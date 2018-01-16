@@ -1,12 +1,11 @@
 Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-Date: Tue, 16 Jan 2018 14:35:27 +0200
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20180116123527.GB21025@ahiler-desk1.ger.corp.intel.com>
-References: <20180116111306.7080-1-petri.latvala@intel.com>
-MIME-Version: 1.0
-Content-Disposition: inline
+From: Petri Latvala <petri.latvala@intel.com>
+Date: Tue, 16 Jan 2018 13:13:05 +0200
+Message-Id: <20180116111306.7080-3-petri.latvala@intel.com>
 In-Reply-To: <20180116111306.7080-1-petri.latvala@intel.com>
-Subject: Re: [Intel-gfx] [PATCH i-g-t 1/4] meson: Build cnl_compute_wrpll
+References: <20180116111306.7080-1-petri.latvala@intel.com>
+Subject: [Intel-gfx] [PATCH i-g-t 3/4] meson: Add quotes in
+	assembler/test/run-test.sh
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
@@ -14,18 +13,37 @@ List-Post: <mailto:intel-gfx@lists.freedesktop.org>
 List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: intel-gfx-bounces@lists.freedesktop.org
 Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBKYW4gMTYsIDIwMTggYXQgMDE6MTM6MDNQTSArMDIwMCwgUGV0cmkgTGF0dmFsYSB3
-cm90ZToKPiBTaWduZWQtb2ZmLWJ5OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVs
-LmNvbT4KClJldmlld2VkLWJ5OiBBcmthZGl1c3ogSGlsZXIgPGFya2FkaXVzei5oaWxlckBpbnRl
-bC5jb20+CgpvbmUgdGhlIHdob2xlIHNlcmllcwoKLS0gCkNoZWVycywKQXJlawpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpJbnRlbC1nZnggbWFpbGluZyBs
-aXN0CkludGVsLWdmeEBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
-a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pbnRlbC1nZngK
+SWYgdGhlIGRpcmVjdG9yaWVzIGNvbnRhaW4gc3BhY2VzLCBydW4tdGVzdC5zaCBmYWlscy4KClNp
+Z25lZC1vZmYtYnk6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgotLS0K
+IGFzc2VtYmxlci90ZXN0L3J1bi10ZXN0LnNoIHwgMTIgKysrKysrLS0tLS0tCiAxIGZpbGUgY2hh
+bmdlZCwgNiBpbnNlcnRpb25zKCspLCA2IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2Fzc2Vt
+Ymxlci90ZXN0L3J1bi10ZXN0LnNoIGIvYXNzZW1ibGVyL3Rlc3QvcnVuLXRlc3Quc2gKaW5kZXgg
+YjA2ZTEwNDQuLmY1ZTFhOGZiIDEwMDY0NAotLS0gYS9hc3NlbWJsZXIvdGVzdC9ydW4tdGVzdC5z
+aAorKysgYi9hc3NlbWJsZXIvdGVzdC9ydW4tdGVzdC5zaApAQCAtMSw3ICsxLDcgQEAKICMhL2Jp
+bi9zaAogCi1TUkNESVI9JHtzcmNkaXItYHB3ZGB9Ci1CVUlMRERJUj0ke3RvcF9idWlsZGRpci1g
+cHdkYH0KK1NSQ0RJUj0iJHtzcmNkaXItYHB3ZGB9IgorQlVJTERESVI9IiR7dG9wX2J1aWxkZGly
+LWBwd2RgfSIKIAogdGVzdD0iVEVTVCIKIApAQCAtOSwxMSArOSwxMSBAQCBpZiBbIC1uICIkMSIg
+XSA7IHRoZW4KIAl0ZXN0PSIkMSIKIGZpCiAKLXRlc3QgLWQgJHtCVUlMRERJUn0vdGVzdCB8fCBt
+a2RpciAke0JVSUxERElSfS90ZXN0LwordGVzdCAtZCAiJHtCVUlMRERJUn0vdGVzdCIgfHwgbWtk
+aXIgIiR7QlVJTERESVJ9L3Rlc3QvIgogCi0ke0JVSUxERElSfS9pbnRlbC1nZW40YXNtIC1vICR7
+QlVJTERESVJ9LyR7dGVzdH0ub3V0ICRTUkNESVIvJHt0ZXN0fS5nNGEKLWlmIGNtcCAke0JVSUxE
+RElSfS8ke3Rlc3R9Lm91dCAke1NSQ0RJUn0vJHt0ZXN0fS5leHBlY3RlZCAyPiAvZGV2L251bGw7
+IHRoZW4gOiA7IGVsc2UKKyIke0JVSUxERElSfS9pbnRlbC1nZW40YXNtIiAtbyAiJHtCVUlMRERJ
+Un0vJHt0ZXN0fS5vdXQiICIkU1JDRElSLyR7dGVzdH0uZzRhIgoraWYgY21wICIke0JVSUxERElS
+fS8ke3Rlc3R9Lm91dCIgIiR7U1JDRElSfS8ke3Rlc3R9LmV4cGVjdGVkIiAyPiAvZGV2L251bGw7
+IHRoZW4gOiA7IGVsc2UKICAgZWNobyAiT3V0cHV0IGNvbXBhcmlzb24gZm9yICR7dGVzdH0iCi0g
+IGRpZmYgLXUgJHtTUkNESVJ9LyR7dGVzdH0uZXhwZWN0ZWQgJHt0ZXN0fS5vdXQKKyAgZGlmZiAt
+dSAiJHtTUkNESVJ9LyR7dGVzdH0uZXhwZWN0ZWQiICIke3Rlc3R9Lm91dCIKICAgZXhpdCAxOwog
+ZmkKLS0gCjIuMTQuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KSW50ZWwtZ2Z4IG1haWxpbmcgbGlzdApJbnRlbC1nZnhAbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaW50ZWwt
+Z2Z4Cg==
