@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E89F56E5AA
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Jan 2018 11:08:08 +0000 (UTC)
-MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7232E6E025
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Jan 2018 11:22:11 +0000 (UTC)
 References: <20180124102500.71999-1-maarten.lankhorst@linux.intel.com>
-In-Reply-To: <20180124102500.71999-1-maarten.lankhorst@linux.intel.com>
-Message-ID: <151679208421.13096.6619668340989603229@mail.alporthouse.com>
-Date: Wed, 24 Jan 2018 11:08:04 +0000
+ <151679208421.13096.6619668340989603229@mail.alporthouse.com>
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Message-ID: <891fc5fe-db82-16d3-970e-18eff5d32b2a@linux.intel.com>
+Date: Wed, 24 Jan 2018 12:22:07 +0100
+MIME-Version: 1.0
+In-Reply-To: <151679208421.13096.6619668340989603229@mail.alporthouse.com>
+Content-Language: en-US
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_render: Rewrite test to take
  advantage of igt_display.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -21,17 +23,19 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBNYWFydGVuIExhbmtob3JzdCAoMjAxOC0wMS0yNCAxMDoyNTowMCkKPiBUaGlzIHRl
-c3Qgd2FzIHRha2luZyB+MTAwcyBmb3IgZWFjaCBzdWJ0ZXN0LCBhbmQgYm90aCB0ZXN0cyB3ZXJl
-IHRoZSBzYW1lLAo+IGJ1dCByZXF1aXJlZCB0aGUgdXNlciB0byBwYXkgYXR0ZW50aW9uLiBJJ3Zl
-IGNoYW5nZWQgaXQgdG8gYXV0b21hdGVkCj4gY2hlY2tpbmcgd2l0aCBDUkMsIGFuZCByZW1vdmVk
-IHRoZSBzdWJ0ZXN0cy4KCldoYXQgZG8gd2UgZG8gaGVyZSB0aGF0IGlzbid0IGNvdmVyZWQgYnkg
-a21zX2Zyb250YnVmZmVyKj8gTXkgZ3Vlc3MKd291bGQgYmUgZG8gc2ltcGxlIHRlc3Rpbmcgb2Yg
-bW9yZSBjb25maWd1cmF0aW9ucyAoYXMgb3Bwb3NlZCB0bwprbXNfZnJvbnRidWZmZXIgdGhhdCBk
-b2VzIGxvdHMgb2YgZGlmZmVyZW50IGRyYXdpbmcgdG8gdGhlIHNhbWUKY29uZmlndXJhdGlvbiku
-Ci1DaHJpcwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpp
-Z3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczov
-L2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+T3AgMjQtMDEtMTggb20gMTI6MDggc2NocmVlZiBDaHJpcyBXaWxzb246Cj4gUXVvdGluZyBNYWFy
+dGVuIExhbmtob3JzdCAoMjAxOC0wMS0yNCAxMDoyNTowMCkKPj4gVGhpcyB0ZXN0IHdhcyB0YWtp
+bmcgfjEwMHMgZm9yIGVhY2ggc3VidGVzdCwgYW5kIGJvdGggdGVzdHMgd2VyZSB0aGUgc2FtZSwK
+Pj4gYnV0IHJlcXVpcmVkIHRoZSB1c2VyIHRvIHBheSBhdHRlbnRpb24uIEkndmUgY2hhbmdlZCBp
+dCB0byBhdXRvbWF0ZWQKPj4gY2hlY2tpbmcgd2l0aCBDUkMsIGFuZCByZW1vdmVkIHRoZSBzdWJ0
+ZXN0cy4KPiBXaGF0IGRvIHdlIGRvIGhlcmUgdGhhdCBpc24ndCBjb3ZlcmVkIGJ5IGttc19mcm9u
+dGJ1ZmZlcio/IE15IGd1ZXNzCj4gd291bGQgYmUgZG8gc2ltcGxlIHRlc3Rpbmcgb2YgbW9yZSBj
+b25maWd1cmF0aW9ucyAoYXMgb3Bwb3NlZCB0bwo+IGttc19mcm9udGJ1ZmZlciB0aGF0IGRvZXMg
+bG90cyBvZiBkaWZmZXJlbnQgZHJhd2luZyB0byB0aGUgc2FtZQo+IGNvbmZpZ3VyYXRpb24pLgpI
+bSBwcm9iYWJseSByaWdodC4gSSB3b3VsZG4ndCBtaW5kIHJlbW92aW5nIGl0IHRvbywgdG8gYmUg
+aG9uZXN0Li4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+aWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
+Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
