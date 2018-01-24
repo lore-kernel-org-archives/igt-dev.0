@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
+ [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7524F6E6BB
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Jan 2018 23:03:09 +0000 (UTC)
+From: Gabriel Krisman Bertazi <krisman@collabora.co.uk>
+References: <20180124204742.30071-1-ville.syrjala@linux.intel.com>
+Date: Wed, 24 Jan 2018 21:03:02 -0200
+In-Reply-To: <20180124204742.30071-1-ville.syrjala@linux.intel.com> (Ville
+ Syrjala's message of "Wed, 24 Jan 2018 22:47:42 +0200")
+Message-ID: <87po5y3lnd.fsf@collabora.co.uk>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 25 Jan 2018 02:38:19 -0000
-Message-ID: <20180125023819.26357.6635@emeril.freedesktop.org>
-References: <20180125010003.7678-1-antonio.argenziano@intel.com>
-In-Reply-To: <20180125010003.7678-1-antonio.argenziano@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2Cv4=2C1/3=5D_lib/igt=5Faux=3A_Add_func?=
- =?utf-8?q?tion_to_swap_int64_in_array?=
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_ccs: Grab the CRC when the
+ plane is actually enabled
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,52 +19,20 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Antonio Argenziano <antonio.argenziano@intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW2ktZy10
-LHY0LDEvM10gbGliL2lndF9hdXg6IEFkZCBmdW5jdGlvbiB0byBzd2FwIGludDY0IGluIGFycmF5
-ClVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy8zNzA4Mi8K
-U3RhdGUgOiBmYWlsdXJlCgo9PSBTdW1tYXJ5ID09CgpUZXN0IHBtX3JjNl9yZXNpZGVuY3k6CiAg
-ICAgICAgU3ViZ3JvdXAgcmM2LWFjY3VyYWN5OgogICAgICAgICAgICAgICAgc2tpcCAgICAgICAt
-PiBQQVNTICAgICAgIChzaGFyZC1zbmIpClRlc3Qga21zX2ZsaXA6CiAgICAgICAgU3ViZ3JvdXAg
-MngtcGxhaW4tZmxpcC1mYi1yZWNyZWF0ZToKICAgICAgICAgICAgICAgIHBhc3MgICAgICAgLT4g
-RkFJTCAgICAgICAoc2hhcmQtaHN3KSBmZG8jMTAwMzY4ICsyCiAgICAgICAgU3ViZ3JvdXAgMngt
-ZmxpcC12cy1tb2Rlc2V0LWludGVycnVwdGlibGU6CiAgICAgICAgICAgICAgICBkbWVzZy13YXJu
-IC0+IFBBU1MgICAgICAgKHNoYXJkLWhzdykKICAgICAgICBTdWJncm91cCBmbGlwLXZzLWV4cGly
-ZWQtdmJsYW5rLWludGVycnVwdGlibGU6CiAgICAgICAgICAgICAgICBwYXNzICAgICAgIC0+IEZB
-SUwgICAgICAgKHNoYXJkLWFwbCkgZmRvIzEwMjg4NwogICAgICAgIFN1Ymdyb3VwIDJ4LXdmX3Zi
-bGFuay10cy1jaGVjay1pbnRlcnJ1cHRpYmxlOgogICAgICAgICAgICAgICAgcGFzcyAgICAgICAt
-PiBGQUlMICAgICAgIChzaGFyZC1oc3cpIGZkbyMxMDM5MjgKVGVzdCBrbXNfc3lzZnNfZWRpZF90
-aW1pbmc6CiAgICAgICAgICAgICAgICBwYXNzICAgICAgIC0+IFdBUk4gICAgICAgKHNoYXJkLWFw
-bCkgZmRvIzEwMDA0NwpUZXN0IGdlbV9wd3JpdGU6CiAgICAgICAgU3ViZ3JvdXAgYmlnLWd0dC1m
-b3J3YXJkczoKICAgICAgICAgICAgICAgIHBhc3MgICAgICAgLT4gU0tJUCAgICAgICAoc2hhcmQt
-YXBsKQpUZXN0IGttc19jdXJzb3JfbGVnYWN5OgogICAgICAgIFN1Ymdyb3VwIGZsaXAtdnMtY3Vy
-c29yLWNyYy1hdG9taWM6CiAgICAgICAgICAgICAgICBmYWlsICAgICAgIC0+IFBBU1MgICAgICAg
-KHNoYXJkLWFwbCkKVGVzdCBnZW1fZWlvOgogICAgICAgIFN1Ymdyb3VwIGluLWZsaWdodC1jb250
-ZXh0czoKICAgICAgICAgICAgICAgIGZhaWwgICAgICAgLT4gUEFTUyAgICAgICAoc2hhcmQtaHN3
-KSBmZG8jMTA0Njc2ClRlc3QgcGVyZl9wbXU6CiAgICAgICAgU3ViZ3JvdXAgYnVzeS1kb3VibGUt
-c3RhcnQtdmNzMDoKICAgICAgICAgICAgICAgIHBhc3MgICAgICAgLT4gSU5DT01QTEVURSAoc2hh
-cmQtYXBsKQoKZmRvIzEwMDM2OCBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVn
-LmNnaT9pZD0xMDAzNjgKZmRvIzEwMjg4NyBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
-b3dfYnVnLmNnaT9pZD0xMDI4ODcKZmRvIzEwMzkyOCBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Au
-b3JnL3Nob3dfYnVnLmNnaT9pZD0xMDM5MjgKZmRvIzEwMDA0NyBodHRwczovL2J1Z3MuZnJlZWRl
-c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDAwNDcKZmRvIzEwNDY3NiBodHRwczovL2J1Z3Mu
-ZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDQ2NzYKCnNoYXJkLWFwbCAgICAgICAg
-dG90YWw6MjgwNyBwYXNzOjE3MjUgZHdhcm46MSAgIGRmYWlsOjAgICBmYWlsOjIxICBza2lwOjEw
-NTggdGltZToxMjMzM3MKc2hhcmQtaHN3ICAgICAgICB0b3RhbDoyODI1IHBhc3M6MTcyMyBkd2Fy
-bjoxICAgZGZhaWw6MCAgIGZhaWw6MTAgIHNraXA6MTA5MCB0aW1lOjEyMDIycwpzaGFyZC1zbmIg
-ICAgICAgIHRvdGFsOjI4MjUgcGFzczoxMzE5IGR3YXJuOjEgICBkZmFpbDowICAgZmFpbDo5ICAg
-c2tpcDoxNDk2IHRpbWU6NjU1NHMKQmxhY2tsaXN0ZWQgaG9zdHM6CnNoYXJkLWtibCAgICAgICAg
-dG90YWw6MjgyNSBwYXNzOjE4MjYgZHdhcm46MzYgIGRmYWlsOjAgICBmYWlsOjIzICBza2lwOjk0
-MCB0aW1lOjk1MzNzCgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9p
-bnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV184MjIvc2hhcmRzLmh0bWwKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
-aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
-ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+VmlsbGUgU3lyamFsYSA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+IHdyaXRlczoKCj4g
+RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KPgo+
+IERvbid0IHR1cm4gb2ZmIHRoZSBwbGFuZSB3ZSB3YW50IHRvIHRlc3QgYmVmb3JlIHdlIGdyYWIg
+dGhlIENSQy4KCkhpIFZpbGxlLCBwbGVhc2UgYWRkCgpSZXZpZXdlZC1ieTogR2FicmllbCBLcmlz
+bWFuIEJlcnRhemkgPGtyaXNtYW5AY29sbGFib3JhLmNvLnVrPgoKVGhhbmtzLAoKLS0gCkdhYnJp
+ZWwgS3Jpc21hbiBCZXJ0YXppCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRl
+dgo=
