@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
- [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7524F6E6BB
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Jan 2018 23:03:09 +0000 (UTC)
-From: Gabriel Krisman Bertazi <krisman@collabora.co.uk>
-References: <20180124204742.30071-1-ville.syrjala@linux.intel.com>
-Date: Wed, 24 Jan 2018 21:03:02 -0200
-In-Reply-To: <20180124204742.30071-1-ville.syrjala@linux.intel.com> (Ville
- Syrjala's message of "Wed, 24 Jan 2018 22:47:42 +0200")
-Message-ID: <87po5y3lnd.fsf@collabora.co.uk>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D6D556E726
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Jan 2018 08:30:32 +0000 (UTC)
+Date: Thu, 25 Jan 2018 10:30:28 +0200
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20180125083028.GA29596@ahiler-desk1.ger.corp.intel.com>
+References: <20180122130407.454-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_ccs: Grab the CRC when the
- plane is actually enabled
+Content-Disposition: inline
+In-Reply-To: <20180122130407.454-1-petri.latvala@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] meson: Use absolute path for
+ IGT_DATADIR
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,16 +22,18 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VmlsbGUgU3lyamFsYSA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+IHdyaXRlczoKCj4g
-RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KPgo+
-IERvbid0IHR1cm4gb2ZmIHRoZSBwbGFuZSB3ZSB3YW50IHRvIHRlc3QgYmVmb3JlIHdlIGdyYWIg
-dGhlIENSQy4KCkhpIFZpbGxlLCBwbGVhc2UgYWRkCgpSZXZpZXdlZC1ieTogR2FicmllbCBLcmlz
-bWFuIEJlcnRhemkgPGtyaXNtYW5AY29sbGFib3JhLmNvLnVrPgoKVGhhbmtzLAoKLS0gCkdhYnJp
-ZWwgS3Jpc21hbiBCZXJ0YXppCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRl
-dgo=
+T24gTW9uLCBKYW4gMjIsIDIwMTggYXQgMDM6MDQ6MDdQTSArMDIwMCwgUGV0cmkgTGF0dmFsYSB3
+cm90ZToKPiBJR1RfREFUQURJUiBuZWVkcyB0byBiZSBhbiBhYnNvbHV0ZSBwYXRoIGluc3RlYWQg
+b2YgcmVsYXRpdmUgdG8KPiBwcmVmaXggb3IgZGF0YSBmaWxlcyBjYW4gb25seSBiZSBmb3VuZCBp
+ZiBjd2QgaXMgZXhhY3RseSBwcmVmaXguCj4gCj4gQnVnemlsbGE6IGh0dHBzOi8vYnVncy5mcmVl
+ZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNDcyMwo+IFNpZ25lZC1vZmYtYnk6IFBldHJp
+IExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgo+IENjOiBBcmthZGl1c3ogSGlsZXIg
+PGFya2FkaXVzei5oaWxlckBpbnRlbC5jb20+ClJldmlld2VkLWJ5OiBBcmthZGl1c3ogSGlsZXIg
+PGFya2FkaXVzei5oaWxlckBpbnRlbC5jb20+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
+Zm8vaWd0LWRldgo=
