@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mail-wm0-x243.google.com (mail-wm0-x243.google.com
  [IPv6:2a00:1450:400c:c09::243])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8461B6E8EC
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2018 10:11:36 +0000 (UTC)
-Received: by mail-wm0-x243.google.com with SMTP id b21so39223481wme.4
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2018 02:11:36 -0800 (PST)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF83B6E8EC
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2018 10:11:35 +0000 (UTC)
+Received: by mail-wm0-x243.google.com with SMTP id v123so39196625wmd.5
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2018 02:11:35 -0800 (PST)
 From: Tvrtko Ursulin <tursulin@ursulin.net>
-Date: Tue, 30 Jan 2018 10:11:13 +0000
-Message-Id: <20180130101119.15758-8-tvrtko.ursulin@linux.intel.com>
+Date: Tue, 30 Jan 2018 10:11:12 +0000
+Message-Id: <20180130101119.15758-7-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20180130101119.15758-1-tvrtko.ursulin@linux.intel.com>
 References: <20180130101119.15758-1-tvrtko.ursulin@linux.intel.com>
-Subject: [igt-dev] [PATCH i-g-t 06/11] trace.pl: Move sortQueue near to the
- user
+Subject: [igt-dev] [PATCH i-g-t 06/11] trace.pl: Move sortQueue near its user
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
