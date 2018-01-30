@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm0-x243.google.com (mail-wm0-x243.google.com
- [IPv6:2a00:1450:400c:c09::243])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 471CD6E8F0
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2018 10:11:38 +0000 (UTC)
-Received: by mail-wm0-x243.google.com with SMTP id f3so39227208wmc.1
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2018 02:11:38 -0800 (PST)
+Received: from mail-wr0-x244.google.com (mail-wr0-x244.google.com
+ [IPv6:2a00:1450:400c:c0c::244])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A41E6E8F0
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2018 10:11:39 +0000 (UTC)
+Received: by mail-wr0-x244.google.com with SMTP id w50so10486630wrc.2
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jan 2018 02:11:39 -0800 (PST)
 From: Tvrtko Ursulin <tursulin@ursulin.net>
-Date: Tue, 30 Jan 2018 10:11:15 +0000
-Message-Id: <20180130101119.15758-10-tvrtko.ursulin@linux.intel.com>
+Date: Tue, 30 Jan 2018 10:11:16 +0000
+Message-Id: <20180130101119.15758-11-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20180130101119.15758-1-tvrtko.ursulin@linux.intel.com>
 References: <20180130101119.15758-1-tvrtko.ursulin@linux.intel.com>
-Subject: [igt-dev] [PATCH i-g-t 08/11] trace.pl: Fix engine busy accounting
- in split mode
+Subject: [igt-dev] [PATCH i-g-t 08/11] trace.pl: Split engine busy
+ accounting in split mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
