@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9551B6EC6C
- for <igt-dev@lists.freedesktop.org>; Wed, 31 Jan 2018 15:49:56 +0000 (UTC)
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <151741348157.10214.9226102139237949466@mail.alporthouse.com>
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 31 Jan 2018 16:47:25 -0000
+Message-ID: <20180131164725.13005.54582@emeril.freedesktop.org>
 References: <20180131123441.32102-1-tvrtko.ursulin@linux.intel.com>
- <151741348157.10214.9226102139237949466@mail.alporthouse.com>
-Message-ID: <151741378846.10214.1316225455958343845@mail.alporthouse.com>
-Date: Wed, 31 Jan 2018 15:49:48 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/dummyload: Allow spin batches
- to be restarted
+In-Reply-To: <20180131123441.32102-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_lib/dummyload=3A_Allow_spin_ba?=
+ =?utf-8?q?tches_to_be_restarted?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,33 +15,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tursulin@ursulin.net>, igt-dev@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBDaHJpcyBXaWxzb24gKDIwMTgtMDEtMzEgMTU6NDQ6NDEpCj4gUXVvdGluZyBUdnJ0
-a28gVXJzdWxpbiAoMjAxOC0wMS0zMSAxMjozNDo0MCkKPiA+IGRpZmYgLS1naXQgYS9saWIvaWd0
-X2R1bW15bG9hZC5oIGIvbGliL2lndF9kdW1teWxvYWQuaAo+ID4gaW5kZXggZmZhN2UzNTFkZWEz
-Li5iOWYyMDFkNGFmYjYgMTAwNjQ0Cj4gPiAtLS0gYS9saWIvaWd0X2R1bW15bG9hZC5oCj4gPiAr
-KysgYi9saWIvaWd0X2R1bW15bG9hZC5oCj4gPiBAQCAtMzYsNiArMzYsMTIgQEAgdHlwZWRlZiBz
-dHJ1Y3QgaWd0X3NwaW4gewo+ID4gICAgICAgICBzdHJ1Y3QgaWd0X2xpc3QgbGluazsKPiA+ICAg
-ICAgICAgdWludDMyX3QgKmJhdGNoOwo+ID4gICAgICAgICBpbnQgb3V0X2ZlbmNlOwo+ID4gKyAg
-ICAgICBzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2JqZWN0MiBvYmpbMl07Cj4gPiArICAgICAg
-IHN0cnVjdCBkcm1faTkxNV9nZW1fcmVsb2NhdGlvbl9lbnRyeSByZWxvY3NbMl07Cj4gPiArICAg
-ICAgIHN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY2J1ZmZlcjIgZXhlY2J1ZjsKPiAKPiBJJ20gZHVi
-aW91cyB3aGV0aGVyIHdlIHdhbnQgdG8gZW1pdCB0aGUgZGVwZW5kZW5jeSBvYmogb24gcmVzdWJt
-aXQuIEkKPiBjYW4gc2VlIHdoZXJlIGl0IG1heSBiZSBkZXNpcmVkLCBhbmQgd2hlcmUgaXQgbWF5
-IGJlIGEgaGluZHJhbmNlLgo+IAo+IEkgdGhpbmsgSSdtIGNvbWluZyBkb3duIG9uIHRoZSBzaWRl
-IHRoYXQgdG8gcmVlbWl0IHRoZSBkZXBlbmRlbmN5IGlzCj4gc3VycHJpc2luZywgYW5kIHdvdWxk
-IGFyZ3VlIHRoYXQgaWYgdGhhdCBpcyBkZXNpcmVkIGl0IHNob3VsZCBiZSBhbgo+IGV4cGxpY2l0
-IHBhcmFtZXRlciB0byByZXN0YXJ0KCkuCgpTdHJvbmdlciBoaW50IHRoYXQgaXQgaXMgc3VycHJp
-c2luZyB0byByZW1pdCB0aGUgZGVwZW5kZW5jeSBvYmogaXMgdGhhdAppdCBpcyBvd25lZCBieSB0
-aGUgY2FsbGVyLCB3aG8gbWF5IG5vdCByZWFsaXNlIGl0IGhhcyBiZWVuIGNhcHR1cmVkIGJ5CnRo
-ZSBzcGluIGJhdGNoIGFuZCB3aWxsIGNhbGwgZ2VtX2Nsb3NlKCkgb24gaXQuCi1DaHJpcwpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxp
-bmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVk
-ZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW2ktZy10
+LDEvMl0gbGliL2R1bW15bG9hZDogQWxsb3cgc3BpbiBiYXRjaGVzIHRvIGJlIHJlc3RhcnRlZApV
+UkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMzc0MDYvClN0
+YXRlIDogZmFpbHVyZQoKPT0gU3VtbWFyeSA9PQoKVGVzdCBwZXJmX3BtdToKICAgICAgICBTdWJn
+cm91cCBzZW1hcGhvcmUtd2FpdC1iY3MwOgogICAgICAgICAgICAgICAgZmFpbCAgICAgICAtPiBQ
+QVNTICAgICAgIChzaGFyZC1hcGwpIGZkbyMxMDQ4MjkKICAgICAgICBTdWJncm91cCBidXN5LWNo
+ZWNrLWFsbC12Y3MwOgogICAgICAgICAgICAgICAgcGFzcyAgICAgICAtPiBGQUlMICAgICAgIChz
+aGFyZC1hcGwpClRlc3QgZHJ2X3N1c3BlbmQ6CiAgICAgICAgU3ViZ3JvdXAgZm9yY2V3YWtlOgog
+ICAgICAgICAgICAgICAgcGFzcyAgICAgICAtPiBTS0lQICAgICAgIChzaGFyZC1zbmIpClRlc3Qg
+a21zX2ZsaXA6CiAgICAgICAgU3ViZ3JvdXAgcGxhaW4tZmxpcC1mYi1yZWNyZWF0ZToKICAgICAg
+ICAgICAgICAgIHBhc3MgICAgICAgLT4gRkFJTCAgICAgICAoc2hhcmQtaHN3KSBmZG8jMTAwMzY4
+CiAgICAgICAgU3ViZ3JvdXAgYmxvY2tpbmctd2ZfdmJsYW5rOgogICAgICAgICAgICAgICAgcGFz
+cyAgICAgICAtPiBGQUlMICAgICAgIChzaGFyZC1oc3cpIGZkbyMxMDM5MjgKVGVzdCBrbXNfZmxp
+cF90aWxpbmc6CiAgICAgICAgU3ViZ3JvdXAgZmxpcC1jaGFuZ2VzLXRpbGluZy15OgogICAgICAg
+ICAgICAgICAgcGFzcyAgICAgICAtPiBGQUlMICAgICAgIChzaGFyZC1hcGwpIGZkbyMxMDM4MjIK
+CmZkbyMxMDQ4MjkgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
+MTA0ODI5CmZkbyMxMDAzNjggaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5j
+Z2k/aWQ9MTAwMzY4CmZkbyMxMDM5MjggaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93
+X2J1Zy5jZ2k/aWQ9MTAzOTI4CmZkbyMxMDM4MjIgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9y
+Zy9zaG93X2J1Zy5jZ2k/aWQ9MTAzODIyCgpzaGFyZC1hcGwgICAgICAgIHRvdGFsOjI4NTMgcGFz
+czoxNzYzIGR3YXJuOjEgICBkZmFpbDowICAgZmFpbDoyMiAgc2tpcDoxMDY3IHRpbWU6MTI4MDFz
+CnNoYXJkLWhzdyAgICAgICAgdG90YWw6Mjg1MyBwYXNzOjE3MzQgZHdhcm46MSAgIGRmYWlsOjAg
+ICBmYWlsOjEyICBza2lwOjExMDUgdGltZToxMTk1NHMKc2hhcmQtc25iICAgICAgICB0b3RhbDoy
+ODUzIHBhc3M6MTMyOSBkd2FybjoxICAgZGZhaWw6MCAgIGZhaWw6MTAgIHNraXA6MTUxMyB0aW1l
+OjY1NjhzCgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9pbnRlbC1n
+ZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV184NDEvc2hhcmRzLmh0bWwKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxp
+c3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
+cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
