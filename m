@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A97A86EB0F
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Feb 2018 12:38:16 +0000 (UTC)
-MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-References: <20180202114116.40361-1-maarten.lankhorst@linux.intel.com>
-In-Reply-To: <20180202114116.40361-1-maarten.lankhorst@linux.intel.com>
-Message-ID: <151757509126.15322.12893528422575020119@mail.alporthouse.com>
-Date: Fri, 02 Feb 2018 12:38:11 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_vblank: Fix spurious test
- failure.
+Received: from mblankhorst.nl (mblankhorst.nl
+ [IPv6:2a02:2308::216:3eff:fe92:dfa3])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA5356E11C
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Feb 2018 13:02:17 +0000 (UTC)
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Date: Fri,  2 Feb 2018 14:02:09 +0100
+Message-Id: <20180202130209.26823-1-maarten.lankhorst@linux.intel.com>
+In-Reply-To: <151757509126.15322.12893528422575020119@mail.alporthouse.com>
+References: <151757509126.15322.12893528422575020119@mail.alporthouse.com>
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_vblank: Fix spurious test failure.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,22 +16,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBNYWFydGVuIExhbmtob3JzdCAoMjAxOC0wMi0wMiAxMTo0MToxNikKPiBpZ3Rfc3lz
-dGVtX3N1c3BlbmRfYXV0b3Jlc3VtZSgpIGNhbGxzIGlndF9yZXF1aXJlKCksIHdoaWNoIGlzbid0
-IGFsbG93ZWQKPiB0byBiZSBjYWxsZWQgZnJvbSBhIGZvcmtlZCBjaGlsZC4gUnVuIHN1YnRlc3Rz
-IGRpcmVjdGx5IGZyb20gdGhlIHRlc3QgYm9keSwKPiBleGNlcHQgd2hlbiBhIGZvcmtlZCB0ZXN0
-IGlzIHJlcXVlc3RlZC4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBNYWFydGVuIExhbmtob3JzdCA8bWFh
-cnRlbi5sYW5raG9yc3RAbGludXguaW50ZWwuY29tPgo+IEJ1Z3ppbGxhOiBodHRwczovL2J1Z3Mu
-ZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDQ3ODMKCkVhc2llciB0aGFuIGxpZnRp
-bmcgYWxsIHRoZSByZXF1aXJlcywKUmV2aWV3ZWQtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hy
-aXMtd2lsc29uLmNvLnVrPgotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVz
-a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9p
-Z3QtZGV2Cg==
+aWd0X3N5c3RlbV9zdXNwZW5kX2F1dG9yZXN1bWUoKSBjYWxscyBpZ3RfcmVxdWlyZSgpLCB3aGlj
+aCBpc24ndCBhbGxvd2VkCnRvIGJlIGNhbGxlZCBmcm9tIGEgZm9ya2VkIGNoaWxkLiBSdW4gc3Vi
+dGVzdHMgZGlyZWN0bHkgZnJvbSB0aGUgdGVzdCBib2R5LApleGNlcHQgd2hlbiBhIGZvcmtlZCB0
+ZXN0IGlzIHJlcXVlc3RlZC4KCkNoYW5nZXMgc2luY2UgdjE6Ci0gRml4ZWQgdG8gYWN0dWFsbHkg
+Y29tcGlsZS4uCgpTaWduZWQtb2ZmLWJ5OiBNYWFydGVuIExhbmtob3JzdCA8bWFhcnRlbi5sYW5r
+aG9yc3RAbGludXguaW50ZWwuY29tPgpCdWd6aWxsYTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
+Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA0NzgzClJldmlld2VkLWJ5OiBDaHJpcyBXaWxzb24gPGNo
+cmlzQGNocmlzLXdpbHNvbi5jby51az4KLS0tCiB0ZXN0cy9rbXNfdmJsYW5rLmMgfCAxOSArKysr
+KysrKysrKystLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwgNyBkZWxl
+dGlvbnMoLSkKCmRpZmYgLS1naXQgYS90ZXN0cy9rbXNfdmJsYW5rLmMgYi90ZXN0cy9rbXNfdmJs
+YW5rLmMKaW5kZXggNWRmMmRhN2IwMzhjLi4yYmVlNDlkZTU1ZWIgMTAwNjQ0Ci0tLSBhL3Rlc3Rz
+L2ttc192YmxhbmsuYworKysgYi90ZXN0cy9rbXNfdmJsYW5rLmMKQEAgLTExMyw4ICsxMTMsNiBA
+QCBzdGF0aWMgaW50IHdhaXRfdmJsYW5rKGludCBmZCwgdW5pb24gZHJtX3dhaXRfdmJsYW5rICp2
+YmwpCiAKIHN0YXRpYyB2b2lkIHJ1bl90ZXN0KGRhdGFfdCAqZGF0YSwgdm9pZCAoKnRlc3RmdW5j
+KShkYXRhX3QgKiwgaW50LCBpbnQpKQogewotCWludCBuY2hpbGRyZW4gPQotCQlkYXRhLT5mbGFn
+cyAmIEZPUktFRCA/IHN5c2NvbmYoX1NDX05QUk9DRVNTT1JTX09OTE4pIDogMTsKIAlpZ3RfZGlz
+cGxheV90ICpkaXNwbGF5ID0gJmRhdGEtPmRpc3BsYXk7CiAJaWd0X291dHB1dF90ICpvdXRwdXQg
+PSBkYXRhLT5vdXRwdXQ7CiAJaW50IGZkID0gZGlzcGxheS0+ZHJtX2ZkOwpAQCAtMTI1LDkgKzEy
+Myw5IEBAIHN0YXRpYyB2b2lkIHJ1bl90ZXN0KGRhdGFfdCAqZGF0YSwgdm9pZCAoKnRlc3RmdW5j
+KShkYXRhX3QgKiwgaW50LCBpbnQpKQogCWlmIChkYXRhLT5mbGFncyAmIFJQTSkKIAkJaWd0X3Jl
+cXVpcmUoaWd0X3NldHVwX3J1bnRpbWVfcG0oKSk7CiAKLQlpZ3RfaW5mbygiQmVnaW5uaW5nICVz
+IG9uIHBpcGUgJXMsIGNvbm5lY3RvciAlcyAoJWQgdGhyZWFkcylcbiIsCisJaWd0X2luZm8oIkJl
+Z2lubmluZyAlcyBvbiBwaXBlICVzLCBjb25uZWN0b3IgJXNcbiIsCiAJCSBpZ3Rfc3VidGVzdF9u
+YW1lKCksIGttc3Rlc3RfcGlwZV9uYW1lKGRhdGEtPnBpcGUpLAotCQkgaWd0X291dHB1dF9uYW1l
+KG91dHB1dCksIG5jaGlsZHJlbik7CisJCSBpZ3Rfb3V0cHV0X25hbWUob3V0cHV0KSk7CiAKIAlp
+ZiAoIShkYXRhLT5mbGFncyAmIE5PSEFORykpCiAJCWhhbmcgPSBpZ3RfaGFuZ19yaW5nKGZkLCBJ
+OTE1X0VYRUNfREVGQVVMVCk7CkBAIC0xNDMsOSArMTQxLDE2IEBAIHN0YXRpYyB2b2lkIHJ1bl90
+ZXN0KGRhdGFfdCAqZGF0YSwgdm9pZCAoKnRlc3RmdW5jKShkYXRhX3QgKiwgaW50LCBpbnQpKQog
+CQlpZ3RfYXNzZXJ0X2VxKHdhaXRfdmJsYW5rKGZkLCAmdmJsKSwgMCk7CiAJfQogCi0JaWd0X2Zv
+cmsoY2hpbGQsIG5jaGlsZHJlbikKLQkJdGVzdGZ1bmMoZGF0YSwgZmQsIG5jaGlsZHJlbik7Ci0J
+aWd0X3dhaXRjaGlsZHJlbigpOworCWlmIChkYXRhLT5mbGFncyAmIEZPUktFRCkgeworCQlpbnQg
+bmNoaWxkcmVuID0gc3lzY29uZihfU0NfTlBST0NFU1NPUlNfT05MTik7CisKKwkJaWd0X2RlYnVn
+KCJTcGF3bmluZyAlZCB0aHJlYWRzXG4iLCBuY2hpbGRyZW4pOworCisJCWlndF9mb3JrKGNoaWxk
+LCBuY2hpbGRyZW4pCisJCQl0ZXN0ZnVuYyhkYXRhLCBmZCwgbmNoaWxkcmVuKTsKKwkJaWd0X3dh
+aXRjaGlsZHJlbigpOworCX0gZWxzZQorCQl0ZXN0ZnVuYyhkYXRhLCBmZCwgMSk7CiAKIAlpZiAo
+ZGF0YS0+ZmxhZ3MgJiBCVVNZKSB7CiAJCXN0cnVjdCBkcm1fZXZlbnRfdmJsYW5rIGJ1ZjsKLS0g
+CjIuMTUuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+aWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
+Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
