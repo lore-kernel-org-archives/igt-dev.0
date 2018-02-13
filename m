@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <1516798260-11685-1-git-send-email-ankit.k.nautiyal@intel.com>
- <1516798260-11685-2-git-send-email-ankit.k.nautiyal@intel.com>
- <1518446057.7484.5.camel@intel.com>
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Message-ID: <4cf22f94-e60d-6a59-d938-5a6993789915@intel.com>
-Date: Tue, 13 Feb 2018 16:39:43 +0530
 MIME-Version: 1.0
-In-Reply-To: <1518446057.7484.5.camel@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_kms.c: modify
- kmstest_dump_mode to print aspect ratio of a mode
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 13 Feb 2018 11:19:19 -0000
+Message-ID: <20180213111919.17941.27312@emeril.freedesktop.org>
+References: <20180213093040.17824-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20180213093040.17824-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2tt?=
+ =?utf-8?q?s=3A_Clear_unused_fields_for_getproperty_ioctl?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,278 +14,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0898800256=="
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Kahola, Mika" <mika.kahola@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is a multi-part message in MIME format.
---===============0898800256==
-Content-Type: multipart/alternative;
- boundary="------------107ACFA33290D3887398E25A"
-
-This is a multi-part message in MIME format.
---------------107ACFA33290D3887398E25A
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-Hi Mika,
-
-Thanks for the review.
-
-Please find my comments inline:
-
-
-On 2/12/2018 8:04 PM, Kahola, Mika wrote:
-> On Wed, 2018-01-24 at 18:20 +0530, Nautiyal, Ankit K wrote:
->> From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
->>
->> This patch adds the support to print the aspect ratio of the modes
->> (if provided) along with other mode information.
->>
->> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
->> ---
->>   lib/igt_kms.c | 31 +++++++++++++++++++++++++++++--
->>   1 file changed, 29 insertions(+), 2 deletions(-)
->>
->> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
->> index eb57f4a..585f94d 100644
->> --- a/lib/igt_kms.c
->> +++ b/lib/igt_kms.c
->> @@ -56,6 +56,14 @@
->>   #include "igt_sysfs.h"
->>   #include "sw_sync.h"
->>   
->> +#ifndef DRM_MODE_FLAG_PIC_AR_64_27
->> +#define DRM_MODE_FLAG_PIC_AR_64_27 (3<<19)
->> +#endif
->> +
->> +#ifndef DRM_MODE_FLAG_PIC_AR_256_135
->> +#define DRM_MODE_FLAG_PIC_AR_256_135 (4<<19)
->> +#endif
->> +
-> Shouldn't these be defined in /include/uapi/drm/drm_mode.h? Although, I
-> wasn't able to find these definitions from that file. Do we have a
-> patch under review in drm to fill this gap?
-
-Yes you are right. These macros are introduced in the drm-devel 
-patch-series to add aspect-ratio
-support in drm layer.
-https://patchwork.freedesktop.org/series/33984/ which is under review.
-
-When the kernel patch gets r-b, I will remove these macros from here and 
-submit
-next patchset for this series.
-
-Regards,
-Ankit
->
-> Otherwise, the patch looks good.
->
-> Acked-by: Mika Kahola <mika.kahola@intel.com>
->
->>   /**
->>    * SECTION:igt_kms
->>    * @short_description: Kernel modesetting support library
->> @@ -491,6 +499,22 @@ static const char *mode_stereo_name(const
->> drmModeModeInfo *mode)
->>   	}
->>   }
->>   
->> +static const char *mode_aspect_name(const drmModeModeInfo *mode)
->> +{
->> +	switch (mode->flags & DRM_MODE_FLAG_PIC_AR_MASK) {
->> +	case DRM_MODE_FLAG_PIC_AR_4_3:
->> +		return "4:3";
->> +	case DRM_MODE_FLAG_PIC_AR_16_9:
->> +		return "16:9";
->> +	case DRM_MODE_FLAG_PIC_AR_64_27:
->> +		return "64:27";
->> +	case DRM_MODE_FLAG_PIC_AR_256_135:
->> +		return "256:135";
->> +	default:
->> +		return NULL;
->> +	}
->> +}
->> +
->>   /**
->>    * kmstest_dump_mode:
->>    * @mode: libdrm mode structure
->> @@ -500,8 +524,9 @@ static const char *mode_stereo_name(const
->> drmModeModeInfo *mode)
->>   void kmstest_dump_mode(drmModeModeInfo *mode)
->>   {
->>   	const char *stereo = mode_stereo_name(mode);
->> +	const char *aspect_ratio = mode_aspect_name(mode);
->>   
->> -	igt_info("  %s %d %d %d %d %d %d %d %d %d 0x%x 0x%x
->> %d%s%s%s\n",
->> +	igt_info("  %s %d %d %d %d %d %d %d %d %d 0x%x 0x%x %d%s%s%s
->> %s%s%s\n",
->>   		 mode->name, mode->vrefresh,
->>   		 mode->hdisplay, mode->hsync_start,
->>   		 mode->hsync_end, mode->htotal,
->> @@ -509,7 +534,9 @@ void kmstest_dump_mode(drmModeModeInfo *mode)
->>   		 mode->vsync_end, mode->vtotal,
->>   		 mode->flags, mode->type, mode->clock,
->>   		 stereo ? " (3D:" : "",
->> -		 stereo ? stereo : "", stereo ? ")" : "");
->> +		 stereo ? stereo : "", stereo ? ")" : "",
->> +		 aspect_ratio ? " (Pixel Aspect Ratio:" : "",
->> +		 aspect_ratio ? aspect_ratio : "", aspect_ratio ?
->> ")" : "");
->>   }
->>   
->>   /**
-
-
---------------107ACFA33290D3887398E25A
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-
-<html>
-  <head>
-    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-  </head>
-  <body bgcolor="#FFFFFF" text="#000000">
-    <p><font size="-1">Hi Mika,<br>
-      </font></p>
-    <p><font size="-1">Thanks for the review.</font></p>
-    <p><font size="-1">Please find my comments inline:</font><br>
-    </p>
-    <br>
-    <div class="moz-cite-prefix">On 2/12/2018 8:04 PM, Kahola, Mika
-      wrote:<br>
-    </div>
-    <blockquote cite="mid:1518446057.7484.5.camel@intel.com" type="cite">
-      <pre wrap="">On Wed, 2018-01-24 at 18:20 +0530, Nautiyal, Ankit K wrote:
-</pre>
-      <blockquote type="cite">
-        <pre wrap="">From: Ankit Nautiyal <a class="moz-txt-link-rfc2396E" href="mailto:ankit.k.nautiyal@intel.com">&lt;ankit.k.nautiyal@intel.com&gt;</a>
-
-This patch adds the support to print the aspect ratio of the modes
-(if provided) along with other mode information.
-
-Signed-off-by: Ankit Nautiyal <a class="moz-txt-link-rfc2396E" href="mailto:ankit.k.nautiyal@intel.com">&lt;ankit.k.nautiyal@intel.com&gt;</a>
----
- lib/igt_kms.c | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
-
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index eb57f4a..585f94d 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -56,6 +56,14 @@
- #include "igt_sysfs.h"
- #include "sw_sync.h"
- 
-+#ifndef DRM_MODE_FLAG_PIC_AR_64_27
-+#define DRM_MODE_FLAG_PIC_AR_64_27 (3&lt;&lt;19)
-+#endif
-+
-+#ifndef DRM_MODE_FLAG_PIC_AR_256_135
-+#define DRM_MODE_FLAG_PIC_AR_256_135 (4&lt;&lt;19)
-+#endif
-+
-</pre>
-      </blockquote>
-      <pre wrap="">Shouldn't these be defined in /include/uapi/drm/drm_mode.h? Although, I
-wasn't able to find these definitions from that file. Do we have a
-patch under review in drm to fill this gap?</pre>
-    </blockquote>
-    <br>
-    <font size="-1">Yes you are right. These macros are introduced in
-      the drm-devel patch-series to add aspect-ratio<br>
-      support in drm layer.<br>
-      <a class="moz-txt-link-freetext" href="https://patchwork.freedesktop.org/series/33984/">https://patchwork.freedesktop.org/series/33984/</a> which is under
-      review.<br>
-      <br>
-      When the kernel patch gets r-b, I will remove these macros from
-      here and submit <br>
-      next patchset for this series.<br>
-      <br>
-      Regards,<br>
-      Ankit</font><br>
-    <blockquote cite="mid:1518446057.7484.5.camel@intel.com" type="cite">
-      <pre wrap="">
-
-Otherwise, the patch looks good.
-
-Acked-by: Mika Kahola <a class="moz-txt-link-rfc2396E" href="mailto:mika.kahola@intel.com">&lt;mika.kahola@intel.com&gt;</a>
-
-</pre>
-      <blockquote type="cite">
-        <pre wrap=""> /**
-  * SECTION:igt_kms
-  * @short_description: Kernel modesetting support library
-@@ -491,6 +499,22 @@ static const char *mode_stereo_name(const
-drmModeModeInfo *mode)
- 	}
- }
- 
-+static const char *mode_aspect_name(const drmModeModeInfo *mode)
-+{
-+	switch (mode-&gt;flags &amp; DRM_MODE_FLAG_PIC_AR_MASK) {
-+	case DRM_MODE_FLAG_PIC_AR_4_3:
-+		return "4:3";
-+	case DRM_MODE_FLAG_PIC_AR_16_9:
-+		return "16:9";
-+	case DRM_MODE_FLAG_PIC_AR_64_27:
-+		return "64:27";
-+	case DRM_MODE_FLAG_PIC_AR_256_135:
-+		return "256:135";
-+	default:
-+		return NULL;
-+	}
-+}
-+
- /**
-  * kmstest_dump_mode:
-  * @mode: libdrm mode structure
-@@ -500,8 +524,9 @@ static const char *mode_stereo_name(const
-drmModeModeInfo *mode)
- void kmstest_dump_mode(drmModeModeInfo *mode)
- {
- 	const char *stereo = mode_stereo_name(mode);
-+	const char *aspect_ratio = mode_aspect_name(mode);
- 
--	igt_info("  %s %d %d %d %d %d %d %d %d %d 0x%x 0x%x
-%d%s%s%s\n",
-+	igt_info("  %s %d %d %d %d %d %d %d %d %d 0x%x 0x%x %d%s%s%s
-%s%s%s\n",
- 		 mode-&gt;name, mode-&gt;vrefresh,
- 		 mode-&gt;hdisplay, mode-&gt;hsync_start,
- 		 mode-&gt;hsync_end, mode-&gt;htotal,
-@@ -509,7 +534,9 @@ void kmstest_dump_mode(drmModeModeInfo *mode)
- 		 mode-&gt;vsync_end, mode-&gt;vtotal,
- 		 mode-&gt;flags, mode-&gt;type, mode-&gt;clock,
- 		 stereo ? " (3D:" : "",
--		 stereo ? stereo : "", stereo ? ")" : "");
-+		 stereo ? stereo : "", stereo ? ")" : "",
-+		 aspect_ratio ? " (Pixel Aspect Ratio:" : "",
-+		 aspect_ratio ? aspect_ratio : "", aspect_ratio ?
-")" : "");
- }
- 
- /**
-</pre>
-      </blockquote>
-    </blockquote>
-    <br>
-  </body>
-</html>
-
---------------107ACFA33290D3887398E25A--
-
---===============0898800256==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0898800256==--
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogbGliL2ttczogQ2xlYXIgdW51c2VkIGZpZWxk
+cyBmb3IgZ2V0cHJvcGVydHkgaW9jdGwKVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVz
+a3RvcC5vcmcvc2VyaWVzLzM4MTQ0LwpTdGF0ZSA6IHN1Y2Nlc3MKCj09IFN1bW1hcnkgPT0KCklH
+VCBwYXRjaHNldCB0ZXN0ZWQgb24gdG9wIG9mIGxhdGVzdCBzdWNjZXNzZnVsIGJ1aWxkCjdhMDJk
+MzA1NmZlOTNmZDJkZGQyOTg2ZjdkM2RiNWYzODRlZTIyYTAgbGliOiBmb3JjZSBhIHJlc2V0IG9u
+IGFuIHVuY29vcGVyYXRpdmUgaTkxNSBkZXZpY2UKCndpdGggbGF0ZXN0IERSTS1UaXAga2VybmVs
+IGJ1aWxkIENJX0RSTV8zNzYwCmZiN2ZmMzI1ZjkyNyBkcm0tdGlwOiAyMDE4eS0wMm0tMTNkLTEw
+aC0wOW0tNDVzIFVUQyBpbnRlZ3JhdGlvbiBtYW5pZmVzdAoKTm8gdGVzdGxpc3QgY2hhbmdlcy4K
+ClRlc3QgZGVidWdmc190ZXN0OgogICAgICAgIFN1Ymdyb3VwIHJlYWRfYWxsX2VudHJpZXM6CiAg
+ICAgICAgICAgICAgICBpbmNvbXBsZXRlIC0+IFBBU1MgICAgICAgKGZpLXNuYi0yNTIwbSkgZmRv
+IzEwMzcxMwoKZmRvIzEwMzcxMyBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVn
+LmNnaT9pZD0xMDM3MTMKCmZpLWJkdy01NTU3dSAgICAgdG90YWw6Mjg4ICBwYXNzOjI2NSAgZHdh
+cm46MCAgIGRmYWlsOjAgICBmYWlsOjIgICBza2lwOjIxICB0aW1lOjQ0N3MKZmktYmR3LWd2dGR2
+bSAgICB0b3RhbDoyODggIHBhc3M6MjY0ICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAgIHNr
+aXA6MjQgIHRpbWU6NDI5cwpmaS1ibGItZTY4NTAgICAgIHRvdGFsOjI4OCAgcGFzczoyMjMgIGR3
+YXJuOjEgICBkZmFpbDowICAgZmFpbDowICAgc2tpcDo2NCAgdGltZTozNzZzCmZpLWJzdy1uMzA1
+MCAgICAgdG90YWw6Mjg4ICBwYXNzOjI0MiAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAgICBz
+a2lwOjQ2ICB0aW1lOjQ5OXMKZmktYndyLTIxNjAgICAgICB0b3RhbDoyODggIHBhc3M6MTgzICBk
+d2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAgIHNraXA6MTA1IHRpbWU6Mjg5cwpmaS1ieHQtZHNp
+ICAgICAgIHRvdGFsOjI4OCAgcGFzczoyNTggIGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDowICAg
+c2tpcDozMCAgdGltZTo0ODRzCmZpLWJ4dC1qNDIwNSAgICAgdG90YWw6Mjg4ICBwYXNzOjI1OSAg
+ZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAgICBza2lwOjI5ICB0aW1lOjQ4N3MKZmktYnl0LWox
+OTAwICAgICB0b3RhbDoyODggIHBhc3M6MjUzICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAg
+IHNraXA6MzUgIHRpbWU6NDczcwpmaS1ieXQtbjI4MjAgICAgIHRvdGFsOjI4OCAgcGFzczoyNDkg
+IGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDowICAgc2tpcDozOSAgdGltZTo0NzNzCmZpLWNmbC1z
+MiAgICAgICAgdG90YWw6Mjg4ICBwYXNzOjI2MiAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAg
+ICBza2lwOjI2ICB0aW1lOjU2N3MKZmktY25sLXkzICAgICAgICB0b3RhbDoyODggIHBhc3M6MjYy
+ICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAgIHNraXA6MjYgIHRpbWU6NTY5cwpmaS1lbGst
+ZTc1MDAgICAgIHRvdGFsOjI4OCAgcGFzczoyMjkgIGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDow
+ICAgc2tpcDo1OSAgdGltZTo0MTRzCmZpLWdkZy01NTEgICAgICAgdG90YWw6Mjg4ICBwYXNzOjE3
+OSAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjEgICBza2lwOjEwOCB0aW1lOjI4NXMKZmktZ2xr
+LTEgICAgICAgICB0b3RhbDoyODggIHBhc3M6MjYwICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6
+MCAgIHNraXA6MjggIHRpbWU6NTE1cwpmaS1oc3ctNDc3MCAgICAgIHRvdGFsOjI4OCAgcGFzczoy
+NTkgIGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDoyICAgc2tpcDoyNyAgdGltZTo0MTRzCmZpLWls
+ay02NTAgICAgICAgdG90YWw6Mjg4ICBwYXNzOjIyOCAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWls
+OjAgICBza2lwOjYwICB0aW1lOjQxNnMKZmktaXZiLTM1MjBtICAgICB0b3RhbDoyODggIHBhc3M6
+MjU5ICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAgIHNraXA6MjkgIHRpbWU6NDU3cwpmaS1p
+dmItMzc3MCAgICAgIHRvdGFsOjI4OCAgcGFzczoyNTUgIGR3YXJuOjAgICBkZmFpbDowICAgZmFp
+bDowICAgc2tpcDozMyAgdGltZTo0MTVzCmZpLWtibC03NTAwdSAgICAgdG90YWw6Mjg4ICBwYXNz
+OjI2MyAgZHdhcm46MSAgIGRmYWlsOjAgICBmYWlsOjAgICBza2lwOjI0ICB0aW1lOjQ1N3MKZmkt
+a2JsLTc1NjB1ICAgICB0b3RhbDoyODggIHBhc3M6MjY5ICBkd2FybjowICAgZGZhaWw6MCAgIGZh
+aWw6MCAgIHNraXA6MTkgIHRpbWU6NDk2cwpmaS1rYmwtciAgICAgICAgIHRvdGFsOjI4OCAgcGFz
+czoyNjEgIGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDowICAgc2tpcDoyNyAgdGltZTo1MDJzCmZp
+LXBudi1kNTEwICAgICAgdG90YWw6Mjg4ICBwYXNzOjIyMiAgZHdhcm46MSAgIGRmYWlsOjAgICBm
+YWlsOjAgICBza2lwOjY1ICB0aW1lOjU5NXMKZmktc2tsLTYyNjB1ICAgICB0b3RhbDoyODggIHBh
+c3M6MjY4ICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAgIHNraXA6MjAgIHRpbWU6NDMycwpm
+aS1za2wtNjYwMHUgICAgIHRvdGFsOjI4OCAgcGFzczoyNjEgIGR3YXJuOjAgICBkZmFpbDowICAg
+ZmFpbDowICAgc2tpcDoyNyAgdGltZTo1MTJzCmZpLXNrbC02NzAwaHEgICAgdG90YWw6Mjg4ICBw
+YXNzOjI2MiAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAgICBza2lwOjI2ICB0aW1lOjUyOHMK
+Zmktc2tsLTY3MDBrMiAgICB0b3RhbDoyODggIHBhc3M6MjY0ICBkd2FybjowICAgZGZhaWw6MCAg
+IGZhaWw6MCAgIHNraXA6MjQgIHRpbWU6NDk0cwpmaS1za2wtNjc3MGhxICAgIHRvdGFsOjI4OCAg
+cGFzczoyNjggIGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDowICAgc2tpcDoyMCAgdGltZTo0NzRz
+CmZpLXNrbC1ndWMgICAgICAgdG90YWw6Mjg4ICBwYXNzOjI2MCAgZHdhcm46MCAgIGRmYWlsOjAg
+ICBmYWlsOjAgICBza2lwOjI4ICB0aW1lOjQxN3MKZmktc2tsLWd2dGR2bSAgICB0b3RhbDoyODgg
+IHBhc3M6MjY1ICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAgIHNraXA6MjMgIHRpbWU6NDM1
+cwpmaS1zbmItMjUyMG0gICAgIHRvdGFsOjI4OCAgcGFzczoyNDggIGR3YXJuOjAgICBkZmFpbDow
+ICAgZmFpbDowICAgc2tpcDo0MCAgdGltZTo1MjJzCmZpLXNuYi0yNjAwICAgICAgdG90YWw6Mjg4
+ICBwYXNzOjI0OCAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAgICBza2lwOjQwICB0aW1lOjQw
+OXMKQmxhY2tsaXN0ZWQgaG9zdHM6CmZpLWdsay1kc2kgICAgICAgdG90YWw6MTIyICBwYXNzOjEw
+OSAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAgICBza2lwOjEyIAoKPT0gTG9ncyA9PQoKRm9y
+IG1vcmUgZGV0YWlscyBzZWU6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10
+aXAvSUdUUFdfOTA5L2lzc3Vlcy5odG1sCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8v
+aWd0LWRldgo=
