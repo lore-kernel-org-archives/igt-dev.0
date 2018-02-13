@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B6AB89AEE
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Feb 2018 10:46:21 +0000 (UTC)
+References: <1516798260-11685-1-git-send-email-ankit.k.nautiyal@intel.com>
+ <1516798260-11685-2-git-send-email-ankit.k.nautiyal@intel.com>
+ <1518446057.7484.5.camel@intel.com>
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+Message-ID: <4cf22f94-e60d-6a59-d938-5a6993789915@intel.com>
+Date: Tue, 13 Feb 2018 16:39:43 +0530
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20180212190158.4710-3-tvrtko.ursulin@linux.intel.com>
-References: <20180212190158.4710-1-tvrtko.ursulin@linux.intel.com>
- <20180212190158.4710-3-tvrtko.ursulin@linux.intel.com>
-Message-ID: <151851877090.8633.2002428330139261308@mail.alporthouse.com>
-Date: Tue, 13 Feb 2018 10:46:10 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] intel-gpu-overlay: Show 1s,
- 30s and 15m GPU load
+In-Reply-To: <1518446057.7484.5.camel@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_kms.c: modify
+ kmstest_dump_mode to print aspect ratio of a mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,180 +16,278 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0898800256=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tursulin@ursulin.net>, igt-dev@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: "Kahola, Mika" <mika.kahola@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBUdnJ0a28gVXJzdWxpbiAoMjAxOC0wMi0xMiAxOTowMTo1OCkKPiBGcm9tOiBUdnJ0
-a28gVXJzdWxpbiA8dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPgo+IAo+IFNob3cgdG90YWwgR1BV
-IGxvYWRzIGluIHRoZSB3aW5kb3cgYmFubmVyLgo+IAo+IEVuZ2luZSBsb2FkIGlzIGRlZmluZWQg
-YXMgdG90YWwgb2YgcnVubmFibGUgYW5kIHJ1bm5pbmcgcmVxdWVzdHMgb24gYW4KPiBlbmdpbmUu
-Cj4gCj4gVG90YWwsIG5vbi1ub3JtYWxpemVkLCBsb2FkIGlzIGRpc3BsYXkuIEluIG90aGVyIHdv
-cmRzIGlmIE4gZW5naW5lcyBhcmUKPiBidXN5IHdpdGggZXhhY3RseSBvbmUgcmVxdWVzdCwgdGhl
-IGxvYWQgd2lsbCBiZSBzaG93biBhcyBOLgo+IAo+IFNpZ25lZC1vZmYtYnk6IFR2cnRrbyBVcnN1
-bGluIDx0dnJ0a28udXJzdWxpbkBpbnRlbC5jb20+Cj4gLS0tCj4gIG92ZXJsYXkvZ3B1LXRvcC5j
-IHwgMzcgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLQo+ICBvdmVybGF5L2dw
-dS10b3AuaCB8IDEwICsrKysrKysrKy0KPiAgb3ZlcmxheS9vdmVybGF5LmMgfCAyNyArKysrKysr
-KysrKysrKysrKysrLS0tLS0tLS0KPiAgMyBmaWxlcyBjaGFuZ2VkLCA2NCBpbnNlcnRpb25zKCsp
-LCAxMCBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvb3ZlcmxheS9ncHUtdG9wLmMgYi9v
-dmVybGF5L2dwdS10b3AuYwo+IGluZGV4IDIyZTliYWRiMjJjMS4uY2EyNWU5OThlM2Q3IDEwMDY0
-NAo+IC0tLSBhL292ZXJsYXkvZ3B1LXRvcC5jCj4gKysrIGIvb3ZlcmxheS9ncHUtdG9wLmMKPiBA
-QCAtMjkwLDE3ICsyOTAsMzUgQEAgc3RhdGljIHZvaWQgbW1pb19pbml0KHN0cnVjdCBncHVfdG9w
-ICpndCkKPiAgICAgICAgIH0KPiAgfQo+ICAKPiAtdm9pZCBncHVfdG9wX2luaXQoc3RydWN0IGdw
-dV90b3AgKmd0KQo+ICt2b2lkIGdwdV90b3BfaW5pdChzdHJ1Y3QgZ3B1X3RvcCAqZ3QsIHVuc2ln
-bmVkIGludCBwZXJpb2RfdXMpCj4gIHsKPiArICAgICAgIGNvbnN0IGRvdWJsZSBwZXJpb2QgPSAo
-ZG91YmxlKXBlcmlvZF91cyAvIDFlNjsKPiArICAgICAgIGNvbnN0IGRvdWJsZSBsb2FkX3Blcmlv
-ZFtOVU1fTE9BRFNdID0geyAxLjAsIDMwLjAsIDkwMC4wIH07Cj4gKyAgICAgICBjb25zdCBjaGFy
-ICpsb2FkX25hbWVzW05VTV9MT0FEU10gPSB7ICIxcyIsICIzMHMiLCAiMTVtIiB9Owo+ICsgICAg
-ICAgdW5zaWduZWQgaW50IGk7Cj4gKwo+ICAgICAgICAgbWVtc2V0KGd0LCAwLCBzaXplb2YoKmd0
-KSk7Cj4gICAgICAgICBndC0+ZmQgPSAtMTsKPiAgCj4gKyAgICAgICBmb3IgKGkgPSAwOyBpIDwg
-TlVNX0xPQURTOyBpKyspIHsKPiArICAgICAgICAgICAgICAgZ3QtPmxvYWRfbmFtZVtpXSA9IGxv
-YWRfbmFtZXNbaV07Cj4gKyAgICAgICAgICAgICAgIGd0LT5leHBbaV0gPSBwZXJpb2QgLyBsb2Fk
-X3BlcmlvZFtpXTsKPiArICAgICAgIH0KPiArCj4gICAgICAgICBpZiAocGVyZl9pbml0KGd0KSA9
-PSAwKQo+ICAgICAgICAgICAgICAgICByZXR1cm47Cj4gIAo+ICAgICAgICAgbW1pb19pbml0KGd0
-KTsKPiAgfQo+ICAKPiArc3RhdGljIGRvdWJsZSB1cGRhdGVfbG9hZChkb3VibGUgbG9hZCwgZG91
-YmxlIGV4cCwgZG91YmxlIHZhbCkKPiArewo+ICsgICAgICAgbG9hZCAqPSAxLjAgLSBleHA7Cj4g
-KyAgICAgICBsb2FkICs9IGV4cCAqIHZhbDsKPiArCj4gKyAgICAgICByZXR1cm4gbG9hZDsKPiAr
-fQo+ICsKPiAgaW50IGdwdV90b3BfdXBkYXRlKHN0cnVjdCBncHVfdG9wICpndCkKPiAgewo+ICAg
-ICAgICAgdWludDMyX3QgZGF0YVsxMDI0XTsKPiBAQCAtMzEzLDYgKzMzMSw4IEBAIGludCBncHVf
-dG9wX3VwZGF0ZShzdHJ1Y3QgZ3B1X3RvcCAqZ3QpCj4gICAgICAgICAgICAgICAgIHN0cnVjdCBn
-cHVfdG9wX3N0YXQgKnMgPSAmZ3QtPnN0YXRbZ3QtPmNvdW50KysmMV07Cj4gICAgICAgICAgICAg
-ICAgIHN0cnVjdCBncHVfdG9wX3N0YXQgKmQgPSAmZ3QtPnN0YXRbZ3QtPmNvdW50JjFdOwo+ICAg
-ICAgICAgICAgICAgICB1aW50NjRfdCAqc2FtcGxlLCBkX3RpbWU7Cj4gKyAgICAgICAgICAgICAg
-IGRvdWJsZSBncHVfcWQgPSAwLjA7Cj4gKyAgICAgICAgICAgICAgIHVuc2lnbmVkIGludCBpOwo+
-ICAgICAgICAgICAgICAgICBpbnQgbiwgbTsKPiAgCj4gICAgICAgICAgICAgICAgIGxlbiA9IHJl
-YWQoZ3QtPmZkLCBkYXRhLCBzaXplb2YoZGF0YSkpOwo+IEBAIC0zNDEsNiArMzYxLDggQEAgaW50
-IGdwdV90b3BfdXBkYXRlKHN0cnVjdCBncHVfdG9wICpndCkKPiAgCj4gICAgICAgICAgICAgICAg
-IGRfdGltZSA9IHMtPnRpbWUgLSBkLT50aW1lOwo+ICAgICAgICAgICAgICAgICBmb3IgKG4gPSAw
-OyBuIDwgZ3QtPm51bV9yaW5nczsgbisrKSB7Cj4gKyAgICAgICAgICAgICAgICAgICAgICAgZG91
-YmxlIHFkID0gMC4wOwo+ICsKPiAgICAgICAgICAgICAgICAgICAgICAgICBndC0+cmluZ1tuXS51
-LnUuYnVzeSA9ICgxMDAgKiAocy0+YnVzeVtuXSAtIGQtPmJ1c3lbbl0pICsgZF90aW1lLzIpIC8g
-ZF90aW1lOwo+ICAgICAgICAgICAgICAgICAgICAgICAgIGlmIChndC0+aGF2ZV93YWl0KQo+ICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZ3QtPnJpbmdbbl0udS51LndhaXQgPSAoMTAw
-ICogKHMtPndhaXRbbl0gLSBkLT53YWl0W25dKSArIGRfdGltZS8yKSAvIGRfdGltZTsKPiBAQCAt
-MzUzLDYgKzM3NSwxNCBAQCBpbnQgZ3B1X3RvcF91cGRhdGUoc3RydWN0IGdwdV90b3AgKmd0KQo+
-ICAgICAgICAgICAgICAgICAgICAgICAgIGlmIChndC0+aGF2ZV9ydW5uaW5nKQo+ICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgZ3QtPnJpbmdbbl0ucnVubmluZyA9IChkb3VibGUpKChz
-LT5ydW5uaW5nW25dIC0gZC0+cnVubmluZ1tuXSkpIC8gSTkxNV9TQU1QTEVfUlVOTklOR19ESVZJ
-U09SICogMWU5IC8gZF90aW1lOwo+ICAKPiArICAgICAgICAgICAgICAgICAgICAgICBxZCA9IGd0
-LT5yaW5nW25dLnJ1bm5hYmxlICsgZ3QtPnJpbmdbbl0ucnVubmluZzsKPiArICAgICAgICAgICAg
-ICAgICAgICAgICBncHVfcWQgKz0gcWQ7Cj4gKwo+ICsgICAgICAgICAgICAgICAgICAgICAgIGZv
-ciAoaSA9IDA7IGkgPCBOVU1fTE9BRFM7IGkrKykKPiArICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIGd0LT5yaW5nW25dLmxvYWRbaV0gPQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICB1cGRhdGVfbG9hZChndC0+cmluZ1tuXS5sb2FkW2ldLAo+ICsgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBndC0+ZXhwW2ldLCBx
-ZCk7Cj4gKwo+ICAgICAgICAgICAgICAgICAgICAgICAgIC8qIGluIGNhc2Ugb2Ygcm91bmRpbmcg
-KyBzYW1wbGluZyBlcnJvcnMsIGZ1ZGdlICovCj4gICAgICAgICAgICAgICAgICAgICAgICAgaWYg
-KGd0LT5yaW5nW25dLnUudS5idXN5ID4gMTAwKQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgZ3QtPnJpbmdbbl0udS51LmJ1c3kgPSAxMDA7Cj4gQEAgLTM2Miw2ICszOTIsMTEgQEAg
-aW50IGdwdV90b3BfdXBkYXRlKHN0cnVjdCBncHVfdG9wICpndCkKPiAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIGd0LT5yaW5nW25dLnUudS5zZW1hID0gMTAwOwo+ICAgICAgICAgICAg
-ICAgICB9Cj4gIAo+ICsgICAgICAgICAgICAgICBmb3IgKGkgPSAwOyBpIDwgTlVNX0xPQURTOyBp
-KyspIHsKPiArICAgICAgICAgICAgICAgICAgICAgICBndC0+bG9hZFtpXSA9IHVwZGF0ZV9sb2Fk
-KGd0LT5sb2FkW2ldLCBndC0+ZXhwW2ldLAo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgZ3B1X3FkKTsKPiArICAgICAgICAgICAgICAgICAgICAgICBn
-dC0+bm9ybV9sb2FkW2ldID0gZ3QtPmxvYWRbaV0gLyBndC0+bnVtX3JpbmdzOwo+ICsgICAgICAg
-ICAgICAgICB9Cj4gICAgICAgICAgICAgICAgIHVwZGF0ZSA9IDE7Cj4gICAgICAgICB9IGVsc2Ug
-ewo+ICAgICAgICAgICAgICAgICB3aGlsZSAoKGxlbiA9IHJlYWQoZ3QtPmZkLCBkYXRhLCBzaXpl
-b2YoZGF0YSkpKSA+IDApIHsKPiBkaWZmIC0tZ2l0IGEvb3ZlcmxheS9ncHUtdG9wLmggYi9vdmVy
-bGF5L2dwdS10b3AuaAo+IGluZGV4IGNiNDMxMGM4MmE5NC4uOGZjNjE3Y2U4NDkyIDEwMDY0NAo+
-IC0tLSBhL292ZXJsYXkvZ3B1LXRvcC5oCj4gKysrIGIvb3ZlcmxheS9ncHUtdG9wLmgKPiBAQCAt
-MjYsNiArMjYsNyBAQAo+ICAjZGVmaW5lIEdQVV9UT1BfSAo+ICAKPiAgI2RlZmluZSBNQVhfUklO
-R1MgMTYKPiArI2RlZmluZSBOVU1fTE9BRFMgMwo+ICAKPiAgI2luY2x1ZGUgPHN0ZGludC5oPgo+
-ICAKPiBAQCAtNDAsNiArNDEsMTEgQEAgc3RydWN0IGdwdV90b3Agewo+ICAgICAgICAgaW50IGhh
-dmVfcnVubmFibGU7Cj4gICAgICAgICBpbnQgaGF2ZV9ydW5uaW5nOwo+ICAKPiArICAgICAgIGRv
-dWJsZSBleHBbTlVNX0xPQURTXTsKPiArICAgICAgIGRvdWJsZSBsb2FkW05VTV9MT0FEU107Cj4g
-KyAgICAgICBkb3VibGUgbm9ybV9sb2FkW05VTV9MT0FEU107Cj4gKyAgICAgICBjb25zdCBjaGFy
-ICpsb2FkX25hbWVbTlVNX0xPQURTXTsKPiArCj4gICAgICAgICBzdHJ1Y3QgZ3B1X3RvcF9yaW5n
-IHsKPiAgICAgICAgICAgICAgICAgY29uc3QgY2hhciAqbmFtZTsKPiAgICAgICAgICAgICAgICAg
-dW5pb24gZ3B1X3RvcF9wYXlsb2FkIHsKPiBAQCAtNTQsNiArNjAsOCBAQCBzdHJ1Y3QgZ3B1X3Rv
-cCB7Cj4gICAgICAgICAgICAgICAgIGRvdWJsZSBxdWV1ZWQ7Cj4gICAgICAgICAgICAgICAgIGRv
-dWJsZSBydW5uYWJsZTsKPiAgICAgICAgICAgICAgICAgZG91YmxlIHJ1bm5pbmc7Cj4gKwo+ICsg
-ICAgICAgICAgICAgICBkb3VibGUgbG9hZFtOVU1fTE9BRFNdOwo+ICAgICAgICAgfSByaW5nW01B
-WF9SSU5HU107Cj4gIAo+ICAgICAgICAgc3RydWN0IGdwdV90b3Bfc3RhdCB7Cj4gQEAgLTY5LDcg
-Kzc3LDcgQEAgc3RydWN0IGdwdV90b3Agewo+ICAgICAgICAgaW50IGNvdW50Owo+ICB9Owo+ICAK
-PiAtdm9pZCBncHVfdG9wX2luaXQoc3RydWN0IGdwdV90b3AgKmd0KTsKPiArdm9pZCBncHVfdG9w
-X2luaXQoc3RydWN0IGdwdV90b3AgKmd0LCB1bnNpZ25lZCBpbnQgcGVyaW9kX3VzKTsKPiAgaW50
-IGdwdV90b3BfdXBkYXRlKHN0cnVjdCBncHVfdG9wICpndCk7Cj4gIAo+ICAjZW5kaWYgLyogR1BV
-X1RPUF9IICovCj4gZGlmZiAtLWdpdCBhL292ZXJsYXkvb3ZlcmxheS5jIGIvb3ZlcmxheS9vdmVy
-bGF5LmMKPiBpbmRleCBhNjM5NzAzZWJjZWMuLjMwZjcxMmU0NDE1YSAxMDA2NDQKPiAtLS0gYS9v
-dmVybGF5L292ZXJsYXkuYwo+ICsrKyBiL292ZXJsYXkvb3ZlcmxheS5jCj4gQEAgLTE0MSw3ICsx
-NDEsOCBAQCBzdHJ1Y3Qgb3ZlcmxheV9jb250ZXh0IHsKPiAgfTsKPiAgCj4gIHN0YXRpYyB2b2lk
-IGluaXRfZ3B1X3RvcChzdHJ1Y3Qgb3ZlcmxheV9jb250ZXh0ICpjdHgsCj4gLSAgICAgICAgICAg
-ICAgICAgICAgICAgIHN0cnVjdCBvdmVybGF5X2dwdV90b3AgKmd0KQo+ICsgICAgICAgICAgICAg
-ICAgICAgICAgICBzdHJ1Y3Qgb3ZlcmxheV9ncHVfdG9wICpndCwKPiArICAgICAgICAgICAgICAg
-ICAgICAgICAgdW5zaWduZWQgaW50IHBlcmlvZF91cykKPiAgewo+ICAgICAgICAgY29uc3QgZG91
-YmxlIHJnYmFbXVs0XSA9IHsKPiAgICAgICAgICAgICAgICAgeyAxLCAwLjI1LCAwLjI1LCAxIH0s
-Cj4gQEAgLTE1Miw3ICsxNTMsNyBAQCBzdGF0aWMgdm9pZCBpbml0X2dwdV90b3Aoc3RydWN0IG92
-ZXJsYXlfY29udGV4dCAqY3R4LAo+ICAgICAgICAgaW50IG47Cj4gIAo+ICAgICAgICAgY3B1X3Rv
-cF9pbml0KCZndC0+Y3B1X3RvcCk7Cj4gLSAgICAgICBncHVfdG9wX2luaXQoJmd0LT5ncHVfdG9w
-KTsKPiArICAgICAgIGdwdV90b3BfaW5pdCgmZ3QtPmdwdV90b3AsIHBlcmlvZF91cyk7Cj4gIAo+
-ICAgICAgICAgY2hhcnRfaW5pdCgmZ3QtPmNwdSwgIkNQVSIsIDEyMCk7Cj4gICAgICAgICBjaGFy
-dF9zZXRfcG9zaXRpb24oJmd0LT5jcHUsIFBBRCwgUEFEKTsKPiBAQCAtOTI5LDEzICs5MzAsMTMg
-QEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKiphcmd2KQo+ICAKPiAgICAgICAgIGRlYnVnZnNf
-aW5pdCgpOwo+ICAKPiAtICAgICAgIGluaXRfZ3B1X3RvcCgmY3R4LCAmY3R4LmdwdV90b3ApOwo+
-ICsgICAgICAgc2FtcGxlX3BlcmlvZCA9IGdldF9zYW1wbGVfcGVyaW9kKCZjb25maWcpOwo+ICsK
-PiArICAgICAgIGluaXRfZ3B1X3RvcCgmY3R4LCAmY3R4LmdwdV90b3AsIHNhbXBsZV9wZXJpb2Qp
-Owo+ICAgICAgICAgaW5pdF9ncHVfcGVyZigmY3R4LCAmY3R4LmdwdV9wZXJmKTsKPiAgICAgICAg
-IGluaXRfZ3B1X2ZyZXEoJmN0eCwgJmN0eC5ncHVfZnJlcSk7Cj4gICAgICAgICBpbml0X2dlbV9v
-YmplY3RzKCZjdHgsICZjdHguZ2VtX29iamVjdHMpOwo+ICAKPiAtICAgICAgIHNhbXBsZV9wZXJp
-b2QgPSBnZXRfc2FtcGxlX3BlcmlvZCgmY29uZmlnKTsKPiAtCj4gICAgICAgICBpID0gMDsKPiAg
-ICAgICAgIHdoaWxlICgxKSB7Cj4gICAgICAgICAgICAgICAgIGN0eC50aW1lID0gdGltZShOVUxM
-KTsKPiBAQCAtOTUxLDE2ICs5NTIsMjYgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKiphcmd2
-KQo+ICAgICAgICAgICAgICAgICBzaG93X2dlbV9vYmplY3RzKCZjdHgsICZjdHguZ2VtX29iamVj
-dHMpOwo+ICAKPiAgICAgICAgICAgICAgICAgewo+IC0gICAgICAgICAgICAgICAgICAgICAgIGNo
-YXIgYnVmWzgwXTsKPiArICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3QgZ3B1X3RvcCAqZ3Qg
-PSAmY3R4LmdwdV90b3AuZ3B1X3RvcDsKPiArICAgICAgICAgICAgICAgICAgICAgICBjaGFyIGJ1
-Zls4MF0sIGJ1ZjJbMjU2XTsKPiAgICAgICAgICAgICAgICAgICAgICAgICBjYWlyb190ZXh0X2V4
-dGVudHNfdCBleHRlbnRzOwo+ICsKPiAgICAgICAgICAgICAgICAgICAgICAgICBnZXRob3N0bmFt
-ZShidWYsIHNpemVvZihidWYpKTsKPiArICAgICAgICAgICAgICAgICAgICAgICBzbnByaW50Zihi
-dWYyLCBzaXplb2YoYnVmMiksCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIiVz
-OyAldSBlbmdpbmVzOyBsb2FkLWF2ZyAlcyAlLjJmLCAlcyAlLjJmLCAlcyAlLjJmIiwKPiArICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBidWYsCj4gKyAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgZ3QtPm51bV9yaW5ncywKPiArICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICBndC0+bG9hZF9uYW1lWzBdLCBndC0+bG9hZFswXSwKPiArICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICBndC0+bG9hZF9uYW1lWzFdLCBndC0+bG9hZFsxXSwKPiArICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICBndC0+bG9hZF9uYW1lWzJdLCBndC0+bG9hZFsyXSk7CgpU
-b28gbXVjaCB0ZXh0IDopCgoiJXM6ICV1IGVuZ2luZXMsIGxvYWQgJS4yZiAlLjJmICUuMmYiIHdv
-cmtzZm9ybWUKCmRpZmYgLS1naXQgYS9vdmVybGF5L292ZXJsYXkuYyBiL292ZXJsYXkvb3Zlcmxh
-eS5jCmluZGV4IDMwZjcxMmU0Li45MWY4ZDUyMyAxMDA2NDQKLS0tIGEvb3ZlcmxheS9vdmVybGF5
-LmMKKysrIGIvb3ZlcmxheS9vdmVybGF5LmMKQEAgLTk1MywyNSArOTUzLDI3IEBAIGludCBtYWlu
-KGludCBhcmdjLCBjaGFyICoqYXJndikKIAogICAgICAgICAgICAgICAgewogICAgICAgICAgICAg
-ICAgICAgICAgICBzdHJ1Y3QgZ3B1X3RvcCAqZ3QgPSAmY3R4LmdwdV90b3AuZ3B1X3RvcDsKLSAg
-ICAgICAgICAgICAgICAgICAgICAgY2hhciBidWZbODBdLCBidWYyWzI1Nl07CiAgICAgICAgICAg
-ICAgICAgICAgICAgIGNhaXJvX3RleHRfZXh0ZW50c190IGV4dGVudHM7CisgICAgICAgICAgICAg
-ICAgICAgICAgIGNoYXIgYnVmWzI1Nl07CiAKICAgICAgICAgICAgICAgICAgICAgICAgZ2V0aG9z
-dG5hbWUoYnVmLCBzaXplb2YoYnVmKSk7Ci0gICAgICAgICAgICAgICAgICAgICAgIHNucHJpbnRm
-KGJ1ZjIsIHNpemVvZihidWYyKSwKLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIiVz
-OyAldSBlbmdpbmVzOyBsb2FkLWF2ZyAlcyAlLjJmLCAlcyAlLjJmLCAlcyAlLjJmIiwKLSAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgYnVmLAotICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBndC0+bnVtX3JpbmdzLAotICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBn
-dC0+bG9hZF9uYW1lWzBdLCBndC0+bG9hZFswXSwKLSAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgZ3QtPmxvYWRfbmFtZVsxXSwgZ3QtPmxvYWRbMV0sCi0gICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIGd0LT5sb2FkX25hbWVbMl0sIGd0LT5sb2FkWzJdKTsKKyAgICAgICAgICAg
-ICAgICAgICAgICAgIGlmIChndC0+bG9hZFsyXSA+IDApIHsgLyogZ3QtPmhhc19sb2FkX2F2ZyAq
-LworICAgICAgICAgICAgICAgICAgICAgICAgICAgaW50IGxlbiA9IHN0cmxlbihidWYpOworICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgc25wcmludGYoYnVmICsgbGVuLCBzaXplb2YoYnVmKSAt
-IGxlbiwKKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICI6ICV1IGVuZ2luZXMs
-IGxvYWQgJS4yZiAlLjJmICUuMmYiLAorICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgZ3QtPm51bV9yaW5ncywKKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGd0
-LT5sb2FkWzBdLAorICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZ3QtPmxvYWRb
-MV0sCisgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBndC0+bG9hZFsyXSk7Cisg
-ICAgICAgICAgICAgICAgICAgICAgICB9CiAKICAgICAgICAgICAgICAgICAgICAgICAgY2Fpcm9f
-c2V0X3NvdXJjZV9yZ2IoY3R4LmNyLCAuNSwgLjUsIC41KTsKICAgICAgICAgICAgICAgICAgICAg
-ICAgY2Fpcm9fc2V0X2ZvbnRfc2l6ZShjdHguY3IsIFBBRC0yKTsKLSAgICAgICAgICAgICAgICAg
-ICAgICAgY2Fpcm9fdGV4dF9leHRlbnRzKGN0eC5jciwgYnVmMiwgJmV4dGVudHMpOworICAgICAg
-ICAgICAgICAgICAgICAgICBjYWlyb190ZXh0X2V4dGVudHMoY3R4LmNyLCBidWYsICZleHRlbnRz
-KTsKICAgICAgICAgICAgICAgICAgICAgICAgY2Fpcm9fbW92ZV90byhjdHguY3IsCiAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKGN0eC53aWR0aC1leHRlbnRzLndpZHRoKS8y
-LiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAxK2V4dGVudHMuaGVpZ2h0
-KTsKLSAgICAgICAgICAgICAgICAgICAgICAgY2Fpcm9fc2hvd190ZXh0KGN0eC5jciwgYnVmMik7
-CisgICAgICAgICAgICAgICAgICAgICAgIGNhaXJvX3Nob3dfdGV4dChjdHguY3IsIGJ1Zik7CiAg
-ICAgICAgICAgICAgICB9CiAKICAgICAgICAgICAgICAgIGNhaXJvX2Rlc3Ryb3koY3R4LmNyKTsK
+This is a multi-part message in MIME format.
+--===============0898800256==
+Content-Type: multipart/alternative;
+ boundary="------------107ACFA33290D3887398E25A"
+
+This is a multi-part message in MIME format.
+--------------107ACFA33290D3887398E25A
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Hi Mika,
+
+Thanks for the review.
+
+Please find my comments inline:
+
+
+On 2/12/2018 8:04 PM, Kahola, Mika wrote:
+> On Wed, 2018-01-24 at 18:20 +0530, Nautiyal, Ankit K wrote:
+>> From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+>>
+>> This patch adds the support to print the aspect ratio of the modes
+>> (if provided) along with other mode information.
+>>
+>> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+>> ---
+>>   lib/igt_kms.c | 31 +++++++++++++++++++++++++++++--
+>>   1 file changed, 29 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>> index eb57f4a..585f94d 100644
+>> --- a/lib/igt_kms.c
+>> +++ b/lib/igt_kms.c
+>> @@ -56,6 +56,14 @@
+>>   #include "igt_sysfs.h"
+>>   #include "sw_sync.h"
+>>   
+>> +#ifndef DRM_MODE_FLAG_PIC_AR_64_27
+>> +#define DRM_MODE_FLAG_PIC_AR_64_27 (3<<19)
+>> +#endif
+>> +
+>> +#ifndef DRM_MODE_FLAG_PIC_AR_256_135
+>> +#define DRM_MODE_FLAG_PIC_AR_256_135 (4<<19)
+>> +#endif
+>> +
+> Shouldn't these be defined in /include/uapi/drm/drm_mode.h? Although, I
+> wasn't able to find these definitions from that file. Do we have a
+> patch under review in drm to fill this gap?
+
+Yes you are right. These macros are introduced in the drm-devel 
+patch-series to add aspect-ratio
+support in drm layer.
+https://patchwork.freedesktop.org/series/33984/ which is under review.
+
+When the kernel patch gets r-b, I will remove these macros from here and 
+submit
+next patchset for this series.
+
+Regards,
+Ankit
+>
+> Otherwise, the patch looks good.
+>
+> Acked-by: Mika Kahola <mika.kahola@intel.com>
+>
+>>   /**
+>>    * SECTION:igt_kms
+>>    * @short_description: Kernel modesetting support library
+>> @@ -491,6 +499,22 @@ static const char *mode_stereo_name(const
+>> drmModeModeInfo *mode)
+>>   	}
+>>   }
+>>   
+>> +static const char *mode_aspect_name(const drmModeModeInfo *mode)
+>> +{
+>> +	switch (mode->flags & DRM_MODE_FLAG_PIC_AR_MASK) {
+>> +	case DRM_MODE_FLAG_PIC_AR_4_3:
+>> +		return "4:3";
+>> +	case DRM_MODE_FLAG_PIC_AR_16_9:
+>> +		return "16:9";
+>> +	case DRM_MODE_FLAG_PIC_AR_64_27:
+>> +		return "64:27";
+>> +	case DRM_MODE_FLAG_PIC_AR_256_135:
+>> +		return "256:135";
+>> +	default:
+>> +		return NULL;
+>> +	}
+>> +}
+>> +
+>>   /**
+>>    * kmstest_dump_mode:
+>>    * @mode: libdrm mode structure
+>> @@ -500,8 +524,9 @@ static const char *mode_stereo_name(const
+>> drmModeModeInfo *mode)
+>>   void kmstest_dump_mode(drmModeModeInfo *mode)
+>>   {
+>>   	const char *stereo = mode_stereo_name(mode);
+>> +	const char *aspect_ratio = mode_aspect_name(mode);
+>>   
+>> -	igt_info("  %s %d %d %d %d %d %d %d %d %d 0x%x 0x%x
+>> %d%s%s%s\n",
+>> +	igt_info("  %s %d %d %d %d %d %d %d %d %d 0x%x 0x%x %d%s%s%s
+>> %s%s%s\n",
+>>   		 mode->name, mode->vrefresh,
+>>   		 mode->hdisplay, mode->hsync_start,
+>>   		 mode->hsync_end, mode->htotal,
+>> @@ -509,7 +534,9 @@ void kmstest_dump_mode(drmModeModeInfo *mode)
+>>   		 mode->vsync_end, mode->vtotal,
+>>   		 mode->flags, mode->type, mode->clock,
+>>   		 stereo ? " (3D:" : "",
+>> -		 stereo ? stereo : "", stereo ? ")" : "");
+>> +		 stereo ? stereo : "", stereo ? ")" : "",
+>> +		 aspect_ratio ? " (Pixel Aspect Ratio:" : "",
+>> +		 aspect_ratio ? aspect_ratio : "", aspect_ratio ?
+>> ")" : "");
+>>   }
+>>   
+>>   /**
+
+
+--------------107ACFA33290D3887398E25A
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  </head>
+  <body bgcolor="#FFFFFF" text="#000000">
+    <p><font size="-1">Hi Mika,<br>
+      </font></p>
+    <p><font size="-1">Thanks for the review.</font></p>
+    <p><font size="-1">Please find my comments inline:</font><br>
+    </p>
+    <br>
+    <div class="moz-cite-prefix">On 2/12/2018 8:04 PM, Kahola, Mika
+      wrote:<br>
+    </div>
+    <blockquote cite="mid:1518446057.7484.5.camel@intel.com" type="cite">
+      <pre wrap="">On Wed, 2018-01-24 at 18:20 +0530, Nautiyal, Ankit K wrote:
+</pre>
+      <blockquote type="cite">
+        <pre wrap="">From: Ankit Nautiyal <a class="moz-txt-link-rfc2396E" href="mailto:ankit.k.nautiyal@intel.com">&lt;ankit.k.nautiyal@intel.com&gt;</a>
+
+This patch adds the support to print the aspect ratio of the modes
+(if provided) along with other mode information.
+
+Signed-off-by: Ankit Nautiyal <a class="moz-txt-link-rfc2396E" href="mailto:ankit.k.nautiyal@intel.com">&lt;ankit.k.nautiyal@intel.com&gt;</a>
+---
+ lib/igt_kms.c | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index eb57f4a..585f94d 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -56,6 +56,14 @@
+ #include "igt_sysfs.h"
+ #include "sw_sync.h"
+ 
++#ifndef DRM_MODE_FLAG_PIC_AR_64_27
++#define DRM_MODE_FLAG_PIC_AR_64_27 (3&lt;&lt;19)
++#endif
++
++#ifndef DRM_MODE_FLAG_PIC_AR_256_135
++#define DRM_MODE_FLAG_PIC_AR_256_135 (4&lt;&lt;19)
++#endif
++
+</pre>
+      </blockquote>
+      <pre wrap="">Shouldn't these be defined in /include/uapi/drm/drm_mode.h? Although, I
+wasn't able to find these definitions from that file. Do we have a
+patch under review in drm to fill this gap?</pre>
+    </blockquote>
+    <br>
+    <font size="-1">Yes you are right. These macros are introduced in
+      the drm-devel patch-series to add aspect-ratio<br>
+      support in drm layer.<br>
+      <a class="moz-txt-link-freetext" href="https://patchwork.freedesktop.org/series/33984/">https://patchwork.freedesktop.org/series/33984/</a> which is under
+      review.<br>
+      <br>
+      When the kernel patch gets r-b, I will remove these macros from
+      here and submit <br>
+      next patchset for this series.<br>
+      <br>
+      Regards,<br>
+      Ankit</font><br>
+    <blockquote cite="mid:1518446057.7484.5.camel@intel.com" type="cite">
+      <pre wrap="">
+
+Otherwise, the patch looks good.
+
+Acked-by: Mika Kahola <a class="moz-txt-link-rfc2396E" href="mailto:mika.kahola@intel.com">&lt;mika.kahola@intel.com&gt;</a>
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap=""> /**
+  * SECTION:igt_kms
+  * @short_description: Kernel modesetting support library
+@@ -491,6 +499,22 @@ static const char *mode_stereo_name(const
+drmModeModeInfo *mode)
+ 	}
+ }
+ 
++static const char *mode_aspect_name(const drmModeModeInfo *mode)
++{
++	switch (mode-&gt;flags &amp; DRM_MODE_FLAG_PIC_AR_MASK) {
++	case DRM_MODE_FLAG_PIC_AR_4_3:
++		return "4:3";
++	case DRM_MODE_FLAG_PIC_AR_16_9:
++		return "16:9";
++	case DRM_MODE_FLAG_PIC_AR_64_27:
++		return "64:27";
++	case DRM_MODE_FLAG_PIC_AR_256_135:
++		return "256:135";
++	default:
++		return NULL;
++	}
++}
++
+ /**
+  * kmstest_dump_mode:
+  * @mode: libdrm mode structure
+@@ -500,8 +524,9 @@ static const char *mode_stereo_name(const
+drmModeModeInfo *mode)
+ void kmstest_dump_mode(drmModeModeInfo *mode)
+ {
+ 	const char *stereo = mode_stereo_name(mode);
++	const char *aspect_ratio = mode_aspect_name(mode);
+ 
+-	igt_info("  %s %d %d %d %d %d %d %d %d %d 0x%x 0x%x
+%d%s%s%s\n",
++	igt_info("  %s %d %d %d %d %d %d %d %d %d 0x%x 0x%x %d%s%s%s
+%s%s%s\n",
+ 		 mode-&gt;name, mode-&gt;vrefresh,
+ 		 mode-&gt;hdisplay, mode-&gt;hsync_start,
+ 		 mode-&gt;hsync_end, mode-&gt;htotal,
+@@ -509,7 +534,9 @@ void kmstest_dump_mode(drmModeModeInfo *mode)
+ 		 mode-&gt;vsync_end, mode-&gt;vtotal,
+ 		 mode-&gt;flags, mode-&gt;type, mode-&gt;clock,
+ 		 stereo ? " (3D:" : "",
+-		 stereo ? stereo : "", stereo ? ")" : "");
++		 stereo ? stereo : "", stereo ? ")" : "",
++		 aspect_ratio ? " (Pixel Aspect Ratio:" : "",
++		 aspect_ratio ? aspect_ratio : "", aspect_ratio ?
+")" : "");
+ }
+ 
+ /**
+</pre>
+      </blockquote>
+    </blockquote>
+    <br>
+  </body>
+</html>
+
+--------------107ACFA33290D3887398E25A--
+
+--===============0898800256==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
 X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
 YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
 cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0898800256==--
