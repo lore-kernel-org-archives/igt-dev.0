@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 86EF46E15D
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Feb 2018 10:49:35 +0000 (UTC)
-MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20180212190158.4710-2-tvrtko.ursulin@linux.intel.com>
-References: <20180212190158.4710-1-tvrtko.ursulin@linux.intel.com>
- <20180212190158.4710-2-tvrtko.ursulin@linux.intel.com>
-Message-ID: <151851896835.8633.5701490843312100785@mail.alporthouse.com>
-Date: Tue, 13 Feb 2018 10:49:28 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] intel-gpu-overlay: Add engine queue
- stats
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 30667898BC
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Feb 2018 00:30:34 +0000 (UTC)
+From: Carlos Santa <carlos.santa@intel.com>
+Date: Mon, 12 Feb 2018 16:29:59 -0800
+Message-Id: <1518481799-12341-1-git-send-email-carlos.santa@intel.com>
+Subject: [igt-dev] tests/kms_plane_scaling: Use existing igt_kms apis to
+ paint the fb
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,34 +14,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tursulin@ursulin.net>, igt-dev@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jyoti Yadav <jyoti.r.yadav@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBUdnJ0a28gVXJzdWxpbiAoMjAxOC0wMi0xMiAxOTowMTo1NykKPiBkaWZmIC0tZ2l0
-IGEvb3ZlcmxheS9vdmVybGF5LmMgYi9vdmVybGF5L292ZXJsYXkuYwo+IGluZGV4IDU0NWFmN2Jj
-YjJmNS4uYTYzOTcwM2ViY2VjIDEwMDY0NAo+IC0tLSBhL292ZXJsYXkvb3ZlcmxheS5jCj4gKysr
-IGIvb3ZlcmxheS9vdmVybGF5LmMKPiBAQCAtMjU1LDYgKzI1NSwxNSBAQCBzdGF0aWMgdm9pZCBz
-aG93X2dwdV90b3Aoc3RydWN0IG92ZXJsYXlfY29udGV4dCAqY3R4LCBzdHJ1Y3Qgb3ZlcmxheV9n
-cHVfdG9wICpndAo+ICAgICAgICAgICAgICAgICBsZW4gPSBzcHJpbnRmKHR4dCwgIiVzOiAlM2Ql
-JSBidXN5IiwKPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBndC0+Z3B1X3RvcC5yaW5n
-W25dLm5hbWUsCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZ3QtPmdwdV90b3Aucmlu
-Z1tuXS51LnUuYnVzeSk7Cj4gKyAgICAgICAgICAgICAgIGlmIChndC0+Z3B1X3RvcC5oYXZlX3F1
-ZXVlZCkKPiArICAgICAgICAgICAgICAgICAgICAgICBsZW4gKz0gc3ByaW50Zih0eHQgKyBsZW4s
-ICIsIHFkICUuMmYiLAo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGd0
-LT5ncHVfdG9wLnJpbmdbbl0ucXVldWVkKTsKPiArICAgICAgICAgICAgICAgaWYgKGd0LT5ncHVf
-dG9wLmhhdmVfcnVubmFibGUpCj4gKyAgICAgICAgICAgICAgICAgICAgICAgbGVuICs9IHNwcmlu
-dGYodHh0ICsgbGVuLCAiLCByZCAlLjJmIiwKPiArICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICBndC0+Z3B1X3RvcC5yaW5nW25dLnJ1bm5hYmxlKTsKPiArICAgICAgICAgICAg
-ICAgaWYgKGd0LT5ncHVfdG9wLmhhdmVfcnVubmluZykKPiArICAgICAgICAgICAgICAgICAgICAg
-ICBsZW4gKz0gc3ByaW50Zih0eHQgKyBsZW4sICIsIGVkICUuMmYiLAo+ICsgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIGd0LT5ncHVfdG9wLnJpbmdbbl0ucnVubmluZyk7CgpI
-bW0sIEkgd291bGQgbGlrZSB0byBjb21wYWN0IHRoaXMgZG93biB0byAiJSUgYnVzeSAoJS4yZiAv
-ICUuMmYgLyAlLjJmKSIKd2l0aCBleGVjdXRpb24sIHJ1bm5hYmxlLCBxdWV1ZWQgcmVzcGVjdGl2
-ZWx5LgotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
-cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+aXRnX2ttcyBhbHJlYWR5IGRlZmluZXMgYW4gYXBpIHRoYXQgY3JlYXRlcyBhbmQgY29sb3JzIGEg
+bmV3IGZiLCBsZXQncwp1c2UgdGhhdCBpbnN0ZWFkIG9mIHJlY3JlYXRpbmcgdGhhdCBhbGwgb3Zl
+ciBhZ2Fpbi4KClNpZ25lZC1vZmYtYnk6IENhcmxvcyBTYW50YSA8Y2FybG9zLnNhbnRhQGludGVs
+LmNvbT4KQ0M6IEp5b3RpIFlhZGF2IDxqeW90aS5yLnlhZGF2QGludGVsLmNvbT4KLS0tCiB0ZXN0
+cy9rbXNfcGxhbmVfc2NhbGluZy5jIHwgMTQgKystLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2Vk
+LCAyIGluc2VydGlvbnMoKyksIDEyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2tt
+c19wbGFuZV9zY2FsaW5nLmMgYi90ZXN0cy9rbXNfcGxhbmVfc2NhbGluZy5jCmluZGV4IDdhNTQ3
+MDEwNmNkNS4uNDQwOGU1Y2VjNjIyIDEwMDY0NAotLS0gYS90ZXN0cy9rbXNfcGxhbmVfc2NhbGlu
+Zy5jCisrKyBiL3Rlc3RzL2ttc19wbGFuZV9zY2FsaW5nLmMKQEAgLTExNCwxNSArMTE0LDYgQEAg
+c3RhdGljIHZvaWQgcHJlcGFyZV9jcnRjKGRhdGFfdCAqZGF0YSwgaWd0X291dHB1dF90ICpvdXRw
+dXQsIGVudW0gcGlwZSBwaXBlLAogCWlndF9kaXNwbGF5X2NvbW1pdDIoZGlzcGxheSwgQ09NTUlU
+X0FUT01JQyk7CiB9CiAKLXN0YXRpYyB2b2lkIHBhaW50X2ZiKGRhdGFfdCAqZCwgc3RydWN0IGln
+dF9mYiAqZmIpCi17Ci0JY2Fpcm9fdCAqY3I7Ci0KLQljciA9IGlndF9nZXRfY2Fpcm9fY3R4KGQt
+PmRybV9mZCwgZmIpOwotCWlndF9wYWludF9jb2xvcihjciwgMCwgMCwgZmItPndpZHRoLCBmYi0+
+aGVpZ2h0LCAwLjAsIDEuMCwgMC4wKTsKLQlpZ3RfcHV0X2NhaXJvX2N0eChkLT5kcm1fZmQsIGZi
+LCBjcik7Ci19Ci0KIHN0YXRpYyB2b2lkIGNoZWNrX3NjYWxpbmdfcGlwZV9wbGFuZV9yb3QoZGF0
+YV90ICpkLCBpZ3RfcGxhbmVfdCAqcGxhbmUsCiAJCQkJCSB1aW50MzJfdCBwaXhlbF9mb3JtYXQs
+CiAJCQkJCSB1aW50NjRfdCB0aWxpbmcsIGVudW0gcGlwZSBwaXBlLApAQCAtMTQwLDkgKzEzMSw4
+IEBAIHN0YXRpYyB2b2lkIGNoZWNrX3NjYWxpbmdfcGlwZV9wbGFuZV9yb3QoZGF0YV90ICpkLCBp
+Z3RfcGxhbmVfdCAqcGxhbmUsCiAKIAkvKiBjcmVhdGUgYnVmZmVyIGluIHRoZSByYW5nZSBvZiAg
+bWluIGFuZCBtYXggc291cmNlIHNpZGUgbGltaXQuKi8KIAl3aWR0aCA9IGhlaWdodCA9IDk7Ci0J
+aWd0X2NyZWF0ZV9mYihkaXNwbGF5LT5kcm1fZmQsIHdpZHRoLCBoZWlnaHQsCi0JCSAgICAgIHBp
+eGVsX2Zvcm1hdCwgdGlsaW5nLCAmZC0+ZmJbMF0pOwotCXBhaW50X2ZiKGQsICZkLT5mYlswXSk7
+CisJaWd0X2NyZWF0ZV9jb2xvcl9mYihkaXNwbGF5LT5kcm1fZmQsIHdpZHRoLCBoZWlnaHQsCisJ
+CSAgICAgICBwaXhlbF9mb3JtYXQsIHRpbGluZywgMC4wLCAxLjAsIDAuMCwgJmQtPmZiWzBdKTsK
+IAlpZ3RfcGxhbmVfc2V0X2ZiKHBsYW5lLCAmZC0+ZmJbMF0pOwogCiAJLyogQ2hlY2sgbWluIHRv
+IGZ1bGwgcmVzb2x1dGlvbiB1cHNjYWxpbmcgKi8KLS0gCjIuNy40CgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
+ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
