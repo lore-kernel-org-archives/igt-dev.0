@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 567C16E24A
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Feb 2018 21:39:33 +0000 (UTC)
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20180214213424.22393-1-antonio.argenziano@intel.com>
-References: <20180214213424.22393-1-antonio.argenziano@intel.com>
-Message-ID: <151864436332.15373.16209958507368565612@mail.alporthouse.com>
-Date: Wed, 14 Feb 2018 21:39:23 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t] igt/gem_exec_fence: Skip parallel*
- tests if I915_PARAM_HAS_EXEC_SUBMIT_FENCE is not defined
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 14 Feb 2018 23:22:12 -0000
+Message-ID: <20180214232212.21139.45243@emeril.freedesktop.org>
+References: <20180214204635.27304-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20180214204635.27304-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaWd0L2dl?=
+ =?utf-8?q?m=5Fexec=5Ffence=3A_Test_that_the_in-fence_is_not_overwritten?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,34 +14,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Antonio Argenziano <antonio.argenziano@intel.com>, igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBBbnRvbmlvIEFyZ2Vuemlhbm8gKDIwMTgtMDItMTQgMjE6MzQ6MjQpCj4gSGF2ZSBo
-YXNfc3VibWl0X2ZlbmNlIHJldHVybiBmYWxzZSBpZiB0aGUgcGFyYW10ZXIgaXQgaXMgbG9va2lu
-ZyBmb3IgaXMKPiBub3QgZGVmaW5lZC4KPiAKPiBCdWd6aWxsYTogaHR0cHM6Ly9idWdzLmZyZWVk
-ZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA0Mjg0Cj4gU2lnbmVkLW9mZi1ieTogQW50b25p
-byBBcmdlbnppYW5vIDxhbnRvbmlvLmFyZ2Vuemlhbm9AaW50ZWwuY29tPgo+IAo+IENjOiBDaHJp
-cyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KPiAtLS0KPiAgdGVzdHMvZ2VtX2V4
-ZWNfZmVuY2UuYyB8IDggKysrKysrLS0KPiAgMSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygr
-KSwgMiBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvdGVzdHMvZ2VtX2V4ZWNfZmVuY2Uu
-YyBiL3Rlc3RzL2dlbV9leGVjX2ZlbmNlLmMKPiBpbmRleCBiZDdiMTI2My4uNjA0MTBlNzAgMTAw
-NjQ0Cj4gLS0tIGEvdGVzdHMvZ2VtX2V4ZWNfZmVuY2UuYwo+ICsrKyBiL3Rlc3RzL2dlbV9leGVj
-X2ZlbmNlLmMKPiBAQCAtNjk0LDE3ICs2OTQsMjEgQEAgc3RhdGljIHZvaWQgdGVzdF9mZW5jZV9m
-bGlwKGludCBpOTE1KQo+ICAKPiAgc3RhdGljIGJvb2wgaGFzX3N1Ym1pdF9mZW5jZShpbnQgZmQp
-Cj4gIHsKCk5vLCB0aGlzIGhhcyB0byBiZSBkZWZpbmVkIGluIHRoaXMgdGVzdCB0byBydW4gYWdh
-aW5zdCBrZXJuZWxzIGJlZm9yZSBpdApoaXRzIHRoZSBoZWFkZXJzLiBXaGljaCBpcyB3aHkgd2Ug
-dXNlIGxvY2FsIGRlZmluZXMgaW4gdGhlIGZpcnN0IHBsYWNlLgoKPiArI2lmbmRlZiBJOTE1X1BB
-UkFNX0hBU19FWEVDX1NVQk1JVF9GRU5DRQo+ICsgICAgICAgcmV0dXJuIGZhbHNlOwo+ICsjZWxz
-ZQo+ICAgICAgICAgc3RydWN0IGRybV9pOTE1X2dldHBhcmFtIGdwOwo+ICAgICAgICAgaW50IHZh
-bHVlID0gMDsKPiAgCj4gICAgICAgICBtZW1zZXQoJmdwLCAwLCBzaXplb2YoZ3ApKTsKPiAtICAg
-ICAgIGdwLnBhcmFtID0gNTA7IC8qIEk5MTVfUEFSQU1fSEFTX0VYRUNfU1VCTUlUX0ZFTkNFICov
-Cj4gKyAgICAgICBncC5wYXJhbSA9IEk5MTVfUEFSQU1fSEFTX0VYRUNfU1VCTUlUX0ZFTkNFOwoK
-TXkgcGF0Y2hlcyBkaWQgV0lQIF4gSEFTT0VYRUNfU1VCTUlUX0ZFTkNFLgotQ2hyaXMKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5n
-IGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
-a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogaWd0L2dlbV9leGVjX2ZlbmNlOiBUZXN0IHRo
+YXQgdGhlIGluLWZlbmNlIGlzIG5vdCBvdmVyd3JpdHRlbgpVUkwgICA6IGh0dHBzOi8vcGF0Y2h3
+b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMzgyOTAvClN0YXRlIDogZmFpbHVyZQoKPT0gU3Vt
+bWFyeSA9PQoKQXBwbHlpbmc6IGlndC9nZW1fZXhlY19mZW5jZTogVGVzdCB0aGF0IHRoZSBpbi1m
+ZW5jZSBpcyBub3Qgb3ZlcndyaXR0ZW4KVXNpbmcgaW5kZXggaW5mbyB0byByZWNvbnN0cnVjdCBh
+IGJhc2UgdHJlZS4uLgpNCXRlc3RzL2dlbV9leGVjX2ZlbmNlLmMKRmFsbGluZyBiYWNrIHRvIHBh
+dGNoaW5nIGJhc2UgYW5kIDMtd2F5IG1lcmdlLi4uCkF1dG8tbWVyZ2luZyB0ZXN0cy9nZW1fZXhl
+Y19mZW5jZS5jCkNPTkZMSUNUIChjb250ZW50KTogTWVyZ2UgY29uZmxpY3QgaW4gdGVzdHMvZ2Vt
+X2V4ZWNfZmVuY2UuYwpQYXRjaCBmYWlsZWQgYXQgMDAwMSBpZ3QvZ2VtX2V4ZWNfZmVuY2U6IFRl
+c3QgdGhhdCB0aGUgaW4tZmVuY2UgaXMgbm90IG92ZXJ3cml0dGVuClRoZSBjb3B5IG9mIHRoZSBw
+YXRjaCB0aGF0IGZhaWxlZCBpcyBmb3VuZCBpbjogLmdpdC9yZWJhc2UtYXBwbHkvcGF0Y2gKV2hl
+biB5b3UgaGF2ZSByZXNvbHZlZCB0aGlzIHByb2JsZW0sIHJ1biAiZ2l0IGFtIC0tY29udGludWUi
+LgpJZiB5b3UgcHJlZmVyIHRvIHNraXAgdGhpcyBwYXRjaCwgcnVuICJnaXQgYW0gLS1za2lwIiBp
+bnN0ZWFkLgpUbyByZXN0b3JlIHRoZSBvcmlnaW5hbCBicmFuY2ggYW5kIHN0b3AgcGF0Y2hpbmcs
+IHJ1biAiZ2l0IGFtIC0tYWJvcnQiLgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVz
+a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9p
+Z3QtZGV2Cg==
