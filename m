@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2DCF46E48F
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2018 12:44:15 +0000 (UTC)
-MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20180215123713.xh2ikz2mhj2qj6jg@platvala-desk.ger.corp.intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A2316E48F
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Feb 2018 12:45:13 +0000 (UTC)
 References: <20180215120308.23454-1-lionel.g.landwerlin@intel.com>
  <20180215123713.xh2ikz2mhj2qj6jg@platvala-desk.ger.corp.intel.com>
-Message-ID: <151869865135.11261.15426905061318782335@mail.alporthouse.com>
-Date: Thu, 15 Feb 2018 12:44:11 +0000
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <1791f2f1-c04c-9680-282f-b105854b6f4a@intel.com>
+Date: Thu, 15 Feb 2018 12:45:01 +0000
+MIME-Version: 1.0
+In-Reply-To: <20180215123713.xh2ikz2mhj2qj6jg@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
 Subject: Re: [igt-dev] [PATCH i-g-t 1/2] include: bump drm uAPI headers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -17,20 +18,20 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>, Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBQZXRyaSBMYXR2YWxhICgyMDE4LTAyLTE1IDEyOjM3OjEzKQo+IE9uIFRodSwgRmVi
-IDE1LCAyMDE4IGF0IDEyOjAzOjA3UE0gKzAwMDAsIExpb25lbCBMYW5kd2VybGluIHdyb3RlOgo+
-ID4gU2lnbmVkLW9mZi1ieTogTGlvbmVsIExhbmR3ZXJsaW4gPGxpb25lbC5nLmxhbmR3ZXJsaW5A
-aW50ZWwuY29tPgo+IAo+IAo+IENvbW1pdCBtZXNzYWdlIG5lZWRzIHRoZSBrZXJuZWwgY29tbWl0
-IHRoaXMgaXMgY29waWVkIGZyb20uCgpBIHJlbWluZGVyIHRoYXQgdGhlIGhlYWRlcnMgYXJlIHN0
-aWxsIFdJUCA6KQotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
-cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-Cg==
+T24gMTUvMDIvMTggMTI6MzcsIFBldHJpIExhdHZhbGEgd3JvdGU6Cj4gT24gVGh1LCBGZWIgMTUs
+IDIwMTggYXQgMTI6MDM6MDdQTSArMDAwMCwgTGlvbmVsIExhbmR3ZXJsaW4gd3JvdGU6Cj4+IFNp
+Z25lZC1vZmYtYnk6IExpb25lbCBMYW5kd2VybGluIDxsaW9uZWwuZy5sYW5kd2VybGluQGludGVs
+LmNvbT4KPgo+IENvbW1pdCBtZXNzYWdlIG5lZWRzIHRoZSBrZXJuZWwgY29tbWl0IHRoaXMgaXMg
+Y29waWVkIGZyb20uCj4KPgpTdXJlLCBkaWRuJ3QgYm90aGVyIGJlY2F1c2UgdW50aWwgYW55dGhp
+bmcgbGFuZHMgaW4gZHJtLXRpcCBhbmQgdGhlbiAKZHJtLW5leHQsIHRoZXJlIGlzbid0IGEgY29t
+bWl0IEkgY2FuIHBvaW50IHRvIHlldC4KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8v
+aWd0LWRldgo=
