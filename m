@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-In-Reply-To: <20180220084520.27965-12-chris@chris-wilson.co.uk>
+In-Reply-To: <20180220084520.27965-13-chris@chris-wilson.co.uk>
 References: <20180220084520.27965-1-chris@chris-wilson.co.uk>
- <20180220084520.27965-12-chris@chris-wilson.co.uk>
-Message-ID: <151913858639.11653.9375923615405664250@jlahtine-desk.ger.corp.intel.com>
-Date: Tue, 20 Feb 2018 16:56:26 +0200
-Subject: Re: [igt-dev] [PATCH igt 12/16] igt/gem_ctx_isolation: Check
- isolation of registers between contexts
+ <20180220084520.27965-13-chris@chris-wilson.co.uk>
+Message-ID: <151913867551.11653.18153755424336345476@jlahtine-desk.ger.corp.intel.com>
+Date: Tue, 20 Feb 2018 16:57:55 +0200
+Subject: Re: [igt-dev] [PATCH igt 13/16] igt/gem_ctx_switch: Do a warmup
+ pass over all contexts
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,21 +23,19 @@ To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBDaHJpcyBXaWxzb24gKDIwMTgtMDItMjAgMTA6NDU6MTYpCj4gQSBuZXcgY29udGV4
-dCBhc3N1bWVzIHRoYXQgYWxsIG9mIGl0cyByZWdpc3RlcnMgYXJlIGluIHRoZSBkZWZhdWx0IHN0
-YXRlCj4gd2hlbiBpdCBpcyBjcmVhdGVkLiBXaGF0IG1heSBoYXBwZW4gaXMgdGhhdCBhIHJlZ2lz
-dGVyIHdyaXR0ZW4gYnkgb25lCj4gY29udGV4dCBtYXkgbGVhayBpbnRvIHRoZSBzZWNvbmQsIGNh
-dXNpbmcgbWFzcyBjb25mdXNpb24uCj4gCj4gdjI6IEV4dGVuZCBiYWNrIHRvIFNhbmR5YnJpZGdl
-IChldGMpCj4gdjM6IENoZWNrIGNvbnRleHQgcHJlc2VydmVzIHJlZ2lzdGVycyBhY3Jvc3Mgc3Vz
-cGVuZC9oaWJlcm5hdGUgYW5kIHJlc2V0cy4KPiB2NDogQ29tcGxldGUgdGhlIHJlbWFwcGluZyBv
-bnRvIHRoZSBuZXcgY2xhc3M6aW5zdGFuY2UKPiB2NTogTm90IGxpa2UgdGhhdCwgbGlrZSB0aGlz
-LCB0cnkgYWdhaW4gdG8gdXNlIGNsYXNzOmluc3RhbmNlCj4gdjY6IFByZXBhcmUgZm9yIHJldHJv
-c3BlY3RpdmUgZ2VuNCBjb250ZXh0cyEKPiB2NzogUmVwYWludCByZWdpc3RlciBzZXQgbmFtZSB0
-byBub25wcml2LCBhcyB0aGlzIGlzIHdoYXQgYnNwZWMgY2FsbHMgdGhlCj4gcmVnaXN0ZXJzIHRo
-YXQgYXJlIHdyaXRhYmxlIGJ5IHVzZXJzcGFjZS4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBDaHJpcyBX
-aWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KPiBDYzogSm9vbmFzIExhaHRpbmVuIDxq
-b29uYXMubGFodGluZW5AbGludXguaW50ZWwuY29tPgoKUmV2aWV3ZWQtYnk6IEpvb25hcyBMYWh0
-aW5lbiA8am9vbmFzLmxhaHRpbmVuQGxpbnV4LmludGVsLmNvbT4KClJlZ2FyZHMsIEpvb25hcwpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1h
-aWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZy
-ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+UXVvdGluZyBDaHJpcyBXaWxzb24gKDIwMTgtMDItMjAgMTA6NDU6MTcpCj4gRW5zdXJlIHRoYXQg
+d2UgYWx3YXlzIHVzZSBldmVyeSBjb250ZXh0IGF0IGxlYXN0IG9uY2UgYmVmb3JlIHdlIHN0YXJ0
+Cj4gcnVubmluZyB0aGUgc3RyZXNzLXRlc3QuCj4gCj4gU2lnbmVkLW9mZi1ieTogQ2hyaXMgV2ls
+c29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Cj4gLS0tCj4gIHRlc3RzL2dlbV9jdHhfc3dp
+dGNoLmMgfCA3ICsrKysrKysKPiAgMSBmaWxlIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKQo+IAo+
+IGRpZmYgLS1naXQgYS90ZXN0cy9nZW1fY3R4X3N3aXRjaC5jIGIvdGVzdHMvZ2VtX2N0eF9zd2l0
+Y2guYwo+IGluZGV4IDRkYjkwMmIxLi5lMGFiM2QxOCAxMDA2NDQKPiAtLS0gYS90ZXN0cy9nZW1f
+Y3R4X3N3aXRjaC5jCj4gKysrIGIvdGVzdHMvZ2VtX2N0eF9zd2l0Y2guYwo+IEBAIC0xMDEsNiAr
+MTAxLDEzIEBAIHN0YXRpYyB2b2lkIHNpbmdsZShpbnQgZmQsIHVpbnQzMl90IGhhbmRsZSwKPiAg
+ICAgICAgICAgICAgICAgc3RydWN0IHRpbWVzcGVjIHN0YXJ0LCBub3c7Cj4gICAgICAgICAgICAg
+ICAgIHVuc2lnbmVkIGludCBjb3VudCA9IDA7Cj4gIAo+ICsgICAgICAgICAgICAgICAvKiBXYXJt
+dXAgKi8KCi8qIFdhcm11cCB0byBtYWtlIHN1cmUgLi4uICovCgpUbyBtYWtlIHN1cmUgd2hhdCwg
+dGhpcyBpcyBub3QgYSBiZW5jaG1hcms/CgpSZWdhcmRzLCBKb29uYXMKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0
+LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
