@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from anholt.net (anholt.net [50.246.234.109])
+ by gabe.freedesktop.org (Postfix) with ESMTP id C80786F18D
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Feb 2018 14:52:04 +0000 (UTC)
+From: Eric Anholt <eric@anholt.net>
+In-Reply-To: <20180223111058.30973-1-petri.latvala@intel.com>
+References: <20180223111058.30973-1-petri.latvala@intel.com>
+Date: Fri, 23 Feb 2018 06:51:58 -0800
+Message-ID: <87zi3zlpwx.fsf@anholt.net>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 23 Feb 2018 15:27:31 -0000
-Message-ID: <20180223152731.30576.18465@emeril.freedesktop.org>
-References: <20180223103053.9445-1-arkadiusz.hiler@intel.com>
-In-Reply-To: <20180223103053.9445-1-arkadiusz.hiler@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbWVzb246?=
- =?utf-8?q?_Get_rid_of_lib=5Fheaders?=
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] meson: Don't build docs when
+ cross-compiling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,46 +17,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1554998756=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogbWVzb246IEdldCByaWQgb2YgbGliX2hlYWRl
-cnMKVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzM4ODQ5
-LwpTdGF0ZSA6IGZhaWx1cmUKCj09IFN1bW1hcnkgPT0KClRlc3Qga21zX3JvdGF0aW9uX2NyYzoK
-ICAgICAgICBTdWJncm91cCBzcHJpdGUtcm90YXRpb24tMTgwOgogICAgICAgICAgICAgICAgZmFp
-bCAgICAgICAtPiBQQVNTICAgICAgIChzaGFyZC1zbmIpIGZkbyMxMDM5MjUKVGVzdCBrbXNfZmxp
-cDoKICAgICAgICBTdWJncm91cCAyeC1tb2Rlc2V0LXZzLXZibGFuay1yYWNlLWludGVycnVwdGli
-bGU6CiAgICAgICAgICAgICAgICBmYWlsICAgICAgIC0+IFBBU1MgICAgICAgKHNoYXJkLWhzdykg
-ZmRvIzEwMzA2MCArMQogICAgICAgIFN1Ymdyb3VwIDJ4LXBsYWluLWZsaXAtZmItcmVjcmVhdGUt
-aW50ZXJydXB0aWJsZToKICAgICAgICAgICAgICAgIHBhc3MgICAgICAgLT4gRkFJTCAgICAgICAo
-c2hhcmQtaHN3KSBmZG8jMTAwMzY4ClRlc3Qga21zX2N1cnNvcl9jcmM6CiAgICAgICAgU3ViZ3Jv
-dXAgY3Vyc29yLTY0eDY0LXN1c3BlbmQ6CiAgICAgICAgICAgICAgICBpbmNvbXBsZXRlIC0+IFBB
-U1MgICAgICAgKHNoYXJkLWhzdykgZmRvIzEwMzU0MApUZXN0IGttc19hdG9taWNfdHJhbnNpdGlv
-bjoKICAgICAgICBTdWJncm91cCBwbGFuZS1hbGwtdHJhbnNpdGlvbi1mZW5jaW5nOgogICAgICAg
-ICAgICAgICAgcGFzcyAgICAgICAtPiBJTkNPTVBMRVRFIChzaGFyZC1oc3cpClRlc3Qga21zX3N5
-c2ZzX2VkaWRfdGltaW5nOgogICAgICAgICAgICAgICAgd2FybiAgICAgICAtPiBQQVNTICAgICAg
-IChzaGFyZC1hcGwpIGZkbyMxMDAwNDcKVGVzdCBnZW1fd29ya2Fyb3VuZHM6CiAgICAgICAgU3Vi
-Z3JvdXAgc3VzcGVuZC1yZXN1bWUtZmQ6CiAgICAgICAgICAgICAgICBwYXNzICAgICAgIC0+IElO
-Q09NUExFVEUgKHNoYXJkLWFwbCkKCmZkbyMxMDM5MjUgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
-Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzOTI1CmZkbyMxMDMwNjAgaHR0cHM6Ly9idWdzLmZyZWVk
-ZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMDYwCmZkbyMxMDAzNjggaHR0cHM6Ly9idWdz
-LmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAwMzY4CmZkbyMxMDM1NDAgaHR0cHM6
-Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzNTQwCmZkbyMxMDAwNDcg
-aHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAwMDQ3CgpzaGFy
-ZC1hcGwgICAgICAgIHRvdGFsOjMzOTAgcGFzczoxNzgzIGR3YXJuOjEgICBkZmFpbDowICAgZmFp
-bDoxMSAgc2tpcDoxNTk0IHRpbWU6MTE5NzZzCnNoYXJkLWhzdyAgICAgICAgdG90YWw6MzQ1OCBw
-YXNzOjE3NjMgZHdhcm46MSAgIGRmYWlsOjAgICBmYWlsOjMgICBza2lwOjE2ODkgdGltZToxMTIw
-MXMKc2hhcmQtc25iICAgICAgICB0b3RhbDozNDY1IHBhc3M6MTM1OCBkd2FybjoxICAgZGZhaWw6
-MCAgIGZhaWw6MiAgIHNraXA6MjEwNCB0aW1lOjY1ODJzCkJsYWNrbGlzdGVkIGhvc3RzOgpzaGFy
-ZC1rYmwgICAgICAgIHRvdGFsOjM0NjUgcGFzczoxOTYzIGR3YXJuOjEgICBkZmFpbDowICAgZmFp
-bDoxNCAgc2tpcDoxNDg3IHRpbWU6OTU5OHMKCj09IExvZ3MgPT0KCkZvciBtb3JlIGRldGFpbHMg
-c2VlOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzk5My9z
-aGFyZHMuaHRtbApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
-czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+--===============1554998756==
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
+
+--=-=-=
+Content-Type: text/plain
+
+Petri Latvala <petri.latvala@intel.com> writes:
+
+> Building documentation requires executing all test binaries to produce
+> their respective description texts. This can be a very time-consuming
+> process, if viable at all, when the target arch differs from the
+> host.
+>
+> Don't process the doc directory at all when an exe wrapper is
+> setup. This avoids the runtime penalty when the target binaries are
+> executed through qemu, but leaves everything as-is when the target
+> binaries can be directly executed, like when cross-compiling to x86
+> from x86_64 host.
+>
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> Cc: Eric Anholt <eric@anholt.net>
+
+Reviewed-by: Eric Anholt <eric@anholt.net>
+
+Thanks!
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE/JuuFDWp9/ZkuCBXtdYpNtH8nugFAlqQKo8ACgkQtdYpNtH8
+nuj5IQ/9HTCZAEstf6zN8++/3lCFf0HvdsZo/CTxKN2q3UO5pNa05VRLVA53Y5qz
+AllBZFuw7Jbd1n59hDK5FnsKVL4ZuT4WZuP0Ck0xzRCvzYlH9pkweGMQCRqSZzvK
+NH4+C7KbXN2TiYL7lCvRuRqef+0cWVJUecKhBa92XD6+UoacPKzfV4PJFyQzh4Cl
+9TXoa/vDSI4LwWB/OZuN5f662sqrOfSRGKKuiLVjj/lg+GamZW1tXJx4CtxRm4qr
+qzAfna2TvQj0CytoP4z2S1xZgRNPpFVmXVyDezGfUHoCAqNu5auUSDOZSAGRvkZR
+BiBDjwpCYk1PoFx4VkTydpL7X9zuIMEJCQr0aqALq9vh6OA1sRsV9N4I3MzRs6ol
+a8rcjpEKBTfWMFZyOWchR7LIrkehCwv4+++qVrSuhd++xVyW4T/MH0QySV1C91v+
+uoXUZVtvJz4OpxQCe4oydkRH+SsnCGa7QWDCpmEpmGb/1dqm0OddZeNoLXWTom01
+GjfXpt1AIXPw8Ae4A2T87ymGLlf05mxeoUfvMELlm7V/yBkNVEKOBR+hlitjom59
+AU49ByWZZXeN9r4En4pxNcENyEgzTh74uwUvQQpG+dN0eBPJnMRbU014/oHJk1eJ
+U1JLdY9NKHOkunIpld1rSVRKMBjCX5QTtm60OBGG8FAv77Vj+Kg=
+=ZRHe
+-----END PGP SIGNATURE-----
+--=-=-=--
+
+--===============1554998756==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1554998756==--
