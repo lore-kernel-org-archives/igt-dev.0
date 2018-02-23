@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 24FA26E055
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Feb 2018 09:21:23 +0000 (UTC)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 23 Feb 2018 08:19:11 -0000
-Message-ID: <20180223081911.30574.80421@emeril.freedesktop.org>
-References: <20180221231947.4184-1-antonio.argenziano@intel.com>
-In-Reply-To: <20180221231947.4184-1-antonio.argenziano@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogd2FybmluZyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2Cv6=5D_lib/igt=5Fdummyload=3A_add_igt?=
- =?utf-8?b?X2NvcmsgKHJldjQp?=
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20180223005438.26761-1-antonio.argenziano@intel.com>
+References: <20180221231947.4184-11-antonio.argenziano@intel.com>
+ <20180223005438.26761-1-antonio.argenziano@intel.com>
+Message-ID: <151937767192.26255.16441034774256890811@mail.alporthouse.com>
+Date: Fri, 23 Feb 2018 09:21:11 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t v3] igt: Use lib gem_execbuf where
+ possible
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,49 +18,23 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Antonio Argenziano <antonio.argenziano@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Antonio Argenziano <antonio.argenziano@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW2ktZy10
-LHY2XSBsaWIvaWd0X2R1bW15bG9hZDogYWRkIGlndF9jb3JrIChyZXY0KQpVUkwgICA6IGh0dHBz
-Oi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvMzg3MzAvClN0YXRlIDogd2Fybmlu
-ZwoKPT0gU3VtbWFyeSA9PQoKVGVzdCBrbXNfZmxpcDoKICAgICAgICBTdWJncm91cCAyeC1wbGFp
-bi1mbGlwLWZiLXJlY3JlYXRlLWludGVycnVwdGlibGU6CiAgICAgICAgICAgICAgICBmYWlsICAg
-ICAgIC0+IFBBU1MgICAgICAgKHNoYXJkLWhzdykgZmRvIzEwMDM2OCArMQogICAgICAgIFN1Ymdy
-b3VwIGRwbXMtdnMtdmJsYW5rLXJhY2U6CiAgICAgICAgICAgICAgICBwYXNzICAgICAgIC0+IEZB
-SUwgICAgICAgKHNoYXJkLWhzdykgZmRvIzEwMzA2MCArMQpUZXN0IGdlbV9laW86CiAgICAgICAg
-U3ViZ3JvdXAgaW4tZmxpZ2h0LWNvbnRleHRzOgogICAgICAgICAgICAgICAgaW5jb21wbGV0ZSAt
-PiBQQVNTICAgICAgIChzaGFyZC1hcGwpIGZkbyMxMDQ5NDUKVGVzdCBrbXNfcGxhbmU6CiAgICAg
-ICAgU3ViZ3JvdXAgcGxhbmUtcGFubmluZy1ib3R0b20tcmlnaHQtcGlwZS1iLXBsYW5lczoKICAg
-ICAgICAgICAgICAgIHBhc3MgICAgICAgLT4gU0tJUCAgICAgICAoc2hhcmQtc25iKQpUZXN0IGtt
-c19wbGFuZV9sb3dyZXM6CiAgICAgICAgU3ViZ3JvdXAgcGlwZS1hLXRpbGluZy1ub25lOgogICAg
-ICAgICAgICAgICAgcGFzcyAgICAgICAtPiBTS0lQICAgICAgIChzaGFyZC1zbmIpClRlc3Qga21z
-X3JvdGF0aW9uX2NyYzoKICAgICAgICBTdWJncm91cCBzcHJpdGUtcm90YXRpb24tMTgwOgogICAg
-ICAgICAgICAgICAgcGFzcyAgICAgICAtPiBGQUlMICAgICAgIChzaGFyZC1oc3cpIGZkbyMxMDM5
-MjUKVGVzdCBrbXNfY3Vyc29yX2NyYzoKICAgICAgICBTdWJncm91cCBjdXJzb3ItNjR4NjQtc3Vz
-cGVuZDoKICAgICAgICAgICAgICAgIHBhc3MgICAgICAgLT4gU0tJUCAgICAgICAoc2hhcmQtc25i
-KSBmZG8jMTAyMzY1ICsxClRlc3QgZ2VtX3B3cml0ZToKICAgICAgICBTdWJncm91cCBiaWctY3B1
-LWJhY2t3YXJkczoKICAgICAgICAgICAgICAgIHBhc3MgICAgICAgLT4gU0tJUCAgICAgICAoc2hh
-cmQtYXBsKQoKZmRvIzEwMDM2OCBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVn
-LmNnaT9pZD0xMDAzNjgKZmRvIzEwMzA2MCBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
-b3dfYnVnLmNnaT9pZD0xMDMwNjAKZmRvIzEwNDk0NSBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Au
-b3JnL3Nob3dfYnVnLmNnaT9pZD0xMDQ5NDUKZmRvIzEwMzkyNSBodHRwczovL2J1Z3MuZnJlZWRl
-c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDM5MjUKZmRvIzEwMjM2NSBodHRwczovL2J1Z3Mu
-ZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDIzNjUKCnNoYXJkLWFwbCAgICAgICAg
-dG90YWw6MzQ2NSBwYXNzOjE4MTkgZHdhcm46MSAgIGRmYWlsOjAgICBmYWlsOjEzICBza2lwOjE2
-MzIgdGltZToxMjQ4M3MKc2hhcmQtaHN3ICAgICAgICB0b3RhbDozNDY1IHBhc3M6MTc2NiBkd2Fy
-bjoxICAgZGZhaWw6MCAgIGZhaWw6NCAgIHNraXA6MTY5MyB0aW1lOjExNTM0cwpzaGFyZC1zbmIg
-ICAgICAgIHRvdGFsOjM0NjUgcGFzczoxMzU0IGR3YXJuOjEgICBkZmFpbDowICAgZmFpbDoyICAg
-c2tpcDoyMTA4IHRpbWU6NjU3MXMKQmxhY2tsaXN0ZWQgaG9zdHM6CnNoYXJkLWtibCAgICAgICAg
-dG90YWw6MzQyMyBwYXNzOjE5NDIgZHdhcm46MSAgIGRmYWlsOjAgICBmYWlsOjE0ICBza2lwOjE0
-NjUgdGltZTo5MzA0cwoKPT0gTG9ncyA9PQoKRm9yIG1vcmUgZGV0YWlscyBzZWU6IGh0dHBzOi8v
-aW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfOTkyL3NoYXJkcy5odG1sCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFp
-bGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+UXVvdGluZyBBbnRvbmlvIEFyZ2Vuemlhbm8gKDIwMTgtMDItMjMgMDA6NTQ6MzgpCj4gZGlmZiAt
+LWdpdCBhL3Rlc3RzL2dlbV9leGVjX2ZlbmNlLmMgYi90ZXN0cy9nZW1fZXhlY19mZW5jZS5jCj4g
+aW5kZXggYjQxNTE5OWYuLjlkOTVjOTgyIDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2dlbV9leGVjX2Zl
+bmNlLmMKPiArKysgYi90ZXN0cy9nZW1fZXhlY19mZW5jZS5jCj4gQEAgLTU2NSw3ICs1NTMsNyBA
+QCBzdGF0aWMgdm9pZCB0ZXN0X2tlZXBfaW5fZmVuY2UoaW50IGZkLCB1bnNpZ25lZCBpbnQgZW5n
+aW5lLCB1bnNpZ25lZCBpbnQgZmxhZ3MpCj4gICAgICAgICBsYXN0ID0gLTE7Cj4gICAgICAgICBj
+b3VudCA9IDA7Cj4gICAgICAgICBkbyB7Cj4gLSAgICAgICAgICAgICAgIGludCBlcnIgPSBfX2V4
+ZWNidWYoZmQsICZleGVjYnVmKTsKPiArICAgICAgICAgICAgICAgaW50IGVyciA9IF9fZ2VtX2V4
+ZWNidWZfd3IoZmQsICZleGVjYnVmKTsKCkRhcm4uIEJ1dCB0aGlzIHN0aWxsIGNhbGxzIGRybUlv
+Y3RsKCkgYW5kIHdlIG5lZWQgdGhlIEVJTlRSIGVzY2FwZS4KLUNocmlzCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
+dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
