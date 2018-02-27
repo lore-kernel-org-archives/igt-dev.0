@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 28 Feb 2018 01:04:30 -0000
-Message-ID: <20180228010430.18275.55910@emeril.freedesktop.org>
-References: <20180227215040.11297-1-chris@chris-wilson.co.uk>
+Received: from anholt.net (anholt.net [50.246.234.109])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 2E9E06E0FD
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Feb 2018 23:29:07 +0000 (UTC)
+From: Eric Anholt <eric@anholt.net>
 In-Reply-To: <20180227215040.11297-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliOiBQ?=
- =?utf-8?q?rovide_an_accelerated_routine_for_readback_from_WC_=28rev4=29?=
+References: <20180227215040.11297-1-chris@chris-wilson.co.uk>
+Date: Tue, 27 Feb 2018 15:29:04 -0800
+Message-ID: <87muzut3jz.fsf@anholt.net>
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH igt] lib: Provide an accelerated routine for
+ readback from WC
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,53 +17,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1807891086=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogbGliOiBQcm92aWRlIGFuIGFjY2VsZXJhdGVk
-IHJvdXRpbmUgZm9yIHJlYWRiYWNrIGZyb20gV0MgKHJldjQpClVSTCAgIDogaHR0cHM6Ly9wYXRj
-aHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy8zOTA3MC8KU3RhdGUgOiBmYWlsdXJlCgo9PSBT
-dW1tYXJ5ID09CgotLS0tIFBvc3NpYmxlIG5ldyBpc3N1ZXM6CgpUZXN0IHBlcmZfcG11OgogICAg
-ICAgIFN1Ymdyb3VwIGJ1c3ktY2hlY2stYWxsLXZjczA6CiAgICAgICAgICAgICAgICBwYXNzICAg
-ICAgIC0+IEZBSUwgICAgICAgKHNoYXJkLXNuYikKCi0tLS0gS25vd24gaXNzdWVzOgoKVGVzdCBn
-ZW1fZWlvOgogICAgICAgIFN1Ymdyb3VwIGluLWZsaWdodDoKICAgICAgICAgICAgICAgIHBhc3Mg
-ICAgICAgLT4gSU5DT01QTEVURSAoc2hhcmQtYXBsKSBmZG8jMTA0OTQ1ClRlc3Qga21zX2ZsaXA6
-CiAgICAgICAgU3ViZ3JvdXAgMngtZHBtcy12cy12YmxhbmstcmFjZS1pbnRlcnJ1cHRpYmxlOgog
-ICAgICAgICAgICAgICAgZmFpbCAgICAgICAtPiBQQVNTICAgICAgIChzaGFyZC1oc3cpIGZkbyMx
-MDMwNjAKICAgICAgICBTdWJncm91cCAyeC1mbGlwLXZzLWV4cGlyZWQtdmJsYW5rOgogICAgICAg
-ICAgICAgICAgZmFpbCAgICAgICAtPiBQQVNTICAgICAgIChzaGFyZC1oc3cpIGZkbyMxMDI4ODcK
-ICAgICAgICBTdWJncm91cCBwbGFpbi1mbGlwLWZiLXJlY3JlYXRlOgogICAgICAgICAgICAgICAg
-ZmFpbCAgICAgICAtPiBQQVNTICAgICAgIChzaGFyZC1oc3cpIGZkbyMxMDAzNjgKVGVzdCBrbXNf
-ZnJvbnRidWZmZXJfdHJhY2tpbmc6CiAgICAgICAgU3ViZ3JvdXAgZmJjLTFwLW9mZnNjcmVuLXBy
-aS1pbmRmYi1kcmF3LW1tYXAtZ3R0OgogICAgICAgICAgICAgICAgc2tpcCAgICAgICAtPiBQQVNT
-ICAgICAgIChzaGFyZC1zbmIpIGZkbyMxMDE2MjMKVGVzdCBrbXNfcGxhbmU6CiAgICAgICAgU3Vi
-Z3JvdXAgcGxhbmUtcGFubmluZy1ib3R0b20tcmlnaHQtc3VzcGVuZC1waXBlLWItcGxhbmVzOgog
-ICAgICAgICAgICAgICAgcGFzcyAgICAgICAtPiBTS0lQICAgICAgIChzaGFyZC1oc3cpIGZkbyMx
-MDM1NDAKVGVzdCBrbXNfcm90YXRpb25fY3JjOgogICAgICAgIFN1Ymdyb3VwIHByaW1hcnktcm90
-YXRpb24tMTgwOgogICAgICAgICAgICAgICAgcGFzcyAgICAgICAtPiBGQUlMICAgICAgIChzaGFy
-ZC1zbmIpIGZkbyMxMDM5MjUgKzEKCmZkbyMxMDQ5NDUgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
-Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA0OTQ1CmZkbyMxMDMwNjAgaHR0cHM6Ly9idWdzLmZyZWVk
-ZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMDYwCmZkbyMxMDI4ODcgaHR0cHM6Ly9idWdz
-LmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAyODg3CmZkbyMxMDAzNjggaHR0cHM6
-Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAwMzY4CmZkbyMxMDE2MjMg
-aHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAxNjIzCmZkbyMx
-MDM1NDAgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzNTQw
-CmZkbyMxMDM5MjUgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
-MTAzOTI1CgpzaGFyZC1hcGwgICAgICAgIHRvdGFsOjM0MzMgcGFzczoxODA0IGR3YXJuOjEgICBk
-ZmFpbDowICAgZmFpbDo3ICAgc2tpcDoxNjIwIHRpbWU6MTE3NjVzCnNoYXJkLWhzdyAgICAgICAg
-dG90YWw6MzQ2MCBwYXNzOjE3NjYgZHdhcm46MSAgIGRmYWlsOjAgICBmYWlsOjEgICBza2lwOjE2
-OTEgdGltZToxMTY3NXMKc2hhcmQtc25iICAgICAgICB0b3RhbDozNDYwIHBhc3M6MTM1NyBkd2Fy
-bjoxICAgZGZhaWw6MCAgIGZhaWw6MyAgIHNraXA6MjA5OSB0aW1lOjY2MjBzCkJsYWNrbGlzdGVk
-IGhvc3RzOgpzaGFyZC1rYmwgICAgICAgIHRvdGFsOjM0NTUgcGFzczoxOTM5IGR3YXJuOjMgICBk
-ZmFpbDowICAgZmFpbDo3ICAgc2tpcDoxNTA1IHRpbWU6OTI4N3MKCj09IExvZ3MgPT0KCkZvciBt
-b3JlIGRldGFpbHMgc2VlOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlw
-L0lHVFBXXzEwMTYvc2hhcmRzLmh0bWwKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVz
-a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9p
-Z3QtZGV2Cg==
+--===============1807891086==
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
+
+--=-=-=
+Content-Type: text/plain
+
+Chris Wilson <chris@chris-wilson.co.uk> writes:
+
+> Reading from WC is awfully slow as each access is uncached and so
+> performed synchronously, stalling for the memory load. x86 did introduce
+> some new instructions in SSE 4.1 to provide a small internal buffer to
+> accelerate reading back a cacheline at a time from uncached memory, for
+> this purpose.
+
+I think without a _mm_mfence() before the movntdqas, you can get stale
+results from movntdqa's little cache.
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE/JuuFDWp9/ZkuCBXtdYpNtH8nugFAlqV6cAACgkQtdYpNtH8
+nujMZQ//WoTmzbZZR1AqbyfJzYCFDODXT0Iz8GfNEZlzceoY7P1//7o6IN1IBmH0
+7HtrWQ6NcOF+l6iINxUGd8jAppXAp3we8y5zTY27xhR4hJUfMLD3Sy/GsY9g95U9
+bwGcvfSF9jCQGH8H3K0zkLAGdBErNbjEWJL/jSTD1IB9BL+KOq2fLQI/7rFNDgSG
+Hu5D5tuLD47ZPHIAsSVy/e9rRWBvwLSkKFZ/bO3u6D4wQ+Ws5rJSOJ34TWThEWeO
+xCLmt9TmlERuQzTW2dqh7IpTue/ZGcXfKvrswuqxpi/pTRb9bUSSjxNZCI+62NKl
++iWmm7ApHfr93PNsOOZMM7huKX9zf6LriidJJLBKxOcoRC/j8Qu/Nsu25aGFADCR
+nohFL6l8jrf5kkcxRoLZWO9j9iBxlkx55PBibI8C060ajzlYYWu6RXSAR2St5ySd
+RmBZauAiV6FMFYx9ejTS343xyyd/RQEd+kyN3Vb5jGF++M9uT/QVXiLacVVMGPJ2
+jDVQ/fasaN175kOoguncmTLS4sBx9x7BEE2+zdNBeOLaaDnMT/y+SpUVSlmFhNpk
+VBnfRb9OFukdwQLYPqGFJXhwvCqdrWDZ8PceGdkItQvdqXY5KtiX43g11mUprL2F
+YRdNZNits5qP+2eAFrGaEfTQB+2RVjh1kotbwQAjrR/XdUGh/TY=
+=rHtF
+-----END PGP SIGNATURE-----
+--=-=-=--
+
+--===============1807891086==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1807891086==--
