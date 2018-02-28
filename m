@@ -1,11 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 28 Feb 2018 15:51:35 +0000
-Message-Id: <20180228155138.16168-2-chris@chris-wilson.co.uk>
-In-Reply-To: <20180228155138.16168-1-chris@chris-wilson.co.uk>
-References: <20180228155138.16168-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] [PATCH igt 2/5] igt/gem_spin_batch: Avoid waiting when
- running concurrently
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 678246E996
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Feb 2018 15:43:14 +0000 (UTC)
+References: <20180123125642.58698-1-maarten.lankhorst@linux.intel.com>
+ <20180123125642.58698-8-maarten.lankhorst@linux.intel.com>
+ <1516974963.2602.12.camel@intel.com>
+ <20180228154008.GB30796@ahiler-desk1.ger.corp.intel.com>
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Message-ID: <7c101d92-5643-5e72-6ff6-a544568bf268@linux.intel.com>
+Date: Wed, 28 Feb 2018 16:43:11 +0100
+MIME-Version: 1.0
+In-Reply-To: <20180228154008.GB30796@ahiler-desk1.ger.corp.intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 7/8] tests/kms_render: Copy all planes
+ when copying fb
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -13,47 +21,22 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>, Mika Kahola <mika.kahola@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SWYgd2UgZG8gYSBnbG9iYWwgd2FpdCB3aGlsZSB0cnlpbmcgdG8gZXhlY3V0ZSBzcGlubmVycyBp
-biBwYXJhbGxlbCwKaXQgZW5kcyBiYWRseSB3aXRoIGEgR1BVIGhhbmcuCgpCdWd6aWxsYTogaHR0
-cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA0MzUyClNpZ25lZC1v
-ZmYtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgotLS0KIHRlc3Rz
-L2dlbV9zcGluX2JhdGNoLmMgfCAxNiArKysrKysrKystLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwg
-OSBpbnNlcnRpb25zKCspLCA3IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2dlbV9z
-cGluX2JhdGNoLmMgYi90ZXN0cy9nZW1fc3Bpbl9iYXRjaC5jCmluZGV4IDAyNmY5ODMwLi5jZmZl
-YjZkNyAxMDA2NDQKLS0tIGEvdGVzdHMvZ2VtX3NwaW5fYmF0Y2guYworKysgYi90ZXN0cy9nZW1f
-c3Bpbl9iYXRjaC5jCkBAIC00MSw3ICs0MSw3IEBAIHN0YXRpYyB2b2lkIHNwaW4oaW50IGZkLCB1
-bnNpZ25lZCBpbnQgZW5naW5lLCB1bnNpZ25lZCBpbnQgdGltZW91dF9zZWMpCiAJc3RydWN0IHRp
-bWVzcGVjIGl0diA9IHsgfTsKIAl1aW50NjRfdCBlbGFwc2VkOwogCi0Jc3BpbiA9IGlndF9zcGlu
-X2JhdGNoX25ldyhmZCwgMCwgZW5naW5lLCAwKTsKKwlzcGluID0gX19pZ3Rfc3Bpbl9iYXRjaF9u
-ZXcoZmQsIDAsIGVuZ2luZSwgMCk7CiAJd2hpbGUgKChlbGFwc2VkID0gaWd0X25zZWNfZWxhcHNl
-ZCgmdHYpKSA+PiAzMCA8IHRpbWVvdXRfc2VjKSB7CiAJCWlndF9zcGluX3QgKm5leHQgPSBfX2ln
-dF9zcGluX2JhdGNoX25ldyhmZCwgMCwgZW5naW5lLCAwKTsKIApAQCAtNjQsNyArNjQsNiBAQCBz
-dGF0aWMgdm9pZCBzcGluKGludCBmZCwgdW5zaWduZWQgaW50IGVuZ2luZSwgdW5zaWduZWQgaW50
-IHRpbWVvdXRfc2VjKQogCQkgbG9vcHMsIChsb25nIGxvbmcpZWxhcHNlZCwgKGxvbmcpKGVsYXBz
-ZWQgLyB0aW1lb3V0XzEwMG1zKSk7CiAKIAlhc3NlcnRfd2l0aGluX2Vwc2lsb24odGltZW91dF8x
-MDBtcyAqIGxvb3BzLCBlbGFwc2VkLCBNQVhfRVJST1IpOwotCWlndF9hc3NlcnRfZXEoaW50ZWxf
-ZGV0ZWN0X2FuZF9jbGVhcl9taXNzZWRfaW50ZXJydXB0cyhmZCksIDApOwogfQogCiBzdGF0aWMg
-dm9pZCBzcGluX2V4aXRfaGFuZGxlcihpbnQgc2lnKQpAQCAtMTAxLDE1ICsxMDAsMTggQEAgaWd0
-X21haW4KIAl9CiAKIAlmb3IgKGUgPSBpbnRlbF9leGVjdXRpb25fZW5naW5lczsgZS0+bmFtZTsg
-ZSsrKSB7Ci0JCWlmIChlLT5leGVjX2lkID09IDApCi0JCQljb250aW51ZTsKLQotCQlpZ3Rfc3Vi
-dGVzdF9mKCJiYXNpYy0lcyIsIGUtPm5hbWUpCisJCWlndF9zdWJ0ZXN0X2YoImJhc2ljLSVzIiwg
-ZS0+bmFtZSkgeworCQkJaW50ZWxfZGV0ZWN0X2FuZF9jbGVhcl9taXNzZWRfaW50ZXJydXB0cyhm
-ZCk7CiAJCQlzcGluKGZkLCBlLT5leGVjX2lkLCAzKTsKKwkJCWlndF9hc3NlcnRfZXEoaW50ZWxf
-ZGV0ZWN0X2FuZF9jbGVhcl9taXNzZWRfaW50ZXJydXB0cyhmZCksIDApOworCQl9CiAJfQogCi0J
-aWd0X3N1YnRlc3QoInNwaW4tZWFjaCIpCisJaWd0X3N1YnRlc3QoInNwaW4tZWFjaCIpIHsKKwkJ
-aW50ZWxfZGV0ZWN0X2FuZF9jbGVhcl9taXNzZWRfaW50ZXJydXB0cyhmZCk7CiAJCXNwaW5fb25f
-YWxsX2VuZ2luZXMoZmQsIDMpOworCQlpZ3RfYXNzZXJ0X2VxKGludGVsX2RldGVjdF9hbmRfY2xl
-YXJfbWlzc2VkX2ludGVycnVwdHMoZmQpLCAwKTsKKwl9CiAKIAlpZ3RfZml4dHVyZSB7CiAJCWln
-dF9zdG9wX2hhbmdfZGV0ZWN0b3IoKTsKLS0gCjIuMTYuMgoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9pZ3QtZGV2Cg==
+T3AgMjgtMDItMTggb20gMTY6NDAgc2NocmVlZiBBcmthZGl1c3ogSGlsZXI6Cj4gT24gRnJpLCBK
+YW4gMjYsIDIwMTggYXQgMDM6NTY6MDNQTSArMDIwMCwgTWlrYSBLYWhvbGEgd3JvdGU6Cj4+IE9u
+IFR1ZSwgMjAxOC0wMS0yMyBhdCAxMzo1NiArMDEwMCwgTWFhcnRlbiBMYW5raG9yc3Qgd3JvdGU6
+Cj4+PiBUaGlzIGlzIHJlcXVpcmVkIHRvIG1ha2UgdGhlIHRlc3QgcGFzcyB3aGVuIHdlIHN0YXJ0
+IGVuYWJsaW5nCj4+PiBwbGFuYXIgZm9ybWF0cyBpbiB0aGUgZnV0dXJlLgo+Pj4KPj4gUmV2aWV3
+ZWQtYnk6IE1pa2EgS2Fob2xhIDxtaWthLmthaG9sYUBpbnRlbC5jb20+Cj4gU2VlbXMgbGlrZSB0
+aGUgd2hvbGUgc2VyaWVzIGhhdmUgYmVlbiBtZXJnZWQgYnV0IHRoaXMgcGF0Y2guCj4gQW55IHJl
+YXNvbiBmb3IgaXQ/Cj4gLSBBcmVrCgprbXNfcmVuZGVyIGhhcyBiZWVuIHJlbW92ZWQgYnkgYW5v
+dGhlciBwYXRjaC4gOikKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
