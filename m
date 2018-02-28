@@ -1,12 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4FEB26E0CF
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Feb 2018 12:46:22 +0000 (UTC)
+Date: Wed, 28 Feb 2018 14:46:18 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <20180228124618.GD5453@intel.com>
+References: <20180130154915.10417-1-ville.syrjala@linux.intel.com>
+ <20180130210521.13168.32030@emeril.freedesktop.org>
+ <20180228122015.GH30712@ahiler-desk1.ger.corp.intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20180228110829.12126-1-tvrtko.ursulin@linux.intel.com>
-References: <20180228110829.12126-1-tvrtko.ursulin@linux.intel.com>
-Message-ID: <151981633284.21577.15318265579483089548@mail.alporthouse.com>
-Date: Wed, 28 Feb 2018 11:12:12 +0000
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] lib/igt_pm: Restore runtime
- pm state on test exit
+Content-Disposition: inline
+In-Reply-To: <20180228122015.GH30712@ahiler-desk1.ger.corp.intel.com>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fatomic=5Ftransition=3A_Don=27t_abuse_the_HSKEW_flag_to_fo?=
+ =?utf-8?q?rce_a_modeset?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,21 +26,20 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tursulin@ursulin.net>, igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBUdnJ0a28gVXJzdWxpbiAoMjAxOC0wMi0yOCAxMTowODoyOSkKPiBGcm9tOiBUdnJ0
-a28gVXJzdWxpbiA8dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPgo+IAo+IFNvbWUgdGVzdHMgKHRo
-ZSBvbmVzIHdoaWNoIGNhbGwgaWd0X3NldHVwX3J1bnRpbWVfcG0gYW5kCj4gaWd0X3BtX2VuYWJs
-ZV9hdWRpb19ydW50aW1lX3BtKSBjaGFuZ2UgZGVmYXVsdCBzeXN0ZW0gY29uZmlndXJhdGlvbiBh
-bmQKPiBuZXZlciByZXN0b3JlIGl0Lgo+IAo+IFRoZSBjb25maWd1cmVkIHJ1bnRpbWUgc3VzcGVu
-ZCBpcyBhZ2dyZXNzaXZlIGFuZCBtYXkgaW5mbHVlbmNlIGJlaGF2aW91cgo+IG9mIHN1YnNlcXVl
-bnQgdGVzdHMsIHNvIGl0IGlzIGJldHRlciB0byByZXN0b3JlIHRvIHByZXZpb3VzIHZhbHVlcyBv
-biB0ZXN0Cj4gZXhpdC4KPiAKPiBUaGlzIHdheSBzeXN0ZW0gYmVoYXZpb3VyLCB3aXRoIHJlZ2Fy
-ZHMgdG8gYSByYW5kb20gc2VxdWVuY2Ugb2YgZXhlY3V0ZWQKPiB0ZXN0cywgd2lsbCBiZSBtb3Jl
-IGNvbnNpc3RlbnQgZnJvbSBvbmUgcnVuIHRvIGFub3RoZXIuCgpPdG9oLCBpZiBiZWhhdmlvdXIg
-Y2hhbmdlcyBpbiBzdWJzZXF1ZW50IHRlc3RzLCB3ZSBsaWtlbHkgaGF2ZSBhIGxhY2sgb2YKdGVz
-dGluZyA6KAotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
-aHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+T24gV2VkLCBGZWIgMjgsIDIwMTggYXQgMDI6MjA6MTVQTSArMDIwMCwgQXJrYWRpdXN6IEhpbGVy
+IHdyb3RlOgo+IE9uIFR1ZSwgSmFuIDMwLCAyMDE4IGF0IDA5OjA1OjIxUE0gKzAwMDAsIFBhdGNo
+d29yayB3cm90ZToKPiA+ID09IFNlcmllcyBEZXRhaWxzID09Cj4gPiAKPiA+IFNlcmllczogdGVz
+dHMva21zX2F0b21pY190cmFuc2l0aW9uOiBEb24ndCBhYnVzZSB0aGUgSFNLRVcgZmxhZyB0byBm
+b3JjZSBhIG1vZGVzZXQKPiA+IFVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Au
+b3JnL3Nlcmllcy8zNzM1My8KPiA+IFN0YXRlIDogZmFpbHVyZQo+IAo+IEhleSBWaWxsZSwKPiAK
+PiBXaHkgd2FzIHRoaXMgbWVyZ2VkIHdpdGhvdXQgd2FpdGluZyBmb3IgdGhlIHByZS1tZXJnZSBy
+ZXN1bHRzIHRvIGNvbWUgYmFjaz8KCk5vIGlkZWEuIEkgZ3Vlc3MgSSBqdXN0IHdhbnRlZCB0aGUg
+dGVzdCB0byBzdGFydCB3b3JraW5nIGFnYWluIGFuZApkaWRuJ3QgYm90aGVyIHdhaXRpbmcgZm9y
+IHRoZSByZXN1bHRzLgoKLS0gClZpbGxlIFN5cmrDpGzDpApJbnRlbCBPVEMKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QK
+aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
