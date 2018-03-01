@@ -1,10 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20180301143217.20884-1-tvrtko.ursulin@linux.intel.com>
 References: <20180301143217.20884-1-tvrtko.ursulin@linux.intel.com>
-Message-ID: <151991529975.32001.16808937974839612621@mail.alporthouse.com>
-Date: Thu, 01 Mar 2018 14:41:39 +0000
+ <151991529975.32001.16808937974839612621@mail.alporthouse.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <5d6b583b-9487-cde3-9826-be532f86e348@linux.intel.com>
+Date: Thu, 1 Mar 2018 14:47:25 +0000
+MIME-Version: 1.0
+In-Reply-To: <151991529975.32001.16808937974839612621@mail.alporthouse.com>
+Content-Language: en-GB
 Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] tests/gen7_forcewake_mt:
  Fix test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -14,26 +16,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tursulin@ursulin.net>, igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, Tvrtko Ursulin <tursulin@ursulin.net>, igt-dev@lists.freedesktop.org
 Cc: Intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBUdnJ0a28gVXJzdWxpbiAoMjAxOC0wMy0wMSAxNDozMjoxNykKPiArc3RhdGljIHZv
-aWQgKm1taW9fYmFzZTsKPiArCj4gK3N0YXRpYyB2b2lkIGNsZWFudXAoaW50IHNpZykKPiArewo+
-ICsgICAgICAgdm9sYXRpbGUgdWludDMyX3QgKmZvcmNld2FrZV9tdCA9Cj4gKyAgICAgICAgICAg
-ICAgICh1aW50MzJfdCAqKSgoY2hhciAqKW1taW9fYmFzZSArIEZPUkNFV0FLRV9NVCk7Cj4gKyAg
-ICAgICB1bnNpZ25lZCBpbnQgYml0Owo+ICsKPiArICAgICAgIGZvciAoYml0ID0gMjsgYml0IDwg
-MTY7IGJpdCsrKSB7Cj4gKyAgICAgICAgICAgICAgICpmb3JjZXdha2VfbXQgPSAoMSA8PCBiaXQp
-IDw8IDE2Owo+ICsgICAgICAgICAgICAgICBpZiAoKmZvcmNld2FrZV9tdCAmICgxIDw8IGJpdCkp
-Cj4gKyAgICAgICAgICAgICAgICAgICAgICAgaWd0X3dhcm4oIkZhaWxlZCB0byByZXN0b3JlIGJp
-dCAldSFcbiIsIGJpdCk7Cj4gKyAgICAgICB9CgpJcyB0aGUgZXhpdCBoYW5kbGVyIGNhbGxlZCBh
-ZnRlciB0aHJlYWRzIGFyZSB0ZXJtaW5hdGVkLi4uIEkgZG9uJ3QgdGhpbmsKc28sIG15IHVuZGVy
-c3RhbmRpbmcgYXJlIHRoZSB0aHJlYWRzIGFyZSB0ZXJtaW5hdGVkIGJ5IHByb2Nlc3Mgc2h1dGRv
-d24Kbm90IGxpYmMuCi1DaHJpcwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
-Lm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
-ZXYK
+Ck9uIDAxLzAzLzIwMTggMTQ6NDEsIENocmlzIFdpbHNvbiB3cm90ZToKPiBRdW90aW5nIFR2cnRr
+byBVcnN1bGluICgyMDE4LTAzLTAxIDE0OjMyOjE3KQo+PiArc3RhdGljIHZvaWQgKm1taW9fYmFz
+ZTsKPj4gKwo+PiArc3RhdGljIHZvaWQgY2xlYW51cChpbnQgc2lnKQo+PiArewo+PiArICAgICAg
+IHZvbGF0aWxlIHVpbnQzMl90ICpmb3JjZXdha2VfbXQgPQo+PiArICAgICAgICAgICAgICAgKHVp
+bnQzMl90ICopKChjaGFyICopbW1pb19iYXNlICsgRk9SQ0VXQUtFX01UKTsKPj4gKyAgICAgICB1
+bnNpZ25lZCBpbnQgYml0Owo+PiArCj4+ICsgICAgICAgZm9yIChiaXQgPSAyOyBiaXQgPCAxNjsg
+Yml0KyspIHsKPj4gKyAgICAgICAgICAgICAgICpmb3JjZXdha2VfbXQgPSAoMSA8PCBiaXQpIDw8
+IDE2Owo+PiArICAgICAgICAgICAgICAgaWYgKCpmb3JjZXdha2VfbXQgJiAoMSA8PCBiaXQpKQo+
+PiArICAgICAgICAgICAgICAgICAgICAgICBpZ3Rfd2FybigiRmFpbGVkIHRvIHJlc3RvcmUgYml0
+ICV1IVxuIiwgYml0KTsKPj4gKyAgICAgICB9Cj4gCj4gSXMgdGhlIGV4aXQgaGFuZGxlciBjYWxs
+ZWQgYWZ0ZXIgdGhyZWFkcyBhcmUgdGVybWluYXRlZC4uLiBJIGRvbid0IHRoaW5rCj4gc28sIG15
+IHVuZGVyc3RhbmRpbmcgYXJlIHRoZSB0aHJlYWRzIGFyZSB0ZXJtaW5hdGVkIGJ5IHByb2Nlc3Mg
+c2h1dGRvd24KPiBub3QgbGliYy4KClllcywgbXkgYmFkLiBBdCBsZWFzdCB3ZSdsbCBzZWUgaWYg
+b3JkZXJseSB0aHJlYWQgZXhpdCBtYWtlcyBhbnkgZGlmZmVyZW5jZS4KClJlZ2FyZHMsCgpUdnJ0
+a28KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
+ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
