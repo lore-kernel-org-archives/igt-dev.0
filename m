@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 5 Mar 2018 15:37:30 +0100
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20180305143730.jjb6futkd4jq4vcj@flea.lan>
-References: <20171012115435.18880-1-maarten.lankhorst@linux.intel.com>
- <20171012115435.18880-4-maarten.lankhorst@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20171012115435.18880-4-maarten.lankhorst@linux.intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v2 03/14] lib/igt_kms:
- Rework pipe properties to be more atomic, v7.
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 05 Mar 2018 15:56:15 -0000
+Message-ID: <20180305155615.10562.45612@emeril.freedesktop.org>
+References: <20180305110352.7360-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20180305110352.7360-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQnVtcCBt?=
+ =?utf-8?q?easure=5Fring=5Fsize=28=29_timer_interval?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,107 +14,86 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1842394781=="
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Paul Kocialkowski <paul.kocialkowski@bootlin.com>, igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============1842394781==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="uf6l7xbfwiwgvjtl"
-Content-Disposition: inline
-
-
---uf6l7xbfwiwgvjtl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-On Thu, Oct 12, 2017 at 01:54:24PM +0200, Maarten Lankhorst wrote:
-> In the future I want to allow tests to commit more properties,
-> but for this to work I have to fix all properties to work better
-> with atomic commit. Instead of special casing each
-> property make a bitmask for all property changed flags, and try to
-> commit all properties.
->=20
-> This has been the most involved one, since legacy pipe commit still
-> handles a lot of the properties differently from the rest.
->=20
-> Changes since v1:
-> - Dump all changed properties on commit.
-> - Fix bug in igt_pipe_refresh().
-> Changes since v2:
-> - Set pipe ACTIVE property changed flag on init.
-> Changes since v3:
-> - Add a missing igt_pipe_refresh() to kms_atomic_interruptible.
-> Changes since v4:
-> - Perform error handling when setting custom crtc properties.
-> Changes since v5:
-> - Only attempt to commit changes properties.
-> Changes since v6:
-> - Clear OUT_FENCE_PTR on succesful commit.
->=20
-> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-
-I'm a bit late to the party on this one, but this commit broke the
-chamelium tests on vc4, with every kernel since at least 4.12.
-
-This is the error message:
-http://code.bulix.org/32fw1l-293842
-
-=46rom the stack trace, it looks like the atomic commit was failing, and
-indeed it fails here:
-https://elixir.bootlin.com/linux/v4.16-rc4/source/drivers/gpu/drm/drm_atomi=
-c.c#L2319
-
-with prop_id being 0 for some reason.
-
-I had a look at that patch, but I can't see anything wrong with it. Do
-you have any ideas?
-
-Thanks!
-Maxime
-
---=20
-Maxime Ripard, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---uf6l7xbfwiwgvjtl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlqdVioACgkQ0rTAlCFN
-r3RdAA/9EpwfF24QYruxZx56bFPVYxs2ClPpzZ0mcvd30PXLaoulznyeVeuNQ5vk
-AturPS37xMUZ0NDWe9C5Cf3BRLtOTse3dB4Nw5mCiYr5YW3lzllpNn0CxBOa1IWk
-8zHDzLmH8p3KALXXZsN7WngMEE37YLO0RM7EXPXhDpz8XNSznv7S8r/2p/BByIJK
-eBuPeUfz+XS7wC+A+hGTrimCE8esh0o2EQ/BUK0QtB9trUrI+AM00/1SP9YlybMw
-13ddPrP1moZtBYLDrJM8fKtq5yFqOsqIg2kaN3M0YQwFmhkihFyXbj5kgykrufGS
-ig+7vxWrU0YXLlQoSKcys4LTk5AHB63EdM/bHXLZrYBOhXdxUeJR3LQ1TyofAm7E
-LZRnzgdaKw/x1VRgifMhA334pmexaK7DV2tz7Ajkt19ojjQNqqZBxV1K2FdV2dAb
-iBeQFyJE8xg0PaQYiBs48aP7cpfVhSqLNckdbbGISO22+QU11q/j7cDwblyLgw9F
-RTBMbyK9dXnvuh2AmQpH9jFeLOSJEtJ1o4VUQQVyHGannFbKomkA9X2RictL5uVU
-oAxzRwqI85bybiKnrFLVPNz2F6ootSEB6e9d4pvX1jsj2z9ei8G4SUmwmyLVEgs9
-ZFKqf3VGfYP17DLy0TTzvoatyFaWu9ZOkir7TYHH0yAUNoeUb/8=
-=NLHv
------END PGP SIGNATURE-----
-
---uf6l7xbfwiwgvjtl--
-
---===============1842394781==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============1842394781==--
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogQnVtcCBtZWFzdXJlX3Jpbmdfc2l6ZSgpIHRp
+bWVyIGludGVydmFsClVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nl
+cmllcy8zOTM3Mi8KU3RhdGUgOiBzdWNjZXNzCgo9PSBTdW1tYXJ5ID09CgpJR1QgcGF0Y2hzZXQg
+dGVzdGVkIG9uIHRvcCBvZiBsYXRlc3Qgc3VjY2Vzc2Z1bCBidWlsZAoyM2Y3ZGExOGE5MjA1OTYx
+MDc5MjI5OWNmZGIwM2QyYzkyMmE5OTQ4IGxpYi9pZ3RfcG06IFJlc3RvcmUgcnVudGltZSBwbSBz
+dGF0ZSBvbiB0ZXN0IGV4aXQKCndpdGggbGF0ZXN0IERSTS1UaXAga2VybmVsIGJ1aWxkIENJX0RS
+TV8zODcyCjRhMzc4NDczNzY5OSBkcm0tdGlwOiAyMDE4eS0wM20tMDVkLTE0aC0zMm0tNTdzIFVU
+QyBpbnRlZ3JhdGlvbiBtYW5pZmVzdAoKTm8gdGVzdGxpc3QgY2hhbmdlcy4KCi0tLS0gS25vd24g
+aXNzdWVzOgoKVGVzdCBnZW1fbW1hcF9ndHQ6CiAgICAgICAgU3ViZ3JvdXAgYmFzaWMtc21hbGwt
+Ym8tdGlsZWR4OgogICAgICAgICAgICAgICAgcGFzcyAgICAgICAtPiBGQUlMICAgICAgIChmaS1n
+ZGctNTUxKSBmZG8jMTAyNTc1ClRlc3Qga21zX3BpcGVfY3JjX2Jhc2ljOgogICAgICAgIFN1Ymdy
+b3VwIHN1c3BlbmQtcmVhZC1jcmMtcGlwZS1jOgogICAgICAgICAgICAgICAgcGFzcyAgICAgICAt
+PiBJTkNPTVBMRVRFIChmaS1ieHQtZHNpKSBmZG8jMTAzOTI3ClRlc3QgcHJpbWVfdmdlbToKICAg
+ICAgICBTdWJncm91cCBiYXNpYy1mZW5jZS1mbGlwOgogICAgICAgICAgICAgICAgZmFpbCAgICAg
+ICAtPiBQQVNTICAgICAgIChmaS1pbGstNjUwKSBmZG8jMTA0MDA4CgpmZG8jMTAyNTc1IGh0dHBz
+Oi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMjU3NQpmZG8jMTAzOTI3
+IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzkyNwpmZG8j
+MTA0MDA4IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNDAw
+OAoKZmktYmR3LTU1NTd1ICAgICB0b3RhbDoyODggIHBhc3M6MjY3ICBkd2FybjowICAgZGZhaWw6
+MCAgIGZhaWw6MCAgIHNraXA6MjEgIHRpbWU6NDE4cwpmaS1iZHctZ3Z0ZHZtICAgIHRvdGFsOjI4
+OCAgcGFzczoyNjQgIGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDowICAgc2tpcDoyNCAgdGltZTo0
+MjNzCmZpLWJsYi1lNjg1MCAgICAgdG90YWw6Mjg4ICBwYXNzOjIyMyAgZHdhcm46MSAgIGRmYWls
+OjAgICBmYWlsOjAgICBza2lwOjY0ICB0aW1lOjM3M3MKZmktYnN3LW4zMDUwICAgICB0b3RhbDoy
+ODggIHBhc3M6MjQyICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAgIHNraXA6NDYgIHRpbWU6
+NDg3cwpmaS1id3ItMjE2MCAgICAgIHRvdGFsOjI4OCAgcGFzczoxODMgIGR3YXJuOjAgICBkZmFp
+bDowICAgZmFpbDowICAgc2tpcDoxMDUgdGltZToyNzlzCmZpLWJ4dC1kc2kgICAgICAgdG90YWw6
+MjQ2ICBwYXNzOjIxOSAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAgICBza2lwOjI2IApmaS1i
+eHQtajQyMDUgICAgIHRvdGFsOjI4OCAgcGFzczoyNTkgIGR3YXJuOjAgICBkZmFpbDowICAgZmFp
+bDowICAgc2tpcDoyOSAgdGltZTo0ODJzCmZpLWJ5dC1qMTkwMCAgICAgdG90YWw6Mjg4ICBwYXNz
+OjI1MyAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAgICBza2lwOjM1ICB0aW1lOjQ3MHMKZmkt
+Ynl0LW4yODIwICAgICB0b3RhbDoyODggIHBhc3M6MjQ5ICBkd2FybjowICAgZGZhaWw6MCAgIGZh
+aWw6MCAgIHNraXA6MzkgIHRpbWU6NDU4cwpmaS1jZmwtODcwMGsgICAgIHRvdGFsOjI4OCAgcGFz
+czoyNjAgIGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDowICAgc2tpcDoyOCAgdGltZTozOTJzCmZp
+LWNmbC1zMiAgICAgICAgdG90YWw6Mjg4ICBwYXNzOjI2MiAgZHdhcm46MCAgIGRmYWlsOjAgICBm
+YWlsOjAgICBza2lwOjI2ICB0aW1lOjU3NXMKZmktY2ZsLXUgICAgICAgICB0b3RhbDoyODggIHBh
+c3M6MjYyICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAgIHNraXA6MjYgIHRpbWU6NDk1cwpm
+aS1jbmwteTMgICAgICAgIHRvdGFsOjI4OCAgcGFzczoyNjIgIGR3YXJuOjAgICBkZmFpbDowICAg
+ZmFpbDowICAgc2tpcDoyNiAgdGltZTo1NzlzCmZpLWVsay1lNzUwMCAgICAgdG90YWw6Mjg4ICBw
+YXNzOjIyOSAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAgICBza2lwOjU5ICB0aW1lOjQxN3MK
+ZmktZ2RnLTU1MSAgICAgICB0b3RhbDoyODggIHBhc3M6MTc5ICBkd2FybjowICAgZGZhaWw6MCAg
+IGZhaWw6MSAgIHNraXA6MTA4IHRpbWU6MjkxcwpmaS1nbGstMSAgICAgICAgIHRvdGFsOjI4OCAg
+cGFzczoyNjAgIGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDowICAgc2tpcDoyOCAgdGltZTo1MDhz
+CmZpLWhzdy00NzcwICAgICAgdG90YWw6Mjg4ICBwYXNzOjI2MSAgZHdhcm46MCAgIGRmYWlsOjAg
+ICBmYWlsOjAgICBza2lwOjI3ICB0aW1lOjM4NnMKZmktaWxrLTY1MCAgICAgICB0b3RhbDoyODgg
+IHBhc3M6MjI4ICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAgIHNraXA6NjAgIHRpbWU6NDEx
+cwpmaS1pdmItMzUyMG0gICAgIHRvdGFsOjI4OCAgcGFzczoyNTkgIGR3YXJuOjAgICBkZmFpbDow
+ICAgZmFpbDowICAgc2tpcDoyOSAgdGltZTo0NTBzCmZpLWl2Yi0zNzcwICAgICAgdG90YWw6Mjg4
+ICBwYXNzOjI1NSAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAgICBza2lwOjMzICB0aW1lOjQx
+MXMKZmkta2JsLTc1MDB1ICAgICB0b3RhbDoyODggIHBhc3M6MjYzICBkd2FybjoxICAgZGZhaWw6
+MCAgIGZhaWw6MCAgIHNraXA6MjQgIHRpbWU6NDUwcwpmaS1rYmwtNzU2MHUgICAgIHRvdGFsOjEw
+OCAgcGFzczoxMDQgIGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDowICAgc2tpcDozICAKZmkta2Js
+LTc1Njd1ICAgICB0b3RhbDoyODggIHBhc3M6MjY4ICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6
+MCAgIHNraXA6MjAgIHRpbWU6NDQ4cwpmaS1rYmwtciAgICAgICAgIHRvdGFsOjI4OCAgcGFzczoy
+NjEgIGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDowICAgc2tpcDoyNyAgdGltZTo0OTNzCmZpLXBu
+di1kNTEwICAgICAgdG90YWw6Mjg4ICBwYXNzOjIyMiAgZHdhcm46MSAgIGRmYWlsOjAgICBmYWls
+OjAgICBza2lwOjY1ICB0aW1lOjU4OHMKZmktc2tsLTYyNjB1ICAgICB0b3RhbDoyODggIHBhc3M6
+MjY4ICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAgIHNraXA6MjAgIHRpbWU6NDI4cwpmaS1z
+a2wtNjYwMHUgICAgIHRvdGFsOjI4OCAgcGFzczoyNjEgIGR3YXJuOjAgICBkZmFpbDowICAgZmFp
+bDowICAgc2tpcDoyNyAgdGltZTo1MDRzCmZpLXNrbC02NzAwaHEgICAgdG90YWw6Mjg4ICBwYXNz
+OjI2MiAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAgICBza2lwOjI2ICB0aW1lOjUyMnMKZmkt
+c2tsLTY3MDBrMiAgICB0b3RhbDoyODggIHBhc3M6MjY0ICBkd2FybjowICAgZGZhaWw6MCAgIGZh
+aWw6MCAgIHNraXA6MjQgIHRpbWU6NDg3cwpmaS1za2wtNjc3MGhxICAgIHRvdGFsOjI4OCAgcGFz
+czoyNjggIGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDowICAgc2tpcDoyMCAgdGltZTo0ODFzCmZp
+LXNrbC1ndWMgICAgICAgdG90YWw6Mjg4ICBwYXNzOjI2MCAgZHdhcm46MCAgIGRmYWlsOjAgICBm
+YWlsOjAgICBza2lwOjI4ICB0aW1lOjQxMHMKZmktc2tsLWd2dGR2bSAgICB0b3RhbDoyODggIHBh
+c3M6MjY1ICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAgIHNraXA6MjMgIHRpbWU6NDMzcwpm
+aS1zbmItMjUyMG0gICAgIHRvdGFsOjI4OCAgcGFzczoyNDggIGR3YXJuOjAgICBkZmFpbDowICAg
+ZmFpbDowICAgc2tpcDo0MCAgdGltZTo1MjJzCmZpLXNuYi0yNjAwICAgICAgdG90YWw6Mjg4ICBw
+YXNzOjI0OCAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAgICBza2lwOjQwICB0aW1lOjM5MnMK
+Cj09IExvZ3MgPT0KCkZvciBtb3JlIGRldGFpbHMgc2VlOiBodHRwczovL2ludGVsLWdmeC1jaS4w
+MS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzEwNTgvaXNzdWVzLmh0bWwKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0
+LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
