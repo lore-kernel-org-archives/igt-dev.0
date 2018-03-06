@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D8B789FCA
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Mar 2018 10:15:59 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B07886E633
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Mar 2018 10:14:44 +0000 (UTC)
 From: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Date: Tue, 6 Mar 2018 10:15:45 +0000
-Message-ID: <F653A0A18852B74D88578FA2EB7094EAB682B2A1@BGSMSX108.gar.corp.intel.com>
+Date: Tue, 6 Mar 2018 10:14:34 +0000
+Message-ID: <F653A0A18852B74D88578FA2EB7094EAB682B288@BGSMSX108.gar.corp.intel.com>
 References: <1520328099-19034-1-git-send-email-vidya.srinivas@intel.com>
- <3efa63f3-27ee-f51d-70fd-b54426a9384d@linux.intel.com>
-In-Reply-To: <3efa63f3-27ee-f51d-70fd-b54426a9384d@linux.intel.com>
+ <eac736a6-1adc-a66c-7c7c-57f12d350552@linux.intel.com>
+In-Reply-To: <eac736a6-1adc-a66c-7c7c-57f12d350552@linux.intel.com>
 Content-Language: en-US
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t] [i-g-t] tests/kms_plane_scaling: Change
@@ -30,7 +30,7 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWFhcnRlbiBMYW5raG9y
 c3QgW21haWx0bzptYWFydGVuLmxhbmtob3JzdEBsaW51eC5pbnRlbC5jb21dDQo+IFNlbnQ6IFR1
-ZXNkYXksIE1hcmNoIDYsIDIwMTggMzoyMyBQTQ0KPiBUbzogU3Jpbml2YXMsIFZpZHlhIDx2aWR5
+ZXNkYXksIE1hcmNoIDYsIDIwMTggMzoyNCBQTQ0KPiBUbzogU3Jpbml2YXMsIFZpZHlhIDx2aWR5
 YS5zcmluaXZhc0BpbnRlbC5jb20+OyBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBD
 YzogS2FtYXRoLCBTdW5pbCA8c3VuaWwua2FtYXRoQGludGVsLmNvbT47IFN5cmphbGEsIFZpbGxl
 DQo+IDx2aWxsZS5zeXJqYWxhQGludGVsLmNvbT47IFNoYW5rYXIsIFVtYSA8dW1hLnNoYW5rYXJA
@@ -57,12 +57,10 @@ ICAJd2lkdGggPSBoZWlnaHQgPSA5Ow0KPiA+ICsJaWYgKHBpeGVsX2Zvcm1hdCA9PSBEUk1fRk9S
 TUFUX05WMTIpDQo+ID4gKwkJaGVpZ2h0ID0gMTY7DQo+ID4gIAlpZ3RfY3JlYXRlX2NvbG9yX2Zi
 KGRpc3BsYXktPmRybV9mZCwgd2lkdGgsIGhlaWdodCwNCj4gPiAgCQkgICAgICAgcGl4ZWxfZm9y
 bWF0LCB0aWxpbmcsIDAuMCwgMS4wLCAwLjAsICZkLT5mYlswXSk7DQo+ID4gIAlpZ3RfcGxhbmVf
-c2V0X2ZiKHBsYW5lLCAmZC0+ZmJbMF0pOw0KPiANCj4gQ291bGQgd2Ugc2V0IGhlaWdodCB0byAx
-NyBmb3IgYWxsPw0KPiANCj4gfk1hYXJ0ZW4NCg0KSGkgTWFhcnRlbi4gV2UgY2FuLiBCdXQgc2lu
-Y2UgbWluIGZvciBub24tWVVWIHdhcyA4LCB3ZSB0aG91Z2h0DQp0aGUgcHVycG9zZSBvZiB0aGUg
-dGVzdCB3YXMgdG8gY3JlYXRlIHRoZSBtaW5pbWFsIHBvc3NpYmxlIGJ1ZmZlci4NClNvIHdlIGRp
-bnQgY2hhbmdlIHRoYXQuIFdoYXQgZG8geW91IHN1Z2dlc3Q/IFBsZWFzZSBsZXQgdXMga25vdy4N
-Cg0KUmVnYXJkcw0KVmlkeWENCg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3Rv
-cC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3Qt
-ZGV2Cg==
+c2V0X2ZiKHBsYW5lLCAmZC0+ZmJbMF0pOw0KPiANCj4gQW5kIHNob3VsZG4ndCB3ZSByZWplY3Qg
+dGhpcyBpbiB0aGUga2VybmVsPw0KPiANCj4gfk1hYXJ0ZW4NCg0KSGkgTWFhcnRlbi4gV2Ugc2hv
+dWxkLiBXZSB3aWxsIGJlIGRvaW5nIHRoYXQgYWxzbyBhbmQgcmVmbG9hdCB0aGUgc2VyaWVzIHRv
+bW9ycm93Lg0KDQpUaGFua3MNClZpZHlhDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVk
+ZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2lndC1kZXYK
