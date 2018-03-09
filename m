@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2152E6EBE1
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Mar 2018 16:45:22 +0000 (UTC)
-References: <20180309145034.25757-1-lionel.g.landwerlin@intel.com>
- <20180309145034.25757-3-lionel.g.landwerlin@intel.com>
- <f6360d5a-fd99-41cb-35b8-9b35405cd0eb@linux.intel.com>
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <c115522a-e1d8-d828-cff5-95f37a7e8295@intel.com>
-Date: Fri, 9 Mar 2018 16:45:20 +0000
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF3A36EBE4
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Mar 2018 16:45:34 +0000 (UTC)
+References: <20180307111119.9423-1-tvrtko.ursulin@linux.intel.com>
+ <20180309162024.19511.49679@emeril.freedesktop.org>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <8d5adf9b-f004-2cf7-5fcf-9237ecc7d8c9@linux.intel.com>
+Date: Fri, 9 Mar 2018 16:45:31 +0000
 MIME-Version: 1.0
-In-Reply-To: <f6360d5a-fd99-41cb-35b8-9b35405cd0eb@linux.intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v9 3/3] tests: add i915 query tests
+In-Reply-To: <20180309162024.19511.49679@emeril.freedesktop.org>
+Content-Language: en-GB
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?perf=5Fpmu=3A_Use_absolute_tolerance_in_accuracy_tests_=28rev2?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,84 +21,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1679167457=="
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, Patchwork <patchwork@emeril.freedesktop.org>, Tvrtko Ursulin <tursulin@ursulin.net>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is a multi-part message in MIME format.
---===============1679167457==
-Content-Type: multipart/alternative;
- boundary="------------A81122DD303F1A66F05B8D2F"
-Content-Language: en-US
-
-This is a multi-part message in MIME format.
---------------A81122DD303F1A66F05B8D2F
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-On 09/03/18 16:35, Tvrtko Ursulin wrote:
->
-> With a commit message added:
-
-Ahaha, I just won't remember :)
-
-Thanks a lot!
-
->
-> Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->
-> Regards, 
-
-
-
---------------A81122DD303F1A66F05B8D2F
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body text="#000000" bgcolor="#FFFFFF">
-    <div class="moz-cite-prefix">On 09/03/18 16:35, Tvrtko Ursulin
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:f6360d5a-fd99-41cb-35b8-9b35405cd0eb@linux.intel.com"><br>
-      With a commit message added:
-      <br>
-    </blockquote>
-    <br>
-    Ahaha, I just won't remember :)<br>
-    <br>
-    Thanks a lot!<br>
-    <br>
-    <blockquote type="cite"
-      cite="mid:f6360d5a-fd99-41cb-35b8-9b35405cd0eb@linux.intel.com">
-      <br>
-      Reviewed-by: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E"
-        href="mailto:tvrtko.ursulin@intel.com" moz-do-not-send="true">&lt;tvrtko.ursulin@intel.com&gt;</a>
-      <br>
-      <br>
-      Regards,
-    </blockquote>
-    <p><br>
-    </p>
-  </body>
-</html>
-
---------------A81122DD303F1A66F05B8D2F--
-
---===============1679167457==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============1679167457==--
+Ck11Y2ggYmV0dGVyIGFjY3VyYWN5IHdpdGggdGhlc2UgdHdlYWtzLgoKTG9va3MgbGlrZSBXQyB3
+cml0ZXMgYW5kIGlvY3RscyB3ZXJlIHNsb3cgYW5kIHdlcmUgYWZmZWN0aW5nIHRoZSAKc2VsZi1j
+YWxpYnJhdGlvbi4gQWx0aG91Z2ggSSBkb24ndCBoYXZlIHRoZSBleHBsYW5hdGlvbiBvbiB3aHkg
+d2VyZSB0aGUgCjUwJSB0ZXN0cyBtb3N0IGFmZmVjdGVkLCBlc3BlY2lhbGx5IGNvbXBhcmVkIHdp
+dGggMiUgb25lcy4gU2hydWcuCgpXaWxsIGl0IGJlIGdvb2QgZW5vdWdoIGZvciBLQVNBTiBlbmFi
+bGVkIHJ1bnMgSSBkb24ndCBrbm93LgoKUmVnYXJkcywKClR2cnRrbwoKT24gMDkvMDMvMjAxOCAx
+NjoyMCwgUGF0Y2h3b3JrIHdyb3RlOgo+ID09IFNlcmllcyBEZXRhaWxzID09Cj4gCj4gU2VyaWVz
+OiB0ZXN0cy9wZXJmX3BtdTogVXNlIGFic29sdXRlIHRvbGVyYW5jZSBpbiBhY2N1cmFjeSB0ZXN0
+cyAocmV2MikKPiBVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJp
+ZXMvMzk1MTgvCj4gU3RhdGUgOiBmYWlsdXJlCj4gCj4gPT0gU3VtbWFyeSA9PQo+IAo+IC0tLS0g
+UG9zc2libGUgbmV3IGlzc3VlczoKPiAKPiBUZXN0IGttc19jdXJzb3JfY3JjOgo+ICAgICAgICAg
+IFN1Ymdyb3VwIGN1cnNvci02NHg2NC1yYW5kb206Cj4gICAgICAgICAgICAgICAgICBwYXNzICAg
+ICAgIC0+IElOQ09NUExFVEUgKHNoYXJkLWhzdykKPiAKPiAtLS0tIEtub3duIGlzc3VlczoKPiAK
+PiBUZXN0IGdlbV9laW86Cj4gICAgICAgICAgU3ViZ3JvdXAgaW4tZmxpZ2h0Ogo+ICAgICAgICAg
+ICAgICAgICAgaW5jb21wbGV0ZSAtPiBQQVNTICAgICAgIChzaGFyZC1hcGwpIGZkbyMxMDUzNDEK
+PiBUZXN0IGttc19jdXJzb3JfY3JjOgo+ICAgICAgICAgIFN1Ymdyb3VwIGN1cnNvci0yNTZ4MjU2
+LXN1c3BlbmQ6Cj4gICAgICAgICAgICAgICAgICBpbmNvbXBsZXRlIC0+IFBBU1MgICAgICAgKHNo
+YXJkLWhzdykgZmRvIzEwMzM3NSArMQo+IFRlc3Qga21zX3ZibGFuazoKPiAgICAgICAgICBTdWJn
+cm91cCBwaXBlLWEtdHMtY29udGludWF0aW9uLWRwbXMtc3VzcGVuZDoKPiAgICAgICAgICAgICAg
+ICAgIGluY29tcGxldGUgLT4gUEFTUyAgICAgICAoc2hhcmQtaHN3KSBmZG8jMTAzNTQwCj4gCj4g
+ZmRvIzEwNTM0MSBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0x
+MDUzNDEKPiBmZG8jMTAzMzc1IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcu
+Y2dpP2lkPTEwMzM3NQo+IGZkbyMxMDM1NDAgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9z
+aG93X2J1Zy5jZ2k/aWQ9MTAzNTQwCj4gCj4gc2hhcmQtYXBsICAgICAgICB0b3RhbDozNDY3IHBh
+c3M6MTgyNSBkd2FybjoxICAgZGZhaWw6MCAgIGZhaWw6OCAgIHNraXA6MTYzMiB0aW1lOjEyMzIy
+cwo+IHNoYXJkLWhzdyAgICAgICAgdG90YWw6MzQyMSBwYXNzOjE3NTQgZHdhcm46MSAgIGRmYWls
+OjAgICBmYWlsOjEgICBza2lwOjE2NjMgdGltZToxMDgyNnMKPiBzaGFyZC1zbmIgICAgICAgIHRv
+dGFsOjM0NjcgcGFzczoxMzY0IGR3YXJuOjEgICBkZmFpbDowICAgZmFpbDoyICAgc2tpcDoyMTAw
+IHRpbWU6NzAxM3MKPiBCbGFja2xpc3RlZCBob3N0czoKPiBzaGFyZC1rYmwgICAgICAgIHRvdGFs
+OjMyODEgcGFzczoxODM4IGR3YXJuOjkgICBkZmFpbDowICAgZmFpbDo5ICAgc2tpcDoxNDIzIHRp
+bWU6ODc3NHMKPiAKPiA9PSBMb2dzID09Cj4gCj4gRm9yIG1vcmUgZGV0YWlscyBzZWU6IGh0dHBz
+Oi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTA5NC9zaGFyZHMuaHRt
+bAo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gaWd0
+LWRldiBtYWlsaW5nIGxpc3QKPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwo+IGh0dHBz
+Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo+IApfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxp
+bmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVk
+ZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
