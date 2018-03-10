@@ -1,13 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 547A66E122
+ for <igt-dev@lists.freedesktop.org>; Sat, 10 Mar 2018 11:28:15 +0000 (UTC)
+References: <20180309145034.25757-1-lionel.g.landwerlin@intel.com>
+ <20180309145034.25757-3-lionel.g.landwerlin@intel.com>
+ <f6360d5a-fd99-41cb-35b8-9b35405cd0eb@linux.intel.com>
+ <c115522a-e1d8-d828-cff5-95f37a7e8295@intel.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <d690d516-3ec3-cd9a-484a-19d8ebb4d292@intel.com>
+Date: Sat, 10 Mar 2018 11:28:12 +0000
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Sat, 10 Mar 2018 05:50:02 -0000
-Message-ID: <20180310055002.19509.68052@emeril.freedesktop.org>
-References: <20180309204308.4605-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20180309204308.4605-1-ville.syrjala@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?pm=5Frpm=3A_Don=27t_try_to_create_an_X-tiled_ARGB8888_framebuff?=
- =?utf-8?q?er?=
+In-Reply-To: <c115522a-e1d8-d828-cff5-95f37a7e8295@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t v9 3/3] tests: add i915 query tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,44 +20,98 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1789837861=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHMvcG1fcnBtOiBEb24ndCB0cnkgdG8g
-Y3JlYXRlIGFuIFgtdGlsZWQgQVJHQjg4ODggZnJhbWVidWZmZXIKVVJMICAgOiBodHRwczovL3Bh
-dGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzM5NzIyLwpTdGF0ZSA6IGZhaWx1cmUKCj09
-IFN1bW1hcnkgPT0KCi0tLS0gUG9zc2libGUgbmV3IGlzc3VlczoKClRlc3Qga21zX2Nodl9jdXJz
-b3JfZmFpbDoKICAgICAgICBTdWJncm91cCBwaXBlLWEtMTI4eDEyOC1sZWZ0LWVkZ2U6CiAgICAg
-ICAgICAgICAgICBmYWlsICAgICAgIC0+IFBBU1MgICAgICAgKHNoYXJkLWFwbCkKVGVzdCBrbXNf
-ZmxpcF90aWxpbmc6CiAgICAgICAgU3ViZ3JvdXAgZmxpcC10by15LXRpbGVkOgogICAgICAgICAg
-ICAgICAgcGFzcyAgICAgICAtPiBGQUlMICAgICAgIChzaGFyZC1hcGwpCgotLS0tIEtub3duIGlz
-c3VlczoKClRlc3QgZ2VtX2VpbzoKICAgICAgICBTdWJncm91cCBpbi1mbGlnaHQ6CiAgICAgICAg
-ICAgICAgICBpbmNvbXBsZXRlIC0+IFBBU1MgICAgICAgKHNoYXJkLWFwbCkgZmRvIzEwNTM0MSAr
-MQpUZXN0IGttc19jdXJzb3JfY3JjOgogICAgICAgIFN1Ymdyb3VwIGN1cnNvci0xMjh4MTI4LXN1
-c3BlbmQ6CiAgICAgICAgICAgICAgICBza2lwICAgICAgIC0+IElOQ09NUExFVEUgKHNoYXJkLWhz
-dykgZmRvIzEwMzU0MApUZXN0IGttc19mbGlwOgogICAgICAgIFN1Ymdyb3VwIHBsYWluLWZsaXAt
-dHMtY2hlY2staW50ZXJydXB0aWJsZToKICAgICAgICAgICAgICAgIGZhaWwgICAgICAgLT4gUEFT
-UyAgICAgICAoc2hhcmQtaHN3KSBmZG8jMTAwMzY4ICsxClRlc3Qga21zX3N5c2ZzX2VkaWRfdGlt
-aW5nOgogICAgICAgICAgICAgICAgcGFzcyAgICAgICAtPiBXQVJOICAgICAgIChzaGFyZC1hcGwp
-IGZkbyMxMDAwNDcKCmZkbyMxMDUzNDEgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93
-X2J1Zy5jZ2k/aWQ9MTA1MzQxCmZkbyMxMDM1NDAgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9y
-Zy9zaG93X2J1Zy5jZ2k/aWQ9MTAzNTQwCmZkbyMxMDAzNjggaHR0cHM6Ly9idWdzLmZyZWVkZXNr
-dG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAwMzY4CmZkbyMxMDAwNDcgaHR0cHM6Ly9idWdzLmZy
-ZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAwMDQ3CgpzaGFyZC1hcGwgICAgICAgIHRv
-dGFsOjM0NjcgcGFzczoxODI1IGR3YXJuOjEgICBkZmFpbDowICAgZmFpbDo4ICAgc2tpcDoxNjMy
-IHRpbWU6MTIyNTNzCnNoYXJkLWhzdyAgICAgICAgdG90YWw6MzQyNyBwYXNzOjE3NTUgZHdhcm46
-MSAgIGRmYWlsOjAgICBmYWlsOjIgICBza2lwOjE2NjcgdGltZToxMTI1NHMKc2hhcmQtc25iICAg
-ICAgICB0b3RhbDozNDY3IHBhc3M6MTM2NSBkd2FybjoxICAgZGZhaWw6MCAgIGZhaWw6MSAgIHNr
-aXA6MjEwMCB0aW1lOjY5ODZzCkJsYWNrbGlzdGVkIGhvc3RzOgpzaGFyZC1rYmwgICAgICAgIHRv
-dGFsOjM0MzUgcGFzczoxOTMyIGR3YXJuOjEgICBkZmFpbDowICAgZmFpbDo3ICAgc2tpcDoxNDk0
-IHRpbWU6OTA4NXMKCj09IExvZ3MgPT0KCkZvciBtb3JlIGRldGFpbHMgc2VlOiBodHRwczovL2lu
-dGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExMDAvc2hhcmRzLmh0bWwKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
-aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
-ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+This is a multi-part message in MIME format.
+--===============1789837861==
+Content-Type: multipart/alternative;
+ boundary="------------AE81B319F93EC360B4E9E2E6"
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------AE81B319F93EC360B4E9E2E6
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 09/03/18 16:45, Lionel Landwerlin wrote:
+> On 09/03/18 16:35, Tvrtko Ursulin wrote:
+>>
+>> With a commit message added:
+>
+> Ahaha, I just won't remember :)
+>
+> Thanks a lot!
+>
+>>
+>> Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>>
+>> Regards, 
+
+I forgot that I need a Ack on the uapi headers bump.
+
+Thanks,
+
+Lionel
+
+--------------AE81B319F93EC360B4E9E2E6
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    <div class="moz-cite-prefix">On 09/03/18 16:45, Lionel Landwerlin
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:c115522a-e1d8-d828-cff5-95f37a7e8295@intel.com">
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <div class="moz-cite-prefix">On 09/03/18 16:35, Tvrtko Ursulin
+        wrote:<br>
+      </div>
+      <blockquote type="cite"
+        cite="mid:f6360d5a-fd99-41cb-35b8-9b35405cd0eb@linux.intel.com"><br>
+        With a commit message added: <br>
+      </blockquote>
+      <br>
+      Ahaha, I just won't remember :)<br>
+      <br>
+      Thanks a lot!<br>
+      <br>
+      <blockquote type="cite"
+        cite="mid:f6360d5a-fd99-41cb-35b8-9b35405cd0eb@linux.intel.com">
+        <br>
+        Reviewed-by: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E"
+          href="mailto:tvrtko.ursulin@intel.com" moz-do-not-send="true">&lt;tvrtko.ursulin@intel.com&gt;</a>
+        <br>
+        <br>
+        Regards, </blockquote>
+    </blockquote>
+    <br>
+    I forgot that I need a Ack on the uapi headers bump.<br>
+    <br>
+    Thanks,<br>
+    <br>
+    Lionel<br>
+  </body>
+</html>
+
+--------------AE81B319F93EC360B4E9E2E6--
+
+--===============1789837861==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1789837861==--
