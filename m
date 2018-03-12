@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F180C6E041
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Mar 2018 15:00:22 +0000 (UTC)
-Date: Mon, 12 Mar 2018 17:00:18 +0200
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20180312150018.GB12196@ahiler-desk1.ger.corp.intel.com>
-References: <20180223162826.16279-1-lionel.g.landwerlin@intel.com>
+References: <20180309214515.15660-1-radhakrishna.sripada@intel.com>
+ <bcd3dbda-52db-eee0-8d33-0294f92c4741@linux.intel.com>
+ <20180312142314.GE5453@intel.com>
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Message-ID: <4cf347ad-f312-e0ec-3482-c7918715d7a8@linux.intel.com>
+Date: Mon, 12 Mar 2018 16:09:06 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180223162826.16279-1-lionel.g.landwerlin@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf: update config register
- whitelist
+In-Reply-To: <20180312142314.GE5453@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_rotation_crc: Remove
+ hardcoding of platforms in igt_require()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,27 +21,41 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Cc: igt-dev@lists.freedesktop.org, matthew.auld@intel.com
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: Manasi Navare <manasi.d.navare@intel.com>, Anusha Srivatsa <anusha.srivatsa@intel.com>, intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org, Rodrigo Vivi <rodrigo.vivi@intel.com>, Daniel Vetter <daniel.vetter@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBGZWIgMjMsIDIwMTggYXQgMDQ6Mjg6MjZQTSArMDAwMCwgTGlvbmVsIExhbmR3ZXJs
-aW4gd3JvdGU6Cj4gV2UgaGF2ZSBhIGdhcCBmb3IgSFNXIG9uIG9uZSBDb21wdXRlIGNvbmZpZ3Vy
-YXRpb24uCj4gCj4gU2lnbmVkLW9mZi1ieTogTGlvbmVsIExhbmR3ZXJsaW4gPGxpb25lbC5nLmxh
-bmR3ZXJsaW5AaW50ZWwuY29tPgo+IC0tLQo+ICB0ZXN0cy9wZXJmLmMgfCA2ICsrKysrKwo+ICAx
-IGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspCj4gCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL3Bl
-cmYuYyBiL3Rlc3RzL3BlcmYuYwo+IGluZGV4IGMzMDJhMzU1Li5jY2JmMDMwYSAxMDA2NDQKPiAt
-LS0gYS90ZXN0cy9wZXJmLmMKPiArKysgYi90ZXN0cy9wZXJmLmMKPiBAQCAtMzk1Nyw2ICszOTU3
-LDEyIEBAIHRlc3Rfd2hpdGVsaXN0ZWRfcmVnaXN0ZXJzX3VzZXJzcGFjZV9jb25maWcodm9pZCkK
-PiAgCQliX2NvdW50ZXJzX3JlZ3NbY29uZmlnLm5fYm9vbGVhbl9yZWdzICogMiArIDFdID0gMDsK
-PiAgCQljb25maWcubl9ib29sZWFuX3JlZ3MrKzsKPiAgCX0KPiArCWlmIChpbnRlbF9nZW4oZGV2
-aWQpIDw9IDcpIHsKPiArCQkvKiBOT0FTRUxFQ1QgKi8KPiArCQliX2NvdW50ZXJzX3JlZ3NbY29u
-ZmlnLm5fYm9vbGVhbl9yZWdzICogMl0gPSAweDIzNkM7Cj4gKwkJYl9jb3VudGVyc19yZWdzW2Nv
-bmZpZy5uX2Jvb2xlYW5fcmVncyAqIDIgKyAxXSA9IDA7Cj4gKwkJY29uZmlnLm5fYm9vbGVhbl9y
-ZWdzKys7Cj4gKwl9Cj4gIAljb25maWcuYm9vbGVhbl9yZWdzX3B0ciA9ICh1aW50cHRyX3QpIGJf
-Y291bnRlcnNfcmVnczsKCkxvb2tzIGxpa2UgaXQgYmxvd3MgdXA6CgpodHRwczovL2ludGVsLWdm
-eC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzk5Ny9zaGFyZC1oc3cyL2lndEBwZXJmQHdo
-aXRlbGlzdGVkLXJlZ2lzdGVycy11c2Vyc3BhY2UtY29uZmlnLmh0bWwKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0
-LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+T3AgMTItMDMtMTggb20gMTU6MjMgc2NocmVlZiBWaWxsZSBTeXJqw6Rsw6Q6Cj4gT24gTW9uLCBN
+YXIgMTIsIDIwMTggYXQgMTI6MDM6MTdQTSArMDEwMCwgTWFhcnRlbiBMYW5raG9yc3Qgd3JvdGU6
+Cj4+IE9wIDA5LTAzLTE4IG9tIDIyOjQ1IHNjaHJlZWYgUmFkaGFrcmlzaG5hIFNyaXBhZGE6Cj4+
+PiBGcm9tOiBBbnVzaGEgU3JpdmF0c2EgPGFudXNoYS5zcml2YXRzYUBpbnRlbC5jb20+Cj4+Pgo+
+Pj4gUmV3b3JrIHRoZSByb3RhdGUgYW5kIHJlZmxlY3Qgc3VidGVzdHMgYnkgY2hlY2tpbmcgdGhl
+Cj4+PiBjcnRjIHN1cHBvcnRlZCBwcm9wZXJ0aWVzIGFnYWluc3QgdGhlIG9uZXMgdGhhdCB0aGUK
+Pj4+IHRlc3QgaXMgdGVzdGluZy4gUmVtb3ZlIHRoZSBoYXJkY29kZWQgcGxhdGZvcm0gbmFtZXMg
+aW4KPj4+IGlndF9yZXF1aXJlKCkKPj4+Cj4+PiB2MjogTWFrZSB1c2Ugb2YgdGhlIHByb3BlcnR5
+IGVudW1zIHRvIGdldCB0aGUgc3VwcG9ydGVkIHJvdGF0aW9ucwo+Pj4KPj4+IENjOiBSYWRoYWty
+aXNobmEgU3JpcGFkYSA8cmFkaGFrcmlzaG5hLnNyaXBhZGFAaW50ZWwuY29tPgo+Pj4gQ2M6IERh
+bmllbCBWZXR0ZXIgPGRhbmllbC52ZXR0ZXJAaW50ZWwuY29tPgo+Pj4gQ2M6IFJvZHJpZ28gVml2
+aSA8cm9kcmlnby52aXZpQGludGVsLmNvbT4KPj4+IENjOiBNYWFydGVuIExhbmtob3JzdCA8bWFh
+cnRlbi5sYW5raG9yc3RAbGludXguaW50ZWwuY29tPgo+Pj4gQ2M6IE1pa2EgS2Fob2xhIDxtaWth
+LmthaG9sYUBpbnRlbC5jb20+Cj4+PiBDYzogTWFuYXNpIE5hdmFyZSA8bWFuYXNpLmQubmF2YXJl
+QGludGVsLmNvbT4KPj4+IFNpZ25lZC1vZmYtYnk6IEFudXNoYSBTcml2YXRzYSA8YW51c2hhLnNy
+aXZhdHNhQGludGVsLmNvbT4KPj4+IFNpZ25lZC1vZmYtYnk6IFJhZGhha3Jpc2huYSBTcmlwYWRh
+IDxyYWRoYWtyaXNobmEuc3JpcGFkYUBpbnRlbC5jb20+Cj4+PiAtLS0KPj4+ICBsaWIvaWd0X2tt
+cy5oICAgICAgICAgICAgfCAgMSArCj4+PiAgdGVzdHMva21zX3JvdGF0aW9uX2NyYy5jIHwgNDYg
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLQo+Pj4gIDIgZmls
+ZXMgY2hhbmdlZCwgMzggaW5zZXJ0aW9ucygrKSwgOSBkZWxldGlvbnMoLSkKPj4gSnVzdCBsZXQg
+aXQgcmVzdCwgaXQncyBub3Qgd29ydGggdGhlIGVmZm9ydCB0byByZW1vdmUgdGhpcywgeW91IG9u
+bHkgZW5kIHVwIHdpdGggbW9yZSBjb21wbGljYXRlZCBjb2RlLi4KPj4gQ2xvc2VzdCBJJ3ZlIGNv
+bWUgaXMgYmVsb3cuIFdoaWNoIHdpbGwgc3RpbGwgZmFpbCBiZWNhdXNlIGl0IHdpbGwgdHJ5IHRv
+IGdlbmVyYXRlIHRoZSB3cm9uZyB0aWxpbmdzIHByZS1nZW45Li4KPiBUaGUgY3VycmVudCBjb2Rl
+IGlzIGFjdHVhbGx5IHdyb25nLiBjaHYgZG9lc24ndCByZXF1aXJlIFgtdGlsaW5nIGZvcgo+IHJl
+ZmxlY3Rpb24uCj4KPiBJIHRoaW5rIHRoZSBhY3R1YWwgaGFyZHdhcmUgcmVzdHJpY3Rpb25zIHdl
+IGhhdmUgYXJlOgo+IGdlbjQrOiAwLzE4MCBkZWdyZWUgcm90YXRpb24gc3VwcG9ydGVkIGFsd2F5
+cwo+IGNodjogc3VwcG9ydHMgcmVmbGVjdGlvbiwgZXhjZXB0IHdpdGggMTgwIGRlZ3JlZSByb3Rh
+dGlvbgo+IGdlbjkrOiA5MC8yNzAgZGVncmVlIHJvdGF0aW9uIHN1cHBvcnRlZCB3aXRoIHkveWYg
+dGlsaW5nCj4gZ2VuMTArOiBzdXBwb3J0cyByZWZsZWN0aW9uLCBleGNlcHQgd2l0aCBsaW5lYXIg
+ZmIKU28gY2FuIHdlIGxlYXZlIGl0IHRoZSB3YXkgaXQgaXMgbm93PwoKfk1hYXJ0ZW4KX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5n
+IGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
+a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
