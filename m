@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 547A66E122
- for <igt-dev@lists.freedesktop.org>; Sat, 10 Mar 2018 11:28:15 +0000 (UTC)
-References: <20180309145034.25757-1-lionel.g.landwerlin@intel.com>
- <20180309145034.25757-3-lionel.g.landwerlin@intel.com>
- <f6360d5a-fd99-41cb-35b8-9b35405cd0eb@linux.intel.com>
- <c115522a-e1d8-d828-cff5-95f37a7e8295@intel.com>
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <d690d516-3ec3-cd9a-484a-19d8ebb4d292@intel.com>
-Date: Sat, 10 Mar 2018 11:28:12 +0000
 MIME-Version: 1.0
-In-Reply-To: <c115522a-e1d8-d828-cff5-95f37a7e8295@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v9 3/3] tests: add i915 query tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 12 Mar 2018 08:54:58 -0000
+Message-ID: <20180312085458.24800.88378@emeril.freedesktop.org>
+References: <20180309162255.22260-1-arkadiusz.hiler@intel.com>
+In-Reply-To: <20180309162255.22260-1-arkadiusz.hiler@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgUnVuIGdl?=
+ =?utf-8?q?m=5Ffd=5Fexhaustion_on_all_the_machines?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,98 +14,84 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1789837861=="
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is a multi-part message in MIME format.
---===============1789837861==
-Content-Type: multipart/alternative;
- boundary="------------AE81B319F93EC360B4E9E2E6"
-Content-Language: en-US
-
-This is a multi-part message in MIME format.
---------------AE81B319F93EC360B4E9E2E6
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-On 09/03/18 16:45, Lionel Landwerlin wrote:
-> On 09/03/18 16:35, Tvrtko Ursulin wrote:
->>
->> With a commit message added:
->
-> Ahaha, I just won't remember :)
->
-> Thanks a lot!
->
->>
->> Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>
->> Regards, 
-
-I forgot that I need a Ack on the uapi headers bump.
-
-Thanks,
-
-Lionel
-
---------------AE81B319F93EC360B4E9E2E6
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body text="#000000" bgcolor="#FFFFFF">
-    <div class="moz-cite-prefix">On 09/03/18 16:45, Lionel Landwerlin
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:c115522a-e1d8-d828-cff5-95f37a7e8295@intel.com">
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-      <div class="moz-cite-prefix">On 09/03/18 16:35, Tvrtko Ursulin
-        wrote:<br>
-      </div>
-      <blockquote type="cite"
-        cite="mid:f6360d5a-fd99-41cb-35b8-9b35405cd0eb@linux.intel.com"><br>
-        With a commit message added: <br>
-      </blockquote>
-      <br>
-      Ahaha, I just won't remember :)<br>
-      <br>
-      Thanks a lot!<br>
-      <br>
-      <blockquote type="cite"
-        cite="mid:f6360d5a-fd99-41cb-35b8-9b35405cd0eb@linux.intel.com">
-        <br>
-        Reviewed-by: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E"
-          href="mailto:tvrtko.ursulin@intel.com" moz-do-not-send="true">&lt;tvrtko.ursulin@intel.com&gt;</a>
-        <br>
-        <br>
-        Regards, </blockquote>
-    </blockquote>
-    <br>
-    I forgot that I need a Ack on the uapi headers bump.<br>
-    <br>
-    Thanks,<br>
-    <br>
-    Lionel<br>
-  </body>
-</html>
-
---------------AE81B319F93EC360B4E9E2E6--
-
---===============1789837861==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============1789837861==--
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogUnVuIGdlbV9mZF9leGhhdXN0aW9uIG9uIGFs
+bCB0aGUgbWFjaGluZXMKVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcv
+c2VyaWVzLzM5NzA3LwpTdGF0ZSA6IHN1Y2Nlc3MKCj09IFN1bW1hcnkgPT0KCklHVCBwYXRjaHNl
+dCB0ZXN0ZWQgb24gdG9wIG9mIGxhdGVzdCBzdWNjZXNzZnVsIGJ1aWxkCjVkNzFkNzc4MmE4MzA4
+NDNjNzIzMWZiZDcyYWIzZWRhZTE5YjQ4ZDcgaWd0L2dlbV9mZF9leGhhdXN0aW9uOiBNb2RpZnkg
+ZnMubnJfb3BlbiBmb3IgZHVyYXRpb24gb2YgdGhlIHRlc3QKCndpdGggbGF0ZXN0IERSTS1UaXAg
+a2VybmVsIGJ1aWxkIENJX0RSTV8zOTA5CjdkN2YxMmI3OTMwNiBkcm0tdGlwOiAyMDE4eS0wM20t
+MTJkLTA3aC0yM20tNDdzIFVUQyBpbnRlZ3JhdGlvbiBtYW5pZmVzdAoKTm8gdGVzdGxpc3QgY2hh
+bmdlcy4KCi0tLS0gS25vd24gaXNzdWVzOgoKVGVzdCBkZWJ1Z2ZzX3Rlc3Q6CiAgICAgICAgU3Vi
+Z3JvdXAgcmVhZF9hbGxfZW50cmllczoKICAgICAgICAgICAgICAgIHBhc3MgICAgICAgLT4gSU5D
+T01QTEVURSAoZmktc25iLTI1MjBtKSBmZG8jMTAzNzEzClRlc3QgZ2VtX21tYXBfZ3R0OgogICAg
+ICAgIFN1Ymdyb3VwIGJhc2ljLXNtYWxsLWJvLXRpbGVkeDoKICAgICAgICAgICAgICAgIGZhaWwg
+ICAgICAgLT4gUEFTUyAgICAgICAoZmktZ2RnLTU1MSkgZmRvIzEwMjU3NQpUZXN0IGttc19waXBl
+X2NyY19iYXNpYzoKICAgICAgICBTdWJncm91cCBzdXNwZW5kLXJlYWQtY3JjLXBpcGUtYzoKICAg
+ICAgICAgICAgICAgIHBhc3MgICAgICAgLT4gSU5DT01QTEVURSAoZmktYnh0LWRzaSkgZmRvIzEw
+MzkyNwoKZmRvIzEwMzcxMyBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNn
+aT9pZD0xMDM3MTMKZmRvIzEwMjU3NSBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3df
+YnVnLmNnaT9pZD0xMDI1NzUKZmRvIzEwMzkyNyBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3Jn
+L3Nob3dfYnVnLmNnaT9pZD0xMDM5MjcKCmZpLWJkdy01NTU3dSAgICAgdG90YWw6Mjg5ICBwYXNz
+OjI2OCAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAgICBza2lwOjIxICB0aW1lOjQ0OXMKZmkt
+YmR3LWd2dGR2bSAgICB0b3RhbDoyODkgIHBhc3M6MjY0ICBkd2FybjowICAgZGZhaWw6MCAgIGZh
+aWw6MSAgIHNraXA6MjQgIHRpbWU6NDM4cwpmaS1ibGItZTY4NTAgICAgIHRvdGFsOjI4OSAgcGFz
+czoyMjQgIGR3YXJuOjEgICBkZmFpbDowICAgZmFpbDowICAgc2tpcDo2NCAgdGltZTozODZzCmZp
+LWJzdy1uMzA1MCAgICAgdG90YWw6Mjg5ICBwYXNzOjI0MiAgZHdhcm46MCAgIGRmYWlsOjAgICBm
+YWlsOjEgICBza2lwOjQ2ICB0aW1lOjU3NnMKZmktYndyLTIxNjAgICAgICB0b3RhbDoyODkgIHBh
+c3M6MTgzICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MSAgIHNraXA6MTA1IHRpbWU6Mjg5cwpm
+aS1ieHQtZHNpICAgICAgIHRvdGFsOjI0NyAgcGFzczoyMjAgIGR3YXJuOjAgICBkZmFpbDowICAg
+ZmFpbDowICAgc2tpcDoyNiAKZmktYnh0LWo0MjA1ICAgICB0b3RhbDoyODkgIHBhc3M6MjYwICBk
+d2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAgIHNraXA6MjkgIHRpbWU6NTY1cwpmaS1ieXQtajE5
+MDAgICAgIHRvdGFsOjI4OSAgcGFzczoyNTQgIGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDowICAg
+c2tpcDozNSAgdGltZTo1MzlzCmZpLWJ5dC1uMjgyMCAgICAgdG90YWw6Mjg5ICBwYXNzOjI0OSAg
+ZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjEgICBza2lwOjM5ICB0aW1lOjUyM3MKZmktY2ZsLTg3
+MDBrICAgICB0b3RhbDoyODkgIHBhc3M6MjYwICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MSAg
+IHNraXA6MjggIHRpbWU6NDI0cwpmaS1jZmwtczIgICAgICAgIHRvdGFsOjI4OSAgcGFzczoyNjMg
+IGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDowICAgc2tpcDoyNiAgdGltZTo2MzBzCmZpLWNubC15
+MyAgICAgICAgdG90YWw6Mjg5ICBwYXNzOjI2MyAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAg
+ICBza2lwOjI2ICB0aW1lOjYwNHMKZmktZWxrLWU3NTAwICAgICB0b3RhbDoyODkgIHBhc3M6MjMw
+ICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAgIHNraXA6NTkgIHRpbWU6NDM4cwpmaS1nZGct
+NTUxICAgICAgIHRvdGFsOjI4OSAgcGFzczoxODEgIGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDow
+ICAgc2tpcDoxMDggdGltZTozMTBzCmZpLWdsay0xICAgICAgICAgdG90YWw6Mjg5ICBwYXNzOjI2
+MSAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAgICBza2lwOjI4ICB0aW1lOjU1MHMKZmktaHN3
+LTQ3NzAgICAgICB0b3RhbDoyODkgIHBhc3M6MjYyICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6
+MCAgIHNraXA6MjcgIHRpbWU6NDQ0cwpmaS1pbGstNjUwICAgICAgIHRvdGFsOjI4OSAgcGFzczoy
+MjkgIGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDowICAgc2tpcDo2MCAgdGltZTo0NDdzCmZpLWl2
+Yi0zNTIwbSAgICAgdG90YWw6Mjg5ICBwYXNzOjI2MCAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWls
+OjAgICBza2lwOjI5ICB0aW1lOjQ3NnMKZmktaXZiLTM3NzAgICAgICB0b3RhbDoyODkgIHBhc3M6
+MjU2ICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAgIHNraXA6MzMgIHRpbWU6NDQwcwpmaS1r
+YmwtNzUwMHUgICAgIHRvdGFsOjI4OSAgcGFzczoyNjQgIGR3YXJuOjEgICBkZmFpbDowICAgZmFp
+bDowICAgc2tpcDoyNCAgdGltZTo0OThzCmZpLWtibC03NTY3dSAgICAgdG90YWw6Mjg5ICBwYXNz
+OjI2OSAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAgICBza2lwOjIwICB0aW1lOjQ4NnMKZmkt
+a2JsLXIgICAgICAgICB0b3RhbDoyODkgIHBhc3M6MjYxICBkd2FybjowICAgZGZhaWw6MCAgIGZh
+aWw6MSAgIHNraXA6MjcgIHRpbWU6NTM3cwpmaS1wbnYtZDUxMCAgICAgIHRvdGFsOjI4OSAgcGFz
+czoyMjMgIGR3YXJuOjEgICBkZmFpbDowICAgZmFpbDowICAgc2tpcDo2NSAgdGltZTo1OTlzCmZp
+LXNrbC02MjYwdSAgICAgdG90YWw6Mjg5ICBwYXNzOjI2OSAgZHdhcm46MCAgIGRmYWlsOjAgICBm
+YWlsOjAgICBza2lwOjIwICB0aW1lOjQ1OHMKZmktc2tsLTY2MDB1ICAgICB0b3RhbDoyODkgIHBh
+c3M6MjYyICBkd2FybjowICAgZGZhaWw6MCAgIGZhaWw6MCAgIHNraXA6MjcgIHRpbWU6NTQ5cwpm
+aS1za2wtNjcwMGhxICAgIHRvdGFsOjI4OSAgcGFzczoyNjMgIGR3YXJuOjAgICBkZmFpbDowICAg
+ZmFpbDowICAgc2tpcDoyNiAgdGltZTo1NjhzCmZpLXNrbC02NzAwazIgICAgdG90YWw6Mjg5ICBw
+YXNzOjI2NSAgZHdhcm46MCAgIGRmYWlsOjAgICBmYWlsOjAgICBza2lwOjI0ICB0aW1lOjUyNHMK
+Zmktc2tsLTY3NzBocSAgICB0b3RhbDoyODkgIHBhc3M6MjY5ICBkd2FybjowICAgZGZhaWw6MCAg
+IGZhaWw6MCAgIHNraXA6MjAgIHRpbWU6NTM3cwpmaS1za2wtZ3VjICAgICAgIHRvdGFsOjI4OSAg
+cGFzczoyNjAgIGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDoxICAgc2tpcDoyOCAgdGltZTo0NDFz
+CmZpLXNuYi0yNTIwbSAgICAgdG90YWw6NCAgICBwYXNzOjMgICAgZHdhcm46MCAgIGRmYWlsOjAg
+ICBmYWlsOjAgICBza2lwOjAgIApmaS1zbmItMjYwMCAgICAgIHRvdGFsOjI4OSAgcGFzczoyNDkg
+IGR3YXJuOjAgICBkZmFpbDowICAgZmFpbDowICAgc2tpcDo0MCAgdGltZTo0MjNzCkJsYWNrbGlz
+dGVkIGhvc3RzOgpmaS1jbmwtZHJycyAgICAgIHRvdGFsOjI4OSAgcGFzczoyNTggIGR3YXJuOjMg
+ICBkZmFpbDowICAgZmFpbDowICAgc2tpcDoxOSAgdGltZTo1MzlzCgo9PSBMb2dzID09CgpGb3Ig
+bW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRp
+cC9JR1RQV18xMTAzL2lzc3Vlcy5odG1sCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8v
+aWd0LWRldgo=
