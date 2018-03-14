@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mblankhorst.nl (mblankhorst.nl
- [IPv6:2a02:2308::216:3eff:fe92:dfa3])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E47E06E6A0
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Mar 2018 10:54:15 +0000 (UTC)
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Date: Wed, 14 Mar 2018 11:54:11 +0100
-Message-Id: <20180314105411.39866-1-maarten.lankhorst@linux.intel.com>
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_panel_fitting: Make test pass on
- gen9's pipe C
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E2AF6E6A0
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Mar 2018 11:04:14 +0000 (UTC)
+MIME-Version: 1.0
+From: Chris Wilson <chris@chris-wilson.co.uk>
+References: <20180314105411.39866-1-maarten.lankhorst@linux.intel.com>
+In-Reply-To: <20180314105411.39866-1-maarten.lankhorst@linux.intel.com>
+Message-ID: <152102545046.515.12129576002521464744@mail.alporthouse.com>
+Date: Wed, 14 Mar 2018 11:04:10 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_panel_fitting: Make test pass
+ on gen9's pipe C
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,35 +17,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhlIGxlZ2FjeSB0ZXN0IGZhaWxzIGJlY2F1c2UgaXQgdHJpZXMgc2NhbGluZyBvbiBwaXBlIEMs
-CmJlY2F1c2UgdGhlIHNpbmdsZSBzY2FsZXIgaXMgYWxyZWFkeSB1c2VkIGZvciBDUlRDIHNjYWxp
-bmcuCk9uIG90aGVyIHBpcGVzIGFuZCBuZXdlciBnZW5zIHdlIGhhdmUgMiBzY2FsZXJzLCBzbyBz
-cGVjaWFsCmNhc2UgcGlwZSBDIGhlcmUuCgpTaWduZWQtb2ZmLWJ5OiBNYWFydGVuIExhbmtob3Jz
-dCA8bWFhcnRlbi5sYW5raG9yc3RAbGludXguaW50ZWwuY29tPgpCdWd6aWxsYTogaHR0cHM6Ly9i
-dWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA1NDU2Ci0tLQogdGVzdHMva21z
-X3BhbmVsX2ZpdHRpbmcuYyB8IDggKysrKysrKysKIDEgZmlsZSBjaGFuZ2VkLCA4IGluc2VydGlv
-bnMoKykKCmRpZmYgLS1naXQgYS90ZXN0cy9rbXNfcGFuZWxfZml0dGluZy5jIGIvdGVzdHMva21z
-X3BhbmVsX2ZpdHRpbmcuYwppbmRleCAxZjA4N2VjYzgyYTAuLjVkY2UxMDEwMDNjNSAxMDA2NDQK
-LS0tIGEvdGVzdHMva21zX3BhbmVsX2ZpdHRpbmcuYworKysgYi90ZXN0cy9rbXNfcGFuZWxfZml0
-dGluZy5jCkBAIC0xMzMsNiArMTMzLDE0IEBAIHN0YXRpYyB2b2lkIHRlc3RfcGFuZWxfZml0dGlu
-ZyhkYXRhX3QgKmQpCiAJCWlndF9wbGFuZV9zZXRfc2l6ZShkLT5wbGFuZTIsIG1vZGUtPmhkaXNw
-bGF5LTIwMCwgbW9kZS0+dmRpc3BsYXktMjAwKTsKIAkJaWd0X2Rpc3BsYXlfY29tbWl0MihkaXNw
-bGF5LCBDT01NSVRfVU5JVkVSU0FMKTsKIAorCQkvKgorCQkgKiBnZW45IHBpcGUgQyBoYXMgb25s
-eSAxIHNjYWxlciBzaGFyZWQgd2l0aCB0aGUgY3J0Yywgd2hpY2gKKwkJICogbWVhbnMgcGlwZSBz
-Y2FsaW5nIGNhbid0IHdvcmsgc2ltdWx0YW5lb3VzbHkgd2l0aCBwYW5lbAorCQkgKiBmaXR0aW5n
-LgorCQkgKi8KKwkJaWYgKGludGVsX2dlbihpbnRlbF9nZXRfZHJtX2RldmlkKGRpc3BsYXktPmRy
-bV9mZCkpID09IDkgJiYgcGlwZSA9PSBQSVBFX0MpCisJCQlpZ3RfcGxhbmVfc2V0X3NpemUoZC0+
-cGxhbmUyLCBkLT5mYjIud2lkdGgtMjAwLCBkLT5mYjIuaGVpZ2h0LTIwMCk7CisKIAkJLyogZW5h
-YmxlIHBhbmVsIGZpdHRpbmcgYWxvbmcgd2l0aCBzcHJpdGUgc2NhbGluZyAqLwogCQltb2RlLT5o
-ZGlzcGxheSA9IDEwMjQ7CiAJCW1vZGUtPnZkaXNwbGF5ID0gNzY4OwotLSAKMi4xNi4yCgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxp
-bmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVk
-ZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+UXVvdGluZyBNYWFydGVuIExhbmtob3JzdCAoMjAxOC0wMy0xNCAxMDo1NDoxMSkKPiBUaGUgbGVn
+YWN5IHRlc3QgZmFpbHMgYmVjYXVzZSBpdCB0cmllcyBzY2FsaW5nIG9uIHBpcGUgQywKPiBiZWNh
+dXNlIHRoZSBzaW5nbGUgc2NhbGVyIGlzIGFscmVhZHkgdXNlZCBmb3IgQ1JUQyBzY2FsaW5nLgo+
+IE9uIG90aGVyIHBpcGVzIGFuZCBuZXdlciBnZW5zIHdlIGhhdmUgMiBzY2FsZXJzLCBzbyBzcGVj
+aWFsCj4gY2FzZSBwaXBlIEMgaGVyZS4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBNYWFydGVuIExhbmto
+b3JzdCA8bWFhcnRlbi5sYW5raG9yc3RAbGludXguaW50ZWwuY29tPgo+IEJ1Z3ppbGxhOiBodHRw
+czovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDU0NTYKPiAtLS0KPiAg
+dGVzdHMva21zX3BhbmVsX2ZpdHRpbmcuYyB8IDggKysrKysrKysKPiAgMSBmaWxlIGNoYW5nZWQs
+IDggaW5zZXJ0aW9ucygrKQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfcGFuZWxfZml0dGlu
+Zy5jIGIvdGVzdHMva21zX3BhbmVsX2ZpdHRpbmcuYwo+IGluZGV4IDFmMDg3ZWNjODJhMC4uNWRj
+ZTEwMTAwM2M1IDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2ttc19wYW5lbF9maXR0aW5nLmMKPiArKysg
+Yi90ZXN0cy9rbXNfcGFuZWxfZml0dGluZy5jCj4gQEAgLTEzMyw2ICsxMzMsMTQgQEAgc3RhdGlj
+IHZvaWQgdGVzdF9wYW5lbF9maXR0aW5nKGRhdGFfdCAqZCkKPiAgICAgICAgICAgICAgICAgaWd0
+X3BsYW5lX3NldF9zaXplKGQtPnBsYW5lMiwgbW9kZS0+aGRpc3BsYXktMjAwLCBtb2RlLT52ZGlz
+cGxheS0yMDApOwo+ICAgICAgICAgICAgICAgICBpZ3RfZGlzcGxheV9jb21taXQyKGRpc3BsYXks
+IENPTU1JVF9VTklWRVJTQUwpOwo+ICAKPiArICAgICAgICAgICAgICAgLyoKPiArICAgICAgICAg
+ICAgICAgICogZ2VuOSBwaXBlIEMgaGFzIG9ubHkgMSBzY2FsZXIgc2hhcmVkIHdpdGggdGhlIGNy
+dGMsIHdoaWNoCj4gKyAgICAgICAgICAgICAgICAqIG1lYW5zIHBpcGUgc2NhbGluZyBjYW4ndCB3
+b3JrIHNpbXVsdGFuZW91c2x5IHdpdGggcGFuZWwKPiArICAgICAgICAgICAgICAgICogZml0dGlu
+Zy4KCisgU2luY2UgdGhpcyBpcyB0aGUgbGVnYWN5IHBhdGgsIHVzZXJzcGFjZSBoYXMgdG8ga25v
+dyBhYm91dCB0aGUgSFcKbGltaXRhdGlvbnMsIHdoZXJlYXMgYXRvbWljIGNhbiBhc2suCgo+ICsg
+ICAgICAgICAgICAgICAgKi8KPiArICAgICAgICAgICAgICAgaWYgKGludGVsX2dlbihpbnRlbF9n
+ZXRfZHJtX2RldmlkKGRpc3BsYXktPmRybV9mZCkpID09IDkgJiYgcGlwZSA9PSBQSVBFX0MpCj4g
+KyAgICAgICAgICAgICAgICAgICAgICAgaWd0X3BsYW5lX3NldF9zaXplKGQtPnBsYW5lMiwgZC0+
+ZmIyLndpZHRoLTIwMCwgZC0+ZmIyLmhlaWdodC0yMDApOwo+ICsKPiAgICAgICAgICAgICAgICAg
+LyogZW5hYmxlIHBhbmVsIGZpdHRpbmcgYWxvbmcgd2l0aCBzcHJpdGUgc2NhbGluZyAqLwo+ICAg
+ICAgICAgICAgICAgICBtb2RlLT5oZGlzcGxheSA9IDEwMjQ7Cj4gICAgICAgICAgICAgICAgIG1v
+ZGUtPnZkaXNwbGF5ID0gNzY4OwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
+Lm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
+ZXYK
