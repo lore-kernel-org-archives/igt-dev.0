@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mblankhorst.nl (mblankhorst.nl [141.105.120.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A59DA6EBA3
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Mar 2018 16:17:01 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A6C1F6EBAA
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Mar 2018 16:19:05 +0000 (UTC)
+References: <20180316012118.3534-1-dhinakaran.pandiyan@intel.com>
 From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Date: Fri, 16 Mar 2018 17:16:57 +0100
-Message-Id: <20180316161657.21398-1-maarten.lankhorst@linux.intel.com>
-Subject: [igt-dev] [PATCH i-g-t] kms_frontbuffer_tracking: Fix PSR reporting
- after PSR active flag is removed.
+Message-ID: <0191a7f5-e229-3f8b-bb91-c02a4b6c2e6d@linux.intel.com>
+Date: Fri, 16 Mar 2018 17:19:03 +0100
+MIME-Version: 1.0
+In-Reply-To: <20180316012118.3534-1-dhinakaran.pandiyan@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_frontbuffer_tracking: Update
+ check for PSR status
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,29 +18,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RWl0aGVyIHRoZSBtYWluIGxpbmsgaW4gc3RhbmRieSBtb2RlIG9yIGh3IGVuYWJsZWQgaXMgZW5v
-dWdoIHRvCnNheSB0aGF0IFBTUiBpcyBhY3RpdmF0ZWQsIHNvIGp1c3QgdXNlIGJvdGguCgpCdWd6
-aWxsYTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA1NTE5
-ClNpZ25lZC1vZmYtYnk6IE1hYXJ0ZW4gTGFua2hvcnN0IDxtYWFydGVuLmxhbmtob3JzdEBsaW51
-eC5pbnRlbC5jb20+Ci0tLQogdGVzdHMva21zX2Zyb250YnVmZmVyX3RyYWNraW5nLmMgfCAyICst
-CiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1n
-aXQgYS90ZXN0cy9rbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcuYyBiL3Rlc3RzL2ttc19mcm9udGJ1
-ZmZlcl90cmFja2luZy5jCmluZGV4IDQ1NDEwM2QzNjdjNy4uZTRkYTcwNmIwNjMxIDEwMDY0NAot
-LS0gYS90ZXN0cy9rbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcuYworKysgYi90ZXN0cy9rbXNfZnJv
-bnRidWZmZXJfdHJhY2tpbmcuYwpAQCAtNzgxLDcgKzc4MSw3IEBAIHN0YXRpYyBib29sIHBzcl9p
-c19lbmFibGVkKHZvaWQpCiAJY2hhciBidWZbMjU2XTsKIAogCWRlYnVnZnNfcmVhZCgiaTkxNV9l
-ZHBfcHNyX3N0YXR1cyIsIGJ1Zik7Ci0JcmV0dXJuIHN0cnN0cihidWYsICJcbkFjdGl2ZTogeWVz
-XG4iKSAmJgorCXJldHVybiBzdHJzdHIoYnVmLCAiXG5NYWluIGxpbmsgaW4gc3RhbmRieSBtb2Rl
-OiB5ZXNcbiIpIHx8CiAJICAgICAgIHN0cnN0cihidWYsICJcbkhXIEVuYWJsZWQgJiBBY3RpdmUg
-Yml0OiB5ZXNcbiIpOwogfQogCi0tIAoyLjE2LjIKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlz
-dGluZm8vaWd0LWRldgo=
+T3AgMTYtMDMtMTggb20gMDI6MjEgc2NocmVlZiBEaGluYWthcmFuIFBhbmRpeWFuOgo+IEtlcm5l
+bCBkb2VzIG5vdCBleHBvc2UgdGhlICJBY3RpdmU6ICIgZmxhZyBpbiBlZHBfcHNyX3N0YXR1cyBh
+bnltb3JlLgo+IFNvIHRlc3QgZm9yICJIVyBFbmFibGVkICYgQWN0aXZlIGJpdDogeWVzIiwgYWx0
+aG91Z2ggdGhpcyBpc24ndCBjb21wbGV0ZWx5Cj4gYWNjdXJhdGUgZWl0aGVyIGZvciBmcm9udGJ1
+ZmZlciB0ZXN0cy4gTGV0J3MgZ28gd2l0aCB0aGlzIGZvciBub3cgdW50aWwKPiB0aGUga2VybmVs
+IGV4cG9zZXMgSFcgUFNSIHN0YXR1cy4KPgo+IENjOiBSb2RyaWdvIFZpdmkgPHJvZHJpZ28udml2
+aUBpbnRlbC5jb20+Cj4gQnVnemlsbGE6IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hv
+d19idWcuY2dpP2lkPTEwNTUxOQo+IFNpZ25lZC1vZmYtYnk6IERoaW5ha2FyYW4gUGFuZGl5YW4g
+PGRoaW5ha2FyYW4ucGFuZGl5YW5AaW50ZWwuY29tPgo+IC0tLQo+ICB0ZXN0cy9rbXNfZmJjb25f
+ZmJ0LmMgICAgICAgICAgICB8IDIgKy0KPiAgdGVzdHMva21zX2Zyb250YnVmZmVyX3RyYWNraW5n
+LmMgfCAzICstLQo+ICAyIGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlv
+bnMoLSkKPgo+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfZmJjb25fZmJ0LmMgYi90ZXN0cy9rbXNf
+ZmJjb25fZmJ0LmMKPiBpbmRleCBiMDFjNzY5Yy4uMjgwZGRiZDcgMTAwNjQ0Cj4gLS0tIGEvdGVz
+dHMva21zX2ZiY29uX2ZidC5jCj4gKysrIGIvdGVzdHMva21zX2ZiY29uX2ZidC5jCj4gQEAgLTE4
+OSw3ICsxODksNyBAQCBzdGF0aWMgYm9vbCBwc3JfaXNfZW5hYmxlZChpbnQgZmQpCj4gIAljaGFy
+IGJ1ZlsyNTZdOwo+ICAKPiAgCWlndF9kZWJ1Z2ZzX3JlYWQoZmQsICJpOTE1X2VkcF9wc3Jfc3Rh
+dHVzIiwgYnVmKTsKPiAtCXJldHVybiBzdHJzdHIoYnVmLCAiXG5BY3RpdmU6IHllc1xuIik7Cj4g
+KwlyZXR1cm4gc3Ryc3RyKGJ1ZiwgIlxuSFcgRW5hYmxlZCAmIEFjdGl2ZSBiaXQ6IHllc1xuIik7
+Cj4gIH0KPiAgCj4gIHN0YXRpYyBib29sIHBzcl93YWl0X3VudGlsX2VuYWJsZWQoaW50IGZkKQo+
+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcuYyBiL3Rlc3RzL2tt
+c19mcm9udGJ1ZmZlcl90cmFja2luZy5jCj4gaW5kZXggMmI4NTM5MmQuLjVjYmE0MTU4IDEwMDY0
+NAo+IC0tLSBhL3Rlc3RzL2ttc19mcm9udGJ1ZmZlcl90cmFja2luZy5jCj4gKysrIGIvdGVzdHMv
+a21zX2Zyb250YnVmZmVyX3RyYWNraW5nLmMKPiBAQCAtNzgxLDggKzc4MSw3IEBAIHN0YXRpYyBi
+b29sIHBzcl9pc19lbmFibGVkKHZvaWQpCj4gIAljaGFyIGJ1ZlsyNTZdOwo+ICAKPiAgCWRlYnVn
+ZnNfcmVhZCgiaTkxNV9lZHBfcHNyX3N0YXR1cyIsIGJ1Zik7Cj4gLQlyZXR1cm4gc3Ryc3RyKGJ1
+ZiwgIlxuQWN0aXZlOiB5ZXNcbiIpICYmCj4gLQkgICAgICAgc3Ryc3RyKGJ1ZiwgIlxuSFcgRW5h
+YmxlZCAmIEFjdGl2ZSBiaXQ6IHllc1xuIik7Cj4gKwlyZXR1cm4gc3Ryc3RyKGJ1ZiwgIlxuSFcg
+RW5hYmxlZCAmIEFjdGl2ZSBiaXQ6IHllc1xuIik7Cj4gIH0KPiAgCj4gIHN0YXRpYyB2b2lkIHBz
+cl9wcmludF9zdGF0dXModm9pZCkKCkhleSwKCklmIGVuYWJsZV9wc3IgaXMgc2V0IHRvIGxpbmsg
+c3RhbmRieSwgd29uJ3QgIk1haW4gbGluayBpbiBzdGFuZGJ5IG1vZGU6IHllcyIgYWxzbyBiZSBh
+IHZhbGlkIHdheSBvZiBlbnRlcmluZyBQU1I/CgpUaGlzIGlzIHByb2JhYmx5IHRoZSBjYXNlIGZv
+ciBIU1csIEkndmUgc2VudCBteSBvd24gcGF0Y2ggZm9yIHRoaXMuLgoKaHR0cHM6Ly9wYXRjaHdv
+cmsuZnJlZWRlc2t0b3Aub3JnL3BhdGNoLzIxMTA2MC8KCn5NYWFydGVuCgpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdApp
+Z3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
