@@ -1,52 +1,43 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46ECA6E274
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Mar 2018 16:40:45 +0000 (UTC)
+References: <20180321210828.16701-1-antonio.argenziano@intel.com>
+From: Antonio Argenziano <antonio.argenziano@intel.com>
+Message-ID: <71bc4687-27ef-8a83-3642-640c71d9da96@intel.com>
+Date: Thu, 22 Mar 2018 09:40:44 -0700
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <1239353d-9f16-d43f-fcbd-d420781c8306@linux.intel.com>
-References: <20180322141205.16746-1-chris@chris-wilson.co.uk>
- <1239353d-9f16-d43f-fcbd-d420781c8306@linux.intel.com>
-Message-ID: <152173417976.23562.7114802973104720698@mail.alporthouse.com>
-Date: Thu, 22 Mar 2018 15:56:19 +0000
-Subject: Re: [Intel-gfx] [PATCH igt] lib: Run gem_test_engine() in an
- isolated context
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20180321210828.16701-1-antonio.argenziano@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t v3] igt/gem_measure_ring_size_inflight:
+ Measure smallest inflight ring size
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Transfer-Encoding: base64
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBUdnJ0a28gVXJzdWxpbiAoMjAxOC0wMy0yMiAxNTo0ODo1MCkKPiAKPiBPbiAyMi8w
-My8yMDE4IDE0OjEyLCBDaHJpcyBXaWxzb24gd3JvdGU6Cj4gPiBJZ25vcmUgdGhlIHNoZW5uaWdh
-bnMgb2YgdGhlIHRlc3Qgc3Vycm91bmRpbmcgdGhlIGxpYnJhcnkgY2FsbCB0bwo+ID4gZ2VtX3Rl
-c3RfZW5naW5lKCkgYW5kIGZvY3VzIG9uIGFuc3dlcmluZyB0aGUgcXVlcnkgb2Ygd2hldGhlciB0
-aGUgZW5naW5lCj4gPiBleGlzdHMgYW5kIGlzIG9wZXJhdGlvbmFsLgo+ID4gCj4gPiBTaWduZWQt
-b2ZmLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KPiA+IENjOiBU
-dnJ0a28gVXJzdWxpbiA8dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPgo+ID4gLS0tCj4gPiAgIGxp
-Yi9pOTE1L2dlbV9zdWJtaXNzaW9uLmMgfCAyMyArKysrKysrKysrKysrKysrKysrLS0tLQo+ID4g
-ICAxIGZpbGUgY2hhbmdlZCwgMTkgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKPiA+IAo+
-ID4gZGlmZiAtLWdpdCBhL2xpYi9pOTE1L2dlbV9zdWJtaXNzaW9uLmMgYi9saWIvaTkxNS9nZW1f
-c3VibWlzc2lvbi5jCj4gPiBpbmRleCBjNWU5Njk2OS4uMDYyYjhiOTMgMTAwNjQ0Cj4gPiAtLS0g
-YS9saWIvaTkxNS9nZW1fc3VibWlzc2lvbi5jCj4gPiArKysgYi9saWIvaTkxNS9nZW1fc3VibWlz
-c2lvbi5jCj4gPiBAQCAtMjIsNiArMjIsNyBAQAo+ID4gICAgKi8KPiA+ICAgCj4gPiAgICNpbmNs
-dWRlIDxlcnJuby5oPgo+ID4gKyNpbmNsdWRlIDxmY250bC5oPgo+ID4gICAjaW5jbHVkZSA8c3Rk
-Ym9vbC5oPgo+ID4gICAjaW5jbHVkZSA8c3lzL2lvY3RsLmg+Cj4gPiAgIAo+ID4gQEAgLTE2NCw2
-ICsxNjUsMTcgQEAgYm9vbCBnZW1faGFzX2d1Y19zdWJtaXNzaW9uKGludCBmZCkKPiA+ICAgICAg
-IHJldHVybiBnZW1fc3VibWlzc2lvbl9tZXRob2QoZmQpICYgR0VNX1NVQk1JU1NJT05fR1VDOwo+
-ID4gICB9Cj4gPiAgIAo+ID4gK3N0YXRpYyBpbnQgcmVvcGVuX2RyaXZlcihpbnQgZmQpCj4gPiAr
-ewo+ID4gKyAgICAgY2hhciBwYXRoWzI1Nl07Cj4gPiArCj4gPiArICAgICBzbnByaW50ZihwYXRo
-LCBzaXplb2YocGF0aCksICIvcHJvYy9zZWxmL2ZkLyVkIiwgZmQpOwo+ID4gKyAgICAgZmQgPSBv
-cGVuKHBhdGgsIE9fUkRXUik7Cj4gPiArICAgICBpZ3RfYXNzZXJ0X2x0ZSgwLCBmZCk7Cj4gCj4g
-V2UgaGF2ZSBpZ3RfYXNzZXJ0X2ZkIGlmIHlvdSB3YW50IGl0LgoKRG9uZS4gUHVzaGVkIHRoaXMg
-bmljZSBiaXQgb2YgcnVnIHN3ZWVwaW5nLgpOb3RoaW5nIHRvIHNlZSBoZXJlLCBwbGVhc2UgbW92
-ZSBhbG9uZy4uLgotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KSW50ZWwtZ2Z4IG1haWxpbmcgbGlzdApJbnRlbC1nZnhAbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaW50
-ZWwtZ2Z4Cg==
+CgpPbiAyMS8wMy8xOCAxNDowOCwgQW50b25pbyBBcmdlbnppYW5vIHdyb3RlOgo+IFNvbWUgdGVz
+dHMgbWVhc3VyZSB0aGUgcmVuZGVyJ3MgcmluZyBzaXplIGJ1dCBhcmUgYWN0dWFsbHkgbWVhbnQg
+dG8KPiBtZWFzdXJlIHRoZSBzbWFsbGVzdCBhY3Jvc3MgYWxsIGVuZ2luZXMuIFRoaXMgcGF0Y2gg
+YWRkcyBtZWFzdXJpbmcgdGhlCj4gc21hbGxlc3Qgc2l6ZSBpbiBnZW1fbWVhc3VyZV9yaW5nX3Np
+emVfaW5mbGlnaHQoKSBnaXZlbiB0aGUgYXBwcm9wcmlhdGUKPiBwYXJhbWV0ZXIuCj4gCj4gdjI6
+Cj4gCS0gT25seSBleHBvc2UgaGlnaCBsZXZlbCBBUEkuIChDaHJpcykKPiAKPiB2MzoKPiAJLSBV
+c2UgQUxMX0VOR0lORVMgbWFjcm8uCj4gCj4gU3VnZ2VzdGVkLWJ5OiBDaHJpcyBXaWxzb24gPGNo
+cmlzQGNocmlzLXdpbHNvbi5jby51az4KPiBTaWduZWQtb2ZmLWJ5OiBBbnRvbmlvIEFyZ2Vuemlh
+bm8gPGFudG9uaW8uYXJnZW56aWFub0BpbnRlbC5jb20+Cj4gQ2M6IENocmlzIFdpbHNvbiA8Y2hy
+aXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+IFJldmlld2VkLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlz
+QGNocmlzLXdpbHNvbi5jby51az4gIzIKCkBtYWludGFpbmVyczogSXMgaXQgT0sgdG8gbWVyZ2Ug
+dGhpcyBwYXRjaD8gSSd2ZSBnb3QgYSBSQiBvbiB2MiBidXQgdjMgCmlzIGNvc21ldGljIGNoYW5n
+ZXMgcGx1cyByZWJhc2UuCgpUaGFua3MsCkFudG9uaW8KCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4v
+bGlzdGluZm8vaWd0LWRldgo=
