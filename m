@@ -1,12 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B96196E47A
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Mar 2018 16:48:31 +0000 (UTC)
+References: <20180327214836.18379-1-ibragimovrinat@mail.ru>
+ <152219069577.10679.11246562182206209888@mail.alporthouse.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <2936a41b-eede-6461-5825-37ffdfe59f4f@linux.intel.com>
+Date: Wed, 28 Mar 2018 17:48:28 +0100
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 28 Mar 2018 14:36:12 -0000
-Message-ID: <20180328143612.11527.6371@emeril.freedesktop.org>
-References: <20180326105758.5211-1-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20180326105758.5211-1-tvrtko.ursulin@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?perf=5Fpmu=3A_Avoid_RT_thread_for_accuracy_test?=
+In-Reply-To: <152219069577.10679.11246562182206209888@mail.alporthouse.com>
+Content-Language: en-GB
+Subject: Re: [igt-dev] [PATCH i-g-t] intel_gpu_top: enable bsd6_ring on gen6
+ and later
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,42 +19,24 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tursulin@ursulin.net>
-Cc: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, Rinat Ibragimov <ibragimovrinat@mail.ru>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHMvcGVyZl9wbXU6IEF2b2lkIFJUIHRo
-cmVhZCBmb3IgYWNjdXJhY3kgdGVzdApVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNr
-dG9wLm9yZy9zZXJpZXMvNDA2NjIvClN0YXRlIDogc3VjY2VzcwoKPT0gU3VtbWFyeSA9PQoKLS0t
-LSBLbm93biBpc3N1ZXM6CgpUZXN0IGttc19mbGlwOgogICAgICAgIFN1Ymdyb3VwIGZsaXAtdnMt
-ZXhwaXJlZC12YmxhbmstaW50ZXJydXB0aWJsZToKICAgICAgICAgICAgICAgIHBhc3MgICAgICAg
-LT4gRkFJTCAgICAgICAoc2hhcmQtaHN3KSBmZG8jMTAyODg3CiAgICAgICAgU3ViZ3JvdXAgbW9k
-ZXNldC12cy12YmxhbmstcmFjZS1pbnRlcnJ1cHRpYmxlOgogICAgICAgICAgICAgICAgcGFzcyAg
-ICAgICAtPiBGQUlMICAgICAgIChzaGFyZC1oc3cpIGZkbyMxMDMwNjAKICAgICAgICBTdWJncm91
-cCBwbGFpbi1mbGlwLXRzLWNoZWNrLWludGVycnVwdGlibGU6CiAgICAgICAgICAgICAgICBmYWls
-ICAgICAgIC0+IFBBU1MgICAgICAgKHNoYXJkLWhzdykgZmRvIzEwMDM2OCArMQpUZXN0IGttc19z
-ZXRtb2RlOgogICAgICAgIFN1Ymdyb3VwIGJhc2ljOgogICAgICAgICAgICAgICAgcGFzcyAgICAg
-ICAtPiBGQUlMICAgICAgIChzaGFyZC1oc3cpIGZkbyM5OTkxMgpUZXN0IHBlcmY6CiAgICAgICAg
-U3ViZ3JvdXAgYmxvY2tpbmc6CiAgICAgICAgICAgICAgICBwYXNzICAgICAgIC0+IEZBSUwgICAg
-ICAgKHNoYXJkLWhzdykgZmRvIzEwMjI1MgoKZmRvIzEwMjg4NyBodHRwczovL2J1Z3MuZnJlZWRl
-c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDI4ODcKZmRvIzEwMzA2MCBodHRwczovL2J1Z3Mu
-ZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDMwNjAKZmRvIzEwMDM2OCBodHRwczov
-L2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDAzNjgKZmRvIzk5OTEyIGh0
-dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTk5OTEyCmZkbyMxMDIy
-NTIgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAyMjUyCgpz
-aGFyZC1hcGwgICAgICAgIHRvdGFsOjM0OTUgcGFzczoxODMxIGR3YXJuOjEgICBkZmFpbDowICAg
-ZmFpbDo3ICAgc2tpcDoxNjU1IHRpbWU6MTI4NTVzCnNoYXJkLWhzdyAgICAgICAgdG90YWw6MzQ5
-NSBwYXNzOjE3ODAgZHdhcm46MSAgIGRmYWlsOjAgICBmYWlsOjQgICBza2lwOjE3MDkgdGltZTox
-MTU3NXMKc2hhcmQtc25iICAgICAgICB0b3RhbDozNDk1IHBhc3M6MTM3MyBkd2FybjoxICAgZGZh
-aWw6MCAgIGZhaWw6NCAgIHNraXA6MjExNyB0aW1lOjY4OTJzCkJsYWNrbGlzdGVkIGhvc3RzOgpz
-aGFyZC1rYmwgICAgICAgIHRvdGFsOjM0MjUgcGFzczoxOTEwIGR3YXJuOjEwICBkZmFpbDoxICAg
-ZmFpbDo5ICAgc2tpcDoxNDk0IHRpbWU6OTQyMXMKCj09IExvZ3MgPT0KCkZvciBtb3JlIGRldGFp
-bHMgc2VlOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzEy
-MDIvc2hhcmRzLmh0bWwKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
-aHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Ck9uIDI3LzAzLzIwMTggMjM6NDQsIENocmlzIFdpbHNvbiB3cm90ZToKPiBRdW90aW5nIFJpbmF0
+IElicmFnaW1vdiAoMjAxOC0wMy0yNyAyMjo0ODozNikKPj4gUmF0aGVyIHRoYW4gdGVzdGluZyBm
+b3IgZWFjaCBnZW4gZXhwbGljaXRseSwgc2FtcGxlIGJzZDZfcmluZyBvbgo+PiBldmVyeXRoaW5n
+IHN0YXJ0aW5nIGZyb20gZ2VuNi4gVGhpcyBjaGFuZ2UgbWFrZXMgaW50ZWxfZ3B1X3RvcCB0byBz
+aG93Cj4+ICJiaXRzdHJlYW0gYnVzeSIgbWV0cmljIG9uIHRoZSBuZXdlciBoYXJkd2FyZSB0b28u
+Cj4gCj4gVHZydGtvLCBjYW4gd2UgcmV0aXJlIHRoaXMgbWFjaGluZSBraWxsZXI/IElmIG5vdCwg
+aXQncyBvdmVyZHVlIGdpdCBybS4KCkkgY291bGQgc3VibWl0IGEgcGF0Y2ggZm9yIG5vdCBtdWNo
+IGVmZm9ydCB3aGljaCB3b3VsZCBkbyBtb3N0IG9mIHRoZSAKdG9wIHBhcnQgb2YgaHR0cHM6Ly9w
+YXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy8zODI4MS8gLSBzbyB3aXRob3V0IAp0aGUg
+cGVyLWNsaWVudCBiaXRzLCBhbmQgd2l0aG91dCBxdWV1ZSBkZXB0aCBhbmQgbG9hZCBhdmVyYWdl
+cy4gSWYgdGhhdCAKd291bGQgYmUgYWNjZXB0YWJsZSBhcyBhIGZpcnN0IHN0ZXA/CgpSZWdhcmRz
+LAoKVHZydGtvCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
+czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
