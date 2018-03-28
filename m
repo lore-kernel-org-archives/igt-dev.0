@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E68A36E341
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Mar 2018 14:17:58 +0000 (UTC)
-From: "Szwichtenberg, Radoslaw" <radoslaw.szwichtenberg@intel.com>
-Date: Wed, 28 Mar 2018 14:17:55 +0000
-Message-ID: <1522246672.3030.8.camel@intel.com>
-References: <20180327133648.30510-1-katarzyna.dec@intel.com>
-In-Reply-To: <20180327133648.30510-1-katarzyna.dec@intel.com>
-Content-Language: en-US
-Content-ID: <91969541603C8A46A6F687EF2BBE1BAB@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib: Move common gpgpu/media
- functions to gpu_fill library
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 28 Mar 2018 14:36:12 -0000
+Message-ID: <20180328143612.11527.6371@emeril.freedesktop.org>
+References: <20180326105758.5211-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20180326105758.5211-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?perf=5Fpmu=3A_Avoid_RT_thread_for_accuracy_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,27 +14,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dec, Katarzyna" <katarzyna.dec@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDE4LTAzLTI3IGF0IDE1OjM2ICswMjAwLCBLYXRhcnp5bmEgRGVjIHdyb3RlOg0K
-PiBHcGdwdV9maWxsIGFuZCBtZWRpYV9maWxsIGxpYnJhcmllcyBhcmUgdmVyeSBzaW1pbGFyIGFu
-ZCBtYW55DQo+IGZ1bmN0aW9ucyBjYW4gYmUgc2hhcmVkLiBJIGhhdmUgY3JlYXRlZCBsaWJyYXJ5
-IGdwdV9maWxsIHdpdGgNCj4gYWxsIGZ1bmN0aW9ucyBuZWVkZWQgZm9yIGltcGxlbWVudGluZyBn
-cGdwdV9maWxsIGFuZCBtZWRpYV9maWxsDQo+IHRlc3RzIGZvciBhbGwgR2Vucy4gRHVwbGljYXRl
-cywgZS5nLiB3aGVyZSBvbmx5IG5hbWUgd2FzIGNoYW5nZWQsDQo+IHdlcmUgcmVtb3ZlZC4gVGhl
-IGVhcmxpZXN0IGNvbW1vbiBmdW5jdGlvbiByZW1haW5lZC4NCj4gDQoNCj4gLXN0YXRpYyB2b2lk
-DQo+IC1nZW44X2VtaXRfc3RhdGVfYmFzZV9hZGRyZXNzKHN0cnVjdCBpbnRlbF9iYXRjaGJ1ZmZl
-ciAqYmF0Y2gpDQo+IC17DQo+IC0JT1VUX0JBVENIKEdFTjhfU1RBVEVfQkFTRV9BRERSRVNTIHwg
-KDE2IC0gMikpOw0KPiAtDQo+IC0JLyogZ2VuZXJhbCAqLw0KPiAtCU9VVF9CQVRDSCgwIHwgKDB4
-NzggPDwgNCkgfCAoMCA8PCAxKSB8wqDCoEJBU0VfQUREUkVTU19NT0RJRlkpOw0KPiAtCU9VVF9C
-QVRDSCgwKTsNCj4gLQ0KV2h5IGRpZCB5b3UgY2hvb3NlIA0KPiArCU9VVF9CQVRDSCgwIHwgQkFT
-RV9BRERSRVNTX01PRElGWSk7DQoNCmFuZCBub3QgdGhlIG9uZSBhYm92ZT8gRG9lcyBpdCBtYWtl
-IGFueSBkaWZmZXJlbmNlIHdoaWNoIGlzIHVzZWQ/DQoNClJhZGVrDQoNCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
-dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHMvcGVyZl9wbXU6IEF2b2lkIFJUIHRo
+cmVhZCBmb3IgYWNjdXJhY3kgdGVzdApVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNr
+dG9wLm9yZy9zZXJpZXMvNDA2NjIvClN0YXRlIDogc3VjY2VzcwoKPT0gU3VtbWFyeSA9PQoKLS0t
+LSBLbm93biBpc3N1ZXM6CgpUZXN0IGttc19mbGlwOgogICAgICAgIFN1Ymdyb3VwIGZsaXAtdnMt
+ZXhwaXJlZC12YmxhbmstaW50ZXJydXB0aWJsZToKICAgICAgICAgICAgICAgIHBhc3MgICAgICAg
+LT4gRkFJTCAgICAgICAoc2hhcmQtaHN3KSBmZG8jMTAyODg3CiAgICAgICAgU3ViZ3JvdXAgbW9k
+ZXNldC12cy12YmxhbmstcmFjZS1pbnRlcnJ1cHRpYmxlOgogICAgICAgICAgICAgICAgcGFzcyAg
+ICAgICAtPiBGQUlMICAgICAgIChzaGFyZC1oc3cpIGZkbyMxMDMwNjAKICAgICAgICBTdWJncm91
+cCBwbGFpbi1mbGlwLXRzLWNoZWNrLWludGVycnVwdGlibGU6CiAgICAgICAgICAgICAgICBmYWls
+ICAgICAgIC0+IFBBU1MgICAgICAgKHNoYXJkLWhzdykgZmRvIzEwMDM2OCArMQpUZXN0IGttc19z
+ZXRtb2RlOgogICAgICAgIFN1Ymdyb3VwIGJhc2ljOgogICAgICAgICAgICAgICAgcGFzcyAgICAg
+ICAtPiBGQUlMICAgICAgIChzaGFyZC1oc3cpIGZkbyM5OTkxMgpUZXN0IHBlcmY6CiAgICAgICAg
+U3ViZ3JvdXAgYmxvY2tpbmc6CiAgICAgICAgICAgICAgICBwYXNzICAgICAgIC0+IEZBSUwgICAg
+ICAgKHNoYXJkLWhzdykgZmRvIzEwMjI1MgoKZmRvIzEwMjg4NyBodHRwczovL2J1Z3MuZnJlZWRl
+c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDI4ODcKZmRvIzEwMzA2MCBodHRwczovL2J1Z3Mu
+ZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDMwNjAKZmRvIzEwMDM2OCBodHRwczov
+L2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDAzNjgKZmRvIzk5OTEyIGh0
+dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTk5OTEyCmZkbyMxMDIy
+NTIgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAyMjUyCgpz
+aGFyZC1hcGwgICAgICAgIHRvdGFsOjM0OTUgcGFzczoxODMxIGR3YXJuOjEgICBkZmFpbDowICAg
+ZmFpbDo3ICAgc2tpcDoxNjU1IHRpbWU6MTI4NTVzCnNoYXJkLWhzdyAgICAgICAgdG90YWw6MzQ5
+NSBwYXNzOjE3ODAgZHdhcm46MSAgIGRmYWlsOjAgICBmYWlsOjQgICBza2lwOjE3MDkgdGltZTox
+MTU3NXMKc2hhcmQtc25iICAgICAgICB0b3RhbDozNDk1IHBhc3M6MTM3MyBkd2FybjoxICAgZGZh
+aWw6MCAgIGZhaWw6NCAgIHNraXA6MjExNyB0aW1lOjY4OTJzCkJsYWNrbGlzdGVkIGhvc3RzOgpz
+aGFyZC1rYmwgICAgICAgIHRvdGFsOjM0MjUgcGFzczoxOTEwIGR3YXJuOjEwICBkZmFpbDoxICAg
+ZmFpbDo5ICAgc2tpcDoxNDk0IHRpbWU6OTQyMXMKCj09IExvZ3MgPT0KCkZvciBtb3JlIGRldGFp
+bHMgc2VlOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzEy
+MDIvc2hhcmRzLmh0bWwKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
+aHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
