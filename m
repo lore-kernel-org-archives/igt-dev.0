@@ -1,12 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mail-wm0-x235.google.com (mail-wm0-x235.google.com
+ [IPv6:2a00:1450:400c:c09::235])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 111DA6E09B
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Apr 2018 13:02:04 +0000 (UTC)
+Received: by mail-wm0-x235.google.com with SMTP id r82so27139996wme.0
+ for <igt-dev@lists.freedesktop.org>; Mon, 02 Apr 2018 06:02:04 -0700 (PDT)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 02 Apr 2018 09:51:00 -0000
-Message-ID: <20180402095100.1926.23620@emeril.freedesktop.org>
-References: <1522656854-19558-1-git-send-email-vidya.srinivas@intel.com>
-In-Reply-To: <1522656854-19558-1-git-send-email-vidya.srinivas@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fplane=5Fscaling=3A_fb_height_to_be_min_16_for_NV12?=
+In-Reply-To: <95cd7da4-fbba-9ac3-404c-3a0eb69c3a35@intel.com>
+References: <20180330154939.20647-1-daniels@collabora.com>
+ <95cd7da4-fbba-9ac3-404c-3a0eb69c3a35@intel.com>
+From: Daniel Stone <daniel@fooishbar.org>
+Date: Mon, 2 Apr 2018 14:02:02 +0100
+Message-ID: <CAPj87rNAHOJNvhyO=BAUCvVYV5XrHJrU7v3Wv45FXNfu4qQX9Q@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_getfb: Use fixtures and
+ subtest groups
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,50 +21,24 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Srinivas, Vidya" <vidya.srinivas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Antonio Argenziano <antonio.argenziano@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Daniel Stone <daniels@collabora.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHMva21zX3BsYW5lX3NjYWxpbmc6IGZi
-IGhlaWdodCB0byBiZSBtaW4gMTYgZm9yIE5WMTIKVVJMICAgOiBodHRwczovL3BhdGNod29yay5m
-cmVlZGVza3RvcC5vcmcvc2VyaWVzLzQwOTk3LwpTdGF0ZSA6IHN1Y2Nlc3MKCj09IFN1bW1hcnkg
-PT0KCi0tLS0gUG9zc2libGUgbmV3IGlzc3VlczoKClRlc3Qga21zX2N1cnNvcl9jcmM6CiAgICAg
-ICAgU3ViZ3JvdXAgY3Vyc29yLTY0eDY0LXN1c3BlbmQ6CiAgICAgICAgICAgICAgICBkbWVzZy13
-YXJuIC0+IFBBU1MgICAgICAgKHNoYXJkLXNuYikKCi0tLS0gS25vd24gaXNzdWVzOgoKVGVzdCBn
-ZW1fc29mdHBpbjoKICAgICAgICBTdWJncm91cCBub3JlbG9jLXMzOgogICAgICAgICAgICAgICAg
-aW5jb21wbGV0ZSAtPiBQQVNTICAgICAgIChzaGFyZC1oc3cpIGZkbyMxMDM1NDAKVGVzdCBrbXNf
-ZmxpcDoKICAgICAgICBTdWJncm91cCBtb2Rlc2V0LXZzLXZibGFuay1yYWNlLWludGVycnVwdGli
-bGU6CiAgICAgICAgICAgICAgICBwYXNzICAgICAgIC0+IEZBSUwgICAgICAgKHNoYXJkLWhzdykg
-ZmRvIzEwMzA2MApUZXN0IGttc19mcm9udGJ1ZmZlcl90cmFja2luZzoKICAgICAgICBTdWJncm91
-cCBmYmMtMXAtcHJpbXNjcm4tc2hyZmItbXNmbGlwLWJsdDoKICAgICAgICAgICAgICAgIGRtZXNn
-LWZhaWwgLT4gUEFTUyAgICAgICAoc2hhcmQtYXBsKSBmZG8jMTA0NzI3ClRlc3Qga21zX3BpcGVf
-Y3JjX2Jhc2ljOgogICAgICAgIFN1Ymdyb3VwIHN1c3BlbmQtcmVhZC1jcmMtcGlwZS1jOgogICAg
-ICAgICAgICAgICAgcGFzcyAgICAgICAtPiBJTkNPTVBMRVRFIChzaGFyZC1oc3cpIGZkbyMxMDMz
-NzUgKzEKVGVzdCBrbXNfcGxhbmVfbXVsdGlwbGU6CiAgICAgICAgU3ViZ3JvdXAgYXRvbWljLXBp
-cGUtYS10aWxpbmcteDoKICAgICAgICAgICAgICAgIHBhc3MgICAgICAgLT4gRkFJTCAgICAgICAo
-c2hhcmQtc25iKSBmZG8jMTAzMTY2ClRlc3Qga21zX3JvdGF0aW9uX2NyYzoKICAgICAgICBTdWJn
-cm91cCBzcHJpdGUtcm90YXRpb24tMTgwOgogICAgICAgICAgICAgICAgZmFpbCAgICAgICAtPiBQ
-QVNTICAgICAgIChzaGFyZC1zbmIpIGZkbyMxMDM5MjUKCmZkbyMxMDM1NDAgaHR0cHM6Ly9idWdz
-LmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzNTQwCmZkbyMxMDMwNjAgaHR0cHM6
-Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMDYwCmZkbyMxMDQ3Mjcg
-aHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA0NzI3CmZkbyMx
-MDMzNzUgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMzc1
-CmZkbyMxMDMxNjYgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
-MTAzMTY2CmZkbyMxMDM5MjUgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5j
-Z2k/aWQ9MTAzOTI1CgpzaGFyZC1hcGwgICAgICAgIHRvdGFsOjM0OTUgcGFzczoxODMxIGR3YXJu
-OjEgICBkZmFpbDowICAgZmFpbDo3ICAgc2tpcDoxNjU1IHRpbWU6MTI4NjdzCnNoYXJkLWhzdyAg
-ICAgICAgdG90YWw6MzM1NCBwYXNzOjE3MTAgZHdhcm46MSAgIGRmYWlsOjAgICBmYWlsOjIgICBz
-a2lwOjE2MzggdGltZToxMDQ3MXMKc2hhcmQtc25iICAgICAgICB0b3RhbDozNDk1IHBhc3M6MTM3
-NCBkd2FybjoxICAgZGZhaWw6MCAgIGZhaWw6MyAgIHNraXA6MjExNyB0aW1lOjcwMTNzCkJsYWNr
-bGlzdGVkIGhvc3RzOgpzaGFyZC1rYmwgICAgICAgIHRvdGFsOjM0OTUgcGFzczoxOTU4IGR3YXJu
-OjEgICBkZmFpbDowICAgZmFpbDo3ICAgc2tpcDoxNTI5IHRpbWU6OTM2OXMKCj09IExvZ3MgPT0K
-CkZvciBtb3JlIGRldGFpbHMgc2VlOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9k
-cm0tdGlwL0lHVFBXXzEyMTQvc2hhcmRzLmh0bWwKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
-cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9pZ3QtZGV2Cg==
+SGkgQW50b25pbywKCk9uIDMwIE1hcmNoIDIwMTggYXQgMjI6MDEsIEFudG9uaW8gQXJnZW56aWFu
+bwo8YW50b25pby5hcmdlbnppYW5vQGludGVsLmNvbT4gd3JvdGU6Cj4gU2luY2UgYm90aCB0ZXN0
+X2hhbmRsZV9pbnB1dCBhbmQgdGVzdF9kdXBsaWNhdGVfaGFuZGxlcyBkZWZpbmUgc29tZQo+IHN1
+Yi10ZXN0cyBhbmQgc29tZSBmaXh0dXJlcywgSSB0aGluayBpdCB3b3VsZCBiZSBiZXR0ZXIgdG8g
+dW53cmFwIHRob3NlCj4gZnVuY3Rpb25zIGFuZCBkbyBhbGwgZml4dHVyZXMgYW5kIHN1YnRlc3Qg
+ZGVmaW5pdGlvbiBpbiBpZ3RfbWFpbiB0byBtYWtlIGl0Cj4gbW9yZSByZWFkYWJsZS4gSXQgc2Vl
+bXMgbGlrZSB5b3Ugd291bGQgYWxzbyBiZSBhYmxlIHRvIHJldXNlIHRoZSBzYW1lCj4gZml4dHVy
+ZSBhY3Jvc3MgdGhlIHR3byBzdWJ0ZXN0X2dyb3Vwcy4KClRvIGJlIGNsZWFyLCBkb2VzIHRoaXMg
+bWVhbiB0aGF0IGVhY2ggcGllY2Ugb2YgZml4dHVyZSBhbmQgaWd0X3N1YnRlc3QKZGVmaW5pdGlv
+biBzaG91bGQgbGl2ZSBpbnNpZGUgbWFpbj8KCkNoZWVycywKRGFuaWVsCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
+dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
