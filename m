@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm0-x235.google.com (mail-wm0-x235.google.com
- [IPv6:2a00:1450:400c:c09::235])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 111DA6E09B
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Apr 2018 13:02:04 +0000 (UTC)
-Received: by mail-wm0-x235.google.com with SMTP id r82so27139996wme.0
- for <igt-dev@lists.freedesktop.org>; Mon, 02 Apr 2018 06:02:04 -0700 (PDT)
-MIME-Version: 1.0
-In-Reply-To: <95cd7da4-fbba-9ac3-404c-3a0eb69c3a35@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 285226E20A
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Apr 2018 17:13:20 +0000 (UTC)
 References: <20180330154939.20647-1-daniels@collabora.com>
  <95cd7da4-fbba-9ac3-404c-3a0eb69c3a35@intel.com>
-From: Daniel Stone <daniel@fooishbar.org>
-Date: Mon, 2 Apr 2018 14:02:02 +0100
-Message-ID: <CAPj87rNAHOJNvhyO=BAUCvVYV5XrHJrU7v3Wv45FXNfu4qQX9Q@mail.gmail.com>
+ <CAPj87rNAHOJNvhyO=BAUCvVYV5XrHJrU7v3Wv45FXNfu4qQX9Q@mail.gmail.com>
+From: Antonio Argenziano <antonio.argenziano@intel.com>
+Message-ID: <e5ed19e2-829e-ad2d-3968-ba0f19c8d059@intel.com>
+Date: Mon, 2 Apr 2018 10:13:19 -0700
+MIME-Version: 1.0
+In-Reply-To: <CAPj87rNAHOJNvhyO=BAUCvVYV5XrHJrU7v3Wv45FXNfu4qQX9Q@mail.gmail.com>
+Content-Language: en-US
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_getfb: Use fixtures and
  subtest groups
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -21,24 +20,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Antonio Argenziano <antonio.argenziano@intel.com>
+To: Daniel Stone <daniel@fooishbar.org>
 Cc: igt-dev@lists.freedesktop.org, Daniel Stone <daniels@collabora.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgQW50b25pbywKCk9uIDMwIE1hcmNoIDIwMTggYXQgMjI6MDEsIEFudG9uaW8gQXJnZW56aWFu
-bwo8YW50b25pby5hcmdlbnppYW5vQGludGVsLmNvbT4gd3JvdGU6Cj4gU2luY2UgYm90aCB0ZXN0
-X2hhbmRsZV9pbnB1dCBhbmQgdGVzdF9kdXBsaWNhdGVfaGFuZGxlcyBkZWZpbmUgc29tZQo+IHN1
-Yi10ZXN0cyBhbmQgc29tZSBmaXh0dXJlcywgSSB0aGluayBpdCB3b3VsZCBiZSBiZXR0ZXIgdG8g
-dW53cmFwIHRob3NlCj4gZnVuY3Rpb25zIGFuZCBkbyBhbGwgZml4dHVyZXMgYW5kIHN1YnRlc3Qg
-ZGVmaW5pdGlvbiBpbiBpZ3RfbWFpbiB0byBtYWtlIGl0Cj4gbW9yZSByZWFkYWJsZS4gSXQgc2Vl
-bXMgbGlrZSB5b3Ugd291bGQgYWxzbyBiZSBhYmxlIHRvIHJldXNlIHRoZSBzYW1lCj4gZml4dHVy
-ZSBhY3Jvc3MgdGhlIHR3byBzdWJ0ZXN0X2dyb3Vwcy4KClRvIGJlIGNsZWFyLCBkb2VzIHRoaXMg
-bWVhbiB0aGF0IGVhY2ggcGllY2Ugb2YgZml4dHVyZSBhbmQgaWd0X3N1YnRlc3QKZGVmaW5pdGlv
-biBzaG91bGQgbGl2ZSBpbnNpZGUgbWFpbj8KCkNoZWVycywKRGFuaWVsCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
-dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+CgpPbiAwMi8wNC8xOCAwNjowMiwgRGFuaWVsIFN0b25lIHdyb3RlOgo+IEhpIEFudG9uaW8sCj4g
+Cj4gT24gMzAgTWFyY2ggMjAxOCBhdCAyMjowMSwgQW50b25pbyBBcmdlbnppYW5vCj4gPGFudG9u
+aW8uYXJnZW56aWFub0BpbnRlbC5jb20+IHdyb3RlOgo+PiBTaW5jZSBib3RoIHRlc3RfaGFuZGxl
+X2lucHV0IGFuZCB0ZXN0X2R1cGxpY2F0ZV9oYW5kbGVzIGRlZmluZSBzb21lCj4+IHN1Yi10ZXN0
+cyBhbmQgc29tZSBmaXh0dXJlcywgSSB0aGluayBpdCB3b3VsZCBiZSBiZXR0ZXIgdG8gdW53cmFw
+IHRob3NlCj4+IGZ1bmN0aW9ucyBhbmQgZG8gYWxsIGZpeHR1cmVzIGFuZCBzdWJ0ZXN0IGRlZmlu
+aXRpb24gaW4gaWd0X21haW4gdG8gbWFrZSBpdAo+PiBtb3JlIHJlYWRhYmxlLiBJdCBzZWVtcyBs
+aWtlIHlvdSB3b3VsZCBhbHNvIGJlIGFibGUgdG8gcmV1c2UgdGhlIHNhbWUKPj4gZml4dHVyZSBh
+Y3Jvc3MgdGhlIHR3byBzdWJ0ZXN0X2dyb3Vwcy4KPiAKPiBUbyBiZSBjbGVhciwgZG9lcyB0aGlz
+IG1lYW4gdGhhdCBlYWNoIHBpZWNlIG9mIGZpeHR1cmUgYW5kIGlndF9zdWJ0ZXN0Cj4gZGVmaW5p
+dGlvbiBzaG91bGQgbGl2ZSBpbnNpZGUgbWFpbj8KCkkgZG9uJ3QgdGhpbmsgdGhlcmUgaXMgYSBy
+dWxlIGZvciB0aGF0LCBpdCBsb29rcyBiZXR0ZXIgdGhhdCB3YXkgCihmaXh0dXJlcy9pZ3Rfc3Vi
+dGVzdC9zdWJ0ZXN0X2dyb3VwIGFsbCBpbiB0aGUgbWFpbikgSU1PIDopLiBBbHNvIGl0IGlzIAp3
+aGF0IEkndmUgZm91bmQgaW4gbW9zdCBpZiBub3QgYWxsIHRlc3RzIEkndmUgbG9va2VkIGF0LgoK
+U3RpbGwgdGhlIHBhdGNoIG1ha2VzIHNlbnNlIHdpdGggb3Igd2l0aG91dCBteSBzdWdnZXN0aW9u
+LgpBY2tlZC1ieTogQW50b25pbyBBcmdlbnppYW5vIDxhbnRvbmlvLmFyZ2Vuemlhbm9AaW50ZWwu
+Y29tPgoKVGhhbmtzLApBbnRvbmlvCgo+IAo+IENoZWVycywKPiBEYW5pZWwKPiAKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxp
+c3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
+cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
