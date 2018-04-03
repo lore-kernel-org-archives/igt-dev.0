@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Antonio Argenziano <antonio.argenziano@intel.com>
-References: <20180329130528.8302-2-tvrtko.ursulin@linux.intel.com>
- <20180403113644.6855-1-tvrtko.ursulin@linux.intel.com>
- <0578d707-45b7-8166-c735-23505e6e330f@intel.com>
-Message-ID: <4b62689c-d562-b289-afae-f97af4376656@intel.com>
-Date: Tue, 3 Apr 2018 11:34:45 -0700
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D25896E5BB
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Apr 2018 21:06:52 +0000 (UTC)
+References: <20180330195625.22529-1-scott.d.phillips@intel.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <a490872c-5d34-2784-8db2-5c9471f5dcef@intel.com>
+Date: Tue, 3 Apr 2018 22:06:50 +0100
 MIME-Version: 1.0
-In-Reply-To: <0578d707-45b7-8166-c735-23505e6e330f@intel.com>
+In-Reply-To: <20180330195625.22529-1-scott.d.phillips@intel.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] tests/gem_eio: Add reset and
- unwedge stress testing
+Subject: Re: [igt-dev] [PATCH i-g-t] tools/aubdump: dump 48-bit addresses
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,89 +17,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: multipart/mixed; boundary="===============0336028553=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tursulin@ursulin.net>, igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Scott D Phillips <scott.d.phillips@intel.com>, igt-dev@lists.freedesktop.org, Jordan Justen <jordan.l.justen@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CgpPbiAwMy8wNC8xOCAxMToyNCwgQW50b25pbyBBcmdlbnppYW5vIHdyb3RlOgo+IAo+IAo+IE9u
-IDAzLzA0LzE4IDA0OjM2LCBUdnJ0a28gVXJzdWxpbiB3cm90ZToKPj4gRnJvbTogVHZydGtvIFVy
-c3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KPj4KPj4gUmVzZXQgYW5kIHVud2VkZ2Ug
-c3RyZXNzIHRlc3RpbmcgaXMgc3VwcG9zZWQgdG8gdHJpZ2dlciB3ZWRnaW5nIG9yIHJlc2V0cwo+
-PiBhdCBpbmNvdmVuaWVudCB0aW1lcyBhbmQgdGhlbiByZS11c2UgdGhlIGNvbnRleHQgc28gZWl0
-aGVyIHRoZSBjb250ZXh0IG9yCj4+IGRyaXZlciB0cmFja2luZyBtaWdodCBnZXQgY29uZnVzZWQg
-YW5kIGJyZWFrLgo+Pgo+PiB2MjoKPj4gwqAgKiBSZW5hbWVkIGZvciBtb3JlIHNlbnNpYmxlIG5h
-bWluZy4KPj4gwqAgKiBBZGRlZCBzb21lIGNvbW1lbnRzIHRvIGV4cGxhaW4gd2hhdCB0aGUgdGVz
-dCBpcyBkb2luZy4gKENocmlzIFdpbHNvbikKPj4KPj4gU2lnbmVkLW9mZi1ieTogVHZydGtvIFVy
-c3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KPj4gLS0tCj4+IMKgIHRlc3RzL2dlbV9l
-aW8uYyB8IDc0IAo+PiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysKPj4gwqAgMSBmaWxlIGNoYW5nZWQsIDc0IGluc2VydGlvbnMoKykKPj4K
-Pj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2dlbV9laW8uYyBiL3Rlc3RzL2dlbV9laW8uYwo+PiBpbmRl
-eCBiN2M1MDQ3ZjA4MTYuLjk1OTllNzNkYjczNiAxMDA2NDQKPj4gLS0tIGEvdGVzdHMvZ2VtX2Vp
-by5jCj4+ICsrKyBiL3Rlc3RzL2dlbV9laW8uYwo+PiBAQCAtNTkxLDYgKzU5MSw3NCBAQCBzdGF0
-aWMgdm9pZCB0ZXN0X2luZmxpZ2h0X2ludGVybmFsKGludCBmZCwgCj4+IHVuc2lnbmVkIGludCB3
-YWl0KQo+PiDCoMKgwqDCoMKgIGNsb3NlKGZkKTsKPj4gwqAgfQo+PiArLyoKPj4gKyAqIFZlcmlm
-eSB0aGF0IHdlIGNhbiBzdWJtaXQgYW5kIGV4ZWN1dGUgd29yayBhZnRlciB1bndlZGdpbmcgdGhl
-IEdQVS4KPj4gKyAqLwo+PiArc3RhdGljIHZvaWQgdGVzdF9yZXNldF9zdHJlc3MoaW50IGZkLCB1
-bnNpZ25lZCBpbnQgZmxhZ3MpCj4+ICt7Cj4+ICvCoMKgwqAgdWludDMyX3QgY3R4MCA9IGdlbV9j
-b250ZXh0X2NyZWF0ZShmZCk7Cj4+ICsKPj4gK8KgwqDCoCBpZ3RfdW50aWxfdGltZW91dCg1KSB7
-Cj4+ICvCoMKgwqDCoMKgwqDCoCBzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNidWZmZXIyIGV4ZWNi
-dWYgPSB7IH07Cj4+ICvCoMKgwqDCoMKgwqDCoCBzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2Jq
-ZWN0MiBvYmogPSB7IH07Cj4+ICvCoMKgwqDCoMKgwqDCoCB1aW50MzJfdCBiYmUgPSBNSV9CQVRD
-SF9CVUZGRVJfRU5EOwo+PiArwqDCoMKgwqDCoMKgwqAgaWd0X3NwaW5fdCAqaGFuZzsKPj4gK8Kg
-wqDCoMKgwqDCoMKgIHVuc2lnbmVkIGludCBpOwo+PiArwqDCoMKgwqDCoMKgwqAgdWludDMyX3Qg
-Y3R4Owo+PiArCj4+ICvCoMKgwqDCoMKgwqDCoCBnZW1fcXVpZXNjZW50X2dwdShmZCk7Cj4+ICsK
-Pj4gK8KgwqDCoMKgwqDCoMKgIGlndF9yZXF1aXJlKGk5MTVfcmVzZXRfY29udHJvbChmbGFncyAm
-IFRFU1RfV0VER0UgPwo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCBmYWxzZSA6IHRydWUpKTsKPj4gKwo+PiArwqDCoMKgwqDCoMKgwqAgY3R4
-ID0gY29udGV4dF9jcmVhdGVfc2FmZShmZCk7Cj4+ICsKPj4gK8KgwqDCoMKgwqDCoMKgIC8qCj4+
-ICvCoMKgwqDCoMKgwqDCoMKgICogU3RhcnQgZXhlY3V0aW5nIGEgc3BpbiBiYXRjaCB3aXRoIHNv
-bWUgcXVldWVkIGJhdGNoZXMKPj4gK8KgwqDCoMKgwqDCoMKgwqAgKiBhZ2FpbnN0IGEgZGlmZmVy
-ZW50IGNvbnRleHQgYWZ0ZXIgaXQuCj4+ICvCoMKgwqDCoMKgwqDCoMKgICovCj4gCj4gQXJlbid0
-IGFsbCBiYXRjaGVzIHF1ZXVlZCBvbiBjdHgwPyBPciBpcyB0aGlzIGEgcmVmZXJlbmNlIHRvIHRo
-ZSBjaGVjayAKPiBvbiBjdHggeW91IGhhdmUgbGF0ZXIgaW4gdGhlIHRlc3QuCj4gCj4gVGhhbmtz
-LAo+IEFudG9uaW8KPiAKPj4gK8KgwqDCoMKgwqDCoMKgIGhhbmcgPSBzcGluX3N5bmMoZmQsIGN0
-eDAsIDApOwoKSSB0aGluayB5b3UgbWVhbnQgdG8gc2VuZCB0aGlzXiBvbiBjdHguCgpBbnRvbmlv
-LgoKPj4gKwo+PiArwqDCoMKgwqDCoMKgwqAgb2JqLmhhbmRsZSA9IGdlbV9jcmVhdGUoZmQsIDQw
-OTYpOwo+PiArwqDCoMKgwqDCoMKgwqAgZ2VtX3dyaXRlKGZkLCBvYmouaGFuZGxlLCAwLCAmYmJl
-LCBzaXplb2YoYmJlKSk7Cj4+ICsKPj4gK8KgwqDCoMKgwqDCoMKgIGV4ZWNidWYuYnVmZmVyc19w
-dHIgPSB0b191c2VyX3BvaW50ZXIoJm9iaik7Cj4+ICvCoMKgwqDCoMKgwqDCoCBleGVjYnVmLmJ1
-ZmZlcl9jb3VudCA9IDE7Cj4+ICvCoMKgwqDCoMKgwqDCoCBleGVjYnVmLnJzdmQxID0gY3R4MDsK
-Pj4gKwo+PiArwqDCoMKgwqDCoMKgwqAgZm9yIChpID0gMDsgaSA8IDEwOyBpKyspCj4+ICvCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIGdlbV9leGVjYnVmKGZkLCAmZXhlY2J1Zik7Cj4+ICsKPj4gK8Kg
-wqDCoMKgwqDCoMKgIC8qIFdlZGdlIGFmdGVyIGEgc21hbGwgZGVsYXkuICovCj4+ICvCoMKgwqDC
-oMKgwqDCoCBpZ3RfYXNzZXJ0X2VxKF9fY2hlY2tfd2FpdChmZCwgb2JqLmhhbmRsZSwgMTAwZTMp
-LCAwKTsKPj4gKwo+PiArwqDCoMKgwqDCoMKgwqAgLyogVW53ZWRnZSBieSBmb3JjaW5nIGEgcmVz
-ZXQuICovCj4+ICvCoMKgwqDCoMKgwqDCoCBpZ3RfYXNzZXJ0KGk5MTVfcmVzZXRfY29udHJvbCh0
-cnVlKSk7Cj4+ICvCoMKgwqDCoMKgwqDCoCB0cmlnZ2VyX3Jlc2V0KGZkKTsKPj4gKwo+PiArwqDC
-oMKgwqDCoMKgwqAgZ2VtX3F1aWVzY2VudF9ncHUoZmQpOwo+PiArCj4+ICvCoMKgwqDCoMKgwqDC
-oCAvKgo+PiArwqDCoMKgwqDCoMKgwqDCoCAqIFZlcmlmeSB0aGF0IHdlIGFyZSBhYmxlIHRvIHN1
-Ym1pdCB3b3JrIGFmdGVyIHVud2VkZ2luZyBmcm9tCj4+ICvCoMKgwqDCoMKgwqDCoMKgICogYm90
-aCBjb250ZXh0cy4KPj4gK8KgwqDCoMKgwqDCoMKgwqAgKi8KPj4gK8KgwqDCoMKgwqDCoMKgIGV4
-ZWNidWYucnN2ZDEgPSBjdHg7Cj4+ICvCoMKgwqDCoMKgwqDCoCBmb3IgKGkgPSAwOyBpIDwgNTsg
-aSsrKQo+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBnZW1fZXhlY2J1ZihmZCwgJmV4ZWNidWYp
-Owo+PiArCj4+ICvCoMKgwqDCoMKgwqDCoCBleGVjYnVmLnJzdmQxID0gY3R4MDsKPj4gK8KgwqDC
-oMKgwqDCoMKgIGZvciAoaSA9IDA7IGkgPCA1OyBpKyspCj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgIGdlbV9leGVjYnVmKGZkLCAmZXhlY2J1Zik7Cj4+ICsKPj4gK8KgwqDCoMKgwqDCoMKgIGdl
-bV9zeW5jKGZkLCBvYmouaGFuZGxlKTsKPj4gK8KgwqDCoMKgwqDCoMKgIGlndF9zcGluX2JhdGNo
-X2ZyZWUoZmQsIGhhbmcpOwo+PiArwqDCoMKgwqDCoMKgwqAgZ2VtX2NvbnRleHRfZGVzdHJveShm
-ZCwgY3R4KTsKPj4gK8KgwqDCoMKgwqDCoMKgIGdlbV9jbG9zZShmZCwgb2JqLmhhbmRsZSk7Cj4+
-ICvCoMKgwqAgfQo+PiArCj4+ICvCoMKgwqAgZ2VtX2NvbnRleHRfZGVzdHJveShmZCwgY3R4MCk7
-Cj4+ICt9Cj4+ICsKPj4gwqAgc3RhdGljIGludCBmZCA9IC0xOwo+PiDCoCBzdGF0aWMgdm9pZAo+
-PiBAQCAtNjM1LDYgKzcwMywxMiBAQCBpZ3RfbWFpbgo+PiDCoMKgwqDCoMKgIGlndF9zdWJ0ZXN0
-KCJpbi1mbGlnaHQtc3VzcGVuZCIpCj4+IMKgwqDCoMKgwqDCoMKgwqDCoCB0ZXN0X2luZmxpZ2h0
-X3N1c3BlbmQoZmQpOwo+PiArwqDCoMKgIGlndF9zdWJ0ZXN0KCJyZXNldC1zdHJlc3MiKQo+PiAr
-wqDCoMKgwqDCoMKgwqAgdGVzdF9yZXNldF9zdHJlc3MoZmQsIDApOwo+PiArCj4+ICvCoMKgwqAg
-aWd0X3N1YnRlc3QoInVud2VkZ2Utc3RyZXNzIikKPj4gK8KgwqDCoMKgwqDCoMKgIHRlc3RfcmVz
-ZXRfc3RyZXNzKGZkLCBURVNUX1dFREdFKTsKPj4gKwo+PiDCoMKgwqDCoMKgIGlndF9zdWJ0ZXN0
-X2dyb3VwIHsKPj4gwqDCoMKgwqDCoMKgwqDCoMKgIGNvbnN0IHN0cnVjdCB7Cj4+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIHVuc2lnbmVkIGludCB3YWl0Owo+Pgo+IF9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gaWd0LWRldiBtYWlsaW5nIGxpc3QK
-PiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwo+IGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3Rz
-LmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2lndC1kZXYK
+This is a multi-part message in MIME format.
+--===============0336028553==
+Content-Type: multipart/alternative;
+ boundary="------------53FB7B8AA8BA76D57605C77C"
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------53FB7B8AA8BA76D57605C77C
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 30/03/18 20:56, Scott D Phillips wrote:
+> For gen10+, write out PPGTT tables in aub files so that full
+> 48-bit addresses can be serialized.
+>
+> Signed-off-by: Scott D Phillips<scott.d.phillips@intel.com>
+> Cc: Jordan Justen<jordan.l.justen@intel.com>
+Struggled a bit with the page table stuff, otherwise looks good to me :
+
+Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+
+--------------53FB7B8AA8BA76D57605C77C
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    <div class="moz-cite-prefix">On 30/03/18 20:56, Scott D Phillips
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20180330195625.22529-1-scott.d.phillips@intel.com">
+      <pre wrap="">For gen10+, write out PPGTT tables in aub files so that full
+48-bit addresses can be serialized.
+
+Signed-off-by: Scott D Phillips <a class="moz-txt-link-rfc2396E" href="mailto:scott.d.phillips@intel.com" moz-do-not-send="true">&lt;scott.d.phillips@intel.com&gt;</a>
+Cc: Jordan Justen <a class="moz-txt-link-rfc2396E" href="mailto:jordan.l.justen@intel.com" moz-do-not-send="true">&lt;jordan.l.justen@intel.com&gt;</a></pre>
+    </blockquote>
+    Struggled a bit with the page table stuff, otherwise looks good to
+    me :<br>
+    <br>
+    Reviewed-by: Lionel Landwerlin <a class="moz-txt-link-rfc2396E" href="mailto:lionel.g.landwerlin@intel.com">&lt;lionel.g.landwerlin@intel.com&gt;</a><br>
+  </body>
+</html>
+
+--------------53FB7B8AA8BA76D57605C77C--
+
+--===============0336028553==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0336028553==--
