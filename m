@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from anholt.net (anholt.net [50.246.234.109])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 18D896E419
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Apr 2018 18:39:08 +0000 (UTC)
+From: Eric Anholt <eric@anholt.net>
+In-Reply-To: <20180306142112.29890-1-daniel.vetter@ffwll.ch>
+References: <20180306142112.29890-1-daniel.vetter@ffwll.ch>
+Date: Wed, 04 Apr 2018 11:39:04 -0700
+Message-ID: <871sfuzuif.fsf@anholt.net>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 04 Apr 2018 16:58:01 -0000
-Message-ID: <20180404165801.12678.64862@emeril.freedesktop.org>
-References: <20180326105758.5211-1-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20180326105758.5211-1-tvrtko.ursulin@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?perf=5Fpmu=3A_Avoid_RT_thread_for_accuracy_test_=28rev4=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t] gtkdoc: Remove the build_by_default hack
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,37 +16,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0786016171=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tursulin@ursulin.net>
-Cc: igt-dev@lists.freedesktop.org
+To: Daniel Vetter <daniel.vetter@ffwll.ch>, IGT development <igt-dev@lists.freedesktop.org>
+Cc: Daniel Vetter <daniel.vetter@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHMvcGVyZl9wbXU6IEF2b2lkIFJUIHRo
-cmVhZCBmb3IgYWNjdXJhY3kgdGVzdCAocmV2NCkKVVJMICAgOiBodHRwczovL3BhdGNod29yay5m
-cmVlZGVza3RvcC5vcmcvc2VyaWVzLzQwNjYyLwpTdGF0ZSA6IHN1Y2Nlc3MKCj09IFN1bW1hcnkg
-PT0KCi0tLS0gUG9zc2libGUgbmV3IGlzc3VlczoKClRlc3QgZ2VtX2V4ZWNfcGFyYWxsZWw6CiAg
-ICAgICAgU3ViZ3JvdXAgdmVib3gtY29udGV4dHM6CiAgICAgICAgICAgICAgICBmYWlsICAgICAg
-IC0+IFBBU1MgICAgICAgKHNoYXJkLWFwbCkKCi0tLS0gS25vd24gaXNzdWVzOgoKVGVzdCBrbXNf
-ZmxpcDoKICAgICAgICBTdWJncm91cCBtb2Rlc2V0LXZzLXZibGFuay1yYWNlOgogICAgICAgICAg
-ICAgICAgcGFzcyAgICAgICAtPiBGQUlMICAgICAgIChzaGFyZC1hcGwpIGZkbyMxMDMwNjAgKzEK
-ICAgICAgICBTdWJncm91cCBwbGFpbi1mbGlwLXRzLWNoZWNrLWludGVycnVwdGlibGU6CiAgICAg
-ICAgICAgICAgICBwYXNzICAgICAgIC0+IEZBSUwgICAgICAgKHNoYXJkLWhzdykgZmRvIzEwMDM2
-OCArMQpUZXN0IGttc19yb3RhdGlvbl9jcmM6CiAgICAgICAgU3ViZ3JvdXAgc3ByaXRlLXJvdGF0
-aW9uLTE4MDoKICAgICAgICAgICAgICAgIHBhc3MgICAgICAgLT4gRkFJTCAgICAgICAoc2hhcmQt
-c25iKSBmZG8jMTAzOTI1CgpmZG8jMTAzMDYwIGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcv
-c2hvd19idWcuY2dpP2lkPTEwMzA2MApmZG8jMTAwMzY4IGh0dHBzOi8vYnVncy5mcmVlZGVza3Rv
-cC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMDM2OApmZG8jMTAzOTI1IGh0dHBzOi8vYnVncy5mcmVl
-ZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzkyNQoKc2hhcmQtYXBsICAgICAgICB0b3Rh
-bDozNDk4IHBhc3M6MTgzMyBkd2FybjoxICAgZGZhaWw6MCAgIGZhaWw6OCAgIHNraXA6MTY1NSB0
-aW1lOjEyODcycwpzaGFyZC1oc3cgICAgICAgIHRvdGFsOjM0OTggcGFzczoxNzgyIGR3YXJuOjEg
-ICBkZmFpbDowICAgZmFpbDo0ICAgc2tpcDoxNzEwIHRpbWU6MTE1NTlzCnNoYXJkLXNuYiAgICAg
-ICAgdG90YWw6MzQ5OCBwYXNzOjEzNzYgZHdhcm46MSAgIGRmYWlsOjAgICBmYWlsOjMgICBza2lw
-OjIxMTggdGltZTo3MDczcwoKPT0gTG9ncyA9PQoKRm9yIG1vcmUgZGV0YWlscyBzZWU6IGh0dHBz
-Oi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTIyMy9zaGFyZHMuaHRt
-bApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
-IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
-LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+--===============0786016171==
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
+
+--=-=-=
+Content-Type: text/plain
+
+Daniel Vetter <daniel.vetter@ffwll.ch> writes:
+
+> meson 0.45 properly supports generated content_files. Except for the
+> minor issue that we're hitting an internal bug in meson. I've made a
+> pull request for that, but this needs more work:
+>
+> https://github.com/mesonbuild/meson/pull/3189
+>
+> Downside of this all is that we'd need to up the meson requirements to
+> something like 0.46, at least if you want to build the docs.
+
+What's the status of this?  I just pulled this to my vc5 dev branch so
+that builds don't take ages, and it seems to have fixed it for me.
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE/JuuFDWp9/ZkuCBXtdYpNtH8nugFAlrFG8gACgkQtdYpNtH8
+nujYaA/+L4KJDN+H5l1lkx4NbPl/DEwykTJHluC3P/wx+Yb83N+YjrUi54JX3C8q
+ZoxyHzdh/hZzKIlFn2fgc/ZmIL0T8iJ250LOAxgGKXhv77tYv5tI63LHT0dAW4Vy
+IldApIRNHddYwB9LC85RbHGTX2Puh9eL/h2rhisvFztrw8JW6TU2rW4JFk1F632Z
+gTLkM+QCktxBCsw7X2ya3Ve6eoOOBVHoeXi7xi9u7Zp9O4TChYBakuuPSMfaMevx
+M8dnD/nw3Zro4K9ctEWYgENOgGZexhokZewcuccYm+n1ZGOw0rlfpTChCf+tdqj4
+8rnPBxB9vbn/HbL/zeJDHEjehm27tkbCM4pBkSeI3N2Y7FHXvrYbWwpMOVP+HLIT
+DWT2xD+ZipzEFdXgPqkBZDHN6SRo61IePXGt9e7G0SJJ+3oSLuOQZGM7bCMP3U4Y
+thly5hsEwPtzwesPl+win5p9StuBBOiZfOOIMhuT6bhzVqAqVp0uZhYOyYbpQEOe
+mfs8X4uqxr5v5DlThgVpWo9S8LhGdgLLOHXNxtj9P6xmY69fZdpcSlhgmrnHrbjJ
+SR7GfTkSN5Yy+fuyBHTCFVHTvnjm41Lj5A1PizxoTlObahHOknXB+8D4FEKnBzQH
+9tnfl4SezyCjaY795sHwcZwRgXCcIiTwr55j4gs1GssQJzXKdQ0=
+=ddpT
+-----END PGP SIGNATURE-----
+--=-=-=--
+
+--===============0786016171==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0786016171==--
