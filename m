@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 06 Apr 2018 17:02:24 -0000
-Message-ID: <20180406170224.19259.92645@emeril.freedesktop.org>
-References: <20180406121907.22114-1-marta.lofstedt@intel.com>
-In-Reply-To: <20180406121907.22114-1-marta.lofstedt@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Ffrontbuffer=5Ftracking=3A_Save_runtime_by_removing_sleep?=
- =?utf-8?q?=2E?=
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B3EC96E176
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Apr 2018 17:52:47 +0000 (UTC)
+Message-ID: <1523038623.11823.4.camel@dk-H97M-D3H>
+From: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
+Date: Fri, 06 Apr 2018 11:17:03 -0700
+In-Reply-To: <20180405104954.6880-1-maarten.lankhorst@linux.intel.com>
+References: <20180405104954.6880-1-maarten.lankhorst@linux.intel.com>
+Mime-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_debugfs: Add timeouts to
+ opening pipe CRC fd.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,40 +17,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
+Reply-To: dhinakaran.pandiyan@intel.com
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Marta Lofstedt <marta.lofstedt@intel.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHMva21zX2Zyb250YnVmZmVyX3RyYWNr
-aW5nOiBTYXZlIHJ1bnRpbWUgYnkgcmVtb3Zpbmcgc2xlZXAuClVSTCAgIDogaHR0cHM6Ly9wYXRj
-aHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy80MTI2OS8KU3RhdGUgOiBzdWNjZXNzCgo9PSBT
-dW1tYXJ5ID09CgotLS0tIEtub3duIGlzc3VlczoKClRlc3Qga21zX2ZsaXA6CiAgICAgICAgU3Vi
-Z3JvdXAgMngtZmxpcC12cy1leHBpcmVkLXZibGFuay1pbnRlcnJ1cHRpYmxlOgogICAgICAgICAg
-ICAgICAgZmFpbCAgICAgICAtPiBQQVNTICAgICAgIChzaGFyZC1oc3cpIGZkbyMxMDI4ODcKICAg
-ICAgICBTdWJncm91cCBwbGFpbi1mbGlwLXRzLWNoZWNrOgogICAgICAgICAgICAgICAgcGFzcyAg
-ICAgICAtPiBGQUlMICAgICAgIChzaGFyZC1oc3cpIGZkbyMxMDAzNjggKzIKVGVzdCBrbXNfcGxh
-bmVfbXVsdGlwbGU6CiAgICAgICAgU3ViZ3JvdXAgYXRvbWljLXBpcGUtYS10aWxpbmcteDoKICAg
-ICAgICAgICAgICAgIHBhc3MgICAgICAgLT4gRkFJTCAgICAgICAoc2hhcmQtc25iKSBmZG8jMTAz
-MTY2ClRlc3Qga21zX3JvdGF0aW9uX2NyYzoKICAgICAgICBTdWJncm91cCBzcHJpdGUtcm90YXRp
-b24tMTgwOgogICAgICAgICAgICAgICAgcGFzcyAgICAgICAtPiBGQUlMICAgICAgIChzaGFyZC1z
-bmIpIGZkbyMxMDM5MjUKCmZkbyMxMDI4ODcgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9z
-aG93X2J1Zy5jZ2k/aWQ9MTAyODg3CmZkbyMxMDAzNjggaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
-Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAwMzY4CmZkbyMxMDMxNjYgaHR0cHM6Ly9idWdzLmZyZWVk
-ZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMTY2CmZkbyMxMDM5MjUgaHR0cHM6Ly9idWdz
-LmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzOTI1CgpzaGFyZC1hcGwgICAgICAg
-IHRvdGFsOjI2ODAgcGFzczoxODM2IGR3YXJuOjEgICBkZmFpbDowICAgZmFpbDo3ICAgc2tpcDo4
-MzYgdGltZToxMjcwM3MKc2hhcmQtaHN3ICAgICAgICB0b3RhbDoyNjgwIHBhc3M6MTc4NSBkd2Fy
-bjoxICAgZGZhaWw6MCAgIGZhaWw6MiAgIHNraXA6ODkxIHRpbWU6MTE0MzVzCnNoYXJkLXNuYiAg
-ICAgICAgdG90YWw6MjY4MCBwYXNzOjEzNzYgZHdhcm46MSAgIGRmYWlsOjAgICBmYWlsOjQgICBz
-a2lwOjEyOTkgdGltZTo2OTA2cwpCbGFja2xpc3RlZCBob3N0czoKc2hhcmQta2JsICAgICAgICB0
-b3RhbDoyNjgwIHBhc3M6MTk2MCBkd2FybjoxICAgZGZhaWw6MCAgIGZhaWw6OCAgIHNraXA6NzEx
-IHRpbWU6OTI3OHMKCj09IExvZ3MgPT0KCkZvciBtb3JlIGRldGFpbHMgc2VlOiBodHRwczovL2lu
-dGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzEyMzMvc2hhcmRzLmh0bWwKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
-aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
-ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+CgoKT24gVGh1LCAyMDE4LTA0LTA1IGF0IDEyOjQ5ICswMjAwLCBNYWFydGVuIExhbmtob3JzdCB3
+cm90ZToKPiBUaGlzIHdpbGwgZml4IHRoZSBQU1IgdGVzdHMgdG8gZmFpbCBzbGlnaHRseSBmYXN0
+ZXIsIHNpbmNlIHRoZXkgd2FpdAo+IGluZGVmaW5pdGVseSBmb3IgYSBDUkMgdGhhdCBuZXZlciBj
+b21lcyBkdXJpbmcgb3Blbi4KPiAKCldoaWxlIHdlIG5lZWQgdG8gZmlndXJlIG91dCBob3cgdG8g
+cnVuIHRoZXNlIHRlc3RzIHdpdGhvdXQgQ1JDLCB0aW1pbmcKb3V0IHRoZSB0ZXN0cyBtYWtlcyBz
+ZW5zZS4KClJldmlld2VkLWJ5OiBEaGluYWthcmFuIFBhbmRpeWFuIDxkaGluYWthcmFuLnBhbmRp
+eWFuQGludGVsLmNvbT4KCj4gU2lnbmVkLW9mZi1ieTogTWFhcnRlbiBMYW5raG9yc3QgPG1hYXJ0
+ZW4ubGFua2hvcnN0QGxpbnV4LmludGVsLmNvbT4KPiAtLS0KPiAgbGliL2lndF9kZWJ1Z2ZzLmMg
+fCAzICsrKwo+ICAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspCj4gCj4gZGlmZiAtLWdp
+dCBhL2xpYi9pZ3RfZGVidWdmcy5jIGIvbGliL2lndF9kZWJ1Z2ZzLmMKPiBpbmRleCA4YWRjMDJl
+OWNjNDcuLjA5NGRmNTY0YjZmNCAxMDA2NDQKPiAtLS0gYS9saWIvaWd0X2RlYnVnZnMuYwo+ICsr
+KyBiL2xpYi9pZ3RfZGVidWdmcy5jCj4gQEAgLTc1Nyw3ICs3NTcsMTAgQEAgdm9pZCBpZ3RfcGlw
+ZV9jcmNfc3RhcnQoaWd0X3BpcGVfY3JjX3QgKnBpcGVfY3JjKQo+ICAKPiAgCXNwcmludGYoYnVm
+LCAiY3J0Yy0lZC9jcmMvZGF0YSIsIHBpcGVfY3JjLT5waXBlKTsKPiAgCj4gKwlpZ3Rfc2V0X3Rp
+bWVvdXQoNSwgIk9wZW5pbmcgY3JjIGZkLCB3aGljaCB3YWl0cyBmb3IgZmlyc3QgQ1JDLiIpOwo+
+ICAJcGlwZV9jcmMtPmNyY19mZCA9IG9wZW5hdChwaXBlX2NyYy0+ZGlyLCBidWYsIHBpcGVfY3Jj
+LT5mbGFncyk7Cj4gKwlpZ3RfcmVzZXRfdGltZW91dCgpOwo+ICsKPiAgCWlndF9hc3NlcnQocGlw
+ZV9jcmMtPmNyY19mZCAhPSAtMSk7Cj4gIAllcnJubyA9IDA7Cj4gIH0KCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
+dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
