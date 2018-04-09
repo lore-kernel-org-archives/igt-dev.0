@@ -1,61 +1,54 @@
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-In-Reply-To: <20180328100549.36538-1-maarten.lankhorst@linux.intel.com>
-References: <20180328100549.36538-1-maarten.lankhorst@linux.intel.com>
-Date: Mon, 9 Apr 2018 12:50:09 -0700
-Message-ID: <CABVU7+v6mpK=+G6v9A5yo6fr4=UB0NROaiC48Z+LHzEms5+SOw@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kms: Reset FIFO underruns on
- first commit after init()/reset().
-From: Rodrigo Vivi <rodrigo.vivi@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 09 Apr 2018 22:07:02 -0000
+Message-ID: <20180409220702.3731.1323@emeril.freedesktop.org>
+References: <20180409154229.678-1-lukasz.kalamarz@intel.com>
+In-Reply-To: <20180409154229.678-1-lukasz.kalamarz@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliL2dl?=
+ =?utf-8?q?n6=5Frender=3A_Refactoring_lib?=
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Lukasz Kalamarz <lukasz.kalamarz@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Mar 28, 2018 at 3:05 AM, Maarten Lankhorst
-<maarten.lankhorst@linux.intel.com> wrote:
-> When we set the test to its first state, we will clear FIFO underrun
-> status through the debugfs, so that any underruns caused by the tests
-> will not affect other tests. In particular this also resets the FBC
-> FIFO underrun status, so previous failures won't affect other tests
-> that depend on FBC.
->
-> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=105681
-
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-
-> ---
->  lib/igt_kms.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 19d650a8dcf8..c943411e52d7 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -3112,6 +3112,13 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
->         }
->
->         if (display->first_commit) {
-> +               int fd = igt_debugfs_open(display->drm_fd, "i915_fifo_underrun_reset", O_WRONLY);
-> +               if (fd >= 0) {
-> +                       igt_assert_eq(write(fd, "y", 1), 1);
-> +
-> +                       close(fd);
-> +               }
-> +
->                 igt_display_drop_events(display);
->                 display->first_commit = false;
->         }
-> --
-> 2.16.3
->
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
-
-
--- 
-Rodrigo Vivi
-Blog: http://blog.vivi.eng.br
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogbGliL2dlbjZfcmVuZGVyOiBSZWZhY3Rvcmlu
+ZyBsaWIKVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzQx
+Mzc5LwpTdGF0ZSA6IGZhaWx1cmUKCj09IFN1bW1hcnkgPT0KCi0tLS0gUG9zc2libGUgbmV3IGlz
+c3VlczoKClRlc3Qga21zX2N1cnNvcl9sZWdhY3k6CiAgICAgICAgU3ViZ3JvdXAgMngtZmxpcC12
+cy1jdXJzb3ItbGVnYWN5OgogICAgICAgICAgICAgICAgcGFzcyAgICAgICAtPiBGQUlMICAgICAg
+IChzaGFyZC1oc3cpClRlc3Qga21zX2Zyb250YnVmZmVyX3RyYWNraW5nOgogICAgICAgIFN1Ymdy
+b3VwIGZiYy0ycC1wcmltc2Nybi1jdXItaW5kZmItb25vZmY6CiAgICAgICAgICAgICAgICBwYXNz
+ICAgICAgIC0+IERNRVNHLUZBSUwgKHNoYXJkLWhzdykKCi0tLS0gS25vd24gaXNzdWVzOgoKVGVz
+dCBrbXNfY3Vyc29yX2xlZ2FjeToKICAgICAgICBTdWJncm91cCBmbGlwLXZzLWN1cnNvci12YXJ5
+aW5nLXNpemU6CiAgICAgICAgICAgICAgICBwYXNzICAgICAgIC0+IEZBSUwgICAgICAgKHNoYXJk
+LWhzdykgZmRvIzEwMjY3MApUZXN0IGttc19mbGlwOgogICAgICAgIFN1Ymdyb3VwIDJ4LWRwbXMt
+dnMtdmJsYW5rLXJhY2U6CiAgICAgICAgICAgICAgICBwYXNzICAgICAgIC0+IEZBSUwgICAgICAg
+KHNoYXJkLWhzdykgZmRvIzEwMzA2MAogICAgICAgIFN1Ymdyb3VwIDJ4LWZsaXAtdnMtZXhwaXJl
+ZC12YmxhbmstaW50ZXJydXB0aWJsZToKICAgICAgICAgICAgICAgIGZhaWwgICAgICAgLT4gUEFT
+UyAgICAgICAoc2hhcmQtaHN3KSBmZG8jMTAyODg3CgpmZG8jMTAyNjcwIGh0dHBzOi8vYnVncy5m
+cmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMjY3MApmZG8jMTAzMDYwIGh0dHBzOi8v
+YnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzA2MApmZG8jMTAyODg3IGh0
+dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMjg4NwoKc2hhcmQt
+YXBsICAgICAgICB0b3RhbDoyNjgwIHBhc3M6MTgzNSBkd2FybjoxICAgZGZhaWw6MCAgIGZhaWw6
+NyAgIHNraXA6ODM2IHRpbWU6MTI3MDRzCnNoYXJkLWhzdyAgICAgICAgdG90YWw6MjY4MCBwYXNz
+OjE3ODIgZHdhcm46MSAgIGRmYWlsOjEgICBmYWlsOjQgICBza2lwOjg5MSB0aW1lOjExNDczcwpC
+bGFja2xpc3RlZCBob3N0czoKc2hhcmQta2JsICAgICAgICB0b3RhbDoyNjgwIHBhc3M6MTk0OCBk
+d2FybjoxNiAgZGZhaWw6MCAgIGZhaWw6NyAgIHNraXA6NzA5IHRpbWU6OTIzOXMKc2hhcmQtc25i
+ICAgICAgICB0b3RhbDoyNjgwIHBhc3M6MTM3MiBkd2FybjoxICAgZGZhaWw6MCAgIGZhaWw6MTEg
+IHNraXA6MTI5NiB0aW1lOjY4NThzCgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNlZTog
+aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMjM3L3NoYXJk
+cy5odG1sCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
+dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
