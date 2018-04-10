@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EADE48991E
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Apr 2018 12:21:25 +0000 (UTC)
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 10 Apr 2018 13:20:43 +0100
-Message-Id: <20180410122043.22021-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] [PATCH igt] lib: Dump meminfo and slabinfo if we complain
- about insufficient memory
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CAF536E41C
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Apr 2018 13:08:20 +0000 (UTC)
+Date: Tue, 10 Apr 2018 16:08:17 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20180410130817.6dwpj5lxdkocnc5k@platvala-desk.ger.corp.intel.com>
+References: <20180410122043.22021-1-chris@chris-wilson.co.uk>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20180410122043.22021-1-chris@chris-wilson.co.uk>
+Subject: Re: [igt-dev] [PATCH igt] lib: Dump meminfo and slabinfo if we
+ complain about insufficient memory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,49 +18,20 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>, Martin Peres <martin.peres@linux.intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, Tomi Sarvela <tomi.p.sarvela@intel.com>, Martin Peres <martin.peres@linux.intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QWxsIHRvbyBmcmVxdWVudGx5LCB3ZSBmYWlsIG91ciBtZW1vcnkgY2hlY2tzIHRvIGEgbGVhayBp
-biB0aGUgZHJpdmVyLgpXaGlsZSB3ZSBnaXZlIGV2ZXJ5IG9wcG9ydHVuaXR5IGZvciB0aGUgZHJp
-dmVyIHRvIHJlbGVhc2UgdGhlIG1lbW9yeQpiZWZvcmUgd2UgZmFpbCwgaWYgd2UgZG8gZHVtcCB0
-aGUgbWVtaW5mbyBhbmQgc2xhYmluZm8sIGlmIGF2YWlsYWJsZSwgc28Kd2UgY2FuIGFzc2lnbiBi
-bGFtZV5XXlcgcmVzb2x2ZSB0aGUgcHJvYmxlbSBxdWlja2x5LgoKUmVmZXJlbmNlczogaHR0cHM6
-Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA1OTY3ClNpZ25lZC1vZmYt
-Ynk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgpDYzogTWFydGluIFBl
-cmVzIDxtYXJ0aW4ucGVyZXNAbGludXguaW50ZWwuY29tPgpDYzogVG9taSBTYXJ2ZWxhIDx0b21p
-LnAuc2FydmVsYUBpbnRlbC5jb20+Ci0tLQogbGliL2ludGVsX29zLmMgfCAyOCArKysrKysrKysr
-KysrKysrKysrKysrKysrKy0tCiAxIGZpbGUgY2hhbmdlZCwgMjYgaW5zZXJ0aW9ucygrKSwgMiBk
-ZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9saWIvaW50ZWxfb3MuYyBiL2xpYi9pbnRlbF9vcy5j
-CmluZGV4IGJiMmMxNmJmLi5mMGYyODcyYiAxMDA2NDQKLS0tIGEvbGliL2ludGVsX29zLmMKKysr
-IGIvbGliL2ludGVsX29zLmMKQEAgLTUxLDYgKzUxLDcgQEAKICNpbmNsdWRlICJkcm10ZXN0Lmgi
-CiAjaW5jbHVkZSAiaWd0X2F1eC5oIgogI2luY2x1ZGUgImlndF9kZWJ1Z2ZzLmgiCisjaW5jbHVk
-ZSAiaWd0X3N5c2ZzLmgiCiAKIC8qKgogICogaW50ZWxfZ2V0X3RvdGFsX3JhbV9tYjoKQEAgLTI4
-MCw5ICsyODEsMzIgQEAgaW50IF9faW50ZWxfY2hlY2tfbWVtb3J5KHVpbnQ2NF90IGNvdW50LCB1
-aW50NjRfdCBzaXplLCB1bnNpZ25lZCBtb2RlLAogdm9pZCBpbnRlbF9yZXF1aXJlX21lbW9yeSh1
-aW50NjRfdCBjb3VudCwgdWludDY0X3Qgc2l6ZSwgdW5zaWduZWQgbW9kZSkKIHsKIAl1aW50NjRf
-dCByZXF1aXJlZCwgdG90YWw7CisJYm9vbCBzdWZmaWNpZW50X21lbW9yeTsKKworCXN1ZmZpY2ll
-bnRfbWVtb3J5ID0gX19pbnRlbF9jaGVja19tZW1vcnkoY291bnQsIHNpemUsIG1vZGUsCisJCQkJ
-CQkgJnJlcXVpcmVkLCAmdG90YWwpOworCWlmICghc3VmZmljaWVudF9tZW1vcnkpIHsKKwkJaW50
-IGRpciA9IG9wZW4oIi9wcm9jIiwgT19SRE9OTFkpOworCQljaGFyICppbmZvOworCisJCWluZm8g
-PSBpZ3Rfc3lzZnNfZ2V0KGRpciwgIm1lbWluZm8iKTsKKwkJaWYgKGluZm8pIHsKKwkJCWlndF9k
-ZWJ1ZygiSW5zdWZmdWNpZW50IGZyZWUgbWVtb3J5OyAvcHJvYy9tZW1pbmZvOlxuJXMiLAorCQkJ
-CSAgaW5mbyk7CisJCQlmcmVlKGluZm8pOworCQl9CisKKwkJaW5mbyA9IGlndF9zeXNmc19nZXQo
-ZGlyLCAic2xhYmluZm8iKTsKKwkJaWYgKGluZm8pIHsKKwkJCWlndF9kZWJ1ZygiSW5zdWZmdWNp
-ZW50IGZyZWUgbWVtb3J5OyAvcHJvYy9zbGFiaW5mbzpcbiVzIiwKKwkJCQkgIGluZm8pOworCQkJ
-ZnJlZShpbmZvKTsKKwkJfQorCisJCWNsb3NlKGRpcik7CisJfQogCi0JaWd0X3JlcXVpcmVfZihf
-X2ludGVsX2NoZWNrX21lbW9yeShjb3VudCwgc2l6ZSwgbW9kZSwKLQkJCQkJICAgICZyZXF1aXJl
-ZCwgJnRvdGFsKSwKKwlpZ3RfcmVxdWlyZV9mKHN1ZmZpY2llbnRfbWVtb3J5LAogCQkgICAgICAi
-RXN0aW1hdGVkIHRoYXQgd2UgbmVlZCAlJ2xsdSBvYmplY3RzIGFuZCAlJ2xsdSBNaUIgZm9yIHRo
-ZSB0ZXN0LCBidXQgb25seSBoYXZlICUnbGx1IE1pQiBhdmFpbGFibGUgKCVzJXMpIGFuZCBhIG1h
-eGltdW0gb2YgJSdsbHUgb2JqZWN0c1xuIiwKIAkJICAgICAgKGxvbmcgbG9uZyljb3VudCwKIAkJ
-ICAgICAgKGxvbmcgbG9uZykoKHJlcXVpcmVkICsgKCgxPDwyMCkgLSAxKSkgPj4gMjApLAotLSAK
-Mi4xNy4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpp
-Z3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczov
-L2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+T24gVHVlLCBBcHIgMTAsIDIwMTggYXQgMDE6MjA6NDNQTSArMDEwMCwgQ2hyaXMgV2lsc29uIHdy
+b3RlOgo+ICsJCQlpZ3RfZGVidWcoIkluc3VmZnVjaWVudCBmcmVlIG1lbW9yeTsgL3Byb2MvbWVt
+aW5mbzpcbiVzIiwKPiArCQkJCSAgaW5mbyk7Cj4gKwkJCWZyZWUoaW5mbyk7Cj4gKwkJfQo+ICsK
+PiArCQlpbmZvID0gaWd0X3N5c2ZzX2dldChkaXIsICJzbGFiaW5mbyIpOwo+ICsJCWlmIChpbmZv
+KSB7Cj4gKwkJCWlndF9kZWJ1ZygiSW5zdWZmdWNpZW50IGZyZWUgbWVtb3J5OyAvcHJvYy9zbGFi
+aW5mbzpcbiVzIiwKCkNvbnNpc3RlbnRseSB1c2VkIGluY29ycmVjdCBzcGVsbGluZy4KCgotLSAK
+UGV0cmkgTGF0dmFsYQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
+dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
