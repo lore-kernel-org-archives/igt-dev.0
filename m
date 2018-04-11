@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B85B16E119
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B4B946E0BE
  for <igt-dev@lists.freedesktop.org>; Wed, 11 Apr 2018 02:37:59 +0000 (UTC)
 From: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-Date: Tue, 10 Apr 2018 19:37:24 -0700
-Message-Id: <20180411023732.32362-12-dhinakaran.pandiyan@intel.com>
+Date: Tue, 10 Apr 2018 19:37:23 -0700
+Message-Id: <20180411023732.32362-11-dhinakaran.pandiyan@intel.com>
 In-Reply-To: <20180411023732.32362-1-dhinakaran.pandiyan@intel.com>
 References: <20180411023732.32362-1-dhinakaran.pandiyan@intel.com>
-Subject: [igt-dev] [PATCH i-g-t 12/20] tests/sink_crc_basic: Debug print CRC
- values
+Subject: [igt-dev] [PATCH i-g-t 11/20] tests/psr: Check for drrs status only
+ after checking for PSR
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,21 +25,18 @@ To: igt-dev@lists.freedesktop.org
 Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>, rodrigo.vivi@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhlIENSQyB2YWx1ZXMgYXJlIHVzZWZ1bCBhcyBhIHJlZmVyZW5jZSB0byBjb21wYXJlIHRoZW0g
-d2l0aCB2YWx1ZXMKZ2VuZXJhdGVkIGZyb20gb3RoZXIgZmVhdHVyZSAoUFNSKSB0ZXN0cy4KClNp
-Z25lZC1vZmYtYnk6IERoaW5ha2FyYW4gUGFuZGl5YW4gPGRoaW5ha2FyYW4ucGFuZGl5YW5AaW50
-ZWwuY29tPgotLS0KIHRlc3RzL2ttc19zaW5rX2NyY19iYXNpYy5jIHwgMiArKwogMSBmaWxlIGNo
-YW5nZWQsIDIgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19zaW5rX2NyY19i
-YXNpYy5jIGIvdGVzdHMva21zX3NpbmtfY3JjX2Jhc2ljLmMKaW5kZXggMTU5NjgzZTIuLjFjMzFl
-MzBhIDEwMDY0NAotLS0gYS90ZXN0cy9rbXNfc2lua19jcmNfYmFzaWMuYworKysgYi90ZXN0cy9r
-bXNfc2lua19jcmNfYmFzaWMuYwpAQCAtNjMsMTEgKzYzLDEzIEBAIHN0YXRpYyB2b2lkIGFzc2Vy
-dF9jb2xvcihpbnQgZGlyLCBlbnVtIGNvbG9yIGNvbG9yKQogCQlpZ3RfYXNzZXJ0X2x0KDAsIHIp
-OwogCQlpZ3RfYXNzZXJ0X2VxKDAsIGcpOwogCQlpZ3RfYXNzZXJ0X2VxKDAsIGIpOworCQlpZ3Rf
-ZGVidWcoInNpbmsgQ1JDIGZvciByZWQgJS40eCUuNHglLjR4XG4iLCByLCBnLCBiKTsKIAkJYnJl
-YWs7CiAJY2FzZSBHUkVFTjoKIAkJaWd0X2Fzc2VydF9lcSgwLCByKTsKIAkJaWd0X2Fzc2VydF9s
-dCgwLCBnKTsKIAkJaWd0X2Fzc2VydF9lcSgwLCBiKTsKKwkJaWd0X2RlYnVnKCJzaW5rIENSQyBm
-b3IgZ3JlZW4gJS40eCUuNHglLjR4XG4iLCByLCBnLCBiKTsKIAkJYnJlYWs7CiAJZGVmYXVsdDoK
-IAkJaWd0X2ZhaWwoSUdUX0VYSVRfRkFJTFVSRSk7Ci0tIAoyLjE0LjEKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
-dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+VGhlIGdvYWwgb2YgdGhpcyB0ZXN0IGlzIChvciBzaG91bGQgYmUpIHRvIHZlcmlmeSBEUlJTIGlz
+IGRpc2FibGVkIGlmIFBTUgp3YXMgZW5hYmxlZC4gVGhlcmUgaXMgbm8gcG9pbnQgaW4gY2hlY2tp
+bmcgZm9yIERSUlMgc3RhdHVzIGlmIFBTUiB3YXMgbm90CmVuYWJsZWQgaW4gdGhlIGZpcnN0IHBs
+YWNlLgoKU2lnbmVkLW9mZi1ieTogRGhpbmFrYXJhbiBQYW5kaXlhbiA8ZGhpbmFrYXJhbi5wYW5k
+aXlhbkBpbnRlbC5jb20+Ci0tLQogdGVzdHMva21zX3Bzcl9zaW5rX2NyYy5jIHwgMSArCiAxIGZp
+bGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykKCmRpZmYgLS1naXQgYS90ZXN0cy9rbXNfcHNyX3Np
+bmtfY3JjLmMgYi90ZXN0cy9rbXNfcHNyX3NpbmtfY3JjLmMKaW5kZXggMTc0OTA3MjYuLmE3YzZh
+MDU3IDEwMDY0NAotLS0gYS90ZXN0cy9rbXNfcHNyX3NpbmtfY3JjLmMKKysrIGIvdGVzdHMva21z
+X3Bzcl9zaW5rX2NyYy5jCkBAIC00ODYsNiArNDg2LDcgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNo
+YXIgKmFyZ3ZbXSkKIAogCWlndF9zdWJ0ZXN0KCJub19kcnJzIikgewogCQlzZXR1cF90ZXN0X3Bs
+YW5lKCZkYXRhKTsKKwkJaWd0X2Fzc2VydCh3YWl0X3Bzcl9lbnRyeSgmZGF0YSkpOwogCQlpZ3Rf
+YXNzZXJ0KGRycnNfZGlzYWJsZWQoJmRhdGEpKTsKIAkJdGVzdF9jbGVhbnVwKCZkYXRhKTsKIAl9
+Ci0tIAoyLjE0LjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0
+dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
