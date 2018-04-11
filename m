@@ -1,62 +1,85 @@
-Return-Path: <maarten.lankhorst@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kms: Reset FIFO underruns on
- first commit after init()/reset().
-References: <20180328100549.36538-1-maarten.lankhorst@linux.intel.com>
- <CABVU7+v6mpK=+G6v9A5yo6fr4=UB0NROaiC48Z+LHzEms5+SOw@mail.gmail.com>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B3C16E569
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Apr 2018 07:47:34 +0000 (UTC)
+References: <20180406110634.30216-1-maarten.lankhorst@linux.intel.com>
+ <CA5F6A4B62957246A95956419746064382B877DB@IRSMSX106.ger.corp.intel.com>
 From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Message-ID: <adf8bc35-2703-bc2a-ee3a-86901345102c@linux.intel.com>
-Date: Wed, 11 Apr 2018 09:47:05 +0200
+Message-ID: <6ca75abf-77e0-a5f0-3aec-d3fd9f814078@linux.intel.com>
+Date: Wed, 11 Apr 2018 09:47:31 +0200
 MIME-Version: 1.0
-In-Reply-To: <CABVU7+v6mpK=+G6v9A5yo6fr4=UB0NROaiC48Z+LHzEms5+SOw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <CA5F6A4B62957246A95956419746064382B877DB@IRSMSX106.ger.corp.intel.com>
 Content-Language: en-US
-To: Rodrigo Vivi <rodrigo.vivi@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kms: Handle outputs with no
+ modes better
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: "Lofstedt, Marta" <marta.lofstedt@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Op 09-04-18 om 21:50 schreef Rodrigo Vivi:
-> On Wed, Mar 28, 2018 at 3:05 AM, Maarten Lankhorst
-> <maarten.lankhorst@linux.intel.com> wrote:
->> When we set the test to its first state, we will clear FIFO underrun
->> status through the debugfs, so that any underruns caused by the tests
->> will not affect other tests. In particular this also resets the FBC
->> FIFO underrun status, so previous failures won't affect other tests
->> that depend on FBC.
->>
->> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->> Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=105681
-> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
->
->> ---
->>  lib/igt_kms.c | 7 +++++++
->>  1 file changed, 7 insertions(+)
->>
->> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
->> index 19d650a8dcf8..c943411e52d7 100644
->> --- a/lib/igt_kms.c
->> +++ b/lib/igt_kms.c
->> @@ -3112,6 +3112,13 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
->>         }
->>
->>         if (display->first_commit) {
->> +               int fd = igt_debugfs_open(display->drm_fd, "i915_fifo_underrun_reset", O_WRONLY);
->> +               if (fd >= 0) {
->> +                       igt_assert_eq(write(fd, "y", 1), 1);
->> +
->> +                       close(fd);
->> +               }
->> +
->>                 igt_display_drop_events(display);
->>                 display->first_commit = false;
->>         }
->> --
->> 2.16.3
->>
->> _______________________________________________
->> igt-dev mailing list
->> igt-dev@lists.freedesktop.org
->> https://lists.freedesktop.org/mailman/listinfo/igt-dev
->
->
-Thanks, pushed. Kernel patch is pushed too so we should now be able to close 105681
+T3AgMTAtMDQtMTggb20gMTM6NTAgc2NocmVlZiBMb2ZzdGVkdCwgTWFydGE6Cj4gUmV2aWV3ZWQt
+Ynk6IE1hcnRhIExvZnN0ZWR0IDxtYXJ0YS5sb2ZzdGVkdEBpbnRlbC5jb20+Cj4KPj4gLS0tLS1P
+cmlnaW5hbCBNZXNzYWdlLS0tLS0KPj4gRnJvbTogaWd0LWRldiBbbWFpbHRvOmlndC1kZXYtYm91
+bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmddIE9uIEJlaGFsZiBPZgo+PiBNYWFydGVuIExhbmto
+b3JzdAo+PiBTZW50OiBGcmlkYXksIEFwcmlsIDYsIDIwMTggMjowNyBQTQo+PiBUbzogaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKPj4gU3ViamVjdDogW2lndC1kZXZdIFtQQVRDSCBpLWct
+dF0gbGliL2lndF9rbXM6IEhhbmRsZSBvdXRwdXRzIHdpdGggbm8gbW9kZXMKPj4gYmV0dGVyCj4+
+Cj4+IFByZXRlbmQgdGhhdCBvdXRwdXRzIHdpdGhvdXQgbW9kZXMgYXJlIGRpc2FibGVkLCBhbmQg
+dHJ5IHJlcHJvYmluZyBpZiBubwo+PiBtb2RlcyBhcmUgaW5pdGlhbGx5IGRldGVjdGVkLCBqdXN0
+IGluIGNhc2UgdGhhdCB0aGUgcmVwcm9iZSB3aWxsIGZpbmQgbW9kZXMuCj4+Cj4+IFNpZ25lZC1v
+ZmYtYnk6IE1hYXJ0ZW4gTGFua2hvcnN0IDxtYWFydGVuLmxhbmtob3JzdEBsaW51eC5pbnRlbC5j
+b20+Cj4+IEJ1Z3ppbGxhOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNn
+aT9pZD0xMDU3OTgKPj4gLS0tCj4+ICBsaWIvaWd0X2ttcy5jIHwgMTMgKysrKysrKystLS0tLQo+
+PiAgbGliL2lndF9rbXMuaCB8ICAzICsrLQo+PiAgMiBmaWxlcyBjaGFuZ2VkLCAxMCBpbnNlcnRp
+b25zKCspLCA2IGRlbGV0aW9ucygtKQo+Pgo+PiBkaWZmIC0tZ2l0IGEvbGliL2lndF9rbXMuYyBi
+L2xpYi9pZ3Rfa21zLmMgaW5kZXggMTlkNjUwYThkY2Y4Li40YjI1ZjgzNjFhNDIKPj4gMTAwNjQ0
+Cj4+IC0tLSBhL2xpYi9pZ3Rfa21zLmMKPj4gKysrIGIvbGliL2lndF9rbXMuYwo+PiBAQCAtMTAz
+Myw5ICsxMDMzLDEwIEBAIHN0YXRpYyBib29sIF9rbXN0ZXN0X2Nvbm5lY3Rvcl9jb25maWcoaW50
+Cj4+IGRybV9mZCwgdWludDMyX3QgY29ubmVjdG9yX2lkLAo+PiAgCQlnb3RvIGVycjI7Cj4+Cj4+
+ICAJaWYgKCFjb25uZWN0b3ItPmNvdW50X21vZGVzKSB7Cj4+IC0JCWlndF93YXJuKCJjb25uZWN0
+b3IgJWQvJXMtJWQgaGFzIG5vCj4+IG1vZGVzXG4iLCBjb25uZWN0b3JfaWQsCj4+IC0KPj4ga21z
+dGVzdF9jb25uZWN0b3JfdHlwZV9zdHIoY29ubmVjdG9yLT5jb25uZWN0b3JfdHlwZSksCj4+IC0J
+CQkgY29ubmVjdG9yLT5jb25uZWN0b3JfdHlwZV9pZCk7Cj4+ICsJCWlmIChwcm9iZSkKPj4gKwkJ
+CWlndF93YXJuKCJjb25uZWN0b3IgJWQvJXMtJWQKPj4gaGFzIG5vIG1vZGVzXG4iLCBjb25uZWN0
+b3JfaWQsCj4+ICsKPj4gCWttc3Rlc3RfY29ubmVjdG9yX3R5cGVfc3RyKGNvbm5lY3Rvci0+Y29u
+bmVjdG9yX3R5cGUpLAo+PiArCQkJCWNvbm5lY3Rvci0KPj4+IGNvbm5lY3Rvcl90eXBlX2lkKTsK
+Pj4gIAkJZ290byBlcnIyOwo+PiAgCX0KPj4KPj4gQEAgLTE5NTAsNiArMTk1MSw3IEBAIHZvaWQg
+aWd0X2Rpc3BsYXlfaW5pdChpZ3RfZGlzcGxheV90ICpkaXNwbGF5LCBpbnQKPj4gZHJtX2ZkKQo+
+Pgo+PiAgCWZvciAoaSA9IDA7IGkgPCBkaXNwbGF5LT5uX291dHB1dHM7IGkrKykgewo+PiAgCQlp
+Z3Rfb3V0cHV0X3QgKm91dHB1dCA9ICZkaXNwbGF5LT5vdXRwdXRzW2ldOwo+PiArCQlkcm1Nb2Rl
+Q29ubmVjdG9yICpjb25uZWN0b3I7Cj4+Cj4+ICAJCS8qCj4+ICAJCSAqIFdlIGRvbid0IGFzc2ln
+biBlYWNoIG91dHB1dCBhIHBpcGUgdW5sZXNzCj4+IEBAIC0xOTYxLDggKzE5NjMsOSBAQCB2b2lk
+IGlndF9kaXNwbGF5X2luaXQoaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSwgaW50Cj4+IGRybV9mZCkK
+Pj4KPj4gIAkJaWd0X291dHB1dF9yZWZyZXNoKG91dHB1dCk7Cj4+Cj4+IC0JCWlmIChvdXRwdXQt
+PmNvbmZpZy5jb25uZWN0b3IgJiYKPj4gLQkJICAgIG91dHB1dC0+Y29uZmlnLmNvbm5lY3Rvci0+
+Y29ubmVjdGlvbiA9PQo+PiBEUk1fTU9ERV9VTktOT1dOQ09OTkVDVElPTikgewo+PiArCQljb25u
+ZWN0b3IgPSBvdXRwdXQtPmNvbmZpZy5jb25uZWN0b3I7Cj4+ICsJCWlmIChjb25uZWN0b3IgJiYg
+KCFjb25uZWN0b3ItPmNvdW50X21vZGVzIHx8Cj4+ICsJCSAgICBjb25uZWN0b3ItPmNvbm5lY3Rp
+b24gPT0KPj4gRFJNX01PREVfVU5LTk9XTkNPTk5FQ1RJT04pKSB7Cj4+ICAJCQlvdXRwdXQtPmZv
+cmNlX3JlcHJvYmUgPSB0cnVlOwo+PiAgCQkJaWd0X291dHB1dF9yZWZyZXNoKG91dHB1dCk7Cj4+
+ICAJCX0KPj4gZGlmZiAtLWdpdCBhL2xpYi9pZ3Rfa21zLmggYi9saWIvaWd0X2ttcy5oIGluZGV4
+IGIzNzM3MGEwYjA1ZS4uMGU3NWQwYzllNmI5Cj4+IDEwMDY0NAo+PiAtLS0gYS9saWIvaWd0X2tt
+cy5oCj4+ICsrKyBiL2xpYi9pZ3Rfa21zLmgKPj4gQEAgLTQxMSw3ICs0MTEsOCBAQCB2b2lkIGln
+dF93YWl0X2Zvcl92YmxhbmtfY291bnQoaW50IGRybV9mZCwgZW51bQo+PiBwaXBlIHBpcGUsIGlu
+dCBjb3VudCk7ICBzdGF0aWMgaW5saW5lIGJvb2wKPj4gaWd0X291dHB1dF9pc19jb25uZWN0ZWQo
+aWd0X291dHB1dF90ICpvdXRwdXQpICB7Cj4+ICAJLyogU29tZXRoaW5nIHdlbnQgd3JvbmcgZHVy
+aW5nIHByb2JlPyAqLwo+PiAtCWlmICghb3V0cHV0LT5jb25maWcuY29ubmVjdG9yKQo+PiArCWlm
+ICghb3V0cHV0LT5jb25maWcuY29ubmVjdG9yIHx8Cj4+ICsJICAgICFvdXRwdXQtPmNvbmZpZy5j
+b25uZWN0b3ItPmNvdW50X21vZGVzKQo+PiAgCQlyZXR1cm4gZmFsc2U7Cj4+Cj4+ICAJaWYgKG91
+dHB1dC0+Y29uZmlnLmNvbm5lY3Rvci0+Y29ubmVjdGlvbiA9PQo+PiBEUk1fTU9ERV9DT05ORUNU
+RUQpCj4+IC0tCj4+IDIuMTYuMwo+Pgo+PiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwo+PiBpZ3QtZGV2IG1haWxpbmcgbGlzdAo+PiBpZ3QtZGV2QGxpc3Rz
+LmZyZWVkZXNrdG9wLm9yZwo+PiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2lndC1kZXYKClRoYW5rcyBmb3IgcmV2aWV3LCBwdXNoZWQuCgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlz
+dAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9w
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
