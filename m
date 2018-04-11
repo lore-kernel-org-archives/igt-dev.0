@@ -1,42 +1,62 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C73216E558
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Apr 2018 07:46:31 +0000 (UTC)
-References: <20180405104954.6880-1-maarten.lankhorst@linux.intel.com>
- <1523038623.11823.4.camel@dk-H97M-D3H>
+Return-Path: <maarten.lankhorst@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kms: Reset FIFO underruns on
+ first commit after init()/reset().
+References: <20180328100549.36538-1-maarten.lankhorst@linux.intel.com>
+ <CABVU7+v6mpK=+G6v9A5yo6fr4=UB0NROaiC48Z+LHzEms5+SOw@mail.gmail.com>
 From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Message-ID: <9e697280-0407-0bde-ff07-88365a1b73a0@linux.intel.com>
-Date: Wed, 11 Apr 2018 09:46:28 +0200
+Message-ID: <adf8bc35-2703-bc2a-ee3a-86901345102c@linux.intel.com>
+Date: Wed, 11 Apr 2018 09:47:05 +0200
 MIME-Version: 1.0
-In-Reply-To: <1523038623.11823.4.camel@dk-H97M-D3H>
+In-Reply-To: <CABVU7+v6mpK=+G6v9A5yo6fr4=UB0NROaiC48Z+LHzEms5+SOw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_debugfs: Add timeouts to
- opening pipe CRC fd.
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: dhinakaran.pandiyan@intel.com
+To: Rodrigo Vivi <rodrigo.vivi@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T3AgMDYtMDQtMTggb20gMjA6MTcgc2NocmVlZiBEaGluYWthcmFuIFBhbmRpeWFuOgo+Cj4KPiBP
-biBUaHUsIDIwMTgtMDQtMDUgYXQgMTI6NDkgKzAyMDAsIE1hYXJ0ZW4gTGFua2hvcnN0IHdyb3Rl
-Ogo+PiBUaGlzIHdpbGwgZml4IHRoZSBQU1IgdGVzdHMgdG8gZmFpbCBzbGlnaHRseSBmYXN0ZXIs
-IHNpbmNlIHRoZXkgd2FpdAo+PiBpbmRlZmluaXRlbHkgZm9yIGEgQ1JDIHRoYXQgbmV2ZXIgY29t
-ZXMgZHVyaW5nIG9wZW4uCj4+Cj4gV2hpbGUgd2UgbmVlZCB0byBmaWd1cmUgb3V0IGhvdyB0byBy
-dW4gdGhlc2UgdGVzdHMgd2l0aG91dCBDUkMsIHRpbWluZwo+IG91dCB0aGUgdGVzdHMgbWFrZXMg
-c2Vuc2UuCj4KPiBSZXZpZXdlZC1ieTogRGhpbmFrYXJhbiBQYW5kaXlhbiA8ZGhpbmFrYXJhbi5w
-YW5kaXlhbkBpbnRlbC5jb20+CjVzIHdhcyB0b28gc2hvcnQgZm9yIHRoZSBtb2Rlc2V0IHdpdGgg
-aGFzd2VsbCdzIHBpcGUgd29ya2Fyb3VuZC4gSSd2ZSBpbmNyZWFzZWQgaXQgdG8gMTBzIGFuZCBw
-dXNoZWQuIDopCgpUaGFua3MgZm9yIHJldmlldywKTWFhcnRlbgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2lndC1kZXYK
+Op 09-04-18 om 21:50 schreef Rodrigo Vivi:
+> On Wed, Mar 28, 2018 at 3:05 AM, Maarten Lankhorst
+> <maarten.lankhorst@linux.intel.com> wrote:
+>> When we set the test to its first state, we will clear FIFO underrun
+>> status through the debugfs, so that any underruns caused by the tests
+>> will not affect other tests. In particular this also resets the FBC
+>> FIFO underrun status, so previous failures won't affect other tests
+>> that depend on FBC.
+>>
+>> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+>> Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=105681
+> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+>
+>> ---
+>>  lib/igt_kms.c | 7 +++++++
+>>  1 file changed, 7 insertions(+)
+>>
+>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>> index 19d650a8dcf8..c943411e52d7 100644
+>> --- a/lib/igt_kms.c
+>> +++ b/lib/igt_kms.c
+>> @@ -3112,6 +3112,13 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
+>>         }
+>>
+>>         if (display->first_commit) {
+>> +               int fd = igt_debugfs_open(display->drm_fd, "i915_fifo_underrun_reset", O_WRONLY);
+>> +               if (fd >= 0) {
+>> +                       igt_assert_eq(write(fd, "y", 1), 1);
+>> +
+>> +                       close(fd);
+>> +               }
+>> +
+>>                 igt_display_drop_events(display);
+>>                 display->first_commit = false;
+>>         }
+>> --
+>> 2.16.3
+>>
+>> _______________________________________________
+>> igt-dev mailing list
+>> igt-dev@lists.freedesktop.org
+>> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+>
+>
+Thanks, pushed. Kernel patch is pushed too so we should now be able to close 105681
