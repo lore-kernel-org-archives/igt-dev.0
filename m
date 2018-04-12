@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-CY1-obe.outbound.protection.outlook.com
- (mail-cys01nam02on0060.outbound.protection.outlook.com [104.47.37.60])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 125006E254
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Apr 2018 21:38:15 +0000 (UTC)
+Received: from NAM03-BY2-obe.outbound.protection.outlook.com
+ (mail-by2nam03on0048.outbound.protection.outlook.com [104.47.42.48])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D6596E086
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Apr 2018 21:47:37 +0000 (UTC)
 From: <sunpeng.li@amd.com>
-Date: Thu, 12 Apr 2018 17:37:25 -0400
-Message-ID: <1523569046-612-3-git-send-email-sunpeng.li@amd.com>
-In-Reply-To: <1523569046-612-1-git-send-email-sunpeng.li@amd.com>
-References: <1523569046-612-1-git-send-email-sunpeng.li@amd.com>
+Date: Thu, 12 Apr 2018 17:46:41 -0400
+Message-ID: <1523569601-2580-1-git-send-email-sunpeng.li@amd.com>
+In-Reply-To: <1523569046-612-3-git-send-email-sunpeng.li@amd.com>
+References: <1523569046-612-3-git-send-email-sunpeng.li@amd.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/3] tests/kms_color: Do not mask LUT for
+Subject: [igt-dev] [PATCH i-g-t v2 2/3] tests/kms_color: Do not mask LUT for
  non i915 drivers.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -25,18 +25,26 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogIkxlbyAoU3VucGVuZykgTGkiIDxzdW5wZW5nLmxpQGFtZC5jb20+CgotLS0KIHRlc3Rz
-L2ttc19jb2xvci5jIHwgNyArKysrKystCiAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCsp
-LCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2NvbG9yLmMgYi90ZXN0cy9r
-bXNfY29sb3IuYwppbmRleCBjMzEyNjk3Li4xZTUxOTE3IDEwMDY0NAotLS0gYS90ZXN0cy9rbXNf
-Y29sb3IuYworKysgYi90ZXN0cy9rbXNfY29sb3IuYwpAQCAtMTY1LDcgKzE2NSwxMiBAQCBzdGF0
-aWMgc3RydWN0IF9kcm1fY29sb3JfbHV0ICpjb2VmZnNfdG9fbHV0KGRhdGFfdCAqZGF0YSwKIAlz
-dHJ1Y3QgX2RybV9jb2xvcl9sdXQgKmx1dDsKIAl1aW50MzJfdCBpOwogCXVpbnQzMl90IG1heF92
-YWx1ZSA9ICgxIDw8IDE2KSAtIDE7Ci0JdWludDMyX3QgbWFzayA9ICgoMSA8PCBjb2xvcl9kZXB0
-aCkgLSAxKSA8PCA4OworCXVpbnQzMl90IG1hc2s7CisKKwlpZiAoaXNfaTkxNV9kZXZpY2UoZGF0
-YS0+ZHJtX2ZkKSkKKwkJbWFzayA9ICgoMSA8PCBjb2xvcl9kZXB0aCkgLSAxKSA8PCA4OworCWVs
-c2UKKwkJbWFzayA9IG1heF92YWx1ZTsKIAogCWx1dCA9IG1hbGxvYyhzaXplb2Yoc3RydWN0IF9k
-cm1fY29sb3JfbHV0KSAqIGx1dF9zaXplKTsKIAotLSAKMi43LjQKCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
-ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
-aWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+RnJvbTogIkxlbyAoU3VucGVuZykgTGkiIDxzdW5wZW5nLmxpQGFtZC5jb20+CgpNYXNraW5nIGFz
+c3VtZXMgYSBkaXJlY3QgcmVsYXRpb25zaGlwIGJldHdlZW4gdGhlIHNvZnR3YXJlIExVVApzdHJ1
+Y3R1cmUsIGFuZCBoYXJkd2FyZSBMVVQuIFRoaXMgaXMgbm90IGFsd2F5cyB0aGUgY2FzZS4KCk9u
+IEFNRCBoYXJkd2FyZSBmb3IgZXhhbXBsZSwgdGhlIGhhcmR3YXJlIExVVCBpcyBjb21wb3NlZCBv
+ZgpwaWVjZXdpc2UtbGluZWFyIHNlZ21lbnRzLCB3aXRoIGVuZC1wb2ludCBzcGFjZWQgZXhwb25l
+bnRpYWxseSBhbG9uZyB0aGUKWCBheGlzLCB3aGlsZSBzb2Z0d2FyZSBMVVQgaXMgc3BhY2VkIGxp
+bmVhcmx5LiBNYXNraW5nIHRoZSBMVVQgZm9yIHRoZQpwdXJwb3NlIG9mIHRydW5jYXRpbmcgdGhl
+IHJlc3VsdGluZyBjb2xvcnMgd29uJ3Qgd29yayBoZXJlLgoKU2lnbmVkLW9mZi1ieTogTGVvIChT
+dW5wZW5nKSBMaSA8c3VucGVuZy5saUBhbWQuY29tPgoKdjI6IEFkZCBjb21taXQgbWVzc2FnZSBh
+bmQgc2lnbiBvZmYuCi0tLQogdGVzdHMva21zX2NvbG9yLmMgfCA3ICsrKysrKy0KIDEgZmlsZSBj
+aGFuZ2VkLCA2IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS90ZXN0
+cy9rbXNfY29sb3IuYyBiL3Rlc3RzL2ttc19jb2xvci5jCmluZGV4IGMzMTI2OTcuLjFlNTE5MTcg
+MTAwNjQ0Ci0tLSBhL3Rlc3RzL2ttc19jb2xvci5jCisrKyBiL3Rlc3RzL2ttc19jb2xvci5jCkBA
+IC0xNjUsNyArMTY1LDEyIEBAIHN0YXRpYyBzdHJ1Y3QgX2RybV9jb2xvcl9sdXQgKmNvZWZmc190
+b19sdXQoZGF0YV90ICpkYXRhLAogCXN0cnVjdCBfZHJtX2NvbG9yX2x1dCAqbHV0OwogCXVpbnQz
+Ml90IGk7CiAJdWludDMyX3QgbWF4X3ZhbHVlID0gKDEgPDwgMTYpIC0gMTsKLQl1aW50MzJfdCBt
+YXNrID0gKCgxIDw8IGNvbG9yX2RlcHRoKSAtIDEpIDw8IDg7CisJdWludDMyX3QgbWFzazsKKwor
+CWlmIChpc19pOTE1X2RldmljZShkYXRhLT5kcm1fZmQpKQorCQltYXNrID0gKCgxIDw8IGNvbG9y
+X2RlcHRoKSAtIDEpIDw8IDg7CisJZWxzZQorCQltYXNrID0gbWF4X3ZhbHVlOwogCiAJbHV0ID0g
+bWFsbG9jKHNpemVvZihzdHJ1Y3QgX2RybV9jb2xvcl9sdXQpICogbHV0X3NpemUpOwogCi0tIAoy
+LjcuNAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0
+LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
+aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
