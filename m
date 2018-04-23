@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E2B7889B62
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Apr 2018 11:53:10 +0000 (UTC)
-MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-References: <20180420215033.15111-1-chris@chris-wilson.co.uk>
- <152448296132.13295.10830880206839645250@jlahtine-desk.ger.corp.intel.com>
-In-Reply-To: <152448296132.13295.10830880206839645250@jlahtine-desk.ger.corp.intel.com>
-Message-ID: <152448438433.5735.17900691024473680455@mail.alporthouse.com>
-Date: Mon, 23 Apr 2018 12:53:04 +0100
-Subject: Re: [igt-dev] [PATCH igt] RFC tools: capture execution pathways
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF7446E1D8
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Apr 2018 13:07:23 +0000 (UTC)
+From: Petri Latvala <petri.latvala@intel.com>
+Date: Mon, 23 Apr 2018 16:06:45 +0300
+Message-Id: <20180423130645.21051-1-petri.latvala@intel.com>
+In-Reply-To: <152448438433.5735.17900691024473680455@mail.alporthouse.com>
+References: <152448438433.5735.17900691024473680455@mail.alporthouse.com>
+Subject: [igt-dev] [PATCH i-g-t 1/1] meson'd igt_kcov
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,19 +15,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBKb29uYXMgTGFodGluZW4gKDIwMTgtMDQtMjMgMTI6Mjk6MjEpCj4gVHdvIHR5cG9z
-OiBzL3NvcnRlc3Qvc2hvcnRlc3QvLCBzL2FzY2k4NS9hc2NpaTg1Lwo+IAo+IE90aGVyIHRoYW4g
-dGhhdCwgbWFrZXMgc2Vuc2UuIERpZCBub3QgZGl2ZSBkZWVwIGludG8gdGhlIHV0aWxpdHkgZnVu
-Y3MKPiBvciB2YWxpZGl0eSBvZiB0aGUgYWxnb3JpdGhtcy4KPiAKPiBBbnl0aGluZyBzdG9wcGlu
-ZyB0byBwb2xpc2ggYW5kIG1lcmdlPwoKbWVzb24uIE5vIGlkZWEgaG93IHRvIGdvIGFib3V0IGFk
-ZGluZyBpdCB0byB0aGF0IGJ1aWxkIGdlbmVyYXRvci4KLUNocmlzCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
-ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
-aWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+LS0tCgpUT0RPOiBGaWd1cmUgb3V0IGhvdyB0byBtYWtlIG1lc29uIF9ub3RfIGZvcmNlIHRoZSBt
+b2R1bGUgbmFtZSB0byBoYXZlCmEgJ2xpYicgcHJlZml4LgoKCm1lc29uLmJ1aWxkICAgICAgIHwg
+IDEgKwogdG9vbHMvbWVzb24uYnVpbGQgfCAxMiArKysrKysrKysrKysKIDIgZmlsZXMgY2hhbmdl
+ZCwgMTMgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL21lc29uLmJ1aWxkIGIvbWVzb24uYnVp
+bGQKaW5kZXggNWI3ODNlNWQuLjhjYjAyOWFkIDEwMDY0NAotLS0gYS9tZXNvbi5idWlsZAorKysg
+Yi9tZXNvbi5idWlsZApAQCAtODksNiArODksNyBAQCBtYXRoID0gY2MuZmluZF9saWJyYXJ5KCdt
+JykKIHJlYWx0aW1lID0gY2MuZmluZF9saWJyYXJ5KCdydCcpCiBkbHN5bSA9IGNjLmZpbmRfbGli
+cmFyeSgnZGwnKQogemxpYiA9IGNjLmZpbmRfbGlicmFyeSgneicpCit5YW1sID0gY2MuZmluZF9s
+aWJyYXJ5KCd5YW1sJywgcmVxdWlyZWQ6IGZhbHNlKQogCiBpZiBjYy5oYXNfaGVhZGVyKCdsaW51
+eC9rZC5oJykKIAljb25maWcuc2V0KCdIQVZFX0xJTlVYX0tEX0gnLCAxKQpkaWZmIC0tZ2l0IGEv
+dG9vbHMvbWVzb24uYnVpbGQgYi90b29scy9tZXNvbi5idWlsZAppbmRleCBiZDJkMzEzZC4uNzU3
+ZjljMjMgMTAwNjQ0Ci0tLSBhL3Rvb2xzL21lc29uLmJ1aWxkCisrKyBiL3Rvb2xzL21lc29uLmJ1
+aWxkCkBAIC0xMDUsNiArMTA1LDE4IEBAIGV4ZWN1dGFibGUoJ2ludGVsX3JlZycsIHNvdXJjZXMg
+OiBpbnRlbF9yZWdfc3JjLAogCSAgICAgJy1ESUdUX0RBVEFESVI9IkAwQCInLmZvcm1hdChqb2lu
+X3BhdGhzKHByZWZpeCwgZGF0YWRpcikpLAogCSAgIF0pCiAKK2lmIHlhbWwuZm91bmQoKQorCWln
+dF9rY292X3NyYyA9IFsgJ2lndF9rY292LmMnIF0KKwlleGVjdXRhYmxlKCdpZ3Rfa2NvdicsIHNv
+dXJjZXMgOiBpZ3Rfa2Nvdl9zcmMsCisJCSAgIGRlcGVuZGVuY2llcyA6IFsgaWd0X2RlcHMsIHps
+aWIsIHJlYWx0aW1lLCBtYXRoLCB5YW1sIF0sCisJCSAgIGluc3RhbGwgOiB0cnVlKQorCisJaWd0
+X2tjb3ZfZWRnZXNfc3JjID0gWyAnaWd0X2tjb3ZfZWRnZXMuYycgXQorCXNoYXJlZF9tb2R1bGUo
+J2lndF9rY292X2VkZ2VzJywgc291cmNlcyA6IGlndF9rY292X2VkZ2VzX3NyYywKKwkJICAgICAg
+ZGVwZW5kZW5jaWVzIDogWyBkbHN5bSBdLAorCQkgICAgICBpbnN0YWxsIDogdHJ1ZSkKK2VuZGlm
+CisKIGluc3RhbGxfZGF0YSgnaW50ZWxfZ3B1X2FicnQnLCBpbnN0YWxsX2RpciA6IGJpbmRpcikK
+IAogaW5zdGFsbF9zdWJkaXIoJ3JlZ2lzdGVycycsIGluc3RhbGxfZGlyIDogZGF0YWRpciwKLS0g
+CjIuMTQuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+aWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
+Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
