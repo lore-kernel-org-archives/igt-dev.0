@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CCF1B6E022
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Apr 2018 23:05:18 +0000 (UTC)
-From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
-Date: Fri, 27 Apr 2018 16:05:16 -0700
-Message-Id: <20180427230516.6188-1-jose.souza@intel.com>
-MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] lib/kbl: Add missing Kaby Lake PCI ID
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F160B6E051
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Apr 2018 23:37:08 +0000 (UTC)
+Message-ID: <1524872216.2544.19.camel@intel.com>
+From: Paulo Zanoni <paulo.r.zanoni@intel.com>
+Date: Fri, 27 Apr 2018 16:36:56 -0700
+In-Reply-To: <20180427230516.6188-1-jose.souza@intel.com>
+References: <20180427230516.6188-1-jose.souza@intel.com>
+Mime-Version: 1.0
+Subject: Re: [igt-dev] [PATCH] lib/kbl: Add missing Kaby Lake PCI ID
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,26 +20,33 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: =?ISO-8859-1?Q?Jos=E9?= Roberto de Souza <jose.souza@intel.com>, igt-dev@lists.freedesktop.org
 Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhpcyBQQ0kgSUQgd2FzIHJlY2VudGx5IGFkZGVkIHRvIGtlcm5lbCBpbiBjb21taXQKJzY3MmUz
-MTRiMjFkYyAoImRybS9pOTE1L2tibDogQWRkIEtCTCBHVDIgc2t1IiknCmJ1dCBub3QgYWRkZWQg
-aGVyZS4KCkNjOiBSb2RyaWdvIFZpdmkgPHJvZHJpZ28udml2aUBpbnRlbC5jb20+CkNjOiBKYW1l
-cyBBdXNtdXMgPGphbWVzLmF1c211c0BpbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IEpvc8OpIFJv
-YmVydG8gZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwuY29tPgotLS0KIGxpYi9pOTE1X3BjaWlk
-cy5oIHwgMyArKy0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24o
-LSkKCmRpZmYgLS1naXQgYS9saWIvaTkxNV9wY2lpZHMuaCBiL2xpYi9pOTE1X3BjaWlkcy5oCmlu
-ZGV4IDBiMmJhNDZmLi4zMzRkNjMyMSAxMDA2NDQKLS0tIGEvbGliL2k5MTVfcGNpaWRzLmgKKysr
-IGIvbGliL2k5MTVfcGNpaWRzLmgKQEAgLTM1NCw3ICszNTQsOCBAQAogCUlOVEVMX1ZHQV9ERVZJ
-Q0UoMHg1OTEyLCBpbmZvKSwgLyogRFQgIEdUMiAqLyBcCiAJSU5URUxfVkdBX0RFVklDRSgweDU5
-MUIsIGluZm8pLCAvKiBIYWxvIEdUMiAqLyBcCiAJSU5URUxfVkdBX0RFVklDRSgweDU5MUEsIGlu
-Zm8pLCAvKiBTUlYgR1QyICovIFwKLQlJTlRFTF9WR0FfREVWSUNFKDB4NTkxRCwgaW5mbykgLyog
-V0tTIEdUMiAqLworCUlOVEVMX1ZHQV9ERVZJQ0UoMHg1OTFELCBpbmZvKSwgLyogV0tTIEdUMiAq
-LyBcCisJSU5URUxfVkdBX0RFVklDRSgweDU5MUMsIGluZm8pICAvKiBVTFggR1QyICovCiAKICNk
-ZWZpbmUgSU5URUxfS0JMX0dUM19JRFMoaW5mbykgXAogCUlOVEVMX1ZHQV9ERVZJQ0UoMHg1OTIz
-LCBpbmZvKSwgLyogVUxUIEdUMyAqLyBcCi0tIAoyLjE3LjAKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
-YW4vbGlzdGluZm8vaWd0LWRldgo=
+RW0gU2V4LCAyMDE4LTA0LTI3IMOgcyAxNjowNSAtMDcwMCwgSm9zw6kgUm9iZXJ0byBkZSBTb3V6
+YSBlc2NyZXZldToKPiBUaGlzIFBDSSBJRCB3YXMgcmVjZW50bHkgYWRkZWQgdG8ga2VybmVsIGlu
+IGNvbW1pdAo+ICc2NzJlMzE0YjIxZGMgKCJkcm0vaTkxNS9rYmw6IEFkZCBLQkwgR1QyIHNrdSIp
+Jwo+IGJ1dCBub3QgYWRkZWQgaGVyZS4KClBsZWFzZSBzZWUgIltQQVRDSCBpZ3QgMS8zXSBsaWI6
+IHN5bmMgd2l0aCB0aGUgbmV3ZXIgaTkxNV9wY2lpZHMuaCBmcm9tCnRoZSBLZXJuZWwgKEtCTCAr
+IElDTCkiLgoKV2Ugc2hvdWxkIGp1c3QgYmUgY29weWluZyBpOTE1X3BjaWlkcy5oIGZyb20gdGhl
+IEtlcm5lbCB0byBoZXJlLCBzbwpib3RoIGZpbGVzIHN0YXkgaW4gc3luYyBhbmQgZGlmZmVyZW5j
+ZXMgYXJlIGVhc2llciB0byBzcG90LgoKVGhpcyBhbHNvIG1lYW5zIHRoYXQgdGhlIG5ldyBJRCBz
+aG91bGQgYmUgYWRkZWQgaW4gYSBkaWZmZXJlbnQgc3BvdC4KClRoYW5rcywKUGF1bG8KCj4gCj4g
+Q2M6IFJvZHJpZ28gVml2aSA8cm9kcmlnby52aXZpQGludGVsLmNvbT4KPiBDYzogSmFtZXMgQXVz
+bXVzIDxqYW1lcy5hdXNtdXNAaW50ZWwuY29tPgo+IFNpZ25lZC1vZmYtYnk6IEpvc8OpIFJvYmVy
+dG8gZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwuY29tPgo+IC0tLQo+ICBsaWIvaTkxNV9wY2lp
+ZHMuaCB8IDMgKystCj4gIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDEgZGVsZXRp
+b24oLSkKPiAKPiBkaWZmIC0tZ2l0IGEvbGliL2k5MTVfcGNpaWRzLmggYi9saWIvaTkxNV9wY2lp
+ZHMuaAo+IGluZGV4IDBiMmJhNDZmLi4zMzRkNjMyMSAxMDA2NDQKPiAtLS0gYS9saWIvaTkxNV9w
+Y2lpZHMuaAo+ICsrKyBiL2xpYi9pOTE1X3BjaWlkcy5oCj4gQEAgLTM1NCw3ICszNTQsOCBAQAo+
+ICAJSU5URUxfVkdBX0RFVklDRSgweDU5MTIsIGluZm8pLCAvKiBEVCAgR1QyICovIFwKPiAgCUlO
+VEVMX1ZHQV9ERVZJQ0UoMHg1OTFCLCBpbmZvKSwgLyogSGFsbyBHVDIgKi8gXAo+ICAJSU5URUxf
+VkdBX0RFVklDRSgweDU5MUEsIGluZm8pLCAvKiBTUlYgR1QyICovIFwKPiAtCUlOVEVMX1ZHQV9E
+RVZJQ0UoMHg1OTFELCBpbmZvKSAvKiBXS1MgR1QyICovCj4gKwlJTlRFTF9WR0FfREVWSUNFKDB4
+NTkxRCwgaW5mbyksIC8qIFdLUyBHVDIgKi8gXAo+ICsJSU5URUxfVkdBX0RFVklDRSgweDU5MUMs
+IGluZm8pICAvKiBVTFggR1QyICovCj4gIAo+ICAjZGVmaW5lIElOVEVMX0tCTF9HVDNfSURTKGlu
+Zm8pIFwKPiAgCUlOVEVMX1ZHQV9ERVZJQ0UoMHg1OTIzLCBpbmZvKSwgLyogVUxUIEdUMyAqLyBc
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYg
+bWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMu
+ZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
