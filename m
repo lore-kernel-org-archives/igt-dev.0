@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2399D6E466
- for <igt-dev@lists.freedesktop.org>; Tue,  1 May 2018 20:50:09 +0000 (UTC)
-Message-ID: <1525207789.2704.9.camel@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 31BB189FED
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 May 2018 20:55:56 +0000 (UTC)
+Message-ID: <1525208149.2704.11.camel@intel.com>
 From: Paulo Zanoni <paulo.r.zanoni@intel.com>
-Date: Tue, 01 May 2018 13:49:49 -0700
-In-Reply-To: <20180427200123.22903-3-paulo.r.zanoni@intel.com>
+Date: Tue, 01 May 2018 13:55:49 -0700
+In-Reply-To: <1b7b830b79dba95ca7f9c33b6f6ce7a7771fa80b.camel@intel.com>
 References: <20180427200123.22903-1-paulo.r.zanoni@intel.com>
- <20180427200123.22903-3-paulo.r.zanoni@intel.com>
+ <1b7b830b79dba95ca7f9c33b6f6ce7a7771fa80b.camel@intel.com>
 Mime-Version: 1.0
-Subject: Re: [igt-dev] [PATCH igt 3/3] lib/instdone.c: Add Gen11 Support
+Subject: Re: [igt-dev] [PATCH igt 1/3] lib: sync with the newer
+ i915_pciids.h from the Kernel (KBL + ICL)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,30 +22,41 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Javier Villavicencio <javier.villavicencio@intel.com>
+To: "Souza, Jose" <jose.souza@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Atwood, Matthew S" <matthew.s.atwood@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RW0gU2V4LCAyMDE4LTA0LTI3IMOgcyAxMzowMSAtMDcwMCwgUGF1bG8gWmFub25pIGVzY3JldmV1
-Ogo+IEZyb206IEphdmllciBWaWxsYXZpY2VuY2lvIDxqYXZpZXIudmlsbGF2aWNlbmNpb0BpbnRl
-bC5jb20+Cj4gCj4gQnNwZWM6IDExNDMxCgpJJ20gbm90IGFuIGV4cGVydCBpbiB0aGlzIGFyZWEs
-IGJ1dCB0aGUgYml0cyBzZWVtIHRvIG1hdGNoIHRoZSBzcGVjLApzbzoKClJldmlld2VkLWJ5OiBQ
-YXVsbyBaYW5vbmkgPHBhdWxvLnIuemFub25pQGludGVsLmNvbT4KCj4gCj4gU2lnbmVkLW9mZi1i
-eTogSmF2aWVyIFZpbGxhdmljZW5jaW8gPGphdmllci52aWxsYXZpY2VuY2lvQGludGVsLmNvbT4K
-PiAtLS0KPiAgbGliL2luc3Rkb25lLmMgfCAxMiArKysrKysrKysrKy0KPiAgMSBmaWxlIGNoYW5n
-ZWQsIDExIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKPiAKPiBkaWZmIC0tZ2l0IGEvbGli
-L2luc3Rkb25lLmMgYi9saWIvaW5zdGRvbmUuYwo+IGluZGV4IDUxMGZjZTY0Li5hODNmODgzNiAx
-MDA2NDQKPiAtLS0gYS9saWIvaW5zdGRvbmUuYwo+ICsrKyBiL2xpYi9pbnN0ZG9uZS5jCj4gQEAg
-LTQxNywxMCArNDE3LDIwIEBAIGluaXRfZ2VuOF9pbnN0ZG9uZSh2b2lkKQo+ICAJaW5pdF9nZW43
-NV9pbnN0ZG9uZSgpOwo+ICB9Cj4gIAo+ICtzdGF0aWMgdm9pZAo+ICtpbml0X2dlbjExX2luc3Rk
-b25lKHZvaWQpCj4gK3sKPiArCWdlbjZfaW5zdGRvbmUxX2JpdCgxIDw8IDI0LCAiVFNHMSIpOwo+
-ICsJZ2VuNl9pbnN0ZG9uZTFfYml0KDEgPDwgMTEsICJUREcxIik7Cj4gKwlpbml0X2dlbjhfaW5z
-dGRvbmUoKTsKPiArfQo+ICsKPiAgYm9vbAo+ICBpbml0X2luc3Rkb25lX2RlZmluaXRpb25zKHVp
-bnQzMl90IGRldmlkKQo+ICB7Cj4gLQlpZiAoSVNfR0VOOChkZXZpZCkgfHwgSVNfR0VOOShkZXZp
-ZCkgfHwgSVNfR0VOMTAoZGV2aWQpKSB7Cj4gKwlpZiAoSVNfR0VOMTEoZGV2aWQpKSB7Cj4gKwkJ
-aW5pdF9nZW4xMV9pbnN0ZG9uZSgpOwo+ICsJfSBlbHNlIGlmIChJU19HRU44KGRldmlkKSB8fCBJ
-U19HRU45KGRldmlkKSB8fAo+IElTX0dFTjEwKGRldmlkKSkgewo+ICAJCWluaXRfZ2VuOF9pbnN0
-ZG9uZSgpOwo+ICAJfSBlbHNlIGlmIChJU19HRU43KGRldmlkKSkgewo+ICAJCWluaXRfZ2VuN19p
-bnN0ZG9uZSgpOwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
-czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+RW0gU2V4LCAyMDE4LTA0LTI3IMOgcyAxNjo1OSAtMDcwMCwgU291emEsIEpvc2UgZXNjcmV2ZXU6
+Cj4gT24gRnJpLCAyMDE4LTA0LTI3IGF0IDEzOjAxIC0wNzAwLCBQYXVsbyBaYW5vbmkgd3JvdGU6
+Cj4gPiBJIGp1c3QgY29waWVkIHRoZSBLZXJuZWwgZmlsZSBpbnRvIHRoZSBJR1QgcmVwb3NpdG9y
+eS4KPiA+IAo+ID4gTmV3IElEczoKPiA+IC0gS0JMIEdUMiBza3UgZnJvbSA2NzJlMzE0YjIxZGMg
+KCJkcm0vaTkxNS9rYmw6IEFkZCBLQkwgR1QyIHNrdSIpCj4gPiAtIElDTCBJRHMgZnJvbSBkNTVj
+YjRmYTJjZjAgKCJkcm0vaTkxNS9pY2w6IEFkZCB0aGUgSUNMIFBDSSBJRHMiKQo+ID4gCj4gPiBD
+YzogTWF0dCBBdHdvb2QgPG1hdHRoZXcucy5hdHdvb2RAaW50ZWwuY29tPgo+ID4gU2lnbmVkLW9m
+Zi1ieTogUGF1bG8gWmFub25pIDxwYXVsby5yLnphbm9uaUBpbnRlbC5jb20+Cj4gCj4gUmV2aWV3
+ZWQtYnk6IEpvc2UgUm9iZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+CgpTZXJp
+ZXMgbWVyZ2VkLiBUaGFua3MgZXZlcnlib2R5IGZvciB0aGUgaGVscC4KCj4gCj4gPiAtLS0KPiA+
+ICBsaWIvaTkxNV9wY2lpZHMuaCB8IDEzICsrKysrKysrKysrKysKPiA+ICAxIGZpbGUgY2hhbmdl
+ZCwgMTMgaW5zZXJ0aW9ucygrKQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvbGliL2k5MTVfcGNpaWRz
+LmggYi9saWIvaTkxNV9wY2lpZHMuaAo+ID4gaW5kZXggMGIyYmE0NmYuLmJhYjcwZmY2IDEwMDY0
+NAo+ID4gLS0tIGEvbGliL2k5MTVfcGNpaWRzLmgKPiA+ICsrKyBiL2xpYi9pOTE1X3BjaWlkcy5o
+Cj4gPiBAQCAtMzQ5LDYgKzM0OSw3IEBACj4gPiAgI2RlZmluZSBJTlRFTF9LQkxfR1QyX0lEUyhp
+bmZvKQlcCj4gPiAgCUlOVEVMX1ZHQV9ERVZJQ0UoMHg1OTE2LCBpbmZvKSwgLyogVUxUIEdUMiAq
+LyBcCj4gPiAgCUlOVEVMX1ZHQV9ERVZJQ0UoMHg1OTE3LCBpbmZvKSwgLyogTW9iaWxlIEdUMiAq
+LyBcCj4gPiArCUlOVEVMX1ZHQV9ERVZJQ0UoMHg1OTFDLCBpbmZvKSwgLyogVUxYIEdUMiAqLyBc
+Cj4gPiAgCUlOVEVMX1ZHQV9ERVZJQ0UoMHg1OTIxLCBpbmZvKSwgLyogVUxUIEdUMkYgKi8gXAo+
+ID4gIAlJTlRFTF9WR0FfREVWSUNFKDB4NTkxRSwgaW5mbyksIC8qIFVMWCBHVDIgKi8gXAo+ID4g
+IAlJTlRFTF9WR0FfREVWSUNFKDB4NTkxMiwgaW5mbyksIC8qIERUICBHVDIgKi8gXAo+ID4gQEAg
+LTQzMSw0ICs0MzIsMTYgQEAKPiA+ICAJSU5URUxfVkdBX0RFVklDRSgweDVBNDQsIGluZm8pLCBc
+Cj4gPiAgCUlOVEVMX1ZHQV9ERVZJQ0UoMHg1QTRDLCBpbmZvKQo+ID4gIAo+ID4gKy8qIElDTCAq
+Lwo+ID4gKyNkZWZpbmUgSU5URUxfSUNMXzExX0lEUyhpbmZvKSBcCj4gPiArCUlOVEVMX1ZHQV9E
+RVZJQ0UoMHg4QTUwLCBpbmZvKSwgXAo+ID4gKwlJTlRFTF9WR0FfREVWSUNFKDB4OEE1MSwgaW5m
+byksIFwKPiA+ICsJSU5URUxfVkdBX0RFVklDRSgweDhBNUMsIGluZm8pLCBcCj4gPiArCUlOVEVM
+X1ZHQV9ERVZJQ0UoMHg4QTVELCBpbmZvKSwgXAo+ID4gKwlJTlRFTF9WR0FfREVWSUNFKDB4OEE1
+MiwgaW5mbyksIFwKPiA+ICsJSU5URUxfVkdBX0RFVklDRSgweDhBNUEsIGluZm8pLCBcCj4gPiAr
+CUlOVEVMX1ZHQV9ERVZJQ0UoMHg4QTVCLCBpbmZvKSwgXAo+ID4gKwlJTlRFTF9WR0FfREVWSUNF
+KDB4OEE3MSwgaW5mbyksIFwKPiA+ICsJSU5URUxfVkdBX0RFVklDRSgweDhBNzAsIGluZm8pCj4g
+PiArCj4gPiAgI2VuZGlmIC8qIF9JOTE1X1BDSUlEU19IICovCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
+YW4vbGlzdGluZm8vaWd0LWRldgo=
