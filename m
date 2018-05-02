@@ -1,59 +1,39 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: Matthew Auld <matthew.auld@intel.com>
+Date: Wed,  2 May 2018 20:17:00 +0100
+Message-Id: <20180502191700.28973-1-matthew.auld@intel.com>
+Subject: [Intel-gfx] [PATCH i-g-t] tests/gem_userptr_blits: test zero
+ user_size
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 02 May 2018 16:22:32 -0000
-Message-ID: <20180502162232.30663.42735@emeril.freedesktop.org>
-References: <20180502145551.2802-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20180502145551.2802-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliOiBD?=
- =?utf-8?q?lear_errno_when_reporting_err?=
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogbGliOiBDbGVhciBlcnJubyB3aGVuIHJlcG9y
-dGluZyBlcnIKVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVz
-LzQyNTcyLwpTdGF0ZSA6IHN1Y2Nlc3MKCj09IFN1bW1hcnkgPT0KCj0gQ0kgQnVnIExvZyAtIGNo
-YW5nZXMgZnJvbSBDSV9EUk1fNDEyMSAtPiBJR1RQV18xMzE1ID0KCj09IFN1bW1hcnkgLSBTVUND
-RVNTID09CgogIE5vIHJlZ3Jlc3Npb25zIGZvdW5kLgoKICBFeHRlcm5hbCBVUkw6IGh0dHBzOi8v
-cGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9hcGkvMS4wL3Nlcmllcy80MjU3Mi9yZXZpc2lvbnMv
-MS9tYm94LwoKPT0gS25vd24gaXNzdWVzID09CgogIEhlcmUgYXJlIHRoZSBjaGFuZ2VzIGZvdW5k
-IGluIElHVFBXXzEzMTUgdGhhdCBjb21lIGZyb20ga25vd24gaXNzdWVzOgoKICA9PT0gSUdUIGNo
-YW5nZXMgPT09CgogICAgPT09PSBJc3N1ZXMgaGl0ID09PT0KCiAgICBpZ3RAZ2VtX2V4ZWNfc3Vz
-cGVuZEBiYXNpYy1zMzoKICAgICAgZmktaXZiLTM1MjBtOiAgICAgICBQQVNTIC0+IERNRVNHLVdB
-Uk4gKGZkbyMxMDYwODQpCgogICAgaWd0QGdlbV9leGVjX3N1c3BlbmRAYmFzaWMtczQtZGV2aWNl
-czoKICAgICAgZmkta2JsLTc1MDB1OiAgICAgICBQQVNTIC0+IERNRVNHLVdBUk4gKGZkbyMxMDUx
-MjgpCgogICAgCiAgICA9PT09IFBvc3NpYmxlIGZpeGVzID09PT0KCiAgICBpZ3RAa21zX3BpcGVf
-Y3JjX2Jhc2ljQHN1c3BlbmQtcmVhZC1jcmMtcGlwZS1iOgogICAgICBmaS1zbmItMjUyMG06ICAg
-ICAgIElOQ09NUExFVEUgKGZkbyMxMDM3MTMpIC0+IFBBU1MKCiAgICBpZ3RAa21zX3BpcGVfY3Jj
-X2Jhc2ljQHN1c3BlbmQtcmVhZC1jcmMtcGlwZS1jOgogICAgICBmaS1pdmItMzUyMG06ICAgICAg
-IERNRVNHLVdBUk4gKGZkbyMxMDYwODQpIC0+IFBBU1MKCiAgICAKICBmZG8jMTAzNzEzIGh0dHBz
-Oi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzcxMwogIGZkbyMxMDUx
-MjggaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA1MTI4CiAg
-ZmRvIzEwNjA4NCBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0x
-MDYwODQKCgo9PSBQYXJ0aWNpcGF0aW5nIGhvc3RzICg0MCAtPiAzNykgPT0KCiAgTWlzc2luZyAg
-ICAoMyk6IGZpLWN0Zy1wODYwMCBmaS1pbGstbTU0MCBmaS1za2wtNjcwMGhxIAoKCj09IEJ1aWxk
-IGNoYW5nZXMgPT0KCiAgICAqIElHVDogSUdUXzQ0NTYgLT4gSUdUUFdfMTMxNQoKICBDSV9EUk1f
-NDEyMTogZDRmNzUyMGQ4MGFiODNlYTkwNTNlZTA4MGRmMDlhMjM0NjNiNjk2NiBAIGdpdDovL2Fu
-b25naXQuZnJlZWRlc2t0b3Aub3JnL2dmeC1jaS9saW51eAogIElHVFBXXzEzMTU6IGh0dHBzOi8v
-aW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTMxNS8KICBJR1RfNDQ1Njog
-NDM3NjE1MzRjNjQ4MmRjNjdiOWMzZDhlZWVjZDQyNWVmNDBiM2M0YyBAIGdpdDovL2Fub25naXQu
-ZnJlZWRlc2t0b3Aub3JnL3hvcmcvYXBwL2ludGVsLWdwdS10b29scwogIHBpZ2xpdF80NDU2OiAz
-MGI5OTJiZGMwNDcwNzNlMWZlOTliMWFjNjIyZjAyNjYxOGE4MDgxIEAgZ2l0Oi8vYW5vbmdpdC5m
-cmVlZGVza3RvcC5vcmcvcGlnbGl0Cgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNlZTog
-aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMzE1L2lzc3Vl
-cy5odG1sCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
-dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+Q2hlY2sgdGhhdCB0aGUga2VybmVsIHJlamVjdHMgYSB6ZXJvIHVzZXJfc2l6ZS4KClNpZ25lZC1v
+ZmYtYnk6IE1hdHRoZXcgQXVsZCA8bWF0dGhldy5hdWxkQGludGVsLmNvbT4KQ2M6IENocmlzIFdp
+bHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgotLS0KIHRlc3RzL2dlbV91c2VycHRyX2Js
+aXRzLmMgfCA4ICsrKysrKysrCiAxIGZpbGUgY2hhbmdlZCwgOCBpbnNlcnRpb25zKCspCgpkaWZm
+IC0tZ2l0IGEvdGVzdHMvZ2VtX3VzZXJwdHJfYmxpdHMuYyBiL3Rlc3RzL2dlbV91c2VycHRyX2Js
+aXRzLmMKaW5kZXggODQ5MDU0YWQuLjdlM2I2ZWYzIDEwMDY0NAotLS0gYS90ZXN0cy9nZW1fdXNl
+cnB0cl9ibGl0cy5jCisrKyBiL3Rlc3RzL2dlbV91c2VycHRyX2JsaXRzLmMKQEAgLTQ0Miw2ICs0
+NDIsMTQgQEAgc3RhdGljIGludCB0ZXN0X2lucHV0X2NoZWNraW5nKGludCBmZCkKIAlyZXQgPSBk
+cm1Jb2N0bChmZCwgTE9DQUxfSU9DVExfSTkxNV9HRU1fVVNFUlBUUiwgJnVzZXJwdHIpOwogCWln
+dF9hc3NlcnRfbmVxKHJldCwgMCk7CiAKKwkvKiBaZXJvIHVzZXJfc2l6ZS4gKi8KKwltZW1zZXQo
+JnVzZXJwdHIsIDAsIHNpemVvZih1c2VycHRyKSk7CisJdXNlcnB0ci51c2VyX3B0ciA9IDA7CisJ
+dXNlcnB0ci51c2VyX3NpemUgPSAwOworCXVzZXJwdHIuZmxhZ3MgPSAwOworCXJldCA9IGRybUlv
+Y3RsKGZkLCBMT0NBTF9JT0NUTF9JOTE1X0dFTV9VU0VSUFRSLCAmdXNlcnB0cik7CisJaWd0X2Fz
+c2VydF9uZXEocmV0LCAwKTsKKwogCXJldHVybiAwOwogfQogCi0tIAoyLjE3LjAKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkludGVsLWdmeCBtYWlsaW5n
+IGxpc3QKSW50ZWwtZ2Z4QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVk
+ZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ludGVsLWdmeAo=
