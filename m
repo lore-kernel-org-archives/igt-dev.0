@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C50926E4C0
- for <igt-dev@lists.freedesktop.org>; Mon,  7 May 2018 21:20:50 +0000 (UTC)
-References: <20180506221712.21823-1-lionel.g.landwerlin@intel.com>
- <20180506221712.21823-2-lionel.g.landwerlin@intel.com>
- <20180507091455.GI4638@kdec5-desk.ger.corp.intel.com>
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <edaf320a-5653-aa53-7b09-377f588014dc@intel.com>
-Date: Mon, 7 May 2018 22:20:48 +0100
-MIME-Version: 1.0
-In-Reply-To: <20180507091455.GI4638@kdec5-desk.ger.corp.intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib: create new dependency for
- aubdump
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C02A46E4FC
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 May 2018 23:34:50 +0000 (UTC)
+From: Antonio Argenziano <antonio.argenziano@intel.com>
+Date: Mon,  7 May 2018 16:34:50 -0700
+Message-Id: <20180507233450.13055-1-antonio.argenziano@intel.com>
+Subject: [igt-dev] [PATCH i-g-t] lib/intel_batchbuffer: Minor cosmetic
+ change in copyright header
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,28 +14,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Katarzyna Dec <katarzyna.dec@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMDcvMDUvMTggMTA6MTQsIEthdGFyenluYSBEZWMgd3JvdGU6Cj4gT24gU3VuLCBNYXkgMDYs
-IDIwMTggYXQgMTE6MTc6MTJQTSArMDEwMCwgTGlvbmVsIExhbmR3ZXJsaW4gd3JvdGU6Cj4+IFdo
-aWxlIHRyeWluZyB0byBjYXB0dXJlIGFuIGF1YmR1bXAgb24gYSBsaWJ2YSBkZW1vLCBJIHJ1biBp
-bnRvIGEgY3Jhc2gKPj4gaW4gaW50ZWxfYmF0Y2hidWZmZXIuYy4gVHVybiBvdXQgZXZlcnkgZHJp
-dmVyIGhhcyBpdCdzIG93bgo+PiBpbnRlbF9iYXRjaGJ1ZmZlci5jIHdpdGggc2ltaWxhciBzeW1i
-b2xzIGFuZCBiZWNhdXNlIGF1YmR1bXAgcHVsbHMgaW4KPj4gbGliaWd0LCB0aGluZ3MgZ28gd3Jv
-bmcuCj4+Cj4+IE9uZSBjb3VsZCBhcmd1ZSB0aGF0IHRoZXJlIGlzIHNvbWV0aGluZyB3cm9uZyB3
-aXRoCj4+IGludGVsLXZhYXBpLWRyaXZlcidzIGJ1aWxkIGJ1dCBJIGFsc28gdGhpbmsgYXViZHVt
-cCBzaG91bGQgZW1iZWQgYXMKPj4gbGl0dGxlIGFzIHBvc3NpYmxlLgo+Pgo+PiBUaGlzIGNoYW5n
-ZSBjcmVhdGVzIGEgdmVyeSBzbWFsbCBsaWJyYXJ5IHRoYXQgZW1iZWRzIGp1c3QgdGhlIG5lZWRl
-ZAo+PiBiaXRzIG9mIGlndCBmb3IgYXViZHVtcC4KPj4KPj4gU2lnbmVkLW9mZi1ieTogTGlvbmVs
-IExhbmR3ZXJsaW4gPGxpb25lbC5nLmxhbmR3ZXJsaW5AaW50ZWwuY29tPgo+IExHVE0KPiBSZXZp
-ZXdlZC1ieTogS2F0YXJ6eW5hIERlYyA8a2F0YXJ6eW5hLmRlY0BpbnRlbC5jb20+Cj4gS2FzaWEg
-OikKPgpUaGFua3MgYSBsb3QsIHB1c2hlZC4KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
-Zm8vaWd0LWRldgo=
+UmVtb3ZlZCBzb21lIHRyYWlsaW5nIHdoaXRlIHNwYWNlcy4KClNpZ25lZC1vZmYtYnk6IEFudG9u
+aW8gQXJnZW56aWFubyA8YW50b25pby5hcmdlbnppYW5vQGludGVsLmNvbT4KLS0tCiBsaWIvaW50
+ZWxfYmF0Y2hidWZmZXIuYyB8IDEwICsrKysrLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA1IGluc2Vy
+dGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2JhdGNoYnVm
+ZmVyLmMgYi9saWIvaW50ZWxfYmF0Y2hidWZmZXIuYwppbmRleCBmODdlNmJlZC4uY2YzZDgzYTMg
+MTAwNjQ0Ci0tLSBhL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jCisrKyBiL2xpYi9pbnRlbF9iYXRj
+aGJ1ZmZlci5jCkBAIC0xLDggKzEsOCBAQAogLyoqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqCi0gKiAKKyAqCiAg
+KiBDb3B5cmlnaHQgMjAwNiBUdW5nc3RlbiBHcmFwaGljcywgSW5jLiwgQ2VkYXIgUGFyaywgVGV4
+YXMuCiAgKiBBbGwgUmlnaHRzIFJlc2VydmVkLgotICogCisgKgogICogUGVybWlzc2lvbiBpcyBo
+ZXJlYnkgZ3JhbnRlZCwgZnJlZSBvZiBjaGFyZ2UsIHRvIGFueSBwZXJzb24gb2J0YWluaW5nIGEK
+ICAqIGNvcHkgb2YgdGhpcyBzb2Z0d2FyZSBhbmQgYXNzb2NpYXRlZCBkb2N1bWVudGF0aW9uIGZp
+bGVzICh0aGUKICAqICJTb2Z0d2FyZSIpLCB0byBkZWFsIGluIHRoZSBTb2Z0d2FyZSB3aXRob3V0
+IHJlc3RyaWN0aW9uLCBpbmNsdWRpbmcKQEAgLTEwLDExICsxMCwxMSBAQAogICogZGlzdHJpYnV0
+ZSwgc3ViIGxpY2Vuc2UsIGFuZC9vciBzZWxsIGNvcGllcyBvZiB0aGUgU29mdHdhcmUsIGFuZCB0
+bwogICogcGVybWl0IHBlcnNvbnMgdG8gd2hvbSB0aGUgU29mdHdhcmUgaXMgZnVybmlzaGVkIHRv
+IGRvIHNvLCBzdWJqZWN0IHRvCiAgKiB0aGUgZm9sbG93aW5nIGNvbmRpdGlvbnM6Ci0gKiAKKyAq
+CiAgKiBUaGUgYWJvdmUgY29weXJpZ2h0IG5vdGljZSBhbmQgdGhpcyBwZXJtaXNzaW9uIG5vdGlj
+ZSAoaW5jbHVkaW5nIHRoZQogICogbmV4dCBwYXJhZ3JhcGgpIHNoYWxsIGJlIGluY2x1ZGVkIGlu
+IGFsbCBjb3BpZXMgb3Igc3Vic3RhbnRpYWwgcG9ydGlvbnMKICAqIG9mIHRoZSBTb2Z0d2FyZS4K
+LSAqIAorICoKICAqIFRIRSBTT0ZUV0FSRSBJUyBQUk9WSURFRCAiQVMgSVMiLCBXSVRIT1VUIFdB
+UlJBTlRZIE9GIEFOWSBLSU5ELCBFWFBSRVNTCiAgKiBPUiBJTVBMSUVELCBJTkNMVURJTkcgQlVU
+IE5PVCBMSU1JVEVEIFRPIFRIRSBXQVJSQU5USUVTIE9GCiAgKiBNRVJDSEFOVEFCSUxJVFksIEZJ
+VE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFIEFORCBOT04tSU5GUklOR0VNRU5ULgpAQCAt
+MjIsNyArMjIsNyBAQAogICogQU5ZIENMQUlNLCBEQU1BR0VTIE9SIE9USEVSIExJQUJJTElUWSwg
+V0hFVEhFUiBJTiBBTiBBQ1RJT04gT0YgQ09OVFJBQ1QsCiAgKiBUT1JUIE9SIE9USEVSV0lTRSwg
+QVJJU0lORyBGUk9NLCBPVVQgT0YgT1IgSU4gQ09OTkVDVElPTiBXSVRIIFRIRQogICogU09GVFdB
+UkUgT1IgVEhFIFVTRSBPUiBPVEhFUiBERUFMSU5HUyBJTiBUSEUgU09GVFdBUkUuCi0gKiAKKyAq
+CiAgKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioq
+KioqKioqKioqKioqKioqKioqKiovCiAKICNpbmNsdWRlIDxpbnR0eXBlcy5oPgotLSAKMi4xNi4y
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
+IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
+LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
