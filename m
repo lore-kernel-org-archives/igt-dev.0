@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 675C389AC2
- for <igt-dev@lists.freedesktop.org>; Mon, 14 May 2018 10:19:39 +0000 (UTC)
-From: Katarzyna Dec <katarzyna.dec@intel.com>
-Date: Mon, 14 May 2018 12:19:30 +0200
-Message-Id: <20180514101930.27085-1-katarzyna.dec@intel.com>
-Subject: [igt-dev] [PATCH i-g-t] lib/igt_device: Add information why cannot
- drop drm master
+References: <20180514080251.11224-1-chris@chris-wilson.co.uk>
+ <20180514080251.11224-2-chris@chris-wilson.co.uk>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <2d1261aa-f9cb-8fe9-3d28-67e6beb39b09@linux.intel.com>
+Date: Mon, 14 May 2018 11:20:15 +0100
+MIME-Version: 1.0
+In-Reply-To: <20180514080251.11224-2-chris@chris-wilson.co.uk>
+Content-Language: en-GB
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 2/6] lib/audio: Replace
+ sqrt(a*a + b*b) with hypot(a, b)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,28 +16,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-TGV0J3MgYWRkIGFkZGl0aW9uYWwgaW5mb3JtYXRpb24gdG8gaWd0X2RldmljZV9kcm9wX21hc3Rl
-cgppbiBjYXNlIHdlIHRyeSB0byBydW4gdGVzdHMgd2l0aCBlLmcuIHgxMSBlbmFibGVkLgoKU2ln
-bmVkLW9mZi1ieTogS2F0YXJ6eW5hIERlYyA8a2F0YXJ6eW5hLmRlY0BpbnRlbC5jb20+CkNjOiBD
-aHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KLS0tCiBsaWIvaWd0X2Rldmlj
-ZS5jIHwgNiArKysrKy0KIDEgZmlsZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDEgZGVsZXRp
-b24oLSkKCmRpZmYgLS1naXQgYS9saWIvaWd0X2RldmljZS5jIGIvbGliL2lndF9kZXZpY2UuYwpp
-bmRleCA4YTJkZDBlMy4uOTZmZGU4OTkgMTAwNjQ0Ci0tLSBhL2xpYi9pZ3RfZGV2aWNlLmMKKysr
-IGIvbGliL2lndF9kZXZpY2UuYwpAQCAtNzQsNSArNzQsOSBAQCBpbnQgX19pZ3RfZGV2aWNlX2Ry
-b3BfbWFzdGVyKGludCBmZCkKICAqLwogdm9pZCBpZ3RfZGV2aWNlX2Ryb3BfbWFzdGVyKGludCBm
-ZCkKIHsKLQlpZ3RfYXNzZXJ0X2VxKF9faWd0X2RldmljZV9kcm9wX21hc3RlcihmZCksIDApOwor
-CWlmIChfX2lndF9kZXZpY2VfZHJvcF9tYXN0ZXIoZmQpKSB7CisJCWlndF9yZXF1aXJlX2YoX19p
-Z3RfZGV2aWNlX2Ryb3BfbWFzdGVyKGZkKSA9PSAwLAorCQkJICAgICAgIkNhbid0IGRyb3AgRFJN
-IG1hc3RlciwgIgorCQkJICAgICAgInBsZWFzZSBjaGVjayBpZiBubyBvdGhlciBEUk0gY2xpZW50
-IGlzIHJ1bm5pbmcuXG4iKTsKKwl9CiB9Ci0tIAoyLjE0LjMKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
-YW4vbGlzdGluZm8vaWd0LWRldgo=
+Ck9uIDE0LzA1LzIwMTggMDk6MDIsIENocmlzIFdpbHNvbiB3cm90ZToKPiBTaWduZWQtb2ZmLWJ5
+OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KPiAtLS0KPiAgIGxpYi9p
+Z3RfYXVkaW8uYyB8IDQgKy0tLQo+ICAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAz
+IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS9saWIvaWd0X2F1ZGlvLmMgYi9saWIvaWd0
+X2F1ZGlvLmMKPiBpbmRleCAyMzIxZDFjNmUuLjIyOWNlNmM2OSAxMDA2NDQKPiAtLS0gYS9saWIv
+aWd0X2F1ZGlvLmMKPiArKysgYi9saWIvaWd0X2F1ZGlvLmMKPiBAQCAtMjY2LDkgKzI2Niw3IEBA
+IGJvb2wgYXVkaW9fc2lnbmFsX2RldGVjdChzdHJ1Y3QgYXVkaW9fc2lnbmFsICpzaWduYWwsIGlu
+dCBjaGFubmVscywKPiAgIAkJbWF4ID0gMDsKPiAgIAo+ICAgCQlmb3IgKGkgPSAwOyBpIDwgZnJh
+bWVzIC8gMjsgaSsrKSB7Cj4gLQkJCWFtcGxpdHVkZVtpXSA9IHNxcnQoZGF0YVtpXSAqIGRhdGFb
+aV0gKwo+IC0JCQkJCSAgICBkYXRhW2ZyYW1lcyAtIGldICoKPiAtCQkJCQkgICAgZGF0YVtmcmFt
+ZXMgLSBpXSk7Cj4gKwkJCWFtcGxpdHVkZVtpXSA9IGh5cG90KGRhdGFbaV0sIGRhdGFbZnJhbWVz
+IC0gaV0pOwo+ICAgCQkJaWYgKGFtcGxpdHVkZVtpXSA+IG1heCkKPiAgIAkJCQltYXggPSBhbXBs
+aXR1ZGVbaV07Cj4gICAJCX0KPiAKClJldmlld2VkLWJ5OiBUdnJ0a28gVXJzdWxpbiA8dHZydGtv
+LnVyc3VsaW5AaW50ZWwuY29tPgoKUmVnYXJkcywKClR2cnRrbwpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2lndC1kZXYK
