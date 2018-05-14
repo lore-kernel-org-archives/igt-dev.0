@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 368CF898CC
- for <igt-dev@lists.freedesktop.org>; Mon, 14 May 2018 11:43:11 +0000 (UTC)
-From: Mika Kahola <mika.kahola@intel.com>
-Date: Mon, 14 May 2018 14:43:08 +0300
-Message-Id: <1526298188-7448-1-git-send-email-mika.kahola@intel.com>
-Subject: [igt-dev] [igt-dev CI TEST] igt/tests/kms_plane_multiple: Disable
- framebuffer compression
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A0F6C89A34
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 May 2018 12:39:24 +0000 (UTC)
+MIME-Version: 1.0
+From: Chris Wilson <chris@chris-wilson.co.uk>
+References: <20180514101930.27085-1-katarzyna.dec@intel.com>
+ <20180514113722.28594-1-katarzyna.dec@intel.com>
+In-Reply-To: <20180514113722.28594-1-katarzyna.dec@intel.com>
+Message-ID: <152630155962.18532.14957894070207895837@mail.alporthouse.com>
+Date: Mon, 14 May 2018 13:39:19 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t v2] lib/igt_device: Add information why
+ cannot drop drm master
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,35 +18,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Katarzyna Dec <katarzyna.dec@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RGlzYWJsZSBmcmFtZWJ1ZmZlciBjb21wcmVzc2lvbiB3aGVuIGV4ZWN1dGlvbiB0ZXN0IHdpdGgg
-bXVsdGlwbGUgcGxhbmVzLgoKU2lnbmVkLW9mZi1ieTogTWlrYSBLYWhvbGEgPG1pa2Eua2Fob2xh
-QGludGVsLmNvbT4KLS0tCiB0ZXN0cy9rbXNfcGxhbmVfbXVsdGlwbGUuYyB8IDcgKysrKysrKwog
-MSBmaWxlIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19w
-bGFuZV9tdWx0aXBsZS5jIGIvdGVzdHMva21zX3BsYW5lX211bHRpcGxlLmMKaW5kZXggZTYxYmM4
-NC4uOWFlMjc1NiAxMDA2NDQKLS0tIGEvdGVzdHMva21zX3BsYW5lX211bHRpcGxlLmMKKysrIGIv
-dGVzdHMva21zX3BsYW5lX211bHRpcGxlLmMKQEAgLTM2LDYgKzM2LDkgQEAgSUdUX1RFU1RfREVT
-Q1JJUFRJT04oIlRlc3QgYXRvbWljIG1vZGUgc2V0dGluZyB3aXRoIG11bHRpcGxlIHBsYW5lcyAi
-KTsKICNkZWZpbmUgU0laRV9DVVJTT1IgICAgIDEyOAogI2RlZmluZSBMT09QX0ZPUkVWRVIgICAg
-IC0xCiAKKyNkZWZpbmUgZmJjX2VuYWJsZSgpIGlndF9zZXRfbW9kdWxlX3BhcmFtX2ludCgiZW5h
-YmxlX2ZiYyIsIDEpCisjZGVmaW5lIGZiY19kaXNhYmxlKCkgaWd0X3NldF9tb2R1bGVfcGFyYW1f
-aW50KCJlbmFibGVfZmJjIiwgMCkKKwogdHlwZWRlZiBzdHJ1Y3QgewogCWZsb2F0IHJlZDsKIAlm
-bG9hdCBncmVlbjsKQEAgLTY3LDYgKzcwLDggQEAgc3RydWN0IHsKICAqLwogc3RhdGljIHZvaWQg
-dGVzdF9pbml0KGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsIGludCBuX3BsYW5lcykKIHsK
-KwlmYmNfZGlzYWJsZSgpOworCiAJZGF0YS0+cGlwZV9jcmMgPSBpZ3RfcGlwZV9jcmNfbmV3KGRh
-dGEtPmRybV9mZCwgcGlwZSwgSU5URUxfUElQRV9DUkNfU09VUkNFX0FVVE8pOwogCiAJZGF0YS0+
-cGxhbmUgPSBjYWxsb2Mobl9wbGFuZXMsIHNpemVvZihkYXRhLT5wbGFuZSkpOwpAQCAtMTAyLDYg
-KzEwNyw4IEBAIHN0YXRpYyB2b2lkIHRlc3RfZmluaShkYXRhX3QgKmRhdGEsIGlndF9vdXRwdXRf
-dCAqb3V0cHV0LCBpbnQgbl9wbGFuZXMpCiAJaWd0X3JlbW92ZV9mYihkYXRhLT5kcm1fZmQsIGRh
-dGEtPmZiKTsKIAogCWlndF9kaXNwbGF5X3Jlc2V0KCZkYXRhLT5kaXNwbGF5KTsKKworCWZiY19l
-bmFibGUoKTsKIH0KIAogc3RhdGljIHZvaWQKLS0gCjIuNy40CgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2lndC1kZXYK
+UXVvdGluZyBLYXRhcnp5bmEgRGVjICgyMDE4LTA1LTE0IDEyOjM3OjIyKQo+IExldCdzIGFkZCBh
+ZGRpdGlvbmFsIGluZm9ybWF0aW9uIHRvIGlndF9kZXZpY2VfZHJvcF9tYXN0ZXIKPiBpbiBjYXNl
+IHdlIHRyeSB0byBydW4gdGVzdHMgd2l0aCBlLmcuIHgxMSBlbmFibGVkLgo+IAo+IHYyOiBDaGFu
+Z2VkIGNvbW1lbnQgYW5kIGFkZGVkIGxpc3RpbmcgY2xpZW50cy4KPiAKPiBTaWduZWQtb2ZmLWJ5
+OiBLYXRhcnp5bmEgRGVjIDxrYXRhcnp5bmEuZGVjQGludGVsLmNvbT4KPiBDYzogQ2hyaXMgV2ls
+c29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Cj4gLS0tCj4gIGxpYi9pZ3RfZGV2aWNlLmMg
+fCA2ICsrKysrLQo+ICAxIGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9u
+KC0pCj4gCj4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZGV2aWNlLmMgYi9saWIvaWd0X2RldmljZS5j
+Cj4gaW5kZXggOGEyZGQwZTMuLmIyYTBhMTYwIDEwMDY0NAo+IC0tLSBhL2xpYi9pZ3RfZGV2aWNl
+LmMKPiArKysgYi9saWIvaWd0X2RldmljZS5jCj4gQEAgLTc0LDUgKzc0LDkgQEAgaW50IF9faWd0
+X2RldmljZV9kcm9wX21hc3RlcihpbnQgZmQpCj4gICAqLwo+ICB2b2lkIGlndF9kZXZpY2VfZHJv
+cF9tYXN0ZXIoaW50IGZkKQo+ICB7Cj4gLSAgICAgICBpZ3RfYXNzZXJ0X2VxKF9faWd0X2Rldmlj
+ZV9kcm9wX21hc3RlcihmZCksIDApOwo+ICsgICAgICAgaWYgKF9faWd0X2RldmljZV9kcm9wX21h
+c3RlcihmZCkpIHsKPiArICAgICAgICAgICAgICAgaWd0X2RlYnVnZnNfZHVtcChmZCwgImNsaWVu
+dHMiKTsKPiArICAgICAgICAgICAgICAgaWd0X3JlcXVpcmVfZihfX2lndF9kZXZpY2VfZHJvcF9t
+YXN0ZXIoZmQpID09IDAsCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIkZhaWxlZCB0
+byBkcm9wIERSTSBtYXN0ZXIuXG4iKTsKPiArICAgICAgIH0KCkkgc3RpbGwgc3RhbmQgYnkgdGhp
+cyBzaG91bGQgYmUgYW4gYXNzZXJ0LgotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
+cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9pZ3QtZGV2Cg==
