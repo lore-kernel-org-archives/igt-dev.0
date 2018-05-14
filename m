@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
- by gabe.freedesktop.org (Postfix) with ESMTP id CCB586E04E
- for <igt-dev@lists.freedesktop.org>; Mon, 14 May 2018 13:17:45 +0000 (UTC)
-Date: Mon, 14 May 2018 15:17:34 +0200
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20180514131734.ms6wvvfo24uip7us@flea>
-References: <cover.4467e4f79584ac18248b9664cbe4a81a2a610ecf.1524555464.git-series.maxime.ripard@bootlin.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE3376E04C
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 May 2018 13:15:03 +0000 (UTC)
+References: <20180320134741.1442-1-lionel.g.landwerlin@intel.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <e6742fcd-0991-d82a-ff79-10a9df2399c0@intel.com>
+Date: Mon, 14 May 2018 14:15:01 +0100
 MIME-Version: 1.0
-In-Reply-To: <cover.4467e4f79584ac18248b9664cbe4a81a2a610ecf.1524555464.git-series.maxime.ripard@bootlin.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 00/12] chamelium: Test the plane formats
+In-Reply-To: <20180320134741.1442-1-lionel.g.landwerlin@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib: intel: report GT size from the
+ database if available
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,86 +18,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1956647141=="
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Paul Kocialkowski <paul.kocialkowski@bootlin.com>, eben@raspberrypi.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============1956647141==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="b6ov5c3cyywpalr5"
-Content-Disposition: inline
-
-
---b6ov5c3cyywpalr5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Apr 24, 2018 at 09:46:34AM +0200, Maxime Ripard wrote:
-> Hi,
->=20
-> Here is a first non-RFC version of a serie that aims at starting to test
-> the plane formats using the Chamelium over the HDMI. This was tested using
-> the vc4 DRM driver found on the RaspberryPi.
->=20
-> There's been a number of changes from the RFC thanks to the feedback from
-> Eric Anholt.
->=20
-> The series now relies mostly on igt_fb, with some decoupling from cairo a=
-nd
-> a bunch of new helpers to aim at being able to convert igt_fb to arbitrary
-> DRM formats. The list of formats have been extended a bit, but is quite
-> small at this point. We also rely solely on pixman at the moment to perfo=
-rm
-> the format conversion.
->=20
-> However, since it's now abstracted away from the igt_fb users, we can
-> easily add some routines to convert to additional formats if needed. And
-> since the code was so close now, it's been integrated into kms_chamelium.
-
-Any comments?
-
-Maxime
-
---=20
-Maxime Ripard, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---b6ov5c3cyywpalr5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlr5jG0ACgkQ0rTAlCFN
-r3RkGw//YyfJAub5MYnNmxM+0oznftRV79JNEfV1lPQTt326kRwObHVFcxWA6U/W
-Gt5Jm8R0hr7RD9AyQQCBkYsHx9PryT67UuOuU2FxO/RJQfU6DeCC1Bsh/Qz95Sdx
-Rmj415GCYcVc5gR/+LdUC9SHhkCQ0trDQwKZoKsgr0mU9DWpYnuFuYPd7fMOsAPV
-ifmLppi5XxIRqeuqkmaz3ohU/lvaN8ojVeAKt+pRhzWkh0HDE9zwJe0hWxegejmb
-fBO4e0U/Rj6E2qBoGae5wLDbFAuUchQPnV/iXmsvy8MOe+1NR34tIw/Sokc81PTp
-hR32NMb9MRRwIvkUVxZ/eFRPwa08aiqn3al/9Ue21fKzTTwEMFj5W1aLY6MZlI/p
-LZyq84iZ29UtRiAxKuaDQskK2muzAm0FMdiYvATpG7pu/JZECeOmQS8s2pV3x7b5
-qXErSYT0opM9CApG5VqJXDEJgg3vGhI107kStf0KSkl/nVQUG2gzcIJhLrkPlib9
-8T9w7zr6ogGeS7f34Oq+Izf4ztW+VPZLx6jhKm4dsLAJUwJU7jBOBuH85/l9cf7a
-biTgmAbw+f3S37T66k6ppXIjD4+1dxLxBY1oAmOi4xxYEmRuyC2BrO4g+dYriitA
-uXQU7phh9WEW0n8Nh2m0zChHPnMzbcClJdkY7+dPmzJhf+C1/rQ=
-=hdnY
------END PGP SIGNATURE-----
-
---b6ov5c3cyywpalr5--
-
---===============1956647141==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============1956647141==--
+UGluZz8KCk9uIDIwLzAzLzE4IDEzOjQ3LCBMaW9uZWwgTGFuZHdlcmxpbiB3cm90ZToKPiBUaGUg
+c2NoZW1lIGlmIGdldHRpbmcgdGhlIEdUIHNpemUgZnJvbSB0aGUgUENJLWlkIGRvZXNuJ3Qgd29y
+ayBhbnltb3JlCj4gb24gQ29mZmVlbGFrZS4KPgo+IFNpZ25lZC1vZmYtYnk6IExpb25lbCBMYW5k
+d2VybGluIDxsaW9uZWwuZy5sYW5kd2VybGluQGludGVsLmNvbT4KPiBCdWd6aWxsYTogaHR0cHM6
+Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA1NDUxLCBodHRwczovL2J1
+Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDE3NDAKPiAtLS0KPiAgIGxpYi9p
+bnRlbF9kZXZpY2VfaW5mby5jIHwgOSArKysrKysrKysKPiAgIDEgZmlsZSBjaGFuZ2VkLCA5IGlu
+c2VydGlvbnMoKykKPgo+IGRpZmYgLS1naXQgYS9saWIvaW50ZWxfZGV2aWNlX2luZm8uYyBiL2xp
+Yi9pbnRlbF9kZXZpY2VfaW5mby5jCj4gaW5kZXggMWM3MTA3MzMuLmMxMDRjOWM0IDEwMDY0NAo+
+IC0tLSBhL2xpYi9pbnRlbF9kZXZpY2VfaW5mby5jCj4gKysrIGIvbGliL2ludGVsX2RldmljZV9p
+bmZvLmMKPiBAQCAtNDEwLDggKzQxMCwxNyBAQCB1bnNpZ25lZCBpbnRlbF9nZW4odWludDE2X3Qg
+ZGV2aWQpCj4gICAgKi8KPiAgIHVuc2lnbmVkIGludGVsX2d0KHVpbnQxNl90IGRldmlkKQo+ICAg
+ewo+ICsJY29uc3Qgc3RydWN0IGludGVsX2RldmljZV9pbmZvICpkZXZpbmZvID0gaW50ZWxfZ2V0
+X2RldmljZV9pbmZvKGRldmlkKTsKPiAgIAl1bnNpZ25lZCBtYXNrID0gaW50ZWxfZ2VuKGRldmlk
+KTsKPiAgIAo+ICsJLyogSWYgaW4gdGhlIGRhdGFiYXNlLCBqdXN0IHVzZSB0aGF0IGluZm9ybWF0
+aW9uLiAqLwo+ICsJaWYgKGRldmluZm8tPmd0ICE9IDApCj4gKwkJcmV0dXJuIGRldmluZm8tPmd0
+IC0gMTsKPiArCj4gKwkvKgo+ICsJICogVGhpcyBzY2hlbWUgZG9lc24ndCB3b3JrIG9uIENvZmZl
+ZWxha2UsIHdlIHNob3VsZCBwcm9iYWJseQo+ICsJICogbm90IHJlbHkgb24gdGhpcyBhbnltb3Jl
+Lgo+ICsJICovCj4gICAJaWYgKG1hc2sgPj0gOCkKPiAgIAkJbWFzayA9IDB4ZjsKPiAgIAllbHNl
+IGlmIChtYXNrID49IDYpCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
+cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+Cg==
