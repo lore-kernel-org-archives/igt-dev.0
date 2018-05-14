@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 14 May 2018 14:19:47 -0000
-Message-ID: <20180514141947.18100.19504@emeril.freedesktop.org>
-References: <20180514101930.27085-1-katarzyna.dec@intel.com>
-In-Reply-To: <20180514101930.27085-1-katarzyna.dec@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliL2ln?=
- =?utf-8?q?t=5Fdevice=3A_Add_information_why_cannot_drop_drm_master?=
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 82CFC89BDB
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 May 2018 14:43:18 +0000 (UTC)
+Message-ID: <1a75f00122de239dcfc55caeca24f43e3fc5d7ae.camel@bootlin.com>
+From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Date: Mon, 14 May 2018 16:41:43 +0200
+In-Reply-To: <ad27c9b88bd9d9f07b4dc902ee80181ae905ff6c.1524555464.git-series.maxime.ripard@bootlin.com>
+References: <cover.4467e4f79584ac18248b9664cbe4a81a2a610ecf.1524555464.git-series.maxime.ripard@bootlin.com>
+ <ad27c9b88bd9d9f07b4dc902ee80181ae905ff6c.1524555464.git-series.maxime.ripard@bootlin.com>
+Mime-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 10/12] chamelium: Add format support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,123 +17,216 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1666356809=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Katarzyna Dec <katarzyna.dec@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Maxime Ripard <maxime.ripard@bootlin.com>, igt-dev@lists.freedesktop.org
+Cc: eben@raspberrypi.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogbGliL2lndF9kZXZpY2U6IEFkZCBpbmZvcm1h
-dGlvbiB3aHkgY2Fubm90IGRyb3AgZHJtIG1hc3RlcgpVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3Jr
-LmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvNDMxMjUvClN0YXRlIDogZmFpbHVyZQoKPT0gU3VtbWFy
-eSA9PQoKPSBDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIElHVF80NDc2X2Z1bGwgLT4gSUdUUFdf
-MTM1Ml9mdWxsID0KCj09IFN1bW1hcnkgLSBGQUlMVVJFID09CgogIFNlcmlvdXMgdW5rbm93biBj
-aGFuZ2VzIGNvbWluZyB3aXRoIElHVFBXXzEzNTJfZnVsbCBhYnNvbHV0ZWx5IG5lZWQgdG8gYmUK
-ICB2ZXJpZmllZCBtYW51YWxseS4KICAKICBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5n
-ZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNoYW5nZXMKICBpbnRyb2R1Y2VkIGluIElH
-VFBXXzEzNTJfZnVsbCwgcGxlYXNlIG5vdGlmeSB5b3VyIGJ1ZyB0ZWFtIHRvIGFsbG93IHRoZW0K
-ICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZh
-bHNlIHBvc2l0aXZlcyBpbiBDSS4KCiAgRXh0ZXJuYWwgVVJMOiBodHRwczovL3BhdGNod29yay5m
-cmVlZGVza3RvcC5vcmcvYXBpLzEuMC9zZXJpZXMvNDMxMjUvcmV2aXNpb25zLzEvbWJveC8KCj09
-IFBvc3NpYmxlIG5ldyBpc3N1ZXMgPT0KCiAgSGVyZSBhcmUgdGhlIHVua25vd24gY2hhbmdlcyB0
-aGF0IG1heSBoYXZlIGJlZW4gaW50cm9kdWNlZCBpbiBJR1RQV18xMzUyX2Z1bGw6CgogID09PSBJ
-R1QgY2hhbmdlcyA9PT0KCiAgICA9PT09IFBvc3NpYmxlIHJlZ3Jlc3Npb25zID09PT0KCiAgICBp
-Z3RAa21zX2F0b21pY190cmFuc2l0aW9uQDF4LW1vZGVzZXQtdHJhbnNpdGlvbnMtbm9uYmxvY2tp
-bmctZmVuY2luZzoKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IEZBSUwKCiAgICBp
-Z3RAa21zX2N1cnNvcl9sZWdhY3lAMngtbm9uYmxvY2tpbmctbW9kZXNldC12cy1jdXJzb3ItYXRv
-bWljOgogICAgICBzaGFyZC1nbGs6ICAgICAgICAgIFNLSVAgLT4gRkFJTAoKICAgIGlndEBrbXNf
-Y3Vyc29yX2xlZ2FjeUBjdXJzb3JiLXZzLWZsaXBiLXRvZ2dsZToKICAgICAgc2hhcmQtZ2xrOiAg
-ICAgICAgICBTS0lQIC0+IERNRVNHLVdBUk4KCiAgICAKICAgID09PT0gV2FybmluZ3MgPT09PQoK
-ICAgIGlndEBnZW1fZXhlY19zY2hlZHVsZUBkZWVwLWJzZDE6CiAgICAgIHNoYXJkLWtibDogICAg
-ICAgICAgU0tJUCAtPiBQQVNTICsxCgogICAgaWd0QGdlbV9leGVjX3NjaGVkdWxlQGRlZXAtdmVi
-b3g6CiAgICAgIHNoYXJkLWtibDogICAgICAgICAgUEFTUyAtPiBTS0lQICsyCgogICAgaWd0QGtt
-c19jY3NAcGlwZS1hLWJhZC1hdXgtc3RyaWRlOgogICAgICBzaGFyZC1hcGw6ICAgICAgICAgIFNL
-SVAgLT4gUEFTUyArMQoKICAgIGlndEBrbXNfY3Vyc29yX2xlZ2FjeUBjdXJzb3JiLXZzLWZsaXBi
-LWF0b21pYy10cmFuc2l0aW9uczoKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBTS0lQIC0+IFBB
-U1MgKzE0NQoKICAgIGlndEBrbXNfaGRtaV9pbmplY3RAaW5qZWN0LWF1ZGlvOgogICAgICBzaGFy
-ZC1nbGs6ICAgICAgICAgIFBBU1MgLT4gU0tJUCArMgoKICAgIAo9PSBLbm93biBpc3N1ZXMgPT0K
-CiAgSGVyZSBhcmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gSUdUUFdfMTM1Ml9mdWxsIHRoYXQgY29t
-ZSBmcm9tIGtub3duIGlzc3VlczoKCiAgPT09IElHVCBjaGFuZ2VzID09PQoKICAgID09PT0gSXNz
-dWVzIGhpdCA9PT09CgogICAgaWd0QGdlbV9wcGd0dEBibHQtdnMtcmVuZGVyLWN0eG46CiAgICAg
-IHNoYXJkLWtibDogICAgICAgICAgUEFTUyAtPiBJTkNPTVBMRVRFIChmZG8jMTA2MDIzLCBmZG8j
-MTAzNjY1KQoKICAgIGlndEBrbXNfY2NzQHBpcGUtYS1iYWQtcGl4ZWwtZm9ybWF0OgogICAgICBz
-aGFyZC1rYmw6ICAgICAgICAgIFBBU1MgLT4gRE1FU0ctV0FSTiAoZmRvIzEwNTYwMiwgZmRvIzEw
-MzMxMywgZmRvIzEwMzU1OCkgKzMKCiAgICBpZ3RAa21zX2Njc0BwaXBlLWEtY3JjLXNwcml0ZS1w
-bGFuZXMtYmFzaWM6CiAgICAgIHNoYXJkLWFwbDogICAgICAgICAgUEFTUyAtPiBGQUlMIChmZG8j
-MTA2NTEwKSArMQoKICAgIGlndEBrbXNfZmxpcEAyeC1hYnNvbHV0ZS13Zl92YmxhbmstaW50ZXJy
-dXB0aWJsZToKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBTS0lQIC0+IEZBSUwgKGZkbyMxMDYw
-ODcpCgogICAgaWd0QGttc19mbGlwQDJ4LXBsYWluLWZsaXAtZmItcmVjcmVhdGUtaW50ZXJydXB0
-aWJsZToKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBTS0lQIC0+IEZBSUwgKGZkbyMxMDAzNjgp
-ICsxCgogICAgaWd0QGttc19mbGlwQGFic29sdXRlLXdmX3ZibGFuay1pbnRlcnJ1cHRpYmxlOgog
-ICAgICBzaGFyZC1zbmI6ICAgICAgICAgIFBBU1MgLT4gRkFJTCAoZmRvIzEwNjA4NykKCiAgICBp
-Z3RAa21zX2ZsaXBAZmxpcC12cy1leHBpcmVkLXZibGFuazoKICAgICAgc2hhcmQtZ2xrOiAgICAg
-ICAgICBQQVNTIC0+IEZBSUwgKGZkbyMxMDUzNjMsIGZkbyMxMDI4ODcpCgogICAgaWd0QGttc19m
-bGlwQHBsYWluLWZsaXAtdHMtY2hlY2staW50ZXJydXB0aWJsZToKICAgICAgc2hhcmQtZ2xrOiAg
-ICAgICAgICBQQVNTIC0+IEZBSUwgKGZkbyMxMDAzNjgpCgogICAgaWd0QGttc19mbGlwX3RpbGlu
-Z0BmbGlwLXRvLXgtdGlsZWQ6CiAgICAgIHNoYXJkLWdsazogICAgICAgICAgUEFTUyAtPiBGQUlM
-IChmZG8jMTAzODIyLCBmZG8jMTA0NzI0KQoKICAgIGlndEBrbXNfZnJvbnRidWZmZXJfdHJhY2tp
-bmdAZmJjLTJwLXByaW1zY3JuLXByaS1zaHJmYi1kcmF3LW1tYXAtd2M6CiAgICAgIHNoYXJkLWds
-azogICAgICAgICAgU0tJUCAtPiBGQUlMIChmZG8jMTAzMTY3LCBmZG8jMTA0NzI0KQoKICAgIGln
-dEBrbXNfcm90YXRpb25fY3JjQHNwcml0ZS1yb3RhdGlvbi0xODA6CiAgICAgIHNoYXJkLXNuYjog
-ICAgICAgICAgUEFTUyAtPiBGQUlMIChmZG8jMTAzOTI1LCBmZG8jMTA0NzI0KSArMQoKICAgIGln
-dEBrbXNfc2V0bW9kZUBiYXNpYzoKICAgICAgc2hhcmQta2JsOiAgICAgICAgICBQQVNTIC0+IEZB
-SUwgKGZkbyM5OTkxMikKCiAgICBpZ3RAa21zX3N5c2ZzX2VkaWRfdGltaW5nOgogICAgICBzaGFy
-ZC1hcGw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCAoZmRvIzEwMDA0NykKCiAgICBpZ3RAa21zX3Zi
-bGFua0BwaXBlLWMtYWNjdXJhY3ktaWRsZToKICAgICAgc2hhcmQtaHN3OiAgICAgICAgICBQQVNT
-IC0+IEZBSUwgKGZkbyMxMDI1ODMpCgogICAgaWd0QHRlc3RkaXNwbGF5OgogICAgICBzaGFyZC1n
-bGs6ICAgICAgICAgIFBBU1MgLT4gSU5DT01QTEVURSAoZmRvIzEwMzM1OSwgay5vcmcjMTk4MTMz
-KQoKICAgIAogICAgPT09PSBQb3NzaWJsZSBmaXhlcyA9PT09CgogICAgaWd0QGttc19mbGlwQGZs
-aXAtdnMtd2ZfdmJsYW5rLWludGVycnVwdGlibGU6CiAgICAgIHNoYXJkLWdsazogICAgICAgICAg
-RkFJTCAoZmRvIzEwMDM2OCkgLT4gUEFTUyArMQoKICAgIGlndEBrbXNfZmxpcEB3Zl92Ymxhbmst
-dHMtY2hlY2s6CiAgICAgIHNoYXJkLWhzdzogICAgICAgICAgRkFJTCAoZmRvIzEwMzkyOCkgLT4g
-UEFTUwoKICAgIGlndEBrbXNfcGxhbmVAcGxhbmUtcGFubmluZy1ib3R0b20tcmlnaHQtc3VzcGVu
-ZC1waXBlLWMtcGxhbmVzOgogICAgICBzaGFyZC1hcGw6ICAgICAgICAgIEZBSUwgKGZkbyMxMDQ3
-MjQsIGZkbyMxMDMxNjYpIC0+IFBBU1MKCiAgICBpZ3RAa21zX3BsYW5lX2xvd3Jlc0BwaXBlLWIt
-dGlsaW5nLXk6CiAgICAgIHNoYXJkLWtibDogICAgICAgICAgRE1FU0ctV0FSTiAoZmRvIzEwNTYw
-MiwgZmRvIzEwMzMxMywgZmRvIzEwMzU1OCkgLT4gUEFTUyArNwoKICAgIGlndEBrbXNfc2V0bW9k
-ZUBiYXNpYzoKICAgICAgc2hhcmQtYXBsOiAgICAgICAgICBGQUlMIChmZG8jOTk5MTIpIC0+IFBB
-U1MKCiAgICBpZ3RAcG1fcnBtQGRwbXMtbW9kZS11bnNldC1ub24tbHBzcDoKICAgICAgc2hhcmQt
-a2JsOiAgICAgICAgICBETUVTRy1XQVJOIChmZG8jMTA1NjAyLCBmZG8jMTAzNTU4KSAtPiBQQVNT
-ICsyCgogICAgCiAgZmRvIzEwMDA0NyBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3df
-YnVnLmNnaT9pZD0xMDAwNDcKICBmZG8jMTAwMzY4IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5v
-cmcvc2hvd19idWcuY2dpP2lkPTEwMDM2OAogIGZkbyMxMDI1ODMgaHR0cHM6Ly9idWdzLmZyZWVk
-ZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAyNTgzCiAgZmRvIzEwMjg4NyBodHRwczovL2J1
-Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDI4ODcKICBmZG8jMTAzMTY2IGh0
-dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzE2NgogIGZkbyMx
-MDMxNjcgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMTY3
-CiAgZmRvIzEwMzMxMyBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9p
-ZD0xMDMzMTMKICBmZG8jMTAzMzU5IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19i
-dWcuY2dpP2lkPTEwMzM1OQogIGZkbyMxMDM1NTggaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9y
-Zy9zaG93X2J1Zy5jZ2k/aWQ9MTAzNTU4CiAgZmRvIzEwMzY2NSBodHRwczovL2J1Z3MuZnJlZWRl
-c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDM2NjUKICBmZG8jMTAzODIyIGh0dHBzOi8vYnVn
-cy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzgyMgogIGZkbyMxMDM5MjUgaHR0
-cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzOTI1CiAgZmRvIzEw
-MzkyOCBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDM5MjgK
-ICBmZG8jMTA0NzI0IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lk
-PTEwNDcyNAogIGZkbyMxMDUzNjMgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1
-Zy5jZ2k/aWQ9MTA1MzYzCiAgZmRvIzEwNTYwMiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3Jn
-L3Nob3dfYnVnLmNnaT9pZD0xMDU2MDIKICBmZG8jMTA2MDIzIGh0dHBzOi8vYnVncy5mcmVlZGVz
-a3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNjAyMwogIGZkbyMxMDYwODcgaHR0cHM6Ly9idWdz
-LmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA2MDg3CiAgZmRvIzEwNjUxMCBodHRw
-czovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDY1MTAKICBmZG8jOTk5
-MTIgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9OTk5MTIKICBr
-Lm9yZyMxOTgxMzMgaHR0cHM6Ly9idWd6aWxsYS5rZXJuZWwub3JnL3Nob3dfYnVnLmNnaT9pZD0x
-OTgxMzMKCgo9PSBQYXJ0aWNpcGF0aW5nIGhvc3RzICg1IC0+IDUpID09CgogIE5vIGNoYW5nZXMg
-aW4gcGFydGljaXBhdGluZyBob3N0cwoKCj09IEJ1aWxkIGNoYW5nZXMgPT0KCiAgICAqIElHVDog
-SUdUXzQ0NzYgLT4gSUdUUFdfMTM1MgogICAgKiBMaW51eDogQ0lfRFJNXzQxNzIgLT4gQ0lfRFJN
-XzQxNzUKCiAgQ0lfRFJNXzQxNzI6IGI0YzE0YzA4MDllOGY2ZGJhOWE0ZmRmMWE2NTljZWE1YTk4
-NzUwZDMgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvbGludXgKICBDSV9E
-Uk1fNDE3NTogYTU3MzY2YjYwMjlhYzg2NDM2YWQzNmJiZjhiOWEzMTU0OWVmMjkwNSBAIGdpdDov
-L2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL2dmeC1jaS9saW51eAogIElHVFBXXzEzNTI6IGh0dHBz
-Oi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTM1Mi8KICBJR1RfNDQ3
-NjogMDNhNjJjZjA1NTQ4MWY2NmI0ZjU4ZTYyMjhiYzQ1ZjhjYTQ1NDIxNiBAIGdpdDovL2Fub25n
-aXQuZnJlZWRlc2t0b3Aub3JnL3hvcmcvYXBwL2ludGVsLWdwdS10b29scwogIHBpZ2xpdF80NDc2
-OiAzYmEwNjU3YmZmNDIxNmQxZWM3MTc5OTM1NTkwMjYxODU1ZjE2NTFlIEAgZ2l0Oi8vYW5vbmdp
-dC5mcmVlZGVza3RvcC5vcmcvcGlnbGl0Cgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNl
-ZTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMzUyL3No
-YXJkcy5odG1sCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBz
-Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+
+--===============1666356809==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-pNnJbl65tx9sLyny3QBB"
+
+
+--=-pNnJbl65tx9sLyny3QBB
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On Tue, 2018-04-24 at 09:46 +0200, Maxime Ripard wrote:
+> In order to introduce subtests for DRM formats, we need to take an
+> intermediate step.
+
+Maybe make it clear in the commit subject that this concerns the CRC
+tests only. We could (and probably should) be doing the same with the
+full-frame comparison tests.
+
+> The current code will generate a pattern in XR24, and will try to compare
+> the CRC returned by the Chamelium for each frames.
+>=20
+> This CRC is computed on an XR24 format as well, so it works. However, as
+> soon as we will start implementing other formats, if we just change the
+> format of the pattern, the raw content of the buffer, and therefore the
+> CRC's won't match anymore.
+>=20
+> In order to address that, we will need an intermediate step, and we will
+> now still create the XR24 pattern, and compute its CRC, then convert it t=
+o
+> the format we want to test, and finally retrieve the CRC from the Chameli=
+um
+> to compare it with the one from the XR24 pattern.
+>=20
+> The current code is converted to the new prototype that will take the
+> fourcc of the format to test, even though we're still using XR24 everywhe=
+re
+> for now.
+
+Reviewed-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+
+> Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
+> ---
+>  tests/kms_chamelium.c | 37 ++++++++++++++++++++++++-------------
+>  1 file changed, 24 insertions(+), 13 deletions(-)
+>=20
+> diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
+> index 2b82f2597c73..9cd05b83076a 100644
+> --- a/tests/kms_chamelium.c
+> +++ b/tests/kms_chamelium.c
+> @@ -524,21 +524,25 @@ static int chamelium_get_pattern_fb(data_t *data, d=
+rmModeModeInfo *mode,
+> =20
+>  static void do_test_display_crc(data_t *data, struct chamelium_port *por=
+t,
+>  				igt_output_t *output, drmModeModeInfo *mode,
+> -				int count)
+> +				uint32_t fourcc, int count)
+>  {
+>  	igt_crc_t *crc;
+>  	igt_crc_t *expected_crc;
+>  	struct chamelium_fb_crc_async_data *fb_crc;
+> -	struct igt_fb fb;
+> +	struct igt_fb frame_fb, fb;
+>  	int i, fb_id, captured_frame_count;
+> +	int frame_id;
+> =20
+>  	fb_id =3D chamelium_get_pattern_fb(data, mode, DRM_FORMAT_XRGB8888, &fb=
+);
+>  	igt_assert(fb_id > 0);
+> =20
+> +	frame_id =3D igt_fb_convert(&frame_fb, &fb, fourcc);
+> +	igt_assert(frame_id > 0);
+> +
+>  	fb_crc =3D chamelium_calculate_fb_crc_async_start(data->drm_fd,
+>  							&fb);
+> =20
+> -	enable_output(data, port, output, mode, &fb);
+> +	enable_output(data, port, output, mode, &frame_fb);
+> =20
+>  	/* We want to keep the display running for a little bit, since
+>  	 * there's always the potential the driver isn't able to keep
+> @@ -562,6 +566,7 @@ static void do_test_display_crc(data_t *data, struct =
+chamelium_port *port,
+>  	free(expected_crc);
+>  	free(crc);
+> =20
+> +	igt_remove_fb(data->drm_fd, &frame_fb);
+>  	igt_remove_fb(data->drm_fd, &fb);
+>  }
+> =20
+> @@ -580,7 +585,7 @@ static drmModeModeInfo *find_preferred_mode(drmModeCo=
+nnector *connector)
+>  }
+> =20
+>  static void test_display_crc_one_mode(data_t *data, struct chamelium_por=
+t *port,
+> -				      int count)
+> +				      uint32_t fourcc, int count)
+>  {
+>  	igt_output_t *output;
+>  	drmModeConnector *connector;
+> @@ -597,13 +602,13 @@ static void test_display_crc_one_mode(data_t *data,=
+ struct chamelium_port *port,
+>  	mode =3D find_preferred_mode(connector);
+>  	igt_assert(mode);
+> =20
+> -	do_test_display_crc(data, port, output, mode, count);
+> +	do_test_display_crc(data, port, output, mode, fourcc, count);
+> =20
+>  	drmModeFreeConnector(connector);
+>  }
+> =20
+>  static void test_display_crc_all_modes(data_t *data, struct chamelium_po=
+rt *port,
+> -					int count)
+> +				       uint32_t fourcc, int count)
+>  {
+>  	igt_output_t *output;
+>  	igt_plane_t *primary;
+> @@ -620,7 +625,7 @@ static void test_display_crc_all_modes(data_t *data, =
+struct chamelium_port *port
+>  	for (i =3D 0; i < connector->count_modes; i++) {
+>  		drmModeModeInfo *mode =3D &connector->modes[i];
+> =20
+> -		do_test_display_crc(data, port, output, mode, count);
+> +		do_test_display_crc(data, port, output, mode, fourcc, count);
+>  	}
+> =20
+>  	drmModeFreeConnector(connector);
+> @@ -881,13 +886,16 @@ igt_main
+>  							edid_id, alt_edid_id);
+> =20
+>  		connector_subtest("dp-crc-single", DisplayPort)
+> -			test_display_crc_all_modes(&data, port, 1);
+> +			test_display_crc_all_modes(&data, port,
+> +						   DRM_FORMAT_XRGB8888, 1);
+> =20
+>  		connector_subtest("dp-crc-fast", DisplayPort)
+> -			test_display_crc_one_mode(&data, port, 1);
+> +			test_display_crc_one_mode(&data, port,
+> +						  DRM_FORMAT_XRGB8888, 1);
+> =20
+>  		connector_subtest("dp-crc-multiple", DisplayPort)
+> -			test_display_crc_all_modes(&data, port, 3);
+> +			test_display_crc_all_modes(&data, port,
+> +						   DRM_FORMAT_XRGB8888, 3);
+> =20
+>  		connector_subtest("dp-frame-dump", DisplayPort)
+>  			test_display_frame_dump(&data, port);
+> @@ -945,13 +953,16 @@ igt_main
+>  							edid_id, alt_edid_id);
+> =20
+>  		connector_subtest("hdmi-crc-single", HDMIA)
+> -			test_display_crc_all_modes(&data, port, 1);
+> +			test_display_crc_all_modes(&data, port,
+> +						   DRM_FORMAT_XRGB8888, 1);
+> =20
+>  		connector_subtest("hdmi-crc-fast", HDMIA)
+> -			test_display_crc_one_mode(&data, port, 1);
+> +			test_display_crc_one_mode(&data, port,
+> +						  DRM_FORMAT_XRGB8888, 1);
+> =20
+>  		connector_subtest("hdmi-crc-multiple", HDMIA)
+> -			test_display_crc_all_modes(&data, port, 3);
+> +			test_display_crc_all_modes(&data, port,
+> +						   DRM_FORMAT_XRGB8888, 3);
+> =20
+>  		connector_subtest("hdmi-frame-dump", HDMIA)
+>  			test_display_frame_dump(&data, port);
+--=20
+Paul Kocialkowski, Bootlin (formerly Free Electrons)
+Embedded Linux and kernel engineering
+https://bootlin.com
+--=-pNnJbl65tx9sLyny3QBB
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEJZpWjZeIetVBefti3cLmz3+fv9EFAlr5oCcACgkQ3cLmz3+f
+v9FI9Af9EIj1NCmBx8LB1M+U/4glxCLFwXKRZgYPqs4iwYdOIBnSmXU7kFxiLNUF
+tUnZ+Qn+9z9gydk0R4Of1OymPuPTZKzL5qwqKCYcxfR4ngycd4cDFenzsiEEFUUa
+DYPqHC1mrOIf8SUTN/c0UoR5rkHf6Yu1h0SgXw7mLYnfjhdcrx8OZlKxfIs0D/9y
+3xTDcLYvcNtRWLLgGusj1Z8lpclkPxVfVUUnLiI8gD+XzB54yf4++ikuSolLm/yW
+ArhscCWSMjtaLlPonjjEWbX3lLrVGOYwR1iIM73dbOQj/I8oMEWB/Wr3d/C53o7n
+N1zhQtnM6Y5QcYVG2Y6kgRsfthn/gA==
+=71qf
+-----END PGP SIGNATURE-----
+
+--=-pNnJbl65tx9sLyny3QBB--
+
+
+--===============1666356809==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1666356809==--
