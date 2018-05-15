@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4EA56E20F
- for <igt-dev@lists.freedesktop.org>; Tue, 15 May 2018 13:02:27 +0000 (UTC)
-MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78B886E218
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 May 2018 13:39:54 +0000 (UTC)
 References: <20180515092243.22374-1-lionel.g.landwerlin@intel.com>
-In-Reply-To: <20180515092243.22374-1-lionel.g.landwerlin@intel.com>
-Message-ID: <152638934184.18532.10324735277798819712@mail.alporthouse.com>
-Date: Tue, 15 May 2018 14:02:21 +0100
+ <152638934184.18532.10324735277798819712@mail.alporthouse.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <3a94a96b-a7f7-eee6-a641-9298479fb1ed@intel.com>
+Date: Tue, 15 May 2018 14:39:51 +0100
+MIME-Version: 1.0
+In-Reply-To: <152638934184.18532.10324735277798819712@mail.alporthouse.com>
+Content-Language: en-US
 Subject: Re: [igt-dev] [PATCH i-g-t 1/4] intel: deviceinfo: split CNL pciids
  into GT1/2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -17,45 +19,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0652018083=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>, igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBMaW9uZWwgTGFuZHdlcmxpbiAoMjAxOC0wNS0xNSAxMDoyMjo0MCkKPiBUaGUgc2l0
-dWF0aW9uIHdpdGggQ05MIGlzIGEgYml0IG9kZCBiZWNhdXNlIHdlIGhhdmUgaGFsZiBHVHMKPiAo
-MC41LzEuNSkuIEJ1dCB3ZSBjYW4gZ3JvdXAgdGhlIEdUMC41LzEgaW50byBhIHNpbmdsZSBHVDEg
-Z3JvdXAgb2YKPiBkZXZpY2VzIHRoYXQgb25seSBoYXZlIDEgc2xpY2UgYW5kIEdUMS41LzIgaW50
-byBhbm90aGVyIEdUMiBncm91cCBvZgo+IGRldmljZXMgd2l0aCAyIHNsaWNlcy4KPiAKPiBTaWdu
-ZWQtb2ZmLWJ5OiBMaW9uZWwgTGFuZHdlcmxpbiA8bGlvbmVsLmcubGFuZHdlcmxpbkBpbnRlbC5j
-b20+Cj4gLS0tCj4gIGxpYi9pOTE1X3BjaWlkcy5oICAgICAgIHwgMTggKysrKysrKysrKy0tLS0t
-LS0tCj4gIGxpYi9pbnRlbF9kZXZpY2VfaW5mby5jIHwgMTMgKysrKysrKysrKystLQo+ICAyIGZp
-bGVzIGNoYW5nZWQsIDIxIGluc2VydGlvbnMoKyksIDEwIGRlbGV0aW9ucygtKQo+IAo+IGRpZmYg
-LS1naXQgYS9saWIvaTkxNV9wY2lpZHMuaCBiL2xpYi9pOTE1X3BjaWlkcy5oCj4gaW5kZXggYmFi
-NzBmZjYuLmFmNGU4YTZjIDEwMDY0NAo+IC0tLSBhL2xpYi9pOTE1X3BjaWlkcy5oCj4gKysrIGIv
-bGliL2k5MTVfcGNpaWRzLmgKPiBAQCAtNDE2LDIxICs0MTYsMjMgQEAKPiAgICAgICAgIElOVEVM
-X0NGTF9VX0dUM19JRFMoaW5mbykKPiAgCj4gIC8qIENOTCAqLwo+IC0jZGVmaW5lIElOVEVMX0NO
-TF9JRFMoaW5mbykgXAo+ICsjZGVmaW5lIElOVEVMX0NOTF9HVDFfSURTKGluZm8pIFwKPiArICAg
-ICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg1QTQ5LCBpbmZvKSwgXAo+ICsgICAgICAgSU5URUxfVkdB
-X0RFVklDRSgweDVBNEEsIGluZm8pLCBcCj4gKyAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4NUE0
-MSwgaW5mbyksIFwKPiArICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg1QTQyLCBpbmZvKSwgXAo+
-ICsgICAgICAgSU5URUxfVkdBX0RFVklDRSgweDVBNDQsIGluZm8pLCBcCj4gKyAgICAgICBJTlRF
-TF9WR0FfREVWSUNFKDB4NUE0QywgaW5mbykKPiArCj4gKyNkZWZpbmUgSU5URUxfQ05MX0dUMl9J
-RFMoaW5mbykgXAo+ICAgICAgICAgSU5URUxfVkdBX0RFVklDRSgweDVBNTEsIGluZm8pLCBcCj4g
-ICAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4NUE1OSwgaW5mbyksIFwKPiAtICAgICAgIElOVEVM
-X1ZHQV9ERVZJQ0UoMHg1QTQxLCBpbmZvKSwgXAo+IC0gICAgICAgSU5URUxfVkdBX0RFVklDRSgw
-eDVBNDksIGluZm8pLCBcCj4gICAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4NUE1MiwgaW5mbyks
-IFwKPiAgICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg1QTVBLCBpbmZvKSwgXAo+IC0gICAgICAg
-SU5URUxfVkdBX0RFVklDRSgweDVBNDIsIGluZm8pLCBcCj4gLSAgICAgICBJTlRFTF9WR0FfREVW
-SUNFKDB4NUE0QSwgaW5mbyksIFwKPiAgICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg1QTUwLCBp
-bmZvKSwgXAo+ICAgICAgICAgSU5URUxfVkdBX0RFVklDRSgweDVBNDAsIGluZm8pLCBcCj4gICAg
-ICAgICBJTlRFTF9WR0FfREVWSUNFKDB4NUE1NCwgaW5mbyksIFwKPiAtICAgICAgIElOVEVMX1ZH
-QV9ERVZJQ0UoMHg1QTVDLCBpbmZvKSwgXAo+IC0gICAgICAgSU5URUxfVkdBX0RFVklDRSgweDVB
-NDQsIGluZm8pLCBcCj4gLSAgICAgICBJTlRFTF9WR0FfREVWSUNFKDB4NUE0QywgaW5mbykKPiAr
-ICAgICAgIElOVEVMX1ZHQV9ERVZJQ0UoMHg1QTVDLCBpbmZvKQoKS2VybmVsIGNvbW1pdCBzaGEg
-Zm9yIHRoZSBhYm92ZT8KLUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0
-LWRldgo=
+This is a multi-part message in MIME format.
+--===============0652018083==
+Content-Type: multipart/alternative;
+ boundary="------------26BC49A138C2BF4C8F3DB469"
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------26BC49A138C2BF4C8F3DB469
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 15/05/18 14:02, Chris Wilson wrote:
+>> -       INTEL_VGA_DEVICE(0x5A44, info), \
+>> -       INTEL_VGA_DEVICE(0x5A4C, info)
+>> +       INTEL_VGA_DEVICE(0x5A5C, info)
+> Kernel commit sha for the above? -Chris 
+Apologies, I forgot those 2 were synced.
+
+-
+Lionel
+
+--------------26BC49A138C2BF4C8F3DB469
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    <div class="moz-cite-prefix">On 15/05/18 14:02, Chris Wilson wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:152638934184.18532.10324735277798819712@mail.alporthouse.com">
+      <blockquote type="cite" style="color: #000000;">
+        <pre wrap="">-       INTEL_VGA_DEVICE(0x5A44, info), \
+-       INTEL_VGA_DEVICE(0x5A4C, info)
++       INTEL_VGA_DEVICE(0x5A5C, info)
+</pre>
+      </blockquote>
+      Kernel commit sha for the above?
+      -Chris
+    </blockquote>
+    Apologies, I forgot those 2 were synced.<br>
+    <br>
+    -<br>
+    Lionel<br>
+  </body>
+</html>
+
+--------------26BC49A138C2BF4C8F3DB469--
+
+--===============0652018083==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0652018083==--
