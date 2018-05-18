@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36E5F6ED78
- for <igt-dev@lists.freedesktop.org>; Fri, 18 May 2018 13:17:25 +0000 (UTC)
-MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20180518130006.GV23723@intel.com>
-References: <20180517195148.5765-1-ville.syrjala@linux.intel.com>
- <20180517195148.5765-8-ville.syrjala@linux.intel.com>
- <152659691631.4210.13911231106136420282@mail.alporthouse.com>
- <20180518130006.GV23723@intel.com>
-Message-ID: <152664944056.13926.18097232894897858924@mail.alporthouse.com>
-Date: Fri, 18 May 2018 14:17:20 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t 08/10] lib: Add support for rendering
- into packed YCbCr framebuffers
+Received: from mail-wm0-x234.google.com (mail-wm0-x234.google.com
+ [IPv6:2a00:1450:400c:c09::234])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA6356EE2D
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 May 2018 16:12:31 +0000 (UTC)
+Received: by mail-wm0-x234.google.com with SMTP id a137-v6so4021973wme.1
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 May 2018 09:12:31 -0700 (PDT)
+From: Tvrtko Ursulin <tursulin@ursulin.net>
+Date: Fri, 18 May 2018 17:12:25 +0100
+Message-Id: <20180518161225.18218-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] [PATCH i-g-t] intel-gpu-overlay: Fix some build warnings
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,34 +16,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBWaWxsZSBTeXJqw6Rsw6QgKDIwMTgtMDUtMTggMTQ6MDA6MDYpCj4gT24gVGh1LCBN
-YXkgMTcsIDIwMTggYXQgMTE6NDE6NTZQTSArMDEwMCwgQ2hyaXMgV2lsc29uIHdyb3RlOgo+ID4g
-UXVvdGluZyBWaWxsZSBTeXJqYWxhICgyMDE4LTA1LTE3IDIwOjUxOjQ2KQo+ID4gPiArLyogeyBZ
-MCwgVSwgWTEsIFYgfSAqLwo+ID4gPiArc3RhdGljIGNvbnN0IHVuc2lnbmVkIGNoYXIgc3dpenps
-ZV95dXl2W10gPSB7IDAsIDEsIDIsIDMgfTsKPiA+ID4gK3N0YXRpYyBjb25zdCB1bnNpZ25lZCBj
-aGFyIHN3aXp6bGVfeXZ5dVtdID0geyAwLCAzLCAyLCAxIH07Cj4gPiA+ICtzdGF0aWMgY29uc3Qg
-dW5zaWduZWQgY2hhciBzd2l6emxlX3V5dnlbXSA9IHsgMSwgMCwgMywgMiB9Owo+ID4gCj4gPiA+
-ICtzdGF0aWMgY29uc3QgdW5zaWduZWQgY2hhciBzd2l6emxlX3Z5dXlbXSA9IHsgMSwgMiwgMywg
-MCB9Owo+ID4gCj4gPiBUaGlzIG9uZSBzdGFuZHMgb3V0IGFzIGJhY2t3YXJkcy4gSXMgaXQgYSB2
-eXV5X3Jldj8KPiAKPiBIbW0uIEkgdGhpbmsgaXQncyBjb3JyZWN0Lgo+IAo+IHN3aXp6bGVbXSB0
-ZWxscyB1cyBpbiB3aGljaCBvZmZzZXQgaW4gdGhlIG1hY3JvcGl4ZWwgd2UgZmluZCB0aGUKPiBj
-b21wb25lbnQuIFRoZSBpbmRleCBkZXRlcm1pbmVzIHdoaWNoIGNvbXBvbmVudCB3ZSB3YW50Lgo+
-IAo+IHN3aXp6bGVbMF0gPSBvZmZzZXQgb2YgWTAKPiBzd2l6emxlWzFdID0gb2Zmc2V0IG9mIFUK
-PiBzd2l6emxlWzJdID0gb2Zmc2V0IG9mIFkxCj4gc3dpenpsZVszXSA9IG9mZnNldCBvZiBWCgpT
-byBJIHdhcyByZWFkaW5nIGl0IGFzIHRoZSBpbnZlcnNlIG1hcHBpbmcsCgpzd2l6emxlX3Z5dXk6
-CglieXRlIDAgPSB2LCByZWFkIG9mZnNldCAxCglieXRlIDEgPSB5LCByZWFkIG9mZnNldCAyCgli
-eXRlIDIgPSB1LCByZWFkIG9mZnNldCAzCglieXRlIDMgPSB5LCByZWFkIG9mZnNldCAwCgpidXQg
-dGhlIGluY29taW5nIG9mZnNldHMgYXJlIHl1eXYsIHNvIEkgcmVhZCB7IDEsIDIsIDMsIDAgfSBh
-cyB1eXZ5LgoKRnJvbSB0aGlua2luZyB0aGF0Cglzd2l6emxlX3JnYmEgPSB7IDAsIDEsIDIsIDMg
-fQoJc3dpenpsZV9ycnJyID0geyAwLCAwLCAwLCAwIH0KLUNocmlzCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
-ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
-aWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+RnJvbTogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KClRyaXZpYWwg
+InNldCBidXQgdW51c2VkIiBjbGVhbnVwLgoKU2lnbmVkLW9mZi1ieTogVHZydGtvIFVyc3VsaW4g
+PHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KLS0tCiBvdmVybGF5L3gxMS94MTEtb3ZlcmxheS5j
+IHwgNiArKy0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25z
+KC0pCgpkaWZmIC0tZ2l0IGEvb3ZlcmxheS94MTEveDExLW92ZXJsYXkuYyBiL292ZXJsYXkveDEx
+L3gxMS1vdmVybGF5LmMKaW5kZXggYWU2NDk0Mjk1YzVhLi5hYzZiNWYzOWE2OTYgMTAwNjQ0Ci0t
+LSBhL292ZXJsYXkveDExL3gxMS1vdmVybGF5LmMKKysrIGIvb3ZlcmxheS94MTEveDExLW92ZXJs
+YXkuYwpAQCAtMTIzLDcgKzEyMyw2IEBAIGNhaXJvX3N1cmZhY2VfdCAqCiB4MTFfb3ZlcmxheV9j
+cmVhdGUoc3RydWN0IGNvbmZpZyAqY29uZmlnLCBpbnQgKndpZHRoLCBpbnQgKmhlaWdodCkKIHsK
+IAlEaXNwbGF5ICpkcHk7Ci0JU2NyZWVuICpzY3I7CiAJY2Fpcm9fc3VyZmFjZV90ICpzdXJmYWNl
+OwogCXN0cnVjdCBkcm1faTkxNV9nZW1fY3JlYXRlIGNyZWF0ZTsKIAlzdHJ1Y3QgZHJtX2dlbV9m
+bGluayBmbGluazsKQEAgLTEzNSw3ICsxMzQsNiBAQCB4MTFfb3ZlcmxheV9jcmVhdGUoc3RydWN0
+IGNvbmZpZyAqY29uZmlnLCBpbnQgKndpZHRoLCBpbnQgKmhlaWdodCkKIAlYdkltYWdlICppbWFn
+ZTsKIAlYdlBvcnRJRCBwb3J0ID0gLTE7CiAJdm9pZCAqcHRyLCAqbWVtOwotCWVudW0gcG9zaXRp
+b24gcG9zaXRpb247CiAKIAlkcHkgPSBYT3BlbkRpc3BsYXkoTlVMTCk7CiAJaWYgKGRweSA9PSBO
+VUxMKQpAQCAtMTQzLDcgKzE0MSw3IEBAIHgxMV9vdmVybGF5X2NyZWF0ZShzdHJ1Y3QgY29uZmln
+ICpjb25maWcsIGludCAqd2lkdGgsIGludCAqaGVpZ2h0KQogCiAJWFNldEVycm9ySGFuZGxlcihj
+aGVja19lcnJvcl9oYW5kbGVyKTsKIAotCXNjciA9IFNjcmVlbk9mRGlzcGxheShkcHksIERlZmF1
+bHRTY3JlZW4oZHB5KSk7CisJU2NyZWVuT2ZEaXNwbGF5KGRweSwgRGVmYXVsdFNjcmVlbihkcHkp
+KTsKIAogCWZkID0gZHJpMl9vcGVuKGRweSk7CiAJaWYgKGZkIDwgMCkKQEAgLTE3OSw3ICsxNzcs
+NyBAQCB4MTFfb3ZlcmxheV9jcmVhdGUoc3RydWN0IGNvbmZpZyAqY29uZmlnLCBpbnQgKndpZHRo
+LCBpbnQgKmhlaWdodCkKIAogCVhTZXRFcnJvckhhbmRsZXIobm9vcCk7CiAKLQlwb3NpdGlvbiA9
+IHgxMV9wb3NpdGlvbihkcHksICp3aWR0aCwgKmhlaWdodCwgY29uZmlnLCAmeCwgJnksICZ3LCAm
+aCk7CisJeDExX3Bvc2l0aW9uKGRweSwgKndpZHRoLCAqaGVpZ2h0LCBjb25maWcsICZ4LCAmeSwg
+JncsICZoKTsKIAogCWltYWdlID0gWHZDcmVhdGVJbWFnZShkcHksIHBvcnQsIEZPVVJDQ19SR0I1
+NjUsIE5VTEwsIHcsIGgpOwogCWlmIChpbWFnZSA9PSBOVUxMKQotLSAKMi4xNy4wCgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcg
+bGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNr
+dG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
