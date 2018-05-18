@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 646306EC61
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 May 2018 07:26:36 +0000 (UTC)
+Date: Fri, 18 May 2018 09:26:25 +0200
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20180518072625.sbsyax3b2hyi4v4j@flea>
+References: <cover.4467e4f79584ac18248b9664cbe4a81a2a610ecf.1524555464.git-series.maxime.ripard@bootlin.com>
+ <eee519ed1db1474de03941c3009228b88224a716.1524555464.git-series.maxime.ripard@bootlin.com>
+ <9aee563e1f348763ce6f85510b4b034c1851e52e.camel@bootlin.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 17 May 2018 23:38:44 -0000
-Message-ID: <20180517233844.2660.30505@emeril.freedesktop.org>
-References: <20180517195148.5765-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20180517195148.5765-1-ville.syrjala@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C01/10=5D_lib=3A_Add_clamp=28=29_to_ig?=
- =?utf-8?q?t=5Faux_and_use_it_for_ycbcr=3C-=3Ergb_conversion?=
+In-Reply-To: <9aee563e1f348763ce6f85510b4b034c1851e52e.camel@bootlin.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 09/12] chamelium: Change our pattern for
+ a custom one
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,114 +19,108 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1477070801=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Cc: igt-dev@lists.freedesktop.org, eben@raspberrypi.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW2ktZy10
-LDAxLzEwXSBsaWI6IEFkZCBjbGFtcCgpIHRvIGlndF9hdXggYW5kIHVzZSBpdCBmb3IgeWNiY3I8
-LT5yZ2IgY29udmVyc2lvbgpVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9y
-Zy9zZXJpZXMvNDMzNjAvClN0YXRlIDogZmFpbHVyZQoKPT0gU3VtbWFyeSA9PQoKPSBDSSBCdWcg
-TG9nIC0gY2hhbmdlcyBmcm9tIElHVF80NDg1X2Z1bGwgLT4gSUdUUFdfMTM3M19mdWxsID0KCj09
-IFN1bW1hcnkgLSBGQUlMVVJFID09CgogIFNlcmlvdXMgdW5rbm93biBjaGFuZ2VzIGNvbWluZyB3
-aXRoIElHVFBXXzEzNzNfZnVsbCBhYnNvbHV0ZWx5IG5lZWQgdG8gYmUKICB2ZXJpZmllZCBtYW51
-YWxseS4KICAKICBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5n
-IHRvIGRvIHdpdGggdGhlIGNoYW5nZXMKICBpbnRyb2R1Y2VkIGluIElHVFBXXzEzNzNfZnVsbCwg
-cGxlYXNlIG5vdGlmeSB5b3VyIGJ1ZyB0ZWFtIHRvIGFsbG93IHRoZW0KICB0byBkb2N1bWVudCB0
-aGlzIG5ldyBmYWlsdXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBp
-biBDSS4KCiAgRXh0ZXJuYWwgVVJMOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcv
-YXBpLzEuMC9zZXJpZXMvNDMzNjAvcmV2aXNpb25zLzEvbWJveC8KCj09IFBvc3NpYmxlIG5ldyBp
-c3N1ZXMgPT0KCiAgSGVyZSBhcmUgdGhlIHVua25vd24gY2hhbmdlcyB0aGF0IG1heSBoYXZlIGJl
-ZW4gaW50cm9kdWNlZCBpbiBJR1RQV18xMzczX2Z1bGw6CgogID09PSBJR1QgY2hhbmdlcyA9PT0K
-CiAgICA9PT09IFBvc3NpYmxlIHJlZ3Jlc3Npb25zID09PT0KCiAgICBpZ3RAa21zX2Njc0BwaXBl
-LWEtY3JjLXByaW1hcnktcm90YXRpb24tMTgwOgogICAgICBzaGFyZC1nbGs6ICAgICAgICAgIFBB
-U1MgLT4gQ1JBU0ggKzUKICAgICAgc2hhcmQtYXBsOiAgICAgICAgICBQQVNTIC0+IENSQVNIICsz
-CgogICAgaWd0QGttc19jY3NAcGlwZS1iLWNyYy1wcmltYXJ5LWJhc2ljOgogICAgICBzaGFyZC1r
-Ymw6ICAgICAgICAgIFBBU1MgLT4gQ1JBU0ggKzcKCiAgICBpZ3RAa21zX3BsYW5lX3NjYWxpbmdA
-cGlwZS1hLXNjYWxlci13aXRoLXBpeGVsLWZvcm1hdDoKICAgICAgc2hhcmQtZ2xrOiAgICAgICAg
-ICBQQVNTIC0+IEZBSUwgKzMKCiAgICBpZ3RAa21zX3BsYW5lX3NjYWxpbmdAcGlwZS1jLXNjYWxl
-ci13aXRoLXBpeGVsLWZvcm1hdDoKICAgICAgc2hhcmQtYXBsOiAgICAgICAgICBQQVNTIC0+IEZB
-SUwgKzUKCiAgICAKICAgID09PT0gV2FybmluZ3MgPT09PQoKICAgIGlndEBnZW1fZXhlY19zY2hl
-ZHVsZUBkZWVwLXJlbmRlcjoKICAgICAgc2hhcmQta2JsOiAgICAgICAgICBQQVNTIC0+IFNLSVAg
-KzEKCiAgICBpZ3RAa21zX2Njc0BwaXBlLWEtY3JjLXNwcml0ZS1wbGFuZXMtYmFzaWM6CiAgICAg
-IHNoYXJkLWFwbDogICAgICAgICAgRkFJTCAoZmRvIzEwNjUxMCkgLT4gQ1JBU0ggKzEKCiAgICBp
-Z3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLTEyOHgxMjgtcmFuZG9tOgogICAgICBzaGFyZC1zbmI6
-ICAgICAgICAgIFNLSVAgLT4gUEFTUwoKICAgIAo9PSBLbm93biBpc3N1ZXMgPT0KCiAgSGVyZSBh
-cmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gSUdUUFdfMTM3M19mdWxsIHRoYXQgY29tZSBmcm9tIGtu
-b3duIGlzc3VlczoKCiAgPT09IElHVCBjaGFuZ2VzID09PQoKICAgID09PT0gSXNzdWVzIGhpdCA9
-PT09CgogICAgaWd0QGdlbV9laW9AdGhyb3R0bGU6CiAgICAgIHNoYXJkLXNuYjogICAgICAgICAg
-UEFTUyAtPiBETUVTRy1XQVJOIChmZG8jMTA2NTIzKSArNAogICAgICBzaGFyZC1oc3c6ICAgICAg
-ICAgIFBBU1MgLT4gRE1FU0ctV0FSTiAoZmRvIzEwNjUyMykgKzQKCiAgICBpZ3RAZ2VtX2Vpb0B1
-bndlZGdlLXN0cmVzczoKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IERNRVNHLVdB
-Uk4gKGZkbyMxMDY1MjMpICs1CiAgICAgIHNoYXJkLWtibDogICAgICAgICAgUEFTUyAtPiBETUVT
-Ry1XQVJOIChmZG8jMTA2NTIzKSArMQoKICAgIGlndEBnZW1fZWlvQHdhaXQtd2VkZ2UtMTBtczoK
-ICAgICAgc2hhcmQtYXBsOiAgICAgICAgICBQQVNTIC0+IERNRVNHLVdBUk4gKGZkbyMxMDY1MjMp
-ICs2CgogICAgaWd0QGttc19mbGlwQDJ4LWZsaXAtdnMtZXhwaXJlZC12Ymxhbms6CiAgICAgIHNo
-YXJkLWdsazogICAgICAgICAgUEFTUyAtPiBGQUlMIChmZG8jMTAyODg3KQoKICAgIGlndEBrbXNf
-ZmxpcEBwbGFpbi1mbGlwLWZiLXJlY3JlYXRlLWludGVycnVwdGlibGU6CiAgICAgIHNoYXJkLWds
-azogICAgICAgICAgUEFTUyAtPiBGQUlMIChmZG8jMTAwMzY4KSArMQoKICAgIGlndEBrbXNfZmxp
-cEBwbGFpbi1mbGlwLXRzLWNoZWNrOgogICAgICBzaGFyZC1oc3c6ICAgICAgICAgIFBBU1MgLT4g
-RkFJTCAoZmRvIzEwMDM2OCkKCiAgICBpZ3RAa21zX2ZsaXBfdGlsaW5nQGZsaXAteS10aWxlZDoK
-ICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IEZBSUwgKGZkbyMxMDQ3MjQpCgogICAg
-aWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0BmYmMtMnAtcHJpbXNjcm4tc2hyZmItbXNmbGlw
-LWJsdDoKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IEZBSUwgKGZkbyMxMDMxNjcs
-IGZkbyMxMDQ3MjQpCgogICAgaWd0QGttc19wbGFuZV9tdWx0aXBsZUBhdG9taWMtcGlwZS1hLXRp
-bGluZy14OgogICAgICBzaGFyZC1zbmI6ICAgICAgICAgIFBBU1MgLT4gRkFJTCAoZmRvIzEwMzE2
-NiwgZmRvIzEwNDcyNCkKCiAgICBpZ3RAa21zX3BsYW5lX3NjYWxpbmdAcGlwZS1iLXNjYWxlci13
-aXRoLXBpeGVsLWZvcm1hdDoKICAgICAgc2hhcmQta2JsOiAgICAgICAgICBQQVNTIC0+IEZBSUwg
-KGZkbyMxMDYwMjYpICs1CgogICAgCiAgICA9PT09IFBvc3NpYmxlIGZpeGVzID09PT0KCiAgICBp
-Z3RAZ2VtX2N0eF9pc29sYXRpb25AdmVjczAtczM6CiAgICAgIHNoYXJkLWtibDogICAgICAgICAg
-SU5DT01QTEVURSAoZmRvIzEwMzY2NSkgLT4gUEFTUyArMQoKICAgIGlndEBnZW1fZWlvQGhpYmVy
-bmF0ZToKICAgICAgc2hhcmQtaHN3OiAgICAgICAgICBETUVTRy1XQVJOIChmZG8jMTA2NTIzKSAt
-PiBQQVNTICs1CgogICAgaWd0QGdlbV9laW9AaW4tZmxpZ2h0LWNvbnRleHRzLTEwbXM6CiAgICAg
-IHNoYXJkLXNuYjogICAgICAgICAgRE1FU0ctV0FSTiAoZmRvIzEwNjUyMykgLT4gUEFTUyArNQoK
-ICAgIGlndEBnZW1fZWlvQGluLWZsaWdodC1pbnRlcm5hbC1pbW1lZGlhdGU6CiAgICAgIHNoYXJk
-LWdsazogICAgICAgICAgRE1FU0ctV0FSTiAoZmRvIzEwNjUyMykgLT4gUEFTUyArNQoKICAgIGln
-dEBnZW1fZWlvQGluLWZsaWdodC1zdXNwZW5kOgogICAgICBzaGFyZC1rYmw6ICAgICAgICAgIERN
-RVNHLVdBUk4gKGZkbyMxMDY1MjMpIC0+IFBBU1MgKzMKICAgICAgc2hhcmQtYXBsOiAgICAgICAg
-ICBETUVTRy1XQVJOIChmZG8jMTA2NTIzKSAtPiBQQVNTICs2CgogICAgaWd0QGttc19mbGlwQGZs
-aXAtdnMtZXhwaXJlZC12YmxhbmstaW50ZXJydXB0aWJsZToKICAgICAgc2hhcmQtZ2xrOiAgICAg
-ICAgICBGQUlMIChmZG8jMTA1NzA3KSAtPiBQQVNTICsxCgogICAgaWd0QGttc19mbGlwX3RpbGlu
-Z0BmbGlwLXRvLXgtdGlsZWQ6CiAgICAgIHNoYXJkLWdsazogICAgICAgICAgRkFJTCAoZmRvIzEw
-NDcyNCkgLT4gUEFTUwoKICAgIGlndEBrbXNfZmxpcF90aWxpbmdAZmxpcC10by15LXRpbGVkOgog
-ICAgICBzaGFyZC1nbGs6ICAgICAgICAgIEZBSUwgKGZkbyMxMDM4MjIsIGZkbyMxMDQ3MjQpIC0+
-IFBBU1MKCiAgICBpZ3RAcGVyZl9wbXVAaWRsZS12Y3MwOgogICAgICBzaGFyZC1nbGs6ICAgICAg
-ICAgIElOQ09NUExFVEUgKGsub3JnIzE5ODEzMywgZmRvIzEwMzM1OSkgLT4gUEFTUwoKICAgIAog
-IGZkbyMxMDAzNjggaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
-MTAwMzY4CiAgZmRvIzEwMjg4NyBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVn
-LmNnaT9pZD0xMDI4ODcKICBmZG8jMTAzMTY2IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcv
-c2hvd19idWcuY2dpP2lkPTEwMzE2NgogIGZkbyMxMDMxNjcgaHR0cHM6Ly9idWdzLmZyZWVkZXNr
-dG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMTY3CiAgZmRvIzEwMzM1OSBodHRwczovL2J1Z3Mu
-ZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDMzNTkKICBmZG8jMTAzNjY1IGh0dHBz
-Oi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzY2NQogIGZkbyMxMDM4
-MjIgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzODIyCiAg
-ZmRvIzEwNDcyNCBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0x
-MDQ3MjQKICBmZG8jMTA1NzA3IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcu
-Y2dpP2lkPTEwNTcwNwogIGZkbyMxMDYwMjYgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9z
-aG93X2J1Zy5jZ2k/aWQ9MTA2MDI2CiAgZmRvIzEwNjUxMCBodHRwczovL2J1Z3MuZnJlZWRlc2t0
-b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDY1MTAKICBmZG8jMTA2NTIzIGh0dHBzOi8vYnVncy5m
-cmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNjUyMwogIGsub3JnIzE5ODEzMyBodHRw
-czovL2J1Z3ppbGxhLmtlcm5lbC5vcmcvc2hvd19idWcuY2dpP2lkPTE5ODEzMwoKCj09IFBhcnRp
-Y2lwYXRpbmcgaG9zdHMgKDUgLT4gNSkgPT0KCiAgTm8gY2hhbmdlcyBpbiBwYXJ0aWNpcGF0aW5n
-IGhvc3RzCgoKPT0gQnVpbGQgY2hhbmdlcyA9PQoKICAgICogSUdUOiBJR1RfNDQ4NSAtPiBJR1RQ
-V18xMzczCiAgICAqIExpbnV4OiBDSV9EUk1fNDE5MSAtPiBDSV9EUk1fNDE5MwogICAgKiBQaWds
-aXQ6IHBpZ2xpdF80NDg1IC0+IHBpZ2xpdF80NDg3CgogIENJX0RSTV80MTkxOiA3MGRhZWJmMWE4
-M2MyZWQ2ZWZmMTE4ZDJhMjgwNjA4NmMwYzg5MDI3IEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3Rv
-cC5vcmcvZ2Z4LWNpL2xpbnV4CiAgQ0lfRFJNXzQxOTM6IDkzMjJlMzkwM2NlNmM4OWJkZTBjMjQ4
-NzdmZTczMGI4MDg0MjdjYWYgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kv
-bGludXgKICBJR1RQV18xMzczOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0t
-dGlwL0lHVFBXXzEzNzMvCiAgSUdUXzQ0ODU6IGVjY2FlMTM2MGQ2ZDAxZTczYzZhZjJiZDk3MTIy
-Y2VmNzA4MjA3ZWYgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy94b3JnL2FwcC9pbnRl
-bC1ncHUtdG9vbHMKICBwaWdsaXRfNDQ4NTogNjJlZjZiMGRiODk2N2U3MDIxZmQzZTBiNTdkMDNm
-ZjE2NGI5ODRmZSBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL3BpZ2xpdAogIHBpZ2xp
-dF80NDg3OiA2YWI3NWY3ZWI1ZTFkY2NiYjc3M2UxNzM5YmVlYjJkN2NiZDZhZDBkIEAgZ2l0Oi8v
-YW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvcGlnbGl0Cgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRh
-aWxzIHNlZTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18x
-MzczL3NoYXJkcy5odG1sCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+
+--===============1477070801==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="5pmjxfotvjsb3rdz"
+Content-Disposition: inline
+
+
+--5pmjxfotvjsb3rdz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, May 14, 2018 at 04:24:40PM +0200, Paul Kocialkowski wrote:
+> On Tue, 2018-04-24 at 09:46 +0200, Maxime Ripard wrote:
+> > The current pattern being used is the one generated through the
+> > igt_create_color_pattern_fb.
+> >=20
+> > However, in order to deal with multiple formats and the upsampling /
+> > downsampling issues that might arise from converting back and forth bet=
+ween
+> > formats, we will need to have a pattern with quite precise color values,
+> > and without any shades or gradient of colors.
+> >=20
+> > The easiest way to do that will be to only use values that would have t=
+he
+> > same part on the common most significant bits (5, to deal with the most
+> > formats) and have the same bit repeated on the least significant bits t=
+hat
+> > are going to be dropped and / or padded when converting between formats.
+> >=20
+> > Pixman will fill the lowest bits with 1, and our hardware is able to
+> > support that, so the easiest is to just use all 1's for our components =
+in
+> > order to still be able to compute the CRCs.
+>=20
+> I understand the issue at hand, the proposed solution and I agree that
+> it an easy way to deal with the issues introduced by up/downsampling.
+>=20
+> However, it all other cases (where the color bpp is the same for the
+> source and destination formats), I think we should definitely use a
+> complex pattern with gradients (igt_create_color_pattern_fb) in order to
+> increase the coverage of the tests (gradients are something we
+> definitely want to make sure are displayed correctly).
+
+Testing a gradient and expecting a pixel-perfect result is pretty
+difficult, even on a digital signal like HDMI. It would assume that
+there's no loss in color depth between the plane and the final
+connector. And you have two boards on your desk that break that
+assumption :)
+
+I guess this would work fine for setup that have an HDMI encoder as
+part of the video pipeline. But if you don't, and you have to use a
+bridge, then it starts to fall apart, since the bridge might very well
+be connected to the upstream encoder through a bus with a lower color
+depth than the signal will output. And the worst part is that this is
+not exposed to the userspace, so you cannot just fallback to a simpler
+pattern if you fall into that case.
+
+Maxime
+
+--=20
+Maxime Ripard, Bootlin (formerly Free Electrons)
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--5pmjxfotvjsb3rdz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlr+gCAACgkQ0rTAlCFN
+r3SppA/9GSxMfXvqXDZAA/uTrUuXgdw/USo4ISR2lfvECBtvZdO+anwlGgCCxZ18
+co/pcENo9UWY2jWj3DIPkiNww6Kw/K0N/GQziZ2wk73WjUj7jtONOjsRcKGOw1n2
+d2puM+aqhLKcNEYbHmb+jKRi6dBuXXRvF6sreJIP5jbwNQVL9ws42hv39mRCEK9o
+TmSKJlmy/AsiSeDh8Jse3aOJhWz4qPUnqDDNwDZ4LL2QL3/PrhfKFwzhmZMZKH92
+c7aYyVDVYiHA/ISfgsakNsg5kKbpwrNWXlN6Epsh+bUsjteBK0+aFIowqHI0v+mu
+g/ZsEYtAVzXtdDInRU9+CV6L/IoFmvovf8TckbCk4cy1j1aeGTgv19fyiGFQnvzA
+hzYFXSYhaNnTT1kLV1lm6tSCU3zxxl31wP9uWfeI9MIrq6KqgT0GDc0E5nYrvgHB
+9BTf4pokYw3UvbsYAOUm7qCX9miuNbbATSorUHinY4MweVJTMwNTNu45ZY6IeV6p
+b8J4IQ2LGe9JAehcrU7GSyaNWe9hN1XfC5+qBL9pNIsox5aIzf7NdEmm9mVTyXJP
+6ezDuoy8UOA37KEEoENZkJ6Kg0+38bx0IIB7kR/48lpjfpjfBhXkc9GdrOhHA+34
+tzRAQGl6dHOj8L8qsMO+Gt0ENHoFiyQ3Ybg7a5S+quuGRB3ghcc=
+=PrV6
+-----END PGP SIGNATURE-----
+
+--5pmjxfotvjsb3rdz--
+
+--===============1477070801==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1477070801==--
