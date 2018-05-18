@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 77F1E6EEB2
- for <igt-dev@lists.freedesktop.org>; Fri, 18 May 2018 18:41:01 +0000 (UTC)
-References: <20180510101924.20814-1-tvrtko.ursulin@linux.intel.com>
- <20180510101924.20814-3-tvrtko.ursulin@linux.intel.com>
-From: John Harrison <John.C.Harrison@Intel.com>
-Message-ID: <502788e0-355f-d46a-4986-386bc3874e1b@Intel.com>
-Date: Fri, 18 May 2018 11:41:00 -0700
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 221F56EEA2
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 May 2018 19:56:42 +0000 (UTC)
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+Date: Fri, 18 May 2018 22:56:39 +0300
+Message-Id: <20180518195639.13159-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20180517195148.5765-7-ville.syrjala@linux.intel.com>
+References: <20180517195148.5765-7-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20180510101924.20814-3-tvrtko.ursulin@linux.intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 3/9] trace.pl: Remove context squashing
- option
+Subject: [igt-dev] [PATCH i-g-t v4 07/10] lib: Use igt_matrix for
+ ycbcr<->rgb conversion
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,230 +17,197 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0913746508=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is a multi-part message in MIME format.
---===============0913746508==
-Content-Type: multipart/alternative;
- boundary="------------0A19A4F764D4041A1761153F"
-Content-Language: en-US
-
-This is a multi-part message in MIME format.
---------------0A19A4F764D4041A1761153F
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-On 5/10/2018 3:19 AM, Tvrtko Ursulin wrote:
-
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->
-> Timeline id allocation order is not tied with engine ids any more.
->
-> Remove the option which assumed that was the case in attempt to provide
-> more readable timeline.
->
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> ---
->   scripts/media-bench.pl |  2 +-
->   scripts/trace.pl       | 18 ------------------
->   2 files changed, 1 insertion(+), 19 deletions(-)
->
-> diff --git a/scripts/media-bench.pl b/scripts/media-bench.pl
-> index c07555b0dc74..375844d9cdf6 100755
-> --- a/scripts/media-bench.pl
-> +++ b/scripts/media-bench.pl
-> @@ -207,7 +207,7 @@ sub trace_workload
->   	show_cmd($cmd);
->   	system($cmd);
->   
-> -	$cmd = "perf script | $tracepl --html -x ctxsave -s -c --squash-ctx-id ";
-> +	$cmd = "perf script | $tracepl --html -x ctxsave -s -c ";
->   	$cmd .= join ' ', map("-i $_", @skip_engine);
->   	$cmd .= " > ${file}.html";
->   	show_cmd($cmd);
-> diff --git a/scripts/trace.pl b/scripts/trace.pl
-> index 7f181a3fa2f5..fae94d5044ef 100755
-> --- a/scripts/trace.pl
-> +++ b/scripts/trace.pl
-> @@ -38,7 +38,6 @@ my %skip_box;
->   my $html = 0;
->   my $trace = 0;
->   my $avg_delay_stats = 0;
-> -my $squash_context_id = 0;
->   my $gpu_timeline = 0;
->   my $colour_contexts = 0;
->   
-> @@ -108,8 +107,6 @@ Usage:
->         --html				Generate HTML output.
->         --trace cmd			Trace the following command.
->         --avg-delay-stats			Print average delay stats.
-> -      --squash-ctx-id			Squash context id by substracting engine
-> -					id from ctx id.
->         --gpu-timeline			Draw overall GPU busy timeline.
->         --colour-contexts / -c		Use different colours for different
->   					context execution boxes.
-> @@ -145,18 +142,6 @@ sub arg_avg_delay_stats
->   	return @_;
->   }
->   
-> -sub arg_squash_ctx_id
-> -{
-> -	return unless scalar(@_);
-> -
-> -	if ($_[0] eq '--squash-ctx-id') {
-> -		shift @_;
-> -		$squash_context_id = 1;
-> -	}
-> -
-> -	return @_;
-> -}
-> -
->   sub arg_gpu_timeline
->   {
->   	return unless scalar(@_);
-> @@ -303,7 +288,6 @@ while (@args) {
->   	@args = arg_help(@args);
->   	@args = arg_html(@args);
->   	@args = arg_avg_delay_stats(@args);
-> -	@args = arg_squash_ctx_id(@args);
->   	@args = arg_gpu_timeline(@args);
->   	@args = arg_trace(@args);
->   	@args = arg_max_items(@args);
-> @@ -338,8 +322,6 @@ sub sanitize_ctx
->   {
->   	my ($ctx, $ring) = @_;
->   
-> -	$ctx = $ctx - $ring if $squash_context_id;
-> -
->   	if (exists $ctxdb{$ctx}) {
->   		return $ctx . '.' . $ctxdb{$ctx};
->   	} else {
-
-
-Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
-
-
---------------0A19A4F764D4041A1761153F
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body text="#000000" bgcolor="#FFFFFF">
-    <p>On 5/10/2018 3:19 AM, Tvrtko Ursulin wrote:<br>
-    </p>
-    <blockquote type="cite"
-      cite="mid:20180510101924.20814-3-tvrtko.ursulin@linux.intel.com">
-      <pre wrap="">From: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E" href="mailto:tvrtko.ursulin@intel.com">&lt;tvrtko.ursulin@intel.com&gt;</a>
-
-Timeline id allocation order is not tied with engine ids any more.
-
-Remove the option which assumed that was the case in attempt to provide
-more readable timeline.
-
-Signed-off-by: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E" href="mailto:tvrtko.ursulin@intel.com">&lt;tvrtko.ursulin@intel.com&gt;</a>
----
- scripts/media-bench.pl |  2 +-
- scripts/trace.pl       | 18 ------------------
- 2 files changed, 1 insertion(+), 19 deletions(-)
-
-diff --git a/scripts/media-bench.pl b/scripts/media-bench.pl
-index c07555b0dc74..375844d9cdf6 100755
---- a/scripts/media-bench.pl
-+++ b/scripts/media-bench.pl
-@@ -207,7 +207,7 @@ sub trace_workload
- 	show_cmd($cmd);
- 	system($cmd);
- 
--	$cmd = "perf script | $tracepl --html -x ctxsave -s -c --squash-ctx-id ";
-+	$cmd = "perf script | $tracepl --html -x ctxsave -s -c ";
- 	$cmd .= join ' ', map("-i $_", @skip_engine);
- 	$cmd .= " &gt; ${file}.html";
- 	show_cmd($cmd);
-diff --git a/scripts/trace.pl b/scripts/trace.pl
-index 7f181a3fa2f5..fae94d5044ef 100755
---- a/scripts/trace.pl
-+++ b/scripts/trace.pl
-@@ -38,7 +38,6 @@ my %skip_box;
- my $html = 0;
- my $trace = 0;
- my $avg_delay_stats = 0;
--my $squash_context_id = 0;
- my $gpu_timeline = 0;
- my $colour_contexts = 0;
- 
-@@ -108,8 +107,6 @@ Usage:
-       --html				Generate HTML output.
-       --trace cmd			Trace the following command.
-       --avg-delay-stats			Print average delay stats.
--      --squash-ctx-id			Squash context id by substracting engine
--					id from ctx id.
-       --gpu-timeline			Draw overall GPU busy timeline.
-       --colour-contexts / -c		Use different colours for different
- 					context execution boxes.
-@@ -145,18 +142,6 @@ sub arg_avg_delay_stats
- 	return @_;
- }
- 
--sub arg_squash_ctx_id
--{
--	return unless scalar(@_);
--
--	if ($_[0] eq '--squash-ctx-id') {
--		shift @_;
--		$squash_context_id = 1;
--	}
--
--	return @_;
--}
--
- sub arg_gpu_timeline
- {
- 	return unless scalar(@_);
-@@ -303,7 +288,6 @@ while (@args) {
- 	@args = arg_help(@args);
- 	@args = arg_html(@args);
- 	@args = arg_avg_delay_stats(@args);
--	@args = arg_squash_ctx_id(@args);
- 	@args = arg_gpu_timeline(@args);
- 	@args = arg_trace(@args);
- 	@args = arg_max_items(@args);
-@@ -338,8 +322,6 @@ sub sanitize_ctx
- {
- 	my ($ctx, $ring) = @_;
- 
--	$ctx = $ctx - $ring if $squash_context_id;
--
- 	if (exists $ctxdb{$ctx}) {
- 		return $ctx . '.' . $ctxdb{$ctx};
- 	} else {
-</pre>
-    </blockquote>
-    <br>
-    <br>
-    Reviewed-by: John Harrison <a class="moz-txt-link-rfc2396E"
-      href="mailto:John.C.Harrison@Intel.com">&lt;John.C.Harrison@Intel.com&gt;</a><br>
-    <br>
-  </body>
-</html>
-
---------------0A19A4F764D4041A1761153F--
-
---===============0913746508==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0913746508==--
+RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KClBy
+b2JhYmx5IGhvcnJpYmx5IGluZWZmaWNpZW50IChub3QgdGhhdCB0aGUgb3JpZ2luYWwgY29kZSB0
+cmllZCB0byBiZQpwYXJ0aWN1bGFybHkgZWZmaWNpZW50KSwgYnV0IGF0IGxlYXN0IHRoaXMgaXMg
+bm93IHByZXR0eSBnZW5lcmljIHNvCml0J2xsIGJlIHN1cGVyIGVhc3kgdG8gYWRkIG90aGVyIGNv
+bG9yIGVuY29kaW5ncyBhbmQgd2hhdG5vdC4KCnYyOiBSZWJhc2UKdjM6IERlYWwgd2l0aCB0aGUg
+bmV3IGNvbG9yX2VuY29kaW5nL3JhbmdlIGVudW1zCnY0OiBGaXggdGhlIGNvZGUgdG8gYWN0dWFs
+bHkgd29yaywgYW5kIGRvIHRoaW5ncyBpbiAyeDIgYmxvY2tzCiAgICBLZWVwIHRoZSBjaHJvbWEg
+c2l0aW5nIGNvbW1lbnQgYW5kIHBpbXAgaXQgdXAgYSBiaXQKClNpZ25lZC1vZmYtYnk6IFZpbGxl
+IFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+Ci0tLQogbGliL2lndF9m
+Yi5jIHwgMjI4ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0t
+LS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMTU5IGluc2VydGlvbnMoKyksIDY5IGRlbGV0
+aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZmIuYyBiL2xpYi9pZ3RfZmIuYwppbmRleCBh
+ZjhiYTcwYjBhMmEuLjVmMzc5NzRmMzkwNCAxMDA2NDQKLS0tIGEvbGliL2lndF9mYi5jCisrKyBi
+L2xpYi9pZ3RfZmIuYwpAQCAtMzEsOCArMzEsMTAgQEAKIAogI2luY2x1ZGUgImRybXRlc3QuaCIK
+ICNpbmNsdWRlICJpZ3RfYXV4LmgiCisjaW5jbHVkZSAiaWd0X2NvbG9yX2VuY29kaW5nLmgiCiAj
+aW5jbHVkZSAiaWd0X2ZiLmgiCiAjaW5jbHVkZSAiaWd0X2ttcy5oIgorI2luY2x1ZGUgImlndF9t
+YXRyaXguaCIKICNpbmNsdWRlICJpZ3RfeDg2LmgiCiAjaW5jbHVkZSAiaW9jdGxfd3JhcHBlcnMu
+aCIKICNpbmNsdWRlICJpbnRlbF9iYXRjaGJ1ZmZlci5oIgpAQCAtMTM3MCw2ICsxMzcyLDIxIEBA
+IHN0YXRpYyB1aW50OF90IGNsYW1wcmdiKGZsb2F0IHZhbCkKIAlyZXR1cm4gY2xhbXAodmFsLCAw
+LjBmLCAyNTUuMGYpOwogfQogCitzdGF0aWMgdm9pZCByZWFkX3JnYihzdHJ1Y3QgaWd0X3ZlYzQg
+KnJnYiwgY29uc3QgdWludDhfdCAqcmdiMjQpCit7CisJcmdiLT5kWzBdID0gcmdiMjRbMl07CisJ
+cmdiLT5kWzFdID0gcmdiMjRbMV07CisJcmdiLT5kWzJdID0gcmdiMjRbMF07CisJcmdiLT5kWzNd
+ID0gMS4wZjsKK30KKworc3RhdGljIHZvaWQgd3JpdGVfcmdiKHVpbnQ4X3QgKnJnYjI0LCBjb25z
+dCBzdHJ1Y3QgaWd0X3ZlYzQgKnJnYikKK3sKKwlyZ2IyNFsyXSA9IGNsYW1wcmdiKHJnYi0+ZFsw
+XSk7CisJcmdiMjRbMV0gPSBjbGFtcHJnYihyZ2ItPmRbMV0pOworCXJnYjI0WzBdID0gY2xhbXBy
+Z2IocmdiLT5kWzJdKTsKK30KKwogc3RhdGljIHZvaWQgY29udmVydF9udjEyX3RvX3JnYjI0KHN0
+cnVjdCBpZ3RfZmIgKmZiLCBzdHJ1Y3QgZmJfY29udmVydF9ibGl0X3VwbG9hZCAqYmxpdCkKIHsK
+IAlpbnQgaSwgajsKQEAgLTEzNzcsNiArMTM5NCw4IEBAIHN0YXRpYyB2b2lkIGNvbnZlcnRfbnYx
+Ml90b19yZ2IyNChzdHJ1Y3QgaWd0X2ZiICpmYiwgc3RydWN0IGZiX2NvbnZlcnRfYmxpdF91cGxv
+CiAJdWludDhfdCAqcmdiMjQgPSBibGl0LT5yZ2IyNC5tYXA7CiAJdW5zaWduZWQgcmdiMjRfc3Ry
+aWRlID0gYmxpdC0+cmdiMjQuc3RyaWRlLCBwbGFuYXJfc3RyaWRlID0gYmxpdC0+bGluZWFyLnN0
+cmlkZTsKIAl1aW50OF90ICpidWYgPSBtYWxsb2MoYmxpdC0+bGluZWFyLnNpemUpOworCXN0cnVj
+dCBpZ3RfbWF0NCBtID0gaWd0X3ljYmNyX3RvX3JnYl9tYXRyaXgoSUdUX0NPTE9SX1lDQkNSX0JU
+NjAxLAorCQkJCQkJICAgIElHVF9DT0xPUl9ZQ0JDUl9MSU1JVEVEX1JBTkdFKTsKIAogCS8qCiAJ
+ICogUmVhZGluZyBmcm9tIHRoZSBCTyBpcyBhd2Z1bGx5IHNsb3cgYmVjYXVzZSBvZiBsYWNrIG9m
+IHJlYWQgY2FjaGluZywKQEAgLTEzODcsMzAgKzE0MDYsNDkgQEAgc3RhdGljIHZvaWQgY29udmVy
+dF9udjEyX3RvX3JnYjI0KHN0cnVjdCBpZ3RfZmIgKmZiLCBzdHJ1Y3QgZmJfY29udmVydF9ibGl0
+X3VwbG8KIAl5ID0gJmJ1ZltibGl0LT5saW5lYXIub2Zmc2V0c1swXV07CiAJdXYgPSAmYnVmW2Js
+aXQtPmxpbmVhci5vZmZzZXRzWzFdXTsKIAotCS8qIENvbnZlcnQgZnJvbSBsaW1pdGVkIGNvbG9y
+IHJhbmdlIEJULjYwMSAqLwogCWZvciAoaSA9IDA7IGkgPCBmYi0+aGVpZ2h0IC8gMjsgaSsrKSB7
+Ci0JCWZvciAoaiA9IDA7IGogPCBmYi0+d2lkdGg7IGorKykgewotCQkJZmxvYXQgcl8sIGdfLCBi
+XywgeTAsIHkxLCBjYiwgY3I7Ci0JCQkvKiBDb252ZXJ0IDF4MiBwaXhlbCBibG9ja3MgKi8KLQot
+CQkJeTAgPSAxLjE2NGYgKiAoeVtqXSAtIDE2LmYpOwotCQkJeTEgPSAxLjE2NGYgKiAoeVtqICsg
+cGxhbmFyX3N0cmlkZV0gLSAxNi5mKTsKKwkJZm9yIChqID0gMDsgaiA8IGZiLT53aWR0aCAvIDI7
+IGorKykgeworCQkJLyogQ29udmVydCAyeDIgcGl4ZWwgYmxvY2tzICovCisJCQlzdHJ1Y3QgaWd0
+X3ZlYzQgeXV2WzRdOworCQkJc3RydWN0IGlndF92ZWM0IHJnYls0XTsKKworCQkJeXV2WzBdLmRb
+MF0gPSB5W2ogKiAyICsgMF07CisJCQl5dXZbMV0uZFswXSA9IHlbaiAqIDIgKyAxXTsKKwkJCXl1
+dlsyXS5kWzBdID0geVtqICogMiArIDAgKyBwbGFuYXJfc3RyaWRlXTsKKwkJCXl1dlszXS5kWzBd
+ID0geVtqICogMiArIDEgKyBwbGFuYXJfc3RyaWRlXTsKKworCQkJeXV2WzBdLmRbMV0gPSB5dXZb
+MV0uZFsxXSA9IHl1dlsyXS5kWzFdID0geXV2WzNdLmRbMV0gPSB1dltqICogMiArIDBdOworCQkJ
+eXV2WzBdLmRbMl0gPSB5dXZbMV0uZFsyXSA9IHl1dlsyXS5kWzJdID0geXV2WzNdLmRbMl0gPSB1
+dltqICogMiArIDFdOworCQkJeXV2WzBdLmRbM10gPSB5dXZbMV0uZFszXSA9IHl1dlsyXS5kWzNd
+ID0geXV2WzNdLmRbM10gPSAxLjBmOworCisJCQlyZ2JbMF0gPSBpZ3RfbWF0cml4X3RyYW5zZm9y
+bSgmbSwgJnl1dlswXSk7CisJCQlyZ2JbMV0gPSBpZ3RfbWF0cml4X3RyYW5zZm9ybSgmbSwgJnl1
+dlsxXSk7CisJCQlyZ2JbMl0gPSBpZ3RfbWF0cml4X3RyYW5zZm9ybSgmbSwgJnl1dlsyXSk7CisJ
+CQlyZ2JbM10gPSBpZ3RfbWF0cml4X3RyYW5zZm9ybSgmbSwgJnl1dlszXSk7CisKKwkJCXdyaXRl
+X3JnYigmcmdiMjRbaiAqIDggKyAwXSwgJnJnYlswXSk7CisJCQl3cml0ZV9yZ2IoJnJnYjI0W2og
+KiA4ICsgNF0sICZyZ2JbMV0pOworCQkJd3JpdGVfcmdiKCZyZ2IyNFtqICogOCArIDAgKyByZ2Iy
+NF9zdHJpZGVdLCAmcmdiWzJdKTsKKwkJCXdyaXRlX3JnYigmcmdiMjRbaiAqIDggKyA0ICsgcmdi
+MjRfc3RyaWRlXSwgJnJnYlszXSk7CisJCX0KIAotCQkJY2IgPSB1dltqICYgfjFdIC0gMTI4LmY7
+Ci0JCQljciA9IHV2W2ogfCAxXSAtIDEyOC5mOworCQlpZiAoZmItPndpZHRoICYgMSkgeworCQkJ
+LyogQ29udmVydCAxeDIgcGl4ZWwgYmxvY2sgKi8KKwkJCXN0cnVjdCBpZ3RfdmVjNCB5dXZbMl07
+CisJCQlzdHJ1Y3QgaWd0X3ZlYzQgcmdiWzJdOwogCi0JCQlyXyA9ICAwLjAwMGYgKiBjYiArICAx
+LjU5NmYgKiBjcjsKLQkJCWdfID0gLTAuMzkyZiAqIGNiICsgLTAuODEzZiAqIGNyOwotCQkJYl8g
+PSAgMi4wMTdmICogY2IgKyAgMC4wMDBmICogY3I7CisJCQl5dXZbMF0uZFswXSA9IHlbaiAqIDIg
+KyAwXTsKKwkJCXl1dlsxXS5kWzBdID0geVtqICogMiArIDAgKyBwbGFuYXJfc3RyaWRlXTsKIAot
+CQkJcmdiMjRbaiAqIDQgKyAyXSA9IGNsYW1wcmdiKHkwICsgcl8pOwotCQkJcmdiMjRbaiAqIDQg
+KyAyICsgcmdiMjRfc3RyaWRlXSA9IGNsYW1wcmdiKHkxICsgcl8pOworCQkJeXV2WzBdLmRbMV0g
+PSB5dXZbMV0uZFsxXSA9IHV2W2ogKiAyICsgMF07CisJCQl5dXZbMF0uZFsyXSA9IHl1dlsxXS5k
+WzJdID0gdXZbaiAqIDIgKyAxXTsKKwkJCXl1dlswXS5kWzNdID0geXV2WzFdLmRbM10gPSAxLjBm
+OwogCi0JCQlyZ2IyNFtqICogNCArIDFdID0gY2xhbXByZ2IoeTAgKyBnXyk7Ci0JCQlyZ2IyNFtq
+ICogNCArIDEgKyByZ2IyNF9zdHJpZGVdID0gY2xhbXByZ2IoeTEgKyBnXyk7CisJCQlyZ2JbMF0g
+PSBpZ3RfbWF0cml4X3RyYW5zZm9ybSgmbSwgJnl1dlswXSk7CisJCQlyZ2JbMV0gPSBpZ3RfbWF0
+cml4X3RyYW5zZm9ybSgmbSwgJnl1dlsxXSk7CiAKLQkJCXJnYjI0W2ogKiA0XSA9IGNsYW1wcmdi
+KHkwICsgYl8pOwotCQkJcmdiMjRbaiAqIDQgKyByZ2IyNF9zdHJpZGVdID0gY2xhbXByZ2IoeTEg
+KyBiXyk7CisJCQl3cml0ZV9yZ2IoJnJnYjI0W2ogKiA4ICsgMF0sICZyZ2JbMF0pOworCQkJd3Jp
+dGVfcmdiKCZyZ2IyNFtqICogOCArIDAgKyByZ2IyNF9zdHJpZGVdLCAmcmdiWzFdKTsKIAkJfQog
+CiAJCXJnYjI0ICs9IDIgKiByZ2IyNF9zdHJpZGU7CkBAIC0xNDIwLDIxICsxNDU4LDM3IEBAIHN0
+YXRpYyB2b2lkIGNvbnZlcnRfbnYxMl90b19yZ2IyNChzdHJ1Y3QgaWd0X2ZiICpmYiwgc3RydWN0
+IGZiX2NvbnZlcnRfYmxpdF91cGxvCiAKIAlpZiAoZmItPmhlaWdodCAmIDEpIHsKIAkJLyogQ29u
+dmVydCBsYXN0IHJvdyAqLwotCQlmb3IgKGogPSAwOyBqIDwgZmItPndpZHRoOyBqKyspIHsKLQkJ
+CWZsb2F0IHJfLCBnXywgYl8sIHkwLCBjYiwgY3I7CisJCWZvciAoaiA9IDA7IGogPCBmYi0+d2lk
+dGggLyAyOyBqKyspIHsKKwkJCS8qIENvbnZlcnQgMngxIHBpeGVsIGJsb2NrcyAqLworCQkJc3Ry
+dWN0IGlndF92ZWM0IHl1dlsyXTsKKwkJCXN0cnVjdCBpZ3RfdmVjNCByZ2JbMl07CisKKwkJCXl1
+dlswXS5kWzBdID0geVtqICogMiArIDBdOworCQkJeXV2WzFdLmRbMF0gPSB5W2ogKiAyICsgMV07
+CisJCQl5dXZbMF0uZFsxXSA9IHl1dlsxXS5kWzFdID0gdXZbaiAqIDIgKyAwXTsKKwkJCXl1dlsw
+XS5kWzJdID0geXV2WzFdLmRbMl0gPSB1dltqICogMiArIDFdOworCQkJeXV2WzBdLmRbM10gPSB5
+dXZbMV0uZFszXSA9IDEuMGY7CisKKwkJCXJnYlswXSA9IGlndF9tYXRyaXhfdHJhbnNmb3JtKCZt
+LCAmeXV2WzBdKTsKKwkJCXJnYlsxXSA9IGlndF9tYXRyaXhfdHJhbnNmb3JtKCZtLCAmeXV2WzFd
+KTsKKworCQkJd3JpdGVfcmdiKCZyZ2IyNFtqICogOCArIDBdLCAmcmdiWzBdKTsKKwkJCXdyaXRl
+X3JnYigmcmdiMjRbaiAqIDggKyA0XSwgJnJnYlswXSk7CisJCX0KKworCQlpZiAoZmItPndpZHRo
+ICYgMSkgewogCQkJLyogQ29udmVydCBzaW5nbGUgcGl4ZWwgKi8KKwkJCXN0cnVjdCBpZ3RfdmVj
+NCB5dXY7CisJCQlzdHJ1Y3QgaWd0X3ZlYzQgcmdiOwogCi0JCQljYiA9IHV2W2ogJiB+MV0gLSAx
+MjguZjsKLQkJCWNyID0gdXZbaiB8IDFdIC0gMTI4LmY7CisJCQl5dXYuZFswXSA9IHlbaiAqIDIg
+KyAwXTsKKwkJCXl1di5kWzFdID0gdXZbaiAqIDIgKyAwXTsKKwkJCXl1di5kWzJdID0gdXZbaiAq
+IDIgKyAxXTsKKwkJCXl1di5kWzNdID0gMS4wZjsKIAotCQkJeTAgPSAxLjE2NGYgKiAoeVtqXSAt
+IDE2LmYpOwotCQkJcl8gPSAgMC4wMDBmICogY2IgKyAgMS41OTZmICogY3I7Ci0JCQlnXyA9IC0w
+LjM5MmYgKiBjYiArIC0wLjgxM2YgKiBjcjsKLQkJCWJfID0gIDIuMDE3ZiAqIGNiICsgIDAuMDAw
+ZiAqIGNyOworCQkJcmdiID0gaWd0X21hdHJpeF90cmFuc2Zvcm0oJm0sICZ5dXYpOwogCi0JCQly
+Z2IyNFtqICogNCArIDJdID0gY2xhbXByZ2IoeTAgKyByXyk7Ci0JCQlyZ2IyNFtqICogNCArIDFd
+ID0gY2xhbXByZ2IoeTAgKyBnXyk7Ci0JCQlyZ2IyNFtqICogNF0gPSBjbGFtcHJnYih5MCArIGJf
+KTsKKwkJCXdyaXRlX3JnYigmcmdiMjRbaiAqIDggKyAwXSwgJnJnYik7CiAJCX0KIAl9CiAKQEAg
+LTE0NDksNjUgKzE1MDMsMTAxIEBAIHN0YXRpYyB2b2lkIGNvbnZlcnRfcmdiMjRfdG9fbnYxMihz
+dHJ1Y3QgaWd0X2ZiICpmYiwgc3RydWN0IGZiX2NvbnZlcnRfYmxpdF91cGxvCiAJY29uc3QgdWlu
+dDhfdCAqcmdiMjQgPSBibGl0LT5yZ2IyNC5tYXA7CiAJdW5zaWduZWQgcmdiMjRfc3RyaWRlID0g
+YmxpdC0+cmdiMjQuc3RyaWRlOwogCXVuc2lnbmVkIHBsYW5hcl9zdHJpZGUgPSBibGl0LT5saW5l
+YXIuc3RyaWRlOworCXN0cnVjdCBpZ3RfbWF0NCBtID0gaWd0X3JnYl90b195Y2Jjcl9tYXRyaXgo
+SUdUX0NPTE9SX1lDQkNSX0JUNjAxLAorCQkJCQkJICAgIElHVF9DT0xPUl9ZQ0JDUl9MSU1JVEVE
+X1JBTkdFKTsKIAogCWlndF9hc3NlcnRfZihmYi0+ZHJtX2Zvcm1hdCA9PSBEUk1fRk9STUFUX05W
+MTIsCiAJCSAgICAgIkNvbnZlcnNpb24gbm90IGltcGxlbWVudGVkIGZvciAhTlYxMiBwbGFuYXIg
+Zm9ybWF0c1xuIik7CiAKLQlmb3IgKGkgPSAwOyBpIDwgZmItPnBsYW5lX2hlaWdodFswXTsgaSsr
+KSB7Ci0JCS8qIFVzZSBsaW1pdGVkIGNvbG9yIHJhbmdlIEJULjYwMSAqLwotCi0JCWZvciAoaiA9
+IDA7IGogPCBmYi0+cGxhbmVfd2lkdGhbMF07IGorKykgewotCQkJZmxvYXQgeWYgPSAwLjI1N2Yg
+KiByZ2IyNFtqICogNCArIDJdICsKLQkJCQkgICAwLjUwNGYgKiByZ2IyNFtqICogNCArIDFdICsK
+LQkJCQkgICAwLjA5OGYgKiByZ2IyNFtqICogNF0gKyAxNjsKKwlmb3IgKGkgPSAwOyBpIDwgZmIt
+PmhlaWdodCAvIDI7IGkrKykgeworCQlmb3IgKGogPSAwOyBqIDwgZmItPndpZHRoIC8gMjsgaisr
+KSB7CisJCQkvKiBDb252ZXJ0IDJ4MiBwaXhlbCBibG9ja3MgKi8KKwkJCXN0cnVjdCBpZ3RfdmVj
+NCByZ2JbNF07CisJCQlzdHJ1Y3QgaWd0X3ZlYzQgeXV2WzRdOworCisJCQlyZWFkX3JnYigmcmdi
+WzBdLCAmcmdiMjRbaiAqIDggKyAwXSk7CisJCQlyZWFkX3JnYigmcmdiWzFdLCAmcmdiMjRbaiAq
+IDggKyA0XSk7CisJCQlyZWFkX3JnYigmcmdiWzJdLCAmcmdiMjRbaiAqIDggKyAwICsgcmdiMjRf
+c3RyaWRlXSk7CisJCQlyZWFkX3JnYigmcmdiWzNdLCAmcmdiMjRbaiAqIDggKyA0ICsgcmdiMjRf
+c3RyaWRlXSk7CisKKwkJCXl1dlswXSA9IGlndF9tYXRyaXhfdHJhbnNmb3JtKCZtLCAmcmdiWzBd
+KTsKKwkJCXl1dlsxXSA9IGlndF9tYXRyaXhfdHJhbnNmb3JtKCZtLCAmcmdiWzFdKTsKKwkJCXl1
+dlsyXSA9IGlndF9tYXRyaXhfdHJhbnNmb3JtKCZtLCAmcmdiWzJdKTsKKwkJCXl1dlszXSA9IGln
+dF9tYXRyaXhfdHJhbnNmb3JtKCZtLCAmcmdiWzNdKTsKKworCQkJeVtqICogMiArIDBdID0geXV2
+WzBdLmRbMF07CisJCQl5W2ogKiAyICsgMV0gPSB5dXZbMV0uZFswXTsKKwkJCXlbaiAqIDIgKyAw
+ICsgcGxhbmFyX3N0cmlkZV0gPSB5dXZbMl0uZFswXTsKKwkJCXlbaiAqIDIgKyAxICsgcGxhbmFy
+X3N0cmlkZV0gPSB5dXZbM10uZFswXTsKIAotCQkJeVtqXSA9ICh1aW50OF90KXlmOworCQkJLyoK
+KwkJCSAqIFdlIGFzc3VtZSB0aGUgTVBFRzIgY2hyb21hIHNpdGluZyBjb252ZW50aW9uLCB3aGVy
+ZQorCQkJICogcGl4ZWwgY2VudGVyIGZvciBDYidDcicgaXMgYmV0d2VlbiB0aGUgbGVmdCB0b3Ag
+YW5kCisJCQkgKiBib3R0b20gcGl4ZWwgaW4gYSAyeDIgYmxvY2ssIHNvIHRha2UgdGhlIGF2ZXJh
+Z2UuCisJCQkgKi8KKwkJCXV2W2ogKiAyICsgMF0gPSAoeXV2WzBdLmRbMV0gKyB5dXZbMl0uZFsx
+XSkgLyAyLjBmOworCQkJdXZbaiAqIDIgKyAxXSA9ICh5dXZbMF0uZFsyXSArIHl1dlsyXS5kWzJd
+KSAvIDIuMGY7CiAJCX0KIAotCQlyZ2IyNCArPSByZ2IyNF9zdHJpZGU7Ci0JCXkgKz0gcGxhbmFy
+X3N0cmlkZTsKLQl9CisJCWlmIChmYi0+d2lkdGggJiAxKSB7CisJCQkvKiBDb252ZXJ0IDF4MiBw
+aXhlbCBibG9jayAqLworCQkJc3RydWN0IGlndF92ZWM0IHJnYlsyXTsKKwkJCXN0cnVjdCBpZ3Rf
+dmVjNCB5dXZbMl07CiAKLQlyZ2IyNCA9IGJsaXQtPnJnYjI0Lm1hcDsKKwkJCXJlYWRfcmdiKCZy
+Z2JbMF0sICZyZ2IyNFtqICogOCArIDBdKTsKKwkJCXJlYWRfcmdiKCZyZ2JbMl0sICZyZ2IyNFtq
+ICogOCArIDAgKyByZ2IyNF9zdHJpZGVdKTsKKworCQkJeXV2WzBdID0gaWd0X21hdHJpeF90cmFu
+c2Zvcm0oJm0sICZyZ2JbMF0pOworCQkJeXV2WzFdID0gaWd0X21hdHJpeF90cmFuc2Zvcm0oJm0s
+ICZyZ2JbMV0pOworCisJCQl5W2ogKiAyICsgMF0gPSB5dXZbMF0uZFswXTsKKwkJCXlbaiAqIDIg
+KyAwICsgcGxhbmFyX3N0cmlkZV0gPSB5dXZbMV0uZFswXTsKIAotCWZvciAoaSA9IDA7IGkgPCBm
+Yi0+aGVpZ2h0IC8gMjsgaSsrKSB7Ci0JCWZvciAoaiA9IDA7IGogPCBmYi0+cGxhbmVfd2lkdGhb
+MV07IGorKykgewogCQkJLyoKLQkJCSAqIFBpeGVsIGNlbnRlciBmb3IgQ2InQ3InIGlzIGJldHdl
+ZW4gdGhlIGxlZnQgdG9wIGFuZAorCQkJICogV2UgYXNzdW1lIHRoZSBNUEVHMiBjaHJvbWEgc2l0
+aW5nIGNvbnZlbnRpb24sIHdoZXJlCisJCQkgKiBwaXhlbCBjZW50ZXIgZm9yIENiJ0NyJyBpcyBi
+ZXR3ZWVuIHRoZSBsZWZ0IHRvcCBhbmQKIAkJCSAqIGJvdHRvbSBwaXhlbCBpbiBhIDJ4MiBibG9j
+aywgc28gdGFrZSB0aGUgYXZlcmFnZS4KIAkJCSAqLwotCQkJZmxvYXQgdWYgPSAtMC4xNDhmLzIg
+KiByZ2IyNFtqICogOCArIDJdICsKLQkJCQkgICAtMC4xNDhmLzIgKiByZ2IyNFtqICogOCArIDIg
+KyByZ2IyNF9zdHJpZGVdICsKLQkJCQkgICAtMC4yOTFmLzIgKiByZ2IyNFtqICogOCArIDFdICsK
+LQkJCQkgICAtMC4yOTFmLzIgKiByZ2IyNFtqICogOCArIDEgKyByZ2IyNF9zdHJpZGVdICsKLQkJ
+CQkgICAgMC40MzlmLzIgKiByZ2IyNFtqICogOF0gKwotCQkJCSAgICAwLjQzOWYvMiAqIHJnYjI0
+W2ogKiA4ICsgcmdiMjRfc3RyaWRlXSArIDEyODsKLQkJCWZsb2F0IHZmID0gIDAuNDM5Zi8yICog
+cmdiMjRbaiAqIDggKyAyXSArCi0JCQkJICAgIDAuNDM5Zi8yICogcmdiMjRbaiAqIDggKyAyICsg
+cmdiMjRfc3RyaWRlXSArCi0JCQkJICAgLTAuMzY4Zi8yICogcmdiMjRbaiAqIDggKyAxXSArCi0J
+CQkJICAgLTAuMzY4Zi8yICogcmdiMjRbaiAqIDggKyAxICsgcmdiMjRfc3RyaWRlXSArCi0JCQkJ
+ICAgLTAuMDcxZi8yICogcmdiMjRbaiAqIDhdICsKLQkJCQkgICAtMC4wNzFmLzIgKiByZ2IyNFtq
+ICogOCArIHJnYjI0X3N0cmlkZV0gKyAxMjg7Ci0JCQl1dltqICogMl0gPSAodWludDhfdCl1ZjsK
+LQkJCXV2W2ogKiAyICsgMV0gPSAodWludDhfdCl2ZjsKKwkJCXV2W2ogKiAyICsgMF0gPSAoeXV2
+WzBdLmRbMV0gKyB5dXZbMV0uZFsxXSkgLyAyLjBmOworCQkJdXZbaiAqIDIgKyAxXSA9ICh5dXZb
+MF0uZFsyXSArIHl1dlsxXS5kWzJdKSAvIDIuMGY7CiAJCX0KIAogCQlyZ2IyNCArPSAyICogcmdi
+MjRfc3RyaWRlOworCQl5ICs9IDIgKiBwbGFuYXJfc3RyaWRlOwogCQl1diArPSBwbGFuYXJfc3Ry
+aWRlOwogCX0KIAogCS8qIExhc3Qgcm93IGNhbm5vdCBiZSBpbnRlcnBvbGF0ZWQgYmV0d2VlbiAy
+IHBpeGVscywgdGFrZSB0aGUgc2luZ2xlIHZhbHVlICovCi0JaWYgKGkgPCBmYi0+cGxhbmVfaGVp
+Z2h0WzFdKSB7Ci0JCWZvciAoaiA9IDA7IGogPCBmYi0+cGxhbmVfd2lkdGhbMV07IGorKykgewot
+CQkJZmxvYXQgdWYgPSAtMC4xNDhmICogcmdiMjRbaiAqIDggKyAyXSArCi0JCQkJICAgLTAuMjkx
+ZiAqIHJnYjI0W2ogKiA4ICsgMV0gKwotCQkJCSAgICAwLjQzOWYgKiByZ2IyNFtqICogOF0gKyAx
+Mjg7Ci0JCQlmbG9hdCB2ZiA9ICAwLjQzOWYgKiByZ2IyNFtqICogOCArIDJdICsKLQkJCQkgICAt
+MC4zNjhmICogcmdiMjRbaiAqIDggKyAxXSArCi0JCQkJICAgLTAuMDcxZiAqIHJnYjI0W2ogKiA4
+XSArIDEyODsKLQotCQkJdXZbaiAqIDJdID0gKHVpbnQ4X3QpdWY7Ci0JCQl1dltqICogMiArIDFd
+ID0gKHVpbnQ4X3QpdmY7CisJaWYgKGZiLT5oZWlnaHQgJiAxKSB7CisJCWZvciAoaiA9IDA7IGog
+PCBmYi0+d2lkdGggLyAyOyBqKyspIHsKKwkJCS8qIENvbnZlcnQgMngxIHBpeGVsIGJsb2NrcyAq
+LworCQkJc3RydWN0IGlndF92ZWM0IHJnYlsyXTsKKwkJCXN0cnVjdCBpZ3RfdmVjNCB5dXZbMl07
+CisKKwkJCXJlYWRfcmdiKCZyZ2JbMF0sICZyZ2IyNFtqICogOCArIDBdKTsKKwkJCXJlYWRfcmdi
+KCZyZ2JbMV0sICZyZ2IyNFtqICogOCArIDRdKTsKKworCQkJeXV2WzBdID0gaWd0X21hdHJpeF90
+cmFuc2Zvcm0oJm0sICZyZ2JbMF0pOworCQkJeXV2WzFdID0gaWd0X21hdHJpeF90cmFuc2Zvcm0o
+Jm0sICZyZ2JbMV0pOworCisJCQl5W2ogKiAyICsgMF0gPSB5dXZbMF0uZFswXTsKKwkJCXlbaiAq
+IDIgKyAxXSA9IHl1dlsxXS5kWzBdOworCQkJdXZbaiAqIDIgKyAwXSA9IHl1dlswXS5kWzFdOwor
+CQkJdXZbaiAqIDIgKyAxXSA9IHl1dlswXS5kWzJdOworCQl9CisKKwkJaWYgKGZiLT53aWR0aCAm
+IDEpIHsKKwkJCS8qIENvbnZlcnQgc2luZ2xlIHBpeGVsICovCisJCQlzdHJ1Y3QgaWd0X3ZlYzQg
+cmdiOworCQkJc3RydWN0IGlndF92ZWM0IHl1djsKKworCQkJcmVhZF9yZ2IoJnJnYiwgJnJnYjI0
+W2ogKiA4ICsgMF0pOworCisJCQl5dXYgPSBpZ3RfbWF0cml4X3RyYW5zZm9ybSgmbSwgJnJnYik7
+CisKKwkJCXlbaiAqIDIgKyAwXSA9IHl1di5kWzBdOworCQkJdXZbaiAqIDIgKyAwXSA9IHl1di5k
+WzFdOworCQkJdXZbaiAqIDIgKyAxXSA9IHl1di5kWzJdOwogCQl9CiAJfQogfQotLSAKMi4xNi4x
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
+IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
+LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
