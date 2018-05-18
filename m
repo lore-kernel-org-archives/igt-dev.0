@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 108736EE5C
- for <igt-dev@lists.freedesktop.org>; Fri, 18 May 2018 17:15:25 +0000 (UTC)
-References: <20180518171043.4438-1-lionel.g.landwerlin@intel.com>
- <20180518171043.4438-4-lionel.g.landwerlin@intel.com>
- <152666365291.13926.12714162767854975895@mail.alporthouse.com>
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <74015275-f63e-0982-9c5e-bcf81bc2c49f@intel.com>
-Date: Fri, 18 May 2018 18:15:30 +0100
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF6E96EE69
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 May 2018 17:15:29 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <152666365291.13926.12714162767854975895@mail.alporthouse.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] test/gem_ctx_isolation: verify
- INSTPM isolation on Gen7+
+From: Chris Wilson <chris@chris-wilson.co.uk>
+References: <20180518171043.4438-1-lionel.g.landwerlin@intel.com>
+ <20180518171043.4438-2-lionel.g.landwerlin@intel.com>
+In-Reply-To: <20180518171043.4438-2-lionel.g.landwerlin@intel.com>
+Message-ID: <152666372488.13926.2534050463986711372@mail.alporthouse.com>
+Date: Fri, 18 May 2018 18:15:24 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/gem_exec_parse: add a
+ register write mask
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,28 +18,21 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
+To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMTgvMDUvMTggMTg6MTQsIENocmlzIFdpbHNvbiB3cm90ZToKPiBRdW90aW5nIExpb25lbCBM
-YW5kd2VybGluICgyMDE4LTA1LTE4IDE4OjEwOjQzKQo+PiBUaGlzIHJlZ2lzdGVyIHNob3VsZCBs
-ZWFrIGJldHdlZW4gY29udGV4dHMuIERvY3VtZW50YXRpb24gc2F5cyBpdCdzCj4+IGNvbnRleHQg
-c2F2ZWQvcmVzdG9yZWQuCj4+Cj4+IFNpZ25lZC1vZmYtYnk6IExpb25lbCBMYW5kd2VybGluIDxs
-aW9uZWwuZy5sYW5kd2VybGluQGludGVsLmNvbT4KPj4gLS0tCj4+ICAgdGVzdHMvZ2VtX2N0eF9p
-c29sYXRpb24uYyB8IDEgKwo+PiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQo+Pgo+
-PiBkaWZmIC0tZ2l0IGEvdGVzdHMvZ2VtX2N0eF9pc29sYXRpb24uYyBiL3Rlc3RzL2dlbV9jdHhf
-aXNvbGF0aW9uLmMKPj4gaW5kZXggNDk2OGUzNjcuLjQ4MjkxNTQ3IDEwMDY0NAo+PiAtLS0gYS90
-ZXN0cy9nZW1fY3R4X2lzb2xhdGlvbi5jCj4+ICsrKyBiL3Rlc3RzL2dlbV9jdHhfaXNvbGF0aW9u
-LmMKPj4gQEAgLTEyMiw2ICsxMjIsNyBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IG5hbWVkX3JlZ2lz
-dGVyIHsKPj4gICAgICAgICAgeyAiT0FfQ09OVFJPTCIsIE5PQ1RYLCBSQ1MwLCAweDJiMDAgfSwK
-Pj4gICAgICAgICAgeyAiUEVSRl9DTlRfMSIsIE5PQ1RYLCBSQ1MwLCAweDkxYjgsIDIgfSwKPj4g
-ICAgICAgICAgeyAiUEVSRl9DTlRfMiIsIE5PQ1RYLCBSQ1MwLCAweDkxYzAsIDIgfSwKPj4gKyAg
-ICAgICB7ICJJTlNUUE0iLCBHRU43LCBSQ1MwLCAweDIwYzAgfSwKPiBJdCdzIGFscmVhZHkgaW4g
-dGhlIGxpc3QsIGp1c3QgbWFya2VkIGFzIEdFTjkrLiBMZXQncyBmaXggdGhhdCBvbmUgOikKPiAt
-Q2hyaXMKPgpEdWghCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
-dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+UXVvdGluZyBMaW9uZWwgTGFuZHdlcmxpbiAoMjAxOC0wNS0xOCAxODoxMDo0MSkKPiBTb21lIHJl
+Z2lzdGVyIGFyZSBtYXNrZWQgKG1lYW5pbmcgdGhlIDE2Yml0cyBhcmUgZGVkaWNhdGVkIHRvIGlk
+ZW50aWZ5Cj4gd2hpY2ggb2YgdGhlIG90aGVyIDE2Yml0cyBoYXZlIHRvIGJlIHRha2VuIGludG8g
+YWNjb3VudCBieSB0aGUKPiBoYXJkd2FyZSkuIFRoaXMgY2hhbmdlIGFkZHMgdGhlIG1hc2sgdG8g
+dGhlIHdyaXRlIGJ1dCBkb2Vzbid0IHRha2UgaXQKPiBpbnRvIGFjY291bnQgaW4gdGhlIHZhbHVl
+IGNvbXBhcmlzb24gYXNzZXJ0Lgo+IAo+IFNpZ25lZC1vZmYtYnk6IExpb25lbCBMYW5kd2VybGlu
+IDxsaW9uZWwuZy5sYW5kd2VybGluQGludGVsLmNvbT4KUmV2aWV3ZWQtYnk6IENocmlzIFdpbHNv
+biA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
+aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9pZ3QtZGV2Cg==
