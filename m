@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
- by gabe.freedesktop.org (Postfix) with ESMTP id 96EAC6E01C
- for <igt-dev@lists.freedesktop.org>; Thu, 24 May 2018 09:38:53 +0000 (UTC)
-Date: Thu, 24 May 2018 11:38:51 +0200
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20180524093851.fxahblwahwksoxz4@flea>
-References: <cover.4467e4f79584ac18248b9664cbe4a81a2a610ecf.1524555464.git-series.maxime.ripard@bootlin.com>
- <67ca95b67e6943d484521f98bbcf30290ad303ba.1524555464.git-series.maxime.ripard@bootlin.com>
- <355775d688f6e129c305d901f8d7b24ff465dc82.camel@bootlin.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 353806E01C
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 May 2018 10:58:42 +0000 (UTC)
+Date: Thu, 24 May 2018 13:58:39 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <20180524105839.GT23723@intel.com>
+References: <20180524070344.47829-1-maarten.lankhorst@linux.intel.com>
+ <20180524104059.GS23723@intel.com>
+ <66e4d178-3250-4733-c88c-f710cefad041@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <355775d688f6e129c305d901f8d7b24ff465dc82.camel@bootlin.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 05/12] chamelium: Make
- chamelium_calculate_fb_crc private
+Content-Disposition: inline
+In-Reply-To: <66e4d178-3250-4733-c88c-f710cefad041@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_panel_fitting: Do not use
+ scaling on haswell.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,88 +20,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0690518033=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-Cc: igt-dev@lists.freedesktop.org, eben@raspberrypi.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============0690518033==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="7fjhlodju5ibkuqw"
-Content-Disposition: inline
-
-
---7fjhlodju5ibkuqw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, May 14, 2018 at 03:50:33PM +0200, Paul Kocialkowski wrote:
-> Hi,
->=20
-> On Tue, 2018-04-24 at 09:46 +0200, Maxime Ripard wrote:
-> > The function chamelium_calculate_fb_crc has no user outside of
-> > lib/igt_chamelium.c, but is still part of the global functions exposed =
-in
-> > lib/igt_chamelium.h.
->=20
-> I don't think the fact that it has no immediate user within IGT is a
-> reason to move this function out of the public API. Is there a specific
-> use case that justifies the need for this?
->=20
-> The way I see it, chamelium_calculate_fb_crc is simply the synchronous
-> version of chamelium_calculate_fb_crc_async and although its use is
-> simplified with helpers, I think both functions should be public on the
-> same grounds.
->=20
-> What do you think?
-
-Fair enough :)
-
-This was a spurious attempt at cleaning up, I'm fine either way.
-
-I'll drop this patch.
-
-Maxime
-
---=20
-Maxime Ripard, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---7fjhlodju5ibkuqw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlsGiCsACgkQ0rTAlCFN
-r3QGcBAAiESEIJcUbaKbCph73xGAKJC2lP8juM84S0jB1pQncLjvQQvvl2PEhlhB
-COQVY97qHA+anJTDHgW1J5s5CqA4ptoDZCbIvDt8xlXDCiWDIbdLRqPmOHm+vDxL
-UyLFbzDa7dLij/08WDA2MS+wKg/qD7BJt7b4RI/Et+o6K717nOBVGL/jqlliMeGo
-X9PAt4OaH1mOGJUb7OxaEqBl9wGme6R8il7Lo9mRbgV9naP1xoEtkzuvHqS9xm47
-SuMDb2/XpsNrBZH76UeLRYLZW/6f1rfP0If1RGzMeWnBuw3Mxs+d4kY3alr9Kupm
-dm9x3nCkmSOgZ2NrqR6CDvyoKcg5aeyS61XWrOKtXXWBOccYiK2rGhQIc5uYV3qu
-FHpNbLHnQ6NuQNYecc7Jz2pCxOPakVW3r25hwlzPSIlKEKlm9yfG2e1Oehcmd5RV
-sZkeTP2LVLI4NZxvCnh0OwLC+bgRBbLdGqA+bgoiBZYsVR1owunFedTI2TK2kyA1
-NIeE40/cntaIRdlzIlYKESQWgUA02OyQsPykxN5oqQDRF4YOl3MupOIY/YeRdrWm
-Lx+e7HGs/PY1axT3mp+hUaOJ+BtBUv4hKUPVU8yrcOfNME8V8e/eEh5YVzP9DLux
-McxcHEflqDeVXaOO91RNfOnZhgShSAN4P9pori1DhI6OjsnUlyg=
-=fR/i
------END PGP SIGNATURE-----
-
---7fjhlodju5ibkuqw--
-
---===============0690518033==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0690518033==--
+T24gVGh1LCBNYXkgMjQsIDIwMTggYXQgMTI6NTA6MjdQTSArMDIwMCwgTWFhcnRlbiBMYW5raG9y
+c3Qgd3JvdGU6Cj4gT3AgMjQtMDUtMTggb20gMTI6NDAgc2NocmVlZiBWaWxsZSBTeXJqw6Rsw6Q6
+Cj4gPiBPbiBUaHUsIE1heSAyNCwgMjAxOCBhdCAwOTowMzo0NEFNICswMjAwLCBNYWFydGVuIExh
+bmtob3JzdCB3cm90ZToKPiA+PiBIYXN3ZWxsIGRvZXNuJ3Qgc3VwcG9ydCBzY2FsaW5nIHRoZSBz
+cHJpdGUgcGxhbmVzLAo+ID4gSFNXL0JEVy9WTFYvQ0hWCj4gT2ggcmlnaHQsIHJlYWQgaXQgd3Jv
+bmcgaW4gaW50ZWxfc3ByaXRlLmMKPiAKPiBKdXN0IGJsYWNrbGlzdCBnZW43ICE9IElWQiAmJiBn
+ZW44PwoKV2hhdGV2ZXIgd29ya3MgSSBndWVzcy4KCj4gPj4gc28gd2UgZmFpbCB3aXRoCj4gPj4g
+LUVSQU5HRS4gRG8gdGhlIHNhbWUgYXMgd2UgZG8gZm9yIGdlbjkgcGlwZSBDLCBhbmQgZG8gbm90
+IGF0dGVtcHQKPiA+PiB0byBzY2FsZSB0aGUgc3ByaXRlIHBsYW5lLiBJdCB3aWxsIGZhaWwsIGFu
+ZCB0aGUga2VybmVsIHdpbGwgbm8KPiA+PiBoaWRlIHRoZSBmYWlsdXJlIGZyb20gdXMuCj4gPj4K
+PiA+PiBCdWd6aWxsYTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/
+aWQ9MTA2NjA2Cj4gPj4gU2lnbmVkLW9mZi1ieTogTWFhcnRlbiBMYW5raG9yc3QgPG1hYXJ0ZW4u
+bGFua2hvcnN0QGxpbnV4LmludGVsLmNvbT4KPiA+PiAtLS0KPiA+PiAgdGVzdHMva21zX3BhbmVs
+X2ZpdHRpbmcuYyB8IDUgKysrKy0KPiA+PiAgMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygr
+KSwgMSBkZWxldGlvbigtKQo+ID4+Cj4gPj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19wYW5lbF9m
+aXR0aW5nLmMgYi90ZXN0cy9rbXNfcGFuZWxfZml0dGluZy5jCj4gPj4gaW5kZXggNWRjZTEwMTAw
+M2M1Li5lYWNjNmJjMGJjMTEgMTAwNjQ0Cj4gPj4gLS0tIGEvdGVzdHMva21zX3BhbmVsX2ZpdHRp
+bmcuYwo+ID4+ICsrKyBiL3Rlc3RzL2ttc19wYW5lbF9maXR0aW5nLmMKPiA+PiBAQCAtMTM0LDEx
+ICsxMzQsMTQgQEAgc3RhdGljIHZvaWQgdGVzdF9wYW5lbF9maXR0aW5nKGRhdGFfdCAqZCkKPiA+
+PiAgCQlpZ3RfZGlzcGxheV9jb21taXQyKGRpc3BsYXksIENPTU1JVF9VTklWRVJTQUwpOwo+ID4+
+ICAKPiA+PiAgCQkvKgo+ID4+ICsJCSAqIGhhc3dlbGwgZG9lc24ndCBzdXBwb3J0IHNjYWxpbmcg
+YXQgYWxsLgo+ID4+ICsJCSAqCj4gPj4gIAkJICogZ2VuOSBwaXBlIEMgaGFzIG9ubHkgMSBzY2Fs
+ZXIgc2hhcmVkIHdpdGggdGhlIGNydGMsIHdoaWNoCj4gPj4gIAkJICogbWVhbnMgcGlwZSBzY2Fs
+aW5nIGNhbid0IHdvcmsgc2ltdWx0YW5lb3VzbHkgd2l0aCBwYW5lbAo+ID4+ICAJCSAqIGZpdHRp
+bmcuCj4gPj4gIAkJICovCj4gPj4gLQkJaWYgKGludGVsX2dlbihpbnRlbF9nZXRfZHJtX2Rldmlk
+KGRpc3BsYXktPmRybV9mZCkpID09IDkgJiYgcGlwZSA9PSBQSVBFX0MpCj4gPj4gKwkJaWYgKElT
+X0hBU1dFTEwoaW50ZWxfZ2V0X2RybV9kZXZpZChkaXNwbGF5LT5kcm1fZmQpKSB8fAo+ID4+ICsJ
+CSAgICAoaW50ZWxfZ2VuKGludGVsX2dldF9kcm1fZGV2aWQoZGlzcGxheS0+ZHJtX2ZkKSkgPT0g
+OSAmJiBwaXBlID09IFBJUEVfQykpCj4gPj4gIAkJCWlndF9wbGFuZV9zZXRfc2l6ZShkLT5wbGFu
+ZTIsIGQtPmZiMi53aWR0aC0yMDAsIGQtPmZiMi5oZWlnaHQtMjAwKTsKPiA+PiAgCj4gPj4gIAkJ
+LyogZW5hYmxlIHBhbmVsIGZpdHRpbmcgYWxvbmcgd2l0aCBzcHJpdGUgc2NhbGluZyAqLwo+ID4+
+IC0tIAo+ID4+IDIuMTcuMAo+ID4+Cj4gPj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KPiA+PiBpZ3QtZGV2IG1haWxpbmcgbGlzdAo+ID4+IGlndC1kZXZA
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4gPj4gaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cj4gCgotLSAKVmlsbGUgU3lyasOkbMOkCkludGVsCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFp
+bGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
