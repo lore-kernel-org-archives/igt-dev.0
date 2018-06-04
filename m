@@ -1,63 +1,127 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-Date: Mon, 4 Jun 2018 13:40:37 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20180604104037.GG16222@ahiler-desk1.ger.corp.intel.com>
-References: <cover.1527639529.git.rodrigosiqueiramelo@gmail.com>
- <03a936e0c4bca03f89e731d2cacaa3624a10147f.1527639529.git.rodrigosiqueiramelo@gmail.com>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 3E5B96E94E
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Jun 2018 09:54:05 +0000 (UTC)
+Date: Mon, 4 Jun 2018 11:54:03 +0200
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20180604095403.fvfz5ygb4jfq73m4@flea>
+References: <cover.ab4e8068ec3bcd788fed734e68f4dac210fe2a3d.1527171699.git-series.maxime.ripard@bootlin.com>
+ <538851bf02215e84605901cd494ed9a7abd82865.1527171699.git-series.maxime.ripard@bootlin.com>
+ <20180524145813.GU23723@intel.com>
+ <20180524151904.6ixjbows5m2id7y4@flea>
+ <20180524154036.GV23723@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <03a936e0c4bca03f89e731d2cacaa3624a10147f.1527639529.git.rodrigosiqueiramelo@gmail.com>
-Subject: Re: [Intel-gfx] [PATCH i-g-t 1/3] Avoid truncate string in
- __igt_lsof_fds
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+In-Reply-To: <20180524154036.GV23723@intel.com>
+Subject: Re: [igt-dev] [PATCH v3 03/11] fb: Add format conversion routine
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============0597011953=="
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Paul Kocialkowski <paul.kocialkowski@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, eben@raspberrypi.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBNYXkgMjksIDIwMTggYXQgMDk6NDY6MzhQTSAtMDMwMCwgUm9kcmlnbyBTaXF1ZWly
-YSB3cm90ZToKPiBOb3RlIHRoYXQgJ3Byb2NfcGF0aCcgcGFyYW1ldGVyIGluIF9faWd0X2xzb2Zf
-ZmRzIHJlY2VpdmVzIGEgc3RyaW5nCj4gd2hpY2ggd2FzIGluaXRpYWxpemVkIHdpdGggdGhlIHNp
-emUgb2YgUEFUSF9NQVggYW5kIHRoZSBsb2NhbCB2YXJpYWJsZQo+ICdwYXRoJyBoYXMgdGhlIHNh
-bWUgc2l6ZSwgYnV0IGl0IGFsc28gaGF2ZSB0byBhcHBlbmQ6ICcvJywgJ1wwJywgYW5kIHRoZQo+
-IGRpcmVjdG9yeSBuYW1lLiBUaGlzIHNpdHVhdGlvbiBjYXVzZWQgdGhlIHdhcm5pbmcgZGVzY3Jp
-YmVkIGJlbG93Lgo+IAo+IHdhcm5pbmc6IOKAmCVz4oCZIGRpcmVjdGl2ZSBvdXRwdXQgbWF5IGJl
-IHRydW5jYXRlZCB3cml0aW5nIHVwIHRvIDI1NSBieXRlcwo+IGludG8gYSByZWdpb24gb2Ygc2l6
-ZSBiZXR3ZWVuIDAgYW5kIDQwOTUgWy1XZm9ybWF0LXRydW5jYXRpb249XQo+IHNucHJpbnRmKHBh
-dGgsIHNpemVvZihwYXRoKSwgIiVzLyVzIiwgcHJvY19wYXRoLCBkLT5kX25hbWUpOwo+IG5vdGU6
-IOKAmHNucHJpbnRm4oCZIG91dHB1dCBiZXR3ZWVuIDIgYW5kIDQzNTIgYnl0ZXMgaW50byBhIGRl
-c3RpbmF0aW9uIG9mCj4gc2l6ZSA0MDk2IFsuLl0KPiAKPiBUaGlzIHBhdGNoIGZpeCB0aGUgYWJv
-dmUgcHJvYmxlbS4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBSb2RyaWdvIFNpcXVlaXJhIDxyb2RyaWdv
-c2lxdWVpcmFtZWxvQGdtYWlsLmNvbT4KPiAtLS0KPiAgbGliL2lndF9hdXguYyB8IDIgKy0KPiAg
-MSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCj4gCj4gZGlmZiAt
-LWdpdCBhL2xpYi9pZ3RfYXV4LmMgYi9saWIvaWd0X2F1eC5jCj4gaW5kZXggYWNhZmI3MTMuLjVk
-ZDI3NjFlIDEwMDY0NAo+IC0tLSBhL2xpYi9pZ3RfYXV4LmMKPiArKysgYi9saWIvaWd0X2F1eC5j
-Cj4gQEAgLTE0MjUsNyArMTQyNSw3IEBAIF9faWd0X2xzb2ZfZmRzKHByb2NfdCAqcHJvY19pbmZv
-LCBpbnQgKnN0YXRlLCBjaGFyICpwcm9jX3BhdGgsIGNvbnN0IGNoYXIgKmRpcikKPiAgewo+ICAJ
-c3RydWN0IGRpcmVudCAqZDsKPiAgCXN0cnVjdCBzdGF0IHN0Owo+IC0JY2hhciBwYXRoW1BBVEhf
-TUFYXTsKPiArCWNoYXIgcGF0aFtQQVRIX01BWCArIE5BTUVfTUFYICsgMl07IC8vIDEgYnl0ZSBm
-b3IgJy8nIGFuZCBhbm90aGVyIGZvciAnXDAnCgpIZXksCgpGaXJzdCBvZiwgdGhhbmtzIGZvciBs
-b29raW5nIGF0IHRoZSBuZXcgd2FybmluZ3MuIFdlIGRlZmluaXRlbHkgaGF2ZSB0bwpmaXggdGhv
-c2UgOi0pCgpBIGNvdXBsZSBvZiBsaW5lcyBkb3duIHdlIGhhdmUgbHN0YXQocGF0aCwgJnN0KSwg
-d2hpY2ggd2lsbCByZXR1cm4gLTEKd2l0aCBlcnJubyA9PSBFTkFNRVRPT0xPTkcgaWYgd2UgZ28g
-b3ZlciBQQVRIX01BWCwgc28gdGhpcyBkb2VzIG5vdCBmZWVsCnJpZ2h0LCBlc3BlY2lhbGx5IHRo
-YXQgd2UgYXJlIG5vdCBjaGVja2luZyBmb3IgdGhhdC4KCkRpZ2dpbmcgZGVlcGVyLCBfX2lndF9s
-c29mX2ZkcygpIGlzIHVzZWQgb25seSBpbnNpZGUgX19pZ3RfbHNvZigpLCB3aGljaAppcyB0aGUg
-cmVhc29uIGZvciBzdWNoIGEgaGlnaCBlc3RpbWF0ZS4KCkl0IHVzZXMgY2hhciBwYXRoW1BBVEhf
-TUFYXSwgd2hpY2ggaXMgdGhlIG1haW4gY29udHJpYnV0aW5nIGNvbXBvbmVudCwKYnV0IGl0IGNv
-bnRhaW5zIGF0IG1vc3Qgc3RybGVuKCIvcHJvYy8lZC9jd2QiKSsxIHdoZXJlICIlZCIgaXMKQ0VJ
-TElORyhMT0dfMTAoSU5UX01BWCkpLgoKTGltaXRpbmcgc2l6ZSBvZiBwYXRoIHRoZXJlIHRvIHNl
-bnNpYmxlIHVwcGVyIGVzdGltYXRpb24gc2hvdWxkIG1ha2UgdXMKZml0IGluIFBBVEhfTUFYIGlu
-IF9faWd0X2xzb2ZfZmRzIChvciBldmVuIGxlc3MpLgoKLS0gCkNoZWVycywKQXJlawpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpJbnRlbC1nZnggbWFpbGlu
-ZyBsaXN0CkludGVsLWdmeEBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
-ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pbnRlbC1nZngK
+
+--===============0597011953==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="33umljp5qs7j2csp"
+Content-Disposition: inline
+
+
+--33umljp5qs7j2csp
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, May 24, 2018 at 06:40:36PM +0300, Ville Syrj=E4l=E4 wrote:
+> On Thu, May 24, 2018 at 05:19:04PM +0200, Maxime Ripard wrote:
+> > On Thu, May 24, 2018 at 05:58:13PM +0300, Ville Syrj=E4l=E4 wrote:
+> > > On Thu, May 24, 2018 at 04:24:42PM +0200, Maxime Ripard wrote:
+> > > > The chamelium format subtests will need to convert the reference pa=
+ttern to
+> > > > the format to be tested on the DRM device.
+> > > >=20
+> > > > However, Cairo is very limited when it comes to format, and while p=
+ixman
+> > > > has much more support for formats, it's still falling short compare=
+d to
+> > > > what DRM exposes, especially on the YUV side.
+> > >=20
+> > > We already have the capability to do format conversions automagically.
+> > > I'm extending it to handle more YUV stuff here:
+> > > https://patchwork.freedesktop.org/series/43651/
+> > >=20
+> > > Can you hook up the pixman stuff in the same way so that we don't
+> > > have to any explicit conversion stuff in the tests themselves?
+> >=20
+> > I really think that the assumption that cairo will handle it is not a
+> > proper fit. Cairo support is very limited, just like pixman is to a
+> > lesser extent, and we should just break the assumption that we will
+> > get a cairo surface all the time.
+>=20
+> Not sure what you're saying here. We don't assume cairo handles all
+> the formats, well, because it doesn't. We just magically convert
+> to/from XRGB888 so that cairo doesn't have to handle anything else.
+
+My point was that from what I can tell from your patches, you allow to
+create an igt_fb with whatever format we want, and then convert it to
+XRGB8888 when one calls igt_get_cairo_surface.
+
+I need something more generic, but even if we simplify to the
+operation that I need now, I basically needs the exact opposite: to be
+able to take an XRGB8888 buffer (that is our pattern) and get an
+igt_fb in an arbitrary format.
+
+And that buffer cannot be created by cairo, so relying on the
+destroy_cairo_surface__convert to convert it back from XRGB8888 to
+whatever format doesn't work.
+
+So yeah, we can't really rely on cairo in this particuliar case, and
+the buffer conversions need be to made explicit.
+
+Maxime
+
+--=20
+Maxime Ripard, Bootlin (formerly Free Electrons)
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--33umljp5qs7j2csp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlsVDDsACgkQ0rTAlCFN
+r3T3QA/+IZ2oba4sy048alLIJ3Soa5JEuWQNZtMBH45YaZxEUauBRin+D/pjeB9q
+mCdwb9rPFkKniIMYf39YdhufLYdJT/QVi6Ho6Wftk696vxt8HYxkUAU1Xs6VTUxH
+r2eQUldT9rxv4344Pom94r0CMCXMcbH7yYUNKgIoW9D5dmQUnU9nF7jQpB0D1t4I
+n+Clk66gROkfIi3j8CKBQQBk7BQUkPYq399oKXFaePOz9ljDe+pbNwuMuh1OmrMZ
+8oKUBwXe7RHdbcr6wJNZOdl25ldWKJTU9xueKllnaAGp1Jmr2Q8bAUy/NzMckGz8
+rEedye1KDYYW/9ba4yNyENS68tnM8o62lYXC7GsSyjqmvBaVbU963nanZWEZHjNg
+iZwS/SfBXLAha3LiCEudXoyKGqTQywyFD+b88drdVVQ0k7Vo2BBp4zLPXFJLsTeW
+iQJXCxTXhLyaQxlt4egOSP3bCr5e/6rsgquPJfsxq4gSHZXkYY6qwUfIPPawZuHr
+YZ3SBGahE2+UxE6oQV+9Uieh29Q8IbeMGpQISlvk6mfgmS/OKXDV6Xz6U2SR9o96
+C3CQ4K9vkNfF/aXahbIMfNl9iVKmWwoep8qk1K0RZxtfFbm1/vHPCKcRw0b37S9O
+g3GBG8/pgb2eDUfY/QpTYPADX/qXrmc2XD/1oMy3fTuHFI7cLsI=
+=E1rf
+-----END PGP SIGNATURE-----
+
+--33umljp5qs7j2csp--
+
+--===============0597011953==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0597011953==--
