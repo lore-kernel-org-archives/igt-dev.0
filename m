@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from anholt.net (anholt.net [50.246.234.109])
- by gabe.freedesktop.org (Postfix) with ESMTP id 149696EC2F
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Jun 2018 22:17:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTP id AA3A56E00B
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Jun 2018 22:20:28 +0000 (UTC)
 From: Eric Anholt <eric@anholt.net>
-In-Reply-To: <20180430092848.10830-1-petri.latvala@intel.com>
-References: <20180430092848.10830-1-petri.latvala@intel.com>
-Date: Mon, 04 Jun 2018 15:17:17 -0700
-Message-ID: <87r2lm6vte.fsf@anholt.net>
+In-Reply-To: <d45f97fbbbe55be0af14abbeb65079464b000cb3.1527171699.git-series.maxime.ripard@bootlin.com>
+References: <cover.ab4e8068ec3bcd788fed734e68f4dac210fe2a3d.1527171699.git-series.maxime.ripard@bootlin.com>
+ <d45f97fbbbe55be0af14abbeb65079464b000cb3.1527171699.git-series.maxime.ripard@bootlin.com>
+Date: Mon, 04 Jun 2018 15:20:25 -0700
+Message-ID: <87o9gq6vo6.fsf@anholt.net>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 0/4] New runner to rule them all
+Subject: Re: [igt-dev] [PATCH v3 01/11] tests: Add vc4 test suite
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,52 +17,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0735843530=="
+Content-Type: multipart/mixed; boundary="===============1795845638=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>, Martin Peres <martin.peres@linux.intel.com>
+To: Maxime Ripard <maxime.ripard@bootlin.com>, igt-dev@lists.freedesktop.org
+Cc: eben@raspberrypi.org, Maxime Ripard <maxime.ripard@bootlin.com>, Paul Kocialkowski <paul.kocialkowski@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0735843530==
+--===============1795845638==
 Content-Type: multipart/signed; boundary="=-=-=";
 	micalg=pgp-sha512; protocol="application/pgp-signature"
 
 --=-=-=
 Content-Type: text/plain
 
-Petri Latvala <petri.latvala@intel.com> writes:
+Maxime Ripard <maxime.ripard@bootlin.com> writes:
 
-> A new test running framework to replace piglit; Refer to patch 3/4 for
-> a more thorough explanation.
+> Add some various test suites relevant for the vc4 drm driver.
 >
-> Note, building it with autotools not done. Only meson hooked up atm.
+> Acked-by: Petri Latvala <petri.latvala@intel.com>
+> Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
 
-I gave this a try on raspberry pi, and it cut the test runtime from 33s
-to 17s.  Thanks for working on this!
+It sounds like there were concerns about the format conversion
+functions.  I've merged this patch in the meantime.
 
 --=-=-=
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEE/JuuFDWp9/ZkuCBXtdYpNtH8nugFAlsVum0ACgkQtdYpNtH8
-nuiKmw//bp0LxF9vfO3W8OyfRzFIPmr2nsXo0I5CjXEvS2fG9lZy+PC+lWvC/b/U
-cIDDN8Orr92tOQID6A51x68FZv5ivHWk8g8b3yllMQdjigkQB2hYhuPYCeme7hhR
-+ZtTPNMZR4xaaQmenJhwUJVnRbrFeDqfmWJYObJ+b5keVgspvc2E5WP5rF0UXYij
-szBqobsltksiIM2wH153aXT1REPF8HILchZsuZIM9yPu8OEehz3MspacT67cklhl
-BsZMk+H3wEInQ8aNxbPiZjxyeff/ohGu+w50XLQlT8sE2L5ywY1qvEPfSOvxhNlR
-KUJkLTW9OnHsrAGIT2kuItb3hIPY6qvlxKjxj2Hhgg/F0gILz33maf73nCJbwYl8
-AKbP6s9wt8Me9CQ1peyMNZsNrP4Bu+GuHsZQvl/R9B8yIwX4wIkgpcxxitrOGHGY
-go8q6ClTjDzkM1b5bV9tCFBKcZsrXXarccDuVHZ35kHVIEW+R+dDiLnqHdDDdakX
-f50jMYsMDGMQ/Bx/qwVFCM6T3ueyRy4AWmFBxR8BGI+dDlw/mYYyysCNo96zyCfe
-SsJxapJ1maGB3F2ruOWqa1m/mhzkMEcdjD5U73BCXQTG53HBOxAo0Ta6kHkw4BUW
-LimyzYmNT3hGVJagjvsDry/L9XuC2Lq2GW/ymRpDog0tlF8/RN8=
-=RaV3
+iQIzBAEBCgAdFiEE/JuuFDWp9/ZkuCBXtdYpNtH8nugFAlsVuykACgkQtdYpNtH8
+nug6zQ/+NayHlFPYYBmGVItdESsjwTahya/fI206rnLAjBVXrxXB08hcfqpKilIQ
+67qdf3BAu5yGkWN8lvp1SaDHXaO/I8TPaZZmmmml3KbK10PBSTawswlCWXbve5wi
+u2EGv2OjX+LDZ7bL1X3Er+YQxTwFJDPO0LOmeyob6GnnUPdgsojwBhDvBJyy4dTw
+PHbwgCyZFKmbK8Dz5o9zljhyBPtNSjPVLt7B7rV0SdmXVFN/TrHFeqzxGqdQQQjz
+IpLo0MD50nWjsrW1Xo2D5Cq130ww7rdnyPf+6r6JHmFYDWp/CcK2MKYYNAlI7m11
+J7O3j63w7tKFrojo1FLVeKD8+SBFto6SQ4M1ZNF1qKeDjgL9kzeuzjXUf/Bl5Cr/
+Hd+v0/wMPO6uZfW6Rmfgd9AjYVwZYOA3lQsvWtHjW/X3sBNiBocawElgxjP+M5iG
+P7e1KieHP5pojT0Mdvbj7yhfy4CvNpx2MmFiQhd15sm2+HoiKJEeWD/ZCeqIqcUd
+ttl69WnSq6SLANaztn9ua9R0qWQB2lmuwra1Akld6NcU1nE+aPjN9R+fGlha2h7E
+ok7ZEBAIk7CrNYFAtLPCJHQNJ+ftg8dYqXvPwPi496aSpvbAQrdDXavcF7x7+ETr
+O90mmfpAKb48xKCf+er4DGzOit+OO4U9LF7fp566NWEv31FuJJs=
+=DBaO
 -----END PGP SIGNATURE-----
 --=-=-=--
 
---===============0735843530==
+--===============1795845638==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: base64
@@ -71,4 +72,4 @@ X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
 YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
 cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
 
---===============0735843530==--
+--===============1795845638==--
