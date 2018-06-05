@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from anholt.net (anholt.net [50.246.234.109])
- by gabe.freedesktop.org (Postfix) with ESMTP id AA3A56E00B
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Jun 2018 22:20:28 +0000 (UTC)
-From: Eric Anholt <eric@anholt.net>
-In-Reply-To: <d45f97fbbbe55be0af14abbeb65079464b000cb3.1527171699.git-series.maxime.ripard@bootlin.com>
-References: <cover.ab4e8068ec3bcd788fed734e68f4dac210fe2a3d.1527171699.git-series.maxime.ripard@bootlin.com>
- <d45f97fbbbe55be0af14abbeb65079464b000cb3.1527171699.git-series.maxime.ripard@bootlin.com>
-Date: Mon, 04 Jun 2018 15:20:25 -0700
-Message-ID: <87o9gq6vo6.fsf@anholt.net>
+Date: Mon, 4 Jun 2018 22:45:27 -0300
+From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Message-ID: <20180605014527.petnzluv3mz3ccvg@smtp.gmail.com>
+References: <cover.1527639529.git.rodrigosiqueiramelo@gmail.com>
+ <03a936e0c4bca03f89e731d2cacaa3624a10147f.1527639529.git.rodrigosiqueiramelo@gmail.com>
+ <20180604104037.GG16222@ahiler-desk1.ger.corp.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v3 01/11] tests: Add vc4 test suite
+Content-Disposition: inline
+In-Reply-To: <20180604104037.GG16222@ahiler-desk1.ger.corp.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] Avoid truncate string in
+ __igt_lsof_fds
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,59 +17,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1795845638=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Maxime Ripard <maxime.ripard@bootlin.com>, igt-dev@lists.freedesktop.org
-Cc: eben@raspberrypi.org, Maxime Ripard <maxime.ripard@bootlin.com>, Paul Kocialkowski <paul.kocialkowski@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Cc: igt-dev@lists.freedesktop.org, gustavo@padovan.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1795845638==
-Content-Type: multipart/signed; boundary="=-=-=";
-	micalg=pgp-sha512; protocol="application/pgp-signature"
-
---=-=-=
-Content-Type: text/plain
-
-Maxime Ripard <maxime.ripard@bootlin.com> writes:
-
-> Add some various test suites relevant for the vc4 drm driver.
->
-> Acked-by: Petri Latvala <petri.latvala@intel.com>
-> Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
-
-It sounds like there were concerns about the format conversion
-functions.  I've merged this patch in the meantime.
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE/JuuFDWp9/ZkuCBXtdYpNtH8nugFAlsVuykACgkQtdYpNtH8
-nug6zQ/+NayHlFPYYBmGVItdESsjwTahya/fI206rnLAjBVXrxXB08hcfqpKilIQ
-67qdf3BAu5yGkWN8lvp1SaDHXaO/I8TPaZZmmmml3KbK10PBSTawswlCWXbve5wi
-u2EGv2OjX+LDZ7bL1X3Er+YQxTwFJDPO0LOmeyob6GnnUPdgsojwBhDvBJyy4dTw
-PHbwgCyZFKmbK8Dz5o9zljhyBPtNSjPVLt7B7rV0SdmXVFN/TrHFeqzxGqdQQQjz
-IpLo0MD50nWjsrW1Xo2D5Cq130ww7rdnyPf+6r6JHmFYDWp/CcK2MKYYNAlI7m11
-J7O3j63w7tKFrojo1FLVeKD8+SBFto6SQ4M1ZNF1qKeDjgL9kzeuzjXUf/Bl5Cr/
-Hd+v0/wMPO6uZfW6Rmfgd9AjYVwZYOA3lQsvWtHjW/X3sBNiBocawElgxjP+M5iG
-P7e1KieHP5pojT0Mdvbj7yhfy4CvNpx2MmFiQhd15sm2+HoiKJEeWD/ZCeqIqcUd
-ttl69WnSq6SLANaztn9ua9R0qWQB2lmuwra1Akld6NcU1nE+aPjN9R+fGlha2h7E
-ok7ZEBAIk7CrNYFAtLPCJHQNJ+ftg8dYqXvPwPi496aSpvbAQrdDXavcF7x7+ETr
-O90mmfpAKb48xKCf+er4DGzOit+OO4U9LF7fp566NWEv31FuJJs=
-=DBaO
------END PGP SIGNATURE-----
---=-=-=--
-
---===============1795845638==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============1795845638==--
+SGkgQXJrYWRpdXN6LAoKRmlyc3Qgb2YgYWxsLCB0aGFua3MgZm9yIHRoZSByZXZpZXcuCgpJIGJl
+bGlldmUgdGhhdCBJIHVuZGVyc3Rvb2QgYWxsIHRoZSBjb21tZW50cyB5b3UgbWFkZSBpbiBhbGwg
+b2YgdGhlCnBhdGNoZXMuIEkgd2lsbCBzZW5kIHRoZSBWMiBzb29uLgoKVGhhbmtzIQoKQmVzdCBS
+ZWdhcmRzClJvZHJpZ28gU2lxdWVpcmEKCk9uIDA2LzA0LCBBcmthZGl1c3ogSGlsZXIgd3JvdGU6
+Cj4gT24gVHVlLCBNYXkgMjksIDIwMTggYXQgMDk6NDY6MzhQTSAtMDMwMCwgUm9kcmlnbyBTaXF1
+ZWlyYSB3cm90ZToKPiA+IE5vdGUgdGhhdCAncHJvY19wYXRoJyBwYXJhbWV0ZXIgaW4gX19pZ3Rf
+bHNvZl9mZHMgcmVjZWl2ZXMgYSBzdHJpbmcKPiA+IHdoaWNoIHdhcyBpbml0aWFsaXplZCB3aXRo
+IHRoZSBzaXplIG9mIFBBVEhfTUFYIGFuZCB0aGUgbG9jYWwgdmFyaWFibGUKPiA+ICdwYXRoJyBo
+YXMgdGhlIHNhbWUgc2l6ZSwgYnV0IGl0IGFsc28gaGF2ZSB0byBhcHBlbmQ6ICcvJywgJ1wwJywg
+YW5kIHRoZQo+ID4gZGlyZWN0b3J5IG5hbWUuIFRoaXMgc2l0dWF0aW9uIGNhdXNlZCB0aGUgd2Fy
+bmluZyBkZXNjcmliZWQgYmVsb3cuCj4gPiAKPiA+IHdhcm5pbmc6IOKAmCVz4oCZIGRpcmVjdGl2
+ZSBvdXRwdXQgbWF5IGJlIHRydW5jYXRlZCB3cml0aW5nIHVwIHRvIDI1NSBieXRlcwo+ID4gaW50
+byBhIHJlZ2lvbiBvZiBzaXplIGJldHdlZW4gMCBhbmQgNDA5NSBbLVdmb3JtYXQtdHJ1bmNhdGlv
+bj1dCj4gPiBzbnByaW50ZihwYXRoLCBzaXplb2YocGF0aCksICIlcy8lcyIsIHByb2NfcGF0aCwg
+ZC0+ZF9uYW1lKTsKPiA+IG5vdGU6IOKAmHNucHJpbnRm4oCZIG91dHB1dCBiZXR3ZWVuIDIgYW5k
+IDQzNTIgYnl0ZXMgaW50byBhIGRlc3RpbmF0aW9uIG9mCj4gPiBzaXplIDQwOTYgWy4uXQo+ID4g
+Cj4gPiBUaGlzIHBhdGNoIGZpeCB0aGUgYWJvdmUgcHJvYmxlbS4KPiA+IAo+ID4gU2lnbmVkLW9m
+Zi1ieTogUm9kcmlnbyBTaXF1ZWlyYSA8cm9kcmlnb3NpcXVlaXJhbWVsb0BnbWFpbC5jb20+Cj4g
+PiAtLS0KPiA+ICBsaWIvaWd0X2F1eC5jIHwgMiArLQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxIGlu
+c2VydGlvbigrKSwgMSBkZWxldGlvbigtKQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9h
+dXguYyBiL2xpYi9pZ3RfYXV4LmMKPiA+IGluZGV4IGFjYWZiNzEzLi41ZGQyNzYxZSAxMDA2NDQK
+PiA+IC0tLSBhL2xpYi9pZ3RfYXV4LmMKPiA+ICsrKyBiL2xpYi9pZ3RfYXV4LmMKPiA+IEBAIC0x
+NDI1LDcgKzE0MjUsNyBAQCBfX2lndF9sc29mX2Zkcyhwcm9jX3QgKnByb2NfaW5mbywgaW50ICpz
+dGF0ZSwgY2hhciAqcHJvY19wYXRoLCBjb25zdCBjaGFyICpkaXIpCj4gPiAgewo+ID4gIAlzdHJ1
+Y3QgZGlyZW50ICpkOwo+ID4gIAlzdHJ1Y3Qgc3RhdCBzdDsKPiA+IC0JY2hhciBwYXRoW1BBVEhf
+TUFYXTsKPiA+ICsJY2hhciBwYXRoW1BBVEhfTUFYICsgTkFNRV9NQVggKyAyXTsgLy8gMSBieXRl
+IGZvciAnLycgYW5kIGFub3RoZXIgZm9yICdcMCcKPiAKPiBIZXksCj4gCj4gRmlyc3Qgb2YsIHRo
+YW5rcyBmb3IgbG9va2luZyBhdCB0aGUgbmV3IHdhcm5pbmdzLiBXZSBkZWZpbml0ZWx5IGhhdmUg
+dG8KPiBmaXggdGhvc2UgOi0pCj4gCj4gQSBjb3VwbGUgb2YgbGluZXMgZG93biB3ZSBoYXZlIGxz
+dGF0KHBhdGgsICZzdCksIHdoaWNoIHdpbGwgcmV0dXJuIC0xCj4gd2l0aCBlcnJubyA9PSBFTkFN
+RVRPT0xPTkcgaWYgd2UgZ28gb3ZlciBQQVRIX01BWCwgc28gdGhpcyBkb2VzIG5vdCBmZWVsCj4g
+cmlnaHQsIGVzcGVjaWFsbHkgdGhhdCB3ZSBhcmUgbm90IGNoZWNraW5nIGZvciB0aGF0Lgo+IAo+
+IERpZ2dpbmcgZGVlcGVyLCBfX2lndF9sc29mX2ZkcygpIGlzIHVzZWQgb25seSBpbnNpZGUgX19p
+Z3RfbHNvZigpLCB3aGljaAo+IGlzIHRoZSByZWFzb24gZm9yIHN1Y2ggYSBoaWdoIGVzdGltYXRl
+Lgo+IAo+IEl0IHVzZXMgY2hhciBwYXRoW1BBVEhfTUFYXSwgd2hpY2ggaXMgdGhlIG1haW4gY29u
+dHJpYnV0aW5nIGNvbXBvbmVudCwKPiBidXQgaXQgY29udGFpbnMgYXQgbW9zdCBzdHJsZW4oIi9w
+cm9jLyVkL2N3ZCIpKzEgd2hlcmUgIiVkIiBpcwo+IENFSUxJTkcoTE9HXzEwKElOVF9NQVgpKS4K
+PiAKPiBMaW1pdGluZyBzaXplIG9mIHBhdGggdGhlcmUgdG8gc2Vuc2libGUgdXBwZXIgZXN0aW1h
+dGlvbiBzaG91bGQgbWFrZSB1cwo+IGZpdCBpbiBQQVRIX01BWCBpbiBfX2lndF9sc29mX2ZkcyAo
+b3IgZXZlbiBsZXNzKS4KPiAKPiAtLSAKPiBDaGVlcnMsCj4gQXJlawpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
+ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
