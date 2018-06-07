@@ -1,44 +1,34 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu,  7 Jun 2018 16:27:22 +0100
-Message-Id: <20180607152723.21246-1-chris@chris-wilson.co.uk>
-Subject: [Intel-gfx] [PATCH i-g-t] igt/gem_exec_await: Tag the final batch
- in the GTT
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20180607152723.21246-1-chris@chris-wilson.co.uk>
+References: <20180607152723.21246-1-chris@chris-wilson.co.uk>
+Message-ID: <152838546243.1522.18224817962971835226@mail.alporthouse.com>
+Date: Thu, 07 Jun 2018 16:31:02 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t] igt/gem_exec_await: Tag the final batch
+ in the GTT
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QmF0Y2hlcyBhcmUgY29udGFpbmVkIGluIHRoZWlyIHBvc2l0aW9uIHdpdGhpbiB0aGUgR1RUIGJ5
-IHRoZSBrZXJuZWwsCmFuZCBpZiB0aGV5IGFyZSBpbiBhbiBpbnZhbGlkIHBvaXN0aW9uIHdpbGwg
-YmUgdW5ib3VuZCBhbmQgcmVib3VuZApiZWZvcmUgZXhlY3V0aW9uLiBJbiBvdXIgdGVzdCBzZXR1
-cCwgd2UgdGhlcmVmb3JlIG5lZWQgdG8gcGxhY2UgdGhlCmJhdGNoIGludG8gYSB2YWxpZCBwb2lz
-dGlvbiB3aXRoaW4gdGhlIEdUVCBiZWZvcmUgd2UgZmlsbCB0aGUgcmluZyB3aXRoCmJ1c3lzcGlu
-bmVycy4KClNpZ25lZC1vZmYtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNv
-LnVrPgotLS0KIHRlc3RzL2dlbV9leGVjX2F3YWl0LmMgfCAzICsrKwogMSBmaWxlIGNoYW5nZWQs
-IDMgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2dlbV9leGVjX2F3YWl0LmMgYi90
-ZXN0cy9nZW1fZXhlY19hd2FpdC5jCmluZGV4IGIwZDVjOTA0NS4uNWNmZWI4ZWM4IDEwMDY0NAot
-LS0gYS90ZXN0cy9nZW1fZXhlY19hd2FpdC5jCisrKyBiL3Rlc3RzL2dlbV9leGVjX2F3YWl0LmMK
-QEAgLTEzNSw2ICsxMzUsOSBAQCBzdGF0aWMgdm9pZCB3aWRlKGludCBmZCwgaW50IHJpbmdfc2l6
-ZSwgaW50IHRpbWVvdXQsIHVuc2lnbmVkIGludCBmbGFncykKIAlnZW1fd3JpdGUoZmQsIG9ialtu
-ZW5naW5lKnJpbmdfc2l6ZV0uaGFuZGxlLCAwLCAmYmJlLCBzaXplb2YoYmJlKSk7CiAKIAltZW1z
-ZXQoJmV4ZWNidWYsIDAsIHNpemVvZihleGVjYnVmKSk7CisJZXhlY2J1Zi5idWZmZXJzX3B0ciA9
-IHRvX3VzZXJfcG9pbnRlcigmb2JqW25lbmdpbmUqcmluZ19zaXplXSk7CisJZXhlY2J1Zi5idWZm
-ZXJfY291bnQgPSAxOworCWdlbV9leGVjYnVmKGZkLCAmZXhlY2J1Zik7IC8qIHRhZyB0aGUgb2Jq
-ZWN0IGFzIGEgYmF0Y2ggaW4gdGhlIEdUVCAqLwogCWV4ZWNidWYuYnVmZmVyc19wdHIgPSB0b191
-c2VyX3BvaW50ZXIob2JqKTsKIAlleGVjYnVmLmJ1ZmZlcl9jb3VudCA9IG5lbmdpbmUqcmluZ19z
-aXplICsgMTsKIAotLSAKMi4xNy4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpJbnRlbC1nZnggbWFpbGluZyBsaXN0CkludGVsLWdmeEBsaXN0cy5mcmVl
-ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9pbnRlbC1nZngK
+UXVvdGluZyBDaHJpcyBXaWxzb24gKDIwMTgtMDYtMDcgMTY6Mjc6MjIpCj4gQmF0Y2hlcyBhcmUg
+Y29udGFpbmVkIGluIHRoZWlyIHBvc2l0aW9uIHdpdGhpbiB0aGUgR1RUIGJ5IHRoZSBrZXJuZWws
+CmNvbnN0cmFpbmVkCgo+IGFuZCBpZiB0aGV5IGFyZSBpbiBhbiBpbnZhbGlkIHBvaXN0aW9uIHdp
+bGwgYmUgdW5ib3VuZCBhbmQgcmVib3VuZApwb3NpdGlvbgoKPiBiZWZvcmUgZXhlY3V0aW9uLiBJ
+biBvdXIgdGVzdCBzZXR1cCwgd2UgdGhlcmVmb3JlIG5lZWQgdG8gcGxhY2UgdGhlCj4gYmF0Y2gg
+aW50byBhIHZhbGlkIHBvaXN0aW9uIHdpdGhpbiB0aGUgR1RUIGJlZm9yZSB3ZSBmaWxsIHRoZSBy
+aW5nIHdpdGgKPiBidXN5c3Bpbm5lcnMuCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8v
+aWd0LWRldgo=
