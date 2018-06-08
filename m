@@ -1,9 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri,  8 Jun 2018 19:54:14 +0100
-Message-Id: <20180608185414.1463-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] [PATCH i-g-t] igt/gem_mmap_gtt: Checking tiling pattern
- requires known swizzling
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EECF6E1B6
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Jun 2018 16:29:35 +0000 (UTC)
+References: <20180605162536.26848-1-lionel.g.landwerlin@intel.com>
+ <20180605162536.26848-3-lionel.g.landwerlin@intel.com>
+ <ef6703e9-8085-aa12-3315-651aeb9df706@intel.com>
+ <1d5aa9a0-d697-9f80-3895-78af672b52e3@intel.com>
+From: Antonio Argenziano <antonio.argenziano@intel.com>
+Message-ID: <e84c1601-8872-0ed9-a342-000958a4b471@intel.com>
+Date: Fri, 8 Jun 2018 09:29:34 -0700
+MIME-Version: 1.0
+In-Reply-To: <1d5aa9a0-d697-9f80-3895-78af672b52e3@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/perf: add test for disabled
+ preemption stream
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -11,46 +21,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QXMgdGhlIHN3aXp6bGluZyBpcyBiYWtlZCBpbnRvIHRoZSB0aWxpbmcgcGF0dGVybiwgdGhlIHN3
-aXp6bGluZyBoYXMgdG8KYmUgY29uc2lzdGVudCBhY3Jvc3MgdGhlIGVudGlyZSBHVFQgbW1hcCBm
-b3Igb3VyIHRlc3RzIHRvIHdvcmsuIEhvd2V2ZXIsCnVuZGVyIEwtc2hhcGVkIG1lbW9yeSBjb25m
-aWd1cmF0aW9ucyBvbiBvbGRlciBhcmNoaXRlY3R1cmVzLCB0aGUKc3dpenpsaW5nIHZhcmllZCBk
-ZXBlbmRpbmcgb24gd2hpY2ggcmVnaW9uIHRoZSBwYWdlIGZvdW5kIGl0c2VsZiBpbiAtLQppbnZh
-bGlkYXRpbmcgb3VyIGFzc3VtcHRpb25zIGFuZCBhYmlsaXR5IHRvIHByZWRpY3QgdGhlIHRpbGlu
-ZyBwYXR0ZXJuLgoKUmVwb3J0ZWQtYnk6IEFkcmljIEJsYWtlIDxwcm9tYXJibGVyMTRAZ21haWwu
-Y29tPgpCdWd6aWxsYTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/
-aWQ9MTA2ODQ4ClNpZ25lZC1vZmYtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29u
-LmNvLnVrPgotLS0KIHRlc3RzL2dlbV9tbWFwX2d0dC5jIHwgMjAgKysrKysrKysrKysrKysrKysr
-KysKIDEgZmlsZSBjaGFuZ2VkLCAyMCBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvdGVzdHMv
-Z2VtX21tYXBfZ3R0LmMgYi90ZXN0cy9nZW1fbW1hcF9ndHQuYwppbmRleCA2YTMzMmIyNTQuLmZk
-NjBiOGZmOCAxMDA2NDQKLS0tIGEvdGVzdHMvZ2VtX21tYXBfZ3R0LmMKKysrIGIvdGVzdHMvZ2Vt
-X21tYXBfZ3R0LmMKQEAgLTQ0NSw2ICs0NDUsMjQgQEAgc3RhdGljIGludCBtYXhfdGlsZV93aWR0
-aCh1aW50MzJfdCBkZXZpZCwgaW50IHRpbGluZykKIAkJcmV0dXJuIDggPDwgMTA7CiB9CiAKK3N0
-YXRpYyBib29sIGtub3duX3N3aXp6bGluZyhpbnQgZmQsIHVpbnQzMl90IGhhbmRsZSkKK3sKKwlz
-dHJ1Y3QgZHJtX2k5MTVfZ2VtX2dldF90aWxpbmcyIHsKKwkJdWludDMyX3QgaGFuZGxlOworCQl1
-aW50MzJfdCB0aWxpbmdfbW9kZTsKKwkJdWludDMyX3Qgc3dpenpsZV9tb2RlOworCQl1aW50MzJf
-dCBwaHlzX3N3aXp6bGVfbW9kZTsKKwl9IGFyZyA9IHsKKwkJLmhhbmRsZSA9IGhhbmRsZSwKKwl9
-OworI2RlZmluZSBEUk1fSU9DVExfSTkxNV9HRU1fR0VUX1RJTElORzIJRFJNX0lPV1IgKERSTV9D
-T01NQU5EX0JBU0UgKyBEUk1fSTkxNV9HRU1fR0VUX1RJTElORywgc3RydWN0IGRybV9pOTE1X2dl
-bV9nZXRfdGlsaW5nMikKKworCWlmIChpZ3RfaW9jdGwoZmQsIERSTV9JT0NUTF9JOTE1X0dFTV9H
-RVRfVElMSU5HMiwgJmFyZykpCisJCXJldHVybiBmYWxzZTsKKworCXJldHVybiBhcmcucGh5c19z
-d2l6emxlX21vZGUgPT0gYXJnLnN3aXp6bGVfbW9kZTsKK30KKwogc3RhdGljIHZvaWQKIHRlc3Rf
-aHVnZV9ibyhpbnQgZmQsIGludCBodWdlLCBpbnQgdGlsaW5nKQogewpAQCAtNDg4LDYgKzUwNiw4
-IEBAIHRlc3RfaHVnZV9ibyhpbnQgZmQsIGludCBodWdlLCBpbnQgdGlsaW5nKQogCWJvID0gZ2Vt
-X2NyZWF0ZShmZCwgUEFHRV9TSVpFKTsKIAlpZiAodGlsaW5nKQogCQlpZ3RfcmVxdWlyZShfX2dl
-bV9zZXRfdGlsaW5nKGZkLCBibywgdGlsaW5nLCBwaXRjaCkgPT0gMCk7CisJaWd0X3JlcXVpcmUo
-a25vd25fc3dpenpsaW5nKGZkLCBibykpOworCiAJbGluZWFyX3BhdHRlcm4gPSBnZW1fbW1hcF9f
-Z3R0KGZkLCBibywgUEFHRV9TSVpFLAogCQkJCSAgICAgICBQUk9UX1JFQUQgfCBQUk9UX1dSSVRF
-KTsKIAlmb3IgKGkgPSAwOyBpIDwgUEFHRV9TSVpFOyBpKyspCi0tIAoyLjE3LjEKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
-aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+CgpPbiAwNi8wNi8xOCAxMDozMiwgTGlvbmVsIExhbmR3ZXJsaW4gd3JvdGU6Cj4gT24gMDYvMDYv
+MTggMTc6NTIsIEFudG9uaW8gQXJnZW56aWFubyB3cm90ZToKPj4KPj4KPj4gT24gMDUvMDYvMTgg
+MDk6MjUsIExpb25lbCBMYW5kd2VybGluIHdyb3RlOgo+Pj4gU2lnbmVkLW9mZi1ieTogTGlvbmVs
+IExhbmR3ZXJsaW4gPGxpb25lbC5nLmxhbmR3ZXJsaW5AaW50ZWwuY29tPgo+Pj4gLS0tCgo+Pgo+
+PiBJIHRoaW5rIHRoaXMgY291bGQgYmUgc3BsaXQgaW50byB0d28gc3ViLXRlc3RzLiBEbyB5b3Ug
+cGxhbiB0byBhZGQgCj4+IG1vcmUgQVBJIHRlc3RzPwo+IAo+IFllYWguLi4gSSBndWVzcyB0aGUg
+dGVzdHMgaXMgc21hbGwgZW5vdWdoIHRoYXQgaXQgZG9lc24ndCByZXF1aXJlIAo+IHNwbGl0dGlu
+Zy4KPiBJdCdzIGJhc2ljYWxseSB0ZXN0aW5nIHRoZSBiZWhhdmlvciBvZiBwZXJmX3N0cmVhbV9w
+YXJhbm9pZC4KPiAKPiBBcmUgeW91IHRoaW5rIG9mIHNvbWV0aGluZyBpbiBwYXJ0aWN1bGFyIGZv
+ciBhZGRpdGlvbmFsIHRlc3RzPwoKTm90IHJlYWxseSwgaW4gc2ltaWxhciB0ZXN0cyB3ZSBjaGVj
+ayB0aGUgcmV0dXJuIGNvZGUgaXMgYXBwcm9wcmlhdGUgZm9yIAppbnZhbGlkIGZsYWdzIGFuZCB2
+YWx1ZXMgdGhhdCBvdXRzaWRlIHRoZSBhbGxvd2VkIHJhbmdlLiBOb3Qgc3VyZSBob3cgCm11Y2gg
+aXQgYXBwbGllcyBoZXJlLgoKU29ycnkgZm9yIHRoZSBsYXRlIHJlcGx5LApBbnRvbmlvCgo+IAo+
+IFRoYW5rcywKPiAKPiAtCj4gTGlvbmVsCj4gCj4+Cj4+IFRoYW5rcywKPj4gQW50b25pbwo+Pgo+
+Pj4gK30KPj4+ICsKPj4KPiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
+cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+Cg==
