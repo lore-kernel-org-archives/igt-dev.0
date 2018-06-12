@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CEE256E4E1
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Jun 2018 14:27:46 +0000 (UTC)
-From: "Szwichtenberg, Radoslaw" <radoslaw.szwichtenberg@intel.com>
-Date: Tue, 12 Jun 2018 14:27:43 +0000
-Message-ID: <1528813661.21622.7.camel@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 760036E4DF
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Jun 2018 14:30:41 +0000 (UTC)
+From: Jani Nikula <jani.nikula@intel.com>
+In-Reply-To: <1528813661.21622.7.camel@intel.com>
 References: <20180612140544.7231-1-jani.nikula@intel.com>
-In-Reply-To: <20180612140544.7231-1-jani.nikula@intel.com>
-Content-Language: en-US
-Content-ID: <FA88AC6B2333B147A9421E232D1B527D@intel.com>
+ <1528813661.21622.7.camel@intel.com>
+Date: Tue, 12 Jun 2018 17:30:33 +0300
+Message-ID: <874li82i2e.fsf@intel.com>
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t] tools/intel_gpu_frequency: fix usage
  and examples
@@ -23,21 +22,23 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Nikula,
- Jani" <jani.nikula@intel.com>
+To: "Szwichtenberg, Radoslaw" <radoslaw.szwichtenberg@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDE4LTA2LTEyIGF0IDE3OjA1ICswMzAwLCBKYW5pIE5pa3VsYSB3cm90ZToNCj4g
-VGhlIGNpdGVkIGNvbW1pdCByZW1vdmVkIC0tZ2V0IHN1Ym9wdGlvbnMgYnV0IGZhaWxlZCB0byB1
-cGRhdGUgdGhlIHVzYWdlDQo+IGFuZCBleGFtcGxlcy4gUmVtb3ZlIHRoZSBkdXBsaWNhdGVkIGV4
-YW1wbGVzIGZyb20gdGhlIGNvbW1lbnRzIGluIHRoZQ0KPiBpbnRlcmVzdCBvZiBpZiBub3Qgc2lu
-Z2xlIGJ1dCBhdCBsZWFzdCBmZXdlciBwb2ludHMgb2YgdHJ1dGguDQo+IA0KPiBGaXhlczogMjBk
-NmUwZjQxYjNiICgidG9vbHMvaW50ZWxfZ3B1X2ZyZXF1ZW5jeTogcmVtb3ZlIHVzZSBvZiBnZXRz
-dWJvcHQiKQ0KPiBCdWd6aWxsYTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1
-Zy5jZ2k/aWQ9OTk0OTINCj4gUmVwb3J0ZWQtYnk6IEFuZHJlYXMgUmVpcyA8YW5kcmVhcy5yZWlz
-QGdtYWlsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogSmFuaSBOaWt1bGEgPGphbmkubmlrdWxhQGlu
-dGVsLmNvbT4NClJldmlld2VkLWJ5OiBSYWRvc2xhdyBTendpY2h0ZW5iZXJnIDxyYWRvc2xhdy5z
-endpY2h0ZW5iZXJnQGludGVsLmNvbT4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVz
-a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9p
-Z3QtZGV2Cg==
+T24gVHVlLCAxMiBKdW4gMjAxOCwgIlN6d2ljaHRlbmJlcmcsIFJhZG9zbGF3IiA8cmFkb3NsYXcu
+c3p3aWNodGVuYmVyZ0BpbnRlbC5jb20+IHdyb3RlOgo+IE9uIFR1ZSwgMjAxOC0wNi0xMiBhdCAx
+NzowNSArMDMwMCwgSmFuaSBOaWt1bGEgd3JvdGU6Cj4+IFRoZSBjaXRlZCBjb21taXQgcmVtb3Zl
+ZCAtLWdldCBzdWJvcHRpb25zIGJ1dCBmYWlsZWQgdG8gdXBkYXRlIHRoZSB1c2FnZQo+PiBhbmQg
+ZXhhbXBsZXMuIFJlbW92ZSB0aGUgZHVwbGljYXRlZCBleGFtcGxlcyBmcm9tIHRoZSBjb21tZW50
+cyBpbiB0aGUKPj4gaW50ZXJlc3Qgb2YgaWYgbm90IHNpbmdsZSBidXQgYXQgbGVhc3QgZmV3ZXIg
+cG9pbnRzIG9mIHRydXRoLgo+PiAKPj4gRml4ZXM6IDIwZDZlMGY0MWIzYiAoInRvb2xzL2ludGVs
+X2dwdV9mcmVxdWVuY3k6IHJlbW92ZSB1c2Ugb2YgZ2V0c3Vib3B0IikKPj4gQnVnemlsbGE6IGh0
+dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTk5NDkyCj4+IFJlcG9y
+dGVkLWJ5OiBBbmRyZWFzIFJlaXMgPGFuZHJlYXMucmVpc0BnbWFpbC5jb20+Cj4+IFNpZ25lZC1v
+ZmYtYnk6IEphbmkgTmlrdWxhIDxqYW5pLm5pa3VsYUBpbnRlbC5jb20+Cj4gUmV2aWV3ZWQtYnk6
+IFJhZG9zbGF3IFN6d2ljaHRlbmJlcmcgPHJhZG9zbGF3LnN6d2ljaHRlbmJlcmdAaW50ZWwuY29t
+PgoKVGhhbmtzIGZvciB0aGUgcmV2aWV3LCBwdXNoZWQuCgpCUiwKSmFuaS4KCi0tIApKYW5pIE5p
+a3VsYSwgSW50ZWwgT3BlbiBTb3VyY2UgR3JhcGhpY3MgQ2VudGVyCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
+aWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
