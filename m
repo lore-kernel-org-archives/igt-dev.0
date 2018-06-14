@@ -1,20 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
- by gabe.freedesktop.org (Postfix) with ESMTP id 132CE896EC
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Jun 2018 14:53:51 +0000 (UTC)
-Date: Thu, 14 Jun 2018 16:53:39 +0200
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20180614145339.r5g2w7nl4iwxylfa@flea>
-References: <cover.ab4e8068ec3bcd788fed734e68f4dac210fe2a3d.1527171699.git-series.maxime.ripard@bootlin.com>
- <538851bf02215e84605901cd494ed9a7abd82865.1527171699.git-series.maxime.ripard@bootlin.com>
- <20180524145813.GU23723@intel.com>
- <20180524151904.6ixjbows5m2id7y4@flea>
- <20180524154036.GV23723@intel.com>
- <20180604095403.fvfz5ygb4jfq73m4@flea>
- <20180604101353.GB23723@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20180604101353.GB23723@intel.com>
-Subject: Re: [igt-dev] [PATCH v3 03/11] fb: Add format conversion routine
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 14 Jun 2018 14:59:00 -0000
+Message-ID: <20180614145900.3687.40365@emeril.freedesktop.org>
+References: <20180614135726.25258-1-katarzyna.dec@intel.com>
+In-Reply-To: <20180614135726.25258-1-katarzyna.dec@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgU2hhZGVy?=
+ =?utf-8?q?s_documentation?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,129 +14,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0408584964=="
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Paul Kocialkowski <paul.kocialkowski@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, eben@raspberrypi.org
+To: Katarzyna Dec <katarzyna.dec@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============0408584964==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="d243j3brd4v6iu2i"
-Content-Disposition: inline
-
-
---d243j3brd4v6iu2i
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Jun 04, 2018 at 01:13:53PM +0300, Ville Syrj=E4l=E4 wrote:
-> On Mon, Jun 04, 2018 at 11:54:03AM +0200, Maxime Ripard wrote:
-> > On Thu, May 24, 2018 at 06:40:36PM +0300, Ville Syrj=E4l=E4 wrote:
-> > > On Thu, May 24, 2018 at 05:19:04PM +0200, Maxime Ripard wrote:
-> > > > On Thu, May 24, 2018 at 05:58:13PM +0300, Ville Syrj=E4l=E4 wrote:
-> > > > > On Thu, May 24, 2018 at 04:24:42PM +0200, Maxime Ripard wrote:
-> > > > > > The chamelium format subtests will need to convert the referenc=
-e pattern to
-> > > > > > the format to be tested on the DRM device.
-> > > > > >=20
-> > > > > > However, Cairo is very limited when it comes to format, and whi=
-le pixman
-> > > > > > has much more support for formats, it's still falling short com=
-pared to
-> > > > > > what DRM exposes, especially on the YUV side.
-> > > > >=20
-> > > > > We already have the capability to do format conversions automagic=
-ally.
-> > > > > I'm extending it to handle more YUV stuff here:
-> > > > > https://patchwork.freedesktop.org/series/43651/
-> > > > >=20
-> > > > > Can you hook up the pixman stuff in the same way so that we don't
-> > > > > have to any explicit conversion stuff in the tests themselves?
-> > > >=20
-> > > > I really think that the assumption that cairo will handle it is not=
- a
-> > > > proper fit. Cairo support is very limited, just like pixman is to a
-> > > > lesser extent, and we should just break the assumption that we will
-> > > > get a cairo surface all the time.
-> > >=20
-> > > Not sure what you're saying here. We don't assume cairo handles all
-> > > the formats, well, because it doesn't. We just magically convert
-> > > to/from XRGB888 so that cairo doesn't have to handle anything else.
-> >=20
-> > My point was that from what I can tell from your patches, you allow to
-> > create an igt_fb with whatever format we want, and then convert it to
-> > XRGB8888 when one calls igt_get_cairo_surface.
-> >=20
-> > I need something more generic, but even if we simplify to the
-> > operation that I need now, I basically needs the exact opposite: to be
-> > able to take an XRGB8888 buffer (that is our pattern) and get an
-> > igt_fb in an arbitrary format.
->=20
-> The current thing (and my patches) converts both ways. Can't get much
-> more generic than that.
->=20
-> >=20
-> > And that buffer cannot be created by cairo,
->=20
-> Why not?
-
-In order to have control over the lower bits that would be lost in the
-resampling. Let's say you convert the initial XRGB8888 pattern to an
-RGB565 one, feed that to the scanout, and capture the frame on the
-other end using a chamelium.
-
-The Chamelium will capture a CRC over an XRGB8888 frame internall, and
-you will have the CRC of the XRGB8888 pattern. However, since that
-pattern was downsampled to RGB565 and the resampled back to 8 bits,
-you lost the least significant bits, and without a pattern that was
-carefully chosen, the CRCs don't match anymore.
-
-As far as I know, Cairo only allows you to specify a color component
-as a float, and tries to map that to a 24bits color components. But
-you have no way to force it to use a particular value for the 3 (or
-more) lower bits.
-
-Maxime
-
---=20
-Maxime Ripard, Bootlin (formerly Free Electrons)
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---d243j3brd4v6iu2i
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlsigXIACgkQ0rTAlCFN
-r3RlzQ/+OizwuVY3UH/LvdxQtIDHmOTcBL2D428QIIQXtHDakJMc2FXqqQU2pdFJ
-gjAmk+t0HwT35OlbAGxC3jKU7rdh+0J/FLHKRCoXvvCp4m3BchRomYb0E7orw59d
-IvyfPT4MJCJf3SzLS6dGkEn1guc47AnaeDjK8qFWJ08V0qVCWqXmmWlNxthrmkPs
-T7TjoFvDJf/pk/4j8PxJILT55ulMnBbgrhQGWR7oWyY6QVi1lyDyaCaSLpR8jg9l
-ZeQXe6KmzELBBPDXWleoDKmMwsaAZ7fgA3sU8TF2RKg8gv1+S6I/wK6pr2+271JT
-kMCe+bcxtf3lkbZn63Lz0+mlsMBa4Xqsy71Nwc6IVP5QNiAQlaqxuN2vrRYxvpPW
-mlr8EIlxfS5yZjcnfLRmE6vJj7Mk60yt+a0te4vaF2cMXnYZ1LBEwNvJHmA3zY/t
-ejC8b4EKNHp7GKy06YcieDGzADcM18C9WFA6SZRjozncwgi+zhhO/+iLFf3gNdV6
-EDPofWyRsbCVACbaXll15sTASTH6oEnU4v73r4UmEGE3kJy7pF7YzJQWac3juIQl
-bD/84SUpbMXTFmctGmDX/+fBzMC1iCnQi/KE7D3QYVuCcXuraT8itsh0OgYxibBl
-DcrTej9n13Qj0MKEQMmH6qeO7DbAJ165VcnTdGEirbFLLTBeJiE=
-=shdI
------END PGP SIGNATURE-----
-
---d243j3brd4v6iu2i--
-
---===============0408584964==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0408584964==--
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogU2hhZGVycyBkb2N1bWVudGF0aW9uClVSTCAg
+IDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy80NDc1OC8KU3RhdGUg
+OiBzdWNjZXNzCgo9PSBTdW1tYXJ5ID09Cgo9IENJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20gQ0lf
+RFJNXzQzMTQgLT4gSUdUUFdfMTQ2MSA9Cgo9PSBTdW1tYXJ5IC0gU1VDQ0VTUyA9PQoKICBObyBy
+ZWdyZXNzaW9ucyBmb3VuZC4KCiAgRXh0ZXJuYWwgVVJMOiBodHRwczovL3BhdGNod29yay5mcmVl
+ZGVza3RvcC5vcmcvYXBpLzEuMC9zZXJpZXMvNDQ3NTgvcmV2aXNpb25zLzEvbWJveC8KCj09IEtu
+b3duIGlzc3VlcyA9PQoKICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV18xNDYx
+IHRoYXQgY29tZSBmcm9tIGtub3duIGlzc3VlczoKCiAgPT09IElHVCBjaGFuZ2VzID09PQoKICAg
+ID09PT0gSXNzdWVzIGhpdCA9PT09CgogICAgaWd0QGRydl9tb2R1bGVfcmVsb2FkQGJhc2ljLXJl
+bG9hZDoKICAgICAgZmktZ2xrLWo0MDA1OiAgICAgICBQQVNTIC0+IERNRVNHLVdBUk4gKGZkbyMx
+MDY3MjUsIGZkbyMxMDYyNDgpCgogICAgaWd0QGttc19jdXJzb3JfbGVnYWN5QGJhc2ljLWJ1c3kt
+ZmxpcC1iZWZvcmUtY3Vyc29yLWF0b21pYzoKICAgICAgZmktZ2xrLWo0MDA1OiAgICAgICBQQVNT
+IC0+IEZBSUwgKGZkbyMxMDY3NjUpCgogICAgaWd0QGttc19mbGlwQGJhc2ljLWZsaXAtdnMtZHBt
+czoKICAgICAgZmktZ2xrLWo0MDA1OiAgICAgICBQQVNTIC0+IERNRVNHLVdBUk4gKGZkbyMxMDYw
+OTcsIGZkbyMxMDYwMDApCgogICAgaWd0QGttc19mbGlwQGJhc2ljLWZsaXAtdnMtbW9kZXNldDoK
+ICAgICAgZmktZ2xrLWo0MDA1OiAgICAgICBQQVNTIC0+IERNRVNHLVdBUk4gKGZkbyMxMDU3MTkp
+CgogICAgaWd0QGttc19mbGlwQGJhc2ljLXBsYWluLWZsaXA6CiAgICAgIGZpLWdsay1qNDAwNTog
+ICAgICAgUEFTUyAtPiBETUVTRy1XQVJOIChmZG8jMTA2MDk3KQoKICAgIGlndEBrbXNfZnJvbnRi
+dWZmZXJfdHJhY2tpbmdAYmFzaWM6CiAgICAgIGZpLWhzdy1wZXBweTogICAgICAgUEFTUyAtPiBE
+TUVTRy1GQUlMIChmZG8jMTAyNjE0LCBmZG8jMTA2MTAzKQoKICAgIGlndEBwcmltZV92Z2VtQGJh
+c2ljLWZlbmNlLWZsaXA6CiAgICAgIGZpLWhzdy00NzcwOiAgICAgICAgUEFTUyAtPiBGQUlMIChm
+ZG8jMTA0MDA4KQoKICAgIAogICAgPT09PSBQb3NzaWJsZSBmaXhlcyA9PT09CgogICAgaWd0QGRl
+YnVnZnNfdGVzdEByZWFkX2FsbF9lbnRyaWVzOgogICAgICBmaS1zbmItMjUyMG06ICAgICAgIElO
+Q09NUExFVEUgKGZkbyMxMDM3MTMpIC0+IFBBU1MKCiAgICBpZ3RAZ2VtX2V4ZWNfc3VzcGVuZEBi
+YXNpYy1zNC1kZXZpY2VzOgogICAgICBmaS1rYmwtNzUwMHU6ICAgICAgIERNRVNHLVdBUk4gKGZk
+byMxMDUxMjgpIC0+IFBBU1MKCiAgICBpZ3RAa21zX2ZsaXBAYmFzaWMtZmxpcC12cy13Zl92Ymxh
+bms6CiAgICAgIGZpLWNubC1wc3I6ICAgICAgICAgRkFJTCAoZmRvIzEwMDM2OCkgLT4gUEFTUwoK
+ICAgIAogIGZkbyMxMDAzNjggaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5j
+Z2k/aWQ9MTAwMzY4CiAgZmRvIzEwMjYxNCBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
+b3dfYnVnLmNnaT9pZD0xMDI2MTQKICBmZG8jMTAzNzEzIGh0dHBzOi8vYnVncy5mcmVlZGVza3Rv
+cC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzcxMwogIGZkbyMxMDQwMDggaHR0cHM6Ly9idWdzLmZy
+ZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA0MDA4CiAgZmRvIzEwNTEyOCBodHRwczov
+L2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDUxMjgKICBmZG8jMTA1NzE5
+IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNTcxOQogIGZk
+byMxMDYwMDAgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA2
+MDAwCiAgZmRvIzEwNjA5NyBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNn
+aT9pZD0xMDYwOTcKICBmZG8jMTA2MTAzIGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hv
+d19idWcuY2dpP2lkPTEwNjEwMwogIGZkbyMxMDYyNDggaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
+Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA2MjQ4CiAgZmRvIzEwNjcyNSBodHRwczovL2J1Z3MuZnJl
+ZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDY3MjUKICBmZG8jMTA2NzY1IGh0dHBzOi8v
+YnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNjc2NQoKCj09IFBhcnRpY2lw
+YXRpbmcgaG9zdHMgKDQ0IC0+IDM4KSA9PQoKICBNaXNzaW5nICAgICg2KTogZmktaWxrLW01NDAg
+ZmktaHN3LTQyMDB1IGZpLWNubC15MyBmaS1ieXQtc3F1YXdrcyBmaS1ic3ctY3lhbiBmaS1jdGct
+cDg2MDAgCgoKPT0gQnVpbGQgY2hhbmdlcyA9PQoKICAgICogSUdUOiBJR1RfNDUxOCAtPiBJR1RQ
+V18xNDYxCgogIENJX0RSTV80MzE0OiAyZjRhMTAxYmFiZTg5OGJhNzUwZmEyNzRkYzkwZGIxZWRl
+NTdkNTljIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xpbnV4CiAgSUdU
+UFdfMTQ2MTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18x
+NDYxLwogIElHVF80NTE4OiBlNDkwODAwNDU0N2I2MzEzMTM1MmZiYzBkZGNkYjFkM2Q1NTQ4MGUw
+IEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcveG9yZy9hcHAvaW50ZWwtZ3B1LXRvb2xz
+Cgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
+MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xNDYxL2lzc3Vlcy5odG1sCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
+dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
