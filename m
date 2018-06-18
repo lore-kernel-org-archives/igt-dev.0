@@ -1,13 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from nowhere.herrb.eu (nowhere.herrb.eu
+ [IPv6:2a03:7220:8081:5900::1])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A40056E129
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Jun 2018 19:29:59 +0000 (UTC)
+Date: Mon, 18 Jun 2018 21:03:14 +0200
+From: Matthieu Herrb <matthieu@herrb.eu>
+Message-ID: <20180618190314.GB2662@localhost.localdomain>
+References: <20180309142831.knvvlatjnussxycm@platvala-desk.ger.corp.intel.com>
+ <CAEdQ38EBA0fL9CH5zczateQsgXs4ZgQGJrX8A9xY0Q0HeCUfHQ@mail.gmail.com>
+ <20180618155123.GI22478@phenom.ffwll.local>
+ <CAEdQ38HF0=qTv7Q19VUj73_41uHj--vytvOJZcEu7d2RuzqjCQ@mail.gmail.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 20 Jun 2018 01:14:06 -0000
-Message-ID: <20180620011406.24308.23197@emeril.freedesktop.org>
-References: <20180619225606.18676-1-jose.souza@intel.com>
-In-Reply-To: <20180619225606.18676-1-jose.souza@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgbGliOiBz?=
- =?utf-8?q?ync_with_the_newer_i915=5Fpciids=2Eh_from_the_Kernel_=28WHL_+_A?=
- =?utf-8?q?ML=29_=28rev2=29?=
+In-Reply-To: <CAEdQ38HF0=qTv7Q19VUj73_41uHj--vytvOJZcEu7d2RuzqjCQ@mail.gmail.com>
+Subject: Re: [igt-dev] [ANNOUNCE] intel-gpu-tools 1.22
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,103 +20,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0846699111=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Matt Turner <mattst88@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, xorg@lists.x.org, Daniel Vetter <daniel@ffwll.ch>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogbGliOiBzeW5jIHdpdGggdGhlIG5ld2VyIGk5
-MTVfcGNpaWRzLmggZnJvbSB0aGUgS2VybmVsIChXSEwgKyBBTUwpIChyZXYyKQpVUkwgICA6IGh0
-dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvNDUwMzUvClN0YXRlIDogc3Vj
-Y2VzcwoKPT0gU3VtbWFyeSA9PQoKPSBDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIElHVF80NTIz
-X2Z1bGwgLT4gSUdUUFdfMTQ4NV9mdWxsID0KCj09IFN1bW1hcnkgLSBXQVJOSU5HID09CgogIE1p
-bm9yIHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0aCBJR1RQV18xNDg1X2Z1bGwgbmVlZCB0byBi
-ZSB2ZXJpZmllZAogIG1hbnVhbGx5LgogIAogIElmIHlvdSB0aGluayB0aGUgcmVwb3J0ZWQgY2hh
-bmdlcyBoYXZlIG5vdGhpbmcgdG8gZG8gd2l0aCB0aGUgY2hhbmdlcwogIGludHJvZHVjZWQgaW4g
-SUdUUFdfMTQ4NV9mdWxsLCBwbGVhc2Ugbm90aWZ5IHlvdXIgYnVnIHRlYW0gdG8gYWxsb3cgdGhl
-bQogIHRvIGRvY3VtZW50IHRoaXMgbmV3IGZhaWx1cmUgbW9kZSwgd2hpY2ggd2lsbCByZWR1Y2Ug
-ZmFsc2UgcG9zaXRpdmVzIGluIENJLgoKICBFeHRlcm5hbCBVUkw6IGh0dHBzOi8vcGF0Y2h3b3Jr
-LmZyZWVkZXNrdG9wLm9yZy9hcGkvMS4wL3Nlcmllcy80NTAzNS9yZXZpc2lvbnMvMi9tYm94LwoK
-PT0gUG9zc2libGUgbmV3IGlzc3VlcyA9PQoKICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2Vz
-IHRoYXQgbWF5IGhhdmUgYmVlbiBpbnRyb2R1Y2VkIGluIElHVFBXXzE0ODVfZnVsbDoKCiAgPT09
-IElHVCBjaGFuZ2VzID09PQoKICAgID09PT0gV2FybmluZ3MgPT09PQoKICAgIGlndEBnZW1fbW9j
-c19zZXR0aW5nc0Btb2NzLXJjNi1ic2QxOgogICAgICBzaGFyZC1rYmw6ICAgICAgICAgIFBBU1Mg
-LT4gU0tJUAoKICAgIAo9PSBLbm93biBpc3N1ZXMgPT0KCiAgSGVyZSBhcmUgdGhlIGNoYW5nZXMg
-Zm91bmQgaW4gSUdUUFdfMTQ4NV9mdWxsIHRoYXQgY29tZSBmcm9tIGtub3duIGlzc3VlczoKCiAg
-PT09IElHVCBjaGFuZ2VzID09PQoKICAgID09PT0gSXNzdWVzIGhpdCA9PT09CgogICAgaWd0QGRy
-dl9zZWxmdGVzdEBsaXZlX2d0dDoKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IElO
-Q09NUExFVEUgKGsub3JnIzE5ODEzMywgZmRvIzEwMzM1OSkgKzEKCiAgICBpZ3RAZHJ2X3N1c3Bl
-bmRAZGVidWdmcy1yZWFkZXI6CiAgICAgIHNoYXJkLXNuYjogICAgICAgICAgUEFTUyAtPiBJTkNP
-TVBMRVRFIChmZG8jMTA1NDExKQoKICAgIGlndEBnZW1fY3R4X2lzb2xhdGlvbkByY3MwLXMzOgog
-ICAgICBzaGFyZC1nbGs6ICAgICAgICAgIE5PVFJVTiAtPiBGQUlMIChmZG8jMTAzMzc1KQoKICAg
-IGlndEBrbXNfY3Vyc29yX2xlZ2FjeUAyeC1ub25ibG9ja2luZy1tb2Rlc2V0LXZzLWN1cnNvci1h
-dG9taWM6CiAgICAgIHNoYXJkLWdsazogICAgICAgICAgUEFTUyAtPiBGQUlMIChmZG8jMTA2NTA5
-LCBmZG8jMTA1NDU0KQoKICAgIGlndEBrbXNfZmxpcEAyeC1mbGlwLXZzLWV4cGlyZWQtdmJsYW5r
-LWludGVycnVwdGlibGU6CiAgICAgIHNoYXJkLWhzdzogICAgICAgICAgUEFTUyAtPiBGQUlMIChm
-ZG8jMTA1MzYzKQoKICAgIGlndEBrbXNfZmxpcF90aWxpbmdAZmxpcC15LXRpbGVkOgogICAgICBz
-aGFyZC1nbGs6ICAgICAgICAgIFBBU1MgLT4gRkFJTCAoZmRvIzEwNDcyNCwgZmRvIzEwMzgyMikK
-CiAgICBpZ3RAa21zX3BsYW5lQHBsYW5lLXBhbm5pbmctYm90dG9tLXJpZ2h0LXN1c3BlbmQtcGlw
-ZS1jLXBsYW5lczoKICAgICAgc2hhcmQta2JsOiAgICAgICAgICBQQVNTIC0+IElOQ09NUExFVEUg
-KGZkbyMxMDM2NjUpCgogICAgaWd0QGttc19wbGFuZV9tdWx0aXBsZUBhdG9taWMtcGlwZS1hLXRp
-bGluZy14OgogICAgICBzaGFyZC1zbmI6ICAgICAgICAgIFBBU1MgLT4gRkFJTCAoZmRvIzEwNDcy
-NCwgZmRvIzEwMzE2NikKCiAgICBpZ3RAa21zX3NldG1vZGVAYmFzaWM6CiAgICAgIHNoYXJkLWti
-bDogICAgICAgICAgUEFTUyAtPiBGQUlMIChmZG8jOTk5MTIpCgogICAgCiAgICA9PT09IFBvc3Np
-YmxlIGZpeGVzID09PT0KCiAgICBpZ3RAZHJ2X2hhbmdtYW5AZXJyb3Itc3RhdGUtY2FwdHVyZS1i
-bHQ6CiAgICAgIHNoYXJkLWhzdzogICAgICAgICAgSU5DT01QTEVURSAoZmRvIzEwMzU0MCkgLT4g
-UEFTUwoKICAgIGlndEBnZW1fZWlvQHN1c3BlbmQ6CiAgICAgIHNoYXJkLWtibDogICAgICAgICAg
-SU5DT01QTEVURSAoZmRvIzEwMzY2NSkgLT4gUEFTUyArMgogICAgICBzaGFyZC1hcGw6ICAgICAg
-ICAgIElOQ09NUExFVEUgKGZkbyMxMDM5MjcpIC0+IFBBU1MgKzEKICAgICAgc2hhcmQtZ2xrOiAg
-ICAgICAgICBJTkNPTVBMRVRFIChrLm9yZyMxOTgxMzMsIGZkbyMxMDMzNTkpIC0+IFBBU1MgKzEK
-CiAgICBpZ3RAZ2VtX3dhaXRAYXdhaXQtZGVmYXVsdDoKICAgICAgc2hhcmQtc25iOiAgICAgICAg
-ICBJTkNPTVBMRVRFIChmZG8jMTA1NDExKSAtPiBQQVNTCgogICAgaWd0QGttc19mbGlwQGZsaXAt
-dnMtYmxvY2tpbmctd2YtdmJsYW5rOgogICAgICBzaGFyZC1nbGs6ICAgICAgICAgIEZBSUwgKGZk
-byMxMDAzNjgpIC0+IFBBU1MgKzEKCiAgICBpZ3RAa21zX2ZsaXBAZmxpcC12cy1leHBpcmVkLXZi
-bGFuay1pbnRlcnJ1cHRpYmxlOgogICAgICBzaGFyZC1nbGs6ICAgICAgICAgIEZBSUwgKGZkbyMx
-MDUxODkpIC0+IFBBU1MKCiAgICBpZ3RAa21zX2ZsaXBAbW9kZXNldC12cy12YmxhbmstcmFjZS1p
-bnRlcnJ1cHRpYmxlOgogICAgICBzaGFyZC1oc3c6ICAgICAgICAgIEZBSUwgKGZkbyMxMDMwNjAp
-IC0+IFBBU1MKCiAgICBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiYy0ycC1zY25kc2Ny
-bi1jdXItaW5kZmItZHJhdy1tbWFwLWd0dDoKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBETUVT
-Ry1XQVJOIChmZG8jMTA1NzYzKSAtPiBQQVNTCgogICAgaWd0QGttc19yb3RhdGlvbl9jcmNAcHJp
-bWFyeS1yb3RhdGlvbi0xODA6CiAgICAgIHNoYXJkLWhzdzogICAgICAgICAgRkFJTCAoZmRvIzEw
-NDcyNCwgZmRvIzEwMzkyNSkgLT4gUEFTUwoKICAgIGlndEBrbXNfc2V0bW9kZUBiYXNpYzoKICAg
-ICAgc2hhcmQtYXBsOiAgICAgICAgICBGQUlMIChmZG8jOTk5MTIpIC0+IFBBU1MKCiAgICAKICBm
-ZG8jMTAwMzY4IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEw
-MDM2OAogIGZkbyMxMDMwNjAgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5j
-Z2k/aWQ9MTAzMDYwCiAgZmRvIzEwMzE2NiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
-b3dfYnVnLmNnaT9pZD0xMDMxNjYKICBmZG8jMTAzMzU5IGh0dHBzOi8vYnVncy5mcmVlZGVza3Rv
-cC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzM1OQogIGZkbyMxMDMzNzUgaHR0cHM6Ly9idWdzLmZy
-ZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMzc1CiAgZmRvIzEwMzU0MCBodHRwczov
-L2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDM1NDAKICBmZG8jMTAzNjY1
-IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzY2NQogIGZk
-byMxMDM4MjIgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAz
-ODIyCiAgZmRvIzEwMzkyNSBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNn
-aT9pZD0xMDM5MjUKICBmZG8jMTAzOTI3IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hv
-d19idWcuY2dpP2lkPTEwMzkyNwogIGZkbyMxMDQ3MjQgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
-Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA0NzI0CiAgZmRvIzEwNTE4OSBodHRwczovL2J1Z3MuZnJl
-ZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDUxODkKICBmZG8jMTA1MzYzIGh0dHBzOi8v
-YnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNTM2MwogIGZkbyMxMDU0MTEg
-aHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA1NDExCiAgZmRv
-IzEwNTQ1NCBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDU0
-NTQKICBmZG8jMTA1NzYzIGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dp
-P2lkPTEwNTc2MwogIGZkbyMxMDY1MDkgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93
-X2J1Zy5jZ2k/aWQ9MTA2NTA5CiAgZmRvIzk5OTEyIGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5v
-cmcvc2hvd19idWcuY2dpP2lkPTk5OTEyCiAgay5vcmcjMTk4MTMzIGh0dHBzOi8vYnVnemlsbGEu
-a2VybmVsLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTk4MTMzCgoKPT0gUGFydGljaXBhdGluZyBob3N0
-cyAoNSAtPiA1KSA9PQoKICBObyBjaGFuZ2VzIGluIHBhcnRpY2lwYXRpbmcgaG9zdHMKCgo9PSBC
-dWlsZCBjaGFuZ2VzID09CgogICAgKiBJR1Q6IElHVF80NTIzIC0+IElHVFBXXzE0ODUKICAgICog
-TGludXg6IENJX0RSTV80MzMyIC0+IENJX0RSTV80MzQyCgogIENJX0RSTV80MzMyOiAzNWQyZTQ2
-MTkyYmY1MWY4MWQzZDQ3NGIxM2NjYTFhNjA3NjEwODQzIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVz
-a3RvcC5vcmcvZ2Z4LWNpL2xpbnV4CiAgQ0lfRFJNXzQzNDI6IGRkNTVkYjg4ZmMzZjU0YTk2YzE1
-NDY3Y2U1MzRlODNhODc4OGFiNzMgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9nZngt
-Y2kvbGludXgKICBJR1RQV18xNDg1OiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9k
-cm0tdGlwL0lHVFBXXzE0ODUvCiAgSUdUXzQ1MjM6IDc3ODQ5N2U3OTY1ZGM4NjYyYzc3MGE4OWVi
-YmQ3NDE3NzhmZWI3MWUgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy94b3JnL2FwcC9p
-bnRlbC1ncHUtdG9vbHMKCj09IExvZ3MgPT0KCkZvciBtb3JlIGRldGFpbHMgc2VlOiBodHRwczov
-L2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzE0ODUvc2hhcmRzLmh0bWwK
+
+--===============0846699111==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ZfOjI3PrQbgiZnxM"
+Content-Disposition: inline
+
+
+--ZfOjI3PrQbgiZnxM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Jun 18, 2018 at 10:23:03AM -0700, Matt Turner wrote:
+> On Mon, Jun 18, 2018 at 8:51 AM Daniel Vetter <daniel@ffwll.ch> wrote:
+> >
+> > On Wed, Jun 13, 2018 at 02:54:52PM -0700, Matt Turner wrote:
+> > > On Fri, Mar 9, 2018 at 6:28 AM, Petri Latvala <petri.latvala@intel.co=
+m> wrote:
+> > > >
+> > > > A new intel-gpu-tools quarterly release is available with the
+> > > > following changes:
+> > > >
+> > >
+> > > Since the Meson build system has no configuration options it's not yet
+> > > a replacement distros can use. Please ship the 1.23 tarball with the
+> > > autotools files generated by make dist.
+> >
+> > Meson upstream seems to think that autoconfiguring with defaults Is Bet=
+ter
+> > (tm). What would distro's want from the meson build (since I think it's
+> > useful to cut down a bit from the all the options, mostly they didn't
+> > really work after a short while anyway)?
+>=20
+> That works fine for developers building it out of their ~/projects
+> directory, but not so well for distros. Source distros in particular
+> don't work well with so-called "automagic" dependencies, i.e., those
+> that are enabled if detected by the configure script without the
+> ability to explicitly disable them.
+>=20
+> Gentoo's dependency tracking works by saying "Depend on package XYZ
+> iff support for XYZ is requested". Automagic deps break this by
+> assumption by linking with XYZ if it happens to be installed even if
+> support isn't requested.
+
++1.  same kind of issues on build system for *BSD.
+
+--=20
+Matthieu Herrb
+
+--ZfOjI3PrQbgiZnxM
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEExByYX9zx5TZFdmOLaHOT7jfRKPgFAlsoAe0ACgkQaHOT7jfR
+KPh1kBAAmhAefTIDOWKecLejQ5EH1esowH2i1x1Qgf53wiq9IyPZYqh9JGaF78Rd
+6qXmSBgtdbVD5qh9qAPme4dsJOP3oNxeNu+5zY35/c47jadHtfcqDGxsWnohEhaK
+xonIwUAjF229Ig/XwmkQTt7sBEITrX1jTAdZS16GZz5sLr87csZ20GCwVvfk2SAl
+Oa86+Xs9e28CpDo+KnCUuSFrSw+qJ1UdD+bwGIr0Jlp6PrSIUSkoB/lvt1H4OaS+
+lbDd4H+orgUHOdu7Ndt7icwGidIoLA2BNOulBBgBmZRkt3VUV/zmgsvmjc+9hIuL
+h9eM0qSK89FpjSQV/oOAjd66QcMlELK5NVciK0q+dOfRuhIbbpyd3UJ9oZfZS/X5
+9MtSHtm1t6INiM6pKMpTBoWlF1OlzMg6R9u37jdGr/RzAZGRykYDJtZnUqhjKxFm
+xysQUddlELH/ntpYG8u+hp25+gtR3HLz01uNsAdkWGd1YOlKPz7QeAGVStVqbifO
+NVva9v2MDd6ZAqjfOJ1lQ0XE00EaZpcbqP3M6LtfGSXNsj14IiPYGptxrpZ9KbAx
+uLmmV6tjGEUbh2dwelYVLfe8bGdLNAVXw+2kHF+yEWJo9W2Yond1PYqDKJ6dbLSX
+rHziJ5OoBf5Fp+dGo6S5r2JlPewMg+tXQ0w0ScRVioDIWnPCeVs=
+=TDNf
+-----END PGP SIGNATURE-----
+
+--ZfOjI3PrQbgiZnxM--
+
+--===============0846699111==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
 X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
 YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
 cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0846699111==--
