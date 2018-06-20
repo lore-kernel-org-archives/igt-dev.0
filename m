@@ -1,53 +1,37 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 20 Jun 2018 12:57:05 +0100
-Message-Id: <20180620115706.4087-1-chris@chris-wilson.co.uk>
-Subject: [Intel-gfx] [PATCH i-g-t 1/2] lib: Spin fast, retire early
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
+From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+In-Reply-To: <20180620115706.4087-1-chris@chris-wilson.co.uk>
+References: <20180620115706.4087-1-chris@chris-wilson.co.uk>
+Message-ID: <152949666516.8247.6136467806985896126@jlahtine-desk.ger.corp.intel.com>
+Date: Wed, 20 Jun 2018 15:11:05 +0300
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 1/2] lib: Spin fast,
+ retire early
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-V2hlbiB1c2luZyB0aGUgcG9sbGFibGUgc3Bpbm5lciwgd2Ugb2Z0ZW4gd2FudCB0byB1c2UgaXQg
-YXMgYSBtZWFucyBvZgplbnN1cmluZyB0aGUgdGFzayBpcyBydW5uaW5nIG9uIHRoZSBHUFUgYmVm
-b3JlIHN3aXRjaGluZyB0byBzb21ldGhpbmcKZWxzZS4gSW4gd2hpY2ggY2FzZSB3ZSBkb24ndCB3
-YW50IHRvIGFkZCBleHRyYSBkZWxheSBpbnNpZGUgdGhlIHNwaW5uZXIsCmJ1dCB0aGUgY3VycmVu
-dCAxMDAwIE5PUHMgYWRkIG9uIG9yZGVyIG9mIDV1cywgd2hpY2ggaXMgb2Z0ZW4gbGFyZ2VyCnRo
-YW4gdGhlIHRhcmdldCBsYXRlbmN5LgoKU2lnbmVkLW9mZi1ieTogQ2hyaXMgV2lsc29uIDxjaHJp
-c0BjaHJpcy13aWxzb24uY28udWs+ClJldmlld2VkLWJ5OiBBbnRvbmlvIEFyZ2Vuemlhbm8gPGFu
-dG9uaW8uYXJnZW56aWFub0BpbnRlbC5jb20+Ci0tLQogbGliL2lndF9kdW1teWxvYWQuYyB8IDYg
-KysrKy0tCiAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoK
-ZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZHVtbXlsb2FkLmMgYi9saWIvaWd0X2R1bW15bG9hZC5jCmlu
-ZGV4IDM4MDliNGU2MS4uZDczYjRhYmQ1IDEwMDY0NAotLS0gYS9saWIvaWd0X2R1bW15bG9hZC5j
-CisrKyBiL2xpYi9pZ3RfZHVtbXlsb2FkLmMKQEAgLTc3LDYgKzc3LDcgQEAgZmlsbF9yZWxvYyhz
-dHJ1Y3QgZHJtX2k5MTVfZ2VtX3JlbG9jYXRpb25fZW50cnkgKnJlbG9jLAogCiAjZGVmaW5lIE9V
-VF9GRU5DRQkoMSA8PCAwKQogI2RlZmluZSBQT0xMX1JVTgkoMSA8PCAxKQorI2RlZmluZSBTUElO
-X0ZBU1QgICAgICAgKDEgPDwgMikKIAogc3RhdGljIGludAogZW1pdF9yZWN1cnNpdmVfYmF0Y2go
-aWd0X3NwaW5fdCAqc3BpbiwgaW50IGZkLCB1aW50MzJfdCBjdHgsIHVuc2lnbmVkIGVuZ2luZSwK
-QEAgLTIwNSw3ICsyMDYsOCBAQCBlbWl0X3JlY3Vyc2l2ZV9iYXRjaChpZ3Rfc3Bpbl90ICpzcGlu
-LCBpbnQgZmQsIHVpbnQzMl90IGN0eCwgdW5zaWduZWQgZW5naW5lLAogCSAqIGJldHdlZW4gZnVu
-Y3Rpb24gY2FsbHMsIHRoYXQgYXBwZWFycyBlbm91Z2ggdG8ga2VlcCBTTkIgb3V0IG9mCiAJICog
-dHJvdWJsZS4gU2VlIGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lk
-PTEwMjI2MgogCSAqLwotCWJhdGNoICs9IDEwMDA7CisJaWYgKCEoZmxhZ3MgJiBTUElOX0ZBU1Qp
-KQorCQliYXRjaCArPSAxMDAwOwogCiAJLyogcmVjdXJzZSAqLwogCXIgPSAmcmVsb2NzW29ialtC
-QVRDSF0ucmVsb2NhdGlvbl9jb3VudCsrXTsKQEAgLTM2Miw3ICszNjQsNyBAQCBpZ3Rfc3Bpbl9i
-YXRjaF9uZXdfZmVuY2UoaW50IGZkLCB1aW50MzJfdCBjdHgsIHVuc2lnbmVkIGVuZ2luZSkKIGln
-dF9zcGluX3QgKgogX19pZ3Rfc3Bpbl9iYXRjaF9uZXdfcG9sbChpbnQgZmQsIHVpbnQzMl90IGN0
-eCwgdW5zaWduZWQgZW5naW5lKQogewotCXJldHVybiBfX19pZ3Rfc3Bpbl9iYXRjaF9uZXcoZmQs
-IGN0eCwgZW5naW5lLCAwLCBQT0xMX1JVTik7CisJcmV0dXJuIF9fX2lndF9zcGluX2JhdGNoX25l
-dyhmZCwgY3R4LCBlbmdpbmUsIDAsIFBPTExfUlVOIHwgU1BJTl9GQVNUKTsKIH0KIAogLyoqCi0t
-IAoyLjE4LjAucmMyCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpJbnRlbC1nZnggbWFpbGluZyBsaXN0CkludGVsLWdmeEBsaXN0cy5mcmVlZGVza3RvcC5v
-cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pbnRlbC1n
-ZngK
+UXVvdGluZyBDaHJpcyBXaWxzb24gKDIwMTgtMDYtMjAgMTQ6NTc6MDUpCj4gV2hlbiB1c2luZyB0
+aGUgcG9sbGFibGUgc3Bpbm5lciwgd2Ugb2Z0ZW4gd2FudCB0byB1c2UgaXQgYXMgYSBtZWFucyBv
+Zgo+IGVuc3VyaW5nIHRoZSB0YXNrIGlzIHJ1bm5pbmcgb24gdGhlIEdQVSBiZWZvcmUgc3dpdGNo
+aW5nIHRvIHNvbWV0aGluZwo+IGVsc2UuIEluIHdoaWNoIGNhc2Ugd2UgZG9uJ3Qgd2FudCB0byBh
+ZGQgZXh0cmEgZGVsYXkgaW5zaWRlIHRoZSBzcGlubmVyLAo+IGJ1dCB0aGUgY3VycmVudCAxMDAw
+IE5PUHMgYWRkIG9uIG9yZGVyIG9mIDV1cywgd2hpY2ggaXMgb2Z0ZW4gbGFyZ2VyCj4gdGhhbiB0
+aGUgdGFyZ2V0IGxhdGVuY3kuCj4gCj4gU2lnbmVkLW9mZi1ieTogQ2hyaXMgV2lsc29uIDxjaHJp
+c0BjaHJpcy13aWxzb24uY28udWs+Cj4gUmV2aWV3ZWQtYnk6IEFudG9uaW8gQXJnZW56aWFubyA8
+YW50b25pby5hcmdlbnppYW5vQGludGVsLmNvbT4KClJldmlld2VkLWJ5OiBKb29uYXMgTGFodGlu
+ZW4gPGpvb25hcy5sYWh0aW5lbkBsaW51eC5pbnRlbC5jb20+CgpSZWdhcmRzLCBKb29uYXMKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
+aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
+ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
