@@ -1,51 +1,44 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-Date: Sat, 7 Jul 2018 20:23:53 -0300
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Date: Sat, 7 Jul 2018 20:24:27 -0300
 From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Message-ID: <3ba3f46a744f6ccff7c0af61c57d5db7be2d7c3a.1531005542.git.rodrigosiqueiramelo@gmail.com>
-References: <cover.1531005542.git.rodrigosiqueiramelo@gmail.com>
+Message-ID: <cover.1531004191.git.rodrigosiqueiramelo@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <cover.1531005542.git.rodrigosiqueiramelo@gmail.com>
-Subject: [Intel-gfx] [PATCH i-g-t 7/7] Avoid truncate string in
- __igt_lsof_fds
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Subject: [igt-dev] [PATCH i-g-t 0/2] Add support to force specific module
+ load
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Petri Latvala <petri.latvala@intel.com>, Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, gustavo@padovan.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Tm90ZSB0aGF0ICdwcm9jX3BhdGgnIHBhcmFtZXRlciBpbiBfX2lndF9sc29mX2ZkcyByZWNlaXZl
-cyBhIHN0cmluZwp3aGljaCB3YXMgaW5pdGlhbGl6ZWQgd2l0aCB0aGUgc2l6ZSBvZiBQQVRIX01B
-WCBhbmQgdGhlIGxvY2FsIHZhcmlhYmxlCidwYXRoJyBoYXMgdGhlIHNhbWUgc2l6ZSwgYnV0IGl0
-IGFsc28gaGF2ZSB0byBhcHBlbmQ6ICcvJywgJ1wwJywgYW5kIHRoZQpkaXJlY3RvcnkgbmFtZS4g
-VGhpcyBzaXR1YXRpb24gY2F1c2VkIHRoZSB3YXJuaW5nIGRlc2NyaWJlZCBiZWxvdy4KCndhcm5p
-bmc6IOKAmCVz4oCZIGRpcmVjdGl2ZSBvdXRwdXQgbWF5IGJlIHRydW5jYXRlZCB3cml0aW5nIHVw
-IHRvIDI1NSBieXRlcwppbnRvIGEgcmVnaW9uIG9mIHNpemUgYmV0d2VlbiAwIGFuZCA0MDk1IFst
-V2Zvcm1hdC10cnVuY2F0aW9uPV0Kc25wcmludGYocGF0aCwgc2l6ZW9mKHBhdGgpLCAiJXMvJXMi
-LCBwcm9jX3BhdGgsIGQtPmRfbmFtZSk7Cm5vdGU6IOKAmHNucHJpbnRm4oCZIG91dHB1dCBiZXR3
-ZWVuIDIgYW5kIDQzNTIgYnl0ZXMgaW50byBhIGRlc3RpbmF0aW9uIG9mCnNpemUgNDA5NiBbLi5d
-CgpUaGlzIGNvbW1pdCBmaXhlcyB0aGlzIHByb2JsZW0gYnkgY2hhbmdpbmcgdGhlIHN0cmluZyBz
-aXplIHBhc3NlZCBieQpfX2lndF9sc29mdCB0byBfX2lndF9sc29mX2Zkcy4gVGhlIG1heCBzaXpl
-IGZvciB0aGUgc3RyaW5nIGlzCnN0cmxlbigiL3Byb2MvJWQvY3dkIikrMSB3aGVyZSAiJWQiIGNh
-biBiZSBlc3RpbWF0ZWQgd2l0aApDRUlMSU5HKExPR18xMChJTlRfTUFYKSksIGluIHRoaXMgc2Vu
-c2UsIGl0IGlzIHNhZmUgdG8gZGVmaW5lIGEgcGF0aApzaXplIG9mIDMwIGNoYXJhY3RlcnMuCgpT
-aWduZWQtb2ZmLWJ5OiBSb2RyaWdvIFNpcXVlaXJhIDxyb2RyaWdvc2lxdWVpcmFtZWxvQGdtYWls
-LmNvbT4KLS0tCiBsaWIvaWd0X2F1eC5jIHwgMiArLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0
-aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2lndF9hdXguYyBiL2xpYi9p
-Z3RfYXV4LmMKaW5kZXggY2E4Y2NmYmQuLmQ5ZGJmN2NlIDEwMDY0NAotLS0gYS9saWIvaWd0X2F1
-eC5jCisrKyBiL2xpYi9pZ3RfYXV4LmMKQEAgLTE0ODUsNyArMTQ4NSw3IEBAIF9faWd0X2xzb2Yo
-Y29uc3QgY2hhciAqZGlyKQogCVBST0NUQUIgKnByb2M7CiAJcHJvY190ICpwcm9jX2luZm87CiAK
-LQljaGFyIHBhdGhbUEFUSF9NQVhdOworCWNoYXIgcGF0aFszMF07CiAJY2hhciAqbmFtZV9sbms7
-CiAJc3RydWN0IHN0YXQgc3Q7CiAJaW50IHN0YXRlID0gMDsKLS0gCjIuMTguMAoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KSW50ZWwtZ2Z4IG1haWxpbmcg
-bGlzdApJbnRlbC1nZnhAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaW50ZWwtZ2Z4Cg==
+VGhpcyBwYXRjaHNldCBhZGRzIHN1cHBvcnQgZm9yIGZvcmNpbmcgYSBzcGVjaWZpYyBtb2R1bGUg
+dG8gYmUgbG9hZGVkCnZpYSBjb21tYW5kIGxpbmUuIFRoaXMgZmVhdHVyZSBjYW4gYnJpbmcgYmVu
+ZWZpdHMgZm9yIGRldmVsb3BlcnMgdGhhdApuZWVkIHRvIGNyZWF0ZSBhIG5ldyBtb2R1bGUgc2lu
+Y2UgdGhleSBjYW4gdXNlIElHVCBhcyBhIGJhc2UgdGVzdCB0bwpndWlkZSB0aGVpciBkZXZlbG9w
+bWVudCAoVGVzdC1kcml2ZW4gZGV2ZWxvcG1lbnQgLSBUREQgKS4gVGhlIGZpcnN0CnBhdGNoLCBl
+eHBhbmQgdGhlIHNpemUgb2YgdGhlIG1vZHVsZSBuYW1lIGFjY2VwdGVkIGJ5IElHVCB0byBtYWtl
+CnBvc3NpYmxlIHRoYXQgbW9kdWxlcyB3aXRoIGxhcmdlciBuYW1lcyBjYW4gYmUgbG9hZGVkLiBU
+aGUgc2Vjb25kIHBhdGNoCmhhcyB0aGUgZm9yY2Ugb3B0aW9uIGltcGxlbWVudGF0aW9uLgoKVGhl
+IGRpc2N1c3Npb24gYWJvdXQgdGhpcyBmZWF0dXJlIHN0YXJ0ZWQgd2l0aCBhbiBSRkMgbmFtZWQg
+IltQQVRDSAppLWctdF0gW1JGQ10gQWRkIHN1cHBvcnQgdG8gZm9yY2Ugc3BlY2lmaWMgbW9kdWxl
+IGxvYWQiLCBsaW5rOgpodHRwczovL3d3dy5zcGluaWNzLm5ldC9saXN0cy9pbnRlbC1nZngvbXNn
+MTY2NzY0Lmh0bWwKClJvZHJpZ28gU2lxdWVpcmEgKDIpOgogIEluY3JlYXNlIHRoZSBzdHJpbmcg
+c2l6ZSBmb3IgYSBtb2R1bGUgbmFtZQogIEFkZCBzdXBwb3J0IGZvciBmb3JjaW5nIHNwZWNpZmlj
+IG1vZHVsZQoKIGxpYi9kcm10ZXN0LmMgICAgICAgIHwgMzkgKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKy0tLS0tLS0tCiBsaWIvaWd0X2NvcmUuYyAgICAgICB8IDIzICsrKysrKysrKysr
+KysrKysrKysrKysrCiBsaWIvaWd0X2NvcmUuaCAgICAgICB8ICA0ICsrKysKIHNjcmlwdHMvcnVu
+LXRlc3RzLnNoIHwgIDQgKysrLQogNCBmaWxlcyBjaGFuZ2VkLCA2MSBpbnNlcnRpb25zKCspLCA5
+IGRlbGV0aW9ucygtKQoKLS0gCjIuMTguMAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
+ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9pZ3QtZGV2Cg==
