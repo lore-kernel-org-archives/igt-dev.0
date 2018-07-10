@@ -1,36 +1,52 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Date: Tue, 10 Jul 2018 16:50:34 +0300
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20180710135034.GA13126@ahiler-mobl1.fi.intel.com>
+References: <cover.1531005542.git.rodrigosiqueiramelo@gmail.com>
+ <1fdd00077524f8c4703095a67caa3d0f920e3c05.1531005542.git.rodrigosiqueiramelo@gmail.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <203943cb-da94-14e0-bc62-4705ef4e8a8c@linux.intel.com>
-References: <20180511071141.24581-1-chris@chris-wilson.co.uk>
- <203943cb-da94-14e0-bc62-4705ef4e8a8c@linux.intel.com>
-Message-ID: <153123045484.18500.13450965873895810528@skylake-alporthouse-com>
-Date: Tue, 10 Jul 2018 14:47:34 +0100
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] benchmarks/wsim: Simulate
- and interpret .wsim
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Disposition: inline
+In-Reply-To: <1fdd00077524f8c4703095a67caa3d0f920e3c05.1531005542.git.rodrigosiqueiramelo@gmail.com>
+Subject: Re: [Intel-gfx] [PATCH i-g-t 1/7] Remove parameter aliases with
+ another argument
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBUdnJ0a28gVXJzdWxpbiAoMjAxOC0wNS0xMSAwOTozMTo1MikKPiAKPiBPbiAxMS8w
-NS8yMDE4IDA4OjExLCBDaHJpcyBXaWxzb24gd3JvdGU6Cj4gPiBBIGxpdHRsZSB0b29sIEkndmUg
-YmVlbiBtZWFuaW5nIHRvIHdyaXRlIGZvciBhIHdoaWxlLi4uIENvbnZlcnQgdGhlCj4gPiAud3Np
-bSBpbnRvIHRoZWlyIGRhZyBhbmQgZmluZCB0aGUgbG9uZ2VzdCBjaGFpbnMgYW5kIGV2YWx1YXRl
-IHRoZW0gb24gYW4KPiA+IHNpbXVsYXRlZCBtYWNoaW5lLgo+IAo+IFZlcnkgY29vbCEKCldvdWxk
-IHlvdSBjYXJlIHRvIGFjayBpdCBpbiBpdHMgY3VycmVudCBmb3JtLCBrbm93aW5nIHRoYXQgd2Ug
-d2lsbCBmaXgKaXQgd2hlbmV2ZXIgd2UgZmluZCBhIGNvcm5lciBjYXNlIGludGVyZXN0aW5nIGVu
-b3VnaCB0byBzdHVkeT8KLUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0
-LWRldgo=
+T24gU2F0LCBKdWwgMDcsIDIwMTggYXQgMDg6MjI6MjVQTSAtMDMwMCwgUm9kcmlnbyBTaXF1ZWly
+YSB3cm90ZToKPiBUaGlzIGNvbW1pdCBmaXhlcyB0aGUgZm9sbG93aW5nIEdDQyB3YXJuaW5nOgo+
+IAo+IHdhcm5pbmc6IHBhc3NpbmcgYXJndW1lbnQgMiB0byByZXN0cmljdC1xdWFsaWZpZWQgcGFy
+YW1ldGVyIGFsaWFzZXMgd2l0aAo+IGFyZ3VtZW50IDEgWy1XcmVzdHJpY3RdCj4gICByZXR1cm4g
+KHJlYWRsaW5rIChidWYsIGJ1Ziwgc2l6ZW9mIChidWYpKSAhPSAtMSAmJgo+IAo+IFRoaXMgY29t
+bWl0IGZpeGVzIHRoZSBHQ0Mgd2FybmluZyBieSBjcmVhdGluZyBhIHNlY29uZCBidWZmZXIgb25s
+eSB0bwo+IGtlZXAgdGhlIHBhdGguCj4gCj4gU2lnbmVkLW9mZi1ieTogUm9kcmlnbyBTaXF1ZWly
+YSA8cm9kcmlnb3NpcXVlaXJhbWVsb0BnbWFpbC5jb20+Cj4gLS0tCj4gIGxpYi9pZ3RfY29yZS5j
+IHwgNiArKystLS0KPiAgMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlv
+bnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9jb3JlLmMgYi9saWIvaWd0X2NvcmUuYwo+
+IGluZGV4IDMzMTMwNTBjLi5mYTIyZjEyZCAxMDA2NDQKPiAtLS0gYS9saWIvaWd0X2NvcmUuYwo+
+ICsrKyBiL2xpYi9pZ3RfY29yZS5jCj4gQEAgLTExNjksMTAgKzExNjksMTAgQEAgYm9vbCBpZ3Rf
+Y2FuX2ZhaWwodm9pZCkKPiAgCj4gIHN0YXRpYyBib29sIHJ1bl91bmRlcl9nZGIodm9pZCkKPiAg
+ewo+IC0JY2hhciBidWZbMTAyNF07Cj4gKwljaGFyIHBhdGhuYW1lWzEwMjRdLCBidWZbMTAyNF07
+CgoxMDI0IGZvciBwYXRobmFtZSBpcyBxdWl0ZSBhbiBvdmVyc2hvb3QuIFdlIHN0YXNoIGF0IG1v
+c3QKIi9wcm9jLyVkL2V4ZWMiIHdoZXJlICVkIHNob3VsZCBiZSBhdCBtb3N0IDIxIG9yIHNvLgoK
+PiAtCXNwcmludGYoYnVmLCAiL3Byb2MvJWQvZXhlIiwgZ2V0cHBpZCgpKTsKPiAtCXJldHVybiAo
+cmVhZGxpbmsgKGJ1ZiwgYnVmLCBzaXplb2YgKGJ1ZikpICE9IC0xICYmCj4gKwlzcHJpbnRmKHBh
+dGhuYW1lLCAiL3Byb2MvJWQvZXhlIiwgZ2V0cHBpZCgpKTsKPiArCXJldHVybiAocmVhZGxpbmsg
+KHBhdGhuYW1lLCBidWYsIHNpemVvZiAoYnVmKSkgIT0gLTEgJiYKCiAgICAgICAgICAgICAgICAg
+ICAgICAgIF4gd2hpbGUgd2UgYXJlIGhlcmUgd2UgY2FuIGdldCByaWQgb2YgdGhhdCBzcGFjZQoK
+PiAgCQlzdHJuY21wKGJhc2VuYW1lKGJ1ZiksICJnZGIiLCAzKSA9PSAwKTsKPiAgfQo+ICAKPiAt
+LSAKPiAyLjE4LjAKPiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KSW50ZWwtZ2Z4IG1haWxpbmcgbGlzdApJbnRlbC1nZnhAbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaW50ZWwt
+Z2Z4Cg==
