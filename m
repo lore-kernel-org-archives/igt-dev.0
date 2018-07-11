@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
- [IPv6:2a00:1450:4864:20::543])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A14589338
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Jul 2018 08:08:24 +0000 (UTC)
-Received: by mail-ed1-x543.google.com with SMTP id u11-v6so18507292eds.10
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Jul 2018 01:08:24 -0700 (PDT)
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Wed, 11 Jul 2018 10:08:17 +0200
-Message-Id: <20180711080817.14304-1-daniel.vetter@ffwll.ch>
-Subject: [igt-dev] [PATCH i-g-t] meson.sh: Add support for install/uninstall
+MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 11 Jul 2018 08:19:10 -0000
+Message-ID: <20180711081910.19438.32514@emeril.freedesktop.org>
+References: <20180711074249.20479-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20180711074249.20479-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2R1?=
+ =?utf-8?q?mmyload=3A_Control_whether_or_not_the_batch_is_preemptible?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,27 +14,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: IGT development <igt-dev@lists.freedesktop.org>
-Cc: Daniel Vetter <daniel.vetter@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhpcyBzaG91bGQgd29yayBub3cuCgpTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgVmV0dGVyIDxkYW5p
-ZWwudmV0dGVyQGludGVsLmNvbT4KLS0tCiBtZXNvbi5zaCB8IDcgKysrKystLQogMSBmaWxlIGNo
-YW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9tZXNv
-bi5zaCBiL21lc29uLnNoCmluZGV4IGYwZGIyYTE5YzQ0MC4uN2NmOWQ0YTNhYzcwIDEwMDc1NQot
-LS0gYS9tZXNvbi5zaAorKysgYi9tZXNvbi5zaApAQCAtMjQsOCArMjQsMTEgQEAgcmVjb25maWd1
-cmU6IGJ1aWxkL2J1aWxkLm5pbmphCiBjaGVjayBkaXN0Y2hlY2sgZGlzdCBkaXN0Y2xlYW46CiAJ
-ZWNobyAiVGhpcyBpcyB0aGUgbWVzb24gd3JhcHBlciwgbm90IGF1dG9tYWtlIiAmJiBmYWxzZQog
-Ci1pbnN0YWxsIHVuaW5zdGFsbDoKLQllY2hvICJtZXNvbiBpbnN0YWxsIHN1cHBvcnQgbm90IHll
-dCBjb21wbGV0ZWQiICYmIGZhbHNlCitpbnN0YWxsOiBidWlsZC9idWlsZC5uaW5qYQorCW5pbmph
-IC1DIGJ1aWxkIGluc3RhbGwKKwordW5pbnN0YWxsOiBidWlsZC9idWlsZC5uaW5qYQorCW5pbmph
-IC1DIGJ1aWxkIHVuaW5zdGFsbAogCiBkb2NzOgogCW5pbmphIC1DIGJ1aWxkIGlndC1ncHUtdG9v
-bHMtZG9jCi0tIAoyLjE4LjAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRl
-dgo=
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogbGliL2R1bW15bG9hZDogQ29udHJvbCB3aGV0
+aGVyIG9yIG5vdCB0aGUgYmF0Y2ggaXMgcHJlZW1wdGlibGUKVVJMICAgOiBodHRwczovL3BhdGNo
+d29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzQ2MjkwLwpTdGF0ZSA6IHN1Y2Nlc3MKCj09IFN1
+bW1hcnkgPT0KCj0gQ0kgQnVnIExvZyAtIGNoYW5nZXMgZnJvbSBDSV9EUk1fNDQ2NiAtPiBJR1RQ
+V18xNTU0ID0KCj09IFN1bW1hcnkgLSBTVUNDRVNTID09CgogIE5vIHJlZ3Jlc3Npb25zIGZvdW5k
+LgoKICBFeHRlcm5hbCBVUkw6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9hcGkv
+MS4wL3Nlcmllcy80NjI5MC9yZXZpc2lvbnMvMS9tYm94LwoKPT0gS25vd24gaXNzdWVzID09Cgog
+IEhlcmUgYXJlIHRoZSBjaGFuZ2VzIGZvdW5kIGluIElHVFBXXzE1NTQgdGhhdCBjb21lIGZyb20g
+a25vd24gaXNzdWVzOgoKICA9PT0gSUdUIGNoYW5nZXMgPT09CgogICAgPT09PSBQb3NzaWJsZSBm
+aXhlcyA9PT09CgogICAgaWd0QGttc19mbGlwQGJhc2ljLWZsaXAtdnMtZHBtczoKICAgICAgZmkt
+c2tsLTY3MDBocTogICAgICBETUVTRy1XQVJOIChmZG8jMTA1OTk4KSAtPiBQQVNTCgogICAgaWd0
+QGttc19waXBlX2NyY19iYXNpY0BoYW5nLXJlYWQtY3JjLXBpcGUtYjoKICAgICAge2ZpLXNrbC1p
+b21tdX06ICAgICBGQUlMIChmZG8jMTA2Njg2KSAtPiBTS0lQICsyCgogICAgCiAge25hbWV9OiBU
+aGlzIGVsZW1lbnQgaXMgc3VwcHJlc3NlZC4gVGhpcyBtZWFucyBpdCBpcyBpZ25vcmVkIHdoZW4g
+Y29tcHV0aW5nCiAgICAgICAgICB0aGUgc3RhdHVzIG9mIHRoZSBkaWZmZXJlbmNlIChTVUNDRVNT
+LCBXQVJOSU5HLCBvciBGQUlMVVJFKS4KCiAgZmRvIzEwNTk5OCBodHRwczovL2J1Z3MuZnJlZWRl
+c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDU5OTgKICBmZG8jMTA2Njg2IGh0dHBzOi8vYnVn
+cy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNjY4NgoKCj09IFBhcnRpY2lwYXRp
+bmcgaG9zdHMgKDQ1IC0+IDQyKSA9PQoKICBBZGRpdGlvbmFsICgyKTogZmktc2tsLWd1YyBmaS1r
+YmwtZ3VjIAogIE1pc3NpbmcgICAgKDUpOiBmaS1jdGctcDg2MDAgZmktaWxrLW01NDAgZmktYnl0
+LXNxdWF3a3MgZmktYnN3LWN5YW4gZmktaHN3LTQyMDB1IAoKCj09IEJ1aWxkIGNoYW5nZXMgPT0K
+CiAgICAqIElHVDogSUdUXzQ1NDUgLT4gSUdUUFdfMTU1NAoKICBDSV9EUk1fNDQ2NjogNDBlYTRk
+Njk2NDgxOTMwNjgyYzc4MmU4ZGQ3YmQwY2RiZGZhZDU3NCBAIGdpdDovL2Fub25naXQuZnJlZWRl
+c2t0b3Aub3JnL2dmeC1jaS9saW51eAogIElHVFBXXzE1NTQ6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNp
+LjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTU1NC8KICBJR1RfNDU0NTogYzMwMzVkOGNiMTE0
+NTlmMTg2ZjcxMmQ5YzdlYmI2NzM0ZmM5OTgzMSBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Au
+b3JnL3hvcmcvYXBwL2ludGVsLWdwdS10b29scwoKPT0gTG9ncyA9PQoKRm9yIG1vcmUgZGV0YWls
+cyBzZWU6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTU1
+NC9pc3N1ZXMuaHRtbApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
+dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
