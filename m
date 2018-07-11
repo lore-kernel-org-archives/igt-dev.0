@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Wed, 11 Jul 2018 15:26:55 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20180711122655.GA21919@ahiler-mobl1.fi.intel.com>
-References: <cover.1531005542.git.rodrigosiqueiramelo@gmail.com>
- <f8ae302060dc9cd7640199f3dca0a275f3351968.1531005542.git.rodrigosiqueiramelo@gmail.com>
+References: <20180709132004.14468-1-tvrtko.ursulin@linux.intel.com>
+ <20180709132004.14468-2-tvrtko.ursulin@linux.intel.com>
+From: John Harrison <John.C.Harrison@Intel.com>
+Message-ID: <f05a65a4-284d-b0ca-9b87-8c4cd080241e@Intel.com>
+Date: Wed, 11 Jul 2018 10:49:17 -0700
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <f8ae302060dc9cd7640199f3dca0a275f3351968.1531005542.git.rodrigosiqueiramelo@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 5/7] Make string commands dynamic
- allocate
+In-Reply-To: <20180709132004.14468-2-tvrtko.ursulin@linux.intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 01/11] trace.pl: Fix no context
+ colouring mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,42 +16,24 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Cc: igt-dev@lists.freedesktop.org, gustavo@padovan.org, intel-gfx@lists.freedesktop.org
+To: Tvrtko Ursulin <tursulin@ursulin.net>, igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gU2F0LCBKdWwgMDcsIDIwMTggYXQgMDg6MjM6MzBQTSAtMDMwMCwgUm9kcmlnbyBTaXF1ZWly
-YSB3cm90ZToKPiBUaGlzIHBhdGNoIGZpeCB0aGUgZm9sbG93aW5nIEdDQyB3YXJuaW5nOgo+IAo+
-IGludGVsX2d2dGdfdGVzdC5jOiBJbiBmdW5jdGlvbiDigJhjcmVhdGVfZ3Vlc3TigJk6Cj4gaW50
-ZWxfZ3Z0Z190ZXN0LmM6MTI3OjUwOiB3YXJuaW5nOiDigJglc+KAmSBkaXJlY3RpdmUgd3JpdGlu
-ZyB1cCB0byA0MDk1Cj4gYnl0ZXMgaW50byBhIHJlZ2lvbiBvZiBzaXplIDQwNzcgWy1XZm9ybWF0
-LW92ZXJmbG93PV0KPiBbLi5dCj4gaW50ZWxfZ3Z0Z190ZXN0LmM6MTI3OjU6IG5vdGU6IOKAmHNw
-cmludGbigJkgb3V0cHV0IGJldHdlZW4gMzYgYW5kIDgyMjYKPiBieXRlcyBpbnRvIGEgZGVzdGlu
-YXRpb24gb2Ygc2l6ZSA0MDk2Cj4gWy4uXQo+IAo+IFRoaXMgcGF0Y2ggY2hhbmdlcyB0aGUgYXBw
-cm9hY2ggZm9yIGFsbG9jYXRpbmcgbWVtb3J5IHRvIGhhbmRsZSBRRU1VCj4gY29tbWFuZHMgYnkg
-ZHluYW1pY2FsbHkgYWxsb2NhdGUgc3BhY2UgdG8gc2F2ZSB0aGUgd2hvbGUgY29tbWFuZC4KPiAK
-PiBTaWduZWQtb2ZmLWJ5OiBSb2RyaWdvIFNpcXVlaXJhIDxyb2RyaWdvc2lxdWVpcmFtZWxvQGdt
-YWlsLmNvbT4KPiAtLS0KPiAgdG9vbHMvaW50ZWxfZ3Z0Z190ZXN0LmMgfCAyNyArKysrKysrKysr
-KysrKysrKystLS0tLS0tLS0KPiAgMSBmaWxlIGNoYW5nZWQsIDE4IGluc2VydGlvbnMoKyksIDkg
-ZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL3Rvb2xzL2ludGVsX2d2dGdfdGVzdC5jIGIv
-dG9vbHMvaW50ZWxfZ3Z0Z190ZXN0LmMKPiBpbmRleCA2NTliNzk1Ni4uOTNjMDVlMzcgMTAwNjQ0
-Cj4gLS0tIGEvdG9vbHMvaW50ZWxfZ3Z0Z190ZXN0LmMKPiArKysgYi90b29scy9pbnRlbF9ndnRn
-X3Rlc3QuYwo+IEBAIC0xMjAsMTYgKzEyMCwyNSBAQCBzdGF0aWMgaW50IGNoZWNrX3Rvb2xzKHZv
-aWQpCj4gIAo+ICBzdGF0aWMgdm9pZCBjcmVhdGVfZ3Vlc3Qodm9pZCkKPiAgewo+IC0gICAgY2hh
-ciBjcmVhdGVfcWNvd19jbWRbUEFUSF9NQVhdID0gezB9Owo+IC0gICAgY2hhciBjcmVhdGVfdmdw
-dV9jbWRbUEFUSF9NQVhdID0gezB9Owo+IC0gICAgY2hhciBjcmVhdGVfaW5zdGFuY2VfY21kW1BB
-VEhfTUFYXSA9IHswfTsKPiArICAgIHVuc2lnbmVkIGludCBtYXhfc2l6ZV9jbWQgPSBzeXNjb25m
-KF9TQ19BUkdfTUFYKTsKClRoYXQncyAyMDk3MTUyIG9uIG15IHN5c3RlbS4gUXVpdGUgYW4gb3Zl
-cmtpbGwuIEkga25vdyB0aGF0IHdlIGhhdmUgbGF6eQpwYWdlIHRhYmxlIGFzc2lnZW1lbnQsIGJ1
-dCBtZW1zZXRpbmcgdGhlIHdob2xlIDJHQiBkZWZlYXRzIGl0LgoKVGhlIHFlbXUgaW52b2NhdGlv
-biBsb29rcyBsaWtlICB0aGUgbG9uZ2VzdCBvbmUsIGFuZCB3ZSBoYXZlIDMKY29tcG9uZW50cyB0
-aGF0IG1heSB0YWtlIHVwIHRvIFBBVEhfTUFYIGVhY2ggYW5kIHNvbWUgZXh0cmEgc3R1ZmYsIHNv
-CmdvaW5nIHdpdGggNCpQQVRIX01BWCBzaG91bGQgYmUgZW5vdWdoLgoKQlRXLCB3aHkgZG8geW91
-IG1lbXNldCBpdCB0byAwIGJlZm9yZSBlYWNoIHNwcmludGY/CgotLSAKQ2hlZXJzLApBcmVrCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFp
-bGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+T24gNy85LzIwMTggNjoxOSBBTSwgVHZydGtvIFVyc3VsaW4gd3JvdGU6Cj4gRnJvbTogVHZydGtv
+IFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KPgo+IENvbW1pdCA4N2QyYWZmYzM4
+MGRhOTZiYTY2YzI1OGM1MzM3YzM2M2ZlODY1MWVmICgidHJhY2UucGw6IEFkZCBzdXBwb3J0Cj4g
+Zm9yIGNvbG91cmluZyBjb250ZXh0IGV4ZWN1dGlvbiIpLCBkdWUgc29tZSBkb2RneSBhdHRlbXB0
+cyBhdCBwYXRjaAo+IHNwbGl0dGluZyBicm9rZSB0aGUgbGVnYWN5IGNvbG91cmluZyBtb2RlLgo+
+Cj4gRml4IGl0IGJ5IHBhc3NpbmcgaW4gdGhlIHJlcXVlc3Qgc3RhZ2UgaW50byB0aGUgaGVscGVy
+IHNvIGFsbCBzdGFnZXMgY2FuCj4gYmUgY29ycmVjdGx5IGNvbG91cmVkIGluIGJvdGggbW9kZXMu
+Cj4KPiBTaWduZWQtb2ZmLWJ5OiBUdnJ0a28gVXJzdWxpbiA8dHZydGtvLnVyc3VsaW5AaW50ZWwu
+Y29tPgo+IENjOiBKb2huIEhhcnJpc29uIDxKb2huLkMuSGFycmlzb25ASW50ZWwuY29tPgoKUmV2
+aWV3ZWQtYnk6IEpvaG4gSGFycmlzb24gPEpvaG4uQy5IYXJyaXNvbkBJbnRlbC5jb20+CgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxp
+bmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVk
+ZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
