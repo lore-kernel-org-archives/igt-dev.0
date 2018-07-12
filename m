@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+References: <20180709132004.14468-1-tvrtko.ursulin@linux.intel.com>
+ <20180709132004.14468-8-tvrtko.ursulin@linux.intel.com>
+From: John Harrison <John.C.Harrison@Intel.com>
+Message-ID: <f80a0fcd-e630-58cb-0fc6-79822791dfc6@Intel.com>
+Date: Wed, 11 Jul 2018 23:38:54 -0700
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 12 Jul 2018 00:14:02 -0000
-Message-ID: <20180712001402.19438.25637@emeril.freedesktop.org>
-References: <20180606222741.24096-1-lucas.demarchi@intel.com>
-In-Reply-To: <20180606222741.24096-1-lucas.demarchi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/4=5D_tests/sw=5Fsync=3A_fix_pthread?=
- =?utf-8?q?_start=5Froutine_declaration_=28rev2=29?=
+In-Reply-To: <20180709132004.14468-8-tvrtko.ursulin@linux.intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 07/11] trace.pl: Fix engine busy
+ accounting in split mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,86 +16,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0286740371=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Tvrtko Ursulin <tursulin@ursulin.net>, igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW2ktZy10
-LDEvNF0gdGVzdHMvc3dfc3luYzogZml4IHB0aHJlYWQgc3RhcnRfcm91dGluZSBkZWNsYXJhdGlv
-biAocmV2MikKVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVz
-LzQ0Mzc1LwpTdGF0ZSA6IHN1Y2Nlc3MKCj09IFN1bW1hcnkgPT0KCj0gQ0kgQnVnIExvZyAtIGNo
-YW5nZXMgZnJvbSBJR1RfNDU0Nl9mdWxsIC0+IElHVFBXXzE1NThfZnVsbCA9Cgo9PSBTdW1tYXJ5
-IC0gV0FSTklORyA9PQoKICBNaW5vciB1bmtub3duIGNoYW5nZXMgY29taW5nIHdpdGggSUdUUFdf
-MTU1OF9mdWxsIG5lZWQgdG8gYmUgdmVyaWZpZWQKICBtYW51YWxseS4KICAKICBJZiB5b3UgdGhp
-bmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNoYW5n
-ZXMKICBpbnRyb2R1Y2VkIGluIElHVFBXXzE1NThfZnVsbCwgcGxlYXNlIG5vdGlmeSB5b3VyIGJ1
-ZyB0ZWFtIHRvIGFsbG93IHRoZW0KICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJlIG1vZGUs
-IHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4KCiAgRXh0ZXJuYWwgVVJM
-OiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvYXBpLzEuMC9zZXJpZXMvNDQzNzUv
-cmV2aXNpb25zLzIvbWJveC8KCj09IFBvc3NpYmxlIG5ldyBpc3N1ZXMgPT0KCiAgSGVyZSBhcmUg
-dGhlIHVua25vd24gY2hhbmdlcyB0aGF0IG1heSBoYXZlIGJlZW4gaW50cm9kdWNlZCBpbiBJR1RQ
-V18xNTU4X2Z1bGw6CgogID09PSBJR1QgY2hhbmdlcyA9PT0KCiAgICA9PT09IFdhcm5pbmdzID09
-PT0KCiAgICBpZ3RAZ2VtX2V4ZWNfc2NoZWR1bGVAZGVlcC12ZWJveDoKICAgICAgc2hhcmQta2Js
-OiAgICAgICAgICBTS0lQIC0+IFBBU1MKCiAgICBpZ3RAZ2VtX21vY3Nfc2V0dGluZ3NAbW9jcy1y
-YzYtY3R4LXJlbmRlcjoKICAgICAgc2hhcmQta2JsOiAgICAgICAgICBQQVNTIC0+IFNLSVAKCiAg
-ICBpZ3RAcG1fcnBtQGN1cnNvcjoKICAgICAgc2hhcmQtaHN3OiAgICAgICAgICBQQVNTIC0+IFNL
-SVAgKzM0CgogICAgCj09IEtub3duIGlzc3VlcyA9PQoKICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBm
-b3VuZCBpbiBJR1RQV18xNTU4X2Z1bGwgdGhhdCBjb21lIGZyb20ga25vd24gaXNzdWVzOgoKICA9
-PT0gSUdUIGNoYW5nZXMgPT09CgogICAgPT09PSBJc3N1ZXMgaGl0ID09PT0KCiAgICBpZ3RAa21z
-X2ZsaXBfdGlsaW5nQGZsaXAtdG8teS10aWxlZDoKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBQ
-QVNTIC0+IEZBSUwgKGZkbyMxMDM4MjIsIGZkbyMxMDcxNjEpCgogICAgaWd0QGttc19mcm9udGJ1
-ZmZlcl90cmFja2luZ0BmYmMtMXAtb2Zmc2NyZW4tcHJpLXNocmZiLWRyYXctcmVuZGVyOgogICAg
-ICBzaGFyZC1zbmI6ICAgICAgICAgIFBBU1MgLT4gSU5DT01QTEVURSAoZmRvIzEwNTQxMSkKCiAg
-ICBpZ3RAa21zX3NldG1vZGVAYmFzaWM6CiAgICAgIHNoYXJkLWFwbDogICAgICAgICAgUEFTUyAt
-PiBGQUlMIChmZG8jOTk5MTIpCgogICAgCiAgICA9PT09IFBvc3NpYmxlIGZpeGVzID09PT0KCiAg
-ICBpZ3RAZHJ2X3N1c3BlbmRAZmVuY2UtcmVzdG9yZS11bnRpbGVkOgogICAgICBzaGFyZC1nbGs6
-ICAgICAgICAgIEZBSUwgKGZkbyMxMDMzNzUpIC0+IFBBU1MKCiAgICBpZ3RAa21zX2J1c3lAYmFz
-aWMtZmxpcC1lOgogICAgICBzaGFyZC1zbmI6ICAgICAgICAgIElOQ09NUExFVEUgKGZkbyMxMDU0
-MTEpIC0+IFNLSVAKCiAgICBpZ3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLTEyOHgxMjgtc3VzcGVu
-ZDoKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBJTkNPTVBMRVRFIChmZG8jMTAzMzU5LCBrLm9y
-ZyMxOTgxMzMpIC0+IFBBU1MKCiAgICBpZ3RAa21zX2ZsaXBAMngtcGxhaW4tZmxpcC1mYi1yZWNy
-ZWF0ZS1pbnRlcnJ1cHRpYmxlOgogICAgICBzaGFyZC1nbGs6ICAgICAgICAgIEZBSUwgKGZkbyMx
-MDAzNjgpIC0+IFBBU1MKCiAgICBpZ3RAa21zX2ZsaXBAZmxpcC12cy1leHBpcmVkLXZibGFuay1p
-bnRlcnJ1cHRpYmxlOgogICAgICBzaGFyZC1nbGs6ICAgICAgICAgIEZBSUwgKGZkbyMxMDUxODkp
-IC0+IFBBU1MKCiAgICBpZ3RAa21zX2ZsaXBAd2ZfdmJsYW5rLXRzLWNoZWNrLWludGVycnVwdGli
-bGU6CiAgICAgIHNoYXJkLWdsazogICAgICAgICAgRkFJTCAoZmRvIzEwMzkyOCkgLT4gUEFTUwoK
-ICAgIGlndEBrbXNfZmxpcF90aWxpbmdAZmxpcC14LXRpbGVkOgogICAgICBzaGFyZC1nbGs6ICAg
-ICAgICAgIEZBSUwgKGZkbyMxMDM4MjIsIGZkbyMxMDcxNjEpIC0+IFBBU1MKCiAgICBpZ3RAa21z
-X3BsYW5lX211bHRpcGxlQGF0b21pYy1waXBlLWEtdGlsaW5nLXg6CiAgICAgIHNoYXJkLXNuYjog
-ICAgICAgICAgRkFJTCAoZmRvIzEwMzE2NikgLT4gUEFTUwoKICAgIGlndEBrbXNfcm90YXRpb25f
-Y3JjQHNwcml0ZS1yb3RhdGlvbi0xODA6CiAgICAgIHNoYXJkLXNuYjogICAgICAgICAgRkFJTCAo
-ZmRvIzEwMzkyNSkgLT4gUEFTUwogICAgICBzaGFyZC1oc3c6ICAgICAgICAgIEZBSUwgKGZkbyMx
-MDM5MjUpIC0+IFBBU1MKCiAgICAKICBmZG8jMTAwMzY4IGh0dHBzOi8vYnVncy5mcmVlZGVza3Rv
-cC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMDM2OAogIGZkbyMxMDMxNjYgaHR0cHM6Ly9idWdzLmZy
-ZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMTY2CiAgZmRvIzEwMzM1OSBodHRwczov
-L2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDMzNTkKICBmZG8jMTAzMzc1
-IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzM3NQogIGZk
-byMxMDM4MjIgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAz
-ODIyCiAgZmRvIzEwMzkyNSBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNn
-aT9pZD0xMDM5MjUKICBmZG8jMTAzOTI4IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hv
-d19idWcuY2dpP2lkPTEwMzkyOAogIGZkbyMxMDUxODkgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
-Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA1MTg5CiAgZmRvIzEwNTQxMSBodHRwczovL2J1Z3MuZnJl
-ZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDU0MTEKICBmZG8jMTA3MTYxIGh0dHBzOi8v
-YnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNzE2MQogIGZkbyM5OTkxMiBo
-dHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD05OTkxMgogIGsub3Jn
-IzE5ODEzMyBodHRwczovL2J1Z3ppbGxhLmtlcm5lbC5vcmcvc2hvd19idWcuY2dpP2lkPTE5ODEz
-MwoKCj09IFBhcnRpY2lwYXRpbmcgaG9zdHMgKDUgLT4gNSkgPT0KCiAgTm8gY2hhbmdlcyBpbiBw
-YXJ0aWNpcGF0aW5nIGhvc3RzCgoKPT0gQnVpbGQgY2hhbmdlcyA9PQoKICAgICogSUdUOiBJR1Rf
-NDU0NiAtPiBJR1RQV18xNTU4CiAgICAqIExpbnV4OiBDSV9EUk1fNDQ2NiAtPiBDSV9EUk1fNDQ2
-OQoKICBDSV9EUk1fNDQ2NjogNDBlYTRkNjk2NDgxOTMwNjgyYzc4MmU4ZGQ3YmQwY2RiZGZhZDU3
-NCBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL2dmeC1jaS9saW51eAogIENJX0RSTV80
-NDY5OiAwMmU1NzhiN2FhY2U0OGQzM2ZhNjE3ZGRkYjQwNjIxYmQ2NjRjOTJjIEAgZ2l0Oi8vYW5v
-bmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xpbnV4CiAgSUdUUFdfMTU1ODogaHR0cHM6Ly9p
-bnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xNTU4LwogIElHVF80NTQ2OiBl
-ODkwNWU3NTZjZjM2NDBjNjY1NDFlOTYzZmY5N2Y4YWYyZDk4OTM2IEAgZ2l0Oi8vYW5vbmdpdC5m
-cmVlZGVza3RvcC5vcmcveG9yZy9hcHAvaW50ZWwtZ3B1LXRvb2xzCgo9PSBMb2dzID09CgpGb3Ig
-bW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRp
-cC9JR1RQV18xNTU4L3NoYXJkcy5odG1sCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8v
-aWd0LWRldgo=
+This is a multi-part message in MIME format.
+--===============0286740371==
+Content-Type: multipart/alternative;
+ boundary="------------E7FA0824A4B923ED39F90064"
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------E7FA0824A4B923ED39F90064
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 7/9/2018 6:20 AM, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>
+> In split mode all requests have to be added up since they were previously
+> re-arranged so there is no overlap.
+>
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Cc: John Harrison <John.C.Harrison@intel.com>
+> ---
+>   scripts/trace.pl | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/scripts/trace.pl b/scripts/trace.pl
+> index 60a8e441c1d9..52372e224da5 100755
+> --- a/scripts/trace.pl
+> +++ b/scripts/trace.pl
+> @@ -612,7 +612,8 @@ foreach my $key (@sorted_keys) {
+>   	$db{$key}->{'submit-delay'} = $db{$key}->{'submit'} - $db{$key}->{'queue'};
+>   	$db{$key}->{'duration'} = $notify - $start;
+>   
+> -	$running{$ring} += $end - $start unless exists $db{$key}->{'no-end'};
+> +	$running{$ring} += $end - $start if $correct_durations or
+> +					    not exists $db{$key}->{'no-end'};
+>   	$runnable{$ring} += $db{$key}->{'execute-delay'};
+>   	$queued{$ring} += $start - $db{$key}->{'execute-delay'} - $db{$key}->{'queue'};
+>   
+
+Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
+
+
+--------------E7FA0824A4B923ED39F90064
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    On 7/9/2018 6:20 AM, Tvrtko Ursulin wrote:<br>
+    <blockquote type="cite"
+      cite="mid:20180709132004.14468-8-tvrtko.ursulin@linux.intel.com">
+      <pre wrap="">From: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E" href="mailto:tvrtko.ursulin@intel.com">&lt;tvrtko.ursulin@intel.com&gt;</a>
+
+In split mode all requests have to be added up since they were previously
+re-arranged so there is no overlap.
+
+Signed-off-by: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E" href="mailto:tvrtko.ursulin@intel.com">&lt;tvrtko.ursulin@intel.com&gt;</a>
+Cc: John Harrison <a class="moz-txt-link-rfc2396E" href="mailto:John.C.Harrison@intel.com">&lt;John.C.Harrison@intel.com&gt;</a>
+---
+ scripts/trace.pl | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/scripts/trace.pl b/scripts/trace.pl
+index 60a8e441c1d9..52372e224da5 100755
+--- a/scripts/trace.pl
++++ b/scripts/trace.pl
+@@ -612,7 +612,8 @@ foreach my $key (@sorted_keys) {
+ 	$db{$key}-&gt;{'submit-delay'} = $db{$key}-&gt;{'submit'} - $db{$key}-&gt;{'queue'};
+ 	$db{$key}-&gt;{'duration'} = $notify - $start;
+ 
+-	$running{$ring} += $end - $start unless exists $db{$key}-&gt;{'no-end'};
++	$running{$ring} += $end - $start if $correct_durations or
++					    not exists $db{$key}-&gt;{'no-end'};
+ 	$runnable{$ring} += $db{$key}-&gt;{'execute-delay'};
+ 	$queued{$ring} += $start - $db{$key}-&gt;{'execute-delay'} - $db{$key}-&gt;{'queue'};
+ 
+</pre>
+    </blockquote>
+    <br>
+    Reviewed-by: John Harrison <a class="moz-txt-link-rfc2396E"
+      href="mailto:John.C.Harrison@Intel.com">&lt;John.C.Harrison@Intel.com&gt;</a><br>
+    <br>
+  </body>
+</html>
+
+--------------E7FA0824A4B923ED39F90064--
+
+--===============0286740371==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0286740371==--
