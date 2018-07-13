@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+References: <20180712105958.12953-1-tvrtko.ursulin@linux.intel.com>
+ <20180712105958.12953-3-tvrtko.ursulin@linux.intel.com>
+From: John Harrison <John.C.Harrison@Intel.com>
+Message-ID: <ca64b1e1-5a86-119d-aca2-fdb45fb5d6d7@Intel.com>
+Date: Thu, 12 Jul 2018 17:21:20 -0700
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 13 Jul 2018 00:07:22 -0000
-Message-ID: <20180713000722.29845.19437@emeril.freedesktop.org>
-References: <20180712205103.3173-1-lucas.demarchi@intel.com>
-In-Reply-To: <20180712205103.3173-1-lucas.demarchi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgUmVtb3Zl?=
- =?utf-8?q?_resource_streamer_tests?=
+In-Reply-To: <20180712105958.12953-3-tvrtko.ursulin@linux.intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 2/9] trace.pl: Scale timeline for better
+ precision
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,87 +16,296 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0134723352=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "De Marchi, Lucas" <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Tvrtko Ursulin <tursulin@ursulin.net>, igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogUmVtb3ZlIHJlc291cmNlIHN0cmVhbWVyIHRl
-c3RzClVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy80NjQz
-OS8KU3RhdGUgOiBzdWNjZXNzCgo9PSBTdW1tYXJ5ID09Cgo9IENJIEJ1ZyBMb2cgLSBjaGFuZ2Vz
-IGZyb20gSUdUXzQ1NTJfZnVsbCAtPiBJR1RQV18xNTczX2Z1bGwgPQoKPT0gU3VtbWFyeSAtIFdB
-Uk5JTkcgPT0KCiAgTWlub3IgdW5rbm93biBjaGFuZ2VzIGNvbWluZyB3aXRoIElHVFBXXzE1NzNf
-ZnVsbCBuZWVkIHRvIGJlIHZlcmlmaWVkCiAgbWFudWFsbHkuCiAgCiAgSWYgeW91IHRoaW5rIHRo
-ZSByZXBvcnRlZCBjaGFuZ2VzIGhhdmUgbm90aGluZyB0byBkbyB3aXRoIHRoZSBjaGFuZ2VzCiAg
-aW50cm9kdWNlZCBpbiBJR1RQV18xNTczX2Z1bGwsIHBsZWFzZSBub3RpZnkgeW91ciBidWcgdGVh
-bSB0byBhbGxvdyB0aGVtCiAgdG8gZG9jdW1lbnQgdGhpcyBuZXcgZmFpbHVyZSBtb2RlLCB3aGlj
-aCB3aWxsIHJlZHVjZSBmYWxzZSBwb3NpdGl2ZXMgaW4gQ0kuCgogIEV4dGVybmFsIFVSTDogaHR0
-cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL2FwaS8xLjAvc2VyaWVzLzQ2NDM5L3Jldmlz
-aW9ucy8xL21ib3gvCgo9PSBQb3NzaWJsZSBuZXcgaXNzdWVzID09CgogIEhlcmUgYXJlIHRoZSB1
-bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVuIGludHJvZHVjZWQgaW4gSUdUUFdfMTU3
-M19mdWxsOgoKICA9PT0gSUdUIGNoYW5nZXMgPT09CgogICAgPT09PSBXYXJuaW5ncyA9PT09Cgog
-ICAgaWd0QGdlbV9leGVjX3NjaGVkdWxlQGRlZXAtdmVib3g6CiAgICAgIHNoYXJkLWtibDogICAg
-ICAgICAgU0tJUCAtPiBQQVNTCgogICAgaWd0QGdlbV9tb2NzX3NldHRpbmdzQG1vY3MtcmM2LWN0
-eC1kaXJ0eS1yZW5kZXI6CiAgICAgIHNoYXJkLWtibDogICAgICAgICAgUEFTUyAtPiBTS0lQICsy
-CgogICAgaWd0QHBtX3JwbUBjdXJzb3I6CiAgICAgIHNoYXJkLWhzdzogICAgICAgICAgU0tJUCAt
-PiBQQVNTICszNAoKICAgIAo9PSBLbm93biBpc3N1ZXMgPT0KCiAgSGVyZSBhcmUgdGhlIGNoYW5n
-ZXMgZm91bmQgaW4gSUdUUFdfMTU3M19mdWxsIHRoYXQgY29tZSBmcm9tIGtub3duIGlzc3VlczoK
-CiAgPT09IElHVCBjaGFuZ2VzID09PQoKICAgID09PT0gSXNzdWVzIGhpdCA9PT09CgogICAgaWd0
-QGdlbV9jdHhfaXNvbGF0aW9uQHZlY3MwLXMzOgogICAgICBzaGFyZC1rYmw6ICAgICAgICAgIFBB
-U1MgLT4gSU5DT01QTEVURSAoZmRvIzEwMzY2NSkKCiAgICBpZ3RAZ2VtX2V4ZWNfc2NoZWR1bGVA
-cGktcmluZ2Z1bGwtYmx0OgogICAgICBzaGFyZC1nbGs6ICAgICAgICAgIE5PVFJVTiAtPiBGQUlM
-IChmZG8jMTAzMTU4KQoKICAgIGlndEBrbXNfY3Vyc29yX2xlZ2FjeUAyeC1sb25nLWZsaXAtdnMt
-Y3Vyc29yLWF0b21pYzoKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IEZBSUwgKGZk
-byMxMDY3NjUpCgogICAgaWd0QGttc19mbGlwQDJ4LXBsYWluLWZsaXAtZmItcmVjcmVhdGU6CiAg
-ICAgIHNoYXJkLWhzdzogICAgICAgICAgUEFTUyAtPiBGQUlMIChmZG8jMTAwMzY4KQoKICAgIGln
-dEBrbXNfZmxpcEAyeC1wbGFpbi1mbGlwLWZiLXJlY3JlYXRlLWludGVycnVwdGlibGU6CiAgICAg
-IHNoYXJkLWdsazogICAgICAgICAgUEFTUyAtPiBGQUlMIChmZG8jMTAwMzY4KSArMwoKICAgIGln
-dEBrbXNfZmxpcF90aWxpbmdAZmxpcC10by14LXRpbGVkOgogICAgICBzaGFyZC1nbGs6ICAgICAg
-ICAgIFBBU1MgLT4gRkFJTCAoZmRvIzEwNzE2MSwgZmRvIzEwMzgyMikKCiAgICBpZ3RAcHJpbWVf
-dmdlbUBidXN5LWJzZDI6CiAgICAgIHNoYXJkLXNuYjogICAgICAgICAgU0tJUCAtPiBJTkNPTVBM
-RVRFIChmZG8jMTA1NDExKQoKICAgIAogICAgPT09PSBQb3NzaWJsZSBmaXhlcyA9PT09CgogICAg
-aWd0QGdlbV9leGVjX2FzeW5jQGNvbmN1cnJlbnQtd3JpdGVzLWJsdDoKICAgICAgc2hhcmQtc25i
-OiAgICAgICAgICBJTkNPTVBMRVRFIChmZG8jMTA1NDExKSAtPiBQQVNTCgogICAgaWd0QGdlbV9w
-cGd0dEBibHQtdnMtcmVuZGVyLWN0eDA6CiAgICAgIHNoYXJkLWtibDogICAgICAgICAgSU5DT01Q
-TEVURSAoZmRvIzEwMzY2NSwgZmRvIzEwNjAyMykgLT4gUEFTUwoKICAgIGlndEBrbXNfZHJhd19j
-cmNAZHJhdy1tZXRob2QtcmdiNTY1LW1tYXAtZ3R0LXl0aWxlZDoKICAgICAgc2hhcmQtZ2xrOiAg
-ICAgICAgICBGQUlMIC0+IFBBU1MKCiAgICBpZ3RAa21zX2ZsaXBAMngtZmxpcC12cy1leHBpcmVk
-LXZibGFuazoKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBGQUlMIChmZG8jMTA1MTg5KSAtPiBQ
-QVNTCgogICAgaWd0QGttc19mbGlwQDJ4LXBsYWluLWZsaXAtZmItcmVjcmVhdGUtaW50ZXJydXB0
-aWJsZToKICAgICAgc2hhcmQtaHN3OiAgICAgICAgICBGQUlMIChmZG8jMTAwMzY4KSAtPiBQQVNT
-CgogICAgaWd0QGttc19mbGlwX3RpbGluZ0BmbGlwLXktdGlsZWQ6CiAgICAgIHNoYXJkLWdsazog
-ICAgICAgICAgRkFJTCAoZmRvIzEwNzE2MSkgLT4gUEFTUwoKICAgIGlndEBrbXNfcm90YXRpb25f
-Y3JjQHNwcml0ZS1yb3RhdGlvbi0xODA6CiAgICAgIHNoYXJkLXNuYjogICAgICAgICAgRkFJTCAo
-ZmRvIzEwMzkyNSkgLT4gUEFTUwoKICAgIGlndEBrbXNfc2V0bW9kZUBiYXNpYzoKICAgICAgc2hh
-cmQtYXBsOiAgICAgICAgICBGQUlMIChmZG8jOTk5MTIpIC0+IFBBU1MKCiAgICAKICBmZG8jMTAw
-MzY4IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMDM2OAog
-IGZkbyMxMDMxNTggaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
-MTAzMTU4CiAgZmRvIzEwMzY2NSBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVn
-LmNnaT9pZD0xMDM2NjUKICBmZG8jMTAzODIyIGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcv
-c2hvd19idWcuY2dpP2lkPTEwMzgyMgogIGZkbyMxMDM5MjUgaHR0cHM6Ly9idWdzLmZyZWVkZXNr
-dG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzOTI1CiAgZmRvIzEwNTE4OSBodHRwczovL2J1Z3Mu
-ZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDUxODkKICBmZG8jMTA1NDExIGh0dHBz
-Oi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNTQxMQogIGZkbyMxMDYw
-MjMgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA2MDIzCiAg
-ZmRvIzEwNjc2NSBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0x
-MDY3NjUKICBmZG8jMTA3MTYxIGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcu
-Y2dpP2lkPTEwNzE2MQogIGZkbyM5OTkxMiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
-b3dfYnVnLmNnaT9pZD05OTkxMgoKCj09IFBhcnRpY2lwYXRpbmcgaG9zdHMgKDUgLT4gNSkgPT0K
-CiAgTm8gY2hhbmdlcyBpbiBwYXJ0aWNpcGF0aW5nIGhvc3RzCgoKPT0gQnVpbGQgY2hhbmdlcyA9
-PQoKICAgICogSUdUOiBJR1RfNDU1MiAtPiBJR1RQV18xNTczCiAgICAqIExpbnV4OiBDSV9EUk1f
-NDQ3NSAtPiBDSV9EUk1fNDQ3NgoKICBDSV9EUk1fNDQ3NTogMWI2ZjA0OWQ3MzIzN2ExNzA5MTk2
-MDQ1MzhlNzQ3YjAyODJiMDEwOSBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL2dmeC1j
-aS9saW51eAogIENJX0RSTV80NDc2OiBiODE4ZmFjMDg3ODE0N2M2ZGY0NTMzOGNiNTE1YjliN2Jk
-ODc4YjdmIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xpbnV4CiAgSUdU
-UFdfMTU3MzogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18x
-NTczLwogIElHVF80NTUyOiA1MTc1YWZmMzFlMDBlMTc3ODZlYmI5N2FhYWYyNWRkZDM4YjVlNzJl
-IEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcveG9yZy9hcHAvaW50ZWwtZ3B1LXRvb2xz
-Cgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xNTczL3NoYXJkcy5odG1sCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
-dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+This is a multi-part message in MIME format.
+--===============0134723352==
+Content-Type: multipart/alternative;
+ boundary="------------1A8C9151517517833632E3E9"
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------1A8C9151517517833632E3E9
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 7/12/2018 3:59 AM, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>
+> vis library has a limited precision compared to our trace data which
+> prevents zooming into the timeline and seeing the fine detail.
+>
+> Scale the HTML view by a thousand to work around it.
+>
+> v2: Rebase for time axis changes.
+>
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Suggested-by: John Harrison <John.C.Harrison@Intel.com>
+> Cc: John Harrison <John.C.Harrison@Intel.com>
+> Reviewed-by: John Harrison <John.C.Harrison@Intel.com> # v1
+> ---
+>   scripts/trace.pl | 46 +++++++++++++++++++++++++++++++++++++++++++---
+>   1 file changed, 43 insertions(+), 3 deletions(-)
+>
+> diff --git a/scripts/trace.pl b/scripts/trace.pl
+> index 89491125490d..726c90d44547 100755
+> --- a/scripts/trace.pl
+> +++ b/scripts/trace.pl
+> @@ -40,6 +40,7 @@ my $trace = 0;
+>   my $avg_delay_stats = 0;
+>   my $gpu_timeline = 0;
+>   my $colour_contexts = 0;
+> +my $no_timeline_scaling = 0;
+>   
+>   my @args;
+>   
+> @@ -281,6 +282,18 @@ sub arg_colour_contexts
+>   	return @_;
+>   }
+>   
+> +sub arg_no_timeline_scaling
+> +{
+> +	return unless scalar(@_);
+> +
+> +	if ($_[0] eq '--no-timeline-scaling') {
+> +		shift @_;
+> +		$no_timeline_scaling = 1;
+> +	}
+> +
+> +	return @_;
+> +}
+> +
+>   @args = @ARGV;
+>   while (@args) {
+>   	my $left = scalar(@args);
+> @@ -296,6 +309,7 @@ while (@args) {
+>   	@args = arg_ignore_ring(@args);
+>   	@args = arg_skip_box(@args);
+>   	@args = arg_colour_contexts(@args);
+> +	@args = arg_no_timeline_scaling(@args);
+>   
+>   	last if $left == scalar(@args);
+>   }
+> @@ -334,6 +348,8 @@ sub ts
+>   	my ($us) = @_;
+>   	my ($y, $mo, $d, $h, $m, $s);
+>   
+> +	$us *= 1000 unless $no_timeline_scaling;
+> +
+>   	$s = int($us / 1000000);
+>   	$us = $us % 1000000;
+>   
+> @@ -1001,11 +1017,28 @@ print <<ENDHTML;
+>     ]);
+>   
+>     var last_major_ms;
+> +ENDHTML
+> +
+> +if ($html) {
+> +	if ($no_timeline_scaling) {
+> +		say "  timeDiv = 1;";
+> +	} else {
+> +		say "  timeDiv = 1000;";
+> +	}
+> +}
+>   
+> +print <<ENDHTML;
+>     function majorAxis(date, scale, step) {
+> -	var s = date / 1000;
+> +	var s = date / 1000 / timeDiv;
+> +
+> +	last_major_ms = date / timeDiv;
+>   
+> -	last_major_ms = date;
+> +	if (timeDiv == 1000) {
+> +		if (scale == 'second')
+> +			scale = 'millisecond';
+> +		else if (scale == 'minute')
+> +			scale = 'second'
+> +	}
+>   
+>   	if (scale == 'millisecond')
+>   		return s.toFixed(6) + "s";
+> @@ -1016,13 +1049,20 @@ print <<ENDHTML;
+>     }
+>   
+>     function minorAxis(date, scale, step) {
+> -	var ms = date;
+> +	var ms = date / timeDiv;
+>   
+>   	ms -= last_major_ms;
+>   
+>   	if (ms < 0)
+>   		return '';
+>   
+> +	if (timeDiv > 1) {
+> +		if (scale == 'second')
+> +			scale = 'millisecond';
+> +		else if (scale == 'minute')
+> +			scale = 'second';
+> +	}
+> +
+>   	if (scale == 'millisecond')
+>   		return "+" + ms.toFixed(3) + "ms";
+>   	else if (scale == 'second')
+
+Reviewed-by: John Harrison<John.C.Harrison@Intel.com>  
+
+
+--------------1A8C9151517517833632E3E9
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    On 7/12/2018 3:59 AM, Tvrtko Ursulin wrote:<br>
+    <blockquote type="cite"
+      cite="mid:20180712105958.12953-3-tvrtko.ursulin@linux.intel.com">
+      <pre wrap="">From: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E" href="mailto:tvrtko.ursulin@intel.com">&lt;tvrtko.ursulin@intel.com&gt;</a>
+
+vis library has a limited precision compared to our trace data which
+prevents zooming into the timeline and seeing the fine detail.
+
+Scale the HTML view by a thousand to work around it.
+
+v2: Rebase for time axis changes.
+
+Signed-off-by: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E" href="mailto:tvrtko.ursulin@intel.com">&lt;tvrtko.ursulin@intel.com&gt;</a>
+Suggested-by: John Harrison <a class="moz-txt-link-rfc2396E" href="mailto:John.C.Harrison@Intel.com">&lt;John.C.Harrison@Intel.com&gt;</a>
+Cc: John Harrison <a class="moz-txt-link-rfc2396E" href="mailto:John.C.Harrison@Intel.com">&lt;John.C.Harrison@Intel.com&gt;</a>
+Reviewed-by: John Harrison <a class="moz-txt-link-rfc2396E" href="mailto:John.C.Harrison@Intel.com">&lt;John.C.Harrison@Intel.com&gt;</a> # v1
+---
+ scripts/trace.pl | 46 +++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 43 insertions(+), 3 deletions(-)
+
+diff --git a/scripts/trace.pl b/scripts/trace.pl
+index 89491125490d..726c90d44547 100755
+--- a/scripts/trace.pl
++++ b/scripts/trace.pl
+@@ -40,6 +40,7 @@ my $trace = 0;
+ my $avg_delay_stats = 0;
+ my $gpu_timeline = 0;
+ my $colour_contexts = 0;
++my $no_timeline_scaling = 0;
+ 
+ my @args;
+ 
+@@ -281,6 +282,18 @@ sub arg_colour_contexts
+ 	return @_;
+ }
+ 
++sub arg_no_timeline_scaling
++{
++	return unless scalar(@_);
++
++	if ($_[0] eq '--no-timeline-scaling') {
++		shift @_;
++		$no_timeline_scaling = 1;
++	}
++
++	return @_;
++}
++
+ @args = @ARGV;
+ while (@args) {
+ 	my $left = scalar(@args);
+@@ -296,6 +309,7 @@ while (@args) {
+ 	@args = arg_ignore_ring(@args);
+ 	@args = arg_skip_box(@args);
+ 	@args = arg_colour_contexts(@args);
++	@args = arg_no_timeline_scaling(@args);
+ 
+ 	last if $left == scalar(@args);
+ }
+@@ -334,6 +348,8 @@ sub ts
+ 	my ($us) = @_;
+ 	my ($y, $mo, $d, $h, $m, $s);
+ 
++	$us *= 1000 unless $no_timeline_scaling;
++
+ 	$s = int($us / 1000000);
+ 	$us = $us % 1000000;
+ 
+@@ -1001,11 +1017,28 @@ print &lt;&lt;ENDHTML;
+   ]);
+ 
+   var last_major_ms;
++ENDHTML
++
++if ($html) {
++	if ($no_timeline_scaling) {
++		say "  timeDiv = 1;";
++	} else {
++		say "  timeDiv = 1000;";
++	}
++}
+ 
++print &lt;&lt;ENDHTML;
+   function majorAxis(date, scale, step) {
+-	var s = date / 1000;
++	var s = date / 1000 / timeDiv;
++
++	last_major_ms = date / timeDiv;
+ 
+-	last_major_ms = date;
++	if (timeDiv == 1000) {
++		if (scale == 'second')
++			scale = 'millisecond';
++		else if (scale == 'minute')
++			scale = 'second'
++	}
+ 
+ 	if (scale == 'millisecond')
+ 		return s.toFixed(6) + "s";
+@@ -1016,13 +1049,20 @@ print &lt;&lt;ENDHTML;
+   }
+ 
+   function minorAxis(date, scale, step) {
+-	var ms = date;
++	var ms = date / timeDiv;
+ 
+ 	ms -= last_major_ms;
+ 
+ 	if (ms &lt; 0)
+ 		return '';
+ 
++	if (timeDiv &gt; 1) {
++		if (scale == 'second')
++			scale = 'millisecond';
++		else if (scale == 'minute')
++			scale = 'second';
++	}
++
+ 	if (scale == 'millisecond')
+ 		return "+" + ms.toFixed(3) + "ms";
+ 	else if (scale == 'second')
+</pre>
+    </blockquote>
+    <br>
+    <pre wrap="">Reviewed-by: John Harrison <a class="moz-txt-link-rfc2396E" href="mailto:John.C.Harrison@Intel.com">&lt;John.C.Harrison@Intel.com&gt;</a> 
+
+</pre>
+  </body>
+</html>
+
+--------------1A8C9151517517833632E3E9--
+
+--===============0134723352==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0134723352==--
