@@ -1,251 +1,131 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-References: <7d8a4756-c021-2751-f81c-0e67b2eba076@Intel.com>
- <20180713095537.21080-1-tvrtko.ursulin@linux.intel.com>
-From: John Harrison <John.C.Harrison@Intel.com>
-Message-ID: <98e2bb4d-b037-af25-90ed-ef54f5033381@Intel.com>
-Date: Mon, 16 Jul 2018 10:53:16 -0700
-MIME-Version: 1.0
-In-Reply-To: <20180713095537.21080-1-tvrtko.ursulin@linux.intel.com>
-Content-Language: en-US
-Subject: Re: [Intel-gfx] [PATCH i-g-t v2 1/9] trace.pl: Improve time axis
- labels
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0076697940=="
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tursulin@ursulin.net>, igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D2BAE6E533
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Jul 2018 18:04:47 +0000 (UTC)
+Message-ID: <1531765788.7606.69.camel@intel.com>
+From: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
+Date: Mon, 16 Jul 2018 11:29:48 -0700
+In-Reply-To: <20180716174310.GM4262@intel.com>
+References: <20180713233904.12917-1-dhinakaran.pandiyan@intel.com>
+ <20180716174310.GM4262@intel.com>
+Mime-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/psr: Add PSR tests to
+ fast-feedback list.
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: dhinakaran.pandiyan@intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Tomi Sarvela <tomi.p.sarvela@intel.com>, Martin Peres <martin.peres@linux.intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is a multi-part message in MIME format.
---===============0076697940==
-Content-Type: multipart/alternative;
- boundary="------------527EC73FF70D9E4D1141705E"
-Content-Language: en-US
-
-This is a multi-part message in MIME format.
---------------527EC73FF70D9E4D1141705E
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-
-On 7/13/2018 2:55 AM, Tvrtko Ursulin wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->
-> It is possible to customize the axis display so change it to display
-> timestamps in seconds on the major axis (with six decimal spaces) and
-> millisecond offsets on the minor axis.
->
-> v2:
->   * Give up on broken relative timestamps.
->
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Suggested-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: John Harrison <John.C.Harrison@Intel.com>
-> ---
->   scripts/trace.pl | 37 +++++++++++++++++++++++++++++++++++++
->   1 file changed, 37 insertions(+)
->
-> diff --git a/scripts/trace.pl b/scripts/trace.pl
-> index fc1713e4f9a7..41f10749a153 100755
-> --- a/scripts/trace.pl
-> +++ b/scripts/trace.pl
-> @@ -1000,6 +1000,42 @@ $first_ts = ts($first_ts);
->   print <<ENDHTML;
->     ]);
->   
-> +  function majorAxis(date, scale, step) {
-> +	var s = date / 1000;
-> +	var precision;
-> +
-> +	if (scale == 'millisecond')
-> +		precision = 6;
-> +	else if (scale == 'second')
-> +		precision = 3;
-> +	else
-> +		precision = 0;
-> +
-> +	return s.toFixed(precision) + "s";
-> +  }
-> +
-> +  function minorAxis(date, scale, step) {
-> +	var ms = date;
-> +	var precision;
-> +	var unit;
-> +
-> +	if (scale == 'millisecond') {
-> +		ms %= 1000;
-> +		precision = 0;
-> +		unit = 'ms';
-> +	} else if (scale == 'second') {
-> +		ms /= 1000;
-> +		precision = 1;
-> +		unit = 's';
-> +	} else {
-> +		ms /= 1000;
-> +		precision = 0;
-> +		unit = 's';
-> +	}
-> +
-> +	return ms.toFixed(precision) + unit;
-> +  }
-> +
->     // Configuration for the Timeline
->     var options = { groupOrder: 'content',
->   		  horizontalScroll: true,
-> @@ -1007,6 +1043,7 @@ print <<ENDHTML;
->   		  stackSubgroups: false,
->   		  zoomKey: 'ctrlKey',
->   		  orientation: 'top',
-> +		  format: { majorLabels: majorAxis, minorLabels: minorAxis },
->   		  start: '$first_ts',
->   		  end: '$end_ts'};
->   
-
-I'm still seeing some kind of strange offset. However, it appears to be 
-browser dependent. If I use Chrome then the offset is +28.8 seconds. 
-With Firefox it is -59958115.2 seconds! On the other hand, if I try Edge 
-or IE then I don't get a graph at all. I'm wondering if the issue is 
-with Vis browser compatibility rather than anything in the trace.pl 
-script. Are you seeing anything at all similar?
-
-Hmm, if I comment out the 'format:' line and go back to the unformatted 
-time stamps then IE & Edge still show nothing. However, Firefox shows 
-dates based on a year of 0097 whereas Chrome says 1997.
-
-Either way, I can't spot anything in this patch that could cause a 
-random offset. So...
-
-Reviewed-by: John Harrison<John.C.Harrison@Intel.com>
-
-
-
-
---------------527EC73FF70D9E4D1141705E
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body text="#000000" bgcolor="#FFFFFF">
-    On 7/13/2018 2:55 AM, Tvrtko Ursulin wrote:<br>
-    <blockquote type="cite"
-      cite="mid:20180713095537.21080-1-tvrtko.ursulin@linux.intel.com">
-      <pre wrap="">From: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E" href="mailto:tvrtko.ursulin@intel.com">&lt;tvrtko.ursulin@intel.com&gt;</a>
-
-It is possible to customize the axis display so change it to display
-timestamps in seconds on the major axis (with six decimal spaces) and
-millisecond offsets on the minor axis.
-
-v2:
- * Give up on broken relative timestamps.
-
-Signed-off-by: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E" href="mailto:tvrtko.ursulin@intel.com">&lt;tvrtko.ursulin@intel.com&gt;</a>
-Suggested-by: Chris Wilson <a class="moz-txt-link-rfc2396E" href="mailto:chris@chris-wilson.co.uk">&lt;chris@chris-wilson.co.uk&gt;</a>
-Cc: Chris Wilson <a class="moz-txt-link-rfc2396E" href="mailto:chris@chris-wilson.co.uk">&lt;chris@chris-wilson.co.uk&gt;</a>
-Cc: John Harrison <a class="moz-txt-link-rfc2396E" href="mailto:John.C.Harrison@Intel.com">&lt;John.C.Harrison@Intel.com&gt;</a>
----
- scripts/trace.pl | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
-
-diff --git a/scripts/trace.pl b/scripts/trace.pl
-index fc1713e4f9a7..41f10749a153 100755
---- a/scripts/trace.pl
-+++ b/scripts/trace.pl
-@@ -1000,6 +1000,42 @@ $first_ts = ts($first_ts);
- print &lt;&lt;ENDHTML;
-   ]);
- 
-+  function majorAxis(date, scale, step) {
-+	var s = date / 1000;
-+	var precision;
-+
-+	if (scale == 'millisecond')
-+		precision = 6;
-+	else if (scale == 'second')
-+		precision = 3;
-+	else
-+		precision = 0;
-+
-+	return s.toFixed(precision) + "s";
-+  }
-+
-+  function minorAxis(date, scale, step) {
-+	var ms = date;
-+	var precision;
-+	var unit;
-+
-+	if (scale == 'millisecond') {
-+		ms %= 1000;
-+		precision = 0;
-+		unit = 'ms';
-+	} else if (scale == 'second') {
-+		ms /= 1000;
-+		precision = 1;
-+		unit = 's';
-+	} else {
-+		ms /= 1000;
-+		precision = 0;
-+		unit = 's';
-+	}
-+
-+	return ms.toFixed(precision) + unit;
-+  }
-+
-   // Configuration for the Timeline
-   var options = { groupOrder: 'content',
- 		  horizontalScroll: true,
-@@ -1007,6 +1043,7 @@ print &lt;&lt;ENDHTML;
- 		  stackSubgroups: false,
- 		  zoomKey: 'ctrlKey',
- 		  orientation: 'top',
-+		  format: { majorLabels: majorAxis, minorLabels: minorAxis },
- 		  start: '$first_ts',
- 		  end: '$end_ts'};
- 
-</pre>
-    </blockquote>
-    <br>
-    I'm still seeing some kind of strange offset. However, it appears to
-    be browser dependent. If I use Chrome then the offset is +28.8
-    seconds. With Firefox it is -59958115.2 seconds! On the other hand,
-    if I try Edge or IE then I don't get a graph at all. I'm wondering
-    if the issue is with Vis browser compatibility rather than anything
-    in the trace.pl script. Are you seeing anything at all similar?<br>
-    <br>
-    Hmm, if I comment out the 'format:' line and go back to the
-    unformatted time stamps then IE &amp; Edge still show nothing.
-    However, Firefox shows dates based on a year of 0097 whereas Chrome
-    says 1997.<br>
-    <br>
-    Either way, I can't spot anything in this patch that could cause a
-    random offset. So...<br>
-    <pre wrap="">Reviewed-by: John Harrison <a class="moz-txt-link-rfc2396E" href="mailto:John.C.Harrison@Intel.com">&lt;John.C.Harrison@Intel.com&gt;</a>
-
-</pre>
-    <br>
-    <br>
-  </body>
-</html>
-
---------------527EC73FF70D9E4D1141705E--
-
---===============0076697940==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KSW50ZWwtZ2Z4
-IG1haWxpbmcgbGlzdApJbnRlbC1nZnhAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaW50ZWwtZ2Z4Cg==
-
---===============0076697940==--
+T24gTW9uLCAyMDE4LTA3LTE2IGF0IDEwOjQzIC0wNzAwLCBSb2RyaWdvIFZpdmkgd3JvdGU6Cj4g
+T24gRnJpLCBKdWwgMTMsIDIwMTggYXQgMDQ6Mzk6MDRQTSAtMDcwMCwgRGhpbmFrYXJhbiBQYW5k
+aXlhbiB3cm90ZToKPiA+IAo+ID4gV2UgZG8gbm90IGhhdmUgUFNSIHBhbmVscyBvbiBzaGFyZHMg
+bWFjaGluZXMsIHNvIHRoaXMgaXMgdGhlIG9ubHkKPiA+IHdheSB0bwo+ID4gdGVzdCBQU1IgaW4g
+Q0kuCj4gV2UgZGVmaW5pdGVseSBuZWVkIHRoaXMuLi4KPiBidXQgd2UgbmVlZCB0byBja2VjayB0
+aGUgb3ZlcmFsbCB0aW1lIGFuZCBmZiBsaW1pdHMgaGVyZSBhcyB3ZWxsLi4uCgrCoEZyb23CoGh0
+dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTU4OC9maS1rYmwt
+ci9ydW50CmltZXMwLmxvZwrCoDE5LjQ2IGlndEBrbXNfcHNyQHN1c3BlbmQgcGFzcwrCoCA0Ljc4
+IGlndEBrbXNfcHNyQGRwbXMgcGFzcwrCoCAzLjM3IGlndEBrbXNfcHNyQHNwcml0ZV9ibHQgcGFz
+cwrCoCAzLjM1IGlndEBrbXNfcHNyQHNwcml0ZV9wbGFuZV9vbm9mZiBwYXNzCsKgIDMuMzUgaWd0
+QGttc19wc3JAc3ByaXRlX3BsYW5lX21vdmUgcGFzcwrCoCAzLjM1IGlndEBrbXNfcHNyQHNwcml0
+ZV9tbWFwX2d0dCBwYXNzCsKgIDMuMzUgaWd0QGttc19wc3JAc3ByaXRlX21tYXBfY3B1IHBhc3MK
+wqAgMy4zNCBpZ3RAa21zX3BzckBzcHJpdGVfcmVuZGVyIHBhc3MKwqAgMy4zNCBpZ3RAa21zX3Bz
+ckBwcmltYXJ5X3JlbmRlciBwYXNzCsKgIDMuMzQgaWd0QGttc19wc3JAcHJpbWFyeV9wYWdlX2Zs
+aXAgcGFzcwrCoCAzLjMzIGlndEBrbXNfcHNyQHByaW1hcnlfbW1hcF9jcHUgcGFzcwrCoCAzLjMx
+IGlndEBrbXNfcHNyQHByaW1hcnlfbW1hcF9ndHQgcGFzcwrCoCAzLjMxIGlndEBrbXNfcHNyQHBy
+aW1hcnlfYmx0IHBhc3MKwqAgMy4yOSBpZ3RAa21zX3BzckBjdXJzb3JfcmVuZGVyIHBhc3MKwqAg
+My4yOSBpZ3RAa21zX3BzckBjdXJzb3JfcGxhbmVfb25vZmYgcGFzcwrCoCAzLjI5IGlndEBrbXNf
+cHNyQGN1cnNvcl9wbGFuZV9tb3ZlIHBhc3MKwqAgMy4yOSBpZ3RAa21zX3BzckBjdXJzb3JfbW1h
+cF9ndHQgcGFzcwrCoCAzLjI5IGlndEBrbXNfcHNyQGN1cnNvcl9tbWFwX2NwdSBwYXNzCsKgIDMu
+MjkgaWd0QGttc19wc3JAY3Vyc29yX2JsdCBwYXNzCsKgIDMuMTQgaWd0QGttc19wc3JAYmFzaWMg
+cGFzcwrCoCAzLjExIGlndEBrbXNfcHNyQG5vX2RycnMgcGFzcwoKRWFjaCB0ZXN0IGlzIHVuZGVy
+IHRoZSAzMHMgbGltaXQgYW5kwqBrbXNfcHNyQHN1c3BlbmTCoGlzIHRoZSBvbmx5IHRoYXQKZ2V0
+cyBjbG9zZXIgdG8gdGhlIGxpbWl0LgoKV2l0aG91dCBrbXNfcHNyIHN1YnRlc3RzIDczMC4xOHMg
+VE9UQUwKaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fNDQ4
+OC9maS1rYmwtci9ydW50aW1lczAKLmxvZwpXaXRoIGttc19wc3Igc3VidGVzdHMgNjI2LjUwcyBU
+T1RBTApodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzE1ODgv
+Zmkta2JsLXIvcnVudGltZXMwLgpsb2cKCj4gZGl0dG8gb24gdGhlIGttc19mcm9udGJ1ZmZlcl90
+cmFja2luZyBvbmUuLi4KCkZyb23CoGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2Ry
+bS10aXAvSUdUUFdfMTU5MC9maS13aGwtdS9ydW50aQptZXMwLmxvZwoKwqAgNy4zOCBpZ3RAa21z
+X2Zyb250YnVmZmVyX3RyYWNraW5nQHBzci0xcC1vZmZzY3Jlbi1wcmktc2hyZmItZHJhdy1wd3Jp
+CnRlIHBhc3MKwqAgNi4yMyBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiY3Bzci0xcC1p
+bmRmYi1mbGlwdHJhY2sgcGFzcwrCoCA1Ljc5IGlndEBrbXNfZnJvbnRidWZmZXJfdHJhY2tpbmdA
+cHNyLTFwLXByaW1zY3JuLXByaS1pbmRmYi1kcmF3LW1tYXAKLWNwdSBwYXNzCsKgIDUuNzEgaWd0
+QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0Bwc3ItMXAtcHJpbXNjcm4tcHJpLXNocmZiLWRyYXct
+bW1hcAotY3B1IHBhc3MKwqAgNS42OSBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQHBzci0x
+cC1wcmltc2Nybi1wcmktc2hyZmItZHJhdy1ibHQKcGFzcwrCoCA1LjUzIGlndEBrbXNfZnJvbnRi
+dWZmZXJfdHJhY2tpbmdAcHNyLWZhcmZyb21mZW5jZSBwYXNzCsKgIDUuNTEgaWd0QGttc19mcm9u
+dGJ1ZmZlcl90cmFja2luZ0BmYmNwc3ItZmFyZnJvbWZlbmNlIHBhc3MKwqAgNS40OCBpZ3RAa21z
+X2Zyb250YnVmZmVyX3RyYWNraW5nQGZiY3Bzci0xcC1vZmZzY3Jlbi1wcmktaW5kZmItZHJhdy1t
+Cm1hcC13YyBwYXNzCjUuMjAgaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0Bwc3ItMXAtcHJp
+bXNjcm4tcHJpLWluZGZiLWRyYXctbW1hcC1nCnR0IHBhc3MKwqAgNS4xOSBpZ3RAa21zX2Zyb250
+YnVmZmVyX3RyYWNraW5nQHBzci0xcC1wcmltc2Nybi1jdXItaW5kZmItZHJhdy1tbWFwCi13YyBw
+YXNzCsKgIDUuMTggaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0Bwc3ItcmdiMTAxMDEwLWRy
+YXctbW1hcC1ndHQgcGFzcwrCoCA1LjE4IGlndEBrbXNfZnJvbnRidWZmZXJfdHJhY2tpbmdAcHNy
+LTFwLXByaW1zY3JuLXByaS1zaHJmYi1kcmF3LW1tYXAKLWd0dCBwYXNzCsKgIDUuMTYgaWd0QGtt
+c19mcm9udGJ1ZmZlcl90cmFja2luZ0BmYmNwc3ItMXAtcHJpbXNjcm4tcHJpLWluZGZiLWRyYXct
+bQptYXAtZ3R0IHBhc3MKwqAgNS4xNCBpZ3RAZ2VtX3N5bmNAYmFzaWMtZWFjaCBwYXNzCsKgIDUu
+MTAgaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0BmYmNwc3ItcmdiNTY1LWRyYXctbW1hcC1n
+dHQgcGFzcwrCoCA1LjA4IGlndEBrbXNfZnJvbnRidWZmZXJfdHJhY2tpbmdAcHNyLXJnYjU2NS1k
+cmF3LW1tYXAtZ3R0IHBhc3MKwqAgNC45NiBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQHBz
+ci0xcC1vZmZzY3Jlbi1wcmktc2hyZmItZHJhdy1tbWFwCi1ndHQgcGFzcwrCoCA0Ljc0IGlndEBr
+bXNfZnJvbnRidWZmZXJfdHJhY2tpbmdAcHNyLTFwLXByaW1zY3JuLXNwci1pbmRmYi1kcmF3LW1t
+YXAKLWd0dCBwYXNzCsKgIDQuNzMgaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0BmYmNwc3It
+MXAtcHJpbXNjcm4tc3ByLWluZGZiLWRyYXctbQptYXAtZ3R0IHBhc3MKwqAgNC43MyBpZ3RAa21z
+X2Zyb250YnVmZmVyX3RyYWNraW5nQGZiY3Bzci0xcC1wcmltc2Nybi1jdXItaW5kZmItZHJhdy1t
+Cm1hcC1ndHQgcGFzcwrCoCA0LjcyIGlndEBrbXNfZnJvbnRidWZmZXJfdHJhY2tpbmdAcHNyLTFw
+LXByaW1zY3JuLWN1ci1pbmRmYi1kcmF3LW1tYXAKLWd0dCBwYXNzCsKgIDQuNjIgaWd0QGttc19m
+cm9udGJ1ZmZlcl90cmFja2luZ0BmYmNwc3ItMXAtb2Zmc2NyZW4tcHJpLXNocmZiLWRyYXctbQpt
+YXAtZ3R0IHNraXAKwqAgNC42MSBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiY3Bzci0x
+cC1zaHJmYi1mbGlwdHJhY2sgc2tpcArCoCA0LjU4IGlndEBrbXNfZnJvbnRidWZmZXJfdHJhY2tp
+bmdAZmJjcHNyLTFwLXByaW1zY3JuLXByaS1zaHJmYi1kcmF3LW0KbWFwLWd0dCBza2lwCsKgIDQu
+NTcgaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0BmYmNwc3ItMXAtcHJpbXNjcm4tcHJpLXNo
+cmZiLWRyYXctcgplbmRlciBza2lwCsKgIDMuNjMgaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2lu
+Z0BmYmNwc3Itc3RyaWRlY2hhbmdlIHNraXAKClNhbWUgaGVyZSwgYWxsIGFyZSB1bmRlciB0aGUg
+aW5kaXZpZHVhbCB0ZXN0IGxpbWl0LgoKSSBhbSBub3Qgc3VyZSB3aGF0IHRoZSBvdmVyYWxsIHRp
+bWUgbGltaXQgaXMsIHRoaXMgaXMgd2hhdCBJIHNlZSAtwqAKV2l0aG91dCBQU1IgZnJvbnRidWZm
+ZXIgNzQyLjEycwooaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9DSV9E
+Uk1fNDQ5OC9maS1za2wtNjYwMHUvcnVudAppbWVzMC5sb2cpCldpdGggUFNSIGZyb250YnVmZmVy
+IHRlc3RzIDY5My42M3MKKGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAv
+SUdUUFdfMTU5MC9maS1za2wtNjYwMHUvcnVudGkKbWVzMC5sb2cpCgpMb29rcyBsaWtlIHRoZXJl
+IGFyZSBvdGhlcnMgdGVzdHMgd2l0aCBhIGxhcmdlciB2YXJpYW5jZSBuZWdhdGluZyB0aGUKaW1w
+YWN0IG9mIG5ldyBQU1IgdGVzdHMuCgotREsKCj4gCj4gPiAKPiA+IAo+ID4gQ2M6IFJvZHJpZ28g
+Vml2aSA8cm9kcmlnby52aXZpQGludGVsLmNvbT4KPiA+IENjOiBQZXRyaSBMYXR2YWxhIDxwZXRy
+aS5sYXR2YWxhQGludGVsLmNvbT4KPiA+IFNpZ25lZC1vZmYtYnk6IERoaW5ha2FyYW4gUGFuZGl5
+YW4gPGRoaW5ha2FyYW4ucGFuZGl5YW5AaW50ZWwuY29tPgo+ID4gLS0tCj4gPiDCoHRlc3RzL2lu
+dGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QgfCAyMCArKysrKysrKysrKysrKysrKysrKwo+
+ID4gwqAxIGZpbGUgY2hhbmdlZCwgMjAgaW5zZXJ0aW9ucygrKQo+ID4gCj4gPiBkaWZmIC0tZ2l0
+IGEvdGVzdHMvaW50ZWwtY2kvZmFzdC1mZWVkYmFjay50ZXN0bGlzdCBiL3Rlc3RzL2ludGVsLQo+
+ID4gY2kvZmFzdC1mZWVkYmFjay50ZXN0bGlzdAo+ID4gaW5kZXggYWE4NjFkMzkuLmUyNjJkMDI0
+IDEwMDY0NAo+ID4gLS0tIGEvdGVzdHMvaW50ZWwtY2kvZmFzdC1mZWVkYmFjay50ZXN0bGlzdAo+
+ID4gKysrIGIvdGVzdHMvaW50ZWwtY2kvZmFzdC1mZWVkYmFjay50ZXN0bGlzdAo+ID4gQEAgLTI0
+NCw2ICsyNDQsMjYgQEAgaWd0QGttc19waXBlX2NyY19iYXNpY0BzdXNwZW5kLXJlYWQtY3JjLXBp
+cGUtYQo+ID4gwqBpZ3RAa21zX3BpcGVfY3JjX2Jhc2ljQHN1c3BlbmQtcmVhZC1jcmMtcGlwZS1i
+Cj4gPiDCoGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAc3VzcGVuZC1yZWFkLWNyYy1waXBlLWMKPiA+
+IMKgaWd0QGttc19wc3JAYmFzaWMKPiA+ICtpZ3RAa21zX3BzckBub19kcnJzCj4gPiAraWd0QGtt
+c19wc3JAcHJpbWFyeV9wYWdlX2ZsaXAKPiA+ICtpZ3RAa21zX3BzckBwcmltYXJ5X21tYXBfZ3R0
+Cj4gPiAraWd0QGttc19wc3JAcHJpbWFyeV9tbWFwX2NwdQo+ID4gK2lndEBrbXNfcHNyQHByaW1h
+cnlfYmx0Cj4gPiAraWd0QGttc19wc3JAcHJpbWFyeV9yZW5kZXIKPiA+ICtpZ3RAa21zX3BzckBz
+cHJpdGVfbW1hcF9ndHQKPiA+ICtpZ3RAa21zX3BzckBzcHJpdGVfbW1hcF9jcHUKPiA+ICtpZ3RA
+a21zX3BzckBzcHJpdGVfYmx0Cj4gPiAraWd0QGttc19wc3JAc3ByaXRlX3JlbmRlcgo+ID4gK2ln
+dEBrbXNfcHNyQHNwcml0ZV9wbGFuZV9tb3ZlCj4gPiAraWd0QGttc19wc3JAc3ByaXRlX3BsYW5l
+X29ub2ZmCj4gPiAraWd0QGttc19wc3JAY3Vyc29yX21tYXBfZ3R0Cj4gPiAraWd0QGttc19wc3JA
+Y3Vyc29yX21tYXBfY3B1Cj4gPiAraWd0QGttc19wc3JAY3Vyc29yX2JsdAo+ID4gK2lndEBrbXNf
+cHNyQGN1cnNvcl9yZW5kZXIKPiA+ICtpZ3RAa21zX3BzckBjdXJzb3JfcGxhbmVfbW92ZQo+ID4g
+K2lndEBrbXNfcHNyQGN1cnNvcl9wbGFuZV9vbm9mZgo+ID4gK2lndEBrbXNfcHNyQGRwbXMKPiA+
+ICtpZ3RAa21zX3BzckBzdXNwZW5kCj4gPiDCoGlndEBrbXNfc2V0bW9kZUBiYXNpYy1jbG9uZS1z
+aW5nbGUtY3J0Ywo+ID4gwqBpZ3RAa21zX3NpbmtfY3JjX2Jhc2ljCj4gPiDCoGlndEBwbV9iYWNr
+bGlnaHRAYmFzaWMtYnJpZ2h0bmVzcwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
+dG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ln
+dC1kZXYK
