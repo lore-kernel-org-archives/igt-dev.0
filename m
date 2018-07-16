@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3F9D6E58A
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Jul 2018 19:56:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB01D6E585
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Jul 2018 19:55:45 +0000 (UTC)
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <153177093422.14594.15658990722579971339@skylake-alporthouse-com>
+In-Reply-To: <20180716195042.13409-1-antonio.argenziano@intel.com>
 References: <20180716195042.13409-1-antonio.argenziano@intel.com>
- <153177093422.14594.15658990722579971339@skylake-alporthouse-com>
-Message-ID: <153177100638.14594.14668719186992574015@skylake-alporthouse-com>
-Date: Mon, 16 Jul 2018 20:56:46 +0100
+Message-ID: <153177093422.14594.15658990722579971339@skylake-alporthouse-com>
+Date: Mon, 16 Jul 2018 20:55:34 +0100
 Subject: Re: [igt-dev] [PATCH i-g-t] igt: Require minimum version of glib
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -24,12 +23,10 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Antonio Argenziano <antonio.argenziano@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBDaHJpcyBXaWxzb24gKDIwMTgtMDctMTYgMjA6NTU6MzQpCj4gUXVvdGluZyBBbnRv
-bmlvIEFyZ2Vuemlhbm8gKDIwMTgtMDctMTYgMjA6NTA6NDIpCj4gPiBQYXRjaCBjYWVhOWM1YjNh
-YTExOTFjMDE1MmQ3YzBmMjJhOTRlZmNhNGZkMDQ4IGludHJvZHVjZWQgdGhlIHVzZSBvZgo+ID4g
-bWVtZmRfY3JlYXRlIHdoaWNoIGhhcyBiZWVuIGltcGxlbWVudGVkIGluIGdsaWIgMi4yNyBbMV0u
-Cj4gCj4gbWFuIDIgbWVtZmRfY3JlYXRlLiBUaGF0J3Mgbm90IGdsaWIuCgpGd2l3LCB5b3UgaGF2
-ZSBjb25mdXNlZCBnbGliYyB3aXRoIGdsaWIuCi1DaHJpcwpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxp
-c3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2lndC1kZXYK
+UXVvdGluZyBBbnRvbmlvIEFyZ2Vuemlhbm8gKDIwMTgtMDctMTYgMjA6NTA6NDIpCj4gUGF0Y2gg
+Y2FlYTljNWIzYWExMTkxYzAxNTJkN2MwZjIyYTk0ZWZjYTRmZDA0OCBpbnRyb2R1Y2VkIHRoZSB1
+c2Ugb2YKPiBtZW1mZF9jcmVhdGUgd2hpY2ggaGFzIGJlZW4gaW1wbGVtZW50ZWQgaW4gZ2xpYiAy
+LjI3IFsxXS4KCm1hbiAyIG1lbWZkX2NyZWF0ZS4gVGhhdCdzIG5vdCBnbGliLgotQ2hyaXMKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
+aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
+ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
