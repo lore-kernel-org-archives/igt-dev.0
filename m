@@ -1,10 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20180713175741.14547-1-chris@chris-wilson.co.uk>
 References: <20180713175741.14547-1-chris@chris-wilson.co.uk>
-Message-ID: <153183139562.31214.8107063368588281626@skylake-alporthouse-com>
-Date: Tue, 17 Jul 2018 13:43:15 +0100
+ <153183139562.31214.8107063368588281626@skylake-alporthouse-com>
+From: Martin Peres <martin.peres@linux.intel.com>
+Message-ID: <828ad01e-ba95-75bb-7169-1d2bf17322f4@linux.intel.com>
+Date: Tue, 17 Jul 2018 15:55:10 +0300
+MIME-Version: 1.0
+In-Reply-To: <153183139562.31214.8107063368588281626@skylake-alporthouse-com>
+Content-Language: en-GB
 Subject: Re: [igt-dev] [PATCH i-g-t] igt: Remove gvt_basic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -17,23 +19,23 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Martin Peres <martin.peres@linux.intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org, Zhi Wang <zhi.a.wang@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBDaHJpcyBXaWxzb24gKDIwMTgtMDctMTMgMTg6NTc6NDEpCj4gVGhpcyB3YXMgYWx3
-YXlzIGEgcGxhY2Vob2xkZXIgZm9yIEdWVCBzdGFrZWhvbGRlcnMgdG8gcHJvdmlkZSBzb21lCj4g
-YmV0dGVyIHRlc3RzLiAyIHllYXJzIGxhdGVyIGFuZCBub25lIGhhdmUgYmVlbiBwdXQgZm9yd2Fy
-ZCBzbyBzdG9wCj4gd2FzdGluZyBDSSdzIHRpbWUgcnVubmluZyBhIHBsYWNlaG9sZGVyLgo+IAo+
-IEJ1Z3ppbGxhOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0x
-MDY5ODkKPiBTaWduZWQtb2ZmLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5j
-by51az4KPiBDYzogWmhpIFdhbmcgPHpoaS5hLndhbmdAaW50ZWwuY29tPgoKTWFydGluLCB3b3Vs
-ZCB5b3UgY2FyZSB0byBhY2s/Ci1DaHJpcwoKPiAtLS0KPiAgdGVzdHMvTWFrZWZpbGUuc291cmNl
-cyAgICAgICAgICAgICAgICB8ICAxIC0KPiAgdGVzdHMvZ3Z0X2Jhc2ljLmMgICAgICAgICAgICAg
-ICAgICAgICB8IDQ0IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+ICB0ZXN0cy9pbnRlbC1j
-aS9mYXN0LWZlZWRiYWNrLnRlc3RsaXN0IHwgIDEgLQo+ICB0ZXN0cy9tZXNvbi5idWlsZCAgICAg
-ICAgICAgICAgICAgICAgIHwgIDEgLQo+ICA0IGZpbGVzIGNoYW5nZWQsIDQ3IGRlbGV0aW9ucygt
-KQo+ICBkZWxldGUgbW9kZSAxMDA2NDQgdGVzdHMvZ3Z0X2Jhc2ljLmMKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0
-LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+T24gMTcvMDcvMTggMTU6NDMsIENocmlzIFdpbHNvbiB3cm90ZToKPiBRdW90aW5nIENocmlzIFdp
+bHNvbiAoMjAxOC0wNy0xMyAxODo1Nzo0MSkKPj4gVGhpcyB3YXMgYWx3YXlzIGEgcGxhY2Vob2xk
+ZXIgZm9yIEdWVCBzdGFrZWhvbGRlcnMgdG8gcHJvdmlkZSBzb21lCj4+IGJldHRlciB0ZXN0cy4g
+MiB5ZWFycyBsYXRlciBhbmQgbm9uZSBoYXZlIGJlZW4gcHV0IGZvcndhcmQgc28gc3RvcAo+PiB3
+YXN0aW5nIENJJ3MgdGltZSBydW5uaW5nIGEgcGxhY2Vob2xkZXIuCj4+Cj4+IEJ1Z3ppbGxhOiBo
+dHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDY5ODkKPj4gU2ln
+bmVkLW9mZi1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Cj4+IENj
+OiBaaGkgV2FuZyA8emhpLmEud2FuZ0BpbnRlbC5jb20+Cj4gCj4gTWFydGluLCB3b3VsZCB5b3Ug
+Y2FyZSB0byBhY2s/CgpBQ0ssIHNpbmNlIHdlIGhhdmUgbm8gdGVzdHMgZm9yIEdWVC1kIGFueXdh
+eSwgd2UgY2FuIGNvbnNpZGVyIGl0IGlzCmJyb2tlbiBieSBkZWZhdWx0OgoKQWNrZWQtYnk6IE1h
+cnRpbiBQZXJlcyA8bWFydGluLnBlcmVzQGxpbnV4LmludGVsLmNvbT4KClpoaSwgcGxlYXNlIHdy
+aXRlIElHVCB0ZXN0cyBmb3IgR1ZULWQgYW5kIHdlJ2xsIHJ1biB0aGUgdGVzdHMgYW5kIGZpbGUK
+YnVncyB3aGVuIHJlZ3Jlc3NpbmcgdGhlbSEKCkNoZWVycywKTWFydGluCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
+dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
