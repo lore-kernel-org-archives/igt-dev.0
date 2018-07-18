@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 References: <20180718094514.5903-1-tvrtko.ursulin@linux.intel.com>
- <20180718094514.5903-2-tvrtko.ursulin@linux.intel.com>
+ <20180718094514.5903-8-tvrtko.ursulin@linux.intel.com>
 From: John Harrison <John.C.Harrison@Intel.com>
-Message-ID: <da140ff7-67fc-0d48-c2de-da2fb9b1163a@Intel.com>
-Date: Wed, 18 Jul 2018 13:03:20 -0700
+Message-ID: <e2776feb-7eb8-ad55-850b-ffdcbb41363a@Intel.com>
+Date: Wed, 18 Jul 2018 13:13:12 -0700
 MIME-Version: 1.0
-In-Reply-To: <20180718094514.5903-2-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20180718094514.5903-8-tvrtko.ursulin@linux.intel.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 1/8] trace.pl: Improve time axis labels
+Subject: Re: [igt-dev] [PATCH i-g-t 7/8] trace.pl: Basic preemption support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,134 +15,112 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: multipart/mixed; boundary="===============0072414376=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Tvrtko Ursulin <tursulin@ursulin.net>, igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gNy8xOC8yMDE4IDI6NDUgQU0sIFR2cnRrbyBVcnN1bGluIHdyb3RlOgo+IEZyb206IFR2cnRr
-byBVcnN1bGluIDx0dnJ0a28udXJzdWxpbkBpbnRlbC5jb20+Cj4KPiBJdCBpcyBwb3NzaWJsZSB0
-byBjdXN0b21pemUgdGhlIGF4aXMgZGlzcGxheSBzbyBjaGFuZ2UgaXQgdG8gZGlzcGxheQo+IHRp
-bWVzdGFtcHMgaW4gc2Vjb25kcyBvbiB0aGUgbWFqb3IgYXhpcyAod2l0aCBzaXggZGVjaW1hbCBz
-cGFjZXMpIGFuZAo+IG1pbGxpc2Vjb25kIG9mZnNldHMgb24gdGhlIG1pbm9yIGF4aXMuCj4KPiB2
-MjoKPiAgICogR2l2ZSB1cCBvbiBicm9rZW4gcmVsYXRpdmUgdGltZXN0YW1wcy4KPgo+IHYzOgo+
-ICAgKiBEcm9wIGFsbCBkYXRlIGNvbXBsaWNhdGlvbnMgYW5kIGp1c3QgdXNlIG1pY3JvIHNlY29u
-ZHMgdGhyb3VnaG91dC4KPiAgICAgKEpvaG4gSGFycmlzb24pCj4KPiBTaWduZWQtb2ZmLWJ5OiBU
-dnJ0a28gVXJzdWxpbiA8dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPgo+IFN1Z2dlc3RlZC1ieTog
-Q2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Cj4gQ2M6IENocmlzIFdpbHNv
-biA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+IENjOiBKb2huIEhhcnJpc29uIDxKb2huLkMu
-SGFycmlzb25ASW50ZWwuY29tPgo+IFJldmlld2VkLWJ5OiBKb2huIEhhcnJpc29uIDxKb2huLkMu
-SGFycmlzb25ASW50ZWwuY29tPiAjIHYyCj4gLS0tCj4gICBzY3JpcHRzL3RyYWNlLnBsIHwgNzIg
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tCj4gICAxIGZp
-bGUgY2hhbmdlZCwgNDggaW5zZXJ0aW9ucygrKSwgMjQgZGVsZXRpb25zKC0pCj4KPiBkaWZmIC0t
-Z2l0IGEvc2NyaXB0cy90cmFjZS5wbCBiL3NjcmlwdHMvdHJhY2UucGwKPiBpbmRleCBmYzE3MTNl
-NGY5YTcuLjNhZDVlZmZhZmQwYSAxMDA3NTUKPiAtLS0gYS9zY3JpcHRzL3RyYWNlLnBsCj4gKysr
-IGIvc2NyaXB0cy90cmFjZS5wbAo+IEBAIC0zMjksMjAgKzMyOSw2IEBAIHN1YiBzYW5pdGl6ZV9j
-dHgKPiAgIAl9Cj4gICB9Cj4gICAKPiAtc3ViIHRzCj4gLXsKPiAtCW15ICgkdXMpID0gQF87Cj4g
-LQlteSAoJHksICRtbywgJGQsICRoLCAkbSwgJHMpOwo+IC0KPiAtCSRzID0gaW50KCR1cyAvIDEw
-MDAwMDApOwo+IC0JJHVzID0gJHVzICUgMTAwMDAwMDsKPiAtCj4gLQkoJHMsICRtLCAkaCwgJGQs
-ICRtbywgJHkpID0gZ210aW1lKCRzKTsKPiAtCj4gLQlyZXR1cm4gc3ByaW50ZignJTA0dS0lMDJ1
-LSUwMnUgJTAydTolMDJ1OiUwMnUuJTA2dScsCj4gLQkJICAgICAgICAkeSwgMSArICRtbywgJGQs
-ICRoLCAkbSwgJHMsIGludCgkdXMpKTsKPiAtfQo+IC0KPiAgICMgTWFpbiBpbnB1dCBsb29wIC0g
-cGFyc2UgbGluZXMgYW5kIGJ1aWxkIHRoZSBpbnRlcm5hbCByZXByZXNlbnRhdGlvbiBvZiB0aGUK
-PiAgICMgdHJhY2UgdXNpbmcgYSBoYXNoIG9mIHJlcXVlc3RzIGFuZCBzb21lIGF1eGlsbGlhcnkg
-ZGF0YSBzdHJ1Y3R1cmVzLgo+ICAgbXkgJHByZXZfZnJlcSA9IDA7Cj4gQEAgLTkxMiw3ICs4OTgs
-NyBAQCBmb3JlYWNoIG15ICRrZXkgKHNvcnQgc29ydFF1ZXVlIGtleXMgJWRiKSB7Cj4gICAJCSRz
-dHlsZSA9ICdjb2xvcjogYmxhY2s7IGJhY2tncm91bmQtY29sb3I6ICcgLgo+ICAgCQkJIGN0eF9j
-b2xvdXIoJGN0eCwgJ3F1ZXVlJyk7Cj4gICAJCSRjb250ZW50ID0gIiRuYW1lPGJyPiRkYnska2V5
-fS0+eydzdWJtaXQtZGVsYXknfXVzIDxzbWFsbD4oJGRieyRrZXl9LT57J2V4ZWN1dGUtZGVsYXkn
-fXVzKTwvc21hbGw+IjsKPiAtCQkkc3RhcnRlbmQgPSAnc3RhcnQ6IFwnJyAuIHRzKCRxdWV1ZSkg
-LiAnXCcsIGVuZDogXCcnIC4gdHMoJHN1Ym1pdCkgLiAnXCcnOwo+ICsJCSRzdGFydGVuZCA9ICdz
-dGFydDogJyAuICRxdWV1ZSAuICcsIGVuZDogJyAuICRzdWJtaXQ7Cj4gICAJCXByaW50ICJcdHtp
-ZDogJGksIGtleTogJHNrZXksICR0eXBlIGdyb3VwOiAkZ3JvdXAsIHN1Ymdyb3VwOiAkc3ViZ3Jv
-dXAsIHN1Ymdyb3VwT3JkZXI6ICRzdWJncm91cCwgY29udGVudDogJyRjb250ZW50JywgJHN0YXJ0
-ZW5kLCBzdHlsZTogXCckc3R5bGVcJ30sXG4iOwo+ICAgCQkkaSsrOwo+ICAgCX0KPiBAQCAtOTIz
-LDcgKzkwOSw3IEBAIGZvcmVhY2ggbXkgJGtleSAoc29ydCBzb3J0UXVldWUga2V5cyAlZGIpIHsK
-PiAgIAkJJHN0eWxlID0gJ2NvbG9yOiBibGFjazsgYmFja2dyb3VuZC1jb2xvcjogJyAuCj4gICAJ
-CQkgY3R4X2NvbG91cigkY3R4LCAncmVhZHknKTsKPiAgIAkJJGNvbnRlbnQgPSAiPHNtYWxsPiRu
-YW1lPGJyPiRkYnska2V5fS0+eydleGVjdXRlLWRlbGF5J311czwvc21hbGw+IjsKPiAtCQkkc3Rh
-cnRlbmQgPSAnc3RhcnQ6IFwnJyAuIHRzKCRzdWJtaXQpIC4gJ1wnLCBlbmQ6IFwnJyAuIHRzKCRz
-dGFydCkgLiAnXCcnOwo+ICsJCSRzdGFydGVuZCA9ICdzdGFydDogJyAuICRzdWJtaXQgLiAnLCBl
-bmQ6ICcgLiAkc3RhcnQ7Cj4gICAJCXByaW50ICJcdHtpZDogJGksIGtleTogJHNrZXksICR0eXBl
-IGdyb3VwOiAkZ3JvdXAsIHN1Ymdyb3VwOiAkc3ViZ3JvdXAsIHN1Ymdyb3VwT3JkZXI6ICRzdWJn
-cm91cCwgY29udGVudDogJyRjb250ZW50JywgJHN0YXJ0ZW5kLCBzdHlsZTogXCckc3R5bGVcJ30s
-XG4iOwo+ICAgCQkkaSsrOwo+ICAgCX0KPiBAQCAtOTQyLDcgKzkyOCw3IEBAIGZvcmVhY2ggbXkg
-JGtleSAoc29ydCBzb3J0UXVldWUga2V5cyAlZGIpIHsKPiAgIAkJJGNvbnRlbnQgLj0gJyA8c21h
-bGw+PGk+Kys8L2k+PC9zbWFsbD4gJyBpZiBleGlzdHMgJGRieyRrZXl9LT57J25vLWVuZCd9Owo+
-ICAgCQkkY29udGVudCAuPSAnIDxzbWFsbD48aT4rPC9pPjwvc21hbGw+ICcgaWYgZXhpc3RzICRk
-Ynska2V5fS0+eyduby1ub3RpZnknfTsKPiAgIAkJJGNvbnRlbnQgLj0gIjxicj4kZGJ7JGtleX0t
-PnsnZHVyYXRpb24nfXVzIDxzbWFsbD4oJGRieyRrZXl9LT57J2NvbnRleHQtY29tcGxldGUtZGVs
-YXknfXVzKTwvc21hbGw+IjsKPiAtCQkkc3RhcnRlbmQgPSAnc3RhcnQ6IFwnJyAuIHRzKCRzdGFy
-dCkgLiAnXCcsIGVuZDogXCcnIC4gdHMoJG5vdGlmeSkgLiAnXCcnOwo+ICsJCSRzdGFydGVuZCA9
-ICdzdGFydDogJyAuICRzdGFydCAuICcsIGVuZDogJyAuICRub3RpZnk7Cj4gICAJCXByaW50ICJc
-dHtpZDogJGksIGtleTogJHNrZXksICR0eXBlIGdyb3VwOiAkZ3JvdXAsIHN1Ymdyb3VwOiAkc3Vi
-Z3JvdXAsIHN1Ymdyb3VwT3JkZXI6ICRzdWJncm91cCwgY29udGVudDogJyRjb250ZW50JywgJHN0
-YXJ0ZW5kLCBzdHlsZTogXCckc3R5bGVcJ30sXG4iOwo+ICAgCQkkaSsrOwo+ICAgCX0KPiBAQCAt
-OTU2LDcgKzk0Miw3IEBAIGZvcmVhY2ggbXkgJGtleSAoc29ydCBzb3J0UXVldWUga2V5cyAlZGIp
-IHsKPiAgIAkJJGNvbnRlbnQgLj0gJyA8c21hbGw+PGk+Pz8/PC9pPjwvc21hbGw+ICcgaWYgZXhp
-c3RzICRkYnska2V5fS0+eydpbmNvbXBsZXRlJ307Cj4gICAJCSRjb250ZW50IC49ICcgPHNtYWxs
-PjxpPisrPC9pPjwvc21hbGw+ICcgaWYgZXhpc3RzICRkYnska2V5fS0+eyduby1lbmQnfTsKPiAg
-IAkJJGNvbnRlbnQgLj0gJyA8c21hbGw+PGk+KzwvaT48L3NtYWxsPiAnIGlmIGV4aXN0cyAkZGJ7
-JGtleX0tPnsnbm8tbm90aWZ5J307Cj4gLQkJJHN0YXJ0ZW5kID0gJ3N0YXJ0OiBcJycgLiB0cygk
-bm90aWZ5KSAuICdcJywgZW5kOiBcJycgLiB0cygkZW5kKSAuICdcJyc7Cj4gKwkJJHN0YXJ0ZW5k
-ID0gJ3N0YXJ0OiAnIC4gJG5vdGlmeSAuICcsIGVuZDogJyAuICRlbmQ7Cj4gICAJCXByaW50ICJc
-dHtpZDogJGksIGtleTogJHNrZXksICR0eXBlIGdyb3VwOiAkZ3JvdXAsIHN1Ymdyb3VwOiAkc3Vi
-Z3JvdXAsIHN1Ymdyb3VwT3JkZXI6ICRzdWJncm91cCwgY29udGVudDogJyRjb250ZW50JywgJHN0
-YXJ0ZW5kLCBzdHlsZTogXCckc3R5bGVcJ30sXG4iOwo+ICAgCQkkaSsrOwo+ICAgCX0KPiBAQCAt
-OTc0LDcgKzk2MCw3IEBAIGZvcmVhY2ggbXkgJGl0ZW0gKEBmcmVxcykgewo+ICAgCj4gICAJJHN0
-YXJ0ID0gJGZpcnN0X3RzIGlmICRzdGFydCA8ICRmaXJzdF90czsKPiAgIAkkZW5kID0gJGxhc3Rf
-dHMgaWYgJGVuZCA+ICRsYXN0X3RzOwo+IC0JJHN0YXJ0ZW5kID0gJ3N0YXJ0OiBcJycgLiB0cygk
-c3RhcnQpIC4gJ1wnLCBlbmQ6IFwnJyAuIHRzKCRlbmQpIC4gJ1wnJzsKPiArCSRzdGFydGVuZCA9
-ICdzdGFydDogJyAuICRzdGFydCAuICcsIGVuZDogJyAuICRlbmQ7Cj4gICAJcHJpbnQgIlx0e2lk
-OiAkaSwgdHlwZTogJ3JhbmdlJywgZ3JvdXA6IDAsIGNvbnRlbnQ6ICckZnJlcScsICRzdGFydGVu
-ZH0sXG4iOwo+ICAgCSRpKys7Cj4gICB9Cj4gQEAgLTk4OCwxOCArOTc0LDU1IEBAIGlmICgkZ3B1
-X3RpbWVsaW5lKSB7Cj4gICAKPiAgIAkJJHN0YXJ0ID0gJGZpcnN0X3RzIGlmICRzdGFydCA8ICRm
-aXJzdF90czsKPiAgIAkJJGVuZCA9ICRsYXN0X3RzIGlmICRlbmQgPiAkbGFzdF90czsKPiAtCQkk
-c3RhcnRlbmQgPSAnc3RhcnQ6IFwnJyAuIHRzKCRzdGFydCkgLiAnXCcsIGVuZDogXCcnIC4gdHMo
-JGVuZCkgLiAnXCcnOwo+ICsJCSRzdGFydGVuZCA9ICdzdGFydDogJyAuICRzdGFydCAuICcsIGVu
-ZDogJyAuICRlbmQ7Cj4gICAJCXByaW50ICJcdHtpZDogJGksIHR5cGU6ICdyYW5nZScsIGdyb3Vw
-OiAxLCAkc3RhcnRlbmR9LFxuIjsKPiAgIAkJJGkrKzsKPiAgIAl9Cj4gICB9Cj4gICAKPiAtbXkg
-JGVuZF90cyA9IHRzKCRmaXJzdF90cyArICR3aWR0aF91cyk7Cj4gLSRmaXJzdF90cyA9IHRzKCRm
-aXJzdF90cyk7Cj4gK215ICRlbmRfdHMgPSAkZmlyc3RfdHMgKyAkd2lkdGhfdXM7Cj4gKyRmaXJz
-dF90cyA9ICRmaXJzdF90czsKPiAgIAo+ICAgcHJpbnQgPDxFTkRIVE1MOwo+ICAgICBdKTsKPiAg
-IAo+ICsgIGZ1bmN0aW9uIG1ham9yQXhpcyhkYXRlLCBzY2FsZSwgc3RlcCkgewo+ICsJdmFyIHMg
-PSBkYXRlIC8gMTAwMDAwMDsKPiArCXZhciBwcmVjaXNpb247Cj4gKwo+ICsJaWYgKHNjYWxlID09
-ICdtaWxsaXNlY29uZCcpCj4gKwkJcHJlY2lzaW9uID0gNjsKPiArCWVsc2UgaWYgKHNjYWxlID09
-ICdzZWNvbmQnKQo+ICsJCXByZWNpc2lvbiA9IDM7Cj4gKwllbHNlCj4gKwkJcHJlY2lzaW9uID0g
-MDsKPiArCj4gKwlyZXR1cm4gcy50b0ZpeGVkKHByZWNpc2lvbikgKyAicyI7Cj4gKyAgfQo+ICsK
-PiArICBmdW5jdGlvbiBtaW5vckF4aXMoZGF0ZSwgc2NhbGUsIHN0ZXApIHsKPiArCXZhciB0ID0g
-ZGF0ZTsKPiArCXZhciBwcmVjaXNpb247Cj4gKwl2YXIgdW5pdDsKPiArCj4gKwlpZiAoc2NhbGUg
-PT0gJ21pbGxpc2Vjb25kJykgewo+ICsJCXQgJT0gMTAwMDsKPiArCQlwcmVjaXNpb24gPSAwOwo+
-ICsJCXVuaXQgPSAndXMnOwo+ICsJfSBlbHNlIGlmIChzY2FsZSA9PSAnc2Vjb25kJykgewo+ICsJ
-CXQgLz0gMTAwMDsKPiArCQl0ICU9IDEwMDA7Cj4gKwkJcHJlY2lzaW9uID0gMDsKPiArCQl1bml0
-ID0gJ21zJzsKPiArCX0gZWxzZSB7Cj4gKwkJdCAvPSAxMDAwMDAwOwo+ICsJCXByZWNpc2lvbiA9
-IDE7Cj4gKwkJdW5pdCA9ICdzJzsKPiArCX0KPiArCj4gKwlyZXR1cm4gdC50b0ZpeGVkKHByZWNp
-c2lvbikgKyB1bml0Owo+ICsgIH0KPiArCj4gICAgIC8vIENvbmZpZ3VyYXRpb24gZm9yIHRoZSBU
-aW1lbGluZQo+ICAgICB2YXIgb3B0aW9ucyA9IHsgZ3JvdXBPcmRlcjogJ2NvbnRlbnQnLAo+ICAg
-CQkgIGhvcml6b250YWxTY3JvbGw6IHRydWUsCj4gQEAgLTEwMDcsOCArMTAzMCw5IEBAIHByaW50
-IDw8RU5ESFRNTDsKPiAgIAkJICBzdGFja1N1Ymdyb3VwczogZmFsc2UsCj4gICAJCSAgem9vbUtl
-eTogJ2N0cmxLZXknLAo+ICAgCQkgIG9yaWVudGF0aW9uOiAndG9wJywKPiAtCQkgIHN0YXJ0OiAn
-JGZpcnN0X3RzJywKPiAtCQkgIGVuZDogJyRlbmRfdHMnfTsKPiArCQkgIGZvcm1hdDogeyBtYWpv
-ckxhYmVsczogbWFqb3JBeGlzLCBtaW5vckxhYmVsczogbWlub3JBeGlzIH0sCj4gKwkJICBzdGFy
-dDogJGZpcnN0X3RzLAo+ICsJCSAgZW5kOiAkZW5kX3RzfTsKPiAgIAo+ICAgICAvLyBDcmVhdGUg
-YSBUaW1lbGluZQo+ICAgICB2YXIgdGltZWxpbmUgPSBuZXcgdmlzLlRpbWVsaW5lKGNvbnRhaW5l
-ciwgaXRlbXMsIGdyb3Vwcywgb3B0aW9ucyk7CgpXb29ob28hCgpUaGlzIG9uZSBzZWVtcyB0byB3
-b3JrIGZpbmUgb24gYm90aCBGaXJlZm94IGFuZCBDaHJvbWUuIEl0IGV2ZW4gd29ya3Mgb24gCklF
-IGFuZCBFZGdlIHVubGlrZSB0aGUgcHJldmlvdXMgdmVyc2lvbiEgSSBndWVzcyB0aGV5IGNhbiBv
-bmx5IGNvcGUgd2l0aCAKcmF3IHRpbWVzIG5vdCBkYXRlcyE/CgpPbmUgdGhpbmcgSSd2ZSBqdXN0
-IG5vdGljZWQgaXMgdGhhdCB0aGVyZSBpcyBhbHNvIGEgJ25vdycgbGluZSBvbiB0aGUgCnRpbWVs
-aW5lIC0gYSByZWQgdmVydGljYWwgYmFyIGFjcm9zcyB0aGUgZW50aXJlIHRpbWVsaW5lLiBPbiB0
-aGUgb2xkIAonZGF0ZScgdmVyc2lvbnMsIGl0IHdhcyBmb2xsb3dpbmcgdGhlIGN1cnJlbnQgc3lz
-dGVtIHRpbWUgYW5kIGhlbmNlIAp3YW5kZXJpbmcgZm9yd2FyZHMgYXQgb25lIHNlY29uZCBwZXIg
-c2Vjb25kLiBPbiB0aGlzIHZlcnNpb24sIGl0IGlzIG91dCAKb2YgcG9zaXRpb24gYW5kIGFkdmFu
-Y2luZyBhdCBvbmUgbWlsbGlzZWNvbmQgcGVyIHNlY29uZC4gUHJlc3VtYWJseSAKYmVjYXVzZSB5
-b3UgYXJlIHNjYWxpbmcgdGhlIGF4ZXMgYnkgYSBmYWN0b3Igb2Ygb25lIHRob3VzYW5kIGluIG9y
-ZGVyIHRvIApnYWluIHRoZSBuZWNlc3NhcnkgcHJlY2lzaW9uIGluIHRoZSBwbG90LiBTb21ldGhp
-bmcgb2YgYSBjdXJpb3NpdHkgYnV0IApjZXJ0YWlubHkgbm90IGEgcHJvYmxlbSEKClNoaXAgaXQg
-OikKClJldmlld2VkLWJ5OiBKb2huIEhhcnJpc29uIDxKb2huLkMuSGFycmlzb25ASW50ZWwuY29t
-PgoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
-ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+This is a multi-part message in MIME format.
+--===============0072414376==
+Content-Type: multipart/alternative;
+ boundary="------------D61587B5B24B55D0A85AC99D"
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------D61587B5B24B55D0A85AC99D
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 7/18/2018 2:45 AM, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>
+> Just forget about earlier request_in events.
+>
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> ---
+>   scripts/trace.pl | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/scripts/trace.pl b/scripts/trace.pl
+> index 60d42865acbd..41bedeefb776 100755
+> --- a/scripts/trace.pl
+> +++ b/scripts/trace.pl
+> @@ -408,7 +408,9 @@ while (<>) {
+>   	} elsif ($tp_name eq 'i915:i915_request_in:') {
+>   		my %req;
+>   
+> -		die if exists $db{$key};
+> +		# preemption
+> +		delete $db{$key} if exists $db{$key};
+> +
+>   		die unless exists $queue{$key};
+>   		die unless exists $submit{$key};
+>   
+
+I've definitely r-b'd this one before too. And no changes so still...
+
+Reviewed-by: John Harrison<John.C.Harrison@Intel.com>
+
+
+--------------D61587B5B24B55D0A85AC99D
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    On 7/18/2018 2:45 AM, Tvrtko Ursulin wrote:<br>
+    <blockquote type="cite"
+      cite="mid:20180718094514.5903-8-tvrtko.ursulin@linux.intel.com">
+      <pre wrap="">From: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E" href="mailto:tvrtko.ursulin@intel.com">&lt;tvrtko.ursulin@intel.com&gt;</a>
+
+Just forget about earlier request_in events.
+
+Signed-off-by: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E" href="mailto:tvrtko.ursulin@intel.com">&lt;tvrtko.ursulin@intel.com&gt;</a>
+---
+ scripts/trace.pl | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/scripts/trace.pl b/scripts/trace.pl
+index 60d42865acbd..41bedeefb776 100755
+--- a/scripts/trace.pl
++++ b/scripts/trace.pl
+@@ -408,7 +408,9 @@ while (&lt;&gt;) {
+ 	} elsif ($tp_name eq 'i915:i915_request_in:') {
+ 		my %req;
+ 
+-		die if exists $db{$key};
++		# preemption
++		delete $db{$key} if exists $db{$key};
++
+ 		die unless exists $queue{$key};
+ 		die unless exists $submit{$key};
+ 
+</pre>
+    </blockquote>
+    <br>
+    I've definitely r-b'd this one before too. And no changes so
+    still...<br>
+    <pre wrap="">Reviewed-by: John Harrison <a class="moz-txt-link-rfc2396E" href="mailto:John.C.Harrison@Intel.com">&lt;John.C.Harrison@Intel.com&gt;</a>
+
+</pre>
+  </body>
+</html>
+
+--------------D61587B5B24B55D0A85AC99D--
+
+--===============0072414376==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0072414376==--
