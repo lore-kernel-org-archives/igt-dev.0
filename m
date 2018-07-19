@@ -1,11 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20180718105627.27023-1-chris@chris-wilson.co.uk>
-References: <20180718105627.27023-1-chris@chris-wilson.co.uk>
-Message-ID: <153199190577.15983.6885674944441389698@skylake-alporthouse-com>
-Date: Thu, 19 Jul 2018 10:18:25 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t] lib: Move trash_bos to their only user
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com
+ [IPv6:2a00:1450:4864:20::431])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BDECB6ED67
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Jul 2018 09:36:09 +0000 (UTC)
+Received: by mail-wr1-x431.google.com with SMTP id r16-v6so7348086wrt.11
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Jul 2018 02:36:09 -0700 (PDT)
+From: Tvrtko Ursulin <tursulin@ursulin.net>
+Date: Thu, 19 Jul 2018 10:35:58 +0100
+Message-Id: <20180719093601.11788-2-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20180719093601.11788-1-tvrtko.ursulin@linux.intel.com>
+References: <20180719093601.11788-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] [PATCH i-g-t 1/4] trace.pl: Context save only applies to
+ last request of a bunch
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -13,21 +19,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBDaHJpcyBXaWxzb24gKDIwMTgtMDctMTggMTE6NTY6MjcpCj4gT25seSBwbV9ycG0g
-c3RpbGwgdXNlcyB0aGUgaWd0X3RyYXNoX2FwZXJ0dXJlKCkgYW5kIHNvIHdlIGNhbiByZW1vdmUg
-aXQKPiBmcm9tIHRoZSBsaWIgYW5kIGluIHRoZSBwcm9jZXNzIGNvbnZlcnQgaXQgb3ZlciBmcm9t
-IHRoZSBsZWdhY3kKPiBsaWJkcm1faW50ZWwuCj4gCj4gU2lnbmVkLW9mZi1ieTogQ2hyaXMgV2ls
-c29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Cj4gQ2M6IE1pY2hhxYIgV2luaWFyc2tpIDxt
-aWNoYWwud2luaWFyc2tpQGludGVsLmNvbT4KCkhpIE1pY2hhxYIsIHdpbGwgeW91IGJlIG15IHZp
-Y3RpbSBmb3IgdG9kYXk/Ci1DaHJpcwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
-dG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ln
-dC1kZXYK
+RnJvbTogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KClNraXAgYWNj
+b3VudGluZyB0aGUgY29udGV4dCBzYXZlIHRpbWUgZm9yIGFueXRoaW5nIGJ1dCB0aGUgbGFzdCBy
+ZXF1ZXN0IG9mCnRoZSBjb2FsZXNjZWQgYnVuY2gsIGFuZCBhbHNvIHNraXAgZHJhd2luZyB0aG9z
+ZSBib3hlcyBvbiB0aGUgdGltZWxpbmUuCgpTaWduZWQtb2ZmLWJ5OiBUdnJ0a28gVXJzdWxpbiA8
+dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPgotLS0KIHNjcmlwdHMvdHJhY2UucGwgfCAxMCArKysr
+KysrLS0tCiAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQoK
+ZGlmZiAtLWdpdCBhL3NjcmlwdHMvdHJhY2UucGwgYi9zY3JpcHRzL3RyYWNlLnBsCmluZGV4IDVh
+ZTUzZmMwYjY4Yi4uNDFiZWRlZWZiNzc2IDEwMDc1NQotLS0gYS9zY3JpcHRzL3RyYWNlLnBsCisr
+KyBiL3NjcmlwdHMvdHJhY2UucGwKQEAgLTYyOCw3ICs2MjgsMTEgQEAgZm9yZWFjaCBteSAka2V5
+IChAc29ydGVkX2tleXMpIHsKIAkkbWluX2N0eCA9ICRkYnska2V5fS0+eydjdHgnfSBpZiBub3Qg
+ZGVmaW5lZCAkbWluX2N0eCBvcgogCQkJCQkgJGRieyRrZXl9LT57J2N0eCd9IDwgJG1pbl9jdHg7
+CiAKLQkkZGJ7JGtleX0tPnsnY29udGV4dC1jb21wbGV0ZS1kZWxheSd9ID0gJGVuZCAtICRub3Rp
+Znk7CisJdW5sZXNzIChleGlzdHMgJGRieyRrZXl9LT57J25vLWVuZCd9KSB7CisJCSRkYnska2V5
+fS0+eydjb250ZXh0LWNvbXBsZXRlLWRlbGF5J30gPSAkZW5kIC0gJG5vdGlmeTsKKwl9IGVsc2Ug
+eworCQkkZGJ7JGtleX0tPnsnY29udGV4dC1jb21wbGV0ZS1kZWxheSd9ID0gMDsKKwl9CiAJJGRi
+eyRrZXl9LT57J2V4ZWN1dGUtZGVsYXknfSA9ICRzdGFydCAtICRkYnska2V5fS0+eydzdWJtaXQn
+fTsKIAkkZGJ7JGtleX0tPnsnc3VibWl0LWRlbGF5J30gPSAkZGJ7JGtleX0tPnsnc3VibWl0J30g
+LSAkZGJ7JGtleX0tPnsncXVldWUnfTsKIAl1bmxlc3MgKGV4aXN0cyAkZGJ7JGtleX0tPnsnbm8t
+bm90aWZ5J30pIHsKQEAgLTY0OSw3ICs2NTMsNyBAQCBmb3JlYWNoIG15ICRrZXkgKEBzb3J0ZWRf
+a2V5cykgewogCiAJJHN1Ym1pdF9hdmd7JHJpbmd9ICs9ICRkYnska2V5fS0+eydzdWJtaXQtZGVs
+YXknfTsKIAkkZXhlY3V0ZV9hdmd7JHJpbmd9ICs9ICRkYnska2V5fS0+eydleGVjdXRlLWRlbGF5
+J307Ci0JJGN0eHNhdmVfYXZneyRyaW5nfSArPSAkZW5kIC0gJG5vdGlmeTsKKwkkY3R4c2F2ZV9h
+dmd7JHJpbmd9ICs9ICRkYnska2V5fS0+eydjb250ZXh0LWNvbXBsZXRlLWRlbGF5J307CiB9CiAK
+IGZvcmVhY2ggbXkgJHJpbmcgKHNvcnQga2V5cyAlYmF0Y2hfYXZnKSB7CkBAIC0xMTAwLDcgKzEx
+MDQsNyBAQCBmb3JlYWNoIG15ICRrZXkgKHNvcnQgc29ydFF1ZXVlIGtleXMgJWRiKSB7CiAJfQog
+CiAJIyB1c2VyIGludGVycnVwdCB0byBjb250ZXh0IGNvbXBsZXRlCi0JdW5sZXNzIChleGlzdHMg
+JHNraXBfYm94eydjdHhzYXZlJ30pIHsKKwl1bmxlc3MgKGV4aXN0cyAkc2tpcF9ib3h7J2N0eHNh
+dmUnfSBvciBleGlzdHMgJGRieyRrZXl9LT57J25vLWVuZCd9KSB7CiAJCSRza2V5ID0gLTIgKiAk
+bWF4X3NlcW5vICogJGN0eCAtIDIgKiAkc2Vxbm87CiAJCSRzdHlsZSA9IGJveF9zdHlsZSgkY3R4
+LCAnY3R4c2F2ZScpOwogCQlteSAkY3R4c2F2ZSA9ICRkYnska2V5fS0+eydlbmQnfSAtICRkYnsk
+a2V5fS0+eydub3RpZnknfTsKLS0gCjIuMTcuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
+cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9pZ3QtZGV2Cg==
