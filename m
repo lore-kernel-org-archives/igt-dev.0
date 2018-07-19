@@ -1,12 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C311D6EEAB
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Jul 2018 20:04:35 +0000 (UTC)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 19 Jul 2018 19:57:26 -0000
-Message-ID: <20180719195726.2273.57503@emeril.freedesktop.org>
-References: <20180712205103.3173-1-lucas.demarchi@intel.com>
-In-Reply-To: <20180712205103.3173-1-lucas.demarchi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgUmVtb3Zl?=
- =?utf-8?q?_resource_streamer_tests_=28rev2=29?=
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20180719195113.GK31791@intel.com>
+References: <20180713085317.GC3008@phenom.ffwll.local>
+ <20180719191614.14525-1-lucas.demarchi@intel.com>
+ <20180719195113.GK31791@intel.com>
+Message-ID: <153203066853.4229.10232641901576912337@skylake-alporthouse-com>
+Date: Thu, 19 Jul 2018 21:04:28 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t v2] Follow kernel's resource streamer
+ removal
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,39 +19,25 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogUmVtb3ZlIHJlc291cmNlIHN0cmVhbWVyIHRl
-c3RzIChyZXYyKQpVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJp
-ZXMvNDY0MzkvClN0YXRlIDogc3VjY2VzcwoKPT0gU3VtbWFyeSA9PQoKPSBDSSBCdWcgTG9nIC0g
-Y2hhbmdlcyBmcm9tIENJX0RSTV80NTA5IC0+IElHVFBXXzE2MDkgPQoKPT0gU3VtbWFyeSAtIFNV
-Q0NFU1MgPT0KCiAgTm8gcmVncmVzc2lvbnMgZm91bmQuCgogIEV4dGVybmFsIFVSTDogaHR0cHM6
-Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL2FwaS8xLjAvc2VyaWVzLzQ2NDM5L3JldmlzaW9u
-cy8yL21ib3gvCgo9PSBLbm93biBpc3N1ZXMgPT0KCiAgSGVyZSBhcmUgdGhlIGNoYW5nZXMgZm91
-bmQgaW4gSUdUUFdfMTYwOSB0aGF0IGNvbWUgZnJvbSBrbm93biBpc3N1ZXM6CgogID09PSBJR1Qg
-Y2hhbmdlcyA9PT0KCiAgICA9PT09IElzc3VlcyBoaXQgPT09PQoKICAgIGlndEBrbXNfcGlwZV9j
-cmNfYmFzaWNAc3VzcGVuZC1yZWFkLWNyYy1waXBlLWM6CiAgICAgIGZpLWJ4dC1kc2k6ICAgICAg
-ICAgUEFTUyAtPiBJTkNPTVBMRVRFIChmZG8jMTAzOTI3KQoKICAgIAogIGZkbyMxMDM5MjcgaHR0
-cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzOTI3CgoKPT0gUGFy
-dGljaXBhdGluZyBob3N0cyAoNDYgLT4gNDIpID09CgogIEFkZGl0aW9uYWwgKDEpOiBmaS1rYmwt
-NzU2MHUgCiAgTWlzc2luZyAgICAoNSk6IGZpLWN0Zy1wODYwMCBmaS1pbGstbTU0MCBmaS1ieXQt
-c3F1YXdrcyBmaS1ic3ctY3lhbiBmaS1oc3ctNDIwMHUgCgoKPT0gQnVpbGQgY2hhbmdlcyA9PQoK
-ICAgICogSUdUOiBJR1RfNDU2NyAtPiBJR1RQV18xNjA5CgogIENJX0RSTV80NTA5OiBlODRhYTBi
-NDdiZWVkNzhhNWExMmRiOTNlNzZmYjAwZWFiNWRiMTYwIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVz
-a3RvcC5vcmcvZ2Z4LWNpL2xpbnV4CiAgSUdUUFdfMTYwOTogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xNjA5LwogIElHVF80NTY3OiA3Zjg1YWRjNDA1MDE4
-MmY0OTBjN2E1YzQ4ZGIzZDU3Y2RiMDBhZjRlIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5v
-cmcveG9yZy9hcHAvaW50ZWwtZ3B1LXRvb2xzCgoKCj09IFRlc3RsaXN0IGNoYW5nZXMgPT0KCitp
-Z3RAZ2VtX2V4ZWNfcGFyYW1zQHJzLWludmFsaWQtb24tcmVuZGVyLXJpbmcKLWlndEBnZW1fZXhl
-Y19wYXJhbXNAcnMtaW52YWxpZC1nZW4KCj09IExvZ3MgPT0KCkZvciBtb3JlIGRldGFpbHMgc2Vl
-OiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzE2MDkvaXNz
-dWVzLmh0bWwKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-aWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
-Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+UXVvdGluZyBSb2RyaWdvIFZpdmkgKDIwMTgtMDctMTkgMjA6NTE6MTMpCj4gT24gVGh1LCBKdWwg
+MTksIDIwMTggYXQgMTI6MTY6MTRQTSAtMDcwMCwgTHVjYXMgRGUgTWFyY2hpIHdyb3RlOgo+ID4g
+UmVzb3VyY2Ugc3RyZWFtZXIgaXMgYmVpbmcgcmVtb3ZlZCBmcm9tIGFsbCBHRU5zLCBzbyBqdXN0
+IHRlc3QgaXQKPiA+IHJldHVybnMgRUlOVkFMIGZvciBhbGwgR0VOcyB3aGVuIGEgYmF0Y2ggaXMg
+c3VibWl0dGVkIHdpdGgKPiA+IEk5MTVfRVhFQ19SRVNPVVJDRV9TVFJFQU1FUiBrZWVwaW5nIG9u
+ZSB0ZXN0IHBlciByaW5nLgo+ID4gCj4gPiB2MjogbGV0IG9uZSB0ZXN0IHBlciByaW5nIHJhdGhl
+ciB0aGFuIGp1c3Qgb25lIHRlc3QKPiAKPiBJIGJlbGlldmUgdGhpcyBwYXRjaCBzaG91bGQgYWxy
+ZWFkeSByZW1vdmUgTE9DQUxfSTkxNV9FWEVDX1JFU09VUkNFX1NUUkVBTUVSCj4gCj4gU28sIHBy
+b2JhYmx5LCB3ZSB3b3VsZCBiZSBhYmxlIHRvIHNvb24ga2lsbCB0aGF0IG9uIHRoZSBrZXJuZWwg
+c2lkZSBhcyB3ZWxsPyEKCldlIGRvIHdhbnQgdG8ga2VlcCBpdCB0byBkb2N1bWVudCB0aGUgb2xk
+IG51bWJlcnMuIE90aGVyd2lzZSB3ZSBsZWF2ZQp1bmV4cGxhaW5lZCBob2xlcy4KLUNocmlzCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFp
+bGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
