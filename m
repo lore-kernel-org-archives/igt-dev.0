@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3BDD66E6B7
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Jul 2018 22:00:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA2CC6E6B8
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Jul 2018 22:01:08 +0000 (UTC)
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 25 Jul 2018 22:58:37 +0100
-Message-Id: <20180725215837.2477-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] [PATCH i-g-t] f2
+Date: Wed, 25 Jul 2018 22:59:33 +0100
+Message-Id: <20180725215933.2726-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] [PATCH i-g-t] f5
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,12 +23,12 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 LS0tCiB0ZXN0cy9kcnZfbW9kdWxlX3JlbG9hZC5jIHwgMyArKysKIDEgZmlsZSBjaGFuZ2VkLCAz
 IGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS90ZXN0cy9kcnZfbW9kdWxlX3JlbG9hZC5jIGIv
-dGVzdHMvZHJ2X21vZHVsZV9yZWxvYWQuYwppbmRleCBkNzE3ZWI2MWUuLmM5MDk5OGMxYSAxMDA2
+dGVzdHMvZHJ2X21vZHVsZV9yZWxvYWQuYwppbmRleCBkNzE3ZWI2MWUuLmI1ZGY1NmZlNSAxMDA2
 NDQKLS0tIGEvdGVzdHMvZHJ2X21vZHVsZV9yZWxvYWQuYworKysgYi90ZXN0cy9kcnZfbW9kdWxl
 X3JlbG9hZC5jCkBAIC0yNTEsNiArMjUxLDkgQEAgaW5qZWN0X2ZhdWx0KGNvbnN0IGNoYXIgKm1v
 ZHVsZV9uYW1lLCBjb25zdCBjaGFyICpvcHQsIGludCBmYXVsdCkKIAlpZ3RfYXNzZXJ0KGZhdWx0
 ID4gMCk7CiAJc25wcmludGYoYnVmLCBzaXplb2YoYnVmKSwgIiVzPSVkIiwgb3B0LCBmYXVsdCk7
-CiAKKwlpZiAoZmF1bHQgPiAyKQorCQlyZXR1cm4gZmF1bHQ7CisKIAlpZiAoaWd0X2ttb2RfbG9h
+CiAKKwlpZiAoZmF1bHQgPiA1KQorCQlyZXR1cm4gZmF1bHQ7CisKIAlpZiAoaWd0X2ttb2RfbG9h
 ZChtb2R1bGVfbmFtZSwgYnVmKSkgewogCQlpZ3Rfd2FybigiRmFpbGVkIHRvIGxvYWQgbW9kdWxl
 ICclcycgd2l0aCBvcHRpb25zICclcydcbiIsCiAJCQkgbW9kdWxlX25hbWUsIGJ1Zik7Ci0tIAoy
 LjE4LjAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
