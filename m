@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <1532729179.7639.41.camel@intel.com>
-From: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-Date: Fri, 27 Jul 2018 15:06:19 -0700
-In-Reply-To: <20180727204348.5m5ou5kx4psept55@InViCtUs>
-References: <20180723182545.19461-1-radhakrishna.sripada@intel.com>
- <1532400764.3356.7.camel@intel.com> <1532402766.3356.23.camel@intel.com>
- <20180727204348.5m5ou5kx4psept55@InViCtUs>
-Mime-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v7] tests/kms_rotation_crc: Move
- platform checks to one place for non exhaust fence cases
+References: <20180719093601.11788-1-tvrtko.ursulin@linux.intel.com>
+ <20180719093601.11788-3-tvrtko.ursulin@linux.intel.com>
+From: John Harrison <John.C.Harrison@Intel.com>
+Message-ID: <4312586c-13a4-2661-a4b4-0097ff0d4747@Intel.com>
+Date: Fri, 27 Jul 2018 14:43:51 -0700
+MIME-Version: 1.0
+In-Reply-To: <20180719093601.11788-3-tvrtko.ursulin@linux.intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] trace.pl: Fix request split mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,172 +15,152 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: dhinakaran.pandiyan@intel.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0719064063=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
-Cc: Anusha Srivatsa <anusha.srivatsa@intel.com>, intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org, Daniel Vetter <daniel.vetter@intel.com>
+To: Tvrtko Ursulin <tursulin@ursulin.net>, igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAyMDE4LTA3LTI3IGF0IDEzOjQzIC0wNzAwLCBSYWRoYWtyaXNobmEgU3JpcGFkYSB3
-cm90ZToKPiBPbiBNb24sIEp1bCAyMywgMjAxOCBhdCAwODoyNjowNlBNIC0wNzAwLCBEaGluYWth
-cmFuIFBhbmRpeWFuIHdyb3RlOgo+ID4gCj4gPiBPbiBNb24sIDIwMTgtMDctMjMgYXQgMTk6NTIg
-LTA3MDAsIERoaW5ha2FyYW4gUGFuZGl5YW4gd3JvdGU6Cj4gPiA+IAo+ID4gPiBPbiBNb24sIDIw
-MTgtMDctMjMgYXQgMTE6MjUgLTA3MDAsIFJhZGhha3Jpc2huYSBTcmlwYWRhIHdyb3RlOgo+ID4g
-PiA+IAo+ID4gPiA+IAo+ID4gPiA+IEZyb206IEFudXNoYSBTcml2YXRzYSA8YW51c2hhLnNyaXZh
-dHNhQGludGVsLmNvbT4KPiA+ID4gPiAKPiA+ID4gPiBDbGVhbnVwIHRoZSB0ZXN0Y2FzZXMgYnkg
-bW92aW5nIHRoZSBwbGF0Zm9ybSBjaGVja3MgdG8gYSBzaW5nbGUKPiA+ID4gPiBmdW5jdGlvbi4K
-PiA+ID4gPiAKPiA+ID4gPiBUaGUgZWFybGllciB2ZXJzaW9uIG9mIHRoZSBwYXRoIGlzIHBvc3Rl
-ZCBoZXJlIFsxXQo+ID4gPiA+IAo+ID4gPiA+IHYyOiBNYWtlIHVzZSBvZiB0aGUgcHJvcGVydHkg
-ZW51bXMgdG8gZ2V0IHRoZSBzdXBwb3J0ZWQKPiA+ID4gPiByb3RhdGlvbnMKPiA+ID4gPiB2Mzog
-TW92ZSBoYXJkY29kaW5ncyB0byBhIHNpbmdsZSBmdW5jdGlvbihWaWxsZSkKPiA+ID4gPiB2NDog
-SW5jbHVkZSB0aGUgY2hlcnJ5dmlldyBleGNlcHRpb24gZm9yIHJlZmxlY3QKPiA+ID4gPiBzdWJ0
-ZXN0KE1hYXJ0ZW4pCj4gPiA+ID4gdjU6IFJlYmFzZSBhbmQgbW92ZSB0aGUgY2hlY2sgZnJvbSBD
-TkwgdG8gSUNMIGZvciByZWZsZWN0LXgKPiA+ID4gPiBjYXNlCj4gPiA+ID4gdjY6IEZpeCB0aGUg
-Q0kgcmVncmVzc2lvbgo+ID4gPiA+IHY3OiByZWJhc2UKPiA+ID4gPiAKPiA+ID4gPiBbMV06IGh0
-dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC8yMDk2NDcvCj4gPiA+ID4gCj4g
-PiA+IE9oIHdlbGwsIEkgd3JvdGUgbXkgY29tbWVudHMgYmVsb3cgYW5kIHRoZW4gcmVhZCB0aGlz
-IGxpbmsuCj4gPiA+IFBsZWFzZQo+ID4gPiBhZGQKPiA+ID4gbmV3IHRlc3QgcmVxdWlyZW1lbnRz
-IGluIHNlcGFyYXRlIHBhdGNoZXMuIE9ubHkgaGF2ZSB0aGUgY29kZQo+ID4gPiBtb3ZlbWVudAo+
-ID4gPiBoZXJlLgo+ID4gPiAKPiA+IFF1b3RpbmcgVmlsbGUgZnJvbSBbMV0gYWJvdmUKPiA+IAo+
-ID4gIlBlcmhhcHMgdGhlIGJlc3Qgc29sdXRpb24gd291bGQgYmUgdG8gbWFrZSBpdCBhcyBnZW5l
-cmljIGFzCj4gPiBwb3NzaWJsZQo+ID4gYnkgY2hlY2tpbmcgdGhlIHBsYW5lIHN1cHBvcnRlZCBy
-b3RhdGlvbnMsIHdoaWxlIHN0aWxsIGtlZW9pbmcgdGhlCj4gPiBtYW51YWwgY2hlY2tzIGZvciB0
-aGUgZmV3IGV4Y2VwdGlvbnMgSSBsaXN0ZWQgYWJvdmUuIE1pZ2h0IGV2ZW4gYmUKPiA+IG5pY2Ug
-dG8gcHV0IHRoZSBnZW5lcmljIHN0dWZmIGludG8gc29tZXRoaW5nIGxpa2UKPiA+IGlndF9wbGFu
-ZV9oYXNfcm90YXRpb24oKS4gQW5kIG1heWJlIHRoZSBleGNlcHRpb25zIHNob3VsZCBiZSB0aGVy
-ZQo+ID4gYXMgd2VsbD8iCj4gPiAKPiA+IElmIEkgYW0gcmVhZGluZyB0aGlzIGNvcnJlY3RseSwg
-dGhpcyBwYXRjaCBzaG91bGQgaGF2ZSByZXRhaW5lZCB0aGUKPiA+IHBsYW5lIHByb3BlcnR5IGNo
-ZWNrcyBpbiBhZGRpdGlvbiB0byBleGNlcHRpb25zIHlvdSBoYXZlIGFkZGVkLgo+IEJhc2VkIG9u
-IHRoZSBmZWVkYmFjayByZWNlaXZlZCBmcm9tIHBhdGNoIHYyIFsxXSwgd2UgbW92ZWQgYmFjayB0
-bwo+IHVzaW5nCj4gdGhlIHBsYXRmb3JtIGNoZWNrcyBpbnN0ZWFkIG9mIHVzaW5nIHRoZSBjb25u
-ZWN0b3IgcHJvcGVydHkuCj4gCgpPa2F5LCBJIGFtIG5vdCByZWFkaW5nIHRoZSBjb21tZW50LCBz
-cGVjaWZpY2FsbHkgIm1ha2UgaXQgYXMgZ2VuZXJpYyBhcwpwb3NzaWJsZSBieSBjaGVja2luZyB0
-aGUgcGxhbmUgc3VwcG9ydGVkIHJvdGF0aW9ucyIsIHRoZSB3YXkgeW91IGFyZS4KQ2hlY2sgd2l0
-aCBWaWxsZS4KCkFueXdheSwgaWYgeW91IHdhbnQgdG8gYWRkIG5ldyBwbGF0Zm9ybSBjaGVja3Ms
-IEkgZG8gbm90IHJlY29tbWVuZAphZGRpbmcgYWxsIG9mIHRoZW0gaW4gYSBzaW5nbGUgcGF0Y2gu
-CgoKPiAKPiBbMV0gaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3BhdGNoLzIwOTY0
-Ny8KPiA+IAo+ID4gCj4gPiAtREsKPiA+IAo+ID4gPiAKPiA+ID4gPiAKPiA+ID4gPiAKPiA+ID4g
-PiBDYzogUmFkaGFrcmlzaG5hIFNyaXBhZGEgPHJhZGhha3Jpc2huYS5zcmlwYWRhQGludGVsLmNv
-bT4KPiA+ID4gPiBDYzogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVs
-LmNvbT4KPiA+ID4gPiBDYzogRGFuaWVsIFZldHRlciA8ZGFuaWVsLnZldHRlckBpbnRlbC5jb20+
-Cj4gPiA+ID4gQ2M6IE1hYXJ0ZW4gTGFua2hvcnN0IDxtYWFydGVuLmxhbmtob3JzdEBsaW51eC5p
-bnRlbC5jb20+Cj4gPiA+ID4gQ2M6IE1pa2EgS2Fob2xhIDxtaWthLmthaG9sYUBpbnRlbC5jb20+
-Cj4gPiA+ID4gU2lnbmVkLW9mZi1ieTogQW51c2hhIFNyaXZhdHNhIDxhbnVzaGEuc3JpdmF0c2FA
-aW50ZWwuY29tPgo+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IFJhZGhha3Jpc2huYSBTcmlwYWRhIDxy
-YWRoYWtyaXNobmEuc3JpcGFkYUBpbnRlbAo+ID4gPiA+IC5jb20KPiA+ID4gPiA+IAo+ID4gPiA+
-ID4gCj4gPiA+ID4gLS0tCj4gPiA+ID4gwqB0ZXN0cy9rbXNfcm90YXRpb25fY3JjLmMgfCAzNSAr
-KysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0KPiA+ID4gPiAtLS0tLQo+ID4gPiA+IMKgMSBm
-aWxlIGNoYW5nZWQsIDIwIGluc2VydGlvbnMoKyksIDE1IGRlbGV0aW9ucygtKQo+ID4gPiA+IAo+
-ID4gPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfcm90YXRpb25fY3JjLmMKPiA+ID4gPiBiL3Rl
-c3RzL2ttc19yb3RhdGlvbl9jcmMuYwo+ID4gPiA+IGluZGV4IDZjYjU4NThhZGIwZi4uZjIwYjhh
-NmQ0YmExIDEwMDY0NAo+ID4gPiA+IC0tLSBhL3Rlc3RzL2ttc19yb3RhdGlvbl9jcmMuYwo+ID4g
-PiA+ICsrKyBiL3Rlc3RzL2ttc19yb3RhdGlvbl9jcmMuYwo+ID4gPiA+IEBAIC00Myw2ICs0Myw3
-IEBAIHR5cGVkZWYgc3RydWN0IHsKPiA+ID4gPiDCoAl1aW50MzJfdCBvdmVycmlkZV9mbXQ7Cj4g
-PiA+ID4gwqAJdWludDY0X3Qgb3ZlcnJpZGVfdGlsaW5nOwo+ID4gPiA+IMKgCWludCBkZXZpZDsK
-PiA+ID4gPiArCWludCBnZW47Cj4gPiA+ID4gwqB9IGRhdGFfdDsKPiA+ID4gPiDCoAo+ID4gPiA+
-IMKgdHlwZWRlZiBzdHJ1Y3Qgewo+ID4gPiA+IEBAIC0yODQsNiArMjg1LDE3IEBAIHN0YXRpYyB2
-b2lkIHByZXBhcmVfZmJzKGRhdGFfdCAqZGF0YSwKPiA+ID4gPiBpZ3Rfb3V0cHV0X3QgKm91dHB1
-dCwKPiA+ID4gPiDCoAkJaWd0X3BsYW5lX3NldF9wb3NpdGlvbihwbGFuZSwgZGF0YS0+cG9zX3gs
-Cj4gPiA+ID4gZGF0YS0KPiA+ID4gPiA+IAo+ID4gPiA+ID4gCj4gPiA+ID4gPiBwb3NfeSk7Cj4g
-PiA+ID4gwqB9Cj4gPiA+ID4gwqAKPiA+ID4gPiArc3RhdGljIHZvaWQgaWd0X2NoZWNrX3JvdGF0
-aW9uKGRhdGFfdCAqZGF0YSkKPiA+ID4gPiArewo+ID4gPiA+ICsJaWYgKGRhdGEtPnJvdGF0aW9u
-ICYgKElHVF9ST1RBVElPTl85MCB8Cj4gPiA+ID4gSUdUX1JPVEFUSU9OXzI3MCkpCj4gPiA+ID4g
-KwkJaWd0X3JlcXVpcmUoZGF0YS0+Z2VuID49IDkpOwo+ID4gPiA+ICsJaWYgKGRhdGEtPnJvdGF0
-aW9uICYgSUdUX1JFRkxFQ1RfWCkKPiA+ID4gPiArCQlpZ3RfcmVxdWlyZShkYXRhLT5nZW4gPj0g
-MTEgfHwKPiA+ID4gVGhpcyBjaGVjayB1c2VkIHRvIGJlwqBpZ3RfcmVxdWlyZShnZW4gPj0gMTAK
-PiBXaWxsIG1vdmUgaXQgYmFjayB0byBnZW4xMC4KPiA+IAo+ID4gPiAKPiA+ID4gCj4gPiA+ID4g
-Cj4gPiA+ID4gCj4gPiA+ID4gKwkJCcKgwqDCoMKgKElTX0NIRVJSWVZJRVcoZGF0YS0+ZGV2aWQp
-ICYmCj4gPiA+ID4gKGRhdGEtCj4gPiA+ID4gPiAKPiA+ID4gPiA+IAo+ID4gPiA+ID4gcm90YXRp
-b24gJiBJR1RfUk9UQVRJT05fMCkpKTsKPiA+ID4gVGhlcmUgd2FzIGFsc28gYSBjaGVjayBmb3Ig
-dGlsaW5nIGZvcm1hdMKgCj4gPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgKElTX0NIRVJSWVZJRVcoZGF0YS5k
-ZXZpZCkgJiYKPiA+ID4gcmVmbGVjdF94LT5yb3QgPT0gSUdUX1JPVEFUSU9OXzAKPiA+ID4gLcKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCYmIHJlZmxlY3RfeC0+dGlsaW5nID09Cj4gPiA+IExPQ0FMX0k5MTVfRk9S
-TUFUX01PRF9YX1RJTEVEKSk7Cj4gPiA+IAo+ID4gPiAKPiA+ID4gPiAKPiA+ID4gPiAKPiA+ID4g
-PiArCWlmIChkYXRhLT5yb3RhdGlvbiAmIElHVF9ST1RBVElPTl8xODApCj4gPiA+ID4gKwkJaWd0
-X3JlcXVpcmUoZGF0YS0+Z2VuID49IDQpOwo+ID4gPiBEb2Vzbid0IGxvb2sgbGlrZSB0aGlzIHJl
-cXVpcmVtZW50IHdhcyBpcyBpbiB0aGUgdGVzdCBlYXJsaWVyLgo+ID4gPiAKPiBUaGlzIGlzIHRo
-ZSByZXF1aXJlbWVudCBwcmVzZW50IGluIHRoZSBrZXJuZWwgYW5kIGdvdCBpbmNsdWRlZCBoZXJl
-Cj4gb24gc3VnZ2VzdGlvbiBmcm9tIGhlcmVbMV0uCj4gCj4gPiAKPiA+ID4gCj4gPiA+ID4gCj4g
-PiA+ID4gCj4gPiA+ID4gK30KPiA+ID4gPiArCj4gPiA+ID4gwqBzdGF0aWMgdm9pZCB0ZXN0X3Np
-bmdsZV9jYXNlKGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsCj4gPiA+ID4gwqAJCQnCoMKg
-wqDCoMKgaWd0X291dHB1dF90ICpvdXRwdXQsIGlndF9wbGFuZV90Cj4gPiA+ID4gKnBsYW5lLAo+
-ID4gPiA+IMKgCQkJwqDCoMKgwqDCoGVudW0gcmVjdGFuZ2xlX3R5cGUgcmVjdCwKPiA+ID4gPiBA
-QCAtMzUyLDE1ICszNjQsMTggQEAgc3RhdGljIHZvaWQgdGVzdF9wbGFuZV9yb3RhdGlvbihkYXRh
-X3QKPiA+ID4gPiAqZGF0YSwKPiA+ID4gPiBpbnQgcGxhbmVfdHlwZSwgYm9vbCB0ZXN0X2JhZF9m
-b3JtCj4gPiA+ID4gwqAKPiA+ID4gPiDCoAlpZ3RfZGlzcGxheV9yZXF1aXJlX291dHB1dChkaXNw
-bGF5KTsKPiA+ID4gPiDCoAo+ID4gPiA+ICsJaWd0X2NoZWNrX3JvdGF0aW9uKGRhdGEpOwo+ID4g
-PiA+ICsKPiA+ID4gPiDCoAlmb3JfZWFjaF9waXBlX3dpdGhfdmFsaWRfb3V0cHV0KGRpc3BsYXks
-IHBpcGUsIG91dHB1dCkKPiA+ID4gPiB7Cj4gPiA+ID4gwqAJCWlndF9wbGFuZV90ICpwbGFuZTsK
-PiA+ID4gPiDCoAkJaW50IGksIGo7Cj4gPiA+ID4gwqAKPiA+ID4gPiAtCQlpZiAoSVNfQ0hFUlJZ
-VklFVyhkYXRhLT5kZXZpZCkgJiYgcGlwZSAhPQo+ID4gPiA+IFBJUEVfQikKPiA+ID4gPiAtCQkJ
-Y29udGludWU7Cj4gPiA+ID4gLQo+ID4gPiA+IMKgCQlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1
-dCwgcGlwZSk7Cj4gPiA+ID4gwqAKPiA+ID4gPiArCQlpZiAoSVNfQ0hFUlJZVklFVyhkYXRhLT5k
-ZXZpZCkgJiYgKGRhdGEtCj4gPiA+ID4gPnJvdGF0aW9uCj4gPiA+ID4gJgo+ID4gPiA+IElHVF9S
-RUZMRUNUX1gpICYmCj4gPiA+ID4gKwkJwqDCoMKgwqBwaXBlICE9IGttc3Rlc3RfcGlwZV90b19p
-bmRleCgnQicpKQo+ID4gPiA+ICsJCQljb250aW51ZTsKPiA+ID4gPiArCj4gPiA+IFdoeSBkbyB0
-aGlzP8KgCj4gPiA+IAo+IE9uIGJyYXN3ZWxsIHJlZmxlY3R4IGlzIHN1cHBvcnRlZCBvbmx5IG9u
-IFBpcGUgQiBhbmQgdGhlIHRlc3QgY2FzZQo+IG5lZWRzIHRvIGJlIHNraXBwZWQgZm9yIHBpcGVz
-IEEsQy4KPiAKPiAKPiBSZWdhcmRzLAo+IFJhZGhoYWtyaXNobmEoUkspIFNyaXBhZGEKPiA+IAo+
-ID4gPiAKPiA+ID4gPiAKPiA+ID4gPiAKPiA+ID4gPiDCoAkJcGxhbmUgPSBpZ3Rfb3V0cHV0X2dl
-dF9wbGFuZV90eXBlKG91dHB1dCwKPiA+ID4gPiBwbGFuZV90eXBlKTsKPiA+ID4gPiDCoAkJaWd0
-X3JlcXVpcmUoaWd0X3BsYW5lX2hhc19wcm9wKHBsYW5lLAo+ID4gPiA+IElHVF9QTEFORV9ST1RB
-VElPTikpOwo+ID4gPiA+IMKgCj4gPiA+ID4gQEAgLTUyMSwxNCArNTM2LDEzIEBAIGlndF9tYWlu
-Cj4gPiA+ID4gwqAJfTsKPiA+ID4gPiDCoAo+ID4gPiA+IMKgCWRhdGFfdCBkYXRhID0ge307Cj4g
-PiA+ID4gLQlpbnQgZ2VuID0gMDsKPiA+ID4gPiDCoAo+ID4gPiA+IMKgCWlndF9za2lwX29uX3Np
-bXVsYXRpb24oKTsKPiA+ID4gPiDCoAo+ID4gPiA+IMKgCWlndF9maXh0dXJlIHsKPiA+ID4gPiDC
-oAkJZGF0YS5nZnhfZmQgPQo+ID4gPiA+IGRybV9vcGVuX2RyaXZlcl9tYXN0ZXIoRFJJVkVSX0lO
-VEVMKTsKPiA+ID4gPiDCoAkJZGF0YS5kZXZpZCA9IGludGVsX2dldF9kcm1fZGV2aWQoZGF0YS5n
-ZnhfZmQpOwo+ID4gPiA+IC0JCWdlbiA9IGludGVsX2dlbihkYXRhLmRldmlkKTsKPiA+ID4gPiAr
-CQlkYXRhLmdlbiA9IGludGVsX2dlbihkYXRhLmRldmlkKTsKPiA+ID4gPiDCoAo+ID4gPiA+IMKg
-CQlrbXN0ZXN0X3NldF92dF9ncmFwaGljc19tb2RlKCk7Cj4gPiA+ID4gwqAKPiA+ID4gPiBAQCAt
-NTQxLDE2ICs1NTUsMTIgQEAgaWd0X21haW4KPiA+ID4gPiDCoAkJaWd0X3N1YnRlc3RfZigiJXMt
-cm90YXRpb24tJXMiLAo+ID4gPiA+IMKgCQkJwqDCoMKgwqDCoMKgcGxhbmVfdGVzdF9zdHIoc3Vi
-dGVzdC0+cGxhbmUpLAo+ID4gPiA+IMKgCQkJwqDCoMKgwqDCoMKgcm90X3Rlc3Rfc3RyKHN1YnRl
-c3QtPnJvdCkpIHsKPiA+ID4gPiAtCQkJaWd0X3JlcXVpcmUoIShzdWJ0ZXN0LT5yb3QgJgo+ID4g
-PiA+IC0JCQkJwqDCoMKgwqAoSUdUX1JPVEFUSU9OXzkwIHwKPiA+ID4gPiBJR1RfUk9UQVRJT05f
-MjcwKSkgfHwKPiA+ID4gPiAtCQkJCcKgwqDCoMKgZ2VuID49IDkpOwo+ID4gPiA+IMKgCQkJZGF0
-YS5yb3RhdGlvbiA9IHN1YnRlc3QtPnJvdDsKPiA+ID4gPiDCoAkJCXRlc3RfcGxhbmVfcm90YXRp
-b24oJmRhdGEsIHN1YnRlc3QtCj4gPiA+ID4gPnBsYW5lLAo+ID4gPiA+IGZhbHNlKTsKPiA+ID4g
-PiDCoAkJfQo+ID4gPiA+IMKgCX0KPiA+ID4gPiDCoAo+ID4gPiA+IMKgCWlndF9zdWJ0ZXN0X2Yo
-InNwcml0ZS1yb3RhdGlvbi05MC1wb3MtMTAwLTAiKSB7Cj4gPiA+ID4gLQkJaWd0X3JlcXVpcmUo
-Z2VuID49IDkpOwo+ID4gPiA+IMKgCQlkYXRhLnJvdGF0aW9uID0gSUdUX1JPVEFUSU9OXzkwOwo+
-ID4gPiA+IMKgCQlkYXRhLnBvc194ID0gMTAwLAo+ID4gPiA+IMKgCQlkYXRhLnBvc195ID0gMDsK
-PiA+ID4gPiBAQCAtNTYwLDcgKzU3MCw2IEBAIGlndF9tYWluCj4gPiA+ID4gwqAJZGF0YS5wb3Nf
-eSA9IDA7Cj4gPiA+ID4gwqAKPiA+ID4gPiDCoAlpZ3Rfc3VidGVzdF9mKCJiYWQtcGl4ZWwtZm9y
-bWF0Iikgewo+ID4gPiA+IC0JCWlndF9yZXF1aXJlKGdlbiA+PSA5KTsKPiA+ID4gPiDCoAkJZGF0
-YS5yb3RhdGlvbiA9IElHVF9ST1RBVElPTl85MDsKPiA+ID4gPiDCoAkJZGF0YS5vdmVycmlkZV9m
-bXQgPSBEUk1fRk9STUFUX1JHQjU2NTsKPiA+ID4gPiDCoAkJdGVzdF9wbGFuZV9yb3RhdGlvbigm
-ZGF0YSwKPiA+ID4gPiBEUk1fUExBTkVfVFlQRV9QUklNQVJZLAo+ID4gPiA+IHRydWUpOwo+ID4g
-PiA+IEBAIC01NjgsNyArNTc3LDYgQEAgaWd0X21haW4KPiA+ID4gPiDCoAlkYXRhLm92ZXJyaWRl
-X2ZtdCA9IDA7Cj4gPiA+ID4gwqAKPiA+ID4gPiDCoAlpZ3Rfc3VidGVzdF9mKCJiYWQtdGlsaW5n
-Iikgewo+ID4gPiA+IC0JCWlndF9yZXF1aXJlKGdlbiA+PSA5KTsKPiA+ID4gPiDCoAkJZGF0YS5y
-b3RhdGlvbiA9IElHVF9ST1RBVElPTl85MDsKPiA+ID4gPiDCoAkJZGF0YS5vdmVycmlkZV90aWxp
-bmcgPQo+ID4gPiA+IExPQ0FMX0k5MTVfRk9STUFUX01PRF9YX1RJTEVEOwo+ID4gPiA+IMKgCQl0
-ZXN0X3BsYW5lX3JvdGF0aW9uKCZkYXRhLAo+ID4gPiA+IERSTV9QTEFORV9UWVBFX1BSSU1BUlks
-Cj4gPiA+ID4gdHJ1ZSk7Cj4gPiA+ID4gQEAgLTU3OSw5ICs1ODcsNiBAQCBpZ3RfbWFpbgo+ID4g
-PiA+IMKgCQlpZ3Rfc3VidGVzdF9mKCJwcmltYXJ5LSVzLXJlZmxlY3QteC0lcyIsCj4gPiA+ID4g
-wqAJCQnCoMKgwqDCoMKgwqB0aWxpbmdfdGVzdF9zdHIocmVmbGVjdF94LQo+ID4gPiA+ID50aWxp
-bmcpLAo+ID4gPiA+IMKgCQkJwqDCoMKgwqDCoMKgcm90X3Rlc3Rfc3RyKHJlZmxlY3RfeC0+cm90
-KSkgewo+ID4gPiA+IC0JCQlpZ3RfcmVxdWlyZShnZW4gPj0gMTAgfHwKPiA+ID4gPiAtCQkJCcKg
-wqDCoMKgKElTX0NIRVJSWVZJRVcoZGF0YS5kZXZpZCkKPiA+ID4gPiAmJgo+ID4gPiA+IHJlZmxl
-Y3RfeC0+cm90ID09IElHVF9ST1RBVElPTl8wCj4gPiA+ID4gLQkJCQnCoMKgwqDCoMKgJiYgcmVm
-bGVjdF94LT50aWxpbmcgPT0KPiA+ID4gPiBMT0NBTF9JOTE1X0ZPUk1BVF9NT0RfWF9USUxFRCkp
-Owo+ID4gPiA+IMKgCQkJZGF0YS5yb3RhdGlvbiA9IChJR1RfUkVGTEVDVF9YIHwKPiA+ID4gPiBy
-ZWZsZWN0X3gtCj4gPiA+ID4gPiAKPiA+ID4gPiA+IAo+ID4gPiA+ID4gcm90KTsKPiA+ID4gPiDC
-oAkJCWRhdGEub3ZlcnJpZGVfdGlsaW5nID0gcmVmbGVjdF94LQo+ID4gPiA+ID50aWxpbmc7Cj4g
-PiA+ID4gwqAJCQl0ZXN0X3BsYW5lX3JvdGF0aW9uKCZkYXRhLAo+ID4gPiA+IERSTV9QTEFORV9U
-WVBFX1BSSU1BUlksIGZhbHNlKTsKPiA+ID4gPiBAQCAtNTk2LDcgKzYwMSw3IEBAIGlndF9tYWlu
-Cj4gPiA+ID4gwqAJCWVudW0gcGlwZSBwaXBlOwo+ID4gPiA+IMKgCQlpZ3Rfb3V0cHV0X3QgKm91
-dHB1dDsKPiA+ID4gPiDCoAo+ID4gPiA+IC0JCWlndF9yZXF1aXJlKGdlbiA+PSA5KTsKPiA+ID4g
-PiArCQlpZ3RfcmVxdWlyZShkYXRhLmdlbiA+PSA5KTsKPiA+ID4gPiDCoAkJaWd0X2Rpc3BsYXlf
-cmVxdWlyZV9vdXRwdXQoJmRhdGEuZGlzcGxheSk7Cj4gPiA+ID4gwqAKPiA+ID4gPiDCoAkJZm9y
-X2VhY2hfcGlwZV93aXRoX3ZhbGlkX291dHB1dCgmZGF0YS5kaXNwbGF5LAo+ID4gPiA+IHBpcGUs
-Cj4gPiA+ID4gb3V0cHV0KSB7Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRl
-dgo=
+This is a multi-part message in MIME format.
+--===============0719064063==
+Content-Type: multipart/alternative;
+ boundary="------------D366B47DE875E479C416B3DB"
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------D366B47DE875E479C416B3DB
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 7/19/2018 2:35 AM, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>
+> Request split mode had several bugs, both in the original version and also
+> after the recent refactorings.
+>
+> One big one was that it wasn't considering different submit ports as a
+> reason to split execution, and also that it was too time based instead of
+> looking at relevant timelines.
+>
+> In this refactoring we address the former by using the engine timelines
+> introduced in the previous patch. Secondary port submissions are moved
+> to follow the preceding submission as a first step in the correction
+> process.
+>
+> In the second step, we add context timelines and use then in a similar
+> fashion to separate start and end time of coalesced requests. For each
+> coalesced request we know its boundaries by looking at the engine
+> timeline (via global seqnos), and we know the previous request it should
+> only start after, by looking at the context timeline.
+>
+> v2:
+>   * Remove some dead code.
+>   * Fix !port0 shifting logic.
+>
+> v3:
+>   * Refactor for less list walking as with incomplete handling.
+>
+> v4:
+>   * Database of context timelines should not contain duplicates!
+>     (Converted from array into a hash.)
+>
+> v5:
+>   * Avoid over-accounting runnable time for a coalesced group by recording
+>     the time first request entered the GPU and ending the execute delay at
+>     that point for the whole group.
+>
+> v6:
+>   * Update for engine class:instance.
+>
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Cc: John Harrison <John.C.Harrison@intel.com>
+> ---
+>   scripts/trace.pl | 138 ++++++++++++++++++++++++++++++++++++-----------
+>   1 file changed, 108 insertions(+), 30 deletions(-)
+>
+>
+
+Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
+
+
+--------------D366B47DE875E479C416B3DB
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    On 7/19/2018 2:35 AM, Tvrtko Ursulin wrote:<br>
+    <blockquote type="cite"
+      cite="mid:20180719093601.11788-3-tvrtko.ursulin@linux.intel.com">
+      <pre wrap="">From: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E" href="mailto:tvrtko.ursulin@intel.com">&lt;tvrtko.ursulin@intel.com&gt;</a>
+
+Request split mode had several bugs, both in the original version and also
+after the recent refactorings.
+
+One big one was that it wasn't considering different submit ports as a
+reason to split execution, and also that it was too time based instead of
+looking at relevant timelines.
+
+In this refactoring we address the former by using the engine timelines
+introduced in the previous patch. Secondary port submissions are moved
+to follow the preceding submission as a first step in the correction
+process.
+
+In the second step, we add context timelines and use then in a similar
+fashion to separate start and end time of coalesced requests. For each
+coalesced request we know its boundaries by looking at the engine
+timeline (via global seqnos), and we know the previous request it should
+only start after, by looking at the context timeline.
+
+v2:
+ * Remove some dead code.
+ * Fix !port0 shifting logic.
+
+v3:
+ * Refactor for less list walking as with incomplete handling.
+
+v4:
+ * Database of context timelines should not contain duplicates!
+   (Converted from array into a hash.)
+
+v5:
+ * Avoid over-accounting runnable time for a coalesced group by recording
+   the time first request entered the GPU and ending the execute delay at
+   that point for the whole group.
+
+v6:
+ * Update for engine class:instance.
+
+Signed-off-by: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E" href="mailto:tvrtko.ursulin@intel.com">&lt;tvrtko.ursulin@intel.com&gt;</a>
+Cc: John Harrison <a class="moz-txt-link-rfc2396E" href="mailto:John.C.Harrison@intel.com">&lt;John.C.Harrison@intel.com&gt;</a>
+---
+ scripts/trace.pl | 138 ++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 108 insertions(+), 30 deletions(-)
+
+
+</pre>
+    </blockquote>
+    <br>
+    Reviewed-by: John Harrison <a class="moz-txt-link-rfc2396E"
+      href="mailto:John.C.Harrison@Intel.com">&lt;John.C.Harrison@Intel.com&gt;</a><br>
+    <br>
+  </body>
+</html>
+
+--------------D366B47DE875E479C416B3DB--
+
+--===============0719064063==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0719064063==--
