@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-In-Reply-To: <20180727103612.7136-1-chris@chris-wilson.co.uk>
-References: <20180726203045.17521-1-chris@chris-wilson.co.uk>
- <20180727103612.7136-1-chris@chris-wilson.co.uk>
-From: Matthew Auld <matthew.william.auld@gmail.com>
-Date: Fri, 27 Jul 2018 13:01:05 +0100
-Message-ID: <CAM0jSHMGP3eaU_dKv_DDqftiKsMH92ZMbcML+sZ2cXD-Nrd_NA@mail.gmail.com>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v2] igt/gem_mocs_settings:
- Use i915_pmu to measure rc6 residency
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DEF136EAA1
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Jul 2018 12:40:17 +0000 (UTC)
+From: Petri Latvala <petri.latvala@intel.com>
+Date: Fri, 27 Jul 2018 15:40:06 +0300
+Message-Id: <20180727124006.25757-1-petri.latvala@intel.com>
+Subject: [igt-dev] [PATCH i-g-t 1/1] meson: Downgrade meson version
+ requirement a notch
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,20 +14,22 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org, Intel Graphics Development <intel-gfx@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMjcgSnVseSAyMDE4IGF0IDExOjM2LCBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNv
-bi5jby51az4gd3JvdGU6Cj4gVXNlIHRoZSBwZXJmIHBtdSBpbnRlcmZhY2UgZm9yIGxvd2xldmVs
-IHJjNiBtZWFzdXJlbWVudCwgaG9wZWZ1bGx5IGZvcgo+IGdyZWF0ZXIgc3RhYmlsaXR5Lgo+Cj4g
-djI6IEZpeCB0aW1lb3V0IHRvIHJ1biBmb3IgMXMsIG5vdCBvbmUgcGFzcyEKPgo+IFNpZ25lZC1v
-ZmYtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgpSZXZpZXdlZC1i
-eTogTWF0dGhldyBBdWxkIDxtYXR0aGV3LmF1bGRAaW50ZWwuY29tPgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
-ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+MC40NC4wIGlzIGEgZmluZSB2ZXJzaW9uLgoKU2lnbmVkLW9mZi1ieTogUGV0cmkgTGF0dmFsYSA8
+cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+Ci0tLQogbWVzb24uYnVpbGQgfCAyICstCiAxIGZpbGUg
+Y2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9tZXNv
+bi5idWlsZCBiL21lc29uLmJ1aWxkCmluZGV4IDYzYWM2MjkyLi42ODJmNDRkYSAxMDA2NDQKLS0t
+IGEvbWVzb24uYnVpbGQKKysrIGIvbWVzb24uYnVpbGQKQEAgLTUsNyArNSw3IEBAIHByb2plY3Qo
+J2lndC1ncHUtdG9vbHMnLCAnYycsCiAgICAgICAgICAgJ2Nfc3RkPWdudTExJywKICAgICAgICAg
+XSwKIAlsaWNlbnNlIDogJ01JVCcsCi0JbWVzb25fdmVyc2lvbiA6ICc+MC40NC4wJykKKwltZXNv
+bl92ZXJzaW9uIDogJz49MC40NC4wJykKIAogY2MgPSBtZXNvbi5nZXRfY29tcGlsZXIoJ2MnKQog
+Ci0tIAoyLjE0LjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0
+dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
