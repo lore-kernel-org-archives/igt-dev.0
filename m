@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C6996EAB2
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Jul 2018 20:47:16 +0000 (UTC)
-From: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
-Date: Fri, 27 Jul 2018 13:48:34 -0700
-Message-Id: <20180727204834.24170-1-radhakrishna.sripada@intel.com>
+References: <20180719093601.11788-1-tvrtko.ursulin@linux.intel.com>
+ <20180719093601.11788-2-tvrtko.ursulin@linux.intel.com>
+From: John Harrison <John.C.Harrison@Intel.com>
+Message-ID: <33c68593-3dd7-83d3-744a-1b9375b234e0@Intel.com>
+Date: Fri, 27 Jul 2018 14:37:12 -0700
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v8] tests/kms_rotation_crc: Move platform
- checks to one place for non exhaust fence cases
+In-Reply-To: <20180719093601.11788-2-tvrtko.ursulin@linux.intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 1/4] trace.pl: Context save
+ only applies to last request of a bunch
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,99 +16,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============2135062285=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Anusha Srivatsa <anusha.srivatsa@intel.com>, Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>, Daniel Vetter <daniel.vetter@intel.com>
+To: Tvrtko Ursulin <tursulin@ursulin.net>, igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogQW51c2hhIFNyaXZhdHNhIDxhbnVzaGEuc3JpdmF0c2FAaW50ZWwuY29tPgoKQ2xlYW51
-cCB0aGUgdGVzdGNhc2VzIGJ5IG1vdmluZyB0aGUgcGxhdGZvcm0gY2hlY2tzIHRvIGEgc2luZ2xl
-IGZ1bmN0aW9uLgoKVGhlIGVhcmxpZXIgdmVyc2lvbiBvZiB0aGUgcGF0aCBpcyBwb3N0ZWQgaGVy
-ZSBbMV0KCnYyOiBNYWtlIHVzZSBvZiB0aGUgcHJvcGVydHkgZW51bXMgdG8gZ2V0IHRoZSBzdXBw
-b3J0ZWQgcm90YXRpb25zCnYzOiBNb3ZlIGhhcmRjb2RpbmdzIHRvIGEgc2luZ2xlIGZ1bmN0aW9u
-KFZpbGxlKQp2NDogSW5jbHVkZSB0aGUgY2hlcnJ5dmlldyBleGNlcHRpb24gZm9yIHJlZmxlY3Qg
-c3VidGVzdChNYWFydGVuKQp2NTogUmViYXNlIGFuZCBtb3ZlIHRoZSBjaGVjayBmcm9tIENOTCB0
-byBJQ0wgZm9yIHJlZmxlY3QteCBjYXNlCnY2OiBGaXggdGhlIENJIHJlZ3Jlc3Npb24Kdjc6IHJl
-YmFzZQp2ODogTW92ZSB0aGUgcmVmbGVjdC14IGNoZWNrIGJhY2sgdG8gZ2VuMTAoREspCgpbMV06
-IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC8yMDk2NDcvCgpDYzogUmFk
-aGFrcmlzaG5hIFNyaXBhZGEgPHJhZGhha3Jpc2huYS5zcmlwYWRhQGludGVsLmNvbT4KQ2M6IFZp
-bGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+CkNjOiBEYW5pZWwg
-VmV0dGVyIDxkYW5pZWwudmV0dGVyQGludGVsLmNvbT4KQ2M6IERoaW5ha2FyYW4gUGFuZGl5YW4g
-PGRoaW5ha2FyYW4ucGFuZGl5YW5AaW50ZWwuY29tPgpDYzogTWFhcnRlbiBMYW5raG9yc3QgPG1h
-YXJ0ZW4ubGFua2hvcnN0QGxpbnV4LmludGVsLmNvbT4KQ2M6IE1pa2EgS2Fob2xhIDxtaWthLmth
-aG9sYUBpbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IEFudXNoYSBTcml2YXRzYSA8YW51c2hhLnNy
-aXZhdHNhQGludGVsLmNvbT4KU2lnbmVkLW9mZi1ieTogUmFkaGFrcmlzaG5hIFNyaXBhZGEgPHJh
-ZGhha3Jpc2huYS5zcmlwYWRhQGludGVsLmNvbT4KLS0tCiB0ZXN0cy9rbXNfcm90YXRpb25fY3Jj
-LmMgfCAzNSArKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5n
-ZWQsIDIwIGluc2VydGlvbnMoKyksIDE1IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL3Rlc3Rz
-L2ttc19yb3RhdGlvbl9jcmMuYyBiL3Rlc3RzL2ttc19yb3RhdGlvbl9jcmMuYwppbmRleCA2Y2I1
-ODU4YWRiMGYuLmE2NWVmMWUxNTAxZSAxMDA2NDQKLS0tIGEvdGVzdHMva21zX3JvdGF0aW9uX2Ny
-Yy5jCisrKyBiL3Rlc3RzL2ttc19yb3RhdGlvbl9jcmMuYwpAQCAtNDMsNiArNDMsNyBAQCB0eXBl
-ZGVmIHN0cnVjdCB7CiAJdWludDMyX3Qgb3ZlcnJpZGVfZm10OwogCXVpbnQ2NF90IG92ZXJyaWRl
-X3RpbGluZzsKIAlpbnQgZGV2aWQ7CisJaW50IGdlbjsKIH0gZGF0YV90OwogCiB0eXBlZGVmIHN0
-cnVjdCB7CkBAIC0yODQsNiArMjg1LDE3IEBAIHN0YXRpYyB2b2lkIHByZXBhcmVfZmJzKGRhdGFf
-dCAqZGF0YSwgaWd0X291dHB1dF90ICpvdXRwdXQsCiAJCWlndF9wbGFuZV9zZXRfcG9zaXRpb24o
-cGxhbmUsIGRhdGEtPnBvc194LCBkYXRhLT5wb3NfeSk7CiB9CiAKK3N0YXRpYyB2b2lkIGlndF9j
-aGVja19yb3RhdGlvbihkYXRhX3QgKmRhdGEpCit7CisJaWYgKGRhdGEtPnJvdGF0aW9uICYgKElH
-VF9ST1RBVElPTl85MCB8IElHVF9ST1RBVElPTl8yNzApKQorCQlpZ3RfcmVxdWlyZShkYXRhLT5n
-ZW4gPj0gOSk7CisJaWYgKGRhdGEtPnJvdGF0aW9uICYgSUdUX1JFRkxFQ1RfWCkKKwkJaWd0X3Jl
-cXVpcmUoZGF0YS0+Z2VuID49IDEwIHx8CisJCQkgICAgKElTX0NIRVJSWVZJRVcoZGF0YS0+ZGV2
-aWQpICYmIChkYXRhLT5yb3RhdGlvbiAmIElHVF9ST1RBVElPTl8wKSkpOworCWlmIChkYXRhLT5y
-b3RhdGlvbiAmIElHVF9ST1RBVElPTl8xODApCisJCWlndF9yZXF1aXJlKGRhdGEtPmdlbiA+PSA0
-KTsKK30KKwogc3RhdGljIHZvaWQgdGVzdF9zaW5nbGVfY2FzZShkYXRhX3QgKmRhdGEsIGVudW0g
-cGlwZSBwaXBlLAogCQkJICAgICBpZ3Rfb3V0cHV0X3QgKm91dHB1dCwgaWd0X3BsYW5lX3QgKnBs
-YW5lLAogCQkJICAgICBlbnVtIHJlY3RhbmdsZV90eXBlIHJlY3QsCkBAIC0zNTIsMTUgKzM2NCwx
-OCBAQCBzdGF0aWMgdm9pZCB0ZXN0X3BsYW5lX3JvdGF0aW9uKGRhdGFfdCAqZGF0YSwgaW50IHBs
-YW5lX3R5cGUsIGJvb2wgdGVzdF9iYWRfZm9ybQogCiAJaWd0X2Rpc3BsYXlfcmVxdWlyZV9vdXRw
-dXQoZGlzcGxheSk7CiAKKwlpZ3RfY2hlY2tfcm90YXRpb24oZGF0YSk7CisKIAlmb3JfZWFjaF9w
-aXBlX3dpdGhfdmFsaWRfb3V0cHV0KGRpc3BsYXksIHBpcGUsIG91dHB1dCkgewogCQlpZ3RfcGxh
-bmVfdCAqcGxhbmU7CiAJCWludCBpLCBqOwogCi0JCWlmIChJU19DSEVSUllWSUVXKGRhdGEtPmRl
-dmlkKSAmJiBwaXBlICE9IFBJUEVfQikKLQkJCWNvbnRpbnVlOwotCiAJCWlndF9vdXRwdXRfc2V0
-X3BpcGUob3V0cHV0LCBwaXBlKTsKIAorCQlpZiAoSVNfQ0hFUlJZVklFVyhkYXRhLT5kZXZpZCkg
-JiYgKGRhdGEtPnJvdGF0aW9uICYgSUdUX1JFRkxFQ1RfWCkgJiYKKwkJICAgIHBpcGUgIT0ga21z
-dGVzdF9waXBlX3RvX2luZGV4KCdCJykpCisJCQljb250aW51ZTsKKwogCQlwbGFuZSA9IGlndF9v
-dXRwdXRfZ2V0X3BsYW5lX3R5cGUob3V0cHV0LCBwbGFuZV90eXBlKTsKIAkJaWd0X3JlcXVpcmUo
-aWd0X3BsYW5lX2hhc19wcm9wKHBsYW5lLCBJR1RfUExBTkVfUk9UQVRJT04pKTsKIApAQCAtNTIx
-LDE0ICs1MzYsMTMgQEAgaWd0X21haW4KIAl9OwogCiAJZGF0YV90IGRhdGEgPSB7fTsKLQlpbnQg
-Z2VuID0gMDsKIAogCWlndF9za2lwX29uX3NpbXVsYXRpb24oKTsKIAogCWlndF9maXh0dXJlIHsK
-IAkJZGF0YS5nZnhfZmQgPSBkcm1fb3Blbl9kcml2ZXJfbWFzdGVyKERSSVZFUl9JTlRFTCk7CiAJ
-CWRhdGEuZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2RldmlkKGRhdGEuZ2Z4X2ZkKTsKLQkJZ2VuID0g
-aW50ZWxfZ2VuKGRhdGEuZGV2aWQpOworCQlkYXRhLmdlbiA9IGludGVsX2dlbihkYXRhLmRldmlk
-KTsKIAogCQlrbXN0ZXN0X3NldF92dF9ncmFwaGljc19tb2RlKCk7CiAKQEAgLTU0MSwxNiArNTU1
-LDEyIEBAIGlndF9tYWluCiAJCWlndF9zdWJ0ZXN0X2YoIiVzLXJvdGF0aW9uLSVzIiwKIAkJCSAg
-ICAgIHBsYW5lX3Rlc3Rfc3RyKHN1YnRlc3QtPnBsYW5lKSwKIAkJCSAgICAgIHJvdF90ZXN0X3N0
-cihzdWJ0ZXN0LT5yb3QpKSB7Ci0JCQlpZ3RfcmVxdWlyZSghKHN1YnRlc3QtPnJvdCAmCi0JCQkJ
-ICAgIChJR1RfUk9UQVRJT05fOTAgfCBJR1RfUk9UQVRJT05fMjcwKSkgfHwKLQkJCQkgICAgZ2Vu
-ID49IDkpOwogCQkJZGF0YS5yb3RhdGlvbiA9IHN1YnRlc3QtPnJvdDsKIAkJCXRlc3RfcGxhbmVf
-cm90YXRpb24oJmRhdGEsIHN1YnRlc3QtPnBsYW5lLCBmYWxzZSk7CiAJCX0KIAl9CiAKIAlpZ3Rf
-c3VidGVzdF9mKCJzcHJpdGUtcm90YXRpb24tOTAtcG9zLTEwMC0wIikgewotCQlpZ3RfcmVxdWly
-ZShnZW4gPj0gOSk7CiAJCWRhdGEucm90YXRpb24gPSBJR1RfUk9UQVRJT05fOTA7CiAJCWRhdGEu
-cG9zX3ggPSAxMDAsCiAJCWRhdGEucG9zX3kgPSAwOwpAQCAtNTYwLDcgKzU3MCw2IEBAIGlndF9t
-YWluCiAJZGF0YS5wb3NfeSA9IDA7CiAKIAlpZ3Rfc3VidGVzdF9mKCJiYWQtcGl4ZWwtZm9ybWF0
-IikgewotCQlpZ3RfcmVxdWlyZShnZW4gPj0gOSk7CiAJCWRhdGEucm90YXRpb24gPSBJR1RfUk9U
-QVRJT05fOTA7CiAJCWRhdGEub3ZlcnJpZGVfZm10ID0gRFJNX0ZPUk1BVF9SR0I1NjU7CiAJCXRl
-c3RfcGxhbmVfcm90YXRpb24oJmRhdGEsIERSTV9QTEFORV9UWVBFX1BSSU1BUlksIHRydWUpOwpA
-QCAtNTY4LDcgKzU3Nyw2IEBAIGlndF9tYWluCiAJZGF0YS5vdmVycmlkZV9mbXQgPSAwOwogCiAJ
-aWd0X3N1YnRlc3RfZigiYmFkLXRpbGluZyIpIHsKLQkJaWd0X3JlcXVpcmUoZ2VuID49IDkpOwog
-CQlkYXRhLnJvdGF0aW9uID0gSUdUX1JPVEFUSU9OXzkwOwogCQlkYXRhLm92ZXJyaWRlX3RpbGlu
-ZyA9IExPQ0FMX0k5MTVfRk9STUFUX01PRF9YX1RJTEVEOwogCQl0ZXN0X3BsYW5lX3JvdGF0aW9u
-KCZkYXRhLCBEUk1fUExBTkVfVFlQRV9QUklNQVJZLCB0cnVlKTsKQEAgLTU3OSw5ICs1ODcsNiBA
-QCBpZ3RfbWFpbgogCQlpZ3Rfc3VidGVzdF9mKCJwcmltYXJ5LSVzLXJlZmxlY3QteC0lcyIsCiAJ
-CQkgICAgICB0aWxpbmdfdGVzdF9zdHIocmVmbGVjdF94LT50aWxpbmcpLAogCQkJICAgICAgcm90
-X3Rlc3Rfc3RyKHJlZmxlY3RfeC0+cm90KSkgewotCQkJaWd0X3JlcXVpcmUoZ2VuID49IDEwIHx8
-Ci0JCQkJICAgIChJU19DSEVSUllWSUVXKGRhdGEuZGV2aWQpICYmIHJlZmxlY3RfeC0+cm90ID09
-IElHVF9ST1RBVElPTl8wCi0JCQkJICAgICAmJiByZWZsZWN0X3gtPnRpbGluZyA9PSBMT0NBTF9J
-OTE1X0ZPUk1BVF9NT0RfWF9USUxFRCkpOwogCQkJZGF0YS5yb3RhdGlvbiA9IChJR1RfUkVGTEVD
-VF9YIHwgcmVmbGVjdF94LT5yb3QpOwogCQkJZGF0YS5vdmVycmlkZV90aWxpbmcgPSByZWZsZWN0
-X3gtPnRpbGluZzsKIAkJCXRlc3RfcGxhbmVfcm90YXRpb24oJmRhdGEsIERSTV9QTEFORV9UWVBF
-X1BSSU1BUlksIGZhbHNlKTsKQEAgLTU5Niw3ICs2MDEsNyBAQCBpZ3RfbWFpbgogCQllbnVtIHBp
-cGUgcGlwZTsKIAkJaWd0X291dHB1dF90ICpvdXRwdXQ7CiAKLQkJaWd0X3JlcXVpcmUoZ2VuID49
-IDkpOworCQlpZ3RfcmVxdWlyZShkYXRhLmdlbiA+PSA5KTsKIAkJaWd0X2Rpc3BsYXlfcmVxdWly
-ZV9vdXRwdXQoJmRhdGEuZGlzcGxheSk7CiAKIAkJZm9yX2VhY2hfcGlwZV93aXRoX3ZhbGlkX291
-dHB1dCgmZGF0YS5kaXNwbGF5LCBwaXBlLCBvdXRwdXQpIHsKLS0gCjIuOS4zCgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlz
-dAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9w
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+This is a multi-part message in MIME format.
+--===============2135062285==
+Content-Type: multipart/alternative;
+ boundary="------------A03531C0A574878EBD2F3BB5"
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------A03531C0A574878EBD2F3BB5
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 7/19/2018 2:35 AM, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>
+> Skip accounting the context save time for anything but the last request of
+> the coalesced bunch, and also skip drawing those boxes on the timeline.
+>
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> ---
+>   scripts/trace.pl | 10 +++++++---
+>   1 file changed, 7 insertions(+), 3 deletions(-)
+>
+>
+Not sure if you are not getting some of my replies? I have definitely 
+sent an R-B to this patch at least twice already. Maybe they are getting 
+caught by some kind of mailing list filter? I know your patches appear 
+randomly in one of three mailboxes for me - inbox, IGT or IntelGFX 
+according to which rule happens to take precedence on any given second 
+:(. Anyway...
+
+Reviewed-by: John Harrison <John.C.Harrison@Intel.com>
+
+
+--------------A03531C0A574878EBD2F3BB5
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    On 7/19/2018 2:35 AM, Tvrtko Ursulin wrote:<br>
+    <blockquote type="cite"
+      cite="mid:20180719093601.11788-2-tvrtko.ursulin@linux.intel.com">
+      <pre wrap="">From: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E" href="mailto:tvrtko.ursulin@intel.com">&lt;tvrtko.ursulin@intel.com&gt;</a>
+
+Skip accounting the context save time for anything but the last request of
+the coalesced bunch, and also skip drawing those boxes on the timeline.
+
+Signed-off-by: Tvrtko Ursulin <a class="moz-txt-link-rfc2396E" href="mailto:tvrtko.ursulin@intel.com">&lt;tvrtko.ursulin@intel.com&gt;</a>
+---
+ scripts/trace.pl | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+
+</pre>
+    </blockquote>
+    Not sure if you are not getting some of my replies? I have
+    definitely sent an R-B to this patch at least twice already. Maybe
+    they are getting caught by some kind of mailing list filter? I know
+    your patches appear randomly in one of three mailboxes for me -
+    inbox, IGT or IntelGFX according to which rule happens to take
+    precedence on any given second :(. Anyway...<br>
+    <br>
+    Reviewed-by: John Harrison <a class="moz-txt-link-rfc2396E"
+      href="mailto:John.C.Harrison@Intel.com">&lt;John.C.Harrison@Intel.com&gt;</a><br>
+    <br>
+  </body>
+</html>
+
+--------------A03531C0A574878EBD2F3BB5--
+
+--===============2135062285==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============2135062285==--
