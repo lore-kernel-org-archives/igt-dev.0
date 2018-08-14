@@ -1,36 +1,54 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tursulin@ursulin.net>
-Date: Tue, 14 Aug 2018 16:05:12 +0100
-Message-Id: <20180814150519.20204-1-tvrtko.ursulin@linux.intel.com>
-Subject: [Intel-gfx] [PATCH i-g-t 0/7] gem_wsim fixes and new features
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20180814150519.20204-2-tvrtko.ursulin@linux.intel.com>
+References: <20180814150519.20204-1-tvrtko.ursulin@linux.intel.com>
+ <20180814150519.20204-2-tvrtko.ursulin@linux.intel.com>
+Message-ID: <153425935575.3371.7564394383875986620@skylake-alporthouse-com>
+Date: Tue, 14 Aug 2018 16:09:15 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t 1/7] gem_wsim: Check sleep times
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Tvrtko Ursulin <tursulin@ursulin.net>, igt-dev@lists.freedesktop.org
+Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KCkEgYmFnIG9m
-IG5ldyBmZWF0dXJlcyBhbmQgYSBjb3VwbGUgZml4ZXMgd2hpY2ggY2FtZSB0byBiZSBhcyBJIHdh
-cyB0ZXN0aW5nCnRoZSBkeW5hbWljIFNTRVUgc3RvcnkuCgpUdnJ0a28gVXJzdWxpbiAoNyk6CiAg
-Z2VtX3dzaW06IENoZWNrIHNsZWVwIHRpbWVzCiAgZ2VtX3dzaW06IE1ha2Ugd29ya2xvYWQgY29t
-bWFuZHMgY2FzZSBzZW5zaXRpdmUKICBnZW1fd3NpbTogQ29udGV4dCBwcmlvcml0eSBzdXBwb3J0
-CiAgZ2VtX3dzaW06IFN0b3Aga2VlcGluZyBiYXRjaGVzIG1hcHBlZAogIGdlbV93c2ltOiBNYWtl
-IGJhdGNoZXMgcHJlZW1wdGFibGUgYnkgZGVmYXVsdAogIGdlbV93c2ltOiBQZXIgY29udGV4dCBw
-cmVlbXB0aW9uIHBvaW50IGNvbnRyb2wKICBnZW1fd3NpbTogRml4IEJDUyB1c2FnZSB1bmRlciBW
-Q1MyIHJlbWFwIHdhcm5pbmcKCiBiZW5jaG1hcmtzL2dlbV93c2ltLmMgIHwgMjE5ICsrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tCiBiZW5jaG1hcmtzL3dzaW0vUkVBRE1F
-IHwgIDM0ICsrKysrKysKIDIgZmlsZXMgY2hhbmdlZCwgMjM0IGluc2VydGlvbnMoKyksIDE5IGRl
-bGV0aW9ucygtKQoKLS0gCjIuMTcuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KSW50ZWwtZ2Z4IG1haWxpbmcgbGlzdApJbnRlbC1nZnhAbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
-Zm8vaW50ZWwtZ2Z4Cg==
+UXVvdGluZyBUdnJ0a28gVXJzdWxpbiAoMjAxOC0wOC0xNCAxNjowNToxMykKPiBGcm9tOiBUdnJ0
+a28gVXJzdWxpbiA8dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPgo+IAo+IE5vdGljZSBpbiBtb3Jl
+IHBsYWNlcyBpZiB3ZSBhcmUgcnVubmluZyBiZWhpbmQuCj4gCj4gU2lnbmVkLW9mZi1ieTogVHZy
+dGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KPiAtLS0KPiAgYmVuY2htYXJr
+cy9nZW1fd3NpbS5jIHwgNTIgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKyst
+LS0tLQo+ICAxIGZpbGUgY2hhbmdlZCwgNDYgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMoLSkK
+PiAKPiBkaWZmIC0tZ2l0IGEvYmVuY2htYXJrcy9nZW1fd3NpbS5jIGIvYmVuY2htYXJrcy9nZW1f
+d3NpbS5jCj4gaW5kZXggODBmMTgwODI5MjQxLi5lYWQ5MWIwZjAwOWIgMTAwNjQ0Cj4gLS0tIGEv
+YmVuY2htYXJrcy9nZW1fd3NpbS5jCj4gKysrIGIvYmVuY2htYXJrcy9nZW1fd3NpbS5jCj4gQEAg
+LTE3MTgsNiArMTcxOCwyMSBAQCBzdGF0aWMgYm9vbCBzeW5jX2RlcHMoc3RydWN0IHdvcmtsb2Fk
+ICp3cmssIHN0cnVjdCB3X3N0ZXAgKncpCj4gICAgICAgICByZXR1cm4gc3luY2VkOwo+ICB9Cj4g
+IAo+ICtzdGF0aWMgdW5zaWduZWQgaW50IG1lYXN1cmVkX3VzbGVlcCh1bnNpZ25lZCBpbnQgdXNl
+YykKPiArewo+ICsgICAgICAgc3RydWN0IHRpbWVzcGVjIHRzID0geyB9Owo+ICsgICAgICAgdW5z
+aWduZWQgaW50IHNsZXB0Owo+ICsKPiArICAgICAgIHNsZXB0ID0gaWd0X25zZWNfZWxhcHNlZCgm
+dHMpOwo+ICsgICAgICAgaWd0X2Fzc2VydChzbGVwdCA9PSAwKTsKPiArICAgICAgIGRvIHsKPiAr
+ICAgICAgICAgICAgICAgdXNsZWVwKHVzZWMgLSBzbGVwdCk7Cj4gKyAgICAgICAgICAgICAgIHNs
+ZXB0ID0gaWd0X25zZWNfZWxhcHNlZCgmdHMpIC8gMTAwMDsKPiArICAgICAgIH0gd2hpbGUgKHNs
+ZXB0IDwgdXNlYyk7Cj4gKwo+ICsgICAgICAgcmV0dXJuIGlndF9uc2VjX2VsYXBzZWQoJnRzKTsK
+PiArfQo+ICsKPiAgc3RhdGljIHZvaWQgKnJ1bl93b3JrbG9hZCh2b2lkICpkYXRhKQo+ICB7Cj4g
+ICAgICAgICBzdHJ1Y3Qgd29ya2xvYWQgKndyayA9IChzdHJ1Y3Qgd29ya2xvYWQgKilkYXRhOwo+
+IEBAIC0xNzM5LDcgKzE3NTQsNyBAQCBzdGF0aWMgdm9pZCAqcnVuX3dvcmtsb2FkKHZvaWQgKmRh
+dGEpCj4gICAgICAgICAgICAgIGNvdW50KyspIHsKPiAgICAgICAgICAgICAgICAgdW5zaWduZWQg
+aW50IGN1cl9zZXFubyA9IHdyay0+c3luY19zZXFubzsKPiAgCj4gLSAgICAgICAgICAgICAgIGNs
+b2NrX2dldHRpbWUoQ0xPQ0tfTU9OT1RPTklDLCAmd3JrLT5yZXBlYXRfc3RhcnQpOwo+ICsgICAg
+ICAgICAgICAgICBpZ3RfZ2V0dGltZSgmd3JrLT5yZXBlYXRfc3RhcnQpOwoKV2VyZSB5b3UgYWxy
+ZWFkeSBsaW5raW5nIGFnYWluc3QgbGliaWd0PwpUaGlzIGNvZGUgaXMgbm90IHNldCB1cCB0byBo
+aXQgYW4gaWd0X2Fzc2VydCgpLi4uCi1DaHJpcwpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZy
+ZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2lndC1kZXYK
