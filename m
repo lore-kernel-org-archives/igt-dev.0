@@ -1,44 +1,39 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 15 Aug 2018 21:59:23 +0100
-Message-Id: <20180815205924.6949-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] [PATCH i-g-t 1/2] igt/pm_rpm: Close local fd before
- trying to unload module
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Date: Wed, 15 Aug 2018 21:59:24 +0100
+Message-Id: <20180815205924.6949-2-chris@chris-wilson.co.uk>
+In-Reply-To: <20180815205924.6949-1-chris@chris-wilson.co.uk>
+References: <20180815205924.6949-1-chris@chris-wilson.co.uk>
+Subject: [Intel-gfx] [PATCH i-g-t 2/2] igt/pm_rpm: Avoid at_exit_drm_fd
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-TWFrZSBzdXJlIGV2ZXJ5dGhpbmcgd2Ugb3BlbiBpbiBzZXR1cF9lbnZpcm9ubWVudCgpIGlzIHBh
-aXJlZCB0bwp0ZWFyZG93bl9lbnZpcm9ubWVudCgpLgoKRml4ZXM6IGQ4ZTc4OTkwYWEyYiAoImln
-dC9wbV9ycG06IFRlc3QgcmVhcXVpc2l0aW9uIG9mIHJ1bnRpbWUtcG0gYWZ0ZXIgbW9kdWxlIHJl
-bG9hZCIpClNpZ25lZC1vZmYtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNv
-LnVrPgotLS0KIHRlc3RzL3BtX3JwbS5jIHwgMjAgKysrKysrKysrKystLS0tLS0tLS0KIDEgZmls
-ZSBjaGFuZ2VkLCAxMSBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBh
-L3Rlc3RzL3BtX3JwbS5jIGIvdGVzdHMvcG1fcnBtLmMKaW5kZXggNjU0ODliY2RiLi5jMDIxMmVk
-NzAgMTAwNjQ0Ci0tLSBhL3Rlc3RzL3BtX3JwbS5jCisrKyBiL3Rlc3RzL3BtX3JwbS5jCkBAIC03
-MTcsMjEgKzcxNywyMyBAQCBvdXQ6CiAJcmV0dXJuIHdhaXRfZm9yX3N1c3BlbmRlZCgpOwogfQog
-Ci1zdGF0aWMgdm9pZCByZXN0b3JlX2Vudmlyb25tZW50KHZvaWQpCitzdGF0aWMgdm9pZCB0ZWFy
-ZG93bl9lbnZpcm9ubWVudCh2b2lkKQogeworCWNsb3NlKG1zcl9mZCk7CisJaWYgKGhhc19wYzgp
-CisJCWNsb3NlKHBjOF9zdGF0dXNfZmQpOworCisJaWd0X3Jlc3RvcmVfcnVudGltZV9wbSgpOwor
-CiAJaWd0X3BtX3Jlc3RvcmVfc2F0YV9saW5rX3Bvd2VyX21hbmFnZW1lbnQocG1fZGF0YSk7CiAJ
-ZnJlZShwbV9kYXRhKTsKLX0KIAotc3RhdGljIHZvaWQgdGVhcmRvd25fZW52aXJvbm1lbnQodm9p
-ZCkKLXsKLQlyZXN0b3JlX2Vudmlyb25tZW50KCk7CiAJZmluaV9tb2RlX3NldF9kYXRhKCZtc19k
-YXRhKTsKKwogCWNsb3NlKGRlYnVnZnMpOwotCWRybUNsb3NlKGRybV9mZCk7Ci0JY2xvc2UobXNy
-X2ZkKTsKLQlpZiAoaGFzX3BjOCkKLQkJY2xvc2UocGM4X3N0YXR1c19mZCk7CisJY2xvc2UoZHJt
-X2ZkKTsKKworCWhhc19ydW50aW1lX3BtID0gZmFsc2U7CiB9CiAKIHN0YXRpYyB2b2lkIGJhc2lj
-X3N1YnRlc3Qodm9pZCkKLS0gCjIuMTguMAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
-ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9pZ3QtZGV2Cg==
+S2VlcCB0aGUgZHJtX2ZkIG93bmVkIGJ5IHBtX3JwbSBhcyB3ZSBuZWVkIHRvIHJlbGlucXVpc2gg
+YWxsIG93bmVyc2hpcApvZiB0aGUgZGV2aWNlIGluIG9yZGVyIHRvIHVubG9hZCB0aGUgbW9kdWxl
+LgoKU2lnbmVkLW9mZi1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+
+Ci0tLQogdGVzdHMvcG1fcnBtLmMgfCA1ICsrKystCiAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRp
+b25zKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvcG1fcnBtLmMgYi90ZXN0
+cy9wbV9ycG0uYwppbmRleCBjMDIxMmVkNzAuLmYwNzgxNjE3YyAxMDA2NDQKLS0tIGEvdGVzdHMv
+cG1fcnBtLmMKKysrIGIvdGVzdHMvcG1fcnBtLmMKQEAgLTY5Nyw3ICs2OTcsMTAgQEAgc3RhdGlj
+IGJvb2wgc2V0dXBfZW52aXJvbm1lbnQodm9pZCkKIAlpZiAoaGFzX3J1bnRpbWVfcG0pCiAJCWdv
+dG8gb3V0OwogCi0JZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfSU5URUwp
+OworCWRybV9mZCA9IF9fZHJtX29wZW5fZHJpdmVyKERSSVZFUl9JTlRFTCk7CisJaWd0X3JlcXVp
+cmUoZHJtX2ZkICE9IC0xKTsKKwlpZ3RfZGV2aWNlX3NldF9tYXN0ZXIoZHJtX2ZkKTsKKwogCWRl
+YnVnZnMgPSBpZ3RfZGVidWdmc19kaXIoZHJtX2ZkKTsKIAlpZ3RfcmVxdWlyZShkZWJ1Z2ZzICE9
+IC0xKTsKIAotLSAKMi4xOC4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpJbnRlbC1nZnggbWFpbGluZyBsaXN0CkludGVsLWdmeEBsaXN0cy5mcmVlZGVz
+a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9p
+bnRlbC1nZngK
