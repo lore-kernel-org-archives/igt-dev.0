@@ -1,38 +1,42 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 77FFA6E189
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Aug 2018 12:12:28 +0000 (UTC)
-Date: Thu, 16 Aug 2018 15:12:24 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20180816121224.GE26434@ahiler-desk1.fi.intel.com>
-References: <20180816111416.8047-1-petri.latvala@intel.com>
- <20180816111416.8047-2-petri.latvala@intel.com>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Thu, 16 Aug 2018 15:17:26 +0100
+Message-Id: <20180816141726.14791-1-chris@chris-wilson.co.uk>
+Subject: [Intel-gfx] [PATCH i-g-t] igt/pm_rpm: Skip counting modes if
+ modprobed with disable_display
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20180816111416.8047-2-petri.latvala@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] runner/resultgen: Implement the
- totals field
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBBdWcgMTYsIDIwMTggYXQgMDI6MTQ6MTZQTSArMDMwMCwgUGV0cmkgTGF0dmFsYSB3
-cm90ZToKPiBUaGUgdG90YWxzIGZpZWxkIGluIHRoZSByZXN1bHRzIGpzb24gbGlzdHMgdGhlIHRv
-dGFsIGFtb3VudCBvZgo+IHBhcnRpY3VsYXIgdGVzdCByZXN1bHRzLCBib3RoIG92ZXJhbGwgYW5k
-IGJ5IGJpbmFyeS4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2
-YWxhQGludGVsLmNvbT4KPiBDYzogQXJrYWRpdXN6IEhpbGVyIDxhcmthZGl1c3ouaGlsZXJAaW50
-ZWwuY29tPgpSZXZpZXdlZC1ieTogQXJrYWRpdXN6IEhpbGVyIDxhcmthZGl1c3ouaGlsZXJAaW50
-ZWwuY29tPgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpp
-Z3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczov
-L2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+SWYgd2UndmUgZXhwbGljaXRseSBkaXNhYmxlZCB0aGUgZGlzcGxheSwgd2Ugd2lsbCBuZXZlciBm
+aW5kIGFueQpjb25uZWN0ZWQgb3V0cHV0cyBvciBtb2Rlcy4gQ2hlY2tpbmcgZm9yIHRoZW0gd2ls
+bCBmYWlsIGFuZCByZXBvcnQgdGhlCm1pc3NpbmcgcmVxdWlyZW1lbnQgaW5zdGVhZC4KClNpZ25l
+ZC1vZmYtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgpDYzogSW1y
+ZSBEZWFrIDxpbXJlLmRlYWtAaW50ZWwuY29tPgotLS0KIHRlc3RzL3BtX3JwbS5jIHwgNCArKy0t
+CiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAt
+LWdpdCBhL3Rlc3RzL3BtX3JwbS5jIGIvdGVzdHMvcG1fcnBtLmMKaW5kZXggZmVmY2IxYmViLi4y
+YzRiZjUyOWMgMTAwNjQ0Ci0tLSBhL3Rlc3RzL3BtX3JwbS5jCisrKyBiL3Rlc3RzL3BtX3JwbS5j
+CkBAIC0yMDQ2LDcgKzIwNDYsNiBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQog
+CiAJCWlndF9hc3NlcnQoc2V0dXBfZW52aXJvbm1lbnQoKSk7CiAJCWJhc2ljX3N1YnRlc3QoKTsK
+LQkJZHJtX3Jlc291cmNlc19lcXVhbF9zdWJ0ZXN0KCk7CiAJCXBjaV9kM19zdGF0ZV9zdWJ0ZXN0
+KCk7CiAJCXRlYXJkb3duX2Vudmlyb25tZW50KCk7CiAKQEAgLTIwNTYsNyArMjA1NSw4IEBAIGlu
+dCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10pCiAKIAkJaWd0X2Fzc2VydChzZXR1cF9lbnZp
+cm9ubWVudCgpKTsKIAkJYmFzaWNfc3VidGVzdCgpOwotCQlkcm1fcmVzb3VyY2VzX2VxdWFsX3N1
+YnRlc3QoKTsKKwkJaWYgKGVuYWJsZV9vbmVfc2NyZWVuX3dpdGhfdHlwZShkYXRhLCBTQ1JFRU5f
+VFlQRV9BTlkpKQorCQkJZHJtX3Jlc291cmNlc19lcXVhbF9zdWJ0ZXN0KCk7CiAJCXBjaV9kM19z
+dGF0ZV9zdWJ0ZXN0KCk7CiAJCXRlYXJkb3duX2Vudmlyb25tZW50KCk7CiAJfQotLSAKMi4xOC4w
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpJbnRlbC1n
+ZnggbWFpbGluZyBsaXN0CkludGVsLWdmeEBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
+aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pbnRlbC1nZngK
