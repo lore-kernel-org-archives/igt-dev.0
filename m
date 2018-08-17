@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20180815092511.3838-1-chris@chris-wilson.co.uk>
- <96c94d6c-3ddc-9587-ef1e-bd99fa9eea59@intel.com>
- <153452816239.2449.12938146332416378964@skylake-alporthouse-com>
-From: Antonio Argenziano <antonio.argenziano@intel.com>
-Message-ID: <88e58716-9c01-bbf6-652e-c7151b747eab@intel.com>
-Date: Fri, 17 Aug 2018 11:27:57 -0700
-MIME-Version: 1.0
-In-Reply-To: <153452816239.2449.12938146332416378964@skylake-alporthouse-com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] igt/pm_rpm: Close local fd before
- trying to unload module
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F3206E0D8
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Aug 2018 20:51:30 +0000 (UTC)
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Date: Fri, 17 Aug 2018 13:51:25 -0700
+Message-Id: <20180817205125.2340-1-rodrigo.vivi@intel.com>
+Subject: [igt-dev] [PATCH i-g-t] pm_rpm: Require DMC loaded before testing
+ runtime_pm for gen9+
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,43 +14,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Anusha Srivatsa <anusha.srivatsa@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CgpPbiAxNy8wOC8xOCAxMDo0OSwgQ2hyaXMgV2lsc29uIHdyb3RlOgo+IFF1b3RpbmcgQW50b25p
-byBBcmdlbnppYW5vICgyMDE4LTA4LTE3IDE4OjI5OjA5KQo+Pgo+Pgo+PiBPbiAxNS8wOC8xOCAw
-MjoyNSwgQ2hyaXMgV2lsc29uIHdyb3RlOgo+Pj4gRml4ZXM6IGQ4ZTc4OTkwYWEyYiAoImlndC9w
-bV9ycG06IFRlc3QgcmVhcXVpc2l0aW9uIG9mIHJ1bnRpbWUtcG0gYWZ0ZXIgbW9kdWxlIHJlbG9h
-ZCIpCj4+PiBTaWduZWQtb2ZmLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5j
-by51az4KPj4+IC0tLQo+Pj4gICAgdGVzdHMvcG1fcnBtLmMgfCAyICsrCj4+PiAgICAxIGZpbGUg
-Y2hhbmdlZCwgMiBpbnNlcnRpb25zKCspCj4+Pgo+Pj4gZGlmZiAtLWdpdCBhL3Rlc3RzL3BtX3Jw
-bS5jIGIvdGVzdHMvcG1fcnBtLmMKPj4+IGluZGV4IDY1NDg5YmNkYi4uYTRmOWY3ODNlIDEwMDY0
-NAo+Pj4gLS0tIGEvdGVzdHMvcG1fcnBtLmMKPj4+ICsrKyBiL3Rlc3RzL3BtX3JwbS5jCj4+PiBA
-QCAtMjAzNCw2ICsyMDM0LDggQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKPj4+
-ICAgICAgICAgICAgICAgIHRlYXJkb3duX2Vudmlyb25tZW50KCk7Cj4+PiAgICAKPj4+ICAgICAg
-ICBpZ3Rfc3VidGVzdCgibW9kdWxlLXJlbG9hZCIpIHsKPj4+ICsgICAgICAgICAgICAgdGVhcmRv
-d25fZW52aXJvbm1lbnQoKTsKPj4KPj4gVGhlcmUgaXMgYWxyZWFkeSBhIGZpeHR1cmUgd2l0aCBh
-IGNhbGwgdG8gJ3RlYXJkb3duX2Vudmlyb25tZW50KCknCj4+IHN1cnJvdW5kaW5nIHRoaXMgdGVz
-dCwgaXMgaXQgbWlzc2luZyBhIGNvdXBsZSBvZiBzdWJ0ZXN0cyBncm91cHM/Cj4gCj4gSXQgd2Fz
-IGludGVuZGVkIGZvciBzZXF1ZW50aWFsIGV4ZWN1dGlvbiAoYW5kIEkgaGFkIGZvcmdvdHRlbiB0
-aGF0IEkgaGFkCj4gcHVycG9zZWx5IHBsYWNlZCBpdCBhZnRlciB0aGUgdGVhcmRvd25fZW52aXJv
-bm1lbnQgLS0gdGhlIGNvbmZ1c2lvbiB3YXMKPiBjYXVzZWQgYnkgdGVhcmRvd25fZW52aXJvbm1l
-bnQgYmVpbmcgaW5jb21wbGV0ZSkuIEFkZGluZyBhIHN1YnRlc3QgZ3JvdXAKPiBmb3IgdGhlIHBy
-ZWNlZGluZyBidW5jaCB3b3VsZCBoYXZlIHRoZSBkZWJhdGFibGUgY29uc2VxdWVuY2Ugb2YgbW9k
-dWxlLQo+IHJlbG9hZCByZXBvcnRpbmcgYSBGQUlMIGlmIHNvbWV0aGluZyBlbHNlIGNhdXNlZCBh
-IHdha2VyZWYgbGVhay4gTXkKPiBvcGluaW9uIGlzIHRvIHByZWZlciBTS0lQIGZvciBleHRlcm5h
-bCBhcnRlZmFjdHMgc28gdGhhdCBpdCBpcyBjbGVhciB3aGVuCj4gYSB0ZXN0IGZhaWxlZCBvZiBp
-dHMgb3duIGFjY29yZCAoYW5kIHNvIGJlIHVzZWZ1bCBmb3IgZGVidWdnaW5nKS4gSXQganVzdAo+
-IHNvIGhhcHBlbnMgdGhhdCB0aGlzIHRlc3Qgd2FzIHRvIHJlcHJvZHVjZSB0aGUgdHJpZ2dlciBm
-b3IgdGhlIGV4dGVybmFsCj4gZmFpbHVyZXMgZWxzZXdoZXJlIGFuZCBzbyBkZXRlY3QgdGhlIHdh
-a2VyZWYgbGVhay4KCkFncmVlZC4gTWF5YmUgYSBjb21tZW50IHdvdWxkIGhlbHAsIHlvdXIgY2hv
-aWNlLgoKUmV2aWV3ZWQtYnk6IEFudG9uaW8gQXJnZW56aWFubyA8YW50b25pby5hcmdlbnppYW5v
-QGludGVsLmNvbT4KCj4gLUNocmlzCj4gCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8v
-aWd0LWRldgo=
+U2luY2Ugd2UgYmxvY2sgcnVudGltZSBQTSBpZiBETUMgaXMgbm90IGxvYWRlZCwgbGV0J3Mgc2tp
+cAp0aGUgdGVzdC4KCkNjOiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4K
+Q2M6IEltcmUgRGVhayA8aW1yZS5kZWFrQGludGVsLmNvbT4KQ2M6IEFudXNoYSBTcml2YXRzYSA8
+YW51c2hhLnNyaXZhdHNhQGludGVsLmNvbT4KU2lnbmVkLW9mZi1ieTogUm9kcmlnbyBWaXZpIDxy
+b2RyaWdvLnZpdmlAaW50ZWwuY29tPgotLS0KIHRlc3RzL3BtX3JwbS5jIHwgMTMgKysrKysrKysr
+KysrKwogMSBmaWxlIGNoYW5nZWQsIDEzIGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS90ZXN0
+cy9wbV9ycG0uYyBiL3Rlc3RzL3BtX3JwbS5jCmluZGV4IGJiZTM2ZTU5Li5mODQ0MmU0YSAxMDA2
+NDQKLS0tIGEvdGVzdHMvcG1fcnBtLmMKKysrIGIvdGVzdHMvcG1fcnBtLmMKQEAgLTY5Myw2ICs2
+OTMsMTYgQEAgc3RhdGljIHZvaWQgc2V0dXBfcGM4KHZvaWQpCiAJaGFzX3BjOCA9IHRydWU7CiB9
+CiAKK3N0YXRpYyBib29sIGRtY19sb2FkZWQodm9pZCkKK3sKKwljaGFyIGJ1ZlsxNV07CisKKwlp
+Z3RfZGVidWdmc19yZWFkKGRybV9mZCwgImk5MTVfZG1jX2luZm8iLCBidWYpOworCisJaWd0X2lu
+Zm8oIkRNQzogJXNcbiIsIGJ1Zik7CisJcmV0dXJuIHN0cnN0cihidWYsICJmdyBsb2FkZWQ6IHll
+cyIpOworfQorCiBzdGF0aWMgYm9vbCBzZXR1cF9lbnZpcm9ubWVudCh2b2lkKQogewogCWlmICho
+YXNfcnVudGltZV9wbSkKQEAgLTcxNiw2ICs3MjYsOSBAQCBzdGF0aWMgYm9vbCBzZXR1cF9lbnZp
+cm9ubWVudCh2b2lkKQogCWlndF9pbmZvKCJQQzggcmVzaWRlbmN5IHN1cHBvcnQ6ICVkXG4iLCBo
+YXNfcGM4KTsKIAlpZ3RfcmVxdWlyZShoYXNfcnVudGltZV9wbSk7CiAKKwlpZiAoaW50ZWxfZ2Vu
+KG1zX2RhdGEuZGV2aWQpID49IDkpCisJCWlndF9yZXF1aXJlKGRtY19sb2FkZWQoKSk7CisKIG91
+dDoKIAlkaXNhYmxlX2FsbF9zY3JlZW5zKCZtc19kYXRhKTsKIAlyZXR1cm4gd2FpdF9mb3Jfc3Vz
+cGVuZGVkKCk7Ci0tIAoyLjE3LjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0
+LWRldgo=
