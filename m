@@ -1,17 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
- by gabe.freedesktop.org (Postfix) with ESMTP id 552496E03C
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Aug 2018 11:47:04 +0000 (UTC)
-Date: Thu, 23 Aug 2018 13:46:52 +0200
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20180823114652.3a4qtwaz23ayuzmq@flea>
-References: <cover.85e5bbe6ef5f0fd420e1fc21fc248471b98481e5.1532596850.git-series.maxime.ripard@bootlin.com>
- <cbedc79edb2bcfc1ad2ed89cb86b15bc9088e634.1532596850.git-series.maxime.ripard@bootlin.com>
- <87tvo3s00j.fsf@anholt.net>
-MIME-Version: 1.0
-In-Reply-To: <87tvo3s00j.fsf@anholt.net>
-Subject: Re: [igt-dev] [PATCH v4 08/13] chamelium: Use preferred mode when
- testing a single mode
+From: Jyoti Yadav <jyoti.r.yadav@intel.com>
+Date: Thu, 23 Aug 2018 08:16:28 -0400
+Message-Id: <1535026588-12495-1-git-send-email-jyoti.r.yadav@intel.com>
+Subject: [igt-dev] [PATCH] [intel-gfx] [PATCH i-g-t] tests/pm_backlight.c :
+ Brightness test with DPMS and System suspend.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,123 +11,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1928422169=="
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Eric Anholt <eric@anholt.net>
-Cc: Paul Kocialkowski <paul.kocialkowski@bootlin.com>, eben@raspberrypi.org, igt-dev@lists.freedesktop.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+To: igt-dev@lists.freedesktop.org
+Cc: madhav.chauhan@intel.com, intel-gfx@lists.freedesktop.org, rodrigo.vivi@intel.com, Jyoti <jyoti.r.yadav@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============1928422169==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="teqdxeg4ug72cx4d"
-Content-Disposition: inline
-
-
---teqdxeg4ug72cx4d
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Eric,
-
-On Thu, Aug 09, 2018 at 02:28:12PM -0700, Eric Anholt wrote:
-> Maxime Ripard <maxime.ripard@bootlin.com> writes:
->=20
-> > The current code is testing the first mode in the connector list when i=
-t's
-> > testing a single mode. While this is arbitrarily chosen, it makes more
-> > sense to use the preferred mode reported by the display.
-> >
-> > Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
-> > ---
-> >  tests/kms_chamelium.c | 19 ++++++++++++++++++-
-> >  1 file changed, 18 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
-> > index 490bacc6f5fe..5d7fb83fb74f 100644
-> > --- a/tests/kms_chamelium.c
-> > +++ b/tests/kms_chamelium.c
-> > @@ -534,6 +534,20 @@ static void do_test_display_crc(data_t *data, stru=
-ct chamelium_port *port,
-> >  	igt_remove_fb(data->drm_fd, &fb);
-> >  }
-> > =20
-> > +static drmModeModeInfo *find_preferred_mode(drmModeConnector *connecto=
-r)
-> > +{
-> > +	int i;
-> > +
-> > +	for (i =3D 0; i < connector->count_modes; i++) {
-> > +		drmModeModeInfo *mode =3D &connector->modes[i];
-> > +
-> > +		if (mode->type & DRM_MODE_TYPE_PREFERRED)
-> > +			return mode;
-> > +	}
-> > +
-> > +	return NULL;
-> > +}
-> > +
-> >  static void test_display_crc_one_mode(data_t *data, struct chamelium_p=
-ort *port,
-> >  				      int count)
-> >  {
-> > @@ -549,7 +563,10 @@ static void test_display_crc_one_mode(data_t *data=
-, struct chamelium_port *port,
-> >  	primary =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> >  	igt_assert(primary);
-> > =20
-> > -	do_test_display_crc(data, port, output, &connector->modes[0], count);
-> > +	mode =3D find_preferred_mode(connector);
-> > +	igt_assert(mode);
-> > +
-> > +	do_test_display_crc(data, port, output, mode, count);
->=20
-> Instead of asserting, should we pick the first if there was no
-> preferred?  I don't really know, so I'd ack the patch either way.
-
-I've changed the return NULL above to return &connector->modes[0]
-instead.
-
-Thanks!
-Maxime
-
---=20
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---teqdxeg4ug72cx4d
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlt+nqsACgkQ0rTAlCFN
-r3SjJA//ZhGafYnDuqmDjozecbtHyXTJsCSYot14uSHfI1E10rA3O9BqaGt5SBcz
-QYb7X8G+RcjsUot8Fs33l0x8RPynuXDW25aP+jCY8MATIjxix6xZfn51rOxmOAxn
-oCPZa1YNCoYGq9g1iJin/IUsKyR+Jkv9z9A+NRAShiiYrac4HZqxOS4wbfO4wBVn
-caxQwHli0726HtKUVPMfsw7bnyQmvSyzTxehy13+WILtUxqfOxHeXtAkfpGTNixS
-Yx9IHa1hWdJbgChYeDcxW9WxL/7XwCdjuuu+45FL9WjuhmblXi6xD8/YjTSp6TXA
-kY+1jbSKCGeGv8xmMQRH4o+TiMV+pSZSAcZWb3Odc5EMJLexlkLQ6fBT6gSZ7zeh
-SNWnkPIs9KXG86dXxp3B1BPfNc24sXgkn7yNMBwf0WsKde5qTIRap6yjMCkse885
-nXel1Ec0afkmeO5b77QrQgXPUJFTbqFJYDrbBFrtOSkovxt0iQBbrFh4sqNz7lJd
-PCKjRdpPpEKEY26x3ZKi/Xg5DR0b0k21KAKzkkuV3eV7cl/LwvadKfFerV4GUSfR
-yrqTdYGlXU3+jh2y5AIo0GGarF41s4wWZp3OBMwIvO2Sp39aJgpgcCWRCK3Z0zqt
-pDHXo+PCPJzVX+fdyqMclVIbQtvukdK4ocUZDGF3jUCpLJSDx/M=
-=MwmE
------END PGP SIGNATURE-----
-
---teqdxeg4ug72cx4d--
-
---===============1928422169==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============1928422169==--
+RnJvbTogSnlvdGkgPGp5b3RpLnIueWFkYXZAaW50ZWwuY29tPgoKQklPUyBwcm9ncmFtcyBmZXcg
+b2YgUFdNIHJlbGF0ZWQgcmVnaXN0ZXJzIGR1cmluZyBpbml0aWFsIGJvb3QuCkJ1dCBkdXJpbmcg
+U3lzdGVtIHN1c3BlbmQgdGhvc2UgcmVnaXN0ZXJzIGFyZSBjbGVhcmVkLgpUaGlzIHRlc3QgYWlt
+IHRvIGNoZWNrIHdoZXRoZXIgZGlzcGxheSBwcm9ncmFtcyB0aG9zZSByZWdpc3RlcnMgcHJvcGVy
+bHkgYWZ0ZXIKc3lzdGVtIHJlc3VtZS4KQWxzbyBjaGVja3MgYnJpZ2h0bmVzcyBwcm9ncmFtbWlu
+ZyBkdXJpbmcgRFBNUyBPTi9PRkYgY3ljbGUgdG8gY2hlY2sgYmFja2xpZ2h0CnByb2dyYW1taW5n
+IGlzIGRvbmUgcHJvcGVybHkgZnJvbSBkaXNwbGF5IHNpZGUuCgpTaWduZWQtb2ZmLWJ5OiBKeW90
+aSBZYWRhdiA8anlvdGkuci55YWRhdkBpbnRlbC5jb20+Ci0tLQogdGVzdHMvcG1fYmFja2xpZ2h0
+LmMgfCA1MiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+Ky0tCiAxIGZpbGUgY2hhbmdlZCwgNTAgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKCmRp
+ZmYgLS1naXQgYS90ZXN0cy9wbV9iYWNrbGlnaHQuYyBiL3Rlc3RzL3BtX2JhY2tsaWdodC5jCmlu
+ZGV4IGE2OTVmOTAuLjZmNmQ3MjcgMTAwNjQ0Ci0tLSBhL3Rlc3RzL3BtX2JhY2tsaWdodC5jCisr
+KyBiL3Rlc3RzL3BtX2JhY2tsaWdodC5jCkBAIC00Nyw2ICs0Nyw3IEBAIHN0cnVjdCBjb250ZXh0
+IHsKICNkZWZpbmUgRkFERVNQRUVEIDEwMCAvKiBtaWxsaXNlY29uZHMgYmV0d2VlbiBzdGVwcyAq
+LwogCiBJR1RfVEVTVF9ERVNDUklQVElPTigiQmFzaWMgYmFja2xpZ2h0IHN5c2ZzIHRlc3QiKTsK
+K3N0YXRpYyBpbnQ4X3QgKnBtX2RhdGEgPSBOVUxMOwogCiBzdGF0aWMgaW50IGJhY2tsaWdodF9y
+ZWFkKGludCAqcmVzdWx0LCBjb25zdCBjaGFyICpmbmFtZSkKIHsKQEAgLTE1MCwxOSArMTUxLDYw
+IEBAIHN0YXRpYyB2b2lkIHRlc3RfZmFkZShzdHJ1Y3QgY29udGV4dCAqY29udGV4dCkKIAkJbmFu
+b3NsZWVwKCZ0cywgTlVMTCk7CiAJfQogfQorc3RhdGljIHZvaWQgdGVzdF9mYWRlX3dpdGhfZHBt
+cyhzdHJ1Y3QgY29udGV4dCAqY29udGV4dCwgaWd0X291dHB1dF90ICpvdXRwdXQpCit7CisJaW50
+IGk7CisJc3RhdGljIGNvbnN0IHN0cnVjdCB0aW1lc3BlYyB0cyA9IHsgLnR2X3NlYyA9IDAsIC50
+dl9uc2VjID0gRkFERVNQRUVEKjEwMDAwMDAgfTsKKwlib29sIGhhc19ydW50aW1lX3BtOworCWhh
+c19ydW50aW1lX3BtID0gaWd0X3NldHVwX3J1bnRpbWVfcG0oKTsKKwlpZ3RfaW5mbygiUnVudGlt
+ZSBQTSBzdXBwb3J0OiAlZFxuIiwgaGFzX3J1bnRpbWVfcG0pOworCWlndF9hc3NlcnQoaGFzX3J1
+bnRpbWVfcG0pOworCWttc3Rlc3Rfc2V0X2Nvbm5lY3Rvcl9kcG1zKG91dHB1dC0+ZGlzcGxheS0+
+ZHJtX2ZkLCBvdXRwdXQtPmNvbmZpZy5jb25uZWN0b3IsIERSTV9NT0RFX0RQTVNfT0ZGKTsKKwlp
+Z3RfYXNzZXJ0KGlndF93YWl0X2Zvcl9wbV9zdGF0dXMoSUdUX1JVTlRJTUVfUE1fU1RBVFVTX1NV
+U1BFTkRFRCkpOworCWttc3Rlc3Rfc2V0X2Nvbm5lY3Rvcl9kcG1zKG91dHB1dC0+ZGlzcGxheS0+
+ZHJtX2ZkLCBvdXRwdXQtPmNvbmZpZy5jb25uZWN0b3IsIERSTV9NT0RFX0RQTVNfT04pOworCWln
+dF9hc3NlcnQoaWd0X3dhaXRfZm9yX3BtX3N0YXR1cyhJR1RfUlVOVElNRV9QTV9TVEFUVVNfQUNU
+SVZFKSk7CisKKwkvKiBGYWRlIG91dCwgdGhlbiBpbiAqLworCWZvciAoaSA9IGNvbnRleHQtPm1h
+eDsgaSA+IDA7IGkgLT0gY29udGV4dC0+bWF4IC8gRkFERVNURVBTKSB7CisJCXRlc3RfYW5kX3Zl
+cmlmeShjb250ZXh0LCBpKTsKKwkJbmFub3NsZWVwKCZ0cywgTlVMTCk7CisJfQorCWZvciAoaSA9
+IDA7IGkgPD0gY29udGV4dC0+bWF4OyBpICs9IGNvbnRleHQtPm1heCAvIEZBREVTVEVQUykgewor
+CQl0ZXN0X2FuZF92ZXJpZnkoY29udGV4dCwgaSk7CisJCW5hbm9zbGVlcCgmdHMsIE5VTEwpOwor
+CX0KK30KK3N0YXRpYyB2b2lkIHRlc3RfZmFkZV93aXRoX3N1c3BlbmQoc3RydWN0IGNvbnRleHQg
+KmNvbnRleHQsIGlndF9vdXRwdXRfdCAqb3V0cHV0KQoreworCWludCBpOworCXN0YXRpYyBjb25z
+dCBzdHJ1Y3QgdGltZXNwZWMgdHMgPSB7IC50dl9zZWMgPSAwLCAudHZfbnNlYyA9IEZBREVTUEVF
+RCoxMDAwMDAwIH07CisJa21zdGVzdF9zZXRfY29ubmVjdG9yX2RwbXMob3V0cHV0LT5kaXNwbGF5
+LT5kcm1fZmQsIG91dHB1dC0+Y29uZmlnLmNvbm5lY3RvciwgRFJNX01PREVfRFBNU19PRkYpOwor
+CWlndF9hc3NlcnQoaWd0X3dhaXRfZm9yX3BtX3N0YXR1cyhJR1RfUlVOVElNRV9QTV9TVEFUVVNf
+U1VTUEVOREVEKSk7CisJaWd0X3N5c3RlbV9zdXNwZW5kX2F1dG9yZXN1bWUoU1VTUEVORF9TVEFU
+RV9NRU0sIFNVU1BFTkRfVEVTVF9OT05FKTsKKworCS8qIEZhZGUgb3V0LCB0aGVuIGluICovCisJ
+Zm9yIChpID0gY29udGV4dC0+bWF4OyBpID4gMDsgaSAtPSBjb250ZXh0LT5tYXggLyBGQURFU1RF
+UFMpIHsKKwkJdGVzdF9hbmRfdmVyaWZ5KGNvbnRleHQsIGkpOworCQluYW5vc2xlZXAoJnRzLCBO
+VUxMKTsKKwl9CisJZm9yIChpID0gMDsgaSA8PSBjb250ZXh0LT5tYXg7IGkgKz0gY29udGV4dC0+
+bWF4IC8gRkFERVNURVBTKSB7CisJCXRlc3RfYW5kX3ZlcmlmeShjb250ZXh0LCBpKTsKKwkJbmFu
+b3NsZWVwKCZ0cywgTlVMTCk7CisJfQorfQogCiBpZ3RfbWFpbgogewogCXN0cnVjdCBjb250ZXh0
+IGNvbnRleHQgPSB7MH07CiAJaW50IG9sZDsKIAlpZ3RfZGlzcGxheV90IGRpc3BsYXk7CisJaWd0
+X291dHB1dF90ICpvdXRwdXQ7CiAJc3RydWN0IGlndF9mYiBmYjsKIAogCWlndF9za2lwX29uX3Np
+bXVsYXRpb24oKTsKIAogCWlndF9maXh0dXJlIHsKIAkJZW51bSBwaXBlIHBpcGU7Ci0JCWlndF9v
+dXRwdXRfdCAqb3V0cHV0OwogCQlib29sIGZvdW5kID0gZmFsc2U7CiAJCWNoYXIgZnVsbF9uYW1l
+WzMyXSA9IHt9OwogCQljaGFyICpuYW1lOwpAQCAtMTg3LDcgKzIyOSw2IEBAIGlndF9tYWluCiAJ
+CWZvcl9lYWNoX3BpcGVfd2l0aF92YWxpZF9vdXRwdXQoJmRpc3BsYXksIHBpcGUsIG91dHB1dCkg
+ewogCQkJaWYgKHN0cmNtcChuYW1lICsgNiwgb3V0cHV0LT5uYW1lKSkKIAkJCQljb250aW51ZTsK
+LQogCQkJZm91bmQgPSB0cnVlOwogCQkJYnJlYWs7CiAJCX0KQEAgLTIwNSw2ICsyNDYsNyBAQCBp
+Z3RfbWFpbgogCQlpZ3RfcGxhbmVfc2V0X2ZiKHByaW1hcnksICZmYik7CiAKIAkJaWd0X2Rpc3Bs
+YXlfY29tbWl0MigmZGlzcGxheSwgZGlzcGxheS5pc19hdG9taWMgPyBDT01NSVRfQVRPTUlDIDog
+Q09NTUlUX0xFR0FDWSk7CisJCXBtX2RhdGEgPSBpZ3RfcG1fZW5hYmxlX3NhdGFfbGlua19wb3dl
+cl9tYW5hZ2VtZW50KCk7CiAJfQogCiAJaWd0X3N1YnRlc3QoImJhc2ljLWJyaWdodG5lc3MiKQpA
+QCAtMjEzLDYgKzI1NSwxMCBAQCBpZ3RfbWFpbgogCQl0ZXN0X2JhZF9icmlnaHRuZXNzKCZjb250
+ZXh0KTsKIAlpZ3Rfc3VidGVzdCgiZmFkZSIpCiAJCXRlc3RfZmFkZSgmY29udGV4dCk7CisJaWd0
+X3N1YnRlc3QoImZhZGVfd2l0aF9kcG1zIikKKwkJdGVzdF9mYWRlX3dpdGhfZHBtcygmY29udGV4
+dCwgb3V0cHV0KTsKKwlpZ3Rfc3VidGVzdCgiZmFkZV93aXRoX3N1c3BlbmQiKQorCQl0ZXN0X2Zh
+ZGVfd2l0aF9zdXNwZW5kKCZjb250ZXh0LCBvdXRwdXQpOwogCiAJaWd0X2ZpeHR1cmUgewogCQkv
+KiBSZXN0b3JlIG9sZCBicmlnaHRuZXNzICovCkBAIC0yMjAsNiArMjY2LDggQEAgaWd0X21haW4K
+IAogCQlpZ3RfZGlzcGxheV9maW5pKCZkaXNwbGF5KTsKIAkJaWd0X3JlbW92ZV9mYihkaXNwbGF5
+LmRybV9mZCwgJmZiKTsKKwkJaWd0X3BtX3Jlc3RvcmVfc2F0YV9saW5rX3Bvd2VyX21hbmFnZW1l
+bnQocG1fZGF0YSk7CisJCWZyZWUocG1fZGF0YSk7CiAJCWNsb3NlKGRpc3BsYXkuZHJtX2ZkKTsK
+IAl9CiB9Ci0tIAoxLjkuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
+cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+Cg==
