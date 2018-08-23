@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7AD66E01B
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Aug 2018 11:36:26 +0000 (UTC)
-References: <20180823080113.693-1-tvrtko.ursulin@linux.intel.com>
- <20180823112527.8841.83944@emeril.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <78dab372-3b1e-23e7-b626-5289e38257e8@linux.intel.com>
-Date: Thu, 23 Aug 2018 12:36:24 +0100
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 552496E03C
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Aug 2018 11:47:04 +0000 (UTC)
+Date: Thu, 23 Aug 2018 13:46:52 +0200
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20180823114652.3a4qtwaz23ayuzmq@flea>
+References: <cover.85e5bbe6ef5f0fd420e1fc21fc248471b98481e5.1532596850.git-series.maxime.ripard@bootlin.com>
+ <cbedc79edb2bcfc1ad2ed89cb86b15bc9088e634.1532596850.git-series.maxime.ripard@bootlin.com>
+ <87tvo3s00j.fsf@anholt.net>
 MIME-Version: 1.0
-In-Reply-To: <20180823112527.8841.83944@emeril.freedesktop.org>
-Content-Language: en-GB
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?b?Z2VtX2N0eF9zc2U6IEV4cGxvcmUuLiAocmV2Mik=?=
+In-Reply-To: <87tvo3s00j.fsf@anholt.net>
+Subject: Re: [igt-dev] [PATCH v4 08/13] chamelium: Use preferred mode when
+ testing a single mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,58 +19,123 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: multipart/mixed; boundary="===============1928422169=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Patchwork <patchwork@emeril.freedesktop.org>, Tvrtko Ursulin <tursulin@ursulin.net>
+To: Eric Anholt <eric@anholt.net>
+Cc: Paul Kocialkowski <paul.kocialkowski@bootlin.com>, eben@raspberrypi.org, igt-dev@lists.freedesktop.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Ck9uIDIzLzA4LzIwMTggMTI6MjUsIFBhdGNod29yayB3cm90ZToKPiA9PSBTZXJpZXMgRGV0YWls
-cyA9PQo+IAo+IFNlcmllczogdGVzdHMvZ2VtX2N0eF9zc2U6IEV4cGxvcmUuLiAocmV2MikKPiBV
-UkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvNDg2MDcvCj4g
-U3RhdGUgOiBzdWNjZXNzCj4gCj4gPT0gU3VtbWFyeSA9PQo+IAo+ID0gQ0kgQnVnIExvZyAtIGNo
-YW5nZXMgZnJvbSBDSV9EUk1fNDY5MyAtPiBJR1RQV18xNzM5ID0KPiAKPiA9PSBTdW1tYXJ5IC0g
-U1VDQ0VTUyA9PQo+IAo+ICAgIE5vIHJlZ3Jlc3Npb25zIGZvdW5kLgo+IAo+ICAgIEV4dGVybmFs
-IFVSTDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL2FwaS8xLjAvc2VyaWVzLzQ4
-NjA3L3JldmlzaW9ucy8yL21ib3gvCj4gCj4gPT0gS25vd24gaXNzdWVzID09Cj4gCj4gICAgSGVy
-ZSBhcmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gSUdUUFdfMTczOSB0aGF0IGNvbWUgZnJvbSBrbm93
-biBpc3N1ZXM6Cj4gCj4gICAgPT09IElHVCBjaGFuZ2VzID09PQo+IAo+ICAgICAgPT09PSBQb3Nz
-aWJsZSBmaXhlcyA9PT09Cj4gCj4gICAgICBpZ3RAZHJ2X3NlbGZ0ZXN0QGxpdmVfaGFuZ2NoZWNr
-Ogo+ICAgICAgICBmaS1rYmwtNzU2MHU6ICAgICAgIERNRVNHLUZBSUwgKGZkbyMxMDY1NjAsIGZk
-byMxMDY5NDcpIC0+IFBBU1MKPiAKPiAgICAgIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAbm9uYmxv
-Y2tpbmctY3JjLXBpcGUtYjoKPiAgICAgICAge2ZpLWJ5dC1jbGFwcGVyfTogICBGQUlMIChmZG8j
-MTA3MzYyKSAtPiBQQVNTCj4gCj4gICAgICBpZ3RAa21zX3BpcGVfY3JjX2Jhc2ljQG5vbmJsb2Nr
-aW5nLWNyYy1waXBlLWItZnJhbWUtc2VxdWVuY2U6Cj4gICAgICAgIHtmaS1ieXQtY2xhcHBlcn06
-ICAgRkFJTCAoZmRvIzEwMzE5MSwgZmRvIzEwNzM2MikgLT4gUEFTUwo+IAo+ICAgICAgaWd0QHBt
-X3JwbUBiYXNpYy1wY2ktZDMtc3RhdGU6Cj4gICAgICAgIGZpLXNrbC02NjAwdTogICAgICAgRkFJ
-TCAtPiBQQVNTCj4gCj4gICAgICAKPiAgICAgID09PT0gV2FybmluZ3MgPT09PQo+IAo+ICAgICAg
-e2lndEBrbXNfcHNyQHByaW1hcnlfcGFnZV9mbGlwfToKPiAgICAgICAgZmktY25sLXBzcjogICAg
-ICAgICBETUVTRy1GQUlMIChmZG8jMTA3MzcyKSAtPiBETUVTRy1XQVJOIChmZG8jMTA3MzcyKQo+
-IAo+ICAgICAgCj4gICAge25hbWV9OiBUaGlzIGVsZW1lbnQgaXMgc3VwcHJlc3NlZC4gVGhpcyBt
-ZWFucyBpdCBpcyBpZ25vcmVkIHdoZW4gY29tcHV0aW5nCj4gICAgICAgICAgICB0aGUgc3RhdHVz
-IG9mIHRoZSBkaWZmZXJlbmNlIChTVUNDRVNTLCBXQVJOSU5HLCBvciBGQUlMVVJFKS4KPiAKPiAg
-ICBmZG8jMTAzMTkxIGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lk
-PTEwMzE5MQo+ICAgIGZkbyMxMDY1NjAgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93
-X2J1Zy5jZ2k/aWQ9MTA2NTYwCj4gICAgZmRvIzEwNjk0NyBodHRwczovL2J1Z3MuZnJlZWRlc2t0
-b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDY5NDcKPiAgICBmZG8jMTA3MzYyIGh0dHBzOi8vYnVn
-cy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNzM2Mgo+ICAgIGZkbyMxMDczNzIg
-aHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3MzcyCj4gCj4g
-Cj4gPT0gUGFydGljaXBhdGluZyBob3N0cyAoNTMgLT4gNDYpID09Cj4gCj4gICAgTWlzc2luZyAg
-ICAoNyk6IGZpLWlsay1tNTQwIGZpLWhzdy00MjAwdSBmaS1za2wtZ3VjIGZpLWJ5dC1zcXVhd2tz
-IGZpLWJzdy1jeWFuIGZpLWN0Zy1wODYwMCBmaS1pY2wtdQo+IAo+IAo+ID09IEJ1aWxkIGNoYW5n
-ZXMgPT0KPiAKPiAgICAgICogSUdUOiBJR1RfNDYwNyAtPiBJR1RQV18xNzM5Cj4gCj4gICAgQ0lf
-RFJNXzQ2OTM6IGYyMjI3NTM2M2ZmYTA0ZGJkNzE5MDMyODEwMTU0ZTg1NzExMGNkNzUgQCBnaXQ6
-Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvbGludXgKPiAgICBJR1RQV18xNzM5OiBo
-dHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzE3MzkvCj4gICAg
-SUdUXzQ2MDc6IDZlMGIzZTdhMmQyNDFhZjM2ZjhjNmIxY2MzMzVhYTFkYjM1MzJkMjkgQCBnaXQ6
-Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy94b3JnL2FwcC9pbnRlbC1ncHUtdG9vbHMKPiAKPiAK
-PiAKPiA9PSBUZXN0bGlzdCBjaGFuZ2VzID09Cj4gCj4gK2lndEBnZW1fY3R4X3NzZXVAc2xpY2Vz
-CgpUaGlzIHNob3dlZCB0aGF0IG9uIDF4M3g2IEJYVCBhbmQgR0xLIHRoZSB1bmRvY3VtZW50ZWQg
-MGIxMSB3cml0dGVuIGludG8gClJfUFdSX0NMS19TVEFURTo6U1Njb3VudCBpcyBwcmVzZXJ2ZWQg
-dW50aWwgcmVhZC1iYWNrLiBOZXh0IHF1ZXN0aW9uIGlzIAp3aGV0aGVyIHRoZSBkb2N1bWVudGF0
-aW9uIGlzIGluY29ycmVjdCwgYW5kIGlmIG5vdCwgd2hhdCBkb2VzIHRoZSAKaGFyZHdhcmUgZG8g
-d2l0aCBpdC4KClJlZ2FyZHMsCgpUdnJ0a28KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
-ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9pZ3QtZGV2Cg==
+
+--===============1928422169==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="teqdxeg4ug72cx4d"
+Content-Disposition: inline
+
+
+--teqdxeg4ug72cx4d
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi Eric,
+
+On Thu, Aug 09, 2018 at 02:28:12PM -0700, Eric Anholt wrote:
+> Maxime Ripard <maxime.ripard@bootlin.com> writes:
+>=20
+> > The current code is testing the first mode in the connector list when i=
+t's
+> > testing a single mode. While this is arbitrarily chosen, it makes more
+> > sense to use the preferred mode reported by the display.
+> >
+> > Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
+> > ---
+> >  tests/kms_chamelium.c | 19 ++++++++++++++++++-
+> >  1 file changed, 18 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
+> > index 490bacc6f5fe..5d7fb83fb74f 100644
+> > --- a/tests/kms_chamelium.c
+> > +++ b/tests/kms_chamelium.c
+> > @@ -534,6 +534,20 @@ static void do_test_display_crc(data_t *data, stru=
+ct chamelium_port *port,
+> >  	igt_remove_fb(data->drm_fd, &fb);
+> >  }
+> > =20
+> > +static drmModeModeInfo *find_preferred_mode(drmModeConnector *connecto=
+r)
+> > +{
+> > +	int i;
+> > +
+> > +	for (i =3D 0; i < connector->count_modes; i++) {
+> > +		drmModeModeInfo *mode =3D &connector->modes[i];
+> > +
+> > +		if (mode->type & DRM_MODE_TYPE_PREFERRED)
+> > +			return mode;
+> > +	}
+> > +
+> > +	return NULL;
+> > +}
+> > +
+> >  static void test_display_crc_one_mode(data_t *data, struct chamelium_p=
+ort *port,
+> >  				      int count)
+> >  {
+> > @@ -549,7 +563,10 @@ static void test_display_crc_one_mode(data_t *data=
+, struct chamelium_port *port,
+> >  	primary =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> >  	igt_assert(primary);
+> > =20
+> > -	do_test_display_crc(data, port, output, &connector->modes[0], count);
+> > +	mode =3D find_preferred_mode(connector);
+> > +	igt_assert(mode);
+> > +
+> > +	do_test_display_crc(data, port, output, mode, count);
+>=20
+> Instead of asserting, should we pick the first if there was no
+> preferred?  I don't really know, so I'd ack the patch either way.
+
+I've changed the return NULL above to return &connector->modes[0]
+instead.
+
+Thanks!
+Maxime
+
+--=20
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--teqdxeg4ug72cx4d
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlt+nqsACgkQ0rTAlCFN
+r3SjJA//ZhGafYnDuqmDjozecbtHyXTJsCSYot14uSHfI1E10rA3O9BqaGt5SBcz
+QYb7X8G+RcjsUot8Fs33l0x8RPynuXDW25aP+jCY8MATIjxix6xZfn51rOxmOAxn
+oCPZa1YNCoYGq9g1iJin/IUsKyR+Jkv9z9A+NRAShiiYrac4HZqxOS4wbfO4wBVn
+caxQwHli0726HtKUVPMfsw7bnyQmvSyzTxehy13+WILtUxqfOxHeXtAkfpGTNixS
+Yx9IHa1hWdJbgChYeDcxW9WxL/7XwCdjuuu+45FL9WjuhmblXi6xD8/YjTSp6TXA
+kY+1jbSKCGeGv8xmMQRH4o+TiMV+pSZSAcZWb3Odc5EMJLexlkLQ6fBT6gSZ7zeh
+SNWnkPIs9KXG86dXxp3B1BPfNc24sXgkn7yNMBwf0WsKde5qTIRap6yjMCkse885
+nXel1Ec0afkmeO5b77QrQgXPUJFTbqFJYDrbBFrtOSkovxt0iQBbrFh4sqNz7lJd
+PCKjRdpPpEKEY26x3ZKi/Xg5DR0b0k21KAKzkkuV3eV7cl/LwvadKfFerV4GUSfR
+yrqTdYGlXU3+jh2y5AIo0GGarF41s4wWZp3OBMwIvO2Sp39aJgpgcCWRCK3Z0zqt
+pDHXo+PCPJzVX+fdyqMclVIbQtvukdK4ocUZDGF3jUCpLJSDx/M=
+=MwmE
+-----END PGP SIGNATURE-----
+
+--teqdxeg4ug72cx4d--
+
+--===============1928422169==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1928422169==--
