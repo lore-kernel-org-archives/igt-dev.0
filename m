@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
- by gabe.freedesktop.org (Postfix) with ESMTP id B8ECD6E645
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Aug 2018 08:00:17 +0000 (UTC)
-Date: Fri, 24 Aug 2018 09:59:59 +0200
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20180824075959.emietojbdme7d7tl@flea>
-References: <cover.85e5bbe6ef5f0fd420e1fc21fc248471b98481e5.1532596850.git-series.maxime.ripard@bootlin.com>
- <2758e622f4a05d69f984bb3439af49823f43d4fc.1532596850.git-series.maxime.ripard@bootlin.com>
- <87r2j7rzuh.fsf@anholt.net>
+Received: from mail-io0-x22d.google.com (mail-io0-x22d.google.com
+ [IPv6:2607:f8b0:4001:c06::22d])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D4A66E68A
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Aug 2018 12:03:32 +0000 (UTC)
+Received: by mail-io0-x22d.google.com with SMTP id q5-v6so3694179iop.3
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Aug 2018 05:03:32 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <87r2j7rzuh.fsf@anholt.net>
-Subject: Re: [igt-dev] [PATCH v4 10/13] chamelium: Change our pattern for a
- custom one
+In-Reply-To: <878t4wmf3e.fsf@intel.com>
+References: <CAKMK7uFciLYN2G+VqvAwk5D9+H5dw6Tb5FtmWgxCnWtLa0uOEg@mail.gmail.com>
+ <87pnyaa6ia.fsf@intel.com>
+ <7393f5fe500ab7173ec579d45866b4506c86ffd7.camel@redhat.com>
+ <20180822160645.GC2340@intel.com> <878t4wmf3e.fsf@intel.com>
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
+Date: Fri, 24 Aug 2018 14:03:30 +0200
+Message-ID: <CAKMK7uENSCZKtccy5w3hQ37puWnDheUNv_sSC6e2tLgG-CwZoA@mail.gmail.com>
+Subject: Re: [igt-dev] RFC: Migration to Gitlab
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,97 +22,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0753488873=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Eric Anholt <eric@anholt.net>
-Cc: Paul Kocialkowski <paul.kocialkowski@bootlin.com>, eben@raspberrypi.org, igt-dev@lists.freedesktop.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: "DRM maintainer tools announcements, discussion,
+ and development" <dim-tools@lists.freedesktop.org>, intel-gfx <intel-gfx@lists.freedesktop.org>, amd-gfx list <amd-gfx@lists.freedesktop.org>, IGT development <igt-dev@lists.freedesktop.org>, Adam Jackson <ajax@redhat.com>, dri-devel <dri-devel@lists.freedesktop.org>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============0753488873==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="gor7rmtrggvg57k6"
-Content-Disposition: inline
-
-
---gor7rmtrggvg57k6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Eric,
-
-On Thu, Aug 09, 2018 at 02:31:50PM -0700, Eric Anholt wrote:
-> Maxime Ripard <maxime.ripard@bootlin.com> writes:
->=20
-> > The current pattern being used is the one generated through the
-> > igt_create_color_pattern_fb.
-> >
-> > However, in order to deal with multiple formats and the upsampling /
-> > downsampling issues that might arise from converting back and forth bet=
-ween
-> > formats, we will need to have a pattern with quite precise color values,
-> > and without any shades or gradient of colors.
->=20
-> 64x64 blocks of color seem pretty limited, and might miss tiling issues
-> for people -- would the previous pattern be worth using for 1:1,
-> possibly non-format-converted cases?
-
-I've changed it to use the previous pattern if we have the same depth
-(and therefore won't have any up/down sampling issues).
-
-> > The easiest way to do that will be to only use values that would have t=
-he
-> > same part on the common most significant bits (5, to deal with the most
-> > formats) and have the same bit repeated on the least significant bits t=
-hat
-> > are going to be dropped and / or padded when converting between formats.
-> >
-> > Pixman will fill the lowest bits with 1, and our hardware is able to
->=20
-> Let's specify which hardware here :)
-
-ACK :)
-
-Thanks!
-Maxime
-
---=20
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---gor7rmtrggvg57k6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlt/uv4ACgkQ0rTAlCFN
-r3RG2xAAi30eJpVMEk/nNfCJTHSK9BO3oad0C6GG7nsxm4tM8pXVYtIoh5OQSLPR
-vXYkvdXfNrFOypMl6TlxtvN00QTUBIwojp4Kr0gfT2etRB6IUZU6UWnMPy5kTS9l
-lhMct0/sm5xTs4PyUGfIydCJmUB13IzT6rwtqJ5YkNuoLsxP5r68V+j0d4KZ82Mm
-+RO5riJRuEPcNa8vMuy8yHxptTH30zvd1lgebFp5oq+/BKx4EQUfER2V8irMfTgG
-L21KMCSGlxRrKHqxkjmYBW/dmcAzj/RDBkh8JSa+rzuNnD6jFdjmh8AwnP8tXKmD
-RjshhH3ZNBEiNbRAvP5toUUvo/HLQNL9J5DN1UIP99K0TVP7gBRRORwOaTMr9KSO
-NGpH8zEHYCr8yi438OqaQ8QMeWAfBeBdM1RKBni+K2OqOkgkSL5A8zNgj4jJgxCl
-ZiRxZeCFMeOpXJ66IDZO/wFBthEVdOF3W7u6B6cpKkm3qpaclBgfIKWCVnubQEmu
-tjzUPExS3N2Ed+Hp4z1xsOhA15uOnl7+6zDVFpEXE+7imwySsUjwFbkgJEZerqb/
-ZjnYQZr6hdleNfyjd+xaL7Ao6Zh8x1eXPT4dX44GB66xP2ZR+u7YKemEHo5boacm
-iOV1xGYFcb2sdNA6mAZbjoJDZuF3XkTQbESkf2rkXxTsffffb5Y=
-=FEu/
------END PGP SIGNATURE-----
-
---gor7rmtrggvg57k6--
-
---===============0753488873==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0753488873==--
+T24gRnJpLCBBdWcgMjQsIDIwMTggYXQgODo1MiBBTSwgSmFuaSBOaWt1bGEKPGphbmkubmlrdWxh
+QGxpbnV4LmludGVsLmNvbT4gd3JvdGU6Cj4gT24gV2VkLCAyMiBBdWcgMjAxOCwgUm9kcmlnbyBW
+aXZpIDxyb2RyaWdvLnZpdmlAaW50ZWwuY29tPiB3cm90ZToKPj4gT24gV2VkLCBBdWcgMjIsIDIw
+MTggYXQgMTA6MTk6MTlBTSAtMDQwMCwgQWRhbSBKYWNrc29uIHdyb3RlOgo+Pj4gT24gV2VkLCAy
+MDE4LTA4LTIyIGF0IDE2OjEzICswMzAwLCBKYW5pIE5pa3VsYSB3cm90ZToKPj4+Cj4+PiA+IC0g
+U3RpY2tpbmcgdG8gZmRvIGJ1Z3ppbGxhIGFuZCBkaXNhYmxpbmcgZ2l0bGFiIGlzc3VlcyBmb3Ig
+YXQgbGVhc3QKPj4+ID4gICBkcm0taW50ZWwgZm9yIHRoZSB0aW1lIGJlaW5nLiBEb2luZyB0aGF0
+IG1pZ3JhdGlvbiBpbiB0aGUgc2FtZSBnbyBpcyBhCj4+PiA+ICAgYml0IG11Y2ggSSB0aGluay4g
+UmVhc3NpZ25tZW50IGFjcm9zcyBidWd6aWxsYSBhbmQgZ2l0bGFiIHdpbGwgYmUgYW4KPj4+ID4g
+ICBpc3N1ZS4KPj4+Cj4+PiBDYW4geW91IGVsYWJvcmF0ZSBhIGJpdCBvbiB0aGUgaXNzdWVzIGhl
+cmU/IFRoZSBhY3R1YWwgbW92ZS10aGUtYnVncwo+Pj4gcHJvY2VzcyBoYXMgYmVlbiBwcmV0dHkg
+cGFpbmxlc3MgZm9yIHRoZSBwYXJ0cyBvZiB4b3JnIHdlJ3ZlIGRvbmUgc28KPj4+IGZhci4KPj4K
+Pj4gSSBndWVzcyB0aGVyZSBpcyBub3RoaW5nIGFnYWluc3QgbW92aW5nIHRoZSBidWdzIHRoZXJl
+LiBUaGUgY29uY2VybiBpcyBvbmx5IG9uCj4+IGRvaW5nIGV2ZXJ5dGhpbmcgYXQgb25jZS4KPgo+
+IE5vLCBpdCdzIG5vdCBqdXN0IHRoYXQuCj4KPiBXZSBoYXZlIHNvbWUgYXV0b21hdGlvbiB1c2lu
+ZyB0aGUgYnVnemlsbGEgQVBJcyBkaXJlY3RseSwgYW5kCj4gc29tZW9uZSh0bSkgbmVlZHMgdG8g
+ZmlndXJlIG91dCBob3cgdGhpcyBzaG91bGQgd29yayB3aXRoIGdpdGxhYi4gTWF5YmUKPiB3ZSBo
+YXZlIGEgYmV0dGVyIGNoYW5jZSBvZiBkb2luZyB0aGluZ3Mgd2l0aCBnaXRsYWIncyBBUElzLCBt
+YXliZSB3ZSBjYW4KPiByZWR1Y2Ugb3VyIGRlcGVuZGVuY2Ugb24gZXh0ZXJuYWwgbG9naWMgYWx0
+b2dldGhlci4KPgo+IFdlIGhhdmUgc3BlY2lhbCAiaTkxNSBwbGF0Zm9ybSIgYW5kICJpOTE1IGZl
+YXR1cmVzIiBmaWVsZHMgaW4KPiBidWd6aWxsYS4gV2UgdXNlIGEgbWFpbGluZyBsaXN0IGRlZmF1
+bHQgYXNzaWduZWUuIFNvbWUgb2YgdXMgdXNlIHRoZQo+ICJ3aGl0ZWJvYXJkIiBhbmQgImtleXdv
+cmRzIiBmaWVsZHMuIEV0Yy4KPgo+IEkgZG9uJ3QgdGhpbmsgZmlndXJpbmcgYWxsIHRoaXMgb3V0
+IGlzIHJvY2tldCBzY2llbmNlLCBidXQgc29tZW9uZSBuZWVkcwo+IHRvIGFjdHVhbGx5IGRvIGl0
+LCBhbmQgZ2V0IG91ciB3b3JrZmxvd3Mgc3RyYWlnaHRlbmVkIG91dCAqYmVmb3JlKiB3ZQo+IGZs
+aXAgdGhlIHN3aXRjaC4gSSdtIGp1c3QgdHJ5aW5nIHRvIGZpZ3VyZSBvdXQgaWYgdGhhdCBpcyBh
+IGJsb2NrZXIgdG8KPiBtaWdyYXRpbmcgdGhlIHJlcG9zLgoKSSB0aGluayB0aGUgbWVzYSBhcHBy
+b2FjaCBvZiBmbGF0LW91dCBkaXNhYmxpbmcgZ2l0bGFiIGlzc3VlcyBhbmQKbWVyZ2UgcmVxdWVz
+dCBpcyBzb2xpZC4gVGhhdCB3YXkgdGhlcmUncyBubyBjb25mdXNpb25zIHdpdGgKY29udHJpYnV0
+aW9ucyBhbmQgYnVnIHJlcG9ydHMgc3RyYW5kZWQgaW4gdGhlIHdyb25nIHBsYWNlLiBUaGlzIHNo
+b3VsZAphbGxvdyB1cyB0byBoYW5kbGUgYWxsIHRoZSBkaWZmZXJlbnQgZmVhdHVyZSBzZXRzIGdp
+dGxhYiBwcm92aWRlcwppbmRlcGVuZGVudGx5IGFuZCBhcyB3ZSBzZWUgZml0OiBSZXBvIGhvc3Rp
+bmcsIGRvY3VtZW50YXRpb24vYXJ0aWZhY3QKaG9zdGluZywgQ0kgaW50ZWdyYXRpb24sIHBhdGNo
+IHN1Ym1pc3Npb25zLCBpc3N1ZSB0cmFja2luZy4gV2UgY2FuCmNob29zZSZwaWNrIHdoYXQgd2Ug
+dGhpbmsgaXMgZ29vZCwgYW5kIGlnbm9yZSBldmVyeXRoaW5nIGVsc2UuCgpBbmQgb2YgY291cnNl
+IGlmIDEtMiB5ZWFycyBkb3duIHRoZSByb2FkIHRoaW5ncyBjaGFuZ2UsIHdlIGNhbgpyZWV2YWx1
+YXRlLiBJIHRoaW5rIGZvciBhIHJvdWdoIHRpbWVsaW5lIGlmIHRoaW5ncyBnbyB3ZWxsIHdlJ2xs
+IGhhdmUKaWd0IGFuZCBtYWludGFpbmVyLXRvb2xzIG1pZ3JhdGVkIGJ5IGVuZCBvZiB5ZWFyIChq
+dXN0IHRoZSByZXBvcywKbm90aGluZyBlbHNlKSwgYW5kIGEgc29saWQgcGxhbiBmb3IgbWlncmF0
+aW5nIGFsbCB0aGUgZHJtKiByZXBvcyBuZXh0CnllYXIuIEV2ZXJ5dGhpbmcgZWxzZSBpcyB0b28g
+ZmFyIGF3YXkgdG8gaGF2ZSBzb2xpZCBwbGFucyBmb3IsIG9yIGV2ZW4KanVzdCBhIHRpbWVsaW5l
+LgotRGFuaWVsCi0tIApEYW5pZWwgVmV0dGVyClNvZnR3YXJlIEVuZ2luZWVyLCBJbnRlbCBDb3Jw
+b3JhdGlvbgorNDEgKDApIDc5IDM2NSA1NyA0OCAtIGh0dHA6Ly9ibG9nLmZmd2xsLmNoCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
+ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
