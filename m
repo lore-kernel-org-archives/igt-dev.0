@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 849136E15F
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Sep 2018 01:32:04 +0000 (UTC)
-Message-ID: <9b36567b394fd04096df5e470306ec4ba4002f33.camel@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C6F226E039
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Sep 2018 01:52:43 +0000 (UTC)
+Message-ID: <b0ff9791e0a7332930796833c11fdc9429736fb3.camel@intel.com>
 From: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-Date: Tue, 04 Sep 2018 18:31:52 -0700
-In-Reply-To: <88b971c245966aac30c91baa5d8cd8558b30b795.camel@intel.com>
-References: <20180829215713.20962-1-dhinakaran.pandiyan@intel.com>
- <20180829215713.20962-5-dhinakaran.pandiyan@intel.com>
- <88b971c245966aac30c91baa5d8cd8558b30b795.camel@intel.com>
+Date: Tue, 04 Sep 2018 18:52:25 -0700
+In-Reply-To: <20180904213448.20196-1-chris@chris-wilson.co.uk>
+References: <20180904213448.20196-1-chris@chris-wilson.co.uk>
 Mime-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 5/6] tests/psr: Test PSR1 in kms_psr
+Subject: Re: [igt-dev] [PATCH i-g-t] igt/pm_backlight: Require a connected
+ output for the backlight
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,42 +22,25 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Souza, Jose" <jose.souza@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDE4LTA5LTA0IGF0IDIyOjE4ICswMDAwLCBTb3V6YSwgSm9zZSB3cm90ZToKPiBP
-biBXZWQsIDIwMTgtMDgtMjkgYXQgMTQ6NTcgLTA3MDAsIERoaW5ha2FyYW4gUGFuZGl5YW4gd3Jv
-dGU6Cj4gPiBUaGUgdGVzdHMgd2UgaGF2ZSB3b3JrIG9ubHkgd2l0aCBQU1IxLCBidXQgc2V0dGlu
-ZyB0aGUgbW9kdWxlCj4gPiBwYXJhbWV0ZXIKPiA+IGVuYWJsZV9wc3IgZW5hYmxlcyBQU1IyIGlm
-IHRoZSBwYW5lbCBzdXBwb3J0cyBpdC4gTWFrZSB1c2Ugb2YgdGhlCj4gPiBuZXdseQo+ID4gYWRk
-ZWQgZGVidWdmcyB0b2dnbGUgdG8gZW5hYmxlIG9ubHkgUFNSMSB3aGVuIHRlc3RpbmcuCj4gCj4g
-SWYgdGhlIGlkZWEgaXMgbGF0dGVyIGhhdmUgcHNyMl9lbmFibGUvZGlzYWJsZSB0aGVuOgoKWWVh
-aCwgdGhhdCBpcyB0aGUgcGxhbi4gQm90aCBwc3Jfd2FpdF9mb3JfZW50cnkoKSBhbmQgcHNyX2Fj
-dGl2ZSgpCmFyZW4ndCBjb21wYXRpYmxlIHdpdGggUFNSMiBhcyBvZiBub3cuIFdlIGhhdmUgdG8g
-cmV3cml0ZSB0aG9zZQpmdW5jdGlvbnMuIFRoYW5rcyBmb3IgdGhlIHJldmlld3MuCgo+IAo+IFJl
-dmlld2VkLWJ5OiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3NlLnNvdXphQGludGVsLmNvbT4K
-PiAKPiA+IFNpZ25lZC1vZmYtYnk6IERoaW5ha2FyYW4gUGFuZGl5YW4gPGRoaW5ha2FyYW4ucGFu
-ZGl5YW5AaW50ZWwuY29tPgo+ID4gLS0tCj4gPiAgdGVzdHMva21zX3Bzci5jIHwgOCArKysrKyst
-LQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCj4g
-PiAKPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfcHNyLmMgYi90ZXN0cy9rbXNfcHNyLmMKPiA+
-IGluZGV4IDNlNjRjZjA0Li5mY2MwNDc3MCAxMDA2NDQKPiA+IC0tLSBhL3Rlc3RzL2ttc19wc3Iu
-Ywo+ID4gKysrIGIvdGVzdHMva21zX3Bzci5jCj4gPiBAQCAtNDE0LDggKzQxNCw5IEBAIGludCBt
-YWluKGludCBhcmdjLCBjaGFyICphcmd2W10pCj4gPiAgCQlrbXN0ZXN0X3NldF92dF9ncmFwaGlj
-c19tb2RlKCk7Cj4gPiAgCQlkYXRhLmRldmlkID0gaW50ZWxfZ2V0X2RybV9kZXZpZChkYXRhLmRy
-bV9mZCk7Cj4gPiAgCj4gPiAtCQlpZ3Rfc2V0X21vZHVsZV9wYXJhbV9pbnQoImVuYWJsZV9wc3Ii
-LAo+ID4gZGF0YS53aXRoX3Bzcl9kaXNhYmxlZCA/Cj4gPiAtCQkJCQkgMCA6IDEpOwo+ID4gKwkJ
-aWYgKCFkYXRhLndpdGhfcHNyX2Rpc2FibGVkKQo+ID4gKwkJCXBzcl9lbmFibGUoZGF0YS5kZWJ1
-Z2ZzX2ZkKTsKPiA+ICsKPiA+ICAJCWlndF9yZXF1aXJlX2Yoc2lua19zdXBwb3J0KCZkYXRhKSwK
-PiA+ICAJCQkgICAgICAiU2luayBkb2VzIG5vdCBzdXBwb3J0IFBTUlxuIik7Cj4gPiAgCj4gPiBA
-QCAtNDkwLDYgKzQ5MSw5IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10pCj4gPiAg
-CX0KPiA+ICAKPiA+ICAJaWd0X2ZpeHR1cmUgewo+ID4gKwkJaWYgKCFkYXRhLndpdGhfcHNyX2Rp
-c2FibGVkKQo+ID4gKwkJCXBzcl9kaXNhYmxlKGRhdGEuZGVidWdmc19mZCk7Cj4gPiArCj4gPiAg
-CQljbG9zZShkYXRhLmRlYnVnZnNfZmQpOwo+ID4gIAkJZHJtX2ludGVsX2J1Zm1ncl9kZXN0cm95
-KGRhdGEuYnVmbWdyKTsKPiA+ICAJCWRpc3BsYXlfZmluaSgmZGF0YSk7Cj4gCj4gX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBpZ3QtZGV2IG1haWxpbmcg
-bGlzdAo+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4gaHR0cHM6Ly9saXN0cy5mcmVl
-ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
-YW4vbGlzdGluZm8vaWd0LWRldgo=
+T24gVHVlLCAyMDE4LTA5LTA0IGF0IDIyOjM0ICswMTAwLCBDaHJpcyBXaWxzb24gd3JvdGU6Cj4g
+V2UgY2Fubm90IGNvbnRyb2wgdGhlIGJhY2tsaWdodCBpZiBpdHMgYXR0YWNoZWQgb3V0cHV0IGlz
+IG5vdAo+IGNvbm5lY3RlZC4KPiBEb24ndCBhc3NlcnQsIGJ1dCByZXF1aXJlLgpNYWtlcyBzZW5z
+ZS4KUmV2aWV3ZWQtYnk6IERoaW5ha2FyYW4gUGFuZGl5YW4gPGRoaW5ha2FyYW4ucGFuZGl5YW5A
+aW50ZWwuY29tPgoKPiAKPiBTaWduZWQtb2ZmLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlz
+LXdpbHNvbi5jby51az4KPiAtLS0KPiAgdGVzdHMvcG1fYmFja2xpZ2h0LmMgfCA0ICsrKy0KPiAg
+MSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQo+IAo+IGRpZmYg
+LS1naXQgYS90ZXN0cy9wbV9iYWNrbGlnaHQuYyBiL3Rlc3RzL3BtX2JhY2tsaWdodC5jCj4gaW5k
+ZXggMzM2MTRlOTY5Li5lOTQzNDBhMmIgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMvcG1fYmFja2xpZ2h0
+LmMKPiArKysgYi90ZXN0cy9wbV9iYWNrbGlnaHQuYwo+IEBAIC0yMjUsNyArMjI1LDkgQEAgaWd0
+X21haW4KPiAgCQkJYnJlYWs7Cj4gIAkJfQo+ICAKPiAtCQlpZ3RfYXNzZXJ0X2YoZm91bmQsICJD
+b3VsZCBub3QgbWFwIFwiJXNcIiB0byBvdXRwdXQKPiAoJXM/KVxuIiwgbmFtZSwgbmFtZSArIDYp
+Owo+ICsJCWlndF9yZXF1aXJlX2YoZm91bmQsCj4gKwkJCSAgICAgICJDb3VsZCBub3QgbWFwIGJh
+Y2tsaWdodCBmb3IgXCIlc1wiIHRvCj4gY29ubmVjdGVkIG91dHB1dFxuIiwKPiArCQkJICAgICAg
+bmFtZSk7Cj4gIAo+ICAJCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBwaXBlKTsKPiAgCQlt
+b2RlID0gaWd0X291dHB1dF9nZXRfbW9kZShvdXRwdXQpOwpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxp
+c3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2lndC1kZXYK
