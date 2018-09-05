@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
- by gabe.freedesktop.org (Postfix) with ESMTP id 01B9F8901E
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Sep 2018 09:36:00 +0000 (UTC)
-Date: Wed, 5 Sep 2018 11:35:49 +0200
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20180905093549.2sv3ggjp5j6yiihz@flea>
-References: <cover.2608afc0c4c8efaee37268ea6e9dee558c619b13.1535721136.git-series.maxime.ripard@bootlin.com>
- <646c39734b6dde4b74f215b64f094cddc9e00ebe.1535721136.git-series.maxime.ripard@bootlin.com>
- <20180831134218.GZ5565@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A7AB66E439
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Sep 2018 10:06:18 +0000 (UTC)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Wed,  5 Sep 2018 11:05:22 +0100
+Message-Id: <20180905100522.19207-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-In-Reply-To: <20180831134218.GZ5565@intel.com>
-Subject: Re: [igt-dev] [PATCH v6 05/13] fb: Fix ARGB8888 color depth
+Subject: [igt-dev] [PATCH i-g-t] igt/kms_addfb_basic: Exercise legacy
+ interface to addfb2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,82 +15,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1423868222=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: Paul Kocialkowski <paul.kocialkowski@bootlin.com>, eben@raspberrypi.org, igt-dev@lists.freedesktop.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============1423868222==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="iwfp76pxiuckfu5y"
-Content-Disposition: inline
-
-
---iwfp76pxiuckfu5y
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Aug 31, 2018 at 04:42:18PM +0300, Ville Syrj=E4l=E4 wrote:
-> On Fri, Aug 31, 2018 at 03:12:14PM +0200, Maxime Ripard wrote:
-> > The ARGB8888 has been listed as having a 32 bits depth, while it actual=
-ly
-> > is a 24 bits format. Fix this.
->=20
-> I think 32 is the more usual definition for this.
-
-Isn't color depth about the color itself? I guess alpha wouldn't apply
-in this case.
-
-In the same format list:
-  - RGB565 has a depth of 16
-  - XRGB8888 has a depth of 24
-  - XRGB2101010 has a depth of 30
-  - ARGB8888 has a depth of 32
-
-Which seems to indicate that the list indeed meant that the color
-depth is about the color, and that ARGB8888 is wrong.
-
-Maxime
-
---=20
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---iwfp76pxiuckfu5y
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAluPo3QACgkQ0rTAlCFN
-r3Q2XBAAmofkb1QTC2WJCkVRMiXxoBLr3lHzvzE1QTN5MPmVUFdSSZBR+DMhnDaT
-k1k74SimU5YZoQ12vUNlxkL96leIxymKCaAIwVgAwki6yJNG9G+XZxEv77a53jpH
-uUhOeXOZu8BDRiX6Uyni8M2BEcCCfrJj6GbfxkUyP4xkgdwoXfd76eVlxMGJwTf+
-kMJRzZvgT732AJAW7fSoVfhiLA3avVdxzXgTTjS42ZeoHejRazyMrVBE3T5npQFV
-zCEdR+oNYsOtoNsgK+Sdr0LVps2bsJu2AzN1IsVsls9oI9ve1MZN6xNbUYw4EwVj
-lqhvFlmLcKW7i+txEV0Dh806jxbTtlVu3eSPrO58vk3xDUeAquIrvIFwBZHSvMn7
-tw3B+4BJ9n29jSEN3cpk/OZ1hElQUEYtD3ziCpp8DeEhZuI2NgofTCrOYFqWmBLg
-sbGBwlRM7YXKI/xidfDeSNPs3CgbxluJqkufVHKBurhYkaoE3wNcD62iWIhGKui7
-pk0tsHDdKq6JVkQtHMeuEdVgveM3Fnwm5yT25aSZb/cPLaCwaHjqKgJSsdI5RY4y
-EP98NyorS7vB/QB8mwLXtcDC3/qIeyCqTUmMkB8/3GDn4H1x5FIA3e9H75351Otu
-nCkpFwBmd1CzX+TbOLSjgWpWAmdTxF0ZZT5DxMHqk39iKIjiPiA=
-=Elfa
------END PGP SIGNATURE-----
-
---iwfp76pxiuckfu5y--
-
---===============1423868222==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============1423868222==--
+VGhlIGxlZ2FjeSBpbnRlcmZhY2UgcGFzc2VzIGluIGEgc2luZ2xlIGhhbmRsZSwgYW5kIGluc3Rl
+YWQgb2YgcHJvdmlkaW5nCnRoZSBwaXhlbF9mb3JtYXQgZm91cmNjLCBwYXNzZXMgaW4gYSBicHAv
+ZGVwdGggY29tYmluYXRpb24gdGhhdCB0aGUKa2VybmVsIHRyYW5zbGF0ZXMgaW50byBhIGZvdXJj
+Yy4gSWYgdGhhdCBpcyBhbiBpbGxlZ2FsIGNvbWJpbmF0aW9uLCB0aGUKa2VybmVsIHNob3VsZCBi
+ZSByZXBvcnRpbmcgRUlOVkFMIHJhdGhlciB0aGFuIHBhc3MgYW4gdW5rbm93bgpmcmFtZWJ1ZmZl
+ciB0byB0aGUgZHJpdmVycy4KCkFzIHRoZSBudW1iZXIgb2YgcG9zc2libGUgcGVybXV0YXRpb25z
+IG9mIGJwcC9kZXB0aCAoYm90aCBhcmUgc3RyaWN0bHkKdTMyIHBhcmFtZXRlcnMpIGlzIGh1Z2Us
+IHdlIHNpbXBseSBmdXp6IHRoZSBpbnRlcmZhY2UgZm9yIDFzLgoKU2lnbmVkLW9mZi1ieTogQ2hy
+aXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+CkNjOiBEYW5pZWwgVmV0dGVyIDxk
+YW5pZWwudmV0dGVyQGZmd2xsLmNoPgpDYzogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxh
+QGxpbnV4LmludGVsLmNvbT4KLS0tCiB0ZXN0cy9rbXNfYWRkZmJfYmFzaWMuYyB8IDEwMyArKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiAxIGZpbGUgY2hhbmdlZCwgMTAz
+IGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS90ZXN0cy9rbXNfYWRkZmJfYmFzaWMuYyBiL3Rl
+c3RzL2ttc19hZGRmYl9iYXNpYy5jCmluZGV4IDdkODg1MmYwMi4uYjFiMTQzZjEyIDEwMDY0NAot
+LS0gYS90ZXN0cy9rbXNfYWRkZmJfYmFzaWMuYworKysgYi90ZXN0cy9rbXNfYWRkZmJfYmFzaWMu
+YwpAQCAtMzgsOSArMzgsMzUgQEAKICNpbmNsdWRlICJkcm0uaCIKICNpbmNsdWRlICJkcm1fZm91
+cmNjLmgiCiAKKyNpbmNsdWRlICJpZ3RfcmFuZC5oIgorCiB1aW50MzJfdCBnZW1fYm87CiB1aW50
+MzJfdCBnZW1fYm9fc21hbGw7CiAKK3N0YXRpYyBpbnQgbGVnYWN5X2FkZGZiKGludCBmZCwgc3Ry
+dWN0IGRybV9tb2RlX2ZiX2NtZCAqYXJnKQoreworCWludCBlcnI7CisKKwllcnIgPSAwOworCWlm
+IChpZ3RfaW9jdGwoZmQsIERSTV9JT0NUTF9NT0RFX0FEREZCLCBhcmcpKQorCQllcnIgPSAtZXJy
+bm87CisKKwllcnJubyA9IDA7CisJcmV0dXJuIGVycjsKK30KKworc3RhdGljIGludCBybWZiKGlu
+dCBmZCwgdWludDMyX3QgaWQpCit7CisJaW50IGVycjsKKworCWVyciA9IDA7CisJaWYgKGlndF9p
+b2N0bChmZCwgRFJNX0lPQ1RMX01PREVfUk1GQiwgJmlkKSkKKwkJZXJyID0gLWVycm5vOworCisJ
+ZXJybm8gPSAwOworCXJldHVybiBlcnI7Cit9CisKIHN0YXRpYyB2b2lkIGludmFsaWRfdGVzdHMo
+aW50IGZkKQogewogCXN0cnVjdCBsb2NhbF9kcm1fbW9kZV9mYl9jbWQyIGYgPSB7fTsKQEAgLTEx
+Myw2ICsxMzksODMgQEAgc3RhdGljIHZvaWQgaW52YWxpZF90ZXN0cyhpbnQgZmQpCiAJCWlndF9h
+c3NlcnQoZi5tb2RpZmllclswXSA9PSAwKTsKIAl9CiAKKwlpZ3Rfc3VidGVzdCgibGVnYWN5LWZv
+cm1hdCIpIHsKKwkJc3RydWN0IHsKKwkJCS8qIGRybV9tb2RlX2xlZ2FjeV9mYl9mb3JtYXQoKSAq
+LworCQkJaW50IGJwcCwgZGVwdGg7CisJCQlpbnQgZXhwZWN0OworCQl9IGtub3duX2Zvcm1hdHNb
+XSA9IHsKKwkJCXsgOCwgMCB9LCAgIC8qIHBhbGV0dGUgKi8KKwkJCXsgMTYsIDE1IH0sIC8qIHgx
+cjVnNWI1ICovCisJCQl7IDE2LCAxNiB9LCAvKiByNWc2YjUgKi8KKwkJCXsgMjQsIDI0IH0sIC8q
+IHI4ZzhiOCAqLworCQkJeyAzMiwgMjQgfSwgLyogeDhyOGc4YjggKi8KKwkJCXsgMzIsIDMwIH0s
+IC8qIHgycjEwZzEwYjEwICovCisJCQl7IDMyLCAzMiB9LCAvKiBhMnIxMGcxMGIxMCAqLworCQl9
+OworCQlzdHJ1Y3QgZHJtX21vZGVfZmJfY21kIGFyZyA9IHsKKwkJCS53aWR0aCA9IGYud2lkdGgs
+CisJCQkuaGVpZ2h0ID0gZi5oZWlnaHQsCisJCQkucGl0Y2ggPSBmLnBpdGNoZXNbMF0sCisJCQku
+aGFuZGxlID0gZi5oYW5kbGVzWzBdLAorCQl9OworCQl1aW50MzJfdCBwcm5nID0gMHgxMjM0NTY3
+ODsKKworCQkvKgorCQkgKiBGaXJzdCBjb25maXJtIHRoZSBrZXJuZWwgcmVjb2duaXNlcyBvdXIg
+a25vd25fZm9ybWF0czsKKwkJICogc29tZSBtYXkgYmUgaW52YWxpZCBmb3IgZGlmZmVyZW50IGRl
+dmljZXMuCisJCSAqLworCQlmb3IgKGludCBpID0gMDsgaSA8IEFSUkFZX1NJWkUoa25vd25fZm9y
+bWF0cyk7IGkrKykgeworCQkJYXJnLmJwcCA9IGtub3duX2Zvcm1hdHNbaV0uYnBwOworCQkJYXJn
+LmRlcHRoID0ga25vd25fZm9ybWF0c1tpXS5kZXB0aDsKKwkJCWtub3duX2Zvcm1hdHNbaV0uZXhw
+ZWN0ID0gbGVnYWN5X2FkZGZiKGZkLCAmYXJnKTsKKwkJCWlndF9kZWJ1ZygiKGJwcDolZCwgZGVw
+dGg6JWQpIC0+IGV4cGVjdDolZFxuIiwKKwkJCQkgIGFyZy5icHAsIGFyZy5kZXB0aCwga25vd25f
+Zm9ybWF0c1tpXS5leHBlY3QpOworCQkJaWYgKGFyZy5mYl9pZCkgeworCQkJCWlndF9hc3NlcnRf
+ZXEocm1mYihmZCwgYXJnLmZiX2lkKSwgMCk7CisJCQkJYXJnLmZiX2lkID0gMDsKKwkJCX0KKwkJ
+fQorCisJCWlndF91bnRpbF90aW1lb3V0KDEpIHsKKwkJCWludCBleHBlY3QgPSAtRUlOVkFMOwor
+CQkJaW50IGVycjsKKworCQkJYXJnLmJwcCA9IGhhcnNfcGV0cnVza2FfZjU0XzFfcmFuZG9tKCZw
+cm5nKTsKKwkJCWFyZy5kZXB0aCA9IGhhcnNfcGV0cnVza2FfZjU0XzFfcmFuZG9tKCZwcm5nKTsK
+KwkJCWZvciAoaW50IHN0YXJ0ID0gMCwgZW5kID0gQVJSQVlfU0laRShrbm93bl9mb3JtYXRzKTsK
+KwkJCSAgICAgc3RhcnQgPCBlbmQ7ICkgeworCQkJCWludCBtaWQgPSBzdGFydCArIChlbmQgLSBz
+dGFydCkgLyAyOworCQkJCXR5cGVvZigqa25vd25fZm9ybWF0cykgKnRibCA9ICZrbm93bl9mb3Jt
+YXRzW21pZF07CisKKwkJCQlpZiAoYXJnLmJwcCA8IHRibC0+YnBwKSB7CisJCQkJCWVuZCA9IG1p
+ZDsKKwkJCQl9IGVsc2UgaWYgKGFyZy5icHAgPiB0YmwtPmJwcCkgeworCQkJCQlzdGFydCA9IG1p
+ZCArIDE7CisJCQkJfSBlbHNlIHsKKwkJCQkJaWYgKGFyZy5kZXB0aCA8IHRibC0+ZGVwdGgpIHsK
+KwkJCQkJCWVuZCA9IG1pZDsKKwkJCQkJfSBlbHNlIGlmIChhcmcuZGVwdGggPiB0YmwtPmRlcHRo
+KSB7CisJCQkJCQlzdGFydCA9IG1pZCArIDE7CisJCQkJCX0gZWxzZSB7CisJCQkJCQlleHBlY3Qg
+PSB0YmwtPmV4cGVjdDsKKwkJCQkJCWJyZWFrOworCQkJCQl9CisJCQkJfQorCQkJfQorCisKKwkJ
+CWVyciA9IGxlZ2FjeV9hZGRmYihmZCwgJmFyZyk7CisJCQlpZ3RfYXNzZXJ0X2YoZXJyID09IGV4
+cGVjdCwKKwkJCQkgICAgICJFeHBlY3RlZCAlZCB3aXRoIChicHA6JWQsIGRlcHRoOiVkKSwgZ290
+ICVkIGluc3RlYWRcbiIsCisJCQkJICAgICBleHBlY3QsIGFyZy5icHAsIGFyZy5kZXB0aCwgZXJy
+KTsKKwkJCWlmIChhcmcuZmJfaWQpIHsKKwkJCQlpZ3RfYXNzZXJ0X2VxKHJtZmIoZmQsIGFyZy5m
+Yl9pZCksIDApOworCQkJCWFyZy5mYl9pZCA9IDA7CisJCQl9CisJCX0KKwl9CisKIAlpZ3RfZml4
+dHVyZSB7CiAJCWdlbV9jbG9zZShmZCwgZ2VtX2JvKTsKIAkJZ2VtX2Nsb3NlKGZkLCBnZW1fYm9f
+c21hbGwpOwotLSAKMi4xOS4wLnJjMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVz
+a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9p
+Z3QtZGV2Cg==
