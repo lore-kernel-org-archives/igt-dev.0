@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A8096E473
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Sep 2018 13:07:04 +0000 (UTC)
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 319CD6E459
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Sep 2018 13:16:38 +0000 (UTC)
+Date: Wed, 5 Sep 2018 15:16:36 +0200
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20180905131636.g2tp65z5y2b32kbb@flea>
+References: <cover.2608afc0c4c8efaee37268ea6e9dee558c619b13.1535721136.git-series.maxime.ripard@bootlin.com>
+ <f9e020246e4999bec72c9005e729b87b51391cdb.1535721136.git-series.maxime.ripard@bootlin.com>
+ <20180831134110.GY5565@intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20180905123439.GO5565@intel.com>
-References: <20180905091747.15306-1-chris@chris-wilson.co.uk>
- <20180905123439.GO5565@intel.com>
-Message-ID: <153615282022.28292.3809975377564480477@skylake-alporthouse-com>
-Date: Wed, 05 Sep 2018 14:07:00 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t] igt/pm_backlight: Skip if pm is not
- supported
+In-Reply-To: <20180831134110.GY5565@intel.com>
+Subject: Re: [igt-dev] [PATCH v6 03/13] fb: Create common function to
+ convert frame formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,55 +19,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0924750018=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: Paul Kocialkowski <paul.kocialkowski@bootlin.com>, eben@raspberrypi.org, igt-dev@lists.freedesktop.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBWaWxsZSBTeXJqw6Rsw6QgKDIwMTgtMDktMDUgMTM6MzQ6MzkpCj4gT24gV2VkLCBT
-ZXAgMDUsIDIwMTggYXQgMTA6MTc6NDdBTSArMDEwMCwgQ2hyaXMgV2lsc29uIHdyb3RlOgo+ID4g
-SWYgd2UgY2Fubm90IGRvIHJ1bnRpbWUgc3VzcGVuZCwgdGVzdGluZyBpdCdzIGltcGFjdCBvbiB0
-aGUgYmFja2xpZ2h0IGlzCj4gPiBtb290LiBTaW1wbHkgc2tpcCBvbiBzeXN0ZW1zIHRoYXQgY2Fu
-bm90IHJ1bnRpbWUgc3VzcGVuZC4KPiA+IAo+ID4gQnVnemlsbGE6IGh0dHBzOi8vYnVncy5mcmVl
-ZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNzc4OQo+ID4gQnVnemlsbGE6IGh0dHBzOi8v
-YnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNzc5MAo+ID4gQnVnemlsbGE6
-IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNzc5NAo+ID4g
-U2lnbmVkLW9mZi1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Cj4g
-PiAtLS0KPiA+ICB0ZXN0cy9wbV9iYWNrbGlnaHQuYyB8IDM2ICsrKysrKysrKysrKysrKysrKysr
-KysrKystLS0tLS0tLS0tLQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAyNSBpbnNlcnRpb25zKCspLCAx
-MSBkZWxldGlvbnMoLSkKPiA+IAo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL3BtX2JhY2tsaWdodC5j
-IGIvdGVzdHMvcG1fYmFja2xpZ2h0LmMKPiA+IGluZGV4IDRjMDM5OWQ0Ni4uZTk0MzQwYTJiIDEw
-MDY0NAo+ID4gLS0tIGEvdGVzdHMvcG1fYmFja2xpZ2h0LmMKPiA+ICsrKyBiL3Rlc3RzL3BtX2Jh
-Y2tsaWdodC5jCj4gPiBAQCAtMTUxLDIzICsxNTEsMzcgQEAgc3RhdGljIHZvaWQgdGVzdF9mYWRl
-KHN0cnVjdCBjb250ZXh0ICpjb250ZXh0KQo+ID4gICAgICAgICAgICAgICBuYW5vc2xlZXAoJnRz
-LCBOVUxMKTsKPiA+ICAgICAgIH0KPiA+ICB9Cj4gPiAtc3RhdGljIHZvaWQgdGVzdF9mYWRlX3dp
-dGhfZHBtcyhzdHJ1Y3QgY29udGV4dCAqY29udGV4dCwgaWd0X291dHB1dF90ICpvdXRwdXQpCj4g
-PiArCj4gPiArc3RhdGljIHZvaWQKPiA+ICt0ZXN0X2ZhZGVfd2l0aF9kcG1zKHN0cnVjdCBjb250
-ZXh0ICpjb250ZXh0LCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCkKPiA+ICB7Cj4gPiAtICAgICBib29s
-IGhhc19ydW50aW1lX3BtOwo+ID4gLSAgICAgaGFzX3J1bnRpbWVfcG0gPSBpZ3Rfc2V0dXBfcnVu
-dGltZV9wbSgpOwo+ID4gLSAgICAgaWd0X2luZm8oIlJ1bnRpbWUgUE0gc3VwcG9ydDogJWRcbiIs
-IGhhc19ydW50aW1lX3BtKTsKPiA+IC0gICAgIGlndF9hc3NlcnQoaGFzX3J1bnRpbWVfcG0pOwo+
-ID4gLSAgICAga21zdGVzdF9zZXRfY29ubmVjdG9yX2RwbXMob3V0cHV0LT5kaXNwbGF5LT5kcm1f
-ZmQsIG91dHB1dC0+Y29uZmlnLmNvbm5lY3RvciwgRFJNX01PREVfRFBNU19PRkYpOwo+ID4gLSAg
-ICAgaWd0X2Fzc2VydChpZ3Rfd2FpdF9mb3JfcG1fc3RhdHVzKElHVF9SVU5USU1FX1BNX1NUQVRV
-U19TVVNQRU5ERUQpKTsKPiA+IC0gICAgIGttc3Rlc3Rfc2V0X2Nvbm5lY3Rvcl9kcG1zKG91dHB1
-dC0+ZGlzcGxheS0+ZHJtX2ZkLCBvdXRwdXQtPmNvbmZpZy5jb25uZWN0b3IsIERSTV9NT0RFX0RQ
-TVNfT04pOwo+ID4gKyAgICAgaWd0X3JlcXVpcmUoaWd0X3NldHVwX3J1bnRpbWVfcG0oKSk7Cj4g
-PiArCj4gPiArICAgICBrbXN0ZXN0X3NldF9jb25uZWN0b3JfZHBtcyhvdXRwdXQtPmRpc3BsYXkt
-PmRybV9mZCwKPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG91dHB1dC0+Y29u
-ZmlnLmNvbm5lY3RvciwKPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIERSTV9N
-T0RFX0RQTVNfT0ZGKTsKPiA+ICsgICAgIGlndF9yZXF1aXJlKGlndF93YWl0X2Zvcl9wbV9zdGF0
-dXMoSUdUX1JVTlRJTUVfUE1fU1RBVFVTX1NVU1BFTkRFRCkpOwo+IAo+IFNob3VsZCB0aGlzIHN0
-YXlzIGFzIGlndF9hc3NlcnQoKSBvciBpcyB0aGUgZWFybGllcgo+IGlndF9yZXF1aXJlKGlndF9z
-ZXR1cF9ydW50aW1lX3BtKCkpIG5vdCBnb29kIGVub3VnaCB0bwo+IGRldGVjdCB0aGF0IHJ1bnRp
-bWUgUE0gaXMgc3VwcG9ydGVkPwoKVGhlIHNldHVwIG9ubHkgdGVsbHMgdXMgaWYgdGhlIHJ1bnRp
-bWUgcG0gaWZhY2UgZXhpc3RzLiBXaGF0IGl0IGRvZXNuJ3QKZXN0YWJsaXNoIGlzIGlmIHRoZXJl
-IGlzIGEgcmFpc2VkIHdha2VyZWYgKGUuZy4gbm8gRE1DKSBwcmV2ZW50aW5nIHVzCmZyb20gZW50
-ZXJpbmcgcnVudGltZSBzdXNwZW5kLiBUbyBkbyB0aGF0IHdlIGhhdmUgdG8gdHJ5IGFuZCBmYWls
-LiBJCmhhdmVuJ3Qgc3BvdHRlZCBhIGJldHRlciB3YXkuCi1DaHJpcwpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
-ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+
+--===============0924750018==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="rpde72bpr5gh3wid"
+Content-Disposition: inline
+
+
+--rpde72bpr5gh3wid
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Aug 31, 2018 at 04:41:10PM +0300, Ville Syrj=E4l=E4 wrote:
+> On Fri, Aug 31, 2018 at 03:12:12PM +0200, Maxime Ripard wrote:
+> > The current code to convert between two buffer formats is quite tied to=
+ the
+> > cairo surface infrastructure. Since we'll want to reuse it, make that
+> > function more generic by introducing a common structure that passes all=
+ the
+> > arguments and a common function that will call the right functions we
+> > needed.
+> >=20
+> > Reviewed-by: Eric Anholt <eric@anholt.net>
+> > Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
+> > ---
+> >  lib/igt_fb.c | 243 ++++++++++++++++++++++++++++++++--------------------
+> >  1 file changed, 153 insertions(+), 90 deletions(-)
+> >=20
+> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> > index 4061fedec0c1..1914233786a5 100644
+> > --- a/lib/igt_fb.c
+> > +++ b/lib/igt_fb.c
+> > @@ -1384,6 +1384,24 @@ struct fb_convert_blit_upload {
+> >  	struct fb_blit_linear linear;
+> >  };
+> > =20
+> > +struct fb_convert_buf {
+> > +	void			*ptr;
+> > +	unsigned int		stride;
+> > +	unsigned int		size;
+> > +	uint32_t		fmt;
+> > +	enum igt_color_encoding	color_encoding;
+> > +	enum igt_color_range	color_range;
+> > +	uint32_t		offsets[4];
+> > +};
+>=20
+> I wonder if we can just use igt_fb for that instead of duplicating most
+> of it?
+
+I guess we could yes. I'll try to adjust the patches to do that.
+
+Maxime
+
+--=20
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--rpde72bpr5gh3wid
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAluP1ygACgkQ0rTAlCFN
+r3TPcg/+MkLrGz6L696YO0oGdNxd81O5fLflPopBn4euvmuu34DXI/awmNOffye0
+khTJWnOegH4zhPhBuBqtSNvoi/46RqWvEoZgJ6X0Z0e2UDUEVFU0NKiwGUjvcjJJ
+FuXdxEu/SQO6r/B4PghGraUk7mF+XzKw4MW3Jqd54BjPlYsLGeheu9yKJXBOUxLV
+syDxqgmqXLdig/d6p8RVkGMGKFAh9PyE8zG73QinsY2IKQ5P8Du+yRrKLfYCdqcd
+0/9gQX6FP61NA70MrgWhesh2iHK8744fmIE5VFxTdAHEaTHUAkLE3kBvrjyZu/tJ
+v4RJqvEdSvrxLmcZ+HSnB/XokNQlLT+TEte6WERtQfMI3E+Gb8bDZ53pR9oyp0ps
+8gh8jpNnddI2Ac2DoO4S8CY9DMEsaANlQN3qi0cny3B/LtGgTGsZK3eYAuYP4/jb
+Xfnn/FzKG/bQ4GHNMINOuss70m/vOJD+Q6gjihLSiEEsBKRySYC4AjS0+AlO3prv
+BNDIBb917SbC+FhfvgMWaEnL2K45LlMV4zZ1tezmg0CRpy29GaDeh6mmBLdy5cVg
+9fTLchxm5hFn6/1l1JKC/n/O8VnFa6vm9S4v/W6ppZW6iAbjocn52fKExK2bAfIt
+hfpuquK7WHA1ItVNFmNGABDjAVj3ePwMjnD3n71OOqzvsYw31QQ=
+=W3OZ
+-----END PGP SIGNATURE-----
+
+--rpde72bpr5gh3wid--
+
+--===============0924750018==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0924750018==--
