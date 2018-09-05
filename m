@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
- by gabe.freedesktop.org (Postfix) with ESMTP id 319CD6E459
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Sep 2018 13:16:38 +0000 (UTC)
-Date: Wed, 5 Sep 2018 15:16:36 +0200
+ by gabe.freedesktop.org (Postfix) with ESMTP id AFE176E459
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Sep 2018 13:19:04 +0000 (UTC)
+Date: Wed, 5 Sep 2018 15:19:03 +0200
 From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20180905131636.g2tp65z5y2b32kbb@flea>
+Message-ID: <20180905131903.ucuftgtcq4hzze2s@flea>
 References: <cover.2608afc0c4c8efaee37268ea6e9dee558c619b13.1535721136.git-series.maxime.ripard@bootlin.com>
- <f9e020246e4999bec72c9005e729b87b51391cdb.1535721136.git-series.maxime.ripard@bootlin.com>
- <20180831134110.GY5565@intel.com>
+ <646c39734b6dde4b74f215b64f094cddc9e00ebe.1535721136.git-series.maxime.ripard@bootlin.com>
+ <20180831134218.GZ5565@intel.com>
+ <20180905093549.2sv3ggjp5j6yiihz@flea>
+ <20180905101434.GL5565@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20180831134110.GY5565@intel.com>
-Subject: Re: [igt-dev] [PATCH v6 03/13] fb: Create common function to
- convert frame formats
+In-Reply-To: <20180905101434.GL5565@intel.com>
+Subject: Re: [igt-dev] [PATCH v6 05/13] fb: Fix ARGB8888 color depth
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,7 +20,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0924750018=="
+Content-Type: multipart/mixed; boundary="===============2055046551=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
@@ -27,55 +28,40 @@ Cc: Paul Kocialkowski <paul.kocialkowski@bootlin.com>, eben@raspberrypi.org, igt
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
---===============0924750018==
+--===============2055046551==
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="rpde72bpr5gh3wid"
+	protocol="application/pgp-signature"; boundary="ahostbkyptyewemy"
 Content-Disposition: inline
 
 
---rpde72bpr5gh3wid
+--ahostbkyptyewemy
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 31, 2018 at 04:41:10PM +0300, Ville Syrj=E4l=E4 wrote:
-> On Fri, Aug 31, 2018 at 03:12:12PM +0200, Maxime Ripard wrote:
-> > The current code to convert between two buffer formats is quite tied to=
- the
-> > cairo surface infrastructure. Since we'll want to reuse it, make that
-> > function more generic by introducing a common structure that passes all=
- the
-> > arguments and a common function that will call the right functions we
-> > needed.
+On Wed, Sep 05, 2018 at 01:14:34PM +0300, Ville Syrj=E4l=E4 wrote:
+> > In the same format list:
+> >   - RGB565 has a depth of 16
+> >   - XRGB8888 has a depth of 24
+> >   - XRGB2101010 has a depth of 30
+> >   - ARGB8888 has a depth of 32
 > >=20
-> > Reviewed-by: Eric Anholt <eric@anholt.net>
-> > Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
-> > ---
-> >  lib/igt_fb.c | 243 ++++++++++++++++++++++++++++++++--------------------
-> >  1 file changed, 153 insertions(+), 90 deletions(-)
-> >=20
-> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> > index 4061fedec0c1..1914233786a5 100644
-> > --- a/lib/igt_fb.c
-> > +++ b/lib/igt_fb.c
-> > @@ -1384,6 +1384,24 @@ struct fb_convert_blit_upload {
-> >  	struct fb_blit_linear linear;
-> >  };
-> > =20
-> > +struct fb_convert_buf {
-> > +	void			*ptr;
-> > +	unsigned int		stride;
-> > +	unsigned int		size;
-> > +	uint32_t		fmt;
-> > +	enum igt_color_encoding	color_encoding;
-> > +	enum igt_color_range	color_range;
-> > +	uint32_t		offsets[4];
-> > +};
+> > Which seems to indicate that the list indeed meant that the color
+> > depth is about the color, and that ARGB8888 is wrong.
 >=20
-> I wonder if we can just use igt_fb for that instead of duplicating most
-> of it?
+> None of those other things have alpha, so they are still
+> consistent with the depth=3D=3D32 definition for ARGB888.
 
-I guess we could yes. I'll try to adjust the patches to do that.
+"24 bits almost always uses 8 bits of each of R, G, B. As of 2018
+24-bit color depth is used by virtually every computer and phone
+display and the vast majority of image storage formats. Almost all
+cases where there are 32 bits per pixel mean that 24 are used for the
+color, and the remaining 8 are the alpha channel or unused."
+
+There's 32bpp, but the depth is 24 bits.
+
+But maybe the X11 legacy says otherwise, I don't know. What's your
+suggestion then? adding yet another field?
 
 Maxime
 
@@ -84,29 +70,29 @@ Maxime Ripard, Bootlin
 Embedded Linux and Kernel engineering
 https://bootlin.com
 
---rpde72bpr5gh3wid
+--ahostbkyptyewemy
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAluP1ygACgkQ0rTAlCFN
-r3TPcg/+MkLrGz6L696YO0oGdNxd81O5fLflPopBn4euvmuu34DXI/awmNOffye0
-khTJWnOegH4zhPhBuBqtSNvoi/46RqWvEoZgJ6X0Z0e2UDUEVFU0NKiwGUjvcjJJ
-FuXdxEu/SQO6r/B4PghGraUk7mF+XzKw4MW3Jqd54BjPlYsLGeheu9yKJXBOUxLV
-syDxqgmqXLdig/d6p8RVkGMGKFAh9PyE8zG73QinsY2IKQ5P8Du+yRrKLfYCdqcd
-0/9gQX6FP61NA70MrgWhesh2iHK8744fmIE5VFxTdAHEaTHUAkLE3kBvrjyZu/tJ
-v4RJqvEdSvrxLmcZ+HSnB/XokNQlLT+TEte6WERtQfMI3E+Gb8bDZ53pR9oyp0ps
-8gh8jpNnddI2Ac2DoO4S8CY9DMEsaANlQN3qi0cny3B/LtGgTGsZK3eYAuYP4/jb
-Xfnn/FzKG/bQ4GHNMINOuss70m/vOJD+Q6gjihLSiEEsBKRySYC4AjS0+AlO3prv
-BNDIBb917SbC+FhfvgMWaEnL2K45LlMV4zZ1tezmg0CRpy29GaDeh6mmBLdy5cVg
-9fTLchxm5hFn6/1l1JKC/n/O8VnFa6vm9S4v/W6ppZW6iAbjocn52fKExK2bAfIt
-hfpuquK7WHA1ItVNFmNGABDjAVj3ePwMjnD3n71OOqzvsYw31QQ=
-=W3OZ
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAluP18YACgkQ0rTAlCFN
+r3RHghAAibrakyB6PS+tK+u5XoM1b9gIty00Q16UGCHRiRUVEPslRnR8wTqOHhO6
+faB0Ebu2Aa1EqxS53rJHEECOfw9QMRRhJ3N7XIJu3V2pnTyRVEvaBr8GyVBUK5i6
++MKaEptUdxeEXbX1VzF5nAgFm2p70xrH8jBp21co0r8XSEW14MCQQoPnfKLNCxPy
+15MHbd1mfP7CEJV8XbKujwFrFEcPFJf/MD92K5JziT7fTrZ7xQw0o+CO+UiAE+p+
+WgDcwBwTSvHCr2fCcjCvTqvvyB9I9SydsyWFx8cpyR/Oe4taXUw1zg6Cph16lduD
+rzlQXvXnE/qjUA37sh4LG1ENo23CiDrOpAyBstp3Z/yo+sHITOY8usDyQQpLgF6N
+WxlJHEyuoi/s9/BHURMJ+dfHXRrs0D6FKj5dJwsbbc344ADy7iZu6uGDVx0Q8xBD
+FIRN/5ewOlo079D6BwLsLLiOATKYLudMuV+0ew3943rEFNx6wnxmayVbeBgnr5FL
+e+O6NDRQD2JP2y/YpQhnBB5iTetCIVwSfsRi9YQ8XLhDuCpoF1Dw3wBtWQjGMIPf
+G0/M1x61ELqhpQU/kAz7+aNPhiSNfnOcALklgHu9CxYjDhxxnKzgofRxnmtp/+Vi
+vDl1EMIQIW8Fr5RsypX1krW/soFMiMwxR0RprAjtIS5XRcuZNdk=
+=P2hT
 -----END PGP SIGNATURE-----
 
---rpde72bpr5gh3wid--
+--ahostbkyptyewemy--
 
---===============0924750018==
+--===============2055046551==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: base64
@@ -116,4 +102,4 @@ X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
 YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
 cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
 
---===============0924750018==--
+--===============2055046551==--
