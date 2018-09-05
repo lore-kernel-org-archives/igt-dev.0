@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6832E6E0B7
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Sep 2018 09:17:55 +0000 (UTC)
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed,  5 Sep 2018 10:17:47 +0100
-Message-Id: <20180905091747.15306-1-chris@chris-wilson.co.uk>
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 01B9F8901E
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Sep 2018 09:36:00 +0000 (UTC)
+Date: Wed, 5 Sep 2018 11:35:49 +0200
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20180905093549.2sv3ggjp5j6yiihz@flea>
+References: <cover.2608afc0c4c8efaee37268ea6e9dee558c619b13.1535721136.git-series.maxime.ripard@bootlin.com>
+ <646c39734b6dde4b74f215b64f094cddc9e00ebe.1535721136.git-series.maxime.ripard@bootlin.com>
+ <20180831134218.GZ5565@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] igt/pm_backlight: Skip if pm is not
- supported
+In-Reply-To: <20180831134218.GZ5565@intel.com>
+Subject: Re: [igt-dev] [PATCH v6 05/13] fb: Fix ARGB8888 color depth
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,56 +18,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1423868222=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: Paul Kocialkowski <paul.kocialkowski@bootlin.com>, eben@raspberrypi.org, igt-dev@lists.freedesktop.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SWYgd2UgY2Fubm90IGRvIHJ1bnRpbWUgc3VzcGVuZCwgdGVzdGluZyBpdCdzIGltcGFjdCBvbiB0
-aGUgYmFja2xpZ2h0IGlzCm1vb3QuIFNpbXBseSBza2lwIG9uIHN5c3RlbXMgdGhhdCBjYW5ub3Qg
-cnVudGltZSBzdXNwZW5kLgoKQnVnemlsbGE6IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcv
-c2hvd19idWcuY2dpP2lkPTEwNzc4OQpCdWd6aWxsYTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
-Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3NzkwCkJ1Z3ppbGxhOiBodHRwczovL2J1Z3MuZnJlZWRl
-c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDc3OTQKU2lnbmVkLW9mZi1ieTogQ2hyaXMgV2ls
-c29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Ci0tLQogdGVzdHMvcG1fYmFja2xpZ2h0LmMg
-fCAzNiArKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2Vk
-LCAyNSBpbnNlcnRpb25zKCspLCAxMSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS90ZXN0cy9w
-bV9iYWNrbGlnaHQuYyBiL3Rlc3RzL3BtX2JhY2tsaWdodC5jCmluZGV4IDRjMDM5OWQ0Ni4uZTk0
-MzQwYTJiIDEwMDY0NAotLS0gYS90ZXN0cy9wbV9iYWNrbGlnaHQuYworKysgYi90ZXN0cy9wbV9i
-YWNrbGlnaHQuYwpAQCAtMTUxLDIzICsxNTEsMzcgQEAgc3RhdGljIHZvaWQgdGVzdF9mYWRlKHN0
-cnVjdCBjb250ZXh0ICpjb250ZXh0KQogCQluYW5vc2xlZXAoJnRzLCBOVUxMKTsKIAl9CiB9Ci1z
-dGF0aWMgdm9pZCB0ZXN0X2ZhZGVfd2l0aF9kcG1zKHN0cnVjdCBjb250ZXh0ICpjb250ZXh0LCBp
-Z3Rfb3V0cHV0X3QgKm91dHB1dCkKKworc3RhdGljIHZvaWQKK3Rlc3RfZmFkZV93aXRoX2RwbXMo
-c3RydWN0IGNvbnRleHQgKmNvbnRleHQsIGlndF9vdXRwdXRfdCAqb3V0cHV0KQogewotCWJvb2wg
-aGFzX3J1bnRpbWVfcG07Ci0JaGFzX3J1bnRpbWVfcG0gPSBpZ3Rfc2V0dXBfcnVudGltZV9wbSgp
-OwotCWlndF9pbmZvKCJSdW50aW1lIFBNIHN1cHBvcnQ6ICVkXG4iLCBoYXNfcnVudGltZV9wbSk7
-Ci0JaWd0X2Fzc2VydChoYXNfcnVudGltZV9wbSk7Ci0Ja21zdGVzdF9zZXRfY29ubmVjdG9yX2Rw
-bXMob3V0cHV0LT5kaXNwbGF5LT5kcm1fZmQsIG91dHB1dC0+Y29uZmlnLmNvbm5lY3RvciwgRFJN
-X01PREVfRFBNU19PRkYpOwotCWlndF9hc3NlcnQoaWd0X3dhaXRfZm9yX3BtX3N0YXR1cyhJR1Rf
-UlVOVElNRV9QTV9TVEFUVVNfU1VTUEVOREVEKSk7Ci0Ja21zdGVzdF9zZXRfY29ubmVjdG9yX2Rw
-bXMob3V0cHV0LT5kaXNwbGF5LT5kcm1fZmQsIG91dHB1dC0+Y29uZmlnLmNvbm5lY3RvciwgRFJN
-X01PREVfRFBNU19PTik7CisJaWd0X3JlcXVpcmUoaWd0X3NldHVwX3J1bnRpbWVfcG0oKSk7CisK
-KwlrbXN0ZXN0X3NldF9jb25uZWN0b3JfZHBtcyhvdXRwdXQtPmRpc3BsYXktPmRybV9mZCwKKwkJ
-CQkgICBvdXRwdXQtPmNvbmZpZy5jb25uZWN0b3IsCisJCQkJICAgRFJNX01PREVfRFBNU19PRkYp
-OworCWlndF9yZXF1aXJlKGlndF93YWl0X2Zvcl9wbV9zdGF0dXMoSUdUX1JVTlRJTUVfUE1fU1RB
-VFVTX1NVU1BFTkRFRCkpOworCisJa21zdGVzdF9zZXRfY29ubmVjdG9yX2RwbXMob3V0cHV0LT5k
-aXNwbGF5LT5kcm1fZmQsCisJCQkJICAgb3V0cHV0LT5jb25maWcuY29ubmVjdG9yLAorCQkJCSAg
-IERSTV9NT0RFX0RQTVNfT04pOwogCWlndF9hc3NlcnQoaWd0X3dhaXRfZm9yX3BtX3N0YXR1cyhJ
-R1RfUlVOVElNRV9QTV9TVEFUVVNfQUNUSVZFKSk7CisKIAl0ZXN0X2ZhZGUoY29udGV4dCk7CiB9
-Ci1zdGF0aWMgdm9pZCB0ZXN0X2ZhZGVfd2l0aF9zdXNwZW5kKHN0cnVjdCBjb250ZXh0ICpjb250
-ZXh0LCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCkKKworc3RhdGljIHZvaWQKK3Rlc3RfZmFkZV93aXRo
-X3N1c3BlbmQoc3RydWN0IGNvbnRleHQgKmNvbnRleHQsIGlndF9vdXRwdXRfdCAqb3V0cHV0KQog
-ewotCWttc3Rlc3Rfc2V0X2Nvbm5lY3Rvcl9kcG1zKG91dHB1dC0+ZGlzcGxheS0+ZHJtX2ZkLCBv
-dXRwdXQtPmNvbmZpZy5jb25uZWN0b3IsIERSTV9NT0RFX0RQTVNfT0ZGKTsKLQlpZ3RfYXNzZXJ0
-KGlndF93YWl0X2Zvcl9wbV9zdGF0dXMoSUdUX1JVTlRJTUVfUE1fU1RBVFVTX1NVU1BFTkRFRCkp
-OworCWlndF9yZXF1aXJlKGlndF9zZXR1cF9ydW50aW1lX3BtKCkpOworCisJa21zdGVzdF9zZXRf
-Y29ubmVjdG9yX2RwbXMob3V0cHV0LT5kaXNwbGF5LT5kcm1fZmQsCisJCQkJICAgb3V0cHV0LT5j
-b25maWcuY29ubmVjdG9yLAorCQkJCSAgIERSTV9NT0RFX0RQTVNfT0ZGKTsKKwlpZ3RfcmVxdWly
-ZShpZ3Rfd2FpdF9mb3JfcG1fc3RhdHVzKElHVF9SVU5USU1FX1BNX1NUQVRVU19TVVNQRU5ERUQp
-KTsKKwogCWlndF9zeXN0ZW1fc3VzcGVuZF9hdXRvcmVzdW1lKFNVU1BFTkRfU1RBVEVfTUVNLCBT
-VVNQRU5EX1RFU1RfTk9ORSk7CisKIAl0ZXN0X2ZhZGUoY29udGV4dCk7CiB9CiAKLS0gCjIuMTku
-MC5yYzEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
-dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+
+--===============1423868222==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="iwfp76pxiuckfu5y"
+Content-Disposition: inline
+
+
+--iwfp76pxiuckfu5y
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Aug 31, 2018 at 04:42:18PM +0300, Ville Syrj=E4l=E4 wrote:
+> On Fri, Aug 31, 2018 at 03:12:14PM +0200, Maxime Ripard wrote:
+> > The ARGB8888 has been listed as having a 32 bits depth, while it actual=
+ly
+> > is a 24 bits format. Fix this.
+>=20
+> I think 32 is the more usual definition for this.
+
+Isn't color depth about the color itself? I guess alpha wouldn't apply
+in this case.
+
+In the same format list:
+  - RGB565 has a depth of 16
+  - XRGB8888 has a depth of 24
+  - XRGB2101010 has a depth of 30
+  - ARGB8888 has a depth of 32
+
+Which seems to indicate that the list indeed meant that the color
+depth is about the color, and that ARGB8888 is wrong.
+
+Maxime
+
+--=20
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--iwfp76pxiuckfu5y
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAluPo3QACgkQ0rTAlCFN
+r3Q2XBAAmofkb1QTC2WJCkVRMiXxoBLr3lHzvzE1QTN5MPmVUFdSSZBR+DMhnDaT
+k1k74SimU5YZoQ12vUNlxkL96leIxymKCaAIwVgAwki6yJNG9G+XZxEv77a53jpH
+uUhOeXOZu8BDRiX6Uyni8M2BEcCCfrJj6GbfxkUyP4xkgdwoXfd76eVlxMGJwTf+
+kMJRzZvgT732AJAW7fSoVfhiLA3avVdxzXgTTjS42ZeoHejRazyMrVBE3T5npQFV
+zCEdR+oNYsOtoNsgK+Sdr0LVps2bsJu2AzN1IsVsls9oI9ve1MZN6xNbUYw4EwVj
+lqhvFlmLcKW7i+txEV0Dh806jxbTtlVu3eSPrO58vk3xDUeAquIrvIFwBZHSvMn7
+tw3B+4BJ9n29jSEN3cpk/OZ1hElQUEYtD3ziCpp8DeEhZuI2NgofTCrOYFqWmBLg
+sbGBwlRM7YXKI/xidfDeSNPs3CgbxluJqkufVHKBurhYkaoE3wNcD62iWIhGKui7
+pk0tsHDdKq6JVkQtHMeuEdVgveM3Fnwm5yT25aSZb/cPLaCwaHjqKgJSsdI5RY4y
+EP98NyorS7vB/QB8mwLXtcDC3/qIeyCqTUmMkB8/3GDn4H1x5FIA3e9H75351Otu
+nCkpFwBmd1CzX+TbOLSjgWpWAmdTxF0ZZT5DxMHqk39iKIjiPiA=
+=Elfa
+-----END PGP SIGNATURE-----
+
+--iwfp76pxiuckfu5y--
+
+--===============1423868222==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1423868222==--
