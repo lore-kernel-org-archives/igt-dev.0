@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A5786E5F2
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Sep 2018 07:24:10 +0000 (UTC)
-From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Date: Thu,  6 Sep 2018 10:23:58 +0300
-Message-Id: <20180906072400.7963-4-gwan-gyeong.mun@intel.com>
-In-Reply-To: <20180906072400.7963-1-gwan-gyeong.mun@intel.com>
-References: <20180906072400.7963-1-gwan-gyeong.mun@intel.com>
-Subject: [igt-dev] [RESEND,
- v3 3/5] kms_plane: Split helpers creating reference FB and
- capturing CRC
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id CAF066E090
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Sep 2018 07:23:19 +0000 (UTC)
+Date: Thu, 6 Sep 2018 09:22:45 +0200
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20180906072245.66ygaloy2wv3e2rr@flea>
+References: <cover.2608afc0c4c8efaee37268ea6e9dee558c619b13.1535721136.git-series.maxime.ripard@bootlin.com>
+ <646c39734b6dde4b74f215b64f094cddc9e00ebe.1535721136.git-series.maxime.ripard@bootlin.com>
+ <20180831134218.GZ5565@intel.com>
+ <20180905093549.2sv3ggjp5j6yiihz@flea>
+ <20180905101434.GL5565@intel.com>
+ <20180905131903.ucuftgtcq4hzze2s@flea>
+ <20180905133726.GR5565@intel.com>
+MIME-Version: 1.0
+In-Reply-To: <20180905133726.GR5565@intel.com>
+Subject: Re: [igt-dev] [PATCH v6 05/13] fb: Fix ARGB8888 color depth
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,85 +22,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============2083240447=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: juha-pekka.heikkila@intel.com
+To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: Paul Kocialkowski <paul.kocialkowski@bootlin.com>, eben@raspberrypi.org, igt-dev@lists.freedesktop.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogSW1yZSBEZWFrIDxpbXJlLmRlYWtAaW50ZWwuY29tPgoKU3BsaXQgY3JlYXRpbmcgYSBy
-ZWZlcmVuY2UgRkIgYW5kIGNhcHR1cmluZyB0aGUgQ1JDIGZvciBpdCBpbnRvIHNlcGFyYXRlCmZ1
-bmN0aW9ucywgc28gaW4gYSBmb2xsb3ctdXAgcGF0Y2ggd2UgY2FuIHJldXNlIHRoZSBDUkMgY2Fw
-dHVyZSBmdW5jdGlvbgpmb3IgYSByZWZlcmVuY2UgRkIgY3JlYXRlZCBpbiBhIGRpZmZlcmVudCB3
-YXkuCgpTaWduZWQtb2ZmLWJ5OiBJbXJlIERlYWsgPGltcmUuZGVha0BpbnRlbC5jb20+ClJldmll
-d2VkLWJ5OiBBcmthZGl1c3ogSGlsZXIgPGFya2FkaXVzei5oaWxlckBpbnRlbC5jb20+Ci0tLQog
-dGVzdHMva21zX3BsYW5lLmMgfCA1MCArKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0t
-LS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDMyIGluc2VydGlvbnMoKyksIDE4IGRlbGV0
-aW9ucygtKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19wbGFuZS5jIGIvdGVzdHMva21zX3BsYW5l
-LmMKaW5kZXggYWNlYWU1OTEuLjNmNDhjODIxIDEwMDY0NAotLS0gYS90ZXN0cy9rbXNfcGxhbmUu
-YworKysgYi90ZXN0cy9rbXNfcGxhbmUuYwpAQCAtNjEsMTEgKzYxLDkgQEAgc3RhdGljIHZvaWQg
-dGVzdF9maW5pKGRhdGFfdCAqZGF0YSkKIH0KIAogc3RhdGljIHZvaWQKLXRlc3RfZ3JhYl9jcmMo
-ZGF0YV90ICpkYXRhLCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCwgZW51bSBwaXBlIHBpcGUsCi0JICAg
-ICAgY29sb3JfdCAqZmJfY29sb3IsIGlndF9jcmNfdCAqY3JjIC8qIG91dCAqLykKK3Rlc3RfZ3Jh
-Yl9jcmNfZm9yX2ZiKGRhdGFfdCAqZGF0YSwgaWd0X291dHB1dF90ICpvdXRwdXQsIGVudW0gcGlw
-ZSBwaXBlLAorCQkgICAgIGlndF9mYl90ICpmYiwgaWd0X2NyY190ICpjcmMgLyogb3V0ICovKQog
-ewotCXN0cnVjdCBpZ3RfZmIgZmI7Ci0JZHJtTW9kZU1vZGVJbmZvICptb2RlOwogCWlndF9wbGFu
-ZV90ICpwcmltYXJ5OwogCWNoYXIgKmNyY19zdHI7CiAJaW50IHJldDsKQEAgLTc0LDEzICs3Miw3
-IEBAIHRlc3RfZ3JhYl9jcmMoZGF0YV90ICpkYXRhLCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCwgZW51
-bSBwaXBlIHBpcGUsCiAKIAlwcmltYXJ5ID0gaWd0X291dHB1dF9nZXRfcGxhbmUob3V0cHV0LCAw
-KTsKIAotCW1vZGUgPSBpZ3Rfb3V0cHV0X2dldF9tb2RlKG91dHB1dCk7Ci0JaWd0X2NyZWF0ZV9j
-b2xvcl9mYihkYXRhLT5kcm1fZmQsIG1vZGUtPmhkaXNwbGF5LCBtb2RlLT52ZGlzcGxheSwKLQkJ
-CSAgICBEUk1fRk9STUFUX1hSR0I4ODg4LAotCQkJICAgIExPQ0FMX0RSTV9GT1JNQVRfTU9EX05P
-TkUsCi0JCQkgICAgZmJfY29sb3ItPnJlZCwgZmJfY29sb3ItPmdyZWVuLCBmYl9jb2xvci0+Ymx1
-ZSwKLQkJCSAgICAmZmIpOwotCWlndF9wbGFuZV9zZXRfZmIocHJpbWFyeSwgJmZiKTsKKwlpZ3Rf
-cGxhbmVfc2V0X2ZiKHByaW1hcnksIGZiKTsKIAogCXJldCA9IGlndF9kaXNwbGF5X3RyeV9jb21t
-aXQyKCZkYXRhLT5kaXNwbGF5LCBDT01NSVRfTEVHQUNZKTsKIAlpZ3Rfc2tpcF9vbihyZXQgIT0g
-MCk7CkBAIC04OSwxNCArODEsMjQgQEAgdGVzdF9ncmFiX2NyYyhkYXRhX3QgKmRhdGEsIGlndF9v
-dXRwdXRfdCAqb3V0cHV0LCBlbnVtIHBpcGUgcGlwZSwKIAogCWlndF9wbGFuZV9zZXRfZmIocHJp
-bWFyeSwgTlVMTCk7CiAKLQlpZ3RfcmVtb3ZlX2ZiKGRhdGEtPmRybV9mZCwgJmZiKTsKLQogCWNy
-Y19zdHIgPSBpZ3RfY3JjX3RvX3N0cmluZyhjcmMpOwotCWlndF9kZWJ1ZygiQ1JDIGZvciBhICgl
-LjAyZiwlLjAyZiwlLjAyZikgZmI6ICVzXG4iLCBmYl9jb2xvci0+cmVkLAotCQkgIGZiX2NvbG9y
-LT5ncmVlbiwgZmJfY29sb3ItPmJsdWUsIGNyY19zdHIpOworCWlndF9kZWJ1ZygiQ1JDIGZvciBm
-YjogJXNcbiIsIGNyY19zdHIpOwogCWZyZWUoY3JjX3N0cik7CiB9CiAKK3N0YXRpYyB2b2lkCit0
-ZXN0X2NyZWF0ZV9mYl9mb3Jfb3V0cHV0KGRhdGFfdCAqZGF0YSwgaWd0X291dHB1dF90ICpvdXRw
-dXQsIGNvbG9yX3QgKmZiX2NvbG9yLAorCQkJICBpZ3RfZmJfdCAqZmIpCit7CisJZHJtTW9kZU1v
-ZGVJbmZvICptb2RlID0gaWd0X291dHB1dF9nZXRfbW9kZShvdXRwdXQpOworCisJaWd0X2NyZWF0
-ZV9jb2xvcl9mYihkYXRhLT5kcm1fZmQsIG1vZGUtPmhkaXNwbGF5LCBtb2RlLT52ZGlzcGxheSwK
-KwkJCSAgICBEUk1fRk9STUFUX1hSR0I4ODg4LAorCQkJICAgIExPQ0FMX0RSTV9GT1JNQVRfTU9E
-X05PTkUsCisJCQkgICAgZmJfY29sb3ItPnJlZCwgZmJfY29sb3ItPmdyZWVuLCBmYl9jb2xvci0+
-Ymx1ZSwKKwkJCSAgICBmYik7Cit9CisKIC8qCiAgKiBQbGFuZSBwb3NpdGlvbiB0ZXN0LgogICog
-ICAtIFdlIHN0YXJ0IGJ5IGdyYWJiaW5nIGEgcmVmZXJlbmNlIENSQyBvZiBhIGZ1bGwgZ3JlZW4g
-ZmIgYmVpbmcgc2Nhbm5lZApAQCAtMjIyLDExICsyMjQsMTUgQEAgdGVzdF9wbGFuZV9wb3NpdGlv
-bihkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlLCB1bnNpZ25lZCBpbnQgZmxhZ3MpCiAKIAlm
-b3JfZWFjaF92YWxpZF9vdXRwdXRfb25fcGlwZSgmZGF0YS0+ZGlzcGxheSwgcGlwZSwgb3V0cHV0
-KSB7CiAJCWludCBuX3BsYW5lcyA9IGRhdGEtPmRpc3BsYXkucGlwZXNbcGlwZV0ubl9wbGFuZXM7
-CisJCWlndF9mYl90IHJlZmVyZW5jZV9mYjsKIAkJaWd0X2NyY190IHJlZmVyZW5jZV9jcmM7CiAK
-IAkJdGVzdF9pbml0KGRhdGEsIHBpcGUpOwogCi0JCXRlc3RfZ3JhYl9jcmMoZGF0YSwgb3V0cHV0
-LCBwaXBlLCAmZ3JlZW4sICZyZWZlcmVuY2VfY3JjKTsKKwkJdGVzdF9jcmVhdGVfZmJfZm9yX291
-dHB1dChkYXRhLCBvdXRwdXQsICZncmVlbiwgJnJlZmVyZW5jZV9mYik7CisJCXRlc3RfZ3JhYl9j
-cmNfZm9yX2ZiKGRhdGEsIG91dHB1dCwgcGlwZSwgJnJlZmVyZW5jZV9mYiwKKwkJCQkgICAgICZy
-ZWZlcmVuY2VfY3JjKTsKKwkJaWd0X3JlbW92ZV9mYihkYXRhLT5kcm1fZmQsICZyZWZlcmVuY2Vf
-ZmIpOwogCiAJCWZvciAoaW50IHBsYW5lID0gMTsgcGxhbmUgPCBuX3BsYW5lczsgcGxhbmUrKykK
-IAkJCXRlc3RfcGxhbmVfcG9zaXRpb25fd2l0aF9vdXRwdXQoZGF0YSwgcGlwZSwgcGxhbmUsCkBA
-IC0zNDMsMTMgKzM0OSwyMSBAQCB0ZXN0X3BsYW5lX3Bhbm5pbmcoZGF0YV90ICpkYXRhLCBlbnVt
-IHBpcGUgcGlwZSwgdW5zaWduZWQgaW50IGZsYWdzKQogCiAJZm9yX2VhY2hfdmFsaWRfb3V0cHV0
-X29uX3BpcGUoJmRhdGEtPmRpc3BsYXksIHBpcGUsIG91dHB1dCkgewogCQlpbnQgbl9wbGFuZXMg
-PSBkYXRhLT5kaXNwbGF5LnBpcGVzW3BpcGVdLm5fcGxhbmVzOworCQlpZ3RfZmJfdCByZWRfZmI7
-CisJCWlndF9mYl90IGJsdWVfZmI7CiAJCWlndF9jcmNfdCByZWRfY3JjOwogCQlpZ3RfY3JjX3Qg
-Ymx1ZV9jcmM7CiAKIAkJdGVzdF9pbml0KGRhdGEsIHBpcGUpOwogCi0JCXRlc3RfZ3JhYl9jcmMo
-ZGF0YSwgb3V0cHV0LCBwaXBlLCAmcmVkLCAmcmVkX2NyYyk7Ci0JCXRlc3RfZ3JhYl9jcmMoZGF0
-YSwgb3V0cHV0LCBwaXBlLCAmYmx1ZSwgJmJsdWVfY3JjKTsKKwkJdGVzdF9jcmVhdGVfZmJfZm9y
-X291dHB1dChkYXRhLCBvdXRwdXQsICZyZWQsICZyZWRfZmIpOworCQl0ZXN0X2NyZWF0ZV9mYl9m
-b3Jfb3V0cHV0KGRhdGEsIG91dHB1dCwgJmJsdWUsICZibHVlX2ZiKTsKKworCQl0ZXN0X2dyYWJf
-Y3JjX2Zvcl9mYihkYXRhLCBvdXRwdXQsIHBpcGUsICZyZWRfZmIsICZyZWRfY3JjKTsKKwkJdGVz
-dF9ncmFiX2NyY19mb3JfZmIoZGF0YSwgb3V0cHV0LCBwaXBlLCAmYmx1ZV9mYiwgJmJsdWVfY3Jj
-KTsKKworCQlpZ3RfcmVtb3ZlX2ZiKGRhdGEtPmRybV9mZCwgJmJsdWVfZmIpOworCQlpZ3RfcmVt
-b3ZlX2ZiKGRhdGEtPmRybV9mZCwgJnJlZF9mYik7CiAKIAkJZm9yIChpbnQgcGxhbmUgPSAxOyBw
-bGFuZSA8IG5fcGxhbmVzOyBwbGFuZSsrKQogCQkJdGVzdF9wbGFuZV9wYW5uaW5nX3dpdGhfb3V0
-cHV0KGRhdGEsIHBpcGUsIHBsYW5lLAotLSAKMi4xOC4wCgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxp
-c3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2lndC1kZXYK
+
+--===============2083240447==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="5dgwrg4e4us3jrj6"
+Content-Disposition: inline
+
+
+--5dgwrg4e4us3jrj6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Sep 05, 2018 at 04:37:26PM +0300, Ville Syrj=E4l=E4 wrote:
+> On Wed, Sep 05, 2018 at 03:19:03PM +0200, Maxime Ripard wrote:
+> > On Wed, Sep 05, 2018 at 01:14:34PM +0300, Ville Syrj=E4l=E4 wrote:
+> > > > In the same format list:
+> > > >   - RGB565 has a depth of 16
+> > > >   - XRGB8888 has a depth of 24
+> > > >   - XRGB2101010 has a depth of 30
+> > > >   - ARGB8888 has a depth of 32
+> > > >=20
+> > > > Which seems to indicate that the list indeed meant that the color
+> > > > depth is about the color, and that ARGB8888 is wrong.
+> > >=20
+> > > None of those other things have alpha, so they are still
+> > > consistent with the depth=3D=3D32 definition for ARGB888.
+> >=20
+> > "24 bits almost always uses 8 bits of each of R, G, B. As of 2018
+> > 24-bit color depth is used by virtually every computer and phone
+> > display and the vast majority of image storage formats. Almost all
+> > cases where there are 32 bits per pixel mean that 24 are used for the
+> > color, and the remaining 8 are the alpha channel or unused."
+> >=20
+> > There's 32bpp, but the depth is 24 bits.
+> >=20
+> > But maybe the X11 legacy says otherwise, I don't know. What's your
+> > suggestion then? adding yet another field?
+>=20
+> Just leave it as is?
+
+I need the actual color depth in order to check whether the conversion
+=66rom one format to another would lead to a lesser number of bits per
+color, and as such should fall back to a more conservative
+pattern. See the later patches in this series.
+
+Maxime
+
+--=20
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--5dgwrg4e4us3jrj6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAluQ1cQACgkQ0rTAlCFN
+r3SWgxAAhphKzLY1sOajoEH9CmFWwbcRyaKnfhx3IyC4IjmEgRfrWdWQRmPuzSo/
+dL/f8Asrcuvyaahi6HLNGml8YLvgIZRB8dSQl+0IEU4YF8q5BgQJwfV4Y+Yzg9w6
+Co9vOd60mHAK59xi2RHffCcZ/ymtPRruz/TG8GQJSJscT29BzXmgTiopdswT9cUW
+zm3+8h80U4z24htDR8su4NcfVKBmRff8MM9aPx8ir0H90lS8bTUGqUzwDdVKJf1B
+lZ/Y7otUiPaxJJLtiUWbuLL7I2qZ8azG2i1NrFAhgMNe69DgL9qYVgFRY+z2tmkz
+ag1l1jX4MtCQ1w3vECjPNeSejwmMdYcGSEp+lf33Vt/Fh3WXnjQi400ISk86zDVE
+FGjxxi8ZbYvGJaK3Qv8yc0xazxckO620OQuJAKTJcE+QluDHMHeLhdyj82bbBz6e
+xGYTMnQCdh2F89sKJeNP3UifnutS5KRtfnoVE6jDxPlmKgonH+C01df4XcM1R7s5
+Qwk6ykUG3E8ZE3SZ0DlM32C75puWsds3xIQLvgDHJlDoGz+E7Hp2r+R1xY/DF5ym
+CdGizG82NPUEnKzY2O3VFtF1ylWLpAci0jLefIRkZYtBx+bLgCBX9lhcRK5m1SyH
+04KUlEk0akEjZo+RNcXyW46lRKEZUZAbZ3jnd2ql7BHPDtQIHD8=
+=xZJT
+-----END PGP SIGNATURE-----
+
+--5dgwrg4e4us3jrj6--
+
+--===============2083240447==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============2083240447==--
