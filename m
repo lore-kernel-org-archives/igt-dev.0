@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
- by gabe.freedesktop.org (Postfix) with ESMTP id 9690589B18
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Sep 2018 11:41:30 +0000 (UTC)
-Date: Thu, 6 Sep 2018 13:41:29 +0200
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20180906114129.6ewtxz5qaehbig4j@flea>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A374C6E695
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Sep 2018 12:11:23 +0000 (UTC)
+Date: Thu, 6 Sep 2018 15:11:16 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <20180906121116.GZ5565@intel.com>
 References: <cover.2608afc0c4c8efaee37268ea6e9dee558c619b13.1535721136.git-series.maxime.ripard@bootlin.com>
  <f9e020246e4999bec72c9005e729b87b51391cdb.1535721136.git-series.maxime.ripard@bootlin.com>
  <20180831134110.GY5565@intel.com>
+ <20180906114129.6ewtxz5qaehbig4j@flea>
 MIME-Version: 1.0
-In-Reply-To: <20180831134110.GY5565@intel.com>
+Content-Disposition: inline
+In-Reply-To: <20180906114129.6ewtxz5qaehbig4j@flea>
 Subject: Re: [igt-dev] [PATCH v6 03/13] fb: Create common function to
  convert frame formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -19,115 +21,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0602582757=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+To: Maxime Ripard <maxime.ripard@bootlin.com>
 Cc: Paul Kocialkowski <paul.kocialkowski@bootlin.com>, eben@raspberrypi.org, igt-dev@lists.freedesktop.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============0602582757==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="2zlt74k2mppqwrx3"
-Content-Disposition: inline
-
-
---2zlt74k2mppqwrx3
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Aug 31, 2018 at 04:41:10PM +0300, Ville Syrj=E4l=E4 wrote:
-> On Fri, Aug 31, 2018 at 03:12:12PM +0200, Maxime Ripard wrote:
-> > The current code to convert between two buffer formats is quite tied to=
- the
-> > cairo surface infrastructure. Since we'll want to reuse it, make that
-> > function more generic by introducing a common structure that passes all=
- the
-> > arguments and a common function that will call the right functions we
-> > needed.
-> >=20
-> > Reviewed-by: Eric Anholt <eric@anholt.net>
-> > Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
-> > ---
-> >  lib/igt_fb.c | 243 ++++++++++++++++++++++++++++++++--------------------
-> >  1 file changed, 153 insertions(+), 90 deletions(-)
-> >=20
-> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> > index 4061fedec0c1..1914233786a5 100644
-> > --- a/lib/igt_fb.c
-> > +++ b/lib/igt_fb.c
-> > @@ -1384,6 +1384,24 @@ struct fb_convert_blit_upload {
-> >  	struct fb_blit_linear linear;
-> >  };
-> > =20
-> > +struct fb_convert_buf {
-> > +	void			*ptr;
-> > +	unsigned int		stride;
-> > +	unsigned int		size;
-> > +	uint32_t		fmt;
-> > +	enum igt_color_encoding	color_encoding;
-> > +	enum igt_color_range	color_range;
-> > +	uint32_t		offsets[4];
-> > +};
->=20
-> I wonder if we can just use igt_fb for that instead of duplicating most
-> of it?
-
-After looking into it again, now I remember why I didn't do what you
-suggested. In the case where you are in the YUYV path, with a "shadow"
-buffer being used to perform the cairo operations on top of an YUV
-buffer, you end up with conversions in create_cairo_surface__convert
-and destroy_cairo_surface__convert, getting a fb_convert_blit_upload
-structure as an argument.
-
-That structure however is used to convert one buffer to the shadow
-buffer, or the other way around at destroy time. However, a single
-igt_fb is allocated for that structure, which makes it impossible to
-assign the second fb in that particular case. All the informations
-needed to perform the conversion are stored in multiple structures
-(fb_convert_blit_upload.linear, fb_convert_blit_upload.blit, and the
-actual igt_fb instance) that we need to aggregate to find the correct
-conversion parameters.
-
-Maxime
-
---=20
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---2zlt74k2mppqwrx3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAluRElgACgkQ0rTAlCFN
-r3QVuBAAkKvX+Mp0XzU/6L8+FPCVItWS690xUGn5MUZjVFVJYaGqeZPiDf0gdF78
-JM7fsScikbBzTR7SzT+qhEUlZm0gtOKq/eWJzJa3EXTeglRan5DqJS8wwLVA9NlA
-VMlqk7cuD1D3GlMVLQXa4aht2aDq/Pu8a7Grdh5OBtZiNyGy0rE+RCBBwjarmLop
-JPJK4EPoOt1tOoEPvxwFtVMOVJfRyRk9Q1xZEHkrvSNmgFk/NNMp9t3wWakUapEL
-FweaXdJfk6mDd0cfWKkKGuF4ld1OHh3tm/Pe2srJPTcjy8c3NLWXmmJaQdx3yFkI
-xAQANrio3d2GV9u5QDq4+9oxx9szvHl5v0op72aD8HXxsBq8hRTtsXieyA75QAYu
-DtJyUBYOzgsRry7DtM+v7oEJgT4k9TgxalgO3hBPuwaafuJnY/u/IBAKpl+IgkQY
-r8ex9x1ZFJoeIXt62i/OiUkNCS8ZmlJAE7bbCfVw2Fb0nVYzbHK5NSLt2h8VtbTo
-KqnOX8trpMaUh7fHyNcXic2x30uSpZ1gEBG6YBZZrtOkh9P8baw3muVG0liXCyJw
-UllvPSh0DfRTwZ2lVYH71k6B90AbD2VKRRHK1cBiDCAqZF/Astbm3M0mm+GwkRgx
-fiTjo6jhBz3Xp1fTgsfQXH2QYAyYUnGnM37L9lxXQ2AjSuprArk=
-=b867
------END PGP SIGNATURE-----
-
---2zlt74k2mppqwrx3--
-
---===============0602582757==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0602582757==--
+T24gVGh1LCBTZXAgMDYsIDIwMTggYXQgMDE6NDE6MjlQTSArMDIwMCwgTWF4aW1lIFJpcGFyZCB3
+cm90ZToKPiBPbiBGcmksIEF1ZyAzMSwgMjAxOCBhdCAwNDo0MToxMFBNICswMzAwLCBWaWxsZSBT
+eXJqw6Rsw6Qgd3JvdGU6Cj4gPiBPbiBGcmksIEF1ZyAzMSwgMjAxOCBhdCAwMzoxMjoxMlBNICsw
+MjAwLCBNYXhpbWUgUmlwYXJkIHdyb3RlOgo+ID4gPiBUaGUgY3VycmVudCBjb2RlIHRvIGNvbnZl
+cnQgYmV0d2VlbiB0d28gYnVmZmVyIGZvcm1hdHMgaXMgcXVpdGUgdGllZCB0byB0aGUKPiA+ID4g
+Y2Fpcm8gc3VyZmFjZSBpbmZyYXN0cnVjdHVyZS4gU2luY2Ugd2UnbGwgd2FudCB0byByZXVzZSBp
+dCwgbWFrZSB0aGF0Cj4gPiA+IGZ1bmN0aW9uIG1vcmUgZ2VuZXJpYyBieSBpbnRyb2R1Y2luZyBh
+IGNvbW1vbiBzdHJ1Y3R1cmUgdGhhdCBwYXNzZXMgYWxsIHRoZQo+ID4gPiBhcmd1bWVudHMgYW5k
+IGEgY29tbW9uIGZ1bmN0aW9uIHRoYXQgd2lsbCBjYWxsIHRoZSByaWdodCBmdW5jdGlvbnMgd2UK
+PiA+ID4gbmVlZGVkLgo+ID4gPiAKPiA+ID4gUmV2aWV3ZWQtYnk6IEVyaWMgQW5ob2x0IDxlcmlj
+QGFuaG9sdC5uZXQ+Cj4gPiA+IFNpZ25lZC1vZmYtYnk6IE1heGltZSBSaXBhcmQgPG1heGltZS5y
+aXBhcmRAYm9vdGxpbi5jb20+Cj4gPiA+IC0tLQo+ID4gPiAgbGliL2lndF9mYi5jIHwgMjQzICsr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiA+ID4g
+IDEgZmlsZSBjaGFuZ2VkLCAxNTMgaW5zZXJ0aW9ucygrKSwgOTAgZGVsZXRpb25zKC0pCj4gPiA+
+IAo+ID4gPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9mYi5jIGIvbGliL2lndF9mYi5jCj4gPiA+IGlu
+ZGV4IDQwNjFmZWRlYzBjMS4uMTkxNDIzMzc4NmE1IDEwMDY0NAo+ID4gPiAtLS0gYS9saWIvaWd0
+X2ZiLmMKPiA+ID4gKysrIGIvbGliL2lndF9mYi5jCj4gPiA+IEBAIC0xMzg0LDYgKzEzODQsMjQg
+QEAgc3RydWN0IGZiX2NvbnZlcnRfYmxpdF91cGxvYWQgewo+ID4gPiAgCXN0cnVjdCBmYl9ibGl0
+X2xpbmVhciBsaW5lYXI7Cj4gPiA+ICB9Owo+ID4gPiAgCj4gPiA+ICtzdHJ1Y3QgZmJfY29udmVy
+dF9idWYgewo+ID4gPiArCXZvaWQJCQkqcHRyOwo+ID4gPiArCXVuc2lnbmVkIGludAkJc3RyaWRl
+Owo+ID4gPiArCXVuc2lnbmVkIGludAkJc2l6ZTsKPiA+ID4gKwl1aW50MzJfdAkJZm10Owo+ID4g
+PiArCWVudW0gaWd0X2NvbG9yX2VuY29kaW5nCWNvbG9yX2VuY29kaW5nOwo+ID4gPiArCWVudW0g
+aWd0X2NvbG9yX3JhbmdlCWNvbG9yX3JhbmdlOwo+ID4gPiArCXVpbnQzMl90CQlvZmZzZXRzWzRd
+Owo+ID4gPiArfTsKPiA+IAo+ID4gSSB3b25kZXIgaWYgd2UgY2FuIGp1c3QgdXNlIGlndF9mYiBm
+b3IgdGhhdCBpbnN0ZWFkIG9mIGR1cGxpY2F0aW5nIG1vc3QKPiA+IG9mIGl0Pwo+IAo+IEFmdGVy
+IGxvb2tpbmcgaW50byBpdCBhZ2Fpbiwgbm93IEkgcmVtZW1iZXIgd2h5IEkgZGlkbid0IGRvIHdo
+YXQgeW91Cj4gc3VnZ2VzdGVkLiBJbiB0aGUgY2FzZSB3aGVyZSB5b3UgYXJlIGluIHRoZSBZVVlW
+IHBhdGgsIHdpdGggYSAic2hhZG93Igo+IGJ1ZmZlciBiZWluZyB1c2VkIHRvIHBlcmZvcm0gdGhl
+IGNhaXJvIG9wZXJhdGlvbnMgb24gdG9wIG9mIGFuIFlVVgo+IGJ1ZmZlciwgeW91IGVuZCB1cCB3
+aXRoIGNvbnZlcnNpb25zIGluIGNyZWF0ZV9jYWlyb19zdXJmYWNlX19jb252ZXJ0Cj4gYW5kIGRl
+c3Ryb3lfY2Fpcm9fc3VyZmFjZV9fY29udmVydCwgZ2V0dGluZyBhIGZiX2NvbnZlcnRfYmxpdF91
+cGxvYWQKPiBzdHJ1Y3R1cmUgYXMgYW4gYXJndW1lbnQuCj4gCj4gVGhhdCBzdHJ1Y3R1cmUgaG93
+ZXZlciBpcyB1c2VkIHRvIGNvbnZlcnQgb25lIGJ1ZmZlciB0byB0aGUgc2hhZG93Cj4gYnVmZmVy
+LCBvciB0aGUgb3RoZXIgd2F5IGFyb3VuZCBhdCBkZXN0cm95IHRpbWUuIEhvd2V2ZXIsIGEgc2lu
+Z2xlCj4gaWd0X2ZiIGlzIGFsbG9jYXRlZCBmb3IgdGhhdCBzdHJ1Y3R1cmUsIHdoaWNoIG1ha2Vz
+IGl0IGltcG9zc2libGUgdG8KPiBhc3NpZ24gdGhlIHNlY29uZCBmYiBpbiB0aGF0IHBhcnRpY3Vs
+YXIgY2FzZS4gQWxsIHRoZSBpbmZvcm1hdGlvbnMKPiBuZWVkZWQgdG8gcGVyZm9ybSB0aGUgY29u
+dmVyc2lvbiBhcmUgc3RvcmVkIGluIG11bHRpcGxlIHN0cnVjdHVyZXMKPiAoZmJfY29udmVydF9i
+bGl0X3VwbG9hZC5saW5lYXIsIGZiX2NvbnZlcnRfYmxpdF91cGxvYWQuYmxpdCwgYW5kIHRoZQo+
+IGFjdHVhbCBpZ3RfZmIgaW5zdGFuY2UpIHRoYXQgd2UgbmVlZCB0byBhZ2dyZWdhdGUgdG8gZmlu
+ZCB0aGUgY29ycmVjdAo+IGNvbnZlcnNpb24gcGFyYW1ldGVycy4KClRoZSBwYXRjaCBzZXJpZXMg
+SSBtZW50aW9uZWQgYmVmb3JlIFsxXSBjaGFuZ2VzIGZiX2JsaXRfbGluZWFyIHRvIGluaGVyaXQK
+ZnJvbSBpZ3RfZmIuIFNvIHByZXN1bWFibHkgdGhhdCBzaG91bGQgaGVscD8KClsxXSBodHRwczov
+L3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzQ2ODc2LwoKLS0gClZpbGxlIFN5cmrD
+pGzDpApJbnRlbApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
+czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
