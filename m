@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-it0-x241.google.com (mail-it0-x241.google.com
- [IPv6:2607:f8b0:4001:c0b::241])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3CAB6E0A4
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Sep 2018 07:31:41 +0000 (UTC)
-Received: by mail-it0-x241.google.com with SMTP id h3-v6so6568810ita.2
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Sep 2018 00:31:41 -0700 (PDT)
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 2968D6E0A4
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Sep 2018 07:33:37 +0000 (UTC)
+Date: Thu, 13 Sep 2018 09:33:36 +0200
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20180913073335.juz6aqai4xgnod3f@flea>
+References: <20180911142923.20314-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <CAKMK7uF-6o_r0L9-pZHUhCMLsA99kyaWMhT79OerG73r3zFePg@mail.gmail.com>
-References: <CAKMK7uF-6o_r0L9-pZHUhCMLsA99kyaWMhT79OerG73r3zFePg@mail.gmail.com>
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Thu, 13 Sep 2018 09:31:39 +0200
-Message-ID: <CAKMK7uEc50Cot9G-quV7MqQVoVZLjbJPS6s0XedvNg+0+SvL0Q@mail.gmail.com>
-Subject: Re: [igt-dev] Gitlab Migration
+In-Reply-To: <20180911142923.20314-1-ville.syrjala@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] lib/igt_fb: Don't use blitter for
+ large buffers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,64 +17,81 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0124042229=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: IGT development <igt-dev@lists.freedesktop.org>
-Cc: Daniel Stone <daniels@collabora.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-R2VudGxlIHBpbmcsIGluIGNhc2UgYW55b25lIGhhcyBhbnkgY29uY2VybnMgb3IgcXVlc3Rpb25z
-LgotRGFuaWVsCgpPbiBUdWUsIFNlcCA0LCAyMDE4IGF0IDEyOjA2IFBNLCBEYW5pZWwgVmV0dGVy
-IDxkYW5pZWwudmV0dGVyQGZmd2xsLmNoPiB3cm90ZToKPiBIaSBhbGwsCj4KPiBGb3IgY29udGV4
-dDogaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvYXJjaGl2ZXMvZHJpLWRldmVsLzIwMTgt
-QXVndXN0LzE4NzA3MS5odG1sCj4KPiBJIHRoaW5rIHdlJ3JlIHJlYWR5IHRvIG1pZ3JhdGUgdGhl
-IGlndCByZXBvLiBOb3RlIHRoYXQgdGhpcyBpcyBfanVzdF8KPiB0aGUgZ2l0IG1pZ3JhdGlvbiwg
-YmVzaWRlcyBhIGRpZmZlcmVudCB1cmwgbm90aGluZyB3aWxsIGNoYW5nZS4gU28KPiBwYXRjaGVz
-IHN0aWxsIHJldmlld2VkIG9uIHRoZSBtYWlsaW5nIGxpc3RzLCBidWdzIHN0aWxsIGluIGJ1Z3pp
-bGxhLgo+Cj4gUm91ZyBwbGFuOgo+IC0gTWFrZSBzdXJlIHRoZXJlJ3Mgbm8gb3BlbnMgYW5kIGV2
-ZXJ5b25lJ3MgYXdhcmUgKD0gdGhpcyB0aHJlYWQgaGVyZSkuCj4KPiAtIGZkLm8gYWRtaW5zIHdp
-bGwgbWlncmF0ZSBhbGwgdGhlIGFjY291bnRzIGluIHRoZSBpZ3QgZ3JvdXAuIFdlJ3ZlCj4gYWRk
-ZWQgcXVpdGUgYSBmZXcgbW9yZSBwZW9wbGUgc2luY2UgdGhlIGluaXRpYWwgYWNjb3VudCBtaWdy
-YXRpb24KPiBoYXBwZW5lZCBpbiBzcHJpbmcgdGhpcyB5ZWFyLCBhbGwgdGhvc2UgZm9sa3MgZG8g
-bm90IHlldCBoYXZlIGEgZ2l0bGFiCj4gYWNjb3VudC4gTW9zdCBsaWtlbHkgdGhpcyB3aWxsIGhh
-cHBlbiBhZnRlciBYREMuCj4KPiAtIEFsbCBjb21taXR0ZXJzIG5lZWQgdG8gYWN0aXZlIHRoZWly
-IGdpdGxhYiBhY2NvdW50Ogo+Cj4gMS4gR28gdG8gZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZyAtPiBT
-aWduIEluL1JlZ2lzdGVyIC0+IEZvcmdvdCBteQo+IHBhc3N3b3JkLiBOb3RlIHRoYXQgeW91IG5l
-ZWQgdG8gdXNlIHRoZSBlbWFpbCB5b3UndmUgdXNlZCB3aGVuCj4gY3JlYXRpbmcgeW91ciBmZC5v
-IHNoZWxsIGFjY291bnQuIFRoZSBnaXRsYWIgdXNlcm5hbWUgd2lsbCBtYXRjaCB5b3VyCj4gZmQu
-byBuYW1lLiBJZiB5b3UgZG9uJ3Qga25vdyB3aGljaCBtYWlsLCBwaW5nIGZkLm8gYWRtaW5zLgo+
-Cj4gSW1wb3J0YW50OiBJZiB5b3VyIGFjY291bnQgaGFzbid0IGJlZW4gbWlncmF0ZWQgeWV0LCBw
-bGVhc2UgZG8gX25vdF8KPiBqdW1wIGFoZWFkIGFuZCBjcmVhdGUgaXQuIEl0J2xsIGNhdXNlIGhl
-YWRhY2hlcyBmb3IgZmQubyBhZG1pbnMgd2hlbgo+IG1pZ3JhdGluZyB0aGUgZ2l0IHJlcG9zaXRv
-cnkgKHNpbmNlIHdlIG5lZWQgdG8gbWFudWFsbHkgZml4IHRoaW5ncwo+IHVwKS4KPgo+IDIuIFNl
-dCB1cCB5b3VyIFNTSCBrZXlzOiBNYWtlIHN1cmUgeW91J3JlIGxvZ2dlZCBpbiwgdGhlbiBnbyB0
-bwo+IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9wcm9maWxlL2tleXMKPgo+IC0gQWZ0
-ZXIgMSB3ZWVrIHdlJ2xsIG1pZ3JhdGUgdGhlIHJlcG9zaXRvcnkuIEl0J2xsIGJlIGF0Cj4gaHR0
-cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pZ3QtZ3B1LXRvb2xzLgo+Cj4gMy4gVXBk
-YXRlIHlvdXIgZ2l0IHJlbW90ZXMgdG8gdXNlIHRoZSBzc2ggdXJscy4gSXQnbGwgYmUKPiBnaXRA
-Z2l0bGFiLmZyZWVkZXNrdG9wLm9yZzpkcm0vaWd0LWdwdS10b29scy5naXQKPgo+IDQuIE9wdGlv
-bmFsOiBVc2UgdGhlIFVJIHRvIGZvcmsgdGhhdCBwcm9qZWN0IGludG8geW91ciBwZXJzb25hbCBn
-aXRsYWIKPiBzcGFjZSwgYW5kIGFsc28gYWRqdXN0IHlvdXIgcmVtb3RlIGZvciB0aGF0IChpZiB5
-b3UncmUgdXNpbmcpLiBOb3RlCj4gdGhhdCBmb3Igbm93IHRoZSBmb3JrIHJlbGF0aW9uc2hpcCBp
-c24ndCByZWFsbHkgaW1wb3J0YW50LCBhbmQgaXQgY2FuCj4gYmUgZml4ZWQgdXAgYWZ0ZXIgdGhl
-IGZhY3QsIGJ1dCBpdCdzIG5pY2UgdG8gaGF2ZSBhbGwgdGhlIGZvcmtzIGVhc2lseQo+IGRpc2Nv
-dmVyYWJsZS4KPgo+IC0gZmQubyBzY3JpcHRzIHdpbGwgbWFpbnRhaW4gYSByZWFkLW9ubHkgbWly
-cm9yIGF0IHRoZSBjdXJyZW50Cj4gbG9jYXRpb24uIEFzIGxvbmcgYXMgeW91IGRvbid0IG5lZWQg
-dG8gcHVzaCB0aGVyZSdzIG5vIHJlYXNvbiB0bwo+IHVwZGF0ZSB0aGUgcmVtb3RlIHVybHMgb3Ig
-ZG8gYW55dGhpbmcgZWxzZS4gQ0ksIGludGVncmF0b3JzLCBkaXN0cm9zLAo+IGNvbnRyaWJ1dG9y
-cyB3aXRob3V0IGNvbW1pdCByaWdodHMgYWxsIGRvbid0IGhhdmUgdG8gY2FyZSBhYm91dCB0aGlz
-Lgo+Cj4gW051bWJlcmVkIHN0ZXBzIGlzIHdoYXQgY29tbWl0dGVycyBzaG91bGQgZG8uXQo+Cj4g
-UXVlc3Rpb25zPyBBbnl0aGluZyB3ZSd2ZSBtaXNzZWQgaW4gdGhlIHBsYW5uaW5nPwo+Cj4gT25j
-ZSBldmVyeXRoaW5nIGlzIGNsZWFyIHdlJ2xsIGZpeCB0aGUgZXhhY3QgZGF0ZXMgZm9yIGVhY2gg
-b2YgdGhlc2UKPiBtaWdyYXRpb24gc3RlcHMuCj4KPiBGb3IgZGV0YWlscyB0aGUgZmQubyB0YXNr
-IHdoZXJlIGFsbCB0aGlzIGlzIGdldHRpbmcgZGlzY3Vzc2VkIHdpdGggZmQubyBhZG1pbnM6Cj4K
-PiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZnJlZWRlc2t0b3AvZnJlZWRlc2t0b3Av
-aXNzdWVzLzY5Cj4KPiBDaGVlcnMsIERhbmllbAo+IC0tCj4gRGFuaWVsIFZldHRlcgo+IFNvZnR3
-YXJlIEVuZ2luZWVyLCBJbnRlbCBDb3Jwb3JhdGlvbgo+ICs0MSAoMCkgNzkgMzY1IDU3IDQ4IC0g
-aHR0cDovL2Jsb2cuZmZ3bGwuY2gKCgoKLS0gCkRhbmllbCBWZXR0ZXIKU29mdHdhcmUgRW5naW5l
-ZXIsIEludGVsIENvcnBvcmF0aW9uCis0MSAoMCkgNzkgMzY1IDU3IDQ4IC0gaHR0cDovL2Jsb2cu
-ZmZ3bGwuY2gKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-aWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
-Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0124042229==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="rrrw7ddjyzxfybf3"
+Content-Disposition: inline
+
+
+--rrrw7ddjyzxfybf3
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Sep 11, 2018 at 05:29:23PM +0300, Ville Syrjala wrote:
+> From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+>=20
+> The blitter stride is limited to <32k. Fall back to gtt mmap if we're
+> about to exceed that.
+>=20
+> This won't work for Yf as the fence doesn't know about Yf. So for that
+> case we'd need to use cpu mmap and (de)tile manually. For now just
+> pretend that there is no problem.
+>=20
+> v2: Throw in some warnings for gtt mmap vs. yf tiling (Chris)
+>=20
+> Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk> #v1
+
+If we (still?) aim at running igt on anything else than intel
+hardware, shouldn't we remove i915-specific code from the generic
+code, instead of having more of those creeping in?
+
+Maxime
+
+--=20
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--rrrw7ddjyzxfybf3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAluaEs8ACgkQ0rTAlCFN
+r3Tt+Q/+MpU/lLkzoaYRV3n5VbPZSFEbBvHm2eJVfpbipViNE3zKtUT17syvmY6K
+kIpDMXD7ky2GX4bIIojVbOlRE/8Apk23RSGTaTj646Zv+PRy0eKjz9p6hg8rdTJx
+n8UMK1dvufRua5jWB7OqfnksCin12LGe1qG7sIlWMabjlBs3V2wDTfQq8nJLA+dF
+l8QlJdcxMR6rDOVyUpePOmu9CBUNKrP+PPz0wX017WXxb1nYCz2mAhptcM76dhxn
+wjlEZTv7I1MAs9Sk3zQ59DeUNDOAX9CcT6+WCoeB3aj2qUCctBkZHLbLX4pzupnc
+eEN+K/FEXuLoceAv1APkiOTeJh935d9n6t7e5mGktzCEGMZowhbcxRIiFxIGAkQj
+JEDF/wEcTM9CIBBZR070xiCQHLhS+xYqGc4nkAu2/UutcI1WJZVkWaOLZ1OnU7Yv
+IOmOXpZitQH1jpzIYGAhBdIsxZpFVKg8Tno53xhldE/aYdL7y9gtltKF6v7uFNrT
+qc+DuxsgewCkKykZsHqPhBXIadxdCYiO4nwCLaDra6+tVTIcXPd7SjOwXPvTs1Av
+P9c4gH2DyaF6AUU/+Qt4wKp8vsazdeTaGBscATQ9DanKOPM9J4PLIfk5hN6JNVuw
+eaztU2IkwA8GzfrExtIN+fmHeNRN/l+fft2uVbTFbT6ISQY43lc=
+=D5pN
+-----END PGP SIGNATURE-----
+
+--rrrw7ddjyzxfybf3--
+
+--===============0124042229==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0124042229==--
