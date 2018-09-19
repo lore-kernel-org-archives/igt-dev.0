@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 0FE8689259
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Sep 2018 12:46:00 +0000 (UTC)
+Date: Wed, 19 Sep 2018 14:45:48 +0200
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20180919124548.3p2shm6qarmibpv3@flea>
+References: <cover.cafc7aee9c887562e8432741cd1f0543ff92121a.1536655647.git-series.maxime.ripard@bootlin.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 19 Sep 2018 12:42:01 -0000
-Message-ID: <20180919124201.21387.65806@emeril.freedesktop.org>
-References: <20180918221531.18233-1-jose.souza@intel.com>
-In-Reply-To: <20180918221531.18233-1-jose.souza@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/3=5D_tests/kms=5Ffrontbuffer=5Ftrac?=
- =?utf-8?q?king=3A_Pass_the_debugfs_fd_to_psr=5Fwait=5Fentry=28=29?=
+In-Reply-To: <cover.cafc7aee9c887562e8432741cd1f0543ff92121a.1536655647.git-series.maxime.ripard@bootlin.com>
+Subject: Re: [igt-dev] [PATCH v7 00/14] chamelium: Test the plane formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,84 +16,86 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1686007756=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: eben@raspberrypi.org, Paul Kocialkowski <paul.kocialkowski@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW2ktZy10
-LDEvM10gdGVzdHMva21zX2Zyb250YnVmZmVyX3RyYWNraW5nOiBQYXNzIHRoZSBkZWJ1Z2ZzIGZk
-IHRvIHBzcl93YWl0X2VudHJ5KCkKVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3Rv
-cC5vcmcvc2VyaWVzLzQ5ODc2LwpTdGF0ZSA6IHN1Y2Nlc3MKCj09IFN1bW1hcnkgPT0KCj0gQ0kg
-QnVnIExvZyAtIGNoYW5nZXMgZnJvbSBJR1RfNDY0NV9mdWxsIC0+IElHVFBXXzE4NTZfZnVsbCA9
-Cgo9PSBTdW1tYXJ5IC0gV0FSTklORyA9PQoKICBNaW5vciB1bmtub3duIGNoYW5nZXMgY29taW5n
-IHdpdGggSUdUUFdfMTg1Nl9mdWxsIG5lZWQgdG8gYmUgdmVyaWZpZWQKICBtYW51YWxseS4KICAK
-ICBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdp
-dGggdGhlIGNoYW5nZXMKICBpbnRyb2R1Y2VkIGluIElHVFBXXzE4NTZfZnVsbCwgcGxlYXNlIG5v
-dGlmeSB5b3VyIGJ1ZyB0ZWFtIHRvIGFsbG93IHRoZW0KICB0byBkb2N1bWVudCB0aGlzIG5ldyBm
-YWlsdXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4KCiAg
-RXh0ZXJuYWwgVVJMOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvYXBpLzEuMC9z
-ZXJpZXMvNDk4NzYvcmV2aXNpb25zLzEvbWJveC8KCj09IFBvc3NpYmxlIG5ldyBpc3N1ZXMgPT0K
-CiAgSGVyZSBhcmUgdGhlIHVua25vd24gY2hhbmdlcyB0aGF0IG1heSBoYXZlIGJlZW4gaW50cm9k
-dWNlZCBpbiBJR1RQV18xODU2X2Z1bGw6CgogID09PSBJR1QgY2hhbmdlcyA9PT0KCiAgICA9PT09
-IFdhcm5pbmdzID09PT0KCiAgICBpZ3RAcG1fcmM2X3Jlc2lkZW5jeUByYzYtYWNjdXJhY3k6CiAg
-ICAgIHNoYXJkLXNuYjogICAgICAgICAgUEFTUyAtPiBTS0lQCgogICAgCj09IEtub3duIGlzc3Vl
-cyA9PQoKICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV18xODU2X2Z1bGwgdGhh
-dCBjb21lIGZyb20ga25vd24gaXNzdWVzOgoKICA9PT0gSUdUIGNoYW5nZXMgPT09CgogICAgPT09
-PSBJc3N1ZXMgaGl0ID09PT0KCiAgICBpZ3RAZ2VtX2V4ZWNfY2FwdHVyZUBjYXB0dXJlLWJzZDoK
-ICAgICAgc2hhcmQtc25iOiAgICAgICAgICBTS0lQIC0+IElOQ09NUExFVEUgKGZkbyMxMDU0MTEp
-CgogICAgaWd0QGttc19idXN5QGV4dGVuZGVkLXBhZ2VmbGlwLW1vZGVzZXQtaGFuZy1vbGRmYi1y
-ZW5kZXItYzoKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IERNRVNHLVdBUk4gKGZk
-byMxMDc5NTYpCgogICAgaWd0QGttc19jdXJzb3JfbGVnYWN5QGN1cnNvcmEtdnMtZmxpcGEtdG9n
-Z2xlOgogICAgICBzaGFyZC1nbGs6ICAgICAgICAgIFBBU1MgLT4gRE1FU0ctV0FSTiAoZmRvIzEw
-NTc2MywgZmRvIzEwNjUzOCkKCiAgICBpZ3RAa21zX2ZiY29uX2ZidEBmYmMtc3VzcGVuZDoKICAg
-ICAgc2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IEZBSUwgKGZkbyMxMDM4MzMsIGZkbyMxMDU2
-ODEpCgogICAgaWd0QHBlcmZAcG9sbGluZzoKICAgICAgc2hhcmQtaHN3OiAgICAgICAgICBQQVNT
-IC0+IEZBSUwgKGZkbyMxMDIyNTIpCgogICAgaWd0QHBlcmZfcG11QHJjNi1ydW50aW1lLXBtOgog
-ICAgICBzaGFyZC1hcGw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCAoZmRvIzEwNTAxMCkKCiAgICAK
-ICAgID09PT0gUG9zc2libGUgZml4ZXMgPT09PQoKICAgIGlndEBkcnZfc3VzcGVuZEBzaHJpbms6
-CiAgICAgIHNoYXJkLXNuYjogICAgICAgICAgSU5DT01QTEVURSAoZmRvIzEwNjg4NiwgZmRvIzEw
-NTQxMSkgLT4gUEFTUwoKICAgIGlndEBrbXNfY3Vyc29yX2xlZ2FjeUBjdXJzb3ItdnMtZmxpcC10
-b2dnbGU6CiAgICAgIHNoYXJkLWhzdzogICAgICAgICAgRkFJTCAoZmRvIzEwMzM1NSkgLT4gUEFT
-UwoKICAgIGlndEBrbXNfZHJhd19jcmNAZHJhdy1tZXRob2QteHJnYjg4ODgtbW1hcC1jcHUteXRp
-bGVkOgogICAgICBzaGFyZC1nbGs6ICAgICAgICAgIEZBSUwgKGZkbyMxMDc3OTEpIC0+IFBBU1MK
-CiAgICBpZ3RAa21zX2ZsaXBAMngtZmxpcC12cy1leHBpcmVkLXZibGFuay1pbnRlcnJ1cHRpYmxl
-OgogICAgICBzaGFyZC1nbGs6ICAgICAgICAgIEZBSUwgKGZkbyMxMDUzNjMpIC0+IFBBU1MKCiAg
-ICBpZ3RAa21zX3BpcGVfY3JjX2Jhc2ljQHN1c3BlbmQtcmVhZC1jcmMtcGlwZS1iOgogICAgICBz
-aGFyZC1rYmw6ICAgICAgICAgIElOQ09NUExFVEUgKGZkbyMxMDM2NjUpIC0+IFBBU1MKCiAgICBp
-Z3RAa21zX3NldG1vZGVAYmFzaWM6CiAgICAgIHNoYXJkLWFwbDogICAgICAgICAgRkFJTCAoZmRv
-Izk5OTEyKSAtPiBQQVNTCgogICAgCiAgZmRvIzEwMjI1MiBodHRwczovL2J1Z3MuZnJlZWRlc2t0
-b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDIyNTIKICBmZG8jMTAzMzU1IGh0dHBzOi8vYnVncy5m
-cmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzM1NQogIGZkbyMxMDM2NjUgaHR0cHM6
-Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzNjY1CiAgZmRvIzEwMzgz
-MyBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDM4MzMKICBm
-ZG8jMTA1MDEwIGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEw
-NTAxMAogIGZkbyMxMDUzNjMgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5j
-Z2k/aWQ9MTA1MzYzCiAgZmRvIzEwNTQxMSBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
-b3dfYnVnLmNnaT9pZD0xMDU0MTEKICBmZG8jMTA1NjgxIGh0dHBzOi8vYnVncy5mcmVlZGVza3Rv
-cC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNTY4MQogIGZkbyMxMDU3NjMgaHR0cHM6Ly9idWdzLmZy
-ZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA1NzYzCiAgZmRvIzEwNjUzOCBodHRwczov
-L2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDY1MzgKICBmZG8jMTA2ODg2
-IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNjg4NgogIGZk
-byMxMDc3OTEgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3
-NzkxCiAgZmRvIzEwNzk1NiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNn
-aT9pZD0xMDc5NTYKICBmZG8jOTk5MTIgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93
-X2J1Zy5jZ2k/aWQ9OTk5MTIKCgo9PSBQYXJ0aWNpcGF0aW5nIGhvc3RzICg1IC0+IDUpID09Cgog
-IE5vIGNoYW5nZXMgaW4gcGFydGljaXBhdGluZyBob3N0cwoKCj09IEJ1aWxkIGNoYW5nZXMgPT0K
-CiAgICAqIElHVDogSUdUXzQ2NDUgLT4gSUdUUFdfMTg1NgogICAgKiBMaW51eDogQ0lfRFJNXzQ4
-MzMgLT4gQ0lfRFJNXzQ4MzYKCiAgQ0lfRFJNXzQ4MzM6IDc1YmI0NjBiMzY3YTYxNGQxMGIwZmJh
-MjIwMTQzYmVlNDI2NTdkN2UgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kv
-bGludXgKICBDSV9EUk1fNDgzNjogYjJiMDQ0NGFhNDM5YWRlMWVkODA5YTkxYTE5ZDM4MmZiYjVl
-NzcwMCBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL2dmeC1jaS9saW51eAogIElHVFBX
-XzE4NTY6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTg1
-Ni8KICBJR1RfNDY0NTogMDNiOTBhMzllZDEyYTU2OGM5ZGE3NTI0NjZlYTcwOGQ2MzQ4ZTExMCBA
-IGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL3hvcmcvYXBwL2ludGVsLWdwdS10b29scwoK
-PT0gTG9ncyA9PQoKRm9yIG1vcmUgZGV0YWlscyBzZWU6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAx
-Lm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTg1Ni9zaGFyZHMuaHRtbApfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
-ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+
+--===============1686007756==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="s4ss2bh2bkzq4hzl"
+Content-Disposition: inline
+
+
+--s4ss2bh2bkzq4hzl
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Sep 11, 2018 at 10:47:27AM +0200, Maxime Ripard wrote:
+> Here is another attempt at a serie that aims at starting to test the plane
+> formats using the Chamelium over the HDMI. This was tested using the vc4
+> DRM driver found on the RaspberryPi.
+>=20
+> There's been a number of changes from the RFC thanks to the feedback from
+> Eric Anholt, Paul Kocialkowski and Ville Syrj=E4l=E4.
+>=20
+> The series now relies mostly on igt_fb, with some decoupling from cairo a=
+nd
+> a bunch of new helpers to aim at being able to convert igt_fb to arbitrary
+> DRM formats. The list of formats have been extended a bit, but is quite
+> small at this point. We also rely solely on either pixman or the existing
+> format conversions functions at them moment, and we allow cairo surfaces =
+to
+> be created for framebuffers in a format not supported by cairo, through an
+> intermediate conversion to RGB24.
+>=20
+> However, since it's now abstracted away from the igt_fb users, we can
+> easily add some routines to convert to additional formats if needed. And
+> since the code was so close now, it's been integrated into kms_chamelium.
+
+Can we make any progress on this?
+
+Maxime
+
+--=20
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--s4ss2bh2bkzq4hzl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAluiRPsACgkQ0rTAlCFN
+r3SwcQ/8D6afznYKOLcUg8baA896KzRKBl0HUkWXwOGPLPRsTMyOpttdAkZbwvFo
+GrDvuGAtfk4VIRznHugtQ0n5Fwu5ChZsAk27IqvnoVFRv3KzzTBcbNJo9Ihjfx3/
+bZRRyaWFUB0CsokNEH7cwvp3cCmJ7DWEE7bhvKnL4+o5YdyRlZylF9BapJuvXlWz
+z4omkVAyaTh6pzTA8l2CvYke0q2goHhFA6SnOj49yuTAwcpbsi47v0tv+33A91GO
+mlWw2zw74qsBQ23XWRNGU4eVlzKDAysRwR5vAq+XZHJSKVhLwEPl6POSr0kkyowD
+Xfr4VLgfGK4ahkfPfcYdF3e8OsrjnrQ8pYN3eJnl+KrCcLwBM5q1EdAjCfn0AiKk
+JbVGXBXebeho01hS1/gwIK+Za/spokH8Qlx/m0NGXg/qI2oeijWgzj3XwsVX1ZSg
+++Qv63yh9kvdLLHZoO8PuTJNNHqYvBjbKbi408NVYkySLOp0kooKbFc2KDM6PapO
+9Sdgc2a1fevVxxvayAP27bz+1fR0cKZUpGZFetGrkMl2e0wfWuLryThcsjETNOTi
+TqmSj6rmD4lATv4va1VzcyMrlcqgOYjnP/7xr1gfFQN4SoDPjyd+TObk8ugMe3O6
+4z5XHVZu9zXHGMG8R11ExAqPTkdCpgF49uy85UCoerrMTP1+47w=
+=VKPq
+-----END PGP SIGNATURE-----
+
+--s4ss2bh2bkzq4hzl--
+
+--===============1686007756==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1686007756==--
