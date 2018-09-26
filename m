@@ -1,11 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-In-Reply-To: <20180926130909.19617-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20180926130909.19617-2-chris@chris-wilson.co.uk>
 References: <20180926130909.19617-1-chris@chris-wilson.co.uk>
-Message-ID: <153796787456.404.5849649267137702305@jlahtine-desk.ger.corp.intel.com>
-Date: Wed, 26 Sep 2018 16:17:54 +0300
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] igt/pm_sseu: gem.has_ppgtt is no
+ <20180926130909.19617-2-chris@chris-wilson.co.uk>
+Message-ID: <153796790446.404.5608636169753172633@jlahtine-desk.ger.corp.intel.com>
+Date: Wed, 26 Sep 2018 16:18:24 +0300
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] igt/perf: gem.has_ppgtt is no
  longer used
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -22,7 +23,7 @@ To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBDaHJpcyBXaWxzb24gKDIwMTgtMDktMjYgMTY6MDk6MDgpCj4gUmVtb3ZlIGdlbS5o
+UXVvdGluZyBDaHJpcyBXaWxzb24gKDIwMTgtMDktMjYgMTY6MDk6MDkpCj4gUmVtb3ZlIGdlbS5o
 YXNfcHBndHQgYXMgdGhlIGluZm9ybWF0aW9uIGlzIG5vIGxvbmdlciB1c2VkLgo+IAo+IFNpZ25l
 ZC1vZmYtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+IENjOiBK
 b29uYXMgTGFodGluZW4gPGpvb25hcy5sYWh0aW5lbkBsaW51eC5pbnRlbC5jb20+CgpSZXZpZXdl
