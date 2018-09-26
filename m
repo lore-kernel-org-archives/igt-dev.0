@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B474890CE
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Sep 2018 16:00:56 +0000 (UTC)
-From: Jyoti Yadav <jyoti.r.yadav@intel.com>
-Date: Wed, 26 Sep 2018 11:59:22 -0400
-Message-Id: <1537977563-18878-6-git-send-email-jyoti.r.yadav@intel.com>
-In-Reply-To: <1537977563-18878-1-git-send-email-jyoti.r.yadav@intel.com>
-References: <1537977563-18878-1-git-send-email-jyoti.r.yadav@intel.com>
-Subject: [igt-dev] [PATCH i-g-t v1 5/6] [intel-gfx] lib/intel_reg : This
- patch adds Display C States related residency counters.
+MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 26 Sep 2018 16:10:28 -0000
+Message-ID: <20180926161028.16061.37941@emeril.freedesktop.org>
+References: <20180926131353.11063-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20180926131353.11063-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliOiBV?=
+ =?utf-8?q?nexport_gem=5Fgtt=5Ftype=28=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,26 +14,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Jyoti Yadav <jyoti.r.yadav@intel.com>, anusha.srivatsa@intel.com, intel-gfx@lists.freedektop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-U2lnbmVkLW9mZi1ieTogSnlvdGkgWWFkYXYgPGp5b3RpLnIueWFkYXZAaW50ZWwuY29tPgotLS0K
-IGxpYi9pbnRlbF9yZWcuaCB8IDUgKysrKysKIDEgZmlsZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMo
-KykKCmRpZmYgLS1naXQgYS9saWIvaW50ZWxfcmVnLmggYi9saWIvaW50ZWxfcmVnLmgKaW5kZXgg
-Zjg1ZmI3NC4uNGY0MjRmMCAxMDA2NDQKLS0tIGEvbGliL2ludGVsX3JlZy5oCisrKyBiL2xpYi9p
-bnRlbF9yZWcuaApAQCAtMzYyMSw0ICszNjIxLDkgQEAgdHlwZWRlZiBlbnVtIHsKICNkZWZpbmUg
-VkxWX0lPU0ZfREFUQQkJCQkoVkxWX0RJU1BMQVlfQkFTRSArIDB4MjEwNCkKICNkZWZpbmUgVkxW
-X0lPU0ZfQUREUgkJCQkoVkxWX0RJU1BMQVlfQkFTRSArIDB4MjEwOCkKIAorLyogRGlzcGxheSBD
-IHN0YXRlcyByZWxhdGVkIHJlc2lkZW5jeSBjb3VudGVyIHJlZ2lzdGVycy4gKi8KKyNkZWZpbmUg
-U0tMX0NTUl9EQzNfREM1X0NPVU5UICAweDgwMDMwCisjZGVmaW5lIFNLTF9DU1JfREM1X0RDNl9D
-T1VOVCAgMHg4MDAyQworI2RlZmluZSBCWFRfQ1NSX0RDM19EQzVfQ09VTlQgIDB4ODAwMzgKKwog
-I2VuZGlmIC8qIF9JODEwX1JFR19IICovCi0tIAoyLjcuNAoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9pZ3QtZGV2Cg==
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogbGliOiBVbmV4cG9ydCBnZW1fZ3R0X3R5cGUo
+KQpVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvNTAyMTMv
+ClN0YXRlIDogc3VjY2VzcwoKPT0gU3VtbWFyeSA9PQoKPSBDSSBCdWcgTG9nIC0gY2hhbmdlcyBm
+cm9tIENJX0RSTV80ODc0IC0+IElHVFBXXzE4NzQgPQoKPT0gU3VtbWFyeSAtIFNVQ0NFU1MgPT0K
+CiAgTm8gcmVncmVzc2lvbnMgZm91bmQuCgogIEV4dGVybmFsIFVSTDogaHR0cHM6Ly9wYXRjaHdv
+cmsuZnJlZWRlc2t0b3Aub3JnL2FwaS8xLjAvc2VyaWVzLzUwMjEzL3JldmlzaW9ucy8xL21ib3gv
+Cgo9PSBLbm93biBpc3N1ZXMgPT0KCiAgSGVyZSBhcmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gSUdU
+UFdfMTg3NCB0aGF0IGNvbWUgZnJvbSBrbm93biBpc3N1ZXM6CgogID09PSBJR1QgY2hhbmdlcyA9
+PT0KCiAgICA9PT09IElzc3VlcyBoaXQgPT09PQoKICAgIGlndEBnZW1fZXhlY19zdXNwZW5kQGJh
+c2ljLXMzOgogICAgICBmaS1iZHctc2FtdXM6ICAgICAgIFBBU1MgLT4gSU5DT01QTEVURSAoZmRv
+IzEwNzc3MykKCiAgICBpZ3RAa21zX2ZsaXBAYmFzaWMtZmxpcC12cy1tb2Rlc2V0OgogICAgICBm
+aS1za2wtNjcwMGhxOiAgICAgIE5PVFJVTiAtPiBETUVTRy1XQVJOIChmZG8jMTA1OTk4KSArMQoK
+ICAgIAogICAgPT09PSBQb3NzaWJsZSBmaXhlcyA9PT09CgogICAgaWd0QGRydl9tb2R1bGVfcmVs
+b2FkQGJhc2ljLXJlbG9hZDoKICAgICAgZmktYmxiLWU2ODUwOiAgICAgICBJTkNPTVBMRVRFIChm
+ZG8jMTA3NzE4KSAtPiBQQVNTCgogICAgaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0BiYXNp
+YzoKICAgICAgZmktYnl0LWNsYXBwZXI6ICAgICBGQUlMIChmZG8jMTAzMTY3KSAtPiBQQVNTCgog
+ICAgaWd0QGttc19waXBlX2NyY19iYXNpY0BzdXNwZW5kLXJlYWQtY3JjLXBpcGUtYjoKICAgICAg
+ZmktY2ZsLTgxMDl1OiAgICAgICBJTkNPTVBMRVRFIChmZG8jMTA2MDcwKSAtPiBQQVNTCgogICAg
+CiAgZmRvIzEwMzE2NyBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9p
+ZD0xMDMxNjcKICBmZG8jMTA1OTk4IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19i
+dWcuY2dpP2lkPTEwNTk5OAogIGZkbyMxMDYwNzAgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9y
+Zy9zaG93X2J1Zy5jZ2k/aWQ9MTA2MDcwCiAgZmRvIzEwNzcxOCBodHRwczovL2J1Z3MuZnJlZWRl
+c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDc3MTgKICBmZG8jMTA3NzczIGh0dHBzOi8vYnVn
+cy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNzc3MwoKCj09IFBhcnRpY2lwYXRp
+bmcgaG9zdHMgKDQ4IC0+IDQyKSA9PQoKICBBZGRpdGlvbmFsICgxKTogZmktc2tsLTY3MDBocSAK
+ICBNaXNzaW5nICAgICg3KTogZmktaWxrLW01NDAgZmktaHN3LTQyMDB1IGZpLWJkdy1ndnRkdm0g
+ZmktYnl0LXNxdWF3a3MgZmktaWNsLXUyIGZpLWJzdy1jeWFuIGZpLWN0Zy1wODYwMCAKCgo9PSBC
+dWlsZCBjaGFuZ2VzID09CgogICAgKiBJR1Q6IElHVF80NjQ5IC0+IElHVFBXXzE4NzQKCiAgQ0lf
+RFJNXzQ4NzQ6IDdiYjQyNDMyZWYxY2M2M2I0YTZhMjIzZTE5NDU1ZjZjNGY5YTE1MzggQCBnaXQ6
+Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvbGludXgKICBJR1RQV18xODc0OiBodHRw
+czovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzE4NzQvCiAgSUdUXzQ2
+NDk6IDE5YjBjNzRkMjBkOWI1M2Q0YzgyYmUxNGFmMDkwOWEzYjY4NDYwMTAgQCBnaXQ6Ly9hbm9u
+Z2l0LmZyZWVkZXNrdG9wLm9yZy94b3JnL2FwcC9pbnRlbC1ncHUtdG9vbHMKCj09IExvZ3MgPT0K
+CkZvciBtb3JlIGRldGFpbHMgc2VlOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9k
+cm0tdGlwL0lHVFBXXzE4NzQvaXNzdWVzLmh0bWwKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
+cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9pZ3QtZGV2Cg==
