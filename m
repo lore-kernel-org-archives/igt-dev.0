@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20180928004350.2346-4-drawat@vmware.com>
+In-Reply-To: <20180928004350.2346-7-drawat@vmware.com>
 References: <20180928004350.2346-1-drawat@vmware.com>
- <20180928004350.2346-4-drawat@vmware.com>
-Message-ID: <153813357703.11401.15015610101863102251@skylake-alporthouse-com>
-Date: Fri, 28 Sep 2018 12:19:37 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t 4/7] lib/igt_fb: Don't call
- gem_set_domain() for dumb buffer
+ <20180928004350.2346-7-drawat@vmware.com>
+Message-ID: <153813361518.11401.14222641332455324685@skylake-alporthouse-com>
+Date: Fri, 28 Sep 2018 12:20:15 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t 7/7] tests/plane_damage: Integrate
+ kernel selftest test-drm_damage_helper
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,19 +23,18 @@ To: Deepak Rawat <drawat@vmware.com>, igt-dev@lists.freedesktop.org, intel-gfx@l
 Cc: Deepak Rawat <drawat@vmware.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBEZWVwYWsgUmF3YXQgKDIwMTgtMDktMjggMDE6NDM6NDcpCj4gZ2VtX3NldF9kb21h
-aW4oKSBpcyBnZW0gc3BlY2lmaWMgYW5kIG5vdCBuZWVkZWQgZm9yIGR1bWIgYnVmZmVycy4KPiAK
-PiBTaWduZWQtb2ZmLWJ5OiBEZWVwYWsgUmF3YXQgPGRyYXdhdEB2bXdhcmUuY29tPgo+IC0tLQo+
-ICBsaWIvaWd0X2ZiLmMgfCA4ICsrKystLS0tCj4gIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlv
-bnMoKyksIDQgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZmIuYyBiL2xp
-Yi9pZ3RfZmIuYwo+IGluZGV4IDA0ODU3MDhiLi43NGE0YjUwMSAxMDA2NDQKPiAtLS0gYS9saWIv
-aWd0X2ZiLmMKPiArKysgYi9saWIvaWd0X2ZiLmMKPiBAQCAtMTM1NiwxNSArMTM1NiwxNSBAQCBz
-dGF0aWMgdm9pZCBjcmVhdGVfY2Fpcm9fc3VyZmFjZV9fZ3R0KGludCBmZCwgc3RydWN0IGlndF9m
-YiAqZmIpCj4gIHsKPiAgICAgICAgIHZvaWQgKnB0cjsKPiAgCj4gLSAgICAgICBnZW1fc2V0X2Rv
-bWFpbihmZCwgZmItPmdlbV9oYW5kbGUsCj4gLSAgICAgICAgICAgICAgICAgICAgICBJOTE1X0dF
-TV9ET01BSU5fR1RULCBJOTE1X0dFTV9ET01BSU5fR1RUKTsKPiAtCj4gICAgICAgICBpZiAoZmIt
-PmlzX2R1bWIpCktlcm5lbCBDT0RJTkdfU1RZTEU6IGlmIG9uZSBicmFuY2ggbmVlZCBicmFjZXMs
-IGFwcGx5IHRoZW0gdG8gYWxsLgotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
-ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9pZ3QtZGV2Cg==
+UXVvdGluZyBEZWVwYWsgUmF3YXQgKDIwMTgtMDktMjggMDE6NDM6NTApCj4gQ2FsbCBrZXJuZWwg
+c2VsZnRlc3QgbW9kdWxlIHRlc3QtZHJtX2RhbWFnZV9oZWxwZXIgZnJvbSBpZ3QuCj4gCj4gU2ln
+bmVkLW9mZi1ieTogRGVlcGFrIFJhd2F0IDxkcmF3YXRAdm13YXJlLmNvbT4KPiAtLS0KPiAgdGVz
+dHMvTWFrZWZpbGUuc291cmNlcyAgIHwgIDEgKwo+ICB0ZXN0cy9kcm1fcGxhbmVfZGFtYWdlLmMg
+fCAxMCArKysrKysrKysrCj4gIDIgZmlsZXMgY2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygrKQo+ICBj
+cmVhdGUgbW9kZSAxMDA2NDQgdGVzdHMvZHJtX3BsYW5lX2RhbWFnZS5jCj4gCj4gZGlmZiAtLWdp
+dCBhL3Rlc3RzL01ha2VmaWxlLnNvdXJjZXMgYi90ZXN0cy9NYWtlZmlsZS5zb3VyY2VzCj4gaW5k
+ZXggMjY5MzM2YWQuLjMxZWE4ODE5IDEwMDY0NAo+IC0tLSBhL3Rlc3RzL01ha2VmaWxlLnNvdXJj
+ZXMKPiArKysgYi90ZXN0cy9NYWtlZmlsZS5zb3VyY2VzCj4gQEAgLTIyOSw2ICsyMjksNyBAQCBU
+RVNUU19wcm9ncyA9IFwKPiAgICAgICAgIHRvb2xzX3Rlc3QgXAo+ICAgICAgICAgdmdlbV9iYXNp
+YyBcCj4gICAgICAgICB2Z2VtX3Nsb3cgXAo+ICsgICAgICAgZHJtX3BsYW5lX2RhbWFnZSBcCgpB
+bHBoYWJldGljYWwsIHBsZWFzZS4KLUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
+Zm8vaWd0LWRldgo=
