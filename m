@@ -1,17 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
- by gabe.freedesktop.org (Postfix) with ESMTP id 9322D895EE
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Oct 2018 14:58:00 +0000 (UTC)
-Date: Tue, 2 Oct 2018 16:57:44 +0200
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20181002145744.jt2ko5vhu7k77c2o@flea>
-References: <cover.cafc7aee9c887562e8432741cd1f0543ff92121a.1536655647.git-series.maxime.ripard@bootlin.com>
- <2a7b88e3a05afa4b8c8661a59a87e9d668cf5a07.1536655647.git-series.maxime.ripard@bootlin.com>
- <20181001092658.GB17124@platvala-desk.ger.corp.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue,  2 Oct 2018 16:29:38 +0100
+Message-Id: <20181002152938.11955-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-In-Reply-To: <20181001092658.GB17124@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH v7 07/14] fb: Add support for conversions
- through pixman
+Subject: [igt-dev] [PATCH i-g-t] lib/kms: Handle no connectors for
+ igt_enable_connectors()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,96 +12,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1717231367=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Boris Brezillon <boris.brezillon@bootlin.com>, Eric Anholt <eric@anholt.net>, eben@raspberrypi.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Paul Kocialkowski <paul.kocialkowski@bootlin.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============1717231367==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="al3opo3dffgpj2zm"
-Content-Disposition: inline
-
-
---al3opo3dffgpj2zm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Petri,
-
-On Mon, Oct 01, 2018 at 12:26:58PM +0300, Petri Latvala wrote:
-> On Tue, Sep 11, 2018 at 10:47:34AM +0200, Maxime Ripard wrote:
-> > Pixman allows for much more conversions than cairo, and we don't want to
-> > open code conversions routine for the common formats.
-> >=20
-> > Let's plug pixman in our conversion function so that we can benefit fro=
-m it
-> > when possible.
-> >=20
-> > Reviewed-by: Eric Anholt <eric@anholt.net>
-> > Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
-> > ---
-> >  lib/igt_fb.c | 55 +++++++++++++++++++++++++++++++++++++++++++++++++++--
-> >  1 file changed, 53 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> > index 624fddbd465b..64370e01c1d6 100644
-> > --- a/lib/igt_fb.c
-> > +++ b/lib/igt_fb.c
-> > @@ -29,6 +29,7 @@
-> >  #include <math.h>
-> >  #include <wchar.h>
-> >  #include <inttypes.h>
-> > +#include <pixman.h>
-> > =20
->=20
-> Currently pixman is only there if you enable chamelium. Doing this
-> requires making it mandatory, doing some refactoring on meson.build
-> and configure.ac. And README.
-
-Ah, right. I'll fix that.
-
-Thanks!
-Maxime
-
---=20
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---al3opo3dffgpj2zm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAluzh2cACgkQ0rTAlCFN
-r3QJbQ/+I127mi28C9foJES5qHjj2xIYkGwf91zkge74v2l33is+HJwQXhXqs4/K
-YjVcYSy4uwqbdFC0rATphrZ2Ea3YPxoQOS0Rt6oPB5MJY9LDl82jlRorvZie7ELf
-zv8F2mm85ldFqtnjYuwg6n1CzatMhg04xXYD1vcR/GCcJ7hJs7nk1UMSDBTmNGDb
-HmNBTqNVGPmp+SfTUlCF7OWWc0msd7e2I6OmZTrb6Pvf+jHyWKYY0nOi8UcK7aoV
-VPEKW5C383Qo8JiYmIDoBURcLRSGDPjf51wxhLGAhvVDgwZwcMDzo8tyYwEq6/tf
-+a67D+E2NuiDayvwypAojoApxCL8hcNrCwC0f83VI/poc4q0l514VoaJNGa5bCuR
-QkX45ixXxFJtQI8V2rEAOcoSdKzYZRYG/ebjl800ieQp/d2eQI8lD2on9pcGuDyX
-S2kEKgjytxtYmQl0YIcszeal6TnkDXzAE95z2IyNPJCW1O7IPJicfiJtd+Y9E+9W
-xKJGLQPyOnjgIPAwhKguAGj614g+3T/OJjXRtmZ24g86BESFQnMMFJZKWWn1cAdc
-nETT4jAy48rRhOqC1Zh302KdzN3/RwM2lthtmiN8kvBkubhIP2I61+0Y1jtL5v43
-eGAEr6QThUbp7Z32EtBVlhSohImOu8Qt0JzzNDC6cRSSyLuUC9s=
-=ZnBv
------END PGP SIGNATURE-----
-
---al3opo3dffgpj2zm--
-
---===============1717231367==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============1717231367==--
+VGFrZSB0aGUgZGV2aWNlIGZkIGZyb20gdGhlIGNhbGxlciBhcyB0byB3aGljaCBjYXJkIHdlIHNo
+b3VsZCB0cnkgYW5kCmVuYWJsZSBjb25uZWN0b3JzIGZvciAob3IgZWxzZSB3ZSBtYXkgbm90IGVu
+YWJsZSB0aGUgcmlnaHQgY29ubmVjdG9ycwpmb3IgdGhlIHRlc3QhKSBhbmQgZmFpbCBncmFjZWZ1
+bGx5IGlmIHRoZXJlIGlzIG5vIGttcyBzdXBwb3J0IG9uIHRoZQpkZXZpY2UuCgpTaWduZWQtb2Zm
+LWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KLS0tCiBsaWIvaWd0
+X2ttcy5jICAgICAgICAgICAgICAgIHwgMTAgKysrLS0tLS0tLQogbGliL2lndF9rbXMuaCAgICAg
+ICAgICAgICAgICB8ICAyICstCiB0ZXN0cy9rbXNfZmxpcC5jICAgICAgICAgICAgIHwgIDIgKy0K
+IHRlc3RzL2ttc19pbnZhbGlkX2RvdGNsb2NrLmMgfCAgMiArLQogdGVzdHMva21zX3BpcGVfY3Jj
+X2Jhc2ljLmMgICB8ICAyICstCiA1IGZpbGVzIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKSwgMTEg
+ZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2lndF9rbXMuYyBiL2xpYi9pZ3Rfa21zLmMK
+aW5kZXggMzg5NGVlYWZmLi5iMmNiYWExMTQgMTAwNjQ0Ci0tLSBhL2xpYi9pZ3Rfa21zLmMKKysr
+IGIvbGliL2lndF9rbXMuYwpAQCAtMzkwNSwxNSArMzkwNSwxMyBAQCB2b2lkIGlndF93YWl0X2Zv
+cl92YmxhbmsoaW50IGRybV9mZCwgZW51bSBwaXBlIHBpcGUpCiAgKiBBbiBleGl0IGhhbmRsZXIg
+aXMgaW5zdGFsbGVkIHRvIGVuc3VyZSBjb25uZWN0b3JzIGFyZSByZXNldCB3aGVuIHRoZSB0ZXN0
+CiAgKiBleGl0cy4KICAqLwotdm9pZCBpZ3RfZW5hYmxlX2Nvbm5lY3RvcnModm9pZCkKK3ZvaWQg
+aWd0X2VuYWJsZV9jb25uZWN0b3JzKGludCBkcm1fZmQpCiB7CiAJZHJtTW9kZVJlcyAqcmVzOwot
+CWludCBkcm1fZmQ7Ci0KLQlkcm1fZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX0FOWSk7CiAK
+IAlyZXMgPSBkcm1Nb2RlR2V0UmVzb3VyY2VzKGRybV9mZCk7Ci0JaWd0X2Fzc2VydChyZXMgIT0g
+TlVMTCk7CisJaWYgKCFyZXMpCisJCXJldHVybjsKIAogCWZvciAoaW50IGkgPSAwOyBpIDwgcmVz
+LT5jb3VudF9jb25uZWN0b3JzOyBpKyspIHsKIAkJZHJtTW9kZUNvbm5lY3RvciAqYzsKQEAgLTM5
+NDAsOCArMzkzOCw2IEBAIHZvaWQgaWd0X2VuYWJsZV9jb25uZWN0b3JzKHZvaWQpCiAKIAkJZHJt
+TW9kZUZyZWVDb25uZWN0b3IoYyk7CiAJfQotCi0JY2xvc2UoZHJtX2ZkKTsKIH0KIAogLyoqCmRp
+ZmYgLS1naXQgYS9saWIvaWd0X2ttcy5oIGIvbGliL2lndF9rbXMuaAppbmRleCAyZDg2MjY2NWUu
+LjM4ZmE5NDRlZiAxMDA2NDQKLS0tIGEvbGliL2lndF9rbXMuaAorKysgYi9saWIvaWd0X2ttcy5o
+CkBAIC03MzQsNyArNzM0LDcgQEAgZXh0ZXJuIHZvaWQgaWd0X3BpcGVfb2JqX3JlcGxhY2VfcHJv
+cF9ibG9iKGlndF9waXBlX3QgKnBpcGUsCiAKIHZvaWQgaWd0X3BpcGVfcmVmcmVzaChpZ3RfZGlz
+cGxheV90ICpkaXNwbGF5LCBlbnVtIHBpcGUgcGlwZSwgYm9vbCBmb3JjZSk7CiAKLXZvaWQgaWd0
+X2VuYWJsZV9jb25uZWN0b3JzKHZvaWQpOwordm9pZCBpZ3RfZW5hYmxlX2Nvbm5lY3RvcnMoaW50
+IGRybV9mZCk7CiB2b2lkIGlndF9yZXNldF9jb25uZWN0b3JzKHZvaWQpOwogCiB1aW50MzJfdCBr
+bXN0ZXN0X2dldF92YmxfZmxhZyh1aW50MzJfdCBwaXBlX2lkKTsKZGlmZiAtLWdpdCBhL3Rlc3Rz
+L2ttc19mbGlwLmMgYi90ZXN0cy9rbXNfZmxpcC5jCmluZGV4IGY3ZDA4YTYwYS4uNDRhODIwNTM4
+IDEwMDY0NAotLS0gYS90ZXN0cy9rbXNfZmxpcC5jCisrKyBiL3Rlc3RzL2ttc19mbGlwLmMKQEAg
+LTE1NzUsNyArMTU3NSw3IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikKIAlpZ3Rf
+Zml4dHVyZSB7CiAJCWRybV9mZCA9IGRybV9vcGVuX2RyaXZlcl9tYXN0ZXIoRFJJVkVSX0FOWSk7
+CiAKLQkJaWd0X2VuYWJsZV9jb25uZWN0b3JzKCk7CisJCWlndF9lbmFibGVfY29ubmVjdG9ycyhk
+cm1fZmQpOwogCiAJCWttc3Rlc3Rfc2V0X3Z0X2dyYXBoaWNzX21vZGUoKTsKIAkJaWd0X2luc3Rh
+bGxfZXhpdF9oYW5kbGVyKGttc19mbGlwX2V4aXRfaGFuZGxlcik7CmRpZmYgLS1naXQgYS90ZXN0
+cy9rbXNfaW52YWxpZF9kb3RjbG9jay5jIGIvdGVzdHMva21zX2ludmFsaWRfZG90Y2xvY2suYwpp
+bmRleCBlN2E4MGQ4ODQuLjU2ODg4OWE5OCAxMDA2NDQKLS0tIGEvdGVzdHMva21zX2ludmFsaWRf
+ZG90Y2xvY2suYworKysgYi90ZXN0cy9rbXNfaW52YWxpZF9kb3RjbG9jay5jCkBAIC0xMzEsNyAr
+MTMxLDcgQEAgaWd0X3NpbXBsZV9tYWluCiAJZGF0YS5kcm1fZmQgPSBkcm1fb3Blbl9kcml2ZXJf
+bWFzdGVyKERSSVZFUl9JTlRFTCk7CiAJaWd0X3JlcXVpcmVfaW50ZWwoZGF0YS5kcm1fZmQpOwog
+Ci0JaWd0X2VuYWJsZV9jb25uZWN0b3JzKCk7CisJaWd0X2VuYWJsZV9jb25uZWN0b3JzKGRhdGEu
+ZHJtX2ZkKTsKIAlrbXN0ZXN0X3NldF92dF9ncmFwaGljc19tb2RlKCk7CiAJaWd0X2Rpc3BsYXlf
+cmVxdWlyZSgmZGF0YS5kaXNwbGF5LCBkYXRhLmRybV9mZCk7CiAJZGF0YS5yZXMgPSBkcm1Nb2Rl
+R2V0UmVzb3VyY2VzKGRhdGEuZHJtX2ZkKTsKZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19waXBlX2Ny
+Y19iYXNpYy5jIGIvdGVzdHMva21zX3BpcGVfY3JjX2Jhc2ljLmMKaW5kZXggOWM5MDc4ZTliLi41
+YmMwOTUyZmMgMTAwNjQ0Ci0tLSBhL3Rlc3RzL2ttc19waXBlX2NyY19iYXNpYy5jCisrKyBiL3Rl
+c3RzL2ttc19waXBlX2NyY19iYXNpYy5jCkBAIC0xODEsNyArMTgxLDcgQEAgaWd0X21haW4KIAlp
+Z3RfZml4dHVyZSB7CiAJCWRhdGEuZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklW
+RVJfQU5ZKTsKIAotCQlpZ3RfZW5hYmxlX2Nvbm5lY3RvcnMoKTsKKwkJaWd0X2VuYWJsZV9jb25u
+ZWN0b3JzKGRhdGEuZHJtX2ZkKTsKIAogCQlrbXN0ZXN0X3NldF92dF9ncmFwaGljc19tb2RlKCk7
+CiAKLS0gCjIuMTkuMAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
+aHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
