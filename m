@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
- [IPv6:2a00:1450:4864:20::541])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3240A6E846
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Oct 2018 15:07:44 +0000 (UTC)
-Received: by mail-ed1-x541.google.com with SMTP id y19-v6so11955801edd.2
- for <igt-dev@lists.freedesktop.org>; Fri, 05 Oct 2018 08:07:44 -0700 (PDT)
-Date: Fri, 5 Oct 2018 17:07:38 +0200
-From: Daniel Vetter <daniel@ffwll.ch>
-Message-ID: <20181005150738.GI31561@phenom.ffwll.local>
-References: <20181004132128.6412-1-daniel.vetter@ffwll.ch>
- <20181004132128.6412-4-daniel.vetter@ffwll.ch>
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id E35A26E846
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Oct 2018 15:24:00 +0000 (UTC)
+Date: Fri, 5 Oct 2018 17:23:59 +0200
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20181005152359.aykjqgwc2zcvcwjk@flea>
+References: <cover.aee5e066f8e9fa68d4d763fee64c7b2d195cb34b.1538656497.git-series.maxime.ripard@bootlin.com>
+ <ad6325825b4e0c497c3e442e334bc6271db373f7.1538656497.git-series.maxime.ripard@bootlin.com>
+ <20181005114203.4ovcbrql3yountf2@ahiler-desk1.fi.intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20181004132128.6412-4-daniel.vetter@ffwll.ch>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] lib/kms: warn if we commit without
- outputs
+In-Reply-To: <20181005114203.4ovcbrql3yountf2@ahiler-desk1.fi.intel.com>
+Subject: Re: [igt-dev] [PATCH v8 08/16] igt: Make pixman mandatory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,57 +18,194 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0417978971=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: IGT development <igt-dev@lists.freedesktop.org>
-Cc: Daniel Vetter <daniel.vetter@intel.com>
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBPY3QgMDQsIDIwMTggYXQgMDM6MjE6MjhQTSArMDIwMCwgRGFuaWVsIFZldHRlciB3
-cm90ZToKPiBXaXRoIHRoZSBoaWdoLWxldmVsIGhlbHBlcnMgcmVxdWlyaW5nIG91dHB1dHMgdGhl
-cmUncyBub3QgcG9pbnQKPiBpbiBzaWxlbnRseSBpZ25vcmluZyBpc3N1ZXMgYW55bW9yZS4gQ29t
-cGxhaW4gYWJvdXQgdGhhdCBpZiBpdAo+IGV2ZXIgaGFwcGVucy4KPiAKPiBDYzogQW50b25pbyBB
-cmdlbnppYW5vIDxhbnRvbmlvLmFyZ2Vuemlhbm9AaW50ZWwuY29tPgo+IENjOiBDaHJpcyBXaWxz
-b24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KPiBTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgVmV0
-dGVyIDxkYW5pZWwudmV0dGVyQGludGVsLmNvbT4KCkkgZ3Vlc3MgbXkgbW90aXZhdGlvbiB3aXRo
-IGZ1bWJsaW5nIGFyb3VuZCB3aXRoIHRoZSBpZ3RfZGlzcGxheV8qIGFwaQp3YXNuJ3QgZW50aXJl
-bHkgY2xlYXI6IEl0J3MgdGhpcyBwYXRjaCBoZXJlLCByZXNwZWN0aXZlbHkgQ2hyaXMnIHBhdGNo
-CndoaWNoIGFkZGVkIHRoZSBzaWxlbnQgc2hvcnQgY2lyY3VpdC4KCkltbyB0aGF0J3MgdmVyeSBi
-cml0dGxlIGFwaSwgYXNraW5nIGZvciB0cm91YmxlLCBhbmQgbWUgbm90IHJlY29nbml6aW5nCnJp
-Z2h0IGF3YXkgd2hhdCdzIGhhcHBlbmluZyBpbiB0aGUgZGVidWdmcyBpcyBraW5kYSBwcm92aW5n
-IHRoZSBwb2ludC4KU2lsZW50bHkgdGhyb3dpbmcgYSByZXF1ZXN0IGF3YXkgZnJvbSB0aGUgdGVz
-dGNhc2UgaXMgYXQgbGVhc3QgdmVyeQpzdXJwcmlzaW5nLiBBbmQgaW5jb25zaXN0ZW50IHdpdGgg
-Ym90aCBtb3JlIGV4cGxpY2l0IGlndF9yZXF1aXJlL2Fzc2VydApjaGVja3MgaW4gZHJpdmVycywg
-YW5kICh0aGUgc3R5bGUgSSBmYXZvdXIgcGVyc29uYWxseSwgYnV0IHJlYWxseSBub3QgdGhlCmlz
-c3VlIGhlcmUpIHB1dHRpbmcgaWd0X3JlcXVpcmUvYXNzZXJ0IGludG8gdGhlIGhlbHBlciBsaWJy
-YXJ5LgoKTm93IG15IHByb3Bvc2FsIHRvIGdldCB1cyBiYWNrIHNvbWUgcm9idXN0bmVzcyBzZWVt
-cyBub3QgbWV0IHdpdGggaHVnZQplbnRodXNpYW1zLCBzbyB3aGF0J3MgaXQgZ29pbmcgdG8gYmU/
-IEknZCBiZSBvayB3aXRoIHNwcmlua2xpbmcgbW9yZQpleHBsaWNpdCBjaGVja3Mgb3ZlciB0ZXN0
-cyAoYW5kIHByb2JhYmx5IG1vcmUgZXhwbGljaXQgY29udHJvbCBmbG93KSwgcGx1cwpwcm9wZXIg
-ZG9jdW1lbnRhdGlvbiBmb3IgaWd0X2Rpc3BsYXlfcmVxdWlyZSwgdG9vLiBCdXQgdGhpcyBoZXJl
-IGRvZXNuJ3QKbG9vayBsaWtlIGEgZ29vZCBpZGVhIGxvbmctdGVybSwgYW5kIHRoYXQncyB3aHkg
-SSdtIG5vdCBoYXBweSB3aXRoIGhvdwp0aGF0IGJ1Z2ZpeGluZyB3YXMgcnVzaGVkIGluLiBGaXhp
-bmcgZGlzYWJsZV9kaXNwbGF5PTEgaXNuJ3QgX3RoYXRfIGhpZ2gKb2YgYSBwcmlvcml0eSB0aGF0
-IHdlIGNhbid0IHRha2UgdGhlIHRpbWUgdG8gZ2V0IHRoZSBpZ3QgbGlicmFyeSBhcGkKc29tZXdo
-YXQgcmlnaHQuCgpDaGVlcnMsIERhbmllbAoKPiAtLS0KPiAgbGliL2lndF9rbXMuYyB8IDQgKyst
-LQo+ICAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQo+IAo+
-IGRpZmYgLS1naXQgYS9saWIvaWd0X2ttcy5jIGIvbGliL2lndF9rbXMuYwo+IGluZGV4IDQ1NGFi
-NzQ4MWNkZS4uODY3ZWFhN2E5NzFjIDEwMDY0NAo+IC0tLSBhL2xpYi9pZ3Rfa21zLmMKPiArKysg
-Yi9saWIvaWd0X2ttcy5jCj4gQEAgLTMyNjksNyArMzI2OSw3IEBAIHN0YXRpYyBpbnQgZG9fZGlz
-cGxheV9jb21taXQoaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSwKPiAgCWVudW0gcGlwZSBwaXBlOwo+
-ICAJTE9HX0lOREVOVChkaXNwbGF5LCAiY29tbWl0Iik7Cj4gIAo+IC0JaWYgKCFkaXNwbGF5LT5u
-X3BpcGVzIHx8ICFkaXNwbGF5LT5uX291dHB1dHMpCj4gKwlpZiAoaWd0X3dhcm5fb24oIWRpc3Bs
-YXktPm5fcGlwZXMgfHwgIWRpc3BsYXktPm5fb3V0cHV0cykpCj4gIAkJcmV0dXJuIDA7IC8qIG5v
-dGhpbmcgdG8gZG8gKi8KPiAgCj4gIAlpZ3RfZGlzcGxheV9yZWZyZXNoKGRpc3BsYXkpOwo+IEBA
-IC0zMzIyLDcgKzMzMjIsNyBAQCBpbnQgaWd0X2Rpc3BsYXlfdHJ5X2NvbW1pdF9hdG9taWMoaWd0
-X2Rpc3BsYXlfdCAqZGlzcGxheSwgdWludDMyX3QgZmxhZ3MsIHZvaWQgKgo+ICB7Cj4gIAlpbnQg
-cmV0Owo+ICAKPiAtCWlmICghZGlzcGxheS0+bl9waXBlcyB8fCAhZGlzcGxheS0+bl9vdXRwdXRz
-KQo+ICsJaWYgKGlndF93YXJuX29uKCFkaXNwbGF5LT5uX3BpcGVzIHx8ICFkaXNwbGF5LT5uX291
-dHB1dHMpKQo+ICAJCXJldHVybiAwOyAvKiBub3RoaW5nIHRvIGRvICovCj4gIAo+ICAJTE9HX0lO
-REVOVChkaXNwbGF5LCAiY29tbWl0Iik7Cj4gLS0gCj4gMi4xOS4wLnJjMgo+IAoKLS0gCkRhbmll
-bCBWZXR0ZXIKU29mdHdhcmUgRW5naW5lZXIsIEludGVsIENvcnBvcmF0aW9uCmh0dHA6Ly9ibG9n
-LmZmd2xsLmNoCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBz
-Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+
+--===============0417978971==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="eivwmvmq2aaptocv"
+Content-Disposition: inline
+
+
+--eivwmvmq2aaptocv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Oct 05, 2018 at 02:42:03PM +0300, Arkadiusz Hiler wrote:
+> On Thu, Oct 04, 2018 at 02:39:01PM +0200, Maxime Ripard wrote:
+> > So far, pixman was used exclusively when the Chamelium support was enab=
+led.
+> >=20
+> > However, since we're going to use it as one of the backend to do the
+> > igt_fb conversions between formats, we'll need it all the time. Make
+> > that explicit.
+> >=20
+> > Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
+> > ---
+> >  README      |  2 +-
+> >  meson.build |  9 +++------
+> >  2 files changed, 4 insertions(+), 7 deletions(-)
+> >=20
+> > diff --git a/README b/README
+> > index f8ba5c710e81..78d14060dccd 100644
+> > --- a/README
+> > +++ b/README
+> > @@ -145,6 +145,7 @@ the default configuration (package names may vary):
+> >  	libcairo2-dev
+> >  	libdrm-dev
+> >  	libkmod-dev
+> > +	libpixman-1-dev
+> >  	libpciaccess-dev
+> >  	libprocps-dev
+> >  	libunwind-dev
+> > @@ -157,7 +158,6 @@ The following dependencies are required for buildin=
+g chamelium support
+> >  (package names may vary):
+> > =20
+> >  	libxmlrpc-core-c3-dev
+> > -	libpixman-1-dev
+> >  	libudev-dev
+> >  	libglib2.0-dev
+> >  	libgsl-dev
+> > diff --git a/meson.build b/meson.build
+> > index faf1b764d69d..eff35585f619 100644
+> > --- a/meson.build
+> > +++ b/meson.build
+> > @@ -105,6 +105,7 @@ libprocps =3D dependency('libprocps', required : tr=
+ue)
+> >  libunwind =3D dependency('libunwind', required : true)
+> >  libdw =3D dependency('libdw', required : true)
+> >  ssl =3D dependency('openssl', required : true)
+> > +pixman =3D dependency('pixman-1', required : true)
+> > =20
+> >  valgrind =3D null_dep
+> >  valgrindinfo =3D 'No'
+> > @@ -123,16 +124,12 @@ glib =3D dependency('glib-2.0', required : true)
+> > =20
+> >  gsl =3D null_dep
+> >  alsa =3D null_dep
+> > -pixman =3D null_dep
+> >  if _build_audio or _build_chamelium
+> >  	gsl =3D dependency('gsl', required : _audio_required or _chamelium_re=
+quired)
+> >  endif
+> >  if _build_audio
+> >  	alsa =3D dependency('alsa', required : _audio_required)
+> >  endif
+> > -if _build_chamelium
+> > -	pixman =3D dependency('pixman-1', required : _chamelium_required)
+> > -endif
+> > =20
+> >  audioinfo =3D 'No'
+> >  if _build_audio and alsa.found() and gsl.found()
+> > @@ -164,8 +161,8 @@ endif
+> > =20
+> >  chamelium =3D null_dep
+> >  chameliuminfo =3D 'No'
+> > -if _build_chamelium and pixman.found() and gsl.found() and xmlrpc.foun=
+d() and xmlrpc_util.found() and xmlrpc_client.found()
+> > -	chamelium =3D declare_dependency(dependencies : [ pixman, xmlrpc,
+> > +if _build_chamelium and gsl.found() and xmlrpc.found() and xmlrpc_util=
+=2Efound() and xmlrpc_client.found()
+> > +	chamelium =3D declare_dependency(dependencies : [ xmlrpc,
+> >  							xmlrpc_util, xmlrpc_client])
+> >  	config.set('HAVE_CHAMELIUM', 1)
+> >  	chameliuminfo =3D 'Yes'
+> > --=20
+> > git-series 0.9.1
+>=20
+>=20
+> Squash this in:
+>=20
+> diff --git a/configure.ac b/configure.ac
+> index c75ef284..b80e905e 100644
+> --- a/configure.ac
+> +++ b/configure.ac
+> @@ -183,6 +183,7 @@ PKG_CHECK_MODULES(XRANDR, xrandr >=3D 1.3, AC_DEFINE(=
+HAVE_XRANDR, 1, [Have libXran
+>  PKG_CHECK_MODULES(CAIRO, [cairo >=3D 1.12.0])
+>  PKG_CHECK_MODULES(LIBUDEV, [libudev])
+>  PKG_CHECK_MODULES(GLIB, [glib-2.0])
+> +PKG_CHECK_MODULES(PIXMAN, [pixman-1])
+>  PKG_CHECK_MODULES(GSL, [gsl], [gsl=3Dyes], [gsl=3Dno])
+>  AM_CONDITIONAL(HAVE_GSL, [test "x$gsl" =3D xyes])
+> =20
+> @@ -206,8 +207,6 @@ if test "x$enable_chamelium" =3D xyes; then
+>  			AC_MSG_ERROR([Failed to find xmlrpc, required by chamelium.])
+>  		fi
+>  	fi
+> -	PKG_CHECK_MODULES(PIXMAN, pixman-1, [],
+> -			  [AC_MSG_ERROR([Failed to find pixman, required by chamelium.])])
+>  	if test x"$gsl" !=3D xyes; then
+>  		AC_MSG_ERROR([Failed to find gsl, required by chamelium.])
+>  	fi
+> diff --git a/lib/meson.build b/lib/meson.build
+> index e60e5e02..7e2c9b7a 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -66,6 +66,7 @@ lib_deps =3D [
+>  	math,
+>  	realtime,
+>  	ssl,
+> +	pixman,
+>  ]
+> =20
+>  if libdrm_intel.found()
+> @@ -79,8 +80,8 @@ if valgrind.found()
+>  	lib_deps +=3D valgrind
+>  endif
+> =20
+> -if gsl.found() and pixman.found()
+> -	lib_deps +=3D [ gsl, pixman ]
+> +if gsl.found()
+> +	lib_deps +=3D [ gsl ]
+>  	lib_sources +=3D [ 'igt_frame.c', 'igt_audio.c' ]
+>  endif
+
+I will, thanks!
+Maxime
+
+--=20
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--eivwmvmq2aaptocv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEE0VqZU19dR2zEVaqr0rTAlCFNr3QFAlu3gg4ACgkQ0rTAlCFN
+r3ScsA/9GlBFedlGcW/lUsQqvw7wJYkg6gxJfv2CVQDHhm8rKZCPz7DHwgnlLGsA
+olCzkszy57aiUAoDnzgB3YovyRsz2+Vzn0zyWNaWgPy0l6Mh2D0D1tbMoIWeYJ8d
+GZzNXb1mXDjCX9DypsMdKxR2ykQQdTg3OUMEgUhIB7gwtP4S2R2j9v36EZVJ91HG
+ddkaOaj+ZKEuhXyqCqX48hGILS96tjRXXzbN85vnvf/3SPYBEluESF4olwur1tz4
+iqYHxWR6rttN8IGQz5WXRu2xA1osc8bZ81oEvI04CIESjlBV3pUNpjwwyYHd/9ZC
+MgteMLjRavZGB2DPJvr+jccq9KvaieJbPLwN9rc6WuTbAuqts2Jkgf41pq1o1VnQ
+jhuyt4asFrqQQIsWjxtDSZk2vx35pnyZS3kUYLKtpSR7iXygt9M6FQBoPZ5EQ9vJ
+zw3dgY2xJrN2gWZhsDv9SoA1uOaUr523BtcnNRKfjqtxNOYzl9P+E56F0YoyFyrT
+JR+kLvKszi6H0BxrKVJg3QAg8Ks2EZBY6ixIG8twsS5Q263jLH4I30qKAyRLdGcx
+QjcDM3AzMgFhp5+xVOn+odAQTZhrcosKFlqNiSGkpoN12p0DbVY/641Mp6AaObfp
+WNJD+BTXT9HzMsNimktY2Lmz88M9AYWpuGK56EHuDh274RZTiXQ=
+=+1ee
+-----END PGP SIGNATURE-----
+
+--eivwmvmq2aaptocv--
+
+--===============0417978971==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0417978971==--
