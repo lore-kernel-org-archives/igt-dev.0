@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA7676E728
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Oct 2018 08:11:13 +0000 (UTC)
-Date: Fri, 5 Oct 2018 11:11:06 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20181005081106.5lwljkzbnekpkgqe@ahiler-desk1.fi.intel.com>
-References: <cover.aee5e066f8e9fa68d4d763fee64c7b2d195cb34b.1538656497.git-series.maxime.ripard@bootlin.com>
- <4c231337f12ae5912139844ae2dee9790ef410e8.1538656497.git-series.maxime.ripard@bootlin.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <4c231337f12ae5912139844ae2dee9790ef410e8.1538656497.git-series.maxime.ripard@bootlin.com>
-Subject: Re: [igt-dev] [PATCH v8 02/16] fb: Only set the GEM domain on intel
- platforms
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 05 Oct 2018 09:46:54 -0000
+Message-ID: <20181005094654.1892.92301@emeril.freedesktop.org>
+References: <cover.aee5e066f8e9fa68d4d763fee64c7b2d195cb34b.1538656497.git-series.maxime.ripard@bootlin.com>
+In-Reply-To: <cover.aee5e066f8e9fa68d4d763fee64c7b2d195cb34b.1538656497.git-series.maxime.ripard@bootlin.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgY2hhbWVs?=
+ =?utf-8?q?ium=3A_Test_the_plane_formats_=28rev7=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,21 +14,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Maxime Ripard <maxime.ripard@bootlin.com>
-Cc: Paul Kocialkowski <paul.kocialkowski@bootlin.com>, Petri Latvala <petri.latvala@intel.com>, eben@raspberrypi.org, igt-dev@lists.freedesktop.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBPY3QgMDQsIDIwMTggYXQgMDI6Mzg6NTVQTSArMDIwMCwgTWF4aW1lIFJpcGFyZCB3
-cm90ZToKPiBUaGUgZ2VtX3NldF9kb21haW4gY2FsbCB1c2VzIGFuIGk5MTUgc3BlY2lmaWMgaW9j
-dGwgdGhhdCB3aWxsIGZhaWwgb24KPiBhbnl0aGluZyBlbHNlLiBMZXQncyBtb3ZlIHRoYXQgY2Fs
-bCB1bmRlciBhIGNoZWNrIGZvciB3aGV0aGVyIG9yIG5vdCB3ZSdyZQo+IHJ1bm5pbmcgb24gYW4g
-aW50ZWwgcGxhdGZvcm0uCj4gCj4gU2lnbmVkLW9mZi1ieTogTWF4aW1lIFJpcGFyZCA8bWF4aW1l
-LnJpcGFyZEBib290bGluLmNvbT4KUmV2aWV3ZWQtYnk6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRp
-dXN6LmhpbGVyQGludGVsLmNvbT4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3Rv
-cC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3Qt
-ZGV2Cg==
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogY2hhbWVsaXVtOiBUZXN0IHRoZSBwbGFuZSBm
+b3JtYXRzIChyZXY3KQpVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9z
+ZXJpZXMvNDIxNjUvClN0YXRlIDogc3VjY2VzcwoKPT0gU3VtbWFyeSA9PQoKPSBDSSBCdWcgTG9n
+IC0gY2hhbmdlcyBmcm9tIENJX0RSTV80OTMzIC0+IElHVFBXXzE5MTUgPQoKPT0gU3VtbWFyeSAt
+IFNVQ0NFU1MgPT0KCiAgTm8gcmVncmVzc2lvbnMgZm91bmQuCgogIEV4dGVybmFsIFVSTDogaHR0
+cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL2FwaS8xLjAvc2VyaWVzLzQyMTY1L3Jldmlz
+aW9ucy83L21ib3gvCgo9PSBLbm93biBpc3N1ZXMgPT0KCiAgSGVyZSBhcmUgdGhlIGNoYW5nZXMg
+Zm91bmQgaW4gSUdUUFdfMTkxNSB0aGF0IGNvbWUgZnJvbSBrbm93biBpc3N1ZXM6CgogID09PSBJ
+R1QgY2hhbmdlcyA9PT0KCiAgICA9PT09IElzc3VlcyBoaXQgPT09PQoKICAgIGlndEBnZW1fZXhl
+Y19zdXNwZW5kQGJhc2ljLXMzOgogICAgICBmaS1iZHctc2FtdXM6ICAgICAgIE5PVFJVTiAtPiBJ
+TkNPTVBMRVRFIChmZG8jMTA3NzczKQoKICAgIAogIGZkbyMxMDc3NzMgaHR0cHM6Ly9idWdzLmZy
+ZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3NzczCgoKPT0gUGFydGljaXBhdGluZyBo
+b3N0cyAoNDQgLT4gNDApID09CgogIEFkZGl0aW9uYWwgKDMpOiBmaS1nbGstajQwMDUgZmktYmR3
+LXNhbXVzIGZpLXNuYi0yNTIwbSAKICBNaXNzaW5nICAgICg3KTogZmktaWxrLW01NDAgZmktYnl0
+LXNxdWF3a3MgZmktYnN3LWN5YW4gZmktaWNsLXUyIGZpLWN0Zy1wODYwMCBmaS1ieXQtY2xhcHBl
+ciBmaS1rYmwtciAKCgo9PSBCdWlsZCBjaGFuZ2VzID09CgogICAgKiBJR1Q6IElHVF80NjY5IC0+
+IElHVFBXXzE5MTUKCiAgQ0lfRFJNXzQ5MzM6IDZiN2E0NGQxNTk3NzkxNTI0ZjQ2ZDdlYTE3NjIw
+ZGI1NGRmZmRjOGMgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvbGludXgK
+ICBJR1RQV18xOTE1OiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lH
+VFBXXzE5MTUvCiAgSUdUXzQ2Njk6IDVmNDBlNjE3Y2Q5YzFlMDg5ZjRhMmQ3OWM1M2E0MTdkODkx
+ZTNlM2MgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy94b3JnL2FwcC9pbnRlbC1ncHUt
+dG9vbHMKCgoKPT0gVGVzdGxpc3QgY2hhbmdlcyA9PQoKK2lndEBrbXNfY2hhbWVsaXVtQGhkbWkt
+Y3JjLWFiZ3I4ODg4CitpZ3RAa21zX2NoYW1lbGl1bUBoZG1pLWNyYy1hcmdiMTU1NQoraWd0QGtt
+c19jaGFtZWxpdW1AaGRtaS1jcmMtYXJnYjg4ODgKK2lndEBrbXNfY2hhbWVsaXVtQGhkbWktY3Jj
+LWJncjU2NQoraWd0QGttc19jaGFtZWxpdW1AaGRtaS1jcmMtYmdyODg4CitpZ3RAa21zX2NoYW1l
+bGl1bUBoZG1pLWNyYy1yZ2I1NjUKK2lndEBrbXNfY2hhbWVsaXVtQGhkbWktY3JjLXJnYjg4OAor
+aWd0QGttc19jaGFtZWxpdW1AaGRtaS1jcmMteGJncjg4ODgKK2lndEBrbXNfY2hhbWVsaXVtQGhk
+bWktY3JjLXhyZ2IxNTU1CitpZ3RAa21zX2NoYW1lbGl1bUBoZG1pLWNyYy14cmdiODg4OAoKPT0g
+TG9ncyA9PQoKRm9yIG1vcmUgZGV0YWlscyBzZWU6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
+Zy90cmVlL2RybS10aXAvSUdUUFdfMTkxNS9pc3N1ZXMuaHRtbApfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2lndC1kZXYK
