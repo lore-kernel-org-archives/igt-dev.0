@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 829D9898F0
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Oct 2018 13:41:36 +0000 (UTC)
-Date: Mon, 8 Oct 2018 16:41:13 +0300
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F14989E3B
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Oct 2018 14:04:44 +0000 (UTC)
 From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20181008134113.ft63iaflytqvwlqo@ahiler-desk1.fi.intel.com>
-References: <cover.aee5e066f8e9fa68d4d763fee64c7b2d195cb34b.1538656497.git-series.maxime.ripard@bootlin.com>
- <38d2bfd4debf9f560bb5e22b023e13a42b70e29b.1538656497.git-series.maxime.ripard@bootlin.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <38d2bfd4debf9f560bb5e22b023e13a42b70e29b.1538656497.git-series.maxime.ripard@bootlin.com>
-Subject: Re: [igt-dev] [PATCH v8 04/16] fb: Use an igt_fb for the cairo
- shadow buffer
+Date: Mon,  8 Oct 2018 17:04:19 +0300
+Message-Id: <20181008140433.32399-2-arkadiusz.hiler@intel.com>
+In-Reply-To: <20181008140433.32399-1-arkadiusz.hiler@intel.com>
+References: <20181008140433.32399-1-arkadiusz.hiler@intel.com>
+Subject: [igt-dev] [CI 02/16] fb: Only set the GEM domain on intel platforms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,25 +15,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Maxime Ripard <maxime.ripard@bootlin.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBPY3QgMDQsIDIwMTggYXQgMDI6Mzg6NTdQTSArMDIwMCwgTWF4aW1lIFJpcGFyZCB3
-cm90ZToKPiBJbiB0aGUgY2FzZSB3aGVyZSBhbiBpZ3RfZmIgdXNlciB3YW50cyB0byBnZXQgYSBj
-YWlybyBzdXJmYWNlIG91dCBvZiB0aGF0Cj4gZnJhbWVidWZmZXIsIGlmIHRoZSBmb3JtYXQgb2Yg
-dGhhdCBmcmFtZWJ1ZmZlciBjYW5ub3QgYmUgaW1wb3J0ZWQgYXMtaXMgaW4KPiBDYWlybywgdGhl
-IGN1cnJlbnQgY29kZSB3aWxsIGRvIGFuIGFub255bW91cyBtYXBwaW5nIHRvIGNyZWF0ZSBhIHNo
-YWRvdwo+IGJ1ZmZlciB3aGVyZSBhbiBSR0IyNCBjb3B5IG9mIHRoYXQgYnVmZmVyIHdpbGwgYmUg
-Y3JlYXRlZC4KPiAKPiBIb3dldmVyLCBtYWtpbmcgdGhhdCBzaGFkb3cgYnVmZmVyIGludG8gYW4g
-aWd0X2ZiIGl0c2VsZiB3aWxsIGhlbHAgdXMgZG8KPiBmdXJ0aGVyIGltcHJvdmVtZW50cyBvbiB0
-aGUgY29udmVyc2lvbiBjb2RlLgo+IAo+IFNpZ25lZC1vZmYtYnk6IE1heGltZSBSaXBhcmQgPG1h
-eGltZS5yaXBhcmRAYm9vdGxpbi5jb20+ClJldmlld2VkLWJ5OiBBcmthZGl1c3ogSGlsZXIgPGFy
-a2FkaXVzei5oaWxlckBpbnRlbC5jb20+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8v
-aWd0LWRldgo=
+RnJvbTogTWF4aW1lIFJpcGFyZCA8bWF4aW1lLnJpcGFyZEBib290bGluLmNvbT4KClRoZSBnZW1f
+c2V0X2RvbWFpbiBjYWxsIHVzZXMgYW4gaTkxNSBzcGVjaWZpYyBpb2N0bCB0aGF0IHdpbGwgZmFp
+bCBvbgphbnl0aGluZyBlbHNlLiBMZXQncyBtb3ZlIHRoYXQgY2FsbCB1bmRlciBhIGNoZWNrIGZv
+ciB3aGV0aGVyIG9yIG5vdCB3ZSdyZQpydW5uaW5nIG9uIGFuIGludGVsIHBsYXRmb3JtLgoKU2ln
+bmVkLW9mZi1ieTogTWF4aW1lIFJpcGFyZCA8bWF4aW1lLnJpcGFyZEBib290bGluLmNvbT4KUmV2
+aWV3ZWQtYnk6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6LmhpbGVyQGludGVsLmNvbT4KLS0t
+CiBsaWIvaWd0X2ZiLmMgfCA1ICsrKy0tCiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCsp
+LCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZmIuYyBiL2xpYi9pZ3RfZmIu
+YwppbmRleCBmMTMzMjE2OS4uYWFhOTBiZjcgMTAwNjQ0Ci0tLSBhL2xpYi9pZ3RfZmIuYworKysg
+Yi9saWIvaWd0X2ZiLmMKQEAgLTEzNTYsOCArMTM1Niw5IEBAIHN0YXRpYyB2b2lkICptYXBfYm8o
+aW50IGZkLCBzdHJ1Y3QgaWd0X2ZiICpmYikKIHsKIAl2b2lkICpwdHI7CiAKLQlnZW1fc2V0X2Rv
+bWFpbihmZCwgZmItPmdlbV9oYW5kbGUsCi0JCSAgICAgICBJOTE1X0dFTV9ET01BSU5fR1RULCBJ
+OTE1X0dFTV9ET01BSU5fR1RUKTsKKwlpZiAoaXNfaTkxNV9kZXZpY2UoZmQpKQorCQlnZW1fc2V0
+X2RvbWFpbihmZCwgZmItPmdlbV9oYW5kbGUsCisJCQkgICAgICAgSTkxNV9HRU1fRE9NQUlOX0dU
+VCwgSTkxNV9HRU1fRE9NQUlOX0dUVCk7CiAKIAlpZiAoZmItPmlzX2R1bWIpCiAJCXB0ciA9IGtt
+c3Rlc3RfZHVtYl9tYXBfYnVmZmVyKGZkLCBmYi0+Z2VtX2hhbmRsZSwgZmItPnNpemUsCi0tIAoy
+LjE3LjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
+dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
