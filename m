@@ -1,11 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A30689F08
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Oct 2018 12:02:15 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 919696E129
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Oct 2018 12:02:17 +0000 (UTC)
 From: Jyoti Yadav <jyoti.r.yadav@intel.com>
-Date: Wed, 10 Oct 2018 08:01:43 -0400
-Message-Id: <1539172908-20679-1-git-send-email-jyoti.r.yadav@intel.com>
-Subject: [igt-dev] [PATCH i-g-t v2 0/5] Added new test file pm_dc.c.
+Date: Wed, 10 Oct 2018 08:01:48 -0400
+Message-Id: <1539172908-20679-6-git-send-email-jyoti.r.yadav@intel.com>
+In-Reply-To: <1539172908-20679-1-git-send-email-jyoti.r.yadav@intel.com>
+References: <1539172908-20679-1-git-send-email-jyoti.r.yadav@intel.com>
+Subject: [igt-dev] [PATCH i-g-t v2 5/5] [intel-gfx] tests/pm_dc: Added test
+ for DC6 during DPMS.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,22 +25,17 @@ To: igt-dev@lists.freedesktop.org
 Cc: Jyoti Yadav <jyoti.r.yadav@intel.com>, anusha.srivatsa@intel.com, rodrigo.vivi@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhpcyBwYXRjaCBzZXJpZXMgYWRkcyBuZXcgdGVzdHMgdG8gdmFsaWRhdGUgRGlzcGxheSBDIHN0
-YXRlcy4KREMgc3RhdGVzIGxpa2UgREM1IGFuZCBEQzYgYXJlIHZhbGlkYXRlZCBkdXJpbmcgUFNS
-IGVudHJ5L2V4aXQKYW5kIGR1cmluZyBEUE1TIG9uL29mZiBjeWNsZS4KCgpKeW90aSBZYWRhdiAo
-NSk6CiAgW2ludGVsLS1nZnhdW2lndC1kZXZdIGxpYi9pZ3RfcG06IE1vdmVzIERtY19sb2FkZWQo
-KSBmdW5jdGlvbiBpbnRvCiAgICBsaWJyYXJ5LgogIFtpbnRlbC1nZnhdW2lndC1kZXZdIHRlc3Rz
-L3BtX2RjIDogQWRkZWQgbmV3IHRlc3QgdG8gdmVyaWZ5IERpc3BsYXkgQwogICAgU3RhdGVzLgog
-IFtpbnRlbC1nZnhdW2lndC1kZXZdIHRlc3RzL3BtX2RjOiBBZGRlZCB0ZXN0IGZvciBEQzYgZHVy
-aW5nIFBTUi4KICBbaW50ZWwtZ2Z4XVtpZ3QtZGV2XSB0ZXN0cy9wbV9kYzogQWRkZWQgdGVzdCBm
-b3IgREM1IGR1cmluZyBEUE1TLgogIFtpbnRlbC1nZnhdW2lndC1kZXZdIHRlc3RzL3BtX2RjOiBB
-ZGRlZCB0ZXN0IGZvciBEQzYgZHVyaW5nIERQTVMuCgogbGliL2lndF9wbS5jICAgICAgICAgICB8
-ICAyOCArKysrKysKIGxpYi9pZ3RfcG0uaCAgICAgICAgICAgfCAgIDEgKwogdGVzdHMvTWFrZWZp
-bGUuc291cmNlcyB8ICAgMSArCiB0ZXN0cy9tZXNvbi5idWlsZCAgICAgIHwgICAxICsKIHRlc3Rz
-L3BtX2RjLmMgICAgICAgICAgfCAyNTkgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKwogdGVzdHMvcG1fcnBtLmMgICAgICAgICB8ICAxNyArLS0tCiA2IGZp
-bGVzIGNoYW5nZWQsIDI5MSBpbnNlcnRpb25zKCspLCAxNiBkZWxldGlvbnMoLSkKIGNyZWF0ZSBt
-b2RlIDEwMDY0NCB0ZXN0cy9wbV9kYy5jCgotLSAKMS45LjEKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
-YW4vbGlzdGluZm8vaWd0LWRldgo=
+QWRkZWQgbmV3IHN1YnRlc3QgZm9yIERDNiBlbnRyeSBkdXJpbmcgRFBNUyBvbi9vZmYgY3ljbGUu
+CkR1cmluZyBEUE1TIG9uL29mZiBjeWNsZSBEQzYgY291bnRlciBpcyBpbmNyZW1lbnRlZC4KClNp
+Z25lZC1vZmYtYnk6IEp5b3RpIFlhZGF2IDxqeW90aS5yLnlhZGF2QGludGVsLmNvbT4KLS0tCiB0
+ZXN0cy9wbV9kYy5jIHwgNiArKysrKysKIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlvbnMoKykK
+CmRpZmYgLS1naXQgYS90ZXN0cy9wbV9kYy5jIGIvdGVzdHMvcG1fZGMuYwppbmRleCBkYWM2MDM1
+Li5jYjBhZWQ3IDEwMDY0NAotLS0gYS90ZXN0cy9wbV9kYy5jCisrKyBiL3Rlc3RzL3BtX2RjLmMK
+QEAgLTI0NCw2ICsyNDQsMTIgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIAkJ
+Y2xlYW51cCgmZGF0YSk7CiAJfQogCisJaWd0X3N1YnRlc3QoImRjNi1kcG1zIikgeworCQlkYXRh
+LmRjX2ZsYWdzIHw9IENIRUNLX0RDNjsKKwkJdGVzdF9kY19zdGF0ZV9kcG1zKCZkYXRhKTsKKwkJ
+Y2xlYW51cCgmZGF0YSk7CisJfQorCiAJaWd0X2ZpeHR1cmUgewogCQljbG9zZShkYXRhLmRlYnVn
+ZnNfZmQpOwogCQlkaXNwbGF5X2ZpbmkoJmRhdGEpOwotLSAKMS45LjEKCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
+dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
