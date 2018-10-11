@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
- [IPv6:2a00:1450:4864:20::541])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A49596E3EF
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Oct 2018 15:42:37 +0000 (UTC)
-Received: by mail-ed1-x541.google.com with SMTP id y20-v6so8692770eds.10
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Oct 2018 08:42:37 -0700 (PDT)
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Thu, 11 Oct 2018 17:42:30 +0200
-Message-Id: <20181011154230.13802-1-daniel.vetter@ffwll.ch>
+From: Deepak Singh Rawat <drawat@vmware.com>
+Date: Thu, 11 Oct 2018 15:48:35 +0000
+Message-ID: <BYAPR05MB418163442EE3A69FDDD8F366BAE10@BYAPR05MB4181.namprd05.prod.outlook.com>
+References: <20181011002104.1845-1-drawat@vmware.com>
+ <20181011002104.1845-3-drawat@vmware.com> <20181011150645.GK9144@intel.com>
+In-Reply-To: <20181011150645.GK9144@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] meson.sh: Add support for install/uninstall
+Subject: Re: [igt-dev] [PATCH i-g-t 3/6] lib/igt_fb: Check for cairo surface
+ success
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,22 +20,52 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: IGT development <igt-dev@lists.freedesktop.org>
-Cc: Daniel Vetter <daniel.vetter@intel.com>
+To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Cc: Thomas Hellstrom <thellstrom@vmware.com>, "petri.latvala@intel.com" <petri.latvala@intel.com>, Sinclair Yeh <syeh@vmware.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, linux-graphics-maintainer <linux-graphics-maintainer@vmware.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhpcyBzaG91bGQgd29yayBub3cuCgpBY2tlZC1ieTogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0
-dmFsYUBpbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IERhbmllbCBWZXR0ZXIgPGRhbmllbC52ZXR0
-ZXJAaW50ZWwuY29tPgotLS0KIG1lc29uLnNoIHwgNyArKysrKy0tCiAxIGZpbGUgY2hhbmdlZCwg
-NSBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL21lc29uLnNoIGIv
-bWVzb24uc2gKaW5kZXggZjBkYjJhMTljNDQwLi43Y2Y5ZDRhM2FjNzAgMTAwNzU1Ci0tLSBhL21l
-c29uLnNoCisrKyBiL21lc29uLnNoCkBAIC0yNCw4ICsyNCwxMSBAQCByZWNvbmZpZ3VyZTogYnVp
-bGQvYnVpbGQubmluamEKIGNoZWNrIGRpc3RjaGVjayBkaXN0IGRpc3RjbGVhbjoKIAllY2hvICJU
-aGlzIGlzIHRoZSBtZXNvbiB3cmFwcGVyLCBub3QgYXV0b21ha2UiICYmIGZhbHNlCiAKLWluc3Rh
-bGwgdW5pbnN0YWxsOgotCWVjaG8gIm1lc29uIGluc3RhbGwgc3VwcG9ydCBub3QgeWV0IGNvbXBs
-ZXRlZCIgJiYgZmFsc2UKK2luc3RhbGw6IGJ1aWxkL2J1aWxkLm5pbmphCisJbmluamEgLUMgYnVp
-bGQgaW5zdGFsbAorCit1bmluc3RhbGw6IGJ1aWxkL2J1aWxkLm5pbmphCisJbmluamEgLUMgYnVp
-bGQgdW5pbnN0YWxsCiAKIGRvY3M6CiAJbmluamEgLUMgYnVpbGQgaWd0LWdwdS10b29scy1kb2MK
-LS0gCjIuMTkuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
-cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+PiAKPiBPbiBXZWQsIE9jdCAxMCwgMjAxOCBhdCAwNToyMTowMVBNIC0wNzAwLCBEZWVwYWsgUmF3
+YXQgd3JvdGU6Cj4gPiBGb3Igdm13Z2Z4IGNhaXJvIHN1cmZhY2UgY3JlYXRpb24gZmFpbHMgZHVl
+IHRvIHN0cmlkZSBtaXNtYXRjaCwgYWRkIGEKPiA+IGlndF9yZXF1aXJlX2YoKSBmb3Igc3VyZmFj
+ZS4KPiAKPiBIbW0uIFdoYXQga2luZCBvZiBwaXhlbCBmb3JtYXQgYXJlIHlvdSB1c2luZz8KPiAK
+PiBJdCBzZWVtcyB0byBtZSBjYWlybyBzaG91bGQgYmUgaGFwcHkgd2l0aCBqdXN0IGEgNCBieXRl
+IGFsaWduZWQKPiBzdHJpZGUuIEhvdyBiYWQgd291bGQgaXQgYmUgdG8gY2hhbmdlIHZtd19kdW1i
+X2NyZWF0ZSgpIHRvIGdpdmUKPiB5b3UgdGhhdD8gSGF2aW5nIHdvcmtpbmcgY2Fpcm8gc3R1ZmYg
+c2hvdWxkIG1ha2UgaWd0X2ZiIG11Y2ggbW9yZQo+IHVzZWZ1bCBmb3IgeW91IGluIGdlbmVyYWwu
+CgpJIHRoaW5rIHBpeGVsIGZvcm1hdCB3YXMgU1ZHQTNEX1I1RzZCNS4gRm9yIHZtd2dmeCBwaXRj
+aCBpcyBzaW1wbHkKd2lkdGggKiBicHAgYW5kIGZvciBvbmx5IHNvbWUgb2xkIGxlbmd0aCBmcmFt
+ZWJ1ZmZlciwgc3VyZmFjZSBjcmVhdGlvbgp3YXMgZmFpbGluZy4gSSBkaWRuJ3QgcHVyc3VlZCB0
+aGlzIGluIG11Y2ggZGV0YWlsLgoKWWVzIEkgcGxhbiB0byBhZGQgdm13Z2Z4IHByaXZhdGUgaW9j
+dGwgZm9yIGJ1ZmZlciBhbGxvY2F0aW9uIHRvIGlndCBhbmQKSSB0aGluayB0aGF0IHdvdWxkIHNv
+bHZlIHRoaXMuCgo+IAo+IEFsdGVybmF0aXZlIHdvdWxkIHRvIG5vdCB1c2UgZHVtYiBidWZmZXJz
+IEkgc3VwcG9zZSwgYnV0IHRoZW4KPiB3ZSdkIG5lZWQgdG8gbWFrZSBzdXJlIHRoZSBpZ3RfZmIg
+c2l6ZSBjYWxjdWxhdGlvbnMgYXJlIE9LIGZvcgo+IHZtd2dmeC4gQ3VycmVudGx5IGlndF9mYiBh
+c3N1bWVzIEludGVsIGh3IGluIHRoZSBzZW5zZSB0aGF0Cj4gbGluZWFyIGJ1ZmZlcnMgd2lsbCBn
+ZXQgYSA2NGJ5dGUgYWxpZ25lZCBzdHJpZGUuCj4gCj4gPgo+ID4gdjI6IENoZWNrIGZvciBzdXJm
+YWNlIGNyZWF0aW9uIGZhaWx1cmUuCj4gPgo+ID4gU2lnbmVkLW9mZi1ieTogRGVlcGFrIFJhd2F0
+IDxkcmF3YXRAdm13YXJlLmNvbT4KPiA+IC0tLQo+ID4gIGxpYi9pZ3RfZmIuYyB8IDQgKysrKwo+
+ID4gIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKykKPiA+Cj4gPiBkaWZmIC0tZ2l0IGEv
+bGliL2lndF9mYi5jIGIvbGliL2lndF9mYi5jCj4gPiBpbmRleCAzMzVlY2U2OS4uMWJiNmQzMjQg
+MTAwNjQ0Cj4gPiAtLS0gYS9saWIvaWd0X2ZiLmMKPiA+ICsrKyBiL2xpYi9pZ3RfZmIuYwo+ID4g
+QEAgLTE0MzMsNiArMTQzMywxMCBAQCBzdGF0aWMgdm9pZCBjcmVhdGVfY2Fpcm9fc3VyZmFjZV9f
+Z3R0KGludCBmZCwKPiBzdHJ1Y3QgaWd0X2ZiICpmYikKPiA+ICAJCWNhaXJvX2ltYWdlX3N1cmZh
+Y2VfY3JlYXRlX2Zvcl9kYXRhKHB0ciwKPiA+ICAJCQkJCQkgICAgZHJtX2Zvcm1hdF90b19jYWly
+byhmYi0KPiA+ZHJtX2Zvcm1hdCksCj4gPiAgCQkJCQkJICAgIGZiLT53aWR0aCwgZmItPmhlaWdo
+dCwgZmItCj4gPnN0cmlkZXNbMF0pOwo+ID4gKwlpZ3RfcmVxdWlyZV9mKGNhaXJvX3N1cmZhY2Vf
+c3RhdHVzKGZiLT5jYWlyb19zdXJmYWNlKSA9PQo+IENBSVJPX1NUQVRVU19TVUNDRVNTLAo+ID4g
+KwkJICAgICAgIlVuYWJsZSB0byBjcmVhdGUgYSBjYWlybyBzdXJmYWNlOiAlc1xuIiwKPiA+ICsJ
+CSAgICAgIGNhaXJvX3N0YXR1c190b19zdHJpbmcoY2Fpcm9fc3VyZmFjZV9zdGF0dXMoZmItCj4g
+PmNhaXJvX3N1cmZhY2UpKSk7Cj4gPiArCj4gPiAgCWZiLT5kb21haW4gPSBJOTE1X0dFTV9ET01B
+SU5fR1RUOwo+ID4KPiA+ICAJY2Fpcm9fc3VyZmFjZV9zZXRfdXNlcl9kYXRhKGZiLT5jYWlyb19z
+dXJmYWNlLAo+ID4gLS0KPiA+IDIuMTcuMQo+ID4KPiA+IF9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCj4gPiBpZ3QtZGV2IG1haWxpbmcgbGlzdAo+ID4gaWd0
+LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKPiA+Cj4gaHR0cHM6Ly9uYTAxLnNhZmVsaW5rcy5w
+cm90ZWN0aW9uLm91dGxvb2suY29tLz91cmw9aHR0cHMlM0ElMkYlMkZsaXN0cy5mcgo+IGVlZGVz
+a3RvcC5vcmclMkZtYWlsbWFuJTJGbGlzdGluZm8lMkZpZ3QtCj4gZGV2JmFtcDtkYXRhPTAyJTdD
+MDElN0NkcmF3YXQlNDB2bXdhcmUuY29tJTdDNTU2NDNjN2VkZGIxNGU2MAo+IGFhM2MwOGQ2MmY4
+YjUwMGMlN0NiMzkxMzhjYTNjZWU0YjRhYTRkNmNkODNkOWRkNjJmMCU3QzElN0MwJTdDNjMKPiA2
+NzQ4NjcyNzI5NDQwMDg5JmFtcDtzZGF0YT1wRTdOWDFMb096NXFoQlpocCUyRjJ3QXJXSHZLZFNG
+MGN0eAo+IFRYeU5XNSUyRmNpZyUzRCZhbXA7cmVzZXJ2ZWQ9MAo+IAo+IC0tCj4gVmlsbGUgU3ly
+asOkbMOkCj4gSW50ZWwKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
+aHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
