@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Deepak Singh Rawat <drawat@vmware.com>
-Date: Thu, 11 Oct 2018 15:38:11 +0000
-Message-ID: <BYAPR05MB418182BBA7EF8892A5CB6D67BAE10@BYAPR05MB4181.namprd05.prod.outlook.com>
-References: <20181011002104.1845-1-drawat@vmware.com>
- <20181011002104.1845-4-drawat@vmware.com> <20181011145104.GJ9144@intel.com>
-In-Reply-To: <20181011145104.GJ9144@intel.com>
-Content-Language: en-US
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
+ [IPv6:2a00:1450:4864:20::541])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A49596E3EF
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Oct 2018 15:42:37 +0000 (UTC)
+Received: by mail-ed1-x541.google.com with SMTP id y20-v6so8692770eds.10
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Oct 2018 08:42:37 -0700 (PDT)
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
+Date: Thu, 11 Oct 2018 17:42:30 +0200
+Message-Id: <20181011154230.13802-1-daniel.vetter@ffwll.ch>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 4/6] lib: Don't call
- igt_require_fb_modifiers() when no modifier
+Subject: [igt-dev] [PATCH i-g-t] meson.sh: Add support for install/uninstall
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,37 +21,22 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Cc: Thomas Hellstrom <thellstrom@vmware.com>, "petri.latvala@intel.com" <petri.latvala@intel.com>, Sinclair Yeh <syeh@vmware.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, linux-graphics-maintainer <linux-graphics-maintainer@vmware.com>
+To: IGT development <igt-dev@lists.freedesktop.org>
+Cc: Daniel Vetter <daniel.vetter@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Cj4gT24gV2VkLCBPY3QgMTAsIDIwMTggYXQgMDU6MjE6MDJQTSAtMDcwMCwgRGVlcGFrIFJhd2F0
-IHdyb3RlOgo+ID4gdm13Z2Z4IGRvZXNuJ3Qgc3VwcG9ydCBmYiBtb2RpZmllciBzbyBza2lwIGln
-dF9yZXF1aXJlX2ZiX21vZGlmaWVycygpCj4gPiB3aGVuIG1vZGlmaWVyIGFyZSBub3QgcGFzc2Vk
-Lgo+ID4KPiA+IFNpZ25lZC1vZmYtYnk6IERlZXBhayBSYXdhdCA8ZHJhd2F0QHZtd2FyZS5jb20+
-Cj4gPiAtLS0KPiA+ICBsaWIvaW9jdGxfd3JhcHBlcnMuYyB8IDUgKysrKy0KPiA+ICAxIGZpbGUg
-Y2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCj4gPgo+ID4gZGlmZiAtLWdp
-dCBhL2xpYi9pb2N0bF93cmFwcGVycy5jIGIvbGliL2lvY3RsX3dyYXBwZXJzLmMKPiA+IGluZGV4
-IDA5MjljNDNmLi4zYTExY2I2ZSAxMDA2NDQKPiA+IC0tLSBhL2xpYi9pb2N0bF93cmFwcGVycy5j
-Cj4gPiArKysgYi9saWIvaW9jdGxfd3JhcHBlcnMuYwo+ID4gQEAgLTE2NzgsNyArMTY3OCwxMCBA
-QCBpbnQgX19rbXNfYWRkZmIoaW50IGZkLCB1aW50MzJfdCBoYW5kbGUsCj4gPiAgCXN0cnVjdCBk
-cm1fbW9kZV9mYl9jbWQyIGY7Cj4gPiAgCWludCByZXQsIGk7Cj4gPgo+ID4gLQlpZ3RfcmVxdWly
-ZV9mYl9tb2RpZmllcnMoZmQpOwo+ID4gKwlpZiAobW9kaWZpZXIpCj4gPiArCQlpZ3RfcmVxdWly
-ZV9mYl9tb2RpZmllcnMoZmQpOwo+ID4gKwllbHNlCj4gPiArCQlmbGFncyAmPSB+RFJNX01PREVf
-RkJfTU9ESUZJRVJTOwo+IAo+IFRoaXMgd291bGQgdGhlb3JldGljYWxseSBjaGFuZ2UgdGhlIGJl
-aHZpb3VyIGZvciBpOTE1IGF0IGxlYXN0LiBXaXRob3V0Cj4gdGhlIG1vZGlmaWVycyBmbGFnIHRo
-ZSBrZXJuZWwgd2lsbCBwaWNrIHRoZSBtb2RpZmllciBmb3IgdXMgYmFzZWQgb24KPiB0aGUgYm8g
-dGlsaW5nLCB3aGljaCBpbiB0aGVvcnkgbWlnaHQgbm90IGJlIHdoYXQgd2Ugd2FudGVkLiBCdXQg
-YXQgbGVhc3QKPiBpZ3RfZmIgc2hvdWxkIGJlIGZpbmUgd2l0aCB0aGF0Lgo+IAo+IE1heWJlIGl0
-IHdvdWxkIGJlIGJldHRlciB0byBqdXN0IG5vdCBwYXNzIHRoZSBmbGFncyBmcm9tIHRoZSBjYWxs
-ZXIgYXQKPiBhbGwsIGFuZCBpbnN0ZWFkIGhhdmUgX19rbXNfYWRkZmIoKSBjaGVjayBpZiB0aGUg
-ZHJpdmVyIGhhcyBtb2RpZmllcnMKPiBvciBub3QgYW5kIHNldCB0aGUgZmxhZyBiYXNlZCBvbiB0
-aGF0Pwo+IAoKVGhhbmtzIFZpbGxlIGZvciB0aGUgcmV2aWV3LiBJIHRob3VnaHQgb2YgY2hlY2tp
-bmcgZm9yIG1vZGlmaWVycyBzdXBwb3J0CmluIF9fa21zX2FkZGZiKCkgYnV0IEkgZGlzY2FyZGVk
-IHRoZSBpZGVhIGFzIGl0IGxvb2tlZCBhbiBvdmVya2lsbCB0byBtZSwKY2hlY2tpbmcgZWFjaCB0
-aW1lIF9fa21zX2FkZGZiKCkgaXMgY2FsbGVkLiBNYXkgYmUgc3RhdGljIHZhcmlhYmxlIHdpbGwK
-YmUgYSBnb29kIGlkZWE/IEFuZCB5ZXMgcmVzZXR0aW5nIHRoZSBmbGFnIGZyb20gY2FsbGVyIGxv
-b2tzIGEgYmV0dGVyIHdheS4KClRoYW5rcywKRGVlcGFrCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4v
-bGlzdGluZm8vaWd0LWRldgo=
+VGhpcyBzaG91bGQgd29yayBub3cuCgpBY2tlZC1ieTogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0
+dmFsYUBpbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IERhbmllbCBWZXR0ZXIgPGRhbmllbC52ZXR0
+ZXJAaW50ZWwuY29tPgotLS0KIG1lc29uLnNoIHwgNyArKysrKy0tCiAxIGZpbGUgY2hhbmdlZCwg
+NSBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL21lc29uLnNoIGIv
+bWVzb24uc2gKaW5kZXggZjBkYjJhMTljNDQwLi43Y2Y5ZDRhM2FjNzAgMTAwNzU1Ci0tLSBhL21l
+c29uLnNoCisrKyBiL21lc29uLnNoCkBAIC0yNCw4ICsyNCwxMSBAQCByZWNvbmZpZ3VyZTogYnVp
+bGQvYnVpbGQubmluamEKIGNoZWNrIGRpc3RjaGVjayBkaXN0IGRpc3RjbGVhbjoKIAllY2hvICJU
+aGlzIGlzIHRoZSBtZXNvbiB3cmFwcGVyLCBub3QgYXV0b21ha2UiICYmIGZhbHNlCiAKLWluc3Rh
+bGwgdW5pbnN0YWxsOgotCWVjaG8gIm1lc29uIGluc3RhbGwgc3VwcG9ydCBub3QgeWV0IGNvbXBs
+ZXRlZCIgJiYgZmFsc2UKK2luc3RhbGw6IGJ1aWxkL2J1aWxkLm5pbmphCisJbmluamEgLUMgYnVp
+bGQgaW5zdGFsbAorCit1bmluc3RhbGw6IGJ1aWxkL2J1aWxkLm5pbmphCisJbmluamEgLUMgYnVp
+bGQgdW5pbnN0YWxsCiAKIGRvY3M6CiAJbmluamEgLUMgYnVpbGQgaWd0LWdwdS10b29scy1kb2MK
+LS0gCjIuMTkuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
+cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
