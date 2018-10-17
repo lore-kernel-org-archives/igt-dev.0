@@ -1,19 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AA6D6E32C
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Oct 2018 07:48:27 +0000 (UTC)
-Date: Wed, 17 Oct 2018 10:48:24 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20181017074824.GO17124@platvala-desk.ger.corp.intel.com>
-References: <20181005233437.31286-1-manasi.d.navare@intel.com>
- <a97c7473-ecb6-ffb7-cddc-a5004f980e8c@intel.com>
- <20181016184704.GA8224@intel.com>
- <3b41c1f5-f149-43a9-d177-d9a751b226e0@intel.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <3b41c1f5-f149-43a9-d177-d9a751b226e0@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] test/kms_dp_dsc: Basic KMS test to
- validate VESA DSC on DP/eDP
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 166556E02B
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Oct 2018 09:13:28 +0000 (UTC)
+From: Jyoti Yadav <jyoti.r.yadav@intel.com>
+Date: Wed, 17 Oct 2018 05:13:20 -0400
+Message-Id: <1539767601-16519-1-git-send-email-jyoti.r.yadav@intel.com>
+Subject: [igt-dev] [PATCH i-g-t 1/2] [CI] tests/pm_backlight.c: Fix
+ brightness failure with system suspend
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,29 +14,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Antonio Argenziano <antonio.argenziano@intel.com>, Manasi Navare <manasi.d.navare@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Anusha Srivatsa <anusha.srivatsa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jyoti Yadav <jyoti.r.yadav@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBPY3QgMTYsIDIwMTggYXQgMDI6MTQ6NTlQTSAtMDcwMCwgQW50b25pbyBBcmdlbnpp
-YW5vIHdyb3RlOgo+ID4gPiA+ICsJCWlndF9hc3NlcnRfZXEocmV0LCAwKTsKPiA+ID4gPiArCX0K
-PiA+ID4gPiArCj4gPiA+ID4gKwljbG9zZShkcm1fZmQpOwo+ID4gPiA+ICsKPiA+ID4gPiArCWln
-dF9hc3NlcnRfZXEocmV0LCAwKTsKPiA+ID4gCj4gPiA+ICdyZXQnIGlzIGFscmVhZHkgY2hlY2tl
-ZCBpbiB0aGUgc3VidGVzdCBhbHNvLCB0aGlzIHdvdWxkIGZhaWwgaWYgeW91IGRvbid0Cj4gPiA+
-IHJ1biB0aGUgc3VidGVzdC4KPiA+IAo+ID4gSWYgSSBkb250IHJ1biB0aGUgc3VidGVzdCwgaXQg
-d2lsbCB1c2UgdGhlIGluaXRpYWxpemVkIHZhbHVlIG9mIHJldCB3aGljaCBpcyAwLgo+ID4gSXQg
-d2lsbCBvbmx5IGZhaWwgaWYgdXBkYXRlX2Rpc3BsYXkgcmV0dXJucyBhIG5lZ2F0aXZlIHZhbHVl
-Lgo+IAo+IFNvcnJ5LCB5b3UgYXJlIHJpZ2h0IEkgbWlzcmVhZCB0aGF0LiBCdXQsIGl0IHdpbGwg
-bm90IGJlIHRoaXMgYXNzZXJ0IHRvIGZpcmUKPiBpZiByZXQgIT0gMCBidXQgdGhlIG9uZSBpbiB0
-aGUgc3VidGVzdC4gTXkgcG9pbnQgd2FzIHRoYXQgdGhpcyBzdGF0ZW1lbnQKPiBzZWVtcyBhIGJp
-dCByZWR1bmRhbnQgYW5kIGNvdWxkIGJlIGVsaW1pbmF0ZWQuCgpJdCdzIG5vdCBvbmx5IHJlZHVu
-ZGFudCwgaXQncyBpbnZhbGlkIHRvIGNhbGwgaWd0X2Fzc2VydCB3aGVuIG5vdAppbnNpZGUgYW4g
-aWd0X2ZpeHR1cmUgb3IgYSBzdWJ0ZXN0LiBTZWUgbGliL2lndF9jb3JlLmM6MTE4MCwKaWd0X2Nh
-bl9mYWlsKCkuCgoKCi0tIApQZXRyaSBMYXR2YWxhCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlz
-dGluZm8vaWd0LWRldgo=
+VGhpcyBwYXRjaCB0cmllcyB0byBmaXggdGhlIGZhbGl1cmUgb2NjdXJpbmcgZHVyaW5nIHN1YnRl
+c3QKImZhZGVfd2l0aF9zdXNwZW5kIi4gRmFpbHVyZSBpcyBvY2N1cmluZyBiZWNhdXNlLCBicmln
+aHRuZXNzCnZhbHVlIGlzIGJlaW5nIGNoZWNrZWQgYmVmb3JlIGRyaXZlciBpbml0aWFsaXplcyBm
+dWxseSBhZnRlciByZXN1bWUuCgpCdWd6aWxsYTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9y
+Zy9zaG93X2J1Zy5jZ2k/aWQ9MTA3ODQ3ClNpZ25lZC1vZmYtYnk6IEp5b3RpIFlhZGF2IDxqeW90
+aS5yLnlhZGF2QGludGVsLmNvbT4KLS0tCiB0ZXN0cy9wbV9iYWNrbGlnaHQuYyB8IDEgKwogMSBm
+aWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspCgpkaWZmIC0tZ2l0IGEvdGVzdHMvcG1fYmFja2xp
+Z2h0LmMgYi90ZXN0cy9wbV9iYWNrbGlnaHQuYwppbmRleCAzMjgwOGNkLi5lYzA0N2IzIDEwMDY0
+NAotLS0gYS90ZXN0cy9wbV9iYWNrbGlnaHQuYworKysgYi90ZXN0cy9wbV9iYWNrbGlnaHQuYwpA
+QCAtMTgzLDYgKzE4Myw3IEBAIHRlc3RfZmFkZV93aXRoX3N1c3BlbmQoc3RydWN0IGNvbnRleHQg
+KmNvbnRleHQsIGlndF9vdXRwdXRfdCAqb3V0cHV0KQogCWlndF9yZXF1aXJlKGlndF93YWl0X2Zv
+cl9wbV9zdGF0dXMoSUdUX1JVTlRJTUVfUE1fU1RBVFVTX1NVU1BFTkRFRCkpOwogCiAJaWd0X3N5
+c3RlbV9zdXNwZW5kX2F1dG9yZXN1bWUoU1VTUEVORF9TVEFURV9NRU0sIFNVU1BFTkRfVEVTVF9O
+T05FKTsKKwlpZ3RfcmVxdWlyZShpZ3Rfd2FpdF9mb3JfcG1fc3RhdHVzKElHVF9SVU5USU1FX1BN
+X1NUQVRVU19BQ1RJVkUpKTsKIAogCXRlc3RfZmFkZShjb250ZXh0KTsKIH0KLS0gCjEuOS4xCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1h
+aWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZy
+ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
