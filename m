@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ABD7F89A8C
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Oct 2018 17:48:39 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Mon, 22 Oct 2018 17:48:38 +0000
-Message-ID: <2cafd7c930ee8754cf3e7d41ef3b1be5ab68f507.camel@intel.com>
-References: <20181022090544.25911-1-petri.latvala@intel.com>
- <20181022091710.GA324@phenom.ffwll.local>
-In-Reply-To: <20181022091710.GA324@phenom.ffwll.local>
-Content-Language: en-US
-Content-ID: <CB9450BBEE83BE40A6719505FB00CB14@intel.com>
+Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com
+ [IPv6:2607:f8b0:4864:20::a44])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C62F88130
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Oct 2018 18:34:07 +0000 (UTC)
+Received: by mail-vk1-xa44.google.com with SMTP id b207so6667510vke.2
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Oct 2018 11:34:07 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] CONTRIBUTING: Point towards gitlab
+References: <20181015162041.29140-1-lionel.g.landwerlin@intel.com>
+ <20181015162041.29140-5-lionel.g.landwerlin@intel.com>
+In-Reply-To: <20181015162041.29140-5-lionel.g.landwerlin@intel.com>
+From: Matthew Auld <matthew.william.auld@gmail.com>
+Date: Mon, 22 Oct 2018 19:33:39 +0100
+Message-ID: <CAM0jSHNB+9vTTWD5=-shLgaDkVDEf9Ht+KUdP97Hd1_UAx10CQ@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 4/4] tests/perf: add new tests for
+ configurable OA buffer size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,43 +25,20 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "daniel@ffwll.ch" <daniel@ffwll.ch>, "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCAyMDE4LTEwLTIyIGF0IDExOjE3ICswMjAwLCBEYW5pZWwgVmV0dGVyIHdyb3RlOg0K
-PiBPbiBNb24sIE9jdCAyMiwgMjAxOCBhdCAxMjowNTo0NFBNICswMzAwLCBQZXRyaSBMYXR2YWxh
-IHdyb3RlOg0KPiA+IFNpZ25lZC1vZmYtYnk6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFA
-aW50ZWwuY29tPg0KPiA+IENjOiBBcmthZGl1c3ogSGlsZXIgPGFya2FkaXVzei5oaWxlckBpbnRl
-bC5jb20+DQo+ID4gQ2M6IERhbmllbCBWZXR0ZXIgPGRhbmllbC52ZXR0ZXJAZmZ3bGwuY2g+DQo+
-ID4gLS0tDQo+ID4gIENPTlRSSUJVVElORyB8IDkgKysrKy0tLS0tDQo+ID4gIDEgZmlsZSBjaGFu
-Z2VkLCA0IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pDQo+ID4gDQo+ID4gZGlmZiAtLWdp
-dCBhL0NPTlRSSUJVVElORyBiL0NPTlRSSUJVVElORw0KPiA+IGluZGV4IDZkMjkzZmQ4Li4xYTY4
-ZmNmNSAxMDA2NDQNCj4gPiAtLS0gYS9DT05UUklCVVRJTkcNCj4gPiArKysgYi9DT05UUklCVVRJ
-TkcNCj4gPiBAQCAtNzMsMTEgKzczLDEwIEBAIGJlbG93IGNyaXRlcmlhOg0KPiA+ICAtIEFncmVl
-cyB0byB1c2UgdGhlaXIgY29tbWl0IHJpZ2h0cyBpbiBhY2NvcmRhbmNlIHdpdGggdGhlDQo+ID4g
-ZG9jdW1lbnRlZCBtZXJnZQ0KPiA+ICAgIGNyaXRlcmlhLCB0b29scywgYW5kIHByb2Nlc3Nlcy4N
-Cj4gPiAgDQo+ID4gLUFwcGx5IGZvciBhbiBhY2NvdW50IChhbmQgYW55IG90aGVyIGFjY291bnQg
-Y2hhbmdlIHJlcXVlc3RzKQ0KPiA+IHRocm91Z2gNCj4gPiAtDQo+ID4gLWh0dHBzOi8vd3d3LmZy
-ZWVkZXNrdG9wLm9yZy93aWtpL0FjY291bnRSZXF1ZXN0cy8NCj4gPiAtDQo+ID4gLWFuZCBwbGVh
-c2UgcGluZyB0aGUgbWFpbnRhaW5lcnMgaWYgeW91ciByZXF1ZXN0IGlzIHN0dWNrLg0KPiA+ICtD
-cmVhdGUgYSBnaXRsYWIgYWNjb3VudCBhdCBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcv
-IGFuZA0KPiA+IGFwcGx5DQo+ID4gK2ZvciBhY2Nlc3MgdG8gdGhlIElHVCBnaXRsYWIgcHJvamVj
-dCwNCj4gPiAraHR0cDovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2lndC1ncHUtdG9vbHMg
-YW5kIHBsZWFzZSBwaW5nDQo+ID4gdGhlDQo+ID4gK21haW50YWluZXJzIGlmIHlvdXIgcmVxdWVz
-dCBpcyBzdHVjay4NCj4gDQo+IE1lc2EgZGlzY3Vzc2VkIHRoaXMgYW5kIGRlY2lkZWQgdG8gc3Rp
-bGwgdXNlIGJ1Z3ppbGxhLCBzbyB5b3UgY291bGQNCj4gc3VwcGx5DQo+IGEgcmVhc29uIHdpdGgg
-eW91ciBhY2NvdW50IHJlcXVlc3QgKHRoZXkgZGlzYWJsZWQgdGhlIGdpdGxhYiBhY2NvdW50DQo+
-IHJlcXVlc3Qgc3R1ZmYpLiBCdXQgd2UgaGF2ZSBzdWZmaWNpZW50bHkgdW4tYW1iaWdpb3VzIGNv
-bW1pdHRlciBydWxlcw0KPiB0aGF0DQo+IGltbyB0aGF0J3Mgbm90IG5lY2Vzc2FyeS4NCj4gDQo+
-IFJldmlld2VkLWJ5OiBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0dGVyQGZmd2xsLmNoPg0KDQoN
-Ckxvb2tzIGxpa2UgaXQgaXMgZGlzYWJsZWQgYnkgZGVmYXVsdCwgSSBjYW4ndCBmaW5kIGFueSBi
-dXR0b24gb3IgbGluaw0KdG8gcmVxdWVzdCBhY2Nlc3MgaW4gaHR0cHM6Ly9naXRsYWIuZnJlZWRl
-c2t0b3Aub3JnL2RybS9pZ3QtZ3B1LXRvb2xzICANCg0KPiA+ICANCj4gPiAgQ29tbWl0dGVycyBh
-cmUgZW5jb3VyYWdlZCB0byByZXF1ZXN0IHRoZWlyIGNvbW1pdCByaWdodHMgZ2V0DQo+ID4gcmVt
-b3ZlZCB3aGVuIHRoZXkNCj4gPiAgbm8gbG9uZ2VyIGNvbnRyaWJ1dGUgdG8gdGhlIHByb2plY3Qu
-IENvbW1pdCByaWdodHMgd2lsbCBiZQ0KPiA+IHJlaW5zdGF0ZWQgd2hlbiB0aGV5DQo+ID4gLS0g
-DQo+ID4gMi4xOC4wDQo+ID4gDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
-Lm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
-ZXYK
+T24gTW9uLCAxNSBPY3QgMjAxOCBhdCAxNzoyMCwgTGlvbmVsIExhbmR3ZXJsaW4KPGxpb25lbC5n
+LmxhbmR3ZXJsaW5AaW50ZWwuY29tPiB3cm90ZToKPgo+IFZlcmlmeSB0aGF0IHRoZSBidWZmZXIg
+ZmlsbHMgdXAgd2l0aGluIHRoZSBleHBlY3RlZCB0aW1lIGJhc2VkIG9mIGEKPiBnaXZlbiBzaXpl
+IGFuZCBhbHNvIHRoYXQgaW52YWxpZCBzaXplcyBhcmUgcmVqZWN0ZWQuCj4KPiB2MjogVXBkYXRl
+IHRlc3RzIHRvIHJlZmxlY3QgdGhhdCB3ZSBoYXZlIHRvIG1hdGNoIHRoZSBleGFjdCBIVyBidWZm
+ZXIKPiAgICAgc2l6ZSAoTGlvbmVsKQo+ICAgICBCdW1wIHRoZSBtaW5pbXVtIGJ1ZmZlciBmaWxs
+IGR1cmF0aW9uIHJlcXVpcmVtZW50IHRvIDQwbXMKPiAgICAgKHVucmVsaWFibGUgb3RoZXJ3aXNl
+IG9uIHNtYWxsIGNvcmVzICYgSUNMKSAoTGlvbmVsKQo+Cj4gU2lnbmVkLW9mZi1ieTogTGlvbmVs
+IExhbmR3ZXJsaW4gPGxpb25lbC5nLmxhbmR3ZXJsaW5AaW50ZWwuY29tPgpSZXZpZXdlZC1ieTog
+TWF0dGhldyBBdWxkIDxtYXR0aGV3LmF1bGRAaW50ZWwuY29tPgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2lndC1kZXYK
