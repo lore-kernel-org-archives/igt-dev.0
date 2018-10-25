@@ -1,150 +1,112 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: Eric Anholt <eric@anholt.net>
+In-Reply-To: <20181025125149.GG154160@art_vandelay>
+References: <20181019085049.25482-1-daniel.vetter@ffwll.ch>
+ <20181025125149.GG154160@art_vandelay>
+Date: Thu, 25 Oct 2018 09:35:50 -0700
+Message-ID: <87efcernkp.fsf@anholt.net>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 25 Oct 2018 15:55:14 -0000
-Message-ID: <20181025155514.11312.57741@emeril.freedesktop.org>
-References: <20181025113620.768-1-daniel.vetter@ffwll.ch>
-In-Reply-To: <20181025113620.768-1-daniel.vetter@ffwll.ch>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fcontent=5Fprotection=3A_Avoid_dmesg_fallout?=
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [Intel-gfx] [igt-dev] [PATCH] RFC: Make igts for cross-driver
+ stuff mandatory?
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============0920542304=="
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: Sean Paul <sean@poorly.run>, Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: IGT development <igt-dev@lists.freedesktop.org>, Intel Graphics Development <intel-gfx@lists.freedesktop.org>, DRI Development <dri-devel@lists.freedesktop.org>, amd-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHMva21zX2NvbnRlbnRfcHJvdGVjdGlv
-bjogQXZvaWQgZG1lc2cgZmFsbG91dApVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNr
-dG9wLm9yZy9zZXJpZXMvNTE1MTUvClN0YXRlIDogc3VjY2VzcwoKPT0gU3VtbWFyeSA9PQoKPSBD
-SSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIElHVF80NjkxX2Z1bGwgLT4gSUdUUFdfMTk5MV9mdWxs
-ID0KCj09IFN1bW1hcnkgLSBTVUNDRVNTID09CgogIE5vIHJlZ3Jlc3Npb25zIGZvdW5kLgoKICBF
-eHRlcm5hbCBVUkw6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9hcGkvMS4wL3Nl
-cmllcy81MTUxNS9yZXZpc2lvbnMvMS9tYm94LwoKPT0gS25vd24gaXNzdWVzID09CgogIEhlcmUg
-YXJlIHRoZSBjaGFuZ2VzIGZvdW5kIGluIElHVFBXXzE5OTFfZnVsbCB0aGF0IGNvbWUgZnJvbSBr
-bm93biBpc3N1ZXM6CgogID09PSBJR1QgY2hhbmdlcyA9PT0KCiAgICA9PT09IElzc3VlcyBoaXQg
-PT09PQoKICAgIGlndEBkcnZfc3VzcGVuZEBzaHJpbms6CiAgICAgIHNoYXJkLWdsazogICAgICAg
-ICAgUEFTUyAtPiBJTkNPTVBMRVRFIChmZG8jMTAzMzU5LCBmZG8jMTA2ODg2LCBrLm9yZyMxOTgx
-MzMpCgogICAgaWd0QGRydl9zdXNwZW5kQHN5c2ZzLXJlYWRlcjoKICAgICAgc2hhcmQta2JsOiAg
-ICAgICAgICBQQVNTIC0+IERNRVNHLVdBUk4gKGZkbyMxMDg1NDkpCgogICAgaWd0QGdlbV9leGVj
-X2NyZWF0ZUBmb3JrZWQ6CiAgICAgIHNoYXJkLWFwbDogICAgICAgICAgUEFTUyAtPiBJTkNPTVBM
-RVRFIChmZG8jMTAzOTI3KQoKICAgIGlndEBrbXNfYXZhaWxhYmxlX21vZGVzX2NyY0BhdmFpbGFi
-bGVfbW9kZV90ZXN0X2NyYzoKICAgICAgc2hhcmQtYXBsOiAgICAgICAgICBQQVNTIC0+IEZBSUwg
-KGZkbyMxMDY2NDEpCgogICAgaWd0QGttc19idXN5QGJhc2ljLW1vZGVzZXQtYjoKICAgICAgc2hh
-cmQta2JsOiAgICAgICAgICBQQVNTIC0+IERNRVNHLVdBUk4gKGZkbyMxMDg1NTApICsxNQoKICAg
-IGlndEBrbXNfYnVzeUBleHRlbmRlZC1wYWdlZmxpcC1tb2Rlc2V0LWhhbmctb2xkZmItcmVuZGVy
-LWE6CiAgICAgIHNoYXJkLXNuYjogICAgICAgICAgTk9UUlVOIC0+IERNRVNHLVdBUk4gKGZkbyMx
-MDc5NTYpCgogICAgaWd0QGttc19jY3NAcGlwZS1hLWNyYy1zcHJpdGUtcGxhbmVzLWJhc2ljOgog
-ICAgICBzaGFyZC1nbGs6ICAgICAgICAgIFBBU1MgLT4gRkFJTCAoZmRvIzEwODE0NSkgKzEKCiAg
-ICBpZ3RAa21zX2NvbG9yQHBpcGUtYi1sZWdhY3ktZ2FtbWE6CiAgICAgIHNoYXJkLWFwbDogICAg
-ICAgICAgUEFTUyAtPiBGQUlMIChmZG8jMTA0NzgyKQoKICAgIHtpZ3RAa21zX2NvbnRlbnRfcHJv
-dGVjdGlvbkBhdG9taWN9OgogICAgICBzaGFyZC1rYmw6ICAgICAgICAgIE5PVFJVTiAtPiBETUVT
-Ry1GQUlMIChmZG8jMTA4NTQ5KQogICAgICBzaGFyZC1hcGw6ICAgICAgICAgIE5PVFJVTiAtPiBE
-TUVTRy1GQUlMIChmZG8jMTA4NTQ5KSArMQoKICAgIHtpZ3RAa21zX2NvbnRlbnRfcHJvdGVjdGlv
-bkBsZWdhY3l9OgogICAgICBzaGFyZC1rYmw6ICAgICAgICAgIE5PVFJVTiAtPiBETUVTRy1GQUlM
-IChmZG8jMTA4NTUwKQoKICAgIGlndEBrbXNfY3Vyc29yX2NyY0BjdXJzb3ItMjU2eDI1Ni1yYW5k
-b206CiAgICAgIHNoYXJkLWFwbDogICAgICAgICAgUEFTUyAtPiBGQUlMIChmZG8jMTAzMjMyKSAr
-MwoKICAgIGlndEBrbXNfY3Vyc29yX2NyY0BjdXJzb3ItMjU2eDI1Ni1zbGlkaW5nOgogICAgICBz
-aGFyZC1nbGs6ICAgICAgICAgIFBBU1MgLT4gRkFJTCAoZmRvIzEwMzIzMikgKzUKCiAgICBpZ3RA
-a21zX2N1cnNvcl9jcmNAY3Vyc29yLTY0eDY0LW9uc2NyZWVuOgogICAgICBzaGFyZC1rYmw6ICAg
-ICAgICAgIFBBU1MgLT4gRE1FU0ctV0FSTiAoZmRvIzEwMzMxMykKCiAgICBpZ3RAa21zX2N1cnNv
-cl9sZWdhY3lAY3Vyc29yYS12cy1mbGlwYS10b2dnbGU6CiAgICAgIHNoYXJkLWdsazogICAgICAg
-ICAgUEFTUyAtPiBETUVTRy1XQVJOIChmZG8jMTA1NzYzLCBmZG8jMTA2NTM4KQoKICAgIGlndEBr
-bXNfZmxpcEBkcG1zLXZzLXZibGFuay1yYWNlOgogICAgICBzaGFyZC1hcGw6ICAgICAgICAgIFBB
-U1MgLT4gRE1FU0ctV0FSTiAoZmRvIzEwODU0OSkgKzE2CgogICAgaWd0QGttc19mcm9udGJ1ZmZl
-cl90cmFja2luZ0BmYmMtMXAtcHJpbXNjcm4tY3VyLWluZGZiLWRyYXctcHdyaXRlOgogICAgICBz
-aGFyZC1hcGw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCAoZmRvIzEwMzE2NykgKzYKCiAgICBpZ3RA
-a21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiYy0ycC1wcmltc2Nybi1jdXItaW5kZmItZHJhdy1t
-bWFwLWNwdToKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IEZBSUwgKGZkbyMxMDMx
-NjcpICs4CgogICAgaWd0QGttc19wbGFuZV9tdWx0aXBsZUBhdG9taWMtcGlwZS1jLXRpbGluZy15
-OgogICAgICBzaGFyZC1hcGw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCAoZmRvIzEwMzE2NikgKzEK
-ICAgICAgc2hhcmQta2JsOiAgICAgICAgICBQQVNTIC0+IEZBSUwgKGZkbyMxMDMxNjYpCgogICAg
-aWd0QGttc19yb3RhdGlvbl9jcmNAcHJpbWFyeS1yb3RhdGlvbi0xODA6CiAgICAgIHNoYXJkLXNu
-YjogICAgICAgICAgTk9UUlVOIC0+IEZBSUwgKGZkbyMxMDM5MjUpCgogICAgaWd0QGttc19zZXRt
-b2RlQGJhc2ljOgogICAgICBzaGFyZC1hcGw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCAoZmRvIzk5
-OTEyKQoKICAgIGlndEBrbXNfdW5pdmVyc2FsX3BsYW5lQHVuaXZlcnNhbC1wbGFuZS1waXBlLWMt
-ZnVuY3Rpb25hbDoKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IEZBSUwgKGZkbyMx
-MDMxNjYpICszCgogICAgCiAgICA9PT09IFBvc3NpYmxlIGZpeGVzID09PT0KCiAgICBpZ3RAZ2Vt
-X2V4ZWNfYXdhaXRAd2lkZS1jb250ZXh0czoKICAgICAgc2hhcmQtZ2xrOiAgICAgICAgICBGQUlM
-IChmZG8jMTAwMDA3KSAtPiBQQVNTCgogICAgaWd0QGttc19idXN5QGV4dGVuZGVkLW1vZGVzZXQt
-aGFuZy1uZXdmYi13aXRoLXJlc2V0LXJlbmRlci1jOgogICAgICBzaGFyZC1oc3c6ICAgICAgICAg
-IERNRVNHLVdBUk4gKGZkbyMxMDc5NTYpIC0+IFBBU1MKCiAgICBpZ3RAa21zX2N1cnNvcl9jcmNA
-Y3Vyc29yLTEyOHgxMjgtc2xpZGluZzoKICAgICAgc2hhcmQta2JsOiAgICAgICAgICBGQUlMIChm
-ZG8jMTAzMjMyKSAtPiBQQVNTICsxCgogICAgaWd0QGttc19jdXJzb3JfY3JjQGN1cnNvci0xMjh4
-NDItb25zY3JlZW46CiAgICAgIHNoYXJkLWdsazogICAgICAgICAgRkFJTCAoZmRvIzEwMzIzMikg
-LT4gUEFTUyArNgoKICAgIGlndEBrbXNfY3Vyc29yX2NyY0BjdXJzb3ItNjR4MjEtcmFuZG9tOgog
-ICAgICBzaGFyZC1hcGw6ICAgICAgICAgIEZBSUwgKGZkbyMxMDMyMzIpIC0+IFBBU1MgKzYKCiAg
-ICBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiYy0xcC1vZmZzY3Jlbi1wcmktc2hyZmIt
-ZHJhdy1tbWFwLWd0dDoKICAgICAgc2hhcmQtc25iOiAgICAgICAgICBETUVTRy1XQVJOIChmZG8j
-MTA3NDY5KSAtPiBQQVNTCgogICAgaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0BmYmMtMXAt
-cHJpbXNjcm4tY3VyLWluZGZiLW1vdmU6CiAgICAgIHNoYXJkLWtibDogICAgICAgICAgRkFJTCAo
-ZmRvIzEwMzE2NykgLT4gUEFTUyArMQogICAgICBzaGFyZC1hcGw6ICAgICAgICAgIEZBSUwgKGZk
-byMxMDMxNjcpIC0+IFBBU1MgKzIKCiAgICBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZi
-Yy0xcC1ydGU6CiAgICAgIHNoYXJkLWtibDogICAgICAgICAgRE1FU0ctV0FSTiAoZmRvIzEwMzU1
-OCwgZmRvIzEwNTYwMikgLT4gUEFTUyArMQoKICAgIGlndEBrbXNfZnJvbnRidWZmZXJfdHJhY2tp
-bmdAZmJjLTJwLXByaW1zY3JuLXByaS1pbmRmYi1kcmF3LXJlbmRlcjoKICAgICAgc2hhcmQtZ2xr
-OiAgICAgICAgICBGQUlMIChmZG8jMTAzMTY3KSAtPiBQQVNTICsyCgogICAgaWd0QGttc19wbGFu
-ZV9hbHBoYV9ibGVuZEBwaXBlLWMtY29uc3RhbnQtYWxwaGEtbWF4OgogICAgICBzaGFyZC1nbGs6
-ICAgICAgICAgIEZBSUwgKGZkbyMxMDgxNDUpIC0+IFBBU1MgKzIKCiAgICBpZ3RAa21zX3BsYW5l
-X211bHRpcGxlQGF0b21pYy1waXBlLWItdGlsaW5nLXg6CiAgICAgIHNoYXJkLWdsazogICAgICAg
-ICAgRkFJTCAoZmRvIzEwMzE2NikgLT4gUEFTUyArMQoKICAgIGlndEBrbXNfcGxhbmVfbXVsdGlw
-bGVAYXRvbWljLXBpcGUtYi10aWxpbmcteToKICAgICAgc2hhcmQtYXBsOiAgICAgICAgICBGQUlM
-IChmZG8jMTAzMTY2KSAtPiBQQVNTCiAgICAgIHNoYXJkLWtibDogICAgICAgICAgRkFJTCAoZmRv
-IzEwMzE2NikgLT4gUEFTUwoKICAgIGlndEBrbXNfcm1mYkBybWZiLWlvY3RsOgogICAgICBzaGFy
-ZC1rYmw6ICAgICAgICAgIERNRVNHLVdBUk4gKGZkbyMxMDMzMTMsIGZkbyMxMDM1NTgsIGZkbyMx
-MDU2MDIpIC0+IFBBU1MgKzYKCiAgICBpZ3RAcG1fcnBtQHN5c3RlbS1zdXNwZW5kLWV4ZWNidWY6
-CiAgICAgIHNoYXJkLWtibDogICAgICAgICAgRE1FU0ctV0FSTiAoZmRvIzEwMzMxMykgLT4gUEFT
-UwoKICAgIAogICAgPT09PSBXYXJuaW5ncyA9PT09CgogICAgaWd0QGttc19idXN5QGV4dGVuZGVk
-LXBhZ2VmbGlwLWhhbmctbmV3ZmItcmVuZGVyLWM6CiAgICAgIHNoYXJkLWdsazogICAgICAgICAg
-RE1FU0ctV0FSTiAoZmRvIzEwNzk1NikgLT4gSU5DT01QTEVURSAoZmRvIzEwMzM1OSwgay5vcmcj
-MTk4MTMzKQoKICAgIAogIHtuYW1lfTogVGhpcyBlbGVtZW50IGlzIHN1cHByZXNzZWQuIFRoaXMg
-bWVhbnMgaXQgaXMgaWdub3JlZCB3aGVuIGNvbXB1dGluZwogICAgICAgICAgdGhlIHN0YXR1cyBv
-ZiB0aGUgZGlmZmVyZW5jZSAoU1VDQ0VTUywgV0FSTklORywgb3IgRkFJTFVSRSkuCgogIGZkbyMx
-MDAwMDcgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAwMDA3
-CiAgZmRvIzEwMzE2NiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9p
-ZD0xMDMxNjYKICBmZG8jMTAzMTY3IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19i
-dWcuY2dpP2lkPTEwMzE2NwogIGZkbyMxMDMyMzIgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9y
-Zy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMjMyCiAgZmRvIzEwMzMxMyBodHRwczovL2J1Z3MuZnJlZWRl
-c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDMzMTMKICBmZG8jMTAzMzU5IGh0dHBzOi8vYnVn
-cy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzM1OQogIGZkbyMxMDM1NTggaHR0
-cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzNTU4CiAgZmRvIzEw
-MzkyNSBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDM5MjUK
-ICBmZG8jMTAzOTI3IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lk
-PTEwMzkyNwogIGZkbyMxMDQ3ODIgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1
-Zy5jZ2k/aWQ9MTA0NzgyCiAgZmRvIzEwNTYwMiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3Jn
-L3Nob3dfYnVnLmNnaT9pZD0xMDU2MDIKICBmZG8jMTA1NzYzIGh0dHBzOi8vYnVncy5mcmVlZGVz
-a3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNTc2MwogIGZkbyMxMDY1MzggaHR0cHM6Ly9idWdz
-LmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA2NTM4CiAgZmRvIzEwNjY0MSBodHRw
-czovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDY2NDEKICBmZG8jMTA2
-ODg2IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNjg4Ngog
-IGZkbyMxMDc0NjkgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
-MTA3NDY5CiAgZmRvIzEwNzk1NiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVn
-LmNnaT9pZD0xMDc5NTYKICBmZG8jMTA4MTQ1IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcv
-c2hvd19idWcuY2dpP2lkPTEwODE0NQogIGZkbyMxMDg1NDkgaHR0cHM6Ly9idWdzLmZyZWVkZXNr
-dG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA4NTQ5CiAgZmRvIzEwODU1MCBodHRwczovL2J1Z3Mu
-ZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDg1NTAKICBmZG8jOTk5MTIgaHR0cHM6
-Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9OTk5MTIKICBrLm9yZyMxOTgx
-MzMgaHR0cHM6Ly9idWd6aWxsYS5rZXJuZWwub3JnL3Nob3dfYnVnLmNnaT9pZD0xOTgxMzMKCgo9
-PSBQYXJ0aWNpcGF0aW5nIGhvc3RzICg2IC0+IDUpID09CgogIE1pc3NpbmcgICAgKDEpOiBzaGFy
-ZC1za2wgCgoKPT0gQnVpbGQgY2hhbmdlcyA9PQoKICAgICogSUdUOiBJR1RfNDY5MSAtPiBJR1RQ
-V18xOTkxCiAgICAqIExpbnV4OiBDSV9EUk1fNTAyOCAtPiBDSV9EUk1fNTAzMwoKICBDSV9EUk1f
-NTAyODogMGQ0YjBkMDkwNzVjYjUzMzRjNjIyMDk5NzI0ZDdiM2FmNjA1YmVkOSBAIGdpdDovL2Fu
-b25naXQuZnJlZWRlc2t0b3Aub3JnL2dmeC1jaS9saW51eAogIENJX0RSTV81MDMzOiBmOTM1ZTRj
-NzYzNDc4MWU2ZmZlZjEwYmI4YTFjOTMyMjVhYzQyZDkwIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVz
-a3RvcC5vcmcvZ2Z4LWNpL2xpbnV4CiAgSUdUUFdfMTk5MTogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xOTkxLwogIElHVF80NjkxOiBkNDQ1YmUwMWY1ZWRj
-N2U3YTMyNDQ0NGM3M2UyMjFjOWVkNzU2MDJlIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5v
-cmcveG9yZy9hcHAvaW50ZWwtZ3B1LXRvb2xzCgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxz
-IHNlZTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xOTkx
-L3NoYXJkcy5odG1sCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0
-dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+--===============0920542304==
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
+
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+
+Sean Paul <sean@poorly.run> writes:
+
+> On Fri, Oct 19, 2018 at 10:50:49AM +0200, Daniel Vetter wrote:
+>> Hi all,
+>>=20
+>> This is just to collect feedback on this idea, and see whether the
+>> overall dri-devel community stands on all this. I think the past few
+>> cross-vendor uapi extensions all came with igts attached, and
+>> personally I think there's lots of value in having them: A
+>> cross-vendor interface isn't useful if every driver implements it
+>> slightly differently.
+>>=20
+>> I think there's 2 questions here:
+>>=20
+>> - Do we want to make such testcases mandatory?
+>>=20
+>
+> Yes, more testing =3D=3D better code.
+>
+>
+>> - If yes, are we there yet, or is there something crucially missing
+>>   still?
+>
+> In my experience, no. Last week while trying to replicate an intel-gfx CI
+> failure, I tried compiling igt for one of my (intel) chromebooks. It seem=
+s like
+> cross-compilation (or, in my case, just specifying
+> prefix/ld_library_path/sbin_path) is broken on igt. If we want to impose
+> restrictions across the entire subsystem, we need to make sure that every=
+one can
+> build and deploy igt easily.
+>
+> I managed to hack around everything and get it working, but I still haven=
+'t
+> tried switching out the toolchain. Once we have some GitLab CI to validate
+> cross-compilation, then we can consider making IGT mandatory.
+>
+> It's possible that I'm just a meson n00b and didn't use the right incanta=
+tion,
+> so maybe it already works, but then we need better documentation.
+>
+> I've pasted my horrible hacks below, I also didn't have libunwind, so rem=
+oved
+> its usage.
+
+I've also had to cut out libunwind for cross-compiling on many
+occasions.  Worst library.
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE/JuuFDWp9/ZkuCBXtdYpNtH8nugFAlvR8OYACgkQtdYpNtH8
+nugbnA//d38dKOKXQoc2QULqasRpO63vPklcmNSBj3ZcMjy67Vf24cL0XdeOePPT
+oiisV3PSMODrVmxLYPes1AifauI1CO9yu0hhOdXr7NOfHj4LG+YdORkWoRK3xXdR
+pThzY0J4zXTKzXUyemL7X1vFYhehUHdL1UVArS6/ZgLOjj0kLqbsMCB/mDQY1vrE
+huaTZt4xGtOzPNpxXqzaps1p9Z+XGZG/l1c7tlZtnIIdJCfKQHWnchTmtv9nf2cR
+SEmTMJRCXHstqq5kK7LfUEWRqnOM/iKAUd0L/+TMvtXSarXdGKbaXjaDP41AlzoI
+lwmCXCsqlVpBf1JFH48a9RIiEgJylMrxQAYAk8yRtjbzbVKLzBdZY64hgyWwJ4ed
+7nqfp36b5pD6acZyibPskvwGnPzrCqjOsFqkjEiRT+3g5X7PG4ya+Q34F/LVE9yi
+NmgeCmF/x+LAHFEEXh+0hLK7iFsSQPrqAE6K1K57W2syB2GwW4Mrp/clMDgRf4YL
+s3iONXtgl2RxGRAF7m8G5cWOgKDCOjWSmfRFXv3sJLuPNszYGQKo+RPaOpuVbFx9
+f1t+ClQ5/+qE4JohJ/QvmLt5gtKzg9ysTclyOs9ySd07Uyd93rZQgZkG1gQQy/pm
+ImwvBgooN2yB6+brtzpWONCVKSKzPZ4fxQEQhZ4iU9+aF+dGKdo=
+=kPxM
+-----END PGP SIGNATURE-----
+--=-=-=--
+
+--===============0920542304==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KSW50ZWwtZ2Z4
+IG1haWxpbmcgbGlzdApJbnRlbC1nZnhAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaW50ZWwtZ2Z4Cg==
+
+--===============0920542304==--
