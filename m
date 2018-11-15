@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 15 Nov 2018 16:16:54 -0000
-Message-ID: <20181115161654.11617.9657@emeril.freedesktop.org>
-References: <1542297066-2954-1-git-send-email-juhapekka.heikkila@gmail.com>
-In-Reply-To: <1542297066-2954-1-git-send-email-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fplane=3A_add_source_clamping_test?=
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id EC32F6E113
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Nov 2018 16:36:11 +0000 (UTC)
+Message-ID: <68b8bb2880f8ef6e52b413c435abd151ae1c9e9f.camel@bootlin.com>
+From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Date: Thu, 15 Nov 2018 17:36:00 +0100
+In-Reply-To: <20181114165008.74a5f97e@bbrezillon>
+References: <20181114153149.14912-1-paul.kocialkowski@bootlin.com>
+ <20181114165008.74a5f97e@bbrezillon>
+Mime-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kms: Set writeback connector
+ capacity to fix VC4 testing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,57 +18,114 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0366495635=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Boris Brezillon <boris.brezillon@bootlin.com>
+Cc: igt-dev@lists.freedesktop.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, eben@raspberrypi.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHMva21zX3BsYW5lOiBhZGQgc291cmNl
-IGNsYW1waW5nIHRlc3QKVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcv
-c2VyaWVzLzUyNTQxLwpTdGF0ZSA6IHN1Y2Nlc3MKCj09IFN1bW1hcnkgPT0KCj0gQ0kgQnVnIExv
-ZyAtIGNoYW5nZXMgZnJvbSBJR1RfNDcxNSAtPiBJR1RQV18yMDY0ID0KCj09IFN1bW1hcnkgLSBT
-VUNDRVNTID09CgogIE5vIHJlZ3Jlc3Npb25zIGZvdW5kLgoKICBFeHRlcm5hbCBVUkw6IGh0dHBz
-Oi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9hcGkvMS4wL3Nlcmllcy81MjU0MS9yZXZpc2lv
-bnMvMS9tYm94LwoKPT0gS25vd24gaXNzdWVzID09CgogIEhlcmUgYXJlIHRoZSBjaGFuZ2VzIGZv
-dW5kIGluIElHVFBXXzIwNjQgdGhhdCBjb21lIGZyb20ga25vd24gaXNzdWVzOgoKICA9PT0gSUdU
-IGNoYW5nZXMgPT09CgogICAgPT09PSBJc3N1ZXMgaGl0ID09PT0KCiAgICBpZ3RAZ2VtX2N0eF9j
-cmVhdGVAYmFzaWMtZmlsZXM6CiAgICAgIGZpLWljbC11MjogICAgICAgICAgUEFTUyAtPiBETUVT
-Ry1XQVJOIChmZG8jMTA3NzI0KQoKICAgIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAc3VzcGVuZC1y
-ZWFkLWNyYy1waXBlLWI6CiAgICAgIGZpLWljbC11OiAgICAgICAgICAgUEFTUyAtPiBJTkNPTVBM
-RVRFIChmZG8jMTA3NzEzKQoKICAgIAogICAgPT09PSBQb3NzaWJsZSBmaXhlcyA9PT09CgogICAg
-aWd0QGRydl9zZWxmdGVzdEBsaXZlX2V4ZWNsaXN0czoKICAgICAgZmktYXBsLWd1YzogICAgICAg
-ICBJTkNPTVBMRVRFIChmZG8jMTAzOTI3LCBmZG8jMTA4NjIyKSAtPiBQQVNTCgogICAgaWd0QGdl
-bV9leGVjX3N1c3BlbmRAYmFzaWMtczM6CiAgICAgIGZpLWljbC11MjogICAgICAgICAgRE1FU0ct
-V0FSTiAoZmRvIzEwNzcyNCkgLT4gUEFTUwoKICAgIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAc3Vz
-cGVuZC1yZWFkLWNyYy1waXBlLWE6CiAgICAgIGZpLWJ5dC1jbGFwcGVyOiAgICAgRkFJTCAoZmRv
-IzEwNzM2MiwgZmRvIzEwMzE5MSkgLT4gUEFTUyArMgoKICAgIAogIGZkbyMxMDMxOTEgaHR0cHM6
-Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMTkxCiAgZmRvIzEwMzky
-NyBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDM5MjcKICBm
-ZG8jMTA3MzYyIGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEw
-NzM2MgogIGZkbyMxMDc3MTMgaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5j
-Z2k/aWQ9MTA3NzEzCiAgZmRvIzEwNzcyNCBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
-b3dfYnVnLmNnaT9pZD0xMDc3MjQKICBmZG8jMTA4NjIyIGh0dHBzOi8vYnVncy5mcmVlZGVza3Rv
-cC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODYyMgoKCj09IFBhcnRpY2lwYXRpbmcgaG9zdHMgKDUx
-IC0+IDQ1KSA9PQoKICBNaXNzaW5nICAgICg2KTogZmktaWxrLW01NDAgZmktaHN3LTQyMDB1IGZp
-LWJ5dC1zcXVhd2tzIGZpLWJzdy1jeWFuIGZpLWN0Zy1wODYwMCBmaS1jZmwtczMgCgoKPT0gQnVp
-bGQgY2hhbmdlcyA9PQoKICAgICogSUdUOiBJR1RfNDcxNSAtPiBJR1RQV18yMDY0CgogIENJX0RS
-TV81MTQxOiBmY2RhZGJhYmMzMjE2YWExNmM2ZDgyMzZkNTVjNWU1YzgyNjFjYzkxIEAgZ2l0Oi8v
-YW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xpbnV4CiAgSUdUUFdfMjA2NDogaHR0cHM6
-Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yMDY0LwogIElHVF80NzE1
-OiAxMTE1OTNjNDlkODEyYTRmNGZmOWFiMGVmMDUzYTNhYjg4YTZmNzNmIEAgZ2l0Oi8vYW5vbmdp
-dC5mcmVlZGVza3RvcC5vcmcveG9yZy9hcHAvaW50ZWwtZ3B1LXRvb2xzCgoKCj09IFRlc3RsaXN0
-IGNoYW5nZXMgPT0KCitpZ3RAa21zX3BsYW5lQHBpeGVsLWZvcm1hdC1waXBlLWEtcGxhbmVzLXNv
-dXJjZS1jbGFtcGluZworaWd0QGttc19wbGFuZUBwaXhlbC1mb3JtYXQtcGlwZS1iLXBsYW5lcy1z
-b3VyY2UtY2xhbXBpbmcKK2lndEBrbXNfcGxhbmVAcGl4ZWwtZm9ybWF0LXBpcGUtYy1wbGFuZXMt
-c291cmNlLWNsYW1waW5nCitpZ3RAa21zX3BsYW5lQHBpeGVsLWZvcm1hdC1waXBlLWQtcGxhbmVz
-LXNvdXJjZS1jbGFtcGluZworaWd0QGttc19wbGFuZUBwaXhlbC1mb3JtYXQtcGlwZS1lLXBsYW5l
-cy1zb3VyY2UtY2xhbXBpbmcKK2lndEBrbXNfcGxhbmVAcGl4ZWwtZm9ybWF0LXBpcGUtZi1wbGFu
-ZXMtc291cmNlLWNsYW1waW5nCgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNlZTogaHR0
-cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yMDY0L2lzc3Vlcy5o
-dG1sCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
-ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+
+--===============0366495635==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-wed76e4yXvCnmp11s/v/"
+
+
+--=-wed76e4yXvCnmp11s/v/
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On Wed, 2018-11-14 at 16:50 +0100, Boris Brezillon wrote:
+> Hi Paul,
+>=20
+> On Wed, 14 Nov 2018 16:31:49 +0100
+> Paul Kocialkowski <paul.kocialkowski@bootlin.com> wrote:
+>=20
+> > Support for writeback connectors was recently introduced in DRM, with
+> > an implementation in the VC4 DRM driver. This unfortunately broke IGT
+> > testing for the driver due to always-failing atomic commits.
+> >=20
+> > After boot up, the writeback connector is attached to a CRTC, with a
+> > virtual encoder and a plane (that takes the same framebuffer as the
+> > primary plane).
+>=20
+> That's weird, the writeback connector should not be attached to its
+> CRTC by default, unless someone explicitly requested that. Maybe
+> something related to the fbdev emulation layer, but I'm not sure.
+
+Thanks for the tip, this was definitely the cause of the writeback
+connector being attached to the CRTC at boot.
+
+I have just sent out a patch to blacklist writeback connectors in fbdev.
+
+I am not sure it's worth keeping this patch around if that issue is to
+be fixed in the kernel directly. It also conflicts with the upcoming
+writeback series in IGT.
+
+Cheers,
+
+Paul
+
+> > Because IGT configures all the available planes, this plane is no
+> > longer associated with the writeback CRTC. The connector remains
+> > associated with the CRTC as the core does not automatically clean it up=
+.
+> > IGT is not aware of the writeback connector (hidden by default), so it
+> > does not detach the CRTC. As a result, the atomic commit fails because
+> > the CRTC is moving to a disabled state with a connector still attached.
+> >=20
+> > Fix this issue by setting the writeback connector cap before getting
+> > DRM resources so that the connector can be discovered and the CRTC
+> > can be detached by IGT. Since it requires atomic support, make it
+> > conditional and move the atomic capability before getting DRM resources=
+.
+> >=20
+> > The associated cap definitions are also updated to include the required
+> > writeback one.
+> >=20
+> > Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+> > ---
+> >  include/drm-uapi/drm.h | 16 ++++++++++++++++
+> >  lib/igt_kms.c          |  8 ++++++--
+>=20
+> Looks like [1] is doing pretty much the same thing.
+>=20
+> [1]https://patchwork.freedesktop.org/patch/260289/
+--=20
+Paul Kocialkowski, Bootlin (formerly Free Electrons)
+Embedded Linux and kernel engineering
+https://bootlin.com
+
+--=-wed76e4yXvCnmp11s/v/
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEJZpWjZeIetVBefti3cLmz3+fv9EFAlvtoHAACgkQ3cLmz3+f
+v9E8mAf/dc5jIXA5q7Pn1E0+FTNDSsCf9ef+1BnhQL+oW+ODhI8tAHk3knqnc6ox
+dWmit9vCghq4KPLLr8VJY3yz15EUaBIHevCpX8/1Rw562GuUr8RWtkTnles/YHjy
+kusCtAg2XkgI6I8OSuzVQWmvT4lEdJ2yBw3YF2VMTRH4PPifEFEXc8upHpuZZ16B
+2KEn9WM7DIkBSNbZPvDzOKxFLiYTAP3IApLN3LVZ98yXyCCGT3LAtb8nEy2JD85e
+lZmXYaynywPH5+LHyUPTf3PQCaAKkDWz5JK0wcM4TYKb285yqdhBrzhnyxtOjHO/
+XruuLb6HkgQHS9TvUYGBP0uBNod5WA==
+=3ezy
+-----END PGP SIGNATURE-----
+
+--=-wed76e4yXvCnmp11s/v/--
+
+
+--===============0366495635==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0366495635==--
