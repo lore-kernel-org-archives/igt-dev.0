@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
- by gabe.freedesktop.org (Postfix) with ESMTP id F03466E13F
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Nov 2018 07:47:02 +0000 (UTC)
-Date: Fri, 16 Nov 2018 08:46:51 +0100
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20181116074651.iglr47vyqtdgzebv@flea>
-References: <20181115165140.21947-1-paul.kocialkowski@bootlin.com>
- <20181115165140.21947-2-paul.kocialkowski@bootlin.com>
+ by gabe.freedesktop.org (Postfix) with ESMTP id 2A5BA6E6D7
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Nov 2018 08:07:18 +0000 (UTC)
+From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Date: Fri, 16 Nov 2018 09:05:54 +0100
+Message-Id: <20181116080554.1615-3-paul.kocialkowski@bootlin.com>
+In-Reply-To: <20181116080554.1615-1-paul.kocialkowski@bootlin.com>
+References: <20181116080554.1615-1-paul.kocialkowski@bootlin.com>
 MIME-Version: 1.0
-In-Reply-To: <20181115165140.21947-2-paul.kocialkowski@bootlin.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] chamelium: Pass and use stride for
+Subject: [igt-dev] [PATCH i-g-t v2 2/2] chamelium: Pass and use stride for
  xr24 pattern paint
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -18,66 +17,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1582376597=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-Cc: igt-dev@lists.freedesktop.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============1582376597==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="aycclxfbbrccnhkn"
-Content-Disposition: inline
-
-
---aycclxfbbrccnhkn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Nov 15, 2018 at 05:51:40PM +0100, Paul Kocialkowski wrote:
-> Using the width from the selected mode is not sufficient to correctly
-> paint a pattern on the framebuffer memory: the stride also has to be
-> taken in account for proper line start alignment.
->=20
-> Pass the stride and use it in chamelium_paint_xr24_pattern.
-
-Both patches look fine, but your missing your SoB here.
-
-With that fixed,
-
-Reviewed-by: Maxime Ripard <maxime.ripard@bootlin.com>
-
-Maxime
-
---=20
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---aycclxfbbrccnhkn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCW+516wAKCRDj7w1vZxhR
-xV2+AP90aGzIZX8RupVBJ1M31zIocUQv59xR/NtJ5nclBW2KRwEAzoLGVLE6b0ql
-APJ+52c2tQIi8X5Hn+7nRuCF8ZDSsAw=
-=MHcd
------END PGP SIGNATURE-----
-
---aycclxfbbrccnhkn--
-
---===============1582376597==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============1582376597==--
+VXNpbmcgdGhlIHdpZHRoIGZyb20gdGhlIHNlbGVjdGVkIG1vZGUgaXMgbm90IHN1ZmZpY2llbnQg
+dG8gY29ycmVjdGx5CnBhaW50IGEgcGF0dGVybiBvbiB0aGUgZnJhbWVidWZmZXIgbWVtb3J5OiB0
+aGUgc3RyaWRlIGFsc28gaGFzIHRvIGJlCnRha2VuIGluIGFjY291bnQgZm9yIHByb3BlciBsaW5l
+IHN0YXJ0IGFsaWdubWVudC4KClBhc3MgdGhlIHN0cmlkZSBhbmQgdXNlIGl0IGluIGNoYW1lbGl1
+bV9wYWludF94cjI0X3BhdHRlcm4uCgpTaWduZWQtb2ZmLWJ5OiBQYXVsIEtvY2lhbGtvd3NraSA8
+cGF1bC5rb2NpYWxrb3dza2lAYm9vdGxpbi5jb20+ClJldmlld2VkLWJ5OiBNYXhpbWUgUmlwYXJk
+IDxtYXhpbWUucmlwYXJkQGJvb3RsaW4uY29tPgotLS0KIHRlc3RzL2ttc19jaGFtZWxpdW0uYyB8
+IDggKysrKystLS0KIDEgZmlsZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25z
+KC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2NoYW1lbGl1bS5jIGIvdGVzdHMva21zX2NoYW1l
+bGl1bS5jCmluZGV4IDRmMTk3N2MzLi5hOGQ4YWVlZSAxMDA2NDQKLS0tIGEvdGVzdHMva21zX2No
+YW1lbGl1bS5jCisrKyBiL3Rlc3RzL2ttc19jaGFtZWxpdW0uYwpAQCAtNDg3LDcgKzQ4Nyw4IEBA
+IGVuYWJsZV9vdXRwdXQoZGF0YV90ICpkYXRhLAogfQogCiBzdGF0aWMgdm9pZCBjaGFtZWxpdW1f
+cGFpbnRfeHIyNF9wYXR0ZXJuKHVpbnQzMl90ICpkYXRhLAotCQkJCQkgc2l6ZV90IHdpZHRoLCBz
+aXplX3QgaGVpZ2h0KQorCQkJCQkgc2l6ZV90IHdpZHRoLCBzaXplX3QgaGVpZ2h0LAorCQkJCQkg
+c2l6ZV90IHN0cmlkZSkKIHsKIAl1aW50MzJfdCBjb2xvcnNbXSA9IHsgMHhmZjAwMDAwMCwKIAkJ
+CSAgICAgIDB4ZmZmZjAwMDAsCkBAIC00OTgsNyArNDk5LDcgQEAgc3RhdGljIHZvaWQgY2hhbWVs
+aXVtX3BhaW50X3hyMjRfcGF0dGVybih1aW50MzJfdCAqZGF0YSwKIAogCWZvciAoaSA9IDA7IGkg
+PCBoZWlnaHQ7IGkrKykKIAkJZm9yIChqID0gMDsgaiA8IHdpZHRoOyBqKyspCi0JCQkqKGRhdGEg
+KyBpICogd2lkdGggKyBqKSA9IGNvbG9yc1soKGogLyA2NCkgKyAoaSAvIDY0KSkgJSA1XTsKKwkJ
+CSooZGF0YSArIGkgKiBzdHJpZGUgLyA0ICsgaikgPSBjb2xvcnNbKChqIC8gNjQpICsgKGkgLyA2
+NCkpICUgNV07CiB9CiAKIHN0YXRpYyBpbnQgY2hhbWVsaXVtX2dldF9wYXR0ZXJuX2ZiKGRhdGFf
+dCAqZGF0YSwgZHJtTW9kZU1vZGVJbmZvICptb2RlLApAQCAtNTE2LDcgKzUxNyw4IEBAIHN0YXRp
+YyBpbnQgY2hhbWVsaXVtX2dldF9wYXR0ZXJuX2ZiKGRhdGFfdCAqZGF0YSwgZHJtTW9kZU1vZGVJ
+bmZvICptb2RlLAogCXB0ciA9IGlndF9mYl9tYXBfYnVmZmVyKGZiLT5mZCwgZmIpOwogCWlndF9h
+c3NlcnQocHRyKTsKIAotCWNoYW1lbGl1bV9wYWludF94cjI0X3BhdHRlcm4ocHRyLCBtb2RlLT5o
+ZGlzcGxheSwgbW9kZS0+dmRpc3BsYXkpOworCWNoYW1lbGl1bV9wYWludF94cjI0X3BhdHRlcm4o
+cHRyLCBtb2RlLT5oZGlzcGxheSwgbW9kZS0+dmRpc3BsYXksCisJCQkJICAgICBmYi0+c3RyaWRl
+c1swXSk7CiAJaWd0X2ZiX3VubWFwX2J1ZmZlcihmYiwgcHRyKTsKIAogCXJldHVybiBmYl9pZDsK
+LS0gCjIuMTkuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
+cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
