@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF86689C9B
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Nov 2018 21:11:09 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 016FE89CE2
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Nov 2018 21:37:03 +0000 (UTC)
+References: <20181122093700.31211-1-daniel.vetter@ffwll.ch>
+ <20181122093700.31211-3-daniel.vetter@ffwll.ch>
+From: Antonio Argenziano <antonio.argenziano@intel.com>
+Message-ID: <c42be249-59d9-ab7b-8e8d-5cc4aa3959d8@intel.com>
+Date: Mon, 26 Nov 2018 13:37:03 -0800
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20181126204349.6739-4-andi.shyti@intel.com>
-References: <20181126204349.6739-1-andi.shyti@intel.com>
- <20181126204349.6739-4-andi.shyti@intel.com>
-Message-ID: <154326664917.11623.2558127012931151958@skylake-alporthouse-com>
-Date: Mon, 26 Nov 2018 21:10:49 +0000
-Subject: Re: [igt-dev] [PATCH v3 3/3] tests: gem_exec_basic: add "exec-ctx"
- buffer execution demo test
+In-Reply-To: <20181122093700.31211-3-daniel.vetter@ffwll.ch>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 3/5] lib/kms: Drop igt_display_init
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,24 +18,23 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Andi Shyti <andi.shyti@intel.com>, IGT dev <igt-dev@lists.freedesktop.org>
-Cc: Andi Shyti <andi@etezian.org>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Daniel Vetter <daniel.vetter@ffwll.ch>, IGT development <igt-dev@lists.freedesktop.org>
+Cc: Daniel Vetter <daniel.vetter@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBBbmRpIFNoeXRpICgyMDE4LTExLTI2IDIwOjQzOjQ5KQo+IFRoZSAiZXhlYy1jdHgi
-IGlzIGEgZGVtbyBzdWJ0ZXN0IGluc2VydGVkIGluIHRoZSBnZW1fZXhlY19iYXNpYwo+IHRlc3Qu
-IFRoZSBtYWluIHNjb3BlIGlzIHRvIGRlbW9uc3RyYXRlIGFuIGFsdGVybmF0aXZlIHdheSBmb3IK
-PiBxdWVyeWluZyBlbmdpbmVzIGFzIGltcGxlbWVudGVkIGluIHRoZSBuZXcgQVBJIGluIGNvbW1p
-dCA4NzA3OWUwNAo+ICgibGliOiBpbXBsZW1lbnQgbmV3IGVuZ2luZSBkaXNjb3ZlcnkgaW50ZXJm
-YWNlIikuCj4gCj4gVGhlICJleGVjLWN0eCIgc3VidGVzdCBzaW1wbHkgZ2V0cyB0aGUgbGlzdCBv
-ZiBlbmdpbmVzLCBiaW5kcwo+IHRoZW0gdG8gYSBjb250ZXh0IGFuZCBleGVjdXRlcyBhIGJ1ZmZl
-ci4gVGhpcyBpcyBkb25lIHRocm91Z2ggYQo+IG5ldyAiZm9yX2VhY2hfZW5naW5lX2N0eCIgbG9v
-cCB3aGljaCBpdGVyYXRlcyB0aHJvdWdoIHRoZQo+IGVuZ2luZXMuCgpTZWUgZ2VtX2N0eF9lbmdp
-bmVzIGZvciB0aGUgaW50ZW50IG9mIHZhbGlkYXRpbmcgdGhlIGN0eC0+ZW5naW5lc1tdIGFwaS4K
-LUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
-dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+CgpPbiAyMi8xMS8xOCAwMTozNiwgRGFuaWVsIFZldHRlciB3cm90ZToKPiBJZiB5b3UgbmVlZCB0
+aGUgaGlnaC1sZXZlbCBmdW5jdGlvbnMsIHRoZW4geW91IHByb2JhYmx5IG5lZWQgYQo+IGZ1bGwg
+ZGlzcGxheS4gVW5leHBvcnQgdGhlIG5vbi1yZXF1aXJpbmcgdmVyc2lvbiwgYW5kIGFkanVzdCB0
+aGUKPiBkb2N1bWVudGF0aW9uLiBUaGlzIGFsc28gZ2l2ZXMgdXMgcHJvcGVyIGRvY3MgZm9yIHRo
+ZSByZWNlbnRseQo+IGFkZGVkIGlndF9kaXNwbGF5X3JlcXVpcmUuCgpJIGFjdHVhbGx5IGxpa2Vk
+IGhhdmluZyBpbml0IGFuZCByZXF1aXJlIHRvIGJlIHNlcGFyYXRlLiBBcmUgdGhlcmUgbm8gCm5l
+Z2F0aXZlIHRlc3QgY2FzZXMgdGhhdCBtaWdodCBwbGF5LWFyb3VuZCB3aXRoIGEgZmFpbGluZyBp
+bml0PwoKb3RoZXIgdGhhbiB0aGF0IHRoZSBzZXJpZXMgTEdUTSBidXQgeW91IG1pZ2h0IHdhbnQg
+c29tZW9uZSB0byBsb29rIGF0IApbMi81XSBpbiBkZXRhaWxzLApBY2tlZC1CeTogQW50b25pbyBB
+cmdlbnppYW5vCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
+cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
