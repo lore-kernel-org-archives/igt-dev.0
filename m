@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2333F899B0
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Nov 2018 21:34:48 +0000 (UTC)
-References: <20181126153624.3690-1-lukasz.kalamarz@intel.com>
-From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Message-ID: <3d9aa8bc-5e99-8be8-0fde-12f2e903f34b@intel.com>
-Date: Wed, 28 Nov 2018 13:34:47 -0800
+Received: from anholt.net (anholt.net [50.246.234.109])
+ by gabe.freedesktop.org (Postfix) with ESMTP id B42E26E3E3
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Nov 2018 22:04:15 +0000 (UTC)
+From: Eric Anholt <eric@anholt.net>
+In-Reply-To: <87lg5da1ho.fsf@intel.com>
+References: <20181127204603.24042-1-eric@anholt.net>
+ <20181127204603.24042-2-eric@anholt.net> <87lg5da1ho.fsf@intel.com>
+Date: Wed, 28 Nov 2018 14:04:13 -0800
+Message-ID: <87k1kweu5e.fsf@anholt.net>
 MIME-Version: 1.0
-In-Reply-To: <20181126153624.3690-1-lukasz.kalamarz@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/3] lib/ioctl_wrapper: Add
- i915_get_param helper
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] v3d: Add tests for hanging V3D
+ using an RCL.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,50 +18,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: multipart/mixed; boundary="===============1086360713=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lukasz Kalamarz <lukasz.kalamarz@intel.com>, igt-dev@lists.freedesktop.org
+To: Jani Nikula <jani.nikula@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CgpPbiAyNi8xMS8yMDE4IDA3OjM2LCBMdWthc3ogS2FsYW1hcnogd3JvdGU6Cj4gZ2V0cGFyYW0g
-aXMgdXNlZCBpbiBmZXcgcGxhY2VzIGFjcm9zcyBJR1QsIGJ1dCBubyBoZWxwZXIgZnVuY3Rpb24K
-PiBpcyB1c2VkIHRvIHJlZHVjZSBjb2RlIGR1cGxpY2F0aW9uLgo+IHYyOiBBZGRlZCBkb2MgcGFy
-dCBhbmQgY2hhbmdlZCByZXR1cm4gdmFsdWUgaW4gY2FzZSBvZiBlcnJvcgo+IAo+IFNpZ25lZC1v
-ZmYtYnk6IEx1a2FzeiBLYWxhbWFyeiA8bHVrYXN6LmthbGFtYXJ6QGludGVsLmNvbT4KPiAKPiBD
-YzogTWljaGFsIFdpbmlhcnNraSA8bWljaGFsLndpbmlhcnNraUBpbnRlbC5jb20+Cj4gQ2M6IEth
-dGFyenluYSBEZWMgPGthdGFyenluYS5kZWNAaW50ZWwuY29tPgo+IENjOiBEYW5pZWxlIENlcmFv
-bG8gU3B1cmlvIDxkYW5pZWxlLmNlcmFvbG9zcHVyaW9AaW50ZWwuY29tPgo+IC0tLQo+ICAgbGli
-L2lvY3RsX3dyYXBwZXJzLmMgfCAyMiArKysrKysrKysrKysrKysrKysrKysrCj4gICBsaWIvaW9j
-dGxfd3JhcHBlcnMuaCB8ICAxICsKPiAgIDIgZmlsZXMgY2hhbmdlZCwgMjMgaW5zZXJ0aW9ucygr
-KQo+IAo+IGRpZmYgLS1naXQgYS9saWIvaW9jdGxfd3JhcHBlcnMuYyBiL2xpYi9pb2N0bF93cmFw
-cGVycy5jCj4gaW5kZXggOWYyNTU1MDguLmFlYzRmMTVlIDEwMDY0NAo+IC0tLSBhL2xpYi9pb2N0
-bF93cmFwcGVycy5jCj4gKysrIGIvbGliL2lvY3RsX3dyYXBwZXJzLmMKPiBAQCAtNDY4LDYgKzQ2
-OCwyOCBAQCB2b2lkIGdlbV9zeW5jKGludCBmZCwgdWludDMyX3QgaGFuZGxlKQo+ICAgCWVycm5v
-ID0gMDsKPiAgIH0KPiAgIAo+ICsvKioKPiArICogZHJtX2dldF9wYXJhbToKPiArICogQGZkOiBv
-cGVuIGk5MTUgZHJtIGZpbGUgZGVzY3JpcHRvcgo+ICsgKiBAcGFyYW06IGRybSBwYXJhbWV0ZXIg
-d2Ugd2FudCB0byByZWFkCj4gKyAqCj4gKyAqIEhlbHBlciBmdW5jdGlvbiB0aGF0IGV4ZWN1dGUg
-R0VUUEFSQU0gaW9jdGwgZm9yIGEgZ2l2ZW4gcGFyYW1ldGVyLgo+ICsgKgo+ICsgKiBSZXR1cm46
-IFJlYWQgdmFsdWUgZnJvbSBHRVRQQVJBTQo+ICsgKi8KPiAraW50IGRybV9nZXRfcGFyYW0oaW50
-IGZkLCB1aW50MzJfdCBwYXJhbSkKPiArewo+ICsJaW50IHZhbHVlOwo+ICsJZHJtX2k5MTVfZ2V0
-cGFyYW1fdCBncCA9IHsKPiArCQkucGFyYW0gPSBwYXJhbSwKPiArCQkudmFsdWUgPSAmdmFsdWUK
-PiArCX07Cj4gKwo+ICsJaWYgKGlndF9pb2N0bChmZCwgRFJNX0lPQ1RMX0k5MTVfR0VUUEFSQU0s
-ICZncCkgPT0gLTEpCj4gKwkJcmV0dXJuIC1FSU5WQUw7CgpSZXR1cm5pbmcgdGhlIGVycm5vIHZh
-bHVlIHdvdWxkIGJlIG1vcmUgYXBwcm9wcmlhdGUgaGVyZSBJTU8uCgpEYW5pZWxlCgo+ICsKPiAr
-CXJldHVybiB2YWx1ZTsKPiArfQo+ICAgCj4gICBib29sIGdlbV9jcmVhdGVfX2hhc19zdG9sZW5f
-c3VwcG9ydChpbnQgZmQpCj4gICB7Cj4gZGlmZiAtLWdpdCBhL2xpYi9pb2N0bF93cmFwcGVycy5o
-IGIvbGliL2lvY3RsX3dyYXBwZXJzLmgKPiBpbmRleCBiMjJiMzZiMC4uOTAxNzRkMTMgMTAwNjQ0
-Cj4gLS0tIGEvbGliL2lvY3RsX3dyYXBwZXJzLmgKPiArKysgYi9saWIvaW9jdGxfd3JhcHBlcnMu
-aAo+IEBAIC03NCw2ICs3NCw3IEBAIGludCBfX2dlbV9zZXRfZG9tYWluKGludCBmZCwgdWludDMy
-X3QgaGFuZGxlLCB1aW50MzJfdCByZWFkLCB1aW50MzJfdCB3cml0ZSk7Cj4gICB2b2lkIGdlbV9z
-ZXRfZG9tYWluKGludCBmZCwgdWludDMyX3QgaGFuZGxlLCB1aW50MzJfdCByZWFkLCB1aW50MzJf
-dCB3cml0ZSk7Cj4gICBpbnQgZ2VtX3dhaXQoaW50IGZkLCB1aW50MzJfdCBoYW5kbGUsIGludDY0
-X3QgKnRpbWVvdXRfbnMpOwo+ICAgdm9pZCBnZW1fc3luYyhpbnQgZmQsIHVpbnQzMl90IGhhbmRs
-ZSk7Cj4gK2ludCBkcm1fZ2V0X3BhcmFtKGludCBmZCwgdWludDMyX3QgcGFyYW0pOwo+ICAgYm9v
-bCBnZW1fY3JlYXRlX19oYXNfc3RvbGVuX3N1cHBvcnQoaW50IGZkKTsKPiAgIHVpbnQzMl90IF9f
-Z2VtX2NyZWF0ZV9zdG9sZW4oaW50IGZkLCB1aW50NjRfdCBzaXplKTsKPiAgIHVpbnQzMl90IGdl
-bV9jcmVhdGVfc3RvbGVuKGludCBmZCwgdWludDY0X3Qgc2l6ZSk7Cj4gCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
-dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+--===============1086360713==
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
+
+--=-=-=
+Content-Type: text/plain
+
+Jani Nikula <jani.nikula@linux.intel.com> writes:
+
+> On Tue, 27 Nov 2018, Eric Anholt <eric@anholt.net> wrote:
+>> +/** Creates a simple CL consisting of a single NOP instruction. */
+>> +struct v3d_cl *
+>> +igt_v3d_cl_create_nop(int fd)
+>> +{
+>> +	struct v3d_cl *cl = igt_v3d_cl_create(fd, 1);
+>> +        uint8_t nop_opcode = 1;
+>
+> Not really reviewing this, the indents with spaces just caught my eyes.
+
+Fixed.
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE/JuuFDWp9/ZkuCBXtdYpNtH8nugFAlv/EN0ACgkQtdYpNtH8
+nuh+KxAAr7BwRBOSFgq9aHCJMn2euJiN2c+rImuPsZoS06brLGoyydFnZYh2/rUd
+JIdxkLpZosEJmNK3DZNASfeheCTh+5Y5H1nRHNnDBcRJ118mpokAVzdSE7FGQFVW
+glStb8e1Ci56J0V4ZxqT24Wadg0HdHRqFXXySarlHaG+QDItfCAn1mjP24DaOAJE
+ygX04FNRgcgT+Db5u9ixg+64TaA33aa1p7IlY5J/vo7fk37ogpbwv946odvjizrJ
++7LfD9rzHIfL7eB6ODZ2TlAVrWhJ6sc/r2R3SJAvZwakjfaG87jc4SYT2rDBl7q5
+fFn5ZfSbitveKzWglYk7BhL910OFJaLSGvT4PcMDaL0wlg9EJwqU/JiHr9tVUn5E
+kJHjtPj44lqgo4AWZ2pfJuGAyQKbFzrpJq+fo9SIFCGA9qAgK0CHghzq74ZYEUxO
+5rKq4nQ1Q76VoWzITgIzjUp/QHwh09Nw/JxSc8RG5MCESJmFmOnb6ztjmZIE+66S
+/W2Xa8/NhxjcWyL2DA1xCtCKoW9cNUfx2qw/upaEXL4kEyV4EZgKGL5eye8/rxDN
+eLa90zVovsJsmQ2d5yzNjMN0ep4l9b7geO/ktcW3GXTzYwZZb2y6d7bbEHRAJRie
+A+lSEqi2vReEH+FOZ3qk3lWFM+rqSu3ZzqnBcxA+e9rQjoneQyo=
+=Pc4H
+-----END PGP SIGNATURE-----
+--=-=-=--
+
+--===============1086360713==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1086360713==--
