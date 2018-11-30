@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM03-BY2-obe.outbound.protection.outlook.com
- (mail-eopbgr780081.outbound.protection.outlook.com [40.107.78.81])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 254ED6E60C
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Nov 2018 13:59:49 +0000 (UTC)
-From: "Kazlauskas, Nicholas" <Nicholas.Kazlauskas@amd.com>
-Date: Fri, 30 Nov 2018 13:59:45 +0000
-Message-ID: <501c910c-7ea2-1947-5548-b547500837af@amd.com>
-References: <20181128145620.11850-1-nicholas.kazlauskas@amd.com>
- <20181128145620.11850-3-nicholas.kazlauskas@amd.com>
- <20181130135614.GU9144@intel.com>
-In-Reply-To: <20181130135614.GU9144@intel.com>
-Content-Language: en-US
-Content-ID: <7D138256488B8648BE3F7EFF949B3365@namprd12.prod.outlook.com>
-MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/kms_plane_lowres: Don't fail
- tests when missing format/mod support
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id D63366E604
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Nov 2018 14:03:03 +0000 (UTC)
+Message-ID: <d2ebd9a66c096db3ca8f64f0637b656790f5a4fc.camel@bootlin.com>
+From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Date: Fri, 30 Nov 2018 15:02:52 +0100
+In-Reply-To: <21027818b010f3322de3717cd0c653079cb279f9.camel@redhat.com>
+References: <20181114152918.14692-1-paul.kocialkowski@bootlin.com>
+ <21027818b010f3322de3717cd0c653079cb279f9.camel@redhat.com>
+Mime-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] chamelium: Fix analog bridge detection
+ memory leak
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,68 +18,119 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0388404111=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Lyude Paul <lyude@redhat.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMTEvMzAvMTggODo1NiBBTSwgVmlsbGUgU3lyasOkbMOkIHdyb3RlOg0KPiBPbiBXZWQsIE5v
-diAyOCwgMjAxOCBhdCAwOTo1NjoxOUFNIC0wNTAwLCBOaWNob2xhcyBLYXpsYXVza2FzIHdyb3Rl
-Og0KPj4gVGhlIGttc19wbGFuZV9sb3dyZXMgc3VidGVzdHMgd2lsbCBmYWlsIG9uIG5vbi1pOTE1
-IGhhcmR3YXJlIGJlY2F1c2UNCj4+IG9mIHRoZSBkZXZpZCBsb29rdXBzIGFuZCB0aWxpbmcgZm9y
-bWF0IHJlcXVpcmVtZW50cy4NCj4+DQo+PiBUaGlzIHBhdGNoIG1ha2VzIHVzZSBvZiB0aGUgaWd0
-X2Rpc3BsYXlfaGFzX2Zvcm1hdF9tb2QoKSBoZWxwZXIgdG8NCj4+IGNoZWNrIGZvciBzdXBwb3J0
-IGJlZm9yZSBmYWlsaW5nIGZiIGNyZWF0aW9uLg0KPj4NCj4+IFRoZSB0ZXN0cyBzdGlsbCB3b24n
-dCBmdWxseSBydW4geWV0IG9uIGk5MTUgaGFyZHdhcmUgYmVjYXVzZSB0aGV5J2xsDQo+PiBza2lw
-IGR1cmluZyBjYWxscyB0byBpZ3RfYXNzZXJ0X3BsYW5lX3Zpc2libGUgLSB0aG9zZSByZXF1aXJl
-IGFuIGk5MTUNCj4+IGV4dGVuc2lvbiB0byBnZXQgdGhlIENSVEMvcGxhbmUgc2V0IGZvciBhIGdp
-dmVuIHBpcGUuDQo+Pg0KPj4gdjI6IFVzZSBpZ3RfZGlzcGxheV9oYXNfZm9ybWF0X21vZCBoZWxw
-ZXIgKFZpbGxlKQ0KPj4NCj4+IENjOiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFAbGlu
-dXguaW50ZWwuY29tPg0KPj4gU2lnbmVkLW9mZi1ieTogTmljaG9sYXMgS2F6bGF1c2thcyA8bmlj
-aG9sYXMua2F6bGF1c2thc0BhbWQuY29tPg0KPj4gLS0tDQo+PiAgIHRlc3RzL2ttc19wbGFuZV9s
-b3dyZXMuYyB8IDI0ICsrKysrKysrKysrKysrKysrLS0tLS0tLQ0KPj4gICAxIGZpbGUgY2hhbmdl
-ZCwgMTcgaW5zZXJ0aW9ucygrKSwgNyBkZWxldGlvbnMoLSkNCj4+DQo+PiBkaWZmIC0tZ2l0IGEv
-dGVzdHMva21zX3BsYW5lX2xvd3Jlcy5jIGIvdGVzdHMva21zX3BsYW5lX2xvd3Jlcy5jDQo+PiBp
-bmRleCAwODI0ZWY4Zi4uNjNhNGU1YjggMTAwNjQ0DQo+PiAtLS0gYS90ZXN0cy9rbXNfcGxhbmVf
-bG93cmVzLmMNCj4+ICsrKyBiL3Rlc3RzL2ttc19wbGFuZV9sb3dyZXMuYw0KPj4gQEAgLTE0MSw2
-ICsxNDEsMTIgQEAgdGVzdF9zZXR1cChkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlLCB1aW50
-NjRfdCBtb2RpZmllciwNCj4+ICAgCWludCBzaXplOw0KPj4gICAJaW50IGkgPSAxLCB4LCB5Ow0K
-Pj4gICAJaWd0X3BsYW5lX3QgKnBsYW5lOw0KPj4gKwl1aW50NjRfdCBwbGFuZV9tb2RpZmllcjsN
-Cj4+ICsJdWludDMyX3QgcGxhbmVfZm9ybWF0Ow0KPiANCj4gVGhlc2UgY291bGQgYmUgbW92ZWQg
-aW50byB0aWdodGVyIHNjb3BlLg0KPiANCj4gQXBhcnQgZnJvbSB0aGF0IGxndG0NCj4gUmV2aWV3
-ZWQtYnk6IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+DQpJ
-J2xsIGZpeCB0aGF0IHVwIHRoZW4gc2VuZCB0aGUgdjMuIFRoYW5rcy4NCg0KTmljaG9sYXMgS2F6
-bGF1c2thcw0KDQo+IA0KPj4gKw0KPj4gKwlpZ3Rfc2tpcF9vbighaWd0X2Rpc3BsYXlfaGFzX2Zv
-cm1hdF9tb2QoJmRhdGEtPmRpc3BsYXksDQo+PiArCQkJCQkJRFJNX0ZPUk1BVF9YUkdCODg4OCwN
-Cj4+ICsJCQkJCQltb2RpZmllcikpOw0KPj4gICANCj4+ICAgCWlndF9vdXRwdXRfc2V0X3BpcGUo
-b3V0cHV0LCBwaXBlKTsNCj4+ICAgDQo+PiBAQCAtMTcxLDEwICsxNzcsMTkgQEAgdGVzdF9zZXR1
-cChkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlLCB1aW50NjRfdCBtb2RpZmllciwNCj4+ICAg
-CQl4ID0gMDsNCj4+ICAgCQl5ID0gbW9kZS0+dmRpc3BsYXkgLSBzaXplOw0KPj4gICANCj4+ICsJ
-CXBsYW5lX2Zvcm1hdCA9IHBsYW5lLT50eXBlID09IERSTV9QTEFORV9UWVBFX0NVUlNPUiA/DQo+
-PiArCQkJRFJNX0ZPUk1BVF9BUkdCODg4OCA6IERSTV9GT1JNQVRfWFJHQjg4ODg7DQo+PiArDQo+
-PiArCQlwbGFuZV9tb2RpZmllciA9IHBsYW5lLT50eXBlID09IERSTV9QTEFORV9UWVBFX0NVUlNP
-UiA/DQo+PiArCQkJTE9DQUxfRFJNX0ZPUk1BVF9NT0RfTk9ORSA6IG1vZGlmaWVyOw0KPj4gKw0K
-Pj4gKwkJaWd0X3NraXBfb24oIWlndF9wbGFuZV9oYXNfZm9ybWF0X21vZChwbGFuZSwgcGxhbmVf
-Zm9ybWF0LA0KPj4gKwkJCQkJCSAgICAgIHBsYW5lX21vZGlmaWVyKSk7DQo+PiArDQo+PiAgIAkJ
-aWd0X2NyZWF0ZV9jb2xvcl9mYihkYXRhLT5kcm1fZmQsDQo+PiAgIAkJCQkgICAgc2l6ZSwgc2l6
-ZSwNCj4+IC0JCQkJICAgIHBsYW5lLT50eXBlID09IERSTV9QTEFORV9UWVBFX0NVUlNPUiA/IERS
-TV9GT1JNQVRfQVJHQjg4ODggOiBEUk1fRk9STUFUX1hSR0I4ODg4LA0KPj4gLQkJCQkgICAgcGxh
-bmUtPnR5cGUgPT0gRFJNX1BMQU5FX1RZUEVfQ1VSU09SID8gTE9DQUxfRFJNX0ZPUk1BVF9NT0Rf
-Tk9ORSA6IG1vZGlmaWVyLA0KPj4gKwkJCQkgICAgcGxhbmVfZm9ybWF0LA0KPj4gKwkJCQkgICAg
-cGxhbmVfbW9kaWZpZXIsDQo+PiAgIAkJCQkgICAgMS4wLCAxLjAsIDAuMCwNCj4+ICAgCQkJCSAg
-ICAmZGF0YS0+ZmJbaV0pOw0KPj4gICANCj4+IEBAIC0yNTEsMTEgKzI2Niw2IEBAIHN0YXRpYyB2
-b2lkDQo+PiAgIHRlc3RfcGxhbmVfcG9zaXRpb24oZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlw
-ZSwgdWludDY0X3QgbW9kaWZpZXIpDQo+PiAgIHsNCj4+ICAgCWlndF9vdXRwdXRfdCAqb3V0cHV0
-Ow0KPj4gLQljb25zdCBpbnQgZ2VuID0gaW50ZWxfZ2VuKGludGVsX2dldF9kcm1fZGV2aWQoZGF0
-YS0+ZHJtX2ZkKSk7DQo+PiAtDQo+PiAtCWlmIChtb2RpZmllciA9PSBMT0NBTF9JOTE1X0ZPUk1B
-VF9NT0RfWV9USUxFRCB8fA0KPj4gLQkgICAgbW9kaWZpZXIgPT0gTE9DQUxfSTkxNV9GT1JNQVRf
-TU9EX1lmX1RJTEVEKQ0KPj4gLQkJaWd0X3NraXBfb24oZ2VuIDwgOSk7DQo+PiAgIA0KPj4gICAJ
-Zm9yX2VhY2hfdmFsaWRfb3V0cHV0X29uX3BpcGUoJmRhdGEtPmRpc3BsYXksIHBpcGUsIG91dHB1
-dCkNCj4+ICAgCQl0ZXN0X3BsYW5lX3Bvc2l0aW9uX3dpdGhfb3V0cHV0KGRhdGEsIHBpcGUsIG91
-dHB1dCwgbW9kaWZpZXIpOw0KPj4gLS0gDQo+PiAyLjE3LjENCj4gDQoNCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
-dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+
+--===============0388404111==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-NCDRGQGWZR3BkEajYxTq"
+
+
+--=-NCDRGQGWZR3BkEajYxTq
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On Tue, 2018-11-20 at 20:44 -0500, Lyude Paul wrote:
+> Reviewed-by: Lyude Paul <lyude@redhat.com>
+>=20
+> Do you need me to push this? Or do you have push access for igt nowadays?
+
+Sorry for the delayed answer. I don't have commit access, so feel free
+to push this!
+
+Thanks,
+
+Paul
+
+> On Wed, 2018-11-14 at 16:29 +0100, Paul Kocialkowski wrote:
+> > The connector and EDID blob retrieved when checking for analog bridges
+> > need to be freed before returning from the associated function.
+> >=20
+> > Fixes: f8d6afa67 ("tests/chamelium: Detect analog bridges and handle
+> > EDID accordingly")
+> > Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+> > ---
+> >  tests/kms_chamelium.c | 10 ++++++----
+> >  1 file changed, 6 insertions(+), 4 deletions(-)
+> >=20
+> > diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
+> > index e0e3e3f1..55b346a9 100644
+> > --- a/tests/kms_chamelium.c
+> > +++ b/tests/kms_chamelium.c
+> > @@ -175,8 +175,10 @@ check_analog_bridge(data_t *data, struct chamelium=
+_port
+> > *port)
+> >  	unsigned char *edid;
+> >  	char edid_vendor[3];
+> > =20
+> > -	if (chamelium_port_get_type(port) !=3D DRM_MODE_CONNECTOR_VGA)
+> > +	if (chamelium_port_get_type(port) !=3D DRM_MODE_CONNECTOR_VGA) {
+> > +		drmModeFreeConnector(connector);
+> >  		return false;
+> > +	}
+> > =20
+> >  	igt_assert(kmstest_get_property(data->drm_fd, connector->connector_id=
+,
+> >  					DRM_MODE_OBJECT_CONNECTOR, "EDID",
+> > NULL,
+> > @@ -191,14 +193,14 @@ check_analog_bridge(data_t *data, struct
+> > chamelium_port *port)
+> >  			  ((edid[9] & 0xe0) >> 5)) + '@';
+> >  	edid_vendor[2] =3D (edid[9] & 0x1f) + '@';
+> > =20
+> > +	drmModeFreePropertyBlob(edid_blob);
+> > +	drmModeFreeConnector(connector);
+> > +
+> >  	/* Analog bridges provide their own EDID */
+> >  	if (edid_vendor[0] !=3D 'I' || edid_vendor[1] !=3D 'G' ||
+> >  	    edid_vendor[0] !=3D 'T')
+> >  		return true;
+> > =20
+> > -	drmModeFreePropertyBlob(edid_blob);
+> > -	drmModeFreeConnector(connector);
+> > -
+> >  	return false;
+> >  }
+> > =20
+--=20
+Paul Kocialkowski, Bootlin (formerly Free Electrons)
+Embedded Linux and kernel engineering
+https://bootlin.com
+
+--=-NCDRGQGWZR3BkEajYxTq
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEJZpWjZeIetVBefti3cLmz3+fv9EFAlwBQwwACgkQ3cLmz3+f
+v9ENjQgAmpU9exwAGAS0oHEM0hsXA1iSV1U2zpjy9bdUwanJFZXYYfX0Dti2+P2m
+SBzwvzLOzy/Hp1thNz1gK+l0vRZ07xxVNTnSE/Id+vD4ZzvTrFYKRyA1LWweE8N0
+oxc72xA98EpoE1sYaRKUfJ0MWF4JdoFHQKfBEQdTgVR2zRjFwsJf9cc190CMEe25
+vs0n4xBim5aL0RMOKn/Wl+FhrkAZ4uTKlwR4AqROJvRpSiKdOfbZXzYrewMYNaTd
+fL/7okZ6Ft+k8c/9RjK4pjdTVj6HbacnqNNCGpj8zxfxApCLku7d1F22ypsTdGnU
+QAIqkvduwz/AuRJ5TsnNSJnnbFw2Ug==
+=qjbv
+-----END PGP SIGNATURE-----
+
+--=-NCDRGQGWZR3BkEajYxTq--
+
+
+--===============0388404111==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0388404111==--
