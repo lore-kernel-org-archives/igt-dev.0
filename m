@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 42CC06E25C
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Dec 2018 23:11:41 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Tue, 4 Dec 2018 23:11:39 +0000
-Message-ID: <e1f7af53fd9f62684d3c8bb66b3d1e986d6f60a0.camel@intel.com>
-References: <20181204230944.7753-1-jose.souza@intel.com>
- <20181204230944.7753-3-jose.souza@intel.com>
-In-Reply-To: <20181204230944.7753-3-jose.souza@intel.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/8] lib/psr: Add support to new
- modified i915_edp_psr_status output
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 04 Dec 2018 23:42:51 -0000
+Message-ID: <20181204234251.4005.82264@emeril.freedesktop.org>
+References: <20181204230102.24002-1-manasi.d.navare@intel.com>
+In-Reply-To: <20181204230102.24002-1-manasi.d.navare@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdC9r?=
+ =?utf-8?q?ms=5Fdp=5Fdsc=3A_Basic_KMS_test_to_validate_VESA_DSC_on_DP/eDP_?=
+ =?utf-8?b?KHJldjQp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,93 +15,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1363109576=="
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>, "Vivi,
- Rodrigo" <rodrigo.vivi@intel.com>
+To: Manasi Navare <manasi.d.navare@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1363109576==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-h3rHXiYj6eJeiuvq5jGn"
-
---=-h3rHXiYj6eJeiuvq5jGn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-kernel patches changing the debugfs can be found here:
-
-https://patchwork.freedesktop.org/series/53510/
-
-On Tue, 2018-12-04 at 15:09 -0800, Jos=C3=A9 Roberto de Souza wrote:
-> The kernel patch 'drm/i915: Refactor PSR status debugfs' changed the
-> output of i915_edp_psr_status, so adding support to the new output
-> here while keeping the support to the old one for a while.
->=20
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-> Signed-off-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
-> ---
->  lib/igt_psr.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
->=20
-> diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-> index d68f4b49..eecee459 100644
-> --- a/lib/igt_psr.c
-> +++ b/lib/igt_psr.c
-> @@ -34,8 +34,10 @@ static bool psr_active(int debugfs_fd, bool
-> check_active)
-> =20
->  	igt_debugfs_simple_read(debugfs_fd, "i915_edp_psr_status", buf,
->  				sizeof(buf));
-> -	active =3D strstr(buf, "HW Enabled & Active bit: yes\n") &&
-> -		(strstr(buf, "SRDENT") || strstr(buf, "SLEEP"));
-> +
-> +	active =3D strstr(buf, "HW Enabled & Active bit: yes\n") ||
-> +		 strstr(buf, "Source PSR ctl: enabled");
-> +	active &=3D !!(strstr(buf, "SRDENT") || strstr(buf, "SLEEP"));
->  	return check_active ? active : !active;
->  }
-> =20
-> @@ -138,5 +140,6 @@ bool psr_supported(int debugfs_fd)
-> =20
->  	igt_debugfs_simple_read(debugfs_fd, "i915_edp_psr_status", buf,
->  				sizeof(buf));
-> -	return strstr(buf, "Sink_Support: yes\n");
-> +	return strstr(buf, "Sink_Support: yes\n") ||
-> +	       strstr(buf, "Sink support: yes");
->  }
-
---=-h3rHXiYj6eJeiuvq5jGn
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlwHCakACgkQVenbO/mO
-WkkSuAf/YjQF5IWY2v3mu7nkbgVN1zvZ78IjduHn77LCD9q+h4EOLV33qUteklVW
-Xh0FGTPMFf6t1HDHJ1lmw0do82794OOqhUmqmEPg9ZK1kXm7k/xf7J/jUiLRil3T
-wvOcQbuT+BT2hv5xMjyqnrhcAlbE8XyDnhSbodPLHeTXdHld0AvG40suL/BnfxHN
-dm7436NVkJEF7R5h80b/TSyvtHaBReYd7WYN+N6y2d+6up2C9MCDgZS1GIdJW7ob
-p4sKQB7zYdNZpWKUhEcaSeTtXPI2MebjqcNUBqdh2nn8S3y9Oqf7kZmwZKVf4jOZ
-en9CIhaEH9mA+Frt/cVhwHbji/n2Zg==
-=9i7u
------END PGP SIGNATURE-----
-
---=-h3rHXiYj6eJeiuvq5jGn--
-
---===============1363109576==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============1363109576==--
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdC9rbXNfZHBfZHNjOiBCYXNpYyBLTVMg
+dGVzdCB0byB2YWxpZGF0ZSBWRVNBIERTQyBvbiBEUC9lRFAgKHJldjQpClVSTCAgIDogaHR0cHM6
+Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy81MDY1Mi8KU3RhdGUgOiBzdWNjZXNz
+Cgo9PSBTdW1tYXJ5ID09CgpDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIElHVF80NzQxIC0+IElH
+VFBXXzIxMTkKPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PQoKU3VtbWFyeQotLS0tLS0tCgogICoqU1VDQ0VTUyoqCgogIE5vIHJlZ3Jlc3Npb25zIGZv
+dW5kLgoKICBFeHRlcm5hbCBVUkw6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9h
+cGkvMS4wL3Nlcmllcy81MDY1Mi9yZXZpc2lvbnMvNC9tYm94LwoKUG9zc2libGUgbmV3IGlzc3Vl
+cwotLS0tLS0tLS0tLS0tLS0tLS0tCgogIEhlcmUgYXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhh
+dCBtYXkgaGF2ZSBiZWVuIGludHJvZHVjZWQgaW4gSUdUUFdfMjExOToKCiMjIyBJR1QgY2hhbmdl
+cyAjIyMKCiMjIyMgV2FybmluZ3MgIyMjIwoKICAqIGlndEBrbXNfYnVzeUBiYXNpYy1mbGlwLWE6
+CiAgICAtIHtmaS1rYmwtNzU2N3V9OiAgICAgUEFTUyAtPiBTS0lQICsyCgogICogaWd0QGttc19w
+aXBlX2NyY19iYXNpY0Bub25ibG9ja2luZy1jcmMtcGlwZS1jOgogICAgLSB7Zmkta2JsLTc1Njd1
+fTogICAgIFNLSVAgLT4gUEFTUyArMzMKCiAgCktub3duIGlzc3VlcwotLS0tLS0tLS0tLS0KCiAg
+SGVyZSBhcmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gSUdUUFdfMjExOSB0aGF0IGNvbWUgZnJvbSBr
+bm93biBpc3N1ZXM6CgojIyMgSUdUIGNoYW5nZXMgIyMjCgojIyMjIElzc3VlcyBoaXQgIyMjIwoK
+ICAqIGlndEBnZW1fY3R4X2NyZWF0ZUBiYXNpYy1maWxlczoKICAgIC0gZmktYnN3LWtlZmthOiAg
+ICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDg2NTZdCgogICoge2lndEBydW5uZXJAYWJvcnRlZH06
+CiAgICAtIHtmaS1pY2wteX06ICAgICAgICAgTk9UUlVOIC0+IEZBSUwgW2ZkbyMxMDgwNzBdCgog
+IAojIyMjIFBvc3NpYmxlIGZpeGVzICMjIyMKCiAgKiBpZ3RAaTkxNV9tb2R1bGVfbG9hZEByZWxv
+YWQtd2l0aC1mYXVsdC1pbmplY3Rpb246CiAgICAtIHtmaS1rYmwtNzU2N3V9OiAgICAgRE1FU0ct
+V0FSTiBbZmRvIzEwNTYwMl0gLyBbZmRvIzEwODUyOV0gLT4gUEFTUyArMQoKICAqIGlndEBpOTE1
+X3NlbGZ0ZXN0QGxpdmVfY29oZXJlbmN5OgogICAgLSBmaS1nZGctNTUxOiAgICAgICAgIERNRVNH
+LUZBSUwgW2ZkbyMxMDcxNjRdIC0+IFBBU1MKCiAgKiBpZ3RAaTkxNV9zZWxmdGVzdEBsaXZlX2hh
+bmdjaGVjazoKICAgIC0gZmktc2tsLWlvbW11OiAgICAgICBJTkNPTVBMRVRFIFtmZG8jMTA4NjAy
+XSAvIFtmZG8jMTA4NzQ0XSAtPiBQQVNTCgogICogaWd0QHBtX3JwbUBtb2R1bGUtcmVsb2FkOgog
+ICAgLSB7Zmkta2JsLTc1Njd1fTogICAgIERNRVNHLVdBUk4gW2ZkbyMxMDg1MjldIC0+IFBBU1MK
+CiAgCiMjIyMgV2FybmluZ3MgIyMjIwoKICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVfY29udGV4
+dHM6CiAgICAtIHtmaS1pY2wtdTN9OiAgICAgICAgRE1FU0ctRkFJTCBbZmRvIzEwODU2OV0gLT4g
+SU5DT01QTEVURSBbZmRvIzEwODMxNV0KCiAgKiBpZ3RAa21zX2NoYW1lbGl1bUBjb21tb24taHBk
+LWFmdGVyLXN1c3BlbmQ6CiAgICAtIHtmaS1rYmwtNzU2N3V9OiAgICAgRE1FU0ctRkFJTCBbZmRv
+IzEwNTA3OV0gLT4gRE1FU0ctV0FSTiBbZmRvIzEwODQ3M10KCiAgCiAge25hbWV9OiBUaGlzIGVs
+ZW1lbnQgaXMgc3VwcHJlc3NlZC4gVGhpcyBtZWFucyBpdCBpcyBpZ25vcmVkIHdoZW4gY29tcHV0
+aW5nCiAgICAgICAgICB0aGUgc3RhdHVzIG9mIHRoZSBkaWZmZXJlbmNlIChTVUNDRVNTLCBXQVJO
+SU5HLCBvciBGQUlMVVJFKS4KCiAgW2ZkbyMxMDUwNzldOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0
+b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDUwNzkKICBbZmRvIzEwNTYwMl06IGh0dHBzOi8vYnVn
+cy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNTYwMgogIFtmZG8jMTA3MTY0XTog
+aHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3MTY0CiAgW2Zk
+byMxMDgwNzBdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0x
+MDgwNzAKICBbZmRvIzEwODMxNV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19i
+dWcuY2dpP2lkPTEwODMxNQogIFtmZG8jMTA4NDczXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
+Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA4NDczCiAgW2ZkbyMxMDg1MjldOiBodHRwczovL2J1Z3Mu
+ZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDg1MjkKICBbZmRvIzEwODU2OV06IGh0
+dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODU2OQogIFtmZG8j
+MTA4NjAyXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA4
+NjAyCiAgW2ZkbyMxMDg2NTZdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVn
+LmNnaT9pZD0xMDg2NTYKICBbZmRvIzEwODc0NF06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5v
+cmcvc2hvd19idWcuY2dpP2lkPTEwODc0NAoKClBhcnRpY2lwYXRpbmcgaG9zdHMgKDQ5IC0+IDQ0
+KQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KCiAgQWRkaXRpb25hbCAoMSk6IGZpLWlj
+bC15IAogIE1pc3NpbmcgICAgKDYpOiBmaS1pbGstbTU0MCBmaS1oc3ctNDIwMHUgZmktYnl0LXNx
+dWF3a3MgZmktYnN3LWN5YW4gZmktY3RnLXA4NjAwIGZpLXBudi1kNTEwIAoKCkJ1aWxkIGNoYW5n
+ZXMKLS0tLS0tLS0tLS0tLQoKICAgICogSUdUOiBJR1RfNDc0MSAtPiBJR1RQV18yMTE5CgogIENJ
+X0RSTV81MjYzOiA4MjM2NjQ2MDBmMWRjNmIzNTE2MTIyODNjZDEzODM2YjBkNzY4MjUxIEAgZ2l0
+Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xpbnV4CiAgSUdUUFdfMjExOTogaHR0
+cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yMTE5LwogIElHVF80
+NzQxOiA1YzhmODlmNjdjN2IzMjAxNGJjMjI0MjFlNDhmM2MwY2Y0ZTVjYTNhIEAgZ2l0Oi8vYW5v
+bmdpdC5mcmVlZGVza3RvcC5vcmcveG9yZy9hcHAvaW50ZWwtZ3B1LXRvb2xzCgoKCj09IFRlc3Rs
+aXN0IGNoYW5nZXMgPT0KCitpZ3RAa21zX2RwX2RzY0BiYXNpYy1kc2MtZW5hYmxlLWRwCitpZ3RA
+a21zX2RwX2RzY0BiYXNpYy1kc2MtZW5hYmxlLWVkcAoKPT0gTG9ncyA9PQoKRm9yIG1vcmUgZGV0
+YWlscyBzZWU6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdf
+MjExOS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0
+LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
+aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
