@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 2B90F6E798
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Dec 2018 15:30:39 +0000 (UTC)
+Date: Fri, 7 Dec 2018 16:29:54 +0100
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20181207152954.immaynpf3vab7zug@flea>
+References: <cover.c2054fa47f16b6319869fa4a8a2357a3a13e6d6c.1543917797.git-series.maxime.ripard@bootlin.com>
+ <20181204100826.15522-7-maxime.ripard@bootlin.com>
+ <20181204193205.GP9144@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 07 Dec 2018 15:25:09 -0000
-Message-ID: <20181207152509.15092.16429@emeril.freedesktop.org>
-References: <20181207085929.24365-1-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20181207085929.24365-1-tvrtko.ursulin@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5BRFT=2Ci-g-t=2C1/2=5D_tests/gem=5Fshrink=3A_Ba?=
- =?utf-8?q?ckground=2C_direct_and_OOM_shrinker_plus_userptr_tests_=28rev3?=
- =?utf-8?q?=29?=
+In-Reply-To: <20181204193205.GP9144@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 7/8] igt: fb: Fallback on KMS dumb
+ buffer allocation for YUV buffers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,71 +19,122 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0283862172=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, eben@raspberrypi.org, igt-dev@lists.freedesktop.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW1JGVCxp
-LWctdCwxLzJdIHRlc3RzL2dlbV9zaHJpbms6IEJhY2tncm91bmQsIGRpcmVjdCBhbmQgT09NIHNo
-cmlua2VyIHBsdXMgdXNlcnB0ciB0ZXN0cyAocmV2MykKVVJMICAgOiBodHRwczovL3BhdGNod29y
-ay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzUzNzI2LwpTdGF0ZSA6IHN1Y2Nlc3MKCj09IFN1bW1h
-cnkgPT0KCkNJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20gQ0lfRFJNXzUyODYgLT4gSUdUUFdfMjEz
-Nwo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CgpT
-dW1tYXJ5Ci0tLS0tLS0KCiAgKipXQVJOSU5HKioKCiAgTWlub3IgdW5rbm93biBjaGFuZ2VzIGNv
-bWluZyB3aXRoIElHVFBXXzIxMzcgbmVlZCB0byBiZSB2ZXJpZmllZAogIG1hbnVhbGx5LgogIAog
-IElmIHlvdSB0aGluayB0aGUgcmVwb3J0ZWQgY2hhbmdlcyBoYXZlIG5vdGhpbmcgdG8gZG8gd2l0
-aCB0aGUgY2hhbmdlcwogIGludHJvZHVjZWQgaW4gSUdUUFdfMjEzNywgcGxlYXNlIG5vdGlmeSB5
-b3VyIGJ1ZyB0ZWFtIHRvIGFsbG93IHRoZW0KICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJl
-IG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4KCiAgRXh0ZXJu
-YWwgVVJMOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvYXBpLzEuMC9zZXJpZXMv
-NTM3MjYvcmV2aXNpb25zLzMvbWJveC8KClBvc3NpYmxlIG5ldyBpc3N1ZXMKLS0tLS0tLS0tLS0t
-LS0tLS0tLQoKICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQgbWF5IGhhdmUgYmVl
-biBpbnRyb2R1Y2VkIGluIElHVFBXXzIxMzc6CgojIyMgSUdUIGNoYW5nZXMgIyMjCgojIyMjIFBv
-c3NpYmxlIHJlZ3Jlc3Npb25zICMjIyMKCiAgKiBpZ3RAa21zX2ZsaXBAYmFzaWMtZmxpcC12cy13
-Zl92Ymxhbms6CiAgICAtIHtmaS1pY2wtdTN9OiAgICAgICAgTk9UUlVOIC0+IElOQ09NUExFVEUK
-CiAgCiMjIyMgV2FybmluZ3MgIyMjIwoKICAqIGlndEBwbV9ycHNAYmFzaWMtYXBpOgogICAgLSBm
-aS1hcGwtZ3VjOiAgICAgICAgIFNLSVAgLT4gUEFTUyArMTQKCiAgCktub3duIGlzc3VlcwotLS0t
-LS0tLS0tLS0KCiAgSGVyZSBhcmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gSUdUUFdfMjEzNyB0aGF0
-IGNvbWUgZnJvbSBrbm93biBpc3N1ZXM6CgojIyMgSUdUIGNoYW5nZXMgIyMjCgojIyMjIElzc3Vl
-cyBoaXQgIyMjIwoKICAqIGlndEBnZW1fZXhlY19zdXNwZW5kQGJhc2ljLXM0LWRldmljZXM6CiAg
-ICAtIGZpLWl2Yi0zNTIwbTogICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTA4ODgwXQoKICAqIGln
-dEBpOTE1X21vZHVsZV9sb2FkQHJlbG9hZDoKICAgIC0gZmktYmxiLWU2ODUwOiAgICAgICBQQVNT
-IC0+IElOQ09NUExFVEUgW2ZkbyMxMDc3MThdCgogICogaWd0QGttc19waXBlX2NyY19iYXNpY0Bz
-dXNwZW5kLXJlYWQtY3JjLXBpcGUtYToKICAgIC0gZmktc25iLTI2MDA6ICAgICAgICBQQVNTIC0+
-IERNRVNHLVdBUk4gW2ZkbyMxMDIzNjVdCgogIAojIyMjIFBvc3NpYmxlIGZpeGVzICMjIyMKCiAg
-KiBpZ3RAZ2VtX2V4ZWNfc3VzcGVuZEBiYXNpYy1zMzoKICAgIC0ge2ZpLWljbC11M306ICAgICAg
-ICBJTkNPTVBMRVRFIFtmZG8jMTA3NzEzXSAtPiBQQVNTCgogICogaWd0QGk5MTVfc2VsZnRlc3RA
-bGl2ZV9leGVjbGlzdHM6CiAgICAtIGZpLWFwbC1ndWM6ICAgICAgICAgSU5DT01QTEVURSBbZmRv
-IzEwMzkyN10gLT4gUEFTUwoKICAqIGlndEB2Z2VtX2Jhc2ljQGRtYWJ1Zi1leHBvcnQ6CiAgICAt
-IGZpLWFwbC1ndWM6ICAgICAgICAgRE1FU0ctV0FSTiBbZmRvIzEwODk2OF0gLT4gUEFTUyArMTAK
-CiAgCiAge25hbWV9OiBUaGlzIGVsZW1lbnQgaXMgc3VwcHJlc3NlZC4gVGhpcyBtZWFucyBpdCBp
-cyBpZ25vcmVkIHdoZW4gY29tcHV0aW5nCiAgICAgICAgICB0aGUgc3RhdHVzIG9mIHRoZSBkaWZm
-ZXJlbmNlIChTVUNDRVNTLCBXQVJOSU5HLCBvciBGQUlMVVJFKS4KCiAgW2ZkbyMxMDIzNjVdOiBo
-dHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDIzNjUKICBbZmRv
-IzEwMzkyN106IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEw
-MzkyNwogIFtmZG8jMTA3NzEzXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1
-Zy5jZ2k/aWQ9MTA3NzEzCiAgW2ZkbyMxMDc3MThdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Au
-b3JnL3Nob3dfYnVnLmNnaT9pZD0xMDc3MTgKICBbZmRvIzEwODg4MF06IGh0dHBzOi8vYnVncy5m
-cmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODg4MAogIFtmZG8jMTA4OTY4XTogaHR0
-cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA4OTY4CgoKUGFydGlj
-aXBhdGluZyBob3N0cyAoNTAgLT4gNDYpCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQoK
-ICBBZGRpdGlvbmFsICgyKTogZmktZ2xrLWo0MDA1IGZpLXBudi1kNTEwIAogIE1pc3NpbmcgICAg
-KDYpOiBmaS1rYmwtc29yYWthIGZpLWlsay1tNTQwIGZpLWhzdy00MjAwdSBmaS1ieXQtc3F1YXdr
-cyBmaS1ic3ctY3lhbiBmaS1jdGctcDg2MDAgCgoKQnVpbGQgY2hhbmdlcwotLS0tLS0tLS0tLS0t
-CgogICAgKiBJR1Q6IElHVF80NzQzIC0+IElHVFBXXzIxMzcKCiAgQ0lfRFJNXzUyODY6IDQ3NzE3
-YTVhNGQxNTlmOTgwZGEwNTFhY2QxNjhmMmM0MGRiYzY3MzYgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVk
-ZXNrdG9wLm9yZy9nZngtY2kvbGludXgKICBJR1RQV18yMTM3OiBodHRwczovL2ludGVsLWdmeC1j
-aS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzIxMzcvCiAgSUdUXzQ3NDM6IGVkYjJkYjJjZjJi
-NjY2NWQ3YmEzZmE5MTE3MjYzMzAyZjYzMDdhNGYgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9w
-Lm9yZy94b3JnL2FwcC9pbnRlbC1ncHUtdG9vbHMKCgoKPT0gVGVzdGxpc3QgY2hhbmdlcyA9PQoK
-K2lndEBnZW1fc2hyaW5rQHR3by1yZWNsYWltcy1hbmQtb29tCitpZ3RAZ2VtX3Nocmlua0B0d28t
-cmVjbGFpbXMtYW5kLW9vbS11c2VycHRyCgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNl
-ZTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yMTM3Lwpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1h
-aWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZy
-ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+
+--===============0283862172==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="j7zlztwbo64kw6l2"
+Content-Disposition: inline
+
+
+--j7zlztwbo64kw6l2
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Dec 04, 2018 at 09:32:05PM +0200, Ville Syrj=E4l=E4 wrote:
+> On Tue, Dec 04, 2018 at 11:08:22AM +0100, Maxime Ripard wrote:
+> > The current YUV buffer allocation only works on the i915 driver, since
+> > it uses some private ioctl. However, we can to use that code on other
+> > drivers that implement only KMS, so if the driver is something else
+> > than the i915 driver, let's allocate a dumb buffer.
+> >=20
+> > Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
+> > ---
+> >  lib/igt_fb.c | 35 +++++++++++++++++++++++++++++++++--
+> >  1 file changed, 33 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> > index d6242a6652f1..f2e6c89f3884 100644
+> > --- a/lib/igt_fb.c
+> > +++ b/lib/igt_fb.c
+> > @@ -501,6 +501,8 @@ static int i915_create_gem_for_fb(struct igt_fb *fb)
+> > =20
+> >  static int create_yuv_bo_for_fb(struct igt_fb *fb)
+> >  {
+> > +	unsigned int virtual_height;
+> > +	unsigned int bpp;
+> >  	uint64_t size =3D calc_fb_size(fb);
+> >  	int fd =3D fb->fd;
+> > =20
+> > @@ -511,8 +513,37 @@ static int create_yuv_bo_for_fb(struct igt_fb *fb)
+> >  	if (is_i915_device(fd))
+> >  		return i915_create_gem_for_fb(fb);
+> > =20
+> > -	/* We cannot allocate any other buffer type */
+> > -	igt_assert(true);
+> > +	switch (fb->drm_format) {
+> > +	case DRM_FORMAT_NV12:
+> > +		bpp =3D 8;
+> > +		break;
+> > +
+> > +	case DRM_FORMAT_UYVY:
+> > +	case DRM_FORMAT_VYUY:
+> > +	case DRM_FORMAT_YUYV:
+> > +	case DRM_FORMAT_YVYU:
+> > +		bpp =3D 16;
+> > +		break;
+> > +
+> > +	default:
+> > +		igt_assert_f(false, "Unsupported YUV format\n");
+> > +	}
+> > +
+> > +	switch (fb->drm_format) {
+> > +	case DRM_FORMAT_NV12:
+> > +		virtual_height =3D fb->height * 3 / 2;
+> > +		break;
+>=20
+> A bit of a hack. The main problem with this is that the kernel won't
+> know anything about any stride alignment limitations etc. If we do use
+> this hack I guess it would be more technically correct to write it as
+> DIV_ROUND_UP(fb->size, fb->stride[0]), or something along those lines.
+
+It's the same algorithm that modetest is using, which is why I went
+for that. It must have been tested on a wide variety of platforms.
+
+> Which also brings me to the other issue we have. calc_plane_stride()
+> and calc_plane_size() are somewhat i915 specific. We should probably
+> do something about that.
+
+Ah, right, I missed that.
+
+When will we start to put some intel specific code in a generic code
+path?
+
+Maxime
+
+--=20
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--j7zlztwbo64kw6l2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXAqR8gAKCRDj7w1vZxhR
+xXlhAQDR5WkxkQx6Y3PPoxruK62SvAsGBDhf1u80G1wDUQyDRQEAtwsPTVSh8P1X
+ZvqU5oZoktsLB+yqwx1u7YDljwOi8AE=
+=dFTa
+-----END PGP SIGNATURE-----
+
+--j7zlztwbo64kw6l2--
+
+--===============0283862172==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0283862172==--
