@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 499756F031
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Dec 2018 19:47:38 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Thu, 13 Dec 2018 19:47:36 +0000
+Message-ID: <ecbd57d3fbce574928208d3b0c86238e72dc2193.camel@intel.com>
+References: <20181204230944.7753-1-jose.souza@intel.com>
+ <20181204230944.7753-4-jose.souza@intel.com>
+ <6ce3aaad562f8e3242dc7921de4baeab1f3f98ad.camel@intel.com>
+In-Reply-To: <6ce3aaad562f8e3242dc7921de4baeab1f3f98ad.camel@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 13 Dec 2018 19:02:45 -0000
-Message-ID: <20181213190245.28801.59929@emeril.freedesktop.org>
-References: <1544723476-22383-1-git-send-email-juhapekka.heikkila@gmail.com>
-In-Reply-To: <1544723476-22383-1-git-send-email-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdC4g?=
- =?utf-8?b?aWdub3JlLiBtZS4gKHJldjIp?=
+Subject: Re: [igt-dev] [PATCH i-g-t 4/8] lib/psr: Make psr_active() only
+ cares about PSR1
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,80 +20,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1975713811=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
+Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdC4gaWdub3JlLiBtZS4gKHJldjIpClVS
-TCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy81NDAxNC8KU3Rh
-dGUgOiBzdWNjZXNzCgo9PSBTdW1tYXJ5ID09CgpDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIENJ
-X0RSTV81MzEyIC0+IElHVFBXXzIxNTkKPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PQoKU3VtbWFyeQotLS0tLS0tCgogICoqV0FSTklORyoqCgogIE1p
-bm9yIHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0aCBJR1RQV18yMTU5IG5lZWQgdG8gYmUgdmVy
-aWZpZWQKICBtYW51YWxseS4KICAKICBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMg
-aGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNoYW5nZXMKICBpbnRyb2R1Y2VkIGluIElHVFBX
-XzIxNTksIHBsZWFzZSBub3RpZnkgeW91ciBidWcgdGVhbSB0byBhbGxvdyB0aGVtCiAgdG8gZG9j
-dW1lbnQgdGhpcyBuZXcgZmFpbHVyZSBtb2RlLCB3aGljaCB3aWxsIHJlZHVjZSBmYWxzZSBwb3Np
-dGl2ZXMgaW4gQ0kuCgogIEV4dGVybmFsIFVSTDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0
-b3Aub3JnL2FwaS8xLjAvc2VyaWVzLzU0MDE0L3JldmlzaW9ucy8yL21ib3gvCgpQb3NzaWJsZSBu
-ZXcgaXNzdWVzCi0tLS0tLS0tLS0tLS0tLS0tLS0KCiAgSGVyZSBhcmUgdGhlIHVua25vd24gY2hh
-bmdlcyB0aGF0IG1heSBoYXZlIGJlZW4gaW50cm9kdWNlZCBpbiBJR1RQV18yMTU5OgoKIyMjIElH
-VCBjaGFuZ2VzICMjIwoKIyMjIyBXYXJuaW5ncyAjIyMjCgogICogaWd0QGttc19waXBlX2NyY19i
-YXNpY0Bub25ibG9ja2luZy1jcmMtcGlwZS1jOgogICAgLSBmaS1rYmwtNzU2N3U6ICAgICAgIFBB
-U1MgLT4gU0tJUCArMjcKCiAgKiBpZ3RAcG1fcnBtQGJhc2ljLXBjaS1kMy1zdGF0ZToKICAgIC0g
-ZmktYnl0LW4yODIwOiAgICAgICBTS0lQIC0+IFBBU1MKICAgIC0gZmktYnN3LWtlZmthOiAgICAg
-ICBTS0lQIC0+IFBBU1MKCiAgCktub3duIGlzc3VlcwotLS0tLS0tLS0tLS0KCiAgSGVyZSBhcmUg
-dGhlIGNoYW5nZXMgZm91bmQgaW4gSUdUUFdfMjE1OSB0aGF0IGNvbWUgZnJvbSBrbm93biBpc3N1
-ZXM6CgojIyMgSUdUIGNoYW5nZXMgIyMjCgojIyMjIElzc3VlcyBoaXQgIyMjIwoKICAqIGlndEBh
-bWRncHUvYW1kX2Jhc2ljQHVzZXJwdHI6CiAgICAtIGZpLWtibC04ODA5ZzogICAgICAgUEFTUyAt
-PiBETUVTRy1XQVJOIFtmZG8jMTA4OTY1XQoKICAqIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAcmVh
-ZC1jcmMtcGlwZS1iLWZyYW1lLXNlcXVlbmNlOgogICAgLSBmaS1ieXQtY2xhcHBlcjogICAgIFBB
-U1MgLT4gRkFJTCBbZmRvIzEwMzE5MV0gLyBbZmRvIzEwNzM2Ml0KCiAgCiMjIyMgUG9zc2libGUg
-Zml4ZXMgIyMjIwoKICAqIGlndEBnZW1fY3R4X2NyZWF0ZUBiYXNpYy1maWxlczoKICAgIC0gZmkt
-YnN3LW4zMDUwOiAgICAgICBJTkNPTVBMRVRFIFtmZG8jMTA1ODc2XSAtPiBQQVNTCgogICogaWd0
-QGk5MTVfbW9kdWxlX2xvYWRAcmVsb2FkLXdpdGgtZmF1bHQtaW5qZWN0aW9uOgogICAgLSBmaS1r
-YmwtNzU2N3U6ICAgICAgIERNRVNHLVdBUk4gW2ZkbyMxMDU2MDJdIC8gW2ZkbyMxMDg1MjldIC0+
-IFBBU1MgKzEKCiAgKiBpZ3RAaTkxNV9zZWxmdGVzdEBsaXZlX2NvaGVyZW5jeToKICAgIC0gZmkt
-Z2RnLTU1MTogICAgICAgICBETUVTRy1GQUlMIFtmZG8jMTA3MTY0XSAtPiBQQVNTCgogICogaWd0
-QGttc19jaGFtZWxpdW1AaGRtaS1ocGQtZmFzdDoKICAgIC0gZmkta2JsLTc1MDB1OiAgICAgICBG
-QUlMIFtmZG8jMTA4NzY3XSAtPiBQQVNTCgogICogaWd0QGttc19waXBlX2NyY19iYXNpY0ByZWFk
-LWNyYy1waXBlLWEtZnJhbWUtc2VxdWVuY2U6CiAgICAtIGZpLWJ5dC1jbGFwcGVyOiAgICAgRkFJ
-TCBbZmRvIzEwMzE5MV0gLyBbZmRvIzEwNzM2Ml0gLT4gUEFTUwoKICAqIGlndEBrbXNfcGlwZV9j
-cmNfYmFzaWNAc3VzcGVuZC1yZWFkLWNyYy1waXBlLWE6CiAgICAtIGZpLWtibC03NTY3dTogICAg
-ICAgRE1FU0ctRkFJTCBbZmRvIzEwNTA3OV0gLT4gU0tJUAoKICAqIGlndEBrbXNfcGlwZV9jcmNf
-YmFzaWNAc3VzcGVuZC1yZWFkLWNyYy1waXBlLWI6CiAgICAtIGZpLWJsYi1lNjg1MDogICAgICAg
-SU5DT01QTEVURSBbZmRvIzEwNzcxOF0gLT4gUEFTUwoKICAqIGlndEBwbV9ycG1AYmFzaWMtcnRl
-OgogICAgLSBmaS1ieXQtbjI4MjA6ICAgICAgIEZBSUwgLT4gUEFTUwogICAgLSBmaS1ic3cta2Vm
-a2E6ICAgICAgIEZBSUwgLT4gUEFTUwoKICAqIGlndEBwbV9ycG1AbW9kdWxlLXJlbG9hZDoKICAg
-IC0gZmkta2JsLTc1Njd1OiAgICAgICBETUVTRy1XQVJOIFtmZG8jMTA4NTI5XSAtPiBQQVNTCgog
-IAogIFtmZG8jMTAzMTkxXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5j
-Z2k/aWQ9MTAzMTkxCiAgW2ZkbyMxMDUwNzldOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3Jn
-L3Nob3dfYnVnLmNnaT9pZD0xMDUwNzkKICBbZmRvIzEwNTYwMl06IGh0dHBzOi8vYnVncy5mcmVl
-ZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNTYwMgogIFtmZG8jMTA1ODc2XTogaHR0cHM6
-Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA1ODc2CiAgW2ZkbyMxMDcx
-NjRdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDcxNjQK
-ICBbZmRvIzEwNzM2Ml06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dp
-P2lkPTEwNzM2MgogIFtmZG8jMTA3NzE4XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9z
-aG93X2J1Zy5jZ2k/aWQ9MTA3NzE4CiAgW2ZkbyMxMDg1MjldOiBodHRwczovL2J1Z3MuZnJlZWRl
-c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDg1MjkKICBbZmRvIzEwODc2N106IGh0dHBzOi8v
-YnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODc2NwogIFtmZG8jMTA4OTY1
-XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA4OTY1CgoK
-UGFydGljaXBhdGluZyBob3N0cyAoNTMgLT4gNDUpCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLQoKICBNaXNzaW5nICAgICg4KTogZmkta2JsLXNvcmFrYSBmaS1pbGstbTU0MCBmaS1oc3ct
-NDIwMHUgZmktYnl0LXNxdWF3a3MgZmktYnN3LWN5YW4gZmktY3RnLXA4NjAwIGZpLWljbC15IGZp
-LWtibC03NTYwdSAKCgpCdWlsZCBjaGFuZ2VzCi0tLS0tLS0tLS0tLS0KCiAgICAqIElHVDogSUdU
-XzQ3NDcgLT4gSUdUUFdfMjE1OQoKICBDSV9EUk1fNTMxMjogZTY5NzU1ZDA4NmQzOGQ1NTlhMzYy
-ZWQ3MTQwMzZmODgzYjdiYTc5YSBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL2dmeC1j
-aS9saW51eAogIElHVFBXXzIxNTk6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2Ry
-bS10aXAvSUdUUFdfMjE1OS8KICBJR1RfNDc0NzogYWQ4MjFkMWRjNWQwZWVhNGFjM2EwZThlMjlj
-NTZjN2Y2NjE5MTEwOCBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL3hvcmcvYXBwL2lu
-dGVsLWdwdS10b29scwoKPT0gTG9ncyA9PQoKRm9yIG1vcmUgZGV0YWlscyBzZWU6IGh0dHBzOi8v
-aW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMjE1OS8KX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QK
-aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5v
-cmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+--===============1975713811==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-54er2YDe3pqg2Fcv2klk"
+
+--=-54er2YDe3pqg2Fcv2klk
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, 2018-12-11 at 16:16 -0800, Dhinakaran Pandiyan wrote:
+> On Tue, 2018-12-04 at 15:09 -0800, Jos=C3=A9 Roberto de Souza wrote:
+> > PSR2 will have it own function to detect if is active so we can
+> > drop
+> > the sleep state search and also to make sure that PSR1 is active
+> > lets
+> > search for "PSR1 enabled".
+>=20
+> How do you plan to handle PSR2 in kms_frontbuffer_tracking or
+> fbt_fbcon? Have new PSR2 sub tests for them?
+
+My plan is have a PSR and PSR2 function to make functions really simple
+and easy to read.
+
+>=20
+>=20
+> Would it be better to have some sort of PSR state maintained in the
+> psr
+> library so that the functions know whether to test for PSR1 or PSR2?
+>=20
+> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
+> > Signed-off-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
+> > ---
+> >  lib/igt_psr.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/lib/igt_psr.c b/lib/igt_psr.c
+> > index eecee459..c6d6390f 100644
+> > --- a/lib/igt_psr.c
+> > +++ b/lib/igt_psr.c
+> > @@ -37,7 +37,8 @@ static bool psr_active(int debugfs_fd, bool
+> > check_active)
+> > =20
+> >  	active =3D strstr(buf, "HW Enabled & Active bit: yes\n") ||
+> >  		 strstr(buf, "Source PSR ctl: enabled");
+> > -	active &=3D !!(strstr(buf, "SRDENT") || strstr(buf, "SLEEP"));
+> > +	active &=3D !!strstr(buf, "SRDENT");
+> > +	active &=3D !!strstr(buf, "Status: PSR1 enabled");
+> >  	return check_active ? active : !active;
+> >  }
+> > =20
+
+--=-54er2YDe3pqg2Fcv2klk
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlwSt1QACgkQVenbO/mO
+Wkn2sgf9E1NUhWitRws6BMSOoPYuRdqBT+187Q07x4I+SPmKelZxUL0cV7gvDGOI
+EqtW/uvD3fYHbRzit39KnrBTBCWypj13tUn65h3MUqxtZ9hQqqHAcZBo3mGFqfOt
+59fBX3sM7pI/K4b7dVWKWjBWr6wdfIyay6Gt+T+dAuBmAJ3rCfwVkmsKvNPMs6Mx
+RNihqplRIbpa4nxd3BSXk4jpETpVEt9YuQVSi8VRvKmAzaC8i0G5DzSmOTcO1SB1
+TDz//ZCyclB4vpCgPqFOCroNpg2S9xc9qvLypx4O+Ef0lI8ZRkakQaANaymrbuYZ
+TUznq0sHRSDfxSlF12KewmBvViM+kQ==
+=XvIG
+-----END PGP SIGNATURE-----
+
+--=-54er2YDe3pqg2Fcv2klk--
+
+--===============1975713811==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1975713811==--
