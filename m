@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE5786F1AF
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Dec 2018 00:22:40 +0000 (UTC)
-Message-ID: <567151e07ff43dd9fb35814ee46b59738eb8519e.camel@intel.com>
-From: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-Date: Thu, 13 Dec 2018 16:22:29 -0800
-In-Reply-To: <91d15d29abd351f92e537049fc7d42e981f80a94.camel@intel.com>
-References: <20181213095234.5251-1-maarten.lankhorst@linux.intel.com>
- <20181213100010.GD21184@phenom.ffwll.local>
- <91d15d29abd351f92e537049fc7d42e981f80a94.camel@intel.com>
-Mime-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_frontbuffer_tracking: Make
- sure GPU is quiescent before handling assertions.
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 8A7D86F37B
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Dec 2018 08:58:37 +0000 (UTC)
+Date: Fri, 14 Dec 2018 09:58:25 +0100
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20181214085825.26lahqk7rzlnc4vu@flea>
+References: <20181213155533.18048-1-paul.kocialkowski@bootlin.com>
+ <20181213155533.18048-2-paul.kocialkowski@bootlin.com>
+MIME-Version: 1.0
+In-Reply-To: <20181213155533.18048-2-paul.kocialkowski@bootlin.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 01/12] chamelium: Pass dimensions
+ instead of mode to pattern generation helper
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,60 +18,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: dhinakaran.pandiyan@intel.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1087290846=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, Eben Upton <eben@raspberrypi.org>, igt-dev@lists.freedesktop.org, Boris Brezillon <boris.brezillon@bootlin.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCAyMDE4LTEyLTEzIGF0IDE2OjE4IC0wODAwLCBEaGluYWthcmFuIFBhbmRpeWFuIHdy
-b3RlOgo+IE9uIFRodSwgMjAxOC0xMi0xMyBhdCAxMTowMCArMDEwMCwgRGFuaWVsIFZldHRlciB3
-cm90ZToKPiA+IE9uIFRodSwgRGVjIDEzLCAyMDE4IGF0IDEwOjUyOjM0QU0gKzAxMDAsIE1hYXJ0
-ZW4gTGFua2hvcnN0IHdyb3RlOgo+ID4gPiBUeXBpY2FsbHkgUFNSIGVuYWJsZXMgaW4gYXJvdW5k
-IDEzNiBtcywgYnV0IG9uIHNvbWUgdGVzdHMgdGhlIHdlCj4gPiA+IGhhdmUKPiA+ID4gdG8gZXhw
-bGljaXRseSBtYWtlIHN1cmUgdGhhdCB0aGUgZ3B1IGlzIGlkbGUgYmVmb3JlIHJlbmRlcmluZy4K
-PiA+ID4gCj4gPiA+IE90aGVyd2lzZSwgc29tZXRpbWVzIHdlIHdhaXQgZm9yIHRoZSBiYWNrZ3Jv
-dW5kIGZsdXNoZXIgdG8KPiA+ID4gZmluaXNoLAo+ID4gPiB3aGljaCB3aWxsIHRha2UgYXQgbGVh
-c3QgYSBzZWNvbmQgbG9uZ2VyLCBhbmQgY2F1c2VzIHRoZSB3YWl0IGZvcgo+ID4gPiBQU1IgdG8g
-dGltZW91dC4KPiA+ID4gCj4gPiA+IE9uIGttc19mcm9udGJ1ZmZlcl90cmFja2luZzoKPiA+ID4g
-U3RhcnRpbmcgc3VidGVzdDogcHNyLTJwLXNjbmRzY3JuLXNocmZiLXBsZmxpcC1ibHQKPiA+ID4g
-cHNyX2FjdGl2ZShkZWJ1Z2ZzX2ZkLCB0cnVlKSB0b29rIDEzNm1zCj4gPiA+IHBzcl9hY3RpdmUo
-ZGVidWdmc19mZCwgdHJ1ZSkgdG9vayAxMzZtcwo+ID4gPiBwc3JfYWN0aXZlKGRlYnVnZnNfZmQs
-IHRydWUpIHRvb2sgMzUwbXMKPiA+ID4gcHNyX2FjdGl2ZShkZWJ1Z2ZzX2ZkLCB0cnVlKSB0b29r
-IDEzNm1zCj4gPiA+IHBzcl9hY3RpdmUoZGVidWdmc19mZCwgdHJ1ZSkgdG9vayAxNTk4bXMKCk5v
-dyB0aGF0IEkgcmVhZCB0aGlzIGFnYWluLCB3ZSBzaG91bGQgYmUgY2hlY2tpbmcgZm9yIFBTUiBl
-eGl0IGFmdGVyIGEKZmxpcCBidXQgaW5zdGVhZCB3ZSBhcmUgd2FpdGluZyBmb3IgUFNSIHRvIGJl
-Y29tZSBhY3RpdmUgYWdhaW4uCkhvd2V2ZXIsIHRoaXMgaXMgYSBkaWZmZXJlbnQgaXNzdWUgdGhh
-dCB3ZSBzaG91bGQgZml4IHNlcGFyYXRlbHkuCgo+ID4gPiAKPiA+ID4gQ2M6IERoaW5ha2FyYW4g
-UGFuZGl5YW4gPGRoaW5ha2FyYW4ucGFuZGl5YW5AaW50ZWwuY29tPgo+ID4gPiBDYzogSm9zw6kg
-Um9iZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+Cj4gPiA+IENjOiBDaHJpcyBX
-aWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KPiA+ID4gQnVnemlsbGE6IGh0dHBzOi8v
-YnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODczMwo+ID4gPiBTdWdnZXN0
-ZWQtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+ID4gPiAtLS0K
-PiA+ID4gIHRlc3RzL2ttc19mcm9udGJ1ZmZlcl90cmFja2luZy5jIHwgMyArKysKPiA+ID4gIDEg
-ZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKykKPiA+ID4gCj4gPiA+IGRpZmYgLS1naXQgYS90
-ZXN0cy9rbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcuYwo+ID4gPiBiL3Rlc3RzL2ttc19mcm9udGJ1
-ZmZlcl90cmFja2luZy5jCj4gPiA+IGluZGV4IDI3NmVmODNjZTM4Ni4uNzkyNGJiOTAyYTJhIDEw
-MDY0NAo+ID4gPiAtLS0gYS90ZXN0cy9rbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcuYwo+ID4gPiAr
-KysgYi90ZXN0cy9rbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcuYwo+ID4gPiBAQCAtMTY0Miw2ICsx
-NjQyLDkgQEAgc3RhdGljIHZvaWQgX19kb19hc3NlcnRpb25zKGNvbnN0IHN0cnVjdAo+ID4gPiB0
-ZXN0X21vZGUgKnQsIGludCBmbGFncywKPiA+ID4gIHsKPiA+ID4gIAlmbGFncyA9IGFkanVzdF9h
-c3NlcnRpb25fZmxhZ3ModCwgZmxhZ3MpOwo+ID4gPiAgCj4gPiA+ICsJLyogTWFrZSBzdXJlIGFu
-eSBzdWJtaXR0ZWQgcmVuZGVyaW5nIGlzIG5vdyBpZGxlLiAqLwo+ID4gPiArCWdlbV9xdWllc2Nl
-bnRfZ3B1KGRybS5mZCk7Cj4gCj4gU2hvdWxkbid0IHRoaXMgYmUgY2FsbGVkIGZyb20gZHJhd19y
-ZWN0KCkgc28gdGhhdCB0aGUgZmxpcCBpcyBkb25lCj4gYWZ0ZXIgcmVuZGVyaW5nIGlzIGNvbXBs
-ZXRlPwo+IAo+IAo+IAo+IAo+ID4gCj4gPiBIbSwgSSB0aG91Z2h0IHdlIGRvIHRoaXMgYWxyZWFk
-eSBhdCBvcGVuIHRpbWUsIGJ1dCBvaCB3ZWxsLCBtYWtlcwo+ID4gc2Vuc2UuCj4gPiAKPiA+IFJl
-dmlld2VkLWJ5OiBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0dGVyQGZmd2xsLmNoPgo+ID4gPiAr
-Cj4gPiA+ICAJaWd0X2RlYnVnKCJjaGVja2luZyBhc3NlcnRzIGluIGxpbmUgJWlcbiIsIGxpbmUp
-Owo+ID4gPiAgCj4gPiA+ICAJd2FpdF91c2VyKDIsICJQYXVzZWQgYmVmb3JlIGFzc2VydGlvbnMu
-Iik7Cj4gPiA+IC0tIAo+ID4gPiAyLjE5LjIKPiA+ID4gCj4gPiA+IF9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gPiA+IGlndC1kZXYgbWFpbGluZyBsaXN0
-Cj4gPiA+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4gPiA+IGh0dHBzOi8vbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo+ID4gCj4gPiAKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
-ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+
+--===============1087290846==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="7vo6c6b7gfvffejw"
+Content-Disposition: inline
+
+
+--7vo6c6b7gfvffejw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Dec 13, 2018 at 04:55:22PM +0100, Paul Kocialkowski wrote:
+> In order to reuse the pattern generation helper for overlay planes,
+> let's provide the pattern generation helper with the explicit dimensions
+> instead of the mode (that only applies to the primary plane).
+>=20
+> Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+> Reviewed-by: Lyude Paul <lyude@redhat.com>
+
+Reviewed-by: Maxime Ripard <maxime.ripard@bootlin.com>
+
+Maxime
+
+--=20
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--7vo6c6b7gfvffejw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXBNwsQAKCRDj7w1vZxhR
+xYmvAQDKhnGl3bHEiVryj0VlszSs9xclBb7mKzzngWTY7zpx6QD9E/A2ZCEiapgq
+Rm77CyBHx7UuZ9XRwIr64WRuJTDMoAA=
+=4+e9
+-----END PGP SIGNATURE-----
+
+--7vo6c6b7gfvffejw--
+
+--===============1087290846==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1087290846==--
