@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 17 Dec 2018 14:45:55 -0200
-From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Message-ID: <20181217164555.nfpkflnfay2mqlje@smtp.gmail.com>
+MIME-Version: 1.0
 References: <20180905203827.n7vpugbs6bjvijpg@smtp.gmail.com>
  <20181217154930.GH21184@phenom.ffwll.local>
-MIME-Version: 1.0
 In-Reply-To: <20181217154930.GH21184@phenom.ffwll.local>
+From: Lucas De Marchi <lucas.de.marchi@gmail.com>
+Date: Mon, 17 Dec 2018 09:22:31 -0800
+Message-ID: <CAKi4VALZd18PghT8=xcMw9BLG4-5RM2+dKdaTECjG4BdrvmjZg@mail.gmail.com>
 Subject: Re: [igt-dev] [PATCH i-g-t v2] Add support for forcing specific
  module
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -15,203 +15,98 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0748431908=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Daniel Vetter <daniel@ffwll.ch>
-Cc: igt-dev@lists.freedesktop.org, gustavo@padovan.org, intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>, "Gustavo F. Padovan" <gustavo@padovan.org>, intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============0748431908==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="b6ni3p7dc6eeudg5"
-Content-Disposition: inline
-
-
---b6ni3p7dc6eeudg5
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On 12/17, Daniel Vetter wrote:
-> On Wed, Sep 05, 2018 at 05:38:27PM -0300, Rodrigo Siqueira wrote:
-> > This commit adds a new option for forcing the use of a specific driver
-> > indicated via an environment variable.
-> >=20
-> > Changes since V1:
-> >  Petri:
-> >  - Use an environment variable instead of command line
-> >  - Refactor the loop in __search_and_open to accept forced module
-> >  - Don't try to load kernel modules
-> >=20
-> > Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
->=20
-> Note: You can't drop the s-o-b line if your patch contains work by other
-> people, like from Petri here. Proper way to resend a patch by someone else
-> is to just add a subject prefix of "PATCH RESEND" and otherwise keep
-> everything unchanged (including author and everything).
->=20
-> https://patchwork.freedesktop.org/patch/245532/
-
-Hi,
-
-Thanks for your feedback.
-Next time I will take care for not make this mistake again.
-
-Best Regards
-Rodrigo Siqueira
-=20
-> Cheers, Daniel
->=20
-> > ---
-> >  lib/drmtest.c  | 44 ++++++++++++++++++++++++++++++++++++++++++--
-> >  lib/drmtest.h  |  2 ++
-> >  lib/igt_core.c |  5 +++++
-> >  3 files changed, 49 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/lib/drmtest.c b/lib/drmtest.c
-> > index bfa2e0f0..6e35d1be 100644
-> > --- a/lib/drmtest.c
-> > +++ b/lib/drmtest.c
-> > @@ -123,6 +123,36 @@ static bool has_known_intel_chipset(int fd)
-> >  	return true;
-> >  }
-> > =20
-> > +static char _forced_driver[5] =3D "";
-> > +
-> > +/**
-> > + * __set_forced_driver:
-> > + * @name: name of driver to forcibly use
-> > + *
-> > + * Set the name of a driver to use when calling #drm_open_driver with
-> > + * the #DRIVER_ANY flag.
-> > + */
-> > +void __set_forced_driver(const char *name)
-> > +{
-> > +	if (!strcmp(name, "")) {
-> > +		igt_warn("IGT_FORCE_DRIVER flag specified without a value,"
-> > +			 "ignoring force option\n");
-> > +		return;
-> > +	}
-> > +
-> > +	igt_info("Attempt to force module %s\n", name);
-> > +
-> > +	strncpy(_forced_driver, name, 4);
-> > +}
-> > +
-> > +static const char *forced_driver(void)
-> > +{
-> > +	if (_forced_driver[0])
-> > +		return _forced_driver;
-> > +
-> > +	return NULL;
-> > +}
-> > +
-> >  #define LOCAL_I915_EXEC_VEBOX	(4 << 0)
-> >  /**
-> >   * gem_quiescent_gpu:
-> > @@ -250,8 +280,18 @@ static int __search_and_open(const char *base, int=
- offset, unsigned int chipset)
-> > =20
-> >  		sprintf(name, "%s%u", base, i + offset);
-> >  		fd =3D open_device(name, chipset);
-> > -		if (fd !=3D -1)
-> > -			return fd;
-> > +		if (fd =3D=3D -1)
-> > +			continue;
-> > +
-> > +		// Force module
-> > +		if (chipset =3D=3D DRIVER_ANY && forced_driver()) {
-> > +			if (__is_device(fd, forced_driver()))
-> > +				return fd;
-> > +			close(fd);
-> > +			continue;
-> > +		}
-> > +
-> > +		return fd;
-> >  	}
-> > =20
-> >  	return -1;
-> > diff --git a/lib/drmtest.h b/lib/drmtest.h
-> > index 949865ee..62f53ec3 100644
-> > --- a/lib/drmtest.h
-> > +++ b/lib/drmtest.h
-> > @@ -51,6 +51,8 @@
-> >   */
-> >  #define DRIVER_ANY 	~(DRIVER_VGEM)
-> > =20
-> > +void __set_forced_driver(const char *name);
-> > +
-> >  /**
-> >   * ARRAY_SIZE:
-> >   * @arr: static array
-> > diff --git a/lib/igt_core.c b/lib/igt_core.c
-> > index 23bb858f..8e65b5e3 100644
-> > --- a/lib/igt_core.c
-> > +++ b/lib/igt_core.c
-> > @@ -647,6 +647,11 @@ static void common_init_env(void)
-> >  	igt_frame_dump_path =3D getenv("IGT_FRAME_DUMP_PATH");
-> > =20
-> >  	stderr_needs_sentinel =3D getenv("IGT_SENTINEL_ON_STDERR") !=3D NULL;
-> > +
-> > +	env =3D getenv("IGT_FORCE_DRIVER");
-> > +	if (env) {
-> > +		__set_forced_driver(env);
-> > +	}
-> >  }
-> > =20
-> >  static int common_init(int *argc, char **argv,
-> > --=20
-> > 2.18.0
-> >=20
-> >=20
-> > --=20
-> > Rodrigo Siqueira
-> > http://siqueira.tech
-> > Graduate Student
-> > Department of Computer Science
-> > University of S=E3o Paulo
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
->=20
-> --=20
-> Daniel Vetter
-> Software Engineer, Intel Corporation
-> http://blog.ffwll.ch
-
---b6ni3p7dc6eeudg5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlwX0sMACgkQWJzP/com
-vP9k7xAAsZwL4GE5IZCcx356LZaB+3L/bTRimtUB3d5djSOdkGCrjcMpZsmmF/A6
-KNdXXU0p4CwpuB+TwCEcI/h0k2gJrEVQKz/HSaiFyUTcJ+ijoKL+oESaHwWPdWzZ
-G/1319r2D8P1lyTj3qjcN7NfMksWoFeNVVtz5g9ARq8UZybRFPzlg8Fe5XHGiSTO
-7ZYpxGADJSnkNAxUkZK1F5/o91A7vREL7RLBNyYTGDzduvHh5qudlUF7EX+dvvAN
-O2aH4AzxZb24/eN2K7njuRk9113mq2aqUUbW//g72fL3xpRSfjSR7qBcPfz+Z7Wt
-HPNqismZq0IhiGkHESFUM0nLzeOtvqF6LSEYNNcj6tPbeLEZmNl2cz3Krc2x1Ius
-UHTZV1HAy5//FbYS5AWfsBN1nJE55MXjLOsjFDlty6jA2FZYTfGXranwIYf6QyLD
-II17FZIBkIL86lJjxAXo5OQ666TtWh+E1iJFSyJMKh56ZvTg3tk870wSzpustFS2
-pd2B+oAG3vXxQVj3rmJST2XpNaw2gzxicrP9iWvMZ4krFUJpuG3oENLOs1eY81Fn
-AKpq6WJPy1R+NTGi9DhCj6iP+ccOyNHm547QBlw61hZNmG1/FK0Vq6pTG8gRkeSP
-NGx6mRaIw5biqnoJvhIhW9LP4nL+cpyy1YVA75bWhpBW0D/ATFo=
-=R1pW
------END PGP SIGNATURE-----
-
---b6ni3p7dc6eeudg5--
-
---===============0748431908==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0748431908==--
+T24gTW9uLCBEZWMgMTcsIDIwMTggYXQgNzo0OSBBTSBEYW5pZWwgVmV0dGVyIDxkYW5pZWxAZmZ3
+bGwuY2g+IHdyb3RlOgo+Cj4gT24gV2VkLCBTZXAgMDUsIDIwMTggYXQgMDU6Mzg6MjdQTSAtMDMw
+MCwgUm9kcmlnbyBTaXF1ZWlyYSB3cm90ZToKPiA+IFRoaXMgY29tbWl0IGFkZHMgYSBuZXcgb3B0
+aW9uIGZvciBmb3JjaW5nIHRoZSB1c2Ugb2YgYSBzcGVjaWZpYyBkcml2ZXIKPiA+IGluZGljYXRl
+ZCB2aWEgYW4gZW52aXJvbm1lbnQgdmFyaWFibGUuCj4gPgo+ID4gQ2hhbmdlcyBzaW5jZSBWMToK
+PiA+ICBQZXRyaToKPiA+ICAtIFVzZSBhbiBlbnZpcm9ubWVudCB2YXJpYWJsZSBpbnN0ZWFkIG9m
+IGNvbW1hbmQgbGluZQo+ID4gIC0gUmVmYWN0b3IgdGhlIGxvb3AgaW4gX19zZWFyY2hfYW5kX29w
+ZW4gdG8gYWNjZXB0IGZvcmNlZCBtb2R1bGUKPiA+ICAtIERvbid0IHRyeSB0byBsb2FkIGtlcm5l
+bCBtb2R1bGVzCj4gPgo+ID4gU2lnbmVkLW9mZi1ieTogUm9kcmlnbyBTaXF1ZWlyYSA8cm9kcmln
+b3NpcXVlaXJhbWVsb0BnbWFpbC5jb20+Cj4KPiBOb3RlOiBZb3UgY2FuJ3QgZHJvcCB0aGUgcy1v
+LWIgbGluZSBpZiB5b3VyIHBhdGNoIGNvbnRhaW5zIHdvcmsgYnkgb3RoZXIKPiBwZW9wbGUsIGxp
+a2UgZnJvbSBQZXRyaSBoZXJlLiBQcm9wZXIgd2F5IHRvIHJlc2VuZCBhIHBhdGNoIGJ5IHNvbWVv
+bmUgZWxzZQo+IGlzIHRvIGp1c3QgYWRkIGEgc3ViamVjdCBwcmVmaXggb2YgIlBBVENIIFJFU0VO
+RCIgYW5kIG90aGVyd2lzZSBrZWVwCj4gZXZlcnl0aGluZyB1bmNoYW5nZWQgKGluY2x1ZGluZyBh
+dXRob3IgYW5kIGV2ZXJ5dGhpbmcpLgo+Cj4gaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Au
+b3JnL3BhdGNoLzI0NTUzMi8KCkxhc3QgdGltZSBJIHdhcyB0b2xkIEkgaGF2ZSB0byBfYWRkXyBt
+eSBzLW8tYiBub25ldGhlbGVzcywgZXZlbiBpZgpqdXN0IHJlLXNlbmRpbmcgdGhlIHBhdGNoLgpJ
+IGRvbid0IHRoaW5rIEkgc2hvdWxkLCBidXQgaW4gdGhlIGVuZCBJIGhhZCB0byBjaGFuZ2UgdGhl
+IHNlcmllcywgYWRkCmFuZCBjaGFuZ2UgcGF0Y2hlcywKc28gaXQgZGlkbid0IG1hdHRlci4KCk1h
+eWJlIHdlIG5lZWQgc29tZSBjbGFyaWZpY2F0aW9uIG9uIHRoaXM/CgpodHRwczovL2xpc3RzLmZy
+ZWVkZXNrdG9wLm9yZy9hcmNoaXZlcy9pbnRlbC1nZngvMjAxOC1Ob3ZlbWJlci8xODMyOTEuaHRt
+bAoKTHVjYXMgRGUgTWFyY2hpCgoKPgo+IENoZWVycywgRGFuaWVsCj4KPiA+IC0tLQo+ID4gIGxp
+Yi9kcm10ZXN0LmMgIHwgNDQgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrLS0KPiA+ICBsaWIvZHJtdGVzdC5oICB8ICAyICsrCj4gPiAgbGliL2lndF9jb3JlLmMgfCAg
+NSArKysrKwo+ID4gIDMgZmlsZXMgY2hhbmdlZCwgNDkgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlv
+bnMoLSkKPiA+Cj4gPiBkaWZmIC0tZ2l0IGEvbGliL2RybXRlc3QuYyBiL2xpYi9kcm10ZXN0LmMK
+PiA+IGluZGV4IGJmYTJlMGYwLi42ZTM1ZDFiZSAxMDA2NDQKPiA+IC0tLSBhL2xpYi9kcm10ZXN0
+LmMKPiA+ICsrKyBiL2xpYi9kcm10ZXN0LmMKPiA+IEBAIC0xMjMsNiArMTIzLDM2IEBAIHN0YXRp
+YyBib29sIGhhc19rbm93bl9pbnRlbF9jaGlwc2V0KGludCBmZCkKPiA+ICAgICAgIHJldHVybiB0
+cnVlOwo+ID4gIH0KPiA+Cj4gPiArc3RhdGljIGNoYXIgX2ZvcmNlZF9kcml2ZXJbNV0gPSAiIjsK
+PiA+ICsKPiA+ICsvKioKPiA+ICsgKiBfX3NldF9mb3JjZWRfZHJpdmVyOgo+ID4gKyAqIEBuYW1l
+OiBuYW1lIG9mIGRyaXZlciB0byBmb3JjaWJseSB1c2UKPiA+ICsgKgo+ID4gKyAqIFNldCB0aGUg
+bmFtZSBvZiBhIGRyaXZlciB0byB1c2Ugd2hlbiBjYWxsaW5nICNkcm1fb3Blbl9kcml2ZXIgd2l0
+aAo+ID4gKyAqIHRoZSAjRFJJVkVSX0FOWSBmbGFnLgo+ID4gKyAqLwo+ID4gK3ZvaWQgX19zZXRf
+Zm9yY2VkX2RyaXZlcihjb25zdCBjaGFyICpuYW1lKQo+ID4gK3sKPiA+ICsgICAgIGlmICghc3Ry
+Y21wKG5hbWUsICIiKSkgewo+ID4gKyAgICAgICAgICAgICBpZ3Rfd2FybigiSUdUX0ZPUkNFX0RS
+SVZFUiBmbGFnIHNwZWNpZmllZCB3aXRob3V0IGEgdmFsdWUsIgo+ID4gKyAgICAgICAgICAgICAg
+ICAgICAgICAiaWdub3JpbmcgZm9yY2Ugb3B0aW9uXG4iKTsKPiA+ICsgICAgICAgICAgICAgcmV0
+dXJuOwo+ID4gKyAgICAgfQo+ID4gKwo+ID4gKyAgICAgaWd0X2luZm8oIkF0dGVtcHQgdG8gZm9y
+Y2UgbW9kdWxlICVzXG4iLCBuYW1lKTsKPiA+ICsKPiA+ICsgICAgIHN0cm5jcHkoX2ZvcmNlZF9k
+cml2ZXIsIG5hbWUsIDQpOwo+ID4gK30KPiA+ICsKPiA+ICtzdGF0aWMgY29uc3QgY2hhciAqZm9y
+Y2VkX2RyaXZlcih2b2lkKQo+ID4gK3sKPiA+ICsgICAgIGlmIChfZm9yY2VkX2RyaXZlclswXSkK
+PiA+ICsgICAgICAgICAgICAgcmV0dXJuIF9mb3JjZWRfZHJpdmVyOwo+ID4gKwo+ID4gKyAgICAg
+cmV0dXJuIE5VTEw7Cj4gPiArfQo+ID4gKwo+ID4gICNkZWZpbmUgTE9DQUxfSTkxNV9FWEVDX1ZF
+Qk9YICAgICAgICAoNCA8PCAwKQo+ID4gIC8qKgo+ID4gICAqIGdlbV9xdWllc2NlbnRfZ3B1Ogo+
+ID4gQEAgLTI1MCw4ICsyODAsMTggQEAgc3RhdGljIGludCBfX3NlYXJjaF9hbmRfb3Blbihjb25z
+dCBjaGFyICpiYXNlLCBpbnQgb2Zmc2V0LCB1bnNpZ25lZCBpbnQgY2hpcHNldCkKPiA+Cj4gPiAg
+ICAgICAgICAgICAgIHNwcmludGYobmFtZSwgIiVzJXUiLCBiYXNlLCBpICsgb2Zmc2V0KTsKPiA+
+ICAgICAgICAgICAgICAgZmQgPSBvcGVuX2RldmljZShuYW1lLCBjaGlwc2V0KTsKPiA+IC0gICAg
+ICAgICAgICAgaWYgKGZkICE9IC0xKQo+ID4gLSAgICAgICAgICAgICAgICAgICAgIHJldHVybiBm
+ZDsKPiA+ICsgICAgICAgICAgICAgaWYgKGZkID09IC0xKQo+ID4gKyAgICAgICAgICAgICAgICAg
+ICAgIGNvbnRpbnVlOwo+ID4gKwo+ID4gKyAgICAgICAgICAgICAvLyBGb3JjZSBtb2R1bGUKPiA+
+ICsgICAgICAgICAgICAgaWYgKGNoaXBzZXQgPT0gRFJJVkVSX0FOWSAmJiBmb3JjZWRfZHJpdmVy
+KCkpIHsKPiA+ICsgICAgICAgICAgICAgICAgICAgICBpZiAoX19pc19kZXZpY2UoZmQsIGZvcmNl
+ZF9kcml2ZXIoKSkpCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICByZXR1cm4gZmQ7
+Cj4gPiArICAgICAgICAgICAgICAgICAgICAgY2xvc2UoZmQpOwo+ID4gKyAgICAgICAgICAgICAg
+ICAgICAgIGNvbnRpbnVlOwo+ID4gKyAgICAgICAgICAgICB9Cj4gPiArCj4gPiArICAgICAgICAg
+ICAgIHJldHVybiBmZDsKPiA+ICAgICAgIH0KPiA+Cj4gPiAgICAgICByZXR1cm4gLTE7Cj4gPiBk
+aWZmIC0tZ2l0IGEvbGliL2RybXRlc3QuaCBiL2xpYi9kcm10ZXN0LmgKPiA+IGluZGV4IDk0OTg2
+NWVlLi42MmY1M2VjMyAxMDA2NDQKPiA+IC0tLSBhL2xpYi9kcm10ZXN0LmgKPiA+ICsrKyBiL2xp
+Yi9kcm10ZXN0LmgKPiA+IEBAIC01MSw2ICs1MSw4IEBACj4gPiAgICovCj4gPiAgI2RlZmluZSBE
+UklWRVJfQU5ZICAgfihEUklWRVJfVkdFTSkKPiA+Cj4gPiArdm9pZCBfX3NldF9mb3JjZWRfZHJp
+dmVyKGNvbnN0IGNoYXIgKm5hbWUpOwo+ID4gKwo+ID4gIC8qKgo+ID4gICAqIEFSUkFZX1NJWkU6
+Cj4gPiAgICogQGFycjogc3RhdGljIGFycmF5Cj4gPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9jb3Jl
+LmMgYi9saWIvaWd0X2NvcmUuYwo+ID4gaW5kZXggMjNiYjg1OGYuLjhlNjViNWUzIDEwMDY0NAo+
+ID4gLS0tIGEvbGliL2lndF9jb3JlLmMKPiA+ICsrKyBiL2xpYi9pZ3RfY29yZS5jCj4gPiBAQCAt
+NjQ3LDYgKzY0NywxMSBAQCBzdGF0aWMgdm9pZCBjb21tb25faW5pdF9lbnYodm9pZCkKPiA+ICAg
+ICAgIGlndF9mcmFtZV9kdW1wX3BhdGggPSBnZXRlbnYoIklHVF9GUkFNRV9EVU1QX1BBVEgiKTsK
+PiA+Cj4gPiAgICAgICBzdGRlcnJfbmVlZHNfc2VudGluZWwgPSBnZXRlbnYoIklHVF9TRU5USU5F
+TF9PTl9TVERFUlIiKSAhPSBOVUxMOwo+ID4gKwo+ID4gKyAgICAgZW52ID0gZ2V0ZW52KCJJR1Rf
+Rk9SQ0VfRFJJVkVSIik7Cj4gPiArICAgICBpZiAoZW52KSB7Cj4gPiArICAgICAgICAgICAgIF9f
+c2V0X2ZvcmNlZF9kcml2ZXIoZW52KTsKPiA+ICsgICAgIH0KPiA+ICB9Cj4gPgo+ID4gIHN0YXRp
+YyBpbnQgY29tbW9uX2luaXQoaW50ICphcmdjLCBjaGFyICoqYXJndiwKPiA+IC0tCj4gPiAyLjE4
+LjAKPiA+Cj4gPgo+ID4gLS0KPiA+IFJvZHJpZ28gU2lxdWVpcmEKPiA+IGh0dHA6Ly9zaXF1ZWly
+YS50ZWNoCj4gPiBHcmFkdWF0ZSBTdHVkZW50Cj4gPiBEZXBhcnRtZW50IG9mIENvbXB1dGVyIFNj
+aWVuY2UKPiA+IFVuaXZlcnNpdHkgb2YgU8OjbyBQYXVsbwo+ID4gX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiA+IGlndC1kZXYgbWFpbGluZyBsaXN0Cj4g
+PiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwo+ID4gaHR0cHM6Ly9saXN0cy5mcmVlZGVz
+a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cj4KPiAtLQo+IERhbmllbCBWZXR0ZXIK
+PiBTb2Z0d2FyZSBFbmdpbmVlciwgSW50ZWwgQ29ycG9yYXRpb24KPiBodHRwOi8vYmxvZy5mZnds
+bC5jaAo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4g
+aWd0LWRldiBtYWlsaW5nIGxpc3QKPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwo+IGh0
+dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgoKCgot
+LQpMdWNhcyBEZSBNYXJjaGkKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
+cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+Cg==
