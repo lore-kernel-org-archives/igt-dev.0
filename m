@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Date: Mon, 17 Dec 2018 14:45:55 -0200
+From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Message-ID: <20181217164555.nfpkflnfay2mqlje@smtp.gmail.com>
+References: <20180905203827.n7vpugbs6bjvijpg@smtp.gmail.com>
+ <20181217154930.GH21184@phenom.ffwll.local>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 17 Dec 2018 16:27:39 -0000
-Message-ID: <20181217162739.2883.51126@emeril.freedesktop.org>
-References: <20181217143028.19331-1-stanislav.lisovskiy@intel.com>
-In-Reply-To: <20181217143028.19331-1-stanislav.lisovskiy@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgbGliL2ln?=
- =?utf-8?q?t=5Ffb=3A_Added_XYUV_format_support_for_testing_=28rev15=29?=
+In-Reply-To: <20181217154930.GH21184@phenom.ffwll.local>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] Add support for forcing specific
+ module
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,143 +15,203 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0748431908=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Daniel Vetter <daniel@ffwll.ch>
+Cc: igt-dev@lists.freedesktop.org, gustavo@padovan.org, intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogbGliL2lndF9mYjogQWRkZWQgWFlVViBmb3Jt
-YXQgc3VwcG9ydCBmb3IgdGVzdGluZyAocmV2MTUpClVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsu
-ZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy80ODc4OS8KU3RhdGUgOiBzdWNjZXNzCgo9PSBTdW1tYXJ5
-ID09CgpDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIENJX0RSTV81MzI0X2Z1bGwgLT4gSUdUUFdf
-MjE2NF9mdWxsCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT0KClN1bW1hcnkKLS0tLS0tLQoKICAqKldBUk5JTkcqKgoKICBNaW5vciB1bmtub3duIGNo
-YW5nZXMgY29taW5nIHdpdGggSUdUUFdfMjE2NF9mdWxsIG5lZWQgdG8gYmUgdmVyaWZpZWQKICBt
-YW51YWxseS4KICAKICBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3Ro
-aW5nIHRvIGRvIHdpdGggdGhlIGNoYW5nZXMKICBpbnRyb2R1Y2VkIGluIElHVFBXXzIxNjRfZnVs
-bCwgcGxlYXNlIG5vdGlmeSB5b3VyIGJ1ZyB0ZWFtIHRvIGFsbG93IHRoZW0KICB0byBkb2N1bWVu
-dCB0aGlzIG5ldyBmYWlsdXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZl
-cyBpbiBDSS4KCiAgRXh0ZXJuYWwgVVJMOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5v
-cmcvYXBpLzEuMC9zZXJpZXMvNDg3ODkvcmV2aXNpb25zLzE1L21ib3gvCgpQb3NzaWJsZSBuZXcg
-aXNzdWVzCi0tLS0tLS0tLS0tLS0tLS0tLS0KCiAgSGVyZSBhcmUgdGhlIHVua25vd24gY2hhbmdl
-cyB0aGF0IG1heSBoYXZlIGJlZW4gaW50cm9kdWNlZCBpbiBJR1RQV18yMTY0X2Z1bGw6CgojIyMg
-SUdUIGNoYW5nZXMgIyMjCgojIyMjIFdhcm5pbmdzICMjIyMKCiAgKiBpZ3RAa21zX2Zyb250YnVm
-ZmVyX3RyYWNraW5nQGZiYy0xcC1wcmltc2Nybi1zcHItaW5kZmItZHJhdy1yZW5kZXI6CiAgICAt
-IHNoYXJkLXNuYjogICAgICAgICAgU0tJUCAtPiBQQVNTCgogICogaWd0QHBtX3JjNl9yZXNpZGVu
-Y3lAcmM2LWFjY3VyYWN5OgogICAgLSBzaGFyZC1rYmw6ICAgICAgICAgIFNLSVAgLT4gUEFTUwog
-ICAgLSBzaGFyZC1zbmI6ICAgICAgICAgIFBBU1MgLT4gU0tJUAoKICAKS25vd24gaXNzdWVzCi0t
-LS0tLS0tLS0tLQoKICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV18yMTY0X2Z1
-bGwgdGhhdCBjb21lIGZyb20ga25vd24gaXNzdWVzOgoKIyMjIElHVCBjaGFuZ2VzICMjIwoKIyMj
-IyBJc3N1ZXMgaGl0ICMjIyMKCiAgKiBpZ3RAa21zX2F2YWlsYWJsZV9tb2Rlc19jcmNAYXZhaWxh
-YmxlX21vZGVfdGVzdF9jcmM6CiAgICAtIHNoYXJkLWFwbDogICAgICAgICAgUEFTUyAtPiBGQUlM
-IFtmZG8jMTA2NjQxXQoKICAqIGlndEBrbXNfYnVzeUBleHRlbmRlZC1wYWdlZmxpcC1tb2Rlc2V0
-LWhhbmctb2xkZmItcmVuZGVyLWI6CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgUEFTUyAtPiBE
-TUVTRy1XQVJOIFtmZG8jMTA3OTU2XQoKICAqIGlndEBrbXNfY29sb3JAcGlwZS1jLWN0bS1tYXg6
-CiAgICAtIHNoYXJkLWFwbDogICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTA4MTQ3XQoKICAq
-IGlndEBrbXNfY3Vyc29yX2NyY0BjdXJzb3ItMjU2eDg1LXJhbmRvbToKICAgIC0gc2hhcmQtYXBs
-OiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDMyMzJdICs2CgogICogaWd0QGttc19jdXJz
-b3JfY3JjQGN1cnNvci02NHgyMS1vbnNjcmVlbjoKICAgIC0gc2hhcmQta2JsOiAgICAgICAgICBQ
-QVNTIC0+IEZBSUwgW2ZkbyMxMDMyMzJdICsyCiAgICAtIHNoYXJkLWdsazogICAgICAgICAgUEFT
-UyAtPiBGQUlMIFtmZG8jMTAzMjMyXSArMwoKICAqIGlndEBrbXNfZmxpcEAyeC1tb2Rlc2V0LXZz
-LXZibGFuay1yYWNlOgogICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRv
-IzEwMzA2MF0KCiAgKiBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiYy0xcC1wcmltc2Ny
-bi1jdXItaW5kZmItZHJhdy1tbWFwLWNwdToKICAgIC0gc2hhcmQta2JsOiAgICAgICAgICBQQVNT
-IC0+IEZBSUwgW2ZkbyMxMDMxNjddCgogICogaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0Bm
-YmMtMXAtcHJpbXNjcm4tc3ByLWluZGZiLWRyYXctbW1hcC1ndHQ6CiAgICAtIHNoYXJkLWFwbDog
-ICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTAzMTY3XSArNAoKICAqIGlndEBrbXNfZnJvbnRi
-dWZmZXJfdHJhY2tpbmdAZmJjLTJwLXByaW1zY3JuLWN1ci1pbmRmYi1tb3ZlOgogICAgLSBzaGFy
-ZC1nbGs6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwMzE2N10gKzQKCiAgKiBpZ3RAa21z
-X3BsYW5lQHBsYW5lLXBhbm5pbmctYm90dG9tLXJpZ2h0LXN1c3BlbmQtcGlwZS1iLXBsYW5lczoK
-ICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBQQVNTIC0+IERNRVNHLVdBUk4gW2ZkbyMxMDg1NjZd
-CgogICogaWd0QGttc19wbGFuZUBwbGFuZS1wb3NpdGlvbi1jb3ZlcmVkLXBpcGUtYi1wbGFuZXM6
-CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTAzMTY2XSArMgoK
-ICAqIGlndEBrbXNfcGxhbmVfbXVsdGlwbGVAYXRvbWljLXBpcGUtYi10aWxpbmcteToKICAgIC0g
-c2hhcmQtYXBsOiAgICAgICAgICBOT1RSVU4gLT4gRkFJTCBbZmRvIzEwMzE2Nl0KICAgIC0gc2hh
-cmQta2JsOiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDMxNjZdICsxCgogICogaWd0QGtt
-c19wbGFuZV9tdWx0aXBsZUBhdG9taWMtcGlwZS1jLXRpbGluZy15ZjoKICAgIC0gc2hhcmQtYXBs
-OiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDMxNjZdICsyCgogICogaWd0QGttc19zZXRt
-b2RlQGJhc2ljOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzk5
-OTEyXQogICAgLSBzaGFyZC1oc3c6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzk5OTEyXQoK
-ICAKIyMjIyBQb3NzaWJsZSBmaXhlcyAjIyMjCgogICogaWd0QGttc19jY3NAcGlwZS1hLWNyYy1z
-cHJpdGUtcGxhbmVzLWJhc2ljOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIEZBSUwgW2ZkbyMx
-MDY1MTBdIC8gW2ZkbyMxMDgxNDVdIC0+IFBBU1MKICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBG
-QUlMIFtmZG8jMTA4MTQ1XSAtPiBQQVNTCiAgICAtIHNoYXJkLWtibDogICAgICAgICAgRkFJTCBb
-ZmRvIzEwNzcyNV0gLyBbZmRvIzEwODE0NV0gLT4gUEFTUwoKICAqIGlndEBrbXNfY29sb3JAcGlw
-ZS1jLWxlZ2FjeS1nYW1tYToKICAgIC0gc2hhcmQta2JsOiAgICAgICAgICBGQUlMIFtmZG8jMTA0
-NzgyXSAtPiBQQVNTCiAgICAtIHNoYXJkLWFwbDogICAgICAgICAgRkFJTCBbZmRvIzEwNDc4Ml0g
-LT4gUEFTUwoKICAqIGlndEBrbXNfY3Vyc29yX2NyY0BjdXJzb3ItMTI4eDEyOC1kcG1zOgogICAg
-LSBzaGFyZC1nbGs6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDMyMzJdIC0+IFBBU1MKCiAgKiBpZ3RA
-a21zX2N1cnNvcl9jcmNAY3Vyc29yLTEyOHgxMjgtb25zY3JlZW46CiAgICAtIHNoYXJkLWFwbDog
-ICAgICAgICAgRkFJTCBbZmRvIzEwMzIzMl0gLT4gUEFTUyArMwoKICAqIGlndEBrbXNfY3Vyc29y
-X2NyY0BjdXJzb3ItMTI4eDEyOC1zdXNwZW5kOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIEZB
-SUwgW2ZkbyMxMDMxOTFdIC8gW2ZkbyMxMDMyMzJdIC0+IFBBU1MgKzEKCiAgKiBpZ3RAa21zX2N1
-cnNvcl9jcmNAY3Vyc29yLTI1NngyNTYtZHBtczoKICAgIC0gc2hhcmQta2JsOiAgICAgICAgICBG
-QUlMIFtmZG8jMTAzMjMyXSAtPiBQQVNTCgogICogaWd0QGttc19jdXJzb3JfY3JjQGN1cnNvci02
-NHg2NC1zdXNwZW5kOgogICAgLSBzaGFyZC1rYmw6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDMxOTFd
-IC8gW2ZkbyMxMDMyMzJdIC0+IFBBU1MKCiAgKiBpZ3RAa21zX2ZsaXBAcGxhaW4tZmxpcC1mYi1y
-ZWNyZWF0ZToKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBJTkNPTVBMRVRFIFtmZG8jMTAzOTI3
-XSAtPiBQQVNTCgogICogaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0BmYmMtMXAtcHJpbXNj
-cm4tY3VyLWluZGZiLW9ub2ZmOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIEZBSUwgW2ZkbyMx
-MDMxNjddIC0+IFBBU1MgKzIKICAgIC0gc2hhcmQta2JsOiAgICAgICAgICBGQUlMIFtmZG8jMTAz
-MTY3XSAtPiBQQVNTICsyCgogICogaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0BmYmMtMnAt
-cHJpbXNjcm4tY3VyLWluZGZiLWRyYXctYmx0OgogICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIEZB
-SUwgW2ZkbyMxMDMxNjddIC0+IFBBU1MgKzYKCiAgKiBpZ3RAa21zX3BpcGVfY3JjX2Jhc2ljQGhh
-bmctcmVhZC1jcmMtcGlwZS1jOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIERNRVNHLVdBUk4g
-W2ZkbyMxMDM1NThdIC8gW2ZkbyMxMDU2MDJdIC0+IFBBU1MgKzIwCgogICogaWd0QGttc19wbGFu
-ZV9tdWx0aXBsZUBhdG9taWMtcGlwZS1hLXRpbGluZy14OgogICAgLSBzaGFyZC1hcGw6ICAgICAg
-ICAgIEZBSUwgW2ZkbyMxMDMxNjZdIC0+IFBBU1MgKzMKCiAgKiBpZ3RAa21zX3BsYW5lX211bHRp
-cGxlQGF0b21pYy1waXBlLWEtdGlsaW5nLXk6CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgRkFJ
-TCBbZmRvIzEwMzE2Nl0gLT4gUEFTUyArMwogICAgLSBzaGFyZC1rYmw6ICAgICAgICAgIEZBSUwg
-W2ZkbyMxMDMxNjZdIC0+IFBBU1MKCiAgKiBpZ3RAa21zX3BsYW5lX211bHRpcGxlQGF0b21pYy1w
-aXBlLWItdGlsaW5nLXlmOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIERNRVNHLUZBSUwgW2Zk
-byMxMDMxNjZdIC8gW2ZkbyMxMDM1NThdIC8gW2ZkbyMxMDU2MDJdIC0+IFBBU1MKCiAgKiBpZ3RA
-a21zX3JvdGF0aW9uX2NyY0BtdWx0aXBsYW5lLXJvdGF0aW9uLWNyb3BwaW5nLXRvcDoKICAgIC0g
-c2hhcmQtZ2xrOiAgICAgICAgICBETUVTRy1GQUlMIFtmZG8jMTA1NzYzXSAvIFtmZG8jMTA2NTM4
-XSAtPiBQQVNTCgogIAojIyMjIFdhcm5pbmdzICMjIyMKCiAgKiBpZ3RAaTkxNV9zdXNwZW5kQHNo
-cmluazoKICAgIC0gc2hhcmQtc25iOiAgICAgICAgICBETUVTRy1XQVJOIFtmZG8jMTA4Nzg0XSAt
-PiBJTkNPTVBMRVRFIFtmZG8jMTA1NDExXSAvIFtmZG8jMTA2ODg2XQoKICAKICBbZmRvIzEwMzA2
-MF06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzA2MAog
-IFtmZG8jMTAzMTY2XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/
-aWQ9MTAzMTY2CiAgW2ZkbyMxMDMxNjddOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
-b3dfYnVnLmNnaT9pZD0xMDMxNjcKICBbZmRvIzEwMzE5MV06IGh0dHBzOi8vYnVncy5mcmVlZGVz
-a3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzE5MQogIFtmZG8jMTAzMjMyXTogaHR0cHM6Ly9i
-dWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMjMyCiAgW2ZkbyMxMDM1NThd
-OiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDM1NTgKICBb
-ZmRvIzEwMzkyN106IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lk
-PTEwMzkyNwogIFtmZG8jMTA0NzgyXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93
-X2J1Zy5jZ2k/aWQ9MTA0NzgyCiAgW2ZkbyMxMDU0MTFdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0
-b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDU0MTEKICBbZmRvIzEwNTYwMl06IGh0dHBzOi8vYnVn
-cy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNTYwMgogIFtmZG8jMTA1NzYzXTog
-aHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA1NzYzCiAgW2Zk
-byMxMDY1MTBdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0x
-MDY1MTAKICBbZmRvIzEwNjUzOF06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19i
-dWcuY2dpP2lkPTEwNjUzOAogIFtmZG8jMTA2NjQxXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
-Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA2NjQxCiAgW2ZkbyMxMDY4ODZdOiBodHRwczovL2J1Z3Mu
-ZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDY4ODYKICBbZmRvIzEwNzcyNV06IGh0
-dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNzcyNQogIFtmZG8j
-MTA3OTU2XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3
-OTU2CiAgW2ZkbyMxMDgxNDVdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVn
-LmNnaT9pZD0xMDgxNDUKICBbZmRvIzEwODE0N106IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5v
-cmcvc2hvd19idWcuY2dpP2lkPTEwODE0NwogIFtmZG8jMTA4NTY2XTogaHR0cHM6Ly9idWdzLmZy
-ZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA4NTY2CiAgW2ZkbyMxMDg3ODRdOiBodHRw
-czovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDg3ODQKICBbZmRvIzk5
-OTEyXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9OTk5MTIK
-CgpQYXJ0aWNpcGF0aW5nIGhvc3RzICg3IC0+IDUpCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLQoKICBNaXNzaW5nICAgICgyKTogc2hhcmQtc2tsIHNoYXJkLWljbGIgCgoKQnVpbGQgY2hh
-bmdlcwotLS0tLS0tLS0tLS0tCgogICAgKiBJR1Q6IElHVF80NzQ4IC0+IElHVFBXXzIxNjQKICAg
-ICogUGlnbGl0OiBwaWdsaXRfNDUwOSAtPiBOb25lCgogIENJX0RSTV81MzI0OiA5MzAwOTE1M2I5
-YmRlMWQ2NWNhNDliYjE3MjljZDExMTE1OTExNDRiIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3Rv
-cC5vcmcvZ2Z4LWNpL2xpbnV4CiAgSUdUUFdfMjE2NDogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
-b3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yMTY0LwogIElHVF80NzQ4OiA5MGM3NmNiOWJiNDdhNWEz
-ZWJiMzRhZDZiMWE1NTdiYzAyZDM5NzEzIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcv
-eG9yZy9hcHAvaW50ZWwtZ3B1LXRvb2xzCiAgcGlnbGl0XzQ1MDk6IGZkYzVhNGNhMTExMjRhYjg0
-MTNjNzk4ODg5NmVlYzRjOTczMzY2OTQgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9w
-aWdsaXQKCj09IExvZ3MgPT0KCkZvciBtb3JlIGRldGFpbHMgc2VlOiBodHRwczovL2ludGVsLWdm
-eC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzIxNjQvCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
-YW4vbGlzdGluZm8vaWd0LWRldgo=
+
+--===============0748431908==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="b6ni3p7dc6eeudg5"
+Content-Disposition: inline
+
+
+--b6ni3p7dc6eeudg5
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 12/17, Daniel Vetter wrote:
+> On Wed, Sep 05, 2018 at 05:38:27PM -0300, Rodrigo Siqueira wrote:
+> > This commit adds a new option for forcing the use of a specific driver
+> > indicated via an environment variable.
+> >=20
+> > Changes since V1:
+> >  Petri:
+> >  - Use an environment variable instead of command line
+> >  - Refactor the loop in __search_and_open to accept forced module
+> >  - Don't try to load kernel modules
+> >=20
+> > Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+>=20
+> Note: You can't drop the s-o-b line if your patch contains work by other
+> people, like from Petri here. Proper way to resend a patch by someone else
+> is to just add a subject prefix of "PATCH RESEND" and otherwise keep
+> everything unchanged (including author and everything).
+>=20
+> https://patchwork.freedesktop.org/patch/245532/
+
+Hi,
+
+Thanks for your feedback.
+Next time I will take care for not make this mistake again.
+
+Best Regards
+Rodrigo Siqueira
+=20
+> Cheers, Daniel
+>=20
+> > ---
+> >  lib/drmtest.c  | 44 ++++++++++++++++++++++++++++++++++++++++++--
+> >  lib/drmtest.h  |  2 ++
+> >  lib/igt_core.c |  5 +++++
+> >  3 files changed, 49 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/lib/drmtest.c b/lib/drmtest.c
+> > index bfa2e0f0..6e35d1be 100644
+> > --- a/lib/drmtest.c
+> > +++ b/lib/drmtest.c
+> > @@ -123,6 +123,36 @@ static bool has_known_intel_chipset(int fd)
+> >  	return true;
+> >  }
+> > =20
+> > +static char _forced_driver[5] =3D "";
+> > +
+> > +/**
+> > + * __set_forced_driver:
+> > + * @name: name of driver to forcibly use
+> > + *
+> > + * Set the name of a driver to use when calling #drm_open_driver with
+> > + * the #DRIVER_ANY flag.
+> > + */
+> > +void __set_forced_driver(const char *name)
+> > +{
+> > +	if (!strcmp(name, "")) {
+> > +		igt_warn("IGT_FORCE_DRIVER flag specified without a value,"
+> > +			 "ignoring force option\n");
+> > +		return;
+> > +	}
+> > +
+> > +	igt_info("Attempt to force module %s\n", name);
+> > +
+> > +	strncpy(_forced_driver, name, 4);
+> > +}
+> > +
+> > +static const char *forced_driver(void)
+> > +{
+> > +	if (_forced_driver[0])
+> > +		return _forced_driver;
+> > +
+> > +	return NULL;
+> > +}
+> > +
+> >  #define LOCAL_I915_EXEC_VEBOX	(4 << 0)
+> >  /**
+> >   * gem_quiescent_gpu:
+> > @@ -250,8 +280,18 @@ static int __search_and_open(const char *base, int=
+ offset, unsigned int chipset)
+> > =20
+> >  		sprintf(name, "%s%u", base, i + offset);
+> >  		fd =3D open_device(name, chipset);
+> > -		if (fd !=3D -1)
+> > -			return fd;
+> > +		if (fd =3D=3D -1)
+> > +			continue;
+> > +
+> > +		// Force module
+> > +		if (chipset =3D=3D DRIVER_ANY && forced_driver()) {
+> > +			if (__is_device(fd, forced_driver()))
+> > +				return fd;
+> > +			close(fd);
+> > +			continue;
+> > +		}
+> > +
+> > +		return fd;
+> >  	}
+> > =20
+> >  	return -1;
+> > diff --git a/lib/drmtest.h b/lib/drmtest.h
+> > index 949865ee..62f53ec3 100644
+> > --- a/lib/drmtest.h
+> > +++ b/lib/drmtest.h
+> > @@ -51,6 +51,8 @@
+> >   */
+> >  #define DRIVER_ANY 	~(DRIVER_VGEM)
+> > =20
+> > +void __set_forced_driver(const char *name);
+> > +
+> >  /**
+> >   * ARRAY_SIZE:
+> >   * @arr: static array
+> > diff --git a/lib/igt_core.c b/lib/igt_core.c
+> > index 23bb858f..8e65b5e3 100644
+> > --- a/lib/igt_core.c
+> > +++ b/lib/igt_core.c
+> > @@ -647,6 +647,11 @@ static void common_init_env(void)
+> >  	igt_frame_dump_path =3D getenv("IGT_FRAME_DUMP_PATH");
+> > =20
+> >  	stderr_needs_sentinel =3D getenv("IGT_SENTINEL_ON_STDERR") !=3D NULL;
+> > +
+> > +	env =3D getenv("IGT_FORCE_DRIVER");
+> > +	if (env) {
+> > +		__set_forced_driver(env);
+> > +	}
+> >  }
+> > =20
+> >  static int common_init(int *argc, char **argv,
+> > --=20
+> > 2.18.0
+> >=20
+> >=20
+> > --=20
+> > Rodrigo Siqueira
+> > http://siqueira.tech
+> > Graduate Student
+> > Department of Computer Science
+> > University of S=E3o Paulo
+> > _______________________________________________
+> > igt-dev mailing list
+> > igt-dev@lists.freedesktop.org
+> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
+>=20
+> --=20
+> Daniel Vetter
+> Software Engineer, Intel Corporation
+> http://blog.ffwll.ch
+
+--b6ni3p7dc6eeudg5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlwX0sMACgkQWJzP/com
+vP9k7xAAsZwL4GE5IZCcx356LZaB+3L/bTRimtUB3d5djSOdkGCrjcMpZsmmF/A6
+KNdXXU0p4CwpuB+TwCEcI/h0k2gJrEVQKz/HSaiFyUTcJ+ijoKL+oESaHwWPdWzZ
+G/1319r2D8P1lyTj3qjcN7NfMksWoFeNVVtz5g9ARq8UZybRFPzlg8Fe5XHGiSTO
+7ZYpxGADJSnkNAxUkZK1F5/o91A7vREL7RLBNyYTGDzduvHh5qudlUF7EX+dvvAN
+O2aH4AzxZb24/eN2K7njuRk9113mq2aqUUbW//g72fL3xpRSfjSR7qBcPfz+Z7Wt
+HPNqismZq0IhiGkHESFUM0nLzeOtvqF6LSEYNNcj6tPbeLEZmNl2cz3Krc2x1Ius
+UHTZV1HAy5//FbYS5AWfsBN1nJE55MXjLOsjFDlty6jA2FZYTfGXranwIYf6QyLD
+II17FZIBkIL86lJjxAXo5OQ666TtWh+E1iJFSyJMKh56ZvTg3tk870wSzpustFS2
+pd2B+oAG3vXxQVj3rmJST2XpNaw2gzxicrP9iWvMZ4krFUJpuG3oENLOs1eY81Fn
+AKpq6WJPy1R+NTGi9DhCj6iP+ccOyNHm547QBlw61hZNmG1/FK0Vq6pTG8gRkeSP
+NGx6mRaIw5biqnoJvhIhW9LP4nL+cpyy1YVA75bWhpBW0D/ATFo=
+=R1pW
+-----END PGP SIGNATURE-----
+
+--b6ni3p7dc6eeudg5--
+
+--===============0748431908==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0748431908==--
