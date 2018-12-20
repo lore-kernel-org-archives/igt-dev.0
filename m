@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4ACA46E35F
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Dec 2018 12:04:43 +0000 (UTC)
-References: <20181217130740.10826-1-petri.latvala@intel.com>
- <20181220120209.45fdrt4u5uw6l5br@ahiler-desk1.fi.intel.com>
-From: Martin Peres <martin.peres@linux.intel.com>
-Message-ID: <963f1a1f-71e7-b428-1bdd-9b1751324ecb@linux.intel.com>
-Date: Thu, 20 Dec 2018 14:04:39 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A786F6F340
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Dec 2018 12:15:23 +0000 (UTC)
+From: Petri Latvala <petri.latvala@intel.com>
+Date: Thu, 20 Dec 2018 14:15:17 +0200
+Message-Id: <20181220121517.28078-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20181220120209.45fdrt4u5uw6l5br@ahiler-desk1.fi.intel.com>
-Content-Language: en-GB
-Subject: Re: [igt-dev] [PATCH i-g-t v2] runner: Add explicit "notrun"
- results for tests that were not executed
+Subject: [igt-dev] [PATCH i-g-t] lib/fb: Remove unused variables
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,29 +18,28 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>, Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMjAvMTIvMjAxOCAxNDowMiwgQXJrYWRpdXN6IEhpbGVyIHdyb3RlOgo+IE9uIE1vbiwgRGVj
-IDE3LCAyMDE4IGF0IDAzOjA3OjQwUE0gKzAyMDAsIFBldHJpIExhdHZhbGEgd3JvdGU6Cj4+IFdo
-ZW4gcG9zc2libGUsIGFsbCB0ZXN0cyB3ZSBrbm93IHdlIHdlcmUgZ29pbmcgdG8gYXR0ZW1wdCB0
-byBleGVjdXRlCj4+IG5vdyBhcHBlYXIgaW4gdGhlIHJlc3VsdHMgYXMgIm5vdHJ1biIuIFRoZSBv
-bmx5IGtub3duIGNhc2Ugd2hlcmUgaXQncwo+PiBub3QgcG9zc2libGUgdG8gYWRkIGFuIGV4cGxp
-Y2l0ICJub3RydW4iIGlzIHdoZW4gcnVubmluZyBpbgo+PiBtdWx0aXBsZS1tb2RlLCBiZWNhdXNl
-ICJubyBzdWJ0ZXN0cyIgYW5kICJydW4gYWxsIHN1YnRlc3RzLCB3ZSBkaWRuJ3QKPj4gbGlzdCB0
-aGVtIGJlZm9yZWhhbmQiIGFyZSByZXByZXNlbnRlZCB0aGUgc2FtZS4KPj4KPj4gTm90ZTogQSBm
-dW5jdGlvbiBjYWxsIGlzIGNvbW1lbnRlZCBvdXQgaW4gcmVzdWx0Z2VuLmMgYmVjYXVzZSBpdCBu
-ZWVkcwo+PiB0aGUgZnVuY3Rpb24gdG8gZXhpc3QsIGFuZCB0aGF0J3MgaW4gYSBwYXRjaCB0aGF0
-IGlzIHN0aWxsIGluIGZsaWdodC4KPj4KPj4gdjI6IFJlYmFzZSBhbmQgYWRqdXN0IHRvIGFscmVh
-ZHkgbGFuZGVkIGpzb24gY2hhbmdlcwo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBQZXRyaSBMYXR2YWxh
-IDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KPj4gQ2M6IE1hcnRpbiBQZXJlcyA8bWFydGluLnBl
-cmVzQGxpbnV4LmludGVsLmNvbT4KPj4gQ2M6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6Lmhp
-bGVyQGludGVsLmNvbT4KPj4gQWNrZWQtYnk6IE1hcnRpbiBQZXJlcyA8bWFydGluLnBlcmVzQGxp
-bnV4LmludGVsLmNvbT4KPiBSZXZpZXdlZC1ieTogQXJrYWRpdXN6IEhpbGVyIDxhcmthZGl1c3ou
-aGlsZXJAaW50ZWwuY29tPgo+IAoKQW5kIHRoZSBmYWlsdXJlIGNhdWdodCBpbiBDSSBpcyBhY3R1
-YWxseSBmcm9tIHRoaXMga25vd24gYnVnOgpodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
-b3dfYnVnLmNnaT9pZD0xMDkxMTkKClNvLCBnb29kIGZvciBwdXNoaW5nIQpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdApp
-Z3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+Li4vbGliL2lndF9mYi5jOiBJbiBmdW5jdGlvbiDigJhjb252ZXJ0X3JnYjI0X3RvX3l1djQ0NOKA
+mToKLi4vbGliL2lndF9mYi5jOjE3MjA6MTY6IHdhcm5pbmc6IHVudXNlZCB2YXJpYWJsZSDigJh2
+4oCZIFstV3VudXNlZC12YXJpYWJsZV0KICAgIGZsb2F0IHksIHUsIHY7CiAgICAgICAgICBeCi4u
+L2xpYi9pZ3RfZmIuYzoxNzIwOjEzOiB3YXJuaW5nOiB1bnVzZWQgdmFyaWFibGUg4oCYdeKAmSBb
+LVd1bnVzZWQtdmFyaWFibGVdCiAgICBmbG9hdCB5LCB1LCB2OwogICAgICAgICAgICAgXgouLi9s
+aWIvaWd0X2ZiLmM6MTcyMDoxMDogd2FybmluZzogdW51c2VkIHZhcmlhYmxlIOKAmHnigJkgWy1X
+dW51c2VkLXZhcmlhYmxlXQogICAgZmxvYXQgeSwgdSwgdjsKICAgICAgICAgICAgICAgIF4KClNp
+Z25lZC1vZmYtYnk6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgpDYzog
+U3RhbmlzbGF2IExpc292c2tpeSA8c3RhbmlzbGF2Lmxpc292c2tpeUBpbnRlbC5jb20+CkNjOiBN
+YWFydGVuIExhbmtob3JzdCA8bWFhcnRlbi5sYW5raG9yc3RAbGludXguaW50ZWwuY29tPgotLS0K
+IGxpYi9pZ3RfZmIuYyB8IDEgLQogMSBmaWxlIGNoYW5nZWQsIDEgZGVsZXRpb24oLSkKCmRpZmYg
+LS1naXQgYS9saWIvaWd0X2ZiLmMgYi9saWIvaWd0X2ZiLmMKaW5kZXggNTcyNjQ4NDQuLjJmNTU1
+Yzk1IDEwMDY0NAotLS0gYS9saWIvaWd0X2ZiLmMKKysrIGIvbGliL2lndF9mYi5jCkBAIC0xNzE3
+LDcgKzE3MTcsNiBAQCBzdGF0aWMgdm9pZCBjb252ZXJ0X3JnYjI0X3RvX3l1djQ0NChzdHJ1Y3Qg
+ZmJfY29udmVydCAqY3Z0KQogCQlmb3IgKGogPSAwOyBqIDwgY3Z0LT5kc3QuZmItPndpZHRoOyBq
+KyspIHsKIAkJCXN0cnVjdCBpZ3RfdmVjNCByZ2I7CiAJCQlzdHJ1Y3QgaWd0X3ZlYzQgeXV2Owot
+CQkJZmxvYXQgeSwgdSwgdjsKIAogCQkJcmVhZF9yZ2IoJnJnYiwgJnJnYjI0W2kgKiByZ2IyNF9z
+dHJpZGUgKyBqICogNF0pOwogCi0tIAoyLjE5LjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMu
+ZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlz
+dGluZm8vaWd0LWRldgo=
