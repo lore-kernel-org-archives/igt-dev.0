@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B70B86F1BA
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Jan 2019 20:40:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D9E266F1BD
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Jan 2019 20:45:47 +0000 (UTC)
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
 References: <20190109174057.16835-1-lukasz.kalamarz@intel.com>
- <20190109174057.16835-2-lukasz.kalamarz@intel.com>
-In-Reply-To: <20190109174057.16835-2-lukasz.kalamarz@intel.com>
-Message-ID: <154706643954.15385.15596004625618353914@skylake-alporthouse-com>
-Date: Wed, 09 Jan 2019 20:40:39 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 2/6] lib/ioctl_wrapper: Implement
- __gem_mmap
+ <20190109174057.16835-4-lukasz.kalamarz@intel.com>
+In-Reply-To: <20190109174057.16835-4-lukasz.kalamarz@intel.com>
+Message-ID: <154706673821.15385.12701563266177621787@skylake-alporthouse-com>
+Date: Wed, 09 Jan 2019 20:45:43 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t 4/6] benchmarks/ tests/i915/: drop usage
+ of __gem_mmap__cpu in code
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,23 +25,10 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Lukasz Kalamarz <lukasz.kalamarz@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBMdWthc3ogS2FsYW1hcnogKDIwMTktMDEtMDkgMTc6NDA6NTMpCj4gK3ZvaWQgKl9f
-Z2VtX21tYXAoaW50IGZkLCB1aW50MzJfdCBoYW5kbGUsIHVpbnQ2NF90IG9mZnNldCwgdWludDY0
-X3Qgc2l6ZSwgdW5zaWduZWQgcHJvdCwgYm9vbCB3YykKPiArewo+ICsgICAgICAgc3RydWN0IGRy
-bV9pOTE1X2dlbV9tbWFwIGFyZzsKPiArCj4gKyAgICAgICBpZiAod2MgJiAhZ2VtX21tYXBfX2hh
-c193YyhmZCkpIHsKCkxldCdzIGp1c3QgcGFzcyBpdCB0byB0aGUga2VybmVsIG9uY2UgcmF0aGVy
-IHRoYW4gdHdpY2UuIEl0IG9ubHkgcmVhbGx5Cm1hZGUgc2Vuc2UgaWYgdGhlcmUgd2FzIGFuIGFz
-c2VydCBsYXRlciBvbiBhbmQgd2Ugd2FudGVkIHRvCmRpZmZlcmVudGlhdGUgYmV0d2VlbiBleHBl
-Y3RlZCBmYWlsdXJlIGFuZCB1c2VyIGVycm9yLgoKPiArICAgICAgICAgICAgICAgZXJybm8gPSBF
-Tk9TWVM7Cj4gKyAgICAgICAgICAgICAgIHJldHVybiBOVUxMOwo+ICsgICAgICAgfQo+ICsKPiAr
-ICAgICAgIG1lbXNldCgmYXJnLCAwLCBzaXplb2YoYXJnKSk7Cj4gKyAgICAgICBhcmcuaGFuZGxl
-ID0gaGFuZGxlOwo+ICsgICAgICAgYXJnLm9mZnNldCA9IG9mZnNldDsKPiArICAgICAgIGFyZy5z
-aXplID0gc2l6ZTsKPiArICAgICAgIGFyZy5mbGFncyA9IHdjID8gSTkxNV9NTUFQX1dDIDogMDsK
-ClRoZW4gdGFrZSBfZmxhZ3NfLgoKPiArICAgICAgIGlmIChpZ3RfaW9jdGwoZmQsIERSTV9JT0NU
-TF9JOTE1X0dFTV9NTUFQLCAmYXJnKSkKPiArICAgICAgICAgICAgICAgcmV0dXJuIE5VTEw7Cj4g
-Kwo+ICsgICAgICAgVkcoVkFMR1JJTkRfTUFLRV9NRU1fREVGSU5FRChmcm9tX3VzZXJfcG9pbnRl
-cihhcmcuYWRkcl9wdHIpLCBhcmcuc2l6ZSkpOwo+ICsKPiArICAgICAgIGVycm5vID0gMDsKPiAr
-ICAgICAgIHJldHVybiBmcm9tX3VzZXJfcG9pbnRlcihhcmcuYWRkcl9wdHIpOwo+ICt9Cl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
-ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+UXVvdGluZyBMdWthc3ogS2FsYW1hcnogKDIwMTktMDEtMDkgMTc6NDA6NTUpCj4gV2l0aCBpbXBs
+ZW1lbnRhdGlvbiBvZiBfX2dlbV9tbWFwIHdlIGNhbiBkcm9wIF9fZ2VtX21tYXBfX2NwdQo+IGFu
+ZCBpbnN0ZWFkIHVzZSByZWZhY3RvcmVkIGZ1bmN0aW9uLgoKTm8sIEkgd291bGQgcmF0aGVyIGtl
+ZXAgdGhlIG1vZGUgKF9fY3B1LCBfX3djLCBfX2d0dCkgZXhwbGljaXQuCi1DaHJpcwpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcg
+bGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNr
+dG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
