@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20190107124140.20183-1-chris@chris-wilson.co.uk>
- <965ee694-dab4-c5b4-76a5-5fea23634292@intel.com>
- <154715567406.26927.3132786364620179936@skylake-alporthouse-com>
- <154715576472.26927.5592232629080383498@skylake-alporthouse-com>
-From: Antonio Argenziano <antonio.argenziano@intel.com>
-Message-ID: <5e33ef39-c5c8-0b6b-3de4-f1fe0fbb7a1a@intel.com>
-Date: Thu, 10 Jan 2019 13:58:52 -0800
-MIME-Version: 1.0
-In-Reply-To: <154715576472.26927.5592232629080383498@skylake-alporthouse-com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_ctx_isolation: Ignore the low
- bits of BB_OFFSET
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 158C96E6D6
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Jan 2019 23:23:53 +0000 (UTC)
+Message-ID: <5827c6b9fe48ca6e0b9bbbff00ac706dd543909c.camel@intel.com>
+From: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
+Date: Thu, 10 Jan 2019 15:23:49 -0800
+In-Reply-To: <20190103143641.20200-2-jose.souza@intel.com>
+References: <20190103143641.20200-1-jose.souza@intel.com>
+ <20190103143641.20200-2-jose.souza@intel.com>
+Mime-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/9] tests/psr: Share the code check
+ if sink supports PSR
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,49 +18,24 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: dhinakaran.pandiyan@intel.com
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+To: =?ISO-8859-1?Q?Jos=E9?= Roberto de Souza <jose.souza@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CgpPbiAxMC8wMS8xOSAxMzoyOSwgQ2hyaXMgV2lsc29uIHdyb3RlOgo+IFF1b3RpbmcgQ2hyaXMg
-V2lsc29uICgyMDE5LTAxLTEwIDIxOjI3OjU0KQo+PiBRdW90aW5nIEFudG9uaW8gQXJnZW56aWFu
-byAoMjAxOS0wMS0xMCAyMToyNDo1NikKPj4+Cj4+Pgo+Pj4gT24gMDcvMDEvMTkgMDQ6NDEsIENo
-cmlzIFdpbHNvbiB3cm90ZToKPj4+PiBPbiBTa3lsYWtlLCBCQl9PRkZTRVQgc2VlbXMgdG8gYmUg
-dW5zdGFibGUuIFNpbmNlIHRoaXMgaXMgYW4KPj4+PiBvZmZzZXQgaW50byB0aGUgYmF0Y2ggYXQg
-dGhlIHRpbWUgb2YgQ1MgZXhlY3V0aW9uLCBpdCBzaG91bGQgYmUgYWN0aXZlbHkKPj4+PiB3cml0
-dGVuIHRvIGFzIHdlIHJlYWQgZnJvbSB0aGUgcmVnaXN0ZXIgc28gYWxsb3cgaXQgYSBxd29yZCBv
-Zgo+Pj4+IGRpc2NyZXBhbmN5IChzaW5jZSB0aGUgQ1Mgc2hvdWxkIGJlIHJlYWRpbmcgaW4gcXdv
-cmRzKS4gVGhpcyBzdGlsbAo+Pj4+IGFsbG93cyB1cyB0byBkZXRlY3QgZGlydCBhY3Jvc3MgdGhl
-IHJlc3Qgb2YgdGhlIHJlZ2lzdGVyIGZpZWxkLCBzaG91bGQKPj4+PiB0aGF0IGJlIHJlcXVpcmVk
-Lgo+Pj4+Cj4+Pj4gU2lnbmVkLW9mZi1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxz
-b24uY28udWs+Cj4+Pj4gLS0tCj4+Pj4gICAgdGVzdHMvaTkxNS9nZW1fY3R4X2lzb2xhdGlvbi5j
-IHwgMiArLQo+Pj4+ICAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlv
-bigtKQo+Pj4+Cj4+Pj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX2N0eF9pc29sYXRpb24u
-YyBiL3Rlc3RzL2k5MTUvZ2VtX2N0eF9pc29sYXRpb24uYwo+Pj4+IGluZGV4IDA1OGNmM2VjMS4u
-NzhhMjQ0MzgyIDEwMDY0NAo+Pj4+IC0tLSBhL3Rlc3RzL2k5MTUvZ2VtX2N0eF9pc29sYXRpb24u
-Ywo+Pj4+ICsrKyBiL3Rlc3RzL2k5MTUvZ2VtX2N0eF9pc29sYXRpb24uYwo+Pj4+IEBAIC05Niw3
-ICs5Niw3IEBAIHN0YXRpYyBjb25zdCBzdHJ1Y3QgbmFtZWRfcmVnaXN0ZXIgewo+Pj4+ICAgICAg
-ICB7ICJHUEdQVV9USFJFQURTX0RJU1BBVENIRUQiLCBHRU44LCBSQ1MwLCAweDIyOTAsIDIgfSwK
-Pj4+PiAgICAgICAgeyAiUFNfSU5WT0NBVElPTl9DT1VOVF8xIiwgR0VOOCwgUkNTMCwgMHgyMmYw
-LCAyIH0sCj4+Pj4gICAgICAgIHsgIlBTX0RFUFRIX0NPVU5UXzEiLCBHRU44LCBSQ1MwLCAweDIy
-ZjgsIDIgfSwKPj4+PiAtICAgICB7ICJCQl9PRkZTRVQiLCBHRU44LCBSQ1MwLCAweDIxNTggfSwK
-Pj4+PiArICAgICB7ICJCQl9PRkZTRVQiLCBHRU44LCBSQ1MwLCAweDIxNTgsIC5pZ25vcmVfYml0
-cyA9IDB4NyB9LAo+Pj4KPj4+IFRoZSBiYXRjaCBvZmZzZXQgc3RhcnRzIGF0IGJpdCAyLiBEbyB3
-ZSBvYnNlcnZlIGNoYW5nZXMgaW4gYml0IDAtMSBhcyB3ZWxsPwo+Pgo+PiBOb3QsIGl0IGlzIGp1
-c3Qgb2ZmIGJ5IGJpdCAyICgweDQpLiBCaXQgMCBpcyBhbHNvIHNldCB3aGVuIEkgZG9uJ3QKPj4g
-cmVhbGx5IGV4cGVjdCBpdCB0byBiZSwgSSBndWVzcyBJIHJlYWxseSBzaG91bGQganVzdCByZWFk
-IHdoYXQgdGhlCj4+IHJlZ2lzdGVyIGlzIG1lYW50IHRvIGJlIHJhdGhlciB0aGFuIGd1ZXNzaW5n
-IHNvbGVseSBvbiB0aGUgYmFzaXMgb2YgaXRzCj4+IG5hbWUuCj4gCj4gQml0IDIgZmxpcCBmbG9w
-cyBiZXR3ZWVuIHJlZmVyZW5jZSB2YWx1ZSBhbmQgb2JzZXJ2ZWQgKHRlc3QgZmFpbHVyZSkuCj4g
-Cj4gQml0IDAgc2ltcGx5IGRpZmZlcnMgZnJvbSBteSBvd24gZXhwZWN0YXRpb25zLgoKSSBndWVz
-cyBpZiBpdCBnZXRzIG92ZXJ3cml0dGVuIHdlIGNhdGNoIGl0IGV2ZW4gaWYgd2UgaWdub3JlIHRo
-ZSBsb3dlc3QgCjMgYml0cyBidXQgc29tZXRoaW5nIHdlaXJkIHdvdWxkIGhhdmUgaGFwcGVuZWQg
-aWYgMC0xIGNoYW5nZS4KCldpdGggb3Igd2l0aG91dCBtb2RpZnlpbmcgdGhlIG1hc2ssClJldmll
-d2VkLWJ5OiBBbnRvbmlvIEFyZ2Vuemlhbm8gPGFudG9uaW8uYXJnZW56aWFub0BpbnRlbC5jb20+
-Cgo+IC1DaHJpcwo+IApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
-dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+T24gVGh1LCAyMDE5LTAxLTAzIGF0IDA2OjM2IC0wODAwLCBKb3PDqSBSb2JlcnRvIGRlIFNvdXph
+IHdyb3RlOgo+IFRoZSBzYW1lIGNvZGUgY2hlY2tpbmcgaWYgc2luayBzdXBwb3J0cyBQU1Igd2Fz
+IHNwcmVhZCBpbnRvIDMgdGVzdHMsCj4gYmV0dGVyIG1vdmUgaXQgdG8gbGliIGFuZCByZXVzZS4K
+PiAKPiB2Mjogc3BsaXR0ZWQgcHJldmlvdXMgcGF0Y2ggaW50byB0aGlzIG9uZSBhbmQgdGhlIG5l
+eHQKPiBvbmUoRGhpbmFrYXJhbikKPiAKPiBDYzogUm9kcmlnbyBWaXZpIDxyb2RyaWdvLnZpdmlA
+aW50ZWwuY29tPgo+IENjOiBEaGluYWthcmFuIFBhbmRpeWFuIDxkaGluYWthcmFuLnBhbmRpeWFu
+QGludGVsLmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3Nl
+LnNvdXphQGludGVsLmNvbT4KClBhdGNoZXMgMSBhbmQgMiwKUmV2aWV3ZWQtYnk6IERoaW5ha2Fy
+YW4gUGFuZGl5YW4gPGRoaW5ha2FyYW4ucGFuZGl5YW5AaW50ZWwuY29tPgoKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QK
+aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
