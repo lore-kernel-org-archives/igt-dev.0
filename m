@@ -1,20 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4BBEF6E230
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Jan 2019 20:56:32 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Fri, 11 Jan 2019 20:56:30 +0000
-Message-ID: <0cece6f17031cd7754d5da9b6e74ae20fbdfbb7c.camel@intel.com>
-References: <20190103143641.20200-1-jose.souza@intel.com>
- <20190103143641.20200-7-jose.souza@intel.com>
- <1b8b803eb063c3754a086f0796d19d696363f7f6.camel@intel.com>
- <84e2114d118e294af5801df0882a3b7e762f63d5.camel@intel.com>
- <7ca39c5a45ce39b5b2bd81bb3f36d70ba1979d58.camel@intel.com>
-In-Reply-To: <7ca39c5a45ce39b5b2bd81bb3f36d70ba1979d58.camel@intel.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 7/9] tests/psr: Add the same test
- coverage that we have for PSR1 to PSR2
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 11 Jan 2019 21:43:16 -0000
+Message-ID: <20190111214316.4427.6649@emeril.freedesktop.org>
+References: <20190111161548.15732-1-lukasz.kalamarz@intel.com>
+In-Reply-To: <20190111161548.15732-1-lukasz.kalamarz@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2Cv3=2C1/4=5D_lib/ioctl=5Fwrapper=3A_us?=
+ =?utf-8?q?e_defines_for_get=5Fparam_instead_of_param_number?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,418 +15,115 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0156962030=="
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
-Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+To: Lukasz Kalamarz <lukasz.kalamarz@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0156962030==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-b5ReSqgOOARJwj5b++2B"
-
---=-b5ReSqgOOARJwj5b++2B
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, 2019-01-11 at 11:49 -0800, Dhinakaran Pandiyan wrote:
-> On Thu, 2019-01-10 at 17:12 -0800, Souza, Jose wrote:
-> > On Thu, 2019-01-10 at 15:52 -0800, Dhinakaran Pandiyan wrote:
-> > > On Thu, 2019-01-03 at 06:36 -0800, Jos=C3=A9 Roberto de Souza wrote:
-> > > > The main tests for PSR1 check if hardware tracking is detecting
-> > > > changes in planes when modifing it in different ways and now
-> > > > those tests will also run for PSR2 if supported by source and
-> > > > sink.
-> > > >=20
-> > > > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > > > Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-> > > > Signed-off-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
-> > > > ---
-> > > >  tests/kms_psr.c | 112
-> > > > +++++++++++++++++++++++++++++++++++++++++++++-
-> > > > --
-> > > >  1 file changed, 105 insertions(+), 7 deletions(-)
-> > > >=20
-> > > > diff --git a/tests/kms_psr.c b/tests/kms_psr.c
-> > > > index 855679b0..d4d38320 100644
-> > > > --- a/tests/kms_psr.c
-> > > > +++ b/tests/kms_psr.c
-> > > > @@ -60,6 +60,7 @@ typedef struct {
-> > > >  	int drm_fd;
-> > > >  	int debugfs_fd;
-> > > >  	enum operations op;
-> > > > +	bool op_psr2;
-> > > >  	uint32_t devid;
-> > > >  	uint32_t crtc_id;
-> > > >  	igt_display_t display;
-> > > > @@ -71,6 +72,7 @@ typedef struct {
-> > > >  	drmModeModeInfo *mode;
-> > > >  	igt_output_t *output;
-> > > >  	bool with_psr_disabled;
-> > > > +	bool supports_psr2;
-> > > >  } data_t;
-> > > > =20
-> > > >  static void create_cursor_fb(data_t *data)
-> > > > @@ -194,12 +196,22 @@ static bool sink_support(data_t *data)
-> > > >  	return data->with_psr_disabled ||
-> > > > psr_sink_support(data-
-> > > > > debugfs_fd);
-> > > >=20
-> > > >  }
-> > > > =20
-> > > > -static bool psr_wait_entry_if_enabled(data_t *data)
-> > > > +static bool sink_support_psr2(data_t *data)
-> > > >  {
-> > > > -	if (data->with_psr_disabled)
-> > > > -		return true;
-> > > > +	return data->with_psr_disabled ||
-> > > > psr2_sink_support(data-
-> > > > > debugfs_fd);
-> > > >=20
-> > > > +}
-> > > > =20
-> > > > -	return psr_wait_entry(data->debugfs_fd);
-> > > > +static bool psr_wait_entry_if_enabled(data_t *data)
-> > > > +{
-> > > > +	if (!data->op_psr2) {
-> > > > +		if (data->with_psr_disabled)
-> > > > +			return true;
-> > > > +		return psr_wait_entry(data->debugfs_fd);
-> > > > +	} else {
-> > > > +		if (data->with_psr_disabled)
-> > > > +			return true;
-> > > > +		return psr2_wait_deep_sleep(data->debugfs_fd);
-> > > > +	}
-> > > >  }
-> > >=20
-> > > Unless I am missing something, we can simplify all these changes
-> > > by
-> > > pushing the PSR mode down through the call chain.
-> > >=20
-> > > =20
-> > > -static bool psr_active(int debugfs_fd, bool check_active)
-> > > +static bool psr_active(int debugfs_fd, enum psr_mode mode, bool
-> > > check_active)
-> > >  {
-> >=20
-> > I added the PSR2 functions with other names to avoid any
-> > misinterpretation as PSR2 could be active in deep sleep state and
-> > doing
-> > selective update and in the states between and in the kms_psr2_su
-> > we
-> > need to check both states to properly test.
->=20
-> Selective update testing does not need modifying the behavior of any
-> of
-> these functions, does it? Both PSR1 and PSR2(non-SU) tests wait until
-> PSR is in an active state, do some operation and then verify we are
-> out
-> of the state.
-
-Yes but after perform some operation it can keep into a active state in
-PSR2 that is why psr_wait_exit() is not a good name. Same for
-psr_wait_entry() it is wait entry in deep sleep? or wait entry in PSR
-active?
-
-> Since they follow the same test steps, I believe it is
-> better to share the interface. We also want kms_fbt_fbcon and
-> kms_frontbuffer_tracking to setup PSR2, that is another reason
-> psr_wait_entry()/psr_wait_exit() in the library should handle PSR1
-> v/s
-> PSR2 instead of the callers in kms_psr.
->=20
->=20
-> > =20
-> > I'm okay in adding the PSR mode to enable(), disable(),
-> > sink_support()
-> > and reuse the internal functions too but in the other functions the
-> > code saved is not worth. What do you think DK?
-> >=20
-> > >         bool active;
-> > >         char buf[PSR_STATUS_MAX_LEN];
-> > > +       char *s =3D mode =3D=3D PSR_MODE_2 ? "DEEP_SLEEP" ? "SRDENT";
-> > > =20
-> > >         igt_debugfs_simple_read(debugfs_fd,
-> > > "i915_edp_psr_status",
-> > > buf,
-> > >                                 sizeof(buf));
-> > >         active =3D strstr(buf, "HW Enabled & Active bit: yes\n") &&
-> > > -               (strstr(buf, "SRDENT") || strstr(buf, "SLEEP"));
-> > > +                strstr(buf, s);
-> > >         return check_active ? active : !active;
-> > >  }
-> > > =20
-> > > -bool psr_wait_entry(int debugfs_fd)
-> > > +bool psr_wait_entry(int debugfs_fd, int psr_mode)
-> > >  {
-> > > -       return igt_wait(psr_active(debugfs_fd, true), 500, 20);
-> > > +       return igt_wait(psr_active(debugfs_fd, true, psr_mode),
-> > > 500,
-> > > 20);
-> > >  }
-> > > =20
-> > > -bool psr_wait_exit(int debugfs_fd)
-> > > +bool psr_wait_exit(int debugfs_fd, int psr_mode)
-> > >  {
-> > >         return igt_wait(psr_active(debugfs_fd, false), 40, 10);
-> > >  }
-> > > diff --git a/tests/kms_psr.c b/tests/kms_psr.c
-> > > index 855679b0..bb90b994 100644
-> > > --- a/tests/kms_psr.c
-> > > +++ b/tests/kms_psr.c
-> > > @@ -199,7 +199,7 @@ static bool psr_wait_entry_if_enabled(data_t
-> > > *data)
-> > >         if (data->with_psr_disabled)
-> > >                 return true;
-> > > =20
-> > > -       return psr_wait_entry(data->debugfs_fd);
-> > > +       return psr_wait_entry(data->debugfs_fd, data->psr_mode);
-> > >  }
-> > > =20
-> > >  static inline void manual(const char *expected)
-> > > @@ -289,7 +289,7 @@ static void run_test(data_t *data)
-> > >                 expected =3D "screen GREEN";
-> > >                 break;
-> > >         }
-> > > -       igt_assert(psr_wait_exit(data->debugfs_fd));
-> > > +       igt_assert(psr_wait_exit(data->debugfs_fd, data-
-> > > > psr_mode));
-> > >         manual(expected);
-> > >  }
-> > >=20
-> > >=20
-> > >=20
-> > > > =20
-> > > >  static inline void manual(const char *expected)
-> > > > @@ -289,11 +301,16 @@ static void run_test(data_t *data)
-> > > >  		expected =3D "screen GREEN";
-> > > >  		break;
-> > > >  	}
-> > > > -	igt_assert(psr_wait_exit(data->debugfs_fd));
-> > > > +
-> > > > +	if (!data->op_psr2)
-> > > > +		igt_assert(psr_wait_exit(data->debugfs_fd));
-> > > > +	else
-> > > > +		igt_assert(psr2_wait_update(data->debugfs_fd));
-> > > >  	manual(expected);
-> > > >  }
-> > > > =20
-> > > > -static void test_cleanup(data_t *data) {
-> > > > +static void test_cleanup(data_t *data)
-> > > > +{
-> > > >  	igt_plane_t *primary;
-> > > > =20
-> > > >  	primary =3D igt_output_get_plane_type(data->output,
-> > > > @@ -304,6 +321,11 @@ static void test_cleanup(data_t *data) {
-> > > > =20
-> > > >  	igt_remove_fb(data->drm_fd, &data->fb_green);
-> > > >  	igt_remove_fb(data->drm_fd, &data->fb_white);
-> > > > +
-> > > > +	/* switch to PSR1 again */
-> > > > +	if (data->op_psr2 && !data->with_psr_disabled)
-> > > > +		psr_enable(data->debugfs_fd);
-> > > > +	data->op_psr2 =3D false;
-> > > >  }
-> > > > =20
-> > > >  static void setup_test_plane(data_t *data, int test_plane)
-> > > > @@ -311,6 +333,11 @@ static void setup_test_plane(data_t *data,
-> > > > int
-> > > > test_plane)
-> > > >  	uint32_t white_h, white_v;
-> > > >  	igt_plane_t *primary, *sprite, *cursor;
-> > > > =20
-> > > > +	if (data->op_psr2 && !data->with_psr_disabled) {
-> > > > +		igt_require(data->supports_psr2);
-> > > > +		psr2_enable(data->debugfs_fd);
-> > > > +	}
-> > > > +
-> > > >  	igt_create_color_fb(data->drm_fd,
-> > > >  			    data->mode->hdisplay, data->mode-
-> > > > >vdisplay,
-> > > >  			    DRM_FORMAT_XRGB8888,
-> > > > @@ -391,7 +418,7 @@ static int opt_handler(int opt, int
-> > > > opt_index,
-> > > > void *_data)
-> > > >  int main(int argc, char *argv[])
-> > > >  {
-> > > >  	const char *help_str =3D
-> > > > -	       "  --no-psr\tRun test without PSR.";
-> > > > +	       "  --no-psr\tRun test without PSR/PSR2.\n";
-> > > >  	static struct option long_options[] =3D {
-> > > >  		{"no-psr", 0, 0, 'n'},
-> > > >  		{ 0, 0, 0, 0 }
-> > > > @@ -414,6 +441,7 @@ int main(int argc, char *argv[])
-> > > > =20
-> > > >  		igt_require_f(sink_support(&data),
-> > > >  			      "Sink does not support PSR\n");
-> > > > +		data.supports_psr2 =3D sink_support_psr2(&data);
-> > > > =20
-> > > >  		data.bufmgr =3D
-> > > > drm_intel_bufmgr_gem_init(data.drm_fd,
-> > > > 4096);
-> > > >  		igt_assert(data.bufmgr);
-> > > > @@ -428,6 +456,13 @@ int main(int argc, char *argv[])
-> > > >  		test_cleanup(&data);
-> > > >  	}
-> > > > =20
-> > > > +	igt_subtest("psr2_basic") {
-> > > > +		data.op_psr2 =3D true;
-> > > > +		setup_test_plane(&data,
-> > > > DRM_PLANE_TYPE_PRIMARY);
-> > > > +		igt_assert(psr_wait_entry_if_enabled(&data));
-> > > > +		test_cleanup(&data);
-> > > > +	}
-> > > > +
-> > > >  	igt_subtest("no_drrs") {
-> > > >  		setup_test_plane(&data,
-> > > > DRM_PLANE_TYPE_PRIMARY);
-> > > >  		igt_assert(psr_wait_entry_if_enabled(&data));
-> > > > @@ -435,6 +470,14 @@ int main(int argc, char *argv[])
-> > > >  		test_cleanup(&data);
-> > > >  	}
-> > > > =20
-> > > > +	igt_subtest("psr2_no_drrs") {
-> > > > +		data.op_psr2 =3D true;
-> > > > +		setup_test_plane(&data,
-> > > > DRM_PLANE_TYPE_PRIMARY);
-> > > > +		igt_assert(psr_wait_entry_if_enabled(&data));
-> > > > +		igt_assert(drrs_disabled(&data));
-> > > > +		test_cleanup(&data);
-> > > > +	}
-> > > > +
-> > > >  	for (op =3D PAGE_FLIP; op <=3D RENDER; op++) {
-> > > >  		igt_subtest_f("primary_%s", op_str(op)) {
-> > > >  			data.op =3D op;
-> > > > @@ -445,6 +488,17 @@ int main(int argc, char *argv[])
-> > > >  		}
-> > > >  	}
-> > > > =20
-> > > > +	for (op =3D PAGE_FLIP; op <=3D RENDER; op++) {
-> > > > +		igt_subtest_f("psr2_primary_%s", op_str(op)) {
-> > > > +			data.op_psr2 =3D true;
-> > > > +			data.op =3D op;
-> > > > +			setup_test_plane(&data,
-> > > > DRM_PLANE_TYPE_PRIMARY);
-> > > > +			igt_assert(psr_wait_entry_if_enabled(&d
-> > > > ata));
-> > > > +			run_test(&data);
-> > > > +			test_cleanup(&data);
-> > > > +		}
-> > > > +	}
-> > > > +
-> > > >  	for (op =3D MMAP_GTT; op <=3D PLANE_ONOFF; op++) {
-> > > >  		igt_subtest_f("sprite_%s", op_str(op)) {
-> > > >  			data.op =3D op;
-> > > > @@ -455,6 +509,17 @@ int main(int argc, char *argv[])
-> > > >  		}
-> > > >  	}
-> > > > =20
-> > > > +	for (op =3D MMAP_GTT; op <=3D PLANE_ONOFF; op++) {
-> > > > +		igt_subtest_f("psr2_sprite_%s", op_str(op)) {
-> > > > +			data.op_psr2 =3D true;
-> > > > +			data.op =3D op;
-> > > > +			setup_test_plane(&data,
-> > > > DRM_PLANE_TYPE_OVERLAY);
-> > > > +			igt_assert(psr_wait_entry_if_enabled(&d
-> > > > ata));
-> > > > +			run_test(&data);
-> > > > +			test_cleanup(&data);
-> > > > +		}
-> > > > +	}
-> > > > +
-> > > >  	for (op =3D MMAP_GTT; op <=3D PLANE_ONOFF; op++) {
-> > > >  		igt_subtest_f("cursor_%s", op_str(op)) {
-> > > >  			data.op =3D op;
-> > > > @@ -465,6 +530,17 @@ int main(int argc, char *argv[])
-> > > >  		}
-> > > >  	}
-> > > > =20
-> > > > +	for (op =3D MMAP_GTT; op <=3D PLANE_ONOFF; op++) {
-> > > > +		igt_subtest_f("psr2_cursor_%s", op_str(op)) {
-> > > > +			data.op_psr2 =3D true;
-> > > > +			data.op =3D op;
-> > > > +			setup_test_plane(&data,
-> > > > DRM_PLANE_TYPE_CURSOR);
-> > > > +			igt_assert(psr_wait_entry_if_enabled(&d
-> > > > ata));
-> > > > +			run_test(&data);
-> > > > +			test_cleanup(&data);
-> > > > +		}
-> > > > +	}
-> > > > +
-> > > >  	igt_subtest_f("dpms") {
-> > > >  		data.op =3D RENDER;
-> > > >  		setup_test_plane(&data,
-> > > > DRM_PLANE_TYPE_PRIMARY);
-> > > > @@ -474,6 +550,16 @@ int main(int argc, char *argv[])
-> > > >  		test_cleanup(&data);
-> > > >  	}
-> > > > =20
-> > > > +	igt_subtest_f("psr2_dpms") {
-> > > > +		data.op_psr2 =3D true;
-> > > > +		data.op =3D RENDER;
-> > > > +		setup_test_plane(&data,
-> > > > DRM_PLANE_TYPE_PRIMARY);
-> > > > +		igt_assert(psr_wait_entry_if_enabled(&data));
-> > > > +		dpms_off_on(&data);
-> > > > +		run_test(&data);
-> > > > +		test_cleanup(&data);
-> > > > +	}
-> > > > +
-> > > >  	igt_subtest_f("suspend") {
-> > > >  		data.op =3D PLANE_ONOFF;
-> > > >  		setup_test_plane(&data, DRM_PLANE_TYPE_CURSOR);
-> > > > @@ -485,6 +571,18 @@ int main(int argc, char *argv[])
-> > > >  		test_cleanup(&data);
-> > > >  	}
-> > > > =20
-> > > > +	igt_subtest_f("psr2_suspend") {
-> > > > +		data.op_psr2 =3D true;
-> > > > +		data.op =3D PLANE_ONOFF;
-> > > > +		setup_test_plane(&data, DRM_PLANE_TYPE_CURSOR);
-> > > > +		igt_assert(psr_wait_entry_if_enabled(&data));
-> > > > +		igt_system_suspend_autoresume(SUSPEND_STATE_MEM
-> > > > ,
-> > > > +					      SUSPEND_TEST_NONE
-> > > > );
-> > > > +		igt_assert(psr_wait_entry_if_enabled(&data));
-> > > > +		run_test(&data);
-> > > > +		test_cleanup(&data);
-> > > > +	}
-> > > > +
-> > > >  	igt_fixture {
-> > > >  		if (!data.with_psr_disabled)
-> > > >  			psr_disable(data.debugfs_fd);
-
---=-b5ReSqgOOARJwj5b++2B
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlw5AvwACgkQVenbO/mO
-WkndGggAoRPmLccmz2QSols7QLjwpDbaDAFaNzqIPsv1KmErI7IrKR5WhoSEMpg4
-f2/4TP/052HolATRvxgU/lKp5EW3wSj2PCP1ja9O97ucYCO6e44Iv1AOyLCXGWfL
-owlEemOmmMg7+kmOGSvsUJ4TN7Qm/KWlFkDpsizPNr6k+MkIWcV+UVCtPiv0qO9d
-qMyr6ogUdHQjSY35x8aVZW+sGb5DsqPGgOeyPo8zKCXxArm9vnRnjXl/h8JamLTq
-P+bgnOxgATSW15dg2gYDqagaLJupLTdvqq/frfTI1xBdyv0hUeDJnGNWzHA9mQdU
-IyJnPIsbaHWkAgvGomflq4spZAw0bA==
-=jlBb
------END PGP SIGNATURE-----
-
---=-b5ReSqgOOARJwj5b++2B--
-
---===============0156962030==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0156962030==--
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW2ktZy10
+LHYzLDEvNF0gbGliL2lvY3RsX3dyYXBwZXI6IHVzZSBkZWZpbmVzIGZvciBnZXRfcGFyYW0gaW5z
+dGVhZCBvZiBwYXJhbSBudW1iZXIKVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3Rv
+cC5vcmcvc2VyaWVzLzU1MDc2LwpTdGF0ZSA6IHN1Y2Nlc3MKCj09IFN1bW1hcnkgPT0KCkNJIEJ1
+ZyBMb2cgLSBjaGFuZ2VzIGZyb20gQ0lfRFJNXzU0MDRfZnVsbCAtPiBJR1RQV18yMjI1X2Z1bGwK
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQoKU3Vt
+bWFyeQotLS0tLS0tCgogICoqU1VDQ0VTUyoqCgogIE5vIHJlZ3Jlc3Npb25zIGZvdW5kLgoKICBF
+eHRlcm5hbCBVUkw6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9hcGkvMS4wL3Nl
+cmllcy81NTA3Ni9yZXZpc2lvbnMvMS9tYm94LwoKS25vd24gaXNzdWVzCi0tLS0tLS0tLS0tLQoK
+ICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV18yMjI1X2Z1bGwgdGhhdCBjb21l
+IGZyb20ga25vd24gaXNzdWVzOgoKIyMjIElHVCBjaGFuZ2VzICMjIwoKIyMjIyBJc3N1ZXMgaGl0
+ICMjIyMKCiAgKiBpZ3RAa21zX2J1c3lAZXh0ZW5kZWQtcGFnZWZsaXAtbW9kZXNldC1oYW5nLW9s
+ZGZiLXJlbmRlci1jOgogICAgLSBzaGFyZC1oc3c6ICAgICAgICAgIFBBU1MgLT4gRE1FU0ctV0FS
+TiBbZmRvIzEwNzk1Nl0KCiAgKiBpZ3RAa21zX2Njc0BwaXBlLWItY3JjLXNwcml0ZS1wbGFuZXMt
+YmFzaWM6CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTA4MTQ1
+XQoKICAqIGlndEBrbXNfY29sb3JAcGlwZS1jLWRlZ2FtbWE6CiAgICAtIHNoYXJkLWFwbDogICAg
+ICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTA0NzgyXQoKICAqIGlndEBrbXNfY3Vyc29yX2NyY0Bj
+dXJzb3ItMTI4eDEyOC1yYW5kb206CiAgICAtIHNoYXJkLWFwbDogICAgICAgICAgUEFTUyAtPiBG
+QUlMIFtmZG8jMTAzMjMyXSArNQoKICAqIGlndEBrbXNfY3Vyc29yX2NyY0BjdXJzb3ItMTI4eDEy
+OC1zdXNwZW5kOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEw
+MzE5MV0gLyBbZmRvIzEwMzIzMl0KCiAgKiBpZ3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLTI1Nngy
+NTYtcmFuZG9tOgogICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEw
+MzIzMl0gKzgKCiAgKiBpZ3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLTY0eDY0LWRwbXM6CiAgICAt
+IHNoYXJkLWFwbDogICAgICAgICAgTk9UUlVOIC0+IEZBSUwgW2ZkbyMxMDMyMzJdCgogICogaWd0
+QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0BmYmMtMXAtcHJpbXNjcm4tY3VyLWluZGZiLWRyYXct
+cHdyaXRlOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwMzE2
+N10gKzEKCiAgKiBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiYy0ycC1wcmltc2Nybi1j
+dXItaW5kZmItbW92ZToKICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2Zk
+byMxMDMxNjddICsxMwoKICAqIGlndEBrbXNfZnJvbnRidWZmZXJfdHJhY2tpbmdAZmJjLTJwLXJ0
+ZToKICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDMxNjddIC8g
+W2ZkbyMxMDU2ODJdCgogICogaWd0QGttc19wbGFuZV9tdWx0aXBsZUBhdG9taWMtcGlwZS1hLXRp
+bGluZy15OgogICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwMzE2
+Nl0gKzcKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDMxNjZd
+ICsyCgogICogaWd0QGttc19yb3RhdGlvbl9jcmNAbXVsdGlwbGFuZS1yb3RhdGlvbi1jcm9wcGlu
+Zy10b3A6CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgUEFTUyAtPiBETUVTRy1GQUlMIFtmZG8j
+MTA1NzYzXSAvIFtmZG8jMTA2NTM4XQoKICAqIGlndEBrbXNfdmJsYW5rQHBpcGUtYi1xdWVyeS1p
+ZGxlLWhhbmc6CiAgICAtIHNoYXJkLWhzdzogICAgICAgICAgUEFTUyAtPiBETUVTRy1XQVJOIFtm
+ZG8jMTAyNjE0XQoKICAKIyMjIyBQb3NzaWJsZSBmaXhlcyAjIyMjCgogICogaWd0QGdlbV9jdHhf
+aXNvbGF0aW9uQHZlY3MwLWRpcnR5LXN3aXRjaDoKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBJ
+TkNPTVBMRVRFIFtmZG8jMTAzOTI3XSAtPiBQQVNTCgogICogaWd0QGttc19jb2xvckBwaXBlLWIt
+ZGVnYW1tYToKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBGQUlMIFtmZG8jMTA0NzgyXSAtPiBQ
+QVNTCgogICogaWd0QGttc19jdXJzb3JfY3JjQGN1cnNvci0xMjh4MTI4LW9uc2NyZWVuOgogICAg
+LSBzaGFyZC1nbGs6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDMyMzJdIC0+IFBBU1MKCiAgKiBpZ3RA
+a21zX2N1cnNvcl9jcmNAY3Vyc29yLTY0eDIxLXJhbmRvbToKICAgIC0gc2hhcmQtYXBsOiAgICAg
+ICAgICBGQUlMIFtmZG8jMTAzMjMyXSAtPiBQQVNTICs1CgogICogaWd0QGttc19kcmF3X2NyY0Bk
+cmF3LW1ldGhvZC14cmdiODg4OC1tbWFwLWd0dC14dGlsZWQ6CiAgICAtIHNoYXJkLWdsazogICAg
+ICAgICAgRkFJTCBbZmRvIzEwNzc5MV0gLT4gUEFTUwoKICAqIGlndEBrbXNfZnJvbnRidWZmZXJf
+dHJhY2tpbmdAZmJjLTFwLXByaW1zY3JuLXNwci1pbmRmYi1kcmF3LW1tYXAtZ3R0OgogICAgLSBz
+aGFyZC1hcGw6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDMxNjddIC0+IFBBU1MgKzUKCiAgKiBpZ3RA
+a21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiYy0xcC1ydGU6CiAgICAtIHNoYXJkLWdsazogICAg
+ICAgICAgRkFJTCBbZmRvIzEwMzE2N10gLyBbZmRvIzEwNTY4Ml0gLT4gUEFTUwoKICAqIGlndEBr
+bXNfZnJvbnRidWZmZXJfdHJhY2tpbmdAZmJjLTJwLXByaW1zY3JuLWN1ci1pbmRmYi1kcmF3LW1t
+YXAtY3B1OgogICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDMxNjddIC0+IFBB
+U1MgKzMKCiAgKiBpZ3RAa21zX3BsYW5lX2FscGhhX2JsZW5kQHBpcGUtYy1jb25zdGFudC1hbHBo
+YS1tYXg6CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgRkFJTCBbZmRvIzEwODE0NV0gLT4gUEFT
+UyArMwoKICAqIGlndEBrbXNfcGxhbmVfbXVsdGlwbGVAYXRvbWljLXBpcGUtYy10aWxpbmcteDoK
+ICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBGQUlMIFtmZG8jMTAzMTY2XSAtPiBQQVNTCiAgICAt
+IHNoYXJkLWFwbDogICAgICAgICAgRkFJTCBbZmRvIzEwMzE2Nl0gLT4gUEFTUyArMQoKICAqIGln
+dEBrbXNfc2V0bW9kZUBiYXNpYzoKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBGQUlMIFtmZG8j
+OTk5MTJdIC0+IFBBU1MKCiAgKiBpZ3RAcG1fcmM2X3Jlc2lkZW5jeUByYzYtYWNjdXJhY3k6CiAg
+ICAtIHNoYXJkLXNuYjogICAgICAgICAge1NLSVB9IFtmZG8jMTA5MjcxXSAtPiBQQVNTCgogIAoj
+IyMjIFdhcm5pbmdzICMjIyMKCiAgKiBpZ3RAa21zX2RyYXdfY3JjQGRyYXctbWV0aG9kLXhyZ2Iy
+MTAxMDEwLXJlbmRlci15dGlsZWQ6CiAgICAtIHNoYXJkLXNuYjogICAgICAgICAge1NLSVB9IFtm
+ZG8jMTA5MjcxXSAtPiBJTkNPTVBMRVRFIFtmZG8jMTA1NDExXSAvIFtmZG8jMTA3NDY5XQoKICAK
+ICB7bmFtZX06IFRoaXMgZWxlbWVudCBpcyBzdXBwcmVzc2VkLiBUaGlzIG1lYW5zIGl0IGlzIGln
+bm9yZWQgd2hlbiBjb21wdXRpbmcKICAgICAgICAgIHRoZSBzdGF0dXMgb2YgdGhlIGRpZmZlcmVu
+Y2UgKFNVQ0NFU1MsIFdBUk5JTkcsIG9yIEZBSUxVUkUpLgoKICBbZmRvIzEwMjYxNF06IGh0dHBz
+Oi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMjYxNAogIFtmZG8jMTAz
+MTY2XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMTY2
+CiAgW2ZkbyMxMDMxNjddOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNn
+aT9pZD0xMDMxNjcKICBbZmRvIzEwMzE5MV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcv
+c2hvd19idWcuY2dpP2lkPTEwMzE5MQogIFtmZG8jMTAzMjMyXTogaHR0cHM6Ly9idWdzLmZyZWVk
+ZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMjMyCiAgW2ZkbyMxMDM5MjddOiBodHRwczov
+L2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDM5MjcKICBbZmRvIzEwNDc4
+Ml06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNDc4Mgog
+IFtmZG8jMTA1NDExXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/
+aWQ9MTA1NDExCiAgW2ZkbyMxMDU2ODJdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
+b3dfYnVnLmNnaT9pZD0xMDU2ODIKICBbZmRvIzEwNTc2M106IGh0dHBzOi8vYnVncy5mcmVlZGVz
+a3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNTc2MwogIFtmZG8jMTA2NTM4XTogaHR0cHM6Ly9i
+dWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA2NTM4CiAgW2ZkbyMxMDc0Njld
+OiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDc0NjkKICBb
+ZmRvIzEwNzc5MV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lk
+PTEwNzc5MQogIFtmZG8jMTA3OTU2XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93
+X2J1Zy5jZ2k/aWQ9MTA3OTU2CiAgW2ZkbyMxMDgxNDVdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0
+b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDgxNDUKICBbZmRvIzEwOTI3MV06IGh0dHBzOi8vYnVn
+cy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI3MQogIFtmZG8jMTA5Mjc4XTog
+aHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5Mjc4CiAgW2Zk
+byM5OTkxMl06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTk5
+OTEyCgoKUGFydGljaXBhdGluZyBob3N0cyAoNyAtPiA0KQotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KCiAgTWlzc2luZyAgICAoMyk6IHNoYXJkLXNrbCBzaGFyZC1rYmwgc2hhcmQtaWNs
+YiAKCgpCdWlsZCBjaGFuZ2VzCi0tLS0tLS0tLS0tLS0KCiAgICAqIElHVDogSUdUXzQ3NjMgLT4g
+SUdUUFdfMjIyNQogICAgKiBQaWdsaXQ6IHBpZ2xpdF80NTA5IC0+IE5vbmUKCiAgQ0lfRFJNXzU0
+MDQ6IGM1MWRjNjA4Njk5YjJkY2ZlNmQyZjY5ODE3NzNmOThkMWI5ZjBjODYgQCBnaXQ6Ly9hbm9u
+Z2l0LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvbGludXgKICBJR1RQV18yMjI1OiBodHRwczovL2lu
+dGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzIyMjUvCiAgSUdUXzQ3NjM6IDgw
+NWE5OTQwOTU0MmQ3ZDcyZGRhM2I2ZGNkMjg0YTg4NjlhM2RlMTYgQCBnaXQ6Ly9hbm9uZ2l0LmZy
+ZWVkZXNrdG9wLm9yZy94b3JnL2FwcC9pbnRlbC1ncHUtdG9vbHMKICBwaWdsaXRfNDUwOTogZmRj
+NWE0Y2ExMTEyNGFiODQxM2M3OTg4ODk2ZWVjNGM5NzMzNjY5NCBAIGdpdDovL2Fub25naXQuZnJl
+ZWRlc2t0b3Aub3JnL3BpZ2xpdAoKPT0gTG9ncyA9PQoKRm9yIG1vcmUgZGV0YWlscyBzZWU6IGh0
+dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMjIyNS8KX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5n
+IGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
+a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
