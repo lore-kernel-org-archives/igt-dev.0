@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF17B6F81F
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Jan 2019 15:41:05 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F7416F844
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Jan 2019 16:19:16 +0000 (UTC)
 From: Lukasz Kalamarz <lukasz.kalamarz@intel.com>
-Date: Fri, 11 Jan 2019 16:37:45 +0100
-Message-Id: <20190111153745.14422-4-lukasz.kalamarz@intel.com>
-In-Reply-To: <20190111153745.14422-1-lukasz.kalamarz@intel.com>
-References: <20190111153745.14422-1-lukasz.kalamarz@intel.com>
-Subject: [igt-dev] [PATCH i-g-t v2 4/4] lib/ioctl_wrapper: Use __gem_mmap
+Date: Fri, 11 Jan 2019 17:15:48 +0100
+Message-Id: <20190111161548.15732-4-lukasz.kalamarz@intel.com>
+In-Reply-To: <20190111161548.15732-1-lukasz.kalamarz@intel.com>
+References: <20190111161548.15732-1-lukasz.kalamarz@intel.com>
+Subject: [igt-dev] [PATCH i-g-t v3 4/4] lib/ioctl_wrapper: Use __gem_mmap
  within __gem_mmap__cpu/wc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,9 +34,9 @@ ZXJhb2xvc3B1cmlvQGludGVsLmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2ls
 c29uLmNvLnVrPgotLS0KIGxpYi9pb2N0bF93cmFwcGVycy5jIHwgMzQgKystLS0tLS0tLS0tLS0t
 LS0tLS0tLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMzIg
 ZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2lvY3RsX3dyYXBwZXJzLmMgYi9saWIvaW9j
-dGxfd3JhcHBlcnMuYwppbmRleCBhODU2YjY2NC4uMDhiZDVkMWEgMTAwNjQ0Ci0tLSBhL2xpYi9p
-b2N0bF93cmFwcGVycy5jCisrKyBiL2xpYi9pb2N0bF93cmFwcGVycy5jCkBAIC03OTEsMjUgKzc5
-MSw3IEBAIHN0YXRpYyB2b2lkCiAgKi8KIHZvaWQgKl9fZ2VtX21tYXBfX3djKGludCBmZCwgdWlu
+dGxfd3JhcHBlcnMuYwppbmRleCBlOTIyNWRhMC4uMTllNTk3OTQgMTAwNjQ0Ci0tLSBhL2xpYi9p
+b2N0bF93cmFwcGVycy5jCisrKyBiL2xpYi9pb2N0bF93cmFwcGVycy5jCkBAIC03ODksMjUgKzc4
+OSw3IEBAIHN0YXRpYyB2b2lkCiAgKi8KIHZvaWQgKl9fZ2VtX21tYXBfX3djKGludCBmZCwgdWlu
 dDMyX3QgaGFuZGxlLCB1aW50NjRfdCBvZmZzZXQsIHVpbnQ2NF90IHNpemUsIHVuc2lnbmVkIHBy
 b3QpCiB7Ci0Jc3RydWN0IGRybV9pOTE1X2dlbV9tbWFwIGFyZzsKLQotCWlmICghZ2VtX21tYXBf
 X2hhc193YyhmZCkpIHsKLQkJZXJybm8gPSBFTk9TWVM7Ci0JCXJldHVybiBOVUxMOwotCX0KLQot
@@ -47,7 +47,7 @@ cmcpKQotCQlyZXR1cm4gTlVMTDsKLQotCVZHKFZBTEdSSU5EX01BS0VfTUVNX0RFRklORUQoZnJv
 bV91c2VyX3BvaW50ZXIoYXJnLmFkZHJfcHRyKSwgYXJnLnNpemUpKTsKLQotCWVycm5vID0gMDsK
 LQlyZXR1cm4gZnJvbV91c2VyX3BvaW50ZXIoYXJnLmFkZHJfcHRyKTsKKwlyZXR1cm4gX19nZW1f
 bW1hcChmZCwgaGFuZGxlLCBvZmZzZXQsIHNpemUsIHByb3QsIEk5MTVfTU1BUF9XQyk7CiB9CiAK
-IC8qKgpAQCAtODQ2LDE5ICs4MjgsNyBAQCB2b2lkICpnZW1fbW1hcF9fd2MoaW50IGZkLCB1aW50
+IC8qKgpAQCAtODQ0LDE5ICs4MjYsNyBAQCB2b2lkICpnZW1fbW1hcF9fd2MoaW50IGZkLCB1aW50
 MzJfdCBoYW5kbGUsIHVpbnQ2NF90IG9mZnNldCwgdWludDY0X3Qgc2l6ZSwgdW5zaQogICovCiB2
 b2lkICpfX2dlbV9tbWFwX19jcHUoaW50IGZkLCB1aW50MzJfdCBoYW5kbGUsIHVpbnQ2NF90IG9m
 ZnNldCwgdWludDY0X3Qgc2l6ZSwgdW5zaWduZWQgcHJvdCkKIHsKLQlzdHJ1Y3QgZHJtX2k5MTVf
