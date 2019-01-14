@@ -1,12 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B56389338
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Jan 2019 22:36:46 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Mon, 14 Jan 2019 22:36:43 +0000
+Message-ID: <71f8d96f2a26344e19a7f811fa26501f6e26e3e8.camel@intel.com>
+References: <20190111225148.28380-1-jose.souza@intel.com>
+ <20190112075427.14931.63728@emeril.freedesktop.org>
+In-Reply-To: <20190112075427.14931.63728@emeril.freedesktop.org>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 14 Jan 2019 22:46:57 -0000
-Message-ID: <20190114224657.24565.30969@emeril.freedesktop.org>
-References: <20190114163432.28819-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20190114163432.28819-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fexec=5Fwhipser=3A_Pass_early_exit_onto_check=5Fbo?=
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2Cv2-resend-reviewed=2C1/2=5D_lib/psr?=
+ =?utf-8?q?=3A_Add_a_macro_with_the_maximum_lenght_of_i915=5Fedp=5Fpsr=5Fs?=
+ =?utf-8?q?tatus_and_use_it?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,139 +22,235 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0982426172=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogaTkxNS9nZW1fZXhlY193aGlwc2VyOiBQYXNz
-IGVhcmx5IGV4aXQgb250byBjaGVja19ibwpVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVk
-ZXNrdG9wLm9yZy9zZXJpZXMvNTUxOTAvClN0YXRlIDogc3VjY2VzcwoKPT0gU3VtbWFyeSA9PQoK
-Q0kgQnVnIExvZyAtIGNoYW5nZXMgZnJvbSBDSV9EUk1fNTQxNl9mdWxsIC0+IElHVFBXXzIyMzZf
-ZnVsbAo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-CgpTdW1tYXJ5Ci0tLS0tLS0KCiAgKipTVUNDRVNTKioKCiAgTm8gcmVncmVzc2lvbnMgZm91bmQu
-CgogIEV4dGVybmFsIFVSTDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL2FwaS8x
-LjAvc2VyaWVzLzU1MTkwL3JldmlzaW9ucy8xL21ib3gvCgpLbm93biBpc3N1ZXMKLS0tLS0tLS0t
-LS0tCgogIEhlcmUgYXJlIHRoZSBjaGFuZ2VzIGZvdW5kIGluIElHVFBXXzIyMzZfZnVsbCB0aGF0
-IGNvbWUgZnJvbSBrbm93biBpc3N1ZXM6CgojIyMgSUdUIGNoYW5nZXMgIyMjCgojIyMjIElzc3Vl
-cyBoaXQgIyMjIwoKICAqIGlndEBnZW1fZXhlY19yZWxvY0BiYXNpYy1ndHQtd2MtYWN0aXZlOgog
-ICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIFBBU1MgLT4gSU5DT01QTEVURSBbZmRvIzEwMzkyN10K
-CiAgKiBpZ3RAa21zX2J1c3lAZXh0ZW5kZWQtbW9kZXNldC1oYW5nLW5ld2ZiLXJlbmRlci1iOgog
-ICAgLSBzaGFyZC1zbmI6ICAgICAgICAgIFBBU1MgLT4gRE1FU0ctV0FSTiBbZmRvIzEwNzk1Nl0K
-CiAgKiBpZ3RAa21zX2J1c3lAZXh0ZW5kZWQtbW9kZXNldC1oYW5nLW5ld2ZiLXdpdGgtcmVzZXQt
-cmVuZGVyLWI6CiAgICAtIHNoYXJkLWFwbDogICAgICAgICAgTk9UUlVOIC0+IERNRVNHLVdBUk4g
-W2ZkbyMxMDc5NTZdCgogICogaWd0QGttc19jb2xvckBwaXBlLWEtY3RtLW1heDoKICAgIC0gc2hh
-cmQtYXBsOiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDgxNDddCgogICogaWd0QGttc19j
-b250ZW50X3Byb3RlY3Rpb25AYXRvbWljOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIE5PVFJV
-TiAtPiBGQUlMIFtmZG8jMTA4NTk3XQoKICAqIGlndEBrbXNfY3Vyc29yX2NyY0BjdXJzb3ItMTI4
-eDQyLXJhbmRvbToKICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMx
-MDMyMzJdICsxCgogICogaWd0QGttc19jdXJzb3JfY3JjQGN1cnNvci02NHgyMS1yYW5kb206CiAg
-ICAtIHNoYXJkLWFwbDogICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTAzMjMyXSArNQoKICAq
-IGlndEBrbXNfZmxpcEAyeC1mbGlwLXZzLWV4cGlyZWQtdmJsYW5rLWludGVycnVwdGlibGU6CiAg
-ICAtIHNoYXJkLWdsazogICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTA1MzYzXQoKICAqIGln
-dEBrbXNfZnJvbnRidWZmZXJfdHJhY2tpbmdAZmJjLTFwLXByaW1zY3JuLWN1ci1pbmRmYi1tb3Zl
-OgogICAgLSBzaGFyZC1rYmw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwMzE2N10KCiAg
-KiBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiYy0xcC1wcmltc2Nybi1zcHItaW5kZmIt
-ZHJhdy1wd3JpdGU6CiAgICAtIHNoYXJkLWFwbDogICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8j
-MTAzMTY3XSArNAoKICAqIGlndEBrbXNfZnJvbnRidWZmZXJfdHJhY2tpbmdAZmJjLTJwLXNjbmRz
-Y3JuLXNocmZiLW1zZmxpcC1ibHQ6CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgUEFTUyAtPiBG
-QUlMIFtmZG8jMTAzMTY3XSArNgoKICAqIGlndEBrbXNfcGxhbmVAcGl4ZWwtZm9ybWF0LXBpcGUt
-YS1wbGFuZXMtc291cmNlLWNsYW1waW5nOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIFBBU1Mg
-LT4gRkFJTCBbZmRvIzEwODk0OF0KICAgIC0gc2hhcmQta2JsOiAgICAgICAgICBQQVNTIC0+IEZB
-SUwgW2ZkbyMxMDg5NDhdCgogICogaWd0QGttc19wbGFuZUBwaXhlbC1mb3JtYXQtcGlwZS1jLXBs
-YW5lcy1zb3VyY2UtY2xhbXBpbmc6CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgUEFTUyAtPiBG
-QUlMIFtmZG8jMTA4OTQ4XSArMQoKICAqIGlndEBrbXNfcGxhbmVfYWxwaGFfYmxlbmRAcGlwZS1j
-LWFscGhhLW9wYXF1ZS1mYjoKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBOT1RSVU4gLT4gRkFJ
-TCBbZmRvIzEwODE0NV0KCiAgKiBpZ3RAa21zX3BsYW5lX2FscGhhX2JsZW5kQHBpcGUtYy1jb25z
-dGFudC1hbHBoYS1tYXg6CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgUEFTUyAtPiBGQUlMIFtm
-ZG8jMTA4MTQ1XQogICAgLSBzaGFyZC1rYmw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEw
-ODE0NV0KICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDgxNDVd
-CgogICogaWd0QGttc19wbGFuZV9tdWx0aXBsZUBhdG9taWMtcGlwZS1iLXRpbGluZy1ub25lOgog
-ICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwMzE2Nl0gKzIKCiAg
-KiBpZ3RAa21zX3BsYW5lX211bHRpcGxlQGF0b21pYy1waXBlLWItdGlsaW5nLXk6CiAgICAtIHNo
-YXJkLWFwbDogICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTAzMTY2XSArNAoKICAqIGlndEBr
-bXNfcGxhbmVfbXVsdGlwbGVAYXRvbWljLXBpcGUtYy10aWxpbmcteDoKICAgIC0gc2hhcmQta2Js
-OiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDMxNjZdCgogICogaWd0QGttc19zZXRtb2Rl
-QGJhc2ljOgogICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzk5OTEy
-XQoKICAqIGlndEBrbXNfdmJsYW5rQHBpcGUtYi10cy1jb250aW51YXRpb24taWRsZS1oYW5nOgog
-ICAgLSBzaGFyZC1oc3c6ICAgICAgICAgIFBBU1MgLT4gRE1FU0ctV0FSTiBbZmRvIzEwMjYxNF0K
-CiAgKiBpZ3RAa21zX3ZibGFua0BwaXBlLWMtdHMtY29udGludWF0aW9uLXN1c3BlbmQ6CiAgICAt
-IHNoYXJkLWtibDogICAgICAgICAgUEFTUyAtPiBJTkNPTVBMRVRFIFtmZG8jMTAzNjY1XQoKICAK
-IyMjIyBQb3NzaWJsZSBmaXhlcyAjIyMjCgogICogaWd0QGdlbV9leGVjX3NjaGVkdWxlQHNtb2tl
-dGVzdC1hbGw6CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgSU5DT01QTEVURSBbZmRvIzEwMzM1
-OV0gLyBbay5vcmcjMTk4MTMzXSAtPiBQQVNTCgogICogaWd0QGttc19hZGRmYl9iYXNpY0B0b28t
-d2lkZToKICAgIC0gc2hhcmQtc25iOiAgICAgICAgICBJTkNPTVBMRVRFIFtmZG8jMTA1NDExXSAv
-IFtmZG8jMTA3NDY5XSAtPiBQQVNTCgogICogaWd0QGttc19hdmFpbGFibGVfbW9kZXNfY3JjQGF2
-YWlsYWJsZV9tb2RlX3Rlc3RfY3JjOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIEZBSUwgW2Zk
-byMxMDY2NDFdIC0+IFBBU1MKCiAgKiBpZ3RAa21zX2NvbG9yQHBpcGUtYi1kZWdhbW1hOgogICAg
-LSBzaGFyZC1hcGw6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDQ3ODJdIC0+IFBBU1MKCiAgKiBpZ3RA
-a21zX2NvbG9yQHBpcGUtYy1jdG0tbWF4OgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIEZBSUwg
-W2ZkbyMxMDgxNDddIC0+IFBBU1MKCiAgKiBpZ3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLTI1Nngy
-NTYtc3VzcGVuZDoKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBGQUlMIFtmZG8jMTAzMTkxXSAv
-IFtmZG8jMTAzMjMyXSAtPiBQQVNTCgogICogaWd0QGttc19jdXJzb3JfY3JjQGN1cnNvci0yNTZ4
-ODUtcmFuZG9tOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDMyMzJdIC0+
-IFBBU1MgKzIKCiAgKiBpZ3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLTY0eDIxLW9uc2NyZWVuOgog
-ICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDMyMzJdIC0+IFBBU1MKCiAgKiBp
-Z3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLTY0eDY0LXJhbmRvbToKICAgIC0gc2hhcmQta2JsOiAg
-ICAgICAgICBGQUlMIFtmZG8jMTAzMjMyXSAtPiBQQVNTCgogICogaWd0QGttc19mbGlwQGZsaXAt
-dnMtZXhwaXJlZC12YmxhbmstaW50ZXJydXB0aWJsZToKICAgIC0gc2hhcmQta2JsOiAgICAgICAg
-ICBGQUlMIFtmZG8jMTAyODg3XSAvIFtmZG8jMTA1MzYzXSAtPiBQQVNTCgogICogaWd0QGttc19m
-cm9udGJ1ZmZlcl90cmFja2luZ0BmYmMtMnAtcHJpbXNjcm4tc3ByLWluZGZiLW9ub2ZmOgogICAg
-LSBzaGFyZC1nbGs6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDMxNjddIC0+IFBBU1MgKzQKCiAgKiBp
-Z3RAa21zX3BsYW5lX2FscGhhX2JsZW5kQHBpcGUtYy1hbHBoYS1vcGFxdWUtZmI6CiAgICAtIHNo
-YXJkLWdsazogICAgICAgICAgRkFJTCBbZmRvIzEwODE0NV0gLT4gUEFTUwoKICAqIGlndEBrbXNf
-dmJsYW5rQHBpcGUtYi10cy1jb250aW51YXRpb24tc3VzcGVuZDoKICAgIC0gc2hhcmQta2JsOiAg
-ICAgICAgICBJTkNPTVBMRVRFIFtmZG8jMTAzNjY1XSAtPiBQQVNTCgogICogaWd0QHBtX3JjNl9y
-ZXNpZGVuY3lAcmM2LWFjY3VyYWN5OgogICAgLSBzaGFyZC1zbmI6ICAgICAgICAgIHtTS0lQfSBb
-ZmRvIzEwOTI3MV0gLT4gUEFTUwoKICAKIyMjIyBXYXJuaW5ncyAjIyMjCgogICogaWd0QGdlbV9l
-eGVjX3BhcmFtc0BpbnZhbGlkLWJzZC1yaW5nOgogICAgLSBzaGFyZC1zbmI6ICAgICAgICAgIHtT
-S0lQfSBbZmRvIzEwOTI3MV0gLT4gSU5DT01QTEVURSBbZmRvIzEwNTQxMV0KCiAgCiAge25hbWV9
-OiBUaGlzIGVsZW1lbnQgaXMgc3VwcHJlc3NlZC4gVGhpcyBtZWFucyBpdCBpcyBpZ25vcmVkIHdo
-ZW4gY29tcHV0aW5nCiAgICAgICAgICB0aGUgc3RhdHVzIG9mIHRoZSBkaWZmZXJlbmNlIChTVUND
-RVNTLCBXQVJOSU5HLCBvciBGQUlMVVJFKS4KCiAgW2ZkbyMxMDI2MTRdOiBodHRwczovL2J1Z3Mu
-ZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDI2MTQKICBbZmRvIzEwMjg4N106IGh0
-dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMjg4NwogIFtmZG8j
-MTAzMTY2XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAz
-MTY2CiAgW2ZkbyMxMDMxNjddOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVn
-LmNnaT9pZD0xMDMxNjcKICBbZmRvIzEwMzE5MV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5v
-cmcvc2hvd19idWcuY2dpP2lkPTEwMzE5MQogIFtmZG8jMTAzMjMyXTogaHR0cHM6Ly9idWdzLmZy
-ZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMjMyCiAgW2ZkbyMxMDMzNTldOiBodHRw
-czovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDMzNTkKICBbZmRvIzEw
-MzY2NV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzY2
-NQogIFtmZG8jMTAzOTI3XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5j
-Z2k/aWQ9MTAzOTI3CiAgW2ZkbyMxMDQ3ODJdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3Jn
-L3Nob3dfYnVnLmNnaT9pZD0xMDQ3ODIKICBbZmRvIzEwNTM2M106IGh0dHBzOi8vYnVncy5mcmVl
-ZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNTM2MwogIFtmZG8jMTA1NDExXTogaHR0cHM6
-Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA1NDExCiAgW2ZkbyMxMDY2
-NDFdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDY2NDEK
-ICBbZmRvIzEwNzQ2OV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dp
-P2lkPTEwNzQ2OQogIFtmZG8jMTA3OTU2XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9z
-aG93X2J1Zy5jZ2k/aWQ9MTA3OTU2CiAgW2ZkbyMxMDgxNDVdOiBodHRwczovL2J1Z3MuZnJlZWRl
-c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDgxNDUKICBbZmRvIzEwODE0N106IGh0dHBzOi8v
-YnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODE0NwogIFtmZG8jMTA4NTk3
-XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA4NTk3CiAg
-W2ZkbyMxMDg5NDhdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9p
-ZD0xMDg5NDgKICBbZmRvIzEwOTI3MV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hv
-d19idWcuY2dpP2lkPTEwOTI3MQogIFtmZG8jMTA5Mjc4XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNr
-dG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5Mjc4CiAgW2ZkbyM5OTkxMl06IGh0dHBzOi8vYnVn
-cy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTk5OTEyCiAgW2sub3JnIzE5ODEzM106
-IGh0dHBzOi8vYnVnemlsbGEua2VybmVsLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTk4MTMzCgoKUGFy
-dGljaXBhdGluZyBob3N0cyAoNyAtPiA1KQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
-CiAgTWlzc2luZyAgICAoMik6IHNoYXJkLXNrbCBzaGFyZC1pY2xiIAoKCkJ1aWxkIGNoYW5nZXMK
-LS0tLS0tLS0tLS0tLQoKICAgICogSUdUOiBJR1RfNDc2OSAtPiBJR1RQV18yMjM2CiAgICAqIFBp
-Z2xpdDogcGlnbGl0XzQ1MDkgLT4gTm9uZQoKICBDSV9EUk1fNTQxNjogNGU4N2ExZDZhNDhmNDZl
-YTRkNmRkNGRjODYxYWI4NjBmN2FjNzM2ZiBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3Jn
-L2dmeC1jaS9saW51eAogIElHVFBXXzIyMzY6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90
-cmVlL2RybS10aXAvSUdUUFdfMjIzNi8KICBJR1RfNDc2OTogYzNhZWY1MDdlMWRmZTFlNDgzNzg3
-ZDUwMWU5OTA3ZGFiNjdmNmJjYSBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL3hvcmcv
-YXBwL2ludGVsLWdwdS10b29scwogIHBpZ2xpdF80NTA5OiBmZGM1YTRjYTExMTI0YWI4NDEzYzc5
-ODg4OTZlZWM0Yzk3MzM2Njk0IEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvcGlnbGl0
-Cgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yMjM2LwpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3Rz
-LmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2lndC1kZXYK
+--===============0982426172==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-bJSg5ZUA6DopB1EXlBQh"
+
+--=-bJSg5ZUA6DopB1EXlBQh
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Pushed, thanks for the reviews DK.
+
+On Sat, 2019-01-12 at 07:54 +0000, Patchwork wrote:
+> =3D=3D Series Details =3D=3D
+>=20
+> Series: series starting with [i-g-t,v2-resend-reviewed,1/2] lib/psr:
+> Add a macro with the maximum lenght of i915_edp_psr_status and use it
+> URL   : https://patchwork.freedesktop.org/series/55105/
+> State : success
+>=20
+> =3D=3D Summary =3D=3D
+>=20
+> CI Bug Log - changes from CI_DRM_5408_full -> IGTPW_2227_full
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+>=20
+> Summary
+> -------
+>=20
+>   **SUCCESS**
+>=20
+>   No regressions found.
+>=20
+>   External URL:=20
+> https://patchwork.freedesktop.org/api/1.0/series/55105/revisions/1/mbox/
+>=20
+> Known issues
+> ------------
+>=20
+>   Here are the changes found in IGTPW_2227_full that come from known
+> issues:
+>=20
+> ### IGT changes ###
+>=20
+> #### Issues hit ####
+>=20
+>   * igt@i915_suspend@sysfs-reader:
+>     - shard-snb:          PASS -> INCOMPLETE [fdo#105411]
+>=20
+>   * igt@kms_busy@extended-pageflip-modeset-hang-oldfb-render-c:
+>     - shard-apl:          NOTRUN -> DMESG-WARN [fdo#107956]
+>=20
+>   * igt@kms_cursor_crc@cursor-64x21-sliding:
+>     - shard-apl:          PASS -> FAIL [fdo#103232] +3
+>     - shard-kbl:          PASS -> FAIL [fdo#103232]
+>=20
+>   * igt@kms_cursor_crc@cursor-64x64-sliding:
+>     - shard-glk:          PASS -> FAIL [fdo#103232] +5
+>=20
+>   * igt@kms_cursor_crc@cursor-64x64-suspend:
+>     - shard-apl:          PASS -> FAIL [fdo#103191] / [fdo#103232]
+>=20
+>   * igt@kms
+> _cursor_legacy@2x-long-nonblocking-modeset-vs-cursor-atomic:
+>     - shard-glk:          PASS -> FAIL [fdo#105454]
+>=20
+>   * igt@kms_flip@modeset-vs-vblank-race:
+>     - shard-hsw:          PASS -> DMESG-FAIL [fdo#102614] /
+> [fdo#103060]
+>=20
+>   * igt@kms
+> _frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-mmap-wc:
+>     - shard-kbl:          PASS -> FAIL [fdo#103167]
+>=20
+>   * igt@kms
+> _frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-render:
+>     - shard-apl:          PASS -> FAIL [fdo#103167] +4
+>=20
+>   * igt@kms_frontbuffer_tracking@fbc-1p-rte:
+>     - shard-apl:          PASS -> FAIL [fdo#103167] / [fdo#105682]
+>=20
+>   * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-onoff:
+>     - shard-glk:          PASS -> FAIL [fdo#103167] +5
+>=20
+>   * igt@kms_plane@pixel-format-pipe-a-planes:
+>     - shard-kbl:          PASS -> FAIL [fdo#103166] +3
+>=20
+>   * igt@kms_plane_alpha_blend@pipe-c-alpha-opaque-fb:
+>     - shard-apl:          NOTRUN -> FAIL [fdo#108145]
+>=20
+>   * igt@kms_plane_multiple@atomic-pipe-a-tiling-x:
+>     - shard-apl:          PASS -> FAIL [fdo#103166] +3
+>=20
+>   * igt@kms_plane_multiple@atomic-pipe-a-tiling-y:
+>     - shard-glk:          PASS -> FAIL [fdo#103166] +8
+>=20
+>   * igt@kms_setmode@basic:
+>     - shard-apl:          PASS -> FAIL [fdo#99912]
+>=20
+>  =20
+> #### Possible fixes ####
+>=20
+>   * igt@kms_available_modes_crc@available_mode_test_crc:
+>     - shard-apl:          FAIL [fdo#106641] -> PASS
+>=20
+>   * igt@kms_cursor_crc@cursor-128x128-random:
+>     - shard-apl:          FAIL [fdo#103232] -> PASS +1
+>=20
+>   * igt@kms_cursor_crc@cursor-256x256-random:
+>     - shard-glk:          FAIL [fdo#103232] -> PASS
+>=20
+>   * igt@kms_cursor_crc@cursor-64x64-dpms:
+>     - shard-kbl:          FAIL [fdo#103232] -> PASS +1
+>=20
+>   * igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff:
+>     - shard-apl:          FAIL [fdo#103167] -> PASS
+>=20
+>   * igt@kms
+> _frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-mmap-cpu:
+>     - shard-glk:          FAIL [fdo#103167] -> PASS +6
+>=20
+>   * igt@kms_frontbuffer_tracking@fbc-suspend:
+>     - shard-kbl:          DMESG-WARN [fdo#103558] / [fdo#105602] ->
+> PASS +16
+>=20
+>   * igt@kms_plane@plane-position-covered-pipe-c-planes:
+>     - shard-kbl:          FAIL [fdo#103166] -> PASS
+>=20
+>   * igt@kms_plane_alpha_blend@pipe-b-constant-alpha-max:
+>     - shard-glk:          FAIL [fdo#108145] -> PASS +2
+>=20
+>   * igt@kms_plane_multiple@atomic-pipe-b-tiling-x:
+>     - shard-glk:          FAIL [fdo#103166] -> PASS +2
+>=20
+>   * igt@kms_plane_multiple@atomic-pipe-c-tiling-yf:
+>     - shard-apl:          FAIL [fdo#103166] -> PASS +1
+>=20
+>   * igt@kms_rotation_crc@multiplane-rotation-cropping-top:
+>     - shard-glk:          DMESG-FAIL [fdo#105763] / [fdo#106538] ->
+> PASS
+>=20
+>   * igt@pm_rc6_residency@rc6-accuracy:
+>     - shard-snb:          {SKIP} [fdo#109271] -> PASS
+>=20
+>  =20
+>   {name}: This element is suppressed. This means it is ignored when
+> computing
+>           the status of the difference (SUCCESS, WARNING, or
+> FAILURE).
+>=20
+>   [fdo#102614]: https://bugs.freedesktop.org/show_bug.cgi?id=3D102614
+>   [fdo#103060]: https://bugs.freedesktop.org/show_bug.cgi?id=3D103060
+>   [fdo#103166]: https://bugs.freedesktop.org/show_bug.cgi?id=3D103166
+>   [fdo#103167]: https://bugs.freedesktop.org/show_bug.cgi?id=3D103167
+>   [fdo#103191]: https://bugs.freedesktop.org/show_bug.cgi?id=3D103191
+>   [fdo#103232]: https://bugs.freedesktop.org/show_bug.cgi?id=3D103232
+>   [fdo#103558]: https://bugs.freedesktop.org/show_bug.cgi?id=3D103558
+>   [fdo#105411]: https://bugs.freedesktop.org/show_bug.cgi?id=3D105411
+>   [fdo#105454]: https://bugs.freedesktop.org/show_bug.cgi?id=3D105454
+>   [fdo#105602]: https://bugs.freedesktop.org/show_bug.cgi?id=3D105602
+>   [fdo#105682]: https://bugs.freedesktop.org/show_bug.cgi?id=3D105682
+>   [fdo#105763]: https://bugs.freedesktop.org/show_bug.cgi?id=3D105763
+>   [fdo#106538]: https://bugs.freedesktop.org/show_bug.cgi?id=3D106538
+>   [fdo#106641]: https://bugs.freedesktop.org/show_bug.cgi?id=3D106641
+>   [fdo#107956]: https://bugs.freedesktop.org/show_bug.cgi?id=3D107956
+>   [fdo#108145]: https://bugs.freedesktop.org/show_bug.cgi?id=3D108145
+>   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=3D109271
+>   [fdo#109278]: https://bugs.freedesktop.org/show_bug.cgi?id=3D109278
+>   [fdo#99912]: https://bugs.freedesktop.org/show_bug.cgi?id=3D99912
+>=20
+>=20
+> Participating hosts (7 -> 5)
+> ------------------------------
+>=20
+>   Missing    (2): shard-skl shard-iclb=20
+>=20
+>=20
+> Build changes
+> -------------
+>=20
+>     * IGT: IGT_4764 -> IGTPW_2227
+>     * Piglit: piglit_4509 -> None
+>=20
+>   CI_DRM_5408: bd0d0bbe6b5a740429be306d7eea41703daf08cc @
+> git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_2227: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_2227/
+>   IGT_4764: db19bccc1c220884baf2136e41683a3c2ba6aa24 @
+> git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+>   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @
+> git://anongit.freedesktop.org/piglit
+>=20
+> =3D=3D Logs =3D=3D
+>=20
+> For more details see:=20
+> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_2227/
+
+--=-bJSg5ZUA6DopB1EXlBQh
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlw9DvkACgkQVenbO/mO
+WkmwOQf8CqmobFYAmH/TZp3E9qc9F782TCv90tVcWITwRz8s8PJMuKTDd3kHjfD/
+y1hct8W1psmPhEUgVJ29XGzvMa0omJcpicUC5CZ/wqgcChIqEicoU+ezhB6R0+iK
+4HmFg2w0YcBfcwKeeRM/tp9I0Ehm9P1A7vhhyVS+cLFqXCyJPLn4mD4hHIkNPiRQ
+j+HlumOIFxwvpNuI/v8dcLGXaQ0l3wf2qEQQtbiI7kIf3JLJDCGTx3PwDUyG2ABm
+SaotBXzIrpjfR6RcRJO5YHD7PSoDPbpmmsTp6ifMguF9x84b2lSCcJ4fgplpsTKs
+g3vfie02NPGJybFET0YEzwoTqnPQGg==
+=+mVR
+-----END PGP SIGNATURE-----
+
+--=-bJSg5ZUA6DopB1EXlBQh--
+
+--===============0982426172==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0982426172==--
