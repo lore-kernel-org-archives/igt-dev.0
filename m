@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 54AE86ED8F
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Jan 2019 16:28:07 +0000 (UTC)
-Date: Tue, 15 Jan 2019 18:28:04 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20190115162804.GM20097@intel.com>
-References: <1545989391-17050-1-git-send-email-juhapekka.heikkila@gmail.com>
- <1545989391-17050-2-git-send-email-juhapekka.heikkila@gmail.com>
- <20190111143528.GB20097@intel.com>
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id D945A89AC2
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Jan 2019 17:41:39 +0000 (UTC)
+Date: Tue, 15 Jan 2019 17:13:01 +0100
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20190115161301.hieduu4jdxivbrlj@flea>
+References: <20190111090532.19235-1-paul.kocialkowski@bootlin.com>
+ <20190111090532.19235-19-paul.kocialkowski@bootlin.com>
+ <20190111151928.4tym2fgfk4osc4rb@flea>
+ <332105994b936f46264e21fe582aeb0567362374.camel@bootlin.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190111143528.GB20097@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/kms_rotation_crc: add NV12
- support for multiplane* tests
+In-Reply-To: <332105994b936f46264e21fe582aeb0567362374.camel@bootlin.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 18/21] lib/igt_frame: Add a
+ checkerboard frame comparison method
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,94 +20,137 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1847173810=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, Eben Upton <eben@raspberrypi.org>, igt-dev@lists.freedesktop.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBKYW4gMTEsIDIwMTkgYXQgMDQ6MzU6MjhQTSArMDIwMCwgVmlsbGUgU3lyasOkbMOk
-IHdyb3RlOgo+IE9uIEZyaSwgRGVjIDI4LCAyMDE4IGF0IDExOjI5OjUxQU0gKzAyMDAsIEp1aGEt
-UGVra2EgSGVpa2tpbGEgd3JvdGU6Cj4gPiBBZGQgTlYxMiBzdXBwb3J0IGZvciB0ZXN0aW5nIHdo
-ZXJlIGF2YWlsYWJsZS4KPiA+IAo+ID4gU2lnbmVkLW9mZi1ieTogSnVoYS1QZWtrYSBIZWlra2ls
-YSA8anVoYXBla2thLmhlaWtraWxhQGdtYWlsLmNvbT4KPiA+IC0tLQo+ID4gIHRlc3RzL2ttc19y
-b3RhdGlvbl9jcmMuYyB8IDM1ICsrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tCj4g
-PiAgMSBmaWxlIGNoYW5nZWQsIDIwIGluc2VydGlvbnMoKyksIDE1IGRlbGV0aW9ucygtKQo+ID4g
-Cj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX3JvdGF0aW9uX2NyYy5jIGIvdGVzdHMva21zX3Jv
-dGF0aW9uX2NyYy5jCj4gPiBpbmRleCA3OTYxMTVhLi43YTc1ZGI4IDEwMDY0NAo+ID4gLS0tIGEv
-dGVzdHMva21zX3JvdGF0aW9uX2NyYy5jCj4gPiArKysgYi90ZXN0cy9rbXNfcm90YXRpb25fY3Jj
-LmMKPiA+IEBAIC00MjYsNyArNDI2LDcgQEAgdHlwZWRlZiBzdHJ1Y3Qgewo+ID4gIAlpZ3Rfcm90
-YXRpb25fdCByb3RhdGlvbl9zdywgcm90YXRpb25faHc7Cj4gPiAgfSBwbGFuZWluZm9zOwo+ID4g
-IAo+ID4gLXN0YXRpYyB2b2lkIGdldF9tdWx0aXBsYW5lX2NyYyhkYXRhX3QgKmRhdGEsIGlndF9v
-dXRwdXRfdCAqb3V0cHV0LAo+ID4gK3N0YXRpYyBib29sIGdldF9tdWx0aXBsYW5lX2NyYyhkYXRh
-X3QgKmRhdGEsIGlndF9vdXRwdXRfdCAqb3V0cHV0LAo+ID4gIAkJCSAgICAgICBpZ3RfY3JjX3Qg
-KmNyY19vdXRwdXQsIHBsYW5laW5mb3MgKnBsYW5laW5mbywKPiA+ICAJCQkgICAgICAgaW50IG51
-bXBsYW5lcykKPiA+ICB7Cj4gPiBAQCAtNDM2LDIyICs0MzYsMjcgQEAgc3RhdGljIHZvaWQgZ2V0
-X211bHRpcGxhbmVfY3JjKGRhdGFfdCAqZGF0YSwgaWd0X291dHB1dF90ICpvdXRwdXQsCj4gPiAg
-CWludCBjLCByZXQ7Cj4gPiAgCj4gPiAgCW9sZHBsYW5lcyA9IGRhdGEtPm11bHRpcGxhbmVvbGR2
-aWV3Owo+ID4gLQlwbGFuZXMgPSBtYWxsb2Moc2l6ZW9mKCpwbGFuZXMpICogbnVtcGxhbmVzKTsK
-PiA+ICsJcGxhbmVzID0gY2FsbG9jKHNpemVvZigqcGxhbmVzKSwgbnVtcGxhbmVzKTsKPiA+ICAK
-PiA+ICAJZm9yIChjID0gMDsgYyA8IG51bXBsYW5lczsgYysrKSB7Cj4gPiAgCQlwbGFuZXNbY10u
-cGxhbmUgPSBpZ3Rfb3V0cHV0X2dldF9wbGFuZV90eXBlKG91dHB1dCwKPiA+ICAJCQkJCQkJICAg
-IHBsYW5laW5mb1tjXS5wbGFuZXR5cGUpOwo+ID4gIAo+ID4gIAkJLyoKPiA+IC0JCSAqIG1ha2Ug
-cGxhbmUgYW5kIGZiIHdpZHRoIGFuZCBoZWlnaHQgYWx3YXlzIGV2ZW4gZHVlIHRvCj4gPiAtCQkg
-KiB0ZXN0IGltYWdlIHJlbmRlcmluZwo+ID4gKwkJICogbWFrZSBwbGFuZSBhbmQgZmIgd2lkdGgg
-YW5kIGhlaWdodCBhbHdheXMgZGl2aXNpYmxlIGJ5IDQKPiA+ICsJCSAqIGR1ZSB0byBOVjEyIHN1
-cHBvcnQKPiAKPiBCZWNhdXNlIG9mIHRoZSBza2wgbnYxMiByb3RhdGlvbiB3b3JrYXJvdW5kIG9y
-IHNvbWUgb3RoZXIgcmVhc29uPwoKQWggeWVzLCB3ZSBzdGlsbCBoYXZlIHRob3NlIGJvZ3VzIHcv
-aCU0IGNoZWNrcyBmb3IgdGhlIGZiIGRpbWVuc2lvbnMuCkV2ZW4gd2l0aCB0aG9zZSBnb25lIHdl
-J2Qgc3RpbGwgaGF2ZSB3L2EgMTEwNiB0byB3b3JyeSBhYm91dC4gV2UgbWlnaHQKd2FudCB0byBu
-b3RlIHRoYXQgaW4gdGhlIGNvbW1lbnQgIi4uLiBkdWUgdG8gSW50ZWwgaHcgd29ya2Fyb3VuZHMu
-IgoKV2l0aCB0aGF0ClJldmlld2VkLWJ5OiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFA
-bGludXguaW50ZWwuY29tPgoKPiAKPiBMb29rcyBhbGwgcmlnaHQgb3RoZXJ3aXNlLgo+IAo+ID4g
-IAkJICovCj4gPiAtCQl3ID0gcGxhbmVpbmZvW2NdLndpZHRoICYgfjE7Cj4gPiAtCQloID0gcGxh
-bmVpbmZvW2NdLmhlaWdodCAmIH4xOwo+ID4gKwkJdyA9IHBsYW5laW5mb1tjXS53aWR0aCAmIH4z
-Owo+ID4gKwkJaCA9IHBsYW5laW5mb1tjXS5oZWlnaHQgJiB+MzsKPiA+ICAKPiA+ICAJCWlmIChw
-bGFuZWluZm9bY10ucm90YXRpb25fc3cgJiAoSUdUX1JPVEFUSU9OXzkwIHwgSUdUX1JPVEFUSU9O
-XzI3MCkpCj4gPiAgCQkJaWd0X3N3YXAodywgaCk7Cj4gPiAgCj4gPiArCQlpZiAoIWlndF9wbGFu
-ZV9oYXNfZm9ybWF0X21vZChwbGFuZXNbY10ucGxhbmUsCj4gPiArCQkJCQkgICAgICBwbGFuZWlu
-Zm9bY10uZm9ybWF0LAo+ID4gKwkJCQkJICAgICAgcGxhbmVpbmZvW2NdLnRpbGluZykpCj4gPiAr
-CQkJcmV0dXJuIGZhbHNlOwo+ID4gKwo+ID4gIAkJaWd0X2NyZWF0ZV9mYihkYXRhLT5nZnhfZmQs
-IHcsIGgsIHBsYW5laW5mb1tjXS5mb3JtYXQsCj4gPiAgCQkJICAgICAgcGxhbmVpbmZvW2NdLnRp
-bGluZywgJnBsYW5lc1tjXS5mYik7Cj4gPiAgCj4gPiBAQCAtNDc1LDYgKzQ4MCw3IEBAIHN0YXRp
-YyB2b2lkIGdldF9tdWx0aXBsYW5lX2NyYyhkYXRhX3QgKmRhdGEsIGlndF9vdXRwdXRfdCAqb3V0
-cHV0LAo+ID4gIAo+ID4gIAlmcmVlKG9sZHBsYW5lcyk7Cj4gPiAgCWRhdGEtPm11bHRpcGxhbmVv
-bGR2aWV3ID0gKHZvaWQqKXBsYW5lczsKPiA+ICsJcmV0dXJuIHRydWU7Cj4gPiAgfQo+ID4gIAo+
-ID4gIHN0YXRpYyB2b2lkIHBvaW50bG9jYXRpb24oZGF0YV90ICpkYXRhLCBwbGFuZWluZm9zICpw
-LCBkcm1Nb2RlTW9kZUluZm8gKm1vZGUsCj4gPiBAQCAtNTIzLDEzICs1MjksMTAgQEAgc3RhdGlj
-IHZvaWQgdGVzdF9tdWx0aV9wbGFuZV9yb3RhdGlvbihkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBw
-aXBlKQo+ID4gIAo+ID4gIAkvKgo+ID4gIAkqIFRoZXNlIGFyZSB0aG9zZSBtb2RlcyB3aGljaCBh
-cmUgdGVzdGVkLiBGb3IgdGVzdGluZyBmZWVsIGludGVyZXN0aW5nCj4gPiAtCSogY2FzZSB3aXRo
-IHRpbGluZyBhcmUgMiBieXRlIHdpZGUgYW5kIDQgYnl0ZSB3aWRlLgo+ID4gLQkqCj4gPiAtCSog
-VE9ETzoKPiA+IC0JKiBCdWlsdCBzdXBwb3J0IGZvciBOVjEyIGhlcmUuCj4gPiArCSogY2FzZSB3
-aXRoIHRpbGluZyBhcmUgMiBicHAsIDQgYnBwIGFuZCBOVjEyLgo+ID4gIAkqLwo+ID4gIAlzdGF0
-aWMgY29uc3QgdWludDMyX3QgZm9ybWF0bGlzdFtdID0ge0RSTV9GT1JNQVRfUkdCNTY1LAo+ID4g
-LQkJRFJNX0ZPUk1BVF9YUkdCODg4OH07Cj4gPiArCQlEUk1fRk9STUFUX1hSR0I4ODg4LCBEUk1f
-Rk9STUFUX05WMTJ9Owo+ID4gIAo+ID4gIAlmb3JfZWFjaF92YWxpZF9vdXRwdXRfb25fcGlwZShk
-aXNwbGF5LCBwaXBlLCBvdXRwdXQpIHsKPiA+ICAJCWludCBpLCBqLCBrLCBsOwo+ID4gQEAgLTU4
-MSwxMyArNTg0LDE1IEBAIHN0YXRpYyB2b2lkIHRlc3RfbXVsdGlfcGxhbmVfcm90YXRpb24oZGF0
-YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSkKPiA+ICAJCQkJCQlwWzBdLnJvdGF0aW9uX2h3ID0g
-SUdUX1JPVEFUSU9OXzA7Cj4gPiAgCQkJCQkJcFsxXS5yb3RhdGlvbl9zdyA9IHBsYW5lY29uZmln
-c1tqXS5yb3RhdGlvbjsKPiA+ICAJCQkJCQlwWzFdLnJvdGF0aW9uX2h3ID0gSUdUX1JPVEFUSU9O
-XzA7Cj4gPiAtCQkJCQkJZ2V0X211bHRpcGxhbmVfY3JjKGRhdGEsIG91dHB1dCwgJnJldGNyY19z
-dywKPiA+IC0JCQkJCQkJCSAgIChwbGFuZWluZm9zICopJnAsIE1BWE1VTFRJUExBTkVTQU1PVU5U
-KTsKPiA+ICsJCQkJCQlpZiAoIWdldF9tdWx0aXBsYW5lX2NyYyhkYXRhLCBvdXRwdXQsICZyZXRj
-cmNfc3csCj4gPiArCQkJCQkJCQkgICAocGxhbmVpbmZvcyAqKSZwLCBNQVhNVUxUSVBMQU5FU0FN
-T1VOVCkpCj4gPiArCQkJCQkJCWNvbnRpbnVlOwo+ID4gIAo+ID4gIAkJCQkJCWlndF9zd2FwKHBb
-MF0ucm90YXRpb25fc3csIHBbMF0ucm90YXRpb25faHcpOwo+ID4gIAkJCQkJCWlndF9zd2FwKHBb
-MV0ucm90YXRpb25fc3csIHBbMV0ucm90YXRpb25faHcpOwo+ID4gLQkJCQkJCWdldF9tdWx0aXBs
-YW5lX2NyYyhkYXRhLCBvdXRwdXQsICZyZXRjcmNfaHcsCj4gPiAtCQkJCQkJCQkgICAocGxhbmVp
-bmZvcyAqKSZwLCBNQVhNVUxUSVBMQU5FU0FNT1VOVCk7Cj4gPiArCQkJCQkJaWYgKCFnZXRfbXVs
-dGlwbGFuZV9jcmMoZGF0YSwgb3V0cHV0LCAmcmV0Y3JjX2h3LAo+ID4gKwkJCQkJCQkJICAgKHBs
-YW5laW5mb3MgKikmcCwgTUFYTVVMVElQTEFORVNBTU9VTlQpKQo+ID4gKwkJCQkJCQljb250aW51
-ZTsKPiA+ICAKPiA+ICAJCQkJCQlpZ3RfYXNzZXJ0X2NyY19lcXVhbCgmcmV0Y3JjX3N3LCAmcmV0
-Y3JjX2h3KTsKPiA+ICAJCQkJCX0KPiA+IC0tIAo+ID4gMi43LjQKPiA+IAo+ID4gX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiA+IGlndC1kZXYgbWFpbGlu
-ZyBsaXN0Cj4gPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwo+ID4gaHR0cHM6Ly9saXN0
-cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cj4gCj4gLS0gCj4gVmls
-bGUgU3lyasOkbMOkCj4gSW50ZWwKCi0tIApWaWxsZSBTeXJqw6Rsw6QKSW50ZWwKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxp
-c3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
-cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1847173810==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="yxxklmzrhtukftqe"
+Content-Disposition: inline
+
+
+--yxxklmzrhtukftqe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Jan 14, 2019 at 04:04:16PM +0100, Paul Kocialkowski wrote:
+> On Fri, 2019-01-11 at 16:19 +0100, Maxime Ripard wrote:
+> > On Fri, Jan 11, 2019 at 10:05:29AM +0100, Paul Kocialkowski wrote:
+> > > This introduces a new frame comparison method that was designed for
+> > > patterns that follow a checkerboard style. These patterns are made of
+> > > consecutive rectangular shapes with alternating solid colors. They are
+> > > currently used for some Chamelium-based tests.
+> > >=20
+> > > The method is particularly adapted for cases where the edges of the
+> > > shapes might be blurred (e.g. due to scaling), which makes it impossi=
+ble
+> > > to use pixel-perfect or CRC-based comparisons to decide whether the
+> > > captured frame matches the reference.
+> > >=20
+> > > Overall, this test will first detect the edges of the pattern and lat=
+er
+> > > exclude them from comparison. Colors are compared between the referen=
+ce
+> > > and capture with a low threshold for error. A percentage of the faulty
+> > > pixels is calculated and the captured frame is considered invalid if
+> > > more than one percent of the pixels are erroneous.
+> > >=20
+> > > Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+> > > ---
+> > >  lib/igt_frame.c | 121 ++++++++++++++++++++++++++++++++++++++++++++++=
+++
+> > >  lib/igt_frame.h |   2 +
+> > >  2 files changed, 123 insertions(+)
+> > >=20
+> > > diff --git a/lib/igt_frame.c b/lib/igt_frame.c
+> > > index 6984c02e9912..e0215660ea6e 100644
+> > > --- a/lib/igt_frame.c
+> > > +++ b/lib/igt_frame.c
+> > > @@ -267,3 +267,124 @@ complete:
+> > > =20
+> > >  	return match;
+> > >  }
+> > > +
+> > > +#define XR24_COLOR_VALUE(data, stride, x, y, c) \
+> > > +	*((uint8_t *)(data) + (y) * (stride) + 4 * (x) + (c))
+> > > +
+> > > +/**
+> > > + * igt_check_checkerboard_frame_match:
+> > > + * @reference: The reference cairo surface
+> > > + * @capture: The captured cairo surface
+> > > + *
+> > > + * Checks that the reference frame matches the captured frame using a
+> > > + * method designed for checkerboard patterns. These patterns are mad=
+e of
+> > > + * consecutive rectangular shapes with alternating solid colors.
+> > > + *
+> > > + * The intent of this method is to cover cases where the captured re=
+sult is
+> > > + * pixel-perfect due to features such as scaling or YUV conversion a=
+nd
+> >=20
+> > is *not* pixel perfect?
+>=20
+> Woops, good catch!
+>=20
+> [...]
+>=20
+> > > diff --git a/lib/igt_frame.h b/lib/igt_frame.h
+> > > index 11f96cbea203..f44f57d7ce73 100644
+> > > --- a/lib/igt_frame.h
+> > > +++ b/lib/igt_frame.h
+> > > @@ -38,5 +38,7 @@ void igt_write_compared_frames_to_png(cairo_surface=
+_t *reference,
+> > >  				      const char *capture_suffix);
+> > >  bool igt_check_analog_frame_match(cairo_surface_t *reference,
+> > >  				  cairo_surface_t *capture);
+> > > +bool igt_check_checkerboard_frame_match(cairo_surface_t *reference,
+> > > +					cairo_surface_t *capture);
+> >=20
+> > Looks good otherwise. I guess it's missing some comments about the
+> > algorithm being used though.
+>=20
+> I tried to include comments where I felt was necessary, but might have
+> missed out on some aspects. Or maybe you meant that the documentation
+> block does not provide enough detail about the algorithm itself (as
+> opposed to what it does)?
+
+Sorry if it wasn't clear enough, that's indeed what I meant.
+
+Maxime
+
+--=20
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--yxxklmzrhtukftqe
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXD4GjQAKCRDj7w1vZxhR
+xUYVAPwOv8DkHEOZ797bWHh9t2YqjDf1ZVLDGBGYyPnajRUUugD9ELOpSd9JVbS1
++v0RgDArD8w+htAZ1WAzwNECeI8YEAc=
+=0Jbw
+-----END PGP SIGNATURE-----
+
+--yxxklmzrhtukftqe--
+
+--===============1847173810==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1847173810==--
