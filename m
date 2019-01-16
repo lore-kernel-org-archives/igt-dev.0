@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 001D36EFCE
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jan 2019 11:21:02 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 29A0B6EFCD
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jan 2019 11:21:03 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
-Date: Wed, 16 Jan 2019 13:20:43 +0200
-Message-Id: <20190116112050.27647-15-petri.latvala@intel.com>
+Date: Wed, 16 Jan 2019 13:20:36 +0200
+Message-Id: <20190116112050.27647-8-petri.latvala@intel.com>
 In-Reply-To: <20190116112050.27647-1-petri.latvala@intel.com>
 References: <20190116112050.27647-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 14/21] lib/igt_audio: Initialize freq in
- audio_signal_detect()
+Subject: [igt-dev] [PATCH i-g-t 07/21] overlay: Write out the assumption for
+ kernel-provided data
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,20 +25,18 @@ To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SXQncyBub3QgY2xlYXIgdG8gdGhlIHN0YXRpYyBhbmFseXplciB0aGF0IGZyZXEgaXMgYXNzaWdu
-ZWQgd2hlbgpoYW5kbGluZyB0aGUgcHJldmlvdXMgZnJhbWUgYW5kIHRoZW4gdXNlZCBpbiB0aGUg
-bmV4dC4gSW4gZmFjdCwgaXQKd2Fzbid0IGNsZWFyIHRvIG1lIGVpdGhlciBiZWZvcmUgc3Rhcmlu
-ZyBhdCB0aGUgY29kZSBmb3Igc29tZQptaW51dGVzLiBJbml0aWFsaXppbmcgaXQgdG8gc29tZXRo
-aW5nIG1ha2VzIGJvdGggb2YgdXMgaGFwcGllci4KClNpZ25lZC1vZmYtYnk6IFBldHJpIExhdHZh
-bGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgpDYzogUGF1bCBLb2NpYWxrb3dza2kgPHBhdWwu
-a29jaWFsa293c2tpQGJvb3RsaW4uY29tPgotLS0KIGxpYi9pZ3RfYXVkaW8uYyB8IDIgKy0KIDEg
-ZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBh
-L2xpYi9pZ3RfYXVkaW8uYyBiL2xpYi9pZ3RfYXVkaW8uYwppbmRleCAyMjljZTZjNi4uYTA1OTJk
-NTMgMTAwNjQ0Ci0tLSBhL2xpYi9pZ3RfYXVkaW8uYworKysgYi9saWIvaWd0X2F1ZGlvLmMKQEAg
-LTI1MCw3ICsyNTAsNyBAQCBib29sIGF1ZGlvX3NpZ25hbF9kZXRlY3Qoc3RydWN0IGF1ZGlvX3Np
-Z25hbCAqc2lnbmFsLCBpbnQgY2hhbm5lbHMsCiAJaW50IHRocmVzaG9sZDsKIAlib29sIGFib3Zl
-OwogCWludCBlcnJvcjsKLQlpbnQgZnJlcTsKKwlpbnQgZnJlcSA9IDA7CiAJaW50IG1heDsKIAlp
-bnQgYywgaSwgajsKIAotLSAKMi4xOS4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVk
-ZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2lndC1kZXYK
+VGhlIGNvZGUgYXNzdW1lcyAoY29ycmVjdGx5KSB0aGF0IHBlcmZfZXZlbnRfaGVhZGVyJ3Mgc2l6
+ZSBpcwpub24temVyby4gV3JpdGUgdGhhdCBvdXQgc28gc3RhdGljIGFuYWx5c2lzIGFsc28ga25v
+d3MgaXQuCgpTaWduZWQtb2ZmLWJ5OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVs
+LmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgotLS0KIG92
+ZXJsYXkvZ3B1LXBlcmYuYyB8IDEgKwogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspCgpk
+aWZmIC0tZ2l0IGEvb3ZlcmxheS9ncHUtcGVyZi5jIGIvb3ZlcmxheS9ncHUtcGVyZi5jCmluZGV4
+IDU2MjlmODI2Li43YWRkZDc4ZCAxMDA2NDQKLS0tIGEvb3ZlcmxheS9ncHUtcGVyZi5jCisrKyBi
+L292ZXJsYXkvZ3B1LXBlcmYuYwpAQCAtNDk0LDYgKzQ5NCw3IEBAIGludCBncHVfcGVyZl91cGRh
+dGUoc3RydWN0IGdwdV9wZXJmICpncCkKIAkJCWNvbnN0IHN0cnVjdCBwZXJmX2V2ZW50X2hlYWRl
+ciAqaGVhZGVyOwogCiAJCQloZWFkZXIgPSAoY29uc3Qgc3RydWN0IHBlcmZfZXZlbnRfaGVhZGVy
+ICopKGRhdGEgKyAodGFpbCAmIG1hc2spKTsKKwkJCWFzc2VydChoZWFkZXItPnNpemUgPiAwKTsK
+IAkJCWlmIChoZWFkZXItPnNpemUgPiBoZWFkIC0gdGFpbCkKIAkJCQlicmVhazsKIAotLSAKMi4x
+OS4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3Qt
+ZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xp
+c3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
