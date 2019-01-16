@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 51AB56F12B
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Jan 2019 16:18:00 +0000 (UTC)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 45DB96F197
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Jan 2019 17:56:38 +0000 (UTC)
+From: Andi Shyti <andi.shyti@intel.com>
+Date: Wed, 16 Jan 2019 19:56:23 +0200
+Message-Id: <20190116175623.3907-5-andi.shyti@intel.com>
+In-Reply-To: <20190116175623.3907-1-andi.shyti@intel.com>
+References: <20190116175623.3907-1-andi.shyti@intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <d937f2942f936f897bcde8eb98a8da0c0a683d8e.camel@vmware.com>
-References: <20190116002230.2545-1-drawat@vmware.com>
- <20190116002230.2545-3-drawat@vmware.com>
- <154762815996.30063.10576306419800434128@skylake-alporthouse-com>
- <d937f2942f936f897bcde8eb98a8da0c0a683d8e.camel@vmware.com>
-Message-ID: <154765547183.22625.10699972788212632326@skylake-alporthouse-com>
-Date: Wed, 16 Jan 2019 16:17:52 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 2/3] igt/kms_addfb_basic: Call
- igt_require_gem for gem specific tiling
+Subject: [igt-dev] [RFC PATCH v5 4/4] tests: gem_exec_basic: add "exec-ctx"
+ buffer execution demo test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,27 +21,31 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, Deepak Singh Rawat <drawat@vmware.com>, Thomas Hellstrom <thellstrom@vmware.com>
-Cc: Linux-graphics-maintainer <Linux-graphics-maintainer@vmware.com>
+To: IGT dev <igt-dev@lists.freedesktop.org>
+Cc: Andi Shyti <andi@etezian.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBEZWVwYWsgU2luZ2ggUmF3YXQgKDIwMTktMDEtMTYgMTY6MTE6MTYpCj4gT24gV2Vk
-LCAyMDE5LTAxLTE2IGF0IDAwOjQyIC0wODAwLCBDaHJpcyBXaWxzb24gd3JvdGU6Cj4gPiBRdW90
-aW5nIERlZXBhayBSYXdhdCAoMjAxOS0wMS0xNiAwMDoyMjoyOSkKPiA+ID4gRm9yIHRlc3RzIHVz
-aW5nIGdlbSBzcGVjaWZpYyBidWZmZXIgdGlsaW5nLCBhZGQgYSBjYWxsIHRvCj4gPiA+IGlndF9y
-ZXF1aXJlX2dlbSBzbyB0aGF0IHRoZXNlIHRlc3RzIGRvbid0IGZhaWwgYXQgbGF0ZXIgc3RhZ2Uu
-Cj4gPiAKPiA+IEtNUyBvcGVyYXRlcyBpbmRlcGVuZGVudGx5IGZyb20gR0VNIG9uIGk5MTUuIFNv
-IGxvbmcgYXMgeW91IGFyZSBub3QKPiA+IGNhbGxpbmcgZ2VtX2V4ZWNidWYsIGl0IHNob3VsZCBj
-b250aW51ZSB0byB3b3JrIGV2ZW4gaWYgd2UgZGlzYWJsZQo+ID4gdGhlCj4gPiBHUFUsIGkuZS4g
-aWd0X3JlcXVpcmVfZ2VtKCkgc2hvdWxkIG5vdCBiZSByZXF1aXJlZCBoZXJlIChhZmFpaykuCj4g
-PiAtQ2hyaXMKPiAKPiBnZW1fc2V0X3RpbGluZygpIGNhbGxzIGFuIGk5MTUgcHJpdmF0ZSBJT0NU
-TCB3aGljaCBJIHRoaW5rIHdvdWxkIGZhaWwKPiB3aGVuIEdFTSBpcyBkaXNhYmxlZCBvciBvbiBv
-dGhlciBkcml2ZXJzLiBTbyBJIGd1ZXNzIGVpdGhlciBoYXZlIGEKPiBpZ3RfcmVxdWlyZV9nZW0o
-KSBvciBwZXJoYXBzIEdFTSBzcGVjaWZpYyBwcml2YXRlIElPQ1RMIGNhbGxzIFNLSVAgb24KPiBv
-dGhlciBkcml2ZXJzLgoKQWgsIHlvdSB3YW50IGlndF9yZXF1aXJlKGlzX2k5MTVfZGV2aWNlKGZk
-KSksIG9yIGludHJvZHVjZSBzb21ldGhpbmcKbGlrZSBpZ3RfcmVxdWlyZV9pOTE1KGZkKS4gRXZl
-biBiZXR0ZXIgaWYgc3VjaCBzcGVjaWZpY3MgYXJlIHJlbW92ZWQsIG9yCm1vdmVkIHRvIGEgc3Vi
-dGVzdCBncm91cCB0aGF0IGFyZSBjbGVhcmx5IGRldmljZSBzcGVjaWZpYy4KLUNocmlzCl9fX19f
+VGhlICJleGVjLWN0eCIgaXMgYSBkZW1vIHN1YnRlc3QgaW5zZXJ0ZWQgaW4gdGhlIGdlbV9leGVj
+X2Jhc2ljCnRlc3QuIFRoZSBtYWluIGdvYWwgb2YgdGhlIHRlc3QgaXMgdG8gZ2V0IHRvIHRoZSBl
+bmdpbmVzIGJ5IHVzaW5nCnRoZSBuZXcgQVBJIGFzIGltcGxlbWVudGVkIGluIGluIGNvbW1pdCA4
+NzA3OWUwNCAoImxpYjogaW1wbGVtZW50Cm5ldyBlbmdpbmUgZGlzY292ZXJ5IGludGVyZmFjZSIp
+LgoKVGhlICJleGVjLWN0eCIgc3VidGVzdCBzaW1wbHkgZ2V0cyB0aGUgbGlzdCBvZiBlbmdpbmVz
+LCBiaW5kcwp0aGVtIHRvIGEgY29udGV4dCBhbmQgZXhlY3V0ZXMgYSBidWZmZXIuIFRoaXMgaXMg
+ZG9uZSB0aHJvdWdoIGEKbmV3ICJmb3JfZWFjaF9lbmdpbmVfY3R4IiBsb29wIHdoaWNoIGl0ZXJh
+dGVzIHRocm91Z2ggdGhlCmVuZ2luZXMuCgpTaWduZWQtb2ZmLWJ5OiBBbmRpIFNoeXRpIDxhbmRp
+LnNoeXRpQGludGVsLmNvbT4KLS0tCiB0ZXN0cy9pOTE1L2dlbV9leGVjX2Jhc2ljLmMgfCAxNCAr
+KysrKysrKysrKysrKwogMSBmaWxlIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKykKCmRpZmYgLS1n
+aXQgYS90ZXN0cy9pOTE1L2dlbV9leGVjX2Jhc2ljLmMgYi90ZXN0cy9pOTE1L2dlbV9leGVjX2Jh
+c2ljLmMKaW5kZXggZGNiODM4NjRiMWMxLi5iNjg4MjlmNjY0ZGIgMTAwNjQ0Ci0tLSBhL3Rlc3Rz
+L2k5MTUvZ2VtX2V4ZWNfYmFzaWMuYworKysgYi90ZXN0cy9pOTE1L2dlbV9leGVjX2Jhc2ljLmMK
+QEAgLTEzNSw2ICsxMzUsMjAgQEAgaWd0X21haW4KIAkJCWd0dChmZCwgZS0+ZXhlY19pZCB8IGUt
+PmZsYWdzKTsKIAl9CiAKKwlpZ3Rfc3VidGVzdCgiZXhlYy1jdHgiKSB7CisJCXVpbnQzMl90IGN0
+eF9pZDsKKwkJc3RydWN0IGludGVsX2V4ZWN1dGlvbl9lbmdpbmUyICplMjsKKwkJaW50IGluZGV4
+X21hcCA9IDA7CisKKwkJY3R4X2lkID0gZ2VtX2NvbnRleHRfY3JlYXRlKGZkKTsKKworCQlmb3Jf
+ZWFjaF9lbmdpbmVfY3R4KGZkLCBjdHhfaWQsIGUyKQorCQkJaWd0X2Fzc2VydChnZW1faGFzX3Jp
+bmdfYnlfaWR4KGZkLCArK2luZGV4X21hcCwKKwkJCQkJCSAgICAgICBjdHhfaWQpKTsKKworCQln
+ZW1fY29udGV4dF9kZXN0cm95KGZkLCBjdHhfaWQpOworCX0KKwogCWlndF9maXh0dXJlIHsKIAkJ
+aWd0X3N0b3BfaGFuZ19kZXRlY3RvcigpOwogCQljbG9zZShmZCk7Ci0tIAoyLjIwLjEKCl9fX19f
 X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
 ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
 c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
