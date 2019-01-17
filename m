@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4BFD66F3A0
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jan 2019 11:14:46 +0000 (UTC)
-Date: Thu, 17 Jan 2019 13:14:41 +0200
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20190117111441.i2qctgwjz2zulr5o@ahiler-desk1.fi.intel.com>
-References: <20190116112050.27647-1-petri.latvala@intel.com>
- <20190116112050.27647-7-petri.latvala@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 800576F3BC
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jan 2019 11:27:21 +0000 (UTC)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190116112050.27647-7-petri.latvala@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 06/21] lib: Avoid memcpying 0 bytes from
- NULL
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <a280afa8-d492-1788-900c-2fea03005661@intel.com>
+References: <20190116153732.32638-1-lionel.g.landwerlin@intel.com>
+ <20190116153732.32638-4-lionel.g.landwerlin@intel.com>
+ <154768145819.9669.9168941470068870842@skylake-alporthouse-com>
+ <a280afa8-d492-1788-900c-2fea03005661@intel.com>
+Message-ID: <154772441963.12932.18284474660546390361@skylake-alporthouse-com>
+Date: Thu, 17 Jan 2019 11:26:59 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/perf: new tests for OA
+ interrupt
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,16 +24,24 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>, igt-dev@lists.freedesktop.org
+Cc: matthew.auld@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCBKYW4gMTYsIDIwMTkgYXQgMDE6MjA6MzVQTSArMDIwMCwgUGV0cmkgTGF0dmFsYSB3
-cm90ZToKPiBUaGUgYmVoYXZpb3VyIG9mIG1lbWNweWluZyAwIGJ5dGVzIGZyb20gTlVMTCBpcyBz
-ZW1hbnRpY2FsbHkgc291bmQsCj4gYnV0IHN0aWxsIHVuZGVmaW5lZCBiZWhhdmlvdXIuCj4gCj4g
-U2lnbmVkLW9mZi1ieTogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+Cj4g
-Q2M6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6LmhpbGVyQGludGVsLmNvbT4KUmV2aWV3ZWQt
-Ynk6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6LmhpbGVyQGludGVsLmNvbT4KX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxp
-c3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
-cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+UXVvdGluZyBMaW9uZWwgTGFuZHdlcmxpbiAoMjAxOS0wMS0xNyAxMTowMzo0OCkKPiBPbiAxNi8w
+MS8yMDE5IDIzOjMwLCBDaHJpcyBXaWxzb24gd3JvdGU6Cj4gPiBRdW90aW5nIExpb25lbCBMYW5k
+d2VybGluICgyMDE5LTAxLTE2IDE1OjM3OjMxKQo+ID4+ICsgICAgICAgaWYgKHVzZV9wb2xsaW5n
+KSB7Cj4gPj4gKyAgICAgICAgICAgICAgIHdoaWxlICgocmV0ID0gcG9sbCgmcG9sbGZkLCAxLCAt
+MSkpIDwgMCAmJgo+ID4+ICsgICAgICAgICAgICAgICAgICAgICAgZXJybm8gPT0gRUlOVFIpCj4g
+Pj4gKyAgICAgICAgICAgICAgICAgICAgICAgOwo+ID4gSG1tLCBhcmUgd2Ugc2VuZGluZyBzaWdu
+YWxzIHRvIG91cnNlbGY/IEp1c3Qgd29uZGVyaW5nIGlmIEVJTlRSIGhlcmUgaXMKPiA+IGEga2Vy
+bmVsIGJ1Zy4uLgo+IAo+IAo+IEhtbSBub3BlLiBJIGp1c3QgYXNzdW1lZCBhbnl0aGluZyBjb3Vs
+ZCBpbnRlcnJ1cHQgdXMuCj4gCj4gSSB0aGluayBpZ3RfaW9jdGwoKSBkb2VzIHRoZSBzYW1lIHJp
+Z2h0PwoKSW4gdGhlIGdlbmVyYWwgY2FzZSwgd2UgZG8gbmVlZCB0byByZXN0YXJ0IG9uIHNpZ25h
+bHMgYXMgd2UgZG8gaW50ZXJydXB0Cm91cnNlbHZlcy4KCkkgd2FzIHdvcnJ5aW5nIGluIGNhc2Ug
+eW91J3ZlIG9ic2VydmVkIEVJTlRSIGhlcmUgaW4gcHJhY3RpY2UsIGFzIEkKY291bGRuJ3Qgc2Vl
+IGEgcmVhc29uIHdoeSAoaGVuY2UgZnJldHRpbmcgb3ZlciB3aGV0aGVyIHRoZSBjaGFpbiBvZgp3
+YWtlX3VwcyBpcyBjYXVzaW5nIGlzc3VlcyBpbiB0aGUga2VybmVsKS4KLUNocmlzCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
+aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
