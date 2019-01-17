@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0224B6F5A0
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jan 2019 23:05:35 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Thu, 17 Jan 2019 23:05:33 +0000
-Message-ID: <e880b793ece181d36dd3624fd250209c0d175207.camel@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 618406F5A0
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jan 2019 23:09:40 +0000 (UTC)
+From: "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
+Date: Thu, 17 Jan 2019 23:09:37 +0000
+Message-ID: <93a139aee95a5363557ee32d1c20fe1fa5bfdf5b.camel@intel.com>
 References: <20190112014607.13446-1-jose.souza@intel.com>
  <20190112014607.13446-10-jose.souza@intel.com>
  <d647571565b99ec07e4a72d3f90e9c573cc6284b.camel@intel.com>
  <d8ac76bb30c656a9b20783c186b4f333faa62d00.camel@intel.com>
  <732d6d7f45300740009bef2c922c7cd5d551cfbb.camel@intel.com>
-In-Reply-To: <732d6d7f45300740009bef2c922c7cd5d551cfbb.camel@intel.com>
+ <e880b793ece181d36dd3624fd250209c0d175207.camel@intel.com>
+In-Reply-To: <e880b793ece181d36dd3624fd250209c0d175207.camel@intel.com>
 Content-Language: en-US
+Content-ID: <CA7F208D0959C64E82E26C0F11D9845C@intel.com>
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t 10/10] tests/psr: Add the same test
  coverage that we have for PSR1 to PSR2
@@ -22,383 +24,234 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0931728006=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Souza,
+ Jose" <jose.souza@intel.com>
 Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0931728006==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-wmZ/B4mUKeaGBI9XYXjI"
-
---=-wmZ/B4mUKeaGBI9XYXjI
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, 2019-01-17 at 13:51 -0800, Dhinakaran Pandiyan wrote:
-> On Thu, 2019-01-17 at 13:43 -0800, Souza, Jose wrote:
-> > On Tue, 2019-01-15 at 22:44 -0800, Dhinakaran Pandiyan wrote:
-> > > On Fri, 2019-01-11 at 17:46 -0800, Jos=C3=A9 Roberto de Souza wrote:
-> > > > The main tests for PSR1 check if hardware tracking is detecting
-> > > > changes in planes when modifing it in different ways and now
-> > > > those tests will also run for PSR2 if supported by source and
-> > > > sink.
-> > > >=20
-> > > > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > > > Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-> > > > Signed-off-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
-> > > > ---
-> > > >  tests/kms_psr.c | 119
-> > > > ++++++++++++++++++++++++++++++++++++++++++++
-> > > > ----
-> > > >  1 file changed, 110 insertions(+), 9 deletions(-)
-> > > >=20
-> > > > diff --git a/tests/kms_psr.c b/tests/kms_psr.c
-> > > > index 8f2ef89c..b2202cd3 100644
-> > > > --- a/tests/kms_psr.c
-> > > > +++ b/tests/kms_psr.c
-> > > > @@ -61,6 +61,7 @@ typedef struct {
-> > > >  	int debugfs_fd;
-> > > >  	enum operations op;
-> > > >  	int test_plane_id;
-> > > > +	enum psr_mode op_psr_mode;
-> > > >  	uint32_t devid;
-> > > >  	uint32_t crtc_id;
-> > > >  	igt_display_t display;
-> > > > @@ -72,6 +73,7 @@ typedef struct {
-> > > >  	drmModeModeInfo *mode;
-> > > >  	igt_output_t *output;
-> > > >  	bool with_psr_disabled;
-> > > > +	bool supports_psr2;
-> > > >  } data_t;
-> > > > =20
-> > > >  static void create_cursor_fb(data_t *data)
-> > > > @@ -190,10 +192,10 @@ static void fill_render(data_t *data,
-> > > > uint32_t
-> > > > handle, unsigned char color)
-> > > >  	gem_bo_busy(data->drm_fd, handle);
-> > > >  }
-> > > > =20
-> > > > -static bool sink_support(data_t *data)
-> > > > +static bool sink_support(data_t *data, enum psr_mode mode)
-> > > >  {
-> > > >  	return data->with_psr_disabled ||
-> > > > -	       psr_sink_support(data->debugfs_fd, PSR_MODE_1);
-> > > > +	       psr_sink_support(data->debugfs_fd, mode);
-> > > >  }
-> > > > =20
-> > > >  static bool psr_wait_entry_if_enabled(data_t *data)
-> > > > @@ -201,7 +203,23 @@ static bool
-> > > > psr_wait_entry_if_enabled(data_t
-> > > > *data)
-> > > >  	if (data->with_psr_disabled)
-> > > >  		return true;
-> > > > =20
-> > > > -	return psr_wait_entry(data->debugfs_fd, PSR_MODE_1);
-> > > > +	return psr_wait_entry(data->debugfs_fd, data-
-> > > > >op_psr_mode);
-> > > > +}
-> > > > +
-> > > > +static bool psr_wait_update_if_enabled(data_t *data)
-> > > > +{
-> > > > +	if (data->with_psr_disabled)
-> > > > +		return true;
-> > > > +
-> > > > +	return psr_wait_update(data->debugfs_fd, data-
-> > > > >op_psr_mode);
-> > > > +}
-> > > > +
-> > > > +static bool psr_enable_if_enabled(data_t *data)
-> > >=20
-> > > This function name is quite confusing. What do you think of using
-> > > macros like this
-> > >=20
-> > > #define PSR_WAIT_ENTRY(data, mode)
-> > > 	return data->with_psr_disabled || psr_wait_entry(data-
-> > > > debugfs_fd, mode);
-> > >=20
-> > > ...
-> >=20
-> > I'm happy with both approaches but I guess we can change that in a
-> > patch on top of this one.
-> >=20
-> > >=20
-> > > > +{
-> > > > +	if (data->with_psr_disabled)
-> > > > +		return true;
-> > > > +
-> > > > +	return psr_enable(data->debugfs_fd, data->op_psr_mode);
-> > > >  }
-> > > > =20
-> > > >  static inline void manual(const char *expected)
-> > > > @@ -291,7 +309,7 @@ static void run_test(data_t *data)
-> > > >  		expected =3D "screen GREEN";
-> > > >  		break;
-> > > >  	}
-> > > > -	igt_assert(psr_wait_update(data->debugfs_fd,
-> > > > PSR_MODE_1));
-> > > > +	igt_assert(psr_wait_update_if_enabled(data));
-> > > >  	manual(expected);
-> > > >  }
-> > > > =20
-> > > > @@ -369,6 +387,7 @@ static void setup_test_plane(data_t *data,
-> > > > int
-> > > > test_plane)
-> > > > =20
-> > > >  static void test_setup(data_t *data)
-> > > >  {
-> > > > +	psr_enable_if_enabled(data);
-> > > >  	setup_test_plane(data, data->test_plane_id);
-> > > >  	igt_assert(psr_wait_entry_if_enabled(data));
-> > > >  }
-> > > > @@ -399,7 +418,7 @@ static int opt_handler(int opt, int
-> > > > opt_index,
-> > > > void *_data)
-> > > >  int main(int argc, char *argv[])
-> > > >  {
-> > > >  	const char *help_str =3D
-> > > > -	       "  --no-psr\tRun test without PSR.";
-> > > > +	       "  --no-psr\tRun test without PSR/PSR2.";
-> > > >  	static struct option long_options[] =3D {
-> > > >  		{"no-psr", 0, 0, 'n'},
-> > > >  		{ 0, 0, 0, 0 }
-> > > > @@ -417,12 +436,15 @@ int main(int argc, char *argv[])
-> > > >  		kmstest_set_vt_graphics_mode();
-> > > >  		data.devid =3D intel_get_drm_devid(data.drm_fd);
-> > > > =20
-> > > > -		if (!data.with_psr_disabled)
-> > > > -			psr_enable(data.debugfs_fd,
-> > > > PSR_MODE_1);
-> > > > -
-> > > > -		igt_require_f(sink_support(&data),
-> > > > +		igt_require_f(sink_support(&data, PSR_MODE_1),
-> > > >  			      "Sink does not support PSR\n");
-> > > > =20
-> > > > +		if (sink_support(&data, PSR_MODE_2)) {
-> > > > +			data.op_psr_mode =3D PSR_MODE_2;
-> > > > +			psr_enable_if_enabled(&data);
-> > >=20
-> > > There is another enable in test_setup() that the PSR2 subtests
-> > > call.
-> > > Why do we need two?
-> >=20
-> > Here I'm enabling by hand to check if source and sink support PSR2
-> > so
-> > data.supports_psr2 is set with the right value and we skip the PSR2
-> > tests when not supported.
->=20
-> How do you distinguish that from a true failure where PSR2 should
-> have
-> got enabled but it doesn't?
-
-We can't distinguish but after the first CI reports if a machine that
-had PSR2 tests running suddenly start to skip PSR2 tests it will be
-reported by CI.
-
-> >=20
-> > > > +			data.supports_psr2 =3D
-> > > > psr_wait_entry_if_enabled(&data);
-> > > > +		}
-> > > > +
-> > > >  		data.bufmgr =3D
-> > > > drm_intel_bufmgr_gem_init(data.drm_fd,
-> > > > 4096);
-> > > >  		igt_assert(data.bufmgr);
-> > > >  		drm_intel_bufmgr_gem_enable_reuse(data.bufmgr);
-> > > > @@ -431,12 +453,31 @@ int main(int argc, char *argv[])
-> > > >  	}
-> > > > =20
-> > > >  	igt_subtest("basic") {
-> > > > +		data.op_psr_mode =3D PSR_MODE_1;
-> > > > +		data.test_plane_id =3D DRM_PLANE_TYPE_PRIMARY;
-> > > > +		test_setup(&data);
-> > > > +		test_cleanup(&data);
-> > > > +	}
-> > >=20
-> > > Run this in a loop (PSR_MODE_1...PSR_MODE_2) instead of repeating
-> > > the
-> > > same calls?=20
-> >=20
-> > I think have separated tests is better because CI reports will show
-> > what version of PSR has a regression, we can run specific tests
-> > while
-> > debuging...
->=20
-> Calling igt_subtest() in a loop should generate separate subtests
-> iiuc.
-
-Ohh now I got what you want to do, looks good I will change to this.
-
-But we will need to generate PSR2 tests for every machine, as the
-igt_fixture() do not run when getting the list of subtests and CI
-probably uses that to split the tests through the shards.
-
-
->=20
-> > > > +
-> > > > +	igt_subtest("psr2_basic") {
-> > > > +		igt_require(data.supports_psr2);
-> > >=20
-> > > We don't have to generate this subtest if the sink does not
-> > > support
-> > > PSR2. kms_frontbuffer_tracking generates subtests dynamically, we
-> > > can
-> > > use the same approach here.
-> > >=20
-> > > > +		data.op_psr_mode =3D PSR_MODE_2;
-> > > >  		data.test_plane_id =3D DRM_PLANE_TYPE_PRIMARY;
-> > > >  		test_setup(&data);
-> > > >  		test_cleanup(&data);
-> > > >  	}
-> > > > =20
-> > > >  	igt_subtest("no_drrs") {
-> > > > +		data.op_psr_mode =3D PSR_MODE_1;
-> > > > +		data.test_plane_id =3D DRM_PLANE_TYPE_PRIMARY;
-> > > > +		test_setup(&data);
-> > > > +		igt_assert(drrs_disabled(&data));
-> > > > +		test_cleanup(&data);
-> > > > +	}
-> > > > +
-> > > > +	igt_subtest("psr2_no_drrs") {
-> > > > +		igt_require(data.supports_psr2);
-> > > > +		data.op_psr_mode =3D PSR_MODE_2;
-> > > >  		data.test_plane_id =3D DRM_PLANE_TYPE_PRIMARY;
-> > > >  		test_setup(&data);
-> > > >  		igt_assert(drrs_disabled(&data));
-> > > > @@ -445,6 +486,17 @@ int main(int argc, char *argv[])
-> > > > =20
-> > > >  	for (op =3D PAGE_FLIP; op <=3D RENDER; op++) {
-> > > >  		igt_subtest_f("primary_%s", op_str(op)) {
-> > > > +			data.op_psr_mode =3D PSR_MODE_1;
-> > > > +			data.op =3D op;
-> > > > +			data.test_plane_id =3D
-> > > > DRM_PLANE_TYPE_PRIMARY;
-> > > > +			test_setup(&data);
-> > > > +			run_test(&data);
-> > > > +			test_cleanup(&data);
-> > > > +		}
-> > > > +
-> > > > +		igt_subtest_f("psr2_primary_%s", op_str(op)) {
-> > > > +			igt_require(data.supports_psr2);
-> > > > +			data.op_psr_mode =3D PSR_MODE_2;
-> > > >  			data.op =3D op;
-> > > >  			data.test_plane_id =3D
-> > > > DRM_PLANE_TYPE_PRIMARY;
-> > > >  			test_setup(&data);
-> > > > @@ -455,6 +507,18 @@ int main(int argc, char *argv[])
-> > > > =20
-> > > >  	for (op =3D MMAP_GTT; op <=3D PLANE_ONOFF; op++) {
-> > > >  		igt_subtest_f("sprite_%s", op_str(op)) {
-> > > > +			igt_require(data.supports_psr2);
-> > > > +			data.op_psr_mode =3D PSR_MODE_1;
-> > > > +			data.op =3D op;
-> > > > +			data.test_plane_id =3D
-> > > > DRM_PLANE_TYPE_OVERLAY;
-> > > > +			test_setup(&data);
-> > > > +			run_test(&data);
-> > > > +			test_cleanup(&data);
-> > > > +		}
-> > > > +
-> > > > +		igt_subtest_f("psr2_sprite_%s", op_str(op)) {
-> > > > +			igt_require(data.supports_psr2);
-> > > > +			data.op_psr_mode =3D PSR_MODE_2;
-> > > >  			data.op =3D op;
-> > > >  			data.test_plane_id =3D
-> > > > DRM_PLANE_TYPE_OVERLAY;
-> > > >  			test_setup(&data);
-> > > > @@ -465,6 +529,17 @@ int main(int argc, char *argv[])
-> > > > =20
-> > > >  	for (op =3D MMAP_GTT; op <=3D PLANE_ONOFF; op++) {
-> > > >  		igt_subtest_f("cursor_%s", op_str(op)) {
-> > > > +			data.op_psr_mode =3D PSR_MODE_1;
-> > > > +			data.op =3D op;
-> > > > +			data.test_plane_id =3D
-> > > > DRM_PLANE_TYPE_CURSOR;
-> > > > +			test_setup(&data);
-> > > > +			run_test(&data);
-> > > > +			test_cleanup(&data);
-> > > > +		}
-> > > > +
-> > > > +		igt_subtest_f("psr2_cursor_%s", op_str(op)) {
-> > > > +			igt_require(data.supports_psr2);
-> > > > +			data.op_psr_mode =3D PSR_MODE_2;
-> > > >  			data.op =3D op;
-> > > >  			data.test_plane_id =3D
-> > > > DRM_PLANE_TYPE_CURSOR;
-> > > >  			test_setup(&data);
-> > > > @@ -474,6 +549,18 @@ int main(int argc, char *argv[])
-> > > >  	}
-> > > > =20
-> > > >  	igt_subtest_f("dpms") {
-> > > > +		data.op_psr_mode =3D PSR_MODE_1;
-> > > > +		data.op =3D RENDER;
-> > > > +		data.test_plane_id =3D DRM_PLANE_TYPE_PRIMARY;
-> > > > +		test_setup(&data);
-> > > > +		dpms_off_on(&data);
-> > > > +		run_test(&data);
-> > > > +		test_cleanup(&data);
-> > > > +	}
-> > > > +
-> > > > +	igt_subtest_f("psr2_dpms") {
-> > > > +		igt_require(data.supports_psr2);
-> > > > +		data.op_psr_mode =3D PSR_MODE_2;
-> > > >  		data.op =3D RENDER;
-> > > >  		data.test_plane_id =3D DRM_PLANE_TYPE_PRIMARY;
-> > > >  		test_setup(&data);
-> > > > @@ -483,6 +570,20 @@ int main(int argc, char *argv[])
-> > > >  	}
-> > > > =20
-> > > >  	igt_subtest_f("suspend") {
-> > > > +		data.op_psr_mode =3D PSR_MODE_1;
-> > > > +		data.op =3D PLANE_ONOFF;
-> > > > +		data.test_plane_id =3D DRM_PLANE_TYPE_CURSOR;
-> > > > +		test_setup(&data);
-> > > > +		igt_system_suspend_autoresume(SUSPEND_STATE_MEM
-> > > > ,
-> > > > +					      SUSPEND_TEST_NONE
-> > > > );
-> > > > +		igt_assert(psr_wait_entry_if_enabled(&data));
-> > > > +		run_test(&data);
-> > > > +		test_cleanup(&data);
-> > > > +	}
-> > > > +
-> > > > +	igt_subtest_f("psr2_suspend") {
-> > > > +		igt_require(data.supports_psr2);
-> > > > +		data.op_psr_mode =3D PSR_MODE_2;
-> > > >  		data.op =3D PLANE_ONOFF;
-> > > >  		data.test_plane_id =3D DRM_PLANE_TYPE_CURSOR;
-> > > >  		test_setup(&data);
-
---=-wmZ/B4mUKeaGBI9XYXjI
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlxBCjsACgkQVenbO/mO
-Wknlhwf+M6mGnnPRWmqtxmS7D7dX1r686R3yijnm6TXIRjgIn2L4lQI1wH8aVap2
-usYgfHVCDDGJ9exzpOZwfACDbN7OgQyUcnsvQo7pdRLHN0RD7cS4LW5lpNVTAmhn
-lYXeRRHIcL7BKoNhqS3JXni/HQNPeP4epInz/ZemA83PF7m6QHIaq6WnBxqI2NM7
-hPrIaXvRAyPwWfJAbY+WNlOsGdLFwptt2NGNfp1uPZxGjwv8Yp39JvC+nhxpRwyP
-7tmv++OtVgYU5J7Sh06o9jrPG84YoYYRvWAozNWHhnWB3QZ6oRLlLCAaUOUW3s2+
-CsguxSQjR/4K5Jzu+JQH2Rxs5CRAkA==
-=TXN3
------END PGP SIGNATURE-----
-
---=-wmZ/B4mUKeaGBI9XYXjI--
-
---===============0931728006==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0931728006==--
+T24gVGh1LCAyMDE5LTAxLTE3IGF0IDE1OjA1IC0wODAwLCBTb3V6YSwgSm9zZSB3cm90ZToNCj4g
+T24gVGh1LCAyMDE5LTAxLTE3IGF0IDEzOjUxIC0wODAwLCBEaGluYWthcmFuIFBhbmRpeWFuIHdy
+b3RlOg0KPiA+IE9uIFRodSwgMjAxOS0wMS0xNyBhdCAxMzo0MyAtMDgwMCwgU291emEsIEpvc2Ug
+d3JvdGU6DQo+ID4gPiBPbiBUdWUsIDIwMTktMDEtMTUgYXQgMjI6NDQgLTA4MDAsIERoaW5ha2Fy
+YW4gUGFuZGl5YW4gd3JvdGU6DQo+ID4gPiA+IE9uIEZyaSwgMjAxOS0wMS0xMSBhdCAxNzo0NiAt
+MDgwMCwgSm9zw6kgUm9iZXJ0byBkZSBTb3V6YSB3cm90ZToNCj4gPiA+ID4gPiBUaGUgbWFpbiB0
+ZXN0cyBmb3IgUFNSMSBjaGVjayBpZiBoYXJkd2FyZSB0cmFja2luZyBpcw0KPiA+ID4gPiA+IGRl
+dGVjdGluZw0KPiA+ID4gPiA+IGNoYW5nZXMgaW4gcGxhbmVzIHdoZW4gbW9kaWZpbmcgaXQgaW4g
+ZGlmZmVyZW50IHdheXMgYW5kIG5vdw0KPiA+ID4gPiA+IHRob3NlIHRlc3RzIHdpbGwgYWxzbyBy
+dW4gZm9yIFBTUjIgaWYgc3VwcG9ydGVkIGJ5IHNvdXJjZSBhbmQNCj4gPiA+ID4gPiBzaW5rLg0K
+PiA+ID4gPiA+IA0KPiA+ID4gPiA+IENjOiBSb2RyaWdvIFZpdmkgPHJvZHJpZ28udml2aUBpbnRl
+bC5jb20+DQo+ID4gPiA+ID4gQ2M6IERoaW5ha2FyYW4gUGFuZGl5YW4gPGRoaW5ha2FyYW4ucGFu
+ZGl5YW5AaW50ZWwuY29tPg0KPiA+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IEpvc8OpIFJvYmVydG8g
+ZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwuY29tPg0KPiA+ID4gPiA+IC0tLQ0KPiA+ID4gPiA+
+ICB0ZXN0cy9rbXNfcHNyLmMgfCAxMTkNCj4gPiA+ID4gPiArKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKw0KPiA+ID4gPiA+IC0tLS0NCj4gPiA+ID4gPiAgMSBmaWxl
+IGNoYW5nZWQsIDExMCBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9ucygtKQ0KPiA+ID4gPiA+IA0K
+PiA+ID4gPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfcHNyLmMgYi90ZXN0cy9rbXNfcHNyLmMN
+Cj4gPiA+ID4gPiBpbmRleCA4ZjJlZjg5Yy4uYjIyMDJjZDMgMTAwNjQ0DQo+ID4gPiA+ID4gLS0t
+IGEvdGVzdHMva21zX3Bzci5jDQo+ID4gPiA+ID4gKysrIGIvdGVzdHMva21zX3Bzci5jDQo+ID4g
+PiA+ID4gQEAgLTYxLDYgKzYxLDcgQEAgdHlwZWRlZiBzdHJ1Y3Qgew0KPiA+ID4gPiA+ICAJaW50
+IGRlYnVnZnNfZmQ7DQo+ID4gPiA+ID4gIAllbnVtIG9wZXJhdGlvbnMgb3A7DQo+ID4gPiA+ID4g
+IAlpbnQgdGVzdF9wbGFuZV9pZDsNCj4gPiA+ID4gPiArCWVudW0gcHNyX21vZGUgb3BfcHNyX21v
+ZGU7DQo+ID4gPiA+ID4gIAl1aW50MzJfdCBkZXZpZDsNCj4gPiA+ID4gPiAgCXVpbnQzMl90IGNy
+dGNfaWQ7DQo+ID4gPiA+ID4gIAlpZ3RfZGlzcGxheV90IGRpc3BsYXk7DQo+ID4gPiA+ID4gQEAg
+LTcyLDYgKzczLDcgQEAgdHlwZWRlZiBzdHJ1Y3Qgew0KPiA+ID4gPiA+ICAJZHJtTW9kZU1vZGVJ
+bmZvICptb2RlOw0KPiA+ID4gPiA+ICAJaWd0X291dHB1dF90ICpvdXRwdXQ7DQo+ID4gPiA+ID4g
+IAlib29sIHdpdGhfcHNyX2Rpc2FibGVkOw0KPiA+ID4gPiA+ICsJYm9vbCBzdXBwb3J0c19wc3Iy
+Ow0KPiA+ID4gPiA+ICB9IGRhdGFfdDsNCj4gPiA+ID4gPiAgDQo+ID4gPiA+ID4gIHN0YXRpYyB2
+b2lkIGNyZWF0ZV9jdXJzb3JfZmIoZGF0YV90ICpkYXRhKQ0KPiA+ID4gPiA+IEBAIC0xOTAsMTAg
+KzE5MiwxMCBAQCBzdGF0aWMgdm9pZCBmaWxsX3JlbmRlcihkYXRhX3QgKmRhdGEsDQo+ID4gPiA+
+ID4gdWludDMyX3QNCj4gPiA+ID4gPiBoYW5kbGUsIHVuc2lnbmVkIGNoYXIgY29sb3IpDQo+ID4g
+PiA+ID4gIAlnZW1fYm9fYnVzeShkYXRhLT5kcm1fZmQsIGhhbmRsZSk7DQo+ID4gPiA+ID4gIH0N
+Cj4gPiA+ID4gPiAgDQo+ID4gPiA+ID4gLXN0YXRpYyBib29sIHNpbmtfc3VwcG9ydChkYXRhX3Qg
+KmRhdGEpDQo+ID4gPiA+ID4gK3N0YXRpYyBib29sIHNpbmtfc3VwcG9ydChkYXRhX3QgKmRhdGEs
+IGVudW0gcHNyX21vZGUgbW9kZSkNCj4gPiA+ID4gPiAgew0KPiA+ID4gPiA+ICAJcmV0dXJuIGRh
+dGEtPndpdGhfcHNyX2Rpc2FibGVkIHx8DQo+ID4gPiA+ID4gLQkgICAgICAgcHNyX3Npbmtfc3Vw
+cG9ydChkYXRhLT5kZWJ1Z2ZzX2ZkLCBQU1JfTU9ERV8xKTsNCj4gPiA+ID4gPiArCSAgICAgICBw
+c3Jfc2lua19zdXBwb3J0KGRhdGEtPmRlYnVnZnNfZmQsIG1vZGUpOw0KPiA+ID4gPiA+ICB9DQo+
+ID4gPiA+ID4gIA0KPiA+ID4gPiA+ICBzdGF0aWMgYm9vbCBwc3Jfd2FpdF9lbnRyeV9pZl9lbmFi
+bGVkKGRhdGFfdCAqZGF0YSkNCj4gPiA+ID4gPiBAQCAtMjAxLDcgKzIwMywyMyBAQCBzdGF0aWMg
+Ym9vbA0KPiA+ID4gPiA+IHBzcl93YWl0X2VudHJ5X2lmX2VuYWJsZWQoZGF0YV90DQo+ID4gPiA+
+ID4gKmRhdGEpDQo+ID4gPiA+ID4gIAlpZiAoZGF0YS0+d2l0aF9wc3JfZGlzYWJsZWQpDQo+ID4g
+PiA+ID4gIAkJcmV0dXJuIHRydWU7DQo+ID4gPiA+ID4gIA0KPiA+ID4gPiA+IC0JcmV0dXJuIHBz
+cl93YWl0X2VudHJ5KGRhdGEtPmRlYnVnZnNfZmQsIFBTUl9NT0RFXzEpOw0KPiA+ID4gPiA+ICsJ
+cmV0dXJuIHBzcl93YWl0X2VudHJ5KGRhdGEtPmRlYnVnZnNfZmQsIGRhdGEtDQo+ID4gPiA+ID4g
+PiBvcF9wc3JfbW9kZSk7DQo+ID4gPiA+ID4gDQo+ID4gPiA+ID4gK30NCj4gPiA+ID4gPiArDQo+
+ID4gPiA+ID4gK3N0YXRpYyBib29sIHBzcl93YWl0X3VwZGF0ZV9pZl9lbmFibGVkKGRhdGFfdCAq
+ZGF0YSkNCj4gPiA+ID4gPiArew0KPiA+ID4gPiA+ICsJaWYgKGRhdGEtPndpdGhfcHNyX2Rpc2Fi
+bGVkKQ0KPiA+ID4gPiA+ICsJCXJldHVybiB0cnVlOw0KPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiAr
+CXJldHVybiBwc3Jfd2FpdF91cGRhdGUoZGF0YS0+ZGVidWdmc19mZCwgZGF0YS0NCj4gPiA+ID4g
+PiA+IG9wX3Bzcl9tb2RlKTsNCj4gPiA+ID4gPiANCj4gPiA+ID4gPiArfQ0KPiA+ID4gPiA+ICsN
+Cj4gPiA+ID4gPiArc3RhdGljIGJvb2wgcHNyX2VuYWJsZV9pZl9lbmFibGVkKGRhdGFfdCAqZGF0
+YSkNCj4gPiA+ID4gDQo+ID4gPiA+IFRoaXMgZnVuY3Rpb24gbmFtZSBpcyBxdWl0ZSBjb25mdXNp
+bmcuIFdoYXQgZG8geW91IHRoaW5rIG9mDQo+ID4gPiA+IHVzaW5nDQo+ID4gPiA+IG1hY3JvcyBs
+aWtlIHRoaXMNCj4gPiA+ID4gDQo+ID4gPiA+ICNkZWZpbmUgUFNSX1dBSVRfRU5UUlkoZGF0YSwg
+bW9kZSkNCj4gPiA+ID4gCXJldHVybiBkYXRhLT53aXRoX3Bzcl9kaXNhYmxlZCB8fCBwc3Jfd2Fp
+dF9lbnRyeShkYXRhLQ0KPiA+ID4gPiA+IGRlYnVnZnNfZmQsIG1vZGUpOw0KPiA+ID4gPiANCj4g
+PiA+ID4gLi4uDQo+ID4gPiANCj4gPiA+IEknbSBoYXBweSB3aXRoIGJvdGggYXBwcm9hY2hlcyBi
+dXQgSSBndWVzcyB3ZSBjYW4gY2hhbmdlIHRoYXQgaW4NCj4gPiA+IGENCj4gPiA+IHBhdGNoIG9u
+IHRvcCBvZiB0aGlzIG9uZS4NCj4gPiA+IA0KPiA+ID4gPiANCj4gPiA+ID4gPiArew0KPiA+ID4g
+PiA+ICsJaWYgKGRhdGEtPndpdGhfcHNyX2Rpc2FibGVkKQ0KPiA+ID4gPiA+ICsJCXJldHVybiB0
+cnVlOw0KPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiArCXJldHVybiBwc3JfZW5hYmxlKGRhdGEtPmRl
+YnVnZnNfZmQsIGRhdGEtPm9wX3Bzcl9tb2RlKTsNCj4gPiA+ID4gPiAgfQ0KPiA+ID4gPiA+ICAN
+Cj4gPiA+ID4gPiAgc3RhdGljIGlubGluZSB2b2lkIG1hbnVhbChjb25zdCBjaGFyICpleHBlY3Rl
+ZCkNCj4gPiA+ID4gPiBAQCAtMjkxLDcgKzMwOSw3IEBAIHN0YXRpYyB2b2lkIHJ1bl90ZXN0KGRh
+dGFfdCAqZGF0YSkNCj4gPiA+ID4gPiAgCQlleHBlY3RlZCA9ICJzY3JlZW4gR1JFRU4iOw0KPiA+
+ID4gPiA+ICAJCWJyZWFrOw0KPiA+ID4gPiA+ICAJfQ0KPiA+ID4gPiA+IC0JaWd0X2Fzc2VydChw
+c3Jfd2FpdF91cGRhdGUoZGF0YS0+ZGVidWdmc19mZCwNCj4gPiA+ID4gPiBQU1JfTU9ERV8xKSk7
+DQo+ID4gPiA+ID4gKwlpZ3RfYXNzZXJ0KHBzcl93YWl0X3VwZGF0ZV9pZl9lbmFibGVkKGRhdGEp
+KTsNCj4gPiA+ID4gPiAgCW1hbnVhbChleHBlY3RlZCk7DQo+ID4gPiA+ID4gIH0NCj4gPiA+ID4g
+PiAgDQo+ID4gPiA+ID4gQEAgLTM2OSw2ICszODcsNyBAQCBzdGF0aWMgdm9pZCBzZXR1cF90ZXN0
+X3BsYW5lKGRhdGFfdA0KPiA+ID4gPiA+ICpkYXRhLA0KPiA+ID4gPiA+IGludA0KPiA+ID4gPiA+
+IHRlc3RfcGxhbmUpDQo+ID4gPiA+ID4gIA0KPiA+ID4gPiA+ICBzdGF0aWMgdm9pZCB0ZXN0X3Nl
+dHVwKGRhdGFfdCAqZGF0YSkNCj4gPiA+ID4gPiAgew0KPiA+ID4gPiA+ICsJcHNyX2VuYWJsZV9p
+Zl9lbmFibGVkKGRhdGEpOw0KPiA+ID4gPiA+ICAJc2V0dXBfdGVzdF9wbGFuZShkYXRhLCBkYXRh
+LT50ZXN0X3BsYW5lX2lkKTsNCj4gPiA+ID4gPiAgCWlndF9hc3NlcnQocHNyX3dhaXRfZW50cnlf
+aWZfZW5hYmxlZChkYXRhKSk7DQo+ID4gPiA+ID4gIH0NCj4gPiA+ID4gPiBAQCAtMzk5LDcgKzQx
+OCw3IEBAIHN0YXRpYyBpbnQgb3B0X2hhbmRsZXIoaW50IG9wdCwgaW50DQo+ID4gPiA+ID4gb3B0
+X2luZGV4LA0KPiA+ID4gPiA+IHZvaWQgKl9kYXRhKQ0KPiA+ID4gPiA+ICBpbnQgbWFpbihpbnQg
+YXJnYywgY2hhciAqYXJndltdKQ0KPiA+ID4gPiA+ICB7DQo+ID4gPiA+ID4gIAljb25zdCBjaGFy
+ICpoZWxwX3N0ciA9DQo+ID4gPiA+ID4gLQkgICAgICAgIiAgLS1uby1wc3JcdFJ1biB0ZXN0IHdp
+dGhvdXQgUFNSLiI7DQo+ID4gPiA+ID4gKwkgICAgICAgIiAgLS1uby1wc3JcdFJ1biB0ZXN0IHdp
+dGhvdXQgUFNSL1BTUjIuIjsNCj4gPiA+ID4gPiAgCXN0YXRpYyBzdHJ1Y3Qgb3B0aW9uIGxvbmdf
+b3B0aW9uc1tdID0gew0KPiA+ID4gPiA+ICAJCXsibm8tcHNyIiwgMCwgMCwgJ24nfSwNCj4gPiA+
+ID4gPiAgCQl7IDAsIDAsIDAsIDAgfQ0KPiA+ID4gPiA+IEBAIC00MTcsMTIgKzQzNiwxNSBAQCBp
+bnQgbWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQ0KPiA+ID4gPiA+ICAJCWttc3Rlc3Rfc2V0
+X3Z0X2dyYXBoaWNzX21vZGUoKTsNCj4gPiA+ID4gPiAgCQlkYXRhLmRldmlkID0gaW50ZWxfZ2V0
+X2RybV9kZXZpZChkYXRhLmRybV9mZCk7DQo+ID4gPiA+ID4gIA0KPiA+ID4gPiA+IC0JCWlmICgh
+ZGF0YS53aXRoX3Bzcl9kaXNhYmxlZCkNCj4gPiA+ID4gPiAtCQkJcHNyX2VuYWJsZShkYXRhLmRl
+YnVnZnNfZmQsDQo+ID4gPiA+ID4gUFNSX01PREVfMSk7DQo+ID4gPiA+ID4gLQ0KPiA+ID4gPiA+
+IC0JCWlndF9yZXF1aXJlX2Yoc2lua19zdXBwb3J0KCZkYXRhKSwNCj4gPiA+ID4gPiArCQlpZ3Rf
+cmVxdWlyZV9mKHNpbmtfc3VwcG9ydCgmZGF0YSwgUFNSX01PREVfMSksDQo+ID4gPiA+ID4gIAkJ
+CSAgICAgICJTaW5rIGRvZXMgbm90IHN1cHBvcnQgUFNSXG4iKTsNCj4gPiA+ID4gPiAgDQo+ID4g
+PiA+ID4gKwkJaWYgKHNpbmtfc3VwcG9ydCgmZGF0YSwgUFNSX01PREVfMikpIHsNCj4gPiA+ID4g
+PiArCQkJZGF0YS5vcF9wc3JfbW9kZSA9IFBTUl9NT0RFXzI7DQo+ID4gPiA+ID4gKwkJCXBzcl9l
+bmFibGVfaWZfZW5hYmxlZCgmZGF0YSk7DQo+ID4gPiA+IA0KPiA+ID4gPiBUaGVyZSBpcyBhbm90
+aGVyIGVuYWJsZSBpbiB0ZXN0X3NldHVwKCkgdGhhdCB0aGUgUFNSMiBzdWJ0ZXN0cw0KPiA+ID4g
+PiBjYWxsLg0KPiA+ID4gPiBXaHkgZG8gd2UgbmVlZCB0d28/DQo+ID4gPiANCj4gPiA+IEhlcmUg
+SSdtIGVuYWJsaW5nIGJ5IGhhbmQgdG8gY2hlY2sgaWYgc291cmNlIGFuZCBzaW5rIHN1cHBvcnQN
+Cj4gPiA+IFBTUjINCj4gPiA+IHNvDQo+ID4gPiBkYXRhLnN1cHBvcnRzX3BzcjIgaXMgc2V0IHdp
+dGggdGhlIHJpZ2h0IHZhbHVlIGFuZCB3ZSBza2lwIHRoZQ0KPiA+ID4gUFNSMg0KPiA+ID4gdGVz
+dHMgd2hlbiBub3Qgc3VwcG9ydGVkLg0KPiA+IA0KPiA+IEhvdyBkbyB5b3UgZGlzdGluZ3Vpc2gg
+dGhhdCBmcm9tIGEgdHJ1ZSBmYWlsdXJlIHdoZXJlIFBTUjIgc2hvdWxkDQo+ID4gaGF2ZQ0KPiA+
+IGdvdCBlbmFibGVkIGJ1dCBpdCBkb2Vzbid0Pw0KPiANCj4gV2UgY2FuJ3QgZGlzdGluZ3Vpc2gg
+YnV0IGFmdGVyIHRoZSBmaXJzdCBDSSByZXBvcnRzIGlmIGEgbWFjaGluZSB0aGF0DQo+IGhhZCBQ
+U1IyIHRlc3RzIHJ1bm5pbmcgc3VkZGVubHkgc3RhcnQgdG8gc2tpcCBQU1IyIHRlc3RzIGl0IHdp
+bGwgYmUNCj4gcmVwb3J0ZWQgYnkgQ0kuDQo+IA0KUmVtb3ZlIHRoaXMgY29kZSBhbmQgbGV0IHRo
+ZSB0ZXN0IGZhaWwgaW5zdGVhZCwgZWFzaWVyIHRvIG5vdGljZS4NCg0KPiA+ID4gDQo+ID4gPiA+
+ID4gKwkJCWRhdGEuc3VwcG9ydHNfcHNyMiA9DQo+ID4gPiA+ID4gcHNyX3dhaXRfZW50cnlfaWZf
+ZW5hYmxlZCgmZGF0YSk7DQo+ID4gPiA+ID4gKwkJfQ0KPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiAg
+CQlkYXRhLmJ1Zm1nciA9DQo+ID4gPiA+ID4gZHJtX2ludGVsX2J1Zm1ncl9nZW1faW5pdChkYXRh
+LmRybV9mZCwNCj4gPiA+ID4gPiA0MDk2KTsNCj4gPiA+ID4gPiAgCQlpZ3RfYXNzZXJ0KGRhdGEu
+YnVmbWdyKTsNCj4gPiA+ID4gPiAgCQlkcm1faW50ZWxfYnVmbWdyX2dlbV9lbmFibGVfcmV1c2Uo
+ZGF0YS5idWZtZ3IpOw0KPiA+ID4gPiA+IEBAIC00MzEsMTIgKzQ1MywzMSBAQCBpbnQgbWFpbihp
+bnQgYXJnYywgY2hhciAqYXJndltdKQ0KPiA+ID4gPiA+ICAJfQ0KPiA+ID4gPiA+ICANCj4gPiA+
+ID4gPiAgCWlndF9zdWJ0ZXN0KCJiYXNpYyIpIHsNCj4gPiA+ID4gPiArCQlkYXRhLm9wX3Bzcl9t
+b2RlID0gUFNSX01PREVfMTsNCj4gPiA+ID4gPiArCQlkYXRhLnRlc3RfcGxhbmVfaWQgPSBEUk1f
+UExBTkVfVFlQRV9QUklNQVJZOw0KPiA+ID4gPiA+ICsJCXRlc3Rfc2V0dXAoJmRhdGEpOw0KPiA+
+ID4gPiA+ICsJCXRlc3RfY2xlYW51cCgmZGF0YSk7DQo+ID4gPiA+ID4gKwl9DQo+ID4gPiA+IA0K
+PiA+ID4gPiBSdW4gdGhpcyBpbiBhIGxvb3AgKFBTUl9NT0RFXzEuLi5QU1JfTU9ERV8yKSBpbnN0
+ZWFkIG9mDQo+ID4gPiA+IHJlcGVhdGluZw0KPiA+ID4gPiB0aGUNCj4gPiA+ID4gc2FtZSBjYWxs
+cz8gDQo+ID4gPiANCj4gPiA+IEkgdGhpbmsgaGF2ZSBzZXBhcmF0ZWQgdGVzdHMgaXMgYmV0dGVy
+IGJlY2F1c2UgQ0kgcmVwb3J0cyB3aWxsDQo+ID4gPiBzaG93DQo+ID4gPiB3aGF0IHZlcnNpb24g
+b2YgUFNSIGhhcyBhIHJlZ3Jlc3Npb24sIHdlIGNhbiBydW4gc3BlY2lmaWMgdGVzdHMNCj4gPiA+
+IHdoaWxlDQo+ID4gPiBkZWJ1Z2luZy4uLg0KPiA+IA0KPiA+IENhbGxpbmcgaWd0X3N1YnRlc3Qo
+KSBpbiBhIGxvb3Agc2hvdWxkIGdlbmVyYXRlIHNlcGFyYXRlIHN1YnRlc3RzDQo+ID4gaWl1Yy4N
+Cj4gDQo+IE9oaCBub3cgSSBnb3Qgd2hhdCB5b3Ugd2FudCB0byBkbywgbG9va3MgZ29vZCBJIHdp
+bGwgY2hhbmdlIHRvIHRoaXMuDQo+IA0KPiBCdXQgd2Ugd2lsbCBuZWVkIHRvIGdlbmVyYXRlIFBT
+UjIgdGVzdHMgZm9yIGV2ZXJ5IG1hY2hpbmUsIGFzIHRoZQ0KPiBpZ3RfZml4dHVyZSgpIGRvIG5v
+dCBydW4gd2hlbiBnZXR0aW5nIHRoZSBsaXN0IG9mIHN1YnRlc3RzIGFuZCBDSQ0KPiBwcm9iYWJs
+eSB1c2VzIHRoYXQgdG8gc3BsaXQgdGhlIHRlc3RzIHRocm91Z2ggdGhlIHNoYXJkcy4NCj4gDQo+
+IA0KPiA+IA0KPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiArCWlndF9zdWJ0ZXN0KCJwc3IyX2Jhc2lj
+Iikgew0KPiA+ID4gPiA+ICsJCWlndF9yZXF1aXJlKGRhdGEuc3VwcG9ydHNfcHNyMik7DQo+ID4g
+PiA+IA0KPiA+ID4gPiBXZSBkb24ndCBoYXZlIHRvIGdlbmVyYXRlIHRoaXMgc3VidGVzdCBpZiB0
+aGUgc2luayBkb2VzIG5vdA0KPiA+ID4gPiBzdXBwb3J0DQo+ID4gPiA+IFBTUjIuIGttc19mcm9u
+dGJ1ZmZlcl90cmFja2luZyBnZW5lcmF0ZXMgc3VidGVzdHMgZHluYW1pY2FsbHksDQo+ID4gPiA+
+IHdlDQo+ID4gPiA+IGNhbg0KPiA+ID4gPiB1c2UgdGhlIHNhbWUgYXBwcm9hY2ggaGVyZS4NCj4g
+PiA+ID4gDQo+ID4gPiA+ID4gKwkJZGF0YS5vcF9wc3JfbW9kZSA9IFBTUl9NT0RFXzI7DQo+ID4g
+PiA+ID4gIAkJZGF0YS50ZXN0X3BsYW5lX2lkID0gRFJNX1BMQU5FX1RZUEVfUFJJTUFSWTsNCj4g
+PiA+ID4gPiAgCQl0ZXN0X3NldHVwKCZkYXRhKTsNCj4gPiA+ID4gPiAgCQl0ZXN0X2NsZWFudXAo
+JmRhdGEpOw0KPiA+ID4gPiA+ICAJfQ0KPiA+ID4gPiA+ICANCj4gPiA+ID4gPiAgCWlndF9zdWJ0
+ZXN0KCJub19kcnJzIikgew0KPiA+ID4gPiA+ICsJCWRhdGEub3BfcHNyX21vZGUgPSBQU1JfTU9E
+RV8xOw0KPiA+ID4gPiA+ICsJCWRhdGEudGVzdF9wbGFuZV9pZCA9IERSTV9QTEFORV9UWVBFX1BS
+SU1BUlk7DQo+ID4gPiA+ID4gKwkJdGVzdF9zZXR1cCgmZGF0YSk7DQo+ID4gPiA+ID4gKwkJaWd0
+X2Fzc2VydChkcnJzX2Rpc2FibGVkKCZkYXRhKSk7DQo+ID4gPiA+ID4gKwkJdGVzdF9jbGVhbnVw
+KCZkYXRhKTsNCj4gPiA+ID4gPiArCX0NCj4gPiA+ID4gPiArDQo+ID4gPiA+ID4gKwlpZ3Rfc3Vi
+dGVzdCgicHNyMl9ub19kcnJzIikgew0KPiA+ID4gPiA+ICsJCWlndF9yZXF1aXJlKGRhdGEuc3Vw
+cG9ydHNfcHNyMik7DQo+ID4gPiA+ID4gKwkJZGF0YS5vcF9wc3JfbW9kZSA9IFBTUl9NT0RFXzI7
+DQo+ID4gPiA+ID4gIAkJZGF0YS50ZXN0X3BsYW5lX2lkID0gRFJNX1BMQU5FX1RZUEVfUFJJTUFS
+WTsNCj4gPiA+ID4gPiAgCQl0ZXN0X3NldHVwKCZkYXRhKTsNCj4gPiA+ID4gPiAgCQlpZ3RfYXNz
+ZXJ0KGRycnNfZGlzYWJsZWQoJmRhdGEpKTsNCj4gPiA+ID4gPiBAQCAtNDQ1LDYgKzQ4NiwxNyBA
+QCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQ0KPiA+ID4gPiA+ICANCj4gPiA+ID4g
+PiAgCWZvciAob3AgPSBQQUdFX0ZMSVA7IG9wIDw9IFJFTkRFUjsgb3ArKykgew0KPiA+ID4gPiA+
+ICAJCWlndF9zdWJ0ZXN0X2YoInByaW1hcnlfJXMiLCBvcF9zdHIob3ApKSB7DQo+ID4gPiA+ID4g
+KwkJCWRhdGEub3BfcHNyX21vZGUgPSBQU1JfTU9ERV8xOw0KPiA+ID4gPiA+ICsJCQlkYXRhLm9w
+ID0gb3A7DQo+ID4gPiA+ID4gKwkJCWRhdGEudGVzdF9wbGFuZV9pZCA9DQo+ID4gPiA+ID4gRFJN
+X1BMQU5FX1RZUEVfUFJJTUFSWTsNCj4gPiA+ID4gPiArCQkJdGVzdF9zZXR1cCgmZGF0YSk7DQo+
+ID4gPiA+ID4gKwkJCXJ1bl90ZXN0KCZkYXRhKTsNCj4gPiA+ID4gPiArCQkJdGVzdF9jbGVhbnVw
+KCZkYXRhKTsNCj4gPiA+ID4gPiArCQl9DQo+ID4gPiA+ID4gKw0KPiA+ID4gPiA+ICsJCWlndF9z
+dWJ0ZXN0X2YoInBzcjJfcHJpbWFyeV8lcyIsIG9wX3N0cihvcCkpIHsNCj4gPiA+ID4gPiArCQkJ
+aWd0X3JlcXVpcmUoZGF0YS5zdXBwb3J0c19wc3IyKTsNCj4gPiA+ID4gPiArCQkJZGF0YS5vcF9w
+c3JfbW9kZSA9IFBTUl9NT0RFXzI7DQo+ID4gPiA+ID4gIAkJCWRhdGEub3AgPSBvcDsNCj4gPiA+
+ID4gPiAgCQkJZGF0YS50ZXN0X3BsYW5lX2lkID0NCj4gPiA+ID4gPiBEUk1fUExBTkVfVFlQRV9Q
+UklNQVJZOw0KPiA+ID4gPiA+ICAJCQl0ZXN0X3NldHVwKCZkYXRhKTsNCj4gPiA+ID4gPiBAQCAt
+NDU1LDYgKzUwNywxOCBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQ0KPiA+ID4g
+PiA+ICANCj4gPiA+ID4gPiAgCWZvciAob3AgPSBNTUFQX0dUVDsgb3AgPD0gUExBTkVfT05PRkY7
+IG9wKyspIHsNCj4gPiA+ID4gPiAgCQlpZ3Rfc3VidGVzdF9mKCJzcHJpdGVfJXMiLCBvcF9zdHIo
+b3ApKSB7DQo+ID4gPiA+ID4gKwkJCWlndF9yZXF1aXJlKGRhdGEuc3VwcG9ydHNfcHNyMik7DQo+
+ID4gPiA+ID4gKwkJCWRhdGEub3BfcHNyX21vZGUgPSBQU1JfTU9ERV8xOw0KPiA+ID4gPiA+ICsJ
+CQlkYXRhLm9wID0gb3A7DQo+ID4gPiA+ID4gKwkJCWRhdGEudGVzdF9wbGFuZV9pZCA9DQo+ID4g
+PiA+ID4gRFJNX1BMQU5FX1RZUEVfT1ZFUkxBWTsNCj4gPiA+ID4gPiArCQkJdGVzdF9zZXR1cCgm
+ZGF0YSk7DQo+ID4gPiA+ID4gKwkJCXJ1bl90ZXN0KCZkYXRhKTsNCj4gPiA+ID4gPiArCQkJdGVz
+dF9jbGVhbnVwKCZkYXRhKTsNCj4gPiA+ID4gPiArCQl9DQo+ID4gPiA+ID4gKw0KPiA+ID4gPiA+
+ICsJCWlndF9zdWJ0ZXN0X2YoInBzcjJfc3ByaXRlXyVzIiwgb3Bfc3RyKG9wKSkgew0KPiA+ID4g
+PiA+ICsJCQlpZ3RfcmVxdWlyZShkYXRhLnN1cHBvcnRzX3BzcjIpOw0KPiA+ID4gPiA+ICsJCQlk
+YXRhLm9wX3Bzcl9tb2RlID0gUFNSX01PREVfMjsNCj4gPiA+ID4gPiAgCQkJZGF0YS5vcCA9IG9w
+Ow0KPiA+ID4gPiA+ICAJCQlkYXRhLnRlc3RfcGxhbmVfaWQgPQ0KPiA+ID4gPiA+IERSTV9QTEFO
+RV9UWVBFX09WRVJMQVk7DQo+ID4gPiA+ID4gIAkJCXRlc3Rfc2V0dXAoJmRhdGEpOw0KPiA+ID4g
+PiA+IEBAIC00NjUsNiArNTI5LDE3IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10p
+DQo+ID4gPiA+ID4gIA0KPiA+ID4gPiA+ICAJZm9yIChvcCA9IE1NQVBfR1RUOyBvcCA8PSBQTEFO
+RV9PTk9GRjsgb3ArKykgew0KPiA+ID4gPiA+ICAJCWlndF9zdWJ0ZXN0X2YoImN1cnNvcl8lcyIs
+IG9wX3N0cihvcCkpIHsNCj4gPiA+ID4gPiArCQkJZGF0YS5vcF9wc3JfbW9kZSA9IFBTUl9NT0RF
+XzE7DQo+ID4gPiA+ID4gKwkJCWRhdGEub3AgPSBvcDsNCj4gPiA+ID4gPiArCQkJZGF0YS50ZXN0
+X3BsYW5lX2lkID0NCj4gPiA+ID4gPiBEUk1fUExBTkVfVFlQRV9DVVJTT1I7DQo+ID4gPiA+ID4g
+KwkJCXRlc3Rfc2V0dXAoJmRhdGEpOw0KPiA+ID4gPiA+ICsJCQlydW5fdGVzdCgmZGF0YSk7DQo+
+ID4gPiA+ID4gKwkJCXRlc3RfY2xlYW51cCgmZGF0YSk7DQo+ID4gPiA+ID4gKwkJfQ0KPiA+ID4g
+PiA+ICsNCj4gPiA+ID4gPiArCQlpZ3Rfc3VidGVzdF9mKCJwc3IyX2N1cnNvcl8lcyIsIG9wX3N0
+cihvcCkpIHsNCj4gPiA+ID4gPiArCQkJaWd0X3JlcXVpcmUoZGF0YS5zdXBwb3J0c19wc3IyKTsN
+Cj4gPiA+ID4gPiArCQkJZGF0YS5vcF9wc3JfbW9kZSA9IFBTUl9NT0RFXzI7DQo+ID4gPiA+ID4g
+IAkJCWRhdGEub3AgPSBvcDsNCj4gPiA+ID4gPiAgCQkJZGF0YS50ZXN0X3BsYW5lX2lkID0NCj4g
+PiA+ID4gPiBEUk1fUExBTkVfVFlQRV9DVVJTT1I7DQo+ID4gPiA+ID4gIAkJCXRlc3Rfc2V0dXAo
+JmRhdGEpOw0KPiA+ID4gPiA+IEBAIC00NzQsNiArNTQ5LDE4IEBAIGludCBtYWluKGludCBhcmdj
+LCBjaGFyICphcmd2W10pDQo+ID4gPiA+ID4gIAl9DQo+ID4gPiA+ID4gIA0KPiA+ID4gPiA+ICAJ
+aWd0X3N1YnRlc3RfZigiZHBtcyIpIHsNCj4gPiA+ID4gPiArCQlkYXRhLm9wX3Bzcl9tb2RlID0g
+UFNSX01PREVfMTsNCj4gPiA+ID4gPiArCQlkYXRhLm9wID0gUkVOREVSOw0KPiA+ID4gPiA+ICsJ
+CWRhdGEudGVzdF9wbGFuZV9pZCA9IERSTV9QTEFORV9UWVBFX1BSSU1BUlk7DQo+ID4gPiA+ID4g
+KwkJdGVzdF9zZXR1cCgmZGF0YSk7DQo+ID4gPiA+ID4gKwkJZHBtc19vZmZfb24oJmRhdGEpOw0K
+PiA+ID4gPiA+ICsJCXJ1bl90ZXN0KCZkYXRhKTsNCj4gPiA+ID4gPiArCQl0ZXN0X2NsZWFudXAo
+JmRhdGEpOw0KPiA+ID4gPiA+ICsJfQ0KPiA+ID4gPiA+ICsNCj4gPiA+ID4gPiArCWlndF9zdWJ0
+ZXN0X2YoInBzcjJfZHBtcyIpIHsNCj4gPiA+ID4gPiArCQlpZ3RfcmVxdWlyZShkYXRhLnN1cHBv
+cnRzX3BzcjIpOw0KPiA+ID4gPiA+ICsJCWRhdGEub3BfcHNyX21vZGUgPSBQU1JfTU9ERV8yOw0K
+PiA+ID4gPiA+ICAJCWRhdGEub3AgPSBSRU5ERVI7DQo+ID4gPiA+ID4gIAkJZGF0YS50ZXN0X3Bs
+YW5lX2lkID0gRFJNX1BMQU5FX1RZUEVfUFJJTUFSWTsNCj4gPiA+ID4gPiAgCQl0ZXN0X3NldHVw
+KCZkYXRhKTsNCj4gPiA+ID4gPiBAQCAtNDgzLDYgKzU3MCwyMCBAQCBpbnQgbWFpbihpbnQgYXJn
+YywgY2hhciAqYXJndltdKQ0KPiA+ID4gPiA+ICAJfQ0KPiA+ID4gPiA+ICANCj4gPiA+ID4gPiAg
+CWlndF9zdWJ0ZXN0X2YoInN1c3BlbmQiKSB7DQo+ID4gPiA+ID4gKwkJZGF0YS5vcF9wc3JfbW9k
+ZSA9IFBTUl9NT0RFXzE7DQo+ID4gPiA+ID4gKwkJZGF0YS5vcCA9IFBMQU5FX09OT0ZGOw0KPiA+
+ID4gPiA+ICsJCWRhdGEudGVzdF9wbGFuZV9pZCA9IERSTV9QTEFORV9UWVBFX0NVUlNPUjsNCj4g
+PiA+ID4gPiArCQl0ZXN0X3NldHVwKCZkYXRhKTsNCj4gPiA+ID4gPiArCQlpZ3Rfc3lzdGVtX3N1
+c3BlbmRfYXV0b3Jlc3VtZShTVVNQRU5EX1NUQVRFX01FTQ0KPiA+ID4gPiA+ICwNCj4gPiA+ID4g
+PiArCQkJCQkgICAgICBTVVNQRU5EX1RFU1RfTk9ORQ0KPiA+ID4gPiA+ICk7DQo+ID4gPiA+ID4g
+KwkJaWd0X2Fzc2VydChwc3Jfd2FpdF9lbnRyeV9pZl9lbmFibGVkKCZkYXRhKSk7DQo+ID4gPiA+
+ID4gKwkJcnVuX3Rlc3QoJmRhdGEpOw0KPiA+ID4gPiA+ICsJCXRlc3RfY2xlYW51cCgmZGF0YSk7
+DQo+ID4gPiA+ID4gKwl9DQo+ID4gPiA+ID4gKw0KPiA+ID4gPiA+ICsJaWd0X3N1YnRlc3RfZigi
+cHNyMl9zdXNwZW5kIikgew0KPiA+ID4gPiA+ICsJCWlndF9yZXF1aXJlKGRhdGEuc3VwcG9ydHNf
+cHNyMik7DQo+ID4gPiA+ID4gKwkJZGF0YS5vcF9wc3JfbW9kZSA9IFBTUl9NT0RFXzI7DQo+ID4g
+PiA+ID4gIAkJZGF0YS5vcCA9IFBMQU5FX09OT0ZGOw0KPiA+ID4gPiA+ICAJCWRhdGEudGVzdF9w
+bGFuZV9pZCA9IERSTV9QTEFORV9UWVBFX0NVUlNPUjsNCj4gPiA+ID4gPiAgCQl0ZXN0X3NldHVw
+KCZkYXRhKTsNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBz
+Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
