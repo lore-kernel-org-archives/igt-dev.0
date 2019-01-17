@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E38F86F37B
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jan 2019 09:56:10 +0000 (UTC)
-References: <20190116112050.27647-1-petri.latvala@intel.com>
- <20190116112050.27647-19-petri.latvala@intel.com>
-From: Abdiel Janulgue <abdiel.janulgue@linux.intel.com>
-Message-ID: <0f98e863-bb23-1f2f-303c-d9e904e0516c@linux.intel.com>
-Date: Thu, 17 Jan 2019 11:56:17 +0200
+Date: Thu, 17 Jan 2019 13:01:00 +0200
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20190117110100.hzngqk4faiuv6gam@ahiler-desk1.fi.intel.com>
+References: <20190116163903.12785-1-daniel.vetter@ffwll.ch>
 MIME-Version: 1.0
-In-Reply-To: <20190116112050.27647-19-petri.latvala@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 18/21] lib/igt_core: Initialize fds in
- igt_system_quiet
+Content-Disposition: inline
+In-Reply-To: <20190116163903.12785-1-daniel.vetter@ffwll.ch>
+Subject: Re: [igt-dev] [PATCH] drm/doc: Make igts for cross-driver stuff
+ mandatory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,24 +19,37 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
+To: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Petri Latvala <petri.latvala@intel.com>, Liviu Dudau <liviu.dudau@arm.com>, DRI Development <dri-devel@lists.freedesktop.org>, IGT development <igt-dev@lists.freedesktop.org>, Daniel Vetter <daniel.vetter@intel.com>, Alex Deucher <alexander.deucher@amd.com>, Dave Airlie <airlied@redhat.com>, Sean Paul <sean@poorly.run>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CgpPbiAwMS8xNi8yMDE5IDAxOjIwIFBNLCBQZXRyaSBMYXR2YWxhIHdyb3RlOgo+IFRoaXMgYXZv
-aWRzIGNhbGxpbmcgY2xvc2UoKSB3aXRoIHVuaW5pdGlhbGl6ZWQgaW50cyBpZiBzb21lIGR1cCgp
-Cj4gY2FsbHMgc3VjY2VlZCBhbmQgb3RoZXJzIGRvbid0Lgo+IAo+IFNpZ25lZC1vZmYtYnk6IFBl
-dHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgo+IENjOiBBYmRpZWwgSmFudWxn
-dWUgPGFiZGllbC5qYW51bGd1ZUBsaW51eC5pbnRlbC5jb20+Cj4gLS0tCgpSZXZpZXdlZC1ieTog
-QWJkaWVsIEphbnVsZ3VlIDxhYmRpZWwuamFudWxndWVAbGludXguaW50ZWwuY29tPgoKCj4gIGxp
-Yi9pZ3RfY29yZS5jIHwgMiArLQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEg
-ZGVsZXRpb24oLSkKPiAKPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9jb3JlLmMgYi9saWIvaWd0X2Nv
-cmUuYwo+IGluZGV4IDBjYWU5YjZhLi40OWZiZjcwZCAxMDA2NDQKPiAtLS0gYS9saWIvaWd0X2Nv
-cmUuYwo+ICsrKyBiL2xpYi9pZ3RfY29yZS5jCj4gQEAgLTIzOTEsNyArMjM5MSw3IEBAIGVycjoK
-PiAgICovCj4gIGludCBpZ3Rfc3lzdGVtX3F1aWV0KGNvbnN0IGNoYXIgKmNvbW1hbmQpCj4gIHsK
-PiAtCWludCBzdGRlcnJfZmRfY29weSwgc3Rkb3V0X2ZkX2NvcHksIHN0YXR1cywgbnVsbGZkOwo+
-ICsJaW50IHN0ZGVycl9mZF9jb3B5ID0gLTEsIHN0ZG91dF9mZF9jb3B5ID0gLTEsIHN0YXR1cywg
-bnVsbGZkID0gLTE7Cj4gIAo+ICAJLyogcmVkaXJlY3QgKi8KPiAgCWlmICgobnVsbGZkID0gb3Bl
-bigiL2Rldi9udWxsIiwgT19XUk9OTFkpKSA9PSAtMSkKPiAKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9pZ3QtZGV2Cg==
+T24gV2VkLCBKYW4gMTYsIDIwMTkgYXQgMDU6Mzk6MDNQTSArMDEwMCwgRGFuaWVsIFZldHRlciB3
+cm90ZToKPiBDb21wYXJlZCB0byB0aGUgUkZDWzFdIG5vIGNoYW5nZXMgdG8gdGhlIHBhdGNoIGl0
+c2VsZiwgYnV0IGlndCBtb3ZlZAo+IGZvcndhcmQgYSBsb3Q6Cj4gCj4gLSBnaXRsYWIgQ0kgYnVp
+bGRzIHdpdGg6IHJlZHVjZWQgY29uZmlncy9saWJyYXJpZXMsIGFybSBjcm9zcyBidWlsZAo+ICAg
+YW5kIGEgc3lzcm9vdCBidWlsZCAoc2hvdWxkIGFkZHJlc3MgYWxsIHRoZSBidWlsZC9jcm9zcyBw
+bGF0Zm9ybQo+ICAgY29uY2VybnMgcmFpc2VkIGluIHRoZSBSRkMgZGlzY3Vzc2lvbnMpLgo+IAo+
+IC0gdGVzdHMgcmVvcmdhbml6ZWQgaW50byBzdWJkaXJlY3RvcmllcyBzbyB0aGF0IHRoZSBpOTE1
+LWdlbSB0ZXN0cwo+ICAgZG9uJ3QgY2xvZyB0aGUgbWFpbi9zaGFyZWQgdGVzdHMgZGlyZWN0b3J5
+IGFueW1vcmUKPiAKPiAtIHF1aXRlIGEgZmV3IG1vcmUgbm9uLWludGVsIHBlb3BsZSBjb250cmli
+dXRpbmcvcmV2aWV3aW5nL2NvbW1pdHRpbmcKPiAgIGlndCB0ZXN0cyBwYXRjaGVzLgo+IAo+IEkg
+dGhpbmsgdGhpcyBhZGRyZXNzZXMgYWxsIHRoZSBjb25jZXJucyByYWlzZWQgaW4gdGhlIFJGQyBk
+aXNjdXNzaW9ucywKPiBhbmQgYXNzdW1pbmcgdGhlcmUncyBlbm91Z2ggQWNrcyBhbmQgbm8gbmV3
+IGlzc3VlcyB0aGF0IHBvcCB1cCwgd2UgY2FuCj4gZ28gYWhlYWQgd2l0aCB0aGlzLgo+IAo+IDE6
+IGh0dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5vcmcvcGF0Y2gvMTA2NDg4NTEvCj4gQ2M6IFBldHJp
+IExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgo+IENjOiBBcmthZGl1c3ogSGlsZXIg
+PGFya2FkaXVzei5oaWxlckBpbnRlbC5jb20+Cj4gQ2M6IExpdml1IER1ZGF1IDxsaXZpdS5kdWRh
+dUBhcm0uY29tPgo+IENjOiBTZWFuIFBhdWwgPHNlYW5AcG9vcmx5LnJ1bj4KPiBDYzogRXJpYyBB
+bmhvbHQgPGVyaWNAYW5ob2x0Lm5ldD4KPiBDYzogQWxleCBEZXVjaGVyIDxhbGV4YW5kZXIuZGV1
+Y2hlckBhbWQuY29tPgo+IENjOiBEYXZlIEFpcmxpZSA8YWlybGllZEByZWRoYXQuY29tPgo+IFNp
+Z25lZC1vZmYtYnk6IERhbmllbCBWZXR0ZXIgPGRhbmllbC52ZXR0ZXJAaW50ZWwuY29tPgoKVGhh
+bmtzIGZvciB0aGUgdHJ1c3QhIEkgaG9wZSB3ZSB3aWxsIHNlcnZlIHRoZSBzdWJzeXN0ZW0gd2Vs
+bC4KCkkgYW0gaGFwcHkgYWJvdXQgdGhlIGluZmx1eCBvZiBwZW9wbGUgZnJvbSBvdXRzaWRlIG9m
+IGk5MTUgdGhhdCB3ZSBoYXZlCmdvdCBpbiAyMDE4IGFuZCBJIGhvcGUgaXQgd2lsbCBvbmx5IGdl
+dCBiZXR0ZXIgdGhpcyB5ZWFyLgoKVGhlcmUgYXJlIHN0aWxsIHNvbWUgY2xlYW51cCB0YXNrcyBs
+ZWZ0IHdoZW4gaXQgY29tZXMgZHJpdmVyLXNwZWNpZmljCnRlc3QgY29tcGFydG1lbnRhbGl6YXRp
+b24sIGJ1dCB3ZSBhcmUgZ2V0dGluZyB0aGVyZSA6LSkKCkFja2VkLWJ5OiBBcmthZGl1c3ogSGls
+ZXIgPGFya2FkaXVzei5oaWxlckBpbnRlbC5jb20+CgotLSAKQ2hlZXJzLApBcmVrCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
+aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
