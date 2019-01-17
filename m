@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2562789192
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Jan 2019 02:07:29 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Thu, 17 Jan 2019 02:07:27 +0000
-Message-ID: <586fcec8b35d9dfa501b8026a7a0412fc23f8e6c.camel@intel.com>
-References: <20190112014607.13446-1-jose.souza@intel.com>
- <20190112014607.13446-7-jose.souza@intel.com>
- <1fefb333444bd5ad208445b4dcfacb85cb2cbc93.camel@intel.com>
-In-Reply-To: <1fefb333444bd5ad208445b4dcfacb85cb2cbc93.camel@intel.com>
-Content-Language: en-US
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D85486F37B
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Jan 2019 09:55:50 +0000 (UTC)
+References: <20190116112050.27647-1-petri.latvala@intel.com>
+ <20190116112050.27647-5-petri.latvala@intel.com>
+From: Abdiel Janulgue <abdiel.janulgue@linux.intel.com>
+Message-ID: <7a521c19-20eb-e9fa-c413-1939c87b3047@linux.intel.com>
+Date: Thu, 17 Jan 2019 11:55:49 +0200
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 07/10] lib/psr: Drop support to old
- kernels without new PSR debugfs interface
+In-Reply-To: <20190116112050.27647-5-petri.latvala@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 04/21] lib/igt_kms: Use correct type for
+ calloc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,132 +19,32 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0283863528=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0283863528==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-Dc7KNIeAy/lp4q7KaX2k"
-
---=-Dc7KNIeAy/lp4q7KaX2k
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, 2019-01-15 at 21:21 -0800, Dhinakaran Pandiyan wrote:
-> On Fri, 2019-01-11 at 17:46 -0800, Jos=C3=A9 Roberto de Souza wrote:
-> > The nexts patches will add PSR2 tests and for that we need the new
-> > PSR debugfs interface that was released in kernel 4.20 so it will
-> > not
-> > break for any updated system and we can drop support to the old
-> > debugsfs and the support to kernels without even a debugfs
-> > interface.
->=20
-> Can't we have psr_set(mode =3D=3D PSR_MODE_2) skip if the kernel does not
-> support the new interface?
-
-We could but why keep supporting old kernels? My experience of running
-a newer IGT over a old kernel or on the contrary was always
-problematic.
-=09
-
->=20
->=20
-> > Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-> > Signed-off-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
-> > ---
-> >  lib/igt_psr.c | 35 +++++++----------------------------
-> >  1 file changed, 7 insertions(+), 28 deletions(-)
-> >=20
-> > diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-> > index c6638c2c..5cc0fbc2 100644
-> > --- a/lib/igt_psr.c
-> > +++ b/lib/igt_psr.c
-> > @@ -73,27 +73,7 @@ static int has_psr_debugfs(int debugfs_fd)
-> >  	 * -ENODEV is returned when PSR is unavailable.
-> >  	 */
-> >  	ret =3D psr_write(debugfs_fd, "0xf");
-> > -	if (ret =3D=3D -EINVAL)
-> > -		return 0;
-> > -	else if (ret < 0)
-> > -		return ret;
-> > -
-> > -	/* legacy debugfs api, we enabled irqs by writing, disable
-> > them. */
-> > -	psr_write(debugfs_fd, "0");
-> > -	return -EINVAL;
-> > -}
-> > -
-> > -static bool psr_modparam_set(int val)
-> > -{
-> > -	static int oldval =3D -1;
-> > -
-> > -	igt_set_module_param_int("enable_psr", val);
-> > -
-> > -	if (val =3D=3D oldval)
-> > -		return false;
-> > -
-> > -	oldval =3D val;
-> > -	return true;
-> > +	return ret =3D=3D -EINVAL ? 0 : ret;
-> >  }
-> > =20
-> >  static int psr_restore_debugfs_fd =3D -1;
-> > @@ -109,16 +89,15 @@ static bool psr_set(int debugfs_fd, bool
-> > enable)
-> > =20
-> >  	ret =3D has_psr_debugfs(debugfs_fd);
-> >  	if (ret =3D=3D -ENODEV) {
-> > -		igt_skip_on_f(enable, "PSR not available\n");
-> > +		igt_skip("PSR not available\n");
-> > +		return false;
-> > +	} else if (ret) {
-> > +		igt_skip("PSR debugfs interface not available\n");
-> >  		return false;
-> >  	}
-> > =20
-> > -	if (ret =3D=3D -EINVAL) {
-> > -		ret =3D psr_modparam_set(enable);
-> > -	} else {
-> > -		ret =3D psr_write(debugfs_fd, enable ? "0x3" : "0x1");
-> > -		igt_assert(ret > 0);
-> > -	}
-> > +	ret =3D psr_write(debugfs_fd, enable ? "0x3" : "0x1");
-> > +	igt_assert(ret > 0);
-> > =20
-> >  	/* Restore original value on exit */
-> >  	if (psr_restore_debugfs_fd =3D=3D -1) {
-
---=-Dc7KNIeAy/lp4q7KaX2k
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlw/410ACgkQVenbO/mO
-Wknc+Af+JxAU2BUzShW736RvUBYDRLfokE3wiVXnXyZUkUSg/cJMlT+TOqRzPvBd
-WtafB77gZpnNzIvamlkW0TwndTnugp8DuG55ycYSlFGNsoqcK3SGecgzmdh8GPUl
-Z/tJF/QKVuOywcL/B5bes5D6UV+QzFEE20CEOhsrzYshmSJOe2XVy8Lho6/QPz66
-EUcPzekeRjqKMey6mM5WA4hEIGMGdpwsb4Zox9i20UJ+gT9elWRIGd52NKGCHFuI
-Vs7ckpJXdTw0hzwPNodVrPx0nkVR1J9cEFcti+0PpWdNwB7/hPhkOdNjgPZpn7x+
-0EsBmC8E5Pe9MC0shiopHnh3oyuWHw==
-=J4HX
------END PGP SIGNATURE-----
-
---=-Dc7KNIeAy/lp4q7KaX2k--
-
---===============0283863528==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0283863528==--
+Ck9uIDAxLzE2LzIwMTkgMDE6MjAgUE0sIFBldHJpIExhdHZhbGEgd3JvdGU6Cj4gVGhlIHR5cGUg
+bWlzbWF0Y2ggd2FzIGNoYXIgdnMuIHVuc2lnbmVkIGNoYXIsIGJvdGggYmVpbmcgc2l6ZSAxIHNv
+Cj4gdGhpcyBkaWRuJ3QgY2F1c2UgYW55IGFjdHVhbCBpc3N1ZXMgb3RoZXIgdGhhbiBub2lzZSBp
+biBzdGF0aWMKPiBhbmFseXNpcyB0aGF0IGRvZXNuJ3QgYmVsaWV2ZSAxIGlzIGVxdWFsIHRvIGFu
+b3RoZXIgdHlwZSBvZiAxLgo+IAo+IFNpZ25lZC1vZmYtYnk6IFBldHJpIExhdHZhbGEgPHBldHJp
+LmxhdHZhbGFAaW50ZWwuY29tPgo+IENjOiBBYmRpZWwgSmFudWxndWUgPGFiZGllbC5qYW51bGd1
+ZUBsaW51eC5pbnRlbC5jb20+CgoKUmV2aWV3ZWQtYnk6IEFiZGllbCBKYW51bGd1ZSA8YWJkaWVs
+LmphbnVsZ3VlQGxpbnV4LmludGVsLmNvbT4KCj4gLS0tCj4gIGxpYi9pZ3Rfa21zLmMgfCAyICst
+Cj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQo+IAo+IGRp
+ZmYgLS1naXQgYS9saWIvaWd0X2ttcy5jIGIvbGliL2lndF9rbXMuYwo+IGluZGV4IDY4NGE1OTlj
+Li5mOTI2ZWFmYiAxMDA2NDQKPiAtLS0gYS9saWIvaWd0X2ttcy5jCj4gKysrIGIvbGliL2lndF9r
+bXMuYwo+IEBAIC0xMjM0LDcgKzEyMzQsNyBAQCBpbml0X2NlYV9ibG9jayhjb25zdCB1bnNpZ25l
+ZCBjaGFyICplZGlkLCBzaXplX3QgbGVuZ3RoLAo+ICAKPiAgCSpuZXdfbGVuZ3RoID0gbGVuZ3Ro
+ICsgMTI4Owo+ICAKPiAtCW5ld19lZGlkLmRhdGEgPSBjYWxsb2MoKm5ld19sZW5ndGgsIHNpemVv
+ZihjaGFyKSk7Cj4gKwluZXdfZWRpZC5kYXRhID0gY2FsbG9jKCpuZXdfbGVuZ3RoLCBzaXplb2Yo
+Km5ld19lZGlkLmRhdGEpKTsKPiAgCWlndF9hc3NlcnRfZihuZXdfZWRpZC5kYXRhLCAiRmFpbGVk
+IHRvIGFsbG9jYXRlICV6dSBieXRlcyBmb3IgZWRpZFxuIiwgc2l6ZW9mKG5ld19sZW5ndGgpKTsK
+PiAgCW1lbWNweShuZXdfZWRpZC5kYXRhLCBlZGlkLCBsZW5ndGgpOwo+ICAJKm5ld19lZGlkX3B0
+ciA9IG5ld19lZGlkLmRhdGE7Cj4gCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0
+LWRldgo=
