@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E46EE6E565
+ for <igt-dev@lists.freedesktop.org>; Fri, 18 Jan 2019 22:24:39 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Fri, 18 Jan 2019 22:24:38 +0000
+Message-ID: <64967b1523f982022aceb473eb53f4684aa60b56.camel@intel.com>
+References: <20190118085818.10124-1-dhinakaran.pandiyan@intel.com>
+ <20190118085818.10124-2-dhinakaran.pandiyan@intel.com>
+In-Reply-To: <20190118085818.10124-2-dhinakaran.pandiyan@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 18 Jan 2019 21:59:20 -0000
-Message-ID: <20190118215920.22165.10674@emeril.freedesktop.org>
-References: <20190118211801.6362-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20190118211801.6362-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fexec=5Fcapture=3A_Really_confirm_error_capturing_is_enabli?=
- =?utf-8?q?ng?=
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/kms_available_modes_crc:
+ Initialize fb struct
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,72 +19,120 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0589215617=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogaTkxNS9nZW1fZXhlY19jYXB0dXJlOiBSZWFs
-bHkgY29uZmlybSBlcnJvciBjYXB0dXJpbmcgaXMgZW5hYmxpbmcKVVJMICAgOiBodHRwczovL3Bh
-dGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzU1NDI4LwpTdGF0ZSA6IHN1Y2Nlc3MKCj09
-IFN1bW1hcnkgPT0KCkNJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20gQ0lfRFJNXzU0NTAgLT4gSUdU
-UFdfMjI2Mgo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09CgpTdW1tYXJ5Ci0tLS0tLS0KCiAgKipTVUNDRVNTKioKCiAgTm8gcmVncmVzc2lvbnMgZm91
-bmQuCgogIEV4dGVybmFsIFVSTDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL2Fw
-aS8xLjAvc2VyaWVzLzU1NDI4L3JldmlzaW9ucy8xL21ib3gvCgpLbm93biBpc3N1ZXMKLS0tLS0t
-LS0tLS0tCgogIEhlcmUgYXJlIHRoZSBjaGFuZ2VzIGZvdW5kIGluIElHVFBXXzIyNjIgdGhhdCBj
-b21lIGZyb20ga25vd24gaXNzdWVzOgoKIyMjIElHVCBjaGFuZ2VzICMjIwoKIyMjIyBJc3N1ZXMg
-aGl0ICMjIyMKCiAgKiBpZ3RAZGVidWdmc190ZXN0QHJlYWRfYWxsX2VudHJpZXM6CiAgICAtIGZp
-LWtibC03NTY3dTogICAgICAgUEFTUyAtPiBETUVTRy1XQVJOIFtmZG8jMTAzNTU4XSAvIFtmZG8j
-MTA1NjAyXQoKICAqIGlndEBnZW1fYmFzaWNAY3JlYXRlLWNsb3NlOgogICAgLSBmaS1za2wtNjc3
-MGhxOiAgICAgIFBBU1MgLT4gRE1FU0ctV0FSTiBbZmRvIzEwNTU0MV0KCiAgKiBpZ3RAZ2VtX2V4
-ZWNfc3VzcGVuZEBiYXNpYy1zMzoKICAgIC0gZmkta2JsLTc1Njd1OiAgICAgICBQQVNTIC0+IERN
-RVNHLVdBUk4gW2ZkbyMxMDM1NThdIC8gW2ZkbyMxMDUwNzldIC8gW2ZkbyMxMDU2MDJdICsxCgog
-ICogaWd0QGk5MTVfbW9kdWxlX2xvYWRAcmVsb2FkLXdpdGgtZmF1bHQtaW5qZWN0aW9uOgogICAg
-LSBmaS1rYmwtNzU2N3U6ICAgICAgIFBBU1MgLT4gRE1FU0ctV0FSTiBbZmRvIzEwNTYwMl0gLyBb
-ZmRvIzEwODUyOV0gKzEKCiAgKiBpZ3RAa21zX2NoYW1lbGl1bUBoZG1pLWVkaWQtcmVhZDoKICAg
-IC0gZmkta2JsLTc1Njd1OiAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDg3NjddICsyCgogICog
-aWd0QGttc19waXBlX2NyY19iYXNpY0BoYW5nLXJlYWQtY3JjLXBpcGUtYjoKICAgIC0gZmktYnl0
-LWNsYXBwZXI6ICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDMxOTFdIC8gW2ZkbyMxMDczNjJdCgog
-ICogaWd0QGttc19waXBlX2NyY19iYXNpY0BzdXNwZW5kLXJlYWQtY3JjLXBpcGUtYToKICAgIC0g
-ZmktYmxiLWU2ODUwOiAgICAgICBQQVNTIC0+IElOQ09NUExFVEUgW2ZkbyMxMDc3MThdCgogICog
-aWd0QGttc19waXBlX2NyY19iYXNpY0BzdXNwZW5kLXJlYWQtY3JjLXBpcGUtYjoKICAgIC0gZmkt
-a2JsLTc1Njd1OiAgICAgICBQQVNTIC0+IERNRVNHLUZBSUwgW2ZkbyMxMDUwNzldCgogICogaWd0
-QHBtX3JwbUBtb2R1bGUtcmVsb2FkOgogICAgLSBmaS1rYmwtNzU2N3U6ICAgICAgIFBBU1MgLT4g
-RE1FU0ctV0FSTiBbZmRvIzEwODUyOV0KCiAgCiMjIyMgUG9zc2libGUgZml4ZXMgIyMjIwoKICAq
-IGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAbm9uYmxvY2tpbmctY3JjLXBpcGUtYS1mcmFtZS1zZXF1
-ZW5jZToKICAgIC0gZmktYnl0LWNsYXBwZXI6ICAgICBGQUlMIFtmZG8jMTAzMTkxXSAvIFtmZG8j
-MTA3MzYyXSAtPiBQQVNTCgogIAogIHtuYW1lfTogVGhpcyBlbGVtZW50IGlzIHN1cHByZXNzZWQu
-IFRoaXMgbWVhbnMgaXQgaXMgaWdub3JlZCB3aGVuIGNvbXB1dGluZwogICAgICAgICAgdGhlIHN0
-YXR1cyBvZiB0aGUgZGlmZmVyZW5jZSAoU1VDQ0VTUywgV0FSTklORywgb3IgRkFJTFVSRSkuCgog
-IFtmZG8jMTAzMTkxXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/
-aWQ9MTAzMTkxCiAgW2ZkbyMxMDM1NThdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
-b3dfYnVnLmNnaT9pZD0xMDM1NTgKICBbZmRvIzEwNTA3OV06IGh0dHBzOi8vYnVncy5mcmVlZGVz
-a3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNTA3OQogIFtmZG8jMTA1NTQxXTogaHR0cHM6Ly9i
-dWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA1NTQxCiAgW2ZkbyMxMDU2MDJd
-OiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDU2MDIKICBb
-ZmRvIzEwNzM2Ml06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lk
-PTEwNzM2MgogIFtmZG8jMTA3NzE4XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93
-X2J1Zy5jZ2k/aWQ9MTA3NzE4CiAgW2ZkbyMxMDg1MjldOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0
-b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDg1MjkKICBbZmRvIzEwODc2N106IGh0dHBzOi8vYnVn
-cy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODc2NwogIFtmZG8jMTA5MjcxXTog
-aHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5MjcxCiAgW2Zk
-byMxMDkyNzhdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0x
-MDkyNzgKCgpQYXJ0aWNpcGF0aW5nIGhvc3RzICg0NyAtPiA0MikKLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tCgogIEFkZGl0aW9uYWwgKDEpOiBmaS1nZGctNTUxIAogIE1pc3NpbmcgICAg
-KDYpOiBmaS1rYmwtc29yYWthIGZpLWlsay1tNTQwIGZpLWJ5dC1zcXVhd2tzIGZpLWJzdy1jeWFu
-IGZpLXBudi1kNTEwIGZpLXNrbC02NjAwdSAKCgpCdWlsZCBjaGFuZ2VzCi0tLS0tLS0tLS0tLS0K
-CiAgICAqIElHVDogSUdUXzQ3NzggLT4gSUdUUFdfMjI2MgoKICBDSV9EUk1fNTQ1MDogZThlMjI3
-MzUwNTJlODhjM2ExNjlhY2MzYmU3OTg5MDQxYTY0ZjMzOCBAIGdpdDovL2Fub25naXQuZnJlZWRl
-c2t0b3Aub3JnL2dmeC1jaS9saW51eAogIElHVFBXXzIyNjI6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNp
-LjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMjI2Mi8KICBJR1RfNDc3ODogMGM4MGJkN2YyYTk2
-NDYwNWYzMDdlMDIyMGM2YmI3NTY2ODU1ODJiOSBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Au
-b3JnL3hvcmcvYXBwL2ludGVsLWdwdS10b29scwoKPT0gTG9ncyA9PQoKRm9yIG1vcmUgZGV0YWls
-cyBzZWU6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMjI2
-Mi8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRl
-diBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0
-cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+--===============0589215617==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-j+aEF2Lsu9Tt0RnlzOqC"
+
+--=-j+aEF2Lsu9Tt0RnlzOqC
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, 2019-01-18 at 00:58 -0800, Dhinakaran Pandiyan wrote:
+> The test does not initialize data->fb, initializing stride and offset
+> is
+> necessary to fill NV12 planes correctly. We should ideally be using
+> library functions in place handrolled code in this test, but let's
+> start
+> with fixing the failures.
+
+It is the right thing to fill igt_fb stride and offset but I did not
+found any call to a function that would use that information in this
+test.
+
+>=20
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Signed-off-by: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
+> ---
+>  tests/kms_available_modes_crc.c | 15 +++++++--------
+>  1 file changed, 7 insertions(+), 8 deletions(-)
+>=20
+> diff --git a/tests/kms_available_modes_crc.c
+> b/tests/kms_available_modes_crc.c
+> index 0c0282f8..fbc40297 100644
+> --- a/tests/kms_available_modes_crc.c
+> +++ b/tests/kms_available_modes_crc.c
+> @@ -254,8 +254,6 @@ static bool setup_fb(data_t *data, igt_output_t
+> *output, igt_plane_t *plane,
+>  	uint64_t w, h;
+>  	signed ret, gemsize =3D 0;
+>  	unsigned tile_width, tile_height;
+> -	uint32_t strides[4] =3D {};
+> -	uint32_t offsets[4] =3D {};
+>  	int num_planes =3D 1;
+>  	uint64_t tiling;
+>  	int bpp =3D 0;
+> @@ -296,24 +294,25 @@ static bool setup_fb(data_t *data, igt_output_t
+> *output, igt_plane_t *plane,
+> =20
+>  	igt_get_fb_tile_size(data->gfx_fd, tiling, bpp,
+>  			     &tile_width, &tile_height);
+> -	strides[0] =3D ALIGN(w * bpp / 8, tile_width);
+> -	gemsize =3D data->size =3D strides[0] * ALIGN(h, tile_height);
+> +	data->fb.offsets[0] =3D 0;
+> +	data->fb.strides[0] =3D ALIGN(w * bpp / 8, tile_width);
+> +	gemsize =3D data->size =3D data->fb.strides[0] * ALIGN(h,
+> tile_height);
+> =20
+>  	if (fillers[i].bpp =3D=3D P010 || fillers[i].bpp =3D=3D NV12) {
+> -		offsets[1] =3D data->size;
+> -		strides[1] =3D strides[0];
+> +		data->fb.offsets[1] =3D data->size;
+> +		data->fb.strides[1] =3D data->fb.strides[0];
+>  		gemsize =3D data->size * 2;
+>  		num_planes =3D 2;
+>  	}
+> =20
+>  	data->gem_handle =3D gem_create(data->gfx_fd, gemsize);
+>  	ret =3D __gem_set_tiling(data->gfx_fd, data->gem_handle,
+> -			       igt_fb_mod_to_tiling(tiling),
+> strides[0]);
+> +			       igt_fb_mod_to_tiling(tiling), data-
+> >fb.strides[0]);
+> =20
+>  	igt_assert_eq(ret, 0);
+> =20
+>  	ret =3D __kms_addfb(data->gfx_fd, data->gem_handle, w, h,
+> -			  format, tiling, strides, offsets,
+> +			  format, tiling, data->fb.strides, data-
+> >fb.offsets,
+>  			  num_planes, LOCAL_DRM_MODE_FB_MODIFIERS,
+>  			  &data->fb.fb_id);
+> =20
+
+--=-j+aEF2Lsu9Tt0RnlzOqC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlxCUiQACgkQVenbO/mO
+WkkC4QgAhzKX2sGm6CE96lhrotfNc88Ng9gMLbweHIuQMF0J45vS+9rlZBMqsTDU
+i0E6FWJrZF9O2YidHQ6yNitw6x7UgfF+Qk08SPF6Kb/hFi+i2Jk+COYpYB4yGIdX
+vklQRiOG7YnRNirO7AAKGfg3CWdSaRz1ua7pJAchRXJO4cjCVhMgkCrwci+BS4f3
+y87wipjn3vOgl6Y7YrKv1Ts6viwvmIN3lc/vUlGq3q3+fDkcLsxmBpfw6d+D0r9k
+qIwev40JUpEv2yCdLMCdeYTAhVl7/A5AtY+Xnc9vBHBwyo8xgbYuxsf0oQHpsXa1
+UO9sYBIyuB67jHmTvhoH6YSnpjtpgw==
+=g65H
+-----END PGP SIGNATURE-----
+
+--=-j+aEF2Lsu9Tt0RnlzOqC--
+
+--===============0589215617==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0589215617==--
