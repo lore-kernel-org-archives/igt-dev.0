@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
- by gabe.freedesktop.org (Postfix) with ESMTP id 2B0E36E8C3
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Jan 2019 13:10:39 +0000 (UTC)
-Date: Mon, 21 Jan 2019 14:10:37 +0100
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20190121131037.vy4hbdjwbut2nob2@flea>
-References: <cover.58d25323616120b55c27ab28cdac25877a37bd78.1546960696.git-series.maxime.ripard@bootlin.com>
- <20190108152001.5367-7-maxime.ripard@bootlin.com>
- <096a36349f86ee387a8cc60f42d493f538baef12.camel@bootlin.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8903F6E90C
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Jan 2019 14:49:28 +0000 (UTC)
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+Date: Mon, 21 Jan 2019 16:49:25 +0200
+Message-Id: <20190121144925.22959-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <096a36349f86ee387a8cc60f42d493f538baef12.camel@bootlin.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 07/13] igt: fb: Account for all
- planes bpp
+Subject: [igt-dev] [PATCH i-g-t] tests/testdisplay: Speed up testdisplay for
+ ci
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,76 +15,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1718999546=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-Cc: Petri Latvala <petri.latvala@intel.com>, eben@raspberrypi.org, igt-dev@lists.freedesktop.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Martin Peres <martin.peres@linux.intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============1718999546==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="c6opt64lly3c6alo"
-Content-Disposition: inline
-
-
---c6opt64lly3c6alo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Jan 10, 2019 at 11:21:24AM +0100, Paul Kocialkowski wrote:
-> On Tue, 2019-01-08 at 16:19 +0100, Maxime Ripard wrote:
-> > When allocating a dumb buffer for a format with multiple plane, we need=
- to
-> > account for all plane's bpp in order to allocate the proper size.
-> >=20
-> > Let's add all the planes bpp and use the result to allocate our buffer.
->=20
-> As discussed off-list, this approach doesn't work well when multiple
-> planes and sub-sampling are involved, causing over-allocation.
->=20
-> For instance, NV12 requires at least width * height * 1.5.
-> The bpp for the second plane is 16 but with four times less pixels due
-> to sub-sampling. Here, this would amount to width * height * 3 at
-> least, so over-allocating.
->=20
-> I think dividing each plane's bpp by the sub-sampling before adding it
-> should work (with a round-up division to be on the safe side for cases
-> where bpp cannot be exactly dividided by hsub * vsub in the future).
->=20
-> What do you think?
-
-It sounds great, thanks!
-Maxime
-
---=20
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---c6opt64lly3c6alo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXEXEzQAKCRDj7w1vZxhR
-xfdQAP4ofRms+P8hq0L565rDG/Ua4x9vfYpUGdDjn2ADxxhM9QD/YrCq13ZlgR4l
-0disJo6RDTxWsnhz5Gj/RKk93r9a4wg=
-=OCzA
------END PGP SIGNATURE-----
-
---c6opt64lly3c6alo--
-
---===============1718999546==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============1718999546==--
+RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KCk5v
+IHBvaW50IGluIHNsZWVwaW5nIDUgc2Vjb25kcyBiZXR3ZWVuIGVhY2ggbW9kZXNldCB3aGVuIHJ1
+bm5pbmcgaW4gY2kuClNvIGxldCdzIGp1c3QgbWFrZSB0aGUgZGVmYXVsdCBzbGVlcCBpbnRlcnZh
+bCAwIHNlY29uZHMgYW5kIGxlYXZlIGl0IHVwCnRvIHRoZSB1c2VyIHRvIGJ1bXAgaXQgdmlhIC1z
+IHdoZW4gcnVubmluZyBpbnRlcmFjdGl2ZWx5LgoKT24gYSBLQkwgKyBMU1BDT04gKyBhIDRrIEhE
+TUkgZGlzcGxheSB3aXRoIDM2IG1vZGVzIGxpc3RlZDoKdGltZSAuL3Rlc3RzL3Rlc3RkaXNwbGF5
+Ci0gcmVhbAkzbTEyLDAyNnMKLSB1c2VyCTBtMSw5MjBzCi0gc3lzCTBtMSwyNDFzCisgcmVhbAkw
+bTE0LDY4MXMKKyB1c2VyCTBtMywxMzVzCisgc3lzCTBtMSwzNDBzCgpDYzogTWFydGluIFBlcmVz
+IDxtYXJ0aW4ucGVyZXNAbGludXguaW50ZWwuY29tPgpTaWduZWQtb2ZmLWJ5OiBWaWxsZSBTeXJq
+w6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPgotLS0KIHRlc3RzL3Rlc3RkaXNw
+bGF5LmMgfCA0ICsrLS0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRp
+b25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvdGVzdGRpc3BsYXkuYyBiL3Rlc3RzL3Rlc3RkaXNw
+bGF5LmMKaW5kZXggOTk3MmZiM2NlYTYzLi5iMzY1NzI2NDJiZWUgMTAwNjQ0Ci0tLSBhL3Rlc3Rz
+L3Rlc3RkaXNwbGF5LmMKKysrIGIvdGVzdHMvdGVzdGRpc3BsYXkuYwpAQCAtODEsNyArODEsNyBA
+QCBpbnQgZHJtX2ZkLCBtb2RlczsKIGludCB0ZXN0X2FsbF9tb2RlcyA9IDAsIHRlc3RfcHJlZmVy
+cmVkX21vZGUgPSAwLCBmb3JjZV9tb2RlID0gMCwgdGVzdF9wbGFuZSwKICAgICB0ZXN0X3N0ZXJl
+b19tb2RlczsKIHVpbnQ2NF90IHRpbGluZyA9IExPQ0FMX0RSTV9GT1JNQVRfTU9EX05PTkU7Ci1p
+bnQgc2xlZXBfYmV0d2Vlbl9tb2RlcyA9IDU7CitpbnQgc2xlZXBfYmV0d2Vlbl9tb2RlcyA9IDA7
+CiBpbnQgZG9fZHBtcyA9IDA7IC8qIFRoaXMgYWxpYXNlcyB0byBEUE1TX09OICovCiB1aW50MzJf
+dCBkZXB0aCA9IDI0LCBzdHJpZGUsIGJwcDsKIGludCBxcl9jb2RlID0gMDsKQEAgLTUyNSw3ICs1
+MjUsNyBAQCBzdGF0aWMgdm9pZCBfX2F0dHJpYnV0ZV9fKChub3JldHVybikpIHVzYWdlKGNoYXIg
+Km5hbWUsIGNoYXIgb3B0KQogCWlndF9pbmZvKCJ1c2FnZTogJXMgWy1oaWFzZHBtdGZdXG4iLCBu
+YW1lKTsKIAlpZ3RfaW5mbygiXHQtaVx0ZHVtcCBpbmZvXG4iKTsKIAlpZ3RfaW5mbygiXHQtYVx0
+dGVzdCBhbGwgbW9kZXNcbiIpOwotCWlndF9pbmZvKCJcdC1zXHQ8ZHVyYXRpb24+XHRzbGVlcCBi
+ZXR3ZWVuIGVhY2ggbW9kZSB0ZXN0XG4iKTsKKwlpZ3RfaW5mbygiXHQtc1x0PGR1cmF0aW9uPlx0
+c2xlZXAgYmV0d2VlbiBlYWNoIG1vZGUgdGVzdCAoZGVmYXVsdDogMClcbiIpOwogCWlndF9pbmZv
+KCJcdC1kXHQ8ZGVwdGg+XHRiaXQgZGVwdGggb2Ygc2Nhbm91dCBidWZmZXJcbiIpOwogCWlndF9p
+bmZvKCJcdC1wXHQ8cGxhbmV3LGg+LDxjcnRjeCx5Piw8Y3J0Y3csaD4gdGVzdCBvdmVybGF5IHBs
+YW5lXG4iKTsKIAlpZ3RfaW5mbygiXHQtbVx0dGVzdCB0aGUgcHJlZmVycmVkIG1vZGVcbiIpOwot
+LSAKMi4xOS4yCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
+czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
