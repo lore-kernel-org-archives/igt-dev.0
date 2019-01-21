@@ -1,12 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 849106E8CB
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Jan 2019 13:17:33 +0000 (UTC)
+Date: Mon, 21 Jan 2019 14:17:12 +0100
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20190121131712.auueqq6ryacpyfxx@flea>
+References: <cover.58d25323616120b55c27ab28cdac25877a37bd78.1546960696.git-series.maxime.ripard@bootlin.com>
+ <20190108152001.5367-11-maxime.ripard@bootlin.com>
+ <36b5c40afa92dd135d046d150d890f28f252c1f0.camel@bootlin.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 21 Jan 2019 12:09:29 -0000
-Message-ID: <20190121120929.12976.71290@emeril.freedesktop.org>
-References: <20190116112050.27647-1-petri.latvala@intel.com>
-In-Reply-To: <20190116112050.27647-1-petri.latvala@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgU3RhdGlj?=
- =?utf-8?q?_analysis=3A_misc_cleanups_and_fixes_=28rev5=29?=
+In-Reply-To: <36b5c40afa92dd135d046d150d890f28f252c1f0.camel@bootlin.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 11/13] igt: tests: chamelium: Start
+ to unify tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,69 +19,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1140144020=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, eben@raspberrypi.org, igt-dev@lists.freedesktop.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogU3RhdGljIGFuYWx5c2lzOiBtaXNjIGNsZWFu
-dXBzIGFuZCBmaXhlcyAocmV2NSkKVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3Rv
-cC5vcmcvc2VyaWVzLzU1Mjg5LwpTdGF0ZSA6IHN1Y2Nlc3MKCj09IFN1bW1hcnkgPT0KCkNJIEJ1
-ZyBMb2cgLSBjaGFuZ2VzIGZyb20gQ0lfRFJNXzU0NTggLT4gSUdUUFdfMjI2NAo9PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CgpTdW1tYXJ5Ci0tLS0t
-LS0KCiAgKipTVUNDRVNTKioKCiAgTm8gcmVncmVzc2lvbnMgZm91bmQuCgogIEV4dGVybmFsIFVS
-TDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL2FwaS8xLjAvc2VyaWVzLzU1Mjg5
-L3JldmlzaW9ucy81L21ib3gvCgpLbm93biBpc3N1ZXMKLS0tLS0tLS0tLS0tCgogIEhlcmUgYXJl
-IHRoZSBjaGFuZ2VzIGZvdW5kIGluIElHVFBXXzIyNjQgdGhhdCBjb21lIGZyb20ga25vd24gaXNz
-dWVzOgoKIyMjIElHVCBjaGFuZ2VzICMjIwoKIyMjIyBJc3N1ZXMgaGl0ICMjIyMKCiAgKiBpZ3RA
-aTkxNV9zZWxmdGVzdEBsaXZlX2hhbmdjaGVjazoKICAgIC0gZmktYndyLTIxNjA6ICAgICAgICBO
-T1RSVU4gLT4gRE1FU0ctRkFJTCBbZmRvIzEwODczNV0KICAgIC0gZmktaWNsLXUyOiAgICAgICAg
-ICBQQVNTIC0+IElOQ09NUExFVEUgW2ZkbyMxMDg1NjldCgogICogaWd0QGttc19idXN5QGJhc2lj
-LWZsaXAtYjoKICAgIC0gZmktZ2RnLTU1MTogICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDMx
-ODJdCgogICogaWd0QGttc19jaGFtZWxpdW1AZHAtaHBkLWZhc3Q6CiAgICAtIGZpLWtibC03NTAw
-dTogICAgICAgUEFTUyAtPiBETUVTRy1XQVJOIFtmZG8jMTAyNTA1XSAvIFtmZG8jMTAzNTU4XSAv
-IFtmZG8jMTA1NjAyXQoKICAqIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAcmVhZC1jcmMtcGlwZS1h
-LWZyYW1lLXNlcXVlbmNlOgogICAgLSBmaS1ieXQtY2xhcHBlcjogICAgIFBBU1MgLT4gRkFJTCBb
-ZmRvIzEwMzE5MV0gLyBbZmRvIzEwNzM2Ml0KCiAgCiMjIyMgUG9zc2libGUgZml4ZXMgIyMjIwoK
-ICAqIGlndEBpOTE1X21vZHVsZV9sb2FkQHJlbG9hZC1uby1kaXNwbGF5OgogICAgLSBmaS1id3It
-MjE2MDogICAgICAgIElOQ09NUExFVEUgLT4gUEFTUwoKICAqIGlndEBrbXNfZnJvbnRidWZmZXJf
-dHJhY2tpbmdAYmFzaWM6CiAgICAtIGZpLWJ5dC1jbGFwcGVyOiAgICAgRkFJTCBbZmRvIzEwMzE2
-N10gLT4gUEFTUwoKICAqIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAc3VzcGVuZC1yZWFkLWNyYy1w
-aXBlLWI6CiAgICAtIGZpLWJ5dC1jbGFwcGVyOiAgICAgRkFJTCBbZmRvIzEwMzE5MV0gLyBbZmRv
-IzEwNzM2Ml0gLT4gUEFTUwoKICAKICB7bmFtZX06IFRoaXMgZWxlbWVudCBpcyBzdXBwcmVzc2Vk
-LiBUaGlzIG1lYW5zIGl0IGlzIGlnbm9yZWQgd2hlbiBjb21wdXRpbmcKICAgICAgICAgIHRoZSBz
-dGF0dXMgb2YgdGhlIGRpZmZlcmVuY2UgKFNVQ0NFU1MsIFdBUk5JTkcsIG9yIEZBSUxVUkUpLgoK
-ICBbZmRvIzEwMjUwNV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dp
-P2lkPTEwMjUwNQogIFtmZG8jMTAzMTY3XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9z
-aG93X2J1Zy5jZ2k/aWQ9MTAzMTY3CiAgW2ZkbyMxMDMxODJdOiBodHRwczovL2J1Z3MuZnJlZWRl
-c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDMxODIKICBbZmRvIzEwMzE5MV06IGh0dHBzOi8v
-YnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzE5MQogIFtmZG8jMTAzNTU4
-XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzNTU4CiAg
-W2ZkbyMxMDU2MDJdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9p
-ZD0xMDU2MDIKICBbZmRvIzEwNzM2Ml06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hv
-d19idWcuY2dpP2lkPTEwNzM2MgogIFtmZG8jMTA4NTY5XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNr
-dG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA4NTY5CiAgW2ZkbyMxMDg3MzVdOiBodHRwczovL2J1
-Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDg3MzUKICBbZmRvIzEwODkwM106
-IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODkwMwogIFtm
-ZG8jMTA4OTA0XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
-MTA4OTA0CiAgW2ZkbyMxMDg5MDVdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3df
-YnVnLmNnaT9pZD0xMDg5MDUKICBbZmRvIzEwOTI3MV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3Rv
-cC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI3MQogIFtmZG8jMTA5Mjc4XTogaHR0cHM6Ly9idWdz
-LmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5Mjc4CgoKUGFydGljaXBhdGluZyBo
-b3N0cyAoNDYgLT4gNDApCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQoKICBNaXNzaW5n
-ICAgICg2KTogZmktaWxrLW01NDAgZmktYnl0LXNxdWF3a3MgZmktYnN3LWN5YW4gZmktcG52LWQ1
-MTAgZmktaWNsLXkgZmktYnl0LW4yODIwIAoKCkJ1aWxkIGNoYW5nZXMKLS0tLS0tLS0tLS0tLQoK
-ICAgICogSUdUOiBJR1RfNDc3OSAtPiBJR1RQV18yMjY0CgogIENJX0RSTV81NDU4OiA3NGVjNzc5
-MmFmMDkwMTg1OTQwOTczNTZkZGM3OWQ4N2NiOTUwNGY5IEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVz
-a3RvcC5vcmcvZ2Z4LWNpL2xpbnV4CiAgSUdUUFdfMjI2NDogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yMjY0LwogIElHVF80Nzc5OiBkNDE5OTUxMDM3NDUx
-NDQ4OWIxYWI1NmUzNDE2ZjUzZjZjMWQ2MjkxIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5v
-cmcveG9yZy9hcHAvaW50ZWwtZ3B1LXRvb2xzCgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxz
-IHNlZTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yMjY0
-LwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
-IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
-LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+
+--===============1140144020==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="dc7ebwu3cu5ckcyv"
+Content-Disposition: inline
+
+
+--dc7ebwu3cu5ckcyv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On Thu, Jan 10, 2019 at 11:50:35AM +0100, Paul Kocialkowski wrote:
+> On Tue, 2019-01-08 at 16:19 +0100, Maxime Ripard wrote:
+> > The various tests in kms_chamelium are really variants of one another
+> > but share little code.
+> >=20
+> > In addition to the duplication, this gets in the way of the
+> > introduction of more tests, or to be able to run all the tests on all
+> > the output, which isn't the case at the moment, with the HDMI and DP
+> > tests and the VGA tests being different.
+> >=20
+> > Start by introducing a check parameter to the do_test_display
+> > function, that will tell which test method we want to use to compare
+> > the frames.
+>=20
+> I think we can go even further and unify the assert_foo_or_dump
+> functions, which would imply moving enum chamelium_check to
+> igt_chamelium. It's probably best to do it in a separate patch though
+> and I might have a go at it in the next revision of my plane testing
+> series.
+>=20
+> What do you think?
+
+I don't have a strong opinion on this, so feel free to send that patch
+:)
+
+> > Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
+>=20
+> Reviewed-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+
+Thanks!
+Maxime
+
+--=20
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--dc7ebwu3cu5ckcyv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXEXGVwAKCRDj7w1vZxhR
+xZ9HAP9WXBm5i2sd21HNIwT8akJoHN/Dz5M/6rnYDlVqnMrl+QEAgH7byn2iuEQu
+iBU8AWz9HPV4LqqPIL6Qjw96bxnohAE=
+=ynDQ
+-----END PGP SIGNATURE-----
+
+--dc7ebwu3cu5ckcyv--
+
+--===============1140144020==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1140144020==--
