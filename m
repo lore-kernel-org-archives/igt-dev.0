@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from anholt.net (anholt.net [50.246.234.109])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 9F7696EDAE
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Jan 2019 18:50:33 +0000 (UTC)
+From: Eric Anholt <eric@anholt.net>
+In-Reply-To: <20190122134215.28396-7-daniel.vetter@ffwll.ch>
+References: <20190122134215.28396-1-daniel.vetter@ffwll.ch>
+ <20190122134215.28396-7-daniel.vetter@ffwll.ch>
+Date: Tue, 22 Jan 2019 10:50:31 -0800
+Message-ID: <87o988zfuw.fsf@anholt.net>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 22 Jan 2019 18:48:35 -0000
-Message-ID: <20190122184835.27231.5106@emeril.freedesktop.org>
-References: <20190122181728.2500-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20190122181728.2500-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliOiBJ?=
- =?utf-8?q?nclude_the_size_in_the_error_message_for_mlock?=
+Subject: Re: [igt-dev] [PATCH i-g-t 7/7] automake: Remove VC4/V3D build
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,58 +18,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1908770937=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: Daniel Vetter <daniel.vetter@ffwll.ch>, IGT development <igt-dev@lists.freedesktop.org>
+Cc: Daniel Vetter <daniel.vetter@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogbGliOiBJbmNsdWRlIHRoZSBzaXplIGluIHRo
-ZSBlcnJvciBtZXNzYWdlIGZvciBtbG9jawpVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVk
-ZXNrdG9wLm9yZy9zZXJpZXMvNTU1NzMvClN0YXRlIDogc3VjY2VzcwoKPT0gU3VtbWFyeSA9PQoK
-Q0kgQnVnIExvZyAtIGNoYW5nZXMgZnJvbSBDSV9EUk1fNTQ2NCAtPiBJR1RQV18yMjczCj09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KClN1bW1hcnkK
-LS0tLS0tLQoKICAqKlNVQ0NFU1MqKgoKICBObyByZWdyZXNzaW9ucyBmb3VuZC4KCiAgRXh0ZXJu
-YWwgVVJMOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvYXBpLzEuMC9zZXJpZXMv
-NTU1NzMvcmV2aXNpb25zLzEvbWJveC8KCktub3duIGlzc3VlcwotLS0tLS0tLS0tLS0KCiAgSGVy
-ZSBhcmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gSUdUUFdfMjI3MyB0aGF0IGNvbWUgZnJvbSBrbm93
-biBpc3N1ZXM6CgojIyMgSUdUIGNoYW5nZXMgIyMjCgojIyMjIElzc3VlcyBoaXQgIyMjIwoKICAq
-IGlndEBhbWRncHUvYW1kX2Jhc2ljQGNzLWNvbXB1dGU6CiAgICAtIGZpLWtibC04ODA5ZzogICAg
-ICAgTk9UUlVOIC0+IEZBSUwgW2ZkbyMxMDgwOTRdCgogICogaWd0QGFtZGdwdS9hbWRfcHJpbWVA
-YW1kLXRvLWk5MTU6CiAgICAtIGZpLWtibC04ODA5ZzogICAgICAgTk9UUlVOIC0+IEZBSUwgW2Zk
-byMxMDczNDFdCgogIAojIyMjIFBvc3NpYmxlIGZpeGVzICMjIyMKCiAgKiBpZ3RAYW1kZ3B1L2Ft
-ZF9iYXNpY0B1c2VycHRyOgogICAgLSBmaS1rYmwtODgwOWc6ICAgICAgIERNRVNHLVdBUk4gW2Zk
-byMxMDg5NjVdIC0+IFBBU1MKCiAgKiBpZ3RAZ2VtX2V4ZWNfc3VzcGVuZEBiYXNpYy1zMzoKICAg
-IC0gZmktYmxiLWU2ODUwOiAgICAgICBJTkNPTVBMRVRFIFtmZG8jMTA3NzE4XSAtPiBQQVNTCgog
-ICogaWd0QGttc19waXBlX2NyY19iYXNpY0BzdXNwZW5kLXJlYWQtY3JjLXBpcGUtYjoKICAgIC0g
-ZmktYnl0LWNsYXBwZXI6ICAgICBGQUlMIFtmZG8jMTAzMTkxXSAvIFtmZG8jMTA3MzYyXSAtPiBQ
-QVNTCgogIAogIHtuYW1lfTogVGhpcyBlbGVtZW50IGlzIHN1cHByZXNzZWQuIFRoaXMgbWVhbnMg
-aXQgaXMgaWdub3JlZCB3aGVuIGNvbXB1dGluZwogICAgICAgICAgdGhlIHN0YXR1cyBvZiB0aGUg
-ZGlmZmVyZW5jZSAoU1VDQ0VTUywgV0FSTklORywgb3IgRkFJTFVSRSkuCgogIFtmZG8jMTAzMTkx
-XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMTkxCiAg
-W2ZkbyMxMDczNDFdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9p
-ZD0xMDczNDEKICBbZmRvIzEwNzM2Ml06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hv
-d19idWcuY2dpP2lkPTEwNzM2MgogIFtmZG8jMTA3NzE4XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNr
-dG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3NzE4CiAgW2ZkbyMxMDgwOTRdOiBodHRwczovL2J1
-Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDgwOTQKICBbZmRvIzEwODk2NV06
-IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODk2NQogIFtm
-ZG8jMTA5MjcxXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
-MTA5MjcxCiAgW2ZkbyMxMDkyNzhdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3df
-YnVnLmNnaT9pZD0xMDkyNzgKCgpQYXJ0aWNpcGF0aW5nIGhvc3RzICg0NSAtPiAzOCkKLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCgogIEFkZGl0aW9uYWwgKDEpOiBmaS1za2wtNjc3MGhx
-IAogIE1pc3NpbmcgICAgKDgpOiBmaS1rYmwtc29yYWthIGZpLWlsay1tNTQwIGZpLWJ5dC1zcXVh
-d2tzIGZpLWJzdy1jeWFuIGZpLWdsay1qNDAwNSBmaS1wbnYtZDUxMCBmaS1pY2wteSBmaS1za2wt
-NjcwMGhxIAoKCkJ1aWxkIGNoYW5nZXMKLS0tLS0tLS0tLS0tLQoKICAgICogSUdUOiBJR1RfNDc4
-MiAtPiBJR1RQV18yMjczCgogIENJX0RSTV81NDY0OiBhZjkwYjUxOWE2NzBhM2FlYzg5MDQ1ZDlm
-Y2NhOGYyZDE3NGFkZWRhIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xp
-bnV4CiAgSUdUUFdfMjI3MzogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRp
-cC9JR1RQV18yMjczLwogIElHVF80NzgyOiA5NmYzYTFiODc2ZTBkZDI0NzA2Yjg1ZmI4NzJmMTIw
-MzFhNDM2ZTg0IEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcveG9yZy9hcHAvaW50ZWwt
-Z3B1LXRvb2xzCgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9pbnRl
-bC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yMjczLwpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
-ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+--===============1908770937==
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
+
+--=-=-=
+Content-Type: text/plain
+
+Daniel Vetter <daniel.vetter@ffwll.ch> writes:
+
+> Eric is using meson nowadays.
+>
+> Cc: Eric Anholt <eric@anholt.net>
+> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+
+Reviewed-by: Eric Anholt <eric@anholt.net>
+
+But, why keep autotools around at this point?
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE/JuuFDWp9/ZkuCBXtdYpNtH8nugFAlxHZfcACgkQtdYpNtH8
+nuittA//UxnEM6piwjaudzJntJGhTDTmw6iTOFPafNLlrq7+ho225VM/wjwTjWBa
+5f29rScehznR0Rxb+uk/db3VBh6dJ7KqrnJgtCclBbZaXGwXzvNnNX6WBOSkEDut
+7OFYJQtpxDUHtJ4sn3qMuW24JRJY9KFGkl2ZKtVvz1vSPkKIUyMgFlwaMccmB0AR
+ZM2KSGTMp/Sbg7qZkH/kfe9l+qk4xO28Ihfj+CC4vwx+OMtg86gd1k/25F3avap6
+T0PSYCWNjH/HqkoB/yoXR6gzsph4QDbKft58WcD0zpTAwoghkMFncFeF0hmlEhq7
+btCfzjJWSd/mdr5+bDGYRIO3wTAnfUtAWAQ1Atl25PQmqZkoxXiB6tpoEmn6e35b
+QVM2o6nIcn2Eby6k1JsV8aDgPIJFHfcNyQAY4TLJBM5ZBj5eBo6ykV1X1AGrJ8VL
+TTK7sq9yRKyWI5KEH2z9msaaWN999l4s4IP617MNlAzgvR/th+BRmvixPpNMGuzm
+EUY1nae91M6T1XdqYwwJaFUqCJ3wcJc73w83XT/ZEppxopj6G/VZzU3eGOloHeZw
+s5pRgDUWy+uVMEvHM9PLrr/Z4n2pfYhY1HMsFfkr0coTHBWuEmcZhBQ70SBOeHlS
+unErtp6HmR5kC2whSE/UIWp/9eQ+XWEOgsJZEd6RtI9k1KiC5O4=
+=+YeE
+-----END PGP SIGNATURE-----
+--=-=-=--
+
+--===============1908770937==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1908770937==--
