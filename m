@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 72E0A6EEF2
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Jan 2019 11:42:51 +0000 (UTC)
-Date: Wed, 23 Jan 2019 13:42:47 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20190123114247.GC4038@platvala-desk.ger.corp.intel.com>
-References: <20190114083937.14822-1-emil.l.velikov@gmail.com>
- <20190118155844.GI3271@phenom.ffwll.local>
- <CACvgo51QnOZgkSzOM5NVGwzv3Ad9tSwJSh-=3JcLH2n=G9iAXg@mail.gmail.com>
- <20190123111814.GH3271@phenom.ffwll.local>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C025A89A60
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Jan 2019 11:52:29 +0000 (UTC)
+From: Jani Nikula <jani.nikula@linux.intel.com>
+In-Reply-To: <20190123113857.GJ3271@phenom.ffwll.local>
+References: <20190122134215.28396-1-daniel.vetter@ffwll.ch>
+ <20190122134215.28396-7-daniel.vetter@ffwll.ch> <87o988zfuw.fsf@anholt.net>
+ <20190123113857.GJ3271@phenom.ffwll.local>
+Date: Wed, 23 Jan 2019 13:54:10 +0200
+Message-ID: <87bm4737z1.fsf@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190123111814.GH3271@phenom.ffwll.local>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/core_unauth_vs_render: new test
- for the relaxed DRM_AUTH handling
+Subject: Re: [igt-dev] [PATCH i-g-t 7/7] automake: Remove VC4/V3D build
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,16 +23,15 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Daniel Vetter <daniel@ffwll.ch>
-Cc: IGT development <igt-dev@lists.freedesktop.org>, Emil Velikov <emil.l.velikov@gmail.com>
+To: Daniel Vetter <daniel@ffwll.ch>, Eric Anholt <eric@anholt.net>
+Cc: IGT development <igt-dev@lists.freedesktop.org>, Daniel Vetter <daniel.vetter@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCBKYW4gMjMsIDIwMTkgYXQgMTI6MTg6MTRQTSArMDEwMCwgRGFuaWVsIFZldHRlciB3
-cm90ZToKPiBCZWluZyByb290IGlzIHRoZSBlYXNpZXN0IHdheSB0byBjaGVjayBmb3IgdGhhdCAo
-aW4gZGVidWdmcywgaWYgdGhlcmUncwo+IGFueSBvdGhlciBkcm0gY2xpZW50IHRoZSBpZ3QgcnVu
-bmVyIGNvbXBsYWlucyZxdWl0cykuCgoKRm9yIHRoZSByZWNvcmQsIHRoYXQgd2FzIHRoZSBjYXNl
-IHdoZW4gcGlnbGl0IHdhcyBvdXIgdGVzdApydW5uZXIuIFRoaXMgaXMgbm90ICh5ZXQpIGltcGxl
-bWVudGVkIHdpdGggaWd0X3J1bm5lci4KCgoKLS0gClBldHJpIExhdHZhbGEKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QK
-aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5v
-cmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+T24gV2VkLCAyMyBKYW4gMjAxOSwgRGFuaWVsIFZldHRlciA8ZGFuaWVsQGZmd2xsLmNoPiB3cm90
+ZToKPiBJIHRoaW5rIHRoZSBjb25zZW5zdXMgd2FzIHRvIGtlZXAgYXV0b21ha2UgZ29pbmcgZm9y
+IHRlc3RzIG9ubHkgdW50aWwKPiBhIGdvb2QgZW5vdWdoIG1lc29uIGlzIGF2YWlsYWJsZSBpbiBk
+ZWJpYW4gc3RhYmxlL3VidW50dSBsdHMuCgpGV0lXIERlYmlhbiBzdHJldGNoLWJhY2twb3J0cyBo
+YXMgMC40OS4KCkJSLApKYW5pLgoKCi0tIApKYW5pIE5pa3VsYSwgSW50ZWwgT3BlbiBTb3VyY2Ug
+R3JhcGhpY3MgQ2VudGVyCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
