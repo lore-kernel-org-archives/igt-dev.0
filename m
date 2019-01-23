@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 91AFD6F026
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Jan 2019 21:00:20 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Wed, 23 Jan 2019 21:00:15 +0000
-Message-ID: <642db4b96db1775294d30cb45f08f4bae4b6a637.camel@intel.com>
-References: <20190123010950.25867-1-jose.souza@intel.com>
- <20190123113719.GB4038@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <20190123113719.GB4038@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/2] tests/intel-ci: Add basic PSR2
- tests to fast feedback test list
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 23 Jan 2019 21:25:59 -0000
+Message-ID: <20190123212559.1343.13269@emeril.freedesktop.org>
+References: <20190123042820.15094-1-dhinakaran.pandiyan@intel.com>
+In-Reply-To: <20190123042820.15094-1-dhinakaran.pandiyan@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Favailable=5Fmode=5Fcrc=3A_Print_debug_info_on_failure_=28?=
+ =?utf-8?q?rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,97 +15,86 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0669833542=="
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandiyan,
- Dhinakaran" <dhinakaran.pandiyan@intel.com>, "Vivi,
- Rodrigo" <rodrigo.vivi@intel.com>
+To: "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0669833542==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-Q21tyRdnCEMw0MRzgOxL"
-
---=-Q21tyRdnCEMw0MRzgOxL
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, 2019-01-23 at 13:37 +0200, Petri Latvala wrote:
-> On Tue, Jan 22, 2019 at 05:09:49PM -0800, Jos=C3=A9 Roberto de Souza
-> wrote:
-> > Lets run the same PSR1 basic tests for PSR2 to caught PSR2
-> > regressions faster.
-> >=20
-> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-> > Signed-off-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
-> > ---
-> >  tests/intel-ci/fast-feedback.testlist | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >=20
-> > diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-
-> > ci/fast-feedback.testlist
-> > index da3c4c8e..e48cb8a5 100644
-> > --- a/tests/intel-ci/fast-feedback.testlist
-> > +++ b/tests/intel-ci/fast-feedback.testlist
-> > @@ -227,6 +227,10 @@ igt@kms_psr@primary_page_flip
-> >  igt@kms_psr@cursor_plane_move
-> >  igt@kms_psr@sprite_plane_onoff
-> >  igt@kms_psr@primary_mmap_gtt
-> > +igt@kms_psr@psr2_primary_page_flip
-> > +igt@kms_psr@psr2_cursor_plane_move
-> > +igt@kms_psr@psr2_sprite_plane_onoff
-> > +igt@kms_psr@psr2_primary_mmap_gtt
->=20
-> The BAT results mail said success because these are new tests, but do
-> note that they failed. They must pass to get onto the BAT list.
->=20
->=20
-
-<7>[   91.805388] [drm:intel_psr_compute_config [i915]] PSR2 not
-enabled, resolution 3840x2160 > max supported 3640x2304
-
-It failed because the GEN9 PSR2 HW only supports resolutions up to
-3640x2304, so it switched back go PSR1 and the test failed because it
-was expecting a PSR2 state not a PSR1.
-
-I talked with DK, he thinks that the panel should be replaced in that
-machine so we can have some PSR2 test coverage in GEN9.
-
-If not possible we should add more code in igt_fixture() to check if
-PSR2 is supported but that could potentially hide PSR2 issues behind
-tests skipped or whitelist PSR2 tests in fi-whl-u.
-
---=-Q21tyRdnCEMw0MRzgOxL
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlxI1d0ACgkQVenbO/mO
-Wkn1dgf+NK9ocj92jqaeYk3nFhjytDfVTKRN1yGddAdfc+8vY2O9ebLg2kJYs9Y6
-l1nR5jUoe8q9ZNGcYrfa2gUhxBzXNA73zaF44XkAo32GMYEos691C73+UGElW5o+
-xxmzyRZeY9ZSMS5kT4Uea6G9BJk4xgFyHQIyuV7Rky0zaUG+XJEtnYX1zYOV/lSv
-jv9ZlNMx/ukBccPyJFfIEl9VK58g8ozM9+V6PwWuQ5uOXHuyXuef+6QjTOXlHrVm
-tV/Cwnwhl2Rx1D3roIyDx56Pc1oOa+tLwaJzaw5TyZ0LQCRabfoGvuqcJjeCm6ME
-5/Lm47JLaiIDRv2c+xLw9CaoYXD9+A==
-=kWj9
------END PGP SIGNATURE-----
-
---=-Q21tyRdnCEMw0MRzgOxL--
-
---===============0669833542==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0669833542==--
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHMva21zX2F2YWlsYWJsZV9tb2RlX2Ny
+YzogUHJpbnQgZGVidWcgaW5mbyBvbiBmYWlsdXJlIChyZXYyKQpVUkwgICA6IGh0dHBzOi8vcGF0
+Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvNTU2MDgvClN0YXRlIDogc3VjY2VzcwoKPT0g
+U3VtbWFyeSA9PQoKQ0kgQnVnIExvZyAtIGNoYW5nZXMgZnJvbSBDSV9EUk1fNTQ3MV9mdWxsIC0+
+IElHVFBXXzIyODRfZnVsbAo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09CgpTdW1tYXJ5Ci0tLS0tLS0KCiAgKipTVUNDRVNTKioKCiAgTm8gcmVncmVz
+c2lvbnMgZm91bmQuCgogIEV4dGVybmFsIFVSTDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0
+b3Aub3JnL2FwaS8xLjAvc2VyaWVzLzU1NjA4L3JldmlzaW9ucy8yL21ib3gvCgpLbm93biBpc3N1
+ZXMKLS0tLS0tLS0tLS0tCgogIEhlcmUgYXJlIHRoZSBjaGFuZ2VzIGZvdW5kIGluIElHVFBXXzIy
+ODRfZnVsbCB0aGF0IGNvbWUgZnJvbSBrbm93biBpc3N1ZXM6CgojIyMgSUdUIGNoYW5nZXMgIyMj
+CgojIyMjIElzc3VlcyBoaXQgIyMjIwoKICAqIGlndEBrbXNfYnVzeUBleHRlbmRlZC1tb2Rlc2V0
+LWhhbmctbmV3ZmItd2l0aC1yZXNldC1yZW5kZXItYjoKICAgIC0gc2hhcmQta2JsOiAgICAgICAg
+ICBOT1RSVU4gLT4gRE1FU0ctV0FSTiBbZmRvIzEwNzk1Nl0gKzEKCiAgKiBpZ3RAa21zX2N1cnNv
+cl9jcmNAY3Vyc29yLTEyOHgxMjgtb25zY3JlZW46CiAgICAtIHNoYXJkLWFwbDogICAgICAgICAg
+UEFTUyAtPiBGQUlMIFtmZG8jMTAzMjMyXSArMwoKICAqIGlndEBrbXNfY3Vyc29yX2NyY0BjdXJz
+b3Itc2l6ZS1jaGFuZ2U6CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgUEFTUyAtPiBGQUlMIFtm
+ZG8jMTAzMjMyXQogICAgLSBzaGFyZC1rYmw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEw
+MzIzMl0KCiAgKiBpZ3RAa21zX3BsYW5lQHBpeGVsLWZvcm1hdC1waXBlLWItcGxhbmVzOgogICAg
+LSBzaGFyZC1rYmw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwMzE2Nl0gKzEKICAgIC0g
+c2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDMxNjZdCgogICogaWd0QGtt
+c19wbGFuZUBwbGFuZS1wb3NpdGlvbi1jb3ZlcmVkLXBpcGUtYy1wbGFuZXM6CiAgICAtIHNoYXJk
+LWFwbDogICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTAzMTY2XSArMwoKICAqIGlndEBrbXNf
+cm90YXRpb25fY3JjQG11bHRpcGxhbmUtcm90YXRpb24tY3JvcHBpbmctdG9wOgogICAgLSBzaGFy
+ZC1rYmw6ICAgICAgICAgIE5PVFJVTiAtPiBGQUlMIFtmZG8jMTA5MzgxXQoKICAqIGlndEBrbXNf
+c2V0bW9kZUBiYXNpYzoKICAgIC0gc2hhcmQta2JsOiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2Zk
+byM5OTkxMl0KCiAgCiMjIyMgUG9zc2libGUgZml4ZXMgIyMjIwoKICAqIGlndEBrbXNfY3Vyc29y
+X2NyY0BjdXJzb3ItMTI4eDQyLXNsaWRpbmc6CiAgICAtIHNoYXJkLWtibDogICAgICAgICAgRkFJ
+TCBbZmRvIzEwMzIzMl0gLT4gUEFTUyArMgoKICAqIGlndEBrbXNfY3Vyc29yX2NyY0BjdXJzb3It
+MjU2eDI1Ni1yYW5kb206CiAgICAtIHNoYXJkLWFwbDogICAgICAgICAgRkFJTCBbZmRvIzEwMzIz
+Ml0gLT4gUEFTUyArNQoKICAqIGlndEBrbXNfY3Vyc29yX2NyY0BjdXJzb3ItMjU2eDI1Ni1zbGlk
+aW5nOgogICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDMyMzJdIC0+IFBBU1Mg
+KzUKCiAgKiBpZ3RAa21zX3BsYW5lQHBpeGVsLWZvcm1hdC1waXBlLWEtcGxhbmVzLXNvdXJjZS1j
+bGFtcGluZzoKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBGQUlMIFtmZG8jMTA4OTQ4XSAtPiBQ
+QVNTCgogICogaWd0QGttc19wbGFuZUBwbGFuZS1wYW5uaW5nLWJvdHRvbS1yaWdodC1zdXNwZW5k
+LXBpcGUtYy1wbGFuZXM6CiAgICAtIHNoYXJkLWtibDogICAgICAgICAgSU5DT01QTEVURSBbZmRv
+IzEwMzY2NV0gLT4gUEFTUyArMQoKICAqIGlndEBrbXNfcGxhbmVAcGxhbmUtcG9zaXRpb24tY292
+ZXJlZC1waXBlLWEtcGxhbmVzOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIEZBSUwgW2ZkbyMx
+MDMxNjZdIC0+IFBBU1MgKzEKCiAgKiBpZ3RAa21zX3BsYW5lX211bHRpcGxlQGF0b21pYy1waXBl
+LWEtdGlsaW5nLW5vbmU6CiAgICAtIHNoYXJkLWtibDogICAgICAgICAgRkFJTCBbZmRvIzEwMzE2
+Nl0gLT4gUEFTUyArMgoKICAqIGlndEBrbXNfcGxhbmVfbXVsdGlwbGVAYXRvbWljLXBpcGUtYi10
+aWxpbmcteToKICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBGQUlMIFtmZG8jMTAzMTY2XSAtPiBQ
+QVNTICsyCgogIAojIyMjIFdhcm5pbmdzICMjIyMKCiAgKiBpZ3RAaTkxNV9zdXNwZW5kQHNocmlu
+azoKICAgIC0gc2hhcmQta2JsOiAgICAgICAgICBETUVTRy1XQVJOIFtmZG8jMTA5MjQ0XSAtPiBJ
+TkNPTVBMRVRFIFtmZG8jMTAzNjY1XSAvIFtmZG8jMTA2ODg2XQoKICAKICB7bmFtZX06IFRoaXMg
+ZWxlbWVudCBpcyBzdXBwcmVzc2VkLiBUaGlzIG1lYW5zIGl0IGlzIGlnbm9yZWQgd2hlbiBjb21w
+dXRpbmcKICAgICAgICAgIHRoZSBzdGF0dXMgb2YgdGhlIGRpZmZlcmVuY2UgKFNVQ0NFU1MsIFdB
+Uk5JTkcsIG9yIEZBSUxVUkUpLgoKICBbZmRvIzEwMzE2Nl06IGh0dHBzOi8vYnVncy5mcmVlZGVz
+a3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzE2NgogIFtmZG8jMTAzMjMyXTogaHR0cHM6Ly9i
+dWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMjMyCiAgW2ZkbyMxMDM2NjVd
+OiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDM2NjUKICBb
+ZmRvIzEwNjg4Nl06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lk
+PTEwNjg4NgogIFtmZG8jMTA3OTU2XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93
+X2J1Zy5jZ2k/aWQ9MTA3OTU2CiAgW2ZkbyMxMDg5NDhdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0
+b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDg5NDgKICBbZmRvIzEwOTI0NF06IGh0dHBzOi8vYnVn
+cy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI0NAogIFtmZG8jMTA5MjcxXTog
+aHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5MjcxCiAgW2Zk
+byMxMDkyNzhdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0x
+MDkyNzgKICBbZmRvIzEwOTM4MV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19i
+dWcuY2dpP2lkPTEwOTM4MQogIFtmZG8jOTk5MTJdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Au
+b3JnL3Nob3dfYnVnLmNnaT9pZD05OTkxMgoKClBhcnRpY2lwYXRpbmcgaG9zdHMgKDcgLT4gNSkK
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCgogIE1pc3NpbmcgICAgKDIpOiBzaGFyZC1z
+a2wgc2hhcmQtaWNsYiAKCgpCdWlsZCBjaGFuZ2VzCi0tLS0tLS0tLS0tLS0KCiAgICAqIElHVDog
+SUdUXzQ3ODYgLT4gSUdUUFdfMjI4NAogICAgKiBQaWdsaXQ6IHBpZ2xpdF80NTA5IC0+IE5vbmUK
+CiAgQ0lfRFJNXzU0NzE6IDE5OGFkZGIxOGUxMmQyNDY5YmM0MWQ1N2Y5ZWQ2M2UxMDcyYTdmODIg
+QCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvbGludXgKICBJR1RQV18yMjg0
+OiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzIyODQvCiAg
+SUdUXzQ3ODY6IDg1Y2Y3NjE4MjA4N2MwOTYwNGJjYWUyYmJlZTllNThiMzNiY2I0ZjIgQCBnaXQ6
+Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy94b3JnL2FwcC9pbnRlbC1ncHUtdG9vbHMKICBwaWds
+aXRfNDUwOTogZmRjNWE0Y2ExMTEyNGFiODQxM2M3OTg4ODk2ZWVjNGM5NzMzNjY5NCBAIGdpdDov
+L2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL3BpZ2xpdAoKPT0gTG9ncyA9PQoKRm9yIG1vcmUgZGV0
+YWlscyBzZWU6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdf
+MjI4NC8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0
+LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
+aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
