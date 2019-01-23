@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 93F2089E65
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Jan 2019 22:02:31 +0000 (UTC)
-Message-ID: <6de30fbf346d26d7b2b44e600add70a972962407.camel@intel.com>
-From: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-Date: Tue, 22 Jan 2019 14:02:28 -0800
-In-Reply-To: <20190117235949.20026-7-jose.souza@intel.com>
-References: <20190117235949.20026-1-jose.souza@intel.com>
- <20190117235949.20026-7-jose.souza@intel.com>
-Mime-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v4 7/7] tests/psr: Add the same test
- coverage that we have for PSR1 to PSR2
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CAD0D6E48A
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Jan 2019 01:09:58 +0000 (UTC)
+From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
+Date: Tue, 22 Jan 2019 17:09:49 -0800
+Message-Id: <20190123010950.25867-1-jose.souza@intel.com>
+MIME-Version: 1.0
+Subject: [igt-dev] [PATCH i-g-t v3 1/2] tests/intel-ci: Add basic PSR2 tests
+ to fast feedback test list
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,27 +15,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: dhinakaran.pandiyan@intel.com
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?ISO-8859-1?Q?Jos=E9?= Roberto de Souza <jose.souza@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCAyMDE5LTAxLTE3IGF0IDE1OjU5IC0wODAwLCBKb3PDqSBSb2JlcnRvIGRlIFNvdXph
-IHdyb3RlOgo+IFRoZSBtYWluIHRlc3RzIGZvciBQU1IxIGNoZWNrIGlmIGhhcmR3YXJlIHRyYWNr
-aW5nIGlzIGRldGVjdGluZwo+IGNoYW5nZXMgaW4gcGxhbmVzIHdoZW4gbW9kaWZpbmcgaXQgaW4g
-ZGlmZmVyZW50IHdheXMgYW5kIG5vdwo+IHRob3NlIHRlc3RzIHdpbGwgYWxzbyBydW4gZm9yIFBT
-UjIgaWYgc3VwcG9ydGVkIGJ5IHNvdXJjZSBhbmQgc2luay4KPiAKPiB2NDogRHluYW1pYyBnZW5l
-cmF0aW5nIFBTUjEgYW5kIFBTUjIgdGVzdHMgaW5zdGVhZCBvZiBjb3B5IGFuZCBwYXN0ZQo+IHRl
-c3RzIHR3aWNlLgo+IAo+IENjOiBSb2RyaWdvIFZpdmkgPHJvZHJpZ28udml2aUBpbnRlbC5jb20+
-Cj4gQ2M6IERoaW5ha2FyYW4gUGFuZGl5YW4gPGRoaW5ha2FyYW4ucGFuZGl5YW5AaW50ZWwuY29t
-Pgo+IEFja2VkLWJ5OiBSb2RyaWdvIFZpdmkgPHJvZHJpZ28udml2aUBpbnRlbC5jb20+Cj4gU2ln
-bmVkLW9mZi1ieTogSm9zw6kgUm9iZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+
-CgpTZXJpZXMgUmV2aWV3ZWQtYnk6IERoaW5ha2FyYW4gUGFuZGl5YW4gPGRoaW5ha2FyYW4ucGFu
-ZGl5YW5AaW50ZWwuY29tPgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
-cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-Cg==
+TGV0cyBydW4gdGhlIHNhbWUgUFNSMSBiYXNpYyB0ZXN0cyBmb3IgUFNSMiB0byBjYXVnaHQgUFNS
+MgpyZWdyZXNzaW9ucyBmYXN0ZXIuCgpDYzogUm9kcmlnbyBWaXZpIDxyb2RyaWdvLnZpdmlAaW50
+ZWwuY29tPgpDYzogRGhpbmFrYXJhbiBQYW5kaXlhbiA8ZGhpbmFrYXJhbi5wYW5kaXlhbkBpbnRl
+bC5jb20+ClNpZ25lZC1vZmYtYnk6IEpvc8OpIFJvYmVydG8gZGUgU291emEgPGpvc2Uuc291emFA
+aW50ZWwuY29tPgotLS0KIHRlc3RzL2ludGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QgfCA0
+ICsrKysKIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS90ZXN0
+cy9pbnRlbC1jaS9mYXN0LWZlZWRiYWNrLnRlc3RsaXN0IGIvdGVzdHMvaW50ZWwtY2kvZmFzdC1m
+ZWVkYmFjay50ZXN0bGlzdAppbmRleCBkYTNjNGM4ZS4uZTQ4Y2I4YTUgMTAwNjQ0Ci0tLSBhL3Rl
+c3RzL2ludGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QKKysrIGIvdGVzdHMvaW50ZWwtY2kv
+ZmFzdC1mZWVkYmFjay50ZXN0bGlzdApAQCAtMjI3LDYgKzIyNywxMCBAQCBpZ3RAa21zX3BzckBw
+cmltYXJ5X3BhZ2VfZmxpcAogaWd0QGttc19wc3JAY3Vyc29yX3BsYW5lX21vdmUKIGlndEBrbXNf
+cHNyQHNwcml0ZV9wbGFuZV9vbm9mZgogaWd0QGttc19wc3JAcHJpbWFyeV9tbWFwX2d0dAoraWd0
+QGttc19wc3JAcHNyMl9wcmltYXJ5X3BhZ2VfZmxpcAoraWd0QGttc19wc3JAcHNyMl9jdXJzb3Jf
+cGxhbmVfbW92ZQoraWd0QGttc19wc3JAcHNyMl9zcHJpdGVfcGxhbmVfb25vZmYKK2lndEBrbXNf
+cHNyQHBzcjJfcHJpbWFyeV9tbWFwX2d0dAogaWd0QGttc19zZXRtb2RlQGJhc2ljLWNsb25lLXNp
+bmdsZS1jcnRjCiBpZ3RAcG1fYmFja2xpZ2h0QGJhc2ljLWJyaWdodG5lc3MKIGlndEBwbV9ycG1A
+YmFzaWMtcGNpLWQzLXN0YXRlCi0tIAoyLjIwLjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMu
+ZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlz
+dGluZm8vaWd0LWRldgo=
