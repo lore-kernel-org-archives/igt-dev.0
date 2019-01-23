@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D0FE06F026
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Jan 2019 21:07:18 +0000 (UTC)
-Date: Wed, 23 Jan 2019 23:07:13 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20190123210713.GI20097@intel.com>
-References: <1548167937-17881-1-git-send-email-juhapekka.heikkila@gmail.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 91AFD6F026
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Jan 2019 21:00:20 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Wed, 23 Jan 2019 21:00:15 +0000
+Message-ID: <642db4b96db1775294d30cb45f08f4bae4b6a637.camel@intel.com>
+References: <20190123010950.25867-1-jose.souza@intel.com>
+ <20190123113719.GB4038@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <20190123113719.GB4038@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1548167937-17881-1-git-send-email-juhapekka.heikkila@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_rotation_crc: Fix
- multiplane-rotation-cropping* tests
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/2] tests/intel-ci: Add basic PSR2
+ tests to fast feedback test list
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,60 +19,97 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0669833542=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Latvala, Petri" <petri.latvala@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandiyan,
+ Dhinakaran" <dhinakaran.pandiyan@intel.com>, "Vivi,
+ Rodrigo" <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBKYW4gMjIsIDIwMTkgYXQgMDQ6Mzg6NTdQTSArMDIwMCwgSnVoYS1QZWtrYSBIZWlr
-a2lsYSB3cm90ZToKPiBNYWtlIGNlcnRhaW4gdmlld3BvcnRzIGFyZSBkaXZpc2libGUgYnkgZm91
-ciBkdWUgdG8gaW50ZWwKPiBodyB3b3JrYXJvdW5kcyBmb3IgTlYxMi4KPiAKPiBCdWd6aWxsYTog
-aHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5MzgxCj4gU2ln
-bmVkLW9mZi1ieTogSnVoYS1QZWtrYSBIZWlra2lsYSA8anVoYXBla2thLmhlaWtraWxhQGdtYWls
-LmNvbT4KPiAtLS0KPiAgdGVzdHMva21zX3JvdGF0aW9uX2NyYy5jIHwgMjQgKysrKysrKysrKysr
-KysrKysrKystLS0tCj4gIDEgZmlsZSBjaGFuZ2VkLCAyMCBpbnNlcnRpb25zKCspLCA0IGRlbGV0
-aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfcm90YXRpb25fY3JjLmMgYi90ZXN0
-cy9rbXNfcm90YXRpb25fY3JjLmMKPiBpbmRleCA4ZjM0M2UwLi5kNjZiNDg5IDEwMDY0NAo+IC0t
-LSBhL3Rlc3RzL2ttc19yb3RhdGlvbl9jcmMuYwo+ICsrKyBiL3Rlc3RzL2ttc19yb3RhdGlvbl9j
-cmMuYwo+IEBAIC00NjcsNiArNDY3LDcgQEAgc3RhdGljIGJvb2wgZ2V0X211bHRpcGxhbmVfY3Jj
-KGRhdGFfdCAqZGF0YSwgaWd0X291dHB1dF90ICpvdXRwdXQsCj4gIAkJCWlndF9wbGFuZV9zZXRf
-c2l6ZShwbGFuZXNbY10ucGxhbmUsIGgsIHcpOwo+ICAKPiAgCQlpZ3RfcGxhbmVfc2V0X3Bvc2l0
-aW9uKHBsYW5lc1tjXS5wbGFuZSwgcGxhbmVpbmZvW2NdLngxLCBwbGFuZWluZm9bY10ueTEpOwo+
-ICsKPiAgCQlpZ3RfcGxhbmVfc2V0X3JvdGF0aW9uKHBsYW5lc1tjXS5wbGFuZSwgcGxhbmVpbmZv
-W2NdLnJvdGF0aW9uX2h3KTsKPiAgCX0KPiAgCj4gQEAgLTQ4NiwxMCArNDg3LDI1IEBAIHN0YXRp
-YyBib29sIGdldF9tdWx0aXBsYW5lX2NyYyhkYXRhX3QgKmRhdGEsIGlndF9vdXRwdXRfdCAqb3V0
-cHV0LAo+ICBzdGF0aWMgdm9pZCBwb2ludGxvY2F0aW9uKGRhdGFfdCAqZGF0YSwgcGxhbmVpbmZv
-cyAqcCwgZHJtTW9kZU1vZGVJbmZvICptb2RlLAo+ICAJCQkgIGludCBjKQo+ICB7Cj4gLQlwW2Nd
-LngxID0gKGludDMyX3QpKGRhdGEtPnBsYW5lcG9zW2NdLnggKiBtb2RlLT5oZGlzcGxheSkKPiAt
-CQkJKyAoKGRhdGEtPnBsYW5lcG9zW2NdLm9yaWdvICYgcF9yaWdodCkgPyBtb2RlLT5oZGlzcGxh
-eSA6IDApOwo+IC0JcFtjXS55MSA9IChpbnQzMl90KShkYXRhLT5wbGFuZXBvc1tjXS55ICogbW9k
-ZS0+dmRpc3BsYXkpCj4gLQkJCSsgKChkYXRhLT5wbGFuZXBvc1tjXS5vcmlnbyAmIHBfYm90dG9t
-KSA/IG1vZGUtPnZkaXNwbGF5IDogMCk7Cj4gKwlpZiAoZGF0YS0+cGxhbmVwb3NbY10ub3JpZ28g
-JiBwX3JpZ2h0KSB7Cj4gKwkJcFtjXS54MSA9IChpbnQzMl90KShkYXRhLT5wbGFuZXBvc1tjXS54
-ICogbW9kZS0+aGRpc3BsYXkKPiArCQkJCSsgbW9kZS0+aGRpc3BsYXkpOwo+ICsJCXBbY10ueDEg
-Jj0gfjM7Cj4gKwkJcFtjXS54MSAtPSAocFtjXS54MStwW2NdLndpZHRoLW1vZGUtPmhkaXNwbGF5
-KSYzOwoKU28gYXNzdW1pbmcgdGhlIHBsYW5lIGlzIGV4dGVuZGluZyBwYXN0IHRoZSByaWdodCBl
-ZGdlIG9mIHRoZSBzY3JlZW4gKGlzCnRoYXQgYWx3YXlzIHRydWUgaGVyZT8pIHRoZSBwYXJ0IHdl
-IHdhbnQgYSBtdWx0aXBsZSBvZiBmb3VyIGlzCidoZGlzcGxheS14MScsIHNvIG5vdCBxdWl0ZSBz
-dXJlIHdoeSB3ZSdyZSBsb29raW5nIGF0IHRoZSBjaG9wcGVkIG9mZgpwYXJ0IGluc3RlYWQuIEJ1
-dCBzaW5jZSB0aGUgcGxhbmUgc2l6ZSBpcyBhbHJlYWR5IGFsaWduZWQgdG8gZm91cgoobWF5YmU/
-KSBJIGd1ZXNzIHRoaXMgd29ya3MuCgpIbW0sIGFyZW4ndCBtb3N0IGRpc3BsYXkgcmVzb2x1dGlv
-bnMgbXVsdGlwbGUgb2YgZm91ciBhbnl3YXk/IFNvIEkgd29uZGVyCndoeSBhIHNpbXBsZSAneDEg
-Jj0gfjMnIGV0Yy4gaXMgbm90IHN1ZmZpY2llbnQ/Cgo+ICsJfSBlbHNlIHsKPiArCQlwW2NdLngx
-ID0gKGludDMyX3QpKGRhdGEtPnBsYW5lcG9zW2NdLnggKiBtb2RlLT5oZGlzcGxheSk7Cj4gKwkJ
-cFtjXS54MSAmPSB+MzsKPiArCX0KPiArCj4gKwlpZiAoZGF0YS0+cGxhbmVwb3NbY10ub3JpZ28g
-JiBwX2JvdHRvbSkgewo+ICsJCXBbY10ueTEgPSAoaW50MzJfdCkoZGF0YS0+cGxhbmVwb3NbY10u
-eSAqIG1vZGUtPnZkaXNwbGF5Cj4gKwkJCQkrIG1vZGUtPnZkaXNwbGF5KTsKPiArCQlwW2NdLnkx
-ICY9IH4zOwo+ICsJCXBbY10ueTEgLT0gKHBbY10ueTErcFtjXS5oZWlnaHQtbW9kZS0+dmRpc3Bs
-YXkpJjM7Cj4gKwl9IGVsc2Ugewo+ICsJCXBbY10ueTEgPSAoaW50MzJfdCkoZGF0YS0+cGxhbmVw
-b3NbY10ueSAqIG1vZGUtPnZkaXNwbGF5KTsKPiArCQlwW2NdLnkxICY9IH4zOwo+ICsJfQo+ICB9
-Cj4gIAo+ICAvKgo+IC0tIAo+IDIuNy40Cj4gCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KPiBpZ3QtZGV2IG1haWxpbmcgbGlzdAo+IGlndC1kZXZAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnCj4gaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9pZ3QtZGV2CgotLSAKVmlsbGUgU3lyasOkbMOkCkludGVsCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0
-CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+--===============0669833542==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-Q21tyRdnCEMw0MRzgOxL"
+
+--=-Q21tyRdnCEMw0MRzgOxL
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, 2019-01-23 at 13:37 +0200, Petri Latvala wrote:
+> On Tue, Jan 22, 2019 at 05:09:49PM -0800, Jos=C3=A9 Roberto de Souza
+> wrote:
+> > Lets run the same PSR1 basic tests for PSR2 to caught PSR2
+> > regressions faster.
+> >=20
+> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
+> > Signed-off-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
+> > ---
+> >  tests/intel-ci/fast-feedback.testlist | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> >=20
+> > diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-
+> > ci/fast-feedback.testlist
+> > index da3c4c8e..e48cb8a5 100644
+> > --- a/tests/intel-ci/fast-feedback.testlist
+> > +++ b/tests/intel-ci/fast-feedback.testlist
+> > @@ -227,6 +227,10 @@ igt@kms_psr@primary_page_flip
+> >  igt@kms_psr@cursor_plane_move
+> >  igt@kms_psr@sprite_plane_onoff
+> >  igt@kms_psr@primary_mmap_gtt
+> > +igt@kms_psr@psr2_primary_page_flip
+> > +igt@kms_psr@psr2_cursor_plane_move
+> > +igt@kms_psr@psr2_sprite_plane_onoff
+> > +igt@kms_psr@psr2_primary_mmap_gtt
+>=20
+> The BAT results mail said success because these are new tests, but do
+> note that they failed. They must pass to get onto the BAT list.
+>=20
+>=20
+
+<7>[   91.805388] [drm:intel_psr_compute_config [i915]] PSR2 not
+enabled, resolution 3840x2160 > max supported 3640x2304
+
+It failed because the GEN9 PSR2 HW only supports resolutions up to
+3640x2304, so it switched back go PSR1 and the test failed because it
+was expecting a PSR2 state not a PSR1.
+
+I talked with DK, he thinks that the panel should be replaced in that
+machine so we can have some PSR2 test coverage in GEN9.
+
+If not possible we should add more code in igt_fixture() to check if
+PSR2 is supported but that could potentially hide PSR2 issues behind
+tests skipped or whitelist PSR2 tests in fi-whl-u.
+
+--=-Q21tyRdnCEMw0MRzgOxL
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlxI1d0ACgkQVenbO/mO
+Wkn1dgf+NK9ocj92jqaeYk3nFhjytDfVTKRN1yGddAdfc+8vY2O9ebLg2kJYs9Y6
+l1nR5jUoe8q9ZNGcYrfa2gUhxBzXNA73zaF44XkAo32GMYEos691C73+UGElW5o+
+xxmzyRZeY9ZSMS5kT4Uea6G9BJk4xgFyHQIyuV7Rky0zaUG+XJEtnYX1zYOV/lSv
+jv9ZlNMx/ukBccPyJFfIEl9VK58g8ozM9+V6PwWuQ5uOXHuyXuef+6QjTOXlHrVm
+tV/Cwnwhl2Rx1D3roIyDx56Pc1oOa+tLwaJzaw5TyZ0LQCRabfoGvuqcJjeCm6ME
+5/Lm47JLaiIDRv2c+xLw9CaoYXD9+A==
+=kWj9
+-----END PGP SIGNATURE-----
+
+--=-Q21tyRdnCEMw0MRzgOxL--
+
+--===============0669833542==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0669833542==--
