@@ -1,21 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D787A6E41A
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Jan 2019 00:09:37 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Fri, 25 Jan 2019 00:09:35 +0000
-Message-ID: <de983ad1947c1394912f37e8f6d4d011a0073790.camel@intel.com>
-References: <20190123235636.8720-1-jose.souza@intel.com>
- <f19eff1547f6f8571bee6d60440a8dcf2f9f687b.camel@intel.com>
- <20190124063953.GA2011@intel.com>
- <d41009c1bc2e4a1754202b7551a5c4e33ccd73c4.camel@intel.com>
- <3580f621177077a72863b4ad1df35ea4d6dbbde3.camel@intel.com>
- <20190124220656.GC6671@intel.com>
-In-Reply-To: <20190124220656.GC6671@intel.com>
-Content-Language: en-US
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60C336E3F0
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Jan 2019 22:11:31 +0000 (UTC)
+Date: Thu, 24 Jan 2019 14:11:30 -0800
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Message-ID: <20190124221130.GD6671@intel.com>
+References: <20190123010950.25867-1-jose.souza@intel.com>
+ <20190123113719.GB4038@platvala-desk.ger.corp.intel.com>
+ <20190123120732.GL3271@phenom.ffwll.local>
+ <20190123164544.GD931@intel.com>
+ <CAKMK7uHQtv0nFNeTTQWMJpoC0gUZY=8N_zhSfvMG_69bN66_Og@mail.gmail.com>
+ <20190123171717.GF931@intel.com>
+ <20190124125541.GX3271@phenom.ffwll.local>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v4 1/4] test/psr: Skip PSR2 tests when
- panel resolution is bigger than PSR2 HW supports
+Content-Disposition: inline
+In-Reply-To: <20190124125541.GX3271@phenom.ffwll.local>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/2] tests/intel-ci: Add basic PSR2
+ tests to fast feedback test list
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,183 +24,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0504079329=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>, "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Daniel Vetter <daniel@ffwll.ch>, Martin Peres <martin.peres@linux.intel.com>
+Cc: IGT development <igt-dev@lists.freedesktop.org>, Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0504079329==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-wjPqA5+VQQouyEQv4mSP"
-
---=-wjPqA5+VQQouyEQv4mSP
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, 2019-01-24 at 14:06 -0800, Rodrigo Vivi wrote:
-> On Thu, Jan 24, 2019 at 11:02:51AM -0800, Dhinakaran Pandiyan wrote:
-> > On Thu, 2019-01-24 at 10:20 -0800, Souza, Jose wrote:
-> > > On Wed, 2019-01-23 at 22:39 -0800, Rodrigo Vivi wrote:
-> > > > On Wed, Jan 23, 2019 at 06:25:07PM -0800, Dhinakaran Pandiyan
-> > > > wrote:
-> > > > > On Wed, 2019-01-23 at 15:56 -0800, Jos=C3=A9 Roberto de Souza
-> > > > > wrote:
-> > > > > > If resolution that will be used in PSR tests is bigger than
-> > > > > > the
-> > > > > > resolution that PSR2 HW supports, PSR2 will not be enabled
-> > > > > > so
-> > > > > > those
-> > > > > > tests should be skiped. Most of eDP panels only supports
-> > > > > > one
-> > > > > > resolution that is why we don't even try to use other
-> > > > > > resolution.
-> > > > > >=20
-> > > > > > BSpec: 7713
-> > > > >=20
-> > > > > I don't like the fact that we are re-implementing driver code
-> > > > > in
-> > > > > the
-> > > > > test to avoid false-positives. We should really replace the
-> > > > > panel
-> > > > > on
-> > > > > the WHL machine with a panel that is expected to work.=20
-> > > > >=20
-> > > >=20
-> > > > I fully agree. The debugfs should be auto-suficient.
-> > > >=20
-> > > > In the past it was the idea of Source OK. if sink support yes
-> > > > and
-> > > > source ok
-> > That had a problem too, "Source OK" was set after driver completed
-> > all
-> > the checks and just before enabling PSR2. In effect, it started
-> > becoming a duplicate of the "Enabled" field and we weren't able to
-> > catch if the driver checks before psr_enable() were wrong.
->=20
-> yeap, this is true indeed...
->=20
-> But we need to find a way where the debugfs tells us if
-> conditions are not match and enable is not expected to
-> avoid having to reimplement all the conditions twice.
-
-I could add a reason field to debugfs and like we have for FBC(fbc-
->no_fbc_reason)
-
-What do you think?
-
->=20
-> >=20
-> > > > and we tried to enabled but it is not getting active,
-> > > > than we have a bug somewhere.
-> > > >=20
-> > > > I don't know the current status of the psr debugfs anymore, but
-> > > > I believe the test case should infer this information from
-> > > > there
-> > > > somehow instead of re-implement the driver code here.
-> > > >=20
-> > > > > But, as a temporary measure to make CI happy and enable PSR2.
-> > > >=20
-> > > > why is this only affecting PSR2 case?
-> > >=20
-> > > PSR2 has a maximum resolution suported and the only resolution
-> > > that
-> > > CI
-> > > eDP panel supports is bigger than that.
-> > >=20
-> > > > > Reviewed-by: Dhinakaran Pandiyan <
-> > > > > dhinakaran.pandiyan@intel.com>
-> > > > >=20
-> > > > > Rodrigo, what's your opinion on this?
-> > > > >=20
-> > > > > -DK
-> > > > > > Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-> > > > > > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > > > > > Signed-off-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com=
->
-> > > > > > ---
-> > > > > >  tests/kms_psr.c | 21 +++++++++++++++++++--
-> > > > > >  1 file changed, 19 insertions(+), 2 deletions(-)
-> > > > > >=20
-> > > > > > diff --git a/tests/kms_psr.c b/tests/kms_psr.c
-> > > > > > index 3e16a6bf..4792e158 100644
-> > > > > > --- a/tests/kms_psr.c
-> > > > > > +++ b/tests/kms_psr.c
-> > > > > > @@ -445,13 +445,30 @@ int main(int argc, char *argv[])
-> > > > > >  		igt_require_f(sink_support(&data, PSR_MODE_1),
-> > > > > >  			      "Sink does not support PSR\n");
-> > > > > > =20
-> > > > > > -		data.supports_psr2 =3D sink_support(&data,
-> > > > > > PSR_MODE_2);
-> > > > > > -
-> > > > > >  		data.bufmgr =3D
-> > > > > > drm_intel_bufmgr_gem_init(data.drm_fd,
-> > > > > > 4096);
-> > > > > >  		igt_assert(data.bufmgr);
-> > > > > >  		drm_intel_bufmgr_gem_enable_reuse(data.bufmgr);
-> > > > > > =20
-> > > > > >  		display_init(&data);
-> > > > > > +
-> > > > > > +		data.supports_psr2 =3D sink_support(&data,
-> > > > > > PSR_MODE_2);
-> > > > > > +		if (data.supports_psr2) {
-> > > > > > +			uint32_t devid =3D
-> > > > > > intel_get_drm_devid(data.drm_fd);
-> > > > > > +			uint16_t max_h =3D 0, max_v =3D 0;
-> > > > > > +			int gen =3D intel_gen(devid);
-> > > > > > +
-> > > > > > +			if (gen >=3D 10 || IS_GEMINILAKE(devid))
-> > > > > > {
-> > > > > > +				max_h =3D 4096;
-> > > > > > +				max_v =3D 2304;
-> > > > > > +			} else if (gen =3D=3D 9) {
-> > > > > > +				max_h =3D 3640;
-> > > > > > +				max_v =3D 2304;
-> > > > > > +			}
-> > > > > > +
-> > > > > > +			if (data.mode->hdisplay > max_h ||
-> > > > > > +			    data.mode->vdisplay > max_v)
-> > > > > > +				data.supports_psr2 =3D false;
-> > > > > > +		}
-> > > > > >  	}
-> > > > > > =20
-> > > > > >  	for (data.op_psr_mode =3D PSR_MODE_1; data.op_psr_mode <=3D
-> > > > > > PSR_MODE_2;
-> >=20
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---=-wjPqA5+VQQouyEQv4mSP
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlxKU70ACgkQVenbO/mO
-WklnUggAov2ds6tYWLK/wuzyCxJIv96mw2tC+tx9bRVIPXmnpQ2l/YdTgTz6eY74
-xEbY2LI5doiUU3j9h3uP2ecG5CwEnQccGhXZEbrqAYyaq6G2612xI+QYInBc7Pnf
-7MK+fps+NlsIZ1luawpVTZnEgWE4tU3b9G+MvMem5Le82yMJk0mpU5rew+qh+6nT
-JKNKrFvZbvzDj0mUZWHV6wDLhNqSFaa0qwO7yQ9uBHrmAarfOd6BkGhMM0Cq12PP
-qhrFj8SRLAyk67W+z7YtB1gOnb/5KaHWIQHf/5h0D3d3fR3NXVp626WFfBkDbgZa
-Xe6R28ym1kvzOuAyJ/4k14FfWcQZyQ==
-=QJFW
------END PGP SIGNATURE-----
-
---=-wjPqA5+VQQouyEQv4mSP--
-
---===============0504079329==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
+T24gVGh1LCBKYW4gMjQsIDIwMTkgYXQgMDE6NTU6NDFQTSArMDEwMCwgRGFuaWVsIFZldHRlciB3
+cm90ZToKPiBPbiBXZWQsIEphbiAyMywgMjAxOSBhdCAwOToxNzoxN0FNIC0wODAwLCBSb2RyaWdv
+IFZpdmkgd3JvdGU6Cj4gPiBPbiBXZWQsIEphbiAyMywgMjAxOSBhdCAwNTo1MToxMVBNICswMTAw
+LCBEYW5pZWwgVmV0dGVyIHdyb3RlOgo+ID4gPiBPbiBXZWQsIEphbiAyMywgMjAxOSBhdCA1OjQ1
+IFBNIFJvZHJpZ28gVml2aSA8cm9kcmlnby52aXZpQGludGVsLmNvbT4gd3JvdGU6Cj4gPiA+ID4K
+PiA+ID4gPiBPbiBXZWQsIEphbiAyMywgMjAxOSBhdCAwMTowNzozMlBNICswMTAwLCBEYW5pZWwg
+VmV0dGVyIHdyb3RlOgo+ID4gPiA+ID4gT24gV2VkLCBKYW4gMjMsIDIwMTkgYXQgMDE6Mzc6MTlQ
+TSArMDIwMCwgUGV0cmkgTGF0dmFsYSB3cm90ZToKPiA+ID4gPiA+ID4gT24gVHVlLCBKYW4gMjIs
+IDIwMTkgYXQgMDU6MDk6NDlQTSAtMDgwMCwgSm9zw6kgUm9iZXJ0byBkZSBTb3V6YSB3cm90ZToK
+PiA+ID4gPiA+ID4gPiBMZXRzIHJ1biB0aGUgc2FtZSBQU1IxIGJhc2ljIHRlc3RzIGZvciBQU1Iy
+IHRvIGNhdWdodCBQU1IyCj4gPiA+ID4gPiA+ID4gcmVncmVzc2lvbnMgZmFzdGVyLgo+ID4gPiA+
+ID4gPiA+Cj4gPiA+ID4gPiA+ID4gQ2M6IFJvZHJpZ28gVml2aSA8cm9kcmlnby52aXZpQGludGVs
+LmNvbT4KPiA+ID4gPiA+ID4gPiBDYzogRGhpbmFrYXJhbiBQYW5kaXlhbiA8ZGhpbmFrYXJhbi5w
+YW5kaXlhbkBpbnRlbC5jb20+Cj4gPiA+ID4gPiA+ID4gU2lnbmVkLW9mZi1ieTogSm9zw6kgUm9i
+ZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+Cj4gPiA+ID4gPiA+ID4gLS0tCj4g
+PiA+ID4gPiA+ID4gIHRlc3RzL2ludGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QgfCA0ICsr
+KysKPiA+ID4gPiA+ID4gPiAgMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKQo+ID4gPiA+
+ID4gPiA+Cj4gPiA+ID4gPiA+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ludGVsLWNpL2Zhc3QtZmVl
+ZGJhY2sudGVzdGxpc3QgYi90ZXN0cy9pbnRlbC1jaS9mYXN0LWZlZWRiYWNrLnRlc3RsaXN0Cj4g
+PiA+ID4gPiA+ID4gaW5kZXggZGEzYzRjOGUuLmU0OGNiOGE1IDEwMDY0NAo+ID4gPiA+ID4gPiA+
+IC0tLSBhL3Rlc3RzL2ludGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QKPiA+ID4gPiA+ID4g
+PiArKysgYi90ZXN0cy9pbnRlbC1jaS9mYXN0LWZlZWRiYWNrLnRlc3RsaXN0Cj4gPiA+ID4gPiA+
+ID4gQEAgLTIyNyw2ICsyMjcsMTAgQEAgaWd0QGttc19wc3JAcHJpbWFyeV9wYWdlX2ZsaXAKPiA+
+ID4gPiA+ID4gPiAgaWd0QGttc19wc3JAY3Vyc29yX3BsYW5lX21vdmUKPiA+ID4gPiA+ID4gPiAg
+aWd0QGttc19wc3JAc3ByaXRlX3BsYW5lX29ub2ZmCj4gPiA+ID4gPiA+ID4gIGlndEBrbXNfcHNy
+QHByaW1hcnlfbW1hcF9ndHQKPiA+ID4gPiA+ID4gPiAraWd0QGttc19wc3JAcHNyMl9wcmltYXJ5
+X3BhZ2VfZmxpcAo+ID4gPiA+ID4gPiA+ICtpZ3RAa21zX3BzckBwc3IyX2N1cnNvcl9wbGFuZV9t
+b3ZlCj4gPiA+ID4gPiA+ID4gK2lndEBrbXNfcHNyQHBzcjJfc3ByaXRlX3BsYW5lX29ub2ZmCj4g
+PiA+ID4gPiA+ID4gK2lndEBrbXNfcHNyQHBzcjJfcHJpbWFyeV9tbWFwX2d0dAo+ID4gPiA+ID4g
+Pgo+ID4gPiA+ID4gPgo+ID4gPiA+ID4gPiBUaGUgQkFUIHJlc3VsdHMgbWFpbCBzYWlkIHN1Y2Nl
+c3MgYmVjYXVzZSB0aGVzZSBhcmUgbmV3IHRlc3RzLCBidXQgZG8KPiA+ID4gPiA+ID4gbm90ZSB0
+aGF0IHRoZXkgZmFpbGVkLiBUaGV5IG11c3QgcGFzcyB0byBnZXQgb250byB0aGUgQkFUIGxpc3Qu
+Cj4gPiA+ID4gPgo+ID4gPiA+ID4gQWxzbywgYWRkaW5nIGFsbCBraW5kcyBvZiB0ZXN0cyB0byBC
+QVQgdG8gdmFsaWRhdGUgZmVhdHVyZXMgZG9lc24ndCBzY2FsZS4KPiA+ID4gPiA+IFdlIG5lZWQg
+c29tZSB3YXkgdG8gcnVuIHRoZXNlIHRlc3RzIG9uIHNwZWNpZmljIG1hY2hpbmVzIGFzIHBhcnQg
+b2YgdGhlCj4gPiA+ID4gPiBmb2xsb3ctdXAgc2hhcmQgcnVucyAuLi4gT3RoZXJ3aXNlIHdlJ3Jl
+IHN0dWNrIHdpdGggYSBodWdlIHByZXNzdXJlIHRvIGFkZAo+ID4gPiA+ID4gYWxsIGtpbmRzIG9m
+IHN1cGVyLWltcG9ydGFudC1mZWF0dXJlLXJpZ2h0LW5vdyB0aGluZ3MgdG8gQkFULgo+ID4gPiA+
+Cj4gPiA+ID4gSSB1bmRlcnN0YW5kIGFuZCBJIGFncmVlIHdpdGggeW91ciBwb2ludC4gQnV0IG9u
+IHRoaXMgdmVyeSBzcGVjaWZpYyBjYXNlCj4gPiA+ID4gbm8gc2hhcmQgaGF2ZSBQU1IxIG9yIFBT
+UjIgcGFuZWxzLgo+ID4gPiAKPiA+ID4gWWVhaC4gU2FtZSB3YXkgdGhhdCBubyBzaGFyZCBoYXM6
+Cj4gPiA+IC1tc3QKPiA+ID4gLWhkY3AKPiA+ID4gLWRzaQo+ID4gPiAtNGsKPiA+ID4gLSAuLi4K
+PiA+IAo+ID4gImNvaW5jaWRlbnRhbGx5IiBhbGwgZGlzcGxheSByZWxhdGVkIDotKQo+ID4gCj4g
+PiA+IAo+ID4gPiBUaGUgbGlzdCBpcyB2ZXJ5IGxvbmcuIEV2ZXJ5b25lIHdhbnRzIHRoZWlyIGZl
+YXR1cmUgdG8gYmUgYW4KPiA+ID4gZXhjZXB0aW9uLiBFdmVyeW9uZSdzIGZlYXR1cmUgb25seSBp
+bmNyZWFzZSB0ZXN0IHRpbWUgYnkgIm5vdCBtdWNoIi4KPiA+IAo+ID4gWWVhcCwgSSB1bmRlcnN0
+YW5kIHRoYXQgZXZlcnlib2R5IHdpbGwgcHV0IHRoZWlyIGZlYXR1cmUgYXMgaW1wb3J0YW50LAo+
+ID4gYnV0IGZvciBtZSBhbm90aGVyIGZhY3RvciB0aGF0IGp1c3RpZnkgdGhhdCBpbmNyZWFzZSBp
+cyB0aGUgImZyYWdpbGUiCj4gPiBwYXJ0Lgo+ID4gCj4gPiBGb3IgbWUgdGhlIGltcG9ydGFudCAr
+IGZyYWdpbGUgZGVzZXJ2ZXMgYSBzcGFjZSBldmVuIGlmIHdlIGhhdmUgdG8gd2FpdAo+ID4gbWlu
+dXRlcyBtb3JlIGZvciB0aGUgcmVzdWx0IDovCj4gPiAKPiA+ID4gCj4gPiA+ID4gQWxzbyB0aGlz
+IHNob3VsZG4ndCBpbmNyZWFzZSB0aGUgdGVzdCB0aW1lIG11Y2gsIGJlY2F1c2UgbWFjaGluZXMg
+d2l0aCBQU1IxIGFyZQo+ID4gPiA+IGFscmVhZHkgcnVubmluZyB0aGUgUFNSMSB0ZXN0cyBvbmx5
+LCBtYWNoaW5lcyB3aXRob3V0IFBTUiBhcmUgbm90IHJ1bm5pbmcKPiA+ID4gPiBhbnl0aGluZyBh
+bmQgbWFjaGluZXMuIE9ubHkgbWFjaGluZXMgd2l0aCBQU1IyIHBhbmVscyB0aGF0IGFyZSBub3cg
+Y29taW5nIGZyb20KPiA+ID4gPiBubyBQU1IgdGVzdHMgdG8gcnVubmluZyB0aGlzIGZldyBQU1Iy
+IHRlc3RzLgo+ID4gPiAKPiA+ID4gT2ssIEkgZ3Vlc3MgdGhhdCBzaGlwIHNhaWxlZCB3aXRoIHRo
+ZSBwc3IxIHRlc3RzIGFscmVhZHkgdGhlbi4KPiA+IAo+ID4gYmVzaWRlcywgSSB0aGluayBNU1Qg
+YWxzbyBkZXNlcnZlcyB0aGlzICJwcml2aWxlZ2UiIDopCj4gCj4gWW91IG1pc3VuZGVyc3Rvb2Qg
+SSB0aGluaywgSSdtIG5vdCBzYXlpbmcgd2Ugc2hvdWxkbid0IHRlc3QgdGhpcy4gSSdtCj4gc2F5
+aW5nIHdlIHNob3VsZG4ndCB0ZXN0IHRoaXMgaW4gQkFULCBidXQgc29sdmUgdGhpcyBwcm9ibGVt
+IGZvciByZWFsLAo+IHRocm91Z2ggc29tZSBkZWRpY2F0ZWQgbWFjaGluZXMgdGhhdCBydW4gc3Bl
+Y2lmaWMgdGVzdHMgYXMgcGFydCBvZiBzaGFyZHMuCj4gVGhhdCdzIHRoZSByZWFsIGZpeCwgYW5k
+IHRoZSBmaXggdGhhdCBzY2FsZXMsIGFuZCB0aGUgZml4IHRoYXQgd2lsbCBhbGxvdwo+IHVzIHRv
+IHRlc3QgYSBsb3QgbW9yZSB0aGFuIGp1c3QgYSBmZXcgQkFUIHRlc3RzIG9uIGEgZmV3IHZlcnkg
+c2VsZWN0Cj4gbWFjaGluZXMuCgpPaCEgSSBzZWUgbm93Li4uIFRoYXQncyBpbmRlZWQgYSB2ZXJ5
+IHNtYXJ0ZXIgd2F5IG9mIHNjYWxpbmcgdGhpcy4KCkFuZCBtYXliZSBub3QgbmVjZXNzYXJpbHkg
+InNoYXJkIiBtYWNoaW5lcyBhbmQgbm90IG5lY2Vzc2FyaWx5IHJ1bm5pbmcgYWxsIElHVC4KQW5k
+IG1heWJlIHNvbWUgc3BlY2lmaWMgZmVhdHVyZS1tYWNoaW5lLnRlc3RsaXN0IHRoYXQgaXMgcGFy
+dCBvZiB0aGUKc2Vjb25kIHJvdW5kIG9mIENJLUlHVC4uLgoKTWFydGluPyA6JAoKPiAKPiBBbmQg
+aW1vIGFzIGZlYXR1cmUgb3duZXJzIGZvciB0aGlzLCBfeW91XyBmb2xrcyBzaG91bGQgYmUgZmln
+aHRpbmcgZm9yCj4gdGhpcywgaW5zdGVhZCBvZiBiZWluZyBvayB3aXRoIHNxdWVlemluZyBhIGZl
+dyB0ZXN0cyBpbnRvIEJBVC4gVGhhdCdzIG5vdAo+IGdvb2QgZW5vdWdoIChhc2lkZSBmcm9tIHRo
+YXQgaXQncyBpbmVmZmljaWVudCkuCj4gCj4gSSB3YW50IG1vcmUgdGVzdGluZywgbm90IGxlc3Mu
+IFNvIHNob3VsZCB5b3UgOi0pCj4gCj4gQ2hlZXJzLCBEYW5pZWwKPiAtLSAKPiBEYW5pZWwgVmV0
+dGVyCj4gU29mdHdhcmUgRW5naW5lZXIsIEludGVsIENvcnBvcmF0aW9uCj4gaHR0cDovL2Jsb2cu
+ZmZ3bGwuY2gKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+Xwo+IGlndC1kZXYgbWFpbGluZyBsaXN0Cj4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
+PiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
 X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
 YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
 cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0504079329==--
