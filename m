@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
- by gabe.freedesktop.org (Postfix) with ESMTP id 7FC93880B0
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Jan 2019 14:21:43 +0000 (UTC)
-Date: Fri, 25 Jan 2019 15:21:32 +0100
+ by gabe.freedesktop.org (Postfix) with ESMTP id 357976E611
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Jan 2019 14:58:55 +0000 (UTC)
 From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20190125142132.lsesk7hetbrp2yt5@flea>
-References: <20190125140623.10801-1-paul.kocialkowski@bootlin.com>
- <20190125140623.10801-13-paul.kocialkowski@bootlin.com>
+Date: Fri, 25 Jan 2019 15:58:31 +0100
+Message-Id: <20190125145842.15738-3-maxime.ripard@bootlin.com>
+In-Reply-To: <20190125145842.15738-1-maxime.ripard@bootlin.com>
+References: <20190125145842.15738-1-maxime.ripard@bootlin.com>
 MIME-Version: 1.0
-In-Reply-To: <20190125140623.10801-13-paul.kocialkowski@bootlin.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 12/21] lib/igt_fb: Support converting
- to VC4 modifiers in igt_fb_convert
+Subject: [igt-dev] [PATCH i-g-t v5 02/13] igt: fb: Reduce tile size
+ alignment for non intel platforms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,63 +17,27 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1736676286=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-Cc: Petri Latvala <petri.latvala@intel.com>, Eben Upton <eben@raspberrypi.org>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>, eben@raspberrypi.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============1736676286==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ayook3ckwe2rphdl"
-Content-Disposition: inline
-
-
---ayook3ckwe2rphdl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Jan 25, 2019 at 03:06:14PM +0100, Paul Kocialkowski wrote:
-> This pipes-in support for the VC4 modifiers that we have conversion
-> helpers for. A new temporary linear framebuffer is introduced, that
-> is either freed later or copied to the destination framebuffer
-> pointer.
->=20
-> Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-
-Reviewed-by: Maxime Ripard <maxime.ripard@bootlin.com>
-
-Maxime
-
---=20
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---ayook3ckwe2rphdl
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXEsbbAAKCRDj7w1vZxhR
-xc4eAQDNkyw2GL/ZHHOKvGw52RxeVe6D8FrQAOQuiseT/+fqPgEAtoq/wNSk02X+
-2VF16pyG+x3g83kF+OAYk67XeBA1ZQ8=
-=VenF
------END PGP SIGNATURE-----
-
---ayook3ckwe2rphdl--
-
---===============1736676286==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============1736676286==--
+QWxpZ25pbmcgdGhlIHdpZHRoIG9uIDY0IHBpeGVscyBvbmx5IG1ha2Ugc2Vuc2Ugb24gaW50ZWwg
+cGxhdGZvcm1zLCBtYWtlCnN1cmUgdG8gYWRkIGEgY2hlY2sgYWdhaW5zdCB0aGlzLgoKUmV2aWV3
+ZWQtYnk6IFBhdWwgS29jaWFsa293c2tpIDxwYXVsLmtvY2lhbGtvd3NraUBib290bGluLmNvbT4K
+U2lnbmVkLW9mZi1ieTogTWF4aW1lIFJpcGFyZCA8bWF4aW1lLnJpcGFyZEBib290bGluLmNvbT4K
+LS0tCiBsaWIvaWd0X2ZiLmMgfCA2ICsrKysrLQogMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9u
+cygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZmIuYyBiL2xpYi9pZ3Rf
+ZmIuYwppbmRleCBlMjM5MDhlMjhjMDcuLjFhNWMzMzhlYTUzMiAxMDA2NDQKLS0tIGEvbGliL2ln
+dF9mYi5jCisrKyBiL2xpYi9pZ3RfZmIuYwpAQCAtMjA0LDcgKzIwNCwxMSBAQCB2b2lkIGlndF9n
+ZXRfZmJfdGlsZV9zaXplKGludCBmZCwgdWludDY0X3QgdGlsaW5nLCBpbnQgZmJfYnBwLAogewog
+CXN3aXRjaCAodGlsaW5nKSB7CiAJY2FzZSBMT0NBTF9EUk1fRk9STUFUX01PRF9OT05FOgotCQkq
+d2lkdGhfcmV0ID0gNjQ7CisJCWlmIChpc19pOTE1X2RldmljZShmZCkpCisJCQkqd2lkdGhfcmV0
+ID0gNjQ7CisJCWVsc2UKKwkJCSp3aWR0aF9yZXQgPSAxOworCiAJCSpoZWlnaHRfcmV0ID0gMTsK
+IAkJYnJlYWs7CiAJY2FzZSBMT0NBTF9JOTE1X0ZPUk1BVF9NT0RfWF9USUxFRDoKLS0gCjIuMjAu
+MQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRl
+diBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0
+cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
