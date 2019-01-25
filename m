@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
- by gabe.freedesktop.org (Postfix) with ESMTP id 278886E5FB
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Jan 2019 14:07:36 +0000 (UTC)
-From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-Date: Fri, 25 Jan 2019 15:06:17 +0100
-Message-Id: <20190125140623.10801-16-paul.kocialkowski@bootlin.com>
-In-Reply-To: <20190125140623.10801-1-paul.kocialkowski@bootlin.com>
+ by gabe.freedesktop.org (Postfix) with ESMTP id 3F3C86E035
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Jan 2019 14:17:58 +0000 (UTC)
+Date: Fri, 25 Jan 2019 15:17:56 +0100
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20190125141756.omkv4m3z3qxpvtsy@flea>
 References: <20190125140623.10801-1-paul.kocialkowski@bootlin.com>
+ <20190125140623.10801-5-paul.kocialkowski@bootlin.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v4 15/21] lib/igt_chamelium: Fixup resources
- liberation in comparison helpers
+In-Reply-To: <20190125140623.10801-5-paul.kocialkowski@bootlin.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 04/21] lib/igt_fb: Add support for
+ VC4 SAND tiling modes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,39 +18,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0577970142=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>, Eben Upton <eben@raspberrypi.org>
+To: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, Eben Upton <eben@raspberrypi.org>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhpcyBmaXhlcyBhIGJ1bmNoIG9mIG9jY3VycmVuY2VzIG9mIG1lbW9yeSBub3QgYmVpbmcgcHJv
-cGVybHkKbGliZXJhdGVkIGFmdGVyIGl0cyB1c2UgaW4gaGVscGVycyByZXZvbHZpbmcgYXJvdW5k
-IGZyYW1lL0NSQwpjb21wYXJpc29uLgoKU2lnbmVkLW9mZi1ieTogUGF1bCBLb2NpYWxrb3dza2kg
-PHBhdWwua29jaWFsa293c2tpQGJvb3RsaW4uY29tPgpSZXZpZXdlZC1ieTogTHl1ZGUgUGF1bCA8
-bHl1ZGVAcmVkaGF0LmNvbT4KUmV2aWV3ZWQtYnk6IE1heGltZSBSaXBhcmQgPG1heGltZS5yaXBh
-cmRAYm9vdGxpbi5jb20+Ci0tLQogbGliL2lndF9jaGFtZWxpdW0uYyB8IDEzICsrKysrKysrKy0t
-LS0KIDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCgpkaWZm
-IC0tZ2l0IGEvbGliL2lndF9jaGFtZWxpdW0uYyBiL2xpYi9pZ3RfY2hhbWVsaXVtLmMKaW5kZXgg
-MzJiODU5ZWFjNGE3Li4wYjZhYzM3YTNkODkgMTAwNjQ0Ci0tLSBhL2xpYi9pZ3RfY2hhbWVsaXVt
-LmMKKysrIGIvbGliL2lndF9jaGFtZWxpdW0uYwpAQCAtMTA2MCw5ICsxMDYwLDkgQEAgdm9pZCBj
-aGFtZWxpdW1fYXNzZXJ0X2NyY19lcV9vcl9kdW1wKHN0cnVjdCBjaGFtZWxpdW0gKmNoYW1lbGl1
-bSwKIAkJZnJlZShyZWZlcmVuY2Vfc3VmZml4KTsKIAkJZnJlZShjYXB0dXJlX3N1ZmZpeCk7CiAK
-LQkJY2hhbWVsaXVtX2Rlc3Ryb3lfZnJhbWVfZHVtcChmcmFtZSk7Ci0KKwkJY2Fpcm9fc3VyZmFj
-ZV9kZXN0cm95KHJlZmVyZW5jZSk7CiAJCWNhaXJvX3N1cmZhY2VfZGVzdHJveShjYXB0dXJlKTsK
-KwkJY2hhbWVsaXVtX2Rlc3Ryb3lfZnJhbWVfZHVtcChmcmFtZSk7CiAJfQogCiAJaWd0X2Fzc2Vy
-dChlcSk7CkBAIC0xMTIwLDExICsxMTIwLDE0IEBAIHZvaWQgY2hhbWVsaXVtX2Fzc2VydF9hbmFs
-b2dfZnJhbWVfbWF0Y2hfb3JfZHVtcChzdHJ1Y3QgY2hhbWVsaXVtICpjaGFtZWxpdW0sCiAKIAkJ
-ZnJlZShyZWZlcmVuY2Vfc3VmZml4KTsKIAkJZnJlZShjYXB0dXJlX3N1ZmZpeCk7CisJCWZyZWUo
-cmVmZXJlbmNlX2NyYyk7CisJCWZyZWUoY2FwdHVyZV9jcmMpOwogCX0KIAotCWNhaXJvX3N1cmZh
-Y2VfZGVzdHJveShjYXB0dXJlKTsKLQogCWlndF9hc3NlcnQobWF0Y2gpOworCisJY2Fpcm9fc3Vy
-ZmFjZV9kZXN0cm95KHJlZmVyZW5jZSk7CisJY2Fpcm9fc3VyZmFjZV9kZXN0cm95KGNhcHR1cmUp
-OwogfQogCiAKQEAgLTEzMjMsNiArMTMyNiw4IEBAIGlndF9jcmNfdCAqY2hhbWVsaXVtX2NhbGN1
-bGF0ZV9mYl9jcmMoaW50IGZkLCBzdHJ1Y3QgaWd0X2ZiICpmYikKIAogCWNoYW1lbGl1bV9kb19j
-YWxjdWxhdGVfZmJfY3JjKGZiX3N1cmZhY2UsIHJldCk7CiAKKwljYWlyb19zdXJmYWNlX2Rlc3Ry
-b3koZmJfc3VyZmFjZSk7CisKIAlyZXR1cm4gcmV0OwogfQogCi0tIAoyLjIwLjEKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
-aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+
+--===============0577970142==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="l3ifjoosqqppbdtw"
+Content-Disposition: inline
+
+
+--l3ifjoosqqppbdtw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Jan 25, 2019 at 03:06:06PM +0100, Paul Kocialkowski wrote:
+> This introduces support for the VC4 SAND tiling modes, that take a
+> specific parameter indicating their column height. This parameter acts
+> as a height-based stride equivalent, that shall be equal or greater
+> than the displayed height.
+>=20
+> The parameter is extracted and returned as tile height so that enough
+> memory can be reserved for column heights containing extra padding.
+>=20
+> Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+
+Reviewed-by: Maxime Ripard <maxime.ripard@bootlin.com>
+
+Maxime
+
+--=20
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--l3ifjoosqqppbdtw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXEsalAAKCRDj7w1vZxhR
+xduNAP9gVdF1kr/AykaI3PiM6etqaJWqx0hUCgF6jB0L4PzM5QD8DeEWc3WHakMg
+LrDzr3/3gFSynogX4kGqzOTg7rplbgU=
+=fsjw
+-----END PGP SIGNATURE-----
+
+--l3ifjoosqqppbdtw--
+
+--===============0577970142==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0577970142==--
