@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
- by gabe.freedesktop.org (Postfix) with ESMTP id 3F3C86E035
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Jan 2019 14:17:58 +0000 (UTC)
-Date: Fri, 25 Jan 2019 15:17:56 +0100
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20190125141756.omkv4m3z3qxpvtsy@flea>
+ by gabe.freedesktop.org (Postfix) with ESMTP id 3AFA46E5FB
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Jan 2019 14:07:35 +0000 (UTC)
+From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Date: Fri, 25 Jan 2019 15:06:13 +0100
+Message-Id: <20190125140623.10801-12-paul.kocialkowski@bootlin.com>
+In-Reply-To: <20190125140623.10801-1-paul.kocialkowski@bootlin.com>
 References: <20190125140623.10801-1-paul.kocialkowski@bootlin.com>
- <20190125140623.10801-5-paul.kocialkowski@bootlin.com>
 MIME-Version: 1.0
-In-Reply-To: <20190125140623.10801-5-paul.kocialkowski@bootlin.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4 04/21] lib/igt_fb: Add support for
- VC4 SAND tiling modes
+Subject: [igt-dev] [PATCH i-g-t v4 11/21] lib/igt_fb: Pass the modifier to
+ igt_fb_convert helpers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,66 +17,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0577970142=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-Cc: Petri Latvala <petri.latvala@intel.com>, Eben Upton <eben@raspberrypi.org>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>, Eben Upton <eben@raspberrypi.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============0577970142==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="l3ifjoosqqppbdtw"
-Content-Disposition: inline
-
-
---l3ifjoosqqppbdtw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Jan 25, 2019 at 03:06:06PM +0100, Paul Kocialkowski wrote:
-> This introduces support for the VC4 SAND tiling modes, that take a
-> specific parameter indicating their column height. This parameter acts
-> as a height-based stride equivalent, that shall be equal or greater
-> than the displayed height.
->=20
-> The parameter is extracted and returned as tile height so that enough
-> memory can be reserved for column heights containing extra padding.
->=20
-> Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-
-Reviewed-by: Maxime Ripard <maxime.ripard@bootlin.com>
-
-Maxime
-
---=20
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---l3ifjoosqqppbdtw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXEsalAAKCRDj7w1vZxhR
-xduNAP9gVdF1kr/AykaI3PiM6etqaJWqx0hUCgF6jB0L4PzM5QD8DeEWc3WHakMg
-LrDzr3/3gFSynogX4kGqzOTg7rplbgU=
-=fsjw
------END PGP SIGNATURE-----
-
---l3ifjoosqqppbdtw--
-
---===============0577970142==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0577970142==--
+VGhlIG1vZGlmaWVyIGlzIHBhcnQgb2YgaG93IGEgZnJhbWUgaXMgcmVwcmVzZW50ZWQsIHNvIGFk
+ZCBpdCBhcyBhbgpleHRyYSBhcmd1bWVudCBzbyB0aGF0IGl0IGNhbiBiZSBzcGVjaWZpZWQgd2hl
+biBjb252ZXJ0aW5nIGZyYW1lYnVmZmVycy4KCkZvciBub3csIG9ubHkgYSBsaW5lYXIgbW9kaWZp
+ZXIgaXMgc3VwcG9ydGVkLgoKU2lnbmVkLW9mZi1ieTogUGF1bCBLb2NpYWxrb3dza2kgPHBhdWwu
+a29jaWFsa293c2tpQGJvb3RsaW4uY29tPgotLS0KIGxpYi9pZ3RfZmIuYyAgICAgICAgICB8IDE0
+ICsrKysrKysrKystLS0tCiBsaWIvaWd0X2ZiLmggICAgICAgICAgfCAgMyArKy0KIHRlc3RzL2tt
+c19jaGFtZWxpdW0uYyB8ICAzICsrLQogMyBmaWxlcyBjaGFuZ2VkLCAxNCBpbnNlcnRpb25zKCsp
+LCA2IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZmIuYyBiL2xpYi9pZ3RfZmIu
+YwppbmRleCA0Yzk3ZTk5YmYwNmIuLmIyNDM1NmZhMDdlNCAxMDA2NDQKLS0tIGEvbGliL2lndF9m
+Yi5jCisrKyBiL2xpYi9pZ3RfZmIuYwpAQCAtMjI1NCw2ICsyMjU0LDcgQEAgdm9pZCBpZ3RfcmVt
+b3ZlX2ZiKGludCBmZCwgc3RydWN0IGlndF9mYiAqZmIpCiAgKiBAZHN0OiBwb2ludGVyIHRvIHRo
+ZSAjaWd0X2ZiIHN0cnVjdHVyZSB0aGF0IHdpbGwgc3RvcmUgdGhlIGNvbnZlcnNpb24gcmVzdWx0
+CiAgKiBAc3JjOiBwb2ludGVyIHRvIHRoZSAjaWd0X2ZiIHN0cnVjdHVyZSB0aGF0IHN0b3JlcyB0
+aGUgZnJhbWUgd2UgY29udmVydAogICogQGRzdF9mb3VyY2M6IERSTSBmb3JtYXQgc3BlY2lmaWVy
+IHRvIGNvbnZlcnQgdG8KKyAqIEBkc3RfbW9kaWZpZXI6IERSTSBmb3JtYXQgbW9kaWZpZXIgdG8g
+Y29udmVydCB0bwogICogQGRzdF9zdHJpZGU6IFN0cmlkZSBmb3IgdGhlIHJlc3VsdGluZyBmcmFt
+ZWJ1ZmZlciAoMCBmb3IgYXV0b21hdGljIHN0cmlkZSkKICAqCiAgKiBUaGlzIHdpbGwgY29udmVy
+dCBhIGdpdmVuIEBzcmMgY29udGVudCB0byB0aGUgQGRzdF9mb3VyY2MgZm9ybWF0LApAQCAtMjI2
+OCw2ICsyMjY5LDcgQEAgdm9pZCBpZ3RfcmVtb3ZlX2ZiKGludCBmZCwgc3RydWN0IGlndF9mYiAq
+ZmIpCiAgKi8KIHVuc2lnbmVkIGludCBpZ3RfZmJfY29udmVydF93aXRoX3N0cmlkZShzdHJ1Y3Qg
+aWd0X2ZiICpkc3QsIHN0cnVjdCBpZ3RfZmIgKnNyYywKIAkJCQkJdWludDMyX3QgZHN0X2ZvdXJj
+YywKKwkJCQkJdWludDY0X3QgZHN0X21vZGlmaWVyLAogCQkJCQl1bnNpZ25lZCBpbnQgZHN0X3N0
+cmlkZSkKIHsKIAlzdHJ1Y3QgZmJfY29udmVydCBjdnQgPSB7IH07CkBAIC0yMjc2LDggKzIyNzgs
+OCBAQCB1bnNpZ25lZCBpbnQgaWd0X2ZiX2NvbnZlcnRfd2l0aF9zdHJpZGUoc3RydWN0IGlndF9m
+YiAqZHN0LCBzdHJ1Y3QgaWd0X2ZiICpzcmMsCiAKIAlmYl9pZCA9IGlndF9jcmVhdGVfZmJfd2l0
+aF9ib19zaXplKHNyYy0+ZmQsIHNyYy0+d2lkdGgsIHNyYy0+aGVpZ2h0LAogCQkJCQkgICBkc3Rf
+Zm91cmNjLAotCQkJCQkgICBMT0NBTF9EUk1fRk9STUFUX01PRF9OT05FLAotCQkJCQkgICBkc3Qs
+IDAsIGRzdF9zdHJpZGUpOworCQkJCQkgICBMT0NBTF9EUk1fRk9STUFUX01PRF9OT05FLCBkc3Qs
+IDAsCisJCQkJCSAgIGRzdF9zdHJpZGUpOwogCWlndF9hc3NlcnQoZmJfaWQgPiAwKTsKIAogCXNy
+Y19wdHIgPSBpZ3RfZmJfbWFwX2J1ZmZlcihzcmMtPmZkLCBzcmMpOwpAQCAtMjI5NSw2ICsyMjk3
+LDggQEAgdW5zaWduZWQgaW50IGlndF9mYl9jb252ZXJ0X3dpdGhfc3RyaWRlKHN0cnVjdCBpZ3Rf
+ZmIgKmRzdCwgc3RydWN0IGlndF9mYiAqc3JjLAogCWlndF9mYl91bm1hcF9idWZmZXIoZHN0LCBk
+c3RfcHRyKTsKIAlpZ3RfZmJfdW5tYXBfYnVmZmVyKHNyYywgc3JjX3B0cik7CiAKKwlpZ3RfYXNz
+ZXJ0KGRzdF9tb2RpZmllciA9PSBMT0NBTF9EUk1fRk9STUFUX01PRF9OT05FKTsKKwogCXJldHVy
+biBmYl9pZDsKIH0KIApAQCAtMjMwMyw2ICsyMzA3LDcgQEAgdW5zaWduZWQgaW50IGlndF9mYl9j
+b252ZXJ0X3dpdGhfc3RyaWRlKHN0cnVjdCBpZ3RfZmIgKmRzdCwgc3RydWN0IGlndF9mYiAqc3Jj
+LAogICogQGRzdDogcG9pbnRlciB0byB0aGUgI2lndF9mYiBzdHJ1Y3R1cmUgdGhhdCB3aWxsIHN0
+b3JlIHRoZSBjb252ZXJzaW9uIHJlc3VsdAogICogQHNyYzogcG9pbnRlciB0byB0aGUgI2lndF9m
+YiBzdHJ1Y3R1cmUgdGhhdCBzdG9yZXMgdGhlIGZyYW1lIHdlIGNvbnZlcnQKICAqIEBkc3RfZm91
+cmNjOiBEUk0gZm9ybWF0IHNwZWNpZmllciB0byBjb252ZXJ0IHRvCisgKiBAZHN0X21vZGlmaWVy
+OiBEUk0gZm9ybWF0IG1vZGlmaWVyIHRvIGNvbnZlcnQgdG8KICAqCiAgKiBUaGlzIHdpbGwgY29u
+dmVydCBhIGdpdmVuIEBzcmMgY29udGVudCB0byB0aGUgQGRzdF9mb3VyY2MgZm9ybWF0LAogICog
+c3RvcmluZyB0aGUgcmVzdWx0IGluIHRoZSBAZHN0IGZiLCBhbGxvY2F0aW5nIHRoZSBAZHN0IGZi
+CkBAIC0yMzE1LDkgKzIzMjAsMTAgQEAgdW5zaWduZWQgaW50IGlndF9mYl9jb252ZXJ0X3dpdGhf
+c3RyaWRlKHN0cnVjdCBpZ3RfZmIgKmRzdCwgc3RydWN0IGlndF9mYiAqc3JjLAogICogVGhlIGtt
+cyBpZCBvZiB0aGUgY3JlYXRlZCBmcmFtZWJ1ZmZlci4KICAqLwogdW5zaWduZWQgaW50IGlndF9m
+Yl9jb252ZXJ0KHN0cnVjdCBpZ3RfZmIgKmRzdCwgc3RydWN0IGlndF9mYiAqc3JjLAotCQkJICAg
+IHVpbnQzMl90IGRzdF9mb3VyY2MpCisJCQkgICAgdWludDMyX3QgZHN0X2ZvdXJjYywgdWludDY0
+X3QgZHN0X21vZGlmaWVyKQogewotCXJldHVybiBpZ3RfZmJfY29udmVydF93aXRoX3N0cmlkZShk
+c3QsIHNyYywgZHN0X2ZvdXJjYywgMCk7CisJcmV0dXJuIGlndF9mYl9jb252ZXJ0X3dpdGhfc3Ry
+aWRlKGRzdCwgc3JjLCBkc3RfZm91cmNjLCBkc3RfbW9kaWZpZXIsCisJCQkJCSAgMCk7CiB9CiAK
+IC8qKgpkaWZmIC0tZ2l0IGEvbGliL2lndF9mYi5oIGIvbGliL2lndF9mYi5oCmluZGV4IGM2ZWRk
+ZGVjMWQ3Ni4uOWE2YzVlM2NkNTE4IDEwMDY0NAotLS0gYS9saWIvaWd0X2ZiLmgKKysrIGIvbGli
+L2lndF9mYi5oCkBAIC0xMzIsOSArMTMyLDEwIEBAIHVuc2lnbmVkIGludCBpZ3RfY3JlYXRlX3N0
+ZXJlb19mYihpbnQgZHJtX2ZkLCBkcm1Nb2RlTW9kZUluZm8gKm1vZGUsCiAJCQkJICB1aW50MzJf
+dCBmb3JtYXQsIHVpbnQ2NF90IHRpbGluZyk7CiB1bnNpZ25lZCBpbnQgaWd0X2ZiX2NvbnZlcnRf
+d2l0aF9zdHJpZGUoc3RydWN0IGlndF9mYiAqZHN0LCBzdHJ1Y3QgaWd0X2ZiICpzcmMsCiAJCQkJ
+CXVpbnQzMl90IGRzdF9mb3VyY2MsCisJCQkJCXVpbnQ2NF90IGRzdF9tb2RpZmllciwKIAkJCQkJ
+dW5zaWduZWQgaW50IHN0cmlkZSk7CiB1bnNpZ25lZCBpbnQgaWd0X2ZiX2NvbnZlcnQoc3RydWN0
+IGlndF9mYiAqZHN0LCBzdHJ1Y3QgaWd0X2ZiICpzcmMsCi0JCQkgICAgdWludDMyX3QgZHN0X2Zv
+dXJjYyk7CisJCQkgICAgdWludDMyX3QgZHN0X2ZvdXJjYywgdWludDY0X3QgZHN0X21vZGlmaWVy
+KTsKIHZvaWQgaWd0X3JlbW92ZV9mYihpbnQgZmQsIHN0cnVjdCBpZ3RfZmIgKmZiKTsKIGludCBp
+Z3RfZGlydHlfZmIoaW50IGZkLCBzdHJ1Y3QgaWd0X2ZiICpmYik7CiB2b2lkICppZ3RfZmJfbWFw
+X2J1ZmZlcihpbnQgZmQsIHN0cnVjdCBpZ3RfZmIgKmZiKTsKZGlmZiAtLWdpdCBhL3Rlc3RzL2tt
+c19jaGFtZWxpdW0uYyBiL3Rlc3RzL2ttc19jaGFtZWxpdW0uYwppbmRleCA2NGY4N2QzYWU0NzQu
+LmZlNThhZWE5OGU4NiAxMDA2NDQKLS0tIGEvdGVzdHMva21zX2NoYW1lbGl1bS5jCisrKyBiL3Rl
+c3RzL2ttc19jaGFtZWxpdW0uYwpAQCAtNTQ2LDcgKzU0Niw4IEBAIHN0YXRpYyB2b2lkIGRvX3Rl
+c3RfZGlzcGxheShkYXRhX3QgKmRhdGEsIHN0cnVjdCBjaGFtZWxpdW1fcG9ydCAqcG9ydCwKIAkJ
+CQkJIERSTV9GT1JNQVRfWFJHQjg4ODgsIDY0LCAmZmIpOwogCWlndF9hc3NlcnQoZmJfaWQgPiAw
+KTsKIAotCWZyYW1lX2lkID0gaWd0X2ZiX2NvbnZlcnQoJmZyYW1lX2ZiLCAmZmIsIGZvdXJjYyk7
+CisJZnJhbWVfaWQgPSBpZ3RfZmJfY29udmVydCgmZnJhbWVfZmIsICZmYiwgZm91cmNjLAorCQkJ
+CSAgTE9DQUxfRFJNX0ZPUk1BVF9NT0RfTk9ORSk7CiAJaWd0X2Fzc2VydChmcmFtZV9pZCA+IDAp
+OwogCiAJaWYgKGNoZWNrID09IENIQU1FTElVTV9DSEVDS19DUkMpCi0tIAoyLjIwLjEKCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
+ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
