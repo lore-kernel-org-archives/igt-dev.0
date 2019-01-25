@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mail.bootlin.com (mail.bootlin.com [62.4.15.54])
- by gabe.freedesktop.org (Postfix) with ESMTP id BCC696E5FF
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Jan 2019 14:07:34 +0000 (UTC)
-From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-Date: Fri, 25 Jan 2019 15:06:11 +0100
-Message-Id: <20190125140623.10801-10-paul.kocialkowski@bootlin.com>
-In-Reply-To: <20190125140623.10801-1-paul.kocialkowski@bootlin.com>
+ by gabe.freedesktop.org (Postfix) with ESMTP id B82A96E035
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Jan 2019 14:19:02 +0000 (UTC)
+Date: Fri, 25 Jan 2019 15:19:01 +0100
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20190125141901.6pfqq4farjzumiaj@flea>
 References: <20190125140623.10801-1-paul.kocialkowski@bootlin.com>
+ <20190125140623.10801-10-paul.kocialkowski@bootlin.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v4 09/21] lib/igt_vc4: Add helpers for
+In-Reply-To: <20190125140623.10801-10-paul.kocialkowski@bootlin.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 09/21] lib/igt_vc4: Add helpers for
  converting linear to T-tiled RGB buffers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -17,109 +18,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1004441192=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>, Eben Upton <eben@raspberrypi.org>
+To: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, Eben Upton <eben@raspberrypi.org>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SW4gb3JkZXIgdG8gaW50ZWdyYXRlIHRlc3Rpbmcgb2YgVC10aWxlZCBidWZmZXJzLCB0aGUgZWFz
-aWVzdCBwYXRoIGlzIHRvCmdlbmVyYXRlIHBhdHRlcm5zICh3aXRoIHRoZSBhbHJlYWR5LWV4aXN0
-aW5nIGZ1bmN0aW9ucykgaW4gbGluZWFyCmJ1ZmZlcnMgYW5kIGNvbnZlcnQgdGhlbSB0byBULXRp
-bGVkIHN1YnNlcXVlbnRseS4KCkFkZCBoZWxwZXJzIHRvIGRvIHRoYXQgY29udmVyc2lvbiwgd2l0
-aCBhIGZpcnN0IGhlbHBlciB0aGF0IHJldHVybnMgdGhlCm1lbW9yeSBvZmZzZXQgZm9yIGEgZ2l2
-ZW4gcG9zaXRpb24gaW4gYSBULXRpbGVkIGJ1ZmZlciBhbmQgYSBzZWNvbmQKaGVscGVyIHRoYXQg
-dXNlcyBpdCBmb3IgY29udmVydGluZyBiZXR3ZWVuIGZyYW1lYnVmZmVycy4KClNpZ25lZC1vZmYt
-Ynk6IFBhdWwgS29jaWFsa293c2tpIDxwYXVsLmtvY2lhbGtvd3NraUBib290bGluLmNvbT4KQWNr
-ZWQtYnk6IEx5dWRlIFBhdWwgPGx5dWRlQHJlZGhhdC5jb20+Ci0tLQogbGliL2lndF92YzQuYyB8
-IDEzMSArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwog
-bGliL2lndF92YzQuaCB8ICAgNCArKwogMiBmaWxlcyBjaGFuZ2VkLCAxMzUgaW5zZXJ0aW9ucygr
-KQoKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfdmM0LmMgYi9saWIvaWd0X3ZjNC5jCmluZGV4IDE2ZGZl
-NjdhNDRiMS4uYjY5N2I1ZmRmMDgyIDEwMDY0NAotLS0gYS9saWIvaWd0X3ZjNC5jCisrKyBiL2xp
-Yi9pZ3RfdmM0LmMKQEAgLTM0LDYgKzM0LDcgQEAKICNpbmNsdWRlICJkcm10ZXN0LmgiCiAjaW5j
-bHVkZSAiaWd0X2F1eC5oIgogI2luY2x1ZGUgImlndF9jb3JlLmgiCisjaW5jbHVkZSAiaWd0X2Zi
-LmgiCiAjaW5jbHVkZSAiaWd0X3ZjNC5oIgogI2luY2x1ZGUgImlvY3RsX3dyYXBwZXJzLmgiCiAj
-aW5jbHVkZSAiaW50ZWxfcmVnLmgiCkBAIC0xNzYsMyArMTc3LDEzMyBAQCBib29sIGlndF92YzRf
-cHVyZ2VhYmxlX2JvKGludCBmZCwgaW50IGhhbmRsZSwgYm9vbCBwdXJnZWFibGUpCiAKIAlyZXR1
-cm4gYXJnLnJldGFpbmVkOwogfQorCit1bnNpZ25lZCBpbnQgaWd0X3ZjNF9mYl90X3RpbGVkX2Nv
-bnZlcnQoc3RydWN0IGlndF9mYiAqZHN0LCBzdHJ1Y3QgaWd0X2ZiICpzcmMpCit7CisJdW5zaWdu
-ZWQgaW50IGZiX2lkOworCXVuc2lnbmVkIGludCBpLCBqOworCXZvaWQgKnNyY19idWY7CisJdm9p
-ZCAqZHN0X2J1ZjsKKwlzaXplX3QgYnBwID0gc3JjLT5wbGFuZV9icHBbMF07CisJc2l6ZV90IGRz
-dF9zdHJpZGUgPSBBTElHTihzcmMtPnN0cmlkZXNbMF0sIDEyOCk7CisKKwlmYl9pZCA9IGlndF9j
-cmVhdGVfZmJfd2l0aF9ib19zaXplKHNyYy0+ZmQsIHNyYy0+d2lkdGgsIHNyYy0+aGVpZ2h0LAor
-CQkJCQkgICBzcmMtPmRybV9mb3JtYXQsCisJCQkJCSAgIERSTV9GT1JNQVRfTU9EX0JST0FEQ09N
-X1ZDNF9UX1RJTEVELAorCQkJCQkgICBkc3QsIDAsIGRzdF9zdHJpZGUpOworCWlndF9hc3NlcnQo
-ZmJfaWQgPiAwKTsKKworCWlndF9hc3NlcnQoYnBwID09IDE2IHx8IGJwcCA9PSAzMik7CisKKwlz
-cmNfYnVmID0gaWd0X2ZiX21hcF9idWZmZXIoc3JjLT5mZCwgc3JjKTsKKwlpZ3RfYXNzZXJ0KHNy
-Y19idWYpOworCisJZHN0X2J1ZiA9IGlndF9mYl9tYXBfYnVmZmVyKGRzdC0+ZmQsIGRzdCk7CisJ
-aWd0X2Fzc2VydChkc3RfYnVmKTsKKworCWZvciAoaSA9IDA7IGkgPCBzcmMtPmhlaWdodDsgaSsr
-KSB7CisJCWZvciAoaiA9IDA7IGogPCBzcmMtPndpZHRoOyBqKyspIHsKKwkJCXNpemVfdCBzcmNf
-b2Zmc2V0ID0gc3JjLT5vZmZzZXRzWzBdOworCQkJc2l6ZV90IGRzdF9vZmZzZXQgPSBkc3QtPm9m
-ZnNldHNbMF07CisKKwkJCXNyY19vZmZzZXQgKz0gc3JjLT5zdHJpZGVzWzBdICogaSArIGogKiBi
-cHAgLyA4OworCQkJZHN0X29mZnNldCArPSBpZ3RfdmM0X3RfdGlsZWRfb2Zmc2V0KGRzdF9zdHJp
-ZGUsCisJCQkJCQkJICAgICBzcmMtPmhlaWdodCwKKwkJCQkJCQkgICAgIGJwcCwgaiwgaSk7CisK
-KwkJCXN3aXRjaCAoYnBwKSB7CisJCQljYXNlIDE2OgorCQkJCSoodWludDE2X3QgKikoZHN0X2J1
-ZiArIGRzdF9vZmZzZXQpID0KKwkJCQkJKih1aW50MTZfdCAqKShzcmNfYnVmICsgc3JjX29mZnNl
-dCk7CisJCQkJYnJlYWs7CisJCQljYXNlIDMyOgorCQkJCSoodWludDMyX3QgKikoZHN0X2J1ZiAr
-IGRzdF9vZmZzZXQpID0KKwkJCQkJKih1aW50MzJfdCAqKShzcmNfYnVmICsgc3JjX29mZnNldCk7
-CisJCQkJYnJlYWs7CisJCQl9CisJCX0KKwl9CisKKwlpZ3RfZmJfdW5tYXBfYnVmZmVyKHNyYywg
-c3JjX2J1Zik7CisJaWd0X2ZiX3VubWFwX2J1ZmZlcihkc3QsIGRzdF9idWYpOworCisJcmV0dXJu
-IGZiX2lkOworfQorCisvKiBDYWxjdWxhdGUgdGhlIHQtdGlsZSB3aWR0aCBzbyB0aGF0IHNpemUg
-PSB3aWR0aCAqIGhlaWdodCAqIGJwcCAvIDguICovCisjZGVmaW5lIFZDNF9UX1RJTEVfVyhzaXpl
-LCBoZWlnaHQsIGJwcCkgKChzaXplKSAvIChoZWlnaHQpIC8gKChicHApIC8gOCkpCisKK3NpemVf
-dCBpZ3RfdmM0X3RfdGlsZWRfb2Zmc2V0KHNpemVfdCBzdHJpZGUsIHNpemVfdCBoZWlnaHQsIHNp
-emVfdCBicHAsCisJCQkgICAgICBzaXplX3QgeCwgc2l6ZV90IHkpCit7CisJY29uc3Qgc2l6ZV90
-IHQxa19tYXBfZXZlbltdID0geyAwLCAzLCAxLCAyIH07CisJY29uc3Qgc2l6ZV90IHQxa19tYXBf
-b2RkW10gPSB7IDIsIDEsIDMsIDAgfTsKKwljb25zdCBzaXplX3QgdDRrX3RfaCA9IDMyOworCWNv
-bnN0IHNpemVfdCB0MWtfdF9oID0gMTY7CisJY29uc3Qgc2l6ZV90IHQ2NF90X2ggPSA0OworCXNp
-emVfdCBvZmZzZXQgPSAwOworCXNpemVfdCB0NGtfdF93LCB0NGtfdywgdDRrX3gsIHQ0a195Owor
-CXNpemVfdCB0MWtfdF93LCB0MWtfeCwgdDFrX3k7CisJc2l6ZV90IHQ2NF90X3csIHQ2NF94LCB0
-NjRfeTsKKwlzaXplX3QgcGl4X3gsIHBpeF95OworCXVuc2lnbmVkIGludCBpbmRleDsKKworCS8q
-IFQtdGlsaW5nIGlzIG9ubHkgc3VwcG9ydGVkIGZvciAxNiBhbmQgMzIgYnBwLiAqLworCWlndF9h
-c3NlcnQoYnBwID09IDE2IHx8IGJwcCA9PSAzMik7CisKKwkvKiBULXRpbGluZyBzdHJpZGUgbXVz
-dCBiZSBhbGlnbmVkIHRvIHRoZSA0SyB0aWxlcyBzdHJpZGVzLiAqLworCWlndF9hc3NlcnQoKHN0
-cmlkZSAlICg0MDk2IC8gdDRrX3RfaCkpID09IDApOworCisJLyogQ2FsY3VsYXRlIHRoZSB0aWxl
-IHdpZHRoIGZvciB0aGUgYnBwLiAqLworCXQ0a190X3cgPSBWQzRfVF9USUxFX1coNDA5NiwgdDRr
-X3RfaCwgYnBwKTsKKwl0MWtfdF93ID0gVkM0X1RfVElMRV9XKDEwMjQsIHQxa190X2gsIGJwcCk7
-CisJdDY0X3RfdyA9IFZDNF9UX1RJTEVfVyg2NCwgdDY0X3RfaCwgYnBwKTsKKworCS8qIEFsaWdu
-ZWQgdG90YWwgd2lkdGggaW4gbnVtYmVyIG9mIDRLIHRpbGVzLiAqLworCXQ0a193ID0gKHN0cmlk
-ZSAvIChicHAgLyA4KSkgLyB0NGtfdF93OworCisJLyogWCBhbmQgeSBjb29yZGluYXRlcyBpbiBu
-dW1iZXIgb2YgNEsgdGlsZXMuICovCisJdDRrX3ggPSB4IC8gdDRrX3RfdzsKKwl0NGtfeSA9IHkg
-LyB0NGtfdF9oOworCisJLyogSW5jcmVhc2Ugb2Zmc2V0IHRvIHRoZSBiZWdpbm5pbmcgb2YgdGhl
-IDRLIHRpbGUgcm93LiAqLworCW9mZnNldCArPSB0NGtfeSAqIHQ0a193ICogNDA5NjsKKworCS8q
-IFggYW5kIFkgY29vcmRpbmF0ZXMgaW4gbnVtYmVyIG9mIDFLIHRpbGVzIHdpdGhpbiB0aGUgNEsg
-dGlsZS4gKi8KKwl0MWtfeCA9ICh4ICUgdDRrX3RfdykgLyB0MWtfdF93OworCXQxa195ID0gKHkg
-JSB0NGtfdF9oKSAvIHQxa190X2g7CisKKwkvKiBJbmRleCBmb3IgMUsgdGlsZSBtYXAgbG9va3Vw
-LiAqLworCWluZGV4ID0gMiAqIHQxa195ICsgdDFrX3g7CisKKwkvKiBPZGQgcm93cyBzdGFydCBm
-cm9tIHRoZSByaWdodCwgZXZlbiByb3dzIGZyb20gdGhlIGxlZnQuICovCisJaWYgKHQ0a195ICUg
-MikgeworCQkvKiBJbmNyZWFzZSBvZmZzZXQgdG8gdGhlIDRLIHRpbGUgKHN0YXJ0aW5nIGZyb20g
-dGhlIHJpZ2h0KS4gKi8KKwkJb2Zmc2V0ICs9ICh0NGtfdyAtIHQ0a194IC0gMSkgKiA0MDk2Owor
-CisJCS8qIEluY3Jhc2Ugb2Zmc2V0IHRvIHRoZSBiZWdpbm5pbmcgb2YgdGhlIChvZGQpIDFLIHRp
-bGUuICovCisJCW9mZnNldCArPSB0MWtfbWFwX29kZFtpbmRleF0gKiAxMDI0OworCX0gZWxzZSB7
-CisJCS8qIEluY3JlYXNlIG9mZnNldCB0byB0aGUgNEsgdGlsZSAoc3RhcnRpbmcgZnJvbSB0aGUg
-bGVmdCkuICovCisJCW9mZnNldCArPSB0NGtfeCAqIDQwOTY7CisKKwkJLyogSW5jcmFzZSBvZmZz
-ZXQgdG8gdGhlIGJlZ2lubmluZyBvZiB0aGUgKGV2ZW4pIDFLIHRpbGUuICovCisJCW9mZnNldCAr
-PSB0MWtfbWFwX2V2ZW5baW5kZXhdICogMTAyNDsKKwl9CisKKwkvKiBYIGFuZCBZIGNvb3JkaW5h
-dGVzIGluIG51bWJlciBvZiA2NCBieXRlIHRpbGVzIHdpdGhpbiB0aGUgMUsgdGlsZS4gKi8KKwl0
-NjRfeCA9ICh4ICUgdDFrX3RfdykgLyB0NjRfdF93OworCXQ2NF95ID0gKHkgJSB0MWtfdF9oKSAv
-IHQ2NF90X2g7CisKKwkvKiBJbmNyZWFzZSBvZmZzZXQgdG8gdGhlIGJlZ2lubmluZyBvZiB0aGUg
-NjQtYnl0ZSB0aWxlLiAqLworCW9mZnNldCArPSAodDY0X3kgKiAodDFrX3RfdyAvIHQ2NF90X3cp
-ICsgdDY0X3gpICogNjQ7CisKKwkvKiBYIGFuZCBZIGNvb3JkaW5hdGVzIGluIG51bWJlciBvZiBw
-aXhlbHMgd2l0aGluIHRoZSA2NC1ieXRlIHRpbGUuICovCisJcGl4X3ggPSB4ICUgdDY0X3RfdzsK
-KwlwaXhfeSA9IHkgJSB0NjRfdF9oOworCisJLyogSW5jcmVhc2Ugb2Zmc2V0IHRvIHRoZSBjb3Jy
-ZWN0IHBpeGVsLiAqLworCW9mZnNldCArPSAocGl4X3kgKiB0NjRfdF93ICsgcGl4X3gpICogYnBw
-IC8gODsKKworCXJldHVybiBvZmZzZXQ7Cit9CmRpZmYgLS1naXQgYS9saWIvaWd0X3ZjNC5oIGIv
-bGliL2lndF92YzQuaAppbmRleCBlYmM4YTM4ODFiNWUuLmQ1YzUyOWJiY2NkYSAxMDA2NDQKLS0t
-IGEvbGliL2lndF92YzQuaAorKysgYi9saWIvaWd0X3ZjNC5oCkBAIC0zMyw0ICszMyw4IEBAIGJv
-b2wgaWd0X3ZjNF9wdXJnZWFibGVfYm8oaW50IGZkLCBpbnQgaGFuZGxlLCBib29sIHB1cmdlYWJs
-ZSk7CiB2b2lkIGlndF92YzRfc2V0X3RpbGluZyhpbnQgZmQsIHVpbnQzMl90IGhhbmRsZSwgdWlu
-dDY0X3QgbW9kaWZpZXIpOwogdWludDY0X3QgaWd0X3ZjNF9nZXRfdGlsaW5nKGludCBmZCwgdWlu
-dDMyX3QgaGFuZGxlKTsKIAordW5zaWduZWQgaW50IGlndF92YzRfZmJfdF90aWxlZF9jb252ZXJ0
-KHN0cnVjdCBpZ3RfZmIgKmRzdCwgc3RydWN0IGlndF9mYiAqc3JjKTsKK3NpemVfdCBpZ3RfdmM0
-X3RfdGlsZWRfb2Zmc2V0KHNpemVfdCBzdHJpZGUsIHNpemVfdCBoZWlnaHQsIHNpemVfdCBicHAs
-CisJCQkgICAgICBzaXplX3QgeCwgc2l6ZV90IHkpOworCiAjZW5kaWYgLyogSUdUX1ZDNF9IICov
-Ci0tIAoyLjIwLjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0
-dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+
+--===============1004441192==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ess3ezvjlbarsn6t"
+Content-Disposition: inline
+
+
+--ess3ezvjlbarsn6t
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Jan 25, 2019 at 03:06:11PM +0100, Paul Kocialkowski wrote:
+> In order to integrate testing of T-tiled buffers, the easiest path is to
+> generate patterns (with the already-existing functions) in linear
+> buffers and convert them to T-tiled subsequently.
+>=20
+> Add helpers to do that conversion, with a first helper that returns the
+> memory offset for a given position in a T-tiled buffer and a second
+> helper that uses it for converting between framebuffers.
+>=20
+> Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+> Acked-by: Lyude Paul <lyude@redhat.com>
+
+Reviewed-by: Maxime Ripard <maxime.ripard@bootlin.com>
+
+Maxime
+
+--=20
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--ess3ezvjlbarsn6t
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXEsa1QAKCRDj7w1vZxhR
+xYd/AQCx0dxbyFKbZmiPfvpuWbJpSwYAKs49TVBZFU62xIdNqwEA9Wo+IKrkzOCr
+7JTzIDr+GXU7NcX1Pf+RE6XXRDjKjAk=
+=hMf8
+-----END PGP SIGNATURE-----
+
+--ess3ezvjlbarsn6t--
+
+--===============1004441192==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1004441192==--
