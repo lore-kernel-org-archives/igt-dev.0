@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Date: Sun, 27 Jan 2019 16:00:02 -0200
+From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Message-ID: <20190127180002.seqemwouk3jbmklk@smtp.gmail.com>
+References: <20190122205405.dpzt3oxkpjxzgvnq@smtp.gmail.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Sun, 27 Jan 2019 16:28:53 -0000
-Message-ID: <20190127162853.31057.58455@emeril.freedesktop.org>
-References: <20190127131353.1843-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20190127131353.1843-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgaTkxNS9w?=
- =?utf-8?q?m=5Frpm=3A_Check_for_functional_GEM_before_use?=
+In-Reply-To: <20190122205405.dpzt3oxkpjxzgvnq@smtp.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_flip: Add test to check
+ suspend/resume
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,118 +14,88 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1009532214=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: Shayenne Moura <shayenneluzmoura@gmail.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogaTkxNS9wbV9ycG06IENoZWNrIGZvciBmdW5j
-dGlvbmFsIEdFTSBiZWZvcmUgdXNlClVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0
-b3Aub3JnL3Nlcmllcy81NTc5NS8KU3RhdGUgOiBzdWNjZXNzCgo9PSBTdW1tYXJ5ID09CgpDSSBC
-dWcgTG9nIC0gY2hhbmdlcyBmcm9tIENJX0RSTV81NDkwX2Z1bGwgLT4gSUdUUFdfMjMwMF9mdWxs
-Cj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KClN1
-bW1hcnkKLS0tLS0tLQoKICAqKlNVQ0NFU1MqKgoKICBObyByZWdyZXNzaW9ucyBmb3VuZC4KCiAg
-RXh0ZXJuYWwgVVJMOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvYXBpLzEuMC9z
-ZXJpZXMvNTU3OTUvcmV2aXNpb25zLzEvbWJveC8KClBvc3NpYmxlIG5ldyBpc3N1ZXMKLS0tLS0t
-LS0tLS0tLS0tLS0tLQoKICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQgbWF5IGhh
-dmUgYmVlbiBpbnRyb2R1Y2VkIGluIElHVFBXXzIzMDBfZnVsbDoKCiMjIyBJR1QgY2hhbmdlcyAj
-IyMKCiMjIyMgU3VwcHJlc3NlZCAjIyMjCgogIFRoZSBmb2xsb3dpbmcgcmVzdWx0cyBjb21lIGZy
-b20gdW50cnVzdGVkIG1hY2hpbmVzLCB0ZXN0cywgb3Igc3RhdHVzZXMuCiAgVGhleSBkbyBub3Qg
-YWZmZWN0IHRoZSBvdmVyYWxsIHJlc3VsdC4KCiAgKiB7aWd0QHJ1bm5lckBhYm9ydGVkfToKICAg
-IC0gc2hhcmQta2JsOiAgICAgICAgICAoIDQgRkFJTCApIC0+ICggMyBGQUlMICkKCiAgCktub3du
-IGlzc3VlcwotLS0tLS0tLS0tLS0KCiAgSGVyZSBhcmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gSUdU
-UFdfMjMwMF9mdWxsIHRoYXQgY29tZSBmcm9tIGtub3duIGlzc3VlczoKCiMjIyBJR1QgY2hhbmdl
-cyAjIyMKCiMjIyMgSXNzdWVzIGhpdCAjIyMjCgogICogaWd0QGdlbV9leGVjX3NjaGVkdWxlQHBp
-LXJpbmdmdWxsLWJzZDI6CiAgICAtIHNoYXJkLWtibDogICAgICAgICAgTk9UUlVOIC0+IEZBSUwg
-W2ZkbyMxMDMxNThdICsxCgogICogaWd0QGk5MTVfc3VzcGVuZEBzaHJpbms6CiAgICAtIHNoYXJk
-LWtibDogICAgICAgICAgTk9UUlVOIC0+IERNRVNHLVdBUk4gW2ZkbyMxMDkyNDRdCiAgICAtIHNo
-YXJkLXNuYjogICAgICAgICAgTk9UUlVOIC0+IERNRVNHLVdBUk4gW2ZkbyMxMDkyNDRdCgogICog
-aWd0QGttc19idXN5QGV4dGVuZGVkLW1vZGVzZXQtaGFuZy1uZXdmYi1yZW5kZXItYToKICAgIC0g
-c2hhcmQta2JsOiAgICAgICAgICBOT1RSVU4gLT4gRE1FU0ctV0FSTiBbZmRvIzEwNzk1Nl0gKzEK
-ICAgIC0gc2hhcmQtc25iOiAgICAgICAgICBOT1RSVU4gLT4gRE1FU0ctV0FSTiBbZmRvIzEwNzk1
-Nl0KCiAgKiBpZ3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLTEyOHgxMjgtb25zY3JlZW46CiAgICAt
-IHNoYXJkLWFwbDogICAgICAgICAgTk9UUlVOIC0+IEZBSUwgW2ZkbyMxMDMyMzJdCgogICogaWd0
-QGttc19jdXJzb3JfY3JjQGN1cnNvci0yNTZ4MjU2LXJhbmRvbToKICAgIC0gc2hhcmQtZ2xrOiAg
-ICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDMyMzJdICszCgogICogaWd0QGttc19jdXJzb3Jf
-Y3JjQGN1cnNvci02NHgyMS1zbGlkaW5nOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIFBBU1Mg
-LT4gRkFJTCBbZmRvIzEwMzIzMl0gKzcKCiAgKiBpZ3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLTY0
-eDY0LWRwbXM6CiAgICAtIHNoYXJkLWtibDogICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTAz
-MjMyXSArMwoKICAqIGlndEBrbXNfY3Vyc29yX2xlZ2FjeUAyeC1sb25nLW5vbmJsb2NraW5nLW1v
-ZGVzZXQtdnMtY3Vyc29yLWF0b21pYzoKICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBOT1RSVU4g
-LT4gRkFJTCBbZmRvIzEwNTQ1NF0gLyBbZmRvIzEwNjUwOV0KCiAgKiBpZ3RAa21zX3BsYW5lQHBp
-eGVsLWZvcm1hdC1waXBlLWItcGxhbmVzLXNvdXJjZS1jbGFtcGluZzoKICAgIC0gc2hhcmQtYXBs
-OiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDg5NDhdCgogICogaWd0QGttc19wbGFuZUBw
-bGFuZS1wb3NpdGlvbi1jb3ZlcmVkLXBpcGUtYy1wbGFuZXM6CiAgICAtIHNoYXJkLWtibDogICAg
-ICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTAzMTY2XSArMQoKICAqIGlndEBrbXNfcGxhbmVfYWxw
-aGFfYmxlbmRAcGlwZS1iLWNvbnN0YW50LWFscGhhLW1heDoKICAgIC0gc2hhcmQtZ2xrOiAgICAg
-ICAgICBOT1RSVU4gLT4gRkFJTCBbZmRvIzEwODE0NV0gKzEKICAgIC0gc2hhcmQtYXBsOiAgICAg
-ICAgICBOT1RSVU4gLT4gRkFJTCBbZmRvIzEwODE0NV0KICAgIC0gc2hhcmQta2JsOiAgICAgICAg
-ICBOT1RSVU4gLT4gRkFJTCBbZmRvIzEwODE0NV0KCiAgKiBpZ3RAa21zX3BsYW5lX211bHRpcGxl
-QGF0b21pYy1waXBlLWEtdGlsaW5nLXk6CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgUEFTUyAt
-PiBGQUlMIFtmZG8jMTAzMTY2XSArMwoKICAqIGlndEBrbXNfc2V0bW9kZUBiYXNpYzoKICAgIC0g
-c2hhcmQtYXBsOiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyM5OTkxMl0KICAgIC0gc2hhcmQt
-a2JsOiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyM5OTkxMl0KCiAgCiMjIyMgUG9zc2libGUg
-Zml4ZXMgIyMjIwoKICAqIGlndEBnZW1fY3R4X2lzb2xhdGlvbkBiY3MwLXMzOgogICAgLSBzaGFy
-ZC1rYmw6ICAgICAgICAgIElOQ09NUExFVEUgW2ZkbyMxMDM2NjVdIC0+IFBBU1MKCiAgKiBpZ3RA
-aTkxNV9zZWxmdGVzdEBsaXZlX3JlcXVlc3RzOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIERN
-RVNHLUZBSUwgLT4gUEFTUwoKICAqIGlndEBrbXNfY29sb3JAcGlwZS1iLWRlZ2FtbWE6CiAgICAt
-IHNoYXJkLWtibDogICAgICAgICAgRkFJTCBbZmRvIzEwNDc4Ml0gLT4gUEFTUwogICAgLSBzaGFy
-ZC1hcGw6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDQ3ODJdIC0+IFBBU1MKCiAgKiBpZ3RAa21zX2N1
-cnNvcl9jcmNAY3Vyc29yLTY0eDIxLXJhbmRvbToKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBG
-QUlMIFtmZG8jMTAzMjMyXSAtPiBQQVNTCiAgICAtIHNoYXJkLWtibDogICAgICAgICAgRkFJTCBb
-ZmRvIzEwMzIzMl0gLT4gUEFTUwoKICAqIGlndEBrbXNfY3Vyc29yX2NyY0BjdXJzb3ItNjR4NjQt
-c2xpZGluZzoKICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBGQUlMIFtmZG8jMTAzMjMyXSAtPiBQ
-QVNTCgogICogaWd0QGttc19mbGlwQGZsaXAtdnMtZXhwaXJlZC12Ymxhbms6CiAgICAtIHNoYXJk
-LWdsazogICAgICAgICAgRkFJTCBbZmRvIzEwMjg4N10gLyBbZmRvIzEwNTM2M10gLT4gUEFTUwoK
-ICAqIGlndEBrbXNfcGxhbmVfYWxwaGFfYmxlbmRAcGlwZS1jLWFscGhhLW9wYXF1ZS1mYjoKICAg
-IC0gc2hhcmQtYXBsOiAgICAgICAgICBGQUlMIFtmZG8jMTA4MTQ1XSAtPiBQQVNTCgogICogaWd0
-QGttc19wbGFuZV9tdWx0aXBsZUBhdG9taWMtcGlwZS1hLXRpbGluZy15OgogICAgLSBzaGFyZC1h
-cGw6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDMxNjZdIC0+IFBBU1MgKzEKCiAgKiBpZ3RAa21zX3Bs
-YW5lX211bHRpcGxlQGF0b21pYy1waXBlLWMtdGlsaW5nLXk6CiAgICAtIHNoYXJkLWdsazogICAg
-ICAgICAgRkFJTCBbZmRvIzEwMzE2Nl0gLT4gUEFTUwoKICAqIGlndEBwbV9yYzZfcmVzaWRlbmN5
-QHJjNi1hY2N1cmFjeToKICAgIC0gc2hhcmQtc25iOiAgICAgICAgICB7U0tJUH0gW2ZkbyMxMDky
-NzFdIC0+IFBBU1MKCiAgCiMjIyMgV2FybmluZ3MgIyMjIwoKICAqIGlndEBrbXNfY3Vyc29yX2xl
-Z2FjeUBjdXJzb3JhLXZzLWZsaXBiLXZhcnlpbmctc2l6ZToKICAgIC0gc2hhcmQtYXBsOiAgICAg
-ICAgICB7U0tJUH0gW2ZkbyMxMDkyNzFdIC0+IElOQ09NUExFVEUgW2ZkbyMxMDM5MjddCgogIAog
-IHtuYW1lfTogVGhpcyBlbGVtZW50IGlzIHN1cHByZXNzZWQuIFRoaXMgbWVhbnMgaXQgaXMgaWdu
-b3JlZCB3aGVuIGNvbXB1dGluZwogICAgICAgICAgdGhlIHN0YXR1cyBvZiB0aGUgZGlmZmVyZW5j
-ZSAoU1VDQ0VTUywgV0FSTklORywgb3IgRkFJTFVSRSkuCgogIFtmZG8jMTAyODg3XTogaHR0cHM6
-Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAyODg3CiAgW2ZkbyMxMDMx
-NThdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDMxNTgK
-ICBbZmRvIzEwMzE2Nl06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dp
-P2lkPTEwMzE2NgogIFtmZG8jMTAzMjMyXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9z
-aG93X2J1Zy5jZ2k/aWQ9MTAzMjMyCiAgW2ZkbyMxMDM2NjVdOiBodHRwczovL2J1Z3MuZnJlZWRl
-c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDM2NjUKICBbZmRvIzEwMzkyN106IGh0dHBzOi8v
-YnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzkyNwogIFtmZG8jMTA0Nzgy
-XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA0NzgyCiAg
-W2ZkbyMxMDUzNjNdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9p
-ZD0xMDUzNjMKICBbZmRvIzEwNTQ1NF06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hv
-d19idWcuY2dpP2lkPTEwNTQ1NAogIFtmZG8jMTA2NTA5XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNr
-dG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA2NTA5CiAgW2ZkbyMxMDc5NTZdOiBodHRwczovL2J1
-Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDc5NTYKICBbZmRvIzEwODE0NV06
-IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODE0NQogIFtm
-ZG8jMTA4OTQ4XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
-MTA4OTQ4CiAgW2ZkbyMxMDkyNDRdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3df
-YnVnLmNnaT9pZD0xMDkyNDQKICBbZmRvIzEwOTI3MV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3Rv
-cC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI3MQogIFtmZG8jMTA5Mjc4XTogaHR0cHM6Ly9idWdz
-LmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5Mjc4CiAgW2ZkbyM5OTkxMl06IGh0
-dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTk5OTEyCgoKUGFydGlj
-aXBhdGluZyBob3N0cyAoNyAtPiA1KQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KCiAg
-TWlzc2luZyAgICAoMik6IHNoYXJkLXNrbCBzaGFyZC1pY2xiIAoKCkJ1aWxkIGNoYW5nZXMKLS0t
-LS0tLS0tLS0tLQoKICAgICogSUdUOiBJR1RfNDc5MCAtPiBJR1RQV18yMzAwCiAgICAqIFBpZ2xp
-dDogcGlnbGl0XzQ1MDkgLT4gTm9uZQoKICBDSV9EUk1fNTQ5MDogMzEwZDM4YjRiNTFlMDZlZjcw
-OTY3MTY0MzBlMmVmMjYyYzNlNDVmZSBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL2dm
-eC1jaS9saW51eAogIElHVFBXXzIzMDA6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVl
-L2RybS10aXAvSUdUUFdfMjMwMC8KICBJR1RfNDc5MDogZGNkZjRiMDRlMTYzMTJmOGY1MmFkMzg5
-Mzg4ZDgzNGY5ZDc0YjhmMCBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL3hvcmcvYXBw
-L2ludGVsLWdwdS10b29scwogIHBpZ2xpdF80NTA5OiBmZGM1YTRjYTExMTI0YWI4NDEzYzc5ODg4
-OTZlZWM0Yzk3MzM2Njk0IEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvcGlnbGl0Cgo9
-PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
-b3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yMzAwLwpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZy
-ZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2lndC1kZXYK
+
+--===============1009532214==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="4p3xhjvuhuyslmpx"
+Content-Disposition: inline
+
+
+--4p3xhjvuhuyslmpx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 01/22, Shayenne Moura wrote:
+> This patch adds one test to evaluate suspend/resume operations using kms_=
+flip.
+>=20
+> Signed-off-by: Shayenne Moura <shayenneluzmoura@gmail.com>
+>=20
+> v2: Reduce test time to 10 (Daniel)
+> ---
+>  tests/kms_flip.c | 1 +
+>  1 file changed, 1 insertion(+)
+>  mode change 100644 =3D> 100755 tests/kms_flip.c
+>=20
+> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+> old mode 100644
+> new mode 100755
+> index f28272dd..3c29f47a
+> --- a/tests/kms_flip.c
+> +++ b/tests/kms_flip.c
+> @@ -1567,6 +1567,7 @@ int main(int argc, char **argv)
+>  		{ 10, TEST_DPMS_OFF | TEST_DPMS | TEST_VBLANK_RACE, "dpms-vs-vblank-ra=
+ce" },
+>  		{ 10, TEST_MODESET | TEST_VBLANK_RACE, "modeset-vs-vblank-race" },
+>  		{ 0, TEST_BO_TOOBIG | TEST_NO_2X_OUTPUT, "bo-too-big" },
+> +		{ 10, TEST_FLIP | TEST_SUSPEND, "flip-vs-suspend" },
+>  	};
+>  	int i;
+> =20
+> --=20
+> 2.17.1
+>=20
+
+Reviewed-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+
+--4p3xhjvuhuyslmpx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlxN8aEACgkQWJzP/com
+vP+Ljg/+KUgwriUenCshpd+xjhoIlp4ga080a09pZWktKmkVQD4p7ip5i6S2QwNO
+PtyjXiJOg9zvr1fKKn1N+OiTMK8r7bScTaIl6XufNw+xYljPc/T4kf+p68nqojEC
+8sWa+HC6XHqh9dt8aT7KzH0XMTBWuubqpEpEj5GdaDdfu30Upt12dmkVWUi3lEg+
++rPhYI9i0WTju0MtYiUhTNlcetKNz4zCxHpAwCZc+X07KGZ5hZ++aUf+3lAvebcJ
+bepkPZagaoLljeNi2ETMFwRY9BlzvpK90toK/UjMCWt5Ji+IxTuCAaCiY+eLYkRV
+GUnnV+6eomwdps6k9FuEq1GCS3vuy9mdOi4AiLJCVScJuADZw6Yfw7ZRHs6TpemC
+qIMsCPW0fXmU8+CoYAcE8bi88V/IruEVoL4a+pjrwBEi0+VxXRHjDVOHy33sQ+b3
+juwLMVmakT8iCoUPTsC4LajM1p+VIB7CqIwzjts6EN6DZEcQjoSLT6dp8GY6M+Hx
+VUaRFfMwl3Qpzlb6uALbHkoaQDhf6PBTQAn+6Ds7g27oMSC66t81shjfQ/zUm3e0
+lQFS6ekgTs4CT0f+uUfvTimUX9ZBJox+iFoH4O4/JaqC2Jw6BzzaKhMmApEnnPYt
+nYUjaVfVfTu3px5ObvK2SazTgtj9omSdZSMP5nvY/+Qy4n8hgr8=
+=po+i
+-----END PGP SIGNATURE-----
+
+--4p3xhjvuhuyslmpx--
+
+--===============1009532214==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1009532214==--
