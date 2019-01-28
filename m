@@ -1,12 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 30BED6E555
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Jan 2019 22:16:33 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Mon, 28 Jan 2019 22:16:31 +0000
+Message-ID: <851ad1537ad97fc297badbff122e9f33682b24c0.camel@intel.com>
+References: <20190128200126.1270-1-ville.syrjala@linux.intel.com>
+ <20190128200126.1270-6-ville.syrjala@linux.intel.com>
+In-Reply-To: <20190128200126.1270-6-ville.syrjala@linux.intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 28 Jan 2019 21:32:37 -0000
-Message-ID: <20190128213237.32722.26575@emeril.freedesktop.org>
-References: <20190128154418.20054-1-nicholas.kazlauskas@amd.com>
-In-Reply-To: <20190128154418.20054-1-nicholas.kazlauskas@amd.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHM6?=
- =?utf-8?q?_Add_variable_refresh_rate_tests_=28rev4=29?=
+Subject: Re: [igt-dev] [PATCH i-g-t 6/6] tools/intel_watermark: Clean up the
+ platform checks in the ilk+ code
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,138 +19,224 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0595105715=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHM6IEFkZCB2YXJpYWJsZSByZWZyZXNo
-IHJhdGUgdGVzdHMgKHJldjQpClVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Au
-b3JnL3Nlcmllcy81NDk2MC8KU3RhdGUgOiBmYWlsdXJlCgo9PSBTdW1tYXJ5ID09CgpDSSBCdWcg
-TG9nIC0gY2hhbmdlcyBmcm9tIENJX0RSTV81NDk0X2Z1bGwgLT4gSUdUUFdfMjMwOV9mdWxsCj09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KClN1bW1h
-cnkKLS0tLS0tLQoKICAqKkZBSUxVUkUqKgoKICBTZXJpb3VzIHVua25vd24gY2hhbmdlcyBjb21p
-bmcgd2l0aCBJR1RQV18yMzA5X2Z1bGwgYWJzb2x1dGVseSBuZWVkIHRvIGJlCiAgdmVyaWZpZWQg
-bWFudWFsbHkuCiAgCiAgSWYgeW91IHRoaW5rIHRoZSByZXBvcnRlZCBjaGFuZ2VzIGhhdmUgbm90
-aGluZyB0byBkbyB3aXRoIHRoZSBjaGFuZ2VzCiAgaW50cm9kdWNlZCBpbiBJR1RQV18yMzA5X2Z1
-bGwsIHBsZWFzZSBub3RpZnkgeW91ciBidWcgdGVhbSB0byBhbGxvdyB0aGVtCiAgdG8gZG9jdW1l
-bnQgdGhpcyBuZXcgZmFpbHVyZSBtb2RlLCB3aGljaCB3aWxsIHJlZHVjZSBmYWxzZSBwb3NpdGl2
-ZXMgaW4gQ0kuCgogIEV4dGVybmFsIFVSTDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Au
-b3JnL2FwaS8xLjAvc2VyaWVzLzU0OTYwL3JldmlzaW9ucy80L21ib3gvCgpQb3NzaWJsZSBuZXcg
-aXNzdWVzCi0tLS0tLS0tLS0tLS0tLS0tLS0KCiAgSGVyZSBhcmUgdGhlIHVua25vd24gY2hhbmdl
-cyB0aGF0IG1heSBoYXZlIGJlZW4gaW50cm9kdWNlZCBpbiBJR1RQV18yMzA5X2Z1bGw6CgojIyMg
-SUdUIGNoYW5nZXMgIyMjCgojIyMjIFBvc3NpYmxlIHJlZ3Jlc3Npb25zICMjIyMKCiAgKiBpZ3RA
-a21zX2J1c3lAYmFzaWMtbW9kZXNldC1hOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIFBBU1Mg
-LT4gRkFJTCArMgogICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIFBBU1MgLT4gRkFJTCArMwogICAg
-LSBzaGFyZC1zbmI6ICAgICAgICAgIFBBU1MgLT4gRkFJTCArMgoKICAqIGlndEBrbXNfYnVzeUBi
-YXNpYy1tb2Rlc2V0LWI6CiAgICAtIHNoYXJkLWtibDogICAgICAgICAgUEFTUyAtPiBGQUlMICsz
-CgogICogaWd0QGttc19idXN5QGJhc2ljLW1vZGVzZXQtYzoKICAgIC0gc2hhcmQtYXBsOiAgICAg
-ICAgICBOT1RSVU4gLT4gRkFJTAoKICAqIGlndEBrbXNfdmJsYW5rQGNydGMtaWQ6CiAgICAtIHNo
-YXJkLWhzdzogICAgICAgICAgUEFTUyAtPiBGQUlMICszCgogIApLbm93biBpc3N1ZXMKLS0tLS0t
-LS0tLS0tCgogIEhlcmUgYXJlIHRoZSBjaGFuZ2VzIGZvdW5kIGluIElHVFBXXzIzMDlfZnVsbCB0
-aGF0IGNvbWUgZnJvbSBrbm93biBpc3N1ZXM6CgojIyMgSUdUIGNoYW5nZXMgIyMjCgojIyMjIElz
-c3VlcyBoaXQgIyMjIwoKICAqIGlndEBnZW1fY3R4X2lzb2xhdGlvbkB2ZWNzMC1zMzoKICAgIC0g
-c2hhcmQta2JsOiAgICAgICAgICBQQVNTIC0+IElOQ09NUExFVEUgW2ZkbyMxMDM2NjVdCgogICog
-aWd0QGdlbV9laW9AaW4tZmxpZ2h0LWNvbnRleHRzLTEwbXM6CiAgICAtIHNoYXJkLWFwbDogICAg
-ICAgICAgTk9UUlVOIC0+IERNRVNHLVdBUk4gW2ZkbyMxMDk0NjddCgogICogaWd0QGttc19hdmFp
-bGFibGVfbW9kZXNfY3JjQGF2YWlsYWJsZV9tb2RlX3Rlc3RfY3JjOgogICAgLSBzaGFyZC1hcGw6
-ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwNjY0MV0KICAgIC0gc2hhcmQtZ2xrOiAgICAg
-ICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDY2NDFdCgogICogaWd0QGttc19idXN5QGV4dGVuZGVk
-LW1vZGVzZXQtaGFuZy1uZXdmYi1yZW5kZXItYToKICAgIC0gc2hhcmQta2JsOiAgICAgICAgICBO
-T1RSVU4gLT4gRE1FU0ctV0FSTiBbZmRvIzEwNzk1Nl0KICAgIC0gc2hhcmQtYXBsOiAgICAgICAg
-ICBOT1RSVU4gLT4gRE1FU0ctV0FSTiBbZmRvIzEwNzk1Nl0KCiAgKiBpZ3RAa21zX2J1c3lAZXh0
-ZW5kZWQtcGFnZWZsaXAtbW9kZXNldC1oYW5nLW9sZGZiLXJlbmRlci1jOgogICAgLSBzaGFyZC1n
-bGs6ICAgICAgICAgIE5PVFJVTiAtPiBETUVTRy1XQVJOIFtmZG8jMTA3OTU2XSArMQoKICAqIGln
-dEBrbXNfY29sb3JAcGlwZS1jLWxlZ2FjeS1nYW1tYToKICAgIC0gc2hhcmQtYXBsOiAgICAgICAg
-ICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDQ3ODJdCgogICogaWd0QGttc19jdXJzb3JfY3JjQGN1cnNv
-ci0yNTZ4MjU2LWRwbXM6CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgUEFTUyAtPiBGQUlMIFtm
-ZG8jMTAzMjMyXSArMQogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRv
-IzEwMzIzMl0gKzEKCiAgKiBpZ3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLTY0eDIxLW9uc2NyZWVu
-OgogICAgLSBzaGFyZC1rYmw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwMzIzMl0gKzEK
-CiAgKiBpZ3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLWFscGhhLXRyYW5zcGFyZW50OgogICAgLSBz
-aGFyZC1nbGs6ICAgICAgICAgIE5PVFJVTiAtPiBGQUlMIFtmZG8jMTA5MzUwXQogICAgLSBzaGFy
-ZC1hcGw6ICAgICAgICAgIE5PVFJVTiAtPiBGQUlMIFtmZG8jMTA5MzUwXQogICAgLSBzaGFyZC1r
-Ymw6ICAgICAgICAgIE5PVFJVTiAtPiBGQUlMIFtmZG8jMTA5MzUwXQoKICAqIGlndEBrbXNfY3Vy
-c29yX2xlZ2FjeUAyeC1sb25nLW5vbmJsb2NraW5nLW1vZGVzZXQtdnMtY3Vyc29yLWF0b21pYzoK
-ICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBOT1RSVU4gLT4gRkFJTCBbZmRvIzEwNTQ1NF0gLyBb
-ZmRvIzEwNjUwOV0KCiAgKiBpZ3RAa21zX3BsYW5lQHBpeGVsLWZvcm1hdC1waXBlLWMtcGxhbmVz
-LXNvdXJjZS1jbGFtcGluZzoKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBQQVNTIC0+IEZBSUwg
-W2ZkbyMxMDg5NDhdCgogICogaWd0QGttc19wbGFuZV9tdWx0aXBsZUBhdG9taWMtcGlwZS1hLXRp
-bGluZy14OgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwMzE2
-Nl0gKzEKCiAgKiBpZ3RAa21zX3BsYW5lX211bHRpcGxlQGF0b21pYy1waXBlLWEtdGlsaW5nLXk6
-CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTAzMTY2XSArMwog
-ICAgLSBzaGFyZC1rYmw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwMzE2Nl0KCiAgKiBp
-Z3RAa21zX3BsYW5lX211bHRpcGxlQGF0b21pYy1waXBlLWItdGlsaW5nLW5vbmU6CiAgICAtIHNo
-YXJkLWFwbDogICAgICAgICAgTk9UUlVOIC0+IEZBSUwgW2ZkbyMxMDMxNjZdICsxCgogICogaWd0
-QGttc19zZXRtb2RlQGJhc2ljOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIFBBU1MgLT4gRkFJ
-TCBbZmRvIzk5OTEyXQoKICAqIGlndEBwcmltZV9idXN5QGhhbmctYmx0OgogICAgLSBzaGFyZC1o
-c3c6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwODgwN10KCiAgCiMjIyMgUG9zc2libGUg
-Zml4ZXMgIyMjIwoKICAqIGlndEBrbXNfY3Vyc29yX2NyY0BjdXJzb3ItMjU2eDI1Ni1vbnNjcmVl
-bjoKICAgIC0gc2hhcmQta2JsOiAgICAgICAgICBGQUlMIFtmZG8jMTAzMjMyXSAtPiBQQVNTCiAg
-ICAtIHNoYXJkLWdsazogICAgICAgICAgRkFJTCBbZmRvIzEwMzIzMl0gLT4gUEFTUwoKICAqIGln
-dEBrbXNfY3Vyc29yX2NyY0BjdXJzb3ItNjR4MjEtc2xpZGluZzoKICAgIC0gc2hhcmQtYXBsOiAg
-ICAgICAgICBGQUlMIFtmZG8jMTAzMjMyXSAtPiBQQVNTICsxCgogICogaWd0QGttc19mbGlwQGZs
-aXAtdnMtZXhwaXJlZC12Ymxhbms6CiAgICAtIHNoYXJkLWFwbDogICAgICAgICAgSU5DT01QTEVU
-RSBbZmRvIzEwMzkyN10gLT4gUEFTUwoKICAqIGlndEBrbXNfcGxhbmVAcGxhbmUtcG9zaXRpb24t
-Y292ZXJlZC1waXBlLWEtcGxhbmVzOgogICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIEZBSUwgW2Zk
-byMxMDMxNjZdIC0+IFBBU1MKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBGQUlMIFtmZG8jMTAz
-MTY2XSAtPiBQQVNTICsxCgogICogaWd0QGttc19yb3RhdGlvbl9jcmNAbXVsdGlwbGFuZS1yb3Rh
-dGlvbi1jcm9wcGluZy10b3A6CiAgICAtIHNoYXJkLWtibDogICAgICAgICAgRkFJTCBbZmRvIzEw
-OTAxNl0gLT4gUEFTUwoKICAqIGlndEBrbXNfdmJsYW5rQHBpcGUtYi10cy1jb250aW51YXRpb24t
-bW9kZXNldC1oYW5nOgogICAgLSBzaGFyZC1zbmI6ICAgICAgICAgIHtTS0lQfSBbZmRvIzEwOTI3
-MV0gLT4gUEFTUwoKICAqIGlndEBwcmltZV9idXN5QGhhbmctYnNkOgogICAgLSBzaGFyZC1oc3c6
-ICAgICAgICAgIEZBSUwgW2ZkbyMxMDg4MDddIC0+IFBBU1MKCiAgKiBpZ3RAcHJpbWVfbW1hcF9r
-bXNAYnVmZmVyLXNoYXJpbmc6CiAgICAtIHNoYXJkLXNuYjogICAgICAgICAgSU5DT01QTEVURSBb
-ZmRvIzEwNTQxMV0gLyBbZmRvIzEwNzQ2OV0gLT4gUEFTUwoKICAKIyMjIyBXYXJuaW5ncyAjIyMj
-CgogICogaWd0QGdlbV9tbWFwX2d0dEBoYW5nOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIEZB
-SUwgW2ZkbyMxMDk0NjldIC0+IElOQ09NUExFVEUgW2ZkbyMxMDM5MjddCgogICogaWd0QGttc19o
-ZG1pX2luamVjdEBpbmplY3QtNGs6CiAgICAtIHNoYXJkLXNuYjogICAgICAgICAge1NLSVB9IFtm
-ZG8jMTA5MjcxXSAtPiBJTkNPTVBMRVRFIFtmZG8jMTA1NDExXSAvIFtmZG8jMTA3NDY5XQoKICAK
-ICB7bmFtZX06IFRoaXMgZWxlbWVudCBpcyBzdXBwcmVzc2VkLiBUaGlzIG1lYW5zIGl0IGlzIGln
-bm9yZWQgd2hlbiBjb21wdXRpbmcKICAgICAgICAgIHRoZSBzdGF0dXMgb2YgdGhlIGRpZmZlcmVu
-Y2UgKFNVQ0NFU1MsIFdBUk5JTkcsIG9yIEZBSUxVUkUpLgoKICBbZmRvIzEwMzE2Nl06IGh0dHBz
-Oi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzE2NgogIFtmZG8jMTAz
-MjMyXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMjMy
-CiAgW2ZkbyMxMDMzNTldOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNn
-aT9pZD0xMDMzNTkKICBbZmRvIzEwMzY2NV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcv
-c2hvd19idWcuY2dpP2lkPTEwMzY2NQogIFtmZG8jMTAzOTI3XTogaHR0cHM6Ly9idWdzLmZyZWVk
-ZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzOTI3CiAgW2ZkbyMxMDQ3ODJdOiBodHRwczov
-L2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDQ3ODIKICBbZmRvIzEwNTQx
-MV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNTQxMQog
-IFtmZG8jMTA1NDU0XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/
-aWQ9MTA1NDU0CiAgW2ZkbyMxMDY1MDldOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
-b3dfYnVnLmNnaT9pZD0xMDY1MDkKICBbZmRvIzEwNjY0MV06IGh0dHBzOi8vYnVncy5mcmVlZGVz
-a3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNjY0MQogIFtmZG8jMTA3NDY5XTogaHR0cHM6Ly9i
-dWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3NDY5CiAgW2ZkbyMxMDc5NTZd
-OiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDc5NTYKICBb
-ZmRvIzEwODgwN106IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lk
-PTEwODgwNwogIFtmZG8jMTA4OTQ4XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93
-X2J1Zy5jZ2k/aWQ9MTA4OTQ4CiAgW2ZkbyMxMDkwMTZdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0
-b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkwMTYKICBbZmRvIzEwOTI3MV06IGh0dHBzOi8vYnVn
-cy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI3MQogIFtmZG8jMTA5Mjc4XTog
-aHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5Mjc4CiAgW2Zk
-byMxMDkzNTBdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0x
-MDkzNTAKICBbZmRvIzEwOTQ2N106IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19i
-dWcuY2dpP2lkPTEwOTQ2NwogIFtmZG8jMTA5NDY5XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
-Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5NDY5CiAgW2ZkbyM5OTkxMl06IGh0dHBzOi8vYnVncy5m
-cmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTk5OTEyCiAgW2sub3JnIzE5ODEzM106IGh0
-dHBzOi8vYnVnemlsbGEua2VybmVsLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTk4MTMzCgoKUGFydGlj
-aXBhdGluZyBob3N0cyAoNiAtPiA1KQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KCiAg
-TWlzc2luZyAgICAoMSk6IHNoYXJkLXNrbCAKCgpCdWlsZCBjaGFuZ2VzCi0tLS0tLS0tLS0tLS0K
-CiAgICAqIElHVDogSUdUXzQ3OTUgLT4gSUdUUFdfMjMwOQogICAgKiBQaWdsaXQ6IHBpZ2xpdF80
-NTA5IC0+IE5vbmUKCiAgQ0lfRFJNXzU0OTQ6IDU0M2MwNzRmZjZhNDAxYjJiY2E1MzMzMjM0YTlj
-MTNjNGIwYTUxNTIgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvbGludXgK
-ICBJR1RQV18yMzA5OiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lH
-VFBXXzIzMDkvCiAgSUdUXzQ3OTU6IDAzMTcxNWUzNjljZjAxYWVjYmUyOTM5MTAyMTFlODBlNTE5
-OTVmZmIgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy94b3JnL2FwcC9pbnRlbC1ncHUt
-dG9vbHMKICBwaWdsaXRfNDUwOTogZmRjNWE0Y2ExMTEyNGFiODQxM2M3OTg4ODk2ZWVjNGM5NzMz
-NjY5NCBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL3BpZ2xpdAoKPT0gTG9ncyA9PQoK
-Rm9yIG1vcmUgZGV0YWlscyBzZWU6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2Ry
-bS10aXAvSUdUUFdfMjMwOS8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
-cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-Cg==
+--===============0595105715==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-2+k6RjhTlg/GSNA539Yq"
+
+--=-2+k6RjhTlg/GSNA539Yq
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, 2019-01-28 at 22:01 +0200, Ville Syrjala wrote:
+> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>=20
+> Replace the old hand rolled platform check funcs with somehting
+> more standard.
+
+Reviewed-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
+
+>=20
+> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> ---
+>  tools/intel_watermark.c | 42 ++++++++++++++++-----------------------
+> --
+>  1 file changed, 16 insertions(+), 26 deletions(-)
+>=20
+> diff --git a/tools/intel_watermark.c b/tools/intel_watermark.c
+> index 6a47b33c438c..e71c3d9cff6d 100644
+> --- a/tools/intel_watermark.c
+> +++ b/tools/intel_watermark.c
+> @@ -125,16 +125,6 @@ static char endis_ast(bool enabled)
+>  	return enabled ? '*' : ' ';
+>  }
+> =20
+> -static int is_gen7_plus(uint32_t d)
+> -{
+> -	return !(IS_GEN5(d) || IS_GEN6(d));
+> -}
+> -
+> -static int is_hsw_plus(uint32_t d)
+> -{
+> -	return !(IS_GEN5(d) || IS_GEN6(d) || IS_IVYBRIDGE(d));
+> -}
+> -
+>  static int skl_num_planes(uint32_t d, int pipe)
+>  {
+>  	if (IS_GEN11(d))
+> @@ -476,14 +466,14 @@ static void ilk_wm_dump(void)
+>  	uint32_t wm_lp[3];
+>  	uint32_t wm_lp_spr[3];
+>  	uint32_t arb_ctl, arb_ctl2, wm_misc =3D 0;
+> -	int num_pipes =3D is_gen7_plus(devid) ? 3 : 2;
+> +	int num_pipes =3D intel_gen(devid) >=3D 7 ? 3 : 2;
+>  	struct ilk_wm wm =3D {};
+> =20
+>  	intel_register_access_init(intel_get_pci_device(), 0, -1);
+> =20
+>  	for (i =3D 0; i < num_pipes; i++) {
+>  		dspcntr[i] =3D read_reg(0x70180 + i * 0x1000);
+> -		if (is_gen7_plus(devid))
+> +		if (intel_gen(devid) >=3D 7)
+>  			spcntr[i] =3D read_reg(0x70280 + i * 0x1000);
+>  		else
+>  			spcntr[i] =3D read_reg(0x72180 + i * 0x1000);
+> @@ -494,7 +484,7 @@ static void ilk_wm_dump(void)
+>  	if (num_pipes =3D=3D 3)
+>  		wm_pipe[2] =3D read_reg(0x45200);
+> =20
+> -	if (is_hsw_plus(devid)) {
+> +	if (IS_BROADWELL(devid) || IS_HASWELL(devid)) {
+>  		wm_linetime[0] =3D read_reg(0x45270);
+>  		wm_linetime[1] =3D read_reg(0x45274);
+>  		wm_linetime[2] =3D read_reg(0x45278);
+> @@ -505,21 +495,21 @@ static void ilk_wm_dump(void)
+>  	wm_lp[2] =3D read_reg(0x45110);
+> =20
+>  	wm_lp_spr[0] =3D read_reg(0x45120);
+> -	if (is_gen7_plus(devid)) {
+> +	if (intel_gen(devid) >=3D 7) {
+>  		wm_lp_spr[1] =3D read_reg(0x45124);
+>  		wm_lp_spr[2] =3D read_reg(0x45128);
+>  	}
+> =20
+>  	arb_ctl =3D read_reg(0x45000);
+>  	arb_ctl2 =3D read_reg(0x45004);
+> -	if (is_hsw_plus(devid))
+> +	if (IS_BROADWELL(devid) || IS_HASWELL(devid))
+>  		wm_misc =3D read_reg(0x45260);
+> =20
+>  	intel_register_access_fini();
+> =20
+>  	for (i =3D 0; i < num_pipes; i++)
+>  		printf("    WM_PIPE_%c =3D 0x%08x\n", pipe_name(i),
+> wm_pipe[i]);
+> -	if (is_hsw_plus(devid)) {
+> +	if (IS_BROADWELL(devid) || IS_HASWELL(devid)) {
+>  		for (i =3D 0; i < num_pipes; i++)
+>  			printf("WM_LINETIME_%c =3D 0x%08x\n",
+> pipe_name(i), wm_linetime[i]);
+>  	}
+> @@ -527,13 +517,13 @@ static void ilk_wm_dump(void)
+>  	printf("       WM_LP2 =3D 0x%08x\n", wm_lp[1]);
+>  	printf("       WM_LP3 =3D 0x%08x\n", wm_lp[2]);
+>  	printf("   WM_LP1_SPR =3D 0x%08x\n", wm_lp_spr[0]);
+> -	if (is_gen7_plus(devid)) {
+> +	if (intel_gen(devid) >=3D 7) {
+>  		printf("   WM_LP2_SPR =3D 0x%08x\n", wm_lp_spr[1]);
+>  		printf("   WM_LP3_SPR =3D 0x%08x\n", wm_lp_spr[2]);
+>  	}
+>  	printf("      ARB_CTL =3D 0x%08x\n", arb_ctl);
+>  	printf("     ARB_CTL2 =3D 0x%08x\n", arb_ctl2);
+> -	if (is_hsw_plus(devid))
+> +	if (IS_BROADWELL(devid) || IS_HASWELL(devid))
+>  		printf("      WM_MISC =3D 0x%08x\n", wm_misc);
+> =20
+>  	for (i =3D 0 ; i < num_pipes; i++) {
+> @@ -541,7 +531,7 @@ static void ilk_wm_dump(void)
+>  		wm.pipe[i].sprite =3D REG_DECODE1(wm_pipe[i], 8, 8);
+>  		wm.pipe[i].cursor =3D REG_DECODE1(wm_pipe[i], 0, 6);
+> =20
+> -		if (is_hsw_plus(devid)) {
+> +		if (IS_BROADWELL(devid) || IS_HASWELL(devid)) {
+>  			wm.linetime[i].linetime =3D
+> REG_DECODE1(wm_linetime[i], 0, 9);
+>  			wm.linetime[i].ips =3D
+> REG_DECODE1(wm_linetime[i], 16, 9);
+>  		}
+> @@ -556,15 +546,15 @@ static void ilk_wm_dump(void)
+>  	for (i =3D 0; i < 3; i++) {
+>  		wm.lp[i].enabled =3D REG_DECODE1(wm_lp[i], 31, 1);
+>  		wm.lp[i].latency =3D REG_DECODE1(wm_lp[i], 24, 7);
+> -		if (IS_GEN8(devid))
+> +		if (IS_BROADWELL(devid))
+>  			wm.lp[i].fbc =3D REG_DECODE1(wm_lp[i], 19, 5);
+>  		else
+>  			wm.lp[i].fbc =3D REG_DECODE1(wm_lp[i], 20, 4);
+>  		wm.lp[i].primary =3D REG_DECODE1(wm_lp[i], 8, 11);
+>  		wm.lp[i].cursor =3D REG_DECODE1(wm_lp[i], 0, 8);
+> =20
+> -		if (i =3D=3D 0 || is_gen7_plus(devid)) {
+> -			if (!is_gen7_plus(devid))
+> +		if (i =3D=3D 0 || intel_gen(devid) >=3D 7) {
+> +			if (intel_gen(devid) < 7)
+>  				wm.lp[i].sprite_enabled =3D
+> REG_DECODE1(wm_lp_spr[i], 31, 1);
+>  			wm.lp[i].sprite =3D REG_DECODE1(wm_lp_spr[i], 0,
+> 11);
+>  		}
+> @@ -574,7 +564,7 @@ static void ilk_wm_dump(void)
+>  		printf("WM_PIPE_%c: primary=3D%d, cursor=3D%d,
+> sprite=3D%d\n",
+>  		       pipe_name(i), wm.pipe[i].primary,
+> wm.pipe[i].cursor, wm.pipe[i].sprite);
+>  	}
+> -	if (is_hsw_plus(devid)) {
+> +	if (IS_BROADWELL(devid) || IS_HASWELL(devid)) {
+>  		for (i =3D 0; i < num_pipes; i++) {
+>  			printf("WM_LINETIME_%c: line time=3D%d (%.3f
+> usec), ips line time=3D%d (%.3f usec)\n",
+>  			       pipe_name(i),
+> @@ -582,7 +572,7 @@ static void ilk_wm_dump(void)
+>  			       wm.linetime[i].ips, wm.linetime[i].ips *
+> 0.125f);
+>  		}
+>  	}
+> -	if (is_gen7_plus(devid)) {
+> +	if (intel_gen(devid) >=3D 7) {
+>  		for (i =3D 0; i < 3; i++) {
+>  			printf("WM_LP%d: %s, latency=3D%d, fbc=3D%d,
+> primary=3D%d, cursor=3D%d, sprite=3D%d\n",
+>  			       i + 1, endis(wm.lp[i].enabled),
+> wm.lp[i].latency, wm.lp[i].fbc,
+> @@ -607,10 +597,10 @@ static void ilk_wm_dump(void)
+>  			printf("Sprite %c trickle feed =3D %s\n",
+>  			       pipe_name(i),
+> endis(!wm.pipe[i].sprite_trickle_feed_dis));
+>  	}
+> -	if (is_hsw_plus(devid)) {
+> +	if (IS_BROADWELL(devid) || IS_HASWELL(devid)) {
+>  		printf("DDB partitioning =3D %s\n",
+>  		       REG_DECODE1(wm_misc, 0, 1) ? "5/6" : "1/2");
+> -	} else if (is_gen7_plus(devid)) {
+> +	} else if (intel_gen(devid) >=3D 7) {
+>  		printf("DDB partitioning =3D %s\n",
+>  		       REG_DECODE1(arb_ctl2, 6, 1) ? "5/6" : "1/2");
+>  	}
+
+--=-2+k6RjhTlg/GSNA539Yq
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlxPfz0ACgkQVenbO/mO
+WknPmwgAqRmNi8qi5+EC/UO5IAU7nw2yuS7qs5s1+SIF6VX0yQX8kkYWG/90BVtq
+xxDu+HgDTiDz02o/px0TZ4dnzvWwHi97sqrKVstQ+UnUpwl9bDabH03gN/xoWt77
+ESewzZaMHKlRXPHvT7YjptyagEV9E8ak+JnEvaAHdqSCsSekgAaA9YyLXABfCegj
+PPgUUR7ZiAfl+ct1n2taTkVT5yn2mrlZ1VN7OQb9EtcoVSSZFX5uGl+GUl+jUwxx
+5Tft+hPsPkEg1Al8i4Q8kc6LbcraBP6sZxOehS6/wQ1eODiUOJWefE9WLgh5KSl4
+ExnqbyqzUVbuZ7t9xdkHrMYvcIWPKw==
+=k/vh
+-----END PGP SIGNATURE-----
+
+--=-2+k6RjhTlg/GSNA539Yq--
+
+--===============0595105715==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0595105715==--
