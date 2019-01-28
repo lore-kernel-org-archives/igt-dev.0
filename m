@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA71E6E74C
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Jan 2019 22:53:35 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC48F6E756
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Jan 2019 23:09:01 +0000 (UTC)
 From: "Souza, Jose" <jose.souza@intel.com>
-Date: Mon, 28 Jan 2019 22:53:33 +0000
-Message-ID: <0d643f52bd2d12fefac590bb8cf14c22889a33fd.camel@intel.com>
-References: <20190128200126.1270-1-ville.syrjala@linux.intel.com>
- <20190128200126.1270-4-ville.syrjala@linux.intel.com>
-In-Reply-To: <20190128200126.1270-4-ville.syrjala@linux.intel.com>
+Date: Mon, 28 Jan 2019 23:08:59 +0000
+Message-ID: <d2ceaf80cacb90a0900bf9944573cf19aaf1b165.camel@intel.com>
+References: <20190128125037.24541-1-maarten.lankhorst@linux.intel.com>
+In-Reply-To: <20190128125037.24541-1-maarten.lankhorst@linux.intel.com>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 4/6] tools/intel_watermark: Show whether
- each plane is enabled
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/psr: Fix skips on
+ kms_frontbuffer_tracking on !PSR capable platforms.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,152 +18,119 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1109213289=="
+Content-Type: multipart/mixed; boundary="===============1458933304=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>
+Cc: "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1109213289==
+--===============1458933304==
 Content-Language: en-US
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-TTHs+ZRLPw99y2riwOUn"
+	protocol="application/pgp-signature"; boundary="=-B3zzEw5GM4lBsoWcXr7z"
 
---=-TTHs+ZRLPw99y2riwOUn
+--=-B3zzEw5GM4lBsoWcXr7z
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2019-01-28 at 22:01 +0200, Ville Syrjala wrote:
-> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+On Mon, 2019-01-28 at 13:50 +0100, Maarten Lankhorst wrote:
+> We unconditionally call psr_disable in kms_frontbuffer_tracking,
+> which
+> causes a skipping of all tests on PSR incapable platforms. Use a
+> proper
+> int in psr_set() and use -1 to denote disable.
+
+The call to disable_features() is the one causing problems? Could share
+one report with this problem?
+
+If this is the case would not be easier just do this?
+
+static bool disable_features(const struct test_mode *t)
+{
+	bool ret =3D true;
+
+	if (t->feature =3D=3D FEATURE_DEFAULT)
+		return false;
+
+	fbc_disable();
+	drrs_disable();
+	if (psr.can_test)
+		ret =3D psr_disable(drm.debugfs);
+	return ret;
+}
+
 >=20
-> To make it easier to spot errors with watermarks vs. plane
-> being enabled/disabled indicate which planes are actually
-> enabled and which are not.
->=20
-> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
+> Cc: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
+> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 > ---
->  tools/intel_watermark.c | 40 ++++++++++++++++++++++++++++++++++++++-
-> -
->  1 file changed, 38 insertions(+), 2 deletions(-)
+>  lib/igt_psr.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 >=20
-> diff --git a/tools/intel_watermark.c b/tools/intel_watermark.c
-> index 97b769250927..8405d6489628 100644
-> --- a/tools/intel_watermark.c
-> +++ b/tools/intel_watermark.c
-> @@ -180,6 +180,20 @@ static const char *skl_wm_linetime_reg_name(int
-> pipe)
->  	return reg_name;
+> diff --git a/lib/igt_psr.c b/lib/igt_psr.c
+> index d726fad58e9d..5eb6d2c6ace5 100644
+> --- a/lib/igt_psr.c
+> +++ b/lib/igt_psr.c
+> @@ -100,13 +100,13 @@ static void restore_psr_debugfs(int sig)
+>  	psr_write(psr_restore_debugfs_fd, "0");
 >  }
 > =20
-> +static const char *skl_plane_ctl_reg_name(int pipe, int plane)
-> +{
-> +	static char reg_name[32];
-> +
-> +	if (plane =3D=3D 0)
-> +		snprintf(reg_name, sizeof(reg_name), "CUR_CTL_%c",
-> +			 pipe_name(pipe));
-> +	else
-> +		snprintf(reg_name, sizeof(reg_name),
-> "PLANE_CTL_%1d_%c",
-> +			 plane, pipe_name(pipe));
-> +
-> +	return reg_name;
-> +}
-> +
->  static const char *skl_wm_reg_name(int pipe, int plane, int level)
+> -static bool psr_set(int debugfs_fd, enum psr_mode mode)
+> +static bool psr_set(int debugfs_fd, int mode)
 >  {
->  	static char reg_name[32];
-> @@ -231,6 +245,7 @@ static void skl_wm_dump(void)
->  	uint32_t wm[num_levels][num_pipes][max_planes];
->  	uint32_t wm_trans[num_pipes][max_planes];
->  	uint32_t buf_cfg[num_pipes][max_planes];
-> +	uint32_t plane_ctl[num_pipes][max_planes];
->  	uint32_t wm_linetime[num_pipes];
+>  	int ret;
 > =20
->  	intel_register_access_init(intel_get_pci_device(), 0, -1);
-> @@ -243,6 +258,7 @@ static void skl_wm_dump(void)
->  		for (plane =3D 0; plane < num_planes; plane++) {
->  			addr =3D  base_addr +  pipe * 0x1000 + plane *
-> 0x100;
-> =20
-> +			plane_ctl[pipe][plane] =3D read_reg(addr + 0x80);
->  			wm_trans[pipe][plane] =3D read_reg(addr +
-> 0x00168);
->  			buf_cfg[pipe][plane] =3D read_reg(addr +
-> 0x0017C);
->  			for (level =3D 0; level < num_levels; level++) {
-> @@ -259,6 +275,19 @@ static void skl_wm_dump(void)
+>  	ret =3D has_psr_debugfs(debugfs_fd);
+>  	if (ret =3D=3D -ENODEV) {
+> -		igt_skip("PSR not available\n");
+> +		igt_skip_on_f(mode >=3D PSR_MODE_1, "PSR not
+> available\n");
+>  		return false;
 >  	}
->  	printf("\n\n");
 > =20
-> +	for (plane =3D 0; plane < max_planes; plane++) {
-> +		for (pipe =3D 0; pipe < num_pipes; pipe++) {
-> +			if (plane >=3D skl_num_planes(devid, pipe))
-> +				break;
-> +
-> +			printf("%18s 0x%08x\t" ,
-> +			       skl_plane_ctl_reg_name(pipe, plane),
-> +			       plane_ctl[pipe][plane]);
-> +		}
-> +		printf("\n");
-> +	}
-> +	printf("\n");
-> +
->  	for (plane =3D 0; plane < max_planes; plane++) {
->  		for (level =3D 0; level < num_levels; level++) {
->  			for (pipe =3D 0; pipe < num_pipes; pipe++) {
-> @@ -312,8 +341,15 @@ static void skl_wm_dump(void)
->  		printf("LINETIME: %d (%.3f usec)\n", linetime,
-> linetime* 0.125f);
+> @@ -117,7 +117,7 @@ static bool psr_set(int debugfs_fd, enum psr_mode
+> mode)
+>  		 * version enabled and the PSR version of the test, it
+> will
+>  		 * fail in the first psr_wait_entry() of the test.
+>  		 */
+> -		ret =3D psr_modparam_set(mode <=3D PSR_MODE_2);
+> +		ret =3D psr_modparam_set(mode >=3D PSR_MODE_1);
+>  	} else {
+>  		const char *debug_val;
 > =20
->  		printf("LEVEL");
-> -		for (plane =3D 0; plane < num_planes; plane++)
-> -			printf("%10s", skl_plane_name(pipe, plane));
-> +		for (plane =3D 0; plane < num_planes; plane++) {
-> +			if (plane =3D=3D 0)
-> +				enable =3D
-> REG_DECODE1(plane_ctl[pipe][plane], 0, 3) ||
-> +					REG_DECODE1(plane_ctl[pipe][pla
-> ne], 5, 1);
-
-I guess we only enabled ARGB and AND/XOR cursors?! But why not keep it
-simple and check for REG_DECODE1(plane_ctl[pipe][plane], 0, 5)?
-
-Other than that LGTM:
-
-Reviewed-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
-
-
-> +			else
-> +				enable =3D
-> REG_DECODE1(plane_ctl[pipe][plane], 31, 1);
-> +			printf("%9s%c", skl_plane_name(pipe, plane),
-> +			       endis_ast(enable));
-> +		}
->  		printf("\n");
+> @@ -155,7 +155,7 @@ bool psr_enable(int debugfs_fd, enum psr_mode
+> mode)
+>  bool psr_disable(int debugfs_fd)
+>  {
+>  	/* Any mode different than PSR_MODE_1/2 will disable PSR */
+> -	return psr_set(debugfs_fd, PSR_MODE_2 + 1);
+> +	return psr_set(debugfs_fd, -1);
+>  }
 > =20
->  		for (level =3D 0; level < num_levels; level++) {
+>  bool psr_sink_support(int debugfs_fd, enum psr_mode mode)
 
---=-TTHs+ZRLPw99y2riwOUn
+--=-B3zzEw5GM4lBsoWcXr7z
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 Content-Transfer-Encoding: 7bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlxPh+oACgkQVenbO/mO
-Wkke5AgAk9rqqFC25XyAnTbaUduAWCKf9Bh5hsWOKF6pWJrODnWGwXBlLzJaBFJb
-mzCS0yWj3Q8DOXvwusOwVmAgoeYRwQ2hKlqj1Fyowq4tAYTanSc2d1YvM3x/Bnc6
-kb/hKVvSI2NDDjT0YxF/rkto8xMqNXiqvDfceR8hcw+kJe2uECNbd3lTu14pbje+
-elmkgB4JNvuTwxvIaIEdXGf3c3viiOV1NmZtctR3fIczgueqOzihMBbfnWxCPc0L
-OK0SMkZeYdQ3EomQ6SaZg3Vcc5pq8WRI/uSxNW4QkYDAe+dGCIcwOkOGMws4xDqa
-ioJR9Cs8/xckH/8AEf/w0ppsLpCqpw==
-=rYCC
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlxPi4kACgkQVenbO/mO
+Wkl4EggAkc8mce/XIP/SsDqKFgQJi8rau9x56qdH/lgj7h3mh8whQ+tOnS7ZxmyC
+KiQ7/6vswap0ImrjQCdH/8c+r4fKOGcCm/pyEFsFWcLgwnJuE+yT9UJiDdiH9/1e
+57IOzndHMIIikLKK0cR96Tz1EQyp6T0lU35bHcn1kEL0EYanwE9D9+V0h606Q9QS
+l432PH0fFBS6G2j8SKMXhr5HGSuP75023YtY1kI6TVoA+fRfr2vglGNK+Pb9XwZA
+gdRH6ZXbFb+WxDBLt83e7Z8DUOWnuijp9OXr2AEz+0QOMPGRN1Hzp/rFKMjSzj0v
+xhp9uaHD5KV3OkO1hUdZj9dQzLKi3g==
+=zZPY
 -----END PGP SIGNATURE-----
 
---=-TTHs+ZRLPw99y2riwOUn--
+--=-B3zzEw5GM4lBsoWcXr7z--
 
---===============1109213289==
+--===============1458933304==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: base64
@@ -174,4 +140,4 @@ X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
 YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
 cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
 
---===============1109213289==--
+--===============1458933304==--
