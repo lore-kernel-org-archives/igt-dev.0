@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-f193.google.com (mail-qk1-f193.google.com
- [209.85.222.193])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 99B5D896E7
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Jan 2019 20:14:48 +0000 (UTC)
-Received: by mail-qk1-f193.google.com with SMTP id 189so12329256qkj.8
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Jan 2019 12:14:48 -0800 (PST)
-Message-ID: <d9cbbff978e38eeeb038c1062e99074008b624c3.camel@redhat.com>
-From: Lyude Paul <lyude@redhat.com>
-Date: Tue, 29 Jan 2019 15:14:46 -0500
-In-Reply-To: <20190125145842.15738-14-maxime.ripard@bootlin.com>
-References: <20190125145842.15738-1-maxime.ripard@bootlin.com>
- <20190125145842.15738-14-maxime.ripard@bootlin.com>
-Mime-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v5 13/13] igt: tests: chamelium: Add YUV
- formats tests
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7BB6C6E3A3
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Jan 2019 20:45:49 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Tue, 29 Jan 2019 20:45:38 +0000
+Message-ID: <0f21ace4b347e74fe5b480b3fb31c8e27fc66bc0.camel@intel.com>
+References: <20190128200126.1270-1-ville.syrjala@linux.intel.com>
+ <20190128200126.1270-3-ville.syrjala@linux.intel.com>
+ <0e82117dda2d41318e5086c39efa694050e0975b.camel@intel.com>
+ <20190129132344.GX20097@intel.com>
+In-Reply-To: <20190129132344.GX20097@intel.com>
+Content-Language: en-US
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 3/6] tools/intel_watermark: Decode wm
+ blocks correctly
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,55 +21,114 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0860793082=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Maxime Ripard <maxime.ripard@bootlin.com>, igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, eben@raspberrypi.org
+To: "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UmV2aWV3ZWQtYnk6IEx5dWRlIFBhdWwgPGx5dWRlQHJlZGhhdC5jb20+CgpPbiBGcmksIDIwMTkt
-MDEtMjUgYXQgMTU6NTggKzAxMDAsIE1heGltZSBSaXBhcmQgd3JvdGU6Cj4gVGhlIE5WMTIsIE5W
-MTYsIE5WMjEsIE5WNjEsIFlVVjQyMCwgWVZVNDIwLCBZVVY0MjIgYW5kIFlWVTQyMiBhcmUgWVVW
-Cj4gZm9ybWF0cyB0aGF0IGFyZSBjdXJyZW50bHkgc3VwcG9ydGVkIGluIElHVC4KPiAKPiBXZSds
-bCB3YW50IHRvIHRlc3QgdGhvc2UgZm9ybWF0cyBpbiBhZGRpdGlvbiB0byB0aGUgUkdCIGZvcm1h
-dHMsIHNvCj4gbGV0J3MgYWRkIHNvbWUgc3VidGVzdHMuIE9uZSB0aGluZyB3b3J0aCBub3Rpbmcg
-aXMgc29tZSBoYXJkd2FyZSBpc24ndAo+IGFibGUgdG8gb3V0cHV0IGEgcGl4ZWwtcGVyZmVjdCBp
-bWFnZSwgc28gd2UgZG8gdGhlIHNhbWUga2luZCBvZgo+IGNvbXBhcmlzb24gdGhhbiBmb3IgVkdB
-Lgo+IAo+IFJldmlld2VkLWJ5OiBQYXVsIEtvY2lhbGtvd3NraSA8cGF1bC5rb2NpYWxrb3dza2lA
-Ym9vdGxpbi5jb20+Cj4gU2lnbmVkLW9mZi1ieTogTWF4aW1lIFJpcGFyZCA8bWF4aW1lLnJpcGFy
-ZEBib290bGluLmNvbT4KPiAtLS0KPiAgdGVzdHMva21zX2NoYW1lbGl1bS5jIHwgMzIgKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysKPiAgMSBmaWxlIGNoYW5nZWQsIDMyIGluc2VydGlv
-bnMoKykKPiAKPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2NoYW1lbGl1bS5jIGIvdGVzdHMva21z
-X2NoYW1lbGl1bS5jCj4gaW5kZXggZWFlYTljMTg4MzJhLi42NGY4N2QzYWU0NzQgMTAwNjQ0Cj4g
-LS0tIGEvdGVzdHMva21zX2NoYW1lbGl1bS5jCj4gKysrIGIvdGVzdHMva21zX2NoYW1lbGl1bS5j
-Cj4gQEAgLTk3Nyw2ICs5NzcsMzggQEAgaWd0X21haW4KPiAgCQkJdGVzdF9kaXNwbGF5X29uZV9t
-b2RlKCZkYXRhLCBwb3J0LAo+IERSTV9GT1JNQVRfWFJHQjE1NTUsCj4gIAkJCQkJICAgICAgQ0hB
-TUVMSVVNX0NIRUNLX0NSQywgMSk7Cj4gIAo+ICsJCWNvbm5lY3Rvcl9zdWJ0ZXN0KCJoZG1pLWNt
-cC1udjEyIiwgSERNSUEpCj4gKwkJCXRlc3RfZGlzcGxheV9vbmVfbW9kZSgmZGF0YSwgcG9ydCwg
-RFJNX0ZPUk1BVF9OVjEyLAo+ICsJCQkJCSAgICAgIENIQU1FTElVTV9DSEVDS19BTkFMT0csIDEp
-Owo+ICsKPiArCQljb25uZWN0b3Jfc3VidGVzdCgiaGRtaS1jbXAtbnYxNiIsIEhETUlBKQo+ICsJ
-CQl0ZXN0X2Rpc3BsYXlfb25lX21vZGUoJmRhdGEsIHBvcnQsIERSTV9GT1JNQVRfTlYxNiwKPiAr
-CQkJCQkgICAgICBDSEFNRUxJVU1fQ0hFQ0tfQU5BTE9HLCAxKTsKPiArCj4gKwkJY29ubmVjdG9y
-X3N1YnRlc3QoImhkbWktY21wLW52MjEiLCBIRE1JQSkKPiArCQkJdGVzdF9kaXNwbGF5X29uZV9t
-b2RlKCZkYXRhLCBwb3J0LCBEUk1fRk9STUFUX05WMjEsCj4gKwkJCQkJICAgICAgQ0hBTUVMSVVN
-X0NIRUNLX0FOQUxPRywgMSk7Cj4gKwo+ICsJCWNvbm5lY3Rvcl9zdWJ0ZXN0KCJoZG1pLWNtcC1u
-djYxIiwgSERNSUEpCj4gKwkJCXRlc3RfZGlzcGxheV9vbmVfbW9kZSgmZGF0YSwgcG9ydCwgRFJN
-X0ZPUk1BVF9OVjYxLAo+ICsJCQkJCSAgICAgIENIQU1FTElVTV9DSEVDS19BTkFMT0csIDEpOwo+
-ICsKPiArCQljb25uZWN0b3Jfc3VidGVzdCgiaGRtaS1jbXAteXUxMiIsIEhETUlBKQo+ICsJCQl0
-ZXN0X2Rpc3BsYXlfb25lX21vZGUoJmRhdGEsIHBvcnQsIERSTV9GT1JNQVRfWVVWNDIwLAo+ICsJ
-CQkJCSAgICAgIENIQU1FTElVTV9DSEVDS19BTkFMT0csIDEpOwo+ICsKPiArCQljb25uZWN0b3Jf
-c3VidGVzdCgiaGRtaS1jbXAteXUxNiIsIEhETUlBKQo+ICsJCQl0ZXN0X2Rpc3BsYXlfb25lX21v
-ZGUoJmRhdGEsIHBvcnQsIERSTV9GT1JNQVRfWVVWNDIyLAo+ICsJCQkJCSAgICAgIENIQU1FTElV
-TV9DSEVDS19BTkFMT0csIDEpOwo+ICsKPiArCQljb25uZWN0b3Jfc3VidGVzdCgiaGRtaS1jbXAt
-eXYxMiIsIEhETUlBKQo+ICsJCQl0ZXN0X2Rpc3BsYXlfb25lX21vZGUoJmRhdGEsIHBvcnQsIERS
-TV9GT1JNQVRfWVZVNDIwLAo+ICsJCQkJCSAgICAgIENIQU1FTElVTV9DSEVDS19BTkFMT0csIDEp
-Owo+ICsKPiArCQljb25uZWN0b3Jfc3VidGVzdCgiaGRtaS1jbXAteXYxNiIsIEhETUlBKQo+ICsJ
-CQl0ZXN0X2Rpc3BsYXlfb25lX21vZGUoJmRhdGEsIHBvcnQsIERSTV9GT1JNQVRfWVZVNDIyLAo+
-ICsJCQkJCSAgICAgIENIQU1FTElVTV9DSEVDS19BTkFMT0csIDEpOwo+ICsKPiAgCQljb25uZWN0
-b3Jfc3VidGVzdCgiaGRtaS1mcmFtZS1kdW1wIiwgSERNSUEpCj4gIAkJCXRlc3RfZGlzcGxheV9m
-cmFtZV9kdW1wKCZkYXRhLCBwb3J0KTsKPiAgCX0KLS0gCkNoZWVycywKCUx5dWRlIFBhdWwKCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFp
-bGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+--===============0860793082==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-STLEh1vEpMrYUxYYEy/B"
+
+--=-STLEh1vEpMrYUxYYEy/B
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, 2019-01-29 at 15:23 +0200, Ville Syrj=C3=A4l=C3=A4 wrote:
+> On Mon, Jan 28, 2019 at 10:30:18PM +0000, Souza, Jose wrote:
+> > On Mon, 2019-01-28 at 22:01 +0200, Ville Syrjala wrote:
+> > > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> > >=20
+> > > Bump up the width of the wm blocks to 11 bits, which it is on
+> > > icl.
+> > > On earlier platforms it was actually 10 bits but the code decoded
+> > > it as 9 bits.
+> >=20
+> > 11? Where did you get that? BSpec says ICL still uses 10 bits and
+> > kernel is also using 10 bits for ICL.
+> > BSpec: 7670
+>=20
+> My bspec clearly says 11. Are you looking at the pre-icl field?
+
+My bad, this is right.
+
+Reviewed-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
+
+>=20
+> I guess I'll have to go fix the kernel too then.
+
+Cc me or if you want I can send this patch.
+
+>=20
+> > > Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com=
+>
+> > > ---
+> > >  tools/intel_watermark.c | 4 ++--
+> > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/tools/intel_watermark.c b/tools/intel_watermark.c
+> > > index c98b8649cc9c..97b769250927 100644
+> > > --- a/tools/intel_watermark.c
+> > > +++ b/tools/intel_watermark.c
+> > > @@ -319,7 +319,7 @@ static void skl_wm_dump(void)
+> > >  		for (level =3D 0; level < num_levels; level++) {
+> > >  			printf("%5d", level);
+> > >  			for (plane =3D 0; plane < num_planes; plane++) {
+> > > -				blocks =3D
+> > > REG_DECODE1(wm[level][pipe][plane], 0, 9);
+> > > +				blocks =3D
+> > > REG_DECODE1(wm[level][pipe][plane], 0, 11);
+> > >  				lines =3D
+> > > REG_DECODE1(wm[level][pipe][plane], 14, 5);
+> > >  				enable =3D
+> > > REG_DECODE1(wm[level][pipe][plane], 31, 1);
+> > > =20
+> > > @@ -334,7 +334,7 @@ static void skl_wm_dump(void)
+> > > =20
+> > >  		printf("TRANS");
+> > >  		for (plane =3D 0; plane < num_planes; plane++) {
+> > > -			blocks =3D REG_DECODE1(wm_trans[pipe][plane], 0,
+> > > 9);
+> > > +			blocks =3D REG_DECODE1(wm_trans[pipe][plane], 0,
+> > > 11);
+> > >  			lines =3D REG_DECODE1(wm_trans[pipe][plane], 14,
+> > > 5);
+> > >  			enable =3D REG_DECODE1(wm_trans[pipe][plane], 31,
+> > > 1);
+> > > =20
+>=20
+>=20
+
+--=-STLEh1vEpMrYUxYYEy/B
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlxQu3AACgkQVenbO/mO
+WknW6gf7BepefYN4c7EoA0BCB1aJh5bkNgqdLLbe/rHJbWjyhR6W/pMdxaLZEd+w
+79sP5ft1NwVP5X3RoEj9DSHh5N/gdL0GYiY74OHWG8DoHqJxXbXGNvEpGktzDGgX
+l/lI6Uag/Eo3qH5HtYRwgZXHIADnja19ypqjOPd96vLhaD7Mpay/QZ1veJTXOcK7
+IA+DnrH4ZKoAsVd5a8hz3JSH2QF2vOnRLcMvl1KdvRlWMWbh4ZeoJJCafgtfAZEe
+9ANjOVpaqVSKgI1tg1qSvegbG36fmulX10S5DG1BULsEhQVEUvJgEDfZd2XVFwRu
+3e+3oqQl2bZOSZZ812WE8ryw+CdQFw==
+=GLDP
+-----END PGP SIGNATURE-----
+
+--=-STLEh1vEpMrYUxYYEy/B--
+
+--===============0860793082==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0860793082==--
