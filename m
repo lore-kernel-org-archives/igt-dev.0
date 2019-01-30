@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
- [217.70.183.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2AFF6E016
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Jan 2019 15:38:32 +0000 (UTC)
-Date: Wed, 30 Jan 2019 16:38:28 +0100
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20190130153828.4gd5mr546spvamgx@flea>
-References: <20190125145842.15738-1-maxime.ripard@bootlin.com>
- <20190125145842.15738-8-maxime.ripard@bootlin.com>
- <45cfa144bcb2366a54a1ec3128f71baeee61e6fb.camel@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <45cfa144bcb2366a54a1ec3128f71baeee61e6fb.camel@redhat.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v5 07/13] igt: fb: Don't pass the stride
- when allocating a dumb, multi-planar buffer
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 30 Jan 2019 16:17:32 -0000
+Message-ID: <20190130161732.28910.86102@emeril.freedesktop.org>
+References: <20190130151408.4571-1-nicholas.kazlauskas@amd.com>
+In-Reply-To: <20190130151408.4571-1-nicholas.kazlauskas@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Fkms=3A_Don=27t_reset_VRR=5FENABLED_on_every_commit?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,117 +14,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0200556786=="
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lyude Paul <lyude@redhat.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, eben@raspberrypi.org
+To: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============0200556786==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="f7xlogrcu44duzct"
-Content-Disposition: inline
-
-
---f7xlogrcu44duzct
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi!
-
-On Tue, Jan 29, 2019 at 03:08:10PM -0500, Lyude Paul wrote:
-> On Fri, 2019-01-25 at 15:58 +0100, Maxime Ripard wrote:
-> > The dumb buffer allocation API only considers a single plane, and even
-> > though allocating multi-planar buffers through it is allowed, the strid=
-e it
-> > gives back is the the width times the bpp passed as an argument.
-> >=20
-> > That doesn't work in our case, since the bpp is going to be the one we =
-give
-> > as an argument, but split over three planes so the stride doesn't match
-> > anymore.
-> >=20
-> > A proper fix for this would be to have a better dumb buffer allocation =
-API,
-> > but for the time being, let's do it that way.
-> >=20
-> > Reviewed-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-> > Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
-> > ---
-> >  lib/igt_fb.c | 17 ++++++++++++++++-
-> >  1 file changed, 16 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> > index 1c52aebb674e..048d274e5d36 100644
-> > --- a/lib/igt_fb.c
-> > +++ b/lib/igt_fb.c
-> > @@ -530,6 +530,7 @@ static int create_bo_for_fb(struct igt_fb *fb)
-> >  {
-> >  	const struct format_desc_struct *fmt =3D lookup_drm_format(fb-
-> > >drm_format);
-> >  	unsigned int plane, bpp;
-> > +	unsigned *strides =3D &fb->strides[0];
-> >  	int fd =3D fb->fd;
-> > =20
-> >  	if (fb->tiling || fb->size || fb->strides[0] || igt_format_is_yuv(fb-
-> > >drm_format)) {
-> > @@ -575,8 +576,22 @@ static int create_bo_for_fb(struct igt_fb *fb)
-> >  				    plane ? fmt->hsub * fmt->vsub : 1);
-> > =20
-> >  	fb->is_dumb =3D true;
-> > +
-> > +	/*
-> > +	 * We can't really pass the stride array here since the dumb
-> > +	 * buffer allocation is assuming that it operates on one
-> > +	 * plane, and therefore will calculate the stride as if each
-> > +	 * pixels were stored on a single plane.
->=20
-> nitpick: s/each pixels were/each pixel was/
->=20
-> > +	 *
-> > +	 * This might cause issues at some point on drivers that would
-> > +	 * change the stride of YUV buffers, but we haven't
-> > +	 * encountered any yet.
-> > +	 */
-> Is it possible to add an igt_assert to check for this? Either way, with t=
-hose
-> changes:
-
-I'm not sure we can test this actually. If we don't pass any pointer,
-then we don't get a stride back, and if we do then we will always get
-a stride that is wrong for what we're trying to do :/
-
-Maxime
-
---=20
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---f7xlogrcu44duzct
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXFHE9AAKCRDj7w1vZxhR
-xXDbAQDzbfXYfkdw9JJaDSF65FU1klpi3UrsmO9NIRyP5hja5QEA04rZb59e7dpz
-jYlUB6iP4WcfXvT8cVSo/CGFVesUEAQ=
-=UilZ
------END PGP SIGNATURE-----
-
---f7xlogrcu44duzct--
-
---===============0200556786==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0200556786==--
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogbGliL2lndF9rbXM6IERvbid0IHJlc2V0IFZS
+Ul9FTkFCTEVEIG9uIGV2ZXJ5IGNvbW1pdApVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVk
+ZXNrdG9wLm9yZy9zZXJpZXMvNTU5OTIvClN0YXRlIDogc3VjY2VzcwoKPT0gU3VtbWFyeSA9PQoK
+Q0kgQnVnIExvZyAtIGNoYW5nZXMgZnJvbSBJR1RfNDgwMSAtPiBJR1RQV18yMzIxCj09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KClN1bW1hcnkKLS0t
+LS0tLQoKICAqKlNVQ0NFU1MqKgoKICBObyByZWdyZXNzaW9ucyBmb3VuZC4KCiAgRXh0ZXJuYWwg
+VVJMOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvYXBpLzEuMC9zZXJpZXMvNTU5
+OTIvcmV2aXNpb25zLzEvbWJveC8KCktub3duIGlzc3VlcwotLS0tLS0tLS0tLS0KCiAgSGVyZSBh
+cmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gSUdUUFdfMjMyMSB0aGF0IGNvbWUgZnJvbSBrbm93biBp
+c3N1ZXM6CgojIyMgSUdUIGNoYW5nZXMgIyMjCgojIyMjIElzc3VlcyBoaXQgIyMjIwoKICAqIGln
+dEBrbXNfYnVzeUBiYXNpYy1mbGlwLWI6CiAgICAtIGZpLWdkZy01NTE6ICAgICAgICAgUEFTUyAt
+PiBGQUlMIFtmZG8jMTAzMTgyXQoKICAqIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAbm9uYmxvY2tp
+bmctY3JjLXBpcGUtYjoKICAgIC0gZmktYnl0LWNsYXBwZXI6ICAgICBQQVNTIC0+IEZBSUwgW2Zk
+byMxMDczNjJdCgogICogaWd0QGttc19waXBlX2NyY19iYXNpY0BzdXNwZW5kLXJlYWQtY3JjLXBp
+cGUtYjoKICAgIC0gZmktYnl0LWNsYXBwZXI6ICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDMxOTFd
+IC8gW2ZkbyMxMDczNjJdCgogIAogIFtmZG8jMTAzMTgyXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNr
+dG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMTgyCiAgW2ZkbyMxMDMxOTFdOiBodHRwczovL2J1
+Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDMxOTEKICBbZmRvIzEwNzM2Ml06
+IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNzM2MgoKClBh
+cnRpY2lwYXRpbmcgaG9zdHMgKDQ1IC0+IDQwKQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0KCiAgTWlzc2luZyAgICAoNSk6IGZpLWtibC1zb3Jha2EgZmktaWxrLW01NDAgZmktYnl0LXNx
+dWF3a3MgZmktYnN3LWN5YW4gZmktaWNsLXkgCgoKQnVpbGQgY2hhbmdlcwotLS0tLS0tLS0tLS0t
+CgogICAgKiBJR1Q6IElHVF80ODAxIC0+IElHVFBXXzIzMjEKCiAgQ0lfRFJNXzU1MDk6IDNlOTI1
+ZGNjNDE0YjY4ZTRhNWRlZjAwOGEyZDE1MDk3YjdiZTdkYjQgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVk
+ZXNrdG9wLm9yZy9nZngtY2kvbGludXgKICBJR1RQV18yMzIxOiBodHRwczovL2ludGVsLWdmeC1j
+aS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzIzMjEvCiAgSUdUXzQ4MDE6IDZmNmJhY2YxMjc1
+OWZiMzE5YWRlM2JhMzc4NjFhZTcxMWY4YTVjZDkgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9w
+Lm9yZy94b3JnL2FwcC9pbnRlbC1ncHUtdG9vbHMKCj09IExvZ3MgPT0KCkZvciBtb3JlIGRldGFp
+bHMgc2VlOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzIz
+MjEvCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
+ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
