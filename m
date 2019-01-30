@@ -1,20 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mslow2.mail.gandi.net (mslow2.mail.gandi.net [217.70.178.242])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A48DF6E5E5
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Jan 2019 14:25:40 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (unknown [217.70.183.198])
- by mslow2.mail.gandi.net (Postfix) with ESMTP id 723B73A7B46
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Jan 2019 15:18:32 +0100 (CET)
-Date: Wed, 30 Jan 2019 15:18:08 +0100
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20190130141808.v5jcwxndjxmbvxwu@flea>
-References: <20190125145842.15738-1-maxime.ripard@bootlin.com>
- <20190125145842.15738-6-maxime.ripard@bootlin.com>
- <d038487f20dfc7d8f847fb232c0709e49fd742c9.camel@vmware.com>
+From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+In-Reply-To: <20190130142134.16362-1-chris@chris-wilson.co.uk>
+References: <20190130131212.15859-1-chris@chris-wilson.co.uk>
+ <20190130142134.16362-1-chris@chris-wilson.co.uk>
+Date: Wed, 30 Jan 2019 16:27:48 +0200
+Message-ID: <87d0oedxuj.fsf@gaia.fi.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <d038487f20dfc7d8f847fb232c0709e49fd742c9.camel@vmware.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v5 05/13] igt: fb: Refactor dumb buffer
- allocation path
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] i915/gem_eio: 64 batches
+ may be too many for some devices!
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,111 +15,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1997841927=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Deepak Singh Rawat <drawat@vmware.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, eben@raspberrypi.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============1997841927==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="tt2zez35xucgpi2a"
-Content-Disposition: inline
-
-
---tt2zez35xucgpi2a
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi!
-
-On Fri, Jan 25, 2019 at 08:16:52AM -0800, Deepak Singh Rawat wrote:
-> On Fri, 2019-01-25 at 15:58 +0100, Maxime Ripard wrote:
-> > The else condition is not needed, since all the other conditions
-> > return
-> > when they are done.
-> >=20
-> > Move the KMS dumb buffer allocation outside of the outer else
-> > condition,
-> > this will also allow to ease later changes.
-> >=20
-> > Reviewed-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-> > Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
-> > ---
-> >  lib/igt_fb.c | 25 +++++++++++++++++--------
-> >  1 file changed, 17 insertions(+), 8 deletions(-)
-> >=20
-> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> > index d69c3fb2d38d..270db8d6dc90 100644
-> > --- a/lib/igt_fb.c
-> > +++ b/lib/igt_fb.c
-> > @@ -557,15 +557,24 @@ static int create_bo_for_fb(struct igt_fb *fb)
-> >  			igt_require(driver_has_gem_api);
-> >  			return -EINVAL;
-> >  		}
-> > -	} else {
-> > -		fb->is_dumb =3D true;
-> > -
-> > -		fb->gem_handle =3D kmstest_dumb_create(fd, fb->width, fb-
-> > >height,
-> > -						     fb->plane_bpp[0],
-> > -						     &fb->strides[0],
-> > &fb->size);
-> > -
-> > -		return fb->gem_handle;
-> >  	}
-> > +
-> > +	/*
-> > +	 * The current dumb buffer allocation API doesn't really allow
-> > to
-> > +	 * specify a custom size or stride. Yet the caller is free to
-> > specify
-> > +	 * them, so we need to make sure to error out in this case.
-> > +	 */
-> > +	igt_assert(fb->size =3D=3D 0);
-> > +	igt_assert(fb->strides[0] =3D=3D 0);
->=20
-> Hi Maxime, thanks for doing this. I am not an expert but do you think
-> this should be igt_skip instead? Tests will simply fail where they
-> should really be skipping if driver don't support the feature.
-
-That's a good suggestion :)
-
-I'm not sure what the proper behaviour here is though. Both approaches
-make sense I guess, but skiping the test would hide that issue under
-the carpet which might or might not be an issue, I don't know.
-
-Maxime
-
---=20
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---tt2zez35xucgpi2a
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXFGyIAAKCRDj7w1vZxhR
-xZSaAQDxFV1K17DXaCGf2xhYzc/QUNVmvgOu//QWia19xzO3XgD/QLnLiXorpUWR
-G3oQagahvZ1i0E07HVBDNHTP5IXgRg4=
-=bmMp
------END PGP SIGNATURE-----
-
---tt2zez35xucgpi2a--
-
---===============1997841927==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============1997841927==--
+Q2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+IHdyaXRlczoKCj4gQWN0dWFs
+bHkgbWVhc3VyZSBob3cgbWFueSBiYXRjaGVzIHdlIGNhbiBmaXQgaW50byBhIHJpbmcgYmVmb3Jl
+Cj4gYmxvY2tpbmcsIG9yIGVsc2Ugd2UgbWF5IGVuZCB1cCBoYW5naW5nIHRoZSBkZXZpY2UgZWFy
+bGllciB0aGFuCj4gZXhwZWN0ZWQhCj4KPiB2MjogTW9zdGx5IGNvbnNlcnZhdGl2ZS4KPgo+IEJ1
+Z3ppbGxhOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkw
+MTQKPiBTaWduZWQtb2ZmLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51
+az4KPiBDYzogTWlrYSBLdW9wcGFsYSA8bWlrYS5rdW9wcGFsYUBpbnRlbC5jb20+CgpSZXZpZXdl
+ZC1ieTogTWlrYSBLdW9wcGFsYSA8bWlrYS5rdW9wcGFsYUBsaW51eC5pbnRlbC5jb20+Cgo+IC0t
+LQo+ICB0ZXN0cy9pOTE1L2dlbV9laW8uYyB8IDIzICsrKysrKysrKysrKysrKysrLS0tLS0tCj4g
+IDEgZmlsZSBjaGFuZ2VkLCAxNyBpbnNlcnRpb25zKCspLCA2IGRlbGV0aW9ucygtKQo+Cj4gZGlm
+ZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX2Vpby5jIGIvdGVzdHMvaTkxNS9nZW1fZWlvLmMKPiBp
+bmRleCAwOTA1OWMzMTEuLjYxMDU0YTA3ZSAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2dlbV9l
+aW8uYwo+ICsrKyBiL3Rlc3RzL2k5MTUvZ2VtX2Vpby5jCj4gQEAgLTQ0LDYgKzQ0LDcgQEAKPiAg
+I2luY2x1ZGUgImlndF9kZXZpY2UuaCIKPiAgI2luY2x1ZGUgImlndF9zeXNmcy5oIgo+ICAjaW5j
+bHVkZSAic3dfc3luYy5oIgo+ICsjaW5jbHVkZSAiaTkxNS9nZW1fcmluZy5oIgo+ICAKPiAgSUdU
+X1RFU1RfREVTQ1JJUFRJT04oIlRlc3QgdGhhdCBzcGVjaWZpYyBpb2N0bHMgcmVwb3J0IGEgd2Vk
+Z2VkIEdQVSAoRUlPKS4iKTsKPiAgCj4gQEAgLTM1OCwxNiArMzU5LDIxIEBAIHN0YXRpYyB2b2lk
+IHRlc3RfaW5mbGlnaHQoaW50IGZkLCB1bnNpZ25lZCBpbnQgd2FpdCkKPiAgewo+ICAJaW50IHBh
+cmVudF9mZCA9IGZkOwo+ICAJdW5zaWduZWQgaW50IGVuZ2luZTsKPiArCWludCBmZW5jZVs2NF07
+IC8qIG1vc3RseSBjb25zZXJ2YXRpdmUgZXN0aW1hdGUgb2YgcmluZyBzaXplICovCj4gKwlpbnQg
+bWF4Owo+ICAKPiAgCWlndF9yZXF1aXJlX2dlbShmZCk7Cj4gIAlpZ3RfcmVxdWlyZShnZW1faGFz
+X2V4ZWNfZmVuY2UoZmQpKTsKPiAgCj4gKwltYXggPSBnZW1fbWVhc3VyZV9yaW5nX2luZmxpZ2h0
+KGZkLCAtMSwgMCk7Cj4gKwlpZ3RfcmVxdWlyZShtYXggPiAxKTsKPiArCW1heCA9IG1pbihtYXgg
+LSAxLCBBUlJBWV9TSVpFKGZlbmNlKSk7Cj4gKwo+ICAJZm9yX2VhY2hfZW5naW5lKHBhcmVudF9m
+ZCwgZW5naW5lKSB7Cj4gIAkJY29uc3QgdWludDMyX3QgYmJlID0gTUlfQkFUQ0hfQlVGRkVSX0VO
+RDsKPiAgCQlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2JqZWN0MiBvYmpbMl07Cj4gIAkJc3Ry
+dWN0IGRybV9pOTE1X2dlbV9leGVjYnVmZmVyMiBleGVjYnVmOwo+ICAJCWlndF9zcGluX3QgKmhh
+bmc7Cj4gLQkJaW50IGZlbmNlWzY0XTsgLyogY29uc2VydmF0aXZlIGVzdGltYXRlIG9mIHJpbmcg
+c2l6ZSAqLwo+ICAKPiAgCQlmZCA9IGdlbV9yZW9wZW5fZHJpdmVyKHBhcmVudF9mZCk7Cj4gIAkJ
+aWd0X3JlcXVpcmVfZ2VtKGZkKTsKPiBAQCAtMzg5LDcgKzM5NSw3IEBAIHN0YXRpYyB2b2lkIHRl
+c3RfaW5mbGlnaHQoaW50IGZkLCB1bnNpZ25lZCBpbnQgd2FpdCkKPiAgCQlleGVjYnVmLmJ1ZmZl
+cl9jb3VudCA9IDI7Cj4gIAkJZXhlY2J1Zi5mbGFncyA9IGVuZ2luZSB8IEk5MTVfRVhFQ19GRU5D
+RV9PVVQ7Cj4gIAo+IC0JCWZvciAodW5zaWduZWQgaW50IG4gPSAwOyBuIDwgQVJSQVlfU0laRShm
+ZW5jZSk7IG4rKykgewo+ICsJCWZvciAodW5zaWduZWQgaW50IG4gPSAwOyBuIDwgbWF4OyBuKysp
+IHsKPiAgCQkJZ2VtX2V4ZWNidWZfd3IoZmQsICZleGVjYnVmKTsKPiAgCQkJZmVuY2Vbbl0gPSBl
+eGVjYnVmLnJzdmQyID4+IDMyOwo+ICAJCQlpZ3RfYXNzZXJ0KGZlbmNlW25dICE9IC0xKTsKPiBA
+QCAtMzk3LDcgKzQwMyw3IEBAIHN0YXRpYyB2b2lkIHRlc3RfaW5mbGlnaHQoaW50IGZkLCB1bnNp
+Z25lZCBpbnQgd2FpdCkKPiAgCj4gIAkJY2hlY2tfd2FpdChmZCwgb2JqWzFdLmhhbmRsZSwgd2Fp
+dCk7Cj4gIAo+IC0JCWZvciAodW5zaWduZWQgaW50IG4gPSAwOyBuIDwgQVJSQVlfU0laRShmZW5j
+ZSk7IG4rKykgewo+ICsJCWZvciAodW5zaWduZWQgaW50IG4gPSAwOyBuIDwgbWF4OyBuKyspIHsK
+PiAgCQkJaWd0X2Fzc2VydF9lcShzeW5jX2ZlbmNlX3N0YXR1cyhmZW5jZVtuXSksIC1FSU8pOwo+
+ICAJCQljbG9zZShmZW5jZVtuXSk7Cj4gIAkJfQo+IEBAIC00MTYsOCArNDIyLDEzIEBAIHN0YXRp
+YyB2b2lkIHRlc3RfaW5mbGlnaHRfc3VzcGVuZChpbnQgZmQpCj4gIAlzdHJ1Y3QgZHJtX2k5MTVf
+Z2VtX2V4ZWNidWZmZXIyIGV4ZWNidWY7Cj4gIAlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2Jq
+ZWN0MiBvYmpbMl07Cj4gIAl1aW50MzJfdCBiYmUgPSBNSV9CQVRDSF9CVUZGRVJfRU5EOwo+IC0J
+aW50IGZlbmNlWzY0XTsgLyogY29uc2VydmF0aXZlIGVzdGltYXRlIG9mIHJpbmcgc2l6ZSAqLwo+
+ICsJaW50IGZlbmNlWzY0XTsgLyogbW9zdGx5IGNvbnNlcnZhdGl2ZSBlc3RpbWF0ZSBvZiByaW5n
+IHNpemUgKi8KPiAgCWlndF9zcGluX3QgKmhhbmc7Cj4gKwlpbnQgbWF4Owo+ICsKPiArCW1heCA9
+IGdlbV9tZWFzdXJlX3JpbmdfaW5mbGlnaHQoZmQsIC0xLCAwKTsKPiArCWlndF9yZXF1aXJlKG1h
+eCA+IDEpOwo+ICsJbWF4ID0gbWluKG1heCAtIDEsIEFSUkFZX1NJWkUoZmVuY2UpKTsKPiAgCj4g
+IAlmZCA9IGdlbV9yZW9wZW5fZHJpdmVyKGZkKTsKPiAgCWlndF9yZXF1aXJlX2dlbShmZCk7Cj4g
+QEAgLTQzNyw3ICs0NDgsNyBAQCBzdGF0aWMgdm9pZCB0ZXN0X2luZmxpZ2h0X3N1c3BlbmQoaW50
+IGZkKQo+ICAJZXhlY2J1Zi5idWZmZXJfY291bnQgPSAyOwo+ICAJZXhlY2J1Zi5mbGFncyA9IEk5
+MTVfRVhFQ19GRU5DRV9PVVQ7Cj4gIAo+IC0JZm9yICh1bnNpZ25lZCBpbnQgbiA9IDA7IG4gPCBB
+UlJBWV9TSVpFKGZlbmNlKTsgbisrKSB7Cj4gKwlmb3IgKHVuc2lnbmVkIGludCBuID0gMDsgbiA8
+IG1heDsgbisrKSB7Cj4gIAkJZ2VtX2V4ZWNidWZfd3IoZmQsICZleGVjYnVmKTsKPiAgCQlmZW5j
+ZVtuXSA9IGV4ZWNidWYucnN2ZDIgPj4gMzI7Cj4gIAkJaWd0X2Fzc2VydChmZW5jZVtuXSAhPSAt
+MSk7Cj4gQEAgLTQ0OCw3ICs0NTksNyBAQCBzdGF0aWMgdm9pZCB0ZXN0X2luZmxpZ2h0X3N1c3Bl
+bmQoaW50IGZkKQo+ICAKPiAgCWNoZWNrX3dhaXQoZmQsIG9ialsxXS5oYW5kbGUsIDEwKTsKPiAg
+Cj4gLQlmb3IgKHVuc2lnbmVkIGludCBuID0gMDsgbiA8IEFSUkFZX1NJWkUoZmVuY2UpOyBuKysp
+IHsKPiArCWZvciAodW5zaWduZWQgaW50IG4gPSAwOyBuIDwgbWF4OyBuKyspIHsKPiAgCQlpZ3Rf
+YXNzZXJ0X2VxKHN5bmNfZmVuY2Vfc3RhdHVzKGZlbmNlW25dKSwgLUVJTyk7Cj4gIAkJY2xvc2Uo
+ZmVuY2Vbbl0pOwo+ICAJfQo+IC0tIAo+IDIuMjAuMQo+Cj4gX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KPiBJbnRlbC1nZnggbWFpbGluZyBsaXN0Cj4gSW50
+ZWwtZ2Z4QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwo+IGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnL21haWxtYW4vbGlzdGluZm8vaW50ZWwtZ2Z4Cl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMu
+ZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlz
+dGluZm8vaWd0LWRldgo=
