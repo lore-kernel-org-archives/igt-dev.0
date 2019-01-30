@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-BN3-obe.outbound.protection.outlook.com
- (mail-eopbgr680051.outbound.protection.outlook.com [40.107.68.51])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C3F86E5FD
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Jan 2019 15:14:43 +0000 (UTC)
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Date: Wed, 30 Jan 2019 10:14:08 -0500
-Message-ID: <20190130151408.4571-1-nicholas.kazlauskas@amd.com>
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
+ [217.70.183.198])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BEB7F897B4
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Jan 2019 15:25:29 +0000 (UTC)
+Date: Wed, 30 Jan 2019 16:25:27 +0100
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20190130152526.z2wc7gkf6m7wqvlk@flea>
+References: <20190125145842.15738-1-maxime.ripard@bootlin.com>
+ <20190125145842.15738-6-maxime.ripard@bootlin.com>
+ <9f029deab28e9f40502c4c0f8406d5d3ac5141e2.camel@redhat.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib/igt_kms: Don't reset VRR_ENABLED on
- every commit
+In-Reply-To: <9f029deab28e9f40502c4c0f8406d5d3ac5141e2.camel@redhat.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v5 05/13] igt: fb: Refactor dumb buffer
+ allocation path
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,47 +20,102 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1740113092=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, eben@raspberrypi.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SWYgdGhlIFZSUiB0ZXN0cyBmYWlsZWQgdGhlbiB0aGVyZSB3YXMgYSBjaGFuY2UgdGhhdCBWUlIg
-Y291bGQgYmUKbGVmdCBlbmFibGVkIHdoZW4gZXhpdGluZyB0aGUgdGVzdCBzbyB0aGUgVlJSX0VO
-QUJMRUQgcHJvcGVydHkgd2FzCnJlc2V0IHRvIDAgd2hlbmV2ZXIgdGhlIHBpcGUgd2FzIHJlc2V0
-LgoKSG93ZXZlciwgaW4gZG9pbmcgc28gdGhlIHBpcGUncyBzdGF0ZSB3YXMgY29uc2lkZXJlZCBj
-aGFuZ2VkIGV2ZW4KaWYgVlJSX0VOQUJMRUQgd2FzIGFscmVhZHkgMC4gVGhpcyBjYXVzZXMgdGhl
-IHBpcGUgdG8gYmUgYWRkZWQgdG8KY29tbWl0cyB3aGVyZSBpdCBwcmV2aW91c2x5IHdhc24ndC4K
-Ck90aGVyIHRlc3RzIHdpdGggcHJvcGVydGllcyB0aGF0IGNhbiBwZXJzaXN0IGZvciBmYWlsdXJl
-cyAobGlrZSBjb2xvcgptYW5hZ2VtZW50KSBkb24ndCBib3RoZXIgcmVzZXR0aW5nIHRoZSBwcm9w
-ZXJ0aWVzIC0gc28gdGhpcyBwYXRjaApjaGFuZ2VzIFZSUl9FTkFCTEVEIHRvIHdvcmsgdGhlIHNh
-bWUuCgpUaGUgVlJSX0VOQUJMRUQgcHJvcGVydHkgd2FzIGFsc28gbmV2ZXIgY2xlYXJlZCBhZnRl
-ciBiZWluZyBzZXQgYW5kCmNvbW1pdCAtIGxlYWRpbmcgdG8gc2ltaWxhciBpc3N1ZXMgYXMgdGhl
-IG9uZSBkZXNjcmliZWQgYWJvdmUuIFRoaXMKcGF0Y2ggbm93IGNsZWFycyBpdCBhZnRlciBiZWlu
-ZyBjb21taXQuCgpDYzogSGFycnkgV2VudGxhbmQgPGhhcnJ5LndlbnRsYW5kQGFtZC5jb20+CkNj
-OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KU2lnbmVkLW9mZi1ieTog
-TmljaG9sYXMgS2F6bGF1c2thcyA8bmljaG9sYXMua2F6bGF1c2thc0BhbWQuY29tPgotLS0KIGxp
-Yi9pZ3Rfa21zLmMgfCA0ICstLS0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMyBk
-ZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9saWIvaWd0X2ttcy5jIGIvbGliL2lndF9rbXMuYwpp
-bmRleCA3MWRmOThkMi4uMWM2YWE3NTQgMTAwNjQ0Ci0tLSBhL2xpYi9pZ3Rfa21zLmMKKysrIGIv
-bGliL2lndF9rbXMuYwpAQCAtMTc5MSw5ICsxNzkxLDYgQEAgc3RhdGljIHZvaWQgaWd0X3BpcGVf
-cmVzZXQoaWd0X3BpcGVfdCAqcGlwZSkKIAlpZ3RfcGlwZV9vYmpfc2V0X3Byb3BfdmFsdWUocGlw
-ZSwgSUdUX0NSVENfQUNUSVZFLCAwKTsKIAlpZ3RfcGlwZV9vYmpfY2xlYXJfcHJvcF9jaGFuZ2Vk
-KHBpcGUsIElHVF9DUlRDX09VVF9GRU5DRV9QVFIpOwogCi0JaWYgKGlndF9waXBlX29ial9oYXNf
-cHJvcChwaXBlLCBJR1RfQ1JUQ19WUlJfRU5BQkxFRCkpCi0JCWlndF9waXBlX29ial9zZXRfcHJv
-cF92YWx1ZShwaXBlLCBJR1RfQ1JUQ19WUlJfRU5BQkxFRCwgMCk7Ci0KIAlwaXBlLT5vdXRfZmVu
-Y2VfZmQgPSAtMTsKIH0KIApAQCAtMzIyNyw2ICszMjI0LDcgQEAgZGlzcGxheV9jb21taXRfY2hh
-bmdlZChpZ3RfZGlzcGxheV90ICpkaXNwbGF5LCBlbnVtIGlndF9jb21taXRfc3R5bGUgcykKIAkJ
-CWlndF9waXBlX29ial9jbGVhcl9wcm9wX2NoYW5nZWQocGlwZV9vYmosIElHVF9DUlRDX0NUTSk7
-CiAJCQlpZ3RfcGlwZV9vYmpfY2xlYXJfcHJvcF9jaGFuZ2VkKHBpcGVfb2JqLCBJR1RfQ1JUQ19E
-RUdBTU1BX0xVVCk7CiAJCQlpZ3RfcGlwZV9vYmpfY2xlYXJfcHJvcF9jaGFuZ2VkKHBpcGVfb2Jq
-LCBJR1RfQ1JUQ19HQU1NQV9MVVQpOworCQkJaWd0X3BpcGVfb2JqX2NsZWFyX3Byb3BfY2hhbmdl
-ZChwaXBlX29iaiwgSUdUX0NSVENfVlJSX0VOQUJMRUQpOwogCiAJCQlpZiAocyAhPSBDT01NSVRf
-VU5JVkVSU0FMKSB7CiAJCQkJaWd0X3BpcGVfb2JqX2NsZWFyX3Byb3BfY2hhbmdlZChwaXBlX29i
-aiwgSUdUX0NSVENfTU9ERV9JRCk7Ci0tIAoyLjE3LjEKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4v
-bGlzdGluZm8vaWd0LWRldgo=
+
+--===============1740113092==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="lwbybcwwlkkcye5p"
+Content-Disposition: inline
+
+
+--lwbybcwwlkkcye5p
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
+
+On Tue, Jan 29, 2019 at 02:46:55PM -0500, Lyude Paul wrote:
+> On Fri, 2019-01-25 at 15:58 +0100, Maxime Ripard wrote:
+> > The else condition is not needed, since all the other conditions return
+> > when they are done.
+> >=20
+> > Move the KMS dumb buffer allocation outside of the outer else condition,
+> > this will also allow to ease later changes.
+> >=20
+> > Reviewed-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+> > Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
+> > ---
+> >  lib/igt_fb.c | 25 +++++++++++++++++--------
+> >  1 file changed, 17 insertions(+), 8 deletions(-)
+> >=20
+> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> > index d69c3fb2d38d..270db8d6dc90 100644
+> > --- a/lib/igt_fb.c
+> > +++ b/lib/igt_fb.c
+> > @@ -557,15 +557,24 @@ static int create_bo_for_fb(struct igt_fb *fb)
+> >  			igt_require(driver_has_gem_api);
+> >  			return -EINVAL;
+> >  		}
+> > -	} else {
+> > -		fb->is_dumb =3D true;
+> > -
+> > -		fb->gem_handle =3D kmstest_dumb_create(fd, fb->width, fb-
+> > >height,
+> > -						     fb->plane_bpp[0],
+> > -						     &fb->strides[0], &fb-
+> > >size);
+> > -
+> > -		return fb->gem_handle;
+> >  	}
+> > +
+> > +	/*
+> > +	 * The current dumb buffer allocation API doesn't really allow to
+> > +	 * specify a custom size or stride. Yet the caller is free to specify
+> > +	 * them, so we need to make sure to error out in this case.
+> > +	 */
+> > +	igt_assert(fb->size =3D=3D 0);
+> > +	igt_assert(fb->strides[0] =3D=3D 0);
+> > +
+> > +	fb->size =3D calc_fb_size(fb);
+>=20
+> ^ Is this supposed to be part of a seperate patch?
+
+Yeah, definitely, I'll split it in another patch, thanks!
+Maxime
+
+--=20
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--lwbybcwwlkkcye5p
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXFHB5gAKCRDj7w1vZxhR
+xbFhAQChQ2xs3z0DFDEb+/CYlPS0XLZH2w5GCgjHYCcYEegUJQD/ZqAmfqJyV042
+YGMCOcvqfKalGQYqvIH1ICE4WWeFcgA=
+=TI8Q
+-----END PGP SIGNATURE-----
+
+--lwbybcwwlkkcye5p--
+
+--===============1740113092==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1740113092==--
