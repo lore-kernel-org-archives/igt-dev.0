@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 371416E170
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Jan 2019 21:00:43 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Thu, 31 Jan 2019 21:00:37 +0000
-Message-ID: <4b611b9a0f0e51417b7a25bf55074626062df520.camel@intel.com>
+MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 31 Jan 2019 23:59:53 -0000
+Message-ID: <20190131235953.28477.66219@emeril.freedesktop.org>
 References: <20190131141852.14187-1-maarten.lankhorst@linux.intel.com>
 In-Reply-To: <20190131141852.14187-1-maarten.lankhorst@linux.intel.com>
-Content-Language: en-US
-MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/psr: Do not use out of bound
- enum for psr_set.
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_lib/psr=3A_Do_not_use_out_of_b?=
+ =?utf-8?q?ound_enum_for_psr=5Fset=2E?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,107 +15,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0920364637=="
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>
-Cc: "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0920364637==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-tlqOrtYEWoGoM1RMfqeU"
-
---=-tlqOrtYEWoGoM1RMfqeU
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, 2019-01-31 at 15:18 +0100, Maarten Lankhorst wrote:
-> Using an undefined int not in the enum is undefined. Use -1 and
-> change
-> mode to an integer.
-
-Reviewed-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
-
->=20
-> Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-> Cc: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
-> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> ---
->  lib/igt_psr.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->=20
-> diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-> index d726fad58e9d..5eb6d2c6ace5 100644
-> --- a/lib/igt_psr.c
-> +++ b/lib/igt_psr.c
-> @@ -100,13 +100,13 @@ static void restore_psr_debugfs(int sig)
->  	psr_write(psr_restore_debugfs_fd, "0");
->  }
-> =20
-> -static bool psr_set(int debugfs_fd, enum psr_mode mode)
-> +static bool psr_set(int debugfs_fd, int mode)
->  {
->  	int ret;
-> =20
->  	ret =3D has_psr_debugfs(debugfs_fd);
->  	if (ret =3D=3D -ENODEV) {
-> -		igt_skip("PSR not available\n");
-> +		igt_skip_on_f(mode >=3D PSR_MODE_1, "PSR not
-> available\n");
->  		return false;
->  	}
-> =20
-> @@ -117,7 +117,7 @@ static bool psr_set(int debugfs_fd, enum psr_mode
-> mode)
->  		 * version enabled and the PSR version of the test, it
-> will
->  		 * fail in the first psr_wait_entry() of the test.
->  		 */
-> -		ret =3D psr_modparam_set(mode <=3D PSR_MODE_2);
-> +		ret =3D psr_modparam_set(mode >=3D PSR_MODE_1);
->  	} else {
->  		const char *debug_val;
-> =20
-> @@ -155,7 +155,7 @@ bool psr_enable(int debugfs_fd, enum psr_mode
-> mode)
->  bool psr_disable(int debugfs_fd)
->  {
->  	/* Any mode different than PSR_MODE_1/2 will disable PSR */
-> -	return psr_set(debugfs_fd, PSR_MODE_2 + 1);
-> +	return psr_set(debugfs_fd, -1);
->  }
-> =20
->  bool psr_sink_support(int debugfs_fd, enum psr_mode mode)
-
---=-tlqOrtYEWoGoM1RMfqeU
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlxTYfQACgkQVenbO/mO
-WklKFgf9G3hf+0pMy2eE0SksBeK8igrCCNdYdx1EpWHEwUCcBQo2andS3REa1y3N
-z/anXtO1Y3czuukXxaSRkoxyAhCJ8IVP/idrwCM0/iSL/loANcuc8ovTLTk7Eh4N
-SELyWIeWIvU+N+NuhIFty4nQJQZCZSkXm+i7RPNYHEEyRMild+s8Ty8fEFyRh9rb
-hAKnMVZJyzKx6W+UzKmad7amyk/jQP+S+GLf9BcDGFmCg10hVdkN0PdCbgSaqIGu
-JttNnY8hdhC5eHupllOBp3L0tW928MpdHigOLwfhxU8HunyPnWfYNOnELTMCOjAu
-g86sIWot/6lxFpYR6wWp69g3AB3sJA==
-=CE7n
------END PGP SIGNATURE-----
-
---=-tlqOrtYEWoGoM1RMfqeU--
-
---===============0920364637==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0920364637==--
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW2ktZy10
+LDEvMl0gbGliL3BzcjogRG8gbm90IHVzZSBvdXQgb2YgYm91bmQgZW51bSBmb3IgcHNyX3NldC4K
+VVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzU2MDQ3LwpT
+dGF0ZSA6IHN1Y2Nlc3MKCj09IFN1bW1hcnkgPT0KCkNJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20g
+SUdUXzQ4MDJfZnVsbCAtPiBJR1RQV18yMzI3X2Z1bGwKPT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PQoKU3VtbWFyeQotLS0tLS0tCgogICoqU1VDQ0VT
+UyoqCgogIE5vIHJlZ3Jlc3Npb25zIGZvdW5kLgoKICBFeHRlcm5hbCBVUkw6IGh0dHBzOi8vcGF0
+Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9hcGkvMS4wL3Nlcmllcy81NjA0Ny9yZXZpc2lvbnMvMS9t
+Ym94LwoKS25vd24gaXNzdWVzCi0tLS0tLS0tLS0tLQoKICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBm
+b3VuZCBpbiBJR1RQV18yMzI3X2Z1bGwgdGhhdCBjb21lIGZyb20ga25vd24gaXNzdWVzOgoKIyMj
+IElHVCBjaGFuZ2VzICMjIwoKIyMjIyBJc3N1ZXMgaGl0ICMjIyMKCiAgKiBpZ3RAZ2VtX2Vpb0By
+ZXNldC1zdHJlc3M6CiAgICAtIHNoYXJkLXNuYjogICAgICAgICAgUEFTUyAtPiBJTkNPTVBMRVRF
+IFtmZG8jMTA1NDExXQoKICAqIGlndEBrbXNfYnVzeUBleHRlbmRlZC1tb2Rlc2V0LWhhbmctbmV3
+ZmItd2l0aC1yZXNldC1yZW5kZXItYjoKICAgIC0gc2hhcmQtc25iOiAgICAgICAgICBOT1RSVU4g
+LT4gRE1FU0ctV0FSTiBbZmRvIzEwNzk1Nl0gKzIKCiAgKiBpZ3RAa21zX2J1c3lAZXh0ZW5kZWQt
+cGFnZWZsaXAtbW9kZXNldC1oYW5nLW9sZGZiLXJlbmRlci1jOgogICAgLSBzaGFyZC1nbGs6ICAg
+ICAgICAgIFBBU1MgLT4gRE1FU0ctV0FSTiBbZmRvIzEwNzk1Nl0KCiAgKiBpZ3RAa21zX2NvbG9y
+QHBpcGUtYS1sZWdhY3ktZ2FtbWE6CiAgICAtIHNoYXJkLWtibDogICAgICAgICAgUEFTUyAtPiBG
+QUlMIFtmZG8jMTA0NzgyXSAvIFtmZG8jMTA4MTQ1XQogICAgLSBzaGFyZC1hcGw6ICAgICAgICAg
+IFBBU1MgLT4gRkFJTCBbZmRvIzEwNDc4Ml0gLyBbZmRvIzEwODE0NV0KCiAgKiBpZ3RAa21zX2Nv
+bG9yQHBpcGUtYy1kZWdhbW1hOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIFBBU1MgLT4gRkFJ
+TCBbZmRvIzEwNDc4Ml0KCiAgKiBpZ3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLTEyOHgxMjgtc3Vz
+cGVuZDoKICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDMyMzJd
+ICsyCiAgICAtIHNoYXJkLWFwbDogICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTAzMTkxXSAv
+IFtmZG8jMTAzMjMyXQogICAgLSBzaGFyZC1rYmw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRv
+IzEwMzE5MV0gLyBbZmRvIzEwMzIzMl0KCiAgKiBpZ3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLTY0
+eDIxLXJhbmRvbToKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMx
+MDMyMzJdICs2CiAgICAtIHNoYXJkLWtibDogICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTAz
+MjMyXSArMQoKICAqIGlndEBrbXNfY3Vyc29yX2NyY0BjdXJzb3ItNjR4NjQtc3VzcGVuZDoKICAg
+IC0gc2hhcmQtaHN3OiAgICAgICAgICBQQVNTIC0+IElOQ09NUExFVEUgW2ZkbyMxMDM1NDBdCgog
+ICogaWd0QGttc19wbGFuZUBwbGFuZS1wb3NpdGlvbi1jb3ZlcmVkLXBpcGUtYy1wbGFuZXM6CiAg
+ICAtIHNoYXJkLWFwbDogICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTAzMTY2XSArMwogICAg
+LSBzaGFyZC1nbGs6ICAgICAgICAgIE5PVFJVTiAtPiBGQUlMIFtmZG8jMTAzMTY2XQogICAgLSBz
+aGFyZC1rYmw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwMzE2Nl0KCiAgKiBpZ3RAa21z
+X3BsYW5lX2FscGhhX2JsZW5kQHBpcGUtYi1hbHBoYS03ZWZjOgogICAgLSBzaGFyZC1rYmw6ICAg
+ICAgICAgIE5PVFJVTiAtPiBGQUlMIFtmZG8jMTA4MTQ1XSAvIFtmZG8jMTA4NTkwXQoKICAqIGln
+dEBrbXNfcGxhbmVfYWxwaGFfYmxlbmRAcGlwZS1jLWNvbnN0YW50LWFscGhhLW1heDoKICAgIC0g
+c2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDgxNDVdICsxCgogICogaWd0
+QGttc19wbGFuZV9tdWx0aXBsZUBhdG9taWMtcGlwZS1iLXRpbGluZy1ub25lOgogICAgLSBzaGFy
+ZC1nbGs6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwMzE2Nl0gKzEKCiAgKiBpZ3RAa21z
+X3NldG1vZGVAYmFzaWM6CiAgICAtIHNoYXJkLXNuYjogICAgICAgICAgTk9UUlVOIC0+IEZBSUwg
+W2ZkbyM5OTkxMl0KCiAgKiBpZ3RAa21zX3ZibGFua0BjcnRjLWlkOgogICAgLSBzaGFyZC1zbmI6
+ICAgICAgICAgIE5PVFJVTiAtPiBGQUlMIFtmZG8jMTA5NDkwXQoKICAKIyMjIyBQb3NzaWJsZSBm
+aXhlcyAjIyMjCgogICogaWd0QGdlbV9leGVjX3BhcmFtc0ByZWwtY29uc3RhbnRzLWludmFsaWQt
+cmVsLWdlbjU6CiAgICAtIHNoYXJkLXNuYjogICAgICAgICAgSU5DT01QTEVURSBbZmRvIzEwNTQx
+MV0gLT4gUEFTUwoKICAqIGlndEBpOTE1X3N1c3BlbmRAZmVuY2UtcmVzdG9yZS11bnRpbGVkOgog
+ICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIERNRVNHLVdBUk4gW2ZkbyMxMDg1NjZdIC0+IFBBU1MK
+CiAgKiBpZ3RAa21zX2F2YWlsYWJsZV9tb2Rlc19jcmNAYXZhaWxhYmxlX21vZGVfdGVzdF9jcmM6
+CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgRkFJTCBbZmRvIzEwNjY0MV0gLT4gUEFTUwoKICAq
+IGlndEBrbXNfY29sb3JAcGlwZS1iLWxlZ2FjeS1nYW1tYToKICAgIC0gc2hhcmQtYXBsOiAgICAg
+ICAgICBGQUlMIFtmZG8jMTA0NzgyXSAtPiBQQVNTCgogICogaWd0QGttc19jdXJzb3JfY3JjQGN1
+cnNvci0yNTZ4ODUtcmFuZG9tOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIEZBSUwgW2ZkbyMx
+MDMyMzJdIC0+IFBBU1MKCiAgKiBpZ3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLTY0eDIxLW9uc2Ny
+ZWVuOgogICAgLSBzaGFyZC1rYmw6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDMyMzJdIC0+IFBBU1Mg
+KzEKCiAgKiBpZ3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLXNpemUtY2hhbmdlOgogICAgLSBzaGFy
+ZC1nbGs6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDMyMzJdIC0+IFBBU1MgKzQKCiAgKiBpZ3RAa21z
+X2ZsaXBAMngtZmxpcC12cy1tb2Rlc2V0OgogICAgLSBzaGFyZC1oc3c6ICAgICAgICAgIERNRVNH
+LVdBUk4gW2ZkbyMxMDI2MTRdIC0+IFBBU1MKCiAgKiBpZ3RAa21zX2ZsaXBAbW9kZXNldC12cy12
+YmxhbmstcmFjZToKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBGQUlMIFtmZG8jMTAzMDYwXSAt
+PiBQQVNTCgogICogaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0BmYmMtMXAtcHJpbXNjcm4t
+c3ByLWluZGZiLWRyYXctcmVuZGVyOgogICAgLSBzaGFyZC1zbmI6ICAgICAgICAgIHtTS0lQfSBb
+ZmRvIzEwOTI3MV0gLT4gUEFTUyArNTcKCiAgKiBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5n
+QGZiYy0xcC1zaHJmYi1mbGlwdHJhY2s6CiAgICAtIHNoYXJkLWdsazogICAgICAgICAge1NLSVB9
+IFtmZG8jMTA5MjcxXSAtPiBQQVNTICsxMjkKCiAgKiBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNr
+aW5nQGZiYy0ycC1wcmltc2Nybi1jdXItaW5kZmItZHJhdy1wd3JpdGU6CiAgICAtIHNoYXJkLWhz
+dzogICAgICAgICAge1NLSVB9IFtmZG8jMTA5MjcxXSAtPiBQQVNTICsxMzkKCiAgKiBpZ3RAa21z
+X2Zyb250YnVmZmVyX3RyYWNraW5nQGZiYy1mYXJmcm9tZmVuY2U6CiAgICAtIHNoYXJkLWtibDog
+ICAgICAgICAge1NLSVB9IFtmZG8jMTA5MjcxXSAtPiBQQVNTICs2NwoKICAqIGlndEBrbXNfZnJv
+bnRidWZmZXJfdHJhY2tpbmdAZmJjLXJnYjEwMTAxMC1kcmF3LXJlbmRlcjoKICAgIC0gc2hhcmQt
+YXBsOiAgICAgICAgICB7U0tJUH0gW2ZkbyMxMDkyNzFdIC0+IFBBU1MgKzY1CgogICogaWd0QGtt
+c19wbGFuZV9hbHBoYV9ibGVuZEBwaXBlLWMtYWxwaGEtb3BhcXVlLWZiOgogICAgLSBzaGFyZC1n
+bGs6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDgxNDVdIC0+IFBBU1MKCiAgKiBpZ3RAa21zX3BsYW5l
+X211bHRpcGxlQGF0b21pYy1waXBlLWItdGlsaW5nLW5vbmU6CiAgICAtIHNoYXJkLWFwbDogICAg
+ICAgICAgRkFJTCBbZmRvIzEwMzE2Nl0gLT4gUEFTUyArMQoKICAqIGlndEBrbXNfcGxhbmVfbXVs
+dGlwbGVAYXRvbWljLXBpcGUtYy10aWxpbmctbm9uZToKICAgIC0gc2hhcmQtZ2xrOiAgICAgICAg
+ICBGQUlMIFtmZG8jMTAzMTY2XSAtPiBQQVNTICs0CgogIAojIyMjIFdhcm5pbmdzICMjIyMKCiAg
+KiBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiYy0xcC1wcmltc2Nybi1zcHItaW5kZmIt
+ZnVsbHNjcmVlbjoKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICB7U0tJUH0gW2ZkbyMxMDkyNzFd
+IC0+IEZBSUwgW2ZkbyMxMDMxNjddICs0CgogICogaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2lu
+Z0BmYmMtMXAtcHJpbXNjcm4tc3ByLWluZGZiLW9ub2ZmOgogICAgLSBzaGFyZC1rYmw6ICAgICAg
+ICAgIHtTS0lQfSBbZmRvIzEwOTI3MV0gLT4gRkFJTCBbZmRvIzEwMzE2N10gKzEKCiAgKiBpZ3RA
+a21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiYy0ycC1wcmltc2Nybi1zcHItaW5kZmItZHJhdy1t
+bWFwLWNwdToKICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICB7U0tJUH0gW2ZkbyMxMDkyNzFdIC0+
+IEZBSUwgW2ZkbyMxMDMxNjddICs1CgogICogaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0Bm
+YmMtc3RyaWRlY2hhbmdlOgogICAgLSBzaGFyZC1oc3c6ICAgICAgICAgIHtTS0lQfSBbZmRvIzEw
+OTI3MV0gLT4gRkFJTCBbZmRvIzEwNTY4Ml0KCiAgCiAge25hbWV9OiBUaGlzIGVsZW1lbnQgaXMg
+c3VwcHJlc3NlZC4gVGhpcyBtZWFucyBpdCBpcyBpZ25vcmVkIHdoZW4gY29tcHV0aW5nCiAgICAg
+ICAgICB0aGUgc3RhdHVzIG9mIHRoZSBkaWZmZXJlbmNlIChTVUNDRVNTLCBXQVJOSU5HLCBvciBG
+QUlMVVJFKS4KCiAgW2ZkbyMxMDI2MTRdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
+b3dfYnVnLmNnaT9pZD0xMDI2MTQKICBbZmRvIzEwMzA2MF06IGh0dHBzOi8vYnVncy5mcmVlZGVz
+a3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzA2MAogIFtmZG8jMTAzMTY2XTogaHR0cHM6Ly9i
+dWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMTY2CiAgW2ZkbyMxMDMxNjdd
+OiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDMxNjcKICBb
+ZmRvIzEwMzE5MV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lk
+PTEwMzE5MQogIFtmZG8jMTAzMjMyXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93
+X2J1Zy5jZ2k/aWQ9MTAzMjMyCiAgW2ZkbyMxMDM1NDBdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0
+b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDM1NDAKICBbZmRvIzEwNDc4Ml06IGh0dHBzOi8vYnVn
+cy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNDc4MgogIFtmZG8jMTA1NDExXTog
+aHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA1NDExCiAgW2Zk
+byMxMDU2ODJdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0x
+MDU2ODIKICBbZmRvIzEwNjY0MV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19i
+dWcuY2dpP2lkPTEwNjY0MQogIFtmZG8jMTA3OTU2XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
+Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3OTU2CiAgW2ZkbyMxMDgxNDVdOiBodHRwczovL2J1Z3Mu
+ZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDgxNDUKICBbZmRvIzEwODU2Nl06IGh0
+dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODU2NgogIFtmZG8j
+MTA4NTkwXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA4
+NTkwCiAgW2ZkbyMxMDkyNzFdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVn
+LmNnaT9pZD0xMDkyNzEKICBbZmRvIzEwOTI3OF06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5v
+cmcvc2hvd19idWcuY2dpP2lkPTEwOTI3OAogIFtmZG8jMTA5NDkwXTogaHR0cHM6Ly9idWdzLmZy
+ZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5NDkwCiAgW2ZkbyM5OTkxMl06IGh0dHBz
+Oi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTk5OTEyCgoKUGFydGljaXBh
+dGluZyBob3N0cyAoNyAtPiA1KQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KCiAgTWlz
+c2luZyAgICAoMik6IHNoYXJkLXNrbCBzaGFyZC1pY2xiIAoKCkJ1aWxkIGNoYW5nZXMKLS0tLS0t
+LS0tLS0tLQoKICAgICogSUdUOiBJR1RfNDgwMiAtPiBJR1RQV18yMzI3CgogIENJX0RSTV81NTE4
+OiAyMzY5ZmQyOGQzYTQ2Yjg2NWY2ZDRmMWQzMDlhNGM2YjdiNGU2ZDkzIEAgZ2l0Oi8vYW5vbmdp
+dC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xpbnV4CiAgSUdUUFdfMjMyNzogaHR0cHM6Ly9pbnRl
+bC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yMzI3LwogIElHVF80ODAyOiA0MDQ5
+YWRmMDEwMTRhZjA3N2RmMjE3NGRlZjRmYWRmN2NlY2IwNjZlIEAgZ2l0Oi8vYW5vbmdpdC5mcmVl
+ZGVza3RvcC5vcmcveG9yZy9hcHAvaW50ZWwtZ3B1LXRvb2xzCgo9PSBMb2dzID09CgpGb3IgbW9y
+ZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9J
+R1RQV18yMzI3LwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
+czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
