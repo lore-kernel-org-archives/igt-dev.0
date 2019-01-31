@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDBE96ECAA
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Jan 2019 12:05:58 +0000 (UTC)
-References: <20190131085802.9703-1-maarten.lankhorst@linux.intel.com>
- <20190131102628.GJ4038@platvala-desk.ger.corp.intel.com>
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Message-ID: <c0c53125-b765-78a1-c026-e6be3f0c0d69@linux.intel.com>
-Date: Thu, 31 Jan 2019 13:05:56 +0100
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
+ [IPv6:2607:f8b0:4864:20::743])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A04666E6BD
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Jan 2019 12:49:06 +0000 (UTC)
+Received: by mail-qk1-x743.google.com with SMTP id m17so1763082qki.5
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Jan 2019 04:49:06 -0800 (PST)
+Date: Thu, 31 Jan 2019 10:49:02 -0200
+From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Message-ID: <20190131124902.j2wtnuwhvhrpjfuu@smtp.gmail.com>
+References: <7fe5b67752b0d53137360a0a4539572df0287e7d.1548799569.git.mamtashukla555@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190131102628.GJ4038@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_kms: Clear all non-atomic
- properties in legacy/universal commit correctly.
+In-Reply-To: <7fe5b67752b0d53137360a0a4539572df0287e7d.1548799569.git.mamtashukla555@gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t, v2,
+ 1/2] tests/kms_cursor_crc.c: Improve test_cursor_alpha()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,73 +20,160 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0258015805=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
-Cc: Nicholas Kazlauskas <nkazlaus@amd.com>
+To: Mamta Shukla <mamtashukla555@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, hamohammed.sa@gmail.com, daniel@ffwll.ch
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T3AgMzEtMDEtMjAxOSBvbSAxMToyNiBzY2hyZWVmIFBldHJpIExhdHZhbGE6Cj4gT24gVGh1LCBK
-YW4gMzEsIDIwMTkgYXQgMDk6NTg6MDJBTSArMDEwMCwgTWFhcnRlbiBMYW5raG9yc3Qgd3JvdGU6
-Cj4+IFdlIHVzZWQgdG8gYWRkIHRoZW0gYWxsIDEgYnkgMSwgYnV0IHdlIHJlYWxseSBvbmx5IGNh
-cmUgYWJvdXQgbm90Cj4+IGhhbmRsaW5nIGEgZmV3Lgo+Pgo+PiBPbmx5IHNraXAgdW5zZXR0aW5n
-IGFsbCBhdG9taWMgcHJvcGVydGllcywgaW5zdGVhZCBvZiBoYW5kbGluZyBpdAo+PiB0aHJvdWdo
-IGEgd2hpdGVsaXN0Lgo+Pgo+PiBUaGlzIGZpeGVzIGttc19idXN5LCB3aGljaCB3YXMgdXBkYXRp
-bmcgdGhlIFZSUiBoaW50LCBldmVuIHRob3VnaAo+PiB3ZSBhbHJlYWR5IHVuc2V0IGl0IGluIHRo
-ZSBsZWdhY3kgcGF0aC4KPj4KPj4gQ2M6IE5pY2hvbGFzIEthemxhdXNrYXMgPG5rYXpsYXVzQGFt
-ZC5jb20+Cj4+IENjOiBIYXJyeSBXZW50bGFuZCA8aGFycnkud2VudGxhbmRAYW1kLmNvbT4KPj4g
-Q2M6IExlbyBMaSA8c3VucGVuZy5saUBhbWQuY29tPgo+PiBCdWd6aWxsYTogaHR0cHM6Ly9idWdz
-LmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5NDkwCj4+IFNpZ25lZC1vZmYtYnk6
-IE1hYXJ0ZW4gTGFua2hvcnN0IDxtYWFydGVuLmxhbmtob3JzdEBsaW51eC5pbnRlbC5jb20+Cj4+
-IC0tLQo+PiAgbGliL2lndF9rbXMuYyB8IDcgKysrLS0tLQo+PiAgMSBmaWxlIGNoYW5nZWQsIDMg
-aW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKPj4KPj4gZGlmZiAtLWdpdCBhL2xpYi9pZ3Rf
-a21zLmMgYi9saWIvaWd0X2ttcy5jCj4+IGluZGV4IDU4ZjMyOTExZDk5OS4uMWY5OGIyNmZjZDc5
-IDEwMDY0NAo+PiAtLS0gYS9saWIvaWd0X2ttcy5jCj4+ICsrKyBiL2xpYi9pZ3Rfa21zLmMKPj4g
-QEAgLTMyOTgsMTAgKzMyOTgsOSBAQCBkaXNwbGF5X2NvbW1pdF9jaGFuZ2VkKGlndF9kaXNwbGF5
-X3QgKmRpc3BsYXksIGVudW0gaWd0X2NvbW1pdF9zdHlsZSBzKQo+PiAgCQkJcGlwZV9vYmotPnZh
-bHVlc1tJR1RfQ1JUQ19PVVRfRkVOQ0VfUFRSXSA9IDA7Cj4+ICAJCQlwaXBlX29iai0+Y2hhbmdl
-ZCA9IDA7Cj4+ICAJCX0gZWxzZSB7Cj4+IC0JCQlpZ3RfcGlwZV9vYmpfY2xlYXJfcHJvcF9jaGFu
-Z2VkKHBpcGVfb2JqLCBJR1RfQ1JUQ19CQUNLR1JPVU5EKTsKPj4gLQkJCWlndF9waXBlX29ial9j
-bGVhcl9wcm9wX2NoYW5nZWQocGlwZV9vYmosIElHVF9DUlRDX0NUTSk7Cj4+IC0JCQlpZ3RfcGlw
-ZV9vYmpfY2xlYXJfcHJvcF9jaGFuZ2VkKHBpcGVfb2JqLCBJR1RfQ1JUQ19ERUdBTU1BX0xVVCk7
-Cj4+IC0JCQlpZ3RfcGlwZV9vYmpfY2xlYXJfcHJvcF9jaGFuZ2VkKHBpcGVfb2JqLCBJR1RfQ1JU
-Q19HQU1NQV9MVVQpOwo+PiArCQkJZm9yIChpID0gMDsgaSA8IElHVF9OVU1fQ1JUQ19QUk9QUzsg
-aSsrKQo+PiArCQkJCWlmICghaXNfYXRvbWljX3Byb3AoaSkpCj4+ICsJCQkJCWlndF9waXBlX29i
-al9jbGVhcl9wcm9wX2NoYW5nZWQocGlwZV9vYmosIGkpOwo+Cj4gRG9lcyBJR1RfQ1JUQ19WUlJf
-RU5BQkxFRCBuZWVkIHRvIGJlIGFkZGVkIHRvIGlzX2F0b21pY19wcm9wPwoKVGhlIGxlZ2FjeSBw
-YXRoOgotIFBlcmZvcm1zIGRybU1vZGVTZXRDcnRjIG9uIHRoZSBwcmltYXJ5IHBsYW5lIHRvIHRy
-aWdnZXIgYSBtb2Rlc2V0IGFuZCBjb25uZWN0b3IgYXNzaWdubWVudHMKLSBVc2VzIGRybU1vZGVT
-ZXRDdXJzb3IvZHJtTW9kZU1vdmVDdXJzb3IgdG8gbW92ZSB0aGUgY3Vyc29yIHBsYW5lCi0gVXNl
-cyBkcm1Nb2RlU2V0UGxhbmUgb24gb3RoZXIgcGxhbmVzLgotIFVzZXMgZHJtTW9kZUNvbm5lY3Rv
-clNldFByb3BlcnR5IHRvIHNldCBjb25uZWN0b3IgcHJvcGVydGllcy4KLSBDYWxscyBkcm1Nb2Rl
-T2JqZWN0U2V0UHJvcGVydHkgdG8gdXBkYXRlIGFueSBub24tYXRvbWljIGNydGMgcHJvcGVydGll
-cy4gUHJvYmFibHkgZ2FtbWEvZXRjIGFzIHdlbGwuClByaW1hcnkgYW5kIGN1cnNvciBwcm9wZXJ0
-aWVzIGFyZSBtb3N0bHkgaWdub3JlZCwgZXhjZXB0IHdpdGggd2hhdCBjYW4gYmUgc2V0IHRocm91
-Z2ggc2V0Y3Vyc29yL3NldGNydGMuCgpUaGUgdW5pdmVyc2FsIHBhdGg6Ci0gVXNlcyBTZXRQbGFu
-ZSBvbiBhbGwgcGxhbmVzLgotIENhbGxzIGRybU1vZGVPYmplY3RTZXRQcm9wZXJ0eSBmb3IgYWxs
-IG5vdCBpZ25vcmVkIHByb3BlcnRpZXMgb24gZWFjaCBwbGFuZS9jb25uZWN0b3IvY3J0Yy4KLSBD
-YW4ndCBkbyBtb2Rlc2V0cy4KClRoZSBhdG9taWMgcGF0aDoKLSBEb2VzIGEgc2luZ2xlIGF0b21p
-YyBjb21taXQsIHdpdGggYWxsIGNoYW5nZWQgcHJvcGVydGllcyBhbmQgdGhlaXIgbmV3IHZhbHVl
-cy4gQWxsIG9mIHRoZSBhYm92ZSBhbmQgbW9yZSAoaW4vb3V0IGZlbmNlIGhhbmRsaW5nKS4uCgpF
-dmVuIGlmIGl0J3Mgc3RyaWN0bHkgc3BlYWtpbmcgYW4gYXRvbWljIHByb3BlcnR5LCB0aGUgZmFj
-dCB3ZSBjbGVhciBpdCBpbiBpZ3RfcGlwZV9yZWZyZXNoKCkKbWVhbnMgd2UgaGF2ZSB0byBtYWtl
-IHN1cmUgdGhhdCB0ZXN0cyBrZWVwIHJ1bm5pbmcsIGFuZCB3ZSBoYXZlIHRvIGNsZWFyIHRoZSBm
-bGFnIGluIGlndF9kaXNwbGF5X2NvbW1pdCgpCmJlY2F1c2Ugb3RoZXJ3aXNlIGV2ZW4gbW9yZSB0
-aGluZ3MgYnJlYWsuIDopCgpQcm9iYWJseSBiZXN0IHRvIG9ubHkga2VlcCB0aGluZ3Mgd2UgYWJz
-b2x1dGVseSBjYW4ndCByZWFzb25hYmx5IGFub3RoZXIgd2F5IHRoYW4gYXRvbWljIGluIGlzX2F0
-b21pYy4KCj4gLi4uCj4KPiBObywgdGhhdCdzIG5vdCBhICJpcyB0aGlzIGFuIGF0b21pYy1vbmx5
-IHByb3BlcnR5IiwgaXMgaXQ/Cj4KPgo+IEFueXdheSwgdGhlIGVmZmVjdCBtYXRjaGVzIHRoZSBz
-ZWNvbmQgY2h1bmsgb2YgTmljaG9sYXMncyBwYXRjaC4KPgo+Cj4gUmV2aWV3ZWQtYnk6IFBldHJp
-IExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgo+Cj4gVGhlcmUncyBzb21lIHF1ZXVl
-IGluIHNoYXJkcyBzbyBzdGFuZCBieSBhIGNvdXBsZSBvZiBob3VycyBmb3IgdGhlaXIgcmVzdWx0
-cyBiZWZvcmUgbWVyZ2luZy4KPgo+Cj4KPj4gIAo+PiAgCQkJaWYgKHMgIT0gQ09NTUlUX1VOSVZF
-UlNBTCkgewo+PiAgCQkJCWlndF9waXBlX29ial9jbGVhcl9wcm9wX2NoYW5nZWQocGlwZV9vYmos
-IElHVF9DUlRDX01PREVfSUQpOwo+PiAtLSAKPj4gMi4yMC4xCj4+Cj4+IF9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4+IGlndC1kZXYgbWFpbGluZyBsaXN0
-Cj4+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4+IGh0dHBzOi8vbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgoKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
-YW4vbGlzdGluZm8vaWd0LWRldgo=
+
+--===============0258015805==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="gkgpspuomcitin6n"
+Content-Disposition: inline
+
+
+--gkgpspuomcitin6n
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+Thanks for your patch! :)
+
+The patch looks good for me.
+
+I just have one question: why did you split the patch into two parts?
+IMHO this series can be a single patch.
+
+Best Regards
+Rodrigo Siqueira
+
+On 01/30, Mamta Shukla wrote:
+> In the kms_cursor_crc, the subtest to check exterme alpha values failed d=
+ue
+> to different CRCs observed in hardware and software rendering. This patch=
+ fixes
+> CRC mismatch error in cursor-alpha-opaque and cursor-alpha-transparent su=
+btests
+> by improving the order in which cursor was rendered in hardware test. Cha=
+nges
+> made in test_cursor_alpha() to ensure cursor rendering in hardware test a=
+nd
+> acquire CRC value:
+> - Add drmModeSetCursor() to set cursor image.
+> - Remove igt_display_commit() to reduce the chance of getting crc values =
+cleared
+>   before it is acquired.
+> - Add igt_remove_fb() to remove locally created framebuffer after disabli=
+ng the
+>   cursor plane in HW test
+>=20
+>   Also, aligned this function with test_cursor_size and after these chang=
+es
+>   got passing results for alpha blending support added in VKMS CRC API.
+>=20
+> Signed-off-by: Mamta Shukla <mamtashukla555@gmail.com>
+> ---
+> changes in v2:
+> -Modify commit message
+> -Add spaces around '=3D'
+>=20
+>  tests/kms_cursor_crc.c | 15 ++++++++-------
+>  1 file changed, 8 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+> index 3c9856d9..144b44b0 100644
+> --- a/tests/kms_cursor_crc.c
+> +++ b/tests/kms_cursor_crc.c
+> @@ -411,26 +411,28 @@ static void test_cursor_alpha(data_t *data, double =
+a)
+>  	igt_crc_t crc, ref_crc;
+>  	cairo_t *cr;
+>  	uint32_t fb_id;
+> -	int curw=3Ddata->curw;
+> -	int curh=3Ddata->curh;
+> +	int curw =3D data->curw;
+> +	int curh =3D data->curh;
+> +	int ret;
+> =20
+>  	/*alpha cursor fb*/
+> -	fb_id =3D igt_create_color_fb(data->drm_fd, curw, curh,
+> +	fb_id =3D igt_create_fb(data->drm_fd, curw, curh,
+>  				    DRM_FORMAT_ARGB8888,
+>  				    LOCAL_DRM_FORMAT_MOD_NONE,
+> -				    1.0, 1.0, 1.0,
+>  				    &data->fb);
+>  	igt_assert(fb_id);
+>  	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->fb);
+> -	draw_cursor(cr, 0, 0, curw, curh, a);
+> +	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
+>  	igt_put_cairo_ctx(data->drm_fd, &data->fb, cr);
+> =20
+>  	/*Hardware Test*/
+>  	cursor_enable(data);
+> -	igt_display_commit(display);
+> +	ret =3D drmModeSetCursor(data->drm_fd, data->output->config.crtc->crtc_=
+id, data->fb.gem_handle, curw, curh);
+> +	igt_assert_eq(ret, 0);
+>  	igt_wait_for_vblank(data->drm_fd, data->pipe);
+>  	igt_pipe_crc_collect_crc(pipe_crc, &crc);
+>  	cursor_disable(data);
+> +	igt_remove_fb(data->drm_fd, &data->fb);
+> =20
+>  	/*Software Test*/
+>  	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->primary_fb);
+> @@ -447,7 +449,6 @@ static void test_cursor_alpha(data_t *data, double a)
+>  	igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
+>  			0.0, 0.0, 0.0);
+>  	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
+> -	igt_remove_fb(data->drm_fd, &data->fb);
+>  }
+> =20
+>  static void test_cursor_transparent(data_t *data)
+> --=20
+> 2.17.1
+>=20
+
+--=20
+Rodrigo Siqueira
+https://siqueira.tech
+Graduate Student
+Department of Computer Science
+University of S=E3o Paulo
+
+--gkgpspuomcitin6n
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlxS7r0ACgkQWJzP/com
+vP8vTxAAqXfSycoOJTQ3CIgZEpBGBAWUjKy49nqrHjGMt+BkETUvgObkXC8tMwuy
+8Dl+9hNK0EkwpeoGRsCumlLtN42DcQoEIeNgJV7Y1rIukyW/a3pjo+AFd/PAQgEY
+maaW76J5+7E1LPYjDqm38m9U/viAk87aS78wL66Th7MnhQyZ1p75/Dzfiw/nbeV8
+mUtcsx6o1krpPPum3PJ4ZAybHTsqtr++8t9aAHPCIkti1cmklq7eRRVxgw8LKtcM
+O+mjNIbXsJl+H/gpMowU/RWouyuiHYnibodAE7ESLUnNb1xk4ittfn6GxNLL5BiC
+l2Q8TqdMoz+RoQPYkfCGJft53U5/MchMdki8xKk9XAbY+1lvucwgjnBritpcM/IO
+KqOGpRKzHxteUZSCE812iA14BdxIzs/mngrhOszDaIBVHSqroquz/yi58vwTrR1A
+XKLRv5jDsLgVGx2wQkH5xZJEHBllFJ748UzylncypNy1oYmthR9Yv5gWf//VVf7K
++iDYfrl4qbbIq4QLhvGkZisxDcN7dYVtffE/qLY8C5tE7CwaaCDlVJmc6Qqtu4Mj
+WwqnYWsPvLfUPsiKCxTIXGnxkt8OJeVnvx7jF3trpe+jAERbMeu8Q1tRiXYtmOwr
+zIjG+UuTgvN7lUW/uf+JDPh7a9sDJM9FFE1HjqbmZ9IVnDBVtDw=
+=Z6Ht
+-----END PGP SIGNATURE-----
+
+--gkgpspuomcitin6n--
+
+--===============0258015805==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0258015805==--
