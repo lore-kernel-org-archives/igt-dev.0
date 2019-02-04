@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE7156E5E6
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Feb 2019 18:47:44 +0000 (UTC)
-Date: Mon, 4 Feb 2019 10:47:45 -0800
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Message-ID: <20190204184745.GC3250@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F3A4B6E5E4
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Feb 2019 18:46:49 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Mon, 4 Feb 2019 18:46:47 +0000
+Message-ID: <fe7dda01ec7d99296a2796981c53116d64caf265.camel@intel.com>
 References: <20190202080816.2978-1-rodrigo.vivi@intel.com>
- <fe7dda01ec7d99296a2796981c53116d64caf265.camel@intel.com>
+In-Reply-To: <20190202080816.2978-1-rodrigo.vivi@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <fe7dda01ec7d99296a2796981c53116d64caf265.camel@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] lib: sync i915_pciids.h with kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -18,60 +17,117 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0391134839=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Souza, Jose" <jose.souza@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCBGZWIgMDQsIDIwMTkgYXQgMTA6NDY6NDdBTSAtMDgwMCwgU291emEsIEpvc2Ugd3Jv
-dGU6Cj4gT24gU2F0LCAyMDE5LTAyLTAyIGF0IDAwOjA4IC0wODAwLCBSb2RyaWdvIFZpdmkgd3Jv
-dGU6Cj4gPiBBZGQgbW9yZSBQQ0kgRGV2aWNlIElEcyBmb3IgQ29mZmVlIExha2UgYW5kIEljZSBM
-YWtlLgo+ID4gCj4gPiBBbGlnbiB3aXRoIGtlcm5lbCBjb21taXRzOgo+ID4gCj4gPiA1ZTBmNWE1
-OGIxNjcgKCJkcm0vaTkxNS9jZmw6IEFkZGluZyBhbm90aGVyIFBDSSBEZXZpY2UgSUQuIikKPiA+
-IDAzY2EzY2Y4ZTlhYSAoImRybS9pOTE1L2ljbDogQWRkaW5nIGZldyBtb3JlIGRldmljZSBJRHMg
-Zm9yIEljZQo+ID4gTGFrZSIpCj4gPiAKPiAKPiBSZXZpZXdlZC1ieTogSm9zw6kgUm9iZXJ0byBk
-ZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+CgpUaGFua3MsIGFsdGhvdWdoIEkgYWxyZWFk
-eSBwdXNoZWQgYWxsIG9mIHRoZW0uLi4Ka2VybmVsLCBsaWJkcm0sIGlndCwgYW5kIG1lc2EgYXJl
-IGluIHN5bmMgbm93LgoKPiAKPiA+IENjOiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3NlLnNv
-dXphQGludGVsLmNvbT4KPiA+IFNpZ25lZC1vZmYtYnk6IFJvZHJpZ28gVml2aSA8cm9kcmlnby52
-aXZpQGludGVsLmNvbT4KPiA+IC0tLQo+ID4gIGxpYi9pOTE1X3BjaWlkcy5oICAgICAgIHwgOCAr
-KysrKysrKwo+ID4gIGxpYi9pbnRlbF9kZXZpY2VfaW5mby5jIHwgMSArCj4gPiAgMiBmaWxlcyBj
-aGFuZ2VkLCA5IGluc2VydGlvbnMoKykKPiA+IAo+ID4gZGlmZiAtLWdpdCBhL2xpYi9pOTE1X3Bj
-aWlkcy5oIGIvbGliL2k5MTVfcGNpaWRzLmgKPiA+IGluZGV4IDE5MjY2NzE0Li5kMmZhZDdiMCAx
-MDA2NDQKPiA+IC0tLSBhL2xpYi9pOTE1X3BjaWlkcy5oCj4gPiArKysgYi9saWIvaTkxNV9wY2lp
-ZHMuaAo+ID4gQEAgLTM5NCw2ICszOTQsOSBAQAo+ID4gIAlJTlRFTF9WR0FfREVWSUNFKDB4M0U5
-QSwgaW5mbykgIC8qIFNSViBHVDIgKi8KPiA+ICAKPiA+ICAvKiBDRkwgSCAqLwo+ID4gKyNkZWZp
-bmUgSU5URUxfQ0ZMX0hfR1QxX0lEUyhpbmZvKSBcCj4gPiArCUlOVEVMX1ZHQV9ERVZJQ0UoMHgz
-RTlDLCBpbmZvKQo+ID4gKwo+ID4gICNkZWZpbmUgSU5URUxfQ0ZMX0hfR1QyX0lEUyhpbmZvKSBc
-Cj4gPiAgCUlOVEVMX1ZHQV9ERVZJQ0UoMHgzRTlCLCBpbmZvKSwgLyogSGFsbyBHVDIgKi8gXAo+
-ID4gIAlJTlRFTF9WR0FfREVWSUNFKDB4M0U5NCwgaW5mbykgIC8qIEhhbG8gR1QyICovCj4gPiBA
-QCAtNDI2LDYgKzQyOSw3IEBACj4gPiAgI2RlZmluZSBJTlRFTF9DRkxfSURTKGluZm8pCSAgIFwK
-PiA+ICAJSU5URUxfQ0ZMX1NfR1QxX0lEUyhpbmZvKSwgXAo+ID4gIAlJTlRFTF9DRkxfU19HVDJf
-SURTKGluZm8pLCBcCj4gPiArCUlOVEVMX0NGTF9IX0dUMV9JRFMoaW5mbyksIFwKPiA+ICAJSU5U
-RUxfQ0ZMX0hfR1QyX0lEUyhpbmZvKSwgXAo+ID4gIAlJTlRFTF9DRkxfVV9HVDJfSURTKGluZm8p
-LCBcCj4gPiAgCUlOVEVMX0NGTF9VX0dUM19JRFMoaW5mbyksIFwKPiA+IEBAIC00NTcsOSArNDYx
-LDEzIEBACj4gPiAgCUlOVEVMX1ZHQV9ERVZJQ0UoMHg4QTUxLCBpbmZvKSwgXAo+ID4gIAlJTlRF
-TF9WR0FfREVWSUNFKDB4OEE1QywgaW5mbyksIFwKPiA+ICAJSU5URUxfVkdBX0RFVklDRSgweDhB
-NUQsIGluZm8pLCBcCj4gPiArCUlOVEVMX1ZHQV9ERVZJQ0UoMHg4QTU5LCBpbmZvKSwJXAo+ID4g
-KwlJTlRFTF9WR0FfREVWSUNFKDB4OEE1OCwgaW5mbyksCVwKPiA+ICAJSU5URUxfVkdBX0RFVklD
-RSgweDhBNTIsIGluZm8pLCBcCj4gPiAgCUlOVEVMX1ZHQV9ERVZJQ0UoMHg4QTVBLCBpbmZvKSwg
-XAo+ID4gIAlJTlRFTF9WR0FfREVWSUNFKDB4OEE1QiwgaW5mbyksIFwKPiA+ICsJSU5URUxfVkdB
-X0RFVklDRSgweDhBNTcsIGluZm8pLCBcCj4gPiArCUlOVEVMX1ZHQV9ERVZJQ0UoMHg4QTU2LCBp
-bmZvKSwgXAo+ID4gIAlJTlRFTF9WR0FfREVWSUNFKDB4OEE3MSwgaW5mbyksIFwKPiA+ICAJSU5U
-RUxfVkdBX0RFVklDRSgweDhBNzAsIGluZm8pCj4gPiAgCj4gPiBkaWZmIC0tZ2l0IGEvbGliL2lu
-dGVsX2RldmljZV9pbmZvLmMgYi9saWIvaW50ZWxfZGV2aWNlX2luZm8uYwo+ID4gaW5kZXggMDc2
-MTY4YmYuLjJiY2E1MTgzIDEwMDY0NAo+ID4gLS0tIGEvbGliL2ludGVsX2RldmljZV9pbmZvLmMK
-PiA+ICsrKyBiL2xpYi9pbnRlbF9kZXZpY2VfaW5mby5jCj4gPiBAQCAtMzUxLDYgKzM1MSw3IEBA
-IHN0YXRpYyBjb25zdCBzdHJ1Y3QgcGNpX2lkX21hdGNoCj4gPiBpbnRlbF9kZXZpY2VfbWF0Y2hb
-XSA9IHsKPiA+ICAKPiA+ICAJSU5URUxfQ0ZMX1NfR1QxX0lEUygmaW50ZWxfY29mZmVlbGFrZV9n
-dDFfaW5mbyksCj4gPiAgCUlOVEVMX0NGTF9TX0dUMl9JRFMoJmludGVsX2NvZmZlZWxha2VfZ3Qy
-X2luZm8pLAo+ID4gKwlJTlRFTF9DRkxfSF9HVDFfSURTKCZpbnRlbF9jb2ZmZWVsYWtlX2d0MV9p
-bmZvKSwKPiA+ICAJSU5URUxfQ0ZMX0hfR1QyX0lEUygmaW50ZWxfY29mZmVlbGFrZV9ndDJfaW5m
-byksCj4gPiAgCUlOVEVMX0NGTF9VX0dUMl9JRFMoJmludGVsX2NvZmZlZWxha2VfZ3QyX2luZm8p
-LAo+ID4gIAlJTlRFTF9DRkxfVV9HVDNfSURTKCZpbnRlbF9jb2ZmZWVsYWtlX2d0M19pbmZvKSwK
-CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
-IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
-LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+--===============0391134839==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-CDozugHWWUeOBfz/b5qz"
+
+--=-CDozugHWWUeOBfz/b5qz
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Sat, 2019-02-02 at 00:08 -0800, Rodrigo Vivi wrote:
+> Add more PCI Device IDs for Coffee Lake and Ice Lake.
+>=20
+> Align with kernel commits:
+>=20
+> 5e0f5a58b167 ("drm/i915/cfl: Adding another PCI Device ID.")
+> 03ca3cf8e9aa ("drm/i915/icl: Adding few more device IDs for Ice
+> Lake")
+>=20
+
+Reviewed-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
+
+> Cc: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
+> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> ---
+>  lib/i915_pciids.h       | 8 ++++++++
+>  lib/intel_device_info.c | 1 +
+>  2 files changed, 9 insertions(+)
+>=20
+> diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
+> index 19266714..d2fad7b0 100644
+> --- a/lib/i915_pciids.h
+> +++ b/lib/i915_pciids.h
+> @@ -394,6 +394,9 @@
+>  	INTEL_VGA_DEVICE(0x3E9A, info)  /* SRV GT2 */
+> =20
+>  /* CFL H */
+> +#define INTEL_CFL_H_GT1_IDS(info) \
+> +	INTEL_VGA_DEVICE(0x3E9C, info)
+> +
+>  #define INTEL_CFL_H_GT2_IDS(info) \
+>  	INTEL_VGA_DEVICE(0x3E9B, info), /* Halo GT2 */ \
+>  	INTEL_VGA_DEVICE(0x3E94, info)  /* Halo GT2 */
+> @@ -426,6 +429,7 @@
+>  #define INTEL_CFL_IDS(info)	   \
+>  	INTEL_CFL_S_GT1_IDS(info), \
+>  	INTEL_CFL_S_GT2_IDS(info), \
+> +	INTEL_CFL_H_GT1_IDS(info), \
+>  	INTEL_CFL_H_GT2_IDS(info), \
+>  	INTEL_CFL_U_GT2_IDS(info), \
+>  	INTEL_CFL_U_GT3_IDS(info), \
+> @@ -457,9 +461,13 @@
+>  	INTEL_VGA_DEVICE(0x8A51, info), \
+>  	INTEL_VGA_DEVICE(0x8A5C, info), \
+>  	INTEL_VGA_DEVICE(0x8A5D, info), \
+> +	INTEL_VGA_DEVICE(0x8A59, info),	\
+> +	INTEL_VGA_DEVICE(0x8A58, info),	\
+>  	INTEL_VGA_DEVICE(0x8A52, info), \
+>  	INTEL_VGA_DEVICE(0x8A5A, info), \
+>  	INTEL_VGA_DEVICE(0x8A5B, info), \
+> +	INTEL_VGA_DEVICE(0x8A57, info), \
+> +	INTEL_VGA_DEVICE(0x8A56, info), \
+>  	INTEL_VGA_DEVICE(0x8A71, info), \
+>  	INTEL_VGA_DEVICE(0x8A70, info)
+> =20
+> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> index 076168bf..2bca5183 100644
+> --- a/lib/intel_device_info.c
+> +++ b/lib/intel_device_info.c
+> @@ -351,6 +351,7 @@ static const struct pci_id_match
+> intel_device_match[] =3D {
+> =20
+>  	INTEL_CFL_S_GT1_IDS(&intel_coffeelake_gt1_info),
+>  	INTEL_CFL_S_GT2_IDS(&intel_coffeelake_gt2_info),
+> +	INTEL_CFL_H_GT1_IDS(&intel_coffeelake_gt1_info),
+>  	INTEL_CFL_H_GT2_IDS(&intel_coffeelake_gt2_info),
+>  	INTEL_CFL_U_GT2_IDS(&intel_coffeelake_gt2_info),
+>  	INTEL_CFL_U_GT3_IDS(&intel_coffeelake_gt3_info),
+
+--=-CDozugHWWUeOBfz/b5qz
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlxYiJUACgkQVenbO/mO
+WkmblQf+Lb+2Yvv4iSZYOLtDRSECl9u6RIaWTv07JlxVgiOxdb61miIz+g0ZPINu
+xza81Dq0OGfB/V/p6m0xOmuV3w5NZbfDCobslNxCs+nb0nHN8klATSU89mCq9aiK
+7dPwAFd+VaLr0c3MgeNKDG6NskIWKU2T/3alW2cWlNSSS0Bl7r5XRbVGVwsPOPak
+0bRFtdGFZMw3zmdX/3fSjtsJKKUKD3OeRhdMuz2xdsN02iXkRzLYtDBgdJnRc+JX
+fbqeju+nT1R0lewRwaSCuARYvXVpUbmORhs9A4jalmkLmrHCJqjKNDCdxAVK/RRh
+t/L75gzCAnmgSphNQr7wZV+f6ue5KA==
+=G40q
+-----END PGP SIGNATURE-----
+
+--=-CDozugHWWUeOBfz/b5qz--
+
+--===============0391134839==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============0391134839==--
