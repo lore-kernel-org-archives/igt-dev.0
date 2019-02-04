@@ -1,13 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mblankhorst.nl (mblankhorst.nl
  [IPv6:2a02:2308::216:3eff:fe92:dfa3])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B1AA6E4CA
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Feb 2019 12:46:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A7146E4CA
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Feb 2019 12:45:29 +0000 (UTC)
 From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Date: Mon,  4 Feb 2019 13:46:25 +0100
-Message-Id: <20190204124625.5364-1-maarten.lankhorst@linux.intel.com>
-In-Reply-To: <20190201111544.7920-2-maarten.lankhorst@linux.intel.com>
-References: <20190201111544.7920-2-maarten.lankhorst@linux.intel.com>
+Date: Mon,  4 Feb 2019 13:45:25 +0100
+Message-Id: <20190204124525.5241-1-maarten.lankhorst@linux.intel.com>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t] lib/igt_fb: Add support for P01x formats,
  v2.
