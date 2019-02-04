@@ -1,20 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
- [IPv6:2607:f8b0:4864:20::742])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDC3A6E250
- for <igt-dev@lists.freedesktop.org>; Sun,  3 Feb 2019 20:25:24 +0000 (UTC)
-Received: by mail-qk1-x742.google.com with SMTP id q8so7239959qke.1
- for <igt-dev@lists.freedesktop.org>; Sun, 03 Feb 2019 12:25:24 -0800 (PST)
-Date: Sun, 3 Feb 2019 18:25:19 -0200
-From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Message-ID: <20190203202519.micxqf3imcioj7lj@smtp.gmail.com>
-References: <7fe5b67752b0d53137360a0a4539572df0287e7d.1549204343.git.mamtashukla555@gmail.com>
- <f6b066cd3ad75629844ade3853e71c6c0786f3a1.1549204343.git.mamtashukla555@gmail.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Mon,  4 Feb 2019 08:36:14 +0000
+Message-Id: <20190204083614.2385-13-chris@chris-wilson.co.uk>
+In-Reply-To: <20190204083614.2385-1-chris@chris-wilson.co.uk>
+References: <20190204083614.2385-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-In-Reply-To: <f6b066cd3ad75629844ade3853e71c6c0786f3a1.1549204343.git.mamtashukla555@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t, v3,
- 2/2] tests/kms_cursor_crc.c: Remove framebuffer at the end of the
- test
+Subject: [igt-dev] [PATCH i-g-t 13/13] i915/gem_sync: Make switch-default
+ asymmetric
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,98 +14,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0543735880=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mamta Shukla <mamtashukla555@gmail.com>
-Cc: igt-dev@lists.freedesktop.org, hamohammed.sa@gmail.com, daniel@ffwll.ch
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============0543735880==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="cqph34cqcrpgns5j"
-Content-Disposition: inline
-
-
---cqph34cqcrpgns5j
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On 02/03, Mamta Shukla wrote:
-> Use igt_remove_fb(data->drm_fd, &data->fb) to remove locally
-> created framebuffer at the end of the hardware test loop in
-> test_cursor_size() function for cursor-size-change subtest in
-> kms_cursor_crc.
->=20
-> Signed-off-by: Mamta Shukla <mamtashukla555@gmail.com>
-> Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-> ---
-> No changes in v2
->=20
-> changes in v3:
-> -Modify commit message
->=20
->  tests/kms_cursor_crc.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-> index 144b44b0..fd74fda5 100644
-> --- a/tests/kms_cursor_crc.c
-> +++ b/tests/kms_cursor_crc.c
-> @@ -583,6 +583,7 @@ static void test_cursor_size(data_t *data)
->  		igt_pipe_crc_collect_crc(pipe_crc, &crc[i]);
->  	}
->  	cursor_disable(data);
-> +	igt_remove_fb(data->drm_fd, &data->fb);
->  	/* Software test loop */
->  	for (i =3D 0, size =3D cursor_max_size; size >=3D 64; size /=3D 2, i++)=
- {
->  		/* Now render the same in software and collect crc */
-> --=20
-> 2.17.1
->=20
-
-Reviewed-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-
---=20
-Rodrigo Siqueira
-https://siqueira.tech
-Graduate Student
-Department of Computer Science
-University of S=E3o Paulo
-
---cqph34cqcrpgns5j
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlxXTi4ACgkQWJzP/com
-vP9BQQ//aitI0w3H8XMukGcp+LK6J9Cii7HyJhGOXFKo2FTmxyzSiOJwfT59K/Xm
-JMRzz3kz90GlSypEYwEIej0GcGGL8feA2TUz1DI9/PpU4NJwGGzGbC2L7SnAGdQw
-UEkUZChwB7bmysxYBPnrBfF+ZkCZzaFZ6RqE+9mBLWF2YvlcsNX5WEW+WzhfcY1p
-1t86o+lY+0bEXnLGWTYNwX8qghEvOhD8hns3X5MO2P3EVUtMRu7Buu4Sss4vdHIa
-rGAY0srDJAKNEoi8kRcL7vX1kDzbBgO7gKBwbPWA6frM9JcAikHrlKgTNHOauV5n
-+JiLZh7ZsdcWLgqF2xskOwnSCWpZpmY5/iKn8Oe8WK17GDJX0XfJmylkQ9z/B0N9
-+7QuxSxJPIT/XsVvaN+cD0JZrR13wTqv8pR4zax32746GROpPYjeAdByNckL6y3f
-o29Lps/Y0a1oBioT38RvdOFPFP32ejmxm1mGXCTfZDmk7DkYpde3OJWTcBZNb5c5
-vEe22N1FxyJnrrD+rJu9oEqGH6Quld3g6Ex9ZB4DIGvuinJmTc0KRYrjFnYTNqLH
-Nlr1aTMqobw1fysV85PP3tNvYHg4TKMV29pvepE1fYOblRk0sjzG+anaph6iRTf/
-9pudTCdaoUR3YxFLa3PltkxXS/Agl10iZ//KUxgN524KNKK7YsE=
-=wuNJ
------END PGP SIGNATURE-----
-
---cqph34cqcrpgns5j--
-
---===============0543735880==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============0543735880==--
+VG8gbWFrZSB0aGUgZGVtb25zdHJhdGlvbiBvZiB0aGUgY2hlZWt5IHByZWVtcHRpb24gbW9yZSBp
+bXBhY3RmdWwsIG1ha2UKdGhlIHNlY29uZCBjb250ZXh0IGEgbm9wIHRvIGNvbnRyYXN0IHRoZSBm
+aXJzdCBiZWluZyAxMDI0Ck1JX1NUT1JFX0RXT1JEX0lNTS4gVGhlbiBpZiB3ZSBleGVjdXRlIGFu
+ZCB3YWl0IG9uIHRoZSBzZWNvbmQgY29udGV4dApiZWZvcmUgZXhlY3V0aW5nIHRoZSBmaXJzdCwg
+dGhlIGNsaWVudCBsYXRlbmN5IGlzIGV2ZW4gbW9yZSBkcmFzdGljYWxseQpyZWR1Y2VkLgoKVG8g
+bW9yZSBjbGVhcmx5IHNob3cgYW55IGVmZmVjdCBvbiB3YWl0IHJlb3JkZXJpbmcsIG1lYXN1cmUg
+dGhlCmFsdGVybmF0aXZlIHBhdGggYW5kIHByZXNlbnQgYm90aC4KClNpZ25lZC1vZmYtYnk6IENo
+cmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgotLS0KIHRlc3RzL2k5MTUvZ2Vt
+X3N5bmMuYyB8IDQwICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0KIDEg
+ZmlsZSBjaGFuZ2VkLCAyOSBpbnNlcnRpb25zKCspLCAxMSBkZWxldGlvbnMoLSkKCmRpZmYgLS1n
+aXQgYS90ZXN0cy9pOTE1L2dlbV9zeW5jLmMgYi90ZXN0cy9pOTE1L2dlbV9zeW5jLmMKaW5kZXgg
+ZmIyMDk5NzdkLi4zZTRmZWZmMzIgMTAwNjQ0Ci0tLSBhL3Rlc3RzL2k5MTUvZ2VtX3N5bmMuYwor
+KysgYi90ZXN0cy9pOTE1L2dlbV9zeW5jLmMKQEAgLTY1MSw3ICs2NTEsNyBAQCBzd2l0Y2hfcmlu
+ZyhpbnQgZmQsIHVuc2lnbmVkIHJpbmcsIGludCBudW1fY2hpbGRyZW4sIGludCB0aW1lb3V0KQog
+CQkJc3RydWN0IGRybV9pOTE1X2dlbV9yZWxvY2F0aW9uX2VudHJ5IHJlbG9jWzEwMjRdOwogCQkJ
+c3RydWN0IGRybV9pOTE1X2dlbV9leGVjYnVmZmVyMiBleGVjYnVmOwogCQl9IGNvbnRleHRzWzJd
+OwotCQlkb3VibGUgc3RhcnQsIGVsYXBzZWQ7CisJCWRvdWJsZSBlbGFwc2VkLCBiYXNlbGluZTsK
+IAkJdW5zaWduZWQgbG9uZyBjeWNsZXM7CiAKIAkJZm9yIChpbnQgaSA9IDA7IGkgPCBBUlJBWV9T
+SVpFKGNvbnRleHRzKTsgaSsrKSB7CkBAIC02NzksNyArNjc5LDcgQEAgc3dpdGNoX3JpbmcoaW50
+IGZkLCB1bnNpZ25lZCByaW5nLCBpbnQgbnVtX2NoaWxkcmVuLCBpbnQgdGltZW91dCkKIAkJCWMt
+Pm9iamVjdFsxXS5oYW5kbGUgPSBnZW1fY3JlYXRlKGZkLCBzeik7CiAKIAkJCWMtPm9iamVjdFsx
+XS5yZWxvY3NfcHRyID0gdG9fdXNlcl9wb2ludGVyKGMtPnJlbG9jKTsKLQkJCWMtPm9iamVjdFsx
+XS5yZWxvY2F0aW9uX2NvdW50ID0gMTAyNDsKKwkJCWMtPm9iamVjdFsxXS5yZWxvY2F0aW9uX2Nv
+dW50ID0gMTAyNCAqIGk7CiAKIAkJCWJhdGNoID0gZ2VtX21tYXBfX2NwdShmZCwgYy0+b2JqZWN0
+WzFdLmhhbmRsZSwgMCwgc3osCiAJCQkJCVBST1RfV1JJVEUgfCBQUk9UX1JFQUQpOwpAQCAtNjg4
+LDcgKzY4OCw3IEBAIHN3aXRjaF9yaW5nKGludCBmZCwgdW5zaWduZWQgcmluZywgaW50IG51bV9j
+aGlsZHJlbiwgaW50IHRpbWVvdXQpCiAKIAkJCW1lbXNldChjLT5yZWxvYywgMCwgc2l6ZW9mKGMt
+PnJlbG9jKSk7CiAJCQliID0gYmF0Y2g7Ci0JCQlmb3IgKGludCByID0gMDsgciA8IDEwMjQ7IHIr
+KykgeworCQkJZm9yIChpbnQgciA9IDA7IHIgPCBjLT5vYmplY3RbMV0ucmVsb2NhdGlvbl9jb3Vu
+dDsgcisrKSB7CiAJCQkJdWludDY0X3Qgb2Zmc2V0OwogCiAJCQkJYy0+cmVsb2Nbcl0ucHJlc3Vt
+ZWRfb2Zmc2V0ID0gYy0+b2JqZWN0WzBdLm9mZnNldDsKQEAgLTcyMiwyNiArNzIyLDQ0IEBAIHN3
+aXRjaF9yaW5nKGludCBmZCwgdW5zaWduZWQgcmluZywgaW50IG51bV9jaGlsZHJlbiwgaW50IHRp
+bWVvdXQpCiAJCX0KIAogCQljeWNsZXMgPSAwOwotCQllbGFwc2VkID0gMDsKLQkJc3RhcnQgPSBn
+ZXR0aW1lKCk7Ci0JCWRvIHsKKwkJYmFzZWxpbmUgPSAwOworCQlpZ3RfdW50aWxfdGltZW91dCh0
+aW1lb3V0KSB7CiAJCQlkbyB7CiAJCQkJZG91YmxlIHRoaXM7CiAKLQkJCQlnZW1fZXhlY2J1Zihm
+ZCwgJmNvbnRleHRzWzBdLmV4ZWNidWYpOwogCQkJCWdlbV9leGVjYnVmKGZkLCAmY29udGV4dHNb
+MV0uZXhlY2J1Zik7CisJCQkJZ2VtX2V4ZWNidWYoZmQsICZjb250ZXh0c1swXS5leGVjYnVmKTsK
+IAogCQkJCXRoaXMgPSBnZXR0aW1lKCk7CiAJCQkJZ2VtX3N5bmMoZmQsIGNvbnRleHRzWzFdLm9i
+amVjdFsxXS5oYW5kbGUpOwotCQkJCWVsYXBzZWQgKz0gZ2V0dGltZSgpIC0gdGhpczsKKwkJCQln
+ZW1fc3luYyhmZCwgY29udGV4dHNbMF0ub2JqZWN0WzFdLmhhbmRsZSk7CisJCQkJYmFzZWxpbmUg
+Kz0gZ2V0dGltZSgpIC0gdGhpczsKKwkJCX0gd2hpbGUgKCsrY3ljbGVzICYgMTAyMyk7CisJCX0K
+KwkJYmFzZWxpbmUgLz0gY3ljbGVzOworCisJCWN5Y2xlcyA9IDA7CisJCWVsYXBzZWQgPSAwOwor
+CQlpZ3RfdW50aWxfdGltZW91dCh0aW1lb3V0KSB7CisJCQlkbyB7CisJCQkJZG91YmxlIHRoaXM7
+CiAKKwkJCQlnZW1fZXhlY2J1ZihmZCwgJmNvbnRleHRzWzFdLmV4ZWNidWYpOworCQkJCWdlbV9l
+eGVjYnVmKGZkLCAmY29udGV4dHNbMF0uZXhlY2J1Zik7CisKKwkJCQl0aGlzID0gZ2V0dGltZSgp
+OwogCQkJCWdlbV9zeW5jKGZkLCBjb250ZXh0c1swXS5vYmplY3RbMV0uaGFuZGxlKTsKKwkJCQll
+bGFwc2VkICs9IGdldHRpbWUoKSAtIHRoaXM7CisKKwkJCQlnZW1fc3luYyhmZCwgY29udGV4dHNb
+MV0ub2JqZWN0WzFdLmhhbmRsZSk7CiAJCQl9IHdoaWxlICgrK2N5Y2xlcyAmIDEwMjMpOwotCQl9
+IHdoaWxlICgoZ2V0dGltZSgpIC0gc3RhcnQpIDwgdGltZW91dCk7Ci0JCWlndF9pbmZvKCIlcyVz
+b21wbGV0ZWQgJWxkIGN5Y2xlczogJS4zZiB1c1xuIiwKKwkJfQorCQllbGFwc2VkIC89IGN5Y2xl
+czsKKworCQlpZ3RfaW5mbygiJXMlc29tcGxldGVkICVsZCBjeWNsZXM6ICUuM2YgdXMsIGJhc2Vs
+aW5lICUuM2YgdXNcbiIsCiAJCQkgbmFtZXNbY2hpbGQgJSBudW1fZW5naW5lc10gPzogIiIsCiAJ
+CQkgbmFtZXNbY2hpbGQgJSBudW1fZW5naW5lc10gPyAiIGMiIDogIkMiLAotCQkJIGN5Y2xlcywg
+ZWxhcHNlZCoxZTYvY3ljbGVzKTsKKwkJCSBjeWNsZXMsIGVsYXBzZWQqMWU2LCBiYXNlbGluZSox
+ZTYpOwogCiAJCWZvciAoaW50IGkgPSAwOyBpIDwgQVJSQVlfU0laRShjb250ZXh0cyk7IGkrKykg
+ewogCQkJZ2VtX2Nsb3NlKGZkLCBjb250ZXh0c1tpXS5vYmplY3RbMV0uaGFuZGxlKTsKLS0gCjIu
+MjAuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0
+LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
+aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
