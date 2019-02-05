@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mslow2.mail.gandi.net (mslow2.mail.gandi.net [217.70.178.242])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D14B6E6F2
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Feb 2019 13:42:14 +0000 (UTC)
-Received: from relay12.mail.gandi.net (unknown [217.70.178.232])
- by mslow2.mail.gandi.net (Postfix) with ESMTP id 606B33A5433
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Feb 2019 14:31:04 +0100 (CET)
-Date: Tue, 5 Feb 2019 14:30:41 +0100
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20190205133041.2joloaleyogbqn3l@flea>
-References: <20190205132205.20330-1-paul.kocialkowski@bootlin.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 22F9189DD8
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Feb 2019 13:44:02 +0000 (UTC)
+Date: Tue, 5 Feb 2019 14:44:00 +0100
+From: Katarzyna Dec <katarzyna.dec@intel.com>
+Message-ID: <20190205134400.GA25949@kdec5-desk.ger.corp.intel.com>
+References: <20190204083614.2385-1-chris@chris-wilson.co.uk>
+ <20190204083614.2385-5-chris@chris-wilson.co.uk>
+ <20190205122757.GA20062@kdec5-desk.ger.corp.intel.com>
+ <154936991534.31771.4947693526415989446@skylake-alporthouse-com>
 MIME-Version: 1.0
-In-Reply-To: <20190205132205.20330-1-paul.kocialkowski@bootlin.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_fb: Fix merge of preliminary
- patches for clearing YUV
+Content-Disposition: inline
+In-Reply-To: <154936991534.31771.4947693526415989446@skylake-alporthouse-com>
+Subject: Re: [igt-dev] [PATCH i-g-t 05/13] lib: Add GPU power measurement
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,61 +20,26 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1490736702=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============1490736702==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="htsjbch5vhxwaaih"
-Content-Disposition: inline
-
-
---htsjbch5vhxwaaih
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Feb 05, 2019 at 02:22:05PM +0100, Paul Kocialkowski wrote:
-> Preliminary patches for the YUV testing series were broken without
-> subsequent patches that fix them when moving things around.
->=20
-> Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-
-Reviewed-by: Maxime Ripard <maxime.ripard@bootlin.com>
-
-Maxime
-
---=20
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---htsjbch5vhxwaaih
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXFmQAQAKCRDj7w1vZxhR
-xVdKAP4m8Ay96TqbjRdYH1HiVTRO/N61h/2LldeQ0sIUOglahwEAjTgVkx5W+B+u
-KqI7e++wj36v/VmBqrf7DTac4em1tAY=
-=h/3W
------END PGP SIGNATURE-----
-
---htsjbch5vhxwaaih--
-
---===============1490736702==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============1490736702==--
+T24gVHVlLCBGZWIgMDUsIDIwMTkgYXQgMTI6MzE6NTVQTSArMDAwMCwgQ2hyaXMgV2lsc29uIHdy
+b3RlOgo+IFF1b3RpbmcgS2F0YXJ6eW5hIERlYyAoMjAxOS0wMi0wNSAxMjoyNzo1NykKPiA+IE9u
+IE1vbiwgRmViIDA0LCAyMDE5IGF0IDA4OjM2OjA2QU0gKzAwMDAsIENocmlzIFdpbHNvbiB3cm90
+ZToKPiA+ID4gKyAgICAgcG93ZXItPnNjYWxlID0gcmFwbF9ncHVfcG93ZXJfc2NhbGUoKTsKPiA+
+ID4gKyAgICAgaWYgKGlzbmFuKHBvd2VyLT5zY2FsZSkgfHwgIXBvd2VyLT5zY2FsZSkgewo+ID4g
+PiArICAgICAgICAgICAgIGNsb3NlKHBvd2VyLT5mZCk7Cj4gPiA+ICsgICAgICAgICAgICAgZ290
+byBlcnI7Cj4gPiA+ICsgICAgIH0KPiA+ID4gKyAgICAgcG93ZXItPnNjYWxlICo9IDFlOTsKPiA+
+IFdoZXJlIHRoaXMgc2NhbGUgdmFsdWUgaXMgY29taW5nIGZyb20/IEkgbG9va2VkIGF0IHRoaXMg
+cGFyYW1ldGVyIG9uIG15IGRlc2t0b3AKPiA+IGFuZCBpdCBpcyBlLTEwLgo+IAo+IFRoZSB0aW1l
+c3RhbXBzIGFyZSBpbiBuYW5vc2Vjb25kcy4gUGljayB5b3VyIHBvaXNvbi4KPiAtQ2hyaXMKQ2Fu
+IEkgaGF2ZSBkb251dHMgZm9yIHBvaXNvbj8gSnVzdCBraWRkaW5nIDopCgpSZXZpZXdlZC1ieTog
+S2F0YXJ6eW5hIERlYyA8a2F0YXJ6eW5hLmRlY0BpbnRlbC5jb20+Ckthc2lhIDopCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
+aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
