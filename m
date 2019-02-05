@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 830866E135
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Feb 2019 18:45:02 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Tue, 5 Feb 2019 18:45:00 +0000
-Message-ID: <bfdf6a356fc2f95bbb3fd3b4e9a39473afe898f1.camel@intel.com>
-References: <20190204205556.32512-1-dhinakaran.pandiyan@intel.com>
-In-Reply-To: <20190204205556.32512-1-dhinakaran.pandiyan@intel.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_fbcon_fbt: Do a full
- connector probe.
+References: <20190128172258.9585-1-daniel.vetter@ffwll.ch>
+In-Reply-To: <20190128172258.9585-1-daniel.vetter@ffwll.ch>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Tue, 5 Feb 2019 14:45:09 -0500
+Message-ID: <CADnq5_OFheo2Gne4GV6BLEaCgTxgTcBTvCZ=ZjVq_K95VDO2Mg@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH] drm/doc: Make igts for cross-driver stuff
+ strongly suggested
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,104 +14,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2132509797=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
+To: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Petri Latvala <petri.latvala@intel.com>, Liviu Dudau <liviu.dudau@arm.com>, DRI Development <dri-devel@lists.freedesktop.org>, IGT development <igt-dev@lists.freedesktop.org>, Dave Airlie <airlied@redhat.com>, Alex Deucher <alexander.deucher@amd.com>, Daniel Vetter <daniel.vetter@intel.com>, Sean Paul <sean@poorly.run>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2132509797==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-n45tWBwrPoyOzV3DQt3w"
-
---=-n45tWBwrPoyOzV3DQt3w
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, 2019-02-04 at 12:55 -0800, Dhinakaran Pandiyan wrote:
-> kms_fbtcon_fbt appears to fail when it is the first test that is
-> executed
-> after module load.
-> 'Test requirement not met in function set_mode_for_one_screen, file
-> ../tests/kms_fbcon_fbt.c:153:
-> Test requirement: i < drm->res->count_connectors'
-> The problem seems to be that the 1920x1080 bios fb is re-used and
-> that
-> prunes the 4k mode before test execution. Later, when the test does
-> not
-> do a full-probe, the eDP connector does not have any valid modes.
-
-drmModeGetConnectorCurrent() will get only one mode, the active one.
-
->=20
-> <7>[   12.444411] [drm:drm_mode_debug_printmodeline] Modeline
-> 191:"3840x2160" 60 533250 3840 3888 3920 4000 2160 2163 2168 2222
-> 0x48
-> 0xa
-> <7>[   12.444418] [drm:drm_mode_prune_invalid] Not using 3840x2160
-> mode:
-> VIRTUAL_X
->=20
-> Fix this by calling drmModeGetConnector() instead
-> drmModeGetConnectorCurrent()
->=20
-> Note that that test is still expected to fail as PSR status checks
-> are
-> broken.
-
-Reviewed-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
-
->=20
-> Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=3D109518
-> Signed-off-by: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-> ---
->  tests/kms_fbcon_fbt.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/tests/kms_fbcon_fbt.c b/tests/kms_fbcon_fbt.c
-> index 9d0d5a36..40465a1c 100644
-> --- a/tests/kms_fbcon_fbt.c
-> +++ b/tests/kms_fbcon_fbt.c
-> @@ -67,7 +67,7 @@ static void setup_drm(struct drm_info *drm)
->  	igt_assert(drm->res->count_connectors <=3D MAX_CONNECTORS);
-> =20
->  	for (i =3D 0; i < drm->res->count_connectors; i++)
-> -		drm->connectors[i] =3D drmModeGetConnectorCurrent(drm-
-> >fd,
-> +		drm->connectors[i] =3D drmModeGetConnector(drm->fd,
->  						drm->res-
-> >connectors[i]);
-> =20
->  	kmstest_set_vt_graphics_mode();
-
---=-n45tWBwrPoyOzV3DQt3w
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlxZ2aoACgkQVenbO/mO
-Wklqqwf8DsgUu9Ph3Nz1kdusbTr0WFEQ1FRjMftIEe7zN3LpMHTUFqfSxDUMXQRT
-Yw3XLa5YzrvHaBQTpbmZ+jeAdTdl4z9YbWhcbivUpD6beKDOXyXB852a3jwAR8CM
-zx0w6nVYWz1TzA1MQaeV/XjMPs0I5GjwGjufiK9nfohHScCTkJPhEJHTwAUVZOjq
-8s9eAm2QyxOIWHyaHgRcSAooAeB9G/cgHekRaQR1tf86+fmFTwC0BNzQjwDjPAlt
-RAp4C9VUe1JoQ6p5qTGax/5q0TOD5PYbn/tySvn5rc2VWAu1VAct4FaMlNDh8Ig6
-lW8K2dAMegxgwkafGs9hU0HWdHKR+g==
-=9IMo
------END PGP SIGNATURE-----
-
---=-n45tWBwrPoyOzV3DQt3w--
-
---===============2132509797==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
-
---===============2132509797==--
+T24gTW9uLCBKYW4gMjgsIDIwMTkgYXQgMTI6MjMgUE0gRGFuaWVsIFZldHRlciA8ZGFuaWVsLnZl
+dHRlckBmZndsbC5jaD4gd3JvdGU6Cj4KPiBDb21wYXJlZCB0byB0aGUgUkZDWzFdIG5vIGNoYW5n
+ZXMgdG8gdGhlIHBhdGNoIGl0c2VsZiwgYnV0IGlndCBtb3ZlZAo+IGZvcndhcmQgYSBsb3Q6Cj4K
+PiAtIGdpdGxhYiBDSSBidWlsZHMgd2l0aDogcmVkdWNlZCBjb25maWdzL2xpYnJhcmllcywgYXJt
+IGNyb3NzIGJ1aWxkCj4gICBhbmQgYSBzeXNyb290IGJ1aWxkIChzaG91bGQgYWRkcmVzcyBhbGwg
+dGhlIGJ1aWxkL2Nyb3NzIHBsYXRmb3JtCj4gICBjb25jZXJucyByYWlzZWQgaW4gdGhlIFJGQyBk
+aXNjdXNzaW9ucykuCj4KPiAtIHRlc3RzIHJlb3JnYW5pemVkIGludG8gc3ViZGlyZWN0b3JpZXMg
+c28gdGhhdCB0aGUgaTkxNS1nZW0gdGVzdHMKPiAgIGRvbid0IGNsb2cgdGhlIG1haW4vc2hhcmVk
+IHRlc3RzIGRpcmVjdG9yeSBhbnltb3JlCj4KPiAtIHF1aXRlIGEgZmV3IG1vcmUgbm9uLWludGVs
+IHBlb3BsZSBjb250cmlidXRpbmcvcmV2aWV3aW5nL2NvbW1pdHRpbmcKPiAgIGlndCB0ZXN0cyBw
+YXRjaGVzLgo+Cj4gSSB0aGluayB0aGlzIGFkZHJlc3NlcyBhbGwgdGhlIGNvbmNlcm5zIHJhaXNl
+ZCBpbiB0aGUgUkZDIGRpc2N1c3Npb25zLAo+IGFuZCBhc3N1bWluZyB0aGVyZSdzIGVub3VnaCBB
+Y2tzIGFuZCBubyBuZXcgaXNzdWVzIHRoYXQgcG9wIHVwLCB3ZSBjYW4KPiBnbyBhaGVhZCB3aXRo
+IHRoaXMuCj4KPiB2MjoKPiAtIFVzZSAic2hvdWxkIiAoaW4gdGhlIHVzdWFsIFJGQyBzZW5zZSkg
+dG8gbWFrZSBpdCBjbGVhciB0aGF0IGluIHRoZQo+ICAgZW5kIHRoaXMgaXMgYWxsIHVwIHRvIHJl
+dmlld2VyJ3MgZGlzY3JldGlvbiwgYXMgdXN1YWwgKEphbmkpLgo+IC0gQWxzbyBpbiB0aGUgdGl0
+bGUgcy9tYW5kYXRvcnkvc3Ryb25nbHkgc3VnZ2VzdGVkLyAobWUpCj4gLSBNYWtlIGl0IGNsZWFy
+IHdlJ3JlIG5vdCBnb2luZyB0byBibG9jayBmZWF0dXJlcyBpZiBhIHRlc3RjYXNlIGlzIG5vdAo+
+ICAgZmVhc2libGUsIGdpdmVuIGh3IGFuZCBzdGF0ZSBvZiBpZ3QsIGJvdGggaGF2aW5nIHNvbWUg
+Z29vZCBnYXBzIGluCj4gICB3aGF0IGNhbiBiZSB0ZXN0ZWQgKEhhcnJ5LCBFcmljLCBTZWFuLCAu
+Li4pLgo+Cj4gMTogaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC8xMDY0ODg1MS8K
+PiBDYzogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+Cj4gQ2M6IEFya2Fk
+aXVzeiBIaWxlciA8YXJrYWRpdXN6LmhpbGVyQGludGVsLmNvbT4KPiBDYzogTGl2aXUgRHVkYXUg
+PGxpdml1LmR1ZGF1QGFybS5jb20+Cj4gQ2M6IFNlYW4gUGF1bCA8c2VhbkBwb29ybHkucnVuPgo+
+IENjOiBFcmljIEFuaG9sdCA8ZXJpY0BhbmhvbHQubmV0Pgo+IENjOiBBbGV4IERldWNoZXIgPGFs
+ZXhhbmRlci5kZXVjaGVyQGFtZC5jb20+Cj4gQ2M6IERhdmUgQWlybGllIDxhaXJsaWVkQHJlZGhh
+dC5jb20+Cj4gQ2M6IERhbmllbCBTdG9uZSA8ZGFuaWVsQGZvb2lzaGJhci5vcmc+Cj4gQ2M6ICJX
+ZW50bGFuZCwgSGFycnkiIDxIYXJyeS5XZW50bGFuZEBhbWQuY29tPgo+IENjOiBCcmlhbiBTdGFy
+a2V5IDxCcmlhbi5TdGFya2V5QGFybS5jb20+Cj4gUmV2aWV3ZWQtYnk6IEVyaWMgQW5ob2x0IDxl
+cmljQGFuaG9sdC5uZXQ+ICh2MSkKPiBBY2tlZC1ieTogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0
+dmFsYUBpbnRlbC5jb20+Cj4gQWNrZWQtYnk6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6Lmhp
+bGVyQGludGVsLmNvbT4KPiBBY2tlZC1ieTogU2VhbiBQYXVsIDxzZWFuQHBvb3JseS5ydW4+Cj4g
+QWNrZWQtYnk6ICJXZW50bGFuZCwgSGFycnkiIDxIYXJyeS5XZW50bGFuZEBhbWQuY29tPgo+IFNp
+Z25lZC1vZmYtYnk6IERhbmllbCBWZXR0ZXIgPGRhbmllbC52ZXR0ZXJAaW50ZWwuY29tPgoKQWNr
+ZWQtYnk6IEFsZXggRGV1Y2hlciA8YWxleGFuZGVyLmRldWNoZXJAYW1kLmNvbT4KCj4gLS0tCj4g
+IERvY3VtZW50YXRpb24vZ3B1L2RybS11YXBpLnJzdCB8IDggKysrKysrKysKPiAgMSBmaWxlIGNo
+YW5nZWQsIDggaW5zZXJ0aW9ucygrKQo+Cj4gZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vZ3B1
+L2RybS11YXBpLnJzdCBiL0RvY3VtZW50YXRpb24vZ3B1L2RybS11YXBpLnJzdAo+IGluZGV4IGE3
+NTJhYTU2MWVhNC4uYzlmZDIzZWZkOTU3IDEwMDY0NAo+IC0tLSBhL0RvY3VtZW50YXRpb24vZ3B1
+L2RybS11YXBpLnJzdAo+ICsrKyBiL0RvY3VtZW50YXRpb24vZ3B1L2RybS11YXBpLnJzdAo+IEBA
+IC0yMzgsNiArMjM4LDE0IEBAIERSTSBzcGVjaWZpYyBwYXR0ZXJucy4gTm90ZSB0aGF0IEVOT1RU
+WSBoYXMgdGhlIHNsaWdodGx5IHVuaW50dWl0aXZlIG1lYW5pbmcgb2YKPiAgVGVzdGluZyBhbmQg
+dmFsaWRhdGlvbgo+ICA9PT09PT09PT09PT09PT09PT09PT09Cj4KPiArVGVzdGluZyBSZXF1aXJl
+bWVudHMgZm9yIHVzZXJzcGFjZSBBUEkKPiArLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KPiArCj4gK05ldyBjcm9zcy1kcml2ZXIgdXNlcnNwYWNlIGludGVyZmFjZSBleHRl
+bnNpb25zLCBsaWtlIG5ldyBJT0NUTCwgbmV3IEtNUwo+ICtwcm9wZXJ0aWVzLCBuZXcgZmlsZXMg
+aW4gc3lzZnMgb3IgYW55dGhpbmcgZWxzZSB0aGF0IGNvbnN0aXR1dGVzIGFuIEFQSSBjaGFuZ2UK
+PiArc2hvdWxkIGhhdmUgZHJpdmVyLWFnbm9zdGljIHRlc3RjYXNlcyBpbiBJR1QgZm9yIHRoYXQg
+ZmVhdHVyZSwgaWYgc3VjaCBhIHRlc3QKPiArY2FuIGJlIHJlYXNvbmFibHkgbWFkZSB1c2luZyBJ
+R1QgZm9yIHRoZSB0YXJnZXQgaGFyZHdhcmUuCj4gKwo+ICBWYWxpZGF0aW5nIGNoYW5nZXMgd2l0
+aCBJR1QKPiAgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4KPiAtLQo+IDIuMjAuMQo+Cj4g
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBkcmktZGV2
+ZWwgbWFpbGluZyBsaXN0Cj4gZHJpLWRldmVsQGxpc3RzLmZyZWVkZXNrdG9wLm9yZwo+IGh0dHBz
+Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vZHJpLWRldmVsCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
+ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
