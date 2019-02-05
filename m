@@ -1,21 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM03-CO1-obe.outbound.protection.outlook.com
- (mail-eopbgr790088.outbound.protection.outlook.com [40.107.79.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D336B6E72E
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Feb 2019 16:16:55 +0000 (UTC)
-From: "Wentland, Harry" <Harry.Wentland@amd.com>
-Date: Tue, 5 Feb 2019 16:16:53 +0000
-Message-ID: <f7166cf9-a4ab-7295-a2f4-742d4e857de8@amd.com>
-References: <20190131144846.25270-1-nicholas.kazlauskas@amd.com>
- <7f3ad6a8-0ce9-015f-7449-4b0a2aa792c2@linux.intel.com>
- <c61c5c90-9fbe-c75d-5c08-dde0c84e3ffb@amd.com>
- <dbd60f69-fbd4-d71b-bc71-8b906e6452db@linux.intel.com>
-In-Reply-To: <dbd60f69-fbd4-d71b-bc71-8b906e6452db@linux.intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 830866E135
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Feb 2019 18:45:02 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Tue, 5 Feb 2019 18:45:00 +0000
+Message-ID: <bfdf6a356fc2f95bbb3fd3b4e9a39473afe898f1.camel@intel.com>
+References: <20190204205556.32512-1-dhinakaran.pandiyan@intel.com>
+In-Reply-To: <20190204205556.32512-1-dhinakaran.pandiyan@intel.com>
 Content-Language: en-US
-Content-ID: <A5F8DFA946F3784391CC8F723DD842F5@namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] lib/igt_kms: Don't reset VRR_ENABLED
- on every commit
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_fbcon_fbt: Do a full
+ connector probe.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,80 +18,104 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============2132509797=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, "Kazlauskas,
- Nicholas" <Nicholas.Kazlauskas@amd.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMjAxOS0wMS0zMSAxMDo1NyBhLm0uLCBNYWFydGVuIExhbmtob3JzdCB3cm90ZToNCj4gT3Ag
-MzEtMDEtMjAxOSBvbSAxNjowOSBzY2hyZWVmIEthemxhdXNrYXMsIE5pY2hvbGFzOg0KPj4gT24g
-MS8zMS8xOSA5OjUzIEFNLCBNYWFydGVuIExhbmtob3JzdCB3cm90ZToNCj4+PiBPcCAzMS0wMS0y
-MDE5IG9tIDE1OjQ4IHNjaHJlZWYgTmljaG9sYXMgS2F6bGF1c2thczoNCj4+Pj4gSWYgdGhlIFZS
-UiB0ZXN0cyBmYWlsZWQgdGhlbiB0aGVyZSB3YXMgYSBjaGFuY2UgdGhhdCBWUlIgY291bGQgYmUN
-Cj4+Pj4gbGVmdCBlbmFibGVkIHdoZW4gZXhpdGluZyB0aGUgdGVzdCBzbyB0aGUgVlJSX0VOQUJM
-RUQgcHJvcGVydHkgd2FzDQo+Pj4+IHJlc2V0IHRvIDAgd2hlbmV2ZXIgdGhlIHBpcGUgd2FzIHJl
-c2V0Lg0KPj4+Pg0KPj4+PiBIb3dldmVyLCBpbiBkb2luZyBzbyB0aGUgcGlwZSdzIHN0YXRlIHdh
-cyBjb25zaWRlcmVkIGNoYW5nZWQgZXZlbg0KPj4+PiBpZiBWUlJfRU5BQkxFRCB3YXMgYWxyZWFk
-eSAwLiBUaGlzIGNhdXNlcyB0aGUgcGlwZSB0byBiZSBhZGRlZCB0bw0KPj4+PiBjb21taXRzIHdo
-ZXJlIGl0IHByZXZpb3VzbHkgd2Fzbid0Lg0KPj4+Pg0KPj4+PiBPdGhlciB0ZXN0cyB3aXRoIHBy
-b3BlcnRpZXMgdGhhdCBjYW4gcGVyc2lzdCBmb3IgZmFpbHVyZXMgKGxpa2UgY29sb3INCj4+Pj4g
-bWFuYWdlbWVudCkgZG9uJ3QgYm90aGVyIHJlc2V0dGluZyB0aGUgcHJvcGVydGllcyAtIHNvIHRo
-aXMgcGF0Y2gNCj4+Pj4gY2hhbmdlcyBWUlJfRU5BQkxFRCB0byB3b3JrIHRoZSBzYW1lLg0KPj4+
-Pg0KPj4+PiBDYzogSGFycnkgV2VudGxhbmQgPGhhcnJ5LndlbnRsYW5kQGFtZC5jb20+DQo+Pj4+
-IENjOiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4NCj4+Pj4gQ2M6IE1h
-YXJ0ZW4gTGFua2hvcnN0IDxtYWFydGVuLmxhbmtob3JzdEBsaW51eC5pbnRlbC5jb20+DQo+Pj4+
-IEJ1Z3ppbGxhOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0x
-MDk0OTANCj4+Pj4gU2lnbmVkLW9mZi1ieTogTmljaG9sYXMgS2F6bGF1c2thcyA8bmljaG9sYXMu
-a2F6bGF1c2thc0BhbWQuY29tPg0KPj4+PiAtLS0NCj4+Pj4gICBsaWIvaWd0X2ttcy5jIHwgMyAt
-LS0NCj4+Pj4gICAxIGZpbGUgY2hhbmdlZCwgMyBkZWxldGlvbnMoLSkNCj4+Pj4NCj4+Pj4gZGlm
-ZiAtLWdpdCBhL2xpYi9pZ3Rfa21zLmMgYi9saWIvaWd0X2ttcy5jDQo+Pj4+IGluZGV4IDcxZGY5
-OGQyLi4wYmVjMzczNCAxMDA2NDQNCj4+Pj4gLS0tIGEvbGliL2lndF9rbXMuYw0KPj4+PiArKysg
-Yi9saWIvaWd0X2ttcy5jDQo+Pj4+IEBAIC0xNzkxLDkgKzE3OTEsNiBAQCBzdGF0aWMgdm9pZCBp
-Z3RfcGlwZV9yZXNldChpZ3RfcGlwZV90ICpwaXBlKQ0KPj4+PiAgIAlpZ3RfcGlwZV9vYmpfc2V0
-X3Byb3BfdmFsdWUocGlwZSwgSUdUX0NSVENfQUNUSVZFLCAwKTsNCj4+Pj4gICAJaWd0X3BpcGVf
-b2JqX2NsZWFyX3Byb3BfY2hhbmdlZChwaXBlLCBJR1RfQ1JUQ19PVVRfRkVOQ0VfUFRSKTsNCj4+
-Pj4gICANCj4+Pj4gLQlpZiAoaWd0X3BpcGVfb2JqX2hhc19wcm9wKHBpcGUsIElHVF9DUlRDX1ZS
-Ul9FTkFCTEVEKSkNCj4+Pj4gLQkJaWd0X3BpcGVfb2JqX3NldF9wcm9wX3ZhbHVlKHBpcGUsIElH
-VF9DUlRDX1ZSUl9FTkFCTEVELCAwKTsNCj4+Pj4gLQ0KPj4+PiAgIAlwaXBlLT5vdXRfZmVuY2Vf
-ZmQgPSAtMTsNCj4+Pj4gICB9DQo+Pj4+ICAgIA0KPj4+IEl0J3Mgb2sgdG8gZm9yY2UgaXQgZGlz
-YWJsZWQgaWYgYW55IHRlc3QgY291bGQgc3RhcnQgZmFpbGluZyBiZWNhdXNlIG9mIGl0PyBNb3N0
-IHRlc3RzIGFyZSBwcm9iYWJseSBub3QgYXdhcmUgb2YgVlJSLg0KPj4+DQo+PiBBIGxvdCBvZiBh
-dG9taWMgc3RhdGUgY2FuIHBlcnNpc3Qgb3V0c2lkZSBvZiBhbiBpbnRlbmRlZCB0ZXN0LiBJIA0K
-Pj4gY291bGRuJ3QgcmVhbGx5IGZpbmQgYW55d2hlcmUgdGhhdCBleHBsaWNpdGx5IHJlc2V0cyBD
-UlRDIHByb3BlcnRpZXMgDQo+PiBsaWtlIGdhbW1hL2JhY2tncm91bmQgY29sb3IvZXRjLg0KPj4N
-Cj4+IFNvIEkgY3VycmVudGx5IGRpc2FibGUgdnJyIGJlZm9yZSBJIGNoZWNrIHRoZSBtYWluIHBh
-c3MvZmFpbCB0aHJlc2hvbGQgDQo+PiBpbiB0aGUgdGVzdC4gVGhlcmUgYXJlIGEgZmV3IGNhc2Vz
-IHdoZXJlIHRoZSB0ZXN0IGNhbiBzdGlsbCBmYWlsIHdoaWxlIA0KPj4gaXQncyBlbmFibGVkLCBi
-dXQgdGhvc2UgYXJlIG1vc3RseSBzeXN0ZW0gZmFpbHVyZXMuIFRoaXMgYml0IGluIGlndF9rbXMg
-DQo+PiBpcyBraW5kIG9mIHJlZHVuZGFudCBpbiB0aGF0IHNlbnNlLg0KPj4NCj4+IFRoaXMgcGF0
-Y2ggYWltcyB0byBrZWVwIHRoaW5ncyB0aGV5IHdlcmUgYmVmb3JlLCB3aGVyZSBvbmUgdGVzdCBm
-YWlsdXJlIA0KPj4gY2FuIGNhc2NhZGUgYW5kIGNhdXNlIG1hbnkgb3RoZXIgdGVzdHMgdG8gZmFp
-bC4gSSBwZXJzb25hbGx5IGZhdm9yIGZ1bGwgDQo+PiB0ZXN0IGlzb2xhdGlvbiB3aGVuIHBvc3Np
-YmxlIHNvIEkgY2FuIHRlbGwgd2hhdCBzcGVjaWZpY2FsbHkgd2VudCB3cm9uZyANCj4+IHdoZW4g
-c29tZXRoaW5nIGhhcHBlbnMgYnV0IHdoZW4gZXZlcnl0aGluZyBicmVha3MgSSBndWVzcyBpdCBn
-aXZlcyBtb3JlIA0KPj4gaW5jZW50aXZlIHRvIGFkZHJlc3MgdGhlIGJyZWFrYWdlIGl0c2VsZi4N
-Cj4gDQo+IEhtbSwgSSBndWVzcyB0aGVyZSdzIHByZWNlZGVuY2UgdG8gdGhpcyB3aXRoIHRoZSBv
-dGhlciBwcm9wZXJ0aWVzLiBNYXliZSB3ZSBzaG91bGQgY2xlYXIgb3V0IGdhbW1hL2V0YyBhcyB3
-ZWxsIGZvciBhIHNhbmVyIGV4cGVyaWVuY2UsIGJ1dCBpdCAncyBoYXJtbGVzcyBmb3Igbm93Lg0K
-PiANCj4gWW91J3JlIGZyZWUgdG8gY2hvb3NlIHRpZiB5b3Ugd2FudCB0byBrZWVwIHJlc2V0dGlu
-ZyB0aGlzIG9yIG5vdC4gSSdtIGEgYml0IGluZGlmZmVyZW50LCBidXQgc29tZSB0ZXN0cyBtYXkg
-bm90IGhhbmRsZSBWUlIgZW5hYmxlZCBjb3JyZWN0bHkuDQo+IA0KPiBJIHRoaW5rIGNhc2NhZGlu
-ZyB0ZXN0cyBzaG91bGQgYmUgYXZvaWRlZCBwZXJzb25hbGx5LCBpZ3RfZGlzcGxheV9yZXNldCgp
-IHNob3VsZCByZWNvdmVyIGZyb20gYSBub3QgdG9vIHdlaXJkIHN0YXRlLCBidXQgdGhlbiBhZ2Fp
-biBpdCBzaG91bGQgYWxzbyBjbGVhciBjc2MvZ2FtbWEvZXRjIHRoZW4uIE9oIHdlbGwuLg0KPiAN
-Cj4gDQo+IFJldmlld2VkLWJ5OiBNYWFydGVuIExhbmtob3JzdCA8bWFhcnRlbi5sYW5raG9yc3RA
-bGludXguaW50ZWwuY29tPg0KPiANCg0KTm90IG5pY2UgdGhhdCBpZ3RfZGlzcGxheV9yZXNldCBj
-YW4ndCBwcm9wZXJseSByZXNldCB0aGluZ3Mgd2l0aG91dCBwb3RlbnRpYWxseSBpbXBhY3Rpbmcg
-dGVzdHMgdGhhdCBydW4gYWZ0ZXIuIFRoaXMgbWlnaHQgaGF2ZSB1bmludGVuZGVkIGNvbnNlcXVl
-bmNlcyBidXQgd291bGQgaXQgbWFrZSBzZW5zZSB0byBkbyBhIGNvbW1pdCBmcm9tIGlndF9kaXNw
-bGF5X3Jlc2V0IHRvIGNvbW1pdCB0aGUgc3RhdGUgYW5kIHRoZXJlZm9yZSBhY3R1YWxseSBnbyBp
-bnRvIGFueSBzdWJzZXF1ZW50IHRlc3Qgd2l0aCBhICJkZWZhdWx0IiBzdGF0ZT8NCg0KRWl0aGVy
-IHdheSwgYmFzZWQgb24gY3VycmVudCBiZWhhdmlvciB0aGlzIHBhdGNoIGlzDQpSZXZpZXdlZC1i
-eTogSGFycnkgV2VudGxhbmQgPGhhcnJ5LndlbnRsYW5kQGFtZC5jb20+DQoNCkhhcnJ5DQpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxp
-bmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVk
-ZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+--===============2132509797==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-n45tWBwrPoyOzV3DQt3w"
+
+--=-n45tWBwrPoyOzV3DQt3w
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, 2019-02-04 at 12:55 -0800, Dhinakaran Pandiyan wrote:
+> kms_fbtcon_fbt appears to fail when it is the first test that is
+> executed
+> after module load.
+> 'Test requirement not met in function set_mode_for_one_screen, file
+> ../tests/kms_fbcon_fbt.c:153:
+> Test requirement: i < drm->res->count_connectors'
+> The problem seems to be that the 1920x1080 bios fb is re-used and
+> that
+> prunes the 4k mode before test execution. Later, when the test does
+> not
+> do a full-probe, the eDP connector does not have any valid modes.
+
+drmModeGetConnectorCurrent() will get only one mode, the active one.
+
+>=20
+> <7>[   12.444411] [drm:drm_mode_debug_printmodeline] Modeline
+> 191:"3840x2160" 60 533250 3840 3888 3920 4000 2160 2163 2168 2222
+> 0x48
+> 0xa
+> <7>[   12.444418] [drm:drm_mode_prune_invalid] Not using 3840x2160
+> mode:
+> VIRTUAL_X
+>=20
+> Fix this by calling drmModeGetConnector() instead
+> drmModeGetConnectorCurrent()
+>=20
+> Note that that test is still expected to fail as PSR status checks
+> are
+> broken.
+
+Reviewed-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
+
+>=20
+> Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=3D109518
+> Signed-off-by: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
+> ---
+>  tests/kms_fbcon_fbt.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/tests/kms_fbcon_fbt.c b/tests/kms_fbcon_fbt.c
+> index 9d0d5a36..40465a1c 100644
+> --- a/tests/kms_fbcon_fbt.c
+> +++ b/tests/kms_fbcon_fbt.c
+> @@ -67,7 +67,7 @@ static void setup_drm(struct drm_info *drm)
+>  	igt_assert(drm->res->count_connectors <=3D MAX_CONNECTORS);
+> =20
+>  	for (i =3D 0; i < drm->res->count_connectors; i++)
+> -		drm->connectors[i] =3D drmModeGetConnectorCurrent(drm-
+> >fd,
+> +		drm->connectors[i] =3D drmModeGetConnector(drm->fd,
+>  						drm->res-
+> >connectors[i]);
+> =20
+>  	kmstest_set_vt_graphics_mode();
+
+--=-n45tWBwrPoyOzV3DQt3w
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlxZ2aoACgkQVenbO/mO
+Wklqqwf8DsgUu9Ph3Nz1kdusbTr0WFEQ1FRjMftIEe7zN3LpMHTUFqfSxDUMXQRT
+Yw3XLa5YzrvHaBQTpbmZ+jeAdTdl4z9YbWhcbivUpD6beKDOXyXB852a3jwAR8CM
+zx0w6nVYWz1TzA1MQaeV/XjMPs0I5GjwGjufiK9nfohHScCTkJPhEJHTwAUVZOjq
+8s9eAm2QyxOIWHyaHgRcSAooAeB9G/cgHekRaQR1tf86+fmFTwC0BNzQjwDjPAlt
+RAp4C9VUe1JoQ6p5qTGax/5q0TOD5PYbn/tySvn5rc2VWAu1VAct4FaMlNDh8Ig6
+lW8K2dAMegxgwkafGs9hU0HWdHKR+g==
+=9IMo
+-----END PGP SIGNATURE-----
+
+--=-n45tWBwrPoyOzV3DQt3w--
+
+--===============2132509797==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============2132509797==--
