@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20190208121140.23134.95113@emeril.freedesktop.org>
-References: <20190208102612.17217-1-tvrtko.ursulin@linux.intel.com>
- <20190208121140.23134.95113@emeril.freedesktop.org>
-Message-ID: <154962816864.3378.8128003699781483834@skylake-alporthouse-com>
-Date: Fri, 08 Feb 2019 12:16:13 +0000
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdG9vbHMv?=
- =?utf-8?q?intel=5Fgpu=5Ftop=3A_Add_support_for_stdout_logging?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 08 Feb 2019 12:29:12 -0000
+Message-ID: <20190208122912.23132.54265@emeril.freedesktop.org>
+References: <20190208120351.18505-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20190208120351.18505-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5B1/2=5D_tools/intel=5Fgpu=5Ftop=3A_Add_support?=
+ =?utf-8?q?_for_stdout_logging?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,21 +15,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Patchwork <patchwork@emeril.freedesktop.org>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBQYXRjaHdvcmsgKDIwMTktMDItMDggMTI6MTE6NDApCj4gPT0gU2VyaWVzIERldGFp
-bHMgPT0KPiAKPiBTZXJpZXM6IHRvb2xzL2ludGVsX2dwdV90b3A6IEFkZCBzdXBwb3J0IGZvciBz
-dGRvdXQgbG9nZ2luZwo+IFVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3Jn
-L3Nlcmllcy81NjM4OS8KPiBTdGF0ZSA6IHN1Y2Nlc3MKPiAKPiA9PSBTdW1tYXJ5ID09Cj4gCj4g
-Q0kgQnVnIExvZyAtIGNoYW5nZXMgZnJvbSBJR1RfNDgxNF9mdWxsIC0+IElHVFBXXzIzNjBfZnVs
-bAo+ID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0K
-PiAKPiBTdW1tYXJ5Cj4gLS0tLS0tLQoKU2hvdWxkIHdlIGFkZCBhIHNhbml0eWNoZWNrIHRvIGln
-dC90b29sc190ZXN0LmMgPwotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVz
-a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9p
-Z3QtZGV2Cg==
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggWzEvMl0g
+dG9vbHMvaW50ZWxfZ3B1X3RvcDogQWRkIHN1cHBvcnQgZm9yIHN0ZG91dCBsb2dnaW5nClVSTCAg
+IDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy81NjM5My8KU3RhdGUg
+OiBzdWNjZXNzCgo9PSBTdW1tYXJ5ID09CgpDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIElHVF80
+ODE0IC0+IElHVFBXXzIzNjIKPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PQoKU3VtbWFyeQotLS0tLS0tCgogICoqU1VDQ0VTUyoqCgogIE5vIHJlZ3Jl
+c3Npb25zIGZvdW5kLgoKICBFeHRlcm5hbCBVUkw6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNr
+dG9wLm9yZy9hcGkvMS4wL3Nlcmllcy81NjM5My9yZXZpc2lvbnMvMS9tYm94LwoKS25vd24gaXNz
+dWVzCi0tLS0tLS0tLS0tLQoKICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV18y
+MzYyIHRoYXQgY29tZSBmcm9tIGtub3duIGlzc3VlczoKCiMjIyBJR1QgY2hhbmdlcyAjIyMKCiMj
+IyMgSXNzdWVzIGhpdCAjIyMjCgogICogaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZV9ldmljdDoKICAg
+IC0gZmktYnN3LWtlZmthOiAgICAgICBQQVNTIC0+IERNRVNHLVdBUk4gW2ZkbyMxMDc3MDldCgog
+ICogaWd0QGttc19jaGFtZWxpdW1AaGRtaS1ocGQtZmFzdDoKICAgIC0gZmkta2JsLTc1MDB1OiAg
+ICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDk0ODVdCgogIAogIHtuYW1lfTogVGhpcyBlbGVtZW50
+IGlzIHN1cHByZXNzZWQuIFRoaXMgbWVhbnMgaXQgaXMgaWdub3JlZCB3aGVuIGNvbXB1dGluZwog
+ICAgICAgICAgdGhlIHN0YXR1cyBvZiB0aGUgZGlmZmVyZW5jZSAoU1VDQ0VTUywgV0FSTklORywg
+b3IgRkFJTFVSRSkuCgogIFtmZG8jMTA3NzA5XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9y
+Zy9zaG93X2J1Zy5jZ2k/aWQ9MTA3NzA5CiAgW2ZkbyMxMDkyNzFdOiBodHRwczovL2J1Z3MuZnJl
+ZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkyNzEKICBbZmRvIzEwOTI3OF06IGh0dHBz
+Oi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI3OAogIFtmZG8jMTA5
+NDg1XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5NDg1
+CiAgW2ZkbyMxMDk1MjddOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNn
+aT9pZD0xMDk1MjcKCgpQYXJ0aWNpcGF0aW5nIGhvc3RzICg0NSAtPiA0MikKLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tCgogIEFkZGl0aW9uYWwgKDMpOiBmaS1oc3ctNDc3MHIgZmktYnl0
+LWoxOTAwIGZpLWdkZy01NTEgCiAgTWlzc2luZyAgICAoNik6IGZpLWtibC1zb3Jha2EgZmktaWxr
+LW01NDAgZmktYnl0LXNxdWF3a3MgZmktYnN3LWN5YW4gZmkta2JsLXgxMjc1IGZpLWljbC15IAoK
+CkJ1aWxkIGNoYW5nZXMKLS0tLS0tLS0tLS0tLQoKICAgICogSUdUOiBJR1RfNDgxNCAtPiBJR1RQ
+V18yMzYyCgogIENJX0RSTV81NTY2OiBkYzhkMjczOTMyNTQzMmRkOTY5MDI4NTUwZTllOWIzMDcw
+Yjc2ZGIxIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xpbnV4CiAgSUdU
+UFdfMjM2MjogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18y
+MzYyLwogIElHVF80ODE0OiBjZWMwNDZkNzI5NDRhMmQ1NTljZTViZDgzMzU4ZjA4ZjIwNDU0MDA1
+IEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcveG9yZy9hcHAvaW50ZWwtZ3B1LXRvb2xz
+Cgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
+MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yMzYyLwpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3Rz
+LmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
+c3RpbmZvL2lndC1kZXYK
