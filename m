@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E9B926E05F
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Feb 2019 07:06:54 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4637D6E11C
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Feb 2019 07:10:21 +0000 (UTC)
 References: <20190207092136.10659-1-maarten.lankhorst@linux.intel.com>
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-Message-ID: <9862804b-9869-0a0d-2866-a221bd4a72fe@intel.com>
-Date: Fri, 8 Feb 2019 12:36:49 +0530
+Message-ID: <b91fedae-4be6-ac79-6aa9-381ea3cef986@intel.com>
+Date: Fri, 8 Feb 2019 12:40:18 +0530
 MIME-Version: 1.0
 In-Reply-To: <20190207092136.10659-1-maarten.lankhorst@linux.intel.com>
 Content-Language: en-US
@@ -18,164 +18,477 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: multipart/mixed; boundary="===============1061954048=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Ck9uIDA3LUZlYi0xOSAyOjUxIFBNLCBNYWFydGVuIExhbmtob3JzdCB3cm90ZToKPiBTaWduZWQt
-b2ZmLWJ5OiBNYWFydGVuIExhbmtob3JzdCA8bWFhcnRlbi5sYW5raG9yc3RAbGludXguaW50ZWwu
-Y29tPgo+IC0tLQo+ICAgbGliL2lndF9jb2xvcl9lbmNvZGluZy5jIHwgODMgKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLQo+ICAgbGliL2lndF9jb2xvcl9lbmNvZGluZy5o
-IHwgIDkgKysrKy0KPiAgIGxpYi9pZ3RfZmIuYyAgICAgICAgICAgICB8IDEwICsrKy0tCj4gICAz
-IGZpbGVzIGNoYW5nZWQsIDc5IGluc2VydGlvbnMoKyksIDIzIGRlbGV0aW9ucygtKQo+Cj4gZGlm
-ZiAtLWdpdCBhL2xpYi9pZ3RfY29sb3JfZW5jb2RpbmcuYyBiL2xpYi9pZ3RfY29sb3JfZW5jb2Rp
-bmcuYwo+IGluZGV4IDAzZTE2ZTBjOTY1OC4uNGNiZTE4ZTIxN2UzIDEwMDY0NAo+IC0tLSBhL2xp
-Yi9pZ3RfY29sb3JfZW5jb2RpbmcuYwo+ICsrKyBiL2xpYi9pZ3RfY29sb3JfZW5jb2RpbmcuYwo+
-IEBAIC0yNCw2ICsyNCw4IEBACj4gICAjaW5jbHVkZSAiaWd0X2NvbG9yX2VuY29kaW5nLmgiCj4g
-ICAjaW5jbHVkZSAiaWd0X21hdHJpeC5oIgo+ICAgI2luY2x1ZGUgImlndF9jb3JlLmgiCj4gKyNp
-bmNsdWRlICJpZ3RfZmIuaCIKPiArI2luY2x1ZGUgImRybXRlc3QuaCIKPiAgIAo+ICAgc3RydWN0
-IGNvbG9yX2VuY29kaW5nIHsKPiAgIAlmbG9hdCBrciwga2I7Cj4gQEAgLTg1LDYwICs4NywxMDUg
-QEAgc3RhdGljIHN0cnVjdCBpZ3RfbWF0NCB5Y2Jjcl90b19yZ2JfbWF0cml4KGNvbnN0IHN0cnVj
-dCBjb2xvcl9lbmNvZGluZyAqZSkKPiAgIAlyZXR1cm4gcmV0Owo+ICAgfQo+ICAgCj4gLXN0YXRp
-YyBzdHJ1Y3QgaWd0X21hdDQgeWNiY3JfaW5wdXRfY29udmVydF9tYXRyaXgoZW51bSBpZ3RfY29s
-b3JfcmFuZ2UgY29sb3JfcmFuZ2UpCj4gK3N0YXRpYyBzdHJ1Y3QgaWd0X21hdDQgeWNiY3JfaW5w
-dXRfY29udmVydF9tYXRyaXgoZW51bSBpZ3RfY29sb3JfcmFuZ2UgY29sb3JfcmFuZ2UsIGZsb2F0
-IHNjYWxlLAo+ICsJCQkJCQkgIGZsb2F0IG9mc195LCBmbG9hdCBtYXhfeSwKPiArCQkJCQkJICBm
-bG9hdCBvZnNfY2JjciwgZmxvYXQgbWlkX2NiY3IsIGZsb2F0IG1heF9jYmNyLAo+ICsJCQkJCQkg
-IGZsb2F0IG1heF92YWwpCj4gICB7Cj4gICAJc3RydWN0IGlndF9tYXQ0IHQsIHM7Cj4gICAKPiAg
-IAlpZiAoY29sb3JfcmFuZ2UgPT0gSUdUX0NPTE9SX1lDQkNSX0ZVTExfUkFOR0UpIHsKPiAtCQl0
-ID0gaWd0X21hdHJpeF90cmFuc2xhdGUoMC4wZiwgLTEyOC4wZiwgLTEyOC4wZik7Cj4gLQkJcyA9
-IGlndF9tYXRyaXhfc2NhbGUoMS4wZiwgMi4wZiwgMi4wZik7Cj4gKwkJdCA9IGlndF9tYXRyaXhf
-dHJhbnNsYXRlKDAuZiwgLW1pZF9jYmNyLCAtbWlkX2NiY3IpOwo+ICsJCXMgPSBpZ3RfbWF0cml4
-X3NjYWxlKHNjYWxlLCAyLjBmICogc2NhbGUsIDIuMGYgKiBzY2FsZSk7Cj4gICAJfSBlbHNlIHsK
-PiAtCQl0ID0gaWd0X21hdHJpeF90cmFuc2xhdGUoLTE2LjBmLCAtMTI4LjBmLCAtMTI4LjBmKTsK
-PiAtCQlzID0gaWd0X21hdHJpeF9zY2FsZSgyNTUuMGYgLyAoMjM1LjBmIC0gMTYuMGYpLAo+IC0J
-CQkJICAgICAyNTUuMGYgLyAoMjQwLjBmIC0gMTI4LjBmKSwKPiAtCQkJCSAgICAgMjU1LjBmIC8g
-KDI0MC4wZiAtIDEyOC4wZikpOwo+ICsJCXQgPSBpZ3RfbWF0cml4X3RyYW5zbGF0ZSgtb2ZzX3ks
-IC1taWRfY2JjciwgLW1pZF9jYmNyKTsKPiArCQlzID0gaWd0X21hdHJpeF9zY2FsZShzY2FsZSAq
-IG1heF92YWwgLyAobWF4X3kgLSBvZnNfeSksCj4gKwkJCQkgICAgIHNjYWxlICogbWF4X3ZhbCAv
-IChtYXhfY2JjciAtIG1pZF9jYmNyKSwKPiArCQkJCSAgICAgc2NhbGUgKiBtYXhfdmFsIC8gKG1h
-eF9jYmNyIC0gbWlkX2NiY3IpKTsKPiAgIAl9Cj4gICAKPiAgIAlyZXR1cm4gaWd0X21hdHJpeF9t
-dWx0aXBseSgmcywgJnQpOwo+ICAgfQo+ICAgCj4gLXN0YXRpYyBzdHJ1Y3QgaWd0X21hdDQgeWNi
-Y3Jfb3V0cHV0X2NvbnZlcnRfbWF0cml4KGVudW0gaWd0X2NvbG9yX3JhbmdlIGNvbG9yX3Jhbmdl
-KQo+ICtzdGF0aWMgc3RydWN0IGlndF9tYXQ0IHljYmNyX291dHB1dF9jb252ZXJ0X21hdHJpeChl
-bnVtIGlndF9jb2xvcl9yYW5nZSBjb2xvcl9yYW5nZSwgZmxvYXQgc2NhbGUsCj4gKwkJCQkJCSAg
-IGZsb2F0IG9mc195LCBmbG9hdCBtYXhfeSwKPiArCQkJCQkJICAgZmxvYXQgb2ZzX2NiY3IsIGZs
-b2F0IG1pZF9jYmNyLCBmbG9hdCBtYXhfY2JjciwKPiArCQkJCQkJICAgZmxvYXQgbWF4X3ZhbCkK
-PiAgIHsKPiAgIAlzdHJ1Y3QgaWd0X21hdDQgcywgdDsKPiAgIAo+ICAgCWlmIChjb2xvcl9yYW5n
-ZSA9PSBJR1RfQ09MT1JfWUNCQ1JfRlVMTF9SQU5HRSkgewo+IC0JCXMgPSBpZ3RfbWF0cml4X3Nj
-YWxlKDEuMGYsIDAuNWYsIDAuNWYpOwo+IC0JCXQgPSBpZ3RfbWF0cml4X3RyYW5zbGF0ZSgwLjBm
-LCAxMjguMGYsIDEyOC4wZik7Cj4gKwkJcyA9IGlndF9tYXRyaXhfc2NhbGUoc2NhbGUsIDAuNWYg
-KiBzY2FsZSwgMC41ZiAqIHNjYWxlKTsKPiArCQl0ID0gaWd0X21hdHJpeF90cmFuc2xhdGUoMC5m
-LCBtaWRfY2JjciwgbWlkX2NiY3IpOwo+ICAgCX0gZWxzZSB7Cj4gLQkJcyA9IGlndF9tYXRyaXhf
-c2NhbGUoKDIzNS4wZiAtIDE2LjBmKSAvIDI1NS4wZiwKPiAtCQkJCSAgICAgKDI0MC4wZiAtIDEy
-OC4wZikgLyAyNTUuMGYsCj4gLQkJCQkgICAgICgyNDAuMGYgLSAxMjguMGYpIC8gMjU1LjBmKTsK
-PiAtCQl0ID0gaWd0X21hdHJpeF90cmFuc2xhdGUoMTYuMGYsIDEyOC4wZiwgMTI4LjBmKTsKPiAr
-CQlzID0gaWd0X21hdHJpeF9zY2FsZShzY2FsZSAqIChtYXhfeSAtIG9mc195KSAvIG1heF92YWws
-Cj4gKwkJCQkgICAgIHNjYWxlICogKG1heF9jYmNyIC0gbWlkX2NiY3IpIC8gbWF4X3ZhbCwKPiAr
-CQkJCSAgICAgc2NhbGUgKiAobWF4X2NiY3IgLSBtaWRfY2JjcikgLyBtYXhfdmFsKTsKPiArCQl0
-ID0gaWd0X21hdHJpeF90cmFuc2xhdGUob2ZzX3ksIG1pZF9jYmNyLCBtaWRfY2Jjcik7Cj4gICAJ
-fQo+ICAgCj4gICAJcmV0dXJuIGlndF9tYXRyaXhfbXVsdGlwbHkoJnQsICZzKTsKPiAgIH0KPiAg
-IAo+IC1zdHJ1Y3QgaWd0X21hdDQgaWd0X3ljYmNyX3RvX3JnYl9tYXRyaXgoZW51bSBpZ3RfY29s
-b3JfZW5jb2RpbmcgY29sb3JfZW5jb2RpbmcsCj4gK3N0YXRpYyBjb25zdCBzdHJ1Y3QgY29sb3Jf
-ZW5jb2RpbmdfZm9ybWF0IHsKPiArCXVpbnQzMl90IGZvdXJjYzsKPiArCkkgdGhpbmsgbm8gbmVl
-ZCBvZiBuZXcgbGluZXMgaGVyZS4gQ2FuIGJlIHJlbW92ZWQ/IDovCj4gKwlmbG9hdCBtYXhfdmFs
-Owo+ICsKPiArCWZsb2F0IG9mc195LCBtYXhfeSwgb2ZzX2NiY3IsIG1pZF9jYmNyLCBtYXhfY2Jj
-cjsKPiArfSBmb3JtYXRzW10gPSB7Cj4gKwl7IERSTV9GT1JNQVRfWFJHQjg4ODgsIDI1NS5mLCB9
-LAo+ICsJeyBEUk1fRk9STUFUX05WMTIsIDI1NS5mLCAxNi5mLCAyMzUuZiwgMTYuZiwgMTI4LmYs
-IDI0MC5mIH0sCj4gKwl7IERSTV9GT1JNQVRfWVVZViwgMjU1LmYsIDE2LmYsIDIzNS5mLCAxNi5m
-LCAxMjguZiwgMjQwLmYgfSwKPiArCXsgRFJNX0ZPUk1BVF9ZVllVLCAyNTUuZiwgMTYuZiwgMjM1
-LmYsIDE2LmYsIDEyOC5mLCAyNDAuZiB9LAo+ICsJeyBEUk1fRk9STUFUX1VZVlksIDI1NS5mLCAx
-Ni5mLCAyMzUuZiwgMTYuZiwgMTI4LmYsIDI0MC5mIH0sCj4gKwl7IERSTV9GT1JNQVRfVllVWSwg
-MjU1LmYsIDE2LmYsIDIzNS5mLCAxNi5mLCAxMjguZiwgMjQwLmYgfSwKPiArfTsKPiArCj4gK3N0
-YXRpYyBjb25zdCBzdHJ1Y3QgY29sb3JfZW5jb2RpbmdfZm9ybWF0ICpsb29rdXBfZm91cmNjKHVp
-bnQzMl90IGZvdXJjYykKPiArewo+ICsJaW50IGk7Ckluc2VydCBhIG5ldyBsaW5lIGhlcmU/Cj4g
-Kwlmb3IgKGkgPSAwOyBpIDwgQVJSQVlfU0laRShmb3JtYXRzKTsgaSsrKQo+ICsJCWlmIChmb3Vy
-Y2MgPT0gZm9ybWF0c1tpXS5mb3VyY2MpCj4gKwkJCXJldHVybiAmZm9ybWF0c1tpXTsKPiArCj4g
-KwlpZ3RfYXNzZXJ0X2YoMCwgIkNvdWxkIG5vdCBsb29rIHVwIGZvdXJjYyAlLjRzXG4iLCAoY2hh
-ciAqKSZmb3VyY2MpOwo+ICt9Cj4gKwo+ICtzdHJ1Y3QgaWd0X21hdDQgaWd0X3ljYmNyX3RvX3Jn
-Yl9tYXRyaXgodWludDMyX3QgZnJvbV9mb3VyY2MsCj4gKwkJCQkJdWludDMyX3QgdG9fZm91cmNj
-LAo+ICsJCQkJCWVudW0gaWd0X2NvbG9yX2VuY29kaW5nIGNvbG9yX2VuY29kaW5nLAo+ICAgCQkJ
-CQllbnVtIGlndF9jb2xvcl9yYW5nZSBjb2xvcl9yYW5nZSkKPiAgIHsKPiAgIAljb25zdCBzdHJ1
-Y3QgY29sb3JfZW5jb2RpbmcgKmUgPSAmY29sb3JfZW5jb2RpbmdzW2NvbG9yX2VuY29kaW5nXTsK
-PiAgIAlzdHJ1Y3QgaWd0X21hdDQgciwgYzsKPiArCWNvbnN0IHN0cnVjdCBjb2xvcl9lbmNvZGlu
-Z19mb3JtYXQgKmZ5Y2JjciA9IGxvb2t1cF9mb3VyY2MoZnJvbV9mb3VyY2MpOwo+ICsJY29uc3Qg
-c3RydWN0IGNvbG9yX2VuY29kaW5nX2Zvcm1hdCAqZnJnYiA9IGxvb2t1cF9mb3VyY2ModG9fZm91
-cmNjKTsKPiArCWZsb2F0IHNjYWxlID0gZnJnYi0+bWF4X3ZhbCAvIGZ5Y2Jjci0+bWF4X3ZhbDsK
-PiAgIAo+IC0JciA9IHljYmNyX2lucHV0X2NvbnZlcnRfbWF0cml4KGNvbG9yX3JhbmdlKTsKPiAr
-CWlndF9hc3NlcnQoZnljYmNyLT5vZnNfeSAmJiAhZnJnYi0+b2ZzX3kpOwo+ICsKPiArCXIgPSB5
-Y2Jjcl9pbnB1dF9jb252ZXJ0X21hdHJpeChjb2xvcl9yYW5nZSwgc2NhbGUsIGZ5Y2Jjci0+b2Zz
-X3ksIGZ5Y2Jjci0+bWF4X3ksIGZ5Y2Jjci0+b2ZzX2NiY3IsIGZ5Y2Jjci0+bWlkX2NiY3IsIGZ5
-Y2Jjci0+bWF4X2NiY3IsIGZ5Y2Jjci0+bWF4X3ZhbCk7Cj4gICAJYyA9IHljYmNyX3RvX3JnYl9t
-YXRyaXgoZSk7Cj4gICAKPiAgIAlyZXR1cm4gaWd0X21hdHJpeF9tdWx0aXBseSgmYywgJnIpOwo+
-ICAgfQo+ICAgCj4gLXN0cnVjdCBpZ3RfbWF0NCBpZ3RfcmdiX3RvX3ljYmNyX21hdHJpeChlbnVt
-IGlndF9jb2xvcl9lbmNvZGluZyBjb2xvcl9lbmNvZGluZywKPiArc3RydWN0IGlndF9tYXQ0IGln
-dF9yZ2JfdG9feWNiY3JfbWF0cml4KHVpbnQzMl90IGZyb21fZm91cmNjLAo+ICsJCQkJCXVpbnQz
-Ml90IHRvX2ZvdXJjYywKPiArCQkJCQllbnVtIGlndF9jb2xvcl9lbmNvZGluZyBjb2xvcl9lbmNv
-ZGluZywKPiAgIAkJCQkJZW51bSBpZ3RfY29sb3JfcmFuZ2UgY29sb3JfcmFuZ2UpCj4gICB7Cj4g
-ICAJY29uc3Qgc3RydWN0IGNvbG9yX2VuY29kaW5nICplID0gJmNvbG9yX2VuY29kaW5nc1tjb2xv
-cl9lbmNvZGluZ107Cj4gKwljb25zdCBzdHJ1Y3QgY29sb3JfZW5jb2RpbmdfZm9ybWF0ICpmcmdi
-ID0gbG9va3VwX2ZvdXJjYyhmcm9tX2ZvdXJjYyk7Cj4gKwljb25zdCBzdHJ1Y3QgY29sb3JfZW5j
-b2RpbmdfZm9ybWF0ICpmeWNiY3IgPSBsb29rdXBfZm91cmNjKHRvX2ZvdXJjYyk7Cj4gICAJc3Ry
-dWN0IGlndF9tYXQ0IGMsIHI7Cj4gKwlmbG9hdCBzY2FsZSA9IGZ5Y2Jjci0+bWF4X3ZhbCAvIGZy
-Z2ItPm1heF92YWw7Cj4gKwo+ICsJaWd0X2Fzc2VydChmeWNiY3ItPm9mc195ICYmICFmcmdiLT5v
-ZnNfeSk7Cj4gICAKPiAgIAljID0gcmdiX3RvX3ljYmNyX21hdHJpeChlKTsKPiAtCXIgPSB5Y2Jj
-cl9vdXRwdXRfY29udmVydF9tYXRyaXgoY29sb3JfcmFuZ2UpOwo+ICsJciA9IHljYmNyX291dHB1
-dF9jb252ZXJ0X21hdHJpeChjb2xvcl9yYW5nZSwgc2NhbGUsIGZ5Y2Jjci0+b2ZzX3ksIGZ5Y2Jj
-ci0+bWF4X3ksIGZ5Y2Jjci0+b2ZzX2NiY3IsIGZ5Y2Jjci0+bWlkX2NiY3IsIGZ5Y2Jjci0+bWF4
-X2NiY3IsIGZ5Y2Jjci0+bWF4X3ZhbCk7Cj4gICAKPiAgIAlyZXR1cm4gaWd0X21hdHJpeF9tdWx0
-aXBseSgmciwgJmMpOwo+ICAgfQo+IGRpZmYgLS1naXQgYS9saWIvaWd0X2NvbG9yX2VuY29kaW5n
-LmggYi9saWIvaWd0X2NvbG9yX2VuY29kaW5nLmgKPiBpbmRleCAzODg0ZTQ5MzlmNGMuLmRiNDVi
-MTZkMzY4NyAxMDA2NDQKPiAtLS0gYS9saWIvaWd0X2NvbG9yX2VuY29kaW5nLmgKPiArKysgYi9s
-aWIvaWd0X2NvbG9yX2VuY29kaW5nLmgKPiBAQCAtMjUsNiArMjUsNyBAQAo+ICAgI2RlZmluZSBf
-X0lHVF9DT0xPUl9FTkNPRElOR19IX18KPiAgIAo+ICAgI2luY2x1ZGUgPHN0ZGJvb2wuaD4KPiAr
-I2luY2x1ZGUgPHN0ZGludC5oPgo+ICAgCj4gICAjaW5jbHVkZSAiaWd0X21hdHJpeC5oIgo+ICAg
-Cj4gQEAgLTQ0LDkgKzQ1LDEzIEBAIGVudW0gaWd0X2NvbG9yX3JhbmdlIHsKPiAgIGNvbnN0IGNo
-YXIgKmlndF9jb2xvcl9lbmNvZGluZ190b19zdHIoZW51bSBpZ3RfY29sb3JfZW5jb2RpbmcgZW5j
-b2RpbmcpOwo+ICAgY29uc3QgY2hhciAqaWd0X2NvbG9yX3JhbmdlX3RvX3N0cihlbnVtIGlndF9j
-b2xvcl9yYW5nZSByYW5nZSk7Cj4gICAKPiAtc3RydWN0IGlndF9tYXQ0IGlndF95Y2Jjcl90b19y
-Z2JfbWF0cml4KGVudW0gaWd0X2NvbG9yX2VuY29kaW5nIGNvbG9yX2VuY29kaW5nLAo+ICtzdHJ1
-Y3QgaWd0X21hdDQgaWd0X3ljYmNyX3RvX3JnYl9tYXRyaXgodWludDMyX3QgeWNiY3JfZm91cmNj
-LAo+ICsJCQkJCXVpbnQzMl90IHJnYl9mb3VyY2MsCj4gKwkJCQkJZW51bSBpZ3RfY29sb3JfZW5j
-b2RpbmcgY29sb3JfZW5jb2RpbmcsCj4gICAJCQkJCWVudW0gaWd0X2NvbG9yX3JhbmdlIGNvbG9y
-X3JhbmdlKTsKPiAtc3RydWN0IGlndF9tYXQ0IGlndF9yZ2JfdG9feWNiY3JfbWF0cml4KGVudW0g
-aWd0X2NvbG9yX2VuY29kaW5nIGNvbG9yX2VuY29kaW5nLAo+ICtzdHJ1Y3QgaWd0X21hdDQgaWd0
-X3JnYl90b195Y2Jjcl9tYXRyaXgodWludDMyX3QgcmdiX2ZvdXJjYywKPiArCQkJCQl1aW50MzJf
-dCB5Y2Jjcl9mb3VyY2MsCj4gKwkJCQkJZW51bSBpZ3RfY29sb3JfZW5jb2RpbmcgY29sb3JfZW5j
-b2RpbmcsCj4gICAJCQkJCWVudW0gaWd0X2NvbG9yX3JhbmdlIGNvbG9yX3JhbmdlKTsKPiAgIAo+
-ICAgI2VuZGlmIC8qIF9fSUdUX0NPTE9SX0VOQ09ESU5HX0hfXyAqLwo+IGRpZmYgLS1naXQgYS9s
-aWIvaWd0X2ZiLmMgYi9saWIvaWd0X2ZiLmMKPiBpbmRleCA1ZDhjMTg3YTlhYzkuLmRiM2FlMDY3
-NDhkMSAxMDA2NDQKPiAtLS0gYS9saWIvaWd0X2ZiLmMKPiArKysgYi9saWIvaWd0X2ZiLmMKPiBA
-QCAtMTUwOCw3ICsxNTA4LDcgQEAgc3RhdGljIHZvaWQgKmlndF9mYl9jcmVhdGVfY2Fpcm9fc2hh
-ZG93X2J1ZmZlcihpbnQgZmQsCj4gICAJCURSTV9GT1JNQVRfWFJHQjg4ODgsIExPQ0FMX0RSTV9G
-T1JNQVRfTU9EX05PTkUsCj4gICAJCUlHVF9DT0xPUl9ZQ0JDUl9CVDcwOSwgSUdUX0NPTE9SX1lD
-QkNSX0xJTUlURURfUkFOR0UpOwo+ICAgCj4gLQlzaGFkb3ctPnN0cmlkZXNbMF0gPSBBTElHTih3
-aWR0aCAqIDQsIDE2KTsKPiArCXNoYWRvdy0+c3RyaWRlc1swXSA9IEFMSUdOKHdpZHRoICogc2hh
-ZG93LT5wbGFuZV9icHBbMF0sIDE2KTsKPiAgIAlzaGFkb3ctPnNpemUgPSBBTElHTihzaGFkb3ct
-PnN0cmlkZXNbMF0gKiBoZWlnaHQsCj4gICAJCQkgICAgIHN5c2NvbmYoX1NDX1BBR0VTSVpFKSk7
-Cj4gICAJcHRyID0gbW1hcChOVUxMLCBzaGFkb3ctPnNpemUsIFBST1RfUkVBRCB8IFBST1RfV1JJ
-VEUsCj4gQEAgLTE2ODEsNyArMTY4MSw5IEBAIHN0YXRpYyB2b2lkIGNvbnZlcnRfeXV2X3RvX3Jn
-YjI0KHN0cnVjdCBmYl9jb252ZXJ0ICpjdnQpCj4gICAJdWludDhfdCAqeSwgKnUsICp2Owo+ICAg
-CXVpbnQ4X3QgKnJnYjI0ID0gY3Z0LT5kc3QucHRyOwo+ICAgCXVuc2lnbmVkIGludCByZ2IyNF9z
-dHJpZGUgPSBjdnQtPmRzdC5mYi0+c3RyaWRlc1swXTsKPiAtCXN0cnVjdCBpZ3RfbWF0NCBtID0g
-aWd0X3ljYmNyX3RvX3JnYl9tYXRyaXgoY3Z0LT5zcmMuZmItPmNvbG9yX2VuY29kaW5nLAo+ICsJ
-c3RydWN0IGlndF9tYXQ0IG0gPSBpZ3RfeWNiY3JfdG9fcmdiX21hdHJpeChjdnQtPnNyYy5mYi0+
-ZHJtX2Zvcm1hdCwKPiArCQkJCQkJICAgIGN2dC0+ZHN0LmZiLT5kcm1fZm9ybWF0LAo+ICsJCQkJ
-CQkgICAgY3Z0LT5zcmMuZmItPmNvbG9yX2VuY29kaW5nLAo+ICAgCQkJCQkJICAgIGN2dC0+c3Jj
-LmZiLT5jb2xvcl9yYW5nZSk7Cj4gICAJdWludDhfdCAqYnVmOwo+ICAgCXN0cnVjdCB5dXZfcGFy
-YW1ldGVycyBwYXJhbXMgPSB7IH07Cj4gQEAgLTE3NDIsNyArMTc0NCw5IEBAIHN0YXRpYyB2b2lk
-IGNvbnZlcnRfcmdiMjRfdG9feXV2KHN0cnVjdCBmYl9jb252ZXJ0ICpjdnQpCj4gICAJY29uc3Qg
-dWludDhfdCAqcmdiMjQgPSBjdnQtPnNyYy5wdHI7Cj4gICAJdWludDhfdCBicHAgPSA0Owo+ICAg
-CXVuc2lnbmVkIHJnYjI0X3N0cmlkZSA9IGN2dC0+c3JjLmZiLT5zdHJpZGVzWzBdOwo+IC0Jc3Ry
-dWN0IGlndF9tYXQ0IG0gPSBpZ3RfcmdiX3RvX3ljYmNyX21hdHJpeChjdnQtPmRzdC5mYi0+Y29s
-b3JfZW5jb2RpbmcsCj4gKwlzdHJ1Y3QgaWd0X21hdDQgbSA9IGlndF9yZ2JfdG9feWNiY3JfbWF0
-cml4KGN2dC0+c3JjLmZiLT5kcm1fZm9ybWF0LAo+ICsJCQkJCQkgICAgY3Z0LT5kc3QuZmItPmRy
-bV9mb3JtYXQsCj4gKwkJCQkJCSAgICBjdnQtPmRzdC5mYi0+Y29sb3JfZW5jb2RpbmcsCj4gICAJ
-CQkJCQkgICAgY3Z0LT5kc3QuZmItPmNvbG9yX3JhbmdlKTsKPiAgIAlzdHJ1Y3QgeXV2X3BhcmFt
-ZXRlcnMgcGFyYW1zID0geyB9Owo+ICAgCi0tIAp+U3dhdGkKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9pZ3QtZGV2Cg==
+This is a multi-part message in MIME format.
+--===============1061954048==
+Content-Type: multipart/alternative;
+ boundary="------------7D9037AC27EA48B98C96360A"
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------7D9037AC27EA48B98C96360A
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Should we state which all HDR formats are?
+
+On 07-Feb-19 2:51 PM, Maarten Lankhorst wrote:
+> Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> ---
+>   lib/igt_color_encoding.c | 83 +++++++++++++++++++++++++++++++---------
+>   lib/igt_color_encoding.h |  9 ++++-
+>   lib/igt_fb.c             | 10 +++--
+>   3 files changed, 79 insertions(+), 23 deletions(-)
+>
+> diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
+> index 03e16e0c9658..4cbe18e217e3 100644
+> --- a/lib/igt_color_encoding.c
+> +++ b/lib/igt_color_encoding.c
+> @@ -24,6 +24,8 @@
+>   #include "igt_color_encoding.h"
+>   #include "igt_matrix.h"
+>   #include "igt_core.h"
+> +#include "igt_fb.h"
+> +#include "drmtest.h"
+>   
+>   struct color_encoding {
+>   	float kr, kb;
+> @@ -85,60 +87,105 @@ static struct igt_mat4 ycbcr_to_rgb_matrix(const struct color_encoding *e)
+>   	return ret;
+>   }
+>   
+> -static struct igt_mat4 ycbcr_input_convert_matrix(enum igt_color_range color_range)
+> +static struct igt_mat4 ycbcr_input_convert_matrix(enum igt_color_range color_range, float scale,
+> +						  float ofs_y, float max_y,
+> +						  float ofs_cbcr, float mid_cbcr, float max_cbcr,
+> +						  float max_val)
+>   {
+>   	struct igt_mat4 t, s;
+>   
+>   	if (color_range == IGT_COLOR_YCBCR_FULL_RANGE) {
+> -		t = igt_matrix_translate(0.0f, -128.0f, -128.0f);
+> -		s = igt_matrix_scale(1.0f, 2.0f, 2.0f);
+> +		t = igt_matrix_translate(0.f, -mid_cbcr, -mid_cbcr);
+> +		s = igt_matrix_scale(scale, 2.0f * scale, 2.0f * scale);
+>   	} else {
+> -		t = igt_matrix_translate(-16.0f, -128.0f, -128.0f);
+> -		s = igt_matrix_scale(255.0f / (235.0f - 16.0f),
+> -				     255.0f / (240.0f - 128.0f),
+> -				     255.0f / (240.0f - 128.0f));
+> +		t = igt_matrix_translate(-ofs_y, -mid_cbcr, -mid_cbcr);
+> +		s = igt_matrix_scale(scale * max_val / (max_y - ofs_y),
+> +				     scale * max_val / (max_cbcr - mid_cbcr),
+> +				     scale * max_val / (max_cbcr - mid_cbcr));
+>   	}
+>   
+>   	return igt_matrix_multiply(&s, &t);
+>   }
+>   
+> -static struct igt_mat4 ycbcr_output_convert_matrix(enum igt_color_range color_range)
+> +static struct igt_mat4 ycbcr_output_convert_matrix(enum igt_color_range color_range, float scale,
+> +						   float ofs_y, float max_y,
+> +						   float ofs_cbcr, float mid_cbcr, float max_cbcr,
+> +						   float max_val)
+>   {
+>   	struct igt_mat4 s, t;
+>   
+>   	if (color_range == IGT_COLOR_YCBCR_FULL_RANGE) {
+> -		s = igt_matrix_scale(1.0f, 0.5f, 0.5f);
+> -		t = igt_matrix_translate(0.0f, 128.0f, 128.0f);
+> +		s = igt_matrix_scale(scale, 0.5f * scale, 0.5f * scale);
+> +		t = igt_matrix_translate(0.f, mid_cbcr, mid_cbcr);
+>   	} else {
+> -		s = igt_matrix_scale((235.0f - 16.0f) / 255.0f,
+> -				     (240.0f - 128.0f) / 255.0f,
+> -				     (240.0f - 128.0f) / 255.0f);
+> -		t = igt_matrix_translate(16.0f, 128.0f, 128.0f);
+> +		s = igt_matrix_scale(scale * (max_y - ofs_y) / max_val,
+> +				     scale * (max_cbcr - mid_cbcr) / max_val,
+> +				     scale * (max_cbcr - mid_cbcr) / max_val);
+> +		t = igt_matrix_translate(ofs_y, mid_cbcr, mid_cbcr);
+>   	}
+>   
+>   	return igt_matrix_multiply(&t, &s);
+>   }
+>   
+> -struct igt_mat4 igt_ycbcr_to_rgb_matrix(enum igt_color_encoding color_encoding,
+> +static const struct color_encoding_format {
+> +	uint32_t fourcc;
+> +
+> +	float max_val;
+> +
+> +	float ofs_y, max_y, ofs_cbcr, mid_cbcr, max_cbcr;
+> +} formats[] = {
+> +	{ DRM_FORMAT_XRGB8888, 255.f, },
+> +	{ DRM_FORMAT_NV12, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> +	{ DRM_FORMAT_YUYV, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> +	{ DRM_FORMAT_YVYU, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> +	{ DRM_FORMAT_UYVY, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> +	{ DRM_FORMAT_VYUY, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> +};
+> +
+> +static const struct color_encoding_format *lookup_fourcc(uint32_t fourcc)
+> +{
+> +	int i;
+> +	for (i = 0; i < ARRAY_SIZE(formats); i++)
+> +		if (fourcc == formats[i].fourcc)
+> +			return &formats[i];
+> +
+> +	igt_assert_f(0, "Could not look up fourcc %.4s\n", (char *)&fourcc);
+> +}
+> +
+> +struct igt_mat4 igt_ycbcr_to_rgb_matrix(uint32_t from_fourcc,
+> +					uint32_t to_fourcc,
+> +					enum igt_color_encoding color_encoding,
+>   					enum igt_color_range color_range)
+>   {
+>   	const struct color_encoding *e = &color_encodings[color_encoding];
+>   	struct igt_mat4 r, c;
+> +	const struct color_encoding_format *fycbcr = lookup_fourcc(from_fourcc);
+> +	const struct color_encoding_format *frgb = lookup_fourcc(to_fourcc);
+> +	float scale = frgb->max_val / fycbcr->max_val;
+>   
+> -	r = ycbcr_input_convert_matrix(color_range);
+> +	igt_assert(fycbcr->ofs_y && !frgb->ofs_y);
+> +
+> +	r = ycbcr_input_convert_matrix(color_range, scale, fycbcr->ofs_y, fycbcr->max_y, fycbcr->ofs_cbcr, fycbcr->mid_cbcr, fycbcr->max_cbcr, fycbcr->max_val);
+>   	c = ycbcr_to_rgb_matrix(e);
+>   
+>   	return igt_matrix_multiply(&c, &r);
+>   }
+>   
+> -struct igt_mat4 igt_rgb_to_ycbcr_matrix(enum igt_color_encoding color_encoding,
+> +struct igt_mat4 igt_rgb_to_ycbcr_matrix(uint32_t from_fourcc,
+> +					uint32_t to_fourcc,
+> +					enum igt_color_encoding color_encoding,
+>   					enum igt_color_range color_range)
+>   {
+>   	const struct color_encoding *e = &color_encodings[color_encoding];
+> +	const struct color_encoding_format *frgb = lookup_fourcc(from_fourcc);
+> +	const struct color_encoding_format *fycbcr = lookup_fourcc(to_fourcc);
+>   	struct igt_mat4 c, r;
+> +	float scale = fycbcr->max_val / frgb->max_val;
+> +
+> +	igt_assert(fycbcr->ofs_y && !frgb->ofs_y);
+>   
+>   	c = rgb_to_ycbcr_matrix(e);
+> -	r = ycbcr_output_convert_matrix(color_range);
+> +	r = ycbcr_output_convert_matrix(color_range, scale, fycbcr->ofs_y, fycbcr->max_y, fycbcr->ofs_cbcr, fycbcr->mid_cbcr, fycbcr->max_cbcr, fycbcr->max_val);
+>   
+>   	return igt_matrix_multiply(&r, &c);
+>   }
+> diff --git a/lib/igt_color_encoding.h b/lib/igt_color_encoding.h
+> index 3884e4939f4c..db45b16d3687 100644
+> --- a/lib/igt_color_encoding.h
+> +++ b/lib/igt_color_encoding.h
+> @@ -25,6 +25,7 @@
+>   #define __IGT_COLOR_ENCODING_H__
+>   
+>   #include <stdbool.h>
+> +#include <stdint.h>
+>   
+>   #include "igt_matrix.h"
+>   
+> @@ -44,9 +45,13 @@ enum igt_color_range {
+>   const char *igt_color_encoding_to_str(enum igt_color_encoding encoding);
+>   const char *igt_color_range_to_str(enum igt_color_range range);
+>   
+> -struct igt_mat4 igt_ycbcr_to_rgb_matrix(enum igt_color_encoding color_encoding,
+> +struct igt_mat4 igt_ycbcr_to_rgb_matrix(uint32_t ycbcr_fourcc,
+> +					uint32_t rgb_fourcc,
+> +					enum igt_color_encoding color_encoding,
+>   					enum igt_color_range color_range);
+> -struct igt_mat4 igt_rgb_to_ycbcr_matrix(enum igt_color_encoding color_encoding,
+> +struct igt_mat4 igt_rgb_to_ycbcr_matrix(uint32_t rgb_fourcc,
+> +					uint32_t ycbcr_fourcc,
+> +					enum igt_color_encoding color_encoding,
+>   					enum igt_color_range color_range);
+>   
+>   #endif /* __IGT_COLOR_ENCODING_H__ */
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 5d8c187a9ac9..db3ae06748d1 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -1508,7 +1508,7 @@ static void *igt_fb_create_cairo_shadow_buffer(int fd,
+>   		DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
+>   		IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE);
+>   
+> -	shadow->strides[0] = ALIGN(width * 4, 16);
+> +	shadow->strides[0] = ALIGN(width * shadow->plane_bpp[0], 16);
+>   	shadow->size = ALIGN(shadow->strides[0] * height,
+>   			     sysconf(_SC_PAGESIZE));
+>   	ptr = mmap(NULL, shadow->size, PROT_READ | PROT_WRITE,
+> @@ -1681,7 +1681,9 @@ static void convert_yuv_to_rgb24(struct fb_convert *cvt)
+>   	uint8_t *y, *u, *v;
+>   	uint8_t *rgb24 = cvt->dst.ptr;
+>   	unsigned int rgb24_stride = cvt->dst.fb->strides[0];
+> -	struct igt_mat4 m = igt_ycbcr_to_rgb_matrix(cvt->src.fb->color_encoding,
+> +	struct igt_mat4 m = igt_ycbcr_to_rgb_matrix(cvt->src.fb->drm_format,
+> +						    cvt->dst.fb->drm_format,
+> +						    cvt->src.fb->color_encoding,
+>   						    cvt->src.fb->color_range);
+>   	uint8_t *buf;
+>   	struct yuv_parameters params = { };
+> @@ -1742,7 +1744,9 @@ static void convert_rgb24_to_yuv(struct fb_convert *cvt)
+>   	const uint8_t *rgb24 = cvt->src.ptr;
+>   	uint8_t bpp = 4;
+>   	unsigned rgb24_stride = cvt->src.fb->strides[0];
+> -	struct igt_mat4 m = igt_rgb_to_ycbcr_matrix(cvt->dst.fb->color_encoding,
+> +	struct igt_mat4 m = igt_rgb_to_ycbcr_matrix(cvt->src.fb->drm_format,
+> +						    cvt->dst.fb->drm_format,
+> +						    cvt->dst.fb->color_encoding,
+>   						    cvt->dst.fb->color_range);
+>   	struct yuv_parameters params = { };
+>   
+-- 
+~Swati Sharma
+
+--------------7D9037AC27EA48B98C96360A
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    <p><font face="Calibri">Should we state which all HDR formats are?</font><br>
+    </p>
+    <div class="moz-cite-prefix">On 07-Feb-19 2:51 PM, Maarten Lankhorst
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20190207092136.10659-1-maarten.lankhorst@linux.intel.com">
+      <pre class="moz-quote-pre" wrap="">Signed-off-by: Maarten Lankhorst <a class="moz-txt-link-rfc2396E" href="mailto:maarten.lankhorst@linux.intel.com">&lt;maarten.lankhorst@linux.intel.com&gt;</a>
+---
+ lib/igt_color_encoding.c | 83 +++++++++++++++++++++++++++++++---------
+ lib/igt_color_encoding.h |  9 ++++-
+ lib/igt_fb.c             | 10 +++--
+ 3 files changed, 79 insertions(+), 23 deletions(-)
+
+diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
+index 03e16e0c9658..4cbe18e217e3 100644
+--- a/lib/igt_color_encoding.c
++++ b/lib/igt_color_encoding.c
+@@ -24,6 +24,8 @@
+ #include "igt_color_encoding.h"
+ #include "igt_matrix.h"
+ #include "igt_core.h"
++#include "igt_fb.h"
++#include "drmtest.h"
+ 
+ struct color_encoding {
+ 	float kr, kb;
+@@ -85,60 +87,105 @@ static struct igt_mat4 ycbcr_to_rgb_matrix(const struct color_encoding *e)
+ 	return ret;
+ }
+ 
+-static struct igt_mat4 ycbcr_input_convert_matrix(enum igt_color_range color_range)
++static struct igt_mat4 ycbcr_input_convert_matrix(enum igt_color_range color_range, float scale,
++						  float ofs_y, float max_y,
++						  float ofs_cbcr, float mid_cbcr, float max_cbcr,
++						  float max_val)
+ {
+ 	struct igt_mat4 t, s;
+ 
+ 	if (color_range == IGT_COLOR_YCBCR_FULL_RANGE) {
+-		t = igt_matrix_translate(0.0f, -128.0f, -128.0f);
+-		s = igt_matrix_scale(1.0f, 2.0f, 2.0f);
++		t = igt_matrix_translate(0.f, -mid_cbcr, -mid_cbcr);
++		s = igt_matrix_scale(scale, 2.0f * scale, 2.0f * scale);
+ 	} else {
+-		t = igt_matrix_translate(-16.0f, -128.0f, -128.0f);
+-		s = igt_matrix_scale(255.0f / (235.0f - 16.0f),
+-				     255.0f / (240.0f - 128.0f),
+-				     255.0f / (240.0f - 128.0f));
++		t = igt_matrix_translate(-ofs_y, -mid_cbcr, -mid_cbcr);
++		s = igt_matrix_scale(scale * max_val / (max_y - ofs_y),
++				     scale * max_val / (max_cbcr - mid_cbcr),
++				     scale * max_val / (max_cbcr - mid_cbcr));
+ 	}
+ 
+ 	return igt_matrix_multiply(&amp;s, &amp;t);
+ }
+ 
+-static struct igt_mat4 ycbcr_output_convert_matrix(enum igt_color_range color_range)
++static struct igt_mat4 ycbcr_output_convert_matrix(enum igt_color_range color_range, float scale,
++						   float ofs_y, float max_y,
++						   float ofs_cbcr, float mid_cbcr, float max_cbcr,
++						   float max_val)
+ {
+ 	struct igt_mat4 s, t;
+ 
+ 	if (color_range == IGT_COLOR_YCBCR_FULL_RANGE) {
+-		s = igt_matrix_scale(1.0f, 0.5f, 0.5f);
+-		t = igt_matrix_translate(0.0f, 128.0f, 128.0f);
++		s = igt_matrix_scale(scale, 0.5f * scale, 0.5f * scale);
++		t = igt_matrix_translate(0.f, mid_cbcr, mid_cbcr);
+ 	} else {
+-		s = igt_matrix_scale((235.0f - 16.0f) / 255.0f,
+-				     (240.0f - 128.0f) / 255.0f,
+-				     (240.0f - 128.0f) / 255.0f);
+-		t = igt_matrix_translate(16.0f, 128.0f, 128.0f);
++		s = igt_matrix_scale(scale * (max_y - ofs_y) / max_val,
++				     scale * (max_cbcr - mid_cbcr) / max_val,
++				     scale * (max_cbcr - mid_cbcr) / max_val);
++		t = igt_matrix_translate(ofs_y, mid_cbcr, mid_cbcr);
+ 	}
+ 
+ 	return igt_matrix_multiply(&amp;t, &amp;s);
+ }
+ 
+-struct igt_mat4 igt_ycbcr_to_rgb_matrix(enum igt_color_encoding color_encoding,
++static const struct color_encoding_format {
++	uint32_t fourcc;
++
++	float max_val;
++
++	float ofs_y, max_y, ofs_cbcr, mid_cbcr, max_cbcr;
++} formats[] = {
++	{ DRM_FORMAT_XRGB8888, 255.f, },
++	{ DRM_FORMAT_NV12, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
++	{ DRM_FORMAT_YUYV, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
++	{ DRM_FORMAT_YVYU, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
++	{ DRM_FORMAT_UYVY, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
++	{ DRM_FORMAT_VYUY, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
++};
++
++static const struct color_encoding_format *lookup_fourcc(uint32_t fourcc)
++{
++	int i;
++	for (i = 0; i &lt; ARRAY_SIZE(formats); i++)
++		if (fourcc == formats[i].fourcc)
++			return &amp;formats[i];
++
++	igt_assert_f(0, "Could not look up fourcc %.4s\n", (char *)&amp;fourcc);
++}
++
++struct igt_mat4 igt_ycbcr_to_rgb_matrix(uint32_t from_fourcc,
++					uint32_t to_fourcc,
++					enum igt_color_encoding color_encoding,
+ 					enum igt_color_range color_range)
+ {
+ 	const struct color_encoding *e = &amp;color_encodings[color_encoding];
+ 	struct igt_mat4 r, c;
++	const struct color_encoding_format *fycbcr = lookup_fourcc(from_fourcc);
++	const struct color_encoding_format *frgb = lookup_fourcc(to_fourcc);
++	float scale = frgb-&gt;max_val / fycbcr-&gt;max_val;
+ 
+-	r = ycbcr_input_convert_matrix(color_range);
++	igt_assert(fycbcr-&gt;ofs_y &amp;&amp; !frgb-&gt;ofs_y);
++
++	r = ycbcr_input_convert_matrix(color_range, scale, fycbcr-&gt;ofs_y, fycbcr-&gt;max_y, fycbcr-&gt;ofs_cbcr, fycbcr-&gt;mid_cbcr, fycbcr-&gt;max_cbcr, fycbcr-&gt;max_val);
+ 	c = ycbcr_to_rgb_matrix(e);
+ 
+ 	return igt_matrix_multiply(&amp;c, &amp;r);
+ }
+ 
+-struct igt_mat4 igt_rgb_to_ycbcr_matrix(enum igt_color_encoding color_encoding,
++struct igt_mat4 igt_rgb_to_ycbcr_matrix(uint32_t from_fourcc,
++					uint32_t to_fourcc,
++					enum igt_color_encoding color_encoding,
+ 					enum igt_color_range color_range)
+ {
+ 	const struct color_encoding *e = &amp;color_encodings[color_encoding];
++	const struct color_encoding_format *frgb = lookup_fourcc(from_fourcc);
++	const struct color_encoding_format *fycbcr = lookup_fourcc(to_fourcc);
+ 	struct igt_mat4 c, r;
++	float scale = fycbcr-&gt;max_val / frgb-&gt;max_val;
++
++	igt_assert(fycbcr-&gt;ofs_y &amp;&amp; !frgb-&gt;ofs_y);
+ 
+ 	c = rgb_to_ycbcr_matrix(e);
+-	r = ycbcr_output_convert_matrix(color_range);
++	r = ycbcr_output_convert_matrix(color_range, scale, fycbcr-&gt;ofs_y, fycbcr-&gt;max_y, fycbcr-&gt;ofs_cbcr, fycbcr-&gt;mid_cbcr, fycbcr-&gt;max_cbcr, fycbcr-&gt;max_val);
+ 
+ 	return igt_matrix_multiply(&amp;r, &amp;c);
+ }
+diff --git a/lib/igt_color_encoding.h b/lib/igt_color_encoding.h
+index 3884e4939f4c..db45b16d3687 100644
+--- a/lib/igt_color_encoding.h
++++ b/lib/igt_color_encoding.h
+@@ -25,6 +25,7 @@
+ #define __IGT_COLOR_ENCODING_H__
+ 
+ #include &lt;stdbool.h&gt;
++#include &lt;stdint.h&gt;
+ 
+ #include "igt_matrix.h"
+ 
+@@ -44,9 +45,13 @@ enum igt_color_range {
+ const char *igt_color_encoding_to_str(enum igt_color_encoding encoding);
+ const char *igt_color_range_to_str(enum igt_color_range range);
+ 
+-struct igt_mat4 igt_ycbcr_to_rgb_matrix(enum igt_color_encoding color_encoding,
++struct igt_mat4 igt_ycbcr_to_rgb_matrix(uint32_t ycbcr_fourcc,
++					uint32_t rgb_fourcc,
++					enum igt_color_encoding color_encoding,
+ 					enum igt_color_range color_range);
+-struct igt_mat4 igt_rgb_to_ycbcr_matrix(enum igt_color_encoding color_encoding,
++struct igt_mat4 igt_rgb_to_ycbcr_matrix(uint32_t rgb_fourcc,
++					uint32_t ycbcr_fourcc,
++					enum igt_color_encoding color_encoding,
+ 					enum igt_color_range color_range);
+ 
+ #endif /* __IGT_COLOR_ENCODING_H__ */
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 5d8c187a9ac9..db3ae06748d1 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -1508,7 +1508,7 @@ static void *igt_fb_create_cairo_shadow_buffer(int fd,
+ 		DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
+ 		IGT_COLOR_YCBCR_BT709, IGT_COLOR_YCBCR_LIMITED_RANGE);
+ 
+-	shadow-&gt;strides[0] = ALIGN(width * 4, 16);
++	shadow-&gt;strides[0] = ALIGN(width * shadow-&gt;plane_bpp[0], 16);
+ 	shadow-&gt;size = ALIGN(shadow-&gt;strides[0] * height,
+ 			     sysconf(_SC_PAGESIZE));
+ 	ptr = mmap(NULL, shadow-&gt;size, PROT_READ | PROT_WRITE,
+@@ -1681,7 +1681,9 @@ static void convert_yuv_to_rgb24(struct fb_convert *cvt)
+ 	uint8_t *y, *u, *v;
+ 	uint8_t *rgb24 = cvt-&gt;dst.ptr;
+ 	unsigned int rgb24_stride = cvt-&gt;dst.fb-&gt;strides[0];
+-	struct igt_mat4 m = igt_ycbcr_to_rgb_matrix(cvt-&gt;src.fb-&gt;color_encoding,
++	struct igt_mat4 m = igt_ycbcr_to_rgb_matrix(cvt-&gt;src.fb-&gt;drm_format,
++						    cvt-&gt;dst.fb-&gt;drm_format,
++						    cvt-&gt;src.fb-&gt;color_encoding,
+ 						    cvt-&gt;src.fb-&gt;color_range);
+ 	uint8_t *buf;
+ 	struct yuv_parameters params = { };
+@@ -1742,7 +1744,9 @@ static void convert_rgb24_to_yuv(struct fb_convert *cvt)
+ 	const uint8_t *rgb24 = cvt-&gt;src.ptr;
+ 	uint8_t bpp = 4;
+ 	unsigned rgb24_stride = cvt-&gt;src.fb-&gt;strides[0];
+-	struct igt_mat4 m = igt_rgb_to_ycbcr_matrix(cvt-&gt;dst.fb-&gt;color_encoding,
++	struct igt_mat4 m = igt_rgb_to_ycbcr_matrix(cvt-&gt;src.fb-&gt;drm_format,
++						    cvt-&gt;dst.fb-&gt;drm_format,
++						    cvt-&gt;dst.fb-&gt;color_encoding,
+ 						    cvt-&gt;dst.fb-&gt;color_range);
+ 	struct yuv_parameters params = { };
+ 
+</pre>
+    </blockquote>
+    <div class="moz-signature">-- <br>
+      ~Swati Sharma
+    </div>
+  </body>
+</html>
+
+--------------7D9037AC27EA48B98C96360A--
+
+--===============1061954048==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+
+--===============1061954048==--
