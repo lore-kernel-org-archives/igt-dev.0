@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9836A6E05D
- for <igt-dev@lists.freedesktop.org>; Sat,  9 Feb 2019 19:37:32 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CE796E05D
+ for <igt-dev@lists.freedesktop.org>; Sat,  9 Feb 2019 19:41:21 +0000 (UTC)
 From: Prathap Kumar Valsan <prathap.kumar.valsan@intel.com>
-Date: Sat,  9 Feb 2019 14:50:47 -0500
-Message-Id: <20190209195047.27721-1-prathap.kumar.valsan@intel.com>
+Date: Sat,  9 Feb 2019 14:54:35 -0500
+Message-Id: <20190209195435.27775-1-prathap.kumar.valsan@intel.com>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t] i915/gem_mocs_settings: Add mocs table for
  icelake
