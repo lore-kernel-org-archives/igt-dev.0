@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ACC8C6E2C7
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Feb 2019 09:07:34 +0000 (UTC)
-Date: Tue, 12 Feb 2019 11:07:30 +0200
-Message-ID: <20190212090730.GA24750@intel.intel>
-References: <20190211230811.24955-1-andi.shyti@intel.com>
- <20190211230811.24955-4-andi.shyti@intel.com>
- <154992700262.14378.14094133033784538677@skylake-alporthouse-com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <154992700262.14378.14094133033784538677@skylake-alporthouse-com>
-Subject: Re: [igt-dev] [RFC PATCH v7 3/5] lib: ioctl_wrappers: check
- GET/SETPARAM ioctl and build active engine list
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 12 Feb 2019 17:51:21 -0000
+Message-ID: <20190212175121.11032.6158@emeril.freedesktop.org>
+References: <20190211180208.29406-1-daniel.vetter@ffwll.ch>
+In-Reply-To: <20190211180208.29406-1-daniel.vetter@ffwll.ch>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/9=5D_lib/tests=3A_Check_that_igt=5F?=
+ =?utf-8?q?assert_forwards_correctly_through_igt=5Ffork_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,32 +15,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-From: Andi Shyti via igt-dev <igt-dev@lists.freedesktop.org>
-Reply-To: Andi Shyti <andi.shyti@intel.com>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: IGT dev <igt-dev@lists.freedesktop.org>, Andi Shyti <andi@etezian.org>, Petri Latvala <petri.latvala@intel.com>
+To: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgQ2hyaXMsCgpPbiBNb24sIEZlYiAxMSwgMjAxOSBhdCAxMToxNjo0MlBNICswMDAwLCBDaHJp
-cyBXaWxzb24gd3JvdGU6Cj4gUXVvdGluZyBBbmRpIFNoeXRpICgyMDE5LTAyLTExIDIzOjA4OjA5
-KQo+ID4gVGhlIGlndF9yZXF1aXJlX2dlbV9lbmdpbmVfbGlzdCgpIGlzIGNhbGxlZCB3aGVuZXZl
-ciB0aGUgdGVzdAo+ID4gd2FudHMgdG8gdXNlIHRoZSBHRVQvU0VUUEFSQU0gaW9jdGxzLgo+ID4g
-Cj4gPiBUaGUgZnVuY3Rpb24gY2hlY2tzIHdoZXRoZXIgdGhlIEdFVC9TRVRQQVJBTSBhcmUgaW1w
-bGVtZW50ZWQgaW4KPiA+IHRoZSBydW5uaW5nIGtlcm5lbCBhbmQgc3RvcHMgdGhlIHRlc3QgaW4g
-Y2FzZSB0aGVzZSBjb21tYW5kcyBhcmUKPiA+IG5vdCBzdXBwb3J0ZWQuCj4gPiAKPiA+IEF0IHRo
-ZSBmaXJzdCBjYWxsIGl0IGNyZWF0ZXMgdGhlIGN1cnJlbnQgZW5naW5lIGxpc3QgYXMKPiA+IGlt
-cGxlbWVudGVkIGluIHRoZSBnZW1faW5pdF9lbmdpbmVfbGlzdCgpIGZ1bmN0aW9uLgo+ID4gCj4g
-PiBTaWduZWQtb2ZmLWJ5OiBBbmRpIFNoeXRpIDxhbmRpLnNoeXRpQGludGVsLmNvbT4KPiA+IC0t
-LQo+ID4gIGxpYi9pb2N0bF93cmFwcGVycy5jIHwgNyArKysrKysrCj4gPiAgbGliL2lvY3RsX3dy
-YXBwZXJzLmggfCAxICsKPiAKPiBObyBuZXcgYWRkaXRpb25zIHRvIGlvY3RsX3dyYXBwZXJzLmMg
-cGxlYXNlLiBJZiB3ZSBhcmUgZ2VuZXJhbGlzaW5nIGFuCj4gZXhpc3RpbmcgaW50ZXJmYWNlLCBw
-dWxsIGl0IG91dCBpbnRvIGk5MTUvIGFuZCBhZGQgeW91ciBhZGRpdGlvbnMgdGhlcmUuCgpmb3Ig
-Ym90aCB0aGUgcmV2aWV3czogSSB3aWxsIG1vdmUgdGhlbiBldmVyeXRoaW5nIGluIGk5MTUvLgoK
-VGhhbmtzIGFnYWluIQpBbmRpCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRl
-dg==
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW2ktZy10
+LDEvOV0gbGliL3Rlc3RzOiBDaGVjayB0aGF0IGlndF9hc3NlcnQgZm9yd2FyZHMgY29ycmVjdGx5
+IHRocm91Z2ggaWd0X2ZvcmsgKHJldjUpClVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRl
+c2t0b3Aub3JnL3Nlcmllcy81NjUwNy8KU3RhdGUgOiBmYWlsdXJlCgo9PSBTdW1tYXJ5ID09CgpB
+cHBseWluZzogbGliL3Rlc3RzOiBDaGVjayB0aGF0IGlndF9hc3NlcnQgZm9yd2FyZHMgY29ycmVj
+dGx5IHRocm91Z2ggaWd0X2ZvcmsKQXBwbHlpbmc6IGxpYi90ZXN0czogbWFrZSBzdXJlIGlndF9z
+a2lwIGluIGlndF9mb3JrIGlzIGZvcmJpZGRlbgpBcHBseWluZzogbGliOiBEb24ndCBsZWFrIGNo
+aWxkcmVuIGluIGlndF93YWl0Y2hpbGRyZW5fdGltZW91dApBcHBseWluZzogdGVzdHMvZ2VtX2V4
+ZWNfcmV1c2U6IERvbid0IGxlYWsgdGhlIGhhbmcgZGV0ZWN0b3IKQXBwbHlpbmc6IHRlc3RzL2k5
+MTVfbWlzc2VkX2lycTogRG9uJ3QgbGVhdmUgdGhlIGhhbmcgZGV0ZWN0b3IgaGFuZ2luZwpBcHBs
+eWluZzogbGliL3Rlc3RzOiBtYWtlIHN1cmUgd2UgY2F0Y2ggaWd0X2ZvcmsgbGVha3MKQXBwbHlp
+bmc6IGxpYjogTWFrZSBzdXJlIHdlIGxlYWsgbm8gY2hpbGQgcHJvY2Vzc2VzClVzaW5nIGluZGV4
+IGluZm8gdG8gcmVjb25zdHJ1Y3QgYSBiYXNlIHRyZWUuLi4KTQlsaWIvaWd0X2NvcmUuYwpNCWxp
+Yi90ZXN0cy9pZ3RfZm9yay5jCkZhbGxpbmcgYmFjayB0byBwYXRjaGluZyBiYXNlIGFuZCAzLXdh
+eSBtZXJnZS4uLgpBdXRvLW1lcmdpbmcgbGliL3Rlc3RzL2lndF9mb3JrLmMKQ09ORkxJQ1QgKGNv
+bnRlbnQpOiBNZXJnZSBjb25mbGljdCBpbiBsaWIvdGVzdHMvaWd0X2ZvcmsuYwpBdXRvLW1lcmdp
+bmcgbGliL2lndF9jb3JlLmMKUGF0Y2ggZmFpbGVkIGF0IDAwMDcgbGliOiBNYWtlIHN1cmUgd2Ug
+bGVhayBubyBjaGlsZCBwcm9jZXNzZXMKV2hlbiB5b3UgaGF2ZSByZXNvbHZlZCB0aGlzIHByb2Js
+ZW0sIHJ1biAiZ2l0IGFtIC0tY29udGludWUiLgpJZiB5b3UgcHJlZmVyIHRvIHNraXAgdGhpcyBw
+YXRjaCwgcnVuICJnaXQgYW0gLS1za2lwIiBpbnN0ZWFkLgpUbyByZXN0b3JlIHRoZSBvcmlnaW5h
+bCBicmFuY2ggYW5kIHN0b3AgcGF0Y2hpbmcsIHJ1biAiZ2l0IGFtIC0tYWJvcnQiLgoKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5n
+IGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
+a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
