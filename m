@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 92BEB6E751
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Feb 2019 14:22:30 +0000 (UTC)
-Date: Wed, 13 Feb 2019 16:21:53 +0200
-Message-ID: <20190213142153.o4a4yu3gw6tpbfeb@ahiler-desk1.fi.intel.com>
-References: <20190213131428.28016-1-tomi.valkeinen@ti.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 413B06E2EA
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Feb 2019 15:15:09 +0000 (UTC)
+References: <1548770932-13048-1-git-send-email-swati2.sharma@intel.com>
+Message-ID: <e6eb5c73-2370-4cc0-c5a8-f7205bc0ddfe@linux.intel.com>
+Date: Wed, 13 Feb 2019 16:15:06 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190213131428.28016-1-tomi.valkeinen@ti.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] gitlab-CI: add armhf
+In-Reply-To: <1548770932-13048-1-git-send-email-swati2.sharma@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [i-g-t,v2] tests/kms_color: Change in commit style
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,35 +16,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-From: Arkadiusz Hiler via igt-dev <igt-dev@lists.freedesktop.org>
-Reply-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+From: Maarten Lankhorst via igt-dev <igt-dev@lists.freedesktop.org>
+Reply-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tomi Valkeinen <tomi.valkeinen@ti.com>
-Cc: igt-dev@lists.freedesktop.org
+To: swati2.sharma@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCBGZWIgMTMsIDIwMTkgYXQgMDM6MTQ6MjhQTSArMDIwMCwgVG9taSBWYWxrZWluZW4g
-dmlhIGlndC1kZXYgd3JvdGU6Cj4gQWRkIENJIGZvciBhcm1oZiBlbnZpcm9ubWVudC4KPiAKPiBT
-aWduZWQtb2ZmLWJ5OiBUb21pIFZhbGtlaW5lbiA8dG9taS52YWxrZWluZW5AdGkuY29tPgo+IC0t
-LQo+IAo+IEknbSBubyBleHBlcnQgb24gZ2l0bGFiIENJLCBhbmQgdGhpcyB3YXMgbW9zdGx5IGEg
-Y29weS1wYXN0ZSAmCj4gc2VhcmNoLXJlcGxhY2UgdHlwZSBvZiB3b3JrLiBTbyByZXZpZXcgY2Fy
-ZWZ1bGx5ID0pLiBUaGUgYXJtaGYgYnVpbGQKPiBkb2VzIGZhaWwgZm9yIG1lLCBhcyBzdXBwb3Nl
-ZCwgYXMgdGhlIGN1cnJlbnQgSEVBRCBpcyBicm9rZW4uIFNvIHRoYXQncwo+IGEgZ29vZCBzaWdu
-LgoKSGV5LAoKSXQncyBuaWNlIHRvIHNlZSBpbnRlcmVzZXQgaW4gZ2V0dGluZyBJR1Qgb24gbW9y
-ZSBhcmNoaXRlY3R1cmVzIDotKQoKU2VlbXMgbGlrZSB0aGUgY29tcGlsYXRpb24gaXNzdWUgd2Fz
-IHRoZSBzYW1lIGFzIHRoZSBvbmUgcmVwb3J0ZWQgYnkKR3VpbGxhdW1lLiBJdCBjb21waWxlcyB3
-aXRoIHRoZWlycyBwYXRjaCBhcHBsaWVkOgoKaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3Jn
-L2l2eWwvaWd0L3RyZWUvYXJtaGYKCj4gKyMgYXV0b3Rvb2xzIGJ1aWxkIGRlcHMKPiArUlVOIGFw
-dC1nZXQgaW5zdGFsbCAteSBcCj4gKwkJCWF1dG9jb25mIFwKPiArCQkJYXV0b21ha2UgXAo+ICsJ
-CQl4dXRpbHMtZGV2IFwKPiArCQkJbGlidG9vbCBcCj4gKwkJCW1ha2UKClRoaXMgbG9va3MgdW5l
-Y2Vzc2FyeSwgYnV0IHdlIGhhdmUgdGhlIHNhbWUgaW4gYXJtNjQsIHNvIHRoaXMgaXMgb24gdXMu
-CgpJJ2xsIG1ha2Ugc3VyZSB0aGF0IHdlIGNhbiBhY3R1YWxseSByZW1vdmUgaXQgd2l0aCBubyBo
-YXJtIGFuZCBJJ2xsIHNlbmQKYSBmb2xsb3d1cCBwYXRjaCBzb29uLgoKSW4gdGhlIG1lYW50aW1l
-OgoKUmV2aWV3ZWQtYnk6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6LmhpbGVyQGludGVsLmNv
-bT4KYW5kIHB1c2hlZC4KCi0tIApDaGVlcnMsCkFyZWsKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0
-cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9pZ3QtZGV2
+SGV5LAoKT3AgMjktMDEtMjAxOSBvbSAxNTowOCBzY2hyZWVmIHN3YXRpMi5zaGFybWFAaW50ZWwu
+Y29tOgo+IEZyb206IFN3YXRpIFNoYXJtYSA8c3dhdGkyLnNoYXJtYUBpbnRlbC5jb20+Cj4KPiBF
+eGlzdGluZyBrbXNfY29sb3IgaS1nLXQsIGNvbW1pdCBzdHlsZSBieSBkZWZhdWx0IGlzIGxlZ2Fj
+eSBmb3IKPiBhbGwgdGhlIGN0bS9nYW1tYS9kZWdhbW1hIHN1YnRlc3RzLgo+Cj4gSW4gdGhpcyBw
+YXRjaCwgcHJvdmlzaW9uIGZvciBib3RoIGxlZ2FjeSBhbmQgYXRvbWljIGNvbW1pdCBpcwo+IHBy
+b3ZpZGVkLiBQYXRjaCBpcyBmbG9hdGVkIGFzIFJGQyB0byBnYXRoZXIgZmVlZGJhY2sgb24gdGhl
+IGlkZWEKPiBhbmQgaW5mcmFzdHJ1Y3R1cmUgcHJvcG9zZWQuCj4KPiBPdGhlciBhcHByb2FjaCBj
+b3VsZCBiZSBnZXR0aW5nIHRoZSB2YWx1ZSBvZiBpc19hdG9taWMgYXMgZG9uZSBpbgo+IGttc19h
+dmFpbGFibGVfbW9kZXNfY3JjIGxpa2UKPiBkYXRhLmNvbW1pdCA9IGRhdGEuZGlzcGxheS5pc19h
+dG9taWMgPyBDT01NSVRfQVRPTUlDIDogQ09NTUlUX0xFR0FDWQo+IEhvd2V2ZXIgd2l0aCB0aGlz
+IGFwcHJvYWNoIHdlIHdvbid0IGJlIGFibGUgdG8gdGVzdCBib3RoIHRoZSBwYXRocy4KPgo+IHYx
+OiBBcyBwZXIgRGFuaWVsJ3MgY29tbWVudHMgc3dpdGNoaW5nIG92ZXIgdG8gYXRvbWljLgo+IHYy
+OiBSZWJhc2UKPgo+IFNpZ25lZC1vZmYtYnk6IFN3YXRpIFNoYXJtYSA8c3dhdGkyLnNoYXJtYUBp
+bnRlbC5jb20+CgoKSnVzdCBkbyBDT01NSVRfQVRPTUlDLCBhbmQgYWRkIGlndF9yZXF1aXJlKGRp
+c3BsYXkuaXNfYXRvbWljKSwgZHJpdmVycyBzaG91bGQgc3VwcG9ydCBpdCBmb3IgdGhpcyB0ZXN0
+LiA6KQoKfk1hYXJ0ZW4KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
