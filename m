@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 92BEB6E751
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Feb 2019 14:22:30 +0000 (UTC)
+Date: Wed, 13 Feb 2019 16:21:53 +0200
+Message-ID: <20190213142153.o4a4yu3gw6tpbfeb@ahiler-desk1.fi.intel.com>
+References: <20190213131428.28016-1-tomi.valkeinen@ti.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <155006688232.2264.2955984791588395728@skylake-alporthouse-com>
-References: <20190213093137.22678-1-guillaume.tucker@collabora.com>
- <155006688232.2264.2955984791588395728@skylake-alporthouse-com>
-Message-ID: <155006713596.2264.18295352705531932239@skylake-alporthouse-com>
-Date: Wed, 13 Feb 2019 14:12:16 +0000
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] i915/gem_ctx_sseu: Fix
- 32-bit build
+Content-Disposition: inline
+In-Reply-To: <20190213131428.28016-1-tomi.valkeinen@ti.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] gitlab-CI: add armhf
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,35 +16,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+From: Arkadiusz Hiler via igt-dev <igt-dev@lists.freedesktop.org>
+Reply-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>, Guillaume Tucker <guillaume.tucker@collabora.com>, Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, kernel@collabora.com
+To: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBDaHJpcyBXaWxzb24gKDIwMTktMDItMTMgMTQ6MDg6MDIpCj4gUXVvdGluZyBHdWls
-bGF1bWUgVHVja2VyICgyMDE5LTAyLTEzIDA5OjMxOjM3KQo+ID4gVGhpcyBmaXhlcyBhIGNvbXBp
-bGVyIHdhcm5pbmcgdHJlYXRlZCBhcyBhbiBlcnJvciB3aGVuIGJ1aWxkaW5nIGZvcgo+ID4gMzIt
-Yml0IGFyY2hpdGVjdHVyZXMgc2luY2UgdGhlaXIgcG9pbnRlciBzaXplIGRvZXMgbm90IG1hdGNo
-IHRoZSBzaXplCj4gPiBvZiBkcm1faTkxNV9nZW1fY29udGV4dF9wYXJhbS52YWx1ZSB3aGljaCBp
-cyA2NCBiaXRzOgo+ID4gCj4gPiAgIENDICAgICAgIGk5MTUvZ2VtX2N0eF9zc2V1Lm8KPiA+ICAg
-aTkxNS9nZW1fY3R4X3NzZXUuYzogSW4gZnVuY3Rpb24g4oCYdGVzdF9nZ3R0X2FyZ3PigJk6Cj4g
-PiAgIGk5MTUvZ2VtX2N0eF9zc2V1LmM6Mzg0Ojk6IGVycm9yOiBjYXN0IHRvIHBvaW50ZXIgZnJv
-bSBpbnRlZ2VyIG9mIGRpZmZlcmVudCBzaXplIFstV2Vycm9yPWludC10by1wb2ludGVyLWNhc3Rd
-Cj4gPiAgICAgbXVubWFwKCh2b2lkICopYXJnLnZhbHVlLCA0MDk2KTsKPiA+IAo+ID4gSXQgd2Fz
-IGZvdW5kIHdoaWxlIGJ1aWxkaW5nIGZvciBhcm0gd2l0aCBnY2MgNi4zLjAgYW5kIEkgc3VzcGVj
-dCB0aGUKPiA+IHNhbWUgcHJvYmxlbSB3b3VsZCBhcmlzZSBmb3IgaTM4NiBvciBvdGhlciAzMi1i
-aXQgYXJjaGl0ZWN0dXJlcy4gIFRoZQo+ID4gdWludHB0cl90IHR5cGUgaXMgYnkgZGVmaW5pdGlv
-biBhbiB1bnNpZ25lZCBpbnRlZ2VyIG9mIHRoZSBzYW1lIGxlbmd0aAo+ID4gYXMgYSBwb2ludGVy
-IG9uIGEgZ2l2ZW4gYXJjaGl0ZWN0dXJlLCBzbyB0aGlzIHNob3VsZCBmaXggdGhlIHByb2JsZW0K
-PiA+IGZvciBhbGwgYXJjaGl0ZWN0dXJlcyB1cCB0byA2NCBiaXRzLgo+ID4gCj4gPiBTaWduZWQt
-b2ZmLWJ5OiBHdWlsbGF1bWUgVHVja2VyIDxndWlsbGF1bWUudHVja2VyQGNvbGxhYm9yYS5jb20+
-Cj4gCj4gQXQgc29tZSBwb2ludCwgd2Ugc2hvdWxkIHNhdmUgb3VyIGV5ZXNpZ2h0IGFuZCBkbyB1
-NjRfdG9fcG9pbnRlcigpLgo+IFJldmlld2VkLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlz
-LXdpbHNvbi5jby51az4KCkFuZCBwdXNoZWQsIGhhdmluZyBmb3Jnb3R0ZW4gSSB3YXNuJ3QgdXNp
-bmcgZGltIGFuZCBmb3Jnb3QgdG8gYXV0by1zb2IuCi1DaHJpcwpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2lndC1kZXY=
+T24gV2VkLCBGZWIgMTMsIDIwMTkgYXQgMDM6MTQ6MjhQTSArMDIwMCwgVG9taSBWYWxrZWluZW4g
+dmlhIGlndC1kZXYgd3JvdGU6Cj4gQWRkIENJIGZvciBhcm1oZiBlbnZpcm9ubWVudC4KPiAKPiBT
+aWduZWQtb2ZmLWJ5OiBUb21pIFZhbGtlaW5lbiA8dG9taS52YWxrZWluZW5AdGkuY29tPgo+IC0t
+LQo+IAo+IEknbSBubyBleHBlcnQgb24gZ2l0bGFiIENJLCBhbmQgdGhpcyB3YXMgbW9zdGx5IGEg
+Y29weS1wYXN0ZSAmCj4gc2VhcmNoLXJlcGxhY2UgdHlwZSBvZiB3b3JrLiBTbyByZXZpZXcgY2Fy
+ZWZ1bGx5ID0pLiBUaGUgYXJtaGYgYnVpbGQKPiBkb2VzIGZhaWwgZm9yIG1lLCBhcyBzdXBwb3Nl
+ZCwgYXMgdGhlIGN1cnJlbnQgSEVBRCBpcyBicm9rZW4uIFNvIHRoYXQncwo+IGEgZ29vZCBzaWdu
+LgoKSGV5LAoKSXQncyBuaWNlIHRvIHNlZSBpbnRlcmVzZXQgaW4gZ2V0dGluZyBJR1Qgb24gbW9y
+ZSBhcmNoaXRlY3R1cmVzIDotKQoKU2VlbXMgbGlrZSB0aGUgY29tcGlsYXRpb24gaXNzdWUgd2Fz
+IHRoZSBzYW1lIGFzIHRoZSBvbmUgcmVwb3J0ZWQgYnkKR3VpbGxhdW1lLiBJdCBjb21waWxlcyB3
+aXRoIHRoZWlycyBwYXRjaCBhcHBsaWVkOgoKaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3Jn
+L2l2eWwvaWd0L3RyZWUvYXJtaGYKCj4gKyMgYXV0b3Rvb2xzIGJ1aWxkIGRlcHMKPiArUlVOIGFw
+dC1nZXQgaW5zdGFsbCAteSBcCj4gKwkJCWF1dG9jb25mIFwKPiArCQkJYXV0b21ha2UgXAo+ICsJ
+CQl4dXRpbHMtZGV2IFwKPiArCQkJbGlidG9vbCBcCj4gKwkJCW1ha2UKClRoaXMgbG9va3MgdW5l
+Y2Vzc2FyeSwgYnV0IHdlIGhhdmUgdGhlIHNhbWUgaW4gYXJtNjQsIHNvIHRoaXMgaXMgb24gdXMu
+CgpJJ2xsIG1ha2Ugc3VyZSB0aGF0IHdlIGNhbiBhY3R1YWxseSByZW1vdmUgaXQgd2l0aCBubyBo
+YXJtIGFuZCBJJ2xsIHNlbmQKYSBmb2xsb3d1cCBwYXRjaCBzb29uLgoKSW4gdGhlIG1lYW50aW1l
+OgoKUmV2aWV3ZWQtYnk6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6LmhpbGVyQGludGVsLmNv
+bT4KYW5kIHB1c2hlZC4KCi0tIApDaGVlcnMsCkFyZWsKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0
+cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9pZ3QtZGV2
