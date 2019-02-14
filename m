@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00D036E167
- for <igt-dev@lists.freedesktop.org>; Thu, 14 Feb 2019 13:06:16 +0000 (UTC)
-Date: Thu, 14 Feb 2019 15:06:14 +0200
-Message-ID: <20190214130614.GC990@intel.intel>
-References: <20190214004445.1733-1-andi.shyti@intel.com>
- <20190214004445.1733-5-andi.shyti@intel.com>
- <155013792674.14276.7984912980614234969@skylake-alporthouse-com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6083A6E3C5
+ for <igt-dev@lists.freedesktop.org>; Thu, 14 Feb 2019 13:08:28 +0000 (UTC)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <155013792674.14276.7984912980614234969@skylake-alporthouse-com>
-Subject: Re: [igt-dev] [RFC PATCH v9 4/5] lib: ioctl_wrappers: reach engines
- by index as well
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20190214130258.GB990@intel.intel>
+References: <20190214004445.1733-1-andi.shyti@intel.com>
+ <20190214004445.1733-3-andi.shyti@intel.com>
+ <155013737042.14276.16193705802949147203@skylake-alporthouse-com>
+ <20190214130258.GB990@intel.intel>
+Message-ID: <155014968886.14276.12818313196046073311@skylake-alporthouse-com>
+Date: Thu, 14 Feb 2019 13:08:09 +0000
+Subject: Re: [igt-dev] [RFC PATCH v9 2/5] lib/i915: add gem_query library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,22 +19,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-From: Andi Shyti via igt-dev <igt-dev@lists.freedesktop.org>
-Reply-To: Andi Shyti <andi.shyti@intel.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Andi Shyti <andi.shyti@intel.com>
 Cc: IGT dev <igt-dev@lists.freedesktop.org>, Andi Shyti <andi@etezian.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgQ2hyaXMsCgo+ID4gLWJvb2wgZ2VtX2hhc19yaW5nKGludCBmZCwgdW5zaWduZWQgcmluZykK
-PiA+ICtib29sIGdlbV9jb250ZXh0X2hhc19lbmdpbmUoaW50IGZkLCB1bnNpZ25lZCByaW5nLCB1
-bnNpZ25lZCBjdHgpCj4gCj4gUmVtZW1iZXIgdG8gbGlmdCBpdCBvdXQgb2YgaW9jdGxfd3JhcHBl
-cnMsIGFuZCBhcyB0aGlzIG9wZXJhdGVzIG9uIHRoZQo+IGNvbnRleHQgKGdpdmVuIHRoZSBuYW1l
-KSwgdGhlIGNvbnRleHQgc2hvdWxkIGJlIGEgcHJpbWFyeSBhcmd1bWVudC4KCkFsbCByaWdodCwg
-SSdsbCBwdXQgJ2dlbV9jb250ZXh0X2hhc19lbmdpbmUoKScgaW4KbGliL2k5MTUvZ2VtX2NvbnRl
-eHQuYy4KCkFuZGkKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
-cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+UXVvdGluZyBBbmRpIFNoeXRpICgyMDE5LTAyLTE0IDEzOjAyOjU4KQo+IEhpIENocmlzLAo+IAo+
+ID4gPiArLyoKPiA+ID4gKyAqIEhBQ0s6IHRoZSAnMiAqIHNpemVvZihfX3UxNiknIGlzIHRoZSBz
+aXplIHJlcXVpcmVkIGZvciB0aGUgZmxleGlibGUgYXJyYXkKPiA+ID4gKyAqIGluc2lkZSAnc3Ry
+dWN0IGk5MTVfY29udGV4dF9wYXJhbV9lbmdpbmVzJyB0aGF0IGRvZXNuJ3QgaGF2ZSBhIG5hbWUg
+YW5kCj4gPiA+ICsgKiB0aGVyZWZvcmUgY2Fubm90IGJlIHJlZmVyZW5jZWQuIEl0IG5lZWRzIGEg
+bmFtZSBpbiB0aGUgdWFwaS4KPiA+ID4gKyAqLwo+ID4gCj4gPiBJdCdzIG5vdCBnb2luZyB0byBn
+ZXQgb25lIHVudGlsIHlvdSByYWlzZSB0aGUgcG9pbnQgaW4gcmV2aWV3IG9mIHRoZQo+ID4gdUFQ
+SS4gSXQgZG9lc24ndCB0aG91Z2gsIHlvdSBjYW4gdXNlIHNpemVvZiBvbiB0aGUgdW5uYW1lZCBt
+ZW1iZXIuCj4gPiAKPiA+ID4gKyNkZWZpbmUgU0laRU9GX0NUWF9QQVJBTSAgICAgICBzaXplb2Yo
+c3RydWN0IGk5MTVfY29udGV4dF9wYXJhbV9lbmdpbmVzKSArIFwKPiA+ID4gKyAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIEk5MTVfRVhFQ19SSU5HX01BU0sgKiBcCj4gPiA+
+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAyICogc2l6ZW9mKF9fdTE2
+KQo+ID4gCj4gPiBGb3IgZXhhbXBsZToKPiA+IAo+ID4gU0laRU9GX0NUWF9QQVJBTSBvZmZzZXRv
+ZmVuZChzdHJ1Y3QgaTkxNV9jb250ZXh0X3BhcmFtX2VuZ2luZXMsCj4gPiAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICBjbGFzc19pbnN0YW5jZVtJOTE1X0VYRUNfUklOR19NQVNLICsgMV0pCj4g
+PiAKPiA+IFRvIG1ha2UgaXQgZ2VuZXJpYyB0aG91Z2gsIGl0IG5lZWRzIF9fYXR0cmlidXRlX18o
+KHBhY2tlZCkpCj4gCj4geWVhaCEgbWFrZXMgc2Vuc2UuCj4gCj4gPiAoSWYgdGhlIG1heGltdW0g
+aW5kZXggaXMgSTkxNV9FWEVDX1JJTkdfTUFTSywgd2UgbmVlZAo+ID4gSTkxNV9FWEVDX1JJTkdf
+TUFTSyArIDEgc3RvcmFnZS4pCj4gCj4gWWVzLCBJIGRpZG4ndCBhZGQgdGhlICcrIDEnIGJlY2F1
+c2UgaW4gdGhlIGRyaXZlciB5b3UgZG86Cj4gCj4gICAgICAgICBpZiAoc2V0Lm5lbmdpbmUgPT0g
+MCB8fCBzZXQubmVuZ2luZSA+IEk5MTVfRVhFQ19SSU5HX01BU0spCj4gICAgICAgICAgICAgICAg
+IHJldHVybiAtRUlOVkFMOwoKSW5kZWVkIHRoYXQgbmVlZHMgdG8gYmUgKzEgc2luY2Ugd2UgYXJl
+bid0IHJlc2VydmluZyBzbG90IDAgYW55bW9yZS4KPiAKPiA+ID4gKyAgICAgICByZXQgPSBfX2dl
+bV9jb250ZXh0X2dldF9wYXJhbShmZCwgJmN0eF9wYXJhbSk7Cj4gPiA+ICsgICAgICAgaWYgKHJl
+dCkgewo+ID4gPiArICAgICAgICAgICAgICAgaWYgKHJldCA9PSAtRUlOVkFMKSB7Cj4gPiAKPiA+
+IEp1c3QKPiA+IAo+ID4gaWYgKF9fZ2VtX2NvbnRleHRfZ2V0X3BhcmFtKCkpIHsKPiA+ICAgICAg
+IGludGVsX2FjdGl2ZV9lbmdpbmVzMiA9IGludGVsX2V4ZWN1dGlvbl9lbmdpbmVzMjsKPiA+ICAg
+ICAgIHJldHVybiAtRU5PREVWOwo+ID4gfQo+ID4gCj4gPiBUaGlzIGJlIGxpYnJhcnkgY29kZSwg
+c28geW91IGRlZmluZSB0aGUgaW50ZXJmYWNlOyBhcyBvcHBvc2VkIHRvIHRlc3QKPiA+IGNvZGUg
+d2hlcmUgd2UgZGVtYW5kIGNlcnRhaW4gcmVzcG9uc2VzIGZyb20gdGhlIGtlcm5lbC4KPiAKPiB3
+ZSBkb24ndCBuZWVkIG90aGVyIC1lcnJub3M/IE9LIQoKSSBoYXZlbid0IGNoZWNrZWQgaWYgd2Ug
+bmVlZCB0aGF0IGVycm9yIGVpdGhlciA7KQoKSSB0aGluayBJIGhhdmUgYSBzbGlnaHRseSBkaWZm
+ZXJlbnQgaWRlYSBmb3IgdGhlIGZvcl9lYWNoX2VuZ2luZSBsb29wCmFueXdheS4KLUNocmlzCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFp
+bGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
