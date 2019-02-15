@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from emeril.freedesktop.org (emeril.freedesktop.org
- [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTP id 926136EBDA
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Feb 2019 15:48:25 +0000 (UTC)
-Received: from emeril.freedesktop.org (localhost [127.0.0.1])
- by emeril.freedesktop.org (Postfix) with ESMTP id 8CDD7A011A
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Feb 2019 15:48:25 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5FE5C6EC58
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Feb 2019 16:09:13 +0000 (UTC)
+Date: Fri, 15 Feb 2019 16:09:11 +0000
+Message-ID: <c569554ab37259d86b6ab387f4b5ec198799de83.camel@intel.com>
+References: <20190215152827.5522-1-stanislav.lisovskiy@intel.com>
+In-Reply-To: <20190215152827.5522-1-stanislav.lisovskiy@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 15 Feb 2019 15:48:25 -0000
-Message-ID: <20190215154825.7911.89214@emeril.freedesktop.org>
-References: <20190215095448.13196-1-daniel.vetter@ffwll.ch>
-In-Reply-To: <20190215095448.13196-1-daniel.vetter@ffwll.ch>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/6=5D_lib/tests=3A_Add_header_for_co?=
- =?utf-8?q?mmon_helpers?=
+Subject: Re: [igt-dev] [PATCH i-g-t v2] igt/tests: Fix error checking in
+ kms_atomic_transition
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,33 +17,172 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+From: "Summers, Stuart via igt-dev" <igt-dev@lists.freedesktop.org>
+Reply-To: "Summers, Stuart" <stuart.summers@intel.com>
+Content-Type: multipart/mixed; boundary="===============1947345113=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
+Cc: "juhapekka.heikkila@intel.com" <juhapekka.heikkila@intel.com>, "Syrjala,
+ Ville" <ville.syrjala@intel.com>, "Peres, Martin" <martin.peres@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW2ktZy10
-LDEvNl0gbGliL3Rlc3RzOiBBZGQgaGVhZGVyIGZvciBjb21tb24gaGVscGVycwpVUkwgICA6IGh0
-dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvNTY3MTUvClN0YXRlIDogZmFp
-bHVyZQoKPT0gU3VtbWFyeSA9PQoKQXBwbHlpbmc6IGxpYi90ZXN0czogQWRkIGhlYWRlciBmb3Ig
-Y29tbW9uIGhlbHBlcnMKQXBwbHlpbmc6IGxpYi90ZXN0czogYWRkIGludGVybmFsX2Fzc2VydF93
-ZXhpdGVkL3dzaWduYWxlZApBcHBseWluZzogdGVzdHM6IGRyb3AgaW52YWxpZCBuYW1lIGJ1aWxk
-IGNoZWNrcwpBcHBseWluZzogbGliL3Rlc3RzOiBDb252ZXJ0IG5vX2V4aXQgdGVzdHMgaW50byBw
-b3NpdGl2ZSB0ZXN0cwpBcHBseWluZzogbGliL3Rlc3RzOiBBZGQgdGVzdGNhc2UgZm9yIG5vbmV4
-aXN0aW5nIHN1YnRlc3QgbmFtZQpBcHBseWluZzogbGliL2NvcmVfYXV0aDogbW91bnQgbmFtZXNw
-YWNlIG1hZ2ljIHRvIG1ha2UgdGhlIHRlc3Qgd29yayBldmVyeXdoZXJlClVzaW5nIGluZGV4IGlu
-Zm8gdG8gcmVjb25zdHJ1Y3QgYSBiYXNlIHRyZWUuLi4KTQl0ZXN0cy9jb3JlX2F1dGguYwpGYWxs
-aW5nIGJhY2sgdG8gcGF0Y2hpbmcgYmFzZSBhbmQgMy13YXkgbWVyZ2UuLi4KQXV0by1tZXJnaW5n
-IHRlc3RzL2NvcmVfYXV0aC5jCkNPTkZMSUNUIChjb250ZW50KTogTWVyZ2UgY29uZmxpY3QgaW4g
-dGVzdHMvY29yZV9hdXRoLmMKUGF0Y2ggZmFpbGVkIGF0IDAwMDYgbGliL2NvcmVfYXV0aDogbW91
-bnQgbmFtZXNwYWNlIG1hZ2ljIHRvIG1ha2UgdGhlIHRlc3Qgd29yayBldmVyeXdoZXJlCldoZW4g
-eW91IGhhdmUgcmVzb2x2ZWQgdGhpcyBwcm9ibGVtLCBydW4gImdpdCBhbSAtLWNvbnRpbnVlIi4K
-SWYgeW91IHByZWZlciB0byBza2lwIHRoaXMgcGF0Y2gsIHJ1biAiZ2l0IGFtIC0tc2tpcCIgaW5z
-dGVhZC4KVG8gcmVzdG9yZSB0aGUgb3JpZ2luYWwgYnJhbmNoIGFuZCBzdG9wIHBhdGNoaW5nLCBy
-dW4gImdpdCBhbSAtLWFib3J0Ii4KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0
-LWRldg==
+--===============1947345113==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=sha-1;
+	protocol="application/x-pkcs7-signature"; boundary="=-J94rR78nbjgT2vTtYibn"
+
+--=-J94rR78nbjgT2vTtYibn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, 2019-02-15 at 17:28 +0200, Stanislav Lisovskiy via igt-dev
+wrote:
+> From: Stanislav Lisovskiy <stanislav.lisovskiy@gmail.com>
+>=20
+> There is no guarantee that error return value will be
+> always EINVAL, made a check more general as it can be
+> ERANGE, ENOSPC, EINVAL and probably others, which all
+> mean the same in context of this test case: i.e this sprite
+> size is not valid.
+>=20
+> v2: Added macro to make check look a bit nicer.
+>=20
+> Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=3D109225
+> Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+> ---
+>  tests/kms_atomic_transition.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/tests/kms_atomic_transition.c
+> b/tests/kms_atomic_transition.c
+> index 12bafe87..32bff1e9 100644
+> --- a/tests/kms_atomic_transition.c
+> +++ b/tests/kms_atomic_transition.c
+> @@ -187,6 +187,11 @@ static void set_sprite_wh(igt_display_t
+> *display, enum pipe pipe,
+>  		      LOCAL_DRM_FORMAT_MOD_NONE, sprite_fb);
+>  }
+> =20
+> +#define is_atomic_check_failure_errno(errno) \
+> +		(errno =3D=3D -EINVAL || \
+> +		errno =3D=3D -ERANGE || \
+> +		errno =3D=3D -ENOSPC)
+> +
+>  static void setup_parms(igt_display_t *display, enum pipe pipe,
+>  			const drmModeModeInfo *mode,
+>  			struct igt_fb *primary_fb,
+> @@ -252,7 +257,7 @@ retry:
+>  		wm_setup_plane(display, pipe, (1 << n_planes) - 1,
+> parms, false);
+>  		ret =3D igt_display_try_commit_atomic(display,
+> DRM_MODE_ATOMIC_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> =20
+> -		if (ret =3D=3D -EINVAL) {
+> +		if (is_atomic_check_failure_errno(ret)) {
+>  			if (cursor_width =3D=3D sprite_width &&
+>  			    cursor_height =3D=3D sprite_height) {
+>  				igt_assert_f(alpha,
+> @@ -391,6 +396,7 @@ run_transition_test(igt_display_t *display, enum
+> pipe pipe, igt_output_t *output
+>  	igt_plane_t *plane;
+>  	igt_pipe_t *pipe_obj =3D &display->pipes[pipe];
+>  	uint32_t iter_max =3D 1 << pipe_obj->n_planes, i;
+> +	iter_max =3D 1 << 3;
+
+Why this added assignment?
+
+>  	struct plane_parms parms[pipe_obj->n_planes];
+>  	unsigned flags =3D 0;
+>  	int ret;
+> @@ -442,7 +448,7 @@ run_transition_test(igt_display_t *display, enum
+> pipe pipe, igt_output_t *output
+>  			igt_pipe_request_out_fence(pipe_obj);
+> =20
+>  		ret =3D igt_display_try_commit_atomic(display,
+> DRM_MODE_ATOMIC_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -		if (ret !=3D -EINVAL || pipe_obj->n_planes < 3)
+> +		if (!is_atomic_check_failure_errno(ret) || pipe_obj-
+> >n_planes < 3)
+>  			break;
+> =20
+>  		ret =3D 0;
+
+--=-J94rR78nbjgT2vTtYibn
+Content-Type: application/x-pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+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
+PwuHX1mRETAlwqXCZa6ba8eraUCltlCb/ZiEk9UFRVLjbLNPh9IYOi+sWkS6n5CovLKAqhMCAwEA
+AaOCAjMwggIvMB0GA1UdDgQWBBSgeYqvLV4nBaCUzAXLr0TeMJYR5zAfBgNVHSMEGDAWgBTaQSOc
+Wo9xr1eDPiDT42XbDMsL2zBlBgNVHR8EXjBcMFqgWKBWhlRodHRwOi8vd3d3LmludGVsLmNvbS9y
+ZXBvc2l0b3J5L0NSTC9JbnRlbCUyMEV4dGVybmFsJTIwQmFzaWMlMjBJc3N1aW5nJTIwQ0ElMjA0
+Qi5jcmwwgZ8GCCsGAQUFBwEBBIGSMIGPMCIGCCsGAQUFBzABhhZodHRwOi8vb2NzcC5pbnRlbC5j
+b20vMGkGCCsGAQUFBzAChl1odHRwOi8vd3d3LmludGVsLmNvbS9yZXBvc2l0b3J5L2NlcnRpZmlj
+YXRlcy9JbnRlbCUyMEV4dGVybmFsJTIwQmFzaWMlMjBJc3N1aW5nJTIwQ0ElMjA0Qi5jcnQwCwYD
+VR0PBAQDAgeAMDwGCSsGAQQBgjcVBwQvMC0GJSsGAQQBgjcVCIbDjHWEmeVRg/2BKIWOn1OCkcAJ
+Z4HevTmV8EMCAWQCAQkwHwYDVR0lBBgwFgYIKwYBBQUHAwQGCisGAQQBgjcKAwwwKQYJKwYBBAGC
+NxUKBBwwGjAKBggrBgEFBQcDBDAMBgorBgEEAYI3CgMMME0GA1UdEQRGMESgKAYKKwYBBAGCNxQC
+A6AaDBhzdHVhcnQuc3VtbWVyc0BpbnRlbC5jb22BGHN0dWFydC5zdW1tZXJzQGludGVsLmNvbTAN
+BgkqhkiG9w0BAQUFAAOCAQEAfyIC7rzSi6S8O+sdH384K8zyeMRJnl6vR7whl9PuEat+BkKpoxHn
+jQ0SFyF/cyI4lH/n938Pm3/Ctq0Z5GTldX6hhxxcLAR0qbk6AQU0Cq2nYMlZfX4FUz3FRsazbjTW
+1qObcvPRUAVScaa7SRGdensvbNV++pN1XqEdc++szxo58UzPaEgDlHIe2sEIVXnFkHnJv0ikRHG3
+urcA1bdj7Rac7dJBeQOQMdZEGmrWWmmbJzvk3OmoK9tKN7wcErQSdlqyYOMLesPfa7YNyLFYEJQd
+CC/N7V8U9yFZx8akWREb8lJYDl9KypirEsufleiew26CWrwcbmdlldDCFS6/HDGCAhcwggITAgEB
+MIGQMHkxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEUMBIGA1UEBxMLU2FudGEgQ2xhcmExGjAY
+BgNVBAoTEUludGVsIENvcnBvcmF0aW9uMSswKQYDVQQDEyJJbnRlbCBFeHRlcm5hbCBCYXNpYyBJ
+c3N1aW5nIENBIDRCAhMzAAB04Th3owY0UbEUAAAAAHThMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0B
+CQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xOTAyMTUxNjA5MDdaMCMGCSqGSIb3DQEJ
+BDEWBBSAzIS0yyIwH3i0+qbwkH2mjY3LEDANBgkqhkiG9w0BAQEFAASCAQAQAWP9Q1/t54fOSuKK
+usCxcrZz2QWX7saI8EASFLb4KVUDPZtdodJWp/4tsLwHNJI1ISBGfILUUSD6t8XGREuBky2GX/pG
+L6HnNIE3e7omsFwj2vANFd2KJfXZPwKRko3vpqSVMEJfW/L/2eVKM2JDhwjHu7UnGjRS1CCko/bW
+bQPkhhshZJOUhMv2Y0EiA8WyAL9Uw+VmrlbDlMlnNpw6vOwi7PH4nd+J8OVhYRWtXqvOjeQiIFWq
+4d/p71/q9d9gdWjV8yNNXeEOh13f0zdMIGjI7tN4+X9OQDFBp0bIfodudAumfDl+6BtnzLHJqPX2
+szXQhQTGKAEiQO51Gb0gAAAAAAAA
+
+
+--=-J94rR78nbjgT2vTtYibn--
+
+--===============1947345113==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============1947345113==--
