@@ -1,38 +1,58 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Sun, 17 Feb 2019 14:35:55 +0000
-Message-Id: <20190217143556.9482-7-chris@chris-wilson.co.uk>
+Date: Sun, 17 Feb 2019 14:35:56 +0000
+Message-Id: <20190217143556.9482-8-chris@chris-wilson.co.uk>
 In-Reply-To: <20190217143556.9482-1-chris@chris-wilson.co.uk>
 References: <20190217143556.9482-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 7/8] kms_fence_pin_leak: Ask for the GPU
- before use
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: [Intel-gfx] [PATCH i-g-t 8/8] kms_fence_pin_leak: Move beneath i915/
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Q2hlY2sgdGhhdCB0aGUgR1BVIGV2ZW4gZXhpc3RzIGJlZm9yZSBzdWJtaXR0aW5nIGEgYmF0Y2gu
-CgpCdWd6aWxsYTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
-MTA5NTg5ClNpZ25lZC1vZmYtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNv
-LnVrPgotLS0KIHRlc3RzL2ttc19mZW5jZV9waW5fbGVhay5jIHwgMSArCiAxIGZpbGUgY2hhbmdl
-ZCwgMSBpbnNlcnRpb24oKykKCmRpZmYgLS1naXQgYS90ZXN0cy9rbXNfZmVuY2VfcGluX2xlYWsu
-YyBiL3Rlc3RzL2ttc19mZW5jZV9waW5fbGVhay5jCmluZGV4IDYyYzUyYjYyNy4uZTZjOGIzM2Mz
-IDEwMDY0NAotLS0gYS90ZXN0cy9rbXNfZmVuY2VfcGluX2xlYWsuYworKysgYi90ZXN0cy9rbXNf
-ZmVuY2VfcGluX2xlYWsuYwpAQCAtMjAxLDYgKzIwMSw3IEBAIGlndF9zaW1wbGVfbWFpbgogCWln
-dF9za2lwX29uX3NpbXVsYXRpb24oKTsKIAogCWRhdGEuZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVy
-X21hc3RlcihEUklWRVJfSU5URUwpOworCWlndF9yZXF1aXJlX2dlbShkYXRhLmRybV9mZCk7CiAK
-IAlkYXRhLmRldmlkID0gaW50ZWxfZ2V0X2RybV9kZXZpZChkYXRhLmRybV9mZCk7CiAKLS0gCjIu
-MjAuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0
-LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
-aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+a21zX2ZlbmNlX3Bpbl9sZWFrIHRlc3RzIHNtb290aCBzaGFycCBlZGdlcyB0aGF0IGFyZSBpOTE1
+IHNwZWNpZmljIChhbmQKcmVxdWlyZXMgdXNpbmcgR0VNIHRvIGRvIHNvKS4gSXQgZG9lc24ndCBi
+ZWxvbmcgaW4gdGhlIGdlbmVyYWwgcGFkZG9jawpvZiBhbGwgZHJpdmVyIHRlc3RzLCBzbyBtb3Zl
+IGl0IGludG8gdGhlIGk5MTUvIHN0YWJsZS4KClNpZ25lZC1vZmYtYnk6IENocmlzIFdpbHNvbiA8
+Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgpDYzogQXJrYWRpdXN6IEhpbGVyIDxhcmthZGl1c3ou
+aGlsZXJAaW50ZWwuY29tPgpDYzogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5j
+b20+CkFja2VkLWJ5OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KLS0t
+CiB0ZXN0cy9NYWtlZmlsZS5zb3VyY2VzICAgICAgICAgICAgICAgIHwgNSArKysrLQogdGVzdHMv
+eyA9PiBpOTE1fS9rbXNfZmVuY2VfcGluX2xlYWsuYyB8IDAKIHRlc3RzL21lc29uLmJ1aWxkICAg
+ICAgICAgICAgICAgICAgICAgfCAyICstCiAzIGZpbGVzIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygr
+KSwgMiBkZWxldGlvbnMoLSkKIHJlbmFtZSB0ZXN0cy97ID0+IGk5MTV9L2ttc19mZW5jZV9waW5f
+bGVhay5jICgxMDAlKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL01ha2VmaWxlLnNvdXJjZXMgYi90ZXN0
+cy9NYWtlZmlsZS5zb3VyY2VzCmluZGV4IGQyYzRmOWZlOS4uOTk3MmIyZGQxIDEwMDY0NAotLS0g
+YS90ZXN0cy9NYWtlZmlsZS5zb3VyY2VzCisrKyBiL3Rlc3RzL01ha2VmaWxlLnNvdXJjZXMKQEAg
+LTQwLDcgKzQwLDYgQEAgVEVTVFNfcHJvZ3MgPSBcCiAJa21zX2RwX2RzYyBcCiAJa21zX2RyYXdf
+Y3JjIFwKIAlrbXNfZmJjb25fZmJ0IFwKLQlrbXNfZmVuY2VfcGluX2xlYWsgXAogCWttc19mbGlw
+IFwKIAlrbXNfZmxpcF9ldmVudF9sZWFrIFwKIAlrbXNfZmxpcF90aWxpbmcgXApAQCAtOTksNiAr
+OTgsMTAgQEAgVEVTVFNfcHJvZ3MgPSBcCiAJdmdlbV9zbG93IFwKIAkkKE5VTEwpCiAKK1RFU1RT
+X3Byb2dzICs9IFwKKwlpOTE1L2ttc19mZW5jZV9waW5fbGVhayBcCisJJChOVUxMKQorCiBURVNU
+U19wcm9ncyArPSBnZW1fYmFkX3JlbG9jCiBnZW1fYmFkX3JlbG9jX1NPVVJDRVMgPSBpOTE1L2dl
+bV9iYWRfcmVsb2MuYwogCmRpZmYgLS1naXQgYS90ZXN0cy9rbXNfZmVuY2VfcGluX2xlYWsuYyBi
+L3Rlc3RzL2k5MTUva21zX2ZlbmNlX3Bpbl9sZWFrLmMKc2ltaWxhcml0eSBpbmRleCAxMDAlCnJl
+bmFtZSBmcm9tIHRlc3RzL2ttc19mZW5jZV9waW5fbGVhay5jCnJlbmFtZSB0byB0ZXN0cy9pOTE1
+L2ttc19mZW5jZV9waW5fbGVhay5jCmRpZmYgLS1naXQgYS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rl
+c3RzL21lc29uLmJ1aWxkCmluZGV4IGVjOTgwNjUxYS4uMDhlNTViOWMwIDEwMDY0NAotLS0gYS90
+ZXN0cy9tZXNvbi5idWlsZAorKysgYi90ZXN0cy9tZXNvbi5idWlsZApAQCAtMjcsNyArMjcsNiBA
+QCB0ZXN0X3Byb2dzID0gWwogCSdrbXNfZHBfZHNjJywKIAkna21zX2RyYXdfY3JjJywKIAkna21z
+X2ZiY29uX2ZidCcsCi0JJ2ttc19mZW5jZV9waW5fbGVhaycsCiAJJ2ttc19mbGlwJywKIAkna21z
+X2ZsaXBfZXZlbnRfbGVhaycsCiAJJ2ttc19mbGlwX3RpbGluZycsCkBAIC0xMDAsNiArOTksNyBA
+QCBpOTE1X3Byb2dzID0gWwogCSdmYl90aWxpbmcnLAogCSdnZXRwYXJhbXNfYmFzaWMnLAogCSdo
+YW5nbWFuJywKKwkna21zX2ZlbmNlX3Bpbl9sZWFrJywKIAknbWlzc2VkX2lycScsCiAJJ21vZHVs
+ZV9sb2FkJywKIAkncXVlcnknLAotLSAKMi4yMC4xCgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpJbnRlbC1nZnggbWFpbGluZyBsaXN0CkludGVsLWdmeEBs
+aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9pbnRlbC1nZng=
