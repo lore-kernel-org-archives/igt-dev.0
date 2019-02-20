@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
- [IPv6:2a00:1450:4864:20::343])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A5C3891A6
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Feb 2019 14:25:00 +0000 (UTC)
-Received: by mail-wm1-x343.google.com with SMTP id z84so6640994wmg.4
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Feb 2019 06:25:00 -0800 (PST)
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Wed, 20 Feb 2019 15:24:49 +0100
-Message-Id: <20190220142449.4986-3-daniel.vetter@ffwll.ch>
-In-Reply-To: <20190220142449.4986-1-daniel.vetter@ffwll.ch>
-References: <20190220142449.4986-1-daniel.vetter@ffwll.ch>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A433D8930C
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Feb 2019 14:31:37 +0000 (UTC)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/3] lib: disallow fixtures/subtest groups
- in simple tests
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20190220142449.4986-2-daniel.vetter@ffwll.ch>
+References: <20190220142449.4986-1-daniel.vetter@ffwll.ch>
+ <20190220142449.4986-2-daniel.vetter@ffwll.ch>
+Message-ID: <155067308109.30979.12568907326839654466@skylake-alporthouse-com>
+Date: Wed, 20 Feb 2019 14:31:21 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] tests/kms_mmap_write_crc: Fix
+ igt_fixture handling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,23 +22,45 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: IGT development <igt-dev@lists.freedesktop.org>
+To: Daniel Vetter <daniel.vetter@ffwll.ch>, IGT development <igt-dev@lists.freedesktop.org>
 Cc: Daniel Vetter <daniel.vetter@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhleSBkb24ndCB3b3JrLCBzZWUgaWd0X2Nhbl9mYWlsKCkuIFdlIGFscmVhZHkgY2hlY2sgZm9y
-CnRlc3Rfd2l0aF9zdWJ0ZXN0cyBpbiBpZ3Rfc3VidGVzdC4KClNpZ25lZC1vZmYtYnk6IERhbmll
-bCBWZXR0ZXIgPGRhbmllbC52ZXR0ZXJAaW50ZWwuY29tPgotLS0KIGxpYi9pZ3RfY29yZS5jIHwg
-MyArKysKIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9saWIv
-aWd0X2NvcmUuYyBiL2xpYi9pZ3RfY29yZS5jCmluZGV4IDcxYjA1ZDNiYmQzYi4uNmViNDc5OGUy
-NGVmIDEwMDY0NAotLS0gYS9saWIvaWd0X2NvcmUuYworKysgYi9saWIvaWd0X2NvcmUuYwpAQCAt
-NDYzLDYgKzQ2Myw3IEBAIHVpbnQ2NF90IGlndF9uc2VjX2VsYXBzZWQoc3RydWN0IHRpbWVzcGVj
-ICpzdGFydCkKIGJvb2wgX19pZ3RfZml4dHVyZSh2b2lkKQogewogCWFzc2VydCghaW5fZml4dHVy
-ZSk7CisJYXNzZXJ0KHRlc3Rfd2l0aF9zdWJ0ZXN0cyk7CiAKIAlpZiAoaWd0X29ubHlfbGlzdF9z
-dWJ0ZXN0cygpKQogCQlyZXR1cm4gZmFsc2U7CkBAIC05NzUsNiArOTc2LDggQEAgYm9vbCBpZ3Rf
-b25seV9saXN0X3N1YnRlc3RzKHZvaWQpCiAKIHZvaWQgX19pZ3Rfc3VidGVzdF9ncm91cF9zYXZl
-KGludCAqc2F2ZSkKIHsKKwlhc3NlcnQodGVzdF93aXRoX3N1YnRlc3RzKTsKKwogCSpzYXZlID0g
-c2tpcF9zdWJ0ZXN0c19oZW5jZWZvcnRoOwogfQogCi0tIAoyLjIwLjEKCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
-dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-L21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
+UXVvdGluZyBEYW5pZWwgVmV0dGVyICgyMDE5LTAyLTIwIDE0OjI0OjQ4KQo+IGlndF9maXh0dXJl
+IHdpdGhpbiBhbiBpZ3Rfc2ltcGxlX3Rlc3QgZG9uJ3QgcmVhbGx5IHdvcmsgYXMgYWR2ZXJ0aXNl
+ZC4KPiAKPiBNaW5pbWFsIGZpeCwgdGhlIHRlc3RjYXNlIHNlZW1zIGZhaXJseSBxdWVzdGlvbmFi
+bGUgYWxyZWFkeSAuLi4KCkRlZmluaXRlbHk7IGl0IHdhcyB3cml0dGVuIHRvIHJlcHJvZHVjZSBh
+IHNwZWNpZmljIHNldHVwIGFuZCBkZW1vbnN0cmF0ZQphbiBpc3N1ZSB3aXRoIGZvcmdldHRpbmcg
+dG8gc3luYywgb3Igc29lbXRoaW5nIGxpa2UgdGhhdC4gTWFhcnRlbgpob3BlZnVsbHkga25vd3Mg
+d2hldGhlciB0aGlzIGNhbiBiZSBzaW1wbHkgc3Vic3VtZWQgaW50byBvbmUgb2Ygb3VyCm90aGVy
+IHRlc3RzLiBJdCdzIGp1c3QgdGhlIHVzZSBvZiBhIGNwdV9ob2cgc3RhbmRzIG91dDsgdGhvdWdo
+IHJlYWxseSBpdAp3YW50cyBhIG1lbW9yeV9ob2c/IGZvciB0aGF0IGV4dHJhIGJpdCBvZiBjYWNo
+ZSBwcmVzc3VyZS4gVGhhdCBtaWdodCBiZQp1c2VmdWwgdG8gZ2VuZXJhbGlzZSBpbiBvdXIgb3Ro
+ZXIgY29oZXJlbmN5IHNlbnNpdGl2ZSB0ZXN0cy4KCj4gUmVmZXJlbmNlczogaHR0cHM6Ly9pbnRl
+bC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9kcm10aXBfMjIyL2ZpLWljbC15L2lndEBrbXNf
+bW1hcF93cml0ZV9jcmMuaHRtbAo+IFNpZ25lZC1vZmYtYnk6IERhbmllbCBWZXR0ZXIgPGRhbmll
+bC52ZXR0ZXJAaW50ZWwuY29tPgo+IC0tLQo+ICB0ZXN0cy9rbXNfbW1hcF93cml0ZV9jcmMuYyB8
+IDExICsrKysrKystLS0tCj4gIDEgZmlsZSBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKyksIDQgZGVs
+ZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19tbWFwX3dyaXRlX2NyYy5jIGIv
+dGVzdHMva21zX21tYXBfd3JpdGVfY3JjLmMKPiBpbmRleCA5M2M5NmVmNGRlMDguLmJmMmIwYzI5
+OTFiMyAxMDA2NDQKPiAtLS0gYS90ZXN0cy9rbXNfbW1hcF93cml0ZV9jcmMuYwo+ICsrKyBiL3Rl
+c3RzL2ttc19tbWFwX3dyaXRlX2NyYy5jCj4gQEAgLTI2OCw3ICsyNjgsOCBAQCBzdGF0aWMgZGF0
+YV90IGRhdGE7Cj4gIGludCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikKPiAgewo+ICAgICAg
+ICAgaW50IGk7Cj4gLSAgICAgICBpZ3Rfc2ltcGxlX2luaXRfcGFyc2Vfb3B0cygmYXJnYywgYXJn
+diwgIm4iLCBOVUxMLCBOVUxMLCBvcHRfaGFuZGxlciwgTlVMTCk7Cj4gKyAgICAgICBpZ3Rfc3Vi
+dGVzdF9pbml0X3BhcnNlX29wdHMoJmFyZ2MsIGFyZ3YsICJuIiwgTlVMTCwgTlVMTCwKPiArICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBvcHRfaGFuZGxlciwgTlVMTCk7Cj4gIAo+
+ICAgICAgICAgaWd0X3NraXBfb25fc2ltdWxhdGlvbigpOwo+ICAKPiBAQCAtMjg2LDEwICsyODcs
+MTIgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKiphcmd2KQo+ICAgICAgICAgICAgICAgICBm
+b3JrX2NwdWhvZ19oZWxwZXIoKTsKPiAgICAgICAgIH0KPiAgCj4gLSAgICAgICBpZ3RfaW5mbygi
+VXNpbmcgJWQgcm91bmRzIGZvciB0aGUgdGVzdFxuIiwgUk9VTkRTKTsKPiArICAgICAgIGlndF9z
+dWJ0ZXN0KCJtYWluIikgewo+ICsgICAgICAgICAgICAgICBpZ3RfaW5mbygiVXNpbmcgJWQgcm91
+bmRzIGZvciB0aGUgdGVzdFxuIiwgUk9VTkRTKTsKPiAgCj4gLSAgICAgICBmb3IgKGkgPSAwOyBp
+IDwgUk9VTkRTOyBpKyspCj4gLSAgICAgICAgICAgICAgIHJ1bl90ZXN0KCZkYXRhKTsKPiArICAg
+ICAgICAgICAgICAgZm9yIChpID0gMDsgaSA8IFJPVU5EUzsgaSsrKQo+ICsgICAgICAgICAgICAg
+ICAgICAgICAgIHJ1bl90ZXN0KCZkYXRhKTsKPiArICAgICAgIH0KCk9rLCB0aGF0IHdhcyBtdWNo
+IHNpbXBsZXIgdGhhbiBJIGZlYXJlZC4gSSBzdGFydGVkIGJ5IHJpcHBpbmcgb3V0IHRoZQpwYXJz
+ZV9vcHRzIDopCgpSZXZpZXdlZC1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24u
+Y28udWs+Ci1DaHJpcwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
+dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
