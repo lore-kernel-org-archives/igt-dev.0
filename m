@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CDF2E891A6
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Feb 2019 05:39:58 +0000 (UTC)
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-References: <0cc138314abc390aa0bfc79d5463034da3024530.1550624857.git.caz@caz-nuc.ra.intel.com>
- <20190219222110.19815-1-chris@chris-wilson.co.uk>
-Date: Tue, 19 Feb 2019 21:39:55 -0800
-In-Reply-To: <20190219222110.19815-1-chris@chris-wilson.co.uk> (Chris Wilson's
- message of "Tue, 19 Feb 2019 15:21:10 -0700")
-Message-ID: <87lg2bauhg.fsf@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DEFFB891B4
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Feb 2019 07:34:56 +0000 (UTC)
+Date: Wed, 20 Feb 2019 09:34:53 +0200
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20190220073453.5noj2vslxyhpmifa@ahiler-desk1.fi.intel.com>
+References: <20190219132543.31786-1-arkadiusz.hiler@intel.com>
+ <20190219132543.31786-3-arkadiusz.hiler@intel.com>
+ <20190219142332.dgf5lajneohb7ed6@ahiler-desk1.fi.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib: Incrementally mlock()
+Content-Disposition: inline
+In-Reply-To: <20190219142332.dgf5lajneohb7ed6@ahiler-desk1.fi.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests: Prefix pm_ tests with i915_
+ and move them to i915/
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,32 +24,34 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, Caz Yokoyama <caz@caz-nuc.ra.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBGZWIgMTkgMjAxOSBhdCAwOToyNjo1NiBQTSwgQXNodXRvc2ggRGl4aXQgPGFzaHV0
-b3NoLmRpeGl0QGludGVsLmNvbT4gd3JvdGU6Cj4gT24gVHVlLCBGZWIgMTkgMjAxOSBhdCAwMzoy
-MToxMCBQTSwgQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+IHdyb3RlOgo+
-PiBBcyB3ZSBhbHJlYWR5IGhhdmUgdGhlIHByZXZpb3VzIHBvcnRpb24gb2YgdGhlIG1tYXAgbWxv
-Y2tlZCwgd2Ugb25seQo+PiBuZWVkIHRvIG1sb2NrKCkgdGhlIGZyZXNoIHBvcnRpb24gZm9yIHRl
-c3RpbmcgYXZhaWxhYmxlIG1lbW9yeS4KPgo+IFN0aWxsIGxvb2tpbmcgYXQgd2hhdCBpcyB3cm9u
-ZyB3aXRoIHRoZSBwYXRjaCBidXQgd2l0aCB0aGUgcGF0Y2ggdGhlCj4gdGVzdCBpcyB1bmFibGUg
-dG8gbG9jayBhcyBtdWNoIG1lbW9yeSBhcyBiZWZvcmUgYW5kIGludm9rZSB0aGUKPiBzaHJpbmtl
-ci4gSGVyZSBhcmUgdGhlIG91dHB1dHMgYmVmb3JlIGFuZCBhZnRlciB0aGUgcGF0Y2ggb24gYSBz
-eXN0ZW0KPiB3aXRoIDE2IEdCOgoKT0ssIGZvdW5kIHRoZSBidWcuIFRoZSBidWcgaXMgdGhhdCBj
-YW5fbWxvY2sgaXMgdTY0Ki4gVGhlcmVmb3JlCmNhbl9tbG9jayBtdXN0IGJlIGNhc3QgdG8gdTgq
-IG9uIHRoZXNlIHR3byBsaW5lczoKCgo+ICsgICAgIGlmIChtbG9jayhjYW5fbWxvY2sgKyBieXRl
-cywgaW5jKSkKCmFuZCAKCj4gKwlpZ3RfYXNzZXJ0KCFtbG9jayhjYW5fbWxvY2sgKyBsb2NrZWQs
-ICpjYW5fbWxvY2sgLSBsb2NrZWQpKTsKCkhvd2V2ZXIgd2hlbiB3ZSBkbyB0aGlzLCB0aGUgcGFy
-ZW50IHByb2Nlc3MgaW52YXJpYWJseSBnZXRzIGtpbGxlZCBieQp0aGUgT09NIGtpbGxlciwgc29t
-ZXRoaW5nIHdoaWNoIHdhcyBub3QgaGFwcGVuaW5nIHByZXZpb3VzbHk6CgojIC4vaTkxNV9zdXNw
-ZW5kIC0tcnVuLXN1YnRlc3Qgc2hyaW5rCklHVC1WZXJzaW9uOiAxLjIzLWc5ZWY3OTFjZSAoeDg2
-XzY0KSAoTGludXg6IDUuMC4wLXJjNSsgeDg2XzY0KQpTdGFydGluZyBzdWJ0ZXN0OiBzaHJpbmsK
-Y2hpbGQgMCBkaWVkIHdpdGggc2lnbmFsIDksIEtpbGxlZApjaGlsZCAwIGRpZWQgd2l0aCBzaWdu
-YWwgOSwgS2lsbGVkCmNoaWxkIDAgZGllZCB3aXRoIHNpZ25hbCA5LCBLaWxsZWQKY2hpbGQgMCBk
-aWVkIHdpdGggc2lnbmFsIDksIEtpbGxlZApjaGlsZCAwIGRpZWQgd2l0aCBzaWduYWwgOSwgS2ls
-bGVkCmNoaWxkIDAgZGllZCB3aXRoIHNpZ25hbCA5LCBLaWxsZWQKS2lsbGVkCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0
-CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
+T24gVHVlLCBGZWIgMTksIDIwMTkgYXQgMDQ6MjM6MzJQTSArMDIwMCwgQXJrYWRpdXN6IEhpbGVy
+IHdyb3RlOgo+IE9uIFR1ZSwgRmViIDE5LCAyMDE5IGF0IDAzOjI1OjQzUE0gKzAyMDAsIEFya2Fk
+aXVzeiBIaWxlciB3cm90ZToKPiA+IFRoZXkgYXJlIGk5MTUtc3BlY2lmaWMsIHNvIHRoZXkgYmVs
+b25nIHRvIHRoZSBkaXJlY3RvcnkuCj4gPiBUaGUgKG5vdykgaW5maXggX3BtXyBpcyBxdWl0ZSBp
+bmZvcm1hdGl2ZSBhbmQgd29ydGgga2VlcGluZy4KPiA+IAo+ID4gdjI6IGFsc28gcHJlZml4IC5j
+IGZpbGVzCj4gPiAKPiA+IENjOiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNv
+bT4KPiA+IENjOiBFd2VsaW5hIE11c2lhbCA8ZXdlbGluYS5tdXNpYWxAaW50ZWwuY29tPgo+ID4g
+U2lnbmVkLW9mZi1ieTogQXJrYWRpdXN6IEhpbGVyIDxhcmthZGl1c3ouaGlsZXJAaW50ZWwuY29t
+Pgo+ID4gLS0tCj4gPiBBY2tzL3JicyBhcHByZWNpYXRlZCwgYnV0IHBsZWFzZSBsZXQgbWUgcHVz
+aCBpdCwgYXMgSSBoYXZlIHRvIGRvCj4gPiByZW5hbWluZyBpbiB0aGUgY2lidWdsb2cgZmlyc3Qg
+Oi0pCj4gCj4gSSBmb3Jnb3QgdG8gc3RhZ2UgdGhpcyBjaGFuZ2U6Cj4gCj4gZGlmZiAtLWdpdCBh
+L3Rlc3RzL2ludGVsLWNpL2JsYWNrbGlzdC50eHQgYi90ZXN0cy9pbnRlbC1jaS9ibGFja2xpc3Qu
+dHh0Cj4gaW5kZXggZjlhZDQ3ZWEuLmYzNDQwZjMxIDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2ludGVs
+LWNpL2JsYWNrbGlzdC50eHQKPiArKysgYi90ZXN0cy9pbnRlbC1jaS9ibGFja2xpc3QudHh0Cj4g
+QEAgLTEzLDcgKzEzLDcgQEAgaWd0QGRybV9tbShALiopPwo+ICAjIGZhaWx1cmVzIGluIHRlc3Rz
+IHJ1biBhZnRlcndhcmRzLgo+ICAjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
+IyMjIyMjIyMjIwo+ICBpZ3RAaTkxNV9tb2R1bGVfbG9hZChALiopPwo+IC1pZ3RAcG1fcnBtQG1v
+ZHVsZS1yZWxvYWQKPiAraWd0QGk5MTVfcG1fcnBtQG1vZHVsZS1yZWxvYWQKPiAgIyMjIyMjIyMj
+IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMKPiAgIyBHRU0KPiAgIyMjIyMj
+IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMKPiAKPiBfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+IGlndC1kZXYgbWFpbGluZyBs
+aXN0Cj4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKPiBodHRwczovL2xpc3RzLmZyZWVk
+ZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYKCkFuZCBwdXNoZWQgd2l0aCBQZXRy
+aSdzIHItYnMgdmlhIElSQy4gVGhhbmtzIQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVk
+ZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2lndC1kZXY=
