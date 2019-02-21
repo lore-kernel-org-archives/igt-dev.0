@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4FCC4893A7
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Feb 2019 11:31:48 +0000 (UTC)
-From: "Szwichtenberg, Radoslaw" <radoslaw.szwichtenberg@intel.com>
-Date: Thu, 21 Feb 2019 11:31:45 +0000
-Message-ID: <5c74565bc4cfd641a2a1fb7276a5ebb13cf6e094.camel@intel.com>
-References: <278578638b2432cf66a4a88f9420b8ddf54fd5a6.1550622229.git.dale.b.stimson@intel.com>
- <20190220165842.GA109037@dbstims-dev.fm.intel.com>
-In-Reply-To: <20190220165842.GA109037@dbstims-dev.fm.intel.com>
-Content-Language: en-US
-Content-ID: <01F531489F816C478E8CF737F143678C@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A21C9893BC
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Feb 2019 11:39:16 +0000 (UTC)
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Date: Thu, 21 Feb 2019 13:39:07 +0200
+Message-Id: <20190221113907.20729-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] gem_ctx_isolation.c - Gen11 enabling
- for context isolation test
+Subject: [igt-dev] [PATCH i-g-t] intel-ci/fast-feedback: Prefix pm tests
+ with i915_
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,13 +19,31 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Stimson, Dale B" <dale.b.stimson@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDE5LTAyLTIwIGF0IDA4OjU4IC0wODAwLCBEYWxlIEIgU3RpbXNvbiB3cm90ZToN
-Cj4gWyBObyBjb250ZW50IGNoYW5nZXMgZnJvbSBvcmlnaW5hbCwgYWRkaW5nIENDIF0NCllvdSBq
-dXN0IGZvcmdvdCB0byBhY3R1YWx5IGFkZCBzb21lb25lIHRvIENDIDopDQpJIGtub3cgeW91IG1l
-YW50IENocmlzIC0gQ0MnaW5nIGhpbS4NCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8v
-aWd0LWRldg==
+Q2M6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgpSZXBvcnRlZC1ieTog
+Q2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+ClNpZ25lZC1vZmYtYnk6IEFy
+a2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6LmhpbGVyQGludGVsLmNvbT4KLS0tCiB0ZXN0cy9pbnRl
+bC1jaS9mYXN0LWZlZWRiYWNrLnRlc3RsaXN0IHwgMTAgKysrKystLS0tLQogMSBmaWxlIGNoYW5n
+ZWQsIDUgaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS90ZXN0cy9p
+bnRlbC1jaS9mYXN0LWZlZWRiYWNrLnRlc3RsaXN0IGIvdGVzdHMvaW50ZWwtY2kvZmFzdC1mZWVk
+YmFjay50ZXN0bGlzdAppbmRleCBhOTVkMmU5NS4uMmQyMmMyYzEgMTAwNjQ0Ci0tLSBhL3Rlc3Rz
+L2ludGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QKKysrIGIvdGVzdHMvaW50ZWwtY2kvZmFz
+dC1mZWVkYmFjay50ZXN0bGlzdApAQCAtMjI2LDEwICsyMjYsMTAgQEAgaWd0QGttc19wc3JAY3Vy
+c29yX3BsYW5lX21vdmUKIGlndEBrbXNfcHNyQHNwcml0ZV9wbGFuZV9vbm9mZgogaWd0QGttc19w
+c3JAcHJpbWFyeV9tbWFwX2d0dAogaWd0QGttc19zZXRtb2RlQGJhc2ljLWNsb25lLXNpbmdsZS1j
+cnRjCi1pZ3RAcG1fYmFja2xpZ2h0QGJhc2ljLWJyaWdodG5lc3MKLWlndEBwbV9ycG1AYmFzaWMt
+cGNpLWQzLXN0YXRlCi1pZ3RAcG1fcnBtQGJhc2ljLXJ0ZQotaWd0QHBtX3Jwc0BiYXNpYy1hcGkK
+K2lndEBpOTE1X3BtX2JhY2tsaWdodEBiYXNpYy1icmlnaHRuZXNzCitpZ3RAaTkxNV9wbV9ycG1A
+YmFzaWMtcGNpLWQzLXN0YXRlCitpZ3RAaTkxNV9wbV9ycG1AYmFzaWMtcnRlCitpZ3RAaTkxNV9w
+bV9ycHNAYmFzaWMtYXBpCiBpZ3RAcHJpbWVfYnVzeUBiYXNpYy1hZnRlci1kZWZhdWx0CiBpZ3RA
+cHJpbWVfYnVzeUBiYXNpYy1iZWZvcmUtZGVmYXVsdAogaWd0QHByaW1lX2J1c3lAYmFzaWMtd2Fp
+dC1hZnRlci1kZWZhdWx0CkBAIC0yNjksNCArMjY5LDQgQEAgaWd0QHZnZW1fYmFzaWNAdW5sb2Fk
+CiBpZ3RAaTkxNV9tb2R1bGVfbG9hZEByZWxvYWQKIGlndEBpOTE1X21vZHVsZV9sb2FkQHJlbG9h
+ZC1uby1kaXNwbGF5CiBpZ3RAaTkxNV9tb2R1bGVfbG9hZEByZWxvYWQtd2l0aC1mYXVsdC1pbmpl
+Y3Rpb24KLWlndEBwbV9ycG1AbW9kdWxlLXJlbG9hZAoraWd0QGk5MTVfcG1fcnBtQG1vZHVsZS1y
+ZWxvYWQKLS0gCjIuMjAuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
+cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
