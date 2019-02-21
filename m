@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from elaine.keithp.com (home.keithp.com [63.227.221.253])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67D98892ED
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Feb 2019 03:08:32 +0000 (UTC)
-From: "Keith Packard" <keithp@keithp.com>
-In-Reply-To: <20190220162530.31643-3-daniel.vetter@ffwll.ch>
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com
+ [IPv6:2a00:1450:4864:20::52a])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 86769893B9
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Feb 2019 09:16:15 +0000 (UTC)
+Received: by mail-ed1-x52a.google.com with SMTP id 10so22427545eds.7
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Feb 2019 01:16:15 -0800 (PST)
+Date: Thu, 21 Feb 2019 10:16:10 +0100
+From: Daniel Vetter <daniel@ffwll.ch>
+Message-ID: <20190221091610.GJ2665@phenom.ffwll.local>
 References: <20190220162530.31643-1-daniel.vetter@ffwll.ch>
  <20190220162530.31643-3-daniel.vetter@ffwll.ch>
-Date: Wed, 20 Feb 2019 19:08:30 -0800
-Message-ID: <87imxdltxt.fsf@keithp.com>
+ <87imxdltxt.fsf@keithp.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <87imxdltxt.fsf@keithp.com>
 Subject: Re: [igt-dev] [PATCH i-g-t 3/9] tests/kms_lease: invalid
  corner-cases for create-lease ioctl
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -18,102 +23,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1790227469=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Daniel Vetter <daniel.vetter@ffwll.ch>, IGT development <igt-dev@lists.freedesktop.org>
+To: Keith Packard <keithp@keithp.com>
+Cc: IGT development <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1790227469==
-Content-Type: multipart/signed; boundary="=-=-=";
-	micalg=pgp-sha256; protocol="application/pgp-signature"
-
---=-=-=
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-
-Daniel Vetter <daniel.vetter@ffwll.ch> writes:
-
-> Found a few things in the kernel that looks suspicious, separate
-> patches on their way.
-
-Thanks for adding more tests!
-
-> +	/* empty lease */
-> +	mcl.object_ids =3D 0;
-> +	mcl.object_count =3D 0;
-> +	mcl.flags =3D 0;
-> +	igt_assert_eq(create_lease(data->master.fd, &mcl), -EINVAL);
-
-Not sure why this should be invalid? It's not useful, but then neither
-are 0x0 windows and look at all the pain not allowing them has caused
-over the years...
-
-> +
-> +	/* NULL array pointer */
-> +	mcl.object_count =3D 1;
-> +	igt_assert_eq(create_lease(data->master.fd, &mcl), -EFAULT);
-
-Should probably explicitly initialize the array pointer here, avoids any
-dependency on the previous test.
-
-> +	/* no crtc, non-universal_plane */
-> +	drmSetClientCap(data->master.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 0);
-> +	object_ids[0] =3D data->master.display.outputs[0].id;
-> +	igt_assert_eq(create_lease(data->master.fd, &mcl), -EINVAL);
-
-Similarly, initialize the object count and pointers explicitly.
-
-> +	/* no subleasing */
-> +	mcl.object_count =3D 3;
-> +	mcl.flags =3D 0;
-> +	igt_assert_eq(create_lease(data->master.fd, &mcl), 0);
-> +	tmp_fd =3D mcl.fd;
-> +	igt_assert_eq(create_lease(tmp_fd, &mcl), -EINVAL);
-> +	close(tmp_fd);
-
-Just reminds me that we should probably enable sub-leasing -- useful in
-a multi-head environment where you also want to run leased applications
-under one of the heads.
-
-All of these tests look OK to me; as usual, the precise errno values are
-subject to interpretation, but it looks like you've made reasonable
-choices here making me wonder how reasonable the kernel is :-)
-
-Reviewed-by: Keith Packard <keithp@keithp.com>
-
-=2D-=20
-=2Dkeith
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEw4O3eCVWE9/bQJ2R2yIaaQAAABEFAlxuFi4ACgkQ2yIaaQAA
-ABFCuhAAlxTRbS/UQNhees1EGeNC9nMltBBoomPMVF8CeeabKx+5WQo8zf+jsxDx
-cm30fDJAmrjtNyJz34wLitp1+FgFiH3Hegq6OU3tSg2C/NcqpiJjRyNGLc0qLHu8
-MEQb/WvTTr4lcF+sK/LFjG0olOrcGOCLoNAkp6Cov3qIhOiA8mCYlwB6J5DXkF2e
-5irLu5vLqkFNc3uxB9ruzQxDITboBT+5OqmoLa9bOcMSMwp1bOVXclDG5+5aEYT5
-+wskFdzcCh+XTMYWFL3/QVWCnRsFsE9kWnBtMEC9DzFkubKvB5lLp87L3heX8hGl
-NIE1IKKGtQoAv7o5i2p1Xn56UbzkN3xLOYyhWR87fD8lxaRk+wxDHdv9g0AY8t8W
-DWAbYzmaDP23/UKL0USObzuD1iAFvSKOoUERFy2mD/oMMFAoULSWd3nZ070ucGJ0
-egQb4uJi6+gF+kI90RkQxC/aKy7mxMrgPeGZXtnWVJ0m1X93GQ7DnjkHgcnZLlF4
-+XAI/DjIKVWN+kE4Y0K2uhzFENKZ9TCz4OQp+cJsG6Ojpc+SfAwCDq2nANNXIE7t
-NcKBqPYSAhTrtWDyc1kJwleo3zbEImymn9RLKBcSWdZgWSxloyNWsqPCEs7Oj/GE
-DaOKf3SWX5kREJadWg1IEi1SzENaXxoGgplh6EUTpHKH6HvPppg=
-=zgMa
------END PGP SIGNATURE-----
---=-=-=--
-
---===============1790227469==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============1790227469==--
+T24gV2VkLCBGZWIgMjAsIDIwMTkgYXQgMDc6MDg6MzBQTSAtMDgwMCwgS2VpdGggUGFja2FyZCB3
+cm90ZToKPiBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0dGVyQGZmd2xsLmNoPiB3cml0ZXM6Cj4g
+Cj4gPiBGb3VuZCBhIGZldyB0aGluZ3MgaW4gdGhlIGtlcm5lbCB0aGF0IGxvb2tzIHN1c3BpY2lv
+dXMsIHNlcGFyYXRlCj4gPiBwYXRjaGVzIG9uIHRoZWlyIHdheS4KPiAKPiBUaGFua3MgZm9yIGFk
+ZGluZyBtb3JlIHRlc3RzIQo+IAo+ID4gKwkvKiBlbXB0eSBsZWFzZSAqLwo+ID4gKwltY2wub2Jq
+ZWN0X2lkcyA9IDA7Cj4gPiArCW1jbC5vYmplY3RfY291bnQgPSAwOwo+ID4gKwltY2wuZmxhZ3Mg
+PSAwOwo+ID4gKwlpZ3RfYXNzZXJ0X2VxKGNyZWF0ZV9sZWFzZShkYXRhLT5tYXN0ZXIuZmQsICZt
+Y2wpLCAtRUlOVkFMKTsKPiAKPiBOb3Qgc3VyZSB3aHkgdGhpcyBzaG91bGQgYmUgaW52YWxpZD8g
+SXQncyBub3QgdXNlZnVsLCBidXQgdGhlbiBuZWl0aGVyCj4gYXJlIDB4MCB3aW5kb3dzIGFuZCBs
+b29rIGF0IGFsbCB0aGUgcGFpbiBub3QgYWxsb3dpbmcgdGhlbSBoYXMgY2F1c2VkCj4gb3ZlciB0
+aGUgeWVhcnMuLi4KPiAKPiA+ICsKPiA+ICsJLyogTlVMTCBhcnJheSBwb2ludGVyICovCj4gPiAr
+CW1jbC5vYmplY3RfY291bnQgPSAxOwo+ID4gKwlpZ3RfYXNzZXJ0X2VxKGNyZWF0ZV9sZWFzZShk
+YXRhLT5tYXN0ZXIuZmQsICZtY2wpLCAtRUZBVUxUKTsKPiAKPiBTaG91bGQgcHJvYmFibHkgZXhw
+bGljaXRseSBpbml0aWFsaXplIHRoZSBhcnJheSBwb2ludGVyIGhlcmUsIGF2b2lkcyBhbnkKPiBk
+ZXBlbmRlbmN5IG9uIHRoZSBwcmV2aW91cyB0ZXN0Lgo+IAo+ID4gKwkvKiBubyBjcnRjLCBub24t
+dW5pdmVyc2FsX3BsYW5lICovCj4gPiArCWRybVNldENsaWVudENhcChkYXRhLT5tYXN0ZXIuZmQs
+IERSTV9DTElFTlRfQ0FQX1VOSVZFUlNBTF9QTEFORVMsIDApOwo+ID4gKwlvYmplY3RfaWRzWzBd
+ID0gZGF0YS0+bWFzdGVyLmRpc3BsYXkub3V0cHV0c1swXS5pZDsKPiA+ICsJaWd0X2Fzc2VydF9l
+cShjcmVhdGVfbGVhc2UoZGF0YS0+bWFzdGVyLmZkLCAmbWNsKSwgLUVJTlZBTCk7Cj4gCj4gU2lt
+aWxhcmx5LCBpbml0aWFsaXplIHRoZSBvYmplY3QgY291bnQgYW5kIHBvaW50ZXJzIGV4cGxpY2l0
+bHkuCj4gCj4gPiArCS8qIG5vIHN1YmxlYXNpbmcgKi8KPiA+ICsJbWNsLm9iamVjdF9jb3VudCA9
+IDM7Cj4gPiArCW1jbC5mbGFncyA9IDA7Cj4gPiArCWlndF9hc3NlcnRfZXEoY3JlYXRlX2xlYXNl
+KGRhdGEtPm1hc3Rlci5mZCwgJm1jbCksIDApOwo+ID4gKwl0bXBfZmQgPSBtY2wuZmQ7Cj4gPiAr
+CWlndF9hc3NlcnRfZXEoY3JlYXRlX2xlYXNlKHRtcF9mZCwgJm1jbCksIC1FSU5WQUwpOwo+ID4g
+KwljbG9zZSh0bXBfZmQpOwo+IAo+IEp1c3QgcmVtaW5kcyBtZSB0aGF0IHdlIHNob3VsZCBwcm9i
+YWJseSBlbmFibGUgc3ViLWxlYXNpbmcgLS0gdXNlZnVsIGluCj4gYSBtdWx0aS1oZWFkIGVudmly
+b25tZW50IHdoZXJlIHlvdSBhbHNvIHdhbnQgdG8gcnVuIGxlYXNlZCBhcHBsaWNhdGlvbnMKPiB1
+bmRlciBvbmUgb2YgdGhlIGhlYWRzLgo+IAo+IEFsbCBvZiB0aGVzZSB0ZXN0cyBsb29rIE9LIHRv
+IG1lOyBhcyB1c3VhbCwgdGhlIHByZWNpc2UgZXJybm8gdmFsdWVzIGFyZQo+IHN1YmplY3QgdG8g
+aW50ZXJwcmV0YXRpb24sIGJ1dCBpdCBsb29rcyBsaWtlIHlvdSd2ZSBtYWRlIHJlYXNvbmFibGUK
+PiBjaG9pY2VzIGhlcmUgbWFraW5nIG1lIHdvbmRlciBob3cgcmVhc29uYWJsZSB0aGUga2VybmVs
+IGlzIDotKQoKQWxsIHRoZSB0ZXN0IGluIHRoZSBjdXJyZW50IHNlcmllcyBoZXJlIHJlZmxlY3Qg
+Y3VycmVudCBrZXJuZWwgYmVoYXZpb3VyLgpTbyBJIGRpZG4ndCBwaWNrIHRoZSBlcnJubyBhdCBh
+bGwsIGl0J3MgYWxsIHRoZSBrZXJuZWwuIEFuZCBzb21lIHRvb2sgc29tZQphbW91bnQgb2YgZGln
+Z2luZyB1bnRpbCBJJ3ZlIGZpZ3VyZWQgb3V0IHdoZXJlIHRoZXkncmUgZnJvbS4KCkhlbmNlIHdo
+eSBJIGNoZWNrIGZvciBOVUxMLzAgaW4gdGhlIG9iamVjdF9jb3VudC9pZHMsIGxhdGVyIGNoZWNr
+cyBtYWtpbmcKc3VyZSB0aGVyZSdzIG5vIHN1YmxlYXNpbmcsIGFuZCB0aGUgY2hvaWNlIG9mIGVy
+cm5vLgoKPiBSZXZpZXdlZC1ieTogS2VpdGggUGFja2FyZCA8a2VpdGhwQGtlaXRocC5jb20+CgpU
+aGFua3MsIERhbmllbAotLSAKRGFuaWVsIFZldHRlcgpTb2Z0d2FyZSBFbmdpbmVlciwgSW50ZWwg
+Q29ycG9yYXRpb24KaHR0cDovL2Jsb2cuZmZ3bGwuY2gKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0
+cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9pZ3QtZGV2
