@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 841E589143
- for <igt-dev@lists.freedesktop.org>; Thu, 21 Feb 2019 11:54:28 +0000 (UTC)
-Date: Thu, 21 Feb 2019 13:54:26 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20190221115426.GZ4038@platvala-desk.ger.corp.intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6255388FE2
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 Feb 2019 11:56:36 +0000 (UTC)
+From: "Szwichtenberg, Radoslaw" <radoslaw.szwichtenberg@intel.com>
+Date: Thu, 21 Feb 2019 11:56:34 +0000
+Message-ID: <da1ab58ea91a1a0f93b43791576602568c63d44c.camel@intel.com>
 References: <20190221113907.20729-1-arkadiusz.hiler@intel.com>
-MIME-Version: 1.0
-Content-Disposition: inline
 In-Reply-To: <20190221113907.20729-1-arkadiusz.hiler@intel.com>
+Content-Language: en-US
+Content-ID: <91F7621E5A9FB444B23265A29B9627D1@intel.com>
+MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci/fast-feedback: Prefix pm tests
  with i915_
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -22,38 +23,15 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Hiler, Arkadiusz" <arkadiusz.hiler@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Latvala, Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBGZWIgMjEsIDIwMTkgYXQgMDE6Mzk6MDdQTSArMDIwMCwgQXJrYWRpdXN6IEhpbGVy
-IHdyb3RlOgo+IENjOiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KPiBS
-ZXBvcnRlZC1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Cj4gU2ln
-bmVkLW9mZi1ieTogQXJrYWRpdXN6IEhpbGVyIDxhcmthZGl1c3ouaGlsZXJAaW50ZWwuY29tPgoK
-UmV2aWV3ZWQtYnk6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgoKPiAt
-LS0KPiAgdGVzdHMvaW50ZWwtY2kvZmFzdC1mZWVkYmFjay50ZXN0bGlzdCB8IDEwICsrKysrLS0t
-LS0KPiAgMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMoLSkKPiAK
-PiBkaWZmIC0tZ2l0IGEvdGVzdHMvaW50ZWwtY2kvZmFzdC1mZWVkYmFjay50ZXN0bGlzdCBiL3Rl
-c3RzL2ludGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QKPiBpbmRleCBhOTVkMmU5NS4uMmQy
-MmMyYzEgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMvaW50ZWwtY2kvZmFzdC1mZWVkYmFjay50ZXN0bGlz
-dAo+ICsrKyBiL3Rlc3RzL2ludGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QKPiBAQCAtMjI2
-LDEwICsyMjYsMTAgQEAgaWd0QGttc19wc3JAY3Vyc29yX3BsYW5lX21vdmUKPiAgaWd0QGttc19w
-c3JAc3ByaXRlX3BsYW5lX29ub2ZmCj4gIGlndEBrbXNfcHNyQHByaW1hcnlfbW1hcF9ndHQKPiAg
-aWd0QGttc19zZXRtb2RlQGJhc2ljLWNsb25lLXNpbmdsZS1jcnRjCj4gLWlndEBwbV9iYWNrbGln
-aHRAYmFzaWMtYnJpZ2h0bmVzcwo+IC1pZ3RAcG1fcnBtQGJhc2ljLXBjaS1kMy1zdGF0ZQo+IC1p
-Z3RAcG1fcnBtQGJhc2ljLXJ0ZQo+IC1pZ3RAcG1fcnBzQGJhc2ljLWFwaQo+ICtpZ3RAaTkxNV9w
-bV9iYWNrbGlnaHRAYmFzaWMtYnJpZ2h0bmVzcwo+ICtpZ3RAaTkxNV9wbV9ycG1AYmFzaWMtcGNp
-LWQzLXN0YXRlCj4gK2lndEBpOTE1X3BtX3JwbUBiYXNpYy1ydGUKPiAraWd0QGk5MTVfcG1fcnBz
-QGJhc2ljLWFwaQo+ICBpZ3RAcHJpbWVfYnVzeUBiYXNpYy1hZnRlci1kZWZhdWx0Cj4gIGlndEBw
-cmltZV9idXN5QGJhc2ljLWJlZm9yZS1kZWZhdWx0Cj4gIGlndEBwcmltZV9idXN5QGJhc2ljLXdh
-aXQtYWZ0ZXItZGVmYXVsdAo+IEBAIC0yNjksNCArMjY5LDQgQEAgaWd0QHZnZW1fYmFzaWNAdW5s
-b2FkCj4gIGlndEBpOTE1X21vZHVsZV9sb2FkQHJlbG9hZAo+ICBpZ3RAaTkxNV9tb2R1bGVfbG9h
-ZEByZWxvYWQtbm8tZGlzcGxheQo+ICBpZ3RAaTkxNV9tb2R1bGVfbG9hZEByZWxvYWQtd2l0aC1m
-YXVsdC1pbmplY3Rpb24KPiAtaWd0QHBtX3JwbUBtb2R1bGUtcmVsb2FkCj4gK2lndEBpOTE1X3Bt
-X3JwbUBtb2R1bGUtcmVsb2FkCj4gLS0gCj4gMi4yMC4xCj4gCj4gX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBpZ3QtZGV2IG1haWxpbmcgbGlzdAo+IGln
-dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4gaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5v
-cmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
-Zm8vaWd0LWRldg==
+T24gVGh1LCAyMDE5LTAyLTIxIGF0IDEzOjM5ICswMjAwLCBBcmthZGl1c3ogSGlsZXIgd3JvdGU6
+DQo+IENjOiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4NCj4gUmVwb3J0
+ZWQtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPg0KPiBTaWduZWQt
+b2ZmLWJ5OiBBcmthZGl1c3ogSGlsZXIgPGFya2FkaXVzei5oaWxlckBpbnRlbC5jb20+DQpBY2tl
+ZC1ieTogUmFkb3NsYXcgU3p3aWNodGVuYmVyZyA8cmFkb3NsYXcuc3p3aWNodGVuYmVyZ0BpbnRl
+bC5jb20+DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpp
+Z3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczov
+L2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
