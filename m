@@ -1,22 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E595589CF3
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Feb 2019 09:32:27 +0000 (UTC)
-Date: Tue, 26 Feb 2019 11:32:24 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20190226093224.GA4038@platvala-desk.ger.corp.intel.com>
-References: <20190206091850.2078-1-andi.shyti@intel.com>
- <20190206092538.9303.56503@emeril.freedesktop.org>
- <20190207085840.GP4038@platvala-desk.ger.corp.intel.com>
- <079ee3ce-ece2-8a4d-fbe3-98a9037769af@linux.intel.com>
- <20190215095025.GU4038@platvala-desk.ger.corp.intel.com>
- <5b501095-2f40-eb56-5043-26c26fd74b4a@linux.intel.com>
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
+ [217.70.183.198])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DADD089CD4
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Feb 2019 09:39:34 +0000 (UTC)
+Date: Tue, 26 Feb 2019 10:39:27 +0100
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20190226093927.naj4jtpsbl7v3d2h@flea>
+References: <20190226093044.32478-1-paul.kocialkowski@bootlin.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <5b501095-2f40-eb56-5043-26c26fd74b4a@linux.intel.com>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbmV3IGVu?=
- =?utf-8?q?gine_discovery_interface_=28rev7=29?=
+In-Reply-To: <20190226093044.32478-1-paul.kocialkowski@bootlin.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] autotools: Always build VC4 helpers
+ with the library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,85 +18,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1156126137=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCBGZWIgMjUsIDIwMTkgYXQgMDE6MjI6MDJQTSArMDAwMCwgVHZydGtvIFVyc3VsaW4g
-d3JvdGU6Cj4gCj4gT24gMTUvMDIvMjAxOSAwOTo1MCwgUGV0cmkgTGF0dmFsYSB3cm90ZToKPiA+
-IE9uIFR1ZSwgRmViIDEyLCAyMDE5IGF0IDA4OjQzOjI0QU0gKzAwMDAsIFR2cnRrbyBVcnN1bGlu
-IHdyb3RlOgo+ID4gPiBJcyBnZW5lcmF0aW5nIHN1YnRlc3QgbmFtZXMgd2l0aG91dCBhY2Nlc3Np
-bmcgdGhlIGRyaXZlciBhbiBhYnNvbHV0ZQo+ID4gPiByZXF1aXJlbWVudD8KPiA+IAo+ID4gWWVz
-Lgo+IAo+IEkgZG9uJ3QgbGlrZSBob3cgdGhpcyBjcmVhdGVzIGEgY291cGxpbmcgYmV0d2VlbiBD
-SSBfaW1wbGVtZW50YXRpb25fIGFuZCBJR1QKPiBjb2RlYmFzZSBhbmQgdGhpbmsgY2FuIGJlIGlt
-cHJvdmVkLgoKCkkgc2VlIHRoZSB1bmRlcmx5aW5nIGRpZmZlcmVuY2UgaW4gb3VyIHRoaW5raW5n
-IG5vdy4gVG8gbWUsIGhhdmluZwpzdWJ0ZXN0IGxpc3RzIHN0YXRpY2FsbHkgYXZhaWxhYmxlIF9l
-bmFibGVzXyBkZWNvdXBsaW5nIElHVCBjb2RlYmFzZQpmcm9tIHN5c3RlbXMgdGhhdCBydW4gdGhl
-IHRlc3RzLgoKCgo+IAo+ID4gCj4gPiA+IFRoaXMgcGFydGljdWxhciBmYWlsdXJlIHdvdWxkIGJl
-IGZpeGFibGUgaWYgdGhlIGVuZ2luZSBsaXN0IHdhcyBpbml0aWFsaXplZAo+ID4gPiBvbiB0aGUg
-Zmlyc3QgY2FsbCB0byBfX2Zvcl9lYWNoX2VuZ2luZV9jbGFzc19pbnN0YW5jZSwgYXMgY2FsbGVk
-IGJ5IHRoZQo+ID4gPiBwZXJmX3BtdSBhYm92ZS4gQW5kIHRoZSBmaXh0dXJlIGJsb2NrIGlzIGFs
-cmVhZHkgcmFuIGluIHRlc3QgZW51bWVyYXRpb24sCj4gPiA+IHdoZXJlIHRoZSBkcml2ZXIgaXMg
-b3BlbmVkLiBJIHRoaW5rIGEgbG90IG9mIHRlc3RzIGFyZSBsaWtlIHRoaXMuIFNvIGluIHRoaXMK
-PiA+ID4gY29udGV4dCBhIHNpbXBsZSBxdWVyeSBpb2N0bCBvbiB0b3AgZG9lc24ndCBzb3VuZCBi
-YWQuCj4gPiAKPiA+IEZpeHR1cmVzIGFyZSBub3QgZXhlY3V0ZWQgd2hlbiBlbnVtZXJhdGluZyB0
-ZXN0cy4KPiAKPiBPa2F5Lgo+IAo+ID4gCj4gPiA+IEkgdGhpbmsgaXQgd291bGQgYmUgc2ltcGxl
-ciBpZiB3ZSBkaWRuJ3QgaGF2ZSB0byBtYWludGFpbiBhIHNlcGFyYXRlIHN0YXRpYwo+ID4gPiBs
-aXN0IG9mIGFsbCBwb3NzaWJsZSBlbmdpbmVzLiBUbyBtYWtlIHRoYXQgd29yayB3ZSB3b3VsZCBu
-ZWVkIHRvIGRldGVjdCB0aGUKPiA+ID4gbW9kZSBvZiBleGVjdXRpb24gKGxpc3QgdnMgZXhlY3V0
-ZSkgaW4gdGhlIGVuZ2luZSBpdGVyYXRvciBhcyB3ZWxsLiBTbyBnYWluLAo+ID4gPiB0byBtZSBp
-dCBzb3VuZHMgcHJlZmVyYWJsZSB0aGF0IHRlc3RzIHdvdWxkIGJlIGFsbG93ZWQgdG8gZW51bWVy
-YXRlCj4gPiA+IGR5bmFtaWNhbGx5Lgo+ID4gCj4gPiBDYW4gdGhlIHRlc3RzIGJlIHJlZmFjdG9y
-ZWQgdG8gaGF2ZSBhIHN1YnRlc3QgcGVyIGVuZ2luZSBfY2xhc3NfPwo+ID4gVGhhdCdzIGEgc3Rh
-dGljIGxpc3QsIGlzbid0IGl0PyBXaXRoaW4gdGhlIHN1YnRlc3QgdGhleSB3b3VsZCBsb29wCj4g
-PiBvdmVyIGluc3RhbmNlcyBvZiB0aGUgY2xhc3MuIEtpbmQgb2YgbGlrZSB0ZXN0cyB0aGF0IGxv
-b3Agb3Zlcgo+ID4gY29ubmVjdG9ycyBvZiAkdHlwZS4KPiAKPiBTb3VuZHMgcXVpdGUgaW52YXNp
-dmUsIGZ1bmRhbWVudGFsIGFuZCBsaW1pdGluZyAoaG93IHRvIHJ1biBhIHRlc3QgYWdhaW5zdCBh
-Cj4gc2luZ2xlIGVuZ2luZSBpbiB0aGlzIHdvcmxkPykgY2hhbmdlLgoKCkhvdyBvZnRlbiBkb2Vz
-IHRoaXMgcmVxdWlyZW1lbnQgY29tZSB1cD8KCkNJLCBieSBkZWZpbml0aW9uLCB3YW50cyB0byBy
-dW4gYWxsIHRlc3RzIHRoZXJlIGFyZS4gRlNWTyBhbGwuCgpEZXZlbG9wZXJzIGFuZCB2YWxpZGF0
-aW9uIHBlb3BsZSBtaWdodCB3YW50IHRvIGV4ZWN1dGUgdGVzdHMgZm9yIGEKc2luZ2xlIGVuZ2lu
-ZT8KClR3byB3YXlzIG9mIGV4ZWN1dGluZywgb25lIG1hY2hpbmVyeSBkb2Vzbid0IGZpdCBhbGws
-IG9uZSBuZWVkcyB0byBkbwpzb21ldGhpbmcgc3BlY2lhbC4gV2h5IG5vdCBhbiBlbnZpcm9ubWVu
-dCB2YXJpYWJsZSB0aGF0IHNheXMKSUdUX09OTFlfRU5HSU5FU19JTl9JOTE1X0FSRT1yY3MyLGJz
-ZDE/CgoKPkhvdyBhYm91dCBpbnN0ZWFkLCB3aGljaCBpcyBtb3JlIG9yCj4gbGVzcyBjb3B5ICYg
-cGFzdGUgZnJvbSBteSByZXBseSB0byBBcmVrOgo+IAo+IFdvdWxkIGl0IGJlIGZlYXNpYmxlIHRv
-IGdlbmVyYXRlIHRoZSB0ZXN0IGxpc3Qgb24gc2hhcmRlZCBwbGF0Zm9ybXM/Cj4gCj4gSXQgY291
-bGQgYmUgYSAibGlzdCB0ZXN0cyIgam9iIHdoaWNoIHlvdSBjb3VsZCBzZW5kIHRvIGVhY2ggb2Yg
-dGhlIHNoYXJkCj4gcGxhdGZvcm1zIChvbmUgbWFjaGluZSBvZiBlYWNoIHBsYXRmb3JtcyksIGV4
-ZWN1dGVkIGJlZm9yZSByYW5kb21pemluZyBhbmQKPiBjaHVua2luZy4KCkZlYXNpYmxlIHN1cmUs
-IGJ1dCBJIGNhbid0IHNheSBhbnl0aGluZyBob3cgaGFyZCB0aGF0IGlzIHRvIG1ha2UKaGFwcGVu
-LiBUaGVyZSBhcmUgYWR2YW50YWdlcyB0byB0aGlzLCBidXQgSSBkb24ndCBzZWUgaG93IGVuZ2lu
-ZQplbnVtZXJhdGlvbiBpcyBvbmUsIHdoZW4gQ0kgd2FudHMgdG8gYW55d2F5IGV4ZWN1dGUgdGVz
-dHMgb24gYWxsIG9mCnRoZW0uCgoKPiAKPiBBZHZhbnRhZ2UgdGhlcmUgd291bGQgYmUgdGhhdCB5
-b3UgZG9uJ3Qgc2VuZCBjaHVua3MgY29udGFpbmluZyB0ZXN0cyB3aGljaCBhCj4gcGFydGljdWxh
-ciBwbGF0Zm9ybSBjYW5ub3QgcnVuLgoKClRoaXMgd291bGQgaW5kZWVkIGJlIG5pY2UuCgpJIGhh
-dmUgYmVlbiBmZXJtZW50aW5nIHNvbWUgdGhvdWdodHMgYWJvdXQgcmVmYWN0b3JpbmcgdGhlIHRl
-c3RzIHRvCmV4cHJlc3MgdGhlaXIgcmVxdWlyZW1lbnRzIG1vcmUgZGVjbGFyYXRpdmVseSBpbnN0
-ZWFkIG9mIHdpdGgKaW1wZXJhdGl2ZSBjb2RlLiBIYXZpbmcgdGhlIHBvc3NpYmlsaXR5IG9mIHNr
-aXBwaW5nIGEgd2hvbGUgYnVuY2ggb2YKdGVzdHMgYXMgc29vbiBhcyB5b3Uga25vdyBhIGRlY2xh
-cmVkIHJlcXVpcmVtZW50IGlzIG5vdCBhdmFpbGFibGUKY291bGQgdGllIHdlbGwgd2l0aCB0aGlz
-IGtpbmQgb2YgYSBmZWF0dXJlLgoKCj4gQW5kIG9mIGNvdXJzZSBhbm90aGVyIGFkdmFudGFnZSBp
-cyB0aGF0IHdlIHJlbW92ZSB1bm5lY2Vzc2FyeSBjb3VwbGluZwo+IGJldHdlZW4gdHdvIGNvbXBv
-bmVudHMgc28gSUdUIG1haW50ZW5hbmNlIGJlY29tZXMgZWFzaWVyLiAoTm8gdHdvIHNldHMgb2YK
-PiBlbmdpbmVzLCBubyB0d28gd2F5cyB0byBpdGVyYXRlIHRob3NlIHNldHMsIGFuZCBubyBuZWVk
-IHRvIHJlbWVtYmVyIHdoZW4gdG8KPiB1c2UgZWFjaC4pCgoKVGhlIHRoaW5nIGlzLCB0aGlzIGtp
-bmQgb2YgYSBkZWNvdXBsaW5nIElHVCdzIHRlc3QgZW51bWVyYXRpb24gZnJvbQpDSSdzIHVzYWdl
-IG9mIHRoZSBlbnVtZXJhdGlvbiBrZWVwcyBjdXJyZW50IENJIHdvcmtpbmcgYnV0IGhpbmRlcnMK
-b3RoZXIgdXNhZ2VzLiBJIHJlZ3VsYXJseSBydW4gSUdUIHdpdGggZXpiZW5jaCwgd2hpY2ggZG9l
-cyBiaXNlY3RpbmcKYXV0b21hdGljYWxseSBmb3IgbWUsIGFuZCBoYXZpbmcgdGVzdHMganVzdCBj
-b21lIGFuZCBnbyBkZXBlbmRpbmcgb24KdGhlIHJ1bm5pbmcga2VybmVsIG9uIG9jY2FzaW9uIGJy
-ZWFrcyB0aGluZ3MgaW4gYW4gaXJyaXRhdGluZyB3YXkuIFdlCmFscmVhZHkgaGF2ZSB0aG9zZSwg
-aW4gdGhlIGZvcm0gb2Yga2VybmVsIHNlbGZ0ZXN0cy4KCkknbSBub3QgY29tcGxldGVseSBvcHBv
-c2VkIG9mIGNoYW5naW5nIHRoZSBwaGlsb3NvcGh5IG9mIGhhdmluZwpzdGF0aWNhbGx5IGVudW1l
-cmF0ZWQgc3VidGVzdHMsIGJ1dCBjaGFuZ2luZyB0aGF0IHdpbGwgcmVxdWlyZSB0aGUKcmVzdCBv
-ZiB0aGUgd29ybGQgdG8gYmUgcmVhZHkgZm9yIHRoZSBjaGFuZ2UuIEN1cnJlbnRseSwgSSBkb24n
-dCBldmVuCmhhdmUgYW4gZXhoYXVzdGl2ZSBsaXN0IG9mIHRoZSB3b3JsZCBjaGFuZ2VzIG5lZWRl
-ZC4KCgotLSAKUGV0cmkgTGF0dmFsYQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
-dG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ln
-dC1kZXY=
+
+--===============1156126137==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ffx7z2nqoue3gznw"
+Content-Disposition: inline
+
+
+--ffx7z2nqoue3gznw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Feb 26, 2019 at 10:30:44AM +0100, Paul Kocialkowski wrote:
+> With recent changes to the igt_fb code, VC4 support is now integrated
+> in common helpers. As a result, VC4 helpers have to be built as part
+> of the library.
+>=20
+> This is already the case with meson, but VC4 support was removed from
+> autotools. Bring it back unconditionally to match meson behaviour.
+>=20
+> This fixes a build error with autotools.
+>=20
+> Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+
+Reviewed-by: Maxime Ripard <maxime.ripard@bootlin.com>
+
+Maxime
+
+--=20
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--ffx7z2nqoue3gznw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXHUJTwAKCRDj7w1vZxhR
+xWv9AQCffB4J8aFrhscKNlODao2kjUHZdfBJMsZHe4TCt1scRgD+O9IyxlQQSGb7
+RpKARyET/oDeFCcOeD2VW1tZa9x5eQw=
+=26Qm
+-----END PGP SIGNATURE-----
+
+--ffx7z2nqoue3gznw--
+
+--===============1156126137==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============1156126137==--
