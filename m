@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
- [217.70.183.198])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DADD089CD4
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Feb 2019 09:39:34 +0000 (UTC)
-Date: Tue, 26 Feb 2019 10:39:27 +0100
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20190226093927.naj4jtpsbl7v3d2h@flea>
-References: <20190226093044.32478-1-paul.kocialkowski@bootlin.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8461089BF5
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Feb 2019 09:46:08 +0000 (UTC)
+Date: Tue, 26 Feb 2019 11:46:05 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20190226094605.GB4038@platvala-desk.ger.corp.intel.com>
+References: <1551100999-27427-1-git-send-email-sergii.romantsov@globallogic.com>
 MIME-Version: 1.0
-In-Reply-To: <20190226093044.32478-1-paul.kocialkowski@bootlin.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] autotools: Always build VC4 helpers
- with the library
+Content-Disposition: inline
+In-Reply-To: <1551100999-27427-1-git-send-email-sergii.romantsov@globallogic.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v1] meson: missed dependency of liblzma
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,67 +17,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1156126137=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-Cc: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
+To: Sergii Romantsov <sergii.romantsov@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============1156126137==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ffx7z2nqoue3gznw"
-Content-Disposition: inline
-
-
---ffx7z2nqoue3gznw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Feb 26, 2019 at 10:30:44AM +0100, Paul Kocialkowski wrote:
-> With recent changes to the igt_fb code, VC4 support is now integrated
-> in common helpers. As a result, VC4 helpers have to be built as part
-> of the library.
->=20
-> This is already the case with meson, but VC4 support was removed from
-> autotools. Bring it back unconditionally to match meson behaviour.
->=20
-> This fixes a build error with autotools.
->=20
-> Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-
-Reviewed-by: Maxime Ripard <maxime.ripard@bootlin.com>
-
-Maxime
-
---=20
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---ffx7z2nqoue3gznw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXHUJTwAKCRDj7w1vZxhR
-xWv9AQCffB4J8aFrhscKNlODao2kjUHZdfBJMsZHe4TCt1scRgD+O9IyxlQQSGb7
-RpKARyET/oDeFCcOeD2VW1tZa9x5eQw=
-=26Qm
------END PGP SIGNATURE-----
-
---ffx7z2nqoue3gznw--
-
---===============1156126137==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============1156126137==--
+T24gTW9uLCBGZWIgMjUsIDIwMTkgYXQgMDM6MjM6MTlQTSArMDIwMCwgU2VyZ2lpIFJvbWFudHNv
+diB3cm90ZToKPiBGYWlsZWQgdG8gY29uZmlndXJlIGludGVsLWdwdS10b29scyB3aXRoIGVycm9y
+Ogo+IAo+IAltZXNvbi5idWlsZDoxNTE6MDogRVJST1I6ICBDb3VsZCBub3QgZ2VuZXJhdGUgY2Fy
+Z3MgZm9yIGxpYmR3Ogo+IAo+IGxpYmR3IGRlcGVuZHMgb24gbGlibHptYS4KPiBJbnN0YWxsYXRp
+b24gb2YgbGlibHptYS1kZXYgZml4ZXMgaXNzdWUuCj4gCj4gRml4ZXM6IGUzOWUwOTkxMGZjOCAo
+bGliL2NvcmU6IFVzZSBsaWJkdyB0byBkZWNvZGUgc3RhY2sgdHJhY2Ugd2l0aCBkZWJ1Z2dpbmcg
+c3ltYm9scywgdjIuKQo+IENDOiBNYWFydGVuIExhbmtob3JzdCA8bWFhcnRlbi5sYW5raG9yc3RA
+bGludXguaW50ZWwuY29tPgo+IFNpZ25lZC1vZmYtYnk6IFNlcmdpaSBSb21hbnRzb3YgPHNlcmdp
+aS5yb21hbnRzb3ZAZ2xvYmFsbG9naWMuY29tPgo+IC0tLQo+ICBtZXNvbi5idWlsZCB8IDEgKwo+
+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykKPiAKPiBkaWZmIC0tZ2l0IGEvbWVzb24u
+YnVpbGQgYi9tZXNvbi5idWlsZAo+IGluZGV4IDA5OWRiODkuLjRjNThjYTggMTAwNjQ0Cj4gLS0t
+IGEvbWVzb24uYnVpbGQKPiArKysgYi9tZXNvbi5idWlsZAo+IEBAIC0xNDgsNiArMTQ4LDcgQEAg
+aWYgd2l0aF9saWJ1bndpbmQgIT0gJ2ZhbHNlJwo+ICBlbmRpZgo+ICBidWlsZF9pbmZvICs9ICdX
+aXRoIGxpYnVud2luZDogJyArIGxpYnVud2luZGluZm8KPiAgCj4gK2xpYmx6bWEgPSBkZXBlbmRl
+bmN5KCdsaWJsem1hJywgcmVxdWlyZWQgOiB0cnVlKQoKX1dlXyBkb24ndCB1c2UgbGlibHptYSBm
+b3IgYW55dGhpbmcgdGhvdWdoLCBzbyB0aGlzIGlzIGtpbmQgb2YKc3VwZXJmbHVvdXMuIEFzIEkg
+dW5kZXJzdG9vZCB5b3UsIGp1c3QgaW5zdGFsbGluZyBsaWJsem1hLWRldiBtYWtlcwp0aGUgYnVp
+bGQgc3VjY2Vzc2Z1bCwgcmlnaHQ/IE1ha2luZyB0aGlzIGNoYW5nZSBqdXN0IGxlYWQgdG8gYmV0
+dGVyCmVycm9yIG1lc3NhZ2VzIHdoZW4gaXQncyBub3QgaW5zdGFsbGVkPwoKV2hhdCBpcyB0aGUg
+ZGlzdHJvIHlvdSdyZSB1c2luZz8gVGhlIG9uZXMgd2UgYnVpbGQtdGVzdCBvbiBpbiBnaXRsYWIK
+Q0kgKEZlZG9yYSwgRGViaWFuKSBib3RoIGhhdmUgbGliZHcncyBkZXZlbG9wbWVudCBwYWNrYWdl
+IGRlcGVuZCBvbgpsaWJsem1hLgoKCi0tIApQZXRyaSBMYXR2YWxhCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
+aWxtYW4vbGlzdGluZm8vaWd0LWRldg==
