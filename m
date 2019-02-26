@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6AD7C89C53
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Feb 2019 09:54:19 +0000 (UTC)
+Received: from mslow2.mail.gandi.net (mslow2.mail.gandi.net [217.70.178.242])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F4C789C53
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Feb 2019 10:01:32 +0000 (UTC)
+Received: from relay10.mail.gandi.net (unknown [217.70.178.230])
+ by mslow2.mail.gandi.net (Postfix) with ESMTP id D80233A3078
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Feb 2019 09:31:22 +0000 (UTC)
+From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Date: Tue, 26 Feb 2019 10:30:44 +0100
+Message-Id: <20190226093044.32478-1-paul.kocialkowski@bootlin.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20190226002020.21550-1-antonio.argenziano@intel.com>
-References: <20190226002020.21550-1-antonio.argenziano@intel.com>
-Message-ID: <155117484487.24929.10245086846965787500@skylake-alporthouse-com>
-Date: Tue, 26 Feb 2019 09:54:04 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/i915: Move mmap IOCTLs wrappers
- into separate file
+Subject: [igt-dev] [PATCH i-g-t] autotools: Always build VC4 helpers with
+ the library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,21 +22,24 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Antonio Argenziano <antonio.argenziano@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBBbnRvbmlvIEFyZ2Vuemlhbm8gKDIwMTktMDItMjYgMDA6MjA6MTkpCj4gTW92ZSBh
-bGwgbW1hcCBmbGF2b3VycyBhbmQgc3VwcG9ydCBmdW5jdGlvbiB0byBzZXBhcmF0ZSBmaWxlIGlu
-IGk5MTUKPiBmb2xkZXIuIFRoaXMgaGVscHMgd2l0aCBtb3ZpbmcgaTkxNSBzcGVjaWZpYyBmdW5j
-dGlvbnMgYXdheSBmcm9tIGNvbW1vbgo+IGxpYnJhcmllcy4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBB
-bnRvbmlvIEFyZ2Vuemlhbm8gPGFudG9uaW8uYXJnZW56aWFub0BpbnRlbC5jb20+Cj4gQ2M6IENo
-cmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+IC0tLQo+IGRpZmYgLS1naXQg
-YS9saWIvaW9jdGxfd3JhcHBlcnMuaCBiL2xpYi9pb2N0bF93cmFwcGVycy5oCj4gaW5kZXggYjIy
-YjM2YjAuLjU0NzAzMjM1IDEwMDY0NAo+IC0tLSBhL2xpYi9pb2N0bF93cmFwcGVycy5oCj4gKysr
-IGIvbGliL2lvY3RsX3dyYXBwZXJzLmgKPiBAQCAtMzgsNiArMzgsNyBAQAo+ICAKPiAgI2luY2x1
-ZGUgImk5MTUvZ2VtX2NvbnRleHQuaCIKPiAgI2luY2x1ZGUgImk5MTUvZ2VtX3NjaGVkdWxlci5o
-Igo+ICsjaW5jbHVkZSAiaTkxNS9nZW1fbW1hbi5oIgoKTm9vb28hISEgSSBoYWRuJ3Qgc3BvdHRl
-ZCB3ZSBjb21taXR0ZWQgdGhpcyBzaW4gYmVmb3JlLCBidXQgbm93IGl0IG11c3QKZ28hCi1DaHJp
-cwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
-IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
-LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
+V2l0aCByZWNlbnQgY2hhbmdlcyB0byB0aGUgaWd0X2ZiIGNvZGUsIFZDNCBzdXBwb3J0IGlzIG5v
+dyBpbnRlZ3JhdGVkCmluIGNvbW1vbiBoZWxwZXJzLiBBcyBhIHJlc3VsdCwgVkM0IGhlbHBlcnMg
+aGF2ZSB0byBiZSBidWlsdCBhcyBwYXJ0Cm9mIHRoZSBsaWJyYXJ5LgoKVGhpcyBpcyBhbHJlYWR5
+IHRoZSBjYXNlIHdpdGggbWVzb24sIGJ1dCBWQzQgc3VwcG9ydCB3YXMgcmVtb3ZlZCBmcm9tCmF1
+dG90b29scy4gQnJpbmcgaXQgYmFjayB1bmNvbmRpdGlvbmFsbHkgdG8gbWF0Y2ggbWVzb24gYmVo
+YXZpb3VyLgoKVGhpcyBmaXhlcyBhIGJ1aWxkIGVycm9yIHdpdGggYXV0b3Rvb2xzLgoKU2lnbmVk
+LW9mZi1ieTogUGF1bCBLb2NpYWxrb3dza2kgPHBhdWwua29jaWFsa293c2tpQGJvb3RsaW4uY29t
+PgotLS0KIGxpYi9NYWtlZmlsZS5zb3VyY2VzIHwgMiArKwogMSBmaWxlIGNoYW5nZWQsIDIgaW5z
+ZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2xpYi9NYWtlZmlsZS5zb3VyY2VzIGIvbGliL01ha2Vm
+aWxlLnNvdXJjZXMKaW5kZXggODA4Yjk2MTdlY2EyLi45NzExZmVmMzQ0NjkgMTAwNjQ0Ci0tLSBh
+L2xpYi9NYWtlZmlsZS5zb3VyY2VzCisrKyBiL2xpYi9NYWtlZmlsZS5zb3VyY2VzCkBAIC0xMDks
+NiArMTA5LDggQEAgbGliX3NvdXJjZV9saXN0ID0JIAlcCiAJaWd0X3Bzci5oCQlcCiAJaWd0X3Yz
+ZC5jCQlcCiAJaWd0X3YzZC5oCQlcCisJaWd0X3ZjNC5jCQlcCisJaWd0X3ZjNC5oCQlcCiAJJChO
+VUxMKQogCiAuUEhPTlk6IHZlcnNpb24uaC50bXAKLS0gCjIuMjAuMQoKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0
+LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
