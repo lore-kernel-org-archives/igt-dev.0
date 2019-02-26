@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 86C56893A8
- for <igt-dev@lists.freedesktop.org>; Tue, 26 Feb 2019 09:50:33 +0000 (UTC)
-Date: Tue, 26 Feb 2019 11:50:31 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20190226095031.GD4038@platvala-desk.ger.corp.intel.com>
-References: <dfd125c4a8fe023c3ce79ce3d3a6bd3cc04e3c4f.1551156196.git.ashutosh.dixit@intel.com>
- <155116770704.24929.7864376547844026825@skylake-alporthouse-com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6AD7C89C53
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 Feb 2019 09:54:19 +0000 (UTC)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <155116770704.24929.7864376547844026825@skylake-alporthouse-com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_exec_nop: Drop signal-all
- subtest from CI
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20190226002020.21550-1-antonio.argenziano@intel.com>
+References: <20190226002020.21550-1-antonio.argenziano@intel.com>
+Message-ID: <155117484487.24929.10245086846965787500@skylake-alporthouse-com>
+Date: Tue, 26 Feb 2019 09:54:04 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/i915: Move mmap IOCTLs wrappers
+ into separate file
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,21 +21,21 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Antonio Argenziano <antonio.argenziano@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBGZWIgMjYsIDIwMTkgYXQgMDc6NTU6MDdBTSArMDAwMCwgQ2hyaXMgV2lsc29uIHdy
-b3RlOgo+IFF1b3RpbmcgQXNodXRvc2ggRGl4aXQgKDIwMTktMDItMjYgMDQ6NDU6MDkpCj4gPiBp
-Z3RAZ2VtLWV4ZWMtbm9wQHNpZ25hbC1hbGwgcnVucyBhIHNpbmdsZSB1bmludGVycnVwdGVkIGxv
-b3AgZm9yIDE1MAo+ID4gc2VjLiBUaGlzIHJlc3VsdHMgaW4gdGhlIHRlc3QgYmVpbmcgb25lIG9m
-IHRoZSBsb25nZXN0IGV4ZWN1dGlvbiB0aW1lcwo+ID4gaW4gQ0kgcnVucy4KPiA+IAo+ID4gQWNj
-b3JkaW5nIHRvIG1haWxpbmcgbGlzdCBkaXNjdXNzaW9ucyB0aGUgdGVzdCBwcm92aWRlcyBsaXR0
-bGUgb2YKPiA+IHZhbHVlLiBUaGVyZWZvcmUgZHJvcCBpdCBmcm9tIHRoZSBDSS4KPiA+IAo+ID4g
-U2lnbmVkLW9mZi1ieTogQXNodXRvc2ggRGl4aXQgPGFzaHV0b3NoLmRpeGl0QGludGVsLmNvbT4K
-PiBSZXZpZXdlZC1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Cj4g
-Cj4gV2FpdCBmb3IgUGV0cmkncyBhY2sgYXMgaW50ZWwtY2kgaXMgbm90IGEgZnJlZS1mb3ItYWxs
-LgoKQWNrZWQtYnk6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgoKCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFp
-bGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
+UXVvdGluZyBBbnRvbmlvIEFyZ2Vuemlhbm8gKDIwMTktMDItMjYgMDA6MjA6MTkpCj4gTW92ZSBh
+bGwgbW1hcCBmbGF2b3VycyBhbmQgc3VwcG9ydCBmdW5jdGlvbiB0byBzZXBhcmF0ZSBmaWxlIGlu
+IGk5MTUKPiBmb2xkZXIuIFRoaXMgaGVscHMgd2l0aCBtb3ZpbmcgaTkxNSBzcGVjaWZpYyBmdW5j
+dGlvbnMgYXdheSBmcm9tIGNvbW1vbgo+IGxpYnJhcmllcy4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBB
+bnRvbmlvIEFyZ2Vuemlhbm8gPGFudG9uaW8uYXJnZW56aWFub0BpbnRlbC5jb20+Cj4gQ2M6IENo
+cmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+IC0tLQo+IGRpZmYgLS1naXQg
+YS9saWIvaW9jdGxfd3JhcHBlcnMuaCBiL2xpYi9pb2N0bF93cmFwcGVycy5oCj4gaW5kZXggYjIy
+YjM2YjAuLjU0NzAzMjM1IDEwMDY0NAo+IC0tLSBhL2xpYi9pb2N0bF93cmFwcGVycy5oCj4gKysr
+IGIvbGliL2lvY3RsX3dyYXBwZXJzLmgKPiBAQCAtMzgsNiArMzgsNyBAQAo+ICAKPiAgI2luY2x1
+ZGUgImk5MTUvZ2VtX2NvbnRleHQuaCIKPiAgI2luY2x1ZGUgImk5MTUvZ2VtX3NjaGVkdWxlci5o
+Igo+ICsjaW5jbHVkZSAiaTkxNS9nZW1fbW1hbi5oIgoKTm9vb28hISEgSSBoYWRuJ3Qgc3BvdHRl
+ZCB3ZSBjb21taXR0ZWQgdGhpcyBzaW4gYmVmb3JlLCBidXQgbm93IGl0IG11c3QKZ28hCi1DaHJp
+cwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
+IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
+LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
