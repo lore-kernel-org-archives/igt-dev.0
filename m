@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 839996E0D5
- for <igt-dev@lists.freedesktop.org>; Wed, 27 Feb 2019 14:30:52 +0000 (UTC)
-References: <20190225130237.31592-1-maarten.lankhorst@linux.intel.com>
- <20190225130237.31592-2-maarten.lankhorst@linux.intel.com>
- <20190225172100.GG20097@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EBFE6E0D5
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 Feb 2019 14:32:17 +0000 (UTC)
+References: <20190214105901.13197-1-maarten.lankhorst@linux.intel.com>
+ <20190225191054.GK20097@intel.com>
 From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Message-ID: <be865b5e-d5ba-a70a-4846-db92e693af5b@linux.intel.com>
-Date: Wed, 27 Feb 2019 15:30:50 +0100
+Message-ID: <a04275bc-7fab-c3e4-5187-bbb1c891a6f0@linux.intel.com>
+Date: Wed, 27 Feb 2019 15:32:08 +0100
 MIME-Version: 1.0
-In-Reply-To: <20190225172100.GG20097@intel.com>
+In-Reply-To: <20190225191054.GK20097@intel.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 2/4] tests/kms_pipe_crc_basic: Only test
- a single output per pipe.
+Subject: Re: [igt-dev] [PATCH i-g-t] kms_chamelium: Fix test failures from
+ missing outputs/unsupported formats, v2.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,13 +27,16 @@ To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T3AgMjUtMDItMjAxOSBvbSAxODoyMSBzY2hyZWVmIFZpbGxlIFN5cmrDpGzDpDoKPiBPbiBNb24s
-IEZlYiAyNSwgMjAxOSBhdCAwMjowMjozNVBNICswMTAwLCBNYWFydGVuIExhbmtob3JzdCB3cm90
-ZToKPj4gSW5zdGVhZCBvZiBpdGVyYXRpbmcgb3ZlciBhbGwgb3V0cHV0cywgdXNlIGlndF9nZXRf
-c2luZ2xlX291dHB1dF9mb3JfcGlwZQo+PiB0byBvbmx5IHRlc3QgYSBzaW5nbGUgb3V0cHV0Lgo+
-IFllYWgsIEkgZ3Vlc3MgdGhhdCdzIHN1ZmZpY2llbnQuCj4KPiBSZXZpZXdlZC1ieTogVmlsbGUg
-U3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KCgpUaGFua3MsIHB1c2hl
-ZCAxIGFuZCAyLCB3aWxsIHJlc2VuZCAjMyA6KQoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
-cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9pZ3QtZGV2
+T3AgMjUtMDItMjAxOSBvbSAyMDoxMCBzY2hyZWVmIFZpbGxlIFN5cmrDpGzDpDoKPiBPbiBUaHUs
+IEZlYiAxNCwgMjAxOSBhdCAxMTo1OTowMUFNICswMTAwLCBNYWFydGVuIExhbmtob3JzdCB3cm90
+ZToKPj4gTmV3ZXIgcGxhdGZvcm1zIGRvbid0IHN1cHBvcnQgdGhpcyBmb3JtYXQsIGJ1dCB0aGUg
+dGVzdHMgZG9uJ3QgY2hlY2sKPj4gaWYgdGhlIGZvcm1hdCBpcyBzdXBwb3J0ZWQgb24gdGhlIHBy
+aW1hcnkgcGxhbmUuCj4gVGhpcyBzZW50ZW5jZSBpcyByYXRoZXIgY29uZnVzaW5nLiBNYXliZQo+
+ICJOb3QgYWxsIGhhcmR3YXJlIHN1cHBvcnRzIGFsbCBmb3JtYXRzLCBidXQgLi4uIiA/Cj4KPiBP
+dGhlcndpc2UgdGhlIHBhdGNoIHNlZW1zIHNlbnNpYmxlIHRvIG1lCj4gUmV2aWV3ZWQtYnk6IFZp
+bGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+CgpPb3BzLCBmb3Jn
+b3QgdG8gY2hhbmdlIHRoZSBjb21taXQgbWVzc2FnZSBoZXJlLCBidXQgcHVzaGVkLiA6KQoKVGhh
+bmtzIGZvciByZXZpZXcuIFdpbGwgYWRkIGEgbWVudGFsIG5vdGUgdG8gYmUgbW9yZSBjYXJlZnVs
+IGluIHRoZSBmdXR1cmUuCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
+ZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
