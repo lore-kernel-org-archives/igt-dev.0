@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Date: Thu, 28 Feb 2019 14:18:26 +0000
-Message-Id: <20190228141828.2567-3-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20190228141828.2567-1-tvrtko.ursulin@linux.intel.com>
-References: <20190228141828.2567-1-tvrtko.ursulin@linux.intel.com>
-MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/5] gem_wsim: Remove some unused struct
- members
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
+ [IPv6:2a00:1450:4864:20::543])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 561FD6E1B7
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Feb 2019 14:19:26 +0000 (UTC)
+Received: by mail-ed1-x543.google.com with SMTP id a16so17138606edn.1
+ for <igt-dev@lists.freedesktop.org>; Thu, 28 Feb 2019 06:19:26 -0800 (PST)
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
+Date: Thu, 28 Feb 2019 15:19:10 +0100
+Message-Id: <20190228141918.26043-1-daniel.vetter@ffwll.ch>
+Subject: [igt-dev] [PATCH i-g-t 1/9] tests/kms_addfb_basic: Check that only
+ the owner can rmfb
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,33 +17,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: IGT development <igt-dev@lists.freedesktop.org>
+Cc: Daniel Vetter <daniel.vetter@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KCldlIGRvIG5v
-dCBib3RoZXIgZXhwbGljaXRseSB1bm1hcHBpbmcgbWVtb3J5IG9uIGV4aXQgc28gbm8gbmVlZCB0
-byBzdG9yZQphZGRyZXNzIGFuZCBzaXplIGluIHRoZSB3b3JrbG9hZCBzdGVwIHN0cnVjdC4KClNp
-Z25lZC1vZmYtYnk6IFR2cnRrbyBVcnN1bGluIDx0dnJ0a28udXJzdWxpbkBpbnRlbC5jb20+Ci0t
-LQogYmVuY2htYXJrcy9nZW1fd3NpbS5jIHwgNSAtLS0tLQogMSBmaWxlIGNoYW5nZWQsIDUgZGVs
-ZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvYmVuY2htYXJrcy9nZW1fd3NpbS5jIGIvYmVuY2htYXJr
-cy9nZW1fd3NpbS5jCmluZGV4IDU3Y2ViOTgzY2Y4Mi4uYWZiOTY0NGRkN2YwIDEwMDY0NAotLS0g
-YS9iZW5jaG1hcmtzL2dlbV93c2ltLmMKKysrIGIvYmVuY2htYXJrcy9nZW1fd3NpbS5jCkBAIC0x
-MzEsNyArMTMxLDYgQEAgc3RydWN0IHdfc3RlcAogCXN0cnVjdCBkcm1faTkxNV9nZW1fcmVsb2Nh
-dGlvbl9lbnRyeSByZWxvY1s0XTsKIAl1bnNpZ25lZCBsb25nIGJiX3N6OwogCXVpbnQzMl90IGJi
-X2hhbmRsZTsKLQl1aW50MzJfdCAqbWFwcGVkX2JhdGNoOwogCXVpbnQzMl90ICpzZXFub192YWx1
-ZTsKIAl1aW50MzJfdCAqc2Vxbm9fYWRkcmVzczsKIAl1aW50MzJfdCAqcnQwX3ZhbHVlOwpAQCAt
-MTM5LDcgKzEzOCw2IEBAIHN0cnVjdCB3X3N0ZXAKIAl1aW50MzJfdCAqcnQxX2FkZHJlc3M7CiAJ
-dWludDMyX3QgKmxhdGNoX3ZhbHVlOwogCXVpbnQzMl90ICpsYXRjaF9hZGRyZXNzOwotCXVuc2ln
-bmVkIGludCBtYXBwZWRfbGVuOwogfTsKIAogREVDTEFSRV9FV01BKHVpbnQ2NF90LCBydCwgNCwg
-MikKQEAgLTgyNCw5ICs4MjIsNiBAQCB0ZXJtaW5hdGVfYmIoc3RydWN0IHdfc3RlcCAqdywgdW5z
-aWduZWQgaW50IGZsYWdzKQogCX0KIAogCSpjcyA9IGJiZTsKLQotCXctPm1hcHBlZF9iYXRjaCA9
-IHB0cjsKLQl3LT5tYXBwZWRfbGVuID0gbW1hcF9sZW47CiB9CiAKIHN0YXRpYyBjb25zdCB1bnNp
-Z25lZCBpbnQgZWJfZW5naW5lX21hcFtOVU1fRU5HSU5FU10gPSB7Ci0tIAoyLjE5LjEKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
-ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
+SnVzdCByZWFsaXplZCB3ZSBkb24ndCBzZWVtIHRvIGhhdmUgYW55IHRlc3RjYXNlIGZvciB0aGlz
+LiBGaWxsIHRoaXMKZ2FwIGFzYXAhCgpTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgVmV0dGVyIDxkYW5p
+ZWwudmV0dGVyQGludGVsLmNvbT4KLS0tCiB0ZXN0cy9rbXNfYWRkZmJfYmFzaWMuYyB8IDQxICsr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiAxIGZpbGUgY2hhbmdlZCwg
+NDEgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19hZGRmYl9iYXNpYy5jIGIv
+dGVzdHMva21zX2FkZGZiX2Jhc2ljLmMKaW5kZXggNDAwMjQxYTkyZTgxLi40OTFlOWJmOWVlMzQg
+MTAwNjQ0Ci0tLSBhL3Rlc3RzL2ttc19hZGRmYl9iYXNpYy5jCisrKyBiL3Rlc3RzL2ttc19hZGRm
+Yl9iYXNpYy5jCkBAIC02NjcsNiArNjY3LDQ1IEBAIHN0YXRpYyB2b2lkIHByb3BfdGVzdHMoaW50
+IGZkKQogCiB9CiAKK3N0YXRpYyB2b2lkIG1hc3Rlcl90ZXN0cyhpbnQgZmQpCit7CisJc3RydWN0
+IGRybV9tb2RlX2ZiX2NtZDIgZiA9IHt9OworCisJZi53aWR0aCA9IDEwMjQ7CisJZi5oZWlnaHQg
+PSAxMDI0OworCWYucGl4ZWxfZm9ybWF0ID0gRFJNX0ZPUk1BVF9YUkdCODg4ODsKKwlmLnBpdGNo
+ZXNbMF0gPSAxMDI0KjQ7CisKKwlpZ3RfZml4dHVyZSB7CisJCWdlbV9ibyA9IGlndF9jcmVhdGVf
+Ym9fd2l0aF9kaW1lbnNpb25zKGZkLCAxMDI0LCAxMDI0LAorCQkJRFJNX0ZPUk1BVF9YUkdCODg4
+OCwgMCwgMCwgTlVMTCwgTlVMTCwgTlVMTCk7CisJCWlndF9hc3NlcnQoZ2VtX2JvKTsKKworCQlm
+LmhhbmRsZXNbMF0gPSBnZW1fYm87CisKKwkJaWd0X2Fzc2VydChkcm1Jb2N0bChmZCwgRFJNX0lP
+Q1RMX01PREVfQURERkIyLCAmZikgPT0gMCk7CisJfQorCisJaWd0X3N1YnRlc3QoIm1hc3Rlci1y
+bWZiIikgeworCQlpbnQgbWFzdGVyMl9mZDsKKworCQlkb19vcl9kaWUoZHJtRHJvcE1hc3Rlcihm
+ZCkpOworCisJCW1hc3RlcjJfZmQgPSBkcm1fb3Blbl9kcml2ZXJfbWFzdGVyKERSSVZFUl9BTlkp
+OworCisJCWlndF9hc3NlcnRfZXEocm1mYihtYXN0ZXIyX2ZkLCBmLmZiX2lkKSwgLUVOT0VOVCk7
+CisKKwkJZG9fb3JfZGllKGRybURyb3BNYXN0ZXIobWFzdGVyMl9mZCkpOworCQljbG9zZShtYXN0
+ZXIyX2ZkKTsKKworCQlkb19vcl9kaWUoZHJtU2V0TWFzdGVyKGZkKSk7CisJfQorCisJaWd0X2Zp
+eHR1cmUKKwkJaWd0X2Fzc2VydChkcm1Jb2N0bChmZCwgRFJNX0lPQ1RMX01PREVfUk1GQiwgJmYu
+ZmJfaWQpID09IDApOworCit9CisKIHN0YXRpYyBib29sIGhhc19hZGRmYjJfaWZhY2UoaW50IGZk
+KQogewogCXN0cnVjdCBsb2NhbF9kcm1fbW9kZV9mYl9jbWQyIGYgPSB7fTsKQEAgLTcxMyw2ICs3
+NTIsOCBAQCBpZ3RfbWFpbgogCiAJcHJvcF90ZXN0cyhmZCk7CiAKKwltYXN0ZXJfdGVzdHMoZmQp
+OworCiAJaWd0X2ZpeHR1cmUKIAkJY2xvc2UoZmQpOwogfQotLSAKMi4xNC40CgpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlz
+dAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9w
+Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
