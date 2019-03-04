@@ -1,12 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 4 Mar 2019 12:31:20 -0300
+Date: Mon, 4 Mar 2019 12:31:46 -0300
 From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Message-ID: <d06e4c2299a6bf414560a60c8edd0ed6e89925ea.1551712108.git.rodrigosiqueiramelo@gmail.com>
+Message-ID: <ff2e2b0c5d4addbb921121dc230613b24bd36a7b.1551712108.git.rodrigosiqueiramelo@gmail.com>
 References: <cover.1551712108.git.rodrigosiqueiramelo@gmail.com>
 MIME-Version: 1.0
 In-Reply-To: <cover.1551712108.git.rodrigosiqueiramelo@gmail.com>
-Subject: [igt-dev] [PATCH i-g-t 5/7] kms_flip: Remove magic constant in
- run_test_on_crtc_set()
+Subject: [igt-dev] [PATCH i-g-t 6/7] kms_flip: Rework set_mode()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,7 +13,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0714770129=="
+Content-Type: multipart/mixed; boundary="===============1074944387=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Petri Latvala <petri.latvala@intel.com>, Arkadiusz Hiler <arkadiusz.hiler@intel.com>
@@ -22,109 +21,91 @@ Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
---===============0714770129==
+--===============1074944387==
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="5hgqpf5uv3tolp3w"
+	protocol="application/pgp-signature"; boundary="2sb4fvqap5cschar"
 Content-Disposition: inline
 
 
---5hgqpf5uv3tolp3w
-Content-Type: text/plain; charset=utf-8
+--2sb4fvqap5cschar
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-The function run_test_on_crtc_set() expects a parameter named crtc_count
-which slight changes the behavior of the test. If this crtc_count is
-=E2=80=981=E2=80=99, the test will run in a single CRTC; otherwise, it will=
- run in two
-different CRTC. However, this function uses hardcoded literal 1 and 2
-for each case. This patch creates two constant with the goal to improve
-the readability.
+This patch removes the duplicate code inside the function set_mode().
 
 Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
 ---
- tests/kms_flip.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ tests/kms_flip.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
 diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index 9ef77de9..42ae3ebc 100755
+index 42ae3ebc..de3ab600 100755
 --- a/tests/kms_flip.c
 +++ b/tests/kms_flip.c
-@@ -76,6 +76,9 @@
- #define EVENT_FLIP		(1 << 0)
- #define EVENT_VBLANK		(1 << 1)
+@@ -609,22 +609,24 @@ static bool is_wedged(int fd)
 =20
-+#define RUN_TEST		1
-+#define RUN_PAIR		2
+ static int set_mode(struct test_output *o, uint32_t fb, int x, int y)
+ {
+-	int n;
++	int n, ret;
+=20
+ 	for (n =3D o->count - 1; n >=3D 0; n--) {
++		uint32_t buffer_id =3D fb, x_crtc =3D x, y_crtc =3D y;
++		uint32_t *conn =3D &o->_connector[n];
++		int count =3D 1;
++		drmModeModeInfoPtr mode =3D &o->kmode[n];
 +
- #ifndef DRM_CAP_TIMESTAMP_MONOTONIC
- #define DRM_CAP_TIMESTAMP_MONOTONIC 6
- #endif
-@@ -1164,7 +1167,7 @@ static void run_test_on_crtc_set(struct test_output *=
-o, int *crtc_idxs,
- 	int i;
-=20
- 	switch (crtc_count) {
--	case 1:
-+	case RUN_TEST:
- 		connector_find_preferred_mode(o->_connector[0], crtc_idxs[0], o);
- 		if (!o->mode_valid)
- 			return;
-@@ -1175,7 +1178,7 @@ static void run_test_on_crtc_set(struct test_output *=
-o, int *crtc_idxs,
- 			 kmstest_connector_type_str(o->kconnector[0]->connector_type),
- 			 o->kconnector[0]->connector_type_id);
- 		break;
--	case 2:
-+	case RUN_PAIR:
- 		connector_find_compatible_mode(crtc_idxs[0], crtc_idxs[1], o);
- 		if (!o->mode_valid)
- 			return;
-@@ -1341,7 +1344,7 @@ static int run_test(int duration, int flags)
- 			o.depth =3D 24;
-=20
- 			crtc_idx =3D n;
--			run_test_on_crtc_set(&o, &crtc_idx, 1, duration);
-+			run_test_on_crtc_set(&o, &crtc_idx, RUN_TEST, duration);
+ 		if (fb =3D=3D 0) {
+-			int ret =3D drmModeSetCrtc(drm_fd, o->_crtc[n],
+-						 0, 0, 0,
+-						 0, 0, 0);
+-			if (ret)
+-				return ret;
+-		} else {
+-			int ret =3D drmModeSetCrtc(drm_fd, o->_crtc[n],
+-						 fb, x, y,
+-						 &o->_connector[n], 1, &o->kmode[n]);
+-			if (ret)
+-				return ret;
++			buffer_id =3D x_crtc =3D y_crtc =3D count =3D 0;
++			conn =3D NULL; mode =3D NULL;
  		}
++
++		ret =3D drmModeSetCrtc(drm_fd, o->_crtc[n],
++				     buffer_id, x_crtc, y_crtc,
++				     conn, count, mode);
++		if (ret)
++			return ret;
  	}
 =20
-@@ -1410,7 +1413,8 @@ static int run_pair(int duration, int flags)
- 					crtc_idxs[0] =3D n;
- 					crtc_idxs[1] =3D m;
-=20
--					run_test_on_crtc_set(&o, crtc_idxs, 2,
-+					run_test_on_crtc_set(&o, crtc_idxs,
-+							     RUN_PAIR,
- 							     duration);
- 				}
- 			}
+ 	return 0;
 --=20
 2.21.0
 
---5hgqpf5uv3tolp3w
+--2sb4fvqap5cschar
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlx9RMcACgkQWJzP/com
-vP8DJA/9FOeIxHhQepK+oMjYKbyHOn9pTvGgz7dQ7Dq/w39ActciQo9gTw5Qh/Xc
-siTc4i80k0eNSXgKLkRtd/s8xIHCBgH18or68OOe9xFBCvf+EHQA3dFCN7hQboSR
-ts5GVjEZBlFJc6xm5717stUwggYfBXssjJSZmn/QbkJpZZpZOZ1CfFvt4As7HKPH
-yWCcMOKHaoNwFZot1yziMSXdM659kMJAs/1tCtim5cOx0tKFPr6EII5V13Gt1an4
-o0GAvxHFXoqHO4csdfSPvZctkiyVUFPrFFrJXbJm2t6nm/UIOLyDN+Famd0xaGSZ
-xJQ3oA1rQiYWzEaurrTwjC88et+kiUWw26X3HPHIocZallTO69dqGdbCSO8kPx9u
-SpX1sBudmvfDd7frwLB7C/DEVbEkxShWYDN8gj9AOoMqq6ojBJKiKJpY+CLsXHAl
-qQOMpW8FWonst9KHwnWLtU8lhIF3xhrmNi4JRwFOQIJGTwx0XHrZU1EK7PoyPoBG
-NvFBLUlh5R8DEa4eDVnrxXPYU0UiSoLWK5jUAzdJ0L941Huw2TUHISgnfzZD0adF
-aMUPBihjMRUq58GQiO1uVKz+SgG6RgzG+olu20i4TJjzuXD8cMDNxI4BRsGT3uC/
-asEintB4R9XC39hojTKSHG/O+Gl5mQvoLKKbkgMou1tWB/Wsjkw=
-=DAv7
+iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlx9ROEACgkQWJzP/com
+vP+tfBAAwDWyIijiWqGhohHEguh3FFiSC7fu3aE0YhDUiM883eCtLyqCGdZmUSBW
+0JzOo7wsFuyhAvH343aszVE5jG4sNXjLbC0AXdt0q5Tomhx0V/Cu7RXqeWDdrgcj
+KiE/LTJXhMRrC8lJL40nbdgda2LHfW/q+kD2XJ81Ns1QcQMQCc45JBpGxckwwwpD
+PqL3M9KgwMoO6Ud3pEijknDQPFK3Lw3ERO34R4F1druS6JzQ9auTPClINCKZW1KS
+eVKPA6KUb2oXkNhAwsknlDIpMituAWjnvjyx6HbNX1RVLv7543uzH5t/MeHQfSMR
+i1QiRdfcq6EKV+ieV/M/gof7pIjlRAWHSA5rhAAHFAi00pvokUotPnW00pTJBt1O
+wIu3S2zkfnmc3PAYNoWORQ5W/E/gMPRR9HAPahYvkAuz2OEaLSsMafcLEEvqWkHm
+/+YyvH04sxrmeEkHurmNcbD+1KUCxaqvOlcnVv9yMr2STGVDPoRybu/wiohUGLIU
+axEpuz/1yzJuABWCCRfBOy9dNNNIRVMXn0ePxOX1SrOL1DgaCr4hTniTjmSSTdcU
+TFgsQqMIKBVfGQLpjm1u1z2BjWFsCO3SON9O43C6k0loPaI9JRRZCaH3ZRBvkPhz
+wvRKMBeqo9i9IOUvDD71/ZUwxkbvbgsqLrZsxS2sxDX7PZHkVmA=
+=6s8m
 -----END PGP SIGNATURE-----
 
---5hgqpf5uv3tolp3w--
+--2sb4fvqap5cschar--
 
---===============0714770129==
+--===============1074944387==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: base64
@@ -134,4 +115,4 @@ X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
 YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
 cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
 
---===============0714770129==--
+--===============1074944387==--
