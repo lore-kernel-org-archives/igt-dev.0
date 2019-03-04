@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 4 Mar 2019 12:30:01 -0300
+Date: Mon, 4 Mar 2019 12:30:30 -0300
 From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Message-ID: <3656fa026ef33f6ce2ddffe9de64b88372df0642.1551712108.git.rodrigosiqueiramelo@gmail.com>
+Message-ID: <127b743d899c62b62921dffa629cfcd469390adf.1551712108.git.rodrigosiqueiramelo@gmail.com>
 References: <cover.1551712108.git.rodrigosiqueiramelo@gmail.com>
 MIME-Version: 1.0
 In-Reply-To: <cover.1551712108.git.rodrigosiqueiramelo@gmail.com>
-Subject: [igt-dev] [PATCH i-g-t 2/7] kms_flip: Removes unreachable code
- related to TEST_TS_CONT
+Subject: [igt-dev] [PATCH i-g-t 3/7] kms_flip: Fix warning related to i915
+ gem dependence
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,7 +14,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2014077332=="
+Content-Type: multipart/mixed; boundary="===============0361176583=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Petri Latvala <petri.latvala@intel.com>, Arkadiusz Hiler <arkadiusz.hiler@intel.com>
@@ -22,87 +22,84 @@ Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
---===============2014077332==
+--===============0361176583==
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="45mzjn257qx2bht7"
+	protocol="application/pgp-signature"; boundary="ecj3rf7ntoee2hbp"
 Content-Disposition: inline
 
 
---45mzjn257qx2bht7
-Content-Type: text/plain; charset=us-ascii
+--ecj3rf7ntoee2hbp
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-This commit removes the code related to TEST_TS_CONT test because the
-kms_flip never sets this flags, i.e., TEST_TS_CONT is not used. Take a
-look at commit 07a3fccf to see why this flag is never set.
+In the kms_flip tests has an igt_fixture that allocates memory for i915
+driver with =E2=80=9Cdrm_intel_bufmgr_gem_init()=E2=80=9D, which produces t=
+he following
+warning:
+
+ IGT-Version: 1.23-g8d81c2c2 (x86_64) (Linux: 5.0.0-rc7-VKMS-RULES+ x86_64)
+ Using monotonic timestamps
+ DRM_IOCTL_I915_GEM_APERTURE failed: Invalid argument
+ Assuming 131072kB available aperture size.
+ May lead to reduced performance or incorrect rendering.
+ get chip id failed: -1 [22]
+
+This commit handles this specific dependence with the i915 driver which
+make the kms_flip logs better.
 
 Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
 ---
- tests/kms_flip.c | 16 ----------------
- 1 file changed, 16 deletions(-)
+ tests/kms_flip.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index f769d30e..0d261b77 100755
+index 0d261b77..57138ec1 100755
 --- a/tests/kms_flip.c
 +++ b/tests/kms_flip.c
-@@ -69,7 +69,6 @@
- #define TEST_FENCE_STRESS	(1 << 23)
- #define TEST_VBLANK_RACE	(1 << 24)
- #define TEST_SUSPEND		(1 << 26)
--#define TEST_TS_CONT		(1 << 27)
- #define TEST_BO_TOOBIG		(1 << 28)
+@@ -1528,10 +1528,12 @@ int main(int argc, char **argv)
+ 		igt_install_exit_handler(kms_flip_exit_handler);
+ 		get_timestamp_format();
 =20
- #define TEST_BASIC		(1 << 30)
-@@ -497,21 +496,6 @@ static void check_state(const struct test_output *o, c=
-onst struct event_state *e
- 			     "unexpected %s seq %u, should be >=3D %u\n",
- 			     es->name, es->current_seq, es->last_seq + o->seq_step);
-=20
--	/* Check that the vblank frame didn't wrap unexpectedly. */
--	if (o->flags & TEST_TS_CONT) {
--		/* Ignore seq_step here since vblank waits time out immediately
--		 * when we kill the crtc. */
--		igt_assert_f(es->current_seq - es->last_seq >=3D 0,
--			     "unexpected %s seq %u, should be >=3D %u\n",
--			     es->name, es->current_seq, es->last_seq);
--		igt_assert_f(es->current_seq - es->last_seq <=3D 150,
--			     "unexpected %s seq %u, should be < %u\n",
--			     es->name, es->current_seq, es->last_seq + 150);
--
--		igt_debug("testing ts continuity: Current frame %u, old frame %u\n",
--			  es->current_seq, es->last_seq);
--	}
--
- 	if (o->flags & TEST_CHECK_TS) {
- 		double elapsed, expected;
+-		bufmgr =3D drm_intel_bufmgr_gem_init(drm_fd, 4096);
+-		if (bufmgr) {
+-			devid =3D intel_get_drm_devid(drm_fd);
+-			batch =3D intel_batchbuffer_alloc(bufmgr, devid);
++		if (is_i915_device(drm_fd)) {
++			bufmgr =3D drm_intel_bufmgr_gem_init(drm_fd, 4096);
++			if (bufmgr) {
++				devid =3D intel_get_drm_devid(drm_fd);
++				batch =3D intel_batchbuffer_alloc(bufmgr, devid);
++			}
+ 		}
+ 	}
 =20
 --=20
 2.21.0
 
---45mzjn257qx2bht7
+--ecj3rf7ntoee2hbp
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlx9RHgACgkQWJzP/com
-vP/DRA/+MyTzGmY9YJNQqJN0lUHWjDJs6luZoOcZ0e55hc00sik1TIkE3x5uhfO1
-XOu2QNODoPrCT6lBdWXUTv9BG2Dami8qVFJuTw0FC1GUEUA6F/9+n1BNgs9kNX6D
-3zT52asuUiCLGAehuldVMHP1LOkuXSNIffuPFazRPl2JfU+DI2sCANBXEyD0LE42
-Ajngca9qXTWpMGxxAd/gT59N/HCHISRsJCEnH0XEw4GZKz2NI3NqEFVCD0JXGko1
-wE63X1qPto8v6s02/Og7EQe/FtP4+3GDsUnJIIhn8LqHHcaQvj1C8HPuwicZQhr2
-d9/zKRU87BUY4AfwTkgLNuoNOEuPoOx8wwWQuPxUK9c5DiOTumcPX3F9f89CiT0y
-WScCCLs+CnvL34ldc/uv0xNp/sqoIayJdI6Pl/JIrVwKy66zNXQPb2dDY7AXwpZZ
-3QhPWwJ2KMWXgf+RqLGb2wRrP7KNiEShzHdgJ8LHmi7KHUBCZ4fTdnA+maiQF8f5
-eAYbX4EXdW80uaIyPfL0EZa1uGhsfqnLMcgw9bdK75bFuYGMhgutwcE2Q8Cex/OZ
-jvSMQMnRKHgQQsG03xelEE3UCrdXDLPYj6PHuXVo4jvVhVvGzoShGFptYBrcmNOi
-dSAn0l16l5dKMWadKiDKBUfJ+dAnATcMyiU+kJ5VEFUhV5jRsxs=
-=d4o/
+iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlx9RJUACgkQWJzP/com
+vP+8kA//Z7dicukzWGJENurEO6nfLRsZMJQa8IMzQ0TWxco+lLLx0xNI3Ci3K82i
+dOt9LqXiFrHqep5trH0IcqatUcNr90DE83Q4sXMgNDPH2M4EWM0OHiOBL4DZzsqY
+aafMUwwh28r63jUdmCGttu1X2d3vtmv4icNBllrAnUWg5EAsIeRQcnnXrTwpCX5j
+ZMiVavHUdH6Kni000SYT1YtAmCvswam7BgeV3skD5mZApHf7cDG52y9J15odAT2A
+/vP7BPuhluKranff+P47msqKcQrJfififPHpRLT4iXG8E5C0EY+dDBNAnPYQsah9
+xhAu0W+eFaAO00skGlmpBLBZxQdtTRQDL2rdwiiCOkTZuP8c4jYL9SI2cYQ5FW4y
+HPFi5b2Ee7UL0zNBCY9sw4H7KjnNImuN5KU8VPNzSzdoDScWULoz+t9cJMqirWj2
+BOVpdbpD+YsYufw/aZcG3P7EdzHR454AJgi8sFBp5zBwBGASbcM9+/O3HY7Xdh5W
+cUGi2qBG+DBgHVUXRy5zyaFZBedeMb0HyLSG/RScoRrmuy73/LcXcc7xRP/kL/J1
+Y343vSOTPrOJ7wUHj/0yhaTuTFROesv9y8WVQm8DrYeCC7WbDUazniM/rctFW6Ci
+gBNpVaUsRR/caA/Jl3CeKzT7YhPoRiRmntTYhjJiRo5sUM8NTlE=
+=ZPzW
 -----END PGP SIGNATURE-----
 
---45mzjn257qx2bht7--
+--ecj3rf7ntoee2hbp--
 
---===============2014077332==
+--===============0361176583==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: base64
@@ -112,4 +109,4 @@ X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
 YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
 cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
 
---===============2014077332==--
+--===============0361176583==--
