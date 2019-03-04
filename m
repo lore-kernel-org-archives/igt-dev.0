@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 4 Mar 2019 12:29:27 -0300
+Date: Mon, 4 Mar 2019 12:30:01 -0300
 From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Message-ID: <69730596ecfc3dc7e7ad1e2b8f28e59ca8c72e8e.1551712108.git.rodrigosiqueiramelo@gmail.com>
+Message-ID: <3656fa026ef33f6ce2ddffe9de64b88372df0642.1551712108.git.rodrigosiqueiramelo@gmail.com>
 References: <cover.1551712108.git.rodrigosiqueiramelo@gmail.com>
 MIME-Version: 1.0
 In-Reply-To: <cover.1551712108.git.rodrigosiqueiramelo@gmail.com>
-Subject: [igt-dev] [PATCH i-g-t 1/7] kms_flip: Removes unreachable code
- related to TEST_RPM
+Subject: [igt-dev] [PATCH i-g-t 2/7] kms_flip: Removes unreachable code
+ related to TEST_TS_CONT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,7 +14,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1334059887=="
+Content-Type: multipart/mixed; boundary="===============2014077332=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Petri Latvala <petri.latvala@intel.com>, Arkadiusz Hiler <arkadiusz.hiler@intel.com>
@@ -22,114 +22,87 @@ Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
---===============1334059887==
+--===============2014077332==
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="573h6ssxvu46gssg"
+	protocol="application/pgp-signature"; boundary="45mzjn257qx2bht7"
 Content-Disposition: inline
 
 
---573h6ssxvu46gssg
-Content-Type: text/plain; charset=iso-8859-1
+--45mzjn257qx2bht7
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-This commit removes the code related to TEST_RPM test because the
-kms_flip never sets this flags, i.e., TEST_RPM is not used. Take a look
-at commit 07a3fccf to see why this flag is never set.
+This commit removes the code related to TEST_TS_CONT test because the
+kms_flip never sets this flags, i.e., TEST_TS_CONT is not used. Take a
+look at commit 07a3fccf to see why this flag is never set.
 
 Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
 ---
- tests/kms_flip.c | 15 ---------------
- 1 file changed, 15 deletions(-)
+ tests/kms_flip.c | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
 diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index 798fc4e8..f769d30e 100755
+index f769d30e..0d261b77 100755
 --- a/tests/kms_flip.c
 +++ b/tests/kms_flip.c
-@@ -68,7 +68,6 @@
- #define TEST_ENOENT		(1 << 22)
+@@ -69,7 +69,6 @@
  #define TEST_FENCE_STRESS	(1 << 23)
  #define TEST_VBLANK_RACE	(1 << 24)
--#define TEST_RPM		(1 << 25)
  #define TEST_SUSPEND		(1 << 26)
- #define TEST_TS_CONT		(1 << 27)
+-#define TEST_TS_CONT		(1 << 27)
  #define TEST_BO_TOOBIG		(1 << 28)
-@@ -809,9 +808,6 @@ static unsigned int run_test_step(struct test_output *o)
- 			     "failed to disable output: %s\n",
- 			     strerror(errno));
 =20
--	if (o->flags & TEST_RPM)
--		igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+ #define TEST_BASIC		(1 << 30)
+@@ -497,21 +496,6 @@ static void check_state(const struct test_output *o, c=
+onst struct event_state *e
+ 			     "unexpected %s seq %u, should be >=3D %u\n",
+ 			     es->name, es->current_seq, es->last_seq + o->seq_step);
+=20
+-	/* Check that the vblank frame didn't wrap unexpectedly. */
+-	if (o->flags & TEST_TS_CONT) {
+-		/* Ignore seq_step here since vblank waits time out immediately
+-		 * when we kill the crtc. */
+-		igt_assert_f(es->current_seq - es->last_seq >=3D 0,
+-			     "unexpected %s seq %u, should be >=3D %u\n",
+-			     es->name, es->current_seq, es->last_seq);
+-		igt_assert_f(es->current_seq - es->last_seq <=3D 150,
+-			     "unexpected %s seq %u, should be < %u\n",
+-			     es->name, es->current_seq, es->last_seq + 150);
 -
- 	if (o->flags & TEST_SUSPEND)
- 		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
- 					      SUSPEND_TEST_NONE);
-@@ -1321,9 +1317,6 @@ static int run_test(int duration, int flags)
-=20
- 	igt_require((flags & TEST_HANG) =3D=3D 0 || !is_wedged(drm_fd));
-=20
--	if (flags & TEST_RPM)
--		igt_require(igt_setup_runtime_pm());
+-		igt_debug("testing ts continuity: Current frame %u, old frame %u\n",
+-			  es->current_seq, es->last_seq);
+-	}
 -
- 	resources =3D drmModeGetResources(drm_fd);
- 	igt_require(resources);
+ 	if (o->flags & TEST_CHECK_TS) {
+ 		double elapsed, expected;
 =20
-@@ -1570,10 +1563,6 @@ int main(int argc, char **argv)
- 		if (tests[i].flags & TEST_NO_2X_OUTPUT)
- 			continue;
-=20
--		/* code doesn't disable all crtcs, so skip rpm tests */
--		if (tests[i].flags & TEST_RPM)
--			continue;
--
- 		igt_subtest_f( "2x-%s", tests[i].name)
- 			run_pair(tests[i].duration, tests[i].flags);
- 	}
-@@ -1592,10 +1581,6 @@ int main(int argc, char **argv)
- 		if (tests[i].flags & TEST_NO_2X_OUTPUT)
- 			continue;
-=20
--		/* code doesn't disable all crtcs, so skip rpm tests */
--		if (tests[i].flags & TEST_RPM)
--			continue;
--
- 		igt_subtest_f( "2x-%s-interruptible", tests[i].name)
- 			run_pair(tests[i].duration, tests[i].flags);
- 	}
 --=20
 2.21.0
 
-
---=20
-Rodrigo Siqueira
-https://siqueira.tech
-Graduate Student
-Department of Computer Science
-University of S=E3o Paulo
-
---573h6ssxvu46gssg
+--45mzjn257qx2bht7
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlx9RFYACgkQWJzP/com
-vP8e9A/9FexPFq6wHB5U+cfyWgUVrsBAVDNxSrL2ssZph6LPdOvwlMGIcGXCuCqH
-+haseLuyYj6zQAKpiWnu6PJS8Br4eZcTpsVCr6rxy4MTlJ5DjHUYRDnzT9ekNZBy
-8/Qx6f/tuZHvewGCTlDIuzcdG0c1uhXHi8D0JaADSm/meZ0muuIL/t4thdcEVZza
-F2QT3790hyRUVAgt3Y+arXpWiKCpvZLGXagil6HkU6Uts4NBlHtCLEqfeV//ti8K
-QhfUqMGONGsmEDuc/YJS0FRoHKugRzL/bTYub0kxuR7vLuliax+8E1fEZT9mmuSR
-OTYy4UNzGwHMjEspLjtiIDHVScJBWXYIfbJ62gnk03btcCM0ED8v219W++d7doC+
-pF5GitWnPqOE6D+fVjYzCLW5A9LXn/W04aXC+BdpFNwuCZM9BdQkmeQQkDJIRUnD
-kETfymBXZnlu9TQ103XoMSrleh9m03D+X7Vc5taxqCguQXqK1XG8EemeU9sDVtbq
-4BGAY/1FyJamJhCBV/jbEq/h0WP1MYF3TUOgQaUQ3Jt67Vu/aPDJ1BRRHGjaGwhQ
-QXwrki+Tk3SXAt7BOJLnINtqgl4YnLp6BfrKrXn/fsLC//KuNhPP22iPlCaTv69r
-3CTE1lKQXilUW/DqjuriofDW6u78RZkh5FqpjLW4fWS9Mua6Wi4=
-=golK
+iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlx9RHgACgkQWJzP/com
+vP/DRA/+MyTzGmY9YJNQqJN0lUHWjDJs6luZoOcZ0e55hc00sik1TIkE3x5uhfO1
+XOu2QNODoPrCT6lBdWXUTv9BG2Dami8qVFJuTw0FC1GUEUA6F/9+n1BNgs9kNX6D
+3zT52asuUiCLGAehuldVMHP1LOkuXSNIffuPFazRPl2JfU+DI2sCANBXEyD0LE42
+Ajngca9qXTWpMGxxAd/gT59N/HCHISRsJCEnH0XEw4GZKz2NI3NqEFVCD0JXGko1
+wE63X1qPto8v6s02/Og7EQe/FtP4+3GDsUnJIIhn8LqHHcaQvj1C8HPuwicZQhr2
+d9/zKRU87BUY4AfwTkgLNuoNOEuPoOx8wwWQuPxUK9c5DiOTumcPX3F9f89CiT0y
+WScCCLs+CnvL34ldc/uv0xNp/sqoIayJdI6Pl/JIrVwKy66zNXQPb2dDY7AXwpZZ
+3QhPWwJ2KMWXgf+RqLGb2wRrP7KNiEShzHdgJ8LHmi7KHUBCZ4fTdnA+maiQF8f5
+eAYbX4EXdW80uaIyPfL0EZa1uGhsfqnLMcgw9bdK75bFuYGMhgutwcE2Q8Cex/OZ
+jvSMQMnRKHgQQsG03xelEE3UCrdXDLPYj6PHuXVo4jvVhVvGzoShGFptYBrcmNOi
+dSAn0l16l5dKMWadKiDKBUfJ+dAnATcMyiU+kJ5VEFUhV5jRsxs=
+=d4o/
 -----END PGP SIGNATURE-----
 
---573h6ssxvu46gssg--
+--45mzjn257qx2bht7--
 
---===============1334059887==
+--===============2014077332==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: base64
@@ -139,4 +112,4 @@ X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
 YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
 cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
 
---===============1334059887==--
+--===============2014077332==--
