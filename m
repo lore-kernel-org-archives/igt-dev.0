@@ -1,104 +1,89 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-Date: Mon, 4 Mar 2019 12:32:08 -0300
-From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Message-ID: <f721ca0d8367607136e076b1870c4cbcbecb8848.1551712108.git.rodrigosiqueiramelo@gmail.com>
-References: <cover.1551712108.git.rodrigosiqueiramelo@gmail.com>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-In-Reply-To: <cover.1551712108.git.rodrigosiqueiramelo@gmail.com>
-Subject: [Intel-gfx] [PATCH i-g-t 7/7] kms_flip: Standardize return value
- for fb_is_bound
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1761115235=="
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>, Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 04 Mar 2019 15:59:09 -0000
+Message-ID: <20190304155909.4815.88773@emeril.freedesktop.org>
+References: <20190304151735.10158-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20190304151735.10158-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9w?=
+ =?utf-8?q?m=5Frpm=3A_Show_the_rpm_status_after_disabling_screens?=
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============1761115235==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="n5cbc5s6uybfywb6"
-Content-Disposition: inline
-
-
---n5cbc5s6uybfywb6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-The function fb_is_bound() mix integer value with booleans for handling
-the return value. This commit standardizes the return value of
-fb_is_bound() for using only booleans.
-
-Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
----
- tests/kms_flip.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index de3ab600..abfdd363 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -947,8 +947,7 @@ static void paint_flip_mode(struct igt_fb *fb, bool odd=
-_frame)
- 	igt_put_cairo_ctx(drm_fd, fb, cr);
- }
-=20
--static int
--fb_is_bound(struct test_output *o, int fb)
-+static bool fb_is_bound(struct test_output *o, int fb)
- {
- 	int n;
-=20
-@@ -958,7 +957,7 @@ fb_is_bound(struct test_output *o, int fb)
- 		};
-=20
- 		if (drmIoctl(drm_fd, DRM_IOCTL_MODE_GETCRTC, &mode))
--			return 0;
-+			return false;
-=20
- 		if (!mode.mode_valid || mode.fb_id !=3D fb)
- 			return false;
---=20
-2.21.0
-
---n5cbc5s6uybfywb6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlx9RPcACgkQWJzP/com
-vP8P/w//WrKlk8xWBLCby5D43ClvSufkGCgQvwI3J7Lcic88W9FViYf5lKt/qNGF
-E3xzF0aPORE9xJWIY1VO114I1DB2bVkKVuGZFH/KzaWLH/+zVgEW3H9I7Hp2xe4+
-HbuvS6zGg63X3bWDRj8fEblSDPYoFldJSueiChDznx1rFRq8vVKtBgu5n/aE93uD
-PRyYepIMhDrSlP2p0h2QsFPnDOWFudRlQnd3nRFowGp0U9HdFCxgyHXvG3lKyWO/
-cFu06kyf3DFCvOFTIBZe9Dx2Ol0MZfuISGR8d9Eq9F+YpczIjPwAvpfHrTddZwoj
-52V1Zvlqdakjgvj5sObP7kQObhsLeTNHKmYqWqp708xYzY+eOsNETVYH1QrkZZg4
-MbzzeEjQVxyWN6MN6Lku/D5TEZxL6PrU/3Y1Or5sJPB9lBojnLXj+yG2UXcFHZoJ
-9KEPhNJsUd6k6YsYxtS+cjSaguc6r1HLWTfaEMXfJOlERwNN8g928dnS9RmBHCFK
-zvXNjf9FjJyRovl3GQiRynQ1uiaxbUTg/SpwpX0LJtL0ffn7AorrcHoPtNLGEH9a
-EhhHUnM2uTXrlDvw1Rc1nKQmCPmq/I93T4zKbDh6ZKtqiEgT/KLMlmfb5WvnB6En
-/grtPOVk4RPCaab3UMHbO+8gzhrVhZfLwgPdao+mu4ThDGaUqGc=
-=yuIf
------END PGP SIGNATURE-----
-
---n5cbc5s6uybfywb6--
-
---===============1761115235==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KSW50ZWwtZ2Z4
-IG1haWxpbmcgbGlzdApJbnRlbC1nZnhAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaW50ZWwtZ2Z4
-
---===============1761115235==--
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogaTkxNS9wbV9ycG06IFNob3cgdGhlIHJwbSBz
+dGF0dXMgYWZ0ZXIgZGlzYWJsaW5nIHNjcmVlbnMKVVJMICAgOiBodHRwczovL3BhdGNod29yay5m
+cmVlZGVza3RvcC5vcmcvc2VyaWVzLzU3NTI2LwpTdGF0ZSA6IHN1Y2Nlc3MKCj09IFN1bW1hcnkg
+PT0KCkNJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20gQ0lfRFJNXzU2OTUgLT4gSUdUUFdfMjU0OQo9
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CgpTdW1t
+YXJ5Ci0tLS0tLS0KCiAgKipTVUNDRVNTKioKCiAgTm8gcmVncmVzc2lvbnMgZm91bmQuCgogIEV4
+dGVybmFsIFVSTDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL2FwaS8xLjAvc2Vy
+aWVzLzU3NTI2L3JldmlzaW9ucy8xL21ib3gvCgpLbm93biBpc3N1ZXMKLS0tLS0tLS0tLS0tCgog
+IEhlcmUgYXJlIHRoZSBjaGFuZ2VzIGZvdW5kIGluIElHVFBXXzI1NDkgdGhhdCBjb21lIGZyb20g
+a25vd24gaXNzdWVzOgoKIyMjIElHVCBjaGFuZ2VzICMjIwoKIyMjIyBJc3N1ZXMgaGl0ICMjIyMK
+CiAgKiBpZ3RAYW1kZ3B1L2FtZF9iYXNpY0B1c2VycHRyOgogICAgLSBmaS1rYmwtODgwOWc6ICAg
+ICAgIFBBU1MgLT4gRE1FU0ctV0FSTiBbZmRvIzEwODk2NV0KCiAgKiBpZ3RAaTkxNV9zZWxmdGVz
+dEBsaXZlX2V4ZWNsaXN0czoKICAgIC0gZmktYXBsLWd1YzogICAgICAgICBQQVNTIC0+IElOQ09N
+UExFVEUgW2ZkbyMxMDM5MjddIC8gW2ZkbyMxMDk3MjBdCgogICogaWd0QGttc19idXN5QGJhc2lj
+LWZsaXAtYToKICAgIC0gZmktZ2RnLTU1MTogICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDMx
+ODJdCgogICogaWd0QGttc19idXN5QGJhc2ljLWZsaXAtYzoKICAgIC0gZmktYmxiLWU2ODUwOiAg
+ICAgICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTI3MV0gLyBbZmRvIzEwOTI3OF0KCiAgKiBpZ3RA
+a21zX3BpcGVfY3JjX2Jhc2ljQGhhbmctcmVhZC1jcmMtcGlwZS1jOgogICAgLSBmaS1ibGItZTY4
+NTA6ICAgICAgIE5PVFJVTiAtPiBTS0lQIFtmZG8jMTA5MjcxXSArNDgKCiAgKiBpZ3RAa21zX3Bp
+cGVfY3JjX2Jhc2ljQHJlYWQtY3JjLXBpcGUtYToKICAgIC0gZmktYnl0LWNsYXBwZXI6ICAgICBQ
+QVNTIC0+IEZBSUwgW2ZkbyMxMDczNjJdCgogICogaWd0QHJ1bm5lckBhYm9ydGVkOgogICAgLSBm
+aS1hcGwtZ3VjOiAgICAgICAgIE5PVFJVTiAtPiBGQUlMIFtmZG8jMTA4NjIyXSAvIFtmZG8jMTA5
+NzIwXSAvIFtmZG8jMTA5Nzk5XQoKICAKIyMjIyBQb3NzaWJsZSBmaXhlcyAjIyMjCgogICogaWd0
+QGdlbV9leGVjX3N1c3BlbmRAYmFzaWMtczQtZGV2aWNlczoKICAgIC0gZmktYmxiLWU2ODUwOiAg
+ICAgICBJTkNPTVBMRVRFIFtmZG8jMTA3NzE4XSAtPiBQQVNTCgogICogaWd0QGk5MTVfc2VsZnRl
+c3RAbGl2ZV9oYW5nY2hlY2s6CiAgICAtIGZpLWtibC03NTYwdTogICAgICAgSU5DT01QTEVURSBb
+ZmRvIzEwODA0NF0gLyBbZmRvIzEwODc0NF0gLT4gUEFTUwoKICAqIGlndEBrbXNfYnVzeUBiYXNp
+Yy1mbGlwLWI6CiAgICAtIGZpLWdkZy01NTE6ICAgICAgICAgRkFJTCBbZmRvIzEwMzE4Ml0gLT4g
+UEFTUwoKICAqIGlndEBrbXNfY2hhbWVsaXVtQGNvbW1vbi1ocGQtYWZ0ZXItc3VzcGVuZDoKICAg
+IC0gZmkta2JsLTc1Njd1OiAgICAgICBXQVJOIFtmZG8jMTA5MzgwXSAtPiBQQVNTCgogICogaWd0
+QGttc19waXBlX2NyY19iYXNpY0BoYW5nLXJlYWQtY3JjLXBpcGUtYToKICAgIC0gZmktYnl0LWNs
+YXBwZXI6ICAgICBGQUlMIFtmZG8jMTAzMTkxXSAvIFtmZG8jMTA3MzYyXSAtPiBQQVNTCgogICog
+aWd0QGttc19waXBlX2NyY19iYXNpY0Bub25ibG9ja2luZy1jcmMtcGlwZS1jOgogICAgLSBmaS1r
+YmwtNzU2N3U6ICAgICAgIFNLSVAgW2ZkbyMxMDkyNzFdIC0+IFBBU1MgKzMzCgogIAogIFtmZG8j
+MTAzMTgyXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAz
+MTgyCiAgW2ZkbyMxMDMxOTFdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVn
+LmNnaT9pZD0xMDMxOTEKICBbZmRvIzEwMzkyN106IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5v
+cmcvc2hvd19idWcuY2dpP2lkPTEwMzkyNwogIFtmZG8jMTA3MzYyXTogaHR0cHM6Ly9idWdzLmZy
+ZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3MzYyCiAgW2ZkbyMxMDc3MThdOiBodHRw
+czovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDc3MTgKICBbZmRvIzEw
+ODA0NF06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODA0
+NAogIFtmZG8jMTA4NjIyXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5j
+Z2k/aWQ9MTA4NjIyCiAgW2ZkbyMxMDg3NDRdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3Jn
+L3Nob3dfYnVnLmNnaT9pZD0xMDg3NDQKICBbZmRvIzEwODk2NV06IGh0dHBzOi8vYnVncy5mcmVl
+ZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODk2NQogIFtmZG8jMTA5MjcxXTogaHR0cHM6
+Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5MjcxCiAgW2ZkbyMxMDky
+NzhdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkyNzgK
+ICBbZmRvIzEwOTM4MF06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dp
+P2lkPTEwOTM4MAogIFtmZG8jMTA5NzIwXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9z
+aG93X2J1Zy5jZ2k/aWQ9MTA5NzIwCiAgW2ZkbyMxMDk3OTldOiBodHRwczovL2J1Z3MuZnJlZWRl
+c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDk3OTkKCgpQYXJ0aWNpcGF0aW5nIGhvc3RzICg0
+NSAtPiA0MCkKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCgogIE1pc3NpbmcgICAgKDUp
+OiBmaS1pbGstbTU0MCBmaS1oc3ctNDIwMHUgZmktYnl0LXNxdWF3a3MgZmktYnN3LWN5YW4gZmkt
+YmR3LXNhbXVzIAoKCkJ1aWxkIGNoYW5nZXMKLS0tLS0tLS0tLS0tLQoKICAgICogSUdUOiBJR1Rf
+NDg2OSAtPiBJR1RQV18yNTQ5CgogIENJX0RSTV81Njk1OiBiNGMzYjZlZDE2NDE5YjNkNTZkYmVk
+MDQ3ZmUxZDVlZGQ2NDVkNjVjIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNp
+L2xpbnV4CiAgSUdUUFdfMjU0OTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJt
+LXRpcC9JR1RQV18yNTQ5LwogIElHVF80ODY5OiBhOTU4ZDNmNjBiNzcxODE1MWZkMGJhZmNkZDFl
+NDg3NDI2MmY1MWI4IEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcveG9yZy9hcHAvaW50
+ZWwtZ3B1LXRvb2xzCgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9p
+bnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yNTQ5LwpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdApp
+Z3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
