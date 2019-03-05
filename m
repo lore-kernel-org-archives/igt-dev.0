@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 5 Mar 2019 12:46:51 -0800
-From: Dale B Stimson <dale.b.stimson@intel.com>
-Message-ID: <20190305204650.GA31562@dbstims-dev.fm.intel.com>
+MIME-Version: 1.0
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20190305204650.GA31562@dbstims-dev.fm.intel.com>
 References: <cover.1551746698.git.dale.b.stimson@intel.com>
  <4182f2c6458418313e9e0132cd8773956257bbf4.1551746698.git.dale.b.stimson@intel.com>
  <155181244896.27405.4364461164560538316@skylake-alporthouse-com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <155181244896.27405.4364461164560538316@skylake-alporthouse-com>
+ <20190305204650.GA31562@dbstims-dev.fm.intel.com>
+Message-ID: <155181937619.27405.7917561202878081530@skylake-alporthouse-com>
+Date: Tue, 05 Mar 2019 20:56:21 +0000
 Subject: Re: [igt-dev] [PATCH i-g-t v4 1/1] gem_ctx_isolation.c - Gen11
  enabling for context isolation test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -21,24 +21,17 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Dale B Stimson <dale.b.stimson@intel.com>
 Cc: tvrtko.ursulin@intel.com, intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Q1NfQ0hJQ0tFTjEgaXMgbm90IHByaXZpbGVnZWQgYW55bW9yZSAoYXMgb2YgR2VuMTEpLCBhcyBl
-dmlkZW5jZWQKYnkgaXRzIGFic2VuY2UgZnJvbSB0aGUga2VybmVsIHdoaXRlbGlzdCBmb3IgR2Vu
-MTEgY29tYmluZWQgd2l0aCB0aGUKc3VjY2Vzc2Z1bCBleGVjdXRpb24gb24gSUNMIG9mIHRoZSB0
-ZXN0cyBhZGRlZCBieSB5b3VyIHJlY2VudCBwYXRjaAoiaTkxNS9nZW1fY3R4X2lzb2xhdGlvbjog
-U2FuaXR5Y2hlY2sgbm9ucHJpdiBhY2Nlc3MiLgoKLURhbGUKCk9uIDIwMTktMDMtMDUgMTk6MDA6
-NDksIENocmlzIFdpbHNvbiB3cm90ZToKPiBRdW90aW5nIERhbGUgQiBTdGltc29uICgyMDE5LTAz
-LTA1IDAxOjAzOjA4KQo+ID4gQEAgLTEzMiwzMCArMTM2LDQ5IEBAIHN0YXRpYyBjb25zdCBzdHJ1
-Y3QgbmFtZWRfcmVnaXN0ZXIgewo+ID4gICAgICAgICB7ICJQRVJGX0NOVF8xIiwgTk9DVFgsIFJD
-UzAsIDB4OTFiOCwgMiB9LAo+ID4gICAgICAgICB7ICJQRVJGX0NOVF8yIiwgTk9DVFgsIFJDUzAs
-IDB4OTFjMCwgMiB9LAo+ID4gIAo+ID4gKyAgICAgICB7ICJDVFhfUFJFRU1QVCIsIE5PQ1RYIC8q
-IEdFTjEwICovLCBSQ1MwLCAweDIyNDggfSwKPiA+ICsgICAgICAgeyAiQ1NfQ0hJQ0tFTjEiLCBH
-RU4xMSwgUkNTMCwgMHgyNTgwLCAubWFza2VkID0gdHJ1ZSB9LAo+IAo+IENTX0NISUNLRU4xIGlz
-IHN0aWxsIHByaXZpbGVnZWQ/IEF0IGxlYXN0IEknbSBwdXNoIGEgcGF0Y2ggdG8gYWRkIGl0IHRv
-Cj4gdGhlIHdoaXRlbGlzdCBmb3IgZ2VuMTEuCj4gLUNocmlzCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
-YW4vbGlzdGluZm8vaWd0LWRldg==
+UXVvdGluZyBEYWxlIEIgU3RpbXNvbiAoMjAxOS0wMy0wNSAyMDo0Njo1MSkKPiBDU19DSElDS0VO
+MSBpcyBub3QgcHJpdmlsZWdlZCBhbnltb3JlIChhcyBvZiBHZW4xMSksIGFzIGV2aWRlbmNlZAo+
+IGJ5IGl0cyBhYnNlbmNlIGZyb20gdGhlIGtlcm5lbCB3aGl0ZWxpc3QgZm9yIEdlbjExIGNvbWJp
+bmVkIHdpdGggdGhlCj4gc3VjY2Vzc2Z1bCBleGVjdXRpb24gb24gSUNMIG9mIHRoZSB0ZXN0cyBh
+ZGRlZCBieSB5b3VyIHJlY2VudCBwYXRjaAo+ICJpOTE1L2dlbV9jdHhfaXNvbGF0aW9uOiBTYW5p
+dHljaGVjayBub25wcml2IGFjY2VzcyIuCgpFdmVyeXRoaW5nIHNlZW1zIGluIG9yZGVyIDopCgpS
+ZXZpZXdlZC1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Ci1DaHJp
+cwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
+IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
+LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
