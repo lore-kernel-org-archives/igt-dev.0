@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A27788FE2
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Mar 2019 10:12:28 +0000 (UTC)
+Date: Tue, 5 Mar 2019 11:12:25 +0100
+From: Katarzyna Dec <katarzyna.dec@intel.com>
+Message-ID: <20190305101225.GB8924@kdec5-desk.ger.corp.intel.com>
+References: <20190305014742.3598-1-dhinakaran.pandiyan@intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <484bd183-ae0b-7231-e1ce-91db16b067ec@linux.intel.com>
-References: <20190304141131.14654-1-tvrtko.ursulin@linux.intel.com>
- <155171071077.14887.9423109998793090230@skylake-alporthouse-com>
- <115f245c-a122-92d2-a9cf-b459e0859034@linux.intel.com>
- <155177513173.27405.11341659637150090555@skylake-alporthouse-com>
- <484bd183-ae0b-7231-e1ce-91db16b067ec@linux.intel.com>
-Message-ID: <155177824808.27405.14750725784450421330@skylake-alporthouse-com>
-Date: Tue, 05 Mar 2019 09:30:48 +0000
-Subject: Re: [igt-dev] [RFT i-g-t] lib/i915: Assert mmap size alignment
+Content-Disposition: inline
+In-Reply-To: <20190305014742.3598-1-dhinakaran.pandiyan@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/7] lib/rendercopy: Copy gen8 surface
+ state definition to gen-9 header
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,46 +22,17 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBUdnJ0a28gVXJzdWxpbiAoMjAxOS0wMy0wNSAwOToyMzowMikKPiAKPiBPbiAwNS8w
-My8yMDE5IDA4OjM4LCBDaHJpcyBXaWxzb24gd3JvdGU6Cj4gPiBRdW90aW5nIFR2cnRrbyBVcnN1
-bGluICgyMDE5LTAzLTA1IDA3OjU1OjQzKQo+ID4+Cj4gPj4gT24gMDQvMDMvMjAxOSAxNDo0NSwg
-Q2hyaXMgV2lsc29uIHdyb3RlOgo+ID4+PiBRdW90aW5nIFR2cnRrbyBVcnN1bGluICgyMDE5LTAz
-LTA0IDE0OjExOjMxKQo+ID4+Pj4gRnJvbTogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGlu
-QGludGVsLmNvbT4KPiA+Pj4+Cj4gPj4+PiBGaXNoaW5nIGZvciBmYWlscy4uLgo+ID4+Pj4KPiA+
-Pj4+IC8qCj4gPj4+PiBtbWFwKDIpIG1hbmRhdGVzIHNpemUgaXMgcGFnZSBhbGlnbmVkIHNvIGNo
-ZWNrIHRoaXMgaW4gb3VyIHdyYXBwZXJzLgo+ID4+Pj4gKi8KPiA+Pj4+Cj4gPj4+PiBTaWduZWQt
-b2ZmLWJ5OiBUdnJ0a28gVXJzdWxpbiA8dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPgo+ID4+Pj4g
-LS0tCj4gPj4+PiAgICBsaWIvaTkxNS9nZW1fbW1hbi5jIHwgIDQgKysrKwo+ID4+Pj4gICAgbGli
-L2lndF9mYi5jICAgICAgICB8IDE0ICsrKysrKysrLS0tLS0tCj4gPj4+PiAgICB0ZXN0cy9rbXNf
-Y2NzLmMgICAgIHwgMTQgKysrKysrKystLS0tLS0KPiA+Pj4+ICAgIHRlc3RzL2ttc19wc3IuYyAg
-ICAgfCAgOCArKysrLS0tLQo+ID4+Pj4gICAgNCBmaWxlcyBjaGFuZ2VkLCAyNCBpbnNlcnRpb25z
-KCspLCAxNiBkZWxldGlvbnMoLSkKPiA+Pj4+Cj4gPj4+PiBkaWZmIC0tZ2l0IGEvbGliL2k5MTUv
-Z2VtX21tYW4uYyBiL2xpYi9pOTE1L2dlbV9tbWFuLmMKPiA+Pj4+IGluZGV4IDNjZjlhNmJiZGIz
-MS4uMDg0ZGJiM2IzNjc4IDEwMDY0NAo+ID4+Pj4gLS0tIGEvbGliL2k5MTUvZ2VtX21tYW4uYwo+
-ID4+Pj4gKysrIGIvbGliL2k5MTUvZ2VtX21tYW4uYwo+ID4+Pj4gQEAgLTU3LDYgKzU3LDggQEAg
-dm9pZCAqX19nZW1fbW1hcF9fZ3R0KGludCBmZCwgdWludDMyX3QgaGFuZGxlLCB1aW50NjRfdCBz
-aXplLCB1bnNpZ25lZCBwcm90KQo+ID4+Pj4gICAgICAgICAgIHN0cnVjdCBkcm1faTkxNV9nZW1f
-bW1hcF9ndHQgbW1hcF9hcmc7Cj4gPj4+PiAgICAgICAgICAgdm9pZCAqcHRyOwo+ID4+Pj4gICAg
-Cj4gPj4+PiArICAgICAgIGlndF9hc3NlcnQoIShzaXplICYgNDA5NSkpOwo+ID4+Pgo+ID4+PiBG
-d2l3LCBpdCdzIHByb2JhYmx5IGJlc3QgaWYgd2UgaGFkIHNvbWUga2luZCBvZiBJR1RfQlVHX09O
-KCkgdGhhdCBjYXVzZWQKPiA+Pj4gYSBtdWNoIG1vcmUgdmlzaWJsZSBleHBsb3Npb24gdGhhbiBh
-IG1lcmUgdGVzdCBmYWlsdXJlLgo+ID4+Pgo+ID4+PiAjZGVmaW5lIElHVF9CVUdfT04oY29uZCkg
-aWYgKCEoY29uZCkpIHJhaXNlKFNJR0lMTCkKPiA+Pgo+ID4+IE5vIGlkZWEgaWYgdGhhdCB3b3Vs
-ZCBiZSB3b3J0aHdoaWxlLgo+ID4+Cj4gPj4gQnV0IGFueXdheSwgaXQgc2VlbXMgSSBoYXZlIGlk
-ZW50aWZpZWQgYWxsIHRoZSB0ZXN0cyB3aGljaCBkbwo+ID4+IG5vbi1wYWdlLWFsaWduZWQgbW1h
-cC4gU28uLgo+ID4+Cj4gPj4gYSkgbGVhdmUgdGhlIGFzc2VydCBpbiBsb3cgbGV2ZWwgbW1hcCBo
-ZWxwZXJzCj4gPj4gYikgbW92ZSB0aGUgYXNzZXJ0IHRvIGhpZ2hlciBsZXZlbCB3cmFwcGVycwo+
-ID4+IGMpIHJvdW5kIHVwIGluIHdyYXBwZXJzIGlzIG5vdCBhbiBvcHRpb24gZHVlIHVubWFwCj4g
-Pj4gZCkgZG8gbm90aGluZyBpbiBpZ3QKPiA+IAo+ID4gSW1vIGxlYXZlIHRoZSB3cmFwcGVycyBh
-bG9uZSwgZml4IHRoZSBidWdzIGluIHRoZSBjYWxsZXJzLCBmdW1lIHRoYXQgaXQKPiA+IGRpZG4n
-dCBleHBsb2RlIGVhcmxpZXIuCj4gCj4gTm90IGV2ZW4gYSBzbWFsbCBpZ3Rfd2FybiBvciB0aW55
-IGlndF9kZWJ1ZyBpbiB0aGUgd3JhcHBlcnM/IDopCgpOb3QgcGFydGljdWxhcmx5LCBpZiBpdCBk
-aWRuJ3QgaW1wYWN0IHRoZSByZXN1bHQsIGF0IHdvcnN0IGl0J3MgYSBzbWFsbApteXN0ZXJpb3Vz
-IGxlYWsgKHdoaWNoIHNob3VsZCBiZSBjYXRjaGFibGUgYnkgdmFsZ3JpbmQpLgotQ2hyaXMKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
-aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
-ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+T24gTW9uLCBNYXIgMDQsIDIwMTkgYXQgMDU6NDc6MzZQTSAtMDgwMCwgRGhpbmFrYXJhbiBQYW5k
+aXlhbiB3cm90ZToKPiBDcmVhdGUgYSBnZW45IHNwZWNpZmljIHN0cnVjdCBzbyB0aGF0IHRoZSBn
+ZW4tOSsgWWYvWXMgdGlsaW5nIGJpdHMgY2FuIGJlCj4gYWRkZWQgdGhlcmUuCj4gCj4gU3VnZ2Vz
+dGVkLWJ5OiBLYXRhcnp5bmEgRGVjIDxrYXRhcnp5bmEuZGVjQGludGVsLmNvbT4KPiBTaWduZWQt
+b2ZmLWJ5OiBEaGluYWthcmFuIFBhbmRpeWFuIDxkaGluYWthcmFuLnBhbmRpeWFuQGludGVsLmNv
+bT4KVGhhbmtzIGZvciB0aGlzIGNoYW5nZS4KUmV2aWV3ZWQtYnk6IEthdGFyenluYSBEZWMgPGth
+dGFyenluYS5kZWNAaW50ZWwuY29tPgoKS2FzaWEgOikKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0
+cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9pZ3QtZGV2
