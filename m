@@ -1,10 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Wed, 6 Mar 2019 19:49:38 -0300
-From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Message-ID: <20190306224938.opisj72oa2kxxrwi@smtp.gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC i-g-t] lib/igt_kms: Set capabilities before get
- resource
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 06 Mar 2019 23:26:09 -0000
+Message-ID: <20190306232609.22815.60708@emeril.freedesktop.org>
+References: <20190306224938.opisj72oa2kxxrwi@smtp.gmail.com>
+In-Reply-To: <20190306224938.opisj72oa2kxxrwi@smtp.gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Fkms=3A_Set_capabilities_before_get_resource?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -12,134 +14,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1565132424=="
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>, Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+To: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============1565132424==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gd2nccwecgjnhuaa"
-Content-Disposition: inline
-
-
---gd2nccwecgjnhuaa
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi, I was working on adding the writeback support to VKMS; as a result,
-I was using the Liviu=E2=80=99s patchset to validate my implementation [1].
-However, I consistently failed to pass the requirements in
-igt_display_require(); more specifically, I couldn't pass this test:
-
- igt_skip("No KMS driver or no outputs, pipes: %d, outputs: %d\n",
-               display->n_pipes, display->n_outputs);
-
-Next, I made a simple code that does the following three steps:
-
- 1. Open the device
- 2. Collect the resource information with drmModeGetResources()
- 3. Set writeback capability via drmSetClientCap()
- 4. Print the total of connectors
-
-I noticed that I could not get any connector as well; after some time
-debugging the issue and thanks to Anholt=E2=80=99s help in the dri-channel I
-learned that I had to use drmSetClientCap() before
-drmModeGetResources(). After move all drmSetClientCap() above
-drmModeGetResources(), my simple coded displayed the connector
-information. I did the same thing within igt_display_require(), and this
-test started to pass for me (I did it, in the Liviu=E2=80=99s patch).
-
-In this sense, I checked the igt_display_require() code in the master
-branch; and again, I noticed that capabilities are set after getting the
-resource information. Is that correct? Is it ok to call
-drmModeGetResources() before drmSetClientCap() in this case?
-
-P.s.: I sent it as a RFC because I=E2=80=99m not 100% sure about the change=
- and
-the impacts on the tests. If it make sense, I can make a real patch.
-
-1. https://patchwork.freedesktop.org/series/39229/
-
-Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
----
- lib/igt_kms.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 7ebab4ca..2de9ac41 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1886,6 +1886,10 @@ void igt_display_require(igt_display_t *display, int=
- drm_fd)
-=20
- 	display->drm_fd =3D drm_fd;
-=20
-+	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
-+	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) =3D=3D 0)
-+		display->is_atomic =3D 1;
-+
- 	resources =3D drmModeGetResources(display->drm_fd);
- 	if (!resources)
- 		goto out;
-@@ -1898,10 +1902,6 @@ void igt_display_require(igt_display_t *display, int=
- drm_fd)
- 	display->pipes =3D calloc(sizeof(igt_pipe_t), display->n_pipes);
- 	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", =
-display->n_pipes);
-=20
--	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
--	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) =3D=3D 0)
--		display->is_atomic =3D 1;
--
- 	plane_resources =3D drmModeGetPlaneResources(display->drm_fd);
- 	igt_assert(plane_resources);
-=20
---=20
-2.21.0
-
-
---=20
-Rodrigo Siqueira
-https://siqueira.tech
-Graduate Student
-Department of Computer Science
-University of S=C3=A3o Paulo
-
---gd2nccwecgjnhuaa
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlyAToIACgkQWJzP/com
-vP9chQ//dcwQQbESyoeS+P4NYseFnEPDTw9NYAqkDPtPERX3QlCN2FCfXieiq4fj
-1BiEh3bWoQDyssUfSstHMT9fOX4a19qJtcws0O4YPuUkYiXgNr3ffjFFEV819BaG
-UUKUYgI56W5zaJWURNH/GB1YQkn962fJ+8378avf5IOLmhaI8lLMr20DO+BtkUWi
-6x6n+sOlQPKUFuU70dfj90Rom6N30/ldc/XcwREGBop7yxUIaxp6R/OjB+852+AD
-lBDAmHm/c9exBRJgjr6CeoUkIEwwI6YKyeZ2FFK7qIqS/Y6NFOCGRAsm1uEQkg2c
-FXQ4t+COoCfUiVM1PgayAEZZ5VmaeTmyzsklBdfk0nr8i5ZTFpgH2cXVwomZwSCD
-oyPE9tk8nMZ6shG4K174LMPLWp3QLleBfbRbLA6EPDOfJ45mOIcTzSK/QO43ggKE
-1dE20b840n3gTja7MpnaZsuRYXNFD1xPiMcGVnPTg3C+z8jdb4iF/7XZ14Egz3Q3
-YOEQt6c3QwKszeb60SBgfucLyHBbOdLXzTcEiLJHd1v3TrlMv6JlbDi+6/NCpH/t
-46HYlUjF2PsyPfXzAgkl3pRCXn27Vu89ZR4gJv1f9RuVE3Zlv/L9PwN/TId96fIP
-rM0LvbU9D27rSC9FdRnxt819wR+XGpaR12J/G7HvRofQWxpMtDA=
-=KPgO
------END PGP SIGNATURE-----
-
---gd2nccwecgjnhuaa--
-
---===============1565132424==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============1565132424==--
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogbGliL2lndF9rbXM6IFNldCBjYXBhYmlsaXRp
+ZXMgYmVmb3JlIGdldCByZXNvdXJjZQpVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNr
+dG9wLm9yZy9zZXJpZXMvNTc2NjgvClN0YXRlIDogZmFpbHVyZQoKPT0gU3VtbWFyeSA9PQoKQ0kg
+QnVnIExvZyAtIGNoYW5nZXMgZnJvbSBDSV9EUk1fNTcxMyAtPiBJR1RQV18yNTYwCj09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KClN1bW1hcnkKLS0t
+LS0tLQoKICAqKkZBSUxVUkUqKgoKICBTZXJpb3VzIHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0
+aCBJR1RQV18yNTYwIGFic29sdXRlbHkgbmVlZCB0byBiZQogIHZlcmlmaWVkIG1hbnVhbGx5Lgog
+IAogIElmIHlvdSB0aGluayB0aGUgcmVwb3J0ZWQgY2hhbmdlcyBoYXZlIG5vdGhpbmcgdG8gZG8g
+d2l0aCB0aGUgY2hhbmdlcwogIGludHJvZHVjZWQgaW4gSUdUUFdfMjU2MCwgcGxlYXNlIG5vdGlm
+eSB5b3VyIGJ1ZyB0ZWFtIHRvIGFsbG93IHRoZW0KICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWls
+dXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4KCiAgRXh0
+ZXJuYWwgVVJMOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvYXBpLzEuMC9zZXJp
+ZXMvNTc2NjgvcmV2aXNpb25zLzEvbWJveC8KClBvc3NpYmxlIG5ldyBpc3N1ZXMKLS0tLS0tLS0t
+LS0tLS0tLS0tLQoKICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQgbWF5IGhhdmUg
+YmVlbiBpbnRyb2R1Y2VkIGluIElHVFBXXzI1NjA6CgojIyMgSUdUIGNoYW5nZXMgIyMjCgojIyMj
+IFBvc3NpYmxlIHJlZ3Jlc3Npb25zICMjIyMKCiAgKiBpZ3RAaTkxNV9wbV9ycG1AbW9kdWxlLXJl
+bG9hZDoKICAgIC0gZmkta2JsLTc1NjB1OiAgICAgICBOT1RSVU4gLT4gQ1JBU0gKCiAgCktub3du
+IGlzc3VlcwotLS0tLS0tLS0tLS0KCiAgSGVyZSBhcmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gSUdU
+UFdfMjU2MCB0aGF0IGNvbWUgZnJvbSBrbm93biBpc3N1ZXM6CgojIyMgSUdUIGNoYW5nZXMgIyMj
+CgojIyMjIElzc3VlcyBoaXQgIyMjIwoKICAqIGlndEBhbWRncHUvYW1kX2Jhc2ljQGNzLXNkbWE6
+CiAgICAtIGZpLWtibC03NTYwdTogICAgICAgTk9UUlVOIC0+IFNLSVAgW2ZkbyMxMDkyNzFdICsx
+NwoKICAqIGlndEBnZW1fY3R4X2NyZWF0ZUBiYXNpYy1maWxlczoKICAgIC0gZmktZ2RnLTU1MTog
+ICAgICAgICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTI3MV0gKzEwNgoKICAqIGlndEBrbXNfYnVz
+eUBiYXNpYy1mbGlwLWM6CiAgICAtIGZpLWJsYi1lNjg1MDogICAgICAgTk9UUlVOIC0+IFNLSVAg
+W2ZkbyMxMDkyNzFdIC8gW2ZkbyMxMDkyNzhdCiAgICAtIGZpLWdkZy01NTE6ICAgICAgICAgTk9U
+UlVOIC0+IFNLSVAgW2ZkbyMxMDkyNzFdIC8gW2ZkbyMxMDkyNzhdCgogICogaWd0QGttc19waXBl
+X2NyY19iYXNpY0BoYW5nLXJlYWQtY3JjLXBpcGUtYzoKICAgIC0gZmktYmxiLWU2ODUwOiAgICAg
+ICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTI3MV0gKzQ4CgogICogaWd0QGttc19waXBlX2NyY19i
+YXNpY0BzdXNwZW5kLXJlYWQtY3JjLXBpcGUtYjoKICAgIC0gZmktYnl0LWNsYXBwZXI6ICAgICBQ
+QVNTIC0+IEZBSUwgW2ZkbyMxMDMxOTFdIC8gW2ZkbyMxMDczNjJdCgogIAojIyMjIFBvc3NpYmxl
+IGZpeGVzICMjIyMKCiAgKiBpZ3RAZ2VtX2V4ZWNfc3VzcGVuZEBiYXNpYy1zMzoKICAgIC0gZmkt
+YmxiLWU2ODUwOiAgICAgICBJTkNPTVBMRVRFIFtmZG8jMTA3NzE4XSAtPiBQQVNTCgogICogaWd0
+QGk5MTVfbW9kdWxlX2xvYWRAcmVsb2FkLXdpdGgtZmF1bHQtaW5qZWN0aW9uOgogICAgLSBmaS1r
+YmwtNzU2MHU6ICAgICAgIElOQ09NUExFVEUgLT4gUEFTUwoKICAqIGlndEBpOTE1X3BtX3JwbUBi
+YXNpYy1wY2ktZDMtc3RhdGU6CiAgICAtIGZpLWJzdy1rZWZrYTogICAgICAgU0tJUCBbZmRvIzEw
+OTI3MV0gLT4gUEFTUwoKICAqIGlndEBpOTE1X3BtX3JwbUBiYXNpYy1ydGU6CiAgICAtIGZpLWJz
+dy1rZWZrYTogICAgICAgRkFJTCBbZmRvIzEwODgwMF0gLT4gUEFTUwoKICAqIGlndEBpOTE1X3Nl
+bGZ0ZXN0QGxpdmVfZXhlY2xpc3RzOgogICAgLSBmaS1hcGwtZ3VjOiAgICAgICAgIElOQ09NUExF
+VEUgW2ZkbyMxMDM5MjddIC8gW2ZkbyMxMDk3MjBdIC0+IFBBU1MKCiAgKiBpZ3RAa21zX2NoYW1l
+bGl1bUBjb21tb24taHBkLWFmdGVyLXN1c3BlbmQ6CiAgICAtIGZpLWtibC03NTY3dTogICAgICAg
+V0FSTiBbZmRvIzEwOTM4MF0gLT4gUEFTUwoKICAqIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAbm9u
+YmxvY2tpbmctY3JjLXBpcGUtYzoKICAgIC0gZmkta2JsLTc1Njd1OiAgICAgICBTS0lQIFtmZG8j
+MTA5MjcxXSAtPiBQQVNTICszMwoKICAqIGlndEBwcmltZV92Z2VtQGJhc2ljLWZlbmNlLWZsaXA6
+CiAgICAtIGZpLWlsay02NTA6ICAgICAgICAgRkFJTCBbZmRvIzEwNDAwOF0gLT4gUEFTUwoKICAK
+ICBbZmRvIzEwMzE5MV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dp
+P2lkPTEwMzE5MQogIFtmZG8jMTAzOTI3XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9z
+aG93X2J1Zy5jZ2k/aWQ9MTAzOTI3CiAgW2ZkbyMxMDQwMDhdOiBodHRwczovL2J1Z3MuZnJlZWRl
+c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDQwMDgKICBbZmRvIzEwNzM2Ml06IGh0dHBzOi8v
+YnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNzM2MgogIFtmZG8jMTA3NzE4
+XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3NzE4CiAg
+W2ZkbyMxMDg4MDBdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9p
+ZD0xMDg4MDAKICBbZmRvIzEwOTI3MV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hv
+d19idWcuY2dpP2lkPTEwOTI3MQogIFtmZG8jMTA5Mjc4XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNr
+dG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5Mjc4CiAgW2ZkbyMxMDkzODBdOiBodHRwczovL2J1
+Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkzODAKICBbZmRvIzEwOTcyMF06
+IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTcyMAoKClBh
+cnRpY2lwYXRpbmcgaG9zdHMgKDQ0IC0+IDM2KQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0KCiAgQWRkaXRpb25hbCAoMSk6IGZpLWdkZy01NTEgCiAgTWlzc2luZyAgICAoOSk6IGZpLWls
+ay1tNTQwIGZpLWhzdy00MjAwdSBmaS1ieXQtajE5MDAgZmktaHN3LXBlcHB5IGZpLWJ5dC1zcXVh
+d2tzIGZpLWJzdy1jeWFuIGZpLWljbC11MyBmaS1wbnYtZDUxMCBmaS1za2wtbG1lbSAKCgpCdWls
+ZCBjaGFuZ2VzCi0tLS0tLS0tLS0tLS0KCiAgICAqIElHVDogSUdUXzQ4NzUgLT4gSUdUUFdfMjU2
+MAoKICBDSV9EUk1fNTcxMzogMjlhNDFjZjVkZDEwZWU2ODg3M2MxNmI2N2Q2MjEyYjNiZDQ3MDkw
+NiBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL2dmeC1jaS9saW51eAogIElHVFBXXzI1
+NjA6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMjU2MC8K
+ICBJR1RfNDg3NTogOTE5MDhkMzZkMGQ1YzkwZWVhODZlMjk3MzZkMjc0OGQ1ZWM1NTMzNSBAIGdp
+dDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL3hvcmcvYXBwL2ludGVsLWdwdS10b29scwoKPT0g
+TG9ncyA9PQoKRm9yIG1vcmUgZGV0YWlscyBzZWU6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
+Zy90cmVlL2RybS10aXAvSUdUUFdfMjU2MC8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
+ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9pZ3QtZGV2
