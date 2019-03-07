@@ -1,19 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B2F96E223
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Mar 2019 01:39:39 +0000 (UTC)
-From: "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
-Date: Thu, 7 Mar 2019 01:39:36 +0000
-Message-ID: <0341c29bf70d105b516581e537b9b150c60dd018.camel@intel.com>
-References: <20190305014742.3598-1-dhinakaran.pandiyan@intel.com>
- <20190305014742.3598-2-dhinakaran.pandiyan@intel.com>
- <20190305101453.GC8924@kdec5-desk.ger.corp.intel.com>
-In-Reply-To: <20190305101453.GC8924@kdec5-desk.ger.corp.intel.com>
-Content-Language: en-US
-Content-ID: <44BEA05E4153B140A02F64F069F7762A@intel.com>
-MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/7] lib/rendercopy: Add support for
- Yf/Ys tiling to gen9 rendercopy
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB3A06E22A
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Mar 2019 01:57:31 +0000 (UTC)
+From: Nischala Yelchuri <nischala.yelchuri@intel.com>
+Date: Wed,  6 Mar 2019 18:44:44 -0800
+Message-Id: <20190307024444.42432-1-nischala.yelchuri@intel.com>
+Subject: [igt-dev] [PATCH] tests/kms_cursor_legacy: Fix assertion failure
+ due to vblank mismatch
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,26 +14,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dec, Katarzyna" <katarzyna.dec@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: Maarten Lankhorst <maarten.lankhorst@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDE5LTAzLTA1IGF0IDExOjE0ICswMTAwLCBLYXRhcnp5bmEgRGVjIHdyb3RlOg0K
-PiBPbiBNb24sIE1hciAwNCwgMjAxOSBhdCAwNTo0NzozN1BNIC0wODAwLCBEaGluYWthcmFuIFBh
-bmRpeWFuIHdyb3RlOg0KPiA+IEZyb206IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBs
-aW51eC5pbnRlbC5jb20+DQo+ID4gDQo+ID4gU2V0IHVwIHRoZSBzdXJmYWNlIHN0YXRlIGFjY29y
-ZGluZ2x5IHRvIHN1cHBvcnQgWWYvWXMgdGlsaW5nLg0KPiA+IA0KPiA+IEZyb20gREs6DQo+ID4g
-IFJlYmFzZS4NCj4gPiAgTW92ZSBzdXBwb3J0IHRvIGdlbi05IHN1cmZhY2Ugc3RhdGUNCj4gPiBD
-YzogTHVrYXN6IEthbGFtYXJ6IDxsdWthc3oua2FsYW1hcnpAaW50ZWwuY29tPg0KPiA+IENjOiBL
-YXRhcnp5bmEgRGVjIDxrYXRhcnp5bmEuZGVjQGludGVsLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5
-OiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPg0KPiA+IFNp
-Z25lZC1vZmYtYnk6IERoaW5ha2FyYW4gUGFuZGl5YW4gPGRoaW5ha2FyYW4ucGFuZGl5YW5AaW50
-ZWwuY29tPg0KPiANCj4gTEdUTSENCj4gUmV2aWV3ZWQtYnk6IEthdGFyenluYSBEZWMgPGthdGFy
-enluYS5kZWNAaW50ZWwuY29tPg0KDQpUaGFua3MgZm9yIHRoZSByZXZpZXdzLg0KLURLDQoNCg0K
-PiBLYXNpYSA6KQ0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
-cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+Rm9yIHRoZSBtb2Rlc2V0IGNhc2UsIHRoZSB2YmxhbmsgY291bnRlciBjYW4gaW5jcmVtZW50IGJ5
+IG1vcmUgdGhhbiAxLgoKQ2M6IE1hYXJ0ZW4gTGFua2hvcnN0IDxtYWFydGVuLmxhbmtob3JzdEBp
+bnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IE5pc2NoYWxhIFllbGNodXJpIDxuaXNjaGFsYS55ZWxj
+aHVyaUBpbnRlbC5jb20+CkJ1Z3ppbGxhOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
+b3dfYnVnLmNnaT9pZD0xMDU0NTQKLS0tCiB0ZXN0cy9rbXNfY3Vyc29yX2xlZ2FjeS5jIHwgMiAr
+LQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0t
+Z2l0IGEvdGVzdHMva21zX2N1cnNvcl9sZWdhY3kuYyBiL3Rlc3RzL2ttc19jdXJzb3JfbGVnYWN5
+LmMKaW5kZXggZDY5ODdlZWEuLjg2NTIwNDdmIDEwMDY0NAotLS0gYS90ZXN0cy9rbXNfY3Vyc29y
+X2xlZ2FjeS5jCisrKyBiL3Rlc3RzL2ttc19jdXJzb3JfbGVnYWN5LmMKQEAgLTk3OCw3ICs5Nzgs
+NyBAQCBzdGF0aWMgdm9pZCB0d29fc2NyZWVuc19mbGlwX3ZzX2N1cnNvcihpZ3RfZGlzcGxheV90
+ICpkaXNwbGF5LCBpbnQgbmxvb3BzLCBib29sCiAJCWlmICghbW9kZXNldCkKIAkJCWlndF9hc3Nl
+cnRfZXEodmJsLnNlcXVlbmNlLCB2Ymxhbmtfc3RhcnQgKyAxKTsKIAotCQlpZiAodmJsYW5rX3N0
+YXJ0ICYmIHZibC5zZXF1ZW5jZSA9PSB2Ymxhbmtfc3RhcnQgKyAxKQorCQlpZiAodmJsYW5rX3N0
+YXJ0ICYmIHZibC5zZXF1ZW5jZSA+PSB2Ymxhbmtfc3RhcnQgKyAxKQogCQkJdmJsYW5rX21hdGNo
+ZXMgPSB0cnVlOwogCiAJCS8qIERvIG5vdCByZXF1ZXVlIG9uIHRoZSBsYXN0IDIgZXZlbnRzLiAq
+LwotLSAKMi4xNy4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
+dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
