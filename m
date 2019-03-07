@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0CFA6E29A
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF2476E29C
  for <igt-dev@lists.freedesktop.org>; Thu,  7 Mar 2019 11:25:43 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
-Date: Thu,  7 Mar 2019 13:24:23 +0200
-Message-Id: <20190307112427.29146-1-petri.latvala@intel.com>
+Date: Thu,  7 Mar 2019 13:24:25 +0200
+Message-Id: <20190307112427.29146-3-petri.latvala@intel.com>
+In-Reply-To: <20190307112427.29146-1-petri.latvala@intel.com>
+References: <20190307112427.29146-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/5] lib/aux: Plug memory leak in
- __igt_lsof_fds
+Subject: [igt-dev] [PATCH i-g-t 3/5] lib/debugfs: Ensure null-termination in
+ igt_hpd_storm_detected
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,13 +25,18 @@ To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QWRkIGEgbWlzc2luZyBjbG9zZWRpciBjYWxsLgoKU2lnbmVkLW9mZi1ieTogUGV0cmkgTGF0dmFs
-YSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+Ci0tLQogbGliL2lndF9hdXguYyB8IDIgKysKIDEg
-ZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9saWIvaWd0X2F1eC5j
-IGIvbGliL2lndF9hdXguYwppbmRleCBmZjk4ZDkxZC4uZTVkNDFlMzIgMTAwNjQ0Ci0tLSBhL2xp
-Yi9pZ3RfYXV4LmMKKysrIGIvbGliL2lndF9hdXguYwpAQCAtMTQxOSw2ICsxNDE5LDggQEAgYWdh
-aW46CiAJCWZyZWUoY29weV9mZF9sbmspOwogCQlmcmVlKGZkX2xuayk7CiAJfQorCisJY2xvc2Vk
-aXIoZHApOwogfQogCiAvKgotLSAKMi4xOS4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZy
-ZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2lndC1kZXY=
+UmVhZCBzaXplb2YgLSAxIHRvIGJ1ZiBzbyBpdCBzdGF5cyBudWxsLXRlcm1pbmF0ZWQuCgpTaWdu
+ZWQtb2ZmLWJ5OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KLS0tCiBs
+aWIvaWd0X2RlYnVnZnMuYyB8IDIgKy0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwg
+MSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZGVidWdmcy5jIGIvbGliL2lndF9k
+ZWJ1Z2ZzLmMKaW5kZXggNjQwYzc4ZTkuLmIwZTVjZmE1IDEwMDY0NAotLS0gYS9saWIvaWd0X2Rl
+YnVnZnMuYworKysgYi9saWIvaWd0X2RlYnVnZnMuYwpAQCAtNjI4LDcgKzYyOCw3IEBAIGJvb2wg
+aWd0X2hwZF9zdG9ybV9kZXRlY3RlZChpbnQgZHJtX2ZkKQogCWlmIChmZCA8IDApCiAJCXJldHVy
+biBmYWxzZTsKIAotCWlndF9hc3NlcnRfbHQoMCwgcmVhZChmZCwgYnVmLCBzaXplb2YoYnVmKSkp
+OworCWlndF9hc3NlcnRfbHQoMCwgcmVhZChmZCwgYnVmLCBzaXplb2YoYnVmKSAtIDEpKTsKIAlp
+Z3RfYXNzZXJ0KHN0YXJ0X2xvYyA9IHN0cnN0cihidWYsICJEZXRlY3RlZDogIikpOwogCWlndF9h
+c3NlcnRfZXEoc3NjYW5mKHN0YXJ0X2xvYywgIkRldGVjdGVkOiAlc1xuIiwgZGV0ZWN0ZWRfc3Ry
+KSwgMSk7CiAKLS0gCjIuMTkuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3Rv
+cC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3Qt
+ZGV2
