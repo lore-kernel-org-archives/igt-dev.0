@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com
- [IPv6:2a00:1450:4864:20::535])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0211189E2B
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2019 13:53:42 +0000 (UTC)
-Received: by mail-ed1-x535.google.com with SMTP id j89so2342825edb.9
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2019 06:53:41 -0700 (PDT)
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
-Date: Tue, 12 Mar 2019 14:53:32 +0100
-Message-Id: <20190312135332.32738-1-daniel.vetter@ffwll.ch>
-In-Reply-To: <20190311164743.13822-1-daniel.vetter@ffwll.ch>
-References: <20190311164743.13822-1-daniel.vetter@ffwll.ch>
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F11989E1D
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2019 14:18:36 +0000 (UTC)
+Date: Tue, 12 Mar 2019 16:18:31 +0200
+From: Marius Vlad <marius.vlad@collabora.com>
+Message-ID: <20190312141831.GA11883@xpredator>
+References: <20190216182959.8760-1-marius.vlad@collabora.com>
+ <20190312134346.GC2665@phenom.ffwll.local>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib/igt_fb: better format printing
+In-Reply-To: <20190312134346.GC2665@phenom.ffwll.local>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_kms: Add zpos plane
+ property.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,50 +18,107 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0631571844=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: IGT development <igt-dev@lists.freedesktop.org>
-Cc: Daniel Vetter <daniel.vetter@intel.com>
+To: Daniel Vetter <daniel@ffwll.ch>
+Cc: igt-dev@lists.freedesktop.org, Marius Vlad <marius.vlad0@gmail.com>, p.zabel@pengutronix.de
 List-ID: <igt-dev@lists.freedesktop.org>
 
-U3RlYWwgaWYgZnJvbSBrbXNfcGxhbmUuYyBhbmQgcHV0IGl0IGludG8gaWd0X2ZiLmgKCkFsc28g
-dGlueSBiaWtlc2hlZCB0byByZW1vdmUgdGhlIHNwYWNlLCBzbyBpdCBmaXRzIG1vcmUgdGlkaWx5
-IGludG8KdGhlIHVzdWFsIG5hbWUxPXZhbHVlMSwgbmFtZTI9dmFsdWUyIHN0eWxlIHByaW50aW5n
-LgoKdjI6IFJlYmFzZQoKdjM6IEl0IGJldHRlciBjb21waWxlIDotLwoKUmV2aWV3ZWQtYnk6IFZp
-bGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+ICh2MSkKU2lnbmVk
-LW9mZi1ieTogRGFuaWVsIFZldHRlciA8ZGFuaWVsLnZldHRlckBpbnRlbC5jb20+Ci0tLQogbGli
-L2lndF9mYi5jICAgICAgfCA2ICsrKystLQogbGliL2lndF9mYi5oICAgICAgfCA0ICsrKysKIHRl
-c3RzL2ttc19wbGFuZS5jIHwgMyAtLS0KIDMgZmlsZXMgY2hhbmdlZCwgOCBpbnNlcnRpb25zKCsp
-LCA1IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZmIuYyBiL2xpYi9pZ3RfZmIu
-YwppbmRleCBlNjk2Yzg2M2VhNzAuLjZhOWE5MzQxNzIzMCAxMDA2NDQKLS0tIGEvbGliL2lndF9m
-Yi5jCisrKyBiL2xpYi9pZ3RfZmIuYwpAQCAtMTE0Niw4ICsxMTQ2LDEwIEBAIGlndF9jcmVhdGVf
-ZmJfd2l0aF9ib19zaXplKGludCBmZCwgaW50IHdpZHRoLCBpbnQgaGVpZ2h0LAogCiAJZmItPnNp
-emUgPSBib19zaXplOwogCi0JaWd0X2RlYnVnKCIlcyh3aWR0aD0lZCwgaGVpZ2h0PSVkLCBmb3Jt
-YXQ9MHgleCwgbW9kaWZpZXI9MHglIlBSSXg2NCIsIHNpemU9JSJQUkl1NjQiKVxuIiwKLQkJICBf
-X2Z1bmNfXywgd2lkdGgsIGhlaWdodCwgZm9ybWF0LCBtb2RpZmllciwgYm9fc2l6ZSk7CisJaWd0
-X2RlYnVnKCIlcyh3aWR0aD0lZCwgaGVpZ2h0PSVkLCBmb3JtYXQ9IiBJR1RfRk9STUFUX0ZNVAor
-CQkgICIsIG1vZGlmaWVyPTB4JSJQUkl4NjQiLCBzaXplPSUiUFJJdTY0IilcbiIsCisJCSAgX19m
-dW5jX18sIHdpZHRoLCBoZWlnaHQsIElHVF9GT1JNQVRfQVJHUyhmb3JtYXQpLCBtb2RpZmllciwK
-KwkJICBib19zaXplKTsKIAogCWNyZWF0ZV9ib19mb3JfZmIoZmIpOwogCWlndF9hc3NlcnQoZmIt
-PmdlbV9oYW5kbGUgPiAwKTsKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZmIuaCBiL2xpYi9pZ3RfZmIu
-aAppbmRleCA3NjY3NTc5YjNkOTguLmJhMjJiZDY2NDUxMCAxMDA2NDQKLS0tIGEvbGliL2lndF9m
-Yi5oCisrKyBiL2xpYi9pZ3RfZmIuaApAQCAtNDQsNiArNDQsMTAgQEAKICAqLwogI2RlZmluZSBJ
-R1RfRk9STUFUX0ZMT0FUIGZvdXJjY19jb2RlKCdJJywgJ0cnLCAnRicsICd4JykKIAorI2RlZmlu
-ZSBJR1RfRk9STUFUX0ZNVCAiJWMlYyVjJWMoMHglMDh4KSIKKyNkZWZpbmUgSUdUX0ZPUk1BVF9B
-UkdTKGYpICgoZikgPj4gMCkgJiAweGZmLCAoKGYpID4+IDgpICYgMHhmZiwgXAorCQkoKGYpID4+
-IDE2KSAmIDB4ZmYsICgoZikgPj4gMjQpICYgMHhmZiwgKGYpCisKIC8qKgogICogaWd0X2ZiX3Q6
-CiAgKiBAZmJfaWQ6IEtNUyBJRCBvZiB0aGUgZnJhbWVidWZmZXIKZGlmZiAtLWdpdCBhL3Rlc3Rz
-L2ttc19wbGFuZS5jIGIvdGVzdHMva21zX3BsYW5lLmMKaW5kZXggZDgwOThiZWY4OTFhLi42OTA2
-OWY2YjEzNTYgMTAwNjQ0Ci0tLSBhL3Rlc3RzL2ttc19wbGFuZS5jCisrKyBiL3Rlc3RzL2ttc19w
-bGFuZS5jCkBAIC00MDEsOSArNDAxLDYgQEAgc3RhdGljIHZvaWQgc2V0X2xlZ2FjeV9sdXQoZGF0
-YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSwKIAlmcmVlKGx1dCk7CiB9CiAKLSNkZWZpbmUgSUdU
-X0ZPUk1BVF9GTVQgIiVjJWMlYyVjICgweCUwOHgpIgotI2RlZmluZSBJR1RfRk9STUFUX0FSR1Mo
-ZikgKChmKSA+PiAwKSAmIDB4ZmYsICgoZikgPj4gOCkgJiAweGZmLCBcCi0JCSgoZikgPj4gMTYp
-ICYgMHhmZiwgKChmKSA+PiAyNCkgJiAweGZmLCAoZikKIAogc3RhdGljIHZvaWQgdGVzdF9mb3Jt
-YXRfcGxhbmVfY29sb3IoZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSwKIAkJCQkgICAgaWd0
-X3BsYW5lX3QgKnBsYW5lLAotLSAKMi4yMC4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZy
-ZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2lndC1kZXY=
+
+--===============0631571844==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="X1bOJ3K7DJ5YkBrT"
+Content-Disposition: inline
+
+
+--X1bOJ3K7DJ5YkBrT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Mar 12, 2019 at 02:43:46PM +0100, Daniel Vetter wrote:
+> On Sat, Feb 16, 2019 at 08:29:58PM +0200, Marius Vlad wrote:
+> > From: Marius Vlad <marius.vlad0@gmail.com>
+> >=20
+> > Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
+>=20
+> Since you already have a pile of igt patches merged, want commit rights?
+> From a quick look you don't have access to the gitlab repo yet.
+Sure! marius.vlad0 is my username on fdo gitlab.
+
+Thanks!
+>=20
+> Cheers, Daniel
+> > ---
+> >  lib/igt_kms.c | 1 +
+> >  lib/igt_kms.h | 1 +
+> >  2 files changed, 2 insertions(+)
+> >=20
+> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> > index 85a911e1..87fa5bff 100644
+> > --- a/lib/igt_kms.c
+> > +++ b/lib/igt_kms.c
+> > @@ -177,6 +177,7 @@ const char * const igt_plane_prop_names[IGT_NUM_PLA=
+NE_PROPS] =3D {
+> >  	[IGT_PLANE_COLOR_RANGE] =3D "COLOR_RANGE",
+> >  	[IGT_PLANE_PIXEL_BLEND_MODE] =3D "pixel blend mode",
+> >  	[IGT_PLANE_ALPHA] =3D "alpha",
+> > +	[IGT_PLANE_ZPOS] =3D "zpos",
+> >  };
+> > =20
+> >  const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] =3D {
+> > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> > index 679d4e84..227fa020 100644
+> > --- a/lib/igt_kms.h
+> > +++ b/lib/igt_kms.h
+> > @@ -272,6 +272,7 @@ enum igt_atomic_plane_properties {
+> >         IGT_PLANE_COLOR_RANGE,
+> >         IGT_PLANE_PIXEL_BLEND_MODE,
+> >         IGT_PLANE_ALPHA,
+> > +       IGT_PLANE_ZPOS,
+> >         IGT_NUM_PLANE_PROPS
+> >  };
+> > =20
+> > --=20
+> > 2.19.2
+> >=20
+>=20
+> --=20
+> Daniel Vetter
+> Software Engineer, Intel Corporation
+> http://blog.ffwll.ch
+
+--X1bOJ3K7DJ5YkBrT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEcDKHej6x6uPk3J379jQS5glH1u8FAlyHv7QACgkQ9jQS5glH
+1u+Blw//SLs2VoQnS5zNNBNruGpsxKZVU1BOsFo1msBoQfesR6lZi3DzITrgZdES
+Whq5bbIWb3c23Pk9KkSTm6cRfJSXE1CTlyDZZ+RO0yzGEdncx9G85fbILdDUlTIB
+8GUwOzrD0Yncal8e/MHX5nW816GlQowOEyDPb/lmqiIG9LOPiVzwWC8KzTMLyIm7
+Kzz2LHsRHroKC93wyJpMrfTlXxES02/1J3HODaEfkEAqXpE1vwdUDC/n/P249vGg
+mmo47l9F4gseuOhAdFaslPzYC0Z/1qmKmgGIvEvC3fI8F0nNLLH8Ja1MrTWw5wbY
+pltsR1KwfNRMoTTemrjLO8P17lXWETnskeTYmzxKb+IXCjjIXMlXyVO88FOEf9r5
+/Yljvcjb+3FXR3dKmBawH6j9I/4n0umnQVNfZvRUBTbZTaik/9Yg6XVrcS8PnIFy
+f/ZlePx+BYP3wsivXov5IMJtnLcLR2ueYe/oiHQLHOQbCcoIjNl/SpIZj104bRpr
+q6M4wk2dhfqgzJUascpz3ZEIDPkkqIH+YVX0zpzwXBLCeHv+xNaSliymmrulUazs
+KQv6u5GS04Acsq4SinRusYEuc7Bt4ANjhf7+ix8Zv3BJYFvXtst5NtIITjv5X5zn
+OlZqFojlqBvzbENtoq0cYuQIPA2jVGDWYv+rCGLtDbgmgMlYqP8=
+=0kFz
+-----END PGP SIGNATURE-----
+
+--X1bOJ3K7DJ5YkBrT--
+
+--===============0631571844==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============0631571844==--
