@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A12E689F19
- for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2019 16:19:06 +0000 (UTC)
-From: Neel Desai <neel.desai@intel.com>
-Date: Tue, 12 Mar 2019 09:12:44 -0700
-Message-Id: <a8cc9404b98e3bd6359783dcdf38618c3db0de24.1552406927.git.neel.desai@intel.com>
-In-Reply-To: <cover.1552406927.git.neel.desai@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC6AF89F2A
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 Mar 2019 16:22:10 +0000 (UTC)
+MIME-Version: 1.0
+From: Chris Wilson <chris@chris-wilson.co.uk>
 References: <cover.1552406927.git.neel.desai@intel.com>
 In-Reply-To: <cover.1552406927.git.neel.desai@intel.com>
-References: <cover.1552406927.git.neel.desai@intel.com>
-Subject: [igt-dev] [PATCH v2 1/1] tests/kms_cursor_legacy: Skip
- 2x-cursor-vs-flip subtests for gen > 9
+Message-ID: <155240771051.30003.10146753749050856630@skylake-alporthouse-com>
+Date: Tue, 12 Mar 2019 16:21:55 +0000
+Subject: Re: [igt-dev] [PATCH v2 0/1] Skip 2x-cursor-vs-flip subtests for
+ gen > 9
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,42 +17,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: sudeep.dutt@intel.com, maarten.lankhorst@linux.intel.com, igt-dev@lists.freedesktop.org
+To: Neel Desai <neel.desai@intel.com>, igt-dev@lists.freedesktop.org, maarten.lankhorst@linux.intel.com, sudeep.dutt@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RHVlIHRvIEREQiBhbGxvY2F0aW9uIGNoYW5nZXMsIHdlIGhhdmUgdG8gYWRkIGFsbCB0aGUgcGxh
-bmVzIHRvIHRoZQpkcm1fYXRvbWljX3N0YXRlIHBvc3QgZ2VuIDkuIFdoZW4gdGhlIHdhdGVybWFy
-a3MgYXJlIGNvbXB1dGVkIGJ5IHRoZQprZXJuZWwsIHRoZSBjdXJzb3IgcGxhbmUgaXMgYWRkZWQg
-dG8gdGhlIGRybV9hdG9taWNfc3RhdGUgd2hpY2gKaW50cm9kdWNlcyBhIGRlcGVuZGVuY3kgb24g
-aHdfZG9uZSBvYmplY3Qgd2hlbiB0aGUga2VybmVsIHByb2Nlc3NlcwpEUk1fSU9DVExfTU9ERV9B
-VE9NSUMgYW5kIERSTV9JT0NUTF9NT0RFX0NVUlNPUiBpbiBwYXJhbGxlbC4gVGhlcmUgaXMgbm8K
-cmFjZS1mcmVlIHdheSB0byBoYW5kbGUgdGhpcyBjb3JuZXIgY2FzZS4gVGhlc2Ugc3VidGVzdHMg
-bWFkZSBzZW5zZSBmb3IKb2xkZXIgZ2VuZXJhdGlvbnMgYnV0IG5vdCBhbnltb3JlLiBIZW5jZSwg
-c2tpcHBpbmcgdGhlc2Ugc3ViLXRlc3RzIHBvc3QKZ2VuIDkuCgpSZWZlcmVuY2U6IGh0dHBzOi8v
-YnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTA3OQpTaWduZWQtb2ZmLWJ5
-OiBOZWVsIERlc2FpIDxuZWVsLmRlc2FpQGludGVsLmNvbT4KY2M6IFN1ZGVlcCBEdXR0IDxzdWRl
-ZXAuZHV0dEBpbnRlbC5jb20+CmNjOiBNYWFydGVuIExhbmtob3JzdCA8bWFhcnRlbi5sYW5raG9y
-c3RAbGludXguaW50ZWwuY29tPgotLS0KIHRlc3RzL2ttc19jdXJzb3JfbGVnYWN5LmMgfCAzICsr
-KwogMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2tt
-c19jdXJzb3JfbGVnYWN5LmMgYi90ZXN0cy9rbXNfY3Vyc29yX2xlZ2FjeS5jCmluZGV4IGQ2OTg3
-ZWVhLi42NDVjMGI5MyAxMDA2NDQKLS0tIGEvdGVzdHMva21zX2N1cnNvcl9sZWdhY3kuYworKysg
-Yi90ZXN0cy9rbXNfY3Vyc29yX2xlZ2FjeS5jCkBAIC0xMTE1LDYgKzExMTUsNyBAQCBzdGF0aWMg
-dm9pZCBjdXJzb3JfdnNfZmxpcChpZ3RfZGlzcGxheV90ICpkaXNwbGF5LCBlbnVtIGZsaXBfdGVz
-dCBtb2RlLCBpbnQgbmxvbwoKIHN0YXRpYyB2b2lkIHR3b19zY3JlZW5zX2N1cnNvcl92c19mbGlw
-KGlndF9kaXNwbGF5X3QgKmRpc3BsYXksIGludCBubG9vcHMsIGJvb2wgYXRvbWljKQogeworCWNv
-bnN0IGludCBnZW4gPSBpbnRlbF9nZW4oaW50ZWxfZ2V0X2RybV9kZXZpZChkaXNwbGF5LT5kcm1f
-ZmQpKTsKIAlzdHJ1Y3QgZHJtX21vZGVfY3Vyc29yIGFyZ1syXVsyXTsKIAlzdHJ1Y3QgZHJtX2V2
-ZW50X3ZibGFuayB2Ymw7CiAJc3RydWN0IGlndF9mYiBmYl9pbmZvWzJdLCBjdXJzb3JfZmI7CkBA
-IC0xMTI2LDYgKzExMjcsOCBAQCBzdGF0aWMgdm9pZCB0d29fc2NyZWVuc19jdXJzb3JfdnNfZmxp
-cChpZ3RfZGlzcGxheV90ICpkaXNwbGF5LCBpbnQgbmxvb3BzLCBib29sCiAJfTsKIAlpZ3Rfb3V0
-cHV0X3QgKm91dHB1dHNbMl07CgorCWlndF9yZXF1aXJlKGdlbiA8PSA5KTsKKwogCXNoYXJlZCA9
-IG1tYXAoTlVMTCwgUEFHRV9TSVpFLCBQUk9UX1dSSVRFLCBNQVBfU0hBUkVEIHwgTUFQX0FOT04s
-IC0xLCAwKTsKIAlpZ3RfYXNzZXJ0KHNoYXJlZCAhPSBNQVBfRkFJTEVEKTsKCi0tCjIuMTcuMQoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+UXVvdGluZyBOZWVsIERlc2FpICgyMDE5LTAzLTEyIDE2OjEyOjQzKQo+IFNraXAgdGhlIGZvbGxv
+d2luZyBmb3IgZ2VuID4gOQo+IAo+IDEuKSB0ZXN0cy9rbXNfY3Vyc29yX2xlZ2FjeUAyeC1jdXJz
+b3ItdnMtZmxpcC1hdG9taWMKPiAyLikgdGVzdHMva21zX2N1cnNvcl9sZWdhY3lAMngtY3Vyc29y
+LXZzLWZsaXAtbGVnYWN5Cj4gMy4pIHRlc3RzL2ttc19jdXJzb3JfbGVnYWN5QDJ4LWxvbmctY3Vy
+c29yLXZzLWZsaXAtYXRvbWljCj4gNC4pIHRlc3RzL2ttc19jdXJzb3JfbGVnYWN5QDJ4LWxvbmct
+Y3Vyc29yLXZzLWZsaXAtbGVnYWN5Cj4gCj4gRHVlIHRvIEREQiBhbGxvY2F0aW9uIGNoYW5nZXMs
+IHdlIGhhdmUgdG8gYWRkIGFsbCB0aGUgcGxhbmVzIHRvIHRoZQo+IGRybV9hdG9taWNfc3RhdGUg
+cG9zdCBnZW4gOS4gV2hlbiB0aGUgd2F0ZXJtYXJrcyBhcmUgY29tcHV0ZWQgYnkgdGhlCj4ga2Vy
+bmVsLCB0aGUgY3Vyc29yIHBsYW5lIGlzIGFkZGVkIHRvIHRoZSBkcm1fYXRvbWljX3N0YXRlIHdo
+aWNoCj4gaW50cm9kdWNlcyBhIGRlcGVuZGVuY3kgb24gaHdfZG9uZSBvYmplY3Qgd2hlbiB0aGUg
+a2VybmVsIHByb2Nlc3Nlcwo+IERSTV9JT0NUTF9NT0RFX0FUT01JQyBhbmQgRFJNX0lPQ1RMX01P
+REVfQ1VSU09SIGluIHBhcmFsbGVsLiBUaGVyZSBpcyBubwo+IHJhY2UtZnJlZSB3YXkgdG8gaGFu
+ZGxlIHRoaXMgY29ybmVyIGNhc2UuIFRoZXNlIHN1YnRlc3RzIG1hZGUgc2Vuc2UgZm9yCj4gb2xk
+ZXIgZ2VuZXJhdGlvbnMgYnV0IG5vdCBhbnltb3JlLiBIZW5jZSwgc2tpcHBpbmcgdGhlc2Ugc3Vi
+LXRlc3RzIHBvc3QKPiBnZW4gOS4KCk9yIGZhaWwuIE1hcmsgaXQgYXMgZXhwZWN0ZWQ7IGNvbWUg
+YmFjayB3aGVuIHByb2JsZW0gaXMgc29sdmVkIG9yIEhXIGhhcwptb3ZlZCBvbi4KLUNocmlzCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFp
+bGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
