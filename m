@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E4576E067
- for <igt-dev@lists.freedesktop.org>; Wed, 13 Mar 2019 07:54:12 +0000 (UTC)
-Date: Wed, 13 Mar 2019 09:54:07 +0200
-From: Marius Vlad <marius.vlad@collabora.com>
-Message-ID: <20190313075407.GA1154@xpredator>
-References: <20190311171309.25383-1-marius.vlad@collabora.com>
- <20190311171309.25383-2-marius.vlad@collabora.com>
- <1552326341.3561.0.camel@pengutronix.de>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C3E76E076
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 Mar 2019 08:44:28 +0000 (UTC)
+Date: Wed, 13 Mar 2019 10:44:25 +0200
+From: Andi Shyti <andi.shyti@intel.com>
+Message-ID: <20190313084425.GA2517@intel.intel>
+References: <20190312171728.3352-1-andi.shyti@intel.com>
+ <20190312171728.3352-3-andi.shyti@intel.com>
+ <4a0d1683-8543-78d5-d3a5-3e923d4709a8@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <1552326341.3561.0.camel@pengutronix.de>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2 v3] kms_atomic: Add subtest for
- testing zpos plane property
+Content-Disposition: inline
+In-Reply-To: <4a0d1683-8543-78d5-d3a5-3e923d4709a8@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH v11 2/6] lib/i915: add gem_engine_topology
+ library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,80 +20,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0861636544=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: igt-dev@lists.freedesktop.org, Tomeu Vizoso <tomeu.vizoso@collabora.com>, petri.latvala@intel.com, daniel@ffwll.ch
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: IGT dev <igt-dev@lists.freedesktop.org>, Andi Shyti <andi@etezian.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============0861636544==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="d6Gm4EdcadzBjdND"
-Content-Disposition: inline
-
-
---d6Gm4EdcadzBjdND
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Mar 11, 2019 at 06:45:41PM +0100, Philipp Zabel wrote:
-> On Mon, 2019-03-11 at 19:13 +0200, Marius Vlad wrote:
-> > From: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-> >=20
-> > We use a 16-bit pixel buffer format for the overlay plane, as some older
-> > HW might not be capable of driving a 32-bit pixel format.
-> >=20
-> > Changes since v2:
-> > - use 0 for igt_paint_color_alpha() alpha parameter, as ARGB1555 uses
-> > just 1 bit for (of) alpha.
-> >=20
-> > Changes since v1:
-> > - fix 'commitintg' with 'committing' (Philipp Zabel)
-> > - replace RGB565 with ARGB1555 (Philipp Zabel)
-> > - test plane if it supports the pixel format supplied (Philipp Zabel)
-> >=20
-> > Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-> > Signed-off-by: Marius Vlad <marius.vlad@collabora.com>
->=20
-> Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Thanks Philipp, patches have been pushed.
->=20
-> regards
-> Philipp
-
---d6Gm4EdcadzBjdND
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEcDKHej6x6uPk3J379jQS5glH1u8FAlyItxwACgkQ9jQS5glH
-1u8cfRAA1rtmb/1gaE7ytYeFatHr0dFIAyx8E5TAcqN4zX8LMjZSjSh3hZRJA92/
-hvOGC7v1TM1lqOjTLZNzsffLu9qUxSiVfn2LDG7yiZU9Ap2viAD17bQkzgvrCQ42
-9LvBRj21ugq2fdFO8cE4JN5j2BhYWXL81jAHj3A1ArVcxMoeH0y9kuHk77SNb1ls
-nBm4jBNSKor4GRStm6ttrydIbS4kA3y+/x6u4WCaaMxbnvKzGeevfxgYwN5h/7aN
-QLqTG2KY4Q8JwPtcXPCOMnsIq3FK7IGwAw7HsLo7vtH+PolYa/YEAcQtHKtjT8cE
-l3GdqNndFzTWc7t3J7gPOQiJb72a71qyAbuN0gXx8hRKOxzQNr10yklADi37cfv5
-tTskG6TpxeG4YzxV0dhiw5jFcxv2HSGXXHYvR8VES7J+Ot9WQczR7lKezYiu5U8G
-4rILV2ClBs3FeoJh6D58whtjL57t3R1KddnUH61eDwiT557fmHMkhpGoSPlUi0oj
-hPplAqnVzw0q00hyJh7VzO2qlfIhCCCXsqm5Si+3ywoEQy0pIgMouICNPX3xrFPh
-SRhXqVGZih8P7p7AKzsaYIprXhNSw2gt1g0NZyF+fe2TjvOn1MezxVVOg2H4y2n/
-1nsCtA9te/FtCb6ENKBEaeIsFr8320jObUbkCJ2AvghA99PEzG4=
-=Y4pd
------END PGP SIGNATURE-----
-
---d6Gm4EdcadzBjdND--
-
---===============0861636544==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============0861636544==--
+SGkgVHZydGtvLAoKPiA+ICtzdGF0aWMgdm9pZCBzZXRfY3R4X3BhcmFtX2VuZ2luZXMoaW50IGZk
+LCB1aW50MzJfdCBjdHhfaWQpCj4gPiArewo+ID4gKwlzdHJ1Y3QgaTkxNV9jb250ZXh0X3BhcmFt
+X2VuZ2luZXMgKmN0eF9lbmdpbmU7Cj4gPiArCXN0cnVjdCBkcm1faTkxNV9nZW1fY29udGV4dF9w
+YXJhbSBjdHhfcGFyYW07Cj4gPiArCWNvbnN0IHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5l
+MiAqZTI7Cj4gPiArCXVpbnQ4X3QgYnVmZltTSVpFT0ZfQ1RYX1BBUkFNXSA9IHsgfTsKPiA+ICsJ
+aW50IGk7Cj4gPiArCj4gPiArCWlmIChjdHhfaXNfc2V0KQo+ID4gKwkJcmV0dXJuOwo+IAo+IEEg
+Z2xvYmFsIGN0eF9pc19zZXQgYm9vbCBkb2Vzbid0IHdvcmsgd2l0aCBwYXNzZWQgaW4gY3R4X2lk
+IEkgdGhpbmshPwo+IAo+IEJ1dCBtb3JlIGltcG9ydGFudGx5Li4gY291bGQgeW91IHRyeSBhbmQg
+bWFrZSB0aGUgaXRlcmF0b3Igd29yayBvZiB0aGUgbG9jYWwKPiBjdHguZ2V0X2VuZ2luZXMoKSBx
+dWVyeT8gT25seSBjb25maWd1cmluZyB0aGUgY3R4IG1hcCB0byBpbmNsdWRlIGFsbCBlbmdpbmVz
+Cj4gaWYgbm90IGFscmVhZHkgc2V0Lgo+IAo+IENocmlzIGhhZCBhIHN1Z2dlc3Rpb24gaW4gdGhl
+IHByZXZpb3VzIHBvc3RpbmcgdG8gdXNlIGFuIGl0ZXJhdG9yIHN0cnVjdAo+IHdoaWNoIEkgdGhp
+bmsgaGFzIG1lcml0IHNpbmNlIGl0IGhpZGVzIHRoZSBleHBsaWNpdCBpbmRleCB2YXIvcGFyYW0u
+Cj4gKDE1NTE3OTI5NjMyNy4yNzQwNS4xNDAxOTQ2ODY2ODQxMTI0NDUxMkBza3lsYWtlLWFscG9y
+dGhvdXNlLWNvbSkKPiAKPiBBbmQgdGhlbiBJJ2QgZHJvcCB0aGUgZm9yX2VhY2hfZW5naW5lMiBh
+bmQganVzdCBjb252ZXJ0Cj4gZm9yX2VhY2hfZW5naW5lX2NsYXNzX2luc3RhbmNlIHN0cmFpZ2h0
+IGF3YXkuIE9ubHkgb25lIHRlc3QgdXNlcyBpdCBzbwo+IHNob3VsZG4ndCBiZSB0b28gaGFyZCAo
+cGVyZl9wbXUpLgo+IAo+IFRoaXMgd2lsbCBJIHRoaW5rIHJlcXVpcmUgYWRkaW5nIHRoZSBnZW1f
+c2V0X2ViX2VuZ2luZSBoZWxwZXIgYW5kIHBvc3NpYmx5Cj4gYWRkaW5nIHNvbWUgaGVscGVycyB0
+byBhbGxvdyB1c2FnZSB3aXRoIHNwaW4gYmF0Y2hlcy4KPiAKPiBXZSB3YW50IHRvIGdldCBhIGJl
+dHRlciB2aWV3IG9mIHVzYWJpbGl0eSBpbiBmdXR1cmUgSUdUIGNvZGUgYW5kIEkgdGhpbmsgdGhl
+Cj4gc2VyaWVzIG5lZWRzIHRvIGJlIGNvbXBsZXRlIGluIHRoaXMgcmVzcGVjdC4KClllcywgSSB1
+bmRlcnN0YW5kIHRoZSBhZHZhbnRhZ2Ugb2YgQ2hyaXMgcHJvcG9zYWwgYW5kIHRoZQp1Z2xpbmVz
+cyBvZiBhIGdsb2JhIGN0eF9pc19zZXQsIGJ1dCBJIHRob3VnaHQgd2Ugd2VyZSBnb2luZwp0aHJv
+dWdodCB0aGlzIHBhdGggaW4gYSBzZWNvbmQgcGhhc2UsIGdpdmVuIHRoYXQgZm9yIG5vdyAiZnV0
+dXJlCnByb29mIiAoYXQgbGVhc3QgZm9yIG1lKSBpcyBzb21ldGhpbmcgd2l0aCBhIGRpZmZlcmVu
+dCBkaW1lbnNpb24KKEkgYWxzbyB3YW50ZWQgdG8ga2VlcCB0aGUgY2hhbmdlcyBhcyBzbWFsbGVy
+IGFzIHBvc3NpYmxlLCBidXQgaXQKdHVybmVkIG91dCB0byBiZSB0aGUgd3JvbmcgdGltZSB0byBk
+byBzbyA6KSApLgoKQW55d2F5LCBzaW5jZSB5b3UgYXJlIHB1c2hpbmcgZm9yIHRoaXMsIEkgdGFr
+ZSB0aGlzIHBhdGguCgpCZWNhdXNlIEkgYW0gbm93IGdvaW5nIHRvIGRyYXN0aWNhbGx5IGNoYW5n
+ZSB0aGUgbG9naWMsIEkgd291bGQKYWxzbyByZW1vdmUgdGhlICdpbml0X2VuZ2luZV9saXN0KCkn
+IGFuZCBxdWVyeSB0aGUgZW5naW5lIGF0IGFueQonaW50ZWxfZW5naW5lX2l0ZXIoKScgY2FsbCB3
+aXRoIHRoZSBkb3VibGUgcXVlcnkgKG9uZSBmb3Igc2l6ZQphbmQgb25lIGZvciB0aGUgcXVlcnkg
+aXRzZWxmKS4KCi4uLiBhbmQgaXQgd291bGQgYmUgYSBjb21wbGV0ZWx5IGRpZmZlcmVudCBwYXRj
+aHNldCA6KQoKQW5kaQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
+dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
