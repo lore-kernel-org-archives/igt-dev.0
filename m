@@ -1,10 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 14 Mar 2019 08:38:18 +0000
-Message-Id: <20190314083818.10945-1-chris@chris-wilson.co.uk>
+Date: Thu, 14 Mar 2019 09:44:19 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+Message-ID: <20190314094419.5889d461@collabora.com>
+In-Reply-To: <20190228144910.26488-3-daniel.vetter@ffwll.ch>
+References: <20190228144910.26488-1-daniel.vetter@ffwll.ch>
+ <20190228144910.26488-3-daniel.vetter@ffwll.ch>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_create: Always try to create an
- object of at least one page
+Subject: Re: [igt-dev] [PATCH 2/7] drm/lease: Drop recursive leads checks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,22 +18,29 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+To: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: IGT development <igt-dev@lists.freedesktop.org>, Daniel Vetter <daniel.vetter@intel.com>, Keith Packard <keithp@keithp.com>, DRI Development <dri-devel@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-MC1ieXRlIG9iamVjdHMgYXJlIG5vdCBhbGxvd2VkLgoKUmVmZXJlbmNlczogaHR0cHM6Ly9idWdz
-LmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTEwMTA2ClNpZ25lZC1vZmYtYnk6IENo
-cmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgotLS0KIHRlc3RzL2k5MTUvZ2Vt
-X2NyZWF0ZS5jIHwgMiArLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0
-aW9uKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fY3JlYXRlLmMgYi90ZXN0cy9pOTE1
-L2dlbV9jcmVhdGUuYwppbmRleCA2MDViN2Y5ZDkuLjJhODYxY2E4YSAxMDA2NDQKLS0tIGEvdGVz
-dHMvaTkxNS9nZW1fY3JlYXRlLmMKKysrIGIvdGVzdHMvaTkxNS9nZW1fY3JlYXRlLmMKQEAgLTE0
-OSw3ICsxNDksNyBAQCBzdGF0aWMgdWludDY0X3QgZ2V0X25wYWdlcyh1aW50NjRfdCAqZ2xvYmFs
-LCB1aW50NjRfdCBucGFnZXMpCiAJbWF4ID0gKmdsb2JhbDsKIAlkbyB7CiAJCW9sZCA9IG1heDsK
-LQkJdHJ5ID0gbnBhZ2VzICUgKG1heCAvIDIpOworCQl0cnkgPSAxICsgbnBhZ2VzICUgKG1heCAv
-IDIpOwogCQltYXggLT0gdHJ5OwogCX0gd2hpbGUgKChtYXggPSBfX3N5bmNfdmFsX2NvbXBhcmVf
-YW5kX3N3YXAoZ2xvYmFsLCBvbGQsIG1heCkpICE9IG9sZCk7CiAKLS0gCjIuMjAuMQoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5n
-IGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
-a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+T24gVGh1LCAyOCBGZWIgMjAxOSAxNTo0OTowNSArMDEwMApEYW5pZWwgVmV0dGVyIDxkYW5pZWwu
+dmV0dGVyQGZmd2xsLmNoPiB3cm90ZToKCj4gV2UgZGlzYWxsb3cgc3VibGVhc2luZywgc28gbm8g
+cG9pbnQgY2hlY2tpbmcgd2hldGhlciB0aGUgbWFzdGVyIGhvbGRzCj4gYWxsIHRoZSBsZWFzZXMg
+LSBpdCB3aWxsLgo+IAo+IFNwb3R0ZWQgd2hpbGUgdHlwaW5nIGV4aGF1c3RpdmUgaWd0IGNvdmVy
+YWdlIGZvciBhbGwgdGhlc2UgY29ybmVyCj4gY2FzZXMuCj4gCj4gQ2M6IEtlaXRoIFBhY2thcmQg
+PGtlaXRocEBrZWl0aHAuY29tPgo+IFNpZ25lZC1vZmYtYnk6IERhbmllbCBWZXR0ZXIgPGRhbmll
+bC52ZXR0ZXJAaW50ZWwuY29tPgoKUmV2aWV3ZWQtYnk6IEJvcmlzIEJyZXppbGxvbiA8Ym9yaXMu
+YnJlemlsbG9uQGNvbGxhYm9yYS5jb20+Cgo+IC0tLQo+ICBkcml2ZXJzL2dwdS9kcm0vZHJtX2xl
+YXNlLmMgfCAyIC0tCj4gIDEgZmlsZSBjaGFuZ2VkLCAyIGRlbGV0aW9ucygtKQo+IAo+IGRpZmYg
+LS1naXQgYS9kcml2ZXJzL2dwdS9kcm0vZHJtX2xlYXNlLmMgYi9kcml2ZXJzL2dwdS9kcm0vZHJt
+X2xlYXNlLmMKPiBpbmRleCAxMTc2ZDgxNGNmN2YuLmNjZTVkOWRkNTJmZiAxMDA2NDQKPiAtLS0g
+YS9kcml2ZXJzL2dwdS9kcm0vZHJtX2xlYXNlLmMKPiArKysgYi9kcml2ZXJzL2dwdS9kcm0vZHJt
+X2xlYXNlLmMKPiBAQCAtMjIwLDggKzIyMCw2IEBAIHN0YXRpYyBzdHJ1Y3QgZHJtX21hc3RlciAq
+ZHJtX2xlYXNlX2NyZWF0ZShzdHJ1Y3QgZHJtX21hc3RlciAqbGVzc29yLCBzdHJ1Y3QgaWRyCj4g
+IAkJZXJyb3IgPSAwOwo+ICAJCWlmICghaWRyX2ZpbmQoJmRldi0+bW9kZV9jb25maWcub2JqZWN0
+X2lkciwgb2JqZWN0KSkKPiAgCQkJZXJyb3IgPSAtRU5PRU5UOwo+IC0JCWVsc2UgaWYgKCFfZHJt
+X2xlYXNlX2hlbGRfbWFzdGVyKGxlc3Nvciwgb2JqZWN0KSkKPiAtCQkJZXJyb3IgPSAtRUFDQ0VT
+Owo+ICAJCWVsc2UgaWYgKF9kcm1faGFzX2xlYXNlZChsZXNzb3IsIG9iamVjdCkpCj4gIAkJCWVy
+cm9yID0gLUVCVVNZOwo+ICAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRl
+dg==
