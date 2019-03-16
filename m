@@ -1,22 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24C676E389
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Mar 2019 22:09:39 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Fri, 15 Mar 2019 22:09:37 +0000
-Message-ID: <b4394042d73de0e726f8a87c0df336c4642690d1.camel@intel.com>
-References: <20190313005945.19039-1-jose.souza@intel.com>
- <20190314165936.GC9133@ideak-desk.fi.intel.com>
- <79b72864c4a338312b8c425a24ac86a6975642c0.camel@intel.com>
- <20190314195748.GD9133@ideak-desk.fi.intel.com>
- <287aa9c3e52d6fb0b1c2344d5a011728c524b9ec.camel@intel.com>
- <20190315012708.GE9133@ideak-desk.fi.intel.com>
- <20190315024621.GG9133@ideak-desk.fi.intel.com>
-In-Reply-To: <20190315024621.GG9133@ideak-desk.fi.intel.com>
-Content-Language: en-US
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 423F76E588
+ for <igt-dev@lists.freedesktop.org>; Sat, 16 Mar 2019 03:50:05 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Date: Fri, 15 Mar 2019 20:49:59 -0700
+Message-Id: <e4433c9b9fba2bef2ef1160884d32d8b97ac2efa.1552708167.git.ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/chamelium: Add test for hotplug
- workaround
+Subject: [igt-dev] [CI] lib/igt_core: Enable extra kernel logs for audio
+ debug
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,247 +15,175 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1224890583=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Deak, Imre" <imre.deak@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1224890583==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-mmOECyr2VvQ0i4Kz19/S"
-
---=-mmOECyr2VvQ0i4Kz19/S
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, 2019-03-15 at 04:46 +0200, Imre Deak wrote:
-> On Fri, Mar 15, 2019 at 03:27:08AM +0200, Imre Deak wrote:
-> > On Fri, Mar 15, 2019 at 02:00:41AM +0200, Souza, Jose wrote:
-> > [...]
-> > > > > > > +
-> > > > > > > +	/*
-> > > > > > > +	 * Give some time to kernel try to process hotplug but
-> > > > > > > it
-> > > > > > > should fail
-> > > > > > > +	 */
-> > > > > > > +	igt_hotplug_detected(mon, FAST_HOTPLUG_SEC_TIMEOUT);
-> > > > > > > +	status =3D connector_status_get(data, port);
-> > > > > > > +	igt_assert(status =3D=3D DRM_MODE_DISCONNECTED);
-> > > > > >=20
-> > > > > > Hm, how does a second disconnect event get signaled here?
-> > > > > > After
-> > > > > > the
-> > > > > > previous hotplug event above where the state was
-> > > > > > disconnected
-> > > > > > already
-> > > > > > there
-> > > > > > shouldn't have been any change to the state, hence there
-> > > > > > shouldn't be
-> > > > > > any event sent by the driver.
-> > > > >=20
-> > > > > It is not signaled, that I why there is not igt_assert() on
-> > > > > this
-> > > > > igt_hotplug_detected() but call it will poll/sleep for the
-> > > > > time we
-> > > > > want.
-> > > >=20
-> > > > But then I don't see how it will work. The sequence is:
-> > > >=20
-> > > > <connector is in disconnected state, corresponding event
-> > > > delivered>
-> > > > 1. disable DDC
-> > > > 2. generate a plug event
-> > > > 3. wait for the plug event delivery with 1 sec timeout
-> > > > 4. re-enable DDC
-> > > > 5. wait for the plug event delivery (that should be triggered
-> > > > by the
-> > > > new
-> > > >    retry logic in the driver)
-> > > >=20
-> > > > Since after 2. DDC is disabled the driver hotplug handler will
-> > > > conclude
-> > > > that the connector is still disconnected and hence doesn't
-> > > > generate
-> > > > any
-> > > > hotplug event. B/c of this 3. will time out after 1 sec.
-> > > >=20
-> > > > So in 4. we'll re-enable DDC only after 1 sec after the plug
-> > > > event
-> > > > (interrupt) generated in 2. Since the retry in the driver
-> > > > happens
-> > > > after
-> > > > 1 sec from the plug interrupt as well the retry processing
-> > > > could
-> > > > easily
-> > > > race with the DDC re-enabling in 4. and thus the detection
-> > > > could
-> > > > fail.
-> > >=20
-> > > You are not taking in the account the time that kernel will take
-> > > to
-> > > process that, I measured just the time spend in the hotplug()
-> > > hook on
-> > > my ICL.
-> > >=20
-> > > [185950.212037] [drm:intel_encoder_hotplug [i915]]
-> > > [CONNECTOR:196:DP-1]=20
-> > > status updated from connected to disconnected
-> > > [185950.212109] [drm:i915_hotplug_work_func [i915]]     hotplug()
-> > > took=3D673123725 nsec(673 msec) ret=3D1
-> > >=20
-> > > [185950.956536] [drm:intel_encoder_hotplug [i915]]
-> > > [CONNECTOR:196:DP-1]=20
-> > > status updated from disconnected to connected
-> > > [185950.957068] [drm:i915_hotplug_work_func [i915]]     hotplug()
-> > > took=3D60222955 nsec(60 msec) ret=3D1
-> > >=20
-> > >=20
-> > > [185953.480877] [drm:drm_dp_dpcd_access] Too many retries, giving
-> > > up.
-> > > First error: -110
-> > > [185953.480969] [drm:intel_encoder_hotplug [i915]]
-> > > [CONNECTOR:196:DP-1]=20
-> > > status updated from connected to disconnected
-> > > [185953.481038] [drm:i915_hotplug_work_func [i915]]     hotplug()
-> > > took=3D672309486 nsec(672 msec) ret=3D1
-> > > =09
-> > > More than half of a second retrying until it gives up and
-> > > change/keep
-> > > the status to disconnected.
-> >=20
-> > 670msec for detection to fail sounds strange, where is that coming
-> > from?
-> > AUX reads should time out much earlier even with all the retries.
->=20
-> Ah, could be the 4msec (max) AUX HW timeout on ICL. That with retries
-> adds up to 5*32*4ms =3D 640msec about what you have measured.
->=20
-> But up to SKL the AUX HW timeout is only 1.6msec giving a 256msec
-> delay,
-> so the hotplug retry could happen as soon as ~1.3sec after the plug
-> event.
->=20
-> So I guess a 1 sec delay/poll at step 3. is ok along with some
-> explanation about the duration like the above calculation. I think it
-> could still be possible for this 1 sec delay/poll to last longer than
-> 1.3sec (due to scheduling) in which case the detection would fail on
-> some platforms. So I'd still add the time measurement between step 2.
-> and 4. as described below and rerun the test if it was > 1.2sec and
-> detection failed.
-
-Yeah sound good measure time between 2 and 4 and retry, I will also the
-comments that you requested.
-
-Thanks for the reviews :D
-
->=20
-> > > So in my rough estimation:
-> > > t 0s =3D IGT disables DDC and do the hotplug(1 and 2 from your
-> > > sequence)
-> > > t 0.7s =3D kernel gives up and keep connector as disconnected
-> > > t 1s =3D IGT read connector as disconnected and enables DCC(3 and 4
-> > > from
-> > > your sequence)
-> > > t 1.7 =3D kernel try to probe again
-> > > t 1.8 =3D kernel probe and mark connector as connected
-> > > t 2s =3D IGT read connector as connected(5 from your sequence)
-> > >=20
-> > > Maybe to avoid test failures the second timeout should be bigger
-> > >=20
-> > > > Since I don't see a good way to ensure that we re-enable DDC
-> > > > after
-> > > > the
-> > > > first detection cycle ran (but not too late missing the retry
-> > > > cycle)
-> > > > I
-> > > > would rather suggest a simple wait at 3., let's say 500msec.
-> > > > With
-> > > > that
-> > > > things should always work. We may not always exercise the
-> > > > driver's
-> > > > retry
-> > > > path if there was a long scheduling delay, but that's unlikely.
-> > > >=20
-> > > > However a scheduling delay after 2. and before 4. could cause a
-> > > > detection failure. To avoid that I'd also check the elapsed
-> > > > time
-> > > > starting from right before 2. until right after 4. and run the
-> > > > sequence
-> > > > again if the elapsed time was too close to 1sec (and hence
-> > > > detection
-> > > > possibly failed because of the race described above).
-> > > >=20
-> > > > > > > +
-> > > > > > > +	/*
-> > > > > > > +	 * Enable the DDC line and the kernel workaround should
-> > > > > > > reprobe
-> > > > > > > and
-> > > > > > > +	 * report as connected
-> > > > > > > +	 */
-> > > > > > > +	chamelium_port_set_ddc_state(data->chamelium, port,
-> > > > > > > true);
-> > > > > > > +	igt_assert(chamelium_port_get_ddc_state(data-
-> > > > > > > > chamelium,
-> > > > > > > port));
-> > > > > > > +	igt_assert(igt_hotplug_detected(mon,
-> > > > > > > FAST_HOTPLUG_SEC_TIMEOUT));
-> > > > > > > +	status =3D connector_status_get(data, port);
-> > > > > > > +	igt_assert(status =3D=3D DRM_MODE_CONNECTED);
-> > > > > > > +}
-> > > > > > > +
-> > > > > > >  static void
-> > > > > > >  test_edid_read(data_t *data, struct chamelium_port
-> > > > > > > *port,
-> > > > > > >  	       int edid_id, const unsigned char *edid)
-> > > > > > > @@ -1308,6 +1375,9 @@ igt_main
-> > > > > > > =20
-> > > > > > >  		connector_subtest("dp-frame-dump", DisplayPort)
-> > > > > > >  			test_display_frame_dump(&data, port);
-> > > > > > > +
-> > > > > > > +		connector_subtest("dp-late-aux-wa",
-> > > > > > > DisplayPort)
-> > > > > > > +			test_late_aux_wa(&data, port);
-> > > >=20
-> > > > This also needs the retry logic to be added for DP ports on old
-> > > > platforms (intel_dp_hotplug() in the driver).
-> > > >=20
-> > > > > > >  	}
-> > > > > > > =20
-> > > > > > >  	igt_subtest_group {
-> > > > > > > --=20
-> > > > > > > 2.21.0
-> > > > > > >=20
-
---=-mmOECyr2VvQ0i4Kz19/S
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyMIqAACgkQVenbO/mO
-WklqhQf/cuQo4Gf5+ie0hr9vml/NhD1dePiScwjOwP7PDfKlpy0j4RGp6BkVjnUM
-xGraDWRtVQnlLYcw/qwHzadIbknBYS+M6y+nKw7PTUKBq1qKRHvQaH25n486P0Y9
-QejcQbVimtnX0Hzvc6jQGoGc4m79jO+DXSfjQti3fyoOZgsN1ODVkcLdRljHVTOf
-6i5TYhXl7zaHNj0Y7dgX9KUrlQnFZAELnqXTYgkaM0Vpq0Md1d42fxmIJhj7YnMg
-mVNUlwvn3zo5pdAYpIbnzui8oO/erLYLGpLq8AZraW40rTN9PdNajLugjP8YAA+J
-/9LRfBtLTZeRxrUd/68pywN9B4yQnw==
-=FVoK
------END PGP SIGNATURE-----
-
---=-mmOECyr2VvQ0i4Kz19/S--
-
---===============1224890583==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============1224890583==--
+Rm9yIGRlYnVnIG9mIGF1ZGlvIGlzc3VlcyBpbiBwb3dlciBtYW5hZ2VtZW50IGFuZCBkcml2ZXIg
+cmVsb2FkIHRlc3RzLAphZGRpdGlvbmFsIGtlcm5lbCBsb2dzIG1heSBiZSB1c2VmdWwsIGJvdGgg
+aW4gZG1lc2cgYXMgd2VsbCBhcwpmdHJhY2UuIEFkZCB0aGUgaW5mcmFzdHJ1Y3R1cmUgdG8gZ2Vu
+ZXJhdGUgdGhlc2UgbG9ncyBhbmQgZW5hYmxlIHRoZXNlCmxvZ3MgZm9yIHNlbGVjdGVkIHN1Yi10
+ZXN0cy4KCkF0IHByZXNlbnQgaWd0X3J1bm5lciBhbmQgb3RoZXIgQ0kgaW5mcmFzdHJ1Y3R1cmUg
+ZG9lcyBub3QgY2FwdHVyZSB0aGUKZnRyYWNlIGJ1ZmZlci4gVGhlcmVmb3JlLCB0byBhdm9pZCBj
+aGFuZ2VzIHRvIGlndF9ydW5uZXIgYW5kIHRoZSBDSQppbmZyYXN0cnVjdHVyZSB0aGUgZnRyYWNl
+IGJ1ZmZlciBpcyBkdW1wZWQgdG8gc3Rkb3V0LiBUaGlzIGlzIGRvbmUKYWZ0ZXIgZWFjaCBzdWIt
+dGVzdCBzbyB0aGUgZnRyYWNlIG91dHB1dCBmb3IgYSBzdWJ0ZXN0IGNhbiBiZQphc3NvY2lhdGVk
+IHdpdGggdGhhdCBzdWJ0ZXN0LgoKQ2M6IE1hcnRpbiBQZXJlcyA8bWFydGluLnBlcmVzQGludGVs
+LmNvbT4KQ2M6IENlemFyeSBSb2pld3NraSA8Y2V6YXJ5LnJvamV3c2tpQGludGVsLmNvbT4KU2ln
+bmVkLW9mZi1ieTogQXNodXRvc2ggRGl4aXQgPGFzaHV0b3NoLmRpeGl0QGludGVsLmNvbT4KLS0t
+CiBsaWIvaWd0X2NvcmUuYyAgICAgICAgICAgICAgICB8IDc4ICsrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrCiBsaWIvaWd0X2NvcmUuaCAgICAgICAgICAgICAgICB8IDIyICsrKysr
+KysrKysKIHRlc3RzL2k5MTUvaTkxNV9tb2R1bGVfbG9hZC5jIHwgIDYgKy0tCiB0ZXN0cy9pOTE1
+L2k5MTVfcG1fcnBtLmMgICAgICB8IDE0ICsrKy0tLS0KIHRlc3RzL2k5MTUvaTkxNV9zdXNwZW5k
+LmMgICAgIHwgMjIgKysrKystLS0tLQogNSBmaWxlcyBjaGFuZ2VkLCAxMjEgaW5zZXJ0aW9ucygr
+KSwgMjEgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2lndF9jb3JlLmMgYi9saWIvaWd0
+X2NvcmUuYwppbmRleCA2ZWI0Nzk4ZS4uYjM3MWI4ZWMgMTAwNjQ0Ci0tLSBhL2xpYi9pZ3RfY29y
+ZS5jCisrKyBiL2xpYi9pZ3RfY29yZS5jCkBAIC0yNDM0LDMgKzI0MzQsODEgQEAgZXJyOgogCiAJ
+cmV0dXJuIC0xOwogfQorCitzdGF0aWMgdm9pZCBpZ3RfY2xlYXJfZnRyYWNlX2J1Zih2b2lkKQor
+eworCXN5c3RlbSgiZWNobyA+IC9zeXMva2VybmVsL2RlYnVnL3RyYWNpbmcvdHJhY2UiKTsKK30K
+Kworc3RhdGljIGNvbnN0IGNoYXIgKmF1ZGlvX2tsb2dfZW5bXSA9IHsKKwkiZWNobyAtbiBcIm1v
+ZHVsZSAqc25kKiArcFwiID4gL3N5cy9rZXJuZWwvZGVidWcvZHluYW1pY19kZWJ1Zy9jb250cm9s
+IiwKKwkiZWNobyAtbiBcIm1vZHVsZSAqc29jKiArcFwiID4gL3N5cy9rZXJuZWwvZGVidWcvZHlu
+YW1pY19kZWJ1Zy9jb250cm9sIiwKKwkiZWNobyAtbiBcIm1vZHVsZSAqc2tsKiArcFwiID4gL3N5
+cy9rZXJuZWwvZGVidWcvZHluYW1pY19kZWJ1Zy9jb250cm9sIiwKKwkiZWNobyAtbiBcIm1vZHVs
+ZSAqaGRhKiArcFwiID4gL3N5cy9rZXJuZWwvZGVidWcvZHluYW1pY19kZWJ1Zy9jb250cm9sIiwK
+KwkiZWNobyAtbiBcIm1vZHVsZSAqYnh0KiArcFwiID4gL3N5cy9rZXJuZWwvZGVidWcvZHluYW1p
+Y19kZWJ1Zy9jb250cm9sIiwKKworCSJGPS9zeXMva2VybmVsL2RlYnVnL3RyYWNpbmcvZXZlbnRz
+L3NzdC9lbmFibGU7IFwKKwkJCQkJWyAtZiAkRiBdICYmIGVjaG8gMSA+ICRGIiwKKwkiRj0vc3lz
+L2tlcm5lbC9kZWJ1Zy90cmFjaW5nL2V2ZW50cy9pbnRlbC1zc3QvZW5hYmxlOyBcCisJCQkJCVsg
+LWYgJEYgXSAmJiBlY2hvIDEgPiAkRiIsCisJIkY9L3N5cy9rZXJuZWwvZGVidWcvdHJhY2luZy9l
+dmVudHMvYXNvYy9lbmFibGU7IFwKKwkJCQkJWyAtZiAkRiBdICYmIGVjaG8gMSA+ICRGIiwKKwki
+Rj0vc3lzL2tlcm5lbC9kZWJ1Zy90cmFjaW5nL2V2ZW50cy9pMmMvZW5hYmxlOyBcCisJCQkJCVsg
+LWYgJEYgXSAmJiBlY2hvIDEgPiAkRiIsCisJIkY9L3N5cy9rZXJuZWwvZGVidWcvdHJhY2luZy9l
+dmVudHMvaGRhL2VuYWJsZTsgXAorCQkJCQlbIC1mICRGIF0gJiYgZWNobyAxID4gJEYiLAorCSJG
+PS9zeXMva2VybmVsL2RlYnVnL3RyYWNpbmcvZXZlbnRzL2hkYV9jb250cm9sbGVyL2VuYWJsZTsg
+XAorCQkJCQlbIC1mICRGIF0gJiYgZWNobyAxID4gJEYiLAorCSJGPS9zeXMva2VybmVsL2RlYnVn
+L3RyYWNpbmcvZXZlbnRzL2hkYV9pbnRlbC9lbmFibGU7IFwKKwkJCQkJWyAtZiAkRiBdICYmIGVj
+aG8gMSA+ICRGIiwKKwkiZWNobyAxID4gL3N5cy9rZXJuZWwvZGVidWcvdHJhY2luZy90cmFjaW5n
+X29uIiwKK307CisKK2Jvb2wgaWd0X2VuYWJsZV9hdWRpb19rbG9nKHZvaWQpCit7CisJaW50IGk7
+CisKKwlpZ3RfY2xlYXJfZnRyYWNlX2J1ZigpOworCisJZm9yIChpID0gMDsgaSA8IHNpemVvZihh
+dWRpb19rbG9nX2VuKS9zaXplb2YoY2hhciopOyBpKyspCisJCXN5c3RlbShhdWRpb19rbG9nX2Vu
+W2ldKTsKKworCXJldHVybiB0cnVlOworfQorCitzdGF0aWMgY29uc3QgY2hhciAqYXVkaW9fa2xv
+Z19kaXNbXSA9IHsKKwkiZWNobyAtbiBcIm1vZHVsZSAqc25kKiAtcFwiID4gL3N5cy9rZXJuZWwv
+ZGVidWcvZHluYW1pY19kZWJ1Zy9jb250cm9sIiwKKwkiZWNobyAtbiBcIm1vZHVsZSAqc29jKiAt
+cFwiID4gL3N5cy9rZXJuZWwvZGVidWcvZHluYW1pY19kZWJ1Zy9jb250cm9sIiwKKwkiZWNobyAt
+biBcIm1vZHVsZSAqc2tsKiAtcFwiID4gL3N5cy9rZXJuZWwvZGVidWcvZHluYW1pY19kZWJ1Zy9j
+b250cm9sIiwKKwkiZWNobyAtbiBcIm1vZHVsZSAqaGRhKiAtcFwiID4gL3N5cy9rZXJuZWwvZGVi
+dWcvZHluYW1pY19kZWJ1Zy9jb250cm9sIiwKKwkiZWNobyAtbiBcIm1vZHVsZSAqYnh0KiAtcFwi
+ID4gL3N5cy9rZXJuZWwvZGVidWcvZHluYW1pY19kZWJ1Zy9jb250cm9sIiwKKworCSJGPS9zeXMv
+a2VybmVsL2RlYnVnL3RyYWNpbmcvZXZlbnRzL3NzdC9lbmFibGU7IFwKKwkJCQkJWyAtZiAkRiBd
+ICYmIGVjaG8gMCA+ICRGIiwKKwkiRj0vc3lzL2tlcm5lbC9kZWJ1Zy90cmFjaW5nL2V2ZW50cy9p
+bnRlbC1zc3QvZW5hYmxlOyBcCisJCQkJCVsgLWYgJEYgXSAmJiBlY2hvIDAgPiAkRiIsCisJIkY9
+L3N5cy9rZXJuZWwvZGVidWcvdHJhY2luZy9ldmVudHMvYXNvYy9lbmFibGU7IFwKKwkJCQkJWyAt
+ZiAkRiBdICYmIGVjaG8gMCA+ICRGIiwKKwkiRj0vc3lzL2tlcm5lbC9kZWJ1Zy90cmFjaW5nL2V2
+ZW50cy9pMmMvZW5hYmxlOyBcCisJCQkJCVsgLWYgJEYgXSAmJiBlY2hvIDAgPiAkRiIsCisJIkY9
+L3N5cy9rZXJuZWwvZGVidWcvdHJhY2luZy9ldmVudHMvaGRhL2VuYWJsZTsgXAorCQkJCQlbIC1m
+ICRGIF0gJiYgZWNobyAwID4gJEYiLAorCSJGPS9zeXMva2VybmVsL2RlYnVnL3RyYWNpbmcvZXZl
+bnRzL2hkYV9jb250cm9sbGVyL2VuYWJsZTsgXAorCQkJCQlbIC1mICRGIF0gJiYgZWNobyAwID4g
+JEYiLAorCSJGPS9zeXMva2VybmVsL2RlYnVnL3RyYWNpbmcvZXZlbnRzL2hkYV9pbnRlbC9lbmFi
+bGU7IFwKKwkJCQkJWyAtZiAkRiBdICYmIGVjaG8gMCA+ICRGIiwKKwkiZWNobyAwID4gL3N5cy9r
+ZXJuZWwvZGVidWcvdHJhY2luZy90cmFjaW5nX29uIiwKK307CisKK3ZvaWQgaWd0X2Rpc2FibGVf
+YXVkaW9fa2xvZyh2b2lkKQoreworCWludCBpOworCisJLyogRHVtcCBmdHJhY2UgYnVmZmVyIHRv
+IHN0ZG91dCAqLworCXN5c3RlbSgiY2F0IC9zeXMva2VybmVsL2RlYnVnL3RyYWNpbmcvdHJhY2Ui
+KTsKKworCWZvciAoaSA9IDA7IGkgPCBzaXplb2YoYXVkaW9fa2xvZ19kaXMpL3NpemVvZihjaGFy
+Kik7IGkrKykKKwkJc3lzdGVtKGF1ZGlvX2tsb2dfZGlzW2ldKTsKKworCWlndF9jbGVhcl9mdHJh
+Y2VfYnVmKCk7Cit9CmRpZmYgLS1naXQgYS9saWIvaWd0X2NvcmUuaCBiL2xpYi9pZ3RfY29yZS5o
+CmluZGV4IDQ3ZmZkOWU3Li5mYmJhNmNmMyAxMDA2NDQKLS0tIGEvbGliL2lndF9jb3JlLmgKKysr
+IGIvbGliL2lndF9jb3JlLmgKQEAgLTIyMiw2ICsyMjIsMjggQEAgYm9vbCBfX2lndF9ydW5fc3Vi
+dGVzdChjb25zdCBjaGFyICpzdWJ0ZXN0X25hbWUpOwogI2RlZmluZSBpZ3Rfc3VidGVzdF9mKGYu
+Li4pIFwKIAlfX2lndF9zdWJ0ZXN0X2YoaWd0X3Rva2VuY2F0KF9fdG1wY2hhciwgX19MSU5FX18p
+LCBmKQogCitib29sIGlndF9lbmFibGVfYXVkaW9fa2xvZyh2b2lkKTsKK3ZvaWQgaWd0X2Rpc2Fi
+bGVfYXVkaW9fa2xvZyh2b2lkKTsKKworLyogTGlrZSBpZ3Rfc3VidGVzdCBidXQgd2l0aCBleHRy
+YSBrZXJuZWwgbG9ncyAqLworI2RlZmluZSBpZ3Rfc3VidGVzdF9hdWRpb19rbG9nKG5hbWUpIFwK
+Kwlmb3IgKDsgX19pZ3RfcnVuX3N1YnRlc3QoKG5hbWUpKSAmJiBpZ3RfZW5hYmxlX2F1ZGlvX2ts
+b2coKSAmJiBcCisJCSAgICAgKChzaWdzZXRqbXAoaWd0X3N1YnRlc3Rfam1wYnVmLCAxKSA9PSAw
+KSA/IHRydWUgOiBcCisJCSAgICAgIChpZ3RfZGlzYWJsZV9hdWRpb19rbG9nKCksIGZhbHNlKSk7
+IFwKKwkgICAgIGlndF9zdWNjZXNzKCkpCisKKyNkZWZpbmUgX19pZ3Rfc3VidGVzdF9hdWRpb19r
+bG9nX2YodG1wLCBmb3JtYXQuLi4pIFwKKwlmb3IgKGNoYXIgdG1wIFsyNTZdOyBcCisJICAgICBz
+bnByaW50Zih0bXAgLCBzaXplb2YodG1wKSwgZm9ybWF0KSwgXAorCQkgICAgIF9faWd0X3J1bl9z
+dWJ0ZXN0KHRtcCkgJiYgaWd0X2VuYWJsZV9hdWRpb19rbG9nKCkgJiYgXAorCQkgICAgICgoc2ln
+c2V0am1wKGlndF9zdWJ0ZXN0X2ptcGJ1ZiwgMSkgPT0gMCkgPyB0cnVlIDogXAorCQkgICAgICAo
+aWd0X2Rpc2FibGVfYXVkaW9fa2xvZygpLCBmYWxzZSkpOyBcCisJICAgICBpZ3Rfc3VjY2Vzcygp
+KQorCisvKiBMaWtlIGlndF9zdWJ0ZXN0X2YgYnV0IHdpdGggZXh0cmEga2VybmVsIGxvZ3MgKi8K
+KyNkZWZpbmUgaWd0X3N1YnRlc3RfYXVkaW9fa2xvZ19mKGYuLi4pIFwKKwlfX2lndF9zdWJ0ZXN0
+X2F1ZGlvX2tsb2dfZihpZ3RfdG9rZW5jYXQoX190bXBjaGFyLCBfX0xJTkVfXyksIGYpCisKIGNv
+bnN0IGNoYXIgKmlndF9zdWJ0ZXN0X25hbWUodm9pZCk7CiBib29sIGlndF9vbmx5X2xpc3Rfc3Vi
+dGVzdHModm9pZCk7CiAKZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvaTkxNV9tb2R1bGVfbG9hZC5j
+IGIvdGVzdHMvaTkxNS9pOTE1X21vZHVsZV9sb2FkLmMKaW5kZXggN2ZlODM1MjAuLmRjYmRkMmRj
+IDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2k5MTVfbW9kdWxlX2xvYWQuYworKysgYi90ZXN0cy9p
+OTE1L2k5MTVfbW9kdWxlX2xvYWQuYwpAQCAtMzI2LDcgKzMyNiw3IEBAIGhkYV9keW5hbWljX2Rl
+YnVnKGJvb2wgZW5hYmxlKQogCiBpZ3RfbWFpbgogewotCWlndF9zdWJ0ZXN0KCJyZWxvYWQiKSB7
+CisJaWd0X3N1YnRlc3RfYXVkaW9fa2xvZygicmVsb2FkIikgewogCQlpbnQgbG9hZF9lcnJvcjsK
+IAogCQlpZ3RfaTkxNV9kcml2ZXJfdW5sb2FkKCk7CkBAIC0zNDMsNyArMzQzLDcgQEAgaWd0X21h
+aW4KIAkJLyogb25seSBkZWZhdWx0IG1vZHBhcmFtcywgY2FuIGxlYXZlIG1vZHVsZSBsb2FkZWQg
+Ki8KIAl9CiAKLQlpZ3Rfc3VidGVzdCgicmVsb2FkLW5vLWRpc3BsYXkiKSB7CisJaWd0X3N1YnRl
+c3RfYXVkaW9fa2xvZygicmVsb2FkLW5vLWRpc3BsYXkiKSB7CiAJCWlndF9pOTE1X2RyaXZlcl91
+bmxvYWQoKTsKIAogCQlpZ3RfYXNzZXJ0X2VxKGlndF9pOTE1X2RyaXZlcl9sb2FkKCJkaXNhYmxl
+X2Rpc3BsYXk9MSIpLCAwKTsKQEAgLTM1MSw3ICszNTEsNyBAQCBpZ3RfbWFpbgogCQlpZ3RfaTkx
+NV9kcml2ZXJfdW5sb2FkKCk7CiAJfQogCi0JaWd0X3N1YnRlc3QoInJlbG9hZC13aXRoLWZhdWx0
+LWluamVjdGlvbiIpIHsKKwlpZ3Rfc3VidGVzdF9hdWRpb19rbG9nKCJyZWxvYWQtd2l0aC1mYXVs
+dC1pbmplY3Rpb24iKSB7CiAJCWludCBpID0gMDsKIAogCQlpZ3RfaTkxNV9kcml2ZXJfdW5sb2Fk
+KCk7CmRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2k5MTVfcG1fcnBtLmMgYi90ZXN0cy9pOTE1L2k5
+MTVfcG1fcnBtLmMKaW5kZXggNzU5Yzc2ZWEuLjAzZmEzODA2IDEwMDY0NAotLS0gYS90ZXN0cy9p
+OTE1L2k5MTVfcG1fcnBtLmMKKysrIGIvdGVzdHMvaTkxNS9pOTE1X3BtX3JwbS5jCkBAIC0xOTY3
+LDcgKzE5NjcsNyBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQogCWlndF9zdWJ0
+ZXN0X2luaXRfcGFyc2Vfb3B0cygmYXJnYywgYXJndiwgIiIsIGxvbmdfb3B0aW9ucywKIAkJCQkg
+ICAgaGVscF9zdHIsIG9wdF9oYW5kbGVyLCBOVUxMKTsKIAotCWlndF9zdWJ0ZXN0KCJiYXNpYy1y
+dGUiKSB7CisJaWd0X3N1YnRlc3RfYXVkaW9fa2xvZygiYmFzaWMtcnRlIikgewogCQlpZ3RfYXNz
+ZXJ0KHNldHVwX2Vudmlyb25tZW50KCkpOwogCQliYXNpY19zdWJ0ZXN0KCk7CiAJfQpAQCAtMjA2
+NCwxNSArMjA2NCwxNSBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQogCQkJCVdB
+SVRfU1RBVFVTIHwgV0FJVF9FWFRSQSk7CiAKIAkvKiBTeXN0ZW0gc3VzcGVuZCAqLwotCWlndF9z
+dWJ0ZXN0KCJzeXN0ZW0tc3VzcGVuZC1kZXZpY2VzIikKKwlpZ3Rfc3VidGVzdF9hdWRpb19rbG9n
+KCJzeXN0ZW0tc3VzcGVuZC1kZXZpY2VzIikKIAkJc3lzdGVtX3N1c3BlbmRfc3VidGVzdChTVVNQ
+RU5EX1NUQVRFX01FTSwgU1VTUEVORF9URVNUX0RFVklDRVMpOwotCWlndF9zdWJ0ZXN0KCJzeXN0
+ZW0tc3VzcGVuZCIpCisJaWd0X3N1YnRlc3RfYXVkaW9fa2xvZygic3lzdGVtLXN1c3BlbmQiKQog
+CQlzeXN0ZW1fc3VzcGVuZF9zdWJ0ZXN0KFNVU1BFTkRfU1RBVEVfTUVNLCBTVVNQRU5EX1RFU1Rf
+Tk9ORSk7Ci0JaWd0X3N1YnRlc3QoInN5c3RlbS1zdXNwZW5kLWV4ZWNidWYiKQorCWlndF9zdWJ0
+ZXN0X2F1ZGlvX2tsb2coInN5c3RlbS1zdXNwZW5kLWV4ZWNidWYiKQogCQlzeXN0ZW1fc3VzcGVu
+ZF9leGVjYnVmX3N1YnRlc3QoKTsKLQlpZ3Rfc3VidGVzdCgic3lzdGVtLXN1c3BlbmQtbW9kZXNl
+dCIpCisJaWd0X3N1YnRlc3RfYXVkaW9fa2xvZygic3lzdGVtLXN1c3BlbmQtbW9kZXNldCIpCiAJ
+CXN5c3RlbV9zdXNwZW5kX21vZGVzZXRfc3VidGVzdCgpOwotCWlndF9zdWJ0ZXN0KCJzeXN0ZW0t
+aGliZXJuYXRlLWRldmljZXMiKQorCWlndF9zdWJ0ZXN0X2F1ZGlvX2tsb2coInN5c3RlbS1oaWJl
+cm5hdGUtZGV2aWNlcyIpCiAJCXN5c3RlbV9zdXNwZW5kX3N1YnRlc3QoU1VTUEVORF9TVEFURV9E
+SVNLLAogCQkJCSAgICAgICBTVVNQRU5EX1RFU1RfREVWSUNFUyk7CiAJaWd0X3N1YnRlc3QoInN5
+c3RlbS1oaWJlcm5hdGUiKQpAQCAtMjA5NSw3ICsyMDk1LDcgQEAgaW50IG1haW4oaW50IGFyZ2Ms
+IGNoYXIgKmFyZ3ZbXSkKIAlpZ3RfZml4dHVyZQogCQl0ZWFyZG93bl9lbnZpcm9ubWVudCgpOwog
+Ci0JaWd0X3N1YnRlc3QoIm1vZHVsZS1yZWxvYWQiKSB7CisJaWd0X3N1YnRlc3RfYXVkaW9fa2xv
+ZygibW9kdWxlLXJlbG9hZCIpIHsKIAkJaWd0X2RlYnVnKCJSZWxvYWQgdy9vIGRpc3BsYXlcbiIp
+OwogCQlpZ3RfaTkxNV9kcml2ZXJfdW5sb2FkKCk7CiAJCWlndF9hc3NlcnRfZXEoaWd0X2k5MTVf
+ZHJpdmVyX2xvYWQoImRpc2FibGVfZGlzcGxheT0xIG1taW9fZGVidWc9LTEiKSwgMCk7CmRpZmYg
+LS1naXQgYS90ZXN0cy9pOTE1L2k5MTVfc3VzcGVuZC5jIGIvdGVzdHMvaTkxNS9pOTE1X3N1c3Bl
+bmQuYwppbmRleCBjZDdjZjk2Ny4uMDIzNWFhOTMgMTAwNjQ0Ci0tLSBhL3Rlc3RzL2k5MTUvaTkx
+NV9zdXNwZW5kLmMKKysrIGIvdGVzdHMvaTkxNS9pOTE1X3N1c3BlbmQuYwpAQCAtMjA1LDM3ICsy
+MDUsMzcgQEAgaWd0X21haW4KIAlpZ3RfZml4dHVyZQogCQlmZCA9IGRybV9vcGVuX2RyaXZlcihE
+UklWRVJfSU5URUwpOwogCi0JaWd0X3N1YnRlc3QoImZlbmNlLXJlc3RvcmUtdGlsZWQydW50aWxl
+ZCIpCisJaWd0X3N1YnRlc3RfYXVkaW9fa2xvZygiZmVuY2UtcmVzdG9yZS10aWxlZDJ1bnRpbGVk
+IikKIAkJdGVzdF9mZW5jZV9yZXN0b3JlKGZkLCB0cnVlLCBmYWxzZSk7CiAKLQlpZ3Rfc3VidGVz
+dCgiZmVuY2UtcmVzdG9yZS11bnRpbGVkIikKKwlpZ3Rfc3VidGVzdF9hdWRpb19rbG9nKCJmZW5j
+ZS1yZXN0b3JlLXVudGlsZWQiKQogCQl0ZXN0X2ZlbmNlX3Jlc3RvcmUoZmQsIGZhbHNlLCBmYWxz
+ZSk7CiAKLQlpZ3Rfc3VidGVzdCgiZGVidWdmcy1yZWFkZXIiKQorCWlndF9zdWJ0ZXN0X2F1ZGlv
+X2tsb2coImRlYnVnZnMtcmVhZGVyIikKIAkJdGVzdF9kZWJ1Z2ZzX3JlYWRlcihmYWxzZSk7CiAK
+LQlpZ3Rfc3VidGVzdCgic3lzZnMtcmVhZGVyIikKKwlpZ3Rfc3VidGVzdF9hdWRpb19rbG9nKCJz
+eXNmcy1yZWFkZXIiKQogCQl0ZXN0X3N5c2ZzX3JlYWRlcihmYWxzZSk7CiAKLQlpZ3Rfc3VidGVz
+dCgic2hyaW5rIikKKwlpZ3Rfc3VidGVzdF9hdWRpb19rbG9nKCJzaHJpbmsiKQogCQl0ZXN0X3No
+cmluayhmZCwgU1VTUEVORF9TVEFURV9NRU0pOwogCi0JaWd0X3N1YnRlc3QoImZvcmNld2FrZSIp
+CisJaWd0X3N1YnRlc3RfYXVkaW9fa2xvZygiZm9yY2V3YWtlIikKIAkJdGVzdF9mb3JjZXdha2Uo
+ZmQsIGZhbHNlKTsKIAotCWlndF9zdWJ0ZXN0KCJmZW5jZS1yZXN0b3JlLXRpbGVkMnVudGlsZWQt
+aGliZXJuYXRlIikKKwlpZ3Rfc3VidGVzdF9hdWRpb19rbG9nKCJmZW5jZS1yZXN0b3JlLXRpbGVk
+MnVudGlsZWQtaGliZXJuYXRlIikKIAkJdGVzdF9mZW5jZV9yZXN0b3JlKGZkLCB0cnVlLCB0cnVl
+KTsKIAotCWlndF9zdWJ0ZXN0KCJmZW5jZS1yZXN0b3JlLXVudGlsZWQtaGliZXJuYXRlIikKKwlp
+Z3Rfc3VidGVzdF9hdWRpb19rbG9nKCJmZW5jZS1yZXN0b3JlLXVudGlsZWQtaGliZXJuYXRlIikK
+IAkJdGVzdF9mZW5jZV9yZXN0b3JlKGZkLCBmYWxzZSwgdHJ1ZSk7CiAKLQlpZ3Rfc3VidGVzdCgi
+ZGVidWdmcy1yZWFkZXItaGliZXJuYXRlIikKKwlpZ3Rfc3VidGVzdF9hdWRpb19rbG9nKCJkZWJ1
+Z2ZzLXJlYWRlci1oaWJlcm5hdGUiKQogCQl0ZXN0X2RlYnVnZnNfcmVhZGVyKHRydWUpOwogCi0J
+aWd0X3N1YnRlc3QoInN5c2ZzLXJlYWRlci1oaWJlcm5hdGUiKQorCWlndF9zdWJ0ZXN0X2F1ZGlv
+X2tsb2coInN5c2ZzLXJlYWRlci1oaWJlcm5hdGUiKQogCQl0ZXN0X3N5c2ZzX3JlYWRlcih0cnVl
+KTsKIAotCWlndF9zdWJ0ZXN0KCJmb3JjZXdha2UtaGliZXJuYXRlIikKKwlpZ3Rfc3VidGVzdF9h
+dWRpb19rbG9nKCJmb3JjZXdha2UtaGliZXJuYXRlIikKIAkJdGVzdF9mb3JjZXdha2UoZmQsIHRy
+dWUpOwogCiAJaWd0X2ZpeHR1cmUKLS0gCjIuMjEuMAoKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0
+cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9pZ3QtZGV2
