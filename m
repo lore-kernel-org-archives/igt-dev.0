@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Date: Mon, 18 Mar 2019 19:05:29 -0300
+From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Message-ID: <20190318220529.jqbvi6amvfe3c7es@smtp.gmail.com>
+References: <20190115174747.3138-1-liviu.dudau@arm.com>
+ <20190115174747.3138-2-liviu.dudau@arm.com>
+ <20190204133134.a6cpke3h6x53eeo3@DESKTOP-E1NTVVP.localdomain>
+ <20190306213005.7hvbnwl7dohr3vuv@smtp.gmail.com>
+ <20190318104128.GH26454@e110455-lin.cambridge.arm.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20190318215342.koavlq763wilvhum@smtp.gmail.com>
-References: <20190316140023.b5gn44gtojoy6iqi@smtp.gmail.com>
- <20190318140108.GL3888@intel.com>
- <20190318213544.gge3iqu7bjrdyhj4@smtp.gmail.com>
- <155294512341.12148.398418988839038376@skylake-alporthouse-com>
- <20190318215342.koavlq763wilvhum@smtp.gmail.com>
-Message-ID: <155294615572.12148.16005320347932444344@skylake-alporthouse-com>
-Date: Mon, 18 Mar 2019 21:56:00 +0000
-Subject: Re: [igt-dev] [PATCH V5 i-g-t] tests/kms_flip: Skip VBlank tests in
- modules without VBlank
+In-Reply-To: <20190318104128.GH26454@e110455-lin.cambridge.arm.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v5 1/6] lib/igt_kms: Add writeback
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,76 +18,217 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0242599941=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Cc: Petri Latvala <petri.latvala@intel.com>, intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
+To: Liviu Dudau <Liviu.Dudau@arm.com>
+Cc: Boris Brezillon <boris.brezillon@free-electrons.com>, Petri Latvala <petri.latvala@intel.com>, Intel GFX ML <intel-gfx@lists.freedesktop.org>, IGT GPU Tools <igt-dev@lists.freedesktop.org>, Daniel Vetter <daniel@ffwll.ch>, nd <nd@arm.com>, Brian Starkey <Brian.Starkey@arm.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBSb2RyaWdvIFNpcXVlaXJhICgyMDE5LTAzLTE4IDIxOjUzOjQyKQo+IE9uIDAzLzE4
-LCBDaHJpcyBXaWxzb24gd3JvdGU6Cj4gPiBRdW90aW5nIFJvZHJpZ28gU2lxdWVpcmEgKDIwMTkt
-MDMtMTggMjE6MzU6NDQpCj4gPiA+IE9uIDAzLzE4LCBWaWxsZSBTeXJqw6Rsw6Qgd3JvdGU6Cj4g
-PiA+ID4gT24gU2F0LCBNYXIgMTYsIDIwMTkgYXQgMTE6MDA6MjNBTSAtMDMwMCwgUm9kcmlnbyBT
-aXF1ZWlyYSB3cm90ZToKPiA+ID4gPiA+IFRoZSBrbXNfZmxpcCB0ZXN0IHJlbGllcyBvbiBWQmxh
-bmsgc3VwcG9ydCwgYW5kIHRoaXMgc2l0dWF0aW9uIG1heQo+ID4gPiA+ID4gZXhjbHVkZSBzb21l
-IHZpcnR1YWwgZHJpdmVycyB0byB0YWtlIGFkdmFudGFnZSBvZiB0aGlzIHNldCBvZiB0ZXN0cy4K
-PiA+ID4gPiA+IFRoaXMgY29tbWl0IGFkZHMgYSBtZWNoYW5pc20gdGhhdCBjaGVja3MgaWYgYSBt
-b2R1bGUgaGFzIFZCbGFuay4gSWYgdGhlCj4gPiA+ID4gPiB0YXJnZXQgbW9kdWxlIGhhcyBWQmxh
-bmsgc3VwcG9ydCwga21zX2ZsaXAgd2lsbCBydW4gYWxsIHRoZSBWQmxhbmsKPiA+ID4gPiA+IHRl
-c3RzOyBvdGhlcndpc2UsIHRoZSBWQmxhbmsgdGVzdHMgd2lsbCBiZSBza2lwcGVkLiBBZGRpdGlv
-bmFsbHksIHRoaXMKPiA+ID4gPiA+IGNvbW1pdCBpbXByb3ZlcyB0aGUgdGVzdCBjb3ZlcmFnZSBi
-eSBjaGVja3MgaWYgdGhlIGZ1bmN0aW9uCj4gPiA+ID4gPiBkcm1XYWl0VkJsYW5rKCkgcmV0dXJu
-cyBFT1BOT1RTVVBQIChpLmUuLCBubyBWQmxhbmsgc3VwcG9ydCkuCj4gPiA+ID4gPiAKPiA+ID4g
-PiA+IFY0OiBSZXBsYWNlIERSTV9WQkxBTktfQUJTT0xVVEUgYnkgRFJNX1ZCTEFOS19SRUxBVElW
-RSBhbmQKPiA+ID4gPiA+IERSTV9WQkxBTktfTkVYVE9OTUlTUwo+ID4gPiA+ID4gCj4gPiA+ID4g
-PiBWMzogQWRkIGRvY3VtZW50YXRpb24gKERhbmllbCBWZXR0ZXIpCj4gPiA+ID4gPiAKPiA+ID4g
-PiA+IFYyOiBBZGQgbmV3IGJyYW5jaCBjb3ZlcmFnZSB0byBjaGVjayBpZiBWQmxhbmsgaXMgZW5h
-YmxlZCBvciBub3QgYW5kCj4gPiA+ID4gPiB1cGRhdGUgY29tbWl0IG1lc3NhZ2UKPiA+ID4gPiA+
-IAo+ID4gPiA+ID4gVjE6IENocmlzIFdpbHNvbgo+ID4gPiA+ID4gICAtIENoYW5nZSBmdW5jdGlv
-biBuYW1lIGZyb20gaWd0X3RoZXJlX2lzX3ZibGFuayB0byBrbXNfaGFzX3ZibGFuawo+ID4gPiA+
-ID4gICAtIE1vdmUgdmJsYW5rIGZ1bmN0aW9uIGNoZWNrIGZyb20gaWd0X2F1eCB0byBpZ3Rfa21z
-Cj4gPiA+ID4gPiAgIC0gVXRpbGl6ZXMgbWVtc2V0IGluIGR1bW15X3ZibCB2YXJpYWJsZQo+ID4g
-PiA+ID4gICAtIERpcmVjdGx5IHJldHVybiB0aGUgcmVzdWx0IG9mIGRybVdhaXRWQmxhbmsoKQo+
-ID4gPiA+ID4gCj4gPiA+ID4gPiBTaWduZWQtb2ZmLWJ5OiBSb2RyaWdvIFNpcXVlaXJhIDxyb2Ry
-aWdvc2lxdWVpcmFtZWxvQGdtYWlsLmNvbT4KPiA+ID4gPiA+IC0tLQo+ID4gPiA+ID4gIGxpYi9p
-Z3Rfa21zLmMgICAgfCAyMCArKysrKysrKysrKysrKysrKysrKwo+ID4gPiA+ID4gIGxpYi9pZ3Rf
-a21zLmggICAgfCAgMiArKwo+ID4gPiA+ID4gIHRlc3RzL2ttc19mbGlwLmMgfCAyMiArKysrKysr
-KysrKysrKysrKysrKysrCj4gPiA+ID4gPiAgMyBmaWxlcyBjaGFuZ2VkLCA0NCBpbnNlcnRpb25z
-KCspCj4gPiA+ID4gPiAKPiA+ID4gPiA+IGRpZmYgLS1naXQgYS9saWIvaWd0X2ttcy5jIGIvbGli
-L2lndF9rbXMuYwo+ID4gPiA+ID4gaW5kZXggZTFlYWNjMWUuLjFkMmQ3MTg4IDEwMDY0NAo+ID4g
-PiA+ID4gLS0tIGEvbGliL2lndF9rbXMuYwo+ID4gPiA+ID4gKysrIGIvbGliL2lndF9rbXMuYwo+
-ID4gPiA+ID4gQEAgLTE2NTUsNiArMTY1NSwyNiBAQCB2b2lkIGlndF9hc3NlcnRfcGxhbmVfdmlz
-aWJsZShpbnQgZmQsIGVudW0gcGlwZSBwaXBlLCBib29sIHZpc2liaWxpdHkpCj4gPiA+ID4gPiAg
-ICAgaWd0X2Fzc2VydF9lcSh2aXNpYmxlLCB2aXNpYmlsaXR5KTsKPiA+ID4gPiA+ICB9Cj4gPiA+
-ID4gPiAgCj4gPiA+ID4gPiArLyoqCj4gPiA+ID4gPiArICoga21zX2hhc192Ymxhbms6Cj4gPiA+
-ID4gPiArICogQGZkOiBEUk0gZmQKPiA+ID4gPiA+ICsgKgo+ID4gPiA+ID4gKyAqIEdldCB0aGUg
-VkJsYW5rIGVycm5vIGFmdGVyIGFuIGF0dGVtcHQgdG8gY2FsbCBkcm1XYWl0VkJsYW5rKCkuIFRo
-aXMKPiA+ID4gPiA+ICsgKiBmdW5jdGlvbiBpcyB1c2VmdWwgZm9yIGNoZWNraW5nIGlmIGEgZHJp
-dmVyIGhhcyBzdXBwb3J0IG9yIG5vdCBmb3IgVkJsYW5rLgo+ID4gPiA+ID4gKyAqCj4gPiA+ID4g
-PiArICogUmV0dXJuczogdHJ1ZSBpZiB0YXJnZXQgZHJpdmVyIGhhcyBWQmxhbmsgc3VwcG9ydCwg
-b3RoZXJ3aXNlIHJldHVybiBmYWxzZS4KPiA+ID4gPiA+ICsgKi8KPiA+ID4gPiA+ICtib29sIGtt
-c19oYXNfdmJsYW5rKGludCBmZCkKPiA+ID4gPiA+ICt7Cj4gPiA+ID4gPiArICAgZHJtVkJsYW5r
-IGR1bW15X3ZibDsKPiA+ID4gPiA+ICsKPiA+ID4gPiA+ICsgICBtZW1zZXQoJmR1bW15X3ZibCwg
-MCwgc2l6ZW9mKGRybVZCbGFuaykpOwo+ID4gPiA+ID4gKyAgIGR1bW15X3ZibC5yZXF1ZXN0LnR5
-cGUgPSBEUk1fVkJMQU5LX1JFTEFUSVZFIHwgRFJNX1ZCTEFOS19ORVhUT05NSVNTOwo+ID4gPiA+
-IAo+ID4gPiA+IFdoeSB0aGUgTkVYVE9OTUlTUz8KPiA+ID4gCj4gPiA+IEkgYWRkZWQgdGhpcyBm
-bGFnIGJlY2F1c2UgSSB3YXMgc3VzcGVjdGluZyB0aGF0IGluIGNhc2Ugb2YgYW55IHByb2JsZW0K
-PiA+ID4gZHVyaW5nIHRoZSBrbXNfaGFzX3ZibGFuaygpIGV4ZWN1dGlvbiB0aGUgZmxhZyBORVhU
-T05NSVNTIHdpbGwgd2FpdCBmb3IKPiA+ID4gdGhlIG5leHQgVkJsYW5rIGFuZCBhdm9pZCB0byBn
-ZW5lcmF0ZSBwcm9ibGVtcyBpbiB0aGUgc3Vic2VxdWVudCB0ZXN0cy4KPiA+IAo+ID4gVGhhdCBp
-cyB0cnVlLCBhbmQgYSB2YWxpZCB1c2UgZm9yIHVzaW5nIE5FWFRPTk1JU1MgaWYgeW91IHdhbnQg
-dG8gYWxpZ24KPiA+IHlvdXIgY29kZSB0byB0aGUgc3RhcnQgb2YgYSB2YmxhbmsgdG8gYXZvaWQg
-b3ZlcnJ1bm5pbmcgaW50byB0aGUgbmV4dAo+ID4gdmJsYW5rLgo+ID4gCj4gPiBIb3dldmVyLCB0
-aGF0IGlzIG5vdCB0aGUgcHVycG9zZSBvZiBrbXNfaGFzX3ZibGFuaygpISBXaG9zZSBvbmx5IHB1
-cnBvc2UKPiA+IGlzIGFuc3dlciB0aGUgcXVlc3Rpb24gb2Ygd2hldGhlciB0aGUgZGV2aWNlIGhh
-cyB2Ymxhbmsgc3VwcG9ydCwgYW5kIHNvCj4gPiBzaG91bGQgYmUgYXMgcXVpY2sgYW5kIHNpbXBs
-ZSBhcyBwb3NzaWJsZSwgc28gdGhlIHRyaXZpYWwgcXVlcnkgb2YgdGhlCj4gPiBjdXJyZW50IHZi
-bGFuayBjb3VudGVyLgo+IAo+IE5pY2UhIFRoYW5rcyBmb3IgeW91ciBhbnN3ZXIuCj4gCj4gU28s
-IEkgc3VwcG9zZSB0aGF0IHVzZSBEUk1fVkJMQU5LX1JFTEFUSVZFIGlzIGVub3VnaCBmb3IgdGhp
-cyBjYXNlLAo+IHJpZ2h0PwoKWWVzLCB0aGF0IHNob3VsZCByZXR1cm4gaW1tZWRpYXRlbHkgYm90
-aCBvbiBzdWNjZXNzIGFuZCBvbiBmYWlsdXJlLgotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9pZ3QtZGV2
+
+--===============0242599941==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mwpmbe6upli32oec"
+Content-Disposition: inline
+
+
+--mwpmbe6upli32oec
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 03/18, Liviu Dudau wrote:
+> On Wed, Mar 06, 2019 at 06:30:05PM -0300, Rodrigo Siqueira wrote:
+> > Hi Liviu,
+> >=20
+> > I=E2=80=99m using your patchset to guide my implementation of writeback=
+ in the
+> > VKMS, so, first of all, thanks :)
+> >=20
+> > During my work, I noticed that you=E2=80=99re setting the drmSetClientC=
+ap()
+> > before drmModeGetResources() which make the writeback capability
+>=20
+> before? I believe your patchset moves it to be before, which makes
+> sense, as the writeback applies to connectors, not planes (sorry for the
+> confusion, I think I wrote the code when we were toying with the idea
+> that writeback was going to be a plane property).
+>=20
+> > =E2=80=98invisible=E2=80=99 for drmModeGetResources(). I made the follo=
+wing change, and
+> > I could pass the igt_display_require():
+> >=20
+> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> > index f4ff3a96..bb2d8e06 100644
+> > --- a/lib/igt_kms.c
+> > +++ b/lib/igt_kms.c
+> > @@ -1912,6 +1912,12 @@ void igt_display_require(igt_display_t *display,=
+ int drm_fd)
+> > =20
+> >         display->drm_fd =3D drm_fd;
+> > =20
+> > +       drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+> > +       if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) =3D=3D 0)
+> > +               display->is_atomic =3D 1;
+> > +
+> > +       drmSetClientCap(drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
+> > +
+> >         resources =3D drmModeGetResources(display->drm_fd);
+> >         if (!resources)
+> >                 goto out;
+> > @@ -1924,12 +1930,6 @@ void igt_display_require(igt_display_t *display,=
+ int drm_fd)
+> >         display->pipes =3D calloc(sizeof(igt_pipe_t), display->n_pipes);
+> >         igt_assert_f(display->pipes, "Failed to allocate memory for %d =
+pipes\n", display->n_pipes);
+> > =20
+> > -       drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+> > -       if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) =3D=3D 0)
+> > -               display->is_atomic =3D 1;
+> > -
+> > -       drmSetClientCap(drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
+> > -
+> >         plane_resources =3D drmModeGetPlaneResources(display->drm_fd);
+> >         igt_assert(plane_resources);
+> >=20
+> > I'm not 100% confident about this issue, because of this I will send an
+> > RFC and see if I can get more details about this issue.
+>=20
+> It actually looks correct to me, so=20
+>=20
+> Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+>=20
+> >=20
+> > Additionally, if you need any help with this patchset I will be glad to
+> > help since I=E2=80=99m using it \o/
+>=20
+> Well, I need to send an updated version and if you could review that
+> then I can merge it into igt.
+
+Sure! I will be glad to take some time to review your code :)
+
+I can also try to test it on my current implementation of VKMS.
+One question, I have a NanoPc-T1 device [1] which has a Mali GPU, can I
+test the writeback feature in this device? All kind of Mali GPU has
+support for the writeback feature?
+
+1. http://wiki.friendlyarm.com/wiki/index.php/NanoPC-T1
+
+Thanks!
+Best Regards
+=20
+> Best regards,
+> Liviu
+>=20
+> >=20
+> > Best Regards
+> > Rodrigo Siqueira
+> >=20
+> > On 02/04, Brian Starkey wrote:
+> > > Hi Liviu,
+> > >=20
+> > > On Tue, Jan 15, 2019 at 05:47:42PM +0000, Liviu Dudau wrote:
+> > > > From: Brian Starkey <brian.starkey@arm.com>
+> > >=20
+> > > [snip]
+> > >=20
+> > > > =20
+> > > > +/**
+> > > > + * igt_output_set_writeback_fb:
+> > > > + * @output: Target output
+> > > > + * @fb: Target framebuffer
+> > > > + *
+> > > > + * This function sets the given @fb to be used as the target frame=
+buffer for the
+> > > > + * writeback engine at the next atomic commit. It will also reques=
+t a writeback
+> > > > + * out fence that will contain the fd number of the out fence crea=
+ted by KMS if
+> > > > + * the given @fb is valid.
+> > > > + */
+> > > > +void igt_output_set_writeback_fb(igt_output_t *output, struct igt_=
+fb *fb)
+> > > > +{
+> > > > +	igt_display_t *display =3D output->display;
+> > > > +
+> > > > +	LOG(display, "%s: output_set_writeback_fb(%d)\n", output->name, f=
+b ? fb->fb_id : 0);
+> > > > +
+> > > > +	igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_FB_ID, =
+fb ? fb->fb_id : 0);
+> > > > +	/* only request a writeback out fence if the framebuffer is valid=
+ */
+> > > > +	if (fb)
+> > > > +		igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_OUT_FE=
+NCE_PTR,
+> > > > +					  (ptrdiff_t)&output->writeback_out_fence_fd);
+> > >=20
+> > > I'm still not sure (ptrdiff_t) is the right type here, (uintptr_t)
+> > > seems better.
+> > >=20
+> > > Thanks,
+> > > -Brian
+> > > _______________________________________________
+> > > igt-dev mailing list
+> > > igt-dev@lists.freedesktop.org
+> > > https://lists.freedesktop.org/mailman/listinfo/igt-dev
+> >=20
+> > --=20
+> > Rodrigo Siqueira
+> > https://siqueira.tech
+> > Graduate Student
+> > Department of Computer Science
+> > University of S=C3=A3o Paulo
+>=20
+>=20
+>=20
+> --=20
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> | I would like to |
+> | fix the world,  |
+> | but they're not |
+> | giving me the   |
+>  \ source code!  /
+>   ---------------
+>     =C2=AF\_(=E3=83=84)_/=C2=AF
+
+--=20
+Rodrigo Siqueira
+https://siqueira.tech
+Graduate Student
+Department of Computer Science
+University of S=C3=A3o Paulo
+
+--mwpmbe6upli32oec
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlyQFikACgkQWJzP/com
+vP8SoA/9GVQsa63nESYj0UL4FVUHQ6Y2t0WURblHTZOWWdeB3yJA+4Qe7wzRqRnT
+cx1pzBSnes4HpfwvP9/4txi2cCCoS/ifJUUCg6WMcC9kjrPsZAtslge/U/CD5ZBo
+gBkY7RY4daSCPeFLAdwpupZPi7BPFYeWSF55WjGqPc14mtxMyfRC60m5P05ZVzip
+BNH9JNUBxuMqacqBQQdioB+1N0FX5nxyY/mUbEa7lfcjG2nsF3czEOAKewzw38on
+KWP2kT67z751a7bFqSX+4vIO6TK8fWdJQyib9LAzLmkmhir93kY91ecX4DvGezZt
+U/xnvp83iiGXpI2gY/Iyxda0zcLxewM1Phtaow3cTWyu8987mRNyQa0BZJ8C38LW
+HKynTaHHFEoKrYuQDvgNIC4s5qYAAtmU7eCte10N8Jor5+ZHPHPySBvBkthDfpSe
+YpAOMdNd5wifvoMgUY8Y4SyMJ2Gj3ax1lcQwwroqug3LioQk3Hgv5fjkWXJli0ou
+sTvjMCF0/Y5pq8ekGfPYsksgDIETbwAY9CCNwTcT0rjMoODEQFvq/6f3RFXf0ROG
+xDd06MIAxw1ttXEz5OTpfmDcEUJoKs/fA5TWRgettGdzcZjDS90EIaImIuDXolOH
+qmuvNiEuGKbB/ohqxCl5DBJc1NWiBEYM/tQO7Wbz71FqR0FoE2s=
+=TRqh
+-----END PGP SIGNATURE-----
+
+--mwpmbe6upli32oec--
+
+--===============0242599941==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============0242599941==--
