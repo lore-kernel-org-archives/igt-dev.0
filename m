@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 18 Mar 2019 19:05:29 -0300
+Date: Mon, 18 Mar 2019 19:06:26 -0300
 From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Message-ID: <20190318220529.jqbvi6amvfe3c7es@smtp.gmail.com>
-References: <20190115174747.3138-1-liviu.dudau@arm.com>
- <20190115174747.3138-2-liviu.dudau@arm.com>
- <20190204133134.a6cpke3h6x53eeo3@DESKTOP-E1NTVVP.localdomain>
- <20190306213005.7hvbnwl7dohr3vuv@smtp.gmail.com>
- <20190318104128.GH26454@e110455-lin.cambridge.arm.com>
+Message-ID: <20190318220626.yaefplg7mqceosgr@smtp.gmail.com>
+References: <20190316140023.b5gn44gtojoy6iqi@smtp.gmail.com>
+ <20190318140108.GL3888@intel.com>
+ <20190318213544.gge3iqu7bjrdyhj4@smtp.gmail.com>
+ <155294512341.12148.398418988839038376@skylake-alporthouse-com>
+ <20190318215342.koavlq763wilvhum@smtp.gmail.com>
+ <155294615572.12148.16005320347932444344@skylake-alporthouse-com>
 MIME-Version: 1.0
-In-Reply-To: <20190318104128.GH26454@e110455-lin.cambridge.arm.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v5 1/6] lib/igt_kms: Add writeback
- support
+In-Reply-To: <155294615572.12148.16005320347932444344@skylake-alporthouse-com>
+Subject: Re: [igt-dev] [PATCH V5 i-g-t] tests/kms_flip: Skip VBlank tests in
+ modules without VBlank
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,210 +19,157 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0242599941=="
+Content-Type: multipart/mixed; boundary="===============0808713967=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Liviu Dudau <Liviu.Dudau@arm.com>
-Cc: Boris Brezillon <boris.brezillon@free-electrons.com>, Petri Latvala <petri.latvala@intel.com>, Intel GFX ML <intel-gfx@lists.freedesktop.org>, IGT GPU Tools <igt-dev@lists.freedesktop.org>, Daniel Vetter <daniel@ffwll.ch>, nd <nd@arm.com>, Brian Starkey <Brian.Starkey@arm.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Petri Latvala <petri.latvala@intel.com>, intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
---===============0242599941==
+--===============0808713967==
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mwpmbe6upli32oec"
+	protocol="application/pgp-signature"; boundary="ggfrnw3kvovtdavq"
 Content-Disposition: inline
 
 
---mwpmbe6upli32oec
-Content-Type: text/plain; charset=utf-8
+--ggfrnw3kvovtdavq
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On 03/18, Liviu Dudau wrote:
-> On Wed, Mar 06, 2019 at 06:30:05PM -0300, Rodrigo Siqueira wrote:
-> > Hi Liviu,
+On 03/18, Chris Wilson wrote:
+> Quoting Rodrigo Siqueira (2019-03-18 21:53:42)
+> > On 03/18, Chris Wilson wrote:
+> > > Quoting Rodrigo Siqueira (2019-03-18 21:35:44)
+> > > > On 03/18, Ville Syrj=E4l=E4 wrote:
+> > > > > On Sat, Mar 16, 2019 at 11:00:23AM -0300, Rodrigo Siqueira wrote:
+> > > > > > The kms_flip test relies on VBlank support, and this situation =
+may
+> > > > > > exclude some virtual drivers to take advantage of this set of t=
+ests.
+> > > > > > This commit adds a mechanism that checks if a module has VBlank=
+=2E If the
+> > > > > > target module has VBlank support, kms_flip will run all the VBl=
+ank
+> > > > > > tests; otherwise, the VBlank tests will be skipped. Additionall=
+y, this
+> > > > > > commit improves the test coverage by checks if the function
+> > > > > > drmWaitVBlank() returns EOPNOTSUPP (i.e., no VBlank support).
+> > > > > >=20
+> > > > > > V4: Replace DRM_VBLANK_ABSOLUTE by DRM_VBLANK_RELATIVE and
+> > > > > > DRM_VBLANK_NEXTONMISS
+> > > > > >=20
+> > > > > > V3: Add documentation (Daniel Vetter)
+> > > > > >=20
+> > > > > > V2: Add new branch coverage to check if VBlank is enabled or no=
+t and
+> > > > > > update commit message
+> > > > > >=20
+> > > > > > V1: Chris Wilson
+> > > > > >   - Change function name from igt_there_is_vblank to kms_has_vb=
+lank
+> > > > > >   - Move vblank function check from igt_aux to igt_kms
+> > > > > >   - Utilizes memset in dummy_vbl variable
+> > > > > >   - Directly return the result of drmWaitVBlank()
+> > > > > >=20
+> > > > > > Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+> > > > > > ---
+> > > > > >  lib/igt_kms.c    | 20 ++++++++++++++++++++
+> > > > > >  lib/igt_kms.h    |  2 ++
+> > > > > >  tests/kms_flip.c | 22 ++++++++++++++++++++++
+> > > > > >  3 files changed, 44 insertions(+)
+> > > > > >=20
+> > > > > > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> > > > > > index e1eacc1e..1d2d7188 100644
+> > > > > > --- a/lib/igt_kms.c
+> > > > > > +++ b/lib/igt_kms.c
+> > > > > > @@ -1655,6 +1655,26 @@ void igt_assert_plane_visible(int fd, en=
+um pipe pipe, bool visibility)
+> > > > > >     igt_assert_eq(visible, visibility);
+> > > > > >  }
+> > > > > > =20
+> > > > > > +/**
+> > > > > > + * kms_has_vblank:
+> > > > > > + * @fd: DRM fd
+> > > > > > + *
+> > > > > > + * Get the VBlank errno after an attempt to call drmWaitVBlank=
+(). This
+> > > > > > + * function is useful for checking if a driver has support or =
+not for VBlank.
+> > > > > > + *
+> > > > > > + * Returns: true if target driver has VBlank support, otherwis=
+e return false.
+> > > > > > + */
+> > > > > > +bool kms_has_vblank(int fd)
+> > > > > > +{
+> > > > > > +   drmVBlank dummy_vbl;
+> > > > > > +
+> > > > > > +   memset(&dummy_vbl, 0, sizeof(drmVBlank));
+> > > > > > +   dummy_vbl.request.type =3D DRM_VBLANK_RELATIVE | DRM_VBLANK=
+_NEXTONMISS;
+> > > > >=20
+> > > > > Why the NEXTONMISS?
+> > > >=20
+> > > > I added this flag because I was suspecting that in case of any prob=
+lem
+> > > > during the kms_has_vblank() execution the flag NEXTONMISS will wait=
+ for
+> > > > the next VBlank and avoid to generate problems in the subsequent te=
+sts.
+> > >=20
+> > > That is true, and a valid use for using NEXTONMISS if you want to ali=
+gn
+> > > your code to the start of a vblank to avoid overrunning into the next
+> > > vblank.
+> > >=20
+> > > However, that is not the purpose of kms_has_vblank()! Whose only purp=
+ose
+> > > is answer the question of whether the device has vblank support, and =
+so
+> > > should be as quick and simple as possible, so the trivial query of the
+> > > current vblank counter.
 > >=20
-> > I=E2=80=99m using your patchset to guide my implementation of writeback=
- in the
-> > VKMS, so, first of all, thanks :)
+> > Nice! Thanks for your answer.
 > >=20
-> > During my work, I noticed that you=E2=80=99re setting the drmSetClientC=
-ap()
-> > before drmModeGetResources() which make the writeback capability
+> > So, I suppose that use DRM_VBLANK_RELATIVE is enough for this case,
+> > right?
 >=20
-> before? I believe your patchset moves it to be before, which makes
-> sense, as the writeback applies to connectors, not planes (sorry for the
-> confusion, I think I wrote the code when we were toying with the idea
-> that writeback was going to be a plane property).
->=20
-> > =E2=80=98invisible=E2=80=99 for drmModeGetResources(). I made the follo=
-wing change, and
-> > I could pass the igt_display_require():
-> >=20
-> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> > index f4ff3a96..bb2d8e06 100644
-> > --- a/lib/igt_kms.c
-> > +++ b/lib/igt_kms.c
-> > @@ -1912,6 +1912,12 @@ void igt_display_require(igt_display_t *display,=
- int drm_fd)
-> > =20
-> >         display->drm_fd =3D drm_fd;
-> > =20
-> > +       drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
-> > +       if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) =3D=3D 0)
-> > +               display->is_atomic =3D 1;
-> > +
-> > +       drmSetClientCap(drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
-> > +
-> >         resources =3D drmModeGetResources(display->drm_fd);
-> >         if (!resources)
-> >                 goto out;
-> > @@ -1924,12 +1930,6 @@ void igt_display_require(igt_display_t *display,=
- int drm_fd)
-> >         display->pipes =3D calloc(sizeof(igt_pipe_t), display->n_pipes);
-> >         igt_assert_f(display->pipes, "Failed to allocate memory for %d =
-pipes\n", display->n_pipes);
-> > =20
-> > -       drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
-> > -       if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) =3D=3D 0)
-> > -               display->is_atomic =3D 1;
-> > -
-> > -       drmSetClientCap(drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
-> > -
-> >         plane_resources =3D drmModeGetPlaneResources(display->drm_fd);
-> >         igt_assert(plane_resources);
-> >=20
-> > I'm not 100% confident about this issue, because of this I will send an
-> > RFC and see if I can get more details about this issue.
->=20
-> It actually looks correct to me, so=20
->=20
-> Acked-by: Liviu Dudau <liviu.dudau@arm.com>
->=20
-> >=20
-> > Additionally, if you need any help with this patchset I will be glad to
-> > help since I=E2=80=99m using it \o/
->=20
-> Well, I need to send an updated version and if you could review that
-> then I can merge it into igt.
+> Yes, that should return immediately both on success and on failure.
+> -Chris
 
-Sure! I will be glad to take some time to review your code :)
-
-I can also try to test it on my current implementation of VKMS.
-One question, I have a NanoPc-T1 device [1] which has a Mali GPU, can I
-test the writeback feature in this device? All kind of Mali GPU has
-support for the writeback feature?
-
-1. http://wiki.friendlyarm.com/wiki/index.php/NanoPC-T1
-
-Thanks!
-Best Regards
-=20
-> Best regards,
-> Liviu
->=20
-> >=20
-> > Best Regards
-> > Rodrigo Siqueira
-> >=20
-> > On 02/04, Brian Starkey wrote:
-> > > Hi Liviu,
-> > >=20
-> > > On Tue, Jan 15, 2019 at 05:47:42PM +0000, Liviu Dudau wrote:
-> > > > From: Brian Starkey <brian.starkey@arm.com>
-> > >=20
-> > > [snip]
-> > >=20
-> > > > =20
-> > > > +/**
-> > > > + * igt_output_set_writeback_fb:
-> > > > + * @output: Target output
-> > > > + * @fb: Target framebuffer
-> > > > + *
-> > > > + * This function sets the given @fb to be used as the target frame=
-buffer for the
-> > > > + * writeback engine at the next atomic commit. It will also reques=
-t a writeback
-> > > > + * out fence that will contain the fd number of the out fence crea=
-ted by KMS if
-> > > > + * the given @fb is valid.
-> > > > + */
-> > > > +void igt_output_set_writeback_fb(igt_output_t *output, struct igt_=
-fb *fb)
-> > > > +{
-> > > > +	igt_display_t *display =3D output->display;
-> > > > +
-> > > > +	LOG(display, "%s: output_set_writeback_fb(%d)\n", output->name, f=
-b ? fb->fb_id : 0);
-> > > > +
-> > > > +	igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_FB_ID, =
-fb ? fb->fb_id : 0);
-> > > > +	/* only request a writeback out fence if the framebuffer is valid=
- */
-> > > > +	if (fb)
-> > > > +		igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_OUT_FE=
-NCE_PTR,
-> > > > +					  (ptrdiff_t)&output->writeback_out_fence_fd);
-> > >=20
-> > > I'm still not sure (ptrdiff_t) is the right type here, (uintptr_t)
-> > > seems better.
-> > >=20
-> > > Thanks,
-> > > -Brian
-> > > _______________________________________________
-> > > igt-dev mailing list
-> > > igt-dev@lists.freedesktop.org
-> > > https://lists.freedesktop.org/mailman/listinfo/igt-dev
-> >=20
-> > --=20
-> > Rodrigo Siqueira
-> > https://siqueira.tech
-> > Graduate Student
-> > Department of Computer Science
-> > University of S=C3=A3o Paulo
->=20
->=20
->=20
-> --=20
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> | I would like to |
-> | fix the world,  |
-> | but they're not |
-> | giving me the   |
->  \ source code!  /
->   ---------------
->     =C2=AF\_(=E3=83=84)_/=C2=AF
+Thanks! I will prepare a v6 tomorrow
 
 --=20
 Rodrigo Siqueira
 https://siqueira.tech
 Graduate Student
 Department of Computer Science
-University of S=C3=A3o Paulo
+University of S=E3o Paulo
 
---mwpmbe6upli32oec
+--ggfrnw3kvovtdavq
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlyQFikACgkQWJzP/com
-vP8SoA/9GVQsa63nESYj0UL4FVUHQ6Y2t0WURblHTZOWWdeB3yJA+4Qe7wzRqRnT
-cx1pzBSnes4HpfwvP9/4txi2cCCoS/ifJUUCg6WMcC9kjrPsZAtslge/U/CD5ZBo
-gBkY7RY4daSCPeFLAdwpupZPi7BPFYeWSF55WjGqPc14mtxMyfRC60m5P05ZVzip
-BNH9JNUBxuMqacqBQQdioB+1N0FX5nxyY/mUbEa7lfcjG2nsF3czEOAKewzw38on
-KWP2kT67z751a7bFqSX+4vIO6TK8fWdJQyib9LAzLmkmhir93kY91ecX4DvGezZt
-U/xnvp83iiGXpI2gY/Iyxda0zcLxewM1Phtaow3cTWyu8987mRNyQa0BZJ8C38LW
-HKynTaHHFEoKrYuQDvgNIC4s5qYAAtmU7eCte10N8Jor5+ZHPHPySBvBkthDfpSe
-YpAOMdNd5wifvoMgUY8Y4SyMJ2Gj3ax1lcQwwroqug3LioQk3Hgv5fjkWXJli0ou
-sTvjMCF0/Y5pq8ekGfPYsksgDIETbwAY9CCNwTcT0rjMoODEQFvq/6f3RFXf0ROG
-xDd06MIAxw1ttXEz5OTpfmDcEUJoKs/fA5TWRgettGdzcZjDS90EIaImIuDXolOH
-qmuvNiEuGKbB/ohqxCl5DBJc1NWiBEYM/tQO7Wbz71FqR0FoE2s=
-=TRqh
+iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlyQFmEACgkQWJzP/com
+vP/wPBAAv3wXD1UCn9UpCe8F8ZDV3ccu18upShVUwmgqkZS2D8Pu6xxyTB/cMfHu
+lfIiD4YwlLgik4pkaIcYOyp6vpkvaV5do1Y+aj0fimJRFAA2k4daDESPcU16qORj
+qvpMg5305b0p/DY/7RC/HyLWmzHnxqzGb0ebIbDhcu4L0/l6Bt8sorDhdjel8uij
+lCBej6hHuXv3VNZhzyEzt/+mL1xtXnu86CcT5IkLCHon2+tdX3PvgnCWnRHDKxqY
+Xv/zxa4yersk3WaHdJA2mYbUfZCrd8PzF+F90Gzjw6/Xj16Yfa13XvmgO9eo+Q6v
+Af2bREBvXh0j2cMwk3S1S2In4tB9+p3wtbzfLflXy6W6FHTqzCZO+bD9HfE+WQPA
+n78AlAQiVd7LFKKFXGzgK44g9PZ8+dfleBDo4JX0ctBWQlfnBJZWaU4YovUMWfIG
+PB7Znute4lhhFW8mF6rphXcu56YTVwPUm/4MGgrfxDcTZasUSdkbaDFXJAj64tlc
+YK7dTTcbwmjLP7pCOkQ74ydqKhdPgiajhQhD02I0yJSqnb4iLMJetF0Q6w0iUEO+
+ZgLvlWbhrbIW2owgjGDtKBojJcGEs0D0lb2wN/oZR+fZo5y7QjhPBuouU45wr/Ix
+npObGBzYJt+HcUKYxlSQQPtlKneF3knFUv+lNyaC52brdddI3NA=
+=duOL
 -----END PGP SIGNATURE-----
 
---mwpmbe6upli32oec--
+--ggfrnw3kvovtdavq--
 
---===============0242599941==
+--===============0808713967==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: base64
@@ -231,4 +179,4 @@ X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
 YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
 cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
 
---===============0242599941==--
+--===============0808713967==--
