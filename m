@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7872789C2C
- for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2019 11:16:01 +0000 (UTC)
-From: Simon Ser <simon.ser@intel.com>
-Date: Wed, 20 Mar 2019 13:15:55 +0200
-Message-Id: <20190320111556.2476-2-simon.ser@intel.com>
-In-Reply-To: <20190320111556.2476-1-simon.ser@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 79A5C8919E
+ for <igt-dev@lists.freedesktop.org>; Wed, 20 Mar 2019 11:18:30 +0000 (UTC)
+From: "Ser, Simon" <simon.ser@intel.com>
+Date: Wed, 20 Mar 2019 11:18:26 +0000
+Message-ID: <9ddb1ecd39780bd6177510b0831c59bf8ef4ec41.camel@intel.com>
 References: <20190320111556.2476-1-simon.ser@intel.com>
+In-Reply-To: <20190320111556.2476-1-simon.ser@intel.com>
+Content-Language: en-US
+Content-ID: <25599BA431D7EB47B355B48F09652C37@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/3] meson: add -Wno-missing-braces
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] tests/testdisplay: fix heap overflow
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,27 +22,12 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RW5hYmxpbmcgLVdlcnJvcj1taXNzaW5nLWJyYWNlcyByZXN1bHRzIGluIHRoaXMgZXJyb3Igd2l0
-aCBDbGFuZzoKCiAgICAuLi90ZXN0cy9rbXNfdnJyLmM6MjAzOjIwOiBlcnJvcjogc3VnZ2VzdCBi
-cmFjZXMgYXJvdW5kIGluaXRpYWxpemF0aW9uIG9mIHN1Ym9iamVjdCBbLVdlcnJvciwtV21pc3Np
-bmctYnJhY2VzXQogICAgICAgICAgICBkcm1WQmxhbmsgdmJsID0geyAwIH07CiAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIF4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAge30KCkkg
-ZG9uJ3QgYmVsaWV2ZSB0aGVyZSBpcyBhbnkgdmFsdWUgaW4ga2VlcGluZyB0aGlzLCBzbyBsZXQn
-cyBqdXN0IGRpc2FibGUKaXQuCgpTaWduZWQtb2ZmLWJ5OiBTaW1vbiBTZXIgPHNpbW9uLnNlckBp
-bnRlbC5jb20+Ci0tLQogbWVzb24uYnVpbGQgfCAyICstCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNl
-cnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS9tZXNvbi5idWlsZCBiL21lc29u
-LmJ1aWxkCmluZGV4IDU1NzQwMGE1Li5iYjEwMGI3NSAxMDA2NDQKLS0tIGEvbWVzb24uYnVpbGQK
-KysrIGIvbWVzb24uYnVpbGQKQEAgLTM4LDYgKzM4LDcgQEAgY2NfYXJncyA9IFsKIAknLVduby10
-eXBlLWxpbWl0cycsCiAJJy1Xbm8tdW51c2VkLXBhcmFtZXRlcicsCiAJJy1Xbm8tdW51c2VkLXJl
-c3VsdCcsCisJJy1Xbm8tbWlzc2luZy1icmFjZXMnLAogCiAJJy1XZXJyb3I9YWRkcmVzcycsCiAJ
-Jy1XZXJyb3I9YXJyYXktYm91bmRzJywKQEAgLTQ1LDcgKzQ2LDYgQEAgY2NfYXJncyA9IFsKIAkn
-LVdlcnJvcj1pbml0LXNlbGYnLAogCSctV2Vycm9yPWludC10by1wb2ludGVyLWNhc3QnLAogCSct
-V2Vycm9yPW1haW4nLAotCSctV2Vycm9yPW1pc3NpbmctYnJhY2VzJywKIAknLVdlcnJvcj1ub25u
-dWxsJywKIAknLVdlcnJvcj1wb2ludGVyLXRvLWludC1jYXN0JywKIAknLVdlcnJvcj1yZXR1cm4t
-dHlwZScsCi0tIAoyLjIxLjAKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+R2FoLiBTb3JyeSBhYm91dCB0aGlzLCBJIGFjY2lkZW50YWxseSBzZW50IDMgcGF0Y2hlcyBpbnN0
+ZWFkIG9mIGp1c3QNCnRoZSBmaXJzdCBvbmUuDQoNClBsZWFzZSBpZ25vcmUgYWxsIHBhdGNoZXMg
+ZXhjZXB0IHRoZSBmaXJzdC4NCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
 LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpJbnRlbCBGaW5sYW5kIE95ClJlZ2lzdGVy
 ZWQgQWRkcmVzczogUEwgMjgxLCAwMDE4MSBIZWxzaW5raSAKQnVzaW5lc3MgSWRlbnRpdHkgQ29k
 ZTogMDM1NzYwNiAtIDQgCkRvbWljaWxlZCBpbiBIZWxzaW5raSAKClRoaXMgZS1tYWlsIGFuZCBh
@@ -48,6 +35,6 @@ bnkgYXR0YWNobWVudHMgbWF5IGNvbnRhaW4gY29uZmlkZW50aWFsIG1hdGVyaWFsIGZvcgp0aGUg
 c29sZSB1c2Ugb2YgdGhlIGludGVuZGVkIHJlY2lwaWVudChzKS4gQW55IHJldmlldyBvciBkaXN0
 cmlidXRpb24KYnkgb3RoZXJzIGlzIHN0cmljdGx5IHByb2hpYml0ZWQuIElmIHlvdSBhcmUgbm90
 IHRoZSBpbnRlbmRlZApyZWNpcGllbnQsIHBsZWFzZSBjb250YWN0IHRoZSBzZW5kZXIgYW5kIGRl
-bGV0ZSBhbGwgY29waWVzLgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
-cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+bGV0ZSBhbGwgY29waWVzLgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
+ZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
