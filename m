@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DD7B6E3DA
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2019 22:32:37 +0000 (UTC)
-Date: Sat, 23 Mar 2019 00:32:24 +0200
-From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20190322223224.GA20683@ideak-desk.fi.intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 080806E3E4
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2019 23:23:51 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Fri, 22 Mar 2019 23:23:49 +0000
+Message-ID: <8c05ee6504d6af38c70ca53747e74b8d55d2d736.camel@intel.com>
 References: <20190318234424.14487-1-jose.souza@intel.com>
+ <20190322223224.GA20683@ideak-desk.fi.intel.com>
+In-Reply-To: <20190322223224.GA20683@ideak-desk.fi.intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190318234424.14487-1-jose.souza@intel.com>
 Subject: Re: [igt-dev] [PATCH v2 i-g-t] tests/chamelium: Add test for
  hotplug workaround
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -18,131 +19,282 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: imre.deak@intel.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0823663388=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?iso-8859-1?Q?Jos=E9?= Roberto de Souza <jose.souza@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Deak, Imre" <imre.deak@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCBNYXIgMTgsIDIwMTkgYXQgMDQ6NDQ6MjRQTSAtMDcwMCwgSm9zw6kgUm9iZXJ0byBk
-ZSBTb3V6YSB3cm90ZToKPiBJdCBpcyBrbm93IHRoYXQgc29tZSB1bnBvd2VyZWQgdHlwZS1jIGRv
-bmdsZXMgY2FuIHRha2Ugc29tZSB0aW1lIHRvCj4gYm9vdCBhbmQgYmUgcmVzcG9uc2libGUgaW4g
-dGhlIEREQy9hdXggdHJhbnNhY3Rpb24gbGluZXMgc28gYQo+IHdvcmthcm91bmQgd2FzIGltcGxl
-bWVudGVkIGluIGtlcm5lbChkcm0vaTkxNTogRW5hYmxlIGhvdHBsdWcgcmV0cnkpCj4gdG8gZml4
-IGl0IGJ1dCBpcyBwb3NzaWJsZSB0aGF0IHRoaXMgY291bGQgaGFwcGVuIHRvIG90aGVyIERQIHNp
-bmtzLgo+IAo+IFNvIHRoaXMgdGVzdCB3aWxsIHRyeSB0byBzaW11bGF0ZSB0aGUgc2NlbmVhcmlv
-IGRlc2NyaWJlZCBhYm92ZSwgaXQKPiB3aWxsIGRpc2FibGUgdGhlIEREQyBsaW5lcyBhbmQgcGx1
-ZyB0aGUgY29ubmVjdG9yLCB0aGUgaG90cGx1ZyBzaG91bGQKPiBmYWlsIGFuZCB0aGVuIGVuYWJs
-aW5nIHRoZSBEREMgbGluZXMga2VybmVsIHNob3VsZCByZXBvcnQgdGhlCj4gY29ubmVjdG9yIGFz
-IGNvbm5lY3RlZC4KPiAKPiBUaGUgd29ya2Fyb3VuZCB3aWxsIHJlcHJvYmUgY29ubmVjdG9yIGFm
-dGVyIDEgc2Vjb25kIGFmdGVyIGtlcm5lbAo+IGdpdmVzIHVwIG9uIHRoZSBmaXJzdCB0cnkgdG8g
-cHJvYmUgdGhlIGNvbm5lY3Rvciwgc28gdGhhdCBpcyB3aHkgYQo+IHNtYWxsZXIgdGltZW91dCB0
-byBkZXRlY3QgaG90cGx1ZyB3YXMgbmVlZGVkLgo+IAo+IHYyOgo+IC0gUmVtb3ZpbmcgaWd0X2Fz
-c2VydCgpIGZyb20gdGhlIGlndF9ob3RwbHVnX2RldGVjdGVkKCkgd2hlbiBjaGVja2luZwo+IGlm
-IGRldmljZSBjYW4gYWN0IG9uIGhvdHBsdWcgZmFzdCBlbm91Z2gKPiAtIENoZWNraW5nIHRpbWUg
-c3BlbmQgYmV0d2VlbiBob3RwbHVnIGFuZCB0aGUgZW5hYmxpbmcgb2YgRERDIGxpbmVzCj4gKElt
-cmUpCj4gCj4gQ2M6IEltcmUgRGVhayA8aW1yZS5kZWFrQGludGVsLmNvbT4KPiBTaWduZWQtb2Zm
-LWJ5OiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3NlLnNvdXphQGludGVsLmNvbT4KPiAtLS0K
-PiAgdGVzdHMva21zX2NoYW1lbGl1bS5jIHwgMTEwICsrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKwo+ICAxIGZpbGUgY2hhbmdlZCwgMTEwIGluc2VydGlvbnMoKykKPiAK
-PiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2NoYW1lbGl1bS5jIGIvdGVzdHMva21zX2NoYW1lbGl1
-bS5jCj4gaW5kZXggYzIwOTAwMzcuLmM3OTUxNmVmIDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2ttc19j
-aGFtZWxpdW0uYwo+ICsrKyBiL3Rlc3RzL2ttc19jaGFtZWxpdW0uYwo+IEBAIC00NSw2ICs0NSw4
-IEBAIHR5cGVkZWYgc3RydWN0IHsKPiAgCj4gICNkZWZpbmUgSE9UUExVR19USU1FT1VUIDIwIC8q
-IHNlY29uZHMgKi8KPiAgCj4gKyNkZWZpbmUgRkFTVF9IT1RQTFVHX1RJTUVPVVQgKDEpIC8qIHNl
-Y29uZCAqLwo+ICsKPiAgI2RlZmluZSBIUERfU1RPUk1fUFVMU0VfSU5URVJWQUxfRFAgMTAwIC8q
-IG1zICovCj4gICNkZWZpbmUgSFBEX1NUT1JNX1BVTFNFX0lOVEVSVkFMX0hETUkgMjAwIC8qIG1z
-ICovCj4gIAo+IEBAIC0xMDcsNiArMTA5LDIxIEBAIHJlcHJvYmVfY29ubmVjdG9yKGRhdGFfdCAq
-ZGF0YSwgc3RydWN0IGNoYW1lbGl1bV9wb3J0ICpwb3J0KQo+ICAJcmV0dXJuIHN0YXR1czsKPiAg
-fQo+ICAKPiArc3RhdGljIGRybU1vZGVDb25uZWN0aW9uCj4gK2Nvbm5lY3Rvcl9zdGF0dXNfZ2V0
-KGRhdGFfdCAqZGF0YSwgc3RydWN0IGNoYW1lbGl1bV9wb3J0ICpwb3J0KQo+ICt7Cj4gKwlkcm1N
-b2RlQ29ubmVjdG9yICpjb25uZWN0b3I7Cj4gKwlkcm1Nb2RlQ29ubmVjdGlvbiBzdGF0dXM7Cj4g
-Kwo+ICsJaWd0X2RlYnVnKCJHZXR0aW5nIGNvbm5lY3RvciBzdGF0ZSAlcy4uLlxuIiwgY2hhbWVs
-aXVtX3BvcnRfZ2V0X25hbWUocG9ydCkpOwo+ICsJY29ubmVjdG9yID0gY2hhbWVsaXVtX3BvcnRf
-Z2V0X2Nvbm5lY3RvcihkYXRhLT5jaGFtZWxpdW0sIHBvcnQsIGZhbHNlKTsKPiArCWlndF9hc3Nl
-cnQoY29ubmVjdG9yKTsKPiArCXN0YXR1cyA9IGNvbm5lY3Rvci0+Y29ubmVjdGlvbjsKPiArCj4g
-Kwlkcm1Nb2RlRnJlZUNvbm5lY3Rvcihjb25uZWN0b3IpOwo+ICsJcmV0dXJuIHN0YXR1czsKPiAr
-fQo+ICsKPiAgc3RhdGljIHZvaWQKPiAgd2FpdF9mb3JfY29ubmVjdG9yKGRhdGFfdCAqZGF0YSwg
-c3RydWN0IGNoYW1lbGl1bV9wb3J0ICpwb3J0LAo+ICAJCSAgIGRybU1vZGVDb25uZWN0aW9uIHN0
-YXR1cykKPiBAQCAtMjUzLDYgKzI3MCw5NiBAQCB0ZXN0X2Jhc2ljX2hvdHBsdWcoZGF0YV90ICpk
-YXRhLCBzdHJ1Y3QgY2hhbWVsaXVtX3BvcnQgKnBvcnQsIGludCB0b2dnbGVfY291bnQpCj4gIAlp
-Z3RfaHBkX3N0b3JtX3Jlc2V0KGRhdGEtPmRybV9mZCk7Cj4gIH0KPiAgCj4gK3N0YXRpYyB2b2lk
-Cj4gK3Rlc3RfZmFzdF9ob3RwbHVnX2hhbmRsaW5nKGRhdGFfdCAqZGF0YSwgc3RydWN0IGNoYW1l
-bGl1bV9wb3J0ICpwb3J0LAo+ICsJCQkgICBzdHJ1Y3QgdWRldl9tb25pdG9yICptb24pCj4gK3sK
-PiArCWRybU1vZGVDb25uZWN0aW9uIHN0YXR1czsKPiArCj4gKwlpZ3RfZmx1c2hfaG90cGx1Z3Mo
-bW9uKTsKPiArCWNoYW1lbGl1bV9wbHVnKGRhdGEtPmNoYW1lbGl1bSwgcG9ydCk7Cj4gKwlpZ3Rf
-aG90cGx1Z19kZXRlY3RlZChtb24sIEZBU1RfSE9UUExVR19USU1FT1VUKTsKPiArCXN0YXR1cyA9
-IGNvbm5lY3Rvcl9zdGF0dXNfZ2V0KGRhdGEsIHBvcnQpOwo+ICsJaWd0X3JlcXVpcmUoc3RhdHVz
-ID09IERSTV9NT0RFX0NPTk5FQ1RFRCk7Cj4gKwo+ICsJaWd0X2ZsdXNoX2hvdHBsdWdzKG1vbik7
-Cj4gKwljaGFtZWxpdW1fdW5wbHVnKGRhdGEtPmNoYW1lbGl1bSwgcG9ydCk7Cj4gKwlpZ3RfaG90
-cGx1Z19kZXRlY3RlZChtb24sIEZBU1RfSE9UUExVR19USU1FT1VUKTsKPiArCXN0YXR1cyA9IGNv
-bm5lY3Rvcl9zdGF0dXNfZ2V0KGRhdGEsIHBvcnQpOwo+ICsJaWd0X3JlcXVpcmUoc3RhdHVzID09
-IERSTV9NT0RFX0RJU0NPTk5FQ1RFRCk7Cj4gK30KPiArCj4gKy8qCj4gKyAqIFRlc3Qga2VybmVs
-IHdvcmthcm91bmQgZm9yIHNpbmtzIHRoYXQgdGFrZXMgc29tZSB0aW1lIHRvIGhhdmUgdGhlIERE
-Qy9hdXgKPiArICogY2hhbm5lbCByZXNwb25zaXZlIGFmdGVyIHRoZSBob3RwbHVnCj4gKyAqLwo+
-ICtzdGF0aWMgdm9pZAo+ICt0ZXN0X2xhdGVfYXV4X3dhKGRhdGFfdCAqZGF0YSwgc3RydWN0IGNo
-YW1lbGl1bV9wb3J0ICpwb3J0KQo+ICt7Cj4gKwlzdHJ1Y3QgdWRldl9tb25pdG9yICptb24gPSBp
-Z3Rfd2F0Y2hfaG90cGx1ZygpOwo+ICsJZHJtTW9kZUNvbm5lY3Rpb24gc3RhdHVzOwo+ICsJc3Ry
-dWN0IHRpbWVzcGVjIGJlZ2luOwo+ICsJdWludDY0X3QgZGVsdGFfbnNlYzsKPiArCXVpbnQ4X3Qg
-cmV0cmllcyA9IDA7Cj4gKwo+ICsJLyogUmVzZXQgd2lsbCB1bnBsdWcgYWxsIGNvbm5lY3RvcnMg
-Ki8KPiArCXJlc2V0X3N0YXRlKGRhdGEsIE5VTEwpOwo+ICsKPiArCS8qIENoZWNrIGlmIGl0IGRl
-dmljZSBjYW4gYWN0IG9uIGhvdHBsdWdzIGZhc3QgZW5vdWdoIGZvciB0aGlzIHRlc3QgKi8KPiAr
-CXRlc3RfZmFzdF9ob3RwbHVnX2hhbmRsaW5nKGRhdGEsIHBvcnQsIG1vbik7Cj4gKwo+ICtyZXRy
-eToKPiArCS8qIEl0IGlzIGZhc3QgZW5vdWdoLCBsZXRzIGRpc2FibGUgdGhlIEREQyBsaW5lcyBh
-bmQgcGx1ZyBhZ2FpbiAqLwo+ICsJaWd0X2ZsdXNoX2hvdHBsdWdzKG1vbik7Cj4gKwljaGFtZWxp
-dW1fcG9ydF9zZXRfZGRjX3N0YXRlKGRhdGEtPmNoYW1lbGl1bSwgcG9ydCwgZmFsc2UpOwo+ICsJ
-Y2hhbWVsaXVtX3BsdWcoZGF0YS0+Y2hhbWVsaXVtLCBwb3J0KTsKPiArCWlndF9nZXR0aW1lKCZi
-ZWdpbik7CgpTaG91bGQgc3RhcnQgbWVhc3VyaW5nIGFscmVhZHkgYmVmb3JlIGNoYW1lbGl1bV9w
-bHVnKCksIG90aGVyd2lzZSB3ZQpjb3VsZCBtaXNzIHRpbWUgdGhhdCBlbGFwc2VkIHNpbmNlIHRo
-ZSBiZWdpbm5pbmcgb2YgSFBECmludGVycnVwdC0+aG90cGx1ZyBwcm9jZXNzaW5nIGluIHRoZSBr
-ZXJuZWwuCgo+ICsJaWd0X2Fzc2VydCghY2hhbWVsaXVtX3BvcnRfZ2V0X2RkY19zdGF0ZShkYXRh
-LT5jaGFtZWxpdW0sIHBvcnQpKTsKPiArCj4gKwkvKgo+ICsJICogR2l2ZSBzb21lIHRpbWUgdG8g
-a2VybmVsIHRyeSB0byBwcm9jZXNzIGhvdHBsdWcgYnV0IGl0IHNob3VsZCBmYWlsCj4gKwkgKi8K
-PiArCWlndF9ob3RwbHVnX2RldGVjdGVkKG1vbiwgRkFTVF9IT1RQTFVHX1RJTUVPVVQpOwo+ICsJ
-c3RhdHVzID0gY29ubmVjdG9yX3N0YXR1c19nZXQoZGF0YSwgcG9ydCk7Cj4gKwlpZ3RfYXNzZXJ0
-KHN0YXR1cyA9PSBEUk1fTU9ERV9ESVNDT05ORUNURUQpOwo+ICsKPiArCS8qCj4gKwkgKiBFbmFi
-bGUgdGhlIEREQyBsaW5lIGFuZCB0aGUga2VybmVsIHdvcmthcm91bmQgc2hvdWxkIHJlcHJvYmUg
-YW5kCj4gKwkgKiByZXBvcnQgYXMgY29ubmVjdGVkCj4gKwkgKi8KPiArCWNoYW1lbGl1bV9wb3J0
-X3NldF9kZGNfc3RhdGUoZGF0YS0+Y2hhbWVsaXVtLCBwb3J0LCB0cnVlKTsKPiArCj4gKwkvKgo+
-ICsJICogaTkxNSB1c2VzIHRoZSBtYXhpbXVtIHRpbWVvdXQgdGhhdCBlYWNoIHBsYXRmb3JtIHN1
-cHBvcnQgdG8gZG8gYXV4Cj4gKwkgKiB0cmFuc2FjdGlvbnMsIHRoaXMgdGltZW91dCBjYW4gdmFy
-eSBmcm9tIDEuNm1zZWMgdG8gNG1zZWMgYW5kIGk5MTUKPiArCSAqIGRyaXZlciB0cmllcyB0aGUg
-c2FtZSBhdXggdHJhbnNhY3Rpb24gdXAgdG8gNSB0aW1lcyBiZWZvcmUgcmV0dXJuIGEKPiArCSAq
-IGVycm9yIGFuZCBhZGRpdGlvbmFsbHkgZHJtIGhlbHBlcnMgd2lsbCBhc2sgZHJpdmVyIHRvIGRv
-IHRoZSBzYW1lIGF1eAo+ICsJICogdHJhbnNhY3Rpb24gdXAgdG8gMzIgdGltZXMsIHNvIGl0IHdp
-bGwgdGFrZSBhdCBsZWFzdCAyNTZtc2VjfjY0MG1zZWMKPiArCSAqIHRvIGtlcm5lbCBnaXZlIHVw
-IG9uIGEgc2luayBkZXRlY3Rpb24uCj4gKwkgKgo+ICsJICogVGhlIHdvcmthcm91bmQgd2lsbCBi
-ZSBzY2hlZHVsZSB0byBydW4gMSBzZWNvbmQgYWZ0ZXIgdGhlIGRyaXZlcgo+ICsJICogZmFpbGVk
-IHRvIHByb2JlIHRoZSBjb25uZWN0b3IgdGhhdCBzaWduYWxlZCBhIGhvdHBsdWcsIHNvIGlmIHRo
-aXMKPiArCSAqIHRlc3QgaXMgcHJlZW1wdCBpdCBjb3VsZCBmYWlsIGJlY2F1c2UgdGhlIHdvcmth
-cm91bmQgaXMgYWxyZWFkeQo+ICsJICogcnVubmluZyB3aXRoIHRoZSBEREMgbGluZXMgc3RpbGwg
-b2ZmLCBzbyBsZXRzIHRyeSBhZ2FpbiB1bnRpbCB0aGUKPiArCSAqIHRpbWUgcmVxdWlyZW1lbnQg
-aXMgbWVldC4KPiArCSAqLwo+ICsJZGVsdGFfbnNlYyA9IGlndF9uc2VjX2VsYXBzZWQoJmJlZ2lu
-KTsKPiArCWlmIChkZWx0YV9uc2VjID4gKE5TRUNfUEVSX1NFQyAqIDEuM2YpKSB7CgoxLjMgc2Vj
-IGlzIHRvbyBsYXRlIGZvciB0aGUgMjU2bXNlYysxc2VjIHNjZW5hcmlvLi4gU2hvdWxkIGJlIDEu
-Mi4KCkkgZ3Vlc3MgeW91J3JlIHN0aWxsIHdvcmtpbmcgb24gdGhlIEhETUkgdGVzdD8gUGxlYXNl
-IGFsc28gYWRkIGl0IHRvIHRoZQptZXNvbiBhbmQgYXV0b21ha2Ugc291cmNlcy4gSSBndWVzcyB3
-ZSBjYW4gbWVyZ2UgaXQgYmVmb3JlIHRoZSBrZXJuZWwgcGF0Y2hlcwpsZXR0aW5nIGl0IGZhaWwg
-dW50aWwgdGhhdC4KCj4gKwkJaWd0X2Fzc2VydF9mKHJldHJpZXMgIT0gNSwgIlRlc3QgcHJlZW1w
-dGVkIHRvbyBtYW55IHRpbWVzIik7Cj4gKwkJcmV0cmllcysrOwo+ICsKPiArCQkvKiBXYWl0IGZv
-ciAxIG1vcmUgc2VjIHRvIG1ha2Ugc3VyZSB0aGUgd29ya2Fyb3VuZCBmaW5pc2hlZCAqLwo+ICsJ
-CWNoYW1lbGl1bV91bnBsdWcoZGF0YS0+Y2hhbWVsaXVtLCBwb3J0KTsKPiArCQlpZ3RfaG90cGx1
-Z19kZXRlY3RlZChtb24sIEZBU1RfSE9UUExVR19USU1FT1VUKTsKPiArCQlnb3RvIHJldHJ5Owo+
-ICsJfQo+ICsKPiArCWlndF9hc3NlcnQoY2hhbWVsaXVtX3BvcnRfZ2V0X2RkY19zdGF0ZShkYXRh
-LT5jaGFtZWxpdW0sIHBvcnQpKTsKPiArCWlndF9hc3NlcnQoaWd0X2hvdHBsdWdfZGV0ZWN0ZWQo
-bW9uLCBGQVNUX0hPVFBMVUdfVElNRU9VVCkpOwo+ICsJc3RhdHVzID0gY29ubmVjdG9yX3N0YXR1
-c19nZXQoZGF0YSwgcG9ydCk7Cj4gKwlpZ3RfYXNzZXJ0KHN0YXR1cyA9PSBEUk1fTU9ERV9DT05O
-RUNURUQpOwo+ICt9Cj4gKwo+ICBzdGF0aWMgdm9pZAo+ICB0ZXN0X2VkaWRfcmVhZChkYXRhX3Qg
-KmRhdGEsIHN0cnVjdCBjaGFtZWxpdW1fcG9ydCAqcG9ydCwKPiAgCSAgICAgICBpbnQgZWRpZF9p
-ZCwgY29uc3QgdW5zaWduZWQgY2hhciAqZWRpZCkKPiBAQCAtMTMwOCw2ICsxNDE1LDkgQEAgaWd0
-X21haW4KPiAgCj4gIAkJY29ubmVjdG9yX3N1YnRlc3QoImRwLWZyYW1lLWR1bXAiLCBEaXNwbGF5
-UG9ydCkKPiAgCQkJdGVzdF9kaXNwbGF5X2ZyYW1lX2R1bXAoJmRhdGEsIHBvcnQpOwo+ICsKPiAr
-CQljb25uZWN0b3Jfc3VidGVzdCgiZHAtbGF0ZS1hdXgtd2EiLCBEaXNwbGF5UG9ydCkKPiArCQkJ
-dGVzdF9sYXRlX2F1eF93YSgmZGF0YSwgcG9ydCk7Cj4gIAl9Cj4gIAo+ICAJaWd0X3N1YnRlc3Rf
-Z3JvdXAgewo+IC0tIAo+IDIuMjEuMAo+IApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVk
-ZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2lndC1kZXY=
+--===============0823663388==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-jy6EpflF8f417j7OGyOM"
+
+--=-jy6EpflF8f417j7OGyOM
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Sat, 2019-03-23 at 00:32 +0200, Imre Deak wrote:
+> On Mon, Mar 18, 2019 at 04:44:24PM -0700, Jos=C3=A9 Roberto de Souza
+> wrote:
+> > It is know that some unpowered type-c dongles can take some time to
+> > boot and be responsible in the DDC/aux transaction lines so a
+> > workaround was implemented in kernel(drm/i915: Enable hotplug
+> > retry)
+> > to fix it but is possible that this could happen to other DP sinks.
+> >=20
+> > So this test will try to simulate the sceneario described above, it
+> > will disable the DDC lines and plug the connector, the hotplug
+> > should
+> > fail and then enabling the DDC lines kernel should report the
+> > connector as connected.
+> >=20
+> > The workaround will reprobe connector after 1 second after kernel
+> > gives up on the first try to probe the connector, so that is why a
+> > smaller timeout to detect hotplug was needed.
+> >=20
+> > v2:
+> > - Removing igt_assert() from the igt_hotplug_detected() when
+> > checking
+> > if device can act on hotplug fast enough
+> > - Checking time spend between hotplug and the enabling of DDC lines
+> > (Imre)
+> >=20
+> > Cc: Imre Deak <imre.deak@intel.com>
+> > Signed-off-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
+> > ---
+> >  tests/kms_chamelium.c | 110
+> > ++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 110 insertions(+)
+> >=20
+> > diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
+> > index c2090037..c79516ef 100644
+> > --- a/tests/kms_chamelium.c
+> > +++ b/tests/kms_chamelium.c
+> > @@ -45,6 +45,8 @@ typedef struct {
+> > =20
+> >  #define HOTPLUG_TIMEOUT 20 /* seconds */
+> > =20
+> > +#define FAST_HOTPLUG_TIMEOUT (1) /* second */
+> > +
+> >  #define HPD_STORM_PULSE_INTERVAL_DP 100 /* ms */
+> >  #define HPD_STORM_PULSE_INTERVAL_HDMI 200 /* ms */
+> > =20
+> > @@ -107,6 +109,21 @@ reprobe_connector(data_t *data, struct
+> > chamelium_port *port)
+> >  	return status;
+> >  }
+> > =20
+> > +static drmModeConnection
+> > +connector_status_get(data_t *data, struct chamelium_port *port)
+> > +{
+> > +	drmModeConnector *connector;
+> > +	drmModeConnection status;
+> > +
+> > +	igt_debug("Getting connector state %s...\n",
+> > chamelium_port_get_name(port));
+> > +	connector =3D chamelium_port_get_connector(data->chamelium, port,
+> > false);
+> > +	igt_assert(connector);
+> > +	status =3D connector->connection;
+> > +
+> > +	drmModeFreeConnector(connector);
+> > +	return status;
+> > +}
+> > +
+> >  static void
+> >  wait_for_connector(data_t *data, struct chamelium_port *port,
+> >  		   drmModeConnection status)
+> > @@ -253,6 +270,96 @@ test_basic_hotplug(data_t *data, struct
+> > chamelium_port *port, int toggle_count)
+> >  	igt_hpd_storm_reset(data->drm_fd);
+> >  }
+> > =20
+> > +static void
+> > +test_fast_hotplug_handling(data_t *data, struct chamelium_port
+> > *port,
+> > +			   struct udev_monitor *mon)
+> > +{
+> > +	drmModeConnection status;
+> > +
+> > +	igt_flush_hotplugs(mon);
+> > +	chamelium_plug(data->chamelium, port);
+> > +	igt_hotplug_detected(mon, FAST_HOTPLUG_TIMEOUT);
+> > +	status =3D connector_status_get(data, port);
+> > +	igt_require(status =3D=3D DRM_MODE_CONNECTED);
+> > +
+> > +	igt_flush_hotplugs(mon);
+> > +	chamelium_unplug(data->chamelium, port);
+> > +	igt_hotplug_detected(mon, FAST_HOTPLUG_TIMEOUT);
+> > +	status =3D connector_status_get(data, port);
+> > +	igt_require(status =3D=3D DRM_MODE_DISCONNECTED);
+> > +}
+> > +
+> > +/*
+> > + * Test kernel workaround for sinks that takes some time to have
+> > the DDC/aux
+> > + * channel responsive after the hotplug
+> > + */
+> > +static void
+> > +test_late_aux_wa(data_t *data, struct chamelium_port *port)
+> > +{
+> > +	struct udev_monitor *mon =3D igt_watch_hotplug();
+> > +	drmModeConnection status;
+> > +	struct timespec begin;
+> > +	uint64_t delta_nsec;
+> > +	uint8_t retries =3D 0;
+> > +
+> > +	/* Reset will unplug all connectors */
+> > +	reset_state(data, NULL);
+> > +
+> > +	/* Check if it device can act on hotplugs fast enough for this
+> > test */
+> > +	test_fast_hotplug_handling(data, port, mon);
+> > +
+> > +retry:
+> > +	/* It is fast enough, lets disable the DDC lines and plug again
+> > */
+> > +	igt_flush_hotplugs(mon);
+> > +	chamelium_port_set_ddc_state(data->chamelium, port, false);
+> > +	chamelium_plug(data->chamelium, port);
+> > +	igt_gettime(&begin);
+>=20
+> Should start measuring already before chamelium_plug(), otherwise we
+> could miss time that elapsed since the beginning of HPD
+> interrupt->hotplug processing in the kernel.
+
+Okay
+
+>=20
+> > +	igt_assert(!chamelium_port_get_ddc_state(data->chamelium,
+> > port));
+> > +
+> > +	/*
+> > +	 * Give some time to kernel try to process hotplug but it
+> > should fail
+> > +	 */
+> > +	igt_hotplug_detected(mon, FAST_HOTPLUG_TIMEOUT);
+> > +	status =3D connector_status_get(data, port);
+> > +	igt_assert(status =3D=3D DRM_MODE_DISCONNECTED);
+> > +
+> > +	/*
+> > +	 * Enable the DDC line and the kernel workaround should reprobe
+> > and
+> > +	 * report as connected
+> > +	 */
+> > +	chamelium_port_set_ddc_state(data->chamelium, port, true);
+> > +
+> > +	/*
+> > +	 * i915 uses the maximum timeout that each platform support to
+> > do aux
+> > +	 * transactions, this timeout can vary from 1.6msec to 4msec
+> > and i915
+> > +	 * driver tries the same aux transaction up to 5 times before
+> > return a
+> > +	 * error and additionally drm helpers will ask driver to do the
+> > same aux
+> > +	 * transaction up to 32 times, so it will take at least
+> > 256msec~640msec
+> > +	 * to kernel give up on a sink detection.
+> > +	 *
+> > +	 * The workaround will be schedule to run 1 second after the
+> > driver
+> > +	 * failed to probe the connector that signaled a hotplug, so if
+> > this
+> > +	 * test is preempt it could fail because the workaround is
+> > already
+> > +	 * running with the DDC lines still off, so lets try again
+> > until the
+> > +	 * time requirement is meet.
+> > +	 */
+> > +	delta_nsec =3D igt_nsec_elapsed(&begin);
+> > +	if (delta_nsec > (NSEC_PER_SEC * 1.3f)) {
+>=20
+> 1.3 sec is too late for the 256msec+1sec scenario.. Should be 1.2.
+
+Okay
+
+>=20
+> I guess you're still working on the HDMI test? Please also add it to
+> the
+> meson and automake sources. I guess we can merge it before the kernel
+> patches
+> letting it fail until that.
+
+The HDMI test is ready but it requires a change in chameleon side, got
+the changed merged upstream[1] this week but it will take some time to
+chromiumos to release a over-the-air chameleond update, it is okay send
+the test but it will skip while the new method is not
+available(checking the return of the chameleond server)?
+
+[1]=20
+https://chromium.googlesource.com/chromiumos/platform/chameleon/+/231016d02=
+369d33ba1c3b3322e4bc88d881bf520
+
+>=20
+> > +		igt_assert_f(retries !=3D 5, "Test preempted too many
+> > times");
+> > +		retries++;
+> > +
+> > +		/* Wait for 1 more sec to make sure the workaround
+> > finished */
+> > +		chamelium_unplug(data->chamelium, port);
+> > +		igt_hotplug_detected(mon, FAST_HOTPLUG_TIMEOUT);
+> > +		goto retry;
+> > +	}
+> > +
+> > +	igt_assert(chamelium_port_get_ddc_state(data->chamelium,
+> > port));
+> > +	igt_assert(igt_hotplug_detected(mon, FAST_HOTPLUG_TIMEOUT));
+> > +	status =3D connector_status_get(data, port);
+> > +	igt_assert(status =3D=3D DRM_MODE_CONNECTED);
+> > +}
+> > +
+> >  static void
+> >  test_edid_read(data_t *data, struct chamelium_port *port,
+> >  	       int edid_id, const unsigned char *edid)
+> > @@ -1308,6 +1415,9 @@ igt_main
+> > =20
+> >  		connector_subtest("dp-frame-dump", DisplayPort)
+> >  			test_display_frame_dump(&data, port);
+> > +
+> > +		connector_subtest("dp-late-aux-wa", DisplayPort)
+> > +			test_late_aux_wa(&data, port);
+> >  	}
+> > =20
+> >  	igt_subtest_group {
+> > --=20
+> > 2.21.0
+> >=20
+
+--=-jy6EpflF8f417j7OGyOM
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyVboQACgkQVenbO/mO
+WklXGgf+KmVEbrhapI8tKhqM977LbRnCBbhCoTraw8OLV1+nmUbs47s/okx90MIX
+P+9e2cYR6WRDlX765O7wyuiXFjW5eGATB6Mx+6KoxKq+pp8vYH5OgVtensc9XGS9
+O0IZ5pKDV49W3b/RzDITweZaCJADTJCGnLNLMd3p1uDgdmUf110ewuAr3x99VSA8
+3HQiZOGhO+VoraOElYRORxCQwtfzErjrgmzvlMK8LyY02++5Po9uqXgYwr129KtR
+UV704iB/h5h7i+azA1VdWgyBva6eg++XAu/BRxfv+42XmfYo6EYPjVN8YpqzVvYr
+kkP7CDwUU5elTmZAmjcXz3Ne+EkZSg==
+=Jc5F
+-----END PGP SIGNATURE-----
+
+--=-jy6EpflF8f417j7OGyOM--
+
+--===============0823663388==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============0823663388==--
