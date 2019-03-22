@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 11F5F6E1FB
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2019 07:13:00 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-Date: Fri, 22 Mar 2019 07:12:56 +0000
-Message-ID: <56e1a1aaa3b77a97d50c2ea456cdea258f02e459.camel@intel.com>
-References: <20190321135714.30854-1-mika.kahola@intel.com>
- <20190321182625.GK3888@intel.com>
-In-Reply-To: <20190321182625.GK3888@intel.com>
-Content-Language: en-US
-Content-ID: <5B9897538B9E8B418C450F8CB3E0130C@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E76E6E260
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Mar 2019 07:19:07 +0000 (UTC)
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: Minimum width
- and height for planar YUV formats on i915 devices
+From: Chris Wilson <chris@chris-wilson.co.uk>
+References: <20190321230613.8639-1-prathap.kumar.valsan@intel.com>
+In-Reply-To: <20190321230613.8639-1-prathap.kumar.valsan@intel.com>
+Message-ID: <155323914179.26447.9281931190004143408@skylake-alporthouse-com>
+Date: Fri, 22 Mar 2019 07:19:01 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_exec_gttfill: Run basic test
+ on simulation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,34 +21,30 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Prathap Kumar Valsan <prathap.kumar.valsan@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UHVzaGVkIQoKVGhhbmtzIGZvciB0aGUgcmV2aWV3IQoKQ2hlZXJzLApNaWthCgpPbiBUaHUsIDIw
-MTktMDMtMjEgYXQgMjA6MjYgKzAyMDAsIFZpbGxlIFN5cmrDpGzDpCB3cm90ZToKPiBPbiBUaHUs
-IE1hciAyMSwgMjAxOSBhdCAwMzo1NzoxNFBNICswMjAwLCBNaWthIEthaG9sYSB3cm90ZToKPiA+
-IFVzZSBtaW5pbXVtIG9mIDE2eDE2IHNpemUgZm9yIGk5MTUgZGV2aWNlcyBvbmx5IGFzIG90aGVy
-IEhXJ3MgbWF5Cj4gPiBoYXZlIGRpZmZlcmVudCBsaW1pdGF0aW9ucy4KPiA+IFRoZSBkZWZhdWx0
-IGlzIDh4OC4KPiAKPiBJIGd1ZXNzIHRoZSA4eDggaXMgZXF1YWxseSBhcmJpdHJhcnkgZm9yIG90
-aGVyIGRldmljZXMuIEJ1dCBtYXliZQo+IGl0J3MKPiBhIGdvb2QgZW5vdWdoIGRlZmF1bHQ/Cj4g
-Cj4gUmV2aWV3ZWQtYnk6IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRl
-bC5jb20+Cj4gCj4gPiAKPiA+IFN1Z2dlc3RlZC1ieTogVmlsbGUgU3lyamFsYSA8dmlsbGUuc3ly
-amFsYUBsaW51eC5pbnRlbC5jb20+Cj4gPiBTaWduZWQtb2ZmLWJ5OiBNaWthIEthaG9sYSA8bWlr
-YS5rYWhvbGFAaW50ZWwuY29tPgo+ID4gLS0tCj4gPiAgdGVzdHMva21zX3BsYW5lX3NjYWxpbmcu
-YyB8IDIgKy0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24o
-LSkKPiA+IAo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19wbGFuZV9zY2FsaW5nLmMgYi90ZXN0
-cy9rbXNfcGxhbmVfc2NhbGluZy5jCj4gPiBpbmRleCAwMWY1ZjdjOS4uMTBjODUyZDUgMTAwNjQ0
-Cj4gPiAtLS0gYS90ZXN0cy9rbXNfcGxhbmVfc2NhbGluZy5jCj4gPiArKysgYi90ZXN0cy9rbXNf
-cGxhbmVfc2NhbGluZy5jCj4gPiBAQCAtMTQ5LDcgKzE0OSw3IEBAIHN0YXRpYyB2b2lkIGNoZWNr
-X3NjYWxpbmdfcGlwZV9wbGFuZV9yb3QoZGF0YV90Cj4gPiAqZCwgaWd0X3BsYW5lX3QgKnBsYW5l
-LAo+ID4gIAo+ID4gIAkvKiBjcmVhdGUgYnVmZmVyIGluIHRoZSByYW5nZSBvZiAgbWluIGFuZCBt
-YXggc291cmNlIHNpZGUKPiA+IGxpbWl0LiovCj4gPiAgCXdpZHRoID0gaGVpZ2h0ID0gODsKPiA+
-IC0JaWYgKGlzX3BsYW5hcl95dXZfZm9ybWF0KHBpeGVsX2Zvcm1hdCkpCj4gPiArCWlmIChpc19p
-OTE1X2RldmljZShkLT5kcm1fZmQpICYmCj4gPiBpc19wbGFuYXJfeXV2X2Zvcm1hdChwaXhlbF9m
-b3JtYXQpKQo+ID4gIAkJd2lkdGggPSBoZWlnaHQgPSAxNjsKPiA+ICAJaWd0X2NyZWF0ZV9jb2xv
-cl9mYihkaXNwbGF5LT5kcm1fZmQsIHdpZHRoLCBoZWlnaHQsCj4gPiAgCQkgICAgICAgcGl4ZWxf
-Zm9ybWF0LCB0aWxpbmcsIDAuMCwgMS4wLCAwLjAsICZkLT5mYlswXSk7Cj4gPiAtLSAKPiA+IDIu
-MTcuMQo+IAo+IApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
-czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
+UXVvdGluZyBQcmF0aGFwIEt1bWFyIFZhbHNhbiAoMjAxOS0wMy0yMSAyMzowNjoxMykKPiBCYXNp
+YyB0ZXN0IGRvbid0IHRha2UgbG9uZyB0byBjb21wbGV0ZSwgc28gYWxsb3cgYmFzaWMgdGVzdCB0
+bwo+IHJ1biBvbiBzaW11bGF0aW9uLgo+IC0tLQo+ICB0ZXN0cy9pOTE1L2dlbV9leGVjX2d0dGZp
+bGwuYyB8IDEzICsrKysrKysrLS0tLS0KPiAgMSBmaWxlIGNoYW5nZWQsIDggaW5zZXJ0aW9ucygr
+KSwgNSBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fZXhlY19n
+dHRmaWxsLmMgYi90ZXN0cy9pOTE1L2dlbV9leGVjX2d0dGZpbGwuYwo+IGluZGV4IGVmZDYxMmJi
+Li45MmMzY2Y2MiAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2dlbV9leGVjX2d0dGZpbGwuYwo+
+ICsrKyBiL3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfZ3R0ZmlsbC5jCj4gQEAgLTE0NCw3ICsxNDQsOCBA
+QCBzdGF0aWMgdm9pZCBmaWxsZ3R0KGludCBmZCwgdW5zaWduZWQgcmluZywgaW50IHRpbWVvdXQp
+Cj4gICAgICAgICBjb3VudCA9IHNpemUgLyBCQVRDSF9TSVpFICsgMTsKPiAgICAgICAgIGlndF9k
+ZWJ1ZygiVXNpbmcgJSdkIGJhdGNoZXMgdG8gZmlsbCAlJ2xsdSBhcGVydHVyZSBvbiAlZCBlbmdp
+bmVzXG4iLAo+ICAgICAgICAgICAgICAgICAgIGNvdW50LCAobG9uZyBsb25nKXNpemUsIG5lbmdp
+bmUpOwo+IC0gICAgICAgaW50ZWxfcmVxdWlyZV9tZW1vcnkoY291bnQsIEJBVENIX1NJWkUsIENI
+RUNLX1JBTSk7Cj4gKyAgICAgICBpZiAoIWlndF9ydW5faW5fc2ltdWxhdGlvbigpKQo+ICsgICAg
+ICAgICAgICAgICBpbnRlbF9yZXF1aXJlX21lbW9yeShjb3VudCwgQkFUQ0hfU0laRSwgQ0hFQ0tf
+UkFNKTsKCk5vLiBUaGF0IGlzIHRvbyB1Z2x5LiBZb3UgYXJlIGJhc2ljYWxseSBzYXlpbmcgdGhh
+dCBtZW1vcnkgbGltaXRzIGRvbid0Cm1hdHRlciBmb3Igc2ltdWxhdGlvbiAtLSB1bmxlc3MgdGhl
+IHJlYWRlciBpcyBhd2FyZSBvZiB0aGUgY29udm9sdXRlZApzdG9yeSBpbiB0aGUgc2V0dXAgYW5k
+IHRoYXQgd2UndmUgcHJldmlvdXNseSBtYXJrZWQgYXMgYW55dGhpbmcgdGhhdApyZXF1aXJlcyB0
+byBjaGVjayBtZW1vcnkgaXMgbm90IHN1aXRhYmxlIGZvciB0aGUgc2xvdyBzaW11bGF0b3IuCgpX
+aHkgZG8geW91IHdhbnQgdG8gcnVuIHRoaXMgb24gdGhlIHNpbXVsYXRvcj8gV3JpdGUgdGhhdCB0
+ZXN0LgotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
+cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
