@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BFBE26E220
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Apr 2019 19:47:05 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Mon, 1 Apr 2019 19:47:03 +0000
+Message-ID: <1cf9032d42196a98c8ce20073b2ae85795a5723c.camel@intel.com>
+References: <20190330010328.28054-1-jose.souza@intel.com>
+ <20190330010328.28054-3-jose.souza@intel.com>
+ <dc503a653b7a6259f9789a8ce8238db691623aa8.camel@intel.com>
+In-Reply-To: <dc503a653b7a6259f9789a8ce8238db691623aa8.camel@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 01 Apr 2019 18:42:44 -0000
-Message-ID: <20190401184244.10512.90026@emeril.freedesktop.org>
-References: <20190401133707.6857-1-arkadiusz.hiler@intel.com>
-In-Reply-To: <20190401133707.6857-1-arkadiusz.hiler@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fdp=5Fdsc=3A_Cosmetic_touch-up?=
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests/plane_lowres: Test each plane
+ individually
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,107 +20,548 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0476268197=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Kahola,
+ Mika" <mika.kahola@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHMva21zX2RwX2RzYzogQ29zbWV0aWMg
-dG91Y2gtdXAKVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVz
-LzU4ODMxLwpTdGF0ZSA6IHN1Y2Nlc3MKCj09IFN1bW1hcnkgPT0KCkNJIEJ1ZyBMb2cgLSBjaGFu
-Z2VzIGZyb20gQ0lfRFJNXzU4NTFfZnVsbCAtPiBJR1RQV18yNzUzX2Z1bGwKPT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQoKU3VtbWFyeQotLS0tLS0t
-CgogICoqU1VDQ0VTUyoqCgogIE5vIHJlZ3Jlc3Npb25zIGZvdW5kLgoKICBFeHRlcm5hbCBVUkw6
-IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9hcGkvMS4wL3Nlcmllcy81ODgzMS9y
-ZXZpc2lvbnMvMS9tYm94LwoKS25vd24gaXNzdWVzCi0tLS0tLS0tLS0tLQoKICBIZXJlIGFyZSB0
-aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV18yNzUzX2Z1bGwgdGhhdCBjb21lIGZyb20ga25vd24g
-aXNzdWVzOgoKIyMjIElHVCBjaGFuZ2VzICMjIwoKIyMjIyBJc3N1ZXMgaGl0ICMjIyMKCiAgKiBp
-Z3RAZ2VtX2NyZWF0ZUBjcmVhdGUtY2xlYXI6CiAgICAtIHNoYXJkLXNuYjogICAgICAgICAgTk9U
-UlVOIC0+IElOQ09NUExFVEUgW2ZkbyMxMDU0MTFdCgogICogaWd0QGdlbV9leGVjX3BhcmFtc0Bj
-b250cm9sOgogICAgLSBzaGFyZC1oc3c6ICAgICAgICAgIFBBU1MgLT4gSU5DT01QTEVURSBbZmRv
-IzEwMzU0MF0KCiAgKiBpZ3RAZ2VtX3RpbGVkX3N3YXBwaW5nQG5vbi10aHJlYWRlZDoKICAgIC0g
-c2hhcmQtaHN3OiAgICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDg2ODZdCgogICogaWd0QGtt
-c19idXN5QGJhc2ljLW1vZGVzZXQtZjoKICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBOT1RSVU4g
-LT4gU0tJUCBbZmRvIzEwOTI3MV0gLyBbZmRvIzEwOTI3OF0KCiAgKiBpZ3RAa21zX2J1c3lAZXh0
-ZW5kZWQtbW9kZXNldC1oYW5nLW5ld2ZiLXJlbmRlci1jOgogICAgLSBzaGFyZC1oc3c6ICAgICAg
-ICAgIFBBU1MgLT4gRE1FU0ctV0FSTiBbZmRvIzExMDIyMl0gKzEKICAgIC0gc2hhcmQta2JsOiAg
-ICAgICAgICBQQVNTIC0+IERNRVNHLVdBUk4gW2ZkbyMxMTAyMjJdCgogICogaWd0QGttc19mcm9u
-dGJ1ZmZlcl90cmFja2luZ0BmYmMtMnAtcHJpbXNjcm4tc3ByLWluZGZiLWRyYXctbW1hcC1ndHQ6
-CiAgICAtIHNoYXJkLWtibDogICAgICAgICAgTk9UUlVOIC0+IFNLSVAgW2ZkbyMxMDkyNzFdICsy
-MAoKICAqIGlndEBrbXNfZnJvbnRidWZmZXJfdHJhY2tpbmdAZmJjLTJwLXNjbmRzY3JuLWN1ci1p
-bmRmYi1kcmF3LXJlbmRlcjoKICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBQQVNTIC0+IEZBSUwg
-W2ZkbyMxMDMxNjddCgogICogaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0BmYmNwc3ItMnAt
-c2NuZHNjcm4taW5kZmItcGxmbGlwLWJsdDoKICAgIC0gc2hhcmQtc25iOiAgICAgICAgICBOT1RS
-VU4gLT4gU0tJUCBbZmRvIzEwOTI3MV0gKzMxCgogICogaWd0QGttc19waXBlX2NyY19iYXNpY0Bo
-YW5nLXJlYWQtY3JjLXBpcGUtZDoKICAgIC0gc2hhcmQta2JsOiAgICAgICAgICBOT1RSVU4gLT4g
-U0tJUCBbZmRvIzEwOTI3MV0gLyBbZmRvIzEwOTI3OF0gKzEKCiAgKiBpZ3RAa21zX3BsYW5lX2Fs
-cGhhX2JsZW5kQHBpcGUtYS1hbHBoYS03ZWZjOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIFBB
-U1MgLT4gRkFJTCBbZmRvIzEwODE0NV0KCiAgKiBpZ3RAa21zX3VuaXZlcnNhbF9wbGFuZUBjdXJz
-b3ItZmItbGVhay1waXBlLWQ6CiAgICAtIHNoYXJkLXNuYjogICAgICAgICAgTk9UUlVOIC0+IFNL
-SVAgW2ZkbyMxMDkyNzFdIC8gW2ZkbyMxMDkyNzhdICs1CgogICogaWd0QGttc192YmxhbmtAcGlw
-ZS1hLXRzLWNvbnRpbnVhdGlvbi1kcG1zLXN1c3BlbmQ6CiAgICAtIHNoYXJkLWFwbDogICAgICAg
-ICAgUEFTUyAtPiBGQUlMIFtmZG8jMTA0ODk0XQogICAgLSBzaGFyZC1rYmw6ICAgICAgICAgIFBB
-U1MgLT4gRkFJTCBbZmRvIzEwNDg5NF0KCiAgKiBpZ3RAa21zX3ZibGFua0BwaXBlLWItdHMtY29u
-dGludWF0aW9uLXN1c3BlbmQ6CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgUEFTUyAtPiBJTkNP
-TVBMRVRFIFtmZG8jMTAzMzU5XSAvIFtrLm9yZyMxOTgxMzNdICsxCgogICogaWd0QHByaW1lX252
-X3Bjb3B5QHRlc3QxX21pY3JvOgogICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIE5PVFJVTiAtPiBT
-S0lQIFtmZG8jMTA5MjcxXSArMwoKICAKIyMjIyBQb3NzaWJsZSBmaXhlcyAjIyMjCgogICogaWd0
-QGk5MTVfcG1fcmM2X3Jlc2lkZW5jeUByYzYtYWNjdXJhY3k6CiAgICAtIHNoYXJkLXNuYjogICAg
-ICAgICAgU0tJUCBbZmRvIzEwOTI3MV0gLT4gUEFTUwoKICAqIGlndEBrbXNfYnVzeUBleHRlbmRl
-ZC1tb2Rlc2V0LWhhbmctbmV3ZmItcmVuZGVyLWE6CiAgICAtIHNoYXJkLWhzdzogICAgICAgICAg
-RE1FU0ctV0FSTiBbZmRvIzExMDIyMl0gLT4gUEFTUyArMQogICAgLSBzaGFyZC1rYmw6ICAgICAg
-ICAgIERNRVNHLVdBUk4gW2ZkbyMxMTAyMjJdIC0+IFBBU1MKCiAgKiBpZ3RAa21zX2J1c3lAZXh0
-ZW5kZWQtbW9kZXNldC1oYW5nLW5ld2ZiLXdpdGgtcmVzZXQtcmVuZGVyLWI6CiAgICAtIHNoYXJk
-LXNuYjogICAgICAgICAgRE1FU0ctV0FSTiBbZmRvIzExMDIyMl0gLT4gUEFTUwoKICAqIGlndEBr
-bXNfY3Vyc29yX2NyY0BjdXJzb3ItMTI4eDQyLXNsaWRpbmc6CiAgICAtIHNoYXJkLWtibDogICAg
-ICAgICAgRkFJTCBbZmRvIzEwMzIzMl0gLT4gUEFTUwogICAgLSBzaGFyZC1hcGw6ICAgICAgICAg
-IEZBSUwgW2ZkbyMxMDMyMzJdIC0+IFBBU1MKCiAgKiBpZ3RAa21zX2N1cnNvcl9jcmNAY3Vyc29y
-LTY0eDIxLXNsaWRpbmc6CiAgICAtIHNoYXJkLWdsazogICAgICAgICAgRkFJTCBbZmRvIzEwMzIz
-Ml0gLT4gUEFTUwoKICAqIGlndEBrbXNfZmxpcEBmbGlwLXZzLXN1c3BlbmQ6CiAgICAtIHNoYXJk
-LXNuYjogICAgICAgICAgRE1FU0ctV0FSTiBbZmRvIzEwMjM2NV0gLT4gUEFTUwoKICAqIGlndEBr
-bXNfZnJvbnRidWZmZXJfdHJhY2tpbmdAZmJjLTJwLXByaW1zY3JuLXByaS1pbmRmYi1kcmF3LW1t
-YXAtY3B1OgogICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDMxNjddIC0+IFBB
-U1MKCiAgKiBpZ3RAa21zX3BsYW5lX3NjYWxpbmdAcGlwZS1hLXNjYWxlci13aXRoLXJvdGF0aW9u
-OgogICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIFNLSVAgW2ZkbyMxMDkyNzFdIC8gW2ZkbyMxMDky
-NzhdIC0+IFBBU1MgKzEKCiAgKiBpZ3RAa21zX3JvdGF0aW9uX2NyY0BtdWx0aXBsYW5lLXJvdGF0
-aW9uLWNyb3BwaW5nLWJvdHRvbToKICAgIC0gc2hhcmQta2JsOiAgICAgICAgICBETUVTRy1GQUlM
-IFtmZG8jMTA1NzYzXSAtPiBQQVNTCgogICogaWd0QGttc192YmxhbmtAcGlwZS1iLXRzLWNvbnRp
-bnVhdGlvbi1zdXNwZW5kOgogICAgLSBzaGFyZC1rYmw6ICAgICAgICAgIElOQ09NUExFVEUgW2Zk
-byMxMDM2NjVdIC0+IFBBU1MKCiAgCiAgW2ZkbyMxMDIzNjVdOiBodHRwczovL2J1Z3MuZnJlZWRl
-c2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDIzNjUKICBbZmRvIzEwMzE2N106IGh0dHBzOi8v
-YnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzE2NwogIFtmZG8jMTAzMjMy
-XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMjMyCiAg
-W2ZkbyMxMDMzNTldOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9p
-ZD0xMDMzNTkKICBbZmRvIzEwMzU0MF06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hv
-d19idWcuY2dpP2lkPTEwMzU0MAogIFtmZG8jMTAzNjY1XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNr
-dG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzNjY1CiAgW2ZkbyMxMDQ4OTRdOiBodHRwczovL2J1
-Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDQ4OTQKICBbZmRvIzEwNTQxMV06
-IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNTQxMQogIFtm
-ZG8jMTA1NzYzXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
-MTA1NzYzCiAgW2ZkbyMxMDgxNDVdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3df
-YnVnLmNnaT9pZD0xMDgxNDUKICBbZmRvIzEwODY4Nl06IGh0dHBzOi8vYnVncy5mcmVlZGVza3Rv
-cC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODY4NgogIFtmZG8jMTA5MjcxXTogaHR0cHM6Ly9idWdz
-LmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5MjcxCiAgW2ZkbyMxMDkyNzhdOiBo
-dHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkyNzgKICBbZmRv
-IzExMDIyMl06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEx
-MDIyMgogIFtrLm9yZyMxOTgxMzNdOiBodHRwczovL2J1Z3ppbGxhLmtlcm5lbC5vcmcvc2hvd19i
-dWcuY2dpP2lkPTE5ODEzMwoKClBhcnRpY2lwYXRpbmcgaG9zdHMgKDEwIC0+IDUpCi0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQoKICBNaXNzaW5nICAgICg1KTogc2hhcmQtc2tsIHBpZy1o
-c3ctNDc3MHIgcGlnLWdsay1qNTAwNSBzaGFyZC1pY2xiIHBpZy1za2wtNjI2MHUgCgoKQnVpbGQg
-Y2hhbmdlcwotLS0tLS0tLS0tLS0tCgogICAgKiBJR1Q6IElHVF80OTE3IC0+IElHVFBXXzI3NTMK
-ICAgICogUGlnbGl0OiBwaWdsaXRfNDUwOSAtPiBOb25lCgogIENJX0RSTV81ODUxOiBkZGNhYjI3
-Yjc2Y2Y2ODVhOTEzNmNmMjZmMTExMDM3NjVmZDdkOGQ1IEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVz
-a3RvcC5vcmcvZ2Z4LWNpL2xpbnV4CiAgSUdUUFdfMjc1MzogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yNzUzLwogIElHVF80OTE3OiBlYzk3OTJhZDc3MGQ1
-MDU1ZDZmNDJlMmE0ODFiODMxNDc1NGM5MjE4IEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5v
-cmcveG9yZy9hcHAvaW50ZWwtZ3B1LXRvb2xzCiAgcGlnbGl0XzQ1MDk6IGZkYzVhNGNhMTExMjRh
-Yjg0MTNjNzk4ODg5NmVlYzRjOTczMzY2OTQgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9y
-Zy9waWdsaXQKCj09IExvZ3MgPT0KCkZvciBtb3JlIGRldGFpbHMgc2VlOiBodHRwczovL2ludGVs
-LWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzI3NTMvCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
-ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
-aWxtYW4vbGlzdGluZm8vaWd0LWRldg==
+--===============0476268197==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-C9B4zoK7asmBkGOPnHdm"
+
+--=-C9B4zoK7asmBkGOPnHdm
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, 2019-04-01 at 14:18 +0100, Kahola, Mika wrote:
+> I think in this test it would be sufficient to test only with one
+> plane
+> as this test is intended to test resolution change. We do have
+> kms_plane_multiple test that tests all planes at once and thereofre
+> exercises full bandwith. Therefore, I see this as valid change to the
+> test.
+
+Now it is pretty easy to change to just one plane if we want to.
+
+>=20
+> On Fri, 2019-03-29 at 18:03 -0700, Jos=C3=A9 Roberto de Souza wrote:
+> > ICL has some many planes per pipe that it is causing this test to
+> > skip due bandwidth limitation when combined with 4K displays.
+> >=20
+> > The objective of this test is test the visibility of the planes
+> > when
+> > switching between high and low resolution, more information in the
+> > patch that added this test 12e34d8c909a ("tests/kms_plane_lowres:
+> > Plane visibility after atomic modesets").
+> > So it was setting all the planes the tested pipe in the bottom left
+> > of the display using the height of high resolution,  checking the
+> > visibility and then switching to the low resolution mode and
+> > checking
+> > again the visibility and now it is expected that all planes would
+> > be
+> > invisible.
+> >=20
+> > So to overcome ICL bandwidth issues, here it is testing each plane
+> > individually.
+> >=20
+> > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> > Cc: Mika Kahola <mika.kahola@intel.com>
+> > Signed-off-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
+> Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+
+Thanks for the reviews, merged.
+
+>=20
+> > ---
+> >  lib/igt_kms.c            |  21 +--
+> >  lib/igt_kms.h            |   2 +-
+> >  tests/kms_plane_lowres.c | 274 ++++++++++++++++++-----------------
+> > --
+> > --
+> >  3 files changed, 135 insertions(+), 162 deletions(-)
+> >=20
+> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> > index ce9fe152..1e2415bf 100644
+> > --- a/lib/igt_kms.c
+> > +++ b/lib/igt_kms.c
+> > @@ -1634,27 +1634,18 @@ static void kmstest_get_crtc(int device,
+> > enum
+> > pipe pipe, struct kmstest_crtc *cr
+> >   *
+> >   * Asserts only if the plane's visibility state matches the status
+> > being passed by @visibility
+> >   */
+> > -void igt_assert_plane_visible(int fd, enum pipe pipe, bool
+> > visibility)
+> > +void igt_assert_plane_visible(int fd, enum pipe pipe, int
+> > plane_index, bool visibility)
+> >  {
+> >  	struct kmstest_crtc crtc;
+> > -	int i;
+> > -	bool visible;
+> > +	bool visible =3D true;
+> > =20
+> >  	kmstest_get_crtc(fd, pipe, &crtc);
+> > =20
+> > -	visible =3D true;
+> > -	for (i =3D 0; i < crtc.n_planes; i++) {
+> > -		if (crtc.planes[i].type =3D=3D DRM_PLANE_TYPE_PRIMARY)
+> > -			continue;
+> > +	igt_assert(plane_index < crtc.n_planes);
+> > =20
+> > -		if (crtc.planes[i].pos_x > crtc.width) {
+> > -			visible =3D false;
+> > -			break;
+> > -		} else if (crtc.planes[i].pos_y > crtc.height) {
+> > -			visible =3D false;
+> > -			break;
+> > -		}
+> > -	}
+> > +	if (crtc.planes[plane_index].pos_x > crtc.width ||
+> > +	    crtc.planes[plane_index].pos_y > crtc.height)
+> > +		visible =3D false;
+> > =20
+> >  	free(crtc.planes);
+> >  	igt_assert_eq(visible, visibility);
+> > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> > index e392e0ef..38bdc08f 100644
+> > --- a/lib/igt_kms.h
+> > +++ b/lib/igt_kms.h
+> > @@ -228,7 +228,7 @@ void *kmstest_dumb_map_buffer(int fd, uint32_t
+> > handle, uint64_t size,
+> >  void kmstest_dumb_destroy(int fd, uint32_t handle);
+> >  void kmstest_wait_for_pageflip(int fd);
+> >  unsigned int kmstest_get_vblank(int fd, int pipe, unsigned int
+> > flags);
+> > -void igt_assert_plane_visible(int fd, enum pipe pipe, bool
+> > visibility);
+> > +void igt_assert_plane_visible(int fd, enum pipe pipe, int
+> > plane_index, bool visibility);
+> > =20
+> >  /*
+> >   * A small modeset API
+> > diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
+> > index 51bb7cd8..0b78573f 100644
+> > --- a/tests/kms_plane_lowres.c
+> > +++ b/tests/kms_plane_lowres.c
+> > @@ -39,7 +39,8 @@ IGT_TEST_DESCRIPTION("Test atomic mode setting
+> > with
+> > a plane by switching between
+> >  typedef struct {
+> >  	int drm_fd;
+> >  	igt_display_t display;
+> > -	struct igt_fb *fb;
+> > +	struct igt_fb fb_primary;
+> > +	struct igt_fb fb_plane;
+> >  } data_t;
+> > =20
+> >  static drmModeModeInfo
+> > @@ -64,24 +65,6 @@ get_lowres_mode(int drmfd, igt_output_t *output,
+> > drmModeModeInfo *mode_default)
+> >  	return mode;
+> >  }
+> > =20
+> > -static void
+> > -test_fini(data_t *data, igt_output_t *output, enum pipe pipe)
+> > -{
+> > -	igt_plane_t *plane;
+> > -
+> > -	/* restore original mode */
+> > -	igt_output_override_mode(output, NULL);
+> > -
+> > -	for_each_plane_on_pipe(&data->display, pipe, plane)
+> > -		igt_plane_set_fb(plane, NULL);
+> > -
+> > -	/* reset the constraint on the pipe */
+> > -	igt_output_set_pipe(output, PIPE_ANY);
+> > -
+> > -	free(data->fb);
+> > -	data->fb =3D NULL;
+> > -}
+> > -
+> >  static void
+> >  check_mode(drmModeModeInfo *mode1, drmModeModeInfo *mode2)
+> >  {
+> > @@ -90,175 +73,160 @@ check_mode(drmModeModeInfo *mode1,
+> > drmModeModeInfo *mode2)
+> >  	igt_assert_eq(mode1->vrefresh, mode2->vrefresh);
+> >  }
+> > =20
+> > -static drmModeModeInfo *
+> > -test_setup(data_t *data, enum pipe pipe, uint64_t modifier,
+> > -	   igt_output_t *output)
+> > +/*
+> > + * Return false if test on this plane should be skipped
+> > + */
+> > +static bool
+> > +setup_plane(data_t *data, igt_plane_t *plane, drmModeModeInfo
+> > *mode,
+> > +	    uint64_t modifier)
+> >  {
+> > -	drmModeModeInfo *mode;
+> > -	int size;
+> > -	int i =3D 1, x, y;
+> > -	igt_plane_t *plane;
+> > -
+> > -	igt_skip_on(!igt_display_has_format_mod(&data->display,
+> > -						DRM_FORMAT_XRGB8888,
+> > -						modifier));
+> > -
+> > -	igt_output_set_pipe(output, pipe);
+> > -
+> > -	mode =3D igt_output_get_mode(output);
+> > -
+> > -	data->fb =3D calloc(data->display.pipes[pipe].n_planes,
+> > sizeof(struct igt_fb));
+> > -	igt_assert_f(data->fb, "Failed to allocate memory for %d
+> > FBs\n",
+> > -	             data->display.pipes[pipe].n_planes);
+> > -
+> > -	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode-
+> > > vdisplay,
+> > -			    DRM_FORMAT_XRGB8888,
+> > -			    modifier,
+> > -			    0.0, 0.0, 1.0,
+> > -			    &data->fb[0]);
+> > -
+> > -	/* yellow sprite plane in lower left corner */
+> > -	for_each_plane_on_pipe(&data->display, pipe, plane) {
+> > -		uint64_t plane_modifier;
+> > -		uint32_t plane_format;
+> > -
+> > -		if (plane->type =3D=3D DRM_PLANE_TYPE_PRIMARY) {
+> > -			igt_plane_set_fb(plane, &data->fb[0]);
+> > -			continue;
+> > -		}
+> > -
+> > -		if (plane->type =3D=3D DRM_PLANE_TYPE_CURSOR)
+> > -			size =3D 64;
+> > -		else
+> > -			size =3D SIZE;
+> > -
+> > -		x =3D 0;
+> > -		y =3D mode->vdisplay - size;
+> > -
+> > -		plane_format =3D plane->type =3D=3D DRM_PLANE_TYPE_CURSOR ?
+> > -			DRM_FORMAT_ARGB8888 : DRM_FORMAT_XRGB8888;
+> > -
+> > -		plane_modifier =3D plane->type =3D=3D DRM_PLANE_TYPE_CURSOR ?
+> > -			LOCAL_DRM_FORMAT_MOD_NONE : modifier;
+> > +	uint64_t plane_modifier;
+> > +	uint32_t plane_format;
+> > +	int size, x, y;
+> > +
+> > +	if (plane->type =3D=3D DRM_PLANE_TYPE_PRIMARY)
+> > +		return false;
+> > +
+> > +	if (plane->type =3D=3D DRM_PLANE_TYPE_CURSOR)
+> > +		size =3D 64;
+> > +	else
+> > +		size =3D SIZE;
+> > +
+> > +	x =3D 0;
+> > +	y =3D mode->vdisplay - size;
+> > +
+> > +	if (plane->type =3D=3D DRM_PLANE_TYPE_CURSOR) {
+> > +		plane_format =3D DRM_FORMAT_ARGB8888;
+> > +		plane_modifier =3D LOCAL_DRM_FORMAT_MOD_NONE;
+> > +	} else {
+> > +		plane_format =3D DRM_FORMAT_XRGB8888;
+> > +		plane_modifier =3D modifier;
+> > +	}
+> > =20
+> > -		igt_skip_on(!igt_plane_has_format_mod(plane,
+> > plane_format,
+> > -						      plane_modifier));
+> > +	if (!igt_plane_has_format_mod(plane, plane_format,
+> > plane_modifier))
+> > +		return false;
+> > =20
+> > -		igt_create_color_fb(data->drm_fd,
+> > -				    size, size,
+> > -				    plane_format,
+> > -				    plane_modifier,
+> > -				    1.0, 1.0, 0.0,
+> > -				    &data->fb[i]);
+> > +	igt_create_color_fb(data->drm_fd, size, size, plane_format,
+> > +			    plane_modifier, 1.0, 1.0, 0.0, &data-
+> > > fb_plane);
+> > +	igt_plane_set_position(plane, x, y);
+> > +	igt_plane_set_fb(plane, &data->fb_plane);
+> > =20
+> > -		igt_plane_set_position(plane, x, y);
+> > -		igt_plane_set_fb(plane, &data->fb[i++]);
+> > -	}
+> > +	return true;
+> > +}
+> > =20
+> > -	return mode;
+> > +static igt_plane_t *
+> > +primary_plane_get(igt_display_t *display, enum pipe pipe)
+> > +{
+> > +	unsigned plane_primary_id =3D display->pipes[pipe].plane_primary;
+> > +	return &display->pipes[pipe].planes[plane_primary_id];
+> >  }
+> > =20
+> > -static void
+> > -test_plane_position_with_output(data_t *data, enum pipe pipe,
+> > +static unsigned
+> > +test_planes_on_pipe_with_output(data_t *data, enum pipe pipe,
+> >  				igt_output_t *output, uint64_t
+> > modifier)
+> >  {
+> > -	igt_crc_t crc_hires1, crc_hires2;
+> > -	igt_crc_t crc_lowres;
+> > -	drmModeModeInfo mode_lowres;
+> > -	drmModeModeInfo *mode1, *mode2, *mode3;
+> > -	int ret;
+> > +	drmModeModeInfo *mode, mode_lowres;
+> >  	igt_pipe_crc_t *pipe_crc;
+> > +	unsigned tested =3D 0;
+> > +	igt_plane_t *plane;
+> > =20
+> >  	igt_info("Testing connector %s using pipe %s\n",
+> >  		 igt_output_name(output), kmstest_pipe_name(pipe));
+> > =20
+> > -	mode1 =3D test_setup(data, pipe, modifier, output);
+> > +	igt_output_set_pipe(output, pipe);
+> > +	mode =3D igt_output_get_mode(output);
+> > +	mode_lowres =3D get_lowres_mode(data->drm_fd, output, mode);
+> > =20
+> > -	mode_lowres =3D get_lowres_mode(data->drm_fd, output, mode1);
+> > +	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode-
+> > > vdisplay,
+> > +			    DRM_FORMAT_XRGB8888, modifier, 0.0, 0.0,
+> > 1.0,
+> > +			    &data->fb_primary);
+> > +	igt_plane_set_fb(primary_plane_get(&data->display, pipe),
+> > +			 &data->fb_primary);
+> > =20
+> > -	ret =3D igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
+> > -	igt_skip_on(ret !=3D 0);
+> > +	pipe_crc =3D igt_pipe_crc_new(data->drm_fd, pipe,
+> > +				    INTEL_PIPE_CRC_SOURCE_AUTO);
+> > =20
+> > -	pipe_crc =3D igt_pipe_crc_new(data->drm_fd, pipe,
+> > INTEL_PIPE_CRC_SOURCE_AUTO);
+> > -	igt_pipe_crc_start(pipe_crc);
+> > -	igt_pipe_crc_get_single(pipe_crc, &crc_hires1);
+> > +	/* yellow sprite plane in lower left corner */
+> > +	for_each_plane_on_pipe(&data->display, pipe, plane) {
+> > +		igt_crc_t crc_hires1, crc_hires2;
+> > +		int r;
+> > =20
+> > -	igt_assert_plane_visible(data->drm_fd, pipe, true);
+> > +		if (!setup_plane(data, plane, mode, modifier))
+> > +			continue;
+> > =20
+> > -	/* switch to lower resolution */
+> > -	igt_output_override_mode(output, &mode_lowres);
+> > -	igt_output_set_pipe(output, pipe);
+> > +		r =3D igt_display_try_commit2(&data->display,
+> > COMMIT_ATOMIC);
+> > +		if (r) {
+> > +			igt_debug("Commit failed %i", r);
+> > +			continue;
+> > +		}
+> > =20
+> > -	mode2 =3D igt_output_get_mode(output);
+> > +		igt_pipe_crc_start(pipe_crc);
+> > +		igt_pipe_crc_get_single(pipe_crc, &crc_hires1);
+> > =20
+> > -	check_mode(&mode_lowres, mode2);
+> > +		igt_assert_plane_visible(data->drm_fd, pipe, plane-
+> > > index,
+> > +					 true);
+> > =20
+> > -	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> > -	igt_pipe_crc_get_current(data->display.drm_fd, pipe_crc,
+> > &crc_lowres);
+> > +		/* switch to lower resolution */
+> > +		igt_output_override_mode(output, &mode_lowres);
+> > +		igt_output_set_pipe(output, pipe);
+> > +		check_mode(&mode_lowres, igt_output_get_mode(output));
+> > =20
+> > -	igt_assert_plane_visible(data->drm_fd, pipe, false);
+> > +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> > =20
+> > -	/* switch back to higher resolution */
+> > -	igt_output_override_mode(output, NULL);
+> > -	igt_output_set_pipe(output, pipe);
+> > +		igt_assert_plane_visible(data->drm_fd, pipe, plane-
+> > > index,
+> > +					 false);
+> > =20
+> > -	mode3 =3D igt_output_get_mode(output);
+> > +		/* switch back to higher resolution */
+> > +		igt_output_override_mode(output, NULL);
+> > +		igt_output_set_pipe(output, pipe);
+> > +		check_mode(mode, igt_output_get_mode(output));
+> > =20
+> > -	check_mode(mode1, mode3);
+> > +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> > =20
+> > -	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> > +		igt_pipe_crc_get_current(data->drm_fd, pipe_crc,
+> > &crc_hires2);
+> > =20
+> > -	igt_pipe_crc_get_current(data->display.drm_fd, pipe_crc,
+> > &crc_hires2);
+> > +		igt_assert_plane_visible(data->drm_fd, pipe, plane-
+> > > index,
+> > +					 true);
+> > =20
+> > -	igt_assert_plane_visible(data->drm_fd, pipe, true);
+> > +		igt_assert_crc_equal(&crc_hires1, &crc_hires2);
+> > =20
+> > -	igt_assert_crc_equal(&crc_hires1, &crc_hires2);
+> > +		igt_pipe_crc_stop(pipe_crc);
+> > =20
+> > -	igt_pipe_crc_stop(pipe_crc);
+> > -	igt_pipe_crc_free(pipe_crc);
+> > +		igt_plane_set_fb(plane, NULL);
+> > +		igt_remove_fb(data->drm_fd, &data->fb_plane);
+> > +		tested++;
+> > +	}
+> > =20
+> > -	test_fini(data, output, pipe);
+> > -}
+> > +	igt_pipe_crc_free(pipe_crc);
+> > =20
+> > -static void
+> > -test_plane_position(data_t *data, enum pipe pipe, uint64_t
+> > modifier)
+> > -{
+> > -	igt_output_t *output;
+> > +	igt_plane_set_fb(primary_plane_get(&data->display, pipe),
+> > NULL);
+> > +	igt_remove_fb(data->drm_fd, &data->fb_primary);
+> > +	igt_output_set_pipe(output, PIPE_NONE);
+> > =20
+> > -	for_each_valid_output_on_pipe(&data->display, pipe, output)
+> > -		test_plane_position_with_output(data, pipe, output,
+> > modifier);
+> > +	return tested;
+> >  }
+> > =20
+> >  static void
+> > -run_tests_for_pipe(data_t *data, enum pipe pipe)
+> > +test_planes_on_pipe(data_t *data, enum pipe pipe, uint64_t
+> > modifier)
+> >  {
+> > -	igt_fixture {
+> > -		igt_skip_on(pipe >=3D data->display.n_pipes);
+> > -
+> > -		igt_display_require_output_on_pipe(&data->display,
+> > pipe);
+> > -	}
+> > -
+> > -	igt_subtest_f("pipe-%s-tiling-none",
+> > -		      kmstest_pipe_name(pipe))
+> > -		test_plane_position(data, pipe,
+> > LOCAL_DRM_FORMAT_MOD_NONE);
+> > +	igt_output_t *output;
+> > +	unsigned tested =3D 0;
+> > =20
+> > -	igt_subtest_f("pipe-%s-tiling-x",
+> > -		      kmstest_pipe_name(pipe))
+> > -		test_plane_position(data, pipe,
+> > LOCAL_I915_FORMAT_MOD_X_TILED);
+> > +	igt_skip_on(pipe >=3D data->display.n_pipes);
+> > +	igt_display_require_output_on_pipe(&data->display, pipe);
+> > +	igt_skip_on(!igt_display_has_format_mod(&data->display,
+> > +						DRM_FORMAT_XRGB8888,
+> > modifier));
+> > =20
+> > -	igt_subtest_f("pipe-%s-tiling-y",
+> > -		      kmstest_pipe_name(pipe))
+> > -		test_plane_position(data, pipe,
+> > LOCAL_I915_FORMAT_MOD_Y_TILED);
+> > +	for_each_valid_output_on_pipe(&data->display, pipe, output)
+> > +		tested +=3D test_planes_on_pipe_with_output(data, pipe,
+> > output,
+> > +							  modifier);
+> > =20
+> > -	igt_subtest_f("pipe-%s-tiling-yf",
+> > -		      kmstest_pipe_name(pipe))
+> > -		test_plane_position(data, pipe,
+> > LOCAL_I915_FORMAT_MOD_Yf_TILED);
+> > +	igt_assert(tested > 0);
+> >  }
+> > =20
+> > -static data_t data;
+> > -
+> >  igt_main
+> >  {
+> > +	data_t data =3D {};
+> >  	enum pipe pipe;
+> > =20
+> >  	igt_skip_on_simulation();
+> > @@ -273,9 +241,23 @@ igt_main
+> >  		igt_require(data.display.is_atomic);
+> >  	}
+> > =20
+> > -	for_each_pipe_static(pipe)
+> > -		igt_subtest_group
+> > -			run_tests_for_pipe(&data, pipe);
+> > +	for_each_pipe_static(pipe) {
+> > +		igt_subtest_f("pipe-%s-tiling-none",
+> > kmstest_pipe_name(pipe))
+> > +			test_planes_on_pipe(&data, pipe,
+> > +					    LOCAL_DRM_FORMAT_MOD_NONE);
+> > +
+> > +		igt_subtest_f("pipe-%s-tiling-x",
+> > kmstest_pipe_name(pipe))
+> > +			test_planes_on_pipe(&data, pipe,
+> > +					    LOCAL_I915_FORMAT_MOD_X_TIL
+> > ED);
+> > +
+> > +		igt_subtest_f("pipe-%s-tiling-y",
+> > kmstest_pipe_name(pipe))
+> > +			test_planes_on_pipe(&data, pipe,
+> > +					    LOCAL_I915_FORMAT_MOD_Y_TIL
+> > ED);
+> > +
+> > +		igt_subtest_f("pipe-%s-tiling-yf",
+> > kmstest_pipe_name(pipe))
+> > +			test_planes_on_pipe(&data, pipe,
+> > +					    LOCAL_I915_FORMAT_MOD_Yf_TI
+> > LED);
+> > +	}
+> > =20
+> >  	igt_fixture {
+> >  		igt_display_fini(&data.display);
+
+--=-C9B4zoK7asmBkGOPnHdm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyiarMACgkQVenbO/mO
+Wkl2hwf/XesVAjU68hpDVWhKZVIvfCgDfWj3mNflMLy3v4o2h7mYWR88GIYzaxDa
+EkN3fQaBXt6qCwT/TX4deby27OpwcXDyN455rMtNDbKc+gTTe+AII7joj2z3Fyba
+yvH2qS1bupm0J/nrUlwc92j6KpLJE1iQ/74Czi8obeg9bjgSnjn1NGCpjbELcszw
+09FLjtZ6pVzFaLvnEFPl/HCZGtnYGSnPAeXjDkgtNLAzVCU2phBm44qtIBYLTUoB
+xrRyc4jzC+OM5DCdfsx76cXTPurpRmKi1tqK+RqhCs/NIlMttCLck68xD+mqW9tQ
+IRoQpT3lGB2A8ab95xiVFmBTIEVZgw==
+=3nSR
+-----END PGP SIGNATURE-----
+
+--=-C9B4zoK7asmBkGOPnHdm--
+
+--===============0476268197==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============0476268197==--
