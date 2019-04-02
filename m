@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F2BB06E7E1
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Apr 2019 20:23:27 +0000 (UTC)
-Message-ID: <439d78690d4f136b09b5ab725263e5b090e407b3.camel@intel.com>
-From: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-Date: Tue, 02 Apr 2019 13:23:25 -0700
-In-Reply-To: <0c028d738deadaa8fca6506738870547e07bd96b.camel@intel.com>
-References: <20190328222827.18099-1-jose.souza@intel.com>
- <005633a0c49a33e66edd4d823f63828917cd565f.camel@intel.com>
- <0c028d738deadaa8fca6506738870547e07bd96b.camel@intel.com>
-Mime-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/frontbuffer_tracking: Do not
- assert FBC state after a page flip changing stride
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB6B16E7E5
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Apr 2019 20:42:57 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Tue, 2 Apr 2019 20:42:55 +0000
+Message-ID: <07ec8a1e0346dd5cf0683e8e592e380b32566154.camel@intel.com>
+References: <20190401112305.6832-1-stanislav.lisovskiy@intel.com>
+ <20190401112305.6832-3-stanislav.lisovskiy@intel.com>
+In-Reply-To: <20190401112305.6832-3-stanislav.lisovskiy@intel.com>
+Content-Language: en-US
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t v3 2/3] igt/tests/kms_atomic_transition:
+ Tolerate if can't have all planes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,66 +19,169 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: dhinakaran.pandiyan@intel.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1277998117=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Souza, Jose" <jose.souza@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
+Cc: "Syrjala, Ville" <ville.syrjala@intel.com>, "Peres,
+ Martin" <martin.peres@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDE5LTA0LTAyIGF0IDEyOjQ2IC0wNzAwLCBTb3V6YSwgSm9zZSB3cm90ZToKPiBP
-biBUdWUsIDIwMTktMDQtMDIgYXQgMTE6NDkgLTA3MDAsIERoaW5ha2FyYW4gUGFuZGl5YW4gd3Jv
-dGU6Cj4gPiBPbiBUaHUsIDIwMTktMDMtMjggYXQgMTU6MjggLTA3MDAsIEpvc8OpIFJvYmVydG8g
-ZGUgU291emEgd3JvdGU6Cj4gPiA+IFdoZW4gdGhlIHN0cmlkZWNoYW5nZSBzdWJ0ZXN0IHdhcyBp
-bnRyb2R1Y2VkIGYyM2VhNThmMWZiYgo+ID4gPiAoImttc19mcm9udGJ1ZmZlcl90cmFja2luZzog
-ZXhwYW5kIGJhZHN0cmlkZSBhbmQgc3RyaWRlY2hhbmdlIikKPiA+ID4gYXRvbWljIHdhcyBub3Qg
-YXJvdW5kIGFuZCBjaGFuZ2UgdGhlIHN0cmlkZSB1c2luZyBkcm1Nb2RlUGFnZUZsaXAoKQo+ID4g
-PiB3YXMgbm90IGFsbG93ZWQgc28gaXQgd2FzIGV4cGVjdGVkIHRoYXQgaXQgd291bGQgcmV0dXJu
-IC1FSU5WQUwgYW5kCj4gPiA+IGtlcm5lbCB3b3VsZCBrZWVwIHRoZSBvbGQgZnJhbWVidWZmZXIg
-d2l0aCB0aGUgc21hbGxlciBwbGFuZSB0aGF0Cj4gPiA+IGlzCj4gPiA+IGtub3cgdG8gZml0IG9u
-IENGQihpZiBpdCBkb24ndCBmaXQgdGhlIHRlc3Qgd2lsbCBza2lwIG9uIHRoZSBmaXJzdAo+ID4g
-PiBmdWxsLW1vZGVzZXQgYmVjYXVzZSAibm90IGVub3VnaCBzdG9sZW4gbWVtb3J5IiBpcyBzZXQp
-Lgo+ID4gPiAKPiA+ID4gQnV0IGFmdGVyIHRoZSBpbnRyb2R1Y3Rpb24gb2YgYXRvbWljIHRoZSBz
-dWJ0ZXN0IHdhcyB1cGRhdGVkIGJ5Cj4gPiA+IGY2M2UwNzBiNDY5ZCAoImttc19mcm9udGJ1ZmZl
-cl90cmFja2luZzogRml4IHRlc3RzIHdpdGggdGhlIG5ldwo+ID4gPiBhdG9taWMgcmVhbGl0eS4i
-KSB0byBhY2NlcHQgYSBubyBlcnJvciByZXR1cm4gZnJvbQo+ID4gPiBkcm1Nb2RlUGFnZUZsaXAo
-KQo+ID4gPiBidXQgdGhlIGRvX2Fzc2VydGlvbnMoKSB0aGF0IGZvbGxvd3MgaXQgd2FzIG5vdCB1
-cGRhdGVkLgo+ID4gPiBBcyB0aGUgc3VidGVzdCBmdW5jdGlvbiBjb21tZW50IHN0YXRlcywga2Vy
-bmVsIHdpbGwgZG8gZmFzdHNldHMgaW4KPiA+ID4gdGhpcyBzY2VuYXJpbyBhbmQgdGhlIGFsbG9j
-YXRlZCBDRkIgY291bGQgbm90IGJlIGVub3VnaCB0byBrZWVwIEZCQwo+ID4gPiBlbmFibGVkIG92
-ZXIgdGhlIG5ldyBmcmFtZWJ1ZmZlciwgc28gaGVyZSBhZGRpbmcgdGhlIG1pc3NpbmcKPiA+ID4g
-RE9OVF9BU1NFUlRfRkVBVFVSRV9TVEFUVVMgdG8gaWdub3JlIHRoZSBGQkMgc3RhdGUgYW5kIGp1
-c3QgdGVzdCBpZgo+ID4gPiBDUkMgbWF0Y2ggYW5kIGlmIGtlcm5lbCBkbyBub3QgbWlzYmVoYXZl
-Lgo+ID4gPiAKPiA+ID4gT3RoZXIgd2F5IHRvIHNvbHZlIHRoaXMgaXNzdWUgd291bGQgYmUgbWFr
-ZSB0aGUga2VybmVsIGRvIGEKPiA+ID4gZnVsbC1tb2Rlc2V0IHdoZW4gQ0ZCIGlzIG5vdCBlbm91
-Z2ggZm9yIHRoZSBuZXcgcGxhbmUgc28gRkJDIGlzCj4gPiA+IGRpc2FibGVkIHdpdGggdGhlIENS
-QyBmcmVlaW5nIHRoZSBhY3R1YWwgQ0ZCIGFuZCB0aGVuIGFmdGVyIGVuYWJsZQo+ID4gPiBDUlRD
-IGFnYWluIGl0IHdpbGwgdHJ5IHRvIGVuYWJsZSBGQkMgYWdhaW4gaWYgaXQgY2FuIGFsbG9jYXRl
-IHRoZQo+ID4gPiByZXF1aXJlZCBDRkIgYnV0IGJ5IHRoZSBzdWJ0ZXN0IGNvbW1lbnQgdGhpcyBp
-cyBub3QgaW50ZW5kZWQuCj4gPiA+IAo+ID4gPiBCdWd6aWxsYTogaHR0cHM6Ly9idWdzLmZyZWVk
-ZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA1NjgzCj4gPiA+IENjOiBNYWFydGVuIExhbmto
-b3JzdCA8bWFhcnRlbi5sYW5raG9yc3RAbGludXguaW50ZWwuY29tPgo+ID4gPiBDYzogUGF1bG8g
-WmFub25pIDxwYXVsby5yLnphbm9uaUBpbnRlbC5jb20+Cj4gPiA+IFNpZ25lZC1vZmYtYnk6IEpv
-c8OpIFJvYmVydG8gZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwuY29tPgo+ID4gPiAtLS0KPiA+
-ID4gIHRlc3RzL2ttc19mcm9udGJ1ZmZlcl90cmFja2luZy5jIHwgMiArLQo+ID4gPiAgMSBmaWxl
-IGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCj4gPiA+IAo+ID4gPiBkaWZm
-IC0tZ2l0IGEvdGVzdHMva21zX2Zyb250YnVmZmVyX3RyYWNraW5nLmMKPiA+ID4gYi90ZXN0cy9r
-bXNfZnJvbnRidWZmZXJfdHJhY2tpbmcuYwo+ID4gPiBpbmRleCA0ZDE1Y2UxYy4uMDg3ZmM0NzMg
-MTAwNjQ0Cj4gPiA+IC0tLSBhL3Rlc3RzL2ttc19mcm9udGJ1ZmZlcl90cmFja2luZy5jCj4gPiA+
-ICsrKyBiL3Rlc3RzL2ttc19mcm9udGJ1ZmZlcl90cmFja2luZy5jCj4gPiA+IEBAIC0yOTUwLDcg
-KzI5NTAsNyBAQCBzdGF0aWMgdm9pZCBzdHJpZGVjaGFuZ2Vfc3VidGVzdChjb25zdCBzdHJ1Y3QK
-PiA+ID4gdGVzdF9tb2RlCj4gPiA+ICp0KQo+ID4gPiAgCSAqLwo+ID4gPiAgCXJjID0gZHJtTW9k
-ZVBhZ2VGbGlwKGRybS5mZCwgZHJtLmRpc3BsYXkucGlwZXNbcGFyYW1zLQo+ID4gPiA+IHBpcGVd
-LmNydGNfaWQsCj4gPiA+IAo+ID4gPiBuZXdfZmItPmZiX2lkLCAwLCBOVUxMKTsKPiA+ID4gIAlp
-Z3RfYXNzZXJ0KHJjID09IC1FSU5WQUwgfHwgcmMgPT0gMCk7Cj4gPiA+IC0JZG9fYXNzZXJ0aW9u
-cygwKTsKPiA+ID4gKwlkb19hc3NlcnRpb25zKERPTlRfQVNTRVJUX0ZFQVRVUkVfU1RBVFVTKTsK
-PiA+IAo+ID4gVGhlIGFzc2VydGlvbiBpcyBzdGlsbCB2YWxpZCBpZiB0aGUgcGFnZSBmbGlwIGlv
-Y3RsIGZhaWxlZCwgaXNuJ3QgaXQ/Cj4gCj4gSHV1bSB5ZWFoLCBJIGd1ZXNzIG5vbi1hdG9taWMg
-ZHJpdmVycyB3b3VsZCBhbHNvIHJldHVybiBhIGVycm9yIGJlZm9yZQo+IGNoYW5naW5nIHRoZSBo
-YXJkd2FyZSBzdGF0ZS4KPiAKPiBTbyBjaGFuZ2UgdG86Cj4gCj4gZG9fYXNzZXJ0aW9ucyhyYyA/
-IDAgOiBET05UX0FTU0VSVF9GRUFUVVJFX1NUQVRVUyk7Cj4gClllYWgsIHRoYXQgc2hvdWxkIHdv
-cmsuCgotREsKPiAKPiA+IAo+ID4gLURLCj4gPiAKPiA+ID4gIH0KPiA+ID4gIAo+ID4gPiAgLyoq
-CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
-IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
-LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
+--===============1277998117==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-iG1rsgTNsidTItwvg6Ml"
+
+--=-iG1rsgTNsidTItwvg6Ml
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, 2019-04-01 at 14:23 +0300, Stanislav Lisovskiy wrote:
+> With some upcoming changes i915 might not allow
+> all sprite planes enabled, depending on available
+> bandwidth limitation. Thus the test need to decrement
+> amount of planes and try again, instead of panicking.
+>=20
+> Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+> ---
+>  tests/kms_atomic_transition.c | 30 ++++++++++++++++++++++--------
+>  1 file changed, 22 insertions(+), 8 deletions(-)
+>=20
+> diff --git a/tests/kms_atomic_transition.c
+> b/tests/kms_atomic_transition.c
+> index 638fe17e..e4dee7e2 100644
+> --- a/tests/kms_atomic_transition.c
+> +++ b/tests/kms_atomic_transition.c
+> @@ -214,7 +214,8 @@ static void setup_parms(igt_display_t *display,
+> enum pipe pipe,
+>  	uint32_t n_planes =3D display->pipes[pipe].n_planes;
+>  	uint32_t n_overlays =3D 0, overlays[n_planes];
+
+Nitpick: you don't need to initialize n_overlays here as you do right
+after the retry label.
+
+>  	igt_plane_t *plane;
+> -	uint32_t iter_mask =3D 3;
+> +	uint32_t iter_mask;
+> +	int retries =3D n_planes - 1;
+> =20
+>  	do_or_die(drmGetCap(display->drm_fd, DRM_CAP_CURSOR_WIDTH,
+> &cursor_width));
+>  	if (cursor_width >=3D mode->hdisplay)
+> @@ -224,6 +225,10 @@ static void setup_parms(igt_display_t *display,
+> enum pipe pipe,
+>  	if (cursor_height >=3D mode->vdisplay)
+>  		cursor_height =3D mode->vdisplay;
+> =20
+> +retry:
+> +	n_overlays =3D 0;
+> +	iter_mask =3D 3;
+> +
+>  	for_each_plane_on_pipe(display, pipe, plane) {
+>  		int i =3D plane->index;
+> =20
+> @@ -278,7 +283,6 @@ static void setup_parms(igt_display_t *display,
+> enum pipe pipe,
+>  	 * Pre gen9 not all sizes are supported, find the biggest
+> possible
+>  	 * size that can be enabled on all sprite planes.
+>  	 */
+> -retry:
+>  	prev_w =3D sprite_width =3D cursor_width;
+>  	prev_h =3D sprite_height =3D cursor_height;
+> =20
+> @@ -298,12 +302,22 @@ retry:
+>  		if (is_atomic_check_plane_size_errno(ret)) {
+>  			if (cursor_width =3D=3D sprite_width &&
+>  			    cursor_height =3D=3D sprite_height) {
+> -				igt_assert_f(alpha,
+> -					      "Cannot configure the
+> test with all sprite planes enabled\n");
+> -
+> -				/* retry once with XRGB format. */
+> -				alpha =3D false;
+> -				goto retry;
+> +				if (--retries >=3D 0) {
+
+The 7 first loops it is going to this, on the 8 it will try for the
+first time to reduce the number of planes.
+Also this way we will only test without alpha in platforms with a high
+number of planes.
+
+> +					/* retry once with XRGB format.
+> */
+> +					if (alpha) {
+> +						alpha =3D false;
+> +					}
+> +					else if (display-
+> >pipes[pipe].n_planes > 0) {
+> +						display-
+> >pipes[pipe].n_planes--;
+
+When you do this wm_setup_plane() will iterate in one less plane, and
+not removing framebuffer from that plane, this is probably why you
+needed the first patch.
+
+> +						igt_warn("Reduced
+> available planes to %d\n",
+> +							    display-
+> >pipes[pipe].n_planes);
+> +					}
+> +					n_planes =3D display-
+> >pipes[pipe].n_planes;
+> +					igt_assert_f(n_planes > 0, "No
+> planes left to proceed with!");
+> +					goto retry;
+> +				}
+> +				igt_assert_f(retries > 0,
+> +				      "Cannot configure the test with
+> all sprite planes enabled\n");
+>  			}
+> =20
+>  			sprite_width =3D prev_w;
+
+
+My suggestion:
+
+Right after "max_sprite_height =3D (sprite_height =3D=3D mode->vdisplay);"
+test if all planes support alpha by using:
+igt_plane_has_format_mod(plane, plane_format, plane_modifier).
+
+Then write a new loop testing the maximum number of planes supported
+and remember to remove the framebuffer from planes.
+
+And finally run this final loop that will find the max size for sprite
+planes.
+
+
+
+--=-iG1rsgTNsidTItwvg6Ml
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyjyU4ACgkQVenbO/mO
+WkmFMAf/TKWbPoFMCYI3GMglrz9u7cV3nQMmoSGmcyFUQ/xhHWI4HXnPExQXKfa2
+8eN19m/lQ12bsCsruVMHymfOllDTuY6CMXgdLyGJM9z3os38G9AUvCpasG7TTL4T
+Smi6k22BMIcNQ8AikahE95YxoUy9K+WsMoXuKBilGQzXIqq0NNDFrxb1WiRjWkCf
+KDdISq5Tq6eBvPgZgAYrsYo49qea3Pk268sZUezDqO3mLOvVECSRYVVvoVR9CoFw
+Q1iPVs5BA7hNipNwKjXS+m4hQSpFVEtvOreTLEcgoUePlKW35GW3l/77MhCtihEC
+bgzW8PEgg0+6u40qu+tskNLE4x9hXg==
+=mnmd
+-----END PGP SIGNATURE-----
+
+--=-iG1rsgTNsidTItwvg6Ml--
+
+--===============1277998117==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============1277998117==--
