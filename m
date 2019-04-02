@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE63D6E421
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Apr 2019 17:57:53 +0000 (UTC)
-Date: Tue, 2 Apr 2019 10:58:22 -0700
-From: James Ausmus <james.ausmus@intel.com>
-Message-ID: <20190402175822.GF9144@jausmus-gentoo-dev6.jf.intel.com>
-References: <20190402114343.2282-1-daniel.vetter@ffwll.ch>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A58A36E4AF
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Apr 2019 18:22:35 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Tue, 2 Apr 2019 18:22:33 +0000
+Message-ID: <60168d80010b68c46291d42f6cae547345dc024a.camel@intel.com>
+References: <1554216150-18709-1-git-send-email-juhapekka.heikkila@gmail.com>
+In-Reply-To: <1554216150-18709-1-git-send-email-juhapekka.heikkila@gmail.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190402114343.2282-1-daniel.vetter@ffwll.ch>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests: Rename kms_chv_cursor_fail to
- kms_cursor_edge_walk
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_multiple: Before going
+ testing check how many planes are allowed
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,54 +18,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1310780900=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: IGT development <igt-dev@lists.freedesktop.org>, Daniel Vetter <daniel.vetter@intel.com>, "Peres,
- Martin" <martin.peres@intel.com>
+To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBBcHIgMDIsIDIwMTkgYXQgMDE6NDM6NDNQTSArMDIwMCwgRGFuaWVsIFZldHRlciB3
-cm90ZToKPiBJdCdzIGEgZ2VuZXJpYyB0ZXN0Y2FzZSwgb3JpZ2luYWxseSBmb3IgYSBjaHYgaXNz
-dWUsIGJ1dCB3ZSBjYW4gaGl0Cj4gbGVnaXQgYnVncyB3aXRoIHRoaXMgb24gYW55IHBsYXRmb3Jt
-cy4gQW5kIHdlIGRvLCB3aGljaCB0aGVuIHJlc3VsdHMKPiBpbiBjb25mdXNlZCBtYW5hZ2Vycy4K
-PiAKPiBMZXQncyByZW5hbWUgZm9yIGNsYXJpdHkuCj4gCj4gQ2M6IEFya2FkaXVzeiBIaWxlciA8
-YXJrYWRpdXN6LmhpbGVyQGludGVsLmNvbT4KPiBDYzogIlBlcmVzLCBNYXJ0aW4iIDxtYXJ0aW4u
-cGVyZXNAaW50ZWwuY29tPgo+IENjOiBWaWxsZSBTeXJqYWxhIDx2aWxsZS5zeXJqYWxhQGxpbnV4
-LmludGVsLmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBEYW5pZWwgVmV0dGVyIDxkYW5pZWwudmV0dGVy
-QGludGVsLmNvbT4KCkFja2VkLWJ5OiBKYW1lcyBBdXNtdXMgPGphbWVzLmF1c211c0BpbnRlbC5j
-b20+CgpBS0Egb25lIG5vdyBzbGlnaHRseS1sZXNzIGNvbmZ1c2VkIG1hbmFnZXIuLi4gOykKCj4g
-LS0tCj4gIHRlc3RzL01ha2VmaWxlLnNvdXJjZXMgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgfCAyICstCj4gIHRlc3RzL3trbXNfY2h2X2N1cnNvcl9mYWlsLmMgPT4ga21zX2N1cnNv
-cl9lZGdlX3dhbGsuY30gfCAwCj4gIHRlc3RzL21lc29uLmJ1aWxkICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgfCAyICstCj4gIDMgZmlsZXMgY2hhbmdlZCwgMiBpbnNlcnRp
-b25zKCspLCAyIGRlbGV0aW9ucygtKQo+ICByZW5hbWUgdGVzdHMve2ttc19jaHZfY3Vyc29yX2Zh
-aWwuYyA9PiBrbXNfY3Vyc29yX2VkZ2Vfd2Fsay5jfSAoMTAwJSkKPiAKPiBkaWZmIC0tZ2l0IGEv
-dGVzdHMvTWFrZWZpbGUuc291cmNlcyBiL3Rlc3RzL01ha2VmaWxlLnNvdXJjZXMKPiBpbmRleCA3
-MWNjZjAwYWYyNTYuLjg2YWQzMDFlMTI1YSAxMDA2NDQKPiAtLS0gYS90ZXN0cy9NYWtlZmlsZS5z
-b3VyY2VzCj4gKysrIGIvdGVzdHMvTWFrZWZpbGUuc291cmNlcwo+IEBAIC0yOSwxMiArMjksMTIg
-QEAgVEVTVFNfcHJvZ3MgPSBcCj4gIAlrbXNfYXZhaWxhYmxlX21vZGVzX2NyYyBcCj4gIAlrbXNf
-YnVzeSBcCj4gIAlrbXNfY2NzIFwKPiAtCWttc19jaHZfY3Vyc29yX2ZhaWwgXAo+ICAJa21zX2Nv
-bG9yIFwKPiAgCWttc19jb25jdXJyZW50IFwKPiAgCWttc19jb250ZW50X3Byb3RlY3Rpb25cCj4g
-IAlrbXNfY3J0Y19iYWNrZ3JvdW5kX2NvbG9yIFwKPiAgCWttc19jdXJzb3JfY3JjIFwKPiArCWtt
-c19jdXJzb3JfZWRnZV93YWxrIFwKPiAgCWttc19jdXJzb3JfbGVnYWN5IFwKPiAgCWttc19kcF9k
-c2MgXAo+ICAJa21zX2RyYXdfY3JjIFwKPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2Nodl9jdXJz
-b3JfZmFpbC5jIGIvdGVzdHMva21zX2N1cnNvcl9lZGdlX3dhbGsuYwo+IHNpbWlsYXJpdHkgaW5k
-ZXggMTAwJQo+IHJlbmFtZSBmcm9tIHRlc3RzL2ttc19jaHZfY3Vyc29yX2ZhaWwuYwo+IHJlbmFt
-ZSB0byB0ZXN0cy9rbXNfY3Vyc29yX2VkZ2Vfd2Fsay5jCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL21l
-c29uLmJ1aWxkIGIvdGVzdHMvbWVzb24uYnVpbGQKPiBpbmRleCA5MDE1ZjgwOWVkMDUuLjhlMWFl
-NGZkOWIxZiAxMDA2NDQKPiAtLS0gYS90ZXN0cy9tZXNvbi5idWlsZAo+ICsrKyBiL3Rlc3RzL21l
-c29uLmJ1aWxkCj4gQEAgLTE2LDEyICsxNiwxMiBAQCB0ZXN0X3Byb2dzID0gWwo+ICAJJ2ttc19h
-dmFpbGFibGVfbW9kZXNfY3JjJywKPiAgCSdrbXNfYnVzeScsCj4gIAkna21zX2NjcycsCj4gLQkn
-a21zX2Nodl9jdXJzb3JfZmFpbCcsCj4gIAkna21zX2NvbG9yJywKPiAgCSdrbXNfY29uY3VycmVu
-dCcsCj4gIAkna21zX2NvbnRlbnRfcHJvdGVjdGlvbicsCj4gIAkna21zX2NydGNfYmFja2dyb3Vu
-ZF9jb2xvcicsCj4gIAkna21zX2N1cnNvcl9jcmMnLAo+ICsJJ2ttc19jdXJzb3JfZWRnZV93YWxr
-JywKPiAgCSdrbXNfY3Vyc29yX2xlZ2FjeScsCj4gIAkna21zX2RwX2RzYycsCj4gIAkna21zX2Ry
-YXdfY3JjJywKPiAtLSAKPiAyLjIwLjEKPiAKPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwo+IGlndC1kZXYgbWFpbGluZyBsaXN0Cj4gaWd0LWRldkBsaXN0
-cy5mcmVlZGVza3RvcC5vcmcKPiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2lndC1kZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
-cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+--===============1310780900==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-uuPIWhABmwGSFFsKRoi2"
+
+--=-uuPIWhABmwGSFFsKRoi2
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, 2019-04-02 at 17:42 +0300, Juha-Pekka Heikkila wrote:
+> Before start testing try out how many planes kernel will allow
+> simultaneously to be used.
+>=20
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>  tests/kms_plane_multiple.c | 32 ++++++++++++++++++++++++++------
+>  1 file changed, 26 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
+> index bfaeede..5107d9d 100644
+> --- a/tests/kms_plane_multiple.c
+> +++ b/tests/kms_plane_multiple.c
+> @@ -260,7 +260,9 @@ test_plane_position_with_output(data_t *data,
+> enum pipe pipe,
+>  {
+>  	color_t blue  =3D { 0.0f, 0.0f, 1.0f };
+>  	igt_crc_t crc;
+> +	igt_plane_t *plane;
+>  	int i;
+> +	int err, c =3D 0;
+>  	int iterations =3D opt.iterations < 1 ? 1 : opt.iterations;
+>  	bool loop_forever;
+>  	char info[256];
+> @@ -274,17 +276,35 @@ test_plane_position_with_output(data_t *data,
+> enum pipe pipe,
+>  			iterations, iterations > 1 ? "iterations" :
+> "iteration");
+>  	}
+> =20
+> -	igt_info("Testing connector %s using pipe %s with %d planes %s
+> with seed %d\n",
+> -		 igt_output_name(output), kmstest_pipe_name(pipe),
+> n_planes,
+> -		 info, opt.seed);
+> -
+>  	test_init(data, pipe, n_planes);
+> =20
+>  	test_grab_crc(data, output, pipe, &blue, tiling);
+> =20
+> +	/*
+> +	 * Find out how many planes are allowed simultaneously
+> +	 */
+> +	do {
+> +		c++;
+> +		prepare_planes(data, pipe, &blue, tiling, c, output);
+> +		err =3D igt_display_try_commit2(&data->display,
+> COMMIT_ATOMIC);
+> +	} while (!err && c < n_planes);
+> +
+> +	if(err)
+> +		c--;
+
+"do {} while()" does the job but "for()" would be better suitable:
+
+for (planes_allowed =3D 0; planes_allowed < n_planes; planes_allowed++) {
+	int err;
+
+	prepare_planes(data, pipe, &blue, tiling, planes_allowed,
+output);
+	err =3D igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
+	if (err)
+		break;
+}
+
+
+Also you are leaking a bunch o memory here, each call to
+prepare_planes() will leak max_planes framebuffers, this could cause
+test to fail due no GPU memory available.
+
+Actually this test is already leaking a bunch as test_fini() is only
+freeing the first framebuffer, there is other leaks here too like:
+data->fb, prepare_planes().x, prepare_planes().y and
+prepare_planes().size.
+
+Can you take care of that too?
+
+
+> +
+> +	/*
+> +	 * clean up failed state.
+> +	 */
+> +	for_each_plane_on_pipe(&data->display, pipe, plane)
+> +		igt_plane_set_fb(plane, NULL);
+> +
+> +	igt_info("Testing connector %s using pipe %s with %d planes %s
+> with seed %d\n",
+> +		 igt_output_name(output), kmstest_pipe_name(pipe), c,
+> +		 info, opt.seed);
+> +
+>  	i =3D 0;
+> -	while (i < iterations || loop_forever) {
+> -		prepare_planes(data, pipe, &blue, tiling, n_planes,
+> output);
+> +	while ((i < iterations || loop_forever) && c > 0) {
+
+We actually want to fail the test if it can not even test one plane, so
+add this before this while()
+
+igt_assert_lt(0, planes_allowed);
+
+> +		prepare_planes(data, pipe, &blue, tiling, c, output);
+> =20
+>  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> =20
+
+--=-uuPIWhABmwGSFFsKRoi2
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyjqGgACgkQVenbO/mO
+Wkl0Agf/c4dY4bGqWS/BKEfYAZqLifEJp6QEjyM+TQnQHjhiO0nMMAIbWIDZkUmJ
+4rsbQOvVCo90ZNFwSvF1RX1YLjBQlLZ8ffLRuO4CqDzArO64QmVzQSLSxkkrjr7c
+fhgMq4Rxc2aot/E5b5XZABxGZnC4C1obKef/p6Z58yE93aurqH0kKVbfZE3ZvlNV
+8Jm+kPWlGv5MweiuLJEcT+ZrzieEgla7s6MgE9l2tAalO+ZlBpNog3ffP8l7oR/7
+CeiaVlp0TgthuSUT4A83FGXjSaMEJGchlzEGLu2ywL8GEJ1A/HsK7U4j7MiODh+z
+ZV9JR+rHO9l/my4hewZwfnygz1owgg==
+=vHsX
+-----END PGP SIGNATURE-----
+
+--=-uuPIWhABmwGSFFsKRoi2--
+
+--===============1310780900==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============1310780900==--
