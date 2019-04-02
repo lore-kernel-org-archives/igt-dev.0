@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 744FF6E35B
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Apr 2019 21:41:28 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Tue, 2 Apr 2019 21:41:06 +0000
-Message-ID: <61f488639507c83c8d22914306361046bcd08a49.camel@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D2A76E3F9
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Apr 2019 21:57:55 +0000 (UTC)
+Message-ID: <e4bba9275559aa7c04c407a0c3beb92cf9a8843f.camel@intel.com>
+From: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
+Date: Tue, 02 Apr 2019 14:57:53 -0700
+In-Reply-To: <61f488639507c83c8d22914306361046bcd08a49.camel@intel.com>
 References: <20190402205902.2245-1-jose.souza@intel.com>
  <20190402205902.2245-2-jose.souza@intel.com>
  <a98c6a80b98d2c9b557e0cdc2de2ef47fb43a03a.camel@intel.com>
-In-Reply-To: <a98c6a80b98d2c9b557e0cdc2de2ef47fb43a03a.camel@intel.com>
-Content-Language: en-US
-MIME-Version: 1.0
+ <61f488639507c83c8d22914306361046bcd08a49.camel@intel.com>
+Mime-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] tests/frontbuffer_tracking:
  Assert the status of other features on stridechange subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -20,152 +20,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0502043001=="
+Reply-To: dhinakaran.pandiyan@intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
+To: "Souza, Jose" <jose.souza@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0502043001==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-cJiE4WEtz4Ba2V07pQzQ"
-
---=-cJiE4WEtz4Ba2V07pQzQ
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, 2019-04-02 at 14:24 -0700, Dhinakaran Pandiyan wrote:
-> On Tue, 2019-04-02 at 13:59 -0700, Jos=C3=A9 Roberto de Souza wrote:
-> > As explained in c1edee186d18 ("tests/frontbuffer_tracking: Do not
-> > assert FBC state after a page flip changing stride") after changing
-> > the plane stride there is the possibility that CFB will not be big
-> > enough to keep FBC enabled, that is why do_assertions() is called
-> > with DONT_ASSERT_FEATURE_STATUS but DONT_ASSERT_FEATURE_STATUS is
-> > overkill and will not check the status of the other features like
-> > PSR
-> > and DRRS when running combined feature tests and possibly hiding
-> > bugs.
-> >=20
-> > So lets add a new flag that will only not assert FBC.
->=20
-> You are adding this flag to be only used in stridechange_subtest().
-> But, is
-> stride change even relevant for PSR and DRRS? I didn't think so.
-> While harmless,
-> I don't see any much value in asserting PSR and DRRS stay enabled.
-
-I'm also not aware of any case that would prevent PSR or DRRS to be
-enabled but that is why we have the tests, to catch missing details
-from spec, regressions and bugs.
-
-Without this change we are not testing the other features states in
-this tests:
-
-fbcpsr-stridechange
-fbcdrrs-stridechange
-fbcpsrdrrs-stridechange
-
->=20
->=20
-> > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> > Cc: Paulo Zanoni <paulo.r.zanoni@intel.com>
-> > Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-> > Signed-off-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
-> > ---
-> >  tests/kms_frontbuffer_tracking.c | 9 +++++----
-> >  1 file changed, 5 insertions(+), 4 deletions(-)
-> >=20
-> > diff --git a/tests/kms_frontbuffer_tracking.c
-> > b/tests/kms_frontbuffer_tracking.c
-> > index caef6755..ee13b138 100644
-> > --- a/tests/kms_frontbuffer_tracking.c
-> > +++ b/tests/kms_frontbuffer_tracking.c
-> > @@ -1509,6 +1509,7 @@ static void do_flush(const struct test_mode
-> > *t)
-> > =20
-> >  #define DONT_ASSERT_CRC			(1 << 0)
-> >  #define DONT_ASSERT_FEATURE_STATUS	(1 << 1)
-> > +#define DONT_ASSERT_FBC_STATUS		(1 << 12)
-> > =20
-> >  #define FBC_ASSERT_FLAGS		(0xF << 2)
-> >  #define ASSERT_FBC_ENABLED		(1 << 2)
-> > @@ -1539,7 +1540,7 @@ static int adjust_assertion_flags(const
-> > struct test_mode
-> > *t, int flags)
-> >  			flags |=3D ASSERT_DRRS_HIGH;
-> >  	}
-> > =20
-> > -	if ((t->feature & FEATURE_FBC) =3D=3D 0)
-> > +	if ((t->feature & FEATURE_FBC) =3D=3D 0 || (flags &
-> > DONT_ASSERT_FBC_STATUS))
-> >  		flags &=3D ~FBC_ASSERT_FLAGS;
-> >  	if ((t->feature & FEATURE_PSR) =3D=3D 0)
-> >  		flags &=3D ~PSR_ASSERT_FLAGS;
-> > @@ -2910,7 +2911,7 @@ static void stridechange_subtest(const struct
-> > test_mode
-> > *t)
-> >  	fill_fb_region(&params->primary, COLOR_PRIM_BG);
-> > =20
-> >  	set_mode_for_params(params);
-> > -	do_assertions(DONT_ASSERT_FEATURE_STATUS);
-> > +	do_assertions(DONT_ASSERT_FBC_STATUS);
-> > =20
-> >  	/* Go back to the fb that can have FBC. */
-> >  	params->primary.fb =3D old_fb;
-> > @@ -2920,7 +2921,7 @@ static void stridechange_subtest(const struct
-> > test_mode
-> > *t)
-> >  	/* This operation is the same as above, but with the planes
-> > API. */
-> >  	params->primary.fb =3D new_fb;
-> >  	set_prim_plane_for_params(params);
-> > -	do_assertions(DONT_ASSERT_FEATURE_STATUS);
-> > +	do_assertions(DONT_ASSERT_FBC_STATUS);
-> > =20
-> >  	params->primary.fb =3D old_fb;
-> >  	set_prim_plane_for_params(params);
-> > @@ -2932,7 +2933,7 @@ static void stridechange_subtest(const struct
-> > test_mode
-> > *t)
-> >  	 */
-> >  	rc =3D drmModePageFlip(drm.fd, drm.display.pipes[params-
-> > >pipe].crtc_id,
-> > new_fb->fb_id, 0, NULL);
-> >  	igt_assert(rc =3D=3D -EINVAL || rc =3D=3D 0);
-> > -	do_assertions(rc ? 0 : DONT_ASSERT_FEATURE_STATUS);
-> > +	do_assertions(rc ? 0 : DONT_ASSERT_FBC_STATUS);
-> >  }
-> > =20
-> >  /**
-
---=-cJiE4WEtz4Ba2V07pQzQ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyj1vEACgkQVenbO/mO
-WkkDZgf7BiSnkDFNZ7CJ6HwVvt7VHnuvwUPDSFmf8tum2e/cfhsCHWu1hV2NIxZB
-6op+cPIUVwASVcGzR44PAVNkcdc8VdUMVKWyR+Ht6aEOcc+16PDetv0oxBrqjgQU
-R8Yp1LBb8eJ6sLDnBEm8cKReWe+R9f7jgYwIKDaZy8ULotZHzeaIgzw6WgbQZeyK
-yS/HpJ1CxRxmCszcYhbTFwCqIY2rnakv268y3/IAtLPBWbsbHMGZ50/gIQyU4JbH
-aQV5EJXEcIXfuCF/3vHwyyZiS8JORKpWssV7DDoQrwjko3JPacbjgsKgwDg06RTk
-Z1/tTpuPBJh/Tdr4KOoS0XysRA0myQ==
-=xv0n
------END PGP SIGNATURE-----
-
---=-cJiE4WEtz4Ba2V07pQzQ--
-
---===============0502043001==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============0502043001==--
+T24gVHVlLCAyMDE5LTA0LTAyIGF0IDIxOjQxICswMDAwLCBTb3V6YSwgSm9zZSB3cm90ZToKPiBP
+biBUdWUsIDIwMTktMDQtMDIgYXQgMTQ6MjQgLTA3MDAsIERoaW5ha2FyYW4gUGFuZGl5YW4gd3Jv
+dGU6Cj4gPiBPbiBUdWUsIDIwMTktMDQtMDIgYXQgMTM6NTkgLTA3MDAsIEpvc8OpIFJvYmVydG8g
+ZGUgU291emEgd3JvdGU6Cj4gPiA+IEFzIGV4cGxhaW5lZCBpbiBjMWVkZWUxODZkMTggKCJ0ZXN0
+cy9mcm9udGJ1ZmZlcl90cmFja2luZzogRG8gbm90Cj4gPiA+IGFzc2VydCBGQkMgc3RhdGUgYWZ0
+ZXIgYSBwYWdlIGZsaXAgY2hhbmdpbmcgc3RyaWRlIikgYWZ0ZXIgY2hhbmdpbmcKPiA+ID4gdGhl
+IHBsYW5lIHN0cmlkZSB0aGVyZSBpcyB0aGUgcG9zc2liaWxpdHkgdGhhdCBDRkIgd2lsbCBub3Qg
+YmUgYmlnCj4gPiA+IGVub3VnaCB0byBrZWVwIEZCQyBlbmFibGVkLCB0aGF0IGlzIHdoeSBkb19h
+c3NlcnRpb25zKCkgaXMgY2FsbGVkCj4gPiA+IHdpdGggRE9OVF9BU1NFUlRfRkVBVFVSRV9TVEFU
+VVMgYnV0IERPTlRfQVNTRVJUX0ZFQVRVUkVfU1RBVFVTIGlzCj4gPiA+IG92ZXJraWxsIGFuZCB3
+aWxsIG5vdCBjaGVjayB0aGUgc3RhdHVzIG9mIHRoZSBvdGhlciBmZWF0dXJlcyBsaWtlCj4gPiA+
+IFBTUgo+ID4gPiBhbmQgRFJSUyB3aGVuIHJ1bm5pbmcgY29tYmluZWQgZmVhdHVyZSB0ZXN0cyBh
+bmQgcG9zc2libHkgaGlkaW5nCj4gPiA+IGJ1Z3MuCj4gPiA+IAo+ID4gPiBTbyBsZXRzIGFkZCBh
+IG5ldyBmbGFnIHRoYXQgd2lsbCBvbmx5IG5vdCBhc3NlcnQgRkJDLgo+ID4gCj4gPiBZb3UgYXJl
+IGFkZGluZyB0aGlzIGZsYWcgdG8gYmUgb25seSB1c2VkIGluIHN0cmlkZWNoYW5nZV9zdWJ0ZXN0
+KCkuCj4gPiBCdXQsIGlzCj4gPiBzdHJpZGUgY2hhbmdlIGV2ZW4gcmVsZXZhbnQgZm9yIFBTUiBh
+bmQgRFJSUz8gSSBkaWRuJ3QgdGhpbmsgc28uCj4gPiBXaGlsZSBoYXJtbGVzcywKPiA+IEkgZG9u
+J3Qgc2VlIGFueSBtdWNoIHZhbHVlIGluIGFzc2VydGluZyBQU1IgYW5kIERSUlMgc3RheSBlbmFi
+bGVkLgo+IAo+IEknbSBhbHNvIG5vdCBhd2FyZSBvZiBhbnkgY2FzZSB0aGF0IHdvdWxkIHByZXZl
+bnQgUFNSIG9yIERSUlMgdG8gYmUKPiBlbmFibGVkIGJ1dCB0aGF0IGlzIHdoeSB3ZSBoYXZlIHRo
+ZSB0ZXN0cywgdG8gY2F0Y2ggbWlzc2luZyBkZXRhaWxzCj4gZnJvbSBzcGVjLCByZWdyZXNzaW9u
+cyBhbmQgYnVncy4KPiAKSXQgaXMgaW1wb3NzaWJsZSB0byB0ZXN0IGFsbCBwb3NzaWJsZSBjb25m
+aWd1cmF0aW9ucywgd2UgY2FuIG9ubHkgdGVzdCB0aGUgb25lcwp0aGF0IGhhdmUgcG90ZW50aWFs
+IHRvIGNhdXNlIHByb2JsZW1zLgoKVGhlIHBhdGNoIGRvZXMgd2hhdCBpdCBzYXlzLCBhbmQgSSBk
+b24ndCBzZWUgYW55IGhhcm0gaW4gbWFraW5nIHRoaXMgY2hhbmdlLiBTbwpSZXZpZXdlZC1ieTog
+RGhpbmFrYXJhbiBQYW5kaXlhbiA8ZGhpbmFrYXJhbi5wYW5kaXlhbkBpbnRlbC5jb20+Cgo+IFdp
+dGhvdXQgdGhpcyBjaGFuZ2Ugd2UgYXJlIG5vdCB0ZXN0aW5nIHRoZSBvdGhlciBmZWF0dXJlcyBz
+dGF0ZXMgaW4KPiB0aGlzIHRlc3RzOgpUaGF0J3Mgb2theSBJTU8sIHRlc3RpbmcgUFNSIGFuZCBE
+UlJTIHN0YXRlcyBpc24ndCB0aGUgZ29hbCBmb3IgdGhpcyBzdWJ0ZXN0Lgo+IAo+IGZiY3Bzci1z
+dHJpZGVjaGFuZ2UKPiBmYmNkcnJzLXN0cmlkZWNoYW5nZQo+IGZiY3BzcmRycnMtc3RyaWRlY2hh
+bmdlCj4gCj4gPiAKPiA+IAo+ID4gPiBDYzogTWFhcnRlbiBMYW5raG9yc3QgPG1hYXJ0ZW4ubGFu
+a2hvcnN0QGxpbnV4LmludGVsLmNvbT4KPiA+ID4gQ2M6IFBhdWxvIFphbm9uaSA8cGF1bG8uci56
+YW5vbmlAaW50ZWwuY29tPgo+ID4gPiBDYzogRGhpbmFrYXJhbiBQYW5kaXlhbiA8ZGhpbmFrYXJh
+bi5wYW5kaXlhbkBpbnRlbC5jb20+Cj4gPiA+IFNpZ25lZC1vZmYtYnk6IEpvc8OpIFJvYmVydG8g
+ZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwuY29tPgo+ID4gPiAtLS0KPiA+ID4gIHRlc3RzL2tt
+c19mcm9udGJ1ZmZlcl90cmFja2luZy5jIHwgOSArKysrKy0tLS0KPiA+ID4gIDEgZmlsZSBjaGFu
+Z2VkLCA1IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCj4gPiA+IAo+ID4gPiBkaWZmIC0t
+Z2l0IGEvdGVzdHMva21zX2Zyb250YnVmZmVyX3RyYWNraW5nLmMKPiA+ID4gYi90ZXN0cy9rbXNf
+ZnJvbnRidWZmZXJfdHJhY2tpbmcuYwo+ID4gPiBpbmRleCBjYWVmNjc1NS4uZWUxM2IxMzggMTAw
+NjQ0Cj4gPiA+IC0tLSBhL3Rlc3RzL2ttc19mcm9udGJ1ZmZlcl90cmFja2luZy5jCj4gPiA+ICsr
+KyBiL3Rlc3RzL2ttc19mcm9udGJ1ZmZlcl90cmFja2luZy5jCj4gPiA+IEBAIC0xNTA5LDYgKzE1
+MDksNyBAQCBzdGF0aWMgdm9pZCBkb19mbHVzaChjb25zdCBzdHJ1Y3QgdGVzdF9tb2RlCj4gPiA+
+ICp0KQo+ID4gPiAgCj4gPiA+ICAjZGVmaW5lIERPTlRfQVNTRVJUX0NSQwkJCSgxIDw8IDApCj4g
+PiA+ICAjZGVmaW5lIERPTlRfQVNTRVJUX0ZFQVRVUkVfU1RBVFVTCSgxIDw8IDEpCj4gPiA+ICsj
+ZGVmaW5lIERPTlRfQVNTRVJUX0ZCQ19TVEFUVVMJCSgxIDw8IDEyKQo+ID4gPiAgCj4gPiA+ICAj
+ZGVmaW5lIEZCQ19BU1NFUlRfRkxBR1MJCSgweEYgPDwgMikKPiA+ID4gICNkZWZpbmUgQVNTRVJU
+X0ZCQ19FTkFCTEVECQkoMSA8PCAyKQo+ID4gPiBAQCAtMTUzOSw3ICsxNTQwLDcgQEAgc3RhdGlj
+IGludCBhZGp1c3RfYXNzZXJ0aW9uX2ZsYWdzKGNvbnN0Cj4gPiA+IHN0cnVjdCB0ZXN0X21vZGUK
+PiA+ID4gKnQsIGludCBmbGFncykKPiA+ID4gIAkJCWZsYWdzIHw9IEFTU0VSVF9EUlJTX0hJR0g7
+Cj4gPiA+ICAJfQo+ID4gPiAgCj4gPiA+IC0JaWYgKCh0LT5mZWF0dXJlICYgRkVBVFVSRV9GQkMp
+ID09IDApCj4gPiA+ICsJaWYgKCh0LT5mZWF0dXJlICYgRkVBVFVSRV9GQkMpID09IDAgfHwgKGZs
+YWdzICYKPiA+ID4gRE9OVF9BU1NFUlRfRkJDX1NUQVRVUykpCj4gPiA+ICAJCWZsYWdzICY9IH5G
+QkNfQVNTRVJUX0ZMQUdTOwo+ID4gPiAgCWlmICgodC0+ZmVhdHVyZSAmIEZFQVRVUkVfUFNSKSA9
+PSAwKQo+ID4gPiAgCQlmbGFncyAmPSB+UFNSX0FTU0VSVF9GTEFHUzsKPiA+ID4gQEAgLTI5MTAs
+NyArMjkxMSw3IEBAIHN0YXRpYyB2b2lkIHN0cmlkZWNoYW5nZV9zdWJ0ZXN0KGNvbnN0IHN0cnVj
+dAo+ID4gPiB0ZXN0X21vZGUKPiA+ID4gKnQpCj4gPiA+ICAJZmlsbF9mYl9yZWdpb24oJnBhcmFt
+cy0+cHJpbWFyeSwgQ09MT1JfUFJJTV9CRyk7Cj4gPiA+ICAKPiA+ID4gIAlzZXRfbW9kZV9mb3Jf
+cGFyYW1zKHBhcmFtcyk7Cj4gPiA+IC0JZG9fYXNzZXJ0aW9ucyhET05UX0FTU0VSVF9GRUFUVVJF
+X1NUQVRVUyk7Cj4gPiA+ICsJZG9fYXNzZXJ0aW9ucyhET05UX0FTU0VSVF9GQkNfU1RBVFVTKTsK
+PiA+ID4gIAo+ID4gPiAgCS8qIEdvIGJhY2sgdG8gdGhlIGZiIHRoYXQgY2FuIGhhdmUgRkJDLiAq
+Lwo+ID4gPiAgCXBhcmFtcy0+cHJpbWFyeS5mYiA9IG9sZF9mYjsKPiA+ID4gQEAgLTI5MjAsNyAr
+MjkyMSw3IEBAIHN0YXRpYyB2b2lkIHN0cmlkZWNoYW5nZV9zdWJ0ZXN0KGNvbnN0IHN0cnVjdAo+
+ID4gPiB0ZXN0X21vZGUKPiA+ID4gKnQpCj4gPiA+ICAJLyogVGhpcyBvcGVyYXRpb24gaXMgdGhl
+IHNhbWUgYXMgYWJvdmUsIGJ1dCB3aXRoIHRoZSBwbGFuZXMKPiA+ID4gQVBJLiAqLwo+ID4gPiAg
+CXBhcmFtcy0+cHJpbWFyeS5mYiA9IG5ld19mYjsKPiA+ID4gIAlzZXRfcHJpbV9wbGFuZV9mb3Jf
+cGFyYW1zKHBhcmFtcyk7Cj4gPiA+IC0JZG9fYXNzZXJ0aW9ucyhET05UX0FTU0VSVF9GRUFUVVJF
+X1NUQVRVUyk7Cj4gPiA+ICsJZG9fYXNzZXJ0aW9ucyhET05UX0FTU0VSVF9GQkNfU1RBVFVTKTsK
+PiA+ID4gIAo+ID4gPiAgCXBhcmFtcy0+cHJpbWFyeS5mYiA9IG9sZF9mYjsKPiA+ID4gIAlzZXRf
+cHJpbV9wbGFuZV9mb3JfcGFyYW1zKHBhcmFtcyk7Cj4gPiA+IEBAIC0yOTMyLDcgKzI5MzMsNyBA
+QCBzdGF0aWMgdm9pZCBzdHJpZGVjaGFuZ2Vfc3VidGVzdChjb25zdCBzdHJ1Y3QKPiA+ID4gdGVz
+dF9tb2RlCj4gPiA+ICp0KQo+ID4gPiAgCSAqLwo+ID4gPiAgCXJjID0gZHJtTW9kZVBhZ2VGbGlw
+KGRybS5mZCwgZHJtLmRpc3BsYXkucGlwZXNbcGFyYW1zLQo+ID4gPiA+IHBpcGVdLmNydGNfaWQs
+Cj4gPiA+IAo+ID4gPiBuZXdfZmItPmZiX2lkLCAwLCBOVUxMKTsKPiA+ID4gIAlpZ3RfYXNzZXJ0
+KHJjID09IC1FSU5WQUwgfHwgcmMgPT0gMCk7Cj4gPiA+IC0JZG9fYXNzZXJ0aW9ucyhyYyA/IDAg
+OiBET05UX0FTU0VSVF9GRUFUVVJFX1NUQVRVUyk7Cj4gPiA+ICsJZG9fYXNzZXJ0aW9ucyhyYyA/
+IDAgOiBET05UX0FTU0VSVF9GQkNfU1RBVFVTKTsKPiA+ID4gIH0KPiA+ID4gIAo+ID4gPiAgLyoq
+Cj4gCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiBp
+Z3QtZGV2IG1haWxpbmcgbGlzdAo+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4gaHR0
+cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2CgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxp
+bmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVk
+ZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
