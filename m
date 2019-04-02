@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00BEA6E4BB
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Apr 2019 19:47:37 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Tue, 2 Apr 2019 19:47:35 +0000
-Message-ID: <b0bcbb0809c6e804159c19a09a519e2d40abafca.camel@intel.com>
-References: <20190328222827.18099-1-jose.souza@intel.com>
- <20190328222827.18099-2-jose.souza@intel.com>
- <b69af2b37aa12ee8831ea5ab5a2b6bd943d8f727.camel@intel.com>
-In-Reply-To: <b69af2b37aa12ee8831ea5ab5a2b6bd943d8f727.camel@intel.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/frontbuffer_tracking: Assert
- the status of other features on stridechange subtest
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 02 Apr 2019 19:52:32 -0000
+Message-ID: <20190402195232.4273.37560@emeril.freedesktop.org>
+References: <20190402191247.26247-1-maarten.lankhorst@linux.intel.com>
+In-Reply-To: <20190402191247.26247-1-maarten.lankhorst@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_lib/igt=5Ffb=3A_Add_cairo_conv?=
+ =?utf-8?q?ersion_to_igt=5Ffb=5Fconvert=5Fwith=5Fstride=2E?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,144 +15,107 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1458408454=="
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1458408454==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-5zhB1uWPo8Z2mwE7dTEY"
-
---=-5zhB1uWPo8Z2mwE7dTEY
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, 2019-04-02 at 12:26 -0700, Dhinakaran Pandiyan wrote:
-> On Thu, 2019-03-28 at 15:28 -0700, Jos=C3=A9 Roberto de Souza wrote:
-> > As explained in c1edee186d18 ("tests/frontbuffer_tracking: Do not
-> > assert FBC state after a page flip changing stride") after changing
-> > the plane stride there is the possibility that CFB will not be big
-> > enough to keep FBC enabled, that is why do_assertions() is called
-> > with DONT_ASSERT_FEATURE_STATUS but DONT_ASSERT_FEATURE_STATUS is
-> > overkill and will not check the status of the other features like
-> > PSR
-> > and DRRS when running combined feature tests and possibly hiding
-> > bugs.
-> >=20
-> > So lets add a new flag that will only not assert FBC.
-> >=20
-> > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> > Cc: Paulo Zanoni <paulo.r.zanoni@intel.com>
-> > Signed-off-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
-> > ---
-> >  tests/kms_frontbuffer_tracking.c | 9 +++++----
-> >  1 file changed, 5 insertions(+), 4 deletions(-)
-> >=20
-> > diff --git a/tests/kms_frontbuffer_tracking.c
-> > b/tests/kms_frontbuffer_tracking.c
-> > index 087fc473..0dcde097 100644
-> > --- a/tests/kms_frontbuffer_tracking.c
-> > +++ b/tests/kms_frontbuffer_tracking.c
-> > @@ -1527,6 +1527,7 @@ static void do_flush(const struct test_mode
-> > *t)
-> > =20
-> >  #define DONT_ASSERT_CRC			(1 << 0)
-> >  #define DONT_ASSERT_FEATURE_STATUS	(1 << 1)
-> > +#define DONT_ASSERT_FBC_STATUS		(1 << 12)
-> > =20
-> >  #define FBC_ASSERT_FLAGS		(0xF << 2)
-> >  #define ASSERT_FBC_ENABLED		(1 << 2)
-> > @@ -1557,7 +1558,7 @@ static int adjust_assertion_flags(const
-> > struct test_mode
-> > *t, int flags)
-> >  			flags |=3D ASSERT_DRRS_HIGH;
-> >  	}
-> > =20
-> > -	if ((t->feature & FEATURE_FBC) =3D=3D 0)
-> > +	if ((t->feature & FEATURE_FBC) =3D=3D 0 || (flags &
-> > DONT_ASSERT_FBC_STATUS))
-> >  		flags &=3D ~FBC_ASSERT_FLAGS;
-> >  	if ((t->feature & FEATURE_PSR) =3D=3D 0)
-> >  		flags &=3D ~PSR_ASSERT_FLAGS;
-> > @@ -2928,7 +2929,7 @@ static void stridechange_subtest(const struct
-> > test_mode
-> > *t)
-> >  	fill_fb_region(&params->primary, COLOR_PRIM_BG);
-> > =20
-> >  	set_mode_for_params(params);
-> > -	do_assertions(DONT_ASSERT_FEATURE_STATUS);
-> > +	do_assertions(DONT_ASSERT_FBC_STATUS);
-> > =20
-> >  	/* Go back to the fb that can have FBC. */
-> >  	params->primary.fb =3D old_fb;
-> > @@ -2938,7 +2939,7 @@ static void stridechange_subtest(const struct
-> > test_mode
-> > *t)
-> >  	/* This operation is the same as above, but with the planes
-> > API. */
-> >  	params->primary.fb =3D new_fb;
-> >  	set_prim_plane_for_params(params);
-> > -	do_assertions(DONT_ASSERT_FEATURE_STATUS);
-> > +	do_assertions(DONT_ASSERT_FBC_STATUS);
-> > =20
-> >  	params->primary.fb =3D old_fb;
-> >  	set_prim_plane_for_params(params);
-> > @@ -2950,7 +2951,7 @@ static void stridechange_subtest(const struct
-> > test_mode
-> > *t)
-> >  	 */
-> >  	rc =3D drmModePageFlip(drm.fd, drm.display.pipes[params-
-> > >pipe].crtc_id,
-> > new_fb->fb_id, 0, NULL);
-> >  	igt_assert(rc =3D=3D -EINVAL || rc =3D=3D 0);
-> > -	do_assertions(DONT_ASSERT_FEATURE_STATUS);
-> > +	do_assertions(DONT_ASSERT_FBC_STATUS);
->=20
-> Isn't this the same as
-> (DONT_ASSERT_FEATURE_STATUS || ASSERT_PSR_ENABLED ||
-> ASSERT_DRRS_HIGH)?
-
-This would work as ASSERT_PSR_ENABLED and ASSERT_DRRS_HIGH would be
-cleared when running this test without this features but have
-DONT_ASSERT_FEATURE_STATUS with ASSERT_PSR_ENABLED and ASSERT_DRRS_HIGH
-is contradictory to each other.
-
->=20
-> Explicit about what features are asserted but is verbose.
->=20
-> > =20
-> >  /**
-
---=-5zhB1uWPo8Z2mwE7dTEY
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyjvFYACgkQVenbO/mO
-WkmpQAf7BFOOwPwAHjSzuD5IMBhkT2opIOSfjz3MjWnfIqil2pmk+YP3RxLvfNIv
-Yw6PrX3Ay8muCF5XkftqwpQLk4+/YAVUOyM4+ys4Lxjf9R+Ewq+5AThPjnwMnd3J
-/ssDUE7RkRG1Yc8iQPsd5ym37UPJ8MQB9SyliqJ5dnd6GA66waJR8M9GQ3z1prAn
-dWOXsPCrX0VCjzTW50moGdkNORqp8GN+nQYGc3oNvQAYA4z0cKpvnru+xoeAUwUn
-WKnAzC3gZvHqOfs76DNdMEMH5eWYStS2WrybTPRALowPh2slF6o3NxrRN0ZIW5/W
-u7qfmkVhh0+gjXUtmmQsB/80vlgxmQ==
-=/A05
------END PGP SIGNATURE-----
-
---=-5zhB1uWPo8Z2mwE7dTEY--
-
---===============1458408454==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============1458408454==--
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW2ktZy10
+LDEvMl0gbGliL2lndF9mYjogQWRkIGNhaXJvIGNvbnZlcnNpb24gdG8gaWd0X2ZiX2NvbnZlcnRf
+d2l0aF9zdHJpZGUuClVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nl
+cmllcy81ODg4Ni8KU3RhdGUgOiBmYWlsdXJlCgo9PSBTdW1tYXJ5ID09CgpDSSBCdWcgTG9nIC0g
+Y2hhbmdlcyBmcm9tIENJX0RSTV81ODU2IC0+IElHVFBXXzI3NjUKPT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQoKU3VtbWFyeQotLS0tLS0tCgogICoq
+RkFJTFVSRSoqCgogIFNlcmlvdXMgdW5rbm93biBjaGFuZ2VzIGNvbWluZyB3aXRoIElHVFBXXzI3
+NjUgYWJzb2x1dGVseSBuZWVkIHRvIGJlCiAgdmVyaWZpZWQgbWFudWFsbHkuCiAgCiAgSWYgeW91
+IHRoaW5rIHRoZSByZXBvcnRlZCBjaGFuZ2VzIGhhdmUgbm90aGluZyB0byBkbyB3aXRoIHRoZSBj
+aGFuZ2VzCiAgaW50cm9kdWNlZCBpbiBJR1RQV18yNzY1LCBwbGVhc2Ugbm90aWZ5IHlvdXIgYnVn
+IHRlYW0gdG8gYWxsb3cgdGhlbQogIHRvIGRvY3VtZW50IHRoaXMgbmV3IGZhaWx1cmUgbW9kZSwg
+d2hpY2ggd2lsbCByZWR1Y2UgZmFsc2UgcG9zaXRpdmVzIGluIENJLgoKICBFeHRlcm5hbCBVUkw6
+IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9hcGkvMS4wL3Nlcmllcy81ODg4Ni9y
+ZXZpc2lvbnMvMS9tYm94LwoKUG9zc2libGUgbmV3IGlzc3VlcwotLS0tLS0tLS0tLS0tLS0tLS0t
+CgogIEhlcmUgYXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVuIGludHJv
+ZHVjZWQgaW4gSUdUUFdfMjc2NToKCiMjIyBJR1QgY2hhbmdlcyAjIyMKCiMjIyMgUG9zc2libGUg
+cmVncmVzc2lvbnMgIyMjIwoKICAqIGlndEBrbXNfY2hhbWVsaXVtQGRwLWNyYy1mYXN0OgogICAg
+LSBmaS1rYmwtNzUwMHU6ICAgICAgIE5PVFJVTiAtPiBGQUlMICsxCgogICogaWd0QGttc19jaGFt
+ZWxpdW1AaGRtaS1jcmMtZmFzdDoKICAgIC0gZmktc2tsLTY3MDBrMjogICAgICBQQVNTIC0+IEZB
+SUwKICAgIC0gZmkta2JsLTc1Njd1OiAgICAgICBQQVNTIC0+IEZBSUwKCiAgCktub3duIGlzc3Vl
+cwotLS0tLS0tLS0tLS0KCiAgSGVyZSBhcmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gSUdUUFdfMjc2
+NSB0aGF0IGNvbWUgZnJvbSBrbm93biBpc3N1ZXM6CgojIyMgSUdUIGNoYW5nZXMgIyMjCgojIyMj
+IElzc3VlcyBoaXQgIyMjIwoKICAqIGlndEBhbWRncHUvYW1kX2NzX25vcEBmb3JrLWNvbXB1dGUw
+OgogICAgLSBmaS1pY2wteTogICAgICAgICAgIE5PVFJVTiAtPiBTS0lQIFtmZG8jMTA5MzE1XSAr
+MTcKCiAgKiBpZ3RAZ2VtX2V4ZWNfYmFzaWNAYmFzaWMtYnNkMjoKICAgIC0gZmkta2JsLTc1MDB1
+OiAgICAgICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTI3MV0gKzM4CiAgICAtIGZpLWljbC15OiAg
+ICAgICAgICAgTk9UUlVOIC0+IFNLSVAgW2ZkbyMxMDkyNzZdICs3CgogICogaWd0QGdlbV9leGVj
+X3BhcnNlQGJhc2ljLXJlamVjdGVkOgogICAgLSBmaS1pY2wteTogICAgICAgICAgIE5PVFJVTiAt
+PiBTS0lQIFtmZG8jMTA5Mjg5XSArMQoKICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVfY29udGV4
+dHM6CiAgICAtIGZpLWljbC15OiAgICAgICAgICAgTk9UUlVOIC0+IERNRVNHLUZBSUwgW2ZkbyMx
+MDg1NjldCgogICogaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZV9yZXF1ZXN0czoKICAgIC0gZmktaWNs
+LXUzOiAgICAgICAgICBQQVNTIC0+IElOQ09NUExFVEUgW2ZkbyMxMDk2NDRdCgogICogaWd0QGtt
+c19jaGFtZWxpdW1AY29tbW9uLWhwZC1hZnRlci1zdXNwZW5kOgogICAgLSBmaS1rYmwtNzUwMHU6
+ICAgICAgIE5PVFJVTiAtPiBETUVTRy1XQVJOIFtmZG8jMTAyNTA1XSAvIFtmZG8jMTAzNTU4XSAv
+IFtmZG8jMTA1MDc5XSAvIFtmZG8jMTA1NjAyXQoKICAqIGlndEBrbXNfY2hhbWVsaXVtQGRwLWNy
+Yy1mYXN0OgogICAgLSBmaS1pY2wteTogICAgICAgICAgIE5PVFJVTiAtPiBTS0lQIFtmZG8jMTA5
+Mjg0XSArOAoKICAqIGlndEBrbXNfZm9yY2VfY29ubmVjdG9yX2Jhc2ljQGZvcmNlLWxvYWQtZGV0
+ZWN0OgogICAgLSBmaS1pY2wteTogICAgICAgICAgIE5PVFJVTiAtPiBTS0lQIFtmZG8jMTA5Mjg1
+XSArMwoKICAqIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAbm9uYmxvY2tpbmctY3JjLXBpcGUtYS1m
+cmFtZS1zZXF1ZW5jZToKICAgIC0gZmktYnl0LWNsYXBwZXI6ICAgICBQQVNTIC0+IEZBSUwgW2Zk
+byMxMDMxOTFdIC8gW2ZkbyMxMDczNjJdICsyCgogICogaWd0QGttc19waXBlX2NyY19iYXNpY0Bz
+dXNwZW5kLXJlYWQtY3JjLXBpcGUtYjoKICAgIC0gZmktYnl0LWNsYXBwZXI6ICAgICBOT1RSVU4g
+LT4gRkFJTCBbZmRvIzEwMzE5MV0gLyBbZmRvIzEwNzM2Ml0KCiAgKiBpZ3RAa21zX3BzckBwcmlt
+YXJ5X21tYXBfZ3R0OgogICAgLSBmaS1pY2wteTogICAgICAgICAgIE5PVFJVTiAtPiBTS0lQIFtm
+ZG8jMTEwMTg5XSArMwogICAgLSBmaS1ieXQtY2xhcHBlcjogICAgIE5PVFJVTiAtPiBTS0lQIFtm
+ZG8jMTA5MjcxXSArMjMKCiAgKiBpZ3RAa21zX3BzckBwcmltYXJ5X3BhZ2VfZmxpcDoKICAgIC0g
+ZmktYXBsLWd1YzogICAgICAgICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTI3MV0gKzUwCgogICog
+aWd0QHByaW1lX3ZnZW1AYmFzaWMtZmVuY2UtZmxpcDoKICAgIC0gZmktaWNsLXk6ICAgICAgICAg
+ICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTI5NF0KCiAgCiMjIyMgUG9zc2libGUgZml4ZXMgIyMj
+IwoKICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVfY29udGV4dHM6CiAgICAtIGZpLWJkdy1ndnRk
+dm06ICAgICAgRE1FU0ctRkFJTCBbZmRvIzExMDIzNSBdIC0+IFBBU1MKICAgIC0gZmktc2tsLWd2
+dGR2bTogICAgICBETUVTRy1GQUlMIFtmZG8jMTEwMjM1IF0gLT4gUEFTUwoKICAqIGlndEBrbXNf
+cGlwZV9jcmNfYmFzaWNAbm9uYmxvY2tpbmctY3JjLXBpcGUtYjoKICAgIC0gZmktYnl0LWNsYXBw
+ZXI6ICAgICBGQUlMIFtmZG8jMTA3MzYyXSAtPiBQQVNTCgogICogaWd0QGttc19waXBlX2NyY19i
+YXNpY0ByZWFkLWNyYy1waXBlLWItZnJhbWUtc2VxdWVuY2U6CiAgICAtIGZpLWJ5dC1jbGFwcGVy
+OiAgICAgRkFJTCBbZmRvIzEwMzE5MV0gLyBbZmRvIzEwNzM2Ml0gLT4gUEFTUwoKICAKIyMjIyBX
+YXJuaW5ncyAjIyMjCgogICogaWd0QGttc19waXBlX2NyY19iYXNpY0BzdXNwZW5kLXJlYWQtY3Jj
+LXBpcGUtYToKICAgIC0gZmktYnl0LWNsYXBwZXI6ICAgICBJTkNPTVBMRVRFIFtmZG8jMTAyNjU3
+XSAtPiBGQUlMIFtmZG8jMTAzMTkxXSAvIFtmZG8jMTA3MzYyXQoKICAKICBbZmRvIzEwMjUwNV06
+IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMjUwNQogIFtm
+ZG8jMTAyNjU3XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
+MTAyNjU3CiAgW2ZkbyMxMDMxOTFdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3df
+YnVnLmNnaT9pZD0xMDMxOTEKICBbZmRvIzEwMzU1OF06IGh0dHBzOi8vYnVncy5mcmVlZGVza3Rv
+cC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzU1OAogIFtmZG8jMTA1MDc5XTogaHR0cHM6Ly9idWdz
+LmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA1MDc5CiAgW2ZkbyMxMDU2MDJdOiBo
+dHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDU2MDIKICBbZmRv
+IzEwNzM2Ml06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEw
+NzM2MgogIFtmZG8jMTA4NTY5XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1
+Zy5jZ2k/aWQ9MTA4NTY5CiAgW2ZkbyMxMDkyNzFdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Au
+b3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkyNzEKICBbZmRvIzEwOTI3Nl06IGh0dHBzOi8vYnVncy5m
+cmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI3NgogIFtmZG8jMTA5Mjg0XTogaHR0
+cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5Mjg0CiAgW2ZkbyMx
+MDkyODVdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDky
+ODUKICBbZmRvIzEwOTI4OV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcu
+Y2dpP2lkPTEwOTI4OQogIFtmZG8jMTA5Mjk0XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9y
+Zy9zaG93X2J1Zy5jZ2k/aWQ9MTA5Mjk0CiAgW2ZkbyMxMDkzMTVdOiBodHRwczovL2J1Z3MuZnJl
+ZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkzMTUKICBbZmRvIzEwOTY0NF06IGh0dHBz
+Oi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTY0NAogIFtmZG8jMTEw
+MTg5XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTEwMTg5
+CiAgW2ZkbyMxMTAyMzUgXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5j
+Z2k/aWQ9MTEwMjM1IAoKClBhcnRpY2lwYXRpbmcgaG9zdHMgKDQzIC0+IDQwKQotLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0KCiAgQWRkaXRpb25hbCAoMyk6IGZpLWljbC15IGZpLWFwbC1n
+dWMgZmkta2JsLTc1MDB1IAogIE1pc3NpbmcgICAgKDYpOiBmaS1oc3ctNDc3MHIgZmktaWxrLW01
+NDAgZmktYnl0LXNxdWF3a3MgZmktc2tsLTYyNjB1IGZpLWJkdy1zYW11cyBmaS1zbmItMjYwMCAK
+CgpCdWlsZCBjaGFuZ2VzCi0tLS0tLS0tLS0tLS0KCiAgICAqIElHVDogSUdUXzQ5MjIgLT4gSUdU
+UFdfMjc2NQoKICBDSV9EUk1fNTg1NjogNTUwNzRiZDgyNTA5OGE3MTc3OWNmNjVhNjk3ODY1NDdm
+MGVjY2JlOSBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL2dmeC1jaS9saW51eAogIElH
+VFBXXzI3NjU6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdf
+Mjc2NS8KICBJR1RfNDkyMjogZTk0MWU0YTI5NDM4YzcxMzA1NTQ0OTJlNGRhZjUyYWZiYzk5ZmZk
+ZiBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0b3Aub3JnL3hvcmcvYXBwL2ludGVsLWdwdS10b29s
+cwoKPT0gTG9ncyA9PQoKRm9yIG1vcmUgZGV0YWlscyBzZWU6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNp
+LjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMjc2NS8KX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0
+cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9pZ3QtZGV2
