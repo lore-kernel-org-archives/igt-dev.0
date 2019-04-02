@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A58A36E4AF
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Apr 2019 18:22:35 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Tue, 2 Apr 2019 18:22:33 +0000
-Message-ID: <60168d80010b68c46291d42f6cae547345dc024a.camel@intel.com>
-References: <1554216150-18709-1-git-send-email-juhapekka.heikkila@gmail.com>
-In-Reply-To: <1554216150-18709-1-git-send-email-juhapekka.heikkila@gmail.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_multiple: Before going
- testing check how many planes are allowed
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 02 Apr 2019 18:23:05 -0000
+Message-ID: <20190402182305.4271.87053@emeril.freedesktop.org>
+References: <20190402174522.19695-1-nicholas.kazlauskas@amd.com>
+In-Reply-To: <20190402174522.19695-1-nicholas.kazlauskas@amd.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Ffb=3A_Create_AMD_YUV_buffers_with_AMD_GEM_IOCTL?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,155 +14,116 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1310780900=="
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
+To: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1310780900==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-uuPIWhABmwGSFFsKRoi2"
-
---=-uuPIWhABmwGSFFsKRoi2
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, 2019-04-02 at 17:42 +0300, Juha-Pekka Heikkila wrote:
-> Before start testing try out how many planes kernel will allow
-> simultaneously to be used.
->=20
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->  tests/kms_plane_multiple.c | 32 ++++++++++++++++++++++++++------
->  1 file changed, 26 insertions(+), 6 deletions(-)
->=20
-> diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-> index bfaeede..5107d9d 100644
-> --- a/tests/kms_plane_multiple.c
-> +++ b/tests/kms_plane_multiple.c
-> @@ -260,7 +260,9 @@ test_plane_position_with_output(data_t *data,
-> enum pipe pipe,
->  {
->  	color_t blue  =3D { 0.0f, 0.0f, 1.0f };
->  	igt_crc_t crc;
-> +	igt_plane_t *plane;
->  	int i;
-> +	int err, c =3D 0;
->  	int iterations =3D opt.iterations < 1 ? 1 : opt.iterations;
->  	bool loop_forever;
->  	char info[256];
-> @@ -274,17 +276,35 @@ test_plane_position_with_output(data_t *data,
-> enum pipe pipe,
->  			iterations, iterations > 1 ? "iterations" :
-> "iteration");
->  	}
-> =20
-> -	igt_info("Testing connector %s using pipe %s with %d planes %s
-> with seed %d\n",
-> -		 igt_output_name(output), kmstest_pipe_name(pipe),
-> n_planes,
-> -		 info, opt.seed);
-> -
->  	test_init(data, pipe, n_planes);
-> =20
->  	test_grab_crc(data, output, pipe, &blue, tiling);
-> =20
-> +	/*
-> +	 * Find out how many planes are allowed simultaneously
-> +	 */
-> +	do {
-> +		c++;
-> +		prepare_planes(data, pipe, &blue, tiling, c, output);
-> +		err =3D igt_display_try_commit2(&data->display,
-> COMMIT_ATOMIC);
-> +	} while (!err && c < n_planes);
-> +
-> +	if(err)
-> +		c--;
-
-"do {} while()" does the job but "for()" would be better suitable:
-
-for (planes_allowed =3D 0; planes_allowed < n_planes; planes_allowed++) {
-	int err;
-
-	prepare_planes(data, pipe, &blue, tiling, planes_allowed,
-output);
-	err =3D igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
-	if (err)
-		break;
-}
-
-
-Also you are leaking a bunch o memory here, each call to
-prepare_planes() will leak max_planes framebuffers, this could cause
-test to fail due no GPU memory available.
-
-Actually this test is already leaking a bunch as test_fini() is only
-freeing the first framebuffer, there is other leaks here too like:
-data->fb, prepare_planes().x, prepare_planes().y and
-prepare_planes().size.
-
-Can you take care of that too?
-
-
-> +
-> +	/*
-> +	 * clean up failed state.
-> +	 */
-> +	for_each_plane_on_pipe(&data->display, pipe, plane)
-> +		igt_plane_set_fb(plane, NULL);
-> +
-> +	igt_info("Testing connector %s using pipe %s with %d planes %s
-> with seed %d\n",
-> +		 igt_output_name(output), kmstest_pipe_name(pipe), c,
-> +		 info, opt.seed);
-> +
->  	i =3D 0;
-> -	while (i < iterations || loop_forever) {
-> -		prepare_planes(data, pipe, &blue, tiling, n_planes,
-> output);
-> +	while ((i < iterations || loop_forever) && c > 0) {
-
-We actually want to fail the test if it can not even test one plane, so
-add this before this while()
-
-igt_assert_lt(0, planes_allowed);
-
-> +		prepare_planes(data, pipe, &blue, tiling, c, output);
-> =20
->  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> =20
-
---=-uuPIWhABmwGSFFsKRoi2
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyjqGgACgkQVenbO/mO
-Wkl0Agf/c4dY4bGqWS/BKEfYAZqLifEJp6QEjyM+TQnQHjhiO0nMMAIbWIDZkUmJ
-4rsbQOvVCo90ZNFwSvF1RX1YLjBQlLZ8ffLRuO4CqDzArO64QmVzQSLSxkkrjr7c
-fhgMq4Rxc2aot/E5b5XZABxGZnC4C1obKef/p6Z58yE93aurqH0kKVbfZE3ZvlNV
-8Jm+kPWlGv5MweiuLJEcT+ZrzieEgla7s6MgE9l2tAalO+ZlBpNog3ffP8l7oR/7
-CeiaVlp0TgthuSUT4A83FGXjSaMEJGchlzEGLu2ywL8GEJ1A/HsK7U4j7MiODh+z
-ZV9JR+rHO9l/my4hewZwfnygz1owgg==
-=vHsX
------END PGP SIGNATURE-----
-
---=-uuPIWhABmwGSFFsKRoi2--
-
---===============1310780900==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============1310780900==--
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogbGliL2lndF9mYjogQ3JlYXRlIEFNRCBZVVYg
+YnVmZmVycyB3aXRoIEFNRCBHRU0gSU9DVEwKVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVl
+ZGVza3RvcC5vcmcvc2VyaWVzLzU4ODgyLwpTdGF0ZSA6IHN1Y2Nlc3MKCj09IFN1bW1hcnkgPT0K
+CkNJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20gQ0lfRFJNXzU4NTYgLT4gSUdUUFdfMjc2NAo9PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CgpTdW1tYXJ5
+Ci0tLS0tLS0KCiAgKipTVUNDRVNTKioKCiAgTm8gcmVncmVzc2lvbnMgZm91bmQuCgogIEV4dGVy
+bmFsIFVSTDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL2FwaS8xLjAvc2VyaWVz
+LzU4ODgyL3JldmlzaW9ucy8xL21ib3gvCgpLbm93biBpc3N1ZXMKLS0tLS0tLS0tLS0tCgogIEhl
+cmUgYXJlIHRoZSBjaGFuZ2VzIGZvdW5kIGluIElHVFBXXzI3NjQgdGhhdCBjb21lIGZyb20ga25v
+d24gaXNzdWVzOgoKIyMjIElHVCBjaGFuZ2VzICMjIwoKIyMjIyBJc3N1ZXMgaGl0ICMjIyMKCiAg
+KiBpZ3RAYW1kZ3B1L2FtZF9jc19ub3BAZm9yay1jb21wdXRlMDoKICAgIC0gZmktaWNsLXk6ICAg
+ICAgICAgICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTMxNV0gKzE3CgogICogaWd0QGFtZGdwdS9h
+bWRfY3Nfbm9wQGZvcmstZ2Z4MDoKICAgIC0gZmktaWNsLXUyOiAgICAgICAgICBOT1RSVU4gLT4g
+U0tJUCBbZmRvIzEwOTMxNV0gKzE3CgogICogaWd0QGdlbV9leGVjX2Jhc2ljQGJhc2ljLWJzZDI6
+CiAgICAtIGZpLWtibC03NTAwdTogICAgICAgTk9UUlVOIC0+IFNLSVAgW2ZkbyMxMDkyNzFdICs5
+CiAgICAtIGZpLWljbC15OiAgICAgICAgICAgTk9UUlVOIC0+IFNLSVAgW2ZkbyMxMDkyNzZdICs3
+CgogICogaWd0QGdlbV9leGVjX2Jhc2ljQHJlYWRvbmx5LWJzZDE6CiAgICAtIGZpLWljbC11Mjog
+ICAgICAgICAgTk9UUlVOIC0+IFNLSVAgW2ZkbyMxMDkyNzZdICs3CgogICogaWd0QGdlbV9leGVj
+X3BhcnNlQGJhc2ljLWFsbG93ZWQ6CiAgICAtIGZpLWljbC11MjogICAgICAgICAgTk9UUlVOIC0+
+IFNLSVAgW2ZkbyMxMDkyODldICsxCgogICogaWd0QGdlbV9leGVjX3BhcnNlQGJhc2ljLXJlamVj
+dGVkOgogICAgLSBmaS1pY2wteTogICAgICAgICAgIE5PVFJVTiAtPiBTS0lQIFtmZG8jMTA5Mjg5
+XSArMQoKICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVfY29udGV4dHM6CiAgICAtIGZpLWljbC11
+MjogICAgICAgICAgTk9UUlVOIC0+IERNRVNHLUZBSUwgW2ZkbyMxMDg1NjldCiAgICAtIGZpLWlj
+bC15OiAgICAgICAgICAgTk9UUlVOIC0+IElOQ09NUExFVEUgW2ZkbyMxMDg1NjldCgogICogaWd0
+QGk5MTVfc2VsZnRlc3RAbGl2ZV9leGVjbGlzdHM6CiAgICAtIGZpLWFwbC1ndWM6ICAgICAgICAg
+Tk9UUlVOIC0+IElOQ09NUExFVEUgW2ZkbyMxMDM5MjddIC8gW2ZkbyMxMDk3MjBdCgogICogaWd0
+QGttc19jaGFtZWxpdW1AZHAtY3JjLWZhc3Q6CiAgICAtIGZpLWtibC03NTAwdTogICAgICAgTk9U
+UlVOIC0+IERNRVNHLVdBUk4gW2ZkbyMxMDM4NDFdCiAgICAtIGZpLWljbC15OiAgICAgICAgICAg
+Tk9UUlVOIC0+IFNLSVAgW2ZkbyMxMDkyODRdICs4CgogICogaWd0QGttc19jaGFtZWxpdW1AZHAt
+ZWRpZC1yZWFkOgogICAgLSBmaS1pY2wtdTI6ICAgICAgICAgIE5PVFJVTiAtPiBTS0lQIFtmZG8j
+MTA5MzE2XSArMgoKICAqIGlndEBrbXNfY2hhbWVsaXVtQHZnYS1ocGQtZmFzdDoKICAgIC0gZmkt
+aWNsLXUyOiAgICAgICAgICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTMwOV0gKzEKCiAgKiBpZ3RA
+a21zX2ZvcmNlX2Nvbm5lY3Rvcl9iYXNpY0Bmb3JjZS1sb2FkLWRldGVjdDoKICAgIC0gZmktaWNs
+LXk6ICAgICAgICAgICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTI4NV0gKzMKCiAgKiBpZ3RAa21z
+X2ZvcmNlX2Nvbm5lY3Rvcl9iYXNpY0BwcnVuZS1zdGFsZS1tb2RlczoKICAgIC0gZmktaWNsLXUy
+OiAgICAgICAgICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTI4NV0gKzMKCiAgKiBpZ3RAa21zX2Zy
+b250YnVmZmVyX3RyYWNraW5nQGJhc2ljOgogICAgLSBmaS1pY2wtdTI6ICAgICAgICAgIE5PVFJV
+TiAtPiBGQUlMIFtmZG8jMTAzMTY3XQoKICAqIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAc3VzcGVu
+ZC1yZWFkLWNyYy1waXBlLWI6CiAgICAtIGZpLWJsYi1lNjg1MDogICAgICAgUEFTUyAtPiBJTkNP
+TVBMRVRFIFtmZG8jMTA3NzE4XQoKICAqIGlndEBrbXNfcHNyQHByaW1hcnlfbW1hcF9ndHQ6CiAg
+ICAtIGZpLWljbC15OiAgICAgICAgICAgTk9UUlVOIC0+IFNLSVAgW2ZkbyMxMTAxODldICszCiAg
+ICAtIGZpLWJ5dC1jbGFwcGVyOiAgICAgTk9UUlVOIC0+IFNLSVAgW2ZkbyMxMDkyNzFdICsyMwoK
+ICAqIGlndEBrbXNfcHNyQHByaW1hcnlfcGFnZV9mbGlwOgogICAgLSBmaS1hcGwtZ3VjOiAgICAg
+ICAgIE5PVFJVTiAtPiBTS0lQIFtmZG8jMTA5MjcxXSArNTAKCiAgKiBpZ3RAcHJpbWVfdmdlbUBi
+YXNpYy1mZW5jZS1mbGlwOgogICAgLSBmaS1pY2wteTogICAgICAgICAgIE5PVFJVTiAtPiBTS0lQ
+IFtmZG8jMTA5Mjk0XQoKICAqIGlndEBydW5uZXJAYWJvcnRlZDoKICAgIC0gZmkta2JsLTc1MDB1
+OiAgICAgICBOT1RSVU4gLT4gRkFJTCBbZmRvIzEwMzg0MV0KICAgIC0gZmktYXBsLWd1YzogICAg
+ICAgICBOT1RSVU4gLT4gRkFJTCBbZmRvIzEwODYyMl0gLyBbZmRvIzEwOTcyMF0KCiAgCiMjIyMg
+UG9zc2libGUgZml4ZXMgIyMjIwoKICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVfY29udGV4dHM6
+CiAgICAtIGZpLWJkdy1ndnRkdm06ICAgICAgRE1FU0ctRkFJTCBbZmRvIzExMDIzNSBdIC0+IFBB
+U1MKICAgIC0gZmktc2tsLWd2dGR2bTogICAgICBETUVTRy1GQUlMIFtmZG8jMTEwMjM1IF0gLT4g
+UEFTUwoKICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVfdW5jb3JlOgogICAgLSBmaS1za2wtZ3Z0
+ZHZtOiAgICAgIERNRVNHLUZBSUwgW2ZkbyMxMTAyMTBdIC0+IFBBU1MKCiAgKiBpZ3RAa21zX2Zy
+b250YnVmZmVyX3RyYWNraW5nQGJhc2ljOgogICAgLSBmaS1ieXQtY2xhcHBlcjogICAgIEZBSUwg
+W2ZkbyMxMDMxNjddIC0+IFBBU1MKCiAgKiBpZ3RAa21zX3BpcGVfY3JjX2Jhc2ljQG5vbmJsb2Nr
+aW5nLWNyYy1waXBlLWI6CiAgICAtIGZpLWJ5dC1jbGFwcGVyOiAgICAgRkFJTCBbZmRvIzEwNzM2
+Ml0gLT4gUEFTUwoKICAqIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAcmVhZC1jcmMtcGlwZS1iLWZy
+YW1lLXNlcXVlbmNlOgogICAgLSBmaS1ieXQtY2xhcHBlcjogICAgIEZBSUwgW2ZkbyMxMDMxOTFd
+IC8gW2ZkbyMxMDczNjJdIC0+IFBBU1MKCiAgCiMjIyMgV2FybmluZ3MgIyMjIwoKICAqIGlndEBp
+OTE1X3NlbGZ0ZXN0QGxpdmVfY29udGV4dHM6CiAgICAtIGZpLWljbC11MzogICAgICAgICAgSU5D
+T01QTEVURSBbZmRvIzEwODU2OV0gLT4gRE1FU0ctRkFJTCBbZmRvIzEwODU2OV0KCiAgKiBpZ3RA
+a21zX3BpcGVfY3JjX2Jhc2ljQHN1c3BlbmQtcmVhZC1jcmMtcGlwZS1hOgogICAgLSBmaS1ieXQt
+Y2xhcHBlcjogICAgIElOQ09NUExFVEUgW2ZkbyMxMDI2NTddIC0+IEZBSUwgW2ZkbyMxMDMxOTFd
+IC8gW2ZkbyMxMDczNjJdCgogIAogIFtmZG8jMTAyNjU3XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNr
+dG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAyNjU3CiAgW2ZkbyMxMDMxNjddOiBodHRwczovL2J1
+Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDMxNjcKICBbZmRvIzEwMzE5MV06
+IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzE5MQogIFtm
+ZG8jMTAzODQxXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
+MTAzODQxCiAgW2ZkbyMxMDM5MjddOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3df
+YnVnLmNnaT9pZD0xMDM5MjcKICBbZmRvIzEwNzM2Ml06IGh0dHBzOi8vYnVncy5mcmVlZGVza3Rv
+cC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNzM2MgogIFtmZG8jMTA3NzE4XTogaHR0cHM6Ly9idWdz
+LmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3NzE4CiAgW2ZkbyMxMDg1NjldOiBo
+dHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDg1NjkKICBbZmRv
+IzEwODYyMl06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEw
+ODYyMgogIFtmZG8jMTA5MjcxXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1
+Zy5jZ2k/aWQ9MTA5MjcxCiAgW2ZkbyMxMDkyNzZdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Au
+b3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkyNzYKICBbZmRvIzEwOTI4NF06IGh0dHBzOi8vYnVncy5m
+cmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI4NAogIFtmZG8jMTA5Mjg1XTogaHR0
+cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5Mjg1CiAgW2ZkbyMx
+MDkyODldOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDky
+ODkKICBbZmRvIzEwOTI5NF06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcu
+Y2dpP2lkPTEwOTI5NAogIFtmZG8jMTA5MzA5XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9y
+Zy9zaG93X2J1Zy5jZ2k/aWQ9MTA5MzA5CiAgW2ZkbyMxMDkzMTVdOiBodHRwczovL2J1Z3MuZnJl
+ZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkzMTUKICBbZmRvIzEwOTMxNl06IGh0dHBz
+Oi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTMxNgogIFtmZG8jMTA5
+NzIwXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5NzIw
+CiAgW2ZkbyMxMTAxODldOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNn
+aT9pZD0xMTAxODkKICBbZmRvIzExMDIxMF06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcv
+c2hvd19idWcuY2dpP2lkPTExMDIxMAogIFtmZG8jMTEwMjM1IF06IGh0dHBzOi8vYnVncy5mcmVl
+ZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTExMDIzNSAKCgpQYXJ0aWNpcGF0aW5nIGhvc3Rz
+ICg0MyAtPiA0MikKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCgogIEFkZGl0aW9uYWwg
+KDQpOiBmaS1pY2wteSBmaS1pY2wtdTIgZmktYXBsLWd1YyBmaS1rYmwtNzUwMHUgCiAgTWlzc2lu
+ZyAgICAoNSk6IGZpLWlsay1tNTQwIGZpLWJzdy1uMzA1MCBmaS1ieXQtc3F1YXdrcyBmaS1za2wt
+NjI2MHUgZmktYmR3LXNhbXVzIAoKCkJ1aWxkIGNoYW5nZXMKLS0tLS0tLS0tLS0tLQoKICAgICog
+SUdUOiBJR1RfNDkyMiAtPiBJR1RQV18yNzY0CgogIENJX0RSTV81ODU2OiA1NTA3NGJkODI1MDk4
+YTcxNzc5Y2Y2NWE2OTc4NjU0N2YwZWNjYmU5IEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5v
+cmcvZ2Z4LWNpL2xpbnV4CiAgSUdUUFdfMjc2NDogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3Jn
+L3RyZWUvZHJtLXRpcC9JR1RQV18yNzY0LwogIElHVF80OTIyOiBlOTQxZTRhMjk0MzhjNzEzMDU1
+NDQ5MmU0ZGFmNTJhZmJjOTlmZmRmIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcveG9y
+Zy9hcHAvaW50ZWwtZ3B1LXRvb2xzCgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNlZTog
+aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yNzY0LwpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxp
+bmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVk
+ZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
