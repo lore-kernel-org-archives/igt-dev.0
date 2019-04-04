@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20190328114925.25204-1-chris@chris-wilson.co.uk>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <1a0d17d4-1a8d-9740-e53c-5d72f2bfa57e@linux.intel.com>
-Date: Thu, 4 Apr 2019 12:14:19 +0100
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
+ [IPv6:2a00:1450:4864:20::543])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 821CD6E9F6
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Apr 2019 11:33:09 +0000 (UTC)
+Received: by mail-ed1-x543.google.com with SMTP id q14so1866159edr.5
+ for <igt-dev@lists.freedesktop.org>; Thu, 04 Apr 2019 04:33:09 -0700 (PDT)
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
+Date: Thu,  4 Apr 2019 13:33:00 +0200
+Message-Id: <20190404113300.10527-1-daniel.vetter@ffwll.ch>
 MIME-Version: 1.0
-In-Reply-To: <20190328114925.25204-1-chris@chris-wilson.co.uk>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_exec_big: Only warn for the
- first sign of a pagefault
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_flip: Improve asserts for expired
+ vblank tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,36 +18,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+To: IGT development <igt-dev@lists.freedesktop.org>
+Cc: "Peres, Martin" <martin.peres@intel.com>, Daniel Vetter <daniel.vetter@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Ck9uIDI4LzAzLzIwMTkgMTE6NDksIENocmlzIFdpbHNvbiB3cm90ZToKPiBXZSBvbmx5IG5lZWQg
-dGhlIHdhcm5pbmcgb25jZSwgbm90IGZvciB0aGUgc2V2ZXJhbCB0aG91c2FuZCByZWxvY2F0aW9u
-cwo+IHdlIHRyeS4gVGhlIGN1cnJlbnQgZXhlY2J1ZiBpbXBsZW1lbnRhdGlvbiB3aWxsIHNldCBh
-bGwgcHJlc3VtZWRfb2Zmc2V0Cj4gdG8gLTEgc28gdGhpcyBsb29wIHNob3VsZCBxdWl0IG9uIHRo
-ZSBmaXJzdCBlbnRyeSBpZiB3ZSBoaXQgdGhlCj4gcGFnZWZhdWx0LCBidXQgZm9yIHRoZSBzYWtl
-IG9mIGNvbXBsZXRlbmVzcyBjaGVjayBhbGwuCj4gCj4gQnVnemlsbGE6IGh0dHBzOi8vYnVncy5m
-cmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTExMDI2OQo+IFNpZ25lZC1vZmYtYnk6IENo
-cmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+IC0tLQo+ICAgdGVzdHMvaTkx
-NS9nZW1fZXhlY19iaWcuYyB8IDYgKysrKy0tCj4gICAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRp
-b25zKCspLCAyIGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9l
-eGVjX2JpZy5jIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19iaWcuYwo+IGluZGV4IDQ0MDEzNmVlOC4u
-OWRhOTBlYWQ2IDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfYmlnLmMKPiArKysg
-Yi90ZXN0cy9pOTE1L2dlbV9leGVjX2JpZy5jCj4gQEAgLTE2OSw4ICsxNjksMTAgQEAgc3RhdGlj
-IHZvaWQgZXhlY04oaW50IGZkLCB1aW50MzJfdCBoYW5kbGUsIHVpbnQ2NF90IGJhdGNoX3NpemUs
-IHVuc2lnbmVkIGZsYWdzLAo+ICAgCWlndF9wZXJtdXRlX2FycmF5KGdlbV9yZWxvYywgbnJlbG9j
-LCB4Y2hnX3JlbG9jKTsKPiAgIAo+ICAgCWdlbV9leGVjYnVmKGZkLCAmZXhlY2J1Zik7Cj4gLQlm
-b3IgKG4gPSAwOyBuIDwgbnJlbG9jOyBuKyspCj4gLQkJaWd0X3dhcm5fb24oZ2VtX3JlbG9jW25d
-LnByZXN1bWVkX29mZnNldCA9PSAtMSk7Cj4gKwlmb3IgKG4gPSAwOyBuIDwgbnJlbG9jOyBuKysp
-IHsKPiArCQlpZiAoaWd0X3dhcm5fb24oZ2VtX3JlbG9jW25dLnByZXN1bWVkX29mZnNldCA9PSAt
-MSkpCj4gKwkJCWJyZWFrOwo+ICsJfQo+ICAgCj4gICAJaWYgKHVzZV82NGJpdF9yZWxvY3MpIHsK
-PiAgIAkJZm9yIChuID0gMDsgbiA8IG5yZWxvYzsgbisrKSB7Cj4gCgpSZXZpZXdlZC1ieTogVHZy
-dGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KClJlZ2FyZHMsCgpUdnJ0a28K
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+U3RlcCAxIGluIGRlYnVnZ2luZzogQWN0dWFsbHkgdW5kZXJzdGFuZCB3aGF0J3MgZ29pbmcgd3Jv
+bmcuCgpSZWZlcmVuY2VzOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNn
+aT9pZD0xMDI4ODcKQ2M6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6LmhpbGVyQGludGVsLmNv
+bT4KQ2M6ICJQZXJlcywgTWFydGluIiA8bWFydGluLnBlcmVzQGludGVsLmNvbT4KU2lnbmVkLW9m
+Zi1ieTogRGFuaWVsIFZldHRlciA8ZGFuaWVsLnZldHRlckBpbnRlbC5jb20+Ci0tLQogdGVzdHMv
+a21zX2ZsaXAuYyB8IDIgKy0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxl
+dGlvbigtKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19mbGlwLmMgYi90ZXN0cy9rbXNfZmxpcC5j
+CmluZGV4IGRmYTVhNjllOGYyOC4uN2MyYWEwYzAyYTBlIDEwMDc1NQotLS0gYS90ZXN0cy9rbXNf
+ZmxpcC5jCisrKyBiL3Rlc3RzL2ttc19mbGlwLmMKQEAgLTY4MSw3ICs2ODEsNyBAQCBzdGF0aWMg
+dW5zaWduZWQgaW50IHJ1bl90ZXN0X3N0ZXAoc3RydWN0IHRlc3Rfb3V0cHV0ICpvKQogCQkJCQkg
+ICAgVEVTVF9WQkxBTktfQkxPQ0ssIG8tPnBpcGUsIGV4cF9zZXEsCiAJCQkJCSAgICAwLCAmcmVw
+bHkpKTsKIAkJaWd0X2Fzc2VydChnZXR0aW1lX3VzKCkgLSBzdGFydCA8IDUwMCk7Ci0JCWlndF9h
+c3NlcnQocmVwbHkuc2VxdWVuY2UgPT0gZXhwX3NlcSk7CisJCWlndF9hc3NlcnRfZXEocmVwbHku
+c2VxdWVuY2UsIGV4cF9zZXEpOwogCQlpZ3RfYXNzZXJ0KHRpbWVyY21wKCZyZXBseS50cywgJm8t
+PmZsaXBfc3RhdGUubGFzdF90cywgPT0pKTsKIAl9CiAKLS0gCjIuMjAuMQoKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QK
+aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
