@@ -1,14 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 573DE6E5B8
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Apr 2019 22:40:14 +0000 (UTC)
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-Date: Thu,  4 Apr 2019 15:39:25 -0700
-Message-Id: <20190404223925.1102-4-lucas.demarchi@intel.com>
-In-Reply-To: <20190404223925.1102-1-lucas.demarchi@intel.com>
-References: <20190404223925.1102-1-lucas.demarchi@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EDEA06EA34
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Apr 2019 22:40:40 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Thu, 4 Apr 2019 22:40:39 +0000
+Message-ID: <23d69bb512afda5863e088c947a6a08efb93c9d0.camel@intel.com>
+References: <36a00595c5083adb40d496ff30ebc820ae770474.1552545177.git.harish.chegondi@intel.com>
+ <f4808a400a4111da36ab2f30a20ec6c5170ae53c.1554339208.git.harish.chegondi@intel.com>
+In-Reply-To: <f4808a400a4111da36ab2f30a20ec6c5170ae53c.1554339208.git.harish.chegondi@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 4/4] gem_exec_parallel: allow unlimited open files
+Subject: Re: [igt-dev] [PATCH v2 1/1] i915/pm_backlight: Do not turn off
+ DPMS before system suspend
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,36 +19,105 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1814062628=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Chegondi, Harish" <harish.chegondi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SSB3YXMgbG9va2luZyBpbnRvIGEgZmFpbHVyZSBpbiB3aGljaCBJIGhhZAoKbGlia21vZDogRVJS
-T1IgLi4vbGlia21vZC9saWJrbW9kLWNvbmZpZy5jOjc5MCBjb25mX2ZpbGVzX2xpc3Q6IG9wZW5k
-aXIoL2V0Yy9tb2Rwcm9iZS5kKTogVG9vIG1hbnkgb3BlbiBmaWxlcwpsaWJrbW9kOiBFUlJPUiAu
-Li9saWJrbW9kL2xpYmttb2QtY29uZmlnLmM6NzkwIGNvbmZfZmlsZXNfbGlzdDogb3BlbmRpcigv
-bGliL21vZHByb2JlLmQpOiBUb28gbWFueSBvcGVuIGZpbGVzCihnZW1fZXhlY19wYXJhbGxlbDox
-MzE1KSBpZ3Rfa21vZC1XQVJOSU5HOiBDb3VsZCBub3QgbG9hZCBpOTE1CihnZW1fZXhlY19wYXJh
-bGxlbDoxMzE1KSBpZ3Rfa21vZC1XQVJOSU5HOiBDb3VsZCBub3QgbG9hZCBpOTE1CgpJIGdvdCBj
-dXJpb3VzIGJlY2F1c2UgbGlia21vZCBkb2Vzbid0IG9wZW4gbW9yZSB0aGFuIG9uZSBjb25maWcg
-ZmlsZSBhdAphIHRpbWUuIFdoYXQncyBoYXBwZW5pbmcgaXMgdGhhdCBsaWJrbW9kIGlzIG5vdCB0
-aGUgY3VscHJpdCwgaXQncyBqdXN0CnRoZSBvbmUgdGhhdCBmYWlsZWQgYmVjYXVzZSB3ZSBvcGVu
-IC9kZXYvZHJpL2NhcmQwIC1FVE9PTUFOWVRJTUVTLgoKU2lnbmVkLW9mZi1ieTogTHVjYXMgRGUg
-TWFyY2hpIDxsdWNhcy5kZW1hcmNoaUBpbnRlbC5jb20+Ci0tLQogdGVzdHMvaTkxNS9nZW1fZXhl
-Y19wYXJhbGxlbC5jIHwgNCArKystCiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAx
-IGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fZXhlY19wYXJhbGxlbC5j
-IGIvdGVzdHMvaTkxNS9nZW1fZXhlY19wYXJhbGxlbC5jCmluZGV4IGY4MzIwYzNhLi41NDIwOTQ1
-NSAxMDA2NDQKLS0tIGEvdGVzdHMvaTkxNS9nZW1fZXhlY19wYXJhbGxlbC5jCisrKyBiL3Rlc3Rz
-L2k5MTUvZ2VtX2V4ZWNfcGFyYWxsZWwuYwpAQCAtMTY0LDggKzE2NCwxMCBAQCBzdGF0aWMgdm9p
-ZCBhbGwoaW50IGZkLCB1bnNpZ25lZCBlbmdpbmUsIHVuc2lnbmVkIGZsYWdzKQogCWlmIChmbGFn
-cyAmIENPTlRFWFRTKQogCQlnZW1fcmVxdWlyZV9jb250ZXh0cyhmZCk7CiAKLQlpZiAoZmxhZ3Mg
-JiBGRFMpCisJaWYgKGZsYWdzICYgRkRTKSB7CiAJCWlndF9yZXF1aXJlKGdlbiA+IDUpOworCQlp
-Z3RfcmVxdWlyZShpZ3RfYWxsb3dfdW5saW1pdGVkX2ZpbGVzKCkpOworCX0KIAogCW5lbmdpbmUg
-PSAwOwogCWlmIChlbmdpbmUgPT0gQUxMX0VOR0lORVMpIHsKLS0gCjIuMjEuMAoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxp
-c3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
-cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+--===============1814062628==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-0EfDI70cyj5gtoOWIDnX"
+
+--=-0EfDI70cyj5gtoOWIDnX
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, 2019-04-03 at 18:26 -0700, Harish Chegondi wrote:
+> backlight fade with suspend test turns off dpms which turns off the
+> edp
+> backlight. Then it does a system suspend and resume. After resume,
+> the edp backlight would still be off, but the test sets the
+> brightness
+> value and reads it back. Since the edp backlight is off, the
+> brightness
+> values written and read are different causing the test to fail.
+>=20
+> Do not turn off the DPMS before suspend so that after system resume,
+> the edp backlight would be on and setting the brightness value would
+> be successful.
+>=20
+> v2: Remove "DPMS off" before system suspend instead of adding
+>     "DPMS on" after system resume.
+
+Reviewed-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
+
+And going to push it.
+
+>=20
+> Cc: Jyoti Yadav <jyoti.r.yadav@intel.com>
+> Cc: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Daniel Vetter <daniel.vetter@intel.com>
+> Cc: Clinton Taylor <clinton.a.taylor@intel.com>
+> Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
+> References: https://bugs.freedesktop.org/show_bug.cgi?id=3D107820
+> Fixes: 377752242995 ("Brightness test with DPMS and System suspend.")
+> ---
+>  tests/i915/i915_pm_backlight.c | 7 -------
+>  1 file changed, 7 deletions(-)
+>=20
+> diff --git a/tests/i915/i915_pm_backlight.c
+> b/tests/i915/i915_pm_backlight.c
+> index 054300f6..4c1bff5b 100644
+> --- a/tests/i915/i915_pm_backlight.c
+> +++ b/tests/i915/i915_pm_backlight.c
+> @@ -175,13 +175,6 @@ test_fade_with_dpms(struct context *context,
+> igt_output_t *output)
+>  static void
+>  test_fade_with_suspend(struct context *context, igt_output_t
+> *output)
+>  {
+> -	igt_require(igt_setup_runtime_pm());
+> -
+> -	kmstest_set_connector_dpms(output->display->drm_fd,
+> -				   output->config.connector,
+> -				   DRM_MODE_DPMS_OFF);
+> -	igt_require(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPEN
+> DED));
+> -
+>  	igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> SUSPEND_TEST_NONE);
+> =20
+>  	test_fade(context);
+
+--=-0EfDI70cyj5gtoOWIDnX
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlymh+YACgkQVenbO/mO
+WknwJQf9HBSs84/dpsEVBfKKVDLnZHvWPmEmHGatj3q6Gu5749NgIqx11DgwNiZe
+8HlJfFxxfQPP8u8PkzxSGWuYa3sBSg/9d/k3613dby4MEPy1x04j8TnbYWMO6ROF
+oNxAO3zAjEmxQHcoo2SEjWz9C5mtXfBeHnWRYlf+WZbthP34klOPwKF2oR7VceP8
+0+c10LWzN8ZqsKRd15bfWXAunkhoPw7A/+QZa9PcHee6X59UeUldHYjzwVC/VKiL
+5mdtijDdZ0tzsj+tpVimaALLBKznW5hcXrnCv2gomTRPMVrL4P/U0nvFDNTdR8Q6
+uck/3RzU9FotJMXxaofPMBTJ/WbTeA==
+=UgUy
+-----END PGP SIGNATURE-----
+
+--=-0EfDI70cyj5gtoOWIDnX--
+
+--===============1814062628==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============1814062628==--
