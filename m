@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE78589EFF
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Apr 2019 23:31:32 +0000 (UTC)
-From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
-Date: Fri,  5 Apr 2019 16:31:18 -0700
-Message-Id: <20190405233118.23045-2-jose.souza@intel.com>
-In-Reply-To: <20190405233118.23045-1-jose.souza@intel.com>
-References: <20190405233118.23045-1-jose.souza@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EDACE89D7D
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Apr 2019 23:46:03 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Fri, 5 Apr 2019 23:45:56 +0000
+Message-ID: <41a03061ffed75fc1c9e2358e23a752452ce96ee.camel@intel.com>
+References: <20190404121359.3339-1-stanislav.lisovskiy@intel.com>
+ <20190404121359.3339-2-stanislav.lisovskiy@intel.com>
+ <1a2d6cfe32a1b292df36b2bc1f8f7e893fac33f1.camel@intel.com>
+ <596e89a28dc4640fc3840bcb91266377dd42aff1.camel@intel.com>
+In-Reply-To: <596e89a28dc4640fc3840bcb91266377dd42aff1.camel@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_atomic_transition: Remove
- useless code
+Subject: Re: [igt-dev] [PATCH i-g-t v5 1/2] igt/tests/kms_atomic_transition:
+ Skip transition, if no changes done
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,49 +21,209 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0479422841=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
+Cc: "Syrjala, Ville" <ville.syrjala@intel.com>, "Peres,
+ Martin" <martin.peres@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-c2V0dXBfcGFybXMoKSBhbHJlYWR5IG1ha2VzIHN1cmUgdGhhdCBvdmVybGF5IHBsYW5lcyBzaXpl
-IGlzIHN1cHBvcnRlZApieSBkcml2ZXIgYW5kIEdQVSwgbm8gbmVlZCB0byByZS1ydW4gaXQuCgpT
-aWduZWQtb2ZmLWJ5OiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3NlLnNvdXphQGludGVsLmNv
-bT4KLS0tCiB0ZXN0cy9rbXNfYXRvbWljX3RyYW5zaXRpb24uYyB8IDM5IC0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMzkgZGVsZXRpb25zKC0pCgpk
-aWZmIC0tZ2l0IGEvdGVzdHMva21zX2F0b21pY190cmFuc2l0aW9uLmMgYi90ZXN0cy9rbXNfYXRv
-bWljX3RyYW5zaXRpb24uYwppbmRleCA5OTg4ZjMwMy4uMWNlZTJiNmUgMTAwNjQ0Ci0tLSBhL3Rl
-c3RzL2ttc19hdG9taWNfdHJhbnNpdGlvbi5jCisrKyBiL3Rlc3RzL2ttc19hdG9taWNfdHJhbnNp
-dGlvbi5jCkBAIC00NzEsNyArNDcxLDYgQEAgcnVuX3RyYW5zaXRpb25fdGVzdChpZ3RfZGlzcGxh
-eV90ICpkaXNwbGF5LCBlbnVtIHBpcGUgcGlwZSwgaWd0X291dHB1dF90ICpvdXRwdXQKIAl1aW50
-MzJfdCBpdGVyX21heCwgaTsKIAlzdHJ1Y3QgcGxhbmVfcGFybXMgcGFybXNbcGlwZV9vYmotPm5f
-cGxhbmVzXTsKIAl1bnNpZ25lZCBmbGFncyA9IDA7Ci0JaW50IHJldDsKIAogCWlmIChmZW5jaW5n
-KQogCQlwcmVwYXJlX2ZlbmNpbmcoZGlzcGxheSwgcGlwZSk7CkBAIC01MDgsNDQgKzUwNyw2IEBA
-IHJ1bl90cmFuc2l0aW9uX3Rlc3QoaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSwgZW51bSBwaXBlIHBp
-cGUsIGlndF9vdXRwdXRfdCAqb3V0cHV0CiAKIAlzZXR1cF9wYXJtcyhkaXNwbGF5LCBwaXBlLCBt
-b2RlLCAmZmIsICZhcmdiX2ZiLCAmc3ByaXRlX2ZiLCBwYXJtcywgJml0ZXJfbWF4KTsKIAotCS8q
-Ci0JICogSW4gc29tZSBjb25maWd1cmF0aW9ucyB0aGUgdGVzdHMgbWF5IG5vdCBydW4gdG8gY29t
-cGxldGlvbiB3aXRoIGFsbAotCSAqIHNwcml0ZSBwbGFuZXMgbGl0IHVwIGF0IDRrIHJlc29sdXRp
-b24sIHRyeSBkZWNyZWFzaW5nIHdpZHRoL3NpemUgb2Ygc2Vjb25kYXJ5Ci0JICogcGxhbmVzIHRv
-IGZpeCB0aGlzCi0JICovCi0Jd2hpbGUgKDEpIHsKLQkJd21fc2V0dXBfcGxhbmUoZGlzcGxheSwg
-cGlwZSwgaXRlcl9tYXggLSAxLCBwYXJtcywgZmFsc2UpOwotCi0JCWlmIChmZW5jaW5nKQotCQkJ
-aWd0X3BpcGVfcmVxdWVzdF9vdXRfZmVuY2UocGlwZV9vYmopOwotCi0JCXJldCA9IGlndF9kaXNw
-bGF5X3RyeV9jb21taXRfYXRvbWljKGRpc3BsYXksIERSTV9NT0RFX0FUT01JQ19URVNUX09OTFkg
-fCBEUk1fTU9ERV9BVE9NSUNfQUxMT1dfTU9ERVNFVCwgTlVMTCk7Ci0JCWlndF9hc3NlcnQoIWlz
-X2F0b21pY19jaGVja19mYWlsdXJlX2Vycm5vKHJldCkpOwotCi0JCWlmICghaXNfYXRvbWljX2No
-ZWNrX3BsYW5lX3NpemVfZXJybm8ocmV0KSB8fCBwaXBlX29iai0+bl9wbGFuZXMgPCAzKQotCQkJ
-YnJlYWs7Ci0KLQkJcmV0ID0gMDsKLQkJZm9yX2VhY2hfcGxhbmVfb25fcGlwZShkaXNwbGF5LCBw
-aXBlLCBwbGFuZSkgewotCQkJaSA9IHBsYW5lLT5pbmRleDsKLQotCQkJaWYgKHBsYW5lLT50eXBl
-ID09IERSTV9QTEFORV9UWVBFX1BSSU1BUlkgfHwKLQkJCSAgICBwbGFuZS0+dHlwZSA9PSBEUk1f
-UExBTkVfVFlQRV9DVVJTT1IpCi0JCQkJY29udGludWU7Ci0KLQkJCWlmIChwYXJtc1tpXS53aWR0
-aCA8PSA1MTIpCi0JCQkJY29udGludWU7Ci0KLQkJCXBhcm1zW2ldLndpZHRoIC89IDI7Ci0JCQly
-ZXQgPSAxOwotCQkJaWd0X2luZm8oIlJlZHVjaW5nIHNwcml0ZSAlaSB0byAldXgldVxuIiwgaSAt
-IDEsIHBhcm1zW2ldLndpZHRoLCBwYXJtc1tpXS5oZWlnaHQpOwotCQkJYnJlYWs7Ci0JCX0KLQot
-CQlpZiAoIXJldCkKLQkJCWlndF9za2lwKCJDYW5ub3QgcnVuIHRlc3RzIHdpdGhvdXQgcHJvcGVy
-IHNpemUgc3ByaXRlIHBsYW5lc1xuIik7Ci0JfQotCiAJaWd0X2Rpc3BsYXlfY29tbWl0MihkaXNw
-bGF5LCBDT01NSVRfQVRPTUlDKTsKIAogCWlmICh0eXBlID09IFRSQU5TSVRJT05fQUZURVJfRlJF
-RSkgewotLSAKMi4yMS4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
-ZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
+--===============0479422841==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-dbyZ9Dv74KZ9tEL6GIVn"
+
+--=-dbyZ9Dv74KZ9tEL6GIVn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, 2019-04-05 at 07:50 +0100, Lisovskiy, Stanislav wrote:
+> On Thu, 2019-04-04 at 15:55 -0700, Souza, Jose wrote:
+> > On Thu, 2019-04-04 at 15:13 +0300, Stanislav Lisovskiy wrote:
+> > > While fixing used amount of planes, discovered that if
+> > > wm_setup_plane is called with 0 planes(might happen during
+> > > main testing cycle, as parms[i].mask can be 0 due to
+> > > randomization)
+> >=20
+> > As already said and you agreed this 'as parms[i].mask can be 0 due
+> > to
+> > randomization' statement is not true, even if this patch is right
+> > the
+> > commit message needs to be true.
+> >=20
+>=20
+> I will fix the commit message, you are right parms[i].mask can't be
+> true. But parms[i].mask & mask parameter can be easily. The function
+> user should be able to check if no changes are actually done.
+> Otherwise
+> run_transition will timeout on fd_completed call.
+>=20
+> > For me this patch is only hidden the real bug.
+>=20
+> Sorry, what do you mean by "real bug"?=20
+>=20
+
+Take a look here: https://patchwork.freedesktop.org/series/59086/
+
+It don't need anything like this patch and fixed the ICL BW issue,
+something is wrong in the next patch and this patch was only hiding it.
+
+
+> > > then subsequent wait_transition fails in assertion on
+> > > fd_completed.
+> > > So added return value to wm_setup_plane, which would allow to
+> > > determine, if we need to skip this step.
+> > >=20
+> > > Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com
+> > > >
+> > > ---
+> > >  tests/kms_atomic_transition.c | 23 +++++++++++++++++------
+> > >  1 file changed, 17 insertions(+), 6 deletions(-)
+> > >=20
+> > > diff --git a/tests/kms_atomic_transition.c
+> > > b/tests/kms_atomic_transition.c
+> > > index 18f73317..638fe17e 100644
+> > > --- a/tests/kms_atomic_transition.c
+> > > +++ b/tests/kms_atomic_transition.c
+> > > @@ -118,11 +118,12 @@ static void configure_fencing(igt_plane_t
+> > > *plane)
+> > >  	igt_assert_eq(ret, 0);
+> > >  }
+> > > =20
+> > > -static void
+> > > +static int
+> > >  wm_setup_plane(igt_display_t *display, enum pipe pipe,
+> > >  	       uint32_t mask, struct plane_parms *parms, bool fencing)
+> > >  {
+> > >  	igt_plane_t *plane;
+> > > +	int planes_set_up =3D 0;
+> > > =20
+> > >  	/*
+> > >  	* Make sure these buffers are suited for display use
+> > > @@ -133,8 +134,10 @@ wm_setup_plane(igt_display_t *display, enum
+> > > pipe
+> > > pipe,
+> > >  		int i =3D plane->index;
+> > > =20
+> > >  		if (!mask || !(parms[i].mask & mask)) {
+> > > -			if (plane->values[IGT_PLANE_FB_ID])
+> > > +			if (plane->values[IGT_PLANE_FB_ID]) {
+> > >  				igt_plane_set_fb(plane, NULL);
+> > > +				planes_set_up++;
+> > > +			}
+> > >  			continue;
+> > >  		}
+> > > =20
+> > > @@ -144,7 +147,10 @@ wm_setup_plane(igt_display_t *display, enum
+> > > pipe
+> > > pipe,
+> > >  		igt_plane_set_fb(plane, parms[i].fb);
+> > >  		igt_fb_set_size(parms[i].fb, plane, parms[i].width,
+> > > parms[i].height);
+> > >  		igt_plane_set_size(plane, parms[i].width,
+> > > parms[i].height);
+> > > +
+> > > +		planes_set_up++;
+> > >  	}
+> > > +	return planes_set_up;
+> > >  }
+> > > =20
+> > >  static void ev_page_flip(int fd, unsigned seq, unsigned tv_sec,
+> > > unsigned tv_usec, void *user_data)
+> > > @@ -544,7 +550,8 @@ run_transition_test(igt_display_t *display,
+> > > enum
+> > > pipe pipe, igt_output_t *output
+> > > =20
+> > >  		igt_output_set_pipe(output, pipe);
+> > > =20
+> > > -		wm_setup_plane(display, pipe, i, parms, fencing);
+> > > +		if (!wm_setup_plane(display, pipe, i, parms, fencing))
+> > > +			continue;
+> > > =20
+> > >  		atomic_commit(display, pipe, flags, (void *)(unsigned
+> > > long)i, fencing);
+> > >  		wait_for_transition(display, pipe, nonblocking,
+> > > fencing);
+> > > @@ -552,7 +559,8 @@ run_transition_test(igt_display_t *display,
+> > > enum
+> > > pipe pipe, igt_output_t *output
+> > >  		if (type =3D=3D TRANSITION_MODESET_DISABLE) {
+> > >  			igt_output_set_pipe(output, PIPE_NONE);
+> > > =20
+> > > -			wm_setup_plane(display, pipe, 0, parms,
+> > > fencing);
+> > > +			if (!wm_setup_plane(display, pipe, 0, parms,
+> > > fencing))
+> > > +				continue;
+> > > =20
+> > >  			atomic_commit(display, pipe, flags, (void *)
+> > > 0UL, fencing);
+> > >  			wait_for_transition(display, pipe, nonblocking,
+> > > fencing);
+> > > @@ -568,7 +576,8 @@ run_transition_test(igt_display_t *display,
+> > > enum
+> > > pipe pipe, igt_output_t *output
+> > >  				    n_enable_planes < pipe_obj-
+> > > > n_planes)
+> > >=20
+> > >  					continue;
+> > > =20
+> > > -				wm_setup_plane(display, pipe, j, parms,
+> > > fencing);
+> > > +				if (!wm_setup_plane(display, pipe, j,
+> > > parms, fencing))
+> > > +					continue;
+> > > =20
+> > >  				if (type >=3D TRANSITION_MODESET)
+> > >  					igt_output_override_mode(output
+> > > , &override_mode);
+> > > @@ -576,7 +585,9 @@ run_transition_test(igt_display_t *display,
+> > > enum
+> > > pipe pipe, igt_output_t *output
+> > >  				atomic_commit(display, pipe, flags,
+> > > (void *)(unsigned long) j, fencing);
+> > >  				wait_for_transition(display, pipe,
+> > > nonblocking, fencing);
+> > > =20
+> > > -				wm_setup_plane(display, pipe, i, parms,
+> > > fencing);
+> > > +				if (!wm_setup_plane(display, pipe, i,
+> > > parms, fencing))
+> > > +					continue;
+> > > +
+> > >  				if (type >=3D TRANSITION_MODESET)
+> > >  					igt_output_override_mode(output
+> > > , NULL);
+> > > =20
+
+--=-dbyZ9Dv74KZ9tEL6GIVn
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyn6LMACgkQVenbO/mO
+Wkm8vAf/R7sqLcdqXCnqzub/i9FLaQ/C6OnRxu0b+iC9im0WMdhClrI6HfjZNrHl
+J1W8xKXfdVxgxWmFFrKj3qdbWdF89fVmLR+bjXi25o56p2nr5zpX7LnH3s9BWDU8
+QXsKB35oC+h3q9Qe9L+2pF196zmCtPxb8vaPMEJw6hDqNanB/g8yMJ7vwnIC6NB5
+AJ+QE41IwMbNHFGchjYaM08KgaekgcYQqI6mE4n2ykBz5TFnY3K0QvfF5DnLqA0c
+AcBJErHM7tbiOagRbZ6eDqU7c0C/MI4eyqNADMuMuRMDXcep38NhMnmsf9DbEpiL
+t7bW1XMIcOK+ABWGzNYH6CtiGvck4A==
+=WrFR
+-----END PGP SIGNATURE-----
+
+--=-dbyZ9Dv74KZ9tEL6GIVn--
+
+--===============0479422841==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============0479422841==--
