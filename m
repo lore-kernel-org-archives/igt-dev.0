@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 097088919E
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Apr 2019 14:56:40 +0000 (UTC)
-Date: Tue, 9 Apr 2019 16:56:36 +0200
-From: Katarzyna Dec <katarzyna.dec@intel.com>
-Message-ID: <20190409145636.GI12599@kdec5-desk.ger.corp.intel.com>
-References: <20190409111059.25296-1-janusz.krzysztofik@linux.intel.com>
- <20190409111059.25296-3-janusz.krzysztofik@linux.intel.com>
+Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [217.70.178.232])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 61E5A891D5
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Apr 2019 15:00:00 +0000 (UTC)
+Date: Tue, 9 Apr 2019 16:59:56 +0200
+From: Maxime Ripard <maxime.ripard@bootlin.com>
+Message-ID: <20190409145956.tginpkhkhs4chhkf@flea>
+References: <20190405125216.6133-1-maarten.lankhorst@linux.intel.com>
+ <0fca59efb26b8d319b1e90619697400ae818fe3e.camel@bootlin.com>
+ <c2d9d711-74a8-faaf-2230-eb157ce9a3d0@linux.intel.com>
+ <20190408085035.jduw3j5wcjm7dbpt@flea>
+ <691be880-dcd1-76ad-5c9d-175c5e078a77@linux.intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190409111059.25296-3-janusz.krzysztofik@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH v5 2/2] tests/core_hot_reload: Accept external
- workload
+In-Reply-To: <691be880-dcd1-76ad-5c9d-175c5e078a77@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_fb: Use cairo conversion in
+ igt_fb_convert_with_stride, v3.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,74 +21,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0405400190=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>, "Lee,
- Simon B" <simon.b.lee@intel.com>, igt-dev@lists.freedesktop.org
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBBcHIgMDksIDIwMTkgYXQgMDE6MTA6NTlQTSArMDIwMCwgSmFudXN6IEtyenlzenRv
-ZmlrIHdyb3RlOgo+IEZyb206IEphbnVzeiBLcnp5c3p0b2ZpayA8amFudXN6LmtyenlzenRvZmlr
-QGludGVsLmNvbT4KPiAKPiBSdW4gYSB1c2VyIHNwZWNpZmllZCBjb21tYW5kLCBwb3NzaWJseSBv
-bmUgb2YgZXhpc3RpbmcgdGVzdHMsIGluCj4gYmFja2dyb3VuZCBpbnN0ZWFkIG9mIHRoZSBkZWZh
-dWx0IGR1bW15IGxvYWQgdG8gcHV0IHNvbWUgYWx0ZXJuYXRpdmUKPiB3b3JrbG9hZCBvbiBhIGRl
-dmljZSB3aGlsZSB0cnlpbmcgdG8gZWl0aGVyIHJlbW92ZSAodW5wbHVnKSB0aGUgZGV2aWNlCj4g
-ZnJvbSBpdHMgYnVzLCBvciB1bmJpbmQgdGhlIGRldmljZSdzIGRyaXZlciBmcm9tIGl0LCBkZXBl
-bmRpbmcgb24gd2hpY2gKPiBzdWJ0ZXN0IGhhcyBiZWVuIHNlbGVjdGVkLgo+IAo+IFRoZSBjb21t
-YW5kIHNlbGVjdGVkIGFzIHRoZSBhbHRlcm5hdGl2ZSB3b3JrbG9hZCBzaG91bGQgbWFrZSByZWFs
-IHVzZSBvZgo+IHRoZSBkZXZpY2UgYXMgbXVjaCBhcyBwb3NzaWJsZSBhbmQgaXRzIGV4ZWN1dGlv
-biBzaG91bGQgdGFrZQo+IHNpZ25pZmljYW50bHkgbW9yZSB0aGFuIDIgc2Vjb25kcyBpbiBvcmRl
-ciB0byBnZXQgcmVsaWFibGUgcmVzdWx0cyBmcm9tCj4gdGhlIHRlc3QuCj4gCj4gU2lnbmVkLW9m
-Zi1ieTogSmFudXN6IEtyenlzenRvZmlrIDxqYW51c3oua3J6eXN6dG9maWtAaW50ZWwuY29tPgo+
-IC0tLQo+ICB0ZXN0cy9jb3JlX2hvdF9yZWxvYWQuYyB8IDUxICsrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKy0tCj4gIDEgZmlsZSBjaGFuZ2VkLCA0OSBpbnNlcnRpb25zKCsp
-LCAyIGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9jb3JlX2hvdF9yZWxvYWQu
-YyBiL3Rlc3RzL2NvcmVfaG90X3JlbG9hZC5jCj4gaW5kZXggZDg2MmM5OWMuLjBkMDc5NWRjIDEw
-MDY0NAo+IC0tLSBhL3Rlc3RzL2NvcmVfaG90X3JlbG9hZC5jCj4gKysrIGIvdGVzdHMvY29yZV9o
-b3RfcmVsb2FkLmMKPiBAQCAtMzMsNiArMzMsOSBAQAo+ICAjaW5jbHVkZSA8dW5pc3RkLmg+Cj4g
-IAo+ICAKPiArI2RlZmluZSBPUFRfV09SS0xPQURfQ01ECSdjJwo+ICsKPiArCj4gIHR5cGVkZWYg
-aW50ICgqYWN0aW9uX3QpKGludCBkaXIpOwo+ICB0eXBlZGVmIHZvaWQgKCp3b3JrbG9hZF93YWl0
-X3QpKHZvaWQgKnByaXYpOwo+ICB0eXBlZGVmIHZvaWQgKCp3b3JrbG9hZF90KShpbnQgZGV2aWNl
-LCBjb25zdCB2b2lkICpwcml2KTsKPiBAQCAtMTA4LDYgKzExMSwxNiBAQCBzdGF0aWMgdm9pZCBz
-cGluX2JhdGNoKGludCBkZXZpY2UsIGNvbnN0IHZvaWQgKnByaXYpCj4gIAlpZ3Rfc3Bpbl9iYXRj
-aF9mcmVlKGRldmljZSwgc3Bpbik7Cj4gIH0KPiAgCj4gKy8qIFdvcmtsb2FkIHVzaW5nIGV4dGVy
-bmFsIGNvbW1hbmQgKi8KQ2FuIHlvdSBwcm92aWRlIGV4YW1wbGVzIG9mIHN1Y2ggY29tbWFuZHM/
-IAo+ICsKPiArc3RhdGljIHZvaWQgZXh0X2NtZChpbnQgZGV2aWNlLCBjb25zdCB2b2lkICpwcml2
-KQo+ICt7Cj4gKwljb25zdCBjaGFyICpjbWQgPSBwcml2Owo+ICsKPiArCS8qIGp1c3QgcnVuIHRo
-ZSB1c2VyIHByb3ZpZGVkIGNvbW1hbmQgbGluZSAqLwo+ICsJaWd0X3N5c3RlbV9xdWlldChjbWQp
-Owo+ICt9Cj4gKwo+ICAKPiAgLyoKPiAgICogU2tlbGV0b24KPiBAQCAtMjAwLDEyICsyMTMsNDAg
-QEAgc3RhdGljIHZvaWQgX193b3JrbG9hZF93YWl0KHZvaWQgKnByaXYpCj4gIH0KPiAgCj4gIAo+
-IC1pZ3RfbWFpbiB7Cj4gK3N0YXRpYyBpbnQgb3B0X2hhbmRsZXIoaW50IG9wdCwgaW50IG9wdF9p
-bmRleCwgdm9pZCAqZGF0YSkKPiArewo+ICsJY29uc3QgY2hhciAqKmNtZCA9IGRhdGE7Cj4gKwo+
-ICsJc3dpdGNoIChvcHQpIHsKPiArCWNhc2UgJ2MnOgo+ICsJCSpjbWQgPSBzdHJkdXAob3B0YXJn
-KTsKPiArCQlicmVhazsKPiArCX0KPiArCj4gKwlyZXR1cm4gMDsKPiArfQo+ICsKPiAraW50IG1h
-aW4gKGludCBhcmdjLCBjaGFyICoqYXJndikKPiArewo+ICAJaW50IGRldmljZSwgY2hpcHNldDsK
-PiAgCWNoYXIgKmRyaXZlcjsKPiAgCXN0cnVjdCBpZ3RfaGVscGVyX3Byb2Nlc3MgcHJvYyA9IHt9
-Owo+ICAJd29ya2xvYWRfd2FpdF90IHdvcmtsb2FkX3dhaXQ7Cj4gIAl2b2lkICp3b3JrbG9hZF9w
-cml2Owo+ICsJY29uc3Qgc3RydWN0IG9wdGlvbiBsb25nX29wdHNbXSA9IHsKPiArCQl7ICJ3b3Jr
-bG9hZC1jbWQiLCByZXF1aXJlZF9hcmd1bWVudCwgMCwgT1BUX1dPUktMT0FEX0NNRCB9LAo+ICsJ
-CXsgMCwgMCwgMCwgMCB9Cj4gKwl9Owo+ICsJY29uc3QgY2hhciAqaGVscF9zdHIgPQo+ICsJCSIg
-IC0td29ya2xvYWQtY21kLCAtY1xuIgo+ICsJCSJcdFx0Q29tbWFuZCBsaW5lIHRvIHJ1biBpbiBi
-YWNrZ3JvdWQgYXMgYW4gb3B0aW9uYWwgd29ya2xvYWQsIGUuZy4sXG4iCj4gKwkJIlx0XHRhbiBl
-eGlzdGluZyB0ZXN0IG5hbWUsIHBvc3NpYmx5IHdpdGggb3B0aW9ucy9hcmd1bWVudHMsIHF1b3Rl
-ZC5cbiIKPiArCQkiXHRcdEV4ZWN1dGlvbiBtdXN0IHRha2Ugd2F5IG1vcmUgdGhhbiAyIHNlY29u
-ZHMgZm9yIHJlbGlhYmxlIHJlc3VsdHMuXG4iCj4gKwkJIlx0XHRObyBkZWZhdWx0IC0gaW50ZXJu
-YWwgZHVtbXkgbG9hZCBpcyB1c2VkIGlmIGV4dGVybmFsIG5vdCBzcGVjaWZpZWQuXG4iOwo+ICsJ
-Y29uc3QgY2hhciAqY21kID0gTlVMTDsKPiArCj4gKwlpZ3Rfc3VidGVzdF9pbml0X3BhcnNlX29w
-dHMoJmFyZ2MsIGFyZ3YsICIiLCBsb25nX29wdHMsIGhlbHBfc3RyLAo+ICsgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICBvcHRfaGFuZGxlciwgJmNtZCk7Cj4gIAo+ICAJaWd0X2Zp
-eHR1cmUgewo+ICAJCWNoYXIgcGF0aFtQQVRIX01BWF07Cj4gQEAgLTIzOCw3ICsyNzksMTMgQEAg
-aWd0X21haW4gewo+ICAKPiAgCQl3b3JrbG9hZF93YWl0ID0gX193b3JrbG9hZF93YWl0Owo+ICAJ
-CXdvcmtsb2FkX3ByaXYgPSAmcHJvYzsKPiAtCQlfX3dvcmtsb2FkKHNwaW5fYmF0Y2gsIGRldmlj
-ZSwgTlVMTCwgJnByb2MpOwo+ICsKPiArCQlpZiAoY21kKSB7Cj4gKwkJCWlndF9kZXZpY2VfZHJv
-cF9tYXN0ZXIoZGV2aWNlKTsKQXJlIHlvdSBzdXJlIHRoaXMgd2lsbCBiZSB3b3JraW5nIGFzIHlv
-dSBleHBlY3Q/IEhhdmUgeW91IHRlc3RlZD8gKFByb2JhYmx5IGl0CndpbGwpCgpLYXNpYSA6KQo+
-ICsJCQlfX3dvcmtsb2FkKGV4dF9jbWQsIC0xLCBjbWQsICZwcm9jKTsKPiArCQl9IGVsc2Ugewo+
-ICsJCQlfX3dvcmtsb2FkKHNwaW5fYmF0Y2gsIGRldmljZSwgTlVMTCwgJnByb2MpOwo+ICsJCX0K
-PiAgCX0KPiAgCj4gIAlpZ3Rfc3VidGVzdCgidW5wbHVnIikKPiAtLSAKPiAyLjIwLjEKPiAKX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
-aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
-ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============0405400190==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="2mdrnyonzpjoeucx"
+Content-Disposition: inline
+
+
+--2mdrnyonzpjoeucx
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On Mon, Apr 08, 2019 at 01:04:42PM +0200, Maarten Lankhorst wrote:
+> Op 08-04-2019 om 10:50 schreef Maxime Ripard:
+> > On Fri, Apr 05, 2019 at 05:38:32PM +0200, Maarten Lankhorst wrote:
+> >> Op 05-04-2019 om 15:54 schreef Paul Kocialkowski:
+> >>> Hi,
+> >>>
+> >>> Le vendredi 05 avril 2019 =E0 14:52 +0200, Maarten Lankhorst a =E9cri=
+t :
+> >>>> Ever since commit 3fa65f4b532bd9a5b ("fb: Add support for conversions
+> >>>> through pixman") we can generate a valid cairo surface for any plane,
+> >>>> use this to avoid having to implement our own conversion routine.
+> >>>>
+> >>>> Instead of duplicating this functionality in igt_fb_convert_with_str=
+ide,
+> >>>> we can simply convert this to a few cairo calls, because we now supp=
+ort
+> >>>> cairo calls to any of the supported framebuffer formats.
+> >>> I don't think this is the case: cairo *only* takes linear buffers, so
+> >>> we need the explicit tiling conversion step after having converted to=
+ a
+> >>> new format with fb_convert. I don't see how it could work otherwise.
+> >>>
+> >>> Note that in igt, we're only interested in converting from linear to
+> >>> tiled, not the other way round (for now, at least), so that's the
+> >>> pipeline that the helper asssumes.
+> >> We have code to handle this exact conversion in i-g-t already, both
+> >> ways, see igt_get_cairo_surface(). :)
+> >>
+> >> You should be able to extend create_cairo_surface__convert() to
+> >> handle broadcom tiling as well,
+> >>
+> >> I didn't see a function to convert from tiled to untiled, else I
+> >> would have plugged it in for you.
+> > That might be a bit dumb, but why do we need to use cairo all the
+> > time in the first place?
+> >
+> > That seems like a waste of resources when the only thing you want to
+> > do is a conversion of one buffer to the other.
+>
+> Cairo doesn't have its own internal buffer format, it uses the same pixman
+> calls that igt_fb_convert_with_stride does, so it's not less efficient.
+>
+> The extra trip to convert the src buffer back after it's read from, or the
+> unnecessary conversion of the target buffer before it's overwritten it wi=
+th
+> src buffer contents might be less efficient, but I don't think it's worth
+> optimizing it.
+
+Right, but I wasn't so much talking about the number of buffers, but
+more about the function calls overhead.
+
+Maxime
+
+--
+Maxime Ripard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
+--2mdrnyonzpjoeucx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXKyzbAAKCRDj7w1vZxhR
+xbvsAP91XR4HWeTU5Sfsn/9YqbPDbse6vI83bojGiFArBHGsbAD/SY8rA2Rf+/mK
+sZ2o4pB+x806EDv5sSgvdeKtprrMAAw=
+=qwL0
+-----END PGP SIGNATURE-----
+
+--2mdrnyonzpjoeucx--
+
+--===============0405400190==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============0405400190==--
