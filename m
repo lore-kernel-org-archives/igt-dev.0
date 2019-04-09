@@ -1,19 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [217.70.178.232])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61E5A891D5
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Apr 2019 15:00:00 +0000 (UTC)
-Date: Tue, 9 Apr 2019 16:59:56 +0200
-From: Maxime Ripard <maxime.ripard@bootlin.com>
-Message-ID: <20190409145956.tginpkhkhs4chhkf@flea>
-References: <20190405125216.6133-1-maarten.lankhorst@linux.intel.com>
- <0fca59efb26b8d319b1e90619697400ae818fe3e.camel@bootlin.com>
- <c2d9d711-74a8-faaf-2230-eb157ce9a3d0@linux.intel.com>
- <20190408085035.jduw3j5wcjm7dbpt@flea>
- <691be880-dcd1-76ad-5c9d-175c5e078a77@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <691be880-dcd1-76ad-5c9d-175c5e078a77@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_fb: Use cairo conversion in
- igt_fb_convert_with_stride, v3.
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 09 Apr 2019 15:05:42 -0000
+Message-ID: <20190409150542.17322.57544@emeril.freedesktop.org>
+References: <20190409134800.13189-1-arkadiusz.hiler@intel.com>
+In-Reply-To: <20190409134800.13189-1-arkadiusz.hiler@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Fmultiple=3A_Run_only_on_the_first_valid_output?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,106 +14,100 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0405400190=="
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============0405400190==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="2mdrnyonzpjoeucx"
-Content-Disposition: inline
-
-
---2mdrnyonzpjoeucx
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-On Mon, Apr 08, 2019 at 01:04:42PM +0200, Maarten Lankhorst wrote:
-> Op 08-04-2019 om 10:50 schreef Maxime Ripard:
-> > On Fri, Apr 05, 2019 at 05:38:32PM +0200, Maarten Lankhorst wrote:
-> >> Op 05-04-2019 om 15:54 schreef Paul Kocialkowski:
-> >>> Hi,
-> >>>
-> >>> Le vendredi 05 avril 2019 =E0 14:52 +0200, Maarten Lankhorst a =E9cri=
-t :
-> >>>> Ever since commit 3fa65f4b532bd9a5b ("fb: Add support for conversions
-> >>>> through pixman") we can generate a valid cairo surface for any plane,
-> >>>> use this to avoid having to implement our own conversion routine.
-> >>>>
-> >>>> Instead of duplicating this functionality in igt_fb_convert_with_str=
-ide,
-> >>>> we can simply convert this to a few cairo calls, because we now supp=
-ort
-> >>>> cairo calls to any of the supported framebuffer formats.
-> >>> I don't think this is the case: cairo *only* takes linear buffers, so
-> >>> we need the explicit tiling conversion step after having converted to=
- a
-> >>> new format with fb_convert. I don't see how it could work otherwise.
-> >>>
-> >>> Note that in igt, we're only interested in converting from linear to
-> >>> tiled, not the other way round (for now, at least), so that's the
-> >>> pipeline that the helper asssumes.
-> >> We have code to handle this exact conversion in i-g-t already, both
-> >> ways, see igt_get_cairo_surface(). :)
-> >>
-> >> You should be able to extend create_cairo_surface__convert() to
-> >> handle broadcom tiling as well,
-> >>
-> >> I didn't see a function to convert from tiled to untiled, else I
-> >> would have plugged it in for you.
-> > That might be a bit dumb, but why do we need to use cairo all the
-> > time in the first place?
-> >
-> > That seems like a waste of resources when the only thing you want to
-> > do is a conversion of one buffer to the other.
->
-> Cairo doesn't have its own internal buffer format, it uses the same pixman
-> calls that igt_fb_convert_with_stride does, so it's not less efficient.
->
-> The extra trip to convert the src buffer back after it's read from, or the
-> unnecessary conversion of the target buffer before it's overwritten it wi=
-th
-> src buffer contents might be less efficient, but I don't think it's worth
-> optimizing it.
-
-Right, but I wasn't so much talking about the number of buffers, but
-more about the function calls overhead.
-
-Maxime
-
---
-Maxime Ripard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
---2mdrnyonzpjoeucx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXKyzbAAKCRDj7w1vZxhR
-xbvsAP91XR4HWeTU5Sfsn/9YqbPDbse6vI83bojGiFArBHGsbAD/SY8rA2Rf+/mK
-sZ2o4pB+x806EDv5sSgvdeKtprrMAAw=
-=qwL0
------END PGP SIGNATURE-----
-
---2mdrnyonzpjoeucx--
-
---===============0405400190==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============0405400190==--
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHMva21zX3BsYW5lX211bHRpcGxlOiBS
+dW4gb25seSBvbiB0aGUgZmlyc3QgdmFsaWQgb3V0cHV0ClVSTCAgIDogaHR0cHM6Ly9wYXRjaHdv
+cmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy81OTIyOC8KU3RhdGUgOiBzdWNjZXNzCgo9PSBTdW1t
+YXJ5ID09CgpDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIENJX0RSTV81ODk3IC0+IElHVFBXXzI4
+MjgKPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQoK
+U3VtbWFyeQotLS0tLS0tCgogICoqU1VDQ0VTUyoqCgogIE5vIHJlZ3Jlc3Npb25zIGZvdW5kLgoK
+ICBFeHRlcm5hbCBVUkw6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9hcGkvMS4w
+L3Nlcmllcy81OTIyOC9yZXZpc2lvbnMvMS9tYm94LwoKS25vd24gaXNzdWVzCi0tLS0tLS0tLS0t
+LQoKICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV18yODI4IHRoYXQgY29tZSBm
+cm9tIGtub3duIGlzc3VlczoKCiMjIyBJR1QgY2hhbmdlcyAjIyMKCiMjIyMgSXNzdWVzIGhpdCAj
+IyMjCgogICogaWd0QGFtZGdwdS9hbWRfY3Nfbm9wQHN5bmMtZm9yay1jb21wdXRlMDoKICAgIC0g
+ZmktaWNsLXUzOiAgICAgICAgICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTMxNV0gKzE3CgogICog
+aWd0QGdlbV9leGVjX2Jhc2ljQGd0dC1ic2QxOgogICAgLSBmaS1pY2wtdTM6ICAgICAgICAgIE5P
+VFJVTiAtPiBTS0lQIFtmZG8jMTA5Mjc2XSArNwoKICAqIGlndEBnZW1fZXhlY19wYXJzZUBiYXNp
+Yy1yZWplY3RlZDoKICAgIC0gZmktaWNsLXUzOiAgICAgICAgICBOT1RSVU4gLT4gU0tJUCBbZmRv
+IzEwOTI4OV0gKzEKCiAgKiBpZ3RAZ2VtX2V4ZWNfc3RvcmVAYmFzaWMtYnNkMToKICAgIC0gZmkt
+a2JsLXI6ICAgICAgICAgICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTI3MV0gKzQxCgogICogaWd0
+QGdlbV9leGVjX3N1c3BlbmRAYmFzaWMtczM6CiAgICAtIGZpLWJsYi1lNjg1MDogICAgICAgUEFT
+UyAtPiBJTkNPTVBMRVRFIFtmZG8jMTA3NzE4XQoKICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVf
+Y29udGV4dHM6CiAgICAtIGZpLWljbC11MzogICAgICAgICAgTk9UUlVOIC0+IERNRVNHLUZBSUwg
+W2ZkbyMxMDg1NjldCgogICogaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZV9ldmljdDoKICAgIC0gZmkt
+YnN3LWtlZmthOiAgICAgICBQQVNTIC0+IERNRVNHLVdBUk4gW2ZkbyMxMDc3MDldCgogICogaWd0
+QGk5MTVfc2VsZnRlc3RAbGl2ZV9leGVjbGlzdHM6CiAgICAtIGZpLWFwbC1ndWM6ICAgICAgICAg
+UEFTUyAtPiBJTkNPTVBMRVRFIFtmZG8jMTAzOTI3XSAvIFtmZG8jMTA5NzIwXQoKICAqIGlndEBr
+bXNfYnVzeUBiYXNpYy1mbGlwLWE6CiAgICAtIGZpLWJzdy1uMzA1MDogICAgICAgTk9UUlVOIC0+
+IFNLSVAgW2ZkbyMxMDkyNzFdIC8gW2ZkbyMxMDkyNzhdICsxCgogICogaWd0QGttc19idXN5QGJh
+c2ljLWZsaXAtYzoKICAgIC0gZmktYnl0LWoxOTAwOiAgICAgICBOT1RSVU4gLT4gU0tJUCBbZmRv
+IzEwOTI3MV0gLyBbZmRvIzEwOTI3OF0KCiAgKiBpZ3RAa21zX2NoYW1lbGl1bUBoZG1pLWNyYy1m
+YXN0OgogICAgLSBmaS1ic3ctbjMwNTA6ICAgICAgIE5PVFJVTiAtPiBTS0lQIFtmZG8jMTA5Mjcx
+XSArNjIKICAgIC0gZmktYnl0LWoxOTAwOiAgICAgICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTI3
+MV0gKzUyCgogICogaWd0QGttc19jaGFtZWxpdW1AaGRtaS1lZGlkLXJlYWQ6CiAgICAtIGZpLWlj
+bC11MzogICAgICAgICAgTk9UUlVOIC0+IFNLSVAgW2ZkbyMxMDkyODRdICs4CgogICogaWd0QGtt
+c19mb3JjZV9jb25uZWN0b3JfYmFzaWNAcHJ1bmUtc3RhbGUtbW9kZXM6CiAgICAtIGZpLWljbC11
+MzogICAgICAgICAgTk9UUlVOIC0+IFNLSVAgW2ZkbyMxMDkyODVdICszCgogICogaWd0QGttc19m
+cm9udGJ1ZmZlcl90cmFja2luZ0BiYXNpYzoKICAgIC0gZmktaWNsLXUzOiAgICAgICAgICBOT1RS
+VU4gLT4gRkFJTCBbZmRvIzEwMzE2N10KCiAgKiBpZ3RAcnVubmVyQGFib3J0ZWQ6CiAgICAtIGZp
+LWdsay1kc2k6ICAgICAgICAgTk9UUlVOIC0+IEZBSUwgW2sub3JnIzIwMjMyMV0KICAgIC0gZmkt
+YnN3LWtlZmthOiAgICAgICBOT1RSVU4gLT4gRkFJTCBbZmRvIzEwNzcwOV0KICAgIC0gZmktYXBs
+LWd1YzogICAgICAgICBOT1RSVU4gLT4gRkFJTCBbZmRvIzEwODYyMl0gLyBbZmRvIzEwOTcyMF0K
+CiAgCiMjIyMgUG9zc2libGUgZml4ZXMgIyMjIwoKICAqIGlndEBnZW1fY3R4X2V4ZWNAYmFzaWM6
+CiAgICAtIGZpLWljbC11MzogICAgICAgICAgSU5DT01QTEVURSBbZmRvIzEwNzcxM10gLT4gUEFT
+UwoKICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVfY29udGV4dHM6CiAgICAtIGZpLWJkdy1ndnRk
+dm06ICAgICAgRE1FU0ctRkFJTCBbZmRvIzExMDIzNSBdIC0+IFBBU1MKICAgIC0gZmktc2tsLWd2
+dGR2bTogICAgICBETUVTRy1GQUlMIFtmZG8jMTEwMjM1IF0gLT4gUEFTUwoKICAKIyMjIyBXYXJu
+aW5ncyAjIyMjCgogICogaWd0QGk5MTVfcG1fcnBtQG1vZHVsZS1yZWxvYWQ6CiAgICAtIGZpLWds
+ay1kc2k6ICAgICAgICAgSU5DT01QTEVURSBbZmRvIzEwMzM1OV0gLyBbay5vcmcjMTk4MTMzXSAt
+PiBETUVTRy1GQUlMIFtmZG8jMTA1NTM4XSAvIFtmZG8jMTA3NzMyXSAvIFtmZG8jMTA5NTEzXQoK
+ICAKICBbZmRvIzEwMzE2N106IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcu
+Y2dpP2lkPTEwMzE2NwogIFtmZG8jMTAzMzU5XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9y
+Zy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMzU5CiAgW2ZkbyMxMDM5MjddOiBodHRwczovL2J1Z3MuZnJl
+ZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDM5MjcKICBbZmRvIzEwNTUzOF06IGh0dHBz
+Oi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNTUzOAogIFtmZG8jMTA3
+NzA5XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3NzA5
+CiAgW2ZkbyMxMDc3MTNdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNn
+aT9pZD0xMDc3MTMKICBbZmRvIzEwNzcxOF06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcv
+c2hvd19idWcuY2dpP2lkPTEwNzcxOAogIFtmZG8jMTA3NzMyXTogaHR0cHM6Ly9idWdzLmZyZWVk
+ZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3NzMyCiAgW2ZkbyMxMDg1NjldOiBodHRwczov
+L2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDg1NjkKICBbZmRvIzEwODYy
+Ml06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODYyMgog
+IFtmZG8jMTA5MjcxXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/
+aWQ9MTA5MjcxCiAgW2ZkbyMxMDkyNzZdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
+b3dfYnVnLmNnaT9pZD0xMDkyNzYKICBbZmRvIzEwOTI3OF06IGh0dHBzOi8vYnVncy5mcmVlZGVz
+a3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI3OAogIFtmZG8jMTA5Mjg0XTogaHR0cHM6Ly9i
+dWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5Mjg0CiAgW2ZkbyMxMDkyODVd
+OiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkyODUKICBb
+ZmRvIzEwOTI4OV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lk
+PTEwOTI4OQogIFtmZG8jMTA5MzE1XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93
+X2J1Zy5jZ2k/aWQ9MTA5MzE1CiAgW2ZkbyMxMDk1MTNdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0
+b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDk1MTMKICBbZmRvIzEwOTcyMF06IGh0dHBzOi8vYnVn
+cy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTcyMAogIFtmZG8jMTEwMjM1IF06
+IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTExMDIzNSAKICBb
+ay5vcmcjMTk4MTMzXTogaHR0cHM6Ly9idWd6aWxsYS5rZXJuZWwub3JnL3Nob3dfYnVnLmNnaT9p
+ZD0xOTgxMzMKICBbay5vcmcjMjAyMzIxXTogaHR0cHM6Ly9idWd6aWxsYS5rZXJuZWwub3JnL3No
+b3dfYnVnLmNnaT9pZD0yMDIzMjEKCgpQYXJ0aWNpcGF0aW5nIGhvc3RzICg0NCAtPiA0MSkKLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCgogIEFkZGl0aW9uYWwgKDMpOiBmaS1ieXQtajE5
+MDAgZmkta2JsLXIgZmktYnN3LW4zMDUwIAogIE1pc3NpbmcgICAgKDYpOiBmaS1ieXQtc3F1YXdr
+cyBmaS1ic3ctY3lhbiBmaS1zbmItMjUyMG0gZmktaHN3LTQ3NzAgZmktaWNsLXkgZmktYmR3LXNh
+bXVzIAoKCkJ1aWxkIGNoYW5nZXMKLS0tLS0tLS0tLS0tLQoKICAgICogSUdUOiBJR1RfNDkzNCAt
+PiBJR1RQV18yODI4CgogIENJX0RSTV81ODk3OiA3ZDA3ZTAyNWU3ODYwM2Q2MjcwYmMxMTVmZGI2
+YzFlZmVhNmU2NmE1IEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xpbnV4
+CiAgSUdUUFdfMjgyODogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9J
+R1RQV18yODI4LwogIElHVF80OTM0OiBkYzRmNDVlYjY4NzQzMzFkYWVjODcwZGMxZTRjZmMzYWM1
+YzQ5MzExIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcveG9yZy9hcHAvaW50ZWwtZ3B1
+LXRvb2xzCgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9pbnRlbC1n
+ZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yODI4LwpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2lndC1kZXY=
