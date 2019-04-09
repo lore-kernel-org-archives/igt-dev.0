@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C1538915E
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Apr 2019 01:29:49 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Tue, 9 Apr 2019 01:29:48 +0000
+Message-ID: <6525db62bc81dd968bb17da7106354545d3429af.camel@intel.com>
+References: <1554476159-25312-1-git-send-email-juhapekka.heikkila@gmail.com>
+In-Reply-To: <1554476159-25312-1-git-send-email-juhapekka.heikkila@gmail.com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 09 Apr 2019 01:25:59 -0000
-Message-ID: <20190409012559.21096.14207@emeril.freedesktop.org>
-References: <20190408195952.17061-1-jose.souza@intel.com>
-In-Reply-To: <20190408195952.17061-1-jose.souza@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2Cv2=2C1/2=5D_HAX=3A_tests/kms=5Fatomic?=
- =?utf-8?q?=5Ftransition=3A_Don=27t_test_more_planes_than_memory_bandwidth?=
- =?utf-8?q?_can_support?=
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_multiple: before going
+ testing check how many planes are allowed
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,194 +18,275 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0467488941=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW2ktZy10
-LHYyLDEvMl0gSEFYOiB0ZXN0cy9rbXNfYXRvbWljX3RyYW5zaXRpb246IERvbid0IHRlc3QgbW9y
-ZSBwbGFuZXMgdGhhbiBtZW1vcnkgYmFuZHdpZHRoIGNhbiBzdXBwb3J0ClVSTCAgIDogaHR0cHM6
-Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy81OTE5MS8KU3RhdGUgOiBzdWNjZXNz
-Cgo9PSBTdW1tYXJ5ID09CgpDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIENJX0RSTV81ODkxX2Z1
-bGwgLT4gSUdUUFdfMjgxOV9mdWxsCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT0KClN1bW1hcnkKLS0tLS0tLQoKICAqKlNVQ0NFU1MqKgoKICBObyBy
-ZWdyZXNzaW9ucyBmb3VuZC4KCiAgRXh0ZXJuYWwgVVJMOiBodHRwczovL3BhdGNod29yay5mcmVl
-ZGVza3RvcC5vcmcvYXBpLzEuMC9zZXJpZXMvNTkxOTEvcmV2aXNpb25zLzEvbWJveC8KCktub3du
-IGlzc3VlcwotLS0tLS0tLS0tLS0KCiAgSGVyZSBhcmUgdGhlIGNoYW5nZXMgZm91bmQgaW4gSUdU
-UFdfMjgxOV9mdWxsIHRoYXQgY29tZSBmcm9tIGtub3duIGlzc3VlczoKCiMjIyBJR1QgY2hhbmdl
-cyAjIyMKCiMjIyMgSXNzdWVzIGhpdCAjIyMjCgogICogaWd0QGdlbV9leGVjX3BhcmFsbGVsQGJs
-dDoKICAgIC0gc2hhcmQtc25iOiAgICAgICAgICBQQVNTIC0+IElOQ09NUExFVEUgW2ZkbyMxMDU0
-MTFdCgogICogaWd0QGdlbV9leGVjX3NjaGVkdWxlQGluZGVwZW5kZW50LWJzZDE6CiAgICAtIHNo
-YXJkLWljbGI6ICAgICAgICAgTk9UUlVOIC0+IFNLSVAgW2ZkbyMxMDkyNzZdICs3CgogICogaWd0
-QGdlbV9wcmVhZEBwYWdlZmF1bHQtcHJlYWQ6CiAgICAtIHNoYXJkLWljbGI6ICAgICAgICAgTk9U
-UlVOIC0+IFNLSVAgW2ZkbyMxMDkyNzddICsxCgogICogaWd0QGdlbV9wd3JpdGVAaHVnZS1ndHQt
-Zm9yd2FyZHM6CiAgICAtIHNoYXJkLWljbGI6ICAgICAgICAgTk9UUlVOIC0+IFNLSVAgW2ZkbyMx
-MDkyOTBdCgogICogaWd0QGdlbV90aWxlZF9zd2FwcGluZ0Bub24tdGhyZWFkZWQ6CiAgICAtIHNo
-YXJkLWhzdzogICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTA4Njg2XQoKICAqIGlndEBnZW4z
-X3JlbmRlcl90aWxlZHlfYmxpdHM6CiAgICAtIHNoYXJkLWljbGI6ICAgICAgICAgTk9UUlVOIC0+
-IFNLSVAgW2ZkbyMxMDkyODldCgogICogaWd0QGk5MTVfcG1fcnBtQHBjOC1yZXNpZGVuY3k6CiAg
-ICAtIHNoYXJkLWljbGI6ICAgICAgICAgTk9UUlVOIC0+IFNLSVAgW2ZkbyMxMDkyOTNdCgogICog
-aWd0QGk5MTVfcG1fcnBtQHBtLXRpbGluZzoKICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBQQVNT
-IC0+IERNRVNHLVdBUk4gW2ZkbyMxMDk1MTNdCgogICogaWd0QGttc19hdG9taWNfdHJhbnNpdGlv
-bkAyeC1tb2Rlc2V0LXRyYW5zaXRpb25zLW5vbmJsb2NraW5nOgogICAgLSBzaGFyZC1pY2xiOiAg
-ICAgICAgIE5PVFJVTiAtPiBTS0lQIFtmZG8jMTA5MjgwXSArOAoKICAqIGlndEBrbXNfYXRvbWlj
-X3RyYW5zaXRpb25AM3gtbW9kZXNldC10cmFuc2l0aW9uczoKICAgIC0gc2hhcmQta2JsOiAgICAg
-ICAgICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTI3MV0gLyBbZmRvIzEwOTI3OF0gKzMKCiAgKiBp
-Z3RAa21zX2J1c3lAYmFzaWMtZmxpcC1mOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIE5PVFJV
-TiAtPiBTS0lQIFtmZG8jMTA5MjcxXSAvIFtmZG8jMTA5Mjc4XSArMTEKCiAgKiBpZ3RAa21zX2No
-YW1lbGl1bUBoZG1pLWVkaWQtcmVhZDoKICAgIC0gc2hhcmQtaWNsYjogICAgICAgICBOT1RSVU4g
-LT4gU0tJUCBbZmRvIzEwOTI4NF0gKzQKCiAgKiBpZ3RAa21zX2NvbnRlbnRfcHJvdGVjdGlvbkBs
-ZWdhY3k6CiAgICAtIHNoYXJkLWljbGI6ICAgICAgICAgTk9UUlVOIC0+IFNLSVAgW2ZkbyMxMDkz
-MDBdCgogICogaWd0QGttc19jdXJzb3JfY3JjQGN1cnNvci01MTJ4NTEyLXJhcGlkLW1vdmVtZW50
-OgogICAgLSBzaGFyZC1pY2xiOiAgICAgICAgIE5PVFJVTiAtPiBTS0lQIFtmZG8jMTA5Mjc5XQoK
-ICAqIGlndEBrbXNfY3Vyc29yX2xlZ2FjeUAyeC1sb25nLWZsaXAtdnMtY3Vyc29yLWxlZ2FjeToK
-ICAgIC0gc2hhcmQtaWNsYjogICAgICAgICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTI3NF0gKzMK
-CiAgKiBpZ3RAa21zX2N1cnNvcl9sZWdhY3lAY3Vyc29yLXZzLWZsaXAtbGVnYWN5OgogICAgLSBz
-aGFyZC1pY2xiOiAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwMzM1NV0KCiAgKiBpZ3RAa21z
-X2ZsaXBAZmxpcC12cy1leHBpcmVkLXZibGFuay1pbnRlcnJ1cHRpYmxlOgogICAgLSBzaGFyZC1n
-bGs6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwNTM2M10KCiAgKiBpZ3RAa21zX2ZvcmNl
-X2Nvbm5lY3Rvcl9iYXNpY0BwcnVuZS1zdGFsZS1tb2RlczoKICAgIC0gc2hhcmQtaWNsYjogICAg
-ICAgICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTI4NV0KCiAgKiBpZ3RAa21zX2Zyb250YnVmZmVy
-X3RyYWNraW5nQGJhc2ljOgogICAgLSBzaGFyZC1pY2xiOiAgICAgICAgIFBBU1MgLT4gRkFJTCBb
-ZmRvIzEwMzE2N10gKzEKCiAgKiBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiY3Bzci0x
-cC1vZmZzY3Jlbi1wcmktc2hyZmItZHJhdy1tbWFwLXdjOgogICAgLSBzaGFyZC1rYmw6ICAgICAg
-ICAgIE5PVFJVTiAtPiBTS0lQIFtmZG8jMTA5MjcxXSArMTIKCiAgKiBpZ3RAa21zX2Zyb250YnVm
-ZmVyX3RyYWNraW5nQGZiY3Bzci1yZ2IxMDEwMTAtZHJhdy1tbWFwLWNwdToKICAgIC0gc2hhcmQt
-aWNsYjogICAgICAgICBQQVNTIC0+IEZBSUwgW2ZkbyMxMDU2ODJdIC8gW2ZkbyMxMDkyNDddCgog
-ICogaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0Bwc3ItMXAtcHJpbXNjcm4tcHJpLWluZGZi
-LWRyYXctYmx0OgogICAgLSBzaGFyZC1pY2xiOiAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEw
-OTI0N10gKzE3CgogICogaWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0Bwc3ItMXAtcHJpbXNj
-cm4tc2hyZmItcGdmbGlwLWJsdDoKICAgIC0gc2hhcmQtaWNsYjogICAgICAgICBOT1RSVU4gLT4g
-RkFJTCBbZmRvIzEwOTI0N10KCiAgKiBpZ3RAa21zX3BpcGVfY3JjX2Jhc2ljQGhhbmctcmVhZC1j
-cmMtcGlwZS1mOgogICAgLSBzaGFyZC1pY2xiOiAgICAgICAgIE5PVFJVTiAtPiBTS0lQIFtmZG8j
-MTA5Mjc4XSArNQoKICAqIGlndEBrbXNfcGxhbmVfYWxwaGFfYmxlbmRAcGlwZS1hLWFscGhhLW9w
-YXF1ZS1mYjoKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBOT1RSVU4gLT4gRkFJTCBbZmRvIzEw
-ODE0NV0gKzMKCiAgKiBpZ3RAa21zX3BsYW5lX2FscGhhX2JsZW5kQHBpcGUtYi1hbHBoYS1iYXNp
-YzoKICAgIC0gc2hhcmQta2JsOiAgICAgICAgICBOT1RSVU4gLT4gRkFJTCBbZmRvIzEwODE0NV0g
-LyBbZmRvIzEwODU5MF0KCiAgKiBpZ3RAa21zX3BzckBjdXJzb3JfbW1hcF9jcHU6CiAgICAtIHNo
-YXJkLWljbGI6ICAgICAgICAgUEFTUyAtPiBGQUlMIFtmZG8jMTA3MzgzXSAvIFtmZG8jMTEwMjE1
-XSArMQoKICAqIGlndEBrbXNfcHNyQHBzcjJfY3Vyc29yX3BsYW5lX29ub2ZmOgogICAgLSBzaGFy
-ZC1pY2xiOiAgICAgICAgIFBBU1MgLT4gU0tJUCBbZmRvIzEwOTQ0MV0gKzIKCiAgKiBpZ3RAa21z
-X3NldG1vZGVAYmFzaWM6CiAgICAtIHNoYXJkLWtibDogICAgICAgICAgUEFTUyAtPiBGQUlMIFtm
-ZG8jOTk5MTJdCgogICogaWd0QGttc192YmxhbmtAcGlwZS1jLXRzLWNvbnRpbnVhdGlvbi1zdXNw
-ZW5kOgogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIFBBU1MgLT4gRkFJTCBbZmRvIzEwNDg5NF0g
-KzEKCiAgKiBpZ3RAcGVyZl9wbXVAcmM2OgogICAgLSBzaGFyZC1rYmw6ICAgICAgICAgIFBBU1Mg
-LT4gU0tJUCBbZmRvIzEwOTI3MV0KCiAgKiBpZ3RAcHJpbWVfbnZfYXBpQGk5MTVfbnZfcmVpbXBv
-cnRfdHdpY2VfY2hlY2tfZmxpbmtfbmFtZToKICAgIC0gc2hhcmQtYXBsOiAgICAgICAgICBOT1RS
-VU4gLT4gU0tJUCBbZmRvIzEwOTI3MV0gKzIxOQoKICAqIGlndEBwcmltZV9udl9hcGlAaTkxNV9z
-ZWxmX2ltcG9ydDoKICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBOT1RSVU4gLT4gU0tJUCBbZmRv
-IzEwOTI3MV0gKzYKCiAgKiBpZ3RAcHJpbWVfbnZfcGNvcHlAdGVzdDNfMjoKICAgIC0gc2hhcmQt
-aWNsYjogICAgICAgICBOT1RSVU4gLT4gU0tJUCBbZmRvIzEwOTI5MV0gKzEKCiAgKiBpZ3RAdG9v
-bHNfdGVzdEBzeXNmc19sM19wYXJpdHk6CiAgICAtIHNoYXJkLWljbGI6ICAgICAgICAgTk9UUlVO
-IC0+IFNLSVAgW2ZkbyMxMDkzMDddCgogICogaWd0QHRvb2xzX3Rlc3RAdG9vbHNfdGVzdDoKICAg
-IC0gc2hhcmQtaHN3OiAgICAgICAgICBQQVNTIC0+IFNLSVAgW2ZkbyMxMDkyNzFdCgogICogaWd0
-QHYzZF9nZXRfcGFyYW1AZ2V0LWJhZC1mbGFnczoKICAgIC0gc2hhcmQtaWNsYjogICAgICAgICBO
-T1RSVU4gLT4gU0tJUCBbZmRvIzEwOTMxNV0KCiAgCiMjIyMgUG9zc2libGUgZml4ZXMgIyMjIwoK
-ICAqIGlndEBnZW1fZXhlY19yZWxvY0BiYXNpYy1jcHUtd2MtYWN0aXZlOgogICAgLSBzaGFyZC1p
-Y2xiOiAgICAgICAgIElOQ09NUExFVEUgW2ZkbyMxMDc3MTNdIC0+IFBBU1MKCiAgKiBpZ3RAZ2Vt
-X21tYXBfZ3R0QGZvcmtlZC1iaWctY29weS1vZGQ6CiAgICAtIHNoYXJkLWljbGI6ICAgICAgICAg
-VElNRU9VVCBbZmRvIzEwOTY3M10gLT4gUEFTUwoKICAqIGlndEBrbXNfY29sb3JAcGlwZS1hLWN0
-bS1tYXg6CiAgICAtIHNoYXJkLWtibDogICAgICAgICAgRkFJTCBbZmRvIzEwODE0N10gLT4gUEFT
-UwogICAgLSBzaGFyZC1hcGw6ICAgICAgICAgIEZBSUwgW2ZkbyMxMDgxNDddIC0+IFBBU1MKCiAg
-KiBpZ3RAa21zX2N1cnNvcl9jcmNAY3Vyc29yLTY0eDY0LXNsaWRpbmc6CiAgICAtIHNoYXJkLWFw
-bDogICAgICAgICAgRkFJTCBbZmRvIzEwMzIzMl0gLT4gUEFTUwogICAgLSBzaGFyZC1rYmw6ICAg
-ICAgICAgIEZBSUwgW2ZkbyMxMDMyMzJdIC0+IFBBU1MKCiAgKiBpZ3RAa21zX2N1cnNvcl9sZWdh
-Y3lAY3Vyc29yLXZzLWZsaXAtYXRvbWljLXRyYW5zaXRpb25zLXZhcnlpbmctc2l6ZToKICAgIC0g
-c2hhcmQtaWNsYjogICAgICAgICBGQUlMIFtmZG8jMTAzMzU1XSAtPiBQQVNTCgogICogaWd0QGtt
-c19mcm9udGJ1ZmZlcl90cmFja2luZ0BmYmMtMnAtc2NuZHNjcm4tc2hyZmItcGxmbGlwLWJsdDoK
-ICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBGQUlMIFtmZG8jMTAzMTY3XSAtPiBQQVNTCgogICog
-aWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0BmYmNwc3ItMXAtcHJpbXNjcm4tY3VyLWluZGZi
-LWRyYXctcmVuZGVyOgogICAgLSBzaGFyZC1pY2xiOiAgICAgICAgIEZBSUwgW2ZkbyMxMDMxNjdd
-IC0+IFBBU1MgKzIKCiAgKiBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQHBzci0xcC1wcmlt
-c2Nybi1jdXItaW5kZmItZHJhdy1wd3JpdGU6CiAgICAtIHNoYXJkLWljbGI6ICAgICAgICAgRkFJ
-TCBbZmRvIzEwOTI0N10gLT4gUEFTUyArNwoKICAqIGlndEBrbXNfcGxhbmVfc2NhbGluZ0BwaXBl
-LWEtc2NhbGVyLXdpdGgtcGl4ZWwtZm9ybWF0OgogICAgLSBzaGFyZC1nbGs6ICAgICAgICAgIFNL
-SVAgW2ZkbyMxMDkyNzFdIC8gW2ZkbyMxMDkyNzhdIC0+IFBBU1MgKzEKCiAgKiBpZ3RAa21zX3Bs
-YW5lX3NjYWxpbmdAcGlwZS1jLXNjYWxlci13aXRoLWNsaXBwaW5nLWNsYW1waW5nOgogICAgLSBz
-aGFyZC1pY2xiOiAgICAgICAgIElOQ09NUExFVEUgW2ZkbyMxMTAwNDFdIC0+IFBBU1MKCiAgKiBp
-Z3RAa21zX3BzckBjdXJzb3JfcmVuZGVyOgogICAgLSBzaGFyZC1pY2xiOiAgICAgICAgIERNRVNH
-LVdBUk4gW2ZkbyMxMTAwMjVdIC0+IFBBU1MKCiAgKiBpZ3RAa21zX3BzckBwc3IyX2N1cnNvcl9y
-ZW5kZXI6CiAgICAtIHNoYXJkLWljbGI6ICAgICAgICAgU0tJUCBbZmRvIzEwOTQ0MV0gLT4gUEFT
-UyArMgoKICAqIGlndEBrbXNfcHNyQHNwcml0ZV9ibHQ6CiAgICAtIHNoYXJkLWljbGI6ICAgICAg
-ICAgRkFJTCBbZmRvIzEwNzM4M10gLyBbZmRvIzExMDIxNV0gLT4gUEFTUwoKICAqIGlndEBrbXNf
-cm90YXRpb25fY3JjQG11bHRpcGxhbmUtcm90YXRpb246CiAgICAtIHNoYXJkLWljbGI6ICAgICAg
-ICAgRE1FU0ctV0FSTiBbZmRvIzEwNjg4NV0gLT4gUEFTUwogICAgLSBzaGFyZC1rYmw6ICAgICAg
-ICAgIElOQ09NUExFVEUgW2ZkbyMxMDM2NjVdIC0+IFBBU1MgKzEKCiAgKiBpZ3RAa21zX3ZibGFu
-a0BwaXBlLWEtdHMtY29udGludWF0aW9uLWRwbXMtc3VzcGVuZDoKICAgIC0gc2hhcmQtYXBsOiAg
-ICAgICAgICBGQUlMIFtmZG8jMTA0ODk0XSAtPiBQQVNTCgogICogaWd0QGttc192YmxhbmtAcGlw
-ZS1iLXRzLWNvbnRpbnVhdGlvbi1tb2Rlc2V0LXJwbToKICAgIC0gc2hhcmQta2JsOiAgICAgICAg
-ICBGQUlMIFtmZG8jMTA0ODk0XSAtPiBQQVNTICsxCgogIAojIyMjIFdhcm5pbmdzICMjIyMKCiAg
-KiBpZ3RAZ2VtX3RpbGVkX3N3YXBwaW5nQG5vbi10aHJlYWRlZDoKICAgIC0gc2hhcmQtaWNsYjog
-ICAgICAgICBGQUlMIFtmZG8jMTA4Njg2XSAtPiBETUVTRy1XQVJOIFtmZG8jMTA4Njg2XQoKICAq
-IGlndEBydW5uZXJAYWJvcnRlZDoKICAgIC0gc2hhcmQtZ2xrOiAgICAgICAgICBGQUlMIFtmZG8j
-MTA5MzczXSAvIFtrLm9yZyMyMDIzMjFdIC0+ICggMiBGQUlMICkgW2ZkbyMxMDkzNzNdIC8gW2su
-b3JnIzIwMjMyMV0KCiAgCiAgW2ZkbyMxMDMxNjddOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Au
-b3JnL3Nob3dfYnVnLmNnaT9pZD0xMDMxNjcKICBbZmRvIzEwMzIzMl06IGh0dHBzOi8vYnVncy5m
-cmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzIzMgogIFtmZG8jMTAzMzU1XTogaHR0
-cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzMzU1CiAgW2ZkbyMx
-MDM2NjVdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDM2
-NjUKICBbZmRvIzEwNDg5NF06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcu
-Y2dpP2lkPTEwNDg5NAogIFtmZG8jMTA1MzYzXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9y
-Zy9zaG93X2J1Zy5jZ2k/aWQ9MTA1MzYzCiAgW2ZkbyMxMDU0MTFdOiBodHRwczovL2J1Z3MuZnJl
-ZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDU0MTEKICBbZmRvIzEwNTY4Ml06IGh0dHBz
-Oi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwNTY4MgogIFtmZG8jMTA2
-ODg1XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA2ODg1
-CiAgW2ZkbyMxMDczODNdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNn
-aT9pZD0xMDczODMKICBbZmRvIzEwNzcxM106IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcv
-c2hvd19idWcuY2dpP2lkPTEwNzcxMwogIFtmZG8jMTA4MTQ1XTogaHR0cHM6Ly9idWdzLmZyZWVk
-ZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA4MTQ1CiAgW2ZkbyMxMDgxNDddOiBodHRwczov
-L2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDgxNDcKICBbZmRvIzEwODU5
-MF06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODU5MAog
-IFtmZG8jMTA4Njg2XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/
-aWQ9MTA4Njg2CiAgW2ZkbyMxMDkyNDddOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
-b3dfYnVnLmNnaT9pZD0xMDkyNDcKICBbZmRvIzEwOTI3MV06IGh0dHBzOi8vYnVncy5mcmVlZGVz
-a3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI3MQogIFtmZG8jMTA5Mjc0XTogaHR0cHM6Ly9i
-dWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5Mjc0CiAgW2ZkbyMxMDkyNzZd
-OiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkyNzYKICBb
-ZmRvIzEwOTI3N106IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lk
-PTEwOTI3NwogIFtmZG8jMTA5Mjc4XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93
-X2J1Zy5jZ2k/aWQ9MTA5Mjc4CiAgW2ZkbyMxMDkyNzldOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0
-b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkyNzkKICBbZmRvIzEwOTI4MF06IGh0dHBzOi8vYnVn
-cy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI4MAogIFtmZG8jMTA5Mjg0XTog
-aHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5Mjg0CiAgW2Zk
-byMxMDkyODVdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0x
-MDkyODUKICBbZmRvIzEwOTI4OV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19i
-dWcuY2dpP2lkPTEwOTI4OQogIFtmZG8jMTA5MjkwXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
-Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5MjkwCiAgW2ZkbyMxMDkyOTFdOiBodHRwczovL2J1Z3Mu
-ZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkyOTEKICBbZmRvIzEwOTI5M106IGh0
-dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI5MwogIFtmZG8j
-MTA5MzAwXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5
-MzAwCiAgW2ZkbyMxMDkzMDddOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVn
-LmNnaT9pZD0xMDkzMDcKICBbZmRvIzEwOTMxNV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5v
-cmcvc2hvd19idWcuY2dpP2lkPTEwOTMxNQogIFtmZG8jMTA5MzczXTogaHR0cHM6Ly9idWdzLmZy
-ZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5MzczCiAgW2ZkbyMxMDk0NDFdOiBodHRw
-czovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDk0NDEKICBbZmRvIzEw
-OTUxM106IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTUx
-MwogIFtmZG8jMTA5NjczXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5j
-Z2k/aWQ9MTA5NjczCiAgW2ZkbyMxMTAwMjVdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3Jn
-L3Nob3dfYnVnLmNnaT9pZD0xMTAwMjUKICBbZmRvIzExMDA0MV06IGh0dHBzOi8vYnVncy5mcmVl
-ZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTExMDA0MQogIFtmZG8jMTEwMjE1XTogaHR0cHM6
-Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTEwMjE1CiAgW2ZkbyM5OTkx
-Ml06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTk5OTEyCiAg
-W2sub3JnIzIwMjMyMV06IGh0dHBzOi8vYnVnemlsbGEua2VybmVsLm9yZy9zaG93X2J1Zy5jZ2k/
-aWQ9MjAyMzIxCgoKUGFydGljaXBhdGluZyBob3N0cyAoMTAgLT4gNikKLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tCgogIE1pc3NpbmcgICAgKDQpOiBwaWctc2tsLTYyNjB1IHNoYXJkLXNr
-bCBwaWctaHN3LTQ3NzByIHBpZy1nbGstajUwMDUgCgoKQnVpbGQgY2hhbmdlcwotLS0tLS0tLS0t
-LS0tCgogICAgKiBJR1Q6IElHVF80OTMyIC0+IElHVFBXXzI4MTkKICAgICogUGlnbGl0OiBwaWds
-aXRfNDUwOSAtPiBOb25lCgogIENJX0RSTV81ODkxOiBhNDZlMTJlODM1NDdjNzgxYTc3OTc3NmYz
-M2ZiZWVlZmUyOTc4OTA1IEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xp
-bnV4CiAgSUdUUFdfMjgxOTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRp
-cC9JR1RQV18yODE5LwogIElHVF80OTMyOiAwOGNmNjNhOGZhYzExZTM1OTRiNTc1ODAzMzFmYjMx
-OTI0MWEwZDY5IEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcveG9yZy9hcHAvaW50ZWwt
-Z3B1LXRvb2xzCiAgcGlnbGl0XzQ1MDk6IGZkYzVhNGNhMTExMjRhYjg0MTNjNzk4ODg5NmVlYzRj
-OTczMzY2OTQgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9waWdsaXQKCj09IExvZ3Mg
-PT0KCkZvciBtb3JlIGRldGFpbHMgc2VlOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJl
-ZS9kcm0tdGlwL0lHVFBXXzI4MTkvCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0
-LWRldg==
+--===============0467488941==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-zdHHJGC6hZ00U7zw/0LC"
+
+--=-zdHHJGC6hZ00U7zw/0LC
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, 2019-04-05 at 17:55 +0300, Juha-Pekka Heikkila wrote:
+> before start testing try out how many planes kernel will
+> allow simultaneously to be used.
+>=20
+> v2 (Jose Souza, Daniel Vetter): Fix resource leaks. Randomize
+> used planes.
+>=20
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>  tests/kms_plane_multiple.c | 88
+> +++++++++++++++++++++++++++++++++++++---------
+>  1 file changed, 71 insertions(+), 17 deletions(-)
+>=20
+> diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
+> index bfaeede..f2707dc 100644
+> --- a/tests/kms_plane_multiple.c
+> +++ b/tests/kms_plane_multiple.c
+> @@ -80,16 +80,6 @@ static void test_fini(data_t *data, igt_output_t
+> *output, int n_planes)
+>  {
+>  	igt_pipe_crc_stop(data->pipe_crc);
+> =20
+> -	for (int i =3D 0; i < n_planes; i++) {
+> -		igt_plane_t *plane =3D data->plane[i];
+> -		if (!plane)
+> -			continue;
+> -		if (plane->type =3D=3D DRM_PLANE_TYPE_PRIMARY)
+> -			continue;
+> -		igt_plane_set_fb(plane, NULL);
+> -		data->plane[i] =3D NULL;
+> -	}
+> -
+>  	/* reset the constraint on the pipe */
+>  	igt_output_set_pipe(output, PIPE_ANY);
+> =20
+> @@ -99,7 +89,8 @@ static void test_fini(data_t *data, igt_output_t
+> *output, int n_planes)
+>  	free(data->plane);
+>  	data->plane =3D NULL;
+> =20
+> -	igt_remove_fb(data->drm_fd, data->fb);
+> +	free(data->fb);
+> +	data->fb =3D NULL;
+> =20
+>  	igt_display_reset(&data->display);
+>  }
+> @@ -195,6 +186,7 @@ prepare_planes(data_t *data, enum pipe pipe_id,
+> color_t *color,
+>  	int *y;
+>  	int *size;
+>  	int i;
+> +	int* suffle;
+> =20
+>  	igt_output_set_pipe(output, pipe_id);
+>  	primary =3D igt_output_get_plane_type(output,
+> DRM_PLANE_TYPE_PRIMARY);
+> @@ -206,6 +198,34 @@ prepare_planes(data_t *data, enum pipe pipe_id,
+> color_t *color,
+>  	igt_assert_f(y, "Failed to allocate %ld bytes for variable
+> y\n", (long int) (pipe->n_planes * sizeof(*y)));
+>  	size =3D malloc(pipe->n_planes * sizeof(*size));
+>  	igt_assert_f(size, "Failed to allocate %ld bytes for variable
+> size\n", (long int) (pipe->n_planes * sizeof(*size)));
+> +	suffle =3D malloc(pipe->n_planes * sizeof(*suffle));
+> +	igt_assert_f(suffle, "Failed to allocate %ld bytes for variable
+> size\n", (long int) (pipe->n_planes * sizeof(*suffle)));
+> +
+> +	for (i =3D 0; i < pipe->n_planes; i++)
+> +		suffle[i] =3D i;
+> +
+> +	/*
+> +	 * suffle table for planes. using rand() should keep it
+> +	 * 'randomized in expected way'
+> +	 */
+> +	for (i =3D 0; i < 256; i++) {
+
+Not beautiful at all
+
+> +		int n, m;
+> +		int a, b;
+> +
+> +		n =3D rand() % (pipe->n_planes-1);
+> +		m =3D rand() % (pipe->n_planes-1);
+> +
+> +		/*
+> +		 * keep primary plane at its place for test's sake.
+> +		 */
+> +		if(n =3D=3D primary->index || m =3D=3D primary->index)
+> +			continue;
+> +
+> +		a =3D suffle[n];
+> +		b =3D suffle[m];
+> +		suffle[n] =3D b;
+> +		suffle[m] =3D a;
+> +	}
+> =20
+>  	mode =3D igt_output_get_mode(output);
+> =20
+> @@ -213,7 +233,11 @@ prepare_planes(data_t *data, enum pipe pipe_id,
+> color_t *color,
+>  	x[primary->index] =3D 0;
+>  	y[primary->index] =3D 0;
+>  	for (i =3D 0; i < max_planes; i++) {
+> -		igt_plane_t *plane =3D igt_output_get_plane(output, i);
+> +		/*
+> +		 * Here is made assumption primary plane will have
+> +		 * index zero.
+> +		 */
+> +		igt_plane_t *plane =3D igt_output_get_plane(output,
+> suffle[i]);
+>  		uint32_t plane_format;
+>  		uint64_t plane_tiling;
+> =20
+> @@ -251,6 +275,10 @@ prepare_planes(data_t *data, enum pipe pipe_id,
+> color_t *color,
+>  	create_fb_for_mode_position(data, output, mode, color, x, y,
+>  				    size, size, tiling, max_planes);
+>  	igt_plane_set_fb(data->plane[primary->index], &data-
+> >fb[primary->index]);
+> +	free((void*)x);
+> +	free((void*)y);
+> +	free((void*)size);
+> +	free((void*)suffle);
+>  }
+> =20
+>  static void
+> @@ -260,7 +288,9 @@ test_plane_position_with_output(data_t *data,
+> enum pipe pipe,
+>  {
+>  	color_t blue  =3D { 0.0f, 0.0f, 1.0f };
+>  	igt_crc_t crc;
+> +	igt_plane_t *plane;
+>  	int i;
+> +	int err, c =3D 0;
+>  	int iterations =3D opt.iterations < 1 ? 1 : opt.iterations;
+>  	bool loop_forever;
+>  	char info[256];
+> @@ -274,22 +304,46 @@ test_plane_position_with_output(data_t *data,
+> enum pipe pipe,
+>  			iterations, iterations > 1 ? "iterations" :
+> "iteration");
+>  	}
+> =20
+> -	igt_info("Testing connector %s using pipe %s with %d planes %s
+> with seed %d\n",
+> -		 igt_output_name(output), kmstest_pipe_name(pipe),
+> n_planes,
+> -		 info, opt.seed);
+> -
+>  	test_init(data, pipe, n_planes);
+> =20
+>  	test_grab_crc(data, output, pipe, &blue, tiling);
+> =20
+> +	/*
+> +	 * Find out how many planes are allowed simultaneously
+> +	 */
+> +	do {
+> +		c++;
+
+Adding one plane at time is a waste of CI time in platforms without a
+high number of planes(anything besides ICL), better start with max and
+decreasing until commit is accepted.
+
+> +		prepare_planes(data, pipe, &blue, tiling, c, output);
+> +		err =3D igt_display_try_commit2(&data->display,
+> COMMIT_ATOMIC);
+
+No need to do a real commit here, you can only test with:
+
+err =3D igt_display_try_commit_atomic(&data->display,
+DRM_MODE_ATOMIC_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+
+
+Also if a err different than -EINVAL is returned you should handle like
+a error.
+
+> +
+> +		for_each_plane_on_pipe(&data->display, pipe, plane)
+> +			igt_plane_set_fb(plane, NULL);
+> +
+> +		for (int x =3D 0; x < c; x++)
+> +			igt_remove_fb(data->drm_fd, &data->fb[x]);
+
+This is still leaking, example:
+
+c =3D 3
+plane 0, plane 1 and plane 3 enabled
+
+Other leak, the framebuffer created in test_grab_crc()
+
+
+> +	} while (!err && c < n_planes);
+> +
+> +	if(err)
+> +		c--;
+> +
+> +	igt_info("Testing connector %s using pipe %s with %d planes %s
+> with seed %d\n",
+> +		 igt_output_name(output), kmstest_pipe_name(pipe), c,
+> +		 info, opt.seed);
+> +
+>  	i =3D 0;
+>  	while (i < iterations || loop_forever) {
+> -		prepare_planes(data, pipe, &blue, tiling, n_planes,
+> output);
+> +		prepare_planes(data, pipe, &blue, tiling, c, output);
+> =20
+>  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> =20
+>  		igt_pipe_crc_get_current(data->display.drm_fd, data-
+> >pipe_crc, &crc);
+> =20
+> +		for_each_plane_on_pipe(&data->display, pipe, plane)
+> +			igt_plane_set_fb(plane, NULL);
+> +
+> +		for (int x =3D 0; x < c; x++)
+> +			igt_remove_fb(data->drm_fd, &data->fb[x]);
+
+move this cleanup to function and call it here and where you test the
+number of planes that can be enabled
+
+> +
+>  		igt_assert_crc_equal(&data->ref_crc, &crc);
+> =20
+>  		i++;
+
+--=-zdHHJGC6hZ00U7zw/0LC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyr9YsACgkQVenbO/mO
+WknXxwgAlGY54swn2VjWPGDphDJelYAGN8KOS+YNj0sHATU9l4EydPrb0jQ3+x8H
+ZzGIJQHh+iMhSalh1cBm1g0E6iZa3maF+Ugfi3AP3zGFyJtTSC7g6TCP6j+712Jf
+DL5TpV2Yis1E9kwY8mLIc1GOeLbYChfjZ8pzwPoHMxUn/9ztqt+RbLutRmJgcQ/V
+IP0AtQQQPkIOO7G7E90/uBmPkFY8S22ntUMADl83eIaySQjNQVJEIFoG6H++DLe4
+YTBnRwkMSQ295U4eInpNKoYXnzFr9X6tRupjrv7ydG6lMNf8Gt+GtF4MAZ/jpvAO
+2nzFNlD/vznG7ywbu8Jmf7NviSK47w==
+=BGxj
+-----END PGP SIGNATURE-----
+
+--=-zdHHJGC6hZ00U7zw/0LC--
+
+--===============0467488941==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============0467488941==--
