@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4061C893A2
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2019 20:32:04 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Wed, 10 Apr 2019 20:31:42 +0000
-Message-ID: <d169656121aaa1fdb0450569ae59a90f31663c25.camel@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA494893EB
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2019 20:42:38 +0000 (UTC)
+From: "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
+Date: Wed, 10 Apr 2019 20:42:37 +0000
+Message-ID: <C56C55B681623645A065C9EE352337D61A268BE4@ORSMSX109.amr.corp.intel.com>
 References: <20190327200331.28602-1-jose.souza@intel.com>
  <20190327200331.28602-3-jose.souza@intel.com>
  <7072ad27249640cedf321b6a851fd2a882572165.camel@intel.com>
-In-Reply-To: <7072ad27249640cedf321b6a851fd2a882572165.camel@intel.com>
+ <d169656121aaa1fdb0450569ae59a90f31663c25.camel@intel.com>
+In-Reply-To: <d169656121aaa1fdb0450569ae59a90f31663c25.camel@intel.com>
 Content-Language: en-US
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t v2 3/8] tests/fbcon_fbt: Add
@@ -20,165 +21,103 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0959249630=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
+To: "Souza, Jose" <jose.souza@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0959249630==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-S1SH8l3+NbRBksvlm+7L"
-
---=-S1SH8l3+NbRBksvlm+7L
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, 2019-04-09 at 14:41 -0700, Dhinakaran Pandiyan wrote:
-> On Wed, 2019-03-27 at 13:03 -0700, Jos=C3=A9 Roberto de Souza wrote:
-> > Lets be more explicit and add and implement a callback to check if
-> > feature had a state update, that is what some points of the test
-> > want
-> > to test.
-> >=20
-> > Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > Cc: Paulo Zanoni <paulo.r.zanoni@intel.com>
-> > Signed-off-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
-> > ---
-> >  tests/kms_fbcon_fbt.c | 19 ++++++++++++++++---
-> >  1 file changed, 16 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/tests/kms_fbcon_fbt.c b/tests/kms_fbcon_fbt.c
-> > index a9d91839..9ab1d630 100644
-> > --- a/tests/kms_fbcon_fbt.c
-> > +++ b/tests/kms_fbcon_fbt.c
-> > @@ -130,6 +130,11 @@ static bool fbc_wait_until_enabled(int
-> > debugfs_fd)
-> >  	return r;
-> >  }
-> > =20
-> > +static bool fbc_wait_until_update(int debugfs)
-> > +{
-> > +	return !fbc_wait_until_enabled(debugfs);
-> > +}
-> > +
-> >  typedef bool (*connector_possible_fn)(drmModeConnectorPtr
-> > connector);
-> > =20
-> >  static void set_mode_for_one_screen(struct drm_info *drm, struct
-> > igt_fb *fb,
-> > @@ -196,6 +201,11 @@ static bool psr_supported_on_chipset(int
-> > debugfs_fd)
-> >  	return psr_sink_support(debugfs_fd, PSR_MODE_1);
-> >  }
-> > =20
-> > +static bool psr_wait_until_update(int debugfs_fd)
-> > +{
-> > +	return !psr_wait_until_enabled(debugfs_fd);
-> > +}
-> > +
-> >  static void disable_features(int debugfs_fd)
-> >  {
-> >  	igt_set_module_param_int("enable_fbc", 0);
-> > @@ -215,16 +225,19 @@ static inline void psr_debugfs_enable(int
-> > debugfs_fd)
-> >  struct feature {
-> >  	bool (*supported_on_chipset)(int debugfs_fd);
-> >  	bool (*wait_until_enabled)(int debugfs_fd);
-> > +	bool (*wait_until_update)(int debugfs_fd);
-> >  	bool (*connector_possible_fn)(drmModeConnectorPtr connector);
-> >  	void (*enable)(int debugfs_fd);
-> >  } fbc =3D {
-> >  	.supported_on_chipset =3D fbc_supported_on_chipset,
-> >  	.wait_until_enabled =3D fbc_wait_until_enabled,
-> > +	.wait_until_update =3D fbc_wait_until_update,
-> >  	.connector_possible_fn =3D connector_can_fbc,
-> >  	.enable =3D fbc_modparam_enable,
-> >  }, psr =3D {
-> >  	.supported_on_chipset =3D psr_supported_on_chipset,
-> >  	.wait_until_enabled =3D psr_wait_until_enabled,
-> > +	.wait_until_update =3D psr_wait_until_update,
-> >  	.connector_possible_fn =3D connector_can_psr,
-> >  	.enable =3D psr_debugfs_enable,
-> >  };
-> > @@ -243,7 +256,7 @@ static void subtest(struct feature *feature,
-> > bool suspend)
-> > =20
-> >  	kmstest_unset_all_crtcs(drm.fd, drm.res);
-> >  	wait_user("Modes unset.");
-> > -	igt_assert(!feature->wait_until_enabled(drm.debugfs_fd));
-> > +	igt_assert(feature->wait_until_update(drm.debugfs_fd));
-> I believe the intention here is to test if PSR and FBC got disabled
-> when pipes
-> are disabled.
-
-Yeah, here pipes will be disable so all the features, so here should we
-keep: igt_assert(!feature->wait_until_enabled(drm.debugfs_fd));
-
->=20
-> > =20
-> >  	set_mode_for_one_screen(&drm, &fb, feature-
-> > >connector_possible_fn);
-> >  	wait_user("Screen set.");
-> > @@ -263,13 +276,13 @@ static void subtest(struct feature *feature,
-> > bool
-> > suspend)
-> >  	sleep(3);
-> > =20
-> >  	wait_user("Back to fbcon.");
-> > -	igt_assert(!feature->wait_until_enabled(drm.debugfs_fd));
-> > +	igt_assert(feature->wait_until_update(drm.debugfs_fd));
-> > =20
-> And here, I believe the expectation is that fbcon leads to
-> frontbuffer
-> invalidate and thus disabling PSR and FBC.
-
-It will disable PSR while doing the full modeset but in fbcon PSR will
-be enabled between cursor blinks, that is why we need to check for
-update here.
-
->=20
-> >  	if (suspend) {
-> >  		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-> >  					      SUSPEND_TEST_NONE);
-> >  		sleep(5);
-> > -		igt_assert(!feature-
-> > >wait_until_enabled(drm.debugfs_fd));
-> > +		igt_assert(feature->wait_until_update(drm.debugfs_fd));
-> >  	}
-> >  }
-> > =20
-
---=-S1SH8l3+NbRBksvlm+7L
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyuUqwACgkQVenbO/mO
-Wkl5aAf9FJ0C+eH7icYqkq1B6B/FojRy6qYKeZe+fCVv2LW3hdIQXfMY5rU+rC1O
-Ydl0zYTjY330ha/+MPAUhY+Vp04i6CUelEHL71k5kWcA+Pr/azB0IF38GMGv0+0k
-BusORk54UTd/niuMFsKPSrZbAegE+kEbKf66sQiK3R4I7aA/JgZP3q235PCnWjZ4
-8ZRFSufdt8qaBVG2Bror8HdhVm9oj360VWpoBQyzcm7N2j9f5QIIrphfj+/iVJwT
-ED84BCy4r+SXkKBRRiXFZl1utecTGlKspdlwqst2Xkt4DnaztHno1P0xL4T4jMKQ
-gQWux0o2Rjsirvj3xoVaSvOn9q0o8w==
-=QlKY
------END PGP SIGNATURE-----
-
---=-S1SH8l3+NbRBksvlm+7L--
-
---===============0959249630==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============0959249630==--
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogU291emEsIEpvc2UNCj4g
+U2VudDogV2VkbmVzZGF5LCBBcHJpbCAxMCwgMjAxOSAxOjMyIFBNDQo+IFRvOiBpZ3QtZGV2QGxp
+c3RzLmZyZWVkZXNrdG9wLm9yZzsgUGFuZGl5YW4sIERoaW5ha2FyYW4NCj4gPGRoaW5ha2FyYW4u
+cGFuZGl5YW5AaW50ZWwuY29tPg0KPiBDYzogVml2aSwgUm9kcmlnbyA8cm9kcmlnby52aXZpQGlu
+dGVsLmNvbT4NCj4gU3ViamVjdDogUmU6IFtpZ3QtZGV2XSBbUEFUQ0ggaS1nLXQgdjIgMy84XSB0
+ZXN0cy9mYmNvbl9mYnQ6IEFkZA0KPiB3YWl0X3VudGlsX3VwZGF0ZSgpIGNhbGxiYWNrIHRvIGZl
+YXR1cmVzDQo+IA0KPiBPbiBUdWUsIDIwMTktMDQtMDkgYXQgMTQ6NDEgLTA3MDAsIERoaW5ha2Fy
+YW4gUGFuZGl5YW4gd3JvdGU6DQo+ID4gT24gV2VkLCAyMDE5LTAzLTI3IGF0IDEzOjAzIC0wNzAw
+LCBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIHdyb3RlOg0KPiA+ID4gTGV0cyBiZSBtb3JlIGV4cGxp
+Y2l0IGFuZCBhZGQgYW5kIGltcGxlbWVudCBhIGNhbGxiYWNrIHRvIGNoZWNrIGlmDQo+ID4gPiBm
+ZWF0dXJlIGhhZCBhIHN0YXRlIHVwZGF0ZSwgdGhhdCBpcyB3aGF0IHNvbWUgcG9pbnRzIG9mIHRo
+ZSB0ZXN0DQo+ID4gPiB3YW50IHRvIHRlc3QuDQo+ID4gPg0KPiA+ID4gQ2M6IERoaW5ha2FyYW4g
+UGFuZGl5YW4gPGRoaW5ha2FyYW4ucGFuZGl5YW5AaW50ZWwuY29tPg0KPiA+ID4gQ2M6IFJvZHJp
+Z28gVml2aSA8cm9kcmlnby52aXZpQGludGVsLmNvbT4NCj4gPiA+IENjOiBQYXVsbyBaYW5vbmkg
+PHBhdWxvLnIuemFub25pQGludGVsLmNvbT4NCj4gPiA+IFNpZ25lZC1vZmYtYnk6IEpvc8OpIFJv
+YmVydG8gZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwuY29tPg0KPiA+ID4gLS0tDQo+ID4gPiAg
+dGVzdHMva21zX2ZiY29uX2ZidC5jIHwgMTkgKysrKysrKysrKysrKysrKy0tLQ0KPiA+ID4gIDEg
+ZmlsZSBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQ0KPiA+ID4NCj4g
+PiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfZmJjb25fZmJ0LmMgYi90ZXN0cy9rbXNfZmJjb25f
+ZmJ0LmMgaW5kZXgNCj4gPiA+IGE5ZDkxODM5Li45YWIxZDYzMCAxMDA2NDQNCj4gPiA+IC0tLSBh
+L3Rlc3RzL2ttc19mYmNvbl9mYnQuYw0KPiA+ID4gKysrIGIvdGVzdHMva21zX2ZiY29uX2ZidC5j
+DQo+ID4gPiBAQCAtMTMwLDYgKzEzMCwxMSBAQCBzdGF0aWMgYm9vbCBmYmNfd2FpdF91bnRpbF9l
+bmFibGVkKGludA0KPiA+ID4gZGVidWdmc19mZCkNCj4gPiA+ICAJcmV0dXJuIHI7DQo+ID4gPiAg
+fQ0KPiA+ID4NCj4gPiA+ICtzdGF0aWMgYm9vbCBmYmNfd2FpdF91bnRpbF91cGRhdGUoaW50IGRl
+YnVnZnMpIHsNCj4gPiA+ICsJcmV0dXJuICFmYmNfd2FpdF91bnRpbF9lbmFibGVkKGRlYnVnZnMp
+OyB9DQo+ID4gPiArDQo+ID4gPiAgdHlwZWRlZiBib29sICgqY29ubmVjdG9yX3Bvc3NpYmxlX2Zu
+KShkcm1Nb2RlQ29ubmVjdG9yUHRyDQo+ID4gPiBjb25uZWN0b3IpOw0KPiA+ID4NCj4gPiA+ICBz
+dGF0aWMgdm9pZCBzZXRfbW9kZV9mb3Jfb25lX3NjcmVlbihzdHJ1Y3QgZHJtX2luZm8gKmRybSwg
+c3RydWN0DQo+ID4gPiBpZ3RfZmIgKmZiLCBAQCAtMTk2LDYgKzIwMSwxMSBAQCBzdGF0aWMgYm9v
+bA0KPiA+ID4gcHNyX3N1cHBvcnRlZF9vbl9jaGlwc2V0KGludA0KPiA+ID4gZGVidWdmc19mZCkN
+Cj4gPiA+ICAJcmV0dXJuIHBzcl9zaW5rX3N1cHBvcnQoZGVidWdmc19mZCwgUFNSX01PREVfMSk7
+ICB9DQo+ID4gPg0KPiA+ID4gK3N0YXRpYyBib29sIHBzcl93YWl0X3VudGlsX3VwZGF0ZShpbnQg
+ZGVidWdmc19mZCkgew0KPiA+ID4gKwlyZXR1cm4gIXBzcl93YWl0X3VudGlsX2VuYWJsZWQoZGVi
+dWdmc19mZCk7DQo+ID4gPiArfQ0KPiA+ID4gKw0KPiA+ID4gIHN0YXRpYyB2b2lkIGRpc2FibGVf
+ZmVhdHVyZXMoaW50IGRlYnVnZnNfZmQpICB7DQo+ID4gPiAgCWlndF9zZXRfbW9kdWxlX3BhcmFt
+X2ludCgiZW5hYmxlX2ZiYyIsIDApOyBAQCAtMjE1LDE2ICsyMjUsMTkNCj4gQEANCj4gPiA+IHN0
+YXRpYyBpbmxpbmUgdm9pZCBwc3JfZGVidWdmc19lbmFibGUoaW50DQo+ID4gPiBkZWJ1Z2ZzX2Zk
+KQ0KPiA+ID4gIHN0cnVjdCBmZWF0dXJlIHsNCj4gPiA+ICAJYm9vbCAoKnN1cHBvcnRlZF9vbl9j
+aGlwc2V0KShpbnQgZGVidWdmc19mZCk7DQo+ID4gPiAgCWJvb2wgKCp3YWl0X3VudGlsX2VuYWJs
+ZWQpKGludCBkZWJ1Z2ZzX2ZkKTsNCj4gPiA+ICsJYm9vbCAoKndhaXRfdW50aWxfdXBkYXRlKShp
+bnQgZGVidWdmc19mZCk7DQo+ID4gPiAgCWJvb2wgKCpjb25uZWN0b3JfcG9zc2libGVfZm4pKGRy
+bU1vZGVDb25uZWN0b3JQdHIgY29ubmVjdG9yKTsNCj4gPiA+ICAJdm9pZCAoKmVuYWJsZSkoaW50
+IGRlYnVnZnNfZmQpOw0KPiA+ID4gIH0gZmJjID0gew0KPiA+ID4gIAkuc3VwcG9ydGVkX29uX2No
+aXBzZXQgPSBmYmNfc3VwcG9ydGVkX29uX2NoaXBzZXQsDQo+ID4gPiAgCS53YWl0X3VudGlsX2Vu
+YWJsZWQgPSBmYmNfd2FpdF91bnRpbF9lbmFibGVkLA0KPiA+ID4gKwkud2FpdF91bnRpbF91cGRh
+dGUgPSBmYmNfd2FpdF91bnRpbF91cGRhdGUsDQo+ID4gPiAgCS5jb25uZWN0b3JfcG9zc2libGVf
+Zm4gPSBjb25uZWN0b3JfY2FuX2ZiYywNCj4gPiA+ICAJLmVuYWJsZSA9IGZiY19tb2RwYXJhbV9l
+bmFibGUsDQo+ID4gPiAgfSwgcHNyID0gew0KPiA+ID4gIAkuc3VwcG9ydGVkX29uX2NoaXBzZXQg
+PSBwc3Jfc3VwcG9ydGVkX29uX2NoaXBzZXQsDQo+ID4gPiAgCS53YWl0X3VudGlsX2VuYWJsZWQg
+PSBwc3Jfd2FpdF91bnRpbF9lbmFibGVkLA0KPiA+ID4gKwkud2FpdF91bnRpbF91cGRhdGUgPSBw
+c3Jfd2FpdF91bnRpbF91cGRhdGUsDQo+ID4gPiAgCS5jb25uZWN0b3JfcG9zc2libGVfZm4gPSBj
+b25uZWN0b3JfY2FuX3BzciwNCj4gPiA+ICAJLmVuYWJsZSA9IHBzcl9kZWJ1Z2ZzX2VuYWJsZSwN
+Cj4gPiA+ICB9Ow0KPiA+ID4gQEAgLTI0Myw3ICsyNTYsNyBAQCBzdGF0aWMgdm9pZCBzdWJ0ZXN0
+KHN0cnVjdCBmZWF0dXJlICpmZWF0dXJlLA0KPiA+ID4gYm9vbCBzdXNwZW5kKQ0KPiA+ID4NCj4g
+PiA+ICAJa21zdGVzdF91bnNldF9hbGxfY3J0Y3MoZHJtLmZkLCBkcm0ucmVzKTsNCj4gPiA+ICAJ
+d2FpdF91c2VyKCJNb2RlcyB1bnNldC4iKTsNCj4gPiA+IC0JaWd0X2Fzc2VydCghZmVhdHVyZS0+
+d2FpdF91bnRpbF9lbmFibGVkKGRybS5kZWJ1Z2ZzX2ZkKSk7DQo+ID4gPiArCWlndF9hc3NlcnQo
+ZmVhdHVyZS0+d2FpdF91bnRpbF91cGRhdGUoZHJtLmRlYnVnZnNfZmQpKTsNCj4gPiBJIGJlbGll
+dmUgdGhlIGludGVudGlvbiBoZXJlIGlzIHRvIHRlc3QgaWYgUFNSIGFuZCBGQkMgZ290IGRpc2Fi
+bGVkDQo+ID4gd2hlbiBwaXBlcyBhcmUgZGlzYWJsZWQuDQo+IA0KPiBZZWFoLCBoZXJlIHBpcGVz
+IHdpbGwgYmUgZGlzYWJsZSBzbyBhbGwgdGhlIGZlYXR1cmVzLCBzbyBoZXJlIHNob3VsZCB3ZQ0K
+PiBrZWVwOiBpZ3RfYXNzZXJ0KCFmZWF0dXJlLT53YWl0X3VudGlsX2VuYWJsZWQoZHJtLmRlYnVn
+ZnNfZmQpKTsNCll1cC4NCg0KPiANCj4gPg0KPiA+ID4NCj4gPiA+ICAJc2V0X21vZGVfZm9yX29u
+ZV9zY3JlZW4oJmRybSwgJmZiLCBmZWF0dXJlLQ0KPiA+ID4gPmNvbm5lY3Rvcl9wb3NzaWJsZV9m
+bik7DQo+ID4gPiAgCXdhaXRfdXNlcigiU2NyZWVuIHNldC4iKTsNCj4gPiA+IEBAIC0yNjMsMTMg
+KzI3NiwxMyBAQCBzdGF0aWMgdm9pZCBzdWJ0ZXN0KHN0cnVjdCBmZWF0dXJlICpmZWF0dXJlLA0K
+PiA+ID4gYm9vbA0KPiA+ID4gc3VzcGVuZCkNCj4gPiA+ICAJc2xlZXAoMyk7DQo+ID4gPg0KPiA+
+ID4gIAl3YWl0X3VzZXIoIkJhY2sgdG8gZmJjb24uIik7DQo+ID4gPiAtCWlndF9hc3NlcnQoIWZl
+YXR1cmUtPndhaXRfdW50aWxfZW5hYmxlZChkcm0uZGVidWdmc19mZCkpOw0KPiA+ID4gKwlpZ3Rf
+YXNzZXJ0KGZlYXR1cmUtPndhaXRfdW50aWxfdXBkYXRlKGRybS5kZWJ1Z2ZzX2ZkKSk7DQo+ID4g
+Pg0KPiA+IEFuZCBoZXJlLCBJIGJlbGlldmUgdGhlIGV4cGVjdGF0aW9uIGlzIHRoYXQgZmJjb24g
+bGVhZHMgdG8gZnJvbnRidWZmZXINCj4gPiBpbnZhbGlkYXRlIGFuZCB0aHVzIGRpc2FibGluZyBQ
+U1IgYW5kIEZCQy4NCj4gDQo+IEl0IHdpbGwgZGlzYWJsZSBQU1Igd2hpbGUgZG9pbmcgdGhlIGZ1
+bGwgbW9kZXNldCBidXQgaW4gZmJjb24gUFNSIHdpbGwgYmUNCj4gZW5hYmxlZCBiZXR3ZWVuIGN1
+cnNvciBibGlua3MsIHRoYXQgaXMgd2h5IHdlIG5lZWQgdG8gY2hlY2sgZm9yIHVwZGF0ZQ0KPiBo
+ZXJlLg0KPiANCkkgdW5kZXJzdGFuZCwgSSBoYXZlIHNlZW4gdGhhdCBteXNlbGYuIE5vdCBzdXJl
+IGF0IHdoYXQgcG9pbnQgaXQgY2hhbmdlZCBmcm9tDQpmYmNvbiBjb21wbGV0ZWx5IGRpc2FibGlu
+ZyBQU1IgYW5kIEZCQyB3aXRoIGZyb250YnVmZmVyX2ludmFsaWRhdGUoKSB0byB0aGUgY3VycmVu
+dA0KYmVoYXZpb3IuIGlpcmMgd2UganVzdCBnZXQgZnJvbnRidWZmZXJfZmx1c2goKSBub3cuIFRC
+SCwgSSBkb24ndCB1bmRlcnN0YW5kIGZiY29uIHRoYXQNCndlbGwuDQoNCldoYXQncyB0aGUgb3Jp
+Z2luIHZhbHVlIGluIGZyb250YnVmZmVyX2ludmFsaWRhdGUvZmx1c2goKT8gRG8gd2UgZ2V0IGZs
+aXBzIGZvciANCmN1cnNvciBibGlua3M/IE9yIGlzIGl0IGEgZnJvbmJ1ZmZlcl9pbnZhbGlkYXRl
+KCkgZm9sbG93ZWQgYnkgYSBmcm9udGJ1ZmZlcl9mbHVzaCgpPw0KDQotREsNCg0KPiA+DQo+ID4g
+PiAgCWlmIChzdXNwZW5kKSB7DQo+ID4gPiAgCQlpZ3Rfc3lzdGVtX3N1c3BlbmRfYXV0b3Jlc3Vt
+ZShTVVNQRU5EX1NUQVRFX01FTSwNCj4gPiA+ICAJCQkJCSAgICAgIFNVU1BFTkRfVEVTVF9OT05F
+KTsNCj4gPiA+ICAJCXNsZWVwKDUpOw0KPiA+ID4gLQkJaWd0X2Fzc2VydCghZmVhdHVyZS0NCj4g
+PiA+ID53YWl0X3VudGlsX2VuYWJsZWQoZHJtLmRlYnVnZnNfZmQpKTsNCj4gPiA+ICsJCWlndF9h
+c3NlcnQoZmVhdHVyZS0+d2FpdF91bnRpbF91cGRhdGUoZHJtLmRlYnVnZnNfZmQpKTsNCj4gPiA+
+ICAJfQ0KPiA+ID4gIH0NCj4gPiA+DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
+dG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ln
+dC1kZXY=
