@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6FC56893D1
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2019 19:55:33 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D00E9893D1
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2019 20:06:33 +0000 (UTC)
 From: "Souza, Jose" <jose.souza@intel.com>
-Date: Wed, 10 Apr 2019 19:55:30 +0000
-Message-ID: <fee087f183a697a39a25c469be88882e3dc707cb.camel@intel.com>
+Date: Wed, 10 Apr 2019 20:06:27 +0000
+Message-ID: <66280075669281f749271e533231685aaaf5ca4f.camel@intel.com>
 References: <1554476159-25312-1-git-send-email-juhapekka.heikkila@gmail.com>
  <6525db62bc81dd968bb17da7106354545d3429af.camel@intel.com>
- <5c9172ae806236a53c82d5f2b3ed31655efa4135.camel@intel.com>
-In-Reply-To: <5c9172ae806236a53c82d5f2b3ed31655efa4135.camel@intel.com>
+ <1da26695-4dbb-066d-614a-2df82f7c6140@gmail.com>
+In-Reply-To: <1da26695-4dbb-066d-614a-2df82f7c6140@gmail.com>
 Content-Language: en-US
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_multiple: before going
@@ -20,24 +20,24 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1391921674=="
+Content-Type: multipart/mixed; boundary="===============1450738833=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Lisovskiy,
- Stanislav" <stanislav.lisovskiy@intel.com>
+To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1391921674==
+--===============1450738833==
 Content-Language: en-US
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-JmOq14kOIt/2rsdLvd+W"
+	protocol="application/pgp-signature"; boundary="=-/FKvABp87izEjWyD8vFn"
 
---=-JmOq14kOIt/2rsdLvd+W
+--=-/FKvABp87izEjWyD8vFn
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2019-04-09 at 13:47 +0100, Lisovskiy, Stanislav wrote:
-> On Mon, 2019-04-08 at 18:29 -0700, Souza, Jose wrote:
+On Tue, 2019-04-09 at 14:47 +0300, Juha-Pekka Heikkila wrote:
+> On 9.4.2019 4.29, Souza, Jose wrote:
 > > On Fri, 2019-04-05 at 17:55 +0300, Juha-Pekka Heikkila wrote:
 > > > before start testing try out how many planes kernel will
 > > > allow simultaneously to be used.
@@ -47,9 +47,9 @@ On Tue, 2019-04-09 at 13:47 +0100, Lisovskiy, Stanislav wrote:
 > > >=20
 > > > Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 > > > ---
-> > >  tests/kms_plane_multiple.c | 88
+> > >   tests/kms_plane_multiple.c | 88
 > > > +++++++++++++++++++++++++++++++++++++---------
-> > >  1 file changed, 71 insertions(+), 17 deletions(-)
+> > >   1 file changed, 71 insertions(+), 17 deletions(-)
 > > >=20
 > > > diff --git a/tests/kms_plane_multiple.c
 > > > b/tests/kms_plane_multiple.c
@@ -59,9 +59,9 @@ On Tue, 2019-04-09 at 13:47 +0100, Lisovskiy, Stanislav wrote:
 > > > @@ -80,16 +80,6 @@ static void test_fini(data_t *data,
 > > > igt_output_t
 > > > *output, int n_planes)
-> > >  {
-> > >  	igt_pipe_crc_stop(data->pipe_crc);
-> > > =20
+> > >   {
+> > >   	igt_pipe_crc_stop(data->pipe_crc);
+> > >  =20
 > > > -	for (int i =3D 0; i < n_planes; i++) {
 > > > -		igt_plane_t *plane =3D data->plane[i];
 > > > -		if (!plane)
@@ -72,39 +72,41 @@ On Tue, 2019-04-09 at 13:47 +0100, Lisovskiy, Stanislav wrote:
 > > > -		data->plane[i] =3D NULL;
 > > > -	}
 > > > -
-> > >  	/* reset the constraint on the pipe */
-> > >  	igt_output_set_pipe(output, PIPE_ANY);
-> > > =20
+> > >   	/* reset the constraint on the pipe */
+> > >   	igt_output_set_pipe(output, PIPE_ANY);
+> > >  =20
 > > > @@ -99,7 +89,8 @@ static void test_fini(data_t *data,
 > > > igt_output_t
 > > > *output, int n_planes)
-> > >  	free(data->plane);
-> > >  	data->plane =3D NULL;
-> > > =20
+> > >   	free(data->plane);
+> > >   	data->plane =3D NULL;
+> > >  =20
 > > > -	igt_remove_fb(data->drm_fd, data->fb);
 > > > +	free(data->fb);
 > > > +	data->fb =3D NULL;
-> > > =20
-> > >  	igt_display_reset(&data->display);
-> > >  }
+> > >  =20
+> > >   	igt_display_reset(&data->display);
+> > >   }
 > > > @@ -195,6 +186,7 @@ prepare_planes(data_t *data, enum pipe
 > > > pipe_id,
 > > > color_t *color,
-> > >  	int *y;
-> > >  	int *size;
-> > >  	int i;
+> > >   	int *y;
+> > >   	int *size;
+> > >   	int i;
 > > > +	int* suffle;
-> > > =20
-> > >  	igt_output_set_pipe(output, pipe_id);
-> > >  	primary =3D igt_output_get_plane_type(output,
+> > >  =20
+> > >   	igt_output_set_pipe(output, pipe_id);
+> > >   	primary =3D igt_output_get_plane_type(output,
 > > > DRM_PLANE_TYPE_PRIMARY);
 > > > @@ -206,6 +198,34 @@ prepare_planes(data_t *data, enum pipe
 > > > pipe_id,
 > > > color_t *color,
-> > >  	igt_assert_f(y, "Failed to allocate %ld bytes for variable
+> > >   	igt_assert_f(y, "Failed to allocate %ld bytes for
+> > > variable
 > > > y\n", (long int) (pipe->n_planes * sizeof(*y)));
-> > >  	size =3D malloc(pipe->n_planes * sizeof(*size));
-> > >  	igt_assert_f(size, "Failed to allocate %ld bytes for variable
+> > >   	size =3D malloc(pipe->n_planes * sizeof(*size));
+> > >   	igt_assert_f(size, "Failed to allocate %ld bytes for
+> > > variable
 > > > size\n", (long int) (pipe->n_planes * sizeof(*size)));
 > > > +	suffle =3D malloc(pipe->n_planes * sizeof(*suffle));
 > > > +	igt_assert_f(suffle, "Failed to allocate %ld bytes for variable
@@ -138,15 +140,15 @@ On Tue, 2019-04-09 at 13:47 +0100, Lisovskiy, Stanislav wrote:
 > > > +		suffle[n] =3D b;
 > > > +		suffle[m] =3D a;
 > > > +	}
-> > > =20
-> > >  	mode =3D igt_output_get_mode(output);
-> > > =20
+> > >  =20
+> > >   	mode =3D igt_output_get_mode(output);
+> > >  =20
 > > > @@ -213,7 +233,11 @@ prepare_planes(data_t *data, enum pipe
 > > > pipe_id,
 > > > color_t *color,
-> > >  	x[primary->index] =3D 0;
-> > >  	y[primary->index] =3D 0;
-> > >  	for (i =3D 0; i < max_planes; i++) {
+> > >   	x[primary->index] =3D 0;
+> > >   	y[primary->index] =3D 0;
+> > >   	for (i =3D 0; i < max_planes; i++) {
 > > > -		igt_plane_t *plane =3D igt_output_get_plane(output, i);
 > > > +		/*
 > > > +		 * Here is made assumption primary plane will have
@@ -154,52 +156,55 @@ On Tue, 2019-04-09 at 13:47 +0100, Lisovskiy, Stanislav wrote:
 > > > +		 */
 > > > +		igt_plane_t *plane =3D igt_output_get_plane(output,
 > > > suffle[i]);
-> > >  		uint32_t plane_format;
-> > >  		uint64_t plane_tiling;
-> > > =20
+> > >   		uint32_t plane_format;
+> > >   		uint64_t plane_tiling;
+> > >  =20
 > > > @@ -251,6 +275,10 @@ prepare_planes(data_t *data, enum pipe
 > > > pipe_id,
 > > > color_t *color,
-> > >  	create_fb_for_mode_position(data, output, mode, color, x, y,
-> > >  				    size, size, tiling, max_planes);
-> > >  	igt_plane_set_fb(data->plane[primary->index], &data-
+> > >   	create_fb_for_mode_position(data, output, mode, color,
+> > > x, y,
+> > >   				    size, size, tiling,
+> > > max_planes);
+> > >   	igt_plane_set_fb(data->plane[primary->index], &data-
 > > > > fb[primary->index]);
-> > >=20
 > > > +	free((void*)x);
 > > > +	free((void*)y);
 > > > +	free((void*)size);
 > > > +	free((void*)suffle);
-> > >  }
-> > > =20
-> > >  static void
+> > >   }
+> > >  =20
+> > >   static void
 > > > @@ -260,7 +288,9 @@ test_plane_position_with_output(data_t *data,
 > > > enum pipe pipe,
-> > >  {
-> > >  	color_t blue  =3D { 0.0f, 0.0f, 1.0f };
-> > >  	igt_crc_t crc;
+> > >   {
+> > >   	color_t blue  =3D { 0.0f, 0.0f, 1.0f };
+> > >   	igt_crc_t crc;
 > > > +	igt_plane_t *plane;
-> > >  	int i;
+> > >   	int i;
 > > > +	int err, c =3D 0;
-> > >  	int iterations =3D opt.iterations < 1 ? 1 : opt.iterations;
-> > >  	bool loop_forever;
-> > >  	char info[256];
+> > >   	int iterations =3D opt.iterations < 1 ? 1 :
+> > > opt.iterations;
+> > >   	bool loop_forever;
+> > >   	char info[256];
 > > > @@ -274,22 +304,46 @@ test_plane_position_with_output(data_t
 > > > *data,
 > > > enum pipe pipe,
-> > >  			iterations, iterations > 1 ? "iterations" :
+> > >   			iterations, iterations > 1 ?
+> > > "iterations" :
 > > > "iteration");
-> > >  	}
-> > > =20
+> > >   	}
+> > >  =20
 > > > -	igt_info("Testing connector %s using pipe %s with %d planes %s
 > > > with seed %d\n",
 > > > -		 igt_output_name(output), kmstest_pipe_name(pipe),
 > > > n_planes,
 > > > -		 info, opt.seed);
 > > > -
-> > >  	test_init(data, pipe, n_planes);
-> > > =20
-> > >  	test_grab_crc(data, output, pipe, &blue, tiling);
-> > > =20
+> > >   	test_init(data, pipe, n_planes);
+> > >  =20
+> > >   	test_grab_crc(data, output, pipe, &blue, tiling);
+> > >  =20
 > > > +	/*
 > > > +	 * Find out how many planes are allowed simultaneously
 > > > +	 */
@@ -211,12 +216,12 @@ On Tue, 2019-04-09 at 13:47 +0100, Lisovskiy, Stanislav wrote:
 > > high number of planes(anything besides ICL), better start with max
 > > and
 > > decreasing until commit is accepted.
+> >=20
 >=20
-> It is actually opposite. Platforms with high amount of planes would
-> be slower obviously, as you will have to increment more and faster=20
-> for systems with less amount of planes. Consider 0->7 and 0-
-> > 3(platforms with less amount of planes) - so where is more waste
-> of time?
+> I'd rather not try to hammer in configurations which may not work,=20
+> that's not what we're testing here. Time anyways is less than 6
+> frames=20
+> per loop so I don't think we are really wasting time.
 
 Platforms with 3 planes will do 3 iterations with current approach
 while it could be done with just one and ICL will will do 5
@@ -226,21 +231,14 @@ could be done in 3 iterations.
 Now takes this additional iterations * 4 tests per pipe * number of
 pipes and you have a considerable waste of CI time.
 
+
 >=20
 > > > +		prepare_planes(data, pipe, &blue, tiling, c, output);
 > > > +		err =3D igt_display_try_commit2(&data->display,
 > > > COMMIT_ATOMIC);
 > >=20
 > > No need to do a real commit here, you can only test with:
->=20
-> This is igt_display_TRY_commit2.
-
-The TRY here means that the test will not fail in case the commit is
-not accepted/valid, it will not call drmModeAtomicCommit() with
-DRM_MODE_ATOMIC_TEST_ONLY, this will save some time when the commit is
-valid/accepted.
-
->=20
+> >=20
 > > err =3D igt_display_try_commit_atomic(&data->display,
 > > DRM_MODE_ATOMIC_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
 > >=20
@@ -249,6 +247,14 @@ valid/accepted.
 > > like
 > > a error.
 > >=20
+>=20
+> We're just enabling planes in the commit, which error would you
+> expect?
+
+-ENOMEM is one example that I have without looking at the libdrm and
+kernel code.
+
+>=20
 > > > +
 > > > +		for_each_plane_on_pipe(&data->display, pipe, plane)
 > > > +			igt_plane_set_fb(plane, NULL);
@@ -260,22 +266,17 @@ valid/accepted.
 > >=20
 > > c =3D 3
 > > plane 0, plane 1 and plane 3 enabled
->=20
-> There should be no leak here. He uses suffle[i]=20
-> for index indirection in prepare_planes like igt_plane_t *plane =3D
-> igt_output_get_plane(output, suffle[i]), so that suffle[0]=3D0,
-> suffle[1]=3D1, suffle[2]=3D3, meanwhile correspondent data->fb[i]
-> remains contiguous, so that plane 0 corresponds to data->fb[0],
-> plane 1 -> data->fb[1] and plane 3 -> data->fb[2].=20
-> So all the igt_remove_fb calls target correct data->fb[] through
-> suffle[i] used as indirection layer.
-
-Okay
-
->=20
+> >=20
 > > Other leak, the framebuffer created in test_grab_crc()
 > >=20
 > >=20
+>=20
+> Huh? hmm... Your comment doesn't make sense. Maybe you have confused=20
+> idea of what plane vs framebuffer is or something?
+
+Yeah, I checked again and you are not leaking, sorry about that.
+
+>=20
 > > > +	} while (!err && c < n_planes);
 > > > +
 > > > +	if(err)
@@ -286,18 +287,19 @@ Okay
 > > > +		 igt_output_name(output), kmstest_pipe_name(pipe), c,
 > > > +		 info, opt.seed);
 > > > +
-> > >  	i =3D 0;
-> > >  	while (i < iterations || loop_forever) {
+> > >   	i =3D 0;
+> > >   	while (i < iterations || loop_forever) {
 > > > -		prepare_planes(data, pipe, &blue, tiling, n_planes,
 > > > output);
 > > > +		prepare_planes(data, pipe, &blue, tiling, c, output);
-> > > =20
-> > >  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> > > =20
-> > >  		igt_pipe_crc_get_current(data->display.drm_fd, data-
+> > >  =20
+> > >   		igt_display_commit2(&data->display,
+> > > COMMIT_ATOMIC);
+> > >  =20
+> > >   		igt_pipe_crc_get_current(data->display.drm_fd,
+> > > data-
 > > > > pipe_crc, &crc);
-> > >=20
-> > > =20
+> > >  =20
 > > > +		for_each_plane_on_pipe(&data->display, pipe, plane)
 > > > +			igt_plane_set_fb(plane, NULL);
 > > > +
@@ -309,30 +311,30 @@ Okay
 > > number of planes that can be enabled
 > >=20
 > > > +
-> > >  		igt_assert_crc_equal(&data->ref_crc, &crc);
-> > > =20
-> > >  		i++;
+> > >   		igt_assert_crc_equal(&data->ref_crc, &crc);
+> > >  =20
+> > >   		i++;
 
---=-JmOq14kOIt/2rsdLvd+W
+--=-/FKvABp87izEjWyD8vFn
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 Content-Transfer-Encoding: 7bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyuSjAACgkQVenbO/mO
-WknjAAf/aNsyD5oDZjk0A7EkHvvD3IoLFiux/HNtl93Pul5CSNt1erZzb+rMhTqf
-fyiQTq00q/oU0Gfux48ttC2b4h8PS7XneaWqIF4WarK1xuxhx4jI+akBYS8vYc52
-1b1hUEbmZ+DcsauNEwtMK0tAGugyWMGKy3nw1NCPSn9cqgU/rYcXmw8GvbiDqJFH
-rY54W05fdQnoMvYE6EAt1nI8Qjxl+5soNuns91DnPygLeoBqdTWlI3WY26hr/mov
-CTqyPJHHF/sRAFbEE4hX8UkDxr1e737vRsuWCSJJfIHHsAoW/nA7hi9QuM2d2DGu
-GxcBOM4B2uEynUWk3Rk4YWhiGypqfw==
-=VP8v
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyuTMMACgkQVenbO/mO
+WknmyggAoiDU51fjW2EkYwkG2/9jpjfv/Cj8Xfa6+mmJAd3SS+GSbY4r7m3LFD35
+CYjpBzN2Dwk6JckoPpmZH4PSEv9+5/jQZIRxF5SaOGElOCaS+jz1Nl4TS8WS9zKE
+6XlrCjNX8SIxSwMQqDRfsifFxoeOuzL+2Zgp1kjGVSB5VZu0XuKTshH2Cxy+aGMp
+TySHUa6VtO2OQHfoqX+v/+iMeDbDDYmxrTDE8VR3KB0wfbg7R6i8UPYq5nLz8ZOp
+4Jkoyd3lM7AYinufU1zCrrkycZjK4fD9AN6dQGnnk6bAa8A51ciu3kdzezm9707p
+Ej9/jCTXxceJxSqjMmb2qJnGeu28HQ==
+=NvB7
 -----END PGP SIGNATURE-----
 
---=-JmOq14kOIt/2rsdLvd+W--
+--=-/FKvABp87izEjWyD8vFn--
 
---===============1391921674==
+--===============1450738833==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: base64
@@ -342,4 +344,4 @@ X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
 YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
 cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
 
---===============1391921674==--
+--===============1450738833==--
