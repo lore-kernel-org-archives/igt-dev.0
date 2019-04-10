@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D00E9893D1
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2019 20:06:33 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4061C893A2
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2019 20:32:04 +0000 (UTC)
 From: "Souza, Jose" <jose.souza@intel.com>
-Date: Wed, 10 Apr 2019 20:06:27 +0000
-Message-ID: <66280075669281f749271e533231685aaaf5ca4f.camel@intel.com>
-References: <1554476159-25312-1-git-send-email-juhapekka.heikkila@gmail.com>
- <6525db62bc81dd968bb17da7106354545d3429af.camel@intel.com>
- <1da26695-4dbb-066d-614a-2df82f7c6140@gmail.com>
-In-Reply-To: <1da26695-4dbb-066d-614a-2df82f7c6140@gmail.com>
+Date: Wed, 10 Apr 2019 20:31:42 +0000
+Message-ID: <d169656121aaa1fdb0450569ae59a90f31663c25.camel@intel.com>
+References: <20190327200331.28602-1-jose.souza@intel.com>
+ <20190327200331.28602-3-jose.souza@intel.com>
+ <7072ad27249640cedf321b6a851fd2a882572165.camel@intel.com>
+In-Reply-To: <7072ad27249640cedf321b6a851fd2a882572165.camel@intel.com>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_multiple: before going
- testing check how many planes are allowed
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/8] tests/fbcon_fbt: Add
+ wait_until_update() callback to features
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,321 +20,158 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1450738833=="
+Content-Type: multipart/mixed; boundary="===============0959249630=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
+Cc: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1450738833==
+--===============0959249630==
 Content-Language: en-US
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="=-/FKvABp87izEjWyD8vFn"
+	protocol="application/pgp-signature"; boundary="=-S1SH8l3+NbRBksvlm+7L"
 
---=-/FKvABp87izEjWyD8vFn
+--=-S1SH8l3+NbRBksvlm+7L
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2019-04-09 at 14:47 +0300, Juha-Pekka Heikkila wrote:
-> On 9.4.2019 4.29, Souza, Jose wrote:
-> > On Fri, 2019-04-05 at 17:55 +0300, Juha-Pekka Heikkila wrote:
-> > > before start testing try out how many planes kernel will
-> > > allow simultaneously to be used.
-> > >=20
-> > > v2 (Jose Souza, Daniel Vetter): Fix resource leaks. Randomize
-> > > used planes.
-> > >=20
-> > > Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> > > ---
-> > >   tests/kms_plane_multiple.c | 88
-> > > +++++++++++++++++++++++++++++++++++++---------
-> > >   1 file changed, 71 insertions(+), 17 deletions(-)
-> > >=20
-> > > diff --git a/tests/kms_plane_multiple.c
-> > > b/tests/kms_plane_multiple.c
-> > > index bfaeede..f2707dc 100644
-> > > --- a/tests/kms_plane_multiple.c
-> > > +++ b/tests/kms_plane_multiple.c
-> > > @@ -80,16 +80,6 @@ static void test_fini(data_t *data,
-> > > igt_output_t
-> > > *output, int n_planes)
-> > >   {
-> > >   	igt_pipe_crc_stop(data->pipe_crc);
-> > >  =20
-> > > -	for (int i =3D 0; i < n_planes; i++) {
-> > > -		igt_plane_t *plane =3D data->plane[i];
-> > > -		if (!plane)
-> > > -			continue;
-> > > -		if (plane->type =3D=3D DRM_PLANE_TYPE_PRIMARY)
-> > > -			continue;
-> > > -		igt_plane_set_fb(plane, NULL);
-> > > -		data->plane[i] =3D NULL;
-> > > -	}
-> > > -
-> > >   	/* reset the constraint on the pipe */
-> > >   	igt_output_set_pipe(output, PIPE_ANY);
-> > >  =20
-> > > @@ -99,7 +89,8 @@ static void test_fini(data_t *data,
-> > > igt_output_t
-> > > *output, int n_planes)
-> > >   	free(data->plane);
-> > >   	data->plane =3D NULL;
-> > >  =20
-> > > -	igt_remove_fb(data->drm_fd, data->fb);
-> > > +	free(data->fb);
-> > > +	data->fb =3D NULL;
-> > >  =20
-> > >   	igt_display_reset(&data->display);
-> > >   }
-> > > @@ -195,6 +186,7 @@ prepare_planes(data_t *data, enum pipe
-> > > pipe_id,
-> > > color_t *color,
-> > >   	int *y;
-> > >   	int *size;
-> > >   	int i;
-> > > +	int* suffle;
-> > >  =20
-> > >   	igt_output_set_pipe(output, pipe_id);
-> > >   	primary =3D igt_output_get_plane_type(output,
-> > > DRM_PLANE_TYPE_PRIMARY);
-> > > @@ -206,6 +198,34 @@ prepare_planes(data_t *data, enum pipe
-> > > pipe_id,
-> > > color_t *color,
-> > >   	igt_assert_f(y, "Failed to allocate %ld bytes for
-> > > variable
-> > > y\n", (long int) (pipe->n_planes * sizeof(*y)));
-> > >   	size =3D malloc(pipe->n_planes * sizeof(*size));
-> > >   	igt_assert_f(size, "Failed to allocate %ld bytes for
-> > > variable
-> > > size\n", (long int) (pipe->n_planes * sizeof(*size)));
-> > > +	suffle =3D malloc(pipe->n_planes * sizeof(*suffle));
-> > > +	igt_assert_f(suffle, "Failed to allocate %ld bytes for variable
-> > > size\n", (long int) (pipe->n_planes * sizeof(*suffle)));
-> > > +
-> > > +	for (i =3D 0; i < pipe->n_planes; i++)
-> > > +		suffle[i] =3D i;
-> > > +
-> > > +	/*
-> > > +	 * suffle table for planes. using rand() should keep it
-> > > +	 * 'randomized in expected way'
-> > > +	 */
-> > > +	for (i =3D 0; i < 256; i++) {
+On Tue, 2019-04-09 at 14:41 -0700, Dhinakaran Pandiyan wrote:
+> On Wed, 2019-03-27 at 13:03 -0700, Jos=C3=A9 Roberto de Souza wrote:
+> > Lets be more explicit and add and implement a callback to check if
+> > feature had a state update, that is what some points of the test
+> > want
+> > to test.
 > >=20
-> > Not beautiful at all
+> > Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
+> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > Cc: Paulo Zanoni <paulo.r.zanoni@intel.com>
+> > Signed-off-by: Jos=C3=A9 Roberto de Souza <jose.souza@intel.com>
+> > ---
+> >  tests/kms_fbcon_fbt.c | 19 ++++++++++++++++---
+> >  1 file changed, 16 insertions(+), 3 deletions(-)
 > >=20
-> > > +		int n, m;
-> > > +		int a, b;
-> > > +
-> > > +		n =3D rand() % (pipe->n_planes-1);
-> > > +		m =3D rand() % (pipe->n_planes-1);
-> > > +
-> > > +		/*
-> > > +		 * keep primary plane at its place for test's sake.
-> > > +		 */
-> > > +		if(n =3D=3D primary->index || m =3D=3D primary->index)
-> > > +			continue;
-> > > +
-> > > +		a =3D suffle[n];
-> > > +		b =3D suffle[m];
-> > > +		suffle[n] =3D b;
-> > > +		suffle[m] =3D a;
-> > > +	}
-> > >  =20
-> > >   	mode =3D igt_output_get_mode(output);
-> > >  =20
-> > > @@ -213,7 +233,11 @@ prepare_planes(data_t *data, enum pipe
-> > > pipe_id,
-> > > color_t *color,
-> > >   	x[primary->index] =3D 0;
-> > >   	y[primary->index] =3D 0;
-> > >   	for (i =3D 0; i < max_planes; i++) {
-> > > -		igt_plane_t *plane =3D igt_output_get_plane(output, i);
-> > > +		/*
-> > > +		 * Here is made assumption primary plane will have
-> > > +		 * index zero.
-> > > +		 */
-> > > +		igt_plane_t *plane =3D igt_output_get_plane(output,
-> > > suffle[i]);
-> > >   		uint32_t plane_format;
-> > >   		uint64_t plane_tiling;
-> > >  =20
-> > > @@ -251,6 +275,10 @@ prepare_planes(data_t *data, enum pipe
-> > > pipe_id,
-> > > color_t *color,
-> > >   	create_fb_for_mode_position(data, output, mode, color,
-> > > x, y,
-> > >   				    size, size, tiling,
-> > > max_planes);
-> > >   	igt_plane_set_fb(data->plane[primary->index], &data-
-> > > > fb[primary->index]);
-> > > +	free((void*)x);
-> > > +	free((void*)y);
-> > > +	free((void*)size);
-> > > +	free((void*)suffle);
-> > >   }
-> > >  =20
-> > >   static void
-> > > @@ -260,7 +288,9 @@ test_plane_position_with_output(data_t *data,
-> > > enum pipe pipe,
-> > >   {
-> > >   	color_t blue  =3D { 0.0f, 0.0f, 1.0f };
-> > >   	igt_crc_t crc;
-> > > +	igt_plane_t *plane;
-> > >   	int i;
-> > > +	int err, c =3D 0;
-> > >   	int iterations =3D opt.iterations < 1 ? 1 :
-> > > opt.iterations;
-> > >   	bool loop_forever;
-> > >   	char info[256];
-> > > @@ -274,22 +304,46 @@ test_plane_position_with_output(data_t
-> > > *data,
-> > > enum pipe pipe,
-> > >   			iterations, iterations > 1 ?
-> > > "iterations" :
-> > > "iteration");
-> > >   	}
-> > >  =20
-> > > -	igt_info("Testing connector %s using pipe %s with %d planes %s
-> > > with seed %d\n",
-> > > -		 igt_output_name(output), kmstest_pipe_name(pipe),
-> > > n_planes,
-> > > -		 info, opt.seed);
-> > > -
-> > >   	test_init(data, pipe, n_planes);
-> > >  =20
-> > >   	test_grab_crc(data, output, pipe, &blue, tiling);
-> > >  =20
-> > > +	/*
-> > > +	 * Find out how many planes are allowed simultaneously
-> > > +	 */
-> > > +	do {
-> > > +		c++;
-> >=20
-> > Adding one plane at time is a waste of CI time in platforms without
-> > a
-> > high number of planes(anything besides ICL), better start with max
-> > and
-> > decreasing until commit is accepted.
-> >=20
->=20
-> I'd rather not try to hammer in configurations which may not work,=20
-> that's not what we're testing here. Time anyways is less than 6
-> frames=20
-> per loop so I don't think we are really wasting time.
+> > diff --git a/tests/kms_fbcon_fbt.c b/tests/kms_fbcon_fbt.c
+> > index a9d91839..9ab1d630 100644
+> > --- a/tests/kms_fbcon_fbt.c
+> > +++ b/tests/kms_fbcon_fbt.c
+> > @@ -130,6 +130,11 @@ static bool fbc_wait_until_enabled(int
+> > debugfs_fd)
+> >  	return r;
+> >  }
+> > =20
+> > +static bool fbc_wait_until_update(int debugfs)
+> > +{
+> > +	return !fbc_wait_until_enabled(debugfs);
+> > +}
+> > +
+> >  typedef bool (*connector_possible_fn)(drmModeConnectorPtr
+> > connector);
+> > =20
+> >  static void set_mode_for_one_screen(struct drm_info *drm, struct
+> > igt_fb *fb,
+> > @@ -196,6 +201,11 @@ static bool psr_supported_on_chipset(int
+> > debugfs_fd)
+> >  	return psr_sink_support(debugfs_fd, PSR_MODE_1);
+> >  }
+> > =20
+> > +static bool psr_wait_until_update(int debugfs_fd)
+> > +{
+> > +	return !psr_wait_until_enabled(debugfs_fd);
+> > +}
+> > +
+> >  static void disable_features(int debugfs_fd)
+> >  {
+> >  	igt_set_module_param_int("enable_fbc", 0);
+> > @@ -215,16 +225,19 @@ static inline void psr_debugfs_enable(int
+> > debugfs_fd)
+> >  struct feature {
+> >  	bool (*supported_on_chipset)(int debugfs_fd);
+> >  	bool (*wait_until_enabled)(int debugfs_fd);
+> > +	bool (*wait_until_update)(int debugfs_fd);
+> >  	bool (*connector_possible_fn)(drmModeConnectorPtr connector);
+> >  	void (*enable)(int debugfs_fd);
+> >  } fbc =3D {
+> >  	.supported_on_chipset =3D fbc_supported_on_chipset,
+> >  	.wait_until_enabled =3D fbc_wait_until_enabled,
+> > +	.wait_until_update =3D fbc_wait_until_update,
+> >  	.connector_possible_fn =3D connector_can_fbc,
+> >  	.enable =3D fbc_modparam_enable,
+> >  }, psr =3D {
+> >  	.supported_on_chipset =3D psr_supported_on_chipset,
+> >  	.wait_until_enabled =3D psr_wait_until_enabled,
+> > +	.wait_until_update =3D psr_wait_until_update,
+> >  	.connector_possible_fn =3D connector_can_psr,
+> >  	.enable =3D psr_debugfs_enable,
+> >  };
+> > @@ -243,7 +256,7 @@ static void subtest(struct feature *feature,
+> > bool suspend)
+> > =20
+> >  	kmstest_unset_all_crtcs(drm.fd, drm.res);
+> >  	wait_user("Modes unset.");
+> > -	igt_assert(!feature->wait_until_enabled(drm.debugfs_fd));
+> > +	igt_assert(feature->wait_until_update(drm.debugfs_fd));
+> I believe the intention here is to test if PSR and FBC got disabled
+> when pipes
+> are disabled.
 
-Platforms with 3 planes will do 3 iterations with current approach
-while it could be done with just one and ICL will will do 5
-iterations(my ICL setup support 5 planes at the same time) while it
-could be done in 3 iterations.
-
-Now takes this additional iterations * 4 tests per pipe * number of
-pipes and you have a considerable waste of CI time.
-
+Yeah, here pipes will be disable so all the features, so here should we
+keep: igt_assert(!feature->wait_until_enabled(drm.debugfs_fd));
 
 >=20
-> > > +		prepare_planes(data, pipe, &blue, tiling, c, output);
-> > > +		err =3D igt_display_try_commit2(&data->display,
-> > > COMMIT_ATOMIC);
-> >=20
-> > No need to do a real commit here, you can only test with:
-> >=20
-> > err =3D igt_display_try_commit_atomic(&data->display,
-> > DRM_MODE_ATOMIC_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> >=20
-> >=20
-> > Also if a err different than -EINVAL is returned you should handle
-> > like
-> > a error.
-> >=20
->=20
-> We're just enabling planes in the commit, which error would you
-> expect?
+> > =20
+> >  	set_mode_for_one_screen(&drm, &fb, feature-
+> > >connector_possible_fn);
+> >  	wait_user("Screen set.");
+> > @@ -263,13 +276,13 @@ static void subtest(struct feature *feature,
+> > bool
+> > suspend)
+> >  	sleep(3);
+> > =20
+> >  	wait_user("Back to fbcon.");
+> > -	igt_assert(!feature->wait_until_enabled(drm.debugfs_fd));
+> > +	igt_assert(feature->wait_until_update(drm.debugfs_fd));
+> > =20
+> And here, I believe the expectation is that fbcon leads to
+> frontbuffer
+> invalidate and thus disabling PSR and FBC.
 
--ENOMEM is one example that I have without looking at the libdrm and
-kernel code.
-
->=20
-> > > +
-> > > +		for_each_plane_on_pipe(&data->display, pipe, plane)
-> > > +			igt_plane_set_fb(plane, NULL);
-> > > +
-> > > +		for (int x =3D 0; x < c; x++)
-> > > +			igt_remove_fb(data->drm_fd, &data->fb[x]);
-> >=20
-> > This is still leaking, example:
-> >=20
-> > c =3D 3
-> > plane 0, plane 1 and plane 3 enabled
-> >=20
-> > Other leak, the framebuffer created in test_grab_crc()
-> >=20
-> >=20
->=20
-> Huh? hmm... Your comment doesn't make sense. Maybe you have confused=20
-> idea of what plane vs framebuffer is or something?
-
-Yeah, I checked again and you are not leaking, sorry about that.
+It will disable PSR while doing the full modeset but in fbcon PSR will
+be enabled between cursor blinks, that is why we need to check for
+update here.
 
 >=20
-> > > +	} while (!err && c < n_planes);
-> > > +
-> > > +	if(err)
-> > > +		c--;
-> > > +
-> > > +	igt_info("Testing connector %s using pipe %s with %d planes %s
-> > > with seed %d\n",
-> > > +		 igt_output_name(output), kmstest_pipe_name(pipe), c,
-> > > +		 info, opt.seed);
-> > > +
-> > >   	i =3D 0;
-> > >   	while (i < iterations || loop_forever) {
-> > > -		prepare_planes(data, pipe, &blue, tiling, n_planes,
-> > > output);
-> > > +		prepare_planes(data, pipe, &blue, tiling, c, output);
-> > >  =20
-> > >   		igt_display_commit2(&data->display,
-> > > COMMIT_ATOMIC);
-> > >  =20
-> > >   		igt_pipe_crc_get_current(data->display.drm_fd,
-> > > data-
-> > > > pipe_crc, &crc);
-> > >  =20
-> > > +		for_each_plane_on_pipe(&data->display, pipe, plane)
-> > > +			igt_plane_set_fb(plane, NULL);
-> > > +
-> > > +		for (int x =3D 0; x < c; x++)
-> > > +			igt_remove_fb(data->drm_fd, &data->fb[x]);
-> >=20
-> > move this cleanup to function and call it here and where you test
-> > the
-> > number of planes that can be enabled
-> >=20
-> > > +
-> > >   		igt_assert_crc_equal(&data->ref_crc, &crc);
-> > >  =20
-> > >   		i++;
+> >  	if (suspend) {
+> >  		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> >  					      SUSPEND_TEST_NONE);
+> >  		sleep(5);
+> > -		igt_assert(!feature-
+> > >wait_until_enabled(drm.debugfs_fd));
+> > +		igt_assert(feature->wait_until_update(drm.debugfs_fd));
+> >  	}
+> >  }
+> > =20
 
---=-/FKvABp87izEjWyD8vFn
+--=-S1SH8l3+NbRBksvlm+7L
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 Content-Transfer-Encoding: 7bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyuTMMACgkQVenbO/mO
-WknmyggAoiDU51fjW2EkYwkG2/9jpjfv/Cj8Xfa6+mmJAd3SS+GSbY4r7m3LFD35
-CYjpBzN2Dwk6JckoPpmZH4PSEv9+5/jQZIRxF5SaOGElOCaS+jz1Nl4TS8WS9zKE
-6XlrCjNX8SIxSwMQqDRfsifFxoeOuzL+2Zgp1kjGVSB5VZu0XuKTshH2Cxy+aGMp
-TySHUa6VtO2OQHfoqX+v/+iMeDbDDYmxrTDE8VR3KB0wfbg7R6i8UPYq5nLz8ZOp
-4Jkoyd3lM7AYinufU1zCrrkycZjK4fD9AN6dQGnnk6bAa8A51ciu3kdzezm9707p
-Ej9/jCTXxceJxSqjMmb2qJnGeu28HQ==
-=NvB7
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyuUqwACgkQVenbO/mO
+Wkl5aAf9FJ0C+eH7icYqkq1B6B/FojRy6qYKeZe+fCVv2LW3hdIQXfMY5rU+rC1O
+Ydl0zYTjY330ha/+MPAUhY+Vp04i6CUelEHL71k5kWcA+Pr/azB0IF38GMGv0+0k
+BusORk54UTd/niuMFsKPSrZbAegE+kEbKf66sQiK3R4I7aA/JgZP3q235PCnWjZ4
+8ZRFSufdt8qaBVG2Bror8HdhVm9oj360VWpoBQyzcm7N2j9f5QIIrphfj+/iVJwT
+ED84BCy4r+SXkKBRRiXFZl1utecTGlKspdlwqst2Xkt4DnaztHno1P0xL4T4jMKQ
+gQWux0o2Rjsirvj3xoVaSvOn9q0o8w==
+=QlKY
 -----END PGP SIGNATURE-----
 
---=-/FKvABp87izEjWyD8vFn--
+--=-S1SH8l3+NbRBksvlm+7L--
 
---===============1450738833==
+--===============0959249630==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: base64
@@ -344,4 +181,4 @@ X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
 YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
 cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
 
---===============1450738833==--
+--===============0959249630==--
