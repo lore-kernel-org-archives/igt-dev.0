@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE6A289361
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2019 18:09:03 +0000 (UTC)
-Date: Wed, 10 Apr 2019 11:11:16 -0700
-From: Manasi Navare <manasi.d.navare@intel.com>
-Message-ID: <20190410181116.GC17858@intel.com>
-References: <20190409014619.8148-1-manasi.d.navare@intel.com>
- <20190409014619.8148-2-manasi.d.navare@intel.com>
- <20190410124639.GC18457@ideak-desk.fi.intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6FC56893D1
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Apr 2019 19:55:33 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Wed, 10 Apr 2019 19:55:30 +0000
+Message-ID: <fee087f183a697a39a25c469be88882e3dc707cb.camel@intel.com>
+References: <1554476159-25312-1-git-send-email-juhapekka.heikkila@gmail.com>
+ <6525db62bc81dd968bb17da7106354545d3429af.camel@intel.com>
+ <5c9172ae806236a53c82d5f2b3ed31655efa4135.camel@intel.com>
+In-Reply-To: <5c9172ae806236a53c82d5f2b3ed31655efa4135.camel@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190410124639.GC18457@ideak-desk.fi.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 2/2] tests/kms_dp_dsc: Restore the
- value of force dsc enable
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_multiple: before going
+ testing check how many planes are allowed
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,87 +20,326 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1391921674=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Imre Deak <imre.deak@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Anusha Srivatsa <anusha.srivatsa@intel.com>, Petri Latvala <petri.latvala@intel.com>
+To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Lisovskiy,
+ Stanislav" <stanislav.lisovskiy@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UHVzaGVkLCB0aGFua3MgZm9yIHRoZSByZXZpZXcKCk1hbmFzaQoKT24gV2VkLCBBcHIgMTAsIDIw
-MTkgYXQgMDM6NDY6MzlQTSArMDMwMCwgSW1yZSBEZWFrIHdyb3RlOgo+IE9uIE1vbiwgQXByIDA4
-LCAyMDE5IGF0IDA2OjQ2OjE5UE0gLTA3MDAsIE1hbmFzaSBOYXZhcmUgd3JvdGU6Cj4gPiBUaGlz
-IHBhdGNoIHNhdmVzIG9mZiB0aGUgb3JpZ2luYWwgdmFsdWUgb2YgZm9yY2VfZHNjX2VuIGFuZAo+
-ID4gcmVzdG9yZXMgaXQgYmFjayBhZnRlciBlYWNoIHRlc3QgYW5kIGluIHRoZSBpZ3QgZXhpdCBo
-YW5kbGVyCj4gPiBzbyB0aGF0IGl0IGdldHMgcmVzdG9yZWQgb24gYW55IGZhaWx1cmUvYXNzZXJ0
-aW9uLgo+ID4gCj4gPiBTdWdnZXN0ZWQtYnk6IEltcmUgRGVhayA8aW1yZS5kZWFrQGludGVsLmNv
-bT4KPiA+IENjOiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KPiA+IENj
-OiBBbnVzaGEgU3JpdmF0c2EgPGFudXNoYS5zcml2YXRzYUBpbnRlbC5jb20+Cj4gPiBDYzogSW1y
-ZSBEZWFrIDxpbXJlLmRlYWtAaW50ZWwuY29tPgo+ID4gU2lnbmVkLW9mZi1ieTogTWFuYXNpIE5h
-dmFyZSA8bWFuYXNpLmQubmF2YXJlQGludGVsLmNvbT4KPiAKPiBMb29rcyBnb29kLCB0aGFua3M6
-Cj4gUmV2aWV3ZWQtYnk6IEltcmUgRGVhayA8aW1yZS5kZWFrQGludGVsLmNvbT4KPiAKPiA+IC0t
-LQo+ID4gIHRlc3RzL2ttc19kcF9kc2MuYyB8IDQ5ICsrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKy0tLS0tLS0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgNDIgaW5zZXJ0aW9ucygr
-KSwgNyBkZWxldGlvbnMoLSkKPiA+IAo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19kcF9kc2Mu
-YyBiL3Rlc3RzL2ttc19kcF9kc2MuYwo+ID4gaW5kZXggN2JhN2M0ZWYuLjFiZmVmYmYyIDEwMDY0
-NAo+ID4gLS0tIGEvdGVzdHMva21zX2RwX2RzYy5jCj4gPiArKysgYi90ZXN0cy9rbXNfZHBfZHNj
-LmMKPiA+IEBAIC02NSw2ICs2NSw5IEBAIHR5cGVkZWYgc3RydWN0IHsKPiA+ICAJY2hhciBjb25u
-X25hbWVbMTI4XTsKPiA+ICB9IGRhdGFfdDsKPiA+ICAKPiA+ICtib29sIGZvcmNlX2RzY19lbl9v
-cmlnOwo+ID4gK2ludCBmb3JjZV9kc2NfcmVzdG9yZV9mZCA9IC0xOwo+ID4gKwo+ID4gIHN0YXRp
-YyBpbmxpbmUgdm9pZCBtYW51YWwoY29uc3QgY2hhciAqZXhwZWN0ZWQpCj4gPiAgewo+ID4gIAlp
-Z3RfZGVidWdfbWFudWFsX2NoZWNrKCJhbGwiLCBleHBlY3RlZCk7Cj4gPiBAQCAtMTIwLDE5ICsx
-MjMsNDQgQEAgc3RhdGljIHZvaWQgZm9yY2VfZHBfZHNjX2VuYWJsZShkYXRhX3QgKmRhdGEpCj4g
-PiAgCWlndF9hc3NlcnRfZihyZXQgPiAwLCAiZGVidWdmc193cml0ZSBmYWlsZWQiKTsKPiA+ICB9
-Cj4gPiAgCj4gPiAtc3RhdGljIHZvaWQgY2xlYXJfZHBfZHNjX2VuYWJsZShkYXRhX3QgKmRhdGEp
-Cj4gPiArc3RhdGljIGJvb2wgaXNfZm9yY2VfZHNjX2VuYWJsZWQoZGF0YV90ICpkYXRhKQo+ID4g
-IHsKPiA+ICAJY2hhciBmaWxlX25hbWVbMTI4XSA9IHswfTsKPiA+IC0JaW50IHJldDsKPiA+ICsJ
-Y2hhciBidWZbNTEyXTsKPiA+ICAKPiA+ICAJc3RyY3B5KGZpbGVfbmFtZSwgZGF0YS0+Y29ubl9u
-YW1lKTsKPiA+ICAJc3RyY2F0KGZpbGVfbmFtZSwgIi9pOTE1X2RzY19mZWNfc3VwcG9ydCIpOwo+
-ID4gLQlpZ3RfZGVidWcgKCJDbGVhcmluZyBEU0MgZW5hYmxlIG9uICVzXG4iLCBkYXRhLT5jb25u
-X25hbWUpOwo+ID4gLQlyZXQgPSBpZ3Rfc3lzZnNfd3JpdGUoZGF0YS0+ZGVidWdmc19mZCwgZmls
-ZV9uYW1lLCAiMCIsIDEpOwo+ID4gLQlpZ3RfYXNzZXJ0X2YocmV0ID4gMCwgImRlYnVnZnNfd3Jp
-dGUgZmFpbGVkIik7Cj4gPiArCWlndF9kZWJ1Z2ZzX3JlYWQoZGF0YS0+ZHJtX2ZkLCBmaWxlX25h
-bWUsIGJ1Zik7Cj4gPiArCj4gPiArCXJldHVybiBzdHJzdHIoYnVmLCAiRm9yY2VfRFNDX0VuYWJs
-ZTogeWVzIik7Cj4gPiAgfQo+ID4gIAo+ID4gLXN0YXRpYyB2b2lkIHRlc3RfY2xlYW51cChkYXRh
-X3QgKmRhdGEpIHsKPiA+ICtzdGF0aWMgdm9pZCBzYXZlX2ZvcmNlX2RzY19lbihkYXRhX3QgKmRh
-dGEpCj4gPiArewo+ID4gKwljaGFyIGZpbGVfbmFtZVsxMjhdID0gezB9Owo+ID4gKwo+ID4gKwlm
-b3JjZV9kc2NfZW5fb3JpZyA9IGlzX2ZvcmNlX2RzY19lbmFibGVkKGRhdGEpOwo+ID4gKwlzdHJj
-cHkoZmlsZV9uYW1lLCBkYXRhLT5jb25uX25hbWUpOwo+ID4gKwlzdHJjYXQoZmlsZV9uYW1lLCAi
-L2k5MTVfZHNjX2ZlY19zdXBwb3J0Iik7Cj4gPiArCWZvcmNlX2RzY19yZXN0b3JlX2ZkID0gb3Bl
-bmF0KGlndF9kZWJ1Z2ZzX2RpcihkYXRhLT5kcm1fZmQpLAo+ID4gKwkJCQkgICAgICBmaWxlX25h
-bWUsIE9fV1JPTkxZKTsKPiA+ICsJaWd0X2Fzc2VydChmb3JjZV9kc2NfcmVzdG9yZV9mZCA+PSAw
-KTsKPiA+ICt9Cj4gPiArCj4gPiArc3RhdGljIHZvaWQgcmVzdG9yZV9mb3JjZV9kc2NfZW4odm9p
-ZCkKPiA+ICt7Cj4gPiArCWlmIChmb3JjZV9kc2NfcmVzdG9yZV9mZCA8IDApCj4gPiArCQlyZXR1
-cm47Cj4gPiArCj4gPiArCWlndF9kZWJ1ZygiUmVzdG9yaW5nIERTQyBlbmFibGVcbiIpOwo+ID4g
-KwlpZ3RfYXNzZXJ0KHdyaXRlKGZvcmNlX2RzY19yZXN0b3JlX2ZkLCBmb3JjZV9kc2NfZW5fb3Jp
-ZyA/ICIxIiA6ICIwIiwgMSkgPT0gMSk7Cj4gPiArCj4gPiArCWNsb3NlKGZvcmNlX2RzY19yZXN0
-b3JlX2ZkKTsKPiA+ICsJZm9yY2VfZHNjX3Jlc3RvcmVfZmQgPSAtMTsKPiA+ICt9Cj4gPiArCj4g
-PiArc3RhdGljIHZvaWQgdGVzdF9jbGVhbnVwKGRhdGFfdCAqZGF0YSkKPiA+ICt7Cj4gPiAgCWln
-dF9wbGFuZV90ICpwcmltYXJ5Owo+ID4gIAo+ID4gIAlpZiAoZGF0YS0+b3V0cHV0KSB7Cj4gPiBA
-QCAtMTQ0LDYgKzE3MiwxMSBAQCBzdGF0aWMgdm9pZCB0ZXN0X2NsZWFudXAoZGF0YV90ICpkYXRh
-KSB7Cj4gPiAgCX0KPiA+ICB9Cj4gPiAgCj4gPiArc3RhdGljIHZvaWQga21zX2RwX2RzY19leGl0
-X2hhbmRsZXIoaW50IHNpZykKPiA+ICt7Cj4gPiArCXJlc3RvcmVfZm9yY2VfZHNjX2VuKCk7Cj4g
-PiArfQo+ID4gKwo+ID4gIAo+ID4gIC8qCj4gPiAgICogUmUtcHJvYmUgY29ubmVjdG9ycyBhbmQg
-ZG8gYSBtb2Rlc2V0IHdpdGggRFNDCj4gPiBAQCAtMTY5LDYgKzIwMiw3IEBAIHN0YXRpYyB2b2lk
-IHVwZGF0ZV9kaXNwbGF5KGRhdGFfdCAqZGF0YSwgZW51bSBkc2NfdGVzdF90eXBlIHRlc3RfdHlw
-ZSkKPiA+ICAJCWJvb2wgZW5hYmxlZDsKPiA+ICAKPiA+ICAJCWlndF9kZWJ1ZygiRFNDIGlzIHN1
-cHBvcnRlZCBvbiAlc1xuIiwgZGF0YS0+Y29ubl9uYW1lKTsKPiA+ICsJCXNhdmVfZm9yY2VfZHNj
-X2VuKGRhdGEpOwo+ID4gIAkJZm9yY2VfZHBfZHNjX2VuYWJsZShkYXRhKTsKPiA+ICAKPiA+ICAJ
-CWlndF9vdXRwdXRfc2V0X3BpcGUoZGF0YS0+b3V0cHV0LCBkYXRhLT5waXBlKTsKPiA+IEBAIC0x
-OTEsNyArMjI1LDcgQEAgc3RhdGljIHZvaWQgdXBkYXRlX2Rpc3BsYXkoZGF0YV90ICpkYXRhLCBl
-bnVtIGRzY190ZXN0X3R5cGUgdGVzdF90eXBlKQo+ID4gIAkJbWFudWFsKCJSR0IgdGVzdCBwYXR0
-ZXJuIHdpdGhvdXQgY29ycnVwdGlvbiIpOwo+ID4gIAo+ID4gIAkJZW5hYmxlZCA9IGlzX2RwX2Rz
-Y19lbmFibGVkKGRhdGEpOwo+ID4gLQkJY2xlYXJfZHBfZHNjX2VuYWJsZShkYXRhKTsKPiA+ICsJ
-CXJlc3RvcmVfZm9yY2VfZHNjX2VuKCk7Cj4gPiAgCj4gPiAgCQlpZ3RfYXNzZXJ0X2YoZW5hYmxl
-ZCwKPiA+ICAJCQkgICAgICJEZWZhdWx0IERTQyBlbmFibGUgZmFpbGVkIG9uIENvbm5lY3Rvcjog
-JXMgUGlwZTogJXNcbiIsCj4gPiBAQCAtMjMxLDYgKzI2NSw3IEBAIGlndF9tYWluCj4gPiAgCQlk
-YXRhLmRybV9mZCA9IGRybV9vcGVuX2RyaXZlcl9tYXN0ZXIoRFJJVkVSX0FOWSk7Cj4gPiAgCQlk
-YXRhLmRlYnVnZnNfZmQgPSBpZ3RfZGVidWdmc19kaXIoZGF0YS5kcm1fZmQpOwo+ID4gIAkJa21z
-dGVzdF9zZXRfdnRfZ3JhcGhpY3NfbW9kZSgpOwo+ID4gKwkJaWd0X2luc3RhbGxfZXhpdF9oYW5k
-bGVyKGttc19kcF9kc2NfZXhpdF9oYW5kbGVyKTsKPiA+ICAJCWlndF9kaXNwbGF5X3JlcXVpcmUo
-JmRhdGEuZGlzcGxheSwgZGF0YS5kcm1fZmQpOwo+ID4gIAkJaWd0X3JlcXVpcmUocmVzID0gZHJt
-TW9kZUdldFJlc291cmNlcyhkYXRhLmRybV9mZCkpOwo+ID4gIAl9Cj4gPiAtLSAKPiA+IDIuMTku
-MQo+ID4gCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
-dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
+--===============1391921674==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-JmOq14kOIt/2rsdLvd+W"
+
+--=-JmOq14kOIt/2rsdLvd+W
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, 2019-04-09 at 13:47 +0100, Lisovskiy, Stanislav wrote:
+> On Mon, 2019-04-08 at 18:29 -0700, Souza, Jose wrote:
+> > On Fri, 2019-04-05 at 17:55 +0300, Juha-Pekka Heikkila wrote:
+> > > before start testing try out how many planes kernel will
+> > > allow simultaneously to be used.
+> > >=20
+> > > v2 (Jose Souza, Daniel Vetter): Fix resource leaks. Randomize
+> > > used planes.
+> > >=20
+> > > Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> > > ---
+> > >  tests/kms_plane_multiple.c | 88
+> > > +++++++++++++++++++++++++++++++++++++---------
+> > >  1 file changed, 71 insertions(+), 17 deletions(-)
+> > >=20
+> > > diff --git a/tests/kms_plane_multiple.c
+> > > b/tests/kms_plane_multiple.c
+> > > index bfaeede..f2707dc 100644
+> > > --- a/tests/kms_plane_multiple.c
+> > > +++ b/tests/kms_plane_multiple.c
+> > > @@ -80,16 +80,6 @@ static void test_fini(data_t *data,
+> > > igt_output_t
+> > > *output, int n_planes)
+> > >  {
+> > >  	igt_pipe_crc_stop(data->pipe_crc);
+> > > =20
+> > > -	for (int i =3D 0; i < n_planes; i++) {
+> > > -		igt_plane_t *plane =3D data->plane[i];
+> > > -		if (!plane)
+> > > -			continue;
+> > > -		if (plane->type =3D=3D DRM_PLANE_TYPE_PRIMARY)
+> > > -			continue;
+> > > -		igt_plane_set_fb(plane, NULL);
+> > > -		data->plane[i] =3D NULL;
+> > > -	}
+> > > -
+> > >  	/* reset the constraint on the pipe */
+> > >  	igt_output_set_pipe(output, PIPE_ANY);
+> > > =20
+> > > @@ -99,7 +89,8 @@ static void test_fini(data_t *data,
+> > > igt_output_t
+> > > *output, int n_planes)
+> > >  	free(data->plane);
+> > >  	data->plane =3D NULL;
+> > > =20
+> > > -	igt_remove_fb(data->drm_fd, data->fb);
+> > > +	free(data->fb);
+> > > +	data->fb =3D NULL;
+> > > =20
+> > >  	igt_display_reset(&data->display);
+> > >  }
+> > > @@ -195,6 +186,7 @@ prepare_planes(data_t *data, enum pipe
+> > > pipe_id,
+> > > color_t *color,
+> > >  	int *y;
+> > >  	int *size;
+> > >  	int i;
+> > > +	int* suffle;
+> > > =20
+> > >  	igt_output_set_pipe(output, pipe_id);
+> > >  	primary =3D igt_output_get_plane_type(output,
+> > > DRM_PLANE_TYPE_PRIMARY);
+> > > @@ -206,6 +198,34 @@ prepare_planes(data_t *data, enum pipe
+> > > pipe_id,
+> > > color_t *color,
+> > >  	igt_assert_f(y, "Failed to allocate %ld bytes for variable
+> > > y\n", (long int) (pipe->n_planes * sizeof(*y)));
+> > >  	size =3D malloc(pipe->n_planes * sizeof(*size));
+> > >  	igt_assert_f(size, "Failed to allocate %ld bytes for variable
+> > > size\n", (long int) (pipe->n_planes * sizeof(*size)));
+> > > +	suffle =3D malloc(pipe->n_planes * sizeof(*suffle));
+> > > +	igt_assert_f(suffle, "Failed to allocate %ld bytes for variable
+> > > size\n", (long int) (pipe->n_planes * sizeof(*suffle)));
+> > > +
+> > > +	for (i =3D 0; i < pipe->n_planes; i++)
+> > > +		suffle[i] =3D i;
+> > > +
+> > > +	/*
+> > > +	 * suffle table for planes. using rand() should keep it
+> > > +	 * 'randomized in expected way'
+> > > +	 */
+> > > +	for (i =3D 0; i < 256; i++) {
+> >=20
+> > Not beautiful at all
+> >=20
+> > > +		int n, m;
+> > > +		int a, b;
+> > > +
+> > > +		n =3D rand() % (pipe->n_planes-1);
+> > > +		m =3D rand() % (pipe->n_planes-1);
+> > > +
+> > > +		/*
+> > > +		 * keep primary plane at its place for test's sake.
+> > > +		 */
+> > > +		if(n =3D=3D primary->index || m =3D=3D primary->index)
+> > > +			continue;
+> > > +
+> > > +		a =3D suffle[n];
+> > > +		b =3D suffle[m];
+> > > +		suffle[n] =3D b;
+> > > +		suffle[m] =3D a;
+> > > +	}
+> > > =20
+> > >  	mode =3D igt_output_get_mode(output);
+> > > =20
+> > > @@ -213,7 +233,11 @@ prepare_planes(data_t *data, enum pipe
+> > > pipe_id,
+> > > color_t *color,
+> > >  	x[primary->index] =3D 0;
+> > >  	y[primary->index] =3D 0;
+> > >  	for (i =3D 0; i < max_planes; i++) {
+> > > -		igt_plane_t *plane =3D igt_output_get_plane(output, i);
+> > > +		/*
+> > > +		 * Here is made assumption primary plane will have
+> > > +		 * index zero.
+> > > +		 */
+> > > +		igt_plane_t *plane =3D igt_output_get_plane(output,
+> > > suffle[i]);
+> > >  		uint32_t plane_format;
+> > >  		uint64_t plane_tiling;
+> > > =20
+> > > @@ -251,6 +275,10 @@ prepare_planes(data_t *data, enum pipe
+> > > pipe_id,
+> > > color_t *color,
+> > >  	create_fb_for_mode_position(data, output, mode, color, x, y,
+> > >  				    size, size, tiling, max_planes);
+> > >  	igt_plane_set_fb(data->plane[primary->index], &data-
+> > > > fb[primary->index]);
+> > >=20
+> > > +	free((void*)x);
+> > > +	free((void*)y);
+> > > +	free((void*)size);
+> > > +	free((void*)suffle);
+> > >  }
+> > > =20
+> > >  static void
+> > > @@ -260,7 +288,9 @@ test_plane_position_with_output(data_t *data,
+> > > enum pipe pipe,
+> > >  {
+> > >  	color_t blue  =3D { 0.0f, 0.0f, 1.0f };
+> > >  	igt_crc_t crc;
+> > > +	igt_plane_t *plane;
+> > >  	int i;
+> > > +	int err, c =3D 0;
+> > >  	int iterations =3D opt.iterations < 1 ? 1 : opt.iterations;
+> > >  	bool loop_forever;
+> > >  	char info[256];
+> > > @@ -274,22 +304,46 @@ test_plane_position_with_output(data_t
+> > > *data,
+> > > enum pipe pipe,
+> > >  			iterations, iterations > 1 ? "iterations" :
+> > > "iteration");
+> > >  	}
+> > > =20
+> > > -	igt_info("Testing connector %s using pipe %s with %d planes %s
+> > > with seed %d\n",
+> > > -		 igt_output_name(output), kmstest_pipe_name(pipe),
+> > > n_planes,
+> > > -		 info, opt.seed);
+> > > -
+> > >  	test_init(data, pipe, n_planes);
+> > > =20
+> > >  	test_grab_crc(data, output, pipe, &blue, tiling);
+> > > =20
+> > > +	/*
+> > > +	 * Find out how many planes are allowed simultaneously
+> > > +	 */
+> > > +	do {
+> > > +		c++;
+> >=20
+> > Adding one plane at time is a waste of CI time in platforms without
+> > a
+> > high number of planes(anything besides ICL), better start with max
+> > and
+> > decreasing until commit is accepted.
+>=20
+> It is actually opposite. Platforms with high amount of planes would
+> be slower obviously, as you will have to increment more and faster=20
+> for systems with less amount of planes. Consider 0->7 and 0-
+> > 3(platforms with less amount of planes) - so where is more waste
+> of time?
+
+Platforms with 3 planes will do 3 iterations with current approach
+while it could be done with just one and ICL will will do 5
+iterations(my ICL setup support 5 planes at the same time) while it
+could be done in 3 iterations.
+
+Now takes this additional iterations * 4 tests per pipe * number of
+pipes and you have a considerable waste of CI time.
+
+>=20
+> > > +		prepare_planes(data, pipe, &blue, tiling, c, output);
+> > > +		err =3D igt_display_try_commit2(&data->display,
+> > > COMMIT_ATOMIC);
+> >=20
+> > No need to do a real commit here, you can only test with:
+>=20
+> This is igt_display_TRY_commit2.
+
+The TRY here means that the test will not fail in case the commit is
+not accepted/valid, it will not call drmModeAtomicCommit() with
+DRM_MODE_ATOMIC_TEST_ONLY, this will save some time when the commit is
+valid/accepted.
+
+>=20
+> > err =3D igt_display_try_commit_atomic(&data->display,
+> > DRM_MODE_ATOMIC_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> >=20
+> >=20
+> > Also if a err different than -EINVAL is returned you should handle
+> > like
+> > a error.
+> >=20
+> > > +
+> > > +		for_each_plane_on_pipe(&data->display, pipe, plane)
+> > > +			igt_plane_set_fb(plane, NULL);
+> > > +
+> > > +		for (int x =3D 0; x < c; x++)
+> > > +			igt_remove_fb(data->drm_fd, &data->fb[x]);
+> >=20
+> > This is still leaking, example:
+> >=20
+> > c =3D 3
+> > plane 0, plane 1 and plane 3 enabled
+>=20
+> There should be no leak here. He uses suffle[i]=20
+> for index indirection in prepare_planes like igt_plane_t *plane =3D
+> igt_output_get_plane(output, suffle[i]), so that suffle[0]=3D0,
+> suffle[1]=3D1, suffle[2]=3D3, meanwhile correspondent data->fb[i]
+> remains contiguous, so that plane 0 corresponds to data->fb[0],
+> plane 1 -> data->fb[1] and plane 3 -> data->fb[2].=20
+> So all the igt_remove_fb calls target correct data->fb[] through
+> suffle[i] used as indirection layer.
+
+Okay
+
+>=20
+> > Other leak, the framebuffer created in test_grab_crc()
+> >=20
+> >=20
+> > > +	} while (!err && c < n_planes);
+> > > +
+> > > +	if(err)
+> > > +		c--;
+> > > +
+> > > +	igt_info("Testing connector %s using pipe %s with %d planes %s
+> > > with seed %d\n",
+> > > +		 igt_output_name(output), kmstest_pipe_name(pipe), c,
+> > > +		 info, opt.seed);
+> > > +
+> > >  	i =3D 0;
+> > >  	while (i < iterations || loop_forever) {
+> > > -		prepare_planes(data, pipe, &blue, tiling, n_planes,
+> > > output);
+> > > +		prepare_planes(data, pipe, &blue, tiling, c, output);
+> > > =20
+> > >  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> > > =20
+> > >  		igt_pipe_crc_get_current(data->display.drm_fd, data-
+> > > > pipe_crc, &crc);
+> > >=20
+> > > =20
+> > > +		for_each_plane_on_pipe(&data->display, pipe, plane)
+> > > +			igt_plane_set_fb(plane, NULL);
+> > > +
+> > > +		for (int x =3D 0; x < c; x++)
+> > > +			igt_remove_fb(data->drm_fd, &data->fb[x]);
+> >=20
+> > move this cleanup to function and call it here and where you test
+> > the
+> > number of planes that can be enabled
+> >=20
+> > > +
+> > >  		igt_assert_crc_equal(&data->ref_crc, &crc);
+> > > =20
+> > >  		i++;
+
+--=-JmOq14kOIt/2rsdLvd+W
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlyuSjAACgkQVenbO/mO
+WknjAAf/aNsyD5oDZjk0A7EkHvvD3IoLFiux/HNtl93Pul5CSNt1erZzb+rMhTqf
+fyiQTq00q/oU0Gfux48ttC2b4h8PS7XneaWqIF4WarK1xuxhx4jI+akBYS8vYc52
+1b1hUEbmZ+DcsauNEwtMK0tAGugyWMGKy3nw1NCPSn9cqgU/rYcXmw8GvbiDqJFH
+rY54W05fdQnoMvYE6EAt1nI8Qjxl+5soNuns91DnPygLeoBqdTWlI3WY26hr/mov
+CTqyPJHHF/sRAFbEE4hX8UkDxr1e737vRsuWCSJJfIHHsAoW/nA7hi9QuM2d2DGu
+GxcBOM4B2uEynUWk3Rk4YWhiGypqfw==
+=VP8v
+-----END PGP SIGNATURE-----
+
+--=-JmOq14kOIt/2rsdLvd+W--
+
+--===============1391921674==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============1391921674==--
