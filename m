@@ -1,20 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com
- [IPv6:2a00:1450:4864:20::144])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 264BD897E0
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Apr 2019 13:41:25 +0000 (UTC)
-Received: by mail-lf1-x144.google.com with SMTP id r25so7505404lfn.13
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Apr 2019 06:41:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <1551100999-27427-1-git-send-email-sergii.romantsov@globallogic.com>
- <20190226094605.GB4038@platvala-desk.ger.corp.intel.com>
- <CALWg4ioqQqgF7i89wFkxUP+xh4mkVJiHCiE00Yc7dgTUXqngow@mail.gmail.com>
- <20190226102029.GE4038@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <20190226102029.GE4038@platvala-desk.ger.corp.intel.com>
-From: Sergii Romantsov <sergii.romantsov@gmail.com>
-Date: Fri, 12 Apr 2019 16:41:12 +0300
-Message-ID: <CALWg4ipb4pM3z1BwFN1_muGb_A+aVd=VGkO5BNgwq00m7k+-1w@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v1] meson: missed dependency of liblzma
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 12 Apr 2019 13:57:06 -0000
+Message-ID: <20190412135706.11258.16341@emeril.freedesktop.org>
+References: <20190412110740.8036-1-mika.kahola@intel.com>
+In-Reply-To: <20190412110740.8036-1-mika.kahola@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Fscaling=3A_Test_if_pixel_format_supports_rotation?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,181 +14,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1462482643=="
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Sergii Romantsov <sergii.romantsov@gmail.com>, igt-dev@lists.freedesktop.org
+To: Mika Kahola <mika.kahola@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1462482643==
-Content-Type: multipart/alternative; boundary="00000000000066ead70586557550"
-
---00000000000066ead70586557550
-Content-Type: text/plain; charset="UTF-8"
-
->
-> I'll welcome a patch that makes dependency failures point to the
-> Dockerfiles, though
-
-Seems it can be done with meson >= 0.50 - here we can dump a message if
-dependency failure.
-But it seems to be look as not good solution (one dependency - one message).
-
-As i see in the Dockerfiles listed dependency on liblzma.
-So if meson-change is not preferable in that case - so at least readme-file
-has to point us about dependencies.
-
-On Tue, Feb 26, 2019 at 12:21 PM Petri Latvala <petri.latvala@intel.com>
-wrote:
-
-> On Tue, Feb 26, 2019 at 12:03:07PM +0200, Sergii Romantsov wrote:
-> > Hello, Petri.
-> >
-> >
-> > > As I understood you, just installing liblzma-dev makes the build
-> > > successful, right?
-> >
-> >
-> > If to be more specific, installing liblzma-dev makes meson-configuration
-> > successful.
-> >
-> > Making this change just lead to better error messages when it's not
-> > > installed?
-> >
-> >
-> > Yes, it will show which package exactly leaked instead of unclear error.
-> >
-> > What is the distro you're using?
-> >
-> >
-> > 4.15.0-45-generic #48~16.04.1-Ubuntu SMP Tue Jan 29 18:03:48 UTC 2019
-> > x86_64 x86_64 x86_64 GNU/Linux
-> >
-> > I think it happens due to specific of meson-dependency - how it looks
-> for a
-> > package.
-> > So command (when liblzma-dev is absent, but liblzma5 is installed)
-> >  'pkg-config --cflags --libs libdw'
-> > gives:
-> > "Package liblzma was not found in the pkg-config search path.
-> > Perhaps you should add the directory containing `liblzma.pc'
-> > to the PKG_CONFIG_PATH environment variable
-> > Package 'liblzma', required by 'libdw', not found"
-> >
-> > So in my understanding its just because of lack of liblzma.pc
->
->
-> Indeed. I checked Ubuntu 16.04's libdw-dev and it:
->
-> 1) Has liblzma in Requires.private in libdw.pc
-> 2) Does not depend on liblzma-dev
->
-> I don't see the bug reported, and I suspect it won't be fixed, with
-> 16.04's support ending this year for the desktop version...
->
->
-> However, on the patch, I'll have to nak the meson.build change. Having
-> better error messages is not a good reason for useless dependency
-> declarations. I'll welcome a patch that makes dependency failures
-> point to the Dockerfiles, though.
->
->
-> --
-> Petri Latvala
->
-
---00000000000066ead70586557550
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">I&#39;ll welcome a patch that makes dependency failures=C2=A0poi=
-nt to the Dockerfiles, though</blockquote><div>Seems it can be done with me=
-son &gt;=3D 0.50 - here we can dump a message if dependency failure.</div><=
-div>But it seems to be look as not good solution (one dependency - one mess=
-age).</div><div><br></div><div>As i see in the Dockerfiles listed dependenc=
-y on liblzma.</div><div>So if meson-change is not preferable in that case -=
- so at least readme-file has to point us about dependencies.</div></div></d=
-iv><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On =
-Tue, Feb 26, 2019 at 12:21 PM Petri Latvala &lt;<a href=3D"mailto:petri.lat=
-vala@intel.com">petri.latvala@intel.com</a>&gt; wrote:<br></div><blockquote=
- class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
-lid rgb(204,204,204);padding-left:1ex">On Tue, Feb 26, 2019 at 12:03:07PM +=
-0200, Sergii Romantsov wrote:<br>
-&gt; Hello, Petri.<br>
-&gt; <br>
-&gt; <br>
-&gt; &gt; As I understood you, just installing liblzma-dev makes the build<=
-br>
-&gt; &gt; successful, right?<br>
-&gt; <br>
-&gt; <br>
-&gt; If to be more specific, installing liblzma-dev makes meson-configurati=
-on<br>
-&gt; successful.<br>
-&gt; <br>
-&gt; Making this change just lead to better error messages when it&#39;s no=
-t<br>
-&gt; &gt; installed?<br>
-&gt; <br>
-&gt; <br>
-&gt; Yes, it will show which package exactly leaked instead of unclear erro=
-r.<br>
-&gt; <br>
-&gt; What is the distro you&#39;re using?<br>
-&gt; <br>
-&gt; <br>
-&gt; 4.15.0-45-generic #48~16.04.1-Ubuntu SMP Tue Jan 29 18:03:48 UTC 2019<=
-br>
-&gt; x86_64 x86_64 x86_64 GNU/Linux<br>
-&gt; <br>
-&gt; I think it happens due to specific of meson-dependency - how it looks =
-for a<br>
-&gt; package.<br>
-&gt; So command (when liblzma-dev is absent, but liblzma5 is installed)<br>
-&gt;=C2=A0 &#39;pkg-config --cflags --libs libdw&#39;<br>
-&gt; gives:<br>
-&gt; &quot;Package liblzma was not found in the pkg-config search path.<br>
-&gt; Perhaps you should add the directory containing `liblzma.pc&#39;<br>
-&gt; to the PKG_CONFIG_PATH environment variable<br>
-&gt; Package &#39;liblzma&#39;, required by &#39;libdw&#39;, not found&quot=
-;<br>
-&gt; <br>
-&gt; So in my understanding its just because of lack of liblzma.pc<br>
-<br>
-<br>
-Indeed. I checked Ubuntu 16.04&#39;s libdw-dev and it:<br>
-<br>
-1) Has liblzma in Requires.private in libdw.pc<br>
-2) Does not depend on liblzma-dev<br>
-<br>
-I don&#39;t see the bug reported, and I suspect it won&#39;t be fixed, with=
-<br>
-16.04&#39;s support ending this year for the desktop version...<br>
-<br>
-<br>
-However, on the patch, I&#39;ll have to nak the meson.build change. Having<=
-br>
-better error messages is not a good reason for useless dependency<br>
-declarations. I&#39;ll welcome a patch that makes dependency failures<br>
-point to the Dockerfiles, though.<br>
-<br>
-<br>
--- <br>
-Petri Latvala<br>
-</blockquote></div>
-
---00000000000066ead70586557550--
-
---===============1462482643==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============1462482643==--
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHMva21zX3BsYW5lX3NjYWxpbmc6IFRl
+c3QgaWYgcGl4ZWwgZm9ybWF0IHN1cHBvcnRzIHJvdGF0aW9uClVSTCAgIDogaHR0cHM6Ly9wYXRj
+aHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy81OTM5MS8KU3RhdGUgOiBzdWNjZXNzCgo9PSBT
+dW1tYXJ5ID09CgpDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIElHVF80OTQ1IC0+IElHVFBXXzI4
+NTIKPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQoK
+U3VtbWFyeQotLS0tLS0tCgogICoqU1VDQ0VTUyoqCgogIE5vIHJlZ3Jlc3Npb25zIGZvdW5kLgoK
+ICBFeHRlcm5hbCBVUkw6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9hcGkvMS4w
+L3Nlcmllcy81OTM5MS9yZXZpc2lvbnMvMS9tYm94LwoKS25vd24gaXNzdWVzCi0tLS0tLS0tLS0t
+LQoKICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV18yODUyIHRoYXQgY29tZSBm
+cm9tIGtub3duIGlzc3VlczoKCiMjIyBJR1QgY2hhbmdlcyAjIyMKCiMjIyMgSXNzdWVzIGhpdCAj
+IyMjCgogICogaWd0QGFtZGdwdS9hbWRfYmFzaWNAdXNlcnB0cjoKICAgIC0gZmkta2JsLTg4MDln
+OiAgICAgICBQQVNTIC0+IERNRVNHLVdBUk4gW2ZkbyMxMDg5NjVdCgogICogaWd0QGdlbV9leGVj
+X3N0b3JlQGJhc2ljLWJzZDE6CiAgICAtIGZpLWtibC1yOiAgICAgICAgICAgTk9UUlVOIC0+IFNL
+SVAgW2ZkbyMxMDkyNzFdICs0MQoKICAqIGlndEBpOTE1X21vZHVsZV9sb2FkQHJlbG9hZDoKICAg
+IC0gZmktYmxiLWU2ODUwOiAgICAgICBQQVNTIC0+IElOQ09NUExFVEUgW2ZkbyMxMDc3MThdCgog
+ICogaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZV9jb250ZXh0czoKICAgIC0gZmktYmR3LWd2dGR2bTog
+ICAgICBQQVNTIC0+IERNRVNHLUZBSUwgW2ZkbyMxMTAyMzUgXQogICAgLSBmaS1za2wtZ3Z0ZHZt
+OiAgICAgIFBBU1MgLT4gRE1FU0ctRkFJTCBbZmRvIzExMDIzNSBdCgogICogaWd0QGttc19jaGFt
+ZWxpdW1AZHAtaHBkLWZhc3Q6CiAgICAtIGZpLXNrbC02NzAwazI6ICAgICAgTk9UUlVOIC0+IFNL
+SVAgW2ZkbyMxMDkyNzFdICs0MQoKICAqIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAc3VzcGVuZC1y
+ZWFkLWNyYy1waXBlLWE6CiAgICAtIGZpLWJ5dC1jbGFwcGVyOiAgICAgUEFTUyAtPiBGQUlMIFtm
+ZG8jMTAzMTkxXSArMQoKICAKIyMjIyBQb3NzaWJsZSBmaXhlcyAjIyMjCgogICogaWd0QGdlbV9j
+dHhfc3dpdGNoQGJhc2ljLWRlZmF1bHQ6CiAgICAtIHtmaS1pY2wtdTJ9OiAgICAgICAgSU5DT01Q
+TEVURSBbZmRvIzEwODU2OV0gLT4gUEFTUwoKICAKICB7bmFtZX06IFRoaXMgZWxlbWVudCBpcyBz
+dXBwcmVzc2VkLiBUaGlzIG1lYW5zIGl0IGlzIGlnbm9yZWQgd2hlbiBjb21wdXRpbmcKICAgICAg
+ICAgIHRoZSBzdGF0dXMgb2YgdGhlIGRpZmZlcmVuY2UgKFNVQ0NFU1MsIFdBUk5JTkcsIG9yIEZB
+SUxVUkUpLgoKICBbZmRvIzEwMzE5MV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hv
+d19idWcuY2dpP2lkPTEwMzE5MQogIFtmZG8jMTA3NzE4XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNr
+dG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3NzE4CiAgW2ZkbyMxMDg1NjldOiBodHRwczovL2J1
+Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDg1NjkKICBbZmRvIzEwODk2NV06
+IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODk2NQogIFtm
+ZG8jMTA5MjcxXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
+MTA5MjcxCiAgW2ZkbyMxMDkyNzZdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3df
+YnVnLmNnaT9pZD0xMDkyNzYKICBbZmRvIzEwOTI4NV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3Rv
+cC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI4NQogIFtmZG8jMTA5Mjg5XTogaHR0cHM6Ly9idWdz
+LmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5Mjg5CiAgW2ZkbyMxMDkzMDldOiBo
+dHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkzMDkKICBbZmRv
+IzEwOTMxNV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEw
+OTMxNQogIFtmZG8jMTA5MzE2XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1
+Zy5jZ2k/aWQ9MTA5MzE2CiAgW2ZkbyMxMTAyMzUgXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
+Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTEwMjM1IAoKClBhcnRpY2lwYXRpbmcgaG9zdHMgKDQ4IC0+
+IDQyKQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KCiAgQWRkaXRpb25hbCAoMik6IGZp
+LXNrbC02NzAwazIgZmkta2JsLXIgCiAgTWlzc2luZyAgICAoOCk6IGZpLWtibC1zb3Jha2EgZmkt
+Ynl0LWoxOTAwIGZpLWJ5dC1zcXVhd2tzIGZpLWJzdy1jeWFuIGZpLWN0Zy1wODYwMCBmaS1oc3ct
+NDc3MCBmaS1nZGctNTUxIGZpLWJkdy1zYW11cyAKCgpCdWlsZCBjaGFuZ2VzCi0tLS0tLS0tLS0t
+LS0KCiAgICAqIElHVDogSUdUXzQ5NDUgLT4gSUdUUFdfMjg1MgoKICBDSV9EUk1fNTkyMjogODQ5
+YWM2ZGJmZjdmNTA3M2MzMTgxYzVlYmEwNzkzNmZlM2Y1NzZlYyBAIGdpdDovL2Fub25naXQuZnJl
+ZWRlc2t0b3Aub3JnL2dmeC1jaS9saW51eAogIElHVFBXXzI4NTI6IGh0dHBzOi8vaW50ZWwtZ2Z4
+LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMjg1Mi8KICBJR1RfNDk0NTogYTUyY2M2NDNj
+ZmU2NzMzNDY1Y2ZjOWNjYjNkMjFjYmRjNGZkNzUwNiBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0
+b3Aub3JnL3hvcmcvYXBwL2ludGVsLWdwdS10b29scwoKPT0gTG9ncyA9PQoKRm9yIG1vcmUgZGV0
+YWlscyBzZWU6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdf
+Mjg1Mi8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0
+LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
+aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
