@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 12 Apr 2019 13:57:06 -0000
-Message-ID: <20190412135706.11258.16341@emeril.freedesktop.org>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA38D89083
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Apr 2019 14:54:23 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Fri, 12 Apr 2019 14:54:07 +0000
+Message-ID: <3d0d06543f88e74505fab7aade9e836aedff4015.camel@intel.com>
 References: <20190412110740.8036-1-mika.kahola@intel.com>
 In-Reply-To: <20190412110740.8036-1-mika.kahola@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fplane=5Fscaling=3A_Test_if_pixel_format_supports_rotation?=
+Content-Language: en-US
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: Test if pixel
+ format supports rotation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,67 +18,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0401817937=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mika Kahola <mika.kahola@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Kahola,
+ Mika" <mika.kahola@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHMva21zX3BsYW5lX3NjYWxpbmc6IFRl
-c3QgaWYgcGl4ZWwgZm9ybWF0IHN1cHBvcnRzIHJvdGF0aW9uClVSTCAgIDogaHR0cHM6Ly9wYXRj
-aHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy81OTM5MS8KU3RhdGUgOiBzdWNjZXNzCgo9PSBT
-dW1tYXJ5ID09CgpDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIElHVF80OTQ1IC0+IElHVFBXXzI4
-NTIKPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQoK
-U3VtbWFyeQotLS0tLS0tCgogICoqU1VDQ0VTUyoqCgogIE5vIHJlZ3Jlc3Npb25zIGZvdW5kLgoK
-ICBFeHRlcm5hbCBVUkw6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9hcGkvMS4w
-L3Nlcmllcy81OTM5MS9yZXZpc2lvbnMvMS9tYm94LwoKS25vd24gaXNzdWVzCi0tLS0tLS0tLS0t
-LQoKICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV18yODUyIHRoYXQgY29tZSBm
-cm9tIGtub3duIGlzc3VlczoKCiMjIyBJR1QgY2hhbmdlcyAjIyMKCiMjIyMgSXNzdWVzIGhpdCAj
-IyMjCgogICogaWd0QGFtZGdwdS9hbWRfYmFzaWNAdXNlcnB0cjoKICAgIC0gZmkta2JsLTg4MDln
-OiAgICAgICBQQVNTIC0+IERNRVNHLVdBUk4gW2ZkbyMxMDg5NjVdCgogICogaWd0QGdlbV9leGVj
-X3N0b3JlQGJhc2ljLWJzZDE6CiAgICAtIGZpLWtibC1yOiAgICAgICAgICAgTk9UUlVOIC0+IFNL
-SVAgW2ZkbyMxMDkyNzFdICs0MQoKICAqIGlndEBpOTE1X21vZHVsZV9sb2FkQHJlbG9hZDoKICAg
-IC0gZmktYmxiLWU2ODUwOiAgICAgICBQQVNTIC0+IElOQ09NUExFVEUgW2ZkbyMxMDc3MThdCgog
-ICogaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZV9jb250ZXh0czoKICAgIC0gZmktYmR3LWd2dGR2bTog
-ICAgICBQQVNTIC0+IERNRVNHLUZBSUwgW2ZkbyMxMTAyMzUgXQogICAgLSBmaS1za2wtZ3Z0ZHZt
-OiAgICAgIFBBU1MgLT4gRE1FU0ctRkFJTCBbZmRvIzExMDIzNSBdCgogICogaWd0QGttc19jaGFt
-ZWxpdW1AZHAtaHBkLWZhc3Q6CiAgICAtIGZpLXNrbC02NzAwazI6ICAgICAgTk9UUlVOIC0+IFNL
-SVAgW2ZkbyMxMDkyNzFdICs0MQoKICAqIGlndEBrbXNfcGlwZV9jcmNfYmFzaWNAc3VzcGVuZC1y
-ZWFkLWNyYy1waXBlLWE6CiAgICAtIGZpLWJ5dC1jbGFwcGVyOiAgICAgUEFTUyAtPiBGQUlMIFtm
-ZG8jMTAzMTkxXSArMQoKICAKIyMjIyBQb3NzaWJsZSBmaXhlcyAjIyMjCgogICogaWd0QGdlbV9j
-dHhfc3dpdGNoQGJhc2ljLWRlZmF1bHQ6CiAgICAtIHtmaS1pY2wtdTJ9OiAgICAgICAgSU5DT01Q
-TEVURSBbZmRvIzEwODU2OV0gLT4gUEFTUwoKICAKICB7bmFtZX06IFRoaXMgZWxlbWVudCBpcyBz
-dXBwcmVzc2VkLiBUaGlzIG1lYW5zIGl0IGlzIGlnbm9yZWQgd2hlbiBjb21wdXRpbmcKICAgICAg
-ICAgIHRoZSBzdGF0dXMgb2YgdGhlIGRpZmZlcmVuY2UgKFNVQ0NFU1MsIFdBUk5JTkcsIG9yIEZB
-SUxVUkUpLgoKICBbZmRvIzEwMzE5MV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hv
-d19idWcuY2dpP2lkPTEwMzE5MQogIFtmZG8jMTA3NzE4XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNr
-dG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA3NzE4CiAgW2ZkbyMxMDg1NjldOiBodHRwczovL2J1
-Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDg1NjkKICBbZmRvIzEwODk2NV06
-IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwODk2NQogIFtm
-ZG8jMTA5MjcxXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
-MTA5MjcxCiAgW2ZkbyMxMDkyNzZdOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3df
-YnVnLmNnaT9pZD0xMDkyNzYKICBbZmRvIzEwOTI4NV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3Rv
-cC5vcmcvc2hvd19idWcuY2dpP2lkPTEwOTI4NQogIFtmZG8jMTA5Mjg5XTogaHR0cHM6Ly9idWdz
-LmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA5Mjg5CiAgW2ZkbyMxMDkzMDldOiBo
-dHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDkzMDkKICBbZmRv
-IzEwOTMxNV06IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEw
-OTMxNQogIFtmZG8jMTA5MzE2XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1
-Zy5jZ2k/aWQ9MTA5MzE2CiAgW2ZkbyMxMTAyMzUgXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
-Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTEwMjM1IAoKClBhcnRpY2lwYXRpbmcgaG9zdHMgKDQ4IC0+
-IDQyKQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KCiAgQWRkaXRpb25hbCAoMik6IGZp
-LXNrbC02NzAwazIgZmkta2JsLXIgCiAgTWlzc2luZyAgICAoOCk6IGZpLWtibC1zb3Jha2EgZmkt
-Ynl0LWoxOTAwIGZpLWJ5dC1zcXVhd2tzIGZpLWJzdy1jeWFuIGZpLWN0Zy1wODYwMCBmaS1oc3ct
-NDc3MCBmaS1nZGctNTUxIGZpLWJkdy1zYW11cyAKCgpCdWlsZCBjaGFuZ2VzCi0tLS0tLS0tLS0t
-LS0KCiAgICAqIElHVDogSUdUXzQ5NDUgLT4gSUdUUFdfMjg1MgoKICBDSV9EUk1fNTkyMjogODQ5
-YWM2ZGJmZjdmNTA3M2MzMTgxYzVlYmEwNzkzNmZlM2Y1NzZlYyBAIGdpdDovL2Fub25naXQuZnJl
-ZWRlc2t0b3Aub3JnL2dmeC1jaS9saW51eAogIElHVFBXXzI4NTI6IGh0dHBzOi8vaW50ZWwtZ2Z4
-LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMjg1Mi8KICBJR1RfNDk0NTogYTUyY2M2NDNj
-ZmU2NzMzNDY1Y2ZjOWNjYjNkMjFjYmRjNGZkNzUwNiBAIGdpdDovL2Fub25naXQuZnJlZWRlc2t0
-b3Aub3JnL3hvcmcvYXBwL2ludGVsLWdwdS10b29scwoKPT0gTG9ncyA9PQoKRm9yIG1vcmUgZGV0
-YWlscyBzZWU6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdf
-Mjg1Mi8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0
-LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
-aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+--===============0401817937==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-eOlYxbXBBNtB959ecvQc"
+
+--=-eOlYxbXBBNtB959ecvQc
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, 2019-04-12 at 14:07 +0300, Mika Kahola wrote:
+> Before actually do the commit with plane rotation, test if the pixel
+> format
+> supports requested rotation. Kernel replies with -EINVAL when
+> requested to do
+> rotation with the pixel format that is not supported. The patch uses
+> this fact
+> to filter out unsupported pixel formats.
+>=20
+> References: https://bugs.freedesktop.org/show_bug.cgi?id=3D109052
+> Bugzilla: https://bugs.freedesktop.org/show_bug.cgi?id=3D110369
+> Signed-off-by: Mika Kahola <mika.kahola@intel.com>
+> ---
+>  tests/kms_plane_scaling.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+> index e843bf86..57092263 100644
+> --- a/tests/kms_plane_scaling.c
+> +++ b/tests/kms_plane_scaling.c
+> @@ -138,6 +138,7 @@ static void check_scaling_pipe_plane_rot(data_t
+> *d, igt_plane_t *plane,
+>  	igt_display_t *display =3D &d->display;
+>  	int width, height;
+>  	drmModeModeInfo *mode;
+> +	int errno;
+> =20
+>  	cleanup_crtc(d);
+> =20
+> @@ -158,7 +159,15 @@ static void check_scaling_pipe_plane_rot(data_t
+> *d, igt_plane_t *plane,
+>  	igt_plane_set_position(plane, 0, 0);
+>  	igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+>  	igt_plane_set_rotation(plane, rot);
+> -	igt_display_commit2(display, COMMIT_ATOMIC);
+> +
+> +	/*
+> +	 * Test first, if pixel format supports rotation.
+> +	 * We expect from kernel to return with -EINVAL
+> +	 * if format is not supported.
+> +	 */
+> +	errno =3D igt_display_try_commit_atomic(display,
+> DRM_MODE_ATOMIC_TEST_ONLY, NULL);
+> +	if (errno !=3D -EINVAL)
+> +		igt_display_commit2(display, COMMIT_ATOMIC);
+
+This is going to cause the test to always pass, becoming useless.
+
+It is already filtering out the know format and rotation combination
+that should not work in the caller, if a combination is not covered it
+should be added to those:
+
+if (igt_fb_supported_format(format) && igt_plane_has_format_mod(plane,
+format, tiling) && can_rotate(d, format))
+	check_scaling_pipe_plane_rot(d, plane, format, tiling, pipe,
+output, rot);
+
+
+> =20
+>  	igt_plane_set_fb(plane, NULL);
+>  	igt_plane_set_position(plane, 0, 0);
+
+--=-eOlYxbXBBNtB959ecvQc
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAlywpo4ACgkQVenbO/mO
+WklzQQf+P7xDp4X2y3OZL2lB6sGyVAZaOAvnkjcVavxOmUVqOoDuAhn0nnH9NU8Z
+AzDSwA4Cfz9mgAQ/hldioD8lhEsYrFs7Z7FLOMazZ4XS7hDrv46bWwdNi5WIAwlU
+BTnADippUPggrZamayLYgXk9psU0K894dMfKfdF7udsYpJMQ/IDGO7m6KB6BwlFI
+oM5m3O8sQybVlnzS0qt4+D2V8adiX6FGvcxbk70gcJMNS9/KyOnHE1lIVZ7VSdDQ
+ZeSreyUGqHigJCTRVZO5qVTglOK3/k9/p2lHQZ5IzxL3+3bRLN6BySD46xZFvoaB
+g/gqtUej09Ms64VXSu3q2dxoNyzmrQ==
+=Jk+V
+-----END PGP SIGNATURE-----
+
+--=-eOlYxbXBBNtB959ecvQc--
+
+--===============0401817937==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============0401817937==--
