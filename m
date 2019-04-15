@@ -1,13 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B0BF48991A
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Apr 2019 19:55:00 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Mon, 15 Apr 2019 19:54:57 +0000
+Message-ID: <52b5a54854947b83461df3be88801a10783a95ce.camel@intel.com>
+References: <20190412172136.17116-1-jose.souza@intel.com>
+ <20190412211339.11255.78685@emeril.freedesktop.org>
+In-Reply-To: <20190412211339.11255.78685@emeril.freedesktop.org>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 15 Apr 2019 18:32:23 -0000
-Message-ID: <20190415183223.30486.28685@emeril.freedesktop.org>
-References: <20190415182251.22427-1-carlos.santa@intel.com>
-In-Reply-To: <20190415182251.22427-1-carlos.santa@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?gem=5Fwatchdog=3A_Initial_set_of_tests_for_GPU_watchdog_=28rev3?=
- =?utf-8?q?=29?=
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2Cv4=2C1/6=5D_tests/fbcon=5Ffbt=3A_Use_?=
+ =?utf-8?q?psr=5Fwait=5Fentry=28=29_to_wait_PSR_be_enabled?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,102 +21,243 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0662073366=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Carlos Santa <carlos.santa@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHMvZ2VtX3dhdGNoZG9nOiBJbml0aWFs
-IHNldCBvZiB0ZXN0cyBmb3IgR1BVIHdhdGNoZG9nIChyZXYzKQpVUkwgICA6IGh0dHBzOi8vcGF0
-Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvNTAwNDEvClN0YXRlIDogZmFpbHVyZQoKPT0g
-U3VtbWFyeSA9PQoKSUdUIHBhdGNoc2V0IGJ1aWxkIGZhaWxlZCBvbiBsYXRlc3Qgc3VjY2Vzc2Z1
-bCBidWlsZApmZjI4YzI4Y2QxZTVhOGNhMjE5ZDk3OTVlNTA4YzgwMjIxYjljZjI2IHRlc3RzOiBB
-ZGQga21zX3BsYW5lX2N1cnNvciB0ZXN0cwoKWzMzNC80NTNdIExpbmtpbmcgdGFyZ2V0IHRlc3Rz
-L2dlbV9zb2Z0cGluLgpbMzM1LzQ1M10gTGlua2luZyB0YXJnZXQgdGVzdHMvZ2VtX3NwaW5fYmF0
-Y2guClszMzYvNDUzXSBMaW5raW5nIHRhcmdldCB0ZXN0cy9nZW1fc3RvbGVuLgpbMzM3LzQ1M10g
-TGlua2luZyB0YXJnZXQgdGVzdHMvZ2VtX3RocmVhZGVkX2FjY2Vzc190aWxlZC4KWzMzOC80NTNd
-IExpbmtpbmcgdGFyZ2V0IHRlc3RzL2dlbV9zdG9yZWR3X2JhdGNoZXNfbG9vcC4KWzMzOS80NTNd
-IExpbmtpbmcgdGFyZ2V0IHRlc3RzL2dlbV9zdG9yZWR3X2xvb3AuClszNDAvNDUzXSBMaW5raW5n
-IHRhcmdldCB0ZXN0cy9nZW1fc3luYy4KWzM0MS80NTNdIExpbmtpbmcgdGFyZ2V0IHRlc3RzL2dl
-bV9zdHJlYW1pbmdfd3JpdGVzLgpbMzQyLzQ1M10gTGlua2luZyB0YXJnZXQgdGVzdHMvZ2VtX3Rp
-bGVkX2JsaXRzLgpbMzQzLzQ1M10gTGlua2luZyB0YXJnZXQgdGVzdHMvZ2VtX3RpbGVkX3BhcnRp
-YWxfcHdyaXRlX3ByZWFkLgpbMzQ0LzQ1M10gTGlua2luZyB0YXJnZXQgdGVzdHMvZ2VtX3RpbGVk
-X2ZlbmNlX2JsaXRzLgpbMzQ1LzQ1M10gTGlua2luZyB0YXJnZXQgdGVzdHMvZ2VtX3RpbGVkX3By
-ZWFkX2Jhc2ljLgpbMzQ2LzQ1M10gTGlua2luZyB0YXJnZXQgdGVzdHMvZ2VtX3RpbGVkX3N3YXBw
-aW5nLgpbMzQ3LzQ1M10gTGlua2luZyB0YXJnZXQgdGVzdHMvZ2VtX3RpbGVkX3ByZWFkX3B3cml0
-ZS4KWzM0OC80NTNdIExpbmtpbmcgdGFyZ2V0IHRlc3RzL2dlbV91bmZlbmNlX2FjdGl2ZV9idWZm
-ZXJzLgpbMzQ5LzQ1M10gTGlua2luZyB0YXJnZXQgdGVzdHMvZ2VtX3RpbGVkX3diLgpbMzUwLzQ1
-M10gTGlua2luZyB0YXJnZXQgdGVzdHMvZ2VtX3dyaXRlX3JlYWRfcmluZ19zd2l0Y2guClszNTEv
-NDUzXSBMaW5raW5nIHRhcmdldCB0ZXN0cy9nZW1fdGlsZWRfd2MuClszNTIvNDUzXSBMaW5raW5n
-IHRhcmdldCB0ZXN0cy9nZW1fdGlsaW5nX21heF9zdHJpZGUuClszNTMvNDUzXSBDb21waWxpbmcg
-QyBvYmplY3QgJ3Rlc3RzL3Rlc3RzQEBnZW1fd2F0Y2hkb2dAZXhlL2k5MTVfZ2VtX3dhdGNoZG9n
-LmMubycuCkZBSUxFRDogdGVzdHMvdGVzdHNAQGdlbV93YXRjaGRvZ0BleGUvaTkxNV9nZW1fd2F0
-Y2hkb2cuYy5vIApjY2FjaGUgY2MgLUl0ZXN0cy90ZXN0c0BAZ2VtX3dhdGNoZG9nQGV4ZSAtSXRl
-c3RzIC1JLi4vdGVzdHMgLUkuLi9pbmNsdWRlL2RybS11YXBpIC1JbGliIC1JLi4vbGliIC1JLi4v
-bGliL3N0dWJzL3N5c2NhbGxzIC1JLiAtSS4uLyAtSS91c3IvaW5jbHVkZS9jYWlybyAtSS91c3Iv
-aW5jbHVkZS9nbGliLTIuMCAtSS91c3IvbGliL3g4Nl82NC1saW51eC1nbnUvZ2xpYi0yLjAvaW5j
-bHVkZSAtSS91c3IvaW5jbHVkZS9waXhtYW4tMSAtSS91c3IvaW5jbHVkZS9saWJwbmcxNiAtSS91
-c3IvaW5jbHVkZS9mcmVldHlwZTIgLUkvdXNyL2luY2x1ZGUvbGlicG5nMTIgLUkvb3B0L2lndC9p
-bmNsdWRlIC1JL29wdC9pZ3QvaW5jbHVkZS9saWJkcm0gLUkvdXNyL2luY2x1ZGUveDg2XzY0LWxp
-bnV4LWdudSAtSS91c3IvaW5jbHVkZSAtSS91c3IvaW5jbHVkZS9saWJkcm0gLUkvdXNyL2luY2x1
-ZGUvbGliZHJtL25vdXZlYXUgLUkvaG9tZS9jaWRybS9rZXJuZWxfaGVhZGVycy9pbmNsdWRlIC1m
-ZGlhZ25vc3RpY3MtY29sb3I9YWx3YXlzIC1waXBlIC1EX0ZJTEVfT0ZGU0VUX0JJVFM9NjQgLVdh
-bGwgLVdpbnZhbGlkLXBjaCAtV2V4dHJhIC1zdGQ9Z251MTEgLU8wIC1nIC1EX0dOVV9TT1VSQ0Ug
-LWluY2x1ZGUgY29uZmlnLmggLVdiYWQtZnVuY3Rpb24tY2FzdCAtV2RlY2xhcmF0aW9uLWFmdGVy
-LXN0YXRlbWVudCAtV2Zvcm1hdD0yIC1XaW1wbGljaXQtZmFsbHRocm91Z2g9MCAtV2xvZ2ljYWwt
-b3AgLVdtaXNzaW5nLWRlY2xhcmF0aW9ucyAtV21pc3NpbmctZm9ybWF0LWF0dHJpYnV0ZSAtV21p
-c3Npbmctbm9yZXR1cm4gLVdtaXNzaW5nLXByb3RvdHlwZXMgLVduZXN0ZWQtZXh0ZXJucyAtV29s
-ZC1zdHlsZS1kZWZpbml0aW9uIC1XcG9pbnRlci1hcml0aCAtV3JlZHVuZGFudC1kZWNscyAtV3No
-YWRvdyAtV3N0cmljdC1wcm90b3R5cGVzIC1XdW5pbml0aWFsaXplZCAtV3VudXNlZCAtV25vLWNs
-b2JiZXJlZCAtV25vLW1heWJlLXVuaW5pdGlhbGl6ZWQgLVduby1taXNzaW5nLWZpZWxkLWluaXRp
-YWxpemVycyAtV25vLXBvaW50ZXItYXJpdGggLVduby1zaWduLWNvbXBhcmUgLVduby10eXBlLWxp
-bWl0cyAtV25vLXVudXNlZC1wYXJhbWV0ZXIgLVduby11bnVzZWQtcmVzdWx0IC1XZXJyb3I9YWRk
-cmVzcyAtV2Vycm9yPWFycmF5LWJvdW5kcyAtV2Vycm9yPWltcGxpY2l0IC1XZXJyb3I9aW5pdC1z
-ZWxmIC1XZXJyb3I9aW50LXRvLXBvaW50ZXItY2FzdCAtV2Vycm9yPW1haW4gLVdlcnJvcj1taXNz
-aW5nLWJyYWNlcyAtV2Vycm9yPW5vbm51bGwgLVdlcnJvcj1wb2ludGVyLXRvLWludC1jYXN0IC1X
-ZXJyb3I9cmV0dXJuLXR5cGUgLVdlcnJvcj1zZXF1ZW5jZS1wb2ludCAtV2Vycm9yPXRyaWdyYXBo
-cyAtV2Vycm9yPXdyaXRlLXN0cmluZ3MgLXB0aHJlYWQgIC1NRCAtTVEgJ3Rlc3RzL3Rlc3RzQEBn
-ZW1fd2F0Y2hkb2dAZXhlL2k5MTVfZ2VtX3dhdGNoZG9nLmMubycgLU1GICd0ZXN0cy90ZXN0c0BA
-Z2VtX3dhdGNoZG9nQGV4ZS9pOTE1X2dlbV93YXRjaGRvZy5jLm8uZCcgLW8gJ3Rlc3RzL3Rlc3Rz
-QEBnZW1fd2F0Y2hkb2dAZXhlL2k5MTVfZ2VtX3dhdGNoZG9nLmMubycgLWMgLi4vdGVzdHMvaTkx
-NS9nZW1fd2F0Y2hkb2cuYwouLi90ZXN0cy9pOTE1L2dlbV93YXRjaGRvZy5jOiBJbiBmdW5jdGlv
-biDigJhncHVfd2F0Y2hkb2dfbG9uZ19iYXRjaF8yX2NvbnRleHRz4oCZOgouLi90ZXN0cy9pOTE1
-L2dlbV93YXRjaGRvZy5jOjI4Mzo1MzogZXJyb3I6IOKAmFNZU19nZXR0aWTigJkgdW5kZWNsYXJl
-ZCAoZmlyc3QgdXNlIGluIHRoaXMgZnVuY3Rpb24pOyBkaWQgeW91IG1lYW4g4oCYZ2V0dGlk4oCZ
-PwogICBiYl9mYWN0b3J5KGZkLCBjdHgsIC0xLCBiYXRjaF90aW1lb3V0X21zLCBzeXNjYWxsKFNZ
-U19nZXR0aWQpKTsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICBefn5+fn5+fn5+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgZ2V0dGlkCi4uL3Rlc3RzL2k5MTUvZ2VtX3dhdGNoZG9nLmM6MjgzOjUz
-OiBub3RlOiBlYWNoIHVuZGVjbGFyZWQgaWRlbnRpZmllciBpcyByZXBvcnRlZCBvbmx5IG9uY2Ug
-Zm9yIGVhY2ggZnVuY3Rpb24gaXQgYXBwZWFycyBpbgouLi90ZXN0cy9pOTE1L2dlbV93YXRjaGRv
-Zy5jOjI3NjoxMzogd2FybmluZzogdW51c2VkIHZhcmlhYmxlIOKAmGrigJkgWy1XdW51c2VkLXZh
-cmlhYmxlXQogIGludCBpID0gMCwgaj0wOwogICAgICAgICAgICAgXgouLi90ZXN0cy9pOTE1L2dl
-bV93YXRjaGRvZy5jOiBJbiBmdW5jdGlvbiDigJhncHVfd2F0Y2hvZGdfaGFuZ19sb25nX2JhdGNo
-X3NpbmdsZV9lbmdpbmXigJk6Ci4uL3Rlc3RzL2k5MTUvZ2VtX3dhdGNoZG9nLmM6MzQxOjUyOiBl
-cnJvcjog4oCYU1lTX2dldHRpZOKAmSB1bmRlY2xhcmVkIChmaXJzdCB1c2UgaW4gdGhpcyBmdW5j
-dGlvbik7IGRpZCB5b3UgbWVhbiDigJhnZXR0aWTigJk/CiAgYmJfZmFjdG9yeShmZCwgY3R4LCAt
-MSwgYmF0Y2hfdGltZW91dF9tcywgc3lzY2FsbChTWVNfZ2V0dGlkKSk7CiAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBefn5+fn5+fn5+CiAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBnZXR0aWQKLi4vdGVz
-dHMvaTkxNS9nZW1fd2F0Y2hkb2cuYzogSW4gZnVuY3Rpb24g4oCYbm9fZ3B1X2hhbmdfbG9uZ19i
-YXRjaF9hbGxfZW5naW5lc+KAmToKLi4vdGVzdHMvaTkxNS9nZW1fd2F0Y2hkb2cuYzozNzg6NTQ6
-IGVycm9yOiDigJhTWVNfZ2V0dGlk4oCZIHVuZGVjbGFyZWQgKGZpcnN0IHVzZSBpbiB0aGlzIGZ1
-bmN0aW9uKTsgZGlkIHlvdSBtZWFuIOKAmGdldHRpZOKAmT8KICBiYl9mYWN0b3J5KGZkLCBjdHgs
-IHByaW8sIGJhdGNoX3RpbWVvdXRfbXMsIHN5c2NhbGwoU1lTX2dldHRpZCkpOwogICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBefn5+fn5+fn5+CiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGdldHRp
-ZAouLi90ZXN0cy9pOTE1L2dlbV93YXRjaGRvZy5jOiBJbiBmdW5jdGlvbiDigJhfX3JlYWxfbWFp
-bjM4NuKAmToKLi4vdGVzdHMvaTkxNS9nZW1fd2F0Y2hkb2cuYzozOTE6MTU6IHdhcm5pbmc6IHZh
-cmlhYmxlIOKAmGVuZ2luZXPigJkgc2V0IGJ1dCBub3QgdXNlZCBbLVd1bnVzZWQtYnV0LXNldC12
-YXJpYWJsZV0KICB1bnNpZ25lZCBpbnQgZW5naW5lc1sxNl07CiAgICAgICAgICAgICAgIF5+fn5+
-fn4KQXQgdG9wIGxldmVsOgouLi90ZXN0cy9pOTE1L2dlbV93YXRjaGRvZy5jOjgxOjEzOiB3YXJu
-aW5nOiDigJhjaGVja19lcnJvcl9zdGF0ZeKAmSBkZWZpbmVkIGJ1dCBub3QgdXNlZCBbLVd1bnVz
-ZWQtZnVuY3Rpb25dCiBzdGF0aWMgYm9vbCBjaGVja19lcnJvcl9zdGF0ZShpbnQgZmQpCiAgICAg
-ICAgICAgICBefn5+fn5+fn5+fn5+fn5+fgpuaW5qYTogYnVpbGQgc3RvcHBlZDogc3ViY29tbWFu
-ZCBmYWlsZWQuCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
-czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
+--===============0662073366==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="=-mGMtfGUC05kAfaK/XZYS"
+
+--=-mGMtfGUC05kAfaK/XZYS
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, 2019-04-12 at 21:13 +0000, Patchwork wrote:
+> =3D=3D Series Details =3D=3D
+>=20
+> Series: series starting with [i-g-t,v4,1/6] tests/fbcon_fbt: Use
+> psr_wait_entry() to wait PSR be enabled
+> URL   : https://patchwork.freedesktop.org/series/59414/
+> State : success
+>=20
+> =3D=3D Summary =3D=3D
+>=20
+> CI Bug Log - changes from CI_DRM_5923_full -> IGTPW_2854_full
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+>=20
+> Summary
+> -------
+>=20
+>   **SUCCESS**
+
+Pushed, thanks for the reviews Maarten and Dhinakaran
+
+>=20
+>   No regressions found.
+>=20
+>   External URL:=20
+> https://patchwork.freedesktop.org/api/1.0/series/59414/revisions/1/mbox/
+>=20
+> Known issues
+> ------------
+>=20
+>   Here are the changes found in IGTPW_2854_full that come from known
+> issues:
+>=20
+> ### IGT changes ###
+>=20
+> #### Issues hit ####
+>=20
+>   * igt@gem_exec_params@invalid-flag:
+>     - shard-apl:          PASS -> INCOMPLETE [fdo#103927]
+>=20
+>   * igt@i915_pm_rc6_residency@rc6-accuracy:
+>     - shard-kbl:          PASS -> SKIP [fdo#109271]
+>=20
+>   * igt@i915_suspend@debugfs-reader:
+>     - shard-apl:          PASS -> DMESG-WARN [fdo#108566] +3
+>=20
+>   * igt@kms_concurrent@pipe-c:
+>     - shard-apl:          PASS -> DMESG-WARN [fdo#110376]
+>=20
+>   * igt@kms_flip@2x-busy-flip:
+>     - shard-kbl:          NOTRUN -> SKIP [fdo#109271] +9
+>=20
+>   * igt@kms_flip@2x-flip-vs-expired-vblank:
+>     - shard-glk:          PASS -> FAIL [fdo#102887]
+>=20
+>   * igt@kms
+> _frontbuffer_tracking@fbc-2p-primscrn-pri-shrfb-draw-mmap-cpu:
+>     - shard-glk:          PASS -> FAIL [fdo#103167]
+>=20
+>   * igt@kms
+> _frontbuffer_tracking@fbcpsr-1p-primscrn-cur-indfb-draw-render:
+>     - shard-iclb:         PASS -> FAIL [fdo#103167] +3
+>=20
+>   * igt@kms_frontbuffer_tracking@psr-1p-primscrn-cur-indfb-onoff:
+>     - shard-iclb:         PASS -> FAIL [fdo#109247] +18
+>=20
+>   * igt@kms
+> _frontbuffer_tracking@psr-2p-primscrn-pri-indfb-draw-mmap-gtt:
+>     - shard-apl:          NOTRUN -> SKIP [fdo#109271] +8
+>=20
+>   * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-f:
+>     - shard-kbl:          NOTRUN -> SKIP [fdo#109271] / [fdo#109278]
+>=20
+>   * igt@kms_plane@plane-position-covered-pipe-a-planes:
+>     - shard-kbl:          PASS -> FAIL [fdo#110038]
+>=20
+>   * igt@kms_plane_lowres@pipe-a-tiling-y:
+>     - shard-iclb:         PASS -> FAIL [fdo#103166]
+>=20
+>   * igt@kms_psr@cursor_blt:
+>     - shard-iclb:         PASS -> FAIL [fdo#107383] / [fdo#110215]
+>=20
+>   * igt@kms_psr@psr2_cursor_mmap_gtt:
+>     - shard-iclb:         PASS -> SKIP [fdo#109441]
+>=20
+>   * igt@kms_vblank@pipe-a-ts-continuation-modeset-hang:
+>     - shard-hsw:          PASS -> INCOMPLETE [fdo#103540]
+>=20
+>  =20
+> #### Possible fixes ####
+>=20
+>   * igt@gem_softpin@noreloc-s3:
+>     - shard-kbl:          DMESG-WARN [fdo#103313] -> PASS
+>=20
+>   * igt@i915_selftest@live_workarounds:
+>     - shard-iclb:         DMESG-FAIL [fdo#108954] -> PASS
+>=20
+>   * igt@kms_fbcon_fbt@psr:
+>     - shard-iclb:         FAIL [fdo#103833] -> PASS
+>=20
+>   * igt@kms_flip@flip-vs-expired-vblank:
+>     - shard-glk:          FAIL [fdo#105363] -> PASS
+>=20
+>   * igt@kms_frontbuffer_tracking@fbc-stridechange:
+>     - shard-glk:          FAIL [fdo#103167] -> PASS
+>     - shard-kbl:          FAIL [fdo#103167] -> PASS
+>=20
+>   * igt@kms_frontbuffer_tracking@fbc-suspend:
+>     - shard-apl:          DMESG-WARN [fdo#108566] -> PASS +5
+>=20
+>   * igt@kms
+> _frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-blt:
+>     - shard-iclb:         FAIL [fdo#109247] -> PASS +14
+>=20
+>   * igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw:
+>     - shard-iclb:         FAIL [fdo#103167] -> PASS +3
+>=20
+>   * igt@kms_plane@pixel-format-pipe-b-planes:
+>     - shard-glk:          SKIP [fdo#109271] -> PASS
+>=20
+>   * igt@kms_plane_lowres@pipe-a-tiling-x:
+>     - shard-iclb:         FAIL [fdo#103166] -> PASS
+>=20
+>   * igt@kms_psr@suspend:
+>     - shard-iclb:         FAIL [fdo#107383] / [fdo#110215] -> PASS
+>=20
+>   * igt@kms_rotation_crc@multiplane-rotation-cropping-bottom:
+>     - shard-kbl:          DMESG-FAIL [fdo#105763] -> PASS
+>=20
+>   * igt@kms_rotation_crc@multiplane-rotation-cropping-top:
+>     - shard-kbl:          FAIL [fdo#109016] -> PASS
+>=20
+>   * igt@kms_setmode@basic:
+>     - shard-apl:          FAIL [fdo#99912] -> PASS
+>     - shard-kbl:          FAIL [fdo#99912] -> PASS
+>=20
+>   * igt@testdisplay:
+>     - shard-kbl:          INCOMPLETE [fdo#103665] -> PASS
+>     - shard-apl:          INCOMPLETE [fdo#103927] -> PASS
+>=20
+>   * igt@tools_test@tools_test:
+>     - shard-snb:          SKIP [fdo#109271] -> PASS
+>=20
+>  =20
+>   [fdo#102887]: https://bugs.freedesktop.org/show_bug.cgi?id=3D102887
+>   [fdo#103166]: https://bugs.freedesktop.org/show_bug.cgi?id=3D103166
+>   [fdo#103167]: https://bugs.freedesktop.org/show_bug.cgi?id=3D103167
+>   [fdo#103313]: https://bugs.freedesktop.org/show_bug.cgi?id=3D103313
+>   [fdo#103540]: https://bugs.freedesktop.org/show_bug.cgi?id=3D103540
+>   [fdo#103665]: https://bugs.freedesktop.org/show_bug.cgi?id=3D103665
+>   [fdo#103833]: https://bugs.freedesktop.org/show_bug.cgi?id=3D103833
+>   [fdo#103927]: https://bugs.freedesktop.org/show_bug.cgi?id=3D103927
+>   [fdo#105363]: https://bugs.freedesktop.org/show_bug.cgi?id=3D105363
+>   [fdo#105763]: https://bugs.freedesktop.org/show_bug.cgi?id=3D105763
+>   [fdo#107383]: https://bugs.freedesktop.org/show_bug.cgi?id=3D107383
+>   [fdo#108566]: https://bugs.freedesktop.org/show_bug.cgi?id=3D108566
+>   [fdo#108954]: https://bugs.freedesktop.org/show_bug.cgi?id=3D108954
+>   [fdo#109016]: https://bugs.freedesktop.org/show_bug.cgi?id=3D109016
+>   [fdo#109247]: https://bugs.freedesktop.org/show_bug.cgi?id=3D109247
+>   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=3D109271
+>   [fdo#109278]: https://bugs.freedesktop.org/show_bug.cgi?id=3D109278
+>   [fdo#109441]: https://bugs.freedesktop.org/show_bug.cgi?id=3D109441
+>   [fdo#110038]: https://bugs.freedesktop.org/show_bug.cgi?id=3D110038
+>   [fdo#110215]: https://bugs.freedesktop.org/show_bug.cgi?id=3D110215
+>   [fdo#110376]: https://bugs.freedesktop.org/show_bug.cgi?id=3D110376
+>   [fdo#99912]: https://bugs.freedesktop.org/show_bug.cgi?id=3D99912
+>=20
+>=20
+> Participating hosts (10 -> 6)
+> ------------------------------
+>=20
+>   Missing    (4): pig-skl-6260u shard-skl pig-hsw-4770r pig-glk-
+> j5005=20
+>=20
+>=20
+> Build changes
+> -------------
+>=20
+>     * IGT: IGT_4945 -> IGTPW_2854
+>     * Piglit: piglit_4509 -> None
+>=20
+>   CI_DRM_5923: 8f69ca66d43ef57be72394ba23c2ff1718d94164 @
+> git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_2854: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_2854/
+>   IGT_4945: a52cc643cfe6733465cfc9ccb3d21cbdc4fd7506 @
+> git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+>   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @
+> git://anongit.freedesktop.org/piglit
+>=20
+> =3D=3D Logs =3D=3D
+>=20
+> For more details see:=20
+> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_2854/
+
+--=-mGMtfGUC05kAfaK/XZYS
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEVNG051EijGa0MiaQVenbO/mOWkkFAly04ZAACgkQVenbO/mO
+WknzAggAmCY1HK7uVks9WdiI7w3NS5klpmbfk+6ox1T2fJ/NozhaMMUNa9UvkAUx
+FH9RQShpZzK7gG0WN/vn6QDSnd0u1GbB+KO1PxWZEBsB9dZbTIqkOPQzc2j7Qoi5
+w7nt380MhII2lKiH+WOXaNQ/o08/KtRGqDbdrcXB/G6kmUN2xJleWg9KK40Vkw1X
+091xP+nVcv4Wf7YGyKNXlizs1uywRYtsxbvwDC/ZfvDNnCk8cAORAnarUmhtgSPg
+SEoif5JOvd0t5b2ueGuRTFuWRlvpQ0VlJoDQXgCzw1GxYTj4D80IL2kX1h4g2Hxa
+0gAzWku7d9l8az73LxbAjE1u723Z1w==
+=/3/f
+-----END PGP SIGNATURE-----
+
+--=-mGMtfGUC05kAfaK/XZYS--
+
+--===============0662073366==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============0662073366==--
