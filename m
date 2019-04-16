@@ -1,15 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6752689CF4
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Apr 2019 19:43:07 +0000 (UTC)
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 00B2889BAB
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Apr 2019 20:11:21 +0000 (UTC)
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
+ [10.5.11.14])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id A2A2137F43
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Apr 2019 20:11:21 +0000 (UTC)
+From: Lyude <lyude@redhat.com>
+Date: Tue, 16 Apr 2019 16:10:56 -0400
+Message-Id: <20190416201101.9132-3-lyude@redhat.com>
+In-Reply-To: <20190416201101.9132-1-lyude@redhat.com>
+References: <20190416201101.9132-1-lyude@redhat.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-References: <89d625e89c1f56c609422987b96ba374e690de3f.1555441875.git.caz.yokoyama@intel.com>
-In-Reply-To: <89d625e89c1f56c609422987b96ba374e690de3f.1555441875.git.caz.yokoyama@intel.com>
-Message-ID: <155544378176.25605.15847739529099628281@skylake-alporthouse-com>
-Date: Tue, 16 Apr 2019 20:43:01 +0100
-Subject: Re: [igt-dev] [PATCH 1/1] lib/gem_cs_prefetch: enable on Simics
- Simulator.
+Subject: [igt-dev] [PATCH i-g-t 2/7] meson: Don't redefine gettid if the C
+ library provides it
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,16 +27,48 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Caz Yokoyama <caz.yokoyama@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBDYXogWW9rb3lhbWEgKDIwMTktMDQtMTYgMjA6MTI6NTIpCj4gQXMgaXRzIGNvbW1l
-bnQgc2F5cywgX2ludGVsX3JlcXVpcmVfbWVtb3J5KCkgd2xsIGJlIHJlbW92ZWQgd2hlbiBhbGwg
-dGVzdAo+IGNhbGxzIF9pbnRlbF9yZXF1aXJlX21lbW9yeSgpLgoKWW91IGNhbiByZXBsYWNlIHRo
-aXMgd2l0aCBhIHNpbmdsZSBidWZmZXIgbG9jYXRlZCBhdCB0aGUgZW5kIG9mIEdUVCAoYW5kCm90
-aGVyIGJvdW5kYXJpZXMgb2YgcHJlc3VtZWQgcmVsZXZhbmNlKSArIHNvZnRwaW4uIE9yIHRoaXMg
-aXMganVzdCB0aGUKc2VsZnRlc3RzIHdlIGFscmVhZHkgc2hvdWxkIGFscmVhZHkgYmUgZG9pbmcg
-Zm9yIGxpdmVfZ3R0LCBzaW5jZSB0aGlzIGlzCmFuIGludGVybmFsIGRldGFpbC4KLUNocmlzCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFp
-bGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
+RnJvbTogTHl1ZGUgUGF1bCA8bHl1ZGVAcmVkaGF0LmNvbT4KCmdsaWJjIDIuMzArIHdpbGwgYWN0
+dWFsbHkgaW5jbHVkZSBhIGRlZmluaXRpb24gZm9yIGdldHRpZCgpIHRoYXQgbWFrZXMKaXQgc28g
+dGhhdCB1c2VycyBkb24ndCBoYXZlIHRvIG1hbnVhbGx5IGRlZmluZSBhIHdyYXBwZXIgZm9yIGl0
+CnRoZW1zZWx2ZXMgd2l0aCBzeXNjYWxsKCkuIFdlIGRvbid0IGN1cnJlbnRseSBjaGVjayBmb3Ig
+dGhpcywgYW5kIGFzIGEKcmVzdWx0IHdpbGwgZW5kIHVwIHJlZGVmaW5pbmcgZ2V0dGlkKCkgb24g
+dGhlIGxhdGVzdCB2ZXJzaW9ucyBvZiBnbGliYywKY2F1c2luZyB0aGUgYnVpbGQgdG8gZmFpbDoK
+CkZBSUxFRDogbGliLzc2YjVhMzVAQGlndC1pZ3Rfa21vZF9jQHN0YS9pZ3Rfa21vZC5jLm8KSW4g
+ZmlsZSBpbmNsdWRlZCBmcm9tIC91c3IvaW5jbHVkZS91bmlzdGQuaDoxMTcwLAogICAgICAgICAg
+ICAgICAgIGZyb20gLi4vLi4vbW50L3ZvbC9saWIvaWd0X2NvcmUuaDo0MywKICAgICAgICAgICAg
+ICAgICBmcm9tIC4uLy4uL21udC92b2wvbGliL2lndF9rbW9kLmM6Mjg6Ci91c3IvaW5jbHVkZS9i
+aXRzL3VuaXN0ZF9leHQuaDozNDoyODogZXJyb3I6IG1hY3JvICJnZXR0aWQiIHBhc3NlZCAxIGFy
+Z3VtZW50cywgYnV0IHRha2VzIGp1c3QgMAogICAzNCB8IGV4dGVybiBfX3BpZF90IGdldHRpZCAo
+dm9pZCkgX19USFJPVzsKICAgICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICBeCkluIGZp
+bGUgaW5jbHVkZWQgZnJvbSAuLi8uLi9tbnQvdm9sL2xpYi9pZ3Rfa21vZC5jOjI3OgouLi8uLi9t
+bnQvdm9sL2xpYi9pZ3RfYXV4Lmg6NDA6IG5vdGU6IG1hY3JvICJnZXR0aWQiIGRlZmluZWQgaGVy
+ZQogICA0MCB8ICNkZWZpbmUgZ2V0dGlkKCkgc3lzY2FsbChfX05SX2dldHRpZCkKICAgICAgfApb
+MzYvNzcxXSBDb21waWxpbmcgQyBvYmplY3QgJ2xpYi83NmI1YTM1QEBpZ3QtaWd0X2ttc19jQHN0
+YS9pZ3Rfa21zLmMubycuCm5pbmphOiBidWlsZCBzdG9wcGVkOiBzdWJjb21tYW5kIGZhaWxlZC4K
+ClNvLCBmaXggdGhpcyBieSBieSBhZGRpbmcgc29tZSBtZXNvbiBjaGVja3MgdG8gZGVmaW5lIEhB
+VkVfR0VUVElEIHdoZW5ldmVyIHRoZQpob3N0IGRlZmluZXMgaXRzIG93biBnZXR0aWQoKSwgYW5k
+IGF2b2lkIHJlZGVmaW5pbmcgZ2V0dGlkKCkgd2hlbiBIQVZFX0dFVFRJRCBpcwpkZWZpbmVkLgoK
+VGhpcyBmaXhlcyBidWlsZCBpbnRlbC1ncHUtdG9vbHMgZm9yIG1lIG9uIEZlZG9yYSBSYXdoaWRl
+CgpTaWduZWQtb2ZmLWJ5OiBMeXVkZSBQYXVsIDxseXVkZUByZWRoYXQuY29tPgotLS0KIGxpYi9p
+Z3RfYXV4LmggfCAzICsrKwogbWVzb24uYnVpbGQgICB8IDMgKysrCiAyIGZpbGVzIGNoYW5nZWQs
+IDYgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfYXV4LmggYi9saWIvaWd0X2F1
+eC5oCmluZGV4IDU1MzkyNzkwLi4zOWZlZmNiZiAxMDA2NDQKLS0tIGEvbGliL2lndF9hdXguaAor
+KysgYi9saWIvaWd0X2F1eC5oCkBAIC0zNiw3ICszNiwxMCBAQAogI2luY2x1ZGUgPGk5MTUvZ2Vt
+X3N1Ym1pc3Npb24uaD4KIAogLyogc2lnbmFsIGludGVycnVwdCBoZWxwZXJzICovCisjaWZuZGVm
+IEhBVkVfR0VUVElECiAjZGVmaW5lIGdldHRpZCgpIHN5c2NhbGwoX19OUl9nZXR0aWQpCisjZW5k
+aWYKKwogI2RlZmluZSBzaWdldl9ub3RpZnlfdGhyZWFkX2lkIF9zaWdldl91bi5fdGlkCiAKIC8q
+IGF1eGlhbGlhcnkgaWd0IGhlbHBlcnMgZnJvbSBpZ3RfYXV4LmMgKi8KZGlmZiAtLWdpdCBhL21l
+c29uLmJ1aWxkIGIvbWVzb24uYnVpbGQKaW5kZXggNTU3NDAwYTUuLmU3MzI3NWRkIDEwMDY0NAot
+LS0gYS9tZXNvbi5idWlsZAorKysgYi9tZXNvbi5idWlsZApAQCAtMjM3LDYgKzIzNyw5IEBAIGlm
+IGNjLmhhc19oZWFkZXIoJ2NwdWlkLmgnKQogCSMgRklYTUU6IERvIHdlIG5lZWQgdGhlIGV4YW1w
+bGUgbGluayB0ZXN0IGZyb20gY29uZmlndXJlLmFjPwogCWNvbmZpZy5zZXQoJ0hBVkVfQ1BVSURf
+SCcsIDEpCiBlbmRpZgoraWYgY2MuaGFzX2hlYWRlcl9zeW1ib2woJ3VuaXN0ZC5oJywgJ2dldHRp
+ZCcsIGFyZ3MgOiAnLURfR05VX1NPVVJDRScpCisJY29uZmlnLnNldCgnSEFWRV9HRVRUSUQnLCAx
+KQorZW5kaWYKIAogaWYgY2MuaGFzX21lbWJlcignc3RydWN0IHN5c2luZm8nLCAndG90YWxyYW0n
+LAogCQlwcmVmaXggOiAnI2luY2x1ZGUgPHN5cy9zeXNpbmZvLmg+JykKLS0gCjIuMjAuMQoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
+aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
+ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
