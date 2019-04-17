@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CCCE86E08F
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Apr 2019 20:35:47 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D49CA6E08F
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Apr 2019 20:35:50 +0000 (UTC)
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Wed, 17 Apr 2019 23:35:40 +0300
-Message-Id: <20190417203544.22298-1-ville.syrjala@linux.intel.com>
+Date: Wed, 17 Apr 2019 23:35:41 +0300
+Message-Id: <20190417203544.22298-2-ville.syrjala@linux.intel.com>
+In-Reply-To: <20190417203544.22298-1-ville.syrjala@linux.intel.com>
+References: <20190417203544.22298-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/5] lib/igt_fb: Unref the renderecopy
- scratch bos
+Subject: [igt-dev] [PATCH i-g-t 2/5] tests/i915/gem_render_copy: Don't leak
+ bos between subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,20 +24,22 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KCldl
-J3JlIGN1cnJlbnRseSBsZWFraW5nIGFsbCB0aGUgdGVtcG9yYXJ5IGJvcyB3ZSBjb25zdHJ1Y3QK
-Zm9yIHJlbmRlcmNvcHkuIFRoYXQgZG9lc24ndCBnbyBzbyB3ZWxsIHdoZW4gdHJ5aW5nIHRvIHRl
-c3QKd2l0aCAxR2lCIGZyYW1lYnVmZmVycy4KClNpZ25lZC1vZmYtYnk6IFZpbGxlIFN5cmrDpGzD
-pCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+Ci0tLQogbGliL2lndF9mYi5jIHwgMyAr
-KysKIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9saWIvaWd0
-X2ZiLmMgYi9saWIvaWd0X2ZiLmMKaW5kZXggNmE0M2ZjYzQ3MzVmLi5jM2VjZDcxODY0NDQgMTAw
-NjQ0Ci0tLSBhL2xpYi9pZ3RfZmIuYworKysgYi9saWIvaWd0X2ZiLmMKQEAgLTE2NDcsNiArMTY0
-Nyw5IEBAIHN0YXRpYyB2b2lkIHJlbmRlcmNvcHkoc3RydWN0IGZiX2JsaXRfdXBsb2FkICpibGl0
-LAogCXJlbmRlcl9jb3B5KGJsaXQtPmJhdGNoLCBOVUxMLAogCQkgICAgJnNyYywgMCwgMCwgZHN0
-X2ZiLT5wbGFuZV93aWR0aFswXSwgZHN0X2ZiLT5wbGFuZV9oZWlnaHRbMF0sCiAJCSAgICAmZHN0
-LCAwLCAwKTsKKworCWRybV9pbnRlbF9ib191bnJlZmVyZW5jZShkc3QuYm8pOworCWRybV9pbnRl
-bF9ib191bnJlZmVyZW5jZShzcmMuYm8pOwogfQogCiBzdGF0aWMgdm9pZCBibGl0Y29weShjb25z
-dCBzdHJ1Y3QgaWd0X2ZiICpkc3RfZmIsCi0tIAoyLjIxLjAKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
-YW4vbGlzdGluZm8vaWd0LWRldg==
+RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KClVu
+cmVmIHRoZSBib3MgYWZ0ZXIgb25lIHN1YnRlc3QgaXMgZG9uZS4gVGhlIG5leHQgc3VidGVzdAp3
+aWxsIGFsbG9jYXRlIGl0cyBvd24gYm9zLgoKU2lnbmVkLW9mZi1ieTogVmlsbGUgU3lyasOkbMOk
+IDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KLS0tCiB0ZXN0cy9pOTE1L2dlbV9yZW5k
+ZXJfY29weS5jIHwgNyArKysrKysrCiAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspCgpk
+aWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fcmVuZGVyX2NvcHkuYyBiL3Rlc3RzL2k5MTUvZ2Vt
+X3JlbmRlcl9jb3B5LmMKaW5kZXggOGQ2MmEwZjQzYWQ4Li5hNjQ3NmE0ZDJkOGQgMTAwNjQ0Ci0t
+LSBhL3Rlc3RzL2k5MTUvZ2VtX3JlbmRlcl9jb3B5LmMKKysrIGIvdGVzdHMvaTkxNS9nZW1fcmVu
+ZGVyX2NvcHkuYwpAQCAtNjYyLDYgKzY2MiwxMyBAQCBzdGF0aWMgdm9pZCB0ZXN0KGRhdGFfdCAq
+ZGF0YSwgdWludDMyX3QgdGlsaW5nLCB1aW50NjRfdCBjY3NfbW9kaWZpZXIpCiAKIAlpZiAoY2Nz
+X21vZGlmaWVyKQogCQlzY3JhdGNoX2J1Zl9hdXhfY2hlY2soZGF0YSwgJmNjcyk7CisKKwlmb3Ig
+KGludCBpID0gMDsgaSA8IG51bV9zcmM7IGkrKykKKwkJZHJtX2ludGVsX2JvX3VucmVmZXJlbmNl
+KHNyY1tpXS5idWYuYm8pOworCWRybV9pbnRlbF9ib191bnJlZmVyZW5jZShkc3QuYm8pOworCWlm
+IChjY3NfbW9kaWZpZXIpCisJCWRybV9pbnRlbF9ib191bnJlZmVyZW5jZShjY3MuYm8pOworCWRy
+bV9pbnRlbF9ib191bnJlZmVyZW5jZShyZWYuYm8pOwogfQogCiBzdGF0aWMgaW50IG9wdF9oYW5k
+bGVyKGludCBvcHQsIGludCBvcHRfaW5kZXgsIHZvaWQgKmRhdGEpCi0tIAoyLjIxLjAKCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
+ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
