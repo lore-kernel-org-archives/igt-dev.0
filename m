@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC2DF89117
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Apr 2019 09:52:38 +0000 (UTC)
-Date: Fri, 26 Apr 2019 12:52:36 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20190426095236.GE22949@platvala-desk.ger.corp.intel.com>
-References: <0df9d3f66d04f5ed7deed54aca5320ad8e202ead.1556212895.git.caz.yokoyama@intel.com>
- <20190426094110.GD22949@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190426094110.GD22949@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/1] lib: consolidate duplicated
- define of vfs_file_max(void)
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 26 Apr 2019 10:08:38 -0000
+Message-ID: <20190426100838.31457.15172@emeril.freedesktop.org>
+References: <1556269897-17144-1-git-send-email-juhapekka.heikkila@gmail.com>
+In-Reply-To: <1556269897-17144-1-git-send-email-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgSEFYIHRl?=
+ =?utf-8?q?sts/kms=5Frotation=5Fcrc?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,21 +14,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Caz Yokoyama <caz.yokoyama@intel.com>, igt-dev@lists.freedesktop.org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBBcHIgMjYsIDIwMTkgYXQgMTI6NDE6MTBQTSArMDMwMCwgUGV0cmkgTGF0dmFsYSB3
-cm90ZToKPiBPbiBUaHUsIEFwciAyNSwgMjAxOSBhdCAxMDoyMzoxM0FNIC0wNzAwLCBDYXogWW9r
-b3lhbWEgd3JvdGU6Cj4gPiBSZW1vdmUgaXQgZnJvbSBpbnRlbF9vcy5jIGFuZCBnZW1fZXhlY19y
-ZXVzZS5jIGFuZCBnbG9iYWxseQo+ID4gZGVmaW5lIGluIGlndF9hdXguYy4KPiA+IAo+ID4gdjM6
-IHVwZGF0ZSBjb21tZW50IGluIHRoZSBjb2RlIGFuZCBjb21taXQgbWVzc2FnZS4KPiA+IAo+ID4g
-U2lnbmVkLW9mZi1ieTogQ2F6IFlva295YW1hIDxjYXoueW9rb3lhbWFAaW50ZWwuY29tPgo+ID4g
-Q2M6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgo+IAo+IAo+IFJldmll
-d2VkLWJ5OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KCkFuZCBtZXJn
-ZWQsIHRoYW5rcy4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
-cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogSEFYIHRlc3RzL2ttc19yb3RhdGlvbl9jcmMK
+VVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzU5OTgxLwpT
+dGF0ZSA6IGZhaWx1cmUKCj09IFN1bW1hcnkgPT0KCkNJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20g
+Q0lfRFJNXzYwMDIgLT4gSUdUUFdfMjkyNgo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09CgpTdW1tYXJ5Ci0tLS0tLS0KCiAgKipGQUlMVVJFKioKCiAg
+U2VyaW91cyB1bmtub3duIGNoYW5nZXMgY29taW5nIHdpdGggSUdUUFdfMjkyNiBhYnNvbHV0ZWx5
+IG5lZWQgdG8gYmUKICB2ZXJpZmllZCBtYW51YWxseS4KICAKICBJZiB5b3UgdGhpbmsgdGhlIHJl
+cG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNoYW5nZXMKICBpbnRy
+b2R1Y2VkIGluIElHVFBXXzI5MjYsIHBsZWFzZSBub3RpZnkgeW91ciBidWcgdGVhbSB0byBhbGxv
+dyB0aGVtCiAgdG8gZG9jdW1lbnQgdGhpcyBuZXcgZmFpbHVyZSBtb2RlLCB3aGljaCB3aWxsIHJl
+ZHVjZSBmYWxzZSBwb3NpdGl2ZXMgaW4gQ0kuCgogIEV4dGVybmFsIFVSTDogaHR0cHM6Ly9wYXRj
+aHdvcmsuZnJlZWRlc2t0b3Aub3JnL2FwaS8xLjAvc2VyaWVzLzU5OTgxL3JldmlzaW9ucy8xL21i
+b3gvCgpQb3NzaWJsZSBuZXcgaXNzdWVzCi0tLS0tLS0tLS0tLS0tLS0tLS0KCiAgSGVyZSBhcmUg
+dGhlIHVua25vd24gY2hhbmdlcyB0aGF0IG1heSBoYXZlIGJlZW4gaW50cm9kdWNlZCBpbiBJR1RQ
+V18yOTI2OgoKIyMjIElHVCBjaGFuZ2VzICMjIwoKIyMjIyBQb3NzaWJsZSByZWdyZXNzaW9ucyAj
+IyMjCgogICogaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZV9zYW5pdHljaGVjazoKICAgIC0gZmktYmxi
+LWU2ODUwOiAgICAgICBbUEFTU11bMV0gLT4gW0lOQ09NUExFVEVdWzJdCiAgIFsxXTogaHR0cHM6
+Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fNjAwMi9maS1ibGItZTY4
+NTAvaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZV9zYW5pdHljaGVjay5odG1sCiAgIFsyXTogaHR0cHM6
+Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yOTI2L2ZpLWJsYi1lNjg1
+MC9pZ3RAaTkxNV9zZWxmdGVzdEBsaXZlX3Nhbml0eWNoZWNrLmh0bWwKCiAgCgoKUGFydGljaXBh
+dGluZyBob3N0cyAoMzYgLT4gMzIpCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQoKICBB
+ZGRpdGlvbmFsICgzKTogZmktaWNsLXkgZmktYnh0LWRzaSBmaS1pY2wtdTMgCiAgTWlzc2luZyAg
+ICAoNyk6IGZpLWtibC1zb3Jha2EgZmktaWxrLW01NDAgZmktYnl0LWoxOTAwIGZpLWN0Zy1wODYw
+MCBmaS1pY2wtZHNpIGZpLWJkdy1zYW11cyBmaS1rYmwtciAKCgpCdWlsZCBjaGFuZ2VzCi0tLS0t
+LS0tLS0tLS0KCiAgKiBJR1Q6IElHVF80OTY2IC0+IElHVFBXXzI5MjYKCiAgQ0lfRFJNXzYwMDI6
+IDhlMzhiMmMyZjE5ODY0MGQ4NDAwNDdlNDI2YWMwMDliNTk5Nzc2MzMgQCBnaXQ6Ly9hbm9uZ2l0
+LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvbGludXgKICBJR1RQV18yOTI2OiBodHRwczovL2ludGVs
+LWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzI5MjYvCiAgSUdUXzQ5NjY6IGE3NTQy
+OTU0NGY1NzIxMzE2YjA0YTM2NTUxYzU3NTczZTBjNzk0ODYgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVk
+ZXNrdG9wLm9yZy94b3JnL2FwcC9pbnRlbC1ncHUtdG9vbHMKCj09IExvZ3MgPT0KCkZvciBtb3Jl
+IGRldGFpbHMgc2VlOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lH
+VFBXXzI5MjYvCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBz
+Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
