@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 32EC689272
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Apr 2019 09:50:14 +0000 (UTC)
-From: "Ser, Simon" <simon.ser@intel.com>
-Date: Mon, 29 Apr 2019 09:50:08 +0000
-Message-ID: <bb0f7bd0a528c1a542a73790e975a967c4aa3388.camel@intel.com>
-References: <20190429092437.23489-1-maarten.lankhorst@linux.intel.com>
-In-Reply-To: <20190429092437.23489-1-maarten.lankhorst@linux.intel.com>
-Content-Language: en-US
-Content-ID: <767CE3FD9B57814FBDB8658935250D91@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15AA3892F2
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Apr 2019 10:24:59 +0000 (UTC)
+Date: Mon, 29 Apr 2019 13:24:55 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <20190429102455.GZ24299@intel.com>
+References: <20190418194043.5184-1-ville.syrjala@linux.intel.com>
+ <20190426234125.31456.74045@emeril.freedesktop.org>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/audio: Fix compiler error with
- missing permsisions to O_CREAT.
+Content-Disposition: inline
+In-Reply-To: <20190426234125.31456.74045@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/5=5D__lib/igt=5Ffb=3A_Fix_the_cairo?=
+ =?utf-8?q?_shadow_buffer_stride_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,23 +25,39 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCAyMDE5LTA0LTI5IGF0IDExOjI0ICswMjAwLCBNYWFydGVuIExhbmtob3JzdCB3cm90
-ZToNCj4gSW4gZmlsZSBpbmNsdWRlZCBmcm9tIC91c3IvaW5jbHVkZS9mY250bC5oOjI5MDowLA0K
-PiAgICAgICAgICAgICAgICAgIGZyb20gLi4vLi4vbGliL2lndF9hdWRpby5jOjMwOg0KPiBJbiBm
-dW5jdGlvbiDigJhvcGVu4oCZLA0KPiAgICAgaW5saW5lZCBmcm9tIOKAmGF1ZGlvX2NyZWF0ZV93
-YXZfZmlsZV9zMzJfbGXigJkgYXQgaWd0X2F1ZGlvLmM6NDUwOjU6DQo+IC91c3IvaW5jbHVkZS94
-ODZfNjQtbGludXgtZ251L2JpdHMvZmNudGwyLmg6NTA6NDogZXJyb3I6IGNhbGwgdG8NCj4gCeKA
-mF9fb3Blbl9taXNzaW5nX21vZGXigJkgZGVjbGFyZWQgd2l0aCBhdHRyaWJ1dGUgZXJyb3I6IG9w
-ZW4gd2l0aA0KPiAJT19DUkVBVCBvciBPX1RNUEZJTEUgaW4gc2Vjb25kIGFyZ3VtZW50IG5lZWRz
-IDMgYXJndW1lbnRzDQo+ICAgICBfX29wZW5fbWlzc2luZ19tb2RlICgpOw0KPiAgICAgXn5+fn5+
-fn5+fn5+fn5+fn5+fn5+fg0KPiANCj4gU2lnbmVkLW9mZi1ieTogTWFhcnRlbiBMYW5raG9yc3Qg
-PG1hYXJ0ZW4ubGFua2hvcnN0QGxpbnV4LmludGVsLmNvbT4NCj4gQ2M6IFNpbW9uIFNlciA8c2lt
-b24uc2VyQGludGVsLmNvbT4NCj4gQ2M6IE1hcnRpbiBQZXJlcyA8bWFydGluLnBlcmVzQGxpbnV4
-LmludGVsLmNvbT4NCg0KRHVwbGljYXRlIG9mIGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-L2FyY2hpdmVzL2lndC1kZXYvMjAxOS1BcHJpbC8wMTI2NDIuaHRtbA0KX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0
-LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+T24gRnJpLCBBcHIgMjYsIDIwMTkgYXQgMTE6NDE6MjVQTSAtMDAwMCwgUGF0Y2h3b3JrIHdyb3Rl
+Ogo+ID09IFNlcmllcyBEZXRhaWxzID09Cj4gCj4gU2VyaWVzOiBzZXJpZXMgc3RhcnRpbmcgd2l0
+aCBbaS1nLXQsMS81XSBsaWIvaWd0X2ZiOiBGaXggdGhlIGNhaXJvIHNoYWRvdyBidWZmZXIgc3Ry
+aWRlIChyZXYyKQo+IFVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nl
+cmllcy81OTczMi8KPiBTdGF0ZSA6IGZhaWx1cmUKPiAKPiA9PSBTdW1tYXJ5ID09Cj4gCj4gQ0kg
+QnVnIExvZyAtIGNoYW5nZXMgZnJvbSBDSV9EUk1fNjAwNl9mdWxsIC0+IElHVFBXXzI5MzBfZnVs
+bAo+ID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0K
+PiAKPiBTdW1tYXJ5Cj4gLS0tLS0tLQo+IAo+ICAgKipGQUlMVVJFKioKPiAKPiAgIFNlcmlvdXMg
+dW5rbm93biBjaGFuZ2VzIGNvbWluZyB3aXRoIElHVFBXXzI5MzBfZnVsbCBhYnNvbHV0ZWx5IG5l
+ZWQgdG8gYmUKPiAgIHZlcmlmaWVkIG1hbnVhbGx5Lgo+ICAgCj4gICBJZiB5b3UgdGhpbmsgdGhl
+IHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNoYW5nZXMKPiAg
+IGludHJvZHVjZWQgaW4gSUdUUFdfMjkzMF9mdWxsLCBwbGVhc2Ugbm90aWZ5IHlvdXIgYnVnIHRl
+YW0gdG8gYWxsb3cgdGhlbQo+ICAgdG8gZG9jdW1lbnQgdGhpcyBuZXcgZmFpbHVyZSBtb2RlLCB3
+aGljaCB3aWxsIHJlZHVjZSBmYWxzZSBwb3NpdGl2ZXMgaW4gQ0kuCj4gCj4gICBFeHRlcm5hbCBV
+Ukw6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9hcGkvMS4wL3Nlcmllcy81OTcz
+Mi9yZXZpc2lvbnMvMi9tYm94Lwo+IAo+IFBvc3NpYmxlIG5ldyBpc3N1ZXMKPiAtLS0tLS0tLS0t
+LS0tLS0tLS0tCj4gCj4gICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQgbWF5IGhh
+dmUgYmVlbiBpbnRyb2R1Y2VkIGluIElHVFBXXzI5MzBfZnVsbDoKPiAKPiAjIyMgSUdUIGNoYW5n
+ZXMgIyMjCj4gCj4gIyMjIyBQb3NzaWJsZSByZWdyZXNzaW9ucyAjIyMjCj4gCj4gICAqIHtpZ3RA
+a21zX2JpZ19mYkB4LXRpbGVkLTMyYnBwLXJvdGF0ZS05MH0gKE5FVyk6Cj4gICAgIC0gc2hhcmQt
+aWNsYjogICAgICAgICBOT1RSVU4gLT4gW1NLSVBdWzFdICszMCBzaW1pbGFyIGlzc3Vlcwo+ICAg
+IFsxXTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yOTMw
+L3NoYXJkLWljbGI2L2lndEBrbXNfYmlnX2ZiQHgtdGlsZWQtMzJicHAtcm90YXRlLTkwLmh0bWwK
+PiAKPiAgICoge2lndEBrbXNfYmlnX2ZiQHktdGlsZWQtNjRicHAtcm90YXRlLTB9IChORVcpOgo+
+ICAgICAtIHNoYXJkLWljbGI6ICAgICAgICAgTk9UUlVOIC0+IFtGQUlMXVsyXSArMTEgc2ltaWxh
+ciBpc3N1ZXMKPiAgICBbMl06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10
+aXAvSUdUUFdfMjkzMC9zaGFyZC1pY2xiOC9pZ3RAa21zX2JpZ19mYkB5LXRpbGVkLTY0YnBwLXJv
+dGF0ZS0wLmh0bWwKCjw3PiBbMTI3LjQwMTQyN10gW2RybTppbnRlbF9mcmFtZWJ1ZmZlcl9pbml0
+IFtpOTE1XV0gdGlsZWQgcGl0Y2ggKDY1NTM2KSBtdXN0IGJlIGF0IG1vc3QgMzI3NjgKCkV4cGVj
+dGVkIGZhaWx1cmUgbW9kZSB1bnRpbCByZW1hcHBpbmcgaXMgaW50cm9kdWNlZC4KCi0tIApWaWxs
+ZSBTeXJqw6Rsw6QKSW50ZWwKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
+cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
