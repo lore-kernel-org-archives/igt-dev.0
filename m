@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20190508121058.27038-2-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20190508121058.27038-17-tvrtko.ursulin@linux.intel.com>
 References: <20190508121058.27038-1-tvrtko.ursulin@linux.intel.com>
- <20190508121058.27038-2-tvrtko.ursulin@linux.intel.com>
-Message-ID: <155731785242.28545.4596359087636884591@skylake-alporthouse-com>
-Date: Wed, 08 May 2019 13:17:32 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t 01/21] scripts/trace.pl: Fix after
- intel_engine_notify removal
+ <20190508121058.27038-17-tvrtko.ursulin@linux.intel.com>
+Message-ID: <155731847301.28545.3793641581373958416@skylake-alporthouse-com>
+Date: Wed, 08 May 2019 13:27:53 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t 16/21] gem_wsim: Some more example
+ workloads
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,16 +23,13 @@ To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.o
 Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBUdnJ0a28gVXJzdWxpbiAoMjAxOS0wNS0wOCAxMzoxMDozOCkKPiBGcm9tOiBUdnJ0
-a28gVXJzdWxpbiA8dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPgo+IAo+IEFmdGVyIHRoZSByZW1v
-dmFsIG9mIGVuZ2luZSBnbG9iYWwgc2Vxbm9zIGFuZCB0aGUgY29ycmVzcG9uZGluZwo+IGludGVs
-X2VuZ2luZV9ub3RpZnkgdHJhY2Vwb2ludHMgdGhlIHNjcmlwdCBuZWVkcyB0byBiZSBhZGp1c3Rl
-ZCB0byBjb3BlCj4gd2l0aCB0aGUgbmV3IHN0YXRlIG9mIHRoaW5ncy4KPiAKPiBUbyBrZWVwIHdv
-cmtpbmcgaXQgc3dpdGNoZXMgb3ZlciB1c2luZyB0aGUgZG1hX2ZlbmNlOmRtYV9mZW5jZV9zaWdu
-YWxlZDoKPiB0cmFjZXBvaW50IGFuZCBrZWVwcyBvbmUgZXh0cmEgaW50ZXJuYWwgbWFwIHRvIGNv
-bm5lY3QgdGhlIGN0eC1zZXFubyBwYWlycwo+IHdpdGggZW5naW5lcy4KCklzIHRoZSBtYXAgc3Vp
-dGFibGUgZm9yIHRoZSBwbGFubmVkIChieSBtZSkKCglzL2k5MTVfcmVxdWVzdF93YWl0X2JlZ2lu
-L2RtYV9mZW5jZV93YWl0X2JlZ2luLwoKSSBndWVzcyBpdCBzaG91bGQgYmUuCi1DaHJpcwpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxp
-bmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVk
-ZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
+UXVvdGluZyBUdnJ0a28gVXJzdWxpbiAoMjAxOS0wNS0wOCAxMzoxMDo1MykKPiBGcm9tOiBUdnJ0
+a28gVXJzdWxpbiA8dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPgo+IAo+IEEgZmV3IGFkZGl0aW9u
+YWwgd29ya2xvYWRzIHVzZWZ1bCBmb3IgZXhwZXJpbWVudGluZyB3aXRoIHNjaGVkdWxpbmcuCj4g
+Cj4gU2lnbmVkLW9mZi1ieTogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNv
+bT4KCkFyZSB0aGUgZXh0cmEgbW9kZXMgJiAud3NpbSBzdXBwb3J0ZWQgYnkgc2NyaXB0cy9tZWRp
+YS1iZW5jaC5wbD8KaS5lLiBjYW4gSSBqdXN0IHJ1biBtZWRpYS1iZW5jaC5wbCBhbmQgaGF2ZSBp
+dCBleGVyY2lzZSBhbGwgdGhlIG5ldwpmZWF0dXJlcz8KLUNocmlzCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
+aWxtYW4vbGlzdGluZm8vaWd0LWRldg==
