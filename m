@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A955E89C28
- for <igt-dev@lists.freedesktop.org>; Mon, 13 May 2019 11:58:07 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4906589C1F
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 May 2019 12:09:09 +0000 (UTC)
+Date: Mon, 13 May 2019 15:09:04 +0300
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20190513120904.pnczn7hmg7zq3z7i@ahiler-desk1.fi.intel.com>
+References: <20190513081548.31837-1-simon.ser@intel.com>
+ <20190513083809.3916.27329@emeril.freedesktop.org>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20190513004508.8042-7-andi@etezian.org>
-References: <20190513004508.8042-1-andi@etezian.org>
- <20190513004508.8042-7-andi@etezian.org>
-Message-ID: <155774862021.2165.10796679625371240823@skylake-alporthouse-com>
-Date: Mon, 13 May 2019 12:57:00 +0100
-Subject: Re: [igt-dev] [PATCH v23 06/14] test: perf_pmu: use the
- gem_engine_topology library
+Content-Disposition: inline
+In-Reply-To: <20190513083809.3916.27329@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyTIEZpLkNJLkJBVDogIHN1Y2Nlc3MgZm9yIHRlc3Rz?=
+ =?utf-8?q?/kms=5Fchamelium=3A_add_hdmi-audio_test_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,17 +24,49 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Andi Shyti <andi@etezian.org>, IGT dev <igt-dev@lists.freedesktop.org>
-Cc: Andi Shyti <andi@etezian.org>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBBbmRpIFNoeXRpICgyMDE5LTA1LTEzIDAxOjQ1OjAwKQo+ICBzdGF0aWMgdm9pZAo+
-IC1pbml0KGludCBnZW1fZmQsIGNvbnN0IHN0cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAq
-ZSwgdWludDhfdCBzYW1wbGUpCj4gK2luaXQoaW50IGdlbV9mZCwgc3RydWN0IGludGVsX2V4ZWN1
-dGlvbl9lbmdpbmUyICplLCB1aW50OF90IHNhbXBsZSkKClRoZXJlJ3MgYSBsb3Qgb2YgY29uc3Qg
-ZHJvcHBpbmcgd2hlcmUgY29uc3Qgc2VlbXMgYXBwcm9wcmlhdGUgdGhyb3VnaG91dAp0aGlzIHNl
-cmllcz8gRGlkIEkgbWlzcmVhZCBhbmQgdGhlcmUncyBhIHJlYXNvbiB0aHJvdWdob3V0IHdoeSB3
-ZSBhcmUKcmV3cml0aW5nIHRoZSBjYWxsZXIncyBzdHJ1Y3Q/Ci1DaHJpcwpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdApp
-Z3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
+T24gTW9uLCBNYXkgMTMsIDIwMTkgYXQgMDg6Mzg6MDlBTSArMDAwMCwgUGF0Y2h3b3JrIHdyb3Rl
+Ogo+ID09IFNlcmllcyBEZXRhaWxzID09Cj4gCj4gU2VyaWVzOiB0ZXN0cy9rbXNfY2hhbWVsaXVt
+OiBhZGQgaGRtaS1hdWRpbyB0ZXN0IChyZXYyKQo+IFVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsu
+ZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy82MDAwMy8KPiBTdGF0ZSA6IHN1Y2Nlc3MKPiAKPiA9PSBT
+dW1tYXJ5ID09Cj4gCj4gQ0kgQnVnIExvZyAtIGNoYW5nZXMgZnJvbSBJR1RfNDk4MiAtPiBJR1RQ
+V18yOTY5Cj4gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PQo+IAo+IFN1bW1hcnkKPiAtLS0tLS0tCj4gCj4gICAqKlNVQ0NFU1MqKgo+IAo+ICAgTm8g
+cmVncmVzc2lvbnMgZm91bmQuCj4gCj4gICBFeHRlcm5hbCBVUkw6IGh0dHBzOi8vcGF0Y2h3b3Jr
+LmZyZWVkZXNrdG9wLm9yZy9hcGkvMS4wL3Nlcmllcy82MDAwMy9yZXZpc2lvbnMvMi9tYm94Lwo+
+IAo+IFBvc3NpYmxlIG5ldyBpc3N1ZXMKPiAtLS0tLS0tLS0tLS0tLS0tLS0tCj4gCj4gICBIZXJl
+IGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQgbWF5IGhhdmUgYmVlbiBpbnRyb2R1Y2VkIGlu
+IElHVFBXXzI5Njk6Cj4gCj4gIyMjIElHVCBjaGFuZ2VzICMjIwo+IAo+ICMjIyMgUG9zc2libGUg
+cmVncmVzc2lvbnMgIyMjIwo+IAo+ICAgKiB7aWd0QGttc19jaGFtZWxpdW1AaGRtaS1hdWRpb30g
+KE5FVyk6Cj4gICAgIC0gZmkta2JsLTc1Njd1OiAgICAgICBOT1RSVU4gLT4gW0ZBSUxdWzFdCj4g
+ICAgWzFdOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzI5
+NjkvZmkta2JsLTc1Njd1L2lndEBrbXNfY2hhbWVsaXVtQGhkbWktYXVkaW8uaHRtbAo+ICAgICAt
+IGZpLWtibC03NTAwdTogICAgICAgTk9UUlVOIC0+IFtETUVTRy1GQUlMXVsyXQo+ICAgIFsyXTog
+aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18yOTY5L2ZpLWti
+bC03NTAwdS9pZ3RAa21zX2NoYW1lbGl1bUBoZG1pLWF1ZGlvLmh0bWwKPiAgICAgLSBmaS1za2wt
+NjcwMGsyOiAgICAgIE5PVFJVTiAtPiBbRkFJTF1bM10KPiAgICBbM106IGh0dHBzOi8vaW50ZWwt
+Z2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMjk2OS9maS1za2wtNjcwMGsyL2lndEBr
+bXNfY2hhbWVsaXVtQGhkbWktYXVkaW8uaHRtbAo+IAo+ICAgCj4gIyMjIyBTdXBwcmVzc2VkICMj
+IyMKPiAKPiAgIFRoZSBmb2xsb3dpbmcgcmVzdWx0cyBjb21lIGZyb20gdW50cnVzdGVkIG1hY2hp
+bmVzLCB0ZXN0cywgb3Igc3RhdHVzZXMuCj4gICBUaGV5IGRvIG5vdCBhZmZlY3QgdGhlIG92ZXJh
+bGwgcmVzdWx0Lgo+IAo+ICAgKiBpZ3RAZ2VtX2V4ZWNfYmFzaWNAYmFzaWMtYnNkMToKPiAgICAg
+LSB7ZmktY21sLXUyfTogICAgICAgIE5PVFJVTiAtPiBbSU5DT01QTEVURV1bNF0KPiAgICBbNF06
+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMjk2OS9maS1j
+bWwtdTIvaWd0QGdlbV9leGVjX2Jhc2ljQGJhc2ljLWJzZDEuaHRtbAo+IAo+ICAgCj4gTmV3IHRl
+c3RzCj4gLS0tLS0tLS0tCj4gCj4gICBOZXcgdGVzdHMgaGF2ZSBiZWVuIGludHJvZHVjZWQgYmV0
+d2VlbiBJR1RfNDk4MiBhbmQgSUdUUFdfMjk2OToKPiAKPiAjIyMgTmV3IElHVCB0ZXN0cyAoMSkg
+IyMjCj4gCj4gICAqIGlndEBrbXNfY2hhbWVsaXVtQGhkbWktYXVkaW86Cj4gICAgIC0gU3RhdHVz
+ZXMgOiAyIGRtZXNnLWZhaWwocykgMiBmYWlsKHMpIDM4IHNraXAocykKPiAgICAgLSBFeGVjIHRp
+bWU6IFswLjAsIDkuMDJdIHMKCihrbXNfY2hhbWVsaXVtOjI5MTkpIGlndF9jaGFtZWxpdW0tQ1JJ
+VElDQUw6IENoYW1lbGl1bSBSUEMgY2FsbCBmYWlsZWQ6IFJQQyBmYWlsZWQgYXQgc2VydmVyLiAg
+PHR5cGUgJ2V4Y2VwdGlvbnMuRXhjZXB0aW9uJz46bWV0aG9kICJHZXRBdWRpb0Zvcm1hdCIgaXMg
+bm90IHN1cHBvcnRlZAoKV2VscCwgYXQgbGVhc3QgdGhlcmUgYXJlIG5vIHJlZ3Jlc3Npb25zLiBJ
+IGd1ZXNzIG91ciBDaGFtZWxpdW1zIG5lZWQKdG8gYmUgdXBkYXRlZC4uLgoKQW55d2F5LCBldmVy
+eXRoaW5nIChzYW5zIHRoZSBIQVgpIGlzOgpSZXZpZXdlZC1ieTogQXJrYWRpdXN6IEhpbGVyIDxh
+cmthZGl1c3ouaGlsZXJAaW50ZWwuY29tPgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVk
+ZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2lndC1kZXY=
