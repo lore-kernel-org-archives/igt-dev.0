@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 26FDE892E6
- for <igt-dev@lists.freedesktop.org>; Tue, 14 May 2019 12:07:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 76D36892EA
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 May 2019 12:07:12 +0000 (UTC)
 From: Simon Ser <simon.ser@intel.com>
-Date: Tue, 14 May 2019 15:06:44 +0300
-Message-Id: <20190514120646.19889-8-simon.ser@intel.com>
+Date: Tue, 14 May 2019 15:06:46 +0300
+Message-Id: <20190514120646.19889-10-simon.ser@intel.com>
 In-Reply-To: <20190514120646.19889-1-simon.ser@intel.com>
 References: <20190514120646.19889-1-simon.ser@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3 7/9] tests/kms_chamelium: enable audio
- test on HDMI ports
+Subject: [igt-dev] [PATCH i-g-t v3 9/9] HAX: add {dp,
+ hdmi}-audio test to fast-feedback
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,18 +25,20 @@ To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Tm93IHRoYXQgd2UgaGF2ZSBhbGwgdGhlIHJlcXVpcmVkIEVESUQgYml0cyBpbiBwbGFjZSwgd2Ug
-Y2FuIGFkZCBhIG5ldwpoZG1pLWF1ZGlvIHRlc3QuCgpTaWduZWQtb2ZmLWJ5OiBTaW1vbiBTZXIg
-PHNpbW9uLnNlckBpbnRlbC5jb20+ClJldmlld2VkLWJ5OiBBcmthZGl1c3ogSGlsZXIgPGFya2Fk
-aXVzei5oaWxlckBpbnRlbC5jb20+Ci0tLQogdGVzdHMva21zX2NoYW1lbGl1bS5jIHwgNCArKysr
-CiAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvdGVzdHMva21z
-X2NoYW1lbGl1bS5jIGIvdGVzdHMva21zX2NoYW1lbGl1bS5jCmluZGV4IGE2ODZkMzQ3OWE4MC4u
-NTFmMzM1ZWZiOTRiIDEwMDY0NAotLS0gYS90ZXN0cy9rbXNfY2hhbWVsaXVtLmMKKysrIGIvdGVz
-dHMva21zX2NoYW1lbGl1bS5jCkBAIC0xOTI3LDYgKzE5MjcsMTAgQEAgaWd0X21haW4KIAogCQlj
-b25uZWN0b3Jfc3VidGVzdCgiaGRtaS1mcmFtZS1kdW1wIiwgSERNSUEpCiAJCQl0ZXN0X2Rpc3Bs
-YXlfZnJhbWVfZHVtcCgmZGF0YSwgcG9ydCk7CisKKwkJY29ubmVjdG9yX3N1YnRlc3QoImhkbWkt
-YXVkaW8iLCBIRE1JQSkKKwkJCXRlc3RfZGlzcGxheV9hdWRpbygmZGF0YSwgcG9ydCwgIkhETUki
-LAorCQkJCQkgICBURVNUX0VESURfSERNSV9BVURJTyk7CiAJfQogCiAJaWd0X3N1YnRlc3RfZ3Jv
-dXAgewotLSAKMi4yMS4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
-ZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
+V2FpdGluZyBmb3IgdGhlIHdob2xlIHNlcmllcyB0byBiZSBjb21wbGV0ZSB0byBkZWNpZGUgd2hl
+dGhlciBvciBub3Qgd2Ugd2FudAp0aGlzIHRlc3QgaW4gZmFzdC1mZWVkYmFjay4KLS0tCiB0ZXN0
+cy9pbnRlbC1jaS9mYXN0LWZlZWRiYWNrLnRlc3RsaXN0IHwgMiArKwogMSBmaWxlIGNoYW5nZWQs
+IDIgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2ludGVsLWNpL2Zhc3QtZmVlZGJh
+Y2sudGVzdGxpc3QgYi90ZXN0cy9pbnRlbC1jaS9mYXN0LWZlZWRiYWNrLnRlc3RsaXN0CmluZGV4
+IDQwNDc1YjFhYjM2MS4uZDM5YjkyYTg2NmRhIDEwMDY0NAotLS0gYS90ZXN0cy9pbnRlbC1jaS9m
+YXN0LWZlZWRiYWNrLnRlc3RsaXN0CisrKyBiL3Rlc3RzL2ludGVsLWNpL2Zhc3QtZmVlZGJhY2su
+dGVzdGxpc3QKQEAgLTE3NSw5ICsxNzUsMTEgQEAgaWd0QGttc19hZGRmYl9iYXNpY0B1bnVzZWQt
+cGl0Y2hlcwogaWd0QGttc19idXN5QGJhc2ljLWZsaXAtYQogaWd0QGttc19idXN5QGJhc2ljLWZs
+aXAtYgogaWd0QGttc19idXN5QGJhc2ljLWZsaXAtYworaWd0QGttc19jaGFtZWxpdW1AZHAtYXVk
+aW8KIGlndEBrbXNfY2hhbWVsaXVtQGRwLWhwZC1mYXN0CiBpZ3RAa21zX2NoYW1lbGl1bUBkcC1l
+ZGlkLXJlYWQKIGlndEBrbXNfY2hhbWVsaXVtQGRwLWNyYy1mYXN0CitpZ3RAa21zX2NoYW1lbGl1
+bUBoZG1pLWF1ZGlvCiBpZ3RAa21zX2NoYW1lbGl1bUBoZG1pLWhwZC1mYXN0CiBpZ3RAa21zX2No
+YW1lbGl1bUBoZG1pLWVkaWQtcmVhZAogaWd0QGttc19jaGFtZWxpdW1AaGRtaS1jcmMtZmFzdAot
+LSAKMi4yMS4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
+czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
