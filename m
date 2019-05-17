@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4EF688997A
- for <igt-dev@lists.freedesktop.org>; Fri, 17 May 2019 19:01:16 +0000 (UTC)
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <op.z1x6hsc7xaggs7@mwajdecz-mobl1.ger.corp.intel.com>
-References: <20190517173753.1736-1-michal.wajdeczko@intel.com>
- <155811533586.1890.7973856669700904263@skylake-alporthouse-com>
- <op.z1x6hsc7xaggs7@mwajdecz-mobl1.ger.corp.intel.com>
-Message-ID: <155811966702.1890.4260470995236821507@skylake-alporthouse-com>
-Date: Fri, 17 May 2019 20:01:07 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915: Add simple test for HuC
+In-Reply-To: <20190517112526.6738-3-tvrtko.ursulin@linux.intel.com>
+References: <20190517112526.6738-1-tvrtko.ursulin@linux.intel.com>
+ <20190517112526.6738-3-tvrtko.ursulin@linux.intel.com>
+Message-ID: <155812085634.1890.3714005121262386142@skylake-alporthouse-com>
+Date: Fri, 17 May 2019 20:20:56 +0100
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 02/25] trace.pl: Ignore
+ signaling on non i915 fences
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,17 +19,17 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Michal Wajdeczko <michal.wajdeczko@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Tony Ye <tony.ye@intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
+Cc: Intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBNaWNoYWwgV2FqZGVjemtvICgyMDE5LTA1LTE3IDE5OjQ3OjQyKQo+IE9uIEZyaSwg
-MTcgTWF5IDIwMTkgMTk6NDg6NTUgKzAyMDAsIENocmlzIFdpbHNvbiAgCj4gPGNocmlzQGNocmlz
-LXdpbHNvbi5jby51az4gd3JvdGU6Cj4gPiBIbW0sIEh1QyBpcyBvcHRpb25hbCBhcyBpdCBtYXkg
-Ym90aCBiZSBkaXNhYmxlZCBieSBbZGVmYXVsdF0gcGFyYW1ldGVyCj4gCj4gYWZhaWssIHRoaXMg
-aXMgYWJvdXQgdG8gY2hhbmdlIHNvb24gOykKCkJ1dCBpdCdzIHN0aWxsIGZ3IHRoYXQgaXMgbm90
-IGF2YWlsYWJsZSBvbiBib290LCBzbyBJIGhvcGUgdGhleSB3aWxsIGFsc28KYWxsb3cgZm9yIGRl
-bGF5ZWQgbG9hZGluZyBieSBsaWJ2YSBvciBzb21ldGhpbmcuCi1DaHJpcwpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdApp
-Z3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
+UXVvdGluZyBUdnJ0a28gVXJzdWxpbiAoMjAxOS0wNS0xNyAxMjoyNTowMykKPiBGcm9tOiBUdnJ0
+a28gVXJzdWxpbiA8dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPgo+IAo+IGdlbV93c2ltIHVzZXMg
+dGhlIHN3X2ZlbmNlIHRpbWVsaW5lIGFuZCBjb25mdXNlcyB0aGUgc2NyaXB0LgoKc3dfc3luYwoK
+SG93IGRvZXMgdGhpcyBmYXJlIHdpdGggY2xmbHVzaCBmZW5jZXMgKHdoaWNoIGFyZSAuZHJpdmVy
+PSJpOTE1IikgYW5kCmFsbCBvZiB0aGUgZnV0dXJlIC5kcml2ZXI9Imk5MTUiIGZlbmNlcz8KCkxv
+b2tzIGxpa2Ugd2UgYXJlIHN0aWxsIHByb25lIHRvIGhpdHRpbmcgdGhhdCBkaWUuIChTaG91bGQg
+ZGllIHByZXR0eQpxdWljayBvbiAhbGxjKQotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0
+cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9pZ3QtZGV2
