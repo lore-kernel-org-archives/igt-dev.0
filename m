@@ -1,7 +1,7 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D9BE8999E
- for <igt-dev@lists.freedesktop.org>; Fri, 17 May 2019 22:10:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C125897D4
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 May 2019 22:25:41 +0000 (UTC)
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
 In-Reply-To: <op.z1ye8mtaxaggs7@mwajdecz-mobl1.ger.corp.intel.com>
@@ -10,8 +10,8 @@ References: <20190517202154.22300-1-michal.wajdeczko@intel.com>
  <op.z1ycbj06xaggs7@mwajdecz-mobl1.ger.corp.intel.com>
  <155812703637.1890.6463677385581203498@skylake-alporthouse-com>
  <op.z1ye8mtaxaggs7@mwajdecz-mobl1.ger.corp.intel.com>
-Message-ID: <155813094690.4652.6002037423393068576@skylake-alporthouse-com>
-Date: Fri, 17 May 2019 23:09:06 +0100
+Message-ID: <155813191809.4652.13230579792257405789@skylake-alporthouse-com>
+Date: Fri, 17 May 2019 23:25:18 +0100
 Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/i915: Add simple test for HuC
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -92,10 +92,9 @@ cm5lbC4KPiA+Cj4gPj4gICAgICAgICBUZXN0IHJlcXVpcmVtZW50IG5vdCBtZXQKPiA+PiAgICAg
 ICAgIFRlc3QgcmVxdWlyZW1lbnQ6IGh1Y19zdGF0dXMoZmQpID4gMAo+ID4+Cj4gPj4gbWVhbnMg
 SHVDIGZpcm13YXJlIHdhcyBub3QgbG9hZGVkCj4gPgo+ID4gV2l0aG91dCB1cyBndWVzc2luZyB3
 aHksIGFzIHRoZSBleHBsYW5hdGlvbiBzaG91bGQgYmUgaW4gdGhlIGRlYnVnZnMuCj4gCj4gd2hp
-Y2gsIGFzIHlvdSBzYWlkIGVhcmxpZXIsIG1heSBub3QgZXhpc3QKCkluIHdoaWNoIGNhc2UgdGhl
-IHVzZXIgaXMgbGVmdCB0byB0aGVpciBkZXZpY2VzIHRvIGRpdmluZSB3aGF0IGhhcHBlbmVkLApw
-cmVzdW1hYmx5IGxvb2tpbmcgYXQgZG1lc2cuIFN0aWxsIGxvb2tpbmcgYXQgd2h5IHRoZSBrZXJu
-ZWwgZGlkbid0IGRvCnNvbWV0aGluZyBpcyBtdWNoIGJldHRlciB0aGFuIGd1ZXNzaW5nLgotQ2hy
-aXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRl
-diBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0
-cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+Y2gsIGFzIHlvdSBzYWlkIGVhcmxpZXIsIG1heSBub3QgZXhpc3QKCkFsc28gbm90ZSB0aGUga2Vy
+bmVsIGlzIGFscmVhZHkgZ2l2aW5nIHVzIHRoZSBoYXNfaHVjIGluZm9tYXRpb24gaW4gdGhlCmVy
+cm5vLCBzbyBpZiB5b3Ugd2FudCB0byBiZSBpbmZvcm1hdGl2ZSwgZGVjb2RlIHRoZSBlcnJvciBy
+ZXR1cm4uCi1DaHJpcwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
+dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
