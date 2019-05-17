@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20190517112526.6738-1-tvrtko.ursulin@linux.intel.com>
- <20190517112526.6738-16-tvrtko.ursulin@linux.intel.com>
- <155809312278.12244.14543752945247172982@skylake-alporthouse-com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <f55f25ca-55c6-888b-d16c-b811961e5cd4@linux.intel.com>
-Date: Fri, 17 May 2019 12:52:36 +0100
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F7198987C
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 May 2019 11:52:19 +0000 (UTC)
+References: <20190517102709.22026-1-simon.ser@intel.com>
+From: Martin Peres <martin.peres@intel.com>
+Message-ID: <45a61ba2-4dc3-3971-0f6b-7db054f9351d@intel.com>
+Date: Fri, 17 May 2019 14:52:55 +0300
 MIME-Version: 1.0
-In-Reply-To: <155809312278.12244.14543752945247172982@skylake-alporthouse-com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 15/25] gem_wsim: Engine map load balance
- command
+In-Reply-To: <20190517102709.22026-1-simon.ser@intel.com>
+Content-Language: en-GB
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_chamelium: document capture
+ audio buffer size constraints
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,25 +18,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Simon Ser <simon.ser@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Ck9uIDE3LzA1LzIwMTkgMTI6MzgsIENocmlzIFdpbHNvbiB3cm90ZToKPiBRdW90aW5nIFR2cnRr
-byBVcnN1bGluICgyMDE5LTA1LTE3IDEyOjI1OjE2KQo+PiBAQCAtMTg0LDMgKzE4NiwxOSBAQCBF
-eGFtcGxlOgo+PiAgIE0uMS5WQ1MKPj4gICAKPj4gICBUaGlzIHNldHMgdXAgdGhlIGVuZ2luZSBt
-YXAgdG8gYWxsIGF2YWlsYWJsZSBWQ1MgY2xhc3MgZW5naW5lcy4KPj4gKwo+PiArQ29udGV4dCBs
-b2FkIGJhbGFuY2luZwo+PiArLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+PiArCj4+ICtDb250ZXh0
-IGxvYWQgYmFsYW5jaW5nIChha2EgVmlydHVhbCBFbmdpbmUpIGlzIGFuIGk5MTUgZmVhdHVyZSB3
-aGVyZSB0aGUgZHJpdmVyCj4+ICt3aWxsIHBpY2sgdGhlIGJlc3QgZW5naW5lIChtb3N0IGlkbGUp
-IHRvIHN1Ym1pdCB0byBnaXZlbiBwcmV2aW91c2x5IGNvbmZpZ3VyZWQKPiAKPiAibW9zdCBpZGxl
-Ij8gQ3VycmVudGx5IHdlIHVzZSBmaXJzdCBpZGxlLCBha2EgZ3JlZWR5IGJhbGFuY2luZy4KCldo
-YXQgYWJvdXQgIm1vc3QgaWRsZSIgLSBpcyBpdCBiYWQgRW5nbGlzaD8gOikKCj4gcy90aGUgYmVz
-dCBlbmdpbmUvYW4gZW5naW5lLwoKT2theS4gOikKClJlZ2FyZHMsCgpUdnJ0a28KX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxp
-c3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
-cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+T24gMTcvMDUvMjAxOSAxMzoyNywgU2ltb24gU2VyIHdyb3RlOgo+IEV4cGxhaW4gd2h5IHdlIG5l
+ZWQgdG8gY2hvb3NlIGEgYmlnIGVub3VnaCBidWZmZXIgZm9yIGF1ZGlvIGNhcHR1cmUuCj4gCj4g
+U2lnbmVkLW9mZi1ieTogU2ltb24gU2VyIDxzaW1vbi5zZXJAaW50ZWwuY29tPgoKUmV2aWV3ZWQt
+Ynk6IE1hcnRpbiBQZXJlcyA8bWFydGluLnBlcmVzQGxpbnV4LmludGVsLmNvbT4KPiAtLS0KPiAg
+dGVzdHMva21zX2NoYW1lbGl1bS5jIHwgOSArKysrKysrKy0KPiAgMSBmaWxlIGNoYW5nZWQsIDgg
+aW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNf
+Y2hhbWVsaXVtLmMgYi90ZXN0cy9rbXNfY2hhbWVsaXVtLmMKPiBpbmRleCBjOGI2YjIyZDdiNGEu
+LjRkYjYwNGQzMmNhZSAxMDA2NDQKPiAtLS0gYS90ZXN0cy9rbXNfY2hhbWVsaXVtLmMKPiArKysg
+Yi90ZXN0cy9rbXNfY2hhbWVsaXVtLmMKPiBAQCAtOTI0LDcgKzkyNCwxNCBAQCBkb190ZXN0X2Rp
+c3BsYXlfYXVkaW8oZGF0YV90ICpkYXRhLCBzdHJ1Y3QgY2hhbWVsaXVtX3BvcnQgKnBvcnQsCj4g
+Cj4gIAkvKiBOZWVkcyB0byBiZSBhIG11bHRpcGxlIG9mIDEyOCwgYmVjYXVzZSB0aGF0J3MgdGhl
+IG51bWJlciBvZiBzYW1wbGVzCj4gIAkgKiB3ZSBnZXQgcGVyIGNoYW5uZWwgZWFjaCB0aW1lIHdl
+IHJlY2VpdmUgYW4gYXVkaW8gcGFnZSBmcm9tIHRoZQo+IC0JICogQ2hhbWVsaXVtIGRldmljZS4g
+Ki8KPiArCSAqIENoYW1lbGl1bSBkZXZpY2UuCj4gKwkgKgo+ICsJICogQWRkaXRpb25hbGx5LCB0
+aGlzIHZhbHVlIG5lZWRzIHRvIGJlIGhpZ2ggZW5vdWdoIHRvIGd1YXJhbnRlZSB3ZQo+ICsJICog
+Y2FwdHVyZSBhIGZ1bGwgcGVyaW9kIG9mIGVhY2ggc2luZSB3ZSBnZW5lcmF0ZS4gSWYgd2UgY2Fw
+dHVyZSAyMDQ4Cj4gKwkgKiBzYW1wbGVzIGF0IGEgMTkyS0h6IHNhbXBsaW5nIHJhdGUsIHdlIGdl
+dCBhIGZ1bGwgcGVyaW9kIGZvciBhID45NEh6Cj4gKwkgKiBzaW5lcy4gRm9yIGxvd2VyIHNhbXBs
+aW5nIHJhdGVzLCB0aGUgY2FwdHVyZSBkdXJhdGlvbiB3aWxsIGJlCj4gKwkgKiBsb25nZXIuCj4g
+KwkgKi8KPiAgCWNoYW5uZWxfbGVuID0gQ0FQVFVSRV9TQU1QTEVTOwo+ICAJY2hhbm5lbCA9IG1h
+bGxvYyhzaXplb2YoZG91YmxlKSAqIGNoYW5uZWxfbGVuKTsKPiAKPiAtLQo+IDIuMjEuMAo+IAot
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0KSW50ZWwgRmlubGFuZCBPeQpSZWdpc3RlcmVkIEFkZHJlc3M6IFBMIDI4MSwg
+MDAxODEgSGVsc2lua2kgCkJ1c2luZXNzIElkZW50aXR5IENvZGU6IDAzNTc2MDYgLSA0IApEb21p
+Y2lsZWQgaW4gSGVsc2lua2kgCgpUaGlzIGUtbWFpbCBhbmQgYW55IGF0dGFjaG1lbnRzIG1heSBj
+b250YWluIGNvbmZpZGVudGlhbCBtYXRlcmlhbCBmb3IKdGhlIHNvbGUgdXNlIG9mIHRoZSBpbnRl
+bmRlZCByZWNpcGllbnQocykuIEFueSByZXZpZXcgb3IgZGlzdHJpYnV0aW9uCmJ5IG90aGVycyBp
+cyBzdHJpY3RseSBwcm9oaWJpdGVkLiBJZiB5b3UgYXJlIG5vdCB0aGUgaW50ZW5kZWQKcmVjaXBp
+ZW50LCBwbGVhc2UgY29udGFjdCB0aGUgc2VuZGVyIGFuZCBkZWxldGUgYWxsIGNvcGllcy4KX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
+aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
+ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
