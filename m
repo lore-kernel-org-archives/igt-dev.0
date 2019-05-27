@@ -1,10 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 27 May 2019 10:46:11 +0100
-Message-Id: <20190527094611.31948-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] benchmarks/gem_wsim: Tidy manual sizeof VLA
- calculations
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20190527011951.h2adglmq2g24exov@smtp.gmail.com>
+References: <20190527011951.h2adglmq2g24exov@smtp.gmail.com>
+Message-ID: <155895198890.6190.3140856123443499779@skylake-alporthouse-com>
+Date: Mon, 27 May 2019 11:13:08 +0100
+Subject: Re: [igt-dev] [PATCH V3 i-g-t] lib: Drop __kms_addfb() wrapper
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,33 +17,19 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>, Petri Latvala <petri.latvala@intel.com>, Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>, Simon Ser <simon.ser@intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-V2UgY2FuIHVzZSBvZmZzZXRvZiBmb3IgdGhlIHNhbWUgZWZmZWN0LCBtdWNoIHRpZGllciB3aXRo
-IG5vIGR1bW15CmxvY2Fscy4KClNpZ25lZC1vZmYtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hy
-aXMtd2lsc29uLmNvLnVrPgpDYzogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVs
-LmNvbT4KLS0tCiBiZW5jaG1hcmtzL2dlbV93c2ltLmMgfCAxNSArKysrKystLS0tLS0tLS0KIDEg
-ZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlvbnMoKyksIDkgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0
-IGEvYmVuY2htYXJrcy9nZW1fd3NpbS5jIGIvYmVuY2htYXJrcy9nZW1fd3NpbS5jCmluZGV4IGRi
-MTk5MjViMS4uYTc2ZmRiZmUyIDEwMDY0NAotLS0gYS9iZW5jaG1hcmtzL2dlbV93c2ltLmMKKysr
-IGIvYmVuY2htYXJrcy9nZW1fd3NpbS5jCkBAIC0xNDQzLDIzICsxNDQzLDIwIEBAIHNldF9jdHhf
-c3NldShzdHJ1Y3QgY3R4ICpjdHgsIHVpbnQ2NF90IHNsaWNlX21hc2spCiAKIHN0YXRpYyBzaXpl
-X3Qgc2l6ZW9mX2xvYWRfYmFsYW5jZShpbnQgY291bnQpCiB7Ci0Jc3RydWN0IGk5MTVfY29udGV4
-dF9lbmdpbmVzX2xvYWRfYmFsYW5jZSAqcHRyOwotCi0JcmV0dXJuIHNpemVvZigqcHRyKSArIGNv
-dW50ICogc2l6ZW9mKHB0ci0+ZW5naW5lc1swXSk7CisJcmV0dXJuIG9mZnNldG9mKHN0cnVjdCBp
-OTE1X2NvbnRleHRfZW5naW5lc19sb2FkX2JhbGFuY2UsCisJCQllbmdpbmVzW2NvdW50XSk7CiB9
-CiAKIHN0YXRpYyBzaXplX3Qgc2l6ZW9mX3BhcmFtX2VuZ2luZXMoaW50IGNvdW50KQogewotCXN0
-cnVjdCBpOTE1X2NvbnRleHRfcGFyYW1fZW5naW5lcyAqcHRyOwotCi0JcmV0dXJuIHNpemVvZigq
-cHRyKSArIGNvdW50ICogc2l6ZW9mKHB0ci0+ZW5naW5lc1swXSk7CisJcmV0dXJuIG9mZnNldG9m
-KHN0cnVjdCBpOTE1X2NvbnRleHRfcGFyYW1fZW5naW5lcywKKwkJCWVuZ2luZXNbY291bnRdKTsK
-IH0KIAogc3RhdGljIHNpemVfdCBzaXplb2ZfZW5naW5lc19ib25kKGludCBjb3VudCkKIHsKLQlz
-dHJ1Y3QgaTkxNV9jb250ZXh0X2VuZ2luZXNfYm9uZCAqcHRyOwotCi0JcmV0dXJuIHNpemVvZigq
-cHRyKSArIGNvdW50ICogc2l6ZW9mKHB0ci0+ZW5naW5lc1swXSk7CisJcmV0dXJuIG9mZnNldG9m
-KHN0cnVjdCBpOTE1X2NvbnRleHRfZW5naW5lc19ib25kLAorCQkJZW5naW5lc1tjb3VudF0pOwog
-fQogCiAjZGVmaW5lIGFsbG9jYTAoc3opICh7IHNpemVfdCBzel9fID0gKHN6KTsgbWVtc2V0KGFs
-bG9jYShzel9fKSwgMCwgc3pfXyk7IH0pCi0tIAoyLjIwLjEKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
-YW4vbGlzdGluZm8vaWd0LWRldg==
+UXVvdGluZyBSb2RyaWdvIFNpcXVlaXJhICgyMDE5LTA1LTI3IDAyOjE5OjUxKQo+IFRoZSBmdW5j
+dGlvbiBfX2ttc19hZGRmYigpIGFuZCBkcm1Nb2RlQWRkRkIyV2l0aE1vZGlmaWVycygpIGhhdmUg
+YQo+IHNpbWlsYXIgY29kZS4gRHVlIHRvIHRoaXMgc2ltaWxhcml0eSwgdGhpcyBjb21taXQgcmVw
+bGFjZXMgYWxsIHRoZQo+IG9jY3VycmVuY2VzIG9mICBfX2ttc19hZGRmYigpIGJ5IGRybU1vZGVB
+ZGRGQjJXaXRoTW9kaWZpZXJzKCkgYW5kIGFkZHMKPiB0aGUgcmVxdWlyZWQgYWRhcHRhdGlvbnMu
+CgpOby4gVGhlcmUgaXMgYSBjcml0aWNhbCBkaWZmZXJlbmNlIGJldHdlZW4gdGhlIHR3bzogaWd0
+X2lvY3RsLiBUaGF0CmFsbG93cyB1cyB0byBjb250cm9sIHRoZSBpb2N0bCBmb3IgZXJyb3IgaW5q
+ZWN0aW9uIGludG8gdGhlIGtlcm5lbC4KCklmIHlvdSB3YW50IHRvIHRlc3QgbGliZHJtIEFQSSBh
+bmQgbm90IHRoZSBrZXJuZWwsIHBsZWFzZSBhZGQgdGVzdHMKdG8gbGliZHJtLgotQ2hyaXMKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
+aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
+ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
