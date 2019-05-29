@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 95D768906D
- for <igt-dev@lists.freedesktop.org>; Wed, 29 May 2019 10:55:31 +0000 (UTC)
-From: "Ser, Simon" <simon.ser@intel.com>
-Date: Wed, 29 May 2019 10:55:28 +0000
-Message-ID: <bf37819519cc6f33137926e9b11e840ecc6a85eb.camel@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 07A756E2BE
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 May 2019 10:57:31 +0000 (UTC)
+Date: Wed, 29 May 2019 13:57:28 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20190529105727.GS22949@platvala-desk.ger.corp.intel.com>
 References: <20190529105150.19050-1-petri.latvala@intel.com>
-In-Reply-To: <20190529105150.19050-1-petri.latvala@intel.com>
-Content-Language: en-US
-Content-ID: <A817DD61D6B74847811233A3465FD776@intel.com>
+ <20190529105150.19050-2-petri.latvala@intel.com>
+ <128385757b1ab1ee6c1f2396eafa6410676289fd.camel@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] meson: Remove redundant libdw from
- lib_deps
+Content-Disposition: inline
+In-Reply-To: <128385757b1ab1ee6c1f2396eafa6410676289fd.camel@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/3] meson: Mark pciaccess and kmod as
+ required
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +24,18 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Latvala, Petri" <petri.latvala@intel.com>
+To: "Ser, Simon" <simon.ser@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDE5LTA1LTI5IGF0IDEzOjUxICswMzAwLCBQZXRyaSBMYXR2YWxhIHdyb3RlOg0K
-PiBMaXN0aW5nIGl0IG9uY2Ugc2hvdWxkIGJlIHF1aXRlIGVub3VnaC4NCj4gDQo+IFNpZ25lZC1v
-ZmYtYnk6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPg0KPiBDYzogQXJr
-YWRpdXN6IEhpbGVyIDxhcmthZGl1c3ouaGlsZXJAaW50ZWwuY29tPg0KPiBDYzogU2ltb24gU2Vy
-IDxzaW1vbi5zZXJAaW50ZWwuY29tPg0KDQpSZXZpZXdlZC1ieTogU2ltb24gU2VyIDxzaW1vbi5z
-ZXJAaW50ZWwuY29tPg0KDQo+IC0tLQ0KPiAgbGliL21lc29uLmJ1aWxkIHwgMSAtDQo+ICAxIGZp
-bGUgY2hhbmdlZCwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2xpYi9tZXNvbi5i
-dWlsZCBiL2xpYi9tZXNvbi5idWlsZA0KPiBpbmRleCBjZGI0NTBlMS4uYWUxYTkxMjAgMTAwNjQ0
-DQo+IC0tLSBhL2xpYi9tZXNvbi5idWlsZA0KPiArKysgYi9saWIvbWVzb24uYnVpbGQNCj4gQEAg
-LTY5LDcgKzY5LDYgQEAgbGliX2RlcHMgPSBbDQo+ICAJbGlia21vZCwNCj4gIAlsaWJwcm9jcHMs
-DQo+ICAJbGlidWRldiwNCj4gLQlsaWJkdywNCj4gIAltYXRoLA0KPiAgCXBjaWFjY2VzcywNCj4g
-IAlwaXhtYW4sDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
-czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
+T24gV2VkLCBNYXkgMjksIDIwMTkgYXQgMDE6NTQ6NTRQTSArMDMwMCwgU2VyLCBTaW1vbiB3cm90
+ZToKPiBPbiBXZWQsIDIwMTktMDUtMjkgYXQgMTM6NTEgKzAzMDAsIFBldHJpIExhdHZhbGEgd3Jv
+dGU6Cj4gPiBsaWJwY2lhY2Nlc3MgYW5kIGxpYmttb2QgaGF2ZSBiZWVuIG1hbmRhdG9yeSBhbHJl
+YWR5LCBidXQgbm90IG1hcmtlZAo+ID4gYXMgcmVxdWlyZWQuCj4gCj4gSSB0aG91Z2h0IG1hbmRh
+dG9yeSBkZXBzIHdlcmUgdGhlIGRlZmF1bHQ/Cj4gCj4gSW4gb3RoZXIgd29yZHMsIEkgYmVsaWV2
+ZSB0aGlzOgo+IAo+ICAgIGxpYmttb2QgPSBkZXBlbmRlbmN5KCdsaWJrbW9kJykKPiAKPiBNYWtl
+cyBsaWJrbW9kIGEgbWFuZGF0b3J5IGRlcC4KCllvdSdyZSByaWdodCwgSSBnb3QgdGhlIGRlZmF1
+bHQgYmFja3dhcmRzIQoKCi0tIApQZXRyaSBMYXR2YWxhCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4v
+bGlzdGluZm8vaWd0LWRldg==
