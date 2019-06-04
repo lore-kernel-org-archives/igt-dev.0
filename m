@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0A99897E3
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Jun 2019 13:01:38 +0000 (UTC)
-References: <20190604114836.2830-1-simon.ser@intel.com>
- <20190604114836.2830-4-simon.ser@intel.com>
-From: Martin Peres <martin.peres@linux.intel.com>
-Message-ID: <3ed8e628-a7cc-91fd-3715-082260a072de@linux.intel.com>
-Date: Tue, 4 Jun 2019 16:01:33 +0300
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49935897E3
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Jun 2019 13:02:49 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20190604114836.2830-4-simon.ser@intel.com>
-Content-Language: en-PH
-Subject: Re: [igt-dev] [PATCH i-g-t v2 3/3] lib/tests/igt_audio: add
- phaseshift detection test
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20190604125955.28806-2-arkadiusz.hiler@intel.com>
+References: <20190604125955.28806-1-arkadiusz.hiler@intel.com>
+ <20190604125955.28806-2-arkadiusz.hiler@intel.com>
+Message-ID: <155965335689.21578.232177564297054544@skylake-alporthouse-com>
+Date: Tue, 04 Jun 2019 14:02:36 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] Makefile: Do not nest new gem tests
+ in i915 directory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,49 +22,21 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Simon Ser <simon.ser@intel.com>, igt-dev@lists.freedesktop.org
-Cc: martin.peres@intel.com
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMDQvMDYvMjAxOSAxNDo0OCwgU2ltb24gU2VyIHdyb3RlOgo+IFRydW5jYXRlIGEgZmV3IHNh
-bXBsZXMgaW4gdGhlIG1pZGRsZSBvZiB0aGUgc2lnbmFsLCBhbmQgbWFrZSBzdXJlIHRoZSBkZXRl
-Y3Rpb24KPiBmYWlscy4KClRoaXMgaXMgdmVyeSBuaWNlIQoKUmV2aWV3ZWQtYnk6IE1hcnRpbiBQ
-ZXJlcyA8bWFydGluLnBlcmVzQGxpbnV4LmludGVsLmNvbT4KCj4gCj4gU2lnbmVkLW9mZi1ieTog
-U2ltb24gU2VyIDxzaW1vbi5zZXJAaW50ZWwuY29tPgo+IC0tLQo+ICBsaWIvdGVzdHMvaWd0X2F1
-ZGlvLmMgfCAzNiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKPiAgMSBmaWxl
-IGNoYW5nZWQsIDM2IGluc2VydGlvbnMoKykKPiAKPiBkaWZmIC0tZ2l0IGEvbGliL3Rlc3RzL2ln
-dF9hdWRpby5jIGIvbGliL3Rlc3RzL2lndF9hdWRpby5jCj4gaW5kZXggODIxODEzYmFlNDdhLi43
-YzUyNzlhY2M5MmUgMTAwNjQ0Cj4gLS0tIGEvbGliL3Rlc3RzL2lndF9hdWRpby5jCj4gKysrIGIv
-bGliL3Rlc3RzL2lndF9hdWRpby5jCj4gQEAgLTMzLDYgKzMzLDggQEAKPiAgI2RlZmluZSBTQU1Q
-TElOR19SQVRFIDQ0MTAwCj4gICNkZWZpbmUgQ0hBTk5FTFMgMQo+ICAjZGVmaW5lIEJVRkZFUl9M
-RU4gMjA0OAo+ICsvKiogUEhBU0VTSElGVF9MRU46IGhvdyBtYW55IHNhbXBsZXMgd2lsbCBiZSB0
-cnVuY2F0ZWQgZnJvbSB0aGUgc2lnbmFsICovCj4gKyNkZWZpbmUgUEhBU0VTSElGVF9MRU4gOAo+
-ICAKPiAgc3RhdGljIGNvbnN0IGludCB0ZXN0X2ZyZXFzW10gPSB7IDMwMCwgNzAwLCA1MDAwIH07
-Cj4gIAo+IEBAIC0xMzYsNiArMTM4LDM3IEBAIHN0YXRpYyB2b2lkIHRlc3Rfc2lnbmFsX2RldGVj
-dF9wb3Aoc3RydWN0IGF1ZGlvX3NpZ25hbCAqc2lnbmFsKQo+ICAJaWd0X2Fzc2VydCghb2spOwo+
-ICB9Cj4gIAo+ICtzdGF0aWMgdm9pZCB0ZXN0X3NpZ25hbF9kZXRlY3RfcGhhc2VzaGlmdChzdHJ1
-Y3QgYXVkaW9fc2lnbmFsICpzaWduYWwpCj4gK3sKPiArCWRvdWJsZSAqYnVmOwo+ICsJYm9vbCBv
-azsKPiArCj4gKwlidWYgPSBtYWxsb2MoKEJVRkZFUl9MRU4gKyBQSEFTRVNISUZUX0xFTikgKiBz
-aXplb2YoZG91YmxlKSk7Cj4gKwlhdWRpb19zaWduYWxfZmlsbChzaWduYWwsIGJ1ZiwgKEJVRkZF
-Ul9MRU4gKyBQSEFTRVNISUZUX0xFTikgLyBDSEFOTkVMUyk7Cj4gKwo+ICsJLyogUGVyZm9ybSBh
-IHBoYXNlc2hpZnQgKHRoaXMgaXNuJ3QgcmVsYXRlZCB0byBzaXJlbnMpLgo+ICsJICoKPiArCSAq
-IFRoZSBpZGVhIGlzIHRvIHJlbW92ZSBhIHBhcnQgb2YgdGhlIHNpZ25hbCBpbiB0aGUgbWlkZGxl
-IG9mIHRoZQo+ICsJICogYnVmZmVyOgo+ICsJICoKPiArCSAqICAgQlVGRkVSX0xFTi8zICAgUEhB
-U0VTSElGVF9MRU4gICAgICAgICAgICAyKkJVRkZFUl9MRU4vMwo+ICsJICogWy0tLS0tLS0tLS0t
-LS0tfCMjIyMjIyMjIyMjIyMjIyN8LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXQo+
-ICsJICoKPiArCSAqICAgICAgICAgICAgICAgICAgICAgICAgICAgfAo+ICsJICogICAgICAgICAg
-ICAgICAgICAgICAgICAgICBWCj4gKwkgKgo+ICsJICogWy0tLS0tLS0tLS0tLS0tfC0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLV0KPiArCSAqLwo+ICsJbWVtbW92ZSgmYnVmW0JVRkZF
-Ul9MRU4gLyAzXSwgJmJ1ZltCVUZGRVJfTEVOIC8gMyArIFBIQVNFU0hJRlRfTEVOXSwKPiArCQko
-MiAqIEJVRkZFUl9MRU4gLyAzKSAqIHNpemVvZihkb3VibGUpKTsKPiArCj4gKwlvayA9IGF1ZGlv
-X3NpZ25hbF9kZXRlY3Qoc2lnbmFsLCBTQU1QTElOR19SQVRFLCAwLCBidWYsIEJVRkZFUl9MRU4p
-Owo+ICsKPiArCWZyZWUoYnVmKTsKPiArCj4gKwlpZ3RfYXNzZXJ0KCFvayk7Cj4gK30KPiArCj4g
-IGlndF9tYWluCj4gIHsKPiAgCXN0cnVjdCBhdWRpb19zaWduYWwgKnNpZ25hbDsKPiBAQCAtMTc0
-LDYgKzIwNyw5IEBAIGlndF9tYWluCj4gIAkJaWd0X3N1YnRlc3QoInNpZ25hbC1kZXRlY3QtcG9w
-IikKPiAgCQkJdGVzdF9zaWduYWxfZGV0ZWN0X3BvcChzaWduYWwpOwo+ICAKPiArCQlpZ3Rfc3Vi
-dGVzdCgic2lnbmFsLWRldGVjdC1waGFzZXNoaWZ0IikKPiArCQkJdGVzdF9zaWduYWxfZGV0ZWN0
-X3BoYXNlc2hpZnQoc2lnbmFsKTsKPiArCj4gIAkJaWd0X2ZpeHR1cmUgewo+ICAJCQlhdWRpb19z
-aWduYWxfZmluaShzaWduYWwpOwo+ICAJCX0KPiAKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
-cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9pZ3QtZGV2
+UXVvdGluZyBBcmthZGl1c3ogSGlsZXIgKDIwMTktMDYtMDQgMTM6NTk6NTMpCj4gJCBkaWZmIDwo
+c2VkICJzLyAvXG4vZyIgbWVzb24tdGVzdC1saXN0LnR4dCB8IGdyZXAgLXYgJ3ZjNFx8djNkXHxw
+YW5mcm9zdCcgfCBzb3J0KSA8KHNlZCAicy8gL1xuL2ciIGF1dG90b29scy10ZXN0LWxpc3QudHh0
+IHwgc29ydCkKPiAzMGQyOQo+IDwgZ2VtX2N0eF9jbG9uZQo+IDMyZDMwCj4gPCBnZW1fY3R4X2Vu
+Z2luZXMKPiAzNmQzMwo+IDwgZ2VtX2N0eF9zaGFyZWQKPiAxMzdkMTMzCj4gPCBnZW1fdm1fY3Jl
+YXRlCj4gMTQ1YTE0MiwxNDYKPiA+IGk5MTUvZ2VtX2N0eF9jbG9uZQo+ID4gaTkxNS9nZW1fY3R4
+X2VuZ2luZXMKPiA+IGk5MTUvZ2VtX2N0eF9zaGFyZWQKPiA+IGk5MTUvZ2VtX2V4ZWNfYmFsYW5j
+ZXIKPiA+IGk5MTUvZ2VtX3ZtX2NyZWF0ZQo+IAo+IExldCdzIG1ha2UgdGhpcyBjb25zaXN0ZW50
+IHdpdGggbWVzb24gYW5kIGFsbCB0aGUgb3RoZXIgZ2VtIHRlc3RzIHdlCj4gaGF2ZS4KCk9yIGZp
+eCBhbGwgdGhlIG90aGVycyBhZ2Fpbi4gQW5kIHN0b3AgdGhyb3dpbmcgYXdheSB0aGUgZGlyZWN0
+b3J5CnN0cnVjdHVyZSBmb3IgbWVzb24/Ci1DaHJpcwpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3Rz
+LmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
+c3RpbmZvL2lndC1kZXY=
