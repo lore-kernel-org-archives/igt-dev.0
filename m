@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 6 Jun 2019 16:16:50 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20190606131650.ipdlqczjpzazbkca@ahiler-desk1.fi.intel.com>
-References: <20190605201809.19657-1-guillaume.tucker@collabora.com>
+Date: Thu, 6 Jun 2019 12:28:43 -0300
+From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Message-ID: <20190606152843.ufyaksklmi5fmv7n@smtp.gmail.com>
+References: <20190605023053.h7q2ei2b7gf2k5pn@smtp.gmail.com>
+ <d6c1ad8d4c2e0b0710d005efb5bb7b18258736c3.camel@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190605201809.19657-1-guillaume.tucker@collabora.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] gitlab-ci: add build for MIPS
+In-Reply-To: <d6c1ad8d4c2e0b0710d005efb5bb7b18258736c3.camel@intel.com>
+Subject: Re: [igt-dev] [PATCH V8 i-g-t] tests/kms_flip: Skip VBlank tests in
+ modules without VBlank
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,81 +15,241 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0315910674=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Guillaume Tucker <guillaume.tucker@collabora.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+To: "Ser, Simon" <simon.ser@intel.com>
+Cc: "Latvala, Petri" <petri.latvala@intel.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCBKdW4gMDUsIDIwMTkgYXQgMDk6MTg6MDlQTSArMDEwMCwgR3VpbGxhdW1lIFR1Y2tl
-ciB3cm90ZToKPiBBZGQgRG9ja2VyIGltYWdlIGFuZCBHaXRsYWIgQ0kgc3RlcHMgdG8gcnVuIGJ1
-aWxkcyBmb3IgdGhlIE1JUFMKPiBhcmNoaXRlY3R1cmUgdXNpbmcgRGViaWFuIEJ1c3Rlci4KPiAK
-PiBTaWduZWQtb2ZmLWJ5OiBHdWlsbGF1bWUgVHVja2VyIDxndWlsbGF1bWUudHVja2VyQGNvbGxh
-Ym9yYS5jb20+Cj4gLS0tCj4gIC5naXRsYWItY2kueW1sICAgICAgICAgfCAyOCArKysrKysrKysr
-KysrKysrKysrKysrKysrKysrCj4gIERvY2tlcmZpbGUuZGViaWFuLW1pcHMgfCAzOCArKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+ICBtZXNvbi1jcm9zcy1taXBzLnR4dCAg
-IHwgMTIgKysrKysrKysrKysrCj4gIDMgZmlsZXMgY2hhbmdlZCwgNzggaW5zZXJ0aW9ucygrKQo+
-ICBjcmVhdGUgbW9kZSAxMDA2NDQgRG9ja2VyZmlsZS5kZWJpYW4tbWlwcwo+ICBjcmVhdGUgbW9k
-ZSAxMDA2NDQgbWVzb24tY3Jvc3MtbWlwcy50eHQKPiAKPiBkaWZmIC0tZ2l0IGEvLmdpdGxhYi1j
-aS55bWwgYi8uZ2l0bGFiLWNpLnltbAo+IGluZGV4IDc3MTE0M2E5ZWE5NS4uZTM5MGY4ZjQ3MmQ1
-IDEwMDY0NAo+IC0tLSBhLy5naXRsYWItY2kueW1sCj4gKysrIGIvLmdpdGxhYi1jaS55bWwKPiBA
-QCAtOTAsNiArOTAsMTcgQEAgYnVpbGQ6dGVzdHMtZGViaWFuLW1lc29uLWFybTY0Ogo+ICAgICAg
-cGF0aHM6Cj4gICAgICAgIC0gYnVpbGQKPiAgCj4gK2J1aWxkOnRlc3RzLWRlYmlhbi1tZXNvbi1t
-aXBzOgo+ICsgIGltYWdlOiAkQ0lfUkVHSVNUUlkvJENJX1BST0pFQ1RfUEFUSC9pZ3QtZGViaWFu
-LW1pcHM6bGF0ZXN0Cj4gKyAgc3RhZ2U6IGJ1aWxkCj4gKyAgc2NyaXB0Ogo+ICsgICAgLSBleHBv
-cnQgUEtHX0NPTkZJR19QQVRIPS91c3IvbGliL21pcHMtbGludXgtZ251L3BrZ2NvbmZpZy8KPiAr
-ICAgIC0gbWVzb24gLS1jcm9zcy1maWxlIG1lc29uLWNyb3NzLW1pcHMudHh0IGJ1aWxkCj4gKyAg
-ICAtIG5pbmphIC1DIGJ1aWxkCj4gKyAgYXJ0aWZhY3RzOgo+ICsgICAgcGF0aHM6Cj4gKyAgICAg
-IC0gYnVpbGQKPiArCj4gIGJ1aWxkOnRlc3RzLWRlYmlhbi1hdXRvdG9vbHM6Cj4gICAgaW1hZ2U6
-ICRDSV9SRUdJU1RSWS8kQ0lfUFJPSkVDVF9QQVRIL2lndC1kZWJpYW46bGF0ZXN0Cj4gICAgc3Rh
-Z2U6IGJ1aWxkCj4gQEAgLTIyMSw2ICsyMzIsMjMgQEAgY29udGFpbmVyczppZ3QtZGViaWFuLWFy
-bTY0Ogo+ICAgICAgLSBkb2NrZXIgYnVpbGQgLXQgJENJX1JFR0lTVFJZLyRDSV9QUk9KRUNUX1BB
-VEgvaWd0LWRlYmlhbi1hcm02NCAtZiBEb2NrZXJmaWxlLmRlYmlhbi1hcm02NCAuCj4gICAgICAt
-IGRvY2tlciBwdXNoICRDSV9SRUdJU1RSWS8kQ0lfUFJPSkVDVF9QQVRIL2lndC1kZWJpYW4tYXJt
-NjQKPiAgCj4gK2NvbnRhaW5lcnM6aWd0LWRlYmlhbi1taXBzOgo+ICsgIHN0YWdlOiBjb250YWlu
-ZXJzCj4gKyAgaW1hZ2U6IGRvY2tlcjpzdGFibGUKPiArICBvbmx5Ogo+ICsgICAgY2hhbmdlczoK
-PiArICAgICAgLSBEb2NrZXJmaWxlLmRlYmlhbi1taXBzCj4gKyAgICAgIC0gLmdpdGxhYi1jaS55
-bWwKPiArICBzZXJ2aWNlczoKPiArICAgIC0gZG9ja2VyOmRpbmQKPiArICB2YXJpYWJsZXM6Cj4g
-KyAgICBET0NLRVJfSE9TVDogdGNwOi8vZG9ja2VyOjIzNzUKPiArICAgIERPQ0tFUl9EUklWRVI6
-IG92ZXJsYXkyCj4gKyAgc2NyaXB0Ogo+ICsgICAgLSBkb2NrZXIgbG9naW4gLXUgZ2l0bGFiLWNp
-LXRva2VuIC1wICRDSV9KT0JfVE9LRU4gJENJX1JFR0lTVFJZCj4gKyAgICAtIGRvY2tlciBidWls
-ZCAtdCAkQ0lfUkVHSVNUUlkvJENJX1BST0pFQ1RfUEFUSC9pZ3QtZGViaWFuLW1pcHMgLWYgRG9j
-a2VyZmlsZS5kZWJpYW4tbWlwcyAuCj4gKyAgICAtIGRvY2tlciBwdXNoICRDSV9SRUdJU1RSWS8k
-Q0lfUFJPSkVDVF9QQVRIL2lndC1kZWJpYW4tbWlwcwo+ICsKPiAgY29udGFpbmVyczppZ3QtZmVk
-b3JhOgo+ICAgIHN0YWdlOiBjb250YWluZXJzCj4gICAgaW1hZ2U6IGRvY2tlcjpzdGFibGUKPiBk
-aWZmIC0tZ2l0IGEvRG9ja2VyZmlsZS5kZWJpYW4tbWlwcyBiL0RvY2tlcmZpbGUuZGViaWFuLW1p
-cHMKPiBuZXcgZmlsZSBtb2RlIDEwMDY0NAo+IGluZGV4IDAwMDAwMDAwMDAwMC4uMjYxMmI3YjE0
-OGUzCj4gLS0tIC9kZXYvbnVsbAo+ICsrKyBiL0RvY2tlcmZpbGUuZGViaWFuLW1pcHMKPiBAQCAt
-MCwwICsxLDM4IEBACj4gK0ZST00gZGViaWFuOmJ1c3RlcgoKQW55IHBhcnRpY3VsYXIgcmVhc29u
-IHlvdSB3ZW50IGhlcmUgZm9yIGJ1c3RlciBpbnN0ZWFkIG9mCnN0cmV0Y2gtYmFja3BvcnRzIGxp
-a2Ugd2l0aCBvdGhlciBpbWFnZXM/IEkgYW0gbm90IHZlcnkgZmx1ZW50IGluCkRlYmlhbi4KCk90
-aGVyIHRoYW4gdGhhdCBsb29rcyBnb29kIHRvIGxhbmQgYWZ0ZXIgdGhlIGF0b21pYyBjb21wYXRp
-YmlsaXR5IGZpeGVzLgoKPiArCj4gK1JVTiBhcHQtZ2V0IHVwZGF0ZQo+ICtSVU4gYXB0LWdldCBp
-bnN0YWxsIC15IFwKPiArCQkJZmxleCBcCj4gKwkJCWJpc29uIFwKPiArCQkJcGtnLWNvbmZpZyBc
-Cj4gKwkJCXgxMXByb3RvLWRyaTItZGV2IFwKPiArCQkJcHl0aG9uLWRvY3V0aWxzIFwKPiArCQkJ
-dmFsZ3JpbmQgXAo+ICsJCQlwZWcKPiArCj4gK1JVTiBkcGtnIC0tYWRkLWFyY2hpdGVjdHVyZSBt
-aXBzCj4gK1JVTiBhcHQtZ2V0IHVwZGF0ZQo+ICtSVU4gYXB0LWdldCBpbnN0YWxsIC15IFwKPiAr
-CQkJZ2NjLW1pcHMtbGludXgtZ251IFwKPiArCQkJbGlicGNpYWNjZXNzLWRldjptaXBzIFwKPiAr
-CQkJbGlia21vZC1kZXY6bWlwcyBcCj4gKwkJCWxpYnByb2Nwcy1kZXY6bWlwcyBcCj4gKwkJCWxp
-YnVud2luZC1kZXY6bWlwcyBcCj4gKwkJCWxpYmR3LWRldjptaXBzIFwKPiArCQkJemxpYjFnLWRl
-djptaXBzIFwKPiArCQkJbGlibHptYS1kZXY6bWlwcyBcCj4gKwkJCWxpYmNhaXJvLWRldjptaXBz
-IFwKPiArCQkJbGlicGl4bWFuLTEtZGV2Om1pcHMgXAo+ICsJCQlsaWJ1ZGV2LWRldjptaXBzIFwK
-PiArCQkJbGliZ3NsLWRldjptaXBzIFwKPiArCQkJbGliYXNvdW5kMi1kZXY6bWlwcyBcCj4gKwkJ
-CWxpYmpzb24tYy1kZXY6bWlwcyBcCj4gKwkJCWxpYmN1cmw0LW9wZW5zc2wtZGV2Om1pcHMgXAo+
-ICsJCQlsaWJ4cmFuZHItZGV2Om1pcHMgXAo+ICsJCQlsaWJ4di1kZXY6bWlwcwo+ICsKPiArUlVO
-IGFwdC1nZXQgaW5zdGFsbCAteSBcCj4gKwkJCW1lc29uIFwKPiArCQkJbGliZHJtLWRldjptaXBz
-IFwKPiArCQkJcWVtdS11c2VyIFwKPiArCQkJcWVtdS11c2VyLXN0YXRpYwo+IGRpZmYgLS1naXQg
-YS9tZXNvbi1jcm9zcy1taXBzLnR4dCBiL21lc29uLWNyb3NzLW1pcHMudHh0Cj4gbmV3IGZpbGUg
-bW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwMDAwMDAuLjYzNTBkNjc3ZTBiYwo+IC0tLSAvZGV2
-L251bGwKPiArKysgYi9tZXNvbi1jcm9zcy1taXBzLnR4dAo+IEBAIC0wLDAgKzEsMTIgQEAKPiAr
-W2JpbmFyaWVzXQo+ICtjID0gJy91c3IvYmluL21pcHMtbGludXgtZ251LWdjYycKPiArYXIgPSAn
-L3Vzci9iaW4vbWlwcy1saW51eC1nbnUtZ2NjLWFyJwo+ICtzdHJpcCA9ICcvdXNyL2Jpbi9taXBz
-LWxpbnV4LWdudS1zdHJpcCcKPiArcGtnY29uZmlnID0gJ3BrZy1jb25maWcnCj4gK2V4ZV93cmFw
-cGVyID0gJ3FlbXUtbWlwcycKPiArCj4gK1tob3N0X21hY2hpbmVdCj4gK3N5c3RlbSA9ICdsaW51
-eCcKPiArY3B1X2ZhbWlseSA9ICdtaXBzJwo+ICtjcHUgPSAnbWlwcycKPiArZW5kaWFuID0gJ2Jp
-ZycKPiAtLSAKPiAyLjIwLjEKPiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3Rv
-cC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3Qt
-ZGV2
+
+--===============0315910674==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="zxwpitsvg7vn45jz"
+Content-Disposition: inline
+
+
+--zxwpitsvg7vn45jz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 06/06, Ser, Simon wrote:
+> On Tue, 2019-06-04 at 23:30 -0300, Rodrigo Siqueira wrote:
+> > The kms_flip test relies on VBlank support, and this situation may
+> > exclude some virtual drivers to take advantage of this set of tests.
+> > This commit adds a mechanism that checks if a module has VBlank. If the
+> > target module has VBlank support, kms_flip will run all the VBlank
+> > tests; otherwise, the VBlank tests will be skipped. Additionally, this
+> > commit improves the test coverage by checks if the function
+> > drmWaitVBlank() returns EOPNOTSUPP (i.e., no VBlank support).
+> >=20
+> > V7: Changes since V6
+> >  - Skip TEST_DPMS with TEST_MODESET and TEST_EBUSY if the device does
+> >    not support vblank
+>=20
+> Hmm, I'm not sure I understand this line. If I'm reading this correctly
+> it refers to this line:
+>=20
+>     if (!(o->flags & (TEST_DPMS | TEST_MODESET | TEST_NO_VBLANK)))
+>=20
+> So the check was previously skipped on TEST_DPMS and TEST_MODESET. It's
+> now skipped on TEST_NO_VBLANK too. So I'm a little confused with the
+> changelog line: should it say "skip seq number checking it the device
+> doesn't support vblank"?
+>=20
+> Am I missing something?
+>=20
+> Apart from this, the patch itself looks good to me.
+
+Hi Simon,
+
+Thank you for your review.
+
+About the changelog message, I'll update it to:
+
+  Skip seq number checking and busy flip if the device doesn't support vbla=
+nk
+
+Can I add your Reviewed-by before applying this patch?
+=20
+> > V6: Set errno to zero before call drmWaitVBlank() (Chris Wilson)
+> >=20
+> > V5: Drop the DRM_VBLANK_NEXTONMISS (Chris Wilson)
+> >=20
+> > V4: Replace DRM_VBLANK_ABSOLUTE by DRM_VBLANK_RELATIVE and
+> > DRM_VBLANK_NEXTONMISS
+> >=20
+> > V3: Add documentation (Daniel Vetter)
+> >=20
+> > V2: Add new branch coverage to check if VBlank is enabled or not and
+> > update commit message
+> >=20
+> > V1: Chris Wilson
+> >   - Change function name from igt_there_is_vblank to kms_has_vblank
+> >   - Move vblank function check from igt_aux to igt_kms
+> >   - Utilizes memset in dummy_vbl variable
+> >   - Directly return the result of drmWaitVBlank()
+> >=20
+> > Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+> > ---
+> >  lib/igt_kms.c    | 21 +++++++++++++++++++++
+> >  lib/igt_kms.h    |  2 ++
+> >  tests/kms_flip.c | 24 +++++++++++++++++++++++-
+> >  3 files changed, 46 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> > index d7d711a7..8a465f67 100644
+> > --- a/lib/igt_kms.c
+> > +++ b/lib/igt_kms.c
+> > @@ -1673,6 +1673,27 @@ void igt_assert_plane_visible(int fd, enum pipe =
+pipe, int plane_index, bool visi
+> >  	igt_assert_eq(visible, visibility);
+> >  }
+> > =20
+> > +/**
+> > + * kms_has_vblank:
+> > + * @fd: DRM fd
+> > + *
+> > + * Get the VBlank errno after an attempt to call drmWaitVBlank(). This
+> > + * function is useful for checking if a driver has support or not for =
+VBlank.
+> > + *
+> > + * Returns: true if target driver has VBlank support, otherwise return=
+ false.
+> > + */
+> > +bool kms_has_vblank(int fd)
+> > +{
+> > +	drmVBlank dummy_vbl;
+> > +
+> > +	memset(&dummy_vbl, 0, sizeof(drmVBlank));
+> > +	dummy_vbl.request.type =3D DRM_VBLANK_RELATIVE;
+> > +
+> > +	errno =3D 0;
+> > +	drmWaitVBlank(fd, &dummy_vbl);
+> > +	return (errno !=3D EOPNOTSUPP);
+> > +}
+> > +
+> >  /*
+> >   * A small modeset API
+> >   */
+> > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> > index 4ac28131..5b5cf274 100644
+> > --- a/lib/igt_kms.h
+> > +++ b/lib/igt_kms.h
+> > @@ -229,6 +229,8 @@ void kmstest_wait_for_pageflip(int fd);
+> >  unsigned int kmstest_get_vblank(int fd, int pipe, unsigned int flags);
+> >  void igt_assert_plane_visible(int fd, enum pipe pipe, int plane_index,=
+ bool visibility);
+> > =20
+> > +bool kms_has_vblank(int fd);
+> > +
+> >  /*
+> >   * A small modeset API
+> >   */
+> > diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+> > index d7c1f9cf..2a158d97 100755
+> > --- a/tests/kms_flip.c
+> > +++ b/tests/kms_flip.c
+> > @@ -71,6 +71,7 @@
+> >  #define TEST_SUSPEND		(1 << 26)
+> >  #define TEST_BO_TOOBIG		(1 << 28)
+> > =20
+> > +#define TEST_NO_VBLANK		(1 << 29)
+> >  #define TEST_BASIC		(1 << 30)
+> > =20
+> >  #define EVENT_FLIP		(1 << 0)
+> > @@ -126,6 +127,18 @@ struct event_state {
+> >  	int seq_step;
+> >  };
+> > =20
+> > +static bool vblank_dependence(int flags)
+> > +{
+> > +	int vblank_flags =3D TEST_VBLANK | TEST_VBLANK_BLOCK |
+> > +			   TEST_VBLANK_ABSOLUTE | TEST_VBLANK_EXPIRED_SEQ |
+> > +			   TEST_CHECK_TS | TEST_VBLANK_RACE | TEST_EBUSY;
+> > +
+> > +	if (flags & vblank_flags)
+> > +		return true;
+> > +
+> > +	return false;
+> > +}
+> > +
+> >  static float timeval_float(const struct timeval *tv)
+> >  {
+> >  	return tv->tv_sec + tv->tv_usec / 1000000.0f;
+> > @@ -494,7 +507,7 @@ static void check_state(const struct test_output *o=
+, const struct event_state *e
+> >  	/* check only valid if no modeset happens in between, that increments=
+ by
+> >  	 * (1 << 23) on each step. This bounding matches the one in
+> >  	 * DRM_IOCTL_WAIT_VBLANK. */
+> > -	if (!(o->flags & (TEST_DPMS | TEST_MODESET)))
+> > +	if (!(o->flags & (TEST_DPMS | TEST_MODESET | TEST_NO_VBLANK)))
+> >  		igt_assert_f(es->current_seq - (es->last_seq + o->seq_step) <=3D 1UL=
+ << 23,
+> >  			     "unexpected %s seq %u, should be >=3D %u\n",
+> >  			     es->name, es->current_seq, es->last_seq + o->seq_step);
+> > @@ -1176,6 +1189,7 @@ static void run_test_on_crtc_set(struct test_outp=
+ut *o, int *crtc_idxs,
+> >  	unsigned bo_size =3D 0;
+> >  	uint64_t tiling;
+> >  	int i;
+> > +	bool vblank =3D true;
+> > =20
+> >  	switch (crtc_count) {
+> >  	case RUN_TEST:
+> > @@ -1259,6 +1273,14 @@ static void run_test_on_crtc_set(struct test_out=
+put *o, int *crtc_idxs,
+> >  	}
+> >  	igt_assert(fb_is_bound(o, o->fb_ids[0]));
+> > =20
+> > +	vblank =3D kms_has_vblank(drm_fd);
+> > +	if (!vblank) {
+> > +		if (vblank_dependence(o->flags))
+> > +			igt_require_f(vblank, "There is no VBlank\n");
+> > +		else
+> > +			o->flags |=3D TEST_NO_VBLANK;
+> > +	}
+> > +
+> >  	/* quiescent the hw a bit so ensure we don't miss a single frame */
+> >  	if (o->flags & TEST_CHECK_TS)
+> >  		calibrate_ts(o, crtc_idxs[0]);
+
+--=20
+Rodrigo Siqueira
+https://siqueira.tech
+
+--zxwpitsvg7vn45jz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlz5MSoACgkQWJzP/com
+vP+Gmg//YpjPTOS4SaZdrz63So1B3c7rZfC+YA+36UJMh/E2ST/222TvRAlpfTEb
+Wf6rQ/nhkSbeC0VUuLoYd/KGH+ateiW1gOAwlCacBqofzCdtRwDpL14//efoltPz
+7mXbVTkcOODWnyleaVtbubz5JaF7UOEB7ZsijbszJFlVdT/82DwNFWNoV4vjLXuW
++jWiVVY8/lZ8XAC65g6JGl5jXq0kbnPYzPMqc8rzRTqkx2KNENBqFd4fTfemFgWF
+DJgNr8AbFf1oVWJ+T5fOnM5N5soXwEvHDkDP4OqRrh7g0/R/JpF1ZGa922AbWa+f
+oT8vqacptgpY3DMt82mVfeIjaOXO+adcwHgDrlCpDFAQeYzcKkxdzfTkxZj8G0vX
+K/SIjicIHZ/kajLkTbQIwUGY3ybQyzGhbiCxaWjHTJpp4kLDaHs/HIgyAQhn4nhv
+vUc27c39OQordHVDSkm/N6aP0QRYW6HCoFRyo3YM0veXh/q9CWiTQpi/FXjMo2ra
+N7qF8n3kA+qkIS/DtKecl88AwEiNSyXbkA349bWe3nTtEdAwbx5i9tkSqHD2JAZY
+YuVZBrKT/FRhbv3/S5mJeyYx7NCPGX9zscUX1s33GkILWMAql3z0d8RsjDyWvkMT
+YAjIym6+ddfr6AgFrpxs/nkmAxQvZHO2nLAFMECAl0z+xzY133c=
+=PKgO
+-----END PGP SIGNATURE-----
+
+--zxwpitsvg7vn45jz--
+
+--===============0315910674==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============0315910674==--
