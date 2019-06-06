@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 6 Jun 2019 12:28:43 -0300
-From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Message-ID: <20190606152843.ufyaksklmi5fmv7n@smtp.gmail.com>
-References: <20190605023053.h7q2ei2b7gf2k5pn@smtp.gmail.com>
- <d6c1ad8d4c2e0b0710d005efb5bb7b18258736c3.camel@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <d6c1ad8d4c2e0b0710d005efb5bb7b18258736c3.camel@intel.com>
-Subject: Re: [igt-dev] [PATCH V8 i-g-t] tests/kms_flip: Skip VBlank tests in
- modules without VBlank
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <87v9xkqdjq.fsf@gaia.fi.intel.com>
+References: <20190604081334.5925-1-chris@chris-wilson.co.uk>
+ <87v9xkqdjq.fsf@gaia.fi.intel.com>
+Message-ID: <155983781008.19464.14658540928723482837@skylake-alporthouse-com>
+Date: Thu, 06 Jun 2019 17:16:50 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/gem_exec_latency: Measure the
+ latency of context switching
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,241 +15,184 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0315910674=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Ser, Simon" <simon.ser@intel.com>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Mika Kuoppala <mika.kuoppala@linux.intel.com>, intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============0315910674==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="zxwpitsvg7vn45jz"
-Content-Disposition: inline
-
-
---zxwpitsvg7vn45jz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On 06/06, Ser, Simon wrote:
-> On Tue, 2019-06-04 at 23:30 -0300, Rodrigo Siqueira wrote:
-> > The kms_flip test relies on VBlank support, and this situation may
-> > exclude some virtual drivers to take advantage of this set of tests.
-> > This commit adds a mechanism that checks if a module has VBlank. If the
-> > target module has VBlank support, kms_flip will run all the VBlank
-> > tests; otherwise, the VBlank tests will be skipped. Additionally, this
-> > commit improves the test coverage by checks if the function
-> > drmWaitVBlank() returns EOPNOTSUPP (i.e., no VBlank support).
-> >=20
-> > V7: Changes since V6
-> >  - Skip TEST_DPMS with TEST_MODESET and TEST_EBUSY if the device does
-> >    not support vblank
->=20
-> Hmm, I'm not sure I understand this line. If I'm reading this correctly
-> it refers to this line:
->=20
->     if (!(o->flags & (TEST_DPMS | TEST_MODESET | TEST_NO_VBLANK)))
->=20
-> So the check was previously skipped on TEST_DPMS and TEST_MODESET. It's
-> now skipped on TEST_NO_VBLANK too. So I'm a little confused with the
-> changelog line: should it say "skip seq number checking it the device
-> doesn't support vblank"?
->=20
-> Am I missing something?
->=20
-> Apart from this, the patch itself looks good to me.
-
-Hi Simon,
-
-Thank you for your review.
-
-About the changelog message, I'll update it to:
-
-  Skip seq number checking and busy flip if the device doesn't support vbla=
-nk
-
-Can I add your Reviewed-by before applying this patch?
-=20
-> > V6: Set errno to zero before call drmWaitVBlank() (Chris Wilson)
-> >=20
-> > V5: Drop the DRM_VBLANK_NEXTONMISS (Chris Wilson)
-> >=20
-> > V4: Replace DRM_VBLANK_ABSOLUTE by DRM_VBLANK_RELATIVE and
-> > DRM_VBLANK_NEXTONMISS
-> >=20
-> > V3: Add documentation (Daniel Vetter)
-> >=20
-> > V2: Add new branch coverage to check if VBlank is enabled or not and
-> > update commit message
-> >=20
-> > V1: Chris Wilson
-> >   - Change function name from igt_there_is_vblank to kms_has_vblank
-> >   - Move vblank function check from igt_aux to igt_kms
-> >   - Utilizes memset in dummy_vbl variable
-> >   - Directly return the result of drmWaitVBlank()
-> >=20
-> > Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-> > ---
-> >  lib/igt_kms.c    | 21 +++++++++++++++++++++
-> >  lib/igt_kms.h    |  2 ++
-> >  tests/kms_flip.c | 24 +++++++++++++++++++++++-
-> >  3 files changed, 46 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> > index d7d711a7..8a465f67 100644
-> > --- a/lib/igt_kms.c
-> > +++ b/lib/igt_kms.c
-> > @@ -1673,6 +1673,27 @@ void igt_assert_plane_visible(int fd, enum pipe =
-pipe, int plane_index, bool visi
-> >  	igt_assert_eq(visible, visibility);
-> >  }
-> > =20
-> > +/**
-> > + * kms_has_vblank:
-> > + * @fd: DRM fd
-> > + *
-> > + * Get the VBlank errno after an attempt to call drmWaitVBlank(). This
-> > + * function is useful for checking if a driver has support or not for =
-VBlank.
-> > + *
-> > + * Returns: true if target driver has VBlank support, otherwise return=
- false.
-> > + */
-> > +bool kms_has_vblank(int fd)
-> > +{
-> > +	drmVBlank dummy_vbl;
-> > +
-> > +	memset(&dummy_vbl, 0, sizeof(drmVBlank));
-> > +	dummy_vbl.request.type =3D DRM_VBLANK_RELATIVE;
-> > +
-> > +	errno =3D 0;
-> > +	drmWaitVBlank(fd, &dummy_vbl);
-> > +	return (errno !=3D EOPNOTSUPP);
-> > +}
-> > +
-> >  /*
-> >   * A small modeset API
-> >   */
-> > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> > index 4ac28131..5b5cf274 100644
-> > --- a/lib/igt_kms.h
-> > +++ b/lib/igt_kms.h
-> > @@ -229,6 +229,8 @@ void kmstest_wait_for_pageflip(int fd);
-> >  unsigned int kmstest_get_vblank(int fd, int pipe, unsigned int flags);
-> >  void igt_assert_plane_visible(int fd, enum pipe pipe, int plane_index,=
- bool visibility);
-> > =20
-> > +bool kms_has_vblank(int fd);
-> > +
-> >  /*
-> >   * A small modeset API
-> >   */
-> > diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-> > index d7c1f9cf..2a158d97 100755
-> > --- a/tests/kms_flip.c
-> > +++ b/tests/kms_flip.c
-> > @@ -71,6 +71,7 @@
-> >  #define TEST_SUSPEND		(1 << 26)
-> >  #define TEST_BO_TOOBIG		(1 << 28)
-> > =20
-> > +#define TEST_NO_VBLANK		(1 << 29)
-> >  #define TEST_BASIC		(1 << 30)
-> > =20
-> >  #define EVENT_FLIP		(1 << 0)
-> > @@ -126,6 +127,18 @@ struct event_state {
-> >  	int seq_step;
-> >  };
-> > =20
-> > +static bool vblank_dependence(int flags)
-> > +{
-> > +	int vblank_flags =3D TEST_VBLANK | TEST_VBLANK_BLOCK |
-> > +			   TEST_VBLANK_ABSOLUTE | TEST_VBLANK_EXPIRED_SEQ |
-> > +			   TEST_CHECK_TS | TEST_VBLANK_RACE | TEST_EBUSY;
-> > +
-> > +	if (flags & vblank_flags)
-> > +		return true;
-> > +
-> > +	return false;
-> > +}
-> > +
-> >  static float timeval_float(const struct timeval *tv)
-> >  {
-> >  	return tv->tv_sec + tv->tv_usec / 1000000.0f;
-> > @@ -494,7 +507,7 @@ static void check_state(const struct test_output *o=
-, const struct event_state *e
-> >  	/* check only valid if no modeset happens in between, that increments=
- by
-> >  	 * (1 << 23) on each step. This bounding matches the one in
-> >  	 * DRM_IOCTL_WAIT_VBLANK. */
-> > -	if (!(o->flags & (TEST_DPMS | TEST_MODESET)))
-> > +	if (!(o->flags & (TEST_DPMS | TEST_MODESET | TEST_NO_VBLANK)))
-> >  		igt_assert_f(es->current_seq - (es->last_seq + o->seq_step) <=3D 1UL=
- << 23,
-> >  			     "unexpected %s seq %u, should be >=3D %u\n",
-> >  			     es->name, es->current_seq, es->last_seq + o->seq_step);
-> > @@ -1176,6 +1189,7 @@ static void run_test_on_crtc_set(struct test_outp=
-ut *o, int *crtc_idxs,
-> >  	unsigned bo_size =3D 0;
-> >  	uint64_t tiling;
-> >  	int i;
-> > +	bool vblank =3D true;
-> > =20
-> >  	switch (crtc_count) {
-> >  	case RUN_TEST:
-> > @@ -1259,6 +1273,14 @@ static void run_test_on_crtc_set(struct test_out=
-put *o, int *crtc_idxs,
-> >  	}
-> >  	igt_assert(fb_is_bound(o, o->fb_ids[0]));
-> > =20
-> > +	vblank =3D kms_has_vblank(drm_fd);
-> > +	if (!vblank) {
-> > +		if (vblank_dependence(o->flags))
-> > +			igt_require_f(vblank, "There is no VBlank\n");
-> > +		else
-> > +			o->flags |=3D TEST_NO_VBLANK;
-> > +	}
-> > +
-> >  	/* quiescent the hw a bit so ensure we don't miss a single frame */
-> >  	if (o->flags & TEST_CHECK_TS)
-> >  		calibrate_ts(o, crtc_idxs[0]);
-
---=20
-Rodrigo Siqueira
-https://siqueira.tech
-
---zxwpitsvg7vn45jz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAlz5MSoACgkQWJzP/com
-vP+Gmg//YpjPTOS4SaZdrz63So1B3c7rZfC+YA+36UJMh/E2ST/222TvRAlpfTEb
-Wf6rQ/nhkSbeC0VUuLoYd/KGH+ateiW1gOAwlCacBqofzCdtRwDpL14//efoltPz
-7mXbVTkcOODWnyleaVtbubz5JaF7UOEB7ZsijbszJFlVdT/82DwNFWNoV4vjLXuW
-+jWiVVY8/lZ8XAC65g6JGl5jXq0kbnPYzPMqc8rzRTqkx2KNENBqFd4fTfemFgWF
-DJgNr8AbFf1oVWJ+T5fOnM5N5soXwEvHDkDP4OqRrh7g0/R/JpF1ZGa922AbWa+f
-oT8vqacptgpY3DMt82mVfeIjaOXO+adcwHgDrlCpDFAQeYzcKkxdzfTkxZj8G0vX
-K/SIjicIHZ/kajLkTbQIwUGY3ybQyzGhbiCxaWjHTJpp4kLDaHs/HIgyAQhn4nhv
-vUc27c39OQordHVDSkm/N6aP0QRYW6HCoFRyo3YM0veXh/q9CWiTQpi/FXjMo2ra
-N7qF8n3kA+qkIS/DtKecl88AwEiNSyXbkA349bWe3nTtEdAwbx5i9tkSqHD2JAZY
-YuVZBrKT/FRhbv3/S5mJeyYx7NCPGX9zscUX1s33GkILWMAql3z0d8RsjDyWvkMT
-YAjIym6+ddfr6AgFrpxs/nkmAxQvZHO2nLAFMECAl0z+xzY133c=
-=PKgO
------END PGP SIGNATURE-----
-
---zxwpitsvg7vn45jz--
-
---===============0315910674==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============0315910674==--
+UXVvdGluZyBNaWthIEt1b3BwYWxhICgyMDE5LTA2LTA1IDE2OjA0OjA5KQo+IENocmlzIFdpbHNv
+biA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPiB3cml0ZXM6Cj4gCj4gPiBNZWFzdXJlIHRoZSBi
+YXNlbGluZSBsYXRlbmN5IGJldHdlZW4gY29udGV4dHMgaW4gb3JkZXIgdG8gZGlyZWN0bHkKPiA+
+IGNvbXBhcmUgdGhhdCB3aXRoIHRoZSBhZGRpdGlvbmFsIGNvc3Qgb2YgcHJlZW1wdGlvbi4KPiA+
+Cj4gPiBTaWduZWQtb2ZmLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51
+az4KPiA+IC0tLQo+ID4gIHRlc3RzL2k5MTUvZ2VtX2V4ZWNfbGF0ZW5jeS5jIHwgMjMwICsrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysKPiA+ICAxIGZpbGUgY2hhbmdlZCwgMjMwIGlu
+c2VydGlvbnMoKykKPiA+Cj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fZXhlY19sYXRl
+bmN5LmMgYi90ZXN0cy9pOTE1L2dlbV9leGVjX2xhdGVuY3kuYwo+ID4gaW5kZXggZTU2ZDYyNzgw
+Li5lODhmYmJjNmEgMTAwNjQ0Cj4gPiAtLS0gYS90ZXN0cy9pOTE1L2dlbV9leGVjX2xhdGVuY3ku
+Ywo+ID4gKysrIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19sYXRlbmN5LmMKPiA+IEBAIC00MTAsNiAr
+NDEwLDg2IEBAIHN0YXRpYyB2b2lkIGxhdGVuY3lfZnJvbV9yaW5nKGludCBmZCwKPiA+ICAgICAg
+IH0KPiA+ICB9Cj4gPiAgCj4gPiArc3RhdGljIHZvaWQgZXhlY3V0aW9uX2xhdGVuY3koaW50IGk5
+MTUsIHVuc2lnbmVkIGludCByaW5nLCBjb25zdCBjaGFyICpuYW1lKQo+ID4gK3sKPiA+ICsgICAg
+IHN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmplY3QyIG9iaiA9IHsKPiA+ICsgICAgICAgICAg
+ICAgLmhhbmRsZSA9IGdlbV9jcmVhdGUoaTkxNSwgNDA5NSksCj4gPiArICAgICB9Owo+ID4gKyAg
+ICAgc3RydWN0IGRybV9pOTE1X2dlbV9leGVjYnVmZmVyMiBleGVjYnVmID0gewo+ID4gKyAgICAg
+ICAgICAgICAuYnVmZmVyc19wdHIgPSB0b191c2VyX3BvaW50ZXIoJm9iaiksCj4gPiArICAgICAg
+ICAgICAgIC5idWZmZXJfY291bnQgPSAxLAo+ID4gKyAgICAgICAgICAgICAuZmxhZ3MgPSByaW5n
+IHwgTE9DQUxfSTkxNV9FWEVDX05PX1JFTE9DIHwgTE9DQUxfSTkxNV9FWEVDX0hBTkRMRV9MVVQs
+Cj4gPiArICAgICB9Owo+ID4gKyAgICAgY29uc3QgdW5zaWduZWQgaW50IG1taW9fYmFzZSA9IDB4
+MjAwMDsKPiA+ICsgICAgIGNvbnN0IHVuc2lnbmVkIGludCBjc190aW1lc3RhbXAgPSBtbWlvX2Jh
+c2UgKyAweDM1ODsKPiA+ICsgICAgIHZvbGF0aWxlIHVpbnQzMl90ICp0aW1lc3RhbXA7Cj4gPiAr
+ICAgICB1aW50MzJfdCAqY3MsICpyZXN1bHQ7Cj4gPiArCj4gPiArICAgICB0aW1lc3RhbXAgPQo+
+ID4gKyAgICAgICAgICAgICAodm9sYXRpbGUgdWludDMyX3QgKikoKHZvbGF0aWxlIGNoYXIgKilp
+Z3RfZ2xvYmFsX21taW8gKyBjc190aW1lc3RhbXApOwo+ID4gKwo+ID4gKyAgICAgb2JqLmhhbmRs
+ZSA9IGdlbV9jcmVhdGUoaTkxNSwgNDA5Nik7Cj4gPiArICAgICBvYmouZmxhZ3MgPSBFWEVDX09C
+SkVDVF9QSU5ORUQ7Cj4gPiArICAgICByZXN1bHQgPSBnZW1fbW1hcF9fd2MoaTkxNSwgb2JqLmhh
+bmRsZSwgMCwgNDA5NiwgUFJPVF9XUklURSk7Cj4gPiArCj4gPiArICAgICBmb3IgKGludCBpID0g
+MDsgaSA8IDE2OyBpKyspIHsKPiA+ICsgICAgICAgICAgICAgY3MgPSByZXN1bHQgKyAxNiAqIGk7
+Cj4gPiArICAgICAgICAgICAgICpjcysrID0gMHgyNCA8PCAyMyB8IDI7IC8qIFNSTSAqLwo+ID4g
+KyAgICAgICAgICAgICAqY3MrKyA9IGNzX3RpbWVzdGFtcDsKPiA+ICsgICAgICAgICAgICAgKmNz
+KysgPSA0MDk2IC0gMTYgKiA0ICsgaSAqIDQ7Cj4gPiArICAgICAgICAgICAgICpjcysrID0gMDsK
+PiA+ICsgICAgICAgICAgICAgKmNzKysgPSAweGEgPDwgMjM7Cj4gCj4gV2h5IG5vdCBNSV9CQVRD
+SF9CVUZGRVJfRU5EPyBUbyBlbXBoYXNpemUgdGhhdCB3ZSBoYXZlCj4gbXVsdGlwbGUgYmF0Y2hl
+cyBpbnNpZGUgYSBibz8KCkkgd3JvdGUgTUlfQkFUQ0hfQlVGRkVSX0VORC4uLiBPaCwgSSBzZWUs
+IG5vLCBJIHdhcyBqdXN0IHVzaW5nIHRoZQp2YWx1ZXMgZm9yIG5vIG90aGVyIHJlYXNvbiB0aGFu
+IGhhYml0LgoKPiA+ICsgICAgIH0KPiA+ICsKPiA+ICsgICAgIGNzID0gcmVzdWx0ICsgMTAyNCAt
+IDE2Owo+ID4gKwo+ID4gKyAgICAgZm9yIChpbnQgbGVuZ3RoID0gMjsgbGVuZ3RoIDw9IDE2OyBs
+ZW5ndGggPDw9IDEpIHsKPiA+ICsgICAgICAgICAgICAgc3RydWN0IGlndF9tZWFuIHN1Ym1pdCwg
+YmF0Y2gsIHRvdGFsOwo+ID4gKyAgICAgICAgICAgICBpbnQgbGFzdCA9IGxlbmd0aCAtIDE7Cj4g
+PiArCj4gPiArICAgICAgICAgICAgIGlndF9tZWFuX2luaXQoJnN1Ym1pdCk7Cj4gPiArICAgICAg
+ICAgICAgIGlndF9tZWFuX2luaXQoJmJhdGNoKTsKPiA+ICsgICAgICAgICAgICAgaWd0X21lYW5f
+aW5pdCgmdG90YWwpOwo+ID4gKwo+ID4gKyAgICAgICAgICAgICBpZ3RfdW50aWxfdGltZW91dCgy
+KSB7Cj4gPiArICAgICAgICAgICAgICAgICAgICAgdWludDMyX3Qgbm93LCBlbmQ7Cj4gPiArCj4g
+PiArICAgICAgICAgICAgICAgICAgICAgY3NbbGFzdF0gPSAwOwo+ID4gKwo+ID4gKyAgICAgICAg
+ICAgICAgICAgICAgIG5vdyA9ICp0aW1lc3RhbXA7Cj4gPiArICAgICAgICAgICAgICAgICAgICAg
+Zm9yIChpbnQgaSA9IDA7IGkgPCBsZW5ndGg7IGkrKykgewo+ID4gKyAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgZXhlY2J1Zi5iYXRjaF9zdGFydF9vZmZzZXQgPSA2NCAqIGk7Cj4gPiArICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICBnZW1fZXhlY2J1ZihpOTE1LCAmZXhlY2J1Zik7Cj4g
+PiArICAgICAgICAgICAgICAgICAgICAgfQo+ID4gKyAgICAgICAgICAgICAgICAgICAgIHdoaWxl
+ICghKCh2b2xhdGlsZSB1aW50MzJfdCAqKWNzKVtsYXN0XSkKPiA+ICsgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIDsKPiA+ICsgICAgICAgICAgICAgICAgICAgICBlbmQgPSAqdGltZXN0YW1w
+Owo+ID4gKwo+ID4gKyAgICAgICAgICAgICAgICAgICAgIGlndF9tZWFuX2FkZCgmc3VibWl0LCAo
+Y3NbMF0gLSBub3cpICogcmNzX2Nsb2NrKTsKPiA+ICsgICAgICAgICAgICAgICAgICAgICBpZ3Rf
+bWVhbl9hZGQoJmJhdGNoLCAoY3NbbGFzdF0gLSBjc1swXSkgKiByY3NfY2xvY2sgLyBsYXN0KTsK
+PiAKPiBKdXN0IGN1cmlvdXMgb2Ygd2hhdCBkbyB5b3UgdXNlIG9mIGludGVyIGJhdGNoIGxhdGVu
+Y3k/CgpFUEFSU0UuCgo+IE9oIGFuZCBkbyB3ZSBuZWVkIHRvIHRvIHRha2UgdGhlIHJjc19jbG9j
+ayByZXNvbHV0aW9uIGludG8gYWNjb3VudAo+IG9uIHJlc3VsdCBjYWxjdWxhdGlvbi4gUHJvbGx5
+IG5vdCBhcyBpdCBzZWVtcyB0byBiZSB0aWNraW5nIGZhc3QgZW5vdWdoCj4gZm9yIDAuMXVzIGFj
+Y3VyYWN5LgoKSXQganVzdCBwcm92aWRlcyB0aGUgbG93ZXIgZ3JhbnVsYXJpdHkgdG8gcmVzdWx0
+cy4gSXQgZG9lc24ndCBhbHRlciB0aGUKY2FsY3VsYXRpb25zIG9yIHByZXNlbnRhdGlvbiwganVz
+dCB0aGF0IHF1YW50dW0gYmVuZWF0aCB3aGljaCB3ZSBjYW5ub3QKbWVhc3VyZS4KCkNvbnNpZGVy
+aW5nIHRoYXQgdGhlIENTIGNhbm5vdCBnbyBmYXN0ZXIgdGhhbiBpdHMgY2xvY2ssIGl0IGRvZXNu
+J3QKYWZmZWN0IGFueXRoaW5nLgoKPiA+ICsgICAgICAgICAgICAgICAgICAgICBpZ3RfbWVhbl9h
+ZGQoJnRvdGFsLCAoZW5kIC0gbm93KSAqIHJjc19jbG9jayk7Cj4gPiArICAgICAgICAgICAgIH0K
+PiA+ICsKPiA+ICsgICAgICAgICAgICAgaWd0X2luZm8oIiVzeCVkIFN1Ym1pc3Npb24gbGF0ZW5j
+eTogJS4yZsKxJS4yZnVzXG4iLAo+ID4gKyAgICAgICAgICAgICAgICAgICAgICBuYW1lLCBsZW5n
+dGgsCj4gPiArICAgICAgICAgICAgICAgICAgICAgIDFlLTMgKiBpZ3RfbWVhbl9nZXQoJnN1Ym1p
+dCksCj4gPiArICAgICAgICAgICAgICAgICAgICAgIDFlLTMgKiBzcXJ0KGlndF9tZWFuX2dldF92
+YXJpYW5jZSgmc3VibWl0KSkpOwo+ID4gKwo+ID4gKyAgICAgICAgICAgICBpZ3RfaW5mbygiJXN4
+JWQgSW50ZXItYmF0Y2ggbGF0ZW5jeTogJS4yZsKxJS4yZnVzXG4iLAo+ID4gKyAgICAgICAgICAg
+ICAgICAgICAgICBuYW1lLCBsZW5ndGgsCj4gPiArICAgICAgICAgICAgICAgICAgICAgIDFlLTMg
+KiBpZ3RfbWVhbl9nZXQoJmJhdGNoKSwKPiA+ICsgICAgICAgICAgICAgICAgICAgICAgMWUtMyAq
+IHNxcnQoaWd0X21lYW5fZ2V0X3ZhcmlhbmNlKCZiYXRjaCkpKTsKPiA+ICsKPiA+ICsgICAgICAg
+ICAgICAgaWd0X2luZm8oIiVzeCVkIEVuZC10by1lbmQgbGF0ZW5jeTogJS4yZsKxJS4yZnVzXG4i
+LAo+ID4gKyAgICAgICAgICAgICAgICAgICAgICBuYW1lLCBsZW5ndGgsCj4gPiArICAgICAgICAg
+ICAgICAgICAgICAgIDFlLTMgKiBpZ3RfbWVhbl9nZXQoJnRvdGFsKSwKPiA+ICsgICAgICAgICAg
+ICAgICAgICAgICAgMWUtMyAqIHNxcnQoaWd0X21lYW5fZ2V0X3ZhcmlhbmNlKCZ0b3RhbCkpKTsK
+PiA+ICsgICAgIH0KPiA+ICsKPiA+ICsgICAgIG11bm1hcChyZXN1bHQsIDQwOTYpOwo+ID4gKyAg
+ICAgZ2VtX2Nsb3NlKGk5MTUsIG9iai5oYW5kbGUpOwo+ID4gK30KPiA+ICsKPiA+ICBzdGF0aWMg
+dm9pZAo+ID4gIF9fc3VibWl0X3NwaW4oaW50IGZkLCBpZ3Rfc3Bpbl90ICpzcGluLCB1bnNpZ25l
+ZCBpbnQgZmxhZ3MpCj4gPiAgewo+ID4gQEAgLTYxNiw2ICs2OTYsMTQyIEBAIHJ0aG9nX2xhdGVu
+Y3lfb25fcmluZyhpbnQgZmQsIHVuc2lnbmVkIGludCBlbmdpbmUsIGNvbnN0IGNoYXIgKm5hbWUs
+IHVuc2lnbmVkIGluCj4gPiAgICAgICBtdW5tYXAocmVzdWx0cywgTU1BUF9TWik7Cj4gPiAgfQo+
+ID4gIAo+ID4gK3N0YXRpYyB2b2lkIGNvbnRleHRfc3dpdGNoKGludCBpOTE1LAo+ID4gKyAgICAg
+ICAgICAgICAgICAgICAgICAgIHVuc2lnbmVkIGludCBlbmdpbmUsIGNvbnN0IGNoYXIgKm5hbWUs
+Cj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgdW5zaWduZWQgaW50IGZsYWdzKQo+ID4gK3sK
+PiA+ICsgICAgIHN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmplY3QyIG9ialsyXTsKPiA+ICsg
+ICAgIHN0cnVjdCBkcm1faTkxNV9nZW1fcmVsb2NhdGlvbl9lbnRyeSByZWxvY1s1XTsKPiA+ICsg
+ICAgIHN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY2J1ZmZlcjIgZWI7Cj4gPiArICAgICB1aW50MzJf
+dCAqY3MsICpiYmUsICpyZXN1bHRzLCB2Owo+ID4gKyAgICAgdW5zaWduZWQgaW50IG1taW9fYmFz
+ZTsKPiA+ICsgICAgIHN0cnVjdCBpZ3RfbWVhbiBtZWFuOwo+ID4gKyAgICAgdWludDMyX3QgY3R4
+WzJdOwo+ID4gKwo+ID4gKyAgICAgLyogWFhYIGk5MTVfcXVlcnkoKSEgKi8KPiA+ICsgICAgIHN3
+aXRjaCAoZW5naW5lKSB7Cj4gPiArICAgICBjYXNlIEk5MTVfRVhFQ19ERUZBVUxUOgo+ID4gKyAg
+ICAgY2FzZSBJOTE1X0VYRUNfUkVOREVSOgo+ID4gKyAgICAgICAgICAgICBtbWlvX2Jhc2UgPSAw
+eDIwMDA7Cj4gPiArICAgICAgICAgICAgIGJyZWFrOwo+ID4gKyNpZiAwCj4gPiArICAgICBjYXNl
+IEk5MTVfRVhFQ19CU0Q6Cj4gPiArICAgICAgICAgICAgIG1taW9fYmFzZSA9IDB4MTIwMDA7Cj4g
+PiArICAgICAgICAgICAgIGJyZWFrOwo+ID4gKyNlbmRpZgo+IAo+IEl0IHNlZW1zIHRvIGJlIHRo
+ZXJlIGFjY29yZGluZyB0byBic3BlYy4gVGltZXN0YW1wcyBkb24ndAo+IHdvcmsgd2l0aCBpdD8K
+CkVuZ2luZSBhc3NpZ25tZW50IGlzIHJhbmRvbS4gT2xkIHVhcGkgaXMgYSBtZXNzLgoKPiAKPiA+
+ICsgICAgIGNhc2UgSTkxNV9FWEVDX0JMVDoKPiA+ICsgICAgICAgICAgICAgbW1pb19iYXNlID0g
+MHgyMjAwMDsKPiA+ICsgICAgICAgICAgICAgYnJlYWs7Cj4gPiArCj4gPiArICAgICBjYXNlIEk5
+MTVfRVhFQ19WRUJPWDoKPiA+ICsgICAgICAgICAgICAgaWYgKGludGVsX2dlbihpbnRlbF9nZXRf
+ZHJtX2RldmlkKGk5MTUpKSA+PSAxMSkKPiA+ICsgICAgICAgICAgICAgICAgICAgICBtbWlvX2Jh
+c2UgPSAweDFkODAwMDsKPiA+ICsgICAgICAgICAgICAgZWxzZQo+ID4gKyAgICAgICAgICAgICAg
+ICAgICAgIG1taW9fYmFzZSA9IDB4MWEwMDA7Cj4gPiArICAgICAgICAgICAgIGJyZWFrOwo+ID4g
+Kwo+ID4gKyAgICAgZGVmYXVsdDoKPiA+ICsgICAgICAgICAgICAgaWd0X3NraXAoIm1taW8gYmFz
+ZSBub3Qga25vd25cbiIpOwo+ID4gKyAgICAgfQo+ID4gKwo+ID4gKyAgICAgZm9yIChpbnQgaSA9
+IDA7IGkgPCBBUlJBWV9TSVpFKGN0eCk7IGkrKykKPiA+ICsgICAgICAgICAgICAgY3R4W2ldID0g
+Z2VtX2NvbnRleHRfY3JlYXRlKGk5MTUpOwo+ID4gKwo+ID4gKyAgICAgaWYgKGZsYWdzICYgUFJF
+RU1QVCkgewo+ID4gKyAgICAgICAgICAgICBnZW1fY29udGV4dF9zZXRfcHJpb3JpdHkoaTkxNSwg
+Y3R4WzBdLCAtMTAyMyk7Cj4gPiArICAgICAgICAgICAgIGdlbV9jb250ZXh0X3NldF9wcmlvcml0
+eShpOTE1LCBjdHhbMV0sICsxMDIzKTsKPiA+ICsgICAgIH0KPiA+ICsKPiA+ICsgICAgIG1lbXNl
+dChvYmosIDAsIHNpemVvZihvYmopKTsKPiA+ICsgICAgIG9ialswXS5oYW5kbGUgPSBnZW1fY3Jl
+YXRlKGk5MTUsIDQwOTYpOwo+ID4gKyAgICAgZ2VtX3NldF9jYWNoaW5nKGk5MTUsIG9ialswXS5o
+YW5kbGUsIDEpOwo+ID4gKyAgICAgcmVzdWx0cyA9IGdlbV9tbWFwX19jcHUoaTkxNSwgb2JqWzBd
+LmhhbmRsZSwgMCwgNDA5NiwgUFJPVF9SRUFEKTsKPiA+ICsgICAgIGdlbV9zZXRfZG9tYWluKGk5
+MTUsIG9ialswXS5oYW5kbGUsIEk5MTVfR0VNX0RPTUFJTl9DUFUsIDApOwo+ID4gKwo+ID4gKyAg
+ICAgb2JqWzFdLmhhbmRsZSA9IGdlbV9jcmVhdGUoaTkxNSwgNDA5Nik7Cj4gPiArICAgICBtZW1z
+ZXQocmVsb2MsMCwgc2l6ZW9mKHJlbG9jKSk7Cj4gPiArICAgICBvYmpbMV0ucmVsb2NhdGlvbl9j
+b3VudCA9IEFSUkFZX1NJWkUocmVsb2MpOwo+ID4gKyAgICAgb2JqWzFdLnJlbG9jc19wdHIgPSB0
+b191c2VyX3BvaW50ZXIocmVsb2MpOwo+ID4gKyAgICAgYmJlID0gZ2VtX21tYXBfX3djKGk5MTUs
+IG9ialsxXS5oYW5kbGUsIDAsIDQwOTYsIFBST1RfV1JJVEUpOwo+ID4gKyAgICAgZ2VtX3NldF9k
+b21haW4oaTkxNSwgb2JqWzFdLmhhbmRsZSwKPiA+ICsgICAgICAgICAgICAgICAgICAgIEk5MTVf
+R0VNX0RPTUFJTl9XQywgSTkxNV9HRU1fRE9NQUlOX1dDKTsKPiA+ICsKPiA+ICsgICAgIGNzID0g
+YmJlOwo+ID4gKyAgICAgKmNzKysgPSAweDUgPDwgMjM7Cj4gCj4gLyogQVJCX0NISyAqLwo+IG9y
+IGV2ZW4gYmV0dGVyIE1JX0FSQl9DSEs7CgpXaG8gZG9lc24ndCBrbm93IHRoZXNlIGNvbW1hbmRz
+PwoKPiAKPiA+ICsgICAgICpjcysrID0gMHgyNCA8PCAyMyB8IDI7IC8qIFNSTSAqLwo+ID4gKyAg
+ICAgKmNzKysgPSBtbWlvX2Jhc2UgKyAweDM1ODsgLyogVElNRVNUQU1QICovCj4gPiArICAgICBy
+ZWxvY1swXS50YXJnZXRfaGFuZGxlID0gb2JqWzBdLmhhbmRsZTsKPiA+ICsgICAgIHJlbG9jWzBd
+Lm9mZnNldCA9IChjcyAtIGJiZSkgKiBzaXplb2YoKmNzKTsKPiA+ICsgICAgICpjcysrID0gMDsK
+PiA+ICsgICAgICpjcysrID0gMDsKPiA+ICsgICAgICpjcysrID0gTUlfQkFUQ0hfQlVGRkVSX1NU
+QVJUIHwgMTsKPiA+ICsgICAgIHJlbG9jWzFdLnRhcmdldF9oYW5kbGUgPSBvYmpbMV0uaGFuZGxl
+Owo+ID4gKyAgICAgcmVsb2NbMV0ub2Zmc2V0ID0gKGNzIC0gYmJlKSAqIHNpemVvZigqY3MpOwo+
+ID4gKyAgICAgKmNzKysgPSAwOwo+ID4gKyAgICAgKmNzKysgPSAwOwo+ID4gKwo+ID4gKyAgICAg
+Y3MgPSBiYmUgKyA2NDsKPiA+ICsgICAgICpjcysrID0gMHgyNCA8PCAyMyB8IDI7IC8qIFNSTSAq
+Lwo+ID4gKyAgICAgKmNzKysgPSBtbWlvX2Jhc2UgKyAweDM1ODsgLyogVElNRVNUQU1QICovCj4g
+PiArICAgICByZWxvY1syXS50YXJnZXRfaGFuZGxlID0gb2JqWzBdLmhhbmRsZTsKPiA+ICsgICAg
+IHJlbG9jWzJdLm9mZnNldCA9IChjcyAtIGJiZSkgKiBzaXplb2YoKmNzKTsKPiA+ICsgICAgICpj
+cysrID0gcmVsb2NbMl0uZGVsdGEgPSA0Owo+ID4gKyAgICAgKmNzKysgPSAwOwo+ID4gKyAgICAg
+KmNzKysgPSAweDI5IDw8IDIzIHwgMjsgLyogTFJNICovCj4gPiArICAgICAqY3MrKyA9IG1taW9f
+YmFzZSArIDB4NjAwOyAvKiBHUFIwICovCj4gPiArICAgICByZWxvY1szXS50YXJnZXRfaGFuZGxl
+ID0gb2JqWzBdLmhhbmRsZTsKPiA+ICsgICAgIHJlbG9jWzNdLm9mZnNldCA9IChjcyAtIGJiZSkg
+KiBzaXplb2YoKmNzKTsKPiA+ICsgICAgICpjcysrID0gMDsKPiA+ICsgICAgICpjcysrID0gMDsK
+PiA+ICsgICAgICpjcysrID0gMHgyNCA8PCAyMyB8IDI7IC8qIFNSTSAqLwo+ID4gKyAgICAgKmNz
+KysgPSBtbWlvX2Jhc2UgKyAweDYwMDsgLyogR1BSMCAqLwo+ID4gKyAgICAgcmVsb2NbNF0udGFy
+Z2V0X2hhbmRsZSA9IG9ialswXS5oYW5kbGU7Cj4gPiArICAgICByZWxvY1s0XS5vZmZzZXQgPSAo
+Y3MgLSBiYmUpICogc2l6ZW9mKCpjcyk7Cj4gPiArICAgICAqY3MrKyA9IHJlbG9jWzRdLmRlbHRh
+ID0gODsKPiA+ICsgICAgICpjcysrID0gMDsKPiA+ICsgICAgICpjcysrID0gMHhhIDw8IDIzOwo+
+ID4gKwo+ID4gKyAgICAgbWVtc2V0KCZlYiwgMCwgc2l6ZW9mKGViKSk7Cj4gPiArICAgICBlYi5i
+dWZmZXJzX3B0ciA9IHRvX3VzZXJfcG9pbnRlcihvYmopOwo+ID4gKyAgICAgZWIuYnVmZmVyX2Nv
+dW50ID0gQVJSQVlfU0laRShvYmopOwo+ID4gKyAgICAgZWIuZmxhZ3MgPSBlbmdpbmU7Cj4gPiAr
+ICAgICBlYi5mbGFncyB8PSBMT0NBTF9JOTE1X0VYRUNfTk9fUkVMT0M7Cj4gPiArCj4gPiArICAg
+ICB2ID0gMDsKPiA+ICsgICAgIGlndF9tZWFuX2luaXQoJm1lYW4pOwo+ID4gKyAgICAgaWd0X3Vu
+dGlsX3RpbWVvdXQoNSkgewo+ID4gKyAgICAgICAgICAgICBlYi5yc3ZkMSA9IGN0eFswXTsKPiA+
+ICsgICAgICAgICAgICAgZWIuYmF0Y2hfc3RhcnRfb2Zmc2V0ID0gMDsKPiA+ICsgICAgICAgICAg
+ICAgZ2VtX2V4ZWNidWYoaTkxNSwgJmViKTsKPiA+ICsKPiA+ICsgICAgICAgICAgICAgd2hpbGUg
+KHJlc3VsdHNbMF0gPT0gdikKPiA+ICsgICAgICAgICAgICAgICAgICAgICBpZ3RfYXNzZXJ0KGdl
+bV9ib19idXN5KGk5MTUsIG9ialsxXS5oYW5kbGUpKTsKPiAKPiBJcyB0aGVyZSBhIHJhY2UgdGhl
+cmU/IE9iamVjdCB3aWxsIGJlIGJ1c3kgc2hvcnQgdGltZQo+IGFmdGVyIHRoZSByZXN1bHQgYXBw
+ZWFycy4KCk5vLiBPYmplY3Qgd2lsbCBiZSBidXN5IGJlZm9yZSByZXN1bHRzIGFuZCB1bnRpbCBh
+IHNob3J0IHRpbWUgYWZ0ZXIgLS0KdW5sZXNzIHRoZXJlIGlzIGEgZ3B1IGhhbmcsIGluIHdoaWNo
+IGNhc2UgdGhlIHJlc3VsdHMgd2lsbCBuZXZlciBhcHBlYXIsCmJ1dCB0aGUgb2JqZWN0IHdpbGwg
+bm8gbG9uZ2VyIGJlIGJ1c3kuCgo+IAo+ID4gKwo+ID4gKyAgICAgICAgICAgICBlYi5yc3ZkMSA9
+IGN0eFsxXTsKPiA+ICsgICAgICAgICAgICAgZWIuYmF0Y2hfc3RhcnRfb2Zmc2V0ID0gNjQgKiBz
+aXplb2YoKmNzKTsKPiA+ICsgICAgICAgICAgICAgZ2VtX2V4ZWNidWYoaTkxNSwgJmViKTsKPiA+
+ICsKPiA+ICsgICAgICAgICAgICAgKmJiZSA9IDB4YSA8PCAyMzsKPiAKPiBfX3N5bmNfc3luY3Jv
+bml6ZSBvciBhcmUgeW91IHJlbHlpbmcgb24gdGhlIGNvcnJlc3BvbmRpbmcKPiBzeXNjYWxscz8K
+Ckl0IGlzIG5vdCB0aW1pbmcgY3JpdGljYWwsIHNvIGEgbGF6eSB3Y2IgZmx1c2ggaXMgZmluZS4K
+LUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
+dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
