@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 86F20892BE
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Jun 2019 09:35:55 +0000 (UTC)
-From: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
-Date: Thu, 6 Jun 2019 09:35:53 +0000
-Message-ID: <318ef972a2b1ec5639068daab3bd63c23bb41ede.camel@intel.com>
-References: <535f7715cf870e58a24678f915a5d40c5ff888e1.camel@intel.com>
- <20190605123528.GS21222@phenom.ffwll.local>
-In-Reply-To: <20190605123528.GS21222@phenom.ffwll.local>
-Content-Language: en-US
-Content-ID: <E931B1250C8B4448815C8657B01BFA48@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 178AB89402
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Jun 2019 09:46:24 +0000 (UTC)
+Date: Thu, 6 Jun 2019 12:46:25 +0300
+From: Andi Shyti <andi.shyti@intel.com>
+Message-ID: <20190606094625.GA2629@intel.intel>
+References: <20190605123815.28529-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [RFC] IGT device scanning and selection
+Content-Disposition: inline
+In-Reply-To: <20190605123815.28529-1-petri.latvala@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] perf_pmu: Remove redundant check for
+ engine
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,20 +22,19 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "daniel@ffwll.ch" <daniel@ffwll.ch>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDE5LTA2LTA1IGF0IDE0OjM1ICswMjAwLCBEYW5pZWwgVmV0dGVyIHdyb3RlOg0K
-DQo8Y3V0Pg0KPiBVZGV2IGhhcyB0aGlzIGlkZWEgb2YgbWF0Y2hpbmcgZGV2aWNlIHByb3BlcnRp
-ZXMuIEkgdGhpbmsgd2Ugc2hvdWxkIHVzZQ0KPiB0aGF0LCBub3QgcmVpbnZlbnQgb3VyIG93biB3
-aGVlbCBoZXJlLiB1ZGV2IGNhbiBnaXZlIHlvdSBhIGxpc3Qgb2YNCj4gcHJvcGVydHk9dmFsdWUg
-cGFpcnMgZm9yIGEgZ2l2ZW4gZGV2aWNlLCB3ZSBjb3VsZCBqdXN0IGFnYWluIG1hdGNoIGFnYWlu
-DQo+IHRob3NlIGJsaW5kbHkuIE5vIG5ldyBkZXZpY2UgcGFyc2luZyBsb2dpYyBpbiBsaWJkcm0g
-b3IgaWd0IHBsZWFzZSA6LSkNCg0KSSd2ZSB0YWtlbiBhIGxvb2sgdG8gbGlidWRldiwgaXQgbG9v
-a3MgZ29vZCBhbmQgbWF0Y2hlcyBteSBuZWVkcy4gSSB3aWxsIHNlbmQNCnBhdGNoZXMgd2l0aCBk
-ZXZpY2UgbWFuYWdlbWVudCBwcm9wb3NhbHMgd2hlbiB0aGV5IHdpbGwgYmUgcmVhZHkuIFRoYW5r
-cyBmb3INCmhpbnRzLg0KDQpaYmlnbmlldw0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
-ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9pZ3QtZGV2
+SGkgUGV0cmksCgpPbiBXZWQsIEp1biAwNSwgMjAxOSBhdCAwMzozODoxNVBNICswMzAwLCBQZXRy
+aSBMYXR2YWxhIHdyb3RlOgo+IF9fZm9yX2VhY2hfcGh5c2ljYWxfZW5naW5lIGFscmVhZHkgaXRl
+cmF0ZXMgb3ZlciBvbmx5IGVuZ2luZXMgdGhhdAo+IGV4aXN0LCB3ZSBkb24ndCBuZWVkIHRvIGNo
+ZWNrIGFnYWluIHRoYXQgdGhleSBleGlzdC4KPiAKPiBSZW1vdmluZyB0aGUgY2hlY2sgYWxzbyBt
+YWtlcyB0aGVpciByZXNwZWN0aXZlIHN1YnRlc3RfZ3JvdXBzIG5vdAo+IG5lZWRlZC4KPiAKPiBT
+aWduZWQtb2ZmLWJ5OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KPiBD
+YzogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KPiBDYzogQW5kaSBT
+aHl0aSA8YW5kaS5zaHl0aUBpbnRlbC5jb20+Cgpsb29rcyBnb29kLAoKVGVzdGVkLWJ5OiBBbmRp
+IFNoeXRpIDxhbmRpLnNoeXRpQGludGVsLmNvbT4KClRoYW5rcywKQW5kaQpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdApp
+Z3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
