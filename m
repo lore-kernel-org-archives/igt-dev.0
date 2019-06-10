@@ -1,14 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Mon, 10 Jun 2019 09:34:37 +0200
-Message-ID: <2766260.H9SineBT9b@jkrzyszt-desk.ger.corp.intel.com>
-In-Reply-To: <20190610064938.GL22949@platvala-desk.ger.corp.intel.com>
-References: <20190607115142.32668-1-janusz.krzysztofik@linux.intel.com>
- <20190607115142.32668-2-janusz.krzysztofik@linux.intel.com>
- <20190610064938.GL22949@platvala-desk.ger.corp.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Mon, 10 Jun 2019 11:46:54 +0100
+Message-Id: <20190610104654.20130-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v11 1/1] tests: Add a new test for
- device hot unplug
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_ctx_engines: Skip trying to read a
+ non-existent TIMESTAMP
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,24 +16,25 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uZGF5LCBKdW5lIDEwLCAyMDE5IDg6NDk6MzggQU0gQ0VTVCBQZXRyaSBMYXR2YWxhIHdy
-b3RlOgo+IE9uIEZyaSwgSnVuIDA3LCAyMDE5IGF0IDAxOjUxOjQyUE0gKzAyMDAsIEphbnVzeiBL
-cnp5c3p0b2ZpayB3cm90ZToKPiA+IC0gdXNlIFNQRFggbGljZW5zZSBpZGVudGlmaWVyLAo+IAo+
-IAo+IFdoeT8gV2UgZG9uJ3QgdXNlIHRob3NlIGluIElHVC4KCkkgbXVzdCBoYXZlIGhhZCBnb3Qg
-YW4gaWRlYSB0byBjaGFuZ2UgaXQgZnJvbSBzb21ld2hlcmUsIHVuZm9ydHVuYXRlbHkgSSdtIG5v
-dCAKYWJsZSB0byByZWNhbGwgZnJvbSB3aGVyZSwgc29ycnkuICBJJ2xsIHJldmVydCBpdC4KCj4g
-PiBkaWZmIC0tZ2l0IGEvdGVzdHMvY29yZV9ob3R1bnBsdWcuYyBiL3Rlc3RzL2NvcmVfaG90dW5w
-bHVnLmMKPiA+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4gPiBpbmRleCAwMDAwMDAwMC4uZDM2YTA1
-NzIKPiA+IC0tLSAvZGV2L251bGwKPiA+ICsrKyBiL3Rlc3RzL2NvcmVfaG90dW5wbHVnLmMKPiA+
-IEBAIC0wLDAgKzEsMjIyIEBACj4gPiArLy8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0y
-LjAKPiA+ICsvKgo+ID4gKyAqIENvcHlyaWdodCDCqSAyMDE5IEludGVsIENvcnBvcmF0aW9uCj4g
-PiArICovCj4gCj4gQW5kIHdoeSBHUEwtMi4wPwoKRnJvbSB0aGUgc2FtZSBzb3VyY2UgYXMgdGhl
-IGlkZWEgb2YgU1BEWCwgSSBndWVzcy4gSSdsbCBmaXggaXQgdG8gYmUgaW4gbGluZSAKd2l0aCBJ
-R1Qgc3RhbmRhcmRzLgoKVGhhbmtzLApKYW51c3oKCgoKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0
-cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9pZ3QtZGV2
+VGhlIHBlci1lbmdpbmUgVElNRVNUQU1QIChhdCBsZWFzdCBhdCB0aGUgb2Zmc2V0IEkga25vdyBh
+Ym91dCkgb25seSBjYW1lCmludG8gYmVpbmcgd2l0aCBnZW42LiBTbyBza2lwIHRoZSB0ZXN0IG9u
+IG9sZGVyIGdlbiBhcyB0aGUgcmVzdWx0cyBhcmUKZ2FyYmFnZS4KCkJ1Z3ppbGxhOiBodHRwczov
+L2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMTA4NzQKU2lnbmVkLW9mZi1i
+eTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Ci0tLQogdGVzdHMvaTkx
+NS9nZW1fY3R4X2VuZ2luZXMuYyB8IDIgKysKIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMo
+KykKCmRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9jdHhfZW5naW5lcy5jIGIvdGVzdHMvaTkx
+NS9nZW1fY3R4X2VuZ2luZXMuYwppbmRleCAzOGVhMzRkMjEuLjNlY2FkZTQxNyAxMDA2NDQKLS0t
+IGEvdGVzdHMvaTkxNS9nZW1fY3R4X2VuZ2luZXMuYworKysgYi90ZXN0cy9pOTE1L2dlbV9jdHhf
+ZW5naW5lcy5jCkBAIC00MTksNiArNDE5LDggQEAgc3RhdGljIHZvaWQgaW5kZXBlbmRlbnQoaW50
+IGk5MTUpCiAJaW50IHRpbWVsaW5lID0gc3dfc3luY190aW1lbGluZV9jcmVhdGUoKTsKIAl1aW50
+MzJfdCBsYXN0LCAqbWFwOwogCisJaWd0X3JlcXVpcmUoZ2VuID49IDYpOyAvKiBObyBwZXItZW5n
+aW5lIFRJTUVTVEFNUCBvbiBvbGRlciBnZW4gKi8KKwogCXsKIAkJc3RydWN0IGRybV9pOTE1X2dl
+bV9leGVjYnVmZmVyMiBleGVjYnVmID0gewogCQkJLmJ1ZmZlcnNfcHRyID0gdG9fdXNlcl9wb2lu
+dGVyKCZyZXN1bHRzKSwKLS0gCjIuMjAuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
+ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9pZ3QtZGV2
