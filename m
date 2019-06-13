@@ -1,46 +1,46 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Guillaume Tucker <guillaume.tucker@collabora.com>
-Date: Thu, 13 Jun 2019 14:53:19 +0100
-Message-Id: <b1e0d69a8352f9fd2e65293f2292086f4ef260e7.1560433744.git.guillaume.tucker@collabora.com>
-In-Reply-To: <cover.1560433744.git.guillaume.tucker@collabora.com>
-References: <cover.1560433744.git.guillaume.tucker@collabora.com>
+Date: Thu, 13 Jun 2019 14:53:18 +0100
+Message-Id: <cover.1560433744.git.guillaume.tucker@collabora.com>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t v2 1/4] meson: add libatomic dependency
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Subject: [igt-dev] [PATCH i-g-t v2 0/4] Use C11 atomics
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>, Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QWRkIGNvbmRpdGlvbmFsIGRlcGVuZGVuY3kgb24gbGliYXRvbWljIGluIG9yZGVyIHRvIGJlIGFi
-bGUgdG8gdXNlIHRoZQpfX2F0b21pY18qIGZ1bmN0aW9ucyBpbnN0ZWFkIG9mIHRoZSBvbGRlciBf
-X3N5bmNfKiBvbmVzLiAgVGhlCmxpYmF0b21pYyBsaWJyYXJ5IGlzIG9ubHkgbmVlZGVkIHdoZW4g
-dGhlcmUgYXJlbid0IGFueSBuYXRpdmUgc3VwcG9ydApvbiB0aGUgY3VycmVudCBhcmNoaXRlY3R1
-cmUsIHNvIGEgbGlua2VyIHRlc3QgaXMgdXNlZCBmb3IgdGhpcwpwdXJwb3NlLiAgVGhpcyBlbmFi
-bGVzIGF0b21pYyBvcGVyYXRpb25zIHRvIGJlIG9uIGEgd2lkZXIgbnVtYmVyIG9mCmFyY2hpdGVj
-dHVyZXMgaW5jbHVkaW5nIE1JUFMuCgpTaWduZWQtb2ZmLWJ5OiBHdWlsbGF1bWUgVHVja2VyIDxn
-dWlsbGF1bWUudHVja2VyQGNvbGxhYm9yYS5jb20+Ci0tLQogbWVzb24uYnVpbGQgfCAxMyArKysr
-KysrKysrKysrCiAxIGZpbGUgY2hhbmdlZCwgMTMgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBh
-L21lc29uLmJ1aWxkIGIvbWVzb24uYnVpbGQKaW5kZXggNjI2OGM1OGQzNjM0Li5kYTI1YTI4ZjMy
-NjggMTAwNjQ0Ci0tLSBhL21lc29uLmJ1aWxkCisrKyBiL21lc29uLmJ1aWxkCkBAIC0xNzksNiAr
-MTc5LDE5IEBAIG1hdGggPSBjYy5maW5kX2xpYnJhcnkoJ20nKQogcmVhbHRpbWUgPSBjYy5maW5k
-X2xpYnJhcnkoJ3J0JykKIGRsc3ltID0gY2MuZmluZF9saWJyYXJ5KCdkbCcpCiB6bGliID0gY2Mu
-ZmluZF9saWJyYXJ5KCd6JykKK2lmIGNjLmxpbmtzKCcnJworI2luY2x1ZGUgPHN0ZGludC5oPgor
-aW50IG1haW4odm9pZCkgeworICB1aW50MzJfdCB4MzIgPSAwOworICB1aW50NjRfdCB4NjQgPSAw
-OworICBfX2F0b21pY19sb2FkX24oJngzMiwgX19BVE9NSUNfU0VRX0NTVCk7CisgIF9fYXRvbWlj
-X2xvYWRfbigmeDY0LCBfX0FUT01JQ19TRVFfQ1NUKTsKKyAgcmV0dXJuIDA7Cit9JycnLCBuYW1l
-IDogJ2J1aWx0LWluIGF0b21pY3MnKQorCWxpYmF0b21pYyA9IFtdCitlbHNlCisJbGliYXRvbWlj
-ID0gY2MuZmluZF9saWJyYXJ5KCdhdG9taWMnKQorZW5kaWYKIAogaWYgY2MuaGFzX2hlYWRlcign
-bGludXgva2QuaCcpCiAJY29uZmlnLnNldCgnSEFWRV9MSU5VWF9LRF9IJywgMSkKLS0gCjIuMjAu
-MQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KSW50ZWwt
-Z2Z4IG1haWxpbmcgbGlzdApJbnRlbC1nZnhAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaW50ZWwtZ2Z4
+VGhpcyBzZXJpZXMgcmVwbGFjZXMgY2FsbHMgdG8gdGhlIF9fc3luY18qIGZ1bmN0aW9ucyB3aXRo
+IHRoZSBtb3JlCnJlY2VudCBhdG9taWNfKiBvbmVzIGRlZmluZWQgaW4gc3RkYXRvbWljLmggaW4g
+Z2VtX2NyZWF0ZSBhbmQKc3dfc3luYy4gIEl0IGFsc28gYWRkcyBkZXBlbmRlbmN5IG9uIGxpYmF0
+b21pYyB3aGVuIHJlcXVpcmVkLCB0aGF0IGlzCnRvIHNheSB3aGVuIHRoZSBDUFUgYXJjaGl0ZWN0
+dXJlIGRvZXNuJ3QgcHJvdmlkZSBuYXRpdmUgc3VwcG9ydCBmb3IKc29tZSBhdG9taWMgb3BlcmF0
+aW9ucy4gIFRoaXMgbWFrZXMgdGhlIHRlc3RzIG1vcmUgcG9ydGFibGUsIGluCnBhcnRpY3VsYXIg
+Zm9yIDMyLWJpdCBNSVBTIHdoaWNoIGRvZXNuJ3Qgc3VwcG9ydCA2NC1iaXQgYXRvbWljcy4KCnYy
+OgogLSBhZGQgbGlua2VyIHRlc3QgdG8gb25seSBhZGQgZGVwZW5kZW5jeSBvbiBsaWJhdG9taWMg
+d2hlbiBuZWVkZWQKIC0gb25seSBhZGQgbGliYXRvbWljIGRlcGVuZGVuY3kgdG8gZ2VtX2NyZWF0
+ZSBhbmQgc3dfc3luYwogLSB1c2Ugc3RkYXRvbWljLmggYW5kIF9BdG9taWMgdHlwZSBtb2RpZmll
+cgogLSBleHBsaWNpdGx5IHJlcXVpcmUgbGliYXRvbWljIGluIGFsbCBEb2NrZXIgaW1hZ2VzCgpH
+dWlsbGF1bWUgVHVja2VyICg0KToKICBtZXNvbjogYWRkIGxpYmF0b21pYyBkZXBlbmRlbmN5CiAg
+Z2l0bGFiLWNpOiBhZGQgbGliYXRvbWljIHRvIGRvY2tlciBpbWFnZXMKICBpOTE1L2dlbV9jcmVh
+dGU6IHVzZSBhdG9taWNfKiBpbnN0ZWFkIG9mIF9fc3luY18qCiAgdGVzdHMvc3dfc3luYzogdXNl
+IGF0b21pY18qIGluc3RlYWQgb2YgX19zeW5jXyoKCiBEb2NrZXJmaWxlLmRlYmlhbiAgICAgICB8
+ICAxICsKIERvY2tlcmZpbGUuZGViaWFuLWFybTY0IHwgIDEgKwogRG9ja2VyZmlsZS5kZWJpYW4t
+YXJtaGYgfCAgMSArCiBEb2NrZXJmaWxlLmZlZG9yYSAgICAgICB8ICAyICstCiBtZXNvbi5idWls
+ZCAgICAgICAgICAgICB8IDEzICsrKysrKysrKysrKysKIHRlc3RzL01ha2VmaWxlLmFtICAgICAg
+IHwgIDMgKystCiB0ZXN0cy9pOTE1L2dlbV9jcmVhdGUuYyB8IDE2ICsrKysrKysrKysrKy0tLS0K
+IHRlc3RzL21lc29uLmJ1aWxkICAgICAgIHwgMTcgKysrKysrKysrKysrKysrLS0KIHRlc3RzL3N3
+X3N5bmMuYyAgICAgICAgIHwgMTIgKysrKysrLS0tLS0tCiA5IGZpbGVzIGNoYW5nZWQsIDUyIGlu
+c2VydGlvbnMoKyksIDE0IGRlbGV0aW9ucygtKQoKLS0KMi4yMC4xCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
+aWxtYW4vbGlzdGluZm8vaWd0LWRldg==
