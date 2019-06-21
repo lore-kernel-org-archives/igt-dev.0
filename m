@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F6A66E409
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Jun 2019 10:14:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 267106E43A
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Jun 2019 10:20:24 +0000 (UTC)
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
 References: <20190621100345.20019-1-ramalingam.c@intel.com>
- <20190621100345.20019-15-ramalingam.c@intel.com>
-In-Reply-To: <20190621100345.20019-15-ramalingam.c@intel.com>
-Message-ID: <156111204794.13036.7208173453759359042@skylake-alporthouse-com>
-Date: Fri, 21 Jun 2019 11:14:07 +0100
-Subject: Re: [igt-dev] [RFC v2 14/43] tests/i915/gem_ctx_switch: use the
+ <20190621100345.20019-17-ramalingam.c@intel.com>
+In-Reply-To: <20190621100345.20019-17-ramalingam.c@intel.com>
+Message-ID: <156111241813.2401.5054526907728595682@skylake-alporthouse-com>
+Date: Fri, 21 Jun 2019 11:20:18 +0100
+Subject: Re: [igt-dev] [RFC v2 16/43] tests/i915/gem_eio: use the
  gem_engine_topology library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -25,14 +25,11 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Ramalingam C <ramalingam.c@intel.com>, andi@etezian.org, igt-dev@lists.freedesktop.org, tvrtko.ursulin@linux.intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBSYW1hbGluZ2FtIEMgKDIwMTktMDYtMjEgMTE6MDM6MTYpCj4gQEAgLTMzOCw3ICsz
-MzcsNyBAQCBpZ3RfbWFpbgo+ICAgICAgICAgICAgICAgICBpZ3RfZm9ya19oYW5nX2RldGVjdG9y
-KGZkKTsKPiAgICAgICAgIH0KPiAgCj4gLSAgICAgICBmb3IgKGUgPSBpbnRlbF9leGVjdXRpb25f
-ZW5naW5lczsgZS0+bmFtZTsgZSsrKSB7Cj4gKyAgICAgICBfX2Zvcl9lYWNoX3BoeXNpY2FsX2Vu
-Z2luZShmZCwgZSkgewoKfm9+IEknbSBsZWFuaW5nIHRvd2FyZHMgc2F5aW5nIHRoYXQgd2UgZG8g
-bmVlZCB0byBleGVyY2lzZSB1QUJJIGhlcmUsCnNpbmNlIHRoaXMgaXMgdGhlIG9ubHkgc3BvdCB3
-aGVyZSB3ZSBleHBsaWNpdGx5IHRyeSBhbmQgY2hlY2sgdGhhdApjb250ZXh0cyBleGlzdCBhY3Jv
-c3MgdGhlIHVBQkkuCi1DaHJpcwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
-Lm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
-ZXY=
+UXVvdGluZyBSYW1hbGluZ2FtIEMgKDIwMTktMDYtMjEgMTE6MDM6MTgpCj4gUmVwbGFjZSB0aGUg
+bGVnYWN5IGZvcl9lYWNoX2VuZ2luZSogZGVmaW5lcyB3aXRoIHRoZSBvbmVzCj4gaW1wbGVtZW50
+ZWQgaW4gdGhlIGdlbV9lbmdpbmVfdG9wb2xvZ3kgbGlicmFyeS4KCmdlbV9laW8gaXMgZmlyc3Qg
+YW5kIGZvcmVtb3N0IGEgdUFCSSB0ZXN0LCB3ZSBjYW5ub3Qgc2ltcGx5IGRpc2NhcmQKZXhlcmNp
+c2luZyB0aGUgbGVnYWN5IGludGVyZmFjZS4KLUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4v
+bGlzdGluZm8vaWd0LWRldg==
