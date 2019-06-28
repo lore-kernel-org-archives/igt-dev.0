@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D01146E8E9
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2019 11:50:03 +0000 (UTC)
-Date: Fri, 28 Jun 2019 14:50:00 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20190628115000.g2jslb2ry75xxowt@ahiler-desk1.fi.intel.com>
-References: <20190628103813.19986-1-arkadiusz.hiler@intel.com>
- <24c063c3a3f6148636352c3bdedb30a5c1d17f6a.camel@intel.com>
+Received: from NAM05-BY2-obe.outbound.protection.outlook.com
+ (mail-eopbgr710070.outbound.protection.outlook.com [40.107.71.70])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBDC56E8F8
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2019 12:10:28 +0000 (UTC)
+From: "Kazlauskas, Nicholas" <Nicholas.Kazlauskas@amd.com>
+Date: Fri, 28 Jun 2019 12:10:27 +0000
+Message-ID: <86de55b2-f73f-2bce-eb7f-e4027e2701df@amd.com>
+References: <20190627173440.7169-1-nicholas.kazlauskas@amd.com>
+ <3ef17139-7a8b-676a-7e2b-8ebda3da7b02@amd.com>
+ <20190628101857.wrh3xoe5ajeck3bb@ahiler-desk1.fi.intel.com>
+In-Reply-To: <20190628101857.wrh3xoe5ajeck3bb@ahiler-desk1.fi.intel.com>
+Content-Language: en-US
+Content-ID: <2C07E56390471142B2B5F51DFF2116EF@namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <24c063c3a3f6148636352c3bdedb30a5c1d17f6a.camel@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/amdpu: Build amd_bypass test with
- autotools
+Subject: Re: [igt-dev] [PATCH i-g-t] amdpgu/amd_bypass: Drop unneeded
+ includes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,24 +26,31 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Ser, Simon" <simon.ser@intel.com>
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>, "Wentland, Harry" <Harry.Wentland@amd.com>
 Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBKdW4gMjgsIDIwMTkgYXQgMDI6MTI6NDJQTSArMDMwMCwgU2VyLCBTaW1vbiB3cm90
-ZToKPiBPbiBGcmksIDIwMTktMDYtMjggYXQgMTM6MzggKzAzMDAsIEFya2FkaXVzeiBIaWxlciB3
-cm90ZToKPiA+IEl0IHdhcyBhZGRlZCBvbmx5IG9uIHRoZSBtZXNvbiBzaWRlIG9mIHRoaW5ncy4K
-PiA+IAo+ID4gQ2M6IEhhcnJ5IFdlbnRsYW5kIDxoYXJyeS53ZW50bGFuZEBhbWQuY29tPgo+ID4g
-Q2M6IE5pY2hvbGFzIEthemxhdXNrYXMgPG5pY2hvbGFzLmthemxhdXNrYXNAYW1kLmNvbT4KPiA+
-IEZpeGVzOiAzYzRlZGViYTM1YWMgKCJ0ZXN0cy9hbWRncHU6IGFkZCA4YnBjIGJ5cGFzcyBtb2Rl
-IHRlc3QuIikKPiA+IFNpZ25lZC1vZmYtYnk6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6Lmhp
-bGVyQGludGVsLmNvbT4KPiAKPiBNaW51cyB0aGUgdHlwbyBpbiB0aGUgY29tbWl0IHRpdGxlOgo+
-IAo+IFJldmlld2VkLWJ5OiBTaW1vbiBTZXIgPHNpbW9uLnNlckBpbnRlbC5jb20+CgpodHRwczov
-L2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdzL3BpcGVsaW5lcy80NTM3
-MgoKU2luY2Ugd2UgYXJlIHRvdWNoaW5nIGp1c3QgYXV0b3Rvb2xzIGhlcmUsIGFuZCB0aGUgQ0kg
-aXMgdXNpbmcgbWVzb24KZXhjbHVzaXZlbHkgKEkgaGF2ZSBjaGVja2VkLCBpdCBjb21waWxlZCBq
-dXN0IGZpbmUpIGl0J3MgZmluZSB0byBwdXNoLgoKVGhhbmtzIGZvciB0aGUgcmV2aWV3ISBQdXNo
-ZWQgd2l0aCB0aGUgdHlwbyBmaXhlZC4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVz
-a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9p
-Z3QtZGV2
+T24gNi8yOC8xOSA2OjE4IEFNLCBBcmthZGl1c3ogSGlsZXIgd3JvdGU6DQo+IE9uIFRodSwgSnVu
+IDI3LCAyMDE5IGF0IDA2OjE5OjE0UE0gKzAwMDAsIEhhcnJ5IFdlbnRsYW5kIHdyb3RlOg0KPj4g
+T24gMjAxOS0wNi0yNyAxOjM0IHAubS4sIE5pY2hvbGFzIEthemxhdXNrYXMgd3JvdGU6DQo+Pj4g
+VGhlc2UganVzdCBicmVhayB0aGUgYnVpbGQgb24gZGViaWFuLW1hc29uLWFybSBhbmQgZGViaWFu
+LW1lc29uLW1pcHMNCj4+PiBhbmQgYXJlbid0IG5lZWRlZCBpbiB0aGUgZmlyc3QgcGxhY2UuDQo+
+Pj4NCj4+PiBDYzogRGluZ2NoZW4gWmhhbmcgPGRpbmdjaGVuLnpoYW5nQGFtZC5jb20+DQo+Pj4g
+Q2M6IEhhcnJ5IFdlbnRsYW5kIDxoYXJyeS53ZW50bGFuZEBhbWQuY29tPg0KPj4+IFNpZ25lZC1v
+ZmYtYnk6IE5pY2hvbGFzIEthemxhdXNrYXMgPG5pY2hvbGFzLmthemxhdXNrYXNAYW1kLmNvbT4N
+Cj4+DQo+PiBSZXZpZXdlZC1ieTogSGFycnkgV2VudGxhbmQgPGhhcnJ5LndlbnRsYW5kQGFtZC5j
+b20+DQo+Pg0KPj4gSGFycnkNCj4gDQo+IFRoYW5rcyBmb3Igc3dpZnQgZml4LiBTdGFydGluZyBu
+ZXh0IHdlZWsgcHJlLW1lcmdlIGdpdGxhYiBwaXBlbGluZXMgYXJlDQo+IGdvaW5nIHRvIHNlbmQg
+ZW1haWxzIG9uIGVycm9ycywgc28gaXQgc2hvdWxkIGJlIGVhc2llciB0byBjYXRjaCBzdWNoDQo+
+IGJyZWFrYWdlcyBlYXJseS4NCj4gDQo+IE5vdyB5b3UgY2FuIGNoZWNrIHRoZW0gZnJvbSBwYXRj
+aHdvcmsuDQo+IA0KPiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1j
+aS10YWdzLy0vam9icy8zODU1MTINCj4gDQo+IFRoaXMgc3RpbGwgZmFpbHMgdGhlIG1lc29uLWF1
+dG90b29scyB0ZXN0bGlzdCBjb25zaXN0ZW5jeSBjaGVjay4gRXhwZWN0DQo+IHBhdGNoIGluIDUg
+Oi0pDQo+IA0KDQpUaGFuayB5b3UgZm9yIHRoZSBmb2xsb3cgdXAgcGF0Y2ghDQoNCkkganVzdCBu
+b3RpY2VkIHRoZSBwcmUtbWVyZ2UgcGlwZWxpbmUgb24gdGhpcyBjaGFuZ2Ugb24gcGF0Y2h3b3Jr
+LCBzbyBJIA0KZ3Vlc3MgdGhpcyBpcyBhIHJlY2VudCBhZGRpdGlvbi4gVGhlc2Ugd2lsbCBiZSBy
+ZWFsbHkgdXNlZnVsIGZvciANCmNhdGNoaW5nIHRoZXNlIGVycm9ycyBkdXJpbmcgcmV2aWV3Lg0K
+DQpOaWNob2xhcyBLYXpsYXVza2FzDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
+dG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ln
+dC1kZXY=
