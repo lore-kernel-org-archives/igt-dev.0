@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 088AA89D39
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jul 2019 12:46:56 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4044389D77
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jul 2019 12:50:40 +0000 (UTC)
 From: Simon Ser <simon.ser@intel.com>
-Date: Tue,  2 Jul 2019 15:12:42 +0300
-Message-Id: <20190702121242.17588-1-simon.ser@intel.com>
+Date: Tue,  2 Jul 2019 15:50:34 +0300
+Message-Id: <20190702125038.21621-1-simon.ser@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib/igt_kms: remove length parameter from
- kmstest_force_edid
+Subject: [igt-dev] [PATCH i-g-t 1/5] lib/igt_kms: remove length parameter
+ from kmstest_force_edid
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
