@@ -1,295 +1,142 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 16 Jul 2019 22:47:27 -0300
-From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Message-ID: <20190717014727.ijkoikehrla5la2s@smtp.gmail.com>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: "Ser, Simon" <simon.ser@intel.com>
+Date: Wed, 17 Jul 2019 11:46:39 +0000
+Message-ID: <aae987e0b45629a632f87ad02cf256d30045c8aa.camel@intel.com>
 References: <cover.1560374714.git.rodrigosiqueiramelo@gmail.com>
- <9f4a3f1d1c9df084ec2bf8e9b7475bbeda5f0985.1560374714.git.rodrigosiqueiramelo@gmail.com>
- <43c3d3c9150fbfd24e0fdf63747fc523b1890c75.camel@intel.com>
+ <296f249138cb4f55466294b07a7aba25801ff146.1560374714.git.rodrigosiqueiramelo@gmail.com>
+ <7eca4f4def5f732d1f9269e2c75eca8da62a78b2.camel@intel.com>
+ <20190712024435.bed52lodxms6rz7y@smtp.gmail.com>
+ <20190716152207.GC13094@e110455-lin.cambridge.arm.com>
+In-Reply-To: <20190716152207.GC13094@e110455-lin.cambridge.arm.com>
+Content-Language: en-US
+Content-ID: <74CB618FB96B4C40BD1AF503CC00B51E@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <43c3d3c9150fbfd24e0fdf63747fc523b1890c75.camel@intel.com>
-Subject: Re: [igt-dev] [PATCH V6 i-g-t 5/6] lib/igt_kms: Add
- igt_output_clone_pipe for cloning
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0676189297=="
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Ser, Simon" <simon.ser@intel.com>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "Liviu.Dudau@arm.com" <Liviu.Dudau@arm.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "daniel@ffwll.ch" <daniel@ffwll.ch>, "nd@arm.com" <nd@arm.com>, "Brian.Starkey@arm.com" <Brian.Starkey@arm.com>
+Subject: Re: [Intel-gfx] [igt-dev] [PATCH V6 i-g-t 2/6] kms_writeback: Add
+ initial writeback tests
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: "Liviu.Dudau@arm.com" <Liviu.Dudau@arm.com>, "rodrigosiqueiramelo@gmail.com" <rodrigosiqueiramelo@gmail.com>
+Cc: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "nd@arm.com" <nd@arm.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
---===============0676189297==
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mutgwvowrsinxz2q"
-Content-Disposition: inline
-
-
---mutgwvowrsinxz2q
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On 07/12, Ser, Simon wrote:
-> So, to test these last two patches we'd need specific hardware right?
-> Because VKMS doesn't support cloning yet (does it?).
-
-hmmm... actually, VKMS successfully pass in this test. However, if you
-compare "writeback-check-output" and "writeback-check-output-clone", you
-will notice they are very similar. Maybe, this test does not correctly
-validating cloning feature?
-
-> What kind of hardware supports cloned writeback outputs? I have a
-> Raspberry Pi which supports writeback via VC4, but I don't think it has
-> writeback cloning. I'm also not willing to install any proprietary
-> driver.
->=20
-> I guess we could land the first part of the series, and wait for VKMS
-> to support cloned outputs to land the last two patches.
->=20
-> Any other ideas?
-
-btw, I'm totally comfortable with the idea of focusing on the first part
-of this series.
-
-Thanks
-=20
-> On Wed, 2019-06-12 at 23:18 -0300, Brian Starkey wrote:
-> > An output can be added as a clone of any other output(s) attached to a
-> > pipe using igt_output_clone_pipe()
-> >=20
-> > v5: Drop field out_fence_requested from struct igt_pipe (Brian Starkey)
-> >=20
-> > Signed-off-by: Brian Starkey <brian.starkey@arm.com>
-> > ---
-> >  lib/igt_kms.c | 100 +++++++++++++++++++++++++++++++-------------------
-> >  lib/igt_kms.h |   4 ++
-> >  2 files changed, 66 insertions(+), 38 deletions(-)
-> >=20
-> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> > index 140db346..b85a0404 100644
-> > --- a/lib/igt_kms.c
-> > +++ b/lib/igt_kms.c
-> > @@ -1765,6 +1765,17 @@ static void igt_display_log_shift(igt_display_t =
-*display, int shift)
-> >  	igt_assert(display->log_shift >=3D 0);
-> >  }
-> > =20
-> > +static int igt_output_idx(igt_output_t *output)
-> > +{
-> > +	int i;
-> > +
-> > +	for (i =3D 0; i < output->display->n_outputs; i++)
-> > +		if (&output->display->outputs[i] =3D=3D output)
-> > +			return i;
-> > +
-> > +	return -1;
-> > +}
-> > +
-> >  static void igt_output_refresh(igt_output_t *output)
-> >  {
-> >  	igt_display_t *display =3D output->display;
-> > @@ -2317,42 +2328,6 @@ void igt_display_fini(igt_display_t *display)
-> >  	display->planes =3D NULL;
-> >  }
-> > =20
-> > -static void igt_display_refresh(igt_display_t *display)
-> > -{
-> > -	igt_output_t *output;
-> > -	int i;
-> > -
-> > -	unsigned long pipes_in_use =3D 0;
-> > -
-> > -       /* Check that two outputs aren't trying to use the same pipe */
-> > -	for (i =3D 0; i < display->n_outputs; i++) {
-> > -		output =3D &display->outputs[i];
-> > -
-> > -		if (output->pending_pipe !=3D PIPE_NONE) {
-> > -			if (pipes_in_use & (1 << output->pending_pipe))
-> > -				goto report_dup;
-> > -
-> > -			pipes_in_use |=3D 1 << output->pending_pipe;
-> > -		}
-> > -
-> > -		if (output->force_reprobe)
-> > -			igt_output_refresh(output);
-> > -	}
-> > -
-> > -	return;
-> > -
-> > -report_dup:
-> > -	for (; i > 0; i--) {
-> > -		igt_output_t *b =3D &display->outputs[i - 1];
-> > -
-> > -		igt_assert_f(output->pending_pipe !=3D
-> > -			     b->pending_pipe,
-> > -			     "%s and %s are both trying to use pipe %s\n",
-> > -			     igt_output_name(output), igt_output_name(b),
-> > -			     kmstest_pipe_name(output->pending_pipe));
-> > -	}
-> > -}
-> > -
-> >  static igt_pipe_t *igt_output_get_driving_pipe(igt_output_t *output)
-> >  {
-> >  	igt_display_t *display =3D output->display;
-> > @@ -2376,6 +2351,40 @@ static igt_pipe_t *igt_output_get_driving_pipe(i=
-gt_output_t *output)
-> >  	return &display->pipes[pipe];
-> >  }
-> > =20
-> > +static void igt_display_refresh(igt_display_t *display)
-> > +{
-> > +	igt_output_t *output;
-> > +	igt_pipe_t *pipe;
-> > +	int i;
-> > +
-> > +	unsigned long pipes_in_use =3D 0;
-> > +	unsigned long pending_crtc_idx_mask;
-> > +
-> > +	/* Check that outputs and pipes agree wrt. cloning */
-> > +	for (i =3D 0; i < display->n_outputs; i++) {
-> > +		output =3D &display->outputs[i];
-> > +		pending_crtc_idx_mask =3D 1 << output->pending_pipe;
-> > +
-> > +		pipe =3D igt_output_get_driving_pipe(output);
-> > +		if (pipe) {
-> > +			igt_assert_f(pipe->outputs & (1 << igt_output_idx(output)),
-> > +				     "Output %s not expected to be using pipe %s\n",
-> > +				     igt_output_name(output),
-> > +				     kmstest_pipe_name(pipe->pipe));
-> > +
-> > +			if (pipes_in_use & pending_crtc_idx_mask)
-> > +				LOG(display, "Output %s clones pipe %s\n",
-> > +				    igt_output_name(output),
-> > +				    kmstest_pipe_name(pipe->pipe));
-> > +		}
-> > +
-> > +		pipes_in_use |=3D pending_crtc_idx_mask;
-> > +
-> > +		if (output->force_reprobe)
-> > +			igt_output_refresh(output);
-> > +	}
-> > +}
-> > +
-> >  static igt_plane_t *igt_pipe_get_plane(igt_pipe_t *pipe, int plane_idx)
-> >  {
-> >  	igt_require_f(plane_idx >=3D 0 && plane_idx < pipe->n_planes,
-> > @@ -3766,6 +3775,7 @@ void igt_output_override_mode(igt_output_t *outpu=
-t, const drmModeModeInfo *mode)
-> >  	output->use_override_mode =3D !!mode;
-> > =20
-> >  	if (pipe) {
-> > +		igt_debug("overriding pipe mode in %s way\n", output->display->is_at=
-omic ? "atomic" : "legacy");
-> >  		if (output->display->is_atomic)
-> >  			igt_pipe_obj_replace_prop_blob(pipe, IGT_CRTC_MODE_ID, igt_output_g=
-et_mode(output), sizeof(*mode));
-> >  		else
-> > @@ -3773,6 +3783,16 @@ void igt_output_override_mode(igt_output_t *outp=
-ut, const drmModeModeInfo *mode)
-> >  	}
-> >  }
-> > =20
-> > +void igt_output_clone_pipe(igt_output_t *output, enum pipe pipe)
-> > +{
-> > +	igt_display_t *display =3D output->display;
-> > +	uint32_t current_clones =3D display->pipes[pipe].outputs;
-> > +
-> > +	igt_output_set_pipe(output, pipe);
-> > +
-> > +	display->pipes[pipe].outputs |=3D current_clones;
-> > +}
-> > +
-> >  /*
-> >   * igt_output_set_pipe:
-> >   * @output: Target output for which the pipe is being set to
-> > @@ -3789,11 +3809,15 @@ void igt_output_set_pipe(igt_output_t *output, =
-enum pipe pipe)
-> > =20
-> >  	igt_assert(output->name);
-> > =20
-> > -	if (output->pending_pipe !=3D PIPE_NONE)
-> > +	if (output->pending_pipe !=3D PIPE_NONE) {
-> >  		old_pipe =3D igt_output_get_driving_pipe(output);
-> > +		old_pipe->outputs &=3D ~(1 << igt_output_idx(output));
-> > +	}
-> > =20
-> > -	if (pipe !=3D PIPE_NONE)
-> > +	if (pipe !=3D PIPE_NONE) {
-> >  		pipe_obj =3D &display->pipes[pipe];
-> > +		pipe_obj->outputs =3D (1 << igt_output_idx(output));
-> > +	}
-> > =20
-> >  	LOG(display, "%s: set_pipe(%s)\n", igt_output_name(output),
-> >  	    kmstest_pipe_name(pipe));
-> > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> > index cacc6b90..676839bb 100644
-> > --- a/lib/igt_kms.h
-> > +++ b/lib/igt_kms.h
-> > @@ -354,6 +354,8 @@ struct igt_pipe {
-> >  	uint32_t crtc_id;
-> > =20
-> >  	int32_t out_fence_fd;
-> > +
-> > +	uint32_t outputs;
-> >  };
-> > =20
-> >  typedef struct {
-> > @@ -411,6 +413,8 @@ const char *igt_output_name(igt_output_t *output);
-> >  drmModeModeInfo *igt_output_get_mode(igt_output_t *output);
-> >  void igt_output_override_mode(igt_output_t *output, const drmModeModeI=
-nfo *mode);
-> >  void igt_output_set_pipe(igt_output_t *output, enum pipe pipe);
-> > +void igt_output_clone_pipe(igt_output_t *output, enum pipe pipe);
-> > +
-> >  igt_plane_t *igt_output_get_plane(igt_output_t *output, int plane_idx);
-> >  igt_plane_t *igt_output_get_plane_type(igt_output_t *output, int plane=
-_type);
-> >  int igt_output_count_plane_type(igt_output_t *output, int plane_type);
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---=20
-Rodrigo Siqueira
-https://siqueira.tech
-
---mutgwvowrsinxz2q
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAl0ufi8ACgkQWJzP/com
-vP/OKQ/+PyDepVRqtJlnBt4Ts43wrLs7MhZuA6HdSYSlZ9gv07HHPbRa6a12bNi1
-0Q2LB2zUZke87lp9EvTA+6KrO4dOFtMCXi7ebpFOLzn4HN+QAmpbi9WnpWBpJqdL
-5EWO5vx8UZtv2kc+xj6BgKXZYa+ZY1R1Tr9tzalbj/Veks6f80IizAsrybe1uw0B
-QLgRUqwVQo428gkLfKdBL71p2va2KrwGtUHwSkT+hNvPAY8ojOSGZV5qPUacxvv/
-gfruGWzaKLLrZ1DDO3Yf0p6yloMaMRUub/BAGdZwvH5tskdDMTrGam3lqNom2IR0
-l395RLdMJc9v+4qQPhL11+rlhs8jwrIRNrE4Uo6p3VUctmGj519ZW7VgzqXcGnn3
-QNw/O7MRpKNIIUGr1UHBGVNns2R4QIDGwR3/DPCG/zoUPHjAchwQWZxJyM5mYXxV
-SQR3IaKDiHLRi/vk3CRDRyKkdvHmtwnj4GJL2y554pysQMr4VzIhPRGUIbwKXvui
-SKOGA8ZndN5DVWR8LYdvunN86e0ux/sQ/39OA87yLWsCiBxPu2DPZhKv+cEcAcCg
-eylTbE3PnCRKu7ymr3ZX9PuMNcgY2VnMP/OlHzD7rzXPqglrskKI4EmT+vkhLfnC
-TuBdnUvcosrje5L/B+7dM0DmQ/k/lF5+YChuN6ELqSdMQ7v8Rf4=
-=90Ts
------END PGP SIGNATURE-----
-
---mutgwvowrsinxz2q--
-
---===============0676189297==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============0676189297==--
+VGhhbmtzIGZvciB0aGUgY2xhcmlmaWNhdGlvbiENCg0KT24gVHVlLCAyMDE5LTA3LTE2IGF0IDE2
+OjIyICswMTAwLCBMaXZpdS5EdWRhdUBhcm0uY29tIHdyb3RlOg0KPiA+ID4gPiArc3RhdGljIHZv
+aWQgaW52YWxpZF9vdXRfZmVuY2UoaWd0X291dHB1dF90ICpvdXRwdXQsIGlndF9mYl90ICp2YWxp
+ZF9mYiwgaWd0X2ZiX3QgKmludmFsaWRfZmIpDQo+ID4gPiA+ICt7DQo+ID4gPiA+ICsJaW50IGks
+IHJldDsNCj4gPiA+ID4gKwlpbnQzMl90IG91dF9mZW5jZTsNCj4gPiA+ID4gKwlzdHJ1Y3Qgew0K
+PiA+ID4gPiArCQl1aW50MzJfdCBmYl9pZDsNCj4gPiA+ID4gKwkJYm9vbCBwdHJfdmFsaWQ7DQo+
+ID4gPiA+ICsJCWludDMyX3QgKm91dF9mZW5jZV9wdHI7DQo+ID4gPiA+ICsJfSBpbnZhbGlkX3Rl
+c3RzW10gPSB7DQo+ID4gPiA+ICsJCXsNCj4gPiA+ID4gKwkJCS8qIE5vIG91dHB1dCBidWZmZXIs
+IGJ1dCB0aGUgV1JJVEVCQUNLX09VVF9GRU5DRV9QVFIgc2V0LiAqLw0KPiA+ID4gPiArCQkJLmZi
+X2lkID0gMCwNCj4gPiA+ID4gKwkJCS5wdHJfdmFsaWQgPSB0cnVlLA0KPiA+ID4gPiArCQkJLm91
+dF9mZW5jZV9wdHIgPSAmb3V0X2ZlbmNlLA0KPiA+ID4gPiArCQl9LA0KPiA+ID4gPiArCQl7DQo+
+ID4gPiA+ICsJCQkvKiBJbnZhbGlkIG91dHB1dCBidWZmZXIuICovDQo+ID4gPiA+ICsJCQkuZmJf
+aWQgPSBpbnZhbGlkX2ZiLT5mYl9pZCwNCj4gPiA+ID4gKwkJCS5wdHJfdmFsaWQgPSB0cnVlLA0K
+PiA+ID4gPiArCQkJLm91dF9mZW5jZV9wdHIgPSAmb3V0X2ZlbmNlLA0KPiA+ID4gPiArCQl9LA0K
+PiA+ID4gDQo+ID4gPiBUaGlzIGRvZXNuJ3QgYmVsb25nIGluIHRoaXMgZnVuY3Rpb24gKGludmFs
+aWRfb3V0X2ZlbmNlKSwgc2luY2UgdGhpcw0KPiA+ID4gY2hlY2tzIGFuIGludmFsaWQgZnJhbWVi
+dWZmZXIsIG5vdCBhbiBpbnZhbGlkIGZlbmNlLiBXZSBzaG91bGQgcHJvYmFibHkNCj4gPiA+IG1v
+dmUgaXQgdG8gd3JpdGViYWNrX2ZiX2lkIChhbmQgcmVuYW1lIHRoYXQgZnVuY3Rpb24gdG8gdGVz
+dF9mYj8pLg0KPiANCj4gSXQgdHJpZXMgdG8gdGVzdCB0aGF0IHlvdSBjYW4ndCB0cmljayB0aGUg
+ZHJpdmVyIHRvIGRvIGFueSB3b3JrIG9uIGEgZmVuY2UgaWYNCj4gdGhlIGZyYW1lYnVmZmVyIGlz
+IGludmFsaWQsIHNvIHRoZSBzZXQgb2YgdGVzdHMgdHJpZXM6IG5vIGZiIHdpdGggdmFsaWQgZmVu
+Y2UsDQo+IGludmFsaWQgZmIgd2l0aCB2YWxpZCBmZW5jZSwgdmFsaWQgZmIgYnV0IGludmFsaWQg
+ZmVuY2UgYW5kIGFzc3VtZXMgdGhhdCBubw0KPiBmYiB3aXRoIGludmFsaWQgZmVuY2UgaXMgYSBO
+T1AgYW55d2F5Lg0KDQpZZWFoLCB0aGF0IG1ha2VzIHNlbnNlLCBpdCdzIGp1c3QgY29uZnVzaW5n
+IHRvIHB1dCBpdCBpbiBhIGZ1bmN0aW9uDQpuYW1lZCBpbnZhbGlkX291dF9mZW5jZS4gSGVyZSB0
+aGUgb3V0IGZlbmNlIGlzIHZhbGlkLCBidXQgdGhlIG91dHB1dA0KYnVmZmVyIGlzbid0LCBzbyBp
+dCBzaG91bGQgcHJvYmFibHkgYmUgbW92ZWQgYXdheSAob3IgdGhpcyBmdW5jdGlvbg0Kc2hvdWxk
+IGJlIHJlbmFtZWQpLg0KDQo+ID4gPiA+ICsJCXsNCj4gPiA+ID4gKwkJCS8qIEludmFsaWQgV1JJ
+VEVCQUNLX09VVF9GRU5DRV9QVFIuICovDQo+ID4gPiA+ICsJCQkuZmJfaWQgPSB2YWxpZF9mYi0+
+ZmJfaWQsDQo+ID4gPiA+ICsJCQkucHRyX3ZhbGlkID0gZmFsc2UsDQo+ID4gPiA+ICsJCQkub3V0
+X2ZlbmNlX3B0ciA9IChpbnQzMl90ICopMHg4LA0KPiA+ID4gPiArCQl9LA0KPiA+ID4gPiArCX07
+DQo+ID4gPiA+ICsNCj4gPiA+ID4gKwlmb3IgKGkgPSAwOyBpIDwgQVJSQVlfU0laRShpbnZhbGlk
+X3Rlc3RzKTsgaSsrKSB7DQo+ID4gPiA+ICsJCXJldCA9IGRvX3dyaXRlYmFja190ZXN0KG91dHB1
+dCwgRFJNX01PREVfQVRPTUlDX0FMTE9XX01PREVTRVQsDQo+ID4gPiA+ICsJCQkJCWludmFsaWRf
+dGVzdHNbaV0uZmJfaWQsDQo+ID4gPiA+ICsJCQkJCWludmFsaWRfdGVzdHNbaV0ub3V0X2ZlbmNl
+X3B0ciwNCj4gPiA+ID4gKwkJCQkJaW52YWxpZF90ZXN0c1tpXS5wdHJfdmFsaWQpOw0KPiA+ID4g
+PiArCQlpZ3RfYXNzZXJ0KHJldCAhPSAwKTsNCj4gPiA+IA0KPiA+ID4gTWF5YmUgd2UgY2FuIGNo
+ZWNrIGZvciAtcmV0ID09IEVJTlZBTD8NCj4gPiA+IA0KPiA+ID4gPiArCX0NCj4gPiA+ID4gK30N
+Cj4gPiA+ID4gKw0KPiA+ID4gPiArc3RhdGljIHZvaWQgd3JpdGViYWNrX2ZiX2lkKGlndF9vdXRw
+dXRfdCAqb3V0cHV0LCBpZ3RfZmJfdCAqdmFsaWRfZmIsIGlndF9mYl90ICppbnZhbGlkX2ZiKQ0K
+PiA+ID4gDQo+ID4gPiBpbnZhbGlkX2ZiIGRvZXNuJ3Qgc2VlbSB0byBiZSB1c2VkIGhlcmUuIHZh
+bGlkX2ZiIHNlZW1zIHRvIGJlIHNldCB0bw0KPiA+ID4gdGhlIGlucHV0IGZyYW1lYnVmZmVyLiBJ
+dCdzIHByb2JhYmx5IG5vdCBhIGdvb2QgaWRlYSB0byB1c2UgdGhlIHNhbWUgRkINCj4gPiA+IGZv
+ciBpbnB1dCBhbmQgd3JpdGViYWNrIG91dHB1dC4NCj4gPiA+IA0KPiA+ID4gPiArew0KPiA+ID4g
+PiArDQo+ID4gPiA+ICsJaW50IHJldDsNCj4gPiA+ID4gKw0KPiA+ID4gPiArCS8qIFZhbGlkIG91
+dHB1dCBidWZmZXIgKi8NCj4gPiA+ID4gKwlyZXQgPSBkb193cml0ZWJhY2tfdGVzdChvdXRwdXQs
+IERSTV9NT0RFX0FUT01JQ19BTExPV19NT0RFU0VULA0KPiA+ID4gPiArCQkJCXZhbGlkX2ZiLT5m
+Yl9pZCwgTlVMTCwgZmFsc2UpOw0KPiA+ID4gPiArCWlndF9hc3NlcnQocmV0ID09IDApOw0KPiA+
+ID4gPiArDQo+ID4gPiA+ICsJLyogSW52YWxpZCBvYmplY3QgZm9yIFdSSVRFQkFDS19GQl9JRCAq
+Lw0KPiA+ID4gPiArCXJldCA9IGRvX3dyaXRlYmFja190ZXN0KG91dHB1dCwgRFJNX01PREVfQVRP
+TUlDX0FMTE9XX01PREVTRVQsDQo+ID4gPiA+ICsJCQkJb3V0cHV0LT5pZCwgTlVMTCwgZmFsc2Up
+Ow0KPiA+ID4gPiArCWlndF9hc3NlcnQocmV0ID09IC1FSU5WQUwpOw0KPiA+ID4gPiArDQo+ID4g
+PiA+ICsJLyogWmVybyBXUklURUJBQ0tfRkJfSUQgKi8NCj4gPiA+ID4gKwlyZXQgPSBkb193cml0
+ZWJhY2tfdGVzdChvdXRwdXQsIERSTV9NT0RFX0FUT01JQ19BTExPV19NT0RFU0VULA0KPiA+ID4g
+PiArCQkJCTAsIE5VTEwsIGZhbHNlKTsNCj4gPiA+ID4gKwlpZ3RfYXNzZXJ0KHJldCA9PSAwKTsN
+Cj4gPiA+ID4gK30NCj4gPiA+ID4gKw0KPiA+ID4gPiAraWd0X21haW4NCj4gPiA+ID4gK3sNCj4g
+PiA+ID4gKwlpZ3RfZGlzcGxheV90IGRpc3BsYXk7DQo+ID4gPiA+ICsJaWd0X291dHB1dF90ICpv
+dXRwdXQ7DQo+ID4gPiA+ICsJaWd0X3BsYW5lX3QgKnBsYW5lOw0KPiA+ID4gPiArCWlndF9mYl90
+IGlucHV0X2ZiOw0KPiA+ID4gPiArCWRybU1vZGVNb2RlSW5mbyBtb2RlOw0KPiA+ID4gPiArCWlu
+dCByZXQ7DQo+ID4gPiA+ICsNCj4gPiA+ID4gKwltZW1zZXQoJmRpc3BsYXksIDAsIHNpemVvZihk
+aXNwbGF5KSk7DQo+ID4gPiA+ICsNCj4gPiA+ID4gKwlpZ3RfZml4dHVyZSB7DQo+ID4gPiA+ICsJ
+CWRpc3BsYXkuZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfQU5ZKTsNCj4g
+PiA+ID4gKwkJaWd0X2Rpc3BsYXlfcmVxdWlyZSgmZGlzcGxheSwgZGlzcGxheS5kcm1fZmQpOw0K
+PiA+ID4gPiArDQo+ID4gPiA+ICsJCWttc3Rlc3Rfc2V0X3Z0X2dyYXBoaWNzX21vZGUoKTsNCj4g
+PiA+ID4gKw0KPiA+ID4gPiArCQlpZ3RfZGlzcGxheV9yZXF1aXJlKCZkaXNwbGF5LCBkaXNwbGF5
+LmRybV9mZCk7DQo+ID4gPiA+ICsNCj4gPiA+ID4gKwkJaWd0X3JlcXVpcmUoZGlzcGxheS5pc19h
+dG9taWMpOw0KPiA+ID4gPiArDQo+ID4gPiA+ICsJCW91dHB1dCA9IGttc193cml0ZWJhY2tfZ2V0
+X291dHB1dCgmZGlzcGxheSk7DQo+ID4gPiA+ICsJCWlndF9yZXF1aXJlKG91dHB1dCk7DQo+ID4g
+PiA+ICsNCj4gPiA+ID4gKwkJaWYgKG91dHB1dC0+dXNlX292ZXJyaWRlX21vZGUpDQo+ID4gPiA+
+ICsJCQltZW1jcHkoJm1vZGUsICZvdXRwdXQtPm92ZXJyaWRlX21vZGUsIHNpemVvZihtb2RlKSk7
+DQo+ID4gPiA+ICsJCWVsc2UNCj4gPiA+ID4gKwkJCW1lbWNweSgmbW9kZSwgJm91dHB1dC0+Y29u
+ZmlnLmRlZmF1bHRfbW9kZSwgc2l6ZW9mKG1vZGUpKTsNCj4gPiA+ID4gKw0KPiA+ID4gPiArCQlw
+bGFuZSA9IGlndF9vdXRwdXRfZ2V0X3BsYW5lX3R5cGUob3V0cHV0LCBEUk1fUExBTkVfVFlQRV9Q
+UklNQVJZKTsNCj4gPiA+ID4gKwkJaWd0X3JlcXVpcmUocGxhbmUpOw0KPiA+ID4gDQo+ID4gPiBN
+YXliZSB3ZSBjYW4gYXNzZXJ0IG9uIHRoaXM/DQo+ID4gPiANCj4gPiA+ID4gKwkJcmV0ID0gaWd0
+X2NyZWF0ZV9mYihkaXNwbGF5LmRybV9mZCwgbW9kZS5oZGlzcGxheSwNCj4gPiA+ID4gKwkJCQkg
+ICAgbW9kZS52ZGlzcGxheSwNCj4gPiA+ID4gKwkJCQkgICAgRFJNX0ZPUk1BVF9YUkdCODg4OCwN
+Cj4gPiA+ID4gKwkJCQkgICAgaWd0X2ZiX21vZF90b190aWxpbmcoMCksDQo+ID4gPiANCj4gPiA+
+IFRoaXMgaXMgc3VwcG9zZWQgdG8gdGFrZSBhIG1vZGlmaWVyLiBEUk1fRk9STUFUX01PRF9MSU5F
+QVIgd291bGQgYmUNCj4gPiA+IGJldHRlciB0byBtYWtlIHRoaXMgY2xlYXIuDQo+IA0KPiBBZ3Jl
+ZS4gVGhlIHBhdGNoc2V0IHByZS1kYXRlcyB0aGUgbW9kaWZpZXJzIHN1cHBvcnQgKG9yIGhhcyB0
+aGUgc2FtZSBhZ2UsIEkNCj4gZm9yZ290KQ0KPiANCj4gPiA+IChBcHBsaWVzIHRvIG90aGVyIGxp
+bmVzIG9mIHRoaXMgcGF0Y2gpDQo+ID4gPiANCj4gPiA+ID4gKwkJCQkgICAgJmlucHV0X2ZiKTsN
+Cj4gPiA+ID4gKwkJaWd0X2Fzc2VydChyZXQgPj0gMCk7DQo+ID4gPiA+ICsJCWlndF9wbGFuZV9z
+ZXRfZmIocGxhbmUsICZpbnB1dF9mYik7DQo+ID4gPiA+ICsJfQ0KPiA+ID4gPiArDQo+ID4gPiA+
+ICsJaWd0X3N1YnRlc3QoIndyaXRlYmFjay1waXhlbC1mb3JtYXRzIikgew0KPiA+ID4gPiArCQlk
+cm1Nb2RlUHJvcGVydHlCbG9iUmVzICpmb3JtYXRzX2Jsb2IgPSBnZXRfd3JpdGViYWNrX2Zvcm1h
+dHNfYmxvYihvdXRwdXQpOw0KPiA+ID4gDQo+ID4gPiBOZWVkIHRvIGRybU1vZGVGcmVlUHJvcGVy
+dHlCbG9iIHRoaXMuDQo+ID4gPiANCj4gPiA+ID4gKwkJY29uc3QgY2hhciAqdmFsaWRfY2hhcnMg
+PSAiMDEyMzQ1NiBBQkNHTlJVVlhZIjsNCj4gPiA+ID4gKwkJdW5zaWduZWQgaW50IGk7DQo+ID4g
+PiA+ICsJCWNoYXIgKmM7DQo+ID4gPiA+ICsNCj4gPiA+ID4gKwkJLyoNCj4gPiA+ID4gKwkJICog
+V2UgZG9uJ3QgaGF2ZSBhIGNvbXByZWhlbnNpdmUgbGlzdCBvZiBmb3JtYXRzLCBzbyBqdXN0IGNo
+ZWNrDQo+ID4gPiA+ICsJCSAqIHRoYXQgdGhlIGJsb2IgbGVuZ3RoIGlzIHNlbnNpYmxlIGFuZCB0
+aGF0IGl0IGRvZXNuJ3QgY29udGFpbg0KPiA+ID4gPiArCQkgKiBhbnkgb3V0bGFuZGlzaCBjaGFy
+YWN0ZXJzDQo+ID4gPiA+ICsJCSAqLw0KPiA+ID4gPiArCQlpZ3RfYXNzZXJ0KCEoZm9ybWF0c19i
+bG9iLT5sZW5ndGggJSA0KSk7DQo+ID4gPiA+ICsJCWMgPSBmb3JtYXRzX2Jsb2ItPmRhdGE7DQo+
+ID4gPiA+ICsJCWZvciAoaSA9IDA7IGkgPCBmb3JtYXRzX2Jsb2ItPmxlbmd0aDsgaSsrKQ0KPiA+
+ID4gPiArCQkJaWd0X2Fzc2VydF9mKHN0cmNocih2YWxpZF9jaGFycywgY1tpXSksDQo+ID4gPiA+
+ICsJCQkJICAgICAiVW5leHBlY3RlZCBjaGFyYWN0ZXIgJWNcbiIsIGNbaV0pOw0KPiA+ID4gDQo+
+ID4gPiBIb25lc3RseSwgSSdtIG5vdCBhIGZhbiBvZiB0aGlzIGNoZWNrLiBUaGVyZSdzIG5vIGd1
+YXJhbnRlZSB0aGF0IGZvdXJjYw0KPiA+ID4gY29kZXMgd2lsbCBiZSBtYWRlIGZyb20gQVNDSUkg
+Y2hhcmFjdGVycywgaW4gZmFjdCBzb21lIGZvcm1hdHMgYWxyZWFkeQ0KPiA+ID4gaGF2ZSBub24t
+cHJpbnRhYmxlIGNoYXJzIGluIHRoZW0uIEkgZG9uJ3Qgd2FudCB0byBoYXZlIHRvIHVwZGF0ZSB0
+aGlzDQo+ID4gPiB0ZXN0IHdoZW4gYSBuZXcgZm91cmNjIGZvcm1hdCBpcyBhZGRlZC4NCj4gDQo+
+IExpa2UgdGhlIGNvbW1lbnRzIHNheXMsIHdlIGRvbid0IGhhdmUgYSBmdWxsIGxpc3Qgb2YgZm9y
+bWF0cyB0byBjaGVjayBhZ2FpbnN0Lg0KPiBTdWdnZXN0aW9ucyBvbiBob3cgdG8gaW1wcm92ZSBh
+cmUgd2VsY29tZSwgYnV0IEkgZG9uJ3QgdGhpbmsgd2Ugc2hvdWxkIGRlbGF5DQo+IChhbnkgbG9u
+Z2VyKSB0aGUgcGF0Y2hzZXQgZHVlIHRvIHRoaXMuDQoNCkFncmVlZC4NCg0KPiBCZXN0IHJlZ2Fy
+ZHMsDQo+IExpdml1DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpJbnRlbC1nZnggbWFpbGluZyBsaXN0CkludGVsLWdmeEBsaXN0cy5mcmVlZGVza3RvcC5v
+cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pbnRlbC1n
+Zng=
