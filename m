@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 16 Jul 2019 22:21:05 -0300
+Date: Tue, 16 Jul 2019 22:25:18 -0300
 From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Message-ID: <20190717012105.uuz5erowelakukrr@smtp.gmail.com>
+Message-ID: <20190717012518.qvx5lvznxsl2m3vw@smtp.gmail.com>
 References: <cover.1560374714.git.rodrigosiqueiramelo@gmail.com>
- <296f249138cb4f55466294b07a7aba25801ff146.1560374714.git.rodrigosiqueiramelo@gmail.com>
- <7eca4f4def5f732d1f9269e2c75eca8da62a78b2.camel@intel.com>
- <20190712024435.bed52lodxms6rz7y@smtp.gmail.com>
- <f96a6c7aa85a0ea73bef49feb9ced889387177a6.camel@intel.com>
+ <539f9b55a8269d3eb20d7d211f701d1a301d5b9d.1560374714.git.rodrigosiqueiramelo@gmail.com>
+ <cb41813cb605db17faee193acfa3f1bbd5b2a039.camel@intel.com>
+ <e54ac9aed7325a0b7735251199dcb3dba8cbdcec.camel@intel.com>
+ <20190712024941.4asntpe6s23x66q4@smtp.gmail.com>
+ <89a0e0508c989289690ecea001bb9ae51da9ac07.camel@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <f96a6c7aa85a0ea73bef49feb9ced889387177a6.camel@intel.com>
-Subject: Re: [igt-dev] [PATCH V6 i-g-t 2/6] kms_writeback: Add initial
- writeback tests
+In-Reply-To: <89a0e0508c989289690ecea001bb9ae51da9ac07.camel@intel.com>
+Subject: Re: [igt-dev] [PATCH V6 i-g-t 3/6] lib: Add function to hash a
+ framebuffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,7 +19,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1761360531=="
+Content-Type: multipart/mixed; boundary="===============1392500453=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: "Ser, Simon" <simon.ser@intel.com>
@@ -26,568 +27,201 @@ Cc: "Latvala, Petri" <petri.latvala@intel.com>, "intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
---===============1761360531==
+--===============1392500453==
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pztsv5umvnkwivlp"
+	protocol="application/pgp-signature"; boundary="zhpnofc2xan2alvp"
 Content-Disposition: inline
 
 
---pztsv5umvnkwivlp
-Content-Type: text/plain; charset=utf-8
+--zhpnofc2xan2alvp
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 On 07/12, Ser, Simon wrote:
-> On Thu, 2019-07-11 at 23:44 -0300, Rodrigo Siqueira wrote:
+> On Thu, 2019-07-11 at 23:49 -0300, Rodrigo Siqueira wrote:
 > > On 07/10, Ser, Simon wrote:
-> > > Hi,
-> > >=20
-> > > Thanks for the patch! Here are a few comments.
-> > >=20
-> > > For bonus points, it would be nice to add igt_describe descriptions of
-> > > each sub-test.
-> >=20
-> > Hi Simon,
-> >=20
-> > First of all, thanks for your feedback; I already applied most of your
-> > suggestions. I just have some inline comments/questions.
-> > =20
-> > > On Wed, 2019-06-12 at 23:16 -0300, Brian Starkey wrote:
-> > > > Add tests for the WRITEBACK_PIXEL_FORMATS, WRITEBACK_OUT_FENCE_PTR =
-and
-> > > > WRITEBACK_FB_ID properties on writeback connectors, ensuring their
-> > > > behaviour is correct.
+> > > On Wed, 2019-07-10 at 15:30 +0000, Ser, Simon wrote:
+> > > > Mostly LGTM, here are a few nits.
 > > > >=20
-> > > > Signed-off-by: Brian Starkey <brian.starkey@arm.com>
-> > > > [rebased and updated do_writeback_test() function to address feedba=
-ck]
-> > > > Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
-> > > > ---
-> > > >  tests/Makefile.sources |   1 +
-> > > >  tests/kms_writeback.c  | 314 +++++++++++++++++++++++++++++++++++++=
-++++
-> > > >  tests/meson.build      |   1 +
-> > > >  3 files changed, 316 insertions(+)
-> > > >  create mode 100644 tests/kms_writeback.c
+> > > > On Wed, 2019-06-12 at 23:17 -0300, Brian Starkey wrote:
+> > > > > To use writeback buffers as a CRC source, we need to be able to h=
+ash
+> > > > > them. Implement a simple FVA-1a hashing routine for this purpose.
+> > > > >=20
+> > > > > Doing a bytewise hash on the framebuffer directly can be very slo=
+w if
+> > > > > the memory is noncached. By making a copy of each line in the FB =
+first
+> > > > > (which can take advantage of word-access speedup), we can do the =
+hash
+> > > > > on a cached copy, which is much faster (10x speedup on my platfor=
+m).
+> > > > >=20
+> > > > > v6: use igt_memcpy_from_wc() instead of plain memcpy, as suggeste=
+d by
+> > > > >     Chris Wilson
+> > > > >=20
+> > > > > Signed-off-by: Brian Starkey <brian.starkey@arm.com>
+> > > > > [rebased and updated to the most recent API]
+> > > > > Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+> > > > > ---
+> > > > >  lib/igt_fb.c | 66 ++++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+> > > > >  lib/igt_fb.h |  3 +++
+> > > > >  2 files changed, 69 insertions(+)
+> > > > >=20
+> > > > > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> > > > > index 9d4f905e..d07dae39 100644
+> > > > > --- a/lib/igt_fb.c
+> > > > > +++ b/lib/igt_fb.c
+> > > > > @@ -3256,6 +3256,72 @@ bool igt_fb_supported_format(uint32_t drm_=
+format)
+> > > > >  	return false;
+> > > > >  }
+> > > > > =20
+> > > > > +/*
+> > > > > + * This implements the FNV-1a hashing algorithm instead of CRC, =
+for
+> > > > > + * simplicity
+> > > > > + * http://www.isthe.com/chongo/tech/comp/fnv/index.html
+> > > > > + *
+> > > > > + * hash =3D offset_basis
+> > > > > + * for each octet_of_data to be hashed
+> > > > > + *         hash =3D hash xor octet_of_data
+> > > > > + *         hash =3D hash * FNV_prime
+> > > > > + * return hash
+> > > > > + *
+> > > > > + * 32 bit offset_basis =3D 2166136261
+> > > > > + * 32 bit FNV_prime =3D 224 + 28 + 0x93 =3D 16777619
+> > > > > + */
+> > > > > +int igt_fb_get_crc(struct igt_fb *fb, igt_crc_t *crc)
+> > > > > +{
+> > > > > +#define FNV1a_OFFSET_BIAS 2166136261
+> > > > > +#define FNV1a_PRIME 16777619
 > > > >=20
-> > > > diff --git a/tests/Makefile.sources b/tests/Makefile.sources
-> > > > index 027ed82f..03cc8efa 100644
-> > > > --- a/tests/Makefile.sources
-> > > > +++ b/tests/Makefile.sources
-> > > > @@ -77,6 +77,7 @@ TESTS_progs =3D \
-> > > >  	kms_universal_plane \
-> > > >  	kms_vblank \
-> > > >  	kms_vrr \
-> > > > +	kms_writeback \
-> > > >  	meta_test \
-> > > >  	perf \
-> > > >  	perf_pmu \
-> > > > diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-> > > > new file mode 100644
-> > > > index 00000000..66ef48a6
-> > > > --- /dev/null
-> > > > +++ b/tests/kms_writeback.c
-> > > > @@ -0,0 +1,314 @@
-> > > > +/*
-> > > > + * (C) COPYRIGHT 2017 ARM Limited. All rights reserved.
-> > > > + *
-> > > > + * Permission is hereby granted, free of charge, to any person obt=
-aining a
-> > > > + * copy of this software and associated documentation files (the "=
-Software"),
-> > > > + * to deal in the Software without restriction, including without =
-limitation
-> > > > + * the rights to use, copy, modify, merge, publish, distribute, su=
-blicense,
-> > > > + * and/or sell copies of the Software, and to permit persons to wh=
-om the
-> > > > + * Software is furnished to do so, subject to the following condit=
-ions:
-> > > > + *
-> > > > + * The above copyright notice and this permission notice (includin=
-g the next
-> > > > + * paragraph) shall be included in all copies or substantial porti=
-ons of the
-> > > > + * Software.
-> > > > + *
-> > > > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,=
- EXPRESS OR
-> > > > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHAN=
-TABILITY,
-> > > > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EV=
-ENT SHALL
-> > > > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAG=
-ES OR OTHER
-> > > > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,=
- ARISING
-> > > > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR O=
-THER DEALINGS
-> > > > + * IN THE SOFTWARE.
-> > > > + *
-> > > > + */
-> > > > +
-> > > > +#include <errno.h>
-> > > > +#include <stdbool.h>
-> > > > +#include <stdio.h>
-> > > > +#include <string.h>
-> > > > +
-> > > > +#include "igt.h"
-> > > > +#include "igt_core.h"
-> > > > +#include "igt_fb.h"
-> > > > +
-> > > > +static drmModePropertyBlobRes *get_writeback_formats_blob(igt_outp=
-ut_t *output)
-> > > > +{
-> > > > +	drmModePropertyBlobRes *blob =3D NULL;
-> > > > +	uint64_t blob_id;
-> > > > +	int ret;
-> > > > +
-> > > > +	ret =3D kmstest_get_property(output->display->drm_fd,
-> > > > +				   output->config.connector->connector_id,
-> > > > +				   DRM_MODE_OBJECT_CONNECTOR,
-> > > > +				   igt_connector_prop_names[IGT_CONNECTOR_WRITEBACK_PIXEL_FORM=
-ATS],
-> > > > +				   NULL, &blob_id, NULL);
-> > > > +	if (ret)
-> > > > +		blob =3D drmModeGetPropertyBlob(output->display->drm_fd, blob_id=
-);
-> > > > +
-> > > > +	igt_assert(blob);
-> > > > +
-> > > > +	return blob;
-> > > > +}
-> > > > +
-> > > > +static bool check_writeback_config(igt_display_t *display, igt_out=
-put_t *output)
-> > > > +{
-> > > > +	igt_fb_t input_fb, output_fb;
-> > > > +	igt_plane_t *plane;
-> > > > +	uint32_t writeback_format =3D DRM_FORMAT_XRGB8888;
-> > > > +	uint64_t tiling =3D igt_fb_mod_to_tiling(0);
-> > > > +	int width, height, ret;
-> > > > +	drmModeModeInfo override_mode =3D {
-> > > > +		.clock =3D 25175,
-> > > > +		.hdisplay =3D 640,
-> > > > +		.hsync_start =3D 656,
-> > > > +		.hsync_end =3D 752,
-> > > > +		.htotal =3D 800,
-> > > > +		.hskew =3D 0,
-> > > > +		.vdisplay =3D 480,
-> > > > +		.vsync_start =3D 490,
-> > > > +		.vsync_end =3D 492,
-> > > > +		.vtotal =3D 525,
-> > > > +		.vscan =3D 0,
-> > > > +		.vrefresh =3D 60,
-> > > > +		.flags =3D DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
-> > > > +		.name =3D {"640x480-60"},
-> > > > +	};
-> > > > +	igt_output_override_mode(output, &override_mode);
-> > > > +
-> > > > +	width =3D override_mode.hdisplay;
-> > > > +	height =3D override_mode.vdisplay;
-> > > > +
-> > > > +	ret =3D igt_create_fb(display->drm_fd, width, height, DRM_FORMAT_=
-XRGB8888, tiling, &input_fb);
-> > > > +	igt_assert(ret >=3D 0);
-> > > > +
-> > > > +	ret =3D igt_create_fb(display->drm_fd, width, height, writeback_f=
-ormat, tiling, &output_fb);
-> > > > +	igt_assert(ret >=3D 0);
-> > > > +
-> > > > +	plane =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMAR=
-Y);
-> > > > +	igt_plane_set_fb(plane, &input_fb);
-> > > > +	igt_output_set_writeback_fb(output, &output_fb);
-> > > > +
-> > > > +	ret =3D igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TE=
-ST_ONLY |
-> > > > +					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> > > > I'd just use plain uint32_t variables for those, but no big deal.
+> > > >=20
+> > > > > +	uint32_t hash;
+> > > > > +	void *map;
+> > > > > +	char *ptr, *line =3D NULL;
+> > > > > +	int x, y, cpp =3D igt_drm_format_to_bpp(fb->drm_format) / 8;
+> > > > > +	uint32_t stride =3D calc_plane_stride(fb, 0);
+> > > >=20
+> > > > We could return -EINVAL in case fb->num_planes !=3D 1.
 > > >=20
-> > > Okay, we're using atomic test-only mode to know if we can perform tes=
-ts
-> > > with the writeback output. It's probably fine, but we don't use
-> > > WRITEBACK_PIXEL_FORMATS, which makes me a little bit sad.
-> >=20
-> > Sorry, I did not fully understand part. Did you expect to see something
-> > like the below code before igt_display_try_commit_atomic()?
-> >=20
-> >  igt_output_set_prop_value(output, WRITEBACK_PIXEL_FORMATS,
-> >                            DRM_FORMAT_XRGB8888);
->=20
-> Hmm, no, we cannot change the list of writeback formats (it's
-> immutable).
->=20
-> This comment doesn't require any action, it's just me thinking aloud :P
->=20
-> I'm just thinking that it would be nice to choose our format depending
-> on the WRITEBACK_PIXEL_FORMATS property. And probably run tests with
-> each supported format (or, alternatively, choose a random one). That
-> way we can make sure WRITEBACK_PIXEL_FORMATS isn't broken.
->=20
-> However, this can be left for a later patch.
->=20
-> > > > +	igt_plane_set_fb(plane, NULL);
-> > > > +	igt_remove_fb(display->drm_fd, &input_fb);
-> > > > +	igt_remove_fb(display->drm_fd, &output_fb);
-> > > > +
-> > > > +	return !ret;
-> > > > +}
-> > > > +
-> > > > +static igt_output_t *kms_writeback_get_output(igt_display_t *displ=
-ay)
-> > > > +{
-> > > > +	int i;
-> > > > +
-> > > > +	for (i =3D 0; i < display->n_outputs; i++) {
-> > > > +		igt_output_t *output =3D &display->outputs[i];
-> > > > +		int j;
-> > > > +
-> > > > +		if (output->config.connector->connector_type !=3D DRM_MODE_CONNE=
-CTOR_WRITEBACK)
-> > > > +			continue;
-> > > > +
-> > > > +		kmstest_force_connector(display->drm_fd, output->config.connecto=
-r, FORCE_CONNECTOR_ON);
+> > > Let's not waste cycles. With this ^ fixed, this patch is:
 > > >=20
-> > > Hmm. Is this really necessary? "Real" userspace won't do this, so I
-> > > don't think we need to either.
+> > > Reviewed-by: Simon Ser <simon.ser@intel.com>
+> > >=20
+> > > Other nits are optional.
 > >=20
-> > Hmmm, I have a little experience with userspace; however, I tested
-> > kms_writeback on top of vkms without this line, and everything worked
-> > well. If I remove this line, should I also drop the line that force
-> > connector to FORCE_CONNECTOR_UNSPECIFIED?
+> > I agreed with all your suggestions, and I already applied all of them.
+> > Should I wait for the other patches review, or should I resend the new
+> > version?
 >=20
-> I believe so.
+> I'm fine with waiting for the full review before a new version of the
+> whole patchset, but you can also send an updated version of a single
+> patch with:
 >=20
-> > Another question, if FORCE_CONNECTOR_ON is something that userspace
-> > won't want to do, why do we have it?
+>     git send-email --in-reply-to=3D"<cover.1560374714.git.rodrigosiqueira=
+melo@gmail.com>" -1 <commit hash>
 >=20
-> We use kmstest_force_connector in injection tests: those pick a
-> disconnected HDMI connector and trick the kernel into thinking it's
-> connected. We generally also force an EDID and this is used to emulate
-> a screen (e.g. a screen that supports audio, 4K or 3D).
->=20
-> This is only meant to be used for testing though, hence "real userspace
-> shouldn't use it".
->
+> where In-Reply-To is the Message-Id of the patch you want to update. I
+> agree it's a little tedious since you need to extract the Message-Id
+> from the message header.
 
-Ahhh, I see. Thanks for the explanation
+Thanks for the tip with git-send-mail. Since I already applied most of
+your suggestions, I'll send a full version soon.
 =20
-> > > > +		for (j =3D 0; j < igt_display_get_n_pipes(display); j++) {
-> > > > +			igt_output_set_pipe(output, j);
-> > > > +
-> > > > +			if (check_writeback_config(display, output)) {
-> > > > +				igt_debug("Using connector %u:%s on pipe %d\n",
-> > > > +					  output->config.connector->connector_id,
-> > > > +					  output->name, j);
-> > > > +				return output;
-> > > > +			}
-> > >=20
-> > > We could probably add an igt_debug statement in case we don't use this
-> > > writeback output.
-> > >=20
-> > > > +		}
-> > > > +
-> > > > +		/* Restore any connectors we don't use, so we don't trip on them=
- later */
-> > > > +		kmstest_force_connector(display->drm_fd, output->config.connecto=
-r, FORCE_CONNECTOR_UNSPECIFIED);
-> > > > +	}
-> > > > +
-> > > > +	return NULL;
-> > > > +}
-> > > > +
-> > > > +static void check_writeback_fb_id(igt_output_t *output)
-> > > > +{
-> > > > +	uint64_t check_fb_id;
-> > > > +
-> > > > +	check_fb_id =3D igt_output_get_prop(output, IGT_CONNECTOR_WRITEBA=
-CK_FB_ID);
-> > > > +	igt_assert(check_fb_id =3D=3D 0);
-> > > > +}
-> > > > +
-> > > > +static int do_writeback_test(igt_output_t *output, uint32_t flags,
-> > > > +			      uint32_t fb_id, int32_t *out_fence_ptr,
-> > > > +			      bool ptr_valid)
-> > >=20
-> > > flags seems to always be set to DRM_MODE_ATOMIC_ALLOW_MODESET. We can
-> > > probably remove the parameter from this function.
-> > >=20
-> > > > +{
-> > > > +	int ret;
-> > > > +	igt_display_t *display =3D output->display;
-> > > > +	struct kmstest_connector_config *config =3D &output->config;
-> > > > +
-> > > > +	igt_output_set_prop_value(output, IGT_CONNECTOR_CRTC_ID, config->=
-crtc->crtc_id);
-> > > > +	igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_FB_ID, =
-fb_id);
-> > > > +	igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_OUT_FEN=
-CE_PTR, (uint64_t)out_fence_ptr);
-> > > > +
-> > > > +	if (ptr_valid)
-> > > > +		*out_fence_ptr =3D 0;
-> > > > +
-> > > > +	ret =3D igt_display_try_commit_atomic(display, flags, NULL);
-> > > > +
-> > > > +	if (ptr_valid)
-> > > > +		igt_assert(*out_fence_ptr =3D=3D -1);
-> > >=20
-> > > I'm confused. Why should this be -1 even if we
-> > > igt_display_try_commit_atomic succeeds?
-> >=20
-> > I inspected the drm_mode_atomic_ioctl() function and I noticed that It
-> > calls complete_signaling() in its turn this function assign -1 to
-> > out_fence_ptr. Since all of this happens at the end of atomic_commit, I
-> > believe that we don=E2=80=99t need it. I already removed it.
+> > Thanks for all the feedback
 >=20
-> I think I'm still confused :)
+> :)
 >=20
-> I'm probably missing something. As far as I understand, we are doing an
-> atomic commit, sometimes with a valid WRITEBACK_FB_ID and
-> WRITEBACK_OUT_FENCE_PTR. In this case it should start the writeback
-> process in the kernel and we should get a valid out_fence_ptr?
->=20
-> Why do we always get -1?
-
-FWIU userspace uses the WRITEBACK_OUT_FENCE_PTR to provide a pointer for
-the kernel to fill with a sync_file file descriptor, which will signal
-once the writeback is finished. If the signal was correctly handled, the
-out_fence_ptr would be set to -1, because of this we always get -1.
-
-Thanks for your feedback, I'll prepare a new version soon.
-=20
-> > > > +	/* WRITEBACK_FB_ID must always read as zero */
-> > > > +	check_writeback_fb_id(output);
-> > > > +
-> > > > +	return ret;
-> > > > +}
-> > > > +
-> > > > +static void invalid_out_fence(igt_output_t *output, igt_fb_t *vali=
-d_fb, igt_fb_t *invalid_fb)
-> > > > +{
-> > > > +	int i, ret;
-> > > > +	int32_t out_fence;
-> > > > +	struct {
-> > > > +		uint32_t fb_id;
-> > > > +		bool ptr_valid;
-> > > > +		int32_t *out_fence_ptr;
-> > > > +	} invalid_tests[] =3D {
-> > > > +		{
-> > > > +			/* No output buffer, but the WRITEBACK_OUT_FENCE_PTR set. */
-> > > > +			.fb_id =3D 0,
-> > > > +			.ptr_valid =3D true,
-> > > > +			.out_fence_ptr =3D &out_fence,
-> > > > +		},
-> > > > +		{
-> > > > +			/* Invalid output buffer. */
-> > > > +			.fb_id =3D invalid_fb->fb_id,
-> > > > +			.ptr_valid =3D true,
-> > > > +			.out_fence_ptr =3D &out_fence,
-> > > > +		},
-> > >=20
-> > > This doesn't belong in this function (invalid_out_fence), since this
-> > > checks an invalid framebuffer, not an invalid fence. We should probab=
-ly
-> > > move it to writeback_fb_id (and rename that function to test_fb?).
-> > >=20
-> > > > +		{
-> > > > +			/* Invalid WRITEBACK_OUT_FENCE_PTR. */
-> > > > +			.fb_id =3D valid_fb->fb_id,
-> > > > +			.ptr_valid =3D false,
-> > > > +			.out_fence_ptr =3D (int32_t *)0x8,
-> > > > +		},
-> > > > +	};
-> > > > +
-> > > > +	for (i =3D 0; i < ARRAY_SIZE(invalid_tests); i++) {
-> > > > +		ret =3D do_writeback_test(output, DRM_MODE_ATOMIC_ALLOW_MODESET,
-> > > > +					invalid_tests[i].fb_id,
-> > > > +					invalid_tests[i].out_fence_ptr,
-> > > > +					invalid_tests[i].ptr_valid);
-> > > > +		igt_assert(ret !=3D 0);
-> > >=20
-> > > Maybe we can check for -ret =3D=3D EINVAL?
-> > >=20
-> > > > +	}
-> > > > +}
-> > > > +
-> > > > +static void writeback_fb_id(igt_output_t *output, igt_fb_t *valid_=
-fb, igt_fb_t *invalid_fb)
-> > >=20
-> > > invalid_fb doesn't seem to be used here. valid_fb seems to be set to
-> > > the input framebuffer. It's probably not a good idea to use the same =
-FB
-> > > for input and writeback output.
-> > >=20
-> > > > +{
-> > > > +
-> > > > +	int ret;
-> > > > +
-> > > > +	/* Valid output buffer */
-> > > > +	ret =3D do_writeback_test(output, DRM_MODE_ATOMIC_ALLOW_MODESET,
-> > > > +				valid_fb->fb_id, NULL, false);
-> > > > +	igt_assert(ret =3D=3D 0);
-> > > > +
-> > > > +	/* Invalid object for WRITEBACK_FB_ID */
-> > > > +	ret =3D do_writeback_test(output, DRM_MODE_ATOMIC_ALLOW_MODESET,
-> > > > +				output->id, NULL, false);
-> > > > +	igt_assert(ret =3D=3D -EINVAL);
-> > > > +
-> > > > +	/* Zero WRITEBACK_FB_ID */
-> > > > +	ret =3D do_writeback_test(output, DRM_MODE_ATOMIC_ALLOW_MODESET,
-> > > > +				0, NULL, false);
-> > > > +	igt_assert(ret =3D=3D 0);
-> > > > +}
-> > > > +
-> > > > +igt_main
-> > > > +{
-> > > > +	igt_display_t display;
-> > > > +	igt_output_t *output;
-> > > > +	igt_plane_t *plane;
-> > > > +	igt_fb_t input_fb;
-> > > > +	drmModeModeInfo mode;
-> > > > +	int ret;
-> > > > +
-> > > > +	memset(&display, 0, sizeof(display));
-> > > > +
-> > > > +	igt_fixture {
-> > > > +		display.drm_fd =3D drm_open_driver_master(DRIVER_ANY);
-> > > > +		igt_display_require(&display, display.drm_fd);
-> > > > +
-> > > > +		kmstest_set_vt_graphics_mode();
-> > > > +
-> > > > +		igt_display_require(&display, display.drm_fd);
-> > > > +
-> > > > +		igt_require(display.is_atomic);
-> > > > +
-> > > > +		output =3D kms_writeback_get_output(&display);
-> > > > +		igt_require(output);
-> > > > +
-> > > > +		if (output->use_override_mode)
-> > > > +			memcpy(&mode, &output->override_mode, sizeof(mode));
-> > > > +		else
-> > > > +			memcpy(&mode, &output->config.default_mode, sizeof(mode));
-> > > > +
-> > > > +		plane =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMA=
-RY);
-> > > > +		igt_require(plane);
-> > >=20
-> > > Maybe we can assert on this?
-> > >=20
-> > > > +		ret =3D igt_create_fb(display.drm_fd, mode.hdisplay,
-> > > > +				    mode.vdisplay,
-> > > > +				    DRM_FORMAT_XRGB8888,
-> > > > +				    igt_fb_mod_to_tiling(0),
-> > >=20
-> > > This is supposed to take a modifier. DRM_FORMAT_MOD_LINEAR would be
-> > > better to make this clear.
-> > >=20
-> > > (Applies to other lines of this patch)
-> > >=20
-> > > > +				    &input_fb);
-> > > > +		igt_assert(ret >=3D 0);
-> > > > +		igt_plane_set_fb(plane, &input_fb);
-> > > > +	}
-> > > > +
-> > > > +	igt_subtest("writeback-pixel-formats") {
-> > > > +		drmModePropertyBlobRes *formats_blob =3D get_writeback_formats_b=
-lob(output);
-> > >=20
-> > > Need to drmModeFreePropertyBlob this.
-> > >=20
-> > > > +		const char *valid_chars =3D "0123456 ABCGNRUVXY";
-> > > > +		unsigned int i;
-> > > > +		char *c;
-> > > > +
-> > > > +		/*
-> > > > +		 * We don't have a comprehensive list of formats, so just check
-> > > > +		 * that the blob length is sensible and that it doesn't contain
-> > > > +		 * any outlandish characters
-> > > > +		 */
-> > > > +		igt_assert(!(formats_blob->length % 4));
-> > > > +		c =3D formats_blob->data;
-> > > > +		for (i =3D 0; i < formats_blob->length; i++)
-> > > > +			igt_assert_f(strchr(valid_chars, c[i]),
-> > > > +				     "Unexpected character %c\n", c[i]);
-> > >=20
-> > > Honestly, I'm not a fan of this check. There's no guarantee that four=
-cc
-> > > codes will be made from ASCII characters, in fact some formats already
-> > > have non-printable chars in them. I don't want to have to update this
-> > > test when a new fourcc format is added.
-> > >=20
-> > > We currently don't have a test for IN_FORMATS. If we really want to
-> > > check formats, we could have a big array of known formats and add a
-> > > bool is_valid_format(uint32_t fmt) function.
-> >=20
-> > Agree with you. How about remove this test?
->=20
-> I guess we could always keep the length % 4 test, even if it's just a
-> sanity test. At least this one won't ever need to be changed.
->=20
-> I don't feel strongly about it.
->=20
-> > Thanks
 > > Best Regards
-> >=20
-> > > > +	}
-> > > > +
-> > > > +	igt_subtest("writeback-invalid-out-fence") {
-> > > > +		igt_fb_t invalid_fb;
-> > >=20
-> > > invalid_output_fb would be a better name IMHO.
-> > >=20
-> > > > +		ret =3D igt_create_fb(display.drm_fd, mode.hdisplay / 2,
-> > > > +				    mode.vdisplay / 2,
-> > > > +				    DRM_FORMAT_XRGB8888,
-> > > > +				    igt_fb_mod_to_tiling(0),
-> > > > +				    &invalid_fb);
-> > > > +		igt_require(ret > 0);
-> > >=20
-> > > We should probably use a different variable: ret is signed,
-> > > igt_create_fb isn't. Also ret doesn't make it clear that the return
-> > > value is the KMS framebuffer ID.
-> > >=20
-> > > (Applies to other subtests)
-> > >=20
-> > > > +		invalid_out_fence(output, &input_fb, &invalid_fb);
-> > >=20
-> > > (Still not sure why we provide the input FB to this function.)
-> > >=20
-> > > > +		igt_remove_fb(display.drm_fd, &invalid_fb);
-> > > > +	}
-> > > > +
-> > > > +	igt_subtest("writeback-fb-id") {
-> > > > +		igt_fb_t output_fb;
-> > > > +		ret =3D igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdispl=
-ay,
-> > > > +				    DRM_FORMAT_XRGB8888,
-> > > > +				    igt_fb_mod_to_tiling(0),
-> > > > +				    &output_fb);
-> > > > +		igt_require(ret > 0);
-> > > > +
-> > > > +		writeback_fb_id(output, &input_fb, &output_fb);
-> > > > +
-> > > > +		igt_remove_fb(display.drm_fd, &output_fb);
-> > > > +	}
-> > > > +
-> > > > +	igt_fixture {
-> > > > +		igt_remove_fb(display.drm_fd, &input_fb);
-> > > > +		igt_display_fini(&display);
-> > > > +	}
-> > > > +}
-> > > > diff --git a/tests/meson.build b/tests/meson.build
-> > > > index f168fbba..9c77cfcd 100644
-> > > > --- a/tests/meson.build
-> > > > +++ b/tests/meson.build
-> > > > @@ -63,6 +63,7 @@ test_progs =3D [
-> > > >  	'kms_universal_plane',
-> > > >  	'kms_vblank',
-> > > >  	'kms_vrr',
-> > > > +	'kms_writeback',
-> > > >  	'meta_test',
-> > > >  	'panfrost_get_param',
-> > > >  	'panfrost_gem_new',
+> > =20
+> > > > > +	if (fb->is_dumb)
+> > > > > +		map =3D kmstest_dumb_map_buffer(fb->fd, fb->gem_handle, fb->si=
+ze,
+> > > > > +					      PROT_READ);
+> > > > > +	else
+> > > > > +		map =3D gem_mmap__gtt(fb->fd, fb->gem_handle, fb->size,
+> > > > > +				    PROT_READ);
+> > > > > +	ptr =3D map;
+> > > >=20
+> > > > Nit: no need for this, can assign the result of mmap directly to pt=
+r.
+> > > >=20
+> > > > > +
+> > > > > +	/*
+> > > > > +	 * Framebuffers are often uncached, which can make byte-wise ac=
+cesses
+> > > > > +	 * very slow. We copy each line of the FB into a local buffer t=
+o speed
+> > > > > +	 * up the hashing.
+> > > > > +	 */
+> > > > > +	line =3D malloc(stride);
+> > > > > +	if (!line) {
+> > > > > +		munmap(map, fb->size);
+> > > > > +		return -ENOMEM;
+> > > > > +	}
+> > > > > +
+> > > > > +	hash =3D FNV1a_OFFSET_BIAS;
+> > > > > +
+> > > > > +	for (y =3D 0; y < fb->height; y++, ptr +=3D stride) {
+> > > > > +
+> > > > > +		igt_memcpy_from_wc(line, ptr, stride);
+> > > >=20
+> > > > Nit: no need to copy the whole stride actually, we can just copy
+> > > > fb->width * cpp since we're only going to read that.
+> > > >=20
+> > > > > +
+> > > > > +		for (x =3D 0; x < fb->width * cpp; x++) {
+> > > > > +			hash ^=3D line[x];
+> > > > > +			hash *=3D FNV1a_PRIME;
+> > > > > +		}
+> > > > > +	}
+> > > > > +
+> > > > > +	crc->n_words =3D 1;
+> > > > > +	crc->crc[0] =3D hash;
+> > > > > +
+> > > > > +	free(line);
+> > > > > +	munmap(map, fb->size);
+> > > > > +
+> > > > > +	return 0;
+> > > > > +#undef FNV1a_OFFSET_BIAS
+> > > > > +#undef FNV1a_PRIME
+> > > > > +}
+> > > > > +
+> > > > >  /**
+> > > > >   * igt_format_is_yuv:
+> > > > >   * @drm_format: drm fourcc
+> > > > > diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+> > > > > index adefebe1..a2741c05 100644
+> > > > > --- a/lib/igt_fb.h
+> > > > > +++ b/lib/igt_fb.h
+> > > > > @@ -37,6 +37,7 @@
+> > > > >  #include <i915_drm.h>
+> > > > > =20
+> > > > >  #include "igt_color_encoding.h"
+> > > > > +#include "igt_debugfs.h"
+> > > > > =20
+> > > > >  /*
+> > > > >   * Internal format to denote a buffer compatible with pixman's
+> > > > > @@ -194,5 +195,7 @@ int igt_format_plane_bpp(uint32_t drm_format,=
+ int plane);
+> > > > >  void igt_format_array_fill(uint32_t **formats_array, unsigned in=
+t *count,
+> > > > >  			   bool allow_yuv);
+> > > > > =20
+> > > > > +int igt_fb_get_crc(struct igt_fb *fb, igt_crc_t *crc);
+> > > > > +
+> > > > >  #endif /* __IGT_FB_H__ */
+> > > > > =20
+> > > > > _______________________________________________
+> > > > > igt-dev mailing list
+> > > > > igt-dev@lists.freedesktop.org
+> > > > > https://lists.freedesktop.org/mailman/listinfo/igt-dev
 > > > > _______________________________________________
 > > > > igt-dev mailing list
 > > > > igt-dev@lists.freedesktop.org
@@ -597,29 +231,29 @@ ay,
 Rodrigo Siqueira
 https://siqueira.tech
 
---pztsv5umvnkwivlp
+--zhpnofc2xan2alvp
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAl0ueAAACgkQWJzP/com
-vP/hNw/+IwWVCzFM2nPcBMDbEOQH2BVralwDahiyxupsvg/qa3ZCK0KoxwoIora9
-MTc7BkC5Dtox4nXapDKBMzXvsSuZ+yYGYTN5KKMh8P43TP2zK2NGW96WpXV4Mubv
-xxmdsXp7Lz6GE54mRNT+2T8xRbRjGXevcohVQyZ3dC1Hsvj18sKIN0zK+I5zeLFl
-wl+YXi/eoUZmgBdOkzm/HDAcCFD8N3kYsH30cYt7UbYlIV7d49x7aqZUoAME0d6E
-iZJ5mBDuzrNfkBzKCobpF1SIhYh3HWehU525gziobxyep7ZFB0OOpVZZ1Md3Wpdo
-24JNe/4MayF6P9epm/Uy6U72g8cK8F2TadmA2dqn8ThZBDj0cP1XPc7rVeM9kYEs
-NtDEBtiaZXIbpAG2uQrqyOyO85UMwHHmriGB9QmquNZzeJ8hKtxr+nHnbqHhg+5Z
-hOxEQ2qk6EJBIg57UT/Lp57QL9vmW9YMkLU1KXzk/Ex/jWB7+29xl8ru6PN8Pfux
-hpmaZPilxsmBffgYGSUgNwd1rKvEehIa1lh95O0Yf4ozfgXQ4jtUPdvaei4CxqTA
-vE0DfqqWFuMPx5CnxMCwBrRvQGFKUoLpt4IfhYp2T9TUBZp57ayosYO3PFUI0CJ9
-3AMrmmGksam9lfq/TGNhpg2Isuk6EsV5pCPHzXNwEckA225HSu4=
-=gunV
+iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAl0ueP0ACgkQWJzP/com
+vP89cA//UGVW7rR7jD+sKZPRNqzcckCPtmBJPpJnrLNZak7E1qkKFm/WEfay8icv
+GfZ/sQPw4Sm+uyobEOAV5Z8s8p5nQDEX4nPtm0ivZN2mzaJp2J680l5tGZnRP4e3
+bNQOBbmVA7TPsc69gxUIkmx58XfVPGd2QjCyLUAdUqZ7ooKjLNJ4j8X3LFdneSfN
+AWfERAAW3b55tLq2uPdtO1icD8IyfDcgQIRrqQDG4kWfcEqgwm9KoGUVzMFh+bx5
+DO9eFa65ESCknTukh6DbBxfu0NWH+8xvVXDG4uEs38DbSPoroiOUqEd3iVg3aw6E
+0oztgh7GikEx8nMnYADKmYX/433LO5t8kD1acJBe8/ReKBmssoJqekkxkgMZ/2ie
+Jn9Am0o+avY5dztSZDfLzl8R1tmSPDZMgO0CiRy3fSrFVwXzxsrXle0KhbLP6uOk
+PKiOrpWQBWaCBeTRWm8RJUNwYVk0w8tngVz1UteC6Z96UJn1KNjc0b1wINzOubYG
+Mg2Ppx6c7V1hf5q2LMYyUVaMJ/pq0rIVRrJnXWgi7qRPx05jfEdsBiIXFc4X7U46
+Cqgi0Fk7nClmZ3l85AC5etc74407Cf0LKUuryEhlYl82JeXWt2MpdVexAAjG5Rqg
+gO/1Cy6pWi+aSwXdPc6KSsDy/4GrCgljKZBBMKN0Cxll13SS6UQ=
+=IQk9
 -----END PGP SIGNATURE-----
 
---pztsv5umvnkwivlp--
+--zhpnofc2xan2alvp--
 
---===============1761360531==
+--===============1392500453==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: base64
@@ -629,4 +263,4 @@ X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
 YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
 cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
 
---===============1761360531==--
+--===============1392500453==--
