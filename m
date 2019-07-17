@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 16 Jul 2019 16:22:07 +0100
-From: "Liviu.Dudau@arm.com" <Liviu.Dudau@arm.com>
-Message-ID: <20190716152207.GC13094@e110455-lin.cambridge.arm.com>
+Date: Tue, 16 Jul 2019 22:21:05 -0300
+From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Message-ID: <20190717012105.uuz5erowelakukrr@smtp.gmail.com>
 References: <cover.1560374714.git.rodrigosiqueiramelo@gmail.com>
  <296f249138cb4f55466294b07a7aba25801ff146.1560374714.git.rodrigosiqueiramelo@gmail.com>
  <7eca4f4def5f732d1f9269e2c75eca8da62a78b2.camel@intel.com>
  <20190712024435.bed52lodxms6rz7y@smtp.gmail.com>
+ <f96a6c7aa85a0ea73bef49feb9ced889387177a6.camel@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190712024435.bed52lodxms6rz7y@smtp.gmail.com>
+In-Reply-To: <f96a6c7aa85a0ea73bef49feb9ced889387177a6.camel@intel.com>
 Subject: Re: [igt-dev] [PATCH V6 i-g-t 2/6] kms_writeback: Add initial
  writeback tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -18,325 +18,615 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============1761360531=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Latvala,
- Petri" <petri.latvala@intel.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "daniel@ffwll.ch" <daniel@ffwll.ch>, "nd@arm.com" <nd@arm.com>, "Brian.Starkey@arm.com" <Brian.Starkey@arm.com>
+To: "Ser, Simon" <simon.ser@intel.com>
+Cc: "Latvala, Petri" <petri.latvala@intel.com>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>, "Liviu.Dudau@arm.com" <Liviu.Dudau@arm.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "daniel@ffwll.ch" <daniel@ffwll.ch>, "nd@arm.com" <nd@arm.com>, "Brian.Starkey@arm.com" <Brian.Starkey@arm.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgUm9kcmlnbywKCk9uIFRodSwgSnVsIDExLCAyMDE5IGF0IDExOjQ0OjM1UE0gLTAzMDAsIFJv
-ZHJpZ28gU2lxdWVpcmEgd3JvdGU6Cj4gT24gMDcvMTAsIFNlciwgU2ltb24gd3JvdGU6Cj4gPiBI
-aSwKPiA+IAo+ID4gVGhhbmtzIGZvciB0aGUgcGF0Y2ghIEhlcmUgYXJlIGEgZmV3IGNvbW1lbnRz
-Lgo+ID4gCj4gPiBGb3IgYm9udXMgcG9pbnRzLCBpdCB3b3VsZCBiZSBuaWNlIHRvIGFkZCBpZ3Rf
-ZGVzY3JpYmUgZGVzY3JpcHRpb25zIG9mCj4gPiBlYWNoIHN1Yi10ZXN0Lgo+IAo+IEhpIFNpbW9u
-LAo+IAo+IEZpcnN0IG9mIGFsbCwgdGhhbmtzIGZvciB5b3VyIGZlZWRiYWNrOyBJIGFscmVhZHkg
-YXBwbGllZCBtb3N0IG9mIHlvdXIKPiBzdWdnZXN0aW9ucy4gSSBqdXN0IGhhdmUgc29tZSBpbmxp
-bmUgY29tbWVudHMvcXVlc3Rpb25zLgo+ICAKPiA+IE9uIFdlZCwgMjAxOS0wNi0xMiBhdCAyMzox
-NiAtMDMwMCwgQnJpYW4gU3RhcmtleSB3cm90ZToKPiA+ID4gQWRkIHRlc3RzIGZvciB0aGUgV1JJ
-VEVCQUNLX1BJWEVMX0ZPUk1BVFMsIFdSSVRFQkFDS19PVVRfRkVOQ0VfUFRSIGFuZAo+ID4gPiBX
-UklURUJBQ0tfRkJfSUQgcHJvcGVydGllcyBvbiB3cml0ZWJhY2sgY29ubmVjdG9ycywgZW5zdXJp
-bmcgdGhlaXIKPiA+ID4gYmVoYXZpb3VyIGlzIGNvcnJlY3QuCj4gPiA+IAo+ID4gPiBTaWduZWQt
-b2ZmLWJ5OiBCcmlhbiBTdGFya2V5IDxicmlhbi5zdGFya2V5QGFybS5jb20+Cj4gPiA+IFtyZWJh
-c2VkIGFuZCB1cGRhdGVkIGRvX3dyaXRlYmFja190ZXN0KCkgZnVuY3Rpb24gdG8gYWRkcmVzcyBm
-ZWVkYmFja10KPiA+ID4gU2lnbmVkLW9mZi1ieTogTGl2aXUgRHVkYXUgPGxpdml1LmR1ZGF1QGFy
-bS5jb20+Cj4gPiA+IC0tLQo+ID4gPiAgdGVzdHMvTWFrZWZpbGUuc291cmNlcyB8ICAgMSArCj4g
-PiA+ICB0ZXN0cy9rbXNfd3JpdGViYWNrLmMgIHwgMzE0ICsrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrCj4gPiA+ICB0ZXN0cy9tZXNvbi5idWlsZCAgICAgIHwgICAxICsK
-PiA+ID4gIDMgZmlsZXMgY2hhbmdlZCwgMzE2IGluc2VydGlvbnMoKykKPiA+ID4gIGNyZWF0ZSBt
-b2RlIDEwMDY0NCB0ZXN0cy9rbXNfd3JpdGViYWNrLmMKPiA+ID4gCj4gPiA+IGRpZmYgLS1naXQg
-YS90ZXN0cy9NYWtlZmlsZS5zb3VyY2VzIGIvdGVzdHMvTWFrZWZpbGUuc291cmNlcwo+ID4gPiBp
-bmRleCAwMjdlZDgyZi4uMDNjYzhlZmEgMTAwNjQ0Cj4gPiA+IC0tLSBhL3Rlc3RzL01ha2VmaWxl
-LnNvdXJjZXMKPiA+ID4gKysrIGIvdGVzdHMvTWFrZWZpbGUuc291cmNlcwo+ID4gPiBAQCAtNzcs
-NiArNzcsNyBAQCBURVNUU19wcm9ncyA9IFwKPiA+ID4gIAlrbXNfdW5pdmVyc2FsX3BsYW5lIFwK
-PiA+ID4gIAlrbXNfdmJsYW5rIFwKPiA+ID4gIAlrbXNfdnJyIFwKPiA+ID4gKwlrbXNfd3JpdGVi
-YWNrIFwKPiA+ID4gIAltZXRhX3Rlc3QgXAo+ID4gPiAgCXBlcmYgXAo+ID4gPiAgCXBlcmZfcG11
-IFwKPiA+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc193cml0ZWJhY2suYyBiL3Rlc3RzL2ttc193
-cml0ZWJhY2suYwo+ID4gPiBuZXcgZmlsZSBtb2RlIDEwMDY0NAo+ID4gPiBpbmRleCAwMDAwMDAw
-MC4uNjZlZjQ4YTYKPiA+ID4gLS0tIC9kZXYvbnVsbAo+ID4gPiArKysgYi90ZXN0cy9rbXNfd3Jp
-dGViYWNrLmMKPiA+ID4gQEAgLTAsMCArMSwzMTQgQEAKPiA+ID4gKy8qCj4gPiA+ICsgKiAoQykg
-Q09QWVJJR0hUIDIwMTcgQVJNIExpbWl0ZWQuIEFsbCByaWdodHMgcmVzZXJ2ZWQuCj4gPiA+ICsg
-Kgo+ID4gPiArICogUGVybWlzc2lvbiBpcyBoZXJlYnkgZ3JhbnRlZCwgZnJlZSBvZiBjaGFyZ2Us
-IHRvIGFueSBwZXJzb24gb2J0YWluaW5nIGEKPiA+ID4gKyAqIGNvcHkgb2YgdGhpcyBzb2Z0d2Fy
-ZSBhbmQgYXNzb2NpYXRlZCBkb2N1bWVudGF0aW9uIGZpbGVzICh0aGUgIlNvZnR3YXJlIiksCj4g
-PiA+ICsgKiB0byBkZWFsIGluIHRoZSBTb2Z0d2FyZSB3aXRob3V0IHJlc3RyaWN0aW9uLCBpbmNs
-dWRpbmcgd2l0aG91dCBsaW1pdGF0aW9uCj4gPiA+ICsgKiB0aGUgcmlnaHRzIHRvIHVzZSwgY29w
-eSwgbW9kaWZ5LCBtZXJnZSwgcHVibGlzaCwgZGlzdHJpYnV0ZSwgc3VibGljZW5zZSwKPiA+ID4g
-KyAqIGFuZC9vciBzZWxsIGNvcGllcyBvZiB0aGUgU29mdHdhcmUsIGFuZCB0byBwZXJtaXQgcGVy
-c29ucyB0byB3aG9tIHRoZQo+ID4gPiArICogU29mdHdhcmUgaXMgZnVybmlzaGVkIHRvIGRvIHNv
-LCBzdWJqZWN0IHRvIHRoZSBmb2xsb3dpbmcgY29uZGl0aW9uczoKPiA+ID4gKyAqCj4gPiA+ICsg
-KiBUaGUgYWJvdmUgY29weXJpZ2h0IG5vdGljZSBhbmQgdGhpcyBwZXJtaXNzaW9uIG5vdGljZSAo
-aW5jbHVkaW5nIHRoZSBuZXh0Cj4gPiA+ICsgKiBwYXJhZ3JhcGgpIHNoYWxsIGJlIGluY2x1ZGVk
-IGluIGFsbCBjb3BpZXMgb3Igc3Vic3RhbnRpYWwgcG9ydGlvbnMgb2YgdGhlCj4gPiA+ICsgKiBT
-b2Z0d2FyZS4KPiA+ID4gKyAqCj4gPiA+ICsgKiBUSEUgU09GVFdBUkUgSVMgUFJPVklERUQgIkFT
-IElTIiwgV0lUSE9VVCBXQVJSQU5UWSBPRiBBTlkgS0lORCwgRVhQUkVTUyBPUgo+ID4gPiArICog
-SU1QTElFRCwgSU5DTFVESU5HIEJVVCBOT1QgTElNSVRFRCBUTyBUSEUgV0FSUkFOVElFUyBPRiBN
-RVJDSEFOVEFCSUxJVFksCj4gPiA+ICsgKiBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9T
-RSBBTkQgTk9OSU5GUklOR0VNRU5ULiAgSU4gTk8gRVZFTlQgU0hBTEwKPiA+ID4gKyAqIFRIRSBB
-VVRIT1JTIE9SIENPUFlSSUdIVCBIT0xERVJTIEJFIExJQUJMRSBGT1IgQU5ZIENMQUlNLCBEQU1B
-R0VTIE9SIE9USEVSCj4gPiA+ICsgKiBMSUFCSUxJVFksIFdIRVRIRVIgSU4gQU4gQUNUSU9OIE9G
-IENPTlRSQUNULCBUT1JUIE9SIE9USEVSV0lTRSwgQVJJU0lORwo+ID4gPiArICogRlJPTSwgT1VU
-IE9GIE9SIElOIENPTk5FQ1RJT04gV0lUSCBUSEUgU09GVFdBUkUgT1IgVEhFIFVTRSBPUiBPVEhF
-UiBERUFMSU5HUwo+ID4gPiArICogSU4gVEhFIFNPRlRXQVJFLgo+ID4gPiArICoKPiA+ID4gKyAq
-Lwo+ID4gPiArCj4gPiA+ICsjaW5jbHVkZSA8ZXJybm8uaD4KPiA+ID4gKyNpbmNsdWRlIDxzdGRi
-b29sLmg+Cj4gPiA+ICsjaW5jbHVkZSA8c3RkaW8uaD4KPiA+ID4gKyNpbmNsdWRlIDxzdHJpbmcu
-aD4KPiA+ID4gKwo+ID4gPiArI2luY2x1ZGUgImlndC5oIgo+ID4gPiArI2luY2x1ZGUgImlndF9j
-b3JlLmgiCj4gPiA+ICsjaW5jbHVkZSAiaWd0X2ZiLmgiCj4gPiA+ICsKPiA+ID4gK3N0YXRpYyBk
-cm1Nb2RlUHJvcGVydHlCbG9iUmVzICpnZXRfd3JpdGViYWNrX2Zvcm1hdHNfYmxvYihpZ3Rfb3V0
-cHV0X3QgKm91dHB1dCkKPiA+ID4gK3sKPiA+ID4gKwlkcm1Nb2RlUHJvcGVydHlCbG9iUmVzICpi
-bG9iID0gTlVMTDsKPiA+ID4gKwl1aW50NjRfdCBibG9iX2lkOwo+ID4gPiArCWludCByZXQ7Cj4g
-PiA+ICsKPiA+ID4gKwlyZXQgPSBrbXN0ZXN0X2dldF9wcm9wZXJ0eShvdXRwdXQtPmRpc3BsYXkt
-PmRybV9mZCwKPiA+ID4gKwkJCQkgICBvdXRwdXQtPmNvbmZpZy5jb25uZWN0b3ItPmNvbm5lY3Rv
-cl9pZCwKPiA+ID4gKwkJCQkgICBEUk1fTU9ERV9PQkpFQ1RfQ09OTkVDVE9SLAo+ID4gPiArCQkJ
-CSAgIGlndF9jb25uZWN0b3JfcHJvcF9uYW1lc1tJR1RfQ09OTkVDVE9SX1dSSVRFQkFDS19QSVhF
-TF9GT1JNQVRTXSwKPiA+ID4gKwkJCQkgICBOVUxMLCAmYmxvYl9pZCwgTlVMTCk7Cj4gPiA+ICsJ
-aWYgKHJldCkKPiA+ID4gKwkJYmxvYiA9IGRybU1vZGVHZXRQcm9wZXJ0eUJsb2Iob3V0cHV0LT5k
-aXNwbGF5LT5kcm1fZmQsIGJsb2JfaWQpOwo+ID4gPiArCj4gPiA+ICsJaWd0X2Fzc2VydChibG9i
-KTsKPiA+ID4gKwo+ID4gPiArCXJldHVybiBibG9iOwo+ID4gPiArfQo+ID4gPiArCj4gPiA+ICtz
-dGF0aWMgYm9vbCBjaGVja193cml0ZWJhY2tfY29uZmlnKGlndF9kaXNwbGF5X3QgKmRpc3BsYXks
-IGlndF9vdXRwdXRfdCAqb3V0cHV0KQo+ID4gPiArewo+ID4gPiArCWlndF9mYl90IGlucHV0X2Zi
-LCBvdXRwdXRfZmI7Cj4gPiA+ICsJaWd0X3BsYW5lX3QgKnBsYW5lOwo+ID4gPiArCXVpbnQzMl90
-IHdyaXRlYmFja19mb3JtYXQgPSBEUk1fRk9STUFUX1hSR0I4ODg4Owo+ID4gPiArCXVpbnQ2NF90
-IHRpbGluZyA9IGlndF9mYl9tb2RfdG9fdGlsaW5nKDApOwo+ID4gPiArCWludCB3aWR0aCwgaGVp
-Z2h0LCByZXQ7Cj4gPiA+ICsJZHJtTW9kZU1vZGVJbmZvIG92ZXJyaWRlX21vZGUgPSB7Cj4gPiA+
-ICsJCS5jbG9jayA9IDI1MTc1LAo+ID4gPiArCQkuaGRpc3BsYXkgPSA2NDAsCj4gPiA+ICsJCS5o
-c3luY19zdGFydCA9IDY1NiwKPiA+ID4gKwkJLmhzeW5jX2VuZCA9IDc1MiwKPiA+ID4gKwkJLmh0
-b3RhbCA9IDgwMCwKPiA+ID4gKwkJLmhza2V3ID0gMCwKPiA+ID4gKwkJLnZkaXNwbGF5ID0gNDgw
-LAo+ID4gPiArCQkudnN5bmNfc3RhcnQgPSA0OTAsCj4gPiA+ICsJCS52c3luY19lbmQgPSA0OTIs
-Cj4gPiA+ICsJCS52dG90YWwgPSA1MjUsCj4gPiA+ICsJCS52c2NhbiA9IDAsCj4gPiA+ICsJCS52
-cmVmcmVzaCA9IDYwLAo+ID4gPiArCQkuZmxhZ3MgPSBEUk1fTU9ERV9GTEFHX05IU1lOQyB8IERS
-TV9NT0RFX0ZMQUdfTlZTWU5DLAo+ID4gPiArCQkubmFtZSA9IHsiNjQweDQ4MC02MCJ9LAo+ID4g
-PiArCX07Cj4gPiA+ICsJaWd0X291dHB1dF9vdmVycmlkZV9tb2RlKG91dHB1dCwgJm92ZXJyaWRl
-X21vZGUpOwo+ID4gPiArCj4gPiA+ICsJd2lkdGggPSBvdmVycmlkZV9tb2RlLmhkaXNwbGF5Owo+
-ID4gPiArCWhlaWdodCA9IG92ZXJyaWRlX21vZGUudmRpc3BsYXk7Cj4gPiA+ICsKPiA+ID4gKwly
-ZXQgPSBpZ3RfY3JlYXRlX2ZiKGRpc3BsYXktPmRybV9mZCwgd2lkdGgsIGhlaWdodCwgRFJNX0ZP
-Uk1BVF9YUkdCODg4OCwgdGlsaW5nLCAmaW5wdXRfZmIpOwo+ID4gPiArCWlndF9hc3NlcnQocmV0
-ID49IDApOwo+ID4gPiArCj4gPiA+ICsJcmV0ID0gaWd0X2NyZWF0ZV9mYihkaXNwbGF5LT5kcm1f
-ZmQsIHdpZHRoLCBoZWlnaHQsIHdyaXRlYmFja19mb3JtYXQsIHRpbGluZywgJm91dHB1dF9mYik7
-Cj4gPiA+ICsJaWd0X2Fzc2VydChyZXQgPj0gMCk7Cj4gPiA+ICsKPiA+ID4gKwlwbGFuZSA9IGln
-dF9vdXRwdXRfZ2V0X3BsYW5lX3R5cGUob3V0cHV0LCBEUk1fUExBTkVfVFlQRV9QUklNQVJZKTsK
-PiA+ID4gKwlpZ3RfcGxhbmVfc2V0X2ZiKHBsYW5lLCAmaW5wdXRfZmIpOwo+ID4gPiArCWlndF9v
-dXRwdXRfc2V0X3dyaXRlYmFja19mYihvdXRwdXQsICZvdXRwdXRfZmIpOwo+ID4gPiArCj4gPiA+
-ICsJcmV0ID0gaWd0X2Rpc3BsYXlfdHJ5X2NvbW1pdF9hdG9taWMoZGlzcGxheSwgRFJNX01PREVf
-QVRPTUlDX1RFU1RfT05MWSB8Cj4gPiA+ICsJCQkJCSAgICBEUk1fTU9ERV9BVE9NSUNfQUxMT1df
-TU9ERVNFVCwgTlVMTCk7Cj4gPiAKPiA+IE9rYXksIHdlJ3JlIHVzaW5nIGF0b21pYyB0ZXN0LW9u
-bHkgbW9kZSB0byBrbm93IGlmIHdlIGNhbiBwZXJmb3JtIHRlc3RzCj4gPiB3aXRoIHRoZSB3cml0
-ZWJhY2sgb3V0cHV0LiBJdCdzIHByb2JhYmx5IGZpbmUsIGJ1dCB3ZSBkb24ndCB1c2UKPiA+IFdS
-SVRFQkFDS19QSVhFTF9GT1JNQVRTLCB3aGljaCBtYWtlcyBtZSBhIGxpdHRsZSBiaXQgc2FkLgo+
-IAo+IFNvcnJ5LCBJIGRpZCBub3QgZnVsbHkgdW5kZXJzdGFuZCBwYXJ0LiBEaWQgeW91IGV4cGVj
-dCB0byBzZWUgc29tZXRoaW5nCj4gbGlrZSB0aGUgYmVsb3cgY29kZSBiZWZvcmUgaWd0X2Rpc3Bs
-YXlfdHJ5X2NvbW1pdF9hdG9taWMoKT8KPiAKPiAgaWd0X291dHB1dF9zZXRfcHJvcF92YWx1ZShv
-dXRwdXQsIFdSSVRFQkFDS19QSVhFTF9GT1JNQVRTLAo+ICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIERSTV9GT1JNQVRfWFJHQjg4ODgpOwo+IAo+ID4gPiArCWlndF9wbGFuZV9zZXRfZmIocGxh
-bmUsIE5VTEwpOwo+ID4gPiArCWlndF9yZW1vdmVfZmIoZGlzcGxheS0+ZHJtX2ZkLCAmaW5wdXRf
-ZmIpOwo+ID4gPiArCWlndF9yZW1vdmVfZmIoZGlzcGxheS0+ZHJtX2ZkLCAmb3V0cHV0X2ZiKTsK
-PiA+ID4gKwo+ID4gPiArCXJldHVybiAhcmV0Owo+ID4gPiArfQo+ID4gPiArCj4gPiA+ICtzdGF0
-aWMgaWd0X291dHB1dF90ICprbXNfd3JpdGViYWNrX2dldF9vdXRwdXQoaWd0X2Rpc3BsYXlfdCAq
-ZGlzcGxheSkKPiA+ID4gK3sKPiA+ID4gKwlpbnQgaTsKPiA+ID4gKwo+ID4gPiArCWZvciAoaSA9
-IDA7IGkgPCBkaXNwbGF5LT5uX291dHB1dHM7IGkrKykgewo+ID4gPiArCQlpZ3Rfb3V0cHV0X3Qg
-Km91dHB1dCA9ICZkaXNwbGF5LT5vdXRwdXRzW2ldOwo+ID4gPiArCQlpbnQgajsKPiA+ID4gKwo+
-ID4gPiArCQlpZiAob3V0cHV0LT5jb25maWcuY29ubmVjdG9yLT5jb25uZWN0b3JfdHlwZSAhPSBE
-Uk1fTU9ERV9DT05ORUNUT1JfV1JJVEVCQUNLKQo+ID4gPiArCQkJY29udGludWU7Cj4gPiA+ICsK
-PiA+ID4gKwkJa21zdGVzdF9mb3JjZV9jb25uZWN0b3IoZGlzcGxheS0+ZHJtX2ZkLCBvdXRwdXQt
-PmNvbmZpZy5jb25uZWN0b3IsIEZPUkNFX0NPTk5FQ1RPUl9PTik7Cj4gPiAKPiA+IEhtbS4gSXMg
-dGhpcyByZWFsbHkgbmVjZXNzYXJ5PyAiUmVhbCIgdXNlcnNwYWNlIHdvbid0IGRvIHRoaXMsIHNv
-IEkKPiA+IGRvbid0IHRoaW5rIHdlIG5lZWQgdG8gZWl0aGVyLgo+IAo+IEhtbW0sIEkgaGF2ZSBh
-IGxpdHRsZSBleHBlcmllbmNlIHdpdGggdXNlcnNwYWNlOyBob3dldmVyLCBJIHRlc3RlZAo+IGtt
-c193cml0ZWJhY2sgb24gdG9wIG9mIHZrbXMgd2l0aG91dCB0aGlzIGxpbmUsIGFuZCBldmVyeXRo
-aW5nIHdvcmtlZAo+IHdlbGwuIElmIEkgcmVtb3ZlIHRoaXMgbGluZSwgc2hvdWxkIEkgYWxzbyBk
-cm9wIHRoZSBsaW5lIHRoYXQgZm9yY2UKPiBjb25uZWN0b3IgdG8gRk9SQ0VfQ09OTkVDVE9SX1VO
-U1BFQ0lGSUVEPwo+IAo+IEFub3RoZXIgcXVlc3Rpb24sIGlmIEZPUkNFX0NPTk5FQ1RPUl9PTiBp
-cyBzb21ldGhpbmcgdGhhdCB1c2Vyc3BhY2UKPiB3b24ndCB3YW50IHRvIGRvLCB3aHkgZG8gd2Ug
-aGF2ZSBpdD8KClRoaXMgaXMgcHJvYmFibHkgYSBsZWZ0LW92ZXIgZnJvbSB0aGUgdGltZXMgd2hl
-biB0aGUgZGVzaWduIG9mIHRoZSB3cml0ZWJhY2sKY29ubmVjdG9ycyBjYWxsZWQgZm9yIHRoZW0g
-dG8gYmUgYWx3YXlzIGRpc2Nvbm5lY3RlZCwgaW4gb3JkZXIgbm90IHRvIHRyaXAgb2xkCnVzZXJz
-cGFjZS4gTGFzdCBpdGVyYXRpb24gYmVmb3JlIHVwc3RyZWFtaW5nIHRoZSB3cml0ZWJhY2sgaW50
-byBEUk0gd2Ugc3dpdGNoZWQKdG8gYW4gZWFybGllciBkZXNpZ24gd2hlcmUgRFJNX0NMSUVOVF9D
-QVBfV1JJVEVCQUNLX0NPTk5FQ1RPUlMgaXMgbmVlZGVkIGluIG9yZGVyCnRvIGV4cG9zZSB0aGUg
-d3JpdGViYWNrIGNvbm5lY3RvciwgYW5kIHRoZW4gaXQgaXMgcmVwb3J0ZWQgYXMgY29ubmVjdGVk
-LiBZb3UKY2FuIGRyb3AgdGhpcyBmcm9tIHRoZSBwYXRjaC4KCj4gIAo+ID4gPiArCQlmb3IgKGog
-PSAwOyBqIDwgaWd0X2Rpc3BsYXlfZ2V0X25fcGlwZXMoZGlzcGxheSk7IGorKykgewo+ID4gPiAr
-CQkJaWd0X291dHB1dF9zZXRfcGlwZShvdXRwdXQsIGopOwo+ID4gPiArCj4gPiA+ICsJCQlpZiAo
-Y2hlY2tfd3JpdGViYWNrX2NvbmZpZyhkaXNwbGF5LCBvdXRwdXQpKSB7Cj4gPiA+ICsJCQkJaWd0
-X2RlYnVnKCJVc2luZyBjb25uZWN0b3IgJXU6JXMgb24gcGlwZSAlZFxuIiwKPiA+ID4gKwkJCQkJ
-ICBvdXRwdXQtPmNvbmZpZy5jb25uZWN0b3ItPmNvbm5lY3Rvcl9pZCwKPiA+ID4gKwkJCQkJICBv
-dXRwdXQtPm5hbWUsIGopOwo+ID4gPiArCQkJCXJldHVybiBvdXRwdXQ7Cj4gPiA+ICsJCQl9Cj4g
-PiAKPiA+IFdlIGNvdWxkIHByb2JhYmx5IGFkZCBhbiBpZ3RfZGVidWcgc3RhdGVtZW50IGluIGNh
-c2Ugd2UgZG9uJ3QgdXNlIHRoaXMKPiA+IHdyaXRlYmFjayBvdXRwdXQuCj4gPiAKPiA+ID4gKwkJ
-fQo+ID4gPiArCj4gPiA+ICsJCS8qIFJlc3RvcmUgYW55IGNvbm5lY3RvcnMgd2UgZG9uJ3QgdXNl
-LCBzbyB3ZSBkb24ndCB0cmlwIG9uIHRoZW0gbGF0ZXIgKi8KPiA+ID4gKwkJa21zdGVzdF9mb3Jj
-ZV9jb25uZWN0b3IoZGlzcGxheS0+ZHJtX2ZkLCBvdXRwdXQtPmNvbmZpZy5jb25uZWN0b3IsIEZP
-UkNFX0NPTk5FQ1RPUl9VTlNQRUNJRklFRCk7Cj4gPiA+ICsJfQo+ID4gPiArCj4gPiA+ICsJcmV0
-dXJuIE5VTEw7Cj4gPiA+ICt9Cj4gPiA+ICsKPiA+ID4gK3N0YXRpYyB2b2lkIGNoZWNrX3dyaXRl
-YmFja19mYl9pZChpZ3Rfb3V0cHV0X3QgKm91dHB1dCkKPiA+ID4gK3sKPiA+ID4gKwl1aW50NjRf
-dCBjaGVja19mYl9pZDsKPiA+ID4gKwo+ID4gPiArCWNoZWNrX2ZiX2lkID0gaWd0X291dHB1dF9n
-ZXRfcHJvcChvdXRwdXQsIElHVF9DT05ORUNUT1JfV1JJVEVCQUNLX0ZCX0lEKTsKPiA+ID4gKwlp
-Z3RfYXNzZXJ0KGNoZWNrX2ZiX2lkID09IDApOwo+ID4gPiArfQo+ID4gPiArCj4gPiA+ICtzdGF0
-aWMgaW50IGRvX3dyaXRlYmFja190ZXN0KGlndF9vdXRwdXRfdCAqb3V0cHV0LCB1aW50MzJfdCBm
-bGFncywKPiA+ID4gKwkJCSAgICAgIHVpbnQzMl90IGZiX2lkLCBpbnQzMl90ICpvdXRfZmVuY2Vf
-cHRyLAo+ID4gPiArCQkJICAgICAgYm9vbCBwdHJfdmFsaWQpCj4gPiAKPiA+IGZsYWdzIHNlZW1z
-IHRvIGFsd2F5cyBiZSBzZXQgdG8gRFJNX01PREVfQVRPTUlDX0FMTE9XX01PREVTRVQuIFdlIGNh
-bgo+ID4gcHJvYmFibHkgcmVtb3ZlIHRoZSBwYXJhbWV0ZXIgZnJvbSB0aGlzIGZ1bmN0aW9uLgo+
-ID4gCj4gPiA+ICt7Cj4gPiA+ICsJaW50IHJldDsKPiA+ID4gKwlpZ3RfZGlzcGxheV90ICpkaXNw
-bGF5ID0gb3V0cHV0LT5kaXNwbGF5Owo+ID4gPiArCXN0cnVjdCBrbXN0ZXN0X2Nvbm5lY3Rvcl9j
-b25maWcgKmNvbmZpZyA9ICZvdXRwdXQtPmNvbmZpZzsKPiA+ID4gKwo+ID4gPiArCWlndF9vdXRw
-dXRfc2V0X3Byb3BfdmFsdWUob3V0cHV0LCBJR1RfQ09OTkVDVE9SX0NSVENfSUQsIGNvbmZpZy0+
-Y3J0Yy0+Y3J0Y19pZCk7Cj4gPiA+ICsJaWd0X291dHB1dF9zZXRfcHJvcF92YWx1ZShvdXRwdXQs
-IElHVF9DT05ORUNUT1JfV1JJVEVCQUNLX0ZCX0lELCBmYl9pZCk7Cj4gPiA+ICsJaWd0X291dHB1
-dF9zZXRfcHJvcF92YWx1ZShvdXRwdXQsIElHVF9DT05ORUNUT1JfV1JJVEVCQUNLX09VVF9GRU5D
-RV9QVFIsICh1aW50NjRfdClvdXRfZmVuY2VfcHRyKTsKPiA+ID4gKwo+ID4gPiArCWlmIChwdHJf
-dmFsaWQpCj4gPiA+ICsJCSpvdXRfZmVuY2VfcHRyID0gMDsKPiA+ID4gKwo+ID4gPiArCXJldCA9
-IGlndF9kaXNwbGF5X3RyeV9jb21taXRfYXRvbWljKGRpc3BsYXksIGZsYWdzLCBOVUxMKTsKPiA+
-ID4gKwo+ID4gPiArCWlmIChwdHJfdmFsaWQpCj4gPiA+ICsJCWlndF9hc3NlcnQoKm91dF9mZW5j
-ZV9wdHIgPT0gLTEpOwo+ID4gCj4gPiBJJ20gY29uZnVzZWQuIFdoeSBzaG91bGQgdGhpcyBiZSAt
-MSBldmVuIGlmIHdlCj4gPiBpZ3RfZGlzcGxheV90cnlfY29tbWl0X2F0b21pYyBzdWNjZWVkcz8K
-PiAKPiBJIGluc3BlY3RlZCB0aGUgZHJtX21vZGVfYXRvbWljX2lvY3RsKCkgZnVuY3Rpb24gYW5k
-IEkgbm90aWNlZCB0aGF0IEl0Cj4gY2FsbHMgY29tcGxldGVfc2lnbmFsaW5nKCkgaW4gaXRzIHR1
-cm4gdGhpcyBmdW5jdGlvbiBhc3NpZ24gLTEgdG8KPiBvdXRfZmVuY2VfcHRyLiBTaW5jZSBhbGwg
-b2YgdGhpcyBoYXBwZW5zIGF0IHRoZSBlbmQgb2YgYXRvbWljX2NvbW1pdCwgSQo+IGJlbGlldmUg
-dGhhdCB3ZSBkb27igJl0IG5lZWQgaXQuIEkgYWxyZWFkeSByZW1vdmVkIGl0LgoKWWVhaCwgSSB0
-aGluayB0aGUgcmVhc29ucyBmb3IgdGhhdCBoYXZlIGJlZW4gbG9zdCBpbnRvIHRoZSBtaXN0IG9m
-IHRpbWUuCgo+ICAKPiA+ID4gKwkvKiBXUklURUJBQ0tfRkJfSUQgbXVzdCBhbHdheXMgcmVhZCBh
-cyB6ZXJvICovCj4gPiA+ICsJY2hlY2tfd3JpdGViYWNrX2ZiX2lkKG91dHB1dCk7Cj4gPiA+ICsK
-PiA+ID4gKwlyZXR1cm4gcmV0Owo+ID4gPiArfQo+ID4gPiArCj4gPiA+ICtzdGF0aWMgdm9pZCBp
-bnZhbGlkX291dF9mZW5jZShpZ3Rfb3V0cHV0X3QgKm91dHB1dCwgaWd0X2ZiX3QgKnZhbGlkX2Zi
-LCBpZ3RfZmJfdCAqaW52YWxpZF9mYikKPiA+ID4gK3sKPiA+ID4gKwlpbnQgaSwgcmV0Owo+ID4g
-PiArCWludDMyX3Qgb3V0X2ZlbmNlOwo+ID4gPiArCXN0cnVjdCB7Cj4gPiA+ICsJCXVpbnQzMl90
-IGZiX2lkOwo+ID4gPiArCQlib29sIHB0cl92YWxpZDsKPiA+ID4gKwkJaW50MzJfdCAqb3V0X2Zl
-bmNlX3B0cjsKPiA+ID4gKwl9IGludmFsaWRfdGVzdHNbXSA9IHsKPiA+ID4gKwkJewo+ID4gPiAr
-CQkJLyogTm8gb3V0cHV0IGJ1ZmZlciwgYnV0IHRoZSBXUklURUJBQ0tfT1VUX0ZFTkNFX1BUUiBz
-ZXQuICovCj4gPiA+ICsJCQkuZmJfaWQgPSAwLAo+ID4gPiArCQkJLnB0cl92YWxpZCA9IHRydWUs
-Cj4gPiA+ICsJCQkub3V0X2ZlbmNlX3B0ciA9ICZvdXRfZmVuY2UsCj4gPiA+ICsJCX0sCj4gPiA+
-ICsJCXsKPiA+ID4gKwkJCS8qIEludmFsaWQgb3V0cHV0IGJ1ZmZlci4gKi8KPiA+ID4gKwkJCS5m
-Yl9pZCA9IGludmFsaWRfZmItPmZiX2lkLAo+ID4gPiArCQkJLnB0cl92YWxpZCA9IHRydWUsCj4g
-PiA+ICsJCQkub3V0X2ZlbmNlX3B0ciA9ICZvdXRfZmVuY2UsCj4gPiA+ICsJCX0sCj4gPiAKPiA+
-IFRoaXMgZG9lc24ndCBiZWxvbmcgaW4gdGhpcyBmdW5jdGlvbiAoaW52YWxpZF9vdXRfZmVuY2Up
-LCBzaW5jZSB0aGlzCj4gPiBjaGVja3MgYW4gaW52YWxpZCBmcmFtZWJ1ZmZlciwgbm90IGFuIGlu
-dmFsaWQgZmVuY2UuIFdlIHNob3VsZCBwcm9iYWJseQo+ID4gbW92ZSBpdCB0byB3cml0ZWJhY2tf
-ZmJfaWQgKGFuZCByZW5hbWUgdGhhdCBmdW5jdGlvbiB0byB0ZXN0X2ZiPykuCgpJdCB0cmllcyB0
-byB0ZXN0IHRoYXQgeW91IGNhbid0IHRyaWNrIHRoZSBkcml2ZXIgdG8gZG8gYW55IHdvcmsgb24g
-YSBmZW5jZSBpZgp0aGUgZnJhbWVidWZmZXIgaXMgaW52YWxpZCwgc28gdGhlIHNldCBvZiB0ZXN0
-cyB0cmllczogbm8gZmIgd2l0aCB2YWxpZCBmZW5jZSwKaW52YWxpZCBmYiB3aXRoIHZhbGlkIGZl
-bmNlLCB2YWxpZCBmYiBidXQgaW52YWxpZCBmZW5jZSBhbmQgYXNzdW1lcyB0aGF0IG5vCmZiIHdp
-dGggaW52YWxpZCBmZW5jZSBpcyBhIE5PUCBhbnl3YXkuCgo+ID4gCj4gPiA+ICsJCXsKPiA+ID4g
-KwkJCS8qIEludmFsaWQgV1JJVEVCQUNLX09VVF9GRU5DRV9QVFIuICovCj4gPiA+ICsJCQkuZmJf
-aWQgPSB2YWxpZF9mYi0+ZmJfaWQsCj4gPiA+ICsJCQkucHRyX3ZhbGlkID0gZmFsc2UsCj4gPiA+
-ICsJCQkub3V0X2ZlbmNlX3B0ciA9IChpbnQzMl90ICopMHg4LAo+ID4gPiArCQl9LAo+ID4gPiAr
-CX07Cj4gPiA+ICsKPiA+ID4gKwlmb3IgKGkgPSAwOyBpIDwgQVJSQVlfU0laRShpbnZhbGlkX3Rl
-c3RzKTsgaSsrKSB7Cj4gPiA+ICsJCXJldCA9IGRvX3dyaXRlYmFja190ZXN0KG91dHB1dCwgRFJN
-X01PREVfQVRPTUlDX0FMTE9XX01PREVTRVQsCj4gPiA+ICsJCQkJCWludmFsaWRfdGVzdHNbaV0u
-ZmJfaWQsCj4gPiA+ICsJCQkJCWludmFsaWRfdGVzdHNbaV0ub3V0X2ZlbmNlX3B0ciwKPiA+ID4g
-KwkJCQkJaW52YWxpZF90ZXN0c1tpXS5wdHJfdmFsaWQpOwo+ID4gPiArCQlpZ3RfYXNzZXJ0KHJl
-dCAhPSAwKTsKPiA+IAo+ID4gTWF5YmUgd2UgY2FuIGNoZWNrIGZvciAtcmV0ID09IEVJTlZBTD8K
-PiA+IAo+ID4gPiArCX0KPiA+ID4gK30KPiA+ID4gKwo+ID4gPiArc3RhdGljIHZvaWQgd3JpdGVi
-YWNrX2ZiX2lkKGlndF9vdXRwdXRfdCAqb3V0cHV0LCBpZ3RfZmJfdCAqdmFsaWRfZmIsIGlndF9m
-Yl90ICppbnZhbGlkX2ZiKQo+ID4gCj4gPiBpbnZhbGlkX2ZiIGRvZXNuJ3Qgc2VlbSB0byBiZSB1
-c2VkIGhlcmUuIHZhbGlkX2ZiIHNlZW1zIHRvIGJlIHNldCB0bwo+ID4gdGhlIGlucHV0IGZyYW1l
-YnVmZmVyLiBJdCdzIHByb2JhYmx5IG5vdCBhIGdvb2QgaWRlYSB0byB1c2UgdGhlIHNhbWUgRkIK
-PiA+IGZvciBpbnB1dCBhbmQgd3JpdGViYWNrIG91dHB1dC4KPiA+IAo+ID4gPiArewo+ID4gPiAr
-Cj4gPiA+ICsJaW50IHJldDsKPiA+ID4gKwo+ID4gPiArCS8qIFZhbGlkIG91dHB1dCBidWZmZXIg
-Ki8KPiA+ID4gKwlyZXQgPSBkb193cml0ZWJhY2tfdGVzdChvdXRwdXQsIERSTV9NT0RFX0FUT01J
-Q19BTExPV19NT0RFU0VULAo+ID4gPiArCQkJCXZhbGlkX2ZiLT5mYl9pZCwgTlVMTCwgZmFsc2Up
-Owo+ID4gPiArCWlndF9hc3NlcnQocmV0ID09IDApOwo+ID4gPiArCj4gPiA+ICsJLyogSW52YWxp
-ZCBvYmplY3QgZm9yIFdSSVRFQkFDS19GQl9JRCAqLwo+ID4gPiArCXJldCA9IGRvX3dyaXRlYmFj
-a190ZXN0KG91dHB1dCwgRFJNX01PREVfQVRPTUlDX0FMTE9XX01PREVTRVQsCj4gPiA+ICsJCQkJ
-b3V0cHV0LT5pZCwgTlVMTCwgZmFsc2UpOwo+ID4gPiArCWlndF9hc3NlcnQocmV0ID09IC1FSU5W
-QUwpOwo+ID4gPiArCj4gPiA+ICsJLyogWmVybyBXUklURUJBQ0tfRkJfSUQgKi8KPiA+ID4gKwly
-ZXQgPSBkb193cml0ZWJhY2tfdGVzdChvdXRwdXQsIERSTV9NT0RFX0FUT01JQ19BTExPV19NT0RF
-U0VULAo+ID4gPiArCQkJCTAsIE5VTEwsIGZhbHNlKTsKPiA+ID4gKwlpZ3RfYXNzZXJ0KHJldCA9
-PSAwKTsKPiA+ID4gK30KPiA+ID4gKwo+ID4gPiAraWd0X21haW4KPiA+ID4gK3sKPiA+ID4gKwlp
-Z3RfZGlzcGxheV90IGRpc3BsYXk7Cj4gPiA+ICsJaWd0X291dHB1dF90ICpvdXRwdXQ7Cj4gPiA+
-ICsJaWd0X3BsYW5lX3QgKnBsYW5lOwo+ID4gPiArCWlndF9mYl90IGlucHV0X2ZiOwo+ID4gPiAr
-CWRybU1vZGVNb2RlSW5mbyBtb2RlOwo+ID4gPiArCWludCByZXQ7Cj4gPiA+ICsKPiA+ID4gKwlt
-ZW1zZXQoJmRpc3BsYXksIDAsIHNpemVvZihkaXNwbGF5KSk7Cj4gPiA+ICsKPiA+ID4gKwlpZ3Rf
-Zml4dHVyZSB7Cj4gPiA+ICsJCWRpc3BsYXkuZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyX21hc3Rl
-cihEUklWRVJfQU5ZKTsKPiA+ID4gKwkJaWd0X2Rpc3BsYXlfcmVxdWlyZSgmZGlzcGxheSwgZGlz
-cGxheS5kcm1fZmQpOwo+ID4gPiArCj4gPiA+ICsJCWttc3Rlc3Rfc2V0X3Z0X2dyYXBoaWNzX21v
-ZGUoKTsKPiA+ID4gKwo+ID4gPiArCQlpZ3RfZGlzcGxheV9yZXF1aXJlKCZkaXNwbGF5LCBkaXNw
-bGF5LmRybV9mZCk7Cj4gPiA+ICsKPiA+ID4gKwkJaWd0X3JlcXVpcmUoZGlzcGxheS5pc19hdG9t
-aWMpOwo+ID4gPiArCj4gPiA+ICsJCW91dHB1dCA9IGttc193cml0ZWJhY2tfZ2V0X291dHB1dCgm
-ZGlzcGxheSk7Cj4gPiA+ICsJCWlndF9yZXF1aXJlKG91dHB1dCk7Cj4gPiA+ICsKPiA+ID4gKwkJ
-aWYgKG91dHB1dC0+dXNlX292ZXJyaWRlX21vZGUpCj4gPiA+ICsJCQltZW1jcHkoJm1vZGUsICZv
-dXRwdXQtPm92ZXJyaWRlX21vZGUsIHNpemVvZihtb2RlKSk7Cj4gPiA+ICsJCWVsc2UKPiA+ID4g
-KwkJCW1lbWNweSgmbW9kZSwgJm91dHB1dC0+Y29uZmlnLmRlZmF1bHRfbW9kZSwgc2l6ZW9mKG1v
-ZGUpKTsKPiA+ID4gKwo+ID4gPiArCQlwbGFuZSA9IGlndF9vdXRwdXRfZ2V0X3BsYW5lX3R5cGUo
-b3V0cHV0LCBEUk1fUExBTkVfVFlQRV9QUklNQVJZKTsKPiA+ID4gKwkJaWd0X3JlcXVpcmUocGxh
-bmUpOwo+ID4gCj4gPiBNYXliZSB3ZSBjYW4gYXNzZXJ0IG9uIHRoaXM/Cj4gPiAKPiA+ID4gKwkJ
-cmV0ID0gaWd0X2NyZWF0ZV9mYihkaXNwbGF5LmRybV9mZCwgbW9kZS5oZGlzcGxheSwKPiA+ID4g
-KwkJCQkgICAgbW9kZS52ZGlzcGxheSwKPiA+ID4gKwkJCQkgICAgRFJNX0ZPUk1BVF9YUkdCODg4
-OCwKPiA+ID4gKwkJCQkgICAgaWd0X2ZiX21vZF90b190aWxpbmcoMCksCj4gPiAKPiA+IFRoaXMg
-aXMgc3VwcG9zZWQgdG8gdGFrZSBhIG1vZGlmaWVyLiBEUk1fRk9STUFUX01PRF9MSU5FQVIgd291
-bGQgYmUKPiA+IGJldHRlciB0byBtYWtlIHRoaXMgY2xlYXIuCgpBZ3JlZS4gVGhlIHBhdGNoc2V0
-IHByZS1kYXRlcyB0aGUgbW9kaWZpZXJzIHN1cHBvcnQgKG9yIGhhcyB0aGUgc2FtZSBhZ2UsIEkK
-Zm9yZ290KQoKPiA+IAo+ID4gKEFwcGxpZXMgdG8gb3RoZXIgbGluZXMgb2YgdGhpcyBwYXRjaCkK
-PiA+IAo+ID4gPiArCQkJCSAgICAmaW5wdXRfZmIpOwo+ID4gPiArCQlpZ3RfYXNzZXJ0KHJldCA+
-PSAwKTsKPiA+ID4gKwkJaWd0X3BsYW5lX3NldF9mYihwbGFuZSwgJmlucHV0X2ZiKTsKPiA+ID4g
-Kwl9Cj4gPiA+ICsKPiA+ID4gKwlpZ3Rfc3VidGVzdCgid3JpdGViYWNrLXBpeGVsLWZvcm1hdHMi
-KSB7Cj4gPiA+ICsJCWRybU1vZGVQcm9wZXJ0eUJsb2JSZXMgKmZvcm1hdHNfYmxvYiA9IGdldF93
-cml0ZWJhY2tfZm9ybWF0c19ibG9iKG91dHB1dCk7Cj4gPiAKPiA+IE5lZWQgdG8gZHJtTW9kZUZy
-ZWVQcm9wZXJ0eUJsb2IgdGhpcy4KPiA+IAo+ID4gPiArCQljb25zdCBjaGFyICp2YWxpZF9jaGFy
-cyA9ICIwMTIzNDU2IEFCQ0dOUlVWWFkiOwo+ID4gPiArCQl1bnNpZ25lZCBpbnQgaTsKPiA+ID4g
-KwkJY2hhciAqYzsKPiA+ID4gKwo+ID4gPiArCQkvKgo+ID4gPiArCQkgKiBXZSBkb24ndCBoYXZl
-IGEgY29tcHJlaGVuc2l2ZSBsaXN0IG9mIGZvcm1hdHMsIHNvIGp1c3QgY2hlY2sKPiA+ID4gKwkJ
-ICogdGhhdCB0aGUgYmxvYiBsZW5ndGggaXMgc2Vuc2libGUgYW5kIHRoYXQgaXQgZG9lc24ndCBj
-b250YWluCj4gPiA+ICsJCSAqIGFueSBvdXRsYW5kaXNoIGNoYXJhY3RlcnMKPiA+ID4gKwkJICov
-Cj4gPiA+ICsJCWlndF9hc3NlcnQoIShmb3JtYXRzX2Jsb2ItPmxlbmd0aCAlIDQpKTsKPiA+ID4g
-KwkJYyA9IGZvcm1hdHNfYmxvYi0+ZGF0YTsKPiA+ID4gKwkJZm9yIChpID0gMDsgaSA8IGZvcm1h
-dHNfYmxvYi0+bGVuZ3RoOyBpKyspCj4gPiA+ICsJCQlpZ3RfYXNzZXJ0X2Yoc3RyY2hyKHZhbGlk
-X2NoYXJzLCBjW2ldKSwKPiA+ID4gKwkJCQkgICAgICJVbmV4cGVjdGVkIGNoYXJhY3RlciAlY1xu
-IiwgY1tpXSk7Cj4gPiAKPiA+IEhvbmVzdGx5LCBJJ20gbm90IGEgZmFuIG9mIHRoaXMgY2hlY2su
-IFRoZXJlJ3Mgbm8gZ3VhcmFudGVlIHRoYXQgZm91cmNjCj4gPiBjb2RlcyB3aWxsIGJlIG1hZGUg
-ZnJvbSBBU0NJSSBjaGFyYWN0ZXJzLCBpbiBmYWN0IHNvbWUgZm9ybWF0cyBhbHJlYWR5Cj4gPiBo
-YXZlIG5vbi1wcmludGFibGUgY2hhcnMgaW4gdGhlbS4gSSBkb24ndCB3YW50IHRvIGhhdmUgdG8g
-dXBkYXRlIHRoaXMKPiA+IHRlc3Qgd2hlbiBhIG5ldyBmb3VyY2MgZm9ybWF0IGlzIGFkZGVkLgoK
-TGlrZSB0aGUgY29tbWVudHMgc2F5cywgd2UgZG9uJ3QgaGF2ZSBhIGZ1bGwgbGlzdCBvZiBmb3Jt
-YXRzIHRvIGNoZWNrIGFnYWluc3QuClN1Z2dlc3Rpb25zIG9uIGhvdyB0byBpbXByb3ZlIGFyZSB3
-ZWxjb21lLCBidXQgSSBkb24ndCB0aGluayB3ZSBzaG91bGQgZGVsYXkKKGFueSBsb25nZXIpIHRo
-ZSBwYXRjaHNldCBkdWUgdG8gdGhpcy4KCkJlc3QgcmVnYXJkcywKTGl2aXUKCj4gPiAKPiA+IFdl
-IGN1cnJlbnRseSBkb24ndCBoYXZlIGEgdGVzdCBmb3IgSU5fRk9STUFUUy4gSWYgd2UgcmVhbGx5
-IHdhbnQgdG8KPiA+IGNoZWNrIGZvcm1hdHMsIHdlIGNvdWxkIGhhdmUgYSBiaWcgYXJyYXkgb2Yg
-a25vd24gZm9ybWF0cyBhbmQgYWRkIGEKPiA+IGJvb2wgaXNfdmFsaWRfZm9ybWF0KHVpbnQzMl90
-IGZtdCkgZnVuY3Rpb24uCj4gCj4gQWdyZWUgd2l0aCB5b3UuIEhvdyBhYm91dCByZW1vdmUgdGhp
-cyB0ZXN0Pwo+IAo+IFRoYW5rcwo+IEJlc3QgUmVnYXJkcwo+IAo+ID4gPiArCX0KPiA+ID4gKwo+
-ID4gPiArCWlndF9zdWJ0ZXN0KCJ3cml0ZWJhY2staW52YWxpZC1vdXQtZmVuY2UiKSB7Cj4gPiA+
-ICsJCWlndF9mYl90IGludmFsaWRfZmI7Cj4gPiAKPiA+IGludmFsaWRfb3V0cHV0X2ZiIHdvdWxk
-IGJlIGEgYmV0dGVyIG5hbWUgSU1ITy4KPiA+IAo+ID4gPiArCQlyZXQgPSBpZ3RfY3JlYXRlX2Zi
-KGRpc3BsYXkuZHJtX2ZkLCBtb2RlLmhkaXNwbGF5IC8gMiwKPiA+ID4gKwkJCQkgICAgbW9kZS52
-ZGlzcGxheSAvIDIsCj4gPiA+ICsJCQkJICAgIERSTV9GT1JNQVRfWFJHQjg4ODgsCj4gPiA+ICsJ
-CQkJICAgIGlndF9mYl9tb2RfdG9fdGlsaW5nKDApLAo+ID4gPiArCQkJCSAgICAmaW52YWxpZF9m
-Yik7Cj4gPiA+ICsJCWlndF9yZXF1aXJlKHJldCA+IDApOwo+ID4gCj4gPiBXZSBzaG91bGQgcHJv
-YmFibHkgdXNlIGEgZGlmZmVyZW50IHZhcmlhYmxlOiByZXQgaXMgc2lnbmVkLAo+ID4gaWd0X2Ny
-ZWF0ZV9mYiBpc24ndC4gQWxzbyByZXQgZG9lc24ndCBtYWtlIGl0IGNsZWFyIHRoYXQgdGhlIHJl
-dHVybgo+ID4gdmFsdWUgaXMgdGhlIEtNUyBmcmFtZWJ1ZmZlciBJRC4KPiA+IAo+ID4gKEFwcGxp
-ZXMgdG8gb3RoZXIgc3VidGVzdHMpCj4gPiAKPiA+ID4gKwkJaW52YWxpZF9vdXRfZmVuY2Uob3V0
-cHV0LCAmaW5wdXRfZmIsICZpbnZhbGlkX2ZiKTsKPiA+IAo+ID4gKFN0aWxsIG5vdCBzdXJlIHdo
-eSB3ZSBwcm92aWRlIHRoZSBpbnB1dCBGQiB0byB0aGlzIGZ1bmN0aW9uLikKPiA+IAo+ID4gPiAr
-CQlpZ3RfcmVtb3ZlX2ZiKGRpc3BsYXkuZHJtX2ZkLCAmaW52YWxpZF9mYik7Cj4gPiA+ICsJfQo+
-ID4gPiArCj4gPiA+ICsJaWd0X3N1YnRlc3QoIndyaXRlYmFjay1mYi1pZCIpIHsKPiA+ID4gKwkJ
-aWd0X2ZiX3Qgb3V0cHV0X2ZiOwo+ID4gPiArCQlyZXQgPSBpZ3RfY3JlYXRlX2ZiKGRpc3BsYXku
-ZHJtX2ZkLCBtb2RlLmhkaXNwbGF5LCBtb2RlLnZkaXNwbGF5LAo+ID4gPiArCQkJCSAgICBEUk1f
-Rk9STUFUX1hSR0I4ODg4LAo+ID4gPiArCQkJCSAgICBpZ3RfZmJfbW9kX3RvX3RpbGluZygwKSwK
-PiA+ID4gKwkJCQkgICAgJm91dHB1dF9mYik7Cj4gPiA+ICsJCWlndF9yZXF1aXJlKHJldCA+IDAp
-Owo+ID4gPiArCj4gPiA+ICsJCXdyaXRlYmFja19mYl9pZChvdXRwdXQsICZpbnB1dF9mYiwgJm91
-dHB1dF9mYik7Cj4gPiA+ICsKPiA+ID4gKwkJaWd0X3JlbW92ZV9mYihkaXNwbGF5LmRybV9mZCwg
-Jm91dHB1dF9mYik7Cj4gPiA+ICsJfQo+ID4gPiArCj4gPiA+ICsJaWd0X2ZpeHR1cmUgewo+ID4g
-PiArCQlpZ3RfcmVtb3ZlX2ZiKGRpc3BsYXkuZHJtX2ZkLCAmaW5wdXRfZmIpOwo+ID4gPiArCQlp
-Z3RfZGlzcGxheV9maW5pKCZkaXNwbGF5KTsKPiA+ID4gKwl9Cj4gPiA+ICt9Cj4gPiA+IGRpZmYg
-LS1naXQgYS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rlc3RzL21lc29uLmJ1aWxkCj4gPiA+IGluZGV4
-IGYxNjhmYmJhLi45Yzc3Y2ZjZCAxMDA2NDQKPiA+ID4gLS0tIGEvdGVzdHMvbWVzb24uYnVpbGQK
-PiA+ID4gKysrIGIvdGVzdHMvbWVzb24uYnVpbGQKPiA+ID4gQEAgLTYzLDYgKzYzLDcgQEAgdGVz
-dF9wcm9ncyA9IFsKPiA+ID4gIAkna21zX3VuaXZlcnNhbF9wbGFuZScsCj4gPiA+ICAJJ2ttc192
-YmxhbmsnLAo+ID4gPiAgCSdrbXNfdnJyJywKPiA+ID4gKwkna21zX3dyaXRlYmFjaycsCj4gPiA+
-ICAJJ21ldGFfdGVzdCcsCj4gPiA+ICAJJ3BhbmZyb3N0X2dldF9wYXJhbScsCj4gPiA+ICAJJ3Bh
-bmZyb3N0X2dlbV9uZXcnLAo+ID4gPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwo+ID4gPiBpZ3QtZGV2IG1haWxpbmcgbGlzdAo+ID4gPiBpZ3QtZGV2QGxp
-c3RzLmZyZWVkZXNrdG9wLm9yZwo+ID4gPiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYKPiAKPiAtLSAKPiBSb2RyaWdvIFNpcXVlaXJhCj4gaHR0
-cHM6Ly9zaXF1ZWlyYS50ZWNoCgoKCi0tIAo9PT09PT09PT09PT09PT09PT09PQp8IEkgd291bGQg
-bGlrZSB0byB8CnwgZml4IHRoZSB3b3JsZCwgIHwKfCBidXQgdGhleSdyZSBub3QgfAp8IGdpdmlu
-ZyBtZSB0aGUgICB8CiBcIHNvdXJjZSBjb2RlISAgLwogIC0tLS0tLS0tLS0tLS0tLQogICAgwq9c
-Xyjjg4QpXy/CrwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
-czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
+
+--===============1761360531==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pztsv5umvnkwivlp"
+Content-Disposition: inline
+
+
+--pztsv5umvnkwivlp
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 07/12, Ser, Simon wrote:
+> On Thu, 2019-07-11 at 23:44 -0300, Rodrigo Siqueira wrote:
+> > On 07/10, Ser, Simon wrote:
+> > > Hi,
+> > >=20
+> > > Thanks for the patch! Here are a few comments.
+> > >=20
+> > > For bonus points, it would be nice to add igt_describe descriptions of
+> > > each sub-test.
+> >=20
+> > Hi Simon,
+> >=20
+> > First of all, thanks for your feedback; I already applied most of your
+> > suggestions. I just have some inline comments/questions.
+> > =20
+> > > On Wed, 2019-06-12 at 23:16 -0300, Brian Starkey wrote:
+> > > > Add tests for the WRITEBACK_PIXEL_FORMATS, WRITEBACK_OUT_FENCE_PTR =
+and
+> > > > WRITEBACK_FB_ID properties on writeback connectors, ensuring their
+> > > > behaviour is correct.
+> > > >=20
+> > > > Signed-off-by: Brian Starkey <brian.starkey@arm.com>
+> > > > [rebased and updated do_writeback_test() function to address feedba=
+ck]
+> > > > Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+> > > > ---
+> > > >  tests/Makefile.sources |   1 +
+> > > >  tests/kms_writeback.c  | 314 +++++++++++++++++++++++++++++++++++++=
+++++
+> > > >  tests/meson.build      |   1 +
+> > > >  3 files changed, 316 insertions(+)
+> > > >  create mode 100644 tests/kms_writeback.c
+> > > >=20
+> > > > diff --git a/tests/Makefile.sources b/tests/Makefile.sources
+> > > > index 027ed82f..03cc8efa 100644
+> > > > --- a/tests/Makefile.sources
+> > > > +++ b/tests/Makefile.sources
+> > > > @@ -77,6 +77,7 @@ TESTS_progs =3D \
+> > > >  	kms_universal_plane \
+> > > >  	kms_vblank \
+> > > >  	kms_vrr \
+> > > > +	kms_writeback \
+> > > >  	meta_test \
+> > > >  	perf \
+> > > >  	perf_pmu \
+> > > > diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+> > > > new file mode 100644
+> > > > index 00000000..66ef48a6
+> > > > --- /dev/null
+> > > > +++ b/tests/kms_writeback.c
+> > > > @@ -0,0 +1,314 @@
+> > > > +/*
+> > > > + * (C) COPYRIGHT 2017 ARM Limited. All rights reserved.
+> > > > + *
+> > > > + * Permission is hereby granted, free of charge, to any person obt=
+aining a
+> > > > + * copy of this software and associated documentation files (the "=
+Software"),
+> > > > + * to deal in the Software without restriction, including without =
+limitation
+> > > > + * the rights to use, copy, modify, merge, publish, distribute, su=
+blicense,
+> > > > + * and/or sell copies of the Software, and to permit persons to wh=
+om the
+> > > > + * Software is furnished to do so, subject to the following condit=
+ions:
+> > > > + *
+> > > > + * The above copyright notice and this permission notice (includin=
+g the next
+> > > > + * paragraph) shall be included in all copies or substantial porti=
+ons of the
+> > > > + * Software.
+> > > > + *
+> > > > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,=
+ EXPRESS OR
+> > > > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHAN=
+TABILITY,
+> > > > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EV=
+ENT SHALL
+> > > > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAG=
+ES OR OTHER
+> > > > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,=
+ ARISING
+> > > > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR O=
+THER DEALINGS
+> > > > + * IN THE SOFTWARE.
+> > > > + *
+> > > > + */
+> > > > +
+> > > > +#include <errno.h>
+> > > > +#include <stdbool.h>
+> > > > +#include <stdio.h>
+> > > > +#include <string.h>
+> > > > +
+> > > > +#include "igt.h"
+> > > > +#include "igt_core.h"
+> > > > +#include "igt_fb.h"
+> > > > +
+> > > > +static drmModePropertyBlobRes *get_writeback_formats_blob(igt_outp=
+ut_t *output)
+> > > > +{
+> > > > +	drmModePropertyBlobRes *blob =3D NULL;
+> > > > +	uint64_t blob_id;
+> > > > +	int ret;
+> > > > +
+> > > > +	ret =3D kmstest_get_property(output->display->drm_fd,
+> > > > +				   output->config.connector->connector_id,
+> > > > +				   DRM_MODE_OBJECT_CONNECTOR,
+> > > > +				   igt_connector_prop_names[IGT_CONNECTOR_WRITEBACK_PIXEL_FORM=
+ATS],
+> > > > +				   NULL, &blob_id, NULL);
+> > > > +	if (ret)
+> > > > +		blob =3D drmModeGetPropertyBlob(output->display->drm_fd, blob_id=
+);
+> > > > +
+> > > > +	igt_assert(blob);
+> > > > +
+> > > > +	return blob;
+> > > > +}
+> > > > +
+> > > > +static bool check_writeback_config(igt_display_t *display, igt_out=
+put_t *output)
+> > > > +{
+> > > > +	igt_fb_t input_fb, output_fb;
+> > > > +	igt_plane_t *plane;
+> > > > +	uint32_t writeback_format =3D DRM_FORMAT_XRGB8888;
+> > > > +	uint64_t tiling =3D igt_fb_mod_to_tiling(0);
+> > > > +	int width, height, ret;
+> > > > +	drmModeModeInfo override_mode =3D {
+> > > > +		.clock =3D 25175,
+> > > > +		.hdisplay =3D 640,
+> > > > +		.hsync_start =3D 656,
+> > > > +		.hsync_end =3D 752,
+> > > > +		.htotal =3D 800,
+> > > > +		.hskew =3D 0,
+> > > > +		.vdisplay =3D 480,
+> > > > +		.vsync_start =3D 490,
+> > > > +		.vsync_end =3D 492,
+> > > > +		.vtotal =3D 525,
+> > > > +		.vscan =3D 0,
+> > > > +		.vrefresh =3D 60,
+> > > > +		.flags =3D DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC,
+> > > > +		.name =3D {"640x480-60"},
+> > > > +	};
+> > > > +	igt_output_override_mode(output, &override_mode);
+> > > > +
+> > > > +	width =3D override_mode.hdisplay;
+> > > > +	height =3D override_mode.vdisplay;
+> > > > +
+> > > > +	ret =3D igt_create_fb(display->drm_fd, width, height, DRM_FORMAT_=
+XRGB8888, tiling, &input_fb);
+> > > > +	igt_assert(ret >=3D 0);
+> > > > +
+> > > > +	ret =3D igt_create_fb(display->drm_fd, width, height, writeback_f=
+ormat, tiling, &output_fb);
+> > > > +	igt_assert(ret >=3D 0);
+> > > > +
+> > > > +	plane =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMAR=
+Y);
+> > > > +	igt_plane_set_fb(plane, &input_fb);
+> > > > +	igt_output_set_writeback_fb(output, &output_fb);
+> > > > +
+> > > > +	ret =3D igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TE=
+ST_ONLY |
+> > > > +					    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> > >=20
+> > > Okay, we're using atomic test-only mode to know if we can perform tes=
+ts
+> > > with the writeback output. It's probably fine, but we don't use
+> > > WRITEBACK_PIXEL_FORMATS, which makes me a little bit sad.
+> >=20
+> > Sorry, I did not fully understand part. Did you expect to see something
+> > like the below code before igt_display_try_commit_atomic()?
+> >=20
+> >  igt_output_set_prop_value(output, WRITEBACK_PIXEL_FORMATS,
+> >                            DRM_FORMAT_XRGB8888);
+>=20
+> Hmm, no, we cannot change the list of writeback formats (it's
+> immutable).
+>=20
+> This comment doesn't require any action, it's just me thinking aloud :P
+>=20
+> I'm just thinking that it would be nice to choose our format depending
+> on the WRITEBACK_PIXEL_FORMATS property. And probably run tests with
+> each supported format (or, alternatively, choose a random one). That
+> way we can make sure WRITEBACK_PIXEL_FORMATS isn't broken.
+>=20
+> However, this can be left for a later patch.
+>=20
+> > > > +	igt_plane_set_fb(plane, NULL);
+> > > > +	igt_remove_fb(display->drm_fd, &input_fb);
+> > > > +	igt_remove_fb(display->drm_fd, &output_fb);
+> > > > +
+> > > > +	return !ret;
+> > > > +}
+> > > > +
+> > > > +static igt_output_t *kms_writeback_get_output(igt_display_t *displ=
+ay)
+> > > > +{
+> > > > +	int i;
+> > > > +
+> > > > +	for (i =3D 0; i < display->n_outputs; i++) {
+> > > > +		igt_output_t *output =3D &display->outputs[i];
+> > > > +		int j;
+> > > > +
+> > > > +		if (output->config.connector->connector_type !=3D DRM_MODE_CONNE=
+CTOR_WRITEBACK)
+> > > > +			continue;
+> > > > +
+> > > > +		kmstest_force_connector(display->drm_fd, output->config.connecto=
+r, FORCE_CONNECTOR_ON);
+> > >=20
+> > > Hmm. Is this really necessary? "Real" userspace won't do this, so I
+> > > don't think we need to either.
+> >=20
+> > Hmmm, I have a little experience with userspace; however, I tested
+> > kms_writeback on top of vkms without this line, and everything worked
+> > well. If I remove this line, should I also drop the line that force
+> > connector to FORCE_CONNECTOR_UNSPECIFIED?
+>=20
+> I believe so.
+>=20
+> > Another question, if FORCE_CONNECTOR_ON is something that userspace
+> > won't want to do, why do we have it?
+>=20
+> We use kmstest_force_connector in injection tests: those pick a
+> disconnected HDMI connector and trick the kernel into thinking it's
+> connected. We generally also force an EDID and this is used to emulate
+> a screen (e.g. a screen that supports audio, 4K or 3D).
+>=20
+> This is only meant to be used for testing though, hence "real userspace
+> shouldn't use it".
+>
+
+Ahhh, I see. Thanks for the explanation
+=20
+> > > > +		for (j =3D 0; j < igt_display_get_n_pipes(display); j++) {
+> > > > +			igt_output_set_pipe(output, j);
+> > > > +
+> > > > +			if (check_writeback_config(display, output)) {
+> > > > +				igt_debug("Using connector %u:%s on pipe %d\n",
+> > > > +					  output->config.connector->connector_id,
+> > > > +					  output->name, j);
+> > > > +				return output;
+> > > > +			}
+> > >=20
+> > > We could probably add an igt_debug statement in case we don't use this
+> > > writeback output.
+> > >=20
+> > > > +		}
+> > > > +
+> > > > +		/* Restore any connectors we don't use, so we don't trip on them=
+ later */
+> > > > +		kmstest_force_connector(display->drm_fd, output->config.connecto=
+r, FORCE_CONNECTOR_UNSPECIFIED);
+> > > > +	}
+> > > > +
+> > > > +	return NULL;
+> > > > +}
+> > > > +
+> > > > +static void check_writeback_fb_id(igt_output_t *output)
+> > > > +{
+> > > > +	uint64_t check_fb_id;
+> > > > +
+> > > > +	check_fb_id =3D igt_output_get_prop(output, IGT_CONNECTOR_WRITEBA=
+CK_FB_ID);
+> > > > +	igt_assert(check_fb_id =3D=3D 0);
+> > > > +}
+> > > > +
+> > > > +static int do_writeback_test(igt_output_t *output, uint32_t flags,
+> > > > +			      uint32_t fb_id, int32_t *out_fence_ptr,
+> > > > +			      bool ptr_valid)
+> > >=20
+> > > flags seems to always be set to DRM_MODE_ATOMIC_ALLOW_MODESET. We can
+> > > probably remove the parameter from this function.
+> > >=20
+> > > > +{
+> > > > +	int ret;
+> > > > +	igt_display_t *display =3D output->display;
+> > > > +	struct kmstest_connector_config *config =3D &output->config;
+> > > > +
+> > > > +	igt_output_set_prop_value(output, IGT_CONNECTOR_CRTC_ID, config->=
+crtc->crtc_id);
+> > > > +	igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_FB_ID, =
+fb_id);
+> > > > +	igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_OUT_FEN=
+CE_PTR, (uint64_t)out_fence_ptr);
+> > > > +
+> > > > +	if (ptr_valid)
+> > > > +		*out_fence_ptr =3D 0;
+> > > > +
+> > > > +	ret =3D igt_display_try_commit_atomic(display, flags, NULL);
+> > > > +
+> > > > +	if (ptr_valid)
+> > > > +		igt_assert(*out_fence_ptr =3D=3D -1);
+> > >=20
+> > > I'm confused. Why should this be -1 even if we
+> > > igt_display_try_commit_atomic succeeds?
+> >=20
+> > I inspected the drm_mode_atomic_ioctl() function and I noticed that It
+> > calls complete_signaling() in its turn this function assign -1 to
+> > out_fence_ptr. Since all of this happens at the end of atomic_commit, I
+> > believe that we don=E2=80=99t need it. I already removed it.
+>=20
+> I think I'm still confused :)
+>=20
+> I'm probably missing something. As far as I understand, we are doing an
+> atomic commit, sometimes with a valid WRITEBACK_FB_ID and
+> WRITEBACK_OUT_FENCE_PTR. In this case it should start the writeback
+> process in the kernel and we should get a valid out_fence_ptr?
+>=20
+> Why do we always get -1?
+
+FWIU userspace uses the WRITEBACK_OUT_FENCE_PTR to provide a pointer for
+the kernel to fill with a sync_file file descriptor, which will signal
+once the writeback is finished. If the signal was correctly handled, the
+out_fence_ptr would be set to -1, because of this we always get -1.
+
+Thanks for your feedback, I'll prepare a new version soon.
+=20
+> > > > +	/* WRITEBACK_FB_ID must always read as zero */
+> > > > +	check_writeback_fb_id(output);
+> > > > +
+> > > > +	return ret;
+> > > > +}
+> > > > +
+> > > > +static void invalid_out_fence(igt_output_t *output, igt_fb_t *vali=
+d_fb, igt_fb_t *invalid_fb)
+> > > > +{
+> > > > +	int i, ret;
+> > > > +	int32_t out_fence;
+> > > > +	struct {
+> > > > +		uint32_t fb_id;
+> > > > +		bool ptr_valid;
+> > > > +		int32_t *out_fence_ptr;
+> > > > +	} invalid_tests[] =3D {
+> > > > +		{
+> > > > +			/* No output buffer, but the WRITEBACK_OUT_FENCE_PTR set. */
+> > > > +			.fb_id =3D 0,
+> > > > +			.ptr_valid =3D true,
+> > > > +			.out_fence_ptr =3D &out_fence,
+> > > > +		},
+> > > > +		{
+> > > > +			/* Invalid output buffer. */
+> > > > +			.fb_id =3D invalid_fb->fb_id,
+> > > > +			.ptr_valid =3D true,
+> > > > +			.out_fence_ptr =3D &out_fence,
+> > > > +		},
+> > >=20
+> > > This doesn't belong in this function (invalid_out_fence), since this
+> > > checks an invalid framebuffer, not an invalid fence. We should probab=
+ly
+> > > move it to writeback_fb_id (and rename that function to test_fb?).
+> > >=20
+> > > > +		{
+> > > > +			/* Invalid WRITEBACK_OUT_FENCE_PTR. */
+> > > > +			.fb_id =3D valid_fb->fb_id,
+> > > > +			.ptr_valid =3D false,
+> > > > +			.out_fence_ptr =3D (int32_t *)0x8,
+> > > > +		},
+> > > > +	};
+> > > > +
+> > > > +	for (i =3D 0; i < ARRAY_SIZE(invalid_tests); i++) {
+> > > > +		ret =3D do_writeback_test(output, DRM_MODE_ATOMIC_ALLOW_MODESET,
+> > > > +					invalid_tests[i].fb_id,
+> > > > +					invalid_tests[i].out_fence_ptr,
+> > > > +					invalid_tests[i].ptr_valid);
+> > > > +		igt_assert(ret !=3D 0);
+> > >=20
+> > > Maybe we can check for -ret =3D=3D EINVAL?
+> > >=20
+> > > > +	}
+> > > > +}
+> > > > +
+> > > > +static void writeback_fb_id(igt_output_t *output, igt_fb_t *valid_=
+fb, igt_fb_t *invalid_fb)
+> > >=20
+> > > invalid_fb doesn't seem to be used here. valid_fb seems to be set to
+> > > the input framebuffer. It's probably not a good idea to use the same =
+FB
+> > > for input and writeback output.
+> > >=20
+> > > > +{
+> > > > +
+> > > > +	int ret;
+> > > > +
+> > > > +	/* Valid output buffer */
+> > > > +	ret =3D do_writeback_test(output, DRM_MODE_ATOMIC_ALLOW_MODESET,
+> > > > +				valid_fb->fb_id, NULL, false);
+> > > > +	igt_assert(ret =3D=3D 0);
+> > > > +
+> > > > +	/* Invalid object for WRITEBACK_FB_ID */
+> > > > +	ret =3D do_writeback_test(output, DRM_MODE_ATOMIC_ALLOW_MODESET,
+> > > > +				output->id, NULL, false);
+> > > > +	igt_assert(ret =3D=3D -EINVAL);
+> > > > +
+> > > > +	/* Zero WRITEBACK_FB_ID */
+> > > > +	ret =3D do_writeback_test(output, DRM_MODE_ATOMIC_ALLOW_MODESET,
+> > > > +				0, NULL, false);
+> > > > +	igt_assert(ret =3D=3D 0);
+> > > > +}
+> > > > +
+> > > > +igt_main
+> > > > +{
+> > > > +	igt_display_t display;
+> > > > +	igt_output_t *output;
+> > > > +	igt_plane_t *plane;
+> > > > +	igt_fb_t input_fb;
+> > > > +	drmModeModeInfo mode;
+> > > > +	int ret;
+> > > > +
+> > > > +	memset(&display, 0, sizeof(display));
+> > > > +
+> > > > +	igt_fixture {
+> > > > +		display.drm_fd =3D drm_open_driver_master(DRIVER_ANY);
+> > > > +		igt_display_require(&display, display.drm_fd);
+> > > > +
+> > > > +		kmstest_set_vt_graphics_mode();
+> > > > +
+> > > > +		igt_display_require(&display, display.drm_fd);
+> > > > +
+> > > > +		igt_require(display.is_atomic);
+> > > > +
+> > > > +		output =3D kms_writeback_get_output(&display);
+> > > > +		igt_require(output);
+> > > > +
+> > > > +		if (output->use_override_mode)
+> > > > +			memcpy(&mode, &output->override_mode, sizeof(mode));
+> > > > +		else
+> > > > +			memcpy(&mode, &output->config.default_mode, sizeof(mode));
+> > > > +
+> > > > +		plane =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMA=
+RY);
+> > > > +		igt_require(plane);
+> > >=20
+> > > Maybe we can assert on this?
+> > >=20
+> > > > +		ret =3D igt_create_fb(display.drm_fd, mode.hdisplay,
+> > > > +				    mode.vdisplay,
+> > > > +				    DRM_FORMAT_XRGB8888,
+> > > > +				    igt_fb_mod_to_tiling(0),
+> > >=20
+> > > This is supposed to take a modifier. DRM_FORMAT_MOD_LINEAR would be
+> > > better to make this clear.
+> > >=20
+> > > (Applies to other lines of this patch)
+> > >=20
+> > > > +				    &input_fb);
+> > > > +		igt_assert(ret >=3D 0);
+> > > > +		igt_plane_set_fb(plane, &input_fb);
+> > > > +	}
+> > > > +
+> > > > +	igt_subtest("writeback-pixel-formats") {
+> > > > +		drmModePropertyBlobRes *formats_blob =3D get_writeback_formats_b=
+lob(output);
+> > >=20
+> > > Need to drmModeFreePropertyBlob this.
+> > >=20
+> > > > +		const char *valid_chars =3D "0123456 ABCGNRUVXY";
+> > > > +		unsigned int i;
+> > > > +		char *c;
+> > > > +
+> > > > +		/*
+> > > > +		 * We don't have a comprehensive list of formats, so just check
+> > > > +		 * that the blob length is sensible and that it doesn't contain
+> > > > +		 * any outlandish characters
+> > > > +		 */
+> > > > +		igt_assert(!(formats_blob->length % 4));
+> > > > +		c =3D formats_blob->data;
+> > > > +		for (i =3D 0; i < formats_blob->length; i++)
+> > > > +			igt_assert_f(strchr(valid_chars, c[i]),
+> > > > +				     "Unexpected character %c\n", c[i]);
+> > >=20
+> > > Honestly, I'm not a fan of this check. There's no guarantee that four=
+cc
+> > > codes will be made from ASCII characters, in fact some formats already
+> > > have non-printable chars in them. I don't want to have to update this
+> > > test when a new fourcc format is added.
+> > >=20
+> > > We currently don't have a test for IN_FORMATS. If we really want to
+> > > check formats, we could have a big array of known formats and add a
+> > > bool is_valid_format(uint32_t fmt) function.
+> >=20
+> > Agree with you. How about remove this test?
+>=20
+> I guess we could always keep the length % 4 test, even if it's just a
+> sanity test. At least this one won't ever need to be changed.
+>=20
+> I don't feel strongly about it.
+>=20
+> > Thanks
+> > Best Regards
+> >=20
+> > > > +	}
+> > > > +
+> > > > +	igt_subtest("writeback-invalid-out-fence") {
+> > > > +		igt_fb_t invalid_fb;
+> > >=20
+> > > invalid_output_fb would be a better name IMHO.
+> > >=20
+> > > > +		ret =3D igt_create_fb(display.drm_fd, mode.hdisplay / 2,
+> > > > +				    mode.vdisplay / 2,
+> > > > +				    DRM_FORMAT_XRGB8888,
+> > > > +				    igt_fb_mod_to_tiling(0),
+> > > > +				    &invalid_fb);
+> > > > +		igt_require(ret > 0);
+> > >=20
+> > > We should probably use a different variable: ret is signed,
+> > > igt_create_fb isn't. Also ret doesn't make it clear that the return
+> > > value is the KMS framebuffer ID.
+> > >=20
+> > > (Applies to other subtests)
+> > >=20
+> > > > +		invalid_out_fence(output, &input_fb, &invalid_fb);
+> > >=20
+> > > (Still not sure why we provide the input FB to this function.)
+> > >=20
+> > > > +		igt_remove_fb(display.drm_fd, &invalid_fb);
+> > > > +	}
+> > > > +
+> > > > +	igt_subtest("writeback-fb-id") {
+> > > > +		igt_fb_t output_fb;
+> > > > +		ret =3D igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdispl=
+ay,
+> > > > +				    DRM_FORMAT_XRGB8888,
+> > > > +				    igt_fb_mod_to_tiling(0),
+> > > > +				    &output_fb);
+> > > > +		igt_require(ret > 0);
+> > > > +
+> > > > +		writeback_fb_id(output, &input_fb, &output_fb);
+> > > > +
+> > > > +		igt_remove_fb(display.drm_fd, &output_fb);
+> > > > +	}
+> > > > +
+> > > > +	igt_fixture {
+> > > > +		igt_remove_fb(display.drm_fd, &input_fb);
+> > > > +		igt_display_fini(&display);
+> > > > +	}
+> > > > +}
+> > > > diff --git a/tests/meson.build b/tests/meson.build
+> > > > index f168fbba..9c77cfcd 100644
+> > > > --- a/tests/meson.build
+> > > > +++ b/tests/meson.build
+> > > > @@ -63,6 +63,7 @@ test_progs =3D [
+> > > >  	'kms_universal_plane',
+> > > >  	'kms_vblank',
+> > > >  	'kms_vrr',
+> > > > +	'kms_writeback',
+> > > >  	'meta_test',
+> > > >  	'panfrost_get_param',
+> > > >  	'panfrost_gem_new',
+> > > > _______________________________________________
+> > > > igt-dev mailing list
+> > > > igt-dev@lists.freedesktop.org
+> > > > https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--=20
+Rodrigo Siqueira
+https://siqueira.tech
+
+--pztsv5umvnkwivlp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAl0ueAAACgkQWJzP/com
+vP/hNw/+IwWVCzFM2nPcBMDbEOQH2BVralwDahiyxupsvg/qa3ZCK0KoxwoIora9
+MTc7BkC5Dtox4nXapDKBMzXvsSuZ+yYGYTN5KKMh8P43TP2zK2NGW96WpXV4Mubv
+xxmdsXp7Lz6GE54mRNT+2T8xRbRjGXevcohVQyZ3dC1Hsvj18sKIN0zK+I5zeLFl
+wl+YXi/eoUZmgBdOkzm/HDAcCFD8N3kYsH30cYt7UbYlIV7d49x7aqZUoAME0d6E
+iZJ5mBDuzrNfkBzKCobpF1SIhYh3HWehU525gziobxyep7ZFB0OOpVZZ1Md3Wpdo
+24JNe/4MayF6P9epm/Uy6U72g8cK8F2TadmA2dqn8ThZBDj0cP1XPc7rVeM9kYEs
+NtDEBtiaZXIbpAG2uQrqyOyO85UMwHHmriGB9QmquNZzeJ8hKtxr+nHnbqHhg+5Z
+hOxEQ2qk6EJBIg57UT/Lp57QL9vmW9YMkLU1KXzk/Ex/jWB7+29xl8ru6PN8Pfux
+hpmaZPilxsmBffgYGSUgNwd1rKvEehIa1lh95O0Yf4ozfgXQ4jtUPdvaei4CxqTA
+vE0DfqqWFuMPx5CnxMCwBrRvQGFKUoLpt4IfhYp2T9TUBZp57ayosYO3PFUI0CJ9
+3AMrmmGksam9lfq/TGNhpg2Isuk6EsV5pCPHzXNwEckA225HSu4=
+=gunV
+-----END PGP SIGNATURE-----
+
+--pztsv5umvnkwivlp--
+
+--===============1761360531==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============1761360531==--
