@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B05A6EE57
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Jul 2019 20:57:36 +0000 (UTC)
-MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <ca157c90-292f-9a13-aeb2-a434b1b51e02@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28FCA6EE72
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Jul 2019 23:23:39 +0000 (UTC)
 References: <20190725203354.6757-1-lucas.demarchi@intel.com>
- <20190725203354.6757-2-lucas.demarchi@intel.com>
- <ca157c90-292f-9a13-aeb2-a434b1b51e02@intel.com>
-Message-ID: <156417464432.21451.7245606376501365382@skylake-alporthouse-com>
-Date: Fri, 26 Jul 2019 21:57:24 +0100
-Subject: Re: [igt-dev] [PATCH 2/5] i915/gem_mocs_settings: do not set
- undefined entries to PTE
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Message-ID: <f83ecb2d-aabc-cd96-8456-9cd2e6bc7e08@intel.com>
+Date: Fri, 26 Jul 2019 16:23:25 -0700
+MIME-Version: 1.0
+In-Reply-To: <20190725203354.6757-1-lucas.demarchi@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH 1/5] i915/gem_mocs_settings: log the engine
+ and MOCS index
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,25 +18,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>, Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
+To: Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBEYW5pZWxlIENlcmFvbG8gU3B1cmlvICgyMDE5LTA3LTI2IDIxOjQ5OjI4KQo+IAo+
-IAo+IE9uIDcvMjUvMTkgMTozMyBQTSwgTHVjYXMgRGUgTWFyY2hpIHdyb3RlOgo+ID4gSW4gdGhl
-IEljZSBMYWtlIHRhYmxlIHdlIGFyZSBzZXR0aW5nIGFsbCB1bmRlZmluZWQgZW50cmllcyB0byBQ
-VEUuCj4gPiBXaXRoIFRpZ2VyIExha2UgdGhpcyB3b24ndCBiZSB0cnVlIGFueW1vcmUuIEV2ZW4g
-aWYgZm9yIHRlc3QgaW4gSUdUIHdlCj4gPiBhZGQgYSBuZXcgdGFibGUgZm9yIFRpZ2VyIExha2Us
-IGluIGtlcm5lbCB0aGV5IGNhbiBiZSBzaGFyZXMgc2luY2UgdGhleQo+ID4gYXJlIHN1cHBvc2Vk
-bHkgY29tcGF0aWJsZSAob25seSB1bnVzZWQgZW50cmllcyB3ZXJlIGFkZGVkIG9yIGJlY2FtZQo+
-ID4gdW51c2VkKS4KPiA+IAo+ID4gU2lnbmVkLW9mZi1ieTogTHVjYXMgRGUgTWFyY2hpIDxsdWNh
-cy5kZW1hcmNoaUBpbnRlbC5jb20+Cj4gCj4gQW5kIHdlIHNob3VsZG4ndCBiZSBndWFyYW50ZWVp
-bmcgdGhhdCB1bnVzZWQgZW50cmllcyBhcmUgc2V0IHRvIAo+IHNvbWV0aGluZyBzZW5zaWJsZSBh
-cyBwYXJ0IG9mIHRoZSBBQkkuCgpCZXR0ZXIgcmVwaHJhc2VkIGFzIHVuZGVmaW5lZCB2YWx1ZXMg
-YXJlIHVuZGVmaW5lZC4KLUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0
-LWRldg==
+CgpPbiA3LzI1LzE5IDE6MzMgUE0sIEx1Y2FzIERlIE1hcmNoaSB3cm90ZToKPiBUaGlzIGhlbHBz
+IHRvIGlkZW50aWZ5IHdoaWNoIGVudHJ5IGlzIHdyb25nIGluIHRoZSB0YWJsZS4KPiAKPiBTaWdu
+ZWQtb2ZmLWJ5OiBMdWNhcyBEZSBNYXJjaGkgPGx1Y2FzLmRlbWFyY2hpQGludGVsLmNvbT4KPiAt
+LS0KPiAgIHRlc3RzL2k5MTUvZ2VtX21vY3Nfc2V0dGluZ3MuYyB8IDYgKysrKy0tCj4gICAxIGZp
+bGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1n
+aXQgYS90ZXN0cy9pOTE1L2dlbV9tb2NzX3NldHRpbmdzLmMgYi90ZXN0cy9pOTE1L2dlbV9tb2Nz
+X3NldHRpbmdzLmMKPiBpbmRleCAxYTMxMWI4Yy4uN2IxNzE4ZjQgMTAwNjQ0Cj4gLS0tIGEvdGVz
+dHMvaTkxNS9nZW1fbW9jc19zZXR0aW5ncy5jCj4gKysrIGIvdGVzdHMvaTkxNS9nZW1fbW9jc19z
+ZXR0aW5ncy5jCj4gQEAgLTMyMiw4ICszMjIsMTAgQEAgc3RhdGljIHZvaWQgY2hlY2tfY29udHJv
+bF9yZWdpc3RlcnMoaW50IGZkLAo+ICAgCWZvciAoaW50IGluZGV4ID0gMDsgaW5kZXggPCB0YWJs
+ZS5zaXplOyBpbmRleCsrKSB7Cj4gICAJCWlmICghdGFibGUudGFibGVbaW5kZXhdLnVzZWQpCj4g
+ICAJCQljb250aW51ZTsKPiAtCQlpZ3RfYXNzZXJ0X2VxX3UzMihyZWFkX3JlZ3NbaW5kZXhdLAo+
+IC0JCQkJICB0YWJsZS50YWJsZVtpbmRleF0uY29udHJvbF92YWx1ZSk7Cj4gKwo+ICsJCWlndF9h
+c3NlcnRfZigKPiArCQkJcmVhZF9yZWdzW2luZGV4XSA9PSB0YWJsZS50YWJsZVtpbmRleF0uY29u
+dHJvbF92YWx1ZSwKPiArCQkJImVuZ2luZT0ldSBpbmRleD0ldSIsIGVuZ2luZSwgaW5kZXgpOwoK
+QnV0IGxpa2UgdGhpcyB5b3UncmUgbm90IHByaW50aW5nIHRoZSB2YWx1ZXMgYW55bW9yZSwgd2hp
+Y2ggd2FzIHVzZWZ1bC4gCkFsc28sIHlvdSdyZSBtaXNzaW5nIGEgIlxuIi4KCkRhbmllbGUKCj4g
+ICAJfQo+ICAgCj4gICAJbXVubWFwKHJlYWRfcmVncywgNDA5Nik7Cj4gCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
+dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+L21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
