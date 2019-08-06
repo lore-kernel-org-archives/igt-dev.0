@@ -1,32 +1,45 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 5 Aug 2019 20:50:57 +0300
-From: Andi Shyti <andi.shyti@intel.com>
-Message-ID: <20190805175057.GC501@intel.intel>
-References: <20190730212454.6954-1-chris@chris-wilson.co.uk>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue,  6 Aug 2019 09:10:52 +0100
+Message-Id: <20190806081052.11564-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190730212454.6954-1-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] i915/gem_exec_schedule: Avoid using
- borked engines
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: [Intel-gfx] [PATCH i-g-t] i915/gem_persistent_relocs: Don't call
+ DROP_IDLE in the middle of submitting
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgQ2hyaXMsCgpPbiBUdWUsIEp1bCAzMCwgMjAxOSBhdCAxMDoyNDo1M1BNICswMTAwLCBDaHJp
-cyBXaWxzb24gd3JvdGU6Cj4gQ2hlY2sgZm9yIHZpYWJpbGl0eSBvZiBzdG9yZS1kd29yZCBiZWZv
-cmUgdXNlLgo+IAo+IFNpZ25lZC1vZmYtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2ls
-c29uLmNvLnVrPgoKUmV2aWV3ZWQtYnk6IEFuZGkgU2h5dGkgPGFuZGkuc2h5dGlAaW50ZWwuY29t
-PgoKQW5kaQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpp
-Z3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczov
-L2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
+VG8gYWN0dWFsbHkgRFJPUF9JRExFIG1lYW5zIHRoYXQgd2UgaGF2ZSB0byB3YWl0IGZvciBvbmdv
+aW5nIHN1Ym1pc3Npb24sCmFuZCBhbnkgbmV3IGNvbmN1cnJlbnRseSBzdWJtaXR0ZWQsIGkuZS4g
+aXQgc2hvdWxkIG9ubHkgYmUgY2FsbGVkIGR1cmluZwpzaW5nbGUtdGhyZWFkZWQgc3VibWlzc2lv
+biB0byBlbnN1cmUgdGhlIEdQVSBpcyBpZGxlIGJlZm9yZSB0aGUgbmV3CmFjdGlvbi4KClNpZ25l
+ZC1vZmYtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgotLS0KIHRl
+c3RzL2k5MTUvZ2VtX3BlcnNpc3RlbnRfcmVsb2NzLmMgfCA5ICsrKysrKy0tLQogMSBmaWxlIGNo
+YW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS90ZXN0
+cy9pOTE1L2dlbV9wZXJzaXN0ZW50X3JlbG9jcy5jIGIvdGVzdHMvaTkxNS9nZW1fcGVyc2lzdGVu
+dF9yZWxvY3MuYwppbmRleCA0NTJmZTY4NmUuLjE0Yjg2ZTExZCAxMDA2NDQKLS0tIGEvdGVzdHMv
+aTkxNS9nZW1fcGVyc2lzdGVudF9yZWxvY3MuYworKysgYi90ZXN0cy9pOTE1L2dlbV9wZXJzaXN0
+ZW50X3JlbG9jcy5jCkBAIC0yODEsMTAgKzI4MSwxMyBAQCBzdGF0aWMgdm9pZCBkb19mb3JrZWRf
+dGVzdChpbnQgZmQsIHVuc2lnbmVkIGZsYWdzKQogCXN0cnVjdCBpZ3RfaGVscGVyX3Byb2Nlc3Mg
+dGhyYXNoZXIgPSB7fTsKIAogCWlmIChmbGFncyAmIChUSFJBU0ggfCBUSFJBU0hfSU5BQ1RJVkUp
+KSB7Ci0JCXVpbnQ2NF90IHZhbCA9IChmbGFncyAmIFRIUkFTSF9JTkFDVElWRSkgPwotCQkJCShE
+Uk9QX1JFVElSRSB8IERST1BfQk9VTkQgfCBEUk9QX1VOQk9VTkQpIDogRFJPUF9BTEw7Ci0KIAkJ
+aWd0X2ZvcmtfaGVscGVyKCZ0aHJhc2hlcikgeworCQkJdWludDY0X3QgdmFsOworCisJCQl2YWwg
+PSBEUk9QX1JFVElSRSB8IERST1BfQk9VTkQgfCBEUk9QX1VOQk9VTkQ7CisJCQlpZiAoIShmbGFn
+cyAmIFRIUkFTSF9JTkFDVElWRSkpCisJCQkJdmFsIHw9IERST1BfQUNUSVZFOworCiAJCQl3aGls
+ZSAoMSkgewogCQkJCXVzbGVlcCgxMDAwKTsKIAkJCQlpZ3RfZHJvcF9jYWNoZXNfc2V0KGZkLCB2
+YWwpOwotLSAKMi4yMy4wLnJjMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KSW50ZWwtZ2Z4IG1haWxpbmcgbGlzdApJbnRlbC1nZnhAbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8v
+aW50ZWwtZ2Z4
