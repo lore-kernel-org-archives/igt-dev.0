@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com
- [IPv6:2607:f8b0:4864:20::e35])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 97CCF89306
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Aug 2019 17:44:45 +0000 (UTC)
-Received: by mail-vs1-xe35.google.com with SMTP id y16so70309644vsc.3
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Aug 2019 10:44:45 -0700 (PDT)
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 946846E58F
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Aug 2019 17:47:49 +0000 (UTC)
 MIME-Version: 1.0
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <CAM0jSHNTb1we3RtvRoygv+a1UjGWkNpePL0xHQp_OHOaMDKCfA@mail.gmail.com>
 References: <20190314102740.5243-1-petri.latvala@intel.com>
-In-Reply-To: <20190314102740.5243-1-petri.latvala@intel.com>
-From: Matthew Auld <matthew.william.auld@gmail.com>
-Date: Mon, 12 Aug 2019 18:44:18 +0100
-Message-ID: <CAM0jSHNTb1we3RtvRoygv+a1UjGWkNpePL0xHQp_OHOaMDKCfA@mail.gmail.com>
+ <CAM0jSHNTb1we3RtvRoygv+a1UjGWkNpePL0xHQp_OHOaMDKCfA@mail.gmail.com>
+Message-ID: <156563206481.2301.9999815296264235325@skylake-alporthouse-com>
+Date: Mon, 12 Aug 2019 18:47:44 +0100
 Subject: Re: [igt-dev] [CI 1/2] lib/sw_sync: Fix querying fence status
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -23,17 +21,19 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
+To: Matthew Auld <matthew.william.auld@gmail.com>, Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCAxNCBNYXIgMjAxOSBhdCAxMDoyNywgUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFs
-YUBpbnRlbC5jb20+IHdyb3RlOgo+Cj4gRnJvbTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13
-aWxzb24uY28udWs+Cj4KPiBUbyBxdWVyeSB0aGUgZmVuY2Ugc3RhdHVzLCBhbmQgb25seSB0aGUg
-ZmVuY2Ugc3RhdHVzLCB5b3Ugb25seSBuZWVkIHRvCj4gcGFzcyAubnVtX2ZlbmNlcyA9IDAuCj4K
-PiBTaWduZWQtb2ZmLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4K
-PiBDYzogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+ClJldmlld2VkLWJ5
-OiBNYXR0aGV3IEF1bGQgPG1hdHRoZXcuYXVsZEBpbnRlbC5jb20+Cl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
-ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
-aWxtYW4vbGlzdGluZm8vaWd0LWRldg==
+UXVvdGluZyBNYXR0aGV3IEF1bGQgKDIwMTktMDgtMTIgMTg6NDQ6MTgpCj4gT24gVGh1LCAxNCBN
+YXIgMjAxOSBhdCAxMDoyNywgUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+
+IHdyb3RlOgo+ID4KPiA+IEZyb206IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNv
+LnVrPgo+ID4KPiA+IFRvIHF1ZXJ5IHRoZSBmZW5jZSBzdGF0dXMsIGFuZCBvbmx5IHRoZSBmZW5j
+ZSBzdGF0dXMsIHlvdSBvbmx5IG5lZWQgdG8KPiA+IHBhc3MgLm51bV9mZW5jZXMgPSAwLgo+ID4K
+PiA+IFNpZ25lZC1vZmYtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVr
+Pgo+ID4gQ2M6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgo+IFJldmll
+d2VkLWJ5OiBNYXR0aGV3IEF1bGQgPG1hdHRoZXcuYXVsZEBpbnRlbC5jb20+CgpUYSwgbmVhcmx5
+IDYgbW9udGhzIHRvIGZpeCBhIHRyaXZpYWwgYnVnLCB0aGF0J3Mgb25lIGh1Z2Ugc2lnaCBvZgpy
+ZWxpZWYuIFxvLwotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
+cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
