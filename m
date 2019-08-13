@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 13 Aug 2019 17:21:06 +0300
+Date: Tue, 13 Aug 2019 17:20:59 +0300
 From: Andi Shyti <andi.shyti@intel.com>
-Message-ID: <20190813142106.GB32007@intel.intel>
+Message-ID: <20190813142059.GA32007@intel.intel>
 References: <20190813062016.7870-1-chris@chris-wilson.co.uk>
- <20190813062016.7870-2-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190813062016.7870-2-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 2/9] i915/gem_eio: Restrict
- number of batches of submitted
+In-Reply-To: <20190813062016.7870-1-chris@chris-wilson.co.uk>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/9] i915/gem_exec_schedule: Limit the
+ plug to fit small rings
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,13 +23,15 @@ To: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgQ2hyaXMsCgpPbiBUdWUsIEF1ZyAxMywgMjAxOSBhdCAwNzoyMDowOUFNICswMTAwLCBDaHJp
-cyBXaWxzb24gd3JvdGU6Cj4gTWFrZSBzdXJlIHdlIGRvbid0IGJsb2NrIHdoaWxlIHNldHRpbmcg
-dXAgdGhlIHN0cmVzcyBjYXNlIGJlZm9yZSB0aGUKPiByZXNldCBieSBvbmx5IHN1Ym1pdHRpbmcg
-bGVzcyBiYXRjaGVzIHRoYW4gd291bGQgZmlsbCB0aGUgcmluZy4KPiAKPiBSZWZlcmVuY2VzOiBo
-dHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMTEzNzkKPiBTaWdu
-ZWQtb2ZmLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KClJldmll
-d2VkLWJ5OiBBbmRpIFNoeXRpIDxhbmRpLnNoeXRpQGludGVsLmNvbT4KCkFuZGkKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxp
-c3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
-cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+SGkgQ2hyaXMsCgpPbiBUdWUsIEF1ZyAxMywgMjAxOSBhdCAwNzoyMDowOEFNICswMTAwLCBDaHJp
+cyBXaWxzb24gd3JvdGU6Cj4gSWYgd2UgYXJlIG5vdCBydW5uaW5nIHdpdGggYSBzY2hlZHVsZXIs
+IHdlIGFyZSB1c2luZyBhIGdsb2JhbCByaW5nYnVmZmVyCj4gd2hpY2ggbWF5IG5vdCBhY2NvbW1v
+ZGF0ZSAxNiBleHRyYSBiYXRjaGVzLiBGb3J0dW5hdGVseSwgd2Ugb25seSBuZWVkCj4gb25lIHN1
+Y2ggYmF0Y2ggdG8gYmxvY2sgdGhlIHN1Ym1pc3Npb24gcXVldWUgYXMgd2l0aG91dCBhIHNjaGVk
+dWxlciwgaXQKPiBpcyBpbiBvcmRlciBzdWJtaXNzaW9uIChhbmQgc28gdGhlIGJhdGNoIGlzIGFm
+dGVyIHRoZSBtYWluIHNldHVwCj4gYW55d2F5ISkuCj4gCj4gU2lnbmVkLW9mZi1ieTogQ2hyaXMg
+V2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Cgpsb29rcyBzdHJhaWdodCBmb3J3YXJk
+IHRvIG1lLgoKUmV2aWV3ZWQtYnk6IEFuZGkgU2h5dGkgPGFuZGkuc2h5dGlAaW50ZWwuY29tPgoK
+QW5kaQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3Qt
+ZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xp
+c3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
