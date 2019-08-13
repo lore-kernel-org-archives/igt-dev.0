@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 13 Aug 2019 07:19:07 +0100
-Message-Id: <20190813061907.5576-1-chris@chris-wilson.co.uk>
+Date: Tue, 13 Aug 2019 07:20:08 +0100
+Message-Id: <20190813062016.7870-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_schedule: Limit the plug to
- fit small rings
+Subject: [igt-dev] [PATCH i-g-t 1/9] i915/gem_exec_schedule: Limit the plug
+ to fit small rings
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
