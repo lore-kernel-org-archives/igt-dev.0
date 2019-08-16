@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 84F346E441
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Aug 2019 14:21:50 +0000 (UTC)
-From: "Vasilev, Oleg" <oleg.vasilev@intel.com>
-Date: Fri, 16 Aug 2019 14:21:46 +0000
-Message-ID: <e52563c18687eea965a4707ca6cfb7e8d4f4a374.camel@intel.com>
-References: <20190712141618.7110-1-oleg.vasilev@intel.com>
- <20190712141618.7110-2-oleg.vasilev@intel.com>
- <03468d86c479d38c77fc3e119b97098618bc86bd.camel@intel.com>
-In-Reply-To: <03468d86c479d38c77fc3e119b97098618bc86bd.camel@intel.com>
-Content-Language: en-US
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F5586E45D
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Aug 2019 14:21:37 +0000 (UTC)
+From: Oleg Vasilev <oleg.vasilev@intel.com>
+Date: Fri, 16 Aug 2019 17:21:31 +0300
+Message-Id: <20190816142132.20091-1-oleg.vasilev@intel.com>
+In-Reply-To: <20190712141618.7110-2-oleg.vasilev@intel.com>
+References: <20190712141618.7110-2-oleg.vasilev@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 2/2] tests/prime_generic: add vendor-agnostic
- prime tests
+Subject: [igt-dev] [PATCH 1/2] lib: expose fb_init
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,242 +16,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2030048682=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Ser,
- Simon" <simon.ser@intel.com>
-Cc: "daniel@ffwll.ch" <daniel@ffwll.ch>
+To: igt-dev@lists.freedesktop.org
+Cc: Simon Ser <daniel@ffwll.ch>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2030048682==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=sha-1;
-	protocol="application/x-pkcs7-signature"; boundary="=-A+3azctjjnpdGdWH8sKp"
-
---=-A+3azctjjnpdGdWH8sKp
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, 2019-08-16 at 11:07 +0100, Ser, Simon wrote:
-> Hi,
->=20
-> Overall this looks good. Here are a few comments.
->=20
-> I agree with Chris and Daniel regarding naming.
->=20
-> On Fri, 2019-07-12 at 17:16 +0300, Oleg Vasilev wrote:
-> > +static bool has_prime_import(int fd)
-> > +{
-> > +	uint64_t value;
-> > +
-> > +	if (drmGetCap(fd, DRM_CAP_PRIME, &value))
-> > +		return false;
-> > +
-> > +	return value & DRM_PRIME_CAP_IMPORT;
->=20
-> This returns a non-zero value when import is supported, but doesn't
-> return true. This can lead to strange bugs.
->=20
-> It's common to use !! to convert to a bool.
-
-Hi,
-
-As discussed, this should be still a valid stdbool.
-
-> > +	vgem_create(exporter, scratch);
->=20
-> The return value should be checked.
-
-Actually, it is already checked inside the function. AFAIU, in IGT
-helpers usually call their __underscored siblings and assert return
-value.
-=20
->=20
-> > +	ptr =3D vgem_mmap(exporter, scratch, PROT_WRITE);
->=20
-> Ditto, we should check that ptr !=3D NULL.
-
-Same.
-
->=20
-> > +	for (i =3D 0; i < scratch->size / sizeof(*ptr); ++i)
-> > +		ptr[i] =3D color;
-> > +
-> > +	munmap(ptr, scratch->size);
-> > +}
-> > +
-> > +static void prepare_fb(int importer, struct vgem_bo *scratch,
-> > struct igt_fb *fb)
-> > +{
-> > +	enum igt_color_encoding color_encoding =3D IGT_COLOR_YCBCR_BT709;
-> > +	enum igt_color_range color_range =3D
-> > IGT_COLOR_YCBCR_LIMITED_RANGE;
-> > +
-> > +	igt_init_fb(fb, importer, scratch->width, scratch->height,
-> > +		    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
-> > +		    color_encoding, color_range);
->=20
-> Maybe we could populate fb->strides[0] here, so that we don't need to
-> pass it around in import_fb.
->=20
-> > +}
-> >=20
-> > +		dmabuf_fd =3D prime_handle_to_fd(exporter,
-> > scratch.handle);
->=20
-> We should check dmabuf_fd >=3D 0.
-
-Same, it is asserted internally.
-
-> > +		gem_close(exporter, scratch.handle);
-> > +
-> > +		prepare_fb(importer, &scratch, &fb);
-> > +		import_fb(importer, &fb, dmabuf_fd, scratch.pitch);
->=20
-> We should release this FB after we're done.
-
-You mean remove fb? It is done in collect_crc, which I renamed to
-collect_crc_for_fb to make it more clear.
-
-> > +		close(dmabuf_fd);
-> > +
-> > +		colors[i].prime_crc.name =3D "prime";
-> > +		collect_crc(importer, &fb, &display, output,
-> > +			    pipe_crc, colors[i].color,
-> > &colors[i].prime_crc);
-> > +
-> > +		igt_create_color_fb(importer,
-> > +				    mode->hdisplay, mode->vdisplay,
-> > +				    DRM_FORMAT_XRGB8888,
-> > LOCAL_DRM_FORMAT_MOD_NONE,
-> > +				    colors[i].r, colors[i].g,
-> > colors[i].b,
-> > +				    &fb);
->=20
-> Ditto, we should release this FB after we're done.
-
-Same
-
->=20
-> > +
-> > +		colors[i].direct_crc.name =3D "direct";
-> > +		collect_crc(importer, &fb, &display, output,
-> > +			    pipe_crc, colors[i].color,
-> > &colors[i].direct_crc);
-> > +	}
-> > +	igt_pipe_crc_free(pipe_crc);
-> > +
-> > +	igt_debug("CRC table:\n");
-> > +	igt_debug("Color\t\tPrime\t\tDirect\n");
-> > +	for (i =3D 0; i < ARRAY_SIZE(colors); i++) {
-> > +		igt_debug("%#08x\t%.8s\t%.8s\n", colors[i].color,
-> > +			  colors[i].prime_crc.str,
-> > colors[i].direct_crc.str);
-> > +		free(colors[i].prime_crc.str);
-> > +		free(colors[i].direct_crc.str);
-> > +	}
-...
-> > +
-> > +igt_main
-> > +{
-> > +	igt_fixture {
-> > +		kmstest_set_vt_graphics_mode();
->=20
-> Is this really needed?
-
-Yeah, it is necessary for every KMS test.
-
-The rest is fixed, thanks for the review. New version is sent.
-
-Oleg
-
->=20
-> > +	}
-> > +	igt_subtest("crc")
->=20
-> Please add a subtest description. See:
-> https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#i=
-gt-describe
->=20
-> > +		run_test_crc(DRIVER_VGEM, DRIVER_ANY);
-> > +}
-
---=-A+3azctjjnpdGdWH8sKp
-Content-Type: application/x-pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-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
-DdWSiLBgHgGaO0ThuDGV4bz316/+F4Vy7z9hcMbMJs41eGz9tueMREgDNywNIAdzWQIDAQABo4IC
-LjCCAiowHQYDVR0OBBYEFP8BYPvxsk8Ryh4Tt/ZBT5qIg2TiMB8GA1UdIwQYMBaAFB5pKrTcKP5H
-GE4hCz+8rBEv8Jj1MGUGA1UdHwReMFwwWqBYoFaGVGh0dHA6Ly93d3cuaW50ZWwuY29tL3JlcG9z
-aXRvcnkvQ1JML0ludGVsJTIwRXh0ZXJuYWwlMjBCYXNpYyUyMElzc3VpbmclMjBDQSUyMDRBLmNy
-bDCBngYIKwYBBQUHAQEEgZEwgY4waQYIKwYBBQUHMAKGXWh0dHA6Ly93d3cuaW50ZWwuY29tL3Jl
-cG9zaXRvcnkvY2VydGlmaWNhdGVzL0ludGVsJTIwRXh0ZXJuYWwlMjBCYXNpYyUyMElzc3Vpbmcl
-MjBDQSUyMDRBLmNydDAhBggrBgEFBQcwAYYVaHR0cDovL29jc3AuaW50ZWwuY29tMAsGA1UdDwQE
-AwIHgDA8BgkrBgEEAYI3FQcELzAtBiUrBgEEAYI3FQiGw4x1hJnlUYP9gSiFjp9TgpHACWeB3r05
-lfBDAgFkAgELMB8GA1UdJQQYMBYGCCsGAQUFBwMEBgorBgEEAYI3CgMMMCkGCSsGAQQBgjcVCgQc
-MBowCgYIKwYBBQUHAwQwDAYKKwYBBAGCNwoDDDBJBgNVHREEQjBAoCYGCisGAQQBgjcUAgOgGAwW
-b2xlZy52YXNpbGV2QGludGVsLmNvbYEWb2xlZy52YXNpbGV2QGludGVsLmNvbTANBgkqhkiG9w0B
-AQUFAAOCAQEAffmCWGLFQzB82/D5fYYzYJ3/8uSfKWA4UPCKcqETG1Zb0vl2FPoCjNID1Bw2HNS7
-TxYcXvrVDul3vdCQfQhKonJi4ioJJXPPAQBDKKPkVoL9f/maehuXJYjFNsGmHNYADJL+4bDRJJcq
-wIQlFVGXvPJFuTSj9HjJAiwH4zehhiEuTTbDhbaaLVrDsEVKCFMj0nvxN4AsYfoBXbscUVLrZs8n
-ZIht2nPvz2NlWwxWgl/7+T42CcriuoeLOPWjmaMncOnXaIR/XNpzvCd6N8Xurg9NhzZaCUwLPAX1
-fyAyMXRsdpgqKqVNd+jLBGt87zB3FQQOh73i8+vBMqm1BfEoojGCAhcwggITAgEBMIGQMHkxCzAJ
-BgNVBAYTAlVTMQswCQYDVQQIEwJDQTEUMBIGA1UEBxMLU2FudGEgQ2xhcmExGjAYBgNVBAoTEUlu
-dGVsIENvcnBvcmF0aW9uMSswKQYDVQQDEyJJbnRlbCBFeHRlcm5hbCBCYXNpYyBJc3N1aW5nIENB
-IDRBAhMzAADRf+xxDzfl4feqAAAAANF/MAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJKoZI
-hvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xOTA4MTYxNDIxNDVaMCMGCSqGSIb3DQEJBDEWBBT63E8o
-rb5d2qO9b97wMrbrdUwnsTANBgkqhkiG9w0BAQEFAASCAQBabgweoaL3ntaGO++Q4r0maGj1EWG/
-iD6lOuk+xpje2MgxKavRA3tIOXqY9YhJi3uuqqhw/E3SICLw1KzMw0ZFj0l8MFy9w90RdR4UDgvJ
-UsRQrxEKgS1z9RDvrDjimk8jZlpiF9qQycti6v/+zwkeZbZqVZEzULoALRRGqhGOHHd2i4QlvRoQ
-MYk9jCWa8blx2fsijeOclyKtlF2o/t7ADSe215/x2UJpRPFQpCd7fGsTpDJIEiQ+8HKdvb3UuItF
-h6d72bg1uLngqgnmfz9+TDiO8aY9X3/R98gMcGT9Bj8YnfKYn0K7OGU2sZO9guM0ggt50N3QTOxR
-zRKMRB/+AAAAAAAA
-
-
---=-A+3azctjjnpdGdWH8sKp--
-
---===============2030048682==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============2030048682==--
+TWFrZSBpdCBwdWJsaWMuCgpBY2tlZC1ieTogRGFuaWVsIFZldHRlciA8ZGFuaWVsLnZldHRlckBm
+ZndsbC5jaD4KQ2M6IFNpbW9uIFNlciA8ZGFuaWVsQGZmd2xsLmNoPgpDYzogRGFuaWVsIFZldHRl
+ciA8ZGFuaWVsQGZmd2xsLmNoPgpTaWduZWQtb2ZmLWJ5OiBPbGVnIFZhc2lsZXYgPG9sZWcudmFz
+aWxldkBpbnRlbC5jb20+Ci0tLQogbGliL2lndF9mYi5jIHwgMzggKysrKysrKysrKysrKysrKysr
+LS0tLS0tLS0tLS0tLS0tLS0tLS0KIGxpYi9pZ3RfZmIuaCB8ICA0ICsrKysKIDIgZmlsZXMgY2hh
+bmdlZCwgMjIgaW5zZXJ0aW9ucygrKSwgMjAgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGli
+L2lndF9mYi5jIGIvbGliL2lndF9mYi5jCmluZGV4IDVkYzc0YTAwLi5iYWQzZWVjYSAxMDA2NDQK
+LS0tIGEvbGliL2lndF9mYi5jCisrKyBiL2xpYi9pZ3RfZmIuYwpAQCAtNDg1LDEyICs0ODUsMTAg
+QEAgc3RhdGljIGludCBmYl9udW1fcGxhbmVzKGNvbnN0IHN0cnVjdCBpZ3RfZmIgKmZiKQogCQly
+ZXR1cm4gZm9ybWF0LT5udW1fcGxhbmVzOwogfQogCi1zdGF0aWMgdm9pZCBmYl9pbml0KHN0cnVj
+dCBpZ3RfZmIgKmZiLAotCQkgICAgaW50IGZkLCBpbnQgd2lkdGgsIGludCBoZWlnaHQsCi0JCSAg
+ICB1aW50MzJfdCBkcm1fZm9ybWF0LAotCQkgICAgdWludDY0X3QgbW9kaWZpZXIsCi0JCSAgICBl
+bnVtIGlndF9jb2xvcl9lbmNvZGluZyBjb2xvcl9lbmNvZGluZywKLQkJICAgIGVudW0gaWd0X2Nv
+bG9yX3JhbmdlIGNvbG9yX3JhbmdlKQordm9pZCBpZ3RfaW5pdF9mYihzdHJ1Y3QgaWd0X2ZiICpm
+YiwgaW50IGZkLCBpbnQgd2lkdGgsIGludCBoZWlnaHQsCisJCSB1aW50MzJfdCBkcm1fZm9ybWF0
+LCB1aW50NjRfdCBtb2RpZmllciwKKwkJIGVudW0gaWd0X2NvbG9yX2VuY29kaW5nIGNvbG9yX2Vu
+Y29kaW5nLAorCQkgZW51bSBpZ3RfY29sb3JfcmFuZ2UgY29sb3JfcmFuZ2UpCiB7CiAJY29uc3Qg
+c3RydWN0IGZvcm1hdF9kZXNjX3N0cnVjdCAqZiA9IGxvb2t1cF9kcm1fZm9ybWF0KGRybV9mb3Jt
+YXQpOwogCkBAIC02MjcsOCArNjI1LDggQEAgdm9pZCBpZ3RfY2FsY19mYl9zaXplKGludCBmZCwg
+aW50IHdpZHRoLCBpbnQgaGVpZ2h0LCB1aW50MzJfdCBkcm1fZm9ybWF0LCB1aW50NjQKIHsKIAlz
+dHJ1Y3QgaWd0X2ZiIGZiOwogCi0JZmJfaW5pdCgmZmIsIGZkLCB3aWR0aCwgaGVpZ2h0LCBkcm1f
+Zm9ybWF0LCBtb2RpZmllciwKLQkJSUdUX0NPTE9SX1lDQkNSX0JUNzA5LCBJR1RfQ09MT1JfWUNC
+Q1JfTElNSVRFRF9SQU5HRSk7CisJaWd0X2luaXRfZmIoJmZiLCBmZCwgd2lkdGgsIGhlaWdodCwg
+ZHJtX2Zvcm1hdCwgbW9kaWZpZXIsCisJCSAgICBJR1RfQ09MT1JfWUNCQ1JfQlQ3MDksIElHVF9D
+T0xPUl9ZQ0JDUl9MSU1JVEVEX1JBTkdFKTsKIAogCWZiLnNpemUgPSBjYWxjX2ZiX3NpemUoJmZi
+KTsKIApAQCAtODU1LDggKzg1Myw4IEBAIHZvaWQgaWd0X2NyZWF0ZV9ib19mb3JfZmIoaW50IGZk
+LCBpbnQgd2lkdGgsIGludCBoZWlnaHQsCiAJCQkgIHVpbnQzMl90IGZvcm1hdCwgdWludDY0X3Qg
+bW9kaWZpZXIsCiAJCQkgIHN0cnVjdCBpZ3RfZmIgKmZiIC8qIG91dCAqLykKIHsKLQlmYl9pbml0
+KGZiLCBmZCwgd2lkdGgsIGhlaWdodCwgZm9ybWF0LCBtb2RpZmllciwKLQkJSUdUX0NPTE9SX1lD
+QkNSX0JUNzA5LCBJR1RfQ09MT1JfWUNCQ1JfTElNSVRFRF9SQU5HRSk7CisJaWd0X2luaXRfZmIo
+ZmIsIGZkLCB3aWR0aCwgaGVpZ2h0LCBmb3JtYXQsIG1vZGlmaWVyLAorCQkgICAgSUdUX0NPTE9S
+X1lDQkNSX0JUNzA5LCBJR1RfQ09MT1JfWUNCQ1JfTElNSVRFRF9SQU5HRSk7CiAJY3JlYXRlX2Jv
+X2Zvcl9mYihmYik7CiB9CiAKQEAgLTg4NSw4ICs4ODMsOCBAQCBpbnQgaWd0X2NyZWF0ZV9ib193
+aXRoX2RpbWVuc2lvbnMoaW50IGZkLCBpbnQgd2lkdGgsIGludCBoZWlnaHQsCiB7CiAJc3RydWN0
+IGlndF9mYiBmYjsKIAotCWZiX2luaXQoJmZiLCBmZCwgd2lkdGgsIGhlaWdodCwgZm9ybWF0LCBt
+b2RpZmllciwKLQkJSUdUX0NPTE9SX1lDQkNSX0JUNzA5LCBJR1RfQ09MT1JfWUNCQ1JfTElNSVRF
+RF9SQU5HRSk7CisJaWd0X2luaXRfZmIoJmZiLCBmZCwgd2lkdGgsIGhlaWdodCwgZm9ybWF0LCBt
+b2RpZmllciwKKwkJICAgIElHVF9DT0xPUl9ZQ0JDUl9CVDcwOSwgSUdUX0NPTE9SX1lDQkNSX0xJ
+TUlURURfUkFOR0UpOwogCiAJZm9yIChpbnQgaSA9IDA7IGkgPCBmYi5udW1fcGxhbmVzOyBpKysp
+CiAJCWZiLnN0cmlkZXNbaV0gPSBzdHJpZGU7CkBAIC0xNDQxLDggKzE0MzksOCBAQCBpZ3RfY3Jl
+YXRlX2ZiX3dpdGhfYm9fc2l6ZShpbnQgZmQsIGludCB3aWR0aCwgaW50IGhlaWdodCwKIHsKIAl1
+aW50MzJfdCBmbGFncyA9IDA7CiAKLQlmYl9pbml0KGZiLCBmZCwgd2lkdGgsIGhlaWdodCwgZm9y
+bWF0LCBtb2RpZmllciwKLQkJY29sb3JfZW5jb2RpbmcsIGNvbG9yX3JhbmdlKTsKKwlpZ3RfaW5p
+dF9mYihmYiwgZmQsIHdpZHRoLCBoZWlnaHQsIGZvcm1hdCwgbW9kaWZpZXIsCisJCSAgICBjb2xv
+cl9lbmNvZGluZywgY29sb3JfcmFuZ2UpOwogCiAJZm9yIChpbnQgaSA9IDA7IGkgPCBmYi0+bnVt
+X3BsYW5lczsgaSsrKQogCQlmYi0+c3RyaWRlc1tpXSA9IGJvX3N0cmlkZTsKQEAgLTE5NzQsOSAr
+MTk3Miw5IEBAIHN0YXRpYyB2b2lkIHNldHVwX2xpbmVhcl9tYXBwaW5nKHN0cnVjdCBmYl9ibGl0
+X3VwbG9hZCAqYmxpdCkKIAkgKiBkZXN0aW5hdGlvbiwgdGlsaW5nIGl0IGF0IHRoZSBzYW1lIHRp
+bWUuCiAJICovCiAKLQlmYl9pbml0KCZsaW5lYXItPmZiLCBmYi0+ZmQsIGZiLT53aWR0aCwgZmIt
+PmhlaWdodCwKLQkJZmItPmRybV9mb3JtYXQsIExPQ0FMX0RSTV9GT1JNQVRfTU9EX05PTkUsCi0J
+CWZiLT5jb2xvcl9lbmNvZGluZywgZmItPmNvbG9yX3JhbmdlKTsKKwlpZ3RfaW5pdF9mYigmbGlu
+ZWFyLT5mYiwgZmItPmZkLCBmYi0+d2lkdGgsIGZiLT5oZWlnaHQsCisJCSAgICBmYi0+ZHJtX2Zv
+cm1hdCwgTE9DQUxfRFJNX0ZPUk1BVF9NT0RfTk9ORSwKKwkJICAgIGZiLT5jb2xvcl9lbmNvZGlu
+ZywgZmItPmNvbG9yX3JhbmdlKTsKIAogCWNyZWF0ZV9ib19mb3JfZmIoJmxpbmVhci0+ZmIpOwog
+CkBAIC0yMTMwLDkgKzIxMjgsOSBAQCBzdGF0aWMgdm9pZCAqaWd0X2ZiX2NyZWF0ZV9jYWlyb19z
+aGFkb3dfYnVmZmVyKGludCBmZCwKIAogCWlndF9hc3NlcnQoc2hhZG93KTsKIAotCWZiX2luaXQo
+c2hhZG93LCBmZCwgd2lkdGgsIGhlaWdodCwKLQkJZHJtX2Zvcm1hdCwgTE9DQUxfRFJNX0ZPUk1B
+VF9NT0RfTk9ORSwKLQkJSUdUX0NPTE9SX1lDQkNSX0JUNzA5LCBJR1RfQ09MT1JfWUNCQ1JfTElN
+SVRFRF9SQU5HRSk7CisJaWd0X2luaXRfZmIoc2hhZG93LCBmZCwgd2lkdGgsIGhlaWdodCwKKwkJ
+ICAgIGRybV9mb3JtYXQsIExPQ0FMX0RSTV9GT1JNQVRfTU9EX05PTkUsCisJCSAgICBJR1RfQ09M
+T1JfWUNCQ1JfQlQ3MDksIElHVF9DT0xPUl9ZQ0JDUl9MSU1JVEVEX1JBTkdFKTsKIAogCXNoYWRv
+dy0+c3RyaWRlc1swXSA9IEFMSUdOKHdpZHRoICogKHNoYWRvdy0+cGxhbmVfYnBwWzBdIC8gOCks
+IDE2KTsKIAlzaGFkb3ctPnNpemUgPSBBTElHTigodWludDY0X3Qpc2hhZG93LT5zdHJpZGVzWzBd
+ICogaGVpZ2h0LApkaWZmIC0tZ2l0IGEvbGliL2lndF9mYi5oIGIvbGliL2lndF9mYi5oCmluZGV4
+IGUxOWNjNWQ0Li42OTEzMmI0MSAxMDA2NDQKLS0tIGEvbGliL2lndF9mYi5oCisrKyBiL2xpYi9p
+Z3RfZmIuaApAQCAtMTE3LDYgKzExNywxMCBAQCB2b2lkIGlndF9nZXRfZmJfdGlsZV9zaXplKGlu
+dCBmZCwgdWludDY0X3QgbW9kaWZpZXIsIGludCBmYl9icHAsCiAJCQkgIHVuc2lnbmVkICp3aWR0
+aF9yZXQsIHVuc2lnbmVkICpoZWlnaHRfcmV0KTsKIHZvaWQgaWd0X2NhbGNfZmJfc2l6ZShpbnQg
+ZmQsIGludCB3aWR0aCwgaW50IGhlaWdodCwgdWludDMyX3QgZm9ybWF0LCB1aW50NjRfdCBtb2Rp
+ZmllciwKIAkJICAgICAgdWludDY0X3QgKnNpemVfcmV0LCB1bnNpZ25lZCAqc3RyaWRlX3JldCk7
+Cit2b2lkIGlndF9pbml0X2ZiKHN0cnVjdCBpZ3RfZmIgKmZiLCBpbnQgZmQsIGludCB3aWR0aCwg
+aW50IGhlaWdodCwKKwkJIHVpbnQzMl90IGRybV9mb3JtYXQsIHVpbnQ2NF90IG1vZGlmaWVyLAor
+CQkgZW51bSBpZ3RfY29sb3JfZW5jb2RpbmcgY29sb3JfZW5jb2RpbmcsCisJCSBlbnVtIGlndF9j
+b2xvcl9yYW5nZSBjb2xvcl9yYW5nZSk7CiB1bnNpZ25lZCBpbnQKIGlndF9jcmVhdGVfZmJfd2l0
+aF9ib19zaXplKGludCBmZCwgaW50IHdpZHRoLCBpbnQgaGVpZ2h0LAogCQkJICAgdWludDMyX3Qg
+Zm9ybWF0LCB1aW50NjRfdCBtb2RpZmllciwKLS0gCjIuMjIuMAoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9pZ3QtZGV2
