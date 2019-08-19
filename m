@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from NAM04-CO1-obe.outbound.protection.outlook.com
+ (mail-eopbgr690061.outbound.protection.outlook.com [40.107.69.61])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 76ED789A67
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2019 14:14:39 +0000 (UTC)
+From: "Li, Sun peng (Leo)" <Sunpeng.Li@amd.com>
+Date: Mon, 19 Aug 2019 14:14:37 +0000
+Message-ID: <90d17513-a9d8-2fa4-ae38-7e8ab8768d99@amd.com>
+References: <20190802172705.32446-1-nicholas.kazlauskas@amd.com>
+In-Reply-To: <20190802172705.32446-1-nicholas.kazlauskas@amd.com>
+Content-Language: en-US
+Content-ID: <AF06F57B1B6F3D47BCD9ADBF59130E09@namprd12.prod.outlook.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 19 Aug 2019 13:22:00 -0000
-Message-ID: <20190819132200.21819.77303@emeril.freedesktop.org>
-References: <20190819103400.31029-1-oleg.vasilev@intel.com>
-In-Reply-To: <20190819103400.31029-1-oleg.vasilev@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHM6?=
- =?utf-8?q?_add_kms=5Fprime_to_Makefile?=
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_multiple: Commit state
+ before remove_fb calls
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,19 +20,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Oleg Vasilev <oleg.vasilev@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Kazlauskas, Nicholas" <Nicholas.Kazlauskas@amd.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogdGVzdHM6IGFkZCBrbXNfcHJpbWUgdG8gTWFr
-ZWZpbGUKVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzY1
-NDEwLwpTdGF0ZSA6IGZhaWx1cmUKCj09IFN1bW1hcnkgPT0KClNlcmllcyA2NTQxMCByZXZpc2lv
-biAxIHdhcyBmdWxseSBtZXJnZWQgb3IgZnVsbHkgZmFpbGVkOiBubyBnaXQgbG9nCgpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcg
-bGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNr
-dG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
+DQoNCk9uIDIwMTktMDgtMDIgMToyNyBwLm0uLCBOaWNob2xhcyBLYXpsYXVza2FzIHdyb3RlOg0K
+PiBUaGUga21zX3BsYW5lX211bHRpcGxlQCogdGVzdHMgZmFpbCBvbiBhbWRncHUgd2l0aCBhIGRt
+ZXNnLXdhcm4gZHVlIHRvDQo+IA0KPiAiYXRvbWljIHJlbW92ZV9mYiBmYWlsZWQgd2l0aCAtMjIi
+DQo+ICJXQVJOSU5HOiBDUFU6IDYgUElEOiAxODMgYXQgZHJpdmVycy9ncHUvZHJtL2RybV9mcmFt
+ZWJ1ZmZlci5jOjk4NiINCj4gDQo+IFRoZSBjYWxsIHRvIGRybU1vZGVSbUZCIGVzc2VudGlhbGx5
+IGNyZWF0ZXMgYW4gYXRvbWljIGNvbW1pdCBpbnRlcm5hbGx5DQo+IHdoZW4gd2UgZHJvcCB0aGUg
+bGFzdCByZWZlcmVuY2UgdG8gdGhlIEZCIGluIElHVC4gVGhpcyBjb21taXQgZGlzYWJsZXMNCj4g
+dGhlIHBsYW5lIGFzc29jaWF0ZWQgd2l0aCBmcmFtZWJ1ZmZlci4NCj4gDQo+IFNpbmNlIHRoZSBw
+bGFuZXMgYXJlIGl0ZXJhdGVkIGJ5IGluY3JlYXNpbmcgaW5kZXggaW4gSUdUIHRoZSBsYXN0DQo+
+IHBsYW5lIHRvIGhhdmUgaXRzIGZyYW1lYnVmZmVyIHJlbW92ZWQgaXMgdGhlIGN1cnNvciBwbGFu
+ZSBvbiBBTURHUFUuDQo+IA0KPiBPbiBBTURHUFUgd2UgY2FuJ3QgZW5hYmxlIHRoZSBjdXJzb3Ig
+cGxhbmUgd2l0aG91dCBhbnkgYWN0aXZlIGhhcmR3YXJlDQo+IHBsYW5lcyAocHJpbWFyeSwgb3Zl
+cmxheSkgc2luY2UgdGhlcmUgaXMgbm8gZGVkaWNhdGVkIGN1cnNvciBwbGFuZS4NCj4gDQo+IFRo
+ZSBjb21taXRzIHRvIHJlbGVhc2UgdGhlIG92ZXJsYXkgcGxhbmUgZmFpbCBzaW5jZSBpdCdzIHRo
+ZSBsYXN0DQo+IHJlbWFpbmluZyBwbGFuZSBhbmQgdGhlIGN1cnNvciBwbGFuZSBpcyBzdGlsbCBh
+Y3RpdmUuDQo+IA0KPiBUaGUgZml4IHRvIHRoZSB0ZXN0IGlzIHRvIGp1c3QgcGVyZm9ybSBhIGNv
+bW1pdCB0aGF0IGRpc2FibGVzIGFsbCAzDQo+IHBsYW5lcyBhdCB0aGUgc2FtZSB0aW1lIGJlZm9y
+ZSBjYWxsaW5nIHJlbW92ZV9mYi4NCj4gDQo+IFRoaXMgaW1wcm92ZXMgcGVyZm9ybWFuY2UgZW5h
+YmxlcyBzdXBwb3J0IGZvciBkcml2ZXJzIHRoYXQgZG9uJ3QNCj4gc3VwcG9ydCBjdXJzb3IgcGxh
+bmVzIGJlaW5nIGVuYWJsZWQgd2l0aG91dCBhIHByaW1hcnkgb3Igb3ZlcmxheS4NCj4gDQo+IENj
+OiBMZW8gTGkgPHN1bnBlbmcubGlAYW1kLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogTmljaG9sYXMg
+S2F6bGF1c2thcyA8bmljaG9sYXMua2F6bGF1c2thc0BhbWQuY29tPg0KDQpSZXZpZXdlZC1ieTog
+TGVvIExpIDxzdW5wZW5nLmxpQGFtZC5jb20+DQoNClRoYW5rcywNCkxlbw0KDQo+IC0tLQ0KPiAg
+dGVzdHMva21zX3BsYW5lX211bHRpcGxlLmMgfCA0ICsrKysNCj4gIDEgZmlsZSBjaGFuZ2VkLCA0
+IGluc2VydGlvbnMoKykNCj4gDQo+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfcGxhbmVfbXVsdGlw
+bGUuYyBiL3Rlc3RzL2ttc19wbGFuZV9tdWx0aXBsZS5jDQo+IGluZGV4IDgxZWQ0NWRkLi4yNTVj
+ZDM0YSAxMDA2NDQNCj4gLS0tIGEvdGVzdHMva21zX3BsYW5lX211bHRpcGxlLmMNCj4gKysrIGIv
+dGVzdHMva21zX3BsYW5lX211bHRpcGxlLmMNCj4gQEAgLTMxNyw2ICszMTcsOCBAQCB0ZXN0X3Bs
+YW5lX3Bvc2l0aW9uX3dpdGhfb3V0cHV0KGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsDQo+
+ICAJCWZvcl9lYWNoX3BsYW5lX29uX3BpcGUoJmRhdGEtPmRpc3BsYXksIHBpcGUsIHBsYW5lKQ0K
+PiAgCQkJaWd0X3BsYW5lX3NldF9mYihwbGFuZSwgTlVMTCk7DQo+ICANCj4gKwkJaWd0X2Rpc3Bs
+YXlfY29tbWl0MigmZGF0YS0+ZGlzcGxheSwgQ09NTUlUX0FUT01JQyk7DQo+ICsNCj4gIAkJZm9y
+IChpbnQgeCA9IDA7IHggPCBjOyB4KyspDQo+ICAJCQlpZ3RfcmVtb3ZlX2ZiKGRhdGEtPmRybV9m
+ZCwgJmRhdGEtPmZiW3hdKTsNCj4gIAl9IHdoaWxlICghZXJyICYmIGMgPCBuX3BsYW5lcyk7DQo+
+IEBAIC0zNDAsNiArMzQyLDggQEAgdGVzdF9wbGFuZV9wb3NpdGlvbl93aXRoX291dHB1dChkYXRh
+X3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlLA0KPiAgCQlmb3JfZWFjaF9wbGFuZV9vbl9waXBlKCZk
+YXRhLT5kaXNwbGF5LCBwaXBlLCBwbGFuZSkNCj4gIAkJCWlndF9wbGFuZV9zZXRfZmIocGxhbmUs
+IE5VTEwpOw0KPiAgDQo+ICsJCWlndF9kaXNwbGF5X2NvbW1pdDIoJmRhdGEtPmRpc3BsYXksIENP
+TU1JVF9BVE9NSUMpOw0KPiArDQo+ICAJCWZvciAoaW50IHggPSAwOyB4IDwgYzsgeCsrKQ0KPiAg
+CQkJaWd0X3JlbW92ZV9mYihkYXRhLT5kcm1fZmQsICZkYXRhLT5mYlt4XSk7DQo+ICANCj4gDQpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1h
+aWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZy
+ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
