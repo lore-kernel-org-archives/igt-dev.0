@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0DD3B6E787
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Aug 2019 08:32:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 00C8789F24
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Aug 2019 08:51:13 +0000 (UTC)
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
 In-Reply-To: <20190819223137.3605-1-antonio.argenziano@intel.com>
 References: <20190819223137.3605-1-antonio.argenziano@intel.com>
-Message-ID: <156628992572.1374.7365340117389014834@skylake-alporthouse-com>
-Date: Tue, 20 Aug 2019 09:32:05 +0100
+Message-ID: <156629106028.1374.13852420105577002712@skylake-alporthouse-com>
+Date: Tue, 20 Aug 2019 09:51:00 +0100
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/igt_command_line.sh: Add new
  selftest for special handling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -43,9 +43,7 @@ ICAgIGlmIFsgIiR0ZXN0bmFtZSIgIT0gImk5MTVfc2VsZnRlc3QiIC1hICIkdGVzdG5hbWUiICE9
 ICJkcm1fbW0iIC1hICIkdGVzdG5hbWUiICE9ICJrbXNfc2VsZnRlc3QiIF07IHRoZW4KPiArICAg
 ICAgICAgICAgICAgaWYgWyAiJHRlc3RuYW1lIiAhPSAiaTkxNV9zZWxmdGVzdCIgLWEgIiR0ZXN0
 bmFtZSIgIT0gImRybV9tbSIgLWEgIiR0ZXN0bmFtZSIgIT0gImttc19zZWxmdGVzdCIgLWEgIiR0
-ZXN0bmFtZSIgIT0gImRtYWJ1Zl9zZWxmdGVzdHMiXTsgdGhlbgoKVGhpcyBkb2VzIG5vdCBzY2Fs
-ZS4gV2hhdCBkb2VzIHRoaXMgdGVzdCBldmVuIGFjaGlldmUgYXMgaXQgYXBwZWFycyBub3QKdG8g
-YmUgdGhlIGludGVuZGVkIGJlaGF2aW91cj8KLUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4v
-bGlzdGluZm8vaWd0LWRldg==
+ZXN0bmFtZSIgIT0gImRtYWJ1Zl9zZWxmdGVzdHMiXTsgdGhlbgoKVGhlIG5hbWUgaXMganVzdCAi
+ZG1hYnVmIgotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
+aHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
