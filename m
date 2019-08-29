@@ -1,13 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: Matt Roper <matthew.d.roper@intel.com>
+Date: Thu, 29 Aug 2019 09:47:07 -0700
+Message-Id: <20190829164707.30012-1-matthew.d.roper@intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20190829145416.31626-2-chris@chris-wilson.co.uk>
-References: <20190829145416.31626-1-chris@chris-wilson.co.uk>
- <20190829145416.31626-2-chris@chris-wilson.co.uk>
-Message-ID: <156709075411.12323.11012570791319711328@skylake-alporthouse-com>
-Date: Thu, 29 Aug 2019 15:59:14 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/intel_mmio: add additional api
- for multiple devices
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_rotation_crc: Skip on platforms
+ without atomic modesetting
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,28 +16,23 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>, Jani Nikula <jani.nikula@intel.com>, intel-gfx@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBDaHJpcyBXaWxzb24gKDIwMTktMDgtMjkgMTU6NTQ6MTYpCj4gRnJvbTogRGFuaWVs
-IE1yenlnbG9kIDxkYW5pZWwudC5tcnp5Z2xvZEBpbnRlbC5jb20+Cj4gCj4gTGlicmFyeSAgd2Fz
-IGxpbWl0ZWQgZm9yIHJlYWRpbmcgcmVnaXN0ZXJzIGZvciBvbmx5Cj4gb25lIGRldmljZSBhdCBh
-IHRpbWUgaW4gaWd0IHRlc3RzLgo+IENoYW5nZXMgaW4gdGhpcyBwYXRjaCBnaXZlIGFzIG9wb3J0
-dW5pdHkgdG8gdGVzdCBtdWx0aXBsZSBkZXZpY2VzIGluCj4gdGhlIHNhbWUgdGltZS4KPiAKPiB2
-ODogcGFjayBhbmQgcmVuYW1lIHN0cnVjdHVyZSwgcmVtb3ZlIHVubmVjZXNzYXJ5IGZpZWxkCj4g
-djc6IHJlbW92ZSB1bm5lY2Vzc2FyeSBjb2RlCj4gdjY6IFJld29yZCBwYXRjaC4gQ29zbWV0aWMg
-Y2hhbmdlcy4KPiAKPiBDYzogQW50b25pbyBBcmdlbnppYW5vIDxhbnRvbmlvLmFyZ2Vuemlhbm9A
-aW50ZWwuY29tPgo+IENjOiBEYW5pZWxlIFNwdXJpbyBDZXJhb2xvIDxkYW5pZWxlLmNlcmFvbG9z
-cHVyaW9AaW50ZWwuY29tPgo+IENjOiBLYXRhcnp5bmEgRGVjIDxrYXRhcnp5bmEuZGVjQGludGVs
-LmNvbT4KPiBDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Cj4gQ2M6
-IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgo+IENjOiBaYmlnbmlldyBL
-ZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KPiBDYzogSmFuaSBO
-aWt1bGEgPGphbmkubmlrdWxhQGludGVsLmNvbT4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBEYW5pZWwg
-TXJ6eWdsb2QgPGRhbmllbC50Lm1yenlnbG9kQGludGVsLmNvbT4KCkxvb2tzIG9rLApSZXZpZXdl
-ZC1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+CgpXaWxsIG5lZWQg
-dG8gYWN0dWFsbHkgY2hlY2sgaW50ZWxfcmVnIHdvcmtzIHdpdGhvdXQgaTkxNS5rbyBsb2FkZWQg
-b3IKZWxzZSBpdCB3aWxsIGJlIHJldmVydGVkLgotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9pZ3QtZGV2
+VGhpcyB0ZXN0IHBlcmZvcm1zIGRpc3BsYXkgdXBkYXRlcyB2aWEgQ09NTUlUX0FUT01JQywgYnV0
+IGZhaWxzIHRvIGNoZWNrCnRoYXQgdGhlIHBsYXRmb3JtIGJlaW5nIHRlc3RlZCBhY3R1YWxseSBz
+dXBwb3J0cyBhdG9taWMuICBUaGlzIGNhdXNlcwpmYWlsdXJlcyBvbiBzb21lIG9mIG91ciBvbGRl
+ciBwcmUtZ2VuNSBwbGF0Zm9ybXMuCgpCdWd6aWxsYTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9w
+Lm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTA2MDEyClNpZ25lZC1vZmYtYnk6IE1hdHQgUm9wZXIgPG1h
+dHRoZXcuZC5yb3BlckBpbnRlbC5jb20+Ci0tLQogdGVzdHMva21zX3JvdGF0aW9uX2NyYy5jIHwg
+MSArCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykKCmRpZmYgLS1naXQgYS90ZXN0cy9r
+bXNfcm90YXRpb25fY3JjLmMgYi90ZXN0cy9rbXNfcm90YXRpb25fY3JjLmMKaW5kZXggZmU0MDQ4
+MTAuLjY2OGMxNzMyIDEwMDY0NAotLS0gYS90ZXN0cy9rbXNfcm90YXRpb25fY3JjLmMKKysrIGIv
+dGVzdHMva21zX3JvdGF0aW9uX2NyYy5jCkBAIC03ODAsNiArNzgwLDcgQEAgaWd0X21haW4KIAkJ
+aWd0X3JlcXVpcmVfcGlwZV9jcmMoZGF0YS5nZnhfZmQpOwogCiAJCWlndF9kaXNwbGF5X3JlcXVp
+cmUoJmRhdGEuZGlzcGxheSwgZGF0YS5nZnhfZmQpOworCQlpZ3RfcmVxdWlyZShkYXRhLmRpc3Bs
+YXkuaXNfYXRvbWljKTsKIAl9CiAKIAlmb3IgKHN1YnRlc3QgPSBzdWJ0ZXN0czsgc3VidGVzdC0+
+cm90OyBzdWJ0ZXN0KyspIHsKLS0gCjIuMjAuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
+cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9pZ3QtZGV2
