@@ -1,13 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CCB2289704
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Sep 2019 20:10:39 +0000 (UTC)
+References: <1565267697-19510-1-git-send-email-swati2.sharma@intel.com>
+ <1b460e442e9c1761c81bd5b70c27e410904386d6.camel@intel.com>
+ <156569270736.2301.12064025513824066940@skylake-alporthouse-com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+Message-ID: <a80d1aaa-66fe-1167-6760-fab0ee109cf0@intel.com>
+Date: Wed, 4 Sep 2019 01:40:36 +0530
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 03 Sep 2019 20:06:04 -0000
-Message-ID: <20190903200604.6071.7120@emeril.freedesktop.org>
-References: <20190902041548.14919-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20190902041548.14919-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/6=5D_lib=3A_Fix_gem=5Fmeasure=5Frin?=
- =?utf-8?q?g=5Finflight_=28rev2=29?=
+In-Reply-To: <156569270736.2301.12064025513824066940@skylake-alporthouse-com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Add assert for
+ drm_intel_bufmgr and intel_batchbuffer before usage
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,90 +20,167 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0631975024=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, "Ser, Simon" <simon.ser@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW2ktZy10
-LDEvNl0gbGliOiBGaXggZ2VtX21lYXN1cmVfcmluZ19pbmZsaWdodCAocmV2MikKVVJMICAgOiBo
-dHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzY2MTEwLwpTdGF0ZSA6IHN1
-Y2Nlc3MKCj09IFN1bW1hcnkgPT0KCkNJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20gSUdUXzUxNjYg
-LT4gSUdUUFdfMzQxNAo9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09CgpTdW1tYXJ5Ci0tLS0tLS0KCiAgKipTVUNDRVNTKioKCiAgTm8gcmVncmVzc2lv
-bnMgZm91bmQuCgogIEV4dGVybmFsIFVSTDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Au
-b3JnL2FwaS8xLjAvc2VyaWVzLzY2MTEwL3JldmlzaW9ucy8yL21ib3gvCgpLbm93biBpc3N1ZXMK
-LS0tLS0tLS0tLS0tCgogIEhlcmUgYXJlIHRoZSBjaGFuZ2VzIGZvdW5kIGluIElHVFBXXzM0MTQg
-dGhhdCBjb21lIGZyb20ga25vd24gaXNzdWVzOgoKIyMjIElHVCBjaGFuZ2VzICMjIwoKIyMjIyBJ
-c3N1ZXMgaGl0ICMjIyMKCiAgKiBpZ3RAZ2VtX2N0eF9zd2l0Y2hAbGVnYWN5LXJlbmRlcjoKICAg
-IC0gZmktYnh0LWRzaTogICAgICAgICBbUEFTU11bMV0gLT4gW0lOQ09NUExFVEVdWzJdIChbZmRv
-IzEwMzkyN10gLyBbZmRvIzExMTM4MV0pCiAgIFsxXTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
-b3JnL3RyZWUvZHJtLXRpcC9JR1RfNTE2Ni9maS1ieHQtZHNpL2lndEBnZW1fY3R4X3N3aXRjaEBs
-ZWdhY3ktcmVuZGVyLmh0bWwKICAgWzJdOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJl
-ZS9kcm0tdGlwL0lHVFBXXzM0MTQvZmktYnh0LWRzaS9pZ3RAZ2VtX2N0eF9zd2l0Y2hAbGVnYWN5
-LXJlbmRlci5odG1sCgogICogaWd0QGk5MTVfbW9kdWxlX2xvYWRAcmVsb2FkOgogICAgLSBmaS1p
-Y2wtdTM6ICAgICAgICAgIFtQQVNTXVszXSAtPiBbRE1FU0ctV0FSTl1bNF0gKFtmZG8jMTA3NzI0
-XSAvIFtmZG8jMTExMjE0XSkKICAgWzNdOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJl
-ZS9kcm0tdGlwL0lHVF81MTY2L2ZpLWljbC11My9pZ3RAaTkxNV9tb2R1bGVfbG9hZEByZWxvYWQu
-aHRtbAogICBbNF06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdU
-UFdfMzQxNC9maS1pY2wtdTMvaWd0QGk5MTVfbW9kdWxlX2xvYWRAcmVsb2FkLmh0bWwKCiAgKiBp
-Z3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGJhc2ljOgogICAgLSBmaS1pY2wtdTI6ICAgICAg
-ICAgIFtQQVNTXVs1XSAtPiBbRkFJTF1bNl0gKFtmZG8jMTAzMTY3XSkKICAgWzVdOiBodHRwczov
-L2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVF81MTY2L2ZpLWljbC11Mi9pZ3RA
-a21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGJhc2ljLmh0bWwKICAgWzZdOiBodHRwczovL2ludGVs
-LWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzM0MTQvZmktaWNsLXUyL2lndEBrbXNf
-ZnJvbnRidWZmZXJfdHJhY2tpbmdAYmFzaWMuaHRtbAoKICAqIGlndEBrbXNfcHJvcF9ibG9iQGJh
-c2ljOgogICAgLSBmaS1pY2wtdTM6ICAgICAgICAgIFtQQVNTXVs3XSAtPiBbRE1FU0ctV0FSTl1b
-OF0gKFtmZG8jMTA3NzI0XSkKICAgWzddOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJl
-ZS9kcm0tdGlwL0lHVF81MTY2L2ZpLWljbC11My9pZ3RAa21zX3Byb3BfYmxvYkBiYXNpYy5odG1s
-CiAgIFs4XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18z
-NDE0L2ZpLWljbC11My9pZ3RAa21zX3Byb3BfYmxvYkBiYXNpYy5odG1sCgogIAojIyMjIFBvc3Np
-YmxlIGZpeGVzICMjIyMKCiAgKiBpZ3RAZ2VtX21tYXBfZ3R0QGJhc2ljLXJlYWQ6CiAgICAtIGZp
-LWljbC11MzogICAgICAgICAgW0RNRVNHLVdBUk5dWzldIChbZmRvIzEwNzcyNF0pIC0+IFtQQVNT
-XVsxMF0KICAgWzldOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lH
-VF81MTY2L2ZpLWljbC11My9pZ3RAZ2VtX21tYXBfZ3R0QGJhc2ljLXJlYWQuaHRtbAogICBbMTBd
-OiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzM0MTQvZmkt
-aWNsLXUzL2lndEBnZW1fbW1hcF9ndHRAYmFzaWMtcmVhZC5odG1sCgogICogaWd0QGttc19mcm9u
-dGJ1ZmZlcl90cmFja2luZ0BiYXNpYzoKICAgIC0gZmktaWNsLXUzOiAgICAgICAgICBbRkFJTF1b
-MTFdIChbZmRvIzEwMzE2N10pIC0+IFtQQVNTXVsxMl0KICAgWzExXTogaHR0cHM6Ly9pbnRlbC1n
-ZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RfNTE2Ni9maS1pY2wtdTMvaWd0QGttc19mcm9u
-dGJ1ZmZlcl90cmFja2luZ0BiYXNpYy5odG1sCiAgIFsxMl06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNp
-LjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMzQxNC9maS1pY2wtdTMvaWd0QGttc19mcm9udGJ1
-ZmZlcl90cmFja2luZ0BiYXNpYy5odG1sCiAgICAtIHtmaS1pY2wtdTR9OiAgICAgICAgW0ZBSUxd
-WzEzXSAoW2ZkbyMxMDMxNjddKSAtPiBbUEFTU11bMTRdCiAgIFsxM106IGh0dHBzOi8vaW50ZWwt
-Z2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUXzUxNjYvZmktaWNsLXU0L2lndEBrbXNfZnJv
-bnRidWZmZXJfdHJhY2tpbmdAYmFzaWMuaHRtbAogICBbMTRdOiBodHRwczovL2ludGVsLWdmeC1j
-aS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzM0MTQvZmktaWNsLXU0L2lndEBrbXNfZnJvbnRi
-dWZmZXJfdHJhY2tpbmdAYmFzaWMuaHRtbAoKICAKICB7bmFtZX06IFRoaXMgZWxlbWVudCBpcyBz
-dXBwcmVzc2VkLiBUaGlzIG1lYW5zIGl0IGlzIGlnbm9yZWQgd2hlbiBjb21wdXRpbmcKICAgICAg
-ICAgIHRoZSBzdGF0dXMgb2YgdGhlIGRpZmZlcmVuY2UgKFNVQ0NFU1MsIFdBUk5JTkcsIG9yIEZB
-SUxVUkUpLgoKICBbZmRvIzEwMzE2N106IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hv
-d19idWcuY2dpP2lkPTEwMzE2NwogIFtmZG8jMTAzOTI3XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNr
-dG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9MTAzOTI3CiAgW2ZkbyMxMDc3MjRdOiBodHRwczovL2J1
-Z3MuZnJlZWRlc2t0b3Aub3JnL3Nob3dfYnVnLmNnaT9pZD0xMDc3MjQKICBbZmRvIzExMTIxNF06
-IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTExMTIxNAogIFtm
-ZG8jMTExMzgxXTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/aWQ9
-MTExMzgxCgoKUGFydGljaXBhdGluZyBob3N0cyAoNTMgLT4gNDIpCi0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLQoKICBNaXNzaW5nICAgICgxMSk6IGZpLWtibC1zb3Jha2EgZmktaWxrLW01
-NDAgZmktY21sLWggZmktYnN3LW4zMDUwIGZpLWJ5dC1qMTkwMCBmaS1oc3ctNDIwMHUgZmktYnl0
-LXNxdWF3a3MgZmktYnN3LWN5YW4gZmktaWNsLXkgZmktYnl0LWNsYXBwZXIgZmktYmR3LXNhbXVz
-IAoKCkJ1aWxkIGNoYW5nZXMKLS0tLS0tLS0tLS0tLQoKICAqIENJOiBDSS0yMDE5MDUyOSAtPiBO
-b25lCiAgKiBJR1Q6IElHVF81MTY2IC0+IElHVFBXXzM0MTQKCiAgQ0ktMjAxOTA1Mjk6IDIwMTkw
-NTI5CiAgQ0lfRFJNXzY4Mjg6IDZlMDQzZGRlMTVhMWIyYjk3ZDkwOGQwNDY3ZTkxOTdmZmE4OTM0
-YzIgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvbGludXgKICBJR1RQV18z
-NDE0OiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzM0MTQv
-CiAgSUdUXzUxNjY6IGE5ZmMwZTJkNDI5ODA4NWUyNmFkYTUzNTM5NWI2MTU1ZDY4MTIwYzYgQCBn
-aXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy94b3JnL2FwcC9pbnRlbC1ncHUtdG9vbHMKCgoK
-PT0gVGVzdGxpc3QgY2hhbmdlcyA9PQoKK2lndEBnZW1fY3R4X3BlcnNpc3RlbmNlQGNsZWFudXAK
-K2lndEBnZW1fY3R4X3BlcnNpc3RlbmNlQGZpbGUKK2lndEBnZW1fY3R4X3BlcnNpc3RlbmNlQGhv
-c3RpbGUKK2lndEBnZW1fY3R4X3BlcnNpc3RlbmNlQGlkZW1wb3RlbnQKK2lndEBnZW1fY3R4X3Bl
-cnNpc3RlbmNlQG1peGVkCitpZ3RAZ2VtX2N0eF9wZXJzaXN0ZW5jZUBwZXJzaXN0ZW5jZQoraWd0
-QGdlbV9jdHhfcGVyc2lzdGVuY2VAcHJvY2VzcwoKPT0gTG9ncyA9PQoKRm9yIG1vcmUgZGV0YWls
-cyBzZWU6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMzQx
-NC8KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRl
-diBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0
-cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+This is a multi-part message in MIME format.
+--===============0631975024==
+Content-Type: multipart/alternative;
+ boundary="------------5E5F357BB8D37A11F6B567EF"
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------5E5F357BB8D37A11F6B567EF
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 13-Aug-19 4:08 PM, Chris Wilson wrote:
+> Quoting Ser, Simon (2019-08-13 11:28:54)
+>> On Thu, 2019-08-08 at 18:04 +0530, Swati Sharma wrote:
+>>> if drm_intel_bufmgr_gem_init() or intel_batchbuffer_alloc()
+>>> returns NULL, it leads to seg fault as below:
+>>>
+>>> root@testrunner:/home/testrunner/swati/otc_gen_graphics-intel-gpu-tools#
+>>> ./tests/kms_big_fb
+>>> IGT-Version: 1.24-g976db91 (x86_64) (Linux: 5.1.0-rc6+ x86_64)
+>>> Max driver framebuffer size 8192x8192
+>>> RAM: 2749 MiB, GPU address space: 134217728 MiB, GGTT mappable size: 256
+>>> MiB
+>>> Received signal SIGSEGV.
+>>> Stack trace:
+>>>   #0 [fatal_sig_handler+0x77]
+>>>   #1 [killpg+0x40]
+>>>   #2 [drm_intel_bo_alloc+0x0]
+>>>   #3 [intel_batchbuffer_reset+0x33]
+>>>   #4 [intel_batchbuffer_alloc+0x34]
+>>>   #5 [__real_main603+0x3e9]
+>>>   #6 [main+0x23]
+>>>   #7 [__libc_start_main+0xf0]
+>>>   #8 [_start+0x29]
+>>>   #9 [<unknown>+0x29]
+>>> Segmentation fault (core dumped)
+>>>
+>>> To prevent this igt_assert() is added for both the functions.
+>> I'm not sure I understand why this segfault happens. Seems like
+>> drm_intel_bufmgr_gem_init can return NULL in the following cases:
+>>
+>> * No compiled with libdrm_intel support, in which case the tests should
+>>    be skipped
+>> * Allocation failure or pthread mutex failure, which are unlikely to
+>>    happen (but it would be nice to log something when those fail)
+>> * DRM_IOCTL_I915_GEM_APERTURE fails (but something is printed to
+>>    stderr, it doesn't seem like this is the case here)
+>>
+>> Am I missing something?
+> Usual cause is unrecognised GPU by libdrm. In which case it should be an
+> igt_require_f(data.bufmgr, "Update libdrm for %s support\n", intel_chipset_get_name(devid))
+> Roll that up into an <somename>_wrapper and spread far and wide.
+> (Although I prefer the option of not using libdrm_intel in the first
+> place.)
+> -Chris
+Shouldn't we add igt_assert() and instead add wrapper func to check bufmgr?
+
+
+-- 
+~Swati Sharma
+
+
+--------------5E5F357BB8D37A11F6B567EF
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body text="#000000" bgcolor="#FFFFFF">
+    <div class="moz-cite-prefix"><tt>On 13-Aug-19 4:08 PM, Chris Wilson
+        wrote:</tt><br>
+    </div>
+    <blockquote type="cite"
+cite="mid:156569270736.2301.12064025513824066940@skylake-alporthouse-com">
+      <pre class="moz-quote-pre" wrap="">Quoting Ser, Simon (2019-08-13 11:28:54)
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">On Thu, 2019-08-08 at 18:04 +0530, Swati Sharma wrote:
+</pre>
+        <blockquote type="cite">
+          <pre class="moz-quote-pre" wrap="">if drm_intel_bufmgr_gem_init() or intel_batchbuffer_alloc()
+returns NULL, it leads to seg fault as below:
+
+root@testrunner:/home/testrunner/swati/otc_gen_graphics-intel-gpu-tools#
+./tests/kms_big_fb
+IGT-Version: 1.24-g976db91 (x86_64) (Linux: 5.1.0-rc6+ x86_64)
+Max driver framebuffer size 8192x8192
+RAM: 2749 MiB, GPU address space: 134217728 MiB, GGTT mappable size: 256
+MiB
+Received signal SIGSEGV.
+Stack trace:
+ #0 [fatal_sig_handler+0x77]
+ #1 [killpg+0x40]
+ #2 [drm_intel_bo_alloc+0x0]
+ #3 [intel_batchbuffer_reset+0x33]
+ #4 [intel_batchbuffer_alloc+0x34]
+ #5 [__real_main603+0x3e9]
+ #6 [main+0x23]
+ #7 [__libc_start_main+0xf0]
+ #8 [_start+0x29]
+ #9 [&lt;unknown&gt;+0x29]
+Segmentation fault (core dumped)
+
+To prevent this igt_assert() is added for both the functions.
+</pre>
+        </blockquote>
+        <pre class="moz-quote-pre" wrap="">
+I'm not sure I understand why this segfault happens. Seems like
+drm_intel_bufmgr_gem_init can return NULL in the following cases:
+
+* No compiled with libdrm_intel support, in which case the tests should
+  be skipped
+* Allocation failure or pthread mutex failure, which are unlikely to
+  happen (but it would be nice to log something when those fail)
+* DRM_IOCTL_I915_GEM_APERTURE fails (but something is printed to
+  stderr, it doesn't seem like this is the case here)
+
+Am I missing something?
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Usual cause is unrecognised GPU by libdrm. In which case it should be an
+igt_require_f(data.bufmgr, "Update libdrm for %s support\n", intel_chipset_get_name(devid))
+Roll that up into an &lt;somename&gt;_wrapper and spread far and wide.
+(Although I prefer the option of not using libdrm_intel in the first
+place.)
+-Chris</pre>
+    </blockquote>
+    <tt>Shouldn't we add igt_assert() and instead add wrapper func to
+      check bufmgr?</tt><br>
+    <blockquote type="cite"
+cite="mid:156569270736.2301.12064025513824066940@skylake-alporthouse-com">
+      <pre class="moz-quote-pre" wrap="">
+</pre>
+    </blockquote>
+    <br>
+    <br>
+    <pre class="moz-signature" cols="72">-- 
+~Swati Sharma
+</pre>
+  </body>
+</html>
+
+--------------5E5F357BB8D37A11F6B567EF--
+
+--===============0631975024==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============0631975024==--
