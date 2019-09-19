@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 19 Sep 2019 17:09:16 +0300
-From: Andi Shyti <andi.shyti@intel.com>
-Message-ID: <20190919140916.GC3723@intel.intel>
-References: <20190911101501.7182-1-chris@chris-wilson.co.uk>
- <20190911101501.7182-3-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190911101501.7182-3-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] kms_busy: Replace fiddling with
- hangcheck modparam with explicit fence
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20190919140857.GA3723@intel.intel>
+References: <20190911101501.7182-1-chris@chris-wilson.co.uk>
+ <20190919140857.GA3723@intel.intel>
+Message-ID: <156890281365.591.11945403003016053142@skylake-alporthouse-com>
+Date: Thu, 19 Sep 2019 15:20:13 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] i915/gem_eio: Race kms on/off vs
+ reset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,19 +19,22 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Andi Shyti <andi.shyti@intel.com>
 Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgQ2hyaXMsCgpPbiBXZWQsIFNlcCAxMSwgMjAxOSBhdCAxMToxNTowMUFNICswMTAwLCBDaHJp
-cyBXaWxzb24gd3JvdGU6Cj4gVXNlIGFuIGV4cGxpY2l0IGZlbmNlIHRvIGNpcmN1bXZlbnQgdGhl
-IFtpOTE1XSBHUFUgaGFuZyBkZXRlY3Rpb24gcmF0aGVyCj4gdGhhbiB0d2VhayB0aGUgaTkxNSBz
-cGVjaWZpYyBtb2RwYXJhbSAoYW5kIHJlbW92ZSB0aGUgYXNzZXJ0aW9uIHRoYXQKPiBzdWNoIGEg
-cGFyYW0gZXhpc3RzKS4gTm90ZSwgdGhhdCB3aXRoIGEgYml0IG1vcmUgd29yaywgdGhlIGZlbmNl
-IGNvdWxkCj4gYmUgdXNlZCBiZSBkaXJlY3RseSByYXRoZXIgdGhhbiB2aWEgZGlydHlpbmcgdGhl
-IGZiIHdpdGggYSBkdW1teWxvYWQuCj4gCj4gU2lnbmVkLW9mZi1ieTogQ2hyaXMgV2lsc29uIDxj
-aHJpc0BjaHJpcy13aWxzb24uY28udWs+Cgpsb29rcyBPSywKClJldmlld2VkLWJ5OiBBbmRpIFNo
-eXRpIDxhbmRpLnNoeXRpQGludGVsLmNvbT4KCkFuZGkKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0
-cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9pZ3QtZGV2
+UXVvdGluZyBBbmRpIFNoeXRpICgyMDE5LTA5LTE5IDE1OjA4OjU3KQo+IEhpIENocmlzLAo+IAo+
+IE9uIFdlZCwgU2VwIDExLCAyMDE5IGF0IDExOjE0OjU5QU0gKzAxMDAsIENocmlzIFdpbHNvbiB3
+cm90ZToKPiA+IE9uIG9sZGVyIHBsYXRmb3JtcywgcGVyZm9ybWluZyBhIEdQVSByZXNldCBjbG9i
+YmVycyB0aGUgZGlzcGxheS4KPiA+IEV4ZXJjaXNlIHRoZSBpbnRlcmFjdGlvbnMgYmV0d2VlbiBy
+ZXNldC93ZWRnZSBhbmQgdGhlIGRpc3BsYXkgYW5kCj4gPiBob3BlZnVsbHkgcHJldmVudCBhbnkg
+cmFjZXMgY3JlZXBpbmcgaW4uCj4gPiAKPiA+IFNpZ25lZC1vZmYtYnk6IENocmlzIFdpbHNvbiA8
+Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+ID4gQ2M6IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUu
+c3lyamFsYUBsaW51eC5pbnRlbC5jb20+Cj4gCj4gSXMgVmlsbGUgQ2MnZWQgZm9yIHJlYWwgb3Ig
+anVzdCBub21pbmFsbHk/CgpIZSdzIGluIHRoZSBvcmlnaW5hbCBjYy4gQXMgaXQgaXMgdXNpbmcg
+IlN5cmrDpGzDpCIsIHRoYXQgbWVhbnMgSSBjb3BpZWQKaGlzIGVtYWlsIGFkZHJlc3MgZnJvbSBv
+bmUgb2YgaGlzIGNvbW1pdHMsIHNvIGl0IHNob3VsZCBiZSB0aGUgcmlnaHQKYWRkcmVzcy4KCm1h
+aWxtYW4gbmF0dXJhbGx5IGRyb3BzIGNjIG9mIGxpc3QgbWVtYmVycy4uLgotQ2hyaXMKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5n
+IGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
+a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
