@@ -1,12 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
-In-Reply-To: <20190923073636.19618-1-chris@chris-wilson.co.uk>
-References: <20190923073636.19618-1-chris@chris-wilson.co.uk>
-Date: Mon, 23 Sep 2019 10:45:09 +0300
-Message-ID: <87zhivzcai.fsf@gaia.fi.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Mon, 23 Sep 2019 10:24:32 +0100
+Message-Id: <20190923092432.14793-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_ppgtt: Check for blitter
- support
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_render_copy: Add hang detector
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,22 +15,27 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Q2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+IHdyaXRlczoKCj4gQW5vdGhl
-ciB0eXBlIG9mIGJjcyB1c2VyLCBoaWRkZW4gYXdheS4KPgo+IFNpZ25lZC1vZmYtYnk6IENocmlz
-IFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+IENjOiBNaWthIEt1b3BwYWxhIDxt
-aWthLmt1b3BwYWxhQGxpbnV4LmludGVsLmNvbT4KClJldmlld2VkLWJ5OiBNaWthIEt1b3BwYWxh
-IDxtaWthLmt1b3BwYWxhQGxpbnV4LmludGVsLmNvbT4KCj4gLS0tCj4gIHRlc3RzL2k5MTUvZ2Vt
-X3BwZ3R0LmMgfCAxICsKPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspCj4KPiBkaWZm
-IC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fcHBndHQuYyBiL3Rlc3RzL2k5MTUvZ2VtX3BwZ3R0LmMK
-PiBpbmRleCAwZDQwYTdiNzguLjg5Y2RjNGRiYyAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2dl
-bV9wcGd0dC5jCj4gKysrIGIvdGVzdHMvaTkxNS9nZW1fcHBndHQuYwo+IEBAIC0yOTUsNiArMjk1
-LDcgQEAgaWd0X21haW4KPiAgCWlndF9maXh0dXJlIHsKPiAgCQlpbnQgZmQgPSBkcm1fb3Blbl9k
-cml2ZXIoRFJJVkVSX0lOVEVMKTsKPiAgCQlpZ3RfcmVxdWlyZV9nZW0oZmQpOwo+ICsJCWdlbV9y
-ZXF1aXJlX2JsaXR0ZXIoZmQpOwo+ICAJCWNsb3NlKGZkKTsKPiAgCX0KPiAgCj4gLS0gCj4gMi4y
-My4wCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
-ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
+RGllIGVhcmx5IGlmIHRoZSBHUFUgaGFuZ3MgZHVyaW5nIG91ciBiYXNpYyByZW5kZXIgY29weSB0
+ZXN0aW5nLCBhbmQKY2xlYW4gdXAgcmF0aGVyIHRoYW4gd2FpdGluZyBmb3IgbXVsdGlwbGUgZGlm
+ZmVyZW50IGZhaWxpbmcgYmF0Y2hlcwpiZWZvcmUgZGV0ZWN0aW5nIG91ciBmYWlsdXJlLgoKU2ln
+bmVkLW9mZi1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Ci0tLQog
+dGVzdHMvaTkxNS9nZW1fcmVuZGVyX2NvcHkuYyB8IDMgKysrCiAxIGZpbGUgY2hhbmdlZCwgMyBp
+bnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fcmVuZGVyX2NvcHkuYyBi
+L3Rlc3RzL2k5MTUvZ2VtX3JlbmRlcl9jb3B5LmMKaW5kZXggYjgxNDk0ODNjLi4yNjE4MzNkMjQg
+MTAwNjQ0Ci0tLSBhL3Rlc3RzL2k5MTUvZ2VtX3JlbmRlcl9jb3B5LmMKKysrIGIvdGVzdHMvaTkx
+NS9nZW1fcmVuZGVyX2NvcHkuYwpAQCAtNzE1LDYgKzcxNSw4IEBAIGlndF9tYWluX2FyZ3MoImRh
+IiwgTlVMTCwgaGVscF9zdHIsIG9wdF9oYW5kbGVyLCBOVUxMKQogCiAJCWRhdGEuYmF0Y2ggPSBp
+bnRlbF9iYXRjaGJ1ZmZlcl9hbGxvYyhkYXRhLmJ1Zm1nciwgZGF0YS5kZXZpZCk7CiAJCWlndF9h
+c3NlcnQoZGF0YS5iYXRjaCk7CisKKwkJaWd0X2ZvcmtfaGFuZ19kZXRlY3RvcihkYXRhLmRybV9m
+ZCk7CiAJfQogCiAJaWd0X3N1YnRlc3QoImxpbmVhciIpCkBAIC03NDUsNiArNzQ3LDcgQEAgaWd0
+X21haW5fYXJncygiZGEiLCBOVUxMLCBoZWxwX3N0ciwgb3B0X2hhbmRsZXIsIE5VTEwpCiAJCXRl
+c3QoJmRhdGEsIEk5MTVfVElMSU5HX1lmLCBJOTE1X1RJTElOR19ZZik7CiAKIAlpZ3RfZml4dHVy
+ZSB7CisJCWlndF9zdG9wX2hhbmdfZGV0ZWN0b3IoKTsKIAkJaW50ZWxfYmF0Y2hidWZmZXJfZnJl
+ZShkYXRhLmJhdGNoKTsKIAkJZHJtX2ludGVsX2J1Zm1ncl9kZXN0cm95KGRhdGEuYnVmbWdyKTsK
+IAl9Ci0tIAoyLjIzLjAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
