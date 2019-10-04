@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com
- [IPv6:2a00:1450:4864:20::542])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 216F26E2BE
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Oct 2019 09:23:46 +0000 (UTC)
-Received: by mail-ed1-x542.google.com with SMTP id r9so5173371edl.10
- for <igt-dev@lists.freedesktop.org>; Fri, 04 Oct 2019 02:23:46 -0700 (PDT)
-MIME-Version: 1.0
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A44C6EB01
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Oct 2019 09:24:41 +0000 (UTC)
+Date: Fri, 4 Oct 2019 12:24:38 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20191004092438.GH4019@platvala-desk.ger.corp.intel.com>
 References: <20191003130657.11309-1-arkadiusz.hiler@intel.com>
+MIME-Version: 1.0
+Content-Disposition: inline
 In-Reply-To: <20191003130657.11309-1-arkadiusz.hiler@intel.com>
-From: Rhys Kidd <rhyskidd@gmail.com>
-Date: Fri, 4 Oct 2019 19:23:33 +1000
-Message-ID: <CA+iOQUGO8k4rjKWhq2D6ksOrUVjBozXHit6OBQXXcSmUkMTC5A@mail.gmail.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] Make README more friendly
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -19,866 +17,229 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1140481740=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============1140481740==
-Content-Type: multipart/alternative; boundary="00000000000034d1fe05941242f7"
-
---00000000000034d1fe05941242f7
-Content-Type: text/plain; charset="UTF-8"
-
-On Thu, 3 Oct 2019 at 23:07, Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-wrote:
-
-> * reorder sections so we have a more newbie friendly reading flow:
->   requirements -> building -> running
->
-> * add links to documentation
->
-> * drop mentions of autotools
->
-> * drop piglit references
->
-> * don't list dependencies, just point to Dockerfiles
->
-> * mention IGT containers
->
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> ---
->  README.md | 280 ++++++++++++++++++++++--------------------------------
->  1 file changed, 112 insertions(+), 168 deletions(-)
->
-> diff --git a/README.md b/README.md
-> index b8c4c5a8..b295dc3e 100644
-> --- a/README.md
-> +++ b/README.md
-> @@ -1,6 +1,7 @@
->  IGT GPU Tools
->  =============
->
-> +
->  Description
->  -----------
->
-> @@ -12,173 +13,31 @@ complicated build procedures or specific testing
-> environments to get useful
->  results. Therefore, IGT GPU Tools includes low-level tools and tests
->  specifically for development and testing of the DRM Drivers.
->
-> -IGT GPU Tools is split into several sections:
-> -
-> -**benchmarks/**
-> -
-> -This is a collection of useful microbenchmarks that can be used to tune
-> -DRM code in relevant ways.
-> -
-> -The benchmarks require KMS to be enabled.  When run with an X Server
-> -running, they must be run as root to avoid the authentication
-> -requirement.
-> -
-> -Note that a few other microbenchmarks are in tests (like gem_gtt_speed).
-> -
-> -**tests/**
-> -
-> -This is a set of automated tests to run against the DRM to validate
-> -changes. Many of the tests have subtests, which can be listed by using
-> -the --list-subtests command line option and then run using the
-> ---run-subtest option. If --run-subtest is not used, all subtests will
-> -be run. Some tests have futher options and these are detailed by using
-> -the --help option.
-> -
-> -The test suite can be run using the run-tests.sh script available in
-> -the scripts directory. Piglit is used to run the tests and can either
-> -be installed from your distribution (if available), or can be
-> -downloaded locally for use with the script by running:
-> -
-> -    ./scripts/run-tests.sh -d
-> -
-> -run-tests.sh has options for filtering and excluding tests from test
-> -runs:
-> -
-> -  -t <regex>      only include tests that match the regular expression
-> -  -x <regex>      exclude tests that match the regular expression
-> -
-> -Useful patterns for test filtering are described in the API
-> -documentation and the full list of tests and subtests can be produced
-> -by passing -l to the run-tests.sh script.
-> -
-> -Results are written to a JSON file and an HTML summary can also be
-> -created by passing -s to the run-tests.sh script. Further options are
-> -are detailed by using the -h option.
-> -
-> -
-> -If not using the script, piglit can be obtained from:
-> -
-> -    git://anongit.freedesktop.org/piglit
-> -
-> -There is no need to build and install piglit if it is only going to be
-> -used for running i-g-t tests.
-> -
-> -Set the IGT_TEST_ROOT environment variable to point to the tests
-> -directory, or set the path key in the "igt" section of piglit.conf to
-> -the igt-gpu-tools root directory.
-> -
-> -The tests in the i-g-t sources need to have been built already. Then we
-> -can run the testcases with (as usual as root, no other drm clients
-> -running):
-> -
-> -    piglit-sources # ./piglit run igt <results-file>
-> -
-> -The testlist is built at runtime, so no need to update anything in
-> -piglit when adding new tests. See
-> -
-> -    piglit-sources $ ./piglit run -h
-> -
-> -for some useful options.
-> -
-> -Piglit only runs a default set of tests and is useful for regression
-> -testing. Other tests not run are:
-> -- tests that might hang the gpu, see HANG in Makefile.am
-> -- gem_stress, a stress test suite. Look at the source for all the
-> -  various options.
-> -- testdisplay is only run in the default mode. testdisplay has tons of
-> -  options to test different kms functionality, again read the source for
-> -  the details.
-> -
-> -**lib/**
-> -
-> -Common helper functions and headers used by the other tools.
-> -
-> -**man/**
-> -
-> -Manpages, unfortunately rather incomplete.
-> -
-> -**tools/**
-> -
-> -This is a collection of debugging tools that had previously been
-> -built with the 2D driver but not shipped.  Some distros were hacking
-> -up the 2D build to ship them.  Instead, here's a separate package for
-> -people debugging the driver.
-> -
-> -These tools generally must be run as root, except for the ones that just
-> -decode dumps.
-> -
-> -**docs/**
-> -
-> -Contains the automatically generated igt-gpu-tools libraries
-> -reference documentation in docs/reference/. You need to have the
-> -gtk-doc tools installed and use the "--enable-gtk-doc" configure flag
-> -to generate this API documentation.
-> -
-> -To regenerate the html files when updating documentation, use:
-> -
-> -    $ ninja -C build igt-gpu-tools-doc
-> -
-> -If you've added/changed/removed a symbol or anything else that changes
-> -the overall structure or indexes, this needs to be reflected in
-> -igt-gpu-tools-sections.txt. Entirely new sections will also need to be
-> -added to igt-gpu-tools-docs.xml in the appropriate place.
-> -
-> -**include/drm-uapi**
-> -
-> -Imported DRM uapi headers from airlied's drm-next branch.
-> -These should be updated all together by executing "make
-> -headers_install" from that branch of the kernel and then
-> -copying the resulting ./usr/include/drm/*.h in and committing
-> -with a note of which commit on airlied's branch was used to
-> -generate them.
-> +Generated documentation for the latest master is published under
-> +<https://drm.pages.freedesktop.org/igt-gpu-tools/>.
->
->
->  Requirements
->  ------------
->
-> -This is a non-exhaustive list of package dependencies required for
-> building
-> -the default configuration (package names may vary):
-> +See `Dockerfiles.*` for up-to-date list of packages names in Fedora and
->
-
-s/Dockerfiles/Dockerfile/
-s/packages/package/
-
-
-> +Debian.
->
-> -       bison
-> -       gtk-doc-tools
-> -       flex
-> -       libcairo2-dev
-> -       libdrm-dev
-> -       libkmod-dev
-> -       libpixman-1-dev
-> -       libpciaccess-dev
-> -       libprocps-dev
-> -       libudev-dev
-> -       libunwind-dev
-> -       liblzma-dev
-> -       libdw-dev
-> -       python-docutils
-> -       x11proto-dri2-dev
-> -       xutils-dev
-> +If your distribution packages IGT you can also use your package manager to
-> +install the dependencies, e.g.:
->
-> -The following dependencies are required for building chamelium support
-> -(package names may vary):
-> +    # dnf builddep igt-gpu-tools
->
-> -       libxmlrpc-core-c3-dev
-> -       libudev-dev
-> -       libglib2.0-dev
-> -       libgsl-dev
-> +But keep in mind that this may be slightly outdated and miss some
-> +recently added dependencies for building the current master.
->
-> -The following dependencies are requires for building audio support
-> -(package names may vary):
->
-> -       libasound2-dev
-> -       libgsl-dev
-> +Building
-> +--------
->
-> -See Dockerfiles.* for package names in different distributions.
-> +Oneliner to get started:
->
-> -Meson build system support
-> ---------------------------
-> -
-> -Currently we support both meson and automake as build systems, but meson
-> is the
-> -recommended choice. Oneliner to get started:
-> -
-> -    $ mkdir build && meson build && cd build && ninja
-> +    $ meson build && ninja -C build
->
->  Note that meson insist on separate build directories from the source tree.
->
-> @@ -186,26 +45,111 @@ Running selfchecks for lib/tests and tests/ is done
-> with
->
->
-In v2, whilst you're here, can you also amend the prior line to properly
-format the two folder
-references to be consistent with the rest of this README:
-
-  Running selfchecks for `lib/tests` and `tests/` is done with
-
-
->      $ ninja -C build test
->
-> -Note that this doesn't actually run the testcases in tests/:
-> scripts/run-tests.sh
-> -should continue to be used for that.
-> -
->  Documentation is built using
->
->      $ ninja -C build igt-gpu-tools-doc
->
-> -Note that this needs meson v0.47 or later, earlier versions of meson do
-> not
-> -track depencies correctly for the documentation build and need:
->
-> -    $ ninja -C build && ninja -C build igt-gpu-tools-doc
-> +Running Tests
-> +-------------
->
-> -Note that there's a setup script similar to ./autogen.sh which creates a
-> -compatibility Makefile with a few useful default targets:
-> +In `tests/` you can find a set of automated tests to run against the DRM
-> +drivers to validate your changes. Many of the tests have subtests, which
-> can
-> +be listed by using the `--list-subtests` command line option and then run
-> +using the --run-subtest option. If `--run-subtest` is not used, all
-> subtests
-> +will be run. Some tests have further options and these are detailed by
-> using
-> +the `--help` option.
->
-> -    $ ./meson.sh [make-arguments]
-> +Most of the test must be run as a root and with no X or Wayland compositor
-> +running.
->
-> -Releases for maintainers
-> -------------------------
-> +    # build/tests/core_auth
-> +    IGT-Version: 1.24 (x86_64) (Linux: 5.3.0 x86_64)
-> +    Starting subtest: getclient-simple
-> +    Subtest getclient-simple: SUCCESS (0.001s)
-> +    Starting subtest: getclient-master-drop
-> +    Subtest getclient-master-drop: SUCCESS (0.000s)
-> +    Starting subtest: basic-auth
-> +    Subtest basic-auth: SUCCESS (0.000s)
-> +    Starting subtest: many-magics
-> +    Subtest many-magics: SUCCESS (0.000s)
->
-> -(1.14)
-> +    # build/tests/core_auth --run-subtest getclient-simple
-> +    IGT-Version: 1.24 (x86_64) (Linux: 5.3.0 x86_64)
-> +    Starting subtest: getclient-simple
-> +    Subtest getclient-simple: SUCCESS (0.000s)
->
-> -http://www.x.org/wiki/Development/Documentation/ReleaseHOWTO/
-> +
-> +The test suite can be run using the `run-tests.sh` script available in the
-> +`scripts/` directory. To use it make sure that `igt_runner` is built,
-> e.g.:
-> +
-> +    meson -Drunner=enabled build && ninja -C build
-> +
-> +`run-tests.sh` has options for filtering and excluding tests from test
-> +runs:
-> +
-> +    -t <regex>      only include tests that match the regular expression
-> +    -x <regex>      exclude tests that match the regular expression
-> +
-> +Useful patterns for test filtering are described in the [API
-> +documentation][API] and the full list of tests and subtests can be
-> produced
-> +by passing `-l` to the `run-tests.sh` script. Further options are are
-> +detailed by using the `-h` option.
-> +
-> +Results are written to a JSON file.
-> +
-> +[API]:
-> https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html
-> +
-> +
-> +IGT Containers
-> +--------------
-> +
-> +IGT is packed into nifty docker-compatible containers for ease of
-> execution
-> +and to avoid having to install all the dependencies. You can use
-> +podman/docker to to run it on your system.
-> +
-> +Oneliner to get you started with the latest master:
-> +
-> +    # podman run --rm --priviledged
-> registry.freedesktop.org/drm/igt-gpu-tools/igt:master
-> +
-> +
-> +Other Things
-> +------------
-> +
-> +### `benchmarks/`
-> +
-> +A collection of useful microbenchmarks that can be used to tune DRM code.
-> +
-> +The benchmarks require KMS to be enabled.  When run with an X Server
-> +running, they must be run as root to avoid the authentication
-> +requirement.
-> +
-> +Note that a few other microbenchmarks are in tests (e.g. `gem_gtt_speed`).
-> +
-> +### `tools/`
-> +
-> +A collection of debugging tools. They generally must be run as root,
-> except
-> +for the ones that just decode dumps.
-> +
-> +### `docs/`
-> +
-> +Contains the infrastracture to automatically generate igt-gpu-tools
-> libraries
->
-
-s/infrastracture/infrastructure/
-
-
-> +reference documentation. You need to have the gtk-doc tools installed.
-> +
-> +To regenerate the html files when updating documentation, use:
-> +
-> +    $ ninja -C build igt-gpu-tools-doc
-> +
-> +If you've added/changed/removed a symbol or anything else that changes the
-> +overall structure or indexes you need to reflect the change in
-> +`igt-gpu-tools-sections.txt`. Entirely new sections also need to be added
-> to
-> +`igt-gpu-tools-docs.xml` in the appropriate place.
-> +
-> +### `include/drm-uapi/`
-> +
-> +Imported DRM uapi headers from airlied's drm-next branch.
-> +
-> +These should be updated all together by executing `make headers_install`
-> from
-> +that branch of the kernel and then copying the resulting
-> +`./usr/include/drm/*.h` in and committing with a note of which exact
-> commit
-> +from the airlied's branch was used to generate them.
->
-
-s/the//
-
-With these couple of small nits fixed, this gets my:
-Reviewed-by: Rhys Kidd <rhyskidd@gmail.com>
-
-
-> --
-> 2.21.0
->
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---00000000000034d1fe05941242f7
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><div class=3D"gmail_quote"><div=
- dir=3D"ltr" class=3D"gmail_attr">On Thu, 3 Oct 2019 at 23:07, Arkadiusz Hi=
-ler &lt;<a href=3D"mailto:arkadiusz.hiler@intel.com">arkadiusz.hiler@intel.=
-com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"marg=
-in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
-x">* reorder sections so we have a more newbie friendly reading flow:<br>
-=C2=A0 requirements -&gt; building -&gt; running<br>
-<br>
-* add links to documentation<br>
-<br>
-* drop mentions of autotools<br>
-<br>
-* drop piglit references<br>
-<br>
-* don&#39;t list dependencies, just point to Dockerfiles<br>
-<br>
-* mention IGT containers<br>
-<br>
-Cc: Petri Latvala &lt;<a href=3D"mailto:petri.latvala@intel.com" target=3D"=
-_blank">petri.latvala@intel.com</a>&gt;<br>
-Signed-off-by: Arkadiusz Hiler &lt;<a href=3D"mailto:arkadiusz.hiler@intel.=
-com" target=3D"_blank">arkadiusz.hiler@intel.com</a>&gt;<br>
----<br>
-=C2=A0README.md | 280 ++++++++++++++++++++++-------------------------------=
--<br>
-=C2=A01 file changed, 112 insertions(+), 168 deletions(-)<br>
-<br>
-diff --git a/README.md b/README.md<br>
-index b8c4c5a8..b295dc3e 100644<br>
---- a/README.md<br>
-+++ b/README.md<br>
-@@ -1,6 +1,7 @@<br>
-=C2=A0IGT GPU Tools<br>
-=C2=A0=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
-<br>
-+<br>
-=C2=A0Description<br>
-=C2=A0-----------<br>
-<br>
-@@ -12,173 +13,31 @@ complicated build procedures or specific testing envir=
-onments to get useful<br>
-=C2=A0results. Therefore, IGT GPU Tools includes low-level tools and tests<=
-br>
-=C2=A0specifically for development and testing of the DRM Drivers.<br>
-<br>
--IGT GPU Tools is split into several sections:<br>
--<br>
--**benchmarks/**<br>
--<br>
--This is a collection of useful microbenchmarks that can be used to tune<br=
->
--DRM code in relevant ways.<br>
--<br>
--The benchmarks require KMS to be enabled.=C2=A0 When run with an X Server<=
-br>
--running, they must be run as root to avoid the authentication<br>
--requirement.<br>
--<br>
--Note that a few other microbenchmarks are in tests (like gem_gtt_speed).<b=
-r>
--<br>
--**tests/**<br>
--<br>
--This is a set of automated tests to run against the DRM to validate<br>
--changes. Many of the tests have subtests, which can be listed by using<br>
--the --list-subtests command line option and then run using the<br>
----run-subtest option. If --run-subtest is not used, all subtests will<br>
--be run. Some tests have futher options and these are detailed by using<br>
--the --help option.<br>
--<br>
--The test suite can be run using the run-tests.sh script available in<br>
--the scripts directory. Piglit is used to run the tests and can either<br>
--be installed from your distribution (if available), or can be<br>
--downloaded locally for use with the script by running:<br>
--<br>
--=C2=A0 =C2=A0 ./scripts/run-tests.sh -d<br>
--<br>
--run-tests.sh has options for filtering and excluding tests from test<br>
--runs:<br>
--<br>
--=C2=A0 -t &lt;regex&gt;=C2=A0 =C2=A0 =C2=A0 only include tests that match =
-the regular expression<br>
--=C2=A0 -x &lt;regex&gt;=C2=A0 =C2=A0 =C2=A0 exclude tests that match the r=
-egular expression<br>
--<br>
--Useful patterns for test filtering are described in the API<br>
--documentation and the full list of tests and subtests can be produced<br>
--by passing -l to the run-tests.sh script.<br>
--<br>
--Results are written to a JSON file and an HTML summary can also be<br>
--created by passing -s to the run-tests.sh script. Further options are<br>
--are detailed by using the -h option.<br>
--<br>
--<br>
--If not using the script, piglit can be obtained from:<br>
--<br>
--=C2=A0 =C2=A0 git://<a href=3D"http://anongit.freedesktop.org/piglit" rel=
-=3D"noreferrer" target=3D"_blank">anongit.freedesktop.org/piglit</a><br>
--<br>
--There is no need to build and install piglit if it is only going to be<br>
--used for running i-g-t tests.<br>
--<br>
--Set the IGT_TEST_ROOT environment variable to point to the tests<br>
--directory, or set the path key in the &quot;igt&quot; section of piglit.co=
-nf to<br>
--the igt-gpu-tools root directory.<br>
--<br>
--The tests in the i-g-t sources need to have been built already. Then we<br=
->
--can run the testcases with (as usual as root, no other drm clients<br>
--running):<br>
--<br>
--=C2=A0 =C2=A0 piglit-sources # ./piglit run igt &lt;results-file&gt;<br>
--<br>
--The testlist is built at runtime, so no need to update anything in<br>
--piglit when adding new tests. See<br>
--<br>
--=C2=A0 =C2=A0 piglit-sources $ ./piglit run -h<br>
--<br>
--for some useful options.<br>
--<br>
--Piglit only runs a default set of tests and is useful for regression<br>
--testing. Other tests not run are:<br>
--- tests that might hang the gpu, see HANG in Makefile.am<br>
--- gem_stress, a stress test suite. Look at the source for all the<br>
--=C2=A0 various options.<br>
--- testdisplay is only run in the default mode. testdisplay has tons of<br>
--=C2=A0 options to test different kms functionality, again read the source =
-for<br>
--=C2=A0 the details.<br>
--<br>
--**lib/**<br>
--<br>
--Common helper functions and headers used by the other tools.<br>
--<br>
--**man/**<br>
--<br>
--Manpages, unfortunately rather incomplete.<br>
--<br>
--**tools/**<br>
--<br>
--This is a collection of debugging tools that had previously been<br>
--built with the 2D driver but not shipped.=C2=A0 Some distros were hacking<=
-br>
--up the 2D build to ship them.=C2=A0 Instead, here&#39;s a separate package=
- for<br>
--people debugging the driver.<br>
--<br>
--These tools generally must be run as root, except for the ones that just<b=
-r>
--decode dumps.<br>
--<br>
--**docs/**<br>
--<br>
--Contains the automatically generated igt-gpu-tools libraries<br>
--reference documentation in docs/reference/. You need to have the<br>
--gtk-doc tools installed and use the &quot;--enable-gtk-doc&quot; configure=
- flag<br>
--to generate this API documentation.<br>
--<br>
--To regenerate the html files when updating documentation, use:<br>
--<br>
--=C2=A0 =C2=A0 $ ninja -C build igt-gpu-tools-doc<br>
--<br>
--If you&#39;ve added/changed/removed a symbol or anything else that changes=
-<br>
--the overall structure or indexes, this needs to be reflected in<br>
--igt-gpu-tools-sections.txt. Entirely new sections will also need to be<br>
--added to igt-gpu-tools-docs.xml in the appropriate place.<br>
--<br>
--**include/drm-uapi**<br>
--<br>
--Imported DRM uapi headers from airlied&#39;s drm-next branch.<br>
--These should be updated all together by executing &quot;make<br>
--headers_install&quot; from that branch of the kernel and then<br>
--copying the resulting ./usr/include/drm/*.h in and committing<br>
--with a note of which commit on airlied&#39;s branch was used to<br>
--generate them.<br>
-+Generated documentation for the latest master is published under<br>
-+&lt;<a href=3D"https://drm.pages.freedesktop.org/igt-gpu-tools/" rel=3D"no=
-referrer" target=3D"_blank">https://drm.pages.freedesktop.org/igt-gpu-tools=
-/</a>&gt;.<br>
-<br>
-<br>
-=C2=A0Requirements<br>
-=C2=A0------------<br>
-<br>
--This is a non-exhaustive list of package dependencies required for buildin=
-g<br>
--the default configuration (package names may vary):<br>
-+See `Dockerfiles.*` for up-to-date list of packages names in Fedora and<br=
-></blockquote><div><br></div><div>s/Dockerfiles/Dockerfile/</div><div>s/pac=
-kages/package/<br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" =
-style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pa=
-dding-left:1ex">
-+Debian.<br>
-<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0bison<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0gtk-doc-tools<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0flex<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0libcairo2-dev<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0libdrm-dev<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0libkmod-dev<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0libpixman-1-dev<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0libpciaccess-dev<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0libprocps-dev<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0libudev-dev<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0libunwind-dev<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0liblzma-dev<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0libdw-dev<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0python-docutils<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0x11proto-dri2-dev<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0xutils-dev<br>
-+If your distribution packages IGT you can also use your package manager to=
-<br>
-+install the dependencies, e.g.:<br>
-<br>
--The following dependencies are required for building chamelium support<br>
--(package names may vary):<br>
-+=C2=A0 =C2=A0 # dnf builddep igt-gpu-tools<br>
-<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0libxmlrpc-core-c3-dev<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0libudev-dev<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0libglib2.0-dev<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0libgsl-dev<br>
-+But keep in mind that this may be slightly outdated and miss some<br>
-+recently added dependencies for building the current master.<br>
-<br>
--The following dependencies are requires for building audio support<br>
--(package names may vary):<br>
-<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0libasound2-dev<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0libgsl-dev<br>
-+Building<br>
-+--------<br>
-<br>
--See Dockerfiles.* for package names in different distributions.<br>
-+Oneliner to get started:<br>
-<br>
--Meson build system support<br>
----------------------------<br>
--<br>
--Currently we support both meson and automake as build systems, but meson i=
-s the<br>
--recommended choice. Oneliner to get started:<br>
--<br>
--=C2=A0 =C2=A0 $ mkdir build &amp;&amp; meson build &amp;&amp; cd build &am=
-p;&amp; ninja<br>
-+=C2=A0 =C2=A0 $ meson build &amp;&amp; ninja -C build<br>
-<br>
-=C2=A0Note that meson insist on separate build directories from the source =
-tree.<br>
-<br>
-@@ -186,26 +45,111 @@ Running selfchecks for lib/tests and tests/ is done w=
-ith<br>
-<br></blockquote><div><br></div><div>In v2, whilst you&#39;re here, can you=
- also amend the prior line to properly format the two folder</div><div>refe=
-rences to be consistent with the rest of this README:</div><div><br></div><=
-div>=C2=A0 Running selfchecks for `lib/tests` and `tests/` is done with</di=
-v><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0p=
-x 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-=C2=A0 =C2=A0 =C2=A0$ ninja -C build test<br>
-<br>
--Note that this doesn&#39;t actually run the testcases in tests/: scripts/r=
-un-tests.sh<br>
--should continue to be used for that.<br>
--<br>
-=C2=A0Documentation is built using<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0$ ninja -C build igt-gpu-tools-doc<br>
-<br>
--Note that this needs meson v0.47 or later, earlier versions of meson do no=
-t<br>
--track depencies correctly for the documentation build and need:<br>
-<br>
--=C2=A0 =C2=A0 $ ninja -C build &amp;&amp; ninja -C build igt-gpu-tools-doc=
-<br>
-+Running Tests<br>
-+-------------<br>
-<br>
--Note that there&#39;s a setup script similar to ./autogen.sh which creates=
- a<br>
--compatibility Makefile with a few useful default targets:<br>
-+In `tests/` you can find a set of automated tests to run against the DRM<b=
-r>
-+drivers to validate your changes. Many of the tests have subtests, which c=
-an<br>
-+be listed by using the `--list-subtests` command line option and then run<=
-br>
-+using the --run-subtest option. If `--run-subtest` is not used, all subtes=
-ts<br>
-+will be run. Some tests have further options and these are detailed by usi=
-ng<br>
-+the `--help` option.<br>
-<br>
--=C2=A0 =C2=A0 $ ./meson.sh [make-arguments]<br>
-+Most of the test must be run as a root and with no X or Wayland compositor=
-<br>
-+running.<br>
-<br>
--Releases for maintainers<br>
--------------------------<br>
-+=C2=A0 =C2=A0 # build/tests/core_auth<br>
-+=C2=A0 =C2=A0 IGT-Version: 1.24 (x86_64) (Linux: 5.3.0 x86_64)<br>
-+=C2=A0 =C2=A0 Starting subtest: getclient-simple<br>
-+=C2=A0 =C2=A0 Subtest getclient-simple: SUCCESS (0.001s)<br>
-+=C2=A0 =C2=A0 Starting subtest: getclient-master-drop<br>
-+=C2=A0 =C2=A0 Subtest getclient-master-drop: SUCCESS (0.000s)<br>
-+=C2=A0 =C2=A0 Starting subtest: basic-auth<br>
-+=C2=A0 =C2=A0 Subtest basic-auth: SUCCESS (0.000s)<br>
-+=C2=A0 =C2=A0 Starting subtest: many-magics<br>
-+=C2=A0 =C2=A0 Subtest many-magics: SUCCESS (0.000s)<br>
-<br>
--(1.14)<br>
-+=C2=A0 =C2=A0 # build/tests/core_auth --run-subtest getclient-simple<br>
-+=C2=A0 =C2=A0 IGT-Version: 1.24 (x86_64) (Linux: 5.3.0 x86_64)<br>
-+=C2=A0 =C2=A0 Starting subtest: getclient-simple<br>
-+=C2=A0 =C2=A0 Subtest getclient-simple: SUCCESS (0.000s)<br>
-<br>
--<a href=3D"http://www.x.org/wiki/Development/Documentation/ReleaseHOWTO/" =
-rel=3D"noreferrer" target=3D"_blank">http://www.x.org/wiki/Development/Docu=
-mentation/ReleaseHOWTO/</a><br>
-+<br>
-+The test suite can be run using the `run-tests.sh` script available in the=
-<br>
-+`scripts/` directory. To use it make sure that `igt_runner` is built, e.g.=
-:<br>
-+<br>
-+=C2=A0 =C2=A0 meson -Drunner=3Denabled build &amp;&amp; ninja -C build<br>
-+<br>
-+`run-tests.sh` has options for filtering and excluding tests from test<br>
-+runs:<br>
-+<br>
-+=C2=A0 =C2=A0 -t &lt;regex&gt;=C2=A0 =C2=A0 =C2=A0 only include tests that=
- match the regular expression<br>
-+=C2=A0 =C2=A0 -x &lt;regex&gt;=C2=A0 =C2=A0 =C2=A0 exclude tests that matc=
-h the regular expression<br>
-+<br>
-+Useful patterns for test filtering are described in the [API<br>
-+documentation][API] and the full list of tests and subtests can be produce=
-d<br>
-+by passing `-l` to the `run-tests.sh` script. Further options are are<br>
-+detailed by using the `-h` option.<br>
-+<br>
-+Results are written to a JSON file.<br>
-+<br>
-+[API]: <a href=3D"https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-=
-tools-Core.html" rel=3D"noreferrer" target=3D"_blank">https://drm.pages.fre=
-edesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html</a><br>
-+<br>
-+<br>
-+IGT Containers<br>
-+--------------<br>
-+<br>
-+IGT is packed into nifty docker-compatible containers for ease of executio=
-n<br>
-+and to avoid having to install all the dependencies. You can use<br>
-+podman/docker to to run it on your system.<br>
-+<br>
-+Oneliner to get you started with the latest master:<br>
-+<br>
-+=C2=A0 =C2=A0 # podman run --rm --priviledged <a href=3D"http://registry.f=
-reedesktop.org/drm/igt-gpu-tools/igt:master" rel=3D"noreferrer" target=3D"_=
-blank">registry.freedesktop.org/drm/igt-gpu-tools/igt:master</a><br>
-+<br>
-+<br>
-+Other Things<br>
-+------------<br>
-+<br>
-+### `benchmarks/`<br>
-+<br>
-+A collection of useful microbenchmarks that can be used to tune DRM code.<=
-br>
-+<br>
-+The benchmarks require KMS to be enabled.=C2=A0 When run with an X Server<=
-br>
-+running, they must be run as root to avoid the authentication<br>
-+requirement.<br>
-+<br>
-+Note that a few other microbenchmarks are in tests (e.g. `gem_gtt_speed`).=
-<br>
-+<br>
-+### `tools/`<br>
-+<br>
-+A collection of debugging tools. They generally must be run as root, excep=
-t<br>
-+for the ones that just decode dumps.<br>
-+<br>
-+### `docs/`<br>
-+<br>
-+Contains the infrastracture to automatically generate igt-gpu-tools librar=
-ies<br></blockquote><div><br></div><div>s/infrastracture/infrastructure/</d=
-iv><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
-px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-+reference documentation. You need to have the gtk-doc tools installed.<br>
-+<br>
-+To regenerate the html files when updating documentation, use:<br>
-+<br>
-+=C2=A0 =C2=A0 $ ninja -C build igt-gpu-tools-doc<br>
-+<br>
-+If you&#39;ve added/changed/removed a symbol or anything else that changes=
- the<br>
-+overall structure or indexes you need to reflect the change in<br>
-+`igt-gpu-tools-sections.txt`. Entirely new sections also need to be added =
-to<br>
-+`igt-gpu-tools-docs.xml` in the appropriate place.<br>
-+<br>
-+### `include/drm-uapi/`<br>
-+<br>
-+Imported DRM uapi headers from airlied&#39;s drm-next branch.<br>
-+<br>
-+These should be updated all together by executing `make headers_install` f=
-rom<br>
-+that branch of the kernel and then copying the resulting<br>
-+`./usr/include/drm/*.h` in and committing with a note of which exact commi=
-t<br>
-+from the airlied&#39;s branch was used to generate them.<br></blockquote><=
-div><br></div><div>s/the//<br></div><div><br></div><div>With these couple o=
-f small nits fixed, this gets my:</div><div>Reviewed-by: Rhys Kidd &lt;<a h=
-ref=3D"mailto:rhyskidd@gmail.com">rhyskidd@gmail.com</a>&gt;</div><div>=C2=
-=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
-x;border-left:1px solid rgb(204,204,204);padding-left:1ex">
--- <br>
-2.21.0<br>
-<br>
-_______________________________________________<br>
-igt-dev mailing list<br>
-<a href=3D"mailto:igt-dev@lists.freedesktop.org" target=3D"_blank">igt-dev@=
-lists.freedesktop.org</a><br>
-<a href=3D"https://lists.freedesktop.org/mailman/listinfo/igt-dev" rel=3D"n=
-oreferrer" target=3D"_blank">https://lists.freedesktop.org/mailman/listinfo=
-/igt-dev</a></blockquote></div></div>
-
---00000000000034d1fe05941242f7--
-
---===============1140481740==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============1140481740==--
+T24gVGh1LCBPY3QgMDMsIDIwMTkgYXQgMDQ6MDY6NTdQTSArMDMwMCwgQXJrYWRpdXN6IEhpbGVy
+IHdyb3RlOgo+ICogcmVvcmRlciBzZWN0aW9ucyBzbyB3ZSBoYXZlIGEgbW9yZSBuZXdiaWUgZnJp
+ZW5kbHkgcmVhZGluZyBmbG93Ogo+ICAgcmVxdWlyZW1lbnRzIC0+IGJ1aWxkaW5nIC0+IHJ1bm5p
+bmcKPiAKPiAqIGFkZCBsaW5rcyB0byBkb2N1bWVudGF0aW9uCj4gCj4gKiBkcm9wIG1lbnRpb25z
+IG9mIGF1dG90b29scwo+IAo+ICogZHJvcCBwaWdsaXQgcmVmZXJlbmNlcwo+IAo+ICogZG9uJ3Qg
+bGlzdCBkZXBlbmRlbmNpZXMsIGp1c3QgcG9pbnQgdG8gRG9ja2VyZmlsZXMKPiAKPiAqIG1lbnRp
+b24gSUdUIGNvbnRhaW5lcnMKPiAKPiBDYzogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBp
+bnRlbC5jb20+Cj4gU2lnbmVkLW9mZi1ieTogQXJrYWRpdXN6IEhpbGVyIDxhcmthZGl1c3ouaGls
+ZXJAaW50ZWwuY29tPgoKClRoZSBkaWZmIGlzIGhvcnJpYmxlIHRvIHJlYWQgYnV0IHRoZSByZXN1
+bHRpbmcgUkVBRE1FIExHVE0uCgpBY2tlZC1ieTogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFs
+YUBpbnRlbC5jb20+CgoKCj4gLS0tCj4gIFJFQURNRS5tZCB8IDI4MCArKysrKysrKysrKysrKysr
+KysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiAgMSBmaWxlIGNoYW5nZWQs
+IDExMiBpbnNlcnRpb25zKCspLCAxNjggZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL1JF
+QURNRS5tZCBiL1JFQURNRS5tZAo+IGluZGV4IGI4YzRjNWE4Li5iMjk1ZGMzZSAxMDA2NDQKPiAt
+LS0gYS9SRUFETUUubWQKPiArKysgYi9SRUFETUUubWQKPiBAQCAtMSw2ICsxLDcgQEAKPiAgSUdU
+IEdQVSBUb29scwo+ICA9PT09PT09PT09PT09Cj4gIAo+ICsKPiAgRGVzY3JpcHRpb24KPiAgLS0t
+LS0tLS0tLS0KPiAgCj4gQEAgLTEyLDE3MyArMTMsMzEgQEAgY29tcGxpY2F0ZWQgYnVpbGQgcHJv
+Y2VkdXJlcyBvciBzcGVjaWZpYyB0ZXN0aW5nIGVudmlyb25tZW50cyB0byBnZXQgdXNlZnVsCj4g
+IHJlc3VsdHMuIFRoZXJlZm9yZSwgSUdUIEdQVSBUb29scyBpbmNsdWRlcyBsb3ctbGV2ZWwgdG9v
+bHMgYW5kIHRlc3RzCj4gIHNwZWNpZmljYWxseSBmb3IgZGV2ZWxvcG1lbnQgYW5kIHRlc3Rpbmcg
+b2YgdGhlIERSTSBEcml2ZXJzLgo+ICAKPiAtSUdUIEdQVSBUb29scyBpcyBzcGxpdCBpbnRvIHNl
+dmVyYWwgc2VjdGlvbnM6Cj4gLQo+IC0qKmJlbmNobWFya3MvKioKPiAtCj4gLVRoaXMgaXMgYSBj
+b2xsZWN0aW9uIG9mIHVzZWZ1bCBtaWNyb2JlbmNobWFya3MgdGhhdCBjYW4gYmUgdXNlZCB0byB0
+dW5lCj4gLURSTSBjb2RlIGluIHJlbGV2YW50IHdheXMuCj4gLQo+IC1UaGUgYmVuY2htYXJrcyBy
+ZXF1aXJlIEtNUyB0byBiZSBlbmFibGVkLiAgV2hlbiBydW4gd2l0aCBhbiBYIFNlcnZlcgo+IC1y
+dW5uaW5nLCB0aGV5IG11c3QgYmUgcnVuIGFzIHJvb3QgdG8gYXZvaWQgdGhlIGF1dGhlbnRpY2F0
+aW9uCj4gLXJlcXVpcmVtZW50Lgo+IC0KPiAtTm90ZSB0aGF0IGEgZmV3IG90aGVyIG1pY3JvYmVu
+Y2htYXJrcyBhcmUgaW4gdGVzdHMgKGxpa2UgZ2VtX2d0dF9zcGVlZCkuCj4gLQo+IC0qKnRlc3Rz
+LyoqCj4gLQo+IC1UaGlzIGlzIGEgc2V0IG9mIGF1dG9tYXRlZCB0ZXN0cyB0byBydW4gYWdhaW5z
+dCB0aGUgRFJNIHRvIHZhbGlkYXRlCj4gLWNoYW5nZXMuIE1hbnkgb2YgdGhlIHRlc3RzIGhhdmUg
+c3VidGVzdHMsIHdoaWNoIGNhbiBiZSBsaXN0ZWQgYnkgdXNpbmcKPiAtdGhlIC0tbGlzdC1zdWJ0
+ZXN0cyBjb21tYW5kIGxpbmUgb3B0aW9uIGFuZCB0aGVuIHJ1biB1c2luZyB0aGUKPiAtLS1ydW4t
+c3VidGVzdCBvcHRpb24uIElmIC0tcnVuLXN1YnRlc3QgaXMgbm90IHVzZWQsIGFsbCBzdWJ0ZXN0
+cyB3aWxsCj4gLWJlIHJ1bi4gU29tZSB0ZXN0cyBoYXZlIGZ1dGhlciBvcHRpb25zIGFuZCB0aGVz
+ZSBhcmUgZGV0YWlsZWQgYnkgdXNpbmcKPiAtdGhlIC0taGVscCBvcHRpb24uCj4gLQo+IC1UaGUg
+dGVzdCBzdWl0ZSBjYW4gYmUgcnVuIHVzaW5nIHRoZSBydW4tdGVzdHMuc2ggc2NyaXB0IGF2YWls
+YWJsZSBpbgo+IC10aGUgc2NyaXB0cyBkaXJlY3RvcnkuIFBpZ2xpdCBpcyB1c2VkIHRvIHJ1biB0
+aGUgdGVzdHMgYW5kIGNhbiBlaXRoZXIKPiAtYmUgaW5zdGFsbGVkIGZyb20geW91ciBkaXN0cmli
+dXRpb24gKGlmIGF2YWlsYWJsZSksIG9yIGNhbiBiZQo+IC1kb3dubG9hZGVkIGxvY2FsbHkgZm9y
+IHVzZSB3aXRoIHRoZSBzY3JpcHQgYnkgcnVubmluZzoKPiAtCj4gLSAgICAuL3NjcmlwdHMvcnVu
+LXRlc3RzLnNoIC1kCj4gLQo+IC1ydW4tdGVzdHMuc2ggaGFzIG9wdGlvbnMgZm9yIGZpbHRlcmlu
+ZyBhbmQgZXhjbHVkaW5nIHRlc3RzIGZyb20gdGVzdAo+IC1ydW5zOgo+IC0KPiAtICAtdCA8cmVn
+ZXg+ICAgICAgb25seSBpbmNsdWRlIHRlc3RzIHRoYXQgbWF0Y2ggdGhlIHJlZ3VsYXIgZXhwcmVz
+c2lvbgo+IC0gIC14IDxyZWdleD4gICAgICBleGNsdWRlIHRlc3RzIHRoYXQgbWF0Y2ggdGhlIHJl
+Z3VsYXIgZXhwcmVzc2lvbgo+IC0KPiAtVXNlZnVsIHBhdHRlcm5zIGZvciB0ZXN0IGZpbHRlcmlu
+ZyBhcmUgZGVzY3JpYmVkIGluIHRoZSBBUEkKPiAtZG9jdW1lbnRhdGlvbiBhbmQgdGhlIGZ1bGwg
+bGlzdCBvZiB0ZXN0cyBhbmQgc3VidGVzdHMgY2FuIGJlIHByb2R1Y2VkCj4gLWJ5IHBhc3Npbmcg
+LWwgdG8gdGhlIHJ1bi10ZXN0cy5zaCBzY3JpcHQuCj4gLQo+IC1SZXN1bHRzIGFyZSB3cml0dGVu
+IHRvIGEgSlNPTiBmaWxlIGFuZCBhbiBIVE1MIHN1bW1hcnkgY2FuIGFsc28gYmUKPiAtY3JlYXRl
+ZCBieSBwYXNzaW5nIC1zIHRvIHRoZSBydW4tdGVzdHMuc2ggc2NyaXB0LiBGdXJ0aGVyIG9wdGlv
+bnMgYXJlCj4gLWFyZSBkZXRhaWxlZCBieSB1c2luZyB0aGUgLWggb3B0aW9uLgo+IC0KPiAtCj4g
+LUlmIG5vdCB1c2luZyB0aGUgc2NyaXB0LCBwaWdsaXQgY2FuIGJlIG9idGFpbmVkIGZyb206Cj4g
+LQo+IC0gICAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvcGlnbGl0Cj4gLQo+IC1UaGVy
+ZSBpcyBubyBuZWVkIHRvIGJ1aWxkIGFuZCBpbnN0YWxsIHBpZ2xpdCBpZiBpdCBpcyBvbmx5IGdv
+aW5nIHRvIGJlCj4gLXVzZWQgZm9yIHJ1bm5pbmcgaS1nLXQgdGVzdHMuCj4gLQo+IC1TZXQgdGhl
+IElHVF9URVNUX1JPT1QgZW52aXJvbm1lbnQgdmFyaWFibGUgdG8gcG9pbnQgdG8gdGhlIHRlc3Rz
+Cj4gLWRpcmVjdG9yeSwgb3Igc2V0IHRoZSBwYXRoIGtleSBpbiB0aGUgImlndCIgc2VjdGlvbiBv
+ZiBwaWdsaXQuY29uZiB0bwo+IC10aGUgaWd0LWdwdS10b29scyByb290IGRpcmVjdG9yeS4KPiAt
+Cj4gLVRoZSB0ZXN0cyBpbiB0aGUgaS1nLXQgc291cmNlcyBuZWVkIHRvIGhhdmUgYmVlbiBidWls
+dCBhbHJlYWR5LiBUaGVuIHdlCj4gLWNhbiBydW4gdGhlIHRlc3RjYXNlcyB3aXRoIChhcyB1c3Vh
+bCBhcyByb290LCBubyBvdGhlciBkcm0gY2xpZW50cwo+IC1ydW5uaW5nKToKPiAtCj4gLSAgICBw
+aWdsaXQtc291cmNlcyAjIC4vcGlnbGl0IHJ1biBpZ3QgPHJlc3VsdHMtZmlsZT4KPiAtCj4gLVRo
+ZSB0ZXN0bGlzdCBpcyBidWlsdCBhdCBydW50aW1lLCBzbyBubyBuZWVkIHRvIHVwZGF0ZSBhbnl0
+aGluZyBpbgo+IC1waWdsaXQgd2hlbiBhZGRpbmcgbmV3IHRlc3RzLiBTZWUKPiAtCj4gLSAgICBw
+aWdsaXQtc291cmNlcyAkIC4vcGlnbGl0IHJ1biAtaAo+IC0KPiAtZm9yIHNvbWUgdXNlZnVsIG9w
+dGlvbnMuCj4gLQo+IC1QaWdsaXQgb25seSBydW5zIGEgZGVmYXVsdCBzZXQgb2YgdGVzdHMgYW5k
+IGlzIHVzZWZ1bCBmb3IgcmVncmVzc2lvbgo+IC10ZXN0aW5nLiBPdGhlciB0ZXN0cyBub3QgcnVu
+IGFyZToKPiAtLSB0ZXN0cyB0aGF0IG1pZ2h0IGhhbmcgdGhlIGdwdSwgc2VlIEhBTkcgaW4gTWFr
+ZWZpbGUuYW0KPiAtLSBnZW1fc3RyZXNzLCBhIHN0cmVzcyB0ZXN0IHN1aXRlLiBMb29rIGF0IHRo
+ZSBzb3VyY2UgZm9yIGFsbCB0aGUKPiAtICB2YXJpb3VzIG9wdGlvbnMuCj4gLS0gdGVzdGRpc3Bs
+YXkgaXMgb25seSBydW4gaW4gdGhlIGRlZmF1bHQgbW9kZS4gdGVzdGRpc3BsYXkgaGFzIHRvbnMg
+b2YKPiAtICBvcHRpb25zIHRvIHRlc3QgZGlmZmVyZW50IGttcyBmdW5jdGlvbmFsaXR5LCBhZ2Fp
+biByZWFkIHRoZSBzb3VyY2UgZm9yCj4gLSAgdGhlIGRldGFpbHMuCj4gLQo+IC0qKmxpYi8qKgo+
+IC0KPiAtQ29tbW9uIGhlbHBlciBmdW5jdGlvbnMgYW5kIGhlYWRlcnMgdXNlZCBieSB0aGUgb3Ro
+ZXIgdG9vbHMuCj4gLQo+IC0qKm1hbi8qKgo+IC0KPiAtTWFucGFnZXMsIHVuZm9ydHVuYXRlbHkg
+cmF0aGVyIGluY29tcGxldGUuCj4gLQo+IC0qKnRvb2xzLyoqCj4gLQo+IC1UaGlzIGlzIGEgY29s
+bGVjdGlvbiBvZiBkZWJ1Z2dpbmcgdG9vbHMgdGhhdCBoYWQgcHJldmlvdXNseSBiZWVuCj4gLWJ1
+aWx0IHdpdGggdGhlIDJEIGRyaXZlciBidXQgbm90IHNoaXBwZWQuICBTb21lIGRpc3Ryb3Mgd2Vy
+ZSBoYWNraW5nCj4gLXVwIHRoZSAyRCBidWlsZCB0byBzaGlwIHRoZW0uICBJbnN0ZWFkLCBoZXJl
+J3MgYSBzZXBhcmF0ZSBwYWNrYWdlIGZvcgo+IC1wZW9wbGUgZGVidWdnaW5nIHRoZSBkcml2ZXIu
+Cj4gLQo+IC1UaGVzZSB0b29scyBnZW5lcmFsbHkgbXVzdCBiZSBydW4gYXMgcm9vdCwgZXhjZXB0
+IGZvciB0aGUgb25lcyB0aGF0IGp1c3QKPiAtZGVjb2RlIGR1bXBzLgo+IC0KPiAtKipkb2NzLyoq
+Cj4gLQo+IC1Db250YWlucyB0aGUgYXV0b21hdGljYWxseSBnZW5lcmF0ZWQgaWd0LWdwdS10b29s
+cyBsaWJyYXJpZXMKPiAtcmVmZXJlbmNlIGRvY3VtZW50YXRpb24gaW4gZG9jcy9yZWZlcmVuY2Uv
+LiBZb3UgbmVlZCB0byBoYXZlIHRoZQo+IC1ndGstZG9jIHRvb2xzIGluc3RhbGxlZCBhbmQgdXNl
+IHRoZSAiLS1lbmFibGUtZ3RrLWRvYyIgY29uZmlndXJlIGZsYWcKPiAtdG8gZ2VuZXJhdGUgdGhp
+cyBBUEkgZG9jdW1lbnRhdGlvbi4KPiAtCj4gLVRvIHJlZ2VuZXJhdGUgdGhlIGh0bWwgZmlsZXMg
+d2hlbiB1cGRhdGluZyBkb2N1bWVudGF0aW9uLCB1c2U6Cj4gLQo+IC0gICAgJCBuaW5qYSAtQyBi
+dWlsZCBpZ3QtZ3B1LXRvb2xzLWRvYwo+IC0KPiAtSWYgeW91J3ZlIGFkZGVkL2NoYW5nZWQvcmVt
+b3ZlZCBhIHN5bWJvbCBvciBhbnl0aGluZyBlbHNlIHRoYXQgY2hhbmdlcwo+IC10aGUgb3ZlcmFs
+bCBzdHJ1Y3R1cmUgb3IgaW5kZXhlcywgdGhpcyBuZWVkcyB0byBiZSByZWZsZWN0ZWQgaW4KPiAt
+aWd0LWdwdS10b29scy1zZWN0aW9ucy50eHQuIEVudGlyZWx5IG5ldyBzZWN0aW9ucyB3aWxsIGFs
+c28gbmVlZCB0byBiZQo+IC1hZGRlZCB0byBpZ3QtZ3B1LXRvb2xzLWRvY3MueG1sIGluIHRoZSBh
+cHByb3ByaWF0ZSBwbGFjZS4KPiAtCj4gLSoqaW5jbHVkZS9kcm0tdWFwaSoqCj4gLQo+IC1JbXBv
+cnRlZCBEUk0gdWFwaSBoZWFkZXJzIGZyb20gYWlybGllZCdzIGRybS1uZXh0IGJyYW5jaC4KPiAt
+VGhlc2Ugc2hvdWxkIGJlIHVwZGF0ZWQgYWxsIHRvZ2V0aGVyIGJ5IGV4ZWN1dGluZyAibWFrZQo+
+IC1oZWFkZXJzX2luc3RhbGwiIGZyb20gdGhhdCBicmFuY2ggb2YgdGhlIGtlcm5lbCBhbmQgdGhl
+bgo+IC1jb3B5aW5nIHRoZSByZXN1bHRpbmcgLi91c3IvaW5jbHVkZS9kcm0vKi5oIGluIGFuZCBj
+b21taXR0aW5nCj4gLXdpdGggYSBub3RlIG9mIHdoaWNoIGNvbW1pdCBvbiBhaXJsaWVkJ3MgYnJh
+bmNoIHdhcyB1c2VkIHRvCj4gLWdlbmVyYXRlIHRoZW0uCj4gK0dlbmVyYXRlZCBkb2N1bWVudGF0
+aW9uIGZvciB0aGUgbGF0ZXN0IG1hc3RlciBpcyBwdWJsaXNoZWQgdW5kZXIKPiArPGh0dHBzOi8v
+ZHJtLnBhZ2VzLmZyZWVkZXNrdG9wLm9yZy9pZ3QtZ3B1LXRvb2xzLz4uCj4gIAo+ICAKPiAgUmVx
+dWlyZW1lbnRzCj4gIC0tLS0tLS0tLS0tLQo+ICAKPiAtVGhpcyBpcyBhIG5vbi1leGhhdXN0aXZl
+IGxpc3Qgb2YgcGFja2FnZSBkZXBlbmRlbmNpZXMgcmVxdWlyZWQgZm9yIGJ1aWxkaW5nCj4gLXRo
+ZSBkZWZhdWx0IGNvbmZpZ3VyYXRpb24gKHBhY2thZ2UgbmFtZXMgbWF5IHZhcnkpOgo+ICtTZWUg
+YERvY2tlcmZpbGVzLipgIGZvciB1cC10by1kYXRlIGxpc3Qgb2YgcGFja2FnZXMgbmFtZXMgaW4g
+RmVkb3JhIGFuZAo+ICtEZWJpYW4uCj4gIAo+IC0JYmlzb24KPiAtCWd0ay1kb2MtdG9vbHMKPiAt
+CWZsZXgKPiAtCWxpYmNhaXJvMi1kZXYKPiAtCWxpYmRybS1kZXYKPiAtCWxpYmttb2QtZGV2Cj4g
+LQlsaWJwaXhtYW4tMS1kZXYKPiAtCWxpYnBjaWFjY2Vzcy1kZXYKPiAtCWxpYnByb2Nwcy1kZXYK
+PiAtCWxpYnVkZXYtZGV2Cj4gLQlsaWJ1bndpbmQtZGV2Cj4gLQlsaWJsem1hLWRldgo+IC0JbGli
+ZHctZGV2Cj4gLQlweXRob24tZG9jdXRpbHMKPiAtCXgxMXByb3RvLWRyaTItZGV2Cj4gLQl4dXRp
+bHMtZGV2Cj4gK0lmIHlvdXIgZGlzdHJpYnV0aW9uIHBhY2thZ2VzIElHVCB5b3UgY2FuIGFsc28g
+dXNlIHlvdXIgcGFja2FnZSBtYW5hZ2VyIHRvCj4gK2luc3RhbGwgdGhlIGRlcGVuZGVuY2llcywg
+ZS5nLjoKPiAgCj4gLVRoZSBmb2xsb3dpbmcgZGVwZW5kZW5jaWVzIGFyZSByZXF1aXJlZCBmb3Ig
+YnVpbGRpbmcgY2hhbWVsaXVtIHN1cHBvcnQKPiAtKHBhY2thZ2UgbmFtZXMgbWF5IHZhcnkpOgo+
+ICsgICAgIyBkbmYgYnVpbGRkZXAgaWd0LWdwdS10b29scwo+ICAKPiAtCWxpYnhtbHJwYy1jb3Jl
+LWMzLWRldgo+IC0JbGlidWRldi1kZXYKPiAtCWxpYmdsaWIyLjAtZGV2Cj4gLQlsaWJnc2wtZGV2
+Cj4gK0J1dCBrZWVwIGluIG1pbmQgdGhhdCB0aGlzIG1heSBiZSBzbGlnaHRseSBvdXRkYXRlZCBh
+bmQgbWlzcyBzb21lCj4gK3JlY2VudGx5IGFkZGVkIGRlcGVuZGVuY2llcyBmb3IgYnVpbGRpbmcg
+dGhlIGN1cnJlbnQgbWFzdGVyLgo+ICAKPiAtVGhlIGZvbGxvd2luZyBkZXBlbmRlbmNpZXMgYXJl
+IHJlcXVpcmVzIGZvciBidWlsZGluZyBhdWRpbyBzdXBwb3J0Cj4gLShwYWNrYWdlIG5hbWVzIG1h
+eSB2YXJ5KToKPiAgCj4gLQlsaWJhc291bmQyLWRldgo+IC0JbGliZ3NsLWRldgo+ICtCdWlsZGlu
+Zwo+ICstLS0tLS0tLQo+ICAKPiAtU2VlIERvY2tlcmZpbGVzLiogZm9yIHBhY2thZ2UgbmFtZXMg
+aW4gZGlmZmVyZW50IGRpc3RyaWJ1dGlvbnMuCj4gK09uZWxpbmVyIHRvIGdldCBzdGFydGVkOgo+
+ICAKPiAtTWVzb24gYnVpbGQgc3lzdGVtIHN1cHBvcnQKPiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0KPiAtCj4gLUN1cnJlbnRseSB3ZSBzdXBwb3J0IGJvdGggbWVzb24gYW5kIGF1dG9tYWtl
+IGFzIGJ1aWxkIHN5c3RlbXMsIGJ1dCBtZXNvbiBpcyB0aGUKPiAtcmVjb21tZW5kZWQgY2hvaWNl
+LiBPbmVsaW5lciB0byBnZXQgc3RhcnRlZDoKPiAtCj4gLSAgICAkIG1rZGlyIGJ1aWxkICYmIG1l
+c29uIGJ1aWxkICYmIGNkIGJ1aWxkICYmIG5pbmphCj4gKyAgICAkIG1lc29uIGJ1aWxkICYmIG5p
+bmphIC1DIGJ1aWxkCj4gIAo+ICBOb3RlIHRoYXQgbWVzb24gaW5zaXN0IG9uIHNlcGFyYXRlIGJ1
+aWxkIGRpcmVjdG9yaWVzIGZyb20gdGhlIHNvdXJjZSB0cmVlLgo+ICAKPiBAQCAtMTg2LDI2ICs0
+NSwxMTEgQEAgUnVubmluZyBzZWxmY2hlY2tzIGZvciBsaWIvdGVzdHMgYW5kIHRlc3RzLyBpcyBk
+b25lIHdpdGgKPiAgCj4gICAgICAkIG5pbmphIC1DIGJ1aWxkIHRlc3QKPiAgCj4gLU5vdGUgdGhh
+dCB0aGlzIGRvZXNuJ3QgYWN0dWFsbHkgcnVuIHRoZSB0ZXN0Y2FzZXMgaW4gdGVzdHMvOiBzY3Jp
+cHRzL3J1bi10ZXN0cy5zaAo+IC1zaG91bGQgY29udGludWUgdG8gYmUgdXNlZCBmb3IgdGhhdC4K
+PiAtCj4gIERvY3VtZW50YXRpb24gaXMgYnVpbHQgdXNpbmcKPiAgCj4gICAgICAkIG5pbmphIC1D
+IGJ1aWxkIGlndC1ncHUtdG9vbHMtZG9jCj4gIAo+IC1Ob3RlIHRoYXQgdGhpcyBuZWVkcyBtZXNv
+biB2MC40NyBvciBsYXRlciwgZWFybGllciB2ZXJzaW9ucyBvZiBtZXNvbiBkbyBub3QKPiAtdHJh
+Y2sgZGVwZW5jaWVzIGNvcnJlY3RseSBmb3IgdGhlIGRvY3VtZW50YXRpb24gYnVpbGQgYW5kIG5l
+ZWQ6Cj4gIAo+IC0gICAgJCBuaW5qYSAtQyBidWlsZCAmJiBuaW5qYSAtQyBidWlsZCBpZ3QtZ3B1
+LXRvb2xzLWRvYwo+ICtSdW5uaW5nIFRlc3RzCj4gKy0tLS0tLS0tLS0tLS0KPiAgCj4gLU5vdGUg
+dGhhdCB0aGVyZSdzIGEgc2V0dXAgc2NyaXB0IHNpbWlsYXIgdG8gLi9hdXRvZ2VuLnNoIHdoaWNo
+IGNyZWF0ZXMgYQo+IC1jb21wYXRpYmlsaXR5IE1ha2VmaWxlIHdpdGggYSBmZXcgdXNlZnVsIGRl
+ZmF1bHQgdGFyZ2V0czoKPiArSW4gYHRlc3RzL2AgeW91IGNhbiBmaW5kIGEgc2V0IG9mIGF1dG9t
+YXRlZCB0ZXN0cyB0byBydW4gYWdhaW5zdCB0aGUgRFJNCj4gK2RyaXZlcnMgdG8gdmFsaWRhdGUg
+eW91ciBjaGFuZ2VzLiBNYW55IG9mIHRoZSB0ZXN0cyBoYXZlIHN1YnRlc3RzLCB3aGljaCBjYW4K
+PiArYmUgbGlzdGVkIGJ5IHVzaW5nIHRoZSBgLS1saXN0LXN1YnRlc3RzYCBjb21tYW5kIGxpbmUg
+b3B0aW9uIGFuZCB0aGVuIHJ1bgo+ICt1c2luZyB0aGUgLS1ydW4tc3VidGVzdCBvcHRpb24uIElm
+IGAtLXJ1bi1zdWJ0ZXN0YCBpcyBub3QgdXNlZCwgYWxsIHN1YnRlc3RzCj4gK3dpbGwgYmUgcnVu
+LiBTb21lIHRlc3RzIGhhdmUgZnVydGhlciBvcHRpb25zIGFuZCB0aGVzZSBhcmUgZGV0YWlsZWQg
+YnkgdXNpbmcKPiArdGhlIGAtLWhlbHBgIG9wdGlvbi4KPiAgCj4gLSAgICAkIC4vbWVzb24uc2gg
+W21ha2UtYXJndW1lbnRzXQo+ICtNb3N0IG9mIHRoZSB0ZXN0IG11c3QgYmUgcnVuIGFzIGEgcm9v
+dCBhbmQgd2l0aCBubyBYIG9yIFdheWxhbmQgY29tcG9zaXRvcgo+ICtydW5uaW5nLgo+ICAKPiAt
+UmVsZWFzZXMgZm9yIG1haW50YWluZXJzCj4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQo+ICsg
+ICAgIyBidWlsZC90ZXN0cy9jb3JlX2F1dGgKPiArICAgIElHVC1WZXJzaW9uOiAxLjI0ICh4ODZf
+NjQpIChMaW51eDogNS4zLjAgeDg2XzY0KQo+ICsgICAgU3RhcnRpbmcgc3VidGVzdDogZ2V0Y2xp
+ZW50LXNpbXBsZQo+ICsgICAgU3VidGVzdCBnZXRjbGllbnQtc2ltcGxlOiBTVUNDRVNTICgwLjAw
+MXMpCj4gKyAgICBTdGFydGluZyBzdWJ0ZXN0OiBnZXRjbGllbnQtbWFzdGVyLWRyb3AKPiArICAg
+IFN1YnRlc3QgZ2V0Y2xpZW50LW1hc3Rlci1kcm9wOiBTVUNDRVNTICgwLjAwMHMpCj4gKyAgICBT
+dGFydGluZyBzdWJ0ZXN0OiBiYXNpYy1hdXRoCj4gKyAgICBTdWJ0ZXN0IGJhc2ljLWF1dGg6IFNV
+Q0NFU1MgKDAuMDAwcykKPiArICAgIFN0YXJ0aW5nIHN1YnRlc3Q6IG1hbnktbWFnaWNzCj4gKyAg
+ICBTdWJ0ZXN0IG1hbnktbWFnaWNzOiBTVUNDRVNTICgwLjAwMHMpCj4gIAo+IC0oMS4xNCkKPiAr
+ICAgICMgYnVpbGQvdGVzdHMvY29yZV9hdXRoIC0tcnVuLXN1YnRlc3QgZ2V0Y2xpZW50LXNpbXBs
+ZQo+ICsgICAgSUdULVZlcnNpb246IDEuMjQgKHg4Nl82NCkgKExpbnV4OiA1LjMuMCB4ODZfNjQp
+Cj4gKyAgICBTdGFydGluZyBzdWJ0ZXN0OiBnZXRjbGllbnQtc2ltcGxlCj4gKyAgICBTdWJ0ZXN0
+IGdldGNsaWVudC1zaW1wbGU6IFNVQ0NFU1MgKDAuMDAwcykKPiAgCj4gLWh0dHA6Ly93d3cueC5v
+cmcvd2lraS9EZXZlbG9wbWVudC9Eb2N1bWVudGF0aW9uL1JlbGVhc2VIT1dUTy8KPiArCj4gK1Ro
+ZSB0ZXN0IHN1aXRlIGNhbiBiZSBydW4gdXNpbmcgdGhlIGBydW4tdGVzdHMuc2hgIHNjcmlwdCBh
+dmFpbGFibGUgaW4gdGhlCj4gK2BzY3JpcHRzL2AgZGlyZWN0b3J5LiBUbyB1c2UgaXQgbWFrZSBz
+dXJlIHRoYXQgYGlndF9ydW5uZXJgIGlzIGJ1aWx0LCBlLmcuOgo+ICsKPiArICAgIG1lc29uIC1E
+cnVubmVyPWVuYWJsZWQgYnVpbGQgJiYgbmluamEgLUMgYnVpbGQKPiArCj4gK2BydW4tdGVzdHMu
+c2hgIGhhcyBvcHRpb25zIGZvciBmaWx0ZXJpbmcgYW5kIGV4Y2x1ZGluZyB0ZXN0cyBmcm9tIHRl
+c3QKPiArcnVuczoKPiArCj4gKyAgICAtdCA8cmVnZXg+ICAgICAgb25seSBpbmNsdWRlIHRlc3Rz
+IHRoYXQgbWF0Y2ggdGhlIHJlZ3VsYXIgZXhwcmVzc2lvbgo+ICsgICAgLXggPHJlZ2V4PiAgICAg
+IGV4Y2x1ZGUgdGVzdHMgdGhhdCBtYXRjaCB0aGUgcmVndWxhciBleHByZXNzaW9uCj4gKwo+ICtV
+c2VmdWwgcGF0dGVybnMgZm9yIHRlc3QgZmlsdGVyaW5nIGFyZSBkZXNjcmliZWQgaW4gdGhlIFtB
+UEkKPiArZG9jdW1lbnRhdGlvbl1bQVBJXSBhbmQgdGhlIGZ1bGwgbGlzdCBvZiB0ZXN0cyBhbmQg
+c3VidGVzdHMgY2FuIGJlIHByb2R1Y2VkCj4gK2J5IHBhc3NpbmcgYC1sYCB0byB0aGUgYHJ1bi10
+ZXN0cy5zaGAgc2NyaXB0LiBGdXJ0aGVyIG9wdGlvbnMgYXJlIGFyZQo+ICtkZXRhaWxlZCBieSB1
+c2luZyB0aGUgYC1oYCBvcHRpb24uCj4gKwo+ICtSZXN1bHRzIGFyZSB3cml0dGVuIHRvIGEgSlNP
+TiBmaWxlLgo+ICsKPiArW0FQSV06IGh0dHBzOi8vZHJtLnBhZ2VzLmZyZWVkZXNrdG9wLm9yZy9p
+Z3QtZ3B1LXRvb2xzL2lndC1ncHUtdG9vbHMtQ29yZS5odG1sCj4gKwo+ICsKPiArSUdUIENvbnRh
+aW5lcnMKPiArLS0tLS0tLS0tLS0tLS0KPiArCj4gK0lHVCBpcyBwYWNrZWQgaW50byBuaWZ0eSBk
+b2NrZXItY29tcGF0aWJsZSBjb250YWluZXJzIGZvciBlYXNlIG9mIGV4ZWN1dGlvbgo+ICthbmQg
+dG8gYXZvaWQgaGF2aW5nIHRvIGluc3RhbGwgYWxsIHRoZSBkZXBlbmRlbmNpZXMuIFlvdSBjYW4g
+dXNlCj4gK3BvZG1hbi9kb2NrZXIgdG8gdG8gcnVuIGl0IG9uIHlvdXIgc3lzdGVtLgo+ICsKPiAr
+T25lbGluZXIgdG8gZ2V0IHlvdSBzdGFydGVkIHdpdGggdGhlIGxhdGVzdCBtYXN0ZXI6Cj4gKwo+
+ICsgICAgIyBwb2RtYW4gcnVuIC0tcm0gLS1wcml2aWxlZGdlZCByZWdpc3RyeS5mcmVlZGVza3Rv
+cC5vcmcvZHJtL2lndC1ncHUtdG9vbHMvaWd0Om1hc3Rlcgo+ICsKPiArCj4gK090aGVyIFRoaW5n
+cwo+ICstLS0tLS0tLS0tLS0KPiArCj4gKyMjIyBgYmVuY2htYXJrcy9gCj4gKwo+ICtBIGNvbGxl
+Y3Rpb24gb2YgdXNlZnVsIG1pY3JvYmVuY2htYXJrcyB0aGF0IGNhbiBiZSB1c2VkIHRvIHR1bmUg
+RFJNIGNvZGUuCj4gKwo+ICtUaGUgYmVuY2htYXJrcyByZXF1aXJlIEtNUyB0byBiZSBlbmFibGVk
+LiAgV2hlbiBydW4gd2l0aCBhbiBYIFNlcnZlcgo+ICtydW5uaW5nLCB0aGV5IG11c3QgYmUgcnVu
+IGFzIHJvb3QgdG8gYXZvaWQgdGhlIGF1dGhlbnRpY2F0aW9uCj4gK3JlcXVpcmVtZW50Lgo+ICsK
+PiArTm90ZSB0aGF0IGEgZmV3IG90aGVyIG1pY3JvYmVuY2htYXJrcyBhcmUgaW4gdGVzdHMgKGUu
+Zy4gYGdlbV9ndHRfc3BlZWRgKS4KPiArCj4gKyMjIyBgdG9vbHMvYAo+ICsKPiArQSBjb2xsZWN0
+aW9uIG9mIGRlYnVnZ2luZyB0b29scy4gVGhleSBnZW5lcmFsbHkgbXVzdCBiZSBydW4gYXMgcm9v
+dCwgZXhjZXB0Cj4gK2ZvciB0aGUgb25lcyB0aGF0IGp1c3QgZGVjb2RlIGR1bXBzLgo+ICsKPiAr
+IyMjIGBkb2NzL2AKPiArCj4gK0NvbnRhaW5zIHRoZSBpbmZyYXN0cmFjdHVyZSB0byBhdXRvbWF0
+aWNhbGx5IGdlbmVyYXRlIGlndC1ncHUtdG9vbHMgbGlicmFyaWVzCj4gK3JlZmVyZW5jZSBkb2N1
+bWVudGF0aW9uLiBZb3UgbmVlZCB0byBoYXZlIHRoZSBndGstZG9jIHRvb2xzIGluc3RhbGxlZC4K
+PiArCj4gK1RvIHJlZ2VuZXJhdGUgdGhlIGh0bWwgZmlsZXMgd2hlbiB1cGRhdGluZyBkb2N1bWVu
+dGF0aW9uLCB1c2U6Cj4gKwo+ICsgICAgJCBuaW5qYSAtQyBidWlsZCBpZ3QtZ3B1LXRvb2xzLWRv
+Ywo+ICsKPiArSWYgeW91J3ZlIGFkZGVkL2NoYW5nZWQvcmVtb3ZlZCBhIHN5bWJvbCBvciBhbnl0
+aGluZyBlbHNlIHRoYXQgY2hhbmdlcyB0aGUKPiArb3ZlcmFsbCBzdHJ1Y3R1cmUgb3IgaW5kZXhl
+cyB5b3UgbmVlZCB0byByZWZsZWN0IHRoZSBjaGFuZ2UgaW4KPiArYGlndC1ncHUtdG9vbHMtc2Vj
+dGlvbnMudHh0YC4gRW50aXJlbHkgbmV3IHNlY3Rpb25zIGFsc28gbmVlZCB0byBiZSBhZGRlZCB0
+bwo+ICtgaWd0LWdwdS10b29scy1kb2NzLnhtbGAgaW4gdGhlIGFwcHJvcHJpYXRlIHBsYWNlLgo+
+ICsKPiArIyMjIGBpbmNsdWRlL2RybS11YXBpL2AKPiArCj4gK0ltcG9ydGVkIERSTSB1YXBpIGhl
+YWRlcnMgZnJvbSBhaXJsaWVkJ3MgZHJtLW5leHQgYnJhbmNoLgo+ICsKPiArVGhlc2Ugc2hvdWxk
+IGJlIHVwZGF0ZWQgYWxsIHRvZ2V0aGVyIGJ5IGV4ZWN1dGluZyBgbWFrZSBoZWFkZXJzX2luc3Rh
+bGxgIGZyb20KPiArdGhhdCBicmFuY2ggb2YgdGhlIGtlcm5lbCBhbmQgdGhlbiBjb3B5aW5nIHRo
+ZSByZXN1bHRpbmcKPiArYC4vdXNyL2luY2x1ZGUvZHJtLyouaGAgaW4gYW5kIGNvbW1pdHRpbmcg
+d2l0aCBhIG5vdGUgb2Ygd2hpY2ggZXhhY3QgY29tbWl0Cj4gK2Zyb20gdGhlIGFpcmxpZWQncyBi
+cmFuY2ggd2FzIHVzZWQgdG8gZ2VuZXJhdGUgdGhlbS4KPiAtLSAKPiAyLjIxLjAKPiAKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5n
+IGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
+a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
