@@ -1,14 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Sat, 5 Oct 2019 16:46:20 +0300
-From: Andi Shyti <andi.shyti@intel.com>
-Message-ID: <20191005134620.GC2562@intel.intel>
-References: <20191005105556.12832-1-chris@chris-wilson.co.uk>
- <20191005105556.12832-3-chris@chris-wilson.co.uk>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Mon,  7 Oct 2019 08:37:29 +0100
+Message-Id: <20191007073729.5612-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191005105556.12832-3-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] i915/gem_softpin: Replace constant
- loop with timeout
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_userptr: Be defensive when testing
+ userptr capabilities
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,15 +16,30 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgQ2hyaXMsCgpPbiBTYXQsIE9jdCAwNSwgMjAxOSBhdCAxMTo1NTo1NkFNICswMTAwLCBDaHJp
-cyBXaWxzb24gd3JvdGU6Cj4gUmF0aGVyIHRoYW4gZG8gYSBmaXhlZCBhbW91bnQgb2Ygd29yayB0
-aGF0IHRha2VzICpmb3JldmVyKiwgcnVuIGZvciBhCj4gZml4ZWQgYW1vdW50IG9mIHRpbWUuCj4g
-Cj4gU2lnbmVkLW9mZi1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+
-Cgpsb29rcyBuaWNlISA6KQoKUmV2aWV3ZWQtYnk6IEFuZGkgU2h5dGkgPGFuZGkuc2h5dGlAaW50
-ZWwuY29tPgoKQW5kaQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
-dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
+Tm90IGV2ZXJ5IGRldmljZSBuYXR1cmFsbHkgc3VwcG9ydHMgc25vb3BpbmcgYW5kIHVzZXJwdHIs
+IHNvIGJlIHByZXBhcmVkCmZvciB0aGUgaW5pdGlhbCBwcm9iZSB0byBmYWlsLgoKQnVnemlsbGE6
+IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTExMTkxMApTaWdu
+ZWQtb2ZmLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KLS0tCiB0
+ZXN0cy9pOTE1L2dlbV91c2VycHRyX2JsaXRzLmMgfCA3ICsrKysrLS0KIDEgZmlsZSBjaGFuZ2Vk
+LCA1IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvaTkx
+NS9nZW1fdXNlcnB0cl9ibGl0cy5jIGIvdGVzdHMvaTkxNS9nZW1fdXNlcnB0cl9ibGl0cy5jCmlu
+ZGV4IDIzNTljMTNmNC4uMThlODA2ZmVkIDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2dlbV91c2Vy
+cHRyX2JsaXRzLmMKKysrIGIvdGVzdHMvaTkxNS9nZW1fdXNlcnB0cl9ibGl0cy5jCkBAIC03OCwx
+MiArNzgsMTQgQEAgc3RhdGljIHVpbnQzMl90IGxpbmVhcltXSURUSCpIRUlHSFRdOwogCiBzdGF0
+aWMgYm9vbCBoYXNfZ3R0X21tYXAoaW50IGk5MTUpCiB7Ci0Jdm9pZCAqcHRyLCAqbWFwOworCXZv
+aWQgKnB0ciwgKm1hcCA9IE5VTEw7CiAJdWludDMyX3QgaGFuZGxlOwogCiAJaWd0X2Fzc2VydChw
+b3NpeF9tZW1hbGlnbigmcHRyLCBQQUdFX1NJWkUsIFBBR0VfU0laRSkgPT0gMCk7CiAKLQlnZW1f
+dXNlcnB0cihpOTE1LCBwdHIsIDQwOTYsIDAsIDAsICZoYW5kbGUpOworCWlmIChfX2dlbV91c2Vy
+cHRyKGk5MTUsIHB0ciwgNDA5NiwgMCwKKwkJCSAgTE9DQUxfSTkxNV9VU0VSUFRSX1VOU1lOQ0hS
+T05JWkVELCAmaGFuZGxlKSkKKwkJZ290byBvdXRfcHRyOwogCWlndF9hc3NlcnQoaGFuZGxlICE9
+IDApOwogCiAJbWFwID0gX19nZW1fbW1hcF9fZ3R0KGk5MTUsIGhhbmRsZSwgNDA5NiwgUFJPVF9X
+UklURSk7CkBAIC05MSw2ICs5Myw3IEBAIHN0YXRpYyBib29sIGhhc19ndHRfbW1hcChpbnQgaTkx
+NSkKIAkJbXVubWFwKG1hcCwgNDA5Nik7CiAKIAlnZW1fY2xvc2UoaTkxNSwgaGFuZGxlKTsKK291
+dF9wdHI6CiAJZnJlZShwdHIpOwogCiAJcmV0dXJuIG1hcCAhPSBOVUxMOwotLSAKMi4yMy4wCgpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1h
+aWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZy
+ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
