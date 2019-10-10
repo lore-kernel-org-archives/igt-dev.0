@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65CD589ACC
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Oct 2019 08:06:59 +0000 (UTC)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 10 Oct 2019 07:59:24 -0000
-Message-ID: <20191010075924.23078.85632@emeril.freedesktop.org>
-References: <20191010073258.24519-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20191010073258.24519-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_se?=
- =?utf-8?q?ries_starting_with_=5Bi-g-t=2C1/2=5D_i915=5Fdrm=2Eh_sync?=
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20191010075528.GG18974@kdec5-desk.ger.corp.intel.com>
+References: <94c5547153d1c9ebce2b8eda730286aba6184793.1565040517.git.caz.yokoyama@intel.com>
+ <20191010075528.GG18974@kdec5-desk.ger.corp.intel.com>
+Message-ID: <157069481451.18808.9666933287205890328@skylake-alporthouse-com>
+Date: Thu, 10 Oct 2019 09:06:54 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/1] tests/i915/gem_exec_balancer.c -
+ remove unnecessary simulation check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,37 +18,23 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Caz Yokoyama <caz.yokoyama@intel.com>, Katarzyna Dec <katarzyna.dec@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogc2VyaWVzIHN0YXJ0aW5nIHdpdGggW2ktZy10
-LDEvMl0gaTkxNV9kcm0uaCBzeW5jClVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0
-b3Aub3JnL3Nlcmllcy82NzgyOS8KU3RhdGUgOiB3YXJuaW5nCgo9PSBTdW1tYXJ5ID09CgpFUlJP
-UiEgVGhpcyBzZXJpZXMgaW50cm9kdWNlcyBuZXcgdW5kb2N1bWVudGVkIHRlc3RzOgoKZ2VtX2N0
-eF9wZXJzaXN0ZW5jZQpnZW1fY3R4X3BlcnNpc3RlbmNlQGNsZWFudXAKZ2VtX2N0eF9wZXJzaXN0
-ZW5jZUBmaWxlCmdlbV9jdHhfcGVyc2lzdGVuY2VAaGFuZ2NoZWNrCmdlbV9jdHhfcGVyc2lzdGVu
-Y2VAaG9zdGlsZQpnZW1fY3R4X3BlcnNpc3RlbmNlQGlkZW1wb3RlbnQKZ2VtX2N0eF9wZXJzaXN0
-ZW5jZUBtaXhlZApnZW1fY3R4X3BlcnNpc3RlbmNlQHBlcnNpc3RlbmNlCmdlbV9jdHhfcGVyc2lz
-dGVuY2VAcHJvY2VzcwoKQ2FuIHlvdSBkb2N1bWVudCB0aGVtIGFzIHBlciB0aGUgcmVxdWlyZW1l
-bnQgaW4gdGhlIFtDT05UUklCVVRJTkcubWRdPwoKW0RvY3VtZW50YXRpb25dIGhhcyBtb3JlIGRl
-dGFpbHMgb24gaG93IHRvIGRvIHRoaXMuCgpIZXJlIGFyZSBmZXcgZXhhbXBsZXM6Cmh0dHBzOi8v
-Z2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaWd0LWdwdS10b29scy9jb21taXQvMDMxNjY5NWQw
-M2FhNDYxMDgyOTZiMjdmMzk4MmVjOTMyMDBjN2E2ZQpodHRwczovL2dpdGxhYi5mcmVlZGVza3Rv
-cC5vcmcvZHJtL2lndC1ncHUtdG9vbHMvY29tbWl0LzQ0M2NjNjU4ZTFlNmI0OTJlZTE3YmY0ZjRk
-ODkxMDI5ZWI3YTIwNWQKClRoYW5rcyBpbiBhZHZhbmNlIQoKW0NPTlRSSUJVVElORy5tZF06IGh0
-dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaWd0LWdwdS10b29scy9ibG9iL21hc3Rl
-ci9DT05UUklCVVRJTkcubWQjTDE5CltEb2N1bWVudGF0aW9uXTogaHR0cHM6Ly9kcm0ucGFnZXMu
-ZnJlZWRlc2t0b3Aub3JnL2lndC1ncHUtdG9vbHMvaWd0LWdwdS10b29scy1Db3JlLmh0bWwjaWd0
-LWRlc2NyaWJlCgpPdGhlciB0aGFuIHRoYXQsIHBpcGVsaW5lIHN0YXR1czogU1VDQ0VTUy4KCnNl
-ZSBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdzL3BpcGVs
-aW5lcy82OTU3MyBmb3IgbW9yZSBkZXRhaWxzCgo9PSBMb2dzID09CgpGb3IgbW9yZSBkZXRhaWxz
-IHNlZTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2dmeC1jaS9pZ3QtY2ktdGFncy9w
-aXBlbGluZXMvNjk1NzMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
-aHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+UXVvdGluZyBLYXRhcnp5bmEgRGVjICgyMDE5LTEwLTEwIDA4OjU1OjI4KQo+IE9uIE1vbiwgQXVn
+IDA1LCAyMDE5IGF0IDAyOjMwOjM1UE0gLTA3MDAsIENheiBZb2tveWFtYSB3cm90ZToKPiAKPiBV
+c3VhbCBhcHByb2FjaCBmb3IgcGF0Y2hlcyBpdCB0byBleHBsYWluIFdIWSB3ZSBkbyB0aGluZ3Mu
+IFdIQVQgaXMKPiBzZWxmLWV4cGxhaW5hYmxlIGJ5IGNvZGUuCj4gQWRkaW5nIGNvbW1pdCBtc2cg
+Y291bGQgbWFrZSBwYXRjaCBtb3JlIG5vdGljYWJsZS4KPiAKPiBNb3Jlb3ZlciAtIEkgd291bGQg
+dGFsayB0byBhdXRob3Igb2YgdGhlIGNvZGUgd2hhdCBoZSB0aGlua3Mgb2YgdGhpcyBjaGFuZ2Uu
+CgpObyBzdHJvbmcgb3BpbmlvbjsgaXQncyBhIG5vdGUgdG8gc2F5IHRoYXQgdGhpcyBpZ3QgZm9j
+dXNpbmcgb24gc3cKZGV0YWlscyByYXRoZXIgdGhhbiBodyBzbyB0aGUgdGVzdCBpcyB1bmxpa2Vs
+eSB0byBiZSB1c2VmdWwgZm9yIGVhcmx5CmJyaW5ndXAuCi1DaHJpcwpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
+ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
