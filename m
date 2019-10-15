@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 15 Oct 2019 16:23:40 +0300
+Date: Tue, 15 Oct 2019 16:31:36 +0300
 From: Andi Shyti <andi.shyti@intel.com>
-Message-ID: <20191015132304.GB12764@intel.intel>
-References: <20191013135021.31957-1-chris@chris-wilson.co.uk>
+Message-ID: <20191015133136.GC12764@intel.intel>
+References: <20191003152302.14818-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20191013135021.31957-1-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib: Generalise rapl interface
+In-Reply-To: <20191003152302.14818-1-chris@chris-wilson.co.uk>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915_hangman: Force error capture
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,14 +22,13 @@ To: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgQ2hyaXMsCgpPbiBTdW4sIE9jdCAxMywgMjAxOSBhdCAwMjo1MDoyMFBNICswMTAwLCBDaHJp
-cyBXaWxzb24gd3JvdGU6Cj4gV2UgY2FuIHVzZSBvdXIgZXhpc3RpbmcgcmFwbCBpbnRlcmZhY2Ug
-dGhhdCBtb25pdG9ycyBncHUgcG93ZXIsIHRvIGFsc28KPiBzYW1wbGUgdGhlIG90aGVyIHJhcGwg
-ZG9tYWlucyBzdWNoIGFzIHBhY2thZ2UsIGNvcmVzIGFuZCByYW0uCj4gCj4gU2lnbmVkLW9mZi1i
-eTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Cj4gQ2M6IEFuZGkgU2h5
-dGkgPGFuZGkuc2h5dGlAaW50ZWwuY29tPgoKbG9va3MgZ29vZCwKClJldmlld2VkLWJ5OiBBbmRp
-IFNoeXRpIDxhbmRpLnNoeXRpQGludGVsLmNvbT4KClRoYW5rcywKQW5kaQoKUFMgRG9uJ3QgdGhp
-bmsgSSBtaXNzZWQgYSBmZXcgaGlkZGVuIHN0eWxlIGNoYW5nZXMgOikKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0
-LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+SGkgQ2hyaXMsCgpPbiBUaHUsIE9jdCAwMywgMjAxOSBhdCAwNDoyMzowMlBNICswMTAwLCBDaHJp
+cyBXaWxzb24gd3JvdGU6Cj4gRm9yIGZhc3QgcHJlZW1wdC1yZXNldHMsIGVycm9yIGNhcHR1cmUg
+aXMgc2tpcHBlZCwgc28gZGlzYWJsZQo+IHByZWVtcHQtcmVzZXRzIGJlZm9yZSBjaGVja2luZyB0
+aGUgZXJyb3Igc3RhdGUuIFdoaWxlIHRoaW5raW5nIGFoZWFkLCBiZQo+IHByZXBhcmVkIGZvciB3
+aGVuIHRoZSBtb2RwYXJhbXMgYXJlIG5vdCBhY2Nlc3NpYmxlLgo+IAo+IFNpZ25lZC1vZmYtYnk6
+IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgoKYW5kIGZpbmFsbHkuLi4K
+ClJldmlld2VkLWJ5OiBBbmRpIFNoeXRpIDxhbmRpLnNoeXRpQGludGVsLmNvbT4KCkFuZGkKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
+aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
+ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
