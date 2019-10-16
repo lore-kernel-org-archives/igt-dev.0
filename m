@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F5F389F55
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Oct 2019 11:27:58 +0000 (UTC)
+Date: Wed, 16 Oct 2019 14:27:54 +0300
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20191016112754.ffmv274343cagm4u@ahiler-desk1.fi.intel.com>
+References: <20191016111352.5212-1-petri.latvala@intel.com>
+ <20191016111352.5212-3-petri.latvala@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 16 Oct 2019 11:25:32 -0000
-Message-ID: <20191016112532.14699.94391@emeril.freedesktop.org>
-References: <20191016074912.32290-1-swati2.sharma@intel.com>
-In-Reply-To: <20191016074912.32290-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_re?=
- =?utf-8?q?moval_of_igt=5Fskip=5Fon=5Fsimulation=28=29_from_i915/_tests_?=
- =?utf-8?b?KHJldjIp?=
+Content-Disposition: inline
+In-Reply-To: <20191016111352.5212-3-petri.latvala@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 3/4] runner/json_tests: Adapt to better
+ output parsing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,24 +19,19 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Swati Sharma <swati2.sharma@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogcmVtb3ZhbCBvZiBpZ3Rfc2tpcF9vbl9zaW11
-bGF0aW9uKCkgZnJvbSBpOTE1LyB0ZXN0cyAocmV2MikKVVJMICAgOiBodHRwczovL3BhdGNod29y
-ay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzY4MDczLwpTdGF0ZSA6IHdhcm5pbmcKCj09IFN1bW1h
-cnkgPT0KCkRpZCBub3QgZ2V0IGxpc3Qgb2YgdW5kb2N1bWVudGVkIHRlc3RzIGZvciB0aGlzIHJ1
-biwgc29tZXRoaW5nIGlzIHdyb25nIQoKT3RoZXIgdGhhbiB0aGF0LCBwaXBlbGluZSBzdGF0dXM6
-IEZBSUxFRC4KCnNlZSBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1j
-aS10YWdzL3BpcGVsaW5lcy83MDkwNCBmb3IgbW9yZSBkZXRhaWxzCgo9PSBMb2dzID09CgpGb3Ig
-bW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2dmeC1jaS9p
-Z3QtY2ktdGFncy9waXBlbGluZXMvNzA5MDQKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
-ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9pZ3QtZGV2
+T24gV2VkLCBPY3QgMTYsIDIwMTkgYXQgMDI6MTM6NTFQTSArMDMwMCwgUGV0cmkgTGF0dmFsYSB3
+cm90ZToKPiBTaW5jZSB3ZSBhY3R1YWxseSBpbmNsdWRlIHRoZSBvdXRwdXQgYmVmb3JlIHRoZSBz
+dWJ0ZXN0IGJlZ2lucyBub3csCj4gYWRkIGl0IHRvIHRoZSByZWZlcmVuY2UuanNvbnMgd2hlcmUg
+YXBwbGljYWJsZS4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2
+YWxhQGludGVsLmNvbT4KUmV2aWV3ZWQtYnk6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6Lmhp
+bGVyQGludGVsLmNvbT4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcK
+aHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
