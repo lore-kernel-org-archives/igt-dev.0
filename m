@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF0796E3D8
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2019 06:43:01 +0000 (UTC)
-From: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>
-Date: Tue, 22 Oct 2019 06:42:59 +0000
-Message-ID: <83ec90078fbaad813807773ef63f3ec193d5d95a.camel@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 360536E612
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2019 12:12:07 +0000 (UTC)
+MIME-Version: 1.0
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <83ec90078fbaad813807773ef63f3ec193d5d95a.camel@intel.com>
 References: <20190814102140.3275-1-lukasz.kalamarz@intel.com>
  <20190814102140.3275-2-lukasz.kalamarz@intel.com>
  <156577850123.2301.8058170876745324840@skylake-alporthouse-com>
-In-Reply-To: <156577850123.2301.8058170876745324840@skylake-alporthouse-com>
-Content-Language: en-US
-Content-ID: <57337009DAB06540A3E5A4794B40EB42@intel.com>
-MIME-Version: 1.0
+ <83ec90078fbaad813807773ef63f3ec193d5d95a.camel@intel.com>
+Message-ID: <157174631514.2684.16851495084789910777@skylake-alporthouse-com>
+Date: Tue, 22 Oct 2019 13:11:55 +0100
 Subject: Re: [igt-dev] [RFC PATCH 1/4] lib/i915/gem_mman: add mmap_offset
  support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -25,24 +24,27 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Kalamarz, Lukasz" <lukasz.kalamarz@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "chris@chris-wilson.co.uk" <chris@chris-wilson.co.uk>
+To: "Kalamarz, Lukasz" <lukasz.kalamarz@intel.com>, "Kempczynski,
+ Zbigniew" <zbigniew.kempczynski@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 Cc: "Auld, Matthew" <matthew.auld@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDE5LTA4LTE0IGF0IDExOjI4ICswMTAwLCBDaHJpcyBXaWxzb24gd3JvdGU6DQo+
-IFF1b3RpbmcgTHVrYXN6IEthbGFtYXJ6ICgyMDE5LTA4LTE0IDExOjIxOjM3KQ0KPiA+ICsjZGVm
-aW5lIExPQ0FMX0k5MTVfUEFSQU1fTU1BUF9PRkZTRVRfVkVSU0lPTiA1NA0KPiA+ICsNCj4gPiAr
-Ym9vbCBnZW1faGFzX21tYXBfb2Zmc2V0KGludCBmZCkNCj4gPiArew0KPiA+ICsgICAgICAgc3Rh
-dGljIGludCBoYXNfbW1hcF9vZmZzZXQgPSAtMTsNCj4gPiArDQo+ID4gKyAgICAgICBpZiAoaGFz
-X21tYXBfb2Zmc2V0ID09IC0xKSB7DQo+IA0KPiBIb3cgbWFueSB0aW1lcyBkbyBJIGhhdmUgdG8g
-c2F5IHRoYXQgSSBhbSBzb3JyeSBmb3IgaW50cm9kdWNpbmcgc3RhdGljDQo+IGhlcmUuIEl0IHdh
-cyB0byBjdXQgZG93biBvbiBzdHJhY2Ugc3BhbSwgYnV0IG5vIG9uZSBzaG91bGQgYmUgcmVwZWF0
-ZWRseQ0KPiBjaGVja2luZywgc28gcGxlYXNlIGRvbid0IGNhcmdvIGN1bHQgaXQuIEl0IGRvZXNu
-J3QgYm9kZSB3ZWxsLg0KPiAtQ2hyaXMNCg0KV2hhdCdzIHdyb25nIHdpdGggdGhpcyBvcHRpbWl6
-YXRpb24gdGVjaG5pcXVlPyBJcyB0aGF0IHBvc3NpYmxlIGZvciBzaW5nbGUNCmk5MTUgZHJpdmVy
-IHdlIGdvdCBkaWZmZXJlbnQgcmVzdWx0cz8gT25seSByZWFzb24gSSBzZWUgd291bGQgYmUgdG8g
-aGF2ZQ0KdHdvIGRpZmZlcmVudCBHUFUncyB3aXRoIGRpZmZlcmVudCBnZW5lcmF0aW9ucywgYnV0
-IGl0IGlzIGltcG9zc2libGU/DQoNClpiaWduaWV3DQpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3Rz
-LmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2lndC1kZXY=
+UXVvdGluZyBLZW1wY3p5bnNraSwgWmJpZ25pZXcgKDIwMTktMTAtMjIgMDc6NDI6NTkpCj4gT24g
+V2VkLCAyMDE5LTA4LTE0IGF0IDExOjI4ICswMTAwLCBDaHJpcyBXaWxzb24gd3JvdGU6Cj4gPiBR
+dW90aW5nIEx1a2FzeiBLYWxhbWFyeiAoMjAxOS0wOC0xNCAxMToyMTozNykKPiA+ID4gKyNkZWZp
+bmUgTE9DQUxfSTkxNV9QQVJBTV9NTUFQX09GRlNFVF9WRVJTSU9OIDU0Cj4gPiA+ICsKPiA+ID4g
+K2Jvb2wgZ2VtX2hhc19tbWFwX29mZnNldChpbnQgZmQpCj4gPiA+ICt7Cj4gPiA+ICsgICAgICAg
+c3RhdGljIGludCBoYXNfbW1hcF9vZmZzZXQgPSAtMTsKPiA+ID4gKwo+ID4gPiArICAgICAgIGlm
+IChoYXNfbW1hcF9vZmZzZXQgPT0gLTEpIHsKPiA+IAo+ID4gSG93IG1hbnkgdGltZXMgZG8gSSBo
+YXZlIHRvIHNheSB0aGF0IEkgYW0gc29ycnkgZm9yIGludHJvZHVjaW5nIHN0YXRpYwo+ID4gaGVy
+ZS4gSXQgd2FzIHRvIGN1dCBkb3duIG9uIHN0cmFjZSBzcGFtLCBidXQgbm8gb25lIHNob3VsZCBi
+ZSByZXBlYXRlZGx5Cj4gPiBjaGVja2luZywgc28gcGxlYXNlIGRvbid0IGNhcmdvIGN1bHQgaXQu
+IEl0IGRvZXNuJ3QgYm9kZSB3ZWxsLgo+ID4gLUNocmlzCj4gCj4gV2hhdCdzIHdyb25nIHdpdGgg
+dGhpcyBvcHRpbWl6YXRpb24gdGVjaG5pcXVlPyBJcyB0aGF0IHBvc3NpYmxlIGZvciBzaW5nbGUK
+PiBpOTE1IGRyaXZlciB3ZSBnb3QgZGlmZmVyZW50IHJlc3VsdHM/IE9ubHkgcmVhc29uIEkgc2Vl
+IHdvdWxkIGJlIHRvIGhhdmUKPiB0d28gZGlmZmVyZW50IEdQVSdzIHdpdGggZGlmZmVyZW50IGdl
+bmVyYXRpb25zLCBidXQgaXQgaXMgaW1wb3NzaWJsZT8KClRoZSB3b3JsZCBoYXMgY2hhbmdlZCBh
+bmQgdGhhdCBpcyBub3cgdmVyeSBwb3NzaWJsZS4KLUNocmlzCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
+YW4vbGlzdGluZm8vaWd0LWRldg==
