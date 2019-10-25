@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA7F86E8D0
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Oct 2019 08:04:07 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCBD26E8D0
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Oct 2019 08:05:47 +0000 (UTC)
+Date: Fri, 25 Oct 2019 11:05:43 +0300
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20191025080543.5kymx6etpee6bfzm@ahiler-desk1.fi.intel.com>
+References: <20191024110546.25569-1-petri.latvala@intel.com>
+ <20191024110546.25569-3-petri.latvala@intel.com>
 MIME-Version: 1.0
-From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-In-Reply-To: <20191024232903.15720-1-chris@chris-wilson.co.uk>
-References: <20191024232903.15720-1-chris@chris-wilson.co.uk>
-Message-ID: <157199059244.7880.15504026717670370382@jlahtine-desk.ger.corp.intel.com>
-Date: Fri, 25 Oct 2019 11:03:12 +0300
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_ctx_exec: Restore
- i915.enable_hangcheck before failing
+Content-Disposition: inline
+In-Reply-To: <20191024110546.25569-3-petri.latvala@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/8] lib/tests: Unit tests for dynamic
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,16 +23,13 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@list.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBDaHJpcyBXaWxzb24gKDIwMTktMTAtMjUgMDI6Mjk6MDMpCj4gSWYgdGhlIHRlc3Qg
-ZmFpbHMsIGRvbid0IGFib3J0IGxlYXZpbmcgdGhlIGdsb2JhbCBpOTE1LmVuYWJsZV9oYW5nY2hl
-Y2sKPiBzdGlsbCBkaXNhYmxlZCBhcyB0aGF0IG1heSBhZmZlY3QgbGF0ZXIgdGVzdHMuCj4gCj4g
-U2lnbmVkLW9mZi1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+CgpS
-ZXZpZXdlZC1ieTogSm9vbmFzIExhaHRpbmVuIDxqb29uYXMubGFodGluZW5AbGludXguaW50ZWwu
-Y29tPgoKUmVnYXJkcywgSm9vbmFzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0
-LWRldg==
+T24gVGh1LCBPY3QgMjQsIDIwMTkgYXQgMDI6MDU6NDBQTSArMDMwMCwgUGV0cmkgTGF0dmFsYSB3
+cm90ZToKPiBTaWduZWQtb2ZmLWJ5OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVs
+LmNvbT4KUmV2aWV3ZWQtYnk6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6LmhpbGVyQGludGVs
+LmNvbT4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0
+LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
+aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
