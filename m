@@ -1,33 +1,35 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-Date: Sun, 27 Oct 2019 21:01:24 +0200
-From: Andi Shyti <andi.shyti@intel.com>
-Message-ID: <20191027190124.GB12997@intel.intel>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+MIME-Version: 1.0
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20191027190124.GB12997@intel.intel>
 References: <20191026193456.19445-1-chris@chris-wilson.co.uk>
  <20191026193456.19445-2-chris@chris-wilson.co.uk>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191026193456.19445-2-chris@chris-wilson.co.uk>
-Subject: Re: [Intel-gfx] [PATCH i-g-t 2/2] i915/gem_ctx_exec: Enable resets
+ <20191027190124.GB12997@intel.intel>
+Message-ID: <157220310477.26808.4656875433175086819@skylake-alporthouse-com>
+Date: Sun, 27 Oct 2019 19:05:04 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] i915/gem_ctx_exec: Enable resets
  for basic-nohangcheck
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Andi Shyti <andi.shyti@intel.com>
 Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgQ2hyaXMsCgo+IEBAIC0yMTYsNiArMjE3LDggQEAgc3RhdGljIHZvaWQgbm9oYW5nY2hlY2tf
-aG9zdGlsZShpbnQgaTkxNSkKPiAgCSAqIHdlIGZvcmNpYmx5IHRlcm1pbmF0ZSB0aGF0IGNvbnRl
-eHQuCj4gIAkgKi8KPiAgCj4gKwloYW5nID0gaWd0X2FsbG93X2hhbmcoaTkxNSwgMCwgMCk7Cj4g
-KwoKd2h5IGN0eCA9IDA/CgpBbmRpCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCkludGVsLWdmeCBtYWlsaW5nIGxpc3QKSW50ZWwtZ2Z4QGxpc3RzLmZyZWVk
-ZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2ludGVsLWdmeA==
+UXVvdGluZyBBbmRpIFNoeXRpICgyMDE5LTEwLTI3IDE5OjAxOjI0KQo+IEhpIENocmlzLAo+IAo+
+ID4gQEAgLTIxNiw2ICsyMTcsOCBAQCBzdGF0aWMgdm9pZCBub2hhbmdjaGVja19ob3N0aWxlKGlu
+dCBpOTE1KQo+ID4gICAgICAgICogd2UgZm9yY2libHkgdGVybWluYXRlIHRoYXQgY29udGV4dC4K
+PiA+ICAgICAgICAqLwo+ID4gIAo+ID4gKyAgICAgaGFuZyA9IGlndF9hbGxvd19oYW5nKGk5MTUs
+IDAsIDApOwo+ID4gKwo+IAo+IHdoeSBjdHggPSAwPwoKQmVjYXVzZSBJJ20gbGF6eSBhbmQgaXQg
+ZGlkbid0IG1hdHRlciA7KQotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVz
+a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9p
+Z3QtZGV2
