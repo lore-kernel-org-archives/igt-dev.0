@@ -5,8 +5,8 @@ In-Reply-To: <20191027190124.GB12997@intel.intel>
 References: <20191026193456.19445-1-chris@chris-wilson.co.uk>
  <20191026193456.19445-2-chris@chris-wilson.co.uk>
  <20191027190124.GB12997@intel.intel>
-Message-ID: <157220310477.26808.4656875433175086819@skylake-alporthouse-com>
-Date: Sun, 27 Oct 2019 19:05:04 +0000
+Message-ID: <157220316435.26808.7932885345329664018@skylake-alporthouse-com>
+Date: Sun, 27 Oct 2019 19:06:04 +0000
 Subject: Re: [igt-dev] [PATCH i-g-t 2/2] i915/gem_ctx_exec: Enable resets
  for basic-nohangcheck
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -28,8 +28,13 @@ UXVvdGluZyBBbmRpIFNoeXRpICgyMDE5LTEwLTI3IDE5OjAxOjI0KQo+IEhpIENocmlzLAo+IAo+
 ID4gQEAgLTIxNiw2ICsyMTcsOCBAQCBzdGF0aWMgdm9pZCBub2hhbmdjaGVja19ob3N0aWxlKGlu
 dCBpOTE1KQo+ID4gICAgICAgICogd2UgZm9yY2libHkgdGVybWluYXRlIHRoYXQgY29udGV4dC4K
 PiA+ICAgICAgICAqLwo+ID4gIAo+ID4gKyAgICAgaGFuZyA9IGlndF9hbGxvd19oYW5nKGk5MTUs
-IDAsIDApOwo+ID4gKwo+IAo+IHdoeSBjdHggPSAwPwoKQmVjYXVzZSBJJ20gbGF6eSBhbmQgaXQg
-ZGlkbid0IG1hdHRlciA7KQotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVz
-a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9p
-Z3QtZGV2
+IDAsIDApOwo+ID4gKwo+IAo+IHdoeSBjdHggPSAwPwoKSW1hZ2luZSwKCiAgICAgICAgICogd2Ug
+Zm9yY2libHkgdGVybWluYXRlIHRoYXQgY29udGV4dC4KICAgICAgICAgKi8KCi0gICAgICAgaGFu
+ZyA9IGlndF9hbGxvd19oYW5nKGk5MTUsIDAsIDApOwotCiAgICAgICAgZGlyID0gaWd0X3N5c2Zz
+X29wZW5fcGFyYW1ldGVycyhpOTE1KTsKICAgICAgICBpZ3RfcmVxdWlyZShkaXIgIT0gLTEpOwoK
+ICAgICAgICBjdHggPSBnZW1fY29udGV4dF9jcmVhdGUoaTkxNSk7CisgICAgICAgaGFuZyA9IGln
+dF9hbGxvd19oYW5nKGk5MTUsIGN0eCwgMCk7CgogICAgICAgIGlndF9yZXF1aXJlKF9fZW5hYmxl
+X2hhbmdjaGVjayhkaXIsIGZhbHNlKSk7Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8v
+aWd0LWRldg==
