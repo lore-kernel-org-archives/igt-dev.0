@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 69F036E9C9
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Oct 2019 12:52:52 +0000 (UTC)
-Date: Wed, 30 Oct 2019 14:52:48 +0200
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF0BB6E9CE
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Oct 2019 12:58:00 +0000 (UTC)
+Date: Wed, 30 Oct 2019 14:57:56 +0200
 From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20191030125248.243ntipsie5o5hem@ahiler-desk1.fi.intel.com>
-References: <20191030113204.11018-1-arkadiusz.hiler@intel.com>
- <20191030114736.GF25209@platvala-desk.ger.corp.intel.com>
- <20191030122001.s6fg5ejehzhbzmbm@ahiler-desk1.fi.intel.com>
- <20191030122405.GG25209@platvala-desk.ger.corp.intel.com>
+Message-ID: <20191030125756.e4snhr7tofyvy56f@ahiler-desk1.fi.intel.com>
+References: <1572355751-24313-1-git-send-email-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20191030122405.GG25209@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] Dockerfile: Use Fedora 31
+In-Reply-To: <1572355751-24313-1-git-send-email-jeevan.b@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 0/2] Add a new IGT test to validate
+ DC3CO state.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,14 +22,15 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
+To: Jeevan B <jeevan.b@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCBPY3QgMzAsIDIwMTkgYXQgMDI6MjQ6MDVQTSArMDIwMCwgUGV0cmkgTGF0dmFsYSB3
-cm90ZToKPiBSZXZpZXdlZC1ieTogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5j
-b20+CgpHaXRMYWIncyBQaXBlbGluZSBpcyBncmVlbi4gSSBoYXZlIGNhbmNlbGVkIHNoYXJkcyBm
-b3IgdGhpcyBwcmUtbWVyZ2UKYW5kIHB1c2hlZCB0aGUgY2hhbmdlLiBUaGFua3MhCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
-aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
+T24gVHVlLCBPY3QgMjksIDIwMTkgYXQgMDY6NTk6MDlQTSArMDUzMCwgSmVldmFuIEIgd3JvdGU6
+Cj4gVGhpcyB0ZXN0IGlzIGNyZWF0aW5nIGEgdnBiIHNjZW5hcmlvIGZvcgo+IHNlbGVjdGl2ZSBm
+cmFtZSB1cGRhdGUgYW5kIHZhbGlkYXRpbmcKPiB0aGF0IERDIHN0YXRlIHN0YXlzIGluIERDM0NP
+IGR1cmluZyBleGVjdXRpb24uCgpUaGFua3MgZm9yIGRvaW5nIHRoZSByZXF1ZXN0ZWQgY2hhbmdl
+cyEKClRoZSBzZXJpZXMgaXMKCkFja2VkLWJ5OiBBcmthZGl1c3ogSGlsZXIgPGFya2FkaXVzei5o
+aWxlckBpbnRlbC5jb20+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
