@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A1EBE6EBC3
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2019 00:24:38 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D85C96EBC3
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2019 00:28:49 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Date: Wed, 30 Oct 2019 17:24:36 -0700
-Message-Id: <20191031002436.17608-1-umesh.nerlige.ramappa@intel.com>
+Date: Wed, 30 Oct 2019 17:28:49 -0700
+Message-Id: <20191031002849.17946-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] test/perf: Add support for TGL in perf tests
+Subject: [igt-dev] [PATCH i-g-t] test/perf: Add support for TGL in perf tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
