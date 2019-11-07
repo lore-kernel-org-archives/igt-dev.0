@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECB136F6BC
- for <igt-dev@lists.freedesktop.org>; Thu,  7 Nov 2019 14:45:12 +0000 (UTC)
-Date: Thu, 7 Nov 2019 16:45:08 +0200
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D1166F6C2
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 Nov 2019 14:45:52 +0000 (UTC)
+Date: Thu, 7 Nov 2019 16:45:48 +0200
 From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20191107144508.537ebof5jqm4phlv@ahiler-desk1.fi.intel.com>
+Message-ID: <20191107144548.dar46htmelqqqx6b@ahiler-desk1.fi.intel.com>
 References: <20191017091713.25456-1-petri.latvala@intel.com>
+ <20191017091713.25456-2-petri.latvala@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20191017091713.25456-1-petri.latvala@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] kms_busy: Rename tests so
- pipe-specific subtests are blacklistable
+In-Reply-To: <20191017091713.25456-2-petri.latvala@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] intel-ci: Adjust pipe-specific
+ blacklisting
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,13 +27,12 @@ To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBPY3QgMTcsIDIwMTkgYXQgMTI6MTc6MTJQTSArMDMwMCwgUGV0cmkgTGF0dmFsYSB3
-cm90ZToKPiBUaGUgYmxhY2tsaXN0IGZvciBwaXBlcyBFIGFuZCBGIGFyZSBub3QgY2FwdHVyaW5n
-IGttc19idXN5J3MgdXNhZ2Ugb2YKPiB0aGVtLCBiZWNhdXNlIG9mIHRoZSBkaWZmZXJpbmcgbmFt
-aW5nIGNvbnZlbnRpb24uIE1ha2UgdGhhdCBtb3JlCj4gdW5pZm9ybS4KPiAKPiBTaWduZWQtb2Zm
-LWJ5OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KPiBDYzogTWFydGlu
-IFBlcmVzIDxtYXJ0aW4ucGVyZXNAbGludXguaW50ZWwuY29tPgpSZXZpZXdlZC1ieTogQXJrYWRp
-dXN6IEhpbGVyIDxhcmthZGl1c3ouaGlsZXJAaW50ZWwuY29tPgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2lndC1kZXY=
+T24gVGh1LCBPY3QgMTcsIDIwMTkgYXQgMTI6MTc6MTNQTSArMDMwMCwgUGV0cmkgTGF0dmFsYSB3
+cm90ZToKPiBCbGFja2xpc3QgcGlwZXMgRSBhbmQgRiB1c2FnZSBldmVuIHdoZW4gdGhlIHN1YnRl
+c3QgbmFtZSBlbmRzIGluCj4gcGlwZS14Lgo+IAo+IFNpZ25lZC1vZmYtYnk6IFBldHJpIExhdHZh
+bGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgo+IENjOiBNYXJ0aW4gUGVyZXMgPG1hcnRpbi5w
+ZXJlc0BsaW51eC5pbnRlbC5jb20+ClJldmlld2VkLWJ5OiBBcmthZGl1c3ogSGlsZXIgPGFya2Fk
+aXVzei5oaWxlckBpbnRlbC5jb20+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0
+LWRldg==
