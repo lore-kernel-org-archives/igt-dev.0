@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D4136E083
- for <igt-dev@lists.freedesktop.org>; Fri,  8 Nov 2019 07:53:26 +0000 (UTC)
-Date: Fri, 8 Nov 2019 09:53:22 +0200
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20191108075322.tqkroaw34gystikr@ahiler-desk1.fi.intel.com>
-References: <20191105181738.6700-1-jose.souza@intel.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191105181738.6700-1-jose.souza@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915_pm_dc: Fix the
- requirement check
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DE25B6F950
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 Nov 2019 11:42:04 +0000 (UTC)
+From: Mika Kahola <mika.kahola@intel.com>
+Date: Fri,  8 Nov 2019 13:41:56 +0200
+Message-Id: <20191108114158.15365-2-mika.kahola@intel.com>
+In-Reply-To: <20191108114158.15365-1-mika.kahola@intel.com>
+References: <20191108114158.15365-1-mika.kahola@intel.com>
+Subject: [igt-dev] [PATCH i-g-t v4 1/3] Format modifier for Intel Gen-12
+ render compression
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,23 +16,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?B?Sm9zw6k=?= Roberto de Souza <jose.souza@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBOb3YgMDUsIDIwMTkgYXQgMTA6MTc6MzdBTSAtMDgwMCwgSm9zw6kgUm9iZXJ0byBk
-ZSBTb3V6YSB3cm90ZToKPiBpZ3RfZGVidWdmc19zaW1wbGVfcmVhZCgpIHJlcXVpcmVzIHRoZSBk
-ZWJ1Z2ZzIGZpbGUgZGVzY3JpcHRvciBub3QKPiB0aGUgZHJtIGRldmljZSBmaWxlIGRlc2NyaXB0
-b3IsIHNvIHRoZSByZXF1aXJlbWVudCBjaGVjayB3YXMgY29tcGxldGUKPiBicm9rZW4uCj4gCj4g
-Q2M6IEplZXZhbiBCIDxqZWV2YW4uYkBpbnRlbC5jb20+Cj4gQ2M6IEFuc2h1bWFuIEd1cHRhIDxh
-bnNodW1hbi5ndXB0YUBpbnRlbC5jb20+Cj4gQ2M6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6
-LmhpbGVyQGludGVsLmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBKb3PDqSBSb2JlcnRvIGRlIFNvdXph
-IDxqb3NlLnNvdXphQGludGVsLmNvbT4KCmJvdGggcGF0Y2hlczoKUmV2aWV3ZWQtYnk6IEFya2Fk
-aXVzeiBIaWxlciA8YXJrYWRpdXN6LmhpbGVyQGludGVsLmNvbT4KCi4uLmFuZCBwdXNoZWQsIHRo
-YW5rcyEKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0
-LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
-aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+R2VuLTEyIGhhcyBhIG5ldyBjb21wcmVzc2lvbiBmb3JtYXQgZm9yIHJlbmRlciBjb21wcmVzc2lv
+bi4KRm9yIHRoaXMsIGEgbmV3IG1vZGlmaWVyIGlzIG5lZWRlZCB0byBpbmRpY2F0ZSB0aGF0LgoK
+U2lnbmVkLW9mZi1ieTogTWlrYSBLYWhvbGEgPG1pa2Eua2Fob2xhQGludGVsLmNvbT4KUmV2aWV3
+ZWQtYnk6IFJhZGhha3Jpc2huYSBTcmlwYWRhIDxyYWRoYWtyaXNobmEuc3JpcGFkYUBpbnRlbC5j
+b20+Ci0tLQogaW5jbHVkZS9kcm0tdWFwaS9kcm1fZm91cmNjLmggfCAxICsKIGxpYi9pb2N0bF93
+cmFwcGVycy5oICAgICAgICAgIHwgMSArCiAyIGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygr
+KQoKZGlmZiAtLWdpdCBhL2luY2x1ZGUvZHJtLXVhcGkvZHJtX2ZvdXJjYy5oIGIvaW5jbHVkZS9k
+cm0tdWFwaS9kcm1fZm91cmNjLmgKaW5kZXggM2ZlZWFhM2YuLmI5M2ViMmQ0IDEwMDY0NAotLS0g
+YS9pbmNsdWRlL2RybS11YXBpL2RybV9mb3VyY2MuaAorKysgYi9pbmNsdWRlL2RybS11YXBpL2Ry
+bV9mb3VyY2MuaApAQCAtNDA5LDYgKzQwOSw3IEBAIGV4dGVybiAiQyIgewogICovCiAjZGVmaW5l
+IEk5MTVfRk9STUFUX01PRF9ZX1RJTEVEX0NDUwlmb3VyY2NfbW9kX2NvZGUoSU5URUwsIDQpCiAj
+ZGVmaW5lIEk5MTVfRk9STUFUX01PRF9ZZl9USUxFRF9DQ1MJZm91cmNjX21vZF9jb2RlKElOVEVM
+LCA1KQorI2RlZmluZSBJOTE1X0ZPUk1BVF9NT0RfWV9USUxFRF9HRU4xMl9SQ19DQ1MgZm91cmNj
+X21vZF9jb2RlKElOVEVMLCA2KQogCiAvKgogICogVGlsZWQsIE5WMTJNVCwgZ3JvdXBlZCBpbiA2
+NCAocGl4ZWxzKSB4IDMyIChsaW5lcykgLXNpemVkIG1hY3JvYmxvY2tzCmRpZmYgLS1naXQgYS9s
+aWIvaW9jdGxfd3JhcHBlcnMuaCBiL2xpYi9pb2N0bF93cmFwcGVycy5oCmluZGV4IDAzMjExYzk3
+Li5mMjQxMmQ3OCAxMDA2NDQKLS0tIGEvbGliL2lvY3RsX3dyYXBwZXJzLmgKKysrIGIvbGliL2lv
+Y3RsX3dyYXBwZXJzLmgKQEAgLTIwMCw2ICsyMDAsNyBAQCBzdHJ1Y3QgbG9jYWxfZHJtX21vZGVf
+ZmJfY21kMiB7CiAjZGVmaW5lIExPQ0FMX0k5MTVfRk9STUFUX01PRF9ZZl9USUxFRAlsb2NhbF9m
+b3VyY2NfbW9kX2NvZGUoSU5URUwsIDMpCiAjZGVmaW5lIExPQ0FMX0k5MTVfRk9STUFUX01PRF9Z
+X1RJTEVEX0NDUwlsb2NhbF9mb3VyY2NfbW9kX2NvZGUoSU5URUwsIDQpCiAjZGVmaW5lIExPQ0FM
+X0k5MTVfRk9STUFUX01PRF9ZZl9USUxFRF9DQ1MJbG9jYWxfZm91cmNjX21vZF9jb2RlKElOVEVM
+LCA1KQorI2RlZmluZSBMT0NBTF9JOTE1X0ZPUk1BVF9NT0RfWV9USUxFRF9HRU4xMl9SQ19DQ1Mg
+Zm91cmNjX21vZF9jb2RlKElOVEVMLCA2KQogCiAjZGVmaW5lIExPQ0FMX0RSTV9JT0NUTF9NT0RF
+X0FEREZCMglEUk1fSU9XUigweEI4LCBcCiAJCQkJCQkgc3RydWN0IGxvY2FsX2RybV9tb2RlX2Zi
+X2NtZDIpCi0tIAoyLjE3LjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRl
+dg==
