@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B94126EB50
- for <igt-dev@lists.freedesktop.org>; Fri, 15 Nov 2019 23:16:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A3BC6EB50
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 Nov 2019 23:16:26 +0000 (UTC)
 From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-Date: Fri, 15 Nov 2019 15:16:23 -0800
-Message-Id: <20191115231625.2368317-1-vanshidhar.r.konda@intel.com>
+Date: Fri, 15 Nov 2019 15:16:25 -0800
+Message-Id: <20191115231625.2368317-3-vanshidhar.r.konda@intel.com>
+In-Reply-To: <20191115231625.2368317-1-vanshidhar.r.konda@intel.com>
+References: <20191115231625.2368317-1-vanshidhar.r.konda@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 0/2] Check if get/set tiling is supported
+Subject: [igt-dev] [PATCH 2/2] i915/i915_fb_tiling: Check if device supports
+ tiling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,17 +25,18 @@ To: igt-dev@lists.freedesktop.org
 Cc: brian.welty@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-V2l0aCBHZW4xMiBoYXJkd2FyZSwgdGhlIEdFVC9TRVRfVElMSU5HIElPQ1RMcyByZXR1cm4gRU9Q
-Tk9UU1VQUCBlcnJvci4KVGhpcyBjaGFuZ2UgaW1wYWN0cyB1c2VybW9kZSBjb2RlLiBTZWUgdGhp
-cyBsaW5rIGZvciBtb3JlIGRpc2N1c3Npb24KYWJvdXQgdGhpcyBjaGFuZ2U6Cmh0dHBzOi8vcGF0
-Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC8zMjUzNDMvCgpJR1QgdGVzdHMgaGF2ZSB0byBi
-ZSB1cGRhdGVkIHRvIGNoZWNrIGlmIHRoZXNlIElPQ1RMcyBhcmUgc3VwcG9ydGVkLgoKVmFuc2hp
-ZGhhciBLb25kYSAoMik6CiAgbGliL2lvY3RsX3dyYXBwZXJzOiBRdWVyeSBpZiBkZXZpY2Ugc3Vw
-cG9ydHMgc2V0L2dldCBsZWdhY3kgdGlsaW5nCiAgaTkxNS9pOTE1X2ZiX3RpbGluZzogQ2hlY2sg
-aWYgZGV2aWNlIHN1cHBvcnRzIHRpbGluZwoKIGxpYi9pb2N0bF93cmFwcGVycy5jICAgICAgICB8
-IDE2ICsrKysrKysrKysrKysrKysKIGxpYi9pb2N0bF93cmFwcGVycy5oICAgICAgICB8ICAxICsK
-IHRlc3RzL2k5MTUvaTkxNV9mYl90aWxpbmcuYyB8ICAyICsrCiAzIGZpbGVzIGNoYW5nZWQsIDE5
-IGluc2VydGlvbnMoKykKCi0tIAoyLjI0LjAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
-Zm8vaWd0LWRldg==
+U2tpcCB0aGlzIHRlc3QgaWYgdGhlIHBsYXRmb3JtIGRvZXMgbm90IHN1cHBvcnQgc2V0dGluZyB0
+aWxpbmcgZm9yIGZyYW1lCmJ1ZmZlciBvYmplY3QuCgpTaWduZWQtb2ZmLWJ5OiBWYW5zaGlkaGFy
+IEtvbmRhIDx2YW5zaGlkaGFyLnIua29uZGFAaW50ZWwuY29tPgpSZXZpZXdlZC1ieTogQXNodXRv
+c2ggRGl4aXQgPGFzaHV0b3NoLmRpeGl0QGludGVsLmNvbT4KLS0tCiB0ZXN0cy9pOTE1L2k5MTVf
+ZmJfdGlsaW5nLmMgfCAyICsrCiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspCgpkaWZm
+IC0tZ2l0IGEvdGVzdHMvaTkxNS9pOTE1X2ZiX3RpbGluZy5jIGIvdGVzdHMvaTkxNS9pOTE1X2Zi
+X3RpbGluZy5jCmluZGV4IDdkNWMzZjFmLi40ZWM4NDk2MiAxMDA2NDQKLS0tIGEvdGVzdHMvaTkx
+NS9pOTE1X2ZiX3RpbGluZy5jCisrKyBiL3Rlc3RzL2k5MTUvaTkxNV9mYl90aWxpbmcuYwpAQCAt
+MzIsNiArMzIsOCBAQCBpZ3Rfc2ltcGxlX21haW4KIAlzdHJ1Y3QgaWd0X2ZiIGZiOwogCWludCBy
+ZXQ7CiAKKwlpZ3RfcmVxdWlyZShnZW1faGFzX2xlZ2FjeV9od190aWxpbmcoZHJtX2ZkKSk7CisK
+IAlpZ3RfY3JlYXRlX2ZiKGRybV9mZCwgNTEyLCA1MTIsIERSTV9GT1JNQVRfWFJHQjg4ODgsCiAJ
+CSAgICAgIExPQ0FMX0k5MTVfRk9STUFUX01PRF9YX1RJTEVELCAmZmIpOwogCi0tIAoyLjIzLjAK
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYg
+bWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMu
+ZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
