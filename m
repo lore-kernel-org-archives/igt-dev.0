@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9AB4789D2F
- for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2019 10:25:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 16479896BF
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 Nov 2019 10:27:37 +0000 (UTC)
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
-References: <20191117143916.110714-1-stuart.summers@intel.com>
- <157400169496.24372.15824845542482878106@skylake-alporthouse-com>
- <c0c88ecc576ec4d6ad19d02bfb17a343f85c7ea5.camel@intel.com>
-In-Reply-To: <c0c88ecc576ec4d6ad19d02bfb17a343f85c7ea5.camel@intel.com>
-Message-ID: <157407269630.24372.16674194105284400953@skylake-alporthouse-com>
-Date: Mon, 18 Nov 2019 10:24:56 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/i915/gem_mman: Add helper routine
- to check GTT version
+In-Reply-To: <20191118100726.GV25209@platvala-desk.ger.corp.intel.com>
+References: <20191115152645.883028-1-chris@chris-wilson.co.uk>
+ <20191118100726.GV25209@platvala-desk.ger.corp.intel.com>
+Message-ID: <157407284270.24372.5743475275065149643@skylake-alporthouse-com>
+Date: Mon, 18 Nov 2019 10:27:22 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t] igt: Stop requesting ftrace dumps on
+ oops by default
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,22 +22,25 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Summers, Stuart" <stuart.summers@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Tomi Sarvela <tomi.p.sarvela@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBTdW1tZXJzLCBTdHVhcnQgKDIwMTktMTEtMTcgMjI6MTI6MzIpCj4gT24gU3VuLCAy
-MDE5LTExLTE3IGF0IDE0OjQxICswMDAwLCBDaHJpcyBXaWxzb24gd3JvdGU6Cj4gPiBRdW90aW5n
-IFN0dWFydCBTdW1tZXJzICgyMDE5LTExLTE3IDE0OjM5OjE2KQo+ID4gPiBBZGQgYSBjaGVjayB0
-byBnZW1fcHJlYWQgYW5kIGdlbV9wd3JpdGUgdG8gb25seSBhbGxvdyBHVFQgc3VidGVzdHMKPiA+
-ID4gd2hlbiB0aGUgR1RUIHZlcnNpb24gaXMgYXQgbGVhc3QgMS4KPiA+IAo+ID4gTm8sIGl0IG11
-c3QgYWxzbyBydW4gb24ga2VybmVscyBiZWZvcmUgaW9jdGwgdmVyc2lvbmluZy4gV2h5Pwo+IAo+
-IEhtLi4geWVhaCB0aGF0IG1ha2VzIHNlbnNlLiBJJ2xsIGhhdmUgdG8gY29tZSB1cCB3aXRoIHNv
-bWV0aGluZyBlbHNlIDopCj4gTG9va2luZyBmb3IgYSB3YXkgdG8gZGV0ZXJtaW5lIHdoZXRoZXIg
-d2UgY2FuIG1tYXAgdG8gdGhlIEdUVC4gSSdsbAo+IHJldGhpbmsgYW5kIHJlcG9zdC4KCkl0J3Mg
-dGhlIHNhbWUgd2F5IGFzIGRldGVjdGluZyB3aGV0aGVyIG9yIG5vdCB3ZSBjYW4gdXNlIFdDLCBV
-QyBvciBXQgpwYWdlIHByb3RlY3Rpb25zOiB0cmlhbC1hbmQtZXJyb3IgYXQgcHJlc2VudC4KCkl0
-J3Mgbm90IHRoZSB3b3JzdCB3YXkuLi4gSWYgSSB3YXMgc3VnZ2VzdGluZyBBUEksIEkgd291bGQg
-c3VnZ2VzdCBpdAp3b3VsZCBiZSBhIHBhcnQgb2YgdGhlIG1lbW9yeSBkaXNjb3ZlcnkgaTkxNV9x
-dWVyeS4KLUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0
-dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
+UXVvdGluZyBQZXRyaSBMYXR2YWxhICgyMDE5LTExLTE4IDEwOjA3OjI2KQo+IE9uIEZyaSwgTm92
+IDE1LCAyMDE5IGF0IDAzOjI2OjQ1UE0gKzAwMDAsIENocmlzIFdpbHNvbiB3cm90ZToKPiA+IFRo
+ZXkgaGF2ZSBsaXZlZCBwYXN0IHRoZWlyIHVzZWZ1bG5lc3MgYXMgbm93IHdlIGZyZXF1ZW50bHkg
+bG9zZSB2aXRhbAo+ID4gZGVidWcgaW5mb3JtYXRpb24gYmVjYXVzZSB3ZSBhcmUgc3BhbW1pbmcg
+dW5yZWxhdGVkIEdFTSB0cmFjZXMuIFdlIGNhbgo+ID4gYWRkIHRoZSBzcGFtIGRpcmVjdGx5IHRv
+IEdFTV9CVUdfT04oKSwgYW5kIGVuYWJsZSBpdCBvdXJzZWx2ZXMgaWYgd2UKPiA+IHRydWx5IG5l
+ZWQgdGhlIHRyYWNlLW9uLW9vcHMuCj4gPiAKPiA+IFNpZ25lZC1vZmYtYnk6IENocmlzIFdpbHNv
+biA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+ID4gQ2M6IE1hcnRpbiBQZXJlcyA8bWFydGlu
+LnBlcmVzQGxpbnV4LmludGVsLmNvbT4KPiA+IENjOiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2
+YWxhQGludGVsLmNvbT4KPiA+IENjOiBUb21pIFNhcnZlbGEgPHRvbWkucC5zYXJ2ZWxhQGludGVs
+LmNvbT4KPiAKPiBEbyB3ZSB3YW50IHRvIGNhbGwgaXQgLS10cmFjZS1vbi1vb3BzIG9yIC0tZnRy
+YWNlLW9uLW9vcHM/CgpJIHdhcyB0aGlua2luZyAidHJhY2UiIHdhcyBzbGlnaHRseSBtb3JlIGdl
+bmVyaWMgdGhhbiAiZnRyYWNlIiBhbmQgc28KbWlnaHQgY292ZXIgc29tZSBtb3JlIGV2aWxzIGlu
+IGZ1dHVyZS4gTm90IHRoYXQgSSBoYXZlIGFueSBmb3Jla25vd2xlZGdlCm9mIHdoYXQgZWxzZSB3
+ZSBtaWdodCBzdGljayBpbiBoZXJlLiA6KQotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0
+cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9pZ3QtZGV2
