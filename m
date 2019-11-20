@@ -1,9 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: "Summers, Stuart" <stuart.summers@intel.com>
-Date: Wed, 20 Nov 2019 17:14:51 +0000
-Message-ID: <7a767d5d0cf044fa26759e7d0bd1f1fae4e66a0f.camel@intel.com>
+Date: Wed, 20 Nov 2019 22:04:59 +0000
+Message-ID: <7ddbfeca6efa339009b889df4dc721b0a5da7b45.camel@intel.com>
 References: <20191120164429.8441-1-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20191120164429.8441-1-janusz.krzysztofik@linux.intel.com>
+ <7a767d5d0cf044fa26759e7d0bd1f1fae4e66a0f.camel@intel.com>
+In-Reply-To: <7a767d5d0cf044fa26759e7d0bd1f1fae4e66a0f.camel@intel.com>
 Content-Language: en-US
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v2] tests/prime_vgem: Skip
@@ -15,118 +16,150 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0176911007=="
+Content-Type: multipart/mixed; boundary="===============0834319395=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: "daniel@ffwll.ch" <daniel@ffwll.ch>, "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>, "janusz.krzysztofik@linux.intel.com" <janusz.krzysztofik@linux.intel.com>
 Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0176911007==
+--===============0834319395==
 Content-Language: en-US
 Content-Type: multipart/signed; micalg=sha-1;
-	protocol="application/x-pkcs7-signature"; boundary="=-+j+dWqXSWdBzb5wGAUQ0"
+	protocol="application/x-pkcs7-signature"; boundary="=-FXmUMjGFhkUvM8qvoR0U"
 
---=-+j+dWqXSWdBzb5wGAUQ0
+--=-FXmUMjGFhkUvM8qvoR0U
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2019-11-20 at 17:44 +0100, Janusz Krzysztofik wrote:
-> As we've agreed that using I915_GEM_PREAD/PWRITE IOCTLs on dma-buf
-> objects doesn't make much sense, we are not going to extend their
-> handlers in the i915 driver with new processing paths required for
-> them
-> to work correctly with dma-buf objects on future hardware with no
-> mappable aperture.  When running on that kind of hardware, just skip
-> subtests which use those IOCTLs.
+On Wed, 2019-11-20 at 17:14 +0000, Summers, Stuart wrote:
+> On Wed, 2019-11-20 at 17:44 +0100, Janusz Krzysztofik wrote:
+> > As we've agreed that using I915_GEM_PREAD/PWRITE IOCTLs on dma-buf
+> > objects doesn't make much sense, we are not going to extend their
+> > handlers in the i915 driver with new processing paths required for
+> > them
+> > to work correctly with dma-buf objects on future hardware with no
+> > mappable aperture.  When running on that kind of hardware, just
+> > skip
+> > subtests which use those IOCTLs.
+>=20
+> How is this handled for other dma-buf capable devices? Is there no
+> opportunity for a working solution in i915 here?
+>=20
+> Also, is this a permanent limitation? Or just a workaround based on
+> our
+> current implementation?
 
-How is this handled for other dma-buf capable devices? Is there no
-opportunity for a working solution in i915 here?
+Thinking a bit more about this, I think my main concern here is around
+the commit message. You are implying there is no chance we can change
+these DRM interfaces to work with dma-buf by referencing an I915 IOCTL.
 
-Also, is this a permanent limitation? Or just a workaround based on our
-current implementation?
+I don't personally have any issue adding the skip below, and honestly
+that seems like a good safeguard. But can you update the commit message
+to indicate that this is simply that, a safeguard, and not because we
+have no option to make this work from the kernel side?
+
+Of course please correct me if I'm mistaken here.
 
 Thanks,
 Stuart
 
 >=20
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com
-> >
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Joonas Lahtinen <joonas.lahtinen@intel.com>
-> ---
->  lib/ioctl_wrappers.c | 2 +-
->  lib/ioctl_wrappers.h | 1 +
->  tests/prime_vgem.c   | 6 ++++++
->  3 files changed, 8 insertions(+), 1 deletion(-)
+> Thanks,
+> Stuart
 >=20
-> diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-> index 628f8b83..78b92bd2 100644
-> --- a/lib/ioctl_wrappers.c
-> +++ b/lib/ioctl_wrappers.c
-> @@ -356,7 +356,7 @@ void gem_write(int fd, uint32_t handle, uint64_t
-> offset, const void *buf, uint64
->  	igt_assert_eq(__gem_write(fd, handle, offset, buf, length), 0);
->  }
-> =20
-> -static int __gem_read(int fd, uint32_t handle, uint64_t offset, void
-> *buf, uint64_t length)
-> +int __gem_read(int fd, uint32_t handle, uint64_t offset, void *buf,
-> uint64_t length)
->  {
->  	struct drm_i915_gem_pread gem_pread;
->  	int err;
-> diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-> index f2412d78..97f278ed 100644
-> --- a/lib/ioctl_wrappers.h
-> +++ b/lib/ioctl_wrappers.h
-> @@ -69,6 +69,7 @@ uint32_t gem_open(int fd, uint32_t name);
->  void gem_close(int fd, uint32_t handle);
->  int __gem_write(int fd, uint32_t handle, uint64_t offset, const void
-> *buf, uint64_t length);
->  void gem_write(int fd, uint32_t handle, uint64_t offset,  const void
-> *buf, uint64_t length);
-> +int __gem_read(int fd, uint32_t handle, uint64_t offset, void *buf,
-> uint64_t length);
->  void gem_read(int fd, uint32_t handle, uint64_t offset, void *buf,
-> uint64_t length);
->  int __gem_set_domain(int fd, uint32_t handle, uint32_t read,
-> uint32_t write);
->  void gem_set_domain(int fd, uint32_t handle, uint32_t read, uint32_t
-> write);
-> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-> index 04cc913d..6595818c 100644
-> --- a/tests/prime_vgem.c
-> +++ b/tests/prime_vgem.c
-> @@ -46,6 +46,8 @@ static void test_read(int vgem, int i915)
->  	handle =3D prime_fd_to_handle(i915, dmabuf);
->  	close(dmabuf);
-> =20
-> +	igt_skip_on(__gem_read(i915, handle, 0, &i, sizeof(i)));
-> +
->  	ptr =3D vgem_mmap(vgem, &scratch, PROT_WRITE);
->  	for (i =3D 0; i < 1024; i++)
->  		ptr[1024*i] =3D i;
-> @@ -81,6 +83,8 @@ static void test_fence_read(int i915, int vgem)
->  	handle =3D prime_fd_to_handle(i915, dmabuf);
->  	close(dmabuf);
-> =20
-> +	igt_skip_on(__gem_read(i915, handle, 0, &i, sizeof(i)));
-> +
->  	igt_fork(child, 1) {
->  		close(master[0]);
->  		close(slave[1]);
-> @@ -191,6 +195,8 @@ static void test_write(int vgem, int i915)
->  	handle =3D prime_fd_to_handle(i915, dmabuf);
->  	close(dmabuf);
-> =20
-> +	igt_skip_on(__gem_write(i915, handle, 0, &i, sizeof(i)));
-> +
->  	ptr =3D vgem_mmap(vgem, &scratch, PROT_READ);
->  	gem_close(vgem, scratch.handle);
-> =20
+> >=20
+> > Signed-off-by: Janusz Krzysztofik <
+> > janusz.krzysztofik@linux.intel.com
+> > >=20
+> >=20
+> > Cc: Daniel Vetter <daniel@ffwll.ch>
+> > Cc: Joonas Lahtinen <joonas.lahtinen@intel.com>
+> > ---
+> >  lib/ioctl_wrappers.c | 2 +-
+> >  lib/ioctl_wrappers.h | 1 +
+> >  tests/prime_vgem.c   | 6 ++++++
+> >  3 files changed, 8 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+> > index 628f8b83..78b92bd2 100644
+> > --- a/lib/ioctl_wrappers.c
+> > +++ b/lib/ioctl_wrappers.c
+> > @@ -356,7 +356,7 @@ void gem_write(int fd, uint32_t handle,
+> > uint64_t
+> > offset, const void *buf, uint64
+> >  	igt_assert_eq(__gem_write(fd, handle, offset, buf, length), 0);
+> >  }
+> > =20
+> > -static int __gem_read(int fd, uint32_t handle, uint64_t offset,
+> > void
+> > *buf, uint64_t length)
+> > +int __gem_read(int fd, uint32_t handle, uint64_t offset, void
+> > *buf,
+> > uint64_t length)
+> >  {
+> >  	struct drm_i915_gem_pread gem_pread;
+> >  	int err;
+> > diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+> > index f2412d78..97f278ed 100644
+> > --- a/lib/ioctl_wrappers.h
+> > +++ b/lib/ioctl_wrappers.h
+> > @@ -69,6 +69,7 @@ uint32_t gem_open(int fd, uint32_t name);
+> >  void gem_close(int fd, uint32_t handle);
+> >  int __gem_write(int fd, uint32_t handle, uint64_t offset, const
+> > void
+> > *buf, uint64_t length);
+> >  void gem_write(int fd, uint32_t handle, uint64_t offset,  const
+> > void
+> > *buf, uint64_t length);
+> > +int __gem_read(int fd, uint32_t handle, uint64_t offset, void
+> > *buf,
+> > uint64_t length);
+> >  void gem_read(int fd, uint32_t handle, uint64_t offset, void *buf,
+> > uint64_t length);
+> >  int __gem_set_domain(int fd, uint32_t handle, uint32_t read,
+> > uint32_t write);
+> >  void gem_set_domain(int fd, uint32_t handle, uint32_t read,
+> > uint32_t
+> > write);
+> > diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+> > index 04cc913d..6595818c 100644
+> > --- a/tests/prime_vgem.c
+> > +++ b/tests/prime_vgem.c
+> > @@ -46,6 +46,8 @@ static void test_read(int vgem, int i915)
+> >  	handle =3D prime_fd_to_handle(i915, dmabuf);
+> >  	close(dmabuf);
+> > =20
+> > +	igt_skip_on(__gem_read(i915, handle, 0, &i, sizeof(i)));
+> > +
+> >  	ptr =3D vgem_mmap(vgem, &scratch, PROT_WRITE);
+> >  	for (i =3D 0; i < 1024; i++)
+> >  		ptr[1024*i] =3D i;
+> > @@ -81,6 +83,8 @@ static void test_fence_read(int i915, int vgem)
+> >  	handle =3D prime_fd_to_handle(i915, dmabuf);
+> >  	close(dmabuf);
+> > =20
+> > +	igt_skip_on(__gem_read(i915, handle, 0, &i, sizeof(i)));
+> > +
+> >  	igt_fork(child, 1) {
+> >  		close(master[0]);
+> >  		close(slave[1]);
+> > @@ -191,6 +195,8 @@ static void test_write(int vgem, int i915)
+> >  	handle =3D prime_fd_to_handle(i915, dmabuf);
+> >  	close(dmabuf);
+> > =20
+> > +	igt_skip_on(__gem_write(i915, handle, 0, &i, sizeof(i)));
+> > +
+> >  	ptr =3D vgem_mmap(vgem, &scratch, PROT_READ);
+> >  	gem_close(vgem, scratch.handle);
+> > =20
+>=20
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
---=-+j+dWqXSWdBzb5wGAUQ0
+--=-FXmUMjGFhkUvM8qvoR0U
 Content-Type: application/x-pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -182,18 +215,18 @@ CC/N7V8U9yFZx8akWREb8lJYDl9KypirEsufleiew26CWrwcbmdlldDCFS6/HDGCAhcwggITAgEB
 MIGQMHkxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEUMBIGA1UEBxMLU2FudGEgQ2xhcmExGjAY
 BgNVBAoTEUludGVsIENvcnBvcmF0aW9uMSswKQYDVQQDEyJJbnRlbCBFeHRlcm5hbCBCYXNpYyBJ
 c3N1aW5nIENBIDRCAhMzAAB04Th3owY0UbEUAAAAAHThMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0B
-CQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xOTExMjAxNzE0NDlaMCMGCSqGSIb3DQEJ
-BDEWBBTuA4fZ2bHtewQWQtO7DoPj7HACLjANBgkqhkiG9w0BAQEFAASCAQAPF7RZueDVhWPqhddI
-TBLe7r0J29vUbAm274oQEQqKxx0aM5vD73RkFe+/QqmVzi8j9Wr8o9gTjCIB9JMvnqN6F65QUUIZ
-Rgpw1XK1QjoC5PUjsQFuV/MgyalVMP9PMWgdmj1p2WsH2Ta2XDYw6zVLSPaBf22tirYJwnTpLV3w
-73KyIPLSE6QVct+WQzO+bOMo1VQu4MIYzPDte5rtOhNEd1lz5w/kYeP7NpuzZr8MR3QaBluQEaDt
-isG9S4wR1aQn56jCzSmIJBmWQ5b44/W9V2XpcFiswEMmu9MBvmp1x3zXTnDqC5pss3GQUAmADnDN
-4oayg3YM2XGTdj9eQQgDAAAAAAAA
+CQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xOTExMjAyMjA0NTZaMCMGCSqGSIb3DQEJ
+BDEWBBQ+bRhHvKcTEbEqhiY5q4iwg43ADzANBgkqhkiG9w0BAQEFAASCAQBg/AUOK+GwH5/BGyTy
+KKZfnkbns8ZiuHsEQSt/BTNV3yXF0WGQ4gfeqHlWZjHtnqo55lQ3E1bE65ucYN3/2ZdLnUelb/wm
+6F15ewGdeKYa/wlKQC1tryR6/ChRZaTWgSgCnB85zoxf+QsJXhzyxud5jD4f6yCc+Lr4FTi5IQ7S
+RRi9sLwR8rjX11w9/WK4ZgHGPke8Y3F1fEIQygCmtsvw3Shut8njW/wuhCkvWSWSY+JdsU4+vNq0
+Ub8om10SCzWf1IKVInTaMJCxthqHLr1yhb+T759F+i1KfqM+a2HxT7R2XI0HZkcNM/Fao8zNi0Cs
+UJOw6tE7Ayj5tZ2HTTU4AAAAAAAA
 
 
---=-+j+dWqXSWdBzb5wGAUQ0--
+--=-FXmUMjGFhkUvM8qvoR0U--
 
---===============0176911007==
+--===============0834319395==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: base64
@@ -203,4 +236,4 @@ X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
 YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
 cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
 
---===============0176911007==--
+--===============0834319395==--
