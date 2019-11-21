@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: "Summers, Stuart" <stuart.summers@intel.com>
-Date: Wed, 20 Nov 2019 22:04:59 +0000
-Message-ID: <7ddbfeca6efa339009b889df4dc721b0a5da7b45.camel@intel.com>
-References: <20191120164429.8441-1-janusz.krzysztofik@linux.intel.com>
- <7a767d5d0cf044fa26759e7d0bd1f1fae4e66a0f.camel@intel.com>
-In-Reply-To: <7a767d5d0cf044fa26759e7d0bd1f1fae4e66a0f.camel@intel.com>
+From: "Liu, Chuansheng" <chuansheng.liu@intel.com>
+Date: Thu, 21 Nov 2019 01:34:24 +0000
+Message-ID: <27240C0AC20F114CBF8149A2696CBE4A615D8A40@SHSMSX101.ccr.corp.intel.com>
+References: <20191120062912.10853-1-chuansheng.liu@intel.com>
+ <157425303636.13839.5788530893723789852@skylake-alporthouse-com>
+In-Reply-To: <157425303636.13839.5788530893723789852@skylake-alporthouse-com>
 Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v2] tests/prime_vgem: Skip
- basic-read/write subtests if no mappable GGTT
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v2] i915/pm_rps: install
+ SIGTERM handler for load_helper process
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,224 +16,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0834319395=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "daniel@ffwll.ch" <daniel@ffwll.ch>, "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>, "janusz.krzysztofik@linux.intel.com" <janusz.krzysztofik@linux.intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0834319395==
-Content-Language: en-US
-Content-Type: multipart/signed; micalg=sha-1;
-	protocol="application/x-pkcs7-signature"; boundary="=-FXmUMjGFhkUvM8qvoR0U"
-
---=-FXmUMjGFhkUvM8qvoR0U
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, 2019-11-20 at 17:14 +0000, Summers, Stuart wrote:
-> On Wed, 2019-11-20 at 17:44 +0100, Janusz Krzysztofik wrote:
-> > As we've agreed that using I915_GEM_PREAD/PWRITE IOCTLs on dma-buf
-> > objects doesn't make much sense, we are not going to extend their
-> > handlers in the i915 driver with new processing paths required for
-> > them
-> > to work correctly with dma-buf objects on future hardware with no
-> > mappable aperture.  When running on that kind of hardware, just
-> > skip
-> > subtests which use those IOCTLs.
->=20
-> How is this handled for other dma-buf capable devices? Is there no
-> opportunity for a working solution in i915 here?
->=20
-> Also, is this a permanent limitation? Or just a workaround based on
-> our
-> current implementation?
-
-Thinking a bit more about this, I think my main concern here is around
-the commit message. You are implying there is no chance we can change
-these DRM interfaces to work with dma-buf by referencing an I915 IOCTL.
-
-I don't personally have any issue adding the skip below, and honestly
-that seems like a good safeguard. But can you update the commit message
-to indicate that this is simply that, a safeguard, and not because we
-have no option to make this work from the kernel side?
-
-Of course please correct me if I'm mistaken here.
-
-Thanks,
-Stuart
-
->=20
-> Thanks,
-> Stuart
->=20
-> >=20
-> > Signed-off-by: Janusz Krzysztofik <
-> > janusz.krzysztofik@linux.intel.com
-> > >=20
-> >=20
-> > Cc: Daniel Vetter <daniel@ffwll.ch>
-> > Cc: Joonas Lahtinen <joonas.lahtinen@intel.com>
-> > ---
-> >  lib/ioctl_wrappers.c | 2 +-
-> >  lib/ioctl_wrappers.h | 1 +
-> >  tests/prime_vgem.c   | 6 ++++++
-> >  3 files changed, 8 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-> > index 628f8b83..78b92bd2 100644
-> > --- a/lib/ioctl_wrappers.c
-> > +++ b/lib/ioctl_wrappers.c
-> > @@ -356,7 +356,7 @@ void gem_write(int fd, uint32_t handle,
-> > uint64_t
-> > offset, const void *buf, uint64
-> >  	igt_assert_eq(__gem_write(fd, handle, offset, buf, length), 0);
-> >  }
-> > =20
-> > -static int __gem_read(int fd, uint32_t handle, uint64_t offset,
-> > void
-> > *buf, uint64_t length)
-> > +int __gem_read(int fd, uint32_t handle, uint64_t offset, void
-> > *buf,
-> > uint64_t length)
-> >  {
-> >  	struct drm_i915_gem_pread gem_pread;
-> >  	int err;
-> > diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-> > index f2412d78..97f278ed 100644
-> > --- a/lib/ioctl_wrappers.h
-> > +++ b/lib/ioctl_wrappers.h
-> > @@ -69,6 +69,7 @@ uint32_t gem_open(int fd, uint32_t name);
-> >  void gem_close(int fd, uint32_t handle);
-> >  int __gem_write(int fd, uint32_t handle, uint64_t offset, const
-> > void
-> > *buf, uint64_t length);
-> >  void gem_write(int fd, uint32_t handle, uint64_t offset,  const
-> > void
-> > *buf, uint64_t length);
-> > +int __gem_read(int fd, uint32_t handle, uint64_t offset, void
-> > *buf,
-> > uint64_t length);
-> >  void gem_read(int fd, uint32_t handle, uint64_t offset, void *buf,
-> > uint64_t length);
-> >  int __gem_set_domain(int fd, uint32_t handle, uint32_t read,
-> > uint32_t write);
-> >  void gem_set_domain(int fd, uint32_t handle, uint32_t read,
-> > uint32_t
-> > write);
-> > diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-> > index 04cc913d..6595818c 100644
-> > --- a/tests/prime_vgem.c
-> > +++ b/tests/prime_vgem.c
-> > @@ -46,6 +46,8 @@ static void test_read(int vgem, int i915)
-> >  	handle =3D prime_fd_to_handle(i915, dmabuf);
-> >  	close(dmabuf);
-> > =20
-> > +	igt_skip_on(__gem_read(i915, handle, 0, &i, sizeof(i)));
-> > +
-> >  	ptr =3D vgem_mmap(vgem, &scratch, PROT_WRITE);
-> >  	for (i =3D 0; i < 1024; i++)
-> >  		ptr[1024*i] =3D i;
-> > @@ -81,6 +83,8 @@ static void test_fence_read(int i915, int vgem)
-> >  	handle =3D prime_fd_to_handle(i915, dmabuf);
-> >  	close(dmabuf);
-> > =20
-> > +	igt_skip_on(__gem_read(i915, handle, 0, &i, sizeof(i)));
-> > +
-> >  	igt_fork(child, 1) {
-> >  		close(master[0]);
-> >  		close(slave[1]);
-> > @@ -191,6 +195,8 @@ static void test_write(int vgem, int i915)
-> >  	handle =3D prime_fd_to_handle(i915, dmabuf);
-> >  	close(dmabuf);
-> > =20
-> > +	igt_skip_on(__gem_write(i915, handle, 0, &i, sizeof(i)));
-> > +
-> >  	ptr =3D vgem_mmap(vgem, &scratch, PROT_READ);
-> >  	gem_close(vgem, scratch.handle);
-> > =20
->=20
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---=-FXmUMjGFhkUvM8qvoR0U
-Content-Type: application/x-pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-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
-PwuHX1mRETAlwqXCZa6ba8eraUCltlCb/ZiEk9UFRVLjbLNPh9IYOi+sWkS6n5CovLKAqhMCAwEA
-AaOCAjMwggIvMB0GA1UdDgQWBBSgeYqvLV4nBaCUzAXLr0TeMJYR5zAfBgNVHSMEGDAWgBTaQSOc
-Wo9xr1eDPiDT42XbDMsL2zBlBgNVHR8EXjBcMFqgWKBWhlRodHRwOi8vd3d3LmludGVsLmNvbS9y
-ZXBvc2l0b3J5L0NSTC9JbnRlbCUyMEV4dGVybmFsJTIwQmFzaWMlMjBJc3N1aW5nJTIwQ0ElMjA0
-Qi5jcmwwgZ8GCCsGAQUFBwEBBIGSMIGPMCIGCCsGAQUFBzABhhZodHRwOi8vb2NzcC5pbnRlbC5j
-b20vMGkGCCsGAQUFBzAChl1odHRwOi8vd3d3LmludGVsLmNvbS9yZXBvc2l0b3J5L2NlcnRpZmlj
-YXRlcy9JbnRlbCUyMEV4dGVybmFsJTIwQmFzaWMlMjBJc3N1aW5nJTIwQ0ElMjA0Qi5jcnQwCwYD
-VR0PBAQDAgeAMDwGCSsGAQQBgjcVBwQvMC0GJSsGAQQBgjcVCIbDjHWEmeVRg/2BKIWOn1OCkcAJ
-Z4HevTmV8EMCAWQCAQkwHwYDVR0lBBgwFgYIKwYBBQUHAwQGCisGAQQBgjcKAwwwKQYJKwYBBAGC
-NxUKBBwwGjAKBggrBgEFBQcDBDAMBgorBgEEAYI3CgMMME0GA1UdEQRGMESgKAYKKwYBBAGCNxQC
-A6AaDBhzdHVhcnQuc3VtbWVyc0BpbnRlbC5jb22BGHN0dWFydC5zdW1tZXJzQGludGVsLmNvbTAN
-BgkqhkiG9w0BAQUFAAOCAQEAfyIC7rzSi6S8O+sdH384K8zyeMRJnl6vR7whl9PuEat+BkKpoxHn
-jQ0SFyF/cyI4lH/n938Pm3/Ctq0Z5GTldX6hhxxcLAR0qbk6AQU0Cq2nYMlZfX4FUz3FRsazbjTW
-1qObcvPRUAVScaa7SRGdensvbNV++pN1XqEdc++szxo58UzPaEgDlHIe2sEIVXnFkHnJv0ikRHG3
-urcA1bdj7Rac7dJBeQOQMdZEGmrWWmmbJzvk3OmoK9tKN7wcErQSdlqyYOMLesPfa7YNyLFYEJQd
-CC/N7V8U9yFZx8akWREb8lJYDl9KypirEsufleiew26CWrwcbmdlldDCFS6/HDGCAhcwggITAgEB
-MIGQMHkxCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEUMBIGA1UEBxMLU2FudGEgQ2xhcmExGjAY
-BgNVBAoTEUludGVsIENvcnBvcmF0aW9uMSswKQYDVQQDEyJJbnRlbCBFeHRlcm5hbCBCYXNpYyBJ
-c3N1aW5nIENBIDRCAhMzAAB04Th3owY0UbEUAAAAAHThMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0B
-CQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xOTExMjAyMjA0NTZaMCMGCSqGSIb3DQEJ
-BDEWBBQ+bRhHvKcTEbEqhiY5q4iwg43ADzANBgkqhkiG9w0BAQEFAASCAQBg/AUOK+GwH5/BGyTy
-KKZfnkbns8ZiuHsEQSt/BTNV3yXF0WGQ4gfeqHlWZjHtnqo55lQ3E1bE65ucYN3/2ZdLnUelb/wm
-6F15ewGdeKYa/wlKQC1tryR6/ChRZaTWgSgCnB85zoxf+QsJXhzyxud5jD4f6yCc+Lr4FTi5IQ7S
-RRi9sLwR8rjX11w9/WK4ZgHGPke8Y3F1fEIQygCmtsvw3Shut8njW/wuhCkvWSWSY+JdsU4+vNq0
-Ub8om10SCzWf1IKVInTaMJCxthqHLr1yhb+T759F+i1KfqM+a2HxT7R2XI0HZkcNM/Fao8zNi0Cs
-UJOw6tE7Ayj5tZ2HTTU4AAAAAAAA
-
-
---=-FXmUMjGFhkUvM8qvoR0U--
-
---===============0834319395==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
-
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-
---===============0834319395==--
+VGhhbmtzIGZvciByZXZpZXdpbmcgdGhlIHBhdGNoLCBwbGVhc2Ugc2VlIGJlbG93IGNvbW1lbnRz
+Lg0KDQo+ID4gU28gaGVyZSB3ZSBpbnN0YWxsIHRoZSBwcm9wZXIgaGFuZGxlciBmb3Igc2lnbmFs
+IFNJR1RFUk0gaW4gdGhlDQo+ID4gc2ltaWxhciB3YXkuIFdpdGhvdXQgdGhpcyBwYXRjaCwgdGhl
+IEdUIG1heSBrZWVwIGJ1c3kgYWZ0ZXINCj4gPiBydW5uaW5nIHRoaXMgc3VidGVzdC4gRW5hYmxp
+bmcgcnBzIHNob3VsZCBiZSB0cmFja2VkIG9uIHRoZQ0KPiA+IG90aGVyIHNpZGUuDQo+ID4NCj4g
+PiBTaWduZWQtb2ZmLWJ5OiBDaHVhbnNoZW5nIExpdSA8Y2h1YW5zaGVuZy5saXVAaW50ZWwuY29t
+Pg0KPiA+IC0tLQ0KPiA+ICB0ZXN0cy9pOTE1L2k5MTVfcG1fcnBzLmMgfCAxICsNCj4gPiAgMSBm
+aWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMv
+aTkxNS9pOTE1X3BtX3Jwcy5jIGIvdGVzdHMvaTkxNS9pOTE1X3BtX3Jwcy5jDQo+ID4gaW5kZXgg
+ZWY2MjdjMGIuLjhjNzFjMWExIDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL2k5MTUvaTkxNV9wbV9y
+cHMuYw0KPiA+ICsrKyBiL3Rlc3RzL2k5MTUvaTkxNV9wbV9ycHMuYw0KPiA+IEBAIC0yNTIsNiAr
+MjUyLDcgQEAgc3RhdGljIHZvaWQgbG9hZF9oZWxwZXJfcnVuKGVudW0gbG9hZCBsb2FkKQ0KPiA+
+DQo+ID4gICAgICAgICAgICAgICAgIHNpZ25hbChTSUdVU1IxLCBsb2FkX2hlbHBlcl9zaWduYWxf
+aGFuZGxlcik7DQo+ID4gICAgICAgICAgICAgICAgIHNpZ25hbChTSUdVU1IyLCBsb2FkX2hlbHBl
+cl9zaWduYWxfaGFuZGxlcik7DQo+ID4gKyAgICAgICAgICAgICAgIHNpZ25hbChTSUdURVJNLCBs
+b2FkX2hlbHBlcl9zaWduYWxfaGFuZGxlcik7DQo+IA0KPiBJIGRvbid0IHNlZSBhbnkgYmVoYXZp
+b3VyIGNoYW5nZXMgdG8gaWd0IHRvIGNhdXNlIGl0IHRvIHNlbmQgU0lHVEVSTSBvbg0KPiBleGl0
+X3N1YnRlc3QuDQoNClllcywgZXhpdF9zdWJ0ZXN0KCkgd2lsbCBub3Qgc2VuZCBTSUdURVJNIG91
+dC4gQnV0IHdoZW4gbWFpbiBwcm9jZXNzIGNhbGxzDQppZ3RfZXhpdCgpIHRvIGV4aXQsIGl0IGhp
+dHMgdGhlIGJlbG93IGFzc2VydGlvbiwgdGhlbiBnb2VzIHRvIGZhdGFsX3NpZ19oYW5kbGVyKCkg
+d2l0aCBTSUdBQk9SVC4NCihpOTE1X3BtX3JwczoxNjgwKSBpZ3RfY29yZS1DUklUSUNBTDogRXhp
+dGluZyB3aXRoIHN0YXR1cyBjb2RlIDk4DQppOTE1X3BtX3JwczogLi4vbGliL2lndF9jb3JlLmM6
+MTc3NTogaWd0X2V4aXQ6IEFzc2VydGlvbiBgd2FpdHBpZCgtMSwgJnRtcCwgV05PSEFORykgPT0g
+LTEgJiYgZXJybm8gPT0gRUNISUxEJyBmYWlsZWQuDQpSZWNlaXZlZCBzaWduYWwgU0lHQUJSVC4N
+Cg0KSW4gZmF0YWxfc2lnX2hhbmRsZXIoKSwgdGhlIGluc3RhbGxlZCBleGl0IGhhbmRsZXIgZm9y
+a19oZWxwZXJfZXhpdF9oYW5kbGVyKCkNCndpbGwgc2VuZCBvdXQgdGhlIFNJR1RFUk0gdG8gYWxs
+IGNoaWxkcmVuIHByb2Nlc3MuDQoNCj4gDQo+IEJ1dCB5b3UgbWlnaHQgYXMgd2VsbCBqdXN0IHMv
+U0lHVVNSMi9TSUdURVJNLyBmb3IgY2xlYXJlciBhbmQgY29tbW9uDQo+IGludGVudGlvbnMuDQpE
+b24ndCBnZXQgeW91ciByZWFsIHBvaW50LCBTSUdVU1IxIGlzIGZvciBhY3RpdmVseSBzdG9wcGlu
+ZyBsb2FkX2hlbHBlciwgU0lHVVNSMiBpcyBmb3INCnN3aXRjaGluZyBoaWdoIGFuZCBsb3cgbG9h
+ZCwgdGhlIFNJR1RFUk0gaXMgZm9yIHBhc3NpdmVseSBleGl0aW5nLg0KDQoNCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0
+CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
