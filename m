@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2957E6F502
- for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2019 09:12:47 +0000 (UTC)
-Date: Fri, 22 Nov 2019 10:12:43 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20191122091243.GA25820@zkempczy-mobl2>
-References: <20191122081357.20401-1-zbigniew.kempczynski@intel.com>
- <20191122081357.20401-3-zbigniew.kempczynski@intel.com>
- <157441315071.2524.1559191578861889966@skylake-alporthouse-com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83D2E6F507
+ for <igt-dev@lists.freedesktop.org>; Fri, 22 Nov 2019 09:16:29 +0000 (UTC)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <157441315071.2524.1559191578861889966@skylake-alporthouse-com>
-Subject: Re: [igt-dev] [PATCH i-g-t v5 2/4] lib/i915/gem_mman: add
- mmap_offset support
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20191122081357.20401-5-zbigniew.kempczynski@intel.com>
+References: <20191122081357.20401-1-zbigniew.kempczynski@intel.com>
+ <20191122081357.20401-5-zbigniew.kempczynski@intel.com>
+Message-ID: <157441417847.2524.10810348748600458662@skylake-alporthouse-com>
+Date: Fri, 22 Nov 2019 09:16:18 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t v5 4/4] tests/i915/gem_mmap_offset: Add
+ new API test for gem_mmap_offset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,42 +22,21 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBOb3YgMjIsIDIwMTkgYXQgMDg6NTk6MTBBTSArMDAwMCwgQ2hyaXMgV2lsc29uIHdy
-b3RlOgoKPiA+ICsjZGVmaW5lIExPQ0FMX0k5MTVfUEFSQU1fTU1BUF9PRkZTRVRfVkVSU0lPTiA1
-NAo+IAo+IExlZnRvdmVyLgoKWW91J3JlIHJpZ2h0LiAKIAo+ID4gKy8qKgo+ID4gKyAqIF9fZ2Vt
-X21tYXBfb2Zmc2V0Ogo+ID4gKyAqIEBmZDogb3BlbiBpOTE1IGRybSBmaWxlIGRlc2NyaXB0b3IK
-PiA+ICsgKiBAaGFuZGxlOiBnZW0gYnVmZmVyIG9iamVjdCBoYW5kbGUKPiA+ICsgKiBAb2Zmc2V0
-OiBvZmZzZXQgaW4gdGhlIGdlbSBidWZmZXIgb2YgdGhlIG1tYXAgYXJlbmEKPiA+ICsgKiBAc2l6
-ZTogc2l6ZSBvZiB0aGUgbW1hcCBhcmVuYQo+ID4gKyAqIEBwcm90OiBtZW1vcnkgcHJvdGVjdGlv
-biBiaXRzIGFzIHVzZWQgYnkgbW1hcCgpCj4gPiArICogQGZsYWdzOiBmbGFncyB1c2VkIHRvIGRl
-dGVybWluZSBjYWNoaW5nCj4gPiArICoKPiA+ICsgKiBNbWFwIHRoZSBnZW0gYnVmZmVyIG1lbW9y
-eSBvbiBvZmZzZXQgcmV0dXJuZWQgaW4gR0VNX01NQVBfT0ZGU0VUIGlvY3RsLgo+ID4gKyAqIE9m
-ZnNldCBhcmd1bWVudCBwYXNzZWQgaW4gZnVuY3Rpb24gY2FsbCBtdXN0IGJlIDAuIEluIHRoZSBm
-dXR1cmUKPiA+ICsgKiB3aGVuIGRyaXZlciB3aWxsIGFsbG93IHNsaWNlIG1hcHBpbmcgb2YgYnVm
-ZmVyIG9iamVjdCB0aGlzIHJlc3RyaWN0aW9uCj4gPiArICogd2lsbCBiZSByZW1vdmVkLgo+ID4g
-KyAqCj4gPiArICogUmV0dXJuczogQSBwb2ludGVyIHRvIHRoZSBjcmVhdGVkIG1lbW9yeSBtYXBw
-aW5nLCBOVUxMIG9uIGZhaWx1cmUuCj4gPiArICovCj4gPiArdm9pZCAqX19nZW1fbW1hcF9vZmZz
-ZXQoaW50IGZkLCB1aW50MzJfdCBoYW5kbGUsIHVpbnQ2NF90IG9mZnNldCwgdWludDY0X3Qgc2l6
-ZSwKPiA+ICsgICAgICAgICAgICAgICAgICAgICAgIHVuc2lnbmVkIGludCBwcm90LCB1aW50NjRf
-dCBmbGFncykKPiA+ICt7Cj4gPiArICAgICAgIHN0cnVjdCBsb2NhbF9pOTE1X2dlbV9tbWFwX29m
-ZnNldCBhcmc7Cj4gPiArICAgICAgIHZvaWQgKnB0cjsKPiA+ICsKPiA+ICsgICAgICAgaWd0X2Fz
-c2VydChvZmZzZXQgPT0gMCk7Cj4gPiArCj4gPiArICAgICAgIG1lbXNldCgmYXJnLCAwLCBzaXpl
-b2YoYXJnKSk7Cj4gPiArICAgICAgIGFyZy5oYW5kbGUgPSBoYW5kbGU7Cj4gPiArICAgICAgIGFy
-Zy5mbGFncyA9IGZsYWdzOwo+ID4gKwo+ID4gKyAgICAgICBpZiAoaWd0X2lvY3RsKGZkLCBMT0NB
-TF9JT0NUTF9JOTE1X0dFTV9NTUFQX09GRlNFVCwgJmFyZykpCj4gPiArICAgICAgICAgICAgICAg
-cmV0dXJuIE5VTEw7Cj4gPiArCj4gPiArICAgICAgIHB0ciA9IG1tYXA2NCgwLCBzaXplLCBwcm90
-LCBNQVBfU0hBUkVELCBmZCwgYXJnLm9mZnNldCk7Cj4gCj4gSSBhbSB0ZW1wdGVkIHRvIHNheSBh
-cmcub2Zmc2V0ICsgb2Zmc2V0LCBidXQgdGhhdCBpcyBwcmVtYXR1cmUgdW50aWwgYW4KPiBhY3R1
-YWwgc2xpY2UgQVBJIGlzIGRlY2lkZWQgdXBvbi4KCkFzIEknbSBnb2luZyB0byByZW1vdmUgTE9D
-QUxfKiBkZWZpbmUgYWJvdmUgc28gSSB3aWxsIGFkZCB0aGlzIHRvIHRoZSBjYWxsLgoKPiAKPiBU
-aGlzIGxvb2tzIHRvIGJlIGEgcmVhc29uYWJsZSBzdGVwIGZvcndhcmQgdGhhdCBzaG91bGQgYXQg
-bGVhc3QgY292ZXIgdXMKPiBmb3IgdGhlIHRyYW5zaXRpb24gcGVyaW9kLgo+IAo+IGxvY2FsXyog
-bm90d2l0aHN0YW5kaW5nLAo+IFJldmlld2VkLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlz
-LXdpbHNvbi5jby51az4KPiAtQ2hyaXMKClRoYW5rcy4gSSdtIGZpeGluZyBhYm92ZSBhbmQgYWRk
-IFItQi4KClpiaWduaWV3Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldg==
+UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMTktMTEtMjIgMDg6MTM6NTcpCj4gRnJv
+bTogTHVrYXN6IEthbGFtYXJ6IDxsdWthc3oua2FsYW1hcnpAaW50ZWwuY29tPgo+IAo+IEZldyBz
+aW1wbGUgdGVzdHMgd2hpY2ggdHJpZXMgdG8gY3JlYXRlIC8gbW1hcCBidWZmZXIgb2JqZWN0cwo+
+IGluIHN5c3RlbSAvIGRldmljZSBtZW1vcnkgcmVnaW9ucy4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBM
+dWthc3ogS2FsYW1hcnogPGx1a2Fzei5rYWxhbWFyekBpbnRlbC5jb20+Cj4gU2lnbmVkLW9mZi1i
+eTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+
+Cj4gQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+IENjOiBWYW5z
+aGlkaGFyIEtvbmRhIDx2YW5zaGlkaGFyLnIua29uZGFAaW50ZWwuY29tPgoKRndpdywgdGhpcyBp
+cyBub3QgdGhlIGdlbV9tbWFwX29mZnNldCBJIG5lZWQgdG8gbGFuZCB0aGUga2VybmVsIHBhdGNo
+ZXMKdG8gaW1wbGVtZW50IGdlbV9tbWFwX29mZnNldCB0aGF0IGFyZSBwcmV0dHkgbXVjaCByZWFk
+eSBhbmQgcG9zdGR1ZS4KCkkgcHJldHR5IG11Y2ggbmVlZCB0aGUgdW5pb24gb2YgZ2VtX21tYXBf
+d2MgYW5kIGdlbV9tbWFwX2d0dC4KLUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
+Zm8vaWd0LWRldg==
