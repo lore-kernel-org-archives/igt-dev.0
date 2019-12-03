@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D2176E480
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Dec 2019 11:38:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6FE856E480
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Dec 2019 11:39:27 +0000 (UTC)
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20191203111537.23389-1-petri.latvala@intel.com>
-References: <20191203104457.20176-2-petri.latvala@intel.com>
- <20191203111537.23389-1-petri.latvala@intel.com>
-Message-ID: <157537307499.7230.10998969344052479241@skylake-alporthouse-com>
-Date: Tue, 03 Dec 2019 11:37:55 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] runner: Don't wait forever for
- processes to die
+In-Reply-To: <20191203104457.20176-1-petri.latvala@intel.com>
+References: <20191203104457.20176-1-petri.latvala@intel.com>
+Message-ID: <157537316057.7230.377097231544921928@skylake-alporthouse-com>
+Date: Tue, 03 Dec 2019 11:39:20 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] runner: Actually ping watchdogs
+ every interval
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,21 +25,18 @@ To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBQZXRyaSBMYXR2YWxhICgyMDE5LTEyLTAzIDExOjE1OjM3KQo+IFdoaWxlIHRoZSBv
-cmlnaW5hbGx5IHdyaXR0ZW4gdGltZW91dCBmb3IgcHJvY2VzcyBraWxsaW5nICgyIHNlY29uZHMp
-Cj4gd2FzIHdheSB0b28gc2hvcnQsIHdhaXRpbmcgaW5kZWZpbml0ZWx5IGlzIHN1Ym9wdGltYWwg
-YXMgd2VsbC4gV2UncmUKPiBzZWVpbmcgY2FzZXMgd2hlcmUgdGhlIHRlc3QgaXMgc3R1Y2sgZm9y
-IHBvc3NpYmx5IGhvdXJzIGluCj4gdW5pbnRlcnJ1cHRpYmxlIHNsZWVwIChJTykuIFdhaXQgYSBm
-YWlybHkgbG9uZ2VyIHNlbGVjdGVkIHRpbWUgcGVyaW9kCj4gb2YgMiBtaW51dGVzLCBiZWNhdXNl
-IGV2ZW4gbWFraW5nIHByb2dyZXNzIGZvciB0aGF0IGxvbmcgbWVhbnMgdGhlCj4gbWFjaGluZSBp
-cyBpbiBiYWQgZW5vdWdoIHN0YXRlIHRvIHJlcXVpcmUgYSBnb29kIGtpY2tpbmcgYW5kIGJvb3Rp
-bmcuCj4gCj4gdjI6Cj4gIC0gQWJvcnQgcXVpY2tlciBpZiBrZXJuZWwgaXMgdGFpbnRlZCAoQ2hy
-aXMpCj4gIC0gQ29ycmVjdGx5IGNvbnZlcnQgcHJvY2Vzcy1leGlzdHMgY2hlY2sgd2l0aCBraWxs
-KCkgdG8gcHJvY2Vzcy1kb2VzLW5vdC1leGlzdAo+IAo+IFNpZ25lZC1vZmYtYnk6IFBldHJpIExh
-dHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgo+IENjOiBDaHJpcyBXaWxzb24gPGNocmlz
-QGNocmlzLXdpbHNvbi5jby51az4KPiBDYzogQXJrYWRpdXN6IEhpbGVyIDxhcmthZGl1c3ouaGls
-ZXJAaW50ZWwuY29tPgoKUmVhZHMgbGlrZSBpdCBkb2VzIHdoYXQgeW91IHNheSBvbiB0aGUgdGlu
-LgpSZXZpZXdlZC1ieSBDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+
-Ci1DaHJpcwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpp
-Z3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczov
-L2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
+UXVvdGluZyBQZXRyaSBMYXR2YWxhICgyMDE5LTEyLTAzIDEwOjQ0OjU2KQo+IFRoZSBzcGxpdCB0
+byB0aW1lb3V0IGludGVydmFscyB3YXMgbWFkZSB0byBhY2NvbW9kYXRlIGZvciB3YXRjaGRvZ3MK
+PiB0aGF0IGNhbm5vdCB1c2UgYSB0aW1lb3V0IGFzIGhpZ2ggYXMgd2Ugd2FudGVkLiBBY3R1YWxs
+eSB1c2luZyB0aGF0Cj4gZmVhdHVyZSByZXF1aXJlcyB1cyB0byBwaW5nIHRoZSB3YXRjaGRvZyBl
+dmVyeSBpbnRlcnZhbCBldmVuIHRob3VnaCB3ZQo+IGhhbmRsZSBhY3R1YWwgdGltZW91dGluZyBh
+ZnRlciBhbGwgaW50ZXJ2YWxzIGFyZSB1c2VkIHVwLgo+IAo+IFNpZ25lZC1vZmYtYnk6IFBldHJp
+IExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgo+IENjOiBBcmthZGl1c3ogSGlsZXIg
+PGFya2FkaXVzei5oaWxlckBpbnRlbC5jb20+CgpEb2Vzbid0IGxvb2sgaGFybWZ1bC4gVGhlIGlt
+cGxpY2F0aW9uIGlzIHRoYXQgd2UgcGluZyB0aGUgd2F0Y2hkb2cgZm9yCnNvbWUgY2FzZXMgd2hl
+cmUgd2UgZGlkIG5vdCBwcmV2aW91c2x5LCBidXQgZm9yIGFzIGxvbmcgYXMgdGhlIHJ1bm5lcgpy
+ZW1haW5zIGluIGNvbnRyb2xzLCB0aGF0IHNob3VsZCBub3QgYmUgYW4gaXNzdWUuCgpSZXZpZXdl
+ZC1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Ci1DaHJpcwpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxp
+bmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVk
+ZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXY=
