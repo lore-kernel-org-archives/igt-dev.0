@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 120076E932
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Dec 2019 16:48:34 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38A0A6E932
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Dec 2019 16:56:01 +0000 (UTC)
+Date: Wed, 4 Dec 2019 18:55:57 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <20191204165557.GA1208@intel.com>
+References: <20191203153555.12948-1-ville.syrjala@linux.intel.com>
+ <157539012572.9581.11458188672276428079@skylake-alporthouse-com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-References: <1575474769-30637-1-git-send-email-juhapekka.heikkila@gmail.com>
- <1575474769-30637-2-git-send-email-juhapekka.heikkila@gmail.com>
-In-Reply-To: <1575474769-30637-2-git-send-email-juhapekka.heikkila@gmail.com>
-Message-ID: <157547811044.19640.17964106229897644448@skylake-alporthouse-com>
-Date: Wed, 04 Dec 2019 16:48:30 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/igt_fb: sync memory at
- unmap_bo()
+Content-Disposition: inline
+In-Reply-To: <157539012572.9581.11458188672276428079@skylake-alporthouse-com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/4] lib/igt_kms: Add
+ igt_connector_sysfs_open()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,22 +23,46 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBKdWhhLVBla2thIEhlaWtraWxhICgyMDE5LTEyLTA0IDE1OjUyOjQ5KQo+IFN5bmMg
-bWVtb3J5IGF0IHVubWFwX2JvKCkgdG8gYXZvaWQgcHJvYmxlbXMgd2l0aCBjcHUgZ2VtIGRvbWFp
-bi4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBKdWhhLVBla2thIEhlaWtraWxhIDxqdWhhcGVra2EuaGVp
-a2tpbGFAZ21haWwuY29tPgo+IC0tLQo+ICBsaWIvaWd0X2ZiLmMgfCA0ICsrKysKPiAgMSBmaWxl
-IGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKQo+IAo+IGRpZmYgLS1naXQgYS9saWIvaWd0X2ZiLmMg
-Yi9saWIvaWd0X2ZiLmMKPiBpbmRleCA2Y2U3Y2ZlLi41YTcwZGJmIDEwMDY0NAo+IC0tLSBhL2xp
-Yi9pZ3RfZmIuYwo+ICsrKyBiL2xpYi9pZ3RfZmIuYwo+IEBAIC0yMTUyLDYgKzIxNTIsMTAgQEAg
-aW50IGlndF9kaXJ0eV9mYihpbnQgZmQsIHN0cnVjdCBpZ3RfZmIgKmZiKQo+ICAKPiAgc3RhdGlj
-IHZvaWQgdW5tYXBfYm8oc3RydWN0IGlndF9mYiAqZmIsIHZvaWQgKnB0cikKPiAgewo+ICsgICAg
-ICAgaWYgKGlzX2k5MTVfZGV2aWNlKGZiLT5mZCkpCj4gKyAgICAgICAgICAgICAgIGdlbV9zZXRf
-ZG9tYWluKGZiLT5mZCwgZmItPmdlbV9oYW5kbGUsCj4gKyAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIEk5MTVfR0VNX0RPTUFJTl9HVFQsIDApOwo+ICsKCldoYXQ/IEhvdyBpcyB0aGlzIG5v
-dCBwYXBlcmluZyBvdmVyIHJhbmRvbSBidWdzPwotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9pZ3QtZGV2
+T24gVHVlLCBEZWMgMDMsIDIwMTkgYXQgMDQ6MjI6MDVQTSArMDAwMCwgQ2hyaXMgV2lsc29uIHdy
+b3RlOgo+IFF1b3RpbmcgVmlsbGUgU3lyamFsYSAoMjAxOS0xMi0wMyAxNTozNTo1MikKPiA+IEZy
+b206IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+Cj4gPiAK
+PiA+IEFkZCBhIGhlbHBlciB0byBvcGVuIHRoZSBzeXNmcyBkaXJlY3RvcnkgZm9yIGEgY29ubmVj
+dG9yLgo+ID4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmph
+bGFAbGludXguaW50ZWwuY29tPgo+ID4gLS0tCj4gPiAgbGliL2lndF9rbXMuYyB8IDM0ICsrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysKPiA+ICBsaWIvaWd0X2ttcy5oIHwgIDMgKysr
+Cj4gPiAgMiBmaWxlcyBjaGFuZ2VkLCAzNyBpbnNlcnRpb25zKCspCj4gPiAKPiA+IGRpZmYgLS1n
+aXQgYS9saWIvaWd0X2ttcy5jIGIvbGliL2lndF9rbXMuYwo+ID4gaW5kZXggNDQ2NDdhMjI2M2Jk
+Li43NGFlOThkNzc0ZjEgMTAwNjQ0Cj4gPiAtLS0gYS9saWIvaWd0X2ttcy5jCj4gPiArKysgYi9s
+aWIvaWd0X2ttcy5jCj4gPiBAQCAtOTY1LDYgKzk2NSw0MCBAQCBzdGF0aWMgdm9pZCByZXNldF9j
+b25uZWN0b3JzX2F0X2V4aXQoaW50IHNpZykKPiA+ICAgICAgICAgaWd0X3Jlc2V0X2Nvbm5lY3Rv
+cnMoKTsKPiA+ICB9Cj4gPiAgCj4gPiArc3RhdGljIGNoYXIgKmttc3Rlc3RfY29ubmVjdG9yX2Rp
+cm5hbWUoaW50IGlkeCwKPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IHVpbnQzMl90IGNvbm5lY3Rvcl90eXBlLAo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgdWludDMyX3QgY29ubmVjdG9yX3R5cGVfaWQsCj4gPiArICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICBjaGFyICpuYW1lLCBpbnQgbmFtZWxlbikKPiA+ICt7
+Cj4gPiArICAgICAgIHNucHJpbnRmKG5hbWUsIG5hbWVsZW4sICJjYXJkJWQtJXMtJWQiLCBpZHgs
+Cj4gPiArICAgICAgICAgICAgICAgIGttc3Rlc3RfY29ubmVjdG9yX3R5cGVfc3RyKGNvbm5lY3Rv
+cl90eXBlKSwKPiA+ICsgICAgICAgICAgICAgICAgY29ubmVjdG9yX3R5cGVfaWQpOwo+ID4gKwo+
+ID4gKyAgICAgICByZXR1cm4gbmFtZTsKPiA+ICt9Cj4gPiArCj4gPiAraW50IGlndF9jb25uZWN0
+b3Jfc3lzZnNfb3BlbihpbnQgZHJtX2ZkLAo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICBkcm1Nb2RlQ29ubmVjdG9yICpjb25uZWN0b3IpCj4gPiArewo+ID4gKyAgICAgICBjaGFyIG5h
+bWVbODBdOwo+ID4gKyAgICAgICBpbnQgZGlyLCBjb25uX2RpcjsKPiA+ICsKPiA+ICsgICAgICAg
+ZGlyID0gaWd0X3N5c2ZzX29wZW4oZHJtX2ZkKTsKPiA+ICsgICAgICAgaWYgKGRpciA8IDApCj4g
+PiArICAgICAgICAgICAgICAgcmV0dXJuIGRpcjsKPiA+ICsKPiA+ICsgICAgICAgaWYgKCFrbXN0
+ZXN0X2Nvbm5lY3Rvcl9kaXJuYW1lKGlndF9kZXZpY2VfZ2V0X2NhcmRfaW5kZXgoZHJtX2ZkKSwK
+PiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbm5lY3Rvci0+Y29u
+bmVjdG9yX3R5cGUsCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBj
+b25uZWN0b3ItPmNvbm5lY3Rvcl90eXBlX2lkLAo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgbmFtZSwgc2l6ZW9mKG5hbWUpKSkKPiA+ICsgICAgICAgICAgICAgICBy
+ZXR1cm4gLTE7Cj4gCj4gQmVmb3JlIGlndF9zeXNmc19vcGVuKCkgb3IgY2xvc2UoZGlyKTsKCkp1
+c3QgcmVhbGl6ZWQgdGhhdCB0aGlzIG5ldmVyIGV2ZW4gcmV0dXJucyBOVUxMIHVubGVzcyB5b3Ug
+cGFzcyBpbgpOVUxMLiBJJ2xsIGp1c3QgZHJvcCB0aGUgY2hlY2suCgo+IAo+IFJldmlld2VkLWJ5
+OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KPiAtQ2hyaXMKCi0tIApW
+aWxsZSBTeXJqw6Rsw6QKSW50ZWwKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3Rv
+cC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3Qt
+ZGV2
