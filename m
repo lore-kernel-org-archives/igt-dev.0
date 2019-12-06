@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6DC996F9EE
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Dec 2019 13:10:07 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B58F6F9EE
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Dec 2019 13:11:11 +0000 (UTC)
 References: <20191120000800.16281-1-umesh.nerlige.ramappa@intel.com>
- <20191120000800.16281-2-umesh.nerlige.ramappa@intel.com>
+ <20191120000800.16281-3-umesh.nerlige.ramappa@intel.com>
+ <609f3846-d778-6858-fba1-c446b6db353e@intel.com>
+ <20191121172625.GA68520@orsosgc001.amr.corp.intel.com>
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <660bda4f-5b56-6e09-f885-058412c9c814@intel.com>
-Date: Fri, 6 Dec 2019 15:10:04 +0200
+Message-ID: <edbcd3d7-47df-504a-977a-4fea6767c217@intel.com>
+Date: Fri, 6 Dec 2019 15:11:09 +0200
 MIME-Version: 1.0
-In-Reply-To: <20191120000800.16281-2-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20191121172625.GA68520@orsosgc001.amr.corp.intel.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v4 2/4] test/perf: Dump the report and
- timestamp frequency for debug
+Subject: Re: [igt-dev] [PATCH i-g-t v4 3/4] test/perf: Add test for TGL OAR
+ unit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,68 +21,88 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: multipart/mixed; boundary="===============0450836843=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris.p.wilson@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris.p.wilson@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMjAvMTEvMjAxOSAwMjowNywgVW1lc2ggTmVybGlnZSBSYW1hcHBhIHdyb3RlOgo+IEFkZCBk
-ZWJ1ZyBsb2dzIHRvIHZpZXcgdGhlIHJlcG9ydHMgaW4gY29tcGFyaXNvbiB3aXRoIGFjdHVhbCBm
-b3JtYXRzLgo+IExvZyB0aGUgdGltZXN0YW1wIGZyZXF1ZW5jeSB1c2VkIHRvIGNhbGN1bGF0ZSB0
-aGUgcGVyaW9kIGV4cG9uZW50cy4KPgo+IHYyOiBTcGxpdCBkZWJ1ZyBwYXRjaCBmcm9tIE9BUiB0
-ZXN0IHBhdGNoIChMaW9uZWwpCj4KPiBTaWduZWQtb2ZmLWJ5OiBVbWVzaCBOZXJsaWdlIFJhbWFw
-cGEgPHVtZXNoLm5lcmxpZ2UucmFtYXBwYUBpbnRlbC5jb20+ClJldmlld2VkLWJ5OiBMaW9uZWwg
-TGFuZHdlcmxpbiA8bGlvbmVsLmcubGFuZHdlcmxpbkBpbnRlbC5jb20+Cj4gLS0tCj4gICB0ZXN0
-cy9wZXJmLmMgfCAxOSArKysrKysrKysrKysrKysrKysrCj4gICAxIGZpbGUgY2hhbmdlZCwgMTkg
-aW5zZXJ0aW9ucygrKQo+Cj4gZGlmZiAtLWdpdCBhL3Rlc3RzL3BlcmYuYyBiL3Rlc3RzL3BlcmYu
-Ywo+IGluZGV4IDJiNmJlMTM0Li41MDZiNjRlYyAxMDA2NDQKPiAtLS0gYS90ZXN0cy9wZXJmLmMK
-PiArKysgYi90ZXN0cy9wZXJmLmMKPiBAQCAtMjEwLDYgKzIxMCwxOSBAQCBzdGF0aWMgdWludDMy
-X3QgKCpyZWFkX3JlcG9ydF90aWNrcykodWludDMyX3QgKnJlcG9ydCwKPiAgIHN0YXRpYyB2b2lk
-ICgqc2FuaXR5X2NoZWNrX3JlcG9ydHMpKHVpbnQzMl90ICpvYV9yZXBvcnQwLCB1aW50MzJfdCAq
-b2FfcmVwb3J0MSwKPiAgIAkJCQkgICAgZW51bSBkcm1faTkxNV9vYV9mb3JtYXQgZm9ybWF0KTsK
-PiAgIAo+ICtzdGF0aWMgdm9pZAo+ICtkdW1wX3JlcG9ydChjb25zdCB1aW50MzJfdCAqcmVwb3J0
-LCB1aW50MzJfdCBzaXplLCBjb25zdCBjaGFyICptZXNzYWdlKSB7Cj4gKwl1aW50MzJfdCBpOwo+
-ICsJaWd0X2RlYnVnKCIlc1xuIiwgbWVzc2FnZSk7Cj4gKwlmb3IgKGkgPSAwOyBpIDwgc2l6ZTsg
-aSArPSA0KSB7Cj4gKwkJaWd0X2RlYnVnKCIlMDh4ICUwOHggJTA4eCAlMDh4XG4iLAo+ICsJCQkJ
-cmVwb3J0W2ldLAo+ICsJCQkJcmVwb3J0W2kgKyAxXSwKPiArCQkJCXJlcG9ydFtpICsgMl0sCj4g
-KwkJCQlyZXBvcnRbaSArIDNdKTsKPiArCX0KPiArfQo+ICsKPiAgIHN0YXRpYyBzdHJ1Y3Qgb2Ff
-Zm9ybWF0Cj4gICBnZXRfb2FfZm9ybWF0KGVudW0gZHJtX2k5MTVfb2FfZm9ybWF0IGZvcm1hdCkK
-PiAgIHsKPiBAQCAtODc0LDYgKzg4Nyw3IEBAIGluaXRfc3lzX2luZm8odm9pZCkKPiAgIAlpZ3Rf
-YXNzZXJ0X25lcShkZXZpZCwgMCk7Cj4gICAKPiAgIAl0aW1lc3RhbXBfZnJlcXVlbmN5ID0gZ2V0
-X2NzX3RpbWVzdGFtcF9mcmVxdWVuY3koKTsKPiArCWlndF9kZWJ1ZygidGltZXN0YW1wX2ZyZXF1
-ZW5jeSA9ICVsdVxuIiwgdGltZXN0YW1wX2ZyZXF1ZW5jeSk7Cj4gICAJaWd0X2Fzc2VydF9uZXEo
-dGltZXN0YW1wX2ZyZXF1ZW5jeSwgMCk7Cj4gICAKPiAgIAlpZiAoSVNfSEFTV0VMTChkZXZpZCkp
-IHsKPiBAQCAtMTI4OSw2ICsxMzAzLDcgQEAgcmVhZF8yX29hX3JlcG9ydHMoaW50IGZvcm1hdF9p
-ZCwKPiAgIAkJCWlndF9hc3NlcnRfZXEoaGVhZGVyLT5zaXplLCBzYW1wbGVfc2l6ZSk7Cj4gICAK
-PiAgIAkJCXJlcG9ydCA9IChjb25zdCB2b2lkICopKGhlYWRlciArIDEpOwo+ICsJCQlkdW1wX3Jl
-cG9ydChyZXBvcnQsIDY0LCAib2EtZm9ybWF0cyIpOwo+ICAgCj4gICAJCQlpZ3RfZGVidWcoInJl
-YWQgcmVwb3J0OiByZWFzb24gPSAleCwgdGltZXN0YW1wID0gJXgsIGV4cG9uZW50IG1hc2s9JXhc
-biIsCj4gICAJCQkJICByZXBvcnRbMF0sIHJlcG9ydFsxXSwgZXhwb25lbnRfbWFzayk7Cj4gQEAg
-LTI4NTYsNiArMjg3MSw3IEBAIHRlc3RfbWlfcnBjKHZvaWQpCj4gICAJaWd0X2Fzc2VydF9lcShy
-ZXQsIDApOwo+ICAgCj4gICAJcmVwb3J0MzIgPSBiby0+dmlydHVhbDsKPiArCWR1bXBfcmVwb3J0
-KHJlcG9ydDMyLCA2NCwgIm1pLXJwYyIpOwo+ICAgCWlndF9hc3NlcnRfZXEocmVwb3J0MzJbMF0s
-IDB4ZGVhZGJlZWYpOyAvKiByZXBvcnQgSUQgKi8KPiAgIAlpZ3RfYXNzZXJ0X25lcShyZXBvcnQz
-MlsxXSwgMCk7IC8qIHRpbWVzdGFtcCAqLwo+ICAgCj4gQEAgLTMzMzUsMTEgKzMzNTEsMTMgQEAg
-Z2VuOF90ZXN0X3NpbmdsZV9jdHhfcmVuZGVyX3RhcmdldF93cml0ZXNfYV9jb3VudGVyKHZvaWQp
-Cj4gICAJCQlwcmV2ID0gcmVwb3J0MF8zMjsKPiAgIAkJCWN0eF9pZCA9IHByZXZbMl07Cj4gICAJ
-CQlpZ3RfZGVidWcoIk1JX1JQQyhzdGFydCkgQ1RYIElEOiAldVxuIiwgY3R4X2lkKTsKPiArCQkJ
-ZHVtcF9yZXBvcnQocmVwb3J0MF8zMiwgNjQsICJyZXBvcnQwXzMyIik7Cj4gICAKPiAgIAkJCXJl
-cG9ydDFfMzIgPSByZXBvcnQwXzMyICsgNjQ7IC8qIDY0IHVpbnQzMl90ID0gMjU2Ynl0ZXMgb2Zm
-c2V0ICovCj4gICAJCQlpZ3RfYXNzZXJ0X2VxKHJlcG9ydDFfMzJbMF0sIDB4YmVlZmJlZWYpOyAv
-KiByZXBvcnQgSUQgKi8KPiAgIAkJCWlndF9hc3NlcnRfbmVxKHJlcG9ydDFfMzJbMV0sIDApOyAv
-KiB0aW1lc3RhbXAgKi8KPiAgIAkJCWN0eDFfaWQgPSByZXBvcnQxXzMyWzJdOwo+ICsJCQlkdW1w
-X3JlcG9ydChyZXBvcnQxXzMyLCA2NCwgInJlcG9ydDFfMzIiKTsKPiAgIAo+ICAgCQkJbWVtc2V0
-KGFjY3VtdWxhdG9yLmRlbHRhcywgMCwgc2l6ZW9mKGFjY3VtdWxhdG9yLmRlbHRhcykpOwo+ICAg
-CQkJYWNjdW11bGF0ZV9yZXBvcnRzKCZhY2N1bXVsYXRvciwgcmVwb3J0MF8zMiwgcmVwb3J0MV8z
-Mik7Cj4gQEAgLTM0MzQsNiArMzQ1Miw3IEBAIGdlbjhfdGVzdF9zaW5nbGVfY3R4X3JlbmRlcl90
-YXJnZXRfd3JpdGVzX2FfY291bnRlcih2b2lkKQo+ICAgCQkJCWlndF9hc3NlcnRfZXEoaGVhZGVy
-LT5zaXplLCBzYW1wbGVfc2l6ZSk7Cj4gICAKPiAgIAkJCQlyZXBvcnQgPSAodm9pZCAqKShoZWFk
-ZXIgKyAxKTsKPiArCQkJCWR1bXBfcmVwb3J0KHJlcG9ydCwgNjQsICJPQSByZXBvcnQiKTsKPiAg
-IAo+ICAgCQkJCS8qIERvbid0IGV4cGVjdCB6ZXJvIGZvciB0aW1lc3RhbXBzICovCj4gICAJCQkJ
-aWd0X2Fzc2VydF9uZXEocmVwb3J0WzFdLCAwKTsKCgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3Rz
-LmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2lndC1kZXY=
+This is a multi-part message in MIME format.
+--===============0450836843==
+Content-Type: multipart/alternative;
+ boundary="------------466189D2943C2BBC4B4618B4"
+Content-Language: en-US
+
+This is a multi-part message in MIME format.
+--------------466189D2943C2BBC4B4618B4
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 21/11/2019 19:26, Umesh Nerlige Ramappa wrote:
+>>
+>>
+>> What delta do you see for the context that is not given to i915-perf?
+>
+> no delta and also all counters are zeroes. The above 2 memcmp check 
+> that all counters are zeroes.
+>
+> Thanks,
+> Umesh
+>
+Thanks for pointing this out : Reviewed-by: Lionel Landwerlin 
+<lionel.g.landwerlin@intel.com>
+
+
+--------------466189D2943C2BBC4B4618B4
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <div class="moz-cite-prefix">On 21/11/2019 19:26, Umesh Nerlige
+      Ramappa wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20191121172625.GA68520@orsosgc001.amr.corp.intel.com">
+      <blockquote type="cite" style="color: #000000;"><br>
+        <br>
+        What delta do you see for the context that is not given to
+        i915-perf?
+        <br>
+      </blockquote>
+      <br>
+      no delta and also all counters are zeroes. The above 2 memcmp
+      check that all counters are zeroes.
+      <br>
+      <br>
+      Thanks,
+      <br>
+      Umesh
+      <br>
+      <br>
+      <blockquote type="cite" style="color: #000000;">
+      </blockquote>
+    </blockquote>
+    <p>Thanks for pointing this out : Reviewed-by: Lionel Landwerlin
+      <a class="moz-txt-link-rfc2396E" href="mailto:lionel.g.landwerlin@intel.com">&lt;lionel.g.landwerlin@intel.com&gt;</a><br>
+    </p>
+  </body>
+</html>
+
+--------------466189D2943C2BBC4B4618B4--
+
+--===============0450836843==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
+
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+
+--===============0450836843==--
