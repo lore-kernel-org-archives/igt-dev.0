@@ -1,12 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20191209110752.12610-1-janusz.krzysztofik@linux.intel.com>
-References: <20191209110752.12610-1-janusz.krzysztofik@linux.intel.com>
-Message-ID: <157589029931.2308.3802269187194993434@skylake-alporthouse-com>
-Date: Mon, 09 Dec 2019 11:18:19 +0000
-Subject: Re: [igt-dev] [RFC PATCH i-g-t] test/prime_vgem: Examine blitter
- access path
+Date: Tue, 10 Dec 2019 12:19:34 +0000
+Message-Id: <20191210121934.3845438-1-chris@chris-wilson.co.uk>
+MIME-Version: 1.0
+Subject: [igt-dev] [PATCH i-g-t] i915/perf_pmu: Cap target number of
+ interrupts
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,28 +12,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-Cc: =?utf-8?q?Micha=C5=82_Czapli=C5=84ski?= <michal.czaplinski@intel.com>, Jari Tahvanainen <jari.tahvanainen@intel.com>, Karol Krol <karol.krol@intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBKYW51c3ogS3J6eXN6dG9maWsgKDIwMTktMTItMDkgMTE6MDc6NTIpCj4gT24gZnV0
-dXJlIGhhcmR3YXJlIHdpdGggbWlzc2luZyBHR1RUIEJBUiB3ZSB3b24ndCBiZSBhYmxlIHRvIGV4
-ZXJjaXNlCj4gZG1hLWJ1ZiBhY2Nlc3MgdmlhIHRoYXQgcGF0aC4gIEhvd2V2ZXIsIGFjY2VzcyB0
-byB0aGUgZG1hIHNnIGxpc3QKPiBmZWF0dXJlIGV4cG9zZWQgYnkgZG1hLWJ1ZiBjYW4gc3RpbGwg
-YmUgdGVzdGVkIHRocm91Z2ggYmxpdHRlci4KPiBVbmZvcnR1bmF0ZWx5IHdlIGRvbid0IGhhdmUg
-YW55IGVxdWl2YWxlbnRseSBzaW1wbGUgdGVzdHMgdGhhdCB1c2UKPiBibGl0dGVyLiAgUHJvdmlk
-ZSB0aGVtLgo+IAo+IFN1Z2dlc3RlZC1ieTogRGFuaWVsIFZldHRlciA8ZGFuaWVsLnZldHRlckBm
-ZndsbC5jaD4KPiBTaWduZWQtb2ZmLWJ5OiBKYW51c3ogS3J6eXN6dG9maWsgPGphbnVzei5rcnp5
-c3p0b2Zpa0BsaW51eC5pbnRlbC5jb20+Cj4gQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMt
-d2lsc29uLmNvLnVrPgo+IC0tLQo+IEFjY29yZGluZyB0byBUcnlib3QsIHRoZXNlIHN1YnRlc3Rz
-IGFyZSBmYWlsaW5nIG9uIFNhbmR5YnJpZGdlIChHZW42KQo+IGFuZCBIYXN3ZWxsIChHNzUpLCBj
-YW4geW91IHBsZWFzZSBhZHZpY2UgaG93IHRob3NlIHBsYXRmb3JtcyBzaG91bGQgYmUKPiBoYW5k
-bGVkPwoKImZhc3QgY29weSIgaXMgZ2VuOSsuIEp1c3QgdXNlIHJlZ3VsYXIgc2FtZS1zcGVlZCBY
-WV9TUkNfQ09QWS4KLUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRl
-dg==
+Limit the maximum number of interrupts in order to avoid overburdening
+older CPUs and GPUs.
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/perf_pmu.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/tests/perf_pmu.c b/tests/perf_pmu.c
+index 33fb4d653..e1bbf2410 100644
+--- a/tests/perf_pmu.c
++++ b/tests/perf_pmu.c
+@@ -1274,11 +1274,15 @@ static void cpu_hotplug(int gem_fd)
+ 	assert_within_epsilon(val, ts[1] - ts[0], tolerance);
+ }
+ 
++static int target_num_interrupts(int i915)
++{
++	return min(gem_measure_ring_inflight(i915, I915_EXEC_DEFAULT, 0), 30);
++}
++
+ static void
+ test_interrupts(int gem_fd)
+ {
+-	const int target =
+-		gem_measure_ring_inflight(gem_fd, I915_EXEC_DEFAULT, 0);
++	const int target = target_num_interrupts(gem_fd);
+ 	const unsigned int test_duration_ms = 1000;
+ 	igt_spin_t *spin[target];
+ 	struct pollfd pfd;
+@@ -1342,8 +1346,7 @@ test_interrupts(int gem_fd)
+ static void
+ test_interrupts_sync(int gem_fd)
+ {
+-	const int target =
+-		gem_measure_ring_inflight(gem_fd, I915_EXEC_DEFAULT, 0);
++	const int target = target_num_interrupts(gem_fd);
+ 	const unsigned int test_duration_ms = 1000;
+ 	igt_spin_t *spin[target];
+ 	struct pollfd pfd;
+-- 
+2.24.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
