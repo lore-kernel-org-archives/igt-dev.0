@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 495936EA20
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Dec 2019 23:31:33 +0000 (UTC)
-Date: Tue, 10 Dec 2019 15:25:44 -0800
-From: Manasi Navare <manasi.d.navare@intel.com>
-Message-ID: <20191210232543.GC12192@intel.com>
-References: <20191209035118.6658-1-karthik.b.s@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B6A46EA2E
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Dec 2019 00:59:42 +0000 (UTC)
+From: D Scott Phillips <d.scott.phillips@intel.com>
+Date: Tue, 10 Dec 2019 16:52:09 -0800
+Message-Id: <20191211005235.67897-4-d.scott.phillips@intel.com>
+In-Reply-To: <20191211005235.67897-1-d.scott.phillips@intel.com>
+References: <20191211005235.67897-1-d.scott.phillips@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191209035118.6658-1-karthik.b.s@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_dp_tiled_display: Request a
- mode on resolution that matches tile size
+Subject: [igt-dev] [PATCH i-g-t 03/29] lib/igt_core: update longjmp buffers
+ to type sigjmp_buf
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,77 +21,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Dec 09, 2019 at 09:21:18AM +0530, Karthik B S wrote:
-> Loop through the connector's modes for both the tiled connectors and 
-> find a mode that matches the tile h size and tile v size.
-> Request a modeset on this mode for both tiled connectors.
-> 
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+sigsetjmp/siglongjmp operate on a different type from
+setjmp/longjmp, sigjmp_buf vs jmp_buf. On glibc these happen to be
+the same type, but on other platforms they may be different.
 
-Looks good to me,
-Could you test if the kernel taints go away with my new patch series:
-https://patchwork.freedesktop.org/series/70722/
+Signed-off-by: D Scott Phillips <d.scott.phillips@intel.com>
+---
+ lib/igt_core.c | 2 +-
+ lib/igt_core.h | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-Reviewed-by: Manasi Navare <manasi.d.navare@intel.com>
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index c705be1e..09d8c159 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -1328,7 +1328,7 @@ static void exit_subtest(const char *result)
+ 	const char *subtest_text = in_dynamic_subtest ? "Dynamic subtest" : "Subtest";
+ 	const char **subtest_name = in_dynamic_subtest ? &in_dynamic_subtest : &in_subtest;
+ 	struct timespec *thentime = in_dynamic_subtest ? &dynamic_subtest_time : &subtest_time;
+-	jmp_buf *jmptarget = in_dynamic_subtest ? &igt_dynamic_jmpbuf : &igt_subtest_jmpbuf;
++	sigjmp_buf *jmptarget = in_dynamic_subtest ? &igt_dynamic_jmpbuf : &igt_subtest_jmpbuf;
+ 
+ 	igt_gettime(&now);
+ 
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index c17a7ba8..e99b782f 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -145,8 +145,8 @@ void __igt_fixture_end(void) __attribute__((noreturn));
+ 			 __igt_fixture_complete())
+ 
+ /* subtest infrastructure */
+-jmp_buf igt_subtest_jmpbuf;
+-jmp_buf igt_dynamic_jmpbuf;
++sigjmp_buf igt_subtest_jmpbuf;
++sigjmp_buf igt_dynamic_jmpbuf;
+ typedef int (*igt_opt_handler_t)(int opt, int opt_index, void *data);
+ #define IGT_OPT_HANDLER_SUCCESS 0
+ #define IGT_OPT_HANDLER_ERROR -2
+-- 
+2.23.0
 
-Manasi
-
-
-> ---
->  tests/kms_dp_tiled_display.c | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
-> index 175ff12f..c86a055e 100644
-> --- a/tests/kms_dp_tiled_display.c
-> +++ b/tests/kms_dp_tiled_display.c
-> @@ -207,9 +207,10 @@ static void test_cleanup(data_t *data)
->  
->  static void setup_mode(data_t *data)
->  {
-> -	int count = 0, prev = 0;
-> -	bool pipe_in_use = false;
-> +	int count = 0, prev = 0, i = 0;
-> +	bool pipe_in_use = false, found = false;
->  	enum pipe pipe;
-> +	drmModeModeInfo *mode;
->  	igt_output_t *output;
->  	data_connector_t *conns = data->conns;
->  
-> @@ -226,6 +227,8 @@ static void setup_mode(data_t *data)
->  
->  		for_each_pipe(data->display, pipe) {
->  			pipe_in_use = false;
-> +			found = false;
-> +
->  			if (count > 0) {
->  				for (prev = count - 1; prev >= 0; prev--) {
->  					if (pipe == conns[prev].pipe) {
-> @@ -247,6 +250,17 @@ static void setup_mode(data_t *data)
->  			}
->  		}
->  		igt_require(conns[count].pipe != PIPE_NONE);
-> +
-> +		for (i = 0; i < conns[count].connector->count_modes; i++) {
-> +			mode = &conns[count].connector->modes[i];
-> +			if (mode->vdisplay == conns[count].tile.tile_v_size &&
-> +			    mode->hdisplay == conns[count].tile.tile_h_size) {
-> +				found = true;
-> +				break;
-> +			}
-> +		}
-> +		igt_require(found);
-> +		igt_output_override_mode(output, mode);
->  	}
->  	igt_display_commit_atomic(data->display, DRM_MODE_ATOMIC_ALLOW_MODESET,
->  				  NULL);
-> -- 
-> 2.22.0
-> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
