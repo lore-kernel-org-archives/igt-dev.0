@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78ACD89FE6
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Dec 2019 01:01:09 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D9396EA2E
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Dec 2019 00:59:50 +0000 (UTC)
 From: D Scott Phillips <d.scott.phillips@intel.com>
-Date: Tue, 10 Dec 2019 16:52:19 -0800
-Message-Id: <20191211005235.67897-14-d.scott.phillips@intel.com>
+Date: Tue, 10 Dec 2019 16:52:22 -0800
+Message-Id: <20191211005235.67897-17-d.scott.phillips@intel.com>
 In-Reply-To: <20191211005235.67897-1-d.scott.phillips@intel.com>
 References: <20191211005235.67897-1-d.scott.phillips@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 13/29] lib/igt_core: skip oom_adjustments on
- non-Linux platforms
+Subject: [igt-dev] [PATCH i-g-t 16/29] lib/igt_kmod: add null implementation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,47 +16,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-oom_adjustments are available only on Linux. Omit the body of
-oom_adjust_for_doom on other platforms and just accept whatever
-default out-of-memory handling we get.
-
-Signed-off-by: D Scott Phillips <d.scott.phillips@intel.com>
----
- lib/igt_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index 09d8c159..8df89905 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -672,6 +672,7 @@ static void print_usage(const char *help_str, bool output_on_stderr)
- 
- static void oom_adjust_for_doom(void)
- {
-+#if defined(__linux__)
- 	int fd;
- 	const char always_kill[] = "1000";
- 
-@@ -679,7 +680,7 @@ static void oom_adjust_for_doom(void)
- 	igt_assert(fd != -1);
- 	igt_assert(write(fd, always_kill, sizeof(always_kill)) == sizeof(always_kill));
- 	close(fd);
--
-+#endif
- }
- 
- /**
--- 
-2.23.0
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+aWd0X2ttb2QgZGVwZW5kcyBvbiBsaWJrbW9kLCB3aGljaCBpcyBvbmx5IGF2YWlsYWJsZSBvbiBM
+aW51eC4gQWRkCmEgZG8tbm90aGluZyBpbXBsZW1lbnRhdGlvbiBvZiB0aGUgc2FtZSBBUEkgZm9y
+IGluY2x1c2lvbiBvbiBvdGhlcgpwbGF0Zm9ybXMuCgpTaWduZWQtb2ZmLWJ5OiBEIFNjb3R0IFBo
+aWxsaXBzIDxkLnNjb3R0LnBoaWxsaXBzQGludGVsLmNvbT4KLS0tCiBsaWIvaWd0X2ttb2QuaCAg
+ICAgIHwgIDIgKysKIGxpYi9pZ3Rfa21vZF9udWxsLmMgfCA4NCArKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysKIGxpYi9tZXNvbi5idWlsZCAgICAgfCAgMyArLQog
+MyBmaWxlcyBjaGFuZ2VkLCA4OCBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCiBjcmVhdGUg
+bW9kZSAxMDA2NDQgbGliL2lndF9rbW9kX251bGwuYwoKZGlmZiAtLWdpdCBhL2xpYi9pZ3Rfa21v
+ZC5oIGIvbGliL2lndF9rbW9kLmgKaW5kZXggYzcxZWMxNDcuLmNkMzc0NjA5IDEwMDY0NAotLS0g
+YS9saWIvaWd0X2ttb2QuaAorKysgYi9saWIvaWd0X2ttb2QuaApAQCAtMjQsNyArMjQsOSBAQAog
+I2lmbmRlZiBJR1RfS01PRF9ICiAjZGVmaW5lIElHVF9LTU9EX0gKIAorI2lmIGRlZmluZWQoX19s
+aW51eF9fKQogI2luY2x1ZGUgPGxpYmttb2QuaD4KKyNlbmRpZgogCiAjaW5jbHVkZSAiaWd0X2xp
+c3QuaCIKIApkaWZmIC0tZ2l0IGEvbGliL2lndF9rbW9kX251bGwuYyBiL2xpYi9pZ3Rfa21vZF9u
+dWxsLmMKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAuLjlkZjY0ZThmCi0tLSAv
+ZGV2L251bGwKKysrIGIvbGliL2lndF9rbW9kX251bGwuYwpAQCAtMCwwICsxLDg0IEBACisvKgor
+ICogQ29weXJpZ2h0IMKpIDIwMTkgSW50ZWwgQ29ycG9yYXRpb24KKyAqCisgKiBQZXJtaXNzaW9u
+IGlzIGhlcmVieSBncmFudGVkLCBmcmVlIG9mIGNoYXJnZSwgdG8gYW55IHBlcnNvbiBvYnRhaW5p
+bmcgYQorICogY29weSBvZiB0aGlzIHNvZnR3YXJlIGFuZCBhc3NvY2lhdGVkIGRvY3VtZW50YXRp
+b24gZmlsZXMgKHRoZSAiU29mdHdhcmUiKSwKKyAqIHRvIGRlYWwgaW4gdGhlIFNvZnR3YXJlIHdp
+dGhvdXQgcmVzdHJpY3Rpb24sIGluY2x1ZGluZyB3aXRob3V0IGxpbWl0YXRpb24KKyAqIHRoZSBy
+aWdodHMgdG8gdXNlLCBjb3B5LCBtb2RpZnksIG1lcmdlLCBwdWJsaXNoLCBkaXN0cmlidXRlLCBz
+dWJsaWNlbnNlLAorICogYW5kL29yIHNlbGwgY29waWVzIG9mIHRoZSBTb2Z0d2FyZSwgYW5kIHRv
+IHBlcm1pdCBwZXJzb25zIHRvIHdob20gdGhlCisgKiBTb2Z0d2FyZSBpcyBmdXJuaXNoZWQgdG8g
+ZG8gc28sIHN1YmplY3QgdG8gdGhlIGZvbGxvd2luZyBjb25kaXRpb25zOgorICoKKyAqIFRoZSBh
+Ym92ZSBjb3B5cmlnaHQgbm90aWNlIGFuZCB0aGlzIHBlcm1pc3Npb24gbm90aWNlIChpbmNsdWRp
+bmcgdGhlIG5leHQKKyAqIHBhcmFncmFwaCkgc2hhbGwgYmUgaW5jbHVkZWQgaW4gYWxsIGNvcGll
+cyBvciBzdWJzdGFudGlhbCBwb3J0aW9ucyBvZiB0aGUKKyAqIFNvZnR3YXJlLgorICoKKyAqIFRI
+RSBTT0ZUV0FSRSBJUyBQUk9WSURFRCAiQVMgSVMiLCBXSVRIT1VUIFdBUlJBTlRZIE9GIEFOWSBL
+SU5ELCBFWFBSRVNTIE9SCisgKiBJTVBMSUVELCBJTkNMVURJTkcgQlVUIE5PVCBMSU1JVEVEIFRP
+IFRIRSBXQVJSQU5USUVTIE9GIE1FUkNIQU5UQUJJTElUWSwKKyAqIEZJVE5FU1MgRk9SIEEgUEFS
+VElDVUxBUiBQVVJQT1NFIEFORCBOT05JTkZSSU5HRU1FTlQuICBJTiBOTyBFVkVOVCBTSEFMTAor
+ICogVEhFIEFVVEhPUlMgT1IgQ09QWVJJR0hUIEhPTERFUlMgQkUgTElBQkxFIEZPUiBBTlkgQ0xB
+SU0sIERBTUFHRVMgT1IgT1RIRVIKKyAqIExJQUJJTElUWSwgV0hFVEhFUiBJTiBBTiBBQ1RJT04g
+T0YgQ09OVFJBQ1QsIFRPUlQgT1IgT1RIRVJXSVNFLCBBUklTSU5HCisgKiBGUk9NLCBPVVQgT0Yg
+T1IgSU4gQ09OTkVDVElPTiBXSVRIIFRIRSBTT0ZUV0FSRSBPUiBUSEUgVVNFIE9SIE9USEVSIERF
+QUxJTkdTCisgKiBJTiBUSEUgU09GVFdBUkUuCisgKi8KKworI2luY2x1ZGUgImlndF9rbW9kLmgi
+CisKK2Jvb2wgaWd0X2ttb2RfaXNfbG9hZGVkKGNvbnN0IGNoYXIgKm1vZF9uYW1lKSB7CisJcmV0
+dXJuIHRydWU7Cit9CisKK3ZvaWQgaWd0X2ttb2RfbGlzdF9sb2FkZWQodm9pZCkgeworfQorCiti
+b29sIGlndF9rbW9kX2hhc19wYXJhbShjb25zdCBjaGFyICptb2RfbmFtZSwgY29uc3QgY2hhciAq
+cGFyYW0pIHsKKwlyZXR1cm4gdHJ1ZTsKK30KKworaW50IGlndF9rbW9kX2xvYWQoY29uc3QgY2hh
+ciAqbW9kX25hbWUsIGNvbnN0IGNoYXIgKm9wdHMpIHsKKwlyZXR1cm4gMDsKK30KKworaW50IGln
+dF9rbW9kX3VubG9hZChjb25zdCBjaGFyICptb2RfbmFtZSwgdW5zaWduZWQgaW50IGZsYWdzKSB7
+CisJcmV0dXJuIDA7Cit9CisKK2ludCBpZ3RfaTkxNV9kcml2ZXJfbG9hZChjb25zdCBjaGFyICpv
+cHRzKSB7CisJcmV0dXJuIDA7Cit9CisKK2ludCBpZ3RfaTkxNV9kcml2ZXJfdW5sb2FkKHZvaWQp
+IHsKKwlyZXR1cm4gMDsKK30KKwordm9pZCBpZ3Rfa3NlbGZ0ZXN0cyhjb25zdCBjaGFyICptb2R1
+bGVfbmFtZSwKKwkJICAgIGNvbnN0IGNoYXIgKm1vZHVsZV9vcHRpb25zLAorCQkgICAgY29uc3Qg
+Y2hhciAqcmVzdWx0X29wdGlvbiwKKwkJICAgIGNvbnN0IGNoYXIgKmZpbHRlcikgeworfQorCitp
+bnQgaWd0X2tzZWxmdGVzdF9pbml0KHN0cnVjdCBpZ3Rfa3NlbGZ0ZXN0ICp0c3QsCisJCSAgICAg
+ICBjb25zdCBjaGFyICptb2R1bGVfbmFtZSkgeworCXJldHVybiAwOworfQorCitpbnQgaWd0X2tz
+ZWxmdGVzdF9iZWdpbihzdHJ1Y3QgaWd0X2tzZWxmdGVzdCAqdHN0KSB7CisJcmV0dXJuIDA7Cit9
+CisKK3ZvaWQgaWd0X2tzZWxmdGVzdF9nZXRfdGVzdHMoc3RydWN0IGttb2RfbW9kdWxlICprbW9k
+LAorCQkJICAgICBjb25zdCBjaGFyICpmaWx0ZXIsCisJCQkgICAgIHN0cnVjdCBpZ3RfbGlzdF9o
+ZWFkICp0ZXN0cykgeworfQorCitpbnQgaWd0X2tzZWxmdGVzdF9leGVjdXRlKHN0cnVjdCBpZ3Rf
+a3NlbGZ0ZXN0ICp0c3QsCisJCQkgIHN0cnVjdCBpZ3Rfa3NlbGZ0ZXN0X2xpc3QgKnRsLAorCQkJ
+ICBjb25zdCBjaGFyICptb2R1bGVfb3B0aW9ucywKKwkJCSAgY29uc3QgY2hhciAqcmVzdWx0KSB7
+CisJcmV0dXJuIDA7Cit9CisKK3ZvaWQgaWd0X2tzZWxmdGVzdF9lbmQoc3RydWN0IGlndF9rc2Vs
+ZnRlc3QgKnRzdCkgeworfQorCit2b2lkIGlndF9rc2VsZnRlc3RfZmluaShzdHJ1Y3QgaWd0X2tz
+ZWxmdGVzdCAqdHN0KSB7Cit9CmRpZmYgLS1naXQgYS9saWIvbWVzb24uYnVpbGQgYi9saWIvbWVz
+b24uYnVpbGQKaW5kZXggNmE1NmZmZjAuLjRhNThkOWNmIDEwMDY0NAotLS0gYS9saWIvbWVzb24u
+YnVpbGQKKysrIGIvbGliL21lc29uLmJ1aWxkCkBAIC01NCw3ICs1NCw2IEBAIGxpYl9zb3VyY2Vz
+ID0gWwogCSdpZ3RfcG0uYycsCiAJJ2lndF9kdW1teWxvYWQuYycsCiAJJ3V3aWxkbWF0L3V3aWxk
+bWF0LmMnLAotCSdpZ3Rfa21vZC5jJywKIAknaWd0X3BhbmZyb3N0LmMnLAogCSdpZ3RfdjNkLmMn
+LAogCSdpZ3RfdmM0LmMnLApAQCAtNjksMTAgKzY4LDEyIEBAIGxpYl9zb3VyY2VzID0gWwogaWYg
+aG9zdF9tYWNoaW5lLnN5c3RlbSgpID09ICdsaW51eCcKIAlsaWJfc291cmNlcyArPSBbCiAJCSdp
+Z3RfYXV4LmMnLAorCQknaWd0X2ttb2QuYycsCiAJXQogZWxzZQogCWxpYl9zb3VyY2VzICs9IFsK
+IAkJJ2lndF9hdXhfbnVsbC5jJywKKwkJJ2lndF9rbW9kX251bGwuYycsCiAJXQogZW5kaWYKIAot
+LSAKMi4yMy4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
+czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
