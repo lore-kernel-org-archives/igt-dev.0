@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Wed, 11 Dec 2019 10:42:43 +0100
-Message-Id: <20191211094243.6939-1-janusz.krzysztofik@linux.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Wed, 11 Dec 2019 16:48:38 +0000
+Message-Id: <20191211164838.137117-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/prime_vgem: Give meaningful messages
- on SKIP
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_parse: Check
+ batch_start_offset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,57 +16,129 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Messages displayed on SKIPs introduced by commit 92caadb4e551
-("tests/prime_vgem: Skip basic-read/write subtests if not supported")
-don't inform clearly enough that those SKIPs are expected behavior.
-Fix it.
+Validate that the cmdparser works with whatever offset we use for our
+batches.
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Ewelina Musial <ewelina.musial@intel.com>
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/prime_vgem.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tests/i915/gem_exec_parse.c | 55 +++++++++++++++++++++++++++++++------
+ 1 file changed, 46 insertions(+), 9 deletions(-)
 
-diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-index 6595818c..3bdb2300 100644
---- a/tests/prime_vgem.c
-+++ b/tests/prime_vgem.c
-@@ -46,7 +46,8 @@ static void test_read(int vgem, int i915)
- 	handle = prime_fd_to_handle(i915, dmabuf);
- 	close(dmabuf);
+diff --git a/tests/i915/gem_exec_parse.c b/tests/i915/gem_exec_parse.c
+index 0c6de677e..5578340f7 100644
+--- a/tests/i915/gem_exec_parse.c
++++ b/tests/i915/gem_exec_parse.c
+@@ -82,8 +82,10 @@ __checked_execbuf(int i915, struct drm_i915_gem_execbuffer2 *eb)
+ 	return 0;
+ }
  
--	igt_skip_on(__gem_read(i915, handle, 0, &i, sizeof(i)));
-+	igt_skip_on_f(__gem_read(i915, handle, 0, &i, sizeof(i)),
-+		      "PREAD from dma-buf not supported on this hardware\n");
+-static uint64_t __exec_batch_patched(int fd, uint32_t cmd_bo, uint32_t *cmds,
+-				     int size, int patch_offset)
++static uint64_t __exec_batch_patched(int fd,
++				     uint32_t cmd_bo, unsigned int offset,
++				     uint32_t *cmds, unsigned int size,
++				     unsigned int patch_offset)
+ {
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj[2];
+@@ -92,14 +94,14 @@ static uint64_t __exec_batch_patched(int fd, uint32_t cmd_bo, uint32_t *cmds,
+ 	uint32_t target_bo = gem_create(fd, 4096);
+ 	uint64_t actual_value = 0;
  
- 	ptr = vgem_mmap(vgem, &scratch, PROT_WRITE);
- 	for (i = 0; i < 1024; i++)
-@@ -83,7 +84,8 @@ static void test_fence_read(int i915, int vgem)
- 	handle = prime_fd_to_handle(i915, dmabuf);
- 	close(dmabuf);
+-	gem_write(fd, cmd_bo, 0, cmds, size);
++	gem_write(fd, cmd_bo, offset, cmds, size);
  
--	igt_skip_on(__gem_read(i915, handle, 0, &i, sizeof(i)));
-+	igt_skip_on_f(__gem_read(i915, handle, 0, &i, sizeof(i)),
-+		      "PREAD from dma-buf not supported on this hardware\n");
+ 	memset(obj, 0, sizeof(obj));
+ 	obj[0].handle = target_bo;
+ 	obj[1].handle = cmd_bo;
  
- 	igt_fork(child, 1) {
- 		close(master[0]);
-@@ -195,7 +197,8 @@ static void test_write(int vgem, int i915)
- 	handle = prime_fd_to_handle(i915, dmabuf);
- 	close(dmabuf);
+ 	memset(reloc, 0, sizeof(reloc));
+-	reloc[0].offset = patch_offset;
++	reloc[0].offset = offset + patch_offset;
+ 	reloc[0].target_handle = obj[0].handle;
+ 	reloc[0].delta = 0;
+ 	reloc[0].read_domains = I915_GEM_DOMAIN_COMMAND;
+@@ -110,6 +112,7 @@ static uint64_t __exec_batch_patched(int fd, uint32_t cmd_bo, uint32_t *cmds,
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(obj);
+ 	execbuf.buffer_count = 2;
++	execbuf.batch_start_offset = offset;
+ 	execbuf.batch_len = size;
+ 	execbuf.flags = I915_EXEC_RENDER;
  
--	igt_skip_on(__gem_write(i915, handle, 0, &i, sizeof(i)));
-+	igt_skip_on_f(__gem_write(i915, handle, 0, &i, sizeof(i)),
-+		      "PWRITE to dma-buf not supported on this hardware\n");
+@@ -123,12 +126,25 @@ static uint64_t __exec_batch_patched(int fd, uint32_t cmd_bo, uint32_t *cmds,
+ 	return actual_value;
+ }
  
- 	ptr = vgem_mmap(vgem, &scratch, PROT_READ);
- 	gem_close(vgem, scratch.handle);
+-static void exec_batch_patched(int fd, uint32_t cmd_bo, uint32_t *cmds,
+-			       int size, int patch_offset,
++static void exec_batch_patched(int fd, uint32_t cmd_bo,
++			       uint32_t *cmds, unsigned int size,
++			       unsigned int patch_offset,
+ 			       uint64_t expected_value)
+ {
+-	igt_assert_eq(__exec_batch_patched(fd, cmd_bo, cmds,
+-					   size, patch_offset),
++	igt_assert_eq(__exec_batch_patched(fd, cmd_bo, 0,
++					   cmds, size,
++					   patch_offset),
++		      expected_value);
++}
++
++static void exec_batch_offset(int fd, uint32_t cmd_bo, unsigned int offset,
++			      uint32_t *cmds, unsigned int size,
++			      unsigned int patch_offset,
++			      uint64_t expected_value)
++{
++	igt_assert_eq(__exec_batch_patched(fd, cmd_bo, offset,
++					   cmds, size,
++					   patch_offset),
+ 		      expected_value);
+ }
+ 
+@@ -408,7 +424,7 @@ static void hsw_load_register_reg(void)
+ 		exec_batch(fd, handle, do_lrr, sizeof(do_lrr),
+ 			   I915_EXEC_RENDER,
+ 			   0);
+-		var = __exec_batch_patched(fd, handle,
++		var = __exec_batch_patched(fd, handle, 0,
+ 					   store_gpr0, sizeof(store_gpr0),
+ 					   2 * sizeof(uint32_t)); /* reloc */
+ 		igt_assert_neq(var, 0xabcdabc0);
+@@ -471,6 +487,27 @@ igt_main
+ 				   0x12000000);
+ 	}
+ 
++	igt_subtest("basic-offset") {
++		uint32_t pc[] = {
++			GFX_OP_PIPE_CONTROL,
++			PIPE_CONTROL_QW_WRITE,
++			0, /* To be patched */
++			0x12000000,
++			0,
++			MI_BATCH_BUFFER_END,
++		};
++		uint32_t scrub[1024];
++
++		memset(scrub, 0xc5, sizeof(scrub));
++		for (int i = 0; i <= 4096 - sizeof(pc); i += 8) {
++			gem_write(fd, handle, 0, scrub, sizeof(scrub));
++			exec_batch_offset(fd, handle, i,
++					  pc, sizeof(pc),
++					  8, /* patch offset, */
++					  0x12000000);
++		}
++	}
++
+ 	igt_subtest("basic-rejected") {
+ 		uint32_t invalid_cmd[] = {
+ 			INSTR_INVALID_CLIENT << INSTR_CLIENT_SHIFT,
 -- 
-2.21.0
+2.24.0
 
 _______________________________________________
 igt-dev mailing list
