@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 813236EA30
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC0DE6EA30
  for <igt-dev@lists.freedesktop.org>; Wed, 11 Dec 2019 00:59:43 +0000 (UTC)
 From: D Scott Phillips <d.scott.phillips@intel.com>
-Date: Tue, 10 Dec 2019 16:52:11 -0800
-Message-Id: <20191211005235.67897-6-d.scott.phillips@intel.com>
+Date: Tue, 10 Dec 2019 16:52:13 -0800
+Message-Id: <20191211005235.67897-8-d.scott.phillips@intel.com>
 In-Reply-To: <20191211005235.67897-1-d.scott.phillips@intel.com>
 References: <20191211005235.67897-1-d.scott.phillips@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 05/29] Use /bin/sh for shell scripts
+Subject: [igt-dev] [PATCH i-g-t 07/29] kms_atomic: change `PAGE_SIZE` to
+ `page_size`
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,49 +24,62 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-These scripts don't use an bash-specific functionality, and bsd is
-not available by default on FreeBSD.
+POSIX limit.h provides a PAGE_SIZE constant, so change the
+variable name here to not collide with it.
 
 Signed-off-by: D Scott Phillips <d.scott.phillips@intel.com>
 ---
- man/rst2man.sh             | 2 +-
- tests/generate_testlist.sh | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ tests/kms_atomic.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/man/rst2man.sh b/man/rst2man.sh
-index 49a98fc5..b7f28991 100755
---- a/man/rst2man.sh
-+++ b/man/rst2man.sh
-@@ -1,4 +1,4 @@
--#!/bin/bash
-+#!/bin/sh
+diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+index 8462d128..ade777e3 100644
+--- a/tests/kms_atomic.c
++++ b/tests/kms_atomic.c
+@@ -683,7 +683,7 @@ static void crtc_invalid_params_fence(igt_pipe_t *pipe,
+ {
+ 	int timeline, fence_fd;
+ 	void *map;
+-	const ptrdiff_t PAGE_SIZE = sysconf(_SC_PAGE_SIZE);
++	const ptrdiff_t page_size = sysconf(_SC_PAGE_SIZE);
+ 	uint64_t old_mode_id = pipe->values[IGT_CRTC_MODE_ID];
  
- rst2man=$1
- input=$2
-diff --git a/tests/generate_testlist.sh b/tests/generate_testlist.sh
-index 87637fc8..d506b149 100755
---- a/tests/generate_testlist.sh
-+++ b/tests/generate_testlist.sh
-@@ -1,16 +1,16 @@
--#!/bin/bash
-+#!/bin/sh
+ 	igt_require_sw_sync();
+@@ -691,28 +691,28 @@ static void crtc_invalid_params_fence(igt_pipe_t *pipe,
+ 	timeline = sw_sync_timeline_create();
  
- OUTPUT=$1
- shift
+ 	/* invalid out_fence_ptr */
+-	map = mmap(NULL, PAGE_SIZE, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	map = mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+ 	igt_assert(map != MAP_FAILED);
  
- echo TESTLIST > $OUTPUT
+ 	igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_OUT_FENCE_PTR, (ptrdiff_t)map);
+ 	crtc_commit_atomic_err(pipe, plane, ATOMIC_RELAX_NONE, EFAULT);
+-	munmap(map, PAGE_SIZE);
++	munmap(map, page_size);
  
--if [[ $# -gt 0 ]] ; then
-+if [ $# -gt 0 ] ; then
- 	echo -n $1 >> $OUTPUT
- 	shift
- fi
+ 	/* invalid out_fence_ptr */
+-	map = mmap(NULL, PAGE_SIZE, PROT_EXEC, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	map = mmap(NULL, page_size, PROT_EXEC, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+ 	igt_assert(map != MAP_FAILED);
  
--while [[ $# -gt 0 ]] ; do
-+while [ $# -gt 0 ] ; do
- 	echo -n " $1" >> $OUTPUT
- 	shift
- done
+ 	igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_OUT_FENCE_PTR, (ptrdiff_t)map);
+ 	crtc_commit_atomic_err(pipe, plane, ATOMIC_RELAX_NONE, EFAULT);
+-	munmap(map, PAGE_SIZE);
++	munmap(map, page_size);
+ 
+ 	/* invalid out_fence_ptr */
+-	map = mmap(NULL, PAGE_SIZE, PROT_NONE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
++	map = mmap(NULL, page_size, PROT_NONE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+ 	igt_assert(map != MAP_FAILED);
+ 
+ 	igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_OUT_FENCE_PTR, (ptrdiff_t)map);
+ 	crtc_commit_atomic_err(pipe, plane, ATOMIC_RELAX_NONE, EFAULT);
+-	munmap(map, PAGE_SIZE);
++	munmap(map, page_size);
+ 
+ 	/* valid in fence but not allowed prop on crtc */
+ 	fence_fd = sw_sync_timeline_create_fence(timeline, 1);
 -- 
 2.23.0
 
