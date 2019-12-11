@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 395D96EA33
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Dec 2019 00:59:45 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 813236EA30
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Dec 2019 00:59:43 +0000 (UTC)
 From: D Scott Phillips <d.scott.phillips@intel.com>
-Date: Tue, 10 Dec 2019 16:52:17 -0800
-Message-Id: <20191211005235.67897-12-d.scott.phillips@intel.com>
+Date: Tue, 10 Dec 2019 16:52:11 -0800
+Message-Id: <20191211005235.67897-6-d.scott.phillips@intel.com>
 In-Reply-To: <20191211005235.67897-1-d.scott.phillips@intel.com>
 References: <20191211005235.67897-1-d.scott.phillips@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 11/29] i915/pm_backlight: use POSIX basename
+Subject: [igt-dev] [PATCH i-g-t 05/29] Use /bin/sh for shell scripts
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,28 +23,49 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We can get POSIX basename by including libgen.h. It behaves
-slightly differently from GNU basename, like possibly modifying
-the passed in string. This is OK in this usage, and POSIX basename
-is available on other platforms.
+These scripts don't use an bash-specific functionality, and bsd is
+not available by default on FreeBSD.
 
 Signed-off-by: D Scott Phillips <d.scott.phillips@intel.com>
 ---
- tests/i915/i915_pm_backlight.c | 1 +
- 1 file changed, 1 insertion(+)
+ man/rst2man.sh             | 2 +-
+ tests/generate_testlist.sh | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/i915_pm_backlight.c b/tests/i915/i915_pm_backlight.c
-index 83b1ed68..2f65156f 100644
---- a/tests/i915/i915_pm_backlight.c
-+++ b/tests/i915/i915_pm_backlight.c
-@@ -30,6 +30,7 @@
- #include <sys/types.h>
- #include <sys/stat.h>
- #include <fcntl.h>
-+#include <libgen.h>
- #include <stdio.h>
- #include <errno.h>
- #include <unistd.h>
+diff --git a/man/rst2man.sh b/man/rst2man.sh
+index 49a98fc5..b7f28991 100755
+--- a/man/rst2man.sh
++++ b/man/rst2man.sh
+@@ -1,4 +1,4 @@
+-#!/bin/bash
++#!/bin/sh
+ 
+ rst2man=$1
+ input=$2
+diff --git a/tests/generate_testlist.sh b/tests/generate_testlist.sh
+index 87637fc8..d506b149 100755
+--- a/tests/generate_testlist.sh
++++ b/tests/generate_testlist.sh
+@@ -1,16 +1,16 @@
+-#!/bin/bash
++#!/bin/sh
+ 
+ OUTPUT=$1
+ shift
+ 
+ echo TESTLIST > $OUTPUT
+ 
+-if [[ $# -gt 0 ]] ; then
++if [ $# -gt 0 ] ; then
+ 	echo -n $1 >> $OUTPUT
+ 	shift
+ fi
+ 
+-while [[ $# -gt 0 ]] ; do
++while [ $# -gt 0 ] ; do
+ 	echo -n " $1" >> $OUTPUT
+ 	shift
+ done
 -- 
 2.23.0
 
