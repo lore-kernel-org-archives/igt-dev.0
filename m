@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 11 Dec 2019 08:06:18 -0000
-Message-ID: <157605157873.30693.12738332019213825027@emeril.freedesktop.org>
-References: <20191210065519.17847-1-stylon.wang@amd.com>
-In-Reply-To: <20191210065519.17847-1-stylon.wang@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
- =?utf-8?q?ests/amdgpu=3A_Test_plane_level_CTM?=
+Date: Wed, 11 Dec 2019 08:10:39 -0000
+Message-ID: <157605183942.30690.11947581064789413262@emeril.freedesktop.org>
+References: <20191205130246.21695-1-petri.latvala@intel.com>
+In-Reply-To: <20191205130246.21695-1-petri.latvala@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/2=5D_runner=3A_Ensure_generate?=
+ =?utf-8?q?d_json_is_properly_UTF8-encoded?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,45 +20,137 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Stylon Wang <Stylon.Wang@amd.com>
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: tests/amdgpu: Test plane level CTM
-URL   : https://patchwork.freedesktop.org/series/70667/
-State : failure
+Series: series starting with [i-g-t,1/2] runner: Ensure generated json is properly UTF8-encoded
+URL   : https://patchwork.freedesktop.org/series/70492/
+State : warning
 
 == Summary ==
 
-ERROR! This series introduces new undocumented tests:
+Did not get list of undocumented tests for this run, something is wrong!
 
-amdgpu/amd_color@plane-ctm-color-remapping
-amdgpu/amd_color@plane-ctm-intensity-reduction
-amdgpu/amd_color@plane-ctm-mixed-mapping
-amdgpu/amd_color@plane-ctm-negative-mapping
+Other than that, pipeline status: FAILED.
 
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/87140 for the overview.
 
-[Documentation] has more details on how to do this.
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1105688):
+  (runner_json_test:2389) igt_core-INFO:   #3 ../runner/runner_json_tests.c:40 compare()
+  (runner_json_test:2389) igt_core-INFO:   #4 ../runner/runner_json_tests.c:40 compare()
+  (runner_json_test:2389) igt_core-INFO:   #5 ../runner/runner_json_tests.c:146 __real_main169()
+  (runner_json_test:2389) igt_core-INFO:   #6 ../runner/runner_json_tests.c:169 main()
+  (runner_json_test:2389) igt_core-INFO:   #7 [__libc_start_main+0xf3]
+  (runner_json_test:2389) igt_core-INFO:   #8 [_start+0x2e]
+  ****  END  ****
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1575988880:build_script
+  [0Ksection_start:1575988880:after_script
+  [0Ksection_end:1575988881:after_script
+  [0Ksection_start:1575988881:upload_artifacts_on_failure
+  [0Ksection_end:1575988883:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1105689):
+  (runner_json_test:2390) igt_core-INFO:   #2 [compare+0x249]
+  (runner_json_test:2390) igt_core-INFO:   #3 [compare+0x249]
+  (runner_json_test:2390) igt_core-INFO:   #4 [__real_main169+0x154]
+  (runner_json_test:2390) igt_core-INFO:   #5 [main+0x29]
+  (runner_json_test:2390) igt_core-INFO:   #6 [__libc_start_main+0xf3]
+  (runner_json_test:2390) igt_core-INFO:   #7 [_start+0x2e]
+  ****  END  ****
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1575988880:build_script
+  [0Ksection_start:1575988880:after_script
+  [0Ksection_end:1575988881:after_script
+  [0Ksection_start:1575988881:upload_artifacts_on_failure
+  [0Ksection_end:1575988883:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
-Thanks in advance!
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1105691):
+  (runner_json_test:5093) igt_core-INFO:   #6 ../runner/runner_json_tests.c:169 main()
+  (runner_json_test:5093) igt_core-INFO:   #7 [__libc_start_main+0xe4]
+  (runner_json_test:5093) igt_core-INFO:   #8 [_start+0x34]
+  ****  END  ****
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1575988868:build_script
+  [0Ksection_start:1575988868:after_script
+  [0Ksection_end:1575988869:after_script
+  [0Ksection_start:1575988869:upload_artifacts_on_failure
+  [0K[32;1mUploading artifacts...[0;m
+  build: found 1367 matching files                  [0;m 
+  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1105691 responseStatus[0;m=201 Created token[0;m=6daYJK9Q
+  section_end:1575988881:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1105692):
+  (runner_json_test:4467) igt_core-INFO:   #6 ../runner/runner_json_tests.c:169 main()
+  (runner_json_test:4467) igt_core-INFO:   #7 [__libc_start_main+0x98]
+  (runner_json_test:4467) igt_core-INFO:   #8 [_start+0x34]
+  ****  END  ****
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1575988876:build_script
+  [0Ksection_start:1575988876:after_script
+  [0Ksection_end:1575988878:after_script
+  [0Ksection_start:1575988878:upload_artifacts_on_failure
+  [0K[32;1mUploading artifacts...[0;m
+  build: found 1366 matching files                  [0;m 
+  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1105692 responseStatus[0;m=201 Created token[0;m=Ry_5mmhn
+  section_end:1575988888:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
-Other than that, pipeline status: SUCCESS.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/86997 for the overview.
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1105693):
+  (runner_json_test:4924) CRITICAL: Test assertion failure function compare, file ../runner/runner_json_tests.c:109:
+  (runner_json_test:4924) CRITICAL: Failed assertion: !strcmp(json_object_get_string(one), json_object_get_string(two))
+  (runner_json_test:4924) igt_core-INFO: Stack trace:
+  ****  END  ****
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1575988880:build_script
+  [0Ksection_start:1575988880:after_script
+  [0Ksection_end:1575988881:after_script
+  [0Ksection_start:1575988881:upload_artifacts_on_failure
+  [0K[32;1mUploading artifacts...[0;m
+  build: found 1366 matching files                  [0;m 
+  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1105693 responseStatus[0;m=201 Created token[0;m=sgwGgmK5
+  section_end:1575988892:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/86997
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/87140
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
