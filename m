@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C8CF16EA35
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Dec 2019 00:59:51 +0000 (UTC)
-From: D Scott Phillips <d.scott.phillips@intel.com>
-Date: Tue, 10 Dec 2019 16:52:27 -0800
-Message-Id: <20191211005235.67897-22-d.scott.phillips@intel.com>
-In-Reply-To: <20191211005235.67897-1-d.scott.phillips@intel.com>
-References: <20191211005235.67897-1-d.scott.phillips@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 21/29] lib: undefine FreeBSD libc's ALIGN
- macro
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 11 Dec 2019 08:05:38 -0000
+Message-ID: <157605153839.30693.16149935390370821881@emeril.freedesktop.org>
+References: <20191209110752.12610-1-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20191209110752.12610-1-janusz.krzysztofik@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
+ =?utf-8?q?est/prime=5Fvgem=3A_Examine_blitter_access_path?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,42 +14,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On FreeBSD, if you include many of the non-POSIX headers, you get
-inflicted with a definition of an ALIGN() macro that has something
-to do with network protocols. Here we include a header that
-provides it and then undefine it so that we can provide our own
-definition.
+== Series Details ==
 
-Signed-off-by: D Scott Phillips <d.scott.phillips@intel.com>
----
- lib/drmtest.h | 4 ++++
- 1 file changed, 4 insertions(+)
+Series: test/prime_vgem: Examine blitter access path
+URL   : https://patchwork.freedesktop.org/series/70622/
+State : failure
 
-diff --git a/lib/drmtest.h b/lib/drmtest.h
-index 632c616b..0fc59311 100644
---- a/lib/drmtest.h
-+++ b/lib/drmtest.h
-@@ -33,6 +33,10 @@
- #include <stdint.h>
- #include <sys/mman.h>
- #include <errno.h>
-+#if defined(__FreeBSD__)
-+# include <sys/param.h>
-+# undef ALIGN
-+#endif
- 
- #include <xf86drm.h>
- 
--- 
-2.23.0
+== Summary ==
 
+ERROR! This series introduces new undocumented tests:
+
+prime_vgem@basic-blt
+prime_vgem@basic-fence-blt
+prime_vgem@coherency-blt
+
+Can you document them as per the requirement in the [CONTRIBUTING.md]?
+
+[Documentation] has more details on how to do this.
+
+Here are few examples:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+
+Thanks in advance!
+
+[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
+[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+
+Other than that, pipeline status: SUCCESS.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/86755 for the overview.
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/86755
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
