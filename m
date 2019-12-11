@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A08D6EA2E
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Dec 2019 00:59:55 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 47B8989FE6
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Dec 2019 00:59:59 +0000 (UTC)
 From: D Scott Phillips <d.scott.phillips@intel.com>
-Date: Tue, 10 Dec 2019 16:52:33 -0800
-Message-Id: <20191211005235.67897-28-d.scott.phillips@intel.com>
+Date: Tue, 10 Dec 2019 16:52:35 -0800
+Message-Id: <20191211005235.67897-30-d.scott.phillips@intel.com>
 In-Reply-To: <20191211005235.67897-1-d.scott.phillips@intel.com>
 References: <20191211005235.67897-1-d.scott.phillips@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 27/29] lib/igt_debugfs: Implement mount()
- for FreeBSD
+Subject: [igt-dev] [PATCH i-g-t 29/29] lib/igt_device_scan: add null
+ implementation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,55 +17,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-debugfs is typically mounted at a different path on FreeBSD, and
-the mount function prototype is slightly different.
-
-Signed-off-by: D Scott Phillips <d.scott.phillips@intel.com>
----
- lib/igt_debugfs.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-index 5a9c8c3c..33592df3 100644
---- a/lib/igt_debugfs.c
-+++ b/lib/igt_debugfs.c
-@@ -116,6 +116,7 @@ static bool is_mountpoint(const char *path)
- 
- static const char *__igt_debugfs_mount(void)
- {
-+#if defined(__linux__)
- 	if (is_mountpoint("/sys/kernel/debug"))
- 		return "/sys/kernel/debug";
- 
-@@ -126,6 +127,17 @@ static const char *__igt_debugfs_mount(void)
- 		return NULL;
- 
- 	return "/sys/kernel/debug";
-+#elif defined(__FreeBSD__)
-+	if (is_mountpoint("/compat/linux/debug"))
-+		return "/compat/linux/debug";
-+
-+	if (mount("lindebugfs", "/compat/linux/debug", 0, NULL))
-+		return NULL;
-+
-+	return "/compat/linux/debug";
-+#else
-+#error Do not know how to mount debugfs
-+#endif
- }
- 
- /**
--- 
-2.23.0
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+U2lnbmVkLW9mZi1ieTogRCBTY290dCBQaGlsbGlwcyA8ZC5zY290dC5waGlsbGlwc0BpbnRlbC5j
+b20+Ci0tLQogbGliL2lndF9kZXZpY2Vfc2Nhbl9udWxsLmMgfCA2NyArKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKwogbGliL21lc29uLmJ1aWxkICAgICAgICAgICAgfCAgMyAr
+LQogMiBmaWxlcyBjaGFuZ2VkLCA2OSBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCiBjcmVh
+dGUgbW9kZSAxMDA2NDQgbGliL2lndF9kZXZpY2Vfc2Nhbl9udWxsLmMKCmRpZmYgLS1naXQgYS9s
+aWIvaWd0X2RldmljZV9zY2FuX251bGwuYyBiL2xpYi9pZ3RfZGV2aWNlX3NjYW5fbnVsbC5jCm5l
+dyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAwLi4yN2YyZDk0YgotLS0gL2Rldi9udWxs
+CisrKyBiL2xpYi9pZ3RfZGV2aWNlX3NjYW5fbnVsbC5jCkBAIC0wLDAgKzEsNjcgQEAKKy8qCisg
+KiBDb3B5cmlnaHQgwqkgMjAxOSBJbnRlbCBDb3Jwb3JhdGlvbgorICoKKyAqIFBlcm1pc3Npb24g
+aXMgaGVyZWJ5IGdyYW50ZWQsIGZyZWUgb2YgY2hhcmdlLCB0byBhbnkgcGVyc29uIG9idGFpbmlu
+ZyBhCisgKiBjb3B5IG9mIHRoaXMgc29mdHdhcmUgYW5kIGFzc29jaWF0ZWQgZG9jdW1lbnRhdGlv
+biBmaWxlcyAodGhlICJTb2Z0d2FyZSIpLAorICogdG8gZGVhbCBpbiB0aGUgU29mdHdhcmUgd2l0
+aG91dCByZXN0cmljdGlvbiwgaW5jbHVkaW5nIHdpdGhvdXQgbGltaXRhdGlvbgorICogdGhlIHJp
+Z2h0cyB0byB1c2UsIGNvcHksIG1vZGlmeSwgbWVyZ2UsIHB1Ymxpc2gsIGRpc3RyaWJ1dGUsIHN1
+YmxpY2Vuc2UsCisgKiBhbmQvb3Igc2VsbCBjb3BpZXMgb2YgdGhlIFNvZnR3YXJlLCBhbmQgdG8g
+cGVybWl0IHBlcnNvbnMgdG8gd2hvbSB0aGUKKyAqIFNvZnR3YXJlIGlzIGZ1cm5pc2hlZCB0byBk
+byBzbywgc3ViamVjdCB0byB0aGUgZm9sbG93aW5nIGNvbmRpdGlvbnM6CisgKgorICogVGhlIGFi
+b3ZlIGNvcHlyaWdodCBub3RpY2UgYW5kIHRoaXMgcGVybWlzc2lvbiBub3RpY2UgKGluY2x1ZGlu
+ZyB0aGUgbmV4dAorICogcGFyYWdyYXBoKSBzaGFsbCBiZSBpbmNsdWRlZCBpbiBhbGwgY29waWVz
+IG9yIHN1YnN0YW50aWFsIHBvcnRpb25zIG9mIHRoZQorICogU29mdHdhcmUuCisgKgorICogVEhF
+IFNPRlRXQVJFIElTIFBST1ZJREVEICJBUyBJUyIsIFdJVEhPVVQgV0FSUkFOVFkgT0YgQU5ZIEtJ
+TkQsIEVYUFJFU1MgT1IKKyAqIElNUExJRUQsIElOQ0xVRElORyBCVVQgTk9UIExJTUlURUQgVE8g
+VEhFIFdBUlJBTlRJRVMgT0YgTUVSQ0hBTlRBQklMSVRZLAorICogRklUTkVTUyBGT1IgQSBQQVJU
+SUNVTEFSIFBVUlBPU0UgQU5EIE5PTklORlJJTkdFTUVOVC4gIElOIE5PIEVWRU5UIFNIQUxMCisg
+KiBUSEUgQVVUSE9SUyBPUiBDT1BZUklHSFQgSE9MREVSUyBCRSBMSUFCTEUgRk9SIEFOWSBDTEFJ
+TSwgREFNQUdFUyBPUiBPVEhFUgorICogTElBQklMSVRZLCBXSEVUSEVSIElOIEFOIEFDVElPTiBP
+RiBDT05UUkFDVCwgVE9SVCBPUiBPVEhFUldJU0UsIEFSSVNJTkcKKyAqIEZST00sIE9VVCBPRiBP
+UiBJTiBDT05ORUNUSU9OIFdJVEggVEhFIFNPRlRXQVJFIE9SIFRIRSBVU0UgT1IgT1RIRVIgREVB
+TElOR1MKKyAqIElOIFRIRSBTT0ZUV0FSRS4KKyAqCisgKi8KKworI2luY2x1ZGUgPGZjbnRsLmg+
+CisjaW5jbHVkZSAiaWd0X2RldmljZV9zY2FuLmgiCisKK3ZvaWQgaWd0X2RldmljZXNfc2Nhbihi
+b29sIGZvcmNlKSB7Cit9CisKK3ZvaWQgaWd0X2RldmljZXNfcHJpbnQoZW51bSBpZ3RfZGV2aWNl
+c19wcmludF90eXBlIHByaW50dHlwZSkgeworfQorCit2b2lkIGlndF9kZXZpY2VzX3ByaW50X3Zl
+bmRvcnModm9pZCkgeworfQorCit2b2lkIGlndF9kZXZpY2VfcHJpbnRfZmlsdGVyX3R5cGVzKHZv
+aWQpIHsKK30KKworYm9vbCBpZ3RfZGV2aWNlX2lzX2ZpbHRlcl9zZXQodm9pZCkgeworCXJldHVy
+biBmYWxzZTsKK30KKwordm9pZCBpZ3RfZGV2aWNlX2ZpbHRlcl9zZXQoY29uc3QgY2hhciAqZmls
+dGVyKSB7Cit9CisKK3ZvaWQgaWd0X2RldmljZV9maWx0ZXJfZnJlZSh2b2lkKSB7Cit9CisKK2Nv
+bnN0IGNoYXIgKmlndF9kZXZpY2VfZmlsdGVyX2dldCh2b2lkKSB7CisJcmV0dXJuIE5VTEw7Cit9
+CisKK2Jvb2wgaWd0X2RldmljZV9jYXJkX21hdGNoKGNvbnN0IGNoYXIgKmZpbHRlciwgc3RydWN0
+IGlndF9kZXZpY2VfY2FyZCAqY2FyZCkgeworCWNhcmQtPnN1YnN5c3RlbVswXSA9ICdcMCc7CisJ
+c3RyY3B5KGNhcmQtPmNhcmQsICIvZGV2L2RyaS9jYXJkMCIpOworCXN0cmNweShjYXJkLT5yZW5k
+ZXIsICIvZGV2L2RyaS9yZW5kZXJEMTI4Iik7CisJcmV0dXJuIHRydWU7Cit9CisKK2ludCBpZ3Rf
+b3Blbl9jYXJkKHN0cnVjdCBpZ3RfZGV2aWNlX2NhcmQgKmNhcmQpIHsKKwlyZXR1cm4gb3Blbihj
+YXJkLT5jYXJkLCBPX1JEV1IpOworfQorCitpbnQgaWd0X29wZW5fcmVuZGVyKHN0cnVjdCBpZ3Rf
+ZGV2aWNlX2NhcmQgKmNhcmQpIHsKKwlyZXR1cm4gb3BlbihjYXJkLT5yZW5kZXIsIE9fUkRXUik7
+Cit9CmRpZmYgLS1naXQgYS9saWIvbWVzb24uYnVpbGQgYi9saWIvbWVzb24uYnVpbGQKaW5kZXgg
+NzEwYjg5YjUuLjhiZjAyNjUzIDEwMDY0NAotLS0gYS9saWIvbWVzb24uYnVpbGQKKysrIGIvbGli
+L21lc29uLmJ1aWxkCkBAIC0xMCw3ICsxMCw2IEBAIGxpYl9zb3VyY2VzID0gWwogCSdpZ3RfY29s
+b3JfZW5jb2RpbmcuYycsCiAJJ2lndF9kZWJ1Z2ZzLmMnLAogCSdpZ3RfZGV2aWNlLmMnLAotCSdp
+Z3RfZGV2aWNlX3NjYW4uYycsCiAJJ2lndF9ndC5jJywKIAknaWd0X2hhbGZmbG9hdC5jJywKIAkn
+aWd0X21hdHJpeC5jJywKQEAgLTY3LDEyICs2NiwxNCBAQCBsaWJfc291cmNlcyA9IFsKIGlmIGhv
+c3RfbWFjaGluZS5zeXN0ZW0oKSA9PSAnbGludXgnCiAJbGliX3NvdXJjZXMgKz0gWwogCQknaWd0
+X2F1eC5jJywKKwkJJ2lndF9kZXZpY2Vfc2Nhbi5jJywKIAkJJ2lndF9rbW9kLmMnLAogCQknaWd0
+X3BlcmYuYycsCiAJXQogZWxzZQogCWxpYl9zb3VyY2VzICs9IFsKIAkJJ2lndF9hdXhfbnVsbC5j
+JywKKwkJJ2lndF9kZXZpY2Vfc2Nhbl9udWxsLmMnLAogCQknaWd0X2ttb2RfbnVsbC5jJywKIAkJ
+J2lndF9wZXJmX251bGwuYycsCiAJXQotLSAKMi4yMy4wCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxp
+c3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2lndC1kZXYK
