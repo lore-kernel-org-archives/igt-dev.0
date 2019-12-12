@@ -1,13 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 12 Dec 2019 08:12:06 -0000
-Message-ID: <157613832692.32008.3938750070622433821@emeril.freedesktop.org>
-References: <20191211204636.16222-1-sunpeng.li@amd.com>
-In-Reply-To: <20191211204636.16222-1-sunpeng.li@amd.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
- =?utf-8?q?ests/kms=5Fcolor=3A_Add_10bpc_frame_buffer_parameterization_to_?=
- =?utf-8?q?subtests?=
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13F796ECEF
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Dec 2019 09:48:55 +0000 (UTC)
+From: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+Date: Thu, 12 Dec 2019 11:45:58 +0200
+Message-Id: <20191212094601.21940-1-stanislav.lisovskiy@intel.com>
+Subject: [igt-dev] [PATCH i-g-t v15 0/3] Introduce i915 pipe stress test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,112 +13,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: sunpeng.li@amd.com
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: martin.peres@intel.com, juha-pekka.heikkila@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+From: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
 
-Series: tests/kms_color: Add 10bpc frame buffer parameterization to subtests
-URL   : https://patchwork.freedesktop.org/series/70782/
-State : failure
+This test case will challenge hardware, by using as maximum
+display buffer/memory bandwidth as possible. To achieve that
+it runs some workload on each CPU core, also it runs some GPU
+load simultaneously, also uses kms to add as much planes as
+possible using highest possible mode.
 
-== Summary ==
+Lisovskiy, Stanislav (2):
+  igt/lib: Check if query_info is null
+  igt/lib: Use proper functions to gen11+ gpgpu_fill
 
-ERROR! This series introduces new undocumented tests:
+Stanislav Lisovskiy (1):
+  igt/tests: kms_plane_stress: Add plane stress test
 
-kms_color@pipe-A-10bpc-ctm-0-25
-kms_color@pipe-A-10bpc-ctm-0-5
-kms_color@pipe-A-10bpc-ctm-0-75
-kms_color@pipe-A-10bpc-ctm-blue-to-red
-kms_color@pipe-A-10bpc-ctm-green-to-red
-kms_color@pipe-A-10bpc-ctm-max
-kms_color@pipe-A-10bpc-ctm-negative
-kms_color@pipe-A-10bpc-ctm-red-to-blue
-kms_color@pipe-A-10bpc-degamma
-kms_color@pipe-A-10bpc-gamma
-kms_color@pipe-A-10bpc-legacy-gamma
-kms_color@pipe-B-10bpc-ctm-0-25
-kms_color@pipe-B-10bpc-ctm-0-5
-kms_color@pipe-B-10bpc-ctm-0-75
-kms_color@pipe-B-10bpc-ctm-blue-to-red
-kms_color@pipe-B-10bpc-ctm-green-to-red
-kms_color@pipe-B-10bpc-ctm-max
-kms_color@pipe-B-10bpc-ctm-negative
-kms_color@pipe-B-10bpc-ctm-red-to-blue
-kms_color@pipe-B-10bpc-degamma
-kms_color@pipe-B-10bpc-gamma
-kms_color@pipe-B-10bpc-legacy-gamma
-kms_color@pipe-C-10bpc-ctm-0-25
-kms_color@pipe-C-10bpc-ctm-0-5
-kms_color@pipe-C-10bpc-ctm-0-75
-kms_color@pipe-C-10bpc-ctm-blue-to-red
-kms_color@pipe-C-10bpc-ctm-green-to-red
-kms_color@pipe-C-10bpc-ctm-max
-kms_color@pipe-C-10bpc-ctm-negative
-kms_color@pipe-C-10bpc-ctm-red-to-blue
-kms_color@pipe-C-10bpc-degamma
-kms_color@pipe-C-10bpc-gamma
-kms_color@pipe-C-10bpc-legacy-gamma
-kms_color@pipe-D-10bpc-ctm-0-25
-kms_color@pipe-D-10bpc-ctm-0-5
-kms_color@pipe-D-10bpc-ctm-0-75
-kms_color@pipe-D-10bpc-ctm-blue-to-red
-kms_color@pipe-D-10bpc-ctm-green-to-red
-kms_color@pipe-D-10bpc-ctm-max
-kms_color@pipe-D-10bpc-ctm-negative
-kms_color@pipe-D-10bpc-ctm-red-to-blue
-kms_color@pipe-D-10bpc-degamma
-kms_color@pipe-D-10bpc-gamma
-kms_color@pipe-D-10bpc-legacy-gamma
-kms_color@pipe-E-10bpc-ctm-0-25
-kms_color@pipe-E-10bpc-ctm-0-5
-kms_color@pipe-E-10bpc-ctm-0-75
-kms_color@pipe-E-10bpc-ctm-blue-to-red
-kms_color@pipe-E-10bpc-ctm-green-to-red
-kms_color@pipe-E-10bpc-ctm-max
-kms_color@pipe-E-10bpc-ctm-negative
-kms_color@pipe-E-10bpc-ctm-red-to-blue
-kms_color@pipe-E-10bpc-degamma
-kms_color@pipe-E-10bpc-gamma
-kms_color@pipe-E-10bpc-legacy-gamma
-kms_color@pipe-F-10bpc-ctm-0-25
-kms_color@pipe-F-10bpc-ctm-0-5
-kms_color@pipe-F-10bpc-ctm-0-75
-kms_color@pipe-F-10bpc-ctm-blue-to-red
-kms_color@pipe-F-10bpc-ctm-green-to-red
-kms_color@pipe-F-10bpc-ctm-max
-kms_color@pipe-F-10bpc-ctm-negative
-kms_color@pipe-F-10bpc-ctm-red-to-blue
-kms_color@pipe-F-10bpc-degamma
-kms_color@pipe-F-10bpc-gamma
-kms_color@pipe-F-10bpc-legacy-gamma
+ lib/gpgpu_fill.c               |  54 +-
+ lib/i915/intel_memory_region.c |   4 +
+ tests/Makefile.sources         |   1 +
+ tests/i915/i915_pipe_stress.c  | 885 +++++++++++++++++++++++++++++++++
+ tests/meson.build              |   1 +
+ 5 files changed, 943 insertions(+), 2 deletions(-)
+ create mode 100644 tests/i915/i915_pipe_stress.c
 
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
+-- 
+2.17.1
 
-[Documentation] has more details on how to do this.
-
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
-
-Thanks in advance!
-
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-
-Other than that, pipeline status: SUCCESS.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/87844 for the overview.
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/87844
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
