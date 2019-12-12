@@ -1,14 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC4DA6E09F
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Dec 2019 11:14:05 +0000 (UTC)
-From: Jani Nikula <jani.nikula@linux.intel.com>
-In-Reply-To: <20191211005235.67897-1-d.scott.phillips@intel.com>
-References: <20191211005235.67897-1-d.scott.phillips@intel.com>
-Date: Thu, 12 Dec 2019 13:14:00 +0200
-Message-ID: <87lfrh3ifb.fsf@intel.com>
-MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 00/30] Add FreeBSD Support
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C2926ED1B
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Dec 2019 11:26:52 +0000 (UTC)
+From: Kunal Joshi <kunal1.joshi@intel.com>
+Date: Thu, 12 Dec 2019 16:56:06 +0530
+Message-Id: <1576149966-11404-1-git-send-email-kunal1.joshi@intel.com>
+Subject: [igt-dev] [PATCH i-g-t] lib/igt_chamelium.c: Skip test if chamelium
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,53 +13,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: D Scott Phillips <d.scott.phillips@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 10 Dec 2019, D Scott Phillips <d.scott.phillips@intel.com> wrote:
-> FreeBSD maintains a port of drm and a few drivers: amdgpu, i915,
-> radeon, vboxvideo, vmwgfx:
->
-> https://github.com/FreeBSDDesktop/kms-drm/
->
-> Recently I backported some drm & i915 security patches into our
-> tree and was lacking a way to verify the backports. Here is my
-> attempt at adding FreeBSD support to igt.
->
-> I've tried to order the series so that what I believe will be less
-> controversial comes nearer the start. I've also tried to err on
-> the side of too many small patches, so I'm happy to squash things
-> where that seems more appropriate to people.
->
-> The "null" implementations toward the end are probably more like
-> RFC ideas. I'm willing to take other approaches there if anyone
-> has a better idea for how to handle large sections of code that
-> are more linux specific. Cheers,
+If chamelium is not present at the specified IP in the igtrc file,
+tests should be skipped instead of failing.
+Adding a change to skip tests on any network related issue and
+assert on any other issue.
 
-I'll mostly defer to Petri and Arek, the IGT maintainers, on the
-details.
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ lib/igt_chamelium.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-I think the bigger questions are, 1) How do we ensure this does not
-bitrot in a matter of weeks? Which translates to, 2) Who is going to
-automate and maintain continuous build testing? And, 3) Who's going to
-take ownership of the port in general?
-
-Personally, I don't think this is going to work long term just by
-merging the port upstream. I think without the continuous support from
-people who care about FreeBSD, this is going to be a net negative.
-
-
-BR,
-Jani.
-
-
+diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+index 9971f51..79eddde 100644
+--- a/lib/igt_chamelium.c
++++ b/lib/igt_chamelium.c
+@@ -344,9 +344,12 @@ static xmlrpc_value *chamelium_rpc(struct chamelium *chamelium,
+ 				 format_str, va_args);
+ 	va_end(va_args);
+ 
+-	igt_assert_f(!chamelium->env.fault_occurred,
+-		     "Chamelium RPC call failed: %s\n",
+-		     chamelium->env.fault_string);
++	if (chamelium->env.fault_code == XMLRPC_NETWORK_ERROR)
++		igt_skip("Chamelium not found at specified IP");
++	else
++		igt_assert_f(!chamelium->env.fault_occurred,
++				"Chamelium RPC call failed: %s\n",
++				chamelium->env.fault_string);
+ 
+ 	return res;
+ }
 -- 
-Jani Nikula, Intel Open Source Graphics Center
+2.7.4
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
