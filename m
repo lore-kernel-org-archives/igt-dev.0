@@ -1,10 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 12 Dec 2019 10:29:24 +0000
-Message-Id: <20191212102924.1194130-1-chris@chris-wilson.co.uk>
+Date: Thu, 12 Dec 2019 13:50:35 +0100
+From: Ewelina Musial <ewelina.musial@intel.com>
+Message-ID: <20191212125035.GA12385@emusial-desk.ger.corp.intel.com>
+References: <20191211094243.6939-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915: Rename gem_exec_parse and
- gem_exec_parse_blt
+Content-Disposition: inline
+In-Reply-To: <20191211094243.6939-1-janusz.krzysztofik@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/prime_vgem: Give meaningful
+ messages on SKIP
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,84 +19,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The cmdparser tests are tied to the generation, so rename the tests to
-indicate that and remove the ambiguity that they are more generic tests.
+On Wed, Dec 11, 2019 at 10:42:43AM +0100, Janusz Krzysztofik wrote:
+> Messages displayed on SKIPs introduced by commit 92caadb4e551
+> ("tests/prime_vgem: Skip basic-read/write subtests if not supported")
+> don't inform clearly enough that those SKIPs are expected behavior.
+> Fix it.
+> 
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> Cc: Ewelina Musial <ewelina.musial@intel.com>
+> ---
+>  tests/prime_vgem.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+> index 6595818c..3bdb2300 100644
+> --- a/tests/prime_vgem.c
+> +++ b/tests/prime_vgem.c
+> @@ -46,7 +46,8 @@ static void test_read(int vgem, int i915)
+>  	handle = prime_fd_to_handle(i915, dmabuf);
+>  	close(dmabuf);
+>  
+> -	igt_skip_on(__gem_read(i915, handle, 0, &i, sizeof(i)));
+> +	igt_skip_on_f(__gem_read(i915, handle, 0, &i, sizeof(i)),
+> +		      "PREAD from dma-buf not supported on this hardware\n");
+>  
+>  	ptr = vgem_mmap(vgem, &scratch, PROT_WRITE);
+>  	for (i = 0; i < 1024; i++)
+> @@ -83,7 +84,8 @@ static void test_fence_read(int i915, int vgem)
+>  	handle = prime_fd_to_handle(i915, dmabuf);
+>  	close(dmabuf);
+>  
+> -	igt_skip_on(__gem_read(i915, handle, 0, &i, sizeof(i)));
+> +	igt_skip_on_f(__gem_read(i915, handle, 0, &i, sizeof(i)),
+> +		      "PREAD from dma-buf not supported on this hardware\n");
+>  
+>  	igt_fork(child, 1) {
+>  		close(master[0]);
+> @@ -195,7 +197,8 @@ static void test_write(int vgem, int i915)
+>  	handle = prime_fd_to_handle(i915, dmabuf);
+>  	close(dmabuf);
+>  
+> -	igt_skip_on(__gem_write(i915, handle, 0, &i, sizeof(i)));
+> +	igt_skip_on_f(__gem_write(i915, handle, 0, &i, sizeof(i)),
+> +		      "PWRITE to dma-buf not supported on this hardware\n");
+>  
+>  	ptr = vgem_mmap(vgem, &scratch, PROT_READ);
+>  	gem_close(vgem, scratch.handle);
+> -- 
+> 2.21.0
+> 
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Mika Kuoppala <mika.kuoppala@linux.intel.com>
----
- tests/Makefile.sources                                 | 8 ++++----
- tests/i915/{gem_exec_parse.c => gen7_exec_parse.c}     | 0
- tests/i915/{gem_exec_parse_blt.c => gen9_exec_parse.c} | 0
- tests/intel-ci/blacklist.txt                           | 2 +-
- tests/meson.build                                      | 4 ++--
- 5 files changed, 7 insertions(+), 7 deletions(-)
- rename tests/i915/{gem_exec_parse.c => gen7_exec_parse.c} (100%)
- rename tests/i915/{gem_exec_parse_blt.c => gen9_exec_parse.c} (100%)
-
-diff --git a/tests/Makefile.sources b/tests/Makefile.sources
-index 2893f9bc0..806eb02d0 100644
---- a/tests/Makefile.sources
-+++ b/tests/Makefile.sources
-@@ -241,11 +241,11 @@ gem_exec_parallel_SOURCES = i915/gem_exec_parallel.c
- TESTS_progs += gem_exec_params
- gem_exec_params_SOURCES = i915/gem_exec_params.c
- 
--TESTS_progs += gem_exec_parse
--gem_exec_parse_SOURCES = i915/gem_exec_parse.c
-+TESTS_progs += gen7_exec_parse
-+gen7_exec_parse_SOURCES = i915/gen7_exec_parse.c
- 
--TESTS_progs += gem_exec_parse_blt
--gem_exec_parse_blt_SOURCES = i915/gem_exec_parse_blt.c
-+TESTS_progs += gen9_exec_parse
-+gen9_exec_parse_SOURCES = i915/gen9_exec_parse.c
- 
- TESTS_progs += gem_exec_reloc
- gem_exec_reloc_SOURCES = i915/gem_exec_reloc.c
-diff --git a/tests/i915/gem_exec_parse.c b/tests/i915/gen7_exec_parse.c
-similarity index 100%
-rename from tests/i915/gem_exec_parse.c
-rename to tests/i915/gen7_exec_parse.c
-diff --git a/tests/i915/gem_exec_parse_blt.c b/tests/i915/gen9_exec_parse.c
-similarity index 100%
-rename from tests/i915/gem_exec_parse_blt.c
-rename to tests/i915/gen9_exec_parse.c
-diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-index 4bca1b6c5..a48163c68 100644
---- a/tests/intel-ci/blacklist.txt
-+++ b/tests/intel-ci/blacklist.txt
-@@ -77,7 +77,7 @@ igt@gem_write_read_ring_switch(@.*)?
- ###############################################
- # GEM: Not worth fixing
- ###############################################
--igt@gem_exec_parse@.*lri.*
-+igt@gen7_exec_parse@.*lri.*
- ###############################################
- # There are no DRRS capable displays in CI lab
- ###############################################
-diff --git a/tests/meson.build b/tests/meson.build
-index d931cc372..570de5459 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -147,8 +147,8 @@ i915_progs = [
- 	'gem_exec_nop',
- 	'gem_exec_parallel',
- 	'gem_exec_params',
--	'gem_exec_parse',
--	'gem_exec_parse_blt',
-+	'gen7_exec_parse',
-+	'gen9_exec_parse',
- 	'gem_exec_reloc',
- 	'gem_exec_reuse',
- 	'gem_exec_schedule',
--- 
-2.24.0
-
+Reviewed-by: Ewelina Musial <ewelina.musial@intel.com>
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
