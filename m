@@ -1,10 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 11 Dec 2019 16:48:38 +0000
-Message-Id: <20191211164838.137117-1-chris@chris-wilson.co.uk>
-MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_parse: Check
- batch_start_offset
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 20C2D6ECF0
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Dec 2019 09:48:57 +0000 (UTC)
+From: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+Date: Thu, 12 Dec 2019 11:45:59 +0200
+Message-Id: <20191212094601.21940-2-stanislav.lisovskiy@intel.com>
+In-Reply-To: <20191212094601.21940-1-stanislav.lisovskiy@intel.com>
+References: <20191212094601.21940-1-stanislav.lisovskiy@intel.com>
+Subject: [igt-dev] [PATCH i-g-t v15 1/3] igt/lib: Check if query_info is null
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -12,133 +15,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: martin.peres@intel.com, juha-pekka.heikkila@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Validate that the cmdparser works with whatever offset we use for our
-batches.
+From: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+On TGL ocassionally got a crash, as query_info
+was 0, which caused crash. Don't know why it
+wasn't(or if it was) noticed else where.
+
+Regardless of what's the reason probably
+checking is still better than crashing.
+
+Change-Id: Ia407e44592a6357126bad3ed0c5fcaed1bd365d6
+Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
 ---
- tests/i915/gem_exec_parse.c | 55 +++++++++++++++++++++++++++++++------
- 1 file changed, 46 insertions(+), 9 deletions(-)
+ lib/i915/intel_memory_region.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/i915/gem_exec_parse.c b/tests/i915/gem_exec_parse.c
-index 0c6de677e..5578340f7 100644
---- a/tests/i915/gem_exec_parse.c
-+++ b/tests/i915/gem_exec_parse.c
-@@ -82,8 +82,10 @@ __checked_execbuf(int i915, struct drm_i915_gem_execbuffer2 *eb)
- 	return 0;
- }
+diff --git a/lib/i915/intel_memory_region.c b/lib/i915/intel_memory_region.c
+index c3d9c814..c62ac6ad 100644
+--- a/lib/i915/intel_memory_region.c
++++ b/lib/i915/intel_memory_region.c
+@@ -127,6 +127,10 @@ uint8_t gem_get_lmem_region_count(int fd)
+ 	uint8_t lmem_regions = 0;
  
--static uint64_t __exec_batch_patched(int fd, uint32_t cmd_bo, uint32_t *cmds,
--				     int size, int patch_offset)
-+static uint64_t __exec_batch_patched(int fd,
-+				     uint32_t cmd_bo, unsigned int offset,
-+				     uint32_t *cmds, unsigned int size,
-+				     unsigned int patch_offset)
- {
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	struct drm_i915_gem_exec_object2 obj[2];
-@@ -92,14 +94,14 @@ static uint64_t __exec_batch_patched(int fd, uint32_t cmd_bo, uint32_t *cmds,
- 	uint32_t target_bo = gem_create(fd, 4096);
- 	uint64_t actual_value = 0;
- 
--	gem_write(fd, cmd_bo, 0, cmds, size);
-+	gem_write(fd, cmd_bo, offset, cmds, size);
- 
- 	memset(obj, 0, sizeof(obj));
- 	obj[0].handle = target_bo;
- 	obj[1].handle = cmd_bo;
- 
- 	memset(reloc, 0, sizeof(reloc));
--	reloc[0].offset = patch_offset;
-+	reloc[0].offset = offset + patch_offset;
- 	reloc[0].target_handle = obj[0].handle;
- 	reloc[0].delta = 0;
- 	reloc[0].read_domains = I915_GEM_DOMAIN_COMMAND;
-@@ -110,6 +112,7 @@ static uint64_t __exec_batch_patched(int fd, uint32_t cmd_bo, uint32_t *cmds,
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	execbuf.buffers_ptr = to_user_pointer(obj);
- 	execbuf.buffer_count = 2;
-+	execbuf.batch_start_offset = offset;
- 	execbuf.batch_len = size;
- 	execbuf.flags = I915_EXEC_RENDER;
- 
-@@ -123,12 +126,25 @@ static uint64_t __exec_batch_patched(int fd, uint32_t cmd_bo, uint32_t *cmds,
- 	return actual_value;
- }
- 
--static void exec_batch_patched(int fd, uint32_t cmd_bo, uint32_t *cmds,
--			       int size, int patch_offset,
-+static void exec_batch_patched(int fd, uint32_t cmd_bo,
-+			       uint32_t *cmds, unsigned int size,
-+			       unsigned int patch_offset,
- 			       uint64_t expected_value)
- {
--	igt_assert_eq(__exec_batch_patched(fd, cmd_bo, cmds,
--					   size, patch_offset),
-+	igt_assert_eq(__exec_batch_patched(fd, cmd_bo, 0,
-+					   cmds, size,
-+					   patch_offset),
-+		      expected_value);
-+}
+ 	query_info = gem_get_query_memory_regions(fd);
 +
-+static void exec_batch_offset(int fd, uint32_t cmd_bo, unsigned int offset,
-+			      uint32_t *cmds, unsigned int size,
-+			      unsigned int patch_offset,
-+			      uint64_t expected_value)
-+{
-+	igt_assert_eq(__exec_batch_patched(fd, cmd_bo, offset,
-+					   cmds, size,
-+					   patch_offset),
- 		      expected_value);
- }
- 
-@@ -408,7 +424,7 @@ static void hsw_load_register_reg(void)
- 		exec_batch(fd, handle, do_lrr, sizeof(do_lrr),
- 			   I915_EXEC_RENDER,
- 			   0);
--		var = __exec_batch_patched(fd, handle,
-+		var = __exec_batch_patched(fd, handle, 0,
- 					   store_gpr0, sizeof(store_gpr0),
- 					   2 * sizeof(uint32_t)); /* reloc */
- 		igt_assert_neq(var, 0xabcdabc0);
-@@ -471,6 +487,27 @@ igt_main
- 				   0x12000000);
- 	}
- 
-+	igt_subtest("basic-offset") {
-+		uint32_t pc[] = {
-+			GFX_OP_PIPE_CONTROL,
-+			PIPE_CONTROL_QW_WRITE,
-+			0, /* To be patched */
-+			0x12000000,
-+			0,
-+			MI_BATCH_BUFFER_END,
-+		};
-+		uint32_t scrub[1024];
++	if (!query_info)
++		return 0;
 +
-+		memset(scrub, 0xc5, sizeof(scrub));
-+		for (int i = 0; i <= 4096 - sizeof(pc); i += 8) {
-+			gem_write(fd, handle, 0, scrub, sizeof(scrub));
-+			exec_batch_offset(fd, handle, i,
-+					  pc, sizeof(pc),
-+					  8, /* patch offset, */
-+					  0x12000000);
-+		}
-+	}
-+
- 	igt_subtest("basic-rejected") {
- 		uint32_t invalid_cmd[] = {
- 			INSTR_INVALID_CLIENT << INSTR_CLIENT_SHIFT,
+ 	num_regions = query_info->num_regions;
+ 
+ 	for (int i = 0; i < num_regions; i++) {
 -- 
-2.24.0
+2.17.1
 
 _______________________________________________
 igt-dev mailing list
