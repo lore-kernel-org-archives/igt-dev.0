@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D7A026E0D3
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Dec 2019 17:18:24 +0000 (UTC)
+Date: Thu, 12 Dec 2019 09:18:24 -0800
+From: Matt Roper <matthew.d.roper@intel.com>
+Message-ID: <20191212171824.GE85422@mdroper-desk1.amr.corp.intel.com>
+References: <20191210195559.9860-1-jose.souza@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 12 Dec 2019 15:40:00 -0000
-Message-ID: <157616520075.32010.2817342128986079523@emeril.freedesktop.org>
-References: <20191212142415.26517-1-stanislav.lisovskiy@intel.com>
-In-Reply-To: <20191212142415.26517-1-stanislav.lisovskiy@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_I?=
- =?utf-8?q?ntroduce_i915_pipe_stress_test_=28rev2=29?=
+Content-Disposition: inline
+In-Reply-To: <20191210195559.9860-1-jose.souza@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib: Sync i915_pciids.h
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,54 +17,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+To: =?iso-8859-1?Q?Jos=E9?= Roberto de Souza <jose.souza@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Tue, Dec 10, 2019 at 11:55:59AM -0800, Jos=E9 Roberto de Souza wrote:
+> IGT is missing the new EHL/JSL PCI ids added in commit
+> 651cc835d5f6 ("drm/i915: Add new EHL/JSL PCI ids")
+> =
 
-Series: Introduce i915 pipe stress test (rev2)
-URL   : https://patchwork.freedesktop.org/series/70815/
-State : warning
+> Cc: James Ausmus <james.ausmus@intel.com>
+> Cc: Matt Roper <matthew.d.roper@intel.com>
+> Signed-off-by: Jos=E9 Roberto de Souza <jose.souza@intel.com>
 
-== Summary ==
+Matches the kernel and the bspec.
 
-Did not get list of undocumented tests for this run, something is wrong!
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
 
-Other than that, pipeline status: FAILED.
+> ---
+>  lib/i915_pciids.h | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> =
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/88172 for the overview.
+> diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
+> index b1f66b11..3e26a917 100644
+> --- a/lib/i915_pciids.h
+> +++ b/lib/i915_pciids.h
+> @@ -579,12 +579,15 @@
+>  	INTEL_VGA_DEVICE(0x8A51, info), \
+>  	INTEL_VGA_DEVICE(0x8A5D, info)
+>  =
 
-build:tests-debian-autotools has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1133323):
-    CCLD     i915_getparams_basic
-    CCLD     i915_hangman
-    CCLD     i915_module_load
-    CCLD     i915_pm_backlight
-    CCLD     i915_pm_lpsp
-    CCLD     i915_pm_rc6_residency
-  make[3]: *** No rule to make target 'i915_pipe_stress.c', needed by 'i915_pipe_stress.o'.  Stop.
-  make[3]: Leaving directory '/builds/gfx-ci/igt-ci-tags/tests'
-  make[2]: Leaving directory '/builds/gfx-ci/igt-ci-tags/tests'
-  make[2]: *** [Makefile:5280: all-recursive] Error 1
-  make[1]: Leaving directory '/builds/gfx-ci/igt-ci-tags'
-  make[1]: *** [Makefile:514: all-recursive] Error 1
-  make: *** [Makefile:446: all] Error 2
-  section_end:1576164934:build_script
-  [0Ksection_start:1576164934:after_script
-  [0Ksection_end:1576164935:after_script
-  [0Ksection_start:1576164935:upload_artifacts_on_failure
-  [0Ksection_end:1576164936:upload_artifacts_on_failure
-  [0K[31;1mERROR: Job failed: exit code 1
-  [0;m
+> -/* EHL */
+> +/* EHL/JSL */
+>  #define INTEL_EHL_IDS(info) \
+>  	INTEL_VGA_DEVICE(0x4500, info),	\
+>  	INTEL_VGA_DEVICE(0x4571, info), \
+>  	INTEL_VGA_DEVICE(0x4551, info), \
+> -	INTEL_VGA_DEVICE(0x4541, info)
+> +	INTEL_VGA_DEVICE(0x4541, info), \
+> +	INTEL_VGA_DEVICE(0x4E71, info), \
+> +	INTEL_VGA_DEVICE(0x4E61, info), \
+> +	INTEL_VGA_DEVICE(0x4E51, info)
+>  =
 
-== Logs ==
+>  /* TGL */
+>  #define INTEL_TGL_12_IDS(info) \
+> -- =
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/88172
+> 2.24.0
+> =
+
+
+-- =
+
+Matt Roper
+Graphics Software Engineer
+VTT-OSGC Platform Enablement
+Intel Corporation
+(916) 356-2795
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
