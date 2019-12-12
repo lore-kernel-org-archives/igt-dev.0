@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3612F6ED5F
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Dec 2019 13:46:45 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A38E26E199
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Dec 2019 14:27:09 +0000 (UTC)
 From: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-Date: Thu, 12 Dec 2019 15:43:53 +0200
-Message-Id: <20191212134353.25663-1-stanislav.lisovskiy@intel.com>
+Date: Thu, 12 Dec 2019 16:24:15 +0200
+Message-Id: <20191212142415.26517-2-stanislav.lisovskiy@intel.com>
+In-Reply-To: <20191212142415.26517-1-stanislav.lisovskiy@intel.com>
+References: <20191212142415.26517-1-stanislav.lisovskiy@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v15] igt/tests: kms_plane_stress: Add plane
- stress test
+Subject: [igt-dev] [PATCH i-g-t v15 1/1] igt/tests: kms_plane_stress: Add
+ plane stress test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
