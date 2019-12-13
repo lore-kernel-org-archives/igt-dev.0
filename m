@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A19B56EDE5
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Dec 2019 22:05:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5EBB86EDE4
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Dec 2019 22:05:44 +0000 (UTC)
 From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Date: Fri, 13 Dec 2019 13:54:23 -0800
-Message-Id: <20191213215429.24498-2-niranjana.vishwanathapura@intel.com>
+Date: Fri, 13 Dec 2019 13:54:27 -0800
+Message-Id: <20191213215429.24498-6-niranjana.vishwanathapura@intel.com>
 In-Reply-To: <20191213215429.24498-1-niranjana.vishwanathapura@intel.com>
 References: <20191213215429.24498-1-niranjana.vishwanathapura@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC i-g-t 1/7] drm-uapi: Import SVM UAPI
+Subject: [igt-dev] [RFC i-g-t 5/7] tests/i915/svm: Add basic SVM SYS
+ allocator test support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,134 +25,268 @@ To: igt-dev@lists.freedesktop.org
 Cc: kenneth.w.graunke@intel.com, sanjay.k.kumar@intel.com, jason.ekstrand@intel.com, dave.hansen@intel.com, jglisse@redhat.com, jon.bloomfield@intel.com, daniel.vetter@intel.com, dan.j.williams@intel.com, ira.weiny@intel.com, jgg@mellanox.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Niranjana <nvishwa1@nvishwa1-DESK1.sc.intel.com>
-
-Import Shared Virtual Memory (SVM) user API. It includes SVM capability
-defintion and the bind and prefetch ioctl defintions.
+Add basic tests for Shared Virtual Memory (SVM) system (SYS) allocator
+functionality. Have GPU copy the data from a source buffer to
+destination buffer by explicitly binding buffers in device page
+table using shared virtual addresses.
+Explicitly migrate buffers from host to device memory and expect it to
+be migrated back to host memory upon CPU access.
+Test for different buffer sizes, allocation method and with multiple
+contexts.
 
 Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Cc: Jon Bloomfield <jon.bloomfield@intel.com>
 Cc: Daniel Vetter <daniel.vetter@intel.com>
 Cc: Sudeep Dutt <sudeep.dutt@intel.com>
 Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Signed-off-by: Venkata Sandeep Dhanalakota <venkata.s.dhanalakota@intel.com>
 ---
- include/drm-uapi/i915_drm.h | 74 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 74 insertions(+)
+ tests/i915/i915_svm_basic.c | 207 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 207 insertions(+)
 
-diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index 9b72e821..de51c7e4 100644
---- a/include/drm-uapi/i915_drm.h
-+++ b/include/drm-uapi/i915_drm.h
-@@ -361,6 +361,10 @@ typedef struct _drm_i915_sarea {
- #define DRM_I915_GEM_VM_CREATE		0x3a
- #define DRM_I915_GEM_VM_DESTROY		0x3b
- #define DRM_I915_GEM_OBJECT_SETPARAM	DRM_I915_GEM_CONTEXT_SETPARAM
-+#define DRM_I915_GEM_VM_GETPARAM        DRM_I915_GEM_CONTEXT_GETPARAM
-+#define DRM_I915_GEM_VM_SETPARAM        DRM_I915_GEM_CONTEXT_SETPARAM
-+#define DRM_I915_GEM_VM_BIND		0x3c
-+#define DRM_I915_GEM_VM_PREFETCH	0x3d
- /* Must be kept compact -- no holes */
+diff --git a/tests/i915/i915_svm_basic.c b/tests/i915/i915_svm_basic.c
+index 90159443..22461ba9 100644
+--- a/tests/i915/i915_svm_basic.c
++++ b/tests/i915/i915_svm_basic.c
+@@ -40,9 +40,16 @@
  
- #define DRM_IOCTL_I915_INIT		DRM_IOW( DRM_COMMAND_BASE + DRM_I915_INIT, drm_i915_init_t)
-@@ -425,6 +429,10 @@ typedef struct _drm_i915_sarea {
- #define DRM_IOCTL_I915_GEM_VM_CREATE	DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_VM_CREATE, struct drm_i915_gem_vm_control)
- #define DRM_IOCTL_I915_GEM_VM_DESTROY	DRM_IOW (DRM_COMMAND_BASE + DRM_I915_GEM_VM_DESTROY, struct drm_i915_gem_vm_control)
- #define DRM_IOCTL_I915_GEM_OBJECT_SETPARAM	DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_OBJECT_SETPARAM, struct drm_i915_gem_object_param)
-+#define DRM_IOCTL_I915_GEM_VM_GETPARAM		DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_VM_GETPARAM, struct drm_i915_gem_vm_param)
-+#define DRM_IOCTL_I915_GEM_VM_SETPARAM		DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_VM_SETPARAM, struct drm_i915_gem_vm_param)
-+#define DRM_IOCTL_I915_GEM_VM_BIND		DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_VM_BIND, struct drm_i915_gem_vm_bind)
-+#define DRM_IOCTL_I915_GEM_VM_PREFETCH		DRM_IOWR(DRM_COMMAND_BASE + DRM_I915_GEM_VM_PREFETCH, struct drm_i915_gem_vm_prefetch)
+ #define MAX_CTXTS   4
  
- /* Allow drivers to submit batchbuffers directly to hardware, relying
-  * on the security mechanisms provided by hardware.
-@@ -622,6 +630,9 @@ typedef struct drm_i915_irq_wait {
-  */
- #define I915_PARAM_PERF_REVISION	54
++#define I915_SVM_ALLOC_ALIGN    0
++#define I915_SVM_ALLOC_MMAP     1
++#define I915_SVM_NUM_ALLOC      2
++
+ #define svm_info    igt_info
+ #define svm_debug   igt_debug
  
-+/* Shared Virtual Memory (SVM) support capability */
-+#define I915_PARAM_HAS_SVM		55
++static const char *
++alloc_type_str[I915_SVM_NUM_ALLOC] = { "align", "mmap" };
 +
- /* Must be kept compact -- no holes and well documented */
- 
- typedef struct drm_i915_getparam {
-@@ -1848,6 +1859,17 @@ struct drm_i915_gem_vm_control {
- 	__u32 vm_id;
- };
- 
-+struct drm_i915_gem_vm_param {
-+	__u32 vm_id;
-+	__u32 rsvd;
-+
-+#define I915_VM_PARAM     (2ull << 32)
-+#define I915_GEM_VM_PARAM_SVM   0x1
-+	__u64 param;
-+
-+	__u64 value;
-+};
-+
- struct drm_i915_reg_read {
- 	/*
- 	 * Register offset.
-@@ -2399,6 +2421,58 @@ struct drm_i915_query_memory_region_info {
- 	struct drm_i915_memory_region_info regions[];
- };
- 
-+/**
-+ * struct drm_i915_gem_vm_bind
-+ *
-+ * Bind an object/buffer in a vm's page table.
-+ */
-+struct drm_i915_gem_vm_bind {
-+	/** VA start to bind **/
-+	__u64 start;
-+
-+	/**
-+	 * VA length to [un]bind
-+	 * length only required while binding buffers.
-+	 */
-+	__u64 length;
-+
-+	/** Type of memory to [un]bind **/
-+	__u32 type;
-+#define I915_GEM_VM_BIND_SVM_OBJ      0
-+#define I915_GEM_VM_BIND_SVM_BUFFER   1
-+
-+	/** Object handle to [un]bind for I915_GEM_VM_BIND_SVM_OBJ type **/
-+	__u32 handle;
-+
-+	/** vm to [un]bind **/
-+	__u32 vm_id;
-+
-+	/** Flags **/
-+	__u32 flags;
-+#define I915_GEM_VM_BIND_UNBIND      (1 << 0)
-+#define I915_GEM_VM_BIND_READONLY    (1 << 1)
-+};
-+
-+/**
-+ * struct drm_i915_gem_vm_prefetch
-+ *
-+ * Prefetch an address range to a memory region.
-+ */
-+struct drm_i915_gem_vm_prefetch {
-+	/** Type of memory to prefetch **/
-+	__u32 type;
-+#define I915_GEM_VM_PREFETCH_SVM_BUFFER   0
-+
-+	/** Memory region to prefetch to **/
-+	__u32 region;
-+
-+	/** VA start to prefetch **/
-+	__u64 start;
-+
-+	/** VA length to prefetch **/
-+	__u64 length;
-+};
-+
- #if defined(__cplusplus)
+ /* gen8_canonical_addr
+  * Used to convert any address into canonical form, i.e. [63:48] == [47].
+  * Based on kernel's sign_extend64 implementation.
+@@ -65,6 +72,35 @@ static inline uint32_t upper_32_bits(uint64_t x)
+ 	return x >> 32;
  }
- #endif
+ 
++static void *svm_alloc(int size, int alloc_type, void *addr)
++{
++	void *ptr;
++
++	if (alloc_type == I915_SVM_ALLOC_MMAP) {
++		int flags = MAP_ANONYMOUS | MAP_PRIVATE;
++
++		flags |= addr ? MAP_FIXED : 0;
++		ptr = mmap(addr, size, PROT_READ | PROT_WRITE, flags, -1, 0);
++		igt_assert(ptr != MAP_FAILED);
++	} else {
++		igt_assert(posix_memalign(&ptr, 512 * PAGE_SIZE, size) == 0);
++	}
++
++	svm_debug("Allocated %sed buf 0x%lx\n",
++		  alloc_type_str[alloc_type], (uint64_t)ptr);
++	return ptr;
++}
++
++static void svm_free(void *ptr, int size, int alloc_type)
++{
++	svm_debug("Freeing %s buf 0x%lx\n",
++		  alloc_type_str[alloc_type], (uint64_t)ptr);
++	if (alloc_type == I915_SVM_ALLOC_MMAP)
++		munmap(ptr, size);
++	else
++		free(ptr);
++}
++
+ static void print_buffer(void *buf, uint32_t size,
+ 			 const char *str, bool full)
+ {
+@@ -401,8 +437,169 @@ static void run_rt(int fd, uint32_t size, bool migrate, bool copy,
+ 		gem_vm_destroy(fd, shared_vm_id);
+ }
+ 
++static void run_sys(int fd, uint32_t size, bool migrate, bool copy,
++		    int alloc_type, bool unbind, int32_t num_ctxts)
++{
++	uint32_t region = INTEL_MEMORY_REGION_ID(I915_DEVICE_MEMORY);
++	uint32_t i, npages = size / PAGE_SIZE;
++	uint32_t shared_vm_id, vm_id[MAX_CTXTS];
++	uint32_t ctx_id[MAX_CTXTS];
++	void *src, *dst;
++	bool share_vm;
++
++	/* Fix parmeters; -ve num_ctxts means all contexts share the vm */
++	num_ctxts = num_ctxts ? : 1;
++	share_vm = num_ctxts < 0;
++	if (num_ctxts < 0)
++		num_ctxts = -num_ctxts;
++
++	/* For shared VM, we need to bind,unbind,en/disable SVM only once */
++	if (share_vm)
++		shared_vm_id = gem_vm_create(fd);
++
++	/* Create contexts and enable svm */
++	num_ctxts = min(MAX_CTXTS, num_ctxts);
++	for (i = 0; i < num_ctxts; i++) {
++		ctx_id[i] = gem_context_create(fd);
++		if (share_vm) {
++			vm_id[i] = shared_vm_id;
++			gem_ctx_set_vm(fd, ctx_id[i], vm_id[i]);
++		} else {
++			vm_id[i] = gem_ctx_get_vm(fd, ctx_id[i]);
++		}
++	}
++	for (i = 0; i < num_ctxts; i++) {
++		gem_vm_enable_svm(fd, vm_id[i]);
++		if (share_vm)
++			break;
++	}
++
++	/* Allocate buffers */
++	src = svm_alloc(size, alloc_type, NULL);
++	dst = svm_alloc(size, alloc_type, NULL);
++
++	/* Fill patterns */
++	memset(dst, 0, size);
++	for (i = 0; i < npages; i++)
++		memset(src + i * PAGE_SIZE, i + 1, PAGE_SIZE);
++
++	print_buffer(src, size, "src", false);
++	print_buffer(dst, size, "dst", false);
++
++	/*
++	 * Explicitly migrate buffers to device memory, if specified.
++	 * Otherwise, buffers remain in host memory.
++	 */
++	if (migrate) {
++		svm_info("Migrating 0x%lx size 0x%x to mem region 0x%x\n",
++			 (uint64_t)src, size, region);
++		svm_prefetch(fd, src, size, region);
++
++		svm_info("Migrating 0x%lx size 0x%x to mem region 0x%x\n",
++			 (uint64_t)dst, size, region);
++		svm_prefetch(fd, dst, size, region);
++	}
++
++	/* Bind the buffers to device page table */
++	/* XXX: Test READ_ONLY bindings */
++	for (i = 0; i < num_ctxts; i++) {
++		svm_info("Binding 0x%lx size 0x%x vm 0x%x\n",
++			 (uint64_t)src, size, vm_id[i]);
++		svm_bind(fd, src, size, vm_id[i], false);
++
++		svm_info("Binding 0x%lx size 0x%x vm 0x%x\n",
++			 (uint64_t)dst, size, vm_id[i]);
++		svm_bind(fd, dst, size, vm_id[i], false);
++
++		if (share_vm)
++			break;
++	}
++
++	/* Have GPU do the copy */
++	if (copy)
++		gem_copy(fd, 0, 0, src, dst, size, ctx_id, num_ctxts);
++
++	/*
++	 * Unbind buffers from device page table.
++	 * If not, it should get unbound while freeing the buffer.
++	 */
++	if (unbind) {
++		for (i = 0; i < num_ctxts; i++) {
++			svm_info("Unbinding 0x%lx size 0x%x vm 0x%x\n",
++				 (uint64_t)src, size, vm_id[i]);
++			svm_unbind(fd, src, size, vm_id[i]);
++
++			svm_info("Unbinding 0x%lx size 0x%x vm 0x%x\n",
++				 (uint64_t)dst, size, vm_id[i]);
++			svm_unbind(fd, dst, size, vm_id[i]);
++
++			if (share_vm)
++				break;
++		}
++	}
++
++	/* Accessing the buffer will migrate the pages from device to host */
++	print_buffer(dst, size, "dst", false);
++
++	/* Validate */
++	if (copy)
++		igt_assert(memcmp(src, dst, size) == 0);
++
++	/* Free the buffers */
++	svm_free(dst, size, alloc_type);
++	svm_free(src, size, alloc_type);
++
++	/* Done with the contexts */
++	for (i = 0; i < num_ctxts; i++) {
++		gem_vm_disable_svm(fd, vm_id[i]);
++		if (share_vm)
++			break;
++	}
++	for (i = 0; i < num_ctxts; i++) {
++		svm_debug("Destroying context 0x%x\n", ctx_id[i]);
++		gem_context_destroy(fd, ctx_id[i]);
++	}
++
++	if (share_vm)
++		gem_vm_destroy(fd, shared_vm_id);
++}
++
+ igt_main
+ {
++	struct {
++		const char *name;
++		uint32_t size;
++		bool migrate;
++		bool copy;
++		int alloc_type;
++		bool unbind;
++		int32_t num_ctxts;
++	}*s, sys_tests[] = {
++		/* Basic test */
++		{"sys_basic", 0, true, true, I915_SVM_ALLOC_ALIGN, true, 1},
++
++		/* Skip GPU copy */
++		{"sys_no_gpu_copy", 0, true, false, I915_SVM_ALLOC_ALIGN, true, 1},
++
++		/* Skip unbinding; should get unbound while freeing */
++		{"sys_no_unbind", 0, true, true, I915_SVM_ALLOC_ALIGN, false, 1},
++
++		/* Use multiple contexts */
++		{"sys_multi_ctxts", 0, true, true, I915_SVM_ALLOC_ALIGN, true, 2},
++
++		/* Use multiple contexts and share vm (-ve num_ctxts) */
++		{"sys_multi_ctxts_share_vm", 0, true, true, I915_SVM_ALLOC_ALIGN, true, -2},
++
++		/* Use 64K buffers */
++		{"sys_64K", (16 * PAGE_SIZE), true, true, I915_SVM_ALLOC_ALIGN, true, 1},
++
++		/* Use 2M buffers */
++		{"sys_2M", (512 * PAGE_SIZE), true, true, I915_SVM_ALLOC_ALIGN, true, 1},
++
++		/* Allocate using mmap */
++		{"sys_mmap", 0, true, true, I915_SVM_ALLOC_MMAP, true, 1},
++	};
++
+ 	struct {
+ 		const char *name;
+ 		uint32_t size;
+@@ -452,6 +649,16 @@ igt_main
+ 		def_size = DEFAULT_BUFF_SIZE;
+ 	}
+ 
++	/* Below are System (sys) allocator tests */
++	for (idx = 0, s = sys_tests; idx < ARRAY_SIZE(sys_tests); idx++, s++) {
++		bool migrate = has_lmem ? s->migrate : false;
++		uint32_t size = s->size ? : def_size;
++
++		igt_subtest_f("%s",s->name)
++			run_sys(fd, size, migrate, s->copy, s->alloc_type,
++				s->unbind, s->num_ctxts);
++	}
++
+ 	/* Below are runtime (rt) allocator tests */
+ 	for (idx = 0, r = rt_tests; idx < ARRAY_SIZE(rt_tests); idx++, r++) {
+ 		bool migrate = has_lmem ? r->migrate : false;
 -- 
 2.21.0.rc0.32.g243a4c7e27
 
