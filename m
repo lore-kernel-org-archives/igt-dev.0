@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA5F16E82C
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Dec 2019 13:23:20 +0000 (UTC)
+Date: Fri, 13 Dec 2019 18:52:31 +0530
+From: Ramalingam C <ramalingam.c@intel.com>
+Message-ID: <20191213132231.GI3829@intel.com>
+References: <20191212123501.4598-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <157623395485.2219.16402732299709049393@skylake-alporthouse-com>
-References: <20191213095204.20667-1-zbigniew.kempczynski@intel.com>
- <157623332805.23799.3291980524957636407@emeril.freedesktop.org>
- <157623395485.2219.16402732299709049393@skylake-alporthouse-com>
-Message-ID: <157623595320.6731.4058698951855891366@skylake-alporthouse-com>
-Date: Fri, 13 Dec 2019 11:19:13 +0000
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL2ln?=
- =?utf-8?q?t=5Fdummyload=3A_Use_mapping_selection_to_allow_run_batch_from_?=
- =?utf-8?q?lmem?=
+Content-Disposition: inline
+In-Reply-To: <20191212123501.4598-1-anshuman.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_content_protection: Fix
+ uevent subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,22 +22,103 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Patchwork <patchwork@emeril.freedesktop.org>, igt-dev@lists.freedesktop.org
+To: Anshuman Gupta <anshuman.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Chris Wilson (2019-12-13 10:45:54)
-> Quoting Patchwork (2019-12-13 10:35:28)
-> > #### Possible regressions ####
-> > 
-> >   * igt@gem_busy@busy-all:
-> >     - fi-glk-dsi:         [PASS][1] -> [FAIL][2] +1 similar issue
-> >    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5349/fi-glk-dsi/igt@gem_busy@busy-all.html
-> >    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3860/fi-glk-dsi/igt@gem_busy@busy-all.html
+On 2019-12-12 at 18:05:01 +0530, Anshuman Gupta wrote:
+> uevent hdcp subtest was failing because hdcp_event()
+> has been called with NULL udev_monitor, which was
+> causing udev_monitor_receive_device() to return a
+> NULL udev.
 > 
-> Well that's conclusive, our device-coherent mapping is not.
+> v2: Using double pointer for udev_monitor and udev. [Ram]
+> 
+> Cc: Ramalingam C <ramalingam.c@intel.com>
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Thanks for the patch. Pushed it with small modification to commit msg.
 
-Sigh, not trivially reproducing on bsw or byt.
--Chris
+-Ram
+> ---
+>  tests/kms_content_protection.c | 30 ++++++++++++++++++------------
+>  1 file changed, 18 insertions(+), 12 deletions(-)
+> 
+> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+> index e676b60b..eb279c4e 100644
+> --- a/tests/kms_content_protection.c
+> +++ b/tests/kms_content_protection.c
+> @@ -165,24 +165,24 @@ static void hdcp_udev_fini(struct udev_monitor *uevent_monitor,
+>  		udev_unref(udev);
+>  }
+>  
+> -static int hdcp_udev_init(struct udev_monitor *uevent_monitor,
+> -			  struct udev *udev)
+> +static int hdcp_udev_init(struct udev_monitor **uevent_monitor,
+> +			  struct udev **udev, int *udev_fd)
+>  {
+>  	int ret = -EINVAL;
+>  
+> -	udev = udev_new();
+> -	if (!udev) {
+> +	*udev = udev_new();
+> +	if (!*udev) {
+>  		igt_info("failed to create udev object\n");
+>  		goto out;
+>  	}
+>  
+> -	uevent_monitor = udev_monitor_new_from_netlink(udev, "udev");
+> -	if (!uevent_monitor) {
+> +	*uevent_monitor = udev_monitor_new_from_netlink(*udev, "udev");
+> +	if (!*uevent_monitor) {
+>  		igt_info("failed to create udev event monitor\n");
+>  		goto out;
+>  	}
+>  
+> -	ret = udev_monitor_filter_add_match_subsystem_devtype(uevent_monitor,
+> +	ret = udev_monitor_filter_add_match_subsystem_devtype(*uevent_monitor,
+>  							      "drm",
+>  							      "drm_minor");
+>  	if (ret < 0) {
+> @@ -190,16 +190,23 @@ static int hdcp_udev_init(struct udev_monitor *uevent_monitor,
+>  		goto out;
+>  	}
+>  
+> -	ret = udev_monitor_enable_receiving(uevent_monitor);
+> +	ret = udev_monitor_enable_receiving(*uevent_monitor);
+>  	if (ret < 0) {
+>  		igt_info("failed to enable udev event reception\n");
+>  		goto out;
+>  	}
+>  
+> -	return udev_monitor_get_fd(uevent_monitor);
+> +	*udev_fd = udev_monitor_get_fd(*uevent_monitor);
+> +	if (*udev_fd < 0) {
+> +		igt_info("failed to get udev_fd on uevent monitor\n");
+> +		ret = *udev_fd;
+> +		goto out;
+> +	}
+> +
+> +	return ret;
+>  
+>  out:
+> -	hdcp_udev_fini(uevent_monitor, udev);
+> +	hdcp_udev_fini(*uevent_monitor, *udev);
+>  	return ret;
+>  }
+>  
+> @@ -214,8 +221,7 @@ static bool wait_for_hdcp_event(uint32_t conn_id, uint32_t prop_id,
+>  	struct epoll_event event, events[MAX_EVENTS];
+>  	bool ret = false;
+>  
+> -	udev_fd = hdcp_udev_init(uevent_monitor, udev);
+> -	if (udev_fd < 0)
+> +	if (hdcp_udev_init(&uevent_monitor, &udev, &udev_fd) < 0)
+>  		return false;
+>  
+>  	epoll_fd = epoll_create1(0);
+> -- 
+> 2.24.0
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
