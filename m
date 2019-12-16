@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 163CF897FD
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Dec 2019 13:55:24 +0000 (UTC)
+Date: Mon, 16 Dec 2019 15:55:19 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20191216135519.GG25209@platvala-desk.ger.corp.intel.com>
+References: <20191211005235.67897-1-d.scott.phillips@intel.com>
+ <87lfrh3ifb.fsf@intel.com> <86v9qlo176.fsf@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 16 Dec 2019 13:31:39 -0000
-Message-ID: <157650309908.5611.1154659044283706100@emeril.freedesktop.org>
-References: <20191216093433.2517697-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20191216093433.2517697-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9w?=
- =?utf-8?q?erf=3A_Skip_OA_testing_on_systems_too_old?=
+Content-Disposition: inline
+In-Reply-To: <86v9qlo176.fsf@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 00/30] Add FreeBSD Support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,141 +18,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: D Scott Phillips <d.scott.phillips@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Thu, Dec 12, 2019 at 10:20:29AM -0800, D Scott Phillips wrote:
+> Jani Nikula <jani.nikula@linux.intel.com> writes:
+> 
+> > I'll mostly defer to Petri and Arek, the IGT maintainers, on the
+> > details.
+> >
+> > I think the bigger questions are, 1) How do we ensure this does not
+> > bitrot in a matter of weeks? Which translates to, 2) Who is going to
+> > automate and maintain continuous build testing? And, 3) Who's going to
+> > take ownership of the port in general?
+> >
+> > Personally, I don't think this is going to work long term just by
+> > merging the port upstream. I think without the continuous support from
+> > people who care about FreeBSD, this is going to be a net negative.
+> 
+> Right, I think that's a fair point. What level of continuous support do
+> you think would get us out of the negative here? A continuous build
+> could be fairly easy to get configured, but might be a side workflow
+> apart from how normal CI results are presented. I think that could be a
+> reasonable indication that things aren't rotting. More sophisticated CI
+> is within the realm of possibility but could be quite a bit harder to
+> get off the ground with.
 
-Series: i915/perf: Skip OA testing on systems too old
-URL   : https://patchwork.freedesktop.org/series/70973/
-State : success
+I'd say the bar to reach is
 
-== Summary ==
+* build-testing for each commit
+* someone responsible for fixing issues in the above in a timely manner
 
-CI Bug Log - changes from CI_DRM_7573 -> IGTPW_3864
-====================================================
+Build-testing we can reach quite easily in gitlab, for some values of
+easily, but the second point is harder.
 
-Summary
--------
+> Ultimately, I think as long as the kernel driver port exists this is
+> something that we will want.
 
-  **SUCCESS**
+Yep. Ultimately, running the tests on HW on FreeBSD is a change that I
+would very much welcome.
 
-  No regressions found.
+> As to who owns the port, FreeBSD has a "Graphics Team" that collectively
+> owns the kernel driver port, so I think the most robust answer going
+> forward is to have them own this port. I can take this up with them and 
+> see if they'll affirm that they will take some ownership here.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3864/index.html
+Thanks for doing this!
 
-Known issues
-------------
+As for the series as such:
 
-  Here are the changes found in IGTPW_3864 that come from known issues:
+There's some trivial cleanups in there that I suspect will help even
+Linux users on non-glibc systems that we can merge as is. I'm going to
+go through reviewing the series later this week for those parts.
 
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-byt-j1900:       [PASS][1] -> [TIMEOUT][2] ([i915#816])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7573/fi-byt-j1900/igt@gem_close_race@basic-threads.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3864/fi-byt-j1900/igt@gem_close_race@basic-threads.html
-    - fi-byt-n2820:       [PASS][3] -> [TIMEOUT][4] ([i915#816])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7573/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3864/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-7500u:       [PASS][5] -> [FAIL][6] ([fdo#111096] / [i915#323])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7573/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3864/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-hsw-peppy:       [PASS][7] -> [DMESG-WARN][8] ([i915#44])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7573/fi-hsw-peppy/igt@kms_frontbuffer_tracking@basic.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3864/fi-hsw-peppy/igt@kms_frontbuffer_tracking@basic.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0:
-    - {fi-tgl-guc}:       [INCOMPLETE][9] ([i915#456] / [i915#472]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7573/fi-tgl-guc/igt@gem_exec_suspend@basic-s0.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3864/fi-tgl-guc/igt@gem_exec_suspend@basic-s0.html
-
-  * igt@gem_sync@basic-store-each:
-    - {fi-tgl-u}:         [INCOMPLETE][11] ([i915#435] / [i915#472]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7573/fi-tgl-u/igt@gem_sync@basic-store-each.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3864/fi-tgl-u/igt@gem_sync@basic-store-each.html
-
-  * igt@i915_selftest@live_blt:
-    - fi-ivb-3770:        [DMESG-FAIL][13] ([i915#725]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7573/fi-ivb-3770/igt@i915_selftest@live_blt.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3864/fi-ivb-3770/igt@i915_selftest@live_blt.html
-    - fi-hsw-4770r:       [DMESG-FAIL][15] ([i915#553] / [i915#725]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7573/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3864/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:
-    - fi-icl-y:           [INCOMPLETE][17] ([i915#140]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7573/fi-icl-y/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3864/fi-icl-y/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
-
-  
-#### Warnings ####
-
-  * igt@gem_exec_suspend@basic-s0:
-    - fi-kbl-x1275:       [DMESG-WARN][19] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][20] ([i915#62] / [i915#92]) +7 similar issues
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7573/fi-kbl-x1275/igt@gem_exec_suspend@basic-s0.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3864/fi-kbl-x1275/igt@gem_exec_suspend@basic-s0.html
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - fi-kbl-x1275:       [DMESG-WARN][21] ([i915#62] / [i915#92]) -> [DMESG-WARN][22] ([i915#62] / [i915#92] / [i915#95]) +2 similar issues
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7573/fi-kbl-x1275/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3864/fi-kbl-x1275/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
-  [i915#140]: https://gitlab.freedesktop.org/drm/intel/issues/140
-  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
-  [i915#435]: https://gitlab.freedesktop.org/drm/intel/issues/435
-  [i915#44]: https://gitlab.freedesktop.org/drm/intel/issues/44
-  [i915#456]: https://gitlab.freedesktop.org/drm/intel/issues/456
-  [i915#472]: https://gitlab.freedesktop.org/drm/intel/issues/472
-  [i915#553]: https://gitlab.freedesktop.org/drm/intel/issues/553
-  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
-  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
-  [i915#816]: https://gitlab.freedesktop.org/drm/intel/issues/816
-  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
-  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+The null-implementation patches are for sure getting a NAK in that
+form. They need a function-by-function analysis of whether the correct
+"do nothing" approach is actually doing nothing or straight up
+igt_skip("Not supported on this platform"); in some form.
+For example, tests that use igt_fork_signal_helper will test nothing
+if they don't manage to fork a periodical interrupter process.
 
 
-Participating hosts (53 -> 46)
-------------------------------
-
-  Additional (1): fi-kbl-guc 
-  Missing    (8): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5349 -> IGTPW_3864
-
-  CI-20190529: 20190529
-  CI_DRM_7573: 5f2c1ea1bfb34f9777b829eec98a974edd82b885 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_3864: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3864/index.html
-  IGT_5349: 048f58513d8b8ec6bb307a939f0ac959bc0f0e10 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3864/index.html
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
