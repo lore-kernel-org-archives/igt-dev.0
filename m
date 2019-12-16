@@ -1,22 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 49CA26E528
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Dec 2019 13:26:25 +0000 (UTC)
-Received: from platvala by thrakatuluk with local (Exim 4.91)
- (envelope-from <petri.latvala@intel.com>) id 1igqOD-00049f-TS
- for igt-dev@lists.freedesktop.org; Mon, 16 Dec 2019 15:26:21 +0200
-Date: Mon, 16 Dec 2019 15:26:21 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1012E6E195
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Dec 2019 13:31:39 +0000 (UTC)
+Date: Mon, 16 Dec 2019 15:31:34 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20191216132621.GE25209@platvala-desk.ger.corp.intel.com>
-References: <20191205130246.21695-1-petri.latvala@intel.com>
- <157605183942.30690.11947581064789413262@emeril.freedesktop.org>
+Message-ID: <20191216133134.GF25209@platvala-desk.ger.corp.intel.com>
+References: <20191211005235.67897-1-d.scott.phillips@intel.com>
+ <20191211005235.67897-12-d.scott.phillips@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <157605183942.30690.11947581064789413262@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
- =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/2=5D_runner=3A_Ensure_generate?=
- =?utf-8?q?d_json_is_properly_UTF8-encoded?=
+In-Reply-To: <20191211005235.67897-12-d.scott.phillips@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 11/29] i915/pm_backlight: use POSIX
+ basename
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,27 +23,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: D Scott Phillips <d.scott.phillips@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Dec 11, 2019 at 08:10:39AM +0000, Patchwork wrote:
-> == Series Details ==
+On Tue, Dec 10, 2019 at 04:52:17PM -0800, D Scott Phillips wrote:
+> We can get POSIX basename by including libgen.h. It behaves
+> slightly differently from GNU basename, like possibly modifying
+> the passed in string. This is OK in this usage, and POSIX basename
+> is available on other platforms.
 > 
-> Series: series starting with [i-g-t,1/2] runner: Ensure generated json is properly UTF8-encoded
-> URL   : https://patchwork.freedesktop.org/series/70492/
-> State : warning
+> Signed-off-by: D Scott Phillips <d.scott.phillips@intel.com>
+> ---
+>  tests/i915/i915_pm_backlight.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> == Summary ==
-> 
-> Did not get list of undocumented tests for this run, something is wrong!
-> 
-> Other than that, pipeline status: FAILED.
+> diff --git a/tests/i915/i915_pm_backlight.c b/tests/i915/i915_pm_backlight.c
+> index 83b1ed68..2f65156f 100644
+> --- a/tests/i915/i915_pm_backlight.c
+> +++ b/tests/i915/i915_pm_backlight.c
+> @@ -30,6 +30,7 @@
+>  #include <sys/types.h>
+>  #include <sys/stat.h>
+>  #include <fcntl.h>
+> +#include <libgen.h>
 
-
-Not completely surprisingly the fancy-characters patch doesn't survive
-being sent by email. The series can be seen in
-https://gitlab.freedesktop.org/adrinael/igt-gpu-tools/commits/unprintable
-with the build-time tests passing.
+Needs to be wrapped in #ifdef HAVE_LIBGEN_H though.
 
 
 -- 
