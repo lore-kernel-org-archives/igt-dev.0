@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 163CF897FD
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Dec 2019 13:55:24 +0000 (UTC)
-Date: Mon, 16 Dec 2019 15:55:19 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20191216135519.GG25209@platvala-desk.ger.corp.intel.com>
-References: <20191211005235.67897-1-d.scott.phillips@intel.com>
- <87lfrh3ifb.fsf@intel.com> <86v9qlo176.fsf@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <86v9qlo176.fsf@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 00/30] Add FreeBSD Support
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 16 Dec 2019 14:10:51 -0000
+Message-ID: <157650545116.5612.5751216429563193018@emeril.freedesktop.org>
+References: <1576142830-31269-1-git-send-email-kunal1.joshi@intel.com>
+In-Reply-To: <1576142830-31269-1-git-send-email-kunal1.joshi@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_l?=
+ =?utf-8?q?ib/igt=5Fchamelium=2Ec_skip_test_if_chamelium_is_not_connected?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,74 +14,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: D Scott Phillips <d.scott.phillips@intel.com>
+To: Kunal Joshi <kunal1.joshi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Dec 12, 2019 at 10:20:29AM -0800, D Scott Phillips wrote:
-> Jani Nikula <jani.nikula@linux.intel.com> writes:
-> 
-> > I'll mostly defer to Petri and Arek, the IGT maintainers, on the
-> > details.
-> >
-> > I think the bigger questions are, 1) How do we ensure this does not
-> > bitrot in a matter of weeks? Which translates to, 2) Who is going to
-> > automate and maintain continuous build testing? And, 3) Who's going to
-> > take ownership of the port in general?
-> >
-> > Personally, I don't think this is going to work long term just by
-> > merging the port upstream. I think without the continuous support from
-> > people who care about FreeBSD, this is going to be a net negative.
-> 
-> Right, I think that's a fair point. What level of continuous support do
-> you think would get us out of the negative here? A continuous build
-> could be fairly easy to get configured, but might be a side workflow
-> apart from how normal CI results are presented. I think that could be a
-> reasonable indication that things aren't rotting. More sophisticated CI
-> is within the realm of possibility but could be quite a bit harder to
-> get off the ground with.
+== Series Details ==
 
-I'd say the bar to reach is
+Series: lib/igt_chamelium.c skip test if chamelium is not connected
+URL   : https://patchwork.freedesktop.org/series/70982/
+State : warning
 
-* build-testing for each commit
-* someone responsible for fixing issues in the above in a timely manner
+== Summary ==
 
-Build-testing we can reach quite easily in gitlab, for some values of
-easily, but the second point is harder.
+Did not get list of undocumented tests for this run, something is wrong!
 
-> Ultimately, I think as long as the kernel driver port exists this is
-> something that we will want.
+Other than that, pipeline status: FAILED.
 
-Yep. Ultimately, running the tests on HW on FreeBSD is a change that I
-would very much welcome.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/89260 for the overview.
 
-> As to who owns the port, FreeBSD has a "Graphics Team" that collectively
-> owns the kernel driver port, so I think the most robust answer going
-> forward is to have them own this port. I can take this up with them and 
-> see if they'll affirm that they will take some ownership here.
+containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1160826):
+  [0Ksection_start:1576505127:download_artifacts
+  [0K[32;1mDownloading artifacts for build:tests-fedora (1160808)...[0;m
+  Downloading artifacts from coordinator... ok      [0;m  id[0;m=1160808 responseStatus[0;m=200 OK token[0;m=tq9MQ7wi
+  section_end:1576505133:download_artifacts
+  [0Ksection_start:1576505133:build_script
+  [0K[0KAuthenticating with credentials from job payload (GitLab Registry)
+  [0;m[32;1m$ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY[0;m
+  Login Succeeded!
+  [32;1m$ .gitlab-ci/pull-or-rebuild.sh igt Dockerfile igt[0;m
+  STEP 1: FROM registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-bdc2c7b88050d9cef9b3e9daafd50d433e3bb98e
+  Getting image source signatures
+  Copying blob sha256:b39735705e69a2516323755ff4698ea5cd86b08b31d8c8287bc83d76d34c3bfc
+  Error: error creating build container: Error writing blob: error storing blob to file "/var/tmp/storage472580015/1": unexpected EOF
+  section_end:1576505157:build_script
+  [0Ksection_start:1576505157:after_script
+  [0Ksection_end:1576505160:after_script
+  [0Ksection_start:1576505160:upload_artifacts_on_failure
+  [0Ksection_end:1576505162:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
-Thanks for doing this!
+== Logs ==
 
-As for the series as such:
-
-There's some trivial cleanups in there that I suspect will help even
-Linux users on non-glibc systems that we can merge as is. I'm going to
-go through reviewing the series later this week for those parts.
-
-The null-implementation patches are for sure getting a NAK in that
-form. They need a function-by-function analysis of whether the correct
-"do nothing" approach is actually doing nothing or straight up
-igt_skip("Not supported on this platform"); in some form.
-For example, tests that use igt_fork_signal_helper will test nothing
-if they don't manage to fork a periodical interrupter process.
-
-
--- 
-Petri Latvala
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/89260
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
