@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A028C6E593
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Dec 2019 14:11:57 +0000 (UTC)
+References: <20191216120923.2376-1-tvrtko.ursulin@linux.intel.com>
+ <20191216120923.2376-2-tvrtko.ursulin@linux.intel.com>
+ <157650281113.2428.13876026348312542903@skylake-alporthouse-com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <e01d7d43-9592-4a9c-dbd3-392b3e37407c@linux.intel.com>
+Date: Mon, 16 Dec 2019 14:11:53 +0000
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 16 Dec 2019 14:10:51 -0000
-Message-ID: <157650545116.5612.5751216429563193018@emeril.freedesktop.org>
-References: <1576142830-31269-1-git-send-email-kunal1.joshi@intel.com>
-In-Reply-To: <1576142830-31269-1-git-send-email-kunal1.joshi@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_l?=
- =?utf-8?q?ib/igt=5Fchamelium=2Ec_skip_test_if_chamelium_is_not_connected?=
+In-Reply-To: <157650281113.2428.13876026348312542903@skylake-alporthouse-com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] intel-gpu-top: Support for client
+ stats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,54 +20,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
+Cc: Brian Welty <brian.welty@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: lib/igt_chamelium.c skip test if chamelium is not connected
-URL   : https://patchwork.freedesktop.org/series/70982/
-State : warning
+On 16/12/2019 13:26, Chris Wilson wrote:
+> Quoting Tvrtko Ursulin (2019-12-16 12:09:23)
+>> +static void __restore_stats(void)
+>> +{
+>> +       int ret;
+>> +
+>> +       if (__stats_enabled)
+>> +               return;
+>> +
+>> +       ret = __set_stats(false);
+> 
+> Therein lies the problem with a global toggle. :(
 
-== Summary ==
+Inverted check bug, okay. :) But yes, global toggle is a bit of a silly 
+thing.
 
-Did not get list of undocumented tests for this run, something is wrong!
+> Hmm, if our stats toggling is always in process_csb() responding to
+> events, they shouldn't affect execution latency... I think you have made
+> them cheap enough to consider always enabling. Let's see.
 
-Other than that, pipeline status: FAILED.
+I think they will be. Didn't spot anything in casual testing but can do 
+more pathological cases if you want.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/89260 for the overview.
+Regards,
 
-containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1160826):
-  [0Ksection_start:1576505127:download_artifacts
-  [0K[32;1mDownloading artifacts for build:tests-fedora (1160808)...[0;m
-  Downloading artifacts from coordinator... ok      [0;m  id[0;m=1160808 responseStatus[0;m=200 OK token[0;m=tq9MQ7wi
-  section_end:1576505133:download_artifacts
-  [0Ksection_start:1576505133:build_script
-  [0K[0KAuthenticating with credentials from job payload (GitLab Registry)
-  [0;m[32;1m$ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY[0;m
-  Login Succeeded!
-  [32;1m$ .gitlab-ci/pull-or-rebuild.sh igt Dockerfile igt[0;m
-  STEP 1: FROM registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-bdc2c7b88050d9cef9b3e9daafd50d433e3bb98e
-  Getting image source signatures
-  Copying blob sha256:b39735705e69a2516323755ff4698ea5cd86b08b31d8c8287bc83d76d34c3bfc
-  Error: error creating build container: Error writing blob: error storing blob to file "/var/tmp/storage472580015/1": unexpected EOF
-  section_end:1576505157:build_script
-  [0Ksection_start:1576505157:after_script
-  [0Ksection_end:1576505160:after_script
-  [0Ksection_start:1576505160:upload_artifacts_on_failure
-  [0Ksection_end:1576505162:upload_artifacts_on_failure
-  [0K[31;1mERROR: Job failed: exit code 1
-  [0;m
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/89260
+Tvrtko
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
