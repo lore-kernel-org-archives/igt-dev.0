@@ -1,100 +1,121 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: Juston Li <juston.li@intel.com>
+Date: Mon, 16 Dec 2019 19:48:37 -0800
+Message-Id: <20191217034836.3936-1-juston.li@intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <b7aaba89-5922-2427-f53d-c11350365ffa@intel.com>
-References: <20191216093433.2517697-1-chris@chris-wilson.co.uk>
- <3b79edfe-673a-9cb7-d8a0-7bf5b54748c8@intel.com>
- <157649017142.2285.5855880084447200659@skylake-alporthouse-com>
- <24ba122e-1213-f230-86b5-152b916833b3@intel.com>
- <157649205822.2285.1111290120487433485@skylake-alporthouse-com>
- <b7aaba89-5922-2427-f53d-c11350365ffa@intel.com>
-Message-ID: <157649417185.2428.9685146186524712541@skylake-alporthouse-com>
-Date: Mon, 16 Dec 2019 11:02:51 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/perf: Skip OA testing on systems
- too old
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: [Intel-gfx] [PATCH v4 i-g-t 1/2] NOMERGE: Import drm.h up to
+ 54ecb8f7028c
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>, intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, ville.syrjala@linux.intel.com, daniel@ffwll.ch
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Lionel Landwerlin (2019-12-16 10:41:40)
-> On 16/12/2019 12:27, Chris Wilson wrote:
-> > Quoting Lionel Landwerlin (2019-12-16 10:06:53)
-> >> On 16/12/2019 11:56, Chris Wilson wrote:
-> >>
-> >>      Quoting Lionel Landwerlin (2019-12-16 09:46:56)
-> >>
-> >>          On 16/12/2019 11:34, Chris Wilson wrote:
-> >>
-> >>              Don't flat out fail if the system doesn't support OA, just skip.
-> >>
-> >>              Closes: https://gitlab.freedesktop.org/drm/intel/issues/834
-> >>              Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> >>              ---
-> >>                tests/perf.c | 4 +---
-> >>                1 file changed, 1 insertion(+), 3 deletions(-)
-> >>
-> >>              diff --git a/tests/perf.c b/tests/perf.c
-> >>              index f5dd6051e..12f552743 100644
-> >>              --- a/tests/perf.c
-> >>              +++ b/tests/perf.c
-> >>              @@ -884,11 +884,9 @@ init_sys_info(void)
-> >>                    const char *test_set_uuid = NULL;
-> >>                    char buf[256];
-> >>
-> >>              -     igt_assert_neq(devid, 0);
-> >>              -
-> >>                    timestamp_frequency = get_cs_timestamp_frequency();
-> >>                    igt_debug("timestamp_frequency = %lu\n", timestamp_frequency);
-> >>              -     igt_assert_neq(timestamp_frequency, 0);
-> >>              +     igt_require(timestamp_frequency);
-> >>
-> >>
-> >>          This requires a kernel version more recent (4.16) than when perf support
-> >>          was added (4.13).
-> >>
-> >>          Is this what you intended?
-> >>
-> >>      You have a fatal assert there. I am just changing it so that it skips
-> >>      when not supported as no testing is being performed.
-> >>      -Chris
-> >>
-> >> I think there might be a problem in i915 if this returns 0.
-> > It should return 0 for gen3 before Pineview.
-> >
-> > However, since it returns i915->rawclk_freq on pnv and g4x, it should
-> > have a value except that i915->cs_timestamp_freq is set in
-> > intel_device_info_runtime_init (i915_driver_hw_probe) before the
-> > rawclk_freq is set (i915_driver_modeset_probe).
-> >
-> > Not sure the best approach to straighten out that mess... Just delaying
-> > setting cs_timestamp_freq to i915_driver_register seems to be the best
-> > idea.
-> > -Chris
-> 
-> That's what I remember reading from old specs (cs timestamp = a factor 
-> of rawclk).
-> 
-> So I was expecting to always get a value.
-> 
-> 
-> Can we call intel_update_rawclk() in read_timestamp_frequency() just for 
-> the <= gen4 case?
+Depends on ummerged kernel code for getfb2
 
-It's only defined for g4x & pnv and later. It doesn't cover earlier
-gen4/gen3/gen2, so still we have 0.
--Chris
+Rest of drm.h taken from:
+commit 54ecb8f7028c5eb3d740bb82b0f1d90f2df63c5c
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon Sep 30 10:35:40 2019 -0700
+
+    Linux 5.4-rc1
+
+Signed-off-by: Juston Li <juston.li@intel.com>
+---
+ include/drm-uapi/drm.h | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
+
+diff --git a/include/drm-uapi/drm.h b/include/drm-uapi/drm.h
+index 85c685a2075e..0b02f4c92d1e 100644
+--- a/include/drm-uapi/drm.h
++++ b/include/drm-uapi/drm.h
+@@ -643,6 +643,7 @@ struct drm_gem_open {
+ #define DRM_CAP_PAGE_FLIP_TARGET	0x11
+ #define DRM_CAP_CRTC_IN_VBLANK_EVENT	0x12
+ #define DRM_CAP_SYNCOBJ		0x13
++#define DRM_CAP_SYNCOBJ_TIMELINE	0x14
+ 
+ /** DRM_IOCTL_GET_CAP ioctl argument type */
+ struct drm_get_cap {
+@@ -729,8 +730,18 @@ struct drm_syncobj_handle {
+ 	__u32 pad;
+ };
+ 
++struct drm_syncobj_transfer {
++	__u32 src_handle;
++	__u32 dst_handle;
++	__u64 src_point;
++	__u64 dst_point;
++	__u32 flags;
++	__u32 pad;
++};
++
+ #define DRM_SYNCOBJ_WAIT_FLAGS_WAIT_ALL (1 << 0)
+ #define DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT (1 << 1)
++#define DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE (1 << 2) /* wait for time point to become available */
+ struct drm_syncobj_wait {
+ 	__u64 handles;
+ 	/* absolute timeout */
+@@ -741,12 +752,33 @@ struct drm_syncobj_wait {
+ 	__u32 pad;
+ };
+ 
++struct drm_syncobj_timeline_wait {
++	__u64 handles;
++	/* wait on specific timeline point for every handles*/
++	__u64 points;
++	/* absolute timeout */
++	__s64 timeout_nsec;
++	__u32 count_handles;
++	__u32 flags;
++	__u32 first_signaled; /* only valid when not waiting all */
++	__u32 pad;
++};
++
++
+ struct drm_syncobj_array {
+ 	__u64 handles;
+ 	__u32 count_handles;
+ 	__u32 pad;
+ };
+ 
++struct drm_syncobj_timeline_array {
++	__u64 handles;
++	__u64 points;
++	__u32 count_handles;
++	__u32 pad;
++};
++
++
+ /* Query current scanout sequence number */
+ struct drm_crtc_get_sequence {
+ 	__u32 crtc_id;		/* requested crtc_id */
+@@ -903,6 +935,13 @@ extern "C" {
+ #define DRM_IOCTL_MODE_GET_LEASE	DRM_IOWR(0xC8, struct drm_mode_get_lease)
+ #define DRM_IOCTL_MODE_REVOKE_LEASE	DRM_IOWR(0xC9, struct drm_mode_revoke_lease)
+ 
++#define DRM_IOCTL_SYNCOBJ_TIMELINE_WAIT	DRM_IOWR(0xCA, struct drm_syncobj_timeline_wait)
++#define DRM_IOCTL_SYNCOBJ_QUERY		DRM_IOWR(0xCB, struct drm_syncobj_timeline_array)
++#define DRM_IOCTL_SYNCOBJ_TRANSFER	DRM_IOWR(0xCC, struct drm_syncobj_transfer)
++#define DRM_IOCTL_SYNCOBJ_TIMELINE_SIGNAL	DRM_IOWR(0xCD, struct drm_syncobj_timeline_array)
++
++#define DRM_IOCTL_MODE_GETFB2		DRM_IOWR(0xCE, struct drm_mode_fb_cmd2)
++
+ /**
+  * Device specific ioctls should only be in their respective headers
+  * The device specific ioctl range is from 0x40 to 0x9f.
+-- 
+2.21.0
+
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
