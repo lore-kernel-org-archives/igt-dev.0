@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F4EA6E92D
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Dec 2019 01:37:38 +0000 (UTC)
-Message-ID: <ddbbf0ac60a4a04860539da3470dfc8413870fbe.camel@intel.com>
-From: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-Date: Mon, 16 Dec 2019 17:00:47 -0800
-In-Reply-To: <20191216235407.23070-1-imre.deak@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A76A89C17
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Dec 2019 01:54:12 +0000 (UTC)
+Date: Tue, 17 Dec 2019 03:53:48 +0200
+From: Imre Deak <imre.deak@intel.com>
+Message-ID: <20191217015348.GA25471@ideak-desk.fi.intel.com>
 References: <20191216235407.23070-1-imre.deak@intel.com>
-Mime-Version: 1.0
+ <ddbbf0ac60a4a04860539da3470dfc8413870fbe.camel@intel.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <ddbbf0ac60a4a04860539da3470dfc8413870fbe.camel@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_fb: Add support for the gen12
  media compressed modifier
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -17,127 +19,250 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: dhinakaran.pandiyan@intel.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: imre.deak@intel.com
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Imre Deak <imre.deak@intel.com>, igt-dev@lists.freedesktop.org
+To: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDE5LTEyLTE3IGF0IDAxOjU0ICswMjAwLCBJbXJlIERlYWsgd3JvdGU6Cj4gTWVk
-aWEgY29tcHJlc3NlZCBmcmFtZWJ1ZmZlcnMgZG9uJ3QgaGF2ZSBhIENDUyBDQyBwbGFuZS4gQWRk
-IGhlbHBlcnMgdG8KPiBzZWxlY3QgdGhlIGRpZmZlcmVudCB0eXBlcyBvZiBDQ1MgcGxhbmVzIGFu
-ZCBtYWtlIHN1cmUgd2Ugc2V0dXAgdGhlCj4gcGxhbmVzIGNvcnJlY3RseSBmb3IgTUMgZnJhbWVi
-dWZmZXJzIHRvby4KPiAKPiBOb3RlIHRoYXQgdGhlIG9yZGVyIG9mIE1DIGZyYW1lYnVmZmVyIHBs
-YW5lcyB0aGlzIGNoYW5nZSBhc3N1bWVzIGlzCj4gCj4gcGxhbmUgMDogWSBwbGFuZQo+IHBsYW5l
-IDE6IFVWIHBsYW5lCj4gcGxhbmUgMjogQ0NTIHBsYW5lIGZvciBwbGFuZSAwCj4gcGxhbmUgMzog
-Q0NTIHBsYW5lIGZvciBwbGFuZSAxCj4gCj4gdW5saWtlIHRoZSBvcmRlciBkZWZpbmVkIGluIHRo
-ZSBsYXRlc3QgZGVjb21wcmVzc2lvbiBrZXJuZWwgcGF0Y2hzZXQuCgpIbW0uIHRoYXQgaXMgaW5k
-ZWVkIHRoZSBvcmRlciBpbiB0aGUgbGF0ZXN0IChiYWNrIGluIFNlcHRlbWJlcikgcGF0Y2ggc2V0
-IEkgc2VudCBvdXQgIApodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvcGF0Y2gvMzMz
-MTEzLz9zZXJpZXM9NjcwNzgmcmV2PTMKCitzdGF0aWMgYm9vbCBpc19jY3NfcGxhbmUoY29uc3Qg
-c3RydWN0IGRybV9mcmFtZWJ1ZmZlciAqZmIsIGludCBjb2xvcl9wbGFuZSkKK3sKKwlpZiAoIWlz
-X2Njc19tb2RpZmllcihmYi0+bW9kaWZpZXIpKQorCQlyZXR1cm4gZmFsc2U7CisKKwlyZXR1cm4g
-Y29sb3JfcGxhbmUgPj0gZmItPmZvcm1hdC0+bnVtX3BsYW5lcyAvIDI7Cit9CgoKVGhlIGRvY3Mg
-aW4gdGhlIG1vZGlmaWVyIHdlcmUgcHJvYmFibHkgbm90IHVwZGF0ZWQuCgotREsKCj4gVGhlIGFi
-b3ZlIG9yZGVyIGlzIHRoZSBsb2dpY2FsIG9uZSB0aGF0IGFsbG93cyB1cyB0byBrZWVwIHRoZSBl
-eGlzdGluZwo+IHdheSBvZiBoYW5kbGluZyB0aGUgWS9VViBwbGFuZXMuCj4gCj4gQ2M6IE1pa2Eg
-S2Fob2xhIDxtaWthLmthaG9sYUBpbnRlbC5jb20+Cj4gQ2M6IERoaW5ha2FyYW4gUGFuZGl5YW4g
-PGRoaW5ha2FyYW4ucGFuZGl5YW5AaW50ZWwuY29tPgo+IENjOiBWaWxsZSBTeXJqw6Rsw6QgPHZp
-bGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPgo+IFNpZ25lZC1vZmYtYnk6IEltcmUgRGVhayA8
-aW1yZS5kZWFrQGludGVsLmNvbT4KPiAtLS0KPiAgbGliL2lndF9mYi5jIHwgOTIgKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLQo+ICAxIGZpbGUgY2hh
-bmdlZCwgNjQgaW5zZXJ0aW9ucygrKSwgMjggZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBh
-L2xpYi9pZ3RfZmIuYyBiL2xpYi9pZ3RfZmIuYwo+IGluZGV4IDNiMTQxYjkzLi44YzZjNDI2ZCAx
-MDA2NDQKPiAtLS0gYS9saWIvaWd0X2ZiLmMKPiArKysgYi9saWIvaWd0X2ZiLmMKPiBAQCAtNDg3
-LDE4ICs0ODcsNTAgQEAgc3RhdGljIGJvb2wgaXNfY2NzX21vZGlmaWVyKHVpbnQ2NF90IG1vZGlm
-aWVyKQo+ICAJCW1vZGlmaWVyID09IEk5MTVfRk9STUFUX01PRF9ZZl9USUxFRF9DQ1M7Cj4gIH0K
-PiAgCj4gK3N0YXRpYyBib29sIGlzX2Njc19wbGFuZShjb25zdCBzdHJ1Y3QgaWd0X2ZiICpmYiwg
-aW50IHBsYW5lKQo+ICt7Cj4gKwlpZiAoaXNfZ2VuMTJfbWNfY2NzX21vZGlmaWVyKGZiLT5tb2Rp
-ZmllcikpCj4gKwkJcmV0dXJuIHBsYW5lID49IGZiLT5udW1fcGxhbmVzIC8gMjsKPiArCj4gKwly
-ZXR1cm4gcGxhbmUgPiAwOwo+ICt9Cj4gKwo+ICtzdGF0aWMgYm9vbCBpc19nZW4xMl9jY3NfcGxh
-bmUoY29uc3Qgc3RydWN0IGlndF9mYiAqZmIsIGludCBwbGFuZSkKPiArewo+ICsJcmV0dXJuIGlz
-X2dlbjEyX2Njc19tb2RpZmllcihmYi0+bW9kaWZpZXIpICYmIGlzX2Njc19wbGFuZShmYiwgcGxh
-bmUpOwo+ICt9Cj4gKwo+ICtzdGF0aWMgYm9vbCBpc19nZW4xMl9jY3NfY2NfcGxhbmUoY29uc3Qg
-c3RydWN0IGlndF9mYiAqZmIsIGludCBwbGFuZSkKPiArewo+ICsJcmV0dXJuIGZiLT5tb2RpZmll
-ciA9PSBJOTE1X0ZPUk1BVF9NT0RfWV9USUxFRF9HRU4xMl9SQ19DQ1NfQ0MgJiYKPiArCSAgICAg
-ICBwbGFuZSA9PSAyOwo+ICt9Cj4gKwo+ICtzdGF0aWMgaW50IGNjc190b19tYWluX3BsYW5lKGNv
-bnN0IHN0cnVjdCBpZ3RfZmIgKmZiLCBpbnQgcGxhbmUpCj4gK3sKPiArCWlmIChpc19nZW4xMl9j
-Y3NfY2NfcGxhbmUoZmIsIHBsYW5lKSkKPiArCQlyZXR1cm4gMDsKPiArCj4gKwlyZXR1cm4gcGxh
-bmUgLSBmYi0+bnVtX3BsYW5lcyAvIDI7Cj4gK30KPiArCj4gIHN0YXRpYyB1bnNpZ25lZCBmYl9w
-bGFuZV93aWR0aChjb25zdCBzdHJ1Y3QgaWd0X2ZiICpmYiwgaW50IHBsYW5lKQo+ICB7Cj4gIAlj
-b25zdCBzdHJ1Y3QgZm9ybWF0X2Rlc2Nfc3RydWN0ICpmb3JtYXQgPSBsb29rdXBfZHJtX2Zvcm1h
-dChmYi0+ZHJtX2Zvcm1hdCk7Cj4gIAo+IC0JaWYgKGlzX2Njc19tb2RpZmllcihmYi0+bW9kaWZp
-ZXIpICYmIHBsYW5lID09IDEpIHsKPiAtCQlpZiAoaXNfZ2VuMTJfY2NzX21vZGlmaWVyKGZiLT5t
-b2RpZmllcikpCj4gLQkJCXJldHVybiBESVZfUk9VTkRfVVAoZmItPndpZHRoLAo+IC0JCQkJCSAg
-ICA1MTIgLyAoZmItPnBsYW5lX2JwcFswXSAvIDgpKSAqIDY0Owo+IC0JCWVsc2UKPiAtCQkJcmV0
-dXJuIERJVl9ST1VORF9VUChmYi0+d2lkdGgsIDEwMjQpICogMTI4Owo+IC0JfSBlbHNlIGlmIChp
-c19nZW4xMl9jY3NfbW9kaWZpZXIoZmItPm1vZGlmaWVyKSAmJiBwbGFuZSA9PSAyKSB7Cj4gKwlp
-ZiAoaXNfZ2VuMTJfY2NzX2NjX3BsYW5lKGZiLCBwbGFuZSkpIHsKPiAgCQlyZXR1cm4gNjQ7Cj4g
-Kwl9IGlmIChpc19nZW4xMl9jY3NfcGxhbmUoZmIsIHBsYW5lKSkgewo+ICsJCWludCBtYWluX3Bs
-YW5lID0gY2NzX3RvX21haW5fcGxhbmUoZmIsIHBsYW5lKTsKPiArCQlpbnQgd2lkdGggPSBmYi0+
-d2lkdGg7Cj4gKwo+ICsJCWlmIChtYWluX3BsYW5lKQo+ICsJCQl3aWR0aCA9IERJVl9ST1VORF9V
-UCh3aWR0aCwgZm9ybWF0LT5oc3ViKTsKPiArCj4gKwkJcmV0dXJuIERJVl9ST1VORF9VUCh3aWR0
-aCwKPiArCQkJCSAgICA1MTIgLyAoZmItPnBsYW5lX2JwcFttYWluX3BsYW5lXSAvIDgpKSAqIDY0
-Owo+ICsJfSBlbHNlIGlmIChpc19jY3NfcGxhbmUoZmIsIHBsYW5lKSkgewo+ICsJCSByZXR1cm4g
-RElWX1JPVU5EX1VQKGZiLT53aWR0aCwgMTAyNCkgKiAxMjg7Cj4gIAl9Cj4gIAo+ICAJaWYgKHBs
-YW5lID09IDApCj4gQEAgLTUxMSw3ICs1NDMsNyBAQCBzdGF0aWMgdW5zaWduZWQgZmJfcGxhbmVf
-YnBwKGNvbnN0IHN0cnVjdCBpZ3RfZmIgKmZiLCBpbnQgcGxhbmUpCj4gIHsKPiAgCWNvbnN0IHN0
-cnVjdCBmb3JtYXRfZGVzY19zdHJ1Y3QgKmZvcm1hdCA9IGxvb2t1cF9kcm1fZm9ybWF0KGZiLT5k
-cm1fZm9ybWF0KTsKPiAgCj4gLQlpZiAoaXNfY2NzX21vZGlmaWVyKGZiLT5tb2RpZmllcikgJiYg
-KHBsYW5lID09IDEgfHwgcGxhbmUgPT0gMikpCj4gKwlpZiAoaXNfY2NzX3BsYW5lKGZiLCBwbGFu
-ZSkpCj4gIAkJcmV0dXJuIDg7Cj4gIAllbHNlCj4gIAkJcmV0dXJuIGZvcm1hdC0+cGxhbmVfYnBw
-W3BsYW5lXTsKPiBAQCAtNTIxLDEzICs1NTMsMTggQEAgc3RhdGljIHVuc2lnbmVkIGZiX3BsYW5l
-X2hlaWdodChjb25zdCBzdHJ1Y3QgaWd0X2ZiICpmYiwgaW50IHBsYW5lKQo+ICB7Cj4gIAljb25z
-dCBzdHJ1Y3QgZm9ybWF0X2Rlc2Nfc3RydWN0ICpmb3JtYXQgPSBsb29rdXBfZHJtX2Zvcm1hdChm
-Yi0+ZHJtX2Zvcm1hdCk7Cj4gIAo+IC0JaWYgKGlzX2Njc19tb2RpZmllcihmYi0+bW9kaWZpZXIp
-ICYmIHBsYW5lID09IDEpIHsKPiAtCQlpZiAoaXNfZ2VuMTJfY2NzX21vZGlmaWVyKGZiLT5tb2Rp
-ZmllcikpCj4gLQkJCXJldHVybiBESVZfUk9VTkRfVVAoZmItPmhlaWdodCwgMTI4KSAqIDQ7Cj4g
-LQkJZWxzZQo+IC0JCQlyZXR1cm4gRElWX1JPVU5EX1VQKGZiLT5oZWlnaHQsIDUxMikgKiAzMjsK
-PiAtCX0gZWxzZSBpZiAoaXNfZ2VuMTJfY2NzX21vZGlmaWVyKGZiLT5tb2RpZmllcikgJiYgcGxh
-bmUgPT0gMikKPiArCWlmIChpc19nZW4xMl9jY3NfY2NfcGxhbmUoZmIsIHBsYW5lKSkgewo+ICAJ
-CXJldHVybiAxOwo+ICsJfSBlbHNlIGlmIChpc19nZW4xMl9jY3NfcGxhbmUoZmIsIHBsYW5lKSkg
-ewo+ICsJCWludCBoZWlnaHQgPSBmYi0+aGVpZ2h0Owo+ICsKPiArCQlpZiAoY2NzX3RvX21haW5f
-cGxhbmUoZmIsIHBsYW5lKSkKPiArCQkJaGVpZ2h0ID0gRElWX1JPVU5EX1VQKGhlaWdodCwgZm9y
-bWF0LT52c3ViKTsKPiArCj4gKwkJcmV0dXJuIERJVl9ST1VORF9VUChoZWlnaHQsIDEyOCkgKiA0
-Owo+ICsJfSBlbHNlIGlmIChpc19jY3NfcGxhbmUoZmIsIHBsYW5lKSkgewo+ICsJCXJldHVybiBE
-SVZfUk9VTkRfVVAoZmItPmhlaWdodCwgNTEyKSAqIDMyOwo+ICsJfQo+ICAKPiAgCWlmIChwbGFu
-ZSA9PSAwKQo+ICAJCXJldHVybiBmYi0+aGVpZ2h0Owo+IEBAIC01MzcsMTYgKzU3NCwxNSBAQCBz
-dGF0aWMgdW5zaWduZWQgZmJfcGxhbmVfaGVpZ2h0KGNvbnN0IHN0cnVjdCBpZ3RfZmIgKmZiLCBp
-bnQgcGxhbmUpCj4gIAo+ICBzdGF0aWMgaW50IGZiX251bV9wbGFuZXMoY29uc3Qgc3RydWN0IGln
-dF9mYiAqZmIpCj4gIHsKPiAtCWNvbnN0IHN0cnVjdCBmb3JtYXRfZGVzY19zdHJ1Y3QgKmZvcm1h
-dCA9IGxvb2t1cF9kcm1fZm9ybWF0KGZiLT5kcm1fZm9ybWF0KTsKPiArCWludCBudW1fcGxhbmVz
-ID0gbG9va3VwX2RybV9mb3JtYXQoZmItPmRybV9mb3JtYXQpLT5udW1fcGxhbmVzOwo+ICAKPiAt
-CWlmIChpc19jY3NfbW9kaWZpZXIoZmItPm1vZGlmaWVyKSkgewo+IC0JCWlmIChmYi0+bW9kaWZp
-ZXIgPT0gSTkxNV9GT1JNQVRfTU9EX1lfVElMRURfR0VOMTJfUkNfQ0NTX0NDKQo+IC0JCQlyZXR1
-cm4gMzsKPiAtCQllbHNlCj4gLQkJCXJldHVybiAyOwo+IC0JfSBlbHNlIHsKPiAtCQlyZXR1cm4g
-Zm9ybWF0LT5udW1fcGxhbmVzOwo+IC0JfQo+ICsJaWYgKGlzX2Njc19tb2RpZmllcihmYi0+bW9k
-aWZpZXIpKQo+ICsJCW51bV9wbGFuZXMgKj0gMjsKPiArCj4gKwlpZiAoZmItPm1vZGlmaWVyID09
-IEk5MTVfRk9STUFUX01PRF9ZX1RJTEVEX0dFTjEyX1JDX0NDU19DQykKPiArCQludW1fcGxhbmVz
-Kys7Cj4gKwo+ICsJcmV0dXJuIG51bV9wbGFuZXM7Cj4gIH0KPiAgCj4gIHZvaWQgaWd0X2luaXRf
-ZmIoc3RydWN0IGlndF9mYiAqZmIsIGludCBmZCwgaW50IHdpZHRoLCBpbnQgaGVpZ2h0LAo+IEBA
-IC02MDQsMTIgKzY0MCwxMiBAQCBzdGF0aWMgdWludDMyX3QgY2FsY19wbGFuZV9zdHJpZGUoc3Ry
-dWN0IGlndF9mYiAqZmIsIGludCBwbGFuZSkKPiAgCQkgKiBzbyB0aGUgZWFzaWVzdCB3YXkgaXMg
-dG8gYWxpZ24gdGhlIGx1bWEgc3RyaWRlIHRvIDI1Ni4KPiAgCQkgKi8KPiAgCQlyZXR1cm4gQUxJ
-R04obWluX3N0cmlkZSwgMjU2KTsKPiAtCX0gZWxzZSBpZiAoaXNfZ2VuMTJfY2NzX21vZGlmaWVy
-KGZiLT5tb2RpZmllcikgJiYgcGxhbmUgPT0gMSkgewo+IC0JCS8qIEEgbWFpbiBzdXJmYWNlIHVz
-aW5nIGEgQ0NTIEFVWCBzdXJmYWNlIG11c3QgYmUgNHg0IHRpbGVzIGFsaWduZWQuICovCj4gLQkJ
-cmV0dXJuIEFMSUdOKG1pbl9zdHJpZGUsIDY0KTsKPiAtCX0gZWxzZSBpZiAoaXNfZ2VuMTJfY2Nz
-X21vZGlmaWVyKGZiLT5tb2RpZmllcikgJiYgcGxhbmUgPT0gMikgewo+ICsJfSBlbHNlIGlmIChp
-c19nZW4xMl9jY3NfY2NfcGxhbmUoZmIsIHBsYW5lKSkgewo+ICAJCS8qIGNsZWFyIGNvbG9yIGFs
-d2F5cyBmaXhlZCB0byA2NCBieXRlcyAqLwo+ICAJCXJldHVybiA2NDsKPiArCX0gZWxzZSBpZiAo
-aXNfZ2VuMTJfY2NzX3BsYW5lKGZiLCBwbGFuZSkpIHsKPiArCQkvKiBBIG1haW4gc3VyZmFjZSB1
-c2luZyBhIENDUyBBVVggc3VyZmFjZSBtdXN0IGJlIDR4NCB0aWxlcyBhbGlnbmVkLiAqLwo+ICsJ
-CXJldHVybiBBTElHTihtaW5fc3RyaWRlLCA2NCk7Cj4gIAl9IGVsc2Ugewo+ICAJCXVuc2lnbmVk
-IGludCB0aWxlX3dpZHRoLCB0aWxlX2hlaWdodDsKPiAgCj4gQEAgLTY0NCw3ICs2ODAsNyBAQCBz
-dGF0aWMgdWludDY0X3QgY2FsY19wbGFuZV9zaXplKHN0cnVjdCBpZ3RfZmIgKmZiLCBpbnQgcGxh
-bmUpCj4gIAkJc2l6ZSA9IHJvdW5kdXBfcG93ZXJfb2ZfdHdvKHNpemUpOwo+ICAKPiAgCQlyZXR1
-cm4gc2l6ZTsKPiAtCX0gZWxzZSBpZiAoaXNfZ2VuMTJfY2NzX21vZGlmaWVyKGZiLT5tb2RpZmll
-cikgJiYgKHBsYW5lID09IDEgfHwgcGxhbmUgPT0gMikpIHsKPiArCX0gZWxzZSBpZiAoaXNfZ2Vu
-MTJfY2NzX3BsYW5lKGZiLCBwbGFuZSkpIHsKPiAgCQkvKiBUaGUgQVVYIENDUyBzdXJmYWNlIG11
-c3QgYmUgcGFnZSBhbGlnbmVkICovCj4gIAkJcmV0dXJuICh1aW50NjRfdClmYi0+c3RyaWRlc1tw
-bGFuZV0gKgo+ICAJCQlBTElHTihmYi0+cGxhbmVfaGVpZ2h0W3BsYW5lXSwgNjQpOwoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5n
-IGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
-a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On Mon, Dec 16, 2019 at 05:00:47PM -0800, Dhinakaran Pandiyan wrote:
+> On Tue, 2019-12-17 at 01:54 +0200, Imre Deak wrote:
+> > Media compressed framebuffers don't have a CCS CC plane. Add helpers to
+> > select the different types of CCS planes and make sure we setup the
+> > planes correctly for MC framebuffers too.
+> > =
+
+> > Note that the order of MC framebuffer planes this change assumes is
+> > =
+
+> > plane 0: Y plane
+> > plane 1: UV plane
+> > plane 2: CCS plane for plane 0
+> > plane 3: CCS plane for plane 1
+> > =
+
+> > unlike the order defined in the latest decompression kernel patchset.
+> =
+
+> Hmm. that is indeed the order in the latest (back in September) patch set=
+ I sent out  =
+
+> https://patchwork.freedesktop.org/patch/333113/?series=3D67078&rev=3D3
+
+The patchset was resent in October that uses a different order and
+that's what I picked up:
+https://patchwork.freedesktop.org/patch/337991/?series=3D66814&rev=3D9
+
+> +static bool is_ccs_plane(const struct drm_framebuffer *fb, int color_pla=
+ne)
+> +{
+> +	if (!is_ccs_modifier(fb->modifier))
+> +		return false;
+> +
+> +	return color_plane >=3D fb->format->num_planes / 2;
+> +}
+
+Thanks, this is simpler.
+
+> The docs in the modifier were probably not updated.
+
+I'll update the docs in the kernel patchset.
+
+> =
+
+> -DK
+> =
+
+> > The above order is the logical one that allows us to keep the existing
+> > way of handling the Y/UV planes.
+> > =
+
+> > Cc: Mika Kahola <mika.kahola@intel.com>
+> > Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
+> > Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> > Signed-off-by: Imre Deak <imre.deak@intel.com>
+> > ---
+> >  lib/igt_fb.c | 92 ++++++++++++++++++++++++++++++++++++----------------
+> >  1 file changed, 64 insertions(+), 28 deletions(-)
+> > =
+
+> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> > index 3b141b93..8c6c426d 100644
+> > --- a/lib/igt_fb.c
+> > +++ b/lib/igt_fb.c
+> > @@ -487,18 +487,50 @@ static bool is_ccs_modifier(uint64_t modifier)
+> >  		modifier =3D=3D I915_FORMAT_MOD_Yf_TILED_CCS;
+> >  }
+> >  =
+
+> > +static bool is_ccs_plane(const struct igt_fb *fb, int plane)
+> > +{
+> > +	if (is_gen12_mc_ccs_modifier(fb->modifier))
+> > +		return plane >=3D fb->num_planes / 2;
+> > +
+> > +	return plane > 0;
+> > +}
+> > +
+> > +static bool is_gen12_ccs_plane(const struct igt_fb *fb, int plane)
+> > +{
+> > +	return is_gen12_ccs_modifier(fb->modifier) && is_ccs_plane(fb, plane);
+> > +}
+> > +
+> > +static bool is_gen12_ccs_cc_plane(const struct igt_fb *fb, int plane)
+> > +{
+> > +	return fb->modifier =3D=3D I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC &&
+> > +	       plane =3D=3D 2;
+> > +}
+> > +
+> > +static int ccs_to_main_plane(const struct igt_fb *fb, int plane)
+> > +{
+> > +	if (is_gen12_ccs_cc_plane(fb, plane))
+> > +		return 0;
+> > +
+> > +	return plane - fb->num_planes / 2;
+> > +}
+> > +
+> >  static unsigned fb_plane_width(const struct igt_fb *fb, int plane)
+> >  {
+> >  	const struct format_desc_struct *format =3D lookup_drm_format(fb->drm=
+_format);
+> >  =
+
+> > -	if (is_ccs_modifier(fb->modifier) && plane =3D=3D 1) {
+> > -		if (is_gen12_ccs_modifier(fb->modifier))
+> > -			return DIV_ROUND_UP(fb->width,
+> > -					    512 / (fb->plane_bpp[0] / 8)) * 64;
+> > -		else
+> > -			return DIV_ROUND_UP(fb->width, 1024) * 128;
+> > -	} else if (is_gen12_ccs_modifier(fb->modifier) && plane =3D=3D 2) {
+> > +	if (is_gen12_ccs_cc_plane(fb, plane)) {
+> >  		return 64;
+> > +	} if (is_gen12_ccs_plane(fb, plane)) {
+> > +		int main_plane =3D ccs_to_main_plane(fb, plane);
+> > +		int width =3D fb->width;
+> > +
+> > +		if (main_plane)
+> > +			width =3D DIV_ROUND_UP(width, format->hsub);
+> > +
+> > +		return DIV_ROUND_UP(width,
+> > +				    512 / (fb->plane_bpp[main_plane] / 8)) * 64;
+> > +	} else if (is_ccs_plane(fb, plane)) {
+> > +		 return DIV_ROUND_UP(fb->width, 1024) * 128;
+> >  	}
+> >  =
+
+> >  	if (plane =3D=3D 0)
+> > @@ -511,7 +543,7 @@ static unsigned fb_plane_bpp(const struct igt_fb *f=
+b, int plane)
+> >  {
+> >  	const struct format_desc_struct *format =3D lookup_drm_format(fb->drm=
+_format);
+> >  =
+
+> > -	if (is_ccs_modifier(fb->modifier) && (plane =3D=3D 1 || plane =3D=3D =
+2))
+> > +	if (is_ccs_plane(fb, plane))
+> >  		return 8;
+> >  	else
+> >  		return format->plane_bpp[plane];
+> > @@ -521,13 +553,18 @@ static unsigned fb_plane_height(const struct igt_=
+fb *fb, int plane)
+> >  {
+> >  	const struct format_desc_struct *format =3D lookup_drm_format(fb->drm=
+_format);
+> >  =
+
+> > -	if (is_ccs_modifier(fb->modifier) && plane =3D=3D 1) {
+> > -		if (is_gen12_ccs_modifier(fb->modifier))
+> > -			return DIV_ROUND_UP(fb->height, 128) * 4;
+> > -		else
+> > -			return DIV_ROUND_UP(fb->height, 512) * 32;
+> > -	} else if (is_gen12_ccs_modifier(fb->modifier) && plane =3D=3D 2)
+> > +	if (is_gen12_ccs_cc_plane(fb, plane)) {
+> >  		return 1;
+> > +	} else if (is_gen12_ccs_plane(fb, plane)) {
+> > +		int height =3D fb->height;
+> > +
+> > +		if (ccs_to_main_plane(fb, plane))
+> > +			height =3D DIV_ROUND_UP(height, format->vsub);
+> > +
+> > +		return DIV_ROUND_UP(height, 128) * 4;
+> > +	} else if (is_ccs_plane(fb, plane)) {
+> > +		return DIV_ROUND_UP(fb->height, 512) * 32;
+> > +	}
+> >  =
+
+> >  	if (plane =3D=3D 0)
+> >  		return fb->height;
+> > @@ -537,16 +574,15 @@ static unsigned fb_plane_height(const struct igt_=
+fb *fb, int plane)
+> >  =
+
+> >  static int fb_num_planes(const struct igt_fb *fb)
+> >  {
+> > -	const struct format_desc_struct *format =3D lookup_drm_format(fb->drm=
+_format);
+> > +	int num_planes =3D lookup_drm_format(fb->drm_format)->num_planes;
+> >  =
+
+> > -	if (is_ccs_modifier(fb->modifier)) {
+> > -		if (fb->modifier =3D=3D I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC)
+> > -			return 3;
+> > -		else
+> > -			return 2;
+> > -	} else {
+> > -		return format->num_planes;
+> > -	}
+> > +	if (is_ccs_modifier(fb->modifier))
+> > +		num_planes *=3D 2;
+> > +
+> > +	if (fb->modifier =3D=3D I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC)
+> > +		num_planes++;
+> > +
+> > +	return num_planes;
+> >  }
+> >  =
+
+> >  void igt_init_fb(struct igt_fb *fb, int fd, int width, int height,
+> > @@ -604,12 +640,12 @@ static uint32_t calc_plane_stride(struct igt_fb *=
+fb, int plane)
+> >  		 * so the easiest way is to align the luma stride to 256.
+> >  		 */
+> >  		return ALIGN(min_stride, 256);
+> > -	} else if (is_gen12_ccs_modifier(fb->modifier) && plane =3D=3D 1) {
+> > -		/* A main surface using a CCS AUX surface must be 4x4 tiles aligned.=
+ */
+> > -		return ALIGN(min_stride, 64);
+> > -	} else if (is_gen12_ccs_modifier(fb->modifier) && plane =3D=3D 2) {
+> > +	} else if (is_gen12_ccs_cc_plane(fb, plane)) {
+> >  		/* clear color always fixed to 64 bytes */
+> >  		return 64;
+> > +	} else if (is_gen12_ccs_plane(fb, plane)) {
+> > +		/* A main surface using a CCS AUX surface must be 4x4 tiles aligned.=
+ */
+> > +		return ALIGN(min_stride, 64);
+> >  	} else {
+> >  		unsigned int tile_width, tile_height;
+> >  =
+
+> > @@ -644,7 +680,7 @@ static uint64_t calc_plane_size(struct igt_fb *fb, =
+int plane)
+> >  		size =3D roundup_power_of_two(size);
+> >  =
+
+> >  		return size;
+> > -	} else if (is_gen12_ccs_modifier(fb->modifier) && (plane =3D=3D 1 || =
+plane =3D=3D 2)) {
+> > +	} else if (is_gen12_ccs_plane(fb, plane)) {
+> >  		/* The AUX CCS surface must be page aligned */
+> >  		return (uint64_t)fb->strides[plane] *
+> >  			ALIGN(fb->plane_height[plane], 64);
+> =
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
