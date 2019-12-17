@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM02-CY1-obe.outbound.protection.outlook.com
- (mail-eopbgr760053.outbound.protection.outlook.com [40.107.76.53])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ADD2E6E0E7
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Dec 2019 14:00:25 +0000 (UTC)
-References: <20191211204636.16222-1-sunpeng.li@amd.com>
- <20191212150319.GP1208@intel.com>
- <cd5191d3-a041-5d7e-ba3a-69fb11aafa30@amd.com>
- <20191212211326.GU1208@intel.com>
-From: Leo <sunpeng.li@amd.com>
-Message-ID: <1ff03e11-12ab-1355-975a-ffca550ee069@amd.com>
-Date: Tue, 17 Dec 2019 09:00:22 -0500
-In-Reply-To: <20191212211326.GU1208@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4EF7C6E9F8
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Dec 2019 14:26:02 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+Date: Tue, 17 Dec 2019 14:25:59 +0000
+Message-ID: <507a9687789d7c4014f6489be3782d3dfd9201cb.camel@intel.com>
+References: <20191217000033.24913-1-imre.deak@intel.com>
+ <20191217020237.27522-1-imre.deak@intel.com>
+In-Reply-To: <20191217020237.27522-1-imre.deak@intel.com>
 Content-Language: en-US
+Content-ID: <B656274BFD0E95468E7ADBD6935D7867@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_color: Add 10bpc frame buffer
- parameterization to subtests
+Subject: Re: [igt-dev] [PATCH v3] lib/igt_fb: Add support for the gen12
+ media compressed modifier
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,53 +20,235 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Deak,
+ Imre" <imre.deak@intel.com>
+Cc: "Pandiyan, Dhinakaran" <dhinakaran.pandiyan@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CgpPbiAyMDE5LTEyLTEyIDQ6MTMgcC5tLiwgVmlsbGUgU3lyasOkbMOkIHdyb3RlOgo+IE9uIFRo
-dSwgRGVjIDEyLCAyMDE5IGF0IDAzOjUzOjM0UE0gLTA1MDAsIExlbyB3cm90ZToKPj4KPj4KPj4g
-T24gMjAxOS0xMi0xMiAxMDowMyBhLm0uLCBWaWxsZSBTeXJqw6Rsw6Qgd3JvdGU6Cj4+PiBPbiBX
-ZWQsIERlYyAxMSwgMjAxOSBhdCAwMzo0NjozNlBNIC0wNTAwLCBzdW5wZW5nLmxpQGFtZC5jb20g
-d3JvdGU6Cj4+Pj4gRnJvbTogTGVvIExpIDxzdW5wZW5nLmxpQGFtZC5jb20+Cj4+Pj4KPj4+PiBX
-ZSdkIGxpa2UgdG8gdGVzdCB0aGUgaGFyZHdhcmUgcGlwZSdzIGNvbG9yIG1hbmFnZW1lbnQgd2l0
-aCAxMGJpdAo+Pj4+IHN1cmZhY2VzLgo+Pj4KPj4+IFdoeSBleGFjdGx5PyBUaGUgcGlwZSBjb2xv
-ciBtYW5hZ2VtZW50IHN0dWZmIGRvZXNuJ3QgY2FyZSB3aGF0Cj4+PiBwaXhlbCBmb3JtYXQgdGhl
-IHBsYW5lIHVzZWQuCj4+Pgo+Pgo+PiBXZSBleHBvc2UgMTBicGMgc3VwcG9ydCB0byB1c2VybW9k
-ZSB3aXRoIGNvbG9yIG1hbmFnZW1lbnQsIHNvIGl0J2QgYmUKPj4gZ29vZCB0byBjb3ZlciBpdCB3
-aXRoIGEgdGVzdC4KPj4KPj4gV2l0aCBhbWRwZ3UsIGNvbG9yIG1hbmFnZW1lbnQgaW5kZWVkIGRv
-ZXNuJ3QgY2FyZSBhYm91dCBzdXJmYWNlIGZvcm1hdCwKPj4gc2luY2UgaXQncyBhbGwgY29udmVy
-dGVkIHRvIGZpeGVkIHBvaW50IGluIGhhcmR3YXJlIGJlZm9yZWhhbmQuCj4gCj4gVG90YWxseSBt
-aXNzZWQgdGhpcyBjYW1lIGZyb20gQU1EIGZvbGtzLiBHb29kIHRoaW5nIEkgd2FzIHN0aWxsCj4g
-Y29ycmVjdCB3aXRoIG15IHN0YXRlbWVudCB0aGVuIDopCj4gCj4+IEJ1dCBJCj4+IHRoaW5rIGl0
-J3MgYmVzdCB0byBub3QgYXNzdW1lIGhhcmR3YXJlIGJlaGF2aW9yLCBhbmQgdGVzdCB0aGUgYWN0
-dWFsCj4+IHVzZSBjYXNlIGluc3RlYWQuCj4gCj4gSSB0aGluayB3aGF0IHdlIHdvdWxkIHJlYWxs
-eSB3YW50IGlzIGEgdGVzdCB0aGF0IG1ha2VzIHN1cmUgd2UgY2FuCj4gYWNoaWV2ZSB0aGUgZGVz
-aXJlZCBwcmVjaXNpb24gaW4gdGhlIG91dHB1dCBmb3Igc29tZSBmYiBkZXB0aCBhbmQKPiBnYW1t
-YSBjb25maWd1cmF0aW9uIChzYWRseSB0aGUgZ2FtbWEgdWFwaSBkb2Vzbid0IGxldCB1cyBkbyB0
-aGF0Cj4gQVRNIGluIGEgaGFyZHdhcmUgYWdub3N0aWMgd2F5KS4gSSBkb24ndCB0aGluayB0aGlz
-IHRlc3QgY3VycmVudGx5Cj4gY2hlY2tzIGFueXRoaW5nIGxpa2UgdGhhdC4gQnV0IG1heWJlIEkn
-bSBtaXNyZW1lYmVyaW5nIHdoYXQgaXQKPiBhY3R1YWxseSBkb2VzLgo+IAoKa21zX2NvbG9yIGRv
-ZXMgYSBtaW4gYW5kIG1heCBnYW1tYSB0ZXN0IHdoZXJlIGFsbCB2YWx1ZXMgYXJlIG1hcHBlZCB0
-byAwCm9yIDEsIHNvIG5vIHByZWNpc2lvbiBjaGVjayB0aGVyZS4uLiBIb3dldmVyLCBpdCBsb29r
-cyBsaWtlIENUTQpwcmVjaXNpb24gaXMgY2hlY2tlZCB0byBiZSB3aXRoaW4gc29tZSByZWFzb25h
-YmxlIHRocmVzaG9sZCwgYWNjb3JkaW5nCnRvIHRoZSBicGMgdGVzdGVkLgoKSSdtIG5vdCBzdXJl
-IGlmIHRlc3RpbmcgTFVUIHByZWNpc2lvbiB3b3VsZCBtYWtlIHNlbnNlIGFzIGEgaHcgYWdub3N0
-aWMKdGVzdC4gRm9yIEFNRCBoYXJkd2FyZSBhdCBsZWFzdCwgdGhlIGludGVybmFsIHJlcHJlc2Vu
-dGF0aW9uIHdhc24ndCBkZXNpZ25lZCB0bwpiZSBwcmVjaXNlLCBidXQgdG8gZm9sbG93IGh1bWFu
-IGNvbG9yIHBlcmNlcHRpb24uIGkuZS4gcHJlY2lzaW9uIGlzIGxvc3QgYXQKaGlnaGVyIGNvbG9y
-IHZhbHVlcy4gU28gYW55IExVVCBwcmVjaXNpb24gdGVzdCB3aWxsIGhhdmUgdG8gdGFrZSB2ZW5k
-b3Itc3BlY2lmaWMKcXVhcmtzIGludG8gYWNjb3VudC4gUGVyaGFwcyB0aGlzIGlzbid0IHRoZSBj
-YXNlIGZvciB0aGUgQ1RNIHNpbmNlIHRoZSBjb25jZXB0CmZvciBodyBpcyBzaW1wbGVyPyBBdCBs
-ZWFzdCBpdCB3b3JrcyB3ZWxsIHdpdGggaTkxNSBhbmQgYW1kZ3B1IEZXSUNULgoKUGVyaGFwcyBp
-dCdzIGJldHRlciB0byBoYXZlIHZlbmRvciBzcGVjaWZpYyB0ZXN0cyBmb3IgTFVUIHByZWNpc2lv
-biBhbmQKYWNjdXJhY3kuIEkgdGhpbmsgdGhlc2UgdGVzdHMgd2lsbCBhdCBsZWFzdCBzaG93IHRo
-YXQgZ2FtbWEgaXMgb3BlcmF0aW9uYWwgd2l0aAoxMGJwYyBzdXJmYWNlcywgd2hpY2ggaXMgaHct
-YWdub3N0aWMgZW5vdWdoIG9mIGEgdGVzdC4KCkxlbwpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3Rz
-LmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2lndC1kZXYK
+On Tue, 2019-12-17 at 04:02 +0200, Imre Deak wrote:
+> Media compressed framebuffers don't have a CCS CC plane. Add helpers
+> to
+> select the different types of CCS planes and make sure we setup the
+> planes correctly for MC framebuffers too.
+> =
+
+> Note that the order of MC framebuffer planes this change assumes is
+> =
+
+> plane 0: Y plane
+> plane 1: UV plane
+> plane 2: CCS plane for plane 0
+> plane 3: CCS plane for plane 1
+> =
+
+> unlike the order defined in the latest decompression kernel patchset.
+> The above order is the logical one that allows us to keep the
+> existing
+> way of handling the Y/UV planes.
+> =
+
+> v2:
+> - Fix is_ccs_plane() adding the missing is_ccs_modifier() check.
+> v3:
+> - Simplify is_ccs_plane(). (DK)
+> =
+
+> Cc: Mika Kahola <mika.kahola@intel.com>
+> Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
+> Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> Signed-off-by: Imre Deak <imre.deak@intel.com>
+
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+
+> ---
+>  lib/igt_fb.c | 92 ++++++++++++++++++++++++++++++++++++------------
+> ----
+>  1 file changed, 64 insertions(+), 28 deletions(-)
+> =
+
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 3b141b93..e6eb39ac 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -487,18 +487,50 @@ static bool is_ccs_modifier(uint64_t modifier)
+>  		modifier =3D=3D I915_FORMAT_MOD_Yf_TILED_CCS;
+>  }
+>  =
+
+> +static bool is_ccs_plane(const struct igt_fb *fb, int plane)
+> +{
+> +	if (!is_ccs_modifier(fb->modifier))
+> +		return false;
+> +
+> +	return plane >=3D fb->num_planes / 2;
+> +}
+> +
+> +static bool is_gen12_ccs_plane(const struct igt_fb *fb, int plane)
+> +{
+> +	return is_gen12_ccs_modifier(fb->modifier) && is_ccs_plane(fb,
+> plane);
+> +}
+> +
+> +static bool is_gen12_ccs_cc_plane(const struct igt_fb *fb, int
+> plane)
+> +{
+> +	return fb->modifier =3D=3D I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC
+> &&
+> +	       plane =3D=3D 2;
+> +}
+> +
+> +static int ccs_to_main_plane(const struct igt_fb *fb, int plane)
+> +{
+> +	if (is_gen12_ccs_cc_plane(fb, plane))
+> +		return 0;
+> +
+> +	return plane - fb->num_planes / 2;
+> +}
+> +
+>  static unsigned fb_plane_width(const struct igt_fb *fb, int plane)
+>  {
+>  	const struct format_desc_struct *format =3D lookup_drm_format(fb-
+> >drm_format);
+>  =
+
+> -	if (is_ccs_modifier(fb->modifier) && plane =3D=3D 1) {
+> -		if (is_gen12_ccs_modifier(fb->modifier))
+> -			return DIV_ROUND_UP(fb->width,
+> -					    512 / (fb->plane_bpp[0] /
+> 8)) * 64;
+> -		else
+> -			return DIV_ROUND_UP(fb->width, 1024) * 128;
+> -	} else if (is_gen12_ccs_modifier(fb->modifier) && plane =3D=3D 2) {
+> +	if (is_gen12_ccs_cc_plane(fb, plane)) {
+>  		return 64;
+> +	} if (is_gen12_ccs_plane(fb, plane)) {
+> +		int main_plane =3D ccs_to_main_plane(fb, plane);
+> +		int width =3D fb->width;
+> +
+> +		if (main_plane)
+> +			width =3D DIV_ROUND_UP(width, format->hsub);
+> +
+> +		return DIV_ROUND_UP(width,
+> +				    512 / (fb->plane_bpp[main_plane] /
+> 8)) * 64;
+> +	} else if (is_ccs_plane(fb, plane)) {
+> +		 return DIV_ROUND_UP(fb->width, 1024) * 128;
+>  	}
+>  =
+
+>  	if (plane =3D=3D 0)
+> @@ -511,7 +543,7 @@ static unsigned fb_plane_bpp(const struct igt_fb
+> *fb, int plane)
+>  {
+>  	const struct format_desc_struct *format =3D lookup_drm_format(fb-
+> >drm_format);
+>  =
+
+> -	if (is_ccs_modifier(fb->modifier) && (plane =3D=3D 1 || plane =3D=3D
+> 2))
+> +	if (is_ccs_plane(fb, plane))
+>  		return 8;
+>  	else
+>  		return format->plane_bpp[plane];
+> @@ -521,13 +553,18 @@ static unsigned fb_plane_height(const struct
+> igt_fb *fb, int plane)
+>  {
+>  	const struct format_desc_struct *format =3D lookup_drm_format(fb-
+> >drm_format);
+>  =
+
+> -	if (is_ccs_modifier(fb->modifier) && plane =3D=3D 1) {
+> -		if (is_gen12_ccs_modifier(fb->modifier))
+> -			return DIV_ROUND_UP(fb->height, 128) * 4;
+> -		else
+> -			return DIV_ROUND_UP(fb->height, 512) * 32;
+> -	} else if (is_gen12_ccs_modifier(fb->modifier) && plane =3D=3D 2)
+> +	if (is_gen12_ccs_cc_plane(fb, plane)) {
+>  		return 1;
+> +	} else if (is_gen12_ccs_plane(fb, plane)) {
+> +		int height =3D fb->height;
+> +
+> +		if (ccs_to_main_plane(fb, plane))
+> +			height =3D DIV_ROUND_UP(height, format->vsub);
+> +
+> +		return DIV_ROUND_UP(height, 128) * 4;
+> +	} else if (is_ccs_plane(fb, plane)) {
+> +		return DIV_ROUND_UP(fb->height, 512) * 32;
+> +	}
+>  =
+
+>  	if (plane =3D=3D 0)
+>  		return fb->height;
+> @@ -537,16 +574,15 @@ static unsigned fb_plane_height(const struct
+> igt_fb *fb, int plane)
+>  =
+
+>  static int fb_num_planes(const struct igt_fb *fb)
+>  {
+> -	const struct format_desc_struct *format =3D lookup_drm_format(fb-
+> >drm_format);
+> +	int num_planes =3D lookup_drm_format(fb->drm_format)->num_planes;
+>  =
+
+> -	if (is_ccs_modifier(fb->modifier)) {
+> -		if (fb->modifier =3D=3D
+> I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC)
+> -			return 3;
+> -		else
+> -			return 2;
+> -	} else {
+> -		return format->num_planes;
+> -	}
+> +	if (is_ccs_modifier(fb->modifier))
+> +		num_planes *=3D 2;
+> +
+> +	if (fb->modifier =3D=3D I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC)
+> +		num_planes++;
+> +
+> +	return num_planes;
+>  }
+>  =
+
+>  void igt_init_fb(struct igt_fb *fb, int fd, int width, int height,
+> @@ -604,12 +640,12 @@ static uint32_t calc_plane_stride(struct igt_fb
+> *fb, int plane)
+>  		 * so the easiest way is to align the luma stride to
+> 256.
+>  		 */
+>  		return ALIGN(min_stride, 256);
+> -	} else if (is_gen12_ccs_modifier(fb->modifier) && plane =3D=3D 1) {
+> -		/* A main surface using a CCS AUX surface must be 4x4
+> tiles aligned. */
+> -		return ALIGN(min_stride, 64);
+> -	} else if (is_gen12_ccs_modifier(fb->modifier) && plane =3D=3D 2) {
+> +	} else if (is_gen12_ccs_cc_plane(fb, plane)) {
+>  		/* clear color always fixed to 64 bytes */
+>  		return 64;
+> +	} else if (is_gen12_ccs_plane(fb, plane)) {
+> +		/* A main surface using a CCS AUX surface must be 4x4
+> tiles aligned. */
+> +		return ALIGN(min_stride, 64);
+>  	} else {
+>  		unsigned int tile_width, tile_height;
+>  =
+
+> @@ -644,7 +680,7 @@ static uint64_t calc_plane_size(struct igt_fb
+> *fb, int plane)
+>  		size =3D roundup_power_of_two(size);
+>  =
+
+>  		return size;
+> -	} else if (is_gen12_ccs_modifier(fb->modifier) && (plane =3D=3D 1
+> || plane =3D=3D 2)) {
+> +	} else if (is_gen12_ccs_plane(fb, plane)) {
+>  		/* The AUX CCS surface must be page aligned */
+>  		return (uint64_t)fb->strides[plane] *
+>  			ALIGN(fb->plane_height[plane], 64);
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
