@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F79889C88
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Dec 2019 11:27:55 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 94FB289A76
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Dec 2019 11:30:28 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
-Date: Tue, 17 Dec 2019 13:27:46 +0200
-Message-Id: <20191217112746.1172-1-petri.latvala@intel.com>
+Date: Tue, 17 Dec 2019 13:30:17 +0200
+Message-Id: <20191217113017.2595-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/1] intel-ci: Blacklist panfrost tests from
+Subject: [igt-dev] [PATCH i-g-t 1/1] intel-ci: Blacklist v3d tests from
  shards
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -26,24 +26,21 @@ List-ID: <igt-dev@lists.freedesktop.org>
 Signed-off-by: Petri Latvala <petri.latvala@intel.com>
 Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>
 ---
- tests/intel-ci/blacklist.txt | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/intel-ci/blacklist.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-index a48163c6..092a673d 100644
+index a48163c6..9bd1b396 100644
 --- a/tests/intel-ci/blacklist.txt
 +++ b/tests/intel-ci/blacklist.txt
-@@ -91,6 +91,10 @@ igt@vc4_.*
+@@ -86,6 +86,7 @@ igt@kms_frontbuffer_tracking@.*drrs.*
+ # Broadcom
  ###############################################
- igt@amdgpu/.*
+ igt@vc4_.*
++igt@v3d_.*
  ###############################################
-+# Panfrost
-+###############################################
-+igt@panfrost_.*
-+###############################################
- # Hibernate: not configured correctly on CI
+ # AMD
  ###############################################
- igt@.*@.*-hibernate
 -- 
 2.19.1
 
