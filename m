@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A76A89C17
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Dec 2019 01:54:12 +0000 (UTC)
-Date: Tue, 17 Dec 2019 03:53:48 +0200
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D77A6E92E
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Dec 2019 02:03:00 +0000 (UTC)
 From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20191217015348.GA25471@ideak-desk.fi.intel.com>
-References: <20191216235407.23070-1-imre.deak@intel.com>
- <ddbbf0ac60a4a04860539da3470dfc8413870fbe.camel@intel.com>
+Date: Tue, 17 Dec 2019 04:02:37 +0200
+Message-Id: <20191217020237.27522-1-imre.deak@intel.com>
+In-Reply-To: <20191217000033.24913-1-imre.deak@intel.com>
+References: <20191217000033.24913-1-imre.deak@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <ddbbf0ac60a4a04860539da3470dfc8413870fbe.camel@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_fb: Add support for the gen12
- media compressed modifier
+Subject: [igt-dev] [PATCH v3] lib/igt_fb: Add support for the gen12 media
+ compressed modifier
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,250 +17,115 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: imre.deak@intel.com
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Dec 16, 2019 at 05:00:47PM -0800, Dhinakaran Pandiyan wrote:
-> On Tue, 2019-12-17 at 01:54 +0200, Imre Deak wrote:
-> > Media compressed framebuffers don't have a CCS CC plane. Add helpers to
-> > select the different types of CCS planes and make sure we setup the
-> > planes correctly for MC framebuffers too.
-> > =
-
-> > Note that the order of MC framebuffer planes this change assumes is
-> > =
-
-> > plane 0: Y plane
-> > plane 1: UV plane
-> > plane 2: CCS plane for plane 0
-> > plane 3: CCS plane for plane 1
-> > =
-
-> > unlike the order defined in the latest decompression kernel patchset.
-> =
-
-> Hmm. that is indeed the order in the latest (back in September) patch set=
- I sent out  =
-
-> https://patchwork.freedesktop.org/patch/333113/?series=3D67078&rev=3D3
-
-The patchset was resent in October that uses a different order and
-that's what I picked up:
-https://patchwork.freedesktop.org/patch/337991/?series=3D66814&rev=3D9
-
-> +static bool is_ccs_plane(const struct drm_framebuffer *fb, int color_pla=
-ne)
-> +{
-> +	if (!is_ccs_modifier(fb->modifier))
-> +		return false;
-> +
-> +	return color_plane >=3D fb->format->num_planes / 2;
-> +}
-
-Thanks, this is simpler.
-
-> The docs in the modifier were probably not updated.
-
-I'll update the docs in the kernel patchset.
-
-> =
-
-> -DK
-> =
-
-> > The above order is the logical one that allows us to keep the existing
-> > way of handling the Y/UV planes.
-> > =
-
-> > Cc: Mika Kahola <mika.kahola@intel.com>
-> > Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
-> > Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > Signed-off-by: Imre Deak <imre.deak@intel.com>
-> > ---
-> >  lib/igt_fb.c | 92 ++++++++++++++++++++++++++++++++++++----------------
-> >  1 file changed, 64 insertions(+), 28 deletions(-)
-> > =
-
-> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> > index 3b141b93..8c6c426d 100644
-> > --- a/lib/igt_fb.c
-> > +++ b/lib/igt_fb.c
-> > @@ -487,18 +487,50 @@ static bool is_ccs_modifier(uint64_t modifier)
-> >  		modifier =3D=3D I915_FORMAT_MOD_Yf_TILED_CCS;
-> >  }
-> >  =
-
-> > +static bool is_ccs_plane(const struct igt_fb *fb, int plane)
-> > +{
-> > +	if (is_gen12_mc_ccs_modifier(fb->modifier))
-> > +		return plane >=3D fb->num_planes / 2;
-> > +
-> > +	return plane > 0;
-> > +}
-> > +
-> > +static bool is_gen12_ccs_plane(const struct igt_fb *fb, int plane)
-> > +{
-> > +	return is_gen12_ccs_modifier(fb->modifier) && is_ccs_plane(fb, plane);
-> > +}
-> > +
-> > +static bool is_gen12_ccs_cc_plane(const struct igt_fb *fb, int plane)
-> > +{
-> > +	return fb->modifier =3D=3D I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC &&
-> > +	       plane =3D=3D 2;
-> > +}
-> > +
-> > +static int ccs_to_main_plane(const struct igt_fb *fb, int plane)
-> > +{
-> > +	if (is_gen12_ccs_cc_plane(fb, plane))
-> > +		return 0;
-> > +
-> > +	return plane - fb->num_planes / 2;
-> > +}
-> > +
-> >  static unsigned fb_plane_width(const struct igt_fb *fb, int plane)
-> >  {
-> >  	const struct format_desc_struct *format =3D lookup_drm_format(fb->drm=
-_format);
-> >  =
-
-> > -	if (is_ccs_modifier(fb->modifier) && plane =3D=3D 1) {
-> > -		if (is_gen12_ccs_modifier(fb->modifier))
-> > -			return DIV_ROUND_UP(fb->width,
-> > -					    512 / (fb->plane_bpp[0] / 8)) * 64;
-> > -		else
-> > -			return DIV_ROUND_UP(fb->width, 1024) * 128;
-> > -	} else if (is_gen12_ccs_modifier(fb->modifier) && plane =3D=3D 2) {
-> > +	if (is_gen12_ccs_cc_plane(fb, plane)) {
-> >  		return 64;
-> > +	} if (is_gen12_ccs_plane(fb, plane)) {
-> > +		int main_plane =3D ccs_to_main_plane(fb, plane);
-> > +		int width =3D fb->width;
-> > +
-> > +		if (main_plane)
-> > +			width =3D DIV_ROUND_UP(width, format->hsub);
-> > +
-> > +		return DIV_ROUND_UP(width,
-> > +				    512 / (fb->plane_bpp[main_plane] / 8)) * 64;
-> > +	} else if (is_ccs_plane(fb, plane)) {
-> > +		 return DIV_ROUND_UP(fb->width, 1024) * 128;
-> >  	}
-> >  =
-
-> >  	if (plane =3D=3D 0)
-> > @@ -511,7 +543,7 @@ static unsigned fb_plane_bpp(const struct igt_fb *f=
-b, int plane)
-> >  {
-> >  	const struct format_desc_struct *format =3D lookup_drm_format(fb->drm=
-_format);
-> >  =
-
-> > -	if (is_ccs_modifier(fb->modifier) && (plane =3D=3D 1 || plane =3D=3D =
-2))
-> > +	if (is_ccs_plane(fb, plane))
-> >  		return 8;
-> >  	else
-> >  		return format->plane_bpp[plane];
-> > @@ -521,13 +553,18 @@ static unsigned fb_plane_height(const struct igt_=
-fb *fb, int plane)
-> >  {
-> >  	const struct format_desc_struct *format =3D lookup_drm_format(fb->drm=
-_format);
-> >  =
-
-> > -	if (is_ccs_modifier(fb->modifier) && plane =3D=3D 1) {
-> > -		if (is_gen12_ccs_modifier(fb->modifier))
-> > -			return DIV_ROUND_UP(fb->height, 128) * 4;
-> > -		else
-> > -			return DIV_ROUND_UP(fb->height, 512) * 32;
-> > -	} else if (is_gen12_ccs_modifier(fb->modifier) && plane =3D=3D 2)
-> > +	if (is_gen12_ccs_cc_plane(fb, plane)) {
-> >  		return 1;
-> > +	} else if (is_gen12_ccs_plane(fb, plane)) {
-> > +		int height =3D fb->height;
-> > +
-> > +		if (ccs_to_main_plane(fb, plane))
-> > +			height =3D DIV_ROUND_UP(height, format->vsub);
-> > +
-> > +		return DIV_ROUND_UP(height, 128) * 4;
-> > +	} else if (is_ccs_plane(fb, plane)) {
-> > +		return DIV_ROUND_UP(fb->height, 512) * 32;
-> > +	}
-> >  =
-
-> >  	if (plane =3D=3D 0)
-> >  		return fb->height;
-> > @@ -537,16 +574,15 @@ static unsigned fb_plane_height(const struct igt_=
-fb *fb, int plane)
-> >  =
-
-> >  static int fb_num_planes(const struct igt_fb *fb)
-> >  {
-> > -	const struct format_desc_struct *format =3D lookup_drm_format(fb->drm=
-_format);
-> > +	int num_planes =3D lookup_drm_format(fb->drm_format)->num_planes;
-> >  =
-
-> > -	if (is_ccs_modifier(fb->modifier)) {
-> > -		if (fb->modifier =3D=3D I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC)
-> > -			return 3;
-> > -		else
-> > -			return 2;
-> > -	} else {
-> > -		return format->num_planes;
-> > -	}
-> > +	if (is_ccs_modifier(fb->modifier))
-> > +		num_planes *=3D 2;
-> > +
-> > +	if (fb->modifier =3D=3D I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC)
-> > +		num_planes++;
-> > +
-> > +	return num_planes;
-> >  }
-> >  =
-
-> >  void igt_init_fb(struct igt_fb *fb, int fd, int width, int height,
-> > @@ -604,12 +640,12 @@ static uint32_t calc_plane_stride(struct igt_fb *=
-fb, int plane)
-> >  		 * so the easiest way is to align the luma stride to 256.
-> >  		 */
-> >  		return ALIGN(min_stride, 256);
-> > -	} else if (is_gen12_ccs_modifier(fb->modifier) && plane =3D=3D 1) {
-> > -		/* A main surface using a CCS AUX surface must be 4x4 tiles aligned.=
- */
-> > -		return ALIGN(min_stride, 64);
-> > -	} else if (is_gen12_ccs_modifier(fb->modifier) && plane =3D=3D 2) {
-> > +	} else if (is_gen12_ccs_cc_plane(fb, plane)) {
-> >  		/* clear color always fixed to 64 bytes */
-> >  		return 64;
-> > +	} else if (is_gen12_ccs_plane(fb, plane)) {
-> > +		/* A main surface using a CCS AUX surface must be 4x4 tiles aligned.=
- */
-> > +		return ALIGN(min_stride, 64);
-> >  	} else {
-> >  		unsigned int tile_width, tile_height;
-> >  =
-
-> > @@ -644,7 +680,7 @@ static uint64_t calc_plane_size(struct igt_fb *fb, =
-int plane)
-> >  		size =3D roundup_power_of_two(size);
-> >  =
-
-> >  		return size;
-> > -	} else if (is_gen12_ccs_modifier(fb->modifier) && (plane =3D=3D 1 || =
-plane =3D=3D 2)) {
-> > +	} else if (is_gen12_ccs_plane(fb, plane)) {
-> >  		/* The AUX CCS surface must be page aligned */
-> >  		return (uint64_t)fb->strides[plane] *
-> >  			ALIGN(fb->plane_height[plane], 64);
-> =
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+TWVkaWEgY29tcHJlc3NlZCBmcmFtZWJ1ZmZlcnMgZG9uJ3QgaGF2ZSBhIENDUyBDQyBwbGFuZS4g
+QWRkIGhlbHBlcnMgdG8Kc2VsZWN0IHRoZSBkaWZmZXJlbnQgdHlwZXMgb2YgQ0NTIHBsYW5lcyBh
+bmQgbWFrZSBzdXJlIHdlIHNldHVwIHRoZQpwbGFuZXMgY29ycmVjdGx5IGZvciBNQyBmcmFtZWJ1
+ZmZlcnMgdG9vLgoKTm90ZSB0aGF0IHRoZSBvcmRlciBvZiBNQyBmcmFtZWJ1ZmZlciBwbGFuZXMg
+dGhpcyBjaGFuZ2UgYXNzdW1lcyBpcwoKcGxhbmUgMDogWSBwbGFuZQpwbGFuZSAxOiBVViBwbGFu
+ZQpwbGFuZSAyOiBDQ1MgcGxhbmUgZm9yIHBsYW5lIDAKcGxhbmUgMzogQ0NTIHBsYW5lIGZvciBw
+bGFuZSAxCgp1bmxpa2UgdGhlIG9yZGVyIGRlZmluZWQgaW4gdGhlIGxhdGVzdCBkZWNvbXByZXNz
+aW9uIGtlcm5lbCBwYXRjaHNldC4KVGhlIGFib3ZlIG9yZGVyIGlzIHRoZSBsb2dpY2FsIG9uZSB0
+aGF0IGFsbG93cyB1cyB0byBrZWVwIHRoZSBleGlzdGluZwp3YXkgb2YgaGFuZGxpbmcgdGhlIFkv
+VVYgcGxhbmVzLgoKdjI6Ci0gRml4IGlzX2Njc19wbGFuZSgpIGFkZGluZyB0aGUgbWlzc2luZyBp
+c19jY3NfbW9kaWZpZXIoKSBjaGVjay4KdjM6Ci0gU2ltcGxpZnkgaXNfY2NzX3BsYW5lKCkuIChE
+SykKCkNjOiBNaWthIEthaG9sYSA8bWlrYS5rYWhvbGFAaW50ZWwuY29tPgpDYzogRGhpbmFrYXJh
+biBQYW5kaXlhbiA8ZGhpbmFrYXJhbi5wYW5kaXlhbkBpbnRlbC5jb20+CkNjOiBWaWxsZSBTeXJq
+w6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPgpTaWduZWQtb2ZmLWJ5OiBJbXJl
+IERlYWsgPGltcmUuZGVha0BpbnRlbC5jb20+Ci0tLQogbGliL2lndF9mYi5jIHwgOTIgKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNo
+YW5nZWQsIDY0IGluc2VydGlvbnMoKyksIDI4IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xp
+Yi9pZ3RfZmIuYyBiL2xpYi9pZ3RfZmIuYwppbmRleCAzYjE0MWI5My4uZTZlYjM5YWMgMTAwNjQ0
+Ci0tLSBhL2xpYi9pZ3RfZmIuYworKysgYi9saWIvaWd0X2ZiLmMKQEAgLTQ4NywxOCArNDg3LDUw
+IEBAIHN0YXRpYyBib29sIGlzX2Njc19tb2RpZmllcih1aW50NjRfdCBtb2RpZmllcikKIAkJbW9k
+aWZpZXIgPT0gSTkxNV9GT1JNQVRfTU9EX1lmX1RJTEVEX0NDUzsKIH0KIAorc3RhdGljIGJvb2wg
+aXNfY2NzX3BsYW5lKGNvbnN0IHN0cnVjdCBpZ3RfZmIgKmZiLCBpbnQgcGxhbmUpCit7CisJaWYg
+KCFpc19jY3NfbW9kaWZpZXIoZmItPm1vZGlmaWVyKSkKKwkJcmV0dXJuIGZhbHNlOworCisJcmV0
+dXJuIHBsYW5lID49IGZiLT5udW1fcGxhbmVzIC8gMjsKK30KKworc3RhdGljIGJvb2wgaXNfZ2Vu
+MTJfY2NzX3BsYW5lKGNvbnN0IHN0cnVjdCBpZ3RfZmIgKmZiLCBpbnQgcGxhbmUpCit7CisJcmV0
+dXJuIGlzX2dlbjEyX2Njc19tb2RpZmllcihmYi0+bW9kaWZpZXIpICYmIGlzX2Njc19wbGFuZShm
+YiwgcGxhbmUpOworfQorCitzdGF0aWMgYm9vbCBpc19nZW4xMl9jY3NfY2NfcGxhbmUoY29uc3Qg
+c3RydWN0IGlndF9mYiAqZmIsIGludCBwbGFuZSkKK3sKKwlyZXR1cm4gZmItPm1vZGlmaWVyID09
+IEk5MTVfRk9STUFUX01PRF9ZX1RJTEVEX0dFTjEyX1JDX0NDU19DQyAmJgorCSAgICAgICBwbGFu
+ZSA9PSAyOworfQorCitzdGF0aWMgaW50IGNjc190b19tYWluX3BsYW5lKGNvbnN0IHN0cnVjdCBp
+Z3RfZmIgKmZiLCBpbnQgcGxhbmUpCit7CisJaWYgKGlzX2dlbjEyX2Njc19jY19wbGFuZShmYiwg
+cGxhbmUpKQorCQlyZXR1cm4gMDsKKworCXJldHVybiBwbGFuZSAtIGZiLT5udW1fcGxhbmVzIC8g
+MjsKK30KKwogc3RhdGljIHVuc2lnbmVkIGZiX3BsYW5lX3dpZHRoKGNvbnN0IHN0cnVjdCBpZ3Rf
+ZmIgKmZiLCBpbnQgcGxhbmUpCiB7CiAJY29uc3Qgc3RydWN0IGZvcm1hdF9kZXNjX3N0cnVjdCAq
+Zm9ybWF0ID0gbG9va3VwX2RybV9mb3JtYXQoZmItPmRybV9mb3JtYXQpOwogCi0JaWYgKGlzX2Nj
+c19tb2RpZmllcihmYi0+bW9kaWZpZXIpICYmIHBsYW5lID09IDEpIHsKLQkJaWYgKGlzX2dlbjEy
+X2Njc19tb2RpZmllcihmYi0+bW9kaWZpZXIpKQotCQkJcmV0dXJuIERJVl9ST1VORF9VUChmYi0+
+d2lkdGgsCi0JCQkJCSAgICA1MTIgLyAoZmItPnBsYW5lX2JwcFswXSAvIDgpKSAqIDY0OwotCQll
+bHNlCi0JCQlyZXR1cm4gRElWX1JPVU5EX1VQKGZiLT53aWR0aCwgMTAyNCkgKiAxMjg7Ci0JfSBl
+bHNlIGlmIChpc19nZW4xMl9jY3NfbW9kaWZpZXIoZmItPm1vZGlmaWVyKSAmJiBwbGFuZSA9PSAy
+KSB7CisJaWYgKGlzX2dlbjEyX2Njc19jY19wbGFuZShmYiwgcGxhbmUpKSB7CiAJCXJldHVybiA2
+NDsKKwl9IGlmIChpc19nZW4xMl9jY3NfcGxhbmUoZmIsIHBsYW5lKSkgeworCQlpbnQgbWFpbl9w
+bGFuZSA9IGNjc190b19tYWluX3BsYW5lKGZiLCBwbGFuZSk7CisJCWludCB3aWR0aCA9IGZiLT53
+aWR0aDsKKworCQlpZiAobWFpbl9wbGFuZSkKKwkJCXdpZHRoID0gRElWX1JPVU5EX1VQKHdpZHRo
+LCBmb3JtYXQtPmhzdWIpOworCisJCXJldHVybiBESVZfUk9VTkRfVVAod2lkdGgsCisJCQkJICAg
+IDUxMiAvIChmYi0+cGxhbmVfYnBwW21haW5fcGxhbmVdIC8gOCkpICogNjQ7CisJfSBlbHNlIGlm
+IChpc19jY3NfcGxhbmUoZmIsIHBsYW5lKSkgeworCQkgcmV0dXJuIERJVl9ST1VORF9VUChmYi0+
+d2lkdGgsIDEwMjQpICogMTI4OwogCX0KIAogCWlmIChwbGFuZSA9PSAwKQpAQCAtNTExLDcgKzU0
+Myw3IEBAIHN0YXRpYyB1bnNpZ25lZCBmYl9wbGFuZV9icHAoY29uc3Qgc3RydWN0IGlndF9mYiAq
+ZmIsIGludCBwbGFuZSkKIHsKIAljb25zdCBzdHJ1Y3QgZm9ybWF0X2Rlc2Nfc3RydWN0ICpmb3Jt
+YXQgPSBsb29rdXBfZHJtX2Zvcm1hdChmYi0+ZHJtX2Zvcm1hdCk7CiAKLQlpZiAoaXNfY2NzX21v
+ZGlmaWVyKGZiLT5tb2RpZmllcikgJiYgKHBsYW5lID09IDEgfHwgcGxhbmUgPT0gMikpCisJaWYg
+KGlzX2Njc19wbGFuZShmYiwgcGxhbmUpKQogCQlyZXR1cm4gODsKIAllbHNlCiAJCXJldHVybiBm
+b3JtYXQtPnBsYW5lX2JwcFtwbGFuZV07CkBAIC01MjEsMTMgKzU1MywxOCBAQCBzdGF0aWMgdW5z
+aWduZWQgZmJfcGxhbmVfaGVpZ2h0KGNvbnN0IHN0cnVjdCBpZ3RfZmIgKmZiLCBpbnQgcGxhbmUp
+CiB7CiAJY29uc3Qgc3RydWN0IGZvcm1hdF9kZXNjX3N0cnVjdCAqZm9ybWF0ID0gbG9va3VwX2Ry
+bV9mb3JtYXQoZmItPmRybV9mb3JtYXQpOwogCi0JaWYgKGlzX2Njc19tb2RpZmllcihmYi0+bW9k
+aWZpZXIpICYmIHBsYW5lID09IDEpIHsKLQkJaWYgKGlzX2dlbjEyX2Njc19tb2RpZmllcihmYi0+
+bW9kaWZpZXIpKQotCQkJcmV0dXJuIERJVl9ST1VORF9VUChmYi0+aGVpZ2h0LCAxMjgpICogNDsK
+LQkJZWxzZQotCQkJcmV0dXJuIERJVl9ST1VORF9VUChmYi0+aGVpZ2h0LCA1MTIpICogMzI7Ci0J
+fSBlbHNlIGlmIChpc19nZW4xMl9jY3NfbW9kaWZpZXIoZmItPm1vZGlmaWVyKSAmJiBwbGFuZSA9
+PSAyKQorCWlmIChpc19nZW4xMl9jY3NfY2NfcGxhbmUoZmIsIHBsYW5lKSkgewogCQlyZXR1cm4g
+MTsKKwl9IGVsc2UgaWYgKGlzX2dlbjEyX2Njc19wbGFuZShmYiwgcGxhbmUpKSB7CisJCWludCBo
+ZWlnaHQgPSBmYi0+aGVpZ2h0OworCisJCWlmIChjY3NfdG9fbWFpbl9wbGFuZShmYiwgcGxhbmUp
+KQorCQkJaGVpZ2h0ID0gRElWX1JPVU5EX1VQKGhlaWdodCwgZm9ybWF0LT52c3ViKTsKKworCQly
+ZXR1cm4gRElWX1JPVU5EX1VQKGhlaWdodCwgMTI4KSAqIDQ7CisJfSBlbHNlIGlmIChpc19jY3Nf
+cGxhbmUoZmIsIHBsYW5lKSkgeworCQlyZXR1cm4gRElWX1JPVU5EX1VQKGZiLT5oZWlnaHQsIDUx
+MikgKiAzMjsKKwl9CiAKIAlpZiAocGxhbmUgPT0gMCkKIAkJcmV0dXJuIGZiLT5oZWlnaHQ7CkBA
+IC01MzcsMTYgKzU3NCwxNSBAQCBzdGF0aWMgdW5zaWduZWQgZmJfcGxhbmVfaGVpZ2h0KGNvbnN0
+IHN0cnVjdCBpZ3RfZmIgKmZiLCBpbnQgcGxhbmUpCiAKIHN0YXRpYyBpbnQgZmJfbnVtX3BsYW5l
+cyhjb25zdCBzdHJ1Y3QgaWd0X2ZiICpmYikKIHsKLQljb25zdCBzdHJ1Y3QgZm9ybWF0X2Rlc2Nf
+c3RydWN0ICpmb3JtYXQgPSBsb29rdXBfZHJtX2Zvcm1hdChmYi0+ZHJtX2Zvcm1hdCk7CisJaW50
+IG51bV9wbGFuZXMgPSBsb29rdXBfZHJtX2Zvcm1hdChmYi0+ZHJtX2Zvcm1hdCktPm51bV9wbGFu
+ZXM7CiAKLQlpZiAoaXNfY2NzX21vZGlmaWVyKGZiLT5tb2RpZmllcikpIHsKLQkJaWYgKGZiLT5t
+b2RpZmllciA9PSBJOTE1X0ZPUk1BVF9NT0RfWV9USUxFRF9HRU4xMl9SQ19DQ1NfQ0MpCi0JCQly
+ZXR1cm4gMzsKLQkJZWxzZQotCQkJcmV0dXJuIDI7Ci0JfSBlbHNlIHsKLQkJcmV0dXJuIGZvcm1h
+dC0+bnVtX3BsYW5lczsKLQl9CisJaWYgKGlzX2Njc19tb2RpZmllcihmYi0+bW9kaWZpZXIpKQor
+CQludW1fcGxhbmVzICo9IDI7CisKKwlpZiAoZmItPm1vZGlmaWVyID09IEk5MTVfRk9STUFUX01P
+RF9ZX1RJTEVEX0dFTjEyX1JDX0NDU19DQykKKwkJbnVtX3BsYW5lcysrOworCisJcmV0dXJuIG51
+bV9wbGFuZXM7CiB9CiAKIHZvaWQgaWd0X2luaXRfZmIoc3RydWN0IGlndF9mYiAqZmIsIGludCBm
+ZCwgaW50IHdpZHRoLCBpbnQgaGVpZ2h0LApAQCAtNjA0LDEyICs2NDAsMTIgQEAgc3RhdGljIHVp
+bnQzMl90IGNhbGNfcGxhbmVfc3RyaWRlKHN0cnVjdCBpZ3RfZmIgKmZiLCBpbnQgcGxhbmUpCiAJ
+CSAqIHNvIHRoZSBlYXNpZXN0IHdheSBpcyB0byBhbGlnbiB0aGUgbHVtYSBzdHJpZGUgdG8gMjU2
+LgogCQkgKi8KIAkJcmV0dXJuIEFMSUdOKG1pbl9zdHJpZGUsIDI1Nik7Ci0JfSBlbHNlIGlmIChp
+c19nZW4xMl9jY3NfbW9kaWZpZXIoZmItPm1vZGlmaWVyKSAmJiBwbGFuZSA9PSAxKSB7Ci0JCS8q
+IEEgbWFpbiBzdXJmYWNlIHVzaW5nIGEgQ0NTIEFVWCBzdXJmYWNlIG11c3QgYmUgNHg0IHRpbGVz
+IGFsaWduZWQuICovCi0JCXJldHVybiBBTElHTihtaW5fc3RyaWRlLCA2NCk7Ci0JfSBlbHNlIGlm
+IChpc19nZW4xMl9jY3NfbW9kaWZpZXIoZmItPm1vZGlmaWVyKSAmJiBwbGFuZSA9PSAyKSB7CisJ
+fSBlbHNlIGlmIChpc19nZW4xMl9jY3NfY2NfcGxhbmUoZmIsIHBsYW5lKSkgewogCQkvKiBjbGVh
+ciBjb2xvciBhbHdheXMgZml4ZWQgdG8gNjQgYnl0ZXMgKi8KIAkJcmV0dXJuIDY0OworCX0gZWxz
+ZSBpZiAoaXNfZ2VuMTJfY2NzX3BsYW5lKGZiLCBwbGFuZSkpIHsKKwkJLyogQSBtYWluIHN1cmZh
+Y2UgdXNpbmcgYSBDQ1MgQVVYIHN1cmZhY2UgbXVzdCBiZSA0eDQgdGlsZXMgYWxpZ25lZC4gKi8K
+KwkJcmV0dXJuIEFMSUdOKG1pbl9zdHJpZGUsIDY0KTsKIAl9IGVsc2UgewogCQl1bnNpZ25lZCBp
+bnQgdGlsZV93aWR0aCwgdGlsZV9oZWlnaHQ7CiAKQEAgLTY0NCw3ICs2ODAsNyBAQCBzdGF0aWMg
+dWludDY0X3QgY2FsY19wbGFuZV9zaXplKHN0cnVjdCBpZ3RfZmIgKmZiLCBpbnQgcGxhbmUpCiAJ
+CXNpemUgPSByb3VuZHVwX3Bvd2VyX29mX3R3byhzaXplKTsKIAogCQlyZXR1cm4gc2l6ZTsKLQl9
+IGVsc2UgaWYgKGlzX2dlbjEyX2Njc19tb2RpZmllcihmYi0+bW9kaWZpZXIpICYmIChwbGFuZSA9
+PSAxIHx8IHBsYW5lID09IDIpKSB7CisJfSBlbHNlIGlmIChpc19nZW4xMl9jY3NfcGxhbmUoZmIs
+IHBsYW5lKSkgewogCQkvKiBUaGUgQVVYIENDUyBzdXJmYWNlIG11c3QgYmUgcGFnZSBhbGlnbmVk
+ICovCiAJCXJldHVybiAodWludDY0X3QpZmItPnN0cmlkZXNbcGxhbmVdICoKIAkJCUFMSUdOKGZi
+LT5wbGFuZV9oZWlnaHRbcGxhbmVdLCA2NCk7Ci0tIAoyLjE3LjEKCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
+aWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
