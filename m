@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4FE466E226
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 54FE86E227
  for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 05:59:27 +0000 (UTC)
 From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-Date: Tue, 17 Dec 2019 21:59:18 -0800
-Message-Id: <20191218055925.705070-4-vanshidhar.r.konda@intel.com>
+Date: Tue, 17 Dec 2019 21:59:23 -0800
+Message-Id: <20191218055925.705070-9-vanshidhar.r.konda@intel.com>
 In-Reply-To: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
 References: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 03/10] lib/igt_fb: Switch from XY_FAST_COPY_BLT to
- XY_SRC_COPY_BLT
+Subject: [igt-dev] [PATCH 08/10] tests/kms_addfb_basic: Avoid tiling
+ subtests on device without HW tiling support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,84 +25,50 @@ To: igt-dev@lists.freedesktop.org
 Cc: brian.welty@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The XY_SRC_COPY_BLT instruction is supported on more platforms than
-XY_FAST_COPY_BLT - use it for X and Y tiling copying using blitter. For
-other tiling modes use the XY_FAST_COPY_BLT.
+Skip subtests that are testing interoperability of FB modifiers and
+hardware tiling if the device does not support HW tiling
 
 Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 ---
- lib/igt_fb.c | 51 +++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 37 insertions(+), 14 deletions(-)
+ tests/kms_addfb_basic.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index e6eb39ac..35a50eeb 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2056,27 +2056,50 @@ static void copy_with_engine(struct fb_blit_upload *blit,
- static void blitcopy(const struct igt_fb *dst_fb,
- 		     const struct igt_fb *src_fb)
- {
-+	uint32_t src_tiling, dst_tiling;
-+
- 	igt_assert_eq(dst_fb->fd, src_fb->fd);
- 	igt_assert_eq(dst_fb->num_planes, src_fb->num_planes);
+diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+index 666e7165..2e39ffe7 100644
+--- a/tests/kms_addfb_basic.c
++++ b/tests/kms_addfb_basic.c
+@@ -132,6 +132,7 @@ static void invalid_tests(int fd)
  
-+	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
-+	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
-+
- 	for (int i = 0; i < dst_fb->num_planes; i++) {
- 		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
- 		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
- 		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
--
--		igt_blitter_fast_copy__raw(dst_fb->fd,
--					   src_fb->gem_handle,
--					   src_fb->offsets[i],
--					   src_fb->strides[i],
--					   igt_fb_mod_to_tiling(src_fb->modifier),
--					   0, 0, /* src_x, src_y */
--					   dst_fb->plane_width[i], dst_fb->plane_height[i],
--					   dst_fb->plane_bpp[i],
--					   dst_fb->gem_handle,
--					   dst_fb->offsets[i],
--					   dst_fb->strides[i],
--					   igt_fb_mod_to_tiling(dst_fb->modifier),
--					   0, 0 /* dst_x, dst_y */);
-+		if ((src_tiling > I915_TILING_Y) || (dst_tiling > I915_TILING_Y)) {
-+			igt_assert(intel_gen(intel_get_drm_devid(src_fb->fd)) >= 9);
-+			igt_blitter_fast_copy__raw(dst_fb->fd,
-+						   src_fb->gem_handle,
-+						   src_fb->offsets[i],
-+						   src_fb->strides[i],
-+						   src_tiling,
-+						   0, 0, /* src_x, src_y */
-+						   dst_fb->plane_width[i],
-+						   dst_fb->plane_height[i],
-+						   dst_fb->plane_bpp[i],
-+						   dst_fb->gem_handle,
-+						   dst_fb->offsets[i],
-+						   dst_fb->strides[i],
-+						   dst_tiling,
-+						   0, 0 /* dst_x, dst_y */);
-+		} else {
-+			igt_blitter_src_copy__raw(dst_fb->fd,
-+						  src_fb->gem_handle,
-+						  src_fb->offsets[i],
-+						  src_fb->strides[i],
-+						  src_tiling,
-+						  0, 0, /* src_x, src_y */
-+						  dst_fb->plane_width[i],
-+						  dst_fb->plane_height[i],
-+						  dst_fb->plane_bpp[i],
-+						  dst_fb->gem_handle,
-+						  dst_fb->offsets[i],
-+						  dst_fb->strides[i],
-+						  dst_tiling,
-+						  0, 0 /* dst_x, dst_y */);
-+		}
- 	}
- }
+ 	igt_subtest("clobberred-modifier") {
+ 		igt_require_intel(fd);
++		igt_require(gem_has_legacy_hw_tiling(fd));
+ 		f.flags = 0;
+ 		f.modifier[0] = 0;
+ 		gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4);
+@@ -304,6 +305,7 @@ static void tiling_tests(int fd)
+ 	igt_subtest_group {
+ 		igt_fixture {
+ 			igt_require_intel(fd);
++			igt_require(gem_has_legacy_hw_tiling(fd));
+ 			tiled_x_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
+ 				DRM_FORMAT_XRGB8888, LOCAL_I915_FORMAT_MOD_X_TILED,
+ 				1024*4, NULL, NULL, NULL);
+@@ -450,6 +452,7 @@ static void size_tests(int fd)
  
+ 	igt_subtest("bo-too-small-due-to-tiling") {
+ 		igt_require_intel(fd);
++		igt_require(gem_has_legacy_hw_tiling(fd));
+ 		gem_set_tiling(fd, gem_bo_small, I915_TILING_X, 1024*4);
+ 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+ 			   errno == EINVAL);
+@@ -502,6 +505,7 @@ static void addfb25_tests(int fd)
+ 	igt_subtest_group {
+ 		igt_fixture {
+ 			igt_require_intel(fd);
++			igt_require(gem_has_legacy_hw_tiling(fd));
+ 			gem_set_tiling(fd, gem_bo, I915_TILING_X, 1024*4);
+ 			igt_require_fb_modifiers(fd);
+ 		}
 -- 
 2.24.0
 
