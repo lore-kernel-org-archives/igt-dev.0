@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B8FC26E21F
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 05:59:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8603A6E225
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 05:59:27 +0000 (UTC)
 From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-Date: Tue, 17 Dec 2019 21:59:15 -0800
-Message-Id: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
+Date: Tue, 17 Dec 2019 21:59:19 -0800
+Message-Id: <20191218055925.705070-5-vanshidhar.r.konda@intel.com>
+In-Reply-To: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
+References: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 00/10] Prepare IGT display test for removal of
+Subject: [igt-dev] [PATCH 04/10] lib/igt_fb: Remove set_tiling calls on
+ devices without HW tiling support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,40 +25,62 @@ To: igt-dev@lists.freedesktop.org
 Cc: brian.welty@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The GET/SET_TILING IOCTLs will not be supported on devices that do not 
-have the CPU (de)tiler. For kms_* tests that use modifiers the IGT 
-library and tests have been updated to skip calling get/set_tiling calls 
-on devices that don't support these IOCTLs.
+On devices that don't support tiling/de-tiling in HW, skip the usage
+of the SET_TILING IOCTL and use blitter for drawing.
 
-Vanshidhar Konda (10):
-  lib/ioctl_wrappers: Query if device supports set/get legacy tiling
-  lib/intel_batchbuffer: Add blitter copy using XY_SRC_COPY_BLT
-  lib/igt_fb: Switch from XY_FAST_COPY_BLT to XY_SRC_COPY_BLT
-  lib/igt_fb: Remove set_tiling calls on devices without HW tiling
-    support
-  lib/igt_draw: Refactor get_tiling calls
-  i915/i915_fb_tiling: Skip on devices that don't support HW tiling
-  tests/kms_frontbuffer_tracking: Skip set tiling calls if not supported
-  tests/kms_addfb_basic: Avoid tiling subtests on device without HW
-    tiling support
-  tests/kms_fence_pin_leak: Skip test on devices without HW tiling
-    support
-  tests/kms_available_modes_crc: Don't set tiling for framebuffer
+Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
+---
+ lib/igt_fb.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
- lib/igt_draw.c                   |  56 +++++-----
- lib/igt_draw.h                   |   5 +-
- lib/igt_fb.c                     |  72 ++++++++----
- lib/intel_batchbuffer.c          | 183 +++++++++++++++++++++++++++++++
- lib/intel_batchbuffer.h          |  21 ++++
- lib/ioctl_wrappers.c             |  17 +++
- lib/ioctl_wrappers.h             |   1 +
- tests/i915/i915_fb_tiling.c      |   2 +
- tests/kms_addfb_basic.c          |   4 +
- tests/kms_available_modes_crc.c  |   6 -
- tests/kms_fence_pin_leak.c       |   2 +
- tests/kms_frontbuffer_tracking.c |  11 +-
- 12 files changed, 321 insertions(+), 59 deletions(-)
-
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 35a50eeb..2843ab4d 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -922,9 +922,11 @@ static int create_bo_for_fb(struct igt_fb *fb)
+ 
+ 		if (is_i915_device(fd)) {
+ 			fb->gem_handle = gem_create(fd, fb->size);
+-			gem_set_tiling(fd, fb->gem_handle,
+-				       igt_fb_mod_to_tiling(fb->modifier),
+-				       fb->strides[0]);
++			if (gem_has_legacy_hw_tiling(fd)) {
++				gem_set_tiling(fd, fb->gem_handle,
++					       igt_fb_mod_to_tiling(fb->modifier),
++					       fb->strides[0]);
++			}
+ 		} else if (is_vc4_device(fd)) {
+ 			fb->gem_handle = igt_vc4_create_bo(fd, fb->size);
+ 
+@@ -1962,9 +1964,14 @@ static bool use_enginecopy(const struct igt_fb *fb)
+ 
+ static bool use_blitter(const struct igt_fb *fb)
+ {
++	if (!blitter_ok(fb))
++		return false;
++
++	if (!gem_has_legacy_hw_tiling(fb->fd))
++		return true;
++
+ 	return (fb->modifier == I915_FORMAT_MOD_Y_TILED ||
+-		fb->modifier == I915_FORMAT_MOD_Yf_TILED) &&
+-		blitter_ok(fb);
++		fb->modifier == I915_FORMAT_MOD_Yf_TILED);
+ }
+ 
+ static void init_buf(struct fb_blit_upload *blit,
+@@ -3381,8 +3388,10 @@ cairo_surface_t *igt_get_cairo_surface(int fd, struct igt_fb *fb)
+ 		else if (use_blitter(fb) || use_enginecopy(fb) ||
+ 			 igt_vc4_is_tiled(fb->modifier))
+ 			create_cairo_surface__gpu(fd, fb);
+-		else
++		else if (gem_has_mappable_ggtt(fd))
+ 			create_cairo_surface__gtt(fd, fb);
++		else
++			igt_assert_f(false, "Configuration not supported.\n");
+ 	}
+ 
+ 	igt_assert(cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS);
 -- 
 2.24.0
 
