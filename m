@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 359F46EA63
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 19:39:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F0C156EA61
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 19:39:16 +0000 (UTC)
 From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-Date: Wed, 18 Dec 2019 11:39:08 -0800
-Message-Id: <20191218193915.1375365-4-vanshidhar.r.konda@intel.com>
+Date: Wed, 18 Dec 2019 11:39:09 -0800
+Message-Id: <20191218193915.1375365-5-vanshidhar.r.konda@intel.com>
 In-Reply-To: <20191218193915.1375365-1-vanshidhar.r.konda@intel.com>
 References: <20191218193915.1375365-1-vanshidhar.r.konda@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 03/10] lib/igt_fb: Switch from XY_FAST_COPY_BLT to
- XY_SRC_COPY_BLT
+Subject: [igt-dev] [PATCH 04/10] lib/igt_fb: Remove set_tiling calls on
+ devices without HW tiling support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,84 +24,62 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The XY_SRC_COPY_BLT instruction is supported on more platforms than
-XY_FAST_COPY_BLT - use it for X and Y tiling copying using blitter. For
-other tiling modes use the XY_FAST_COPY_BLT.
+On devices that don't support tiling/de-tiling in HW, skip the usage
+of the SET_TILING IOCTL and use blitter for drawing.
 
 Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 ---
- lib/igt_fb.c | 51 +++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 37 insertions(+), 14 deletions(-)
+ lib/igt_fb.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index e6eb39ac..35a50eeb 100644
+index 35a50eeb..2843ab4d 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -2056,27 +2056,50 @@ static void copy_with_engine(struct fb_blit_upload *blit,
- static void blitcopy(const struct igt_fb *dst_fb,
- 		     const struct igt_fb *src_fb)
- {
-+	uint32_t src_tiling, dst_tiling;
-+
- 	igt_assert_eq(dst_fb->fd, src_fb->fd);
- 	igt_assert_eq(dst_fb->num_planes, src_fb->num_planes);
+@@ -922,9 +922,11 @@ static int create_bo_for_fb(struct igt_fb *fb)
  
-+	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
-+	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
+ 		if (is_i915_device(fd)) {
+ 			fb->gem_handle = gem_create(fd, fb->size);
+-			gem_set_tiling(fd, fb->gem_handle,
+-				       igt_fb_mod_to_tiling(fb->modifier),
+-				       fb->strides[0]);
++			if (gem_has_legacy_hw_tiling(fd)) {
++				gem_set_tiling(fd, fb->gem_handle,
++					       igt_fb_mod_to_tiling(fb->modifier),
++					       fb->strides[0]);
++			}
+ 		} else if (is_vc4_device(fd)) {
+ 			fb->gem_handle = igt_vc4_create_bo(fd, fb->size);
+ 
+@@ -1962,9 +1964,14 @@ static bool use_enginecopy(const struct igt_fb *fb)
+ 
+ static bool use_blitter(const struct igt_fb *fb)
+ {
++	if (!blitter_ok(fb))
++		return false;
 +
- 	for (int i = 0; i < dst_fb->num_planes; i++) {
- 		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
- 		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
- 		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
--
--		igt_blitter_fast_copy__raw(dst_fb->fd,
--					   src_fb->gem_handle,
--					   src_fb->offsets[i],
--					   src_fb->strides[i],
--					   igt_fb_mod_to_tiling(src_fb->modifier),
--					   0, 0, /* src_x, src_y */
--					   dst_fb->plane_width[i], dst_fb->plane_height[i],
--					   dst_fb->plane_bpp[i],
--					   dst_fb->gem_handle,
--					   dst_fb->offsets[i],
--					   dst_fb->strides[i],
--					   igt_fb_mod_to_tiling(dst_fb->modifier),
--					   0, 0 /* dst_x, dst_y */);
-+		if ((src_tiling > I915_TILING_Y) || (dst_tiling > I915_TILING_Y)) {
-+			igt_assert(intel_gen(intel_get_drm_devid(src_fb->fd)) >= 9);
-+			igt_blitter_fast_copy__raw(dst_fb->fd,
-+						   src_fb->gem_handle,
-+						   src_fb->offsets[i],
-+						   src_fb->strides[i],
-+						   src_tiling,
-+						   0, 0, /* src_x, src_y */
-+						   dst_fb->plane_width[i],
-+						   dst_fb->plane_height[i],
-+						   dst_fb->plane_bpp[i],
-+						   dst_fb->gem_handle,
-+						   dst_fb->offsets[i],
-+						   dst_fb->strides[i],
-+						   dst_tiling,
-+						   0, 0 /* dst_x, dst_y */);
-+		} else {
-+			igt_blitter_src_copy__raw(dst_fb->fd,
-+						  src_fb->gem_handle,
-+						  src_fb->offsets[i],
-+						  src_fb->strides[i],
-+						  src_tiling,
-+						  0, 0, /* src_x, src_y */
-+						  dst_fb->plane_width[i],
-+						  dst_fb->plane_height[i],
-+						  dst_fb->plane_bpp[i],
-+						  dst_fb->gem_handle,
-+						  dst_fb->offsets[i],
-+						  dst_fb->strides[i],
-+						  dst_tiling,
-+						  0, 0 /* dst_x, dst_y */);
-+		}
- 	}
++	if (!gem_has_legacy_hw_tiling(fb->fd))
++		return true;
++
+ 	return (fb->modifier == I915_FORMAT_MOD_Y_TILED ||
+-		fb->modifier == I915_FORMAT_MOD_Yf_TILED) &&
+-		blitter_ok(fb);
++		fb->modifier == I915_FORMAT_MOD_Yf_TILED);
  }
  
+ static void init_buf(struct fb_blit_upload *blit,
+@@ -3381,8 +3388,10 @@ cairo_surface_t *igt_get_cairo_surface(int fd, struct igt_fb *fb)
+ 		else if (use_blitter(fb) || use_enginecopy(fb) ||
+ 			 igt_vc4_is_tiled(fb->modifier))
+ 			create_cairo_surface__gpu(fd, fb);
+-		else
++		else if (gem_has_mappable_ggtt(fd))
+ 			create_cairo_surface__gtt(fd, fb);
++		else
++			igt_assert_f(false, "Configuration not supported.\n");
+ 	}
+ 
+ 	igt_assert(cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS);
 -- 
 2.24.0
 
