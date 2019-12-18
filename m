@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED7196E4E8
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 14:54:05 +0000 (UTC)
-Received: by mail-pl1-x644.google.com with SMTP id p27so1072091pli.10
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 06:54:05 -0800 (PST)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Wed, 18 Dec 2019 16:53:57 +0200
-Message-Id: <1576680837-2836-1-git-send-email-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: Fix user space read
- too slow error
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B84806E511
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 15:13:31 +0000 (UTC)
+Date: Wed, 18 Dec 2019 17:13:28 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <20191218151328.GK1208@intel.com>
+References: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
+ <20191218055925.705070-3-vanshidhar.r.konda@intel.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191218055925.705070-3-vanshidhar.r.konda@intel.com>
+Subject: Re: [igt-dev] [PATCH 02/10] lib/intel_batchbuffer: Add blitter copy
+ using XY_SRC_COPY_BLT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,463 +19,288 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
+Cc: igt-dev@lists.freedesktop.org, brian.welty@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Having crc running continuously cause this test sometime
-fill crc buffer, fix this problem as well as do some generic
-cleanups.
+On Tue, Dec 17, 2019 at 09:59:17PM -0800, Vanshidhar Konda wrote:
+> Add a method that uses the XY_SRC_COPY_BLT instruction for copying
+> buffers using the blitter engine.
+> =
 
-v2: Take out gem_sync()
+> Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
+> ---
+>  lib/intel_batchbuffer.c | 183 ++++++++++++++++++++++++++++++++++++++++
+>  lib/intel_batchbuffer.h |  21 +++++
+>  2 files changed, 204 insertions(+)
+> =
 
-v3: Use rendercopy if available, otherwise Cairo surface for restoring
-    test image
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index 51aae4dc..1352aa95 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -46,6 +46,12 @@
+>  =
 
-v4: take out useless assert and restructure a bit
+>  #include <i915_drm.h>
+>  =
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/kms_cursor_crc.c | 220 ++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 154 insertions(+), 66 deletions(-)
+> +#define MI_FLUSH_DW (0x26 << 23)
+> +
+> +#define BCS_SWCTRL 0x22200
+> +#define BCS_SRC_Y (1 << 0)
+> +#define BCS_DST_Y (1 << 1)
+> +
+>  /**
+>   * SECTION:intel_batchbuffer
+>   * @short_description: Batchbuffer and blitter support
+> @@ -661,6 +667,183 @@ static void exec_blit(int fd,
+>  	gem_execbuf(fd, &exec);
+>  }
+>  =
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 6475dea..630b9be 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -48,11 +48,10 @@ IGT_TEST_DESCRIPTION(
- typedef struct {
- 	int drm_fd;
- 	igt_display_t display;
--	struct igt_fb primary_fb;
-+	struct igt_fb primary_fb[2];
- 	struct igt_fb fb;
- 	igt_output_t *output;
- 	enum pipe pipe;
--	igt_crc_t ref_crc;
- 	int left, right, top, bottom;
- 	int screenw, screenh;
- 	int refresh;
-@@ -60,11 +59,24 @@ typedef struct {
- 	int cursor_max_w, cursor_max_h;
- 	igt_pipe_crc_t *pipe_crc;
- 	unsigned flags;
-+	igt_plane_t *primary;
-+	igt_plane_t *cursor;
-+	cairo_surface_t *surface;
-+	uint32_t devid;
-+	drm_intel_bufmgr *bufmgr;
-+	igt_render_copyfunc_t rendercopy;
-+	drm_intel_bo * drmibo[2];
-+	struct intel_batchbuffer *batch;
-+	struct igt_buf igtbo[2];
-+
- } data_t;
- 
- #define TEST_DPMS (1<<0)
- #define TEST_SUSPEND (1<<1)
- 
-+#define FRONTBUFFER 0
-+#define RESTOREBUFFER 1
-+
- static void draw_cursor(cairo_t *cr, int x, int y, int cw, int ch, double a)
- {
- 	int wl, wr, ht, hb;
-@@ -89,23 +101,15 @@ static void draw_cursor(cairo_t *cr, int x, int y, int cw, int ch, double a)
- 
- static void cursor_enable(data_t *data)
- {
--	igt_output_t *output = data->output;
--	igt_plane_t *cursor =
--		igt_output_get_plane_type(output, DRM_PLANE_TYPE_CURSOR);
--
--	igt_plane_set_fb(cursor, &data->fb);
--	igt_plane_set_size(cursor, data->curw, data->curh);
--	igt_fb_set_size(&data->fb, cursor, data->curw, data->curh);
-+	igt_plane_set_fb(data->cursor, &data->fb);
-+	igt_plane_set_size(data->cursor, data->curw, data->curh);
-+	igt_fb_set_size(&data->fb, data->cursor, data->curw, data->curh);
- }
- 
- static void cursor_disable(data_t *data)
- {
--	igt_output_t *output = data->output;
--	igt_plane_t *cursor =
--		igt_output_get_plane_type(output, DRM_PLANE_TYPE_CURSOR);
--
--	igt_plane_set_fb(cursor, NULL);
--	igt_plane_set_position(cursor, 0, 0);
-+	igt_plane_set_fb(data->cursor, NULL);
-+	igt_plane_set_position(data->cursor, 0, 0);
- }
- 
- static bool chv_cursor_broken(data_t *data, int x)
-@@ -144,36 +148,58 @@ static bool cursor_visible(data_t *data, int x, int y)
- 	return true;
- }
- 
-+static void restore_image(data_t *data)
-+{
-+	cairo_t *cr;
-+
-+	if (data->rendercopy != NULL) {
-+		/* use rendercopy if available */
-+		data->rendercopy(data->batch, NULL,
-+				 &data->igtbo[RESTOREBUFFER], 0, 0,
-+				 data->primary_fb[RESTOREBUFFER].width,
-+				 data->primary_fb[RESTOREBUFFER].height,
-+				 &data->igtbo[FRONTBUFFER], 0, 0);
-+	} else {
-+		/* if rendercopy not implemented in igt use cairo */
-+		cr = igt_get_cairo_ctx(data->drm_fd,
-+				       &data->primary_fb[FRONTBUFFER]);
-+		cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-+		cairo_set_source_surface(cr, data->surface, 0, 0);
-+		cairo_rectangle(cr, 0, 0, data->screenw, data->screenh);
-+		cairo_fill(cr);
-+		igt_put_cairo_ctx(data->drm_fd,
-+				  &data->primary_fb[FRONTBUFFER], cr);
-+	}
-+	igt_dirty_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-+}
-+
- static void do_single_test(data_t *data, int x, int y)
- {
- 	igt_display_t *display = &data->display;
- 	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
- 	igt_crc_t crc, ref_crc;
--	igt_plane_t *cursor =
--		igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_CURSOR);
- 	cairo_t *cr;
- 	int ret = 0;
- 
- 	igt_print_activity();
- 
- 	/* Hardware test */
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb);
--	igt_paint_test_pattern(cr, data->screenw, data->screenh);
--	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
-+	restore_image(data);
- 
-+	igt_plane_set_position(data->cursor, x, y);
- 	cursor_enable(data);
--	igt_plane_set_position(cursor, x, y);
- 
- 	if (chv_cursor_broken(data, x) && cursor_visible(data, x, y)) {
- 		ret = igt_display_try_commit2(display, COMMIT_LEGACY);
- 		igt_assert_eq(ret, -EINVAL);
--		igt_plane_set_position(cursor, 0, y);
-+		igt_plane_set_position(data->cursor, 0, y);
- 
- 		return;
- 	}
- 
- 	igt_display_commit(display);
- 
-+	/* Extra vblank wait is because nonblocking cursor ioctl */
- 	igt_wait_for_vblank(data->drm_fd, data->pipe);
- 	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
- 
-@@ -205,45 +231,35 @@ static void do_single_test(data_t *data, int x, int y)
- 	}
- 
- 	cursor_disable(data);
--	igt_display_commit(display);
- 
- 	/* Now render the same in software and collect crc */
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb);
-+	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
- 	draw_cursor(cr, x, y, data->curw, data->curh, 1.0);
--	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
-+	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER], cr);
- 	igt_display_commit(display);
--
-+	igt_dirty_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-+	/* Extra vblank wait is because nonblocking cursor ioctl */
- 	igt_wait_for_vblank(data->drm_fd, data->pipe);
--	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
- 
-+	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
- 	igt_assert_crc_equal(&crc, &ref_crc);
--
--	/* Clear screen afterwards */
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb);
--	igt_paint_color(cr, 0, 0, data->screenw, data->screenh, 0.0, 0.0, 0.0);
--	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
- }
- 
- static void do_fail_test(data_t *data, int x, int y, int expect)
- {
- 	igt_display_t *display = &data->display;
--	igt_plane_t *cursor =
--		igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_CURSOR);
--	cairo_t *cr;
- 	int ret;
- 
- 	igt_print_activity();
- 
- 	/* Hardware test */
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb);
--	igt_paint_test_pattern(cr, data->screenw, data->screenh);
--	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
-+	restore_image(data);
- 
- 	cursor_enable(data);
--	igt_plane_set_position(cursor, x, y);
-+	igt_plane_set_position(data->cursor, x, y);
- 	ret = igt_display_try_commit2(display, COMMIT_LEGACY);
- 
--	igt_plane_set_position(cursor, 0, 0);
-+	igt_plane_set_position(data->cursor, 0, 0);
- 	cursor_disable(data);
- 	igt_display_commit(display);
- 
-@@ -355,31 +371,54 @@ static void cleanup_crtc(data_t *data)
- 	igt_pipe_crc_free(data->pipe_crc);
- 	data->pipe_crc = NULL;
- 
--	igt_remove_fb(data->drm_fd, &data->primary_fb);
-+	cairo_surface_destroy(data->surface);
-+
-+	igt_plane_set_fb(data->primary, NULL);
-+	igt_display_commit(display);
-+
-+	igt_remove_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-+	igt_remove_fb(data->drm_fd, &data->primary_fb[RESTOREBUFFER]);
- 
- 	igt_display_reset(display);
- }
- 
-+static void scratch_buf_init(data_t *data, int buffer)
-+{
-+	data->igtbo[buffer].bo = data->drmibo[buffer];
-+	data->igtbo[buffer].stride = data->primary_fb[buffer].strides[0];
-+	data->igtbo[buffer].tiling = data->primary_fb[buffer].modifier;
-+	data->igtbo[buffer].size = data->primary_fb[buffer].size;
-+	data->igtbo[buffer].bpp = data->primary_fb[buffer].plane_bpp[0];
-+}
-+
- static void prepare_crtc(data_t *data, igt_output_t *output,
- 			 int cursor_w, int cursor_h)
- {
- 	drmModeModeInfo *mode;
- 	igt_display_t *display = &data->display;
--	igt_plane_t *primary;
-+	cairo_t *cr;
- 
- 	/* select the pipe we want to use */
- 	igt_output_set_pipe(output, data->pipe);
- 
--	/* create and set the primary plane fb */
-+	/* create and set the primary plane fbs */
- 	mode = igt_output_get_mode(output);
- 	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
- 			    DRM_FORMAT_XRGB8888,
- 			    LOCAL_DRM_FORMAT_MOD_NONE,
- 			    0.0, 0.0, 0.0,
--			    &data->primary_fb);
-+			    &data->primary_fb[FRONTBUFFER]);
-+
-+	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+			    DRM_FORMAT_XRGB8888,
-+			    LOCAL_DRM_FORMAT_MOD_NONE,
-+			    0.0, 0.0, 0.0,
-+			    &data->primary_fb[RESTOREBUFFER]);
- 
--	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
--	igt_plane_set_fb(primary, &data->primary_fb);
-+	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	data->cursor = igt_output_get_plane_type(output, DRM_PLANE_TYPE_CURSOR);
-+
-+	igt_plane_set_fb(data->primary, &data->primary_fb[FRONTBUFFER]);
- 
- 	igt_display_commit(display);
- 
-@@ -398,9 +437,42 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
- 	data->curh = cursor_h;
- 	data->refresh = mode->vrefresh;
- 
--	/* get reference crc w/o cursor */
-+	data->surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24, data->screenw, data->screenh);
-+
-+	if (data->rendercopy == NULL) {
-+		/* store test image as cairo surface */
-+		cr = cairo_create(data->surface);
-+		cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-+		igt_paint_test_pattern(cr, data->screenw, data->screenh);
-+		cairo_destroy(cr);
-+	} else {
-+		/* store test image as fb if rendercopy is available */
-+		cr = igt_get_cairo_ctx(data->drm_fd,
-+		                       &data->primary_fb[RESTOREBUFFER]);
-+		cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-+		igt_paint_test_pattern(cr, data->screenw, data->screenh);
-+		igt_put_cairo_ctx(data->drm_fd,
-+				  &data->primary_fb[RESTOREBUFFER], cr);
-+
-+		data->drmibo[FRONTBUFFER] = gem_handle_to_libdrm_bo(data->bufmgr,
-+								    data->drm_fd,
-+								    "", data->primary_fb[FRONTBUFFER].gem_handle);
-+		igt_assert(data->drmibo[FRONTBUFFER]);
-+
-+		data->drmibo[RESTOREBUFFER] = gem_handle_to_libdrm_bo(data->bufmgr,
-+								      data->drm_fd,
-+								      "", data->primary_fb[RESTOREBUFFER].gem_handle);
-+		igt_assert(data->drmibo[RESTOREBUFFER]);
-+
-+		scratch_buf_init(data, RESTOREBUFFER);
-+		scratch_buf_init(data, FRONTBUFFER);
-+
-+		data->batch = intel_batchbuffer_alloc(data->bufmgr,
-+						      data->devid);
-+		igt_assert(data->batch);
-+	}
-+
- 	igt_pipe_crc_start(data->pipe_crc);
--	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &data->ref_crc);
- }
- 
- static void test_cursor_alpha(data_t *data, double a)
-@@ -432,9 +504,9 @@ static void test_cursor_alpha(data_t *data, double a)
- 	igt_remove_fb(data->drm_fd, &data->fb);
- 
- 	/*Software Test*/
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb);
-+	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
- 	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
--	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
-+	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER], cr);
- 
- 	igt_display_commit(display);
- 	igt_wait_for_vblank(data->drm_fd, data->pipe);
-@@ -442,10 +514,10 @@ static void test_cursor_alpha(data_t *data, double a)
- 	igt_assert_crc_equal(&crc, &ref_crc);
- 
- 	/*Clear Screen*/
--	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb);
-+	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
- 	igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
- 			0.0, 0.0, 0.0);
--	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
-+	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER], cr);
- }
- 
- static void test_cursor_transparent(data_t *data)
-@@ -521,8 +593,6 @@ static void test_cursor_size(data_t *data)
- 	uint32_t fb_id;
- 	int i, size;
- 	int cursor_max_size = data->cursor_max_w;
--	igt_plane_t *cursor =
--		igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_CURSOR);
- 
- 	/* Create a maximum size cursor, then change the size in flight to
- 	 * smaller ones to see that the size is applied correctly
-@@ -541,8 +611,8 @@ static void test_cursor_size(data_t *data)
- 	cursor_enable(data);
- 	for (i = 0, size = cursor_max_size; size >= 64; size /= 2, i++) {
- 		/* Change size in flight: */
--		igt_plane_set_size(cursor, size, size);
--		igt_fb_set_size(&data->fb, cursor, size, size);
-+		igt_plane_set_size(data->cursor, size, size);
-+		igt_fb_set_size(&data->fb, data->cursor, size, size);
- 		igt_display_commit(display);
- 		igt_wait_for_vblank(data->drm_fd, data->pipe);
- 		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc[i]);
-@@ -553,18 +623,18 @@ static void test_cursor_size(data_t *data)
- 	/* Software test loop */
- 	for (i = 0, size = cursor_max_size; size >= 64; size /= 2, i++) {
- 		/* Now render the same in software and collect crc */
--		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb);
-+		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
- 		igt_paint_color_alpha(cr, 0, 0, size, size, 1.0, 1.0, 1.0, 1.0);
--		igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
-+		igt_put_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER], cr);
- 
- 		igt_display_commit(display);
- 		igt_wait_for_vblank(data->drm_fd, data->pipe);
- 		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
- 		/* Clear screen afterwards */
--		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb);
-+		cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
- 		igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
- 				0.0, 0.0, 0.0);
--		igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
-+		igt_put_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER], cr);
- 		igt_assert_crc_equal(&crc[i], &ref_crc);
- 	}
- }
-@@ -575,26 +645,24 @@ static void test_rapid_movement(data_t *data)
- 	int x = 0, y = 0;
- 	long usec;
- 	igt_display_t *display = &data->display;
--	igt_plane_t *cursor =
--		igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_CURSOR);
- 
- 	cursor_enable(data);
- 
- 	gettimeofday(&start, NULL);
- 	for ( ; x < 100; x++) {
--		igt_plane_set_position(cursor, x, y);
-+		igt_plane_set_position(data->cursor, x, y);
- 		igt_display_commit(display);
- 	}
- 	for ( ; y < 100; y++) {
--		igt_plane_set_position(cursor, x, y);
-+		igt_plane_set_position(data->cursor, x, y);
- 		igt_display_commit(display);
- 	}
- 	for ( ; x > 0; x--) {
--		igt_plane_set_position(cursor, x, y);
-+		igt_plane_set_position(data->cursor, x, y);
- 		igt_display_commit(display);
- 	}
- 	for ( ; y > 0; y--) {
--		igt_plane_set_position(cursor, x, y);
-+		igt_plane_set_position(data->cursor, x, y);
- 		igt_display_commit(display);
- 	}
- 	gettimeofday(&end, NULL);
-@@ -736,6 +804,16 @@ igt_main
- 		igt_require_pipe_crc(data.drm_fd);
- 
- 		igt_display_require(&data.display, data.drm_fd);
-+
-+		if (is_i915_device(data.drm_fd)) {
-+			data.bufmgr = drm_intel_bufmgr_gem_init(data.drm_fd, 4096);
-+			igt_assert(data.bufmgr);
-+			drm_intel_bufmgr_gem_enable_reuse(data.bufmgr);
-+
-+			data.devid = intel_get_drm_devid(data.drm_fd);
-+			data.rendercopy = igt_get_render_copyfunc(data.devid);
-+		}
-+		igt_debug("Using %s for restoring test image\n", (data.rendercopy == NULL)?"Cairo":"rendercopy");
- 	}
- 
- 	data.cursor_max_w = cursor_width;
-@@ -746,6 +824,16 @@ igt_main
- 			run_tests_on_pipe(&data, pipe);
- 
- 	igt_fixture {
-+		if (data.pipe_crc != NULL) {
-+			igt_pipe_crc_stop(data.pipe_crc);
-+			igt_pipe_crc_free(data.pipe_crc);
-+		}
-+
-+		if (data.bufmgr != NULL) {
-+			intel_batchbuffer_free(data.batch);
-+			drm_intel_bufmgr_destroy(data.bufmgr);
-+		}
-+
- 		igt_display_fini(&data.display);
- 	}
- }
--- 
-2.7.4
+> +static uint32_t src_copy_dword0(uint32_t src_tiling, uint32_t dst_tiling,
+> +				uint32_t bpp, uint32_t device_gen)
+> +{
+> +	uint32_t dword0 =3D 0;
+> +
+> +	dword0 |=3D XY_SRC_COPY_BLT_CMD;
+> +	if (bpp =3D=3D 32)
+> +		dword0 |=3D XY_SRC_COPY_BLT_WRITE_RGB |
+> +			XY_SRC_COPY_BLT_WRITE_ALPHA;
+> +
+> +	if (device_gen >=3D 4 && src_tiling)
+> +		dword0 |=3D XY_SRC_COPY_BLT_SRC_TILED;
+> +	if (device_gen >=3D 4 && dst_tiling)
+> +		dword0 |=3D XY_SRC_COPY_BLT_DST_TILED;
+> +
+> +	return dword0;
+> +}
+> +
+> +static uint32_t src_copy_dword1(uint32_t dst_pitch, uint32_t bpp)
+> +{
+> +	uint32_t dword1 =3D 0;
+> +
+> +	switch (bpp) {
+> +	case 8:
+> +		break;
+> +	case 16:
+> +		dword1 |=3D (1 << 24); /* Only support 565 color */
+> +		break;
+> +	case 32:
+> +		dword1 |=3D (3 << 24);
+> +		break;
+> +	default:
+> +		igt_assert(0);
+> +	}
+> +
+> +	dword1 |=3D 0xcc << 16;
+> +	dword1 |=3D dst_pitch;
+> +
+> +	return dword1;
+> +}
+> +/**
+> + * igt_blitter_src_copy__raw:
+> + * @fd: file descriptor of the i915 driver
+> + * @src_handle: GEM handle of the source buffer
+> + * @src_delta: offset into the source GEM bo, in bytes
+> + * @src_stride: Stride (in bytes) of the source buffer
+> + * @src_tiling: Tiling mode of the source buffer
+> + * @src_x: X coordinate of the source region to copy
+> + * @src_y: Y coordinate of the source region to copy
+> + * @width: Width of the region to copy
+> + * @height: Height of the region to copy
+> + * @bpp: source and destination bits per pixel
+> + * @dst_handle: GEM handle of the destination buffer
+> + * @dst_delta: offset into the destination GEM bo, in bytes
+> + * @dst_stride: Stride (in bytes) of the destination buffer
+> + * @dst_tiling: Tiling mode of the destination buffer
+> + * @dst_x: X coordinate of destination
+> + * @dst_y: Y coordinate of destination
+> + *
+> + */
+> +void igt_blitter_src_copy__raw(int fd,
+> +				/* src */
+> +				uint32_t src_handle,
+> +				unsigned int src_delta,
+> +				unsigned int src_stride,
+> +				unsigned int src_tiling,
+> +				unsigned int src_x, unsigned src_y,
 
+Inconsistent unsigned int vs. unsigned
+
+> +
+> +				/* size */
+> +				unsigned int width, unsigned int height,
+> +
+> +				/* bpp */
+> +				int bpp,
+> +
+> +				/* dst */
+> +				uint32_t dst_handle,
+> +				unsigned dst_delta,
+> +				unsigned int dst_stride,
+> +				unsigned int dst_tiling,
+> +				unsigned int dst_x, unsigned dst_y)
+> +{
+> +	uint32_t batch[32];
+> +	struct drm_i915_gem_exec_object2 objs[3];
+> +	struct drm_i915_gem_relocation_entry relocs[2];
+> +	uint32_t batch_handle;
+> +	uint32_t src_pitch, dst_pitch;
+> +	uint32_t dst_reloc_offset, src_reloc_offset;
+> +	int i =3D 0;
+> +	uint32_t gen =3D intel_gen(intel_get_drm_devid(fd));
+> +	const bool has_64b_reloc =3D gen >=3D 8;
+> +
+> +	memset(batch, 0, sizeof(batch));
+> +
+> +	igt_assert((src_tiling =3D=3D I915_TILING_NONE) ||
+> +		   (src_tiling =3D=3D I915_TILING_X) ||
+> +		   (src_tiling =3D=3D I915_TILING_Y));
+> +	igt_assert((dst_tiling =3D=3D I915_TILING_NONE) ||
+> +		   (dst_tiling =3D=3D I915_TILING_X) ||
+> +		   (dst_tiling =3D=3D I915_TILING_Y));
+> +
+> +	src_pitch =3D fast_copy_pitch(src_stride, src_tiling);
+> +	dst_pitch =3D fast_copy_pitch(dst_stride, dst_tiling);
+
+I believe those do the wrong thing for pre-gen4 tiling.
+
+I also wonder how many implementations of this we already have in igt.
+I suspect the answer is more than two. Maybe there's a way to reduce the
+duplication a bit?
+
+> +
+> +	CHECK_RANGE(src_x); CHECK_RANGE(src_y);
+> +	CHECK_RANGE(dst_x); CHECK_RANGE(dst_y);
+> +	CHECK_RANGE(width); CHECK_RANGE(height);
+> +	CHECK_RANGE(src_x + width); CHECK_RANGE(src_y + height);
+> +	CHECK_RANGE(dst_x + width); CHECK_RANGE(dst_y + height);
+> +	CHECK_RANGE(src_pitch); CHECK_RANGE(dst_pitch);
+> +
+> +	if ((src_tiling | dst_tiling) >=3D I915_TILING_Y) {
+> +		unsigned int mask;
+> +
+> +		batch[i++] =3D MI_LOAD_REGISTER_IMM;
+> +		batch[i++] =3D BCS_SWCTRL;
+> +
+> +		mask =3D (BCS_SRC_Y | BCS_DST_Y) << 16;
+> +		if (src_tiling =3D=3D I915_TILING_Y)
+> +			mask |=3D BCS_SRC_Y;
+> +		if (dst_tiling =3D=3D I915_TILING_Y)
+> +			mask |=3D BCS_DST_Y;
+> +		batch[i++] =3D mask;
+> +	}
+> +
+> +	batch[i] =3D src_copy_dword0(src_tiling, dst_tiling, bpp, gen);
+> +	batch[i++] |=3D 6 + 2 * has_64b_reloc;
+> +	batch[i++] =3D src_copy_dword1(dst_pitch, bpp);
+> +	batch[i++] =3D (dst_y << 16) | dst_x; /* dst x1,y1 */
+> +	batch[i++] =3D ((dst_y + height) << 16) | (dst_x + width); /* dst x2,y2=
+ */
+> +	dst_reloc_offset =3D i;
+> +	batch[i++] =3D dst_delta; /* dst address lower bits */
+> +	batch[i++] =3D 0;	/* dst address upper bits */
+> +	batch[i++] =3D (src_y << 16) | src_x; /* src x1,y1 */
+> +	batch[i++] =3D src_pitch;
+> +	src_reloc_offset =3D i;
+> +	batch[i++] =3D src_delta; /* src address lower bits */
+> +	batch[i++] =3D 0;	/* src address upper bits */
+> +
+> +	if ((src_tiling | dst_tiling) >=3D I915_TILING_Y) {
+> +		igt_assert(gen >=3D 6);
+> +		batch[i++] =3D MI_FLUSH_DW | 2;
+> +		batch[i++] =3D 0;
+> +		batch[i++] =3D 0;
+> +		batch[i++] =3D 0;
+> +
+> +		batch[i++] =3D MI_LOAD_REGISTER_IMM;
+> +		batch[i++] =3D BCS_SWCTRL;
+> +		batch[i++] =3D (BCS_SRC_Y | BCS_DST_Y) << 16;
+> +	}
+> +
+> +	batch[i++] =3D MI_BATCH_BUFFER_END;
+> +	batch[i++] =3D MI_NOOP;
+> +
+> +	igt_assert(i <=3D ARRAY_SIZE(batch));
+> +
+> +	batch_handle =3D gem_create(fd, 4096);
+> +	gem_write(fd, batch_handle, 0, batch, sizeof(batch));
+> +
+> +	fill_relocation(&relocs[0], dst_handle, dst_delta, dst_reloc_offset,
+> +			I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER);
+> +	fill_relocation(&relocs[1], src_handle, src_delta, src_reloc_offset,
+> +			I915_GEM_DOMAIN_RENDER, 0);
+> +
+> +	fill_object(&objs[0], dst_handle, NULL, 0);
+> +	fill_object(&objs[1], src_handle, NULL, 0);
+> +	fill_object(&objs[2], batch_handle, relocs, 2);
+> +
+> +	if (dst_tiling)
+> +		objs[0].flags |=3D EXEC_OBJECT_NEEDS_FENCE;
+> +	if (src_tiling)
+> +		objs[1].flags |=3D EXEC_OBJECT_NEEDS_FENCE;
+> +
+> +	exec_blit(fd, objs, 3, ARRAY_SIZE(batch));
+> +
+> +	gem_close(fd, batch_handle);
+> +}
+> +
+>  /**
+>   * igt_blitter_fast_copy__raw:
+>   * @fd: file descriptor of the i915 driver
+> diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+> index 37e3affe..4820cebb 100644
+> --- a/lib/intel_batchbuffer.h
+> +++ b/lib/intel_batchbuffer.h
+> @@ -252,6 +252,27 @@ struct igt_buf {
+>  unsigned igt_buf_width(const struct igt_buf *buf);
+>  unsigned igt_buf_height(const struct igt_buf *buf);
+>  =
+
+> +void igt_blitter_src_copy__raw(int fd,
+> +				/* src */
+> +				uint32_t src_handle,
+> +				unsigned int src_delta,
+> +				unsigned int src_stride,
+> +				unsigned int src_tiling,
+> +				unsigned int src_x, unsigned src_y,
+> +
+> +				/* size */
+> +				unsigned int width, unsigned int height,
+> +
+> +				/* bpp */
+> +				int bpp,
+> +
+> +				/* dst */
+> +				uint32_t dst_handle,
+> +				unsigned int dst_delta,
+> +				unsigned int dst_stride,
+> +				unsigned int dst_tiling,
+> +				unsigned int dst_x, unsigned dst_y);
+> +
+>  void igt_blitter_fast_copy(struct intel_batchbuffer *batch,
+>  			   const struct igt_buf *src, unsigned src_delta,
+>  			   unsigned src_x, unsigned src_y,
+> -- =
+
+> 2.24.0
+> =
+
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+-- =
+
+Ville Syrj=E4l=E4
+Intel
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
