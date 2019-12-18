@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 706D76EA60
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42EFC6EA61
  for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 19:39:16 +0000 (UTC)
 From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-Date: Wed, 18 Dec 2019 11:39:12 -0800
-Message-Id: <20191218193915.1375365-8-vanshidhar.r.konda@intel.com>
+Date: Wed, 18 Dec 2019 11:39:13 -0800
+Message-Id: <20191218193915.1375365-9-vanshidhar.r.konda@intel.com>
 In-Reply-To: <20191218193915.1375365-1-vanshidhar.r.konda@intel.com>
 References: <20191218193915.1375365-1-vanshidhar.r.konda@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 07/10] tests/kms_frontbuffer_tracking: Skip set
- tiling calls if not supported
+Subject: [igt-dev] [PATCH 08/10] tests/kms_addfb_basic: Avoid tiling
+ subtests on device without HW tiling support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,28 +24,50 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Skip the method that is setting tiling with invalid strides if the
-hardware does not support HW for tiling/de-tiling.
+Skip subtests that are testing interoperability of FB modifiers and
+hardware tiling if the device does not support HW tiling
 
 Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 ---
- tests/kms_frontbuffer_tracking.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/kms_addfb_basic.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
-index ae3b087e..89023bbe 100644
---- a/tests/kms_frontbuffer_tracking.c
-+++ b/tests/kms_frontbuffer_tracking.c
-@@ -2833,7 +2833,8 @@ static void badstride_subtest(const struct test_mode *t)
- 	struct modeset_params *params = pick_params(t);
- 	int rc;
+diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+index 666e7165..2e39ffe7 100644
+--- a/tests/kms_addfb_basic.c
++++ b/tests/kms_addfb_basic.c
+@@ -132,6 +132,7 @@ static void invalid_tests(int fd)
  
--	try_invalid_strides();
-+	if (gem_has_legacy_hw_tiling(drm.fd))
-+		try_invalid_strides();
+ 	igt_subtest("clobberred-modifier") {
+ 		igt_require_intel(fd);
++		igt_require(gem_has_legacy_hw_tiling(fd));
+ 		f.flags = 0;
+ 		f.modifier[0] = 0;
+ 		gem_set_tiling(fd, gem_bo, I915_TILING_X, 512*4);
+@@ -304,6 +305,7 @@ static void tiling_tests(int fd)
+ 	igt_subtest_group {
+ 		igt_fixture {
+ 			igt_require_intel(fd);
++			igt_require(gem_has_legacy_hw_tiling(fd));
+ 			tiled_x_bo = igt_create_bo_with_dimensions(fd, 1024, 1024,
+ 				DRM_FORMAT_XRGB8888, LOCAL_I915_FORMAT_MOD_X_TILED,
+ 				1024*4, NULL, NULL, NULL);
+@@ -450,6 +452,7 @@ static void size_tests(int fd)
  
- 	prepare_subtest(t, NULL);
- 
+ 	igt_subtest("bo-too-small-due-to-tiling") {
+ 		igt_require_intel(fd);
++		igt_require(gem_has_legacy_hw_tiling(fd));
+ 		gem_set_tiling(fd, gem_bo_small, I915_TILING_X, 1024*4);
+ 		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+ 			   errno == EINVAL);
+@@ -502,6 +505,7 @@ static void addfb25_tests(int fd)
+ 	igt_subtest_group {
+ 		igt_fixture {
+ 			igt_require_intel(fd);
++			igt_require(gem_has_legacy_hw_tiling(fd));
+ 			gem_set_tiling(fd, gem_bo, I915_TILING_X, 1024*4);
+ 			igt_require_fb_modifiers(fd);
+ 		}
 -- 
 2.24.0
 
