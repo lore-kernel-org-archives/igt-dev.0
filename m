@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 481776E2CF
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 11:31:40 +0000 (UTC)
-From: "Saarinen, Jani" <jani.saarinen@intel.com>
-Date: Wed, 18 Dec 2019 11:31:38 +0000
-Message-ID: <43D4F724E12AB6478FC1572B3FBE89D076A5E829@IRSMSX106.ger.corp.intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6411C6E2C8
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 11:36:06 +0000 (UTC)
+Date: Wed, 18 Dec 2019 13:36:02 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20191218113602.GH25209@platvala-desk.ger.corp.intel.com>
 References: <20191218112012.3539911-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20191218112012.3539911-1-chris@chris-wilson.co.uk>
-Content-Language: en-US
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20191218112012.3539911-1-chris@chris-wilson.co.uk>
 Subject: Re: [igt-dev] [PATCH i-g-t] tests: Open DRM_MASTER for display
  operations
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -22,22 +22,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Chris
-> Wilson
-> Sent: keskiviikko 18. joulukuuta 2019 13.20
-> To: igt-dev@lists.freedesktop.org
-> Subject: [igt-dev] [PATCH i-g-t] tests: Open DRM_MASTER for display operations
-> 
+On Wed, Dec 18, 2019 at 11:20:12AM +0000, Chris Wilson wrote:
 > To configure the display, one is required to be the DRM_MASTER.
 > 
 > Closes: https://gitlab.freedesktop.org/drm/intel/issues/855
-Is this change also for : https://gitlab.freedesktop.org/drm/intel/issues/844 ?
-
 > Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 > ---
 >  tests/kms_content_protection.c | 2 +-
@@ -54,22 +46,20 @@ Is this change also for : https://gitlab.freedesktop.org/drm/intel/issues/844 ?
 >  {
 >  	igt_fixture {
 > -		data.drm_fd = drm_open_driver(DRIVER_ANY);
-> +		data.drm_fd =
-> drm_open_driver_master(DRIVER_ANY);
-> 
+> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>  
 >  		igt_display_require(&data.display, data.drm_fd);
 >  	}
-> diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c index
-> ac24730f8..065fc2df8 100644
+> diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
+> index ac24730f8..065fc2df8 100644
 > --- a/tests/kms_panel_fitting.c
 > +++ b/tests/kms_panel_fitting.c
 > @@ -252,7 +252,7 @@ igt_main
 >  	data_t data = {};
-> 
+>  
 >  	igt_fixture {
 > -		data.drm_fd = drm_open_driver(DRIVER_ANY);
-> +		data.drm_fd =
-> drm_open_driver_master(DRIVER_ANY);
+> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
 >  		igt_display_require(&data.display, data.drm_fd);
 >  		igt_display_require_output(&data.display);
 >  	}
@@ -79,21 +69,21 @@ Is this change also for : https://gitlab.freedesktop.org/drm/intel/issues/844 ?
 > +++ b/tests/kms_plane_alpha_blend.c
 > @@ -565,7 +565,7 @@ igt_main
 >  	enum pipe pipe;
-> 
+>  
 >  	igt_fixture {
 > -		data.gfx_fd = drm_open_driver(DRIVER_ANY);
-> +		data.gfx_fd =
-> drm_open_driver_master(DRIVER_ANY);
+> +		data.gfx_fd = drm_open_driver_master(DRIVER_ANY);
 >  		igt_require_pipe_crc(data.gfx_fd);
 >  		igt_display_require(&data.display, data.gfx_fd);
 >  		igt_require(data.display.is_atomic);
-> --
-> 2.24.1
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+
+Don't they implicitly become masters if that's the first-and-only
+open() on the dev? Did that change?
+
+
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
