@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 254626E21F
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99D746E226
  for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 05:59:27 +0000 (UTC)
 From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-Date: Tue, 17 Dec 2019 21:59:17 -0800
-Message-Id: <20191218055925.705070-3-vanshidhar.r.konda@intel.com>
+Date: Tue, 17 Dec 2019 21:59:20 -0800
+Message-Id: <20191218055925.705070-6-vanshidhar.r.konda@intel.com>
 In-Reply-To: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
 References: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 02/10] lib/intel_batchbuffer: Add blitter copy
- using XY_SRC_COPY_BLT
+Subject: [igt-dev] [PATCH 05/10] lib/igt_draw: Refactor get_tiling calls
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,248 +24,238 @@ To: igt-dev@lists.freedesktop.org
 Cc: brian.welty@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a method that uses the XY_SRC_COPY_BLT instruction for copying
-buffers using the blitter engine.
+Simplify the number of places from which gem_get_tiling method is called
+and call it only if the device has support in hardware for tiling.
 
 Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 ---
- lib/intel_batchbuffer.c | 183 ++++++++++++++++++++++++++++++++++++++++
- lib/intel_batchbuffer.h |  21 +++++
- 2 files changed, 204 insertions(+)
+ lib/igt_draw.c                   | 56 +++++++++++++++++---------------
+ lib/igt_draw.h                   |  5 +--
+ tests/kms_frontbuffer_tracking.c |  8 +++--
+ 3 files changed, 37 insertions(+), 32 deletions(-)
 
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index 51aae4dc..1352aa95 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -46,6 +46,12 @@
- 
- #include <i915_drm.h>
- 
-+#define MI_FLUSH_DW (0x26 << 23)
-+
-+#define BCS_SWCTRL 0x22200
-+#define BCS_SRC_Y (1 << 0)
-+#define BCS_DST_Y (1 << 1)
-+
- /**
-  * SECTION:intel_batchbuffer
-  * @short_description: Batchbuffer and blitter support
-@@ -661,6 +667,183 @@ static void exec_blit(int fd,
- 	gem_execbuf(fd, &exec);
+diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+index 7e0edec1..cc2efc3d 100644
+--- a/lib/igt_draw.c
++++ b/lib/igt_draw.c
+@@ -333,20 +333,19 @@ static void draw_rect_ptr_tiled(void *ptr, uint32_t stride, uint32_t tiling,
  }
  
-+static uint32_t src_copy_dword0(uint32_t src_tiling, uint32_t dst_tiling,
-+				uint32_t bpp, uint32_t device_gen)
-+{
-+	uint32_t dword0 = 0;
-+
-+	dword0 |= XY_SRC_COPY_BLT_CMD;
-+	if (bpp == 32)
-+		dword0 |= XY_SRC_COPY_BLT_WRITE_RGB |
-+			XY_SRC_COPY_BLT_WRITE_ALPHA;
-+
-+	if (device_gen >= 4 && src_tiling)
-+		dword0 |= XY_SRC_COPY_BLT_SRC_TILED;
-+	if (device_gen >= 4 && dst_tiling)
-+		dword0 |= XY_SRC_COPY_BLT_DST_TILED;
-+
-+	return dword0;
-+}
-+
-+static uint32_t src_copy_dword1(uint32_t dst_pitch, uint32_t bpp)
-+{
-+	uint32_t dword1 = 0;
-+
-+	switch (bpp) {
-+	case 8:
-+		break;
-+	case 16:
-+		dword1 |= (1 << 24); /* Only support 565 color */
-+		break;
-+	case 32:
-+		dword1 |= (3 << 24);
-+		break;
-+	default:
-+		igt_assert(0);
-+	}
-+
-+	dword1 |= 0xcc << 16;
-+	dword1 |= dst_pitch;
-+
-+	return dword1;
-+}
-+/**
-+ * igt_blitter_src_copy__raw:
-+ * @fd: file descriptor of the i915 driver
-+ * @src_handle: GEM handle of the source buffer
-+ * @src_delta: offset into the source GEM bo, in bytes
-+ * @src_stride: Stride (in bytes) of the source buffer
-+ * @src_tiling: Tiling mode of the source buffer
-+ * @src_x: X coordinate of the source region to copy
-+ * @src_y: Y coordinate of the source region to copy
-+ * @width: Width of the region to copy
-+ * @height: Height of the region to copy
-+ * @bpp: source and destination bits per pixel
-+ * @dst_handle: GEM handle of the destination buffer
-+ * @dst_delta: offset into the destination GEM bo, in bytes
-+ * @dst_stride: Stride (in bytes) of the destination buffer
-+ * @dst_tiling: Tiling mode of the destination buffer
-+ * @dst_x: X coordinate of destination
-+ * @dst_y: Y coordinate of destination
-+ *
-+ */
-+void igt_blitter_src_copy__raw(int fd,
-+				/* src */
-+				uint32_t src_handle,
-+				unsigned int src_delta,
-+				unsigned int src_stride,
-+				unsigned int src_tiling,
-+				unsigned int src_x, unsigned src_y,
-+
-+				/* size */
-+				unsigned int width, unsigned int height,
-+
-+				/* bpp */
-+				int bpp,
-+
-+				/* dst */
-+				uint32_t dst_handle,
-+				unsigned dst_delta,
-+				unsigned int dst_stride,
-+				unsigned int dst_tiling,
-+				unsigned int dst_x, unsigned dst_y)
-+{
-+	uint32_t batch[32];
-+	struct drm_i915_gem_exec_object2 objs[3];
-+	struct drm_i915_gem_relocation_entry relocs[2];
-+	uint32_t batch_handle;
-+	uint32_t src_pitch, dst_pitch;
-+	uint32_t dst_reloc_offset, src_reloc_offset;
-+	int i = 0;
-+	uint32_t gen = intel_gen(intel_get_drm_devid(fd));
-+	const bool has_64b_reloc = gen >= 8;
-+
-+	memset(batch, 0, sizeof(batch));
-+
-+	igt_assert((src_tiling == I915_TILING_NONE) ||
-+		   (src_tiling == I915_TILING_X) ||
-+		   (src_tiling == I915_TILING_Y));
-+	igt_assert((dst_tiling == I915_TILING_NONE) ||
-+		   (dst_tiling == I915_TILING_X) ||
-+		   (dst_tiling == I915_TILING_Y));
-+
-+	src_pitch = fast_copy_pitch(src_stride, src_tiling);
-+	dst_pitch = fast_copy_pitch(dst_stride, dst_tiling);
-+
-+	CHECK_RANGE(src_x); CHECK_RANGE(src_y);
-+	CHECK_RANGE(dst_x); CHECK_RANGE(dst_y);
-+	CHECK_RANGE(width); CHECK_RANGE(height);
-+	CHECK_RANGE(src_x + width); CHECK_RANGE(src_y + height);
-+	CHECK_RANGE(dst_x + width); CHECK_RANGE(dst_y + height);
-+	CHECK_RANGE(src_pitch); CHECK_RANGE(dst_pitch);
-+
-+	if ((src_tiling | dst_tiling) >= I915_TILING_Y) {
-+		unsigned int mask;
-+
-+		batch[i++] = MI_LOAD_REGISTER_IMM;
-+		batch[i++] = BCS_SWCTRL;
-+
-+		mask = (BCS_SRC_Y | BCS_DST_Y) << 16;
-+		if (src_tiling == I915_TILING_Y)
-+			mask |= BCS_SRC_Y;
-+		if (dst_tiling == I915_TILING_Y)
-+			mask |= BCS_DST_Y;
-+		batch[i++] = mask;
-+	}
-+
-+	batch[i] = src_copy_dword0(src_tiling, dst_tiling, bpp, gen);
-+	batch[i++] |= 6 + 2 * has_64b_reloc;
-+	batch[i++] = src_copy_dword1(dst_pitch, bpp);
-+	batch[i++] = (dst_y << 16) | dst_x; /* dst x1,y1 */
-+	batch[i++] = ((dst_y + height) << 16) | (dst_x + width); /* dst x2,y2 */
-+	dst_reloc_offset = i;
-+	batch[i++] = dst_delta; /* dst address lower bits */
-+	batch[i++] = 0;	/* dst address upper bits */
-+	batch[i++] = (src_y << 16) | src_x; /* src x1,y1 */
-+	batch[i++] = src_pitch;
-+	src_reloc_offset = i;
-+	batch[i++] = src_delta; /* src address lower bits */
-+	batch[i++] = 0;	/* src address upper bits */
-+
-+	if ((src_tiling | dst_tiling) >= I915_TILING_Y) {
-+		igt_assert(gen >= 6);
-+		batch[i++] = MI_FLUSH_DW | 2;
-+		batch[i++] = 0;
-+		batch[i++] = 0;
-+		batch[i++] = 0;
-+
-+		batch[i++] = MI_LOAD_REGISTER_IMM;
-+		batch[i++] = BCS_SWCTRL;
-+		batch[i++] = (BCS_SRC_Y | BCS_DST_Y) << 16;
-+	}
-+
-+	batch[i++] = MI_BATCH_BUFFER_END;
-+	batch[i++] = MI_NOOP;
-+
-+	igt_assert(i <= ARRAY_SIZE(batch));
-+
-+	batch_handle = gem_create(fd, 4096);
-+	gem_write(fd, batch_handle, 0, batch, sizeof(batch));
-+
-+	fill_relocation(&relocs[0], dst_handle, dst_delta, dst_reloc_offset,
-+			I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER);
-+	fill_relocation(&relocs[1], src_handle, src_delta, src_reloc_offset,
-+			I915_GEM_DOMAIN_RENDER, 0);
-+
-+	fill_object(&objs[0], dst_handle, NULL, 0);
-+	fill_object(&objs[1], src_handle, NULL, 0);
-+	fill_object(&objs[2], batch_handle, relocs, 2);
-+
-+	if (dst_tiling)
-+		objs[0].flags |= EXEC_OBJECT_NEEDS_FENCE;
-+	if (src_tiling)
-+		objs[1].flags |= EXEC_OBJECT_NEEDS_FENCE;
-+
-+	exec_blit(fd, objs, 3, ARRAY_SIZE(batch));
-+
-+	gem_close(fd, batch_handle);
-+}
-+
- /**
-  * igt_blitter_fast_copy__raw:
-  * @fd: file descriptor of the i915 driver
-diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-index 37e3affe..4820cebb 100644
---- a/lib/intel_batchbuffer.h
-+++ b/lib/intel_batchbuffer.h
-@@ -252,6 +252,27 @@ struct igt_buf {
- unsigned igt_buf_width(const struct igt_buf *buf);
- unsigned igt_buf_height(const struct igt_buf *buf);
+ static void draw_rect_mmap_cpu(int fd, struct buf_data *buf, struct rect *rect,
+-			       uint32_t color)
++			       uint32_t tiling, uint32_t swizzle, uint32_t color)
+ {
+ 	uint32_t *ptr;
+-	uint32_t tiling, swizzle;
  
-+void igt_blitter_src_copy__raw(int fd,
-+				/* src */
-+				uint32_t src_handle,
-+				unsigned int src_delta,
-+				unsigned int src_stride,
-+				unsigned int src_tiling,
-+				unsigned int src_x, unsigned src_y,
+ 	gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_CPU,
+ 		       I915_GEM_DOMAIN_CPU);
+-	igt_require(gem_get_tiling(fd, buf->handle, &tiling, &swizzle));
+ 
+ 	/* We didn't implement suport for the older tiling methods yet. */
+ 	if (tiling != I915_TILING_NONE)
+ 		igt_require(intel_gen(intel_get_drm_devid(fd)) >= 5);
+ 
+-	ptr = gem_mmap__cpu(fd, buf->handle, 0, PAGE_ALIGN(buf->size), 0);
++	ptr = gem_mmap__cpu(fd, buf->handle, 0, PAGE_ALIGN(buf->size),
++			    PROT_READ | PROT_WRITE);
+ 
+ 	switch (tiling) {
+ 	case I915_TILING_NONE:
+@@ -384,14 +383,12 @@ static void draw_rect_mmap_gtt(int fd, struct buf_data *buf, struct rect *rect,
+ }
+ 
+ static void draw_rect_mmap_wc(int fd, struct buf_data *buf, struct rect *rect,
+-			      uint32_t color)
++			      uint32_t tiling, uint32_t swizzle, uint32_t color)
+ {
+ 	uint32_t *ptr;
+-	uint32_t tiling, swizzle;
+ 
+ 	gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
+ 		       I915_GEM_DOMAIN_GTT);
+-	igt_require(gem_get_tiling(fd, buf->handle, &tiling, &swizzle));
+ 
+ 	/* We didn't implement suport for the older tiling methods yet. */
+ 	if (tiling != I915_TILING_NONE)
+@@ -495,12 +492,9 @@ static void draw_rect_pwrite_tiled(int fd, struct buf_data *buf,
+ }
+ 
+ static void draw_rect_pwrite(int fd, struct buf_data *buf,
+-			     struct rect *rect, uint32_t color)
++			     struct rect *rect, uint32_t tiling,
++			     uint32_t swizzle, uint32_t color)
+ {
+-	uint32_t tiling, swizzle;
+-
+-	igt_require(gem_get_tiling(fd, buf->handle, &tiling, &swizzle));
+-
+ 	switch (tiling) {
+ 	case I915_TILING_NONE:
+ 		draw_rect_pwrite_untiled(fd, buf, rect, color);
+@@ -517,6 +511,7 @@ static void draw_rect_pwrite(int fd, struct buf_data *buf,
+ 
+ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+ 			  struct buf_data *buf, struct rect *rect,
++			  uint32_t tiling, uint32_t swizzle,
+ 			  uint32_t color)
+ {
+ 	drm_intel_bo *dst;
+@@ -524,11 +519,8 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+ 	int blt_cmd_len, blt_cmd_tiling, blt_cmd_depth;
+ 	uint32_t devid = intel_get_drm_devid(fd);
+ 	int gen = intel_gen(devid);
+-	uint32_t tiling, swizzle;
+ 	int pitch;
+ 
+-	igt_require(gem_get_tiling(fd, buf->handle, &tiling, &swizzle));
+-
+ 	dst = gem_handle_to_libdrm_bo(cmd_data->bufmgr, fd, "", buf->handle);
+ 	igt_assert(dst);
+ 
+@@ -574,6 +566,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+ 
+ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+ 			     struct buf_data *buf, struct rect *rect,
++			     uint32_t tiling, uint32_t swizzle,
+ 			     uint32_t color)
+ {
+ 	drm_intel_bo *src, *dst;
+@@ -581,21 +574,18 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+ 	igt_render_copyfunc_t rendercopy = igt_get_render_copyfunc(devid);
+ 	struct igt_buf src_buf = {}, dst_buf = {};
+ 	struct intel_batchbuffer *batch;
+-	uint32_t tiling, swizzle;
+ 	struct buf_data tmp;
+ 	int pixel_size = buf->bpp / 8;
+ 
+ 	igt_skip_on(!rendercopy);
+ 
+-	igt_require(gem_get_tiling(fd, buf->handle, &tiling, &swizzle));
+-
+ 	/* We create a temporary buffer and copy from it using rendercopy. */
+ 	tmp.size = rect->w * rect->h * pixel_size;
+ 	tmp.handle = gem_create(fd, tmp.size);
+ 	tmp.stride = rect->w * pixel_size;
+ 	tmp.bpp = buf->bpp;
+ 	draw_rect_mmap_cpu(fd, &tmp, &(struct rect){0, 0, rect->w, rect->h},
+-			   color);
++			   I915_TILING_NONE, I915_BIT_6_SWIZZLE_NONE, color);
+ 
+ 	src = gem_handle_to_libdrm_bo(cmd_data->bufmgr, fd, "", tmp.handle);
+ 	igt_assert(src);
+@@ -647,9 +637,12 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+  */
+ void igt_draw_rect(int fd, drm_intel_bufmgr *bufmgr, drm_intel_context *context,
+ 		   uint32_t buf_handle, uint32_t buf_size, uint32_t buf_stride,
+-		   enum igt_draw_method method, int rect_x, int rect_y,
+-		   int rect_w, int rect_h, uint32_t color, int bpp)
++		   uint32_t tiling, enum igt_draw_method method,
++		   int rect_x, int rect_y, int rect_w, int rect_h,
++		   uint32_t color, int bpp)
+ {
++	uint32_t buf_tiling, swizzle;
 +
-+				/* size */
-+				unsigned int width, unsigned int height,
+ 	struct cmd_data cmd_data = {
+ 		.bufmgr = bufmgr,
+ 		.context = context,
+@@ -667,24 +660,32 @@ void igt_draw_rect(int fd, drm_intel_bufmgr *bufmgr, drm_intel_context *context,
+ 		.h = rect_h,
+ 	};
+ 
++	swizzle = I915_BIT_6_SWIZZLE_NONE;
++	if (tiling != I915_TILING_NONE && gem_has_legacy_hw_tiling(fd)) {
++		gem_get_tiling(fd, buf_handle, &buf_tiling, &swizzle);
++		igt_assert(tiling == buf_tiling);
++	}
 +
-+				/* bpp */
-+				int bpp,
-+
-+				/* dst */
-+				uint32_t dst_handle,
-+				unsigned int dst_delta,
-+				unsigned int dst_stride,
-+				unsigned int dst_tiling,
-+				unsigned int dst_x, unsigned dst_y);
-+
- void igt_blitter_fast_copy(struct intel_batchbuffer *batch,
- 			   const struct igt_buf *src, unsigned src_delta,
- 			   unsigned src_x, unsigned src_y,
+ 	switch (method) {
+ 	case IGT_DRAW_MMAP_CPU:
+-		draw_rect_mmap_cpu(fd, &buf, &rect, color);
++		draw_rect_mmap_cpu(fd, &buf, &rect, tiling, swizzle, color);
+ 		break;
+ 	case IGT_DRAW_MMAP_GTT:
+ 		draw_rect_mmap_gtt(fd, &buf, &rect, color);
+ 		break;
+ 	case IGT_DRAW_MMAP_WC:
+-		draw_rect_mmap_wc(fd, &buf, &rect, color);
++		draw_rect_mmap_wc(fd, &buf, &rect, tiling, swizzle, color);
+ 		break;
+ 	case IGT_DRAW_PWRITE:
+-		draw_rect_pwrite(fd, &buf, &rect, color);
++		draw_rect_pwrite(fd, &buf, &rect, tiling, swizzle, color);
+ 		break;
+ 	case IGT_DRAW_BLT:
+-		draw_rect_blt(fd, &cmd_data, &buf, &rect, color);
++		draw_rect_blt(fd, &cmd_data, &buf, &rect, tiling, swizzle,
++			      color);
+ 		break;
+ 	case IGT_DRAW_RENDER:
+-		draw_rect_render(fd, &cmd_data, &buf, &rect, color);
++		draw_rect_render(fd, &cmd_data, &buf, &rect, tiling, swizzle,
++				 color);
+ 		break;
+ 	default:
+ 		igt_assert(false);
+@@ -715,7 +716,8 @@ void igt_draw_rect_fb(int fd, drm_intel_bufmgr *bufmgr,
+ 		      int rect_w, int rect_h, uint32_t color)
+ {
+ 	igt_draw_rect(fd, bufmgr, context, fb->gem_handle, fb->size, fb->strides[0],
+-		      method, rect_x, rect_y, rect_w, rect_h, color,
++		      igt_fb_mod_to_tiling(fb->modifier), method,
++		      rect_x, rect_y, rect_w, rect_h, color,
+ 		      igt_drm_format_to_bpp(fb->drm_format));
+ }
+ 
+diff --git a/lib/igt_draw.h b/lib/igt_draw.h
+index b030131e..ec146754 100644
+--- a/lib/igt_draw.h
++++ b/lib/igt_draw.h
+@@ -52,8 +52,9 @@ const char *igt_draw_get_method_name(enum igt_draw_method method);
+ 
+ void igt_draw_rect(int fd, drm_intel_bufmgr *bufmgr, drm_intel_context *context,
+ 		   uint32_t buf_handle, uint32_t buf_size, uint32_t buf_stride,
+-		   enum igt_draw_method method, int rect_x, int rect_y,
+-		   int rect_w, int rect_h, uint32_t color, int bpp);
++		   uint32_t tiling, enum igt_draw_method method,
++		   int rect_x, int rect_y, int rect_w, int rect_h,
++		   uint32_t color, int bpp);
+ 
+ void igt_draw_rect_fb(int fd, drm_intel_bufmgr *bufmgr,
+ 		      drm_intel_context *context, struct igt_fb *fb,
+diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
+index c788b59e..ae3b087e 100644
+--- a/tests/kms_frontbuffer_tracking.c
++++ b/tests/kms_frontbuffer_tracking.c
+@@ -291,6 +291,7 @@ struct {
+ 	int height;
+ 	uint32_t color;
+ 	int bpp;
++	uint32_t tiling;
+ } busy_thread = {
+ 	.stop = true,
+ };
+@@ -1126,9 +1127,9 @@ static void *busy_thread_func(void *data)
+ 	while (!busy_thread.stop)
+ 		igt_draw_rect(drm.fd, drm.bufmgr, NULL, busy_thread.handle,
+ 			      busy_thread.size, busy_thread.stride,
+-			      IGT_DRAW_BLT, 0, 0, busy_thread.width,
+-			      busy_thread.height, busy_thread.color,
+-			      busy_thread.bpp);
++			      busy_thread.tiling, IGT_DRAW_BLT, 0, 0,
++			      busy_thread.width, busy_thread.height,
++			      busy_thread.color, busy_thread.bpp);
+ 
+ 	pthread_exit(0);
+ }
+@@ -1146,6 +1147,7 @@ static void start_busy_thread(struct igt_fb *fb)
+ 	busy_thread.height = fb->height;
+ 	busy_thread.color = pick_color(fb, COLOR_PRIM_BG);
+ 	busy_thread.bpp = igt_drm_format_to_bpp(fb->drm_format);
++	busy_thread.tiling = igt_fb_mod_to_tiling(fb->modifier);
+ 
+ 	rc = pthread_create(&busy_thread.thread, NULL, busy_thread_func, NULL);
+ 	igt_assert_eq(rc, 0);
 -- 
 2.24.0
 
