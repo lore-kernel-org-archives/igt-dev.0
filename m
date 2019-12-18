@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 707E96E21F
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 05:59:27 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFA476E225
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 05:59:26 +0000 (UTC)
 From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-Date: Tue, 17 Dec 2019 21:59:24 -0800
-Message-Id: <20191218055925.705070-10-vanshidhar.r.konda@intel.com>
+Date: Tue, 17 Dec 2019 21:59:16 -0800
+Message-Id: <20191218055925.705070-2-vanshidhar.r.konda@intel.com>
 In-Reply-To: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
 References: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 09/10] tests/kms_fence_pin_leak: Skip test on
- devices without HW tiling support
+Subject: [igt-dev] [PATCH 01/10] lib/ioctl_wrappers: Query if device
+ supports set/get legacy tiling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,27 +25,55 @@ To: igt-dev@lists.freedesktop.org
 Cc: brian.welty@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This test is utilizing fences associated with tiled buffer objects. On
-devices that don't have HW support for tiling/de-tiling these fences are
-not available.
+Add a method to query if the device supports setting and getting legacy
+tiling formats for buffer objects.
 
 Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/kms_fence_pin_leak.c | 2 ++
- 1 file changed, 2 insertions(+)
+ lib/ioctl_wrappers.c | 17 +++++++++++++++++
+ lib/ioctl_wrappers.h |  1 +
+ 2 files changed, 18 insertions(+)
 
-diff --git a/tests/kms_fence_pin_leak.c b/tests/kms_fence_pin_leak.c
-index 8c9e10a5..a05039df 100644
---- a/tests/kms_fence_pin_leak.c
-+++ b/tests/kms_fence_pin_leak.c
-@@ -200,6 +200,8 @@ igt_simple_main
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 627717d2..c1abb575 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -133,6 +133,23 @@ __gem_get_tiling(int fd, struct drm_i915_gem_get_tiling *arg)
+ 	return err;
+ }
  
- 	data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
- 	igt_require_gem(data.drm_fd);
-+	igt_require(gem_has_legacy_hw_tiling(data.drm_fd));
-+	igt_require(gem_has_mappable_ggtt(data.drm_fd));
++/**
++ * gem_has_legacy_hw_tiling:
++ * @fd: open i915 drm file descriptor
++ *
++ * Feature check to query if the device supports setting/getting
++ * legacy tiling formats for buffer objects
++ *
++ * Returns: True if tiling is supported
++ */
++bool
++gem_has_legacy_hw_tiling(int fd)
++{
++	struct drm_i915_gem_get_tiling arg = {};
++
++	return (__gem_get_tiling(fd, &arg) != -EOPNOTSUPP);
++}
++
+ /**
+  * gem_get_tiling:
+  * @fd: open i915 drm file descriptor
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index 7614e688..0ea77738 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -146,6 +146,7 @@ void gem_require_caching(int fd);
+ void gem_require_ring(int fd, unsigned ring);
+ bool gem_has_mocs_registers(int fd);
+ void gem_require_mocs_registers(int fd);
++bool gem_has_legacy_hw_tiling(int fd);
  
- 	data.devid = intel_get_drm_devid(data.drm_fd);
+ #define gem_has_ring(f, r) gem_context_has_engine(f, 0, r)
  
 -- 
 2.24.0
