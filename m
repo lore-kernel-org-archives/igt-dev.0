@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B34F6E225
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B022B6E228
  for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 05:59:27 +0000 (UTC)
 From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-Date: Tue, 17 Dec 2019 21:59:22 -0800
-Message-Id: <20191218055925.705070-8-vanshidhar.r.konda@intel.com>
+Date: Tue, 17 Dec 2019 21:59:21 -0800
+Message-Id: <20191218055925.705070-7-vanshidhar.r.konda@intel.com>
 In-Reply-To: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
 References: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 07/10] tests/kms_frontbuffer_tracking: Skip set
- tiling calls if not supported
+Subject: [igt-dev] [PATCH 06/10] i915/i915_fb_tiling: Skip on devices that
+ don't support HW tiling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,27 +25,27 @@ To: igt-dev@lists.freedesktop.org
 Cc: brian.welty@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Skip the method that is setting tiling with invalid strides if the
-hardware does not support HW for tiling/de-tiling.
+The test tries to change the tiling of a framebuffer object after it has
+been set using a framebuffer modifier. If the device does not support HW
+tiling/de-tiling the test should not be run.
 
 Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 ---
- tests/kms_frontbuffer_tracking.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/i915/i915_fb_tiling.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
-index ae3b087e..89023bbe 100644
---- a/tests/kms_frontbuffer_tracking.c
-+++ b/tests/kms_frontbuffer_tracking.c
-@@ -2833,7 +2833,8 @@ static void badstride_subtest(const struct test_mode *t)
- 	struct modeset_params *params = pick_params(t);
- 	int rc;
+diff --git a/tests/i915/i915_fb_tiling.c b/tests/i915/i915_fb_tiling.c
+index 7d5c3f1f..4ec84962 100644
+--- a/tests/i915/i915_fb_tiling.c
++++ b/tests/i915/i915_fb_tiling.c
+@@ -32,6 +32,8 @@ igt_simple_main
+ 	struct igt_fb fb;
+ 	int ret;
  
--	try_invalid_strides();
-+	if (gem_has_legacy_hw_tiling(drm.fd))
-+		try_invalid_strides();
- 
- 	prepare_subtest(t, NULL);
++	igt_require(gem_has_legacy_hw_tiling(drm_fd));
++
+ 	igt_create_fb(drm_fd, 512, 512, DRM_FORMAT_XRGB8888,
+ 		      LOCAL_I915_FORMAT_MOD_X_TILED, &fb);
  
 -- 
 2.24.0
