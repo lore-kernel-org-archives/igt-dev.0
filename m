@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F0C156EA61
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C1066EA61
  for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 19:39:16 +0000 (UTC)
 From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-Date: Wed, 18 Dec 2019 11:39:09 -0800
-Message-Id: <20191218193915.1375365-5-vanshidhar.r.konda@intel.com>
+Date: Wed, 18 Dec 2019 11:39:11 -0800
+Message-Id: <20191218193915.1375365-7-vanshidhar.r.konda@intel.com>
 In-Reply-To: <20191218193915.1375365-1-vanshidhar.r.konda@intel.com>
 References: <20191218193915.1375365-1-vanshidhar.r.konda@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 04/10] lib/igt_fb: Remove set_tiling calls on
- devices without HW tiling support
+Subject: [igt-dev] [PATCH 06/10] i915/i915_fb_tiling: Skip on devices that
+ don't support HW tiling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,62 +24,28 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On devices that don't support tiling/de-tiling in HW, skip the usage
-of the SET_TILING IOCTL and use blitter for drawing.
+The test tries to change the tiling of a framebuffer object after it has
+been set using a framebuffer modifier. If the device does not support HW
+tiling/de-tiling the test should not be run.
 
 Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 ---
- lib/igt_fb.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ tests/i915/i915_fb_tiling.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 35a50eeb..2843ab4d 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -922,9 +922,11 @@ static int create_bo_for_fb(struct igt_fb *fb)
+diff --git a/tests/i915/i915_fb_tiling.c b/tests/i915/i915_fb_tiling.c
+index 7d5c3f1f..4ec84962 100644
+--- a/tests/i915/i915_fb_tiling.c
++++ b/tests/i915/i915_fb_tiling.c
+@@ -32,6 +32,8 @@ igt_simple_main
+ 	struct igt_fb fb;
+ 	int ret;
  
- 		if (is_i915_device(fd)) {
- 			fb->gem_handle = gem_create(fd, fb->size);
--			gem_set_tiling(fd, fb->gem_handle,
--				       igt_fb_mod_to_tiling(fb->modifier),
--				       fb->strides[0]);
-+			if (gem_has_legacy_hw_tiling(fd)) {
-+				gem_set_tiling(fd, fb->gem_handle,
-+					       igt_fb_mod_to_tiling(fb->modifier),
-+					       fb->strides[0]);
-+			}
- 		} else if (is_vc4_device(fd)) {
- 			fb->gem_handle = igt_vc4_create_bo(fd, fb->size);
- 
-@@ -1962,9 +1964,14 @@ static bool use_enginecopy(const struct igt_fb *fb)
- 
- static bool use_blitter(const struct igt_fb *fb)
- {
-+	if (!blitter_ok(fb))
-+		return false;
++	igt_require(gem_has_legacy_hw_tiling(drm_fd));
 +
-+	if (!gem_has_legacy_hw_tiling(fb->fd))
-+		return true;
-+
- 	return (fb->modifier == I915_FORMAT_MOD_Y_TILED ||
--		fb->modifier == I915_FORMAT_MOD_Yf_TILED) &&
--		blitter_ok(fb);
-+		fb->modifier == I915_FORMAT_MOD_Yf_TILED);
- }
+ 	igt_create_fb(drm_fd, 512, 512, DRM_FORMAT_XRGB8888,
+ 		      LOCAL_I915_FORMAT_MOD_X_TILED, &fb);
  
- static void init_buf(struct fb_blit_upload *blit,
-@@ -3381,8 +3388,10 @@ cairo_surface_t *igt_get_cairo_surface(int fd, struct igt_fb *fb)
- 		else if (use_blitter(fb) || use_enginecopy(fb) ||
- 			 igt_vc4_is_tiled(fb->modifier))
- 			create_cairo_surface__gpu(fd, fb);
--		else
-+		else if (gem_has_mappable_ggtt(fd))
- 			create_cairo_surface__gtt(fd, fb);
-+		else
-+			igt_assert_f(false, "Configuration not supported.\n");
- 	}
- 
- 	igt_assert(cairo_surface_status(fb->cairo_surface) == CAIRO_STATUS_SUCCESS);
 -- 
 2.24.0
 
