@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AA166E227
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 05:59:27 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B8FC26E21F
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 05:59:26 +0000 (UTC)
 From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-Date: Tue, 17 Dec 2019 21:59:25 -0800
-Message-Id: <20191218055925.705070-11-vanshidhar.r.konda@intel.com>
-In-Reply-To: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
-References: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
+Date: Tue, 17 Dec 2019 21:59:15 -0800
+Message-Id: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 10/10] tests/kms_available_modes_crc: Don't set
- tiling for framebuffer
+Subject: [igt-dev] [PATCH 00/10] Prepare IGT display test for removal of
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,37 +22,40 @@ To: igt-dev@lists.freedesktop.org
 Cc: brian.welty@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The GEM object used for the framebuffer does not need tiling to be set
-on it as the entire framebuffer is being filled with the same value -
-tiling will not impact the end value of the buffer.
+The GET/SET_TILING IOCTLs will not be supported on devices that do not 
+have the CPU (de)tiler. For kms_* tests that use modifiers the IGT 
+library and tests have been updated to skip calling get/set_tiling calls 
+on devices that don't support these IOCTLs.
 
-Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
----
- tests/kms_available_modes_crc.c | 6 ------
- 1 file changed, 6 deletions(-)
+Vanshidhar Konda (10):
+  lib/ioctl_wrappers: Query if device supports set/get legacy tiling
+  lib/intel_batchbuffer: Add blitter copy using XY_SRC_COPY_BLT
+  lib/igt_fb: Switch from XY_FAST_COPY_BLT to XY_SRC_COPY_BLT
+  lib/igt_fb: Remove set_tiling calls on devices without HW tiling
+    support
+  lib/igt_draw: Refactor get_tiling calls
+  i915/i915_fb_tiling: Skip on devices that don't support HW tiling
+  tests/kms_frontbuffer_tracking: Skip set tiling calls if not supported
+  tests/kms_addfb_basic: Avoid tiling subtests on device without HW
+    tiling support
+  tests/kms_fence_pin_leak: Skip test on devices without HW tiling
+    support
+  tests/kms_available_modes_crc: Don't set tiling for framebuffer
 
-diff --git a/tests/kms_available_modes_crc.c b/tests/kms_available_modes_crc.c
-index d1b7b517..4113b4c0 100644
---- a/tests/kms_available_modes_crc.c
-+++ b/tests/kms_available_modes_crc.c
-@@ -211,17 +211,11 @@ static bool setup_fb(data_t *data, igt_output_t *output, igt_plane_t *plane,
- 	data->buf = (unsigned char *)calloc(data->size*2, 1);
- 
- 	data->gem_handle = gem_create(data->gfx_fd, gemsize);
--	ret = __gem_set_tiling(data->gfx_fd, data->gem_handle,
--			       igt_fb_mod_to_tiling(tiling),
--			       data->fb.strides[0]);
--
- 	data->fb.gem_handle = data->gem_handle;
- 	data->fb.width = w;
- 	data->fb.height = h;
- 	fill_in_fb(data, output, plane, format);
- 
--	igt_assert_eq(ret, 0);
--
- 	ret = __kms_addfb(data->gfx_fd, data->gem_handle, w, h,
- 			  format, tiling, data->fb.strides, data->fb.offsets,
- 			  num_planes, LOCAL_DRM_MODE_FB_MODIFIERS,
+ lib/igt_draw.c                   |  56 +++++-----
+ lib/igt_draw.h                   |   5 +-
+ lib/igt_fb.c                     |  72 ++++++++----
+ lib/intel_batchbuffer.c          | 183 +++++++++++++++++++++++++++++++
+ lib/intel_batchbuffer.h          |  21 ++++
+ lib/ioctl_wrappers.c             |  17 +++
+ lib/ioctl_wrappers.h             |   1 +
+ tests/i915/i915_fb_tiling.c      |   2 +
+ tests/kms_addfb_basic.c          |   4 +
+ tests/kms_available_modes_crc.c  |   6 -
+ tests/kms_fence_pin_leak.c       |   2 +
+ tests/kms_frontbuffer_tracking.c |  11 +-
+ 12 files changed, 321 insertions(+), 59 deletions(-)
+
 -- 
 2.24.0
 
