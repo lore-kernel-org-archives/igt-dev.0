@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFA476E225
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 05:59:26 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B34F6E225
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Dec 2019 05:59:27 +0000 (UTC)
 From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-Date: Tue, 17 Dec 2019 21:59:16 -0800
-Message-Id: <20191218055925.705070-2-vanshidhar.r.konda@intel.com>
+Date: Tue, 17 Dec 2019 21:59:22 -0800
+Message-Id: <20191218055925.705070-8-vanshidhar.r.konda@intel.com>
 In-Reply-To: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
 References: <20191218055925.705070-1-vanshidhar.r.konda@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 01/10] lib/ioctl_wrappers: Query if device
- supports set/get legacy tiling
+Subject: [igt-dev] [PATCH 07/10] tests/kms_frontbuffer_tracking: Skip set
+ tiling calls if not supported
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,55 +25,27 @@ To: igt-dev@lists.freedesktop.org
 Cc: brian.welty@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add a method to query if the device supports setting and getting legacy
-tiling formats for buffer objects.
+Skip the method that is setting tiling with invalid strides if the
+hardware does not support HW for tiling/de-tiling.
 
 Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/ioctl_wrappers.c | 17 +++++++++++++++++
- lib/ioctl_wrappers.h |  1 +
- 2 files changed, 18 insertions(+)
+ tests/kms_frontbuffer_tracking.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index 627717d2..c1abb575 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -133,6 +133,23 @@ __gem_get_tiling(int fd, struct drm_i915_gem_get_tiling *arg)
- 	return err;
- }
+diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
+index ae3b087e..89023bbe 100644
+--- a/tests/kms_frontbuffer_tracking.c
++++ b/tests/kms_frontbuffer_tracking.c
+@@ -2833,7 +2833,8 @@ static void badstride_subtest(const struct test_mode *t)
+ 	struct modeset_params *params = pick_params(t);
+ 	int rc;
  
-+/**
-+ * gem_has_legacy_hw_tiling:
-+ * @fd: open i915 drm file descriptor
-+ *
-+ * Feature check to query if the device supports setting/getting
-+ * legacy tiling formats for buffer objects
-+ *
-+ * Returns: True if tiling is supported
-+ */
-+bool
-+gem_has_legacy_hw_tiling(int fd)
-+{
-+	struct drm_i915_gem_get_tiling arg = {};
-+
-+	return (__gem_get_tiling(fd, &arg) != -EOPNOTSUPP);
-+}
-+
- /**
-  * gem_get_tiling:
-  * @fd: open i915 drm file descriptor
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index 7614e688..0ea77738 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -146,6 +146,7 @@ void gem_require_caching(int fd);
- void gem_require_ring(int fd, unsigned ring);
- bool gem_has_mocs_registers(int fd);
- void gem_require_mocs_registers(int fd);
-+bool gem_has_legacy_hw_tiling(int fd);
+-	try_invalid_strides();
++	if (gem_has_legacy_hw_tiling(drm.fd))
++		try_invalid_strides();
  
- #define gem_has_ring(f, r) gem_context_has_engine(f, 0, r)
+ 	prepare_subtest(t, NULL);
  
 -- 
 2.24.0
