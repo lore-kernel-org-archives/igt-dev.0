@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73BB76EC6C
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Dec 2019 15:55:46 +0000 (UTC)
-From: "Bommu, Krishnaiah" <krishnaiah.bommu@intel.com>
-Date: Fri, 20 Dec 2019 21:10:30 +0530
-Message-Id: <20191220154030.25684-2-krishnaiah.bommu@intel.com>
-In-Reply-To: <20191220154030.25684-1-krishnaiah.bommu@intel.com>
-References: <20191220154030.25684-1-krishnaiah.bommu@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B84706E038
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Dec 2019 14:17:55 +0000 (UTC)
+From: "Nayana, Venkata Ramana" <venkata.ramana.nayana@intel.com>
+Date: Fri, 20 Dec 2019 19:55:14 +0530
+Message-Id: <20191220142515.13424-1-venkata.ramana.nayana@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/1] tests/i915/gem_ctx_persistence:
- pre-emption support check.
+Subject: [igt-dev] [PATCH i-g-t 0/1] tests/i915/gem_fence: platforms not
+ supporting fences
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,31 +20,18 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Brian <brian.welty@intel.com>, Welty@freedesktop.org, Dutt@freedesktop.org, "Bommu,  Krishnaiah" <krishnaiah.bommu@intel.com>, Bommu@freedesktop.org
+Cc: "Nayana, Venkata Ramana" <venkata.ramana.nayana@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Check for I915_SCHEDULER_CAP_PREEMPTION support, if driver has support for
-pre-emption test will continue otherwise skip the test
+For platforms not supporting fences(no aperture), skip tests
 
-Cc: Welty, Brian <brian.welty@intel.com>
-Cc: Dutt, Sudeep <sudeep.dutt@intel.com>
-Signed-off-by: Bommu, Krishnaiah <krishnaiah.bommu@intel.com>
----
- tests/i915/gem_ctx_persistence.c | 1 +
- 1 file changed, 1 insertion(+)
+Nayana, Venkata Ramana (1):
+  tests/i915/gem_fence: platforms not supporting fences
 
-diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
-index d68431ae..282ce082 100644
---- a/tests/i915/gem_ctx_persistence.c
-+++ b/tests/i915/gem_ctx_persistence.c
-@@ -703,6 +703,7 @@ igt_main
- 		i915 = drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(i915);
- 
-+		igt_require(gem_scheduler_has_preemption(i915));
- 		igt_require(has_persistence(i915));
- 		enable_hangcheck(i915);
- 
+ tests/i915/gem_fence_thrash.c       | 2 +-
+ tests/i915/gem_fenced_exec_thrash.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
 -- 
 2.24.0
 
