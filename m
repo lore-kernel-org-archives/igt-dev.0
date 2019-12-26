@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6CD9189AAE
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Dec 2019 10:51:12 +0000 (UTC)
-From: Kunal Joshi <kunal1.joshi@intel.com>
-Date: Thu, 26 Dec 2019 16:20:23 +0530
-Message-Id: <1577357423-6663-4-git-send-email-kunal1.joshi@intel.com>
-In-Reply-To: <1577357423-6663-1-git-send-email-kunal1.joshi@intel.com>
+MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 26 Dec 2019 11:28:06 -0000
+Message-ID: <157735968602.14823.17382544236175272867@emeril.freedesktop.org>
 References: <1577357423-6663-1-git-send-email-kunal1.joshi@intel.com>
-Subject: [igt-dev] [PATCH i-g-t 3/3] Added a subtest where chamelium acts as
- a tiled panel.
+In-Reply-To: <1577357423-6663-1-git-send-email-kunal1.joshi@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_T?=
+ =?utf-8?q?est_tiled_display_with_aid_of_chamelium=2E?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,181 +14,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
+To: Kunal Joshi <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Split kms_dp_tiled_display into to two subtest.First to execute the
-basic test with physical tiled panel and second with chamelium.
-
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/kms_dp_tiled_display.c | 109 +++++++++++++++++++++++++++++++++++--------
- 1 file changed, 89 insertions(+), 20 deletions(-)
-
-diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
-index 219de01..c83a8e6 100644
---- a/tests/kms_dp_tiled_display.c
-+++ b/tests/kms_dp_tiled_display.c
-@@ -40,6 +40,7 @@
- #include "poll.h"
- #include "drm_mode.h"
- #include "drm_fourcc.h"
-+#include "igt_edid.h"
- 
- IGT_TEST_DESCRIPTION("Test for Transcoder Port Sync for Display Port Tiled Displays");
- 
-@@ -61,6 +62,11 @@ typedef struct {
- 	struct timeval first_ts;
- } data_t;
- 
-+void basic_test(data_t data, drmEventContext drm_event, struct pollfd pfd);
-+
-+void
-+require_displayport_connector_present(struct data_chamelium_t *data);
-+
- static int drm_property_is_tile(drmModePropertyPtr prop)
- {
- 	return (strcmp(prop->name, "TILE") ? 0 : 1) &&
-@@ -380,13 +386,90 @@ static bool got_all_page_flips(data_t *data)
- 	return true;
- }
- 
-+void
-+require_displayport_connector_present(struct data_chamelium_t *data)
-+{
-+	int i, count = 0;
-+	bool found = false;
-+	int type_dp = 10;
-+
-+	for (i = 0; i < data->port_count && !found; i++) {
-+		if (chamelium_port_get_type(data->ports[i]) == type_dp)
-+			count++;
-+		if (count == 2)
-+			found = true;
-+	}
-+	igt_require_f(found,
-+		"Need atleast 2 ports of type %s connected, found %d\n",
-+		"DisplayPort", count);
-+}
-+
-+static void test_with_chamelium(data_t data)
-+{
-+	struct data_chamelium_t data_cham = {0};
-+	int i, count = 0;
-+	uint8_t htile = 2, vtile = 1;
-+	struct edid **edid;
-+
-+	data_cham.chamelium = chamelium_init(data.drm_fd);
-+	igt_assert(data_cham.chamelium);
-+	data_cham.ports = chamelium_get_ports
-+		(data_cham.chamelium, &data_cham.port_count);
-+	require_displayport_connector_present(&data_cham);
-+	edid = igt_kms_get_tiled_edid(htile-1, vtile-1);
-+
-+	for (i = 0; i < 2; i++)
-+		data_cham.edids[i] =
-+			chamelium_new_edid(data_cham.chamelium, edid[i]);
-+
-+	for (i = 0; i < data_cham.port_count; i++) {
-+		if (chamelium_port_get_type(data_cham.ports[i]) ==
-+				DRM_MODE_CONNECTOR_DisplayPort) {
-+
-+			chamelium_port_set_tiled_edid(data_cham.chamelium,
-+				data_cham.ports[i], data_cham.edids[i]);
-+			chamelium_plug(data_cham.chamelium, data_cham.ports[i]);
-+			wait_for_connector(&data_cham, data_cham.ports[i],
-+				DRM_MODE_CONNECTED);
-+			count++;
-+		}
-+		if (count == 2)
-+			break;
-+	}
-+}
-+
-+void basic_test(data_t data, drmEventContext drm_event, struct pollfd pfd)
-+{
-+		int ret;
-+
-+		get_number_of_h_tiles(&data);
-+		igt_debug("Number of Horizontal Tiles: %d\n", data.num_h_tiles);
-+		igt_require(data.num_h_tiles > 0);
-+		data.conns = calloc(data.num_h_tiles, sizeof(data_connector_t));
-+		igt_assert(data.conns);
-+
-+		get_connectors(&data);
-+		setup_mode(&data);
-+		setup_framebuffer(&data);
-+		timerclear(&data.first_ts);
-+		igt_display_commit_atomic(data.display,
-+			DRM_MODE_ATOMIC_NONBLOCK |
-+			DRM_MODE_PAGE_FLIP_EVENT, &data);
-+		while (!got_all_page_flips(&data)) {
-+			ret = poll(&pfd, 1, 1000);
-+			igt_assert(ret == 1);
-+			drmHandleEvent(data.drm_fd, &drm_event);
-+		}
-+
-+		test_cleanup(&data);
-+}
-+
- igt_main
- {
- 	igt_display_t display;
- 	data_t data = {0};
- 	struct pollfd pfd = {0};
- 	drmEventContext drm_event = {0};
--	int ret;
- 
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-@@ -402,31 +485,17 @@ igt_main
- 		drm_event.page_flip_handler2 = page_flip_handler;
- 		data.commit = data.display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY;
- 		igt_require(data.commit == COMMIT_ATOMIC);
--
--		get_number_of_h_tiles(&data);
--		igt_debug("Number of Horizontal Tiles: %d\n", data.num_h_tiles);
--		igt_require(data.num_h_tiles > 0);
--		data.conns = calloc(data.num_h_tiles, sizeof(data_connector_t));
- 	}
- 
- 	igt_describe("Make sure the Tiled CRTCs are synchronized and we get "
- 		     "page flips for all tiled CRTCs in one vblank.");
- 	igt_subtest("basic-test-pattern") {
--		igt_assert(data.conns);
--
--		get_connectors(&data);
--		setup_mode(&data);
--		setup_framebuffer(&data);
--		timerclear(&data.first_ts);
--		igt_display_commit_atomic(data.display, DRM_MODE_ATOMIC_NONBLOCK |
--					  DRM_MODE_PAGE_FLIP_EVENT, &data);
--		while (!got_all_page_flips(&data)) {
--			ret = poll(&pfd, 1, 1000);
--			igt_assert(ret == 1);
--			drmHandleEvent(data.drm_fd, &drm_event);
--		}
-+		basic_test(data, drm_event, pfd);
-+	}
- 
--		test_cleanup(&data);
-+	igt_subtest("basic-test-pattern-with-chamelium") {
-+		test_with_chamelium(data);
-+		basic_test(data, drm_event, pfd);
- 	}
- 
- 	igt_fixture {
--- 
-2.7.4
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogVGVzdCB0aWxlZCBkaXNwbGF5IHdpdGggYWlk
+IG9mIGNoYW1lbGl1bS4KVVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcv
+c2VyaWVzLzcxMzkzLwpTdGF0ZSA6IHdhcm5pbmcKCj09IFN1bW1hcnkgPT0KCkRpZCBub3QgZ2V0
+IGxpc3Qgb2YgdW5kb2N1bWVudGVkIHRlc3RzIGZvciB0aGlzIHJ1biwgc29tZXRoaW5nIGlzIHdy
+b25nIQoKT3RoZXIgdGhhbiB0aGF0LCBwaXBlbGluZSBzdGF0dXM6IEZBSUxFRC4KCnNlZSBodHRw
+czovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdzL3BpcGVsaW5lcy85
+MjE1NSBmb3IgdGhlIG92ZXJ2aWV3LgoKYnVpbGQ6dGVzdHMtZGViaWFuLW1lc29uLWFybWhmIGhh
+cyBmYWlsZWQgKGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvaWd0LWNpLXRh
+Z3MvLS9qb2JzLzEyMzMyMTgpOgogICAgICBjaGFtZWxpdW1fcGx1ZyhkYXRhX2NoYW0uY2hhbWVs
+aXVtLCBkYXRhX2NoYW0ucG9ydHNbaV0pOwogICAgICBefn5+fn5+fn5+fn5+fgogIC4uL3Rlc3Rz
+L2ttc19kcF90aWxlZF9kaXNwbGF5LmM6NDMxOjQ6IHdhcm5pbmc6IG5lc3RlZCBleHRlcm4gZGVj
+bGFyYXRpb24gb2Yg4oCYY2hhbWVsaXVtX3BsdWfigJkgWy1XbmVzdGVkLWV4dGVybnNdCiAgLi4v
+dGVzdHMva21zX2RwX3RpbGVkX2Rpc3BsYXkuYzo0MzI6NDogZXJyb3I6IGltcGxpY2l0IGRlY2xh
+cmF0aW9uIG9mIGZ1bmN0aW9uIOKAmHdhaXRfZm9yX2Nvbm5lY3RvcuKAmTsgZGlkIHlvdSBtZWFu
+IOKAmGdldF9jb25uZWN0b3Jz4oCZPyBbLVdlcnJvcj1pbXBsaWNpdC1mdW5jdGlvbi1kZWNsYXJh
+dGlvbl0KICAgICAgd2FpdF9mb3JfY29ubmVjdG9yKCZkYXRhX2NoYW0sIGRhdGFfY2hhbS5wb3J0
+c1tpXSwKICAgICAgXn5+fn5+fn5+fn5+fn5+fn5+CiAgICAgIGdldF9jb25uZWN0b3JzCiAgLi4v
+dGVzdHMva21zX2RwX3RpbGVkX2Rpc3BsYXkuYzo0MzI6NDogd2FybmluZzogbmVzdGVkIGV4dGVy
+biBkZWNsYXJhdGlvbiBvZiDigJh3YWl0X2Zvcl9jb25uZWN0b3LigJkgWy1XbmVzdGVkLWV4dGVy
+bnNdCiAgLi4vdGVzdHMva21zX2RwX3RpbGVkX2Rpc3BsYXkuYzo0MDk6MjY6IHdhcm5pbmc6IHVu
+dXNlZCB2YXJpYWJsZSDigJhkYXRhX2NoYW3igJkgWy1XdW51c2VkLXZhcmlhYmxlXQogICAgc3Ry
+dWN0IGRhdGFfY2hhbWVsaXVtX3QgZGF0YV9jaGFtID0gezB9OwogICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgXn5+fn5+fn5+CiAgY2MxOiBzb21lIHdhcm5pbmdzIGJlaW5nIHRyZWF0ZWQgYXMg
+ZXJyb3JzCiAgbmluamE6IGJ1aWxkIHN0b3BwZWQ6IHN1YmNvbW1hbmQgZmFpbGVkLgogIHNlY3Rp
+b25fZW5kOjE1NzczNTk2MTk6YnVpbGRfc2NyaXB0CiAgG1swS3NlY3Rpb25fc3RhcnQ6MTU3NzM1
+OTYxOTphZnRlcl9zY3JpcHQKICAbWzBLc2VjdGlvbl9lbmQ6MTU3NzM1OTYyMDphZnRlcl9zY3Jp
+cHQKICAbWzBLc2VjdGlvbl9zdGFydDoxNTc3MzU5NjIwOnVwbG9hZF9hcnRpZmFjdHNfb25fZmFp
+bHVyZQogIBtbMEtzZWN0aW9uX2VuZDoxNTc3MzU5NjIyOnVwbG9hZF9hcnRpZmFjdHNfb25fZmFp
+bHVyZQogIBtbMEsbWzMxOzFtRVJST1I6IEpvYiBmYWlsZWQ6IGV4aXQgY29kZSAxCiAgG1swO20K
+CmJ1aWxkOnRlc3RzLWRlYmlhbi1tZXNvbi1hcm02NCBoYXMgZmFpbGVkIChodHRwczovL2dpdGxh
+Yi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdzLy0vam9icy8xMjMzMjE5KToKICAg
+ICAgY2hhbWVsaXVtX3BsdWcoZGF0YV9jaGFtLmNoYW1lbGl1bSwgZGF0YV9jaGFtLnBvcnRzW2ld
+KTsKICAgICAgXn5+fn5+fn5+fn5+fn4KICAuLi90ZXN0cy9rbXNfZHBfdGlsZWRfZGlzcGxheS5j
+OjQzMTo0OiB3YXJuaW5nOiBuZXN0ZWQgZXh0ZXJuIGRlY2xhcmF0aW9uIG9mIOKAmGNoYW1lbGl1
+bV9wbHVn4oCZIFstV25lc3RlZC1leHRlcm5zXQogIC4uL3Rlc3RzL2ttc19kcF90aWxlZF9kaXNw
+bGF5LmM6NDMyOjQ6IGVycm9yOiBpbXBsaWNpdCBkZWNsYXJhdGlvbiBvZiBmdW5jdGlvbiDigJh3
+YWl0X2Zvcl9jb25uZWN0b3LigJk7IGRpZCB5b3UgbWVhbiDigJhnZXRfY29ubmVjdG9yc+KAmT8g
+Wy1XZXJyb3I9aW1wbGljaXQtZnVuY3Rpb24tZGVjbGFyYXRpb25dCiAgICAgIHdhaXRfZm9yX2Nv
+bm5lY3RvcigmZGF0YV9jaGFtLCBkYXRhX2NoYW0ucG9ydHNbaV0sCiAgICAgIF5+fn5+fn5+fn5+
+fn5+fn5+fgogICAgICBnZXRfY29ubmVjdG9ycwogIC4uL3Rlc3RzL2ttc19kcF90aWxlZF9kaXNw
+bGF5LmM6NDMyOjQ6IHdhcm5pbmc6IG5lc3RlZCBleHRlcm4gZGVjbGFyYXRpb24gb2Yg4oCYd2Fp
+dF9mb3JfY29ubmVjdG9y4oCZIFstV25lc3RlZC1leHRlcm5zXQogIC4uL3Rlc3RzL2ttc19kcF90
+aWxlZF9kaXNwbGF5LmM6NDA5OjI2OiB3YXJuaW5nOiB1bnVzZWQgdmFyaWFibGUg4oCYZGF0YV9j
+aGFt4oCZIFstV3VudXNlZC12YXJpYWJsZV0KICAgIHN0cnVjdCBkYXRhX2NoYW1lbGl1bV90IGRh
+dGFfY2hhbSA9IHswfTsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIF5+fn5+fn5+fgogIGNj
+MTogc29tZSB3YXJuaW5ncyBiZWluZyB0cmVhdGVkIGFzIGVycm9ycwogIG5pbmphOiBidWlsZCBz
+dG9wcGVkOiBzdWJjb21tYW5kIGZhaWxlZC4KICBzZWN0aW9uX2VuZDoxNTc3MzU5NjI1OmJ1aWxk
+X3NjcmlwdAogIBtbMEtzZWN0aW9uX3N0YXJ0OjE1NzczNTk2MjU6YWZ0ZXJfc2NyaXB0CiAgG1sw
+S3NlY3Rpb25fZW5kOjE1NzczNTk2MjY6YWZ0ZXJfc2NyaXB0CiAgG1swS3NlY3Rpb25fc3RhcnQ6
+MTU3NzM1OTYyNjp1cGxvYWRfYXJ0aWZhY3RzX29uX2ZhaWx1cmUKICAbWzBLc2VjdGlvbl9lbmQ6
+MTU3NzM1OTYyNzp1cGxvYWRfYXJ0aWZhY3RzX29uX2ZhaWx1cmUKICAbWzBLG1szMTsxbUVSUk9S
+OiBKb2IgZmFpbGVkOiBleGl0IGNvZGUgMQogIBtbMDttCgpidWlsZDp0ZXN0cy1kZWJpYW4tbWVz
+b24tbWlwcyBoYXMgZmFpbGVkIChodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNp
+L2lndC1jaS10YWdzLy0vam9icy8xMjMzMjIwKToKICAuLi90ZXN0cy9rbXNfZHBfdGlsZWRfZGlz
+cGxheS5jOjQzMTo0OiBlcnJvcjogaW1wbGljaXQgZGVjbGFyYXRpb24gb2YgZnVuY3Rpb24g4oCY
+Y2hhbWVsaXVtX3BsdWfigJkgWy1XZXJyb3I9aW1wbGljaXQtZnVuY3Rpb24tZGVjbGFyYXRpb25d
+CiAgICAgIGNoYW1lbGl1bV9wbHVnKGRhdGFfY2hhbS5jaGFtZWxpdW0sIGRhdGFfY2hhbS5wb3J0
+c1tpXSk7CiAgICAgIF5+fn5+fn5+fn5+fn5+CiAgLi4vdGVzdHMva21zX2RwX3RpbGVkX2Rpc3Bs
+YXkuYzo0MzE6NDogd2FybmluZzogbmVzdGVkIGV4dGVybiBkZWNsYXJhdGlvbiBvZiDigJhjaGFt
+ZWxpdW1fcGx1Z+KAmSBbLVduZXN0ZWQtZXh0ZXJuc10KICAuLi90ZXN0cy9rbXNfZHBfdGlsZWRf
+ZGlzcGxheS5jOjQzMjo0OiBlcnJvcjogaW1wbGljaXQgZGVjbGFyYXRpb24gb2YgZnVuY3Rpb24g
+4oCYd2FpdF9mb3JfY29ubmVjdG9y4oCZIFstV2Vycm9yPWltcGxpY2l0LWZ1bmN0aW9uLWRlY2xh
+cmF0aW9uXQogICAgICB3YWl0X2Zvcl9jb25uZWN0b3IoJmRhdGFfY2hhbSwgZGF0YV9jaGFtLnBv
+cnRzW2ldLAogICAgICBefn5+fn5+fn5+fn5+fn5+fn4KICAuLi90ZXN0cy9rbXNfZHBfdGlsZWRf
+ZGlzcGxheS5jOjQzMjo0OiB3YXJuaW5nOiBuZXN0ZWQgZXh0ZXJuIGRlY2xhcmF0aW9uIG9mIOKA
+mHdhaXRfZm9yX2Nvbm5lY3RvcuKAmSBbLVduZXN0ZWQtZXh0ZXJuc10KICAuLi90ZXN0cy9rbXNf
+ZHBfdGlsZWRfZGlzcGxheS5jOjQwOToyNjogd2FybmluZzogdW51c2VkIHZhcmlhYmxlIOKAmGRh
+dGFfY2hhbeKAmSBbLVd1bnVzZWQtdmFyaWFibGVdCiAgICBzdHJ1Y3QgZGF0YV9jaGFtZWxpdW1f
+dCBkYXRhX2NoYW0gPSB7MH07CiAgICAgICAgICAgICAgICAgICAgICAgICAgICBefn5+fn5+fn4K
+ICBjYzE6IHNvbWUgd2FybmluZ3MgYmVpbmcgdHJlYXRlZCBhcyBlcnJvcnMKICBuaW5qYTogYnVp
+bGQgc3RvcHBlZDogc3ViY29tbWFuZCBmYWlsZWQuCiAgc2VjdGlvbl9lbmQ6MTU3NzM1OTU5Mzpi
+dWlsZF9zY3JpcHQKICAbWzBLc2VjdGlvbl9zdGFydDoxNTc3MzU5NTkzOmFmdGVyX3NjcmlwdAog
+IBtbMEtzZWN0aW9uX2VuZDoxNTc3MzU5NTk0OmFmdGVyX3NjcmlwdAogIBtbMEtzZWN0aW9uX3N0
+YXJ0OjE1NzczNTk1OTQ6dXBsb2FkX2FydGlmYWN0c19vbl9mYWlsdXJlCiAgG1swS3NlY3Rpb25f
+ZW5kOjE1NzczNTk1OTU6dXBsb2FkX2FydGlmYWN0c19vbl9mYWlsdXJlCiAgG1swSxtbMzE7MW1F
+UlJPUjogSm9iIGZhaWxlZDogZXhpdCBjb2RlIDEKICAbWzA7bQoKPT0gTG9ncyA9PQoKRm9yIG1v
+cmUgZGV0YWlscyBzZWU6IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvaWd0
+LWNpLXRhZ3MvcGlwZWxpbmVzLzkyMTU1Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8v
+aWd0LWRldgo=
