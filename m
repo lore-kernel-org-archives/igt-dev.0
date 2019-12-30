@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C7F5789BFD
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Dec 2019 09:22:39 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Date: Mon, 30 Dec 2019 09:22:36 +0000
-Message-ID: <546365BAC259CE4F805D3CB67F73B3C70CA244B4@IRSMSX103.ger.corp.intel.com>
-References: <20191230034040.21943-1-imre.deak@intel.com>
- <157767915029.15517.16057991606027508953@emeril.freedesktop.org>
- <20191230090013.GA22722@ideak-desk.fi.intel.com>
-In-Reply-To: <20191230090013.GA22722@ideak-desk.fi.intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60BA38968D
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Dec 2019 10:02:24 +0000 (UTC)
+From: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
+Date: Mon, 30 Dec 2019 10:02:16 +0000
+Message-ID: <abd57c2e33e0c23a4407f1f4102223b9a884c734.camel@intel.com>
+References: <1576680837-2836-1-git-send-email-juhapekka.heikkila@gmail.com>
+In-Reply-To: <1576680837-2836-1-git-send-email-juhapekka.heikkila@gmail.com>
 Content-Language: en-US
+Content-ID: <A72BA640A7B3F549AA2FD3A9622F01FA@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliOiBB?=
- =?utf-8?q?dd_support_and_coverage_for_MC_YUV_formats?=
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: Fix user space
+ read too slow error
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,151 +19,524 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Deak, Imre" <imre.deak@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SW1yZSwgUmVzdWx0cyBhcmUgcmUtcmVwb3J0ZWQuIA0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2Ut
-LS0tLQ0KRnJvbTogSW1yZSBEZWFrIDxpbXJlLmRlYWtAaW50ZWwuY29tPiANClNlbnQ6IE1vbmRh
-eSwgRGVjZW1iZXIgMzAsIDIwMTkgMTE6MDAgQU0NClRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
-dG9wLm9yZzsgVnVkdW0sIExha3NobWluYXJheWFuYSA8bGFrc2htaW5hcmF5YW5hLnZ1ZHVtQGlu
-dGVsLmNvbT4NClN1YmplY3Q6IFJlOiDinJcgRmkuQ0kuQkFUOiBmYWlsdXJlIGZvciBsaWI6IEFk
-ZCBzdXBwb3J0IGFuZCBjb3ZlcmFnZSBmb3IgTUMgWVVWIGZvcm1hdHMNCg0KSGkgTGFrc2htaSwN
-Cg0KT24gTW9uLCBEZWMgMzAsIDIwMTkgYXQgMDQ6MTI6MzBBTSArMDAwMCwgUGF0Y2h3b3JrIHdy
-b3RlOg0KPiA9PSBTZXJpZXMgRGV0YWlscyA9PQ0KPiANCj4gU2VyaWVzOiBsaWI6IEFkZCBzdXBw
-b3J0IGFuZCBjb3ZlcmFnZSBmb3IgTUMgWVVWIGZvcm1hdHMNCj4gVVJMICAgOiBodHRwczovL3Bh
-dGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzcxNDgzLw0KPiBTdGF0ZSA6IGZhaWx1cmUN
-Cj4gDQo+ID09IFN1bW1hcnkgPT0NCj4gDQo+IENJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20gQ0lf
-RFJNXzc2NTEgLT4gSUdUUFdfMzg4OSANCj4gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PQ0KPiANCj4gU3VtbWFyeQ0KPiAtLS0tLS0tDQo+IA0KPiAg
-ICoqRkFJTFVSRSoqDQo+IA0KPiAgIFNlcmlvdXMgdW5rbm93biBjaGFuZ2VzIGNvbWluZyB3aXRo
-IElHVFBXXzM4ODkgYWJzb2x1dGVseSBuZWVkIHRvIGJlDQo+ICAgdmVyaWZpZWQgbWFudWFsbHku
-DQo+ICAgDQo+ICAgSWYgeW91IHRoaW5rIHRoZSByZXBvcnRlZCBjaGFuZ2VzIGhhdmUgbm90aGlu
-ZyB0byBkbyB3aXRoIHRoZSBjaGFuZ2VzDQo+ICAgaW50cm9kdWNlZCBpbiBJR1RQV18zODg5LCBw
-bGVhc2Ugbm90aWZ5IHlvdXIgYnVnIHRlYW0gdG8gYWxsb3cgdGhlbQ0KPiAgIHRvIGRvY3VtZW50
-IHRoaXMgbmV3IGZhaWx1cmUgbW9kZSwgd2hpY2ggd2lsbCByZWR1Y2UgZmFsc2UgcG9zaXRpdmVz
-IGluIENJLg0KPiANCj4gICBFeHRlcm5hbCBVUkw6IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4w
-MS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzM4ODkvaW5kZXguaHRtbA0KPiANCj4gUG9zc2libGUg
-bmV3IGlzc3Vlcw0KPiAtLS0tLS0tLS0tLS0tLS0tLS0tDQo+IA0KPiAgIEhlcmUgYXJlIHRoZSB1
-bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVuIGludHJvZHVjZWQgaW4gSUdUUFdfMzg4
-OToNCj4gDQo+ICMjIyBJR1QgY2hhbmdlcyAjIyMNCj4gDQo+ICMjIyMgUG9zc2libGUgcmVncmVz
-c2lvbnMgIyMjIw0KPiANCj4gICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVfY2xpZW50Og0KPiAg
-ICAgLSBmaS1za2wtNjYwMHU6ICAgICAgIFtQQVNTXVsxXSAtPiBbRE1FU0ctV0FSTl1bMl0gKzkg
-c2ltaWxhciBpc3N1ZXMNCj4gICAgWzFdOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJl
-ZS9kcm0tdGlwL0NJX0RSTV83NjUxL2ZpLXNrbC02NjAwdS9pZ3RAaTkxNV9zZWxmdGVzdEBsaXZl
-X2NsaWVudC5odG1sDQo+ICAgIFsyXTogDQo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90
-cmVlL2RybS10aXAvSUdUUFdfMzg4OS9maS1za2wtNjYwMHUvaWd0QGkNCj4gOTE1X3NlbGZ0ZXN0
-QGxpdmVfY2xpZW50Lmh0bWwNCj4gDQo+ICAgKiBpZ3RAaTkxNV9zZWxmdGVzdEBsaXZlX3Jlc2V0
-Og0KPiAgICAgLSBmaS1za2wtNjYwMHU6ICAgICAgIFtQQVNTXVszXSAtPiBbRE1FU0ctRkFJTF1b
-NF0gKzMgc2ltaWxhciBpc3N1ZXMNCj4gICAgWzNdOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5v
-cmcvdHJlZS9kcm0tdGlwL0NJX0RSTV83NjUxL2ZpLXNrbC02NjAwdS9pZ3RAaTkxNV9zZWxmdGVz
-dEBsaXZlX3Jlc2V0Lmh0bWwNCj4gICAgWzRdOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
-b3JnL3RyZWUvZHJtLXRpcC9JR1RQV18zODg5L2ZpLXNrbC02NjAwdS9pZ3RAaQ0KPiA5MTVfc2Vs
-ZnRlc3RAbGl2ZV9yZXNldC5odG1sDQoNClRoZXNlIGFyZSBwcmUtZXhpc3RpbmcgaXNzdWVzLCBz
-ZWUNCmh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvQ0lfRFJNXzc2NDQv
-Zmktc2tsLTY2MDB1L2lndEBpOTE1X3NlbGZ0ZXN0QGxpdmVfY2xpZW50Lmh0bWwNCmh0dHBzOi8v
-aW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvQ0lfRFJNXzc2NDQvZmktc2tsLTY2MDB1
-L2lndEBpOTE1X3NlbGZ0ZXN0QGxpdmVfcmVzZXQuaHRtbA0KDQotLUltcmUNCg0KPiANCj4gICAN
-Cj4gS25vd24gaXNzdWVzDQo+IC0tLS0tLS0tLS0tLQ0KPiANCj4gICBIZXJlIGFyZSB0aGUgY2hh
-bmdlcyBmb3VuZCBpbiBJR1RQV18zODg5IHRoYXQgY29tZSBmcm9tIGtub3duIGlzc3VlczoNCj4g
-DQo+ICMjIyBJR1QgY2hhbmdlcyAjIyMNCj4gDQo+ICMjIyMgSXNzdWVzIGhpdCAjIyMjDQo+IA0K
-PiAgICogaWd0QGk5MTVfcG1fcnBtQG1vZHVsZS1yZWxvYWQ6DQo+ICAgICAtIGZpLXNrbC02NjAw
-dTogICAgICAgW1BBU1NdWzVdIC0+IFtETUVTRy1XQVJOXVs2XSAoW2k5MTUjODg5XSkgKzEzIHNp
-bWlsYXIgaXNzdWVzDQo+ICAgIFs1XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUv
-ZHJtLXRpcC9DSV9EUk1fNzY1MS9maS1za2wtNjYwMHUvaWd0QGk5MTVfcG1fcnBtQG1vZHVsZS1y
-ZWxvYWQuaHRtbA0KPiAgICBbNl06IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJl
-ZS9kcm0tdGlwL0lHVFBXXzM4ODkvZmktc2tsLTY2MDB1L2lndEBpDQo+IDkxNV9wbV9ycG1AbW9k
-dWxlLXJlbG9hZC5odG1sDQo+IA0KPiAgICogaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZV9nZW1fY29u
-dGV4dHM6DQo+ICAgICAtIGZpLWJ5dC1qMTkwMDogICAgICAgW1BBU1NdWzddIC0+IFtETUVTRy1G
-QUlMXVs4XSAoW2k5MTUjNzIyXSkNCj4gICAgWzddOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5v
-cmcvdHJlZS9kcm0tdGlwL0NJX0RSTV83NjUxL2ZpLWJ5dC1qMTkwMC9pZ3RAaTkxNV9zZWxmdGVz
-dEBsaXZlX2dlbV9jb250ZXh0cy5odG1sDQo+ICAgIFs4XTogDQo+IGh0dHBzOi8vaW50ZWwtZ2Z4
-LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMzg4OS9maS1ieXQtajE5MDAvaWd0QGkNCj4g
-OTE1X3NlbGZ0ZXN0QGxpdmVfZ2VtX2NvbnRleHRzLmh0bWwNCj4gDQo+ICAgKiBpZ3RAaTkxNV9z
-ZWxmdGVzdEBsaXZlX2d0X2xyYzoNCj4gICAgIC0gZmktc2tsLTY2MDB1OiAgICAgICBbUEFTU11b
-OV0gLT4gW0RNRVNHLUZBSUxdWzEwXSAoW2k5MTUjODg5XSkgKzMgc2ltaWxhciBpc3N1ZXMNCj4g
-ICAgWzldOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV83
-NjUxL2ZpLXNrbC02NjAwdS9pZ3RAaTkxNV9zZWxmdGVzdEBsaXZlX2d0X2xyYy5odG1sDQo+ICAg
-IFsxMF06IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBX
-XzM4ODkvZmktc2tsLTY2MDB1L2lndEBpDQo+IDkxNV9zZWxmdGVzdEBsaXZlX2d0X2xyYy5odG1s
-DQo+IA0KPiAgIA0KPiAjIyMjIFBvc3NpYmxlIGZpeGVzICMjIyMNCj4gDQo+ICAgKiBpZ3RAaTkx
-NV9tb2R1bGVfbG9hZEByZWxvYWQtd2l0aC1mYXVsdC1pbmplY3Rpb246DQo+ICAgICAtIGZpLWJ4
-dC1kc2k6ICAgICAgICAgW0lOQ09NUExFVEVdWzExXSAoW2ZkbyMxMDM5MjddKSAtPiBbUEFTU11b
-MTJdDQo+ICAgIFsxMV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAv
-Q0lfRFJNXzc2NTEvZmktYnh0LWRzaS9pZ3RAaTkxNV9tb2R1bGVfbG9hZEByZWxvYWQtd2l0aC1m
-YXVsdC1pbmplY3Rpb24uaHRtbA0KPiAgICBbMTJdOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18zODg5L2ZpLWJ4dC1kc2kvaWd0QGk5MQ0KPiA1X21v
-ZHVsZV9sb2FkQHJlbG9hZC13aXRoLWZhdWx0LWluamVjdGlvbi5odG1sDQo+IA0KPiAgICogaWd0
-QGttc19idXN5QGJhc2ljLWZsaXAtcGlwZS1hOg0KPiAgICAgLSB7ZmktdGdsLWd1Y306ICAgICAg
-IFtETUVTRy1XQVJOXVsxM10gKFtpOTE1IzQwMl0pIC0+IFtQQVNTXVsxNF0NCj4gICAgWzEzXTog
-aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fNzY1MS9maS10
-Z2wtZ3VjL2lndEBrbXNfYnVzeUBiYXNpYy1mbGlwLXBpcGUtYS5odG1sDQo+ICAgIFsxNF06IA0K
-PiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzM4ODkvZmkt
-dGdsLWd1Yy9pZ3RAa21zDQo+IF9idXN5QGJhc2ljLWZsaXAtcGlwZS1hLmh0bWwNCj4gDQo+ICAg
-DQo+ICMjIyMgV2FybmluZ3MgIyMjIw0KPiANCj4gICAqIGlndEBnZW1fZXhlY19zdXNwZW5kQGJh
-c2ljLXM0LWRldmljZXM6DQo+ICAgICAtIGZpLWtibC14MTI3NTogICAgICAgW0RNRVNHLVdBUk5d
-WzE1XSAoW2ZkbyMxMDcxMzldIC8gW2k5MTUjNjJdIC8gW2k5MTUjOTJdIC8gW2k5MTUjOTVdKSAt
-PiBbRE1FU0ctV0FSTl1bMTZdIChbZmRvIzEwNzEzOV0gLyBbaTkxNSM2Ml0gLyBbaTkxNSM5Ml0p
-DQo+ICAgIFsxNV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvQ0lf
-RFJNXzc2NTEvZmkta2JsLXgxMjc1L2lndEBnZW1fZXhlY19zdXNwZW5kQGJhc2ljLXM0LWRldmlj
-ZXMuaHRtbA0KPiAgICBbMTZdOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUv
-ZHJtLXRpcC9JR1RQV18zODg5L2ZpLWtibC14MTI3NS9pZ3RAZw0KPiBlbV9leGVjX3N1c3BlbmRA
-YmFzaWMtczQtZGV2aWNlcy5odG1sDQo+IA0KPiAgICogaWd0QGttc19mbGlwQGJhc2ljLWZsaXAt
-dnMtbW9kZXNldDoNCj4gICAgIC0gZmkta2JsLXgxMjc1OiAgICAgICBbRE1FU0ctV0FSTl1bMTdd
-IChbaTkxNSM2Ml0gLyBbaTkxNSM5Ml0pIC0+IFtETUVTRy1XQVJOXVsxOF0gKFtpOTE1IzYyXSAv
-IFtpOTE1IzkyXSAvIFtpOTE1Izk1XSkgKzIgc2ltaWxhciBpc3N1ZXMNCj4gICAgWzE3XTogaHR0
-cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fNzY1MS9maS1rYmwt
-eDEyNzUvaWd0QGttc19mbGlwQGJhc2ljLWZsaXAtdnMtbW9kZXNldC5odG1sDQo+ICAgIFsxOF06
-IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzM4ODkv
-Zmkta2JsLXgxMjc1L2lndEBrDQo+IG1zX2ZsaXBAYmFzaWMtZmxpcC12cy1tb2Rlc2V0Lmh0bWwN
-Cj4gDQo+ICAgKiBpZ3RAa21zX2ZsaXBAYmFzaWMtZmxpcC12cy13Zl92Ymxhbms6DQo+ICAgICAt
-IGZpLWtibC14MTI3NTogICAgICAgW0RNRVNHLVdBUk5dWzE5XSAoW2k5MTUjNjJdIC8gW2k5MTUj
-OTJdIC8gW2k5MTUjOTVdKSAtPiBbRE1FU0ctV0FSTl1bMjBdIChbaTkxNSM2Ml0gLyBbaTkxNSM5
-Ml0pICszIHNpbWlsYXIgaXNzdWVzDQo+ICAgIFsxOV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAx
-Lm9yZy90cmVlL2RybS10aXAvQ0lfRFJNXzc2NTEvZmkta2JsLXgxMjc1L2lndEBrbXNfZmxpcEBi
-YXNpYy1mbGlwLXZzLXdmX3ZibGFuay5odG1sDQo+ICAgIFsyMF06IA0KPiBodHRwczovL2ludGVs
-LWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzM4ODkvZmkta2JsLXgxMjc1L2lndEBr
-DQo+IG1zX2ZsaXBAYmFzaWMtZmxpcC12cy13Zl92YmxhbmsuaHRtbA0KPiANCj4gICANCj4gICB7
-bmFtZX06IFRoaXMgZWxlbWVudCBpcyBzdXBwcmVzc2VkLiBUaGlzIG1lYW5zIGl0IGlzIGlnbm9y
-ZWQgd2hlbiBjb21wdXRpbmcNCj4gICAgICAgICAgIHRoZSBzdGF0dXMgb2YgdGhlIGRpZmZlcmVu
-Y2UgKFNVQ0NFU1MsIFdBUk5JTkcsIG9yIEZBSUxVUkUpLg0KPiANCj4gICBbZmRvIzEwMzkyN106
-IGh0dHBzOi8vYnVncy5mcmVlZGVza3RvcC5vcmcvc2hvd19idWcuY2dpP2lkPTEwMzkyNw0KPiAg
-IFtmZG8jMTA3MTM5XTogaHR0cHM6Ly9idWdzLmZyZWVkZXNrdG9wLm9yZy9zaG93X2J1Zy5jZ2k/
-aWQ9MTA3MTM5DQo+ICAgW2k5MTUjNDAyXTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3Jn
-L2RybS9pbnRlbC9pc3N1ZXMvNDAyDQo+ICAgW2k5MTUjNjJdOiBodHRwczovL2dpdGxhYi5mcmVl
-ZGVza3RvcC5vcmcvZHJtL2ludGVsL2lzc3Vlcy82Mg0KPiAgIFtpOTE1IzcyMl06IGh0dHBzOi8v
-Z2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzcyMg0KPiAgIFtpOTE1Izg4
-OV06IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzg4OQ0K
-PiAgIFtpOTE1IzkyXTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9p
-c3N1ZXMvOTINCj4gICBbaTkxNSM5NV06IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9k
-cm0vaW50ZWwvaXNzdWVzLzk1DQo+IA0KPiANCj4gUGFydGljaXBhdGluZyBob3N0cyAoNDQgLT4g
-MzMpDQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiANCj4gICBBZGRpdGlvbmFs
-ICg0KTogZmktaHN3LTQ3NzByIGZpLXNrbC02NzcwaHEgZmktYnN3LW5pY2sgZmktaHN3LTQ3NzAg
-DQo+ICAgTWlzc2luZyAgICAoMTUpOiBmaS1pbGstbTU0MCBmaS1ic3ctbjMwNTAgZmktaHN3LTQy
-MDB1IGZpLWdsay1kc2kgZmktYnl0LXNxdWF3a3MgZmktYndyLTIxNjAgZmktc25iLTI1MjBtIGZp
-LWN0Zy1wODYwMCBmaS13aGwtdSBmaS1ic3cta2Vma2EgZmktc2tsLWxtZW0gZmktYnl0LW4yODIw
-IGZpLWJ5dC1jbGFwcGVyIGZpLWJkdy1zYW11cyBmaS1rYmwtciANCj4gDQo+IA0KPiBCdWlsZCBj
-aGFuZ2VzDQo+IC0tLS0tLS0tLS0tLS0NCj4gDQo+ICAgKiBDSTogQ0ktMjAxOTA1MjkgLT4gTm9u
-ZQ0KPiAgICogSUdUOiBJR1RfNTM1MiAtPiBJR1RQV18zODg5DQo+IA0KPiAgIENJLTIwMTkwNTI5
-OiAyMDE5MDUyOQ0KPiAgIENJX0RSTV83NjUxOiBkY2Q5YjQ3ZDU5NmZmODJiOTc2OGYxZWNiYTQz
-NmVmMDMwNzNjMjExIEAgZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2xpbnV4
-DQo+ICAgSUdUUFdfMzg4OTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRp
-cC9JR1RQV18zODg5L2luZGV4Lmh0bWwNCj4gICBJR1RfNTM1MjogMDU4NmQyMDVmNjUxNjc0ZTU3
-NTM1MWMyZDVhN2QwNzYwNzE2YzlmMSBAIA0KPiBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9y
-Zy94b3JnL2FwcC9pbnRlbC1ncHUtdG9vbHMNCj4gDQo+ID09IExvZ3MgPT0NCj4gDQo+IEZvciBt
-b3JlIGRldGFpbHMgc2VlOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJt
-LXRpcC9JR1RQV18zODg5L2luZGV4Lmh0bWwNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpJbnRlbCBGaW5sYW5kIE95
-ClJlZ2lzdGVyZWQgQWRkcmVzczogUEwgMjgxLCAwMDE4MSBIZWxzaW5raSAKQnVzaW5lc3MgSWRl
-bnRpdHkgQ29kZTogMDM1NzYwNiAtIDQgCkRvbWljaWxlZCBpbiBIZWxzaW5raSAKClRoaXMgZS1t
-YWlsIGFuZCBhbnkgYXR0YWNobWVudHMgbWF5IGNvbnRhaW4gY29uZmlkZW50aWFsIG1hdGVyaWFs
-IGZvcgp0aGUgc29sZSB1c2Ugb2YgdGhlIGludGVuZGVkIHJlY2lwaWVudChzKS4gQW55IHJldmll
-dyBvciBkaXN0cmlidXRpb24KYnkgb3RoZXJzIGlzIHN0cmljdGx5IHByb2hpYml0ZWQuIElmIHlv
-dSBhcmUgbm90IHRoZSBpbnRlbmRlZApyZWNpcGllbnQsIHBsZWFzZSBjb250YWN0IHRoZSBzZW5k
-ZXIgYW5kIGRlbGV0ZSBhbGwgY29waWVzLgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVk
-ZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2lndC1kZXYK
+On Wed, 2019-12-18 at 16:53 +0200, Juha-Pekka Heikkila wrote:
+> Having crc running continuously cause this test sometime
+> fill crc buffer, fix this problem as well as do some generic
+> cleanups.
+> 
+> v2: Take out gem_sync()
+> 
+> v3: Use rendercopy if available, otherwise Cairo surface for
+> restoring
+>     test image
+> 
+> v4: take out useless assert and restructure a bit
+> 
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+
+Reviewed-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+
+> ---
+>  tests/kms_cursor_crc.c | 220 ++++++++++++++++++++++++++++++++++-----
+> ----------
+>  1 file changed, 154 insertions(+), 66 deletions(-)
+> 
+> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+> index 6475dea..630b9be 100644
+> --- a/tests/kms_cursor_crc.c
+> +++ b/tests/kms_cursor_crc.c
+> @@ -48,11 +48,10 @@ IGT_TEST_DESCRIPTION(
+>  typedef struct {
+>  	int drm_fd;
+>  	igt_display_t display;
+> -	struct igt_fb primary_fb;
+> +	struct igt_fb primary_fb[2];
+>  	struct igt_fb fb;
+>  	igt_output_t *output;
+>  	enum pipe pipe;
+> -	igt_crc_t ref_crc;
+>  	int left, right, top, bottom;
+>  	int screenw, screenh;
+>  	int refresh;
+> @@ -60,11 +59,24 @@ typedef struct {
+>  	int cursor_max_w, cursor_max_h;
+>  	igt_pipe_crc_t *pipe_crc;
+>  	unsigned flags;
+> +	igt_plane_t *primary;
+> +	igt_plane_t *cursor;
+> +	cairo_surface_t *surface;
+> +	uint32_t devid;
+> +	drm_intel_bufmgr *bufmgr;
+> +	igt_render_copyfunc_t rendercopy;
+> +	drm_intel_bo * drmibo[2];
+> +	struct intel_batchbuffer *batch;
+> +	struct igt_buf igtbo[2];
+> +
+>  } data_t;
+>  
+>  #define TEST_DPMS (1<<0)
+>  #define TEST_SUSPEND (1<<1)
+>  
+> +#define FRONTBUFFER 0
+> +#define RESTOREBUFFER 1
+> +
+>  static void draw_cursor(cairo_t *cr, int x, int y, int cw, int ch,
+> double a)
+>  {
+>  	int wl, wr, ht, hb;
+> @@ -89,23 +101,15 @@ static void draw_cursor(cairo_t *cr, int x, int
+> y, int cw, int ch, double a)
+>  
+>  static void cursor_enable(data_t *data)
+>  {
+> -	igt_output_t *output = data->output;
+> -	igt_plane_t *cursor =
+> -		igt_output_get_plane_type(output,
+> DRM_PLANE_TYPE_CURSOR);
+> -
+> -	igt_plane_set_fb(cursor, &data->fb);
+> -	igt_plane_set_size(cursor, data->curw, data->curh);
+> -	igt_fb_set_size(&data->fb, cursor, data->curw, data->curh);
+> +	igt_plane_set_fb(data->cursor, &data->fb);
+> +	igt_plane_set_size(data->cursor, data->curw, data->curh);
+> +	igt_fb_set_size(&data->fb, data->cursor, data->curw, data-
+> >curh);
+>  }
+>  
+>  static void cursor_disable(data_t *data)
+>  {
+> -	igt_output_t *output = data->output;
+> -	igt_plane_t *cursor =
+> -		igt_output_get_plane_type(output,
+> DRM_PLANE_TYPE_CURSOR);
+> -
+> -	igt_plane_set_fb(cursor, NULL);
+> -	igt_plane_set_position(cursor, 0, 0);
+> +	igt_plane_set_fb(data->cursor, NULL);
+> +	igt_plane_set_position(data->cursor, 0, 0);
+>  }
+>  
+>  static bool chv_cursor_broken(data_t *data, int x)
+> @@ -144,36 +148,58 @@ static bool cursor_visible(data_t *data, int x,
+> int y)
+>  	return true;
+>  }
+>  
+> +static void restore_image(data_t *data)
+> +{
+> +	cairo_t *cr;
+> +
+> +	if (data->rendercopy != NULL) {
+> +		/* use rendercopy if available */
+> +		data->rendercopy(data->batch, NULL,
+> +				 &data->igtbo[RESTOREBUFFER], 0, 0,
+> +				 data->primary_fb[RESTOREBUFFER].width,
+> +				 data-
+> >primary_fb[RESTOREBUFFER].height,
+> +				 &data->igtbo[FRONTBUFFER], 0, 0);
+> +	} else {
+> +		/* if rendercopy not implemented in igt use cairo */
+> +		cr = igt_get_cairo_ctx(data->drm_fd,
+> +				       &data->primary_fb[FRONTBUFFER]);
+> +		cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
+> +		cairo_set_source_surface(cr, data->surface, 0, 0);
+> +		cairo_rectangle(cr, 0, 0, data->screenw, data-
+> >screenh);
+> +		cairo_fill(cr);
+> +		igt_put_cairo_ctx(data->drm_fd,
+> +				  &data->primary_fb[FRONTBUFFER], cr);
+> +	}
+> +	igt_dirty_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
+> +}
+> +
+>  static void do_single_test(data_t *data, int x, int y)
+>  {
+>  	igt_display_t *display = &data->display;
+>  	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
+>  	igt_crc_t crc, ref_crc;
+> -	igt_plane_t *cursor =
+> -		igt_output_get_plane_type(data->output,
+> DRM_PLANE_TYPE_CURSOR);
+>  	cairo_t *cr;
+>  	int ret = 0;
+>  
+>  	igt_print_activity();
+>  
+>  	/* Hardware test */
+> -	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb);
+> -	igt_paint_test_pattern(cr, data->screenw, data->screenh);
+> -	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
+> +	restore_image(data);
+>  
+> +	igt_plane_set_position(data->cursor, x, y);
+>  	cursor_enable(data);
+> -	igt_plane_set_position(cursor, x, y);
+>  
+>  	if (chv_cursor_broken(data, x) && cursor_visible(data, x, y)) {
+>  		ret = igt_display_try_commit2(display, COMMIT_LEGACY);
+>  		igt_assert_eq(ret, -EINVAL);
+> -		igt_plane_set_position(cursor, 0, y);
+> +		igt_plane_set_position(data->cursor, 0, y);
+>  
+>  		return;
+>  	}
+>  
+>  	igt_display_commit(display);
+>  
+> +	/* Extra vblank wait is because nonblocking cursor ioctl */
+>  	igt_wait_for_vblank(data->drm_fd, data->pipe);
+>  	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
+>  
+> @@ -205,45 +231,35 @@ static void do_single_test(data_t *data, int x,
+> int y)
+>  	}
+>  
+>  	cursor_disable(data);
+> -	igt_display_commit(display);
+>  
+>  	/* Now render the same in software and collect crc */
+> -	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb);
+> +	cr = igt_get_cairo_ctx(data->drm_fd, &data-
+> >primary_fb[FRONTBUFFER]);
+>  	draw_cursor(cr, x, y, data->curw, data->curh, 1.0);
+> -	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
+> +	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER], 
+> cr);
+>  	igt_display_commit(display);
+> -
+> +	igt_dirty_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
+> +	/* Extra vblank wait is because nonblocking cursor ioctl */
+>  	igt_wait_for_vblank(data->drm_fd, data->pipe);
+> -	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
+>  
+> +	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
+>  	igt_assert_crc_equal(&crc, &ref_crc);
+> -
+> -	/* Clear screen afterwards */
+> -	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb);
+> -	igt_paint_color(cr, 0, 0, data->screenw, data->screenh, 0.0,
+> 0.0, 0.0);
+> -	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
+>  }
+>  
+>  static void do_fail_test(data_t *data, int x, int y, int expect)
+>  {
+>  	igt_display_t *display = &data->display;
+> -	igt_plane_t *cursor =
+> -		igt_output_get_plane_type(data->output,
+> DRM_PLANE_TYPE_CURSOR);
+> -	cairo_t *cr;
+>  	int ret;
+>  
+>  	igt_print_activity();
+>  
+>  	/* Hardware test */
+> -	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb);
+> -	igt_paint_test_pattern(cr, data->screenw, data->screenh);
+> -	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
+> +	restore_image(data);
+>  
+>  	cursor_enable(data);
+> -	igt_plane_set_position(cursor, x, y);
+> +	igt_plane_set_position(data->cursor, x, y);
+>  	ret = igt_display_try_commit2(display, COMMIT_LEGACY);
+>  
+> -	igt_plane_set_position(cursor, 0, 0);
+> +	igt_plane_set_position(data->cursor, 0, 0);
+>  	cursor_disable(data);
+>  	igt_display_commit(display);
+>  
+> @@ -355,31 +371,54 @@ static void cleanup_crtc(data_t *data)
+>  	igt_pipe_crc_free(data->pipe_crc);
+>  	data->pipe_crc = NULL;
+>  
+> -	igt_remove_fb(data->drm_fd, &data->primary_fb);
+> +	cairo_surface_destroy(data->surface);
+> +
+> +	igt_plane_set_fb(data->primary, NULL);
+> +	igt_display_commit(display);
+> +
+> +	igt_remove_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
+> +	igt_remove_fb(data->drm_fd, &data->primary_fb[RESTOREBUFFER]);
+>  
+>  	igt_display_reset(display);
+>  }
+>  
+> +static void scratch_buf_init(data_t *data, int buffer)
+> +{
+> +	data->igtbo[buffer].bo = data->drmibo[buffer];
+> +	data->igtbo[buffer].stride = data-
+> >primary_fb[buffer].strides[0];
+> +	data->igtbo[buffer].tiling = data->primary_fb[buffer].modifier;
+> +	data->igtbo[buffer].size = data->primary_fb[buffer].size;
+> +	data->igtbo[buffer].bpp = data-
+> >primary_fb[buffer].plane_bpp[0];
+> +}
+> +
+>  static void prepare_crtc(data_t *data, igt_output_t *output,
+>  			 int cursor_w, int cursor_h)
+>  {
+>  	drmModeModeInfo *mode;
+>  	igt_display_t *display = &data->display;
+> -	igt_plane_t *primary;
+> +	cairo_t *cr;
+>  
+>  	/* select the pipe we want to use */
+>  	igt_output_set_pipe(output, data->pipe);
+>  
+> -	/* create and set the primary plane fb */
+> +	/* create and set the primary plane fbs */
+>  	mode = igt_output_get_mode(output);
+>  	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode-
+> >vdisplay,
+>  			    DRM_FORMAT_XRGB8888,
+>  			    LOCAL_DRM_FORMAT_MOD_NONE,
+>  			    0.0, 0.0, 0.0,
+> -			    &data->primary_fb);
+> +			    &data->primary_fb[FRONTBUFFER]);
+> +
+> +	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode-
+> >vdisplay,
+> +			    DRM_FORMAT_XRGB8888,
+> +			    LOCAL_DRM_FORMAT_MOD_NONE,
+> +			    0.0, 0.0, 0.0,
+> +			    &data->primary_fb[RESTOREBUFFER]);
+>  
+> -	primary = igt_output_get_plane_type(output,
+> DRM_PLANE_TYPE_PRIMARY);
+> -	igt_plane_set_fb(primary, &data->primary_fb);
+> +	data->primary = igt_output_get_plane_type(output,
+> DRM_PLANE_TYPE_PRIMARY);
+> +	data->cursor = igt_output_get_plane_type(output,
+> DRM_PLANE_TYPE_CURSOR);
+> +
+> +	igt_plane_set_fb(data->primary, &data-
+> >primary_fb[FRONTBUFFER]);
+>  
+>  	igt_display_commit(display);
+>  
+> @@ -398,9 +437,42 @@ static void prepare_crtc(data_t *data,
+> igt_output_t *output,
+>  	data->curh = cursor_h;
+>  	data->refresh = mode->vrefresh;
+>  
+> -	/* get reference crc w/o cursor */
+> +	data->surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24,
+> data->screenw, data->screenh);
+> +
+> +	if (data->rendercopy == NULL) {
+> +		/* store test image as cairo surface */
+> +		cr = cairo_create(data->surface);
+> +		cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
+> +		igt_paint_test_pattern(cr, data->screenw, data-
+> >screenh);
+> +		cairo_destroy(cr);
+> +	} else {
+> +		/* store test image as fb if rendercopy is available */
+> +		cr = igt_get_cairo_ctx(data->drm_fd,
+> +		                       &data-
+> >primary_fb[RESTOREBUFFER]);
+> +		cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
+> +		igt_paint_test_pattern(cr, data->screenw, data-
+> >screenh);
+> +		igt_put_cairo_ctx(data->drm_fd,
+> +				  &data->primary_fb[RESTOREBUFFER],
+> cr);
+> +
+> +		data->drmibo[FRONTBUFFER] =
+> gem_handle_to_libdrm_bo(data->bufmgr,
+> +								    dat
+> a->drm_fd,
+> +								    "",
+> data->primary_fb[FRONTBUFFER].gem_handle);
+> +		igt_assert(data->drmibo[FRONTBUFFER]);
+> +
+> +		data->drmibo[RESTOREBUFFER] =
+> gem_handle_to_libdrm_bo(data->bufmgr,
+> +								      d
+> ata->drm_fd,
+> +								      "
+> ", data->primary_fb[RESTOREBUFFER].gem_handle);
+> +		igt_assert(data->drmibo[RESTOREBUFFER]);
+> +
+> +		scratch_buf_init(data, RESTOREBUFFER);
+> +		scratch_buf_init(data, FRONTBUFFER);
+> +
+> +		data->batch = intel_batchbuffer_alloc(data->bufmgr,
+> +						      data->devid);
+> +		igt_assert(data->batch);
+> +	}
+> +
+>  	igt_pipe_crc_start(data->pipe_crc);
+> -	igt_pipe_crc_get_current(data->drm_fd, data->pipe_crc, &data-
+> >ref_crc);
+>  }
+>  
+>  static void test_cursor_alpha(data_t *data, double a)
+> @@ -432,9 +504,9 @@ static void test_cursor_alpha(data_t *data,
+> double a)
+>  	igt_remove_fb(data->drm_fd, &data->fb);
+>  
+>  	/*Software Test*/
+> -	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb);
+> +	cr = igt_get_cairo_ctx(data->drm_fd, &data-
+> >primary_fb[FRONTBUFFER]);
+>  	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
+> -	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
+> +	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER], 
+> cr);
+>  
+>  	igt_display_commit(display);
+>  	igt_wait_for_vblank(data->drm_fd, data->pipe);
+> @@ -442,10 +514,10 @@ static void test_cursor_alpha(data_t *data,
+> double a)
+>  	igt_assert_crc_equal(&crc, &ref_crc);
+>  
+>  	/*Clear Screen*/
+> -	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb);
+> +	cr = igt_get_cairo_ctx(data->drm_fd, &data-
+> >primary_fb[FRONTBUFFER]);
+>  	igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
+>  			0.0, 0.0, 0.0);
+> -	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
+> +	igt_put_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER], 
+> cr);
+>  }
+>  
+>  static void test_cursor_transparent(data_t *data)
+> @@ -521,8 +593,6 @@ static void test_cursor_size(data_t *data)
+>  	uint32_t fb_id;
+>  	int i, size;
+>  	int cursor_max_size = data->cursor_max_w;
+> -	igt_plane_t *cursor =
+> -		igt_output_get_plane_type(data->output,
+> DRM_PLANE_TYPE_CURSOR);
+>  
+>  	/* Create a maximum size cursor, then change the size in flight
+> to
+>  	 * smaller ones to see that the size is applied correctly
+> @@ -541,8 +611,8 @@ static void test_cursor_size(data_t *data)
+>  	cursor_enable(data);
+>  	for (i = 0, size = cursor_max_size; size >= 64; size /= 2, i++)
+> {
+>  		/* Change size in flight: */
+> -		igt_plane_set_size(cursor, size, size);
+> -		igt_fb_set_size(&data->fb, cursor, size, size);
+> +		igt_plane_set_size(data->cursor, size, size);
+> +		igt_fb_set_size(&data->fb, data->cursor, size, size);
+>  		igt_display_commit(display);
+>  		igt_wait_for_vblank(data->drm_fd, data->pipe);
+>  		igt_pipe_crc_get_current(data->drm_fd, pipe_crc,
+> &crc[i]);
+> @@ -553,18 +623,18 @@ static void test_cursor_size(data_t *data)
+>  	/* Software test loop */
+>  	for (i = 0, size = cursor_max_size; size >= 64; size /= 2, i++)
+> {
+>  		/* Now render the same in software and collect crc */
+> -		cr = igt_get_cairo_ctx(data->drm_fd, &data-
+> >primary_fb);
+> +		cr = igt_get_cairo_ctx(data->drm_fd, &data-
+> >primary_fb[FRONTBUFFER]);
+>  		igt_paint_color_alpha(cr, 0, 0, size, size, 1.0, 1.0,
+> 1.0, 1.0);
+> -		igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
+> +		igt_put_cairo_ctx(data->drm_fd, &data-
+> >primary_fb[FRONTBUFFER], cr);
+>  
+>  		igt_display_commit(display);
+>  		igt_wait_for_vblank(data->drm_fd, data->pipe);
+>  		igt_pipe_crc_get_current(data->drm_fd, pipe_crc,
+> &ref_crc);
+>  		/* Clear screen afterwards */
+> -		cr = igt_get_cairo_ctx(data->drm_fd, &data-
+> >primary_fb);
+> +		cr = igt_get_cairo_ctx(data->drm_fd, &data-
+> >primary_fb[FRONTBUFFER]);
+>  		igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
+>  				0.0, 0.0, 0.0);
+> -		igt_put_cairo_ctx(data->drm_fd, &data->primary_fb, cr);
+> +		igt_put_cairo_ctx(data->drm_fd, &data-
+> >primary_fb[FRONTBUFFER], cr);
+>  		igt_assert_crc_equal(&crc[i], &ref_crc);
+>  	}
+>  }
+> @@ -575,26 +645,24 @@ static void test_rapid_movement(data_t *data)
+>  	int x = 0, y = 0;
+>  	long usec;
+>  	igt_display_t *display = &data->display;
+> -	igt_plane_t *cursor =
+> -		igt_output_get_plane_type(data->output,
+> DRM_PLANE_TYPE_CURSOR);
+>  
+>  	cursor_enable(data);
+>  
+>  	gettimeofday(&start, NULL);
+>  	for ( ; x < 100; x++) {
+> -		igt_plane_set_position(cursor, x, y);
+> +		igt_plane_set_position(data->cursor, x, y);
+>  		igt_display_commit(display);
+>  	}
+>  	for ( ; y < 100; y++) {
+> -		igt_plane_set_position(cursor, x, y);
+> +		igt_plane_set_position(data->cursor, x, y);
+>  		igt_display_commit(display);
+>  	}
+>  	for ( ; x > 0; x--) {
+> -		igt_plane_set_position(cursor, x, y);
+> +		igt_plane_set_position(data->cursor, x, y);
+>  		igt_display_commit(display);
+>  	}
+>  	for ( ; y > 0; y--) {
+> -		igt_plane_set_position(cursor, x, y);
+> +		igt_plane_set_position(data->cursor, x, y);
+>  		igt_display_commit(display);
+>  	}
+>  	gettimeofday(&end, NULL);
+> @@ -736,6 +804,16 @@ igt_main
+>  		igt_require_pipe_crc(data.drm_fd);
+>  
+>  		igt_display_require(&data.display, data.drm_fd);
+> +
+> +		if (is_i915_device(data.drm_fd)) {
+> +			data.bufmgr =
+> drm_intel_bufmgr_gem_init(data.drm_fd, 4096);
+> +			igt_assert(data.bufmgr);
+> +			drm_intel_bufmgr_gem_enable_reuse(data.bufmgr);
+> +
+> +			data.devid = intel_get_drm_devid(data.drm_fd);
+> +			data.rendercopy =
+> igt_get_render_copyfunc(data.devid);
+> +		}
+> +		igt_debug("Using %s for restoring test image\n",
+> (data.rendercopy == NULL)?"Cairo":"rendercopy");
+>  	}
+>  
+>  	data.cursor_max_w = cursor_width;
+> @@ -746,6 +824,16 @@ igt_main
+>  			run_tests_on_pipe(&data, pipe);
+>  
+>  	igt_fixture {
+> +		if (data.pipe_crc != NULL) {
+> +			igt_pipe_crc_stop(data.pipe_crc);
+> +			igt_pipe_crc_free(data.pipe_crc);
+> +		}
+> +
+> +		if (data.bufmgr != NULL) {
+> +			intel_batchbuffer_free(data.batch);
+> +			drm_intel_bufmgr_destroy(data.bufmgr);
+> +		}
+> +
+>  		igt_display_fini(&data.display);
+>  	}
+>  }
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
