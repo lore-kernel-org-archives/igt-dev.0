@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A11EC891FD
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Dec 2019 08:00:36 +0000 (UTC)
-Date: Mon, 30 Dec 2019 09:00:33 +0100
-From: Katarzyna Dec <katarzyna.dec@intel.com>
-Message-ID: <20191230080033.GD2869@kdec5-desk.ger.corp.intel.com>
-References: <20191220142515.13424-1-venkata.ramana.nayana@intel.com>
- <20191220142515.13424-2-venkata.ramana.nayana@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F3A1C89862
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Dec 2019 09:00:51 +0000 (UTC)
+Date: Mon, 30 Dec 2019 11:00:13 +0200
+From: Imre Deak <imre.deak@intel.com>
+Message-ID: <20191230090013.GA22722@ideak-desk.fi.intel.com>
+References: <20191230034040.21943-1-imre.deak@intel.com>
+ <157767915029.15517.16057991606027508953@emeril.freedesktop.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20191220142515.13424-2-venkata.ramana.nayana@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tests/i915/gem_fence: platforms not
- supporting fences
+In-Reply-To: <157767915029.15517.16057991606027508953@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliOiBB?=
+ =?utf-8?q?dd_support_and_coverage_for_MC_YUV_formats?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,47 +20,160 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: imre.deak@intel.com
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Nayana, Venkata Ramana" <venkata.ramana.nayana@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Kempczynski@kdec5-desk.ger.corp.intel.com
+To: igt-dev@lists.freedesktop.org, Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBEZWMgMjAsIDIwMTkgYXQgMDc6NTU6MTVQTSArMDUzMCwgTmF5YW5hLCBWZW5rYXRh
-IFJhbWFuYSB3cm90ZToKPiBGb3IgcGxhdGZvcm1zIG5vdCBzdXBwb3J0aW5nIGZlbmNlcyhubyBh
-cGVydHVyZSksIHNraXAgdGVzdHMKPiAKPiBDYzogRGVjLCBLYXRhcnp5bmEgPGthdGFyenluYS5k
-ZWNAaW50ZWwuY29tPgo+IENjOiBLZW1wY3p5bnNraSwgWmJpZ25pZXcgPHpiaWduaWV3LmtlbXBj
-enluc2tpQGludGVsLmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBOYXlhbmEsIFZlbmthdGEgUmFtYW5h
-IDx2ZW5rYXRhLnJhbWFuYS5uYXlhbmFAaW50ZWwuY29tPgo+IEFja2VkLWJ5OiBaYmlnbmlldyBL
-ZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KPiAtLS0KPiAgdGVz
-dHMvaTkxNS9nZW1fZmVuY2VfdGhyYXNoLmMgICAgICAgfCAyICstCj4gIHRlc3RzL2k5MTUvZ2Vt
-X2ZlbmNlZF9leGVjX3RocmFzaC5jIHwgMiArLQo+ICAyIGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0
-aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1f
-ZmVuY2VfdGhyYXNoLmMgYi90ZXN0cy9pOTE1L2dlbV9mZW5jZV90aHJhc2guYwo+IGluZGV4IGM4
-NWMzOGJiLi45YmVhZGE5OCAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2dlbV9mZW5jZV90aHJh
-c2guYwo+ICsrKyBiL3Rlc3RzL2k5MTUvZ2VtX2ZlbmNlX3RocmFzaC5jCj4gQEAgLTIwMyw3ICsy
-MDMsNyBAQCBzdGF0aWMgaW50IHJ1bl90ZXN0KGludCB0aHJlYWRzX3Blcl9mZW5jZSwgdm9pZCAq
-ZiwgaW50IHRpbGluZywKPiAgCXQubnVtX3N1cmZhY2VzID0gc3VyZmFjZXNfcGVyX3RocmVhZDsK
-PiAgCj4gIAludW1fZmVuY2VzID0gZ2VtX2F2YWlsYWJsZV9mZW5jZXModC5mZCk7Cj4gLQlpZ3Rf
-YXNzZXJ0X2x0KDAsIG51bV9mZW5jZXMpOwo+ICsJaWd0X3JlcXVpcmUobnVtX2ZlbmNlcyA+IDAp
-Owo+ICAKPiAgCW51bV90aHJlYWRzID0gdGhyZWFkc19wZXJfZmVuY2UgKiBudW1fZmVuY2VzOwo+
-ICAKPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fZmVuY2VkX2V4ZWNfdGhyYXNoLmMgYi90
-ZXN0cy9pOTE1L2dlbV9mZW5jZWRfZXhlY190aHJhc2guYwo+IGluZGV4IGU0MGZhNDM4Li5kYjFi
-MTVhYSAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2dlbV9mZW5jZWRfZXhlY190aHJhc2guYwo+
-ICsrKyBiL3Rlc3RzL2k5MTUvZ2VtX2ZlbmNlZF9leGVjX3RocmFzaC5jCj4gQEAgLTE2NSw3ICsx
-NjUsNyBAQCBpZ3RfbWFpbgo+ICAJCWlndF9yZXF1aXJlX2dlbShmZCk7Cj4gIAo+ICAJCW51bV9m
-ZW5jZXMgPSBnZW1fYXZhaWxhYmxlX2ZlbmNlcyhmZCk7Cj4gLQkJaWd0X2Fzc2VydChudW1fZmVu
-Y2VzID4gNCk7Cj4gKwkJaWd0X3JlcXVpcmUobnVtX2ZlbmNlcyA+IDQpOwo+ICAJCWlndF9hc3Nl
-cnQobnVtX2ZlbmNlcyA8PSBNQVhfRkVOQ0VTKTsKPiAgCj4gIAkJZGV2aWQgPSBpbnRlbF9nZXRf
-ZHJtX2RldmlkKGZkKTsKPiAtLSAKPiAyLjI0LjAKPgpUaGlzIGlzIG5vdCBmaXJzdCB2ZXJzaW9u
-IG9mIHRoaXMgcGF0Y2ggLSBuZXh0IHRpbWUgKGZvciBuZXcgc2VyaWVzKSBhZGQgd2hpY2gKdmVy
-c2lvbiB3aGlsZSBnZW5lcmF0aW5nIHBhdGNoIChlLmcuICdnaXQgZm9ybWF0LXBhdGNoIC12Micp
-IGFuZCBpbmNsdWRlIGNoYW5nZQpsb2cgaW4gY29tbWl0IG1zZzoKdjI6IFJlbW92ZWQgWCwgQWRk
-ZWQgWQoKVGhpcyBwYXRjaCB3YXMgYWNrZWQgYnkgWmJpZ25pZXcuIEl0IGxvb2tzIGdvb2QsIHNv
-IEkgdGhpbmsgd2UgY2FuIG1lcmdlIGl0LgpSZXZpZXdlZC1ieTogS2F0YXJ6eW5hIERlYyA8a2F0
-YXJ6eW5hLmRlY0BpbnRlbC5jb20+CgpLYXNpYSA6KQpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3Rz
-LmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2lndC1kZXYK
+Hi Lakshmi,
+
+On Mon, Dec 30, 2019 at 04:12:30AM +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: lib: Add support and coverage for MC YUV formats
+> URL   : https://patchwork.freedesktop.org/series/71483/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_7651 -> IGTPW_3889
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_3889 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_3889, please notify your bug team to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3889/index.html
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_3889:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@live_client:
+>     - fi-skl-6600u:       [PASS][1] -> [DMESG-WARN][2] +9 similar issues
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7651/fi-skl-6600u/igt@i915_selftest@live_client.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3889/fi-skl-6600u/igt@i915_selftest@live_client.html
+> 
+>   * igt@i915_selftest@live_reset:
+>     - fi-skl-6600u:       [PASS][3] -> [DMESG-FAIL][4] +3 similar issues
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7651/fi-skl-6600u/igt@i915_selftest@live_reset.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3889/fi-skl-6600u/igt@i915_selftest@live_reset.html
+
+These are pre-existing issues, see
+https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7644/fi-skl-6600u/igt@i915_selftest@live_client.html
+https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7644/fi-skl-6600u/igt@i915_selftest@live_reset.html
+
+--Imre
+
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_3889 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@i915_pm_rpm@module-reload:
+>     - fi-skl-6600u:       [PASS][5] -> [DMESG-WARN][6] ([i915#889]) +13 similar issues
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7651/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3889/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html
+> 
+>   * igt@i915_selftest@live_gem_contexts:
+>     - fi-byt-j1900:       [PASS][7] -> [DMESG-FAIL][8] ([i915#722])
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7651/fi-byt-j1900/igt@i915_selftest@live_gem_contexts.html
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3889/fi-byt-j1900/igt@i915_selftest@live_gem_contexts.html
+> 
+>   * igt@i915_selftest@live_gt_lrc:
+>     - fi-skl-6600u:       [PASS][9] -> [DMESG-FAIL][10] ([i915#889]) +3 similar issues
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7651/fi-skl-6600u/igt@i915_selftest@live_gt_lrc.html
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3889/fi-skl-6600u/igt@i915_selftest@live_gt_lrc.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@i915_module_load@reload-with-fault-injection:
+>     - fi-bxt-dsi:         [INCOMPLETE][11] ([fdo#103927]) -> [PASS][12]
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7651/fi-bxt-dsi/igt@i915_module_load@reload-with-fault-injection.html
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3889/fi-bxt-dsi/igt@i915_module_load@reload-with-fault-injection.html
+> 
+>   * igt@kms_busy@basic-flip-pipe-a:
+>     - {fi-tgl-guc}:       [DMESG-WARN][13] ([i915#402]) -> [PASS][14]
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7651/fi-tgl-guc/igt@kms_busy@basic-flip-pipe-a.html
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3889/fi-tgl-guc/igt@kms_busy@basic-flip-pipe-a.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@gem_exec_suspend@basic-s4-devices:
+>     - fi-kbl-x1275:       [DMESG-WARN][15] ([fdo#107139] / [i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][16] ([fdo#107139] / [i915#62] / [i915#92])
+>    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7651/fi-kbl-x1275/igt@gem_exec_suspend@basic-s4-devices.html
+>    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3889/fi-kbl-x1275/igt@gem_exec_suspend@basic-s4-devices.html
+> 
+>   * igt@kms_flip@basic-flip-vs-modeset:
+>     - fi-kbl-x1275:       [DMESG-WARN][17] ([i915#62] / [i915#92]) -> [DMESG-WARN][18] ([i915#62] / [i915#92] / [i915#95]) +2 similar issues
+>    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7651/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-modeset.html
+>    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3889/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-modeset.html
+> 
+>   * igt@kms_flip@basic-flip-vs-wf_vblank:
+>     - fi-kbl-x1275:       [DMESG-WARN][19] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][20] ([i915#62] / [i915#92]) +3 similar issues
+>    [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7651/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-wf_vblank.html
+>    [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3889/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-wf_vblank.html
+> 
+>   
+>   {name}: This element is suppressed. This means it is ignored when computing
+>           the status of the difference (SUCCESS, WARNING, or FAILURE).
+> 
+>   [fdo#103927]: https://bugs.freedesktop.org/show_bug.cgi?id=103927
+>   [fdo#107139]: https://bugs.freedesktop.org/show_bug.cgi?id=107139
+>   [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+>   [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+>   [i915#722]: https://gitlab.freedesktop.org/drm/intel/issues/722
+>   [i915#889]: https://gitlab.freedesktop.org/drm/intel/issues/889
+>   [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
+>   [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+> 
+> 
+> Participating hosts (44 -> 33)
+> ------------------------------
+> 
+>   Additional (4): fi-hsw-4770r fi-skl-6770hq fi-bsw-nick fi-hsw-4770 
+>   Missing    (15): fi-ilk-m540 fi-bsw-n3050 fi-hsw-4200u fi-glk-dsi fi-byt-squawks fi-bwr-2160 fi-snb-2520m fi-ctg-p8600 fi-whl-u fi-bsw-kefka fi-skl-lmem fi-byt-n2820 fi-byt-clapper fi-bdw-samus fi-kbl-r 
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_5352 -> IGTPW_3889
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_7651: dcd9b47d596ff82b9768f1ecba436ef03073c211 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_3889: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3889/index.html
+>   IGT_5352: 0586d205f651674e575351c2d5a7d0760716c9f1 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3889/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
