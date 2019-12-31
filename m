@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA7296E231
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Dec 2019 13:33:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2BC0A6E22F
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Dec 2019 13:33:51 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
-Date: Tue, 31 Dec 2019 18:51:52 +0530
-Message-Id: <20191231132158.3911-2-swati2.sharma@intel.com>
-In-Reply-To: <20191231132158.3911-1-swati2.sharma@intel.com>
-References: <20191231132158.3911-1-swati2.sharma@intel.com>
+Date: Tue, 31 Dec 2019 18:51:51 +0530
+Message-Id: <20191231132158.3911-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/7] headers: Bump drm uapi headers
+Subject: [igt-dev] [PATCH i-g-t 0/7] Add tests for HDR metadata interfaces
+ and bpc switch
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,208 +22,51 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+This series contains tests to validate HDR metadata interfaces
+and bpc switch test cases (8bpc<->10bpc).
+Minor changes are made in the original patch series 
+https://patchwork.freedesktop.org/patch/255755/
 
-Updating them to the latest version from drm-next for HDR static
-metadata uapi structures:
+Changes made to the original series:
+*Current version is made compatible for both amd and intel driver,
+earlier it could be used by amd driver only.
+*No assumption is made regarding output. Tests will execute on
+all availabe outputs, since there is no ROI to execute
+tests on all the pipes; tests will execute on single pipe.
+*To make tests generic, moved tests from tests/amdgpu/amd_hdr.c to
+tests/kms_hdr.c.
+*Also, splitted the hdr igt into multiple patches so that subtests
+can be easily reviewed.
+*Renaming of functions, addition of new flags, igt_describe()
 
-Commit: a09db883e5d9 ("drm: Fix docbook warnings in hdr metadata helper structures")
+As per current design, test will execute on all the attached
+monitors even if its non-HDR because we haven't exposed any property
+from kernel to tell userspace whether monitor is hdr or not.
+TODO: Either expose debugfs entry (or) parse edid in IGT to know
+      whether monitor supports hdr
 
-v2: Bumped to latest drm-next headers
+Also, amd exposes max_bpc as a debugfs entry..so it's asserted for their
+driver. i915 drives misses that.
+TODO: Expose max_bpc as debugfs entry in i915 driver too, if required.
 
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
----
- include/drm-uapi/drm_mode.h | 121 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 119 insertions(+), 2 deletions(-)
+Nicholas Kazlauskas (7):
+  headers: Bump drm uapi headers
+  lib/igt_kms: Add max bpc connector property
+  lib/igt_kms: Add HDR_OUTPUT_METADATA connector property
+  tests/kms_hdr: Add bpc switch subtests
+  tests/kms_hdr: Add static toggle SDR->HDR mode subtests
+  tests/kms_hdr: Add subtest to validate HDR mode using luminance sensor
+  tests/kms_hdr: Add subtest to swap static HDR metadata
 
-diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-index a439c2e6..5ab331e5 100644
---- a/include/drm-uapi/drm_mode.h
-+++ b/include/drm-uapi/drm_mode.h
-@@ -33,7 +33,15 @@
- extern "C" {
- #endif
- 
--#define DRM_DISPLAY_INFO_LEN	32
-+/**
-+ * DOC: overview
-+ *
-+ * DRM exposes many UAPI and structure definition to have a consistent
-+ * and standardized interface with user.
-+ * Userspace can refer to these structure definitions and UAPI formats
-+ * to communicate to driver
-+ */
-+
- #define DRM_CONNECTOR_NAME_LEN	32
- #define DRM_DISPLAY_MODE_LEN	32
- #define DRM_PROP_NAME_LEN	32
-@@ -622,7 +630,8 @@ struct drm_color_ctm {
- 
- struct drm_color_lut {
- 	/*
--	 * Data is U0.16 fixed point format.
-+	 * Values are mapped linearly to 0.0 - 1.0 range, with 0x0 == 0.0 and
-+	 * 0xffff == 1.0.
- 	 */
- 	__u16 red;
- 	__u16 green;
-@@ -630,6 +639,92 @@ struct drm_color_lut {
- 	__u16 reserved;
- };
- 
-+/**
-+ * struct hdr_metadata_infoframe - HDR Metadata Infoframe Data.
-+ *
-+ * HDR Metadata Infoframe as per CTA 861.G spec. This is expected
-+ * to match exactly with the spec.
-+ *
-+ * Userspace is expected to pass the metadata information as per
-+ * the format described in this structure.
-+ */
-+struct hdr_metadata_infoframe {
-+	/**
-+	 * @eotf: Electro-Optical Transfer Function (EOTF)
-+	 * used in the stream.
-+	 */
-+	__u8 eotf;
-+	/**
-+	 * @metadata_type: Static_Metadata_Descriptor_ID.
-+	 */
-+	__u8 metadata_type;
-+	/**
-+	 * @display_primaries: Color Primaries of the Data.
-+	 * These are coded as unsigned 16-bit values in units of
-+	 * 0.00002, where 0x0000 represents zero and 0xC350
-+	 * represents 1.0000.
-+	 * @display_primaries.x: X cordinate of color primary.
-+	 * @display_primaries.y: Y cordinate of color primary.
-+	 */
-+	struct {
-+		__u16 x, y;
-+		} display_primaries[3];
-+	/**
-+	 * @white_point: White Point of Colorspace Data.
-+	 * These are coded as unsigned 16-bit values in units of
-+	 * 0.00002, where 0x0000 represents zero and 0xC350
-+	 * represents 1.0000.
-+	 * @white_point.x: X cordinate of whitepoint of color primary.
-+	 * @white_point.y: Y cordinate of whitepoint of color primary.
-+	 */
-+	struct {
-+		__u16 x, y;
-+		} white_point;
-+	/**
-+	 * @max_display_mastering_luminance: Max Mastering Display Luminance.
-+	 * This value is coded as an unsigned 16-bit value in units of 1 cd/m2,
-+	 * where 0x0001 represents 1 cd/m2 and 0xFFFF represents 65535 cd/m2.
-+	 */
-+	__u16 max_display_mastering_luminance;
-+	/**
-+	 * @min_display_mastering_luminance: Min Mastering Display Luminance.
-+	 * This value is coded as an unsigned 16-bit value in units of
-+	 * 0.0001 cd/m2, where 0x0001 represents 0.0001 cd/m2 and 0xFFFF
-+	 * represents 6.5535 cd/m2.
-+	 */
-+	__u16 min_display_mastering_luminance;
-+	/**
-+	 * @max_cll: Max Content Light Level.
-+	 * This value is coded as an unsigned 16-bit value in units of 1 cd/m2,
-+	 * where 0x0001 represents 1 cd/m2 and 0xFFFF represents 65535 cd/m2.
-+	 */
-+	__u16 max_cll;
-+	/**
-+	 * @max_fall: Max Frame Average Light Level.
-+	 * This value is coded as an unsigned 16-bit value in units of 1 cd/m2,
-+	 * where 0x0001 represents 1 cd/m2 and 0xFFFF represents 65535 cd/m2.
-+	 */
-+	__u16 max_fall;
-+};
-+
-+/**
-+ * struct hdr_output_metadata - HDR output metadata
-+ *
-+ * Metadata Information to be passed from userspace
-+ */
-+struct hdr_output_metadata {
-+	/**
-+	 * @metadata_type: Static_Metadata_Descriptor_ID.
-+	 */
-+	__u32 metadata_type;
-+	/**
-+	 * @hdmi_metadata_type1: HDR Metadata Infoframe.
-+	 */
-+	union {
-+		struct hdr_metadata_infoframe hdmi_metadata_type1;
-+	};
-+};
-+
- #define DRM_MODE_PAGE_FLIP_EVENT 0x01
- #define DRM_MODE_PAGE_FLIP_ASYNC 0x02
- #define DRM_MODE_PAGE_FLIP_TARGET_ABSOLUTE 0x4
-@@ -803,6 +898,10 @@ struct drm_format_modifier {
- };
- 
- /**
-+ * struct drm_mode_create_blob - Create New block property
-+ * @data: Pointer to data to copy.
-+ * @length: Length of data to copy.
-+ * @blob_id: new property ID.
-  * Create a new 'blob' data property, copying length bytes from data pointer,
-  * and returning new blob ID.
-  */
-@@ -816,6 +915,8 @@ struct drm_mode_create_blob {
- };
- 
- /**
-+ * struct drm_mode_destroy_blob - Destroy user blob
-+ * @blob_id: blob_id to destroy
-  * Destroy a user-created blob property.
-  */
- struct drm_mode_destroy_blob {
-@@ -823,6 +924,12 @@ struct drm_mode_destroy_blob {
- };
- 
- /**
-+ * struct drm_mode_create_lease - Create lease
-+ * @object_ids: Pointer to array of object ids.
-+ * @object_count: Number of object ids.
-+ * @flags: flags for new FD.
-+ * @lessee_id: unique identifier for lessee.
-+ * @fd: file descriptor to new drm_master file.
-  * Lease mode resources, creating another drm_master.
-  */
- struct drm_mode_create_lease {
-@@ -840,6 +947,10 @@ struct drm_mode_create_lease {
- };
- 
- /**
-+ * struct drm_mode_list_lessees - List lessees
-+ * @count_lessees: Number of lessees.
-+ * @pad: pad.
-+ * @lessees_ptr: Pointer to lessess.
-  * List lesses from a drm_master
-  */
- struct drm_mode_list_lessees {
-@@ -860,6 +971,10 @@ struct drm_mode_list_lessees {
- };
- 
- /**
-+ * struct drm_mode_get_lease - Get Lease
-+ * @count_objects: Number of leased objects.
-+ * @pad: pad.
-+ * @objects_ptr: Pointer to objects.
-  * Get leased objects
-  */
- struct drm_mode_get_lease {
-@@ -880,6 +995,8 @@ struct drm_mode_get_lease {
- };
- 
- /**
-+ * struct drm_mode_revoke_lease - Revoke lease
-+ * @lessee_id: Unique ID of lessee.
-  * Revoke lease
-  */
- struct drm_mode_revoke_lease {
+ include/drm-uapi/drm_mode.h | 121 +++++-
+ lib/igt_kms.c               |   6 +
+ lib/igt_kms.h               |   2 +
+ tests/Makefile.sources      |   1 +
+ tests/kms_hdr.c             | 839 ++++++++++++++++++++++++++++++++++++
+ tests/meson.build           |   1 +
+ 6 files changed, 968 insertions(+), 2 deletions(-)
+ create mode 100644 tests/kms_hdr.c
+
 -- 
 2.24.1
 
