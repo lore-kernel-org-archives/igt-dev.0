@@ -1,9 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Sat,  4 Jan 2020 15:37:46 +0000
-Message-Id: <20200104153746.2175482-1-chris@chris-wilson.co.uk>
+Date: Sun,  5 Jan 2020 01:06:43 +0000
+Message-Id: <20200105010643.2207837-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200104153746.2175482-1-chris@chris-wilson.co.uk>
+References: <20200104153746.2175482-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] i915/perf: Find the associated perf-type
+Subject: [igt-dev] [PATCH i-g-t] i915/perf: Find the associated perf-type
  for a particular device
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -37,7 +39,7 @@ Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
 ---
  benchmarks/gem_wsim.c          |  4 +-
- lib/igt_perf.c                 | 77 ++++++++++++++++++++++++++++---
+ lib/igt_perf.c                 | 84 +++++++++++++++++++++++++++++++---
  lib/igt_perf.h                 | 13 ++++--
  overlay/gem-interrupts.c       |  2 +-
  overlay/gpu-freq.c             |  4 +-
@@ -48,7 +50,7 @@ Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
  tests/i915/gem_exec_balancer.c | 18 +++++---
  tests/perf_pmu.c               | 84 ++++++++++++++++++----------------
  tools/intel_gpu_top.c          |  2 +-
- 12 files changed, 152 insertions(+), 70 deletions(-)
+ 12 files changed, 159 insertions(+), 70 deletions(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
 index 6305e0d7a..9156fdc90 100644
@@ -66,10 +68,10 @@ index 6305e0d7a..9156fdc90 100644
  		if (pfd < 0) {
  			if (d->id != VCS2)
 diff --git a/lib/igt_perf.c b/lib/igt_perf.c
-index e3dec2cc2..1537faf80 100644
+index e3dec2cc2..840add043 100644
 --- a/lib/igt_perf.c
 +++ b/lib/igt_perf.c
-@@ -4,17 +4,70 @@
+@@ -4,17 +4,77 @@
  #include <stdlib.h>
  #include <string.h>
  #include <errno.h>
@@ -85,6 +87,7 @@ index e3dec2cc2..1537faf80 100644
 +	struct stat st;
 +	int len = -1;
 +	int dir;
++	char *s;
 +
 +	if (fstat(i915, &st) || !S_ISCHR(st.st_mode))
 +		return NULL;
@@ -101,6 +104,12 @@ index e3dec2cc2..1537faf80 100644
 +		return NULL;
 +
 +	path[len] = '\0';
++
++	/* strip off the relative path */
++	s = strrchr(path, '/');
++	if (s)
++		memmove(path, s + 1, len - (s - path) + 1);
++
 +	return path;
 +}
 +
@@ -142,7 +151,7 @@ index e3dec2cc2..1537faf80 100644
  	if (fd < 0)
  		return 0;
  
-@@ -52,15 +105,27 @@ _perf_open(uint64_t type, uint64_t config, int group, uint64_t format)
+@@ -52,15 +112,27 @@ _perf_open(uint64_t type, uint64_t config, int group, uint64_t format)
  	return ret;
  }
  
