@@ -1,16 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20200104153746.2175482-1-chris@chris-wilson.co.uk>
- <20200105010643.2207837-1-chris@chris-wilson.co.uk>
- <65f5226b-9f8d-9442-1131-4c4768cfa41c@linux.intel.com>
- <157839316240.2273.2749522722629040780@skylake-alporthouse-com>
-From: "Fosha, Robert M" <robert.m.fosha@intel.com>
-Message-ID: <2d8e70a0-69e7-a448-6b1f-e477dcf8dc9d@intel.com>
-Date: Wed, 8 Jan 2020 14:19:47 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Thu,  9 Jan 2020 15:01:23 +0100
+Message-Id: <20200109140125.18483-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <157839316240.2273.2749522722629040780@skylake-alporthouse-com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/perf: Find the associated
- perf-type for a particular device
+Subject: [igt-dev] [RFC PATCH i-g-t 0/2] tests/prime_vgem: Examine blitter
+ access path
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,168 +12,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, saurabhg.gupta@intel.com, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On future hardware with missing GGTT BAR we won't be able to exercise
+dma-buf access via that path.  An alternative to basic-gtt subtest for
+testing dma-buf access is required, as well as basic-fence-mmap and
+coherency-gtt subtest alternatives for testing WC coherency.
 
+Access to the dma sg list feature exposed by dma-buf can be tested
+through blitter.  Unfortunately we don't have any equivalently simple
+tests that use blitter.  Provide them.
 
-On 1/7/20 2:32 AM, Chris Wilson wrote:
-> Quoting Tvrtko Ursulin (2020-01-07 09:53:39)
->> +Arek, Saurabhg
->>
->> On 05/01/2020 01:06, Chris Wilson wrote:
->>> Since with multiple devices, we may have multiple different perf_pmu
->>> each with their own type, we want to find the right one for the job.
->>>
->>> The tests are run with a specific fd, from which we can extract the
->>> appropriate bus-id and find the associated perf-type. The performance
->>> monitoring tools are a little more general and not yet ready to probe
->>> all device or bind to one in particular, so we just assume the default
->>> igfx for the time being.
->>>
->>> v2: Extract the bus address from out of sysfs
->>>
->>> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
->>> Cc: "Robert M. Fosha" <robert.m.fosha@intel.com>
->>> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->>> Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Blitter XY_SRC_COPY method implemented by igt_blitter_src_copy__raw()
+IGT library function has been chosen.
 
-Tested-by: Robert M. Fosha <robert.m.fosha@intel.com>
+v2: As fast copy is not supported on platforms older than Gen 9,
+    use XY_SRC_COPY instead (Chris),
+  - bundle with a patch providing XY_SRC_COPY implementation,
+  - add subtest descriptions.
 
->>> ---
->>>    benchmarks/gem_wsim.c          |  4 +-
->>>    lib/igt_perf.c                 | 84 +++++++++++++++++++++++++++++++---
->>>    lib/igt_perf.h                 | 13 ++++--
->>>    overlay/gem-interrupts.c       |  2 +-
->>>    overlay/gpu-freq.c             |  4 +-
->>>    overlay/gpu-top.c              | 12 ++---
->>>    overlay/rc6.c                  |  2 +-
->>>    tests/i915/gem_ctx_freq.c      |  2 +-
->>>    tests/i915/gem_ctx_sseu.c      |  2 +-
->>>    tests/i915/gem_exec_balancer.c | 18 +++++---
->>>    tests/perf_pmu.c               | 84 ++++++++++++++++++----------------
->>>    tools/intel_gpu_top.c          |  2 +-
->>>    12 files changed, 159 insertions(+), 70 deletions(-)
->>>
->>> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
->>> index 6305e0d7a..9156fdc90 100644
->>> --- a/benchmarks/gem_wsim.c
->>> +++ b/benchmarks/gem_wsim.c
->>> @@ -2268,8 +2268,8 @@ busy_init(const struct workload_balancer *balancer, struct workload *wrk)
->>>        for (d = &engines[0]; d->id != VCS; d++) {
->>>                int pfd;
->>>    
->>> -             pfd = perf_i915_open_group(I915_PMU_ENGINE_BUSY(d->class,
->>> -                                                             d->inst),
->>> +             pfd = perf_igfx_open_group(I915_PMU_ENGINE_BUSY(d->class,
->>> +                                                             d->inst),
->>>                                           bb->fd);
->>>                if (pfd < 0) {
->>>                        if (d->id != VCS2)
->>> diff --git a/lib/igt_perf.c b/lib/igt_perf.c
->>> index e3dec2cc2..840add043 100644
->>> --- a/lib/igt_perf.c
->>> +++ b/lib/igt_perf.c
->>> @@ -4,17 +4,77 @@
->>>    #include <stdlib.h>
->>>    #include <string.h>
->>>    #include <errno.h>
->>> +#include <sys/stat.h>
->>>    #include <sys/sysinfo.h>
->>> +#include <sys/sysmacros.h>
->>>    
->>>    #include "igt_perf.h"
->>>    
->>> -uint64_t i915_type_id(void)
->>> +static char *bus_address(int i915, char *path, int pathlen)
->>> +{
->>> +     struct stat st;
->>> +     int len = -1;
->>> +     int dir;
->>> +     char *s;
->>> +
->>> +     if (fstat(i915, &st) || !S_ISCHR(st.st_mode))
->>> +             return NULL;
->>> +
->>> +     snprintf(path, pathlen, "/sys/dev/char/%d:%d",
->>> +              major(st.st_rdev), minor(st.st_rdev));
->>> +
->>> +     dir = open(path, O_RDONLY);
->>> +     if (dir != -1) {
->>> +             len = readlinkat(dir, "device", path, pathlen - 1);
->>> +             close(dir);
->>> +     }
->>> +     if (len < 0)
->>> +             return NULL;
->>> +
->>> +     path[len] = '\0';
->>> +
->>> +     /* strip off the relative path */
->>> +     s = strrchr(path, '/');
->>> +     if (s)
->>> +             memmove(path, s + 1, len - (s - path) + 1);
->>> +
->>> +     return path;
->>> +}
->>> +
->>> +const char *i915_perf_device(int i915, char *buf, int buflen)
->>> +{
->>> +#define prefix "i915-"
->>> +#define plen strlen(prefix)
->>> +
->>> +     if (!buf || buflen < plen)
->>> +             return "i915";
->>> +
->>> +     memcpy(buf, prefix, plen);
->>> +
->>> +     if (!bus_address(i915, buf + plen, buflen - plen) ||
->>> +         strcmp(buf + plen, "0000:00:02.0") == 0) /* legacy name for igfx */
->>> +             buf[plen - 1] = '\0';
->>> +
->>> +     return buf;
->>> +}
->> So DRM fd -> PCI string conversion, yes? On a glance it looks okay.
->> However Arek probably has this data as part of "[PATCH i-g-t 0/4] device
->> selection && lsgpu" (https://patchwork.freedesktop.org/series/70285/).
-> If the string is known, we can use it. This simple routine is *simple*
-> yet effective :)
->   
->> Also:
->>
->> https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/52
->> https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/51
-> How lightweight are they aiming to be?
->   
->> And VLK-5588.
->>
->> This patch is overlap with #52 and then #51/VLK-5588 is about allowing
->> card selection for tools.
->>
->> How to meld the two with minimum effort? We could put this in and then
->> later replace the PCI name resolve with a library routine and re-adjust
->> tools to allow card selection via some mechanism.
-> Exactly. All we need here is a name to lookup the perf type id. One
-> routine to provide an introspection method for a given fd and assumption
-> of i915, does not prevent better methods :)
->
-> I do wonder though if we should have perf_name in our sysfs.
-> -Chris
+Janusz Krzysztofik (1):
+  tests/prime_vgem: Examine blitter access path
 
-Agree with idea of adding this change now and re-adjusting if other 
-mechanism is added for other tests/tools. If no other concerns from 
-Tvrtko or Arek
-Reviewed-by: Robert M. Fosha <robert.m.fosha@intel.com>
+Vanshidhar Konda (1):
+  lib/intel_batchbuffer: Add blitter copy using XY_SRC_COPY_BLT
 
--Rob
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+ lib/intel_batchbuffer.c | 185 ++++++++++++++++++++++++++++++++++++++
+ lib/intel_batchbuffer.h |  21 +++++
+ tests/prime_vgem.c      | 192 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 398 insertions(+)
+
+-- 
+2.21.0
 
 _______________________________________________
 igt-dev mailing list
