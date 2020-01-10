@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 10 Jan 2020 12:34:36 -0000
-Message-ID: <157865967610.30838.10866021506259495704@emeril.freedesktop.org>
-References: <20200110113144.10893-1-petri.latvala@intel.com>
-In-Reply-To: <20200110113144.10893-1-petri.latvala@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgcGVyZl9w?=
- =?utf-8?q?mu=3A_Use_dynamic_subtests?=
+Date: Fri, 10 Jan 2020 12:40:59 -0000
+Message-ID: <157866005988.30835.7931293127790741914@emeril.freedesktop.org>
+References: <20200109132941.21401-1-petri.latvala@intel.com>
+In-Reply-To: <20200109132941.21401-1-petri.latvala@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgcHJpbWVf?=
+ =?utf-8?q?udl=3A_Remove_incorrect_copypasted_comment=2C_add_description?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,13 +25,13 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: perf_pmu: Use dynamic subtests
-URL   : https://patchwork.freedesktop.org/series/71879/
+Series: prime_udl: Remove incorrect copypasted comment, add description
+URL   : https://patchwork.freedesktop.org/series/71821/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_5361 -> IGTPW_3913
+CI Bug Log - changes from CI_DRM_7706 -> IGTPW_3909
 ====================================================
 
 Summary
@@ -41,109 +41,108 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3913/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/index.html
 
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_3909:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@gem_exec_suspend@basic-s0:
+    - {fi-ehl-1}:         NOTRUN -> [SKIP][1] +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-ehl-1/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@gem_exec_suspend@basic-s4-devices:
+    - {fi-ehl-1}:         NOTRUN -> [INCOMPLETE][2]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-ehl-1/igt@gem_exec_suspend@basic-s4-devices.html
+
+  
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_3913 that come from known issues:
+  Here are the changes found in IGTPW_3909 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
   * igt@i915_module_load@reload-with-fault-injection:
-    - fi-skl-6700k2:      [PASS][1] -> [DMESG-WARN][2] ([i915#889])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5361/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3913/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
-    - fi-kbl-x1275:       [PASS][3] -> [DMESG-WARN][4] ([i915#889])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5361/fi-kbl-x1275/igt@i915_module_load@reload-with-fault-injection.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3913/fi-kbl-x1275/igt@i915_module_load@reload-with-fault-injection.html
+    - fi-skl-6700k2:      [PASS][3] -> [DMESG-WARN][4] ([i915#889])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7706/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
 
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-x1275:       [PASS][5] -> [INCOMPLETE][6] ([i915#151])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5361/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3913/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live_blt:
-    - fi-ivb-3770:        [PASS][7] -> [DMESG-FAIL][8] ([i915#563])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5361/fi-ivb-3770/igt@i915_selftest@live_blt.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3913/fi-ivb-3770/igt@i915_selftest@live_blt.html
+  * igt@i915_selftest@live_execlists:
+    - fi-kbl-r:           [PASS][5] -> [DMESG-FAIL][6] ([i915#841])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7706/fi-kbl-r/igt@i915_selftest@live_execlists.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-kbl-r/igt@i915_selftest@live_execlists.html
 
   
 #### Possible fixes ####
 
-  * igt@gem_close_race@basic-threads:
-    - fi-byt-n2820:       [INCOMPLETE][9] ([i915#45]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5361/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3913/fi-byt-n2820/igt@gem_close_race@basic-threads.html
+  * igt@gem_exec_fence@basic-wait-default:
+    - {fi-ehl-1}:         [INCOMPLETE][7] ([i915#949]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7706/fi-ehl-1/igt@gem_exec_fence@basic-wait-default.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-ehl-1/igt@gem_exec_fence@basic-wait-default.html
 
   * igt@i915_module_load@reload-with-fault-injection:
-    - fi-cfl-guc:         [DMESG-WARN][11] ([i915#889]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5361/fi-cfl-guc/igt@i915_module_load@reload-with-fault-injection.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3913/fi-cfl-guc/igt@i915_module_load@reload-with-fault-injection.html
-    - fi-skl-6770hq:      [DMESG-WARN][13] ([i915#88]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5361/fi-skl-6770hq/igt@i915_module_load@reload-with-fault-injection.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3913/fi-skl-6770hq/igt@i915_module_load@reload-with-fault-injection.html
+    - fi-bxt-dsi:         [INCOMPLETE][9] ([fdo#103927]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7706/fi-bxt-dsi/igt@i915_module_load@reload-with-fault-injection.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-bxt-dsi/igt@i915_module_load@reload-with-fault-injection.html
 
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-icl-u2:          [FAIL][15] ([i915#217]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5361/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3913/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+  * igt@i915_selftest@live_blt:
+    - fi-hsw-4770:        [DMESG-FAIL][11] ([i915#553]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7706/fi-hsw-4770/igt@i915_selftest@live_blt.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-hsw-4770/igt@i915_selftest@live_blt.html
+    - fi-hsw-4770r:       [DMESG-FAIL][13] ([i915#725]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7706/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-hsw-4770r/igt@i915_selftest@live_blt.html
 
-  
-#### Warnings ####
-
-  * igt@i915_pm_rpm@basic-rte:
-    - fi-kbl-guc:         [FAIL][17] ([i915#579]) -> [SKIP][18] ([fdo#109271])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5361/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3913/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-icl-u2:          [DMESG-WARN][19] ([IGT#4] / [i915#263]) -> [FAIL][20] ([i915#217])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5361/fi-icl-u2/igt@kms_chamelium@common-hpd-after-suspend.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3913/fi-icl-u2/igt@kms_chamelium@common-hpd-after-suspend.html
+  * igt@prime_vgem@basic-write:
+    - fi-icl-dsi:         [DMESG-WARN][15] ([i915#109]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7706/fi-icl-dsi/igt@prime_vgem@basic-write.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-icl-dsi/igt@prime_vgem@basic-write.html
 
   
-  [IGT#4]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/4
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#151]: https://gitlab.freedesktop.org/drm/intel/issues/151
-  [i915#217]: https://gitlab.freedesktop.org/drm/intel/issues/217
-  [i915#263]: https://gitlab.freedesktop.org/drm/intel/issues/263
-  [i915#45]: https://gitlab.freedesktop.org/drm/intel/issues/45
-  [i915#563]: https://gitlab.freedesktop.org/drm/intel/issues/563
-  [i915#579]: https://gitlab.freedesktop.org/drm/intel/issues/579
-  [i915#88]: https://gitlab.freedesktop.org/drm/intel/issues/88
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#103927]: https://bugs.freedesktop.org/show_bug.cgi?id=103927
+  [i915#109]: https://gitlab.freedesktop.org/drm/intel/issues/109
+  [i915#553]: https://gitlab.freedesktop.org/drm/intel/issues/553
+  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
+  [i915#841]: https://gitlab.freedesktop.org/drm/intel/issues/841
   [i915#889]: https://gitlab.freedesktop.org/drm/intel/issues/889
+  [i915#949]: https://gitlab.freedesktop.org/drm/intel/issues/949
 
 
-Participating hosts (51 -> 33)
+Participating hosts (44 -> 45)
 ------------------------------
 
-  Missing    (18): fi-kbl-soraka fi-ehl-1 fi-bdw-5557u fi-bsw-n3050 fi-hsw-4200u fi-hsw-peppy fi-byt-squawks fi-bsw-cyan fi-ilk-650 fi-kbl-7500u fi-ctg-p8600 fi-elk-e7500 fi-bsw-kefka fi-blb-e6850 fi-byt-clapper fi-bsw-nick fi-skl-6600u fi-kbl-r 
+  Additional (8): fi-kbl-soraka fi-skl-6770hq fi-kbl-7500u fi-ivb-3770 fi-skl-lmem fi-bsw-nick fi-skl-6600u fi-snb-2600 
+  Missing    (7): fi-cml-s fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-tgl-y fi-byt-clapper 
 
 
 Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_5361 -> IGTPW_3913
+  * IGT: IGT_5358 -> IGTPW_3909
 
   CI-20190529: 20190529
-  CI_DRM_7716: b532d43e8d71b07d1cd0619915b1d4039002b5b9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_3913: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3913/index.html
-  IGT_5361: 2671f7a47ea3500b1c741ef4c2dd9afd7eed471c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+++ 27 lines
---- 157 lines
+  CI_DRM_7706: 3d36ffaa59259e46de9dde125d18d228d764609f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_3909: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/index.html
+  IGT_5358: c6fc013f414b806175dc4143c58ab445e5235ea5 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3913/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
