@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F99B6E9A8
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jan 2020 10:08:09 +0000 (UTC)
-Date: Fri, 10 Jan 2020 12:08:07 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200110100807.GL25209@platvala-desk.ger.corp.intel.com>
-References: <20200109132941.21401-1-petri.latvala@intel.com>
- <157858049595.4565.3650088134860393838@emeril.freedesktop.org>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C6896E9B4
+ for <igt-dev@lists.freedesktop.org>; Fri, 10 Jan 2020 10:57:03 +0000 (UTC)
+References: <20200109085023.25551-1-krishnaiah.bommu@intel.com>
+ <20200109085023.25551-2-krishnaiah.bommu@intel.com>
+ <157856151326.13423.7387696609558876020@skylake-alporthouse-com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <c8f8236d-0644-218a-ad1d-43de0dde5716@linux.intel.com>
+Date: Fri, 10 Jan 2020 10:56:59 +0000
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <157858049595.4565.3650088134860393838@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgcHJpbWVf?=
- =?utf-8?q?udl=3A_Remove_incorrect_copypasted_comment=2C_add_description?=
+In-Reply-To: <157856151326.13423.7387696609558876020@skylake-alporthouse-com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tests/i915/gem_ctx_persistence: Set
+ context with supported engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,154 +20,173 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Martin Peres <martin.peres@linux.intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>, Bommu Krishnaiah <krishnaiah.bommu@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jan 09, 2020 at 02:34:55PM +0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: prime_udl: Remove incorrect copypasted comment, add description
-> URL   : https://patchwork.freedesktop.org/series/71821/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_7706 -> IGTPW_3909
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_3909 absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_3909, please notify your bug team to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/index.html
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_3909:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@runner@aborted:
->     - fi-kbl-r:           NOTRUN -> [FAIL][1]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-kbl-r/igt@runner@aborted.html
 
+These were my suggestions so I'll reply. :)
 
-Martin, igt@i915_selftest@live_execlists hit was caught below but this somehow wasn't.
+On 09/01/2020 09:18, Chris Wilson wrote:
+> Quoting Bommu Krishnaiah (2020-01-09 08:50:23)
+>> Update the context with supported engines on the platform with set_property
+>> I915_CONTEXT_PARAM_ENGINES to make sure the work load is submitted to
+>> the available engines only.
+>>
+>> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+>> Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+>> ---
+>>   tests/i915/gem_ctx_persistence.c | 34 ++++++++++++++++++--------------
+>>   1 file changed, 19 insertions(+), 15 deletions(-)
+>>
+>> diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+>> index d68431ae..e410e85f 100644
+>> --- a/tests/i915/gem_ctx_persistence.c
+>> +++ b/tests/i915/gem_ctx_persistence.c
+>> @@ -145,6 +145,15 @@ static void test_clone(int i915)
+>>          gem_context_destroy(i915, clone);
+>>   }
+>>   
+>> +static uint32_t create_context(int i915, bool persistent)
+>> +{
+>> +       uint32_t ctx;
+>> +
+>> +       ctx = gem_context_create(i915);
+>> +       gem_context_set_persistence(i915, ctx, persistent);
+>> +       gem_context_set_all_engines(i915, ctx);
+> 
+> Really? We only need a single engine, could you not be a little more
+> precise.
 
-
-
-
+We have a general situation where as soon as we call 
+__for_each_physical_engine, all code/subtests that follow and which 
+create new contexts, which are then submitted mixing the flags from the 
+iterated engines, needs to have a matching engine map. This stateful 
+behaviour causes problems but it's what we have. I don't have any better 
+ideas on how to universally go about this.
 
 > 
->   
-> #### Suppressed ####
+>> +       return ctx;
+>> +}
+>>   static void test_persistence(int i915, unsigned int engine)
+>>   {
+>>          igt_spin_t *spin;
+>> @@ -156,8 +165,7 @@ static void test_persistence(int i915, unsigned int engine)
+>>           * request is retired -- no early termination.
+>>           */
+>>   
+>> -       ctx = gem_context_create(i915);
+>> -       gem_context_set_persistence(i915, ctx, true);
+>> +       ctx = create_context(i915, true);
+>>   
+>>          spin = igt_spin_new(i915, ctx,
+>>                              .engine = engine,
+>> @@ -188,8 +196,7 @@ static void test_nonpersistent_cleanup(int i915, unsigned int engine)
+>>           * any inflight request is cancelled.
+>>           */
+>>   
+>> -       ctx = gem_context_create(i915);
+>> -       gem_context_set_persistence(i915, ctx, false);
+>> +       ctx = create_context(i915, false);
+>>   
+>>          spin = igt_spin_new(i915, ctx,
+>>                              .engine = engine,
+>> @@ -217,8 +224,7 @@ static void test_nonpersistent_mixed(int i915, unsigned int engine)
+>>                  igt_spin_t *spin;
+>>                  uint32_t ctx;
+>>   
+>> -               ctx = gem_context_create(i915);
+>> -               gem_context_set_persistence(i915, ctx, i & 1);
+>> +               ctx = create_context(i915, i & 1);
+>>   
+>>                  spin = igt_spin_new(i915, ctx,
+>>                                      .engine = engine,
+>> @@ -253,8 +259,7 @@ static void test_nonpersistent_hostile(int i915, unsigned int engine)
+>>           * the requests and cleanup the context.
+>>           */
+>>   
+>> -       ctx = gem_context_create(i915);
+>> -       gem_context_set_persistence(i915, ctx, false);
+>> +       ctx = create_context(i915, false);
+>>   
+>>          spin = igt_spin_new(i915, ctx,
+>>                              .engine = engine,
+>> @@ -284,8 +289,8 @@ static void test_nonpersistent_hostile_preempt(int i915, unsigned int engine)
+>>   
+>>          igt_require(gem_scheduler_has_preemption(i915));
+>>   
+>> -       ctx = gem_context_create(i915);
+>> -       gem_context_set_persistence(i915, ctx, true);
+>> +       ctx = create_context(i915, true);
+>> +
+>>          gem_context_set_priority(i915, ctx, 0);
+>>          spin[0] = igt_spin_new(i915, ctx,
+>>                                 .engine = engine,
+>> @@ -385,8 +390,8 @@ static void test_nonpersistent_queued(int i915, unsigned int engine)
+>>   
+>>          gem_quiescent_gpu(i915);
+>>   
+>> -       ctx = gem_context_create(i915);
+>> -       gem_context_set_persistence(i915, ctx, false);
+>> +       ctx = create_context(i915, false);
+>> +
+>>          spin = igt_spin_new(i915, ctx,
+>>                              .engine = engine,
+>>                              .flags = IGT_SPIN_FENCE_OUT);
+>> @@ -512,8 +517,7 @@ static void test_process_mixed(int i915, unsigned int engine)
+>>                          igt_spin_t *spin;
+>>                          uint32_t ctx;
+>>   
+>> -                       ctx = gem_context_create(i915);
+>> -                       gem_context_set_persistence(i915, ctx, persists);
+>> +                       ctx = create_context(i915, persists);
+>>   
+>>                          spin = igt_spin_new(i915, ctx,
+>>                                              .engine = engine,
+>> @@ -727,7 +731,7 @@ igt_main
+>>          igt_subtest("hangcheck")
+>>                  test_nohangcheck_hostile(i915);
+>>   
+>> -       __for_each_static_engine(e) {
+>> +       __for_each_physical_engine(i915, e) {
 > 
->   The following results come from untrusted machines, tests, or statuses.
->   They do not affect the overall result.
-> 
->   * igt@gem_exec_suspend@basic-s0:
->     - {fi-ehl-1}:         NOTRUN -> [SKIP][2] +1 similar issue
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-ehl-1/igt@gem_exec_suspend@basic-s0.html
-> 
->   * igt@gem_exec_suspend@basic-s4-devices:
->     - {fi-ehl-1}:         NOTRUN -> [INCOMPLETE][3]
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-ehl-1/igt@gem_exec_suspend@basic-s4-devices.html
-> 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_3909 that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@i915_module_load@reload-with-fault-injection:
->     - fi-skl-6700k2:      [PASS][4] -> [DMESG-WARN][5] ([i915#889])
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7706/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
-> 
->   * igt@i915_selftest@live_execlists:
->     - fi-kbl-r:           [PASS][6] -> [DMESG-FAIL][7] ([i915#841])
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7706/fi-kbl-r/igt@i915_selftest@live_execlists.html
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-kbl-r/igt@i915_selftest@live_execlists.html
-> 
->   
-> #### Possible fixes ####
-> 
->   * igt@gem_exec_fence@basic-wait-default:
->     - {fi-ehl-1}:         [INCOMPLETE][8] ([i915#949]) -> [PASS][9]
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7706/fi-ehl-1/igt@gem_exec_fence@basic-wait-default.html
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-ehl-1/igt@gem_exec_fence@basic-wait-default.html
-> 
->   * igt@i915_module_load@reload-with-fault-injection:
->     - fi-bxt-dsi:         [INCOMPLETE][10] ([fdo#103927]) -> [PASS][11]
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7706/fi-bxt-dsi/igt@i915_module_load@reload-with-fault-injection.html
->    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-bxt-dsi/igt@i915_module_load@reload-with-fault-injection.html
-> 
->   * igt@i915_selftest@live_blt:
->     - fi-hsw-4770:        [DMESG-FAIL][12] ([i915#553]) -> [PASS][13]
->    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7706/fi-hsw-4770/igt@i915_selftest@live_blt.html
->    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-hsw-4770/igt@i915_selftest@live_blt.html
->     - fi-hsw-4770r:       [DMESG-FAIL][14] ([i915#725]) -> [PASS][15]
->    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7706/fi-hsw-4770r/igt@i915_selftest@live_blt.html
->    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-> 
->   * igt@prime_vgem@basic-write:
->     - fi-icl-dsi:         [DMESG-WARN][16] ([i915#109]) -> [PASS][17]
->    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7706/fi-icl-dsi/igt@prime_vgem@basic-write.html
->    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/fi-icl-dsi/igt@prime_vgem@basic-write.html
-> 
->   
->   {name}: This element is suppressed. This means it is ignored when computing
->           the status of the difference (SUCCESS, WARNING, or FAILURE).
-> 
->   [fdo#103927]: https://bugs.freedesktop.org/show_bug.cgi?id=103927
->   [i915#109]: https://gitlab.freedesktop.org/drm/intel/issues/109
->   [i915#553]: https://gitlab.freedesktop.org/drm/intel/issues/553
->   [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
->   [i915#841]: https://gitlab.freedesktop.org/drm/intel/issues/841
->   [i915#889]: https://gitlab.freedesktop.org/drm/intel/issues/889
->   [i915#949]: https://gitlab.freedesktop.org/drm/intel/issues/949
-> 
-> 
-> Participating hosts (44 -> 45)
-> ------------------------------
-> 
->   Additional (8): fi-kbl-soraka fi-skl-6770hq fi-kbl-7500u fi-ivb-3770 fi-skl-lmem fi-bsw-nick fi-skl-6600u fi-snb-2600 
->   Missing    (7): fi-cml-s fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-tgl-y fi-byt-clapper 
-> 
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_5358 -> IGTPW_3909
-> 
->   CI-20190529: 20190529
->   CI_DRM_7706: 3d36ffaa59259e46de9dde125d18d228d764609f @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_3909: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/index.html
->   IGT_5358: c6fc013f414b806175dc4143c58ab445e5235ea5 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3909/index.html
+> Please note this has to check ABI. We have to confirm that no matter how
+> the user tries to fool us, they cannot. So the gem_context_set_engines()
+> should be considered a separate step, or a very, very persuasive
+> argument made as to why we consider the multiple ABI paths equivalent,
+> bearing in mind the security implications of getting it wrong.
+
+So duplicate the subtest loop, first do ABI, then physical?
+
+for_each_engine(..) {
+	...
+
+	igt_subtest_f("legacy-%s-persistence")
+		test_persistence(..)
+	...
+}
+
+__for_each_physical_engine(..) {
+	...
+
+	igt_subtest_f("%s-persistence")
+		test_persistence(..)
+	...
+}
+
+Then in create_context helper we need to query the default context ( 
+gem_context_has_engine_map) to establish if we need to call 
+gem_context_set_all_engines or not.
+
+Acceptable?
+
+Regards,
+
+Tvrtko
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
