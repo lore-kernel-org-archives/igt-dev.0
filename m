@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E7C5E6E10F
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Jan 2020 17:21:29 +0000 (UTC)
-From: Imre Deak <imre.deak@intel.com>
-Date: Mon, 13 Jan 2020 19:21:20 +0200
-Message-Id: <20200113172120.32553-1-imre.deak@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 01DDB89B70
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Jan 2020 17:50:24 +0000 (UTC)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/i915: Add test for unaligned detiler
- fences
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20200113172120.32553-1-imre.deak@intel.com>
+References: <20200113172120.32553-1-imre.deak@intel.com>
+Message-ID: <157893780917.27314.7143019011032309969@skylake-alporthouse-com>
+Date: Mon, 13 Jan 2020 17:50:09 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915: Add test for unaligned
+ detiler fences
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,111 +17,107 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Imre Deak <imre.deak@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QWRkIGEgdGVzdCB0byBjaGVjayB0aGUgZGV0aWxpbmcgb24gYSBidWZmZXIgd2l0aCBhIHNpemUg
-dGhhdCBpc24ndAphbGlnbmVkIHRvIHRoZSBkZXRpbGVyIGZlbmNlIHN0cmlkZSB3ZSBhZGQgZm9y
-IHRoZSBidWZmZXIuIFdoaWxlIHdyaXRlcwpiZXlvbmQgdGhlIGxhc3QgZnVsbCB0aWxlIHJvdyBt
-YXkgdGFyZ2V0IGFuIGFkZHJlc3MgYmV5b25kIHRoZSBidWZmZXIncwpzaXplLCB3ZSBzdGlsbCBl
-eHBlY3QgdGhhdCBzdWNoIHdyaXRlcyB3aWxsIG5vdCBsZWFkIHRvIGEgY29ycnVwdGlvbgpvbiBt
-ZW1vcnkgcGFnZXMgdGhhdCBhcmUgbm90IG93bmVkIGJ5IHRoZSBwcm9jZXNzIHBlcmZvcm1pbmcg
-dGhlIHdyaXRlLgoKVGhlIHJlYXNvbiBmb3IgdGhpcyB0ZXN0OiBvbiBUR0wgc3VjaCB3cml0ZXMg
-bGVhZCB0byByYW5kb20gbWVtb3J5CmNvcnJ1cHRpb24gaW4gbWVtb3J5IG5vdCBiZWxvbmdpbmcg
-dG8gdGhlIHByb2Nlc3MuIFRoaXMgc2hvdWxkIGJlCnByZXZlbnRlZCBlbnN1cmluZyB0aGF0IHdl
-IGtlZXAgcGFnZXMgdGhhdCB1c2VyIHNwYWNlIGNhbiBhY2Nlc3MKKHBhZGRpbmcgdGhlIG9iamVj
-dCBzaXplIHRvIGJlIHRpbGUtcm93IHNpemUgYWxpZ25lZCkgcmVzZXJ2ZWQgaW4gdGhlCkdUVCBh
-ZGRyZXNzIHNwYWNlIHVudGlsIHVzZXJzcGFjZSBjYW4gd3JpdGUgdGhyb3VnaCB0aGUgZmVuY2Vk
-IHJlZ2lvbi4KCkNjOiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KQ2M6
-IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+ClNpZ25lZC1v
-ZmYtYnk6IEltcmUgRGVhayA8aW1yZS5kZWFrQGludGVsLmNvbT4KLS0tCiB0ZXN0cy9NYWtlZmls
-ZS5zb3VyY2VzICAgICAgICAgICAgICAgIHwgICAzICsKIHRlc3RzL2k5MTUvZ2VtX3VuYWxpZ25l
-ZF9mZW5jZS5jICAgICAgfCAxMDggKysrKysrKysrKysrKysrKysrKysrKysrKysKIHRlc3RzL2lu
-dGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QgfCAgIDEgKwogdGVzdHMvbWVzb24uYnVpbGQg
-ICAgICAgICAgICAgICAgICAgICB8ICAgMSArCiA0IGZpbGVzIGNoYW5nZWQsIDExMyBpbnNlcnRp
-b25zKCspCiBjcmVhdGUgbW9kZSAxMDA2NDQgdGVzdHMvaTkxNS9nZW1fdW5hbGlnbmVkX2ZlbmNl
-LmMKCmRpZmYgLS1naXQgYS90ZXN0cy9NYWtlZmlsZS5zb3VyY2VzIGIvdGVzdHMvTWFrZWZpbGUu
-c291cmNlcwppbmRleCA4MDZlYjAyZC4uZGNlMWQxOTcgMTAwNjQ0Ci0tLSBhL3Rlc3RzL01ha2Vm
-aWxlLnNvdXJjZXMKKysrIGIvdGVzdHMvTWFrZWZpbGUuc291cmNlcwpAQCAtNDYwLDYgKzQ2MCw5
-IEBAIGdlbV90aWxlZF93Y19TT1VSQ0VTID0gaTkxNS9nZW1fdGlsZWRfd2MuYwogVEVTVFNfcHJv
-Z3MgKz0gZ2VtX3RpbGluZ19tYXhfc3RyaWRlCiBnZW1fdGlsaW5nX21heF9zdHJpZGVfU09VUkNF
-UyA9IGk5MTUvZ2VtX3RpbGluZ19tYXhfc3RyaWRlLmMKIAorVEVTVFNfcHJvZ3MgKz0gZ2VtX3Vu
-YWxpZ25lZF9mZW5jZQorZ2VtX3VuYWxpZ25lZF9mZW5jZV9TT1VSQ0VTID0gaTkxNS9nZW1fdW5h
-bGlnbmVkX2ZlbmNlLmMKKwogVEVTVFNfcHJvZ3MgKz0gZ2VtX3VuZmVuY2VfYWN0aXZlX2J1ZmZl
-cnMKIGdlbV91bmZlbmNlX2FjdGl2ZV9idWZmZXJzX1NPVVJDRVMgPSBpOTE1L2dlbV91bmZlbmNl
-X2FjdGl2ZV9idWZmZXJzLmMKIApkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fdW5hbGlnbmVk
-X2ZlbmNlLmMgYi90ZXN0cy9pOTE1L2dlbV91bmFsaWduZWRfZmVuY2UuYwpuZXcgZmlsZSBtb2Rl
-IDEwMDY0NAppbmRleCAwMDAwMDAwMC4uYWM0OWZkODAKLS0tIC9kZXYvbnVsbAorKysgYi90ZXN0
-cy9pOTE1L2dlbV91bmFsaWduZWRfZmVuY2UuYwpAQCAtMCwwICsxLDEwOCBAQAorLyoKKyAqIENv
-cHlyaWdodCDCqSAyMDIwIEludGVsIENvcnBvcmF0aW9uCisgKgorICogUGVybWlzc2lvbiBpcyBo
-ZXJlYnkgZ3JhbnRlZCwgZnJlZSBvZiBjaGFyZ2UsIHRvIGFueSBwZXJzb24gb2J0YWluaW5nIGEK
-KyAqIGNvcHkgb2YgdGhpcyBzb2Z0d2FyZSBhbmQgYXNzb2NpYXRlZCBkb2N1bWVudGF0aW9uIGZp
-bGVzICh0aGUgIlNvZnR3YXJlIiksCisgKiB0byBkZWFsIGluIHRoZSBTb2Z0d2FyZSB3aXRob3V0
-IHJlc3RyaWN0aW9uLCBpbmNsdWRpbmcgd2l0aG91dCBsaW1pdGF0aW9uCisgKiB0aGUgcmlnaHRz
-IHRvIHVzZSwgY29weSwgbW9kaWZ5LCBtZXJnZSwgcHVibGlzaCwgZGlzdHJpYnV0ZSwgc3VibGlj
-ZW5zZSwKKyAqIGFuZC9vciBzZWxsIGNvcGllcyBvZiB0aGUgU29mdHdhcmUsIGFuZCB0byBwZXJt
-aXQgcGVyc29ucyB0byB3aG9tIHRoZQorICogU29mdHdhcmUgaXMgZnVybmlzaGVkIHRvIGRvIHNv
-LCBzdWJqZWN0IHRvIHRoZSBmb2xsb3dpbmcgY29uZGl0aW9uczoKKyAqCisgKiBUaGUgYWJvdmUg
-Y29weXJpZ2h0IG5vdGljZSBhbmQgdGhpcyBwZXJtaXNzaW9uIG5vdGljZSAoaW5jbHVkaW5nIHRo
-ZSBuZXh0CisgKiBwYXJhZ3JhcGgpIHNoYWxsIGJlIGluY2x1ZGVkIGluIGFsbCBjb3BpZXMgb3Ig
-c3Vic3RhbnRpYWwgcG9ydGlvbnMgb2YgdGhlCisgKiBTb2Z0d2FyZS4KKyAqCisgKiBUSEUgU09G
-VFdBUkUgSVMgUFJPVklERUQgIkFTIElTIiwgV0lUSE9VVCBXQVJSQU5UWSBPRiBBTlkgS0lORCwg
-RVhQUkVTUyBPUgorICogSU1QTElFRCwgSU5DTFVESU5HIEJVVCBOT1QgTElNSVRFRCBUTyBUSEUg
-V0FSUkFOVElFUyBPRiBNRVJDSEFOVEFCSUxJVFksCisgKiBGSVRORVNTIEZPUiBBIFBBUlRJQ1VM
-QVIgUFVSUE9TRSBBTkQgTk9OSU5GUklOR0VNRU5ULiAgSU4gTk8gRVZFTlQgU0hBTEwKKyAqIFRI
-RSBBVVRIT1JTIE9SIENPUFlSSUdIVCBIT0xERVJTIEJFIExJQUJMRSBGT1IgQU5ZIENMQUlNLCBE
-QU1BR0VTIE9SIE9USEVSCisgKiBMSUFCSUxJVFksIFdIRVRIRVIgSU4gQU4gQUNUSU9OIE9GIENP
-TlRSQUNULCBUT1JUIE9SIE9USEVSV0lTRSwgQVJJU0lORworICogRlJPTSwgT1VUIE9GIE9SIElO
-IENPTk5FQ1RJT04gV0lUSCBUSEUgU09GVFdBUkUgT1IgVEhFIFVTRSBPUiBPVEhFUiBERUFMSU5H
-UworICogSU4gVEhFIFNPRlRXQVJFLgorICovCisjaW5jbHVkZSAiaWd0LmgiCisKKyNkZWZpbmUg
-RklMTF9QQVQ2NAkweGVlZWVlZWVlZWVlZWVlZWUKKworc3RhdGljIGJvb2wgY2hlY2tfYnVmKGlu
-dCBmZCwgdWludDMyX3QgaGFuZGxlLCB1aW50MzJfdCBzaXplKQoreworCXVpbnQ2NF90ICpwdHI7
-CisJc2l6ZV90IGk7CisKKwlnZW1fc2V0X2RvbWFpbihmZCwgaGFuZGxlLCBJOTE1X0dFTV9ET01B
-SU5fR1RULCAwKTsKKworCXB0ciA9IGdlbV9tbWFwX19ndHQoZmQsIGhhbmRsZSwgc2l6ZSwgUFJP
-VF9SRUFEKTsKKworCWZvciAoaSA9IDA7IGkgPCBzaXplIC8gc2l6ZW9mKCpwdHIpOyBpKyspCisJ
-CWlmIChwdHJbaV0gIT0gRklMTF9QQVQ2NCkKKwkJCWJyZWFrOworCW11bm1hcChwdHIsIHNpemUp
-OworCisJcmV0dXJuIGkgKiBzaXplb2YoKnB0cikgPT0gc2l6ZTsKK30KKworc3RhdGljIHZvaWQg
-bWVtc2V0NjQodWludDY0X3QgKnMsIHVpbnQ2NF90IGMsIHNpemVfdCBuKQoreworCWZvciAoaW50
-IGkgPSAwOyBpIDwgbjsgaSsrKQorCQlzW2ldID0gYzsKK30KKworc3RhdGljIHZvaWQgZmlsbF9i
-dWYoaW50IGZkLCB1aW50MzJfdCBoYW5kbGUsIHNpemVfdCBzaXplKQoreworCXZvaWQgKnB0cjsK
-KworCWdlbV9zZXRfZG9tYWluKGZkLCBoYW5kbGUsIEk5MTVfR0VNX0RPTUFJTl9HVFQsIEk5MTVf
-R0VNX0RPTUFJTl9HVFQpOworCisJcHRyID0gZ2VtX21tYXBfX2d0dChmZCwgaGFuZGxlLCBzaXpl
-LCBQUk9UX1dSSVRFKTsKKwlpZ3RfYXNzZXJ0KHB0cik7CisKKwltZW1zZXQ2NChwdHIsIEZJTExf
-UEFUNjQsIHNpemUgLyBzaXplb2YodWludDY0X3QpKTsKKworCW11bm1hcChwdHIsIHNpemUpOwor
-fQorCitzdGF0aWMgdm9pZCB0ZXN0X3N0cmlkZShpbnQgZmQsIGludCBzdHJpZGUsIGludCB0aWxl
-X3Jvd3MpCit7CisJdWludDMyX3QgaGFuZGxlOworCWludCB0aWxlX2hlaWdodDsKKwlpbnQgdGls
-ZV9yb3dfc2l6ZTsKKwlzaXplX3Qgc2l6ZTsKKworCWlndF9pbmZvKCJUZXN0aW5nIHN0cmlkZSAl
-ZCByb3dzICVkXG4iLCBzdHJpZGUsIHRpbGVfcm93cyk7CisKKwl0aWxlX2hlaWdodCA9IDMyOwor
-CXRpbGVfcm93X3NpemUgPSBzdHJpZGUgKiB0aWxlX2hlaWdodDsKKwlzaXplID0gdGlsZV9yb3df
-c2l6ZSAqIHRpbGVfcm93cyArIHRpbGVfcm93X3NpemUgLyAyOworCisJaGFuZGxlID0gZ2VtX2Ny
-ZWF0ZShmZCwgc2l6ZSk7CisKKwlpZiAoX19nZW1fc2V0X3RpbGluZyhmZCwgaGFuZGxlLCBJOTE1
-X1RJTElOR19ZLCBzdHJpZGUpICE9IDApCisJCXJldHVybjsKKworCWZpbGxfYnVmKGZkLCBoYW5k
-bGUsIHNpemUpOworCisJaWd0X2Fzc2VydChjaGVja19idWYoZmQsIGhhbmRsZSwgc2l6ZSkpOwor
-CisJZ2VtX2Nsb3NlKGZkLCBoYW5kbGUpOworfQorCitzdGF0aWMgdm9pZCBkb190ZXN0X2FsbF9z
-dHJpZGVzKGludCBmZCkKK3sKKwlpbnQgdGlsZV9yb3dzOworCWludCBzdHJpZGU7CisKKwlmb3Ig
-KHRpbGVfcm93cyA9IDE7IHRpbGVfcm93cyA8IDEwOyB0aWxlX3Jvd3MrKykKKwkJZm9yIChzdHJp
-ZGUgPSA1MTI7IHN0cmlkZSA8IDgxOTY7IHN0cmlkZSArPSA1MTIpCisJCQl0ZXN0X3N0cmlkZShm
-ZCwgc3RyaWRlLCB0aWxlX3Jvd3MpOworfQorCitpZ3RfbWFpbgoreworCWludCBmZDsKKworCWln
-dF9maXh0dXJlCisJCWZkID0gZHJtX29wZW5fZHJpdmVyX3JlbmRlcihEUklWRVJfSU5URUwpOwor
-CisJaWd0X3N1YnRlc3QoImJhc2ljIikKKwkJZG9fdGVzdF9hbGxfc3RyaWRlcyhmZCk7Cit9CmRp
-ZmYgLS1naXQgYS90ZXN0cy9pbnRlbC1jaS9mYXN0LWZlZWRiYWNrLnRlc3RsaXN0IGIvdGVzdHMv
-aW50ZWwtY2kvZmFzdC1mZWVkYmFjay50ZXN0bGlzdAppbmRleCA4MDgxNDQ2ZS4uNDQ0NjBjZDIg
-MTAwNjQ0Ci0tLSBhL3Rlc3RzL2ludGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QKKysrIGIv
-dGVzdHMvaW50ZWwtY2kvZmFzdC1mZWVkYmFjay50ZXN0bGlzdApAQCAtNzAsNiArNzAsNyBAQCBp
-Z3RAZ2VtX3N5bmNAYmFzaWMtc3RvcmUtZWFjaAogaWd0QGdlbV90aWxlZF9ibGl0c0BiYXNpYwog
-aWd0QGdlbV90aWxlZF9mZW5jZV9ibGl0c0BiYXNpYwogaWd0QGdlbV90aWxlZF9wcmVhZF9iYXNp
-YworaWd0QGdlbV91bmFsaWduZWRfZmVuY2VAYmFzaWMKIGlndEBnZW1fd2FpdEBiYXNpYy1idXN5
-LWFsbAogaWd0QGdlbV93YWl0QGJhc2ljLXdhaXQtYWxsCiBpZ3RAZ2VtX3dhaXRAYmFzaWMtYXdh
-aXQtYWxsCmRpZmYgLS1naXQgYS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rlc3RzL21lc29uLmJ1aWxk
-CmluZGV4IDU3MGRlNTQ1Li4xOWNkY2U1MyAxMDA2NDQKLS0tIGEvdGVzdHMvbWVzb24uYnVpbGQK
-KysrIGIvdGVzdHMvbWVzb24uYnVpbGQKQEAgLTIxOSw2ICsyMTksNyBAQCBpOTE1X3Byb2dzID0g
-WwogCSdnZW1fdGlsZWRfd2InLAogCSdnZW1fdGlsZWRfd2MnLAogCSdnZW1fdGlsaW5nX21heF9z
-dHJpZGUnLAorCSdnZW1fdW5hbGlnbmVkX2ZlbmNlJywKIAknZ2VtX3VuZmVuY2VfYWN0aXZlX2J1
-ZmZlcnMnLAogCSdnZW1fdW5yZWZfYWN0aXZlX2J1ZmZlcnMnLAogCSdnZW1fdXNlcnB0cl9ibGl0
-cycsCi0tIAoyLjIzLjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+Quoting Imre Deak (2020-01-13 17:21:20)
+> Add a test to check the detiling on a buffer with a size that isn't
+> aligned to the detiler fence stride we add for the buffer. While writes
+> beyond the last full tile row may target an address beyond the buffer's
+> size, we still expect that such writes will not lead to a corruption
+> on memory pages that are not owned by the process performing the write.
+> 
+> The reason for this test: on TGL such writes lead to random memory
+> corruption in memory not belonging to the process. This should be
+> prevented ensuring that we keep pages that user space can access
+> (padding the object size to be tile-row size aligned) reserved in the
+> GTT address space until userspace can write through the fenced region.
+
+This is going through a different IP block and driver paths than the
+original bug. When we are using a fence, we create a vma that is
+sufficient to include the last tile row. When we create a vma for the
+display, we don't ask for that...
+
+--- a/drivers/gpu/drm/i915/gem/i915_gem_domain.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_domain.c
+@@ -344,19 +344,24 @@ i915_gem_object_pin_to_display_plane(struct drm_i915_gem_object *obj,
+ 	 * put it anyway and hope that userspace can cope (but always first
+ 	 * try to preserve the existing ABI).
+ 	 */
+-	vma = ERR_PTR(-ENOSPC);
+-	if ((flags & PIN_MAPPABLE) == 0 &&
+-	    (!view || view->type == I915_GGTT_VIEW_NORMAL))
+-		vma = i915_gem_object_ggtt_pin(obj, view, 0, alignment,
+-					       flags |
+-					       PIN_MAPPABLE |
+-					       PIN_NONBLOCK);
+-	if (IS_ERR(vma))
+-		vma = i915_gem_object_ggtt_pin(obj, view, 0, alignment, flags);
++	vma = i915_vma_instance(obj, &i915->ggtt.vm, view);
+ 	if (IS_ERR(vma))
+ 		return vma;
+
+-	vma->display_alignment = max_t(u64, vma->display_alignment, alignment);
++	alignment = max(vma->display_alignment, alignment);
++
++	ret = -ENOSPC;
++	if ((flags & PIN_MAPPABLE) == 0 &&
++	    vma->ggtt_view.type == I915_GGTT_VIEW_NORMAL)
++		ret = i915_vma_pin(vma,
++				   alignment, vma->fence_size,
++				   flags | PIN_MAPPABLE | PIN_NONBLOCK);
++	if (ret == -ENOSPC)
++		ret = i915_vma_pin(vma, alignment, vma->fence_size, flags);
++	if (ret)
++		return ERR_PTR(ret);
++
++	vma->display_alignment = alignment;
+
+ 	i915_gem_object_flush_if_display(obj);
+
+diff --git a/drivers/gpu/drm/i915/i915_vma.c b/drivers/gpu/drm/i915/i915_vma.c
+index 17d7c525ea5c..57df22b809fa 100644
+--- a/drivers/gpu/drm/i915/i915_vma.c
++++ b/drivers/gpu/drm/i915/i915_vma.c
+@@ -619,7 +619,7 @@ i915_vma_insert(struct i915_vma *vma, u64 size, u64 alignment, u64 flags)
+ 	GEM_BUG_ON(drm_mm_node_allocated(&vma->node));
+
+ 	size = max(size, vma->size);
+-	alignment = max(alignment, vma->display_alignment);
++	alignment = max_t(typeof(alignment), alignment, vma->display_alignment);
+ 	if (flags & PIN_MAPPABLE) {
+ 		size = max_t(typeof(size), size, vma->fence_size);
+ 		alignment = max_t(typeof(alignment),
+diff --git a/drivers/gpu/drm/i915/i915_vma_types.h b/drivers/gpu/drm/i915/i915_vma_types.h
+index e0942efd5236..2cf642ecbd7d 100644
+--- a/drivers/gpu/drm/i915/i915_vma_types.h
++++ b/drivers/gpu/drm/i915/i915_vma_types.h
+@@ -182,7 +182,6 @@ struct i915_vma {
+ 	struct i915_fence_reg *fence;
+
+ 	u64 size;
+-	u64 display_alignment;
+ 	struct i915_page_sizes page_sizes;
+
+ 	/* mmap-offset associated with fencing for this vma */
+@@ -190,6 +189,7 @@ struct i915_vma {
+
+ 	u32 fence_size;
+ 	u32 fence_alignment;
++	u32 display_alignment;
+
+ 	/**
+ 	 * Count of the number of times this vma has been opened by different
+
+The partial fencing interaction with HW and peeking at the pages behind
+should be covered by selftests -- as we want to peek at physical pages.
+Mostly done already.
+-Chris
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
