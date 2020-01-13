@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E88D489BD2
- for <igt-dev@lists.freedesktop.org>; Sun, 12 Jan 2020 10:06:48 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9BBF89E98
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Jan 2020 09:19:10 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Mon, 13 Jan 2020 10:19:03 +0100
+Message-Id: <20200113091908.11983-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <875zhhtm99.wl-ashutosh.dixit@intel.com>
-References: <037121df1ee6fcf1fa92ea4a7fb6ba31b39e80ac.1578720512.git.ashutosh.dixit@intel.com>
- <fd2da281033416f29cba6e1ab616164b1cfc6928.1578720512.git.ashutosh.dixit@intel.com>
- <157873229910.10140.6691170131873194678@skylake-alporthouse-com>
- <875zhhtm99.wl-ashutosh.dixit@intel.com>
-Message-ID: <157882360367.10140.5434429041477278187@skylake-alporthouse-com>
-Date: Sun, 12 Jan 2020 10:06:43 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] i915/treewide: Replace
- gem_mmap__gtt() by gem_mmap__device_coherent()
+Subject: [igt-dev] [PATCH i-g-t v7 0/5] Simplify working on tiled surfaces
+ over GenX
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,50 +15,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Dixit, Ashutosh (2020-01-12 02:57:22)
-> On Sat, 11 Jan 2020 00:44:59 -0800, Chris Wilson wrote:
-> >
-> > Here, we want OFFSET_WC etc added. So leave this style for a later patch,
-> > and focus on just converting the ones where we want any old mapping to
-> > device_coherent(). Another patch can focus on converting any __cpu maps
-> > that are only used for writes to device_coherent.
-> 
-> Thanks for the feedback Chris, makes sense, will rework and repost.
-> 
-> Some time ago, Dixit, Ashutosh wrote:
-> > On Sat, 11 Jan 2020 00:40:32 -0800, Chris Wilson wrote:
-> > > Quoting Ashutosh Dixit (2020-01-11 05:36:52)
-> > > > In order to preserve legacy behavior for devices with a mappable
-> > > > aperture try a GTT mapping first. Use a WC mapping only for devices
-> > > > without a mappable aperture.
-> > >
-> > > No...? It's just historical legacy from before we even had WC available.
-> > > Since we've had WC for basic mmappings, we prefer WC since it is not as
-> > > scarce and as precious a resource. (Not that it matters for most tests
-> > > since GTT thrashing in basic igt is unheard of!)
-> 
-> About this, I was assuming if we were using WC instead of GTT on legacy
-> (Gen < 6), we would have to set read/write domains to WC too, unless you
-> are saying it's not required? (From what I know, for later Gen's, setting
-> the domain to either GTT or WC is identical).
-
-The complication is just in mixing GTT and WC mappings [including
-implicit paths via reloc/pwrite/pread). And technically that matters for
-all gen, as GTT is only coherent on a few platforms.  But it really only
-matters if you follow a GTT write with a WC read (GTT write followed by
-WC write could also technically race). The answer is not to mix a
-device_coherent mapping with any other GEM access [on the same cacheline],
-and you can rely on set_domain(GTT).
--Chris
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RGlmZmVyZW50IEdlblggc3VwcG9ydCBkaWZmZXJlbnQgdGlsaW5nIGZvcm1hdHMgYW5kIEhXIGNh
+cGFiaWxpdGllcyB0bwpjb3B5IGxpbmVhciBzdXJmYWNlIG9uIENQVSBmcm9tL3RvIHRpbGVkIG9u
+ZSBvbiBHUFUuIERldmVsb3BpbmcgdGVzdHMKd2hpY2ggaGF2ZSB0byBiZSBhd2FyZSBvZiBhbGwg
+dGlsaW5nIEhXIGRldGFpbHMgaXMgYSBsaXR0bGUgYml0IGN1bWJlcnNvbWUuCkZvbGxvd2luZyBw
+YXRjaGVzIGV4dGVuZCBJR1Q6CgoxLiBpbnRlbF9idWZvcHMgLSBjb3JlIHRpbGluZyBzdXJmYWNl
+IGNvZGUgd2hpY2ggaXMgaW5kZXBlbmRlbnQgb24gbGliZHJtLAoyLiByZW5kZXJjb3B5X2J1Zm1n
+ciAtIGdsdWUgYmV0d2VlbiBsaWJkcm0gYW5kIGludGVsX2J1Zm9wcywgbmVjZXNzYXJ5IAogICBk
+dWUgdG8gY3VycmVudCByZW5kZXJfY29weSBjb2RlIGlzIGhlYXZpbHkgY291cGxlZCB3aXRoIGxp
+YmRybS4KCkFzIENJIGRvZXNuJ3QgaGF2ZSBHZW4yIEkgY291bGRuJ3QgYWRkIGFuZCB0ZXN0IHNv
+ZnR3YXJlIHRpbGluZyBjb2RlIG9uCnRoYXQgZ2VuZXJhdGlvbi4gRm9yIHRoYXQgc2luZ2xlIGNh
+c2UgaGFyZHdhcmUgdGlsaW5nIGlzIGVuZm9yY2VkIGFuZCAKc3dpdGNoIHRvIHNvZnR3YXJlIGZh
+bGxiYWNrIGlzIG5vdCBwb3NzaWJsZS4gCgpGb3IgZ2VuZXJhdGlvbnMgd2hpY2ggc3VwcG9ydHMg
+aGFyZHdhcmUgdGlsaW5nIGJ1Zm9wcyBkb2VzIGlkZW1wb3RlbmN5CnRlc3Qgd2hpY2ggc2hvdWxk
+IHJldmVhbCBpcyBzdXJmYWNlIGVxdWFsIHJlZ2FyZGxlc3MgdXNpbmcgaGFyZHdhcmUgb3IKc29m
+dHdhcmUgY29weWluZyBtZXRob2QuCgp2NjoKLSByZW5hbWUgaWd0X2J1Zl9jY3Nfd2lkdGgvaGVp
+Z2h0IHRvIGlndF9idWZfaW50ZWxfY2NzX3dpZHRoL2hlaWdodAogIHBvaW50aW5nIGNjcyBmaWVs
+ZCBpbiBpZ3RfYnVmIGlzIHZlbmRvciBkZXBlbmRlbnQuCi0gZml4aW5nIGNvZGUgY29tcGlsYXRp
+b24gZGVwZW5kZW5jeSBhbmQgb3JkZXIuCgp2NzoKLSBmaXhpbmcgc3VwcG9ydCBDQ1MgZGF0YSBm
+b3IgdmVib3ggY29weQotIGFkZGluZyBzdXBwb3J0IGZvciBjb3B5aW5nIENDUyBkYXRhIHRvL2Zy
+b20gbGluZWFyCgpDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+CkNj
+OiBLYXRhcnp5bmEgRGVjIDxrYXRhcnp5bmEuZGVjQGludGVsLmNvbT4KClpiaWduaWV3IEtlbXBj
+ennFhHNraSAoNSk6CiAgbGliL2ludGVsX2J1Zm9wczogSW50cm9kdWNlIGJ1ZmZlciBvcGVyYXRp
+b25zCiAgbGliL2ludGVsX2JhdGNoYnVmZmVyOiBBZGQgQ0NTIHdpZHRoL2hlaWdodCBmdW5jdGlv
+bnMgZm9yIEludGVsCiAgICBpZ3RfYnVmCiAgbGliL3JlbmRlcmNvcHlfYnVmbWdyOiBBZGQgcmVu
+ZGVyY29weSBidWZmZXIgbWFuYWdlcgogIGk5MTUvZ2VtX3JlbmRlcl9jb3B5LmM6IFNpbXBsaWZ5
+IGNvZGUgYnkgc3dpdGNoIHRvIHJlbmRlcmNvcHkgYnVmbWdyCiAgSEFYOiBydW4gZ2VtX3JlbmRl
+cl9jb3B5IHRlc3RzIGluIEJBVAoKIC4uLi9pZ3QtZ3B1LXRvb2xzL2lndC1ncHUtdG9vbHMtZG9j
+cy54bWwgICAgICB8ICAgIDEgKwogbGliL01ha2VmaWxlLnNvdXJjZXMgICAgICAgICAgICAgICAg
+ICAgICAgICAgIHwgICAgNCArCiBsaWIvaW50ZWxfYmF0Y2hidWZmZXIuYyAgICAgICAgICAgICAg
+ICAgICAgICAgfCAgIDQ3ICsKIGxpYi9pbnRlbF9iYXRjaGJ1ZmZlci5oICAgICAgICAgICAgICAg
+ICAgICAgICB8ICAgIDIgKwogbGliL2ludGVsX2J1Zm9wcy5jICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIHwgMTE2OCArKysrKysrKysrKysrKysrKwogbGliL2ludGVsX2J1Zm9wcy5oICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIHwgICA4NCArKwogbGliL21lc29uLmJ1aWxkICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIHwgICAgMiArCiBsaWIvcmVuZGVyY29weV9idWZtZ3IuYyAg
+ICAgICAgICAgICAgICAgICAgICAgfCAgMTc1ICsrKwogbGliL3JlbmRlcmNvcHlfYnVmbWdyLmgg
+ICAgICAgICAgICAgICAgICAgICAgIHwgICAyOCArCiB0ZXN0cy9pOTE1L2dlbV9yZW5kZXJfY29w
+eS5jICAgICAgICAgICAgICAgICAgfCAgNDIzICsrLS0tLQogdGVzdHMvaW50ZWwtY2kvZmFzdC1m
+ZWVkYmFjay50ZXN0bGlzdCAgICAgICAgIHwgICAzOCArCiAxMSBmaWxlcyBjaGFuZ2VkLCAxNjY2
+IGluc2VydGlvbnMoKyksIDMwNiBkZWxldGlvbnMoLSkKIGNyZWF0ZSBtb2RlIDEwMDY0NCBsaWIv
+aW50ZWxfYnVmb3BzLmMKIGNyZWF0ZSBtb2RlIDEwMDY0NCBsaWIvaW50ZWxfYnVmb3BzLmgKIGNy
+ZWF0ZSBtb2RlIDEwMDY0NCBsaWIvcmVuZGVyY29weV9idWZtZ3IuYwogY3JlYXRlIG1vZGUgMTAw
+NjQ0IGxpYi9yZW5kZXJjb3B5X2J1Zm1nci5oCgotLSAKMi4yMy4wCgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
+ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
