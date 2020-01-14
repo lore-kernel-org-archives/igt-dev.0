@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DCFCE891CB
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jan 2020 14:29:33 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 805F389332
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jan 2020 14:30:21 +0000 (UTC)
+From: "Shankar, Uma" <uma.shankar@intel.com>
+Date: Tue, 14 Jan 2020 14:30:16 +0000
+Message-ID: <E7C9878FBA1C6D42A1CA3F62AEB6945F823928F2@BGSMSX104.gar.corp.intel.com>
+References: <20191231132158.3911-1-swati2.sharma@intel.com>
+ <20191231132158.3911-3-swati2.sharma@intel.com>
+In-Reply-To: <20191231132158.3911-3-swati2.sharma@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-References: <20200114142523.10603-1-ville.syrjala@linux.intel.com>
- <20200114142523.10603-7-ville.syrjala@linux.intel.com>
-In-Reply-To: <20200114142523.10603-7-ville.syrjala@linux.intel.com>
-Message-ID: <157901216899.5559.6627170876783910455@skylake-alporthouse-com>
-Date: Tue, 14 Jan 2020 14:29:29 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 7/7] tools/intel_panel_fitter: Fix
- abs(unsigned)
+Subject: Re: [igt-dev] [PATCH i-g-t 2/7] lib/igt_kms: Add max bpc connector
+ property
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,29 +19,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: "Sharma, Swati2" <swati2.sharma@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBWaWxsZSBTeXJqYWxhICgyMDIwLTAxLTE0IDE0OjI1OjIzKQo+IEZyb206IFZpbGxl
-IFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+Cj4gCj4gLi4vdG9vbHMv
-aW50ZWxfcGFuZWxfZml0dGVyLmM6IEluIGZ1bmN0aW9uIOKAmGNoYW5nZV9zY3JlZW5fc2l6ZeKA
-mToKPiAuLi90b29scy9pbnRlbF9wYW5lbF9maXR0ZXIuYzoxODM6MTA6IHdhcm5pbmc6IHRha2lu
-ZyB0aGUgYWJzb2x1dGUgdmFsdWUgb2YgdW5zaWduZWQgdHlwZSDigJh1aW50MzJfdOKAmSB7YWth
-IOKAmHVuc2lnbmVkIGludOKAmX0gaGFzIG5vIGVmZmVjdCBbLVdhYnNvbHV0ZS12YWx1ZV0KPiAg
-IDE4MyB8ICBwb3NfeCA9IGFicygoaW5mby50b3Rfd2lkdGggLSBkc3Rfd2lkdGgpKSAvIDI7Cj4g
-ICAgICAgfCAgICAgICAgICBefn4KPiAuLi90b29scy9pbnRlbF9wYW5lbF9maXR0ZXIuYzoxODQ6
-MTA6IHdhcm5pbmc6IHRha2luZyB0aGUgYWJzb2x1dGUgdmFsdWUgb2YgdW5zaWduZWQgdHlwZSDi
-gJh1aW50MzJfdOKAmSB7YWthIOKAmHVuc2lnbmVkIGludOKAmX0gaGFzIG5vIGVmZmVjdCBbLVdh
-YnNvbHV0ZS12YWx1ZV0KPiAgIDE4NCB8ICBwb3NfeSA9IGFicygoaW5mby50b3RfaGVpZ2h0IC0g
-ZHN0X2hlaWdodCkpIC8gMjsKPiAgICAgICB8ICAgICAgICAgIF5+fgo+IAo+IFNpZ25lZC1vZmYt
-Ynk6IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+CgpBIGJp
-dCBvZiBhIGRvdWJsZSB0YWtlIG9uICM2ICh0aGF0IHdhcyBtb3JlIHRoYW4gSSBleHBlY3RlZCB3
-b3VsZCBiZQpyZXF1aXJlZCBmb3IgdGhlIHdhcm5pbmcpLCBzZXJpZXMgaXMKClJldmlld2VkLWJ5
-OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KLUNocmlzCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
-aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+
+
+>-----Original Message-----
+>From: Sharma, Swati2 <swati2.sharma@intel.com>
+>Sent: Tuesday, December 31, 2019 6:52 PM
+>To: igt-dev@lists.freedesktop.org
+>Cc: ville.syrjala@linux.intel.com; Shankar, Uma <uma.shankar@intel.com>; Hiler,
+>Arkadiusz <arkadiusz.hiler@intel.com>; Nicholas Kazlauskas
+><nicholas.kazlauskas@amd.com>; Leo Li <sunpeng.li@amd.com>; Harry Wentland
+><harry.wentland@amd.com>; Sharma, Swati2 <swati2.sharma@intel.com>
+>Subject: [igt-dev][PATCH i-g-t 2/7] lib/igt_kms: Add max bpc connector property
+>
+>From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+>
+>It's been in DRM for a while but was never added to IGT's internal list.
+>
+>This property should be reset along with other properties between tests since output
+>color depth can affect CRC calculation... but it's not really feasible since it's driver
+>specific for what the value should be reset to.
+>
+>v2: rebase
+>v3: rebase
+
+Looks good to me.
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+
+>Cc: Leo Li <sunpeng.li@amd.com>
+>Cc: Harry Wentland <harry.wentland@amd.com>
+>Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+>Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+>---
+> lib/igt_kms.c | 1 +
+> lib/igt_kms.h | 1 +
+> 2 files changed, 2 insertions(+)
+>
+>diff --git a/lib/igt_kms.c b/lib/igt_kms.c index d20daaad..b0b064c9 100644
+>--- a/lib/igt_kms.c
+>+++ b/lib/igt_kms.c
+>@@ -416,6 +416,7 @@ const char * const
+>igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
+> 	[IGT_CONNECTOR_VRR_CAPABLE] = "vrr_capable",
+> 	[IGT_CONNECTOR_HDCP_CONTENT_TYPE] = "HDCP Content Type",
+> 	[IGT_CONNECTOR_LINK_STATUS] = "link-status",
+>+	[IGT_CONNECTOR_MAX_BPC] = "max bpc",
+> };
+>
+> /*
+>diff --git a/lib/igt_kms.h b/lib/igt_kms.h index 6c919e92..36077d41 100644
+>--- a/lib/igt_kms.h
+>+++ b/lib/igt_kms.h
+>@@ -125,6 +125,7 @@ enum igt_atomic_connector_properties {
+>        IGT_CONNECTOR_VRR_CAPABLE,
+>        IGT_CONNECTOR_HDCP_CONTENT_TYPE,
+>        IGT_CONNECTOR_LINK_STATUS,
+>+       IGT_CONNECTOR_MAX_BPC,
+>        IGT_NUM_CONNECTOR_PROPS
+> };
+>
+>--
+>2.24.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
