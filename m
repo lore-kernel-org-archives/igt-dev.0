@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7BA2D6E3F4
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jan 2020 14:25:46 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Tue, 14 Jan 2020 16:25:20 +0200
-Message-Id: <20200114142523.10603-4-ville.syrjala@linux.intel.com>
-In-Reply-To: <20200114142523.10603-1-ville.syrjala@linux.intel.com>
-References: <20200114142523.10603-1-ville.syrjala@linux.intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5AF46891CB
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jan 2020 14:26:57 +0000 (UTC)
+From: "Shankar, Uma" <uma.shankar@intel.com>
+Date: Tue, 14 Jan 2020 14:26:52 +0000
+Message-ID: <E7C9878FBA1C6D42A1CA3F62AEB6945F823928B3@BGSMSX104.gar.corp.intel.com>
+References: <20191231132158.3911-1-swati2.sharma@intel.com>
+ <20191231132158.3911-2-swati2.sharma@intel.com>
+In-Reply-To: <20191231132158.3911-2-swati2.sharma@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 4/7] lib/intel_aux_pgtable: Fix uint64_t vs.
- long mismatch
+Subject: Re: [igt-dev] [PATCH i-g-t 1/7] headers: Bump drm uapi headers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,34 +18,227 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: "Sharma, Swati2" <swati2.sharma@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KCi4u
-L2xpYi9pbnRlbF9hdXhfcGd0YWJsZS5jOiBJbiBmdW5jdGlvbiDigJhwdHJfbWFza+KAmToKLi4v
-bGliL2ludGVsX2F1eF9wZ3RhYmxlLmM6MTQ6MTI6IHdhcm5pbmc6IHJpZ2h0IHNoaWZ0IGNvdW50
-ID49IHdpZHRoIG9mIHR5cGUgWy1Xc2hpZnQtY291bnQtb3ZlcmZsb3ddCiAgIDE0IHwgICAgICAo
-fjBVTCA+PiAoQklUU19QRVJfTE9ORyAtIDEgLSAoZSkpKSkKICAgICAgfCAgICAgICAgICAgIF5+
-Ci4uL2xpYi9pbnRlbF9hdXhfcGd0YWJsZS5jOjEzODo5OiBub3RlOiBpbiBleHBhbnNpb24gb2Yg
-bWFjcm8g4oCYQklUTUFTS+KAmQogIDEzOCB8ICByZXR1cm4gQklUTUFTSyhHRlhfQUREUkVTU19C
-SVRTIC0gMSwgbGQtPmVudHJ5X3B0cl9zaGlmdCk7CiAgICAgIHwgICAgICAgICBefn5+fn5+CgpT
-aWduZWQtb2ZmLWJ5OiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwu
-Y29tPgotLS0KIGxpYi9pbnRlbF9hdXhfcGd0YWJsZS5jIHwgNiArKystLS0KIDEgZmlsZSBjaGFu
-Z2VkLCAzIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2lu
-dGVsX2F1eF9wZ3RhYmxlLmMgYi9saWIvaW50ZWxfYXV4X3BndGFibGUuYwppbmRleCBmY2QyNGYw
-ODdjMTIuLmRiNTA1NWM4MjBlYyAxMDA2NDQKLS0tIGEvbGliL2ludGVsX2F1eF9wZ3RhYmxlLmMK
-KysrIGIvbGliL2ludGVsX2F1eF9wZ3RhYmxlLmMKQEAgLTksOSArOSw5IEBACiAKICNpbmNsdWRl
-ICJpOTE1L2dlbV9tbWFuLmgiCiAKLSNkZWZpbmUgQklUU19QRVJfTE9ORwkJKHNpemVvZihsb25n
-KSAqIDgpCi0jZGVmaW5lIEJJVE1BU0soZSwgcykJCSgofjBVTCA8PCAocykpICYgXAotCQkJCSAo
-fjBVTCA+PiAoQklUU19QRVJfTE9ORyAtIDEgLSAoZSkpKSkKKyNkZWZpbmUgQklUU19QRVJfTE9O
-R19MT05HCShzaXplb2YobG9uZyBsb25nKSAqIDgpCisjZGVmaW5lIEJJVE1BU0soZSwgcykJCSgo
-fjBVTEwgPDwgKHMpKSAmIFwKKwkJCQkgKH4wVUxMID4+IChCSVRTX1BFUl9MT05HX0xPTkcgLSAx
-IC0gKGUpKSkpCiAKIC8qIFRoZSB1bml0IHNpemUgdG8gd2hpY2ggdGhlIEFVWCBDQ1Mgc3VyZmFj
-ZSBpcyBhbGlnbmVkIHRvLiAqLwogI2RlZmluZSBBVVhfQ0NTX1VOSVRfU0laRQk2NAotLSAKMi4y
-NC4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3Qt
-ZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xp
-c3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+
+
+>-----Original Message-----
+>From: Sharma, Swati2 <swati2.sharma@intel.com>
+>Sent: Tuesday, December 31, 2019 6:52 PM
+>To: igt-dev@lists.freedesktop.org
+>Cc: ville.syrjala@linux.intel.com; Shankar, Uma <uma.shankar@intel.com>; Hiler,
+>Arkadiusz <arkadiusz.hiler@intel.com>; Nicholas Kazlauskas
+><nicholas.kazlauskas@amd.com>
+>Subject: [igt-dev][PATCH i-g-t 1/7] headers: Bump drm uapi headers
+>
+>From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+>
+>Updating them to the latest version from drm-next for HDR static metadata uapi
+>structures:
+>
+>Commit: a09db883e5d9 ("drm: Fix docbook warnings in hdr metadata helper
+>structures")
+>
+>v2: Bumped to latest drm-next headers
+
+Looks good to me.
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+
+>Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+>---
+> include/drm-uapi/drm_mode.h | 121 +++++++++++++++++++++++++++++++++++-
+> 1 file changed, 119 insertions(+), 2 deletions(-)
+>
+>diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h index
+>a439c2e6..5ab331e5 100644
+>--- a/include/drm-uapi/drm_mode.h
+>+++ b/include/drm-uapi/drm_mode.h
+>@@ -33,7 +33,15 @@
+> extern "C" {
+> #endif
+>
+>-#define DRM_DISPLAY_INFO_LEN	32
+>+/**
+>+ * DOC: overview
+>+ *
+>+ * DRM exposes many UAPI and structure definition to have a consistent
+>+ * and standardized interface with user.
+>+ * Userspace can refer to these structure definitions and UAPI formats
+>+ * to communicate to driver
+>+ */
+>+
+> #define DRM_CONNECTOR_NAME_LEN	32
+> #define DRM_DISPLAY_MODE_LEN	32
+> #define DRM_PROP_NAME_LEN	32
+>@@ -622,7 +630,8 @@ struct drm_color_ctm {
+>
+> struct drm_color_lut {
+> 	/*
+>-	 * Data is U0.16 fixed point format.
+>+	 * Values are mapped linearly to 0.0 - 1.0 range, with 0x0 == 0.0 and
+>+	 * 0xffff == 1.0.
+> 	 */
+> 	__u16 red;
+> 	__u16 green;
+>@@ -630,6 +639,92 @@ struct drm_color_lut {
+> 	__u16 reserved;
+> };
+>
+>+/**
+>+ * struct hdr_metadata_infoframe - HDR Metadata Infoframe Data.
+>+ *
+>+ * HDR Metadata Infoframe as per CTA 861.G spec. This is expected
+>+ * to match exactly with the spec.
+>+ *
+>+ * Userspace is expected to pass the metadata information as per
+>+ * the format described in this structure.
+>+ */
+>+struct hdr_metadata_infoframe {
+>+	/**
+>+	 * @eotf: Electro-Optical Transfer Function (EOTF)
+>+	 * used in the stream.
+>+	 */
+>+	__u8 eotf;
+>+	/**
+>+	 * @metadata_type: Static_Metadata_Descriptor_ID.
+>+	 */
+>+	__u8 metadata_type;
+>+	/**
+>+	 * @display_primaries: Color Primaries of the Data.
+>+	 * These are coded as unsigned 16-bit values in units of
+>+	 * 0.00002, where 0x0000 represents zero and 0xC350
+>+	 * represents 1.0000.
+>+	 * @display_primaries.x: X cordinate of color primary.
+>+	 * @display_primaries.y: Y cordinate of color primary.
+>+	 */
+>+	struct {
+>+		__u16 x, y;
+>+		} display_primaries[3];
+>+	/**
+>+	 * @white_point: White Point of Colorspace Data.
+>+	 * These are coded as unsigned 16-bit values in units of
+>+	 * 0.00002, where 0x0000 represents zero and 0xC350
+>+	 * represents 1.0000.
+>+	 * @white_point.x: X cordinate of whitepoint of color primary.
+>+	 * @white_point.y: Y cordinate of whitepoint of color primary.
+>+	 */
+>+	struct {
+>+		__u16 x, y;
+>+		} white_point;
+>+	/**
+>+	 * @max_display_mastering_luminance: Max Mastering Display Luminance.
+>+	 * This value is coded as an unsigned 16-bit value in units of 1 cd/m2,
+>+	 * where 0x0001 represents 1 cd/m2 and 0xFFFF represents 65535 cd/m2.
+>+	 */
+>+	__u16 max_display_mastering_luminance;
+>+	/**
+>+	 * @min_display_mastering_luminance: Min Mastering Display Luminance.
+>+	 * This value is coded as an unsigned 16-bit value in units of
+>+	 * 0.0001 cd/m2, where 0x0001 represents 0.0001 cd/m2 and 0xFFFF
+>+	 * represents 6.5535 cd/m2.
+>+	 */
+>+	__u16 min_display_mastering_luminance;
+>+	/**
+>+	 * @max_cll: Max Content Light Level.
+>+	 * This value is coded as an unsigned 16-bit value in units of 1 cd/m2,
+>+	 * where 0x0001 represents 1 cd/m2 and 0xFFFF represents 65535 cd/m2.
+>+	 */
+>+	__u16 max_cll;
+>+	/**
+>+	 * @max_fall: Max Frame Average Light Level.
+>+	 * This value is coded as an unsigned 16-bit value in units of 1 cd/m2,
+>+	 * where 0x0001 represents 1 cd/m2 and 0xFFFF represents 65535 cd/m2.
+>+	 */
+>+	__u16 max_fall;
+>+};
+>+
+>+/**
+>+ * struct hdr_output_metadata - HDR output metadata
+>+ *
+>+ * Metadata Information to be passed from userspace  */ struct
+>+hdr_output_metadata {
+>+	/**
+>+	 * @metadata_type: Static_Metadata_Descriptor_ID.
+>+	 */
+>+	__u32 metadata_type;
+>+	/**
+>+	 * @hdmi_metadata_type1: HDR Metadata Infoframe.
+>+	 */
+>+	union {
+>+		struct hdr_metadata_infoframe hdmi_metadata_type1;
+>+	};
+>+};
+>+
+> #define DRM_MODE_PAGE_FLIP_EVENT 0x01
+> #define DRM_MODE_PAGE_FLIP_ASYNC 0x02
+> #define DRM_MODE_PAGE_FLIP_TARGET_ABSOLUTE 0x4 @@ -803,6 +898,10 @@
+>struct drm_format_modifier {  };
+>
+> /**
+>+ * struct drm_mode_create_blob - Create New block property
+>+ * @data: Pointer to data to copy.
+>+ * @length: Length of data to copy.
+>+ * @blob_id: new property ID.
+>  * Create a new 'blob' data property, copying length bytes from data pointer,
+>  * and returning new blob ID.
+>  */
+>@@ -816,6 +915,8 @@ struct drm_mode_create_blob {  };
+>
+> /**
+>+ * struct drm_mode_destroy_blob - Destroy user blob
+>+ * @blob_id: blob_id to destroy
+>  * Destroy a user-created blob property.
+>  */
+> struct drm_mode_destroy_blob {
+>@@ -823,6 +924,12 @@ struct drm_mode_destroy_blob {  };
+>
+> /**
+>+ * struct drm_mode_create_lease - Create lease
+>+ * @object_ids: Pointer to array of object ids.
+>+ * @object_count: Number of object ids.
+>+ * @flags: flags for new FD.
+>+ * @lessee_id: unique identifier for lessee.
+>+ * @fd: file descriptor to new drm_master file.
+>  * Lease mode resources, creating another drm_master.
+>  */
+> struct drm_mode_create_lease {
+>@@ -840,6 +947,10 @@ struct drm_mode_create_lease {  };
+>
+> /**
+>+ * struct drm_mode_list_lessees - List lessees
+>+ * @count_lessees: Number of lessees.
+>+ * @pad: pad.
+>+ * @lessees_ptr: Pointer to lessess.
+>  * List lesses from a drm_master
+>  */
+> struct drm_mode_list_lessees {
+>@@ -860,6 +971,10 @@ struct drm_mode_list_lessees {  };
+>
+> /**
+>+ * struct drm_mode_get_lease - Get Lease
+>+ * @count_objects: Number of leased objects.
+>+ * @pad: pad.
+>+ * @objects_ptr: Pointer to objects.
+>  * Get leased objects
+>  */
+> struct drm_mode_get_lease {
+>@@ -880,6 +995,8 @@ struct drm_mode_get_lease {  };
+>
+> /**
+>+ * struct drm_mode_revoke_lease - Revoke lease
+>+ * @lessee_id: Unique ID of lessee.
+>  * Revoke lease
+>  */
+> struct drm_mode_revoke_lease {
+>--
+>2.24.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
