@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE9D96E321
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jan 2020 09:17:50 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4A9F6E321
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jan 2020 09:17:51 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
-Date: Tue, 14 Jan 2020 11:17:42 +0200
-Message-Id: <20200114091745.4555-1-petri.latvala@intel.com>
+Date: Tue, 14 Jan 2020 11:17:44 +0200
+Message-Id: <20200114091745.4555-3-petri.latvala@intel.com>
+In-Reply-To: <20200114091745.4555-1-petri.latvala@intel.com>
+References: <20200114091745.4555-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/4] lib: Don't dump log buffer when dynamic
- subtest failure is inherited
+Subject: [igt-dev] [PATCH i-g-t 3/4] runner_tests: Add new mockup test binary
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,53 +24,64 @@ To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-A subtest with dynamic subparts will automatically fail if any dynamic
-subparts fail. Failing a subtest will dump our log buffer, which is
-useful in normal cases, but when it's just the actual subtest
-inheriting the failure from a dynamic subtest, nothing in the log
-buffer is of any use for the failure.
+'dynamic' is a new mockup test binary. It has one subtest with two
+dynamic subtests, first of which will fail.
 
-Dynamic subtest parsing will stuff all output after the last dynamic
-subtest into that last dynamic subtest's output, and in the case of
-that last dynamic subtest itself being a 'SUCCESS', that extra output
-from dumping the log buffer will cause an innocent dynamic subtest to
-be incorrectly marked as a 'WARN' result.
-
-Issue: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/66
 Signed-off-by: Petri Latvala <petri.latvala@intel.com>
 Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 ---
- lib/igt_core.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ runner/runner_tests.c       |  4 ++--
+ runner/testdata/dynamic.c   | 12 ++++++++++++
+ runner/testdata/meson.build |  1 +
+ 3 files changed, 15 insertions(+), 2 deletions(-)
+ create mode 100644 runner/testdata/dynamic.c
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index c705be1e..0a006894 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -370,6 +370,23 @@ static void _igt_log_buffer_dump(void)
- {
- 	uint8_t i;
+diff --git a/runner/runner_tests.c b/runner/runner_tests.c
+index 9bbc4252..a232aa2b 100644
+--- a/runner/runner_tests.c
++++ b/runner/runner_tests.c
+@@ -25,9 +25,9 @@ static const char testdatadir[] = TESTDATA_DIRECTORY;
+  * that test binaries without subtests should still be counted as one
+  * for this macro.
+  */
+-#define NUM_TESTDATA_SUBTESTS 5
++#define NUM_TESTDATA_SUBTESTS 6
+ /* The total number of test binaries in runner/testdata/ */
+-#define NUM_TESTDATA_BINARIES 3
++#define NUM_TESTDATA_BINARIES 4
  
-+	if (in_subtest && !in_dynamic_subtest && _igt_dynamic_tests_executed >= 0) {
-+		/*
-+		 * We're exiting a subtest with dynamic subparts and
-+		 * we're reaching this function because a dynamic
-+		 * subpart failed which automatically translates to
-+		 * the subtest failing. There cannot be anything in
-+		 * the log buffer that is of any use to anyone; The
-+		 * dynamic subpart that failed has already printed out
-+		 * the real reason for the failure, and dumping the
-+		 * buffer at this point will only cause the last
-+		 * executed dynamic part be incorrectly marked as
-+		 * 'WARN' by igt_runner.
-+		 */
-+		_igt_log_buffer_reset();
-+		return;
-+	}
+ static void igt_assert_eqstr(const char *one, const char *two)
+ {
+diff --git a/runner/testdata/dynamic.c b/runner/testdata/dynamic.c
+new file mode 100644
+index 00000000..8e5de7d9
+--- /dev/null
++++ b/runner/testdata/dynamic.c
+@@ -0,0 +1,12 @@
++#include "igt.h"
 +
- 	if (in_dynamic_subtest)
- 		fprintf(stderr, "Dynamic subtest %s failed.\n", in_dynamic_subtest);
- 	else if (in_subtest)
++igt_main
++{
++	igt_subtest_with_dynamic("dynamic-subtest") {
++		igt_dynamic("failing")
++			igt_assert(false);
++
++		igt_dynamic("passing")
++			;
++	}
++}
+diff --git a/runner/testdata/meson.build b/runner/testdata/meson.build
+index 2456f82a..631ba5b9 100644
+--- a/runner/testdata/meson.build
++++ b/runner/testdata/meson.build
+@@ -2,6 +2,7 @@
+ testdata_progs = [ 'successtest',
+ 		   'no-subtests',
+ 		   'skippers',
++		   'dynamic',
+ 		 ]
+ 
+ testdata_executables = []
 -- 
 2.20.1
 
