@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A5506E2F2
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Jan 2020 08:23:28 +0000 (UTC)
-Date: Tue, 14 Jan 2020 10:23:25 +0200
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9F2536E321
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Jan 2020 09:17:50 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200114082325.GM25209@platvala-desk.ger.corp.intel.com>
-References: <20200109183338.17164-1-bob.j.paauwe@intel.com>
- <157867216283.30836.10618289646905876948@emeril.freedesktop.org>
- <20200113113040.44cd7487@bpaauwe-desk1.amr.corp.intel.com>
+Date: Tue, 14 Jan 2020 11:17:45 +0200
+Message-Id: <20200114091745.4555-4-petri.latvala@intel.com>
+In-Reply-To: <20200114091745.4555-1-petri.latvala@intel.com>
+References: <20200114091745.4555-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200113113040.44cd7487@bpaauwe-desk1.amr.corp.intel.com>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliL2Nv?=
- =?utf-8?q?lor=5Fencoding=3A_Fix_up_support_for_XYUV_format=2E_=28rev2=29?=
+Subject: [igt-dev] [PATCH i-g-t 4/4] runner_tests: Test that dynamic subtest
+ failure is handled correctly
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,69 +21,117 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Martin Peres <martin.peres@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Jan 13, 2020 at 11:30:40AM -0800, Bob Paauwe wrote:
-> On Fri, 10 Jan 2020 16:02:42 +0000
-> Patchwork <patchwork@emeril.freedesktop.org> wrote:
-> 
-> > == Series Details ==
-> > 
-> > Series: lib/color_encoding: Fix up support for XYUV format. (rev2)
-> > URL   : https://patchwork.freedesktop.org/series/70516/
-> > State : failure
-> > 
-> > == Summary ==
-> > 
-> > CI Bug Log - changes from CI_DRM_7713_full -> IGTPW_3911_full
-> > ====================================================
-> > 
-> > Summary
-> > -------
-> > 
-> >   **FAILURE**
-> > 
-> >   Serious unknown changes coming with IGTPW_3911_full absolutely need
-> > to be verified manually.
-> >   
-> >   If you think the reported changes have nothing to do with the
-> > changes introduced in IGTPW_3911_full, please notify your bug team to
-> > allow them to document this new failure mode, which will reduce false
-> > positives in CI.
-> > 
-> >   External URL:
-> > https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3911/index.html
-> > 
-> > Possible new issues
-> > -------------------
-> > 
-> >   Here are the unknown changes that may have been introduced in
-> > IGTPW_3911_full:
-> > 
-> > ### IGT changes ###
-> > 
-> > #### Possible regressions ####
-> > 
-> >   * igt@gem_exec_reloc@basic-wc-gtt-active:
-> >     - shard-snb:          [PASS][1] -> [DMESG-WARN][2]
-> >    [1]:
-> > https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7713/shard-snb6/igt@gem_exec_reloc@basic-wc-gtt-active.html
-> > [2]:
-> > https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3911/shard-snb2/igt@gem_exec_reloc@basic-wc-gtt-active.html
-> 
-> The XYUV patch is simply adding a new format to the supported format
-> list.  I don't believe that gem_exec_reloc makes use of the format list
-> at all so this patch should not be the cause of these possible
-> regressions.
+See also: commit 0e6457f1bfe2 ("lib: Don't dump log buffer when
+dynamic subtest failure is inherited")
 
+This is quite an explicit top-to-bottom test that we don't get an
+incorrect warn result for an innocent dynamic subtest. It is tested
+here in runner_test instead of testing in lib/tests that the extra
+lines are not printed, because not printing the extra lines is an
+implementation detail that might change later. The issue is after all
+about test results parsed by igt_runner.
 
-Martin, one for you then.
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+---
+ runner/meson.build    |  2 +-
+ runner/runner_tests.c | 51 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 52 insertions(+), 1 deletion(-)
 
-
+diff --git a/runner/meson.build b/runner/meson.build
+index 404b8e04..7c2e8e0d 100644
+--- a/runner/meson.build
++++ b/runner/meson.build
+@@ -59,7 +59,7 @@ if jsonc.found()
+ 				 c_args : '-DTESTDATA_DIRECTORY="@0@"'.format(testdata_dir),
+ 				 link_with : runnerlib,
+ 				 install : false,
+-				 dependencies : igt_deps)
++				 dependencies : [igt_deps, jsonc])
+ 	test('runner', runner_test, timeout : 300)
+ 
+ 	runner_json_test = executable('runner_json_test', runner_json_test_sources,
+diff --git a/runner/runner_tests.c b/runner/runner_tests.c
+index a232aa2b..6b0e6cc4 100644
+--- a/runner/runner_tests.c
++++ b/runner/runner_tests.c
+@@ -4,11 +4,14 @@
+ #include <sys/types.h>
+ #include <unistd.h>
+ 
++#include <json.h>
++
+ #include "igt.h"
+ 
+ #include "settings.h"
+ #include "job_list.h"
+ #include "executor.h"
++#include "resultgen.h"
+ 
+ /*
+  * NOTE: this test is using a lot of variables that are changed in igt_fixture,
+@@ -1348,6 +1351,54 @@ igt_main
+ 			free(list);
+ 	}
+ 
++	igt_subtest_group {
++		struct job_list *list = malloc(sizeof(*list));
++		volatile int dirfd = -1;
++		char dirname[] = "tmpdirXXXXXX";
++
++		igt_fixture {
++			igt_require(mkdtemp(dirname) != NULL);
++			rmdir(dirname);
++
++			init_job_list(list);
++		}
++
++		igt_subtest("dynamic-subtest-failure-should-not-cause-warn") {
++			struct execute_state state;
++			struct json_object *results, *obj;
++			const char *argv[] = { "runner",
++					       "-t", "dynamic",
++					       testdatadir,
++					       dirname,
++			};
++
++			igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
++			igt_assert(create_job_list(list, settings));
++			igt_assert(initialize_execute_state(&state, settings, list));
++			igt_assert(execute(&state, settings, list));
++
++			igt_assert_f((dirfd = open(dirname, O_DIRECTORY | O_RDONLY)) >= 0,
++				     "Execute didn't create the results directory\n");
++			igt_assert_f((results = generate_results_json(dirfd)) != NULL,
++				     "Results parsing failed\n");
++
++			obj = results;
++			igt_assert(json_object_object_get_ex(obj, "tests", &obj));
++			igt_assert(json_object_object_get_ex(obj, "igt@dynamic@dynamic-subtest@passing", &obj));
++			igt_assert(json_object_object_get_ex(obj, "result", &obj));
++
++			igt_assert_eqstr(json_object_get_string(obj), "pass");
++
++			igt_assert_eq(json_object_put(results), 1);
++		}
++
++		igt_fixture {
++			close(dirfd);
++			clear_directory(dirname);
++			free_job_list(list);
++		}
++	}
++
+ 	igt_subtest("file-descriptor-leakage") {
+ 		int i;
+ 
 -- 
-Petri Latvala
+2.20.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
