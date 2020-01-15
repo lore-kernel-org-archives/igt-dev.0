@@ -1,95 +1,336 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20200110115320.1284901-1-chris@chris-wilson.co.uk>
- <06e82c0a-3752-6d30-0aa0-0bb9993b5bae@linux.intel.com>
- <157899692591.27314.10652294075559860834@skylake-alporthouse-com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <831fd3bf-031d-5b0a-ae73-6fc1ffa6051d@linux.intel.com>
-Date: Tue, 14 Jan 2020 10:21:31 +0000
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Wed, 15 Jan 2020 12:04:51 +0100
+Message-ID: <3109551.1VqvYxZIyR@jkrzyszt-desk.ger.corp.intel.com>
+In-Reply-To: <157858221040.2197.11860218526538512609@skylake-alporthouse-com>
+References: <20200109140125.18483-1-janusz.krzysztofik@linux.intel.com>
+ <20200109140125.18483-3-janusz.krzysztofik@linux.intel.com>
+ <157858221040.2197.11860218526538512609@skylake-alporthouse-com>
 MIME-Version: 1.0
-In-Reply-To: <157899692591.27314.10652294075559860834@skylake-alporthouse-com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v3] i915/perf: Find the associated
- perf-type for a particular device
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: Re: [Intel-gfx] [PATCH i-g-t 2/2] tests/prime_vgem: Examine blitter
+ access path
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, Daniel Vetter <daniel.vetter@ffwll.ch>, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Chris,
 
-On 14/01/2020 10:15, Chris Wilson wrote:
-> Quoting Tvrtko Ursulin (2020-01-14 10:09:15)
->>
->> On 10/01/2020 11:53, Chris Wilson wrote:
->>> -uint64_t i915_type_id(void)
->>> +static char *bus_address(int i915, char *path, int pathlen)
->>> +{
->>> +     struct stat st;
->>> +     int len = -1;
->>> +     int dir;
->>> +     char *s;
->>> +
->>> +     if (fstat(i915, &st) || !S_ISCHR(st.st_mode))
->>> +             return NULL;
->>> +
->>> +     snprintf(path, pathlen, "/sys/dev/char/%d:%d",
->>> +              major(st.st_rdev), minor(st.st_rdev));
->>> +
->>> +     dir = open(path, O_RDONLY);
->>> +     if (dir != -1) {
->>> +             len = readlinkat(dir, "device", path, pathlen - 1);
->>> +             close(dir);
->>> +     }
->>> +     if (len < 0)
->>> +             return NULL;
->>> +
->>> +     path[len] = '\0';
->>
->> In the realm of hypothetical but an assert that no truncation occurred
->> would be good.
->>
->> if (len == pathlen - 1)
->>          return NULL;
->>
->> ?
->>
->> Although it is not clear to me from man readlinkat how do we distinguish
->> between truncation and exact fit.
->>
->> Or you were counting on failure at a later step if truncation occurred?
+Thanks for your review.
+
+On Thursday, January 9, 2020 4:03:30 PM CET Chris Wilson wrote:
+> Quoting Janusz Krzysztofik (2020-01-09 14:01:25)
+> > On future hardware with missing GGTT BAR we won't be able to exercise
+> > dma-buf access via that path.  An alternative to basic-gtt subtest for
+> > testing dma-buf access is required, as well as basic-fence-mmap and
+> > coherency-gtt subtest alternatives for testing WC coherency.
+> > 
+> > Access to the dma sg list feature exposed by dma-buf can be tested
+> > through blitter.  Unfortunately we don't have any equivalently simple
+> > tests that use blitter.  Provide them.
+> > 
+> > Blitter XY_SRC_COPY method implemented by igt_blitter_src_copy__raw()
+> > IGT library function has been chosen.
+> > 
+> > v2: As fast copy is not supported on platforms older than Gen 9,
+> >     use XY_SRC_COPY instead (Chris),
+> >   - add subtest descriptions.
+> > 
+> > Suggested-by: Chris Wilson <chris@chris-wilson.co.uk>
+> > Suggested-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > ---
+> >  tests/prime_vgem.c | 192 +++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 192 insertions(+)
+> > 
+> > diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+> > index 69ae8c9b..9ceee47a 100644
+> > --- a/tests/prime_vgem.c
+> > +++ b/tests/prime_vgem.c
+> > @@ -23,6 +23,7 @@
+> >  
+> >  #include "igt.h"
+> >  #include "igt_vgem.h"
+> > +#include "intel_batchbuffer.h"
+> >  
+> >  #include <sys/ioctl.h>
+> >  #include <sys/poll.h>
+> > @@ -171,6 +172,77 @@ static void test_fence_mmap(int i915, int vgem)
+> >         close(slave[1]);
+> >  }
+> >  
+> > +static void test_fence_blt(int i915, int vgem)
+> > +{
+> > +       struct vgem_bo scratch;
+> > +       uint32_t prime;
+> > +       uint32_t *ptr;
+> > +       uint32_t fence;
+> > +       int dmabuf, i;
+> > +       int master[2], slave[2];
+> > +
+> > +       igt_assert(pipe(master) == 0);
+> > +       igt_assert(pipe(slave) == 0);
+> > +
+> > +       scratch.width = 1024;
+> > +       scratch.height = 1024;
+> > +       scratch.bpp = 32;
+> > +       vgem_create(vgem, &scratch);
 > 
-> I did not expect a partial match to ever succeed. We at least know for
-> the moment the names are fixed.
+> Hmm. The pitch is returned by the dumb create, did we not report it in
+> vgem_bo? scratch.pitch;
+
+You're right, the pitch is returned in scratch.pitch.
+ 
+> > +
+> > +       dmabuf = prime_handle_to_fd(vgem, scratch.handle);
+> > +       prime = prime_fd_to_handle(i915, dmabuf);
+> > +       close(dmabuf);
+> > +
+> > +       igt_fork(child, 1) {
+> > +               uint32_t native;
+> > +
+> > +               close(master[0]);
+> > +               close(slave[1]);
+> > +
+> > +               native = gem_create(i915, scratch.size);
+> > +
+> > +               ptr = gem_mmap__wc(i915, native, 0, scratch.size, PROT_READ);
+> > +               for (i = 0; i < 1024; i++)
+> for (i = 0; i < scratch.height; i++)
+
+Makes sense.
+
+> > +                       igt_assert_eq(ptr[1024 * i], 0);
 > 
->> Maybe try stat(2) in this wrapper to be sure function returns a valid path?
+> igt_assert_eq_u32(ptr[scratch.pitch * i / sizeof(*ptr)], 0);
 > 
-> That would have the same danger of a partial match.
+> The "%08x" will be easier to read when you have ~i later on.
 
-True, it would need more string validation - that the returned string 
-matches the PCI bus address format of xxxx:yy:zz. Failure at a later 
-step works for now I guess.
+Indeed.
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> > +
+> > +               write(master[1], &child, sizeof(child));
+> > +               read(slave[0], &child, sizeof(child));
+> > +
+> > +               igt_blitter_src_copy__raw(i915, prime, 0,
+> > +                                         scratch.width * scratch.bpp / 8,
+> 
+> scratch.pitch,
 
-> I think the foolproof solution here is having pmu_name in
-> /sys/class/drm/cardN/pmu_name. (Or rather
-> /sys/dev/char/%d:%d/device/pnu_name. :)
+Sure.
 
-True.
+> > +                                         I915_TILING_NONE, 0, 0,
+> > +                                         scratch.width, scratch.height,
+> > +                                         scratch.bpp, native, 0,
+> > +                                         scratch.width * scratch.bpp / 8,
+> > +                                         I915_TILING_NONE, 0, 0);
+> > +               gem_sync(i915, native);
 
-Regards,
+While exercising next version of the patch in my test environment, I've found 
+out that the only place where synchronization is actually required for new 
+subtests to succeed is this subtest - "basic-fence-blt".  Moreover, either 
+following the blitter copy operation with gem_sync(i915, native) or enclosing 
+it with prime_sync_start/end(dmabuf, flase) does the job for me.  Assuming 
+this behavior is reproducible, which method would you prefer here?
 
-Tvrtko
+> > +
+> > +               for (i = 0; i < 1024; i++)
+> > +                       igt_assert_eq(ptr[1024 * i], i);
+> > +
+> > +               munmap(ptr, scratch.size);
+> > +               gem_close(i915, native);
+> > +               gem_close(i915, prime);
+> > +       }
+> > +
+> > +       close(master[1]);
+> > +       close(slave[0]);
+> > +       read(master[0], &i, sizeof(i));
+> > +       fence = vgem_fence_attach(vgem, &scratch, VGEM_FENCE_WRITE);
+> > +       write(slave[1], &i, sizeof(i));
+> 
+> Throw in a usleep(50*1000); to emphasize that the only thing stopping
+> the blitter is the fence.
+
+OK, and with your comment placed above it, I think.
+
+> > +
+> > +       ptr = vgem_mmap(vgem, &scratch, PROT_WRITE);
+> > +       for (i = 0; i < 1024; i++)
+> > +               ptr[1024 * i] = i;
+> > +       munmap(ptr, scratch.size);
+> > +       vgem_fence_signal(vgem, fence);
+> > +       gem_close(vgem, scratch.handle);
+> > +
+> > +       igt_waitchildren();
+> > +       close(master[0]);
+> > +       close(slave[1]);
+> > +}
+> > +
+> >  static void test_write(int vgem, int i915)
+> >  {
+> >         struct vgem_bo scratch;
+> > @@ -236,6 +308,62 @@ static void test_gtt(int vgem, int i915)
+> >         gem_close(vgem, scratch.handle);
+> >  }
+> >  
+> > +static void test_blt(int vgem, int i915)
+> > +{
+> > +       struct vgem_bo scratch;
+> > +       uint32_t prime, native;
+> > +       uint32_t *ptr;
+> > +       int dmabuf, i;
+> > +
+> > +       scratch.width = 1024;
+> > +       scratch.height = 1024;
+> > +       scratch.bpp = 32;
+> > +       vgem_create(vgem, &scratch);
+> > +
+> > +       dmabuf = prime_handle_to_fd(vgem, scratch.handle);
+> > +       prime = prime_fd_to_handle(i915, dmabuf);
+> > +       close(dmabuf);
+> > +
+> > +       native = gem_create(i915, scratch.size);
+> > +
+> > +       ptr = gem_mmap__wc(i915, native, 0, scratch.size, PROT_WRITE);
+> > +       for (i = 0; i < 1024; i++)
+> > +               ptr[1024 * i] = i;
+> > +       munmap(ptr, scratch.size);
+> > +
+> > +       igt_blitter_src_copy__raw(i915,
+> > +                                 native, 0, scratch.width * scratch.bpp / 8,
+> > +                                 I915_TILING_NONE, 0, 0,
+> > +                                 scratch.width, scratch.height, scratch.bpp,
+> > +                                 prime, 0, scratch.width * scratch.bpp / 8,
+> > +                                 I915_TILING_NONE, 0, 0);
+> > +       gem_sync(i915, prime);
+> 
+> Would this be better with prime_sync_start(dmabuf, true); ?
+
+Did you mean surrounding the this native->prime blitter copy operation with 
+prime_sync_start/end(dmabuf, true); ?
+
+> gem_sync(prime) is nice in its own way (checking sync on imported handle
+> provides correct serialisation for the vgem_mmap). But I think the
+> recommended practice would be to use dmabuf for the inter-device sync?
+
+My intention was to make sure the copy has been completed by GPU.
+
+As I've found both test_blt() and test_blt_interleaved() succeed without any 
+syncing in my test environment, I'm going to give different options a try on 
+Trybot first before my next submission, unless you are able to provide me with 
+your recommendations on all my gem_sync() use cases found in this patch.
+
+Thanks,
+Janusz
+
+
+> > +       ptr = vgem_mmap(vgem, &scratch, PROT_READ | PROT_WRITE);
+> > +       for (i = 0; i < 1024; i++) {
+> > +               igt_assert_eq(ptr[1024 * i], i);
+> > +               ptr[1024 * i] = ~i;
+> > +       }
+> > +       munmap(ptr, scratch.size);
+> > +
+> > +       igt_blitter_src_copy__raw(i915,
+> > +                                 prime, 0, scratch.width * scratch.bpp / 8,
+> > +                                 I915_TILING_NONE, 0, 0,
+> > +                                 scratch.width, scratch.height, scratch.bpp,
+> > +                                 native, 0, scratch.width * scratch.bpp / 8,
+> > +                                 I915_TILING_NONE, 0, 0);
+> > +       gem_sync(i915, native);
+> > +
+> > +       ptr = gem_mmap__wc(i915, native, 0, scratch.size, PROT_READ);
+> > +       for (i = 0; i < 1024; i++)
+> > +               igt_assert_eq(ptr[1024 * i], ~i);
+> > +       munmap(ptr, scratch.size);
+> > +
+> > +       gem_close(i915, native);
+> > +       gem_close(i915, prime);
+> > +       gem_close(vgem, scratch.handle);
+> > +}
+> > +
+> >  static void test_shrink(int vgem, int i915)
+> >  {
+> >         struct vgem_bo scratch = {
+> > @@ -319,6 +447,59 @@ static void test_gtt_interleaved(int vgem, int i915)
+> >         gem_close(vgem, scratch.handle);
+> >  }
+> >  
+> > +static void test_blt_interleaved(int vgem, int i915)
+> > +{
+> > +       struct vgem_bo scratch;
+> > +       uint32_t prime, native;
+> > +       uint32_t *foreign, *local;
+> > +       int dmabuf, i;
+> > +
+> > +       scratch.width = 1024;
+> > +       scratch.height = 1024;
+> > +       scratch.bpp = 32;
+> > +       vgem_create(vgem, &scratch);
+> > +
+> > +       dmabuf = prime_handle_to_fd(vgem, scratch.handle);
+> > +       prime = prime_fd_to_handle(i915, dmabuf);
+> > +       close(dmabuf);
+> > +
+> > +       native = gem_create(i915, scratch.size);
+> > +
+> > +       foreign = vgem_mmap(vgem, &scratch, PROT_WRITE);
+> > +       local = gem_mmap__wc(i915, native, 0, scratch.size, PROT_WRITE);
+> > +
+> > +       for (i = 0; i < 1024; i++) {
+> > +               local[1024 * i] = i;
+> > +               igt_blitter_src_copy__raw(i915, native, 0,
+> > +                                         scratch.width * scratch.bpp / 8,
+> > +                                         I915_TILING_NONE, 0, i,
+> > +                                         scratch.width, 1, scratch.bpp,
+> > +                                         prime, 0,
+> > +                                         scratch.width * scratch.bpp / 8,
+> > +                                         I915_TILING_NONE, 0, i);
+> > +               gem_sync(i915, prime);
+> > +               igt_assert_eq(foreign[1024 * i], i);
+> > +
+> > +               foreign[1024 * i] = ~i;
+> > +               igt_blitter_src_copy__raw(i915, prime, 0,
+> > +                                         scratch.width * scratch.bpp / 8,
+> > +                                         I915_TILING_NONE, 0, i,
+> > +                                         scratch.width, 1, scratch.bpp,
+> > +                                         native, 0,
+> > +                                         scratch.width * scratch.bpp / 8,
+> > +                                         I915_TILING_NONE, 0, i);
+> > +               gem_sync(i915, native);
+> > +               igt_assert_eq(local[1024 * i], ~i);
+> > +       }
+> > +
+> > +       munmap(local, scratch.size);
+> > +       munmap(foreign, scratch.size);
+> > +
+> > +       gem_close(i915, native);
+> > +       gem_close(i915, prime);
+> > +       gem_close(vgem, scratch.handle);
+> > +}
+> 
+> So other than using scratch.constants where possible, the tests make
+> sense and look interesting. Asynchronous fence scheduling,
+> back-and-forth coherency and serialisation.
+> 
+> Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+> -Chris
+> 
+
+
+
+
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
