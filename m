@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C44A76E8FF
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jan 2020 10:32:11 +0000 (UTC)
-Date: Wed, 15 Jan 2020 12:32:08 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200115103208.GN25209@platvala-desk.ger.corp.intel.com>
-References: <20200115091307.2602311-1-chris@chris-wilson.co.uk>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 84A7D6E907
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jan 2020 10:44:32 +0000 (UTC)
+Date: Wed, 15 Jan 2020 12:44:24 +0200
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20200115104424.erb53mg6eru6ppm4@ahiler-desk1.fi.intel.com>
+References: <20200110120642.19844-1-petri.latvala@intel.com>
+ <20200110120642.19844-3-petri.latvala@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200115091307.2602311-1-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci: Drop extended basic mmap
- testing from BAT
+In-Reply-To: <20200110120642.19844-3-petri.latvala@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] runner/json_tests: Test handling
+ of unprintable output from tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,67 +23,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org, Matthew Auld <matthew.auld@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jan 15, 2020 at 09:13:07AM +0000, Chris Wilson wrote:
-> Now that we have basic page faulting support (and more) for mmap in
-> selftests, we don't need the same redundant exercise in BAT.
+On Fri, Jan 10, 2020 at 02:06:42PM +0200, Petri Latvala wrote:
+> A simple test output with numbers from 1 to 255, both in plain text
+> form and as a single byte with that particular value.
 > 
-> While these individual tests are quite quick, on some systems such as
-> fi-kbl-soraka we incur much longer delays between each test; removing
-> 20 tests can easily shorten the BAT runtime by 20s.
+> Note that the json spec doesn't require \u-encoding for characters
+> other than '"', '\' and the range U+0000 to U+001F, the raw
+> non-\u-encoded UTF-8 in the reference.json file for bytes 128 and up
+> is what libjson-c outputs for those codepoints and is valid.
 > 
-> References: 6fedafacae1b ("drm/i915/selftests: Wrap vm_mmap() around GEM objects")
-> References: 9771d5f72966 ("drm/i915/selftests: Extend fault handler selftests to all memory regions")
-> References: 0658186283ba ("drm/i915/selftests: Compare user mmap against GPU")
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Cc: Petri Latvala <petri.latvala@intel.com>
+> The validity of the json file can be verified with iconv, i.e.
+> 
+>  $ iconv -f UTF-8 reference.json -o /dev/null && echo it is utf-8
+> 
+> v2: Rebase over dynamic subtest tests, trivial
+> 
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+> Reviewed-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com> #v1
 
-Acked-by: Petri Latvala <petri.latvala@intel.com>
+still looks good, and patchwork still does not like it... someday I'll
+get to fixing the diff parsing logic and probably break other edge cases
+in the process :-P
 
+since gitlab's pipeline is passing feel free to merge it
 
-> ---
->  tests/intel-ci/fast-feedback.testlist | 19 -------------------
->  1 file changed, 19 deletions(-)
-> 
-> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-> index 8081446e3..37a92b4e7 100644
-> --- a/tests/intel-ci/fast-feedback.testlist
-> +++ b/tests/intel-ci/fast-feedback.testlist
-> @@ -36,26 +36,7 @@ igt@gem_flink_basic@double-flink
->  igt@gem_flink_basic@flink-lifetime
->  igt@gem_linear_blits@basic
->  igt@gem_mmap@basic
-> -igt@gem_mmap@basic-small-bo
->  igt@gem_mmap_gtt@basic
-> -igt@gem_mmap_gtt@basic-copy
-> -igt@gem_mmap_gtt@basic-read
-> -igt@gem_mmap_gtt@basic-read-no-prefault
-> -igt@gem_mmap_gtt@basic-read-write
-> -igt@gem_mmap_gtt@basic-read-write-distinct
-> -igt@gem_mmap_gtt@basic-short
-> -igt@gem_mmap_gtt@basic-small-bo
-> -igt@gem_mmap_gtt@basic-small-bo-tiledx
-> -igt@gem_mmap_gtt@basic-small-bo-tiledy
-> -igt@gem_mmap_gtt@basic-small-copy
-> -igt@gem_mmap_gtt@basic-small-copy-xy
-> -igt@gem_mmap_gtt@basic-write
-> -igt@gem_mmap_gtt@basic-write-cpu-read-gtt
-> -igt@gem_mmap_gtt@basic-write-gtt
-> -igt@gem_mmap_gtt@basic-write-gtt-no-prefault
-> -igt@gem_mmap_gtt@basic-write-no-prefault
-> -igt@gem_mmap_gtt@basic-write-read
-> -igt@gem_mmap_gtt@basic-write-read-distinct
->  igt@gem_render_linear_blits@basic
->  igt@gem_render_tiled_blits@basic
->  igt@gem_ringfill@basic-default
-> -- 
-> 2.25.0
-> 
+Reviewed-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
