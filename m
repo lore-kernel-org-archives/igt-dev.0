@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3BDA06EE5A
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2020 17:39:03 +0000 (UTC)
+References: <20200116135546.14003-1-anna.karas@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <8ba9bf77-11a6-59c1-84dd-e85246bed9e6@linux.intel.com>
+Date: Thu, 16 Jan 2020 17:38:59 +0000
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 16 Jan 2020 16:26:20 -0000
-Message-ID: <157919198027.12914.10635235042218092446@emeril.freedesktop.org>
-References: <1579008904-22441-1-git-send-email-kunal1.joshi@intel.com>
-In-Reply-To: <1579008904-22441-1-git-send-email-kunal1.joshi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdmFsaWRh?=
- =?utf-8?q?te_color_tests_using_chamelium=2E?=
+In-Reply-To: <20200116135546.14003-1-anna.karas@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] Distinguish particular engines during
+ calculating nop calibration.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,550 +18,470 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Anna Karas <anna.karas@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: validate color tests using chamelium.
-URL   : https://patchwork.freedesktop.org/series/72006/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_7739_full -> IGTPW_3922_full
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_3922_full:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * {igt@kms_color_chamelium@pipe-d-ctm-red-to-blue} (NEW):
-    - shard-tglb:         NOTRUN -> [SKIP][1] +27 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-tglb5/igt@kms_color_chamelium@pipe-d-ctm-red-to-blue.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_7739_full and IGTPW_3922_full:
-
-### New IGT tests (47) ###
-
-  * igt@kms_color_chamelium@pipe-a-ctm-0-25:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-a-ctm-0-5:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-a-ctm-0-75:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-a-ctm-blue-to-red:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-a-ctm-green-to-red:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-a-ctm-limited-range:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-a-ctm-max:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-a-ctm-negative:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-a-ctm-red-to-blue:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-a-degamma:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-a-gamma:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-b-ctm-0-25:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-b-ctm-0-5:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-b-ctm-0-75:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-b-ctm-blue-to-red:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-b-ctm-green-to-red:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-b-ctm-limited-range:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-b-ctm-max:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-b-ctm-negative:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-b-ctm-red-to-blue:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-b-degamma:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-b-gamma:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-c-ctm-0-25:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-c-ctm-0-5:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-c-ctm-0-75:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-c-ctm-blue-to-red:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-c-ctm-green-to-red:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-c-ctm-limited-range:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-c-ctm-max:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-c-ctm-negative:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-c-ctm-red-to-blue:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-c-degamma:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-c-gamma:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-d-ctm-0-25:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-d-ctm-0-5:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-d-ctm-0-75:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-d-ctm-blue-to-red:
-    - Statuses : 5 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-d-ctm-green-to-red:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-d-ctm-limited-range:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-d-ctm-max:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-d-ctm-negative:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-d-ctm-red-to-blue:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-d-degamma:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-d-gamma:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-invalid-ctm-matrix-sizes:
-    - Statuses : 6 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-invalid-degamma-lut-sizes:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_color_chamelium@pipe-invalid-gamma-lut-sizes:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_3922_full that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_ctx_shared@exec-single-timeline-bsd:
-    - shard-iclb:         [PASS][2] -> [SKIP][3] ([fdo#110841])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb8/igt@gem_ctx_shared@exec-single-timeline-bsd.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb1/igt@gem_ctx_shared@exec-single-timeline-bsd.html
-
-  * igt@gem_exec_create@basic:
-    - shard-tglb:         [PASS][4] -> [INCOMPLETE][5] ([fdo#111736] / [i915#472])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-tglb7/igt@gem_exec_create@basic.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-tglb2/igt@gem_exec_create@basic.html
-
-  * igt@gem_exec_create@forked:
-    - shard-glk:          [PASS][6] -> [TIMEOUT][7] ([fdo#112271] / [i915#940])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-glk9/igt@gem_exec_create@forked.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-glk5/igt@gem_exec_create@forked.html
-
-  * igt@gem_exec_schedule@independent-bsd2:
-    - shard-iclb:         [PASS][8] -> [SKIP][9] ([fdo#109276]) +20 similar issues
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb4/igt@gem_exec_schedule@independent-bsd2.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb8/igt@gem_exec_schedule@independent-bsd2.html
-
-  * igt@gem_exec_schedule@pi-common-bsd:
-    - shard-iclb:         [PASS][10] -> [SKIP][11] ([i915#677])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb3/igt@gem_exec_schedule@pi-common-bsd.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb2/igt@gem_exec_schedule@pi-common-bsd.html
-
-  * igt@gem_exec_schedule@smoketest-blt:
-    - shard-tglb:         [PASS][12] -> [INCOMPLETE][13] ([i915#470] / [i915#472])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-tglb5/igt@gem_exec_schedule@smoketest-blt.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-tglb6/igt@gem_exec_schedule@smoketest-blt.html
-
-  * igt@gem_exec_schedule@wide-bsd:
-    - shard-iclb:         [PASS][14] -> [SKIP][15] ([fdo#112146]) +3 similar issues
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb6/igt@gem_exec_schedule@wide-bsd.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb1/igt@gem_exec_schedule@wide-bsd.html
-
-  * igt@gem_exec_suspend@basic-s0:
-    - shard-tglb:         [PASS][16] -> [INCOMPLETE][17] ([i915#472]) +1 similar issue
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-tglb7/igt@gem_exec_suspend@basic-s0.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-tglb3/igt@gem_exec_suspend@basic-s0.html
-
-  * igt@gem_persistent_relocs@forked-interruptible-thrashing:
-    - shard-kbl:          [PASS][18] -> [TIMEOUT][19] ([fdo#112271])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-kbl2/igt@gem_persistent_relocs@forked-interruptible-thrashing.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-kbl2/igt@gem_persistent_relocs@forked-interruptible-thrashing.html
-
-  * igt@gem_persistent_relocs@forked-thrash-inactive:
-    - shard-tglb:         [PASS][20] -> [TIMEOUT][21] ([fdo#112271] / [i915#530])
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-tglb3/igt@gem_persistent_relocs@forked-thrash-inactive.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-tglb5/igt@gem_persistent_relocs@forked-thrash-inactive.html
-
-  * igt@gem_sync@basic-each:
-    - shard-tglb:         [PASS][22] -> [INCOMPLETE][23] ([i915#472] / [i915#707])
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-tglb7/igt@gem_sync@basic-each.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-tglb3/igt@gem_sync@basic-each.html
-
-  * igt@gen9_exec_parse@allowed-all:
-    - shard-glk:          [PASS][24] -> [DMESG-WARN][25] ([i915#716])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-glk7/igt@gen9_exec_parse@allowed-all.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-glk5/igt@gen9_exec_parse@allowed-all.html
-
-  * igt@i915_pm_dc@dc6-psr:
-    - shard-iclb:         [PASS][26] -> [FAIL][27] ([i915#454])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb1/igt@i915_pm_dc@dc6-psr.html
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb8/igt@i915_pm_dc@dc6-psr.html
-
-  * igt@i915_pm_rps@waitboost:
-    - shard-iclb:         [PASS][28] -> [FAIL][29] ([i915#413])
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb1/igt@i915_pm_rps@waitboost.html
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb6/igt@i915_pm_rps@waitboost.html
-
-  * igt@kms_cursor_legacy@cursor-vs-flip-legacy:
-    - shard-tglb:         [PASS][30] -> [INCOMPLETE][31] ([i915#519])
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-tglb4/igt@kms_cursor_legacy@cursor-vs-flip-legacy.html
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-tglb9/igt@kms_cursor_legacy@cursor-vs-flip-legacy.html
-
-  * igt@kms_frontbuffer_tracking@fbc-suspend:
-    - shard-kbl:          [PASS][32] -> [DMESG-WARN][33] ([i915#180]) +4 similar issues
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-kbl2/igt@kms_frontbuffer_tracking@fbc-suspend.html
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-kbl6/igt@kms_frontbuffer_tracking@fbc-suspend.html
-
-  * igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw:
-    - shard-tglb:         [PASS][34] -> [FAIL][35] ([i915#49]) +2 similar issues
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-tglb4/igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw.html
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-tglb1/igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw.html
-
-  * igt@kms_plane@plane-panning-bottom-right-suspend-pipe-b-planes:
-    - shard-apl:          [PASS][36] -> [DMESG-WARN][37] ([i915#180]) +2 similar issues
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-apl8/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-b-planes.html
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-apl1/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-b-planes.html
-
-  * igt@kms_psr@psr2_sprite_mmap_gtt:
-    - shard-iclb:         [PASS][38] -> [SKIP][39] ([fdo#109441]) +3 similar issues
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb2/igt@kms_psr@psr2_sprite_mmap_gtt.html
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb5/igt@kms_psr@psr2_sprite_mmap_gtt.html
-
-  * igt@perf_pmu@init-busy-vcs1:
-    - shard-iclb:         [PASS][40] -> [SKIP][41] ([fdo#112080]) +6 similar issues
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb1/igt@perf_pmu@init-busy-vcs1.html
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb8/igt@perf_pmu@init-busy-vcs1.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_ctx_isolation@vcs1-clean:
-    - shard-iclb:         [SKIP][42] ([fdo#109276] / [fdo#112080]) -> [PASS][43] +2 similar issues
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb3/igt@gem_ctx_isolation@vcs1-clean.html
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb2/igt@gem_ctx_isolation@vcs1-clean.html
-
-  * igt@gem_exec_schedule@pi-distinct-iova-bsd:
-    - shard-iclb:         [SKIP][44] ([i915#677]) -> [PASS][45]
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb1/igt@gem_exec_schedule@pi-distinct-iova-bsd.html
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb6/igt@gem_exec_schedule@pi-distinct-iova-bsd.html
-
-  * igt@gem_exec_schedule@preempt-other-chain-bsd:
-    - shard-iclb:         [SKIP][46] ([fdo#112146]) -> [PASS][47] +6 similar issues
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb1/igt@gem_exec_schedule@preempt-other-chain-bsd.html
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb3/igt@gem_exec_schedule@preempt-other-chain-bsd.html
-
-  * igt@gem_exec_schedule@preempt-queue-contexts-render:
-    - shard-tglb:         [INCOMPLETE][48] ([fdo#111606] / [fdo#111677] / [i915#472]) -> [PASS][49] +1 similar issue
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-tglb8/igt@gem_exec_schedule@preempt-queue-contexts-render.html
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-tglb1/igt@gem_exec_schedule@preempt-queue-contexts-render.html
-
-  * igt@gem_exec_schedule@smoketest-bsd2:
-    - shard-tglb:         [INCOMPLETE][50] ([i915#472] / [i915#707]) -> [PASS][51] +1 similar issue
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-tglb6/igt@gem_exec_schedule@smoketest-bsd2.html
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-tglb1/igt@gem_exec_schedule@smoketest-bsd2.html
-
-  * igt@gem_persistent_relocs@forked-interruptible-thrashing:
-    - shard-hsw:          [TIMEOUT][52] ([fdo#112271] / [i915#530]) -> [PASS][53]
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-hsw2/igt@gem_persistent_relocs@forked-interruptible-thrashing.html
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-hsw7/igt@gem_persistent_relocs@forked-interruptible-thrashing.html
-
-  * igt@gem_ppgtt@flink-and-close-vma-leak:
-    - shard-glk:          [FAIL][54] ([i915#644]) -> [PASS][55]
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-glk2/igt@gem_ppgtt@flink-and-close-vma-leak.html
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-glk4/igt@gem_ppgtt@flink-and-close-vma-leak.html
-    - shard-apl:          [FAIL][56] ([i915#644]) -> [PASS][57]
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-apl1/igt@gem_ppgtt@flink-and-close-vma-leak.html
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-apl6/igt@gem_ppgtt@flink-and-close-vma-leak.html
-
-  * igt@gen9_exec_parse@allowed-all:
-    - shard-kbl:          [DMESG-WARN][58] ([i915#716]) -> [PASS][59]
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-kbl7/igt@gen9_exec_parse@allowed-all.html
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-kbl7/igt@gen9_exec_parse@allowed-all.html
-
-  * igt@i915_pm_dc@dc5-dpms:
-    - shard-iclb:         [FAIL][60] ([i915#447]) -> [PASS][61]
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb3/igt@i915_pm_dc@dc5-dpms.html
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb1/igt@i915_pm_dc@dc5-dpms.html
-
-  * igt@i915_pm_rps@reset:
-    - shard-iclb:         [FAIL][62] ([i915#413]) -> [PASS][63]
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb2/igt@i915_pm_rps@reset.html
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb2/igt@i915_pm_rps@reset.html
-
-  * igt@i915_suspend@sysfs-reader:
-    - shard-apl:          [DMESG-WARN][64] ([i915#180]) -> [PASS][65] +3 similar issues
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-apl6/igt@i915_suspend@sysfs-reader.html
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-apl6/igt@i915_suspend@sysfs-reader.html
-
-  * igt@kms_cursor_crc@pipe-a-cursor-suspend:
-    - shard-kbl:          [DMESG-WARN][66] ([i915#180]) -> [PASS][67] +10 similar issues
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-kbl2/igt@kms_cursor_crc@pipe-a-cursor-suspend.html
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-kbl7/igt@kms_cursor_crc@pipe-a-cursor-suspend.html
-
-  * igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic:
-    - shard-glk:          [FAIL][68] ([i915#72]) -> [PASS][69]
-   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-glk8/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic.html
-   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-glk2/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic.html
-
-  * igt@kms_flip@flip-vs-expired-vblank:
-    - shard-glk:          [FAIL][70] ([i915#79]) -> [PASS][71]
-   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-glk3/igt@kms_flip@flip-vs-expired-vblank.html
-   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-glk3/igt@kms_flip@flip-vs-expired-vblank.html
-
-  * igt@kms_flip@flip-vs-suspend-interruptible:
-    - shard-apl:          [INCOMPLETE][72] ([fdo#103927]) -> [PASS][73]
-   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-apl6/igt@kms_flip@flip-vs-suspend-interruptible.html
-   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-apl7/igt@kms_flip@flip-vs-suspend-interruptible.html
-
-  * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-pwrite:
-    - shard-tglb:         [FAIL][74] ([i915#49]) -> [PASS][75]
-   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-tglb1/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-pwrite.html
-   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-tglb5/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-pwrite.html
-
-  * igt@kms_plane@pixel-format-pipe-c-planes-source-clamping:
-    - shard-tglb:         [FAIL][76] ([i915#576] / [i915#598]) -> [PASS][77]
-   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-tglb5/igt@kms_plane@pixel-format-pipe-c-planes-source-clamping.html
-   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-tglb1/igt@kms_plane@pixel-format-pipe-c-planes-source-clamping.html
-    - shard-iclb:         [FAIL][78] ([i915#576]) -> [PASS][79]
-   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb4/igt@kms_plane@pixel-format-pipe-c-planes-source-clamping.html
-   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb4/igt@kms_plane@pixel-format-pipe-c-planes-source-clamping.html
-
-  * igt@kms_psr@psr2_sprite_blt:
-    - shard-iclb:         [SKIP][80] ([fdo#109441]) -> [PASS][81] +1 similar issue
-   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb1/igt@kms_psr@psr2_sprite_blt.html
-   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb2/igt@kms_psr@psr2_sprite_blt.html
-
-  * igt@kms_vblank@pipe-c-ts-continuation-suspend:
-    - shard-kbl:          [INCOMPLETE][82] ([fdo#103665]) -> [PASS][83]
-   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-kbl4/igt@kms_vblank@pipe-c-ts-continuation-suspend.html
-   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-kbl7/igt@kms_vblank@pipe-c-ts-continuation-suspend.html
-
-  * igt@perf_pmu@busy-no-semaphores-vcs1:
-    - shard-iclb:         [SKIP][84] ([fdo#112080]) -> [PASS][85] +6 similar issues
-   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb5/igt@perf_pmu@busy-no-semaphores-vcs1.html
-   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb1/igt@perf_pmu@busy-no-semaphores-vcs1.html
-
-  * igt@prime_vgem@fence-wait-bsd2:
-    - shard-iclb:         [SKIP][86] ([fdo#109276]) -> [PASS][87] +15 similar issues
-   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-iclb5/igt@prime_vgem@fence-wait-bsd2.html
-   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-iclb4/igt@prime_vgem@fence-wait-bsd2.html
-
-  
-#### Warnings ####
-
-  * igt@i915_pm_rpm@i2c:
-    - shard-snb:          [INCOMPLETE][88] ([i915#82]) -> [SKIP][89] ([fdo#109271])
-   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-snb2/igt@i915_pm_rpm@i2c.html
-   [89]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-snb1/igt@i915_pm_rpm@i2c.html
-
-  * igt@kms_atomic_transition@6x-modeset-transitions-nonblocking-fencing:
-    - shard-tglb:         [SKIP][90] ([fdo#112016] / [fdo#112021]) -> [SKIP][91] ([fdo#112021])
-   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-tglb3/igt@kms_atomic_transition@6x-modeset-transitions-nonblocking-fencing.html
-   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-tglb9/igt@kms_atomic_transition@6x-modeset-transitions-nonblocking-fencing.html
-
-  * igt@runner@aborted:
-    - shard-kbl:          ([FAIL][92], [FAIL][93]) ([i915#716] / [i915#974]) -> [FAIL][94] ([i915#974])
-   [92]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-kbl2/igt@runner@aborted.html
-   [93]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7739/shard-kbl7/igt@runner@aborted.html
-   [94]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/shard-kbl2/igt@runner@aborted.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#103665]: https://bugs.freedesktop.org/show_bug.cgi?id=103665
-  [fdo#103927]: https://bugs.freedesktop.org/show_bug.cgi?id=103927
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109276]: https://bugs.freedesktop.org/show_bug.cgi?id=109276
-  [fdo#109441]: https://bugs.freedesktop.org/show_bug.cgi?id=109441
-  [fdo#110841]: https://bugs.freedesktop.org/show_bug.cgi?id=110841
-  [fdo#111606]: https://bugs.freedesktop.org/show_bug.cgi?id=111606
-  [fdo#111677]: https://bugs.freedesktop.org/show_bug.cgi?id=111677
-  [fdo#111736]: https://bugs.freedesktop.org/show_bug.cgi?id=111736
-  [fdo#112016]: https://bugs.freedesktop.org/show_bug.cgi?id=112016
-  [fdo#112021]: https://bugs.freedesktop.org/show_bug.cgi?id=112021
-  [fdo#112080]: https://bugs.freedesktop.org/show_bug.cgi?id=112080
-  [fdo#112146]: https://bugs.freedesktop.org/show_bug.cgi?id=112146
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
-  [i915#413]: https://gitlab.freedesktop.org/drm/intel/issues/413
-  [i915#447]: https://gitlab.freedesktop.org/drm/intel/issues/447
-  [i915#454]: https://gitlab.freedesktop.org/drm/intel/issues/454
-  [i915#470]: https://gitlab.freedesktop.org/drm/intel/issues/470
-  [i915#472]: https://gitlab.freedesktop.org/drm/intel/issues/472
-  [i915#49]: https://gitlab.freedesktop.org/drm/intel/issues/49
-  [i915#519]: https://gitlab.freedesktop.org/drm/intel/issues/519
-  [i915#530]: https://gitlab.freedesktop.org/drm/intel/issues/530
-  [i915#576]: https://gitlab.freedesktop.org/drm/intel/issues/576
-  [i915#598]: https://gitlab.freedesktop.org/drm/intel/issues/598
-  [i915#644]: https://gitlab.freedesktop.org/drm/intel/issues/644
-  [i915#677]: https://gitlab.freedesktop.org/drm/intel/issues/677
-  [i915#707]: https://gitlab.freedesktop.org/drm/intel/issues/707
-  [i915#716]: https://gitlab.freedesktop.org/drm/intel/issues/716
-  [i915#72]: https://gitlab.freedesktop.org/drm/intel/issues/72
-  [i915#79]: https://gitlab.freedesktop.org/drm/intel/issues/79
-  [i915#82]: https://gitlab.freedesktop.org/drm/intel/issues/82
-  [i915#940]: https://gitlab.freedesktop.org/drm/intel/issues/940
-  [i915#974]: https://gitlab.freedesktop.org/drm/intel/issues/974
-
-
-Participating hosts (11 -> 8)
-------------------------------
-
-  Missing    (3): pig-snb-2600 pig-glk-j5005 pig-skl-6260u 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5365 -> IGTPW_3922
-  * Piglit: piglit_4509 -> None
-
-  CI-20190529: 20190529
-  CI_DRM_7739: 757c25a357ea6e34d5eba9b6efee6f45e7961334 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_3922: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/index.html
-  IGT_5365: e9ec0ed63b25c86861ffac3c8601cc4d1b910b65 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3922/index.html
+On 16/01/2020 13:55, Anna Karas wrote:
+> Extend handling -n parameter by accepting multiple values of per
+> engine nop calibration. Add raw numbers handling to set default
+> calibration values. Print copyable and pastable string with
+> calibrations. Allow to switch between calculating in parallel
+> or doing it sequentially.
+> 
+> Accepted input values:
+> -n 123456
+> All calibrations will be set to 123456.
+> 
+> -n ENG=value,ENG2=value2,value3
+> i.e.
+> -n RCS=123456,BCS=345678,999999
+> RCS engine's value is set to 123456, BCS engine's value is set to
+> 345678, 999999 is copied to rest of engines. All engines must be set;
+> you can either provide values for each of the engines, or you can set
+> specific values and provide a default value for the others.
+> 
+> -n value,ENG1=value1,ENG2=value2
+> First, value is copied to all engines, then value1 overrides ENG1, and
+> finally value2 overrides ENG2.
+> 
+> New output follows the pattern:
+> Nop calibrations for 1000us delay is: <eng1>=<v1>,<eng2>=<v2>,...
+> So you can easily copy-paste it to the next invocation.
+> 
+> Switching between calculation modes:
+> Run program with -T parameter to calculate calibrations in parallel.
+> The calculations are performed sequentially by default.
+
+Put "gem_wsim:" prefix in patch title and fix this please:
+
+$ git am ...
+Applying: Distinguish particular engines during calculating nop calibration.
+.git/rebase-apply/patch:61: trailing whitespace.
+                 if (class == map[i].class && instance == map[i].instance)
+.git/rebase-apply/patch:67: trailing whitespace.
+static void
+.git/rebase-apply/patch:70: trailing whitespace.
+         for (int i = 0; i < NUM_ENGINES; i++)
+.git/rebase-apply/patch:76: trailing whitespace.
+static void
+.git/rebase-apply/patch:77: trailing whitespace.
+print_engines_calibrations(void)
+warning: squelched 12 whitespace errors
+warning: 17 lines add whitespace errors.
+
+Then when printing out calibrations:
+
+Nop calibrations for 1000us delay is: 
+DEFAULT=0,RCS=813060,BCS=381189,VCS=0,VCS1=846222,VCS2=846409,VECS=890365
+
+Please skip DEFAULT and VCS since those have special meaning in 
+gem_wsim. It will be bit ugly but it will do for now. At some later 
+point I need to refactor how tool think about engines in a bit smarter way.
+
+Also please reject DEFAULT and VCS in the string passed to -n.
+
+> 
+> Signed-off-by: Anna Karas <anna.karas@intel.com>
+> ---
+>   benchmarks/gem_wsim.c | 251 ++++++++++++++++++++++++++++++++++--------
+>   1 file changed, 207 insertions(+), 44 deletions(-)
+> 
+> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+> index 9156fdc9..faac01b0 100644
+> --- a/benchmarks/gem_wsim.c
+> +++ b/benchmarks/gem_wsim.c
+> @@ -23,6 +23,7 @@
+>    */
+>   
+>   #include <unistd.h>
+> +#include <stdbool.h>
+>   #include <stdlib.h>
+>   #include <stdint.h>
+>   #include <stdio.h>
+> @@ -55,6 +56,7 @@
+>   #include "i915/gem_mman.h"
+>   
+>   #include "ewma.h"
+> +#include "i915/gem_engine_topology.h"
+>   
+>   enum intel_engine_id {
+>   	DEFAULT,
+> @@ -240,7 +242,8 @@ struct workload
+>   
+>   struct intel_mmio_data mmio_data;
+>   static const unsigned int nop_calibration_us = 1000;
+> -static unsigned long nop_calibration;
+> +static bool has_nop_calibration = false;
+> +static bool sequential = true;
+>   
+>   static unsigned int master_prng;
+>   
+> @@ -281,6 +284,54 @@ static const char *ring_str_map[NUM_ENGINES] = {
+>   	[VECS] = "VECS",
+>   };
+>   
+> +/* stores calibrations for particular engines */
+> +static unsigned long engine_calib_map[NUM_ENGINES];
+> +
+> +static enum intel_engine_id
+> +ci_to_engine_id(int class, int instance)
+> +{
+> +	static const struct {
+> +		int class;
+> +		int instance;
+> +		unsigned int id;
+> +	} map[] = {
+> +		{ I915_ENGINE_CLASS_RENDER, 0, RCS },
+> +		{ I915_ENGINE_CLASS_COPY, 0, BCS },
+> +		{ I915_ENGINE_CLASS_VIDEO, 0, VCS1 },
+> +		{ I915_ENGINE_CLASS_VIDEO, 1, VCS2 },
+> +		{ I915_ENGINE_CLASS_VIDEO, 2, VCS2 }, /* FIXME/ICL */
+> +		{ I915_ENGINE_CLASS_VIDEO_ENHANCE, 0, VECS },
+> +	};
+> +
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(map); i++) {
+> +		if (class == map[i].class && instance == map[i].instance)
+> +			return map[i].id;
+> +	}
+> +	return -1;
+> +}
+> +
+> +static void
+> +apply_unset_calibrations(unsigned long raw_number)
+> +{
+> +	for (int i = 0; i < NUM_ENGINES; i++)
+> +		engine_calib_map[i] += engine_calib_map[i] ? 0 : raw_number;
+> +
+> +	has_nop_calibration = true;
+> +}
+> +
+> +static void
+> +print_engines_calibrations(void)
+> +{
+> +	printf("Nop calibrations for %uus delay is: ", nop_calibration_us);
+> +
+> +	for (int i = 0; i < NUM_ENGINES; i++) {
+> +		printf("%s%s=%lu", i > 0 ? "," : "", ring_str_map[i], engine_calib_map[i]);
+> +	}
+> +	printf("\n");
+> +}
+> +
+>   static int
+>   parse_dependencies(unsigned int nr_steps, struct w_step *w, char *_desc)
+>   {
+> @@ -1082,17 +1133,17 @@ static unsigned int get_duration(struct workload *wrk, struct w_step *w)
+>   		       (dur->max + 1 - dur->min);
+>   }
+>   
+> -static unsigned long get_bb_sz(unsigned int duration)
+> +static unsigned long get_bb_sz(unsigned int duration, enum intel_engine_id engine)
+>   {
+> -	return ALIGN(duration * nop_calibration * sizeof(uint32_t) /
+> -		     nop_calibration_us, sizeof(uint32_t));
+> +	return ALIGN(duration * engine_calib_map[engine] * sizeof(uint32_t) /
+> +		nop_calibration_us, sizeof(uint32_t));
+>   }
+>   
+>   static void
+>   init_bb(struct w_step *w, unsigned int flags)
+>   {
+>   	const unsigned int arb_period =
+> -			get_bb_sz(w->preempt_us) / sizeof(uint32_t);
+> +			get_bb_sz(w->preempt_us, w->engine) / sizeof(uint32_t);
+>   	const unsigned int mmap_len = ALIGN(w->bb_sz, 4096);
+>   	unsigned int i;
+>   	uint32_t *ptr;
+> @@ -1319,10 +1370,11 @@ alloc_step_batch(struct workload *wrk, struct w_step *w, unsigned int flags)
+>   
+>   	if (w->unbound_duration)
+>   		/* nops + MI_ARB_CHK + MI_BATCH_BUFFER_START */
+> -		w->bb_sz = max(PAGE_SIZE, get_bb_sz(w->preempt_us)) +
+> +		w->bb_sz = max(PAGE_SIZE, get_bb_sz(w->preempt_us, w->engine)) +
+>   			   (1 + 3) * sizeof(uint32_t);
+>   	else
+> -		w->bb_sz = get_bb_sz(w->duration.max);
+> +		w->bb_sz = get_bb_sz(w->duration.max, w->engine);
+> +
+>   	w->bb_handle = w->obj[j].handle = gem_create(fd, w->bb_sz + (w->unbound_duration ? 4096 : 0));
+>   	init_bb(w, flags);
+>   	w->obj[j].relocation_count = terminate_bb(w, flags);
+> @@ -2622,7 +2674,7 @@ do_eb(struct workload *wrk, struct w_step *w, enum intel_engine_id engine,
+>   	w->eb.batch_start_offset =
+>   		w->unbound_duration ?
+>   		0 :
+> -		ALIGN(w->bb_sz - get_bb_sz(get_duration(wrk, w)),
+> +		ALIGN(w->bb_sz - get_bb_sz(get_duration(wrk, w), w->engine),
+>   		      2 * sizeof(uint32_t));
+>   
+>   	for (i = 0; i < w->fence_deps.nr; i++) {
+> @@ -2899,15 +2951,18 @@ static void fini_workload(struct workload *wrk)
+>   	free(wrk);
+>   }
+>   
+> -static unsigned long calibrate_nop(unsigned int tolerance_pct)
+> +static unsigned long calibrate_nop(unsigned int tolerance_pct, struct intel_execution_engine2 *engine)
+>   {
+>   	const uint32_t bbe = 0xa << 23;
+>   	unsigned int loops = 17;
+>   	unsigned int usecs = nop_calibration_us;
+>   	struct drm_i915_gem_exec_object2 obj = {};
+> -	struct drm_i915_gem_execbuffer2 eb =
+> -		{ .buffer_count = 1, .buffers_ptr = (uintptr_t)&obj};
+> -	long size, last_size;
+> +	struct drm_i915_gem_execbuffer2 eb = {
+> +		.buffer_count = 1,
+> +		.buffers_ptr = (uintptr_t)&obj,
+> +		.flags = engine->flags
+> +	};
+> +	unsigned long size, last_size;
+>   	struct timespec t_0, t_end;
+>   
+>   	clock_gettime(CLOCK_MONOTONIC, &t_0);
+> @@ -2939,6 +2994,77 @@ static unsigned long calibrate_nop(unsigned int tolerance_pct)
+>   	return size / sizeof(uint32_t);
+>   }
+>   
+> +static void
+> +calibrate_sequentially(void)
+> +{
+> +	struct intel_execution_engine2 *engine;
+> +	enum intel_engine_id eng_id;
+> +
+> +	__for_each_physical_engine(fd, engine) {
+> +		eng_id = ci_to_engine_id(engine->class, engine->instance);
+> +		igt_assert(eng_id >= 0);
+> +		engine_calib_map[eng_id] = calibrate_nop(fd, engine);
+> +	}
+> +}
+> +
+> +struct thread_data {
+> +	struct intel_execution_engine2 *eng;
+> +	pthread_t thr;
+> +	unsigned long calib;
+> +};
+> +
+> +static void *
+> +engine_calibration_thread(void *data)
+> +{
+> +	struct thread_data *thr_d = (struct thread_data *) data;
+> +
+> +	thr_d->calib = calibrate_nop(fd, thr_d->eng);
+> +	return NULL;
+> +}
+> +
+> +static void
+> +calibrate_in_parallel(void)
+> +{
+> +	struct thread_data *thr_d = malloc(NUM_ENGINES * sizeof(*thr_d));
+> +	struct intel_execution_engine2 *engine;
+> +	enum intel_engine_id id;
+> +	int ret;
+> +
+> +	__for_each_physical_engine(fd, engine) {
+> +		id = ci_to_engine_id(engine->class, engine->instance);
+> +		thr_d[id].eng = engine;
+> +		ret = pthread_create(&thr_d[id].thr, NULL, engine_calibration_thread, &thr_d[id]);
+> +		igt_assert_eq(ret, 0);
+> +	}
+> +
+> +	__for_each_physical_engine(fd, engine) {
+> +		id = ci_to_engine_id(engine->class, engine->instance);
+> +		igt_assert(id >= 0);
+> +
+> +		ret = pthread_join(thr_d[id].thr, NULL);
+> +		igt_assert_eq(ret, 0);
+> +		engine_calib_map[id] = thr_d[id].calib;
+> +	}
+> +
+> +	free(thr_d);
+> +}
+> +
+> +static void
+> +calibrate_engines(void)
+> +{
+> +	if (sequential)
+> +		calibrate_sequentially();
+> +	else
+> +		calibrate_in_parallel();
+> +
+> +	has_nop_calibration = true;
+> +
+> +	if (verbose > 1)
+> +		print_engines_calibrations();
+> +
+> +}
+> +
+> +
+>   static void print_help(void)
+>   {
+>   	unsigned int i;
+> @@ -2951,27 +3077,30 @@ static void print_help(void)
+>   "be provided when running the simulation in subsequent invocations.\n"
+>   "\n"
+>   "Options:\n"
+> -"  -h              This text.\n"
+> -"  -q              Be quiet - do not output anything to stdout.\n"
+> -"  -n <n>          Nop calibration value.\n"
+> -"  -t <n>          Nop calibration tolerance percentage.\n"
+> -"                  Use when there is a difficulty obtaining calibration with the\n"
+> -"                  default settings.\n"
+> -"  -I <n>          Initial randomness seed.\n"
+> -"  -p <n>          Context priority to use for the following workload on the\n"
+> -"                  command line.\n"
+> -"  -w <desc|path>  Filename or a workload descriptor.\n"
+> -"                  Can be given multiple times.\n"
+> -"  -W <desc|path>  Filename or a master workload descriptor.\n"
+> -"                  Only one master workload can be optinally specified in which\n"
+> -"                  case all other workloads become background ones and run as\n"
+> -"                  long as the master.\n"
+> -"  -a <desc|path>  Append a workload to all other workloads.\n"
+> -"  -r <n>          How many times to emit the workload.\n"
+> -"  -c <n>          Fork N clients emitting the workload simultaneously.\n"
+> -"  -x              Swap VCS1 and VCS2 engines in every other client.\n"
+> -"  -b <n>          Load balancing to use.\n"
+> -"                  Available load balancers are:"
+> +"  -h                This text.\n"
+> +"  -q                Be quiet - do not output anything to stdout.\n"
+> +"  -n <n |           Nop calibration value - single value is set to all engines\n"
+> +"  e1=v1,e2=v2,n...> without specified value; you can also specify calibrations for\n"
+> +"                    particular engines.\n"
+> +"  -t <n>            Nop calibration tolerance percentage.\n"
+> +"  -T                Disable sequential calibration and perform calibration in parallel.\n"
+> +"                    Use when there is a difficulty obtaining calibration with the\n"
+> +"                    default settings.\n"
+> +"  -I <n>            Initial randomness seed.\n"
+> +"  -p <n>            Context priority to use for the following workload on the\n"
+> +"                    command line.\n"
+> +"  -w <desc|path>    Filename or a workload descriptor.\n"
+> +"                    Can be given multiple times.\n"
+> +"  -W <desc|path>    Filename or a master workload descriptor.\n"
+> +"                    Only one master workload can be optinally specified in which\n"
+> +"                    case all other workloads become background ones and run as\n"
+> +"                    long as the master.\n"
+> +"  -a <desc|path>    Append a workload to all other workloads.\n"
+> +"  -r <n>            How many times to emit the workload.\n"
+> +"  -c <n>            Fork N clients emitting the workload simultaneously.\n"
+> +"  -x                Swap VCS1 and VCS2 engines in every other client.\n"
+> +"  -b <n>            Load balancing to use.\n"
+> +"                    Available load balancers are:"
+
+You need to re-align the second part of the help text as well. Run the 
+tool with -h to check.
+
+>   	);
+>   
+>   	for (i = 0; i < ARRAY_SIZE(all_balancers); i++) {
+> @@ -3117,6 +3246,9 @@ int main(int argc, char **argv)
+>   	int prio = 0;
+>   	double t;
+>   	int i, c;
+> +	char *subopts, *value;
+> +	enum intel_engine_id res;
+> +	int raw_number = 0;
+>   
+>   	/*
+>   	 * Open the device via the low-level API so we can do the GPU quiesce
+> @@ -3134,7 +3266,7 @@ int main(int argc, char **argv)
+>   	master_prng = time(NULL);
+>   
+>   	while ((c = getopt(argc, argv,
+> -			   "hqv2RsSHxGdc:n:r:w:W:a:t:b:p:I:")) != -1) {
+> +			   "Thqv2RsSHxGdc:n:r:w:W:a:t:b:p:I:")) != -1) {
+>   		switch (c) {
+>   		case 'W':
+>   			if (master_workload >= 0) {
+> @@ -3163,8 +3295,41 @@ int main(int argc, char **argv)
+>   		case 't':
+>   			tolerance_pct = strtol(optarg, NULL, 0);
+>   			break;
+> +		case 'T':
+> +			sequential = false;
+> +			break;
+> +
+>   		case 'n':
+> -			nop_calibration = strtol(optarg, NULL, 0);
+> +			subopts = optarg;
+> +			while (*subopts != '\0') {
+> +				res = getsubopt(&subopts, (char **)ring_str_map, &value);
+> +				switch (res) {
+> +				case RCS ... VECS:
+> +					engine_calib_map[res] = atol(value);
+> +					has_nop_calibration = true;
+> +					break;
+> +				default:
+> +					/* raw number was given - two cases: */
+> +
+> +					/* raw number is already set  */
+> +					if (raw_number) {
+> +						wsim_err("Default engine calibration provided more than once.\n");
+> +						goto err;
+> +					}
+> +
+> +					/* raw number has been set for the first time */
+> +					raw_number = atol(value);
+> +
+> +					if (value) {
+> +						apply_unset_calibrations(raw_number);
+> +					} else {
+> +						/* not engine=value pair, not raw number, so it's just an error */
+> +						wsim_err("Unknown engine name: %s/\n", value);
+> +						goto err;
+> +					}
+
+I was able to pass "-n 10,XYZ=10" and did not get the "Unknown engine 
+name" error. Please check what's happening with that.
+
+> +					break;
+> +				}
+> +			}
+>   			break;
+>   		case 'r':
+>   			repeat = strtol(optarg, NULL, 0);
+> @@ -3242,14 +3407,13 @@ int main(int argc, char **argv)
+>   		goto err;
+>   	}
+>   
+> -	if (!nop_calibration) {
+> -		if (verbose > 1)
+> -			printf("Calibrating nop delay with %u%% tolerance...\n",
+> +	if (!has_nop_calibration) {
+> +		if (verbose > 1) {
+> +			printf("Calibrating nop delays with %u%% tolerance...\n",
+>   				tolerance_pct);
+> -		nop_calibration = calibrate_nop(tolerance_pct);
+> -		if (verbose)
+> -			printf("Nop calibration for %uus delay is %lu.\n",
+> -			       nop_calibration_us, nop_calibration);
+> +		}
+> +
+> +		calibrate_engines();
+>   
+>   		goto out;
+>   	}
+> @@ -3309,8 +3473,7 @@ int main(int argc, char **argv)
+>   
+>   	if (verbose > 1) {
+>   		printf("Random seed is %u.\n", master_prng);
+> -		printf("Using %lu nop calibration for %uus delay.\n",
+> -		       nop_calibration, nop_calibration_us);
+> +		print_engines_calibrations();
+>   		printf("%u client%s.\n", clients, clients > 1 ? "s" : "");
+>   		if (flags & SWAPVCS)
+>   			printf("Swapping VCS rings between clients.\n");
+> 
+
+Almost there. :)
+
+Regards,
+
+Tvrtko
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
