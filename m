@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B37186E214
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2020 11:47:21 +0000 (UTC)
+Date: Thu, 16 Jan 2020 13:47:19 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200116114719.GR25209@platvala-desk.ger.corp.intel.com>
+References: <20200114091745.4555-1-petri.latvala@intel.com>
+ <20200114091745.4555-4-petri.latvala@intel.com>
+ <20200115130915.afkcbio4qu3muoxl@ahiler-desk1.fi.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 16 Jan 2020 10:51:34 -0000
-Message-ID: <157917189460.12914.14122184329607242539@emeril.freedesktop.org>
-References: <20200116101326.11710-1-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20200116101326.11710-1-janusz.krzysztofik@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?prime=5Fvgem=3A_Give_meaningful_messages_on_SKIP_=28rev2=29?=
+Content-Disposition: inline
+In-Reply-To: <20200115130915.afkcbio4qu3muoxl@ahiler-desk1.fi.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/4] runner_tests: Test that dynamic
+ subtest failure is handled correctly
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,25 +20,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Wed, Jan 15, 2020 at 03:09:15PM +0200, Arkadiusz Hiler wrote:
+> On Tue, Jan 14, 2020 at 11:17:45AM +0200, Petri Latvala wrote:
+> > See also: commit 0e6457f1bfe2 ("lib: Don't dump log buffer when
+> > dynamic subtest failure is inherited")
+> > 
+> > This is quite an explicit top-to-bottom test that we don't get an
+> > incorrect warn result for an innocent dynamic subtest. It is tested
+> > here in runner_test instead of testing in lib/tests that the extra
+> > lines are not printed, because not printing the extra lines is an
+> > implementation detail that might change later. The issue is after all
+> > about test results parsed by igt_runner.
+> > 
+> > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> > Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+> 
+> The whole series is
+> 
+> Reviewed-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+> 
+> although I would squash patch 3 and 4 together
 
-Series: tests/prime_vgem: Give meaningful messages on SKIP (rev2)
-URL   : https://patchwork.freedesktop.org/series/70748/
-State : failure
 
-== Summary ==
+Squashed and merged, with Arek's IRC ack on the end result.
 
-Series 70748 revision 2 was fully merged or fully failed: no git log
 
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
