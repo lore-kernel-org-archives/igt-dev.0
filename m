@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B37186E214
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2020 11:47:21 +0000 (UTC)
-Date: Thu, 16 Jan 2020 13:47:19 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200116114719.GR25209@platvala-desk.ger.corp.intel.com>
-References: <20200114091745.4555-1-petri.latvala@intel.com>
- <20200114091745.4555-4-petri.latvala@intel.com>
- <20200115130915.afkcbio4qu3muoxl@ahiler-desk1.fi.intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D9856ECCF
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2020 12:28:18 +0000 (UTC)
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Date: Thu, 16 Jan 2020 14:27:59 +0200
+Message-ID: <20200116122759.1032392-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200115130915.afkcbio4qu3muoxl@ahiler-desk1.fi.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/4] runner_tests: Test that dynamic
- subtest failure is handled correctly
+Subject: [igt-dev] [PATCH i-g-t] .gitlab-ci: Retry `ninja test` 2 times in
+ case of failures
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,37 +19,91 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jan 15, 2020 at 03:09:15PM +0200, Arkadiusz Hiler wrote:
-> On Tue, Jan 14, 2020 at 11:17:45AM +0200, Petri Latvala wrote:
-> > See also: commit 0e6457f1bfe2 ("lib: Don't dump log buffer when
-> > dynamic subtest failure is inherited")
-> > 
-> > This is quite an explicit top-to-bottom test that we don't get an
-> > incorrect warn result for an innocent dynamic subtest. It is tested
-> > here in runner_test instead of testing in lib/tests that the extra
-> > lines are not printed, because not printing the extra lines is an
-> > implementation detail that might change later. The issue is after all
-> > about test results parsed by igt_runner.
-> > 
-> > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> > Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> 
-> The whole series is
-> 
-> Reviewed-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> 
-> although I would squash patch 3 and 4 together
+Freedesktop CI/CD runners are shared machines with a lot of cores and
+they accept many parallel jobs coming from multiple projects. There
+are no resources guarantees, which leads to the sporadic slowness.
 
+This makes our `ninja test` fail in extreme cases.
 
-Squashed and merged, with Arek's IRC ack on the end result.
+We have already tried to bump the timoeut limit for the slower tests in
+e941638ce652 ("runner/tests: Increase the timeout by 10x") which helped
+a bit, but we still fail from time to time.
 
+As an extra mitigation let's make the CI do 2 retries (= total of 3
+attempts) before finally failing the whole pipeline.
 
+Cc: Petri Latvala <petri.latvala@intel.com>
+Issue: https://gitlab.freedesktop.org/freedesktop/freedesktop/issues/197
+Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+---
+
+This emails is sent with a header that makes Patchwork ignore it as there is no
+use in running this change on a real hardware. You can see gitlab's pipeline
+results for this patch here:
+
+https://gitlab.freedesktop.org/ivyl/igt/pipelines/98032
+
+ .gitlab-ci.yml | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+index 9a4dcb71..c5a6bd9e 100644
+--- a/.gitlab-ci.yml
++++ b/.gitlab-ci.yml
+@@ -168,12 +168,14 @@ build:tests-debian-autotools:
+ #################### TEST ##########################
+ 
+ test:ninja-test:
++  retry: 2
+   dependencies:
+     - build:tests-fedora
+   stage: test
+   script: ninja -C build test
+ 
+ test:ninja-test-clang:
++  retry: 2
+   dependencies:
+     - build:tests-fedora-clang
+   variables:
+@@ -182,6 +184,7 @@ test:ninja-test-clang:
+   script: ninja -C build test
+ 
+ test:ninja-test-minimal:
++  retry: 2
+   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-minimal:commit-$CI_COMMIT_SHA
+   dependencies:
+     - build:tests-debian-minimal
+@@ -189,6 +192,7 @@ test:ninja-test-minimal:
+   script: ninja -C build test
+ 
+ test:ninja-test-arm64:
++  retry: 2
+   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-arm64:commit-$CI_COMMIT_SHA
+   dependencies:
+     - build:tests-debian-meson-arm64
+@@ -203,6 +207,7 @@ test:ninja-test-arm64:
+     when: on_failure
+ 
+ test:ninja-test-armhf:
++  retry: 2
+   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-armhf:commit-$CI_COMMIT_SHA
+   dependencies:
+     - build:tests-debian-meson-armhf
+@@ -217,6 +222,7 @@ test:ninja-test-armhf:
+     when: on_failure
+ 
+ test:ninja-test-mips:
++  retry: 2
+   image: $CI_REGISTRY/$CI_PROJECT_PATH/build-debian-mips:commit-$CI_COMMIT_SHA
+   dependencies:
+     - build:tests-debian-meson-mips
 -- 
-Petri Latvala
+2.24.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
