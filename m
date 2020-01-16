@@ -1,22 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 026DA6E49C
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jan 2020 23:59:08 +0000 (UTC)
-From: "Ye, Tony" <tony.ye@intel.com>
-References: <20191223221959.12814-1-robert.m.fosha@intel.com>
- <20200110174146.15480-1-robert.m.fosha@intel.com>
- <157868089371.10140.10254349676452972062@skylake-alporthouse-com>
- <5315c347-7ebc-1519-73d6-16eb0d409ec9@intel.com>
- <157868607106.10140.11425210605146276060@skylake-alporthouse-com>
- <7d163c70-d814-4c96-271f-3e6092ca53e8@intel.com>
- <a25f2fda-ffa8-b9f3-540d-4c23346114d8@intel.com>
-Message-ID: <5cbc0fc2-3c8a-fb32-8f05-779ead8e14f8@intel.com>
-Date: Thu, 16 Jan 2020 15:59:08 -0800
-MIME-Version: 1.0
-In-Reply-To: <a25f2fda-ffa8-b9f3-540d-4c23346114d8@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/i915/gem_huc_copy: Enable a
- HuC copy test
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD47E6F3D6
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jan 2020 06:56:36 +0000 (UTC)
+From: John Machado <john.machado@intel.com>
+Date: Fri, 17 Jan 2020 05:27:59 +0530
+Message-Id: <1579219079-10981-1-git-send-email-john.machado@intel.com>
+Subject: [igt-dev] [PATCH i-g-t] Add TigerLake Registers file
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,49 +13,367 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, "Robert M. Fosha" <robert.m.fosha@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Sally Qi <feng.qi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: John Machado <john.machado@intel.com>, petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CgpPbiAxLzE2LzIwMjAgMzo1NiBQTSwgWWUsIFRvbnkgd3JvdGU6Cj4gVGhlcmUgYXJlIHR3byBp
-c3N1ZXMgd2l0aCB0aGUgSFVDX1NUQVRVUyBxdWVyeSBpb2N0bC4KPiAKPiAxLiBvbiBhIHBsYXRm
-b3JtIHdpdGggaHVjIHN1cHBvcnRlZCwgaTkxNS5lbmFibGVfZ3VjPTAsIGdvdCB1bmV4cGVjdGVk
-IAo+IHJldHVybiB2YWx1ZToKPiByZXQ9MCwgcGFyYW0udmFsdWU9MCwgZXJybm89RU5PREVWCml0
-IGlzIHJldD0tMSwgcGFyYW0udmFsdWU9MCwgZXJybm89RU5PREVWLCBzb3JyeSBmb3IgdGhlIHR5
-cG8uCj4gCj4gMi4gdGhlIHJldHVybiB2YWx1ZSBkb2Vzbid0IGRpZmZlcmVudGlhdGUgdGhlc2Ug
-dHdvIGNvbmRpdGlvbnM6Cj4gYS4gaTkxNS5lbmFibGVfZ3VjPTAvMSwgaHVjIGlzIGRpc2FibGVk
-LCBza2lwIHRoZSBodWNfY29weSB0ZXN0Owo+IGIuIGk5MTUuZW5hYmxlX2d1Yz0yLzMsIGh1YyBs
-b2FkL2F1dGhlbnRpY2F0aW9uIGZhaWxlZCwgZmFpbCBodWNfY29weS4KPiBBIHBhdGNoIGxpa2Ug
-dGhpcyBpcyByZXF1aXJlZDoKPiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvcGF0
-Y2gvMzA2NDE5Lz9zZXJpZXM9NjEwMDEmcmV2PTEKPiAKPiBSZWdhcmRzLAo+IFRvbnkKPiBPbiAx
-LzEwLzIwMjAgNTowNSBQTSwgWWUsIFRvbnkgd3JvdGU6Cj4+Cj4+Cj4+IE9uIDEvMTAvMjAyMCAx
-MTo1NCBBTSwgQ2hyaXMgV2lsc29uIHdyb3RlOgo+Pj4gUXVvdGluZyBZZSwgVG9ueSAoMjAyMC0w
-MS0xMCAxOTo1MTo1OCkKPj4+Pgo+Pj4+Cj4+Pj4gT24gMS8xMC8yMDIwIDEwOjI4IEFNLCBDaHJp
-cyBXaWxzb24gd3JvdGU6Cj4+Pj4+IFF1b3RpbmcgUm9iZXJ0IE0uIEZvc2hhICgyMDIwLTAxLTEw
-IDE3OjQxOjQ2KQo+Pj4+Pj4gK3N0YXRpYyBib29sCj4+Pj4+PiArY2hlY2tfaHVjX2VuYWJsZWQo
-aW50IGZkKQo+Pj4+Pj4gK3sKPj4+Pj4+ICvCoMKgwqDCoMKgwqAgaW50IGRpcjsKPj4+Pj4+ICvC
-oMKgwqDCoMKgwqAgZGlyID0gaWd0X3N5c2ZzX29wZW5fcGFyYW1ldGVycyhmZCk7Cj4+Pj4+PiAr
-Cj4+Pj4+PiArwqDCoMKgwqDCoMKgIGlmIChkaXIgPCAwKQo+Pj4+Pj4gK8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqAgcmV0dXJuIDA7Cj4+Pj4+PiArCj4+Pj4+PiArwqDCoMKgwqDCoMKgIGlm
-IChpZ3Rfc3lzZnNfZ2V0X3UzMihkaXIsICJlbmFibGVfZ3VjIikgJiAyKQo+Pj4+Pj4gK8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIDE7Cj4+Pj4+PiArwqDCoMKgwqDCoMKgIGVs
-c2UKPj4+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiAwOwo+Pj4+Pgo+
-Pj4+PiBOby4gSWYgeW91IGhhdmUgdGhpcyBpbiB5b3VyIHVzZXJzcGFjZSwgcGxlYXNlIGltbWVk
-aWF0ZWx5IHJlbW92ZSBpdCwKPj4+Pj4gYW5kIGJhY2twb3J0IHRoYXQgdG8gYW55IGFuZCBhbGwg
-c3RhYmxlIGJyYW5jaGVzIGFuZCByZWxlYXNlcy4KPj4+Pj4gLUNocmlzCj4+Pj4KPj4+PiBUaGUg
-Y29kZSBpcyB0byBza2lwIHRoZSB0ZXN0IHdoZW4gSHVDIGlzIGRpc2FibGVkIGJ5IHRoZSBlbmFi
-bGVfZ3VjCj4+Pj4gbW9kdWxlIHBhcmFtZXRlci4gSWYgSHVDIGlzIGRpc2FibGVkIGJ5IHRoZSBl
-bmFibGVfZ3VjIHBhcmFtLCB0aGVuIHNraXAKPj4+PiB0aGUgdGVzdC4gSWYgdGhlIEh1QyBmYWls
-ZWQgdG8gbG9hZCBkdWUgdG8gYSByZWFsIGVycm9yLCB0aGVuIGZhaWwgdGhlCj4+Pj4gdGVzdC4K
-Pj4+Pgo+Pj4+IENvdWxkIHlvdSBzdWdnZXN0IGhvdyB0byBoYW5kbGUgSFVDX1NUQVRVUyBmYWls
-dXJlIHByb3Blcmx5IHdpdGhvdXQgCj4+Pj4gdGhpcwo+Pj4+IGNvZGU/Cj4+Pgo+Pj4gTG9vayBh
-dCB0aGUgZXJyb3IgY29kZSBmcm9tIHF1ZXJ5aW5nIEhVQ19TVEFUVVMuCj4+PiAtQ2hyaXMKPj4K
-Pj4gQWdyZWUgdGhhdCB0aGUgY2hlY2sgc2hvdWxkIGJlIGRvbmUgdmlhIHVBUEkgaW5zdGVhZCBv
-ZiB0aGUgc3lzZnMuIAo+PiBUaGFua3MgZm9yIHRoZSBmZWVkYmFjay4KPj4gVG9ueQo+Pj4KX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
-aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
-ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Added the TigerLake register spec file and a register delta file
+that contain additional registers corresponding to TigerLake.
+
+The spec file uses the icelake file along with the newly added
+register file for TGL register definations.
+
+Suggested-by: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: John Machado <john.machado@intel.com>
+---
+ tools/registers/tigerlake           |   2 +
+ tools/registers/tigerlake_delta.txt | 319 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 321 insertions(+)
+ create mode 100644 tools/registers/tigerlake
+ create mode 100644 tools/registers/tigerlake_delta.txt
+
+diff --git a/tools/registers/tigerlake b/tools/registers/tigerlake
+new file mode 100644
+index 0000000..0cad0ab
+--- /dev/null
++++ b/tools/registers/tigerlake
+@@ -0,0 +1,2 @@
++icelake
++tigerlake_delta.txt
+diff --git a/tools/registers/tigerlake_delta.txt b/tools/registers/tigerlake_delta.txt
+new file mode 100644
+index 0000000..e82049b
+--- /dev/null
++++ b/tools/registers/tigerlake_delta.txt
+@@ -0,0 +1,319 @@
++#CLOCKS
++('DPLL4_ENABLE', '0x46018', '')
++('DPLL4_CFGCR0', '0x164294', '')
++('DPLL4_CFGCR1', '0x164298', '')
++('DPLL0_SSC', '0x164b10', '')
++('DPLL1_SSC', '0x164c10', '')
++('DPLL4_SSC', '0x164e10', '')
++('TRANS_CLK_SEL_D', '0x4614c', '')
++#PIPE_A_PLANE
++('PLANE_OFFSET_4_A', '0x704a4', '')
++('PLANE_OFFSET_5_A', '0x705a4', '')
++('PLANE_OFFSET_6_A', '0x706a4', '')
++('PLANE_OFFSET_7_A', '0x707a4', '')
++('PLANE_KEYMSK_4_A', '0x70498', '')
++('PLANE_KEYMSK_5_A', '0x70598', '')
++('PLANE_KEYMSK_6_A', '0x70698', '')
++('PLANE_KEYMSK_7_A', '0x70798', '')
++('PLANE_KEYVAL_4_A', '0x70494', '')
++('PLANE_KEYVAL_5_A', '0x70594', '')
++('PLANE_KEYVAL_6_A', '0x70694', '')
++('PLANE_KEYVAL_7_A', '0x70794', '')
++('PLANE_STRIDE_4_A', '0x70488', '')
++('PLANE_STRIDE_5_A', '0x70588', '')
++('PLANE_STRIDE_6_A', '0x70688', '')
++('PLANE_STRIDE_7_A', '0x70788', '')
++('PLANE_SURF_4_A', '0x7049c', '')
++('PLANE_SURF_5_A', '0x7059c', '')
++('PLANE_SURF_6_A', '0x7069c', '')
++('PLANE_SURF_7_A', '0x7079c', '')
++('PLANE_SURFLIVE_4_A', '0x704ac', '')
++('PLANE_SURFLIVE_5_A', '0x705ac', '')
++('PLANE_SURFLIVE_6_A', '0x706ac', '')
++('PLANE_SURFLIVE_7_A', '0x707ac', '')
++#PIPE_B_PLANE
++('PLANE_OFFSET_4_B', '0x714a4', '')
++('PLANE_OFFSET_5_B', '0x715a4', '')
++('PLANE_OFFSET_6_B', '0x716a4', '')
++('PLANE_OFFSET_7_B', '0x717a4', '')
++('PLANE_KEYMSK_4_B', '0x71498', '')
++('PLANE_KEYMSK_5_B', '0x71598', '')
++('PLANE_KEYMSK_6_B', '0x71698', '')
++('PLANE_KEYMSK_7_B', '0x71798', '')
++('PLANE_KEYVAL_4_B', '0x71494', '')
++('PLANE_KEYVAL_5_B', '0x71594', '')
++('PLANE_KEYVAL_6_B', '0x71694', '')
++('PLANE_KEYVAL_7_B', '0x71794', '')
++('PLANE_STRIDE_4_B', '0x71488', '')
++('PLANE_STRIDE_5_B', '0x71588', '')
++('PLANE_STRIDE_6_B', '0x71688', '')
++('PLANE_STRIDE_7_B', '0x71788', '')
++('PLANE_SURF_4_B', '0x7149c', '')
++('PLANE_SURF_5_B', '0x7159c', '')
++('PLANE_SURF_6_B', '0x7169c', '')
++('PLANE_SURF_7_B', '0x7179c', '')
++('PLANE_SURFLIVE_4_B', '0x714ac', '')
++('PLANE_SURFLIVE_5_B', '0x715ac', '')
++('PLANE_SURFLIVE_6_B', '0x716ac', '')
++('PLANE_SURFLIVE_7_B', '0x717ac', '')
++#PIPE_C_PLANE
++('PLANE_OFFSET_4_C', '0x724a4', '')
++('PLANE_OFFSET_5_C', '0x725a4', '')
++('PLANE_OFFSET_6_C', '0x726a4', '')
++('PLANE_OFFSET_7_C', '0x727a4', '')
++('PLANE_KEYMSK_4_C', '0x72498', '')
++('PLANE_KEYMSK_5_C', '0x72598', '')
++('PLANE_KEYMSK_6_C', '0x72698', '')
++('PLANE_KEYMSK_7_C', '0x72798', '')
++('PLANE_KEYVAL_4_C', '0x72494', '')
++('PLANE_KEYVAL_5_C', '0x72594', '')
++('PLANE_KEYVAL_6_C', '0x72694', '')
++('PLANE_KEYVAL_7_C', '0x72794', '')
++('PLANE_STRIDE_4_C', '0x72488', '')
++('PLANE_STRIDE_5_C', '0x72588', '')
++('PLANE_STRIDE_6_C', '0x72688', '')
++('PLANE_STRIDE_7_C', '0x72788', '')
++('PLANE_SURF_4_C', '0x7249c', '')
++('PLANE_SURF_5_C', '0x7259c', '')
++('PLANE_SURF_6_C', '0x7269c', '')
++('PLANE_SURF_7_C', '0x7279c', '')
++('PLANE_SURFLIVE_4_C', '0x724ac', '')
++('PLANE_SURFLIVE_5_C', '0x725ac', '')
++('PLANE_SURFLIVE_6_C', '0x726ac', '')
++('PLANE_SURFLIVE_7_C', '0x727ac', '')
++#PIPE_D_PLANE
++('PLANE_AUX_DIST_1_D', '0x731c0', '')
++('PLANE_AUX_DIST_2_D', '0x732c0', '')
++('PLANE_AUX_DIST_3_D', '0x733c0', '')
++('PLANE_AUX_DIST_4_D', '0x734c0', '')
++('PLANE_AUX_DIST_5_D', '0x735c0', '')
++('PLANE_AUX_DIST_6_D', '0x736c0', '')
++('PLANE_AUX_DIST_7_D', '0x737c0', '')
++('PLANE_CTL_1_D', '0x73180', '')
++('PLANE_CTL_2_D', '0x73280', '')
++('PLANE_CTL_3_D', '0x73380', '')
++('PLANE_CTL_4_D', '0x73480', '')
++('PLANE_CTL_5_D', '0x73580', '')
++('PLANE_CTL_6_D', '0x73680', '')
++('PLANE_CTL_7_D', '0x73780', '')
++('PLANE_BUF_CFG_1_D', '0x7327c', '')
++('PLANE_BUF_CFG_2_D', '0x7337c', '')
++('PLANE_BUF_CFG_3_D', '0x7347c', '')
++('PLANE_BUF_CFG_4_D', '0x7357c', '')
++('PLANE_BUF_CFG_5_D', '0x7367c', '')
++('PLANE_BUF_CFG_6_D', '0x7377c', '')
++('PLANE_BUF_CFG_7_D', '0x7387c', '')
++('PLANE_COLOR_CTL_1_D', '0x731cc', '')
++('PLANE_COLOR_CTL_2_D', '0x732cc', '')
++('PLANE_COLOR_CTL_3_D', '0x733cc', '')
++('PLANE_COLOR_CTL_4_D', '0x734cc', '')
++('PLANE_COLOR_CTL_5_D', '0x735cc', '')
++('PLANE_COLOR_CTL_6_D', '0x736cc', '')
++('PLANE_COLOR_CTL_7_D', '0x737cc', '')
++('PLANE_OFFSET_1_D', '0x731a4', ''
++('PLANE_OFFSET_2_D', '0x732a4', '')
++('PLANE_OFFSET_3_D', '0x733a4', '')
++('PLANE_OFFSET_4_D', '0x734a4', '')
++('PLANE_OFFSET_5_D', '0x735a4', '')
++('PLANE_OFFSET_6_D', '0x736a4', '')
++('PLANE_OFFSET_7_D', '0x737a4', '')
++('PLANE_KEYMAX_1_D', '0x731a0', '')
++('PLANE_KEYMAX_2_D', '0x732a0', '')
++('PLANE_KEYMAX_3_D', '0x733a0', '')
++('PLANE_KEYMAX_4_D', '0x734a0', '')
++('PLANE_KEYMAX_5_D', '0x735a0', '')
++('PLANE_KEYMAX_6_D', '0x736a0', '')
++('PLANE_KEYMAX_7_D', '0x737a0', '')
++('PLANE_KEYMSK_1_D', '0x73198', '')
++('PLANE_KEYMSK_2_D', '0x73298', '')
++('PLANE_KEYMSK_3_D', '0x73398', '')
++('PLANE_KEYMSK_4_D', '0x73498', '')
++('PLANE_KEYMSK_5_D', '0x73598', '')
++('PLANE_KEYMSK_6_D', '0x73698', '')
++('PLANE_KEYMSK_7_D', '0x73798', '')
++('PLANE_KEYVAL_1_D', '0x73194', '')
++('PLANE_KEYVAL_2_D', '0x73294', '')
++('PLANE_KEYVAL_3_D', '0x73394', '')
++('PLANE_KEYVAL_4_D', '0x73494', '')
++('PLANE_KEYVAL_5_D', '0x73594', '')
++('PLANE_KEYVAL_6_D', '0x73694', '')
++('PLANE_KEYVAL_7_D', '0x73794', '')
++('PLANE_STRIDE_1_D', '0x73188', '')
++('PLANE_STRIDE_2_D', '0x73288', '')
++('PLANE_STRIDE_3_D', '0x73388', '')
++('PLANE_STRIDE_4_D', '0x73488', '')
++('PLANE_STRIDE_5_D', '0x73588', '')
++('PLANE_STRIDE_6_D', '0x73688', '')
++('PLANE_STRIDE_7_D', '0x73788', '')
++('PLANE_SURF_1_D', '0x7319c', '')
++('PLANE_SURF_2_D', '0x7329c', '')
++('PLANE_SURF_3_D', '0x7339c', '')
++('PLANE_SURF_4_D', '0x7349c', '')
++('PLANE_SURF_5_D', '0x7359c', '')
++('PLANE_SURF_6_D', '0x7369c', '')
++('PLANE_SURF_7_D', '0x7379c', '')
++('PLANE_SURFLIVE_1_D', '0x731ac', '')
++('PLANE_SURFLIVE_2_D', '0x732ac', '')
++('PLANE_SURFLIVE_3_D', '0x733ac', '')
++('PLANE_SURFLIVE_4_D', '0x734ac', '')
++('PLANE_SURFLIVE_5_D', '0x735ac', '')
++('PLANE_SURFLIVE_6_D', '0x736ac', '')
++('PLANE_SURFLIVE_7_D', '0x737ac', '')
++('PLANE_POS_1_D', '0x7318c', '')
++('PLANE_POS_2_D', '0x7328c', '')
++('PLANE_POS_3_D', '0x7338c', '')
++('PLANE_POS_4_D', '0x7348c', '')
++('PLANE_POS_5_D', '0x7358c', '')
++('PLANE_POS_6_D', '0x7368c', '')
++('PLANE_POS_7_D', '0x7378c', '')
++('PLANE_SIZE_1_D', '0x73190', '')
++('PLANE_SIZE_2_D', '0x73290', '')
++('PLANE_SIZE_3_D', '0x73390', '')
++('PLANE_SIZE_4_D', '0x73490', '')
++('PLANE_SIZE_5_D', '0x73590', '')
++('PLANE_SIZE_6_D', '0x73690', '')
++('PLANE_SIZE_7_D', '0x73790', '')
++('PLANE_WM_1_D_0', '0x73240', '')
++('PLANE_WM_1_D_1', '0x73244', '')
++('PLANE_WM_1_D_2', '0x73248', '')
++('PLANE_WM_1_D_3', '0x7324c', '')
++('PLANE_WM_1_D_4', '0x73250', '')
++('PLANE_WM_1_D_5', '0x73254', '')
++('PLANE_WM_1_D_6', '0x73258', '')
++('PLANE_WM_1_D_7', '0x7325c', '')
++('PLANE_WM_2_D_0', '0x73340', '')
++('PLANE_WM_2_D_1', '0x73344', '')
++('PLANE_WM_2_D_2', '0x73348', '')
++('PLANE_WM_2_D_3', '0x7334c', '')
++('PLANE_WM_2_D_4', '0x73350', '')
++('PLANE_WM_2_D_5', '0x73354', '')
++('PLANE_WM_2_D_6', '0x73358', '')
++('PLANE_WM_2_D_7', '0x7335c', '')
++('PLANE_WM_3_D_0', '0x73440', '')
++('PLANE_WM_3_D_1', '0x73444', '')
++('PLANE_WM_3_D_2', '0x73448', '')
++('PLANE_WM_3_D_3', '0x7344c', '')
++('PLANE_WM_3_D_4', '0x73450', '')
++('PLANE_WM_3_D_5', '0x73454', '')
++('PLANE_WM_3_D_6', '0x73458', '')
++('PLANE_WM_3_D_7', '0x7345c', '')
++('PLANE_WM_4_D_0', '0x73540', '')
++('PLANE_WM_4_D_1', '0x73544', '')
++('PLANE_WM_4_D_2', '0x73548', '')
++('PLANE_WM_4_D_3', '0x7354c', '')
++('PLANE_WM_4_D_4', '0x73550', '')
++('PLANE_WM_4_D_5', '0x73554', '')
++('PLANE_WM_4_D_6', '0x73558', '')
++('PLANE_WM_4_D_7', '0x7355c', '')
++('PLANE_WM_5_D_0', '0x73640', '')
++('PLANE_WM_5_D_1', '0x73644', '')
++('PLANE_WM_5_D_2', '0x73648', '')
++('PLANE_WM_5_D_3', '0x7364c', '')
++('PLANE_WM_5_D_4', '0x73650', '')
++('PLANE_WM_5_D_5', '0x73654', '')
++('PLANE_WM_5_D_6', '0x73658', '')
++('PLANE_WM_5_D_7', '0x7365c', '')
++('PLANE_WM_6_D_0', '0x73740', '')
++('PLANE_WM_6_D_1', '0x73744', '')
++('PLANE_WM_6_D_2', '0x73748', '')
++('PLANE_WM_6_D_3', '0x7374c', '')
++('PLANE_WM_6_D_4', '0x73750', '')
++('PLANE_WM_6_D_5', '0x73754', '')
++('PLANE_WM_6_D_6', '0x73758', '')
++('PLANE_WM_6_D_7', '0x7375c', '')
++('PLANE_WM_7_D_0', '0x73840', '')
++('PLANE_WM_7_D_1', '0x73844', '')
++('PLANE_WM_7_D_2', '0x73848', '')
++('PLANE_WM_7_D_3', '0x7384c', '')
++('PLANE_WM_7_D_4', '0x73850', '')
++('PLANE_WM_7_D_5', '0x73854', '')
++('PLANE_WM_7_D_6', '0x73858', '')
++('PLANE_WM_7_D_7', '0x7385c', '')
++('PLANE_WM_TRANS_1_D', '0x73268', '')
++('PLANE_WM_TRANS_2_D', '0x73368', '')
++('PLANE_WM_TRANS_3_D', '0x73468', '')
++('PLANE_WM_TRANS_4_D', '0x73568', '')
++('PLANE_WM_TRANS_5_D', '0x73668', '')
++('PLANE_WM_TRANS_6_D', '0x73768', '')
++('PLANE_WM_TRANS_7_D', '0x73868', '')
++# PIPE_D_CURSOR_PLANE
++('CUR_BUF_CFG_D', '0x7317c', '')
++('CUR_BASE_D', '0x73084', '')
++('CUR_CTL_D', '0x73080', '')
++('CUR_FBC_CTL_D', '0x730a0', '')
++('CUR_POS_D', '0x73088', '')
++('CUR_SURFLIVE_D', '0x730ac', '')
++('CUR_WM_0_D', '0x73140', '')
++('CUR_WM_1_D', '0x73144', '')
++('CUR_WM_2_D', '0x73148', '')
++('CUR_WM_3_D', '0x7314c', '')
++('CUR_WM_4_D', '0x73150', '')
++('CUR_WM_5_D', '0x73154', '')
++('CUR_WM_6_D', '0x73158', '')
++('CUR_WM_7_D', '0x7315c', '')
++('CUR_WM_TRANS_D', '0x73168', '')
++#PIPE_SCALER_D
++('PS_CTRL_1_D', '0x69980', '')
++('PS_CTRL_2_D', '0x69a80', '')
++('PS_ECC_STAT_1_D', '0x699d0', '')
++('PS_ECC_STAT_2_D', '0x69ad0', '')
++('PS_HPHASE_1_D', '0x69994', '')
++('PS_HPHASE_2_D', '0x69a94', '')
++('PS_HSCALE_1_D', '0x69990', '')
++('PS_HSCALE_2_D', '0x69a90', '')
++('PS_PWR_GATE_1_D', '0x69960', '')
++('PS_PWR_GATE_2_D', '0x69a60', '')
++('PS_VPHASE_1_D', '0x69988', '')
++('PS_VPHASE_2_D', '0x69a88', '')
++('PS_VSCALE_1_D', '0x69984', '')
++('PS_VSCALE_2_D', '0x69a84', '')
++('PS_WIN_POS_1_D', '0x69970', '')
++('PS_WIN_POS_2_D', '0x69a70', '')
++('PS_WIN_SZ_1_D', '0x69974', '')
++('PS_WIN_SZ_2_D', '0x69a74', '')
++#TRANSCODER_D_CONTROL
++('TRANS_CONF_D', '0x73008', '')
++#TRANSCODER_DSI_CONTROL
++('TRANS_CONF_DSI0', '0x7b008', '')
++('TRANS_CONF_DSI1', '0x7b808', '')
++# TRANSCODER_D_TIMING
++('TRANS_HBLANK_D', '0x63004', '')
++('TRANS_HSYNC_D', '0x63008', '')
++('TRANS_HTOTAL_D', '0x63000', '')
++('TRANS_MULT_D', '0x6302c', '')
++('TRANS_SPACE_D', '0x63024', '')
++('TRANS_VBLANK_D', '0x63010', '')
++('TRANS_VSYNC_D', '0x63014', '')
++('TRANS_VSYNCSHIFT_D', '0x63028', '')
++('TRANS_VTOTAL_D', '0x6300c', '')
++# TRANSCODER_DSI_TIMING
++('TRANS_HSYNC_DSI0', '0x6b008', '')
++('TRANS_HSYNC_DSI1', '0x6b808', '')
++('TRANS_HTOTAL_DSI0', '0x6b000', '')
++('TRANS_HTOTAL_DSI1', '0x6b800', '')
++('TRANS_SPACE_DSI0', '0x6b024', '')
++('TRANS_SPACE_DSI1', '0x6b824', '')
++('TRANS_VBLANK_DSI0', '0x6b010', '')
++('TRANS_VBLANK_DSI1', '0x6b810', '')
++('TRANS_VSYNC_DSI0', '0x6b014', '')
++('TRANS_VSYNC_DSI1', '0x6b814', '')
++('TRANS_VSYNCSHIFT_DSI0', '0x6b028', '')
++('TRANS_VSYNCSHIFT_DSI1', '0x6b828', '')
++('TRANS_VTOTAL_DSI0', '0x6b00c', '')
++('TRANS_VTOTAL_DSI1', '0x6b80c', '')
++# TRANSCODER_D_M_N
++('TRANS_DATAM1_D', '0x63030', '')
++('TRANS_DATAN1_D', '0x63034', '')
++('TRANS_LINKM1_D', '0x63040', '')
++('TRANS_LINKN1_D', '0x63044', '')
++# TRANSCODER_D_DDI_CONTROL
++('TRANS_DDI_FUNC_CTL_D', '0x63400', '')
++('TRANS_MSA_MISC_D', '0x63410', '')
++# TRANSCODER_DSI_DDI_CONTROL
++('TRANS_DDI_FUNC_CTL_DSI0', '0x6b400', '')
++('TRANS_DDI_FUNC_CTL_DSI1', '0x6bc00', '')
++# MBUS_CTL
++('MBUS_DBOX_CTL_D', '0x7303c', '')
++# WATERMARK
++('WM_LINETIME_D', '0x4527c', '')
++
+-- 
+2.7.4
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
