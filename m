@@ -1,10 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri, 17 Jan 2020 21:11:29 +0000
-Message-Id: <20200117211129.3303428-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_mmap_offset: Exercise many,
- many mmap_offset
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 17 Jan 2020 21:27:14 -0000
+Message-ID: <157929643403.26756.10610152767880824217@emeril.freedesktop.org>
+References: <20200117184924.12600-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20200117184924.12600-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2NyaXB0?=
+ =?utf-8?q?s/trace=2Epl=3A_Update_for_preempt-to-busy=2C_heartbeats_and_ti?=
+ =?utf-8?q?meslicing?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -12,110 +15,132 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Just keep on generating a new mmap_offset for the same old buffer, but
-for different handles and so exercise the scaling of the obj->mmo lists.
+== Series Details ==
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Abdiel Janulgue <abdiel.janulgue@linux.intel.com>
----
- tests/i915/gem_mmap_offset.c | 66 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 66 insertions(+)
+Series: scripts/trace.pl: Update for preempt-to-busy, heartbeats and timeslicing
+URL   : https://patchwork.freedesktop.org/series/72213/
+State : success
 
-diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-index 95e1e3e6c..005839c38 100644
---- a/tests/i915/gem_mmap_offset.c
-+++ b/tests/i915/gem_mmap_offset.c
-@@ -326,6 +326,69 @@ static void close_race(int i915, int timeout)
- 	munmap(handles, len);
- }
- 
-+static void open_flood(int i915, int timeout)
-+{
-+	unsigned long count;
-+	uint32_t handle;
-+	int dmabuf;
-+	int *ctl;
-+
-+	ctl = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-+	igt_assert(ctl != MAP_FAILED);
-+
-+	handle = gem_create(i915, 4096);
-+	dmabuf = prime_handle_to_fd(i915, handle);
-+
-+	for_each_mmap_offset_type(t) {
-+		struct drm_i915_gem_mmap_offset arg = {
-+			.handle = handle,
-+			.flags = t->type,
-+		};
-+
-+		if (mmap_offset_ioctl(i915, &arg))
-+			continue;
-+
-+		igt_fork(child, 1) {
-+			i915 = gem_reopen_driver(i915);
-+			arg.handle = prime_fd_to_handle(i915, dmabuf);
-+
-+			do {
-+				igt_assert_eq(mmap_offset_ioctl(i915, &arg), 0);
-+			} while (!READ_ONCE(*ctl));
-+		}
-+	}
-+	gem_close(i915, handle);
-+
-+	count = 0;
-+	igt_until_timeout(timeout) {
-+		int tmp;
-+
-+		tmp = gem_reopen_driver(i915);
-+		handle = prime_fd_to_handle(i915, dmabuf);
-+
-+		for_each_mmap_offset_type(t) {
-+			struct drm_i915_gem_mmap_offset arg = {
-+				.handle = handle,
-+				.flags = t->type,
-+			};
-+
-+			mmap_offset_ioctl(i915, &arg);
-+		}
-+
-+		close(tmp);
-+		count++;
-+	}
-+
-+	igt_info("Completed %lu cycles\n", count);
-+
-+	close(dmabuf);
-+	close(i915);
-+
-+	*ctl = 1;
-+	igt_waitchildren();
-+	munmap(ctl, 4096);
-+}
-+
- static uint64_t atomic_compare_swap_u64(_Atomic(uint64_t) *ptr,
- 					uint64_t oldval, uint64_t newval)
- {
-@@ -488,6 +551,9 @@ igt_main
- 	igt_subtest_f("close-race")
- 		close_race(i915, 20);
- 
-+	igt_subtest_f("open-flood")
-+		open_flood(i915, 20);
-+
- 	igt_subtest_f("clear")
- 		always_clear(i915, 20);
- 
--- 
-2.25.0
+== Summary ==
 
+CI Bug Log - changes from CI_DRM_7767 -> IGTPW_3938
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3938/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_3938 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_module_load@reload-with-fault-injection:
+    - fi-skl-6700k2:      [PASS][1] -> [DMESG-WARN][2] ([i915#889])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7767/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3938/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
+
+  * igt@i915_selftest@live_gem_contexts:
+    - fi-hsw-peppy:       [PASS][3] -> [DMESG-FAIL][4] ([i915#722])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7767/fi-hsw-peppy/igt@i915_selftest@live_gem_contexts.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3938/fi-hsw-peppy/igt@i915_selftest@live_gem_contexts.html
+
+  * igt@kms_chamelium@hdmi-edid-read:
+    - fi-kbl-7500u:       [PASS][5] -> [FAIL][6] ([i915#217])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7767/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3938/fi-kbl-7500u/igt@kms_chamelium@hdmi-edid-read.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [PASS][7] -> [FAIL][8] ([fdo#111096] / [i915#323])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7767/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3938/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@vgem_basic@debugfs:
+    - fi-tgl-y:           [PASS][9] -> [DMESG-WARN][10] ([i915#402]) +1 similar issue
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7767/fi-tgl-y/igt@vgem_basic@debugfs.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3938/fi-tgl-y/igt@vgem_basic@debugfs.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_getparams_basic@basic-subslice-total:
+    - fi-tgl-y:           [DMESG-WARN][11] ([i915#402]) -> [PASS][12] +1 similar issue
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7767/fi-tgl-y/igt@i915_getparams_basic@basic-subslice-total.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3938/fi-tgl-y/igt@i915_getparams_basic@basic-subslice-total.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-skl-6600u:       [DMESG-WARN][13] ([i915#889]) -> [PASS][14] +23 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7767/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3938/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live_blt:
+    - fi-hsw-4770:        [DMESG-FAIL][15] ([i915#725]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7767/fi-hsw-4770/igt@i915_selftest@live_blt.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3938/fi-hsw-4770/igt@i915_selftest@live_blt.html
+
+  * igt@i915_selftest@live_gt_lrc:
+    - fi-skl-6600u:       [DMESG-FAIL][17] ([i915#889]) -> [PASS][18] +7 similar issues
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7767/fi-skl-6600u/igt@i915_selftest@live_gt_lrc.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3938/fi-skl-6600u/igt@i915_selftest@live_gt_lrc.html
+
+  
+#### Warnings ####
+
+  * igt@i915_module_load@reload-with-fault-injection:
+    - fi-skl-6770hq:      [DMESG-WARN][19] ([i915#889]) -> [DMESG-WARN][20] ([i915#88])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7767/fi-skl-6770hq/igt@i915_module_load@reload-with-fault-injection.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3938/fi-skl-6770hq/igt@i915_module_load@reload-with-fault-injection.html
+
+  
+  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
+  [i915#217]: https://gitlab.freedesktop.org/drm/intel/issues/217
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#722]: https://gitlab.freedesktop.org/drm/intel/issues/722
+  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
+  [i915#88]: https://gitlab.freedesktop.org/drm/intel/issues/88
+  [i915#889]: https://gitlab.freedesktop.org/drm/intel/issues/889
+
+
+Participating hosts (44 -> 44)
+------------------------------
+
+  Additional (5): fi-gdg-551 fi-ivb-3770 fi-blb-e6850 fi-bsw-nick fi-snb-2600 
+  Missing    (5): fi-hsw-4770r fi-cml-u2 fi-ilk-m540 fi-bsw-cyan fi-byt-clapper 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5371 -> IGTPW_3938
+
+  CI-20190529: 20190529
+  CI_DRM_7767: dc447e46590410adce9a6fc6b19dbf02f1ba4ab4 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_3938: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3938/index.html
+  IGT_5371: 1b2816124ec3dbd53b81725d39292f45d41d895b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3938/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
