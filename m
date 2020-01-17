@@ -1,11 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD47E6F3D6
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jan 2020 06:56:36 +0000 (UTC)
-From: John Machado <john.machado@intel.com>
-Date: Fri, 17 Jan 2020 05:27:59 +0530
-Message-Id: <1579219079-10981-1-git-send-email-john.machado@intel.com>
-Subject: [igt-dev] [PATCH i-g-t] Add TigerLake Registers file
+MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 17 Jan 2020 07:08:22 -0000
+Message-ID: <157924490218.26754.11537121923181501823@emeril.freedesktop.org>
+References: <20200117143936.5726-1-sreedhar.telukuntla@intel.com>
+In-Reply-To: <20200117143936.5726-1-sreedhar.telukuntla@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fexec=5Fparallel=3A_Set_engine_map_to_default_context?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -13,366 +14,153 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: John Machado <john.machado@intel.com>, petri.latvala@intel.com
+To: Sreedhar Telukuntla <sreedhar.telukuntla@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Added the TigerLake register spec file and a register delta file
-that contain additional registers corresponding to TigerLake.
+== Series Details ==
 
-The spec file uses the icelake file along with the newly added
-register file for TGL register definations.
+Series: tests/i915/gem_exec_parallel: Set engine map to default context
+URL   : https://patchwork.freedesktop.org/series/72160/
+State : success
 
-Suggested-by: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: John Machado <john.machado@intel.com>
----
- tools/registers/tigerlake           |   2 +
- tools/registers/tigerlake_delta.txt | 319 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 321 insertions(+)
- create mode 100644 tools/registers/tigerlake
- create mode 100644 tools/registers/tigerlake_delta.txt
+== Summary ==
 
-diff --git a/tools/registers/tigerlake b/tools/registers/tigerlake
-new file mode 100644
-index 0000000..0cad0ab
---- /dev/null
-+++ b/tools/registers/tigerlake
-@@ -0,0 +1,2 @@
-+icelake
-+tigerlake_delta.txt
-diff --git a/tools/registers/tigerlake_delta.txt b/tools/registers/tigerlake_delta.txt
-new file mode 100644
-index 0000000..e82049b
---- /dev/null
-+++ b/tools/registers/tigerlake_delta.txt
-@@ -0,0 +1,319 @@
-+#CLOCKS
-+('DPLL4_ENABLE', '0x46018', '')
-+('DPLL4_CFGCR0', '0x164294', '')
-+('DPLL4_CFGCR1', '0x164298', '')
-+('DPLL0_SSC', '0x164b10', '')
-+('DPLL1_SSC', '0x164c10', '')
-+('DPLL4_SSC', '0x164e10', '')
-+('TRANS_CLK_SEL_D', '0x4614c', '')
-+#PIPE_A_PLANE
-+('PLANE_OFFSET_4_A', '0x704a4', '')
-+('PLANE_OFFSET_5_A', '0x705a4', '')
-+('PLANE_OFFSET_6_A', '0x706a4', '')
-+('PLANE_OFFSET_7_A', '0x707a4', '')
-+('PLANE_KEYMSK_4_A', '0x70498', '')
-+('PLANE_KEYMSK_5_A', '0x70598', '')
-+('PLANE_KEYMSK_6_A', '0x70698', '')
-+('PLANE_KEYMSK_7_A', '0x70798', '')
-+('PLANE_KEYVAL_4_A', '0x70494', '')
-+('PLANE_KEYVAL_5_A', '0x70594', '')
-+('PLANE_KEYVAL_6_A', '0x70694', '')
-+('PLANE_KEYVAL_7_A', '0x70794', '')
-+('PLANE_STRIDE_4_A', '0x70488', '')
-+('PLANE_STRIDE_5_A', '0x70588', '')
-+('PLANE_STRIDE_6_A', '0x70688', '')
-+('PLANE_STRIDE_7_A', '0x70788', '')
-+('PLANE_SURF_4_A', '0x7049c', '')
-+('PLANE_SURF_5_A', '0x7059c', '')
-+('PLANE_SURF_6_A', '0x7069c', '')
-+('PLANE_SURF_7_A', '0x7079c', '')
-+('PLANE_SURFLIVE_4_A', '0x704ac', '')
-+('PLANE_SURFLIVE_5_A', '0x705ac', '')
-+('PLANE_SURFLIVE_6_A', '0x706ac', '')
-+('PLANE_SURFLIVE_7_A', '0x707ac', '')
-+#PIPE_B_PLANE
-+('PLANE_OFFSET_4_B', '0x714a4', '')
-+('PLANE_OFFSET_5_B', '0x715a4', '')
-+('PLANE_OFFSET_6_B', '0x716a4', '')
-+('PLANE_OFFSET_7_B', '0x717a4', '')
-+('PLANE_KEYMSK_4_B', '0x71498', '')
-+('PLANE_KEYMSK_5_B', '0x71598', '')
-+('PLANE_KEYMSK_6_B', '0x71698', '')
-+('PLANE_KEYMSK_7_B', '0x71798', '')
-+('PLANE_KEYVAL_4_B', '0x71494', '')
-+('PLANE_KEYVAL_5_B', '0x71594', '')
-+('PLANE_KEYVAL_6_B', '0x71694', '')
-+('PLANE_KEYVAL_7_B', '0x71794', '')
-+('PLANE_STRIDE_4_B', '0x71488', '')
-+('PLANE_STRIDE_5_B', '0x71588', '')
-+('PLANE_STRIDE_6_B', '0x71688', '')
-+('PLANE_STRIDE_7_B', '0x71788', '')
-+('PLANE_SURF_4_B', '0x7149c', '')
-+('PLANE_SURF_5_B', '0x7159c', '')
-+('PLANE_SURF_6_B', '0x7169c', '')
-+('PLANE_SURF_7_B', '0x7179c', '')
-+('PLANE_SURFLIVE_4_B', '0x714ac', '')
-+('PLANE_SURFLIVE_5_B', '0x715ac', '')
-+('PLANE_SURFLIVE_6_B', '0x716ac', '')
-+('PLANE_SURFLIVE_7_B', '0x717ac', '')
-+#PIPE_C_PLANE
-+('PLANE_OFFSET_4_C', '0x724a4', '')
-+('PLANE_OFFSET_5_C', '0x725a4', '')
-+('PLANE_OFFSET_6_C', '0x726a4', '')
-+('PLANE_OFFSET_7_C', '0x727a4', '')
-+('PLANE_KEYMSK_4_C', '0x72498', '')
-+('PLANE_KEYMSK_5_C', '0x72598', '')
-+('PLANE_KEYMSK_6_C', '0x72698', '')
-+('PLANE_KEYMSK_7_C', '0x72798', '')
-+('PLANE_KEYVAL_4_C', '0x72494', '')
-+('PLANE_KEYVAL_5_C', '0x72594', '')
-+('PLANE_KEYVAL_6_C', '0x72694', '')
-+('PLANE_KEYVAL_7_C', '0x72794', '')
-+('PLANE_STRIDE_4_C', '0x72488', '')
-+('PLANE_STRIDE_5_C', '0x72588', '')
-+('PLANE_STRIDE_6_C', '0x72688', '')
-+('PLANE_STRIDE_7_C', '0x72788', '')
-+('PLANE_SURF_4_C', '0x7249c', '')
-+('PLANE_SURF_5_C', '0x7259c', '')
-+('PLANE_SURF_6_C', '0x7269c', '')
-+('PLANE_SURF_7_C', '0x7279c', '')
-+('PLANE_SURFLIVE_4_C', '0x724ac', '')
-+('PLANE_SURFLIVE_5_C', '0x725ac', '')
-+('PLANE_SURFLIVE_6_C', '0x726ac', '')
-+('PLANE_SURFLIVE_7_C', '0x727ac', '')
-+#PIPE_D_PLANE
-+('PLANE_AUX_DIST_1_D', '0x731c0', '')
-+('PLANE_AUX_DIST_2_D', '0x732c0', '')
-+('PLANE_AUX_DIST_3_D', '0x733c0', '')
-+('PLANE_AUX_DIST_4_D', '0x734c0', '')
-+('PLANE_AUX_DIST_5_D', '0x735c0', '')
-+('PLANE_AUX_DIST_6_D', '0x736c0', '')
-+('PLANE_AUX_DIST_7_D', '0x737c0', '')
-+('PLANE_CTL_1_D', '0x73180', '')
-+('PLANE_CTL_2_D', '0x73280', '')
-+('PLANE_CTL_3_D', '0x73380', '')
-+('PLANE_CTL_4_D', '0x73480', '')
-+('PLANE_CTL_5_D', '0x73580', '')
-+('PLANE_CTL_6_D', '0x73680', '')
-+('PLANE_CTL_7_D', '0x73780', '')
-+('PLANE_BUF_CFG_1_D', '0x7327c', '')
-+('PLANE_BUF_CFG_2_D', '0x7337c', '')
-+('PLANE_BUF_CFG_3_D', '0x7347c', '')
-+('PLANE_BUF_CFG_4_D', '0x7357c', '')
-+('PLANE_BUF_CFG_5_D', '0x7367c', '')
-+('PLANE_BUF_CFG_6_D', '0x7377c', '')
-+('PLANE_BUF_CFG_7_D', '0x7387c', '')
-+('PLANE_COLOR_CTL_1_D', '0x731cc', '')
-+('PLANE_COLOR_CTL_2_D', '0x732cc', '')
-+('PLANE_COLOR_CTL_3_D', '0x733cc', '')
-+('PLANE_COLOR_CTL_4_D', '0x734cc', '')
-+('PLANE_COLOR_CTL_5_D', '0x735cc', '')
-+('PLANE_COLOR_CTL_6_D', '0x736cc', '')
-+('PLANE_COLOR_CTL_7_D', '0x737cc', '')
-+('PLANE_OFFSET_1_D', '0x731a4', ''
-+('PLANE_OFFSET_2_D', '0x732a4', '')
-+('PLANE_OFFSET_3_D', '0x733a4', '')
-+('PLANE_OFFSET_4_D', '0x734a4', '')
-+('PLANE_OFFSET_5_D', '0x735a4', '')
-+('PLANE_OFFSET_6_D', '0x736a4', '')
-+('PLANE_OFFSET_7_D', '0x737a4', '')
-+('PLANE_KEYMAX_1_D', '0x731a0', '')
-+('PLANE_KEYMAX_2_D', '0x732a0', '')
-+('PLANE_KEYMAX_3_D', '0x733a0', '')
-+('PLANE_KEYMAX_4_D', '0x734a0', '')
-+('PLANE_KEYMAX_5_D', '0x735a0', '')
-+('PLANE_KEYMAX_6_D', '0x736a0', '')
-+('PLANE_KEYMAX_7_D', '0x737a0', '')
-+('PLANE_KEYMSK_1_D', '0x73198', '')
-+('PLANE_KEYMSK_2_D', '0x73298', '')
-+('PLANE_KEYMSK_3_D', '0x73398', '')
-+('PLANE_KEYMSK_4_D', '0x73498', '')
-+('PLANE_KEYMSK_5_D', '0x73598', '')
-+('PLANE_KEYMSK_6_D', '0x73698', '')
-+('PLANE_KEYMSK_7_D', '0x73798', '')
-+('PLANE_KEYVAL_1_D', '0x73194', '')
-+('PLANE_KEYVAL_2_D', '0x73294', '')
-+('PLANE_KEYVAL_3_D', '0x73394', '')
-+('PLANE_KEYVAL_4_D', '0x73494', '')
-+('PLANE_KEYVAL_5_D', '0x73594', '')
-+('PLANE_KEYVAL_6_D', '0x73694', '')
-+('PLANE_KEYVAL_7_D', '0x73794', '')
-+('PLANE_STRIDE_1_D', '0x73188', '')
-+('PLANE_STRIDE_2_D', '0x73288', '')
-+('PLANE_STRIDE_3_D', '0x73388', '')
-+('PLANE_STRIDE_4_D', '0x73488', '')
-+('PLANE_STRIDE_5_D', '0x73588', '')
-+('PLANE_STRIDE_6_D', '0x73688', '')
-+('PLANE_STRIDE_7_D', '0x73788', '')
-+('PLANE_SURF_1_D', '0x7319c', '')
-+('PLANE_SURF_2_D', '0x7329c', '')
-+('PLANE_SURF_3_D', '0x7339c', '')
-+('PLANE_SURF_4_D', '0x7349c', '')
-+('PLANE_SURF_5_D', '0x7359c', '')
-+('PLANE_SURF_6_D', '0x7369c', '')
-+('PLANE_SURF_7_D', '0x7379c', '')
-+('PLANE_SURFLIVE_1_D', '0x731ac', '')
-+('PLANE_SURFLIVE_2_D', '0x732ac', '')
-+('PLANE_SURFLIVE_3_D', '0x733ac', '')
-+('PLANE_SURFLIVE_4_D', '0x734ac', '')
-+('PLANE_SURFLIVE_5_D', '0x735ac', '')
-+('PLANE_SURFLIVE_6_D', '0x736ac', '')
-+('PLANE_SURFLIVE_7_D', '0x737ac', '')
-+('PLANE_POS_1_D', '0x7318c', '')
-+('PLANE_POS_2_D', '0x7328c', '')
-+('PLANE_POS_3_D', '0x7338c', '')
-+('PLANE_POS_4_D', '0x7348c', '')
-+('PLANE_POS_5_D', '0x7358c', '')
-+('PLANE_POS_6_D', '0x7368c', '')
-+('PLANE_POS_7_D', '0x7378c', '')
-+('PLANE_SIZE_1_D', '0x73190', '')
-+('PLANE_SIZE_2_D', '0x73290', '')
-+('PLANE_SIZE_3_D', '0x73390', '')
-+('PLANE_SIZE_4_D', '0x73490', '')
-+('PLANE_SIZE_5_D', '0x73590', '')
-+('PLANE_SIZE_6_D', '0x73690', '')
-+('PLANE_SIZE_7_D', '0x73790', '')
-+('PLANE_WM_1_D_0', '0x73240', '')
-+('PLANE_WM_1_D_1', '0x73244', '')
-+('PLANE_WM_1_D_2', '0x73248', '')
-+('PLANE_WM_1_D_3', '0x7324c', '')
-+('PLANE_WM_1_D_4', '0x73250', '')
-+('PLANE_WM_1_D_5', '0x73254', '')
-+('PLANE_WM_1_D_6', '0x73258', '')
-+('PLANE_WM_1_D_7', '0x7325c', '')
-+('PLANE_WM_2_D_0', '0x73340', '')
-+('PLANE_WM_2_D_1', '0x73344', '')
-+('PLANE_WM_2_D_2', '0x73348', '')
-+('PLANE_WM_2_D_3', '0x7334c', '')
-+('PLANE_WM_2_D_4', '0x73350', '')
-+('PLANE_WM_2_D_5', '0x73354', '')
-+('PLANE_WM_2_D_6', '0x73358', '')
-+('PLANE_WM_2_D_7', '0x7335c', '')
-+('PLANE_WM_3_D_0', '0x73440', '')
-+('PLANE_WM_3_D_1', '0x73444', '')
-+('PLANE_WM_3_D_2', '0x73448', '')
-+('PLANE_WM_3_D_3', '0x7344c', '')
-+('PLANE_WM_3_D_4', '0x73450', '')
-+('PLANE_WM_3_D_5', '0x73454', '')
-+('PLANE_WM_3_D_6', '0x73458', '')
-+('PLANE_WM_3_D_7', '0x7345c', '')
-+('PLANE_WM_4_D_0', '0x73540', '')
-+('PLANE_WM_4_D_1', '0x73544', '')
-+('PLANE_WM_4_D_2', '0x73548', '')
-+('PLANE_WM_4_D_3', '0x7354c', '')
-+('PLANE_WM_4_D_4', '0x73550', '')
-+('PLANE_WM_4_D_5', '0x73554', '')
-+('PLANE_WM_4_D_6', '0x73558', '')
-+('PLANE_WM_4_D_7', '0x7355c', '')
-+('PLANE_WM_5_D_0', '0x73640', '')
-+('PLANE_WM_5_D_1', '0x73644', '')
-+('PLANE_WM_5_D_2', '0x73648', '')
-+('PLANE_WM_5_D_3', '0x7364c', '')
-+('PLANE_WM_5_D_4', '0x73650', '')
-+('PLANE_WM_5_D_5', '0x73654', '')
-+('PLANE_WM_5_D_6', '0x73658', '')
-+('PLANE_WM_5_D_7', '0x7365c', '')
-+('PLANE_WM_6_D_0', '0x73740', '')
-+('PLANE_WM_6_D_1', '0x73744', '')
-+('PLANE_WM_6_D_2', '0x73748', '')
-+('PLANE_WM_6_D_3', '0x7374c', '')
-+('PLANE_WM_6_D_4', '0x73750', '')
-+('PLANE_WM_6_D_5', '0x73754', '')
-+('PLANE_WM_6_D_6', '0x73758', '')
-+('PLANE_WM_6_D_7', '0x7375c', '')
-+('PLANE_WM_7_D_0', '0x73840', '')
-+('PLANE_WM_7_D_1', '0x73844', '')
-+('PLANE_WM_7_D_2', '0x73848', '')
-+('PLANE_WM_7_D_3', '0x7384c', '')
-+('PLANE_WM_7_D_4', '0x73850', '')
-+('PLANE_WM_7_D_5', '0x73854', '')
-+('PLANE_WM_7_D_6', '0x73858', '')
-+('PLANE_WM_7_D_7', '0x7385c', '')
-+('PLANE_WM_TRANS_1_D', '0x73268', '')
-+('PLANE_WM_TRANS_2_D', '0x73368', '')
-+('PLANE_WM_TRANS_3_D', '0x73468', '')
-+('PLANE_WM_TRANS_4_D', '0x73568', '')
-+('PLANE_WM_TRANS_5_D', '0x73668', '')
-+('PLANE_WM_TRANS_6_D', '0x73768', '')
-+('PLANE_WM_TRANS_7_D', '0x73868', '')
-+# PIPE_D_CURSOR_PLANE
-+('CUR_BUF_CFG_D', '0x7317c', '')
-+('CUR_BASE_D', '0x73084', '')
-+('CUR_CTL_D', '0x73080', '')
-+('CUR_FBC_CTL_D', '0x730a0', '')
-+('CUR_POS_D', '0x73088', '')
-+('CUR_SURFLIVE_D', '0x730ac', '')
-+('CUR_WM_0_D', '0x73140', '')
-+('CUR_WM_1_D', '0x73144', '')
-+('CUR_WM_2_D', '0x73148', '')
-+('CUR_WM_3_D', '0x7314c', '')
-+('CUR_WM_4_D', '0x73150', '')
-+('CUR_WM_5_D', '0x73154', '')
-+('CUR_WM_6_D', '0x73158', '')
-+('CUR_WM_7_D', '0x7315c', '')
-+('CUR_WM_TRANS_D', '0x73168', '')
-+#PIPE_SCALER_D
-+('PS_CTRL_1_D', '0x69980', '')
-+('PS_CTRL_2_D', '0x69a80', '')
-+('PS_ECC_STAT_1_D', '0x699d0', '')
-+('PS_ECC_STAT_2_D', '0x69ad0', '')
-+('PS_HPHASE_1_D', '0x69994', '')
-+('PS_HPHASE_2_D', '0x69a94', '')
-+('PS_HSCALE_1_D', '0x69990', '')
-+('PS_HSCALE_2_D', '0x69a90', '')
-+('PS_PWR_GATE_1_D', '0x69960', '')
-+('PS_PWR_GATE_2_D', '0x69a60', '')
-+('PS_VPHASE_1_D', '0x69988', '')
-+('PS_VPHASE_2_D', '0x69a88', '')
-+('PS_VSCALE_1_D', '0x69984', '')
-+('PS_VSCALE_2_D', '0x69a84', '')
-+('PS_WIN_POS_1_D', '0x69970', '')
-+('PS_WIN_POS_2_D', '0x69a70', '')
-+('PS_WIN_SZ_1_D', '0x69974', '')
-+('PS_WIN_SZ_2_D', '0x69a74', '')
-+#TRANSCODER_D_CONTROL
-+('TRANS_CONF_D', '0x73008', '')
-+#TRANSCODER_DSI_CONTROL
-+('TRANS_CONF_DSI0', '0x7b008', '')
-+('TRANS_CONF_DSI1', '0x7b808', '')
-+# TRANSCODER_D_TIMING
-+('TRANS_HBLANK_D', '0x63004', '')
-+('TRANS_HSYNC_D', '0x63008', '')
-+('TRANS_HTOTAL_D', '0x63000', '')
-+('TRANS_MULT_D', '0x6302c', '')
-+('TRANS_SPACE_D', '0x63024', '')
-+('TRANS_VBLANK_D', '0x63010', '')
-+('TRANS_VSYNC_D', '0x63014', '')
-+('TRANS_VSYNCSHIFT_D', '0x63028', '')
-+('TRANS_VTOTAL_D', '0x6300c', '')
-+# TRANSCODER_DSI_TIMING
-+('TRANS_HSYNC_DSI0', '0x6b008', '')
-+('TRANS_HSYNC_DSI1', '0x6b808', '')
-+('TRANS_HTOTAL_DSI0', '0x6b000', '')
-+('TRANS_HTOTAL_DSI1', '0x6b800', '')
-+('TRANS_SPACE_DSI0', '0x6b024', '')
-+('TRANS_SPACE_DSI1', '0x6b824', '')
-+('TRANS_VBLANK_DSI0', '0x6b010', '')
-+('TRANS_VBLANK_DSI1', '0x6b810', '')
-+('TRANS_VSYNC_DSI0', '0x6b014', '')
-+('TRANS_VSYNC_DSI1', '0x6b814', '')
-+('TRANS_VSYNCSHIFT_DSI0', '0x6b028', '')
-+('TRANS_VSYNCSHIFT_DSI1', '0x6b828', '')
-+('TRANS_VTOTAL_DSI0', '0x6b00c', '')
-+('TRANS_VTOTAL_DSI1', '0x6b80c', '')
-+# TRANSCODER_D_M_N
-+('TRANS_DATAM1_D', '0x63030', '')
-+('TRANS_DATAN1_D', '0x63034', '')
-+('TRANS_LINKM1_D', '0x63040', '')
-+('TRANS_LINKN1_D', '0x63044', '')
-+# TRANSCODER_D_DDI_CONTROL
-+('TRANS_DDI_FUNC_CTL_D', '0x63400', '')
-+('TRANS_MSA_MISC_D', '0x63410', '')
-+# TRANSCODER_DSI_DDI_CONTROL
-+('TRANS_DDI_FUNC_CTL_DSI0', '0x6b400', '')
-+('TRANS_DDI_FUNC_CTL_DSI1', '0x6bc00', '')
-+# MBUS_CTL
-+('MBUS_DBOX_CTL_D', '0x7303c', '')
-+# WATERMARK
-+('WM_LINETIME_D', '0x4527c', '')
-+
--- 
-2.7.4
+CI Bug Log - changes from CI_DRM_7758 -> IGTPW_3929
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_3929 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_module_load@reload-with-fault-injection:
+    - fi-cfl-8700k:       [PASS][1] -> [DMESG-WARN][2] ([i915#889])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7758/fi-cfl-8700k/igt@i915_module_load@reload-with-fault-injection.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/fi-cfl-8700k/igt@i915_module_load@reload-with-fault-injection.html
+    - fi-skl-6700k2:      [PASS][3] -> [INCOMPLETE][4] ([i915#671])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7758/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
+    - fi-skl-6770hq:      [PASS][5] -> [DMESG-WARN][6] ([i915#889])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7758/fi-skl-6770hq/igt@i915_module_load@reload-with-fault-injection.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/fi-skl-6770hq/igt@i915_module_load@reload-with-fault-injection.html
+    - fi-kbl-7500u:       [PASS][7] -> [INCOMPLETE][8] ([i915#879])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7758/fi-kbl-7500u/igt@i915_module_load@reload-with-fault-injection.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/fi-kbl-7500u/igt@i915_module_load@reload-with-fault-injection.html
+    - fi-skl-lmem:        [PASS][9] -> [DMESG-WARN][10] ([i915#889])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7758/fi-skl-lmem/igt@i915_module_load@reload-with-fault-injection.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/fi-skl-lmem/igt@i915_module_load@reload-with-fault-injection.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-cfl-8700k:       [PASS][11] -> [INCOMPLETE][12] ([i915#148])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7758/fi-cfl-8700k/igt@i915_pm_rpm@module-reload.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/fi-cfl-8700k/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live_blt:
+    - fi-hsw-4770r:       [PASS][13] -> [DMESG-FAIL][14] ([i915#725])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7758/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+
+  * igt@kms_chamelium@hdmi-crc-fast:
+    - fi-icl-u2:          [PASS][15] -> [FAIL][16] ([fdo#109635])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7758/fi-icl-u2/igt@kms_chamelium@hdmi-crc-fast.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/fi-icl-u2/igt@kms_chamelium@hdmi-crc-fast.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-hsw-peppy:       [PASS][17] -> [DMESG-WARN][18] ([i915#44])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7758/fi-hsw-peppy/igt@kms_frontbuffer_tracking@basic.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/fi-hsw-peppy/igt@kms_frontbuffer_tracking@basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_create@basic:
+    - fi-icl-dsi:         [DMESG-WARN][19] ([i915#109]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7758/fi-icl-dsi/igt@gem_exec_create@basic.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/fi-icl-dsi/igt@gem_exec_create@basic.html
+
+  * igt@gem_exec_suspend@basic-s0:
+    - {fi-ehl-1}:         [INCOMPLETE][21] ([i915#937]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7758/fi-ehl-1/igt@gem_exec_suspend@basic-s0.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/fi-ehl-1/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [FAIL][23] ([fdo#111096] / [i915#323]) -> [PASS][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7758/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-skl-6770hq:      [FAIL][25] ([i915#178]) -> [INCOMPLETE][26] ([i915#151])
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7758/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live_blt:
+    - fi-hsw-4770:        [DMESG-FAIL][27] ([i915#553] / [i915#725]) -> [DMESG-FAIL][28] ([i915#725])
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7758/fi-hsw-4770/igt@i915_selftest@live_blt.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/fi-hsw-4770/igt@i915_selftest@live_blt.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109635]: https://bugs.freedesktop.org/show_bug.cgi?id=109635
+  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
+  [i915#109]: https://gitlab.freedesktop.org/drm/intel/issues/109
+  [i915#148]: https://gitlab.freedesktop.org/drm/intel/issues/148
+  [i915#151]: https://gitlab.freedesktop.org/drm/intel/issues/151
+  [i915#178]: https://gitlab.freedesktop.org/drm/intel/issues/178
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
+  [i915#44]: https://gitlab.freedesktop.org/drm/intel/issues/44
+  [i915#553]: https://gitlab.freedesktop.org/drm/intel/issues/553
+  [i915#671]: https://gitlab.freedesktop.org/drm/intel/issues/671
+  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
+  [i915#879]: https://gitlab.freedesktop.org/drm/intel/issues/879
+  [i915#889]: https://gitlab.freedesktop.org/drm/intel/issues/889
+  [i915#937]: https://gitlab.freedesktop.org/drm/intel/issues/937
+
+
+Participating hosts (47 -> 46)
+------------------------------
+
+  Additional (3): fi-byt-j1900 fi-kbl-7560u fi-byt-n2820 
+  Missing    (4): fi-ilk-m540 fi-byt-squawks fi-bsw-cyan fi-hsw-4200u 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5371 -> IGTPW_3929
+
+  CI-20190529: 20190529
+  CI_DRM_7758: d19270ce1f367fbfc1ff3b539bcb50e11ded181f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_3929: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/index.html
+  IGT_5371: 1b2816124ec3dbd53b81725d39292f45d41d895b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3929/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
