@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BCE016FA0E
- for <igt-dev@lists.freedesktop.org>; Sat, 18 Jan 2020 13:59:46 +0000 (UTC)
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Sat, 18 Jan 2020 13:59:40 +0000
-Message-Id: <20200118135940.3497095-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] intel-ci: Use one ringfull example
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sat, 18 Jan 2020 14:27:24 -0000
+Message-ID: <157935764428.11510.2048481635761132351@emeril.freedesktop.org>
+References: <20200118135300.3496908-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200118135300.3496908-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaW50ZWwt?=
+ =?utf-8?q?ci=3A_Drop_gem=5Fctx=5Fswitch_from_fast_feedback?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,40 +14,117 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The principle under test is that we fill the ring and the kernel waits
-rather than overrun the ring buffer. We only need one test to exercise
-that basic behaviour in BAT.
+== Series Details ==
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
----
- tests/intel-ci/fast-feedback.testlist | 3 ---
- 1 file changed, 3 deletions(-)
+Series: intel-ci: Drop gem_ctx_switch from fast feedback
+URL   : https://patchwork.freedesktop.org/series/72232/
+State : success
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 8c574d910..40d273c1d 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -39,10 +39,7 @@ igt@gem_mmap@basic
- igt@gem_mmap_gtt@basic
- igt@gem_render_linear_blits@basic
- igt@gem_render_tiled_blits@basic
--igt@gem_ringfill@basic-default
--igt@gem_ringfill@basic-default-interruptible
- igt@gem_ringfill@basic-default-forked
--igt@gem_ringfill@basic-default-fd
- igt@gem_sync@basic-all
- igt@gem_sync@basic-each
- igt@gem_tiled_blits@basic
--- 
-2.25.0
+== Summary ==
 
+CI Bug Log - changes from CI_DRM_7772 -> IGTPW_3941
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3941/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_3941 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-guc:         [PASS][1] -> [FAIL][2] ([i915#579])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7772/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3941/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live_blt:
+    - fi-hsw-4770:        [PASS][3] -> [DMESG-FAIL][4] ([i915#563])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7772/fi-hsw-4770/igt@i915_selftest@live_blt.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3941/fi-hsw-4770/igt@i915_selftest@live_blt.html
+
+  * igt@i915_selftest@live_gem_contexts:
+    - fi-cfl-8700k:       [PASS][5] -> [INCOMPLETE][6] ([i915#424])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7772/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3941/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [PASS][7] -> [FAIL][8] ([fdo#111407])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7772/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3941/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_module_load@reload-with-fault-injection:
+    - fi-skl-6700k2:      [INCOMPLETE][9] ([i915#671]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7772/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3941/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-skl-6770hq:      [FAIL][11] ([i915#178]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7772/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3941/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-kbl-guc:         [SKIP][13] ([fdo#109271]) -> [FAIL][14] ([i915#138])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7772/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3941/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
+  [i915#138]: https://gitlab.freedesktop.org/drm/intel/issues/138
+  [i915#178]: https://gitlab.freedesktop.org/drm/intel/issues/178
+  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
+  [i915#563]: https://gitlab.freedesktop.org/drm/intel/issues/563
+  [i915#579]: https://gitlab.freedesktop.org/drm/intel/issues/579
+  [i915#671]: https://gitlab.freedesktop.org/drm/intel/issues/671
+
+
+Participating hosts (40 -> 42)
+------------------------------
+
+  Additional (7): fi-bdw-5557u fi-hsw-peppy fi-snb-2520m fi-ivb-3770 fi-elk-e7500 fi-skl-lmem fi-snb-2600 
+  Missing    (5): fi-bsw-n3050 fi-byt-squawks fi-bsw-cyan fi-byt-n2820 fi-byt-clapper 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5372 -> IGTPW_3941
+
+  CI-20190529: 20190529
+  CI_DRM_7772: f65c394056d8637ff151fa83d5d1613adc0932d2 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_3941: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3941/index.html
+  IGT_5372: 0d00a27fbbd4d4a77d24499ea9811e07e65eb0ac @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3941/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
