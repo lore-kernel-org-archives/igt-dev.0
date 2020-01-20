@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F51E6E91D
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Jan 2020 11:58:13 +0000 (UTC)
-Date: Mon, 20 Jan 2020 13:58:10 +0200
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C9746E920
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Jan 2020 12:02:11 +0000 (UTC)
+Date: Mon, 20 Jan 2020 14:02:08 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200120115810.GV25209@platvala-desk.ger.corp.intel.com>
-References: <20200117075449.6928-1-zbigniew.kempczynski@intel.com>
- <157926915673.2389.14208125162387943918@skylake-alporthouse-com>
+Message-ID: <20200120120208.GW25209@platvala-desk.ger.corp.intel.com>
+References: <20200117091749.1606-1-mika.kahola@intel.com>
+ <20200117121305.GT25209@platvala-desk.ger.corp.intel.com>
+ <357202513f72d3e36517dfffacdc49577ab786c4.camel@intel.com>
+ <20200117131516.GU25209@platvala-desk.ger.corp.intel.com>
+ <da99bfa3432a4c4d267e29bbffc9a50f2b58855b.camel@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <157926915673.2389.14208125162387943918@skylake-alporthouse-com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_set: Adding combinatorics
- facility
+In-Reply-To: <da99bfa3432a4c4d267e29bbffc9a50f2b58855b.camel@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane_lowres: Test only with
+ one plane
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,35 +22,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: "Kahola, Mika" <mika.kahola@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBKYW4gMTcsIDIwMjAgYXQgMDE6NTI6MzZQTSArMDAwMCwgQ2hyaXMgV2lsc29uIHdy
-b3RlOgo+IFF1b3RpbmcgWmJpZ25pZXcgS2VtcGN6ecWEc2tpICgyMDIwLTAxLTE3IDA3OjU0OjQ5
-KQo+ID4gRHluYW1pYyB0ZXN0cyBnaXZlcyB1cyBuZXcgbWV0aG9kIHRvIGNyZWF0ZSB0ZXN0cyBk
-ZXBlbmRpbmcgb24gdGhlCj4gPiBoYXJkd2FyZS9zb2Z0d2FyZSBjYXBhYmlsaXRpZXMuIFRvIGNo
-ZWNrIGNvdmVyYWdlIHNvbWUgdGVzdHMgcmVxdWlyZQo+ID4gdmVyaWZpY2F0aW9uIG92ZXIgc29t
-ZSBzZXQgb2Ygb2JqZWN0cy9kYXRhLiBUbyBtYWtlIGxpZmUgZWFzaWVyCj4gPiB3aXRoIGNvbWJp
-bmF0b3JpY3MgdGhpcyBwYXRjaCBpbnRyb2R1Y2VzIGlndF9zZXQuIEN1cnJlbnRseSBpdCBzdXBw
-b3J0cwo+ID4gaXRlcmF0aW5nIG92ZXIgc2V0IHRvIGdldCBzdWJzZXRzLCBjb21iaW5hdGlvbnMg
-YW5kIG11bHRpY29tYmluYXRpb25zLgo+ID4gQ29kZSBoYXMgc29tZSBsaW1pdGF0aW9uIChzZXQv
-c3Vic2V0IGNhbm5vdCBiZSBsYXJnZXIgdGhhbiAxNiBlbGVtZW50cywKPiA+IHdoYXQgaXMgZW5v
-dWdoIGZvciBtb3N0IGNhc2VzKS4KPiAKPiBJIGhhdmUgdG8gc2F5LCB0aGlzIGxvb2tzIGxpa2Ug
-aXQgaXMgZ29pbmcgdG8gYmUgdmVyeSwgdmVyeSB1c2VmdWwuIEFsbAo+IHRob3NlIHRpbWVzIHdo
-ZXJlIEkndmUgdXNlZAo+IAlmb3JfZWFjaF9lbmdpbmUgewo+IAkJZm9yX2VhY2hfZW5naW5lIHsK
-PiAJCX0KPiAJfQo+IGNhbiBiZSByZWR1Y2VkIHRvIGEgc3RhbmRhcmQgY29tYmluYXRvcmlhbCBz
-ZXQsIHdpdGggaWd0X2R5bmFtaWMKPiBsYWJlbGxpbmcgdGhyb3duIG9uIHRvcC4KPiAKPiBQZXRy
-aSwgY2FuIHlvdSBzdWdnZXN0IGhvdyB0byB3cml0ZSB0aGUgc2VsZnRlc3RzIGZvciBpZ3Q/IFdl
-IGRlZmluaXRlbHkKPiBuZWVkIGEgZmV3IHRvIHZlcmlmeSBpdCB3b3JrcyBhcyBleHBlY3RlZCBh
-bmQgcHJvdmlkZSBhIGZldyBzaW1wbGUKPiBleGFtcGxlcy4KCgpsaWIvdGVzdHMvKi5jCgppZ3Rf
-YXVkaW8uYyBhbmQgaWd0X2VkaWQuYyBhcmUgYmV0dGVyIGV4YW1wbGVzIHRoYW4gdGhlIG9uZXMg
-dGVzdGluZwp0aGF0IHRoZSBpZ3RfbWFnaWNfc3R1ZmYgbWFjcm9zIHdvcmtzIHByb3Blcmx5LiBU
-aGV5IG1pZ2h0IGFsc28gbG9vayBhCmJpdCBmYW1pbGlhciBpbiBzdHJ1Y3R1cmUuLi4KCgotLSAK
-UGV0cmkgTGF0dmFsYQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
-dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+On Fri, Jan 17, 2020 at 04:35:37PM +0200, Kahola, Mika wrote:
+> On Fri, 2020-01-17 at 15:15 +0200, Petri Latvala wrote:
+> > On Fri, Jan 17, 2020 at 02:44:40PM +0200, Kahola, Mika wrote:
+> > > On Fri, 2020-01-17 at 14:13 +0200, Petri Latvala wrote:
+> > > > On Fri, Jan 17, 2020 at 11:17:49AM +0200, Mika Kahola wrote:
+> > > > > The test is intended to test resolution changes from higher to
+> > > > > lower and back. We can test this with only one plane and we
+> > > > > don't
+> > > > > need to run through all planes. This will save significant
+> > > > > amount
+> > > > > of test execution time.
+> > > > > 
+> > > > > Fix for
+> > > > > Bugzilla: https://gitlab.freedesktop.org/drm/intel/issues/899
+> > > > 
+> > > > I'm having a hard time understanding how this change fixes this
+> > > > issue.
+> > > 
+> > > For some reason crc's don't match if we loop through multiple
+> > > overlay
+> > > planes. The reference image has primary, first overlay and cursors
+> > > plane. Crc already fails if we compare the reference with the image
+> > > having primary, second overlay and cursor plane. This I have been
+> > > testing with TGL.
+> > 
+> > 
+> > Commit message talks about saving test execution time but this
+> > explanation is about working around failures.
+> Right. I should have been more verbal about the commit message. On TGL
+> running a single subtest takes ~15s with one plane of each type. If we
+> loop through all planes, it takes ~55s.
+
+Ok fair enough.
+
+> > What is actually broken and is this working around an issue or hiding
+> > it? Is it always the same plane combination failing, every test
+> > round?
+> > 
+> > (Am I reading the test wrong though, as far as I can see there's just
+> > two planes in use at a time, primary and one other...)
+> That's true. The crc's are ok with overlay plane[0] but has a mismatch
+> on the round plane[1]. Should we draw references too with all the
+> overlay planes instead? Any suggestions how to handle this?
+> 
+> Originally, we tested only with the first overlay plane. This is not
+> about testing the plane but more on testing resolution changes. That's
+> why I suggested to take a step back and test only with one plane.
+
+
+The thumb rule is that we have a test case for all different
+behaviours of the driver, and incidentally for different behaviours of
+the hardware because the kernel is supposed to handle the
+differences. I suppose the pertinent question here is: Does the driver
+have different code paths for resolution changes for different plane
+usage?
+
+
+-- 
+Petri Latvala
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
