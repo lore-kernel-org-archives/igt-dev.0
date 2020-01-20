@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E6586EB40
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Jan 2020 22:03:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D1DD6EB3D
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Jan 2020 22:03:28 +0000 (UTC)
 From: Imre Deak <imre.deak@intel.com>
-Date: Tue, 21 Jan 2020 00:03:20 +0200
-Message-Id: <20200120220320.17092-3-imre.deak@intel.com>
+Date: Tue, 21 Jan 2020 00:03:19 +0200
+Message-Id: <20200120220320.17092-2-imre.deak@intel.com>
 In-Reply-To: <20200120220320.17092-1-imre.deak@intel.com>
 References: <20200120220320.17092-1-imre.deak@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/3] lib/igt_fb: Fix creating FBs on
- platforms w/o HW detiling
+Subject: [igt-dev] [PATCH i-g-t 2/3] lib/igt_fb: Use render copy/blit for
+ tiled formats on platforms w/o HW detiling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,36 +24,48 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On platforms w/o HW detiling don't fail creating the FB due to the
-expected error from the set_tiling IOCTL.
-
-Most of the tests use a cairo surface to draw, which don't depend on HW
-detiling. Other tests (using lib/igt_draw.c or drawing to the FB
-directly, like kms_draw_crc, kms_frontbuffer) are failing atm and will
-need to be fixed separately.
+On platforms without HW detiling use render copy or blitting to convert
+between a tiled and a linear framebuffer.
 
 Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
- lib/igt_fb.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ lib/igt_fb.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index b5b1750e..ccb76455 100644
+index c81b9de8..b5b1750e 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -944,9 +944,10 @@ static int create_bo_for_fb(struct igt_fb *fb)
+@@ -1975,17 +1975,27 @@ static bool blitter_ok(const struct igt_fb *fb)
+ 	return true;
+ }
  
- 		if (is_i915_device(fd)) {
- 			fb->gem_handle = gem_create(fd, fb->size);
--			gem_set_tiling(fd, fb->gem_handle,
--				       igt_fb_mod_to_tiling(fb->modifier),
--				       fb->strides[0]);
-+			if (gem_has_legacy_hw_tiling(fd))
-+				gem_set_tiling(fd, fb->gem_handle,
-+					       igt_fb_mod_to_tiling(fb->modifier),
-+					       fb->strides[0]);
- 		} else if (is_vc4_device(fd)) {
- 			fb->gem_handle = igt_vc4_create_bo(fd, fb->size);
++static bool hw_can_detile(const struct igt_fb *fb)
++{
++	if (fb->modifier == DRM_FORMAT_MOD_NONE)
++		return true;
++
++	if (!gem_has_legacy_hw_tiling(fb->fd))
++		return false;
++
++	return fb->modifier != I915_FORMAT_MOD_Yf_TILED;
++}
++
+ static bool use_enginecopy(const struct igt_fb *fb)
+ {
+ 	return is_ccs_modifier(fb->modifier) ||
+-		(fb->modifier == I915_FORMAT_MOD_Yf_TILED &&
+-		 !blitter_ok(fb));
++		(!hw_can_detile(fb) && !blitter_ok(fb));
+ }
+ 
+ static bool use_blitter(const struct igt_fb *fb)
+ {
+ 	return (fb->modifier == I915_FORMAT_MOD_Y_TILED ||
+-		fb->modifier == I915_FORMAT_MOD_Yf_TILED) &&
++		!hw_can_detile(fb)) &&
+ 		blitter_ok(fb);
+ }
  
 -- 
 2.23.1
