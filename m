@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6ECA06E8D5
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Jan 2020 11:19:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 039586E8DC
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Jan 2020 11:19:13 +0000 (UTC)
 From: Kunal Joshi <kunal1.joshi@intel.com>
-Date: Mon, 20 Jan 2020 09:50:27 +0530
-Message-Id: <1579494027-2018-4-git-send-email-kunal1.joshi@intel.com>
+Date: Mon, 20 Jan 2020 09:50:25 +0530
+Message-Id: <1579494027-2018-2-git-send-email-kunal1.joshi@intel.com>
 In-Reply-To: <1579494027-2018-1-git-send-email-kunal1.joshi@intel.com>
 References: <1579494027-2018-1-git-send-email-kunal1.joshi@intel.com>
-Subject: [igt-dev] [PATCH i-g-t v2 3/3] Added a subtest where chamelium acts
- as a tiled panel.
+Subject: [igt-dev] [PATCH i-g-t v2 1/3] Make basic chamelium function
+ accessible to other tests.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,188 +25,283 @@ To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>, martin.peres@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Split kms_dp_tiled_display into to two subtest.First to execute the
-basic test with physical tiled panel and second with chamelium.
+There are many use case where we can integrate chamelium with other tests,
+Migrating some of basic chamelium functions to igt_chamelium lib to avoid
+Code rewriting.
 
-v2:Revised to just have basic test if chamelium dependencies are not present.
-   Reset ports after the test executes.Changed subtest name from with-chamelium
-   to basic-test-pattern-with-chamelium
+v2: Moved one more function reset_state from tests/kms_chamelium to
+lib/igt_chamelium.
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 Signed-off-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_dp_tiled_display.c | 111 +++++++++++++++++++++++++++++++++----------
- 1 file changed, 87 insertions(+), 24 deletions(-)
+ lib/igt_chamelium.c   | 85 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_chamelium.h   | 28 +++++++++++++++++
+ tests/kms_chamelium.c | 81 +-----------------------------------------------
+ 3 files changed, 114 insertions(+), 80 deletions(-)
 
-diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
-index b1160fe..21c13d9 100644
---- a/tests/kms_dp_tiled_display.c
-+++ b/tests/kms_dp_tiled_display.c
-@@ -40,6 +40,7 @@
- #include "poll.h"
- #include "drm_mode.h"
- #include "drm_fourcc.h"
-+#include "igt_edid.h"
+diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+index 9971f51..8b910bf 100644
+--- a/lib/igt_chamelium.c
++++ b/lib/igt_chamelium.c
+@@ -132,6 +132,91 @@ static struct chamelium *cleanup_instance;
+ static void chamelium_do_calculate_fb_crc(cairo_surface_t *fb_surface,
+ 					  igt_crc_t *out);
  
- IGT_TEST_DESCRIPTION("Test for Transcoder Port Sync for Display Port Tiled Displays");
- 
-@@ -61,6 +62,13 @@ typedef struct {
- 	struct timeval first_ts;
- } data_t;
- 
-+void basic_test(data_t *data, drmEventContext *drm_event, struct pollfd *pfd);
-+
-+#ifdef HAVE_CHAMELIUM
-+static void test_with_chamelium(data_t data,
-+				struct data_chamelium_t *data_cham);
-+#endif
-+
- static int drm_property_is_tile(drmModePropertyPtr prop)
- {
- 	return (strcmp(prop->name, "TILE") ? 0 : 1) &&
-@@ -206,7 +214,6 @@ static void test_cleanup(data_t *data)
- 	igt_display_commit2(data->display, data->commit);
- 	memset(conns, 0, sizeof(data_connector_t) * data->num_h_tiles);
- }
--
- static void setup_mode(data_t *data)
- {
- 	int count = 0, prev = 0, i = 0;
-@@ -380,21 +387,84 @@ static bool got_all_page_flips(data_t *data)
- 	return true;
- }
- 
-+#ifdef HAVE_CHAMELIUM
-+static void test_with_chamelium(data_t data,
-+				struct data_chamelium_t *data_cham)
++void
++require_displayport_connector_present(struct data_chamelium_t *data,
++							    unsigned int type)
 +{
 +	int i, count = 0;
-+	uint8_t htile = 2, vtile = 1;
-+	struct edid **edid;
++	bool found = false;
 +
-+	data_cham->chamelium = chamelium_init(data.drm_fd);
-+	igt_assert(data_cham->chamelium);
-+	data_cham->ports = chamelium_get_ports
-+		(data_cham->chamelium, &data_cham->port_count);
-+	require_displayport_connector_present(
-+		data_cham, DRM_MODE_CONNECTOR_DisplayPort);
-+	edid = igt_kms_get_tiled_edid(htile-1, vtile-1);
-+
-+	for (i = 0; i < 2; i++)
-+		data_cham->edids[i] =
-+			chamelium_new_edid(data_cham->chamelium, edid[i]);
-+
-+	for (i = 0; i < data_cham->port_count; i++) {
-+		if (chamelium_port_get_type(data_cham->ports[i]) ==
-+				DRM_MODE_CONNECTOR_DisplayPort) {
-+
-+			chamelium_port_set_tiled_edid(data_cham->chamelium,
-+				data_cham->ports[i], data_cham->edids[i]);
-+			chamelium_plug(data_cham->chamelium,
-+				       data_cham->ports[i]);
-+			wait_for_connector(data_cham, data_cham->ports[i],
-+				DRM_MODE_CONNECTED);
++	for (i = 0; i < data->port_count && !found; i++) {
++		if (chamelium_port_get_type(data->ports[i]) == type)
 +			count++;
-+		}
 +		if (count == 2)
-+			break;
++			found = true;
++	}
++	igt_require_f(found,
++		"Need atleast 2 ports of type %s connected, found %d\n",
++		kmstest_connector_type_str(type), count);
++}
++
++drmModeConnection
++reprobe_connector(struct data_chamelium_t *data, struct chamelium_port *port)
++{
++	drmModeConnector *connector;
++	drmModeConnection status;
++
++	igt_debug("Reprobing %s...\n", chamelium_port_get_name(port));
++	connector = chamelium_port_get_connector(data->chamelium, port, true);
++	igt_assert(connector);
++	status = connector->connection;
++
++	drmModeFreeConnector(connector);
++	return status;
++}
++
++const char *connection_str(drmModeConnection c)
++{
++	switch (c) {
++	case DRM_MODE_CONNECTED:
++		return "connected";
++	case DRM_MODE_DISCONNECTED:
++		return "disconnected";
++	case DRM_MODE_UNKNOWNCONNECTION:
++		return "unknown";
++	}
++	assert(0); /* unreachable */
++}
++
++void
++wait_for_connector(struct data_chamelium_t *data, struct chamelium_port *port,
++		   drmModeConnection status)
++{
++	igt_debug("Waiting for %s to get %s...\n",
++		chamelium_port_get_name(port), connection_str(status));
++
++	/*
++	 * Rely on simple reprobing so we don't fail tests that don't require
++	 * that hpd events work in the event that hpd doesn't work on the system
++	 */
++	igt_until_timeout(HOTPLUG_TIMEOUT) {
++	if (reprobe_connector(data, port) == status)
++		return;
++
++	usleep(50000);
++
++	}
++	igt_assert_f(false, "Timed out waiting for %s to get %s\n",
++		chamelium_port_get_name(port), connection_str(status));
++}
++
++void
++reset_state(struct data_chamelium_t *data, struct chamelium_port *port)
++{
++	int p;
++
++	chamelium_reset(data->chamelium);
++
++	if (port) {
++		wait_for_connector(data, port, DRM_MODE_DISCONNECTED);
++	} else {
++		for (p = 0; p < data->port_count; p++) {
++			port = data->ports[p];
++			wait_for_connector(data, port, DRM_MODE_DISCONNECTED);
++		}
 +	}
 +}
-+#endif
 +
-+void basic_test(data_t *data, drmEventContext *drm_event, struct pollfd *pfd)
-+{
-+		int ret;
-+
-+		get_number_of_h_tiles(data);
-+		igt_debug("Number of Horizontal Tiles: %d\n",
-+			  data->num_h_tiles);
-+		igt_require(data->num_h_tiles > 0);
-+		data->conns = calloc(data->num_h_tiles,
-+				     sizeof(data_connector_t));
-+		igt_assert(data->conns);
-+
-+		get_connectors(data);
-+		setup_mode(data);
-+		setup_framebuffer(data);
-+		timerclear(&data->first_ts);
-+		igt_display_commit_atomic(data->display,
-+			DRM_MODE_ATOMIC_NONBLOCK |
-+			DRM_MODE_PAGE_FLIP_EVENT, data);
-+		while (!got_all_page_flips(data)) {
-+			ret = poll(pfd, 1, 1000);
-+			igt_assert(ret == 1);
-+			drmHandleEvent(data->drm_fd, drm_event);
-+		}
-+}
-+
- igt_main
- {
- 	igt_display_t display;
- 	data_t data = {0};
-+	#ifdef HAVE_CHAMELIUM
-+	struct data_chamelium_t data_cham = {0};
-+	#endif
- 	struct pollfd pfd = {0};
- 	drmEventContext drm_event = {0};
--	int ret;
--
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
--
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&display, data.drm_fd);
- 		igt_display_reset(&display);
--
- 		data.display = &display;
- 		pfd.fd = data.drm_fd;
- 		pfd.events = POLLIN;
-@@ -402,33 +472,26 @@ igt_main
- 		drm_event.page_flip_handler2 = page_flip_handler;
- 		data.commit = data.display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY;
- 		igt_require(data.commit == COMMIT_ATOMIC);
--
--		get_number_of_h_tiles(&data);
--		igt_debug("Number of Horizontal Tiles: %d\n", data.num_h_tiles);
--		igt_require(data.num_h_tiles > 0);
--		data.conns = calloc(data.num_h_tiles, sizeof(data_connector_t));
- 	}
+ /**
+  * chamelium_get_ports:
+  * @chamelium: The Chamelium instance to use
+diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
+index 08705a9..71080f4 100644
+--- a/lib/igt_chamelium.h
++++ b/lib/igt_chamelium.h
+@@ -25,6 +25,8 @@
  
- 	igt_describe("Make sure the Tiled CRTCs are synchronized and we get "
- 		     "page flips for all tiled CRTCs in one vblank.");
- 	igt_subtest("basic-test-pattern") {
--		igt_assert(data.conns);
+ #ifndef IGT_CHAMELIUM_H
+ #define IGT_CHAMELIUM_H
++#define TEST_EDID_COUNT 5
++#define HOTPLUG_TIMEOUT 20
+ 
+ #include "config.h"
+ 
+@@ -32,6 +34,7 @@
+ #include <xf86drmMode.h>
+ 
+ #include "igt_debugfs.h"
++#include "igt_kms.h"
+ 
+ struct igt_fb;
+ struct edid;
+@@ -81,6 +84,17 @@ struct chamelium_infoframe {
+ 
+ struct chamelium_edid;
+ 
++struct data_chamelium_t {
++	struct chamelium *chamelium;
++	struct chamelium_port **ports;
++	igt_display_t display;
++	int port_count;
++
++	int drm_fd;
++
++	struct chamelium_edid *edids[TEST_EDID_COUNT];
++};
++
+ /**
+  * CHAMELIUM_MAX_PORTS: the maximum number of ports supported by igt_chamelium.
+  *
+@@ -210,4 +224,18 @@ void chamelium_destroy_frame_dump(struct chamelium_frame_dump *dump);
+ void chamelium_destroy_audio_file(struct chamelium_audio_file *audio_file);
+ void chamelium_infoframe_destroy(struct chamelium_infoframe *infoframe);
+ 
++void
++require_displayport_connector_present(struct data_chamelium_t *data,
++							unsigned int type);
++
++drmModeConnection
++reprobe_connector(struct data_chamelium_t *data, struct chamelium_port *port);
++
++const char *connection_str(drmModeConnection c);
++
++void
++wait_for_connector(struct data_chamelium_t *data, struct chamelium_port *port,
++		   drmModeConnection status);
++void
++reset_state(struct data_chamelium_t *data, struct chamelium_port *port);
+ #endif /* IGT_CHAMELIUM_H */
+diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
+index 5c4a189..972f045 100644
+--- a/tests/kms_chamelium.c
++++ b/tests/kms_chamelium.c
+@@ -43,20 +43,9 @@ enum test_edid {
+ 	TEST_EDID_DP_AUDIO,
+ 	TEST_EDID_ASPECT_RATIO,
+ };
+-#define TEST_EDID_COUNT 5
+ 
+-typedef struct {
+-	struct chamelium *chamelium;
+-	struct chamelium_port **ports;
+-	igt_display_t display;
+-	int port_count;
 -
--		get_connectors(&data);
--		setup_mode(&data);
--		setup_framebuffer(&data);
--		timerclear(&data.first_ts);
--		igt_display_commit_atomic(data.display, DRM_MODE_ATOMIC_NONBLOCK |
--					  DRM_MODE_PAGE_FLIP_EVENT, &data);
--		while (!got_all_page_flips(&data)) {
--			ret = poll(&pfd, 1, 1000);
--			igt_assert(ret == 1);
--			drmHandleEvent(data.drm_fd, &drm_event);
+-	int drm_fd;
+-
+-	struct chamelium_edid *edids[TEST_EDID_COUNT];
+-} data_t;
++typedef struct data_chamelium_t data_t;
+ 
+-#define HOTPLUG_TIMEOUT 20 /* seconds */
+ #define ONLINE_TIMEOUT 20 /* seconds */
+ 
+ #define HPD_STORM_PULSE_INTERVAL_DP 100 /* ms */
+@@ -106,57 +95,6 @@ require_connector_present(data_t *data, unsigned int type)
+ 		      kmstest_connector_type_str(type));
+ }
+ 
+-static drmModeConnection
+-reprobe_connector(data_t *data, struct chamelium_port *port)
+-{
+-	drmModeConnector *connector;
+-	drmModeConnection status;
+-
+-	igt_debug("Reprobing %s...\n", chamelium_port_get_name(port));
+-	connector = chamelium_port_get_connector(data->chamelium, port, true);
+-	igt_assert(connector);
+-	status = connector->connection;
+-
+-	drmModeFreeConnector(connector);
+-	return status;
+-}
+-
+-static const char *connection_str(drmModeConnection c)
+-{
+-	switch (c) {
+-	case DRM_MODE_CONNECTED:
+-		return "connected";
+-	case DRM_MODE_DISCONNECTED:
+-		return "disconnected";
+-	case DRM_MODE_UNKNOWNCONNECTION:
+-		return "unknown";
+-	}
+-	assert(0); /* unreachable */
+-}
+-
+-static void
+-wait_for_connector(data_t *data, struct chamelium_port *port,
+-		   drmModeConnection status)
+-{
+-	igt_debug("Waiting for %s to get %s...\n",
+-		  chamelium_port_get_name(port), connection_str(status));
+-
+-	/*
+-	 * Rely on simple reprobing so we don't fail tests that don't require
+-	 * that hpd events work in the event that hpd doesn't work on the system
+-	 */
+-	igt_until_timeout(HOTPLUG_TIMEOUT) {
+-		if (reprobe_connector(data, port) == status) {
+-			return;
 -		}
 -
-+		basic_test(&data, &drm_event, &pfd);
- 		test_cleanup(&data);
- 	}
+-		usleep(50000);
+-	}
+-
+-	igt_assert_f(false, "Timed out waiting for %s to get %s\n",
+-		  chamelium_port_get_name(port), connection_str(status));
+-}
+-
+ static int chamelium_vga_modes[][2] = {
+ 	{ 1600, 1200 },
+ 	{ 1920, 1200 },
+@@ -225,23 +163,6 @@ check_analog_bridge(data_t *data, struct chamelium_port *port)
+ 	return false;
+ }
  
-+	#ifdef HAVE_CHAMELIUM
-+	igt_subtest_f("basic-test-pattern-with-chamelium") {
-+		int i;
-+
-+		test_with_chamelium(data, &data_cham);
-+		basic_test(&data, &drm_event, &pfd);
-+		test_cleanup(&data);
-+		for (i = 0; i < data_cham.port_count; i++)
-+			reset_state(&data_cham, data_cham.ports[i]);
-+	}
-+	#endif
- 	igt_fixture {
- 		free(data.conns);
- 		close(data.drm_fd);
+-static void
+-reset_state(data_t *data, struct chamelium_port *port)
+-{
+-	int p;
+-
+-	chamelium_reset(data->chamelium);
+-
+-	if (port) {
+-		wait_for_connector(data, port, DRM_MODE_DISCONNECTED);
+-	} else {
+-		for (p = 0; p < data->port_count; p++) {
+-			port = data->ports[p];
+-			wait_for_connector(data, port, DRM_MODE_DISCONNECTED);
+-		}
+-	}
+-}
+-
+ static const char test_basic_hotplug_desc[] =
+ 	"Check that we get uevents and updated connector status on "
+ 	"hotplug and unplug";
 -- 
 2.7.4
 
