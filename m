@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D1DD6EB3D
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Jan 2020 22:03:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED9446EB3D
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Jan 2020 22:03:27 +0000 (UTC)
 From: Imre Deak <imre.deak@intel.com>
-Date: Tue, 21 Jan 2020 00:03:19 +0200
-Message-Id: <20200120220320.17092-2-imre.deak@intel.com>
-In-Reply-To: <20200120220320.17092-1-imre.deak@intel.com>
-References: <20200120220320.17092-1-imre.deak@intel.com>
+Date: Tue, 21 Jan 2020 00:03:18 +0200
+Message-Id: <20200120220320.17092-1-imre.deak@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/3] lib/igt_fb: Use render copy/blit for
- tiled formats on platforms w/o HW detiling
+Subject: [igt-dev] [PATCH i-g-t 1/3] lib/ioctl_wrappers: Query if device
+ supports set/get legacy tiling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,48 +22,58 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On platforms without HW detiling use render copy or blitting to convert
-between a tiled and a linear framebuffer.
+From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 
+Add a method to query if the device supports setting and getting legacy
+tiling formats for buffer objects.
+
+Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
- lib/igt_fb.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ lib/ioctl_wrappers.c | 17 +++++++++++++++++
+ lib/ioctl_wrappers.h |  1 +
+ 2 files changed, 18 insertions(+)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index c81b9de8..b5b1750e 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -1975,17 +1975,27 @@ static bool blitter_ok(const struct igt_fb *fb)
- 	return true;
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 627717d2..c1abb575 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -133,6 +133,23 @@ __gem_get_tiling(int fd, struct drm_i915_gem_get_tiling *arg)
+ 	return err;
  }
  
-+static bool hw_can_detile(const struct igt_fb *fb)
++/**
++ * gem_has_legacy_hw_tiling:
++ * @fd: open i915 drm file descriptor
++ *
++ * Feature check to query if the device supports setting/getting
++ * legacy tiling formats for buffer objects
++ *
++ * Returns: True if tiling is supported
++ */
++bool
++gem_has_legacy_hw_tiling(int fd)
 +{
-+	if (fb->modifier == DRM_FORMAT_MOD_NONE)
-+		return true;
++	struct drm_i915_gem_get_tiling arg = {};
 +
-+	if (!gem_has_legacy_hw_tiling(fb->fd))
-+		return false;
-+
-+	return fb->modifier != I915_FORMAT_MOD_Yf_TILED;
++	return (__gem_get_tiling(fd, &arg) != -EOPNOTSUPP);
 +}
 +
- static bool use_enginecopy(const struct igt_fb *fb)
- {
- 	return is_ccs_modifier(fb->modifier) ||
--		(fb->modifier == I915_FORMAT_MOD_Yf_TILED &&
--		 !blitter_ok(fb));
-+		(!hw_can_detile(fb) && !blitter_ok(fb));
- }
+ /**
+  * gem_get_tiling:
+  * @fd: open i915 drm file descriptor
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index 7614e688..0ea77738 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -146,6 +146,7 @@ void gem_require_caching(int fd);
+ void gem_require_ring(int fd, unsigned ring);
+ bool gem_has_mocs_registers(int fd);
+ void gem_require_mocs_registers(int fd);
++bool gem_has_legacy_hw_tiling(int fd);
  
- static bool use_blitter(const struct igt_fb *fb)
- {
- 	return (fb->modifier == I915_FORMAT_MOD_Y_TILED ||
--		fb->modifier == I915_FORMAT_MOD_Yf_TILED) &&
-+		!hw_can_detile(fb)) &&
- 		blitter_ok(fb);
- }
+ #define gem_has_ring(f, r) gem_context_has_engine(f, 0, r)
  
 -- 
 2.23.1
