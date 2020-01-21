@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 271916ED08
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2020 13:45:09 +0000 (UTC)
-Date: Tue, 21 Jan 2020 15:45:06 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200121134506.GE25209@platvala-desk.ger.corp.intel.com>
-References: <20200121111738.127417-1-chris@chris-wilson.co.uk>
- <20200121125929.267027-1-chris@chris-wilson.co.uk>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 190336ED01
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2020 13:50:37 +0000 (UTC)
+References: <20200121123120.27148-1-arjun.melkaveri@intel.com>
+ <157961043554.3096.4464531165987455648@skylake-alporthouse-com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <bd4c78e6-59fd-ebdd-d18e-0c8cbf0d30ac@linux.intel.com>
+Date: Tue, 21 Jan 2020 13:50:34 +0000
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200121125929.267027-1-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [PATCH i-g-t] runner: Clean up quickly if the kernel
- OOPSed during a test
+In-Reply-To: <157961043554.3096.4464531165987455648@skylake-alporthouse-com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_exec_nop:Adjusted test to
+ utilize all available engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,125 +19,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jan 21, 2020 at 12:59:29PM +0000, Chris Wilson wrote:
-> If the kernel OOPSed during the test, it is unlikely to ever complete.
-> Furthermore, we have the reason why it won't complete and so do not need
-> to burden ourselves with the full stacktrace of every process -- or at
-> least we have a more pressing bug to fix before worrying about the
-> system deadlock.
+
+On 21/01/2020 12:40, Chris Wilson wrote:
+> Quoting Arjun Melkaveri (2020-01-21 12:31:20)
+>> Added __for_each_physical_engine to utilize all available engines.
+>> Moved single, signal, preempt, poll and headless test cases
+>> from static to dynamic group.
 > 
-> v2: Log the post-taint killing.
-> 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Petri Latvala <petri.latvala@intel.com>
+> But doesn't this prevent us from exercising the legacy ABI?
+
+It was my suggestion that for gem_exec_nop (measuring execution speed) 
+we don't care about legacy ABI.
+
+Regards,
+
+Tvrtko
 
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-
-
-
-> ---
->  runner/executor.c | 45 +++++++++++++++++++++++++++++++++++----------
->  1 file changed, 35 insertions(+), 10 deletions(-)
-> 
-> diff --git a/runner/executor.c b/runner/executor.c
-> index f36bfd3dd..71483b749 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -314,13 +314,28 @@ static const struct {
->    {(1 << 9), "TAINT_WARN: WARN_ON has happened."},
->    {0, 0}};
->  
-> +static unsigned long bad_taints(void)
-> +{
-> +	static unsigned long __bad_taints;
-> +
-> +	if (!__bad_taints) {
-> +		for (typeof(*abort_taints) *taint = abort_taints;
-> +		     taint->bit;
-> +		     taint++)
-> +			__bad_taints |= taint->bit;
-> +	}
-> +
-> +	return __bad_taints;
-> +}
-> +
-> +static unsigned long is_tainted(unsigned long taints)
-> +{
-> +	return taints & bad_taints();
-> +}
-> +
->  static unsigned long tainted(unsigned long *taints)
->  {
->  	FILE *f;
-> -	unsigned long bad_taints = 0;
-> -
-> -	for (typeof(*abort_taints) *taint = abort_taints; taint->bit; taint++)
-> -		bad_taints |= taint->bit;
->  
->  	*taints = 0;
->  
-> @@ -330,7 +345,7 @@ static unsigned long tainted(unsigned long *taints)
->  		fclose(f);
->  	}
->  
-> -	return *taints & bad_taints;
-> +	return is_tainted(*taints);
->  }
->  
->  static char *handle_taint(void)
-> @@ -744,17 +759,27 @@ static int monitor_output(pid_t child,
->  			return -1;
->  		}
->  
-> +		if (tainted(&taints)) /* cancel children after a kernel OOPS */
-> +			n = 0, intervals_left = 1;
-> +
->  		if (n == 0) {
->  			if (--intervals_left)
->  				continue;
->  
->  			switch (killed) {
->  			case 0:
-> -				show_kernel_task_state();
-> +				if (!is_tainted(taints)) {
-> +					show_kernel_task_state();
-> +					if (settings->log_level >= LOG_LEVEL_NORMAL) {
-> +						outf("Timeout. Killing the current test with SIGQUIT.\n");
->  
-> -				if (settings->log_level >= LOG_LEVEL_NORMAL) {
-> -					outf("Timeout. Killing the current test with SIGQUIT.\n");
-> -					fflush(stdout);
-> +						fflush(stdout);
-> +					}
-> +				} else {
-> +					if (settings->log_level >= LOG_LEVEL_NORMAL) {
-> +						outf("Killing the test because the kernel is tainted.\n");
-> +						fflush(stdout);
-> +					}
->  				}
->  
->  				killed = SIGQUIT;
-> @@ -791,7 +816,7 @@ static int monitor_output(pid_t child,
->  				intervals_left = 1; /* Intervals handled separately for sigkill */
->  				break;
->  			case SIGKILL:
-> -				if (!tainted(&taints) && --sigkill_intervals_left) {
-> +				if (!is_tainted(taints) && --sigkill_intervals_left) {
->  					intervals_left = 1;
->  					break;
->  				}
-> -- 
-> 2.25.0
-> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
