@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 022576ECFB
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2020 13:42:37 +0000 (UTC)
-Date: Tue, 21 Jan 2020 15:42:34 +0200
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 271916ED08
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2020 13:45:09 +0000 (UTC)
+Date: Tue, 21 Jan 2020 15:45:06 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200121134234.GD25209@platvala-desk.ger.corp.intel.com>
-References: <1579586055-27583-1-git-send-email-kunal1.joshi@intel.com>
- <1579586055-27583-3-git-send-email-kunal1.joshi@intel.com>
+Message-ID: <20200121134506.GE25209@platvala-desk.ger.corp.intel.com>
+References: <20200121111738.127417-1-chris@chris-wilson.co.uk>
+ <20200121125929.267027-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1579586055-27583-3-git-send-email-kunal1.joshi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 2/3] lib/igt_color Moved kms_color
- functions to lib/igt_color to git avoid code duplication
+In-Reply-To: <20200121125929.267027-1-chris@chris-wilson.co.uk>
+Subject: Re: [igt-dev] [PATCH i-g-t] runner: Clean up quickly if the kernel
+ OOPSed during a test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,73 +23,121 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, daniel.vetter@intel.com, ville.syrjala@intel.com
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jan 21, 2020 at 11:24:14AM +0530, Kunal Joshi wrote:
-> kms_color and kms_color_chamelium shared common functions.
-> Moved them to lib/igt_color to avoid code duplication.
+On Tue, Jan 21, 2020 at 12:59:29PM +0000, Chris Wilson wrote:
+> If the kernel OOPSed during the test, it is unlikely to ever complete.
+> Furthermore, we have the reason why it won't complete and so do not need
+> to burden ourselves with the full stacktrace of every process -- or at
+> least we have a more pressing bug to fix before worrying about the
+> system deadlock.
 > 
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> Suggested-by: Uma Shankar <uma.shankar@intel.com>
+> v2: Log the post-taint killing.
+> 
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+
+
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+
+
+
 > ---
->  lib/Makefile.sources |   2 +
->  lib/igt_color.c      | 386 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_color.h      | 105 ++++++++++++++
->  3 files changed, 493 insertions(+)
->  create mode 100644 lib/igt_color.c
->  create mode 100644 lib/igt_color.h
-
-Meson changes are missing.
-
-The removal of those functions from tests/kms_color.c should be in this commit too.
-
-
-> diff --git a/lib/igt_color.c b/lib/igt_color.c
-> +
-> +#include "igt_color.h"
-> +
-> +void paint_gradient_rectangles(data_t *data,
-> +			       drmModeModeInfo *mode,
-> +			       color_t *colors,
-> +			       struct igt_fb *fb)
-
-
-You can't just blindly copy the functions over. data_t is a name tests
-use for their test-specific structures, library code shouldn't have
-such a name. This function for example just uses drm_fd from data, so
-the function should take int fd instead.
-
-
-> +struct drm_color_lut *coeffs_to_lut(data_t *data,
-> +				    const gamma_lut_t *gamma,
-> +				    uint32_t color_depth,
-> +				    int off)
+>  runner/executor.c | 45 +++++++++++++++++++++++++++++++++++----------
+>  1 file changed, 35 insertions(+), 10 deletions(-)
+> 
+> diff --git a/runner/executor.c b/runner/executor.c
+> index f36bfd3dd..71483b749 100644
+> --- a/runner/executor.c
+> +++ b/runner/executor.c
+> @@ -314,13 +314,28 @@ static const struct {
+>    {(1 << 9), "TAINT_WARN: WARN_ON has happened."},
+>    {0, 0}};
+>  
+> +static unsigned long bad_taints(void)
 > +{
-> +	struct drm_color_lut *lut;
-> +	int i, lut_size = gamma->size;
-> +	uint32_t max_value = (1 << 16) - 1;
-> +	uint32_t mask;
+> +	static unsigned long __bad_taints;
 > +
-> +	if (is_i915_device(data->drm_fd))
-> +		mask = ((1 << color_depth) - 1) << 8;
-> +	else
-> +		mask = max_value;
+> +	if (!__bad_taints) {
+> +		for (typeof(*abort_taints) *taint = abort_taints;
+> +		     taint->bit;
+> +		     taint++)
+> +			__bad_taints |= taint->bit;
+> +	}
 > +
-> +	lut = malloc(sizeof(struct drm_color_lut) * lut_size);
+> +	return __bad_taints;
+> +}
 > +
-> +	if (IS_CHERRYVIEW(data->devid))
-
-Another example why you can't just copy over functions from a test:
-Nothing in this patch fills in the devid field.
-
-Some documentation for new lib functions would also be very nice.
-
-
--- 
-Petri Latvala
+> +static unsigned long is_tainted(unsigned long taints)
+> +{
+> +	return taints & bad_taints();
+> +}
+> +
+>  static unsigned long tainted(unsigned long *taints)
+>  {
+>  	FILE *f;
+> -	unsigned long bad_taints = 0;
+> -
+> -	for (typeof(*abort_taints) *taint = abort_taints; taint->bit; taint++)
+> -		bad_taints |= taint->bit;
+>  
+>  	*taints = 0;
+>  
+> @@ -330,7 +345,7 @@ static unsigned long tainted(unsigned long *taints)
+>  		fclose(f);
+>  	}
+>  
+> -	return *taints & bad_taints;
+> +	return is_tainted(*taints);
+>  }
+>  
+>  static char *handle_taint(void)
+> @@ -744,17 +759,27 @@ static int monitor_output(pid_t child,
+>  			return -1;
+>  		}
+>  
+> +		if (tainted(&taints)) /* cancel children after a kernel OOPS */
+> +			n = 0, intervals_left = 1;
+> +
+>  		if (n == 0) {
+>  			if (--intervals_left)
+>  				continue;
+>  
+>  			switch (killed) {
+>  			case 0:
+> -				show_kernel_task_state();
+> +				if (!is_tainted(taints)) {
+> +					show_kernel_task_state();
+> +					if (settings->log_level >= LOG_LEVEL_NORMAL) {
+> +						outf("Timeout. Killing the current test with SIGQUIT.\n");
+>  
+> -				if (settings->log_level >= LOG_LEVEL_NORMAL) {
+> -					outf("Timeout. Killing the current test with SIGQUIT.\n");
+> -					fflush(stdout);
+> +						fflush(stdout);
+> +					}
+> +				} else {
+> +					if (settings->log_level >= LOG_LEVEL_NORMAL) {
+> +						outf("Killing the test because the kernel is tainted.\n");
+> +						fflush(stdout);
+> +					}
+>  				}
+>  
+>  				killed = SIGQUIT;
+> @@ -791,7 +816,7 @@ static int monitor_output(pid_t child,
+>  				intervals_left = 1; /* Intervals handled separately for sigkill */
+>  				break;
+>  			case SIGKILL:
+> -				if (!tainted(&taints) && --sigkill_intervals_left) {
+> +				if (!is_tainted(taints) && --sigkill_intervals_left) {
+>  					intervals_left = 1;
+>  					break;
+>  				}
+> -- 
+> 2.25.0
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
