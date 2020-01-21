@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 21 Jan 2020 16:00:30 -0000
-Message-ID: <157962243070.11481.5397069734122788611@emeril.freedesktop.org>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBF4D6ED75
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2020 16:02:08 +0000 (UTC)
 References: <20200116135546.14003-1-anna.karas@intel.com>
-In-Reply-To: <20200116135546.14003-1-anna.karas@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgRGlzdGlu?=
- =?utf-8?q?guish_particular_engines_during_calculating_nop_calibration=2E_?=
- =?utf-8?b?KHJldjIp?=
+ <20200121150400.15207-1-anna.karas@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <d4333c56-8067-db49-084d-ff66d929eb51@linux.intel.com>
+Date: Tue, 21 Jan 2020 16:02:04 +0000
+MIME-Version: 1.0
+In-Reply-To: <20200121150400.15207-1-anna.karas@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] Distinguish particular engines during
+ calculating nop calibration
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,247 +19,621 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anna Karas <anna.karas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Anna Karas <anna.karas@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: Distinguish particular engines during calculating nop calibration. (rev2)
-URL   : https://patchwork.freedesktop.org/series/72113/
-State : success
+On 21/01/2020 15:04, Anna Karas wrote:
+> Extend handling -n parameter by accepting multiple values of per
+> engine nop calibration. Add raw numbers handling to set default
+> calibration values. Print copyable and pastable string with
+> calibrations. Allow to switch between calculating in parallel
+> or doing it sequentially.
+> 
+> Accepted input values:
+> -n 123456
+> All calibrations will be set to 123456.
+> 
+> -n ENG=value,ENG2=value2,value3
+> i.e.
+> -n RCS=123456,BCS=345678,999999
+> RCS engine's value is set to 123456, BCS engine's value is set to
+> 345678, 999999 is copied to rest of engines. All engines must be set;
+> you can either provide values for each of the engines, or you can set
+> specific values and provide a default value for the others.
+> 
+> -n value,ENG1=value1,ENG2=value2
+> First, value is copied to all engines, then value1 overrides ENG1, and
+> finally value2 overrides ENG2.
+> 
+> New output follows the pattern:
+> Nop calibrations for 1000us delay is: <eng1>=<v1>,<eng2>=<v2>,...
+> So you can easily copy-paste it to the next invocation.
+> 
+> Switching between calculation modes:
+> Run program with -T parameter to calculate calibrations in parallel.
+> The calculations are performed sequentially by default.
+> 
+> v2: Get rid of trailing whitespaces. Skip DEFAULT and VCS engines
+> when printing out calibrations. Reject them in the string passed
+> to -n. Re-align rest of help text. Fix accepting unknown engines.
+> 
+> Signed-off-by: Anna Karas <anna.karas@intel.com>
+> ---
+>   benchmarks/gem_wsim.c | 293 +++++++++++++++++++++++++++++++++---------
+>   1 file changed, 235 insertions(+), 58 deletions(-)
+> 
+> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+> index 9156fdc9..ae5d5670 100644
+> --- a/benchmarks/gem_wsim.c
+> +++ b/benchmarks/gem_wsim.c
+> @@ -23,6 +23,7 @@
+>    */
+>   
+>   #include <unistd.h>
+> +#include <stdbool.h>
+>   #include <stdlib.h>
+>   #include <stdint.h>
+>   #include <stdio.h>
+> @@ -55,6 +56,7 @@
+>   #include "i915/gem_mman.h"
+>   
+>   #include "ewma.h"
+> +#include "i915/gem_engine_topology.h"
+>   
+>   enum intel_engine_id {
+>   	DEFAULT,
+> @@ -240,7 +242,8 @@ struct workload
+>   
+>   struct intel_mmio_data mmio_data;
+>   static const unsigned int nop_calibration_us = 1000;
+> -static unsigned long nop_calibration;
+> +static bool has_nop_calibration = false;
+> +static bool sequential = true;
+>   
+>   static unsigned int master_prng;
+>   
+> @@ -281,6 +284,55 @@ static const char *ring_str_map[NUM_ENGINES] = {
+>   	[VECS] = "VECS",
+>   };
+>   
+> +/* stores calibrations for particular engines */
+> +static unsigned long engine_calib_map[NUM_ENGINES];
+> +
+> +static enum intel_engine_id
+> +ci_to_engine_id(int class, int instance)
+> +{
+> +	static const struct {
+> +		int class;
+> +		int instance;
+> +		unsigned int id;
+> +	} map[] = {
+> +		{ I915_ENGINE_CLASS_RENDER, 0, RCS },
+> +		{ I915_ENGINE_CLASS_COPY, 0, BCS },
+> +		{ I915_ENGINE_CLASS_VIDEO, 0, VCS1 },
+> +		{ I915_ENGINE_CLASS_VIDEO, 1, VCS2 },
+> +		{ I915_ENGINE_CLASS_VIDEO, 2, VCS2 }, /* FIXME/ICL */
+> +		{ I915_ENGINE_CLASS_VIDEO_ENHANCE, 0, VECS },
+> +	};
+> +
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(map); i++) {
+> +		if (class == map[i].class && instance == map[i].instance)
+> +			return map[i].id;
+> +	}
+> +	return -1;
+> +}
+> +
+> +static void
+> +apply_unset_calibrations(unsigned long raw_number)
+> +{
+> +	for (int i = 0; i < NUM_ENGINES; i++)
+> +		engine_calib_map[i] += engine_calib_map[i] ? 0 : raw_number;
+> +
+> +	has_nop_calibration = true;
+> +}
+> +
+> +static void
+> +print_engines_calibrations(void)
+> +{
+> +	printf("Nop calibrations for %uus delay is: ", nop_calibration_us);
+> +
+> +	/* skip DEFAULT and VCS engines */
+> +	for (int i = 1; i < NUM_ENGINES; i++) {
+> +		if (i != 3) printf("%s%s=%lu", i - 1 > 0 ? "," : "", ring_str_map[i], engine_calib_map[i]);
 
-== Summary ==
+Please use symbolic names and also do not assume the order of the enums (DEFAULT is zero or not).
 
-CI Bug Log - changes from CI_DRM_7783 -> IGTPW_3961
-====================================================
+And also we never use this coding style, body of the conditional should go to line following the conditional.
 
-Summary
--------
+> +	}
+> +	printf("\n");
+> +}
+> +
+>   static int
+>   parse_dependencies(unsigned int nr_steps, struct w_step *w, char *_desc)
+>   {
+> @@ -1082,17 +1134,17 @@ static unsigned int get_duration(struct workload *wrk, struct w_step *w)
+>   		       (dur->max + 1 - dur->min);
+>   }
+>   
+> -static unsigned long get_bb_sz(unsigned int duration)
+> +static unsigned long get_bb_sz(unsigned int duration, enum intel_engine_id engine)
+>   {
+> -	return ALIGN(duration * nop_calibration * sizeof(uint32_t) /
+> -		     nop_calibration_us, sizeof(uint32_t));
+> +	return ALIGN(duration * engine_calib_map[engine] * sizeof(uint32_t) /
+> +		nop_calibration_us, sizeof(uint32_t));
+>   }
+>   
+>   static void
+>   init_bb(struct w_step *w, unsigned int flags)
+>   {
+>   	const unsigned int arb_period =
+> -			get_bb_sz(w->preempt_us) / sizeof(uint32_t);
+> +			get_bb_sz(w->preempt_us, w->engine) / sizeof(uint32_t);
+>   	const unsigned int mmap_len = ALIGN(w->bb_sz, 4096);
+>   	unsigned int i;
+>   	uint32_t *ptr;
+> @@ -1319,10 +1371,11 @@ alloc_step_batch(struct workload *wrk, struct w_step *w, unsigned int flags)
+>   
+>   	if (w->unbound_duration)
+>   		/* nops + MI_ARB_CHK + MI_BATCH_BUFFER_START */
+> -		w->bb_sz = max(PAGE_SIZE, get_bb_sz(w->preempt_us)) +
+> +		w->bb_sz = max(PAGE_SIZE, get_bb_sz(w->preempt_us, w->engine)) +
+>   			   (1 + 3) * sizeof(uint32_t);
+>   	else
+> -		w->bb_sz = get_bb_sz(w->duration.max);
+> +		w->bb_sz = get_bb_sz(w->duration.max, w->engine);
+> +
+>   	w->bb_handle = w->obj[j].handle = gem_create(fd, w->bb_sz + (w->unbound_duration ? 4096 : 0));
+>   	init_bb(w, flags);
+>   	w->obj[j].relocation_count = terminate_bb(w, flags);
+> @@ -2622,7 +2675,7 @@ do_eb(struct workload *wrk, struct w_step *w, enum intel_engine_id engine,
+>   	w->eb.batch_start_offset =
+>   		w->unbound_duration ?
+>   		0 :
+> -		ALIGN(w->bb_sz - get_bb_sz(get_duration(wrk, w)),
+> +		ALIGN(w->bb_sz - get_bb_sz(get_duration(wrk, w), w->engine),
+>   		      2 * sizeof(uint32_t));
+>   
+>   	for (i = 0; i < w->fence_deps.nr; i++) {
+> @@ -2899,15 +2952,18 @@ static void fini_workload(struct workload *wrk)
+>   	free(wrk);
+>   }
+>   
+> -static unsigned long calibrate_nop(unsigned int tolerance_pct)
+> +static unsigned long calibrate_nop(unsigned int tolerance_pct, struct intel_execution_engine2 *engine)
+>   {
+>   	const uint32_t bbe = 0xa << 23;
+>   	unsigned int loops = 17;
+>   	unsigned int usecs = nop_calibration_us;
+>   	struct drm_i915_gem_exec_object2 obj = {};
+> -	struct drm_i915_gem_execbuffer2 eb =
+> -		{ .buffer_count = 1, .buffers_ptr = (uintptr_t)&obj};
+> -	long size, last_size;
+> +	struct drm_i915_gem_execbuffer2 eb = {
+> +		.buffer_count = 1,
+> +		.buffers_ptr = (uintptr_t)&obj,
+> +		.flags = engine->flags
+> +	};
+> +	unsigned long size, last_size;
+>   	struct timespec t_0, t_end;
+>   
+>   	clock_gettime(CLOCK_MONOTONIC, &t_0);
+> @@ -2939,6 +2995,77 @@ static unsigned long calibrate_nop(unsigned int tolerance_pct)
+>   	return size / sizeof(uint32_t);
+>   }
+>   
+> +static void
+> +calibrate_sequentially(void)
+> +{
+> +	struct intel_execution_engine2 *engine;
+> +	enum intel_engine_id eng_id;
+> +
+> +	__for_each_physical_engine(fd, engine) {
+> +		eng_id = ci_to_engine_id(engine->class, engine->instance);
+> +		igt_assert(eng_id >= 0);
+> +		engine_calib_map[eng_id] = calibrate_nop(fd, engine);
+> +	}
+> +}
+> +
+> +struct thread_data {
+> +	struct intel_execution_engine2 *eng;
+> +	pthread_t thr;
+> +	unsigned long calib;
+> +};
+> +
+> +static void *
+> +engine_calibration_thread(void *data)
+> +{
+> +	struct thread_data *thr_d = (struct thread_data *) data;
+> +
+> +	thr_d->calib = calibrate_nop(fd, thr_d->eng);
+> +	return NULL;
+> +}
+> +
+> +static void
+> +calibrate_in_parallel(void)
+> +{
+> +	struct thread_data *thr_d = malloc(NUM_ENGINES * sizeof(*thr_d));
+> +	struct intel_execution_engine2 *engine;
+> +	enum intel_engine_id id;
+> +	int ret;
+> +
+> +	__for_each_physical_engine(fd, engine) {
+> +		id = ci_to_engine_id(engine->class, engine->instance);
+> +		thr_d[id].eng = engine;
+> +		ret = pthread_create(&thr_d[id].thr, NULL, engine_calibration_thread, &thr_d[id]);
+> +		igt_assert_eq(ret, 0);
+> +	}
+> +
+> +	__for_each_physical_engine(fd, engine) {
+> +		id = ci_to_engine_id(engine->class, engine->instance);
+> +		igt_assert(id >= 0);
+> +
+> +		ret = pthread_join(thr_d[id].thr, NULL);
+> +		igt_assert_eq(ret, 0);
+> +		engine_calib_map[id] = thr_d[id].calib;
+> +	}
+> +
+> +	free(thr_d);
+> +}
+> +
+> +static void
+> +calibrate_engines(void)
+> +{
+> +	if (sequential)
+> +		calibrate_sequentially();
+> +	else
+> +		calibrate_in_parallel();
+> +
+> +	has_nop_calibration = true;
+> +
+> +	if (verbose > 1)
+> +		print_engines_calibrations();
+> +
+> +}
+> +
+> +
+>   static void print_help(void)
+>   {
+>   	unsigned int i;
+> @@ -2951,50 +3078,53 @@ static void print_help(void)
+>   "be provided when running the simulation in subsequent invocations.\n"
+>   "\n"
+>   "Options:\n"
+> -"  -h              This text.\n"
+> -"  -q              Be quiet - do not output anything to stdout.\n"
+> -"  -n <n>          Nop calibration value.\n"
+> -"  -t <n>          Nop calibration tolerance percentage.\n"
+> -"                  Use when there is a difficulty obtaining calibration with the\n"
+> -"                  default settings.\n"
+> -"  -I <n>          Initial randomness seed.\n"
+> -"  -p <n>          Context priority to use for the following workload on the\n"
+> -"                  command line.\n"
+> -"  -w <desc|path>  Filename or a workload descriptor.\n"
+> -"                  Can be given multiple times.\n"
+> -"  -W <desc|path>  Filename or a master workload descriptor.\n"
+> -"                  Only one master workload can be optinally specified in which\n"
+> -"                  case all other workloads become background ones and run as\n"
+> -"                  long as the master.\n"
+> -"  -a <desc|path>  Append a workload to all other workloads.\n"
+> -"  -r <n>          How many times to emit the workload.\n"
+> -"  -c <n>          Fork N clients emitting the workload simultaneously.\n"
+> -"  -x              Swap VCS1 and VCS2 engines in every other client.\n"
+> -"  -b <n>          Load balancing to use.\n"
+> -"                  Available load balancers are:"
+> +"  -h                This text.\n"
+> +"  -q                Be quiet - do not output anything to stdout.\n"
+> +"  -n <n |           Nop calibration value - single value is set to all engines\n"
+> +"  e1=v1,e2=v2,n...> without specified value; you can also specify calibrations for\n"
+> +"                    particular engines.\n"
+> +"  -t <n>            Nop calibration tolerance percentage.\n"
+> +"  -T                Disable sequential calibration and perform calibration in parallel.\n"
+> +"                    Use when there is a difficulty obtaining calibration with the\n"
+> +"                    default settings.\n"
+> +"  -I <n>            Initial randomness seed.\n"
+> +"  -p <n>            Context priority to use for the following workload on the\n"
+> +"                    command line.\n"
+> +"  -w <desc|path>    Filename or a workload descriptor.\n"
+> +"                    Can be given multiple times.\n"
+> +"  -W <desc|path>    Filename or a master workload descriptor.\n"
+> +"                    Only one master workload can be optinally specified in which\n"
+> +"                    case all other workloads become background ones and run as\n"
+> +"                    long as the master.\n"
+> +"  -a <desc|path>    Append a workload to all other workloads.\n"
+> +"  -r <n>            How many times to emit the workload.\n"
+> +"  -c <n>            Fork N clients emitting the workload simultaneously.\n"
+> +"  -x                Swap VCS1 and VCS2 engines in every other client.\n"
+> +"  -b <n>            Load balancing to use.\n"
+> +"                    Available load balancers are:"
+>   	);
+>   
+>   	for (i = 0; i < ARRAY_SIZE(all_balancers); i++) {
+>   		igt_assert(all_balancers[i].desc);
+>   		printf(
+> -"                     %s (%u): %s\n",
+> +"                       %s (%u): %s\n",
+>   		       all_balancers[i].name, all_balancers[i].id,
+>   		       all_balancers[i].desc);
+>   	}
+>   	puts(
+> -"                  Balancers can be specified either as names or as their id\n"
+> -"                  number as listed above.\n"
+> -"  -2              Remap VCS2 to BCS.\n"
+> -"  -R              Round-robin initial VCS assignment per client.\n"
+> -"  -H              Send heartbeat on synchronisation points with seqno based\n"
+> -"                  balancers. Gives better engine busyness view in some cases.\n"
+> -"  -s              Turn on small SSEU config for the next workload on the\n"
+> -"                  command line. Subsequent -s switches it off.\n"
+> -"  -S              Synchronize the sequence of random batch durations between\n"
+> -"                  clients.\n"
+> -"  -G              Global load balancing - a single load balancer will be shared\n"
+> -"                  between all clients and there will be a single seqno domain.\n"
+> -"  -d              Sync between data dependencies in userspace."
+> +"                     Balancers can be specified either as names or as their id\n"
+> +"                     number as listed above.\n"
+> +"  -2                 Remap VCS2 to BCS.\n"
+> +"  -R                 Round-robin initial VCS assignment per client.\n"
+> +"  -H                 Send heartbeat on synchronisation points with seqno based\n"
+> +"                     balancers. Gives better engine busyness view in some cases.\n"
+> +"  -s                 Turn on small SSEU config for the next workload on the\n"
+> +"                     command line. Subsequent -s switches it off.\n"
+> +"  -S                 Synchronize the sequence of random batch durations between\n"
+> +"                     clients.\n"
+> +"  -G                 Global load balancing - a single load balancer will be shared\n"
+> +"                     between all clients and there will be a single seqno domain.\n"
+> +"  -d                 Sync between data dependencies in userspace."
+>   	);
+>   }
+>   
+> @@ -3117,6 +3247,10 @@ int main(int argc, char **argv)
+>   	int prio = 0;
+>   	double t;
+>   	int i, c;
+> +	char *subopts, *value;
+> +	enum intel_engine_id eng;
+> +	int raw_number = 0;
+> +	long calib_val;
+>   
+>   	/*
+>   	 * Open the device via the low-level API so we can do the GPU quiesce
+> @@ -3134,7 +3268,7 @@ int main(int argc, char **argv)
+>   	master_prng = time(NULL);
+>   
+>   	while ((c = getopt(argc, argv,
+> -			   "hqv2RsSHxGdc:n:r:w:W:a:t:b:p:I:")) != -1) {
+> +			   "Thqv2RsSHxGdc:n:r:w:W:a:t:b:p:I:")) != -1) {
+>   		switch (c) {
+>   		case 'W':
+>   			if (master_workload >= 0) {
+> @@ -3163,8 +3297,53 @@ int main(int argc, char **argv)
+>   		case 't':
+>   			tolerance_pct = strtol(optarg, NULL, 0);
+>   			break;
+> +		case 'T':
+> +			sequential = false;
+> +			break;
+> +
+>   		case 'n':
+> -			nop_calibration = strtol(optarg, NULL, 0);
+> +			subopts = optarg;
+> +			while (*subopts != '\0') {
+> +				eng = getsubopt(&subopts, (char **)ring_str_map, &value);
+> +				if (!value) {
+> +					wsim_err("No calibration value for engine has been provided.\n");
+> +					goto err;
+> +				}
+> +
+> +				calib_val = atol(value);
 
-  **SUCCESS**
+I tried a negative value and it was silently accepted. 
 
-  No regressions found.
+> +
+> +				if (!calib_val) {
+> +					wsim_err("An unsupported engine has been provided.\n");
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/index.html
+Hm how is this unsupported engine?
 
-Known issues
-------------
+-n RCS=0 triggers this for instance.
 
-  Here are the changes found in IGTPW_3961 that come from known issues:
+What are all input combinations where this can be hit?
 
-### IGT changes ###
+> +					goto err;
+> +				}
+> +
+> +				switch (eng) {
+> +				/* skip DEFAULT and VCS engines */
+> +				case DEFAULT:
+> +				case VCS:
+> +					wsim_err("An unsupported engine has been provided.\n");
+> +					goto err;
+> +				case RCS:
+> +				case BCS:
+> +				case VCS1 ... VECS:
 
-#### Issues hit ####
+Using the range also implies order of the enum. I think it is better to list them all individually. Or would it be better to use if-else instead of a switch here?
 
-  * igt@gem_close_race@basic-threads:
-    - fi-byt-j1900:       [PASS][1] -> [TIMEOUT][2] ([fdo#112271] / [i915#816])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-byt-j1900/igt@gem_close_race@basic-threads.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-byt-j1900/igt@gem_close_race@basic-threads.html
+...
 
-  * igt@i915_pm_rpm@module-reload:
-    - fi-skl-6600u:       [PASS][3] -> [DMESG-WARN][4] ([i915#889]) +23 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html
+Actually try squashing the below into your patch and please do test it to check if I haven't missed something:
 
-  * igt@i915_selftest@live_blt:
-    - fi-hsw-4770r:       [PASS][5] -> [DMESG-FAIL][6] ([i915#563])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+index ae5d5670de0d..52a617183e49 100644
+--- a/benchmarks/gem_wsim.c
++++ b/benchmarks/gem_wsim.c
+@@ -3248,9 +3248,9 @@ int main(int argc, char **argv)
+ 	double t;
+ 	int i, c;
+ 	char *subopts, *value;
+-	enum intel_engine_id eng;
+ 	int raw_number = 0;
+ 	long calib_val;
++	int eng;
+ 
+ 	/*
+ 	 * Open the device via the low-level API so we can do the GPU quiesce
+@@ -3304,44 +3304,43 @@ int main(int argc, char **argv)
+ 		case 'n':
+ 			subopts = optarg;
+ 			while (*subopts != '\0') {
+-				eng = getsubopt(&subopts, (char **)ring_str_map, &value);
+-				if (!value) {
+-					wsim_err("No calibration value for engine has been provided.\n");
+-					goto err;
+-				}
++				eng = getsubopt(&subopts, (char **)ring_str_map,
++						&value);
+ 
+ 				calib_val = atol(value);
+ 
+-				if (!calib_val) {
+-					wsim_err("An unsupported engine has been provided.\n");
++				if (calib_val < 0) {
++					wsim_err("Invalid negative calibration!\n");
+ 					goto err;
+ 				}
+ 
+-				switch (eng) {
+-				/* skip DEFAULT and VCS engines */
+-				case DEFAULT:
+-				case VCS:
+-					wsim_err("An unsupported engine has been provided.\n");
++				if (eng < 0 && !calib_val) {
++					wsim_err("Invalid calibration or engine '%s'!\n",
++						 value);
+ 					goto err;
+-				case RCS:
+-				case BCS:
+-				case VCS1 ... VECS:
+-					engine_calib_map[eng] = calib_val;
+-					has_nop_calibration = true;
+-					break;
+-				default:
+-					/* raw number was given - two cases:
+-					 * raw number is already set */
++				} else if (eng < 0) {
+ 					if (raw_number) {
+-						wsim_err("Default engine calibration provided more than once.\n");
++						wsim_err("Default engine calibration provided more than once!\n");
+ 						goto err;
+ 					}
+-					else if (!raw_number) {
+-						/* raw number has been set for the first time */
+-						raw_number = calib_val;
+-						apply_unset_calibrations(raw_number);
++					raw_number = calib_val;
++					apply_unset_calibrations(raw_number);
++				} else if (eng == DEFAULT || eng == VCS) {
++					wsim_err("'%s' not allowed in engine calibrations!\n",
++						 ring_str_map[eng]);
++					goto err;
++				} else {
++					if (!calib_val) {
++						wsim_err("Invalid zero calibration!\n");
++						goto err;
++					} else if (engine_calib_map[eng]) {
++						wsim_err("Invalid repeated calibration of %s!\n",
++							ring_str_map[eng]);
++						goto err;
++					} else {
++						engine_calib_map[eng] = calib_val;
++						has_nop_calibration = true;
+ 					}
+-					break;
+ 				}
+ 			}
+ 			break;
+@@ -3430,6 +3429,22 @@ int main(int argc, char **argv)
+ 		calibrate_engines();
+ 
+ 		goto out;
++	} else {
++		bool missing = false;
++
++		for (i = 0; i < NUM_ENGINES; i++) {
++			if (i == DEFAULT || i == VCS)
++				continue;
++
++			if (!engine_calib_map[i]) {
++				wsim_err("Missing calibration for '%s'!\n",
++					 ring_str_map[i]);
++				missing = true;
++			}
++		}
++
++		if (missing)
++			goto err;
+ 	}
+ 
+ 	if (!nr_w_args) {
 
-  * igt@i915_selftest@live_gt_lrc:
-    - fi-skl-6600u:       [PASS][7] -> [DMESG-FAIL][8] ([i915#889]) +7 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-skl-6600u/igt@i915_selftest@live_gt_lrc.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-skl-6600u/igt@i915_selftest@live_gt_lrc.html
+Regards,
 
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-cml-u2:          [PASS][9] -> [FAIL][10] ([i915#262])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-cml-u2/igt@kms_chamelium@dp-crc-fast.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-cml-u2/igt@kms_chamelium@dp-crc-fast.html
+Tvrtko
 
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-icl-u2:          [PASS][11] -> [FAIL][12] ([i915#217])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+> +					engine_calib_map[eng] = calib_val;
+> +					has_nop_calibration = true;
+> +					break;
+> +				default:
+> +					/* raw number was given - two cases:
+> +					 * raw number is already set */
+> +					if (raw_number) {
+> +						wsim_err("Default engine calibration provided more than once.\n");
+> +						goto err;
+> +					}
+> +					else if (!raw_number) {
 
-  
-#### Possible fixes ####
+"} else if (...) {" is our coding style.
 
-  * igt@i915_module_load@reload-with-fault-injection:
-    - fi-cfl-8700k:       [DMESG-WARN][13] ([i915#889]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-cfl-8700k/igt@i915_module_load@reload-with-fault-injection.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-cfl-8700k/igt@i915_module_load@reload-with-fault-injection.html
-    - fi-skl-6700k2:      [INCOMPLETE][15] ([i915#671]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
-    - fi-kbl-x1275:       [DMESG-WARN][17] ([i915#889]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-kbl-x1275/igt@i915_module_load@reload-with-fault-injection.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-kbl-x1275/igt@i915_module_load@reload-with-fault-injection.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-x1275:       [INCOMPLETE][19] ([i915#151]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-
-  
-#### Warnings ####
-
-  * igt@gem_exec_parallel@contexts:
-    - fi-byt-n2820:       [INCOMPLETE][21] ([i915#45] / [i915#999]) -> [TIMEOUT][22] ([fdo#112271])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-bxt-dsi:         [SKIP][23] ([fdo#109271]) -> [SKIP][24] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-bxt-dsi/igt@kms_chamelium@common-hpd-after-suspend.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-bxt-dsi/igt@kms_chamelium@common-hpd-after-suspend.html
-    - fi-hsw-4770:        [SKIP][25] ([fdo#109271]) -> [SKIP][26] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-hsw-4770/igt@kms_chamelium@common-hpd-after-suspend.html
-    - fi-kbl-soraka:      [SKIP][27] ([fdo#109271]) -> [SKIP][28] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-kbl-soraka/igt@kms_chamelium@common-hpd-after-suspend.html
-    - fi-whl-u:           [SKIP][29] ([fdo#109271]) -> [SKIP][30] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-whl-u/igt@kms_chamelium@common-hpd-after-suspend.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-whl-u/igt@kms_chamelium@common-hpd-after-suspend.html
-    - fi-pnv-d510:        [SKIP][31] ([fdo#109271]) -> [SKIP][32] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-pnv-d510/igt@kms_chamelium@common-hpd-after-suspend.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-pnv-d510/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-icl-dsi:         [SKIP][33] ([fdo#109284]) -> [SKIP][34] ([fdo#109284] / [fdo#111827]) +8 similar issues
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-icl-dsi/igt@kms_chamelium@dp-crc-fast.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-icl-dsi/igt@kms_chamelium@dp-crc-fast.html
-    - fi-skl-guc:         [SKIP][35] ([fdo#109271]) -> [SKIP][36] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-skl-guc/igt@kms_chamelium@dp-crc-fast.html
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-skl-guc/igt@kms_chamelium@dp-crc-fast.html
-    - fi-bwr-2160:        [SKIP][37] ([fdo#109271]) -> [SKIP][38] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-bwr-2160/igt@kms_chamelium@dp-crc-fast.html
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-bwr-2160/igt@kms_chamelium@dp-crc-fast.html
-    - fi-icl-y:           [SKIP][39] ([fdo#109284]) -> [SKIP][40] ([fdo#109284] / [fdo#111827]) +8 similar issues
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-icl-y/igt@kms_chamelium@dp-crc-fast.html
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-icl-y/igt@kms_chamelium@dp-crc-fast.html
-
-  * igt@kms_chamelium@dp-edid-read:
-    - fi-cfl-guc:         [SKIP][41] ([fdo#109271]) -> [SKIP][42] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-cfl-guc/igt@kms_chamelium@dp-edid-read.html
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-cfl-guc/igt@kms_chamelium@dp-edid-read.html
-    - fi-icl-guc:         [SKIP][43] ([fdo#109284]) -> [SKIP][44] ([fdo#109284] / [fdo#111827]) +8 similar issues
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-icl-guc/igt@kms_chamelium@dp-edid-read.html
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-icl-guc/igt@kms_chamelium@dp-edid-read.html
-    - fi-elk-e7500:       [SKIP][45] ([fdo#109271]) -> [SKIP][46] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-elk-e7500/igt@kms_chamelium@dp-edid-read.html
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-elk-e7500/igt@kms_chamelium@dp-edid-read.html
-
-  * igt@kms_chamelium@dp-hpd-fast:
-    - fi-ilk-650:         [SKIP][47] ([fdo#109271]) -> [SKIP][48] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-ilk-650/igt@kms_chamelium@dp-hpd-fast.html
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-ilk-650/igt@kms_chamelium@dp-hpd-fast.html
-    - fi-ivb-3770:        [SKIP][49] ([fdo#109271]) -> [SKIP][50] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-ivb-3770/igt@kms_chamelium@dp-hpd-fast.html
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-ivb-3770/igt@kms_chamelium@dp-hpd-fast.html
-
-  * igt@kms_chamelium@hdmi-crc-fast:
-    - fi-skl-lmem:        [SKIP][51] ([fdo#109271]) -> [SKIP][52] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-skl-lmem/igt@kms_chamelium@hdmi-crc-fast.html
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-skl-lmem/igt@kms_chamelium@hdmi-crc-fast.html
-    - fi-kbl-x1275:       [SKIP][53] ([fdo#109271]) -> [SKIP][54] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-kbl-x1275/igt@kms_chamelium@hdmi-crc-fast.html
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-kbl-x1275/igt@kms_chamelium@hdmi-crc-fast.html
-    - fi-icl-u3:          [SKIP][55] ([fdo#109284]) -> [SKIP][56] ([fdo#109284] / [fdo#111827]) +8 similar issues
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-icl-u3/igt@kms_chamelium@hdmi-crc-fast.html
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-icl-u3/igt@kms_chamelium@hdmi-crc-fast.html
-
-  * igt@kms_chamelium@hdmi-edid-read:
-    - fi-hsw-peppy:       [SKIP][57] ([fdo#109271]) -> [SKIP][58] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-hsw-peppy/igt@kms_chamelium@hdmi-edid-read.html
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-hsw-peppy/igt@kms_chamelium@hdmi-edid-read.html
-    - fi-blb-e6850:       [SKIP][59] ([fdo#109271]) -> [SKIP][60] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-blb-e6850/igt@kms_chamelium@hdmi-edid-read.html
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-blb-e6850/igt@kms_chamelium@hdmi-edid-read.html
-    - fi-kbl-8809g:       [SKIP][61] ([fdo#109271]) -> [SKIP][62] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-kbl-8809g/igt@kms_chamelium@hdmi-edid-read.html
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-kbl-8809g/igt@kms_chamelium@hdmi-edid-read.html
-    - fi-kbl-r:           [SKIP][63] ([fdo#109271]) -> [SKIP][64] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-kbl-r/igt@kms_chamelium@hdmi-edid-read.html
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-kbl-r/igt@kms_chamelium@hdmi-edid-read.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-apl-guc:         [SKIP][65] ([fdo#109271]) -> [SKIP][66] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-apl-guc/igt@kms_chamelium@hdmi-hpd-fast.html
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-apl-guc/igt@kms_chamelium@hdmi-hpd-fast.html
-    - fi-snb-2520m:       [SKIP][67] ([fdo#109271]) -> [SKIP][68] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-snb-2520m/igt@kms_chamelium@hdmi-hpd-fast.html
-   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-snb-2520m/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  * igt@kms_chamelium@vga-edid-read:
-    - fi-cfl-8700k:       [SKIP][69] ([fdo#109271]) -> [SKIP][70] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-cfl-8700k/igt@kms_chamelium@vga-edid-read.html
-   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-cfl-8700k/igt@kms_chamelium@vga-edid-read.html
-    - fi-hsw-4770r:       [SKIP][71] ([fdo#109271]) -> [SKIP][72] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-hsw-4770r/igt@kms_chamelium@vga-edid-read.html
-   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-hsw-4770r/igt@kms_chamelium@vga-edid-read.html
-    - fi-icl-u2:          [SKIP][73] ([fdo#109309]) -> [FAIL][74] ([i915#217])
-   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-icl-u2/igt@kms_chamelium@vga-edid-read.html
-   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-icl-u2/igt@kms_chamelium@vga-edid-read.html
-    - fi-skl-6600u:       [SKIP][75] ([fdo#109271]) -> [SKIP][76] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-skl-6600u/igt@kms_chamelium@vga-edid-read.html
-   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-skl-6600u/igt@kms_chamelium@vga-edid-read.html
-
-  * igt@kms_chamelium@vga-hpd-fast:
-    - fi-kbl-guc:         [SKIP][77] ([fdo#109271]) -> [SKIP][78] ([fdo#109271] / [fdo#111827]) +8 similar issues
-   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-kbl-guc/igt@kms_chamelium@vga-hpd-fast.html
-   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/fi-kbl-guc/igt@kms_chamelium@vga-hpd-fast.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109284]: https://bugs.freedesktop.org/show_bug.cgi?id=109284
-  [fdo#109309]: https://bugs.freedesktop.org/show_bug.cgi?id=109309
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#151]: https://gitlab.freedesktop.org/drm/intel/issues/151
-  [i915#217]: https://gitlab.freedesktop.org/drm/intel/issues/217
-  [i915#262]: https://gitlab.freedesktop.org/drm/intel/issues/262
-  [i915#45]: https://gitlab.freedesktop.org/drm/intel/issues/45
-  [i915#472]: https://gitlab.freedesktop.org/drm/intel/issues/472
-  [i915#563]: https://gitlab.freedesktop.org/drm/intel/issues/563
-  [i915#647]: https://gitlab.freedesktop.org/drm/intel/issues/647
-  [i915#671]: https://gitlab.freedesktop.org/drm/intel/issues/671
-  [i915#816]: https://gitlab.freedesktop.org/drm/intel/issues/816
-  [i915#889]: https://gitlab.freedesktop.org/drm/intel/issues/889
-  [i915#937]: https://gitlab.freedesktop.org/drm/intel/issues/937
-  [i915#999]: https://gitlab.freedesktop.org/drm/intel/issues/999
-
-
-Participating hosts (44 -> 41)
-------------------------------
-
-  Additional (4): fi-bsw-kefka fi-kbl-7560u fi-glk-dsi fi-gdg-551 
-  Missing    (7): fi-ilk-m540 fi-bdw-5557u fi-byt-squawks fi-bsw-cyan fi-kbl-7500u fi-ctg-p8600 fi-byt-clapper 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5376 -> IGTPW_3961
-
-  CI-20190529: 20190529
-  CI_DRM_7783: 3ee976286895f0bd54388efc16b12f62c624ff19 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_3961: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/index.html
-  IGT_5376: 5cf58d947a02379d2885d6dd4f8bb487cfc3eed2 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3961/index.html
+> +						/* raw number has been set for the first time */
+> +						raw_number = calib_val;
+> +						apply_unset_calibrations(raw_number);
+> +					}
+> +					break;
+> +				}
+> +			}
+>   			break;
+>   		case 'r':
+>   			repeat = strtol(optarg, NULL, 0);
+> @@ -3242,14 +3421,13 @@ int main(int argc, char **argv)
+>   		goto err;
+>   	}
+>   
+> -	if (!nop_calibration) {
+> -		if (verbose > 1)
+> -			printf("Calibrating nop delay with %u%% tolerance...\n",
+> +	if (!has_nop_calibration) {
+> +		if (verbose > 1) {
+> +			printf("Calibrating nop delays with %u%% tolerance...\n",
+>   				tolerance_pct);
+> -		nop_calibration = calibrate_nop(tolerance_pct);
+> -		if (verbose)
+> -			printf("Nop calibration for %uus delay is %lu.\n",
+> -			       nop_calibration_us, nop_calibration);
+> +		}
+> +
+> +		calibrate_engines();
+>   
+>   		goto out;
+>   	}
+> @@ -3309,8 +3487,7 @@ int main(int argc, char **argv)
+>   
+>   	if (verbose > 1) {
+>   		printf("Random seed is %u.\n", master_prng);
+> -		printf("Using %lu nop calibration for %uus delay.\n",
+> -		       nop_calibration, nop_calibration_us);
+> +		print_engines_calibrations();
+>   		printf("%u client%s.\n", clients, clients > 1 ? "s" : "");
+>   		if (flags & SWAPVCS)
+>   			printf("Swapping VCS rings between clients.\n");
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
