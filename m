@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBF4D6ED75
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2020 16:02:08 +0000 (UTC)
-References: <20200116135546.14003-1-anna.karas@intel.com>
- <20200121150400.15207-1-anna.karas@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <d4333c56-8067-db49-084d-ff66d929eb51@linux.intel.com>
-Date: Tue, 21 Jan 2020 16:02:04 +0000
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6981A6ED88
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2020 16:10:58 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Tue, 21 Jan 2020 17:10:47 +0100
+Message-Id: <20200121161047.16773-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200121150400.15207-1-anna.karas@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] Distinguish particular engines during
- calculating nop calibration
+Subject: [igt-dev] [PATCH i-g-t v4] lib/igt_collection: Adding combinatorics
+ facility
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,622 +15,357 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anna Karas <anna.karas@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 21/01/2020 15:04, Anna Karas wrote:
-> Extend handling -n parameter by accepting multiple values of per
-> engine nop calibration. Add raw numbers handling to set default
-> calibration values. Print copyable and pastable string with
-> calibrations. Allow to switch between calculating in parallel
-> or doing it sequentially.
-> 
-> Accepted input values:
-> -n 123456
-> All calibrations will be set to 123456.
-> 
-> -n ENG=value,ENG2=value2,value3
-> i.e.
-> -n RCS=123456,BCS=345678,999999
-> RCS engine's value is set to 123456, BCS engine's value is set to
-> 345678, 999999 is copied to rest of engines. All engines must be set;
-> you can either provide values for each of the engines, or you can set
-> specific values and provide a default value for the others.
-> 
-> -n value,ENG1=value1,ENG2=value2
-> First, value is copied to all engines, then value1 overrides ENG1, and
-> finally value2 overrides ENG2.
-> 
-> New output follows the pattern:
-> Nop calibrations for 1000us delay is: <eng1>=<v1>,<eng2>=<v2>,...
-> So you can easily copy-paste it to the next invocation.
-> 
-> Switching between calculation modes:
-> Run program with -T parameter to calculate calibrations in parallel.
-> The calculations are performed sequentially by default.
-> 
-> v2: Get rid of trailing whitespaces. Skip DEFAULT and VCS engines
-> when printing out calibrations. Reject them in the string passed
-> to -n. Re-align rest of help text. Fix accepting unknown engines.
-> 
-> Signed-off-by: Anna Karas <anna.karas@intel.com>
-> ---
->   benchmarks/gem_wsim.c | 293 +++++++++++++++++++++++++++++++++---------
->   1 file changed, 235 insertions(+), 58 deletions(-)
-> 
-> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-> index 9156fdc9..ae5d5670 100644
-> --- a/benchmarks/gem_wsim.c
-> +++ b/benchmarks/gem_wsim.c
-> @@ -23,6 +23,7 @@
->    */
->   
->   #include <unistd.h>
-> +#include <stdbool.h>
->   #include <stdlib.h>
->   #include <stdint.h>
->   #include <stdio.h>
-> @@ -55,6 +56,7 @@
->   #include "i915/gem_mman.h"
->   
->   #include "ewma.h"
-> +#include "i915/gem_engine_topology.h"
->   
->   enum intel_engine_id {
->   	DEFAULT,
-> @@ -240,7 +242,8 @@ struct workload
->   
->   struct intel_mmio_data mmio_data;
->   static const unsigned int nop_calibration_us = 1000;
-> -static unsigned long nop_calibration;
-> +static bool has_nop_calibration = false;
-> +static bool sequential = true;
->   
->   static unsigned int master_prng;
->   
-> @@ -281,6 +284,55 @@ static const char *ring_str_map[NUM_ENGINES] = {
->   	[VECS] = "VECS",
->   };
->   
-> +/* stores calibrations for particular engines */
-> +static unsigned long engine_calib_map[NUM_ENGINES];
-> +
-> +static enum intel_engine_id
-> +ci_to_engine_id(int class, int instance)
-> +{
-> +	static const struct {
-> +		int class;
-> +		int instance;
-> +		unsigned int id;
-> +	} map[] = {
-> +		{ I915_ENGINE_CLASS_RENDER, 0, RCS },
-> +		{ I915_ENGINE_CLASS_COPY, 0, BCS },
-> +		{ I915_ENGINE_CLASS_VIDEO, 0, VCS1 },
-> +		{ I915_ENGINE_CLASS_VIDEO, 1, VCS2 },
-> +		{ I915_ENGINE_CLASS_VIDEO, 2, VCS2 }, /* FIXME/ICL */
-> +		{ I915_ENGINE_CLASS_VIDEO_ENHANCE, 0, VECS },
-> +	};
-> +
-> +	unsigned int i;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(map); i++) {
-> +		if (class == map[i].class && instance == map[i].instance)
-> +			return map[i].id;
-> +	}
-> +	return -1;
-> +}
-> +
-> +static void
-> +apply_unset_calibrations(unsigned long raw_number)
-> +{
-> +	for (int i = 0; i < NUM_ENGINES; i++)
-> +		engine_calib_map[i] += engine_calib_map[i] ? 0 : raw_number;
-> +
-> +	has_nop_calibration = true;
-> +}
-> +
-> +static void
-> +print_engines_calibrations(void)
-> +{
-> +	printf("Nop calibrations for %uus delay is: ", nop_calibration_us);
-> +
-> +	/* skip DEFAULT and VCS engines */
-> +	for (int i = 1; i < NUM_ENGINES; i++) {
-> +		if (i != 3) printf("%s%s=%lu", i - 1 > 0 ? "," : "", ring_str_map[i], engine_calib_map[i]);
-
-Please use symbolic names and also do not assume the order of the enums (DEFAULT is zero or not).
-
-And also we never use this coding style, body of the conditional should go to line following the conditional.
-
-> +	}
-> +	printf("\n");
-> +}
-> +
->   static int
->   parse_dependencies(unsigned int nr_steps, struct w_step *w, char *_desc)
->   {
-> @@ -1082,17 +1134,17 @@ static unsigned int get_duration(struct workload *wrk, struct w_step *w)
->   		       (dur->max + 1 - dur->min);
->   }
->   
-> -static unsigned long get_bb_sz(unsigned int duration)
-> +static unsigned long get_bb_sz(unsigned int duration, enum intel_engine_id engine)
->   {
-> -	return ALIGN(duration * nop_calibration * sizeof(uint32_t) /
-> -		     nop_calibration_us, sizeof(uint32_t));
-> +	return ALIGN(duration * engine_calib_map[engine] * sizeof(uint32_t) /
-> +		nop_calibration_us, sizeof(uint32_t));
->   }
->   
->   static void
->   init_bb(struct w_step *w, unsigned int flags)
->   {
->   	const unsigned int arb_period =
-> -			get_bb_sz(w->preempt_us) / sizeof(uint32_t);
-> +			get_bb_sz(w->preempt_us, w->engine) / sizeof(uint32_t);
->   	const unsigned int mmap_len = ALIGN(w->bb_sz, 4096);
->   	unsigned int i;
->   	uint32_t *ptr;
-> @@ -1319,10 +1371,11 @@ alloc_step_batch(struct workload *wrk, struct w_step *w, unsigned int flags)
->   
->   	if (w->unbound_duration)
->   		/* nops + MI_ARB_CHK + MI_BATCH_BUFFER_START */
-> -		w->bb_sz = max(PAGE_SIZE, get_bb_sz(w->preempt_us)) +
-> +		w->bb_sz = max(PAGE_SIZE, get_bb_sz(w->preempt_us, w->engine)) +
->   			   (1 + 3) * sizeof(uint32_t);
->   	else
-> -		w->bb_sz = get_bb_sz(w->duration.max);
-> +		w->bb_sz = get_bb_sz(w->duration.max, w->engine);
-> +
->   	w->bb_handle = w->obj[j].handle = gem_create(fd, w->bb_sz + (w->unbound_duration ? 4096 : 0));
->   	init_bb(w, flags);
->   	w->obj[j].relocation_count = terminate_bb(w, flags);
-> @@ -2622,7 +2675,7 @@ do_eb(struct workload *wrk, struct w_step *w, enum intel_engine_id engine,
->   	w->eb.batch_start_offset =
->   		w->unbound_duration ?
->   		0 :
-> -		ALIGN(w->bb_sz - get_bb_sz(get_duration(wrk, w)),
-> +		ALIGN(w->bb_sz - get_bb_sz(get_duration(wrk, w), w->engine),
->   		      2 * sizeof(uint32_t));
->   
->   	for (i = 0; i < w->fence_deps.nr; i++) {
-> @@ -2899,15 +2952,18 @@ static void fini_workload(struct workload *wrk)
->   	free(wrk);
->   }
->   
-> -static unsigned long calibrate_nop(unsigned int tolerance_pct)
-> +static unsigned long calibrate_nop(unsigned int tolerance_pct, struct intel_execution_engine2 *engine)
->   {
->   	const uint32_t bbe = 0xa << 23;
->   	unsigned int loops = 17;
->   	unsigned int usecs = nop_calibration_us;
->   	struct drm_i915_gem_exec_object2 obj = {};
-> -	struct drm_i915_gem_execbuffer2 eb =
-> -		{ .buffer_count = 1, .buffers_ptr = (uintptr_t)&obj};
-> -	long size, last_size;
-> +	struct drm_i915_gem_execbuffer2 eb = {
-> +		.buffer_count = 1,
-> +		.buffers_ptr = (uintptr_t)&obj,
-> +		.flags = engine->flags
-> +	};
-> +	unsigned long size, last_size;
->   	struct timespec t_0, t_end;
->   
->   	clock_gettime(CLOCK_MONOTONIC, &t_0);
-> @@ -2939,6 +2995,77 @@ static unsigned long calibrate_nop(unsigned int tolerance_pct)
->   	return size / sizeof(uint32_t);
->   }
->   
-> +static void
-> +calibrate_sequentially(void)
-> +{
-> +	struct intel_execution_engine2 *engine;
-> +	enum intel_engine_id eng_id;
-> +
-> +	__for_each_physical_engine(fd, engine) {
-> +		eng_id = ci_to_engine_id(engine->class, engine->instance);
-> +		igt_assert(eng_id >= 0);
-> +		engine_calib_map[eng_id] = calibrate_nop(fd, engine);
-> +	}
-> +}
-> +
-> +struct thread_data {
-> +	struct intel_execution_engine2 *eng;
-> +	pthread_t thr;
-> +	unsigned long calib;
-> +};
-> +
-> +static void *
-> +engine_calibration_thread(void *data)
-> +{
-> +	struct thread_data *thr_d = (struct thread_data *) data;
-> +
-> +	thr_d->calib = calibrate_nop(fd, thr_d->eng);
-> +	return NULL;
-> +}
-> +
-> +static void
-> +calibrate_in_parallel(void)
-> +{
-> +	struct thread_data *thr_d = malloc(NUM_ENGINES * sizeof(*thr_d));
-> +	struct intel_execution_engine2 *engine;
-> +	enum intel_engine_id id;
-> +	int ret;
-> +
-> +	__for_each_physical_engine(fd, engine) {
-> +		id = ci_to_engine_id(engine->class, engine->instance);
-> +		thr_d[id].eng = engine;
-> +		ret = pthread_create(&thr_d[id].thr, NULL, engine_calibration_thread, &thr_d[id]);
-> +		igt_assert_eq(ret, 0);
-> +	}
-> +
-> +	__for_each_physical_engine(fd, engine) {
-> +		id = ci_to_engine_id(engine->class, engine->instance);
-> +		igt_assert(id >= 0);
-> +
-> +		ret = pthread_join(thr_d[id].thr, NULL);
-> +		igt_assert_eq(ret, 0);
-> +		engine_calib_map[id] = thr_d[id].calib;
-> +	}
-> +
-> +	free(thr_d);
-> +}
-> +
-> +static void
-> +calibrate_engines(void)
-> +{
-> +	if (sequential)
-> +		calibrate_sequentially();
-> +	else
-> +		calibrate_in_parallel();
-> +
-> +	has_nop_calibration = true;
-> +
-> +	if (verbose > 1)
-> +		print_engines_calibrations();
-> +
-> +}
-> +
-> +
->   static void print_help(void)
->   {
->   	unsigned int i;
-> @@ -2951,50 +3078,53 @@ static void print_help(void)
->   "be provided when running the simulation in subsequent invocations.\n"
->   "\n"
->   "Options:\n"
-> -"  -h              This text.\n"
-> -"  -q              Be quiet - do not output anything to stdout.\n"
-> -"  -n <n>          Nop calibration value.\n"
-> -"  -t <n>          Nop calibration tolerance percentage.\n"
-> -"                  Use when there is a difficulty obtaining calibration with the\n"
-> -"                  default settings.\n"
-> -"  -I <n>          Initial randomness seed.\n"
-> -"  -p <n>          Context priority to use for the following workload on the\n"
-> -"                  command line.\n"
-> -"  -w <desc|path>  Filename or a workload descriptor.\n"
-> -"                  Can be given multiple times.\n"
-> -"  -W <desc|path>  Filename or a master workload descriptor.\n"
-> -"                  Only one master workload can be optinally specified in which\n"
-> -"                  case all other workloads become background ones and run as\n"
-> -"                  long as the master.\n"
-> -"  -a <desc|path>  Append a workload to all other workloads.\n"
-> -"  -r <n>          How many times to emit the workload.\n"
-> -"  -c <n>          Fork N clients emitting the workload simultaneously.\n"
-> -"  -x              Swap VCS1 and VCS2 engines in every other client.\n"
-> -"  -b <n>          Load balancing to use.\n"
-> -"                  Available load balancers are:"
-> +"  -h                This text.\n"
-> +"  -q                Be quiet - do not output anything to stdout.\n"
-> +"  -n <n |           Nop calibration value - single value is set to all engines\n"
-> +"  e1=v1,e2=v2,n...> without specified value; you can also specify calibrations for\n"
-> +"                    particular engines.\n"
-> +"  -t <n>            Nop calibration tolerance percentage.\n"
-> +"  -T                Disable sequential calibration and perform calibration in parallel.\n"
-> +"                    Use when there is a difficulty obtaining calibration with the\n"
-> +"                    default settings.\n"
-> +"  -I <n>            Initial randomness seed.\n"
-> +"  -p <n>            Context priority to use for the following workload on the\n"
-> +"                    command line.\n"
-> +"  -w <desc|path>    Filename or a workload descriptor.\n"
-> +"                    Can be given multiple times.\n"
-> +"  -W <desc|path>    Filename or a master workload descriptor.\n"
-> +"                    Only one master workload can be optinally specified in which\n"
-> +"                    case all other workloads become background ones and run as\n"
-> +"                    long as the master.\n"
-> +"  -a <desc|path>    Append a workload to all other workloads.\n"
-> +"  -r <n>            How many times to emit the workload.\n"
-> +"  -c <n>            Fork N clients emitting the workload simultaneously.\n"
-> +"  -x                Swap VCS1 and VCS2 engines in every other client.\n"
-> +"  -b <n>            Load balancing to use.\n"
-> +"                    Available load balancers are:"
->   	);
->   
->   	for (i = 0; i < ARRAY_SIZE(all_balancers); i++) {
->   		igt_assert(all_balancers[i].desc);
->   		printf(
-> -"                     %s (%u): %s\n",
-> +"                       %s (%u): %s\n",
->   		       all_balancers[i].name, all_balancers[i].id,
->   		       all_balancers[i].desc);
->   	}
->   	puts(
-> -"                  Balancers can be specified either as names or as their id\n"
-> -"                  number as listed above.\n"
-> -"  -2              Remap VCS2 to BCS.\n"
-> -"  -R              Round-robin initial VCS assignment per client.\n"
-> -"  -H              Send heartbeat on synchronisation points with seqno based\n"
-> -"                  balancers. Gives better engine busyness view in some cases.\n"
-> -"  -s              Turn on small SSEU config for the next workload on the\n"
-> -"                  command line. Subsequent -s switches it off.\n"
-> -"  -S              Synchronize the sequence of random batch durations between\n"
-> -"                  clients.\n"
-> -"  -G              Global load balancing - a single load balancer will be shared\n"
-> -"                  between all clients and there will be a single seqno domain.\n"
-> -"  -d              Sync between data dependencies in userspace."
-> +"                     Balancers can be specified either as names or as their id\n"
-> +"                     number as listed above.\n"
-> +"  -2                 Remap VCS2 to BCS.\n"
-> +"  -R                 Round-robin initial VCS assignment per client.\n"
-> +"  -H                 Send heartbeat on synchronisation points with seqno based\n"
-> +"                     balancers. Gives better engine busyness view in some cases.\n"
-> +"  -s                 Turn on small SSEU config for the next workload on the\n"
-> +"                     command line. Subsequent -s switches it off.\n"
-> +"  -S                 Synchronize the sequence of random batch durations between\n"
-> +"                     clients.\n"
-> +"  -G                 Global load balancing - a single load balancer will be shared\n"
-> +"                     between all clients and there will be a single seqno domain.\n"
-> +"  -d                 Sync between data dependencies in userspace."
->   	);
->   }
->   
-> @@ -3117,6 +3247,10 @@ int main(int argc, char **argv)
->   	int prio = 0;
->   	double t;
->   	int i, c;
-> +	char *subopts, *value;
-> +	enum intel_engine_id eng;
-> +	int raw_number = 0;
-> +	long calib_val;
->   
->   	/*
->   	 * Open the device via the low-level API so we can do the GPU quiesce
-> @@ -3134,7 +3268,7 @@ int main(int argc, char **argv)
->   	master_prng = time(NULL);
->   
->   	while ((c = getopt(argc, argv,
-> -			   "hqv2RsSHxGdc:n:r:w:W:a:t:b:p:I:")) != -1) {
-> +			   "Thqv2RsSHxGdc:n:r:w:W:a:t:b:p:I:")) != -1) {
->   		switch (c) {
->   		case 'W':
->   			if (master_workload >= 0) {
-> @@ -3163,8 +3297,53 @@ int main(int argc, char **argv)
->   		case 't':
->   			tolerance_pct = strtol(optarg, NULL, 0);
->   			break;
-> +		case 'T':
-> +			sequential = false;
-> +			break;
-> +
->   		case 'n':
-> -			nop_calibration = strtol(optarg, NULL, 0);
-> +			subopts = optarg;
-> +			while (*subopts != '\0') {
-> +				eng = getsubopt(&subopts, (char **)ring_str_map, &value);
-> +				if (!value) {
-> +					wsim_err("No calibration value for engine has been provided.\n");
-> +					goto err;
-> +				}
-> +
-> +				calib_val = atol(value);
-
-I tried a negative value and it was silently accepted. 
-
-> +
-> +				if (!calib_val) {
-> +					wsim_err("An unsupported engine has been provided.\n");
-
-Hm how is this unsupported engine?
-
--n RCS=0 triggers this for instance.
-
-What are all input combinations where this can be hit?
-
-> +					goto err;
-> +				}
-> +
-> +				switch (eng) {
-> +				/* skip DEFAULT and VCS engines */
-> +				case DEFAULT:
-> +				case VCS:
-> +					wsim_err("An unsupported engine has been provided.\n");
-> +					goto err;
-> +				case RCS:
-> +				case BCS:
-> +				case VCS1 ... VECS:
-
-Using the range also implies order of the enum. I think it is better to list them all individually. Or would it be better to use if-else instead of a switch here?
-
-...
-
-Actually try squashing the below into your patch and please do test it to check if I haven't missed something:
-
-diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index ae5d5670de0d..52a617183e49 100644
---- a/benchmarks/gem_wsim.c
-+++ b/benchmarks/gem_wsim.c
-@@ -3248,9 +3248,9 @@ int main(int argc, char **argv)
- 	double t;
- 	int i, c;
- 	char *subopts, *value;
--	enum intel_engine_id eng;
- 	int raw_number = 0;
- 	long calib_val;
-+	int eng;
- 
- 	/*
- 	 * Open the device via the low-level API so we can do the GPU quiesce
-@@ -3304,44 +3304,43 @@ int main(int argc, char **argv)
- 		case 'n':
- 			subopts = optarg;
- 			while (*subopts != '\0') {
--				eng = getsubopt(&subopts, (char **)ring_str_map, &value);
--				if (!value) {
--					wsim_err("No calibration value for engine has been provided.\n");
--					goto err;
--				}
-+				eng = getsubopt(&subopts, (char **)ring_str_map,
-+						&value);
- 
- 				calib_val = atol(value);
- 
--				if (!calib_val) {
--					wsim_err("An unsupported engine has been provided.\n");
-+				if (calib_val < 0) {
-+					wsim_err("Invalid negative calibration!\n");
- 					goto err;
- 				}
- 
--				switch (eng) {
--				/* skip DEFAULT and VCS engines */
--				case DEFAULT:
--				case VCS:
--					wsim_err("An unsupported engine has been provided.\n");
-+				if (eng < 0 && !calib_val) {
-+					wsim_err("Invalid calibration or engine '%s'!\n",
-+						 value);
- 					goto err;
--				case RCS:
--				case BCS:
--				case VCS1 ... VECS:
--					engine_calib_map[eng] = calib_val;
--					has_nop_calibration = true;
--					break;
--				default:
--					/* raw number was given - two cases:
--					 * raw number is already set */
-+				} else if (eng < 0) {
- 					if (raw_number) {
--						wsim_err("Default engine calibration provided more than once.\n");
-+						wsim_err("Default engine calibration provided more than once!\n");
- 						goto err;
- 					}
--					else if (!raw_number) {
--						/* raw number has been set for the first time */
--						raw_number = calib_val;
--						apply_unset_calibrations(raw_number);
-+					raw_number = calib_val;
-+					apply_unset_calibrations(raw_number);
-+				} else if (eng == DEFAULT || eng == VCS) {
-+					wsim_err("'%s' not allowed in engine calibrations!\n",
-+						 ring_str_map[eng]);
-+					goto err;
-+				} else {
-+					if (!calib_val) {
-+						wsim_err("Invalid zero calibration!\n");
-+						goto err;
-+					} else if (engine_calib_map[eng]) {
-+						wsim_err("Invalid repeated calibration of %s!\n",
-+							ring_str_map[eng]);
-+						goto err;
-+					} else {
-+						engine_calib_map[eng] = calib_val;
-+						has_nop_calibration = true;
- 					}
--					break;
- 				}
- 			}
- 			break;
-@@ -3430,6 +3429,22 @@ int main(int argc, char **argv)
- 		calibrate_engines();
- 
- 		goto out;
-+	} else {
-+		bool missing = false;
-+
-+		for (i = 0; i < NUM_ENGINES; i++) {
-+			if (i == DEFAULT || i == VCS)
-+				continue;
-+
-+			if (!engine_calib_map[i]) {
-+				wsim_err("Missing calibration for '%s'!\n",
-+					 ring_str_map[i]);
-+				missing = true;
-+			}
-+		}
-+
-+		if (missing)
-+			goto err;
- 	}
- 
- 	if (!nr_w_args) {
-
-Regards,
-
-Tvrtko
-
-> +					engine_calib_map[eng] = calib_val;
-> +					has_nop_calibration = true;
-> +					break;
-> +				default:
-> +					/* raw number was given - two cases:
-> +					 * raw number is already set */
-> +					if (raw_number) {
-> +						wsim_err("Default engine calibration provided more than once.\n");
-> +						goto err;
-> +					}
-> +					else if (!raw_number) {
-
-"} else if (...) {" is our coding style.
-
-> +						/* raw number has been set for the first time */
-> +						raw_number = calib_val;
-> +						apply_unset_calibrations(raw_number);
-> +					}
-> +					break;
-> +				}
-> +			}
->   			break;
->   		case 'r':
->   			repeat = strtol(optarg, NULL, 0);
-> @@ -3242,14 +3421,13 @@ int main(int argc, char **argv)
->   		goto err;
->   	}
->   
-> -	if (!nop_calibration) {
-> -		if (verbose > 1)
-> -			printf("Calibrating nop delay with %u%% tolerance...\n",
-> +	if (!has_nop_calibration) {
-> +		if (verbose > 1) {
-> +			printf("Calibrating nop delays with %u%% tolerance...\n",
->   				tolerance_pct);
-> -		nop_calibration = calibrate_nop(tolerance_pct);
-> -		if (verbose)
-> -			printf("Nop calibration for %uus delay is %lu.\n",
-> -			       nop_calibration_us, nop_calibration);
-> +		}
-> +
-> +		calibrate_engines();
->   
->   		goto out;
->   	}
-> @@ -3309,8 +3487,7 @@ int main(int argc, char **argv)
->   
->   	if (verbose > 1) {
->   		printf("Random seed is %u.\n", master_prng);
-> -		printf("Using %lu nop calibration for %uus delay.\n",
-> -		       nop_calibration, nop_calibration_us);
-> +		print_engines_calibrations();
->   		printf("%u client%s.\n", clients, clients > 1 ? "s" : "");
->   		if (flags & SWAPVCS)
->   			printf("Swapping VCS rings between clients.\n");
-> 
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RHluYW1pYyB0ZXN0cyBnaXZlcyB1cyBuZXcgbWV0aG9kIHRvIGNyZWF0ZSB0ZXN0cyBkZXBlbmRp
+bmcgb24gdGhlCmhhcmR3YXJlL3NvZnR3YXJlIGNhcGFiaWxpdGllcy4gVG8gY2hlY2sgY292ZXJh
+Z2Ugc29tZSB0ZXN0cyByZXF1aXJlCnZlcmlmaWNhdGlvbiBvdmVyIHNvbWUgc2V0IG9mIG9iamVj
+dHMvZGF0YS4gVG8gbWFrZSBsaWZlIGVhc2llcgp3aXRoIGNvbWJpbmF0b3JpY3MgdGhpcyBwYXRj
+aCBpbnRyb2R1Y2VzIGlndF9jb2xsZWN0aW9uLiBDdXJyZW50bHkgaXQKc3VwcG9ydHMgaXRlcmF0
+aW5nIG92ZXIgc2V0IHRvIGdldCBzdWJzZXRzLCBjb21iaW5hdGlvbnMsIHZhcmlhdGlvbnMKd2l0
+aCBhbmQgd2l0aG91dCByZXBldGl0aW9ucy4KQ29kZSBoYXMgc29tZSBsaW1pdGF0aW9uIChzZXQv
+c3Vic2V0IGNhbm5vdCBiZSBsYXJnZXIgdGhhbiAxNiBlbGVtZW50cywKd2hhdCBpcyBlbm91Z2gg
+Zm9yIG1vc3QgY2FzZXMpLgoKU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6
+Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+CkNjOiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5s
+YXR2YWxhQGludGVsLmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNv
+LnVrPgotLS0KIC4uLi9pZ3QtZ3B1LXRvb2xzL2lndC1ncHUtdG9vbHMtZG9jcy54bWwgICAgICB8
+ICAgMSArCiBsaWIvTWFrZWZpbGUuc291cmNlcyAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
+IDIgKwogbGliL2lndF9jb2xsZWN0aW9uLmMgICAgICAgICAgICAgICAgICAgICAgICAgIHwgNTE1
+ICsrKysrKysrKysrKysrKysrKwogbGliL2lndF9jb2xsZWN0aW9uLmggICAgICAgICAgICAgICAg
+ICAgICAgICAgIHwgIDk5ICsrKysKIGxpYi9tZXNvbi5idWlsZCAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICB8ICAgMSArCiA1IGZpbGVzIGNoYW5nZWQsIDYxOCBpbnNlcnRpb25zKCspCiBj
+cmVhdGUgbW9kZSAxMDA2NDQgbGliL2lndF9jb2xsZWN0aW9uLmMKIGNyZWF0ZSBtb2RlIDEwMDY0
+NCBsaWIvaWd0X2NvbGxlY3Rpb24uaAoKZGlmZiAtLWdpdCBhL2RvY3MvcmVmZXJlbmNlL2lndC1n
+cHUtdG9vbHMvaWd0LWdwdS10b29scy1kb2NzLnhtbCBiL2RvY3MvcmVmZXJlbmNlL2lndC1ncHUt
+dG9vbHMvaWd0LWdwdS10b29scy1kb2NzLnhtbAppbmRleCBhYTlmZWYyMC4uOWM5YWE4ZjEgMTAw
+NjQ0Ci0tLSBhL2RvY3MvcmVmZXJlbmNlL2lndC1ncHUtdG9vbHMvaWd0LWdwdS10b29scy1kb2Nz
+LnhtbAorKysgYi9kb2NzL3JlZmVyZW5jZS9pZ3QtZ3B1LXRvb2xzL2lndC1ncHUtdG9vbHMtZG9j
+cy54bWwKQEAgLTIwLDYgKzIwLDcgQEAKICAgICA8eGk6aW5jbHVkZSBocmVmPSJ4bWwvaWd0X2F1
+ZGlvLnhtbCIvPgogICAgIDx4aTppbmNsdWRlIGhyZWY9InhtbC9pZ3RfYXV4LnhtbCIvPgogICAg
+IDx4aTppbmNsdWRlIGhyZWY9InhtbC9pZ3RfY2hhbWVsaXVtLnhtbCIvPgorICAgIDx4aTppbmNs
+dWRlIGhyZWY9InhtbC9pZ3RfY29sbGVjdGlvbi54bWwiLz4KICAgICA8eGk6aW5jbHVkZSBocmVm
+PSJ4bWwvaWd0X2NvcmUueG1sIi8+CiAgICAgPHhpOmluY2x1ZGUgaHJlZj0ieG1sL2lndF9kZWJ1
+Z2ZzLnhtbCIvPgogICAgIDx4aTppbmNsdWRlIGhyZWY9InhtbC9pZ3RfZGV2aWNlLnhtbCIvPgpk
+aWZmIC0tZ2l0IGEvbGliL01ha2VmaWxlLnNvdXJjZXMgYi9saWIvTWFrZWZpbGUuc291cmNlcwpp
+bmRleCBmZWI4YzIwZC4uNjMxZDY3MTQgMTAwNjQ0Ci0tLSBhL2xpYi9NYWtlZmlsZS5zb3VyY2Vz
+CisrKyBiL2xpYi9NYWtlZmlsZS5zb3VyY2VzCkBAIC0yOSw2ICsyOSw4IEBAIGxpYl9zb3VyY2Vf
+bGlzdCA9CSAJXAogCWlndF9kZXZpY2Vfc2Nhbi5oCVwKIAlpZ3RfYXV4LmMJCVwKIAlpZ3RfYXV4
+LmgJCVwKKwlpZ3RfY29sbGVjdGlvbi5jCVwKKwlpZ3RfY29sbGVjdGlvbi5oCVwKIAlpZ3RfY29s
+b3JfZW5jb2RpbmcuYwlcCiAJaWd0X2NvbG9yX2VuY29kaW5nLmgJXAogCWlndF9lZGlkLmMJCVwK
+ZGlmZiAtLWdpdCBhL2xpYi9pZ3RfY29sbGVjdGlvbi5jIGIvbGliL2lndF9jb2xsZWN0aW9uLmMK
+bmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAuLmMzZTU4NWM3Ci0tLSAvZGV2L251
+bGwKKysrIGIvbGliL2lndF9jb2xsZWN0aW9uLmMKQEAgLTAsMCArMSw1MTUgQEAKKyNpbmNsdWRl
+ICJpZ3QuaCIKKyNpbmNsdWRlICJpZ3RfY29sbGVjdGlvbi5oIgorCisvKioKKyAqIFNFQ1RJT046
+aWd0X2NvbGxlY3Rpb24KKyAqIEBzaG9ydF9kZXNjcmlwdGlvbjogR2VuZXJpYyBjb21iaW5hdG9y
+aWNzIGxpYnJhcnkKKyAqIEB0aXRsZTogQ29sbGVjdGlvbgorICogQGluY2x1ZGU6IGlndC5oCisg
+KgorICogIyBHZW5lcmljIGNvbWJpbmF0b3JpY3MgbGlicmFyeS4KKyAqCisgKiBTdXBwb3J0czoK
+KyAqIC0gc3Vic2V0cworICogLSBjb21iaW5hdGlvbnMKKyAqIC0gdmFyaWF0aW9ucyB3aXRoIHJl
+cGV0aXRpb25zCisgKiAtIHZhcmlhdGlvbnMgd2l0aG91dCByZXBldGl0aW9ucworICoKKyAqICMj
+IFN1YnNldHMKKyAqCisgKiBMZXQgQSA9IHsgMSwgMiwgMyB9CisgKgorICogV2l0aCBzdWJzZXQg
+c2l6ZSA9PSAyIHdlIGdvdCBzdWJzZXRzIHdpdGggbnVtYmVyIG9mIGVsZW1lbnRzIDw9IHN1YnNl
+dCBzaXplOgorICoge30KKyAqIHsgMSB9CisgKiB7IDIgfQorICogeyAzIH0KKyAqIHsgMSwgMiB9
+CisgKiB7IDEsIDMgfQorICogeyAyLCAzIH0KKyAqCisgKiAjIyBDb21iaW5hdGlvbnMKKyAqCisg
+KiBMZXQgQSA9IHsgMSwgMiwgMyB9CisgKgorICogV2l0aCBzdWJzZXQgc2l6ZSA9PSAyIHdlIGdv
+dCBzdWJzZXRzIHdpdGggbnVtYmVyIG9mIGVsZW1lbnRzID09IHN1YnNldCBzaXplOgorICogeyAx
+LCAyIH0KKyAqIHsgMSwgMyB9CisgKiB7IDIsIDMgfQorICoKKyAqIFNvIGl0IGlzIHNpbWlsYXIg
+dG8gc3Vic2V0IGV4dHJhY3Rpb24gYnV0IHRhcmdldGVkIHRvIHNpbmdsZSBzdWJzZXQgc2l6ZS4K
+KyAqCisgKiAjIyBWYXJpYXRpb25zIHdpdGggcmVwZXRpdGlvbnMKKyAqCisgKiBMZXQgQSA9IHsg
+MCwgMSB9CisgKgorICogV2l0aCByZXN1bHQgc2l6ZSA9PSAzIHdlIGdvdCByZXN1bHQgdHVwbGVz
+OgorICoKKyAqICggMCwgMCwgMCApCisgKiAoIDAsIDAsIDEgKQorICogKCAwLCAxLCAwICkKKyAq
+ICggMCwgMSwgMSApCisgKiAoIDEsIDAsIDAgKQorICogKCAxLCAwLCAxICkKKyAqICggMSwgMSwg
+MCApCisgKiAoIDEsIDEsIDEgKQorICoKKyAqICMjIFZhcmlhdGlvbnMgd2l0aG91dCByZXBldGl0
+aW9ucworICoKKyAqIExldCBBID0geyAxLCAyLCAzIH0KKyAqCisgKiBXaXRoIHN1YnNldCBzaXpl
+ID09IDIgd2UgZ290IHR1cGxlczoKKyAqCisgKiAoMSwgMikKKyAqICgxLCAzKQorICogKDIsIDEp
+CisgKiAoMiwgMykKKyAqICgzLCAxKQorICogKDMsIDIpCisgKgorICogIyBVc2FnZSBleGFtcGxl
+czoKKyAqCisgKiAjIyBpdGVyYXRvciBpcyBtYW51YWxseSBjb250cm9sbGVkOgorICoKKyAqIHxb
+PCEtLSBsYW5ndWFnZT0iQyIgLS0+CisgKiBzdHJ1Y3QgaWd0X2NvbGxlY3Rpb24gKnNldDsKKyAq
+IHN0cnVjdCBpZ3RfY29sbGVjdGlvbiAqc3Vic2V0OworICogc3RydWN0IGlndF9jb2xsZWN0aW9u
+X2l0ZXIgKml0ZXI7CisgKgorICogaW50IGk7CisgKiBzZXQgPSBpZ3RfY29sbGVjdGlvbl9jcmVh
+dGUoNCk7CisgKiBpdGVyID0gaWd0X2NvbGxlY3Rpb25faXRlcl9pbml0KHNldCwgMiwgU1VCU0VU
+KTsKKyAqIC8vaXRlciA9IGlndF9jb2xsZWN0aW9uX2l0ZXJfaW5pdChzZXQsIDIsIENPTUJJTkFU
+SU9OKTsKKyAqIC8vaXRlciA9IGlndF9jb2xsZWN0aW9uX2l0ZXJfaW5pdChzZXQsIDIsIFZBUklB
+VElPTl9SKTsKKyAqIC8vaXRlciA9IGlndF9jb2xsZWN0aW9uX2l0ZXJfaW5pdChzZXQsIDIsIFZB
+UklBVElPTl9OUik7CisgKgorICogZm9yIChpID0gMDsgaSA8IHNldC0+c2l6ZTsgaSsrKSB7Cisg
+KiAgICAgIGlndF9jb2xsZWN0aW9uX3NldF92YWx1ZShzZXQsIGksIGkgKyAxKTsKKyAqICAgICAg
+aWd0X2NvbGxlY3Rpb25fc2V0X3BvaW50ZXIoc2V0LCBpLCAmaSArIGkpOworICogfQorICoKKyAq
+IHdoaWxlICgoc3Vic2V0ID0gaWd0X2NvbGxlY3Rpb25faXRlcl9uZXh0KGl0ZXIpKSkgeworICog
+ICAgICAvLyAtLS0gZG8gc3RoIHdpdGggc3Vic2V0IC0tLQorICogICAgICAvLyAtLS0gc3Vic2V0
+IGlzIGEgcGFydCBvZiBpdGVyYXRvciwgc28gZG9uJ3QgZnJlZSBpdCEgLS0tCisgKiB9CisgKgor
+ICogaWd0X2NvbGxlY3Rpb25faXRlcl9kZXN0cm95KGl0ZXIpOworICogaWd0X2NvbGxlY3Rpb25f
+ZGVzdHJveShzZXQpOworICogXXwKKyAqCisgKiAjIyBpdGVyYXRvciBpcyBjcmVhdGVkIGFuZCBk
+ZXN0cm95ZWQgaW5zaWRlIGhlbHBlciBtYWNyb3M6CisgKiB8WzwhLS0gbGFuZ3VhZ2U9IkMiIC0t
+PgorICogc3RydWN0IGlndF9jb2xsZWN0aW9uICpzZXQ7CisgKiBzdHJ1Y3QgaWd0X2NvbGxlY3Rp
+b24gKnN1YnNldCwgKnJlc3VsdDsKKyAqIHN0cnVjdCBpZ3RfY29sbGVjdGlvbl9kYXRhICpkYXRh
+OworICoKKyAqIGZvcl9lYWNoX3N1YnNldChzdWJzZXQsIHN1YnNldF9zaXplLCBzZXQpCisgKiAg
+ICAgICAvLyAtLS0gZG8gc3RoIHdpdGggc3Vic2V0IC0tLQorICoKKyAqIGZvcl9lYWNoX2NvbWJp
+bmF0aW9uKHN1YnNldCwgc3Vic2V0X3NpemUsIHNldCkKKyAqICAgICAgIC8vIC0tLSBkbyBzdGgg
+d2l0aCBzdWJzZXQgLS0tCisgKgorICogZm9yX2VhY2hfdmFyaWF0aW9uX3IocmVzdWx0LCByZXN1
+bHRfc2l6ZSwgc2V0KQorICogICAgICAgLy8gLS0tIGRvIHN0aCB3aXRoIHJlc3VsdCAtLS0KKyAq
+CisgKiBmb3JfZWFjaF92YXJpYXRpb25fbnIocmVzdWx0LCByZXN1bHRfc2l6ZSwgc2V0KQorICog
+ICAgICAgLy8gLS0tIGRvIHN0aCB3aXRoIHJlc3VsdCAtLS0KKyAqCisgKiAvLyBtYWNybyBmb3Ig
+aXRlcmF0aW9uIG92ZXIgc2V0IGRhdGEgLSBmb3JfZWFjaF9jb2xsZWN0aW9uX2RhdGEoKQorICog
+Zm9yX2VhY2hfc3Vic2V0KHN1YnNldCwgc3Vic2V0X3NpemUsIHNldCkKKyAqICAgICAgIGZvcl9l
+YWNoX2NvbGxlY3Rpb25fZGF0YShkYXRhLCBzdWJzZXQpCisgKiAgICAgICAgICAgICBwcmludGYo
+InY6ICVkLCBwOiAlcFxuIiwgZGF0YS0+dmFsdWUsIGRhdGEtPnB0cik7CisgKiBdfAorICovCisK
+K3N0cnVjdCBpZ3RfY29sbGVjdGlvbl9pdGVyIHsKKwljb25zdCBzdHJ1Y3QgaWd0X2NvbGxlY3Rp
+b24gKnNldDsKKwllbnVtIGlndF9jb2xsZWN0aW9uX2l0ZXJfYWxnbyBhbGdvcml0aG07CisJYm9v
+bCBpbml0OworCWludCByZXN1bHRfc2l6ZTsKKwlzdHJ1Y3QgaWd0X2NvbGxlY3Rpb24gcmVzdWx0
+OworCisJLyogQWxnb3JpdGhtcyBzdGF0ZSAqLworCXN0cnVjdCB7CisJCXVpbnQzMl90IHJlc3Vs
+dF9iaXRzOworCQlpbnQgY3VycmVudF9yZXN1bHRfc2l6ZTsKKwkJaW50IGlkeHNbSUdUX0NPTExF
+Q1RJT05fTUFYU0laRV07CisJfSBkYXRhOworfTsKKworLyoqCisgKiBpZ3RfY29sbGVjdGlvbl9j
+cmVhdGUKKyAqIEBzaXplOiBzaXplIG9mIHRoZSBjb2xsZWN0aW9uLCBtdXN0IGJlIGdyZWF0ZXIg
+dGhhbiAwIGFuZCBsZXNzCisgKiB0aGFuICNJR1RfQ09MTEVDVElPTl9NQVhTSVpFCisgKgorICog
+RnVuY3Rpb24gY3JlYXRlcyBhIGNvbGxlY3Rpb24gKHNldCkgY29udGFpbmluZyBpZ3RfY29sbGVj
+dGlvbl9kYXRhIGVsZW1lbnRzLgorICoKKyAqIFJldHVybnM6CisgKiBwb2ludGVyIHRvICNpZ3Rf
+Y29sbGVjdGlvbi4gQXNzZXJ0cyBvbiBtZW1vcnkgYWxsb2NhdGlvbiBmYWlsdXJlLgorICovCitz
+dHJ1Y3QgaWd0X2NvbGxlY3Rpb24gKmlndF9jb2xsZWN0aW9uX2NyZWF0ZShpbnQgc2l6ZSkKK3sK
+KwlzdHJ1Y3QgaWd0X2NvbGxlY3Rpb24gKnNldDsKKwlpbnQgaTsKKworCWlndF9hc3NlcnQoc2l6
+ZSA+IDAgJiYgc2l6ZSA8PSBJR1RfQ09MTEVDVElPTl9NQVhTSVpFKTsKKworCXNldCA9IGNhbGxv
+YygxLCBzaXplb2YoKnNldCkpOworCWlndF9hc3NlcnQoc2V0KTsKKworCXNldC0+c2l6ZSA9IHNp
+emU7CisJZm9yIChpID0gMDsgaSA8IHNpemU7IGkrKykKKwkJc2V0LT5zZXRbaV0udmFsdWUgPSBp
+OyAvKiBzZXQgdG8gaW5kZXggYXMgZGVmYXVsdCAqLworCisJcmV0dXJuIHNldDsKK30KKworLyoq
+CisgKiBpZ3RfY29sbGVjdGlvbl9kdXBsaWNhdGUKKyAqIEBzcmM6IHNvdXJjZSBjb2xsZWN0aW9u
+CisgKgorICogRnVuY3Rpb24gZHVwbGljYXRlcyBjb2xsZWN0aW9uLiBVc2VmdWwgdG8gY292ZXIg
+bXVsdGl0aHJlYWRpbmcKKyAqIHdoZW4gZGlmZmVyZW50IHRocmVhZHMgbmVlZCB0byBnZXQgaXQn
+cyBvd24gY29weSBvZiB0aGUgY29sbGVjdGlvbgorICogYWNxdWlyZWQgZHVyaW5nIGl0ZXJhdGlv
+bi4KKyAqCisgKiBSZXR1cm5zOgorICogcG9pbnRlciB0byAjaWd0X2NvbGxlY3Rpb24uIEFzc2Vy
+dHMgb24gbWVtb3J5IGFsbG9jYXRpb24gZmFpbHVyZS4KKyAqLworc3RydWN0IGlndF9jb2xsZWN0
+aW9uICoKK2lndF9jb2xsZWN0aW9uX2R1cGxpY2F0ZShjb25zdCBzdHJ1Y3QgaWd0X2NvbGxlY3Rp
+b24gKnNyYykKK3sKKwlzdHJ1Y3QgaWd0X2NvbGxlY3Rpb24gKnNldCA9IG1hbGxvYyhzaXplb2Yo
+KnNldCkpOworCisJaWd0X2Fzc2VydChzZXQpOworCW1lbWNweShzZXQsIHNyYywgc2l6ZW9mKCpz
+ZXQpKTsKKworCXJldHVybiBzZXQ7Cit9CisKKy8qKgorICogaWd0X2NvbGxlY3Rpb25fZGVzdHJv
+eQorICogQHNldDogY29sbGVjdGlvbiB0byBiZSBmcmVlZAorICoKKyAqIEZ1bmN0aW9uIGZyZWVz
+IGNvbGxlY3Rpb24gbWVtb3J5LgorICovCit2b2lkIGlndF9jb2xsZWN0aW9uX2Rlc3Ryb3koc3Ry
+dWN0IGlndF9jb2xsZWN0aW9uICpzZXQpCit7CisJZnJlZShzZXQpOworfQorCisvKioKKyAqIGln
+dF9jb2xsZWN0aW9uX3NldF92YWx1ZQorICogQHNldDogY29sbGVjdGlvbgorICogQGluZGV4OiBp
+bmRleCBvZiB2YWx1ZSBkYXRhIHRvIGJlIHNldCBpbiB0aGUgY29sbGVjdGlvbgorICogQHZhbHVl
+OiBuZXcgdmFsdWUKKyAqCisgKiBBc3NpZ24gbmV3IHZhbHVlIHRvIHRoZSBjb2xsZWN0aW9uIGVs
+ZW1lbnQgYXQgQGluZGV4LgorICovCit2b2lkIGlndF9jb2xsZWN0aW9uX3NldF92YWx1ZShzdHJ1
+Y3QgaWd0X2NvbGxlY3Rpb24gKnNldCwgaW50IGluZGV4LCBpbnQgdmFsdWUpCit7CisJaWd0X2Fz
+c2VydChpbmRleCA+PSAwICYmIGluZGV4IDwgc2V0LT5zaXplKTsKKwlzZXQtPnNldFtpbmRleF0u
+dmFsdWUgPSB2YWx1ZTsKK30KKworLyoqCisgKiBpZ3RfY29sbGVjdGlvbl9nZXRfdmFsdWUKKyAq
+IEBzZXQ6IGNvbGxlY3Rpb24KKyAqIEBpbmRleDogaW5kZXggb2YgdmFsdWUgZGF0YSB0byBiZSBn
+ZXQgZnJvbSB0aGUgY29sbGVjdGlvbgorICoKKyAqIFJldHVybnM6IGludGVnZXIgdmFsdWUgYXQg
+ZnJvbSB0aGUgY29sbGVjdGlvbiBlbGVtZW50IGF0IEBpbmRleC4KKyAqLworaW50IGlndF9jb2xs
+ZWN0aW9uX2dldF92YWx1ZShzdHJ1Y3QgaWd0X2NvbGxlY3Rpb24gKnNldCwgaW50IGluZGV4KQor
+eworCWlndF9hc3NlcnQoaW5kZXggPj0gMCAmJiBpbmRleCA8IHNldC0+c2l6ZSk7CisJcmV0dXJu
+IHNldC0+c2V0W2luZGV4XS52YWx1ZTsKK30KKworLyoqCisgKiBpZ3RfY29sbGVjdGlvbl9zZXRf
+cG9pbnRlcgorICogQHNldDogY29sbGVjdGlvbgorICogQGluZGV4OiBpbmRleCBvZiBwb2ludGVy
+IGRhdGEgdG8gYmUgc2V0IGluIHRoZSBjb2xsZWN0aW9uCisgKiBAcHRyOiBuZXcgcG9pbnRlcgor
+ICovCit2b2lkIGlndF9jb2xsZWN0aW9uX3NldF9wb2ludGVyKHN0cnVjdCBpZ3RfY29sbGVjdGlv
+biAqc2V0LCBpbnQgaW5kZXgsIHZvaWQgKnB0cikKK3sKKwlpZ3RfYXNzZXJ0KGluZGV4ID49IDAg
+JiYgaW5kZXggPCBzZXQtPnNpemUpOworCXNldC0+c2V0W2luZGV4XS5wdHIgPSBwdHI7Cit9CisK
+Ky8qKgorICogaWd0X2NvbGxlY3Rpb25fZ2V0X3BvaW50ZXIKKyAqIEBzZXQ6IGNvbGxlY3Rpb24K
+KyAqIEBpbmRleDogaW5kZXggb2YgcG9pbnRlciBkYXRhIHRvIGJlIGdldCBmcm9tIHRoZSBjb2xs
+ZWN0aW9uCisgKgorICogUmV0dXJuczogcG9pbnRlciBmcm9tIHRoZSBjb2xsZWN0aW9uIGVsZW1l
+bnQgYXQgQGluZGV4LgorICovCit2b2lkICppZ3RfY29sbGVjdGlvbl9nZXRfcG9pbnRlcihzdHJ1
+Y3QgaWd0X2NvbGxlY3Rpb24gKnNldCwgaW50IGluZGV4KQoreworCWlndF9hc3NlcnQoaW5kZXgg
+Pj0gMCAmJiBpbmRleCA8IHNldC0+c2l6ZSk7CisJcmV0dXJuIHNldC0+c2V0W2luZGV4XS5wdHI7
+Cit9CisKKy8qKgorICogaWd0X2NvbGxlY3Rpb25faXRlcl9jcmVhdGUKKyAqIEBzZXQ6IGJhc2Ug
+Y29sbGVjdGlvbgorICogQHJlc3VsdF9zaXplOiByZXN1bHQgY29sbGVjdGlvbiBzaXplCisgKiBA
+YWxnb3JpdGhtOiBtZXRob2Qgb2YgaXRlcmF0aW5nIG92ZXIgYmFzZSBjb2xsZWN0aW9uCisgKgor
+ICogRnVuY3Rpb24gY3JlYXRlcyBpdGVyYXRvciB3aGljaCBjb250YWlucyByZXN1bHQgY29sbGVj
+dGlvbiBjaGFuZ2VkIGVhY2ggdGltZQorICogaWd0X2NvbGxlY3Rpb25faXRlcl9uZXh0KCkgaXMg
+Y2FsbGVkLiBGb3IgdmFyaWF0aW9ucyB3aXRob3V0IHJlcGV0aXRpb25zCisgKiAoVkFSSUFUSU9O
+X1IpIHJlc3VsdCBjb2xsZWN0aW9uIHNpemUgY2FuIGJlIGxhcmdlciB0aGFuIHNpemUgb2YKKyAq
+IGJhc2UgY29sbGVjdGlvbiAoYWx0aG91Z2ggc3RpbGwgbGVzcyBvciBlcXVhbCAjSUdUX0NPTExF
+Q1RJT05fTUFYU0laRSkuCisgKiBBcyByZXN1bHQgY29sbGVjdGlvbiBpcyBhIHBhcnQgb2YgdGhl
+IGl0ZXJhdG9yIHRvIGJlIHRocmVhZC1zYWZlCisgKiBpZ3RfY29sbGVjdGlvbl9kdXBsaWNhdGUo
+KSBtdXN0IGJlIGNhbGxlZCB0byBtYWtlIHJlc3VsdCBjb2xsZWN0aW9uIGNvcHkKKyAqIGJlZm9y
+ZSBwYXNzaW5nIGl0IHRvIHRoZSB0aHJlYWQuCisgKgorICogUmV0dXJuczoKKyAqIHBvaW50ZXIg
+dG8gI2lndF9jb2xsZWN0aW9uX2l0ZXIuIEFzc2VydHMgb24gbWVtb3J5IGFsbG9jYXRpb24gZmFp
+bHVyZS4KKyAqLworc3RydWN0IGlndF9jb2xsZWN0aW9uX2l0ZXIgKgoraWd0X2NvbGxlY3Rpb25f
+aXRlcl9jcmVhdGUoY29uc3Qgc3RydWN0IGlndF9jb2xsZWN0aW9uICpzZXQsIGludCByZXN1bHRf
+c2l6ZSwKKwkJCSAgIGVudW0gaWd0X2NvbGxlY3Rpb25faXRlcl9hbGdvIGFsZ29yaXRobSkKK3sK
+KwlzdHJ1Y3QgaWd0X2NvbGxlY3Rpb25faXRlciAqaXRlcjsKKworCWlndF9hc3NlcnQocmVzdWx0
+X3NpemUgPiAwICYmIHJlc3VsdF9zaXplIDw9IElHVF9DT0xMRUNUSU9OX01BWFNJWkUpOworCWlm
+IChhbGdvcml0aG0gIT0gVkFSSUFUSU9OX1IpCisJCWlndF9hc3NlcnQocmVzdWx0X3NpemUgPD0g
+c2V0LT5zaXplKTsKKworCWl0ZXIgPSBjYWxsb2MoMSwgc2l6ZW9mKCppdGVyKSk7CisJaWd0X2Fz
+c2VydChpdGVyKTsKKworCWl0ZXItPnNldCA9IHNldDsKKwlpdGVyLT5yZXN1bHRfc2l6ZSA9IHJl
+c3VsdF9zaXplOworCWl0ZXItPmFsZ29yaXRobSA9IGFsZ29yaXRobTsKKwlpdGVyLT5pbml0ID0g
+dHJ1ZTsKKworCXJldHVybiBpdGVyOworfQorCisvKioKKyAqIGlndF9jb2xsZWN0aW9uX2l0ZXJf
+ZGVzdHJveQorICogQGl0ZXI6IGl0ZXJhdG9yIHRvIGJlIGZyZWVkCisgKgorICogRnVuY3Rpb24g
+ZnJlZXMgaXRlcmF0b3IgbWVtb3J5LgorICovCit2b2lkIGlndF9jb2xsZWN0aW9uX2l0ZXJfZGVz
+dHJveShzdHJ1Y3QgaWd0X2NvbGxlY3Rpb25faXRlciAqaXRlcikKK3sKKwlmcmVlKGl0ZXIpOwor
+fQorCitzdGF0aWMgc3RydWN0IGlndF9jb2xsZWN0aW9uICoKK2lndF9jb2xsZWN0aW9uX2l0ZXJf
+c3Vic2V0cyhzdHJ1Y3QgaWd0X2NvbGxlY3Rpb25faXRlciAqaXRlcikKK3sKKwljb25zdCBzdHJ1
+Y3QgaWd0X2NvbGxlY3Rpb24gKnNldCA9IGl0ZXItPnNldDsKKwlzdHJ1Y3QgaWd0X2NvbGxlY3Rp
+b24gKmN1cnIgPSAmaXRlci0+cmVzdWx0OworCWludCBpLCBwb3MgPSAwOworCisJaWYgKGl0ZXIt
+PmluaXQpIHsKKwkJaXRlci0+aW5pdCA9IGZhbHNlOworCQlpdGVyLT5kYXRhLnJlc3VsdF9iaXRz
+ID0gMDsKKwkJaXRlci0+ZGF0YS5jdXJyZW50X3Jlc3VsdF9zaXplID0gMDsKKwkJY3Vyci0+c2l6
+ZSA9IDA7CisJfSBlbHNlIHsKKwkJaXRlci0+ZGF0YS5yZXN1bHRfYml0cysrOworCQlpZiAoaXRl
+ci0+ZGF0YS5yZXN1bHRfYml0cyAmICgxIDw8IGl0ZXItPnNldC0+c2l6ZSkpIHsKKwkJCWl0ZXIt
+PmRhdGEuY3VycmVudF9yZXN1bHRfc2l6ZSsrOworCQkJaXRlci0+ZGF0YS5yZXN1bHRfYml0cyA9
+IDA7CisJCX0KKwkJaWYgKGl0ZXItPmRhdGEuY3VycmVudF9yZXN1bHRfc2l6ZSA+IGl0ZXItPnJl
+c3VsdF9zaXplKQorCQkJcmV0dXJuIE5VTEw7CisJfQorCisJd2hpbGUgKGlndF9od2VpZ2h0KGl0
+ZXItPmRhdGEucmVzdWx0X2JpdHMpICE9CisJCQlpdGVyLT5kYXRhLmN1cnJlbnRfcmVzdWx0X3Np
+emUpIHsKKwkJaXRlci0+ZGF0YS5yZXN1bHRfYml0cysrOworCQlpZiAoaXRlci0+ZGF0YS5yZXN1
+bHRfYml0cyAmICgxIDw8IGl0ZXItPnNldC0+c2l6ZSkpIHsKKwkJCWl0ZXItPmRhdGEuY3VycmVu
+dF9yZXN1bHRfc2l6ZSsrOworCQkJaXRlci0+ZGF0YS5yZXN1bHRfYml0cyA9IDA7CisJCX0KKwl9
+CisKKwlpZiAoaXRlci0+ZGF0YS5jdXJyZW50X3Jlc3VsdF9zaXplID4gaXRlci0+cmVzdWx0X3Np
+emUpCisJCXJldHVybiBOVUxMOworCisJZm9yIChpID0gMDsgaSA8IHNldC0+c2l6ZTsgaSsrKSB7
+CisJCWlmICghKGl0ZXItPmRhdGEucmVzdWx0X2JpdHMgJiAoMSA8PCBpKSkpCisJCQljb250aW51
+ZTsKKwkJY3Vyci0+c2V0W3BvcysrXSA9IHNldC0+c2V0W2ldOworCQljdXJyLT5zaXplID0gcG9z
+OworCX0KKworCXJldHVybiBjdXJyOworfQorCitzdGF0aWMgc3RydWN0IGlndF9jb2xsZWN0aW9u
+ICoKK2lndF9jb2xsZWN0aW9uX2l0ZXJfY29tYmluYXRpb24oc3RydWN0IGlndF9jb2xsZWN0aW9u
+X2l0ZXIgKml0ZXIpCit7CisJY29uc3Qgc3RydWN0IGlndF9jb2xsZWN0aW9uICpzZXQgPSBpdGVy
+LT5zZXQ7CisJc3RydWN0IGlndF9jb2xsZWN0aW9uICpjdXJyID0gJml0ZXItPnJlc3VsdDsKKwlp
+bnQgaSwgcG9zID0gMDsKKworCWlmIChpdGVyLT5pbml0KSB7CisJCWl0ZXItPmluaXQgPSBmYWxz
+ZTsKKwkJaXRlci0+ZGF0YS5yZXN1bHRfYml0cyA9IDA7CisJCWl0ZXItPnJlc3VsdC5zaXplID0g
+aXRlci0+cmVzdWx0X3NpemU7CisJfSBlbHNlIHsKKwkJaXRlci0+ZGF0YS5yZXN1bHRfYml0cysr
+OworCX0KKworCXdoaWxlIChpZ3RfaHdlaWdodChpdGVyLT5kYXRhLnJlc3VsdF9iaXRzKSAhPSBp
+dGVyLT5yZXN1bHRfc2l6ZSkKKwkJaXRlci0+ZGF0YS5yZXN1bHRfYml0cysrOworCisJaWYgKGl0
+ZXItPmRhdGEucmVzdWx0X2JpdHMgJiAoMSA8PCBzZXQtPnNpemUpKQorCQlyZXR1cm4gTlVMTDsK
+KworCWZvciAoaSA9IDA7IGkgPCBzZXQtPnNpemU7IGkrKykgeworCQlpZiAoIShpdGVyLT5kYXRh
+LnJlc3VsdF9iaXRzICYgKDEgPDwgaSkpKQorCQkJY29udGludWU7CisJCWN1cnItPnNldFtwb3Mr
+K10gPSBzZXQtPnNldFtpXTsKKwkJY3Vyci0+c2l6ZSA9IHBvczsKKwl9CisKKwlyZXR1cm4gY3Vy
+cjsKK30KKworc3RhdGljIHN0cnVjdCBpZ3RfY29sbGVjdGlvbiAqCitpZ3RfY29sbGVjdGlvbl9p
+dGVyX3ZhcmlhdGlvbl9yKHN0cnVjdCBpZ3RfY29sbGVjdGlvbl9pdGVyICppdGVyKQoreworCWNv
+bnN0IHN0cnVjdCBpZ3RfY29sbGVjdGlvbiAqc2V0ID0gaXRlci0+c2V0OworCXN0cnVjdCBpZ3Rf
+Y29sbGVjdGlvbiAqY3VyciA9ICZpdGVyLT5yZXN1bHQ7CisJaW50IGk7CisKKwlpZiAoaXRlci0+
+aW5pdCkgeworCQlpdGVyLT5pbml0ID0gZmFsc2U7CisJCWl0ZXItPnJlc3VsdC5zaXplID0gaXRl
+ci0+cmVzdWx0X3NpemU7CisJCWZvciAoaSA9IDA7IGkgPCBpdGVyLT5yZXN1bHRfc2l6ZTsgaSsr
+KQorCQkJaXRlci0+ZGF0YS5pZHhzW2ldID0gMDsKKwl9CisKKwlpZiAoaXRlci0+ZGF0YS5pZHhz
+WzBdID09IGl0ZXItPnNldC0+c2l6ZSkKKwkJcmV0dXJuIE5VTEw7CisKKwlmb3IgKGkgPSAwOyBp
+IDwgaXRlci0+cmVzdWx0X3NpemU7IGkrKykKKwkJY3Vyci0+c2V0W2ldID0gc2V0LT5zZXRbaXRl
+ci0+ZGF0YS5pZHhzW2ldXTsKKworCWZvciAoaSA9IGl0ZXItPnJlc3VsdF9zaXplLTE7IGkgPj0g
+MDsgaS0tKSB7CisJCWlmICgrK2l0ZXItPmRhdGEuaWR4c1tpXSA9PSBpdGVyLT5zZXQtPnNpemUg
+JiYgaSA+IDApIHsKKwkJCWl0ZXItPmRhdGEuaWR4c1tpXSAlPSBpdGVyLT5zZXQtPnNpemU7CisJ
+CX0gZWxzZSB7CisJCQlicmVhazsKKwkJfQorCX0KKworCXJldHVybiBjdXJyOworfQorCitzdGF0
+aWMgc3RydWN0IGlndF9jb2xsZWN0aW9uICoKK2lndF9jb2xsZWN0aW9uX2l0ZXJfdmFyaWF0aW9u
+X25yKHN0cnVjdCBpZ3RfY29sbGVjdGlvbl9pdGVyICppdGVyKQoreworCWNvbnN0IHN0cnVjdCBp
+Z3RfY29sbGVjdGlvbiAqc2V0ID0gaXRlci0+c2V0OworCXN0cnVjdCBpZ3RfY29sbGVjdGlvbiAq
+Y3VyciA9ICZpdGVyLT5yZXN1bHQ7CisJYm9vbCBpbl91c2VbSUdUX0NPTExFQ1RJT05fTUFYU0la
+RV07CisJYm9vbCBza2lwOworCWludCBpOworCisJaWYgKGl0ZXItPmluaXQpIHsKKwkJaXRlci0+
+aW5pdCA9IGZhbHNlOworCQlpdGVyLT5yZXN1bHQuc2l6ZSA9IGl0ZXItPnJlc3VsdF9zaXplOwor
+CQlmb3IgKGkgPSAwOyBpIDwgaXRlci0+cmVzdWx0X3NpemU7IGkrKykKKwkJCWl0ZXItPmRhdGEu
+aWR4c1tpXSA9IDA7CisJfQorCisJLyoKKwkgKiBTaW1wbGUgbmFpdmUgYWxnb3JpdGhtIGNoZWNr
+aW5nIGRvZXMgZWxlbWVudCBpbmRleCBpcyBhbHJlYWR5CisJICogb2NjdXBpZWQuCisJICovCity
+ZXRyeToKKwlza2lwID0gZmFsc2U7CisKKwlpZiAoaXRlci0+ZGF0YS5pZHhzWzBdID09IGl0ZXIt
+PnNldC0+c2l6ZSkKKwkJcmV0dXJuIE5VTEw7CisKKwlmb3IgKGkgPSAwOyBpIDwgaXRlci0+cmVz
+dWx0X3NpemU7IGkrKykKKwkJY3Vyci0+c2V0W2ldID0gc2V0LT5zZXRbaXRlci0+ZGF0YS5pZHhz
+W2ldXTsKKworCW1lbXNldChpbl91c2UsIDAsIHNpemVvZihpbl91c2UpKTsKKwlmb3IgKGkgPSAw
+OyBpIDwgaXRlci0+cmVzdWx0X3NpemU7IGkrKykgeworCQlpZiAoaW5fdXNlW2l0ZXItPmRhdGEu
+aWR4c1tpXV0pIHsKKwkJCXNraXAgPSB0cnVlOworCQkJYnJlYWs7CisJCX0KKwkJaW5fdXNlW2l0
+ZXItPmRhdGEuaWR4c1tpXV0gPSB0cnVlOworCX0KKworCWZvciAoaSA9IGl0ZXItPnJlc3VsdF9z
+aXplLTE7IGkgPj0gMDsgaS0tKSB7CisJCWlmICgrK2l0ZXItPmRhdGEuaWR4c1tpXSA9PSBpdGVy
+LT5zZXQtPnNpemUgJiYgaSA+IDApIHsKKwkJCWl0ZXItPmRhdGEuaWR4c1tpXSAlPSBpdGVyLT5z
+ZXQtPnNpemU7CisJCX0gZWxzZSB7CisJCQlicmVhazsKKwkJfQorCX0KKworCWlmIChza2lwKQor
+CQlnb3RvIHJldHJ5OworCisJcmV0dXJuIGN1cnI7Cit9CisKKy8qKgorICogaWd0X2NvbGxlY3Rp
+b25faXRlcl9uZXh0CisgKiBAaXRlcjogY29sbGVjdGlvbiBpdGVyYXRvcgorICoKKyAqIEZ1bmN0
+aW9uIGl0ZXJhdGVzIG92ZXIgY29sbGVjdGlvbiByZWdhcmRpbmcgdG8gYWxnb3JpdGhtIHNlbGVj
+dGVkIGR1cmluZworICogaXRlcmF0b3IgY3JlYXRpb24gcmV0dXJuaW5nIGNvbGxlY3Rpb24gKHN1
+YnNldCBvciB0dXBsZXMgKGZvciB2YXJpYXRpb25zKSkuCisgKgorICogUmV0dXJuczogcG9pbnRl
+ciB0byB0aGUgY29sbGVjdGlvbiAoaXQgaXMgYSBwYXJ0IG9mIHRoZSBpdGVyYXRvciBtZW1vcnkK
+KyAqIHNvIHRvIGJlIHRocmVhZC1zYWZlIGl0IG11c3QgYmUgZHVwbGljYXRlZCBieSB0aGUgY2Fs
+bGVyIHdoZW4KKyAqIG5lY2Vzc2FyeSkgb3IgTlVMTCB3aGVuIHRoZXJlJ3JlIG5vIG1vcmUgZWxl
+bWVudHMuIEl0ZXJhdG9yIGlzIG5vIGxvbmdlcgorICogdmFsaWQgYW5kIG11c3QgYmUgdGhlbiBm
+cmVlZCB3aXRoIGlndF9jb2xsZWN0aW9uX2l0ZXJfZGVzdHJveSgpLgorICovCitzdHJ1Y3QgaWd0
+X2NvbGxlY3Rpb24gKgoraWd0X2NvbGxlY3Rpb25faXRlcl9uZXh0KHN0cnVjdCBpZ3RfY29sbGVj
+dGlvbl9pdGVyICppdGVyKQoreworCXN0cnVjdCBpZ3RfY29sbGVjdGlvbiAqcmV0X3NldCA9IE5V
+TEw7CisKKwlzd2l0Y2goaXRlci0+YWxnb3JpdGhtKSB7CisJY2FzZSBTVUJTRVQ6CisJCXJldF9z
+ZXQgPSBpZ3RfY29sbGVjdGlvbl9pdGVyX3N1YnNldHMoaXRlcik7CisJCWJyZWFrOworCWNhc2Ug
+Q09NQklOQVRJT046CisJCXJldF9zZXQgPSBpZ3RfY29sbGVjdGlvbl9pdGVyX2NvbWJpbmF0aW9u
+KGl0ZXIpOworCQlicmVhazsKKwljYXNlIFZBUklBVElPTl9SOgorCQlyZXRfc2V0ID0gaWd0X2Nv
+bGxlY3Rpb25faXRlcl92YXJpYXRpb25fcihpdGVyKTsKKwkJYnJlYWs7CisJY2FzZSBWQVJJQVRJ
+T05fTlI6CisJCXJldF9zZXQgPSBpZ3RfY29sbGVjdGlvbl9pdGVyX3ZhcmlhdGlvbl9ucihpdGVy
+KTsKKwkJYnJlYWs7CisJZGVmYXVsdDoKKwkJaWd0X2Fzc2VydF9mKGZhbHNlLCAiVW5rbm93biBh
+bGdvcml0aG1cbiIpOworCX0KKworCXJldHVybiByZXRfc2V0OworfQorCisvKioKKyAqIGlndF9j
+b2xsZWN0aW9uX2l0ZXJfbmV4dF9vcl9lbmQKKyAqIEBpdGVyOiBjb2xsZWN0aW9uIGl0ZXJhdG9y
+CisgKgorICogRnVuY3Rpb24gZG9lcyB0aGUgc2FtZSBhcyBpZ3RfY29sbGVjdGlvbl9pdGVyX25l
+eHQoKSBidXQgYWRkaXRpb25hbGx5CisgKiBjaGVja3Mgd2hlbiB0aGUgaXRlcmF0b3IgaXMgbm8g
+bG9uZ2VyIHZhbGlkIGFuZCBmcmVlcyBpdCB0aGVuLgorICogVXNlZnVsIGZvciBmb3JfZWFjaF8q
+IG1hY3JvcyB0byBhdm9pZCBuZWNlc3NpdHkgb2YgbWFudWFsIGhhbmRsaW5nCisgKiB0aGUgaXRl
+cmF0b3IuCisgKi8KK3N0cnVjdCBpZ3RfY29sbGVjdGlvbiAqCitpZ3RfY29sbGVjdGlvbl9pdGVy
+X25leHRfb3JfZW5kKHN0cnVjdCBpZ3RfY29sbGVjdGlvbl9pdGVyICppdGVyKQoreworCXN0cnVj
+dCBpZ3RfY29sbGVjdGlvbiAqcmV0X3NldCA9CisJCQlpZ3RfY29sbGVjdGlvbl9pdGVyX25leHQo
+aXRlcik7CisKKwlpZiAoIXJldF9zZXQpCisJCWlndF9jb2xsZWN0aW9uX2l0ZXJfZGVzdHJveShp
+dGVyKTsKKworCXJldHVybiByZXRfc2V0OworfQpkaWZmIC0tZ2l0IGEvbGliL2lndF9jb2xsZWN0
+aW9uLmggYi9saWIvaWd0X2NvbGxlY3Rpb24uaApuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAw
+MDAwMDAwMC4uNWRhNjYxZjgKLS0tIC9kZXYvbnVsbAorKysgYi9saWIvaWd0X2NvbGxlY3Rpb24u
+aApAQCAtMCwwICsxLDk5IEBACisvKgorICogQ29weXJpZ2h0IMKpIDIwMjAgSW50ZWwgQ29ycG9y
+YXRpb24KKyAqCisgKiBQZXJtaXNzaW9uIGlzIGhlcmVieSBncmFudGVkLCBmcmVlIG9mIGNoYXJn
+ZSwgdG8gYW55IHBlcnNvbiBvYnRhaW5pbmcgYQorICogY29weSBvZiB0aGlzIHNvZnR3YXJlIGFu
+ZCBhc3NvY2lhdGVkIGRvY3VtZW50YXRpb24gZmlsZXMgKHRoZSAiU29mdHdhcmUiKSwKKyAqIHRv
+IGRlYWwgaW4gdGhlIFNvZnR3YXJlIHdpdGhvdXQgcmVzdHJpY3Rpb24sIGluY2x1ZGluZyB3aXRo
+b3V0IGxpbWl0YXRpb24KKyAqIHRoZSByaWdodHMgdG8gdXNlLCBjb3B5LCBtb2RpZnksIG1lcmdl
+LCBwdWJsaXNoLCBkaXN0cmlidXRlLCBzdWJsaWNlbnNlLAorICogYW5kL29yIHNlbGwgY29waWVz
+IG9mIHRoZSBTb2Z0d2FyZSwgYW5kIHRvIHBlcm1pdCBwZXJzb25zIHRvIHdob20gdGhlCisgKiBT
+b2Z0d2FyZSBpcyBmdXJuaXNoZWQgdG8gZG8gc28sIHN1YmplY3QgdG8gdGhlIGZvbGxvd2luZyBj
+b25kaXRpb25zOgorICoKKyAqIFRoZSBhYm92ZSBjb3B5cmlnaHQgbm90aWNlIGFuZCB0aGlzIHBl
+cm1pc3Npb24gbm90aWNlIChpbmNsdWRpbmcgdGhlIG5leHQKKyAqIHBhcmFncmFwaCkgc2hhbGwg
+YmUgaW5jbHVkZWQgaW4gYWxsIGNvcGllcyBvciBzdWJzdGFudGlhbCBwb3J0aW9ucyBvZiB0aGUK
+KyAqIFNvZnR3YXJlLgorICoKKyAqIFRIRSBTT0ZUV0FSRSBJUyBQUk9WSURFRCAiQVMgSVMiLCBX
+SVRIT1VUIFdBUlJBTlRZIE9GIEFOWSBLSU5ELCBFWFBSRVNTIE9SCisgKiBJTVBMSUVELCBJTkNM
+VURJTkcgQlVUIE5PVCBMSU1JVEVEIFRPIFRIRSBXQVJSQU5USUVTIE9GIE1FUkNIQU5UQUJJTElU
+WSwKKyAqIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFIEFORCBOT05JTkZSSU5HRU1F
+TlQuICBJTiBOTyBFVkVOVCBTSEFMTAorICogVEhFIEFVVEhPUlMgT1IgQ09QWVJJR0hUIEhPTERF
+UlMgQkUgTElBQkxFIEZPUiBBTlkgQ0xBSU0sIERBTUFHRVMgT1IgT1RIRVIKKyAqIExJQUJJTElU
+WSwgV0hFVEhFUiBJTiBBTiBBQ1RJT04gT0YgQ09OVFJBQ1QsIFRPUlQgT1IgT1RIRVJXSVNFLCBB
+UklTSU5HCisgKiBGUk9NLCBPVVQgT0YgT1IgSU4gQ09OTkVDVElPTiBXSVRIIFRIRSBTT0ZUV0FS
+RSBPUiBUSEUgVVNFIE9SIE9USEVSIERFQUxJTkdTCisgKiBJTiBUSEUgU09GVFdBUkUuCisgKi8K
+KworI2lmbmRlZiBfX0lHVF9DT0xMRUNUSU9OX0hfXworI2RlZmluZSBfX0lHVF9DT0xMRUNUSU9O
+X0hfXworCisjaW5jbHVkZSA8c3RkYm9vbC5oPgorCisvKiBNYXhpbXVtIGNvbGxlY3Rpb24gc2l6
+ZSB3ZSBzdXBwb3J0LCBkb24ndCBjaGFuZ2UgdW5sZXNzIHlvdSB1bmRlcnN0YW5kCisgKiB0aGUg
+aW1wbGVtZW50YXRpb24gKi8KKyNkZWZpbmUgSUdUX0NPTExFQ1RJT05fTUFYU0laRSAxNgorCitl
+bnVtIGlndF9jb2xsZWN0aW9uX2l0ZXJfYWxnbyB7CisJU1VCU0VULAorCUNPTUJJTkFUSU9OLAor
+CVZBUklBVElPTl9SLCAgLyogdmFyaWF0aW9ucyB3aXRoIHJlcGV0aXRpb24gKi8KKwlWQVJJQVRJ
+T05fTlIsIC8qIHZhcmlhdGlvbnMgd2l0aG91dCByZXBldGl0aW9ucyAqLworfTsKKworc3RydWN0
+IGlndF9jb2xsZWN0aW9uX2RhdGEgeworCWludCB2YWx1ZTsKKwl2b2lkICpwdHI7Cit9OworCitz
+dHJ1Y3QgaWd0X2NvbGxlY3Rpb24geworCWludCBzaXplOworCXN0cnVjdCBpZ3RfY29sbGVjdGlv
+bl9kYXRhIHNldFtJR1RfQ09MTEVDVElPTl9NQVhTSVpFXTsKK307CisKK3N0cnVjdCBpZ3RfY29s
+bGVjdGlvbl9pdGVyOworCitzdHJ1Y3QgaWd0X2NvbGxlY3Rpb24gKmlndF9jb2xsZWN0aW9uX2Ny
+ZWF0ZShpbnQgc2l6ZSk7CitzdHJ1Y3QgaWd0X2NvbGxlY3Rpb24gKmlndF9jb2xsZWN0aW9uX2R1
+cGxpY2F0ZShjb25zdCBzdHJ1Y3QgaWd0X2NvbGxlY3Rpb24gKnNyYyk7CisKK3ZvaWQgaWd0X2Nv
+bGxlY3Rpb25fZGVzdHJveShzdHJ1Y3QgaWd0X2NvbGxlY3Rpb24gKnNldCk7Cit2b2lkIGlndF9j
+b2xsZWN0aW9uX3NldF92YWx1ZShzdHJ1Y3QgaWd0X2NvbGxlY3Rpb24gKnNldCwgaW50IGluZGV4
+LCBpbnQgdmFsdWUpOworaW50IGlndF9jb2xsZWN0aW9uX2dldF92YWx1ZShzdHJ1Y3QgaWd0X2Nv
+bGxlY3Rpb24gKnNldCwgaW50IGluZGV4KTsKK3ZvaWQgaWd0X2NvbGxlY3Rpb25fc2V0X3BvaW50
+ZXIoc3RydWN0IGlndF9jb2xsZWN0aW9uICpzZXQsIGludCBpbmRleCwgdm9pZCAqcHRyKTsKK3Zv
+aWQgKmlndF9jb2xsZWN0aW9uX2dldF9wb2ludGVyKHN0cnVjdCBpZ3RfY29sbGVjdGlvbiAqc2V0
+LCBpbnQgaW5kZXgpOworCitzdHJ1Y3QgaWd0X2NvbGxlY3Rpb25faXRlciAqCitpZ3RfY29sbGVj
+dGlvbl9pdGVyX2NyZWF0ZShjb25zdCBzdHJ1Y3QgaWd0X2NvbGxlY3Rpb24gKnNldCwgaW50IHN1
+YnNldF9zaXplLAorCQkJICAgZW51bSBpZ3RfY29sbGVjdGlvbl9pdGVyX2FsZ28gYWxnb3JpdGht
+KTsKKwordm9pZCBpZ3RfY29sbGVjdGlvbl9pdGVyX2Rlc3Ryb3koc3RydWN0IGlndF9jb2xsZWN0
+aW9uX2l0ZXIgKml0ZXIpOworc3RydWN0IGlndF9jb2xsZWN0aW9uICppZ3RfY29sbGVjdGlvbl9p
+dGVyX25leHQoc3RydWN0IGlndF9jb2xsZWN0aW9uX2l0ZXIgKml0ZXIpOworc3RydWN0IGlndF9j
+b2xsZWN0aW9uICppZ3RfY29sbGVjdGlvbl9pdGVyX25leHRfb3JfZW5kKHN0cnVjdCBpZ3RfY29s
+bGVjdGlvbl9pdGVyICppdGVyKTsKKworI2RlZmluZSBmb3JfZWFjaF9zdWJzZXQoX19yZXN1bHQs
+IF9fc2l6ZSwgX19zZXQpIFwKKwlmb3IgKHN0cnVjdCBpZ3RfY29sbGVjdGlvbl9pdGVyICppZ3Rf
+dG9rZW5jYXQoX19pdCwgX19MSU5FX18pID0gXAorCQlpZ3RfY29sbGVjdGlvbl9pdGVyX2NyZWF0
+ZShfX3NldCwgX19zaXplLCBTVUJTRVQpOyBcCisJCSgoX19yZXN1bHQpID0gaWd0X2NvbGxlY3Rp
+b25faXRlcl9uZXh0X29yX2VuZChcCisJCQlpZ3RfdG9rZW5jYXQoX19pdCwgX19MSU5FX18pKSk7
+ICkKKworI2RlZmluZSBmb3JfZWFjaF9jb21iaW5hdGlvbihfX3Jlc3VsdCwgX19zaXplLCBfX3Nl
+dCkgXAorCWZvciAoc3RydWN0IGlndF9jb2xsZWN0aW9uX2l0ZXIgKmlndF90b2tlbmNhdChfX2l0
+LCBfX0xJTkVfXykgPSBcCisJCWlndF9jb2xsZWN0aW9uX2l0ZXJfY3JlYXRlKF9fc2V0LCBfX3Np
+emUsIENPTUJJTkFUSU9OKTsgXAorCQkoKF9fcmVzdWx0KSA9IGlndF9jb2xsZWN0aW9uX2l0ZXJf
+bmV4dF9vcl9lbmQoXAorCQkJaWd0X3Rva2VuY2F0KF9faXQsIF9fTElORV9fKSkpOyApCisKKyNk
+ZWZpbmUgZm9yX2VhY2hfdmFyaWF0aW9uX3IoX19yZXN1bHQsIF9fc2l6ZSwgX19zZXQpIFwKKwlm
+b3IgKHN0cnVjdCBpZ3RfY29sbGVjdGlvbl9pdGVyICppZ3RfdG9rZW5jYXQoX19pdCwgX19MSU5F
+X18pID0gXAorCQlpZ3RfY29sbGVjdGlvbl9pdGVyX2NyZWF0ZShfX3NldCwgX19zaXplLCBWQVJJ
+QVRJT05fUik7IFwKKwkJKChfX3Jlc3VsdCkgPSBpZ3RfY29sbGVjdGlvbl9pdGVyX25leHRfb3Jf
+ZW5kKFwKKwkJCWlndF90b2tlbmNhdChfX2l0LCBfX0xJTkVfXykpKTsgKQorCisjZGVmaW5lIGZv
+cl9lYWNoX3ZhcmlhdGlvbl9ucihfX3Jlc3VsdCwgX19zaXplLCBfX3NldCkgXAorCWZvciAoc3Ry
+dWN0IGlndF9jb2xsZWN0aW9uX2l0ZXIgKmlndF90b2tlbmNhdChfX2l0LCBfX0xJTkVfXykgPSBc
+CisJCWlndF9jb2xsZWN0aW9uX2l0ZXJfY3JlYXRlKF9fc2V0LCBfX3NpemUsIFZBUklBVElPTl9O
+Uik7IFwKKwkJKChfX3Jlc3VsdCkgPSBpZ3RfY29sbGVjdGlvbl9pdGVyX25leHRfb3JfZW5kKFwK
+KwkJCWlndF90b2tlbmNhdChfX2l0LCBfX0xJTkVfXykpKTsgKQorCisjZGVmaW5lIGZvcl9lYWNo
+X2NvbGxlY3Rpb25fZGF0YShfX2RhdGEsIF9fc2V0KSBcCisJZm9yIChpbnQgaWd0X3Rva2VuY2F0
+KF9faSwgX19MSU5FX18pID0gMDsgXAorCQkoX19kYXRhID0gKGlndF90b2tlbmNhdChfX2ksIF9f
+TElORV9fKSA8IF9fc2V0LT5zaXplKSA/IFwKKwkJICZfX3NldC0+c2V0W2lndF90b2tlbmNhdChf
+X2ksIF9fTElORV9fKV0gOiBOVUxMKTsgXAorCQlpZ3RfdG9rZW5jYXQoX19pLCBfX0xJTkVfXykr
+KykKKworI2VuZGlmIC8qIF9fSUdUX0NPTExFQ1RJT05fSF9fICovCmRpZmYgLS1naXQgYS9saWIv
+bWVzb24uYnVpbGQgYi9saWIvbWVzb24uYnVpbGQKaW5kZXggM2JmMzk5MTUuLmQ4NzU0NjE4IDEw
+MDY0NAotLS0gYS9saWIvbWVzb24uYnVpbGQKKysrIGIvbGliL21lc29uLmJ1aWxkCkBAIC03LDYg
+KzcsNyBAQCBsaWJfc291cmNlcyA9IFsKIAknaTkxNS9nZW1fcmluZy5jJywKIAknaTkxNS9nZW1f
+bW1hbi5jJywKIAknaTkxNS9nZW1fdm0uYycsCisJJ2lndF9jb2xsZWN0aW9uLmMnLAogCSdpZ3Rf
+Y29sb3JfZW5jb2RpbmcuYycsCiAJJ2lndF9kZWJ1Z2ZzLmMnLAogCSdpZ3RfZGV2aWNlLmMnLAot
+LSAKMi4yMy4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
+czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
