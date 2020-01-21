@@ -1,12 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 21 Jan 2020 13:43:05 -0000
-Message-ID: <157961418563.11480.12849845600925083820@emeril.freedesktop.org>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 022576ECFB
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Jan 2020 13:42:37 +0000 (UTC)
+Date: Tue, 21 Jan 2020 15:42:34 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200121134234.GD25209@platvala-desk.ger.corp.intel.com>
 References: <1579586055-27583-1-git-send-email-kunal1.joshi@intel.com>
-In-Reply-To: <1579586055-27583-1-git-send-email-kunal1.joshi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdmFsaWRh?=
- =?utf-8?q?te_color_tests_using_chamelium=2E_=28rev3=29?=
+ <1579586055-27583-3-git-send-email-kunal1.joshi@intel.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <1579586055-27583-3-git-send-email-kunal1.joshi@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 2/3] lib/igt_color Moved kms_color
+ functions to lib/igt_color to git avoid code duplication
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,137 +19,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, daniel.vetter@intel.com, ville.syrjala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Tue, Jan 21, 2020 at 11:24:14AM +0530, Kunal Joshi wrote:
+> kms_color and kms_color_chamelium shared common functions.
+> Moved them to lib/igt_color to avoid code duplication.
+> 
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> Suggested-by: Uma Shankar <uma.shankar@intel.com>
+> ---
+>  lib/Makefile.sources |   2 +
+>  lib/igt_color.c      | 386 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_color.h      | 105 ++++++++++++++
+>  3 files changed, 493 insertions(+)
+>  create mode 100644 lib/igt_color.c
+>  create mode 100644 lib/igt_color.h
 
-Series: validate color tests using chamelium. (rev3)
-URL   : https://patchwork.freedesktop.org/series/72006/
-State : success
+Meson changes are missing.
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_7783 -> IGTPW_3959
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3959/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_3959 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_close_race@basic-process:
-    - fi-byt-n2820:       [PASS][1] -> [FAIL][2] ([i915#694])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-byt-n2820/igt@gem_close_race@basic-process.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3959/fi-byt-n2820/igt@gem_close_race@basic-process.html
-
-  * igt@i915_selftest@live_blt:
-    - fi-hsw-4770r:       [PASS][3] -> [DMESG-FAIL][4] ([i915#725])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3959/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-
-  * igt@i915_selftest@live_coherency:
-    - fi-cfl-guc:         [PASS][5] -> [DMESG-FAIL][6] ([i915#889]) +7 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-cfl-guc/igt@i915_selftest@live_coherency.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3959/fi-cfl-guc/igt@i915_selftest@live_coherency.html
-
-  * igt@i915_selftest@live_gt_timelines:
-    - fi-cfl-guc:         [PASS][7] -> [DMESG-WARN][8] ([i915#889]) +23 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-cfl-guc/igt@i915_selftest@live_gt_timelines.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3959/fi-cfl-guc/igt@i915_selftest@live_gt_timelines.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_parallel@contexts:
-    - fi-byt-n2820:       [INCOMPLETE][9] ([i915#45] / [i915#999]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3959/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
-    - {fi-ehl-1}:         [INCOMPLETE][11] ([i915#937]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-ehl-1/igt@gem_exec_parallel@contexts.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3959/fi-ehl-1/igt@gem_exec_parallel@contexts.html
-
-  * igt@i915_module_load@reload-with-fault-injection:
-    - fi-cfl-8700k:       [DMESG-WARN][13] ([i915#889]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-cfl-8700k/igt@i915_module_load@reload-with-fault-injection.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3959/fi-cfl-8700k/igt@i915_module_load@reload-with-fault-injection.html
-    - fi-skl-6700k2:      [INCOMPLETE][15] ([i915#671]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3959/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
-    - fi-kbl-x1275:       [DMESG-WARN][17] ([i915#889]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-kbl-x1275/igt@i915_module_load@reload-with-fault-injection.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3959/fi-kbl-x1275/igt@i915_module_load@reload-with-fault-injection.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-x1275:       [INCOMPLETE][19] ([i915#151]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3959/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-
-  
-#### Warnings ####
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-icl-u2:          [DMESG-WARN][21] ([IGT#4] / [i915#263]) -> [FAIL][22] ([i915#217])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7783/fi-icl-u2/igt@kms_chamelium@common-hpd-after-suspend.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3959/fi-icl-u2/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [IGT#4]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/4
-  [i915#151]: https://gitlab.freedesktop.org/drm/intel/issues/151
-  [i915#217]: https://gitlab.freedesktop.org/drm/intel/issues/217
-  [i915#263]: https://gitlab.freedesktop.org/drm/intel/issues/263
-  [i915#45]: https://gitlab.freedesktop.org/drm/intel/issues/45
-  [i915#671]: https://gitlab.freedesktop.org/drm/intel/issues/671
-  [i915#694]: https://gitlab.freedesktop.org/drm/intel/issues/694
-  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
-  [i915#889]: https://gitlab.freedesktop.org/drm/intel/issues/889
-  [i915#937]: https://gitlab.freedesktop.org/drm/intel/issues/937
-  [i915#999]: https://gitlab.freedesktop.org/drm/intel/issues/999
+The removal of those functions from tests/kms_color.c should be in this commit too.
 
 
-Participating hosts (44 -> 44)
-------------------------------
+> diff --git a/lib/igt_color.c b/lib/igt_color.c
+> +
+> +#include "igt_color.h"
+> +
+> +void paint_gradient_rectangles(data_t *data,
+> +			       drmModeModeInfo *mode,
+> +			       color_t *colors,
+> +			       struct igt_fb *fb)
 
-  Additional (5): fi-glk-dsi fi-gdg-551 fi-bsw-kefka fi-bsw-nick fi-snb-2600 
-  Missing    (5): fi-ilk-m540 fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper 
+
+You can't just blindly copy the functions over. data_t is a name tests
+use for their test-specific structures, library code shouldn't have
+such a name. This function for example just uses drm_fd from data, so
+the function should take int fd instead.
 
 
-Build changes
--------------
+> +struct drm_color_lut *coeffs_to_lut(data_t *data,
+> +				    const gamma_lut_t *gamma,
+> +				    uint32_t color_depth,
+> +				    int off)
+> +{
+> +	struct drm_color_lut *lut;
+> +	int i, lut_size = gamma->size;
+> +	uint32_t max_value = (1 << 16) - 1;
+> +	uint32_t mask;
+> +
+> +	if (is_i915_device(data->drm_fd))
+> +		mask = ((1 << color_depth) - 1) << 8;
+> +	else
+> +		mask = max_value;
+> +
+> +	lut = malloc(sizeof(struct drm_color_lut) * lut_size);
+> +
+> +	if (IS_CHERRYVIEW(data->devid))
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5376 -> IGTPW_3959
+Another example why you can't just copy over functions from a test:
+Nothing in this patch fills in the devid field.
 
-  CI-20190529: 20190529
-  CI_DRM_7783: 3ee976286895f0bd54388efc16b12f62c624ff19 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_3959: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3959/index.html
-  IGT_5376: 5cf58d947a02379d2885d6dd4f8bb487cfc3eed2 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+Some documentation for new lib functions would also be very nice.
 
-== Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3959/index.html
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
