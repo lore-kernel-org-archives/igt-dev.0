@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-References: <20200122101043.21347-1-tvrtko.ursulin@linux.intel.com>
- <20200122144028.27346-1-tvrtko.ursulin@linux.intel.com>
- <157970441989.7477.13168128747438871488@skylake-alporthouse-com>
- <dcadd92b-5f5b-ac99-d6c4-ed9beb19f6ca@linux.intel.com>
-Message-ID: <754810cf-420a-4920-dae3-8bcbf2e267a9@linux.intel.com>
-Date: Wed, 22 Jan 2020 15:16:05 +0000
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Wed, 22 Jan 2020 16:24:49 +0100
+Message-ID: <11711055.DxJhndXA8j@jkrzyszt-desk.ger.corp.intel.com>
+In-Reply-To: <157858221040.2197.11860218526538512609@skylake-alporthouse-com>
+References: <20200109140125.18483-1-janusz.krzysztofik@linux.intel.com>
+ <20200109140125.18483-3-janusz.krzysztofik@linux.intel.com>
+ <157858221040.2197.11860218526538512609@skylake-alporthouse-com>
 MIME-Version: 1.0
-In-Reply-To: <dcadd92b-5f5b-ac99-d6c4-ed9beb19f6ca@linux.intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v2] i915/gem_engine_topology: Generate
- engine names based on class
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/prime_vgem: Examine blitter
+ access path
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,36 +16,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Ck9uIDIyLzAxLzIwMjAgMTQ6NTMsIFR2cnRrbyBVcnN1bGluIHdyb3RlOgo+IAo+IE9uIDIyLzAx
-LzIwMjAgMTQ6NDYsIENocmlzIFdpbHNvbiB3cm90ZToKPj4gUXVvdGluZyBUdnJ0a28gVXJzdWxp
-biAoMjAyMC0wMS0yMiAxNDo0MDoyOCkKPj4+IMKgIHN0YXRpYyB2b2lkIGluaXRfZW5naW5lKHN0
-cnVjdCBpbnRlbF9leGVjdXRpb25fZW5naW5lMiAqZTIsCj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaW50IGNsYXNzLCBpbnQgaW5zdGFuY2UsIHVp
-bnQ2NF90IGZsYWdzKQo+Pj4gwqAgewo+Pj4gLcKgwqDCoMKgwqDCoCBjb25zdCBzdHJ1Y3QgaW50
-ZWxfZXhlY3V0aW9uX2VuZ2luZTIgKl9fZTI7Cj4+PiAtwqDCoMKgwqDCoMKgIHN0YXRpYyBjb25z
-dCBjaGFyICp1bmtub3duX25hbWUgPSAidW5rbm93biIsCj4+PiAtwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICp2aXJ0dWFsX25hbWUgPSAidmlydHVhbCI7
-Cj4+PiArwqDCoMKgwqDCoMKgIGludCByZXQ7Cj4+PiDCoMKgwqDCoMKgwqDCoMKgIGUyLT5jbGFz
-c8KgwqDCoCA9IGNsYXNzOwo+Pj4gwqDCoMKgwqDCoMKgwqDCoCBlMi0+aW5zdGFuY2UgPSBpbnN0
-YW5jZTsKPj4+IC3CoMKgwqDCoMKgwqAgZTItPmZsYWdzwqDCoMKgID0gZmxhZ3M7Cj4+PiDCoMKg
-wqDCoMKgwqDCoMKgIC8qIGVuZ2luZSBpcyBhIHZpcnR1YWwgZW5naW5lICovCj4+PiDCoMKgwqDC
-oMKgwqDCoMKgIGlmIChjbGFzcyA9PSBJOTE1X0VOR0lORV9DTEFTU19JTlZBTElEICYmCj4+PiDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaW5zdGFuY2UgPT0gSTkxNV9FTkdJTkVfQ0xBU1NfSU5W
-QUxJRF9WSVJUVUFMKSB7Cj4+Cj4+IENhbiB0aGlzIGV2ZXIgbWF0Y2g/wqAgaW5zdGFuY2UgaXMg
-NjU1MzQgYW5kIElOVkFMSURfVklSVFVBTCBpcyAtMi4KPj4gaW50IGNsYXNzL2luc3RhbmNlIHNo
-b3VsZCBiZSB1MTY/Cj4gCj4gWWVhaCwgbm8gaXQgY2FuJ3QgZXZlciBtYXRjaC4gSSdsbCBoYXZl
-IGEgbG9vayBob3cgZWFzeSB0byBjaGFuZ2UgaXQgYWxsIAo+IHRvIHN0cnVjdCBpOTE1X2VuZ2lu
-ZV9jbGFzc19pbnN0YW5jZS4KClRvbyBtdWNoIGNodXJuLiBJIGRpZCBzaW1wbGUgdWludDE2X3Qg
-aGVyZSBhbmQgaW4gc3RydWN0IAppbnRlbF9leGVjdXRpb25fZW5naW5lMiBhcyBhIGZvbGxvdyB1
-cCBwYXRjaCB0byB0aGlzIG9uZS4KClJlZ2FyZHMsCgpUdnJ0a28KX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
-dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Hi Chris,
+
+On Thursday, January 9, 2020 4:03:30 PM CET Chris Wilson wrote:
+> Quoting Janusz Krzysztofik (2020-01-09 14:01:25)
+> > On future hardware with missing GGTT BAR we won't be able to exercise
+> > dma-buf access via that path.  An alternative to basic-gtt subtest for
+> > testing dma-buf access is required, as well as basic-fence-mmap and
+> > coherency-gtt subtest alternatives for testing WC coherency.
+> > 
+> > Access to the dma sg list feature exposed by dma-buf can be tested
+> > through blitter.  Unfortunately we don't have any equivalently simple
+> > tests that use blitter.  Provide them.
+> > 
+> > Blitter XY_SRC_COPY method implemented by igt_blitter_src_copy__raw()
+> > IGT library function has been chosen.
+> > 
+> > v2: As fast copy is not supported on platforms older than Gen 9,
+> >     use XY_SRC_COPY instead (Chris),
+> >   - add subtest descriptions.
+> > 
+> > Suggested-by: Chris Wilson <chris@chris-wilson.co.uk>
+> > Suggested-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > ---
+> >  tests/prime_vgem.c | 192 +++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 192 insertions(+)
+> > 
+> > diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+> > index 69ae8c9b..9ceee47a 100644
+> > --- a/tests/prime_vgem.c
+> > +++ b/tests/prime_vgem.c
+<SNIP>
+> >  
+> > +static void test_blt(int vgem, int i915)
+> > +{
+> > +       struct vgem_bo scratch;
+> > +       uint32_t prime, native;
+> > +       uint32_t *ptr;
+> > +       int dmabuf, i;
+> > +
+> > +       scratch.width = 1024;
+> > +       scratch.height = 1024;
+> > +       scratch.bpp = 32;
+> > +       vgem_create(vgem, &scratch);
+> > +
+> > +       dmabuf = prime_handle_to_fd(vgem, scratch.handle);
+> > +       prime = prime_fd_to_handle(i915, dmabuf);
+> > +       close(dmabuf);
+> > +
+> > +       native = gem_create(i915, scratch.size);
+> > +
+> > +       ptr = gem_mmap__wc(i915, native, 0, scratch.size, PROT_WRITE);
+> > +       for (i = 0; i < 1024; i++)
+> > +               ptr[1024 * i] = i;
+> > +       munmap(ptr, scratch.size);
+> > +
+> > +       igt_blitter_src_copy__raw(i915,
+> > +                                 native, 0, scratch.width * scratch.bpp / 8,
+> > +                                 I915_TILING_NONE, 0, 0,
+> > +                                 scratch.width, scratch.height, scratch.bpp,
+> > +                                 prime, 0, scratch.width * scratch.bpp / 8,
+> > +                                 I915_TILING_NONE, 0, 0);
+> > +       gem_sync(i915, prime);
+> 
+> Would this be better with prime_sync_start(dmabuf, true); ?
+
+I'm not sure why you suggest true for write access, not false for just having 
+the prime object confirmed ready for reading.  Could you please explain?
+
+Thanks,
+Janusz
+
+> gem_sync(prime) is nice in its own way (checking sync on imported handle
+> provides correct serialisation for the vgem_mmap). But I think the
+> recommended practice would be to use dmabuf for the inter-device sync?
+
+
+
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
