@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B76396F529
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2020 13:52:39 +0000 (UTC)
-Date: Wed, 22 Jan 2020 15:52:36 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200122135236.GK25209@platvala-desk.ger.corp.intel.com>
-References: <20191115121445.11693-1-petri.latvala@intel.com>
- <59311102-b402-49e5-7c62-b235123b3d0c@linux.intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 820E56F598
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2020 15:42:08 +0000 (UTC)
+References: <20200122104710.10971-1-arjun.melkaveri@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <b2907c5f-a2f0-231f-e009-f7bc134d8d51@linux.intel.com>
+Date: Wed, 22 Jan 2020 15:42:04 +0000
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <59311102-b402-49e5-7c62-b235123b3d0c@linux.intel.com>
-Subject: Re: [igt-dev] [RFC PATCH i-g-t] lib/i915: Generate engine names at
- runtime
+In-Reply-To: <20200122104710.10971-1-arjun.melkaveri@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH V2] i915/gem_exec_nop:Adjusted test to utilize
+ all available engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,155 +18,467 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Arjun Melkaveri <arjun.melkaveri@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jan 22, 2020 at 01:44:58PM +0000, Tvrtko Ursulin wrote:
+
+On 22/01/2020 10:47, Arjun Melkaveri wrote:
+> Added __for_each_physical_engine to utilize all available engines.
+> Moved single, signal, preempt, poll and headless test cases
+> from static to dynamic group.
 > 
-> On 15/11/2019 12:14, Petri Latvala wrote:
-> > The kernel supplies us an engine list with engine class and an
-> > instance id. If the hardcoded engine list doesn't have the
-> > class+instance we get, construct the engine name with printf instead
-> > of calling additional engines "unknown".
-> > 
-> > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> > Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> > Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> > Cc: Andi Shyti <andi.shyti@intel.com>
-> > Cc: Katarzyna Dec <katarzyna.dec@intel.com>
-> > 
-> > ---
-> >   lib/i915/gem_engine_topology.c | 27 +++++++++++++++++++--------
-> >   lib/i915/gem_engine_topology.h |  2 +-
-> >   lib/igt_gt.c                   |  8 ++++++++
-> >   lib/igt_gt.h                   |  7 ++++++-
-> >   4 files changed, 34 insertions(+), 10 deletions(-)
-> > 
-> > diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-> > index 790d455f..0707f237 100644
-> > --- a/lib/i915/gem_engine_topology.c
-> > +++ b/lib/i915/gem_engine_topology.c
-> > @@ -103,6 +103,7 @@ static void init_engine(struct intel_execution_engine2 *e2,
-> >   	const struct intel_execution_engine2 *__e2;
-> >   	static const char *unknown_name = "unknown",
-> >   			  *virtual_name = "virtual";
-> > +	const struct intel_execution_engine_class *cls;
-> >   	e2->class    = class;
-> >   	e2->instance = instance;
-> > @@ -111,7 +112,7 @@ static void init_engine(struct intel_execution_engine2 *e2,
-> >   	/* engine is a virtual engine */
-> >   	if (class == I915_ENGINE_CLASS_INVALID &&
-> >   	    instance == I915_ENGINE_CLASS_INVALID_VIRTUAL) {
-> > -		e2->name = virtual_name;
-> > +		strncpy(e2->name, virtual_name, sizeof(e2->name));
-> >   		e2->is_virtual = true;
-> >   		return;
-> >   	}
-> > @@ -120,12 +121,22 @@ static void init_engine(struct intel_execution_engine2 *e2,
-> >   		if (__e2->class == class && __e2->instance == instance)
-> >   			break;
-> > -	if (__e2->name) {
-> > -		e2->name = __e2->name;
-> > +	if (__e2->name[0]) {
-> > +		strncpy(e2->name, __e2->name, sizeof(e2->name));
-> >   	} else {
-> > -		igt_warn("found unknown engine (%d, %d)\n", class, instance);
-> > -		e2->name = unknown_name;
-> > -		e2->flags = -1;
-> > +		for (cls = intel_execution_engine_class_map; cls->name; cls++) {
-> > +			if (cls->class == class) {
-> > +				snprintf(e2->name, sizeof(e2->name), "%s%d", cls->name, instance);
-> > +				igt_info("unknown but supported engine %s found\n", e2->name);
-> > +				break;
-> > +			}
-> > +		}
-> > +
-> > +		if (!e2->name[0]) {
-> > +			igt_info("found unknown engine (%d, %d)\n", class, instance);
-> > +			strncpy(e2->name, unknown_name, sizeof(e2->name));
-> > +			e2->flags = -1;
-> > +		}
-> >   	}
-> >   	/* just to remark it */
-> > @@ -223,7 +234,7 @@ struct intel_engine_data intel_init_engine_list(int fd, uint32_t ctx_id)
-> >   			struct intel_execution_engine2 *__e2 =
-> >   				&engine_data.engines[engine_data.nengines];
-> > -			__e2->name       = e2->name;
-> > +			strncpy(__e2->name, e2->name, sizeof(__e2->name));
-> >   			__e2->instance   = e2->instance;
-> >   			__e2->class      = e2->class;
-> >   			__e2->flags      = e2->flags;
-> > @@ -302,7 +313,7 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags)
-> >   	if (ring == I915_EXEC_DEFAULT) {
-> >   		e2__.flags = I915_EXEC_DEFAULT;
-> > -		e2__.name = "default";
-> > +		strncpy(e2__.name, "default", sizeof(e2__.name));
-> >   	} else {
-> >   		const struct intel_execution_engine2 *e2;
-> > diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
-> > index d98773e0..525741cc 100644
-> > --- a/lib/i915/gem_engine_topology.h
-> > +++ b/lib/i915/gem_engine_topology.h
-> > @@ -61,7 +61,7 @@ bool gem_engine_is_equal(const struct intel_execution_engine2 *e1,
-> >   struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags);
-> >   #define __for_each_static_engine(e__) \
-> > -	for ((e__) = intel_execution_engines2; (e__)->name; (e__)++)
-> > +	for ((e__) = intel_execution_engines2; (e__)->name[0]; (e__)++)
-> >   #define for_each_context_engine(fd__, ctx__, e__) \
-> >   	for (struct intel_engine_data i__ = intel_init_engine_list(fd__, ctx__); \
-> > diff --git a/lib/igt_gt.c b/lib/igt_gt.c
-> > index 256c7cbc..25e6c455 100644
-> > --- a/lib/igt_gt.c
-> > +++ b/lib/igt_gt.c
-> > @@ -596,6 +596,14 @@ const struct intel_execution_engine2 intel_execution_engines2[] = {
-> >   	{ }
-> >   };
-> > +const struct intel_execution_engine_class intel_execution_engine_class_map[] = {
-> > +	{ "rcs", I915_ENGINE_CLASS_RENDER },
-> > +	{ "bcs", I915_ENGINE_CLASS_COPY },
-> > +	{ "vcs", I915_ENGINE_CLASS_VIDEO },
-> > +	{ "vecs", I915_ENGINE_CLASS_VIDEO_ENHANCE },
-> > +	{ }
-> > +};
-> > +
-> >   int gem_execbuf_flags_to_engine_class(unsigned int flags)
-> >   {
-> >   	switch (flags & 0x3f) {
-> > diff --git a/lib/igt_gt.h b/lib/igt_gt.h
-> > index 66088d39..0268031f 100644
-> > --- a/lib/igt_gt.h
-> > +++ b/lib/igt_gt.h
-> > @@ -95,13 +95,18 @@ bool gem_can_store_dword(int fd, unsigned int engine);
-> >   bool gem_class_can_store_dword(int fd, int class);
-> >   extern const struct intel_execution_engine2 {
-> > -	const char *name;
-> > +	char name[10];
+> Cc: Dec Katarzyna <katarzyna.dec@intel.com>
+> Cc: Kempczynski Zbigniew <zbigniew.kempczynski@intel.com>
+> Cc: Tahvanainen Jari <jari.tahvanainen@intel.com>
+> Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+> Reviewed-by: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
+
+Still no r-b given.
+
+> ---
+> V1 -> V2
 > 
-> You have the same bug as I do in
-> https://patchwork.freedesktop.org/series/72384/ in that
-> __for_each_static_engine has no engine names? :) And I have another bug that
-> I missed to adjust the iterator macro. :)
+> Addressed Tvrtko review comments
+> 1) removed gem_require_ring
+> 2) replaced gem_can_store_dword with gem_class_can_store_dword
+> 3) Fixed WhiteSpace issues.
+> ---
+>   tests/i915/gem_exec_nop.c | 160 ++++++++++++++++++++++----------------
+>   1 file changed, 91 insertions(+), 69 deletions(-)
+> 
+> diff --git a/tests/i915/gem_exec_nop.c b/tests/i915/gem_exec_nop.c
+> index dbedb356..b87bf99e 100644
+> --- a/tests/i915/gem_exec_nop.c
+> +++ b/tests/i915/gem_exec_nop.c
+> @@ -66,8 +66,9 @@ static double elapsed(const struct timespec *start, const struct timespec *end)
+>   		(end->tv_nsec - start->tv_nsec)*1e-9);
+>   }
+>   
+> -static double nop_on_ring(int fd, uint32_t handle, unsigned ring_id,
+> -			  int timeout, unsigned long *out)
+> +static double nop_on_ring(int fd, uint32_t handle,
+> +			  const struct intel_execution_engine2 *e, int timeout,
+> +			  unsigned long *out)
+>   {
+>   	struct drm_i915_gem_execbuffer2 execbuf;
+>   	struct drm_i915_gem_exec_object2 obj;
+> @@ -80,11 +81,11 @@ static double nop_on_ring(int fd, uint32_t handle, unsigned ring_id,
+>   	memset(&execbuf, 0, sizeof(execbuf));
+>   	execbuf.buffers_ptr = to_user_pointer(&obj);
+>   	execbuf.buffer_count = 1;
+> -	execbuf.flags = ring_id;
+> +	execbuf.flags = e->flags;
+>   	execbuf.flags |= LOCAL_I915_EXEC_HANDLE_LUT;
+>   	execbuf.flags |= LOCAL_I915_EXEC_NO_RELOC;
+>   	if (__gem_execbuf(fd, &execbuf)) {
+> -		execbuf.flags = ring_id;
+> +		execbuf.flags = e->flags;
+>   		gem_execbuf(fd, &execbuf);
+>   	}
+>   	intel_detect_and_clear_missed_interrupts(fd);
+> @@ -104,7 +105,8 @@ static double nop_on_ring(int fd, uint32_t handle, unsigned ring_id,
+>   	return elapsed(&start, &now);
+>   }
+>   
+> -static void poll_ring(int fd, unsigned engine, const char *name, int timeout)
+> +static void poll_ring(int fd, const struct intel_execution_engine2 *e,
+> +		      int timeout)
+>   {
+>   	const int gen = intel_gen(intel_get_drm_devid(fd));
+>   	const uint32_t MI_ARB_CHK = 0x5 << 23;
+> @@ -121,9 +123,8 @@ static void poll_ring(int fd, unsigned engine, const char *name, int timeout)
+>   	if (gen == 4 || gen == 5)
+>   		flags |= I915_EXEC_SECURE;
+>   
+> -	gem_require_ring(fd, engine);
+> -	igt_require(gem_can_store_dword(fd, engine));
+> -	igt_require(gem_engine_has_mutable_submission(fd, engine));
+> +	igt_require(gem_class_can_store_dword(fd, e->class));
+> +	igt_require(gem_class_has_mutable_submission(fd, e->class));
+>   
+>   	memset(&obj, 0, sizeof(obj));
+>   	obj.handle = gem_create(fd, 4096);
+> @@ -187,7 +188,7 @@ static void poll_ring(int fd, unsigned engine, const char *name, int timeout)
+>   	memset(&execbuf, 0, sizeof(execbuf));
+>   	execbuf.buffers_ptr = to_user_pointer(&obj);
+>   	execbuf.buffer_count = 1;
+> -	execbuf.flags = engine | flags;
+> +	execbuf.flags = e->flags | flags;
+>   
+>   	cycles = 0;
+>   	do {
+> @@ -209,7 +210,7 @@ static void poll_ring(int fd, unsigned engine, const char *name, int timeout)
+>   	gem_sync(fd, obj.handle);
+>   
+>   	igt_info("%s completed %ld cycles: %.3f us\n",
+> -		 name, cycles, elapsed*1e-3/cycles);
+> +		 e->name, cycles, elapsed*1e-3/cycles);
+>   
+>   	munmap(batch, 4096);
+>   	gem_close(fd, obj.handle);
+> @@ -218,6 +219,7 @@ static void poll_ring(int fd, unsigned engine, const char *name, int timeout)
+>   static void poll_sequential(int fd, const char *name, int timeout)
+>   {
+>   	const int gen = intel_gen(intel_get_drm_devid(fd));
+> +	const struct intel_execution_engine2 *e;
+>   	const uint32_t MI_ARB_CHK = 0x5 << 23;
+>   	struct drm_i915_gem_execbuffer2 execbuf;
+>   	struct drm_i915_gem_exec_object2 obj[2];
+> @@ -234,13 +236,14 @@ static void poll_sequential(int fd, const char *name, int timeout)
+>   		flags |= I915_EXEC_SECURE;
+>   
+>   	nengine = 0;
+> -	for_each_physical_engine(e, fd) {
+> -		if (!gem_can_store_dword(fd, eb_ring(e)) ||
+> -		    !gem_engine_has_mutable_submission(fd, eb_ring(e)))
+> +	__for_each_physical_engine(fd, e) {
+> +		if (!gem_class_can_store_dword(fd, e->class) ||
+> +		    !gem_class_has_mutable_submission(fd, e->class))
+>   			continue;
+>   
+> -		engines[nengine++] = eb_ring(e);
+> +		engines[nengine++] = e->flags;
+>   	}
+> +
+>   	igt_require(nengine);
+>   
+>   	memset(obj, 0, sizeof(obj));
+> @@ -344,21 +347,20 @@ static void poll_sequential(int fd, const char *name, int timeout)
+>   }
+>   
+>   static void single(int fd, uint32_t handle,
+> -		   unsigned ring_id, const char *ring_name)
+> +		   const struct intel_execution_engine2 *e)
+>   {
+>   	double time;
+>   	unsigned long count;
+>   
+> -	gem_require_ring(fd, ring_id);
+> -
+> -	time = nop_on_ring(fd, handle, ring_id, 20, &count);
+> +	time = nop_on_ring(fd, handle, e, 20, &count);
+>   	igt_info("%s: %'lu cycles: %.3fus\n",
+> -		 ring_name, count, time*1e6 / count);
+> +		  e->name, count, time*1e6 / count);
+>   }
+>   
+>   static double
+> -stable_nop_on_ring(int fd, uint32_t handle, unsigned int engine,
+> -		   int timeout, int reps)
+> +stable_nop_on_ring(int fd, uint32_t handle,
+> +		   const struct intel_execution_engine2 *e, int timeout,
+> +		   int reps)
+>   {
+>   	igt_stats_t s;
+>   	double n;
+> @@ -372,7 +374,7 @@ stable_nop_on_ring(int fd, uint32_t handle, unsigned int engine,
+>   		unsigned long count;
+>   		double time;
+>   
+> -		time = nop_on_ring(fd, handle, engine, timeout, &count);
+> +		time = nop_on_ring(fd, handle, e, timeout, &count);
+>   		igt_stats_push_float(&s, time / count);
+>   	}
+>   
+> @@ -388,7 +390,8 @@ stable_nop_on_ring(int fd, uint32_t handle, unsigned int engine,
+>                        "'%s' != '%s' (%f not within %f%% tolerance of %f)\n",\
+>                        #x, #ref, x, tolerance * 100.0, ref)
+>   
+> -static void headless(int fd, uint32_t handle)
+> +static void headless(int fd, uint32_t handle,
+> +		     const struct intel_execution_engine2 *e)
+>   {
+>   	unsigned int nr_connected = 0;
+>   	drmModeConnector *connector;
+> @@ -411,7 +414,7 @@ static void headless(int fd, uint32_t handle)
+>   	kmstest_set_vt_graphics_mode();
+>   
+>   	/* benchmark nops */
+> -	n_display = stable_nop_on_ring(fd, handle, I915_EXEC_DEFAULT, 1, 5);
+> +	n_display = stable_nop_on_ring(fd, handle, e, 1, 5);
+>   	igt_info("With one display connected: %.2fus\n",
+>   		 n_display * 1e6);
+>   
+> @@ -419,7 +422,7 @@ static void headless(int fd, uint32_t handle)
+>   	kmstest_unset_all_crtcs(fd, res);
+>   
+>   	/* benchmark nops again */
+> -	n_headless = stable_nop_on_ring(fd, handle, I915_EXEC_DEFAULT, 1, 5);
+> +	n_headless = stable_nop_on_ring(fd, handle, e, 1, 5);
+>   	igt_info("Without a display connected (headless): %.2fus\n",
+>   		 n_headless * 1e6);
+>   
+> @@ -429,6 +432,7 @@ static void headless(int fd, uint32_t handle)
+>   
+>   static void parallel(int fd, uint32_t handle, int timeout)
+>   {
+> +	const struct intel_execution_engine2 *e;
+>   	struct drm_i915_gem_execbuffer2 execbuf;
+>   	struct drm_i915_gem_exec_object2 obj;
+>   	unsigned engines[16];
+> @@ -439,12 +443,11 @@ static void parallel(int fd, uint32_t handle, int timeout)
+>   
+>   	sum = 0;
+>   	nengine = 0;
+> -	for_each_physical_engine(e, fd) {
+> -		engines[nengine] = eb_ring(e);
+> -		names[nengine] = e->name;
+> -		nengine++;
+> +	__for_each_physical_engine(fd, e) {
+> +		engines[nengine] = e->flags;
+> +		names[nengine++] = e->name;
+>   
+> -		time = nop_on_ring(fd, handle, eb_ring(e), 1, &count) / count;
+> +		time = nop_on_ring(fd, handle, e, 1, &count) / count;
+>   		sum += time;
+>   		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
+>   	}
+> @@ -490,6 +493,7 @@ static void parallel(int fd, uint32_t handle, int timeout)
+>   
+>   static void series(int fd, uint32_t handle, int timeout)
+>   {
+> +	const struct intel_execution_engine2 *e;
+>   	struct drm_i915_gem_execbuffer2 execbuf;
+>   	struct drm_i915_gem_exec_object2 obj;
+>   	struct timespec start, now, sync;
+> @@ -500,8 +504,8 @@ static void series(int fd, uint32_t handle, int timeout)
+>   	const char *name;
+>   
+>   	nengine = 0;
+> -	for_each_physical_engine(e, fd) {
+> -		time = nop_on_ring(fd, handle, eb_ring(e), 1, &count) / count;
+> +	__for_each_physical_engine(fd, e) {
+> +		time = nop_on_ring(fd, handle, e, 1, &count) / count;
+>   		if (time > max) {
+>   			name = e->name;
+>   			max = time;
+> @@ -509,7 +513,7 @@ static void series(int fd, uint32_t handle, int timeout)
+>   		if (time < min)
+>   			min = time;
+>   		sum += time;
+> -		engines[nengine++] = eb_ring(e);
+> +		engines[nengine++] = e->flags;
+>   	}
+>   	igt_require(nengine);
+>   	igt_info("Maximum execution latency on %s, %.3fus, min %.3fus, total %.3fus per cycle, average %.3fus\n",
+> @@ -580,6 +584,7 @@ static void xchg(void *array, unsigned i, unsigned j)
+>   static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+>   {
+>   	const int ncpus = flags & FORKED ? sysconf(_SC_NPROCESSORS_ONLN) : 1;
+> +	const struct intel_execution_engine2 *e;
+>   	struct drm_i915_gem_execbuffer2 execbuf;
+>   	struct drm_i915_gem_exec_object2 obj[2];
+>   	unsigned engines[16];
+> @@ -595,14 +600,14 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+>   
+>   	nengine = 0;
+>   	sum = 0;
+> -	for_each_physical_engine(e, fd) {
+> +	__for_each_physical_engine(fd, e) {
+>   		unsigned long count;
+>   
+> -		time = nop_on_ring(fd, handle, eb_ring(e), 1, &count) / count;
+> +		time = nop_on_ring(fd, handle, e, 1, &count) / count;
+>   		sum += time;
+>   		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
+>   
+> -		engines[nengine++] = eb_ring(e);
+> +		engines[nengine++] = e->flags;
+>   	}
+>   	igt_require(nengine);
+>   	igt_info("Total (individual) execution latency %.3fus per cycle\n",
+> @@ -625,6 +630,7 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+>   
+>   		igt_require(__gem_context_create(fd, &id) == 0);
+>   		execbuf.rsvd1 = id;
+> +		gem_context_set_all_engines(fd, execbuf.rsvd1);
+>   	}
+>   
+>   	for (n = 0; n < nengine; n++) {
+> @@ -642,8 +648,10 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+>   		obj[0].handle = gem_create(fd, 4096);
+>   		gem_execbuf(fd, &execbuf);
+>   
+> -		if (flags & CONTEXT)
+> +		if (flags & CONTEXT) {
+>   			execbuf.rsvd1 = gem_context_create(fd);
+> +			gem_context_set_all_engines(fd, execbuf.rsvd1);
+> +		}
+>   
+>   		hars_petruska_f54_1_random_perturb(child);
+>   
+> @@ -716,6 +724,7 @@ static void fence_signal(int fd, uint32_t handle,
+>   #define NFENCES 512
+>   	struct drm_i915_gem_execbuffer2 execbuf;
+>   	struct drm_i915_gem_exec_object2 obj;
+> +	struct intel_execution_engine2 *__e;
+>   	struct timespec start, now;
+>   	unsigned engines[16];
+>   	unsigned nengine;
+> @@ -726,8 +735,8 @@ static void fence_signal(int fd, uint32_t handle,
+>   
+>   	nengine = 0;
+>   	if (ring_id == ALL_ENGINES) {
+> -		for_each_physical_engine(e, fd)
+> -			engines[nengine++] = eb_ring(e);
+> +		__for_each_physical_engine(fd, __e)
+> +			engines[nengine++] = __e->flags;
+>   	} else {
+>   		gem_require_ring(fd, ring_id);
+>   		engines[nengine++] = ring_id;
+> @@ -787,7 +796,7 @@ static void fence_signal(int fd, uint32_t handle,
+>   }
+>   
+>   static void preempt(int fd, uint32_t handle,
+> -		   unsigned ring_id, const char *ring_name)
+> +		    const struct intel_execution_engine2 *e)
+>   {
+>   	struct drm_i915_gem_execbuffer2 execbuf;
+>   	struct drm_i915_gem_exec_object2 obj;
+> @@ -795,13 +804,11 @@ static void preempt(int fd, uint32_t handle,
+>   	unsigned long count;
+>   	uint32_t ctx[2];
+>   
+> -	gem_require_ring(fd, ring_id);
+> -
+> -	ctx[0] = gem_context_create(fd);
+> -	gem_context_set_priority(fd, ctx[0], MIN_PRIO);
+> -
+> -	ctx[1] = gem_context_create(fd);
+> -	gem_context_set_priority(fd, ctx[1], MAX_PRIO);
+> +	for (int i = 0; i < 2; i++) {
+> +		ctx[i] = gem_context_create(fd);
+> +		gem_context_set_all_engines(fd, ctx[i]);
+> +		gem_context_set_priority(fd, ctx[i], MAX_PRIO);
 
-See the chunk above that edits __for_each_static_engine to check
-(e__)->name[0] instead of (e__)->name, I think that was missing in
-your version.
+You lost MIN_PRIO.
 
-> Otherwise similar implementations. Lets do one of the two and get it over
-> with... You were here first so do you want to send an update including past
-> and latest tweaks? Or if you are busy I'll tweak my version into submission.
+> +	}
+>   
+>   	memset(&obj, 0, sizeof(obj));
+>   	obj.handle = handle;
+> @@ -809,11 +816,11 @@ static void preempt(int fd, uint32_t handle,
+>   	memset(&execbuf, 0, sizeof(execbuf));
+>   	execbuf.buffers_ptr = to_user_pointer(&obj);
+>   	execbuf.buffer_count = 1;
+> -	execbuf.flags = ring_id;
+> +	execbuf.flags = e->flags;
+>   	execbuf.flags |= LOCAL_I915_EXEC_HANDLE_LUT;
+>   	execbuf.flags |= LOCAL_I915_EXEC_NO_RELOC;
+>   	if (__gem_execbuf(fd, &execbuf)) {
+> -		execbuf.flags = ring_id;
+> +		execbuf.flags = e->flags;
+>   		gem_execbuf(fd, &execbuf);
+>   	}
+>   	execbuf.rsvd1 = ctx[1];
+> @@ -825,7 +832,7 @@ static void preempt(int fd, uint32_t handle,
+>   		igt_spin_t *spin =
+>   			__igt_spin_new(fd,
+>   				       .ctx = ctx[0],
+> -				       .engine = ring_id);
+> +				       .engine = e->flags);
+>   
+>   		for (int loop = 0; loop < 1024; loop++)
+>   			gem_execbuf(fd, &execbuf);
+> @@ -841,12 +848,12 @@ static void preempt(int fd, uint32_t handle,
+>   	gem_context_destroy(fd, ctx[0]);
+>   
+>   	igt_info("%s: %'lu cycles: %.3fus\n",
+> -		 ring_name, count, elapsed(&start, &now)*1e6 / count);
+> +		 e->name, count, elapsed(&start, &now)*1e6 / count);
+>   }
+>   
+>   igt_main
+>   {
+> -	const struct intel_execution_engine *e;
+> +	const struct intel_execution_engine2 *e;
+>   	uint32_t handle = 0;
+>   	int device = -1;
+>   
+> @@ -873,11 +880,19 @@ igt_main
+>   	igt_subtest("basic-sequential")
+>   		sequential(device, handle, 0, 5);
+>   
+> -	for (e = intel_execution_engines; e->name; e++) {
+> -		igt_subtest_f("%s", e->name)
+> -			single(device, handle, eb_ring(e), e->name);
+> -		igt_subtest_f("signal-%s", e->name)
+> -			fence_signal(device, handle, eb_ring(e), e->name, 5);
+> +	igt_subtest_with_dynamic("single") {
+> +		__for_each_physical_engine(device, e) {
+> +			igt_dynamic_f("%s", e->name)
+> +				single(device, handle, e);
+> +		}
+> +	}
+> +
+> +	igt_subtest_with_dynamic("signal") {
+> +		__for_each_physical_engine(device, e) {
+> +			igt_dynamic_f("%s", e->name)
+> +				fence_signal(device, handle, e->flags,
+> +					     e->name, 5);
+> +		}
+>   	}
+>   
+>   	igt_subtest("signal-all")
+> @@ -907,10 +922,11 @@ igt_main
+>   			igt_require(gem_scheduler_has_ctx_priority(device));
+>   			igt_require(gem_scheduler_has_preemption(device));
+>   		}
+> -
+> -		for (e = intel_execution_engines; e->name; e++) {
+> -			igt_subtest_f("preempt-%s", e->name)
+> -				preempt(device, handle, eb_ring(e), e->name);
+> +		igt_subtest_with_dynamic("preempt") {
+> +			__for_each_physical_engine(device, e) {
+> +				igt_dynamic_f("%s", e->name)
+> +					preempt(device, handle, e);
+> +			}
+>   		}
+>   	}
+>   
+> @@ -919,19 +935,25 @@ igt_main
+>   			igt_device_set_master(device);
+>   		}
+>   
+> -		for (e = intel_execution_engines; e->name; e++) {
+> -			/* Requires master for STORE_DWORD on gen4/5 */
+> -			igt_subtest_f("poll-%s", e->name)
+> -				poll_ring(device, eb_ring(e), e->name, 20);
+> +		igt_subtest_with_dynamic("poll") {
+> +			__for_each_physical_engine(device, e) {
+> +				/* Requires master for STORE_DWORD on gen4/5 */
+> +				igt_dynamic_f("%s", e->name)
+> +					poll_ring(device, e, 20);
+> +			}
+> +		}
+> +
+> +		igt_subtest_with_dynamic("headless") {
+> +			__for_each_physical_engine(device, e) {
+> +				igt_dynamic_f("%s", e->name)
+> +				/* Requires master for changing display modes */
+> +					headless(device, handle, e);
+> +			}
+>   		}
+>   
+>   		igt_subtest("poll-sequential")
+>   			poll_sequential(device, "Sequential", 20);
+>   
+> -		igt_subtest("headless") {
+> -			/* Requires master for changing display modes */
+> -			headless(device, handle);
+> -		}
+>   	}
+>   
+>   	igt_fixture {
+> 
 
-The minor details like cleaner looking loops over the name table and
-the way you did init_engine() makes me lean towards going with your
-code. I'll be happy to review it.
+Regards,
 
-
--- 
-Petri Latvala
+Tvrtko
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
