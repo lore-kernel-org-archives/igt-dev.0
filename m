@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B96126F46B
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2020 11:11:56 +0000 (UTC)
-Date: Wed, 22 Jan 2020 13:11:53 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200122111153.GJ25209@platvala-desk.ger.corp.intel.com>
-References: <20200122110548.22838-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200122110548.22838-1-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_collection: Adding
- combinatorics facility
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 22 Jan 2020 11:32:59 -0000
+Message-ID: <157969277910.22393.12451940793757112112@emeril.freedesktop.org>
+References: <20200122104710.10971-1-arjun.melkaveri@intel.com>
+In-Reply-To: <20200122104710.10971-1-arjun.melkaveri@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
+ =?utf-8?q?em=5Fexec=5Fnop=3AAdjusted_test_to_utilize_all_available_engine?=
+ =?utf-8?q?s_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,30 +15,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Arjun Melkaveri <arjun.melkaveri@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCBKYW4gMjIsIDIwMjAgYXQgMTI6MDU6NDhQTSArMDEwMCwgWmJpZ25pZXcgS2VtcGN6
-ecWEc2tpIHdyb3RlOgo+IER5bmFtaWMgdGVzdHMgZ2l2ZXMgdXMgbmV3IG1ldGhvZCB0byBjcmVh
-dGUgdGVzdHMgZGVwZW5kaW5nIG9uIHRoZQo+IGhhcmR3YXJlL3NvZnR3YXJlIGNhcGFiaWxpdGll
-cy4gVG8gY2hlY2sgY292ZXJhZ2Ugc29tZSB0ZXN0cyByZXF1aXJlCj4gdmVyaWZpY2F0aW9uIG92
-ZXIgc29tZSBzZXQgb2Ygb2JqZWN0cy9kYXRhLiBUbyBtYWtlIGxpZmUgZWFzaWVyCj4gd2l0aCBj
-b21iaW5hdG9yaWNzIHRoaXMgcGF0Y2ggaW50cm9kdWNlcyBpZ3RfY29sbGVjdGlvbi4gQ3VycmVu
-dGx5IGl0Cj4gc3VwcG9ydHMgaXRlcmF0aW5nIG92ZXIgc2V0IHRvIGdldCBzdWJzZXRzLCBjb21i
-aW5hdGlvbnMsIHZhcmlhdGlvbnMKPiB3aXRoIGFuZCB3aXRob3V0IHJlcGV0aXRpb25zLgo+IENv
-ZGUgaGFzIHNvbWUgbGltaXRhdGlvbiAoc2V0L3N1YnNldCBjYW5ub3QgYmUgbGFyZ2VyIHRoYW4g
-MTYgZWxlbWVudHMsCj4gd2hhdCBpcyBlbm91Z2ggZm9yIG1vc3QgY2FzZXMpLgo+IAo+IFNpZ25l
-ZC1vZmYtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50
-ZWwuY29tPgo+IENjOiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KPiBD
-YzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+CgpJcyB0aGUgcGxhbiB0
-byBtZXJnZSB0aGlzIHBhdGNoIGZpcnN0IGFuZCB0aGVuIHdvcmsgb24gdW5pdCB0ZXN0cyBhbmQK
-dGhlIGNvZGUgdGhhdCB1c2VzIGNvbGxlY3Rpb25zPwoKRm9yIHRoYXQgcGxhbiwgYW5kIHRoaXMg
-cGF0Y2g6CgpBY2tlZC1ieTogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+
-CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
-IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
-LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+== Series Details ==
+
+Series: i915/gem_exec_nop:Adjusted test to utilize all available engines (rev2)
+URL   : https://patchwork.freedesktop.org/series/72334/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_7789 -> IGTPW_3965
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3965/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_3965 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_module_load@reload-with-fault-injection:
+    - fi-skl-6700k2:      [PASS][1] -> [INCOMPLETE][2] ([i915#671])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7789/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3965/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
+    - fi-kbl-7500u:       [PASS][3] -> [INCOMPLETE][4] ([i915#879])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7789/fi-kbl-7500u/igt@i915_module_load@reload-with-fault-injection.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3965/fi-kbl-7500u/igt@i915_module_load@reload-with-fault-injection.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-icl-u2:          [PASS][5] -> [DMESG-WARN][6] ([IGT#4] / [i915#263])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7789/fi-icl-u2/igt@kms_chamelium@common-hpd-after-suspend.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3965/fi-icl-u2/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live_blt:
+    - fi-ivb-3770:        [DMESG-FAIL][7] ([i915#725]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7789/fi-ivb-3770/igt@i915_selftest@live_blt.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3965/fi-ivb-3770/igt@i915_selftest@live_blt.html
+
+  
+#### Warnings ####
+
+  * igt@gem_exec_parallel@contexts:
+    - fi-byt-j1900:       [INCOMPLETE][9] ([i915#45]) -> [TIMEOUT][10] ([fdo#112271])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7789/fi-byt-j1900/igt@gem_exec_parallel@contexts.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3965/fi-byt-j1900/igt@gem_exec_parallel@contexts.html
+
+  * igt@i915_selftest@live_blt:
+    - fi-hsw-4770r:       [DMESG-FAIL][11] ([i915#725]) -> [DMESG-FAIL][12] ([i915#770])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7789/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3965/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+
+  * igt@i915_selftest@live_gem_contexts:
+    - fi-cfl-8700k:       [INCOMPLETE][13] ([i915#424]) -> [DMESG-FAIL][14] ([i915#623])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7789/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3965/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
+
+  
+  [IGT#4]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/4
+  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
+  [i915#263]: https://gitlab.freedesktop.org/drm/intel/issues/263
+  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
+  [i915#45]: https://gitlab.freedesktop.org/drm/intel/issues/45
+  [i915#623]: https://gitlab.freedesktop.org/drm/intel/issues/623
+  [i915#671]: https://gitlab.freedesktop.org/drm/intel/issues/671
+  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
+  [i915#770]: https://gitlab.freedesktop.org/drm/intel/issues/770
+  [i915#879]: https://gitlab.freedesktop.org/drm/intel/issues/879
+
+
+Participating hosts (45 -> 40)
+------------------------------
+
+  Additional (2): fi-hsw-peppy fi-kbl-x1275 
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-kbl-7560u fi-byt-clapper 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5377 -> IGTPW_3965
+
+  CI-20190529: 20190529
+  CI_DRM_7789: ad538420f468637d707bae774a858da3592d823f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_3965: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3965/index.html
+  IGT_5377: 1e6cb3e75925cf623df04f78430ae9299632ec3f @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@gem_exec_nop@poll
++igt@gem_exec_nop@preempt
++igt@gem_exec_nop@signal
++igt@gem_exec_nop@single
+-igt@gem_exec_nop@blt
+-igt@gem_exec_nop@bsd
+-igt@gem_exec_nop@bsd1
+-igt@gem_exec_nop@bsd2
+-igt@gem_exec_nop@default
+-igt@gem_exec_nop@poll-blt
+-igt@gem_exec_nop@poll-bsd
+-igt@gem_exec_nop@poll-bsd1
+-igt@gem_exec_nop@poll-bsd2
+-igt@gem_exec_nop@poll-default
+-igt@gem_exec_nop@poll-render
+-igt@gem_exec_nop@poll-vebox
+-igt@gem_exec_nop@preempt-blt
+-igt@gem_exec_nop@preempt-bsd
+-igt@gem_exec_nop@preempt-bsd1
+-igt@gem_exec_nop@preempt-bsd2
+-igt@gem_exec_nop@preempt-default
+-igt@gem_exec_nop@preempt-render
+-igt@gem_exec_nop@preempt-vebox
+-igt@gem_exec_nop@render
+-igt@gem_exec_nop@signal-blt
+-igt@gem_exec_nop@signal-bsd
+-igt@gem_exec_nop@signal-bsd1
+-igt@gem_exec_nop@signal-bsd2
+-igt@gem_exec_nop@signal-default
+-igt@gem_exec_nop@signal-render
+-igt@gem_exec_nop@signal-vebox
+-igt@gem_exec_nop@vebox
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3965/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
