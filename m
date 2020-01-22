@@ -1,20 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4EBD96F491
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2020 10:34:51 +0000 (UTC)
-Date: Wed, 22 Jan 2020 12:34:47 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200122103447.GI25209@platvala-desk.ger.corp.intel.com>
-References: <1579586055-27583-1-git-send-email-kunal1.joshi@intel.com>
- <1579586055-27583-2-git-send-email-kunal1.joshi@intel.com>
- <20200121132948.GC25209@platvala-desk.ger.corp.intel.com>
- <20200122030147.GA32307@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E5B216F498
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2020 10:47:36 +0000 (UTC)
+From: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Date: Wed, 22 Jan 2020 16:17:10 +0530
+Message-Id: <20200122104710.10971-1-arjun.melkaveri@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200122030147.GA32307@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/3] lib/igt_chamelium Added
- chamelium_frame_match_or_dump which returns bool that the captured frame
- matches
+Subject: [igt-dev] [PATCH V2] i915/gem_exec_nop:Adjusted test to utilize all
+ available engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,121 +19,453 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jan 22, 2020 at 08:31:47AM +0530, Kunal Joshi wrote:
-> On 2020-01-21 at 15:29:48 +0200, Petri Latvala wrote:
-> > On Tue, Jan 21, 2020 at 11:24:13AM +0530, Kunal Joshi wrote:
-> > > Added chamelium_frame_match_or_dump which returns bool that the captured
-> > > frame matches with reference framebuffer.
-> > > 
-> > > (v2)
-> > >         Removed previously added function chamelium_assert_frame_dump_eq.
-> > > 
-> > > (v3)
-> > > 	No change.
-> > > 
-> > > Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> > > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> > > Suggested-by: Uma Shankar <uma.shankar@intel.com>
-> > > ---
-> > >  lib/igt_chamelium.c | 65 +++++++++++++++++++++++++++++++++++++++++++++++++++++
-> > >  lib/igt_chamelium.h |  5 +++++
-> > >  2 files changed, 70 insertions(+)
-> > > 
-> > > diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-> > > index 9971f51..db1f2b6 100644
-> > > --- a/lib/igt_chamelium.c
-> > > +++ b/lib/igt_chamelium.c
-> > > @@ -1632,6 +1632,71 @@ void chamelium_assert_frame_match_or_dump(struct chamelium *chamelium,
-> > >  }
-> > >  
-> > >  /**
-> > > + * chamelium_assert_frame_match_or_dump:
-> > > + * @chamelium: The chamelium instance the frame dump belongs to
-> > > + * @frame: The chamelium frame dump to match
-> > > + * @fb: pointer to an #igt_fb structure
-> > > + * @check: the type of frame matching check to use
-> > > + *
-> > > + * Returns bool that the provided captured frame matches the reference
-> > > + * frame from the framebuffer. If they do not, this saves the reference
-> > > + * and captured frames to a png file.
-> > > + */
-> > > +bool chamelium_frame_match_or_dump(struct chamelium *chamelium,
-> > > +				   struct chamelium_port *port,
-> > > +				   const struct chamelium_frame_dump *frame,
-> > > +				   struct igt_fb *fb,
-> > > +				   enum chamelium_check check)
-> > > +{
-> > > +	cairo_surface_t *reference;
-> > > +	cairo_surface_t *capture;
-> > > +	igt_crc_t *reference_crc;
-> > > +	igt_crc_t *capture_crc;
-> > > +	bool match;
-> > > +
-> > > +	/* Grab the reference frame from framebuffer */
-> > > +	reference = igt_get_cairo_surface(chamelium->drm_fd, fb);
-> > > +
-> > > +	/* Grab the captured frame from chamelium */
-> > > +	capture = convert_frame_dump_argb32(frame);
-> > > +
-> > > +	switch (check) {
-> > > +	case CHAMELIUM_CHECK_ANALOG:
-> > > +		match = igt_check_analog_frame_match(reference, capture);
-> > > +		break;
-> > > +	case CHAMELIUM_CHECK_CHECKERBOARD:
-> > > +		match = igt_check_checkerboard_frame_match(reference, capture);
-> > > +		break;
-> > > +	default:
-> > > +		igt_assert(false);
-> > > +	}
-> > > +
-> > > +	if (!match && igt_frame_dump_is_enabled()) {
-> > > +		reference_crc = malloc(sizeof(igt_crc_t));
-> > > +		igt_assert(reference_crc);
-> > > +
-> > > +		/* Calculate the reference frame CRC. */
-> > > +		chamelium_do_calculate_fb_crc(reference, reference_crc);
-> > > +
-> > > +		/* Get the captured frame CRC from the Chamelium. */
-> > > +		capture_crc = chamelium_get_crc_for_area(chamelium, port, 0, 0,
-> > > +							 0, 0);
-> > > +		igt_assert(capture_crc);
-> > > +
-> > > +		compared_frames_dump(reference, capture, reference_crc,
-> > > +				     capture_crc);
-> > > +
-> > > +		free(reference_crc);
-> > > +		free(capture_crc);
-> > > +	}
-> > > +
-> > > +	cairo_surface_destroy(reference);
-> > > +	cairo_surface_destroy(capture);
-> > > +
-> > > +	return match;
-> > > +}
-> > 
-> > This copy of chamelium_assert_frame_match_or_dump is
-> > unnecessary. The typical structure is that we have a bool-returning
-> > function for code that wants to do its own checks afterwards, and
-> > another one that 1) calls the bool-returning function 2) asserts
-> > success. Like so:
-> > 
-> > 
-> Petri if you see the function test_pipe_ctm, we loop for different
-> delta values If the of the delta value has a match then only we assert,
-> I think chamelium_frame_dump_match returning a bool value is required,
-> I will use chamelium_assert_frame_match_or_dump in the rest of
-> the functions where we need to assert without any further checks.
+Added __for_each_physical_engine to utilize all available engines.
+Moved single, signal, preempt, poll and headless test cases
+from static to dynamic group.
 
-I only meant that you don't need to copy the function body to get
-those two different functions. The asserting function can be
-implemented by calling the other one and asserting.
+Cc: Dec Katarzyna <katarzyna.dec@intel.com>
+Cc: Kempczynski Zbigniew <zbigniew.kempczynski@intel.com>
+Cc: Tahvanainen Jari <jari.tahvanainen@intel.com>
+Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Reviewed-by: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
+---
+V1 -> V2
 
+Addressed Tvrtko review comments
+1) removed gem_require_ring
+2) replaced gem_can_store_dword with gem_class_can_store_dword
+3) Fixed WhiteSpace issues.
+---
+ tests/i915/gem_exec_nop.c | 160 ++++++++++++++++++++++----------------
+ 1 file changed, 91 insertions(+), 69 deletions(-)
+
+diff --git a/tests/i915/gem_exec_nop.c b/tests/i915/gem_exec_nop.c
+index dbedb356..b87bf99e 100644
+--- a/tests/i915/gem_exec_nop.c
++++ b/tests/i915/gem_exec_nop.c
+@@ -66,8 +66,9 @@ static double elapsed(const struct timespec *start, const struct timespec *end)
+ 		(end->tv_nsec - start->tv_nsec)*1e-9);
+ }
+ 
+-static double nop_on_ring(int fd, uint32_t handle, unsigned ring_id,
+-			  int timeout, unsigned long *out)
++static double nop_on_ring(int fd, uint32_t handle,
++			  const struct intel_execution_engine2 *e, int timeout,
++			  unsigned long *out)
+ {
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+@@ -80,11 +81,11 @@ static double nop_on_ring(int fd, uint32_t handle, unsigned ring_id,
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(&obj);
+ 	execbuf.buffer_count = 1;
+-	execbuf.flags = ring_id;
++	execbuf.flags = e->flags;
+ 	execbuf.flags |= LOCAL_I915_EXEC_HANDLE_LUT;
+ 	execbuf.flags |= LOCAL_I915_EXEC_NO_RELOC;
+ 	if (__gem_execbuf(fd, &execbuf)) {
+-		execbuf.flags = ring_id;
++		execbuf.flags = e->flags;
+ 		gem_execbuf(fd, &execbuf);
+ 	}
+ 	intel_detect_and_clear_missed_interrupts(fd);
+@@ -104,7 +105,8 @@ static double nop_on_ring(int fd, uint32_t handle, unsigned ring_id,
+ 	return elapsed(&start, &now);
+ }
+ 
+-static void poll_ring(int fd, unsigned engine, const char *name, int timeout)
++static void poll_ring(int fd, const struct intel_execution_engine2 *e,
++		      int timeout)
+ {
+ 	const int gen = intel_gen(intel_get_drm_devid(fd));
+ 	const uint32_t MI_ARB_CHK = 0x5 << 23;
+@@ -121,9 +123,8 @@ static void poll_ring(int fd, unsigned engine, const char *name, int timeout)
+ 	if (gen == 4 || gen == 5)
+ 		flags |= I915_EXEC_SECURE;
+ 
+-	gem_require_ring(fd, engine);
+-	igt_require(gem_can_store_dword(fd, engine));
+-	igt_require(gem_engine_has_mutable_submission(fd, engine));
++	igt_require(gem_class_can_store_dword(fd, e->class));
++	igt_require(gem_class_has_mutable_submission(fd, e->class));
+ 
+ 	memset(&obj, 0, sizeof(obj));
+ 	obj.handle = gem_create(fd, 4096);
+@@ -187,7 +188,7 @@ static void poll_ring(int fd, unsigned engine, const char *name, int timeout)
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(&obj);
+ 	execbuf.buffer_count = 1;
+-	execbuf.flags = engine | flags;
++	execbuf.flags = e->flags | flags;
+ 
+ 	cycles = 0;
+ 	do {
+@@ -209,7 +210,7 @@ static void poll_ring(int fd, unsigned engine, const char *name, int timeout)
+ 	gem_sync(fd, obj.handle);
+ 
+ 	igt_info("%s completed %ld cycles: %.3f us\n",
+-		 name, cycles, elapsed*1e-3/cycles);
++		 e->name, cycles, elapsed*1e-3/cycles);
+ 
+ 	munmap(batch, 4096);
+ 	gem_close(fd, obj.handle);
+@@ -218,6 +219,7 @@ static void poll_ring(int fd, unsigned engine, const char *name, int timeout)
+ static void poll_sequential(int fd, const char *name, int timeout)
+ {
+ 	const int gen = intel_gen(intel_get_drm_devid(fd));
++	const struct intel_execution_engine2 *e;
+ 	const uint32_t MI_ARB_CHK = 0x5 << 23;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj[2];
+@@ -234,13 +236,14 @@ static void poll_sequential(int fd, const char *name, int timeout)
+ 		flags |= I915_EXEC_SECURE;
+ 
+ 	nengine = 0;
+-	for_each_physical_engine(e, fd) {
+-		if (!gem_can_store_dword(fd, eb_ring(e)) ||
+-		    !gem_engine_has_mutable_submission(fd, eb_ring(e)))
++	__for_each_physical_engine(fd, e) {
++		if (!gem_class_can_store_dword(fd, e->class) ||
++		    !gem_class_has_mutable_submission(fd, e->class))
+ 			continue;
+ 
+-		engines[nengine++] = eb_ring(e);
++		engines[nengine++] = e->flags;
+ 	}
++
+ 	igt_require(nengine);
+ 
+ 	memset(obj, 0, sizeof(obj));
+@@ -344,21 +347,20 @@ static void poll_sequential(int fd, const char *name, int timeout)
+ }
+ 
+ static void single(int fd, uint32_t handle,
+-		   unsigned ring_id, const char *ring_name)
++		   const struct intel_execution_engine2 *e)
+ {
+ 	double time;
+ 	unsigned long count;
+ 
+-	gem_require_ring(fd, ring_id);
+-
+-	time = nop_on_ring(fd, handle, ring_id, 20, &count);
++	time = nop_on_ring(fd, handle, e, 20, &count);
+ 	igt_info("%s: %'lu cycles: %.3fus\n",
+-		 ring_name, count, time*1e6 / count);
++		  e->name, count, time*1e6 / count);
+ }
+ 
+ static double
+-stable_nop_on_ring(int fd, uint32_t handle, unsigned int engine,
+-		   int timeout, int reps)
++stable_nop_on_ring(int fd, uint32_t handle,
++		   const struct intel_execution_engine2 *e, int timeout,
++		   int reps)
+ {
+ 	igt_stats_t s;
+ 	double n;
+@@ -372,7 +374,7 @@ stable_nop_on_ring(int fd, uint32_t handle, unsigned int engine,
+ 		unsigned long count;
+ 		double time;
+ 
+-		time = nop_on_ring(fd, handle, engine, timeout, &count);
++		time = nop_on_ring(fd, handle, e, timeout, &count);
+ 		igt_stats_push_float(&s, time / count);
+ 	}
+ 
+@@ -388,7 +390,8 @@ stable_nop_on_ring(int fd, uint32_t handle, unsigned int engine,
+                      "'%s' != '%s' (%f not within %f%% tolerance of %f)\n",\
+                      #x, #ref, x, tolerance * 100.0, ref)
+ 
+-static void headless(int fd, uint32_t handle)
++static void headless(int fd, uint32_t handle,
++		     const struct intel_execution_engine2 *e)
+ {
+ 	unsigned int nr_connected = 0;
+ 	drmModeConnector *connector;
+@@ -411,7 +414,7 @@ static void headless(int fd, uint32_t handle)
+ 	kmstest_set_vt_graphics_mode();
+ 
+ 	/* benchmark nops */
+-	n_display = stable_nop_on_ring(fd, handle, I915_EXEC_DEFAULT, 1, 5);
++	n_display = stable_nop_on_ring(fd, handle, e, 1, 5);
+ 	igt_info("With one display connected: %.2fus\n",
+ 		 n_display * 1e6);
+ 
+@@ -419,7 +422,7 @@ static void headless(int fd, uint32_t handle)
+ 	kmstest_unset_all_crtcs(fd, res);
+ 
+ 	/* benchmark nops again */
+-	n_headless = stable_nop_on_ring(fd, handle, I915_EXEC_DEFAULT, 1, 5);
++	n_headless = stable_nop_on_ring(fd, handle, e, 1, 5);
+ 	igt_info("Without a display connected (headless): %.2fus\n",
+ 		 n_headless * 1e6);
+ 
+@@ -429,6 +432,7 @@ static void headless(int fd, uint32_t handle)
+ 
+ static void parallel(int fd, uint32_t handle, int timeout)
+ {
++	const struct intel_execution_engine2 *e;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+ 	unsigned engines[16];
+@@ -439,12 +443,11 @@ static void parallel(int fd, uint32_t handle, int timeout)
+ 
+ 	sum = 0;
+ 	nengine = 0;
+-	for_each_physical_engine(e, fd) {
+-		engines[nengine] = eb_ring(e);
+-		names[nengine] = e->name;
+-		nengine++;
++	__for_each_physical_engine(fd, e) {
++		engines[nengine] = e->flags;
++		names[nengine++] = e->name;
+ 
+-		time = nop_on_ring(fd, handle, eb_ring(e), 1, &count) / count;
++		time = nop_on_ring(fd, handle, e, 1, &count) / count;
+ 		sum += time;
+ 		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
+ 	}
+@@ -490,6 +493,7 @@ static void parallel(int fd, uint32_t handle, int timeout)
+ 
+ static void series(int fd, uint32_t handle, int timeout)
+ {
++	const struct intel_execution_engine2 *e;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+ 	struct timespec start, now, sync;
+@@ -500,8 +504,8 @@ static void series(int fd, uint32_t handle, int timeout)
+ 	const char *name;
+ 
+ 	nengine = 0;
+-	for_each_physical_engine(e, fd) {
+-		time = nop_on_ring(fd, handle, eb_ring(e), 1, &count) / count;
++	__for_each_physical_engine(fd, e) {
++		time = nop_on_ring(fd, handle, e, 1, &count) / count;
+ 		if (time > max) {
+ 			name = e->name;
+ 			max = time;
+@@ -509,7 +513,7 @@ static void series(int fd, uint32_t handle, int timeout)
+ 		if (time < min)
+ 			min = time;
+ 		sum += time;
+-		engines[nengine++] = eb_ring(e);
++		engines[nengine++] = e->flags;
+ 	}
+ 	igt_require(nengine);
+ 	igt_info("Maximum execution latency on %s, %.3fus, min %.3fus, total %.3fus per cycle, average %.3fus\n",
+@@ -580,6 +584,7 @@ static void xchg(void *array, unsigned i, unsigned j)
+ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+ {
+ 	const int ncpus = flags & FORKED ? sysconf(_SC_NPROCESSORS_ONLN) : 1;
++	const struct intel_execution_engine2 *e;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj[2];
+ 	unsigned engines[16];
+@@ -595,14 +600,14 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+ 
+ 	nengine = 0;
+ 	sum = 0;
+-	for_each_physical_engine(e, fd) {
++	__for_each_physical_engine(fd, e) {
+ 		unsigned long count;
+ 
+-		time = nop_on_ring(fd, handle, eb_ring(e), 1, &count) / count;
++		time = nop_on_ring(fd, handle, e, 1, &count) / count;
+ 		sum += time;
+ 		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
+ 
+-		engines[nengine++] = eb_ring(e);
++		engines[nengine++] = e->flags;
+ 	}
+ 	igt_require(nengine);
+ 	igt_info("Total (individual) execution latency %.3fus per cycle\n",
+@@ -625,6 +630,7 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+ 
+ 		igt_require(__gem_context_create(fd, &id) == 0);
+ 		execbuf.rsvd1 = id;
++		gem_context_set_all_engines(fd, execbuf.rsvd1);
+ 	}
+ 
+ 	for (n = 0; n < nengine; n++) {
+@@ -642,8 +648,10 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+ 		obj[0].handle = gem_create(fd, 4096);
+ 		gem_execbuf(fd, &execbuf);
+ 
+-		if (flags & CONTEXT)
++		if (flags & CONTEXT) {
+ 			execbuf.rsvd1 = gem_context_create(fd);
++			gem_context_set_all_engines(fd, execbuf.rsvd1);
++		}
+ 
+ 		hars_petruska_f54_1_random_perturb(child);
+ 
+@@ -716,6 +724,7 @@ static void fence_signal(int fd, uint32_t handle,
+ #define NFENCES 512
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
++	struct intel_execution_engine2 *__e;
+ 	struct timespec start, now;
+ 	unsigned engines[16];
+ 	unsigned nengine;
+@@ -726,8 +735,8 @@ static void fence_signal(int fd, uint32_t handle,
+ 
+ 	nengine = 0;
+ 	if (ring_id == ALL_ENGINES) {
+-		for_each_physical_engine(e, fd)
+-			engines[nengine++] = eb_ring(e);
++		__for_each_physical_engine(fd, __e)
++			engines[nengine++] = __e->flags;
+ 	} else {
+ 		gem_require_ring(fd, ring_id);
+ 		engines[nengine++] = ring_id;
+@@ -787,7 +796,7 @@ static void fence_signal(int fd, uint32_t handle,
+ }
+ 
+ static void preempt(int fd, uint32_t handle,
+-		   unsigned ring_id, const char *ring_name)
++		    const struct intel_execution_engine2 *e)
+ {
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+@@ -795,13 +804,11 @@ static void preempt(int fd, uint32_t handle,
+ 	unsigned long count;
+ 	uint32_t ctx[2];
+ 
+-	gem_require_ring(fd, ring_id);
+-
+-	ctx[0] = gem_context_create(fd);
+-	gem_context_set_priority(fd, ctx[0], MIN_PRIO);
+-
+-	ctx[1] = gem_context_create(fd);
+-	gem_context_set_priority(fd, ctx[1], MAX_PRIO);
++	for (int i = 0; i < 2; i++) {
++		ctx[i] = gem_context_create(fd);
++		gem_context_set_all_engines(fd, ctx[i]);
++		gem_context_set_priority(fd, ctx[i], MAX_PRIO);
++	}
+ 
+ 	memset(&obj, 0, sizeof(obj));
+ 	obj.handle = handle;
+@@ -809,11 +816,11 @@ static void preempt(int fd, uint32_t handle,
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(&obj);
+ 	execbuf.buffer_count = 1;
+-	execbuf.flags = ring_id;
++	execbuf.flags = e->flags;
+ 	execbuf.flags |= LOCAL_I915_EXEC_HANDLE_LUT;
+ 	execbuf.flags |= LOCAL_I915_EXEC_NO_RELOC;
+ 	if (__gem_execbuf(fd, &execbuf)) {
+-		execbuf.flags = ring_id;
++		execbuf.flags = e->flags;
+ 		gem_execbuf(fd, &execbuf);
+ 	}
+ 	execbuf.rsvd1 = ctx[1];
+@@ -825,7 +832,7 @@ static void preempt(int fd, uint32_t handle,
+ 		igt_spin_t *spin =
+ 			__igt_spin_new(fd,
+ 				       .ctx = ctx[0],
+-				       .engine = ring_id);
++				       .engine = e->flags);
+ 
+ 		for (int loop = 0; loop < 1024; loop++)
+ 			gem_execbuf(fd, &execbuf);
+@@ -841,12 +848,12 @@ static void preempt(int fd, uint32_t handle,
+ 	gem_context_destroy(fd, ctx[0]);
+ 
+ 	igt_info("%s: %'lu cycles: %.3fus\n",
+-		 ring_name, count, elapsed(&start, &now)*1e6 / count);
++		 e->name, count, elapsed(&start, &now)*1e6 / count);
+ }
+ 
+ igt_main
+ {
+-	const struct intel_execution_engine *e;
++	const struct intel_execution_engine2 *e;
+ 	uint32_t handle = 0;
+ 	int device = -1;
+ 
+@@ -873,11 +880,19 @@ igt_main
+ 	igt_subtest("basic-sequential")
+ 		sequential(device, handle, 0, 5);
+ 
+-	for (e = intel_execution_engines; e->name; e++) {
+-		igt_subtest_f("%s", e->name)
+-			single(device, handle, eb_ring(e), e->name);
+-		igt_subtest_f("signal-%s", e->name)
+-			fence_signal(device, handle, eb_ring(e), e->name, 5);
++	igt_subtest_with_dynamic("single") {
++		__for_each_physical_engine(device, e) {
++			igt_dynamic_f("%s", e->name)
++				single(device, handle, e);
++		}
++	}
++
++	igt_subtest_with_dynamic("signal") {
++		__for_each_physical_engine(device, e) {
++			igt_dynamic_f("%s", e->name)
++				fence_signal(device, handle, e->flags,
++					     e->name, 5);
++		}
+ 	}
+ 
+ 	igt_subtest("signal-all")
+@@ -907,10 +922,11 @@ igt_main
+ 			igt_require(gem_scheduler_has_ctx_priority(device));
+ 			igt_require(gem_scheduler_has_preemption(device));
+ 		}
+-
+-		for (e = intel_execution_engines; e->name; e++) {
+-			igt_subtest_f("preempt-%s", e->name)
+-				preempt(device, handle, eb_ring(e), e->name);
++		igt_subtest_with_dynamic("preempt") {
++			__for_each_physical_engine(device, e) {
++				igt_dynamic_f("%s", e->name)
++					preempt(device, handle, e);
++			}
+ 		}
+ 	}
+ 
+@@ -919,19 +935,25 @@ igt_main
+ 			igt_device_set_master(device);
+ 		}
+ 
+-		for (e = intel_execution_engines; e->name; e++) {
+-			/* Requires master for STORE_DWORD on gen4/5 */
+-			igt_subtest_f("poll-%s", e->name)
+-				poll_ring(device, eb_ring(e), e->name, 20);
++		igt_subtest_with_dynamic("poll") {
++			__for_each_physical_engine(device, e) {
++				/* Requires master for STORE_DWORD on gen4/5 */
++				igt_dynamic_f("%s", e->name)
++					poll_ring(device, e, 20);
++			}
++		}
++
++		igt_subtest_with_dynamic("headless") {
++			__for_each_physical_engine(device, e) {
++				igt_dynamic_f("%s", e->name)
++				/* Requires master for changing display modes */
++					headless(device, handle, e);
++			}
+ 		}
+ 
+ 		igt_subtest("poll-sequential")
+ 			poll_sequential(device, "Sequential", 20);
+ 
+-		igt_subtest("headless") {
+-			/* Requires master for changing display modes */
+-			headless(device, handle);
+-		}
+ 	}
+ 
+ 	igt_fixture {
 -- 
-Petri Latvala
+2.24.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
