@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B37EB6F60C
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2020 17:09:25 +0000 (UTC)
-MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 317AE6F614
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jan 2020 17:21:30 +0000 (UTC)
+Date: Wed, 22 Jan 2020 19:21:26 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <20200122172126.GD13686@intel.com>
 References: <20200122164332.11460-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20200122164332.11460-1-ville.syrjala@linux.intel.com>
-Message-ID: <157971295973.15024.11653081154812513001@skylake-alporthouse-com>
-Date: Wed, 22 Jan 2020 17:09:19 +0000
+ <157971295973.15024.11653081154812513001@skylake-alporthouse-com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <157971295973.15024.11653081154812513001@skylake-alporthouse-com>
 Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_core: Detect gdb harder
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -16,64 +18,141 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBWaWxsZSBTeXJqYWxhICgyMDIwLTAxLTIyIDE2OjQzOjMyKQo+IEZyb206IFZpbGxl
-IFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+Cj4gCj4gVGhlIGN1cnJl
-bnQgZ2RiIGRldGVjdGlvbiBvbmx5IHdvcmtzIGZvciB0aGUgcGFyZW50IGlndCBwcm9jZXNzLAo+
-IGJ1dCBub25lIG9mIGl0cyBjaGlsZHJlbiB3aWxsIHNlZSB0aGUgZ2RiIGFuZCBzbyB3b24ndCB0
-cmFwIHByb3Blcmx5Cj4gaW4gaWd0X2ZhaWxfYXNzZXJ0KCkuIEFsc28gd2Ugd2lsbCBub3QgZGV0
-ZWN0IGdkYiBpZiBpdCB3YXMgYXR0YWNoZWQKPiBhZnRlciB0aGUgZmFjdC4gRml4IGFsbCBvZiB0
-aGF0IGJ5IGxvb2tpbmcgZm9yIHRoZSAiVHJhY2VyUGlkIgo+IGluZm9ybWF0aW9uIGluIC9wcm9j
-LzxwaWQ+L3N0YXR1cy4gV2UnbGwgbGVhdmUgdGhlIGN1cnJlbnQgImFzc3VtZQo+IHBhcmVudCBt
-YXkgYmUgZ2RiIiBhcHByb2FjaCBhcyBhIGZhbGxiYWNrLgo+IAo+IEFsc28gYW5ub3lpbmdseSBi
-eSBkZWZhdWx0IGdkYiB3aWxsIG9ubHkgdHJhY2sgYSBzaW5nbGUgcHJvY2Vzcy4KPiBUbyBtYWtl
-IGl0IHRyYWNrIGFsbCBvZiB0aGVtLCBhbmQgbGV0IHRoZW0gYWxsIHJ1biBzaW11bHRhbm91c2x5
-Cj4gb25lIG5lZWRzIHRoZSBmb2xsb3dpbmcgaW5jYW50YXRpb25zOgo+ICBzZXQgZGV0YWNoLW9u
-LWZvcmsgb2ZmCj4gIHNldCBzY2hlZHVsZS1tdWx0aXBsZSBvbgo+IAo+IE1heWJlIHRoYXQgd2ls
-bCBzYXZlIHNvbWVvbmUgZnJvbSBoYXZpbmcgdG8gdHJhd2wgYXMgbWFueQo+IGRvY3MvZ29nb2xl
-IGhpdHMgYXMgSSBkaWQuCj4gCj4gU2lnbmVkLW9mZi1ieTogVmlsbGUgU3lyasOkbMOkIDx2aWxs
-ZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KPiAtLS0KPiAgbGliL2lndF9jb3JlLmMgfCAzOCAr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLQo+ICAxIGZpbGUgY2hhbmdlZCwg
-MzYgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvbGliL2ln
-dF9jb3JlLmMgYi9saWIvaWd0X2NvcmUuYwo+IGluZGV4IDBhMDA2ODk0NmE2YS4uMTA5YjU5MjZl
-YWM0IDEwMDY0NAo+IC0tLSBhL2xpYi9pZ3RfY29yZS5jCj4gKysrIGIvbGliL2lndF9jb3JlLmMK
-PiBAQCAtMTYwOSwxMiArMTYwOSwxMiBAQCB2b2lkIGlndF9kZXNjcmliZV9mKGNvbnN0IGNoYXIg
-KmZtdCwgLi4uKQo+ICAgICAgICAgYXNzZXJ0KHJldCA8IHNpemVvZihfX2N1cnJlbnRfZGVzY3Jp
-cHRpb24pKTsKPiAgfQo+ICAKPiAtc3RhdGljIGJvb2wgcnVubmluZ191bmRlcl9nZGIodm9pZCkK
-PiArc3RhdGljIGJvb2wgaXNfZ2RiKHBpZF90IHBpZCkKPiAgewo+ICAgICAgICAgY2hhciBwYXRo
-bmFtZVszMF0sIGJ1ZlsxMDI0XTsKPiAgICAgICAgIHNzaXplX3QgbGVuOwo+ICAKPiAtICAgICAg
-IHNwcmludGYocGF0aG5hbWUsICIvcHJvYy8lZC9leGUiLCBnZXRwcGlkKCkpOwo+ICsgICAgICAg
-c3ByaW50ZihwYXRobmFtZSwgIi9wcm9jLyVkL2V4ZSIsIHBpZCk7Cj4gICAgICAgICBsZW4gPSBy
-ZWFkbGluayhwYXRobmFtZSwgYnVmLCBzaXplb2YoYnVmKSAtIDEpOwo+ICAgICAgICAgaWYgKGxl
-biA8IDApCj4gICAgICAgICAgICAgICAgIHJldHVybiBmYWxzZTsKPiBAQCAtMTYyNCw2ICsxNjI0
-LDQwIEBAIHN0YXRpYyBib29sIHJ1bm5pbmdfdW5kZXJfZ2RiKHZvaWQpCj4gICAgICAgICByZXR1
-cm4gc3RybmNtcChiYXNlbmFtZShidWYpLCAiZ2RiIiwgMykgPT0gMDsKPiAgfQo+ICAKPiArc3Rh
-dGljIHBpZF90IHRyYWNlcl9waWQodm9pZCkKPiArewo+ICsgICAgICAgY2hhciBwYXRobmFtZVsz
-MF07Cj4gKyAgICAgICBwaWRfdCBwaWQgPSAwOwo+ICsgICAgICAgRklMRSAqZjsKPiArCj4gKyAg
-ICAgICBzcHJpbnRmKHBhdGhuYW1lLCAiL3Byb2MvJWQvc3RhdHVzIiwgZ2V0cGlkKCkpOwo+ICsK
-PiArICAgICAgIGYgPSBmb3BlbihwYXRobmFtZSwgInIiKTsKPiArICAgICAgIGlmICghZikKPiAr
-ICAgICAgICAgICAgICAgcmV0dXJuIGdldHBwaWQoKTsKPiArCj4gKyAgICAgICBmb3IgKDs7KSB7
-Cj4gKyAgICAgICAgICAgICAgIGNoYXIgYnVmWzEwMjRdOwo+ICsgICAgICAgICAgICAgICBjaGFy
-ICpzOwo+ICsKPiArICAgICAgICAgICAgICAgcyA9IGZnZXRzKGJ1Ziwgc2l6ZW9mKGJ1ZiksIGYp
-OwoKSSdkIHByZWZlciBmZ2V0bGluZSwgL3Byb2MvPHBpZD5zdGF0dXMgaXMgPjEwMjQgYnl0ZXMg
-c28gdGhlcmUncyBhbHdheXMKdGhhdCBjaGFuY2Ugd2UgY3V0IHRoZSBUcmFjZXJQaWQgbGluZS4K
-Cj4gKyAgICAgICAgICAgICAgIGlmICghcykKPiArICAgICAgICAgICAgICAgICAgICAgICBicmVh
-azsKPiArCj4gKyAgICAgICAgICAgICAgIGlmIChzc2NhbmYocywgIlRyYWNlclBpZDogJWQiLCAm
-cGlkKSA9PSAxKQo+ICsgICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOwo+ICsgICAgICAgfQo+
-ICsKPiArICAgICAgIGZjbG9zZShmKTsKPiArCj4gKyAgICAgICByZXR1cm4gcGlkID86IGdldHBw
-aWQoKTsKCk1ha2VzIHNlbnNlLgoKPiArfQo+ICsKPiArc3RhdGljIGJvb2wgcnVubmluZ191bmRl
-cl9nZGIodm9pZCkKPiArewoKLyoKICogQW5ub3lpbmdseSBieSBkZWZhdWx0IGdkYiB3aWxsIG9u
-bHkgdHJhY2sgYSBzaW5nbGUgcHJvY2Vzcy4KICogVG8gbWFrZSBpdCB0cmFjayBhbGwgb2YgdGhl
-bSwgYW5kIGxldCB0aGVtIGFsbCBydW4gc2ltdWx0YW5lb3VzbHkKICogb25lIG5lZWRzIHRoZSBm
-b2xsb3dpbmcgaW5jYW50YXRpb25zOgogKiAgIHNldCBkZXRhY2gtb24tZm9yayBvZmYKICogICBz
-ZXQgc2NoZWR1bGUtbXVsdGlwbGUgb24KICovCgoKVElMIHR3byB0aGluZ3MsIHNvClJldmlld2Vk
-LWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KLUNocmlzCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
-ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+On Wed, Jan 22, 2020 at 05:09:19PM +0000, Chris Wilson wrote:
+> Quoting Ville Syrjala (2020-01-22 16:43:32)
+> > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> > =
+
+> > The current gdb detection only works for the parent igt process,
+> > but none of its children will see the gdb and so won't trap properly
+> > in igt_fail_assert(). Also we will not detect gdb if it was attached
+> > after the fact. Fix all of that by looking for the "TracerPid"
+> > information in /proc/<pid>/status. We'll leave the current "assume
+> > parent may be gdb" approach as a fallback.
+> > =
+
+> > Also annoyingly by default gdb will only track a single process.
+> > To make it track all of them, and let them all run simultanously
+> > one needs the following incantations:
+> >  set detach-on-fork off
+> >  set schedule-multiple on
+> > =
+
+> > Maybe that will save someone from having to trawl as many
+> > docs/gogole hits as I did.
+> > =
+
+> > Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> > ---
+> >  lib/igt_core.c | 38 ++++++++++++++++++++++++++++++++++++--
+> >  1 file changed, 36 insertions(+), 2 deletions(-)
+> > =
+
+> > diff --git a/lib/igt_core.c b/lib/igt_core.c
+> > index 0a0068946a6a..109b5926eac4 100644
+> > --- a/lib/igt_core.c
+> > +++ b/lib/igt_core.c
+> > @@ -1609,12 +1609,12 @@ void igt_describe_f(const char *fmt, ...)
+> >         assert(ret < sizeof(__current_description));
+> >  }
+> >  =
+
+> > -static bool running_under_gdb(void)
+> > +static bool is_gdb(pid_t pid)
+> >  {
+> >         char pathname[30], buf[1024];
+> >         ssize_t len;
+> >  =
+
+> > -       sprintf(pathname, "/proc/%d/exe", getppid());
+> > +       sprintf(pathname, "/proc/%d/exe", pid);
+> >         len =3D readlink(pathname, buf, sizeof(buf) - 1);
+> >         if (len < 0)
+> >                 return false;
+> > @@ -1624,6 +1624,40 @@ static bool running_under_gdb(void)
+> >         return strncmp(basename(buf), "gdb", 3) =3D=3D 0;
+> >  }
+> >  =
+
+> > +static pid_t tracer_pid(void)
+> > +{
+> > +       char pathname[30];
+> > +       pid_t pid =3D 0;
+> > +       FILE *f;
+> > +
+> > +       sprintf(pathname, "/proc/%d/status", getpid());
+> > +
+> > +       f =3D fopen(pathname, "r");
+> > +       if (!f)
+> > +               return getppid();
+> > +
+> > +       for (;;) {
+> > +               char buf[1024];
+> > +               char *s;
+> > +
+> > +               s =3D fgets(buf, sizeof(buf), f);
+> =
+
+> I'd prefer fgetline, /proc/<pid>status is >1024 bytes so there's always
+> that chance we cut the TracerPid line.
+
+fgets() reads at most one line (which means my 1024 copypasta is
+probably a bit much). Not sure what fgetline() is.
+
+> =
+
+> > +               if (!s)
+> > +                       break;
+> > +
+> > +               if (sscanf(s, "TracerPid: %d", &pid) =3D=3D 1)
+> > +                       break;
+> > +       }
+> > +
+> > +       fclose(f);
+> > +
+> > +       return pid ?: getppid();
+> =
+
+> Makes sense.
+> =
+
+> > +}
+> > +
+> > +static bool running_under_gdb(void)
+> > +{
+> =
+
+> /*
+>  * Annoyingly by default gdb will only track a single process.
+>  * To make it track all of them, and let them all run simultaneously
+>  * one needs the following incantations:
+>  *   set detach-on-fork off
+>  *   set schedule-multiple on
+>  */
+
+Yeah, a comment is probably a good idea for this.
+
+> =
+
+> =
+
+> TIL two things, so
+> Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+> -Chris
+
+-- =
+
+Ville Syrj=E4l=E4
+Intel
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
