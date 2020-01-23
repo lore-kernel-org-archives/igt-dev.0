@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Thu, 23 Jan 2020 12:01:57 +0100
+Message-ID: <4915664.0qtKoWCMDK@jkrzyszt-desk.ger.corp.intel.com>
+In-Reply-To: <11711055.DxJhndXA8j@jkrzyszt-desk.ger.corp.intel.com>
+References: <20200109140125.18483-1-janusz.krzysztofik@linux.intel.com>
+ <157858221040.2197.11860218526538512609@skylake-alporthouse-com>
+ <11711055.DxJhndXA8j@jkrzyszt-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <225f88d1044053674cbd632998c69c0c677a530e.1579731227.git.dale.b.stimson@intel.com>
-References: <cover.1579731227.git.dale.b.stimson@intel.com>
- <76818a8047c4b9da76d0619c7b8f58c89449b4ed.1579731227.git.dale.b.stimson@intel.com>
- <225f88d1044053674cbd632998c69c0c677a530e.1579731227.git.dale.b.stimson@intel.com>
-Message-ID: <157977054018.18920.9879323586181021015@skylake-alporthouse-com>
-Date: Thu, 23 Jan 2020 09:09:00 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] DBS: tests/i915/gem_ctx_isolation:
- use the gem_engine_topology library, part 2
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/prime_vgem: Examine blitter
+ access path
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,54 +20,104 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Dale B Stimson <dale.b.stimson@intel.com>, igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Dale B Stimson (2020-01-22 23:26:57)
-> Switch from simple iteration over all potential engines to using
-> macro __for_each_physical_engine which only returns engines that are
-> actually present.
-> 
-> For each context (as it is created) call gem_context_set_all_engines
-> so that execbuf will interpret the engine specification in the new way.
-> 
-> Signed-off-by: Dale B Stimson <dale.b.stimson@intel.com>
-> ---
->  tests/i915/gem_ctx_isolation.c | 41 ++++++++++++++++++++++++++--------
->  1 file changed, 32 insertions(+), 9 deletions(-)
-> 
-> diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
-> index 25113b054..31a20ed3a 100644
-> --- a/tests/i915/gem_ctx_isolation.c
-> +++ b/tests/i915/gem_ctx_isolation.c
-> @@ -240,6 +240,25 @@ static bool ignore_register(uint32_t offset)
->         return false;
->  }
->  
-> +/*
-> + * context_create_plus_all_engines - Same as gem_context_create plus setup.
-> + *
-> + * This is a convenience function that may be called instead of the sequence
-> + * of gem_context_create followed by gem_context_set_all_engines.
-> + * If gem_has_engine_topology(), then function gem_context_set_all_engines
-> + * indicates that future execbuf calls for this context should interpret the
-> + * engine specification in a gem_engine_topology-compatible way.
-> + */
-> +static uint32_t context_create_plus_all_engines(int fd)
-> +{
-> +       uint32_t ctx;
-> +
-> +       ctx = gem_context_create(fd);
-> +       gem_context_set_all_engines(fd, ctx);
-> +
-> +       return ctx;
-> +}
+Sorry for replying to myself again.
 
-gem_context_clone_with_engines() so we can stop assuming that
-all-engines is the right answer, because that depends on the conditions
-set up by the iterator on the first context.
--Chris
+On Wednesday, January 22, 2020 4:24:49 PM CET Janusz Krzysztofik wrote:
+> Hi Chris,
+> 
+> On Thursday, January 9, 2020 4:03:30 PM CET Chris Wilson wrote:
+> > Quoting Janusz Krzysztofik (2020-01-09 14:01:25)
+> > > On future hardware with missing GGTT BAR we won't be able to exercise
+> > > dma-buf access via that path.  An alternative to basic-gtt subtest for
+> > > testing dma-buf access is required, as well as basic-fence-mmap and
+> > > coherency-gtt subtest alternatives for testing WC coherency.
+> > > 
+> > > Access to the dma sg list feature exposed by dma-buf can be tested
+> > > through blitter.  Unfortunately we don't have any equivalently simple
+> > > tests that use blitter.  Provide them.
+> > > 
+> > > Blitter XY_SRC_COPY method implemented by igt_blitter_src_copy__raw()
+> > > IGT library function has been chosen.
+> > > 
+> > > v2: As fast copy is not supported on platforms older than Gen 9,
+> > >     use XY_SRC_COPY instead (Chris),
+> > >   - add subtest descriptions.
+> > > 
+> > > Suggested-by: Chris Wilson <chris@chris-wilson.co.uk>
+> > > Suggested-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+> > > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > > ---
+> > >  tests/prime_vgem.c | 192 +++++++++++++++++++++++++++++++++++++++++++++
+> > >  1 file changed, 192 insertions(+)
+> > > 
+> > > diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+> > > index 69ae8c9b..9ceee47a 100644
+> > > --- a/tests/prime_vgem.c
+> > > +++ b/tests/prime_vgem.c
+> <SNIP>
+> > >  
+> > > +static void test_blt(int vgem, int i915)
+> > > +{
+> > > +       struct vgem_bo scratch;
+> > > +       uint32_t prime, native;
+> > > +       uint32_t *ptr;
+> > > +       int dmabuf, i;
+> > > +
+> > > +       scratch.width = 1024;
+> > > +       scratch.height = 1024;
+> > > +       scratch.bpp = 32;
+> > > +       vgem_create(vgem, &scratch);
+> > > +
+> > > +       dmabuf = prime_handle_to_fd(vgem, scratch.handle);
+> > > +       prime = prime_fd_to_handle(i915, dmabuf);
+> > > +       close(dmabuf);
+> > > +
+> > > +       native = gem_create(i915, scratch.size);
+> > > +
+> > > +       ptr = gem_mmap__wc(i915, native, 0, scratch.size, PROT_WRITE);
+> > > +       for (i = 0; i < 1024; i++)
+> > > +               ptr[1024 * i] = i;
+> > > +       munmap(ptr, scratch.size);
+> > > +
+> > > +       igt_blitter_src_copy__raw(i915,
+> > > +                                 native, 0, scratch.width * scratch.bpp / 8,
+> > > +                                 I915_TILING_NONE, 0, 0,
+> > > +                                 scratch.width, scratch.height, scratch.bpp,
+> > > +                                 prime, 0, scratch.width * scratch.bpp / 8,
+> > > +                                 I915_TILING_NONE, 0, 0);
+> > > +       gem_sync(i915, prime);
+> > 
+> > Would this be better with prime_sync_start(dmabuf, true); ?
+> 
+> I'm not sure why you suggest true for write access, not false for just having 
+> the prime object confirmed ready for reading.  Could you please explain?
+
+Now I think that by requesting a write sync, as suggested by Chris, we make 
+sure that all former write operations have completed.  That might be not true 
+if we requested a read sync as we might get a snapshot taken while the write 
+we wanted to serialize against was still pending.  I hope my understanding of 
+this is now correct.
+
+Thanks,
+Janusz
+
+> 
+> Thanks,
+> Janusz
+> 
+> > gem_sync(prime) is nice in its own way (checking sync on imported handle
+> > provides correct serialisation for the vgem_mmap). But I think the
+> > recommended practice would be to use dmabuf for the inter-device sync?
+> 
+> 
+
+
+
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
