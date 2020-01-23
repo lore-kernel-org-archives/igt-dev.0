@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 23 Jan 2020 13:50:36 -0000
-Message-ID: <157978743645.1144.6584282563199075294@emeril.freedesktop.org>
-References: <20200122104710.10971-1-arjun.melkaveri@intel.com>
-In-Reply-To: <20200122104710.10971-1-arjun.melkaveri@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_i?=
- =?utf-8?q?915/gem=5Fexec=5Fnop=3AAdjusted_test_to_utilize_all_available_e?=
- =?utf-8?q?ngines_=28rev2=29?=
+Date: Thu, 23 Jan 2020 13:50:28 -0000
+Message-ID: <157978742823.1145.15893200943431977008@emeril.freedesktop.org>
+References: <20200122101043.21347-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20200122101043.21347-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_i?=
+ =?utf-8?q?915/gem=5Fengine=5Ftopology=3A_Generate_engine_names_based_on_c?=
+ =?utf-8?q?lass?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,46 +20,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arjun Melkaveri <arjun.melkaveri@intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: i915/gem_exec_nop:Adjusted test to utilize all available engines (rev2)
-URL   : https://patchwork.freedesktop.org/series/72334/
-State : failure
+Series: i915/gem_engine_topology: Generate engine names based on class
+URL   : https://patchwork.freedesktop.org/series/72384/
+State : warning
 
 == Summary ==
 
-ERROR! This series introduces new undocumented tests:
+Did not get list of undocumented tests for this run, something is wrong!
 
-gem_exec_nop@poll
-gem_exec_nop@preempt
-gem_exec_nop@signal
-gem_exec_nop@single
-gem_mmap_offset@open-flood
+Other than that, pipeline status: FAILED.
 
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/99786 for the overview.
 
-[Documentation] has more details on how to do this.
-
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
-
-Thanks in advance!
-
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-
-Other than that, pipeline status: SUCCESS.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/99801 for the overview.
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1420618):
+  [1/639] Generating version.h with a custom command.
+  [2/492] Linking target tests/gem_concurrent_blit.
+  [3/492] Linking target tests/gem_ctx_create.
+  [4/492] Linking target tests/gem_ctx_engines.
+  [5/492] Linking target tests/gem_ctx_exec.
+  [6/492] Compiling C object 'tests/59830eb@@gem_ctx_isolation@exe/i915_gem_ctx_isolation.c.o'.
+  FAILED: tests/59830eb@@gem_ctx_isolation@exe/i915_gem_ctx_isolation.c.o 
+  clang -Itests/59830eb@@gem_ctx_isolation@exe -Itests -I../tests -I../include/drm-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/valgrind -I/usr/include/libdrm/nouveau -Xclang -fcolor-diagnostics -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wextra -std=gnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=2 -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=address -Werror=array-bounds -Werror=i
+ mplicit -Werror=init-self -Werror=int-to-pointer-cast -Werror=main -Werror=missing-braces -Werror=nonnull -Werror=pointer-to-int-cast -Werror=return-type -Werror=sequence-point -Werror=trigraphs -Werror=write-strings -fno-builtin-malloc -fno-builtin-calloc -pthread -MD -MQ 'tests/59830eb@@gem_ctx_isolation@exe/i915_gem_ctx_isolation.c.o' -MF 'tests/59830eb@@gem_ctx_isolation@exe/i915_gem_ctx_isolation.c.o.d' -o 'tests/59830eb@@gem_ctx_isolation@exe/i915_gem_ctx_isolation.c.o' -c ../tests/i915/gem_ctx_isolation.c
+  ../tests/i915/gem_ctx_isolation.c:880:10: error: address of array 'e->name' will always evaluate to 'true' [-Werror,-Wpointer-bool-conversion]
+               e->name; e++) {
+               ~~~^~~~
+  1 error generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1579689434:build_script
+  [0Ksection_start:1579689434:after_script
+  [0Ksection_end:1579689435:after_script
+  [0Ksection_start:1579689435:upload_artifacts_on_failure
+  [0Ksection_end:1579689437:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/99801
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/99786
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
