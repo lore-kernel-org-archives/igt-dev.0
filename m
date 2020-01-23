@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 23 Jan 2020 13:50:28 -0000
-Message-ID: <157978742823.1145.15893200943431977008@emeril.freedesktop.org>
+Date: Thu, 23 Jan 2020 13:51:06 -0000
+Message-ID: <157978746621.1145.16266350274909208756@emeril.freedesktop.org>
 References: <20200122101043.21347-1-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20200122101043.21347-1-tvrtko.ursulin@linux.intel.com>
 Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_i?=
  =?utf-8?q?915/gem=5Fengine=5Ftopology=3A_Generate_engine_names_based_on_c?=
- =?utf-8?q?lass?=
+ =?utf-8?q?lass_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,7 +26,7 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: i915/gem_engine_topology: Generate engine names based on class
+Series: i915/gem_engine_topology: Generate engine names based on class (rev2)
 URL   : https://patchwork.freedesktop.org/series/72384/
 State : warning
 
@@ -36,15 +36,15 @@ Did not get list of undocumented tests for this run, something is wrong!
 
 Other than that, pipeline status: FAILED.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/99786 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/99903 for the overview.
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1420618):
-  [1/639] Generating version.h with a custom command.
-  [2/492] Linking target tests/gem_concurrent_blit.
-  [3/492] Linking target tests/gem_ctx_create.
-  [4/492] Linking target tests/gem_ctx_engines.
-  [5/492] Linking target tests/gem_ctx_exec.
-  [6/492] Compiling C object 'tests/59830eb@@gem_ctx_isolation@exe/i915_gem_ctx_isolation.c.o'.
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1423548):
+  [140/623] Linking target tests/gem_ctx_bad_destroy.
+  [141/623] Linking target tests/gem_ctx_clone.
+  [142/623] Linking target tests/gem_ctx_create.
+  [143/623] Linking target tests/gem_ctx_engines.
+  [144/623] Linking target tests/gem_ctx_exec.
+  [145/623] Compiling C object 'tests/59830eb@@gem_ctx_isolation@exe/i915_gem_ctx_isolation.c.o'.
   FAILED: tests/59830eb@@gem_ctx_isolation@exe/i915_gem_ctx_isolation.c.o 
   clang -Itests/59830eb@@gem_ctx_isolation@exe -Itests -I../tests -I../include/drm-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/valgrind -I/usr/include/libdrm/nouveau -Xclang -fcolor-diagnostics -pipe -D_FILE_OFFSET_BITS=64 -Wall -Winvalid-pch -Wextra -std=gnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=2 -Wmissing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-packed-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=address -Werror=array-bounds -Werror=i
  mplicit -Werror=init-self -Werror=int-to-pointer-cast -Werror=main -Werror=missing-braces -Werror=nonnull -Werror=pointer-to-int-cast -Werror=return-type -Werror=sequence-point -Werror=trigraphs -Werror=write-strings -fno-builtin-malloc -fno-builtin-calloc -pthread -MD -MQ 'tests/59830eb@@gem_ctx_isolation@exe/i915_gem_ctx_isolation.c.o' -MF 'tests/59830eb@@gem_ctx_isolation@exe/i915_gem_ctx_isolation.c.o.d' -o 'tests/59830eb@@gem_ctx_isolation@exe/i915_gem_ctx_isolation.c.o' -c ../tests/i915/gem_ctx_isolation.c
@@ -53,17 +53,17 @@ build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-c
                ~~~^~~~
   1 error generated.
   ninja: build stopped: subcommand failed.
-  section_end:1579689434:build_script
-  [0Ksection_start:1579689434:after_script
-  [0Ksection_end:1579689435:after_script
-  [0Ksection_start:1579689435:upload_artifacts_on_failure
-  [0Ksection_end:1579689437:upload_artifacts_on_failure
+  section_end:1579704764:build_script
+  [0Ksection_start:1579704764:after_script
+  [0Ksection_end:1579704766:after_script
+  [0Ksection_start:1579704766:upload_artifacts_on_failure
+  [0Ksection_end:1579704768:upload_artifacts_on_failure
   [0K[31;1mERROR: Job failed: exit code 1
   [0;m
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/99786
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/99903
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
