@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 23 Jan 2020 13:52:20 -0000
-Message-ID: <157978754022.1145.745235269447535205@emeril.freedesktop.org>
-References: <20200123002517.31327-1-vinay.belgaumkar@intel.com>
-In-Reply-To: <20200123002517.31327-1-vinay.belgaumkar@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/i915/gem=5Fexec=5Fschedule=3A_Use_mmap=5F=5Fdevice=5Fcoher?=
- =?utf-8?q?ent?=
+Date: Thu, 23 Jan 2020 13:52:37 -0000
+Message-ID: <157978755744.1145.11132226521751551338@emeril.freedesktop.org>
+References: <20200123091824.29850-1-arjun.melkaveri@intel.com>
+In-Reply-To: <20200123091824.29850-1-arjun.melkaveri@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_i?=
+ =?utf-8?q?915/gem=5Fexec=5Fnop=3AAdjusted_test_to_utilize_all_available_e?=
+ =?utf-8?q?ngines_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,115 +20,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+To: Arjun Melkaveri <arjun.melkaveri@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: tests/i915/gem_exec_schedule: Use mmap__device_coherent
-URL   : https://patchwork.freedesktop.org/series/72436/
-State : warning
+Series: i915/gem_exec_nop:Adjusted test to utilize all available engines (rev4)
+URL   : https://patchwork.freedesktop.org/series/72334/
+State : failure
 
 == Summary ==
 
-Did not get list of undocumented tests for this run, something is wrong!
+ERROR! This series introduces new undocumented tests:
 
-Other than that, pipeline status: FAILED.
+gem_exec_nop@poll
+gem_exec_nop@preempt
+gem_exec_nop@signal
+gem_exec_nop@single
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/100247 for the overview.
+Can you document them as per the requirement in the [CONTRIBUTING.md]?
 
-test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1432547):
-   #3 [abort+0x12b]
-   #4 [__assert_fail_base.cold+0xf]
-   #5 [__assert_fail+0x46]
-   #6 [igt_exit+0x18a]
-   #7 [main+0x28]
-   #8 [__libc_start_main+0xf3]
-   #9 [_start+0x2e]
-  -------
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1579742232:build_script
-  [0Ksection_start:1579742232:after_script
-  [0Ksection_end:1579742233:after_script
-  [0Ksection_start:1579742233:upload_artifacts_on_failure
-  [0Ksection_end:1579742236:upload_artifacts_on_failure
-  [0K[31;1mERROR: Job failed: exit code 1
-  [0;m
+[Documentation] has more details on how to do this.
 
-test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1432551):
-   #1 [sigset+0xf4]
-   #2 [gnu_get_libc_version+0x119]
-   #3 [gsignal+0x76]
-  qemu: uncaught target signal 6 (Aborted) - core dumped
-  -------
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1579742246:build_script
-  [0Ksection_start:1579742246:after_script
-  [0Ksection_end:1579742248:after_script
-  [0Ksection_start:1579742248:upload_artifacts_on_failure
-  [0K[32;1mUploading artifacts...[0;m
-  build: found 1376 matching files                  [0;m 
-  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1432551 responseStatus[0;m=201 Created token[0;m=LfcMdHTx
-  section_end:1579742254:upload_artifacts_on_failure
-  [0K[31;1mERROR: Job failed: exit code 1
-  [0;m
+Here are few examples:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
 
-test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1432557):
-   #1 [sigset+0xf4]
-   #2 [gnu_get_libc_version+0x119]
-   #3 [gsignal+0x76]
-  qemu: uncaught target signal 6 (Aborted) - core dumped
-  -------
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1579742278:build_script
-  [0Ksection_start:1579742278:after_script
-  [0Ksection_end:1579742280:after_script
-  [0Ksection_start:1579742280:upload_artifacts_on_failure
-  [0K[32;1mUploading artifacts...[0;m
-  build: found 1376 matching files                  [0;m 
-  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1432557 responseStatus[0;m=201 Created token[0;m=cvvw1Gbx
-  section_end:1579742286:upload_artifacts_on_failure
-  [0K[31;1mERROR: Job failed: exit code 1
-  [0;m
+Thanks in advance!
 
-test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1432558):
-   #1 [sigset+0xf4]
-   #2 [gnu_get_libc_version+0x119]
-   #3 [gsignal+0x76]
-  qemu: uncaught target signal 6 (Aborted) - core dumped
-  -------
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1579742310:build_script
-  [0Ksection_start:1579742310:after_script
-  [0Ksection_end:1579742311:after_script
-  [0Ksection_start:1579742311:upload_artifacts_on_failure
-  [0K[32;1mUploading artifacts...[0;m
-  build: found 1376 matching files                  [0;m 
-  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1432558 responseStatus[0;m=201 Created token[0;m=xuHfNmqS
-  section_end:1579742317:upload_artifacts_on_failure
-  [0K[31;1mERROR: Job failed: exit code 1
-  [0;m
+[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
+[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+
+Other than that, pipeline status: SUCCESS.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/100370 for the overview.
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/100247
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/100370
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
