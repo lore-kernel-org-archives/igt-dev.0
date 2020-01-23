@@ -1,13 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 315E66FCC9
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jan 2020 13:59:12 +0000 (UTC)
+Date: Thu, 23 Jan 2020 12:30:06 +0530
+From: Kunal Joshi <kunal1.joshi@intel.com>
+Message-ID: <20200123070005.GA19868@intel.com>
+References: <1579586055-27583-1-git-send-email-kunal1.joshi@intel.com>
+ <1579586055-27583-4-git-send-email-kunal1.joshi@intel.com>
+ <20200121135115.GF25209@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 23 Jan 2020 13:52:37 -0000
-Message-ID: <157978755744.1145.11132226521751551338@emeril.freedesktop.org>
-References: <20200123091824.29850-1-arjun.melkaveri@intel.com>
-In-Reply-To: <20200123091824.29850-1-arjun.melkaveri@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_i?=
- =?utf-8?q?915/gem=5Fexec=5Fnop=3AAdjusted_test_to_utilize_all_available_e?=
- =?utf-8?q?ngines_=28rev4=29?=
+Content-Disposition: inline
+In-Reply-To: <20200121135115.GF25209@platvala-desk.ger.corp.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 3/3] tests/kms_color_chamelium: add
+ subtests to validate color
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,50 +20,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arjun Melkaveri <arjun.melkaveri@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On 2020-01-21 at 15:51:15 +0200, Petri Latvala wrote:
+> On Tue, Jan 21, 2020 at 11:24:15AM +0530, Kunal Joshi wrote:
+> > To validate color subtests using chamelium, subtests modified
+> > to do frame dump comparison instead of crc comparison.
+> > Tests require chamelium and will validate color features
+> > at pipe level.
+> > 
+> > (v2)
+> >         Comparing framedump with framebuffer reference instead of
+> >         comparing two framedump.
+> > (v3)
+> > 	Moved common functions with kms_color to lib/igt_color
+> > 
+> > Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> > Suggested-by: Uma Shankar <uma.shankar@intel.com>
+> > ---
+> >  tests/Makefile.am           |   1 +
+> >  tests/kms_color_chamelium.c | 759 ++++++++++++++++++++++++++++++++++++++++++++
+> 
+> 
+> Meson changes are missing.
+> 
+> Looks pretty much what you'd expect from a kms_color ported to use
+> chamelium. When you send the next revision, can you also include a
+> patch with commit message "HAX: Run in BAT", modifying
+> tests/intel-ci/fast-feedback.testlist to add all these new tests
+> there. That way we get testing done on chameliums, which we currently
+> only have on the BAT machines, not on shards.
+> 
+> 
+> -- 
+> Petri Latvala
+Thanks petri for the feedback and support.
+I will float the next patch with recommended
+changes.
 
-Series: i915/gem_exec_nop:Adjusted test to utilize all available engines (rev4)
-URL   : https://patchwork.freedesktop.org/series/72334/
-State : failure
 
-== Summary ==
+Regards
+Kunal
 
-ERROR! This series introduces new undocumented tests:
-
-gem_exec_nop@poll
-gem_exec_nop@preempt
-gem_exec_nop@signal
-gem_exec_nop@single
-
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
-
-[Documentation] has more details on how to do this.
-
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
-
-Thanks in advance!
-
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-
-Other than that, pipeline status: SUCCESS.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/100370 for the overview.
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/100370
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
