@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 23 Jan 2020 15:34:16 -0000
-Message-ID: <157979365660.1144.8110272416037115372@emeril.freedesktop.org>
-References: <20200123124306.18857-1-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20200123124306.18857-1-tvrtko.ursulin@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fengine=5Ftopology=3A_Introduce_and_use_gem=5Fcontext=5Fclo?=
- =?utf-8?q?ne=5Fwith=5Fengines_=28rev2=29?=
+Date: Thu, 23 Jan 2020 16:04:34 -0000
+Message-ID: <157979547468.1144.347795029297249183@emeril.freedesktop.org>
+References: <1579766442-20285-1-git-send-email-kunal1.joshi@intel.com>
+In-Reply-To: <1579766442-20285-1-git-send-email-kunal1.joshi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdmFsaWRh?=
+ =?utf-8?q?te_color_tests_using_chamelium=2E_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,19 +19,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To: Kunal Joshi <kunal1.joshi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: i915/gem_engine_topology: Introduce and use gem_context_clone_with_engines (rev2)
-URL   : https://patchwork.freedesktop.org/series/72464/
+Series: validate color tests using chamelium. (rev4)
+URL   : https://patchwork.freedesktop.org/series/72006/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_5382 -> IGTPW_3979
+CI Bug Log - changes from IGT_5382 -> IGTPW_3981
 ====================================================
 
 Summary
@@ -42,73 +41,374 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3979/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_3981:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@kms_color_chamelium@pipe-a-ctm-0-75} (NEW):
+    - fi-icl-u2:          NOTRUN -> [FAIL][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/fi-icl-u2/igt@kms_color_chamelium@pipe-a-ctm-0-75.html
+
+  * {igt@kms_color_chamelium@pipe-c-ctm-limited-range} (NEW):
+    - fi-skl-6700k2:      NOTRUN -> [FAIL][2] +65 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/fi-skl-6700k2/igt@kms_color_chamelium@pipe-c-ctm-limited-range.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between IGT_5382 and IGTPW_3981:
+
+### New IGT tests (66) ###
+
+  * igt@kms_color_chamelium@pipe-a-ctm-0-25:
+    - Statuses : 1 fail(s) 3 pass(s) 38 skip(s)
+    - Exec time: [0.0, 109.84] s
+
+  * igt@kms_color_chamelium@pipe-a-ctm-0-5:
+    - Statuses : 1 fail(s) 3 pass(s) 38 skip(s)
+    - Exec time: [0.0, 109.88] s
+
+  * igt@kms_color_chamelium@pipe-a-ctm-0-75:
+    - Statuses : 2 fail(s) 2 pass(s) 38 skip(s)
+    - Exec time: [0.0, 160.99] s
+
+  * igt@kms_color_chamelium@pipe-a-ctm-blue-to-red:
+    - Statuses : 1 fail(s) 3 pass(s) 38 skip(s)
+    - Exec time: [0.0, 23.09] s
+
+  * igt@kms_color_chamelium@pipe-a-ctm-green-to-red:
+    - Statuses : 1 fail(s) 3 pass(s) 38 skip(s)
+    - Exec time: [0.0, 21.57] s
+
+  * igt@kms_color_chamelium@pipe-a-ctm-limited-range:
+    - Statuses : 1 fail(s) 3 pass(s) 38 skip(s)
+    - Exec time: [0.0, 23.16] s
+
+  * igt@kms_color_chamelium@pipe-a-ctm-max:
+    - Statuses : 1 fail(s) 3 pass(s) 38 skip(s)
+    - Exec time: [0.0, 23.04] s
+
+  * igt@kms_color_chamelium@pipe-a-ctm-negative:
+    - Statuses : 1 fail(s) 3 pass(s) 38 skip(s)
+    - Exec time: [0.0, 23.07] s
+
+  * igt@kms_color_chamelium@pipe-a-ctm-red-to-blue:
+    - Statuses : 1 fail(s) 3 pass(s) 38 skip(s)
+    - Exec time: [0.0, 23.07] s
+
+  * igt@kms_color_chamelium@pipe-a-degamma:
+    - Statuses : 1 fail(s) 3 pass(s) 38 skip(s)
+    - Exec time: [0.0, 23.13] s
+
+  * igt@kms_color_chamelium@pipe-a-gamma:
+    - Statuses : 1 fail(s) 3 pass(s) 38 skip(s)
+    - Exec time: [0.0, 21.58] s
+
+  * igt@kms_color_chamelium@pipe-b-ctm-0-25:
+    - Statuses : 1 fail(s) 2 pass(s) 38 skip(s)
+    - Exec time: [0.0, 109.44] s
+
+  * igt@kms_color_chamelium@pipe-b-ctm-0-5:
+    - Statuses : 1 fail(s) 1 pass(s) 38 skip(s)
+    - Exec time: [0.0, 88.14] s
+
+  * igt@kms_color_chamelium@pipe-b-ctm-0-75:
+    - Statuses : 1 fail(s) 1 pass(s) 38 skip(s)
+    - Exec time: [0.0, 123.50] s
+
+  * igt@kms_color_chamelium@pipe-b-ctm-blue-to-red:
+    - Statuses : 1 fail(s) 3 pass(s) 38 skip(s)
+    - Exec time: [0.0, 21.11] s
+
+  * igt@kms_color_chamelium@pipe-b-ctm-green-to-red:
+    - Statuses : 1 fail(s) 3 pass(s) 38 skip(s)
+    - Exec time: [0.0, 22.91] s
+
+  * igt@kms_color_chamelium@pipe-b-ctm-limited-range:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-b-ctm-max:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-b-ctm-negative:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-b-ctm-red-to-blue:
+    - Statuses : 1 fail(s) 3 pass(s) 38 skip(s)
+    - Exec time: [0.0, 23.01] s
+
+  * igt@kms_color_chamelium@pipe-b-degamma:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-b-gamma:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-c-ctm-0-25:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-c-ctm-0-5:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-c-ctm-0-75:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-c-ctm-blue-to-red:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-c-ctm-green-to-red:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-c-ctm-limited-range:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-c-ctm-max:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-c-ctm-negative:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-c-ctm-red-to-blue:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-c-degamma:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-c-gamma:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-d-ctm-0-25:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-d-ctm-0-5:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-d-ctm-0-75:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-d-ctm-blue-to-red:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-d-ctm-green-to-red:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-d-ctm-limited-range:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-d-ctm-max:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-d-ctm-negative:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-d-ctm-red-to-blue:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-d-degamma:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-d-gamma:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-e-ctm-0-25:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-e-ctm-0-5:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-e-ctm-0-75:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-e-ctm-blue-to-red:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-e-ctm-green-to-red:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-e-ctm-limited-range:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-e-ctm-max:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-e-ctm-negative:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-e-ctm-red-to-blue:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-e-degamma:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-e-gamma:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-f-ctm-0-25:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-f-ctm-0-5:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-f-ctm-0-75:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-f-ctm-blue-to-red:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-f-ctm-green-to-red:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-f-ctm-limited-range:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-f-ctm-max:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-f-ctm-negative:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-f-ctm-red-to-blue:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-f-degamma:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_color_chamelium@pipe-f-gamma:
+    - Statuses : 1 fail(s) 38 skip(s)
+    - Exec time: [0.0] s
+
+  
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_3979 that come from known issues:
+  Here are the changes found in IGTPW_3981 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@gem_exec_parallel@fds:
-    - fi-byt-n2820:       [PASS][1] -> [INCOMPLETE][2] ([i915#45])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-byt-n2820/igt@gem_exec_parallel@fds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3979/fi-byt-n2820/igt@gem_exec_parallel@fds.html
+  * igt@gem_close_race@basic-process:
+    - fi-byt-j1900:       [PASS][3] -> [FAIL][4] ([i915#694])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-byt-j1900/igt@gem_close_race@basic-process.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/fi-byt-j1900/igt@gem_close_race@basic-process.html
 
-  * igt@prime_self_import@basic-with_fd_dup:
-    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([CI#94] / [i915#402])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-tgl-y/igt@prime_self_import@basic-with_fd_dup.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3979/fi-tgl-y/igt@prime_self_import@basic-with_fd_dup.html
+  * igt@gem_ctx_param@basic:
+    - fi-tgl-y:           [PASS][5] -> [DMESG-WARN][6] ([CI#94] / [i915#402]) +2 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-tgl-y/igt@gem_ctx_param@basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/fi-tgl-y/igt@gem_ctx_param@basic.html
+
+  * igt@i915_selftest@live_blt:
+    - fi-bsw-n3050:       [PASS][7] -> [DMESG-FAIL][8] ([i915#723])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-bsw-n3050/igt@i915_selftest@live_blt.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/fi-bsw-n3050/igt@i915_selftest@live_blt.html
 
   
 #### Possible fixes ####
 
   * igt@gem_close_race@basic-threads:
-    - fi-byt-j1900:       [INCOMPLETE][5] ([i915#45]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-byt-j1900/igt@gem_close_race@basic-threads.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3979/fi-byt-j1900/igt@gem_close_race@basic-threads.html
+    - fi-byt-j1900:       [INCOMPLETE][9] ([i915#45]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-byt-j1900/igt@gem_close_race@basic-threads.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/fi-byt-j1900/igt@gem_close_race@basic-threads.html
 
   * igt@gem_exec_suspend@basic-s4-devices:
-    - fi-tgl-y:           [FAIL][7] ([CI#94]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3979/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+    - fi-tgl-y:           [FAIL][11] ([CI#94]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+
+  * igt@i915_module_load@reload-with-fault-injection:
+    - fi-skl-lmem:        [INCOMPLETE][13] ([i915#671] / [i915#971]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-skl-lmem/igt@i915_module_load@reload-with-fault-injection.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/fi-skl-lmem/igt@i915_module_load@reload-with-fault-injection.html
 
   * igt@i915_selftest@live_blt:
-    - fi-hsw-4770r:       [DMESG-FAIL][9] ([i915#553] / [i915#725]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3979/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-    - fi-ivb-3770:        [DMESG-FAIL][11] ([i915#725]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-ivb-3770/igt@i915_selftest@live_blt.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3979/fi-ivb-3770/igt@i915_selftest@live_blt.html
-    - fi-hsw-4770:        [DMESG-FAIL][13] ([i915#725]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-hsw-4770/igt@i915_selftest@live_blt.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3979/fi-hsw-4770/igt@i915_selftest@live_blt.html
+    - fi-ivb-3770:        [DMESG-FAIL][15] ([i915#725]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-ivb-3770/igt@i915_selftest@live_blt.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/fi-ivb-3770/igt@i915_selftest@live_blt.html
+    - fi-hsw-4770:        [DMESG-FAIL][17] ([i915#725]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-hsw-4770/igt@i915_selftest@live_blt.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/fi-hsw-4770/igt@i915_selftest@live_blt.html
+    - fi-hsw-4770r:       [DMESG-FAIL][19] ([i915#553] / [i915#725]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/fi-hsw-4770r/igt@i915_selftest@live_blt.html
 
   * igt@i915_selftest@live_gem_contexts:
-    - fi-hsw-peppy:       [DMESG-FAIL][15] ([i915#722]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-hsw-peppy/igt@i915_selftest@live_gem_contexts.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3979/fi-hsw-peppy/igt@i915_selftest@live_gem_contexts.html
+    - fi-hsw-peppy:       [DMESG-FAIL][21] ([i915#722]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-hsw-peppy/igt@i915_selftest@live_gem_contexts.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/fi-hsw-peppy/igt@i915_selftest@live_gem_contexts.html
+
+  * igt@kms_addfb_basic@invalid-set-prop-any:
+    - fi-tgl-y:           [DMESG-WARN][23] ([CI#94] / [i915#402]) -> [PASS][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-tgl-y/igt@kms_addfb_basic@invalid-set-prop-any.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/fi-tgl-y/igt@kms_addfb_basic@invalid-set-prop-any.html
 
   * igt@kms_frontbuffer_tracking@basic:
-    - fi-hsw-peppy:       [DMESG-WARN][17] ([i915#44]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-hsw-peppy/igt@kms_frontbuffer_tracking@basic.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3979/fi-hsw-peppy/igt@kms_frontbuffer_tracking@basic.html
+    - fi-hsw-peppy:       [DMESG-WARN][25] ([i915#44]) -> [PASS][26]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-hsw-peppy/igt@kms_frontbuffer_tracking@basic.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/fi-hsw-peppy/igt@kms_frontbuffer_tracking@basic.html
 
   
 #### Warnings ####
 
   * igt@gem_exec_parallel@contexts:
-    - fi-byt-n2820:       [FAIL][19] ([i915#694]) -> [TIMEOUT][20] ([fdo#112271])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3979/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
-
-  * igt@i915_module_load@reload-with-fault-injection:
-    - fi-skl-lmem:        [INCOMPLETE][21] ([i915#671] / [i915#971]) -> [DMESG-WARN][22] ([i915#889])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-skl-lmem/igt@i915_module_load@reload-with-fault-injection.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3979/fi-skl-lmem/igt@i915_module_load@reload-with-fault-injection.html
+    - fi-byt-n2820:       [FAIL][27] ([i915#694]) -> [TIMEOUT][28] ([fdo#112271])
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5382/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
@@ -125,8 +425,8 @@ Known issues
   [i915#671]: https://gitlab.freedesktop.org/drm/intel/issues/671
   [i915#694]: https://gitlab.freedesktop.org/drm/intel/issues/694
   [i915#722]: https://gitlab.freedesktop.org/drm/intel/issues/722
+  [i915#723]: https://gitlab.freedesktop.org/drm/intel/issues/723
   [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
-  [i915#889]: https://gitlab.freedesktop.org/drm/intel/issues/889
   [i915#971]: https://gitlab.freedesktop.org/drm/intel/issues/971
 
 
@@ -140,16 +440,90 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_5382 -> IGTPW_3979
+  * IGT: IGT_5382 -> IGTPW_3981
 
   CI-20190529: 20190529
   CI_DRM_7802: cd932df72f11bdff93423a8d4a9e0e9ccb0985d7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_3979: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3979/index.html
+  IGTPW_3981: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/index.html
   IGT_5382: 8dbe5ce61baa2d563d4dd7c56a018bb1e1077467 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@kms_color_chamelium@pipe-a-ctm-0-5
++igt@kms_color_chamelium@pipe-a-ctm-0-25
++igt@kms_color_chamelium@pipe-a-ctm-0-75
++igt@kms_color_chamelium@pipe-a-ctm-blue-to-red
++igt@kms_color_chamelium@pipe-a-ctm-green-to-red
++igt@kms_color_chamelium@pipe-a-ctm-limited-range
++igt@kms_color_chamelium@pipe-a-ctm-max
++igt@kms_color_chamelium@pipe-a-ctm-negative
++igt@kms_color_chamelium@pipe-a-ctm-red-to-blue
++igt@kms_color_chamelium@pipe-a-degamma
++igt@kms_color_chamelium@pipe-a-gamma
++igt@kms_color_chamelium@pipe-b-ctm-0-5
++igt@kms_color_chamelium@pipe-b-ctm-0-25
++igt@kms_color_chamelium@pipe-b-ctm-0-75
++igt@kms_color_chamelium@pipe-b-ctm-blue-to-red
++igt@kms_color_chamelium@pipe-b-ctm-green-to-red
++igt@kms_color_chamelium@pipe-b-ctm-limited-range
++igt@kms_color_chamelium@pipe-b-ctm-max
++igt@kms_color_chamelium@pipe-b-ctm-negative
++igt@kms_color_chamelium@pipe-b-ctm-red-to-blue
++igt@kms_color_chamelium@pipe-b-degamma
++igt@kms_color_chamelium@pipe-b-gamma
++igt@kms_color_chamelium@pipe-c-ctm-0-5
++igt@kms_color_chamelium@pipe-c-ctm-0-25
++igt@kms_color_chamelium@pipe-c-ctm-0-75
++igt@kms_color_chamelium@pipe-c-ctm-blue-to-red
++igt@kms_color_chamelium@pipe-c-ctm-green-to-red
++igt@kms_color_chamelium@pipe-c-ctm-limited-range
++igt@kms_color_chamelium@pipe-c-ctm-max
++igt@kms_color_chamelium@pipe-c-ctm-negative
++igt@kms_color_chamelium@pipe-c-ctm-red-to-blue
++igt@kms_color_chamelium@pipe-c-degamma
++igt@kms_color_chamelium@pipe-c-gamma
++igt@kms_color_chamelium@pipe-d-ctm-0-5
++igt@kms_color_chamelium@pipe-d-ctm-0-25
++igt@kms_color_chamelium@pipe-d-ctm-0-75
++igt@kms_color_chamelium@pipe-d-ctm-blue-to-red
++igt@kms_color_chamelium@pipe-d-ctm-green-to-red
++igt@kms_color_chamelium@pipe-d-ctm-limited-range
++igt@kms_color_chamelium@pipe-d-ctm-max
++igt@kms_color_chamelium@pipe-d-ctm-negative
++igt@kms_color_chamelium@pipe-d-ctm-red-to-blue
++igt@kms_color_chamelium@pipe-d-degamma
++igt@kms_color_chamelium@pipe-d-gamma
++igt@kms_color_chamelium@pipe-e-ctm-0-5
++igt@kms_color_chamelium@pipe-e-ctm-0-25
++igt@kms_color_chamelium@pipe-e-ctm-0-75
++igt@kms_color_chamelium@pipe-e-ctm-blue-to-red
++igt@kms_color_chamelium@pipe-e-ctm-green-to-red
++igt@kms_color_chamelium@pipe-e-ctm-limited-range
++igt@kms_color_chamelium@pipe-e-ctm-max
++igt@kms_color_chamelium@pipe-e-ctm-negative
++igt@kms_color_chamelium@pipe-e-ctm-red-to-blue
++igt@kms_color_chamelium@pipe-e-degamma
++igt@kms_color_chamelium@pipe-e-gamma
++igt@kms_color_chamelium@pipe-f-ctm-0-5
++igt@kms_color_chamelium@pipe-f-ctm-0-25
++igt@kms_color_chamelium@pipe-f-ctm-0-75
++igt@kms_color_chamelium@pipe-f-ctm-blue-to-red
++igt@kms_color_chamelium@pipe-f-ctm-green-to-red
++igt@kms_color_chamelium@pipe-f-ctm-limited-range
++igt@kms_color_chamelium@pipe-f-ctm-max
++igt@kms_color_chamelium@pipe-f-ctm-negative
++igt@kms_color_chamelium@pipe-f-ctm-red-to-blue
++igt@kms_color_chamelium@pipe-f-degamma
++igt@kms_color_chamelium@pipe-f-gamma
++igt@kms_color_chamelium@pipe-invalid-ctm-matrix-sizes
++igt@kms_color_chamelium@pipe-invalid-degamma-lut-sizes
++igt@kms_color_chamelium@pipe-invalid-gamma-lut-sizes
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3979/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3981/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
