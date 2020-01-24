@@ -1,19 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E7DAE6E33C
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Jan 2020 11:51:27 +0000 (UTC)
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <1bea94f3-4fb1-fde4-3d2e-f9c555254fc2@linux.intel.com>
-References: <d4333c56-8067-db49-084d-ff66d929eb51@linux.intel.com>
- <20200124111822.16862-1-anna.karas@intel.com>
- <1349f081-c89f-8360-9d1e-20f2a371564a@linux.intel.com>
- <157986608873.2524.12038857715017029844@skylake-alporthouse-com>
- <1bea94f3-4fb1-fde4-3d2e-f9c555254fc2@linux.intel.com>
-Message-ID: <157986667776.2524.11778775204722243652@skylake-alporthouse-com>
-Date: Fri, 24 Jan 2020 11:51:17 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t] gem_wsim: Distinguish particular
- engines during calculating nop calibration.
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 24 Jan 2020 12:03:24 -0000
+Message-ID: <157986740429.15091.930535048713619826@emeril.freedesktop.org>
+References: <20200116135546.14003-1-anna.karas@intel.com>
+In-Reply-To: <20200116135546.14003-1-anna.karas@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgRGlzdGlu?=
+ =?utf-8?q?guish_particular_engines_during_calculating_nop_calibration=2E_?=
+ =?utf-8?b?KHJldjQp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,103 +15,139 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anna Karas <anna.karas@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Anna Karas <anna.karas@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Tvrtko Ursulin (2020-01-24 11:45:49)
-> 
-> On 24/01/2020 11:41, Chris Wilson wrote:
-> > Quoting Tvrtko Ursulin (2020-01-24 11:35:35)
-> >>
-> >> On 24/01/2020 11:18, Anna Karas wrote:
-> >>> Extend handling -n parameter by accepting multiple values of per
-> >>> engine nop calibration. Add raw numbers handling to set default
-> >>> calibration values. Print copyable and pastable string with
-> >>> calibrations. Allow to switch between calculating in parallel
-> >>> or doing it sequentially.
-> >>>
-> >>> Accepted input values:
-> >>> -n 123456
-> >>> All calibrations will be set to 123456.
-> >>>
-> >>> -n ENG=value,ENG2=value2,value3
-> >>> i.e.
-> >>> -n RCS=123456,BCS=345678,999999
-> >>> RCS engine's value is set to 123456, BCS engine's value is set to
-> >>> 345678, 999999 is copied to rest of engines. All engines must be set;
-> >>> you can either provide values for each of the engines, or you can set
-> >>> specific values and provide a default value for the others.
-> >>>
-> >>> -n value,ENG1=value1,ENG2=value2
-> >>> First, value is copied to all engines, then value1 overrides ENG1, and
-> >>> finally value2 overrides ENG2.
-> >>>
-> >>> New output follows the pattern:
-> >>> Nop calibrations for 1000us delay is: <eng1>=<v1>,<eng2>=<v2>,...
-> >>> So you can easily copy-paste it to the next invocation.
-> >>>
-> >>> Switching between calculation modes:
-> >>> Run program with -T parameter to calculate calibrations in parallel.
-> >>> The calculations are performed sequentially by default.
-> >>>
-> >>> v2: Get rid of trailing whitespaces. Skip DEFAULT and VCS engines
-> >>> when printing out calibrations. Reject them in the string passed
-> >>> to -n. Re-align rest of help text. Fix accepting unknown engines.
-> >>>
-> >>> v3: Consider all cases of arguments
-> >>> for -n (Tvrtko).
-> >>>
-> >>> -n 10 (raw number)
-> >>> -n RCS (engine without calib)
-> >>> -n AA (neither the engine nor the number)
-> >>> -n RCS=500 (valid eng=val pair)
-> >>> -n RCS=AA (calib is not a number)
-> >>> -n XYZ=10 (engine is not an engine)
-> >>> -n XYZ=AA (combo)
-> >>>
-> >>> v4: Print calculated values (Chris). Do not make any assumptions
-> >>> about the order of the engines (Tvrtko).
-> >>
-> >> Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> >>
-> >> Interesting, or maybe entirely expected, observation is that parallel
-> >> calibration gives different values. I think more engines slower they get
-> >> in parallel because of memory bandwith? Probably. That's why suggested
-> >> default is sequential. Although in practice is depends a lot on the
-> >> workload to be executed what matches the reality better. Calibrating for
-> >> the workload sounded a step too far. In theory could be doable using
-> >> Chris' wsim to theoretical throughput parser. Along the lines probably.
-> >> But definitely to complicated for now.
-> > 
-> > I haven't checked but have you accounted for the overhead in submission
-> > serialisation? Finite memory bandwidth is definitely plausible.
-> > 
-> > If we can put a timing MI_MATH loop inside 128bytes, there's a chance we
-> > could benefit from the tiny CS prefetch and avoid having N engines all
-> > competing for finite CS throughput.
-> 
-> For calibration and workload execution? Sounds intriguing. Max batch 
-> length would be limited by u32 CS timestamp cycles? Assuming you would 
-> do some sort of counting along those lines.. Possibly that limit would 
-> be long enough for any practical usage, I haven't tried to remember what 
-> it is. But anyway, okay to merge this and leave future improvements for 
-> the future?
+== Series Details ==
 
-Definitely... The MI_MATH loop is still in its conceptual stage. I've
-got about as far as thinking it'll need a chained batch (or at least 2
-phases) the first to prime the CS_GPR with the parameters to the timing
-loop, and the second being the actual loop itself which could be common
-to all.
+Series: Distinguish particular engines during calculating nop calibration. (rev4)
+URL   : https://patchwork.freedesktop.org/series/72113/
+State : success
 
-Ballpark was that we could do 300s with the loop with approx .1us
-accuracy, that should cover the current .wsim? Above that a pure MI_NOOP
-batch would be huge, so probably not viable :)
--Chris
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_7808 -> IGTPW_3987
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3987/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_3987 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_module_load@reload-with-fault-injection:
+    - fi-skl-6700k2:      [PASS][1] -> [INCOMPLETE][2] ([i915#671])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7808/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3987/fi-skl-6700k2/igt@i915_module_load@reload-with-fault-injection.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-skl-6600u:       [PASS][3] -> [DMESG-WARN][4] ([i915#889]) +23 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7808/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3987/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live_gt_heartbeat:
+    - fi-bsw-kefka:       [PASS][5] -> [DMESG-FAIL][6] ([i915#541])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7808/fi-bsw-kefka/igt@i915_selftest@live_gt_heartbeat.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3987/fi-bsw-kefka/igt@i915_selftest@live_gt_heartbeat.html
+
+  * igt@i915_selftest@live_gt_lrc:
+    - fi-skl-6600u:       [PASS][7] -> [DMESG-FAIL][8] ([i915#889]) +7 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7808/fi-skl-6600u/igt@i915_selftest@live_gt_lrc.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3987/fi-skl-6600u/igt@i915_selftest@live_gt_lrc.html
+
+  * igt@kms_addfb_basic@bad-pitch-63:
+    - fi-tgl-y:           [PASS][9] -> [DMESG-WARN][10] ([CI#94] / [i915#402])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7808/fi-tgl-y/igt@kms_addfb_basic@bad-pitch-63.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3987/fi-tgl-y/igt@kms_addfb_basic@bad-pitch-63.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_parallel@fds:
+    - fi-byt-n2820:       [TIMEOUT][11] ([fdo#112271]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7808/fi-byt-n2820/igt@gem_exec_parallel@fds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3987/fi-byt-n2820/igt@gem_exec_parallel@fds.html
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-cml-s:           [FAIL][13] ([fdo#103375]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7808/fi-cml-s/igt@gem_exec_suspend@basic-s0.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3987/fi-cml-s/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@i915_module_load@reload-with-fault-injection:
+    - fi-skl-lmem:        [DMESG-WARN][15] ([i915#889]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7808/fi-skl-lmem/igt@i915_module_load@reload-with-fault-injection.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3987/fi-skl-lmem/igt@i915_module_load@reload-with-fault-injection.html
+
+  * igt@i915_selftest@live_blt:
+    - fi-hsw-4770r:       [DMESG-FAIL][17] ([i915#725]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7808/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3987/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+
+  * igt@i915_selftest@live_gem_contexts:
+    - fi-cfl-8700k:       [INCOMPLETE][19] ([i915#424]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7808/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3987/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
+
+  * igt@i915_selftest@live_gtt:
+    - fi-icl-dsi:         [TIMEOUT][21] ([fdo#112271]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7808/fi-icl-dsi/igt@i915_selftest@live_gtt.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3987/fi-icl-dsi/igt@i915_selftest@live_gtt.html
+
+  * igt@prime_vgem@basic-busy-default:
+    - fi-tgl-y:           [DMESG-WARN][23] ([CI#94] / [i915#402]) -> [PASS][24]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7808/fi-tgl-y/igt@prime_vgem@basic-busy-default.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3987/fi-tgl-y/igt@prime_vgem@basic-busy-default.html
+
+  
+  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
+  [fdo#103375]: https://bugs.freedesktop.org/show_bug.cgi?id=103375
+  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
+  [i915#541]: https://gitlab.freedesktop.org/drm/intel/issues/541
+  [i915#671]: https://gitlab.freedesktop.org/drm/intel/issues/671
+  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
+  [i915#889]: https://gitlab.freedesktop.org/drm/intel/issues/889
+
+
+Participating hosts (52 -> 45)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5382 -> IGTPW_3987
+
+  CI-20190529: 20190529
+  CI_DRM_7808: 2c0cac4ed28a1f343c5a7c5c3a1c2edb382ab4dd @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_3987: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3987/index.html
+  IGT_5382: 8dbe5ce61baa2d563d4dd7c56a018bb1e1077467 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3987/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
