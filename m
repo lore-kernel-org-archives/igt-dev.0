@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7736D6FF5D
+ for <igt-dev@lists.freedesktop.org>; Fri, 24 Jan 2020 08:30:00 +0000 (UTC)
+From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+Date: Fri, 24 Jan 2020 13:43:39 +0530
+Message-Id: <20200124081339.10518-2-krishnaiah.bommu@intel.com>
+In-Reply-To: <20200124081339.10518-1-krishnaiah.bommu@intel.com>
+References: <20200124081339.10518-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 24 Jan 2020 08:06:06 -0000
-Message-ID: <157985316615.15089.4562316849082170677@emeril.freedesktop.org>
-References: <20200124071246.18147-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20200124071246.18147-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
- =?utf-8?q?t=5Fcollection=3A_documentation_fix?=
+Subject: [igt-dev] [PATCH i-g-t v3 1/1] tests/i915/gem_ctx_persistence: Set
+ context with supported engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,106 +17,257 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Update the context with supported engines on the platform with set_property
+I915_CONTEXT_PARAM_ENGINES to make sure the work load is submitted to
+the available engines only.
 
-Series: lib/igt_collection: documentation fix
-URL   : https://patchwork.freedesktop.org/series/72509/
-State : success
+v2: addressed the review comments.
+v3: addressed v2 review comments.
 
-== Summary ==
+Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
+ tests/i915/gem_ctx_persistence.c | 91 +++++++++++++++++++++-----------
+ 1 file changed, 60 insertions(+), 31 deletions(-)
 
-CI Bug Log - changes from CI_DRM_7806 -> IGTPW_3984
-====================================================
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index d68431ae..65c2b4f2 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -145,7 +145,18 @@ static void test_clone(int i915)
+ 	gem_context_destroy(i915, clone);
+ }
+ 
+-static void test_persistence(int i915, unsigned int engine)
++static int create_context(int i915, bool persistent, bool set_engine_map)
++{
++        uint32_t ctx;
++
++        ctx = gem_context_create(i915);
++        gem_context_set_persistence(i915, ctx, persistent);
++        if (set_engine_map)
++                gem_context_set_all_engines(i915, ctx);
++        return ctx;
++}
++
++static void test_persistence(int i915, unsigned int engine, bool set_engine_map)
+ {
+ 	igt_spin_t *spin;
+ 	int64_t timeout;
+@@ -156,8 +167,7 @@ static void test_persistence(int i915, unsigned int engine)
+ 	 * request is retired -- no early termination.
+ 	 */
+ 
+-	ctx = gem_context_create(i915);
+-	gem_context_set_persistence(i915, ctx, true);
++	ctx = create_context(i915, true, set_engine_map);
+ 
+ 	spin = igt_spin_new(i915, ctx,
+ 			    .engine = engine,
+@@ -177,7 +187,7 @@ static void test_persistence(int i915, unsigned int engine)
+ 	gem_quiescent_gpu(i915);
+ }
+ 
+-static void test_nonpersistent_cleanup(int i915, unsigned int engine)
++static void test_nonpersistent_cleanup(int i915, unsigned int engine, bool set_engine_map)
+ {
+ 	int64_t timeout = reset_timeout_ms * NSEC_PER_MSEC;
+ 	igt_spin_t *spin;
+@@ -188,8 +198,7 @@ static void test_nonpersistent_cleanup(int i915, unsigned int engine)
+ 	 * any inflight request is cancelled.
+ 	 */
+ 
+-	ctx = gem_context_create(i915);
+-	gem_context_set_persistence(i915, ctx, false);
++	ctx = create_context(i915, false, set_engine_map);
+ 
+ 	spin = igt_spin_new(i915, ctx,
+ 			    .engine = engine,
+@@ -203,7 +212,7 @@ static void test_nonpersistent_cleanup(int i915, unsigned int engine)
+ 	gem_quiescent_gpu(i915);
+ }
+ 
+-static void test_nonpersistent_mixed(int i915, unsigned int engine)
++static void test_nonpersistent_mixed(int i915, unsigned int engine, bool set_engine_map)
+ {
+ 	int fence[3];
+ 
+@@ -217,8 +226,7 @@ static void test_nonpersistent_mixed(int i915, unsigned int engine)
+ 		igt_spin_t *spin;
+ 		uint32_t ctx;
+ 
+-		ctx = gem_context_create(i915);
+-		gem_context_set_persistence(i915, ctx, i & 1);
++		ctx = create_context(i915, i & 1, set_engine_map);
+ 
+ 		spin = igt_spin_new(i915, ctx,
+ 				    .engine = engine,
+@@ -241,7 +249,7 @@ static void test_nonpersistent_mixed(int i915, unsigned int engine)
+ 	gem_quiescent_gpu(i915);
+ }
+ 
+-static void test_nonpersistent_hostile(int i915, unsigned int engine)
++static void test_nonpersistent_hostile(int i915, unsigned int engine, bool set_engine_map)
+ {
+ 	int64_t timeout = reset_timeout_ms * NSEC_PER_MSEC;
+ 	igt_spin_t *spin;
+@@ -253,8 +261,7 @@ static void test_nonpersistent_hostile(int i915, unsigned int engine)
+ 	 * the requests and cleanup the context.
+ 	 */
+ 
+-	ctx = gem_context_create(i915);
+-	gem_context_set_persistence(i915, ctx, false);
++	ctx = create_context(i915, false, set_engine_map);
+ 
+ 	spin = igt_spin_new(i915, ctx,
+ 			    .engine = engine,
+@@ -267,7 +274,7 @@ static void test_nonpersistent_hostile(int i915, unsigned int engine)
+ 	gem_quiescent_gpu(i915);
+ }
+ 
+-static void test_nonpersistent_hostile_preempt(int i915, unsigned int engine)
++static void test_nonpersistent_hostile_preempt(int i915, unsigned int engine, bool set_engine_map)
+ {
+ 	int64_t timeout = reset_timeout_ms * NSEC_PER_MSEC;
+ 	igt_spin_t *spin[2];
+@@ -284,8 +291,7 @@ static void test_nonpersistent_hostile_preempt(int i915, unsigned int engine)
+ 
+ 	igt_require(gem_scheduler_has_preemption(i915));
+ 
+-	ctx = gem_context_create(i915);
+-	gem_context_set_persistence(i915, ctx, true);
++	ctx = create_context(i915, true, set_engine_map);
+ 	gem_context_set_priority(i915, ctx, 0);
+ 	spin[0] = igt_spin_new(i915, ctx,
+ 			       .engine = engine,
+@@ -295,8 +301,7 @@ static void test_nonpersistent_hostile_preempt(int i915, unsigned int engine)
+ 
+ 	igt_spin_busywait_until_started(spin[0]);
+ 
+-	ctx = gem_context_create(i915);
+-	gem_context_set_persistence(i915, ctx, false);
++	ctx = create_context(i915, false, set_engine_map);
+ 	gem_context_set_priority(i915, ctx, 1); /* higher priority than 0 */
+ 	spin[1] = igt_spin_new(i915, ctx,
+ 			       .engine = engine,
+@@ -371,7 +376,7 @@ static void test_nonpersistent_file(int i915)
+ 	igt_spin_free(-1, spin);
+ }
+ 
+-static void test_nonpersistent_queued(int i915, unsigned int engine)
++static void test_nonpersistent_queued(int i915, unsigned int engine, bool set_engine_map)
+ {
+ 	const int count = gem_measure_ring_inflight(i915, engine, 0);
+ 	igt_spin_t *spin;
+@@ -385,8 +390,7 @@ static void test_nonpersistent_queued(int i915, unsigned int engine)
+ 
+ 	gem_quiescent_gpu(i915);
+ 
+-	ctx = gem_context_create(i915);
+-	gem_context_set_persistence(i915, ctx, false);
++	ctx = create_context(i915, false, set_engine_map);
+ 	spin = igt_spin_new(i915, ctx,
+ 			    .engine = engine,
+ 			    .flags = IGT_SPIN_FENCE_OUT);
+@@ -492,7 +496,7 @@ static void test_process(int i915)
+ 	gem_quiescent_gpu(i915);
+ }
+ 
+-static void test_process_mixed(int i915, unsigned int engine)
++static void test_process_mixed(int i915, unsigned int engine, bool set_engine_map)
+ {
+ 	int fence[2], sv[2];
+ 
+@@ -512,8 +516,7 @@ static void test_process_mixed(int i915, unsigned int engine)
+ 			igt_spin_t *spin;
+ 			uint32_t ctx;
+ 
+-			ctx = gem_context_create(i915);
+-			gem_context_set_persistence(i915, ctx, persists);
++			ctx = create_context(i915, persists, set_engine_map);
+ 
+ 			spin = igt_spin_new(i915, ctx,
+ 					    .engine = engine,
+@@ -727,7 +730,33 @@ igt_main
+ 	igt_subtest("hangcheck")
+ 		test_nohangcheck_hostile(i915);
+ 
+-	__for_each_static_engine(e) {
++	for_each_engine(e, i915) {
++		igt_subtest_group {
++			igt_fixture {
++				gem_require_ring(i915, e->flags);
++				gem_require_contexts(i915);
++			}
++
++			igt_subtest_f("legacy-%s-persistence", e->name)
++				test_persistence(i915, e->flags, 0);
++			igt_subtest_f("legacy-%s-cleanup", e->name)
++				test_nonpersistent_cleanup(i915, e->flags, 0);
++			igt_subtest_f("legacy-%s-queued", e->name)
++				test_nonpersistent_queued(i915, e->flags, 0);
++			igt_subtest_f("legacy-%s-mixed", e->name)
++				test_nonpersistent_mixed(i915, e->flags, 0);
++			igt_subtest_f("legacy-%s-mixed-process", e->name)
++				test_process_mixed(i915, e->flags, 0);
++			igt_subtest_f("legacy-%s-hostile", e->name)
++				test_nonpersistent_hostile(i915, e->flags, 0);
++			igt_subtest_f("legacy-%s-hostile-preempt", e->name)
++				test_nonpersistent_hostile_preempt(i915,
++								   e->flags, 0);
++		}
++	}
++
++	__for_each_physical_engine(i915, e) {
++		bool set_engine_map = gem_context_has_engine_map(i915, 0);
+ 		igt_subtest_group {
+ 			igt_fixture {
+ 				gem_require_ring(i915, e->flags);
+@@ -735,26 +764,26 @@ igt_main
+ 			}
+ 
+ 			igt_subtest_f("%s-persistence", e->name)
+-				test_persistence(i915, e->flags);
++				test_persistence(i915, e->flags, set_engine_map);
+ 
+ 			igt_subtest_f("%s-cleanup", e->name)
+-				test_nonpersistent_cleanup(i915, e->flags);
++				test_nonpersistent_cleanup(i915, e->flags, set_engine_map);
+ 
+ 			igt_subtest_f("%s-queued", e->name)
+-				test_nonpersistent_queued(i915, e->flags);
++				test_nonpersistent_queued(i915, e->flags, set_engine_map);
+ 
+ 			igt_subtest_f("%s-mixed", e->name)
+-				test_nonpersistent_mixed(i915, e->flags);
++				test_nonpersistent_mixed(i915, e->flags, set_engine_map);
+ 
+ 			igt_subtest_f("%s-mixed-process", e->name)
+-				test_process_mixed(i915, e->flags);
++				test_process_mixed(i915, e->flags, set_engine_map);
+ 
+ 			igt_subtest_f("%s-hostile", e->name)
+-				test_nonpersistent_hostile(i915, e->flags);
++				test_nonpersistent_hostile(i915, e->flags, set_engine_map);
+ 
+ 			igt_subtest_f("%s-hostile-preempt", e->name)
+ 				test_nonpersistent_hostile_preempt(i915,
+-								   e->flags);
++								   e->flags, set_engine_map);
+ 		}
+ 	}
+ 
+-- 
+2.24.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_3984 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_module_load@reload-with-fault-injection:
-    - fi-cfl-8700k:       [PASS][1] -> [INCOMPLETE][2] ([i915#505])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7806/fi-cfl-8700k/igt@i915_module_load@reload-with-fault-injection.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/fi-cfl-8700k/igt@i915_module_load@reload-with-fault-injection.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live_blt:
-    - fi-bsw-nick:        [DMESG-FAIL][3] ([i915#723]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7806/fi-bsw-nick/igt@i915_selftest@live_blt.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/fi-bsw-nick/igt@i915_selftest@live_blt.html
-    - fi-hsw-4770r:       [DMESG-FAIL][5] ([i915#563]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7806/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-    - fi-ivb-3770:        [DMESG-FAIL][7] ([i915#725]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7806/fi-ivb-3770/igt@i915_selftest@live_blt.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/fi-ivb-3770/igt@i915_selftest@live_blt.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-7500u:       [FAIL][9] ([fdo#111407]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7806/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live_blt:
-    - fi-hsw-4770:        [DMESG-FAIL][11] ([i915#770]) -> [DMESG-FAIL][12] ([i915#725])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7806/fi-hsw-4770/igt@i915_selftest@live_blt.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/fi-hsw-4770/igt@i915_selftest@live_blt.html
-
-  
-  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
-  [i915#505]: https://gitlab.freedesktop.org/drm/intel/issues/505
-  [i915#563]: https://gitlab.freedesktop.org/drm/intel/issues/563
-  [i915#723]: https://gitlab.freedesktop.org/drm/intel/issues/723
-  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
-  [i915#770]: https://gitlab.freedesktop.org/drm/intel/issues/770
-
-
-Participating hosts (52 -> 42)
-------------------------------
-
-  Additional (1): fi-snb-2520m 
-  Missing    (11): fi-ilk-m540 fi-bsw-n3050 fi-byt-j1900 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-kbl-7560u fi-tgl-y fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5382 -> IGTPW_3984
-
-  CI-20190529: 20190529
-  CI_DRM_7806: 0b551226df5e5b84044705d5fd76571da70f3163 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_3984: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/index.html
-  IGT_5382: 8dbe5ce61baa2d563d4dd7c56a018bb1e1077467 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
