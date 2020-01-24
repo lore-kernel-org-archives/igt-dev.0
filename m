@@ -1,13 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: Matthew Auld <matthew.auld@intel.com>
+Date: Fri, 24 Jan 2020 16:41:31 +0000
+Message-Id: <20200124164131.39591-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20200124122833.26392-1-tvrtko.ursulin@linux.intel.com>
-References: <20200124121759.22308-1-tvrtko.ursulin@linux.intel.com>
- <20200124122833.26392-1-tvrtko.ursulin@linux.intel.com>
-Message-ID: <157987011855.2524.1539076508642921814@skylake-alporthouse-com>
-Date: Fri, 24 Jan 2020 12:48:38 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] lib/i915: Add helper for copying
- engine maps from one context to another
+Subject: [igt-dev] [PATCH] i915/tests/gem_exec_big: prefer PROT_WRITE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,23 +15,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Tvrtko Ursulin (2020-01-24 12:28:33)
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> 
-> We also need to support copying across file descriptors.
-> 
-> v2:
->  * Copy over even if src is unset. (Chris)
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Sreedhar Telukuntla <sreedhar.telukuntla@intel.com>
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
--Chris
+Technically mmap__cpu and mmap__wc just ignore the prot value, so it
+doesn't really matter, but the intention is to have write access to the
+ptr, so make that clear. Also if the underlying mmap__wc were to at some
+point use mmap_offset where the prot is not ignored then we won't have
+any surprises.
+
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/i915/gem_exec_big.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/tests/i915/gem_exec_big.c b/tests/i915/gem_exec_big.c
+index c06ee995..a5869330 100644
+--- a/tests/i915/gem_exec_big.c
++++ b/tests/i915/gem_exec_big.c
+@@ -217,9 +217,9 @@ static void exhaustive(int fd)
+ 		gem_write(fd, handle, 0, batch, sizeof(batch));
+ 
+ 		if (!FORCE_PREAD_PWRITE && gem_has_llc(fd))
+-			ptr = __gem_mmap__cpu(fd, handle, 0, batch_size, PROT_READ);
++			ptr = __gem_mmap__cpu(fd, handle, 0, batch_size, PROT_WRITE);
+ 		else if (!FORCE_PREAD_PWRITE && gem_mmap__has_wc(fd))
+-			ptr = __gem_mmap__wc(fd, handle, 0, batch_size, PROT_READ);
++			ptr = __gem_mmap__wc(fd, handle, 0, batch_size, PROT_WRITE);
+ 		else
+ 			ptr = NULL;
+ 
+@@ -281,9 +281,9 @@ static void single(int i915)
+ 	gem_write(i915, handle, 0, &bbe, sizeof(bbe));
+ 
+ 	if (!FORCE_PREAD_PWRITE && gem_has_llc(i915))
+-		ptr = __gem_mmap__cpu(i915, handle, 0, batch_size, PROT_READ);
++		ptr = __gem_mmap__cpu(i915, handle, 0, batch_size, PROT_WRITE);
+ 	else if (!FORCE_PREAD_PWRITE && gem_mmap__has_wc(i915))
+-		ptr = __gem_mmap__wc(i915, handle, 0, batch_size, PROT_READ);
++		ptr = __gem_mmap__wc(i915, handle, 0, batch_size, PROT_WRITE);
+ 	else
+ 		ptr = NULL;
+ 
+-- 
+2.20.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
