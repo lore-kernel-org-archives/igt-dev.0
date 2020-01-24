@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 824626FF12
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C7BC46FF12
  for <igt-dev@lists.freedesktop.org>; Fri, 24 Jan 2020 06:15:13 +0000 (UTC)
 From: Sreedhar Telukuntla <sreedhar.telukuntla@intel.com>
-Date: Fri, 24 Jan 2020 19:46:30 +0530
-Message-Id: <20200124141631.2633-1-sreedhar.telukuntla@intel.com>
+Date: Fri, 24 Jan 2020 19:46:31 +0530
+Message-Id: <20200124141631.2633-2-sreedhar.telukuntla@intel.com>
+In-Reply-To: <20200124141631.2633-1-sreedhar.telukuntla@intel.com>
+References: <20200124141631.2633-1-sreedhar.telukuntla@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 0/1]tests/i915/gem_exec_parallel:Set
+Subject: [igt-dev] [PATCH i-g-t v2 1/1] tests/i915/gem_exec_parallel:Set
  engine map to default context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -20,6 +22,7 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Set the potential engine map of the parent client's default
@@ -27,12 +30,27 @@ context to the newly created DRM client's default context.
 Without doing so there is a mismatch between the intended
 and actual engine used by the *-fds subtests.
 
-Sreedhar Telukuntla (1):
-  tests/i915/gem_exec_parallel:Set engine map to default context
+v2: Fix FDS flags check
 
+Signed-off-by: Sreedhar Telukuntla <sreedhar.telukuntla@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
  tests/i915/gem_exec_parallel.c | 2 ++
  1 file changed, 2 insertions(+)
 
+diff --git a/tests/i915/gem_exec_parallel.c b/tests/i915/gem_exec_parallel.c
+index 56b26cf4..ddb34368 100644
+--- a/tests/i915/gem_exec_parallel.c
++++ b/tests/i915/gem_exec_parallel.c
+@@ -130,6 +130,8 @@ static void *thread(void *data)
+ 		execbuf.rsvd1 = gem_context_create(fd);
+ 		gem_context_set_all_engines(fd, execbuf.rsvd1);
+ 	}
++	if (t->flags & FDS)
++		gem_context_set_all_engines(fd, 0);
+ 
+ 	for (i = 0; i < 16; i++) {
+ 		obj[0].handle = t->scratch[i];
 -- 
 2.24.1
 
