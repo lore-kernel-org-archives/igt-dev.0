@@ -1,10 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri, 24 Jan 2020 17:03:37 +0000
-Message-Id: <20200124170337.346187-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] perf: Treat Cometlake as an alias for
- Coffeelake
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <83b0451b-3252-1efb-840d-ad5a51151534@intel.com>
+References: <20200124164131.39591-1-matthew.auld@intel.com>
+ <157988441300.2524.9356450040552570684@skylake-alporthouse-com>
+ <83b0451b-3252-1efb-840d-ad5a51151534@intel.com>
+Message-ID: <157988585282.2524.15483710315061878991@skylake-alporthouse-com>
+Date: Fri, 24 Jan 2020 17:10:52 +0000
+Subject: Re: [igt-dev] [PATCH] i915/tests/gem_exec_big: prefer PROT_WRITE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,36 +19,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The kernel doesn't differentiate between the Coffeelake and Cometlake
-platforms, but igt does. Add the alias for perf to use the Coffeelake
-register set for Cometlake.
+Quoting Matthew Auld (2020-01-24 16:54:42)
+> On 24/01/2020 16:46, Chris Wilson wrote:
+> > Quoting Matthew Auld (2020-01-24 16:41:31)
+> >> Technically mmap__cpu and mmap__wc just ignore the prot value, so it
+> >> doesn't really matter, but the intention is to have write access to the
+> >> ptr, so make that clear. Also if the underlying mmap__wc were to at some
+> >> point use mmap_offset where the prot is not ignored then we won't have
+> >> any surprises.
+> > 
+> > The ptr here was just meant for cheaply reading back from the buffer to
+> > verify the relocation took place. E.g.,
+> > 
+> > -static void exec1(int fd, uint32_t handle, uint64_t reloc_ofs, unsigned flags, char *ptr)
+> > +static void exec1(int fd, uint32_t handle, uint64_t reloc_ofs, unsigned flags, const char *ptr)
+> >   {
+> >          struct drm_i915_gem_execbuffer2 execbuf;
+> >          struct drm_i915_gem_exec_object2 gem_exec[1];
+> > @@ -126,7 +126,7 @@ static void xchg_reloc(void *array, unsigned i, unsigned j)
+> >          *b = tmp;
+> >   }
+> > 
+> > -static void execN(int fd, uint32_t handle, uint64_t batch_size, unsigned flags, char *ptr)
+> > +static void execN(int fd, uint32_t handle, uint64_t batch_size, unsigned flags, const char *ptr)
+> >   {
+> > 
+> > What am I missing?
+> 
+> *(uint64_t *)(ptr + gem_reloc[n].offset) = gem_reloc[n].presumed_offset;
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
----
- tests/perf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+They say your memory is the first to go.
 
-diff --git a/tests/perf.c b/tests/perf.c
-index a837551cb..f1f9b7cea 100644
---- a/tests/perf.c
-+++ b/tests/perf.c
-@@ -955,7 +955,7 @@ init_sys_info(void)
- 			}
- 		} else if (IS_GEMINILAKE(devid)) {
- 			test_set_uuid = "dd3fd789-e783-4204-8cd0-b671bbccb0cf";
--		} else if (IS_COFFEELAKE(devid)) {
-+		} else if (IS_COFFEELAKE(devid) || IS_COMETLAKE(devid)) {
- 			switch (intel_gt(devid)) {
- 			case 1:
- 				test_set_uuid = "74fb4902-d3d3-4237-9e90-cbdc68d0a446";
--- 
-2.25.0
-
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
