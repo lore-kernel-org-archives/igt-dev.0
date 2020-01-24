@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 94BEE6FF12
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Jan 2020 06:10:34 +0000 (UTC)
-From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Fri, 24 Jan 2020 11:40:24 +0530
-Message-Id: <20200124061024.18369-2-mohammed.khajapasha@intel.com>
-In-Reply-To: <20200124061024.18369-1-mohammed.khajapasha@intel.com>
-References: <20200124061024.18369-1-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/1] tests/kms_concurrent: Move
- simultaneously allowed planes to main thread
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 24 Jan 2020 08:06:06 -0000
+Message-ID: <157985316615.15089.4562316849082170677@emeril.freedesktop.org>
+References: <20200124071246.18147-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200124071246.18147-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Fcollection=3A_documentation_fix?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,135 +14,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: juha-pekka.heikkila@intel.com
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-High resolution consumes more bandwidth so if amount of max planes is
-calculated during low resolution switch back to high resolution will
-immediately fail with bandwidth problem.
+== Series Details ==
 
-To avoid bandwidth exceed,move the simultaneously allowed planes to
-before switching to low resolution mode in main thread.
+Series: lib/igt_collection: documentation fix
+URL   : https://patchwork.freedesktop.org/series/72509/
+State : success
 
-Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
----
- tests/kms_concurrent.c | 65 +++++++++++++++++++-----------------------
- 1 file changed, 30 insertions(+), 35 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index a0280d15..14ca5fab 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -57,33 +57,11 @@ struct {
- static void test_init(data_t *data, enum pipe pipe, int n_planes,
- 		      igt_output_t *output)
- {
--	drmModeModeInfo *mode;
--	igt_plane_t *primary;
--	int ret;
--
- 	data->plane = calloc(n_planes, sizeof(*data->plane));
- 	igt_assert_f(data->plane != NULL, "Failed to allocate memory for planes\n");
- 
- 	data->fb = calloc(n_planes, sizeof(struct igt_fb));
- 	igt_assert_f(data->fb != NULL, "Failed to allocate memory for FBs\n");
--
--	igt_output_set_pipe(output, pipe);
--
--	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
--	data->plane[primary->index] = primary;
--
--	mode = igt_output_get_mode(output);
--
--	igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
--			    DRM_FORMAT_XRGB8888,
--			    LOCAL_I915_FORMAT_MOD_X_TILED,
--			    0.0f, 0.0f, 1.0f,
--			    &data->fb[primary->index]);
--
--	igt_plane_set_fb(data->plane[primary->index], &data->fb[primary->index]);
--
--	ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
--	igt_skip_on(ret != 0);
- }
- 
- static void test_fini(data_t *data, enum pipe pipe, int n_planes,
-@@ -184,7 +162,6 @@ prepare_planes(data_t *data, enum pipe pipe, int max_planes,
- 	y[primary->index] = 0;
- 	for (i = 0; i < max_planes; i++) {
- 		igt_plane_t *plane = igt_output_get_plane(output, i);
--		int ret;
- 
- 		if (plane->type == DRM_PLANE_TYPE_PRIMARY)
- 			continue;
-@@ -207,18 +184,7 @@ prepare_planes(data_t *data, enum pipe pipe, int max_planes,
- 
- 		igt_plane_set_position(data->plane[i], x[i], y[i]);
- 		igt_plane_set_fb(data->plane[i], &data->fb[i]);
--
--		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_TEST_ONLY, NULL);
--		if (ret) {
--			igt_plane_set_fb(data->plane[i], NULL);
--			igt_remove_fb(data->drm_fd, &data->fb[i]);
--			data->plane[i] = NULL;
--			break;
--		}
- 	}
--	max_planes = i;
--
--	igt_assert_lt(0, max_planes);
- 
- 	/* primary plane */
- 	data->plane[primary->index] = primary;
-@@ -282,10 +248,39 @@ test_resolution_with_output(data_t *data, enum pipe pipe, igt_output_t *output)
- 	const drmModeModeInfo *mode_hi, *mode_lo;
- 	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
- 	bool loop_forever = opt.iterations == LOOP_FOREVER ? true : false;
--	int i;
-+	int i, c, ret;
-+	int max_planes = data->display.pipes[pipe].n_planes;
-+	igt_plane_t *primary;
-+	drmModeModeInfo *mode;
- 
- 	i = 0;
- 	while (i < iterations || loop_forever) {
-+		igt_output_set_pipe(output, pipe);
-+		for (c = 0; c < max_planes; c++) {
-+			igt_plane_t *plane = igt_output_get_plane(output, c);
-+
-+			if (plane->type != DRM_PLANE_TYPE_PRIMARY)
-+				continue;
-+			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+			data->plane[primary->index] = primary;
-+			mode = igt_output_get_mode(output);
-+			igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+						DRM_FORMAT_XRGB8888,
-+						LOCAL_I915_FORMAT_MOD_X_TILED,
-+						0.0f, 0.0f, 1.0f,
-+						&data->fb[primary->index]);
-+			igt_plane_set_fb(data->plane[primary->index], &data->fb[primary->index]);
-+			ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
-+			if (ret) {
-+				igt_plane_set_fb(data->plane[i], NULL);
-+				igt_remove_fb(data->drm_fd, &data->fb[i]);
-+				data->plane[i] = NULL;
-+				break;
-+			}
-+		}
-+		max_planes = c;
-+		igt_assert_lt(0, max_planes);
-+
- 		mode_hi = igt_output_get_mode(output);
- 		mode_lo = get_lowres_mode(data, mode_hi, output);
- 
--- 
-2.24.1
+CI Bug Log - changes from CI_DRM_7806 -> IGTPW_3984
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_3984 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_module_load@reload-with-fault-injection:
+    - fi-cfl-8700k:       [PASS][1] -> [INCOMPLETE][2] ([i915#505])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7806/fi-cfl-8700k/igt@i915_module_load@reload-with-fault-injection.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/fi-cfl-8700k/igt@i915_module_load@reload-with-fault-injection.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live_blt:
+    - fi-bsw-nick:        [DMESG-FAIL][3] ([i915#723]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7806/fi-bsw-nick/igt@i915_selftest@live_blt.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/fi-bsw-nick/igt@i915_selftest@live_blt.html
+    - fi-hsw-4770r:       [DMESG-FAIL][5] ([i915#563]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7806/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+    - fi-ivb-3770:        [DMESG-FAIL][7] ([i915#725]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7806/fi-ivb-3770/igt@i915_selftest@live_blt.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/fi-ivb-3770/igt@i915_selftest@live_blt.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [FAIL][9] ([fdo#111407]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7806/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live_blt:
+    - fi-hsw-4770:        [DMESG-FAIL][11] ([i915#770]) -> [DMESG-FAIL][12] ([i915#725])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7806/fi-hsw-4770/igt@i915_selftest@live_blt.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/fi-hsw-4770/igt@i915_selftest@live_blt.html
+
+  
+  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
+  [i915#505]: https://gitlab.freedesktop.org/drm/intel/issues/505
+  [i915#563]: https://gitlab.freedesktop.org/drm/intel/issues/563
+  [i915#723]: https://gitlab.freedesktop.org/drm/intel/issues/723
+  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
+  [i915#770]: https://gitlab.freedesktop.org/drm/intel/issues/770
+
+
+Participating hosts (52 -> 42)
+------------------------------
+
+  Additional (1): fi-snb-2520m 
+  Missing    (11): fi-ilk-m540 fi-bsw-n3050 fi-byt-j1900 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-kbl-7560u fi-tgl-y fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5382 -> IGTPW_3984
+
+  CI-20190529: 20190529
+  CI_DRM_7806: 0b551226df5e5b84044705d5fd76571da70f3163 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_3984: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/index.html
+  IGT_5382: 8dbe5ce61baa2d563d4dd7c56a018bb1e1077467 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3984/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
