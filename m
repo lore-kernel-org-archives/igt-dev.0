@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 23 Jan 2020 11:21:45 -0800
-From: Dale B Stimson <dale.b.stimson@intel.com>
-Message-ID: <20200123192143.GA1284@dbstims-dev.fm.intel.com>
-References: <cover.1579731227.git.dale.b.stimson@intel.com>
- <76818a8047c4b9da76d0619c7b8f58c89449b4ed.1579731227.git.dale.b.stimson@intel.com>
- <225f88d1044053674cbd632998c69c0c677a530e.1579731227.git.dale.b.stimson@intel.com>
- <157977054018.18920.9879323586181021015@skylake-alporthouse-com>
- <c192e00d-1997-c714-50be-91fc64f9cc29@linux.intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Date: Fri, 24 Jan 2020 12:17:59 +0000
+Message-Id: <20200124121759.22308-2-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20200124121759.22308-1-tvrtko.ursulin@linux.intel.com>
+References: <20200124121759.22308-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <c192e00d-1997-c714-50be-91fc64f9cc29@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] DBS: tests/i915/gem_ctx_isolation:
- use the gem_engine_topology library, part 2
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/i915/gem_exec_parallel:Set engine
+ map to default context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,30 +18,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>, intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org, Bommu Krishnaiah <krishnaiah.bommu@intel.com>, "Melkaveri, Arjun" <arjun.melkaveri@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-01-23 15:59:33, Tvrtko Ursulin wrote:
-> gem_context_clone_with_engines was agreed upon in principle some time ago
-> but never implemented. I have now posted this as
-> https://patchwork.freedesktop.org/series/72464/ and plan to merge it once it
-> passes CI.
-> 
-> Dale, Arjun, Krishnaiah and Sreedhar - you have in progress patches which
-> use gem_context_set_all_engines which will be gone and you will need to
-> adjust your work accordingly.
-> 
-> Sreedhar specifically for your change in gem_exec_parallel we will need to
-> add a new helper which transfers the engine map from one fd/context to
-> another. I will copy you on a patch which will add it.
+From: Sreedhar Telukuntla <sreedhar.telukuntla@intel.com>
 
-I have a new iteration of the gem_ctx_isolation patches (on top of your
-patch and using gem_context_clone_with_engines) which I will submit to the
-ML as soon as your patch merges.
+Set the potential engine map of the parent client's default
+context to the newly created DRM client's default context.
+Without doing so there is a mismatch between the intended
+and actual engine used by the *-fds subtests.
 
-Thanks,
-Dale
+v2: Fix FDS flags check
+
+Tvrtko:
+v3: Use new helper gem_context_copy_engines.
+
+Signed-off-by: Sreedhar Telukuntla <sreedhar.telukuntla@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
+ tests/i915/gem_exec_parallel.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/tests/i915/gem_exec_parallel.c b/tests/i915/gem_exec_parallel.c
+index cfbe78070873..0d4d6c6283e0 100644
+--- a/tests/i915/gem_exec_parallel.c
++++ b/tests/i915/gem_exec_parallel.c
+@@ -83,10 +83,12 @@ static void *thread(void *data)
+ 		pthread_cond_wait(t->cond, t->mutex);
+ 	pthread_mutex_unlock(t->mutex);
+ 
+-	if (t->flags & FDS)
++	if (t->flags & FDS) {
+ 		fd = drm_open_driver(DRIVER_INTEL);
+-	else
++		gem_context_copy_engines(t->fd, 0, fd, 0);
++	} else {
+ 		fd = t->fd;
++	}
+ 
+ 	i = 0;
+ 	batch[i] = MI_STORE_DWORD_IMM | (t->gen < 6 ? 1 << 22 : 0);
+-- 
+2.20.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
