@@ -1,11 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Sun, 26 Jan 2020 13:48:11 +0000
-Message-Id: <20200126134811.2084060-2-chris@chris-wilson.co.uk>
-In-Reply-To: <20200126134811.2084060-1-chris@chris-wilson.co.uk>
-References: <20200126134811.2084060-1-chris@chris-wilson.co.uk>
+Date: Sun, 26 Jan 2020 13:48:10 +0000
+Message-Id: <20200126134811.2084060-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] i915_pm_rps: Be wary if RP0 == RPn
+Subject: [igt-dev] [PATCH i-g-t 1/2] i915: Inject invalid CS into hanging
+ spinners
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,52 +20,164 @@ To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-If the HW min/max frequencies are the same, there is not much range to
-deal with and a couple of our invalid tests become confused as they are
-actually no-ops.
+Some spinners are used with the intent of never ending and being
+declared hung by the kernel. In some cases, these are being used to
+simulate invalid payloads and so we can use an invalid command to
+trigger a GPU hang. (Other cases, they are simulating infinite workloads
+that truly never end, but we still need to be able to curtail to provide
+multi-tasking). This patch adds IGT_SPIN_INVALID_CS to request the
+injection of 0xdeadbeef into the command stream that should trigger a
+GPU hang.
 
-Error reporting in i915_pm_rps is rudimentary and we deserve better.
-
-Closes: https://gitlab.freedesktop.org/drm/intel/issues/1008
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/i915/i915_pm_rps.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ lib/igt_dummyload.c              |  2 ++
+ lib/igt_dummyload.h              |  1 +
+ tests/i915/gem_busy.c            |  3 ++-
+ tests/i915/gem_ctx_persistence.c | 39 +++++++++++++++++++++++++++++++-
+ tests/i915/gem_eio.c             |  1 +
+ tests/i915/gem_exec_balancer.c   |  4 +++-
+ tests/i915/gem_exec_fence.c      |  3 ++-
+ 7 files changed, 49 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/i915_pm_rps.c b/tests/i915/i915_pm_rps.c
-index b65eefb03..56c745a5b 100644
---- a/tests/i915/i915_pm_rps.c
-+++ b/tests/i915/i915_pm_rps.c
-@@ -397,9 +397,11 @@ static void min_max_config(void (*check)(void), bool load_gpu)
- 	writeval_inval(sysfs_files[MIN].filp, origfreqs[RP0] + 1000);
- 	check();
+diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+index b7f4caca3..041122af9 100644
+--- a/lib/igt_dummyload.c
++++ b/lib/igt_dummyload.c
+@@ -189,6 +189,8 @@ emit_recursive_batch(igt_spin_t *spin,
+ 	/* Allow ourselves to be preempted */
+ 	if (!(opts->flags & IGT_SPIN_NO_PREEMPTION))
+ 		*cs++ = MI_ARB_CHK;
++	if (opts->flags & IGT_SPIN_INVALID_CS)
++		*cs++ = 0xdeadbeef;
  
--	igt_debug("\nDecrease max to RPn (invalid)...\n");
--	writeval_inval(sysfs_files[MAX].filp, origfreqs[RPn]);
--	check();
-+	if (origfreqs[RPn] < origfreqs[RP0]) {
-+		igt_debug("\nDecrease max to RPn (invalid)...\n");
-+		writeval_inval(sysfs_files[MAX].filp, origfreqs[RPn]);
-+		check();
+ 	/* Pad with a few nops so that we do not completely hog the system.
+ 	 *
+diff --git a/lib/igt_dummyload.h b/lib/igt_dummyload.h
+index 421ca183b..cb696009f 100644
+--- a/lib/igt_dummyload.h
++++ b/lib/igt_dummyload.h
+@@ -62,6 +62,7 @@ struct igt_spin_factory {
+ #define IGT_SPIN_POLL_RUN      (1 << 2)
+ #define IGT_SPIN_FAST          (1 << 3)
+ #define IGT_SPIN_NO_PREEMPTION (1 << 4)
++#define IGT_SPIN_INVALID_CS    (1 << 5)
+ 
+ igt_spin_t *
+ __igt_spin_factory(int fd, const struct igt_spin_factory *opts);
+diff --git a/tests/i915/gem_busy.c b/tests/i915/gem_busy.c
+index 39a6714c2..2f1b04e3c 100644
+--- a/tests/i915/gem_busy.c
++++ b/tests/i915/gem_busy.c
+@@ -436,7 +436,8 @@ static void basic(int fd, const struct intel_execution_engine2 *e, unsigned flag
+ 	igt_spin_t *spin =
+ 		igt_spin_new(fd,
+ 			     .engine = e->flags,
+-			     .flags = IGT_SPIN_NO_PREEMPTION);
++			     .flags = IGT_SPIN_NO_PREEMPTION |
++			     (flags & HANG ? IGT_SPIN_INVALID_CS : 0));
+ 	struct timespec tv;
+ 	int timeout;
+ 	bool busy;
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index d68431ae0..d48234450 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -345,6 +345,41 @@ static void test_nohangcheck_hostile(int i915)
+ 	close(dir);
+ }
+ 
++static void test_nohangcheck_hang(int i915)
++{
++	int64_t timeout = reset_timeout_ms * NSEC_PER_MSEC;
++	int dir;
++
++	/*
++	 * Even if the user disables hangcheck during their context,
++	 * we forcibly terminate that context.
++	 */
++
++	dir = igt_sysfs_open_parameters(i915);
++	igt_require(dir != -1);
++
++	igt_require(__enable_hangcheck(dir, false));
++
++	for_each_physical_engine(e, i915) {
++		uint32_t ctx = gem_context_create(i915);
++		igt_spin_t *spin;
++
++		spin = igt_spin_new(i915, ctx,
++				    .engine = eb_ring(e),
++				    .flags = IGT_SPIN_INVALID_CS);
++		gem_context_destroy(i915, ctx);
++
++		igt_assert_eq(gem_wait(i915, spin->handle, &timeout), 0);
++
++		igt_spin_free(i915, spin);
 +	}
++
++	igt_require(__enable_hangcheck(dir, true));
++
++	gem_quiescent_gpu(i915);
++	close(dir);
++}
++
+ static void test_nonpersistent_file(int i915)
+ {
+ 	int debugfs = i915;
+@@ -724,8 +759,10 @@ igt_main
+ 	igt_subtest("processes")
+ 		test_processes(i915);
  
- 	igt_debug("\nDecrease min to midpoint...\n");
- 	writeval(sysfs_files[MIN].filp, fmid);
-@@ -429,9 +431,11 @@ static void min_max_config(void (*check)(void), bool load_gpu)
- 	writeval_inval(sysfs_files[MAX].filp, 0);
- 	check();
+-	igt_subtest("hangcheck")
++	igt_subtest("hostile")
+ 		test_nohangcheck_hostile(i915);
++	igt_subtest("hang")
++		test_nohangcheck_hang(i915);
  
--	igt_debug("\nIncrease min to RP0 (invalid)...\n");
--	writeval_inval(sysfs_files[MIN].filp, origfreqs[RP0]);
--	check();
-+	if (origfreqs[RP0] > origfreqs[RP0]) {
-+		igt_debug("\nIncrease min to RP0 (invalid)...\n");
-+		writeval_inval(sysfs_files[MIN].filp, origfreqs[RP0]);
-+		check();
-+	}
+ 	__for_each_static_engine(e) {
+ 		igt_subtest_group {
+diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
+index b23dfecc6..aa4accc9d 100644
+--- a/tests/i915/gem_eio.c
++++ b/tests/i915/gem_eio.c
+@@ -187,6 +187,7 @@ static igt_spin_t * __spin_poll(int fd, uint32_t ctx, unsigned long flags)
+ 		.engine = flags,
+ 		.flags = (IGT_SPIN_FAST |
+ 			  IGT_SPIN_NO_PREEMPTION |
++			  IGT_SPIN_INVALID_CS |
+ 			  IGT_SPIN_FENCE_OUT),
+ 	};
  
- 	igt_debug("\nIncrease max to midpoint...\n");
- 	writeval(sysfs_files[MAX].filp, fmid);
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index cebcc39c7..6b0c47f09 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -1654,7 +1654,9 @@ static void hangme(int i915)
+ 			set_unbannable(i915, ctx);
+ 			set_load_balancer(i915, ctx, ci, count, NULL);
+ 
+-			flags = IGT_SPIN_FENCE_OUT | IGT_SPIN_NO_PREEMPTION;
++			flags = IGT_SPIN_FENCE_OUT |
++				IGT_SPIN_NO_PREEMPTION |
++				IGT_SPIN_INVALID_CS;
+ 			for (int j = 0; j < ARRAY_SIZE(c->spin); j++)  {
+ 				c->spin[j] = igt_spin_new(i915, ctx,
+ 							  .flags = flags);
+diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+index 2f802eece..6d369f589 100644
+--- a/tests/i915/gem_exec_fence.c
++++ b/tests/i915/gem_exec_fence.c
+@@ -335,7 +335,8 @@ static void test_fence_await(int fd, unsigned ring, unsigned flags)
+ 	spin = igt_spin_new(fd,
+ 			    .engine = ring,
+ 			    .flags = (IGT_SPIN_FENCE_OUT |
+-				      IGT_SPIN_NO_PREEMPTION));
++				      IGT_SPIN_NO_PREEMPTION |
++				      (flags & HANG ? IGT_SPIN_INVALID_CS : 0)));
+ 	igt_assert(spin->out_fence != -1);
+ 
+ 	i = 0;
 -- 
 2.25.0
 
