@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7FADA6EB8E
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2020 13:11:36 +0000 (UTC)
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Date: Mon, 27 Jan 2020 15:11:31 +0200
-Message-Id: <20200127131131.1440949-2-lionel.g.landwerlin@intel.com>
-In-Reply-To: <20200127131131.1440949-1-lionel.g.landwerlin@intel.com>
-References: <20200127131131.1440949-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v4 1/1] tests/i915-query: add new tests for
- perf configurations queries
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 27 Jan 2020 13:49:25 -0000
+Message-ID: <158013296515.9685.15271400826003180632@emeril.freedesktop.org>
+References: <20200124211819.1796-1-vinay.belgaumkar@intel.com>
+In-Reply-To: <20200124211819.1796-1-vinay.belgaumkar@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fmmap=5Fwc=3A_Skip_gtt_test_if_aperture_is_missing?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,668 +14,287 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-These new tests allow to list the available configurations and also to
-query the data that makes up a configuration.
+== Series Details ==
 
-v2: Verify uuid queries (Lionel)
+Series: tests/i915/gem_mmap_wc: Skip gtt test if aperture is missing
+URL   : https://patchwork.freedesktop.org/series/72553/
+State : failure
 
-v3: Fix mistake with missing pointer value (Lionel)
+== Summary ==
 
-v4: Add igt_describe() (Lionel)
+CI Bug Log - changes from CI_DRM_7811_full -> IGTPW_3994_full
+====================================================
 
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
----
- tests/i915/i915_query.c | 613 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 613 insertions(+)
+Summary
+-------
 
-diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
-index 71807425..2d83427a 100644
---- a/tests/i915/i915_query.c
-+++ b/tests/i915/i915_query.c
-@@ -22,6 +22,7 @@
-  */
- 
- #include "igt.h"
-+#include "igt_sysfs.h"
- 
- #include <limits.h>
- 
-@@ -735,6 +736,600 @@ static void engines(int fd)
- 	free(engines);
- }
- 
-+static bool query_perf_config_supported(int fd)
-+{
-+	struct drm_i915_query_item item = {
-+		.query_id = DRM_I915_QUERY_PERF_CONFIG,
-+		.flags = DRM_I915_QUERY_PERF_CONFIG_LIST,
-+	};
-+
-+	return __i915_query_items(fd, &item, 1) == 0 && item.length > 0;
-+}
-+
-+/*
-+ * Verify that perf configuration queries for list of configurations
-+ * rejects invalid parameters.
-+ */
-+static void test_query_perf_config_list_invalid(int fd)
-+{
-+	struct drm_i915_query_perf_config *query_config_ptr, dummy_query_config;
-+	struct drm_i915_query_item item;
-+	size_t len;
-+	void *data;
-+
-+	/* Verify invalid flags for perf config queries */
-+	memset(&item, 0, sizeof(item));
-+	item.query_id = DRM_I915_QUERY_PERF_CONFIG;
-+	item.flags = 42; /* invalid */
-+	i915_query_items(fd, &item, 1);
-+	igt_assert_eq(item.length, -EINVAL);
-+
-+	/*
-+	 * A too small data length is invalid. We should have at least
-+	 * the test config list.
-+	 */
-+	memset(&item, 0, sizeof(item));
-+	memset(&dummy_query_config, 0, sizeof(dummy_query_config));
-+	item.query_id = DRM_I915_QUERY_PERF_CONFIG;
-+	item.data_ptr = to_user_pointer(&dummy_query_config);
-+	item.flags = DRM_I915_QUERY_PERF_CONFIG_LIST;
-+	item.length = sizeof(struct drm_i915_query_perf_config); /* invalid */
-+	i915_query_items(fd, &item, 1);
-+	igt_assert_eq(item.length, -EINVAL);
-+
-+	/* Flags on the query config data are invalid. */
-+	memset(&item, 0, sizeof(item));
-+	item.query_id = DRM_I915_QUERY_PERF_CONFIG;
-+	item.flags = DRM_I915_QUERY_PERF_CONFIG_LIST;
-+	item.length = 0;
-+	i915_query_items(fd, &item, 1);
-+	igt_assert(item.length > sizeof(struct drm_i915_query_perf_config));
-+
-+	query_config_ptr = calloc(1, item.length);
-+	query_config_ptr->flags = 1; /* invalid */
-+	item.data_ptr = to_user_pointer(query_config_ptr);
-+	i915_query_items(fd, &item, 1);
-+	igt_assert_eq(item.length, -EINVAL);
-+	free(query_config_ptr);
-+
-+	/*
-+	 * A NULL data pointer is invalid when the length is long
-+	 * enough for i915 to copy data into the pointed memory.
-+	 */
-+	memset(&item, 0, sizeof(item));
-+	item.query_id = DRM_I915_QUERY_PERF_CONFIG;
-+	item.flags = DRM_I915_QUERY_PERF_CONFIG_LIST;
-+	item.length = 0;
-+	i915_query_items(fd, &item, 1);
-+	igt_assert(item.length > sizeof(struct drm_i915_query_perf_config));
-+
-+	i915_query_items(fd, &item, 1); /* leaves data ptr to null */
-+	igt_assert_eq(item.length, -EFAULT);
-+
-+	/* Trying to write into read only memory will fail. */
-+	memset(&item, 0, sizeof(item));
-+	item.query_id = DRM_I915_QUERY_PERF_CONFIG;
-+	item.flags = DRM_I915_QUERY_PERF_CONFIG_LIST;
-+	item.length = 0;
-+	i915_query_items(fd, &item, 1);
-+	igt_assert(item.length > sizeof(struct drm_i915_query_perf_config));
-+
-+	len = ALIGN(item.length, 4096);
-+	data = mmap(0, len, PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
-+	memset(data, 0, len);
-+	mprotect(data, len, PROT_READ);
-+	item.data_ptr = to_user_pointer(data); /* invalid with read only data */
-+	i915_query_items(fd, &item, 1);
-+	igt_assert_eq(item.length, -EFAULT);
-+
-+	munmap(data, len);
-+}
-+
-+static int query_perf_config_id_data(int fd, int length,
-+				     struct drm_i915_query_perf_config *query)
-+{
-+	struct drm_i915_query_item item;
-+
-+	memset(&item, 0, sizeof(item));
-+	item.query_id = DRM_I915_QUERY_PERF_CONFIG;
-+	item.flags = DRM_I915_QUERY_PERF_CONFIG_DATA_FOR_ID;
-+	item.length = length;
-+	item.data_ptr = to_user_pointer(query);
-+	i915_query_items(fd, &item, 1);
-+
-+	return item.length;
-+}
-+
-+static int query_perf_config_uuid_data(int fd, int length,
-+				       struct drm_i915_query_perf_config *query)
-+{
-+	struct drm_i915_query_item item;
-+
-+	memset(&item, 0, sizeof(item));
-+	item.query_id = DRM_I915_QUERY_PERF_CONFIG;
-+	item.flags = DRM_I915_QUERY_PERF_CONFIG_DATA_FOR_UUID;
-+	item.length = length;
-+	item.data_ptr = to_user_pointer(query);
-+	i915_query_items(fd, &item, 1);
-+
-+	return item.length;
-+}
-+
-+/*
-+ * Verify that perf configuration queries for configuration data
-+ * rejects invalid parameters.
-+ */
-+static void test_query_perf_config_data_invalid(int fd)
-+{
-+	struct {
-+		struct drm_i915_query_perf_config query;
-+		struct drm_i915_perf_oa_config oa;
-+	} query;
-+	struct drm_i915_query_item item;
-+	size_t len;
-+	void *data;
-+
-+	/* Flags are invalid for perf config queries */
-+	memset(&item, 0, sizeof(item));
-+	item.query_id = DRM_I915_QUERY_PERF_CONFIG;
-+	item.flags = DRM_I915_QUERY_PERF_CONFIG_DATA_FOR_ID + 1; /* invalid */
-+	i915_query_items(fd, &item, 1);
-+	igt_assert_eq(item.length, -EINVAL);
-+
-+	/*
-+	 * A too small data length is invalid. We should have at least
-+	 * the test config list.
-+	 */
-+	memset(&item, 0, sizeof(item));
-+	item.query_id = DRM_I915_QUERY_PERF_CONFIG;
-+	item.flags = DRM_I915_QUERY_PERF_CONFIG_DATA_FOR_ID;
-+	item.length = sizeof(struct drm_i915_query_perf_config); /* invalid */
-+	i915_query_items(fd, &item, 1);
-+	igt_assert_eq(item.length, -EINVAL);
-+
-+	memset(&item, 0, sizeof(item));
-+	item.query_id = DRM_I915_QUERY_PERF_CONFIG;
-+	item.flags = DRM_I915_QUERY_PERF_CONFIG_DATA_FOR_ID;
-+	item.length = sizeof(struct drm_i915_query_perf_config) +
-+		sizeof(struct drm_i915_perf_oa_config) - 1; /* invalid */
-+	i915_query_items(fd, &item, 1);
-+	igt_assert_eq(item.length, -EINVAL);
-+
-+	/* Flags on the query config data are invalid. */
-+	memset(&item, 0, sizeof(item));
-+	item.query_id = DRM_I915_QUERY_PERF_CONFIG;
-+	item.flags = DRM_I915_QUERY_PERF_CONFIG_DATA_FOR_ID;
-+	item.length = 0;
-+	i915_query_items(fd, &item, 1);
-+	igt_assert_eq(item.length, sizeof(query));
-+
-+	memset(&query, 0, sizeof(query));
-+	query.query.flags = 1; /* invalid */
-+	item.data_ptr = to_user_pointer(&query.query);
-+	i915_query_items(fd, &item, 1);
-+	igt_assert_eq(item.length, -EINVAL);
-+
-+	/* Invalid UUID. */
-+	memset(&item, 0, sizeof(item));
-+	memset(&query, 0, sizeof(query));
-+	item.query_id = DRM_I915_QUERY_PERF_CONFIG;
-+	item.flags = DRM_I915_QUERY_PERF_CONFIG_DATA_FOR_UUID;
-+	item.data_ptr = to_user_pointer(&query);
-+	item.length = sizeof(query);
-+	i915_query_items(fd, &item, 1);
-+	igt_assert_eq(item.length, -ENOENT);
-+
-+	/*
-+	 * A NULL data pointer is invalid when the length is long
-+	 * enough for i915 to copy data into the pointed memory.
-+	 */
-+	memset(&item, 0, sizeof(item));
-+	item.query_id = DRM_I915_QUERY_PERF_CONFIG;
-+	item.flags = DRM_I915_QUERY_PERF_CONFIG_DATA_FOR_ID;
-+	item.length = 0;
-+	i915_query_items(fd, &item, 1);
-+	igt_assert_eq(item.length, sizeof(query));
-+
-+	i915_query_items(fd, &item, 1); /* leaves data ptr to null */
-+	igt_assert_eq(item.length, -EFAULT);
-+
-+	item.data_ptr = ULONG_MAX; /* invalid pointer */
-+	i915_query_items(fd, &item, 1);
-+	igt_assert_eq(item.length, -EFAULT);
-+
-+	/* Trying to write into read only memory will fail. */
-+	memset(&item, 0, sizeof(item));
-+	item.query_id = DRM_I915_QUERY_PERF_CONFIG;
-+	item.flags = DRM_I915_QUERY_PERF_CONFIG_DATA_FOR_ID;
-+	item.length = 0;
-+	i915_query_items(fd, &item, 1);
-+	igt_assert_eq(item.length, sizeof(query));
-+
-+	len = ALIGN(item.length, 4096);
-+	data = mmap(0, len, PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
-+	memset(data, 0, len);
-+	((struct drm_i915_query_perf_config *)data)->config = 1; /* test config */
-+	mprotect(data, len, PROT_READ);
-+	item.data_ptr = to_user_pointer(data); /* invalid with read only data */
-+	i915_query_items(fd, &item, 1);
-+	igt_assert_eq(item.length, -EFAULT);
-+
-+	munmap(data, len);
-+
-+	/* Invalid memory (NULL) for configuration registers. */
-+	memset(&query, 0, sizeof(query));
-+	query.query.config = 1; /* test config */
-+	igt_assert_eq(sizeof(query),
-+		      query_perf_config_id_data(fd, sizeof(query), &query.query));
-+
-+	igt_debug("Queried test config %.*s\n",
-+		  (int)sizeof(query.oa.uuid), query.oa.uuid);
-+	igt_debug("  n_mux_regs=%u, n_boolean_regs=%u, n_flex_regs=%u\n",
-+		  query.oa.n_mux_regs, query.oa.n_boolean_regs,
-+		  query.oa.n_flex_regs);
-+	igt_assert_eq(-EFAULT,
-+		      query_perf_config_id_data(fd, sizeof(query), &query.query));
-+
-+	/* Invalid memory (ULONG max) for configuration registers. */
-+	memset(&query, 0, sizeof(query));
-+	query.query.config = 1; /* test config */
-+	igt_assert_eq(sizeof(query), query_perf_config_id_data(fd, 0, &query.query));
-+
-+	if (query.oa.n_mux_regs > 0) {
-+		query.oa.mux_regs_ptr = ULONG_MAX;
-+		query.oa.n_boolean_regs = 0;
-+		query.oa.n_flex_regs = 0;
-+		igt_assert_eq(-EFAULT, query_perf_config_id_data(fd, sizeof(query),
-+								 &query.query));
-+	}
-+
-+	memset(&query, 0, sizeof(query));
-+	query.query.config = 1; /* test config */
-+	igt_assert_eq(sizeof(query),
-+		      query_perf_config_id_data(fd, 0, &query.query));
-+
-+	if (query.oa.n_boolean_regs > 0) {
-+		query.oa.boolean_regs_ptr = ULONG_MAX;
-+		query.oa.n_mux_regs = 0;
-+		query.oa.n_flex_regs = 0;
-+		igt_assert_eq(-EFAULT, query_perf_config_id_data(fd, sizeof(query),
-+								 &query.query));
-+	}
-+
-+	memset(&query, 0, sizeof(query));
-+	query.query.config = 1; /* test config */
-+	igt_assert_eq(sizeof(query),
-+		      query_perf_config_id_data(fd, 0, &query.query));
-+
-+	if (query.oa.n_flex_regs > 0) {
-+		query.oa.flex_regs_ptr = ULONG_MAX;
-+		query.oa.n_mux_regs = 0;
-+		query.oa.n_boolean_regs = 0;
-+		igt_assert_eq(-EFAULT, query_perf_config_id_data(fd, sizeof(query),
-+								 &query.query));
-+	}
-+
-+	/* Too small number of registers to write. */
-+	memset(&query, 0, sizeof(query));
-+	query.query.config = 1; /* test config */
-+	igt_assert_eq(sizeof(query), query_perf_config_id_data(fd, 0, &query.query));
-+
-+	if (query.oa.n_mux_regs > 0) {
-+		query.oa.n_mux_regs--;
-+		igt_assert_eq(-EINVAL, query_perf_config_id_data(fd, sizeof(query),
-+								 &query.query));
-+	}
-+
-+	memset(&query, 0, sizeof(query));
-+	query.query.config = 1; /* test config */
-+	igt_assert_eq(sizeof(query),
-+		      query_perf_config_id_data(fd, 0, &query.query));
-+
-+	if (query.oa.n_boolean_regs > 0) {
-+		query.oa.n_boolean_regs--;
-+		igt_assert_eq(-EINVAL, query_perf_config_id_data(fd, sizeof(query),
-+								 &query.query));
-+	}
-+
-+	memset(&query, 0, sizeof(query));
-+	query.query.config = 1; /* test config */
-+	igt_assert_eq(sizeof(query), query_perf_config_id_data(fd, 0, &query.query));
-+
-+	if (query.oa.n_flex_regs > 0) {
-+		query.oa.n_flex_regs--;
-+		igt_assert_eq(-EINVAL, query_perf_config_id_data(fd, sizeof(query),
-+								 &query.query));
-+	}
-+
-+	memset(&query, 0, sizeof(query));
-+	query.query.config = 1; /* test config */
-+	igt_assert_eq(sizeof(query),
-+		      query_perf_config_id_data(fd, 0, &query.query));
-+
-+	if (query.oa.n_boolean_regs > 0) {
-+		query.oa.boolean_regs_ptr = ULONG_MAX;
-+		query.oa.n_mux_regs = 0;
-+		query.oa.n_flex_regs = 0;
-+		igt_assert_eq(-EFAULT, query_perf_config_id_data(fd, sizeof(query),
-+								 &query.query));
-+	}
-+
-+	/* Read only memory for registers. */
-+	memset(&query, 0, sizeof(query));
-+	query.query.config = 1; /* test config */
-+	igt_assert_eq(sizeof(query),
-+		      query_perf_config_id_data(fd, sizeof(query), &query.query));
-+
-+	len = ALIGN(query.oa.n_mux_regs * sizeof(uint32_t) * 2, 4096);
-+	data = mmap(0, len, PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
-+	memset(data, 0, len);
-+	mprotect(data, len, PROT_READ);
-+	query.oa.mux_regs_ptr = to_user_pointer(data);
-+	igt_assert_eq(-EFAULT,
-+		      query_perf_config_id_data(fd, sizeof(query), &query.query));
-+
-+	munmap(data, len);
-+}
-+
-+static uint64_t create_perf_config(int fd,
-+				   const char *uuid,
-+				   uint32_t **boolean_regs,
-+				   uint32_t *n_boolean_regs,
-+				   uint32_t **flex_regs,
-+				   uint32_t *n_flex_regs,
-+				   uint32_t **mux_regs,
-+				   uint32_t *n_mux_regs)
-+{
-+	struct drm_i915_perf_oa_config config;
-+	int devid = intel_get_drm_devid(fd);
-+	int i, ret;
-+
-+	*n_boolean_regs = rand() % 50;
-+	*boolean_regs = calloc(*n_boolean_regs, sizeof(uint32_t) * 2);
-+	*n_mux_regs = rand() % 50;
-+	*mux_regs = calloc(*n_mux_regs, sizeof(uint32_t) * 2);
-+	if (intel_gen(devid) < 8) {
-+		/* flex register don't exist on gen7 */
-+		*n_flex_regs = 0;
-+		*flex_regs = NULL;
-+	} else {
-+		*n_flex_regs = rand() % 50;
-+		*flex_regs = calloc(*n_flex_regs, sizeof(uint32_t) * 2);
-+	}
-+
-+	for (i = 0; i < *n_boolean_regs; i++) {
-+		if (rand() % 2) {
-+			/* OASTARTTRIG[1-8] */
-+			(*boolean_regs)[i * 2] =
-+				0x2710 + ((rand() % (0x2730 - 0x2710)) / 4) * 4;
-+			(*boolean_regs)[i * 2 + 1] = rand();
-+		} else {
-+			/* OAREPORTTRIG[1-8] */
-+			(*boolean_regs)[i * 2] =
-+				0x2740 + ((rand() % (0x275c - 0x2744)) / 4) * 4;
-+			(*boolean_regs)[i * 2 + 1] = rand();
-+		}
-+	}
-+
-+	for (i = 0; i < *n_mux_regs; i++) {
-+		(*mux_regs)[i * 2] = 0x9800;
-+		(*mux_regs)[i * 2 + 1] = rand();
-+	}
-+
-+	for (i = 0; i < *n_flex_regs; i++) {
-+		const uint32_t flex[] = {
-+			0xe458,
-+			0xe558,
-+			0xe658,
-+			0xe758,
-+			0xe45c,
-+			0xe55c,
-+			0xe65c
-+		};
-+		(*flex_regs)[i * 2] = flex[rand() % ARRAY_SIZE(flex)];
-+		(*flex_regs)[i * 2 + 1] = rand();
-+	}
-+
-+	memset(&config, 0, sizeof(config));
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+
-+	config.n_boolean_regs = *n_boolean_regs;
-+	config.boolean_regs_ptr = to_user_pointer(*boolean_regs);
-+	config.n_flex_regs = *n_flex_regs;
-+	config.flex_regs_ptr = to_user_pointer(*flex_regs);
-+	config.n_mux_regs = *n_mux_regs;
-+	config.mux_regs_ptr = to_user_pointer(*mux_regs);
-+
-+	ret = igt_ioctl(fd, DRM_IOCTL_I915_PERF_ADD_CONFIG, &config);
-+	igt_assert(ret > 1); /* Config 0/1 should be used by the kernel */
-+
-+	igt_debug("created config id=%i uuid=%s:\n", ret, uuid);
-+	igt_debug("\tn_boolean_regs=%u n_flex_regs=%u n_mux_regs=%u\n",
-+		  config.n_boolean_regs, config.n_flex_regs,
-+		  config.n_mux_regs);
-+
-+	return ret;
-+}
-+
-+static void remove_perf_config(int fd, uint64_t config_id)
-+{
-+	igt_assert_eq(0, igt_ioctl(fd, DRM_IOCTL_I915_PERF_REMOVE_CONFIG,
-+				   &config_id));
-+}
-+
-+static uint64_t get_config_id(int fd, const char *uuid)
-+{
-+	char rel_path[100];
-+	uint64_t ret;
-+	int sysfs;
-+
-+	sysfs = igt_sysfs_open(fd);
-+	igt_assert_lte(0, sysfs);
-+
-+	snprintf(rel_path, sizeof(rel_path), "metrics/%s/id", uuid);
-+
-+	if (igt_sysfs_scanf(sysfs, rel_path, "%lu", &ret) < 0)
-+		ret = 0;
-+
-+	close(sysfs);
-+	return ret;
-+}
-+
-+/*
-+ * Verifies that created configurations appear in the query of list of
-+ * configuration and also verify the content of the queried
-+ * configurations matches with what was created.
-+ */
-+static void test_query_perf_configs(int fd)
-+{
-+	struct {
-+		uint64_t id;
-+
-+		char uuid[40];
-+
-+		uint32_t *boolean_regs;
-+		uint32_t n_boolean_regs;
-+		uint32_t *flex_regs;
-+		uint32_t n_flex_regs;
-+		uint32_t *mux_regs;
-+		uint32_t n_mux_regs;
-+	} configs[5];
-+	struct {
-+		struct drm_i915_query_perf_config query;
-+		uint64_t config_ids[];
-+	} *list_query;
-+	struct drm_i915_query_item item;
-+	int i;
-+
-+	srand(time(NULL));
-+
-+	for (i = 0; i < ARRAY_SIZE(configs); i++) {
-+		uint64_t prev_config_id;
-+
-+		snprintf(configs[i].uuid, sizeof(configs[i].uuid),
-+			 "01234567-%04u-0123-0123-0123456789ab", i);
-+
-+		prev_config_id = get_config_id(fd, configs[i].uuid);
-+		if (prev_config_id)
-+			remove_perf_config(fd, prev_config_id);
-+
-+		configs[i].id =
-+			create_perf_config(fd, configs[i].uuid,
-+					   &configs[i].boolean_regs,
-+					   &configs[i].n_boolean_regs,
-+					   &configs[i].flex_regs,
-+					   &configs[i].n_flex_regs,
-+					   &configs[i].mux_regs,
-+					   &configs[i].n_mux_regs);
-+	}
-+
-+	memset(&item, 0, sizeof(item));
-+	item.query_id = DRM_I915_QUERY_PERF_CONFIG;
-+	item.flags = DRM_I915_QUERY_PERF_CONFIG_LIST;
-+	item.length = 0;
-+	i915_query_items(fd, &item, 1);
-+	igt_assert(item.length > sizeof(struct drm_i915_query_perf_config));
-+
-+	list_query = malloc(item.length);
-+	memset(list_query, 0, item.length);
-+	item.data_ptr = to_user_pointer(list_query);
-+	i915_query_items(fd, &item, 1);
-+	igt_assert(item.length > sizeof(struct drm_i915_query_perf_config));
-+
-+	igt_debug("listed configs:\n");
-+	for (i = 0; i < list_query->query.config; i++)
-+		igt_debug("\tid=%lu\n", list_query->config_ids[i]);
-+
-+	/* Verify that all created configs are listed. */
-+	for (i = 0; i < ARRAY_SIZE(configs); i++) {
-+		int j;
-+		bool found = false;
-+
-+		for (j = 0; j < list_query->query.config; j++) {
-+			if (list_query->config_ids[j] == configs[i].id) {
-+				found = true;
-+				break;
-+			}
-+		}
-+
-+		igt_assert(found);
-+	}
-+
-+	/* Verify the content of the configs. */
-+	for (i = 0; i < ARRAY_SIZE(configs); i++) {
-+		struct {
-+			struct drm_i915_query_perf_config query;
-+			struct drm_i915_perf_oa_config oa;
-+		} query;
-+		uint32_t *boolean_regs = NULL, *flex_regs = NULL, *mux_regs = NULL;
-+
-+		/* First query with configuration id. */
-+		memset(&query, 0, sizeof(query));
-+		query.query.config = configs[i].id;
-+		igt_assert_eq(sizeof(query),
-+			      query_perf_config_id_data(fd, sizeof(query),
-+							&query.query));
-+
-+		igt_debug("queried config data id=%lu uuid=%s:\n",
-+			  configs[i].id, configs[i].uuid);
-+		igt_debug("\tn_boolean_regs=%u n_flex_regs=%u n_mux_regs=%u\n",
-+			  query.oa.n_boolean_regs, query.oa.n_flex_regs,
-+			  query.oa.n_mux_regs);
-+
-+		igt_assert_eq(query.oa.n_boolean_regs, configs[i].n_boolean_regs);
-+		igt_assert_eq(query.oa.n_flex_regs, configs[i].n_flex_regs);
-+		igt_assert_eq(query.oa.n_mux_regs, configs[i].n_mux_regs);
-+
-+		/* Query again with configuration uuid. */
-+		memset(&query, 0, sizeof(query));
-+		memcpy(query.query.uuid, configs[i].uuid,
-+		       sizeof(query.query.uuid));
-+		igt_assert_eq(sizeof(query),
-+			      query_perf_config_uuid_data(fd, sizeof(query),
-+							  &query.query));
-+
-+		igt_assert_eq(query.oa.n_boolean_regs, configs[i].n_boolean_regs);
-+		igt_assert_eq(query.oa.n_flex_regs, configs[i].n_flex_regs);
-+		igt_assert_eq(query.oa.n_mux_regs, configs[i].n_mux_regs);
-+
-+		/* Now get the register programming values. */
-+		boolean_regs = calloc(query.oa.n_boolean_regs * 2, sizeof(uint32_t));
-+		if (query.oa.n_flex_regs > 0)
-+			flex_regs = calloc(query.oa.n_flex_regs * 2, sizeof(uint32_t));
-+		mux_regs = calloc(query.oa.n_mux_regs * 2, sizeof(uint32_t));
-+
-+		query.oa.boolean_regs_ptr = to_user_pointer(boolean_regs);
-+		query.oa.flex_regs_ptr = to_user_pointer(flex_regs);
-+		query.oa.mux_regs_ptr = to_user_pointer(mux_regs);
-+
-+		igt_assert_eq(sizeof(query),
-+			      query_perf_config_uuid_data(fd, sizeof(query),
-+							  &query.query));
-+
-+		igt_assert_eq(0, memcmp(configs[i].boolean_regs,
-+					boolean_regs,
-+					configs[i].n_boolean_regs * 2 * sizeof(uint32_t)));
-+		igt_assert_eq(0, memcmp(configs[i].flex_regs,
-+					flex_regs,
-+					configs[i].n_flex_regs * 2 * sizeof(uint32_t)));
-+		igt_assert_eq(0, memcmp(configs[i].mux_regs,
-+					mux_regs,
-+					configs[i].n_mux_regs * 2 * sizeof(uint32_t)));
-+
-+		free(boolean_regs);
-+		free(flex_regs);
-+		free(mux_regs);
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(configs); i++) {
-+		remove_perf_config(fd, configs[i].id);
-+
-+		free(configs[i].boolean_regs);
-+		free(configs[i].flex_regs);
-+		free(configs[i].mux_regs);
-+	}
-+}
-+
- igt_main
- {
- 	int fd = -1;
-@@ -794,6 +1389,24 @@ igt_main
- 			engines(fd);
- 	}
- 
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(query_perf_config_supported(fd));
-+		}
-+
-+		igt_describe("Test invalid parameters when listing OA configurations");
-+		igt_subtest("query-perf-config-list-invalid")
-+			test_query_perf_config_list_invalid(fd);
-+
-+		igt_describe("Test invalid parameters when querying OA configuration data");
-+		igt_subtest("query-perf-config-data-invalid")
-+			test_query_perf_config_data_invalid(fd);
-+
-+		igt_describe("Test listing & querying OA configurations");
-+		igt_subtest("query-perf-configs")
-+			test_query_perf_configs(fd);
-+	}
-+
- 	igt_fixture {
- 		close(fd);
- 	}
--- 
-2.25.0
+  **FAILURE**
 
+  Serious unknown changes coming with IGTPW_3994_full absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_3994_full, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_3994_full:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_ctx_exec@basic-nohangcheck:
+    - shard-iclb:         [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb7/igt@gem_ctx_exec@basic-nohangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb2/igt@gem_ctx_exec@basic-nohangcheck.html
+
+  * igt@gem_partial_pwrite_pread@writes-after-reads-display:
+    - shard-hsw:          [PASS][3] -> [FAIL][4] +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-hsw6/igt@gem_partial_pwrite_pread@writes-after-reads-display.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-hsw6/igt@gem_partial_pwrite_pread@writes-after-reads-display.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_3994_full that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_ctx_persistence@vcs1-queued:
+    - shard-iclb:         [PASS][5] -> [SKIP][6] ([fdo#109276] / [fdo#112080]) +4 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb4/igt@gem_ctx_persistence@vcs1-queued.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb3/igt@gem_ctx_persistence@vcs1-queued.html
+
+  * igt@gem_exec_balancer@smoke:
+    - shard-iclb:         [PASS][7] -> [SKIP][8] ([fdo#110854])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb4/igt@gem_exec_balancer@smoke.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb6/igt@gem_exec_balancer@smoke.html
+
+  * igt@gem_exec_schedule@independent-bsd2:
+    - shard-iclb:         [PASS][9] -> [SKIP][10] ([fdo#109276]) +13 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb2/igt@gem_exec_schedule@independent-bsd2.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb7/igt@gem_exec_schedule@independent-bsd2.html
+
+  * igt@gem_exec_schedule@preempt-other-chain-bsd:
+    - shard-iclb:         [PASS][11] -> [SKIP][12] ([fdo#112146]) +5 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb8/igt@gem_exec_schedule@preempt-other-chain-bsd.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb1/igt@gem_exec_schedule@preempt-other-chain-bsd.html
+
+  * igt@gen7_exec_parse@basic-offset:
+    - shard-hsw:          [PASS][13] -> [FAIL][14] ([i915#694])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-hsw1/igt@gen7_exec_parse@basic-offset.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-hsw5/igt@gen7_exec_parse@basic-offset.html
+
+  * igt@kms_cursor_legacy@cursora-vs-flipa-atomic-transitions:
+    - shard-snb:          [PASS][15] -> [SKIP][16] ([fdo#109271]) +2 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-snb5/igt@kms_cursor_legacy@cursora-vs-flipa-atomic-transitions.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-snb2/igt@kms_cursor_legacy@cursora-vs-flipa-atomic-transitions.html
+
+  * igt@kms_psr@psr2_primary_mmap_cpu:
+    - shard-iclb:         [PASS][17] -> [SKIP][18] ([fdo#109441]) +3 similar issues
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb2/igt@kms_psr@psr2_primary_mmap_cpu.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb6/igt@kms_psr@psr2_primary_mmap_cpu.html
+
+  * igt@kms_setmode@basic:
+    - shard-apl:          [PASS][19] -> [FAIL][20] ([i915#31])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-apl3/igt@kms_setmode@basic.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-apl6/igt@kms_setmode@basic.html
+    - shard-kbl:          [PASS][21] -> [FAIL][22] ([i915#31])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-kbl2/igt@kms_setmode@basic.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-kbl2/igt@kms_setmode@basic.html
+
+  * igt@kms_vblank@pipe-b-ts-continuation-suspend:
+    - shard-apl:          [PASS][23] -> [DMESG-WARN][24] ([i915#180])
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-apl1/igt@kms_vblank@pipe-b-ts-continuation-suspend.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-apl4/igt@kms_vblank@pipe-b-ts-continuation-suspend.html
+
+  * igt@kms_vblank@pipe-c-ts-continuation-suspend:
+    - shard-kbl:          [PASS][25] -> [DMESG-WARN][26] ([i915#180])
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-kbl2/igt@kms_vblank@pipe-c-ts-continuation-suspend.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-kbl3/igt@kms_vblank@pipe-c-ts-continuation-suspend.html
+
+  * igt@perf@short-reads:
+    - shard-apl:          [PASS][27] -> [TIMEOUT][28] ([fdo#112271] / [i915#51])
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-apl2/igt@perf@short-reads.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-apl3/igt@perf@short-reads.html
+
+  * igt@perf_pmu@busy-no-semaphores-vcs1:
+    - shard-iclb:         [PASS][29] -> [SKIP][30] ([fdo#112080]) +8 similar issues
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb4/igt@perf_pmu@busy-no-semaphores-vcs1.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb7/igt@perf_pmu@busy-no-semaphores-vcs1.html
+
+  * igt@prime_mmap_coherency@ioctl-errors:
+    - shard-hsw:          [PASS][31] -> [FAIL][32] ([i915#831])
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-hsw2/igt@prime_mmap_coherency@ioctl-errors.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-hsw2/igt@prime_mmap_coherency@ioctl-errors.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_ctx_persistence@vcs1-mixed-process:
+    - shard-iclb:         [SKIP][33] ([fdo#109276] / [fdo#112080]) -> [PASS][34] +1 similar issue
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb3/igt@gem_ctx_persistence@vcs1-mixed-process.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb4/igt@gem_ctx_persistence@vcs1-mixed-process.html
+
+  * igt@gem_exec_parallel@vcs1-fds:
+    - shard-iclb:         [SKIP][35] ([fdo#112080]) -> [PASS][36] +11 similar issues
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb6/igt@gem_exec_parallel@vcs1-fds.html
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb1/igt@gem_exec_parallel@vcs1-fds.html
+
+  * igt@gem_exec_schedule@preempt-contexts-bsd2:
+    - shard-iclb:         [SKIP][37] ([fdo#109276]) -> [PASS][38] +16 similar issues
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb7/igt@gem_exec_schedule@preempt-contexts-bsd2.html
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb2/igt@gem_exec_schedule@preempt-contexts-bsd2.html
+
+  * igt@gem_exec_schedule@preempt-queue-bsd:
+    - shard-iclb:         [SKIP][39] ([fdo#112146]) -> [PASS][40] +3 similar issues
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb1/igt@gem_exec_schedule@preempt-queue-bsd.html
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb8/igt@gem_exec_schedule@preempt-queue-bsd.html
+
+  * igt@gem_userptr_blits@dmabuf-unsync:
+    - shard-snb:          [DMESG-WARN][41] ([fdo#111870] / [i915#478]) -> [PASS][42]
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-snb5/igt@gem_userptr_blits@dmabuf-unsync.html
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-snb2/igt@gem_userptr_blits@dmabuf-unsync.html
+
+  * igt@i915_pm_dc@dc6-psr:
+    - shard-iclb:         [FAIL][43] ([i915#454]) -> [PASS][44]
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb4/igt@i915_pm_dc@dc6-psr.html
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb4/igt@i915_pm_dc@dc6-psr.html
+
+  * igt@i915_selftest@live_blt:
+    - shard-hsw:          [DMESG-FAIL][45] ([i915#553] / [i915#725]) -> [PASS][46]
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-hsw1/igt@i915_selftest@live_blt.html
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-hsw5/igt@i915_selftest@live_blt.html
+
+  * igt@kms_cursor_crc@pipe-a-cursor-suspend:
+    - shard-kbl:          [DMESG-WARN][47] ([i915#180]) -> [PASS][48] +3 similar issues
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-kbl1/igt@kms_cursor_crc@pipe-a-cursor-suspend.html
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-kbl2/igt@kms_cursor_crc@pipe-a-cursor-suspend.html
+
+  * igt@kms_cursor_crc@pipe-b-cursor-128x42-onscreen:
+    - shard-kbl:          [FAIL][49] ([i915#54]) -> [PASS][50]
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-kbl6/igt@kms_cursor_crc@pipe-b-cursor-128x42-onscreen.html
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-kbl1/igt@kms_cursor_crc@pipe-b-cursor-128x42-onscreen.html
+    - shard-apl:          [FAIL][51] ([i915#54]) -> [PASS][52]
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-apl8/igt@kms_cursor_crc@pipe-b-cursor-128x42-onscreen.html
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-apl1/igt@kms_cursor_crc@pipe-b-cursor-128x42-onscreen.html
+
+  * igt@kms_cursor_crc@pipe-c-cursor-suspend:
+    - shard-apl:          [DMESG-WARN][53] ([i915#180]) -> [PASS][54]
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-apl4/igt@kms_cursor_crc@pipe-c-cursor-suspend.html
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-apl7/igt@kms_cursor_crc@pipe-c-cursor-suspend.html
+
+  * igt@kms_flip@flip-vs-suspend-interruptible:
+    - shard-hsw:          [INCOMPLETE][55] ([i915#61]) -> [PASS][56] +1 similar issue
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-hsw7/igt@kms_flip@flip-vs-suspend-interruptible.html
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-hsw6/igt@kms_flip@flip-vs-suspend-interruptible.html
+
+  * igt@kms_plane@plane-panning-bottom-right-suspend-pipe-a-planes:
+    - shard-iclb:         [INCOMPLETE][57] ([i915#140] / [i915#250]) -> [PASS][58]
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb8/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-a-planes.html
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb7/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-a-planes.html
+
+  * igt@kms_psr@no_drrs:
+    - shard-iclb:         [FAIL][59] ([i915#173]) -> [PASS][60]
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb1/igt@kms_psr@no_drrs.html
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb8/igt@kms_psr@no_drrs.html
+
+  * igt@kms_psr@psr2_sprite_plane_move:
+    - shard-iclb:         [SKIP][61] ([fdo#109441]) -> [PASS][62] +2 similar issues
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb4/igt@kms_psr@psr2_sprite_plane_move.html
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb2/igt@kms_psr@psr2_sprite_plane_move.html
+
+  
+#### Warnings ####
+
+  * igt@gem_ctx_isolation@vcs1-nonpriv-switch:
+    - shard-iclb:         [SKIP][63] ([fdo#109276] / [fdo#112080]) -> [FAIL][64] ([IGT#28])
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-iclb3/igt@gem_ctx_isolation@vcs1-nonpriv-switch.html
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-iclb4/igt@gem_ctx_isolation@vcs1-nonpriv-switch.html
+
+  * igt@gem_tiled_blits@interruptible:
+    - shard-hsw:          [FAIL][65] ([i915#694]) -> [FAIL][66] ([i915#818])
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-hsw1/igt@gem_tiled_blits@interruptible.html
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-hsw2/igt@gem_tiled_blits@interruptible.html
+
+  * igt@gem_userptr_blits@sync-unmap-cycles:
+    - shard-snb:          [DMESG-WARN][67] ([fdo#110789] / [fdo#111870] / [i915#478]) -> [DMESG-WARN][68] ([fdo#111870] / [i915#478])
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-snb1/igt@gem_userptr_blits@sync-unmap-cycles.html
+   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-snb4/igt@gem_userptr_blits@sync-unmap-cycles.html
+
+  * igt@i915_pm_rpm@universal-planes-dpms:
+    - shard-snb:          [SKIP][69] ([fdo#109271]) -> [INCOMPLETE][70] ([i915#82])
+   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7811/shard-snb5/igt@i915_pm_rpm@universal-planes-dpms.html
+   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/shard-snb5/igt@i915_pm_rpm@universal-planes-dpms.html
+
+  
+  [IGT#28]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/28
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109276]: https://bugs.freedesktop.org/show_bug.cgi?id=109276
+  [fdo#109441]: https://bugs.freedesktop.org/show_bug.cgi?id=109441
+  [fdo#110789]: https://bugs.freedesktop.org/show_bug.cgi?id=110789
+  [fdo#110854]: https://bugs.freedesktop.org/show_bug.cgi?id=110854
+  [fdo#111870]: https://bugs.freedesktop.org/show_bug.cgi?id=111870
+  [fdo#112080]: https://bugs.freedesktop.org/show_bug.cgi?id=112080
+  [fdo#112146]: https://bugs.freedesktop.org/show_bug.cgi?id=112146
+  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
+  [i915#140]: https://gitlab.freedesktop.org/drm/intel/issues/140
+  [i915#173]: https://gitlab.freedesktop.org/drm/intel/issues/173
+  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
+  [i915#250]: https://gitlab.freedesktop.org/drm/intel/issues/250
+  [i915#31]: https://gitlab.freedesktop.org/drm/intel/issues/31
+  [i915#454]: https://gitlab.freedesktop.org/drm/intel/issues/454
+  [i915#478]: https://gitlab.freedesktop.org/drm/intel/issues/478
+  [i915#51]: https://gitlab.freedesktop.org/drm/intel/issues/51
+  [i915#54]: https://gitlab.freedesktop.org/drm/intel/issues/54
+  [i915#553]: https://gitlab.freedesktop.org/drm/intel/issues/553
+  [i915#61]: https://gitlab.freedesktop.org/drm/intel/issues/61
+  [i915#694]: https://gitlab.freedesktop.org/drm/intel/issues/694
+  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
+  [i915#818]: https://gitlab.freedesktop.org/drm/intel/issues/818
+  [i915#82]: https://gitlab.freedesktop.org/drm/intel/issues/82
+  [i915#831]: https://gitlab.freedesktop.org/drm/intel/issues/831
+
+
+Participating hosts (10 -> 8)
+------------------------------
+
+  Missing    (2): pig-skl-6260u pig-glk-j5005 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5384 -> IGTPW_3994
+  * Piglit: piglit_4509 -> None
+
+  CI-20190529: 20190529
+  CI_DRM_7811: f528982f5c837f075e82ca544df010ca5183064a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_3994: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/index.html
+  IGT_5384: fd6896567f7d612c76207970376d4f1e634ded55 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_3994/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
