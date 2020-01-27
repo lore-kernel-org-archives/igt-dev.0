@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 88D456EAA1
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2020 09:46:46 +0000 (UTC)
+Date: Mon, 27 Jan 2020 15:16:46 +0530
+From: Ramalingam C <ramalingam.c@intel.com>
+Message-ID: <20200127094147.GA25694@intel.com>
+References: <20200127084610.29356-1-ramalingam.c@intel.com>
+ <158011536751.25356.9436764177649025245@skylake-alporthouse-com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 27 Jan 2020 09:19:16 -0000
-Message-ID: <158011675664.9687.18020798183781782772@emeril.freedesktop.org>
-References: <20200126134811.2084060-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200126134811.2084060-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_s?=
- =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/2=5D_i915=3A_Inject_invalid_CS?=
- =?utf-8?q?_into_hanging_spinners?=
+Content-Disposition: inline
+In-Reply-To: <158011536751.25356.9436764177649025245@skylake-alporthouse-com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_create: Remove page
+ nonaligned buffer tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,48 +19,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On 2020-01-27 at 08:56:07 +0000, Chris Wilson wrote:
+> Quoting Ramalingam C (2020-01-27 08:46:10)
+> > Considering that kernel returns the real memory size(page aligned)
+> > allocated, nonaligned buffer tests are not valid anymore. Hence removing
+> > them.
+> 
+> > 
+> > Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
+> > cc: Chris Wilson <chris@chris-wilson.co.uk>
+> > ---
+> >  tests/i915/gem_create.c | 46 -----------------------------------------
+> >  1 file changed, 46 deletions(-)
+> > 
+> > diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
+> > index 8fc128dae6e2..d80479c757e8 100644
+> > --- a/tests/i915/gem_create.c
+> > +++ b/tests/i915/gem_create.c
+> > @@ -119,46 +119,6 @@ static void invalid_size_test(int fd)
+> >         igt_assert_eq(create_ioctl(fd, &create), -EINVAL);
+> >  }
+> >  
+> > -/*
+> > - * Creating an object with non-aligned size and trying to access it with an
+> > - * offset, which is greater than the requested size but smaller than the
+> > - * object's last page boundary. pwrite here must be successful.
+> > - */
+> > -static void valid_nonaligned_size(int fd)
+> > -{
+> > -       struct drm_i915_gem_create create = {
+> > -               .size = PAGE_SIZE / 2,
+> > -       };
+> > -       char buf[PAGE_SIZE];
+> > -
+> > -       igt_assert_eq(create_ioctl(fd, &create), 0);
+> > -
+> > -       gem_write(fd, create.handle, PAGE_SIZE / 2, buf, PAGE_SIZE / 2);
+> > -
+> > -       gem_close(fd, create.handle);
+> 
+> This is reasonable, just add a igt_assert(create.size >= PAGE_SIZE) as
+you mean igt_assert(create.size == PAGE_SIZE) right... ?
 
-Series: series starting with [i-g-t,1/2] i915: Inject invalid CS into hanging spinners
-URL   : https://patchwork.freedesktop.org/series/72587/
-State : failure
+I will update this test.
 
-== Summary ==
-
-ERROR! This series introduces new undocumented tests:
-
-gem_ctx_persistence@hang
-gem_ctx_persistence@hostile
-
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
-
-[Documentation] has more details on how to do this.
-
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
-
-Thanks in advance!
-
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-
-Other than that, pipeline status: SUCCESS.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/101567 for the overview.
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/101567
+-Ram
+> well. We pass in a small request, the kernel pads it to a minimum of
+> system page size so that it will work with the usual page aligned
+> interfaces. We verify that the extra size returned by the kernel is
+> usable.
+> 
+> > -}
+> > -
+> > -/*
+> > - * Creating an object with non-aligned size and trying to access it with an
+> > - * offset, which is greater than the requested size and larger than the
+> > - * object's last page boundary. pwrite here must fail.
+> > - */
+> > -static void invalid_nonaligned_size(int fd)
+> > -{
+> > -       struct drm_i915_gem_create create = {
+> > -               .size = PAGE_SIZE / 2,
+> > -       };
+> > -       char buf[PAGE_SIZE];
+> > -
+> > -       igt_assert_eq(create_ioctl(fd, &create), 0);
+> > -
+> > -       /* This should fail. Hence cannot use gem_write. */
+> > -       igt_assert(__gem_write(fd, create.handle,
+> > -                              PAGE_SIZE / 2, buf, PAGE_SIZE));
+> 
+> This is falling under gem_write testing, since we aren't looking at
+> create.size and deliberating trying to write passed the end.
+> 
+> So I wouldn't be upset losing this.
+> -Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
