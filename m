@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD0D66EB0B
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2020 11:04:31 +0000 (UTC)
-From: Ramalingam C <ramalingam.c@intel.com>
-Date: Mon, 27 Jan 2020 16:34:31 +0530
-Message-Id: <20200127110431.30712-1-ramalingam.c@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A92436EB2E
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2020 11:23:22 +0000 (UTC)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_create: Modify the page
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20200127110431.30712-1-ramalingam.c@intel.com>
+References: <20200127110431.30712-1-ramalingam.c@intel.com>
+Message-ID: <158012418532.25356.7697959714402670112@skylake-alporthouse-com>
+Date: Mon, 27 Jan 2020 11:23:05 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_create: Modify the page
  nonaligned tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -19,87 +21,22 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev <igt-dev@lists.freedesktop.org>
+To: Ramalingam C <ramalingam.c@intel.com>, igt-dev <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Considering that kernel returns the real memory size(page aligned)
-allocated, "create-invalid-nonaligned" test is not needed anymore.
-Hence removing them.
-
-At "create-valid-nonaligned" test we are asserting the returned mem size
-from kernel to be minimum page aligned and checking the write into padded
-memory.
-
-Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
-cc: Chris Wilson <chris@chris-wilson.co.uk>
----
- tests/i915/gem_create.c | 30 +++---------------------------
- 1 file changed, 3 insertions(+), 27 deletions(-)
-
-diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-index 8fc128dae6e2..0a0c4d5804a2 100644
---- a/tests/i915/gem_create.c
-+++ b/tests/i915/gem_create.c
-@@ -120,9 +120,8 @@ static void invalid_size_test(int fd)
- }
- 
- /*
-- * Creating an object with non-aligned size and trying to access it with an
-- * offset, which is greater than the requested size but smaller than the
-- * object's last page boundary. pwrite here must be successful.
-+ * Creating an object with non-aligned size request and assert the buffer is
-+ * page aligned. And test the write into the padded extra memory.
-  */
- static void valid_nonaligned_size(int fd)
- {
-@@ -132,33 +131,13 @@ static void valid_nonaligned_size(int fd)
- 	char buf[PAGE_SIZE];
- 
- 	igt_assert_eq(create_ioctl(fd, &create), 0);
-+	igt_assert(create.size >= PAGE_SIZE);
- 
- 	gem_write(fd, create.handle, PAGE_SIZE / 2, buf, PAGE_SIZE / 2);
- 
- 	gem_close(fd, create.handle);
- }
- 
--/*
-- * Creating an object with non-aligned size and trying to access it with an
-- * offset, which is greater than the requested size and larger than the
-- * object's last page boundary. pwrite here must fail.
-- */
--static void invalid_nonaligned_size(int fd)
--{
--	struct drm_i915_gem_create create = {
--		.size = PAGE_SIZE / 2,
--	};
--	char buf[PAGE_SIZE];
--
--	igt_assert_eq(create_ioctl(fd, &create), 0);
--
--	/* This should fail. Hence cannot use gem_write. */
--	igt_assert(__gem_write(fd, create.handle,
--			       PAGE_SIZE / 2, buf, PAGE_SIZE));
--
--	gem_close(fd, create.handle);
--}
--
- static uint64_t atomic_compare_swap_u64(_Atomic(uint64_t) *ptr,
- 					uint64_t oldval, uint64_t newval)
- {
-@@ -307,9 +286,6 @@ igt_main
- 	igt_subtest("create-valid-nonaligned")
- 		valid_nonaligned_size(fd);
- 
--	igt_subtest("create-invalid-nonaligned")
--		invalid_nonaligned_size(fd);
--
- 	igt_subtest("create-size-update")
- 		size_update(fd);
- 
--- 
-2.20.1
-
+Quoting Ramalingam C (2020-01-27 11:04:31)
+> Considering that kernel returns the real memory size(page aligned)
+> allocated, "create-invalid-nonaligned" test is not needed anymore.
+> Hence removing them.
+> 
+> At "create-valid-nonaligned" test we are asserting the returned mem size
+> from kernel to be minimum page aligned and checking the write into padded
+> memory.
+> 
+> Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
+> cc: Chris Wilson <chris@chris-wilson.co.uk>
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
