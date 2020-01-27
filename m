@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Date: Mon, 27 Jan 2020 09:19:10 +0000
-Message-Id: <20200127091910.14446-2-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20200127091910.14446-1-tvrtko.ursulin@linux.intel.com>
-References: <20200127091910.14446-1-tvrtko.ursulin@linux.intel.com>
+From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+In-Reply-To: <20200127085123.2229746-1-chris@chris-wilson.co.uk>
+References: <20200127085123.2229746-1-chris@chris-wilson.co.uk>
+Date: Mon, 27 Jan 2020 11:58:39 +0200
+Message-ID: <87v9oxmd9s.fsf@gaia.fi.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [CI i-g-t 2/2] tests/i915/gem_exec_parallel:Set engine
- map to default context
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_pipe_control_store_loop: Limit
+ runtime
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,51 +18,63 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Sreedhar Telukuntla <sreedhar.telukuntla@intel.com>
+Chris Wilson <chris@chris-wilson.co.uk> writes:
 
-Set the potential engine map of the parent client's default
-context to the newly created DRM client's default context.
-Without doing so there is a mismatch between the intended
-and actual engine used by the *-fds subtests.
+> Use a runtime limit, not a fixed amount of work, so that it doesn't take
+> several hundred seconds on the slower machines.
+>
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 
-v2: Fix FDS flags check
+Reviewed-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 
-Tvrtko:
-v3: Use new helper gem_context_copy_engines.
-
-Signed-off-by: Sreedhar Telukuntla <sreedhar.telukuntla@intel.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
----
- tests/i915/gem_exec_parallel.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/tests/i915/gem_exec_parallel.c b/tests/i915/gem_exec_parallel.c
-index cfbe78070873..0d4d6c6283e0 100644
---- a/tests/i915/gem_exec_parallel.c
-+++ b/tests/i915/gem_exec_parallel.c
-@@ -83,10 +83,12 @@ static void *thread(void *data)
- 		pthread_cond_wait(t->cond, t->mutex);
- 	pthread_mutex_unlock(t->mutex);
- 
--	if (t->flags & FDS)
-+	if (t->flags & FDS) {
- 		fd = drm_open_driver(DRIVER_INTEL);
--	else
-+		gem_context_copy_engines(t->fd, 0, fd, 0);
-+	} else {
- 		fd = t->fd;
-+	}
- 
- 	i = 0;
- 	batch[i] = MI_STORE_DWORD_IMM | (t->gen < 6 ? 1 << 22 : 0);
--- 
-2.20.1
-
+> ---
+>  tests/i915/gem_pipe_control_store_loop.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/tests/i915/gem_pipe_control_store_loop.c b/tests/i915/gem_pipe_control_store_loop.c
+> index b8a21d780..9330a47c8 100644
+> --- a/tests/i915/gem_pipe_control_store_loop.c
+> +++ b/tests/i915/gem_pipe_control_store_loop.c
+> @@ -62,13 +62,13 @@ uint32_t devid;
+>  
+>  /* Like the store dword test, but we create new command buffers each time */
+>  static void
+> -store_pipe_control_loop(bool preuse_buffer)
+> +store_pipe_control_loop(bool preuse_buffer, int timeout)
+>  {
+>  	int i, val = 0;
+>  	uint32_t *buf;
+>  	drm_intel_bo *target_bo;
+>  
+> -	for (i = 0; i < SLOW_QUICK(0x10000, 4); i++) {
+> +	igt_until_timeout(timeout) {
+>  		/* we want to check tlb consistency of the pipe_control target,
+>  		 * so get a new buffer every time around */
+>  		target_bo = drm_intel_bo_alloc(bufmgr, "target bo", 4096, 4096);
+> @@ -182,10 +182,10 @@ igt_main
+>  	}
+>  
+>  	igt_subtest("fresh-buffer")
+> -		store_pipe_control_loop(false);
+> +		store_pipe_control_loop(false, 2);
+>  
+>  	igt_subtest("reused-buffer")
+> -		store_pipe_control_loop(true);
+> +		store_pipe_control_loop(true, 2);
+>  
+>  	igt_fixture {
+>  		intel_batchbuffer_free(batch);
+> -- 
+> 2.25.0
+>
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
