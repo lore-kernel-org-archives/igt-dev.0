@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 27 Jan 2020 12:00:28 -0000
-Message-ID: <158012642814.9684.5505589375193865478@emeril.freedesktop.org>
-References: <20200126134811.2084060-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200126134811.2084060-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_s?=
- =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/2=5D_i915=3A_Inject_invalid_CS?=
- =?utf-8?q?_into_hanging_spinners_=28rev2=29?=
+Date: Mon, 27 Jan 2020 13:05:59 -0000
+Message-ID: <158013035989.9685.1830339563167736169@emeril.freedesktop.org>
+References: <20200127112710.1427587-1-lionel.g.landwerlin@intel.com>
+In-Reply-To: <20200127112710.1427587-1-lionel.g.landwerlin@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
+ =?utf-8?q?ests=3A_add_i915-query_perf_tests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,22 +19,23 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: series starting with [i-g-t,1/2] i915: Inject invalid CS into hanging spinners (rev2)
-URL   : https://patchwork.freedesktop.org/series/72587/
+Series: tests: add i915-query perf tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/72235/
 State : failure
 
 == Summary ==
 
 ERROR! This series introduces new undocumented tests:
 
-gem_ctx_persistence@hang
-gem_ctx_persistence@hostile
+i915_query@query-perf-config-data-invalid
+i915_query@query-perf-config-list-invalid
+i915_query@query-perf-configs
 
 Can you document them as per the requirement in the [CONTRIBUTING.md]?
 
@@ -52,11 +52,11 @@ Thanks in advance!
 
 Other than that, pipeline status: SUCCESS.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/101737 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/101763 for the overview.
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/101737
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/101763
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
