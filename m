@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 008A86EA61
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2020 08:56:18 +0000 (UTC)
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20200127084610.29356-1-ramalingam.c@intel.com>
-References: <20200127084610.29356-1-ramalingam.c@intel.com>
-Message-ID: <158011536751.25356.9436764177649025245@skylake-alporthouse-com>
-Date: Mon, 27 Jan 2020 08:56:07 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_create: Remove page
- nonaligned buffer tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 27 Jan 2020 09:18:49 -0000
+Message-ID: <158011672937.9687.14369970478948414924@emeril.freedesktop.org>
+References: <20200124170337.346187-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200124170337.346187-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_p?=
+ =?utf-8?q?erf=3A_Treat_Cometlake_as_an_alias_for_Coffeelake?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,82 +14,98 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ramalingam C <ramalingam.c@intel.com>, igt-dev <igt-dev@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Ramalingam C (2020-01-27 08:46:10)
-> Considering that kernel returns the real memory size(page aligned)
-> allocated, nonaligned buffer tests are not valid anymore. Hence removing
-> them.
+== Series Details ==
 
-> 
-> Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
-> cc: Chris Wilson <chris@chris-wilson.co.uk>
-> ---
->  tests/i915/gem_create.c | 46 -----------------------------------------
->  1 file changed, 46 deletions(-)
-> 
-> diff --git a/tests/i915/gem_create.c b/tests/i915/gem_create.c
-> index 8fc128dae6e2..d80479c757e8 100644
-> --- a/tests/i915/gem_create.c
-> +++ b/tests/i915/gem_create.c
-> @@ -119,46 +119,6 @@ static void invalid_size_test(int fd)
->         igt_assert_eq(create_ioctl(fd, &create), -EINVAL);
->  }
->  
-> -/*
-> - * Creating an object with non-aligned size and trying to access it with an
-> - * offset, which is greater than the requested size but smaller than the
-> - * object's last page boundary. pwrite here must be successful.
-> - */
-> -static void valid_nonaligned_size(int fd)
-> -{
-> -       struct drm_i915_gem_create create = {
-> -               .size = PAGE_SIZE / 2,
-> -       };
-> -       char buf[PAGE_SIZE];
-> -
-> -       igt_assert_eq(create_ioctl(fd, &create), 0);
-> -
-> -       gem_write(fd, create.handle, PAGE_SIZE / 2, buf, PAGE_SIZE / 2);
-> -
-> -       gem_close(fd, create.handle);
+Series: perf: Treat Cometlake as an alias for Coffeelake
+URL   : https://patchwork.freedesktop.org/series/72545/
+State : warning
 
-This is reasonable, just add a igt_assert(create.size >= PAGE_SIZE) as
-well. We pass in a small request, the kernel pads it to a minimum of
-system page size so that it will work with the usual page aligned
-interfaces. We verify that the extra size returned by the kernel is
-usable.
+== Summary ==
 
-> -}
-> -
-> -/*
-> - * Creating an object with non-aligned size and trying to access it with an
-> - * offset, which is greater than the requested size and larger than the
-> - * object's last page boundary. pwrite here must fail.
-> - */
-> -static void invalid_nonaligned_size(int fd)
-> -{
-> -       struct drm_i915_gem_create create = {
-> -               .size = PAGE_SIZE / 2,
-> -       };
-> -       char buf[PAGE_SIZE];
-> -
-> -       igt_assert_eq(create_ioctl(fd, &create), 0);
-> -
-> -       /* This should fail. Hence cannot use gem_write. */
-> -       igt_assert(__gem_write(fd, create.handle,
-> -                              PAGE_SIZE / 2, buf, PAGE_SIZE));
+Did not get list of undocumented tests for this run, something is wrong!
 
-This is falling under gem_write testing, since we aren't looking at
-create.size and deliberating trying to write passed the end.
+Other than that, pipeline status: FAILED.
 
-So I wouldn't be upset losing this.
--Chris
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/101157 for the overview.
+
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1455508):
+    [test_root]           Directory that contains the IGT tests. The environment
+                          variable IGT_TEST_ROOT will be used if set, overriding
+                          this option if given.
+  Cannot open /builds/gfx-ci/igt-ci-tags/build/tmpdirGnl8WG/test-list.txt
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1579887046:build_script
+  [0Ksection_start:1579887046:after_script
+  [0Ksection_end:1579887047:after_script
+  [0Ksection_start:1579887047:upload_artifacts_on_failure
+  [0K[32;1mUploading artifacts...[0;m
+  build: found 1403 matching files                  [0;m 
+  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1455508 responseStatus[0;m=201 Created token[0;m=aG8UxSkm
+  section_end:1579887052:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
+
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1455681):
+  tests/gem_exec_balancer:
+    Checking invalid option handling...
+    Checking valid option handling...
+    Checking subtest enumeration...
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1579887332:build_script
+  [0Ksection_start:1579887332:after_script
+  [0Ksection_end:1579887334:after_script
+  [0Ksection_start:1579887334:upload_artifacts_on_failure
+  [0K[32;1mUploading artifacts...[0;m
+  build: found 1378 matching files                  [0;m 
+  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1455681 responseStatus[0;m=201 Created token[0;m=dUdcMQkQ
+  section_end:1579887339:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
+
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1455683):
+  --- stdout ---
+  tests/gem_eio:
+    Checking invalid option handling...
+    Checking valid option handling...
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1579887598:build_script
+  [0Ksection_start:1579887598:after_script
+  [0Ksection_end:1579887599:after_script
+  [0Ksection_start:1579887599:upload_artifacts_on_failure
+  [0K[32;1mUploading artifacts...[0;m
+  build: found 1378 matching files                  [0;m 
+  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1455683 responseStatus[0;m=201 Created token[0;m=5MoxQmiL
+  section_end:1579887605:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/101157
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
