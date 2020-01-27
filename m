@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 93E446EB8E
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2020 13:11:35 +0000 (UTC)
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Date: Mon, 27 Jan 2020 15:11:30 +0200
+Message-Id: <20200127131131.1440949-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 27 Jan 2020 13:05:59 -0000
-Message-ID: <158013035989.9685.1830339563167736169@emeril.freedesktop.org>
-References: <20200127112710.1427587-1-lionel.g.landwerlin@intel.com>
-In-Reply-To: <20200127112710.1427587-1-lionel.g.landwerlin@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
- =?utf-8?q?ests=3A_add_i915-query_perf_tests_=28rev2=29?=
+Subject: [igt-dev] [PATCH i-g-t v4 0/1] tests: add i915-query perf tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,49 +14,27 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Hi again,
 
-Series: tests: add i915-query perf tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/72235/
-State : failure
+This time with igt_describes :)
 
-== Summary ==
+Cheers,
 
-ERROR! This series introduces new undocumented tests:
+Lionel Landwerlin (1):
+  tests/i915-query: add new tests for perf configurations queries
 
-i915_query@query-perf-config-data-invalid
-i915_query@query-perf-config-list-invalid
-i915_query@query-perf-configs
+ tests/i915/i915_query.c | 613 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 613 insertions(+)
 
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
-
-[Documentation] has more details on how to do this.
-
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
-
-Thanks in advance!
-
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-
-Other than that, pipeline status: SUCCESS.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/101763 for the overview.
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/101763
+--
+2.25.0
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
