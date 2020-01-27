@@ -1,11 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 27 Jan 2020 09:07:12 +0000
-Message-Id: <20200127090712.2324227-4-chris@chris-wilson.co.uk>
-In-Reply-To: <20200127090712.2324227-1-chris@chris-wilson.co.uk>
-References: <20200127090712.2324227-1-chris@chris-wilson.co.uk>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Date: Mon, 27 Jan 2020 09:19:09 +0000
+Message-Id: <20200127091910.14446-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 4/4] i915/gem_ctx_switch: Reduce runtime
+Subject: [igt-dev] [CI i-g-t 1/2] lib/i915: Add helper for copying engine
+ maps from one context to another
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,89 +16,79 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reduce the upper timeout for stress tests from 150s to a mere 20s, and
-quick tests to 2s.
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+We also need to support copying across file descriptors.
+
+v2:
+ * Copy over even if src is unset. (Chris)
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Sreedhar Telukuntla <sreedhar.telukuntla@intel.com>
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/i915/gem_ctx_switch.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ lib/i915/gem_context.c | 30 ++++++++++++++++++++++++++++++
+ lib/i915/gem_context.h |  2 ++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/tests/i915/gem_ctx_switch.c b/tests/i915/gem_ctx_switch.c
-index 6bbd24972..2f94e326f 100644
---- a/tests/i915/gem_ctx_switch.c
-+++ b/tests/i915/gem_ctx_switch.c
-@@ -364,18 +364,18 @@ igt_main
- 				}
+diff --git a/lib/i915/gem_context.c b/lib/i915/gem_context.c
+index 0b6a554dfe27..50dfee3d1030 100644
+--- a/lib/i915/gem_context.c
++++ b/lib/i915/gem_context.c
+@@ -462,3 +462,33 @@ bool gem_context_has_engine(int fd, uint32_t ctx, uint64_t engine)
  
- 				igt_subtest_f("legacy-%s%s", e->name, p->name)
--					single(fd, light, e2, p->flags, 1, 5);
-+					single(fd, light, e2, p->flags, 1, 2);
- 				igt_subtest_f("legacy-%s-heavy%s",
- 					      e->name, p->name)
--					single(fd, heavy, e2, p->flags, 1, 5);
-+					single(fd, heavy, e2, p->flags, 1, 2);
- 				igt_subtest_f("legacy-%s-forked%s",
- 					      e->name, p->name)
- 					single(fd, light, e2, p->flags, ncpus,
--					       150);
-+					       20);
- 				igt_subtest_f("legacy-%s-forked-heavy%s",
- 					      e->name, p->name)
- 					single(fd, heavy, e2, p->flags, ncpus,
--					       150);
-+					       20);
- 			}
- 		}
- 	}
-@@ -390,33 +390,33 @@ igt_main
- 				}
+ 	return __gem_execbuf(fd, &execbuf) == -ENOENT;
+ }
++
++/**
++ * gem_context_copy_engines:
++ * @src_fd: open i915 drm file descriptor where @src context belongs to
++ * @src: source engine map context id
++ * @dst_fd: open i915 drm file descriptor where @dst context belongs to
++ * @dst: destination engine map context id
++ *
++ * Special purpose helper for copying engine map from one context to another.
++ *
++ * In can be called regardless of whether the kernel supports context engine
++ * maps and is a no-op if not supported.
++ */
++void
++gem_context_copy_engines(int src_fd, uint32_t src, int dst_fd, uint32_t dst)
++{
++	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, I915_EXEC_RING_MASK + 1);
++	struct drm_i915_gem_context_param param = {
++		.param = I915_CONTEXT_PARAM_ENGINES,
++		.ctx_id = src,
++		.size = sizeof(engines),
++		.value = to_user_pointer(&engines),
++	};
++
++	if (__gem_context_get_param(src_fd, &param))
++		return;
++
++	param.ctx_id = dst;
++	gem_context_set_param(dst_fd, &param);
++}
+diff --git a/lib/i915/gem_context.h b/lib/i915/gem_context.h
+index cf2ba33fee8f..15e5db281b79 100644
+--- a/lib/i915/gem_context.h
++++ b/lib/i915/gem_context.h
+@@ -42,6 +42,8 @@ uint32_t gem_context_clone(int i915,
+ 			   uint32_t src, unsigned int share,
+ 			   unsigned int flags);
+ uint32_t gem_context_clone_with_engines(int i915, uint32_t src);
++void gem_context_copy_engines(int src_fd, uint32_t src,
++			      int dst_fd, uint32_t dst);
  
- 				igt_subtest_f("%s%s", e2->name, p->name)
--					single(fd, light, e2, p->flags, 1, 5);
-+					single(fd, light, e2, p->flags, 1, 2);
- 				igt_subtest_f("%s-heavy%s", e2->name, p->name)
--					single(fd, heavy, e2, p->flags, 1, 5);
-+					single(fd, heavy, e2, p->flags, 1, 2);
- 				igt_subtest_f("%s-forked%s", e2->name, p->name)
- 					single(fd, light, e2, p->flags, ncpus,
--					       150);
-+					       20);
- 				igt_subtest_f("%s-forked-heavy%s",
- 					      e2->name, p->name)
- 					single(fd, heavy, e2, p->flags, ncpus,
--					       150);
-+					       20);
- 			}
- 		}
- 	}
- 
- 	igt_subtest("all-light")
--		all(fd, light, 0, 5);
-+		all(fd, light, 0, 2);
- 	igt_subtest("all-heavy")
--		all(fd, heavy, 0, 5);
-+		all(fd, heavy, 0, 2);
- 
- 	igt_subtest_group {
- 		igt_fixture {
- 			igt_require(gem_has_queues(fd));
- 		}
- 		igt_subtest("queue-light")
--			all(fd, light, QUEUE, 5);
-+			all(fd, light, QUEUE, 2);
- 		igt_subtest("queue-heavy")
--			all(fd, heavy, QUEUE, 5);
-+			all(fd, heavy, QUEUE, 2);
- 	}
- 
- 	igt_fixture {
+ uint32_t gem_queue_create(int i915);
+ uint32_t gem_queue_clone_with_engines(int i915, uint32_t src);
 -- 
-2.25.0
+2.20.1
 
 _______________________________________________
 igt-dev mailing list
