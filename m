@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1EC226E1BB
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jan 2020 17:13:15 +0000 (UTC)
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20200127170205.7195-4-ramalingam.c@intel.com>
-References: <20200127170205.7195-1-ramalingam.c@intel.com>
- <20200127170205.7195-4-ramalingam.c@intel.com>
-Message-ID: <158014518219.25356.9692221359856117157@skylake-alporthouse-com>
-Date: Mon, 27 Jan 2020 17:13:02 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 4/5] tests/dumb_duffer: extending for
- lmem coverage.
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 27 Jan 2020 17:17:10 -0000
+Message-ID: <158014543043.9684.11980775119707541688@emeril.freedesktop.org>
+References: <20200127121818.2492460-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200127121818.2492460-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/5=5D_i915=3A_Start_putting_the?=
+ =?utf-8?q?_mmio=5Fbase_to_wider_use?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,32 +15,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ramalingam C <ramalingam.c@intel.com>, igt-dev <igt-dev@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Ramalingam C (2020-01-27 17:02:04)
->         igt_fixture {
-> -               fd = drm_open_driver(DRIVER_ANY);
-> +               data.drm_fd = drm_open_driver(DRIVER_ANY);
-> +               data.lmem = false;
-> +               data.page_size = 4096;
-> +               if (is_i915_device(data.drm_fd)) {
-> +                       if (gem_has_lmem(data.drm_fd)) {
-> +                               data.lmem = true;
-> +                               data.page_size = 65536;
-> +                       }
+== Series Details ==
 
-Just say to be agnostic to all potential limitations across drivers,
-bump the allocation unit to SZ_2M. Let's not hardcode any backend
-specific behaviour if we avoid it.
+Series: series starting with [i-g-t,1/5] i915: Start putting the mmio_base to wider use
+URL   : https://patchwork.freedesktop.org/series/72620/
+State : warning
 
-An alternative might be to assume that create.size returned for a 1x1
-surface is the min_page_size. Better.
--Chris
+== Summary ==
+
+Did not get list of undocumented tests for this run, something is wrong!
+
+Other than that, pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/101870 for the overview.
+
+build:tests-debian-autotools has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1472953):
+    CCLD     vgem_basic
+    CCLD     vgem_slow
+    CCLD     sysfs_heartbeat_interval
+  /usr/bin/ld: /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o: in function `_start':
+  (.text+0x20): undefined reference to `main'
+  collect2: error: ld returned 1 exit status
+  make[3]: Leaving directory '/builds/gfx-ci/igt-ci-tags/tests'
+  make[3]: *** [Makefile:4564: sysfs_heartbeat_interval] Error 1
+  make[2]: *** [Makefile:5341: all-recursive] Error 1
+  make[2]: Leaving directory '/builds/gfx-ci/igt-ci-tags/tests'
+  make[1]: *** [Makefile:514: all-recursive] Error 1
+  make[1]: Leaving directory '/builds/gfx-ci/igt-ci-tags'
+  make: *** [Makefile:446: all] Error 2
+  section_end:1580145327:build_script
+  [0Ksection_start:1580145327:after_script
+  [0Ksection_end:1580145328:after_script
+  [0Ksection_start:1580145328:upload_artifacts_on_failure
+  [0Ksection_end:1580145330:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/101870
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
