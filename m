@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C571B6ED46
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jan 2020 09:28:37 +0000 (UTC)
-From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Date: Tue, 28 Jan 2020 14:42:17 +0530
-Message-Id: <20200128091217.27112-2-krishnaiah.bommu@intel.com>
-In-Reply-To: <20200128091217.27112-1-krishnaiah.bommu@intel.com>
-References: <20200128091217.27112-1-krishnaiah.bommu@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 869776ED42
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jan 2020 09:26:30 +0000 (UTC)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v4 1/1] tests/i915/gem_ctx_persistence: Set
- context with supported engines
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20200128092204.GA11349@zkempczy-desk.igk.intel.com>
+References: <20200128090022.10547-1-zbigniew.kempczynski@intel.com>
+ <158020271085.525.13300871984135519604@skylake-alporthouse-com>
+ <20200128092204.GA11349@zkempczy-desk.igk.intel.com>
+Message-ID: <158020358466.525.12722593605355564106@skylake-alporthouse-com>
+Date: Tue, 28 Jan 2020 09:26:24 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_tiled_wc: skip on
+ platforms without GGTT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,203 +19,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Update the context with supported engines on the platform with set_property
-I915_CONTEXT_PARAM_ENGINES to make sure the work load is submitted to
-the available engines only.
-
-v2: addressed the review comments.
-v3: addressed v2 review comments.
-V4: Re-introduced the gem_context_set_all_engines() API,test_process_mixed()
-test creating new forked process, to set engine map to new forked process
-I added gem_context_set_all_engines() API.
-
-Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
----
- lib/i915/gem_engine_topology.c   | 11 +++++++
- lib/i915/gem_engine_topology.h   |  2 ++
- tests/i915/gem_ctx_persistence.c | 52 ++++++++++++++++++++++++++------
- 3 files changed, 55 insertions(+), 10 deletions(-)
-
-diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-index 43a99e0f..ed6737ef 100644
---- a/lib/i915/gem_engine_topology.c
-+++ b/lib/i915/gem_engine_topology.c
-@@ -274,6 +274,17 @@ int gem_context_lookup_engine(int fd, uint64_t engine, uint32_t ctx_id,
- 	return 0;
- }
- 
-+void gem_context_set_all_engines(int fd, uint32_t ctx)
-+{
-+        DEFINE_CONTEXT_ENGINES_PARAM(engines, param, ctx, GEM_MAX_ENGINES);
-+        struct intel_engine_data engine_data = { };
-+
-+        if (!gem_topology_get_param(fd, &param) && !param.size) {
-+                query_engine_list(fd, &engine_data);
-+                ctx_map_engines(fd, &engine_data, &param);
-+        }
-+}
-+
- bool gem_has_engine_topology(int fd)
- {
- 	struct drm_i915_gem_context_param param = {
-diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
-index e40d7ec8..525741cc 100644
---- a/lib/i915/gem_engine_topology.h
-+++ b/lib/i915/gem_engine_topology.h
-@@ -51,6 +51,8 @@ void intel_next_engine(struct intel_engine_data *ed);
- int gem_context_lookup_engine(int fd, uint64_t engine, uint32_t ctx_id,
- 			      struct intel_execution_engine2 *e);
- 
-+void gem_context_set_all_engines(int fd, uint32_t ctx);
-+
- bool gem_context_has_engine_map(int fd, uint32_t ctx);
- 
- bool gem_engine_is_equal(const struct intel_execution_engine2 *e1,
-diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
-index d68431ae..4e1004c8 100644
---- a/tests/i915/gem_ctx_persistence.c
-+++ b/tests/i915/gem_ctx_persistence.c
-@@ -156,7 +156,7 @@ static void test_persistence(int i915, unsigned int engine)
- 	 * request is retired -- no early termination.
- 	 */
- 
--	ctx = gem_context_create(i915);
-+	ctx = gem_context_clone_with_engines(i915, 0);
- 	gem_context_set_persistence(i915, ctx, true);
- 
- 	spin = igt_spin_new(i915, ctx,
-@@ -188,7 +188,7 @@ static void test_nonpersistent_cleanup(int i915, unsigned int engine)
- 	 * any inflight request is cancelled.
- 	 */
- 
--	ctx = gem_context_create(i915);
-+	ctx = gem_context_clone_with_engines(i915, 0);
- 	gem_context_set_persistence(i915, ctx, false);
- 
- 	spin = igt_spin_new(i915, ctx,
-@@ -217,7 +217,7 @@ static void test_nonpersistent_mixed(int i915, unsigned int engine)
- 		igt_spin_t *spin;
- 		uint32_t ctx;
- 
--		ctx = gem_context_create(i915);
-+		ctx = gem_context_clone_with_engines(i915, 0);
- 		gem_context_set_persistence(i915, ctx, i & 1);
- 
- 		spin = igt_spin_new(i915, ctx,
-@@ -253,7 +253,7 @@ static void test_nonpersistent_hostile(int i915, unsigned int engine)
- 	 * the requests and cleanup the context.
- 	 */
- 
--	ctx = gem_context_create(i915);
-+	ctx = gem_context_clone_with_engines(i915, 0);
- 	gem_context_set_persistence(i915, ctx, false);
- 
- 	spin = igt_spin_new(i915, ctx,
-@@ -284,7 +284,7 @@ static void test_nonpersistent_hostile_preempt(int i915, unsigned int engine)
- 
- 	igt_require(gem_scheduler_has_preemption(i915));
- 
--	ctx = gem_context_create(i915);
-+	ctx = gem_context_clone_with_engines(i915, 0);
- 	gem_context_set_persistence(i915, ctx, true);
- 	gem_context_set_priority(i915, ctx, 0);
- 	spin[0] = igt_spin_new(i915, ctx,
-@@ -295,7 +295,7 @@ static void test_nonpersistent_hostile_preempt(int i915, unsigned int engine)
- 
- 	igt_spin_busywait_until_started(spin[0]);
- 
--	ctx = gem_context_create(i915);
-+	ctx = gem_context_clone_with_engines(i915, 0);
- 	gem_context_set_persistence(i915, ctx, false);
- 	gem_context_set_priority(i915, ctx, 1); /* higher priority than 0 */
- 	spin[1] = igt_spin_new(i915, ctx,
-@@ -385,7 +385,7 @@ static void test_nonpersistent_queued(int i915, unsigned int engine)
- 
- 	gem_quiescent_gpu(i915);
- 
--	ctx = gem_context_create(i915);
-+	ctx = gem_context_clone_with_engines(i915, 0);
- 	gem_context_set_persistence(i915, ctx, false);
- 	spin = igt_spin_new(i915, ctx,
- 			    .engine = engine,
-@@ -512,7 +512,8 @@ static void test_process_mixed(int i915, unsigned int engine)
- 			igt_spin_t *spin;
- 			uint32_t ctx;
- 
--			ctx = gem_context_create(i915);
-+			ctx = gem_context_clone_with_engines(i915, 0);
-+			gem_context_set_all_engines(i915, ctx);
- 			gem_context_set_persistence(i915, ctx, persists);
- 
- 			spin = igt_spin_new(i915, ctx,
-@@ -727,13 +728,44 @@ igt_main
- 	igt_subtest("hangcheck")
- 		test_nohangcheck_hostile(i915);
- 
--	__for_each_static_engine(e) {
-+	for_each_engine(e, i915) {
- 		igt_subtest_group {
- 			igt_fixture {
- 				gem_require_ring(i915, e->flags);
- 				gem_require_contexts(i915);
- 			}
- 
-+			igt_subtest_f("legacy-%s-persistence", e->name)
-+				test_persistence(i915, e->flags);
-+
-+			igt_subtest_f("legacy-%s-cleanup", e->name)
-+				test_nonpersistent_cleanup(i915, e->flags);
-+
-+			igt_subtest_f("legacy-%s-queued", e->name)
-+				test_nonpersistent_queued(i915, e->flags);
-+
-+			igt_subtest_f("legacy-%s-mixed", e->name)
-+				test_nonpersistent_mixed(i915, e->flags);
-+
-+			igt_subtest_f("legacy-%s-mixed-process", e->name)
-+				test_process_mixed(i915, e->flags);
-+
-+			igt_subtest_f("legacy-%s-hostile", e->name)
-+				test_nonpersistent_hostile(i915, e->flags);
-+
-+			igt_subtest_f("legacy-%s-hostile-preempt", e->name)
-+				test_nonpersistent_hostile_preempt(i915,
-+								   e->flags);
-+		}
-+	}
-+
-+        __for_each_physical_engine(i915, e) {
-+                igt_subtest_group {
-+                        igt_fixture {
-+                                gem_require_ring(i915, e->flags);
-+                                gem_require_contexts(i915);
-+                        }
-+
- 			igt_subtest_f("%s-persistence", e->name)
- 				test_persistence(i915, e->flags);
- 
-@@ -753,7 +785,7 @@ igt_main
- 				test_nonpersistent_hostile(i915, e->flags);
- 
- 			igt_subtest_f("%s-hostile-preempt", e->name)
--				test_nonpersistent_hostile_preempt(i915,
-+				test_nonpersistent_hostile_preempt(i915, 
- 								   e->flags);
- 		}
- 	}
--- 
-2.24.0
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMDEtMjggMDk6MjI6MDQpCj4gT24g
+VHVlLCBKYW4gMjgsIDIwMjAgYXQgMDk6MTE6NTBBTSArMDAwMCwgQ2hyaXMgV2lsc29uIHdyb3Rl
+Ogo+ID4gUXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMDEtMjggMDk6MDA6MjIp
+Cj4gPiA+IE9uIHBsYXRmb3JtcyB3aXRob3V0IGFwZXJ0dXJlIGVuc3VyZSB0ZXN0IGlzIHNraXBw
+ZWQuIExvY2FsaXplCj4gPiA+IEdFTV9NTUFQIGlvY3RsKCkgdG8gbWFrZSBzdXJlIHRoaXMgaW50
+ZXJmYWNlIGlzIHRlc3RlZC4KPiA+IAo+ID4gQWN0dWFsbHkgdGhpcyB3b3VsZCBiZSBvayB3aXRo
+IGRldmljZSBjb2hlcmVudC4gTm90IHN1cmUgaWYgaXQncwo+ID4gcmVsZXZhbnQuLi4gWW91IGNv
+dWxkIGNlcnRhaW5seSB3cml0ZSB0aGUgZXF1aXZhbGVudCBmb3IgbW1hcF9vZmZzZXQsCj4gPiB0
+aGF0IGlzIHRoZSBHVFQgcGF0aCB0YWtlcyB0aGUgZmVuY2UsIGFuZCB0aGUgb3RoZXJzIGRvIG5v
+dC4KPiA+IAo+ID4gPiBTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWdu
+aWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KPiA+ID4gQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNA
+Y2hyaXMtd2lsc29uLmNvLnVrPgo+ID4gUmV2aWV3ZWQtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNA
+Y2hyaXMtd2lsc29uLmNvLnVrPgo+ID4gCj4gPiBJIHdvdWxkIG1vdmUgdGhpcyBpbnRvIGdlbV9t
+bWFwX3djIGp1c3QgdG8gbWFrZSBpdCBtb3JlIHNlbGYtY29udGFpbmVkLAo+ID4gaWd0X3N1YnRl
+c3QoInRpbGVkIikuCj4gCj4gWW91IHRoaW5rIGp1c3QgdG8gcmVtb3ZlIHRoaXMgdGVzdCBhZnRl
+ciBtaWdyYXRpbmcgdG8gZ2VtX21tYXBfd2M/IAoKSSB0aGluayB0aGlzIHdvdWxkIG1ha2UgYSB2
+YWxpZCBzdWJ0ZXN0IGZvciBnZW1fbW1hcF93Yy5jIChyZXBsYWNpbmcgdGhpcwouYykgYW5kIGFs
+c28gYXBwbGllcyB0byBnZW1fbW1hcF9vZmZzZXQuYwoKPiBPbmx5IGNvbnMgSSBzZWUgbm93IGlz
+IHRoYXQgd2UgZG9uJ3Qgc3VwcG9ydCBvZmZzZXQgaW4gZ2VtX21tYXBfb2Zmc2V0X193YygpCj4g
+c28gSSB3b3VsZCBkZWZlciBpdCB3aGVuIHRoaXMgYXJndW1lbnQgd2lsbCBiZSBoYW5kbGVkLgoK
+VGhhdCdzIG5vdCBhIGh1Z2UgZGVhbCB3cnQgdG8gdGhlIHRlc3QsIGFsbCBpdCBpcyBkb2luZyBp
+cyB2ZXJpZnlpbmcKdGhhdCBldmVuIHRob3VnaCB0aGUgb2JqZWN0IGhhcyBhIHRpbGluZywgdGhl
+IFdDL1dCL1VDIHZpZXdzIGFyZSB1bnRpbGVkCndoZXJlYXMgR1RUIGlzLgotQ2hyaXMKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5n
+IGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
+a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
