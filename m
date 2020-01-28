@@ -1,11 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C4BCF6E893
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jan 2020 14:34:47 +0000 (UTC)
-From: Mika Kahola <mika.kahola@intel.com>
-Date: Tue, 28 Jan 2020 16:30:54 +0200
-Message-Id: <20200128143054.23907-1-mika.kahola@intel.com>
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_ccs: Select highest resolution
+MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 28 Jan 2020 15:15:06 -0000
+Message-ID: <158022450613.20534.7176228621235439763@emeril.freedesktop.org>
+References: <20200128112549.172135-1-daniel.vetter@ffwll.ch>
+In-Reply-To: <20200128112549.172135-1-daniel.vetter@ffwll.ch>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/3=5D_tests/kms=5Ffbcon=5Ffbt=3A_Che?=
+ =?utf-8?q?ck_for_psr_before_keeling_over?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -13,93 +15,97 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In some cases we select resolution that is insufficient for testing
-and we receive unnecessary skips on CI. Let's loop through all available
-modes and select the higest one when running the tests.
+== Series Details ==
 
-Signed-off-by: Mika Kahola <mika.kahola@intel.com>
----
- tests/kms_ccs.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+Series: series starting with [i-g-t,1/3] tests/kms_fbcon_fbt: Check for psr before keeling over
+URL   : https://patchwork.freedesktop.org/series/72654/
+State : success
 
-diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
-index 2259a4f1..ddc6a30b 100644
---- a/tests/kms_ccs.c
-+++ b/tests/kms_ccs.c
-@@ -276,12 +276,28 @@ static igt_plane_t *compatible_main_plane(data_t *data)
- 	return igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
- }
- 
-+static drmModeModeInfo get_mode(igt_output_t *output)
-+{
-+	const drmModeModeInfo *mode;
-+	drmModeModeInfo *tmp;
-+	int i;
-+
-+	mode = &output->config.connector->modes[0];
-+	for (i = 1; i < output->config.connector->count_modes; i++) {
-+		tmp = &output->config.connector->modes[i];
-+		if (tmp->vdisplay > mode->vdisplay)
-+			mode = tmp;
-+	}
-+
-+	return *mode;
-+}
-+
- static bool try_config(data_t *data, enum test_fb_flags fb_flags,
- 		       igt_crc_t *crc)
- {
- 	igt_display_t *display = &data->display;
- 	igt_plane_t *primary = compatible_main_plane(data);
--	drmModeModeInfo *drm_mode = igt_output_get_mode(data->output);
-+	drmModeModeInfo drm_mode = get_mode(data->output);
- 	enum igt_commit_style commit;
- 	struct igt_fb fb, fb_sprite;
- 	int ret;
-@@ -298,25 +314,27 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
- 				      data->ccs_modifier))
- 		return false;
- 
-+	igt_output_override_mode(data->output, &drm_mode);
-+
- 	if (data->plane && fb_flags & FB_COMPRESSED) {
- 		if (!igt_plane_has_format_mod(data->plane, data->format,
- 					      data->ccs_modifier))
- 			return false;
- 
--		generate_fb(data, &fb, min(MAX_SPRITE_PLANE_WIDTH, drm_mode->hdisplay),
--			    drm_mode->vdisplay,
-+		generate_fb(data, &fb, min(MAX_SPRITE_PLANE_WIDTH, drm_mode.hdisplay),
-+			    drm_mode.vdisplay,
- 			    (fb_flags & ~FB_COMPRESSED) | FB_HAS_PLANE);
- 		generate_fb(data, &fb_sprite, 256, 256, fb_flags);
- 	} else {
--		generate_fb(data, &fb, min(MAX_SPRITE_PLANE_WIDTH, drm_mode->hdisplay),
--			    drm_mode->vdisplay, fb_flags);
-+		generate_fb(data, &fb, min(MAX_SPRITE_PLANE_WIDTH, drm_mode.hdisplay),
-+			    drm_mode.vdisplay, fb_flags);
- 	}
- 
- 	if (data->flags & TEST_FAIL_ON_ADDFB2)
- 		return true;
- 
- 	igt_plane_set_position(primary, 0, 0);
--	igt_plane_set_size(primary, drm_mode->hdisplay, drm_mode->vdisplay);
-+	igt_plane_set_size(primary, drm_mode.hdisplay, drm_mode.vdisplay);
- 	igt_plane_set_fb(primary, &fb);
- 
- 	if (data->plane && fb_flags & FB_COMPRESSED) {
--- 
-2.17.1
+== Summary ==
 
+CI Bug Log - changes from CI_DRM_7831 -> IGTPW_4015
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4015/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4015 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_close_race@basic-threads:
+    - fi-hsw-peppy:       [PASS][1] -> [INCOMPLETE][2] ([i915#816])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7831/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4015/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
+
+  * igt@gem_sync@basic-all:
+    - fi-icl-dsi:         [PASS][3] -> [DMESG-WARN][4] ([i915#109])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7831/fi-icl-dsi/igt@gem_sync@basic-all.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4015/fi-icl-dsi/igt@gem_sync@basic-all.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live_blt:
+    - fi-hsw-4770r:       [DMESG-FAIL][5] ([i915#725]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7831/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4015/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+
+  * igt@i915_selftest@live_gtt:
+    - fi-icl-u2:          [TIMEOUT][7] ([fdo#112271]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7831/fi-icl-u2/igt@i915_selftest@live_gtt.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4015/fi-icl-u2/igt@i915_selftest@live_gtt.html
+    - fi-bdw-5557u:       [TIMEOUT][9] ([fdo#112271]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7831/fi-bdw-5557u/igt@i915_selftest@live_gtt.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4015/fi-bdw-5557u/igt@i915_selftest@live_gtt.html
+
+  
+  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
+  [i915#109]: https://gitlab.freedesktop.org/drm/intel/issues/109
+  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
+  [i915#816]: https://gitlab.freedesktop.org/drm/intel/issues/816
+
+
+Participating hosts (50 -> 42)
+------------------------------
+
+  Missing    (8): fi-ilk-m540 fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-kbl-x1275 fi-byt-n2820 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5393 -> IGTPW_4015
+
+  CI-20190529: 20190529
+  CI_DRM_7831: c40c8f70d19e5b27cffb4bb4609b1bc76fd1a58a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4015: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4015/index.html
+  IGT_5393: 9b8b789ef15f8b5abdfbe2684cae234164254cda @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4015/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
