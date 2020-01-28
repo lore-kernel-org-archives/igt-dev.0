@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B72A6ED02
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jan 2020 08:32:17 +0000 (UTC)
+From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+Date: Tue, 28 Jan 2020 13:45:58 +0530
+Message-Id: <20200128081558.26688-2-krishnaiah.bommu@intel.com>
+In-Reply-To: <20200128081558.26688-1-krishnaiah.bommu@intel.com>
+References: <20200128081558.26688-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 27 Jan 2020 20:28:48 -0000
-Message-ID: <158015692826.9685.7458733158139571987@emeril.freedesktop.org>
-References: <20200127192859.20029-1-bob.j.paauwe@intel.com>
-In-Reply-To: <20200127192859.20029-1-bob.j.paauwe@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_l?=
- =?utf-8?q?ib/color=5Fencoding=3A_Fix_up_support_for_XYUV_format?=
+Subject: [igt-dev] [PATCH i-g-t v4 1/1] tests/i915/gem_ctx_persistence: Set
+ context with supported engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,164 +17,223 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bob Paauwe <bob.j.paauwe@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Update the context with supported engines on the platform with set_property
+I915_CONTEXT_PARAM_ENGINES to make sure the work load is submitted to
+the available engines only.
 
-Series: lib/color_encoding: Fix up support for XYUV format
-URL   : https://patchwork.freedesktop.org/series/72636/
-State : warning
+v2: addressed the review comments.
+v3: addressed v2 review comments.
+V4: addressed v3 review comments.
 
-== Summary ==
+Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
+ lib/i915/gem_engine_topology.c   | 11 ++++++
+ lib/i915/gem_engine_topology.h   |  2 +
+ tests/i915/gem_ctx_persistence.c | 65 ++++++++++++++++++++++++--------
+ 3 files changed, 62 insertions(+), 16 deletions(-)
 
-Did not get list of undocumented tests for this run, something is wrong!
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index 43a99e0f..ed6737ef 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -274,6 +274,17 @@ int gem_context_lookup_engine(int fd, uint64_t engine, uint32_t ctx_id,
+ 	return 0;
+ }
+ 
++void gem_context_set_all_engines(int fd, uint32_t ctx)
++{
++        DEFINE_CONTEXT_ENGINES_PARAM(engines, param, ctx, GEM_MAX_ENGINES);
++        struct intel_engine_data engine_data = { };
++
++        if (!gem_topology_get_param(fd, &param) && !param.size) {
++                query_engine_list(fd, &engine_data);
++                ctx_map_engines(fd, &engine_data, &param);
++        }
++}
++
+ bool gem_has_engine_topology(int fd)
+ {
+ 	struct drm_i915_gem_context_param param = {
+diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
+index e40d7ec8..525741cc 100644
+--- a/lib/i915/gem_engine_topology.h
++++ b/lib/i915/gem_engine_topology.h
+@@ -51,6 +51,8 @@ void intel_next_engine(struct intel_engine_data *ed);
+ int gem_context_lookup_engine(int fd, uint64_t engine, uint32_t ctx_id,
+ 			      struct intel_execution_engine2 *e);
+ 
++void gem_context_set_all_engines(int fd, uint32_t ctx);
++
+ bool gem_context_has_engine_map(int fd, uint32_t ctx);
+ 
+ bool gem_engine_is_equal(const struct intel_execution_engine2 *e1,
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index d68431ae..e0c6965a 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -156,7 +156,7 @@ static void test_persistence(int i915, unsigned int engine)
+ 	 * request is retired -- no early termination.
+ 	 */
+ 
+-	ctx = gem_context_create(i915);
++	ctx = gem_context_clone_with_engines(i915, 0);
+ 	gem_context_set_persistence(i915, ctx, true);
+ 
+ 	spin = igt_spin_new(i915, ctx,
+@@ -188,7 +188,7 @@ static void test_nonpersistent_cleanup(int i915, unsigned int engine)
+ 	 * any inflight request is cancelled.
+ 	 */
+ 
+-	ctx = gem_context_create(i915);
++	ctx = gem_context_clone_with_engines(i915, 0);
+ 	gem_context_set_persistence(i915, ctx, false);
+ 
+ 	spin = igt_spin_new(i915, ctx,
+@@ -217,7 +217,7 @@ static void test_nonpersistent_mixed(int i915, unsigned int engine)
+ 		igt_spin_t *spin;
+ 		uint32_t ctx;
+ 
+-		ctx = gem_context_create(i915);
++		ctx = gem_context_clone_with_engines(i915, 0);
+ 		gem_context_set_persistence(i915, ctx, i & 1);
+ 
+ 		spin = igt_spin_new(i915, ctx,
+@@ -253,7 +253,7 @@ static void test_nonpersistent_hostile(int i915, unsigned int engine)
+ 	 * the requests and cleanup the context.
+ 	 */
+ 
+-	ctx = gem_context_create(i915);
++	ctx = gem_context_clone_with_engines(i915, 0);
+ 	gem_context_set_persistence(i915, ctx, false);
+ 
+ 	spin = igt_spin_new(i915, ctx,
+@@ -284,7 +284,7 @@ static void test_nonpersistent_hostile_preempt(int i915, unsigned int engine)
+ 
+ 	igt_require(gem_scheduler_has_preemption(i915));
+ 
+-	ctx = gem_context_create(i915);
++	ctx = gem_context_clone_with_engines(i915, 0);
+ 	gem_context_set_persistence(i915, ctx, true);
+ 	gem_context_set_priority(i915, ctx, 0);
+ 	spin[0] = igt_spin_new(i915, ctx,
+@@ -295,7 +295,7 @@ static void test_nonpersistent_hostile_preempt(int i915, unsigned int engine)
+ 
+ 	igt_spin_busywait_until_started(spin[0]);
+ 
+-	ctx = gem_context_create(i915);
++	ctx = gem_context_clone_with_engines(i915, 0);
+ 	gem_context_set_persistence(i915, ctx, false);
+ 	gem_context_set_priority(i915, ctx, 1); /* higher priority than 0 */
+ 	spin[1] = igt_spin_new(i915, ctx,
+@@ -385,7 +385,7 @@ static void test_nonpersistent_queued(int i915, unsigned int engine)
+ 
+ 	gem_quiescent_gpu(i915);
+ 
+-	ctx = gem_context_create(i915);
++	ctx = gem_context_clone_with_engines(i915, 0);
+ 	gem_context_set_persistence(i915, ctx, false);
+ 	spin = igt_spin_new(i915, ctx,
+ 			    .engine = engine,
+@@ -512,7 +512,8 @@ static void test_process_mixed(int i915, unsigned int engine)
+ 			igt_spin_t *spin;
+ 			uint32_t ctx;
+ 
+-			ctx = gem_context_create(i915);
++			ctx = gem_context_clone_with_engines(i915, 0);
++			gem_context_set_all_engines(i915, ctx);
+ 			gem_context_set_persistence(i915, ctx, persists);
+ 
+ 			spin = igt_spin_new(i915, ctx,
+@@ -727,37 +728,69 @@ igt_main
+ 	igt_subtest("hangcheck")
+ 		test_nohangcheck_hostile(i915);
+ 
+-	__for_each_static_engine(e) {
++	for_each_engine(e, i915) {
+ 		igt_subtest_group {
+ 			igt_fixture {
+ 				gem_require_ring(i915, e->flags);
+ 				gem_require_contexts(i915);
+ 			}
+ 
+-			igt_subtest_f("%s-persistence", e->name)
++			igt_subtest_f("legacy-%s-persistence", e->name)
+ 				test_persistence(i915, e->flags);
+ 
+-			igt_subtest_f("%s-cleanup", e->name)
++			igt_subtest_f("legacy-%s-cleanup", e->name)
+ 				test_nonpersistent_cleanup(i915, e->flags);
+ 
+-			igt_subtest_f("%s-queued", e->name)
++			igt_subtest_f("legacy-%s-queued", e->name)
+ 				test_nonpersistent_queued(i915, e->flags);
+ 
+-			igt_subtest_f("%s-mixed", e->name)
++			igt_subtest_f("legacy-%s-mixed", e->name)
+ 				test_nonpersistent_mixed(i915, e->flags);
+ 
+-			igt_subtest_f("%s-mixed-process", e->name)
++			igt_subtest_f("legacy-%s-mixed-process", e->name)
+ 				test_process_mixed(i915, e->flags);
+ 
+-			igt_subtest_f("%s-hostile", e->name)
++			igt_subtest_f("legacy-%s-hostile", e->name)
+ 				test_nonpersistent_hostile(i915, e->flags);
+ 
+-			igt_subtest_f("%s-hostile-preempt", e->name)
++			igt_subtest_f("legacy-%s-hostile-preempt", e->name)
+ 				test_nonpersistent_hostile_preempt(i915,
+ 								   e->flags);
+ 		}
+ 	}
+ 
++        __for_each_physical_engine(i915, e) {
++                igt_subtest_group {
++                        igt_fixture {
++                                gem_require_ring(i915, e->flags);
++                                gem_require_contexts(i915);
++                        }
++
++                        igt_subtest_f("%s-persistence", e->name)
++                                test_persistence(i915, e->flags);
++
++                        igt_subtest_f("%s-cleanup", e->name)
++                                test_nonpersistent_cleanup(i915, e->flags);
++
++                        igt_subtest_f("%s-queued", e->name)
++                                test_nonpersistent_queued(i915, e->flags);
++
++                        igt_subtest_f("%s-mixed", e->name)
++                                test_nonpersistent_mixed(i915, e->flags);
++
++                        igt_subtest_f("%s-mixed-process", e->name)
++                                test_process_mixed(i915, e->flags);
++
++                        igt_subtest_f("%s-hostile", e->name)
++                                test_nonpersistent_hostile(i915, e->flags);
++
++                        igt_subtest_f("%s-hostile-preempt", e->name)
++                                test_nonpersistent_hostile_preempt(i915,
++                                                                   e->flags);
++                }
++        }
++
++
+ 	igt_subtest("smoketest")
+ 		smoketest(i915);
+ 
+-- 
+2.24.0
 
-Other than that, pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/101947 for the overview.
-
-test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1474702):
-    [test_root]           Directory that contains the IGT tests. The environment
-                          variable IGT_TEST_ROOT will be used if set, overriding
-                          this option if given.
-  Cannot open /builds/gfx-ci/igt-ci-tags/build/tmpdirsaUonV/test-list.txt
-  -------
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1580156049:build_script
-  [0Ksection_start:1580156049:after_script
-  [0Ksection_end:1580156050:after_script
-  [0Ksection_start:1580156050:upload_artifacts_on_failure
-  [0K[32;1mUploading artifacts...[0;m
-  build: found 1379 matching files                  [0;m 
-  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1474702 responseStatus[0;m=201 Created token[0;m=zFZxx7c6
-  section_end:1580156056:upload_artifacts_on_failure
-  [0K[31;1mERROR: Job failed: exit code 1
-  [0;m
-
-test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1474703):
-    [test_root]           Directory that contains the IGT tests. The environment
-                          variable IGT_TEST_ROOT will be used if set, overriding
-                          this option if given.
-  Cannot open /builds/gfx-ci/igt-ci-tags/build/tmpdirXsVs69/test-list.txt
-  -------
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1580156103:build_script
-  [0Ksection_start:1580156103:after_script
-  [0Ksection_end:1580156104:after_script
-  [0Ksection_start:1580156104:upload_artifacts_on_failure
-  [0K[32;1mUploading artifacts...[0;m
-  build: found 1379 matching files                  [0;m 
-  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1474703 responseStatus[0;m=201 Created token[0;m=yj1ycmtf
-  section_end:1580156110:upload_artifacts_on_failure
-  [0K[31;1mERROR: Job failed: exit code 1
-  [0;m
-
-test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1474712):
-    [test_root]           Directory that contains the IGT tests. The environment
-                          variable IGT_TEST_ROOT will be used if set, overriding
-                          this option if given.
-  Cannot open /builds/gfx-ci/igt-ci-tags/build/tmpdirafSQ2R/test-list.txt
-  -------
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1580156393:build_script
-  [0Ksection_start:1580156393:after_script
-  [0Ksection_end:1580156395:after_script
-  [0Ksection_start:1580156395:upload_artifacts_on_failure
-  [0K[32;1mUploading artifacts...[0;m
-  build: found 1379 matching files                  [0;m 
-  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1474712 responseStatus[0;m=201 Created token[0;m=EghC_an_
-  section_end:1580156401:upload_artifacts_on_failure
-  [0K[31;1mERROR: Job failed: exit code 1
-  [0;m
-
-test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1474713):
-    [test_root]           Directory that contains the IGT tests. The environment
-                          variable IGT_TEST_ROOT will be used if set, overriding
-                          this option if given.
-  Cannot open /builds/gfx-ci/igt-ci-tags/build/tmpdirnzJZ1k/test-list.txt
-  -------
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1580156495:build_script
-  [0Ksection_start:1580156495:after_script
-  [0Ksection_end:1580156496:after_script
-  [0Ksection_start:1580156496:upload_artifacts_on_failure
-  [0K[32;1mUploading artifacts...[0;m
-  build: found 1379 matching files                  [0;m 
-  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1474713 responseStatus[0;m=201 Created token[0;m=esYneQy3
-  section_end:1580156502:upload_artifacts_on_failure
-  [0K[31;1mERROR: Job failed: exit code 1
-  [0;m
-
-test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1474752):
-    [test_root]           Directory that contains the IGT tests. The environment
-                          variable IGT_TEST_ROOT will be used if set, overriding
-                          this option if given.
-  Cannot open /builds/gfx-ci/igt-ci-tags/build/tmpdirpDDOKe/test-list.txt
-  -------
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1580156728:build_script
-  [0Ksection_start:1580156728:after_script
-  [0Ksection_end:1580156729:after_script
-  [0Ksection_start:1580156729:upload_artifacts_on_failure
-  [0K[32;1mUploading artifacts...[0;m
-  build: found 1379 matching files                  [0;m 
-  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1474752 responseStatus[0;m=201 Created token[0;m=T1X9DkbS
-  section_end:1580156735:upload_artifacts_on_failure
-  [0K[31;1mERROR: Job failed: exit code 1
-  [0;m
-
-test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1474757):
-    [test_root]           Directory that contains the IGT tests. The environment
-                          variable IGT_TEST_ROOT will be used if set, overriding
-                          this option if given.
-  Cannot open /builds/gfx-ci/igt-ci-tags/build/tmpdircmw9ir/test-list.txt
-  -------
-  
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1580156857:build_script
-  [0Ksection_start:1580156857:after_script
-  [0Ksection_end:1580156859:after_script
-  [0Ksection_start:1580156859:upload_artifacts_on_failure
-  [0K[32;1mUploading artifacts...[0;m
-  build: found 1379 matching files                  [0;m 
-  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1474757 responseStatus[0;m=201 Created token[0;m=pi3oio8L
-  section_end:1580156864:upload_artifacts_on_failure
-  [0K[31;1mERROR: Job failed: exit code 1
-  [0;m
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/101947
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
