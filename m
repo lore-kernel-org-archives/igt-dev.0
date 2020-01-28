@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F6E06E104
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jan 2020 17:48:12 +0000 (UTC)
+From: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Date: Tue, 28 Jan 2020 23:17:42 +0530
+Message-Id: <20200128174742.4310-1-arjun.melkaveri@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 28 Jan 2020 17:32:27 -0000
-Message-ID: <158023274702.20535.2200668330467685663@emeril.freedesktop.org>
-References: <20200128152307.3477-1-arjun.melkaveri@intel.com>
-In-Reply-To: <20200128152307.3477-1-arjun.melkaveri@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fexec=5Fnop=3AAdjusted_test_to_utilize_all_available_engine?=
- =?utf-8?q?s_=28rev6=29?=
+Subject: [igt-dev] [PATCH V7] i915/gem_exec_nop:Adjusted test to utilize all
+ available engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,157 +15,500 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Added __for_each_physical_engine to utilize all available engines.
+Moved single, signal, preempt, poll and headless test cases
+from static to dynamic group.
 
-Series: i915/gem_exec_nop:Adjusted test to utilize all available engines (rev6)
-URL   : https://patchwork.freedesktop.org/series/72334/
-State : success
+Cc: Dec Katarzyna <katarzyna.dec@intel.com>
+Cc: Kempczynski Zbigniew <zbigniew.kempczynski@intel.com>
+Cc: Tahvanainen Jari <jari.tahvanainen@intel.com>
+Cc: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
+Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+---
+V1 -> V2
 
-== Summary ==
+Addressed Tvrtko review comments
+1) removed gem_require_ring
+2) replaced gem_can_store_dword with gem_class_can_store_dword
+3) Fixed WhiteSpace issues.
+---
+V2 -> V3
 
-CI Bug Log - changes from CI_DRM_7833 -> IGTPW_4020
-====================================================
+Added back missing code. i.e. MIN_PRIO
+---
+V3 -> V4
 
-Summary
--------
+1) Added gem_context_set_all_engines , that was deleted accidentally
+2) Removed gem_require_ring from fence_signal
+3) Passing NULL in fence_signal to run test for all engines.
+---
+V4 -> V5
 
-  **SUCCESS**
+Used gem_context_clone_with_engines for creating contexts
+---
+V5 -> V6
 
-  No regressions found.
+Added missing code to check context support. gem_context_clone_with_engines
+ checks this by calling gem_context_create having igt_assert_eq for
+__gem_context_create.
+---
+V6 -> V7
+Minor correction related to check context support.
+---
+ tests/i915/gem_exec_nop.c | 171 +++++++++++++++++++++-----------------
+ 1 file changed, 97 insertions(+), 74 deletions(-)
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4020/index.html
+diff --git a/tests/i915/gem_exec_nop.c b/tests/i915/gem_exec_nop.c
+index 9a2efd32..6eb8006d 100644
+--- a/tests/i915/gem_exec_nop.c
++++ b/tests/i915/gem_exec_nop.c
+@@ -66,8 +66,9 @@ static double elapsed(const struct timespec *start, const struct timespec *end)
+ 		(end->tv_nsec - start->tv_nsec)*1e-9);
+ }
+ 
+-static double nop_on_ring(int fd, uint32_t handle, unsigned ring_id,
+-			  int timeout, unsigned long *out)
++static double nop_on_ring(int fd, uint32_t handle,
++			  const struct intel_execution_engine2 *e, int timeout,
++			  unsigned long *out)
+ {
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+@@ -80,11 +81,11 @@ static double nop_on_ring(int fd, uint32_t handle, unsigned ring_id,
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(&obj);
+ 	execbuf.buffer_count = 1;
+-	execbuf.flags = ring_id;
++	execbuf.flags = e->flags;
+ 	execbuf.flags |= LOCAL_I915_EXEC_HANDLE_LUT;
+ 	execbuf.flags |= LOCAL_I915_EXEC_NO_RELOC;
+ 	if (__gem_execbuf(fd, &execbuf)) {
+-		execbuf.flags = ring_id;
++		execbuf.flags = e->flags;
+ 		gem_execbuf(fd, &execbuf);
+ 	}
+ 	intel_detect_and_clear_missed_interrupts(fd);
+@@ -104,7 +105,8 @@ static double nop_on_ring(int fd, uint32_t handle, unsigned ring_id,
+ 	return elapsed(&start, &now);
+ }
+ 
+-static void poll_ring(int fd, unsigned engine, const char *name, int timeout)
++static void poll_ring(int fd, const struct intel_execution_engine2 *e,
++		      int timeout)
+ {
+ 	const int gen = intel_gen(intel_get_drm_devid(fd));
+ 	const uint32_t MI_ARB_CHK = 0x5 << 23;
+@@ -121,9 +123,8 @@ static void poll_ring(int fd, unsigned engine, const char *name, int timeout)
+ 	if (gen == 4 || gen == 5)
+ 		flags |= I915_EXEC_SECURE;
+ 
+-	gem_require_ring(fd, engine);
+-	igt_require(gem_can_store_dword(fd, engine));
+-	igt_require(gem_engine_has_mutable_submission(fd, engine));
++	igt_require(gem_class_can_store_dword(fd, e->class));
++	igt_require(gem_class_has_mutable_submission(fd, e->class));
+ 
+ 	memset(&obj, 0, sizeof(obj));
+ 	obj.handle = gem_create(fd, 4096);
+@@ -187,7 +188,7 @@ static void poll_ring(int fd, unsigned engine, const char *name, int timeout)
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(&obj);
+ 	execbuf.buffer_count = 1;
+-	execbuf.flags = engine | flags;
++	execbuf.flags = e->flags | flags;
+ 
+ 	cycles = 0;
+ 	do {
+@@ -209,7 +210,7 @@ static void poll_ring(int fd, unsigned engine, const char *name, int timeout)
+ 	gem_sync(fd, obj.handle);
+ 
+ 	igt_info("%s completed %ld cycles: %.3f us\n",
+-		 name, cycles, elapsed*1e-3/cycles);
++		 e->name, cycles, elapsed*1e-3/cycles);
+ 
+ 	munmap(batch, 4096);
+ 	gem_close(fd, obj.handle);
+@@ -218,6 +219,7 @@ static void poll_ring(int fd, unsigned engine, const char *name, int timeout)
+ static void poll_sequential(int fd, const char *name, int timeout)
+ {
+ 	const int gen = intel_gen(intel_get_drm_devid(fd));
++	const struct intel_execution_engine2 *e;
+ 	const uint32_t MI_ARB_CHK = 0x5 << 23;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj[2];
+@@ -234,13 +236,14 @@ static void poll_sequential(int fd, const char *name, int timeout)
+ 		flags |= I915_EXEC_SECURE;
+ 
+ 	nengine = 0;
+-	for_each_physical_engine(e, fd) {
+-		if (!gem_can_store_dword(fd, eb_ring(e)) ||
+-		    !gem_engine_has_mutable_submission(fd, eb_ring(e)))
++	__for_each_physical_engine(fd, e) {
++		if (!gem_class_can_store_dword(fd, e->class) ||
++		    !gem_class_has_mutable_submission(fd, e->class))
+ 			continue;
+ 
+-		engines[nengine++] = eb_ring(e);
++		engines[nengine++] = e->flags;
+ 	}
++
+ 	igt_require(nengine);
+ 
+ 	memset(obj, 0, sizeof(obj));
+@@ -344,21 +347,20 @@ static void poll_sequential(int fd, const char *name, int timeout)
+ }
+ 
+ static void single(int fd, uint32_t handle,
+-		   unsigned ring_id, const char *ring_name)
++		   const struct intel_execution_engine2 *e)
+ {
+ 	double time;
+ 	unsigned long count;
+ 
+-	gem_require_ring(fd, ring_id);
+-
+-	time = nop_on_ring(fd, handle, ring_id, 20, &count);
++	time = nop_on_ring(fd, handle, e, 20, &count);
+ 	igt_info("%s: %'lu cycles: %.3fus\n",
+-		 ring_name, count, time*1e6 / count);
++		  e->name, count, time*1e6 / count);
+ }
+ 
+ static double
+-stable_nop_on_ring(int fd, uint32_t handle, unsigned int engine,
+-		   int timeout, int reps)
++stable_nop_on_ring(int fd, uint32_t handle,
++		   const struct intel_execution_engine2 *e, int timeout,
++		   int reps)
+ {
+ 	igt_stats_t s;
+ 	double n;
+@@ -372,7 +374,7 @@ stable_nop_on_ring(int fd, uint32_t handle, unsigned int engine,
+ 		unsigned long count;
+ 		double time;
+ 
+-		time = nop_on_ring(fd, handle, engine, timeout, &count);
++		time = nop_on_ring(fd, handle, e, timeout, &count);
+ 		igt_stats_push_float(&s, time / count);
+ 	}
+ 
+@@ -388,7 +390,8 @@ stable_nop_on_ring(int fd, uint32_t handle, unsigned int engine,
+                      "'%s' != '%s' (%f not within %f%% tolerance of %f)\n",\
+                      #x, #ref, x, tolerance * 100.0, ref)
+ 
+-static void headless(int fd, uint32_t handle)
++static void headless(int fd, uint32_t handle,
++		     const struct intel_execution_engine2 *e)
+ {
+ 	unsigned int nr_connected = 0;
+ 	drmModeConnector *connector;
+@@ -411,7 +414,7 @@ static void headless(int fd, uint32_t handle)
+ 	kmstest_set_vt_graphics_mode();
+ 
+ 	/* benchmark nops */
+-	n_display = stable_nop_on_ring(fd, handle, I915_EXEC_DEFAULT, 1, 5);
++	n_display = stable_nop_on_ring(fd, handle, e, 1, 5);
+ 	igt_info("With one display connected: %.2fus\n",
+ 		 n_display * 1e6);
+ 
+@@ -419,7 +422,7 @@ static void headless(int fd, uint32_t handle)
+ 	kmstest_unset_all_crtcs(fd, res);
+ 
+ 	/* benchmark nops again */
+-	n_headless = stable_nop_on_ring(fd, handle, I915_EXEC_DEFAULT, 1, 5);
++	n_headless = stable_nop_on_ring(fd, handle, e, 1, 5);
+ 	igt_info("Without a display connected (headless): %.2fus\n",
+ 		 n_headless * 1e6);
+ 
+@@ -429,6 +432,7 @@ static void headless(int fd, uint32_t handle)
+ 
+ static void parallel(int fd, uint32_t handle, int timeout)
+ {
++	const struct intel_execution_engine2 *e;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+ 	unsigned engines[16];
+@@ -439,12 +443,11 @@ static void parallel(int fd, uint32_t handle, int timeout)
+ 
+ 	sum = 0;
+ 	nengine = 0;
+-	for_each_physical_engine(e, fd) {
+-		engines[nengine] = eb_ring(e);
+-		names[nengine] = e->name;
+-		nengine++;
++	__for_each_physical_engine(fd, e) {
++		engines[nengine] = e->flags;
++		names[nengine++] = e->name;
+ 
+-		time = nop_on_ring(fd, handle, eb_ring(e), 1, &count) / count;
++		time = nop_on_ring(fd, handle, e, 1, &count) / count;
+ 		sum += time;
+ 		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
+ 	}
+@@ -490,6 +493,7 @@ static void parallel(int fd, uint32_t handle, int timeout)
+ 
+ static void series(int fd, uint32_t handle, int timeout)
+ {
++	const struct intel_execution_engine2 *e;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+ 	struct timespec start, now, sync;
+@@ -500,8 +504,8 @@ static void series(int fd, uint32_t handle, int timeout)
+ 	const char *name;
+ 
+ 	nengine = 0;
+-	for_each_physical_engine(e, fd) {
+-		time = nop_on_ring(fd, handle, eb_ring(e), 1, &count) / count;
++	__for_each_physical_engine(fd, e) {
++		time = nop_on_ring(fd, handle, e, 1, &count) / count;
+ 		if (time > max) {
+ 			name = e->name;
+ 			max = time;
+@@ -509,7 +513,7 @@ static void series(int fd, uint32_t handle, int timeout)
+ 		if (time < min)
+ 			min = time;
+ 		sum += time;
+-		engines[nengine++] = eb_ring(e);
++		engines[nengine++] = e->flags;
+ 	}
+ 	igt_require(nengine);
+ 	igt_info("Maximum execution latency on %s, %.3fus, min %.3fus, total %.3fus per cycle, average %.3fus\n",
+@@ -580,6 +584,7 @@ static void xchg(void *array, unsigned i, unsigned j)
+ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+ {
+ 	const int ncpus = flags & FORKED ? sysconf(_SC_NPROCESSORS_ONLN) : 1;
++	const struct intel_execution_engine2 *e;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj[2];
+ 	unsigned engines[16];
+@@ -595,14 +600,14 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+ 
+ 	nengine = 0;
+ 	sum = 0;
+-	for_each_physical_engine(e, fd) {
++	__for_each_physical_engine(fd, e) {
+ 		unsigned long count;
+ 
+-		time = nop_on_ring(fd, handle, eb_ring(e), 1, &count) / count;
++		time = nop_on_ring(fd, handle, e, 1, &count) / count;
+ 		sum += time;
+ 		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
+ 
+-		engines[nengine++] = eb_ring(e);
++		engines[nengine++] = e->flags;
+ 	}
+ 	igt_require(nengine);
+ 	igt_info("Total (individual) execution latency %.3fus per cycle\n",
+@@ -623,7 +628,7 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+ 	if (flags & CONTEXT) {
+ 		uint32_t id;
+ 
+-		igt_require(__gem_context_create(fd, &id) == 0);
++		igt_require(gem_context_clone_with_engines(fd, id) == 0);
+ 		execbuf.rsvd1 = id;
+ 	}
+ 
+@@ -642,8 +647,12 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+ 		obj[0].handle = gem_create(fd, 4096);
+ 		gem_execbuf(fd, &execbuf);
+ 
+-		if (flags & CONTEXT)
+-			execbuf.rsvd1 = gem_context_create(fd);
++		if (flags & CONTEXT) {
++			uint32_t id;
++
++			igt_require(gem_context_clone_with_engines(fd, id) == 0);
++			execbuf.rsvd1 = id;
++		}
+ 
+ 		hars_petruska_f54_1_random_perturb(child);
+ 
+@@ -710,12 +719,13 @@ static bool fence_wait(int fence)
+ }
+ 
+ static void fence_signal(int fd, uint32_t handle,
+-			 unsigned ring_id, const char *ring_name,
+-			 int timeout)
++			 const struct intel_execution_engine2 *ring_id,
++			 const char *ring_name, int timeout)
+ {
+ #define NFENCES 512
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
++	struct intel_execution_engine2 *__e;
+ 	struct timespec start, now;
+ 	unsigned engines[16];
+ 	unsigned nengine;
+@@ -725,12 +735,11 @@ static void fence_signal(int fd, uint32_t handle,
+ 	igt_require(gem_has_exec_fence(fd));
+ 
+ 	nengine = 0;
+-	if (ring_id == ALL_ENGINES) {
+-		for_each_physical_engine(e, fd)
+-			engines[nengine++] = eb_ring(e);
++	if (!ring_id) {
++		__for_each_physical_engine(fd, __e)
++			engines[nengine++] = __e->flags;
+ 	} else {
+-		gem_require_ring(fd, ring_id);
+-		engines[nengine++] = ring_id;
++		engines[nengine++] = ring_id->flags;
+ 	}
+ 	igt_require(nengine);
+ 
+@@ -787,7 +796,7 @@ static void fence_signal(int fd, uint32_t handle,
+ }
+ 
+ static void preempt(int fd, uint32_t handle,
+-		   unsigned ring_id, const char *ring_name)
++		    const struct intel_execution_engine2 *e)
+ {
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+@@ -795,12 +804,10 @@ static void preempt(int fd, uint32_t handle,
+ 	unsigned long count;
+ 	uint32_t ctx[2];
+ 
+-	gem_require_ring(fd, ring_id);
+-
+-	ctx[0] = gem_context_create(fd);
++	ctx[0] = gem_context_clone_with_engines(fd, 0);
+ 	gem_context_set_priority(fd, ctx[0], MIN_PRIO);
+ 
+-	ctx[1] = gem_context_create(fd);
++	ctx[1] = gem_context_clone_with_engines(fd, 0);
+ 	gem_context_set_priority(fd, ctx[1], MAX_PRIO);
+ 
+ 	memset(&obj, 0, sizeof(obj));
+@@ -809,11 +816,11 @@ static void preempt(int fd, uint32_t handle,
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(&obj);
+ 	execbuf.buffer_count = 1;
+-	execbuf.flags = ring_id;
++	execbuf.flags = e->flags;
+ 	execbuf.flags |= LOCAL_I915_EXEC_HANDLE_LUT;
+ 	execbuf.flags |= LOCAL_I915_EXEC_NO_RELOC;
+ 	if (__gem_execbuf(fd, &execbuf)) {
+-		execbuf.flags = ring_id;
++		execbuf.flags = e->flags;
+ 		gem_execbuf(fd, &execbuf);
+ 	}
+ 	execbuf.rsvd1 = ctx[1];
+@@ -825,7 +832,7 @@ static void preempt(int fd, uint32_t handle,
+ 		igt_spin_t *spin =
+ 			__igt_spin_new(fd,
+ 				       .ctx = ctx[0],
+-				       .engine = ring_id);
++				       .engine = e->flags);
+ 
+ 		for (int loop = 0; loop < 1024; loop++)
+ 			gem_execbuf(fd, &execbuf);
+@@ -841,12 +848,12 @@ static void preempt(int fd, uint32_t handle,
+ 	gem_context_destroy(fd, ctx[0]);
+ 
+ 	igt_info("%s: %'lu cycles: %.3fus\n",
+-		 ring_name, count, elapsed(&start, &now)*1e6 / count);
++		 e->name, count, elapsed(&start, &now)*1e6 / count);
+ }
+ 
+ igt_main
+ {
+-	const struct intel_execution_engine *e;
++	const struct intel_execution_engine2 *e;
+ 	uint32_t handle = 0;
+ 	int device = -1;
+ 
+@@ -873,15 +880,24 @@ igt_main
+ 	igt_subtest("basic-sequential")
+ 		sequential(device, handle, 0, 2);
+ 
+-	for (e = intel_execution_engines; e->name; e++) {
+-		igt_subtest_f("%s", e->name)
+-			single(device, handle, eb_ring(e), e->name);
+-		igt_subtest_f("signal-%s", e->name)
+-			fence_signal(device, handle, eb_ring(e), e->name, 2);
++	igt_subtest_with_dynamic("single") {
++		__for_each_physical_engine(device, e) {
++			igt_dynamic_f("%s", e->name)
++				single(device, handle, e);
++		}
++	}
++
++	igt_subtest_with_dynamic("signal") {
++		__for_each_physical_engine(device, e) {
++			igt_dynamic_f("%s", e->name)
++				fence_signal(device, handle, e,
++					     e->name, 2);
++		}
+ 	}
+ 
+ 	igt_subtest("signal-all")
+-		fence_signal(device, handle, ALL_ENGINES, "all", 20);
++		/* NULL value means all engines */
++		fence_signal(device, handle, NULL, "all", 20);
+ 
+ 	igt_subtest("series")
+ 		series(device, handle, 20);
+@@ -907,10 +923,11 @@ igt_main
+ 			igt_require(gem_scheduler_has_ctx_priority(device));
+ 			igt_require(gem_scheduler_has_preemption(device));
+ 		}
+-
+-		for (e = intel_execution_engines; e->name; e++) {
+-			igt_subtest_f("preempt-%s", e->name)
+-				preempt(device, handle, eb_ring(e), e->name);
++		igt_subtest_with_dynamic("preempt") {
++			__for_each_physical_engine(device, e) {
++				igt_dynamic_f("%s", e->name)
++					preempt(device, handle, e);
++			}
+ 		}
+ 	}
+ 
+@@ -919,19 +936,25 @@ igt_main
+ 			igt_device_set_master(device);
+ 		}
+ 
+-		for (e = intel_execution_engines; e->name; e++) {
+-			/* Requires master for STORE_DWORD on gen4/5 */
+-			igt_subtest_f("poll-%s", e->name)
+-				poll_ring(device, eb_ring(e), e->name, 20);
++		igt_subtest_with_dynamic("poll") {
++			__for_each_physical_engine(device, e) {
++				/* Requires master for STORE_DWORD on gen4/5 */
++				igt_dynamic_f("%s", e->name)
++					poll_ring(device, e, 20);
++			}
++		}
++
++		igt_subtest_with_dynamic("headless") {
++			__for_each_physical_engine(device, e) {
++				igt_dynamic_f("%s", e->name)
++				/* Requires master for changing display modes */
++					headless(device, handle, e);
++			}
+ 		}
+ 
+ 		igt_subtest("poll-sequential")
+ 			poll_sequential(device, "Sequential", 20);
+ 
+-		igt_subtest("headless") {
+-			/* Requires master for changing display modes */
+-			headless(device, handle);
+-		}
+ 	}
+ 
+ 	igt_fixture {
+-- 
+2.24.0
 
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4020 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_parallel@fds:
-    - fi-byt-n2820:       [PASS][1] -> [TIMEOUT][2] ([fdo#112271])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7833/fi-byt-n2820/igt@gem_exec_parallel@fds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4020/fi-byt-n2820/igt@gem_exec_parallel@fds.html
-
-  * igt@i915_module_load@reload-with-fault-injection:
-    - fi-icl-guc:         [PASS][3] -> [DMESG-WARN][4] ([i915#109])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7833/fi-icl-guc/igt@i915_module_load@reload-with-fault-injection.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4020/fi-icl-guc/igt@i915_module_load@reload-with-fault-injection.html
-
-  * igt@i915_selftest@live_blt:
-    - fi-ivb-3770:        [PASS][5] -> [DMESG-FAIL][6] ([i915#725])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7833/fi-ivb-3770/igt@i915_selftest@live_blt.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4020/fi-ivb-3770/igt@i915_selftest@live_blt.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live_blt:
-    - fi-hsw-4770r:       [DMESG-FAIL][7] ([i915#563]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7833/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4020/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-    - fi-hsw-4770:        [DMESG-FAIL][9] ([i915#725]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7833/fi-hsw-4770/igt@i915_selftest@live_blt.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4020/fi-hsw-4770/igt@i915_selftest@live_blt.html
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-icl-guc:         [INCOMPLETE][11] ([i915#140]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7833/fi-icl-guc/igt@i915_selftest@live_gem_contexts.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4020/fi-icl-guc/igt@i915_selftest@live_gem_contexts.html
-
-  
-#### Warnings ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-hsw-peppy:       [INCOMPLETE][13] ([i915#816]) -> [TIMEOUT][14] ([fdo#112271])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7833/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4020/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_pm_rpm@basic-rte:
-    - fi-kbl-guc:         [FAIL][15] ([i915#579]) -> [SKIP][16] ([fdo#109271])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7833/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4020/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#109]: https://gitlab.freedesktop.org/drm/intel/issues/109
-  [i915#140]: https://gitlab.freedesktop.org/drm/intel/issues/140
-  [i915#563]: https://gitlab.freedesktop.org/drm/intel/issues/563
-  [i915#579]: https://gitlab.freedesktop.org/drm/intel/issues/579
-  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
-  [i915#816]: https://gitlab.freedesktop.org/drm/intel/issues/816
-
-
-Participating hosts (50 -> 44)
-------------------------------
-
-  Additional (1): fi-snb-2520m 
-  Missing    (7): fi-ilk-m540 fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5394 -> IGTPW_4020
-
-  CI-20190529: 20190529
-  CI_DRM_7833: 8210f0f999e2d396a8611e0cabc2f6c6a52468de @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4020: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4020/index.html
-  IGT_5394: 991fd07bcd7add7a5beca2c95b72a994e62fbb75 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@gem_exec_nop@poll
-+igt@gem_exec_nop@preempt
-+igt@gem_exec_nop@signal
-+igt@gem_exec_nop@single
--igt@gem_exec_nop@blt
--igt@gem_exec_nop@bsd
--igt@gem_exec_nop@bsd1
--igt@gem_exec_nop@bsd2
--igt@gem_exec_nop@default
--igt@gem_exec_nop@poll-blt
--igt@gem_exec_nop@poll-bsd
--igt@gem_exec_nop@poll-bsd1
--igt@gem_exec_nop@poll-bsd2
--igt@gem_exec_nop@poll-default
--igt@gem_exec_nop@poll-render
--igt@gem_exec_nop@poll-vebox
--igt@gem_exec_nop@preempt-blt
--igt@gem_exec_nop@preempt-bsd
--igt@gem_exec_nop@preempt-bsd1
--igt@gem_exec_nop@preempt-bsd2
--igt@gem_exec_nop@preempt-default
--igt@gem_exec_nop@preempt-render
--igt@gem_exec_nop@preempt-vebox
--igt@gem_exec_nop@render
--igt@gem_exec_nop@signal-blt
--igt@gem_exec_nop@signal-bsd
--igt@gem_exec_nop@signal-bsd1
--igt@gem_exec_nop@signal-bsd2
--igt@gem_exec_nop@signal-default
--igt@gem_exec_nop@signal-render
--igt@gem_exec_nop@signal-vebox
--igt@gem_exec_nop@vebox
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4020/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
