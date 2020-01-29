@@ -1,12 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Dale B Stimson <dale.b.stimson@intel.com>
-Date: Tue, 28 Jan 2020 10:47:42 -0800
-Message-Id: <ad6ab29b3bde2a85d2dd6666fe5e6b06e404c2c8.1580236781.git.dale.b.stimson@intel.com>
-In-Reply-To: <cover.1580236781.git.dale.b.stimson@intel.com>
-References: <cover.1580236781.git.dale.b.stimson@intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Wed, 29 Jan 2020 12:16:02 +0000
+Message-Id: <20200129121602.1106978-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3 1/2] i915/gem_ctx_isolation:
- gem_engine_topology, part 1
+Subject: [igt-dev] [PATCH i-g-t] lib/i915: Fix is_physical_engine advancement
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,152 +15,38 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ramalingam C <ramalingam.c@intel.com>
+Update the local var e after iterating to the next engine when searching
+for the next non-virtual engine. Otherwise, it is prone to loop forever.
 
-Call function gem_class_can_store_dword instead of legacy function
-gem_can_store_dword.  This requires that e->class be available in the
-calling function.
-
-Instead of passing "engine" (== "e->flags") to functions, pass "e".
-This makes e->class available where it is needed.
-
-This commit is being kept separate from "part 2" in order to ensure
-proper attribution to the author.  The code associated with this
-commit was written by Ramalingam C <ramalingam.c@intel.com>.
-Since then, slight modifications have been done due to upstream
-changes.
-
-Signed-off-by: Ramalingam C <ramalingam.c@intel.com>.
-X-Original-Author: Ramalingam C <ramalingam.c@intel.com>
-Signed-off-by: Dale B Stimson <dale.b.stimson@intel.com>
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Andi Shyti <andi.shyti@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
 ---
- tests/i915/gem_ctx_isolation.c | 25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ lib/i915/gem_engine_topology.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
-index 8b72a16ad..c45617456 100644
---- a/tests/i915/gem_ctx_isolation.c
-+++ b/tests/i915/gem_ctx_isolation.c
-@@ -575,7 +575,6 @@ static void nonpriv(int fd,
- 		0x0505c0c0,
- 		0xdeadbeef
- 	};
--	unsigned int engine = e->flags;
- 	unsigned int num_values = ARRAY_SIZE(values);
- 
- 	/* Sigh -- hsw: we need cmdparser access to our own registers! */
-@@ -593,7 +592,7 @@ static void nonpriv(int fd,
- 
- 		tmpl_regs(fd, ctx, e, tmpl, values[v]);
- 
--		spin = igt_spin_new(fd, .ctx = ctx, .engine = engine);
-+		spin = igt_spin_new(fd, .ctx = ctx, .engine = e->flags);
- 
- 		igt_debug("%s[%d]: Setting all registers to 0x%08x\n",
- 			  __func__, v, values[v]);
-@@ -606,12 +605,12 @@ static void nonpriv(int fd,
- 			/* Explicit sync to keep the switch between write/read */
- 			syncpt = igt_spin_new(fd,
- 					      .ctx = ctx,
--					      .engine = engine,
-+					      .engine = e->flags,
- 					      .flags = IGT_SPIN_FENCE_OUT);
- 
- 			dirt = igt_spin_new(fd,
- 					    .ctx = sw,
--					    .engine = engine,
-+					    .engine = e->flags,
- 					    .fence = syncpt->out_fence,
- 					    .flags = (IGT_SPIN_FENCE_IN |
- 						      IGT_SPIN_FENCE_OUT));
-@@ -619,7 +618,7 @@ static void nonpriv(int fd,
- 
- 			syncpt = igt_spin_new(fd,
- 					      .ctx = ctx,
--					      .engine = engine,
-+					      .engine = e->flags,
- 					      .fence = dirt->out_fence,
- 					      .flags = IGT_SPIN_FENCE_IN);
- 			igt_spin_free(fd, dirt);
-@@ -660,7 +659,6 @@ static void isolation(int fd,
- 		0xaaaaaaaa,
- 		0xdeadbeef
- 	};
--	unsigned int engine = e->flags;
- 	unsigned int num_values =
- 		flags & (DIRTY1 | DIRTY2) ? ARRAY_SIZE(values) : 1;
- 
-@@ -673,7 +671,7 @@ static void isolation(int fd,
- 		ctx[0] = gem_context_create(fd);
- 		regs[0] = read_regs(fd, ctx[0], e, flags);
- 
--		spin = igt_spin_new(fd, .ctx = ctx[0], .engine = engine);
-+		spin = igt_spin_new(fd, .ctx = ctx[0], .engine = e->flags);
- 
- 		if (flags & DIRTY1) {
- 			igt_debug("%s[%d]: Setting all registers of ctx 0 to 0x%08x\n",
-@@ -726,11 +724,11 @@ static void isolation(int fd,
- #define S4 (4 << 8)
- #define SLEEP_MASK (0xf << 8)
- 
--static void inject_reset_context(int fd, unsigned int engine)
-+static void inject_reset_context(int fd, const struct intel_execution_engine2 *e)
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index 43a99e0ff..9daa03df4 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -180,10 +180,8 @@ intel_get_current_physical_engine(struct intel_engine_data *ed)
  {
- 	struct igt_spin_factory opts = {
- 		.ctx = gem_context_create(fd),
--		.engine = engine,
-+		.engine = e->flags,
- 		.flags = IGT_SPIN_FAST,
- 	};
- 	igt_spin_t *spin;
-@@ -741,7 +739,7 @@ static void inject_reset_context(int fd, unsigned int engine)
- 	 * HW for screwing up if the context was already broken.
- 	 */
+ 	struct intel_execution_engine2 *e;
  
--	if (gem_can_store_dword(fd, engine))
-+	if (gem_class_can_store_dword(fd, e->class))
- 		opts.flags |= IGT_SPIN_POLL_RUN;
+-	for (e = intel_get_current_engine(ed);
+-	     e && e->is_virtual;
+-	     intel_next_engine(ed))
+-		;
++	while ((e = intel_get_current_engine(ed)) && e->is_virtual)
++	     intel_next_engine(ed);
  
- 	spin = __igt_spin_factory(fd, &opts);
-@@ -771,7 +769,6 @@ static void preservation(int fd,
- 		0xdeadbeef
- 	};
- 	const unsigned int num_values = ARRAY_SIZE(values);
--	unsigned int engine = e->flags;
- 	uint32_t ctx[num_values +1 ];
- 	uint32_t regs[num_values + 1][2];
- 	igt_spin_t *spin;
-@@ -779,7 +776,7 @@ static void preservation(int fd,
- 	gem_quiescent_gpu(fd);
- 
- 	ctx[num_values] = gem_context_create(fd);
--	spin = igt_spin_new(fd, .ctx = ctx[num_values], .engine = engine);
-+	spin = igt_spin_new(fd, .ctx = ctx[num_values], .engine = e->flags);
- 	regs[num_values][0] = read_regs(fd, ctx[num_values], e, flags);
- 	for (int v = 0; v < num_values; v++) {
- 		ctx[v] = gem_context_create(fd);
-@@ -792,7 +789,7 @@ static void preservation(int fd,
- 	igt_spin_free(fd, spin);
- 
- 	if (flags & RESET)
--		inject_reset_context(fd, engine);
-+		inject_reset_context(fd, e);
- 
- 	switch (flags & SLEEP_MASK) {
- 	case NOSLEEP:
-@@ -819,7 +816,7 @@ static void preservation(int fd,
- 		break;
- 	}
- 
--	spin = igt_spin_new(fd, .ctx = ctx[num_values], .engine = engine);
-+	spin = igt_spin_new(fd, .ctx = ctx[num_values], .engine = e->flags);
- 	for (int v = 0; v < num_values; v++)
- 		regs[v][1] = read_regs(fd, ctx[v], e, flags);
- 	regs[num_values][1] = read_regs(fd, ctx[num_values], e, flags);
+ 	return e;
+ }
 -- 
 2.25.0
 
