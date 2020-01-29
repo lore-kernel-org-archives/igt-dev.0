@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 20D536F458
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2020 07:01:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F1586F45F
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2020 07:01:12 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
-Date: Wed, 29 Jan 2020 12:20:11 +0530
-Message-Id: <20200129065018.16971-1-swati2.sharma@intel.com>
+Date: Wed, 29 Jan 2020 12:20:13 +0530
+Message-Id: <20200129065018.16971-3-swati2.sharma@intel.com>
+In-Reply-To: <20200129065018.16971-1-swati2.sharma@intel.com>
+References: <20200129065018.16971-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 0/7] Add tests for HDR metadata interfaces
- and bpc switch
+Subject: [igt-dev] [PATCH i-g-t 2/7] lib/igt_kms: Add max bpc connector
+ property
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,51 +25,53 @@ To: igt-dev@lists.freedesktop.org
 Cc: matthew.d.ropper@intel.com, petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This series contains tests to validate HDR metadata interfaces
-and bpc switch test cases (8bpc<->10bpc).
-Minor changes are made in the original patch series 
-https://patchwork.freedesktop.org/patch/255755/
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-Changes made to the original series:
+It's been in DRM for a while but was never added to IGT's internal list.
 
-*Current version is made compatible for both amd and intel driver,
-earlier it could be used by amd driver only.
-*No assumption is made regarding output. Tests will execute on
-all availabe outputs, since there is no ROI to execute
-tests on all the pipes; tests will execute on single pipe.
-*To make tests generic, moved tests from tests/amdgpu/amd_hdr.c to
-tests/kms_hdr.c.
-*Also, splitted the hdr igt into multiple patches so that subtests
-can be easily reviewed.
-*Renaming of functions, addition of new flags, igt_describe(), etc
-*Added function to detect whether panel connected is HDR or not,
-if non-HDR then tests will be skipped.
-*Dropped test case using luminance sensor
+This property should be reset along with other properties between tests
+since output color depth can affect CRC calculation... but it's not
+really feasible since it's driver specific for what the value should
+be reset to.
 
-Also, amd exposes max_bpc as a debugfs entry..so it's asserted for their
-driver. i915 drives misses that.
-TODO: Expose max_bpc as debugfs entry in i915 driver too, if required.
+v2: rebase
+v3: rebase
 
-Nicholas Kazlauskas (6):
-  headers: Bump drm uapi headers
-  lib/igt_kms: Add max bpc connector property
-  lib/igt_kms: Add HDR_OUTPUT_METADATA connector property
-  tests/kms_hdr: Add bpc switch subtests
-  tests/kms_hdr: Add static toggle SDR->HDR mode subtests
-  tests/kms_hdr: Add subtest to swap static HDR metadata
+Cc: Leo Li <sunpeng.li@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+---
+ lib/igt_kms.c | 1 +
+ lib/igt_kms.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-Swati Sharma (1):
-  tests/kms_hdr: Add function to check HDR panel
-
- include/drm-uapi/drm_mode.h | 121 ++++++-
- lib/igt_kms.c               |   7 +
- lib/igt_kms.h               |   2 +
- tests/Makefile.sources      |   1 +
- tests/kms_hdr.c             | 655 ++++++++++++++++++++++++++++++++++++
- tests/meson.build           |   1 +
- 6 files changed, 785 insertions(+), 2 deletions(-)
- create mode 100644 tests/kms_hdr.c
-
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index d20daaad..b0b064c9 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -416,6 +416,7 @@ const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
+ 	[IGT_CONNECTOR_VRR_CAPABLE] = "vrr_capable",
+ 	[IGT_CONNECTOR_HDCP_CONTENT_TYPE] = "HDCP Content Type",
+ 	[IGT_CONNECTOR_LINK_STATUS] = "link-status",
++	[IGT_CONNECTOR_MAX_BPC] = "max bpc",
+ };
+ 
+ /*
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 6c919e92..36077d41 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -125,6 +125,7 @@ enum igt_atomic_connector_properties {
+        IGT_CONNECTOR_VRR_CAPABLE,
+        IGT_CONNECTOR_HDCP_CONTENT_TYPE,
+        IGT_CONNECTOR_LINK_STATUS,
++       IGT_CONNECTOR_MAX_BPC,
+        IGT_NUM_CONNECTOR_PROPS
+ };
+ 
 -- 
 2.24.1
 
