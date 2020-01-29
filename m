@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C4FF76F612
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 252B76F612
  for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2020 18:16:12 +0000 (UTC)
 From: Imre Deak <imre.deak@intel.com>
-Date: Wed, 29 Jan 2020 20:15:54 +0200
-Message-Id: <20200129181601.15918-2-imre.deak@intel.com>
-In-Reply-To: <20200129181601.15918-1-imre.deak@intel.com>
-References: <20200129181601.15918-1-imre.deak@intel.com>
+Date: Wed, 29 Jan 2020 20:15:53 +0200
+Message-Id: <20200129181601.15918-1-imre.deak@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/9] lib/igt_fb: Fix creating FBs on
- platforms w/o HW detiling
+Subject: [igt-dev] [PATCH i-g-t 1/9] lib/ioctl_wrappers: Query if device
+ supports set/get legacy tiling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,37 +22,58 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On platforms w/o HW detiling don't fail creating the FB due to the
-expected error from the set_tiling IOCTL.
+From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 
-Most of the tests use a cairo surface to draw, which don't depend on the
-HW detiling. Other tests (using lib/igt_draw.c or drawing to the FB
-directly, like kms_draw_crc, kms_frontbuffer) are failing atm and will
-need to be fixed separately.
+Add a method to query if the device supports setting and getting legacy
+tiling formats for buffer objects.
 
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
- lib/igt_fb.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ lib/ioctl_wrappers.c | 17 +++++++++++++++++
+ lib/ioctl_wrappers.h |  1 +
+ 2 files changed, 18 insertions(+)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index c81b9de8..ec7e9991 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -944,9 +944,10 @@ static int create_bo_for_fb(struct igt_fb *fb)
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 627717d2..c1abb575 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -133,6 +133,23 @@ __gem_get_tiling(int fd, struct drm_i915_gem_get_tiling *arg)
+ 	return err;
+ }
  
- 		if (is_i915_device(fd)) {
- 			fb->gem_handle = gem_create(fd, fb->size);
--			gem_set_tiling(fd, fb->gem_handle,
--				       igt_fb_mod_to_tiling(fb->modifier),
--				       fb->strides[0]);
-+			if (gem_has_legacy_hw_tiling(fd))
-+				gem_set_tiling(fd, fb->gem_handle,
-+					       igt_fb_mod_to_tiling(fb->modifier),
-+					       fb->strides[0]);
- 		} else if (is_vc4_device(fd)) {
- 			fb->gem_handle = igt_vc4_create_bo(fd, fb->size);
++/**
++ * gem_has_legacy_hw_tiling:
++ * @fd: open i915 drm file descriptor
++ *
++ * Feature check to query if the device supports setting/getting
++ * legacy tiling formats for buffer objects
++ *
++ * Returns: True if tiling is supported
++ */
++bool
++gem_has_legacy_hw_tiling(int fd)
++{
++	struct drm_i915_gem_get_tiling arg = {};
++
++	return (__gem_get_tiling(fd, &arg) != -EOPNOTSUPP);
++}
++
+ /**
+  * gem_get_tiling:
+  * @fd: open i915 drm file descriptor
+diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+index 7614e688..0ea77738 100644
+--- a/lib/ioctl_wrappers.h
++++ b/lib/ioctl_wrappers.h
+@@ -146,6 +146,7 @@ void gem_require_caching(int fd);
+ void gem_require_ring(int fd, unsigned ring);
+ bool gem_has_mocs_registers(int fd);
+ void gem_require_mocs_registers(int fd);
++bool gem_has_legacy_hw_tiling(int fd);
+ 
+ #define gem_has_ring(f, r) gem_context_has_engine(f, 0, r)
  
 -- 
 2.23.1
