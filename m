@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B00786F616
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2020 18:16:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 214096F619
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2020 18:16:20 +0000 (UTC)
 From: Imre Deak <imre.deak@intel.com>
-Date: Wed, 29 Jan 2020 20:15:58 +0200
-Message-Id: <20200129181601.15918-6-imre.deak@intel.com>
+Date: Wed, 29 Jan 2020 20:16:00 +0200
+Message-Id: <20200129181601.15918-8-imre.deak@intel.com>
 In-Reply-To: <20200129181601.15918-1-imre.deak@intel.com>
 References: <20200129181601.15918-1-imre.deak@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 6/9] lib/igt_fb: Fall back from gtt map to
- coherent map on platforms w/o aperture
+Subject: [igt-dev] [PATCH i-g-t 8/9] lib/igt_fb: Speed up format conversion
+ for local memory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,45 +24,30 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use a device coherent map instead of GGTT map on platforms w/o an
-aperture.
+To speed up the conversion that needs to read from a dGFX local memory
+use the same trick as what's used for GTT apertures and make a copy
+first into system memory.
 
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
- lib/igt_fb.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ lib/igt_fb.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index fa294a38..cb594634 100644
+index 30f3bfba..ef3fa2ed 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -2376,18 +2376,23 @@ static void destroy_cairo_surface__gtt(void *arg)
- 
- static void *map_bo(int fd, struct igt_fb *fb)
- {
-+	bool is_i915 = is_i915_device(fd);
- 	void *ptr;
- 
--	if (is_i915_device(fd))
-+	if (is_i915)
- 		gem_set_domain(fd, fb->gem_handle,
- 			       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
- 
- 	if (fb->is_dumb)
- 		ptr = kmstest_dumb_map_buffer(fd, fb->gem_handle, fb->size,
- 					      PROT_READ | PROT_WRITE);
--	else if (is_i915_device(fd))
-+	else if (is_i915 && gem_has_mappable_ggtt(fd))
- 		ptr = gem_mmap__gtt(fd, fb->gem_handle, fb->size,
- 				    PROT_READ | PROT_WRITE);
-+	else if (is_i915)
-+		ptr = gem_mmap__device_coherent(fd, fb->gem_handle, 0,
-+						fb->size,
-+						PROT_READ | PROT_WRITE);
- 	else if (is_vc4_device(fd))
- 		ptr = igt_vc4_mmap_bo(fd, fb->gem_handle, fb->size,
- 				      PROT_READ | PROT_WRITE);
+@@ -3427,6 +3427,10 @@ static void create_cairo_surface__convert(int fd, struct igt_fb *fb)
+ 	if (use_enginecopy(fb) || use_blitter(fb) ||
+ 	    igt_vc4_is_tiled(fb->modifier)) {
+ 		setup_linear_mapping(&blit->base);
++
++		/* speed things up by working from a copy in system memory */
++		cvt.src.slow_reads =
++			is_i915_device(fd) && !gem_has_mappable_ggtt(fd);
+ 	} else {
+ 		blit->base.linear.fb = *fb;
+ 		blit->base.linear.fb.gem_handle = 0;
 -- 
 2.23.1
 
