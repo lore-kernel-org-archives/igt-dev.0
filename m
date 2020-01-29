@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 322426F53E
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 391BD6F540
  for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2020 13:18:05 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
-Date: Wed, 29 Jan 2020 15:17:53 +0200
-Message-Id: <20200129131753.12460-2-petri.latvala@intel.com>
-In-Reply-To: <20200129131753.12460-1-petri.latvala@intel.com>
-References: <20200129131753.12460-1-petri.latvala@intel.com>
+Date: Wed, 29 Jan 2020 15:17:52 +0200
+Message-Id: <20200129131753.12460-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] runner_tests: Unit test dynamic subtest
- testlist support
+Subject: [igt-dev] [PATCH i-g-t 1/2] runner: Support dynamic subtests in
+ testlists
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,155 +23,123 @@ To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+In a very rudimentary and undocumented manner, testlist files can now
+have dynamic subtests specified. This feature is intended for very
+special cases, and the main supported mode of operation with testlist
+files is still the CI-style "run it all no matter what".
+
+The syntax for testlist files is:
+
+igt@binary@subtestname@dynamicsubtestname
+
+As dynamic subtests are not easily listable, any helpers for
+generating such testlists are not implemented.
+
+If running in multiple-mode, subtests with dynamic subtests specified
+will run in single-mode instead.
+
+Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/45
 Signed-off-by: Petri Latvala <petri.latvala@intel.com>
 Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 ---
- runner/runner_tests.c | 125 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 125 insertions(+)
+ runner/executor.c | 20 +++++++++++++++++---
+ runner/job_list.c | 28 ++++++++++++++++++++++------
+ 2 files changed, 39 insertions(+), 9 deletions(-)
 
-diff --git a/runner/runner_tests.c b/runner/runner_tests.c
-index 6b0e6cc4..ed30b3f9 100644
---- a/runner/runner_tests.c
-+++ b/runner/runner_tests.c
-@@ -740,6 +740,66 @@ igt_main
- 		}
- 	}
+diff --git a/runner/executor.c b/runner/executor.c
+index 0927d1fd..8c506dcc 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -1033,7 +1033,7 @@ execute_test_process(int outfd, int errfd,
+ 		     struct settings *settings,
+ 		     struct job_list_entry *entry)
+ {
+-	char *argv[4] = {};
++	char *argv[6] = {};
+ 	size_t rootlen;
  
-+	igt_subtest_group {
-+		char filename[] = "tmplistXXXXXX";
-+		const char testlisttext[] = "igt@dynamic@dynamic-subtest@passing\n"
-+			"igt@dynamic@dynamic-subtest@failing\n"
-+			"igt@dynamic@different-subtest@passing\n";
-+		int multiple;
-+		struct job_list *list = malloc(sizeof(*list));
-+
-+		igt_fixture {
-+			int fd;
-+			igt_require((fd = mkstemp(filename)) >= 0);
-+			igt_require(write(fd, testlisttext, strlen(testlisttext)) == strlen(testlisttext));
-+			close(fd);
-+			init_job_list(list);
-+		}
-+
-+		for (multiple = 0; multiple < 2; multiple++) {
-+			igt_subtest_f("job-list-testlist-dynamic-%s", multiple ? "multiple" : "normal") {
-+				const char *argv[] = { "runner",
-+						       "--test-list", filename,
-+						       multiple ? "--multiple-mode" : "--sync",
-+						       testdatadir,
-+						       "path-to-results",
-+				};
-+
-+				igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
-+				igt_assert(create_job_list(list, settings));
-+
-+				/*
-+				 * Normally we would combine different
-+				 * subtests of the same binary to the
-+				 * same execution when using
-+				 * multiple-mode. If dynamic subtests
-+				 * are used, no execution combining
-+				 * should occur.
-+				 */
-+
-+				igt_assert_eq(list->size, 3);
-+
-+				igt_assert_eqstr(list->entries[0].binary, "dynamic");
-+				igt_assert_eqstr(list->entries[1].binary, "dynamic");
-+				igt_assert_eqstr(list->entries[2].binary, "dynamic");
-+
-+				igt_assert_eq(list->entries[0].subtest_count, 1);
-+				igt_assert_eq(list->entries[1].subtest_count, 1);
-+				igt_assert_eq(list->entries[2].subtest_count, 1);
-+
-+				igt_assert_eqstr(list->entries[0].subtests[0], "dynamic-subtest@passing");
-+				igt_assert_eqstr(list->entries[1].subtests[0], "dynamic-subtest@failing");
-+				igt_assert_eqstr(list->entries[2].subtests[0], "different-subtest@passing");
-+			}
-+		}
-+
-+		igt_fixture {
-+			unlink(filename);
-+			free_job_list(list);
-+			free(list);
-+		}
-+	}
-+
- 	igt_subtest_group {
- 		char dirname[] = "tmpdirXXXXXX";
- 		volatile int dirfd = -1, fd = -1;
-@@ -1351,6 +1411,71 @@ igt_main
- 			free(list);
- 	}
+ 	dup2(outfd, STDOUT_FILENO);
+@@ -1049,17 +1049,31 @@ execute_test_process(int outfd, int errfd,
  
-+	igt_subtest_group {
-+		const char testlisttext[] = "igt@dynamic@dynamic-subtest@passing\n";
-+		struct job_list *list = malloc(sizeof(*list));
-+		volatile int dirfd = -1;
-+		char dirname[] = "tmpdirXXXXXX";
-+		volatile int fd;
-+		char filename[] = "tmplistXXXXXX";
+ 	if (entry->subtest_count) {
+ 		size_t argsize;
++		const char *dynbegin;
+ 		size_t i;
+ 
+ 		argv[1] = strdup("--run-subtest");
+-		argsize = strlen(entry->subtests[0]);
 +
-+		igt_fixture {
-+			igt_require(mkdtemp(dirname) != NULL);
-+			rmdir(dirname);
++		if ((dynbegin = strchr(entry->subtests[0], '@')) != NULL)
++			argsize = dynbegin - entry->subtests[0];
++		else
++			argsize = strlen(entry->subtests[0]);
 +
-+			igt_require((fd = mkstemp(filename)) >= 0);
-+			igt_require(write(fd, testlisttext, strlen(testlisttext)) == strlen(testlisttext));
-+			close(fd);
+ 		argv[2] = malloc(argsize + 1);
+-		strcpy(argv[2], entry->subtests[0]);
++		memcpy(argv[2], entry->subtests[0], argsize);
++		argv[2][argsize] = '\0';
 +
-+			init_job_list(list);
++		if (dynbegin) {
++			argv[3] = strdup("--dynamic-subtest");
++			argv[4] = strdup(dynbegin + 1);
 +		}
+ 
+ 		for (i = 1; i < entry->subtest_count; i++) {
+ 			char *sub = entry->subtests[i];
+ 			size_t sublen = strlen(sub);
+ 
++			assert(dynbegin == NULL);
 +
-+		igt_subtest("dynamic-subtests-in-testlist") {
-+			struct execute_state state;
-+			struct json_object *results, *obj;
-+			const char *argv[] = { "runner",
-+					       "--test-list", filename,
-+					       testdatadir,
-+					       dirname,
-+			};
+ 			argv[2] = realloc(argv[2], argsize + sublen + 2);
+ 			argv[2][argsize] = ',';
+ 			strcpy(argv[2] + argsize + 1, sub);
+diff --git a/runner/job_list.c b/runner/job_list.c
+index 93cede75..520a98da 100644
+--- a/runner/job_list.c
++++ b/runner/job_list.c
+@@ -248,8 +248,12 @@ static bool job_list_from_test_list(struct job_list *job_list,
+ 			 * If the currently built entry has the same
+ 			 * binary, add a subtest. Otherwise submit
+ 			 * what's already built and start a new one.
++			 *
++			 * If the new test has a dynamic subtest
++			 * specified, also start a new entry.
+ 			 */
+-			if (entry.binary && !strcmp(entry.binary, binary)) {
++			if (entry.binary && !strcmp(entry.binary, binary) &&
++			    (delim == NULL || strchr(delim, '@') == NULL)) {
+ 				if (!delim) {
+ 					/* ... except we didn't get a subtest */
+ 					fprintf(stderr,
+@@ -275,11 +279,23 @@ static bool job_list_from_test_list(struct job_list *job_list,
+ 			}
+ 
+ 			memset(&entry, 0, sizeof(entry));
+-			entry.binary = strdup(binary);
+-			if (delim) {
+-				entry.subtests = malloc(sizeof(*entry.subtests));
+-				entry.subtests[0] = strdup(delim);
+-				entry.subtest_count = 1;
 +
-+			igt_assert(parse_options(ARRAY_SIZE(argv), (char**)argv, settings));
++			if (delim != NULL && strchr(delim, '@') != NULL) {
++				/* Dynamic subtest specified. Add to job list alone. */
++				char **subtests;
 +
-+			igt_assert(create_job_list(list, settings));
-+			igt_assert_eq(list->size, 1);
-+			igt_assert_eq(list->entries[0].subtest_count, 1);
++				subtests = malloc(sizeof(char*));
++				subtests[0] = strdup(delim);
 +
-+			igt_assert(initialize_execute_state(&state, settings, list));
-+			igt_assert(execute(&state, settings, list));
-+
-+			igt_assert_f((dirfd = open(dirname, O_DIRECTORY | O_RDONLY)) >= 0,
-+				     "Execute didn't create the results directory\n");
-+			igt_assert_f((results = generate_results_json(dirfd)) != NULL,
-+				     "Results parsing failed\n");
-+
-+			obj = results;
-+			igt_assert(json_object_object_get_ex(obj, "tests", &obj));
-+
-+			/* Check that the dynamic subtest we didn't request is not reported */
-+			igt_assert(!json_object_object_get_ex(obj, "igt@dynamic@dynamic-subtest@failing", NULL));
-+
-+			/* Check that the dynamic subtest we did request is */
-+			igt_assert(json_object_object_get_ex(obj, "igt@dynamic@dynamic-subtest@passing", &obj));
-+			igt_assert(json_object_object_get_ex(obj, "result", &obj));
-+			igt_assert_eqstr(json_object_get_string(obj), "pass");
-+
-+			igt_assert_eq(json_object_put(results), 1);
-+		}
-+
-+		igt_fixture {
-+			unlink(filename);
-+			close(dirfd);
-+			clear_directory(dirname);
-+			free_job_list(list);
-+			free(list);
-+		}
-+	}
-+
- 	igt_subtest_group {
- 		struct job_list *list = malloc(sizeof(*list));
- 		volatile int dirfd = -1;
++				add_job_list_entry(job_list, strdup(binary), subtests, 1);
++				any = true;
++			} else {
++				entry.binary = strdup(binary);
++				if (delim) {
++					entry.subtests = malloc(sizeof(*entry.subtests));
++					entry.subtests[0] = strdup(delim);
++					entry.subtest_count = 1;
++				}
+ 			}
+ 
+ 			free(binary);
 -- 
 2.20.1
 
