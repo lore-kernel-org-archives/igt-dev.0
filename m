@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 252B76F612
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2020 18:16:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 533C76F615
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2020 18:16:15 +0000 (UTC)
 From: Imre Deak <imre.deak@intel.com>
-Date: Wed, 29 Jan 2020 20:15:53 +0200
-Message-Id: <20200129181601.15918-1-imre.deak@intel.com>
+Date: Wed, 29 Jan 2020 20:15:56 +0200
+Message-Id: <20200129181601.15918-4-imre.deak@intel.com>
+In-Reply-To: <20200129181601.15918-1-imre.deak@intel.com>
+References: <20200129181601.15918-1-imre.deak@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/9] lib/ioctl_wrappers: Query if device
- supports set/get legacy tiling
+Subject: [igt-dev] [PATCH i-g-t 4/9] lib/igt_fb: Switch from
+ XY_FAST_COPY_BLT to XY_SRC_COPY_BLT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,56 +26,95 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 
-Add a method to query if the device supports setting and getting legacy
-tiling formats for buffer objects.
+The XY_SRC_COPY_BLT instruction is supported on more platforms than
+XY_FAST_COPY_BLT - use it for X tiling on GEN12+ copying using blitter.
+For other tiling modes/platforms use the XY_FAST_COPY_BLT as before.
+
+v2:
+- Use xy_src blit only - when necessary - on GEN12+/X-tiled mods.
 
 Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
- lib/ioctl_wrappers.c | 17 +++++++++++++++++
- lib/ioctl_wrappers.h |  1 +
- 2 files changed, 18 insertions(+)
+ lib/igt_fb.c | 59 +++++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 45 insertions(+), 14 deletions(-)
 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index 627717d2..c1abb575 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -133,6 +133,23 @@ __gem_get_tiling(int fd, struct drm_i915_gem_get_tiling *arg)
- 	return err;
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index ec7e9991..53b43528 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2146,27 +2146,58 @@ static void copy_with_engine(struct fb_blit_upload *blit,
+ static void blitcopy(const struct igt_fb *dst_fb,
+ 		     const struct igt_fb *src_fb)
+ {
++	uint32_t src_tiling, dst_tiling;
++
+ 	igt_assert_eq(dst_fb->fd, src_fb->fd);
+ 	igt_assert_eq(dst_fb->num_planes, src_fb->num_planes);
+ 
++	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
++	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
++
+ 	for (int i = 0; i < dst_fb->num_planes; i++) {
++		int gen = intel_gen(intel_get_drm_devid(src_fb->fd));
++
+ 		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
+ 		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
+ 		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
+-
+-		igt_blitter_fast_copy__raw(dst_fb->fd,
+-					   src_fb->gem_handle,
+-					   src_fb->offsets[i],
+-					   src_fb->strides[i],
+-					   igt_fb_mod_to_tiling(src_fb->modifier),
+-					   0, 0, /* src_x, src_y */
+-					   dst_fb->plane_width[i], dst_fb->plane_height[i],
+-					   dst_fb->plane_bpp[i],
+-					   dst_fb->gem_handle,
+-					   dst_fb->offsets[i],
+-					   dst_fb->strides[i],
+-					   igt_fb_mod_to_tiling(dst_fb->modifier),
+-					   0, 0 /* dst_x, dst_y */);
++		/*
++		 * On GEN12+ X-tiled format support is removed from the fast
++		 * blit command, so use the XY_SRC blit command for it
++		 * instead.
++		 */
++		if ((gen >= 9 && gen < 12) ||
++		    (gen >= 12 && (src_tiling != I915_TILING_X &&
++				   dst_tiling != I915_TILING_X))) {
++			igt_blitter_fast_copy__raw(dst_fb->fd,
++						   src_fb->gem_handle,
++						   src_fb->offsets[i],
++						   src_fb->strides[i],
++						   src_tiling,
++						   0, 0, /* src_x, src_y */
++						   dst_fb->plane_width[i],
++						   dst_fb->plane_height[i],
++						   dst_fb->plane_bpp[i],
++						   dst_fb->gem_handle,
++						   dst_fb->offsets[i],
++						   dst_fb->strides[i],
++						   dst_tiling,
++						   0, 0 /* dst_x, dst_y */);
++		} else {
++			igt_blitter_src_copy__raw(dst_fb->fd,
++						  src_fb->gem_handle,
++						  src_fb->offsets[i],
++						  src_fb->strides[i],
++						  src_tiling,
++						  0, 0, /* src_x, src_y */
++						  dst_fb->plane_width[i],
++						  dst_fb->plane_height[i],
++						  dst_fb->plane_bpp[i],
++						  dst_fb->gem_handle,
++						  dst_fb->offsets[i],
++						  dst_fb->strides[i],
++						  dst_tiling,
++						  0, 0 /* dst_x, dst_y */);
++		}
+ 	}
  }
- 
-+/**
-+ * gem_has_legacy_hw_tiling:
-+ * @fd: open i915 drm file descriptor
-+ *
-+ * Feature check to query if the device supports setting/getting
-+ * legacy tiling formats for buffer objects
-+ *
-+ * Returns: True if tiling is supported
-+ */
-+bool
-+gem_has_legacy_hw_tiling(int fd)
-+{
-+	struct drm_i915_gem_get_tiling arg = {};
-+
-+	return (__gem_get_tiling(fd, &arg) != -EOPNOTSUPP);
-+}
-+
- /**
-  * gem_get_tiling:
-  * @fd: open i915 drm file descriptor
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index 7614e688..0ea77738 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -146,6 +146,7 @@ void gem_require_caching(int fd);
- void gem_require_ring(int fd, unsigned ring);
- bool gem_has_mocs_registers(int fd);
- void gem_require_mocs_registers(int fd);
-+bool gem_has_legacy_hw_tiling(int fd);
- 
- #define gem_has_ring(f, r) gem_context_has_engine(f, 0, r)
  
 -- 
 2.23.1
