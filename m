@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 852166F45D
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2020 07:01:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F01626F461
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2020 07:01:29 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
-Date: Wed, 29 Jan 2020 12:20:16 +0530
-Message-Id: <20200129065018.16971-6-swati2.sharma@intel.com>
+Date: Wed, 29 Jan 2020 12:20:18 +0530
+Message-Id: <20200129065018.16971-8-swati2.sharma@intel.com>
 In-Reply-To: <20200129065018.16971-1-swati2.sharma@intel.com>
 References: <20200129065018.16971-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 5/7] tests/kms_hdr: Add function to check
- HDR panel
+Subject: [igt-dev] [PATCH i-g-t 7/7] tests/kms_hdr: Add subtest to swap
+ static HDR metadata
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,130 +22,161 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: matthew.d.ropper@intel.com, Kunal Joshi <kunal1.joshi@intel.com>, petri.latvala@intel.com
+Cc: matthew.d.ropper@intel.com, petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-EDID of connected panel needs to be parsed to detect whether
-panel can drive hdr or not. Added new function is_panel_hdr(),
-to know about hdr capabilities of panel. If panel supports hdr
-then only tests will get executed else skipped.
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-v2: continue instead of break [Kunal]
+Add subtest to enable fast static metadata switches.
+
+v2: Allow modeset for intel driver [Uma]
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Suggested-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_hdr.c | 87 +++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 87 insertions(+)
+ tests/kms_hdr.c | 109 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 109 insertions(+)
 
 diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index c48e43e9..5615ac35 100644
+index c604fdc6..cca08fcb 100644
 --- a/tests/kms_hdr.c
 +++ b/tests/kms_hdr.c
-@@ -24,9 +24,22 @@
- #include <fcntl.h>
- #include <termios.h>
- #include <unistd.h>
-+#include "igt_edid.h"
- 
- IGT_TEST_DESCRIPTION("Test HDR metadata interfaces and bpc switch");
- 
-+/* HDR EDID parsing. */
-+#define CTA_EXTENSION_VERSION		0x03
-+#define HDR_STATIC_METADATA_BLOCK       0x06
-+#define USE_EXTENDED_TAG		0x07
-+
-+/* DRM HDR definitions. Not in the UAPI header, unfortunately. */
-+enum hdmi_eotf {
-+	HDMI_EOTF_TRADITIONAL_GAMMA_SDR,
-+	HDMI_EOTF_TRADITIONAL_GAMMA_HDR,
-+	HDMI_EOTF_SMPTE_ST2084,
-+};
-+
- /* Test flags. */
- enum {
+@@ -49,6 +49,7 @@ enum {
  	TEST_NONE = 0,
-@@ -268,6 +281,80 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
- 	igt_require_f(valid_tests, "No connector found with MAX BPC connector property\n");
+ 	TEST_DPMS = 1 << 0,
+ 	TEST_SUSPEND = 1 << 1,
++	TEST_SWAP = 1 << 2,
+ };
+ 
+ /* BPC connector state. */
+@@ -476,6 +477,110 @@ static void test_static_toggle(data_t *data, igt_output_t *output,
+ 	}
  }
  
-+static bool cta_block(const char *edid_ext)
++/* Fills some test values for HDR metadata targeting SDR. */
++static void fill_hdr_output_metadata_sdr(struct hdr_output_metadata *meta)
 +{
-+	/*
-+	 * Byte 1: 0x07 indicates Extended Tag
-+	 * Byte 2: 0x06 indicates HDMI Static Metadata Block
-+	 * Byte 3: bits 0 to 5 identify EOTF functions supported by sink
-+	 *	       where ET_0: Traditional Gamma - SDR Luminance Range
-+	 *	             ET_1: Traditional Gamma - HDR Luminance Range
-+	 *	             ET_2: SMPTE ST 2084
-+	 *	             ET_3: Hybrid Log-Gamma (HLG)
-+	 *	             ET_4 to ET_5: Reserved for future use
-+	 */
++	memset(meta, 0, sizeof(*meta));
 +
-+	if ((((edid_ext[0] & 0xe0) >> 5 == USE_EXTENDED_TAG) &&
-+	      (edid_ext[1] == HDR_STATIC_METADATA_BLOCK)) &&
-+	     ((edid_ext[2] & HDMI_EOTF_TRADITIONAL_GAMMA_HDR) ||
-+	      (edid_ext[2] & HDMI_EOTF_SMPTE_ST2084)))
-+			return true;
++	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
++	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_TRADITIONAL_GAMMA_SDR;
 +
-+	return false;
++	/* Rec. 709 */
++	meta->hdmi_metadata_type1.display_primaries[0].x =
++		calc_hdr_float(0.640); /* Red */
++	meta->hdmi_metadata_type1.display_primaries[0].y =
++		calc_hdr_float(0.330);
++	meta->hdmi_metadata_type1.display_primaries[1].x =
++		calc_hdr_float(0.300); /* Green */
++	meta->hdmi_metadata_type1.display_primaries[1].y =
++		calc_hdr_float(0.600);
++	meta->hdmi_metadata_type1.display_primaries[2].x =
++		calc_hdr_float(0.150); /* Blue */
++	meta->hdmi_metadata_type1.display_primaries[2].y =
++		calc_hdr_float(0.006);
++	meta->hdmi_metadata_type1.white_point.x = calc_hdr_float(0.3127);
++	meta->hdmi_metadata_type1.white_point.y = calc_hdr_float(0.3290);
++
++	meta->hdmi_metadata_type1.max_display_mastering_luminance = 0;
++	meta->hdmi_metadata_type1.min_display_mastering_luminance = 0;
++	meta->hdmi_metadata_type1.max_fall = 0;
++	meta->hdmi_metadata_type1.max_cll = 0;
 +}
 +
-+/* Returns true if panel supports hdr */
-+static bool is_panel_hdr(data_t *data, igt_output_t *output)
++static void test_static_swap(data_t *data, igt_output_t *output)
 +{
-+	bool ok;
-+	int i, j, offset;
-+	uint64_t edid_blob_id;
-+	drmModePropertyBlobRes *edid_blob;
-+	const struct edid_ext *edid_ext;
-+	const struct edid *edid;
-+	const struct edid_cea *edid_cea;
-+	const char *cea_data;
-+	bool ret = false;
++	igt_display_t *display = &data->display;
++	igt_crc_t ref_crc, new_crc;
++	enum pipe pipe;
++	igt_fb_t afb;
++	int afb_id;
++	struct hdr_output_metadata hdr;
 +
-+	ok = kmstest_get_property(data->fd, output->id,
-+			DRM_MODE_OBJECT_CONNECTOR, "EDID",
-+			NULL, &edid_blob_id, NULL);
++	for_each_pipe(display, pipe) {
++		if (!igt_pipe_connector_valid(pipe, output))
++			continue;
 +
-+	if (!ok || !edid_blob_id)
-+		return ret;
++		if (!igt_pipe_is_free(display, pipe))
++			continue;
 +
-+	edid_blob = drmModeGetPropertyBlob(data->fd, edid_blob_id);
-+	igt_assert(edid_blob);
++		prepare_test(data, output, pipe);
 +
-+	edid = (const struct edid *) edid_blob->data;
-+	igt_assert(edid);
++		/* 10-bit formats are slow, so limit the size. */
++		afb_id = igt_create_fb(data->fd, 512, 512, DRM_FORMAT_XRGB2101010, 0, &afb);
++		igt_assert(afb_id);
 +
-+	drmModeFreePropertyBlob(edid_blob);
++		draw_hdr_pattern(&afb);
 +
-+	for (i = 0; i < edid->extensions_len; i++) {
-+		edid_ext = &edid->extensions[i];
-+		edid_cea = &edid_ext->data.cea;
++		/* Start in SDR. */
++		igt_plane_set_fb(data->primary, &afb);
++		igt_plane_set_size(data->primary, data->w, data->h);
++		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
++		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++		if (is_amdgpu_device(data->fd))
++			assert_output_bpc(data, 8);
 +
-+		/* HDR not defined in CTA Extension Version < 3 */
-+		if ((edid_ext->tag != EDID_EXT_CEA) ||
-+		    (edid_cea->revision != CTA_EXTENSION_VERSION))
-+				continue;
-+		else {
-+			offset = edid_cea->dtd_start;
-+			cea_data = edid_cea->data;
++		/* Enter HDR, a modeset is allowed here. */
++		fill_hdr_output_metadata_st2048(&hdr);
++		set_hdr_output_metadata(data, &hdr);
++		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
++		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++		if (is_amdgpu_device(data->fd))
++			assert_output_bpc(data, 10);
 +
-+			for (j = 0; j < offset; j += (cea_data[j] & 0x1f) + 1) {
-+				ret = cta_block(cea_data + j);
++		igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
 +
-+				if (ret)
-+					break;
-+			}
-+		}
++		/* Change the mastering information, no modeset allowed. */
++		hdr.hdmi_metadata_type1.max_display_mastering_luminance = 200;
++		hdr.hdmi_metadata_type1.max_fall = 200;
++		hdr.hdmi_metadata_type1.max_cll = 100;
++
++		set_hdr_output_metadata(data, &hdr);
++		igt_display_commit_atomic(display, 0, NULL);
++
++		/* Enter SDR via metadata, no modeset allowed. */
++		fill_hdr_output_metadata_sdr(&hdr);
++		set_hdr_output_metadata(data, &hdr);
++		igt_display_commit_atomic(display, 0, NULL);
++
++		igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
++
++		/* Exit SDR and enter 8bpc, cleanup. */
++		set_hdr_output_metadata(data, NULL);
++		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
++		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++		if (is_amdgpu_device(data->fd))
++			assert_output_bpc(data, 8);
++
++		/* Verify that the CRC didn't change while cycling metadata. */
++		igt_assert_crc_equal(&ref_crc, &new_crc);
++
++		test_fini(data);
++		igt_remove_fb(data->fd, &afb);
++
++		break;
 +	}
-+
-+	return ret;
 +}
 +
- igt_main
+ /* Returns true if an output supports hdr metadata property */
+ static bool has_hdr(igt_output_t *output)
  {
- 	data_t data = { 0 };
+@@ -504,6 +609,8 @@ static void test_hdr(data_t *data, const char *test_name, uint32_t flags)
+ 		igt_info("HDR %s test execution on %s\n", test_name, output->name);
+ 		if (flags & TEST_NONE || flags & TEST_DPMS || flags & TEST_SUSPEND)
+ 			test_static_toggle(data, output, flags);
++		if (flags & TEST_SWAP)
++			test_static_swap(data, output);
+ 		valid_tests++;
+ 	}
+ 
+@@ -540,6 +647,8 @@ igt_main
+ 	igt_describe("Tests static toggle with suspend");
+ 	igt_subtest("static-toggle-suspend") test_hdr(&data, "static-toggle-suspend", TEST_SUSPEND);
+ 
++	igt_describe("Tests swapping static HDR metadata");
++	igt_subtest("static-swap") test_hdr(&data, "static-swap", TEST_SWAP);
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 	}
 -- 
 2.24.1
 
