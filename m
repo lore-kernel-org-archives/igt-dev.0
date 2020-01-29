@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 59F806F616
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2020 18:16:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B00786F616
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2020 18:16:17 +0000 (UTC)
 From: Imre Deak <imre.deak@intel.com>
-Date: Wed, 29 Jan 2020 20:15:57 +0200
-Message-Id: <20200129181601.15918-5-imre.deak@intel.com>
+Date: Wed, 29 Jan 2020 20:15:58 +0200
+Message-Id: <20200129181601.15918-6-imre.deak@intel.com>
 In-Reply-To: <20200129181601.15918-1-imre.deak@intel.com>
 References: <20200129181601.15918-1-imre.deak@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 5/9] lib/igt_fb: Add 64bpp support to the
- XY_SRC blit command
+Subject: [igt-dev] [PATCH i-g-t 6/9] lib/igt_fb: Fall back from gtt map to
+ coherent map on platforms w/o aperture
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,98 +24,45 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-While the XY_SRC blit command lacks native 64bpp copy support, we can
-emulate it using a 32bpp copy by treating the 64bpp plane as a 2x wide
-32bpp plane. Add support for this, as we need the XY_SRC command at
-least for GEN12+ X-tiled formats.
+Use a device coherent map instead of GGTT map on platforms w/o an
+aperture.
 
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
- lib/igt_fb.c            | 30 ++++++++++++++++++++++++------
- lib/intel_batchbuffer.c |  5 +++++
- 2 files changed, 29 insertions(+), 6 deletions(-)
+ lib/igt_fb.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 53b43528..fa294a38 100644
+index fa294a38..cb594634 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -1957,9 +1957,31 @@ struct fb_blit_upload {
- 	struct intel_batchbuffer *batch;
- };
+@@ -2376,18 +2376,23 @@ static void destroy_cairo_surface__gtt(void *arg)
  
-+static bool fast_blit_ok(const struct igt_fb *fb)
-+{
-+	int gen = intel_gen(intel_get_drm_devid(fb->fd));
-+
-+	if (gen < 9)
-+		return false;
-+
-+	if (gen < 12)
-+		return true;
-+
-+	return fb->modifier != I915_FORMAT_MOD_X_TILED;
-+}
-+
- static bool blitter_ok(const struct igt_fb *fb)
+ static void *map_bo(int fd, struct igt_fb *fb)
  {
- 	for (int i = 0; i < fb->num_planes; i++) {
-+		int width = fb->plane_width[i];
-+
-+		/*
-+		 * XY_SRC blit supports only 32bpp, but we can still use it
-+		 * for a 64bpp plane by treating that as a 2x wide 32bpp plane.
-+		 */
-+		if (!fast_blit_ok(fb) && fb->plane_bpp[i] == 64)
-+			width *= 2;
-+
- 		/*
- 		 * gen4+ stride limit is 4x this with tiling,
- 		 * but since our blits are always between tiled
-@@ -1967,7 +1989,7 @@ static bool blitter_ok(const struct igt_fb *fb)
- 		 * for the tiled surface) we must use the lower
- 		 * linear stride limit here.
- 		 */
--		if (fb->plane_width[i] > 32767 ||
-+		if (width > 32767 ||
- 		    fb->plane_height[i] > 32767 ||
- 		    fb->strides[i] > 32767)
- 			return false;
-@@ -2155,8 +2177,6 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
++	bool is_i915 = is_i915_device(fd);
+ 	void *ptr;
  
- 	for (int i = 0; i < dst_fb->num_planes; i++) {
--		int gen = intel_gen(intel_get_drm_devid(src_fb->fd));
--
- 		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
- 		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
- 		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
-@@ -2165,9 +2185,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
- 		 * blit command, so use the XY_SRC blit command for it
- 		 * instead.
- 		 */
--		if ((gen >= 9 && gen < 12) ||
--		    (gen >= 12 && (src_tiling != I915_TILING_X &&
--				   dst_tiling != I915_TILING_X))) {
-+		if (fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
- 			igt_blitter_fast_copy__raw(dst_fb->fd,
- 						   src_fb->gem_handle,
- 						   src_fb->offsets[i],
-diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-index c4bf7ef4..2fd3a75a 100644
---- a/lib/intel_batchbuffer.c
-+++ b/lib/intel_batchbuffer.c
-@@ -817,6 +817,11 @@ void igt_blitter_src_copy__raw(int fd,
- 	src_pitch = (gen >= 4 && src_tiling) ? src_stride / 4 : src_stride;
- 	dst_pitch = (gen >= 4 && dst_tiling) ? dst_stride / 4 : dst_stride;
+-	if (is_i915_device(fd))
++	if (is_i915)
+ 		gem_set_domain(fd, fb->gem_handle,
+ 			       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
  
-+	if (bpp == 64) {
-+		bpp /= 2;
-+		width *= 2;
-+	}
-+
- 	CHECK_RANGE(src_x); CHECK_RANGE(src_y);
- 	CHECK_RANGE(dst_x); CHECK_RANGE(dst_y);
- 	CHECK_RANGE(width); CHECK_RANGE(height);
+ 	if (fb->is_dumb)
+ 		ptr = kmstest_dumb_map_buffer(fd, fb->gem_handle, fb->size,
+ 					      PROT_READ | PROT_WRITE);
+-	else if (is_i915_device(fd))
++	else if (is_i915 && gem_has_mappable_ggtt(fd))
+ 		ptr = gem_mmap__gtt(fd, fb->gem_handle, fb->size,
+ 				    PROT_READ | PROT_WRITE);
++	else if (is_i915)
++		ptr = gem_mmap__device_coherent(fd, fb->gem_handle, 0,
++						fb->size,
++						PROT_READ | PROT_WRITE);
+ 	else if (is_vc4_device(fd))
+ 		ptr = igt_vc4_mmap_bo(fd, fb->gem_handle, fb->size,
+ 				      PROT_READ | PROT_WRITE);
 -- 
 2.23.1
 
