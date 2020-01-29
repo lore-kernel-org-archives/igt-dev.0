@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4AEDF6F5A2
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2020 15:02:10 +0000 (UTC)
-From: "Shankar, Uma" <uma.shankar@intel.com>
-Date: Wed, 29 Jan 2020 15:02:06 +0000
-Message-ID: <E7C9878FBA1C6D42A1CA3F62AEB6945F823A6A03@BGSMSX104.gar.corp.intel.com>
-References: <20200129135520.20336-1-swati2.sharma@intel.com>
- <20200129135520.20336-6-swati2.sharma@intel.com>
-In-Reply-To: <20200129135520.20336-6-swati2.sharma@intel.com>
-Content-Language: en-US
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BCE986E3E1
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jan 2020 15:44:17 +0000 (UTC)
+From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+Date: Wed, 29 Jan 2020 20:54:26 +0530
+Message-Id: <20200129152427.8833-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH 5/7] tests/kms_hdr: Add function to check HDR
- panel
+Subject: [igt-dev] [PATCH i-g-t v5 0/1] tests/i915/gem_ctx_persistence: Set
+ context with supported engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,145 +19,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Sharma, Swati2" <swati2.sharma@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "Latvala,
- Petri" <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Update the context with supported engines on the platform with set_property
+I915_CONTEXT_PARAM_ENGINES to make sure the work load is submitted to
+the available engines only.
 
+v2: addressed the review comments.
+v3: addressed v2 review comments.
+V4: Re-introduced the gem_context_set_all_engines() API,test_process_mixed() 
+test creating new forked process, to set engine map to new forked process 
+I added gem_context_set_all_engines() API.
+v5: addressed v4 review comments.
 
-> -----Original Message-----
-> From: Sharma, Swati2 <swati2.sharma@intel.com>
-> Sent: Wednesday, January 29, 2020 7:25 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Mun, Gwan-gyeong <gwan-gyeong.mun@intel.com>;
-> ville.syrjala@linux.intel.com; Hiler, Arkadiusz <arkadiusz.hiler@intel.com>; Latvala,
-> Petri <petri.latvala@intel.com>; Shankar, Uma <uma.shankar@intel.com>; Sharma,
-> Swati2 <swati2.sharma@intel.com>; Joshi, Kunal1 <kunal1.joshi@intel.com>
-> Subject: [PATCH 5/7] tests/kms_hdr: Add function to check HDR panel
-> 
-> EDID of connected panel needs to be parsed to detect whether panel can drive hdr
-> or not. Added new function is_panel_hdr(), to know about hdr capabilities of panel.
-> If panel supports hdr then only tests will get executed else skipped.
-> 
-> v2: continue instead of break [Kunal]
->
-Looks good to me.
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> Suggested-by: Kunal Joshi <kunal1.joshi@intel.com>
-> ---
->  tests/kms_hdr.c | 87 +++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 87 insertions(+)
-> 
-> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c index ff21335a..780395ad 100644
-> --- a/tests/kms_hdr.c
-> +++ b/tests/kms_hdr.c
-> @@ -24,9 +24,22 @@
->  #include <fcntl.h>
->  #include <termios.h>
->  #include <unistd.h>
-> +#include "igt_edid.h"
-> 
->  IGT_TEST_DESCRIPTION("Test HDR metadata interfaces and bpc switch");
-> 
-> +/* HDR EDID parsing. */
-> +#define CTA_EXTENSION_VERSION		0x03
-> +#define HDR_STATIC_METADATA_BLOCK       0x06
-> +#define USE_EXTENDED_TAG		0x07
-> +
-> +/* DRM HDR definitions. Not in the UAPI header, unfortunately. */ enum
-> +hdmi_eotf {
-> +	HDMI_EOTF_TRADITIONAL_GAMMA_SDR,
-> +	HDMI_EOTF_TRADITIONAL_GAMMA_HDR,
-> +	HDMI_EOTF_SMPTE_ST2084,
-> +};
-> +
->  /* Test flags. */
->  enum {
->  	TEST_NONE = 1 << 0,
-> @@ -267,6 +280,80 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
->  	igt_require_f(valid_tests, "No connector found with MAX BPC connector
-> property\n");  }
-> 
-> +static bool cta_block(const char *edid_ext) {
-> +	/*
-> +	 * Byte 1: 0x07 indicates Extended Tag
-> +	 * Byte 2: 0x06 indicates HDMI Static Metadata Block
-> +	 * Byte 3: bits 0 to 5 identify EOTF functions supported by sink
-> +	 *	       where ET_0: Traditional Gamma - SDR Luminance Range
-> +	 *	             ET_1: Traditional Gamma - HDR Luminance Range
-> +	 *	             ET_2: SMPTE ST 2084
-> +	 *	             ET_3: Hybrid Log-Gamma (HLG)
-> +	 *	             ET_4 to ET_5: Reserved for future use
-> +	 */
-> +
-> +	if ((((edid_ext[0] & 0xe0) >> 5 == USE_EXTENDED_TAG) &&
-> +	      (edid_ext[1] == HDR_STATIC_METADATA_BLOCK)) &&
-> +	     ((edid_ext[2] & HDMI_EOTF_TRADITIONAL_GAMMA_HDR) ||
-> +	      (edid_ext[2] & HDMI_EOTF_SMPTE_ST2084)))
-> +			return true;
-> +
-> +	return false;
-> +}
-> +
-> +/* Returns true if panel supports HDR. */ static bool
-> +is_panel_hdr(data_t *data, igt_output_t *output) {
-> +	bool ok;
-> +	int i, j, offset;
-> +	uint64_t edid_blob_id;
-> +	drmModePropertyBlobRes *edid_blob;
-> +	const struct edid_ext *edid_ext;
-> +	const struct edid *edid;
-> +	const struct edid_cea *edid_cea;
-> +	const char *cea_data;
-> +	bool ret = false;
-> +
-> +	ok = kmstest_get_property(data->fd, output->id,
-> +			DRM_MODE_OBJECT_CONNECTOR, "EDID",
-> +			NULL, &edid_blob_id, NULL);
-> +
-> +	if (!ok || !edid_blob_id)
-> +		return ret;
-> +
-> +	edid_blob = drmModeGetPropertyBlob(data->fd, edid_blob_id);
-> +	igt_assert(edid_blob);
-> +
-> +	edid = (const struct edid *) edid_blob->data;
-> +	igt_assert(edid);
-> +
-> +	drmModeFreePropertyBlob(edid_blob);
-> +
-> +	for (i = 0; i < edid->extensions_len; i++) {
-> +		edid_ext = &edid->extensions[i];
-> +		edid_cea = &edid_ext->data.cea;
-> +
-> +		/* HDR not defined in CTA Extension Version < 3. */
-> +		if ((edid_ext->tag != EDID_EXT_CEA) ||
-> +		    (edid_cea->revision != CTA_EXTENSION_VERSION))
-> +				continue;
-> +		else {
-> +			offset = edid_cea->dtd_start;
-> +			cea_data = edid_cea->data;
-> +
-> +			for (j = 0; j < offset; j += (cea_data[j] & 0x1f) + 1) {
-> +				ret = cta_block(cea_data + j);
-> +
-> +				if (ret)
-> +					break;
-> +			}
-> +		}
-> +	}
-> +
-> +	return ret;
-> +}
-> +
->  igt_main
->  {
->  	data_t data = { 0 };
-> --
-> 2.24.1
+Bommu Krishnaiah (1):
+  tests/i915/gem_ctx_persistence: Set context with supported engines
+
+ tests/i915/gem_ctx_persistence.c | 55 +++++++++++++++++++++++++-------
+ 1 file changed, 44 insertions(+), 11 deletions(-)
+
+-- 
+2.24.0
 
 _______________________________________________
 igt-dev mailing list
