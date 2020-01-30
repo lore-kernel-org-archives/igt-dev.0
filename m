@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 31E8E6F9F0
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 15:57:22 +0000 (UTC)
-Date: Thu, 30 Jan 2020 17:57:18 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20200130155718.GF13686@intel.com>
-References: <20200130151229.984-1-ville.syrjala@linux.intel.com>
- <20200130151229.984-3-ville.syrjala@linux.intel.com>
- <158039885873.18112.16131853497278614661@skylake-alporthouse-com>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6613F6F9F5
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 16:00:30 +0000 (UTC)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <158039885873.18112.16131853497278614661@skylake-alporthouse-com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests/kms_plane_scaling: Don't test
- every pixel format
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20200130155410.GE13686@intel.com>
+References: <20200130151229.984-1-ville.syrjala@linux.intel.com>
+ <158039830112.18112.1082852252008596408@skylake-alporthouse-com>
+ <20200130155410.GE13686@intel.com>
+Message-ID: <158040002443.18112.10223513693967405399@skylake-alporthouse-com>
+Date: Thu, 30 Jan 2020 16:00:24 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/vec: Add igt_vec
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,111 +18,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jan 30, 2020 at 03:40:58PM +0000, Chris Wilson wrote:
-> Quoting Ville Syrjala (2020-01-30 15:12:29)
-> > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > =
-
-> > We probably don't need to test every pixel format, so let's just
-> > test one format for each format "class" (as defined by
-> > igt_reduce_format()).
-> > =
-
-> > Speeds up the test considerably (on KBL):
-> > $ time ./build/tests/kms_plane_scaling --r pipe-A-scaler-with-clipping-=
-clamping
-> > - real  0m25,186s
-> > + real  0m3,440s
-> > =
-
-> > As with kms_plane we'll add a new command line argument (--extended)
-> > which can be used to test all formats.
-> > =
-
-> > Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > ---
-> >  tests/kms_plane_scaling.c | 80 ++++++++++++++++++++++++++++++++++++---
-> >  1 file changed, 74 insertions(+), 6 deletions(-)
-> > =
-
-> > diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-> > index 35aac8dad078..19087286a0f9 100644
-> > --- a/tests/kms_plane_scaling.c
-> > +++ b/tests/kms_plane_scaling.c
-> > @@ -23,6 +23,7 @@
-> >   */
-> >  =
-
-> >  #include "igt.h"
-> > +#include "igt_vec.h"
-> >  #include <math.h>
-> >  =
-
-> >  =
-
-> > @@ -43,6 +44,7 @@ typedef struct {
-> >         igt_plane_t *plane2;
-> >         igt_plane_t *plane3;
-> >         igt_plane_t *plane4;
-> > +       bool extended;
-> >  } data_t;
-> >  =
-
-> >  static int get_num_scalers(data_t* d, enum pipe pipe)
-> > @@ -221,6 +223,28 @@ static bool can_scale(data_t *d, unsigned format)
-> >         }
-> >  }
-> >  =
-
-> > +static bool test_format(data_t *data,
-> > +                       struct igt_vec *tested_formats,
-> > +                       uint32_t format)
-> > +{
-> > +       if (!igt_fb_supported_format(format))
-> > +               return false;
-> > +
-> > +       if (!is_i915_device(data->drm_fd) ||
-> > +           data->extended)
-> > +               return true;
-> > +
-> > +       format =3D igt_reduce_format(format);
-> > +
-> > +       /* only test each format "class" once */
-> > +       if (igt_vec_index(tested_formats, &format) >=3D 0)
-> > +               return false;
-> > +
-> > +       igt_vec_push(tested_formats, &format);
-> =
-
-> Ok, that does exactly what you describe.
-> =
-
-> However, that lookup is giving me the shivers, but it does the job so
-> long as we don't have too many formats.
-
-Yeah, this being the reduced format we should only have a handful of
-these. But I'd be totally fine using a better data structure if
-someone wants to write me one ;)
-
-> =
-
-> Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
-
-Thanks.
-
--- =
-
-Ville Syrj=E4l=E4
-Intel
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+UXVvdGluZyBWaWxsZSBTeXJqw6Rsw6QgKDIwMjAtMDEtMzAgMTU6NTQ6MTApCj4gT24gVGh1LCBK
+YW4gMzAsIDIwMjAgYXQgMDM6MzE6NDFQTSArMDAwMCwgQ2hyaXMgV2lsc29uIHdyb3RlOgo+ID4g
+UXVvdGluZyBWaWxsZSBTeXJqYWxhICgyMDIwLTAxLTMwIDE1OjEyOjI3KQo+ID4gPiArI2lmbmRl
+ZiBfX0lHVF9WRUNfSF9fCj4gPiA+ICsjZGVmaW5lIF9fSUdUX1ZFQ19IX18KPiA+ID4gKwo+ID4g
+PiArc3RydWN0IGlndF92ZWMgewo+ID4gPiArICAgICAgIHZvaWQgKmVsZW1zOwo+ID4gPiArICAg
+ICAgIGludCBlbGVtX3NpemUsIHNpemUsIGxlbjsKPiA+IAo+ID4gSSB3b3VsZCBoYXZlIHVzZWQg
+Y2hhclswXSBhbmQgY2FzdGluZyBqdXN0IHRvIGhhdmUgYSB2YXJpYWJsZSBsZW5ndGgKPiA+IHN0
+cnVjdCA6KQo+IAo+IFRoZW4gd2UnZCBoYXZlIHRvIHJlYWxsb2NhdGUgdGhlIHdob2xlIHN0cnVj
+dCB0byBncm93IGl0Lgo+IFdvdWxkbid0IHdvcmsgc2luY2UgdGhlIGNhbGxlciBvd25zIHRoZSBz
+dHJ1Y3QuCgpUcnVlLgoKPiA+IAo+ID4gSSBtaWdodCBoYXZlIGFsc28gdXNlZCBsb25ncyB0aHJv
+dWdob3V0IGluc3RlYWQgb2YgaW50cywgb3IgaW4gdGhpcyBkYXkKPiA+IGFuZCBhZ2UsIHNpemVf
+dC4KPiAKPiBJIHdhcyBhY3R1YWxseSB0aGlua2luZyBvZiBzb21ldGhpbmcgc21hbGxlciBzaW5j
+ZSBJIGRvdWJ0IGFueW9uZQo+IHdhbnRzIHRvIHVzZSB0aGlzIHdpdGggbGFyZ2UgYW1vdW50cyBv
+ZiBkYXRhIGR1ZSB0byBPKG4pLgoKSGVoLCBJIHdhcyB0aGlua2luZyBvZiBjb21iaW5pbmcgdGhp
+cyB3aXRoIHRoZSBpZ3RfY29sbGVjdGlvbnMgZWxzZXdoZXJlCmZvciByYW5kb20gc2V0IHBlcm11
+dGF0aW9ucy4gQm90aCBBUEkgYXJlIG5vdCBzbyBrZWVuIHdpdGggbXkgaWRlYSBvZgp0ZXN0aW5n
+IGV2ZXJ5dGhpbmcgdW5kZXIgdGhlIHN1biBhdCBvbmNlLiBTZWxmLW11dGF0aW5nIHRlc3Qgc2V0
+cz8KLUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBz
+Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
