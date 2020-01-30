@@ -1,13 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Thu, 30 Jan 2020 17:06:44 +0100
-Message-ID: <2674285.dfp4hl5QMi@jkrzyszt-desk.ger.corp.intel.com>
-In-Reply-To: <05e9fd42-3f74-5249-9e5c-630e39d5c17e@intel.com>
-References: <20200122162651.1111-1-janusz.krzysztofik@linux.intel.com>
- <05e9fd42-3f74-5249-9e5c-630e39d5c17e@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Date: Thu, 30 Jan 2020 20:41:24 +0000
+Message-Id: <20200130204124.29907-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [Intel-gfx] [RFC PATCH i-g-t]
- tests/gem_userptr_blits: Enhance invalid mapping exercise
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_ctx_persistence: Convert
+ engine subtests to dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,182 +16,150 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Antonio Argenziano <antonio.argenziano@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, Matthew Auld <matthew.auld@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>, Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Antonio,
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-On Tuesday, January 28, 2020 1:59:00 AM CET Antonio Argenziano wrote:
-> 
-> On 22/01/20 08:26, Janusz Krzysztofik wrote:
-> > Working with a userptr GEM object backed by any type of mapping to
-> > another GEM object, not only GTT mapping currently examined bu the
-> > test, may cause a currently unavoidable lockdep splat inside the i915
-> > driver.  Then, such operations are expected to fail in advance to
-> > prevent from that badness to happen.
-> > 
-> > Extend the scope of the test by adding subtests which exercise other,
-> > non-GTT mapping types.  Moreover, also succeed if a failure happens
-> > as soon as a userptr object is created on top of an invalid mapping.
-> > 
-> > Suggested-by: Chris Wilson <chris@chris-wilson.co.uk>
-> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > ---
-> >   tests/i915/gem_userptr_blits.c | 87 +++++++++++++++++++++++-----------
-> >   1 file changed, 59 insertions(+), 28 deletions(-)
-> > 
-> > diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-> > index a8d3783f..69e5bd1f 100644
-> > --- a/tests/i915/gem_userptr_blits.c
-> > +++ b/tests/i915/gem_userptr_blits.c
-> > @@ -60,6 +60,7 @@
-> >   
-> >   #include "drm.h"
-> >   #include "i915_drm.h"
-> > +#include "i915/gem_mman.h"
-> >   
-> >   #include "intel_bufmgr.h"
-> >   
-> > @@ -577,11 +578,11 @@ static int test_invalid_null_pointer(int fd)
-> >   	return 0;
-> >   }
-> >   
-> > -static int test_invalid_gtt_mapping(int fd)
-> > +static int test_invalid_mapping(int fd, uint64_t flags)
-> >   {
-> > -	struct drm_i915_gem_mmap_gtt arg;
-> > +	struct drm_i915_gem_mmap_offset arg;
-> >   	uint32_t handle;
-> > -	char *gtt, *map;
-> > +	char *offset, *map;
-> >   
-> >   	/* Anonymous mapping to find a hole */
-> >   	map = mmap(NULL, sizeof(linear) + 2 * PAGE_SIZE,
-> > @@ -602,39 +603,46 @@ static int test_invalid_gtt_mapping(int fd)
-> >   	igt_assert_eq(copy(fd, handle, handle), 0);
-> >   	gem_close(fd, handle);
-> >   
-> > -	/* GTT mapping */
-> > +	/* object mapping */
-> >   	memset(&arg, 0, sizeof(arg));
-> >   	arg.handle = create_bo(fd, 0);
-> > -	do_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_GTT, &arg);
-> > -	gtt = mmap(map + PAGE_SIZE, sizeof(linear),
-> > -		   PROT_READ | PROT_WRITE,
-> > -		   MAP_SHARED | MAP_FIXED,
-> > -		   fd, arg.offset);
-> > -	igt_assert(gtt == map + PAGE_SIZE);
-> > +	arg.flags = flags;
-> > +	do_ioctl(fd, DRM_IOCTL_I915_GEM_MMAP_OFFSET, &arg);
-> > +	offset = mmap(map + PAGE_SIZE, sizeof(linear), PROT_READ | PROT_WRITE,
-> > +		      MAP_SHARED | MAP_FIXED, fd, arg.offset);
-> > +	igt_assert(offset == map + PAGE_SIZE);
-> >   	gem_close(fd, arg.handle);
-> > -	igt_assert(((unsigned long)gtt & (PAGE_SIZE - 1)) == 0);
-> > +	igt_assert(((unsigned long)offset & (PAGE_SIZE - 1)) == 0);
-> >   	igt_assert((sizeof(linear) & (PAGE_SIZE - 1)) == 0);
-> >   
-> > -	gem_userptr(fd, gtt, sizeof(linear), 0, userptr_flags, &handle);
-> > -	igt_assert_eq(copy(fd, handle, handle), -EFAULT);
-> > -	gem_close(fd, handle);
-> > +	if (!__gem_userptr(fd, offset, sizeof(linear), 0, userptr_flags,
-> > +	    &handle)) {
-> 
-> Not sure I follow why you converted this to an if. Do we expect the 
-> userptr IOCTL not to work? Could you add a small comment.
+Converts all per-engine tests into dynamic subtests and in the process:
 
-Please have a look at Chris' response to CI report [1] for more information on 
-what is expected.
+ * Put back I915_EXEC_BSD legacy coverage.
+ * Remove one added static engine list usage.
+ * Compact code by driving two groups of the name/func table.
 
-Thanks,
-Janusz
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+---
+ tests/i915/gem_ctx_persistence.c | 97 +++++++++++++-------------------
+ 1 file changed, 39 insertions(+), 58 deletions(-)
 
-[1] https://lists.freedesktop.org/archives/igt-dev/2020-January/019515.html
-
-> 
-> Antonio
-> 
-> > +		igt_assert_eq(copy(fd, handle, handle), -EFAULT);
-> > +		gem_close(fd, handle);
-> > +	}
-> >   
-> > -	gem_userptr(fd, gtt, PAGE_SIZE, 0, userptr_flags, &handle);
-> > -	igt_assert_eq(copy(fd, handle, handle), -EFAULT);
-> > -	gem_close(fd, handle);
-> > +	if (!__gem_userptr(fd, offset, PAGE_SIZE, 0, userptr_flags, &handle)) {
-> > +		igt_assert_eq(copy(fd, handle, handle), -EFAULT);
-> > +		gem_close(fd, handle);
-> > +	}
-> >   
-> > -	gem_userptr(fd, gtt + sizeof(linear) - PAGE_SIZE, PAGE_SIZE, 0, userptr_flags, &handle);
-> > -	igt_assert_eq(copy(fd, handle, handle), -EFAULT);
-> > -	gem_close(fd, handle);
-> > +	if (!__gem_userptr(fd, offset + sizeof(linear) - PAGE_SIZE, PAGE_SIZE,
-> > +	    0, userptr_flags, &handle)) {
-> > +		igt_assert_eq(copy(fd, handle, handle), -EFAULT);
-> > +		gem_close(fd, handle);
-> > +	}
-> >   
-> >   	/* boundaries */
-> > -	gem_userptr(fd, map, 2*PAGE_SIZE, 0, userptr_flags, &handle);
-> > -	igt_assert_eq(copy(fd, handle, handle), -EFAULT);
-> > -	gem_close(fd, handle);
-> > +	if (!__gem_userptr(fd, map, 2 * PAGE_SIZE, 0, userptr_flags, &handle)) {
-> > +		igt_assert_eq(copy(fd, handle, handle), -EFAULT);
-> > +		gem_close(fd, handle);
-> > +	}
-> >   
-> > -	gem_userptr(fd, map + sizeof(linear), 2*PAGE_SIZE, 0, userptr_flags, &handle);
-> > -	igt_assert_eq(copy(fd, handle, handle), -EFAULT);
-> > -	gem_close(fd, handle);
-> > +	if (!__gem_userptr(fd, map + sizeof(linear), 2 * PAGE_SIZE, 0,
-> > +	    userptr_flags, &handle)) {
-> > +		igt_assert_eq(copy(fd, handle, handle), -EFAULT);
-> > +		gem_close(fd, handle);
-> > +	}
-> >   
-> >   	munmap(map, sizeof(linear) + 2*PAGE_SIZE);
-> >   
-> > @@ -2009,8 +2017,31 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
-> >   		igt_subtest("invalid-null-pointer")
-> >   			test_invalid_null_pointer(fd);
-> >   
-> > -		igt_subtest("invalid-gtt-mapping")
-> > -			test_invalid_gtt_mapping(fd);
-> > +		igt_describe("Verify userptr on top of GTT mapping to GEM object will fail");
-> > +		igt_subtest("invalid-gtt-mapping") {
-> > +			gem_require_mappable_ggtt(fd);
-> > +			test_invalid_mapping(fd, I915_MMAP_OFFSET_GTT);
-> > +		}
-> > +		igt_subtest_group {
-> > +			igt_fixture
-> > +				igt_require(gem_has_mmap_offset(fd));
-> > +
-> > +			igt_describe("Verify userptr on top of CPU mapping to GEM object will fail");
-> > +			igt_subtest("invalid-wb-mapping")
-> > +				test_invalid_mapping(fd, I915_MMAP_OFFSET_WB);
-> > +
-> > +			igt_subtest_group {
-> > +				igt_fixture
-> > +					igt_require(gem_mmap_offset__has_wc(fd));
-> > +
-> > +				igt_describe("Verify userptr on top of coherent mapping to GEM object will fail");
-> > +				igt_subtest("invalid-wc-mapping")
-> > +					test_invalid_mapping(fd, I915_MMAP_OFFSET_WC);
-> > +				igt_describe("Verify userptr on top of uncached mapping to GEM object will fail");
-> > +				igt_subtest("invalid-uc-mapping")
-> > +					test_invalid_mapping(fd, I915_MMAP_OFFSET_UC);
-> > +			}
-> > +		}
-> >   
-> >   		igt_subtest("forked-access")
-> >   			test_forked_access(fd);
-> > 
-> 
-
-
-
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index 8b9633b214ff..0d5b22d2b162 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -759,7 +759,20 @@ static void smoketest(int i915)
+ 
+ igt_main
+ {
+-	const struct intel_execution_engine2 *e;
++	struct {
++		const char *name;
++		void (*func)(int fd, unsigned int engine);
++	} *test, tests[] = {
++		{ "persistence", test_persistence },
++		{ "cleanup", test_nonpersistent_cleanup },
++		{ "queued", test_nonpersistent_queued },
++		{ "mixed", test_nonpersistent_mixed },
++		{ "mixed-process", test_process_mixed },
++		{ "hostile", test_nonpersistent_hostile },
++		{ "hostile-preempt", test_nonpersistent_hostile_preempt },
++		{ "hang", test_nonpersistent_hang },
++		{ NULL, NULL },
++	};
+ 	int i915;
+ 
+ 	igt_fixture {
+@@ -792,72 +805,40 @@ igt_main
+ 	igt_subtest("hang")
+ 		test_nohangcheck_hang(i915);
+ 
+-	__for_each_static_engine(e) {
+-		igt_subtest_group {
+-			igt_fixture {
+-				gem_require_ring(i915, e->flags);
+-				gem_require_contexts(i915);
+-			}
+-
+-			igt_subtest_f("legacy-%s-persistence", e->name)
+-				test_persistence(i915, e->flags);
+-
+-			igt_subtest_f("legacy-%s-cleanup", e->name)
+-				test_nonpersistent_cleanup(i915, e->flags);
+-
+-			igt_subtest_f("legacy-%s-queued", e->name)
+-				test_nonpersistent_queued(i915, e->flags);
+-
+-			igt_subtest_f("legacy-%s-mixed", e->name)
+-				test_nonpersistent_mixed(i915, e->flags);
+-
+-			igt_subtest_f("legacy-%s-mixed-process", e->name)
+-				test_process_mixed(i915, e->flags);
+-
+-			igt_subtest_f("legacy-%s-hostile", e->name)
+-				test_nonpersistent_hostile(i915, e->flags);
++	igt_subtest("smoketest")
++		smoketest(i915);
+ 
+-			igt_subtest_f("legacy-%s-hostile-preempt", e->name)
+-				test_nonpersistent_hostile_preempt(i915,
+-								   e->flags);
++	igt_subtest_group {
++		igt_fixture
++			gem_require_contexts(i915);
++
++		for (test = tests; test->name; test++) {
++			igt_subtest_with_dynamic_f("legacy-engines-%s",
++						   test->name) {
++				for_each_engine(e, i915) {
++					igt_dynamic_f("%s", e->name)
++						test->func(i915, eb_ring(e));
++				}
++			}
+ 		}
+ 	}
+ 
+-        __for_each_physical_engine(i915, e) {
+-                igt_subtest_group {
+-                        igt_fixture
+-                                gem_require_contexts(i915);
+-
+-			igt_subtest_f("%s-persistence", e->name)
+-				test_persistence(i915, e->flags);
+-
+-			igt_subtest_f("%s-cleanup", e->name)
+-				test_nonpersistent_cleanup(i915, e->flags);
+-
+-			igt_subtest_f("%s-queued", e->name)
+-				test_nonpersistent_queued(i915, e->flags);
+-
+-			igt_subtest_f("%s-mixed", e->name)
+-				test_nonpersistent_mixed(i915, e->flags);
+-
+-			igt_subtest_f("%s-mixed-process", e->name)
+-				test_process_mixed(i915, e->flags);
++	igt_subtest_group {
++		const struct intel_execution_engine2 *e;
+ 
+-			igt_subtest_f("%s-hostile", e->name)
+-				test_nonpersistent_hostile(i915, e->flags);
++		igt_fixture
++			gem_require_contexts(i915);
+ 
+-			igt_subtest_f("%s-hostile-preempt", e->name)
+-				test_nonpersistent_hostile_preempt(i915,
+-								   e->flags);
+-
+-			igt_subtest_f("%s-hang", e->name)
+-				test_nonpersistent_hang(i915, e->flags);
++		for (test = tests; test->name; test++) {
++			igt_subtest_with_dynamic_f("engines-%s", test->name) {
++				__for_each_physical_engine(i915, e) {
++					igt_dynamic_f("%s", e->name)
++						test->func(i915, e->flags);
++				}
++			}
+ 		}
+ 	}
+ 
+-	igt_subtest("smoketest")
+-		smoketest(i915);
+-
+ 	igt_fixture {
+ 		close(i915);
+ 	}
+-- 
+2.20.1
 
 _______________________________________________
 igt-dev mailing list
