@@ -1,12 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 55EA66E8C3
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 18:20:36 +0000 (UTC)
+Date: Thu, 30 Jan 2020 20:20:22 +0200
+From: Imre Deak <imre.deak@intel.com>
+Message-ID: <20200130182022.GH20639@ideak-desk.fi.intel.com>
+References: <20200129181601.15918-1-imre.deak@intel.com>
+ <20200129181601.15918-8-imre.deak@intel.com>
+ <158037984591.16598.12090164847858859078@skylake-alporthouse-com>
+ <20200130120409.GA20639@ideak-desk.fi.intel.com>
+ <158038632644.16598.14492574632391920381@skylake-alporthouse-com>
+ <20200130131059.GB20639@ideak-desk.fi.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 30 Jan 2020 17:07:12 -0000
-Message-ID: <158040403256.21032.8904627229395025269@emeril.freedesktop.org>
-References: <1580401532-24828-1-git-send-email-nidhi1.gupta@intel.com>
-In-Reply-To: <1580401532-24828-1-git-send-email-nidhi1.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQWRkIGVE?=
- =?utf-8?q?P_support_in_Link_Layer_Compliance_Tool?=
+Content-Disposition: inline
+In-Reply-To: <20200130131059.GB20639@ideak-desk.fi.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 8/9] lib/igt_fb: Speed up format
+ conversion for local memory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,136 +23,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
+Reply-To: imre.deak@intel.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Thu, Jan 30, 2020 at 03:10:59PM +0200, Imre Deak wrote:
+> On Thu, Jan 30, 2020 at 12:12:06PM +0000, Chris Wilson wrote:
+> > Quoting Imre Deak (2020-01-30 12:04:09)
+> > > On Thu, Jan 30, 2020 at 10:24:05AM +0000, Chris Wilson wrote:
+> > > > Quoting Imre Deak (2020-01-29 18:16:00)
+> > > > > To speed up the conversion that needs to read from a dGFX local memory
+> > > > > use the same trick as what's used for GTT apertures and make a copy
+> > > > > first into system memory.
+> > > > > 
+> > > > > Signed-off-by: Imre Deak <imre.deak@intel.com>
+> > > > > ---
+> > > > >  lib/igt_fb.c | 4 ++++
+> > > > >  1 file changed, 4 insertions(+)
+> > > > > 
+> > > > > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> > > > > index 30f3bfba..ef3fa2ed 100644
+> > > > > --- a/lib/igt_fb.c
+> > > > > +++ b/lib/igt_fb.c
+> > > > > @@ -3427,6 +3427,10 @@ static void create_cairo_surface__convert(int fd, struct igt_fb *fb)
+> > > > >         if (use_enginecopy(fb) || use_blitter(fb) ||
+> > > > >             igt_vc4_is_tiled(fb->modifier)) {
+> > > > >                 setup_linear_mapping(&blit->base);
+> > > > > +
+> > > > > +               /* speed things up by working from a copy in system memory */
+> > > > > +               cvt.src.slow_reads =
+> > > > > +                       is_i915_device(fd) && !gem_has_mappable_ggtt(fd);
+> > > > 
+> > > > Any read from WC (including from GGTT) is greatly improved by using
+> > > > memcpy_from_wc, and it even works with X/Y-tiling through fences.
+> > > > 
+> > > > slow_reads is a question of the mapping, at the time of use.
+> > > 
+> > > Yes, setting slow_reads above will lead to a memcpy_from_wc() of the
+> > > source to a system memory buf and the conversion will happen from the
+> > > latter. What's slow is the random access read during conversion from
+> > > local memory.
+> > 
+> > We have fast routines for those, if needed. We can read from tiled
+> > surfaces faster than the HW can detile in most cases.
+> 
+> Not sure what you mean here. The above change is to make sure
+> conversions between YUV/RGB formats are fast even if the buffer is not
+> tiled.
 
-Series: Add eDP support in Link Layer Compliance Tool
-URL   : https://patchwork.freedesktop.org/series/72783/
-State : failure
+FTR: After discussing with Ville, I checked a version that blits to
+system memory directly, but that was somewhat slower than blitting to
+local memory and then memcpy_from_wc() that.
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_7844 -> IGTPW_4044
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_4044 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_4044, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4044/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_4044:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-icl-guc:         [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7844/fi-icl-guc/igt@i915_selftest@live_gem_contexts.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4044/fi-icl-guc/igt@i915_selftest@live_gem_contexts.html
-
-  * igt@runner@aborted:
-    - fi-hsw-peppy:       NOTRUN -> [FAIL][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4044/fi-hsw-peppy/igt@runner@aborted.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4044 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-hsw-peppy:       [PASS][4] -> [TIMEOUT][5] ([fdo#112271] / [i915#1084])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7844/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4044/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_selftest@live_gtt:
-    - fi-bdw-5557u:       [PASS][6] -> [TIMEOUT][7] ([fdo#112271])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7844/fi-bdw-5557u/igt@i915_selftest@live_gtt.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4044/fi-bdw-5557u/igt@i915_selftest@live_gtt.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-byt-n2820:       [TIMEOUT][8] ([fdo#112271] / [i915#1084] / [i915#816]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7844/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4044/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-skl-6770hq:      [FAIL][10] ([i915#178]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7844/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4044/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
-
-  
-#### Warnings ####
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-7500u:       [FAIL][12] ([fdo#111096] / [i915#323]) -> [FAIL][13] ([fdo#111407])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7844/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4044/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  * igt@runner@aborted:
-    - fi-byt-n2820:       [FAIL][14] ([i915#816]) -> [FAIL][15] ([i915#999])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7844/fi-byt-n2820/igt@runner@aborted.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4044/fi-byt-n2820/igt@runner@aborted.html
-
-  
-  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
-  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#1084]: https://gitlab.freedesktop.org/drm/intel/issues/1084
-  [i915#178]: https://gitlab.freedesktop.org/drm/intel/issues/178
-  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
-  [i915#816]: https://gitlab.freedesktop.org/drm/intel/issues/816
-  [i915#999]: https://gitlab.freedesktop.org/drm/intel/issues/999
-
-
-Participating hosts (46 -> 48)
-------------------------------
-
-  Additional (8): fi-glk-dsi fi-ilk-650 fi-whl-u fi-ivb-3770 fi-cfl-8109u fi-blb-e6850 fi-skl-6600u fi-kbl-r 
-  Missing    (6): fi-icl-1065g7 fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5407 -> IGTPW_4044
-
-  CI-20190529: 20190529
-  CI_DRM_7844: 47faa2a989ef89a15089190a5f942a2d2a34fda5 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4044: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4044/index.html
-  IGT_5407: a9d69f51dadbcbc53527671f87572d05c3370cba @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4044/index.html
+> 
+> > -Chris
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
