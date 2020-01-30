@@ -1,18 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E73B66F941
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 10:02:30 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Date: Thu, 30 Jan 2020 10:00:11 +0000
-Message-ID: <a1c71e9a0d7e45ae8be277e391b29041@intel.com>
-References: <20200129131753.12460-1-petri.latvala@intel.com>
- <158031307404.5461.3089085800181360253@emeril.freedesktop.org>
- <20200130085645.GU25209@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <20200130085645.GU25209@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 30 Jan 2020 10:04:08 -0000
+Message-ID: <158037864884.21035.8273764995660176271@emeril.freedesktop.org>
+References: <20200129131753.12460-1-petri.latvala@intel.com>
+In-Reply-To: <20200129131753.12460-1-petri.latvala@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
  =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_runner=3A_Support_dynamic_subt?=
  =?utf-8?q?ests_in_testlists?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -22,60 +15,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-TmV3IGJ1ZyBpcyBmaWxlZCBhbmQgcmVzdWx0cyBhcmUgUmUtcmVwb3J0ZWQuIA0KDQotLS0tLU9y
-aWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogTGF0dmFsYSwgUGV0cmkgPHBldHJpLmxhdHZhbGFA
-aW50ZWwuY29tPiANClNlbnQ6IFRodXJzZGF5LCBKYW51YXJ5IDMwLCAyMDIwIDEwOjU3IEFNDQpU
-bzogVnVkdW0sIExha3NobWluYXJheWFuYSA8bGFrc2htaW5hcmF5YW5hLnZ1ZHVtQGludGVsLmNv
-bT4NCkNjOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KU3ViamVjdDogUmU6IOKclyBG
-aS5DSS5CQVQ6IGZhaWx1cmUgZm9yIHNlcmllcyBzdGFydGluZyB3aXRoIFtpLWctdCwxLzJdIHJ1
-bm5lcjogU3VwcG9ydCBkeW5hbWljIHN1YnRlc3RzIGluIHRlc3RsaXN0cw0KDQpPbiBXZWQsIEph
-biAyOSwgMjAyMCBhdCAwMzo1MToxNFBNICswMDAwLCBQYXRjaHdvcmsgd3JvdGU6DQo+ID09IFNl
-cmllcyBEZXRhaWxzID09DQo+IA0KPiBTZXJpZXM6IHNlcmllcyBzdGFydGluZyB3aXRoIFtpLWct
-dCwxLzJdIHJ1bm5lcjogU3VwcG9ydCBkeW5hbWljIHN1YnRlc3RzIGluIHRlc3RsaXN0cw0KPiBV
-UkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvNzI3MTkvDQo+
-IFN0YXRlIDogZmFpbHVyZQ0KPiANCj4gPT0gU3VtbWFyeSA9PQ0KPiANCj4gQ0kgQnVnIExvZyAt
-IGNoYW5nZXMgZnJvbSBJR1RfNTQwNCAtPiBJR1RQV180MDI3IA0KPiA9PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09DQo+IA0KPiBTdW1tYXJ5DQo+IC0t
-LS0tLS0NCj4gDQo+ICAgKipGQUlMVVJFKioNCj4gDQo+ICAgU2VyaW91cyB1bmtub3duIGNoYW5n
-ZXMgY29taW5nIHdpdGggSUdUUFdfNDAyNyBhYnNvbHV0ZWx5IG5lZWQgdG8gYmUNCj4gICB2ZXJp
-ZmllZCBtYW51YWxseS4NCj4gICANCj4gICBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5n
-ZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNoYW5nZXMNCj4gICBpbnRyb2R1Y2VkIGlu
-IElHVFBXXzQwMjcsIHBsZWFzZSBub3RpZnkgeW91ciBidWcgdGVhbSB0byBhbGxvdyB0aGVtDQo+
-ICAgdG8gZG9jdW1lbnQgdGhpcyBuZXcgZmFpbHVyZSBtb2RlLCB3aGljaCB3aWxsIHJlZHVjZSBm
-YWxzZSBwb3NpdGl2ZXMgaW4gQ0kuDQo+IA0KPiAgIEV4dGVybmFsIFVSTDogDQo+IGh0dHBzOi8v
-aW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfNDAyNy9pbmRleC5odG1sDQo+
-IA0KPiBQb3NzaWJsZSBuZXcgaXNzdWVzDQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gDQo+ICAg
-SGVyZSBhcmUgdGhlIHVua25vd24gY2hhbmdlcyB0aGF0IG1heSBoYXZlIGJlZW4gaW50cm9kdWNl
-ZCBpbiBJR1RQV180MDI3Og0KPiANCj4gIyMjIElHVCBjaGFuZ2VzICMjIw0KPiANCj4gIyMjIyBQ
-b3NzaWJsZSByZWdyZXNzaW9ucyAjIyMjDQo+IA0KPiAgICogaWd0QHJ1bm5lckBhYm9ydGVkOg0K
-PiAgICAgLSBmaS1ic3cta2Vma2E6ICAgICAgIE5PVFJVTiAtPiBbRkFJTF1bMV0NCj4gICAgWzFd
-OiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzQwMjcvZmkt
-YnN3LWtlZmthL2lndEBydW5uZXJAYWJvcnRlZC5odG1sDQo+ICAgICAtIGZpLWJzdy1uaWNrOiAg
-ICAgICAgTk9UUlVOIC0+IFtGQUlMXVsyXQ0KPiAgICBbMl06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNp
-LjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfNDAyNy9maS1ic3ctbmljay9pZ3RAcnVubmVyQGFi
-b3J0ZWQuaHRtbA0KPiAgICAgLSBmaS1ic3ctbjMwNTA6ICAgICAgIE5PVFJVTiAtPiBbRkFJTF1b
-M10NCj4gICAgWzNdOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRp
-cC9JR1RQV180MDI3L2ZpLWJzdy1uMzA1MC9pZ3RAcg0KPiB1bm5lckBhYm9ydGVkLmh0bWwNCg0K
-Ik5ldyIgaXNzdWVzICJjYXVzZWQiIGJ5IFRvbWkgZW5hYmxpbmcgbG9ja2RlcCBjaGVja2luZyBh
-Z2Fpbi4NCg0KTGFrc2htaSwgdGhlc2Ugd2lsbCBjcm9wIHVwIGluIHBvc3RtZXJnZSBub3cgdG9v
-IHNvIHlvdSBzaG91bGQgYWxyZWFkeSBoYXZlIHRoZW0gY292ZXJlZC4gV2hlbiB5b3UgZG8sIHBs
-ZWFzZSByZS1yZXBvcnQgSUdUUFdfNDAyNy4NCg0KDQotLQ0KUGV0cmkgTGF0dmFsYQ0KLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tCkludGVsIEZpbmxhbmQgT3kKUmVnaXN0ZXJlZCBBZGRyZXNzOiBQTCAyODEsIDAwMTgx
-IEhlbHNpbmtpIApCdXNpbmVzcyBJZGVudGl0eSBDb2RlOiAwMzU3NjA2IC0gNCAKRG9taWNpbGVk
-IGluIEhlbHNpbmtpIAoKVGhpcyBlLW1haWwgYW5kIGFueSBhdHRhY2htZW50cyBtYXkgY29udGFp
-biBjb25maWRlbnRpYWwgbWF0ZXJpYWwgZm9yCnRoZSBzb2xlIHVzZSBvZiB0aGUgaW50ZW5kZWQg
-cmVjaXBpZW50KHMpLiBBbnkgcmV2aWV3IG9yIGRpc3RyaWJ1dGlvbgpieSBvdGhlcnMgaXMgc3Ry
-aWN0bHkgcHJvaGliaXRlZC4gSWYgeW91IGFyZSBub3QgdGhlIGludGVuZGVkCnJlY2lwaWVudCwg
-cGxlYXNlIGNvbnRhY3QgdGhlIHNlbmRlciBhbmQgZGVsZXRlIGFsbCBjb3BpZXMuCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
-aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+== Series Details ==
+
+Series: series starting with [i-g-t,1/2] runner: Support dynamic subtests in testlists
+URL   : https://patchwork.freedesktop.org/series/72719/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_5404 -> IGTPW_4027
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4027/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4027 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_close_race@basic-threads:
+    - fi-byt-j1900:       [PASS][1] -> [TIMEOUT][2] ([fdo#112271] / [i915#816])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5404/fi-byt-j1900/igt@gem_close_race@basic-threads.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4027/fi-byt-j1900/igt@gem_close_race@basic-threads.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-skl-6770hq:      [PASS][3] -> [FAIL][4] ([i915#178])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5404/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4027/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live_blt:
+    - fi-hsw-4770r:       [PASS][5] -> [DMESG-FAIL][6] ([i915#553] / [i915#725])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5404/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4027/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+    - fi-hsw-4770:        [PASS][7] -> [DMESG-FAIL][8] ([i915#563])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5404/fi-hsw-4770/igt@i915_selftest@live_blt.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4027/fi-hsw-4770/igt@i915_selftest@live_blt.html
+
+  * igt@prime_self_import@basic-llseek-bad:
+    - fi-tgl-y:           [PASS][9] -> [DMESG-WARN][10] ([CI#94] / [i915#402]) +1 similar issue
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5404/fi-tgl-y/igt@prime_self_import@basic-llseek-bad.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4027/fi-tgl-y/igt@prime_self_import@basic-llseek-bad.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_parallel@fds:
+    - fi-byt-n2820:       [FAIL][11] ([i915#694]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5404/fi-byt-n2820/igt@gem_exec_parallel@fds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4027/fi-byt-n2820/igt@gem_exec_parallel@fds.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [FAIL][13] ([fdo#111096] / [i915#323]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5404/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4027/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@prime_self_import@basic-llseek-size:
+    - fi-tgl-y:           [DMESG-WARN][15] ([CI#94] / [i915#402]) -> [PASS][16] +1 similar issue
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5404/fi-tgl-y/igt@prime_self_import@basic-llseek-size.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4027/fi-tgl-y/igt@prime_self_import@basic-llseek-size.html
+
+  
+#### Warnings ####
+
+  * igt@gem_exec_parallel@contexts:
+    - fi-byt-n2820:       [TIMEOUT][17] ([fdo#112271]) -> [FAIL][18] ([i915#694])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5404/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4027/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
+
+  
+  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
+  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
+  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
+  [i915#178]: https://gitlab.freedesktop.org/drm/intel/issues/178
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#553]: https://gitlab.freedesktop.org/drm/intel/issues/553
+  [i915#563]: https://gitlab.freedesktop.org/drm/intel/issues/563
+  [i915#694]: https://gitlab.freedesktop.org/drm/intel/issues/694
+  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
+  [i915#816]: https://gitlab.freedesktop.org/drm/intel/issues/816
+
+
+Participating hosts (49 -> 47)
+------------------------------
+
+  Additional (3): fi-hsw-peppy fi-bxt-dsi fi-pnv-d510 
+  Missing    (5): fi-ilk-m540 fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5404 -> IGTPW_4027
+
+  CI-20190529: 20190529
+  CI_DRM_7837: 4a3438425d35afbf11f3d2c6092642d42c4cf941 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4027: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4027/index.html
+  IGT_5404: 4147bab8e3dcaf11bd657b5fb4c109708e94e60c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4027/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
