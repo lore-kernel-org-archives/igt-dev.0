@@ -1,23 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E1D56E7FA
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 11:40:45 +0000 (UTC)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 678FE6F974
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 12:04:47 +0000 (UTC)
+Date: Thu, 30 Jan 2020 14:04:09 +0200
+From: Imre Deak <imre.deak@intel.com>
+Message-ID: <20200130120409.GA20639@ideak-desk.fi.intel.com>
+References: <20200129181601.15918-1-imre.deak@intel.com>
+ <20200129181601.15918-8-imre.deak@intel.com>
+ <158037984591.16598.12090164847858859078@skylake-alporthouse-com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <852adc41-b5a9-7fd8-598c-8db7b7f5b59f@linux.intel.com>
-References: <20200129181002.9405-1-krishnaiah.bommu@intel.com>
- <20200129181002.9405-2-krishnaiah.bommu@intel.com>
- <158033216228.13511.16715726772665260638@skylake-alporthouse-com>
- <8454bc4b-d07a-07bd-a8e8-bd15795de282@linux.intel.com>
- <72a7ea9a-e3f9-1164-1b93-432f71cb9398@linux.intel.com>
- <158038170520.16598.9441619406410034128@skylake-alporthouse-com>
- <4042402c-58f3-8ff9-2165-149f06d19074@linux.intel.com>
- <158038280911.16598.3910529948495289620@skylake-alporthouse-com>
- <852adc41-b5a9-7fd8-598c-8db7b7f5b59f@linux.intel.com>
-Message-ID: <158038443303.16598.12571733350789280766@skylake-alporthouse-com>
-Date: Thu, 30 Jan 2020 11:40:33 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t v6 1/1] tests/i915/gem_ctx_persistence:
- Set context with supported engines
+Content-Disposition: inline
+In-Reply-To: <158037984591.16598.12090164847858859078@skylake-alporthouse-com>
+Subject: Re: [igt-dev] [PATCH i-g-t 8/9] lib/igt_fb: Speed up format
+ conversion for local memory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,24 +20,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: imre.deak@intel.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bommu Krishnaiah <krishnaiah.bommu@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Tvrtko Ursulin (2020-01-30 11:37:03)
+On Thu, Jan 30, 2020 at 10:24:05AM +0000, Chris Wilson wrote:
+> Quoting Imre Deak (2020-01-29 18:16:00)
+> > To speed up the conversion that needs to read from a dGFX local memory
+> > use the same trick as what's used for GTT apertures and make a copy
+> > first into system memory.
+> > 
+> > Signed-off-by: Imre Deak <imre.deak@intel.com>
+> > ---
+> >  lib/igt_fb.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> > 
+> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> > index 30f3bfba..ef3fa2ed 100644
+> > --- a/lib/igt_fb.c
+> > +++ b/lib/igt_fb.c
+> > @@ -3427,6 +3427,10 @@ static void create_cairo_surface__convert(int fd, struct igt_fb *fb)
+> >         if (use_enginecopy(fb) || use_blitter(fb) ||
+> >             igt_vc4_is_tiled(fb->modifier)) {
+> >                 setup_linear_mapping(&blit->base);
+> > +
+> > +               /* speed things up by working from a copy in system memory */
+> > +               cvt.src.slow_reads =
+> > +                       is_i915_device(fd) && !gem_has_mappable_ggtt(fd);
 > 
-> On 30/01/2020 11:13, Chris Wilson wrote:
-> > But much yuck on e and e2. Can we move them to separate functions to
-> > hide the eyesore?
+> Any read from WC (including from GGTT) is greatly improved by using
+> memcpy_from_wc, and it even works with X/Y-tiling through fences.
 > 
-> Move to functions, how?
+> slow_reads is a question of the mapping, at the time of use.
 
-The subtest groups, each in their own scope.
--Chris
+Yes, setting slow_reads above will lead to a memcpy_from_wc() of the
+source to a system memory buf and the conversion will happen from the
+latter. What's slow is the random access read during conversion from
+local memory.
+
+> -Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
