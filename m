@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81E2E6E5AE
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 10:24:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7594E6E5AE
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 10:26:32 +0000 (UTC)
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
 References: <20200129181601.15918-1-imre.deak@intel.com>
- <20200129181601.15918-8-imre.deak@intel.com>
-In-Reply-To: <20200129181601.15918-8-imre.deak@intel.com>
-Message-ID: <158037984591.16598.12090164847858859078@skylake-alporthouse-com>
-Date: Thu, 30 Jan 2020 10:24:05 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 8/9] lib/igt_fb: Speed up format
- conversion for local memory
+ <20200129181601.15918-3-imre.deak@intel.com>
+ <158037946007.16598.7471905083101163451@skylake-alporthouse-com>
+In-Reply-To: <158037946007.16598.7471905083101163451@skylake-alporthouse-com>
+Message-ID: <158037998804.16598.2815858479186185052@skylake-alporthouse-com>
+Date: Thu, 30 Jan 2020 10:26:28 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t 3/9] lib/intel_batchbuffer: Add blitter
+ copy using XY_SRC_COPY_BLT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,33 +26,23 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Imre Deak <imre.deak@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Imre Deak (2020-01-29 18:16:00)
-> To speed up the conversion that needs to read from a dGFX local memory
-> use the same trick as what's used for GTT apertures and make a copy
-> first into system memory.
+Quoting Chris Wilson (2020-01-30 10:17:40)
+> Quoting Imre Deak (2020-01-29 18:15:55)
+> > +       if ((src_tiling | dst_tiling) >= I915_TILING_Y) {
+> > +               igt_assert(gen >= 6);
+> > +               batch[i++] = MI_FLUSH_DW | 2;
 > 
-> Signed-off-by: Imre Deak <imre.deak@intel.com>
-> ---
->  lib/igt_fb.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> MI_FLUSH_DW is only 3 dwords on gen6, so
 > 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 30f3bfba..ef3fa2ed 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -3427,6 +3427,10 @@ static void create_cairo_surface__convert(int fd, struct igt_fb *fb)
->         if (use_enginecopy(fb) || use_blitter(fb) ||
->             igt_vc4_is_tiled(fb->modifier)) {
->                 setup_linear_mapping(&blit->base);
-> +
-> +               /* speed things up by working from a copy in system memory */
-> +               cvt.src.slow_reads =
-> +                       is_i915_device(fd) && !gem_has_mappable_ggtt(fd);
+> batch[i] = MI_FLUSH_DW | 1;
+> if (has_64b_reloc)
+>         batch[i]++;
+> i++;
+> 
+> or something prettier.
 
-Any read from WC (including from GGTT) is greatly improved by using
-memcpy_from_wc, and it even works with X/Y-tiling through fences.
-
-slow_reads is a question of the mapping, at the time of use.
+Actually, you can get away with MI_FLUSH_DW | 2 as that should indicate
+a qword write instead for gen6/7.
 -Chris
 _______________________________________________
 igt-dev mailing list
