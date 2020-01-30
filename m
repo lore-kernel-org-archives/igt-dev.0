@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BAF616E8D3
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 18:31:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A764F6E8D3
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 18:31:13 +0000 (UTC)
 From: Imre Deak <imre.deak@intel.com>
-Date: Thu, 30 Jan 2020 20:30:55 +0200
-Message-Id: <20200130183101.20930-1-imre.deak@intel.com>
+Date: Thu, 30 Jan 2020 20:30:56 +0200
+Message-Id: <20200130183101.20930-2-imre.deak@intel.com>
+In-Reply-To: <20200130183101.20930-1-imre.deak@intel.com>
+References: <20200130183101.20930-1-imre.deak@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v2 1/7] lib/igt_fb: Fix creating FBs on platforms
- w/o HW detiling
+Subject: [igt-dev] [PATCH v2 2/7] lib/intel_batchbuffer: Add blitter copy
+ using XY_SRC_COPY_BLT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,46 +24,263 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On platforms w/o HW detiling don't fail creating the FB due to the
-expected error from the set_tiling IOCTL.
+From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 
-Most of the tests use a cairo surface to draw, which don't depend on the
-HW detiling. Other tests (using lib/igt_draw.c or drawing to the FB
-directly, like kms_draw_crc, kms_frontbuffer) are failing atm and will
-need to be fixed separately.
+Add a method that uses the XY_SRC_COPY_BLT instruction for copying
+buffers using the blitter engine.
 
-v2:
-- Simplify things by calling __gem_set_tiling() unconditionally. (Chris)
+v2: Use uint32_t for parameters; fix stride for Gen2/3
+v3:
+- Fix 64b relocations. (Chris)
+- Rename func to igt_blitter_src_copy(), being the only version of
+  the same functionality. (Chris)
+- Use the existing instruction definition of MI_FLUSH_DW.
 
 Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
- lib/igt_fb.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ lib/intel_batchbuffer.c | 184 ++++++++++++++++++++++++++++++++++++++++
+ lib/intel_batchbuffer.h |  21 +++++
+ 2 files changed, 205 insertions(+)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index c81b9de8..87fe5883 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -943,10 +943,14 @@ static int create_bo_for_fb(struct igt_fb *fb)
- 		fb->is_dumb = false;
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index ab907913..d6c3657c 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -44,9 +44,14 @@
+ #include "media_spin.h"
+ #include "gpgpu_fill.h"
+ #include "igt_aux.h"
++#include "i830_reg.h"
  
- 		if (is_i915_device(fd)) {
-+			int err;
+ #include <i915_drm.h>
+ 
++#define BCS_SWCTRL 0x22200
++#define BCS_SRC_Y (1 << 0)
++#define BCS_DST_Y (1 << 1)
 +
- 			fb->gem_handle = gem_create(fd, fb->size);
--			gem_set_tiling(fd, fb->gem_handle,
--				       igt_fb_mod_to_tiling(fb->modifier),
--				       fb->strides[0]);
-+			err = __gem_set_tiling(fd, fb->gem_handle,
-+					       igt_fb_mod_to_tiling(fb->modifier),
-+					       fb->strides[0]);
-+			/* If we can't use fences, we won't use ggtt detiling later. */
-+			igt_assert(err == 0 || err == -EOPNOTSUPP);
- 		} else if (is_vc4_device(fd)) {
- 			fb->gem_handle = igt_vc4_create_bo(fd, fb->size);
+ /**
+  * SECTION:intel_batchbuffer
+  * @short_description: Batchbuffer and blitter support
+@@ -708,6 +713,185 @@ static void exec_blit(int fd,
+ 	gem_execbuf(fd, &exec);
+ }
  
++static uint32_t src_copy_dword0(uint32_t src_tiling, uint32_t dst_tiling,
++				uint32_t bpp, uint32_t device_gen)
++{
++	uint32_t dword0 = 0;
++
++	dword0 |= XY_SRC_COPY_BLT_CMD;
++	if (bpp == 32)
++		dword0 |= XY_SRC_COPY_BLT_WRITE_RGB |
++			XY_SRC_COPY_BLT_WRITE_ALPHA;
++
++	if (device_gen >= 4 && src_tiling)
++		dword0 |= XY_SRC_COPY_BLT_SRC_TILED;
++	if (device_gen >= 4 && dst_tiling)
++		dword0 |= XY_SRC_COPY_BLT_DST_TILED;
++
++	return dword0;
++}
++
++static uint32_t src_copy_dword1(uint32_t dst_pitch, uint32_t bpp)
++{
++	uint32_t dword1 = 0;
++
++	switch (bpp) {
++	case 8:
++		break;
++	case 16:
++		dword1 |= 1 << 24; /* Only support 565 color */
++		break;
++	case 32:
++		dword1 |= 3 << 24;
++		break;
++	default:
++		igt_assert(0);
++	}
++
++	dword1 |= 0xcc << 16;
++	dword1 |= dst_pitch;
++
++	return dword1;
++}
++
++/**
++ * igt_blitter_src_copy:
++ * @fd: file descriptor of the i915 driver
++ * @src_handle: GEM handle of the source buffer
++ * @src_delta: offset into the source GEM bo, in bytes
++ * @src_stride: Stride (in bytes) of the source buffer
++ * @src_tiling: Tiling mode of the source buffer
++ * @src_x: X coordinate of the source region to copy
++ * @src_y: Y coordinate of the source region to copy
++ * @width: Width of the region to copy
++ * @height: Height of the region to copy
++ * @bpp: source and destination bits per pixel
++ * @dst_handle: GEM handle of the destination buffer
++ * @dst_delta: offset into the destination GEM bo, in bytes
++ * @dst_stride: Stride (in bytes) of the destination buffer
++ * @dst_tiling: Tiling mode of the destination buffer
++ * @dst_x: X coordinate of destination
++ * @dst_y: Y coordinate of destination
++ *
++ * Copy @src into @dst using the XY_SRC blit command.
++ */
++void igt_blitter_src_copy(int fd,
++			  /* src */
++			  uint32_t src_handle,
++			  uint32_t src_delta,
++			  uint32_t src_stride,
++			  uint32_t src_tiling,
++			  uint32_t src_x, uint32_t src_y,
++
++			  /* size */
++			  uint32_t width, uint32_t height,
++
++			  /* bpp */
++			  uint32_t bpp,
++
++			  /* dst */
++			  uint32_t dst_handle,
++			  uint32_t dst_delta,
++			  uint32_t dst_stride,
++			  uint32_t dst_tiling,
++			  uint32_t dst_x, uint32_t dst_y)
++{
++	uint32_t batch[32];
++	struct drm_i915_gem_exec_object2 objs[3];
++	struct drm_i915_gem_relocation_entry relocs[2];
++	uint32_t batch_handle;
++	uint32_t src_pitch, dst_pitch;
++	uint32_t dst_reloc_offset, src_reloc_offset;
++	uint32_t gen = intel_gen(intel_get_drm_devid(fd));
++	const bool has_64b_reloc = gen >= 8;
++	int i = 0;
++
++	memset(batch, 0, sizeof(batch));
++
++	igt_assert((src_tiling == I915_TILING_NONE) ||
++		   (src_tiling == I915_TILING_X) ||
++		   (src_tiling == I915_TILING_Y));
++	igt_assert((dst_tiling == I915_TILING_NONE) ||
++		   (dst_tiling == I915_TILING_X) ||
++		   (dst_tiling == I915_TILING_Y));
++
++	src_pitch = (gen >= 4 && src_tiling) ? src_stride / 4 : src_stride;
++	dst_pitch = (gen >= 4 && dst_tiling) ? dst_stride / 4 : dst_stride;
++
++	CHECK_RANGE(src_x); CHECK_RANGE(src_y);
++	CHECK_RANGE(dst_x); CHECK_RANGE(dst_y);
++	CHECK_RANGE(width); CHECK_RANGE(height);
++	CHECK_RANGE(src_x + width); CHECK_RANGE(src_y + height);
++	CHECK_RANGE(dst_x + width); CHECK_RANGE(dst_y + height);
++	CHECK_RANGE(src_pitch); CHECK_RANGE(dst_pitch);
++
++	if ((src_tiling | dst_tiling) >= I915_TILING_Y) {
++		unsigned int mask;
++
++		batch[i++] = MI_LOAD_REGISTER_IMM;
++		batch[i++] = BCS_SWCTRL;
++
++		mask = (BCS_SRC_Y | BCS_DST_Y) << 16;
++		if (src_tiling == I915_TILING_Y)
++			mask |= BCS_SRC_Y;
++		if (dst_tiling == I915_TILING_Y)
++			mask |= BCS_DST_Y;
++		batch[i++] = mask;
++	}
++
++	batch[i] = src_copy_dword0(src_tiling, dst_tiling, bpp, gen);
++	batch[i++] |= 6 + 2 * has_64b_reloc;
++	batch[i++] = src_copy_dword1(dst_pitch, bpp);
++	batch[i++] = (dst_y << 16) | dst_x; /* dst x1,y1 */
++	batch[i++] = ((dst_y + height) << 16) | (dst_x + width); /* dst x2,y2 */
++	dst_reloc_offset = i;
++	batch[i++] = dst_delta; /* dst address lower bits */
++	if (has_64b_reloc)
++		batch[i++] = 0;	/* dst address upper bits */
++	batch[i++] = (src_y << 16) | src_x; /* src x1,y1 */
++	batch[i++] = src_pitch;
++	src_reloc_offset = i;
++	batch[i++] = src_delta; /* src address lower bits */
++	if (has_64b_reloc)
++		batch[i++] = 0;	/* src address upper bits */
++
++	if ((src_tiling | dst_tiling) >= I915_TILING_Y) {
++		igt_assert(gen >= 6);
++		batch[i++] = MI_FLUSH_DW | 2;
++		batch[i++] = 0;
++		batch[i++] = 0;
++		batch[i++] = 0;
++
++		batch[i++] = MI_LOAD_REGISTER_IMM;
++		batch[i++] = BCS_SWCTRL;
++		batch[i++] = (BCS_SRC_Y | BCS_DST_Y) << 16;
++	}
++
++	batch[i++] = MI_BATCH_BUFFER_END;
++	batch[i++] = MI_NOOP;
++
++	igt_assert(i <= ARRAY_SIZE(batch));
++
++	batch_handle = gem_create(fd, 4096);
++	gem_write(fd, batch_handle, 0, batch, sizeof(batch));
++
++	fill_relocation(&relocs[0], dst_handle, dst_delta, dst_reloc_offset,
++			I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER);
++	fill_relocation(&relocs[1], src_handle, src_delta, src_reloc_offset,
++			I915_GEM_DOMAIN_RENDER, 0);
++
++	fill_object(&objs[0], dst_handle, NULL, 0);
++	fill_object(&objs[1], src_handle, NULL, 0);
++	fill_object(&objs[2], batch_handle, relocs, 2);
++
++	objs[0].flags |= EXEC_OBJECT_NEEDS_FENCE;
++	objs[1].flags |= EXEC_OBJECT_NEEDS_FENCE;
++
++	exec_blit(fd, objs, 3, ARRAY_SIZE(batch));
++
++	gem_close(fd, batch_handle);
++}
++
+ /**
+  * igt_blitter_fast_copy__raw:
+  * @fd: file descriptor of the i915 driver
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index 85eb3ffd..442f3a18 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -265,6 +265,27 @@ unsigned igt_buf_height(const struct igt_buf *buf);
+ unsigned int igt_buf_intel_ccs_width(int gen, const struct igt_buf *buf);
+ unsigned int igt_buf_intel_ccs_height(int gen, const struct igt_buf *buf);
+ 
++void igt_blitter_src_copy(int fd,
++			  /* src */
++			  uint32_t src_handle,
++			  uint32_t src_delta,
++			  uint32_t src_stride,
++			  uint32_t src_tiling,
++			  uint32_t src_x, uint32_t src_y,
++
++			  /* size */
++			  uint32_t width, uint32_t height,
++
++			  /* bpp */
++			  uint32_t bpp,
++
++			  /* dst */
++			  uint32_t dst_handle,
++			  uint32_t dst_delta,
++			  uint32_t dst_stride,
++			  uint32_t dst_tiling,
++			  uint32_t dst_x, uint32_t dst_y);
++
+ void igt_blitter_fast_copy(struct intel_batchbuffer *batch,
+ 			   const struct igt_buf *src, unsigned src_delta,
+ 			   unsigned src_x, unsigned src_y,
 -- 
 2.23.1
 
