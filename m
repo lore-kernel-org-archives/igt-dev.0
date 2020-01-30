@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E8FBD6E8D5
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 18:31:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC70A6E8D5
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 18:31:15 +0000 (UTC)
 From: Imre Deak <imre.deak@intel.com>
-Date: Thu, 30 Jan 2020 20:30:57 +0200
-Message-Id: <20200130183101.20930-3-imre.deak@intel.com>
+Date: Thu, 30 Jan 2020 20:30:58 +0200
+Message-Id: <20200130183101.20930-4-imre.deak@intel.com>
 In-Reply-To: <20200130183101.20930-1-imre.deak@intel.com>
 References: <20200130183101.20930-1-imre.deak@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v2 3/7] lib/igt_fb: Switch from XY_FAST_COPY_BLT
- to XY_SRC_COPY_BLT
+Subject: [igt-dev] [PATCH v2 4/7] lib/igt_fb: Add 64bpp support to the
+ XY_SRC blit command
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,100 +24,98 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
+While the XY_SRC blit command lacks native 64bpp copy support, we can
+emulate it using a 32bpp copy by treating the 64bpp plane as a 2x wide
+32bpp plane. Add support for this, as we need the XY_SRC command at
+least for GEN12+ X-tiled formats.
 
-The XY_SRC_COPY_BLT instruction is supported on more platforms than
-XY_FAST_COPY_BLT - use it for X tiling on GEN12+ copying using blitter.
-For other tiling modes/platforms use the XY_FAST_COPY_BLT as before.
-
-v2:
-- Use xy_src blit only - when necessary - on GEN12+/X-tiled mods.
-v3:
-- Rebased on igt_blitter_src_copy() rename.
-
-Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
- lib/igt_fb.c | 59 +++++++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 45 insertions(+), 14 deletions(-)
+ lib/igt_fb.c            | 30 ++++++++++++++++++++++++------
+ lib/intel_batchbuffer.c |  5 +++++
+ 2 files changed, 29 insertions(+), 6 deletions(-)
 
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 87fe5883..2aa2bffb 100644
+index 2aa2bffb..f8ed8622 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -2149,27 +2149,58 @@ static void copy_with_engine(struct fb_blit_upload *blit,
- static void blitcopy(const struct igt_fb *dst_fb,
- 		     const struct igt_fb *src_fb)
- {
-+	uint32_t src_tiling, dst_tiling;
-+
- 	igt_assert_eq(dst_fb->fd, src_fb->fd);
- 	igt_assert_eq(dst_fb->num_planes, src_fb->num_planes);
+@@ -1960,9 +1960,31 @@ struct fb_blit_upload {
+ 	struct intel_batchbuffer *batch;
+ };
  
-+	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
-+	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
++static bool fast_blit_ok(const struct igt_fb *fb)
++{
++	int gen = intel_gen(intel_get_drm_devid(fb->fd));
 +
++	if (gen < 9)
++		return false;
++
++	if (gen < 12)
++		return true;
++
++	return fb->modifier != I915_FORMAT_MOD_X_TILED;
++}
++
+ static bool blitter_ok(const struct igt_fb *fb)
+ {
+ 	for (int i = 0; i < fb->num_planes; i++) {
++		int width = fb->plane_width[i];
++
++		/*
++		 * XY_SRC blit supports only 32bpp, but we can still use it
++		 * for a 64bpp plane by treating that as a 2x wide 32bpp plane.
++		 */
++		if (!fast_blit_ok(fb) && fb->plane_bpp[i] == 64)
++			width *= 2;
++
+ 		/*
+ 		 * gen4+ stride limit is 4x this with tiling,
+ 		 * but since our blits are always between tiled
+@@ -1970,7 +1992,7 @@ static bool blitter_ok(const struct igt_fb *fb)
+ 		 * for the tiled surface) we must use the lower
+ 		 * linear stride limit here.
+ 		 */
+-		if (fb->plane_width[i] > 32767 ||
++		if (width > 32767 ||
+ 		    fb->plane_height[i] > 32767 ||
+ 		    fb->strides[i] > 32767)
+ 			return false;
+@@ -2158,8 +2180,6 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
+ 
  	for (int i = 0; i < dst_fb->num_planes; i++) {
-+		int gen = intel_gen(intel_get_drm_devid(src_fb->fd));
-+
+-		int gen = intel_gen(intel_get_drm_devid(src_fb->fd));
+-
  		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
  		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
  		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
--
--		igt_blitter_fast_copy__raw(dst_fb->fd,
--					   src_fb->gem_handle,
--					   src_fb->offsets[i],
--					   src_fb->strides[i],
--					   igt_fb_mod_to_tiling(src_fb->modifier),
--					   0, 0, /* src_x, src_y */
--					   dst_fb->plane_width[i], dst_fb->plane_height[i],
--					   dst_fb->plane_bpp[i],
--					   dst_fb->gem_handle,
--					   dst_fb->offsets[i],
--					   dst_fb->strides[i],
--					   igt_fb_mod_to_tiling(dst_fb->modifier),
--					   0, 0 /* dst_x, dst_y */);
-+		/*
-+		 * On GEN12+ X-tiled format support is removed from the fast
-+		 * blit command, so use the XY_SRC blit command for it
-+		 * instead.
-+		 */
-+		if ((gen >= 9 && gen < 12) ||
-+		    (gen >= 12 && (src_tiling != I915_TILING_X &&
-+				   dst_tiling != I915_TILING_X))) {
-+			igt_blitter_fast_copy__raw(dst_fb->fd,
-+						   src_fb->gem_handle,
-+						   src_fb->offsets[i],
-+						   src_fb->strides[i],
-+						   src_tiling,
-+						   0, 0, /* src_x, src_y */
-+						   dst_fb->plane_width[i],
-+						   dst_fb->plane_height[i],
-+						   dst_fb->plane_bpp[i],
-+						   dst_fb->gem_handle,
-+						   dst_fb->offsets[i],
-+						   dst_fb->strides[i],
-+						   dst_tiling,
-+						   0, 0 /* dst_x, dst_y */);
-+		} else {
-+			igt_blitter_src_copy(dst_fb->fd,
-+					     src_fb->gem_handle,
-+					     src_fb->offsets[i],
-+					     src_fb->strides[i],
-+					     src_tiling,
-+					     0, 0, /* src_x, src_y */
-+					     dst_fb->plane_width[i],
-+					     dst_fb->plane_height[i],
-+					     dst_fb->plane_bpp[i],
-+					     dst_fb->gem_handle,
-+					     dst_fb->offsets[i],
-+					     dst_fb->strides[i],
-+					     dst_tiling,
-+					     0, 0 /* dst_x, dst_y */);
-+		}
- 	}
- }
+@@ -2168,9 +2188,7 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 		 * blit command, so use the XY_SRC blit command for it
+ 		 * instead.
+ 		 */
+-		if ((gen >= 9 && gen < 12) ||
+-		    (gen >= 12 && (src_tiling != I915_TILING_X &&
+-				   dst_tiling != I915_TILING_X))) {
++		if (fast_blit_ok(src_fb) && fast_blit_ok(dst_fb)) {
+ 			igt_blitter_fast_copy__raw(dst_fb->fd,
+ 						   src_fb->gem_handle,
+ 						   src_fb->offsets[i],
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index d6c3657c..5a00481c 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -818,6 +818,11 @@ void igt_blitter_src_copy(int fd,
+ 	src_pitch = (gen >= 4 && src_tiling) ? src_stride / 4 : src_stride;
+ 	dst_pitch = (gen >= 4 && dst_tiling) ? dst_stride / 4 : dst_stride;
  
++	if (bpp == 64) {
++		bpp /= 2;
++		width *= 2;
++	}
++
+ 	CHECK_RANGE(src_x); CHECK_RANGE(src_y);
+ 	CHECK_RANGE(dst_x); CHECK_RANGE(dst_y);
+ 	CHECK_RANGE(width); CHECK_RANGE(height);
 -- 
 2.23.1
 
