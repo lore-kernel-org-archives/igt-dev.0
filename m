@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B5A2E6E90E
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 21:29:23 +0000 (UTC)
+References: <20200130211748.629-1-antonio.argenziano@intel.com>
+ <158041953199.2430.10960787414167851154@skylake-alporthouse-com>
+From: Antonio Argenziano <antonio.argenziano@intel.com>
+Message-ID: <09f8cca0-d245-02d4-bc70-d514beee251f@intel.com>
+Date: Thu, 30 Jan 2020 13:29:23 -0800
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 30 Jan 2020 21:26:25 -0000
-Message-ID: <158041958566.21035.3362233169222591214@emeril.freedesktop.org>
-References: <20200130204124.29907-1-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20200130204124.29907-1-tvrtko.ursulin@linux.intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
- =?utf-8?q?ests/i915/gem=5Fctx=5Fpersistence=3A_Convert_engine_subtests_to?=
- =?utf-8?q?_dynamic_=28rev3=29?=
+In-Reply-To: <158041953199.2430.10960787414167851154@skylake-alporthouse-com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_concurrent_all: Skip GTT
+ mapping when aperture not available
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,62 +19,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: tests/i915/gem_ctx_persistence: Convert engine subtests to dynamic (rev3)
-URL   : https://patchwork.freedesktop.org/series/72793/
-State : failure
 
-== Summary ==
+On 30/01/20 13:25, Chris Wilson wrote:
+> Quoting Antonio Argenziano (2020-01-30 21:17:48)
+>> The test iterates over several mappings and BOs creation options, when
+>> GTT mapping is not available skip those options.
+> 
+> The million-dollar question is "did I already add wc paths?"
 
-ERROR! This series introduces new undocumented tests:
+I saw at least one wc mode and one wc pipeline so assumed it was ok :).
 
-gem_ctx_persistence@engines-cleanup
-gem_ctx_persistence@engines-hang
-gem_ctx_persistence@engines-hostile
-gem_ctx_persistence@engines-hostile-preempt
-gem_ctx_persistence@engines-mixed
-gem_ctx_persistence@engines-mixed-process
-gem_ctx_persistence@engines-persistence
-gem_ctx_persistence@engines-queued
-gem_ctx_persistence@legacy-engines-cleanup
-gem_ctx_persistence@legacy-engines-hang
-gem_ctx_persistence@legacy-engines-hostile
-gem_ctx_persistence@legacy-engines-hostile-preempt
-gem_ctx_persistence@legacy-engines-mixed
-gem_ctx_persistence@legacy-engines-mixed-process
-gem_ctx_persistence@legacy-engines-persistence
-gem_ctx_persistence@legacy-engines-queued
+Antonio
 
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
-
-[Documentation] has more details on how to do this.
-
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
-
-Thanks in advance!
-
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-
-Other than that, pipeline status: SUCCESS.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/103458 for the overview.
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/103458
+> -Chris
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
