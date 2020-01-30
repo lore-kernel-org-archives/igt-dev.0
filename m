@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 794116F8E6
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D94B6F8E5
  for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 04:36:43 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Wed, 29 Jan 2020 20:36:42 -0800
-Message-Id: <bd104efb959aeb6b752ef1be8a0d69a152952e1d.1580358863.git.ashutosh.dixit@intel.com>
-In-Reply-To: <7ca4c47dcf1e463fab2d54a7fec7b04bb4cfdea4.1580358863.git.ashutosh.dixit@intel.com>
-References: <7ca4c47dcf1e463fab2d54a7fec7b04bb4cfdea4.1580358863.git.ashutosh.dixit@intel.com>
+Date: Wed, 29 Jan 2020 20:36:41 -0800
+Message-Id: <7ca4c47dcf1e463fab2d54a7fec7b04bb4cfdea4.1580358863.git.ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] benchmarks/gem_busy: use
- gem_mmap__device_coherent()
+Subject: [igt-dev] [PATCH i-g-t 1/2] benchmarks/gem_latency: change gtt to
+ device coherent mapping
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,41 +15,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use gem_mmap__device_coherent() in benchmarks/gem_busy for use with
-devices without a mappable aperture.
-
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- benchmarks/gem_busy.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/benchmarks/gem_busy.c b/benchmarks/gem_busy.c
-index 2fb1edf98..405cc9b09 100644
---- a/benchmarks/gem_busy.c
-+++ b/benchmarks/gem_busy.c
-@@ -185,10 +185,7 @@ static int loop(unsigned ring, int reps, int ncpus, unsigned flags)
- 	if (flags & WRITE)
- 		obj[0].flags = EXEC_OBJECT_WRITE;
- 	obj[1].handle = gem_create(fd, 4096);
--	if (gem_mmap__has_wc(fd))
--		batch = gem_mmap__wc(fd, obj[1].handle, 0, 4096, PROT_WRITE);
--	else
--		batch = gem_mmap__gtt(fd, obj[1].handle, 4096, PROT_WRITE);
-+	batch = gem_mmap__device_coherent(fd, obj[1].handle, 0, 4096, PROT_WRITE);
- 	gem_set_domain(fd, obj[1].handle,
- 			I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
- 	batch[0] = MI_BATCH_BUFFER_END;
--- 
-2.25.0
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RnJvbTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5j
+b20+CgpPbiBuZXdlciBnZW5zIHdpdGggbm8gbWFwcGFibGUgYXBlcnR1cmUgd2UgaGF2ZSB0byBz
+d2l0Y2ggdG8KR0VNX01NQVBfT0ZGU0VUIHdoZW4gcmVhc29uYWJsZS4gQXMgZ2VtX21tYXBfX2Rl
+dmljZV9jb2hlcmVudCgpCndyYXBwZXIgd2FzIHdyaXR0ZW4gdG8gY2hvb3NlIGJlc3QgbWFwaW5n
+IG1ldGhvZCB3ZSBjYW4gY2hhbmdlIGd0dAptYXBwaW5nIHRvIGl0LgoKU2lnbmVkLW9mZi1ieTog
+WmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Ci0t
+LQogYmVuY2htYXJrcy9nZW1fbGF0ZW5jeS5jIHwgMiArLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5z
+ZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvYmVuY2htYXJrcy9nZW1fbGF0
+ZW5jeS5jIGIvYmVuY2htYXJrcy9nZW1fbGF0ZW5jeS5jCmluZGV4IDBmYzRiMDVlYS4uNzI2OWUy
+MmQyIDEwMDY0NAotLS0gYS9iZW5jaG1hcmtzL2dlbV9sYXRlbmN5LmMKKysrIGIvYmVuY2htYXJr
+cy9nZW1fbGF0ZW5jeS5jCkBAIC0yNDIsNyArMjQyLDcgQEAgc3RhdGljIHZvaWQgc2V0dXBfbGF0
+ZW5jeShzdHJ1Y3QgcHJvZHVjZXIgKnAsIGludCBnZW4sIHVuc2lnbmVkIGZsYWdzKQogCWlmIChn
+ZW1faGFzX2xsYyhmZCkpCiAJCW1hcCA9IGdlbV9tbWFwX19jcHUoZmQsIGhhbmRsZSwgMCwgNDA5
+NiwgUFJPVF9XUklURSk7CiAJZWxzZQotCQltYXAgPSBnZW1fbW1hcF9fZ3R0KGZkLCBoYW5kbGUs
+IDQwOTYsIFBST1RfV1JJVEUpOworCQltYXAgPSBnZW1fbW1hcF9fZGV2aWNlX2NvaGVyZW50KGZk
+LCBoYW5kbGUsIDAsIDQwOTYsIFBST1RfV1JJVEUpOwogCiAJcC0+bGF0ZW5jeV9kaXNwYXRjaC5l
+eGVjWzBdLnJlbG9jYXRpb25fY291bnQgPSAxOwogCXAtPmxhdGVuY3lfZGlzcGF0Y2guZXhlY1sw
+XS5yZWxvY3NfcHRyID0KLS0gCjIuMjUuMAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
+ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9pZ3QtZGV2Cg==
