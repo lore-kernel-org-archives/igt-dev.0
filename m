@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6767A6E836
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 14:01:31 +0000 (UTC)
-Date: Thu, 30 Jan 2020 16:01:07 +0200
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D29956E856
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jan 2020 14:23:37 +0000 (UTC)
+Date: Thu, 30 Jan 2020 16:23:24 +0200
 From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20200130140107.GF20639@ideak-desk.fi.intel.com>
+Message-ID: <20200130142324.GG20639@ideak-desk.fi.intel.com>
 References: <20200129181601.15918-1-imre.deak@intel.com>
  <20200129181601.15918-3-imre.deak@intel.com>
  <158037946007.16598.7471905083101163451@skylake-alporthouse-com>
+ <158037998804.16598.2815858479186185052@skylake-alporthouse-com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <158037946007.16598.7471905083101163451@skylake-alporthouse-com>
+In-Reply-To: <158037998804.16598.2815858479186185052@skylake-alporthouse-com>
 Subject: Re: [igt-dev] [PATCH i-g-t 3/9] lib/intel_batchbuffer: Add blitter
  copy using XY_SRC_COPY_BLT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -29,272 +30,28 @@ To: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jan 30, 2020 at 10:17:40AM +0000, Chris Wilson wrote:
-> Quoting Imre Deak (2020-01-29 18:15:55)
-> > From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
+On Thu, Jan 30, 2020 at 10:26:28AM +0000, Chris Wilson wrote:
+> Quoting Chris Wilson (2020-01-30 10:17:40)
+> > Quoting Imre Deak (2020-01-29 18:15:55)
+> > > +       if ((src_tiling | dst_tiling) >= I915_TILING_Y) {
+> > > +               igt_assert(gen >= 6);
+> > > +               batch[i++] = MI_FLUSH_DW | 2;
 > > 
-> > Add a method that uses the XY_SRC_COPY_BLT instruction for copying
-> > buffers using the blitter engine.
+> > MI_FLUSH_DW is only 3 dwords on gen6, so
 > > 
-> > v2: Use uint32_t for parameters; fix stride for Gen2/3
+> > batch[i] = MI_FLUSH_DW | 1;
+> > if (has_64b_reloc)
+> >         batch[i]++;
+> > i++;
 > > 
-> > Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
-> > Signed-off-by: Imre Deak <imre.deak@intel.com>
-> > ---
-> >  lib/intel_batchbuffer.c | 183 ++++++++++++++++++++++++++++++++++++++++
-> >  lib/intel_batchbuffer.h |  21 +++++
-> >  2 files changed, 204 insertions(+)
-> > 
-> > diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> > index ab907913..c4bf7ef4 100644
-> > --- a/lib/intel_batchbuffer.c
-> > +++ b/lib/intel_batchbuffer.c
-> > @@ -47,6 +47,12 @@
-> >  
-> >  #include <i915_drm.h>
-> >  
-> > +#define MI_FLUSH_DW (0x26 << 23)
-> > +
-> > +#define BCS_SWCTRL 0x22200
-> > +#define BCS_SRC_Y (1 << 0)
-> > +#define BCS_DST_Y (1 << 1)
-> > +
-> >  /**
-> >   * SECTION:intel_batchbuffer
-> >   * @short_description: Batchbuffer and blitter support
-> > @@ -708,6 +714,183 @@ static void exec_blit(int fd,
-> >         gem_execbuf(fd, &exec);
-> >  }
-> >  
-> > +static uint32_t src_copy_dword0(uint32_t src_tiling, uint32_t dst_tiling,
-> > +                               uint32_t bpp, uint32_t device_gen)
-> > +{
-> > +       uint32_t dword0 = 0;
-> > +
-> > +       dword0 |= XY_SRC_COPY_BLT_CMD;
-> > +       if (bpp == 32)
-> > +               dword0 |= XY_SRC_COPY_BLT_WRITE_RGB |
-> > +                       XY_SRC_COPY_BLT_WRITE_ALPHA;
-> > +
-> > +       if (device_gen >= 4 && src_tiling)
-> > +               dword0 |= XY_SRC_COPY_BLT_SRC_TILED;
-> > +       if (device_gen >= 4 && dst_tiling)
-> > +               dword0 |= XY_SRC_COPY_BLT_DST_TILED;
-> > +
-> > +       return dword0;
-> > +}
-> > +
-> > +static uint32_t src_copy_dword1(uint32_t dst_pitch, uint32_t bpp)
-> > +{
-> > +       uint32_t dword1 = 0;
-> > +
-> > +       switch (bpp) {
-> > +       case 8:
-> > +               break;
-> > +       case 16:
-> > +               dword1 |= (1 << 24); /* Only support 565 color */
-> > +               break;
-> > +       case 32:
-> > +               dword1 |= (3 << 24);
-> > +               break;
-> > +       default:
-> > +               igt_assert(0);
-> > +       }
-> > +
-> > +       dword1 |= 0xcc << 16;
-> > +       dword1 |= dst_pitch;
-> > +
-> > +       return dword1;
-> > +}
-> > +/**
-> > + * igt_blitter_src_copy__raw:
-> > + * @fd: file descriptor of the i915 driver
-> > + * @src_handle: GEM handle of the source buffer
-> > + * @src_delta: offset into the source GEM bo, in bytes
-> > + * @src_stride: Stride (in bytes) of the source buffer
-> > + * @src_tiling: Tiling mode of the source buffer
-> > + * @src_x: X coordinate of the source region to copy
-> > + * @src_y: Y coordinate of the source region to copy
-> > + * @width: Width of the region to copy
-> > + * @height: Height of the region to copy
-> > + * @bpp: source and destination bits per pixel
-> > + * @dst_handle: GEM handle of the destination buffer
-> > + * @dst_delta: offset into the destination GEM bo, in bytes
-> > + * @dst_stride: Stride (in bytes) of the destination buffer
-> > + * @dst_tiling: Tiling mode of the destination buffer
-> > + * @dst_x: X coordinate of destination
-> > + * @dst_y: Y coordinate of destination
-> > + *
-> > + */
-> > +void igt_blitter_src_copy__raw(int fd,
-> > +                               /* src */
-> > +                               uint32_t src_handle,
-> > +                               uint32_t src_delta,
-> > +                               uint32_t src_stride,
-> > +                               uint32_t src_tiling,
-> > +                               uint32_t src_x, uint32_t src_y,
-> > +
-> > +                               /* size */
-> > +                               uint32_t width, uint32_t height,
-> > +
-> > +                               /* bpp */
-> > +                               uint32_t bpp,
-> > +
-> > +                               /* dst */
-> > +                               uint32_t dst_handle,
-> > +                               uint32_t dst_delta,
-> > +                               uint32_t dst_stride,
-> > +                               uint32_t dst_tiling,
-> > +                               uint32_t dst_x, uint32_t dst_y)
-> > +{
-> > +       uint32_t batch[32];
-> > +       struct drm_i915_gem_exec_object2 objs[3];
-> > +       struct drm_i915_gem_relocation_entry relocs[2];
-> > +       uint32_t batch_handle;
-> > +       uint32_t src_pitch, dst_pitch;
-> > +       uint32_t dst_reloc_offset, src_reloc_offset;
-> > +       int i = 0;
-> > +       uint32_t gen = intel_gen(intel_get_drm_devid(fd));
-> > +       const bool has_64b_reloc = gen >= 8;
+> > or something prettier.
 > 
-> Could try to be a little less haphazard.
+> Actually, you can get away with MI_FLUSH_DW | 2 as that should indicate
+> a qword write instead for gen6/7.
 
-Ok, will use has_64b_reloc() instead.
+Ok, making it qword for gen6/7 and dword for gen8+.
 
-> 
-> > +
-> > +       memset(batch, 0, sizeof(batch));
-> > +
-> > +       igt_assert((src_tiling == I915_TILING_NONE) ||
-> > +                  (src_tiling == I915_TILING_X) ||
-> > +                  (src_tiling == I915_TILING_Y));
-> > +       igt_assert((dst_tiling == I915_TILING_NONE) ||
-> > +                  (dst_tiling == I915_TILING_X) ||
-> > +                  (dst_tiling == I915_TILING_Y));
-> > +
-> > +       src_pitch = (gen >= 4 && src_tiling) ? src_stride / 4 : src_stride;
-> > +       dst_pitch = (gen >= 4 && dst_tiling) ? dst_stride / 4 : dst_stride;
-> > +
-> > +       CHECK_RANGE(src_x); CHECK_RANGE(src_y);
-> > +       CHECK_RANGE(dst_x); CHECK_RANGE(dst_y);
-> > +       CHECK_RANGE(width); CHECK_RANGE(height);
-> > +       CHECK_RANGE(src_x + width); CHECK_RANGE(src_y + height);
-> > +       CHECK_RANGE(dst_x + width); CHECK_RANGE(dst_y + height);
-> > +       CHECK_RANGE(src_pitch); CHECK_RANGE(dst_pitch);
-> > +
-> > +       if ((src_tiling | dst_tiling) >= I915_TILING_Y) {
-> > +               unsigned int mask;
-> > +
-> > +               batch[i++] = MI_LOAD_REGISTER_IMM;
-> > +               batch[i++] = BCS_SWCTRL;
-> > +
-> > +               mask = (BCS_SRC_Y | BCS_DST_Y) << 16;
-> > +               if (src_tiling == I915_TILING_Y)
-> > +                       mask |= BCS_SRC_Y;
-> > +               if (dst_tiling == I915_TILING_Y)
-> > +                       mask |= BCS_DST_Y;
-> > +               batch[i++] = mask;
-> > +       }
-> > +
-> > +       batch[i] = src_copy_dword0(src_tiling, dst_tiling, bpp, gen);
-> > +       batch[i++] |= 6 + 2 * has_64b_reloc;
-> > +       batch[i++] = src_copy_dword1(dst_pitch, bpp);
-> > +       batch[i++] = (dst_y << 16) | dst_x; /* dst x1,y1 */
-> > +       batch[i++] = ((dst_y + height) << 16) | (dst_x + width); /* dst x2,y2 */
-> > +       dst_reloc_offset = i;
-> > +       batch[i++] = dst_delta; /* dst address lower bits */
-> 
-> if (has_64b_reloc)
-> > +       batch[i++] = 0; /* dst address upper bits */
-> 
-> > +       batch[i++] = (src_y << 16) | src_x; /* src x1,y1 */
-> > +       batch[i++] = src_pitch;
-> > +       src_reloc_offset = i;
-> > +       batch[i++] = src_delta; /* src address lower bits */
-> 
-> if (has_64b_reloc)
-> > +       batch[i++] = 0; /* src address upper bits */
-> > +
-> > +       if ((src_tiling | dst_tiling) >= I915_TILING_Y) {
-> > +               igt_assert(gen >= 6);
-> > +               batch[i++] = MI_FLUSH_DW | 2;
-> 
-> MI_FLUSH_DW is only 3 dwords on gen6, so
-> 
-> batch[i] = MI_FLUSH_DW | 1;
-> if (has_64b_reloc)
-> 	batch[i]++;
-> i++;
-> 
-> or something prettier.
-
-Ok.
-
-> > +               batch[i++] = 0;
-> > +               batch[i++] = 0;
-> > +               batch[i++] = 0;
-> > +
-> > +               batch[i++] = MI_LOAD_REGISTER_IMM;
-> > +               batch[i++] = BCS_SWCTRL;
-> > +               batch[i++] = (BCS_SRC_Y | BCS_DST_Y) << 16;
-> > +       }
-> > +
-> > +       batch[i++] = MI_BATCH_BUFFER_END;
-> > +       batch[i++] = MI_NOOP;
-> > +
-> > +       igt_assert(i <= ARRAY_SIZE(batch));
-> > +
-> > +       batch_handle = gem_create(fd, 4096);
-> > +       gem_write(fd, batch_handle, 0, batch, sizeof(batch));
-> > +
-> > +       fill_relocation(&relocs[0], dst_handle, dst_delta, dst_reloc_offset,
-> > +                       I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER);
-> > +       fill_relocation(&relocs[1], src_handle, src_delta, src_reloc_offset,
-> > +                       I915_GEM_DOMAIN_RENDER, 0);
-> > +
-> > +       fill_object(&objs[0], dst_handle, NULL, 0);
-> > +       fill_object(&objs[1], src_handle, NULL, 0);
-> > +       fill_object(&objs[2], batch_handle, relocs, 2);
-> > +
-> > +       if (dst_tiling)
-> > +               objs[0].flags |= EXEC_OBJECT_NEEDS_FENCE;
-> 
-> Strictly speaking, NEEDS_FENCE anyway for gen2. Basically any blitter
-> operation needs to be so marked so that a fence may be removed instead.
-
-Ok, so set NEEDS_FENCE unconditionally (removed by kernel for gen>=4?).
-
-> 
-> > +       if (src_tiling)
-> > +               objs[1].flags |= EXEC_OBJECT_NEEDS_FENCE;
-> > +
-> > +       exec_blit(fd, objs, 3, ARRAY_SIZE(batch));
-> > +
-> > +       gem_close(fd, batch_handle);
-> > +}
-> > +
-> >  /**
-> >   * igt_blitter_fast_copy__raw:
-> >   * @fd: file descriptor of the i915 driver
-> > diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-> > index 85eb3ffd..0fc18db1 100644
-> > --- a/lib/intel_batchbuffer.h
-> > +++ b/lib/intel_batchbuffer.h
-> > @@ -265,6 +265,27 @@ unsigned igt_buf_height(const struct igt_buf *buf);
-> >  unsigned int igt_buf_intel_ccs_width(int gen, const struct igt_buf *buf);
-> >  unsigned int igt_buf_intel_ccs_height(int gen, const struct igt_buf *buf);
-> >  
-> > +void igt_blitter_src_copy__raw(int fd,
-> 
-> Just src_copy after the instruction.
-> 
-> What is __raw meant to mean?
-
-Looks like to align with the name of fast_copy__raw() which is the
-version of fast_copy() not depending on libdrm. We don't have a libdrm
-version of src_copy though so I can rename it to src_copy().
-
-> -Chris
+--Imre
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
