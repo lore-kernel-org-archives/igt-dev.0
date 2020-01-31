@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 50ADC6FBAB
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2020 17:31:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 18E2A6FBAD
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2020 17:31:18 +0000 (UTC)
 From: Ramalingam C <ramalingam.c@intel.com>
-Date: Fri, 31 Jan 2020 23:01:03 +0530
-Message-Id: <20200131173109.12527-4-ramalingam.c@intel.com>
+Date: Fri, 31 Jan 2020 23:01:04 +0530
+Message-Id: <20200131173109.12527-5-ramalingam.c@intel.com>
 In-Reply-To: <20200131173109.12527-1-ramalingam.c@intel.com>
 References: <20200131173109.12527-1-ramalingam.c@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/9] tests/prime_mmap_coherency: use device
- coherent mapping instead of mmap_gtt
+Subject: [igt-dev] [PATCH i-g-t 4/9] tests/prime_mmap: use device coherent
+ mapping instead of mmap_gtt
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,22 +31,24 @@ the order of gem_mmap_offset / gem_mmap / mmap_gtt
 
 Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
 ---
- tests/prime_mmap_coherency.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/prime_mmap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/prime_mmap_coherency.c b/tests/prime_mmap_coherency.c
-index 39538767c68f..32d78ee1a771 100644
---- a/tests/prime_mmap_coherency.c
-+++ b/tests/prime_mmap_coherency.c
-@@ -69,7 +69,7 @@ static int test_read_flush(void)
+diff --git a/tests/prime_mmap.c b/tests/prime_mmap.c
+index fc985784407b..1433424109c8 100644
+--- a/tests/prime_mmap.c
++++ b/tests/prime_mmap.c
+@@ -85,8 +85,8 @@ test_correct(void)
+ 	dma_buf_fd = prime_handle_to_fd(fd, handle);
+ 	igt_assert(errno == 0);
  
- 	/* STEP #3: write 0x11 into BO 1. */
- 	bo_2 = drm_intel_bo_alloc(bufmgr, "BO 2", width * height * 4, 4096);
--	ptr_gtt = gem_mmap__gtt(fd, bo_2->handle, width * height, PROT_READ | PROT_WRITE);
-+	ptr_gtt = gem_mmap__device_coherent(fd, bo_2->handle, 0, width * height, PROT_READ | PROT_WRITE);
- 	gem_set_domain(fd, bo_2->handle,
- 		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
- 	memset(ptr_gtt, 0xc5, width * height);
+-	/* Check correctness vs GEM_MMAP_GTT */
+-	ptr1 = gem_mmap__gtt(fd, handle, BO_SIZE, PROT_READ);
++	/* Check correctness vs GEM_MMAP */
++	ptr1 = gem_mmap__device_coherent(fd, handle, 0, BO_SIZE, PROT_READ);
+ 	ptr2 = mmap(NULL, BO_SIZE, PROT_READ, MAP_SHARED, dma_buf_fd, 0);
+ 	igt_assert(ptr1 != MAP_FAILED);
+ 	igt_assert(ptr2 != MAP_FAILED);
 -- 
 2.20.1
 
