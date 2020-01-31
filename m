@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 693906E976
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2020 11:34:45 +0000 (UTC)
-Date: Fri, 31 Jan 2020 13:34:42 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200131113442.GZ25209@platvala-desk.ger.corp.intel.com>
-References: <20200131065456.16467-1-ayaz.siddiqui@intel.com>
- <158045733048.13124.2012059183209037103@emeril.freedesktop.org>
- <7A5E39DA87903F41868485E0C46984D1539835@BGSMSX101.gar.corp.intel.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <7A5E39DA87903F41868485E0C46984D1539835@BGSMSX101.gar.corp.intel.com>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQWRkIGNo?=
- =?utf-8?q?eck_for_HW_tiling_support_in_gem=5Fset=5Ftiling=5Fvs=5Fblt_test?=
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 877F96E204
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2020 11:41:18 +0000 (UTC)
+Received: by mail-pf1-x441.google.com with SMTP id j9so107652pfa.8
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2020 03:41:18 -0800 (PST)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Fri, 31 Jan 2020 13:41:09 +0200
+Message-Id: <1580470869-698-1-git-send-email-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_frontbuffer_tracking: fix fbc
+ checking rules
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,50 +17,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Siddiqui,
- Ayaz A" <ayaz.siddiqui@intel.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBKYW4gMzEsIDIwMjAgYXQgMTE6MjY6MDBBTSArMDAwMCwgU2lkZGlxdWksIEF5YXog
-QSB3cm90ZToKPiBIaSwKPiAKPiA+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tCj4gPiBGcm9t
-OiBQYXRjaHdvcmsgPHBhdGNod29ya0BlbWVyaWwuZnJlZWRlc2t0b3Aub3JnPgo+ID4gU2VudDog
-RnJpZGF5LCBKYW51YXJ5IDMxLCAyMDIwIDE6MjYgUE0KPiA+IFRvOiBTaWRkaXF1aSwgQXlheiBB
-IDxheWF6LnNpZGRpcXVpQGludGVsLmNvbT4KPiA+IENjOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
-dG9wLm9yZwo+ID4gU3ViamVjdDog4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgQWRkIGNoZWNr
-IGZvciBIVyB0aWxpbmcgc3VwcG9ydCBpbgo+ID4gZ2VtX3NldF90aWxpbmdfdnNfYmx0IHRlc3QK
-PiA+IAo+ID4gPT0gU2VyaWVzIERldGFpbHMgPT0KPiA+IAo+ID4gU2VyaWVzOiBBZGQgY2hlY2sg
-Zm9yIEhXIHRpbGluZyBzdXBwb3J0IGluIGdlbV9zZXRfdGlsaW5nX3ZzX2JsdCB0ZXN0Cj4gPiBV
-UkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvNzI4MDMvCj4g
-PiBTdGF0ZSA6IGZhaWx1cmUKPiA+IAo+ID4gPT0gU3VtbWFyeSA9PQo+ID4gCj4gPiBDSSBCdWcg
-TG9nIC0gY2hhbmdlcyBmcm9tIENJX0RSTV83ODQ4IC0+IElHVFBXXzQwNTQKPiA+ID09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KPiA+IAo+ID4gU3Vt
-bWFyeQo+ID4gLS0tLS0tLQo+ID4gCj4gPiAgICoqRkFJTFVSRSoqCj4gPiAKPiA+ICAgU2VyaW91
-cyB1bmtub3duIGNoYW5nZXMgY29taW5nIHdpdGggSUdUUFdfNDA1NCBhYnNvbHV0ZWx5IG5lZWQg
-dG8gYmUKPiA+ICAgdmVyaWZpZWQgbWFudWFsbHkuCj4gPiAKPiA+ICAgSWYgeW91IHRoaW5rIHRo
-ZSByZXBvcnRlZCBjaGFuZ2VzIGhhdmUgbm90aGluZyB0byBkbyB3aXRoIHRoZSBjaGFuZ2VzCj4g
-PiAgIGludHJvZHVjZWQgaW4gSUdUUFdfNDA1NCwgcGxlYXNlIG5vdGlmeSB5b3VyIGJ1ZyB0ZWFt
-IHRvIGFsbG93IHRoZW0KPiA+ICAgdG8gZG9jdW1lbnQgdGhpcyBuZXcgZmFpbHVyZSBtb2RlLCB3
-aGljaCB3aWxsIHJlZHVjZSBmYWxzZSBwb3NpdGl2ZXMgaW4gQ0kuCj4gPiAKPiA+ICAgRXh0ZXJu
-YWwgVVJMOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tCj4gPiB0aXAvSUdU
-UFdfNDA1NC9pbmRleC5odG1sCj4gPiAKPiA+IFBvc3NpYmxlIG5ldyBpc3N1ZXMKPiA+IC0tLS0t
-LS0tLS0tLS0tLS0tLS0KPiA+IAo+ID4gICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRo
-YXQgbWF5IGhhdmUgYmVlbiBpbnRyb2R1Y2VkIGluCj4gPiBJR1RQV180MDU0Ogo+ID4gCj4gPiAj
-IyMgSUdUIGNoYW5nZXMgIyMjCj4gPiAKPiA+ICMjIyMgUG9zc2libGUgcmVncmVzc2lvbnMgIyMj
-Iwo+ID4gCj4gPiAgICogaWd0QGdlbV9leGVjX3N1c3BlbmRAYmFzaWMtczA6Cj4gPiAgICAgLSBm
-aS1pY2wtdTM6ICAgICAgICAgIFtQQVNTXVsxXSAtPiBbSU5DT01QTEVURV1bMl0KPiA+ICAgIFsx
-XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fNzg0OC9m
-aS1pY2wtCj4gPiB1My9pZ3RAZ2VtX2V4ZWNfc3VzcGVuZEBiYXNpYy1zMC5odG1sCj4gPiAgICBb
-Ml06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfNDA1NC9m
-aS1pY2wtCj4gPiB1My9pZ3RAZ2VtX2V4ZWNfc3VzcGVuZEBiYXNpYy1zMC5odG1sCj4gPiAKPiA+
-IAo+IENoYW5nZSBwcm92aWRlZCBpbiB0aGlzIHBhdGNoIHNldCB3aWxsIG9ubHkgaW1wYWN0IHRo
-ZSB0ZXN0cyB3aGljaCBhcmUgcGFydCBvZiAKPiBnZW1fc2V0X3RpbGluZ192c19ibHQgdGVzdCBz
-dWl0ZSBvbmx5LiAKPiAKPiBSZWdhcmRzCj4gLUF5YXoKCgpMYWtzaG1pLCBzZWUgYWJvdmUuCgoK
-LS0gClBldHJpIExhdHZhbGEKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
-cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-Cg==
+Fix FBC checking rules for scaledprimary subtests
+
+References: https://gitlab.freedesktop.org/drm/intel/issues/160
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ tests/kms_frontbuffer_tracking.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
+index c788b59..2c765c3 100644
+--- a/tests/kms_frontbuffer_tracking.c
++++ b/tests/kms_frontbuffer_tracking.c
+@@ -2614,16 +2614,16 @@ static void scaledprimary_subtest(const struct test_mode *t)
+ 	do_assertions(DONT_ASSERT_CRC);
+ 
+ 	/*
+-	 * On gen <= 10 HW, FBC is not enabled on a plane with a Y offset
++	 * On gen >= 9 HW, FBC is not enabled on a plane with a Y offset
+ 	 * that isn't divisible by 4, because it causes FIFO underruns.
+ 	 *
+ 	 * Check that FBC is disabled.
+ 	 */
+ 	igt_fb_set_position(&new_fb, reg->plane,
+-			    reg->x + reg->w / 4, reg->y + src_y_upscale + 3);
++			    reg->x + reg->w / 4, (reg->y + src_y_upscale) | 3);
+ 	igt_fb_set_size(&new_fb, reg->plane, reg->w / 2, reg->h / 2);
+ 	igt_display_commit2(&drm.display, COMMIT_UNIVERSAL);
+-	do_assertions(DONT_ASSERT_CRC | (gen <= 10 ? ASSERT_FBC_DISABLED : 0));
++	do_assertions(DONT_ASSERT_CRC | (gen >= 9 ? ASSERT_FBC_DISABLED : 0));
+ 
+ 	/* Back to the good and old blue fb. */
+ 	igt_plane_set_fb(reg->plane, old_fb);
+-- 
+2.7.4
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
