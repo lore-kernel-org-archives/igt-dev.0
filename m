@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 77D3F6FBA1
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2020 17:11:54 +0000 (UTC)
-From: Antonio Argenziano <antonio.argenziano@intel.com>
-Date: Fri, 31 Jan 2020 09:11:50 -0800
-Message-Id: <20200131171150.8333-1-antonio.argenziano@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 559076FBAD
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2020 17:31:07 +0000 (UTC)
+From: Ramalingam C <ramalingam.c@intel.com>
+Date: Fri, 31 Jan 2020 23:01:00 +0530
+Message-Id: <20200131173109.12527-1-ramalingam.c@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] tests/i915/gem_ctx_sseu: Skip gtt tests
- if mappable aperture unavailable
+Subject: [igt-dev] [PATCH i-g-t 0/9] Handling mmap_gtt
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,41 +18,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: igt-dev <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The gtt tests try to verify that a gtt mapped area can be used as an
-sseu pointer so it wouldn't make sense to run those when gtt mapping is
-not available.
+When platform doesn't support mappable aperture, we use device coherent
+mapping instead of mmap_gtt.
 
-v2:
-	- Move require in subtest definition. (Ashutosh)
+And in such scenarios we are skipping the tiling based tests and fence
+related tests along with GTT mmap specific tests.
 
-Signed-off-by: Antonio Argenziano <antonio.argenziano@intel.com>
-Cc: Dixit Ashutosh <ashutosh.dixit@intel.com>
----
- tests/i915/gem_ctx_sseu.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Ramalingam C (9):
+  tests/prime_vgem: Skip fence and gtt specific tests
+  tests/intel_dp_compliance: Skip tests as tiling is not supported
+  tests/prime_mmap_coherency: use device coherent mapping instead of
+    mmap_gtt
+  tests/prime_mmap: use device coherent mapping instead of mmap_gtt
+  tests/kms_psr: Skip tests on mmap_gtt, if no mappable aperture
+  tests/kms_available_modes_crc: Skip test if mappable aperture not
+    supported
+  tests/i915_pm_rpm: use device coherent mapping instead of mmap_gtt
+  tests/i915_suspend: skip fence related tests, if no mmap_gtt
+  tests/gem_tiling_max_stride: Skip if set tiling is not supported
 
-diff --git a/tests/i915/gem_ctx_sseu.c b/tests/i915/gem_ctx_sseu.c
-index 38dc584b..b5e9658e 100644
---- a/tests/i915/gem_ctx_sseu.c
-+++ b/tests/i915/gem_ctx_sseu.c
-@@ -528,8 +528,11 @@ igt_main
- 		igt_subtest("invalid-sseu")
- 			test_invalid_sseu(fd);
- 
--		igt_subtest("ggtt-args")
-+		igt_subtest("ggtt-args") {
-+			gem_require_mappable_ggtt(fd);
-+
- 			test_ggtt_args(fd);
-+		}
- 
- 		igt_subtest("engines")
- 			test_engines(fd);
+ tests/i915/gem_tiling_max_stride.c |  1 +
+ tests/i915/i915_pm_rpm.c           | 24 +++++++++++++++---------
+ tests/i915/i915_suspend.c          | 16 ++++++++++++----
+ tests/kms_available_modes_crc.c    |  1 +
+ tests/kms_psr.c                    |  1 +
+ tests/prime_mmap.c                 |  4 ++--
+ tests/prime_mmap_coherency.c       |  2 +-
+ tests/prime_vgem.c                 | 12 +++++++++---
+ tools/intel_dp_compliance.c        |  2 ++
+ 9 files changed, 44 insertions(+), 19 deletions(-)
+
 -- 
-2.21.0
+2.20.1
 
 _______________________________________________
 igt-dev mailing list
