@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 853AF6E969
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2020 10:55:22 +0000 (UTC)
-Date: Fri, 31 Jan 2020 12:55:20 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200131105520.GY25209@platvala-desk.ger.corp.intel.com>
-References: <20200131092603.24223-1-mika.kahola@intel.com>
- <20200131092603.24223-2-mika.kahola@intel.com>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B27286E96A
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2020 10:57:02 +0000 (UTC)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200131092603.24223-2-mika.kahola@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/1] tests/kms_plane_lowres: Fix CRC
- mismatch
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20200131105037.GX25209@platvala-desk.ger.corp.intel.com>
+References: <20200131001516.2228-1-antonio.argenziano@intel.com>
+ <20200131105037.GX25209@platvala-desk.ger.corp.intel.com>
+Message-ID: <158046821812.2430.13863012700596149680@skylake-alporthouse-com>
+Date: Fri, 31 Jan 2020 10:56:58 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_basic: Skip subtest
+ gtt if gtt mapping is unavailable
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,71 +22,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mika Kahola <mika.kahola@intel.com>
+To: Antonio Argenziano <antonio.argenziano@intel.com>, Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jan 31, 2020 at 11:26:03AM +0200, Mika Kahola wrote:
-> Mixing SDR and HDR planes yields to CRC mismatch. The patch computes the
-> reference image and CRC with the main plane matching the SDR/HDR plane type.
+Quoting Petri Latvala (2020-01-31 10:50:37)
+> On Thu, Jan 30, 2020 at 04:15:16PM -0800, Antonio Argenziano wrote:
+> > The subtest tries to do a gtt mapping but if there is no mappable
+> > aperture that is not possible.
+> > 
+> > Signed-off-by: Antonio Argenziano <antonio.argenziano@intel.com>
+> > ---
+> >  tests/i915/gem_exec_basic.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/tests/i915/gem_exec_basic.c b/tests/i915/gem_exec_basic.c
+> > index 70dce34b..08336168 100644
+> > --- a/tests/i915/gem_exec_basic.c
+> > +++ b/tests/i915/gem_exec_basic.c
+> > @@ -93,6 +93,7 @@ static void gtt(int fd, uint64_t flags)
+> >       struct drm_i915_gem_exec_object2 *exec;
+> >       uint32_t handle;
+> >  
+> > +     gem_require_mappable_ggtt(fd);
+> >       gem_require_ring(fd, flags);
 > 
-> v2: HDR planes are not defined for gen9 and older (CI)
 > 
-> References: https://gitlab.freedesktop.org/drm/intel/issues/899
-> Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-> ---
->  tests/kms_plane_lowres.c | 142 +++++++++++++++++++++++++--------------
->  1 file changed, 90 insertions(+), 52 deletions(-)
+> Hmm, without mappable aperture this ends up yielding a SKIP for each
+> dynamic subtest. Note to self: Check that it gets properly handled...
 > 
-> diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-> index 4c3f5636..012b25e3 100644
-> --- a/tests/kms_plane_lowres.c
-> +++ b/tests/kms_plane_lowres.c
-> @@ -32,11 +32,15 @@
->  
->  IGT_TEST_DESCRIPTION("Test atomic mode setting with a plane by switching between high and low resolutions");
->  
-> +#define SDR_PLANE_BASE 3
->  #define SIZE 64
->  
->  typedef struct {
->  	int drm_fd;
->  	igt_display_t display;
-> +	uint32_t devid;
-> +	igt_output_t *output;
-> +	enum pipe pipe;
->  	struct igt_fb fb_primary;
->  	struct igt_fb fb_plane[2];
->  	struct {
-> @@ -77,11 +81,44 @@ get_lowres_mode(int drmfd, igt_output_t *output,
->  	return *mode;
->  }
->  
-> +static igt_plane_t *first_sdr_plane(igt_output_t *output, uint32_t devid)
-> +{
-> +        int index;
-> +
-> +        index = intel_gen(devid) <= 9 ? 0 : SDR_PLANE_BASE;
-> +
-> +        return igt_output_get_plane(output, index);
-> +}
-> +
-> +static bool is_sdr_plane(const igt_plane_t *plane, uint32_t devid)
-> +{
-> +        if (intel_gen(devid) <= 9)
-> +                return true;
-> +
-> +        return plane->index >= SDR_PLANE_BASE;
-> +}
+> Anyway, it's useless to loop and yield multiple SKIPs when you know a
+> priori you're going to do it for each loop element.
 
-kms_plane.c has similar HDR plane finder code by Ville. For some
-values of similar. At least it had comments explaining why the SDR plane base is 3. :P
-
-Any takers for refactoring to shared code?
-
-
--- 
-Petri Latvala
+There's no reason to loop over engines at all for this, since it's just
+testing passing a pointer to the kernel and copy_from_user(). Sigh. It's
+a confused test.
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
