@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE2C56E237
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B1F456E235
  for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2020 19:54:05 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Fri, 31 Jan 2020 11:47:01 -0800
-Message-Id: <fe554b5b42e3e4aad658c4eda46045d8b12fbfa8.1580499870.git.ashutosh.dixit@intel.com>
-In-Reply-To: <bfc5383a40425ee2071a44ca75be5c55b7378bed.1580499870.git.ashutosh.dixit@intel.com>
-References: <bfc5383a40425ee2071a44ca75be5c55b7378bed.1580499870.git.ashutosh.dixit@intel.com>
+Date: Fri, 31 Jan 2020 11:47:00 -0800
+Message-Id: <bfc5383a40425ee2071a44ca75be5c55b7378bed.1580499870.git.ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] benchmarks/gem_mmap: Add feature checks
- and use mmap_offset
+Subject: [igt-dev] [PATCH i-g-t 1/2] lib/i915/gem_mman: Add
+ gem_mmap__wc_ext()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,66 +22,62 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add checks for particular features to be available before invoking
-those tests. Also use function versions with mmap_offset.
+Add gem_mmap__wc_ext() for when specifically a WC mapping is required,
+whether by using mmap_offset or mmap__wc.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- benchmarks/gem_mmap.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ lib/i915/gem_mman.c | 23 +++++++++++++++++++++++
+ lib/i915/gem_mman.h |  2 ++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/benchmarks/gem_mmap.c b/benchmarks/gem_mmap.c
-index d3d4ad310..33e22cc08 100644
---- a/benchmarks/gem_mmap.c
-+++ b/benchmarks/gem_mmap.c
-@@ -118,22 +118,28 @@ int main(int argc, char **argv)
- 	handle = gem_create(fd, OBJECT_SIZE);
- 	switch (map) {
- 	case CPU:
--		ptr = gem_mmap__cpu(fd, handle, 0, OBJECT_SIZE, PROT_WRITE);
-+		igt_require(gem_has_llc(fd));
-+		ptr = gem_mmap__cpu_coherent(fd, handle, 0, OBJECT_SIZE, PROT_WRITE);
- 		gem_set_domain(fd, handle, I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
- 		break;
- 	case GTT:
-+		gem_require_mappable_ggtt(fd);
- 		ptr = gem_mmap__gtt(fd, handle, OBJECT_SIZE, PROT_WRITE);
- 		gem_set_domain(fd, handle, I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
- 		break;
- 	case WC:
--		ptr = gem_mmap__wc(fd, handle, 0, OBJECT_SIZE, PROT_WRITE);
-+		igt_require(gem_mmap__has_wc(fd) || gem_mmap_offset__has_wc(fd));
-+		ptr = gem_mmap__wc_ext(fd, handle, 0, OBJECT_SIZE, PROT_WRITE);
- 		gem_set_domain(fd, handle, I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
- 		break;
- 	default:
- 		abort();
- 	}
+diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
+index c034f3173..796ae6ebc 100644
+--- a/lib/i915/gem_mman.c
++++ b/lib/i915/gem_mman.c
+@@ -338,6 +338,29 @@ void *gem_mmap_offset__wc(int fd, uint32_t handle, uint64_t offset,
+ 	return ptr;
+ }
  
--	gem_set_tiling(fd, handle, tiling, 512);
-+	if (tiling != I915_TILING_NONE) {
-+		igt_require(gem_available_fences(fd) > 0);
-+		gem_set_tiling(fd, handle, tiling, 512);
-+	}
- 
- 	if (dir == READ) {
- 		src = ptr;
-@@ -169,13 +175,13 @@ int main(int argc, char **argv)
- 				munmap(ptr, OBJECT_SIZE);
- 				switch (map) {
- 				case CPU:
--					ptr = gem_mmap__cpu(fd, handle, 0, OBJECT_SIZE, PROT_WRITE);
-+					ptr = gem_mmap__cpu_coherent(fd, handle, 0, OBJECT_SIZE, PROT_WRITE);
- 					break;
- 				case GTT:
- 					ptr = gem_mmap__gtt(fd, handle, OBJECT_SIZE, PROT_WRITE);
- 					break;
- 				case WC:
--					ptr = gem_mmap__wc(fd, handle, 0, OBJECT_SIZE, PROT_WRITE);
-+					ptr = gem_mmap__wc_ext(fd, handle, 0, OBJECT_SIZE, PROT_WRITE);
- 					break;
- 				default:
- 					abort();
++
++/**
++ * gem_mmap__wc_ext
++ * @fd: open i915 drm file descriptor
++ * @handle: gem buffer object handle
++ * @offset: offset in the gem buffer of the mmap arena
++ * @size: size of the mmap arena
++ * @prot: memory protection bits as used by mmap()
++ *
++ * Used when specifically a WC mapping is needed, whether by using
++ * mmap_offset or mmap__wc
++ */
++void *gem_mmap__wc_ext(int fd, uint32_t handle, uint64_t offset,
++		       uint64_t size, unsigned prot)
++{
++	void *ptr = __gem_mmap_offset(fd, handle, offset, size, prot,
++				      I915_MMAP_OFFSET_WC);
++	if (!ptr)
++		ptr = __gem_mmap__wc(fd, handle, offset, size, prot);
++
++	return ptr;
++}
++
+ /**
+  * __gem_mmap__device_coherent:
+  * @fd: open i915 drm file descriptor
+diff --git a/lib/i915/gem_mman.h b/lib/i915/gem_mman.h
+index 2730295ea..b8e0c9dcd 100644
+--- a/lib/i915/gem_mman.h
++++ b/lib/i915/gem_mman.h
+@@ -37,6 +37,8 @@ bool gem_mmap_offset__has_wc(int fd);
+ void *gem_mmap__wc(int fd, uint32_t handle, uint64_t offset, uint64_t size, unsigned prot);
+ void *gem_mmap_offset__wc(int fd, uint32_t handle, uint64_t offset,
+ 			  uint64_t size, unsigned prot);
++void *gem_mmap__wc_ext(int fd, uint32_t handle, uint64_t offset,
++		       uint64_t size, unsigned prot);
+ void *gem_mmap__device_coherent(int fd, uint32_t handle, uint64_t offset,
+ 				uint64_t size, unsigned prot);
+ void *gem_mmap__cpu_coherent(int fd, uint32_t handle, uint64_t offset,
 -- 
 2.25.0
 
