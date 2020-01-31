@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B6E16FA85
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2020 06:56:02 +0000 (UTC)
-From: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-Date: Fri, 31 Jan 2020 12:24:55 +0530
-Message-Id: <20200131065456.16467-1-ayaz.siddiqui@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 879446FA78
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2020 07:02:46 +0000 (UTC)
+Date: Fri, 31 Jan 2020 08:02:42 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20200131070242.GA8650@zkempczy-mobl2>
+References: <20200130151757.14104-1-zbigniew.kempczynski@intel.com>
+ <158039852481.18112.2292421656643729526@skylake-alporthouse-com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 0/1] Add check for HW tiling support in
- gem_set_tiling_vs_blt test
+Content-Disposition: inline
+In-Reply-To: <158039852481.18112.2292421656643729526@skylake-alporthouse-com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_tiled_.*blits: skip the
+ tests on newer gens
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,30 +19,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This  test is currently assuming that platform always support HW tiling.
-A check has been added to skip the test if HW tiling is not supported
-by platform.
-
-Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-
-Ayaz A Siddiqui (1):
-  Add check for HW tiling support in gem_set_tiling_vs_blt test
-
- tests/i915/gem_set_tiling_vs_blt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
--- 
-2.24.0
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVGh1LCBKYW4gMzAsIDIwMjAgYXQgMDM6MzU6MjRQTSArMDAwMCwgQ2hyaXMgV2lsc29uIHdy
+b3RlOgo+IFF1b3RpbmcgWmJpZ25pZXcgS2VtcGN6ecWEc2tpICgyMDIwLTAxLTMwIDE1OjE3OjU3
+KQo+ID4gU2tpcCB0aGUgdGVzdHMgb24gbmV3ZXIgZ2VucyB3aGVuIG5vIGZlbmNlcyBhcmUgYXZh
+aWxhYmxlCj4gPiBhbmQgZ2VtX3NldF90aWxpbmcoKSBjYW5ub3Qgc3VjY2VlZC4KPiA+IAo+ID4g
+U2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNr
+aUBpbnRlbC5jb20+Cj4gPiBDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28u
+dWs+Cj4gPiAtLS0KPiA+ICB0ZXN0cy9pOTE1L2dlbV90aWxlZF9ibGl0cy5jICAgICAgIHwgMSAr
+Cj4gPiAgdGVzdHMvaTkxNS9nZW1fdGlsZWRfZmVuY2VfYmxpdHMuYyB8IDEgKwo+ID4gIDIgZmls
+ZXMgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspCj4gPiAKPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9p
+OTE1L2dlbV90aWxlZF9ibGl0cy5jIGIvdGVzdHMvaTkxNS9nZW1fdGlsZWRfYmxpdHMuYwo+ID4g
+aW5kZXggZGYwNjk5ZjMuLmJhMDkyMGRhIDEwMDY0NAo+ID4gLS0tIGEvdGVzdHMvaTkxNS9nZW1f
+dGlsZWRfYmxpdHMuYwo+ID4gKysrIGIvdGVzdHMvaTkxNS9nZW1fdGlsZWRfYmxpdHMuYwo+ID4g
+QEAgLTIwNCw2ICsyMDQsNyBAQCBpZ3RfbWFpbgo+ID4gICAgICAgICAgICAgICAgIGZkID0gZHJt
+X29wZW5fZHJpdmVyKERSSVZFUl9JTlRFTCk7Cj4gPiAgICAgICAgICAgICAgICAgaWd0X3JlcXVp
+cmVfZ2VtKGZkKTsKPiA+ICAgICAgICAgICAgICAgICBnZW1fcmVxdWlyZV9ibGl0dGVyKGZkKTsK
+PiA+ICsgICAgICAgICAgICAgICBnZW1fcmVxdWlyZV9tYXBwYWJsZV9nZ3R0KGZkKTsKPiAKPiBX
+ZWxsLCBJIGNhbiB0aGluayBvZiBhIHVzZSBmb3IgdGhpcyBmb3IgdGVzdGluZyBpbXBsaWNpdCBI
+VyB0aWxpbmcKPiBhY3Jvc3MgdGhlIGFwZXJ0dXJlIHRocmFzaGluZy4uLgoKSWYgSSBnb29kIHVu
+ZGVyc3RhbmQgZm9yIGFsbCBvYmplY3RzIGNvbmZpZ3VyZWQgYXMgdGlsZWQgKFggaW4gdGhpcyBj
+YXNlKQplYWNoIHRpbWUgYmxpdHRlciBjb21tYW5kIHdpbGwgYmUgZXhlY3V0ZWQgYXBwcm9wcmlh
+dGUgZmVuY2VzIHdpbGwgYmUKY29uZmlndXJlZCBldmVuIHRoZXkgYXJlIG5vdCB1c2VkIGZvciBn
+ZW40Ky4gU28gdGVzdCBjb25maWd1cmVzIHRoaXMKZ2d0dCBzcGFjZSBhbmQgZmVuY2VzIGJ1dCBp
+cyByZWFsbHkgbm90IHVzZWQgZm9yIGdlbjQrLiBFdmVuIGNoZWNrX2JvKCkKaXMgcGVyZm9ybWVk
+IGFmdGVyIGJsaXR0aW5nIHRvIGxpbmVhciBzcGFjZSB3aGljaCBhbHNvIGRvZXNuJ3QgdXNlIGFu
+eQpmZW5jZSBoZXJlLiAKClNvIHdlIGRlcGVuZCBvbiBsaWJkcm0gc2V0X3RpbGluZy9nZXRfdGls
+aW5nIGludGVybmFsbHkgYnV0IHRlc3QgbmFtZSAKanVzdCBzdWdnZXN0cyB3ZSB3YW50IHRvIHBl
+cmZvcm0gdGlsaW5nIGJsaXRzIG9wZXJhdGlvbnMgKG5vdCBleGVyY2lzaW5nIAp0aGUgYXBlcnR1
+cmUpLiBGb3IgbmV3ZXIgZ2VuIHdlIGNhbiBwcmVwYXJlIGJsaXR0ZXIgY29tbWFuZHMgdG8gbWFr
+ZQphIGxvb3AgbGluZWFyIC0+IHggLT4geSAtPiB5ZiAtPiB4IC0+IHkgLT4gbGluZWFyIGFuZCBj
+aGVjayBkb2VzIGEgCmxvb3AgaXMgaWRlbXBvdGVudCBhdCB0aGUgZW5kLiBUaGlzIHJlcXVpcmUg
+cmV3cml0ZSB0aGUgdGVzdCBjb21wbGV0ZWx5CnRvIG1ha2UgaXQgc2ltaWxhciB0byBnZW1fdGls
+ZWRfZmVuY2VfYmxpdHMgd2hpY2gganVzdCBpcyBsaWJkcm0KaW5kZXBlbmRlbnQuIAoKVGVzdCBu
+YW1lIGlzIGNvbmZ1c2luZyBmb3IgbWUsIGl0IHN0cm9uZ2x5IHN1Z2dlc3QgaXQgd2FzIHdyaXR0
+ZW4KZm9yIGRvaW5nIHRpbGVkIGJsaXRzLCBidXQgaW50ZXJuYWxseSBpdCB0ZXN0cyBhcGVydHVy
+ZSB0cmFzaGluZy4KCj4gCj4gPiAgICAgICAgICAgICAgICAgYnVmbWdyID0gZHJtX2ludGVsX2J1
+Zm1ncl9nZW1faW5pdChmZCwgNDA5Nik7Cj4gPiAgICAgICAgICAgICAgICAgZHJtX2ludGVsX2J1
+Zm1ncl9nZW1fZW5hYmxlX3JldXNlKGJ1Zm1ncik7Cj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkx
+NS9nZW1fdGlsZWRfZmVuY2VfYmxpdHMuYyBiL3Rlc3RzL2k5MTUvZ2VtX3RpbGVkX2ZlbmNlX2Js
+aXRzLmMKPiA+IGluZGV4IDkzYzc5ZGMyLi42MmZkMTMyOCAxMDA2NDQKPiA+IC0tLSBhL3Rlc3Rz
+L2k5MTUvZ2VtX3RpbGVkX2ZlbmNlX2JsaXRzLmMKPiA+ICsrKyBiL3Rlc3RzL2k5MTUvZ2VtX3Rp
+bGVkX2ZlbmNlX2JsaXRzLmMKPiA+IEBAIC0yMTQsNiArMjE0LDcgQEAgaWd0X21haW4KPiA+ICAg
+ICAgICAgICAgICAgICBmZCA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJfSU5URUwpOwo+ID4gICAg
+ICAgICAgICAgICAgIGlndF9yZXF1aXJlX2dlbShmZCk7Cj4gPiAgICAgICAgICAgICAgICAgZ2Vt
+X3JlcXVpcmVfYmxpdHRlcihmZCk7Cj4gPiArICAgICAgICAgICAgICAgZ2VtX3JlcXVpcmVfbWFw
+cGFibGVfZ2d0dChmZCk7Cj4gCj4gYnV0IHRoaXMgaXMgdGFyZ2V0aW5nIHRoZSBmZW5jZSBhYm92
+ZSBhbmQgYmV5b25kIHRoZSBnZW1fdGlsZWRfYmxpdHMuCgpIZXJlIGF0IGxlYXN0IHdlIGRvbid0
+IGRlcGVuZCBvbiBsaWJkcm0sIGRvIHNpbWlsYXIgdGhpbmdzIHRvIGdlbV90aWxlZF9ibGl0cywK
+YnV0IHdlJ3JlIHZlcmlmeWluZyBkYXRhIHRocm91Z2ggZ3R0IG1hcHBpbmcuCgo+IAo+IFN3ZWV0
+ZW4gdGhlIGNoYW5nZWxvZyBieSBkZXNjcmliaW5nIGhvdyB5b3Ugd3JpdGUgYSBzZWxmdGVzdCB0
+byB2ZXJpZnkKPiB0aGUgaW1wbGljaXQgSFcgdGlsaW5nIGluZGVwZW5kZW50bHkgb2YgZmVuY2Ug
+cmVnaXN0ZXJzLgo+IC1DaHJpcwoKSSB0aGluayBpZGVtcG90ZW5jeSBsb29wIHRlc3QgZGVzY3Jp
+YmVkIGFib3ZlICsgYWRkaXRpb25hbCBvcGVyYXRpb25zCm5vdCBwb3NzaWJsZSBpbiB1c2Vyc3Bh
+Y2UgY2FuIGJlIHdyaXR0ZW4uCgotLQpaYmlnbmlldyAKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0
+cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
+aXN0aW5mby9pZ3QtZGV2Cg==
