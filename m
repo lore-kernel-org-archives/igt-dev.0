@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6DDEF6FBAD
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2020 17:31:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 50ADC6FBAB
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jan 2020 17:31:15 +0000 (UTC)
 From: Ramalingam C <ramalingam.c@intel.com>
-Date: Fri, 31 Jan 2020 23:01:02 +0530
-Message-Id: <20200131173109.12527-3-ramalingam.c@intel.com>
+Date: Fri, 31 Jan 2020 23:01:03 +0530
+Message-Id: <20200131173109.12527-4-ramalingam.c@intel.com>
 In-Reply-To: <20200131173109.12527-1-ramalingam.c@intel.com>
 References: <20200131173109.12527-1-ramalingam.c@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/9] tests/intel_dp_compliance: Skip tests
- as tiling is not supported
+Subject: [igt-dev] [PATCH i-g-t 3/9] tests/prime_mmap_coherency: use device
+ coherent mapping instead of mmap_gtt
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,26 +24,29 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Skip the test if the tiling is not supported on the platforms.
+Since on new discrete GPUs we dont have the mappable aperture, if that
+is acceptable for the test purpose, we should use GEM_MMAP_OFFSET.
+Hence using gem_mmap_device_coherent() which wraps the mmap options in
+the order of gem_mmap_offset / gem_mmap / mmap_gtt
 
 Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
 ---
- tools/intel_dp_compliance.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/prime_mmap_coherency.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/intel_dp_compliance.c b/tools/intel_dp_compliance.c
-index 5cc3d37a71d6..8f4ea3f3d328 100644
---- a/tools/intel_dp_compliance.c
-+++ b/tools/intel_dp_compliance.c
-@@ -1043,6 +1043,8 @@ int main(int argc, char **argv)
- 	drm_fd = drm_open_driver(DRIVER_ANY);
- 	gen = intel_gen(intel_get_drm_devid(drm_fd));
+diff --git a/tests/prime_mmap_coherency.c b/tests/prime_mmap_coherency.c
+index 39538767c68f..32d78ee1a771 100644
+--- a/tests/prime_mmap_coherency.c
++++ b/tests/prime_mmap_coherency.c
+@@ -69,7 +69,7 @@ static int test_read_flush(void)
  
-+	/* Set tiling is not supported on newer platforms */
-+	gem_require_mappable_ggtt(drm_fd);
- 	kmstest_set_vt_graphics_mode();
- 	setup_debugfs_files();
- 	cleanup_test();
+ 	/* STEP #3: write 0x11 into BO 1. */
+ 	bo_2 = drm_intel_bo_alloc(bufmgr, "BO 2", width * height * 4, 4096);
+-	ptr_gtt = gem_mmap__gtt(fd, bo_2->handle, width * height, PROT_READ | PROT_WRITE);
++	ptr_gtt = gem_mmap__device_coherent(fd, bo_2->handle, 0, width * height, PROT_READ | PROT_WRITE);
+ 	gem_set_domain(fd, bo_2->handle,
+ 		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+ 	memset(ptr_gtt, 0xc5, width * height);
 -- 
 2.20.1
 
