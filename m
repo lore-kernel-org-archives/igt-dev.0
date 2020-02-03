@@ -1,12 +1,10 @@
 Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
-In-Reply-To: <20200203105401.17340-1-chris@chris-wilson.co.uk>
-References: <20200203105401.17340-1-chris@chris-wilson.co.uk>
-Date: Mon, 03 Feb 2020 15:04:32 +0200
-Message-ID: <87k153akkf.fsf@gaia.fi.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Mon,  3 Feb 2020 21:45:18 +0000
+Message-Id: <20200203214518.723198-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: Re: [Intel-gfx] [PATCH i-g-t] i915/gem_eio: Don't mix INVALID_CS
- and the cmdparser
+Subject: [Intel-gfx] [PATCH i-g-t] i915/gem_exec_basic: Drop per-engine
+ testing of *execbuf
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
@@ -18,48 +16,238 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: intel-gfx-bounces@lists.freedesktop.org
 Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Chris Wilson <chris@chris-wilson.co.uk> writes:
+The gtt/readonly tests are nothing to do with execution and engines;
+they are strictly checking the copy-from-user of the ioctl arguments.
+Drop the silly per-engine tests.
 
-> Since the cmdparser causes it to discard the batch with INVALID_CS, we
-> are not being as thorough in our testing on gen9/bcs as we expect.
-> Furthermore, snb just dies, so don't.
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Antonio Argenziano <antonio.argenziano@intel.com>
+---
+ tests/i915/gem_exec_basic.c  | 109 +++++------------------------------
+ tests/i915/gem_exec_params.c |  61 ++++++++++++++++++++
+ 2 files changed, 76 insertions(+), 94 deletions(-)
 
-snb funny
+diff --git a/tests/i915/gem_exec_basic.c b/tests/i915/gem_exec_basic.c
+index 70dce34b5..0d05819ce 100644
+--- a/tests/i915/gem_exec_basic.c
++++ b/tests/i915/gem_exec_basic.c
+@@ -36,84 +36,6 @@ static uint32_t batch_create(int fd)
+ 	return handle;
+ }
+ 
+-static void batch_fini(int fd, uint32_t handle)
+-{
+-	gem_sync(fd, handle); /* catch any GPU hang */
+-	gem_close(fd, handle);
+-}
+-
+-static void noop(int fd, uint64_t flags)
+-{
+-	struct drm_i915_gem_execbuffer2 execbuf;
+-	struct drm_i915_gem_exec_object2 exec;
+-
+-	gem_require_ring(fd, flags);
+-
+-	memset(&exec, 0, sizeof(exec));
+-
+-	exec.handle = batch_create(fd);
+-
+-	memset(&execbuf, 0, sizeof(execbuf));
+-	execbuf.buffers_ptr = to_user_pointer(&exec);
+-	execbuf.buffer_count = 1;
+-	execbuf.flags = flags;
+-	gem_execbuf(fd, &execbuf);
+-
+-	batch_fini(fd, exec.handle);
+-}
+-
+-static void readonly(int fd, uint64_t flags)
+-{
+-	struct drm_i915_gem_execbuffer2 *execbuf;
+-	struct drm_i915_gem_exec_object2 exec;
+-
+-	gem_require_ring(fd, flags);
+-
+-	memset(&exec, 0, sizeof(exec));
+-	exec.handle = batch_create(fd);
+-
+-	execbuf = mmap(NULL, 4096, PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+-	igt_assert(execbuf != NULL);
+-
+-	execbuf->buffers_ptr = to_user_pointer(&exec);
+-	execbuf->buffer_count = 1;
+-	execbuf->flags = flags;
+-	igt_assert(mprotect(execbuf, 4096, PROT_READ) == 0);
+-
+-	gem_execbuf(fd, execbuf);
+-
+-	munmap(execbuf, 4096);
+-
+-	batch_fini(fd, exec.handle);
+-}
+-
+-static void gtt(int fd, uint64_t flags)
+-{
+-	struct drm_i915_gem_execbuffer2 *execbuf;
+-	struct drm_i915_gem_exec_object2 *exec;
+-	uint32_t handle;
+-
+-	gem_require_ring(fd, flags);
+-
+-	handle = gem_create(fd, 4096);
+-
+-	gem_set_domain(fd, handle, I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+-	execbuf = gem_mmap__gtt(fd, handle, 4096, PROT_WRITE);
+-	exec = (struct drm_i915_gem_exec_object2 *)(execbuf + 1);
+-	gem_close(fd, handle);
+-
+-	exec->handle = batch_create(fd);
+-
+-	execbuf->buffers_ptr = to_user_pointer(exec);
+-	execbuf->buffer_count = 1;
+-	execbuf->flags = flags;
+-
+-	gem_execbuf(fd, execbuf);
+-
+-	batch_fini(fd, exec->handle);
+-	munmap(execbuf, 4096);
+-}
+-
+ igt_main
+ {
+ 	const struct intel_execution_engine2 *e;
+@@ -121,30 +43,29 @@ igt_main
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_INTEL);
+-		igt_require_gem(fd);
+-
++		/* igt_require_gem(fd); // test is mandatory */
+ 		igt_fork_hang_detector(fd);
+ 	}
+ 
+ 	igt_subtest_with_dynamic("basic") {
+-		__for_each_physical_engine(fd, e) {
+-			igt_dynamic_f("%s", e->name)
+-				noop(fd, e->flags);
+-		}
+-	}
++		struct drm_i915_gem_exec_object2 exec = {
++			.handle = batch_create(fd),
++		};
+ 
+-	igt_subtest_with_dynamic("readonly") {
+ 		__for_each_physical_engine(fd, e) {
+-			igt_dynamic_f("%s", e->name)
+-				readonly(fd, e->flags);
++			igt_dynamic_f("%s", e->name) {
++				struct drm_i915_gem_execbuffer2 execbuf = {
++					.buffers_ptr = to_user_pointer(&exec),
++					.buffer_count = 1,
++					.flags = e->flags,
++				};
++
++				gem_execbuf(fd, &execbuf);
++			}
+ 		}
+-	}
+ 
+-	igt_subtest_with_dynamic("gtt") {
+-		__for_each_physical_engine(fd, e) {
+-			igt_dynamic_f("%s", e->name)
+-				gtt(fd, e->flags);
+-		}
++		gem_sync(fd, exec.handle); /* catch any GPU hang */
++		gem_close(fd, exec.handle);
+ 	}
+ 
+ 	igt_fixture {
+diff --git a/tests/i915/gem_exec_params.c b/tests/i915/gem_exec_params.c
+index 9c3525698..094fa904c 100644
+--- a/tests/i915/gem_exec_params.c
++++ b/tests/i915/gem_exec_params.c
+@@ -206,6 +206,61 @@ static int has_secure_batches(const int fd)
+ 	return v > 0;
+ }
+ 
++static uint32_t batch_create(int fd)
++{
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	uint32_t handle;
++
++	handle = gem_create(fd, 4096);
++	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
++
++	return handle;
++}
++
++static void readonly(int i915)
++{
++	struct drm_i915_gem_execbuffer2 *execbuf;
++	struct drm_i915_gem_exec_object2 exec = {
++		batch_create(i915)
++	};
++
++	execbuf = mmap(NULL, 4096, PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
++	igt_assert(execbuf != MAP_FAILED);
++
++	execbuf->buffers_ptr = to_user_pointer(&exec);
++	execbuf->buffer_count = 1;
++	igt_assert(mprotect(execbuf, 4096, PROT_READ) == 0);
++
++	gem_execbuf(i915, execbuf);
++	gem_close(i915, exec.handle);
++
++	munmap(execbuf, 4096);
++}
++
++static void mmapped(int i915)
++{
++	struct drm_i915_gem_execbuffer2 *execbuf;
++	struct drm_i915_gem_exec_object2 *exec;
++	uint32_t handle;
++
++	handle = gem_create(i915, 4096);
++
++	gem_set_domain(i915, handle, I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
++	execbuf = gem_mmap__gtt(i915, handle, 4096, PROT_WRITE);
++	exec = (struct drm_i915_gem_exec_object2 *)(execbuf + 1);
++	gem_close(i915, handle);
++
++	exec->handle = batch_create(i915);
++
++	execbuf->buffers_ptr = to_user_pointer(exec);
++	execbuf->buffer_count = 1;
++
++	gem_execbuf(i915, execbuf);
++	gem_close(i915, exec->handle);
++
++	munmap(execbuf, 4096);
++}
++
+ struct drm_i915_gem_execbuffer2 execbuf;
+ struct drm_i915_gem_exec_object2 gem_exec[1];
+ uint32_t batch[2] = {MI_BATCH_BUFFER_END};
+@@ -256,6 +311,12 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_subtest("readonly")
++		readonly(fd);
++
++	igt_subtest("mmapped")
++		mmapped(fd);
++
+ #define RUN_FAIL(expected_errno) do { \
+ 		igt_assert_eq(__gem_execbuf(fd, &execbuf), -expected_errno); \
+ 	} while(0)
+-- 
+2.25.0
 
-Reviewed-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
-
->
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Mika Kuoppala <mika.kuoppala@linux.intel.com>
-> ---
->  tests/i915/gem_eio.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
-> index aa4accc9d..d226d7428 100644
-> --- a/tests/i915/gem_eio.c
-> +++ b/tests/i915/gem_eio.c
-> @@ -187,10 +187,13 @@ static igt_spin_t * __spin_poll(int fd, uint32_t ctx, unsigned long flags)
->  		.engine = flags,
->  		.flags = (IGT_SPIN_FAST |
->  			  IGT_SPIN_NO_PREEMPTION |
-> -			  IGT_SPIN_INVALID_CS |
->  			  IGT_SPIN_FENCE_OUT),
->  	};
->  
-> +	if (!gem_has_cmdparser(fd, opts.engine) &&
-> +	    intel_gen(intel_get_drm_devid(fd)) != 6)
-> +		opts.flags |= IGT_SPIN_INVALID_CS;
-> +
->  	if (gem_can_store_dword(fd, opts.engine))
->  		opts.flags |= IGT_SPIN_POLL_RUN;
->  
-> -- 
-> 2.25.0
 _______________________________________________
 Intel-gfx mailing list
 Intel-gfx@lists.freedesktop.org
