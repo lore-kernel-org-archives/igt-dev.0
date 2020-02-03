@@ -1,20 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
- [IPv6:2a00:1450:4864:20::342])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E64689C3F
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Feb 2020 15:07:04 +0000 (UTC)
-Received: by mail-wm1-x342.google.com with SMTP id a5so16284802wmb.0
- for <igt-dev@lists.freedesktop.org>; Mon, 03 Feb 2020 07:07:04 -0800 (PST)
-References: <20200131092603.24223-1-mika.kahola@intel.com>
- <20200131092603.24223-2-mika.kahola@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <26630e56-0185-94b1-968c-b80d6dda2ccd@gmail.com>
-Date: Mon, 3 Feb 2020 17:06:56 +0200
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75DE66EC8A
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Feb 2020 16:28:20 +0000 (UTC)
+From: Antonio Argenziano <antonio.argenziano@intel.com>
+Date: Mon,  3 Feb 2020 08:28:10 -0800
+Message-Id: <20200203162810.26138-1-antonio.argenziano@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200131092603.24223-2-mika.kahola@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/1] tests/kms_plane_lowres: Fix CRC
- mismatch
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_exec_faulting_reloc: Delete
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,284 +15,156 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mika Kahola <mika.kahola@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 31.1.2020 11.26, Mika Kahola wrote:
-> Mixing SDR and HDR planes yields to CRC mismatch. The patch computes the
-> reference image and CRC with the main plane matching the SDR/HDR plane type.
-> 
-> v2: HDR planes are not defined for gen9 and older (CI)
-> 
-> References: https://gitlab.freedesktop.org/drm/intel/issues/899
-> Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
-> ---
->   tests/kms_plane_lowres.c | 142 +++++++++++++++++++++++++--------------
->   1 file changed, 90 insertions(+), 52 deletions(-)
-> 
-> diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-> index 4c3f5636..012b25e3 100644
-> --- a/tests/kms_plane_lowres.c
-> +++ b/tests/kms_plane_lowres.c
-> @@ -32,11 +32,15 @@
->   
->   IGT_TEST_DESCRIPTION("Test atomic mode setting with a plane by switching between high and low resolutions");
->   
-> +#define SDR_PLANE_BASE 3
->   #define SIZE 64
->   
->   typedef struct {
->   	int drm_fd;
->   	igt_display_t display;
-> +	uint32_t devid;
-> +	igt_output_t *output;
-> +	enum pipe pipe;
->   	struct igt_fb fb_primary;
->   	struct igt_fb fb_plane[2];
->   	struct {
-> @@ -77,11 +81,44 @@ get_lowres_mode(int drmfd, igt_output_t *output,
->   	return *mode;
->   }
->   
-> +static igt_plane_t *first_sdr_plane(igt_output_t *output, uint32_t devid)
-> +{
-> +        int index;
-> +
-> +        index = intel_gen(devid) <= 9 ? 0 : SDR_PLANE_BASE;
-> +
-> +        return igt_output_get_plane(output, index);
-> +}
-> +
-> +static bool is_sdr_plane(const igt_plane_t *plane, uint32_t devid)
-> +{
-> +        if (intel_gen(devid) <= 9)
-> +                return true;
-> +
-> +        return plane->index >= SDR_PLANE_BASE;
-> +}
-> +/*
-> + * Mixing SDR and HDR planes results in a CRC mismatch, so use the first
-> + * SDR/HDR plane as the main plane matching the SDR/HDR type of the sprite
-> + * plane under test.
-> + */
-> +static igt_plane_t *compatible_main_plane(igt_plane_t *plane,
-> +					  igt_output_t *output,
-> +					  uint32_t devid)
-> +{
-> +        if (is_sdr_plane(plane, devid))
-> +                return first_sdr_plane(output, devid);
-> +
-> +        return igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +}
-> +
->   static bool setup_plane(data_t *data, igt_plane_t *plane)
->   {
->   	struct igt_fb *fb;
->   
-> -	if (plane->type == DRM_PLANE_TYPE_PRIMARY)
-> +	if (plane->type == DRM_PLANE_TYPE_PRIMARY ||
-> +	    plane == first_sdr_plane(data->output, data->devid) ||
-> +		plane->type == DRM_PLANE_TYPE_CURSOR)
->   		return false;
->   
->   	fb = &data->fb_plane[0];
-> @@ -125,25 +162,20 @@ static void create_ref_fb(data_t *data, uint64_t modifier,
->   }
->   
->   static unsigned
-> -test_planes_on_pipe_with_output(data_t *data, enum pipe pipe,
-> -				igt_output_t *output, uint64_t modifier)
-> +test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane, uint64_t modifier)
->   {
-> -	igt_pipe_t *pipe_obj = &data->display.pipes[pipe];
->   	const drmModeModeInfo *mode;
->   	drmModeModeInfo mode_lowres;
->   	igt_pipe_crc_t *pipe_crc;
->   	unsigned tested = 0;
-> -	igt_plane_t *plane;
->   	igt_plane_t *primary;
-> +	igt_crc_t crc_lowres, crc_hires1, crc_hires2;
->   
-> -	primary = igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_PRIMARY);
-> -
-> -	igt_info("Testing connector %s using pipe %s\n",
-> -		 igt_output_name(output), kmstest_pipe_name(pipe));
-> +	igt_output_set_pipe(data->output, data->pipe);
->   
-> -	igt_output_set_pipe(output, pipe);
-> -	mode = igt_output_get_mode(output);
-> -	mode_lowres = get_lowres_mode(data->drm_fd, output, mode);
-> +	primary = compatible_main_plane(plane, data->output, data->devid);
-> +	mode = igt_output_get_mode(data->output);
-> +	mode_lowres = get_lowres_mode(data->drm_fd, data->output, mode);
->   
->   	igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
->   				    DRM_FORMAT_XRGB8888, modifier, 0.0, 0.0, 1.0,
-> @@ -164,15 +196,15 @@ test_planes_on_pipe_with_output(data_t *data, enum pipe pipe,
->   	create_ref_fb(data, modifier, mode, &data->ref_hires.fb);
->   	create_ref_fb(data, modifier, &mode_lowres, &data->ref_lowres.fb);
->   
-> -	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
-> +	pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
->   				    INTEL_PIPE_CRC_SOURCE_AUTO);
->   
-> -	igt_output_override_mode(output, &mode_lowres);
-> +	igt_output_override_mode(data->output, &mode_lowres);
->   	igt_plane_set_fb(primary, &data->ref_lowres.fb);
->   	igt_display_commit2(&data->display, COMMIT_ATOMIC);
->   	igt_pipe_crc_collect_crc(pipe_crc, &data->ref_lowres.crc);
->   
-> -	igt_output_override_mode(output, NULL);
-> +	igt_output_override_mode(data->output, NULL);
->   	igt_plane_set_fb(primary, &data->ref_hires.fb);
->   	igt_display_commit2(&data->display, COMMIT_ATOMIC);
->   	igt_pipe_crc_collect_crc(pipe_crc, &data->ref_hires.crc);
-> @@ -181,40 +213,36 @@ test_planes_on_pipe_with_output(data_t *data, enum pipe pipe,
->   	igt_display_commit2(&data->display, COMMIT_ATOMIC);
->   
->   	/* yellow sprite plane in lower left corner */
-> -	for_each_plane_on_pipe(&data->display, pipe, plane) {
-> -		igt_crc_t crc_lowres, crc_hires1, crc_hires2;
-> -
-> -		if (!setup_plane(data, plane))
-> -			continue;
-> +	if (!setup_plane(data, plane))
-> +		return 0;
->   
-> -		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
->   
-> -		igt_pipe_crc_collect_crc(pipe_crc, &crc_hires1);
-> +	igt_pipe_crc_collect_crc(pipe_crc, &crc_hires1);
->   
-> -		/* switch to lower resolution */
-> -		igt_output_override_mode(output, &mode_lowres);
-> -		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +	/* switch to lower resolution */
-> +	igt_output_override_mode(data->output, &mode_lowres);
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
->   
-> -		igt_pipe_crc_collect_crc(pipe_crc, &crc_lowres);
-> +	igt_pipe_crc_collect_crc(pipe_crc, &crc_lowres);
->   
-> -		/* switch back to higher resolution */
-> -		igt_output_override_mode(output, NULL);
-> -		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +	/* switch back to higher resolution */
-> +	igt_output_override_mode(data->output, NULL);
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
->   
-> -		igt_pipe_crc_collect_crc(pipe_crc, &crc_hires2);
-> +	igt_pipe_crc_collect_crc(pipe_crc, &crc_hires2);
->   
-> -		igt_assert_crc_equal(&data->ref_hires.crc, &crc_hires1);
-> -		igt_assert_crc_equal(&data->ref_hires.crc, &crc_hires2);
-> -		igt_assert_crc_equal(&data->ref_lowres.crc, &crc_lowres);
-> +	igt_assert_crc_equal(&data->ref_hires.crc, &crc_hires1);
-> +	igt_assert_crc_equal(&data->ref_hires.crc, &crc_hires2);
-> +	igt_assert_crc_equal(&data->ref_lowres.crc, &crc_lowres);
->   
-> -		igt_plane_set_fb(plane, NULL);
-> -		tested++;
-> -	}
-> +	igt_plane_set_fb(plane, NULL);
-> +	tested++;
->   
->   	igt_pipe_crc_free(pipe_crc);
->   
->   	igt_plane_set_fb(primary, NULL);
-> -	igt_output_set_pipe(output, PIPE_NONE);
-> +	igt_output_set_pipe(data->output, PIPE_NONE);
->   
->   	igt_remove_fb(data->drm_fd, &data->fb_plane[1]);
->   	igt_remove_fb(data->drm_fd, &data->fb_plane[0]);
-> @@ -226,21 +254,32 @@ test_planes_on_pipe_with_output(data_t *data, enum pipe pipe,
->   }
->   
->   static void
-> -test_planes_on_pipe(data_t *data, enum pipe pipe, uint64_t modifier)
-> +test_planes_on_pipe(data_t *data, uint64_t modifier)
->   {
-> -	igt_output_t *output;
-> +	igt_plane_t *plane;
->   	unsigned tested = 0;
->   
-> -	igt_skip_on(pipe >= data->display.n_pipes);
-> -	igt_display_require_output_on_pipe(&data->display, pipe);
-> +	igt_skip_on(data->pipe >= data->display.n_pipes);
-> +	igt_display_require_output_on_pipe(&data->display, data->pipe);
->   	igt_skip_on(!igt_display_has_format_mod(&data->display,
->   						DRM_FORMAT_XRGB8888, modifier));
->   
-> -	for_each_valid_output_on_pipe(&data->display, pipe, output)
-> -		tested += test_planes_on_pipe_with_output(data, pipe, output,
-> -							  modifier);
-> +	data->output = igt_get_single_output_for_pipe(&data->display, data->pipe);
-> +	igt_require(data->output);
-> +
-> +	igt_info("Testing connector %s using pipe %s\n",
-> +		 igt_output_name(data->output), kmstest_pipe_name(data->pipe));
-> +
-> +	for_each_plane_on_pipe(&data->display, data->pipe, plane) {
-> +		data->output = igt_get_single_output_for_pipe(&data->display, data->pipe);
-> +		igt_require(data->output);
-> +
-> +		tested += test_planes_on_pipe_with_output(data, plane, modifier);
-> +	}
->   
->   	igt_assert(tested > 0);
-> +	igt_output_set_pipe(data->output, PIPE_NONE);
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
->   }
->   
->   igt_main
-> @@ -250,6 +289,8 @@ igt_main
->   
->   	igt_fixture {
->   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> +		data.devid = is_i915_device(data.drm_fd) ?
-> +			intel_get_drm_devid(data.drm_fd) : 0;
->   
->   		kmstest_set_vt_graphics_mode();
->   
-> @@ -259,21 +300,18 @@ igt_main
->   	}
->   
->   	for_each_pipe_static(pipe) {
-> +		data.pipe = pipe;
->   		igt_subtest_f("pipe-%s-tiling-none", kmstest_pipe_name(pipe))
-> -			test_planes_on_pipe(&data, pipe,
-> -					    LOCAL_DRM_FORMAT_MOD_NONE);
-> +			test_planes_on_pipe(&data, LOCAL_DRM_FORMAT_MOD_NONE);
->   
->   		igt_subtest_f("pipe-%s-tiling-x", kmstest_pipe_name(pipe))
-> -			test_planes_on_pipe(&data, pipe,
-> -					    LOCAL_I915_FORMAT_MOD_X_TILED);
-> +			test_planes_on_pipe(&data, LOCAL_I915_FORMAT_MOD_X_TILED);
->   
->   		igt_subtest_f("pipe-%s-tiling-y", kmstest_pipe_name(pipe))
-> -			test_planes_on_pipe(&data, pipe,
-> -					    LOCAL_I915_FORMAT_MOD_Y_TILED);
-> +			test_planes_on_pipe(&data, LOCAL_I915_FORMAT_MOD_Y_TILED);
->   
->   		igt_subtest_f("pipe-%s-tiling-yf", kmstest_pipe_name(pipe))
-> -			test_planes_on_pipe(&data, pipe,
-> -					    LOCAL_I915_FORMAT_MOD_Yf_TILED);
-> +			test_planes_on_pipe(&data, LOCAL_I915_FORMAT_MOD_Yf_TILED);
->   	}
->   
->   	igt_fixture {
-> 
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+VGVzdCBhbHJlYWR5IGNvdmVyZWQgaW4gZ2VtX2V4ZWNfcmVsb2MsIHJlbW92ZSBkdXBsaWNhdGlv
+bi4KClNpZ25lZC1vZmYtYnk6IEFudG9uaW8gQXJnZW56aWFubyA8YW50b25pby5hcmdlbnppYW5v
+QGludGVsLmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgot
+LS0KIHRlc3RzL01ha2VmaWxlLnNvdXJjZXMgICAgICAgICAgICAgICB8ICAgMyAtCiB0ZXN0cy9p
+OTE1L2dlbV9leGVjX2ZhdWx0aW5nX3JlbG9jLmMgfCAyNTAgLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tCiB0ZXN0cy9tZXNvbi5idWlsZCAgICAgICAgICAgICAgICAgICAgfCAgIDEgLQogMyBm
+aWxlcyBjaGFuZ2VkLCAyNTQgZGVsZXRpb25zKC0pCiBkZWxldGUgbW9kZSAxMDA2NDQgdGVzdHMv
+aTkxNS9nZW1fZXhlY19mYXVsdGluZ19yZWxvYy5jCgpkaWZmIC0tZ2l0IGEvdGVzdHMvTWFrZWZp
+bGUuc291cmNlcyBiL3Rlc3RzL01ha2VmaWxlLnNvdXJjZXMKaW5kZXggNzRmODc4NDkuLmI0NmM2
+NDM5IDEwMDY0NAotLS0gYS90ZXN0cy9NYWtlZmlsZS5zb3VyY2VzCisrKyBiL3Rlc3RzL01ha2Vm
+aWxlLnNvdXJjZXMKQEAgLTIxMyw5ICsyMTMsNiBAQCBnZW1fZXhlY19jYXB0dXJlX1NPVVJDRVMg
+PSBpOTE1L2dlbV9leGVjX2NhcHR1cmUuYwogVEVTVFNfcHJvZ3MgKz0gZ2VtX2V4ZWNfY3JlYXRl
+CiBnZW1fZXhlY19jcmVhdGVfU09VUkNFUyA9IGk5MTUvZ2VtX2V4ZWNfY3JlYXRlLmMKIAotVEVT
+VFNfcHJvZ3MgKz0gZ2VtX2V4ZWNfZmF1bHRpbmdfcmVsb2MKLWdlbV9leGVjX2ZhdWx0aW5nX3Jl
+bG9jX1NPVVJDRVMgPSBpOTE1L2dlbV9leGVjX2ZhdWx0aW5nX3JlbG9jLmMKLQogVEVTVFNfcHJv
+Z3MgKz0gZ2VtX2V4ZWNfZmVuY2UKIGdlbV9leGVjX2ZlbmNlX1NPVVJDRVMgPSBpOTE1L2dlbV9l
+eGVjX2ZlbmNlLmMKIApkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fZXhlY19mYXVsdGluZ19y
+ZWxvYy5jIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19mYXVsdGluZ19yZWxvYy5jCmRlbGV0ZWQgZmls
+ZSBtb2RlIDEwMDY0NAppbmRleCBjMmFlYTAzOS4uMDAwMDAwMDAKLS0tIGEvdGVzdHMvaTkxNS9n
+ZW1fZXhlY19mYXVsdGluZ19yZWxvYy5jCisrKyAvZGV2L251bGwKQEAgLTEsMjUwICswLDAgQEAK
+LS8qCi0gKiBDb3B5cmlnaHQgwqkgMjAxMSBJbnRlbCBDb3Jwb3JhdGlvbgotICoKLSAqIFBlcm1p
+c3Npb24gaXMgaGVyZWJ5IGdyYW50ZWQsIGZyZWUgb2YgY2hhcmdlLCB0byBhbnkgcGVyc29uIG9i
+dGFpbmluZyBhCi0gKiBjb3B5IG9mIHRoaXMgc29mdHdhcmUgYW5kIGFzc29jaWF0ZWQgZG9jdW1l
+bnRhdGlvbiBmaWxlcyAodGhlICJTb2Z0d2FyZSIpLAotICogdG8gZGVhbCBpbiB0aGUgU29mdHdh
+cmUgd2l0aG91dCByZXN0cmljdGlvbiwgaW5jbHVkaW5nIHdpdGhvdXQgbGltaXRhdGlvbgotICog
+dGhlIHJpZ2h0cyB0byB1c2UsIGNvcHksIG1vZGlmeSwgbWVyZ2UsIHB1Ymxpc2gsIGRpc3RyaWJ1
+dGUsIHN1YmxpY2Vuc2UsCi0gKiBhbmQvb3Igc2VsbCBjb3BpZXMgb2YgdGhlIFNvZnR3YXJlLCBh
+bmQgdG8gcGVybWl0IHBlcnNvbnMgdG8gd2hvbSB0aGUKLSAqIFNvZnR3YXJlIGlzIGZ1cm5pc2hl
+ZCB0byBkbyBzbywgc3ViamVjdCB0byB0aGUgZm9sbG93aW5nIGNvbmRpdGlvbnM6Ci0gKgotICog
+VGhlIGFib3ZlIGNvcHlyaWdodCBub3RpY2UgYW5kIHRoaXMgcGVybWlzc2lvbiBub3RpY2UgKGlu
+Y2x1ZGluZyB0aGUgbmV4dAotICogcGFyYWdyYXBoKSBzaGFsbCBiZSBpbmNsdWRlZCBpbiBhbGwg
+Y29waWVzIG9yIHN1YnN0YW50aWFsIHBvcnRpb25zIG9mIHRoZQotICogU29mdHdhcmUuCi0gKgot
+ICogVEhFIFNPRlRXQVJFIElTIFBST1ZJREVEICJBUyBJUyIsIFdJVEhPVVQgV0FSUkFOVFkgT0Yg
+QU5ZIEtJTkQsIEVYUFJFU1MgT1IKLSAqIElNUExJRUQsIElOQ0xVRElORyBCVVQgTk9UIExJTUlU
+RUQgVE8gVEhFIFdBUlJBTlRJRVMgT0YgTUVSQ0hBTlRBQklMSVRZLAotICogRklUTkVTUyBGT1Ig
+QSBQQVJUSUNVTEFSIFBVUlBPU0UgQU5EIE5PTklORlJJTkdFTUVOVC4gIElOIE5PIEVWRU5UIFNI
+QUxMCi0gKiBUSEUgQVVUSE9SUyBPUiBDT1BZUklHSFQgSE9MREVSUyBCRSBMSUFCTEUgRk9SIEFO
+WSBDTEFJTSwgREFNQUdFUyBPUiBPVEhFUgotICogTElBQklMSVRZLCBXSEVUSEVSIElOIEFOIEFD
+VElPTiBPRiBDT05UUkFDVCwgVE9SVCBPUiBPVEhFUldJU0UsIEFSSVNJTkcKLSAqIEZST00sIE9V
+VCBPRiBPUiBJTiBDT05ORUNUSU9OIFdJVEggVEhFIFNPRlRXQVJFIE9SIFRIRSBVU0UgT1IgT1RI
+RVIgREVBTElOR1MKLSAqIElOIFRIRSBTT0ZUV0FSRS4KLSAqCi0gKiBBdXRob3JzOgotICogICAg
+RGFuaWVsIFZldHRlciA8ZGFuaWVsLnZldHRlckBmZndsbC5jaD4KLSAqCi0gKi8KLQotI2luY2x1
+ZGUgImlndC5oIgotI2luY2x1ZGUgPHVuaXN0ZC5oPgotI2luY2x1ZGUgPHN0ZGxpYi5oPgotI2lu
+Y2x1ZGUgPHN0ZGludC5oPgotI2luY2x1ZGUgPHN0ZGlvLmg+Ci0jaW5jbHVkZSA8c3RyaW5nLmg+
+Ci0jaW5jbHVkZSA8ZmNudGwuaD4KLSNpbmNsdWRlIDxpbnR0eXBlcy5oPgotI2luY2x1ZGUgPGVy
+cm5vLmg+Ci0jaW5jbHVkZSA8c3lzL3N0YXQuaD4KLSNpbmNsdWRlIDxzeXMvaW9jdGwuaD4KLSNp
+bmNsdWRlIDxzeXMvdGltZS5oPgotI2luY2x1ZGUgImRybS5oIgotCi0vKiBUZXN0Y2FzZTogU3Vi
+bWl0IHBhdGNoZXMgd2l0aCByZWxvY2F0aW9ucyBpbiBtZW1vcnkgdGhhdCB3aWxsIGZhdWx0Ci0g
+KgotICogVG8gYmUgcmVhbGx5IGV2aWwsIHVzZSBhIGd0dCBtbWFwIGZvciB0aGVtLgotICovCi0K
+LUlHVF9URVNUX0RFU0NSSVBUSU9OKCJTdWJtaXQgcGF0Y2hlcyB3aXRoIHJlbG9jYXRpb25zIGlu
+IG1lbW9yeSB0aGF0IHdpbGwiCi0JCSAgICAgIiBmYXVsdC4iKTsKLQotI2RlZmluZSBPQkpFQ1Rf
+U0laRSAxNjM4NAotCi0jZGVmaW5lIENPUFlfQkxUX0NNRF9OT0xFTgkoMjw8Mjl8MHg1Mzw8MjIp
+Ci0jZGVmaW5lIEJMVF9XUklURV9BTFBIQQkJKDE8PDIxKQotI2RlZmluZSBCTFRfV1JJVEVfUkdC
+CQkoMTw8MjApCi0jZGVmaW5lIEJMVF9TUkNfVElMRUQJCSgxPDwxNSkKLSNkZWZpbmUgQkxUX0RT
+VF9USUxFRAkJKDE8PDExKQotCi11aW50MzJfdCBkZXZpZDsKLQotc3RhdGljIGludCBnZW1fbGlu
+ZWFyX2JsdCh1aW50MzJfdCAqYmF0Y2gsCi0JCQkgIHVpbnQzMl90IHNyYywKLQkJCSAgdWludDMy
+X3QgZHN0LAotCQkJICB1aW50MzJfdCBsZW5ndGgsCi0JCQkgIHN0cnVjdCBkcm1faTkxNV9nZW1f
+cmVsb2NhdGlvbl9lbnRyeSAqcmVsb2MpCi17Ci0JdWludDMyX3QgKmIgPSBiYXRjaDsKLQlpbnQg
+aGVpZ2h0ID0gbGVuZ3RoIC8gKDE2ICogMTAyNCk7Ci0KLQlpZ3RfYXNzZXJ0X2x0ZShoZWlnaHQs
+IDEgPDwgMTYpOwotCi0JaWYgKGhlaWdodCkgewotCQlpbnQgaSA9IDA7Ci0JCWJbaSsrXSA9IENP
+UFlfQkxUX0NNRF9OT0xFTiB8IEJMVF9XUklURV9BTFBIQSB8IEJMVF9XUklURV9SR0I7Ci0JCWlm
+IChpbnRlbF9nZW4oZGV2aWQpID49IDgpCi0JCQliW2ktMV0gfD0gODsKLQkJZWxzZQotCQkJYltp
+LTFdIHw9IDY7Ci0JCWJbaSsrXSA9IDB4Y2MgPDwgMTYgfCAxIDw8IDI1IHwgMSA8PCAyNCB8ICgx
+NioxMDI0KTsKLQkJYltpKytdID0gMDsKLQkJYltpKytdID0gaGVpZ2h0IDw8IDE2IHwgKDQqMTAy
+NCk7Ci0JCWJbaSsrXSA9IDA7Ci0JCXJlbG9jLT5vZmZzZXQgPSAoYi1iYXRjaCs0KSAqIHNpemVv
+Zih1aW50MzJfdCk7Ci0JCXJlbG9jLT5kZWx0YSA9IDA7Ci0JCXJlbG9jLT50YXJnZXRfaGFuZGxl
+ID0gZHN0OwotCQlyZWxvYy0+cmVhZF9kb21haW5zID0gSTkxNV9HRU1fRE9NQUlOX1JFTkRFUjsK
+LQkJcmVsb2MtPndyaXRlX2RvbWFpbiA9IEk5MTVfR0VNX0RPTUFJTl9SRU5ERVI7Ci0JCXJlbG9j
+LT5wcmVzdW1lZF9vZmZzZXQgPSAwOwotCQlyZWxvYysrOwotCi0JCWlmIChpbnRlbF9nZW4oZGV2
+aWQpID49IDgpCi0JCQliW2krK10gPSAwOyAvKiBGSVhNRTogdXNlIHJlYWwgaGlnaCBkd29yZCAq
+LwotCi0JCWJbaSsrXSA9IDA7Ci0JCWJbaSsrXSA9IDE2KjEwMjQ7Ci0JCWJbaSsrXSA9IDA7Ci0J
+CXJlbG9jLT5vZmZzZXQgPSAoYi1iYXRjaCs3KSAqIHNpemVvZih1aW50MzJfdCk7Ci0JCWlmIChp
+bnRlbF9nZW4oZGV2aWQpID49IDgpIHsKLQkJCXJlbG9jLT5vZmZzZXQgKz0gc2l6ZW9mKHVpbnQz
+Ml90KTsKLQkJCWJbaSsrXSA9IDA7IC8qIEZJWE1FOiB1c2UgcmVhbCBoaWdoIGR3b3JkICovCi0J
+CX0KLQkJcmVsb2MtPmRlbHRhID0gMDsKLQkJcmVsb2MtPnRhcmdldF9oYW5kbGUgPSBzcmM7Ci0J
+CXJlbG9jLT5yZWFkX2RvbWFpbnMgPSBJOTE1X0dFTV9ET01BSU5fUkVOREVSOwotCQlyZWxvYy0+
+d3JpdGVfZG9tYWluID0gMDsKLQkJcmVsb2MtPnByZXN1bWVkX29mZnNldCA9IDA7Ci0JCXJlbG9j
+Kys7Ci0KLQkJaWYgKGludGVsX2dlbihkZXZpZCkgPj0gOCkKLQkJCWIgKz0gMTA7Ci0JCWVsc2UK
+LQkJCWIgKz0gODsKLQkJbGVuZ3RoIC09IGhlaWdodCAqIDE2KjEwMjQ7Ci0JfQotCQotCWlmIChs
+ZW5ndGgpIHsKLQkJaW50IGkgPSAwOwotCQliW2krK10gPSBDT1BZX0JMVF9DTURfTk9MRU4gfCBC
+TFRfV1JJVEVfQUxQSEEgfCBCTFRfV1JJVEVfUkdCOwotCQlpZiAoaW50ZWxfZ2VuKGRldmlkKSA+
+PSA4KQotCQkJYltpLTFdIHw9IDg7Ci0JCWVsc2UKLQkJCWJbaS0xXSB8PSA2OwotCQliW2krK10g
+PSAweGNjIDw8IDE2IHwgMSA8PCAyNSB8IDEgPDwgMjQgfCAoMTYqMTAyNCk7Ci0JCWJbaSsrXSA9
+IGhlaWdodCA8PCAxNjsKLQkJYltpKytdID0gKDEraGVpZ2h0KSA8PCAxNiB8IChsZW5ndGggLyA0
+KTsKLQkJYltpKytdID0gMDsKLQkJcmVsb2MtPm9mZnNldCA9IChiLWJhdGNoKzQpICogc2l6ZW9m
+KHVpbnQzMl90KTsKLQkJcmVsb2MtPmRlbHRhID0gMDsKLQkJcmVsb2MtPnRhcmdldF9oYW5kbGUg
+PSBkc3Q7Ci0JCXJlbG9jLT5yZWFkX2RvbWFpbnMgPSBJOTE1X0dFTV9ET01BSU5fUkVOREVSOwot
+CQlyZWxvYy0+d3JpdGVfZG9tYWluID0gSTkxNV9HRU1fRE9NQUlOX1JFTkRFUjsKLQkJcmVsb2Mt
+PnByZXN1bWVkX29mZnNldCA9IDA7Ci0JCXJlbG9jKys7Ci0JCWlmIChpbnRlbF9nZW4oZGV2aWQp
+ID49IDgpCi0JCQliW2krK10gPSAwOyAvKiBGSVhNRTogdXNlIHJlYWwgaGlnaCBkd29yZCAqLwot
+Ci0JCWJbaSsrXSA9IGhlaWdodCA8PCAxNjsKLQkJYltpKytdID0gMTYqMTAyNDsKLQkJYltpKytd
+ID0gMDsKLQkJcmVsb2MtPm9mZnNldCA9IChiLWJhdGNoKzcpICogc2l6ZW9mKHVpbnQzMl90KTsK
+LQkJaWYgKGludGVsX2dlbihkZXZpZCkgPj0gOCkgewotCQkJcmVsb2MtPm9mZnNldCArPSBzaXpl
+b2YodWludDMyX3QpOwotCQkJYltpKytdID0gMDsgLyogRklYTUU6IHVzZSByZWFsIGhpZ2ggZHdv
+cmQgKi8KLQkJfQotCQlyZWxvYy0+ZGVsdGEgPSAwOwotCQlyZWxvYy0+dGFyZ2V0X2hhbmRsZSA9
+IHNyYzsKLQkJcmVsb2MtPnJlYWRfZG9tYWlucyA9IEk5MTVfR0VNX0RPTUFJTl9SRU5ERVI7Ci0J
+CXJlbG9jLT53cml0ZV9kb21haW4gPSAwOwotCQlyZWxvYy0+cHJlc3VtZWRfb2Zmc2V0ID0gMDsK
+LQkJcmVsb2MrKzsKLQotCQlpZiAoaW50ZWxfZ2VuKGRldmlkKSA+PSA4KQotCQkJYiArPSAxMDsK
+LQkJZWxzZQotCQkJYiArPSA4OwotCX0KLQotCWJbMF0gPSBNSV9CQVRDSF9CVUZGRVJfRU5EOwot
+CWJbMV0gPSAwOwotCi0JcmV0dXJuIChiKzIgLSBiYXRjaCkgKiBzaXplb2YodWludDMyX3QpOwot
+fQotCi1zdGF0aWMgdm9pZCBydW4oaW50IG9iamVjdF9zaXplKQotewotCXN0cnVjdCBkcm1faTkx
+NV9nZW1fZXhlY2J1ZmZlcjIgZXhlY2J1ZjsKLQlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2Jq
+ZWN0MiBleGVjWzNdOwotCXN0cnVjdCBkcm1faTkxNV9nZW1fcmVsb2NhdGlvbl9lbnRyeSByZWxv
+Y1s0XTsKLQl1aW50MzJfdCBidWZbNDBdOwotCXVpbnQzMl90IGhhbmRsZSwgaGFuZGxlX3JlbG9j
+cywgc3JjLCBkc3Q7Ci0Jdm9pZCAqZ3R0X3JlbG9jczsKLQlpbnQgZmQsIGxlbjsKLQlpbnQgcmlu
+ZzsKLQotCWZkID0gZHJtX29wZW5fZHJpdmVyKERSSVZFUl9JTlRFTCk7Ci0JaWd0X3JlcXVpcmVf
+Z2VtKGZkKTsKLQlnZW1fcmVxdWlyZV9ibGl0dGVyKGZkKTsKLQotCWRldmlkID0gaW50ZWxfZ2V0
+X2RybV9kZXZpZChmZCk7Ci0JaGFuZGxlID0gZ2VtX2NyZWF0ZShmZCwgNDA5Nik7Ci0Jc3JjID0g
+Z2VtX2NyZWF0ZShmZCwgb2JqZWN0X3NpemUpOwotCWRzdCA9IGdlbV9jcmVhdGUoZmQsIG9iamVj
+dF9zaXplKTsKLQotCWxlbiA9IGdlbV9saW5lYXJfYmx0KGJ1Ziwgc3JjLCBkc3QsIG9iamVjdF9z
+aXplLCByZWxvYyk7Ci0JZ2VtX3dyaXRlKGZkLCBoYW5kbGUsIDAsIGJ1ZiwgbGVuKTsKLQotCWV4
+ZWNbMF0uaGFuZGxlID0gc3JjOwotCWV4ZWNbMF0ucmVsb2NhdGlvbl9jb3VudCA9IDA7Ci0JZXhl
+Y1swXS5yZWxvY3NfcHRyID0gMDsKLQlleGVjWzBdLmFsaWdubWVudCA9IDA7Ci0JZXhlY1swXS5v
+ZmZzZXQgPSAwOwotCWV4ZWNbMF0uZmxhZ3MgPSAwOwotCWV4ZWNbMF0ucnN2ZDEgPSAwOwotCWV4
+ZWNbMF0ucnN2ZDIgPSAwOwotCi0JZXhlY1sxXS5oYW5kbGUgPSBkc3Q7Ci0JZXhlY1sxXS5yZWxv
+Y2F0aW9uX2NvdW50ID0gMDsKLQlleGVjWzFdLnJlbG9jc19wdHIgPSAwOwotCWV4ZWNbMV0uYWxp
+Z25tZW50ID0gMDsKLQlleGVjWzFdLm9mZnNldCA9IDA7Ci0JZXhlY1sxXS5mbGFncyA9IDA7Ci0J
+ZXhlY1sxXS5yc3ZkMSA9IDA7Ci0JZXhlY1sxXS5yc3ZkMiA9IDA7Ci0KLQloYW5kbGVfcmVsb2Nz
+ID0gZ2VtX2NyZWF0ZShmZCwgNDA5Nik7Ci0JZ2VtX3dyaXRlKGZkLCBoYW5kbGVfcmVsb2NzLCAw
+LCByZWxvYywgc2l6ZW9mKHJlbG9jKSk7Ci0JZ3R0X3JlbG9jcyA9IGdlbV9tbWFwX19ndHQoZmQs
+IGhhbmRsZV9yZWxvY3MsIDQwOTYsCi0JCQkJICAgUFJPVF9SRUFEIHwgUFJPVF9XUklURSk7Ci0K
+LQlleGVjWzJdLmhhbmRsZSA9IGhhbmRsZTsKLQlpZiAoaW50ZWxfZ2VuKGRldmlkKSA+PSA4KQot
+CQlleGVjWzJdLnJlbG9jYXRpb25fY291bnQgPSBsZW4gPiA1NiA/IDQgOiAyOwotCWVsc2UKLQkJ
+ZXhlY1syXS5yZWxvY2F0aW9uX2NvdW50ID0gbGVuID4gNDAgPyA0IDogMjsKLQkvKiBBIG5ld2x5
+IG1tYXAgZ3R0IGJvIHdpbGwgZmF1bHQgb24gZmlyc3QgYWNjZXNzLiAqLwotCWV4ZWNbMl0ucmVs
+b2NzX3B0ciA9IHRvX3VzZXJfcG9pbnRlcihndHRfcmVsb2NzKTsKLQlleGVjWzJdLmFsaWdubWVu
+dCA9IDA7Ci0JZXhlY1syXS5vZmZzZXQgPSAwOwotCWV4ZWNbMl0uZmxhZ3MgPSAwOwotCWV4ZWNb
+Ml0ucnN2ZDEgPSAwOwotCWV4ZWNbMl0ucnN2ZDIgPSAwOwotCi0JcmluZyA9IDA7Ci0JaWYgKEhB
+U19CTFRfUklORyhkZXZpZCkpCi0JCXJpbmcgPSBJOTE1X0VYRUNfQkxUOwotCi0JZXhlY2J1Zi5i
+dWZmZXJzX3B0ciA9IHRvX3VzZXJfcG9pbnRlcihleGVjKTsKLQlleGVjYnVmLmJ1ZmZlcl9jb3Vu
+dCA9IDM7Ci0JZXhlY2J1Zi5iYXRjaF9zdGFydF9vZmZzZXQgPSAwOwotCWV4ZWNidWYuYmF0Y2hf
+bGVuID0gbGVuOwotCWV4ZWNidWYuY2xpcHJlY3RzX3B0ciA9IDA7Ci0JZXhlY2J1Zi5udW1fY2xp
+cHJlY3RzID0gMDsKLQlleGVjYnVmLkRSMSA9IDA7Ci0JZXhlY2J1Zi5EUjQgPSAwOwotCWV4ZWNi
+dWYuZmxhZ3MgPSByaW5nOwotCWk5MTVfZXhlY2J1ZmZlcjJfc2V0X2NvbnRleHRfaWQoZXhlY2J1
+ZiwgMCk7Ci0JZXhlY2J1Zi5yc3ZkMiA9IDA7Ci0KLQlnZW1fZXhlY2J1ZihmZCwgJmV4ZWNidWYp
+OwotCWdlbV9zeW5jKGZkLCBoYW5kbGUpOwotCi0JZ2VtX2Nsb3NlKGZkLCBoYW5kbGUpOwotCi0J
+Y2xvc2UoZmQpOwotfQotCi1pZ3RfbWFpbgotewotCWlndF9zdWJ0ZXN0KCJub3JtYWwiKQotCQly
+dW4oT0JKRUNUX1NJWkUpOwotfQpkaWZmIC0tZ2l0IGEvdGVzdHMvbWVzb24uYnVpbGQgYi90ZXN0
+cy9tZXNvbi5idWlsZAppbmRleCA2NzAyNTBhNy4uMDg1OTY4MDIgMTAwNjQ0Ci0tLSBhL3Rlc3Rz
+L21lc29uLmJ1aWxkCisrKyBiL3Rlc3RzL21lc29uLmJ1aWxkCkBAIC0xMzcsNyArMTM3LDYgQEAg
+aTkxNV9wcm9ncyA9IFsKIAknZ2VtX2V4ZWNfYmlnJywKIAknZ2VtX2V4ZWNfY2FwdHVyZScsCiAJ
+J2dlbV9leGVjX2NyZWF0ZScsCi0JJ2dlbV9leGVjX2ZhdWx0aW5nX3JlbG9jJywKIAknZ2VtX2V4
+ZWNfZmVuY2UnLAogCSdnZW1fZXhlY19mbHVzaCcsCiAJJ2dlbV9leGVjX2d0dGZpbGwnLAotLSAK
+Mi4yMS4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpp
+Z3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczov
+L2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
