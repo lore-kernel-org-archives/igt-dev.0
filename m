@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 97A676E33F
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Feb 2020 13:11:39 +0000 (UTC)
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon,  3 Feb 2020 13:11:27 +0000
-Message-Id: <20200203131127.176041-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200202185649.4105689-1-chris@chris-wilson.co.uk>
-References: <20200202185649.4105689-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3] lib: Kill residual children at the end
- of a subtest
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 03 Feb 2020 13:19:04 -0000
+Message-ID: <158073594413.3014.16273486522478292165@emeril.freedesktop.org>
+References: <20200203123103.12397-1-sai.gowtham.ch@intel.com>
+In-Reply-To: <20200203123103.12397-1-sai.gowtham.ch@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
+ =?utf-8?q?ests/i915/gem=5Fexec=5Ffence=3AAdded_=5F=5Ffor=5Feach=5Fphysica?=
+ =?utf-8?q?l=5Fengine_to_utilize_all_available_engines=2E?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,108 +15,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: saigowth <sai.gowtham.ch@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Ensure that we tidy up all the excess children left behind by a failing
-subtest, we do not want them loitering into the next!
+== Series Details ==
 
-v2: Behead the undead plague, and throw in a bonus lib/tests
+Series: tests/i915/gem_exec_fence:Added __for_each_physical_engine to utilize all available engines.
+URL   : https://patchwork.freedesktop.org/series/72916/
+State : failure
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Petri Latvala <petri.latvala@intel.com>
----
- lib/igt_core.c       |  7 +++++++
- lib/tests/igt_fork.c | 45 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 52 insertions(+)
+== Summary ==
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index a0bf29408..510417934 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -1362,6 +1362,13 @@ static void exit_subtest(const char *result)
- 
- 	igt_terminate_spins();
- 
-+	/* If the subtest aborted, it may have left children behind */
-+	for (int c = 0; c < num_test_children; c++) {
-+		kill(test_children[c], SIGKILL);
-+		waitpid(test_children[c], NULL, 0); /* don't leave zombies! */
-+	}
-+	num_test_children = 0;
-+
- 	if (!in_dynamic_subtest)
- 		_igt_dynamic_tests_executed = -1;
- 
-diff --git a/lib/tests/igt_fork.c b/lib/tests/igt_fork.c
-index 7e8b4f9b5..e30584fd2 100644
---- a/lib/tests/igt_fork.c
-+++ b/lib/tests/igt_fork.c
-@@ -107,6 +107,48 @@ static int do_fork(void (*test_to_run)(void))
- 	}
- }
- 
-+static int do_subtest(void (*test_to_run)(void))
-+{
-+	int pid, status;
-+	int argc;
-+
-+	switch (pid = fork()) {
-+	case -1:
-+		internal_assert(0);
-+	case 0:
-+		argc = ARRAY_SIZE(argv_run);
-+		igt_subtest_init(argc, argv_run);
-+		test_to_run();
-+		igt_exit();
-+	default:
-+		while (waitpid(pid, &status, 0) == -1 &&
-+		       errno == EINTR)
-+			;
-+
-+		return status;
-+	}
-+}
-+
-+static void subtest_leak(void)
-+{
-+	pid_t *children =
-+		mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-+	const int num_children = 4096 / sizeof(*children);
-+
-+	igt_subtest("fork-leak") {
-+		igt_fork(child, num_children)
-+			children[child] = getpid();
-+
-+		/* leak the children */
-+		igt_assert(0);
-+	}
-+
-+	/* We expect the exit_subtest to cleanup after the igt_fork */
-+	for (int i = 0; i < num_children; i++)
-+		assert(kill(children[i], 0) == -1 && errno == ESRCH);
-+
-+	munmap(children, 4096);
-+}
- 
- int main(int argc, char **argv)
- {
-@@ -131,4 +173,7 @@ int main(int argc, char **argv)
- 	/* check that any other process leaks are caught*/
- 	ret = do_fork(plain_fork_leak);
- 	internal_assert_wsignaled(ret, SIGABRT);
-+
-+	ret = do_subtest(subtest_leak);
-+	internal_assert_wexited(ret, IGT_EXIT_FAILURE); /* not asserted! */
- }
--- 
-2.25.0
+ERROR! This series introduces new undocumented tests:
 
+gem_exec_fence@await-hang
+gem_exec_fence@basic-await
+gem_exec_fence@basic-busy
+gem_exec_fence@basic-wait
+gem_exec_fence@busy-hang
+gem_exec_fence@keep-in-fence
+gem_exec_fence@nb-await
+gem_exec_fence@nb-await-hang
+gem_exec_fence@parallel
+gem_exec_fence@wait-hang
+
+Can you document them as per the requirement in the [CONTRIBUTING.md]?
+
+[Documentation] has more details on how to do this.
+
+Here are few examples:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+
+Thanks in advance!
+
+[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
+[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+
+Other than that, pipeline status: SUCCESS.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/104264 for the overview.
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/104264
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
