@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E90B89A1A
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Feb 2020 16:35:10 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Mon,  3 Feb 2020 18:35:07 +0200
-Message-Id: <20200203163507.22381-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20200130151229.984-2-ville.syrjala@linux.intel.com>
-References: <20200130151229.984-2-ville.syrjala@linux.intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C5776EA0E
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Feb 2020 16:37:07 +0000 (UTC)
+References: <20200131171150.8333-1-antonio.argenziano@intel.com>
+ <87blqj565y.wl-ashutosh.dixit@intel.com>
+ <158063948798.17828.2067896502546028406@skylake-alporthouse-com>
+From: Antonio Argenziano <antonio.argenziano@intel.com>
+Message-ID: <90567319-4f8a-4f96-7291-0a5eccccebba@intel.com>
+Date: Mon, 3 Feb 2020 08:37:05 -0800
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 2/3] lib/igt_kms: Add igt_reduce_format()
+In-Reply-To: <158063948798.17828.2067896502546028406@skylake-alporthouse-com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/i915/gem_ctx_sseu: Skip gtt
+ tests if mappable aperture unavailable
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,84 +20,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KCkFk
-ZCBhIGhlbHBlciB0byByZWR1Y2UgYSBwaXhlbCBmb3JtYXQgdG8gYSAiYmFzZSIgZm9ybWF0LgpJ
-ZS4gZ3JvdXAgYWxsIGZvcm1hdHMgdG8gc29tZSBpZGVhIG9mIGNsYXNzZXMgYmFzZWQgb24gdGhl
-CmJpdHMgcGVyIHBpeGVsICsgY29tcG9uZW50IHNpemVzIGV0Yy4gaWdub3JpbmcgYW55IGNvbXBv
-bmVudCBvcmRlcmluZy4KTGV0J3MgdXMgc2tpcCBwb3RlbnRpYWxseSByZWR1bmRhbnQgdGVzdHMg
-d2hlbiBhbGwgd2UgbWlnaHQgY2FyZQphYm91dCBpcyB0ZXN0aW5nIGVhY2ggZm9ybWF0ICJjbGFz
-cyIgdGhlIG9uY2UuCgp2MjogQWRkIHNvbWUgZG9jcyAoQ2hyaXMpCgpDYzogRnJvbTogQ2hyaXMg
-V2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+ClNpZ25lZC1vZmYtYnk6IFZpbGxlIFN5
-cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+Ci0tLQogbGliL2lndF9rbXMu
-YyB8IDk1ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KwogbGliL2lndF9rbXMuaCB8ICAxICsKIDIgZmlsZXMgY2hhbmdlZCwgOTYgaW5zZXJ0aW9ucygr
-KQoKZGlmZiAtLWdpdCBhL2xpYi9pZ3Rfa21zLmMgYi9saWIvaWd0X2ttcy5jCmluZGV4IGQyMGRh
-YWFkNzc2NC4uZjY2ZGE2MzVjNjZlIDEwMDY0NAotLS0gYS9saWIvaWd0X2ttcy5jCisrKyBiL2xp
-Yi9pZ3Rfa21zLmMKQEAgLTQ0NzQsMyArNDQ3NCw5OCBAQCB2b2lkIGlndF9wYXJzZV9jb25uZWN0
-b3JfdGlsZV9ibG9iKGRybU1vZGVQcm9wZXJ0eUJsb2JQdHIgYmxvYiwKIAl0aWxlLT50aWxlX2hf
-c2l6ZSA9IGF0b2koc3RydG9rKE5VTEwsICI6IikpOwogCXRpbGUtPnRpbGVfdl9zaXplID0gYXRv
-aShzdHJ0b2soTlVMTCwgIjoiKSk7CiB9CisKKy8qKgorICogaWd0X3JlZHVjZV9mb3JtYXQ6Cisg
-KiBAZm9ybWF0OiBkcm0gZm91cmNjCisgKgorICogUmVkdWNlIEBmb3JtYXQgdG8gYSBiYXNlIGZv
-cm1hdC4gVGhlIGFpbSBpcyB0byBhbGxvdyBncm91cGluZworICogc3VmZmljaWVudGx5IHNpbWls
-YXIgZm9ybWF0cyBpbnRvIGNsYXNzZXMuIEZvcm1hdHMgd2l0aCBpZGVudGljYWwKKyAqIGNvbXBv
-bmVudCBzaXplcywgb3ZlcmFsbCBwaXhlbCBzaXplLCBjaHJvbWEgc3Vic2FtbGluZywgZXRjLiBh
-cmUKKyAqIGNvbnNpZGVyZWQgcGFydCBvZiB0aGUgc2FtZSBjbGFzcywgbm8gbWF0dGVyIGluIHdo
-aWNoIG9yZGVyIHRoZQorICogY29tcG9uZW50cyBhcHBlYXIuIFdlIGFyYml0cmFyaWx5IGNob29z
-ZSBvbmUgb2YgdGhlIGZvcm1hdHMgaW4KKyAqIHRoZSBjbGFzcyBhcyB0aGUgYmFzZSBmb3JtYXQu
-IE5vdGUgdGhhdCB0aGUgYmFzZSBmb3JtYXQgaXRzZWxmCisgKiBtYXkgbm90IGJlIHN1cHBvcnRl
-ZCBieSB3aGF0ZXZlciBkZXZpY2UgaXMgYmVpbmcgdGVzdGVkIGV2ZW4gaWYKKyAqIHNvbWUgb2Yg
-dGhlIG90aGVyIGZvcm1hdHMgaW4gdGhlIGNsYXNzIGFyZSBzdXBwb3J0ZWQuCisgKgorICogUmV0
-dXJuczoKKyAqIFRoZSBiYXNlIGZvcm1hdCBmb3IgQGZvcm1hdAorICovCit1aW50MzJfdCBpZ3Rf
-cmVkdWNlX2Zvcm1hdCh1aW50MzJfdCBmb3JtYXQpCit7CisJc3dpdGNoIChmb3JtYXQpIHsKKwlj
-YXNlIERSTV9GT1JNQVRfUkdCMzMyOgorCWNhc2UgRFJNX0ZPUk1BVF9CR1IyMzM6CisJCXJldHVy
-biBEUk1fRk9STUFUX1JHQjMzMjsKKwljYXNlIERSTV9GT1JNQVRfWFJHQjE1NTU6CisJY2FzZSBE
-Uk1fRk9STUFUX1hCR1IxNTU1OgorCWNhc2UgRFJNX0ZPUk1BVF9BUkdCMTU1NToKKwljYXNlIERS
-TV9GT1JNQVRfQUJHUjE1NTU6CisJY2FzZSBEUk1fRk9STUFUX1JHQlg1NTUxOgorCWNhc2UgRFJN
-X0ZPUk1BVF9CR1JYNTU1MToKKwljYXNlIERSTV9GT1JNQVRfUkdCQTU1NTE6CisJY2FzZSBEUk1f
-Rk9STUFUX0JHUkE1NTUxOgorCQlyZXR1cm4gRFJNX0ZPUk1BVF9YUkdCMTU1NTsKKwljYXNlIERS
-TV9GT1JNQVRfUkdCNTY1OgorCWNhc2UgRFJNX0ZPUk1BVF9CR1I1NjU6CisJCXJldHVybiBEUk1f
-Rk9STUFUX1JHQjU2NTsKKwljYXNlIERSTV9GT1JNQVRfWFJHQjg4ODg6CisJY2FzZSBEUk1fRk9S
-TUFUX1hCR1I4ODg4OgorCWNhc2UgRFJNX0ZPUk1BVF9BUkdCODg4ODoKKwljYXNlIERSTV9GT1JN
-QVRfQUJHUjg4ODg6CisJY2FzZSBEUk1fRk9STUFUX1JHQlg4ODg4OgorCWNhc2UgRFJNX0ZPUk1B
-VF9CR1JYODg4ODoKKwljYXNlIERSTV9GT1JNQVRfUkdCQTg4ODg6CisJY2FzZSBEUk1fRk9STUFU
-X0JHUkE4ODg4OgorCQlyZXR1cm4gRFJNX0ZPUk1BVF9YUkdCODg4ODsKKwljYXNlIERSTV9GT1JN
-QVRfWFJHQjIxMDEwMTA6CisJY2FzZSBEUk1fRk9STUFUX1hCR1IyMTAxMDEwOgorCWNhc2UgRFJN
-X0ZPUk1BVF9BUkdCMjEwMTAxMDoKKwljYXNlIERSTV9GT1JNQVRfQUJHUjIxMDEwMTA6CisJY2Fz
-ZSBEUk1fRk9STUFUX1JHQlgxMDEwMTAyOgorCWNhc2UgRFJNX0ZPUk1BVF9CR1JYMTAxMDEwMjoK
-KwljYXNlIERSTV9GT1JNQVRfUkdCQTEwMTAxMDI6CisJY2FzZSBEUk1fRk9STUFUX0JHUkExMDEw
-MTAyOgorCQlyZXR1cm4gRFJNX0ZPUk1BVF9YUkdCMjEwMTAxMDsKKwljYXNlIERSTV9GT1JNQVRf
-WFJHQjE2MTYxNjE2RjoKKwljYXNlIERSTV9GT1JNQVRfWEJHUjE2MTYxNjE2RjoKKwljYXNlIERS
-TV9GT1JNQVRfQVJHQjE2MTYxNjE2RjoKKwljYXNlIERSTV9GT1JNQVRfQUJHUjE2MTYxNjE2RjoK
-KwkJcmV0dXJuIERSTV9GT1JNQVRfWFJHQjE2MTYxNjE2RjsKKwljYXNlIERSTV9GT1JNQVRfWVVZ
-VjoKKwljYXNlIERSTV9GT1JNQVRfVVlWWToKKwljYXNlIERSTV9GT1JNQVRfWVZZVToKKwljYXNl
-IERSTV9GT1JNQVRfVllVWToKKwkJcmV0dXJuIERSTV9GT1JNQVRfWVVZVjsKKwljYXNlIERSTV9G
-T1JNQVRfTlYxMjoKKwljYXNlIERSTV9GT1JNQVRfTlYyMToKKwkJcmV0dXJuIERSTV9GT1JNQVRf
-TlYxMjsKKwljYXNlIERSTV9GT1JNQVRfTlYxNjoKKwljYXNlIERSTV9GT1JNQVRfTlY2MToKKwkJ
-cmV0dXJuIERSTV9GT1JNQVRfTlYxNjsKKwljYXNlIERSTV9GT1JNQVRfTlYyNDoKKwljYXNlIERS
-TV9GT1JNQVRfTlY0MjoKKwkJcmV0dXJuIERSTV9GT1JNQVRfTlYyNDsKKwljYXNlIERSTV9GT1JN
-QVRfUDAxMDoKKwljYXNlIERSTV9GT1JNQVRfUDAxMjoKKwljYXNlIERSTV9GT1JNQVRfUDAxNjoK
-KwkJcmV0dXJuIERSTV9GT1JNQVRfUDAxMDsKKwljYXNlIERSTV9GT1JNQVRfWTIxMDoKKwljYXNl
-IERSTV9GT1JNQVRfWTIxMjoKKwljYXNlIERSTV9GT1JNQVRfWTIxNjoKKwkJcmV0dXJuIERSTV9G
-T1JNQVRfWTIxMDsKKwljYXNlIERSTV9GT1JNQVRfWFlVVjg4ODg6CisJY2FzZSBEUk1fRk9STUFU
-X0FZVVY6CisJCXJldHVybiBEUk1fRk9STUFUX1hZVVY4ODg4OworCWNhc2UgRFJNX0ZPUk1BVF9Y
-VllVMjEwMTAxMDoKKwljYXNlIERSTV9GT1JNQVRfWTQxMDoKKwkJcmV0dXJuIERSTV9GT1JNQVRf
-WFZZVTIxMDEwMTA7CisJY2FzZSBEUk1fRk9STUFUX1hWWVUxMl8xNjE2MTYxNjoKKwljYXNlIERS
-TV9GT1JNQVRfWFZZVTE2MTYxNjE2OgorCWNhc2UgRFJNX0ZPUk1BVF9ZNDEyOgorCWNhc2UgRFJN
-X0ZPUk1BVF9ZNDE2OgorCQlyZXR1cm4gRFJNX0ZPUk1BVF9YVllVMTJfMTYxNjE2MTY7CisJZGVm
-YXVsdDoKKwkJcmV0dXJuIGZvcm1hdDsKKwl9Cit9CmRpZmYgLS1naXQgYS9saWIvaWd0X2ttcy5o
-IGIvbGliL2lndF9rbXMuaAppbmRleCA2YzkxOWU5MmY0ODguLjY2YjBkZTUxNmUzYyAxMDA2NDQK
-LS0tIGEvbGliL2lndF9rbXMuaAorKysgYi9saWIvaWd0X2ttcy5oCkBAIC04NDYsNSArODQ2LDYg
-QEAgdm9pZCBpZ3RfcGFyc2VfY29ubmVjdG9yX3RpbGVfYmxvYihkcm1Nb2RlUHJvcGVydHlCbG9i
-UHRyIGJsb2IsCiAKIGludCBpZ3RfY29ubmVjdG9yX3N5c2ZzX29wZW4oaW50IGRybV9mZCwKIAkJ
-CSAgICAgZHJtTW9kZUNvbm5lY3RvciAqY29ubmVjdG9yKTsKK3VpbnQzMl90IGlndF9yZWR1Y2Vf
-Zm9ybWF0KHVpbnQzMl90IGZvcm1hdCk7CiAKICNlbmRpZiAvKiBfX0lHVF9LTVNfSF9fICovCi0t
-IAoyLjI0LjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBz
-Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+
+
+On 02/02/20 02:31, Chris Wilson wrote:
+> Quoting Dixit, Ashutosh (2020-02-01 03:37:45)
+>> On Fri, 31 Jan 2020 09:11:50 -0800, Antonio Argenziano wrote:
+>>> The gtt tests try to verify that a gtt mapped area can be used as an
+>>> sseu pointer so it wouldn't make sense to run those when gtt mapping is
+>>> not available.
+>>>
+>>> v2:
+>>>        - Move require in subtest definition. (Ashutosh)
+>>>
+>>
+>> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>>
+>>> Signed-off-by: Antonio Argenziano <antonio.argenziano@intel.com>
+>>> Cc: Dixit Ashutosh <ashutosh.dixit@intel.com>
+>>> ---
+>>>   tests/i915/gem_ctx_sseu.c | 5 ++++-
+>>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/tests/i915/gem_ctx_sseu.c b/tests/i915/gem_ctx_sseu.c
+>>> index 38dc584b..b5e9658e 100644
+>>> --- a/tests/i915/gem_ctx_sseu.c
+>>> +++ b/tests/i915/gem_ctx_sseu.c
+>>> @@ -528,8 +528,11 @@ igt_main
+>>>                igt_subtest("invalid-sseu")
+>>>                        test_invalid_sseu(fd);
+>>>
+>>> -             igt_subtest("ggtt-args")
+>>> +             igt_subtest("ggtt-args") {
+>>> +                     gem_require_mappable_ggtt(fd);
+>>> +
+>>>                        test_ggtt_args(fd);
+> 
+> It pains me to say because of all the duplication, but we do need to
+> cover the cases where args are inside strange mmaped objects.
+> 
+> Long ago we wanted a 'toolbox', as nearly all of these tests are the
+> same except for the ioctl layout. Ideal candidates for annotated
+> fuzzing (how many different types of mmap/faulthandlers can we think
+> of?)
+> 
+> We need a better solution here.
+
+How about looping across all mappings like we do for other tests?
+
+Antonio
+
+> -Chris
+> 
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
