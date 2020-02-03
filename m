@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 572116E27C
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Feb 2020 08:49:19 +0000 (UTC)
+References: <20200129135520.20336-1-swati2.sharma@intel.com>
+ <20200129135520.20336-5-swati2.sharma@intel.com>
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+Message-ID: <c97ce9f9-9eb9-5356-ccb2-3fcbbf26ae1b@intel.com>
+Date: Mon, 3 Feb 2020 14:19:14 +0530
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 03 Feb 2020 08:37:12 -0000
-Message-ID: <158071903234.3017.3489347008537164913@emeril.freedesktop.org>
-References: <20200203072057.25593-1-ayaz.siddiqui@intel.com>
-In-Reply-To: <20200203072057.25593-1-ayaz.siddiqui@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIGNo?=
- =?utf-8?q?eck_for_FENCE_based_tiling_support_=28rev2=29?=
+In-Reply-To: <20200129135520.20336-5-swati2.sharma@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH 4/7] tests/kms_hdr: Add bpc switch subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,130 +18,383 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Hi Nicholas,
 
-Series: Add check for FENCE based tiling support (rev2)
-URL   : https://patchwork.freedesktop.org/series/72870/
-State : success
+With this patch we are seeing regression on HSW.
+Earlier we were getting scaler issue, I tried fixing it by having plane 
+size to 512x512.
+Now, in dmesg we can see "Plane must cover entire CRTC". For this to fix 
+i need to change the plane size to CRTC size; which will give scaler 
+issue as earlier. Ultimately i have to change FB size to mode->w, mode->h.
+But according to comment its written "10-bit formats are slow, so limit 
+the size"; so what you think is the right way to proceed? Should i 
+change FB size? How much slowness is "slow" here?
 
-== Summary ==
+@Ville what you think?
 
-CI Bug Log - changes from CI_DRM_7857 -> IGTPW_4074
-====================================================
+On 29-Jan-20 7:25 PM, Swati Sharma wrote:
+> From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+> 
+> Add subtests to validate transitions between 8bpc and 10bpc. Test is
+> made compatible for both amd and intel drivers. The test requires
+> the "output_bpc" debugfs entry to read current and maximum bpc.
+> This is exposed by amd driver, however intel driver doesn't expose it,
+> so made that restriction to assert output bpc only for amd driver.
+> 
+> v2: -Limiting plane size to 512x512 since regression observed in hsw
+>       because of plane scaling restriction.
+>      -Minor alignment fix [Uma]
+> v3: -Small fix
+> 
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Leo Li <sunpeng.li@amd.com>
+> Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+> ---
+>   tests/Makefile.sources |   1 +
+>   tests/kms_hdr.c        | 295 +++++++++++++++++++++++++++++++++++++++++
+>   tests/meson.build      |   1 +
+>   3 files changed, 297 insertions(+)
+>   create mode 100644 tests/kms_hdr.c
+> 
+> diff --git a/tests/Makefile.sources b/tests/Makefile.sources
+> index 4582f656..98411172 100644
+> --- a/tests/Makefile.sources
+> +++ b/tests/Makefile.sources
+> @@ -54,6 +54,7 @@ TESTS_progs = \
+>   	kms_frontbuffer_tracking \
+>   	kms_getfb \
+>   	kms_hdmi_inject \
+> +	kms_hdr \
+>   	kms_invalid_dotclock \
+>   	kms_lease \
+>   	kms_legacy_colorkey \
+> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+> new file mode 100644
+> index 00000000..ff21335a
+> --- /dev/null
+> +++ b/tests/kms_hdr.c
+> @@ -0,0 +1,295 @@
+> +/*
+> + * Copyright 2019 Advanced Micro Devices, Inc.
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining a
+> + * copy of this software and associated documentation files (the "Software"),
+> + * to deal in the Software without restriction, including without limitation
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice shall be included in
+> + * all copies or substantial portions of the Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
+> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> + * OTHER DEALINGS IN THE SOFTWARE.
+> + */
+> +
+> +#include "igt.h"
+> +#include <fcntl.h>
+> +#include <termios.h>
+> +#include <unistd.h>
+> +
+> +IGT_TEST_DESCRIPTION("Test HDR metadata interfaces and bpc switch");
+> +
+> +/* Test flags. */
+> +enum {
+> +	TEST_NONE = 1 << 0,
+> +	TEST_DPMS = 1 << 1,
+> +	TEST_SUSPEND = 1 << 2,
+> +};
+> +
+> +/* BPC connector state. */
+> +typedef struct output_bpc {
+> +	unsigned int current;
+> +	unsigned int maximum;
+> +} output_bpc_t;
+> +
+> +/* Common test data. */
+> +typedef struct data {
+> +	igt_display_t display;
+> +	igt_plane_t *primary;
+> +	igt_output_t *output;
+> +	igt_pipe_t *pipe;
+> +	igt_pipe_crc_t *pipe_crc;
+> +	drmModeModeInfo *mode;
+> +	enum pipe pipe_id;
+> +	int fd;
+> +	int w;
+> +	int h;
+> +} data_t;
+> +
+> +/* Common test cleanup. */
+> +static void test_fini(data_t *data)
+> +{
+> +	igt_pipe_crc_free(data->pipe_crc);
+> +	igt_display_reset(&data->display);
+> +}
+> +
+> +static void test_cycle_flags(data_t *data, uint32_t test_flags)
+> +{
+> +	if (test_flags & TEST_DPMS) {
+> +		kmstest_set_connector_dpms(data->fd,
+> +					   data->output->config.connector,
+> +					   DRM_MODE_DPMS_OFF);
+> +		kmstest_set_connector_dpms(data->fd,
+> +					   data->output->config.connector,
+> +					   DRM_MODE_DPMS_ON);
+> +	}
+> +
+> +	if (test_flags & TEST_SUSPEND)
+> +		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> +					      SUSPEND_TEST_NONE);
+> +}
+> +
+> +/* Returns the current and maximum bpc from the connector debugfs. */
+> +static output_bpc_t get_output_bpc(data_t *data)
+> +{
+> +	char buf[256];
+> +	char *start_loc;
+> +	int fd, res;
+> +	output_bpc_t info;
+> +
+> +	fd = igt_debugfs_connector_dir(data->fd, data->output->name, O_RDONLY);
+> +	igt_assert(fd >= 0);
+> +
+> +	res = igt_debugfs_simple_read(fd, "output_bpc", buf, sizeof(buf));
+> +
+> +	igt_require(res > 0);
+> +
+> +	close(fd);
+> +
+> +	igt_assert(start_loc = strstr(buf, "Current: "));
+> +	igt_assert_eq(sscanf(start_loc, "Current: %u", &info.current), 1);
+> +
+> +	igt_assert(start_loc = strstr(buf, "Maximum: "));
+> +	igt_assert_eq(sscanf(start_loc, "Maximum: %u", &info.maximum), 1);
+> +
+> +	return info;
+> +}
+> +
+> +/* Verifies that connector has the correct output bpc. */
+> +static void assert_output_bpc(data_t *data, unsigned int bpc)
+> +{
+> +	output_bpc_t info = get_output_bpc(data);
+> +
+> +	igt_require_f(info.maximum >= bpc,
+> +		      "Monitor doesn't support %u bpc, max is %u\n", bpc,
+> +		      info.maximum);
+> +
+> +	igt_assert_eq(info.current, bpc);
+> +}
+> +
+> +/* Fills the FB with a test HDR pattern. */
+> +static void draw_hdr_pattern(igt_fb_t *fb)
+> +{
+> +	cairo_t *cr = igt_get_cairo_ctx(fb->fd, fb);
+> +
+> +	igt_paint_color(cr, 0, 0, fb->width, fb->height, 1.0, 1.0, 1.0);
+> +	igt_paint_test_pattern(cr, fb->width, fb->height);
+> +
+> +	igt_put_cairo_ctx(fb->fd, fb, cr);
+> +}
+> +
+> +/* Prepare test data. */
+> +static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+> +{
+> +	igt_display_t *display = &data->display;
+> +
+> +	data->pipe_id = pipe;
+> +	data->pipe = &data->display.pipes[data->pipe_id];
+> +	igt_assert(data->pipe);
+> +
+> +	igt_display_reset(display);
+> +
+> +	data->output = output;
+> +	igt_assert(data->output);
+> +
+> +	data->mode = igt_output_get_mode(data->output);
+> +	igt_assert(data->mode);
+> +
+> +	data->primary =
+> +		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
+> +
+> +	data->pipe_crc = igt_pipe_crc_new(data->fd, data->pipe_id,
+> +					  INTEL_PIPE_CRC_SOURCE_AUTO);
+> +
+> +	igt_output_set_pipe(data->output, data->pipe_id);
+> +
+> +	data->w = data->mode->hdisplay;
+> +	data->h = data->mode->vdisplay;
+> +}
+> +
+> +static bool igt_pipe_is_free(igt_display_t *display, enum pipe pipe)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < display->n_outputs; i++)
+> +		if (display->outputs[i].pending_pipe == pipe)
+> +			return false;
+> +
+> +	return true;
+> +}
+> +
+> +static void test_bpc_switch_on_output(data_t *data, igt_output_t *output,
+> +				      uint32_t flags)
+> +{
+> +	igt_display_t *display = &data->display;
+> +	igt_crc_t ref_crc, new_crc;
+> +	enum pipe pipe;
+> +	igt_fb_t afb;
+> +	int afb_id;
+> +
+> +	for_each_pipe(display, pipe) {
+> +		if (!igt_pipe_connector_valid(pipe, output))
+> +			continue;
+> +		/*
+> +		 * If previous subtest of connector failed, pipe
+> +		 * attached to that connector is not released.
+> +		 * Because of that we have to choose the non
+> +		 * attached pipe for this subtest.
+> +		 */
+> +		if (!igt_pipe_is_free(display, pipe))
+> +			continue;
+> +
+> +		prepare_test(data, output, pipe);
+> +
+> +		/* 10-bit formats are slow, so limit the size. */
+> +		afb_id = igt_create_fb(data->fd, 512, 512, DRM_FORMAT_XRGB2101010, 0, &afb);
+> +		igt_assert(afb_id);
+> +
+> +		draw_hdr_pattern(&afb);
+> +
+> +		/* Start in 8bpc. */
+> +		igt_plane_set_fb(data->primary, &afb);
+> +		/*
+> +		 * Limiting plane size aswell, since most of gen7 and all of
+> +		 * gen8 doesn't support plane scaling at all.
+> +		 */
+> +		igt_plane_set_size(data->primary, 512, 512);
+> +		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+> +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +		/*
+> +		 * i915 driver doesn't expose max bpc as debugfs entry,
+> +		 * so limiting assert only for amd driver.
+> +		 */
+> +		if (is_amdgpu_device(data->fd))
+> +			assert_output_bpc(data, 8);
+> +
+> +		/* Switch to 10bpc. */
+> +		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+> +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +		if (is_amdgpu_device(data->fd))
+> +			assert_output_bpc(data, 10);
+> +
+> +		/* Verify that the CRC are equal after DPMS or suspend. */
+> +		igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
+> +		test_cycle_flags(data, flags);
+> +		igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
+> +
+> +		/* Drop back to 8bpc. */
+> +		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
+> +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +		if (is_amdgpu_device(data->fd))
+> +			assert_output_bpc(data, 8);
+> +
+> +		/* CRC capture is clamped to 8bpc, so capture should match. */
+> +		igt_assert_crc_equal(&ref_crc, &new_crc);
+> +
+> +		test_fini(data);
+> +		igt_remove_fb(data->fd, &afb);
+> +
+> +		/*
+> +		 * Testing a output with a pipe is enough for HDR
+> +		 * testing. No ROI in testing the connector with other
+> +		 * pipes. So break the loop on pipe.
+> +		 */
+> +		break;
+> +	}
+> +}
+> +
+> +/* Returns true if an output supports max bpc property. */
+> +static bool has_max_bpc(igt_output_t *output)
+> +{
+> +	return igt_output_has_prop(output, IGT_CONNECTOR_MAX_BPC) &&
+> +	       igt_output_get_prop(output, IGT_CONNECTOR_MAX_BPC);
+> +}
+> +
+> +static void test_bpc_switch(data_t *data, uint32_t flags)
+> +{
+> +	igt_output_t *output;
+> +	int valid_tests = 0;
+> +
+> +	for_each_connected_output(&data->display, output) {
+> +		if (!has_max_bpc(output))
+> +			continue;
+> +
+> +		igt_info("BPC switch test execution on %s\n", output->name);
+> +		test_bpc_switch_on_output(data, output, flags);
+> +		valid_tests++;
+> +	}
+> +
+> +	igt_require_f(valid_tests, "No connector found with MAX BPC connector property\n");
+> +}
+> +
+> +igt_main
+> +{
+> +	data_t data = { 0 };
+> +
+> +	igt_fixture {
+> +		data.fd = drm_open_driver_master(DRIVER_AMDGPU | DRIVER_INTEL);
+> +
+> +		kmstest_set_vt_graphics_mode();
+> +
+> +		igt_display_require(&data.display, data.fd);
+> +		igt_require(data.display.is_atomic);
+> +
+> +		igt_display_require_output(&data.display);
+> +	}
+> +
+> +	igt_describe("Tests switching between different display output bpc modes");
+> +	igt_subtest("bpc-switch") test_bpc_switch(&data, TEST_NONE);
+> +	igt_describe("Tests bpc switch with dpms");
+> +	igt_subtest("bpc-switch-dpms") test_bpc_switch(&data, TEST_DPMS);
+> +	igt_describe("Tests bpc switch with suspend");
+> +	igt_subtest("bpc-switch-suspend") test_bpc_switch(&data, TEST_SUSPEND);
+> +
+> +	igt_fixture {
+> +		igt_display_fini(&data.display);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index bc8652aa..6ac2c830 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -38,6 +38,7 @@ test_progs = [
+>   	'kms_frontbuffer_tracking',
+>   	'kms_getfb',
+>   	'kms_hdmi_inject',
+> +	'kms_hdr',
+>   	'kms_invalid_dotclock',
+>   	'kms_lease',
+>   	'kms_legacy_colorkey',
+> 
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4074/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4074 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-hsw-peppy:       [PASS][1] -> [TIMEOUT][2] ([fdo#112271] / [i915#1084])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4074/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_selftest@live_blt:
-    - fi-ivb-3770:        [PASS][3] -> [DMESG-FAIL][4] ([i915#770])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-ivb-3770/igt@i915_selftest@live_blt.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4074/fi-ivb-3770/igt@i915_selftest@live_blt.html
-
-  * igt@i915_selftest@live_execlists:
-    - fi-icl-y:           [PASS][5] -> [DMESG-FAIL][6] ([fdo#108569])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-icl-y/igt@i915_selftest@live_execlists.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4074/fi-icl-y/igt@i915_selftest@live_execlists.html
-
-  * igt@i915_selftest@live_gtt:
-    - fi-kbl-7500u:       [PASS][7] -> [TIMEOUT][8] ([fdo#112271])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-kbl-7500u/igt@i915_selftest@live_gtt.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4074/fi-kbl-7500u/igt@i915_selftest@live_gtt.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live_blt:
-    - fi-hsw-4770r:       [DMESG-FAIL][9] ([i915#553] / [i915#725]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4074/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-    - fi-hsw-4770:        [DMESG-FAIL][11] ([i915#553] / [i915#725]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-hsw-4770/igt@i915_selftest@live_blt.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4074/fi-hsw-4770/igt@i915_selftest@live_blt.html
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-cfl-guc:         [INCOMPLETE][13] ([fdo#106070] / [i915#424]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-cfl-guc/igt@i915_selftest@live_gem_contexts.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4074/fi-cfl-guc/igt@i915_selftest@live_gem_contexts.html
-
-  
-#### Warnings ####
-
-  * igt@i915_pm_rpm@basic-rte:
-    - fi-kbl-guc:         [SKIP][15] ([fdo#109271]) -> [FAIL][16] ([i915#579])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4074/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-7500u:       [FAIL][17] ([fdo#111096] / [i915#323]) -> [FAIL][18] ([fdo#111407])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4074/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  
-  [fdo#106070]: https://bugs.freedesktop.org/show_bug.cgi?id=106070
-  [fdo#108569]: https://bugs.freedesktop.org/show_bug.cgi?id=108569
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
-  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#1084]: https://gitlab.freedesktop.org/drm/intel/issues/1084
-  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
-  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
-  [i915#553]: https://gitlab.freedesktop.org/drm/intel/issues/553
-  [i915#579]: https://gitlab.freedesktop.org/drm/intel/issues/579
-  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
-  [i915#770]: https://gitlab.freedesktop.org/drm/intel/issues/770
-
-
-Participating hosts (47 -> 45)
-------------------------------
-
-  Additional (5): fi-bdw-5557u fi-skl-6770hq fi-bwr-2160 fi-kbl-7560u fi-bsw-nick 
-  Missing    (7): fi-kbl-soraka fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-n2820 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5411 -> IGTPW_4074
-
-  CI-20190529: 20190529
-  CI_DRM_7857: 8ec40a15b9a930df9e445f17c5e01cdb6f80353a @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4074: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4074/index.html
-  IGT_5411: 86c6ab8a0b6696bdb2153febd350af7fa02fbb00 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4074/index.html
+-- 
+~Swati Sharma
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
