@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9DBFB6E334
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Feb 2020 13:04:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 97A676E33F
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Feb 2020 13:11:39 +0000 (UTC)
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon,  3 Feb 2020 13:03:51 +0000
-Message-Id: <20200203130351.175879-1-chris@chris-wilson.co.uk>
+Date: Mon,  3 Feb 2020 13:11:27 +0000
+Message-Id: <20200203131127.176041-1-chris@chris-wilson.co.uk>
 In-Reply-To: <20200202185649.4105689-1-chris@chris-wilson.co.uk>
 References: <20200202185649.4105689-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] lib: Kill residual children at the end
+Subject: [igt-dev] [PATCH i-g-t v3] lib: Kill residual children at the end
  of a subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -34,8 +34,8 @@ Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: Petri Latvala <petri.latvala@intel.com>
 ---
  lib/igt_core.c       |  7 +++++++
- lib/tests/igt_fork.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 51 insertions(+)
+ lib/tests/igt_fork.c | 45 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 52 insertions(+)
 
 diff --git a/lib/igt_core.c b/lib/igt_core.c
 index a0bf29408..510417934 100644
@@ -56,7 +56,7 @@ index a0bf29408..510417934 100644
  		_igt_dynamic_tests_executed = -1;
  
 diff --git a/lib/tests/igt_fork.c b/lib/tests/igt_fork.c
-index 7e8b4f9b5..36597553d 100644
+index 7e8b4f9b5..e30584fd2 100644
 --- a/lib/tests/igt_fork.c
 +++ b/lib/tests/igt_fork.c
 @@ -107,6 +107,48 @@ static int do_fork(void (*test_to_run)(void))
@@ -108,12 +108,13 @@ index 7e8b4f9b5..36597553d 100644
  
  int main(int argc, char **argv)
  {
-@@ -131,4 +173,6 @@ int main(int argc, char **argv)
+@@ -131,4 +173,7 @@ int main(int argc, char **argv)
  	/* check that any other process leaks are caught*/
  	ret = do_fork(plain_fork_leak);
  	internal_assert_wsignaled(ret, SIGABRT);
 +
-+	do_subtest(subtest_leak);
++	ret = do_subtest(subtest_leak);
++	internal_assert_wexited(ret, IGT_EXIT_FAILURE); /* not asserted! */
  }
 -- 
 2.25.0
