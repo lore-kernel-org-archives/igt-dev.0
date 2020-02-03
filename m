@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F34B76E162
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Feb 2020 02:53:18 +0000 (UTC)
-From: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Date: Mon,  3 Feb 2020 08:22:50 +0530
-Message-Id: <20200203025250.30943-1-arjun.melkaveri@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] [PATCH i-g-t] gem_ctx_create:Adjusted test to use
- __for_each_physical_engine to utilize all available engines
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 03 Feb 2020 03:37:52 -0000
+Message-ID: <158070107223.3015.12880809971676788064@emeril.freedesktop.org>
+References: <20200203025250.30943-1-arjun.melkaveri@intel.com>
+In-Reply-To: <20200203025250.30943-1-arjun.melkaveri@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgZ2VtX2N0?=
+ =?utf-8?q?x=5Fcreate=3AAdjusted_test_to_use_=5F=5Ffor=5Feach=5Fphysical?=
+ =?utf-8?q?=5Fengine_to_utilize_all_available_engines?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,158 +15,149 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org
+To: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Changes :-
-1) Added __for_each_physical_engine for subtest engines.
-2) Moved test cases from static to dynamic.
-3) used gem_context_clone_with_engines for creating contexts.
-4) Passing NULL in active test to run test for all engines.
+== Series Details ==
 
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
-Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
----
- tests/i915/gem_ctx_create.c | 56 ++++++++++++++++++++++---------------
- 1 file changed, 34 insertions(+), 22 deletions(-)
+Series: gem_ctx_create:Adjusted test to use __for_each_physical_engine to utilize all available engines
+URL   : https://patchwork.freedesktop.org/series/72889/
+State : success
 
-diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
-index d9a820e2..7100e75a 100644
---- a/tests/i915/gem_ctx_create.c
-+++ b/tests/i915/gem_ctx_create.c
-@@ -124,22 +124,22 @@ static void files(int core, int timeout, const int ncpus)
- 	gem_close(core, batch);
- }
- 
--static void active(int fd, unsigned engine, int timeout, int ncpus)
-+static void active(int fd, const struct intel_execution_engine2 *e,
-+		   int timeout, int ncpus)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	struct drm_i915_gem_exec_object2 obj;
- 	unsigned int nengine, engines[16];
- 	unsigned *shared;
--
--	if (engine == ALL_ENGINES) {
-+	/* When e is NULL, test would run for all engines */
-+	if (!e) {
- 		igt_require(all_nengine);
- 		nengine = all_nengine;
- 		memcpy(engines, all_engines, sizeof(engines[0])*nengine);
- 	} else {
--		gem_require_ring(fd, engine);
- 		nengine = 1;
--		engines[0] = engine;
-+		engines[0] = e->flags;
- 	}
- 
- 	shared = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-@@ -157,7 +157,7 @@ static void active(int fd, unsigned engine, int timeout, int ncpus)
- 		igt_fork(child, ppgtt_nengine) {
- 			unsigned long count = 0;
- 
--			if (ppgtt_engines[child] == engine)
-+			if (ppgtt_engines[child] == e->flags)
- 				continue;
- 
- 			execbuf.flags = ppgtt_engines[child];
-@@ -183,7 +183,7 @@ static void active(int fd, unsigned engine, int timeout, int ncpus)
- 		clock_gettime(CLOCK_MONOTONIC, &start);
- 		do {
- 			do {
--				execbuf.rsvd1 = gem_context_create(fd);
-+				execbuf.rsvd1 = gem_context_clone_with_engines(fd, 0);
- 				for (unsigned n = 0; n < nengine; n++) {
- 					execbuf.flags = engines[n];
- 					gem_execbuf(fd, &execbuf);
-@@ -276,7 +276,9 @@ static void maximum(int fd, int ncpus, unsigned mode)
- 
- 		err = -ENOMEM;
- 		if (avail_mem > (count + 1) * ctx_size)
--			err = __gem_context_create(fd, &ctx_id);
-+			err =  __gem_context_clone(fd, 0,
-+						   I915_CONTEXT_CLONE_ENGINES,
-+						   0, &ctx_id);
- 		if (err) {
- 			igt_info("Created %lu contexts, before failing with '%s' [%d]\n",
- 				 count, strerror(-err), -err);
-@@ -370,6 +372,7 @@ static void basic_ext_param(int i915)
- 
- 		gem_context_destroy(i915, create.ctx_id);
- 
-+
- 		/* Having demonstrated a valid setup, check a few invalids */
- 		ext.param.ctx_id = 1;
- 		igt_assert_eq(create_ext_ioctl(i915, &create), -EINVAL);
-@@ -524,6 +527,7 @@ igt_main
- {
- 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
- 	struct drm_i915_gem_context_create create;
-+	const struct intel_execution_engine2 *e;
- 	int fd = -1;
- 
- 	igt_fixture {
-@@ -531,8 +535,8 @@ igt_main
- 		igt_require_gem(fd);
- 		gem_require_contexts(fd);
- 
--		for_each_physical_engine(e, fd)
--			all_engines[all_nengine++] = eb_ring(e);
-+		__for_each_physical_engine(fd, e)
-+			all_engines[all_nengine++] = e->flags;
- 		igt_require(all_nengine);
- 
- 		if (gem_uses_full_ppgtt(fd)) {
-@@ -572,20 +576,28 @@ igt_main
- 	igt_subtest("forked-files")
- 		files(fd, 20, ncpus);
- 
-+	/* NULL value means all engines */
- 	igt_subtest("active-all")
--		active(fd, ALL_ENGINES, 20, 1);
-+		active(fd, NULL, 20, 1);
- 	igt_subtest("forked-active-all")
--		active(fd, ALL_ENGINES, 20, ncpus);
--
--	for (const struct intel_execution_engine *e = intel_execution_engines;
--	     e->name; e++) {
--		igt_subtest_f("active-%s", e->name)
--			active(fd, eb_ring(e), 20, 1);
--		igt_subtest_f("forked-active-%s", e->name)
--			active(fd, eb_ring(e), 20, ncpus);
--		if (e->exec_id) {
--			igt_subtest_f("hog-%s", e->name)
--				active(fd, eb_ring(e), 20, -1);
-+		active(fd, NULL, 20, ncpus);
-+
-+	igt_subtest_with_dynamic("active") {
-+		__for_each_physical_engine(fd, e) {
-+			igt_dynamic_f("%s", e->name)
-+				active(fd, e, 20, 1);
-+		}
-+	}
-+	igt_subtest_with_dynamic("forked-active") {
-+		__for_each_physical_engine(fd, e) {
-+			igt_dynamic_f("%s", e->name)
-+				active(fd, e, 20, ncpus);
-+		}
-+	}
-+	igt_subtest_with_dynamic("hog") {
-+		__for_each_physical_engine(fd, e) {
-+			igt_dynamic_f("%s", e->name)
-+				active(fd, e, 20, -1);
- 		}
- 	}
- 
--- 
-2.24.0
+== Summary ==
 
+CI Bug Log - changes from CI_DRM_7857 -> IGTPW_4073
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4073/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4073 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_close_race@basic-threads:
+    - fi-byt-n2820:       [PASS][1] -> [TIMEOUT][2] ([fdo#112271] / [i915#1084] / [i915#816])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-byt-n2820/igt@gem_close_race@basic-threads.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4073/fi-byt-n2820/igt@gem_close_race@basic-threads.html
+
+  * igt@i915_selftest@live_execlists:
+    - fi-icl-y:           [PASS][3] -> [DMESG-FAIL][4] ([fdo#108569])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-icl-y/igt@i915_selftest@live_execlists.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4073/fi-icl-y/igt@i915_selftest@live_execlists.html
+
+  * igt@i915_selftest@live_gt_heartbeat:
+    - fi-apl-guc:         [PASS][5] -> [DMESG-FAIL][6] ([fdo#112406])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-apl-guc/igt@i915_selftest@live_gt_heartbeat.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4073/fi-apl-guc/igt@i915_selftest@live_gt_heartbeat.html
+
+  * igt@i915_selftest@live_gtt:
+    - fi-kbl-7500u:       [PASS][7] -> [TIMEOUT][8] ([fdo#112271])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-kbl-7500u/igt@i915_selftest@live_gtt.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4073/fi-kbl-7500u/igt@i915_selftest@live_gtt.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live_blt:
+    - fi-hsw-4770r:       [DMESG-FAIL][9] ([i915#553] / [i915#725]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4073/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+
+  * igt@i915_selftest@live_gem_contexts:
+    - fi-cfl-guc:         [INCOMPLETE][11] ([fdo#106070] / [i915#424]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-cfl-guc/igt@i915_selftest@live_gem_contexts.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4073/fi-cfl-guc/igt@i915_selftest@live_gem_contexts.html
+
+  
+#### Warnings ####
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [FAIL][13] ([fdo#111096] / [i915#323]) -> [FAIL][14] ([fdo#111407])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7857/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4073/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+  [fdo#106070]: https://bugs.freedesktop.org/show_bug.cgi?id=106070
+  [fdo#108569]: https://bugs.freedesktop.org/show_bug.cgi?id=108569
+  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
+  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
+  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
+  [fdo#112406]: https://bugs.freedesktop.org/show_bug.cgi?id=112406
+  [i915#1084]: https://gitlab.freedesktop.org/drm/intel/issues/1084
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
+  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
+  [i915#553]: https://gitlab.freedesktop.org/drm/intel/issues/553
+  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
+  [i915#816]: https://gitlab.freedesktop.org/drm/intel/issues/816
+
+
+Participating hosts (47 -> 34)
+------------------------------
+
+  Additional (1): fi-bwr-2160 
+  Missing    (14): fi-bsw-n3050 fi-hsw-4200u fi-hsw-peppy fi-byt-squawks fi-bsw-cyan fi-ilk-650 fi-snb-2520m fi-gdg-551 fi-cfl-8109u fi-bsw-kefka fi-skl-lmem fi-blb-e6850 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5411 -> IGTPW_4073
+
+  CI-20190529: 20190529
+  CI_DRM_7857: 8ec40a15b9a930df9e445f17c5e01cdb6f80353a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4073: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4073/index.html
+  IGT_5411: 86c6ab8a0b6696bdb2153febd350af7fa02fbb00 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@gem_ctx_create@active
++igt@gem_ctx_create@forked-active
++igt@gem_ctx_create@hog
+-igt@gem_ctx_create@active-blt
+-igt@gem_ctx_create@active-bsd
+-igt@gem_ctx_create@active-bsd1
+-igt@gem_ctx_create@active-bsd2
+-igt@gem_ctx_create@active-default
+-igt@gem_ctx_create@active-render
+-igt@gem_ctx_create@active-vebox
+-igt@gem_ctx_create@forked-active-blt
+-igt@gem_ctx_create@forked-active-bsd
+-igt@gem_ctx_create@forked-active-bsd1
+-igt@gem_ctx_create@forked-active-bsd2
+-igt@gem_ctx_create@forked-active-default
+-igt@gem_ctx_create@forked-active-render
+-igt@gem_ctx_create@forked-active-vebox
+-igt@gem_ctx_create@hog-blt
+-igt@gem_ctx_create@hog-bsd
+-igt@gem_ctx_create@hog-bsd1
+-igt@gem_ctx_create@hog-bsd2
+-igt@gem_ctx_create@hog-render
+-igt@gem_ctx_create@hog-vebox
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4073/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
