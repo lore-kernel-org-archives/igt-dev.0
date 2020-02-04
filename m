@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A8CC86EDB5
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Feb 2020 07:31:23 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-Date: Tue, 4 Feb 2020 07:31:19 +0000
-Message-ID: <c9e18570dd31120f3a2828fb52bce6a5dd6d971f.camel@intel.com>
-References: <20200131092603.24223-1-mika.kahola@intel.com>
- <20200131092603.24223-2-mika.kahola@intel.com>
- <26630e56-0185-94b1-968c-b80d6dda2ccd@gmail.com>
-In-Reply-To: <26630e56-0185-94b1-968c-b80d6dda2ccd@gmail.com>
-Content-Language: en-US
-Content-ID: <79E498FEDD2C654AB57B1EF2B17100B3@intel.com>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7957F6E584
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Feb 2020 08:42:00 +0000 (UTC)
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/1] tests/kms_plane_lowres: Fix CRC
- mismatch
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20200204072122.5968-1-zbigniew.kempczynski@intel.com>
+References: <20200204072122.5968-1-zbigniew.kempczynski@intel.com>
+Message-ID: <158080569744.27392.14619919263736144841@skylake-alporthouse-com>
+Date: Tue, 04 Feb 2020 08:41:37 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_set_tiling_vs_pwrite:
+ disable test on gens without ggtt
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,331 +17,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, 2020-02-03 at 17:06 +0200, Juha-Pekka Heikkila wrote:
-> On 31.1.2020 11.26, Mika Kahola wrote:
-> > Mixing SDR and HDR planes yields to CRC mismatch. The patch
-> > computes the
-> > reference image and CRC with the main plane matching the SDR/HDR
-> > plane type.
-> > 
-> > v2: HDR planes are not defined for gen9 and older (CI)
-> > 
-> > References: https://gitlab.freedesktop.org/drm/intel/issues/899
-> > Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-> 
-> Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
-Pushed. Thanks for the review!
-
--Mika-
-> 
-> > ---
-> >   tests/kms_plane_lowres.c | 142 +++++++++++++++++++++++++---------
-> > -----
-> >   1 file changed, 90 insertions(+), 52 deletions(-)
-> > 
-> > diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-> > index 4c3f5636..012b25e3 100644
-> > --- a/tests/kms_plane_lowres.c
-> > +++ b/tests/kms_plane_lowres.c
-> > @@ -32,11 +32,15 @@
-> >   
-> >   IGT_TEST_DESCRIPTION("Test atomic mode setting with a plane by
-> > switching between high and low resolutions");
-> >   
-> > +#define SDR_PLANE_BASE 3
-> >   #define SIZE 64
-> >   
-> >   typedef struct {
-> >   	int drm_fd;
-> >   	igt_display_t display;
-> > +	uint32_t devid;
-> > +	igt_output_t *output;
-> > +	enum pipe pipe;
-> >   	struct igt_fb fb_primary;
-> >   	struct igt_fb fb_plane[2];
-> >   	struct {
-> > @@ -77,11 +81,44 @@ get_lowres_mode(int drmfd, igt_output_t
-> > *output,
-> >   	return *mode;
-> >   }
-> >   
-> > +static igt_plane_t *first_sdr_plane(igt_output_t *output, uint32_t
-> > devid)
-> > +{
-> > +        int index;
-> > +
-> > +        index = intel_gen(devid) <= 9 ? 0 : SDR_PLANE_BASE;
-> > +
-> > +        return igt_output_get_plane(output, index);
-> > +}
-> > +
-> > +static bool is_sdr_plane(const igt_plane_t *plane, uint32_t devid)
-> > +{
-> > +        if (intel_gen(devid) <= 9)
-> > +                return true;
-> > +
-> > +        return plane->index >= SDR_PLANE_BASE;
-> > +}
-> > +/*
-> > + * Mixing SDR and HDR planes results in a CRC mismatch, so use the
-> > first
-> > + * SDR/HDR plane as the main plane matching the SDR/HDR type of
-> > the sprite
-> > + * plane under test.
-> > + */
-> > +static igt_plane_t *compatible_main_plane(igt_plane_t *plane,
-> > +					  igt_output_t *output,
-> > +					  uint32_t devid)
-> > +{
-> > +        if (is_sdr_plane(plane, devid))
-> > +                return first_sdr_plane(output, devid);
-> > +
-> > +        return igt_output_get_plane_type(output,
-> > DRM_PLANE_TYPE_PRIMARY);
-> > +}
-> > +
-> >   static bool setup_plane(data_t *data, igt_plane_t *plane)
-> >   {
-> >   	struct igt_fb *fb;
-> >   
-> > -	if (plane->type == DRM_PLANE_TYPE_PRIMARY)
-> > +	if (plane->type == DRM_PLANE_TYPE_PRIMARY ||
-> > +	    plane == first_sdr_plane(data->output, data->devid) ||
-> > +		plane->type == DRM_PLANE_TYPE_CURSOR)
-> >   		return false;
-> >   
-> >   	fb = &data->fb_plane[0];
-> > @@ -125,25 +162,20 @@ static void create_ref_fb(data_t *data,
-> > uint64_t modifier,
-> >   }
-> >   
-> >   static unsigned
-> > -test_planes_on_pipe_with_output(data_t *data, enum pipe pipe,
-> > -				igt_output_t *output, uint64_t
-> > modifier)
-> > +test_planes_on_pipe_with_output(data_t *data, igt_plane_t *plane,
-> > uint64_t modifier)
-> >   {
-> > -	igt_pipe_t *pipe_obj = &data->display.pipes[pipe];
-> >   	const drmModeModeInfo *mode;
-> >   	drmModeModeInfo mode_lowres;
-> >   	igt_pipe_crc_t *pipe_crc;
-> >   	unsigned tested = 0;
-> > -	igt_plane_t *plane;
-> >   	igt_plane_t *primary;
-> > +	igt_crc_t crc_lowres, crc_hires1, crc_hires2;
-> >   
-> > -	primary = igt_pipe_get_plane_type(pipe_obj,
-> > DRM_PLANE_TYPE_PRIMARY);
-> > -
-> > -	igt_info("Testing connector %s using pipe %s\n",
-> > -		 igt_output_name(output), kmstest_pipe_name(pipe));
-> > +	igt_output_set_pipe(data->output, data->pipe);
-> >   
-> > -	igt_output_set_pipe(output, pipe);
-> > -	mode = igt_output_get_mode(output);
-> > -	mode_lowres = get_lowres_mode(data->drm_fd, output, mode);
-> > +	primary = compatible_main_plane(plane, data->output, data-
-> > >devid);
-> > +	mode = igt_output_get_mode(data->output);
-> > +	mode_lowres = get_lowres_mode(data->drm_fd, data->output,
-> > mode);
-> >   
-> >   	igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode-
-> > >vdisplay,
-> >   				    DRM_FORMAT_XRGB8888, modifier, 0.0,
-> > 0.0, 1.0,
-> > @@ -164,15 +196,15 @@ test_planes_on_pipe_with_output(data_t *data,
-> > enum pipe pipe,
-> >   	create_ref_fb(data, modifier, mode, &data->ref_hires.fb);
-> >   	create_ref_fb(data, modifier, &mode_lowres, &data-
-> > >ref_lowres.fb);
-> >   
-> > -	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe,
-> > +	pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
-> >   				    INTEL_PIPE_CRC_SOURCE_AUTO);
-> >   
-> > -	igt_output_override_mode(output, &mode_lowres);
-> > +	igt_output_override_mode(data->output, &mode_lowres);
-> >   	igt_plane_set_fb(primary, &data->ref_lowres.fb);
-> >   	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> >   	igt_pipe_crc_collect_crc(pipe_crc, &data->ref_lowres.crc);
-> >   
-> > -	igt_output_override_mode(output, NULL);
-> > +	igt_output_override_mode(data->output, NULL);
-> >   	igt_plane_set_fb(primary, &data->ref_hires.fb);
-> >   	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> >   	igt_pipe_crc_collect_crc(pipe_crc, &data->ref_hires.crc);
-> > @@ -181,40 +213,36 @@ test_planes_on_pipe_with_output(data_t *data,
-> > enum pipe pipe,
-> >   	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> >   
-> >   	/* yellow sprite plane in lower left corner */
-> > -	for_each_plane_on_pipe(&data->display, pipe, plane) {
-> > -		igt_crc_t crc_lowres, crc_hires1, crc_hires2;
-> > -
-> > -		if (!setup_plane(data, plane))
-> > -			continue;
-> > +	if (!setup_plane(data, plane))
-> > +		return 0;
-> >   
-> > -		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> > +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> >   
-> > -		igt_pipe_crc_collect_crc(pipe_crc, &crc_hires1);
-> > +	igt_pipe_crc_collect_crc(pipe_crc, &crc_hires1);
-> >   
-> > -		/* switch to lower resolution */
-> > -		igt_output_override_mode(output, &mode_lowres);
-> > -		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> > +	/* switch to lower resolution */
-> > +	igt_output_override_mode(data->output, &mode_lowres);
-> > +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> >   
-> > -		igt_pipe_crc_collect_crc(pipe_crc, &crc_lowres);
-> > +	igt_pipe_crc_collect_crc(pipe_crc, &crc_lowres);
-> >   
-> > -		/* switch back to higher resolution */
-> > -		igt_output_override_mode(output, NULL);
-> > -		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> > +	/* switch back to higher resolution */
-> > +	igt_output_override_mode(data->output, NULL);
-> > +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> >   
-> > -		igt_pipe_crc_collect_crc(pipe_crc, &crc_hires2);
-> > +	igt_pipe_crc_collect_crc(pipe_crc, &crc_hires2);
-> >   
-> > -		igt_assert_crc_equal(&data->ref_hires.crc,
-> > &crc_hires1);
-> > -		igt_assert_crc_equal(&data->ref_hires.crc,
-> > &crc_hires2);
-> > -		igt_assert_crc_equal(&data->ref_lowres.crc,
-> > &crc_lowres);
-> > +	igt_assert_crc_equal(&data->ref_hires.crc, &crc_hires1);
-> > +	igt_assert_crc_equal(&data->ref_hires.crc, &crc_hires2);
-> > +	igt_assert_crc_equal(&data->ref_lowres.crc, &crc_lowres);
-> >   
-> > -		igt_plane_set_fb(plane, NULL);
-> > -		tested++;
-> > -	}
-> > +	igt_plane_set_fb(plane, NULL);
-> > +	tested++;
-> >   
-> >   	igt_pipe_crc_free(pipe_crc);
-> >   
-> >   	igt_plane_set_fb(primary, NULL);
-> > -	igt_output_set_pipe(output, PIPE_NONE);
-> > +	igt_output_set_pipe(data->output, PIPE_NONE);
-> >   
-> >   	igt_remove_fb(data->drm_fd, &data->fb_plane[1]);
-> >   	igt_remove_fb(data->drm_fd, &data->fb_plane[0]);
-> > @@ -226,21 +254,32 @@ test_planes_on_pipe_with_output(data_t *data,
-> > enum pipe pipe,
-> >   }
-> >   
-> >   static void
-> > -test_planes_on_pipe(data_t *data, enum pipe pipe, uint64_t
-> > modifier)
-> > +test_planes_on_pipe(data_t *data, uint64_t modifier)
-> >   {
-> > -	igt_output_t *output;
-> > +	igt_plane_t *plane;
-> >   	unsigned tested = 0;
-> >   
-> > -	igt_skip_on(pipe >= data->display.n_pipes);
-> > -	igt_display_require_output_on_pipe(&data->display, pipe);
-> > +	igt_skip_on(data->pipe >= data->display.n_pipes);
-> > +	igt_display_require_output_on_pipe(&data->display, data->pipe);
-> >   	igt_skip_on(!igt_display_has_format_mod(&data->display,
-> >   						DRM_FORMAT_XRGB8888,
-> > modifier));
-> >   
-> > -	for_each_valid_output_on_pipe(&data->display, pipe, output)
-> > -		tested += test_planes_on_pipe_with_output(data, pipe,
-> > output,
-> > -							  modifier);
-> > +	data->output = igt_get_single_output_for_pipe(&data->display,
-> > data->pipe);
-> > +	igt_require(data->output);
-> > +
-> > +	igt_info("Testing connector %s using pipe %s\n",
-> > +		 igt_output_name(data->output), kmstest_pipe_name(data-
-> > >pipe));
-> > +
-> > +	for_each_plane_on_pipe(&data->display, data->pipe, plane) {
-> > +		data->output = igt_get_single_output_for_pipe(&data-
-> > >display, data->pipe);
-> > +		igt_require(data->output);
-> > +
-> > +		tested += test_planes_on_pipe_with_output(data, plane,
-> > modifier);
-> > +	}
-> >   
-> >   	igt_assert(tested > 0);
-> > +	igt_output_set_pipe(data->output, PIPE_NONE);
-> > +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> >   }
-> >   
-> >   igt_main
-> > @@ -250,6 +289,8 @@ igt_main
-> >   
-> >   	igt_fixture {
-> >   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> > +		data.devid = is_i915_device(data.drm_fd) ?
-> > +			intel_get_drm_devid(data.drm_fd) : 0;
-> >   
-> >   		kmstest_set_vt_graphics_mode();
-> >   
-> > @@ -259,21 +300,18 @@ igt_main
-> >   	}
-> >   
-> >   	for_each_pipe_static(pipe) {
-> > +		data.pipe = pipe;
-> >   		igt_subtest_f("pipe-%s-tiling-none",
-> > kmstest_pipe_name(pipe))
-> > -			test_planes_on_pipe(&data, pipe,
-> > -					    LOCAL_DRM_FORMAT_MOD_NONE);
-> > +			test_planes_on_pipe(&data,
-> > LOCAL_DRM_FORMAT_MOD_NONE);
-> >   
-> >   		igt_subtest_f("pipe-%s-tiling-x",
-> > kmstest_pipe_name(pipe))
-> > -			test_planes_on_pipe(&data, pipe,
-> > -					    LOCAL_I915_FORMAT_MOD_X_TIL
-> > ED);
-> > +			test_planes_on_pipe(&data,
-> > LOCAL_I915_FORMAT_MOD_X_TILED);
-> >   
-> >   		igt_subtest_f("pipe-%s-tiling-y",
-> > kmstest_pipe_name(pipe))
-> > -			test_planes_on_pipe(&data, pipe,
-> > -					    LOCAL_I915_FORMAT_MOD_Y_TIL
-> > ED);
-> > +			test_planes_on_pipe(&data,
-> > LOCAL_I915_FORMAT_MOD_Y_TILED);
-> >   
-> >   		igt_subtest_f("pipe-%s-tiling-yf",
-> > kmstest_pipe_name(pipe))
-> > -			test_planes_on_pipe(&data, pipe,
-> > -					    LOCAL_I915_FORMAT_MOD_Yf_TI
-> > LED);
-> > +			test_planes_on_pipe(&data,
-> > LOCAL_I915_FORMAT_MOD_Yf_TILED);
-> >   	}
-> >   
-> >   	igt_fixture {
-> > 
-> 
-> 
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMDItMDQgMDc6MjE6MjIpCj4gVGVz
+dCByZXF1aXJlcyBmZW5jZXMgdG8gbWFwIHZpYSBnZ3R0IHNvIHdlIGNhbiBza2lwIGl0IG9uIG5l
+d2VyIGdlbnMuCj4gCj4gU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymln
+bmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Cj4gQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hy
+aXMtd2lsc29uLmNvLnVrPgo+IC0tLQo+ICB0ZXN0cy9pOTE1L2dlbV9zZXRfdGlsaW5nX3ZzX3B3
+cml0ZS5jIHwgMSArCj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQo+IAo+IGRpZmYg
+LS1naXQgYS90ZXN0cy9pOTE1L2dlbV9zZXRfdGlsaW5nX3ZzX3B3cml0ZS5jIGIvdGVzdHMvaTkx
+NS9nZW1fc2V0X3RpbGluZ192c19wd3JpdGUuYwo+IGluZGV4IDI1YTI4MTkxLi5iMzdhMmVlNCAx
+MDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2dlbV9zZXRfdGlsaW5nX3ZzX3B3cml0ZS5jCj4gKysr
+IGIvdGVzdHMvaTkxNS9nZW1fc2V0X3RpbGluZ192c19wd3JpdGUuYwo+IEBAIC01NSw2ICs1NSw3
+IEBAIGlndF9zaW1wbGVfbWFpbgo+ICAgICAgICAgdWludDMyX3QgaGFuZGxlOwo+ICAKPiAgICAg
+ICAgIGZkID0gZHJtX29wZW5fZHJpdmVyKERSSVZFUl9JTlRFTCk7Cj4gKyAgICAgICBnZW1fcmVx
+dWlyZV9tYXBwYWJsZV9nZ3R0KGZkKTsKCkl0IGRvZXNuJ3QgcmVxdWlyZSB0aGUgZ3R0IHBlciBz
+ZS4gSXQncyB1c2Ugb2YgdGhlIGd0dCBpcyBoaWdobHkKcXVlc3Rpb25hYmxlIGFuZCBkb2Vzbid0
+IHF1aXRlIGRvIHdoYXQgaXQgb25jZSBkaWQgYW55d2F5LgotQ2hyaXMKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0
+LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
