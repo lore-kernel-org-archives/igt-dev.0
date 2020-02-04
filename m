@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C3FE6E0DF
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Feb 2020 12:53:26 +0000 (UTC)
+References: <20200204114837.887623-1-chris@chris-wilson.co.uk>
+From: Martin Peres <martin.peres@linux.intel.com>
+Message-ID: <e86bbe9a-a638-3fa4-9cb6-4eb1ba7f73d2@linux.intel.com>
+Date: Tue, 4 Feb 2020 14:53:21 +0200
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 04 Feb 2020 12:36:37 -0000
-Message-ID: <158081979797.25089.4309500356789727784@emeril.freedesktop.org>
-References: <20200130151229.984-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20200130151229.984-1-ville.syrjala@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2Cv2=2C1/3=5D_lib/vec=3A_Add_igt=5Fvec_?=
- =?utf-8?b?KHJldjMp?=
+In-Reply-To: <20200204114837.887623-1-chris@chris-wilson.co.uk>
+Content-Language: en-PH
+Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci: Delegate exhaustive
+ fault-injection to the idle runs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,126 +18,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
+Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On 04/02/2020 13:48, Chris Wilson wrote:
+> i915_module_reload/fault-injection is valuable for its exhaustive trawl
+> through (hopefully) every path that hits i915_probe_error, unfortunately
+> such thoroughness comes at a cost. On kbl-guc, it takes almost 3minutes,
+> and on tgl-y takes over 4 minutes, which is unacceptable for BAT, so leave
+> it to the shards and idle runs to catch unusual errors on module load.
+> 
+> v2: remove blacklisting to allow module-reload in shards.
+> 
+> Tomi prefers not to have to manually create a runlist for the idle-runs,
+> so let's take a risk by allowing the module-reload within the shards.
+> 
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Martin Peres <martin.peres@linux.intel.com>
+> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>
 
-Series: series starting with [i-g-t,v2,1/3] lib/vec: Add igt_vec (rev3)
-URL   : https://patchwork.freedesktop.org/series/72778/
-State : success
+I think this is the right call! Thanks for doing it :)
 
-== Summary ==
+Acked-by: Martin Peres <martin.peres@linux.intel.com>
 
-CI Bug Log - changes from CI_DRM_7863 -> IGTPW_4082
-====================================================
+Martin
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4082/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4082 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-hsw-peppy:       [PASS][1] -> [INCOMPLETE][2] ([i915#694] / [i915#816])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7863/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4082/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-    - fi-byt-j1900:       [PASS][3] -> [INCOMPLETE][4] ([i915#45])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7863/fi-byt-j1900/igt@gem_close_race@basic-threads.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4082/fi-byt-j1900/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-cfl-guc:         [PASS][5] -> [INCOMPLETE][6] ([fdo#106070] / [i915#424])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7863/fi-cfl-guc/igt@i915_selftest@live_gem_contexts.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4082/fi-cfl-guc/igt@i915_selftest@live_gem_contexts.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-7500u:       [PASS][7] -> [FAIL][8] ([fdo#111407])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7863/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4082/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  * igt@prime_self_import@basic-llseek-size:
-    - fi-tgl-y:           [PASS][9] -> [DMESG-WARN][10] ([CI#94] / [i915#402]) +1 similar issue
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7863/fi-tgl-y/igt@prime_self_import@basic-llseek-size.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4082/fi-tgl-y/igt@prime_self_import@basic-llseek-size.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-byt-n2820:       [INCOMPLETE][11] ([i915#45]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7863/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4082/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-skl-6770hq:      [FAIL][13] ([i915#178]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7863/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4082/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live_hangcheck:
-    - {fi-ehl-1}:         [INCOMPLETE][15] ([i915#937]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7863/fi-ehl-1/igt@i915_selftest@live_hangcheck.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4082/fi-ehl-1/igt@i915_selftest@live_hangcheck.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - fi-tgl-y:           [DMESG-WARN][17] ([CI#94] / [i915#402]) -> [PASS][18] +1 similar issue
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7863/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4082/fi-tgl-y/igt@prime_vgem@basic-fence-flip.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
-  [fdo#106070]: https://bugs.freedesktop.org/show_bug.cgi?id=106070
-  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
-  [i915#178]: https://gitlab.freedesktop.org/drm/intel/issues/178
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
-  [i915#45]: https://gitlab.freedesktop.org/drm/intel/issues/45
-  [i915#694]: https://gitlab.freedesktop.org/drm/intel/issues/694
-  [i915#816]: https://gitlab.freedesktop.org/drm/intel/issues/816
-  [i915#937]: https://gitlab.freedesktop.org/drm/intel/issues/937
-
-
-Participating hosts (53 -> 47)
-------------------------------
-
-  Missing    (6): fi-ilk-m540 fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5417 -> IGTPW_4082
-
-  CI-20190529: 20190529
-  CI_DRM_7863: 8ae46cc3902da96a0744a7237dce4b17747438b4 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4082: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4082/index.html
-  IGT_5417: 33cc93c8ba5daa0b7498f297a4f626844d895d06 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4082/index.html
+> ---
+>  tests/intel-ci/blacklist.txt          | 2 +-
+>  tests/intel-ci/fast-feedback.testlist | 2 --
+>  2 files changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+> index 723f24457..181c8cd5f 100644
+> --- a/tests/intel-ci/blacklist.txt
+> +++ b/tests/intel-ci/blacklist.txt
+> @@ -12,7 +12,7 @@ igt@drm_mm(@.*)?
+>  # self-contained tests, leading to random
+>  # failures in tests run afterwards.
+>  ###############################################
+> -igt@i915_module_load(@.*)?
+> +#igt@i915_module_load(@.*)? # danger, danger; hope for taints!
+>  igt@i915_pm_rpm@module-reload
+>  igt@i915_pm_rpm@gem-execbuf-stress-extra-wait
+>  ###############################################
+> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+> index 40d273c1d..467e11267 100644
+> --- a/tests/intel-ci/fast-feedback.testlist
+> +++ b/tests/intel-ci/fast-feedback.testlist
+> @@ -172,6 +172,4 @@ igt@vgem_basic@sysfs
+>  
+>  igt@vgem_basic@unload
+>  igt@i915_module_load@reload
+> -igt@i915_module_load@reload-no-display
+> -igt@i915_module_load@reload-with-fault-injection
+>  igt@i915_pm_rpm@module-reload
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
