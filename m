@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED4376EE23
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Feb 2020 09:52:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 11C306EE25
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Feb 2020 09:53:08 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
-Date: Tue,  4 Feb 2020 15:12:13 +0530
-Message-Id: <20200204094219.22544-2-swati2.sharma@intel.com>
+Date: Tue,  4 Feb 2020 15:12:17 +0530
+Message-Id: <20200204094219.22544-6-swati2.sharma@intel.com>
 In-Reply-To: <20200204094219.22544-1-swati2.sharma@intel.com>
 References: <20200204094219.22544-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 1/7] headers: Bump drm uapi headers
+Subject: [igt-dev] [PATCH 5/7] tests/kms_hdr: Add function to check HDR panel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,214 +21,131 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: petri.latvala@intel.com
+Cc: Kunal Joshi <kunal1.joshi@intel.com>, petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+EDID of connected panel needs to be parsed to detect whether
+panel can drive hdr or not. Added new function is_panel_hdr(),
+to know about hdr capabilities of panel. If panel supports hdr
+then only tests will get executed else skipped.
 
-Updating them to the latest version from drm-next for HDR static
-metadata uapi structures:
+v2: continue instead of break [Kunal]
 
- commit a09db883e5d9 ("drm: Fix docbook warnings in hdr metadata
- helper structures")
-
-v2: Bumped to latest drm-next headers
-
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Suggested-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- include/drm-uapi/drm_mode.h | 121 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 119 insertions(+), 2 deletions(-)
+ tests/kms_hdr.c | 87 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 87 insertions(+)
 
-diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-index a439c2e6..5ab331e5 100644
---- a/include/drm-uapi/drm_mode.h
-+++ b/include/drm-uapi/drm_mode.h
-@@ -33,7 +33,15 @@
- extern "C" {
- #endif
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index ce6575c5..3441c311 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -24,9 +24,22 @@
+ #include <fcntl.h>
+ #include <termios.h>
+ #include <unistd.h>
++#include "igt_edid.h"
  
--#define DRM_DISPLAY_INFO_LEN	32
-+/**
-+ * DOC: overview
-+ *
-+ * DRM exposes many UAPI and structure definition to have a consistent
-+ * and standardized interface with user.
-+ * Userspace can refer to these structure definitions and UAPI formats
-+ * to communicate to driver
-+ */
+ IGT_TEST_DESCRIPTION("Test HDR metadata interfaces and bpc switch");
+ 
++/* HDR EDID parsing. */
++#define CTA_EXTENSION_VERSION		0x03
++#define HDR_STATIC_METADATA_BLOCK       0x06
++#define USE_EXTENDED_TAG		0x07
 +
- #define DRM_CONNECTOR_NAME_LEN	32
- #define DRM_DISPLAY_MODE_LEN	32
- #define DRM_PROP_NAME_LEN	32
-@@ -622,7 +630,8 @@ struct drm_color_ctm {
- 
- struct drm_color_lut {
- 	/*
--	 * Data is U0.16 fixed point format.
-+	 * Values are mapped linearly to 0.0 - 1.0 range, with 0x0 == 0.0 and
-+	 * 0xffff == 1.0.
- 	 */
- 	__u16 red;
- 	__u16 green;
-@@ -630,6 +639,92 @@ struct drm_color_lut {
- 	__u16 reserved;
- };
- 
-+/**
-+ * struct hdr_metadata_infoframe - HDR Metadata Infoframe Data.
-+ *
-+ * HDR Metadata Infoframe as per CTA 861.G spec. This is expected
-+ * to match exactly with the spec.
-+ *
-+ * Userspace is expected to pass the metadata information as per
-+ * the format described in this structure.
-+ */
-+struct hdr_metadata_infoframe {
-+	/**
-+	 * @eotf: Electro-Optical Transfer Function (EOTF)
-+	 * used in the stream.
-+	 */
-+	__u8 eotf;
-+	/**
-+	 * @metadata_type: Static_Metadata_Descriptor_ID.
-+	 */
-+	__u8 metadata_type;
-+	/**
-+	 * @display_primaries: Color Primaries of the Data.
-+	 * These are coded as unsigned 16-bit values in units of
-+	 * 0.00002, where 0x0000 represents zero and 0xC350
-+	 * represents 1.0000.
-+	 * @display_primaries.x: X cordinate of color primary.
-+	 * @display_primaries.y: Y cordinate of color primary.
-+	 */
-+	struct {
-+		__u16 x, y;
-+		} display_primaries[3];
-+	/**
-+	 * @white_point: White Point of Colorspace Data.
-+	 * These are coded as unsigned 16-bit values in units of
-+	 * 0.00002, where 0x0000 represents zero and 0xC350
-+	 * represents 1.0000.
-+	 * @white_point.x: X cordinate of whitepoint of color primary.
-+	 * @white_point.y: Y cordinate of whitepoint of color primary.
-+	 */
-+	struct {
-+		__u16 x, y;
-+		} white_point;
-+	/**
-+	 * @max_display_mastering_luminance: Max Mastering Display Luminance.
-+	 * This value is coded as an unsigned 16-bit value in units of 1 cd/m2,
-+	 * where 0x0001 represents 1 cd/m2 and 0xFFFF represents 65535 cd/m2.
-+	 */
-+	__u16 max_display_mastering_luminance;
-+	/**
-+	 * @min_display_mastering_luminance: Min Mastering Display Luminance.
-+	 * This value is coded as an unsigned 16-bit value in units of
-+	 * 0.0001 cd/m2, where 0x0001 represents 0.0001 cd/m2 and 0xFFFF
-+	 * represents 6.5535 cd/m2.
-+	 */
-+	__u16 min_display_mastering_luminance;
-+	/**
-+	 * @max_cll: Max Content Light Level.
-+	 * This value is coded as an unsigned 16-bit value in units of 1 cd/m2,
-+	 * where 0x0001 represents 1 cd/m2 and 0xFFFF represents 65535 cd/m2.
-+	 */
-+	__u16 max_cll;
-+	/**
-+	 * @max_fall: Max Frame Average Light Level.
-+	 * This value is coded as an unsigned 16-bit value in units of 1 cd/m2,
-+	 * where 0x0001 represents 1 cd/m2 and 0xFFFF represents 65535 cd/m2.
-+	 */
-+	__u16 max_fall;
++/* DRM HDR definitions. Not in the UAPI header, unfortunately. */
++enum hdmi_eotf {
++	HDMI_EOTF_TRADITIONAL_GAMMA_SDR,
++	HDMI_EOTF_TRADITIONAL_GAMMA_HDR,
++	HDMI_EOTF_SMPTE_ST2084,
 +};
 +
-+/**
-+ * struct hdr_output_metadata - HDR output metadata
-+ *
-+ * Metadata Information to be passed from userspace
-+ */
-+struct hdr_output_metadata {
-+	/**
-+	 * @metadata_type: Static_Metadata_Descriptor_ID.
+ /* Test flags. */
+ enum {
+ 	TEST_NONE = 1 << 0,
+@@ -270,6 +283,80 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
+ 	igt_require_f(valid_tests, "No connector found with MAX BPC connector property\n");
+ }
+ 
++static bool cta_block(const char *edid_ext)
++{
++	/*
++	 * Byte 1: 0x07 indicates Extended Tag
++	 * Byte 2: 0x06 indicates HDMI Static Metadata Block
++	 * Byte 3: bits 0 to 5 identify EOTF functions supported by sink
++	 *	       where ET_0: Traditional Gamma - SDR Luminance Range
++	 *	             ET_1: Traditional Gamma - HDR Luminance Range
++	 *	             ET_2: SMPTE ST 2084
++	 *	             ET_3: Hybrid Log-Gamma (HLG)
++	 *	             ET_4 to ET_5: Reserved for future use
 +	 */
-+	__u32 metadata_type;
-+	/**
-+	 * @hdmi_metadata_type1: HDR Metadata Infoframe.
-+	 */
-+	union {
-+		struct hdr_metadata_infoframe hdmi_metadata_type1;
-+	};
-+};
 +
- #define DRM_MODE_PAGE_FLIP_EVENT 0x01
- #define DRM_MODE_PAGE_FLIP_ASYNC 0x02
- #define DRM_MODE_PAGE_FLIP_TARGET_ABSOLUTE 0x4
-@@ -803,6 +898,10 @@ struct drm_format_modifier {
- };
- 
- /**
-+ * struct drm_mode_create_blob - Create New block property
-+ * @data: Pointer to data to copy.
-+ * @length: Length of data to copy.
-+ * @blob_id: new property ID.
-  * Create a new 'blob' data property, copying length bytes from data pointer,
-  * and returning new blob ID.
-  */
-@@ -816,6 +915,8 @@ struct drm_mode_create_blob {
- };
- 
- /**
-+ * struct drm_mode_destroy_blob - Destroy user blob
-+ * @blob_id: blob_id to destroy
-  * Destroy a user-created blob property.
-  */
- struct drm_mode_destroy_blob {
-@@ -823,6 +924,12 @@ struct drm_mode_destroy_blob {
- };
- 
- /**
-+ * struct drm_mode_create_lease - Create lease
-+ * @object_ids: Pointer to array of object ids.
-+ * @object_count: Number of object ids.
-+ * @flags: flags for new FD.
-+ * @lessee_id: unique identifier for lessee.
-+ * @fd: file descriptor to new drm_master file.
-  * Lease mode resources, creating another drm_master.
-  */
- struct drm_mode_create_lease {
-@@ -840,6 +947,10 @@ struct drm_mode_create_lease {
- };
- 
- /**
-+ * struct drm_mode_list_lessees - List lessees
-+ * @count_lessees: Number of lessees.
-+ * @pad: pad.
-+ * @lessees_ptr: Pointer to lessess.
-  * List lesses from a drm_master
-  */
- struct drm_mode_list_lessees {
-@@ -860,6 +971,10 @@ struct drm_mode_list_lessees {
- };
- 
- /**
-+ * struct drm_mode_get_lease - Get Lease
-+ * @count_objects: Number of leased objects.
-+ * @pad: pad.
-+ * @objects_ptr: Pointer to objects.
-  * Get leased objects
-  */
- struct drm_mode_get_lease {
-@@ -880,6 +995,8 @@ struct drm_mode_get_lease {
- };
- 
- /**
-+ * struct drm_mode_revoke_lease - Revoke lease
-+ * @lessee_id: Unique ID of lessee.
-  * Revoke lease
-  */
- struct drm_mode_revoke_lease {
++	if ((((edid_ext[0] & 0xe0) >> 5 == USE_EXTENDED_TAG) &&
++	      (edid_ext[1] == HDR_STATIC_METADATA_BLOCK)) &&
++	     ((edid_ext[2] & HDMI_EOTF_TRADITIONAL_GAMMA_HDR) ||
++	      (edid_ext[2] & HDMI_EOTF_SMPTE_ST2084)))
++			return true;
++
++	return false;
++}
++
++/* Returns true if panel supports HDR. */
++static bool is_panel_hdr(data_t *data, igt_output_t *output)
++{
++	bool ok;
++	int i, j, offset;
++	uint64_t edid_blob_id;
++	drmModePropertyBlobRes *edid_blob;
++	const struct edid_ext *edid_ext;
++	const struct edid *edid;
++	const struct edid_cea *edid_cea;
++	const char *cea_data;
++	bool ret = false;
++
++	ok = kmstest_get_property(data->fd, output->id,
++			DRM_MODE_OBJECT_CONNECTOR, "EDID",
++			NULL, &edid_blob_id, NULL);
++
++	if (!ok || !edid_blob_id)
++		return ret;
++
++	edid_blob = drmModeGetPropertyBlob(data->fd, edid_blob_id);
++	igt_assert(edid_blob);
++
++	edid = (const struct edid *) edid_blob->data;
++	igt_assert(edid);
++
++	drmModeFreePropertyBlob(edid_blob);
++
++	for (i = 0; i < edid->extensions_len; i++) {
++		edid_ext = &edid->extensions[i];
++		edid_cea = &edid_ext->data.cea;
++
++		/* HDR not defined in CTA Extension Version < 3. */
++		if ((edid_ext->tag != EDID_EXT_CEA) ||
++		    (edid_cea->revision != CTA_EXTENSION_VERSION))
++				continue;
++		else {
++			offset = edid_cea->dtd_start;
++			cea_data = edid_cea->data;
++
++			for (j = 0; j < offset; j += (cea_data[j] & 0x1f) + 1) {
++				ret = cta_block(cea_data + j);
++
++				if (ret)
++					break;
++			}
++		}
++	}
++
++	return ret;
++}
++
+ igt_main
+ {
+ 	data_t data = { 0 };
 -- 
 2.24.1
 
