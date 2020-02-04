@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 17FF26EE24
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Feb 2020 09:53:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B78D6EE24
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Feb 2020 09:53:14 +0000 (UTC)
 From: Swati Sharma <swati2.sharma@intel.com>
-Date: Tue,  4 Feb 2020 15:12:18 +0530
-Message-Id: <20200204094219.22544-7-swati2.sharma@intel.com>
+Date: Tue,  4 Feb 2020 15:12:19 +0530
+Message-Id: <20200204094219.22544-8-swati2.sharma@intel.com>
 In-Reply-To: <20200204094219.22544-1-swati2.sharma@intel.com>
 References: <20200204094219.22544-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 6/7] tests/kms_hdr: Add static toggle SDR->HDR
- mode subtests
+Subject: [igt-dev] [PATCH 7/7] tests/kms_hdr: Add subtest to swap static HDR
+ metadata
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,101 +27,70 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-Add subtests to toggle between SDR to HDR mode with suspend
-and dpms scenarios. Tests are made compatible for both amd
-and intel drivers.
+Add subtest to enable fast static metadata switches.
 
-v2: Added additional check to validate whether panel is
-    HDR or not. If it's a non-HDR panel, test will skip [Uma]
+v2: Allow modeset for intel driver [Uma]
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-Acked-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 ---
- tests/kms_hdr.c | 162 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 162 insertions(+)
+ tests/kms_hdr.c | 120 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 120 insertions(+)
 
 diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index 3441c311..39d31cc2 100644
+index 39d31cc2..677936c6 100644
 --- a/tests/kms_hdr.c
 +++ b/tests/kms_hdr.c
-@@ -34,6 +34,10 @@ IGT_TEST_DESCRIPTION("Test HDR metadata interfaces and bpc switch");
- #define USE_EXTENDED_TAG		0x07
+@@ -49,6 +49,7 @@ enum {
+ 	TEST_NONE = 1 << 0,
+ 	TEST_DPMS = 1 << 1,
+ 	TEST_SUSPEND = 1 << 2,
++	TEST_SWAP = 1 << 3,
+ };
  
- /* DRM HDR definitions. Not in the UAPI header, unfortunately. */
-+enum hdmi_metadata_type {
-+	HDMI_STATIC_METADATA_TYPE1 = 1,
-+};
-+
- enum hdmi_eotf {
- 	HDMI_EOTF_TRADITIONAL_GAMMA_SDR,
- 	HDMI_EOTF_TRADITIONAL_GAMMA_HDR,
-@@ -357,6 +361,157 @@ static bool is_panel_hdr(data_t *data, igt_output_t *output)
- 	return ret;
+ /* BPC connector state. */
+@@ -478,6 +479,120 @@ static void test_static_toggle(data_t *data, igt_output_t *output,
+ 	}
  }
  
-+/* Sets the HDR output metadata prop. */
-+static void set_hdr_output_metadata(data_t *data,
-+				    struct hdr_output_metadata const *meta)
-+{
-+	igt_output_replace_prop_blob(data->output,
-+				     IGT_CONNECTOR_HDR_OUTPUT_METADATA, meta,
-+				     meta ? sizeof(*meta) : 0);
-+}
-+
-+/* Converts a double to 861-G spec FP format. */
-+static uint16_t calc_hdr_float(double val)
-+{
-+	return (uint16_t)(val * 50000.0);
-+}
-+
-+/* Fills some test values for ST2048 HDR output metadata.
-+ *
-+ * Note: there isn't really a standard for what the metadata is supposed
-+ * to do on the display side of things. The display is free to ignore it
-+ * and clip the output, use it to help tonemap to the content range,
-+ * or do anything they want, really.
-+ */
-+static void fill_hdr_output_metadata_st2048(struct hdr_output_metadata *meta)
++/* Fills some test values for HDR metadata targeting SDR. */
++static void fill_hdr_output_metadata_sdr(struct hdr_output_metadata *meta)
 +{
 +	memset(meta, 0, sizeof(*meta));
 +
 +	meta->metadata_type = HDMI_STATIC_METADATA_TYPE1;
-+	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_SMPTE_ST2084;
++	meta->hdmi_metadata_type1.eotf = HDMI_EOTF_TRADITIONAL_GAMMA_SDR;
 +
-+	/* Rec. 2020 */
++	/* Rec. 709 */
 +	meta->hdmi_metadata_type1.display_primaries[0].x =
-+		calc_hdr_float(0.708); /* Red */
++		calc_hdr_float(0.640); /* Red */
 +	meta->hdmi_metadata_type1.display_primaries[0].y =
-+		calc_hdr_float(0.292);
++		calc_hdr_float(0.330);
 +	meta->hdmi_metadata_type1.display_primaries[1].x =
-+		calc_hdr_float(0.170); /* Green */
++		calc_hdr_float(0.300); /* Green */
 +	meta->hdmi_metadata_type1.display_primaries[1].y =
-+		calc_hdr_float(0.797);
++		calc_hdr_float(0.600);
 +	meta->hdmi_metadata_type1.display_primaries[2].x =
-+		calc_hdr_float(0.131); /* Blue */
++		calc_hdr_float(0.150); /* Blue */
 +	meta->hdmi_metadata_type1.display_primaries[2].y =
-+		calc_hdr_float(0.046);
++		calc_hdr_float(0.006);
 +	meta->hdmi_metadata_type1.white_point.x = calc_hdr_float(0.3127);
 +	meta->hdmi_metadata_type1.white_point.y = calc_hdr_float(0.3290);
 +
-+	meta->hdmi_metadata_type1.max_display_mastering_luminance =
-+		1000; /* 1000 nits */
-+	meta->hdmi_metadata_type1.min_display_mastering_luminance =
-+		500;				   /* 0.05 nits */
-+	meta->hdmi_metadata_type1.max_fall = 1000; /* 1000 nits */
-+	meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
++	meta->hdmi_metadata_type1.max_display_mastering_luminance = 0;
++	meta->hdmi_metadata_type1.min_display_mastering_luminance = 0;
++	meta->hdmi_metadata_type1.max_fall = 0;
++	meta->hdmi_metadata_type1.max_cll = 0;
 +}
 +
-+static void test_static_toggle(data_t *data, igt_output_t *output,
-+			       uint32_t flags)
++static void test_static_swap(data_t *data, igt_output_t *output)
 +{
 +	igt_display_t *display = &data->display;
-+	struct hdr_output_metadata hdr;
 +	igt_crc_t ref_crc, new_crc;
 +	enum pipe pipe;
 +	igt_fb_t afb;
 +	int afb_id;
++	struct hdr_output_metadata hdr;
 +
 +	for_each_pipe(display, pipe) {
 +		if (!igt_pipe_connector_valid(pipe, output))
@@ -138,36 +107,57 @@ index 3441c311..39d31cc2 100644
 +
 +		draw_hdr_pattern(&afb);
 +
-+		fill_hdr_output_metadata_st2048(&hdr);
-+
-+		/* Start with no metadata. */
++		/* Start in SDR. */
 +		igt_plane_set_fb(data->primary, &afb);
 +		igt_plane_set_size(data->primary, data->w, data->h);
-+		set_hdr_output_metadata(data, NULL);
 +		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
 +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
 +		if (is_amdgpu_device(data->fd))
 +			assert_output_bpc(data, 8);
 +
-+		/* Apply HDR metadata and 10bpc. We expect a modeset for entering. */
++		/* Enter HDR, a modeset is allowed here. */
++		fill_hdr_output_metadata_st2048(&hdr);
 +		set_hdr_output_metadata(data, &hdr);
 +		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
 +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
 +		if (is_amdgpu_device(data->fd))
 +			assert_output_bpc(data, 10);
 +
-+		/* Verify that the CRC are equal after DPMS or suspend. */
 +		igt_pipe_crc_collect_crc(data->pipe_crc, &ref_crc);
-+		test_cycle_flags(data, flags);
++
++		/* Change the mastering information, no modeset allowed
++		 * for amd driver, whereas a modeset is required for i915
++		 * driver. */
++		hdr.hdmi_metadata_type1.max_display_mastering_luminance = 200;
++		hdr.hdmi_metadata_type1.max_fall = 200;
++		hdr.hdmi_metadata_type1.max_cll = 100;
++
++		set_hdr_output_metadata(data, &hdr);
++		if (is_amdgpu_device(data->fd))
++			igt_display_commit_atomic(display, 0, NULL);
++		else
++			igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++		/* Enter SDR via metadata, no modeset allowed for
++		 * amd driver, whereas a modeset is required for
++		 * i915 driver. */
++		fill_hdr_output_metadata_sdr(&hdr);
++		set_hdr_output_metadata(data, &hdr);
++		if (is_amdgpu_device(data->fd))
++			igt_display_commit_atomic(display, 0, NULL);
++		else
++			igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
 +		igt_pipe_crc_collect_crc(data->pipe_crc, &new_crc);
 +
-+		/* Disable HDR metadata and drop back to 8bpc. We expect a modeset for exiting. */
++		/* Exit SDR and enter 8bpc, cleanup. */
 +		set_hdr_output_metadata(data, NULL);
 +		igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
 +		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
 +		if (is_amdgpu_device(data->fd))
 +			assert_output_bpc(data, 8);
 +
++		/* Verify that the CRC didn't change while cycling metadata. */
 +		igt_assert_crc_equal(&ref_crc, &new_crc);
 +
 +		test_fini(data);
@@ -177,53 +167,24 @@ index 3441c311..39d31cc2 100644
 +	}
 +}
 +
-+/* Returns true if an output supports HDR metadata property. */
-+static bool has_hdr(igt_output_t *output)
-+{
-+	return igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
-+}
-+
-+static void test_hdr(data_t *data, const char *test_name, uint32_t flags)
-+{
-+	igt_output_t *output;
-+	int valid_tests = 0;
-+
-+	for_each_connected_output(&data->display, output) {
-+		/* To test HDR, 10 bpc is required, so we need to
-+		 * set MAX_BPC property to 10bpc prior to setting
-+		 * HDR metadata property. Therefore, checking.
-+		 */
-+		if (!has_max_bpc(output))
-+			continue;
-+
-+		if (!has_hdr(output))
-+			continue;
-+
-+		if (!is_panel_hdr(data, output))
-+			continue;
-+
-+		igt_info("HDR %s test execution on %s\n", test_name, output->name);
-+		if (flags & TEST_NONE || flags & TEST_DPMS || flags & TEST_SUSPEND)
-+			test_static_toggle(data, output, flags);
-+		valid_tests++;
-+	}
-+
-+	igt_require_f(valid_tests, "No connector found with HDR metadata/MAX BPC connector property (or) panel is Non-HDR\n");
-+}
-+
- igt_main
+ /* Returns true if an output supports HDR metadata property. */
+ static bool has_hdr(igt_output_t *output)
  {
- 	data_t data = { 0 };
-@@ -379,6 +534,13 @@ igt_main
- 	igt_describe("Tests bpc switch with suspend");
- 	igt_subtest("bpc-switch-suspend") test_bpc_switch(&data, TEST_SUSPEND);
+@@ -506,6 +621,8 @@ static void test_hdr(data_t *data, const char *test_name, uint32_t flags)
+ 		igt_info("HDR %s test execution on %s\n", test_name, output->name);
+ 		if (flags & TEST_NONE || flags & TEST_DPMS || flags & TEST_SUSPEND)
+ 			test_static_toggle(data, output, flags);
++		if (flags & TEST_SWAP)
++			test_static_swap(data, output);
+ 		valid_tests++;
+ 	}
  
-+	igt_describe("Tests entering and exiting HDR mode");
-+	igt_subtest("static-toggle") test_hdr(&data, "static-toggle", TEST_NONE);
-+	igt_describe("Tests static toggle with dpms");
-+	igt_subtest("static-toggle-dpms") test_hdr(&data, "static-toggle-dpms", TEST_DPMS);
-+	igt_describe("Tests static toggle with suspend");
-+	igt_subtest("static-toggle-suspend") test_hdr(&data, "static-toggle-suspend", TEST_SUSPEND);
+@@ -541,6 +658,9 @@ igt_main
+ 	igt_describe("Tests static toggle with suspend");
+ 	igt_subtest("static-toggle-suspend") test_hdr(&data, "static-toggle-suspend", TEST_SUSPEND);
+ 
++	igt_describe("Tests swapping static HDR metadata");
++	igt_subtest("static-swap") test_hdr(&data, "static-swap", TEST_SWAP);
 +
  	igt_fixture {
  		igt_display_fini(&data.display);
