@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF5D56E916
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Feb 2020 21:53:40 +0000 (UTC)
-From: Antonio Argenziano <antonio.argenziano@intel.com>
-Date: Tue,  4 Feb 2020 13:53:37 -0800
-Message-Id: <20200204215337.7837-1-antonio.argenziano@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC PATCH v2] tests/i915/gem_ctx_sseu: Extend the
- mmapped paramaters test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 04 Feb 2020 23:02:37 -0000
+Message-ID: <158085735782.25088.10579388819258439019@emeril.freedesktop.org>
+References: <20200204215337.7837-1-antonio.argenziano@intel.com>
+In-Reply-To: <20200204215337.7837-1-antonio.argenziano@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
+ =?utf-8?q?ests/i915/gem=5Fctx=5Fsseu=3A_Extend_the_mmapped_paramaters_tes?=
+ =?utf-8?q?t?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,116 +15,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Antonio Argenziano <antonio.argenziano@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The current implementation of the test only maps the arguments in gtt.
-This proposal is to extend the test to use different mappings. This is a
-first step in making this test exhaustive enough to say that the
-interface is robust but, it is meant as a first step improvement. It
-also helps with the lack of mappable aperture skipping the mappings if
-they do not work.
+== Series Details ==
 
-Signed-off-by: Antonio Argenziano <antonio.argenziano@intel.com>
-Cc: Dixit Ashutosh <ashutosh.dixit@intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
----
- tests/i915/gem_ctx_sseu.c | 54 +++++++++++++++++++++++++++++----------
- 1 file changed, 40 insertions(+), 14 deletions(-)
+Series: tests/i915/gem_ctx_sseu: Extend the mmapped paramaters test
+URL   : https://patchwork.freedesktop.org/series/72994/
+State : failure
 
-diff --git a/tests/i915/gem_ctx_sseu.c b/tests/i915/gem_ctx_sseu.c
-index 38dc584b..7d1ee5a3 100644
---- a/tests/i915/gem_ctx_sseu.c
-+++ b/tests/i915/gem_ctx_sseu.c
-@@ -48,6 +48,8 @@ static unsigned int __intel_gen__, __intel_devid__;
- static uint64_t __slice_mask__, __subslice_mask__;
- static unsigned int __slice_count__, __subslice_count__;
- 
-+enum { GTT, WC, CPU, COHERENT, } mappings;
-+
- static uint64_t mask_minus_one(uint64_t mask)
- {
- 	unsigned int i;
-@@ -364,7 +366,7 @@ test_invalid_args(int fd)
-  * Verify that ggtt mapped area can be used as the sseu pointer.
-  */
- static void
--test_ggtt_args(int fd)
-+test_mmapped_args(int fd)
- {
- 	struct drm_i915_gem_context_param_sseu *sseu;
- 	struct drm_i915_gem_context_param arg = {
-@@ -373,17 +375,40 @@ test_ggtt_args(int fd)
- 		.size = sizeof(*sseu),
- 	};
- 	uint32_t bo;
--
--	bo = gem_create(fd, 4096);
--	arg.value = to_user_pointer(gem_mmap__gtt(fd, bo, 4096,
--						  PROT_READ | PROT_WRITE));
--
--	igt_assert_eq(__gem_context_get_param(fd, &arg), 0);
--	igt_assert_eq(__gem_context_set_param(fd, &arg), 0);
--
--	munmap((void *)(uintptr_t)arg.value, 4096);
--	gem_close(fd, bo);
--	gem_context_destroy(fd, arg.ctx_id);
-+	void *ptr;
-+
-+	for (unsigned mapping = GTT; mapping <= COHERENT; mapping++)
-+	{
-+		bo = gem_create(fd, 4096);
-+
-+		switch (mapping)
-+		{
-+			case GTT:
-+				ptr = gem_mmap__gtt(fd, bo, 4096, PROT_READ | PROT_WRITE);
-+				break;
-+			case WC:
-+				ptr = gem_mmap__wc(fd, bo, 0, 4096, PROT_READ | PROT_WRITE);
-+				break;
-+			case CPU:
-+				ptr = gem_mmap__cpu(fd, bo, 0, 4096, PROT_READ | PROT_WRITE);
-+				break;
-+			case COHERENT:
-+				ptr = gem_mmap__device_coherent(fd, bo, 0, 4096, PROT_READ | PROT_WRITE);
-+				break;
-+		};
-+
-+		if (!ptr)
-+			continue;
-+
-+		arg.value = to_user_pointer(ptr);
-+
-+		igt_assert_eq(__gem_context_get_param(fd, &arg), 0);
-+		igt_assert_eq(__gem_context_set_param(fd, &arg), 0);
-+
-+		munmap((void *)(uintptr_t)arg.value, 4096);
-+		gem_close(fd, bo);
-+		gem_context_destroy(fd, arg.ctx_id);
-+	}
- }
- 
- /*
-@@ -528,8 +553,9 @@ igt_main
- 		igt_subtest("invalid-sseu")
- 			test_invalid_sseu(fd);
- 
--		igt_subtest("ggtt-args")
--			test_ggtt_args(fd);
-+		igt_subtest("mmapped-args") {
-+			test_mmapped_args(fd);
-+		}
- 
- 		igt_subtest("engines")
- 			test_engines(fd);
--- 
-2.21.0
+== Summary ==
 
+ERROR! This series introduces new undocumented tests:
+
+gem_ctx_sseu@mmapped-args
+
+Can you document them as per the requirement in the [CONTRIBUTING.md]?
+
+[Documentation] has more details on how to do this.
+
+Here are few examples:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+
+Thanks in advance!
+
+[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
+[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+
+Other than that, pipeline status: SUCCESS.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/104814 for the overview.
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/104814
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
