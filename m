@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7957F6E584
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Feb 2020 08:42:00 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 22D276EE24
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Feb 2020 09:52:58 +0000 (UTC)
+From: Swati Sharma <swati2.sharma@intel.com>
+Date: Tue,  4 Feb 2020 15:12:14 +0530
+Message-Id: <20200204094219.22544-3-swati2.sharma@intel.com>
+In-Reply-To: <20200204094219.22544-1-swati2.sharma@intel.com>
+References: <20200204094219.22544-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20200204072122.5968-1-zbigniew.kempczynski@intel.com>
-References: <20200204072122.5968-1-zbigniew.kempczynski@intel.com>
-Message-ID: <158080569744.27392.14619919263736144841@skylake-alporthouse-com>
-Date: Tue, 04 Feb 2020 08:41:37 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_set_tiling_vs_pwrite:
- disable test on gens without ggtt
+Subject: [igt-dev] [PATCH 2/7] lib/igt_kms: Add max bpc connector property
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,28 +16,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMDItMDQgMDc6MjE6MjIpCj4gVGVz
-dCByZXF1aXJlcyBmZW5jZXMgdG8gbWFwIHZpYSBnZ3R0IHNvIHdlIGNhbiBza2lwIGl0IG9uIG5l
-d2VyIGdlbnMuCj4gCj4gU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymln
-bmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Cj4gQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hy
-aXMtd2lsc29uLmNvLnVrPgo+IC0tLQo+ICB0ZXN0cy9pOTE1L2dlbV9zZXRfdGlsaW5nX3ZzX3B3
-cml0ZS5jIHwgMSArCj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQo+IAo+IGRpZmYg
-LS1naXQgYS90ZXN0cy9pOTE1L2dlbV9zZXRfdGlsaW5nX3ZzX3B3cml0ZS5jIGIvdGVzdHMvaTkx
-NS9nZW1fc2V0X3RpbGluZ192c19wd3JpdGUuYwo+IGluZGV4IDI1YTI4MTkxLi5iMzdhMmVlNCAx
-MDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2dlbV9zZXRfdGlsaW5nX3ZzX3B3cml0ZS5jCj4gKysr
-IGIvdGVzdHMvaTkxNS9nZW1fc2V0X3RpbGluZ192c19wd3JpdGUuYwo+IEBAIC01NSw2ICs1NSw3
-IEBAIGlndF9zaW1wbGVfbWFpbgo+ICAgICAgICAgdWludDMyX3QgaGFuZGxlOwo+ICAKPiAgICAg
-ICAgIGZkID0gZHJtX29wZW5fZHJpdmVyKERSSVZFUl9JTlRFTCk7Cj4gKyAgICAgICBnZW1fcmVx
-dWlyZV9tYXBwYWJsZV9nZ3R0KGZkKTsKCkl0IGRvZXNuJ3QgcmVxdWlyZSB0aGUgZ3R0IHBlciBz
-ZS4gSXQncyB1c2Ugb2YgdGhlIGd0dCBpcyBoaWdobHkKcXVlc3Rpb25hYmxlIGFuZCBkb2Vzbid0
-IHF1aXRlIGRvIHdoYXQgaXQgb25jZSBkaWQgYW55d2F5LgotQ2hyaXMKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0
-LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+
+It's been in DRM for a while but was never added to IGT's internal list.
+
+This property should be reset along with other properties between tests
+since output color depth can affect CRC calculation... but it's not
+really feasible since it's driver specific for what the value should
+be reset to.
+
+v2: rebase
+v3: rebase
+
+Cc: Leo Li <sunpeng.li@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+---
+ lib/igt_kms.c | 1 +
+ lib/igt_kms.h | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index d20daaad..b0b064c9 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -416,6 +416,7 @@ const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
+ 	[IGT_CONNECTOR_VRR_CAPABLE] = "vrr_capable",
+ 	[IGT_CONNECTOR_HDCP_CONTENT_TYPE] = "HDCP Content Type",
+ 	[IGT_CONNECTOR_LINK_STATUS] = "link-status",
++	[IGT_CONNECTOR_MAX_BPC] = "max bpc",
+ };
+ 
+ /*
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 6c919e92..36077d41 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -125,6 +125,7 @@ enum igt_atomic_connector_properties {
+        IGT_CONNECTOR_VRR_CAPABLE,
+        IGT_CONNECTOR_HDCP_CONTENT_TYPE,
+        IGT_CONNECTOR_LINK_STATUS,
++       IGT_CONNECTOR_MAX_BPC,
+        IGT_NUM_CONNECTOR_PROPS
+ };
+ 
+-- 
+2.24.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
