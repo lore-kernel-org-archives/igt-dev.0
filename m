@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A40A6E9A0
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Feb 2020 13:55:27 +0000 (UTC)
+From: Ramalingam C <ramalingam.c@intel.com>
+Date: Wed,  5 Feb 2020 19:25:32 +0530
+Message-Id: <20200205135532.15757-1-ramalingam.c@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 05 Feb 2020 13:33:37 -0000
-Message-ID: <158090961776.17318.3778386254737029427@emeril.freedesktop.org>
-References: <20200205123927.2865-1-arjun.melkaveri@intel.com>
-In-Reply-To: <20200205123927.2865-1-arjun.melkaveri@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgZ2VtX2N0?=
- =?utf-8?q?x=5Fcreate=3AAdjusted_test_to_use_=5F=5Ffor=5Feach=5Fphysical?=
- =?utf-8?q?=5Fengine_to_utilize_all_available_engines_=28rev2=29?=
+Subject: [igt-dev] [PATCH i-g-t] tests/dumb_buffer: page_size for
+ create_clear
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,179 +15,108 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+For the dumb_buffer@clear_create test we need to detect the correct page
+size for the buffer size calculation.
 
-Series: gem_ctx_create:Adjusted test to use __for_each_physical_engine to utilize all available engines (rev2)
-URL   : https://patchwork.freedesktop.org/series/72889/
-State : success
+We create the least sized buffer and see the page aligned size returned
+from kernel, which is minimum page size kernel will allocate.
 
-== Summary ==
+Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
+cc: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/dumb_buffer.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-CI Bug Log - changes from CI_DRM_7869 -> IGTPW_4100
-====================================================
+diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
+index ad854c0696e7..de0501873e59 100644
+--- a/tests/dumb_buffer.c
++++ b/tests/dumb_buffer.c
+@@ -52,8 +52,6 @@
+ 
+ IGT_TEST_DESCRIPTION("This is a test for the generic dumb buffer interface.");
+ 
+-#define PAGE_SIZE 4096
+-
+ static int __dumb_create(int fd, struct drm_mode_create_dumb *create)
+ {
+ 	int err = 0;
+@@ -225,6 +223,7 @@ struct thread_clear {
+ 	_Atomic(uint64_t) max;
+ 	int timeout;
+ 	int fd;
++	unsigned long page_size;
+ };
+ 
+ #define MAX_PAGE_TO_REQUEST	102400
+@@ -247,14 +246,12 @@ static void *thread_clear(void *data)
+ 
+ 		for (uint64_t _npages = npages; npages > 0; npages -= _npages) {
+ 			create.bpp = 32;
+-			create.width = PAGE_SIZE / (create.bpp / 8);
++			create.width = arg->page_size / (create.bpp / 8);
+ 			_npages = npages <= MAX_PAGE_TO_REQUEST ? npages :
+ 				  MAX_PAGE_TO_REQUEST;
+ 			create.height = _npages;
+ 
+ 			dumb_create(fd, &create);
+-			igt_assert_eq(PAGE_SIZE * create.height, create.size);
+-
+ 			ptr = dumb_map(fd,
+ 				       create.handle, create.size,
+ 				       PROT_WRITE);
+@@ -286,7 +283,7 @@ static void sigprobe(int sig)
+ 	longjmp(sigjmp, sig);
+ }
+ 
+-static uint64_t estimate_largest_dumb_buffer(int fd)
++static uint64_t estimate_largest_dumb_buffer(int fd, unsigned long page_size)
+ {
+ 	sighandler_t old_sigbus = signal(SIGBUS, sigprobe);
+ 	sighandler_t old_sigsegv = signal(SIGSEGV, sigprobe);
+@@ -307,7 +304,7 @@ static uint64_t estimate_largest_dumb_buffer(int fd)
+ 
+ 		igt_info("Largest dumb buffer sucessfully created: %'"PRIu64" bytes\n",
+ 			 largest);
+-		return largest / PAGE_SIZE;
++		return largest / page_size;
+ 	}
+ 
+ 	for (create.height = 1; create.height; create.height *= 2) {
+@@ -334,13 +331,23 @@ static void always_clear(int fd, int timeout)
+ 	struct thread_clear arg = {
+ 		.fd = fd,
+ 		.timeout = timeout,
+-		.max = estimate_largest_dumb_buffer(fd), /* in pages */
+ 	};
+ 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
++	struct drm_mode_create_dumb create = {
++		.bpp = 32,
++		.width = 1, /* in pixels */
++		.height = 1, /* in rows */
++	};
+ 	unsigned long checked;
+ 	pthread_t thread[ncpus];
+ 	void *result;
+ 
++	dumb_create(fd, &create);
++	arg.page_size = create.size;
++	dumb_destroy(fd, create.handle);
++
++	arg.max = estimate_largest_dumb_buffer(fd, arg.page_size);
++
+ 	for (int i = 0; i < ncpus; i++)
+ 		pthread_create(&thread[i], NULL, thread_clear, &arg);
+ 
+-- 
+2.20.1
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4100 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-byt-j1900:       [PASS][1] -> [INCOMPLETE][2] ([i915#45])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7869/fi-byt-j1900/igt@gem_close_race@basic-threads.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/fi-byt-j1900/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_selftest@live_blt:
-    - fi-hsw-4770r:       [PASS][3] -> [DMESG-FAIL][4] ([i915#725])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7869/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-hsw-peppy:       [PASS][5] -> [DMESG-FAIL][6] ([i915#761])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7869/fi-hsw-peppy/igt@i915_selftest@live_gem_contexts.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/fi-hsw-peppy/igt@i915_selftest@live_gem_contexts.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-kbl-7500u:       [PASS][7] -> [FAIL][8] ([fdo#109635] / [i915#262])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7869/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_parallel@fds:
-    - fi-icl-u3:          [INCOMPLETE][9] -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7869/fi-icl-u3/igt@gem_exec_parallel@fds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/fi-icl-u3/igt@gem_exec_parallel@fds.html
-
-  * igt@i915_module_load@reload:
-    - fi-skl-6770hq:      [DMESG-WARN][11] ([i915#92]) -> [PASS][12] +2 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7869/fi-skl-6770hq/igt@i915_module_load@reload.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/fi-skl-6770hq/igt@i915_module_load@reload.html
-
-  * igt@i915_selftest@live_blt:
-    - fi-bsw-nick:        [INCOMPLETE][13] ([i915#392]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7869/fi-bsw-nick/igt@i915_selftest@live_blt.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/fi-bsw-nick/igt@i915_selftest@live_blt.html
-    - fi-ivb-3770:        [DMESG-FAIL][15] ([i915#725]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7869/fi-ivb-3770/igt@i915_selftest@live_blt.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/fi-ivb-3770/igt@i915_selftest@live_blt.html
-
-  * igt@kms_chamelium@hdmi-crc-fast:
-    - fi-kbl-7500u:       [FAIL][17] ([fdo#109635] / [i915#217]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7869/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-7500u:       [FAIL][19] ([fdo#111096] / [i915#323]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7869/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  * igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:
-    - fi-skl-6770hq:      [SKIP][21] ([fdo#109271]) -> [PASS][22] +4 similar issues
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7869/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-
-  * igt@kms_pipe_crc_basic@read-crc-pipe-c:
-    - fi-skl-6770hq:      [DMESG-WARN][23] ([i915#106] / [i915#188]) -> [PASS][24]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7869/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-c.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-c.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live_blt:
-    - fi-hsw-4770:        [DMESG-FAIL][25] ([i915#553]) -> [DMESG-FAIL][26] ([i915#725])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7869/fi-hsw-4770/igt@i915_selftest@live_blt.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/fi-hsw-4770/igt@i915_selftest@live_blt.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109635]: https://bugs.freedesktop.org/show_bug.cgi?id=109635
-  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
-  [i915#106]: https://gitlab.freedesktop.org/drm/intel/issues/106
-  [i915#188]: https://gitlab.freedesktop.org/drm/intel/issues/188
-  [i915#217]: https://gitlab.freedesktop.org/drm/intel/issues/217
-  [i915#262]: https://gitlab.freedesktop.org/drm/intel/issues/262
-  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
-  [i915#392]: https://gitlab.freedesktop.org/drm/intel/issues/392
-  [i915#45]: https://gitlab.freedesktop.org/drm/intel/issues/45
-  [i915#553]: https://gitlab.freedesktop.org/drm/intel/issues/553
-  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
-  [i915#761]: https://gitlab.freedesktop.org/drm/intel/issues/761
-  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
-
-
-Participating hosts (49 -> 44)
-------------------------------
-
-  Additional (2): fi-gdg-551 fi-snb-2520m 
-  Missing    (7): fi-kbl-soraka fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-tgl-y fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5419 -> IGTPW_4100
-
-  CI-20190529: 20190529
-  CI_DRM_7869: db0579be255412f38a450c3c577f8d10f1195034 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4100: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/index.html
-  IGT_5419: 44913a91e77434b03001bb9ea53216cd03c476e6 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@gem_ctx_create@active
-+igt@gem_ctx_create@forked-active
-+igt@gem_ctx_create@hog
--igt@gem_ctx_create@active-blt
--igt@gem_ctx_create@active-bsd
--igt@gem_ctx_create@active-bsd1
--igt@gem_ctx_create@active-bsd2
--igt@gem_ctx_create@active-default
--igt@gem_ctx_create@active-render
--igt@gem_ctx_create@active-vebox
--igt@gem_ctx_create@forked-active-blt
--igt@gem_ctx_create@forked-active-bsd
--igt@gem_ctx_create@forked-active-bsd1
--igt@gem_ctx_create@forked-active-bsd2
--igt@gem_ctx_create@forked-active-default
--igt@gem_ctx_create@forked-active-render
--igt@gem_ctx_create@forked-active-vebox
--igt@gem_ctx_create@hog-blt
--igt@gem_ctx_create@hog-bsd
--igt@gem_ctx_create@hog-bsd1
--igt@gem_ctx_create@hog-bsd2
--igt@gem_ctx_create@hog-render
--igt@gem_ctx_create@hog-vebox
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4100/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
