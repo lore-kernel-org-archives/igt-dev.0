@@ -1,13 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20200205115915.1823074-1-chris@chris-wilson.co.uk>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <dd9bd10f-d43c-bce9-7a89-81e2c10fbc66@linux.intel.com>
-Date: Wed, 5 Feb 2020 12:13:52 +0000
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Wed,  5 Feb 2020 13:31:54 +0000
+Message-Id: <20200205133154.1886680-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-In-Reply-To: <20200205115915.1823074-1-chris@chris-wilson.co.uk>
-Content-Language: en-US
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] i915/gem_ctx_exec: Update
- the list of engines on the actual context
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_ctx_persistence: Check that we
+ cannot hide hangs on old engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,67 +12,117 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+As the kernel loses track of the context's old engines, if we request
+that the context is non-persistent then any request on the untracked
+engines must be cancelled.
 
-On 05/02/2020 11:59, Chris Wilson wrote:
-> We want to iterate the set of physical engines on this context, so
-> update the iterators to act on a particular context.
-> 
-> This tunnel keeps on getting longer.
-> 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> ---
->   lib/i915/gem_engine_topology.h | 7 +++++--
->   tests/i915/gem_ctx_exec.c      | 2 +-
->   2 files changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/lib/i915/gem_engine_topology.h b/lib/i915/gem_engine_topology.h
-> index e40d7ec83..027d86be2 100644
-> --- a/lib/i915/gem_engine_topology.h
-> +++ b/lib/i915/gem_engine_topology.h
-> @@ -67,9 +67,12 @@ struct intel_execution_engine2 gem_eb_flags_to_engine(unsigned int flags);
->   	     intel_next_engine(&i__))
->   
->   /* needs to replace "for_each_physical_engine" when conflicts are fixed */
-> -#define __for_each_physical_engine(fd__, e__) \
-> -	for (struct intel_engine_data i__ = intel_init_engine_list(fd__, 0); \
-> +#define ____for_each_physical_engine(fd__, ctx__, e__) \
-> +	for (struct intel_engine_data i__ = intel_init_engine_list(fd__, ctx__); \
->   	     ((e__) = intel_get_current_physical_engine(&i__)); \
->   	     intel_next_engine(&i__))
->   
-> +#define __for_each_physical_engine(fd__, e__) \
-> +	____for_each_physical_engine(fd__, 0, e__)
-> +
->   #endif /* GEM_ENGINE_TOPOLOGY_H */
-> diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
-> index aeb8d2976..5b4e4b3db 100644
-> --- a/tests/i915/gem_ctx_exec.c
-> +++ b/tests/i915/gem_ctx_exec.c
-> @@ -226,7 +226,7 @@ static void nohangcheck_hostile(int i915)
->   
->   	igt_require(__enable_hangcheck(dir, false));
->   
-> -	__for_each_physical_engine(i915, e) {
-> +	____for_each_physical_engine(i915, ctx, e) {
->   		igt_spin_t *spin;
->   
->   		spin = igt_spin_new(i915, ctx,
-> 
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
+ tests/i915/gem_ctx_persistence.c | 62 +++++++++++++++++++++++++++++++-
+ 1 file changed, 61 insertions(+), 1 deletion(-)
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index c54797e9b..0db5c31c2 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -761,6 +761,51 @@ static void smoketest(int i915)
+ 	gem_quiescent_gpu(i915);
+ }
+ 
++static void replace_engines_hostile(int i915,
++				    const struct intel_execution_engine2 *e)
++{
++	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 1) = {
++		.engines = {{ e->class, e->instance }}
++	};
++	struct drm_i915_gem_context_param param = {
++		.ctx_id = gem_context_create(i915),
++		.param = I915_CONTEXT_PARAM_ENGINES,
++		.value = to_user_pointer(&engines),
++		.size = sizeof(engines),
++	};
++	igt_spin_t *spin[2];
++	int64_t timeout;
++
++	/*
++	 * Suppose the user tries to hide a hanging batch by replacing
++	 * the set of engines on the context so that it's not visible
++	 * at the time of closure? Then we must act when they replace
++	 * the engines!
++	 */
++
++	gem_context_set_persistence(i915, param.ctx_id, false);
++
++	gem_context_set_param(i915, &param);
++	spin[0] = igt_spin_new(i915, param.ctx_id,
++			       .flags = IGT_SPIN_NO_PREEMPTION);
++
++	gem_context_set_param(i915, &param);
++	spin[1] = igt_spin_new(i915, param.ctx_id,
++			       .flags = IGT_SPIN_NO_PREEMPTION);
++
++	gem_context_destroy(i915, param.ctx_id);
++
++	timeout = reset_timeout_ms * NSEC_PER_MSEC;
++	igt_assert_eq(gem_wait(i915, spin[1]->handle, &timeout), 0);
++
++	timeout = reset_timeout_ms * NSEC_PER_MSEC;
++	igt_assert_eq(gem_wait(i915, spin[0]->handle, &timeout), 0);
++
++	igt_spin_free(i915, spin[1]);
++	igt_spin_free(i915, spin[0]);
++	gem_quiescent_gpu(i915);
++}
++
+ int i915;
+ 
+ static void exit_handler(int sig)
+@@ -793,10 +838,10 @@ igt_main
+ 		igt_assert(igt_sysfs_set_parameter
+ 			   (i915, "reset", "%d", -1 /* any [default] reset */));
+ 
+-		igt_require(has_persistence(i915));
+ 		enable_hangcheck(i915);
+ 		igt_install_exit_handler(exit_handler);
+ 
++		igt_require(has_persistence(i915));
+ 		igt_allow_hang(i915, 0, 0);
+ 	}
+ 
+@@ -861,6 +906,21 @@ igt_main
+ 			smoketest(i915);
+ 	}
+ 
++	/* Check interactions with set-engines */
++	igt_subtest_group {
++		const struct intel_execution_engine2 *e;
++
++		igt_fixture
++			gem_require_contexts(i915);
++
++		igt_subtest_with_dynamic("replace-hostile") {
++			__for_each_physical_engine(i915, e) {
++				igt_dynamic_f("%s", e->name)
++					replace_engines_hostile(i915, e);
++			}
++		}
++	}
++
+ 	igt_fixture {
+ 		close(i915);
+ 	}
+-- 
+2.25.0
 
-Regards,
-
-Tvrtko
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
