@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E69A6F5C1
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Feb 2020 14:04:40 +0000 (UTC)
-Date: Wed, 5 Feb 2020 16:04:21 +0200
-From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20200205140421.GA4899@ideak-desk.fi.intel.com>
-References: <20200128143054.23907-1-mika.kahola@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200128143054.23907-1-mika.kahola@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_ccs: Select highest resolution
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 05 Feb 2020 14:17:16 -0000
+Message-ID: <158091223691.17318.4791796417938385153@emeril.freedesktop.org>
+References: <20200205133154.1886680-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200205133154.1886680-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_i?=
+ =?utf-8?q?915/gem=5Fctx=5Fpersistence=3A_Check_that_we_cannot_hide_hangs_?=
+ =?utf-8?q?on_old_engines_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,115 +15,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: imre.deak@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mika Kahola <mika.kahola@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jan 28, 2020 at 04:30:54PM +0200, Mika Kahola wrote:
-> In some cases we select resolution that is insufficient for testing
-> and we receive unnecessary skips on CI. Let's loop through all available
-> modes and select the higest one when running the tests.
-> 
-> Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-> ---
->  tests/kms_ccs.c | 30 ++++++++++++++++++++++++------
->  1 file changed, 24 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
-> index 2259a4f1..ddc6a30b 100644
-> --- a/tests/kms_ccs.c
-> +++ b/tests/kms_ccs.c
-> @@ -276,12 +276,28 @@ static igt_plane_t *compatible_main_plane(data_t *data)
->  	return igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
->  }
->  
-> +static drmModeModeInfo get_mode(igt_output_t *output)
+== Series Details ==
 
-Should return a ptr to drmModeModeInfo.
+Series: i915/gem_ctx_persistence: Check that we cannot hide hangs on old engines (rev2)
+URL   : https://patchwork.freedesktop.org/series/73029/
+State : failure
 
-> +{
-> +	const drmModeModeInfo *mode;
-> +	drmModeModeInfo *tmp;
-> +	int i;
-> +
-> +	mode = &output->config.connector->modes[0];
+== Summary ==
 
-Let's still default to the preferred mode:
+ERROR! This series introduces new undocumented tests:
 
-	mode = igt_output_get_mode(output);
+gem_ctx_persistence@replace-hostile
 
-and then look for a wide enough mode only for the
-test_fb_flags & (FB_MISALIGN_AUX_STRIDE|FB_SMALL_AUX_STRIDE)
-case. That would have minimal effect on existing unrelated test cases.
+Can you document them as per the requirement in the [CONTRIBUTING.md]?
 
-> +	for (i = 1; i < output->config.connector->count_modes; i++) {
-> +		tmp = &output->config.connector->modes[i];
-> +		if (tmp->vdisplay > mode->vdisplay)
+[Documentation] has more details on how to do this.
 
-The requirement is mode->hdisplay > 1024, so we should look for such a
-mode starting from the default one above.
+Here are few examples:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
 
-> +			mode = tmp;
-> +	}
-> +
-> +	return *mode;
-> +}
-> +
->  static bool try_config(data_t *data, enum test_fb_flags fb_flags,
->  		       igt_crc_t *crc)
->  {
->  	igt_display_t *display = &data->display;
->  	igt_plane_t *primary = compatible_main_plane(data);
-> -	drmModeModeInfo *drm_mode = igt_output_get_mode(data->output);
-> +	drmModeModeInfo drm_mode = get_mode(data->output);
->  	enum igt_commit_style commit;
->  	struct igt_fb fb, fb_sprite;
->  	int ret;
-> @@ -298,25 +314,27 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
->  				      data->ccs_modifier))
->  		return false;
->  
-> +	igt_output_override_mode(data->output, &drm_mode);
-> +
->  	if (data->plane && fb_flags & FB_COMPRESSED) {
->  		if (!igt_plane_has_format_mod(data->plane, data->format,
->  					      data->ccs_modifier))
->  			return false;
->  
-> -		generate_fb(data, &fb, min(MAX_SPRITE_PLANE_WIDTH, drm_mode->hdisplay),
-> -			    drm_mode->vdisplay,
-> +		generate_fb(data, &fb, min(MAX_SPRITE_PLANE_WIDTH, drm_mode.hdisplay),
-> +			    drm_mode.vdisplay,
->  			    (fb_flags & ~FB_COMPRESSED) | FB_HAS_PLANE);
->  		generate_fb(data, &fb_sprite, 256, 256, fb_flags);
->  	} else {
-> -		generate_fb(data, &fb, min(MAX_SPRITE_PLANE_WIDTH, drm_mode->hdisplay),
-> -			    drm_mode->vdisplay, fb_flags);
-> +		generate_fb(data, &fb, min(MAX_SPRITE_PLANE_WIDTH, drm_mode.hdisplay),
-> +			    drm_mode.vdisplay, fb_flags);
->  	}
->  
->  	if (data->flags & TEST_FAIL_ON_ADDFB2)
->  		return true;
->  
->  	igt_plane_set_position(primary, 0, 0);
-> -	igt_plane_set_size(primary, drm_mode->hdisplay, drm_mode->vdisplay);
-> +	igt_plane_set_size(primary, drm_mode.hdisplay, drm_mode.vdisplay);
->  	igt_plane_set_fb(primary, &fb);
->  
->  	if (data->plane && fb_flags & FB_COMPRESSED) {
-> -- 
-> 2.17.1
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Thanks in advance!
+
+[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
+[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+
+Other than that, pipeline status: SUCCESS.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/105052 for the overview.
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/105052
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
