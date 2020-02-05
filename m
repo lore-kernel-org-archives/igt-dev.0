@@ -1,7 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed,  5 Feb 2020 13:31:54 +0000
-Message-Id: <20200205133154.1886680-1-chris@chris-wilson.co.uk>
+Date: Wed,  5 Feb 2020 13:48:56 +0000
+Message-Id: <20200205134856.1886849-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200205133154.1886680-1-chris@chris-wilson.co.uk>
+References: <20200205133154.1886680-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t] i915/gem_ctx_persistence: Check that we
  cannot hide hangs on old engines
@@ -27,14 +29,14 @@ engines must be cancelled.
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- tests/i915/gem_ctx_persistence.c | 62 +++++++++++++++++++++++++++++++-
- 1 file changed, 61 insertions(+), 1 deletion(-)
+ tests/i915/gem_ctx_persistence.c | 60 +++++++++++++++++++++++++++++++-
+ 1 file changed, 59 insertions(+), 1 deletion(-)
 
 diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
-index c54797e9b..0db5c31c2 100644
+index c54797e9b..04a6c179e 100644
 --- a/tests/i915/gem_ctx_persistence.c
 +++ b/tests/i915/gem_ctx_persistence.c
-@@ -761,6 +761,51 @@ static void smoketest(int i915)
+@@ -761,6 +761,49 @@ static void smoketest(int i915)
  	gem_quiescent_gpu(i915);
  }
  
@@ -63,12 +65,10 @@ index c54797e9b..0db5c31c2 100644
 +	gem_context_set_persistence(i915, param.ctx_id, false);
 +
 +	gem_context_set_param(i915, &param);
-+	spin[0] = igt_spin_new(i915, param.ctx_id,
-+			       .flags = IGT_SPIN_NO_PREEMPTION);
++	spin[0] = igt_spin_new(i915, param.ctx_id);
 +
 +	gem_context_set_param(i915, &param);
-+	spin[1] = igt_spin_new(i915, param.ctx_id,
-+			       .flags = IGT_SPIN_NO_PREEMPTION);
++	spin[1] = igt_spin_new(i915, param.ctx_id);
 +
 +	gem_context_destroy(i915, param.ctx_id);
 +
@@ -86,7 +86,7 @@ index c54797e9b..0db5c31c2 100644
  int i915;
  
  static void exit_handler(int sig)
-@@ -793,10 +838,10 @@ igt_main
+@@ -793,10 +836,10 @@ igt_main
  		igt_assert(igt_sysfs_set_parameter
  			   (i915, "reset", "%d", -1 /* any [default] reset */));
  
@@ -98,7 +98,7 @@ index c54797e9b..0db5c31c2 100644
  		igt_allow_hang(i915, 0, 0);
  	}
  
-@@ -861,6 +906,21 @@ igt_main
+@@ -861,6 +904,21 @@ igt_main
  			smoketest(i915);
  	}
  
