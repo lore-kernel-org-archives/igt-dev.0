@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 06 Feb 2020 15:58:53 -0000
-Message-ID: <158100473378.15034.9633819126490461278@emeril.freedesktop.org>
-References: <20200206061915.26057-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20200206061915.26057-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
- =?utf-8?q?ests/i915/gem=5Fexec=5Ffence=3AAdded_=5F=5Ffor=5Feach=5Fphysica?=
- =?utf-8?q?l=5Fengine_to_utilize_all_available_engines=2E_=28rev2=29?=
+Date: Thu, 06 Feb 2020 15:58:45 -0000
+Message-ID: <158100472550.15031.204344632921757565@emeril.freedesktop.org>
+References: <20200206020944.338033-1-jose.souza@intel.com>
+In-Reply-To: <20200206020944.338033-1-jose.souza@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/4=5D_tests/kms=5Ffrontbuffer?=
+ =?utf-8?q?=5Ftracking=3A_Add_tiling_to_test=5Fmode?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,30 +20,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: saigowth <sai.gowtham.ch@intel.com>
+To: =?utf-8?q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: tests/i915/gem_exec_fence:Added __for_each_physical_engine to utilize all available engines. (rev2)
-URL   : https://patchwork.freedesktop.org/series/72916/
+Series: series starting with [i-g-t,1/4] tests/kms_frontbuffer_tracking: Add tiling to test_mode
+URL   : https://patchwork.freedesktop.org/series/73071/
 State : failure
 
 == Summary ==
 
 ERROR! This series introduces new undocumented tests:
 
-gem_exec_fence@await-hang
-gem_exec_fence@basic-await
-gem_exec_fence@basic-busy
-gem_exec_fence@basic-wait
-gem_exec_fence@busy-hang
-gem_exec_fence@keep-in-fence
-gem_exec_fence@nb-await
-gem_exec_fence@nb-await-hang
-gem_exec_fence@parallel
-gem_exec_fence@wait-hang
+kms_frontbuffer_tracking@fbc-tiling-linear
+kms_frontbuffer_tracking@fbc-tiling-x
+kms_frontbuffer_tracking@fbc-tiling-y
+kms_frontbuffer_tracking@fbcdrrs-tiling-linear
+kms_frontbuffer_tracking@fbcdrrs-tiling-x
+kms_frontbuffer_tracking@fbcdrrs-tiling-y
+kms_frontbuffer_tracking@fbcpsr-tiling-linear
+kms_frontbuffer_tracking@fbcpsr-tiling-x
+kms_frontbuffer_tracking@fbcpsr-tiling-y
+kms_frontbuffer_tracking@fbcpsrdrrs-tiling-linear
+kms_frontbuffer_tracking@fbcpsrdrrs-tiling-x
+kms_frontbuffer_tracking@fbcpsrdrrs-tiling-y
 
 Can you document them as per the requirement in the [CONTRIBUTING.md]?
 
@@ -60,11 +62,11 @@ Thanks in advance!
 
 Other than that, pipeline status: SUCCESS.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/105470 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/105425 for the overview.
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/105470
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/105425
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
