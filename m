@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 446EC6EB22
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Feb 2020 19:15:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 443FF6EB22
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Feb 2020 19:15:47 +0000 (UTC)
 From: Imre Deak <imre.deak@intel.com>
-Date: Fri,  7 Feb 2020 21:15:21 +0200
-Message-Id: <20200207191524.19362-5-imre.deak@intel.com>
+Date: Fri,  7 Feb 2020 21:15:22 +0200
+Message-Id: <20200207191524.19362-6-imre.deak@intel.com>
 In-Reply-To: <20200207191524.19362-1-imre.deak@intel.com>
 References: <20200207191524.19362-1-imre.deak@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 5/8] tests/kms_draw_crc: Fix generating
- reference CRCs on platforms w/o aperture
+Subject: [igt-dev] [PATCH i-g-t 6/8] tests/kms_frontbuffer_tracking: Skip
+ GTT subtests on platforms w/o aperture
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,36 +24,120 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Generate reference CRCs by drawing through a CPU mapping, which is also
-available on platforms w/o a GTT aperture.
+Subtests that draw through a GTT mapping are not relevent on a platform w/o
+GTT aperture, so skip them.
 
 Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
- tests/kms_draw_crc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/kms_frontbuffer_tracking.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/tests/kms_draw_crc.c b/tests/kms_draw_crc.c
-index 6de9feae..f9d4b178 100644
---- a/tests/kms_draw_crc.c
-+++ b/tests/kms_draw_crc.c
-@@ -187,7 +187,7 @@ static void draw_method_subtest(enum igt_draw_method method,
- 	 * comparison. Cache the value so we don't recompute it for every single
- 	 * subtest. */
- 	if (!base_crcs[format_index].set) {
--		get_method_crc(IGT_DRAW_MMAP_GTT, formats[format_index],
-+		get_method_crc(IGT_DRAW_MMAP_CPU, formats[format_index],
- 			       LOCAL_DRM_FORMAT_MOD_NONE,
- 			       &base_crcs[format_index].crc);
- 		base_crcs[format_index].set = true;
-@@ -225,7 +225,7 @@ static void fill_fb_subtest(void)
- 	igt_create_fb(drm_fd, ms.mode->hdisplay, ms.mode->vdisplay,
- 		      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE, &fb);
+diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
+index 724f5d16..310c8b7b 100644
+--- a/tests/kms_frontbuffer_tracking.c
++++ b/tests/kms_frontbuffer_tracking.c
+@@ -1934,6 +1934,9 @@ static void draw_subtest(const struct test_mode *t)
+ 	struct modeset_params *params = pick_params(t);
+ 	struct fb_region *target;
  
--	igt_draw_rect_fb(drm_fd, bufmgr, NULL, &fb, IGT_DRAW_MMAP_GTT,
-+	igt_draw_rect_fb(drm_fd, bufmgr, NULL, &fb, IGT_DRAW_MMAP_CPU,
- 			 0, 0, fb.width, fb.height, 0xFF);
++	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
++		    !gem_has_mappable_ggtt(drm.fd));
++
+ 	switch (t->screen) {
+ 	case SCREEN_PRIM:
+ 		if (t->method != IGT_DRAW_MMAP_GTT && t->plane == PLANE_PRI)
+@@ -2032,6 +2035,11 @@ static void multidraw_subtest(const struct test_mode *t)
+ 			igt_debug("Methods %s and %s\n",
+ 				  igt_draw_get_method_name(m1),
+ 				  igt_draw_get_method_name(m2));
++
++			igt_skip_on((m1 == IGT_DRAW_MMAP_GTT ||
++				     m2 == IGT_DRAW_MMAP_GTT) &&
++				    !gem_has_mappable_ggtt(drm.fd));
++
+ 			for (r = 0; r < pattern->n_rects; r++) {
+ 				used_method = (r % 2 == 0) ? m1 : m2;
  
- 	rc = drmModeSetCrtc(drm_fd, ms.crtc_id, fb.fb_id, 0, 0,
+@@ -2140,6 +2148,9 @@ static void badformat_subtest(const struct test_mode *t)
+  */
+ static void format_draw_subtest(const struct test_mode *t)
+ {
++	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
++		    !gem_has_mappable_ggtt(drm.fd));
++
+ 	if (format_is_valid(t->feature, t->format))
+ 		draw_subtest(t);
+ 	else
+@@ -2276,6 +2287,9 @@ static void flip_subtest(const struct test_mode *t)
+ 	struct draw_pattern_info *pattern = &pattern1;
+ 	enum color bg_color;
+ 
++	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
++		    !gem_has_mappable_ggtt(drm.fd));
++
+ 	switch (t->screen) {
+ 	case SCREEN_PRIM:
+ 		assertions |= ASSERT_LAST_ACTION_CHANGED;
+@@ -2335,6 +2349,9 @@ static void fliptrack_subtest(const struct test_mode *t, enum flip_type type)
+ 	struct modeset_params *params = pick_params(t);
+ 	struct draw_pattern_info *pattern = &pattern1;
+ 
++	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
++		    !gem_has_mappable_ggtt(drm.fd));
++
+ 	prepare_subtest(t, pattern);
+ 
+ 	create_fb(t->format, params->primary.fb->width, params->primary.fb->height,
+@@ -2383,6 +2400,9 @@ static void move_subtest(const struct test_mode *t)
+ 	struct fb_region *reg = pick_target(t, params);
+ 	bool repeat = false;
+ 
++	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
++		    !gem_has_mappable_ggtt(drm.fd));
++
+ 	prepare_subtest(t, pattern);
+ 
+ 	/* Just paint the right color since we start at 0x0. */
+@@ -2434,6 +2454,9 @@ static void onoff_subtest(const struct test_mode *t)
+ 	struct modeset_params *params = pick_params(t);
+ 	struct draw_pattern_info *pattern = &pattern3;
+ 
++	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
++		    !gem_has_mappable_ggtt(drm.fd));
++
+ 	prepare_subtest(t, pattern);
+ 
+ 	/* Just paint the right color since we start at 0x0. */
+@@ -2493,6 +2516,9 @@ static void fullscreen_plane_subtest(const struct test_mode *t)
+ 	struct modeset_params *params = pick_params(t);
+ 	int assertions;
+ 
++	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
++		    !gem_has_mappable_ggtt(drm.fd));
++
+ 	prepare_subtest(t, pattern);
+ 
+ 	rect = pattern->get_rect(&params->primary, 0);
+@@ -2744,6 +2770,9 @@ static void farfromfence_subtest(const struct test_mode *t)
+ 	int max_height, assertions = 0;
+ 	int gen = intel_gen(intel_get_drm_devid(drm.fd));
+ 
++	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
++		    !gem_has_mappable_ggtt(drm.fd));
++
+ 	switch (gen) {
+ 	case 2:
+ 		max_height = 2048;
+@@ -3025,6 +3054,9 @@ static void basic_subtest(const struct test_mode *t)
+ 	fb1 = params->primary.fb;
+ 
+ 	for (r = 0, method = 0; method < IGT_DRAW_METHOD_COUNT; method++, r++) {
++		igt_skip_on(method == IGT_DRAW_MMAP_GTT &&
++			    !gem_has_mappable_ggtt(drm.fd));
++
+ 		if (r == pattern->n_rects) {
+ 			params->primary.fb = (params->primary.fb == fb1) ? &fb2 : fb1;
+ 
 -- 
 2.23.1
 
