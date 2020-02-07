@@ -1,12 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9ED1F6EAA6
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Feb 2020 11:53:23 +0000 (UTC)
+Date: Fri, 7 Feb 2020 12:53:21 +0100
+From: Katarzyna Dec <katarzyna.dec@intel.com>
+Message-ID: <20200207115321.GG21459@kdec5-desk.ger.corp.intel.com>
+References: <20200206061915.26057-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 07 Feb 2020 06:04:30 -0000
-Message-ID: <158105547080.8755.12371339674683304831@emeril.freedesktop.org>
-References: <7278cd464aa928fdefb9b4b89df73d3c52fefc42.1581053156.git.ashutosh.dixit@intel.com>
-In-Reply-To: <7278cd464aa928fdefb9b4b89df73d3c52fefc42.1581053156.git.ashutosh.dixit@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Iga21zX2Zl?=
- =?utf-8?q?nce=5Fpin=5Fleak=3A_check_for_availabile_fences?=
+Content-Disposition: inline
+In-Reply-To: <20200206061915.26057-1-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH V2] [PATCH
+ i-g-t]tests/i915/gem_exec_fence:Added __for_each_physical_engine to utilize
+ all available engines.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,101 +19,481 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: saigowth <sai.gowtham.ch@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Thu, Feb 06, 2020 at 11:49:15AM +0530, saigowth wrote:
+> Following Changes are done in gem_exec_fence program.
+> 
+> 1) Added __for_each_physical_engine .
+> 2) moved subtests from static to dynamic
+> 
+> List of subtests that are modified:
+> 1) basic-busy
+> 2) basic-wait
+> 3) basic-await
+> 4) nb-await
+> 5) keep-in-fence
+> 6) parallel
+> 7) busy-hang
+> 8) wait-hang
+> 9) await-hang
+> 10) nb-await-hang
+> 11) basic-busy-all
+> 12) basic-wait-all
+> 13) busy-hang-all
+> 14) wait-hang-all
+I do not think we need this information in commit message.
+Information like:
 
-Series: kms_fence_pin_leak: check for availabile fences
-URL   : https://patchwork.freedesktop.org/series/73127/
-State : success
+Replace the legacy for_each_engine* defines with the ones implemented in the
+gem_engine_topology library. Add dynamic substest support.
 
-== Summary ==
+> 
+> Cc: Dec Katarzyna <katarzyna.dec@intel.com>
+> Cc: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
+> Signed-off-by: saigowth <sai.gowtham.ch@intel.com>
+> ---
+> V1 -> V2
+> 
+> Corrected subtest name in fast-feedback.testlist from,
+> basic-busy-default --> basic-busy
+> basic-wait-default --> basic-wait
+> basi-await-deafult --> basic-await
+> nb-await-default --> nb-await
+Is this ^^ also a part of commit msg? If yes move it up and make more general,
+like
+updadate fast-feedback testlist.
+If that was only for testing your changes - needs to be removed.
+> ---
+>  tests/i915/gem_exec_fence.c           | 204 ++++++++++++++++----------
+>  tests/intel-ci/fast-feedback.testlist |   8 +-
+>  2 files changed, 127 insertions(+), 85 deletions(-)
+> 
+> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+> index 6d369f58..36488ea7 100644
+> --- a/tests/i915/gem_exec_fence.c
+> +++ b/tests/i915/gem_exec_fence.c
+> @@ -46,7 +46,8 @@ struct sync_merge_data {
+>  #define SYNC_IOC_MERGE _IOWR(SYNC_IOC_MAGIC, 3, struct sync_merge_data)
+>  #endif
+>  
+> -static void store(int fd, unsigned ring, int fence, uint32_t target, unsigned offset_value)
+> +static void store(int fd, const struct intel_execution_engine2 *e,
+> +		  int fence, uint32_t target, unsigned offset_value)
+>  {
+>  	const int SCRATCH = 0;
+>  	const int BATCH = 1;
+> @@ -60,7 +61,7 @@ static void store(int fd, unsigned ring, int fence, uint32_t target, unsigned of
+>  	memset(&execbuf, 0, sizeof(execbuf));
+>  	execbuf.buffers_ptr = to_user_pointer(obj);
+>  	execbuf.buffer_count = 2;
+> -	execbuf.flags = ring | I915_EXEC_FENCE_IN;
+> +	execbuf.flags = e->flags | I915_EXEC_FENCE_IN;
+>  	execbuf.rsvd2 = fence;
+>  	if (gen < 6)
+>  		execbuf.flags |= I915_EXEC_SECURE;
+> @@ -108,7 +109,8 @@ static bool fence_busy(int fence)
+>  #define NONBLOCK 0x2
+>  #define WAIT 0x4
+>  
+> -static void test_fence_busy(int fd, unsigned ring, unsigned flags)
+> +static void test_fence_busy(int fd, const struct intel_execution_engine2 *e,
+> +			    unsigned flags)
+>  {
+>  	const int gen = intel_gen(intel_get_drm_devid(fd));
+>  	struct drm_i915_gem_exec_object2 obj;
+> @@ -119,14 +121,14 @@ static void test_fence_busy(int fd, unsigned ring, unsigned flags)
+>  	int fence, i, timeout;
+>  
+>  	if ((flags & HANG) == 0)
+> -		igt_require(gem_engine_has_mutable_submission(fd, ring));
+> +		igt_require(gem_class_has_mutable_submission(fd, e->class));
+>  
+>  	gem_quiescent_gpu(fd);
+>  
+>  	memset(&execbuf, 0, sizeof(execbuf));
+>  	execbuf.buffers_ptr = to_user_pointer(&obj);
+>  	execbuf.buffer_count = 1;
+> -	execbuf.flags = ring | I915_EXEC_FENCE_OUT;
+> +	execbuf.flags = e->flags | I915_EXEC_FENCE_OUT;
+>  
+>  	memset(&obj, 0, sizeof(obj));
+>  	obj.handle = gem_create(fd, 4096);
+> @@ -205,6 +207,7 @@ static void test_fence_busy(int fd, unsigned ring, unsigned flags)
+>  
+>  static void test_fence_busy_all(int fd, unsigned flags)
+>  {
+> +	const struct intel_execution_engine2 *e;
+>  	const int gen = intel_gen(intel_get_drm_devid(fd));
+>  	struct drm_i915_gem_exec_object2 obj;
+>  	struct drm_i915_gem_relocation_entry reloc;
+> @@ -260,14 +263,14 @@ static void test_fence_busy_all(int fd, unsigned flags)
+>  	i++;
+>  
+>  	all = -1;
+> -	for_each_engine(e, fd) {
+> +	__for_each_physical_engine(fd, e) {
+>  		int fence, new;
+>  
+>  		if ((flags & HANG) == 0 &&
+> -		    !gem_engine_has_mutable_submission(fd, eb_ring(e)))
+> +		    !gem_class_has_mutable_submission(fd, e->class))
+>  			continue;
+>  
+> -		execbuf.flags = eb_ring(e) | I915_EXEC_FENCE_OUT;
+> +		execbuf.flags = e->flags | I915_EXEC_FENCE_OUT;
+>  		execbuf.rsvd2 = -1;
+>  		gem_execbuf_wr(fd, &execbuf);
+>  		fence = execbuf.rsvd2 >> 32;
+> @@ -316,39 +319,41 @@ static void test_fence_busy_all(int fd, unsigned flags)
+>  	gem_quiescent_gpu(fd);
+>  }
+>  
+> -static void test_fence_await(int fd, unsigned ring, unsigned flags)
+> +static void test_fence_await(int fd, const struct intel_execution_engine2 *e,
+> +			     unsigned flags)
+>  {
+> +	const struct intel_execution_engine2 *e2;
+>  	uint32_t scratch = gem_create(fd, 4096);
+>  	igt_spin_t *spin;
+>  	uint32_t *out;
+>  	int i;
+>  
+>  	if ((flags & HANG) == 0)
+> -		igt_require(gem_engine_has_mutable_submission(fd, ring));
+> +		igt_require(gem_class_has_mutable_submission(fd, e->class));
+>  
+> -	igt_require(gem_can_store_dword(fd, 0));
+> +	igt_require(gem_class_can_store_dword(fd, 0));
+>  
+>  	out = gem_mmap__wc(fd, scratch, 0, 4096, PROT_WRITE);
+>  	gem_set_domain(fd, scratch,
+>  			I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+>  
+>  	spin = igt_spin_new(fd,
+> -			    .engine = ring,
+> +			    .engine = e->flags,
+>  			    .flags = (IGT_SPIN_FENCE_OUT |
+>  				      IGT_SPIN_NO_PREEMPTION |
+>  				      (flags & HANG ? IGT_SPIN_INVALID_CS : 0)));
+>  	igt_assert(spin->out_fence != -1);
+>  
+>  	i = 0;
+> -	for_each_physical_engine(e, fd) {
+> -		if (!gem_can_store_dword(fd, eb_ring(e)))
+> +	__for_each_physical_engine(fd, e2) {
+> +		if (!gem_class_can_store_dword(fd, e->class))
+>  			continue;
+>  
+>  		if (flags & NONBLOCK) {
+> -			store(fd, eb_ring(e), spin->out_fence, scratch, i);
+> +			store(fd, e2, spin->out_fence, scratch, i);
+>  		} else {
+>  			igt_fork(child, 1)
+> -				store(fd, eb_ring(e), spin->out_fence, scratch, i);
+> +				store(fd, e2, spin->out_fence, scratch, i);
+>  		}
+>  
+>  		i++;
+> @@ -376,13 +381,14 @@ static void test_fence_await(int fd, unsigned ring, unsigned flags)
+>  	gem_close(fd, scratch);
+>  }
+>  
+> -static void resubmit(int fd, uint32_t handle, unsigned int ring, int count)
+> +static void resubmit(int fd, uint32_t handle,
+> +		     const struct intel_execution_engine2 *e, int count)
+>  {
+>  	struct drm_i915_gem_exec_object2 obj = { .handle = handle };
+>  	struct drm_i915_gem_execbuffer2 execbuf = {
+>  		.buffers_ptr = to_user_pointer(&obj),
+>  		.buffer_count = 1,
+> -		.flags = ring,
+> +		.flags = e->flags,
+>  	};
+>  	while (count--)
+>  		gem_execbuf(fd, &execbuf);
+> @@ -404,8 +410,9 @@ static int __execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf)
+>  	return err;
+>  }
+>  
+> -static void test_parallel(int fd, unsigned int master)
+> +static void test_parallel(int fd, const struct intel_execution_engine2 *e)
+>  {
+> +	const struct intel_execution_engine2 *e2;
+>  	const int SCRATCH = 0;
+>  	const int BATCH = 1;
+>  	const int gen = intel_gen(intel_get_drm_devid(fd));
+> @@ -426,14 +433,14 @@ static void test_parallel(int fd, unsigned int master)
+>  	/* Fill the queue with many requests so that the next one has to
+>  	 * wait before it can be executed by the hardware.
+>  	 */
+> -	spin = igt_spin_new(fd, .engine = master, .dependency = plug);
+> -	resubmit(fd, spin->handle, master, 16);
+> +	spin = igt_spin_new(fd, .engine = e->flags, .dependency = plug);
+> +	resubmit(fd, spin->handle, e, 16);
+>  
+>  	/* Now queue the master request and its secondaries */
+>  	memset(&execbuf, 0, sizeof(execbuf));
+>  	execbuf.buffers_ptr = to_user_pointer(obj);
+>  	execbuf.buffer_count = 2;
+> -	execbuf.flags = master | I915_EXEC_FENCE_OUT;
+> +	execbuf.flags = e->flags | I915_EXEC_FENCE_OUT;
+>  	if (gen < 6)
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  
+> @@ -502,11 +509,11 @@ static void test_parallel(int fd, unsigned int master)
+>  	obj[BATCH].relocation_count = 1;
+>  
+>  	/* Queue all secondaries */
+> -	for_each_physical_engine(e, fd) {
+> -		if (eb_ring(e) == master)
+> +	__for_each_physical_engine(fd, e2) {
+> +		if (e2->flags == e->flags)
+>  			continue;
+>  
+> -		execbuf.flags = eb_ring(e) | I915_EXEC_FENCE_SUBMIT;
+> +		execbuf.flags = e2->flags | I915_EXEC_FENCE_SUBMIT;
+>  		if (gen < 6)
+>  			execbuf.flags |= I915_EXEC_SECURE;
+>  
+> @@ -593,7 +600,7 @@ static inline uint32_t upper_32_bits(uint64_t x)
+>  	return x >> 32;
+>  }
+>  
+> -static void test_keep_in_fence(int fd, unsigned int engine, unsigned int flags)
+> +static void test_keep_in_fence(int fd, const struct intel_execution_engine2 *e)
+>  {
+>  	struct sigaction sa = { .sa_handler = alarm_handler };
+>  	struct drm_i915_gem_exec_object2 obj = {
+> @@ -602,14 +609,14 @@ static void test_keep_in_fence(int fd, unsigned int engine, unsigned int flags)
+>  	struct drm_i915_gem_execbuffer2 execbuf = {
+>  		.buffers_ptr = to_user_pointer(&obj),
+>  		.buffer_count = 1,
+> -		.flags = engine | I915_EXEC_FENCE_OUT,
+> +		.flags = e->flags | I915_EXEC_FENCE_OUT,
+>  	};
+>  	unsigned long count, last;
+>  	struct itimerval itv;
+>  	igt_spin_t *spin;
+>  	int fence;
+>  
+> -	spin = igt_spin_new(fd, .engine = engine);
+> +	spin = igt_spin_new(fd, .engine = e->flags);
+>  
+>  	gem_execbuf_wr(fd, &execbuf);
+>  	fence = upper_32_bits(execbuf.rsvd2);
+> @@ -1373,7 +1380,7 @@ static void test_syncobj_channel(int fd)
+>  
+>  igt_main
+>  {
+> -	const struct intel_execution_engine *e;
+> +	const struct intel_execution_engine2 *e;
+>  	int i915 = -1;
+>  
+>  	igt_fixture {
+> @@ -1412,69 +1419,105 @@ igt_main
+>  		}
+>  	}
+>  
+> -	for (e = intel_execution_engines; e->name; e++) {
+> -		igt_subtest_group {
+> +	igt_subtest_group {
+> +		__for_each_physical_engine(i915, e) {
+>  			igt_fixture {
+> -				igt_require(gem_has_ring(i915, eb_ring(e)));
+> -				igt_require(gem_can_store_dword(i915, eb_ring(e)));
+> +				igt_require(gem_class_can_store_dword(i915, e->class));
+>  			}
+> +		}
+> +		igt_subtest_group {
+> +			igt_fixture {
+> +				igt_fork_hang_detector(i915);
+> +		}
+> +			igt_subtest_with_dynamic("basic-busy") {
+> +				__for_each_physical_engine(i915, e) {
+> +				/* Requires master for STORE_DWORD on gen4/5 */
+>  
+> -			igt_subtest_group {
+> -				igt_fixture {
+> -					igt_fork_hang_detector(i915);
+> +					igt_dynamic_f("%s", e->name)
+> +						test_fence_busy(i915, e, 0);
+>  				}
+> -
+> -				igt_subtest_f("%sbusy-%s",
+> -						e->exec_id == 0 ? "basic-" : "",
+> -						e->name)
+> -					test_fence_busy(i915, eb_ring(e), 0);
+> -				igt_subtest_f("%swait-%s",
+> -						e->exec_id == 0 ? "basic-" : "",
+> -						e->name)
+> -					test_fence_busy(i915, eb_ring(e), WAIT);
+> -				igt_subtest_f("%sawait-%s",
+> -						e->exec_id == 0 ? "basic-" : "",
+> -						e->name)
+> -					test_fence_await(i915, eb_ring(e), 0);
+> -				igt_subtest_f("nb-await-%s", e->name)
+> -					test_fence_await(i915, eb_ring(e), NONBLOCK);
+> -
+> -				igt_subtest_f("keep-in-fence-%s", e->name)
+> -					test_keep_in_fence(i915, eb_ring(e), 0);
+> -
+> -				if (e->exec_id &&
+> -				    !(e->exec_id == I915_EXEC_BSD && !e->flags)) {
+> -					igt_subtest_f("parallel-%s", e->name) {
+> -						igt_require(has_submit_fence(i915));
+> -						igt_until_timeout(2)
+> -							test_parallel(i915, eb_ring(e));
+> -					}
+> +			}
+> +			igt_subtest_with_dynamic("basic-wait") {
+> +				__for_each_physical_engine(i915, e) {
+> +				/* Requires master for STORE_DWORD on gen4/5 */
+> +					igt_dynamic_f("%s", e->name)
+> +						test_fence_busy(i915, e, WAIT);
+>  				}
+> -
+> -				igt_fixture {
+> -					igt_stop_hang_detector();
+> +			}
+> +			igt_subtest_with_dynamic("basic-await") {
+> +				__for_each_physical_engine(i915, e) {
+> +				/* Requires master for STORE_DWORD on gen4/5 */
+> +					igt_dynamic_f("%s", e->name)
+> +						test_fence_await(i915, e, 0);
+> +				}
+> +			}
+> +			igt_subtest_with_dynamic("nb-await") {
+> +				__for_each_physical_engine(i915, e) {
+> +				/* Requires master for STORE_DWORD on gen4/5 */
+> +					igt_dynamic_f("%s", e->name)
+> +						test_fence_await(i915,
+> +								 e, NONBLOCK);
+> +				}
+> +			}
+> +			igt_subtest_with_dynamic("keep-in-fence") {
+> +				__for_each_physical_engine(i915, e) {
+> +				/* Requires master for STORE_DWORD on gen4/5 */
+> +					igt_dynamic_f("%s", e->name)
+> +						test_keep_in_fence(i915, e);
+> +				}
+> +			}
+> +			igt_subtest_with_dynamic("parallel") {
+> +				__for_each_physical_engine(i915, e) {
+> +				/* Requires master for STORE_DWORD on gen4/5 */
+> +					igt_dynamic_f("%s", e->name)
+> +					igt_require(has_submit_fence(i915));
+> +					igt_until_timeout(2)
+> +						test_parallel(i915, e);
+>  				}
+>  			}
+>  
+> -			igt_subtest_group {
+> -				igt_hang_t hang;
+> +			igt_fixture {
+> +				igt_stop_hang_detector();
+> +			}
+> +		}
+>  
+> -				igt_fixture {
+> -					hang = igt_allow_hang(i915, 0, 0);
+> -				}
+> +		igt_subtest_group {
+> +			igt_hang_t hang;
+>  
+> -				igt_subtest_f("busy-hang-%s", e->name)
+> -					test_fence_busy(i915, eb_ring(e), HANG);
+> -				igt_subtest_f("wait-hang-%s", e->name)
+> -					test_fence_busy(i915, eb_ring(e), HANG | WAIT);
+> -				igt_subtest_f("await-hang-%s", e->name)
+> -					test_fence_await(i915, eb_ring(e), HANG);
+> -				igt_subtest_f("nb-await-hang-%s", e->name)
+> -					test_fence_await(i915, eb_ring(e), NONBLOCK | HANG);
+> -				igt_fixture {
+> -					igt_disallow_hang(i915, hang);
+> +			igt_fixture {
+> +				hang = igt_allow_hang(i915, 0, 0);
+> +			}
+> +			igt_subtest_with_dynamic("busy-hang") {
+> +				__for_each_physical_engine(i915, e) {
+> +				/* Requires master for STORE_DWORD on gen4/5 */
+> +					igt_dynamic_f("%s", e->name)
+> +						test_fence_busy(i915, e, HANG);
+> +				}
+> +			}
+> +			igt_subtest_with_dynamic("wait-hang") {
+> +				__for_each_physical_engine(i915, e) {
+> +				/* Requires master for STORE_DWORD on gen4/5 */
+> +					igt_dynamic_f("%s", e->name)
+> +						test_fence_busy(i915, e, HANG | WAIT);
+> +				}
+> +			}
+> +			igt_subtest_with_dynamic("await-hang") {
+> +				__for_each_physical_engine(i915, e) {
+> +				/* Requires master for STORE_DWORD on gen4/5 */
+> +					igt_dynamic_f("%s", e->name)
+> +						test_fence_await(i915, e, HANG);
+> +				}
+> +			}
+> +			igt_subtest_with_dynamic("nb-await-hang") {
+> +				__for_each_physical_engine(i915, e) {
+> +				/* Requires master for STORE_DWORD on gen4/5 */
+> +					igt_dynamic_f("%s", e->name)
+> +						test_fence_await(i915, e, NONBLOCK | HANG);
+>  				}
+>  			}
+> +			igt_fixture {
+> +				igt_disallow_hang(i915, hang);
+> +			}
+>  		}
+>  	}
+>  
+> @@ -1542,7 +1585,6 @@ igt_main
+>  			igt_stop_hang_detector();
+>  		}
+>  	}
+> -
+>  	igt_fixture {
+>  		close(i915);
+>  	}
+> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+> index 40d273c1..8a191922 100644
+> --- a/tests/intel-ci/fast-feedback.testlist
+> +++ b/tests/intel-ci/fast-feedback.testlist
+> @@ -16,10 +16,10 @@ igt@gem_ctx_param@basic
+>  igt@gem_ctx_param@basic-default
+>  igt@gem_exec_basic@basic
+>  igt@gem_exec_create@basic
+> -igt@gem_exec_fence@basic-busy-default
+> -igt@gem_exec_fence@basic-wait-default
+> -igt@gem_exec_fence@basic-await-default
+> -igt@gem_exec_fence@nb-await-default
+> +igt@gem_exec_fence@basic-busy
+> +igt@gem_exec_fence@basic-wait
+> +igt@gem_exec_fence@basic-await
+> +igt@gem_exec_fence@nb-await
+>  igt@gem_exec_gttfill@basic
+>  igt@gem_exec_parallel@basic
+>  igt@gem_exec_parallel@contexts
 
-CI Bug Log - changes from CI_DRM_7882 -> IGTPW_4110
-====================================================
+The rest looks good.
+Please make changes in commit msg and with that:
+Reviewed-by: Katarzyna Dec <katarzyna.dec@intel.com>
 
-Summary
--------
+Kasia :)
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4110/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4110 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live_blt:
-    - fi-hsw-4770:        [PASS][1] -> [DMESG-FAIL][2] ([i915#725])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7882/fi-hsw-4770/igt@i915_selftest@live_blt.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4110/fi-hsw-4770/igt@i915_selftest@live_blt.html
-
-  * igt@i915_selftest@live_gtt:
-    - fi-hsw-4770:        [PASS][3] -> [TIMEOUT][4] ([fdo#112271])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7882/fi-hsw-4770/igt@i915_selftest@live_gtt.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4110/fi-hsw-4770/igt@i915_selftest@live_gtt.html
-
-  * igt@kms_flip@basic-flip-vs-dpms:
-    - fi-skl-6770hq:      [PASS][5] -> [SKIP][6] ([fdo#109271]) +27 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7882/fi-skl-6770hq/igt@kms_flip@basic-flip-vs-dpms.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4110/fi-skl-6770hq/igt@kms_flip@basic-flip-vs-dpms.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:
-    - fi-icl-u2:          [PASS][7] -> [INCOMPLETE][8] ([i915#140])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7882/fi-icl-u2/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4110/fi-icl-u2/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-byt-n2820:       [INCOMPLETE][9] ([i915#45]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7882/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4110/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#140]: https://gitlab.freedesktop.org/drm/intel/issues/140
-  [i915#45]: https://gitlab.freedesktop.org/drm/intel/issues/45
-  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
-
-
-Participating hosts (50 -> 42)
-------------------------------
-
-  Additional (5): fi-bxt-dsi fi-bsw-n3050 fi-gdg-551 fi-bsw-nick fi-snb-2600 
-  Missing    (13): fi-ilk-m540 fi-bdw-5557u fi-tgl-dsi fi-hsw-4200u fi-byt-j1900 fi-hsw-peppy fi-byt-squawks fi-bsw-cyan fi-kbl-7500u fi-ctg-p8600 fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5423 -> IGTPW_4110
-
-  CI-20190529: 20190529
-  CI_DRM_7882: bc62c7b88481f1c427fed468264ef0674fc1e8ba @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4110: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4110/index.html
-  IGT_5423: 02ef996e76b3bae1c62d6a1298462aba0b7ac51a @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4110/index.html
+> -- 
+> 2.25.0
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
