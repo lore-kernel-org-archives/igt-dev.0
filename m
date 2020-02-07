@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 010386EAB6
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Feb 2020 13:45:17 +0000 (UTC)
+From: Ramalingam C <ramalingam.c@intel.com>
+Date: Fri,  7 Feb 2020 19:15:26 +0530
+Message-Id: <20200207134527.17205-1-ramalingam.c@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 07 Feb 2020 13:36:22 -0000
-Message-ID: <158108258238.8754.7358734017155227041@emeril.freedesktop.org>
-References: <20200207125941.22974-1-arjun.melkaveri@intel.com>
-In-Reply-To: <20200207125941.22974-1-arjun.melkaveri@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_g?=
- =?utf-8?q?em=5Fctx=5Fcreate=3AAdjusted_test_to_use_=5F=5Ffor=5Feach=5Fphy?=
- =?utf-8?q?sical=5Fengine_to_utilize_all_available_engines_=28rev3=29?=
+Subject: [igt-dev] [PATCH i-g-t v2 1/2] tests/intel_dp_compliance: use
+ device coherent mapping instead of mmap_gtt
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,49 +15,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+As tiling is not used we use the device coherent mapping instead of
+mmap_gtt.
 
-Series: gem_ctx_create:Adjusted test to use __for_each_physical_engine to utilize all available engines (rev3)
-URL   : https://patchwork.freedesktop.org/series/72889/
-State : failure
+v2:
+  instead of skipping device coherent mapping is used. [Ashutosh]
 
-== Summary ==
+Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
+---
+ tools/intel_dp_compliance.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-ERROR! This series introduces new undocumented tests:
+diff --git a/tools/intel_dp_compliance.c b/tools/intel_dp_compliance.c
+index 5cc3d37a71d6..2d42cb1a7b6f 100644
+--- a/tools/intel_dp_compliance.c
++++ b/tools/intel_dp_compliance.c
+@@ -451,9 +451,9 @@ static int setup_framebuffers(struct connector *dp_conn)
+ 	igt_assert(dp_conn->fb);
+ 
+ 	/* Map the mapping of GEM object into the virtual address space */
+-	dp_conn->pixmap = gem_mmap__gtt(drm_fd,
++	dp_conn->pixmap = gem_mmap__device_coherent(drm_fd,
+ 					dp_conn->fb_video_pattern.gem_handle,
+-					dp_conn->fb_video_pattern.size,
++					0, dp_conn->fb_video_pattern.size,
+ 					PROT_READ | PROT_WRITE);
+ 	if (dp_conn->pixmap == NULL)
+ 		return -1;
+@@ -481,9 +481,9 @@ static int setup_failsafe_framebuffer(struct connector *dp_conn)
+ 	igt_assert(dp_conn->failsafe_fb);
+ 
+ 	/* Map the mapping of GEM object into the virtual address space */
+-	dp_conn->failsafe_pixmap = gem_mmap__gtt(drm_fd,
++	dp_conn->failsafe_pixmap = gem_mmap__device_coherent(drm_fd,
+ 						 dp_conn->fb_failsafe_pattern.gem_handle,
+-						 dp_conn->fb_failsafe_pattern.size,
++						 0, dp_conn->fb_failsafe_pattern.size,
+ 						 PROT_READ | PROT_WRITE);
+ 	if (dp_conn->failsafe_pixmap == NULL)
+ 		return -1;
+@@ -518,9 +518,9 @@ static int setup_video_pattern_framebuffer(struct connector *dp_conn)
+ 	igt_assert(dp_conn->test_pattern.fb);
+ 
+ 	/* Map the mapping of GEM object into the virtual address space */
+-	dp_conn->test_pattern.pixmap = gem_mmap__gtt(drm_fd,
++	dp_conn->test_pattern.pixmap = gem_mmap__device_coherent(drm_fd,
+ 						     dp_conn->test_pattern.fb_pattern.gem_handle,
+-						     dp_conn->test_pattern.fb_pattern.size,
++						     0, dp_conn->test_pattern.fb_pattern.size,
+ 						     PROT_READ | PROT_WRITE);
+ 	if (dp_conn->test_pattern.pixmap == NULL)
+ 		return -1;
+-- 
+2.20.1
 
-gem_ctx_create@active
-gem_ctx_create@forked-active
-gem_ctx_create@hog
-
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
-
-[Documentation] has more details on how to do this.
-
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
-
-Thanks in advance!
-
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-
-Other than that, pipeline status: SUCCESS.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/106112 for the overview.
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/106112
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
