@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 43E956EAB8
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Feb 2020 14:08:33 +0000 (UTC)
-Date: Fri, 7 Feb 2020 16:08:29 +0200
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 40A626FCC4
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Feb 2020 14:19:23 +0000 (UTC)
+Date: Fri, 7 Feb 2020 16:19:19 +0200
 From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20200207140829.GZ13686@intel.com>
-References: <7278cd464aa928fdefb9b4b89df73d3c52fefc42.1581053156.git.ashutosh.dixit@intel.com>
- <20200207135605.GC11460@intel.com>
+Message-ID: <20200207141919.GA13686@intel.com>
+References: <20200128112549.172135-1-daniel.vetter@ffwll.ch>
+ <20200128112549.172135-3-daniel.vetter@ffwll.ch>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200207135605.GC11460@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] kms_fence_pin_leak: check for
- availabile fences
+In-Reply-To: <20200128112549.172135-3-daniel.vetter@ffwll.ch>
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests/kms_fbcon_fbt: Drop master
+ before restoring fbcon
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,41 +23,61 @@ Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ramalingam C <ramalingam.c@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: IGT development <igt-dev@lists.freedesktop.org>, Daniel Vetter <daniel.vetter@intel.com>, Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Feb 07, 2020 at 07:26:06PM +0530, Ramalingam C wrote:
-> On 2020-02-06 at 21:26:52 -0800, Ashutosh Dixit wrote:
-> > Need fences to leak fences.
-> > =
+On Tue, Jan 28, 2020 at 12:25:49PM +0100, Daniel Vetter wrote:
+> fbdev helpers refuse to restore the fbdev screen if there's still a
+> master present. This is to avoid fbcon popping up when a compositor
+> has intentionally disabled all outputs.
+> =
 
-> > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> > ---
-> >  tests/kms_fence_pin_leak.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> > =
+> Unfortunately the kernel had some bugs in this area, and kms_fbcon_fbt
+> relied on those. Result was that fbdev restore was skipped, which
+> skipped the frontbuffer flushing, which broke the PSR subtest's
+> expectation that PSR is always disable when fbdev is enabled. FBC did
+> not get broken because FBC was never enabled on linear framebuffers as
+> used by fbdev.
+> =
 
-> > diff --git a/tests/kms_fence_pin_leak.c b/tests/kms_fence_pin_leak.c
-> > index 8c9e10a56..1ac65e8a1 100644
-> > --- a/tests/kms_fence_pin_leak.c
-> > +++ b/tests/kms_fence_pin_leak.c
-> > @@ -200,6 +200,7 @@ igt_simple_main
-> >  =
+> Fix things up to make sure fbcon gets restored correctly in all cases.
+> =
 
-> >  	data.drm_fd =3D drm_open_driver_master(DRIVER_INTEL);
-> >  	igt_require_gem(data.drm_fd);
-> > +	igt_require(gem_available_fences(data.drm_fd) > 0);
-> >From documentation, seams this gem_available_fences is Only relevant for=
- pre-gen4.
-> after the gen4 we dont use the fences or we can't use this method to get =
-the fence
-> count?
+> Cc: Noralf Tr=F8nnes <noralf@tronnes.org>
+> Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
+> ---
+>  tests/kms_fbcon_fbt.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> =
 
-These days it just returns the total number of fences, so should work
-on everything. There used to be a way userspace could reserve some
-fences for itself (I think for UMS). I believe that's what the
-documentation  is referring to. That stuff got removed years ago.
+> diff --git a/tests/kms_fbcon_fbt.c b/tests/kms_fbcon_fbt.c
+> index 236e09ea1ebd..ed4cccbe743e 100644
+> --- a/tests/kms_fbcon_fbt.c
+> +++ b/tests/kms_fbcon_fbt.c
+> @@ -74,6 +74,8 @@ static void teardown_drm(struct drm_info *drm)
+>  {
+>  	int i;
+>  =
+
+> +	igt_assert_eq(drmDropMaster(drm->fd), 0);
+> +
+
+Aren't we closing the whole fd soonish?
+
+>  	kmstest_restore_vt_mode();
+>  =
+
+>  	for (i =3D 0; i < drm->res->count_connectors; i++)
+> -- =
+
+> 2.24.1
+> =
+
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
 -- =
 
