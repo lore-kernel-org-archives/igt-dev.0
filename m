@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 791606E845
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Feb 2020 03:27:30 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri,  7 Feb 2020 04:27:25 +0100
-Message-Id: <20200207032725.10731-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib/igt_vec: assertion fortification
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 07 Feb 2020 03:52:06 -0000
+Message-ID: <158104752697.8753.15893578687865395684@emeril.freedesktop.org>
+References: <20200207032725.10731-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200207032725.10731-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2ln?=
+ =?utf-8?q?t=5Fvec=3A_assertion_fortification?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,30 +14,113 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RW5zdXJlIG5vIG9uZSB3aWxsIHBhc3MgbmVnYXRpdmUgaW5kZXggb24gaWd0X3ZlYyBiZWNhdXNl
-IGl0IGNvdWxkCmxlYWQgdG8gbWVtb3J5IGNvcnJ1cHRpb25zIGFuZCB3ZWlyZCBwcm9ncmFtIGJl
-aGF2aW9yLgoKU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5r
-ZW1wY3p5bnNraUBpbnRlbC5jb20+CkNjOiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFA
-bGludXguaW50ZWwuY29tPgotLS0KIGxpYi9pZ3RfdmVjLmMgfCA0ICsrLS0KIDEgZmlsZSBjaGFu
-Z2VkLCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2ln
-dF92ZWMuYyBiL2xpYi9pZ3RfdmVjLmMKaW5kZXggNTkxZTU2ZmEuLmM2YmExNjRiIDEwMDY0NAot
-LS0gYS9saWIvaWd0X3ZlYy5jCisrKyBiL2xpYi9pZ3RfdmVjLmMKQEAgLTQxLDcgKzQxLDcgQEAg
-dm9pZCBpZ3RfdmVjX2Zpbmkoc3RydWN0IGlndF92ZWMgKnZlYykKIAogdm9pZCAqaWd0X3ZlY19l
-bGVtKGNvbnN0IHN0cnVjdCBpZ3RfdmVjICp2ZWMsIGludCBpZHgpCiB7Ci0JaWd0X2Fzc2VydChp
-ZHggPCB2ZWMtPmxlbik7CisJaWd0X2Fzc2VydChpZHggPj0gMCAmJiBpZHggPCB2ZWMtPmxlbik7
-CiAKIAlyZXR1cm4gdmVjLT5lbGVtcyArIGlkeCAqIHZlYy0+ZWxlbV9zaXplOwogfQpAQCAtNzks
-NyArNzksNyBAQCBpbnQgaWd0X3ZlY19pbmRleChjb25zdCBzdHJ1Y3QgaWd0X3ZlYyAqdmVjLCB2
-b2lkICplbGVtKQogCiB2b2lkIGlndF92ZWNfcmVtb3ZlKHN0cnVjdCBpZ3RfdmVjICp2ZWMsIGlu
-dCBpZHgpCiB7Ci0JaWd0X2Fzc2VydChpZHggPCB2ZWMtPmxlbik7CisJaWd0X2Fzc2VydChpZHgg
-Pj0gMCAmJiBpZHggPCB2ZWMtPmxlbik7CiAKIAltZW1tb3ZlKGlndF92ZWNfZWxlbSh2ZWMsIGlk
-eCksCiAJCWlndF92ZWNfZWxlbSh2ZWMsIGlkeCArIDEpLAotLSAKMi4yMy4wCgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlz
-dAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9w
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+== Series Details ==
+
+Series: lib/igt_vec: assertion fortification
+URL   : https://patchwork.freedesktop.org/series/73125/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_7882 -> IGTPW_4109
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4109/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4109 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-skl-6770hq:      [PASS][1] -> [FAIL][2] ([i915#178])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7882/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4109/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live_active:
+    - fi-kbl-r:           [PASS][3] -> [DMESG-FAIL][4] ([i915#666])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7882/fi-kbl-r/igt@i915_selftest@live_active.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4109/fi-kbl-r/igt@i915_selftest@live_active.html
+
+  * igt@i915_selftest@live_blt:
+    - fi-hsw-4770:        [PASS][5] -> [DMESG-FAIL][6] ([i915#563])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7882/fi-hsw-4770/igt@i915_selftest@live_blt.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4109/fi-hsw-4770/igt@i915_selftest@live_blt.html
+
+  * igt@i915_selftest@live_gtt:
+    - fi-icl-u3:          [PASS][7] -> [TIMEOUT][8] ([fdo#112271])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7882/fi-icl-u3/igt@i915_selftest@live_gtt.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4109/fi-icl-u3/igt@i915_selftest@live_gtt.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_close_race@basic-threads:
+    - fi-byt-n2820:       [INCOMPLETE][9] ([i915#45]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7882/fi-byt-n2820/igt@gem_close_race@basic-threads.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4109/fi-byt-n2820/igt@gem_close_race@basic-threads.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live_blt:
+    - fi-hsw-4770r:       [DMESG-FAIL][11] ([i915#770]) -> [DMESG-FAIL][12] ([i915#553] / [i915#725])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7882/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4109/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+
+  
+  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
+  [i915#178]: https://gitlab.freedesktop.org/drm/intel/issues/178
+  [i915#45]: https://gitlab.freedesktop.org/drm/intel/issues/45
+  [i915#553]: https://gitlab.freedesktop.org/drm/intel/issues/553
+  [i915#563]: https://gitlab.freedesktop.org/drm/intel/issues/563
+  [i915#666]: https://gitlab.freedesktop.org/drm/intel/issues/666
+  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
+  [i915#770]: https://gitlab.freedesktop.org/drm/intel/issues/770
+
+
+Participating hosts (50 -> 47)
+------------------------------
+
+  Additional (5): fi-bxt-dsi fi-bsw-n3050 fi-gdg-551 fi-bsw-nick fi-snb-2600 
+  Missing    (8): fi-ilk-m540 fi-tgl-dsi fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5423 -> IGTPW_4109
+
+  CI-20190529: 20190529
+  CI_DRM_7882: bc62c7b88481f1c427fed468264ef0674fc1e8ba @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4109: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4109/index.html
+  IGT_5423: 02ef996e76b3bae1c62d6a1298462aba0b7ac51a @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4109/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
