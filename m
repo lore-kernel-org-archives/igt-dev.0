@@ -1,23 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
- [IPv6:2a00:1450:4864:20::444])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F01D6E906
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Feb 2020 08:04:08 +0000 (UTC)
-Received: by mail-wr1-x444.google.com with SMTP id z7so6245628wrl.13
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Feb 2020 00:04:08 -0800 (PST)
-Date: Mon, 10 Feb 2020 09:04:04 +0100
-From: Daniel Vetter <daniel@ffwll.ch>
-Message-ID: <20200210080404.GQ43062@phenom.ffwll.local>
-References: <20200128112549.172135-1-daniel.vetter@ffwll.ch>
- <20200128112549.172135-3-daniel.vetter@ffwll.ch>
- <20200207141919.GA13686@intel.com>
- <20200207152945.GE43062@phenom.ffwll.local>
- <20200207153608.GJ13686@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 129056EBDE
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Feb 2020 10:31:44 +0000 (UTC)
+References: <20191205123113.12611-1-zbigniew.kempczynski@intel.com>
+ <157554961951.22727.15891786065422931889@skylake-alporthouse-com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <f5ebacf0-0c9b-28f8-6138-1933a0ebcaa9@linux.intel.com>
+Date: Mon, 10 Feb 2020 10:31:40 +0000
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200207153608.GJ13686@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tests/kms_fbcon_fbt: Drop master
- before restoring fbcon
+In-Reply-To: <157554961951.22727.15891786065422931889@skylake-alporthouse-com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/i915/gem_mman: Add support for
+ GEM_MMAP_OFFSET ioctl
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,130 +19,38 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Cc: IGT development <igt-dev@lists.freedesktop.org>, Noralf =?iso-8859-1?Q?Tr=F8nnes?= <noralf@tronnes.org>, Daniel Vetter <daniel@ffwll.ch>, Daniel Vetter <daniel.vetter@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>, =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Feb 07, 2020 at 05:36:08PM +0200, Ville Syrj=E4l=E4 wrote:
-> On Fri, Feb 07, 2020 at 04:29:45PM +0100, Daniel Vetter wrote:
-> > On Fri, Feb 07, 2020 at 04:19:19PM +0200, Ville Syrj=E4l=E4 wrote:
-> > > On Tue, Jan 28, 2020 at 12:25:49PM +0100, Daniel Vetter wrote:
-> > > > fbdev helpers refuse to restore the fbdev screen if there's still a
-> > > > master present. This is to avoid fbcon popping up when a compositor
-> > > > has intentionally disabled all outputs.
-> > > > =
-
-> > > > Unfortunately the kernel had some bugs in this area, and kms_fbcon_=
-fbt
-> > > > relied on those. Result was that fbdev restore was skipped, which
-> > > > skipped the frontbuffer flushing, which broke the PSR subtest's
-> > > > expectation that PSR is always disable when fbdev is enabled. FBC d=
-id
-> > > > not get broken because FBC was never enabled on linear framebuffers=
- as
-> > > > used by fbdev.
-> > > > =
-
-> > > > Fix things up to make sure fbcon gets restored correctly in all cas=
-es.
-> > > > =
-
-> > > > Cc: Noralf Tr=F8nnes <noralf@tronnes.org>
-> > > > Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-> > > > ---
-> > > >  tests/kms_fbcon_fbt.c | 2 ++
-> > > >  1 file changed, 2 insertions(+)
-> > > > =
-
-> > > > diff --git a/tests/kms_fbcon_fbt.c b/tests/kms_fbcon_fbt.c
-> > > > index 236e09ea1ebd..ed4cccbe743e 100644
-> > > > --- a/tests/kms_fbcon_fbt.c
-> > > > +++ b/tests/kms_fbcon_fbt.c
-> > > > @@ -74,6 +74,8 @@ static void teardown_drm(struct drm_info *drm)
-> > > >  {
-> > > >  	int i;
-> > > >  =
-
-> > > > +	igt_assert_eq(drmDropMaster(drm->fd), 0);
-> > > > +
-> > > =
-
-> > > Aren't we closing the whole fd soonish?
-> > =
-
-> > Yeah, but after the vt switch, which I think is too late (proof still
-> > waiting for CI). I guess I could have moved the close up too, but I
-> > figured trying to implement proper vt switching a bit more closely yiel=
-ds
-> > the better test.
-> > =
-
-> > Could also be that I'm totally misinterpreting what's going on here with
-> > my kernel patch series.
-> =
-
-> I can buy that the close after vt switch somehow doesn't do the
-> same thing as swapping them around. At least can't see any possible
-> harm from this (other than not testing close-after-vt-switch), so
-
-CI results came back, this indeed fixes the regression that held up
-Noralf's original idea, so whatever the theory, the practice works out :-)
-
-> Reviewed-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-
-Thanks for taking a look at these, all pushed.
--Daniel
-
-> =
-
-> > -Daniel
-> > =
-
-> > > =
-
-> > > >  	kmstest_restore_vt_mode();
-> > > >  =
-
-> > > >  	for (i =3D 0; i < drm->res->count_connectors; i++)
-> > > > -- =
-
-> > > > 2.24.1
-> > > > =
-
-> > > > _______________________________________________
-> > > > igt-dev mailing list
-> > > > igt-dev@lists.freedesktop.org
-> > > > https://lists.freedesktop.org/mailman/listinfo/igt-dev
-> > > =
-
-> > > -- =
-
-> > > Ville Syrj=E4l=E4
-> > > Intel
-> > =
-
-> > -- =
-
-> > Daniel Vetter
-> > Software Engineer, Intel Corporation
-> > http://blog.ffwll.ch
-> =
-
-> -- =
-
-> Ville Syrj=E4l=E4
-> Intel
-
--- =
-
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Ck9uIDA1LzEyLzIwMTkgMTI6NDAsIENocmlzIFdpbHNvbiB3cm90ZToKPiBRdW90aW5nIFpiaWdu
+aWV3IEtlbXBjennFhHNraSAoMjAxOS0xMi0wNSAxMjozMToxMykKPj4gV2l0aCBpbnRyb2R1Y3Rp
+b24gb2YgbmV3IGtlcm5lbCBpb2N0bCB3ZSBuZWVkIHRvIGNvdmVyIHRoaXMgaW4KPj4gdGhlIElH
+VCdzLiBQYXRjaCBhZGRzIG1tYXAgZnVuY3Rpb25zIGFwcHJvcHJpYXRlIGZvciB0aGlzLgo+Pgo+
+PiBTaWduZWQtb2ZmLWJ5OiBMdWthc3ogS2FsYW1hcnogPGx1a2Fzei5rYWxhbWFyekBpbnRlbC5j
+b20+Cj4+IFNpZ25lZC1vZmYtYnk6IEFudG9uaW8gQXJnZW56aWFubyA8YW50b25pby5hcmdlbnpp
+YW5vQGludGVsLmNvbT4KPj4gU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6
+Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Cj4+IENjOiBDaHJpcyBXaWxzb24gPGNocmlz
+QGNocmlzLXdpbHNvbi5jby51az4KPiAKPiBEbyB3ZSByZWFsbHkgaGF2ZSBwZW9wbGUgb3V0c2lk
+ZSBvZiBnZW1fbW1hcF93Yy5jIGFuZCBnZW1fbW1hcF9vZmZzZXQuYwo+IHRoYXQgY2FyZSB3aGV0
+aGVyIHRoZWlyIFdDL1dCIG1tYXBwaW5nIGlzIHByb3ZpZGVkIGJ5IE1NQVBfT0ZGU0VUX0lPQ1RM
+Cj4gb3IgTU1BUF9JT0NUTC4gVGhleSBqdXN0IGV4cGVjdCBpdCB0byB3b3JrLCBJIHdvdWxkIGhh
+dmUgdGhvdWdodCAtLQo+IGJhc2ljYWxseSBqdXN0IGdlbV9tbWFwX19kZXZpY2VfY29oZXJlbnQg
+KGFuZCBtYXliZSB0aGUgYWx0ZXJuYXRpdmUgd291bGQKPiBiZSBnZW1fbW1hcF9fY2FjaGVfY29o
+ZXJlbnQsIGRvbid0IHF1b3RlIG1lIG9uIHRoYXQgOikKPiAKPiBJdCdzIG5vdCBhIGh1Z2UgZGVh
+bCwgSSB0aGluayBpdCBmYWxscyB1bmRlciBvdmVyZW5naW5lZXJpbmcgdGhhdCB3aWxsCj4gc2lt
+cGx5IGxlYWQgdG8gY29uZnVzaW9uIG9mICJ3aGVuIGRvIEkgdXNlIG9uZSBhbmQgbm90IHRoZSBv
+dGhlcj8iCgpXaGF0IHNoYWxsIHdlIGRvIHdpdGggY2FsbCBzaXRlcyB3aGljaCB1c2VkIHRvIGRv
+OgoKICAgZ2VtX21tYXBfX2d0dCgpCiAgIGdldF9zZXRfZG9tYWluKEdUVCkKCkFuZCBub3cgZG86
+CgogICBnZW1fbW1hcF9fZGV2aWNlX2NvaGVyZW50KCkKICAgZ2VtX3NldF9kb21haW4oR1RUKQoK
+PwoKU291bmRzIGxpa2Ugd2UgbmVlZCBhIGhlbHBlciB0byBlaXRoZXIgbGV0cyB0aGUgY2FsbGVy
+IGtub3cgd2hpY2ggCmZsYXZvdXIgb2YgbW1hcCB3YXMgdXNlZCBzbyBjb3JyZWN0IGZsdXNoaW5n
+IGNhbiBiZSBkb25lLCBvciBhIApzeW5jaHJvbm91cyBoZWxwZXIgd2hlcmUgcG9zc2libGUgc291
+bmRzIG11Y2ggZWFzaWVyOgoKICAgZ2VtX21tYXBfX2RldmljZV9jb2hlcmVudF9zeW5jKCkgLSBk
+b2VzIHRoZSBjb3JyZWN0IHNldF9kb21haW4gaW50ZXJuYWxseQoKUmVnYXJkcywKClR2cnRrbwoK
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYg
+bWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMu
+ZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
