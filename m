@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 961646E247
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Feb 2020 22:13:32 +0000 (UTC)
+Date: Mon, 10 Feb 2020 14:13:31 -0800
+From: Matt Roper <matthew.d.roper@intel.com>
+Message-ID: <20200210221331.GN232048@mdroper-desk1.amr.corp.intel.com>
+References: <20200207191524.19362-1-imre.deak@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 10 Feb 2020 21:49:59 -0000
-Message-ID: <158137139979.3100.6851578016229855633@emeril.freedesktop.org>
-References: <20200210210016.2886-1-antonio.argenziano@intel.com>
-In-Reply-To: <20200210210016.2886-1-antonio.argenziano@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/gem=5Fexec=5Fbalancer=3A_Skip_the_test_if_no_perf_engines_?=
- =?utf-8?q?are_available?=
+Content-Disposition: inline
+In-Reply-To: <20200207191524.19362-1-imre.deak@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/8] lib/igt_draw: Refactor get_tiling
+ calls
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,137 +18,285 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Antonio Argenziano <antonio.argenziano@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Imre Deak <imre.deak@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Fri, Feb 07, 2020 at 09:15:17PM +0200, Imre Deak wrote:
+> From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
+> 
+> Simplify the number of places from which gem_get_tiling method is called
+> and call it only if the device has support in hardware for tiling.
+> 
+> v2:
+> - Use gem_available_fences() to check for HW detiling.
+> 
+> Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
+> Signed-off-by: Imre Deak <imre.deak@intel.com>
+> ---
+>  lib/igt_draw.c                   | 56 +++++++++++++++++---------------
+>  lib/igt_draw.h                   |  5 +--
+>  tests/kms_frontbuffer_tracking.c |  8 +++--
+>  3 files changed, 37 insertions(+), 32 deletions(-)
+> 
+> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+> index 6950bc49..d227a53a 100644
+> --- a/lib/igt_draw.c
+> +++ b/lib/igt_draw.c
+> @@ -333,20 +333,19 @@ static void draw_rect_ptr_tiled(void *ptr, uint32_t stride, uint32_t tiling,
+>  }
+>  
+>  static void draw_rect_mmap_cpu(int fd, struct buf_data *buf, struct rect *rect,
+> -			       uint32_t color)
+> +			       uint32_t tiling, uint32_t swizzle, uint32_t color)
+>  {
+>  	uint32_t *ptr;
+> -	uint32_t tiling, swizzle;
+>  
+>  	gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_CPU,
+>  		       I915_GEM_DOMAIN_CPU);
+> -	igt_require(gem_get_tiling(fd, buf->handle, &tiling, &swizzle));
+>  
+>  	/* We didn't implement suport for the older tiling methods yet. */
+>  	if (tiling != I915_TILING_NONE)
+>  		igt_require(intel_gen(intel_get_drm_devid(fd)) >= 5);
+>  
+> -	ptr = gem_mmap__cpu(fd, buf->handle, 0, PAGE_ALIGN(buf->size), 0);
+> +	ptr = gem_mmap__cpu(fd, buf->handle, 0, PAGE_ALIGN(buf->size),
+> +			    PROT_READ | PROT_WRITE);
 
-Series: tests/i915/gem_exec_balancer: Skip the test if no perf engines are available
-URL   : https://patchwork.freedesktop.org/series/73257/
-State : success
+This change doesn't seem to be related to the main purpose of this
+patch?
 
-== Summary ==
+>  
+>  	switch (tiling) {
+>  	case I915_TILING_NONE:
+> @@ -384,14 +383,12 @@ static void draw_rect_mmap_gtt(int fd, struct buf_data *buf, struct rect *rect,
+>  }
+>  
+>  static void draw_rect_mmap_wc(int fd, struct buf_data *buf, struct rect *rect,
+> -			      uint32_t color)
+> +			      uint32_t tiling, uint32_t swizzle, uint32_t color)
+>  {
+>  	uint32_t *ptr;
+> -	uint32_t tiling, swizzle;
+>  
+>  	gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
+>  		       I915_GEM_DOMAIN_GTT);
+> -	igt_require(gem_get_tiling(fd, buf->handle, &tiling, &swizzle));
+>  
+>  	/* We didn't implement suport for the older tiling methods yet. */
+>  	if (tiling != I915_TILING_NONE)
+> @@ -495,12 +492,9 @@ static void draw_rect_pwrite_tiled(int fd, struct buf_data *buf,
+>  }
+>  
+>  static void draw_rect_pwrite(int fd, struct buf_data *buf,
+> -			     struct rect *rect, uint32_t color)
+> +			     struct rect *rect, uint32_t tiling,
+> +			     uint32_t swizzle, uint32_t color)
+>  {
+> -	uint32_t tiling, swizzle;
+> -
+> -	igt_require(gem_get_tiling(fd, buf->handle, &tiling, &swizzle));
+> -
+>  	switch (tiling) {
+>  	case I915_TILING_NONE:
+>  		draw_rect_pwrite_untiled(fd, buf, rect, color);
+> @@ -517,6 +511,7 @@ static void draw_rect_pwrite(int fd, struct buf_data *buf,
+>  
+>  static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+>  			  struct buf_data *buf, struct rect *rect,
+> +			  uint32_t tiling, uint32_t swizzle,
+>  			  uint32_t color)
+>  {
+>  	drm_intel_bo *dst;
+> @@ -524,11 +519,8 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+>  	int blt_cmd_len, blt_cmd_tiling, blt_cmd_depth;
+>  	uint32_t devid = intel_get_drm_devid(fd);
+>  	int gen = intel_gen(devid);
+> -	uint32_t tiling, swizzle;
+>  	int pitch;
+>  
+> -	igt_require(gem_get_tiling(fd, buf->handle, &tiling, &swizzle));
+> -
+>  	dst = gem_handle_to_libdrm_bo(cmd_data->bufmgr, fd, "", buf->handle);
+>  	igt_assert(dst);
+>  
+> @@ -574,6 +566,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+>  
+>  static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+>  			     struct buf_data *buf, struct rect *rect,
+> +			     uint32_t tiling, uint32_t swizzle,
+>  			     uint32_t color)
+>  {
+>  	drm_intel_bo *src, *dst;
+> @@ -581,21 +574,18 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+>  	igt_render_copyfunc_t rendercopy = igt_get_render_copyfunc(devid);
+>  	struct igt_buf src_buf = {}, dst_buf = {};
+>  	struct intel_batchbuffer *batch;
+> -	uint32_t tiling, swizzle;
+>  	struct buf_data tmp;
+>  	int pixel_size = buf->bpp / 8;
+>  
+>  	igt_skip_on(!rendercopy);
+>  
+> -	igt_require(gem_get_tiling(fd, buf->handle, &tiling, &swizzle));
+> -
+>  	/* We create a temporary buffer and copy from it using rendercopy. */
+>  	tmp.size = rect->w * rect->h * pixel_size;
+>  	tmp.handle = gem_create(fd, tmp.size);
+>  	tmp.stride = rect->w * pixel_size;
+>  	tmp.bpp = buf->bpp;
+>  	draw_rect_mmap_cpu(fd, &tmp, &(struct rect){0, 0, rect->w, rect->h},
+> -			   color);
+> +			   I915_TILING_NONE, I915_BIT_6_SWIZZLE_NONE, color);
+>  
+>  	src = gem_handle_to_libdrm_bo(cmd_data->bufmgr, fd, "", tmp.handle);
+>  	igt_assert(src);
+> @@ -647,9 +637,12 @@ static void draw_rect_render(int fd, struct cmd_data *cmd_data,
+>   */
+>  void igt_draw_rect(int fd, drm_intel_bufmgr *bufmgr, drm_intel_context *context,
+>  		   uint32_t buf_handle, uint32_t buf_size, uint32_t buf_stride,
+> -		   enum igt_draw_method method, int rect_x, int rect_y,
+> -		   int rect_w, int rect_h, uint32_t color, int bpp)
+> +		   uint32_t tiling, enum igt_draw_method method,
 
-CI Bug Log - changes from CI_DRM_7903 -> IGTPW_4122
-====================================================
+The new tiling parameter should probably be captured in the kerneldoc
+right above this function.
 
-Summary
--------
+> +		   int rect_x, int rect_y, int rect_w, int rect_h,
+> +		   uint32_t color, int bpp)
+>  {
+> +	uint32_t buf_tiling, swizzle;
+> +
+>  	struct cmd_data cmd_data = {
+>  		.bufmgr = bufmgr,
+>  		.context = context,
+> @@ -667,24 +660,32 @@ void igt_draw_rect(int fd, drm_intel_bufmgr *bufmgr, drm_intel_context *context,
+>  		.h = rect_h,
+>  	};
+>  
+> +	swizzle = I915_BIT_6_SWIZZLE_NONE;
+> +	if (tiling != I915_TILING_NONE && gem_available_fences(fd)) {
+> +		gem_get_tiling(fd, buf_handle, &buf_tiling, &swizzle);
+> +		igt_assert(tiling == buf_tiling);
+> +	}
+> +
+>  	switch (method) {
+>  	case IGT_DRAW_MMAP_CPU:
+> -		draw_rect_mmap_cpu(fd, &buf, &rect, color);
+> +		draw_rect_mmap_cpu(fd, &buf, &rect, tiling, swizzle, color);
+>  		break;
+>  	case IGT_DRAW_MMAP_GTT:
+>  		draw_rect_mmap_gtt(fd, &buf, &rect, color);
+>  		break;
+>  	case IGT_DRAW_MMAP_WC:
+> -		draw_rect_mmap_wc(fd, &buf, &rect, color);
+> +		draw_rect_mmap_wc(fd, &buf, &rect, tiling, swizzle, color);
+>  		break;
+>  	case IGT_DRAW_PWRITE:
+> -		draw_rect_pwrite(fd, &buf, &rect, color);
+> +		draw_rect_pwrite(fd, &buf, &rect, tiling, swizzle, color);
+>  		break;
+>  	case IGT_DRAW_BLT:
+> -		draw_rect_blt(fd, &cmd_data, &buf, &rect, color);
+> +		draw_rect_blt(fd, &cmd_data, &buf, &rect, tiling, swizzle,
+> +			      color);
+>  		break;
+>  	case IGT_DRAW_RENDER:
+> -		draw_rect_render(fd, &cmd_data, &buf, &rect, color);
+> +		draw_rect_render(fd, &cmd_data, &buf, &rect, tiling, swizzle,
+> +				 color);
+>  		break;
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4122/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4122 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live_blt:
-    - fi-hsw-4770r:       [PASS][1] -> [DMESG-FAIL][2] ([i915#770])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7903/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4122/fi-hsw-4770r/igt@i915_selftest@live_blt.html
-
-  * igt@i915_selftest@live_execlists:
-    - fi-icl-y:           [PASS][3] -> [DMESG-FAIL][4] ([fdo#108569])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7903/fi-icl-y/igt@i915_selftest@live_execlists.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4122/fi-icl-y/igt@i915_selftest@live_execlists.html
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-hsw-4770:        [PASS][5] -> [DMESG-FAIL][6] ([i915#722])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7903/fi-hsw-4770/igt@i915_selftest@live_gem_contexts.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4122/fi-hsw-4770/igt@i915_selftest@live_gem_contexts.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-7500u:       [PASS][7] -> [FAIL][8] ([fdo#111407])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7903/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4122/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live_blt:
-    - fi-ivb-3770:        [DMESG-FAIL][9] ([i915#725]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7903/fi-ivb-3770/igt@i915_selftest@live_blt.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4122/fi-ivb-3770/igt@i915_selftest@live_blt.html
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-cfl-8700k:       [DMESG-FAIL][11] ([i915#623]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7903/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4122/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
-    - fi-byt-n2820:       [DMESG-FAIL][13] ([i915#1052]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7903/fi-byt-n2820/igt@i915_selftest@live_gem_contexts.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4122/fi-byt-n2820/igt@i915_selftest@live_gem_contexts.html
-    - fi-cfl-guc:         [INCOMPLETE][15] ([CI#80] / [fdo#106070] / [i915#424]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7903/fi-cfl-guc/igt@i915_selftest@live_gem_contexts.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4122/fi-cfl-guc/igt@i915_selftest@live_gem_contexts.html
-    - fi-cml-s:           [DMESG-FAIL][17] ([i915#877]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7903/fi-cml-s/igt@i915_selftest@live_gem_contexts.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4122/fi-cml-s/igt@i915_selftest@live_gem_contexts.html
-
-  * igt@i915_selftest@live_gtt:
-    - fi-bdw-5557u:       [TIMEOUT][19] ([fdo#112271]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7903/fi-bdw-5557u/igt@i915_selftest@live_gtt.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4122/fi-bdw-5557u/igt@i915_selftest@live_gtt.html
-
-  
-#### Warnings ####
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - fi-kbl-guc:         [SKIP][21] ([fdo#109271]) -> [FAIL][22] ([i915#138])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7903/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4122/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  
-  [CI#80]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/80
-  [fdo#106070]: https://bugs.freedesktop.org/show_bug.cgi?id=106070
-  [fdo#108569]: https://bugs.freedesktop.org/show_bug.cgi?id=108569
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#1052]: https://gitlab.freedesktop.org/drm/intel/issues/1052
-  [i915#138]: https://gitlab.freedesktop.org/drm/intel/issues/138
-  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
-  [i915#623]: https://gitlab.freedesktop.org/drm/intel/issues/623
-  [i915#722]: https://gitlab.freedesktop.org/drm/intel/issues/722
-  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
-  [i915#770]: https://gitlab.freedesktop.org/drm/intel/issues/770
-  [i915#877]: https://gitlab.freedesktop.org/drm/intel/issues/877
+Blt and render draws don't use the swizzle parameter.  If the goal is to
+keep a consistent parameter list for all these functions, we should
+probably add tiling & swizzle to the gtt map function, even though they
+won't be used; otherwise we can drop the swizzle parameter from these
+two.
 
 
-Participating hosts (47 -> 43)
-------------------------------
+Matt
 
-  Additional (2): fi-hsw-peppy fi-gdg-551 
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-bsw-n3050 fi-byt-squawks fi-byt-clapper fi-bdw-samus 
+>  	default:
+>  		igt_assert(false);
+> @@ -715,7 +716,8 @@ void igt_draw_rect_fb(int fd, drm_intel_bufmgr *bufmgr,
+>  		      int rect_w, int rect_h, uint32_t color)
+>  {
+>  	igt_draw_rect(fd, bufmgr, context, fb->gem_handle, fb->size, fb->strides[0],
+> -		      method, rect_x, rect_y, rect_w, rect_h, color,
+> +		      igt_fb_mod_to_tiling(fb->modifier), method,
+> +		      rect_x, rect_y, rect_w, rect_h, color,
+>  		      igt_drm_format_to_bpp(fb->drm_format));
+>  }
+>  
+> diff --git a/lib/igt_draw.h b/lib/igt_draw.h
+> index b030131e..ec146754 100644
+> --- a/lib/igt_draw.h
+> +++ b/lib/igt_draw.h
+> @@ -52,8 +52,9 @@ const char *igt_draw_get_method_name(enum igt_draw_method method);
+>  
+>  void igt_draw_rect(int fd, drm_intel_bufmgr *bufmgr, drm_intel_context *context,
+>  		   uint32_t buf_handle, uint32_t buf_size, uint32_t buf_stride,
+> -		   enum igt_draw_method method, int rect_x, int rect_y,
+> -		   int rect_w, int rect_h, uint32_t color, int bpp);
+> +		   uint32_t tiling, enum igt_draw_method method,
+> +		   int rect_x, int rect_y, int rect_w, int rect_h,
+> +		   uint32_t color, int bpp);
+>  
+>  void igt_draw_rect_fb(int fd, drm_intel_bufmgr *bufmgr,
+>  		      drm_intel_context *context, struct igt_fb *fb,
+> diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
+> index 2c765c34..9c2c3a5d 100644
+> --- a/tests/kms_frontbuffer_tracking.c
+> +++ b/tests/kms_frontbuffer_tracking.c
+> @@ -291,6 +291,7 @@ struct {
+>  	int height;
+>  	uint32_t color;
+>  	int bpp;
+> +	uint32_t tiling;
+>  } busy_thread = {
+>  	.stop = true,
+>  };
+> @@ -1126,9 +1127,9 @@ static void *busy_thread_func(void *data)
+>  	while (!busy_thread.stop)
+>  		igt_draw_rect(drm.fd, drm.bufmgr, NULL, busy_thread.handle,
+>  			      busy_thread.size, busy_thread.stride,
+> -			      IGT_DRAW_BLT, 0, 0, busy_thread.width,
+> -			      busy_thread.height, busy_thread.color,
+> -			      busy_thread.bpp);
+> +			      busy_thread.tiling, IGT_DRAW_BLT, 0, 0,
+> +			      busy_thread.width, busy_thread.height,
+> +			      busy_thread.color, busy_thread.bpp);
+>  
+>  	pthread_exit(0);
+>  }
+> @@ -1146,6 +1147,7 @@ static void start_busy_thread(struct igt_fb *fb)
+>  	busy_thread.height = fb->height;
+>  	busy_thread.color = pick_color(fb, COLOR_PRIM_BG);
+>  	busy_thread.bpp = igt_drm_format_to_bpp(fb->drm_format);
+> +	busy_thread.tiling = igt_fb_mod_to_tiling(fb->modifier);
+>  
+>  	rc = pthread_create(&busy_thread.thread, NULL, busy_thread_func, NULL);
+>  	igt_assert_eq(rc, 0);
+> -- 
+> 2.23.1
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5433 -> IGTPW_4122
-
-  CI-20190529: 20190529
-  CI_DRM_7903: 47b768c475f4a11a48bc43e6228660f8b26a542b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4122: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4122/index.html
-  IGT_5433: 6a96c17f3a1b4e1f90b1a0b0ce42a7219875d1a4 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4122/index.html
+-- 
+Matt Roper
+Graphics Software Engineer
+VTT-OSGC Platform Enablement
+Intel Corporation
+(916) 356-2795
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
