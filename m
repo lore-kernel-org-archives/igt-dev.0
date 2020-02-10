@@ -1,21 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E083B6EBE4
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Feb 2020 10:55:51 +0000 (UTC)
-References: <20191205123113.12611-1-zbigniew.kempczynski@intel.com>
- <157554961951.22727.15891786065422931889@skylake-alporthouse-com>
- <f5ebacf0-0c9b-28f8-6138-1933a0ebcaa9@linux.intel.com>
- <158133105747.7442.15779188234974396545@skylake-alporthouse-com>
- <77905490-e665-f501-c246-9ff3b20a8020@linux.intel.com>
- <158133184057.7442.7413967140789251418@skylake-alporthouse-com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <3083c08e-9713-3c80-6853-97d42a936adc@linux.intel.com>
-Date: Mon, 10 Feb 2020 10:55:47 +0000
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 289636EBE4
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Feb 2020 10:56:59 +0000 (UTC)
+From: Petri Latvala <petri.latvala@intel.com>
+Date: Mon, 10 Feb 2020 12:56:53 +0200
+Message-Id: <20200210105653.20323-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <158133184057.7442.7413967140789251418@skylake-alporthouse-com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/i915/gem_mman: Add support for
- GEM_MMAP_OFFSET ioctl
+Subject: [igt-dev] [PATCH i-g-t] runner: Print an error message if resume
+ fails to load data
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,56 +15,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Ck9uIDEwLzAyLzIwMjAgMTA6NTAsIENocmlzIFdpbHNvbiB3cm90ZToKPiBRdW90aW5nIFR2cnRr
-byBVcnN1bGluICgyMDIwLTAyLTEwIDEwOjQ3OjIzKQo+Pgo+PiBPbiAxMC8wMi8yMDIwIDEwOjM3
-LCBDaHJpcyBXaWxzb24gd3JvdGU6Cj4+PiBRdW90aW5nIFR2cnRrbyBVcnN1bGluICgyMDIwLTAy
-LTEwIDEwOjMxOjQwKQo+Pj4+Cj4+Pj4gT24gMDUvMTIvMjAxOSAxMjo0MCwgQ2hyaXMgV2lsc29u
-IHdyb3RlOgo+Pj4+PiBRdW90aW5nIFpiaWduaWV3IEtlbXBjennFhHNraSAoMjAxOS0xMi0wNSAx
-MjozMToxMykKPj4+Pj4+IFdpdGggaW50cm9kdWN0aW9uIG9mIG5ldyBrZXJuZWwgaW9jdGwgd2Ug
-bmVlZCB0byBjb3ZlciB0aGlzIGluCj4+Pj4+PiB0aGUgSUdUJ3MuIFBhdGNoIGFkZHMgbW1hcCBm
-dW5jdGlvbnMgYXBwcm9wcmlhdGUgZm9yIHRoaXMuCj4+Pj4+Pgo+Pj4+Pj4gU2lnbmVkLW9mZi1i
-eTogTHVrYXN6IEthbGFtYXJ6IDxsdWthc3oua2FsYW1hcnpAaW50ZWwuY29tPgo+Pj4+Pj4gU2ln
-bmVkLW9mZi1ieTogQW50b25pbyBBcmdlbnppYW5vIDxhbnRvbmlvLmFyZ2Vuemlhbm9AaW50ZWwu
-Y29tPgo+Pj4+Pj4gU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmll
-dy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Cj4+Pj4+PiBDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0Bj
-aHJpcy13aWxzb24uY28udWs+Cj4+Pj4+Cj4+Pj4+IERvIHdlIHJlYWxseSBoYXZlIHBlb3BsZSBv
-dXRzaWRlIG9mIGdlbV9tbWFwX3djLmMgYW5kIGdlbV9tbWFwX29mZnNldC5jCj4+Pj4+IHRoYXQg
-Y2FyZSB3aGV0aGVyIHRoZWlyIFdDL1dCIG1tYXBwaW5nIGlzIHByb3ZpZGVkIGJ5IE1NQVBfT0ZG
-U0VUX0lPQ1RMCj4+Pj4+IG9yIE1NQVBfSU9DVEwuIFRoZXkganVzdCBleHBlY3QgaXQgdG8gd29y
-aywgSSB3b3VsZCBoYXZlIHRob3VnaHQgLS0KPj4+Pj4gYmFzaWNhbGx5IGp1c3QgZ2VtX21tYXBf
-X2RldmljZV9jb2hlcmVudCAoYW5kIG1heWJlIHRoZSBhbHRlcm5hdGl2ZSB3b3VsZAo+Pj4+PiBi
-ZSBnZW1fbW1hcF9fY2FjaGVfY29oZXJlbnQsIGRvbid0IHF1b3RlIG1lIG9uIHRoYXQgOikKPj4+
-Pj4KPj4+Pj4gSXQncyBub3QgYSBodWdlIGRlYWwsIEkgdGhpbmsgaXQgZmFsbHMgdW5kZXIgb3Zl
-cmVuZ2luZWVyaW5nIHRoYXQgd2lsbAo+Pj4+PiBzaW1wbHkgbGVhZCB0byBjb25mdXNpb24gb2Yg
-IndoZW4gZG8gSSB1c2Ugb25lIGFuZCBub3QgdGhlIG90aGVyPyIKPj4+Pgo+Pj4+IFdoYXQgc2hh
-bGwgd2UgZG8gd2l0aCBjYWxsIHNpdGVzIHdoaWNoIHVzZWQgdG8gZG86Cj4+Pj4KPj4+PiAgICAg
-IGdlbV9tbWFwX19ndHQoKQo+Pj4+ICAgICAgZ2V0X3NldF9kb21haW4oR1RUKQo+Pj4+Cj4+Pj4g
-QW5kIG5vdyBkbzoKPj4+Pgo+Pj4+ICAgICAgZ2VtX21tYXBfX2RldmljZV9jb2hlcmVudCgpCj4+
-Pj4gICAgICBnZW1fc2V0X2RvbWFpbihHVFQpCj4+Pj4KPj4+PiA/Cj4+Pgo+Pj4gRm9yIHRoZSBs
-YXJnZSBwYXJ0IGl0J3MgaW1tYXRlcmlhbC4gVGhlIHN1YnRseSBpcyBvbmx5IHdoZW4gbWl4aW5n
-IEdFTQo+Pj4gb3BlcmF0aW9ucyBvbiB0aGUgc2FtZSBidWZmZXIgd2l0aGluIHRoZSBzYW1lIGNy
-aXRpY2FsIHNlY3Rpb24uCj4+Pgo+Pj4+IFNvdW5kcyBsaWtlIHdlIG5lZWQgYSBoZWxwZXIgdG8g
-ZWl0aGVyIGxldHMgdGhlIGNhbGxlciBrbm93IHdoaWNoCj4+Pj4gZmxhdm91ciBvZiBtbWFwIHdh
-cyB1c2VkIHNvIGNvcnJlY3QgZmx1c2hpbmcgY2FuIGJlIGRvbmUsIG9yIGEKPj4+PiBzeW5jaHJv
-bm91cyBoZWxwZXIgd2hlcmUgcG9zc2libGUgc291bmRzIG11Y2ggZWFzaWVyOgo+Pj4+Cj4+Pj4g
-ICAgICBnZW1fbW1hcF9fZGV2aWNlX2NvaGVyZW50X3N5bmMoKSAtIGRvZXMgdGhlIGNvcnJlY3Qg
-c2V0X2RvbWFpbiBpbnRlcm5hbGx5Cj4+Pgo+Pj4gZ2VtX21tYXBfX2RldmljZV9jb2hlcmVudF9k
-b21haW4oKSB0byByZXR1cm4gdGhlIGRvbWFpbiBhbmQgc3luYyB0byByb2xsCj4+PiB1cCB0aGUg
-Y29tbW9uIGFjdGlvbnMgaW50byBvbmUgKHRob3VnaCBJJ20gbm90IGZvbmQgb2YgaGlkaW5nIHN1
-YnRsZQo+Pj4gZGV0YWlscyBpbiBoZWxwZXJzIHdoZW4gdGhlIHRlc3RzIGFyZSBtZWFudCB0byBi
-ZSBleGVyY2lzaW5nIHRob3NlCj4+PiBzdWJ0bGUgZGV0YWlscyA6KAo+Pgo+PiBTbyBnZW1fbW1h
-cF9fZGV2aWNlX2NvaGVyZW50X2RvbWFpbiBjYWxscyB0aGUgc2V0X2RvbWFpbiwgbm90IGp1c3QK
-Pj4gcmV0dXJucyB0aGUgbmVlZGVkIGRvbWFpbj8KPiAKPiBJIHdvdWxkIHNheSByZXR1cm5zIHRo
-ZSBkb21haW4sIHdpdGggX3N5bmMgYmVpbmcgdGhlIGhlbHBlciB0aGF0IG1tYXBzCj4gKyBzZXQt
-ZG9tYWluIGluIG9uZS4KClNvdW5kcyBnb29kIHRvIG1lLgoKU3JlZWRoYXIgY291bGQgeW91IHNr
-ZXRjaCB0aGlzIGFuZCBjb252ZXJ0IGdlbV9jdHhfc2hhcmVkIGFzIGFuIGV4YW1wbGU/CgpSZWdh
-cmRzLAoKVHZydGtvCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
-dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+If metadata.txt or other vital data files are missing from a
+results-directory, igt_resume silently exited. Print an error message
+to the user so it's somewhat clear why we didn't resume the
+execution.
+
+Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/69
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>
+Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+---
+ runner/resume.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/runner/resume.c b/runner/resume.c
+index d5a20e80..08129ffb 100644
+--- a/runner/resume.c
++++ b/runner/resume.c
+@@ -32,10 +32,12 @@ int main(int argc, char **argv)
+ 	}
+ 
+ 	if (!initialize_execute_state_from_resume(dirfd, &state, &settings, &job_list)) {
++		fprintf(stderr, "Failure reading data from %s\n", argv[1]);
+ 		return 1;
+ 	}
+ 
+ 	if (!execute(&state, &settings, &job_list)) {
++		fprintf(stderr, "Executing tests failed, stopping.\n");
+ 		exitcode = 1;
+ 	}
+ 
+-- 
+2.20.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
