@@ -1,90 +1,115 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-Date: Tue, 11 Feb 2020 02:42:55 +0200
-From: Andi Shyti <andi@etezian.org>
-Message-ID: <20200211004255.GA2535@jack.zhora.eu>
-References: <20200211003742.863630-1-chris@chris-wilson.co.uk>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: Dale B Stimson <dale.b.stimson@intel.com>
+Date: Mon, 10 Feb 2020 16:46:10 -0800
+Message-Id: <cover.1581381780.git.dale.b.stimson@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200211003742.863630-1-chris@chris-wilson.co.uk>
-Subject: Re: [Intel-gfx] [PATCH i-g-t] i915/gem_exec_nop: Keep a copy of the
- names
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Subject: [igt-dev] [PATCH i-g-t 0/3] mmio_base via debugfs infrastructure +
+ gem_ctx_isolation
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Chris,
+This patch series provides infrastructure to allow determination of i915
+per-engine mmio_base (which is otherwise sometimes hard to get).  The provided
+method uses debugfs mmio_base information if present.  Otherwise, a default
+determination is provided when possible.  Also, gem_ctx_isolation is modified
+to use the new infrastructure.
 
-On Tue, Feb 11, 2020 at 12:37:42AM +0000, Chris Wilson wrote:
-> The engine names are now stored inside the iterator and not as static
-> strings. If we wish to use them later, we need to make a copy.
+For example, on TGL, gem_ctx_isolation (without these or similar changes)
+will fail for subtests that use engine vcs1.
 
-But we are not using them later. Your patch just copies and frees
-an array.
+The patches in this series are as they are intended to be submitted (subject
+to comments), except I would like to squash the two gem_ctx_isolation
+"relative registers" patches into one (as discussed below).  Also, function
+gem_engine_mmio_base_info_dump() could be removed.
 
-Is there a follow-up?
+On 2020-01-27, Chris wilson sent to the ML:
+  [igt-dev] [PATCH i-g-t 1/5] i915: Start putting the mmio_base to wider use
+  [igt-dev] [PATCH i-g-t 2/5] i915/gem_ctx_isolation: Check engine relative registers
+plus the following, which are not addressed here:
+  [igt-dev] [PATCH i-g-t 3/5] i915: Exercise preemption timeout controls in sysfs
+  [igt-dev] [PATCH i-g-t 4/5] i915: Exercise sysfs heartbeat controls
+  [igt-dev] [PATCH i-g-t 5/5] i915: Exercise timeslice sysfs property
 
-Andi
+This patch list is:
+  i915/gem_mmio_base.c - get mmio_base from debugfs (if possible)
+  i915/gem_ctx_isolation: Check engine relative registers
+  i915/gem_ctx_isolation: Check engine relative registers - Part 2
 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> ---
->  tests/i915/gem_exec_nop.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/i915/gem_exec_nop.c b/tests/i915/gem_exec_nop.c
-> index ed9568e5a..fc7f11827 100644
-> --- a/tests/i915/gem_exec_nop.c
-> +++ b/tests/i915/gem_exec_nop.c
-> @@ -436,7 +436,7 @@ static void parallel(int fd, uint32_t handle, int timeout)
->  	struct drm_i915_gem_execbuffer2 execbuf;
->  	struct drm_i915_gem_exec_object2 obj;
->  	unsigned engines[16];
-> -	const char *names[16];
-> +	char *names[16];
->  	unsigned nengine;
->  	unsigned long count;
->  	double time, sum;
-> @@ -445,7 +445,7 @@ static void parallel(int fd, uint32_t handle, int timeout)
->  	nengine = 0;
->  	__for_each_physical_engine(fd, e) {
->  		engines[nengine] = e->flags;
-> -		names[nengine++] = e->name;
-> +		names[nengine++] = strdup(e->name);
->  
->  		time = nop_on_ring(fd, handle, e, 1, &count) / count;
->  		sum += time;
-> @@ -485,10 +485,11 @@ static void parallel(int fd, uint32_t handle, int timeout)
->  		time = elapsed(&start, &now) / count;
->  		igt_info("%s: %ld cycles, %.3fus\n", names[child], count, 1e6*time);
->  	}
-> +	while (nengine--)
-> +		free(names[nengine]);
->  
->  	igt_waitchildren();
->  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
-> -
->  }
->  
->  static void series(int fd, uint32_t handle, int timeout)
-> -- 
-> 2.25.0
-> 
-> _______________________________________________
-> Intel-gfx mailing list
-> Intel-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+The first 2020-01-27 patch obtains mmio_base information via sysfs, and depends
+on a proposed kernel change that would provide the mmio_base information
+via sysfs.  It is unclear when or whether that kernel change will progress.
+
+The mmio_base information used by this patch series is available through
+debugfs now (as of kernel 5.4).  If the per-engine mmio_base information is
+ever added to sysfs, it would be easy to plug that into the infrastructure
+proposed here as an additional higher-priority source of that information.
+
+This submission replaces the first patch (switching from sysfs to debugfs),
+retains the second 2020-01-27 patch
+  i915/gem_ctx_isolation: Check engine relative registers
+and has a third patch that modifies the original second patch to support the
+altered API:
+  i915/gem_ctx_isolation: Check engine relative registers - Part 2
+
+I propose squashing the two gem_ctx_isolation "relative registers" patches
+into one patch with author == "Chris Wilson" if Chris agrees.
+
+Some differences from the 2020-01-27 patches:
+
+The mmio_base information is fetched once into local data structures, and
+is obtained from them thereafter instead of being fetched from the kernel
+everytime it is wanted.
+
+The function that obtains the mmio_base information is called by a particular
+test that wants it, and returns a handle through which the mmio_base can be
+requested for any particular engine.
+
+These patches introduce new source files lib/i915/gem_mmio_base.c
+and lib/i915/gem_mmio_base.h.  Should the code instead be placed into
+lib/i915/gem_engine_topology.c?
+
+Function gem_engine_mmio_base_info_dump presently exists to dump the
+mmio_base information to stdout for debugging or informational purposes.
+This function is not currently called.  I presume this function should
+be removed.  Is there any desire to keep it around for future use?
+
+The 2020-01-27 patches define function gem_engine_mmio_base() with its first
+parameter as "fd".  The new patches replace the first parameter with the
+mmio_base object handle.
+
+
+Chris Wilson (1):
+  i915/gem_ctx_isolation: Check engine relative registers
+
+Dale B Stimson (2):
+  i915/gem_mmio_base.c - get mmio_base from debugfs (if possible)
+  i915/gem_ctx_isolation: Check engine relative registers - Part 2
+
+ lib/Makefile.sources           |   2 +
+ lib/i915/gem_mmio_base.c       | 346 +++++++++++++++++++++++++++++++++
+ lib/i915/gem_mmio_base.h       |  19 ++
+ lib/igt.h                      |   1 +
+ lib/meson.build                |   1 +
+ tests/i915/gem_ctx_isolation.c | 229 +++++++++++++---------
+ 6 files changed, 506 insertions(+), 92 deletions(-)
+ create mode 100644 lib/i915/gem_mmio_base.c
+ create mode 100644 lib/i915/gem_mmio_base.h
+
+-- 
+2.25.0
+
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
