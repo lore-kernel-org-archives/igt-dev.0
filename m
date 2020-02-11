@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60A876EA2C
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2020 11:01:57 +0000 (UTC)
+Date: Tue, 11 Feb 2020 12:01:54 +0100
+From: Katarzyna Dec <katarzyna.dec@intel.com>
+Message-ID: <20200211110154.GA27843@kdec5-desk.ger.corp.intel.com>
+References: <20200207125941.22974-1-arjun.melkaveri@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 11 Feb 2020 09:42:26 -0000
-Message-ID: <158141414625.23971.1697611693568061738@emeril.freedesktop.org>
-References: <20200211090614.7852-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20200211090614.7852-1-sai.gowtham.ch@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/gem=5Fexec=5Ffence=3AAdded_=5F=5Ffor=5Feach=5Fphysical=5Fe?=
- =?utf-8?q?ngine_to_utilize_all_available_engines=2E_=28rev3=29?=
+Content-Disposition: inline
+In-Reply-To: <20200207125941.22974-1-arjun.melkaveri@intel.com>
+Subject: Re: [igt-dev] [PATCH V3] [PATCH i-g-t] gem_ctx_create:Adjusted test
+ to use __for_each_physical_engine to utilize all available engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,305 +18,257 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: saigowth <sai.gowtham.ch@intel.com>
+To: Arjun Melkaveri <arjun.melkaveri@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: tests/i915/gem_exec_fence:Added __for_each_physical_engine to utilize all available engines. (rev3)
-URL   : https://patchwork.freedesktop.org/series/72916/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_7905 -> IGTPW_4125
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4125/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_4125:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * {igt@gem_exec_fence@basic-await@bcs0} (NEW):
-    - fi-cml-u2:          NOTRUN -> [SKIP][1] +3 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4125/fi-cml-u2/igt@gem_exec_fence@basic-await@bcs0.html
-
-  * {igt@gem_exec_fence@basic-wait@bcs0} (NEW):
-    - fi-cml-s:           NOTRUN -> [SKIP][2] +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4125/fi-cml-s/igt@gem_exec_fence@basic-wait@bcs0.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_7905 and IGTPW_4125:
-
-### New IGT tests (24) ###
-
-  * igt@gem_exec_fence@basic-await:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_exec_fence@basic-await@bcs0:
-    - Statuses : 14 pass(s) 18 skip(s)
-    - Exec time: [0.0, 0.15] s
-
-  * igt@gem_exec_fence@basic-await@rcs0:
-    - Statuses : 36 pass(s)
-    - Exec time: [0.06, 0.21] s
-
-  * igt@gem_exec_fence@basic-await@vcs0:
-    - Statuses : 34 pass(s)
-    - Exec time: [0.06, 0.19] s
-
-  * igt@gem_exec_fence@basic-await@vcs1:
-    - Statuses : 9 pass(s)
-    - Exec time: [0.06, 0.15] s
-
-  * igt@gem_exec_fence@basic-await@vecs0:
-    - Statuses : 30 pass(s)
-    - Exec time: [0.06, 0.18] s
-
-  * igt@gem_exec_fence@basic-busy:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_exec_fence@basic-busy@bcs0:
-    - Statuses : 14 pass(s) 18 skip(s)
-    - Exec time: [0.0, 0.02] s
-
-  * igt@gem_exec_fence@basic-busy@rcs0:
-    - Statuses : 36 pass(s)
-    - Exec time: [0.00, 0.03] s
-
-  * igt@gem_exec_fence@basic-busy@vcs0:
-    - Statuses : 34 pass(s)
-    - Exec time: [0.01, 0.02] s
-
-  * igt@gem_exec_fence@basic-busy@vcs1:
-    - Statuses : 9 pass(s)
-    - Exec time: [0.01, 0.02] s
-
-  * igt@gem_exec_fence@basic-busy@vecs0:
-    - Statuses : 30 pass(s)
-    - Exec time: [0.01, 0.02] s
-
-  * igt@gem_exec_fence@basic-wait:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_exec_fence@basic-wait@bcs0:
-    - Statuses : 14 pass(s) 18 skip(s)
-    - Exec time: [0.0, 0.02] s
-
-  * igt@gem_exec_fence@basic-wait@rcs0:
-    - Statuses : 36 pass(s)
-    - Exec time: [0.00, 0.03] s
-
-  * igt@gem_exec_fence@basic-wait@vcs0:
-    - Statuses : 34 pass(s)
-    - Exec time: [0.01, 0.03] s
-
-  * igt@gem_exec_fence@basic-wait@vcs1:
-    - Statuses : 9 pass(s)
-    - Exec time: [0.01, 0.02] s
-
-  * igt@gem_exec_fence@basic-wait@vecs0:
-    - Statuses : 30 pass(s)
-    - Exec time: [0.01, 0.02] s
-
-  * igt@gem_exec_fence@nb-await:
-    - Statuses : 3 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@gem_exec_fence@nb-await@bcs0:
-    - Statuses : 14 pass(s) 18 skip(s)
-    - Exec time: [0.0, 0.07] s
-
-  * igt@gem_exec_fence@nb-await@rcs0:
-    - Statuses : 36 pass(s)
-    - Exec time: [0.05, 0.08] s
-
-  * igt@gem_exec_fence@nb-await@vcs0:
-    - Statuses : 34 pass(s)
-    - Exec time: [0.05, 0.07] s
-
-  * igt@gem_exec_fence@nb-await@vcs1:
-    - Statuses : 9 pass(s)
-    - Exec time: [0.05, 0.07] s
-
-  * igt@gem_exec_fence@nb-await@vecs0:
-    - Statuses : 30 pass(s)
-    - Exec time: [0.05, 0.07] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4125 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-hsw-4770:        [PASS][3] -> [TIMEOUT][4] ([fdo#112271] / [i915#1084])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7905/fi-hsw-4770/igt@gem_close_race@basic-threads.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4125/fi-hsw-4770/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-cml-s:           [PASS][5] -> [DMESG-FAIL][6] ([i915#877])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7905/fi-cml-s/igt@i915_selftest@live_gem_contexts.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4125/fi-cml-s/igt@i915_selftest@live_gem_contexts.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-byt-n2820:       [INCOMPLETE][7] ([i915#45]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7905/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4125/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-cfl-8700k:       [INCOMPLETE][9] ([i915#424]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7905/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4125/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#1084]: https://gitlab.freedesktop.org/drm/intel/issues/1084
-  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
-  [i915#45]: https://gitlab.freedesktop.org/drm/intel/issues/45
-  [i915#877]: https://gitlab.freedesktop.org/drm/intel/issues/877
-
-
-Participating hosts (46 -> 40)
-------------------------------
-
-  Additional (5): fi-glk-dsi fi-snb-2520m fi-skl-lmem fi-skl-6600u fi-kbl-r 
-  Missing    (11): fi-ilk-m540 fi-bdw-5557u fi-bsw-n3050 fi-byt-j1900 fi-skl-6770hq fi-hsw-4200u fi-hsw-peppy fi-byt-squawks fi-bwr-2160 fi-bsw-cyan fi-byt-clapper 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5433 -> IGTPW_4125
-
-  CI-20190529: 20190529
-  CI_DRM_7905: db98da3dd757a19dbaaeaef8640276fe7be2fc4e @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4125: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4125/index.html
-  IGT_5433: 6a96c17f3a1b4e1f90b1a0b0ce42a7219875d1a4 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@gem_exec_fence@await-hang
-+igt@gem_exec_fence@basic-await
-+igt@gem_exec_fence@basic-busy
-+igt@gem_exec_fence@basic-wait
-+igt@gem_exec_fence@busy-hang
-+igt@gem_exec_fence@keep-in-fence
-+igt@gem_exec_fence@nb-await
-+igt@gem_exec_fence@nb-await-hang
-+igt@gem_exec_fence@parallel
-+igt@gem_exec_fence@wait-hang
--igt@gem_exec_fence@await-blt
--igt@gem_exec_fence@await-bsd
--igt@gem_exec_fence@await-bsd1
--igt@gem_exec_fence@await-bsd2
--igt@gem_exec_fence@await-hang-blt
--igt@gem_exec_fence@await-hang-bsd
--igt@gem_exec_fence@await-hang-bsd1
--igt@gem_exec_fence@await-hang-bsd2
--igt@gem_exec_fence@await-hang-default
--igt@gem_exec_fence@await-hang-render
--igt@gem_exec_fence@await-hang-vebox
--igt@gem_exec_fence@await-render
--igt@gem_exec_fence@await-vebox
--igt@gem_exec_fence@basic-await-default
--igt@gem_exec_fence@basic-busy-default
--igt@gem_exec_fence@basic-wait-default
--igt@gem_exec_fence@busy-blt
--igt@gem_exec_fence@busy-bsd
--igt@gem_exec_fence@busy-bsd1
--igt@gem_exec_fence@busy-bsd2
--igt@gem_exec_fence@busy-hang-blt
--igt@gem_exec_fence@busy-hang-bsd
--igt@gem_exec_fence@busy-hang-bsd1
--igt@gem_exec_fence@busy-hang-bsd2
--igt@gem_exec_fence@busy-hang-default
--igt@gem_exec_fence@busy-hang-render
--igt@gem_exec_fence@busy-hang-vebox
--igt@gem_exec_fence@busy-render
--igt@gem_exec_fence@busy-vebox
--igt@gem_exec_fence@keep-in-fence-blt
--igt@gem_exec_fence@keep-in-fence-bsd
--igt@gem_exec_fence@keep-in-fence-bsd1
--igt@gem_exec_fence@keep-in-fence-bsd2
--igt@gem_exec_fence@keep-in-fence-default
--igt@gem_exec_fence@keep-in-fence-render
--igt@gem_exec_fence@keep-in-fence-vebox
--igt@gem_exec_fence@nb-await-blt
--igt@gem_exec_fence@nb-await-bsd
--igt@gem_exec_fence@nb-await-bsd1
--igt@gem_exec_fence@nb-await-bsd2
--igt@gem_exec_fence@nb-await-default
--igt@gem_exec_fence@nb-await-hang-blt
--igt@gem_exec_fence@nb-await-hang-bsd
--igt@gem_exec_fence@nb-await-hang-bsd1
--igt@gem_exec_fence@nb-await-hang-bsd2
--igt@gem_exec_fence@nb-await-hang-default
--igt@gem_exec_fence@nb-await-hang-render
--igt@gem_exec_fence@nb-await-hang-vebox
--igt@gem_exec_fence@nb-await-render
--igt@gem_exec_fence@nb-await-vebox
--igt@gem_exec_fence@parallel-blt
--igt@gem_exec_fence@parallel-bsd1
--igt@gem_exec_fence@parallel-bsd2
--igt@gem_exec_fence@parallel-render
--igt@gem_exec_fence@parallel-vebox
--igt@gem_exec_fence@wait-blt
--igt@gem_exec_fence@wait-bsd
--igt@gem_exec_fence@wait-bsd1
--igt@gem_exec_fence@wait-bsd2
--igt@gem_exec_fence@wait-hang-blt
--igt@gem_exec_fence@wait-hang-bsd
--igt@gem_exec_fence@wait-hang-bsd1
--igt@gem_exec_fence@wait-hang-bsd2
--igt@gem_exec_fence@wait-hang-default
--igt@gem_exec_fence@wait-hang-render
--igt@gem_exec_fence@wait-hang-vebox
--igt@gem_exec_fence@wait-render
--igt@gem_exec_fence@wait-vebox
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4125/index.html
+On Fri, Feb 07, 2020 at 06:29:41PM +0530, Arjun Melkaveri wrote:
+> Replaced the legacy for_each_engine* defines with the ones
+> implemented in the gem_engine_topology library.
+> 
+> Used  gem_context_clone_with_engines
+> to make sure that engine index was potentially created
+> based on a  default context with engine map configured
+> 
+> V2:
+> 
+> Added gem_reopen_driver and gem_context_copy_engines
+> to transfer the engine map from parent fd default
+> context.
+LGTM. CI failures are not connected with this change.
+I will merge it later.
+Reviewed-by: Katarzyna Dec <katarzyna.dec@intel.com>
+Kasia :)
+> 
+> Cc: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
+> Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+> ---
+>  tests/i915/gem_ctx_create.c | 102 ++++++++++++++++++++++++++----------
+>  1 file changed, 75 insertions(+), 27 deletions(-)
+> 
+> diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
+> index d9a820e2..2c44a3e3 100644
+> --- a/tests/i915/gem_ctx_create.c
+> +++ b/tests/i915/gem_ctx_create.c
+> @@ -100,11 +100,18 @@ static void files(int core, int timeout, const int ncpus)
+>  	igt_fork(child, ncpus) {
+>  		struct timespec start, end;
+>  		unsigned count = 0;
+> +		int fd;
+>  
+>  		clock_gettime(CLOCK_MONOTONIC, &start);
+>  		do {
+>  			do {
+> -				int fd = drm_open_driver(DRIVER_INTEL);
+> +				fd = gem_reopen_driver(core);
+> +				/*
+> +				 * Ensure the gpu is idle by launching
+> +				 * a nop execbuf  and stalling for it.
+> +				 */
+> +				gem_quiescent_gpu(fd);
+> +				gem_context_copy_engines(core, 0, fd, 0);
+>  				obj.handle = gem_open(fd, name);
+>  				execbuf.flags &= ~ENGINE_FLAGS;
+>  				execbuf.flags |= ppgtt_engines[count % ppgtt_nengine];
+> @@ -124,22 +131,22 @@ static void files(int core, int timeout, const int ncpus)
+>  	gem_close(core, batch);
+>  }
+>  
+> -static void active(int fd, unsigned engine, int timeout, int ncpus)
+> +static void active(int fd, const struct intel_execution_engine2 *e,
+> +		   int timeout, int ncpus)
+>  {
+>  	const uint32_t bbe = MI_BATCH_BUFFER_END;
+>  	struct drm_i915_gem_execbuffer2 execbuf;
+>  	struct drm_i915_gem_exec_object2 obj;
+>  	unsigned int nengine, engines[16];
+>  	unsigned *shared;
+> -
+> -	if (engine == ALL_ENGINES) {
+> +	/* When e is NULL, test would run for all engines */
+> +	if (!e) {
+>  		igt_require(all_nengine);
+>  		nengine = all_nengine;
+>  		memcpy(engines, all_engines, sizeof(engines[0])*nengine);
+>  	} else {
+> -		gem_require_ring(fd, engine);
+>  		nengine = 1;
+> -		engines[0] = engine;
+> +		engines[0] = e->flags;
+>  	}
+>  
+>  	shared = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> @@ -156,8 +163,17 @@ static void active(int fd, unsigned engine, int timeout, int ncpus)
+>  	if (ncpus < 0) {
+>  		igt_fork(child, ppgtt_nengine) {
+>  			unsigned long count = 0;
+> +			int i915;
+> +
+> +			i915 = gem_reopen_driver(fd);
+> +			/*
+> +			 * Ensure the gpu is idle by launching
+> +			 * a nop execbuf and stalling for it
+> +			 */
+> +			gem_quiescent_gpu(i915);
+> +			gem_context_copy_engines(fd, 0, i915, 0);
+>  
+> -			if (ppgtt_engines[child] == engine)
+> +			if (ppgtt_engines[child] == e->flags)
+>  				continue;
+>  
+>  			execbuf.flags = ppgtt_engines[child];
+> @@ -179,11 +195,22 @@ static void active(int fd, unsigned engine, int timeout, int ncpus)
+>  	igt_fork(child, ncpus) {
+>  		struct timespec start, end;
+>  		unsigned count = 0;
+> +		int i915;
+> +		uint32_t ctx;
+> +
+> +		i915 = gem_reopen_driver(fd);
+> +		/*
+> +		 * Ensure the gpu is idle by launching
+> +		 * a nop execbuf and stalling for it.
+> +		 */
+> +		gem_quiescent_gpu(i915);
+> +		ctx = gem_context_create(i915);
+> +		gem_context_copy_engines(fd, 0, i915, ctx);
+>  
+>  		clock_gettime(CLOCK_MONOTONIC, &start);
+>  		do {
+>  			do {
+> -				execbuf.rsvd1 = gem_context_create(fd);
+> +				execbuf.rsvd1 = ctx;
+>  				for (unsigned n = 0; n < nengine; n++) {
+>  					execbuf.flags = engines[n];
+>  					gem_execbuf(fd, &execbuf);
+> @@ -276,7 +303,9 @@ static void maximum(int fd, int ncpus, unsigned mode)
+>  
+>  		err = -ENOMEM;
+>  		if (avail_mem > (count + 1) * ctx_size)
+> -			err = __gem_context_create(fd, &ctx_id);
+> +			err =  __gem_context_clone(fd, 0,
+> +						   I915_CONTEXT_CLONE_ENGINES,
+> +						   0, &ctx_id);
+>  		if (err) {
+>  			igt_info("Created %lu contexts, before failing with '%s' [%d]\n",
+>  				 count, strerror(-err), -err);
+> @@ -297,9 +326,18 @@ static void maximum(int fd, int ncpus, unsigned mode)
+>  
+>  	igt_fork(child, ncpus) {
+>  		struct timespec start, end;
+> +		int i915;
+> +
+> +		i915 = gem_reopen_driver(fd);
+> +		/*
+> +		 * Ensure the gpu is idle by launching
+> +		 * a nop execbuf and stalling for it.
+> +		 */
+> +		gem_quiescent_gpu(i915);
+> +		gem_context_copy_engines(fd, 0, i915, 0);
+>  
+>  		hars_petruska_f54_1_random_perturb(child);
+> -		obj[0].handle = gem_create(fd, 4096);
+> +		obj[0].handle = gem_create(i915, 4096);
+>  
+>  		clock_gettime(CLOCK_MONOTONIC, &start);
+>  		for (int repeat = 0; repeat < 3; repeat++) {
+> @@ -310,13 +348,13 @@ static void maximum(int fd, int ncpus, unsigned mode)
+>  				execbuf.rsvd1 = contexts[i];
+>  				for (unsigned long j = 0; j < all_nengine; j++) {
+>  					execbuf.flags = all_engines[j];
+> -					gem_execbuf(fd, &execbuf);
+> +					gem_execbuf(i915, &execbuf);
+>  				}
+>  			}
+>  		}
+> -		gem_sync(fd, obj[0].handle);
+> +		gem_sync(i915, obj[0].handle);
+>  		clock_gettime(CLOCK_MONOTONIC, &end);
+> -		gem_close(fd, obj[0].handle);
+> +		gem_close(i915, obj[0].handle);
+>  
+>  		igt_info("[%d] Context execution: %.3f us\n", child,
+>  			 elapsed(&start, &end) / (3 * count * all_nengine) * 1e6);
+> @@ -370,6 +408,7 @@ static void basic_ext_param(int i915)
+>  
+>  		gem_context_destroy(i915, create.ctx_id);
+>  
+> +
+>  		/* Having demonstrated a valid setup, check a few invalids */
+>  		ext.param.ctx_id = 1;
+>  		igt_assert_eq(create_ext_ioctl(i915, &create), -EINVAL);
+> @@ -524,6 +563,7 @@ igt_main
+>  {
+>  	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+>  	struct drm_i915_gem_context_create create;
+> +	const struct intel_execution_engine2 *e;
+>  	int fd = -1;
+>  
+>  	igt_fixture {
+> @@ -531,8 +571,8 @@ igt_main
+>  		igt_require_gem(fd);
+>  		gem_require_contexts(fd);
+>  
+> -		for_each_physical_engine(e, fd)
+> -			all_engines[all_nengine++] = eb_ring(e);
+> +		__for_each_physical_engine(fd, e)
+> +			all_engines[all_nengine++] = e->flags;
+>  		igt_require(all_nengine);
+>  
+>  		if (gem_uses_full_ppgtt(fd)) {
+> @@ -572,20 +612,28 @@ igt_main
+>  	igt_subtest("forked-files")
+>  		files(fd, 20, ncpus);
+>  
+> +	/* NULL value means all engines */
+>  	igt_subtest("active-all")
+> -		active(fd, ALL_ENGINES, 20, 1);
+> +		active(fd, NULL, 20, 1);
+>  	igt_subtest("forked-active-all")
+> -		active(fd, ALL_ENGINES, 20, ncpus);
+> -
+> -	for (const struct intel_execution_engine *e = intel_execution_engines;
+> -	     e->name; e++) {
+> -		igt_subtest_f("active-%s", e->name)
+> -			active(fd, eb_ring(e), 20, 1);
+> -		igt_subtest_f("forked-active-%s", e->name)
+> -			active(fd, eb_ring(e), 20, ncpus);
+> -		if (e->exec_id) {
+> -			igt_subtest_f("hog-%s", e->name)
+> -				active(fd, eb_ring(e), 20, -1);
+> +		active(fd, NULL, 20, ncpus);
+> +
+> +	igt_subtest_with_dynamic("active") {
+> +		__for_each_physical_engine(fd, e) {
+> +			igt_dynamic_f("%s", e->name)
+> +				active(fd, e, 20, 1);
+> +		}
+> +	}
+> +	igt_subtest_with_dynamic("forked-active") {
+> +		__for_each_physical_engine(fd, e) {
+> +			igt_dynamic_f("%s", e->name)
+> +				active(fd, e, 20, ncpus);
+> +		}
+> +	}
+> +	igt_subtest_with_dynamic("hog") {
+> +		__for_each_physical_engine(fd, e) {
+> +			igt_dynamic_f("%s", e->name)
+> +				active(fd, e, 20, -1);
+>  		}
+>  	}
+>  
+> -- 
+> 2.24.0
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
