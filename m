@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC43E6E29A
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2020 02:31:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 868CA6E297
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2020 02:31:32 +0000 (UTC)
 From: Imre Deak <imre.deak@intel.com>
-Date: Tue, 11 Feb 2020 04:31:03 +0200
-Message-Id: <20200211023108.25369-3-imre.deak@intel.com>
+Date: Tue, 11 Feb 2020 04:31:02 +0200
+Message-Id: <20200211023108.25369-2-imre.deak@intel.com>
 In-Reply-To: <20200211023108.25369-1-imre.deak@intel.com>
 References: <20200211023108.25369-1-imre.deak@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v2 3/8] tests/kms_available_modes_crc: Don't set
- tiling for framebuffer
+Subject: [igt-dev] [PATCH v2 2/8] tests/kms_frontbuffer_tracking: Skip set
+ tiling calls if not supported
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,40 +27,34 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 
-The GEM object used for the framebuffer does not need tiling to be set
-on it as the entire framebuffer is being filled with the same value -
-tiling will not impact the end value of the buffer.
+Skip the method that is setting tiling with invalid strides if the
+hardware does not support HW for tiling/de-tiling.
+
+v2:
+- Use gem_available_fences() to check for HW detiling.
 
 Cc: Matt Roper <matthew.d.roper@intel.com>
 Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 Signed-off-by: Imre Deak <imre.deak@intel.com>
 Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
 ---
- tests/kms_available_modes_crc.c | 6 ------
- 1 file changed, 6 deletions(-)
+ tests/kms_frontbuffer_tracking.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_available_modes_crc.c b/tests/kms_available_modes_crc.c
-index 12761343..ed43d1fb 100644
---- a/tests/kms_available_modes_crc.c
-+++ b/tests/kms_available_modes_crc.c
-@@ -211,17 +211,11 @@ static bool setup_fb(data_t *data, igt_output_t *output, igt_plane_t *plane,
- 	data->buf = (unsigned char *)calloc(data->size*2, 1);
+diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
+index 9c2c3a5d..724f5d16 100644
+--- a/tests/kms_frontbuffer_tracking.c
++++ b/tests/kms_frontbuffer_tracking.c
+@@ -2833,7 +2833,8 @@ static void badstride_subtest(const struct test_mode *t)
+ 	struct modeset_params *params = pick_params(t);
+ 	int rc;
  
- 	data->gem_handle = gem_create(data->gfx_fd, gemsize);
--	ret = __gem_set_tiling(data->gfx_fd, data->gem_handle,
--			       igt_fb_mod_to_tiling(tiling),
--			       data->fb.strides[0]);
--
- 	data->fb.gem_handle = data->gem_handle;
- 	data->fb.width = w;
- 	data->fb.height = h;
- 	fill_in_fb(data, output, plane, format);
+-	try_invalid_strides();
++	if (gem_available_fences(drm.fd))
++		try_invalid_strides();
  
--	igt_assert_eq(ret, 0);
--
- 	ret = __kms_addfb(data->gfx_fd, data->gem_handle, w, h,
- 			  format, tiling, data->fb.strides, data->fb.offsets,
- 			  num_planes, LOCAL_DRM_MODE_FB_MODIFIERS,
+ 	prepare_subtest(t, NULL);
+ 
 -- 
 2.23.1
 
