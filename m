@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B0616E525
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2020 17:04:16 +0000 (UTC)
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 11 Feb 2020 17:03:23 +0000
-Message-Id: <20200211170323.1104332-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200211161508.1052436-1-chris@chris-wilson.co.uk>
-References: <20200211161508.1052436-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] intel-ci: Drop b/c pipes from kms_busy
- fast feedback
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 11 Feb 2020 17:08:15 -0000
+Message-ID: <158144089551.23974.17655170488793691448@emeril.freedesktop.org>
+References: <20200211161508.1052436-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200211161508.1052436-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaW50ZWwt?=
+ =?utf-8?q?ci=3A_Drop_b/c_pipes_from_kms=5Fbusy_fast_feedback?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,49 +14,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhlIHByaW5jaXBsZSB0ZXN0IGZvciBrbXNfYnVzeSBpcyBjaGVja2luZyB0aGUgc3luY2hyb25p
-c2F0aW9uIGJldHdlZW4Kb24tZ29pbmcgcmVuZGVyaW5nIHRvIGEgZnJhbWVidWZmZXIgYW5kIGl0
-cyBmbGlwLCB0aGF0IGlzIGluZGVwZW5kZW50IG9mCnRoZSBwaXBlLiBBcyBzdWNoIGZvciBvdXIg
-ZmFzdCBmZWVkYmFjayBvbiBkcml2ZXIgaGVhbHRoLCB3ZSBjYW4gbG9vayBhdAp0aGUgZmlyc3Qg
-cGlwZSBhbmQgYXNzdW1lIGFueSBlcnJvcnMgb24gdGhlIHJlc3Qgd2lsbCBiZSBwaWNrZWQgdXAg
-bGF0ZXIKaW4gdGhlIHNoYXJkcy9pZGxlIHJ1bnMuCgpFYWNoIHBhc3Mgb2Yga21zX2J1c3kgaXMg
-YWJvdXQgMjVzLgoKdjI6IFVzZSB0aGUgZmlyc3QgcGlwZSBjb25uZWN0ZWQ7IGNvbWJpbmUgZmxp
-cC9tb2Rlc2V0IHRlc3RpbmcgaW50byBhCnNpbmdsZSBkeW5hbWljIGdyb3VwLgoKU2lnbmVkLW9m
-Zi1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+CkNjOiBWaWxsZSBT
-eXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPgotLS0KIHRlc3RzL2ludGVs
-LWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QgfCAgNCArLS0tCiB0ZXN0cy9rbXNfYnVzeS5jICAg
-ICAgICAgICAgICAgICAgICAgIHwgMTUgKysrKysrKysrKysrKysrCiAyIGZpbGVzIGNoYW5nZWQs
-IDE2IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvaW50
-ZWwtY2kvZmFzdC1mZWVkYmFjay50ZXN0bGlzdCBiL3Rlc3RzL2ludGVsLWNpL2Zhc3QtZmVlZGJh
-Y2sudGVzdGxpc3QKaW5kZXggNDY3ZTExMjY3Li43MzllMmQ0NmIgMTAwNjQ0Ci0tLSBhL3Rlc3Rz
-L2ludGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QKKysrIGIvdGVzdHMvaW50ZWwtY2kvZmFz
-dC1mZWVkYmFjay50ZXN0bGlzdApAQCAtODgsOSArODgsNyBAQCBpZ3RAa21zX2FkZGZiX2Jhc2lj
-QHVudXNlZC1oYW5kbGUKIGlndEBrbXNfYWRkZmJfYmFzaWNAdW51c2VkLW1vZGlmaWVyCiBpZ3RA
-a21zX2FkZGZiX2Jhc2ljQHVudXNlZC1vZmZzZXRzCiBpZ3RAa21zX2FkZGZiX2Jhc2ljQHVudXNl
-ZC1waXRjaGVzCi1pZ3RAa21zX2J1c3lAYmFzaWMtZmxpcC1waXBlLWEKLWlndEBrbXNfYnVzeUBi
-YXNpYy1mbGlwLXBpcGUtYgotaWd0QGttc19idXN5QGJhc2ljLWZsaXAtcGlwZS1jCitpZ3RAa21z
-X2J1c3lAYmFzaWMKIGlndEBrbXNfY2hhbWVsaXVtQGRwLWhwZC1mYXN0CiBpZ3RAa21zX2NoYW1l
-bGl1bUBkcC1lZGlkLXJlYWQKIGlndEBrbXNfY2hhbWVsaXVtQGRwLWNyYy1mYXN0CmRpZmYgLS1n
-aXQgYS90ZXN0cy9rbXNfYnVzeS5jIGIvdGVzdHMva21zX2J1c3kuYwppbmRleCAwMTcyZmNiNjEu
-LjdlNDk1ZmUyYyAxMDA2NDQKLS0tIGEvdGVzdHMva21zX2J1c3kuYworKysgYi90ZXN0cy9rbXNf
-YnVzeS5jCkBAIC0zMDIsNiArMzAyLDIxIEBAIGlndF9tYWluCiAKIAkvKiBYWFggRXh0ZW5kIHRv
-IGNvdmVyIGF0b21pYyByZW5kZXJpbmcgdGVzdHMgdG8gYWxsIHBsYW5lcyArIGxlZ2FjeSAqLwog
-CisJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJiYXNpYyIpIHsgLyoganVzdCBydW4gb24gdGhl
-IGZpcnN0IHBpcGUgKi8KKwkJZW51bSBwaXBlIHBpcGU7CisJCWlndF9vdXRwdXRfdCAqb3V0cHV0
-OworCisJCWlndF9yZXF1aXJlKGdlbV9oYXNfcmluZyhkaXNwbGF5LmRybV9mZCwgZWJfcmluZyhl
-KSkpOworCisJCWZvcl9lYWNoX3BpcGVfd2l0aF92YWxpZF9vdXRwdXQoJmRpc3BsYXksIHBpcGUs
-IG91dHB1dCkgeworCQkJaWd0X2R5bmFtaWMoImZsaXAiKQorCQkJCXRlc3RfZmxpcCgmZGlzcGxh
-eSwgZWJfcmluZyhlKSwgcGlwZSwgZmFsc2UpOworCQkJaWd0X2R5bmFtaWMoIm1vZGVzZXQiKQor
-CQkJCXRlc3RfZmxpcCgmZGlzcGxheSwgZWJfcmluZyhlKSwgcGlwZSwgdHJ1ZSk7CisJCQlicmVh
-azsKKwkJfQorCX0KKwogCWZvcl9lYWNoX3BpcGVfc3RhdGljKG4pIGlndF9zdWJ0ZXN0X2dyb3Vw
-IHsKIAkJaWd0X2hhbmdfdCBoYW5nOwogCi0tIAoyLjI1LjAKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
-YW4vbGlzdGluZm8vaWd0LWRldgo=
+== Series Details ==
+
+Series: intel-ci: Drop b/c pipes from kms_busy fast feedback
+URL   : https://patchwork.freedesktop.org/series/73314/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_7913 -> IGTPW_4129
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_4129 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4129, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4129/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4129:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live_blt:
+    - fi-snb-2520m:       [PASS][1] -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7913/fi-snb-2520m/igt@i915_selftest@live_blt.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4129/fi-snb-2520m/igt@i915_selftest@live_blt.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4129 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_close_race@basic-threads:
+    - fi-byt-n2820:       [PASS][3] -> [INCOMPLETE][4] ([i915#45])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7913/fi-byt-n2820/igt@gem_close_race@basic-threads.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4129/fi-byt-n2820/igt@gem_close_race@basic-threads.html
+
+  * igt@i915_module_load@reload:
+    - fi-skl-6770hq:      [PASS][5] -> [DMESG-WARN][6] ([i915#92]) +1 similar issue
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7913/fi-skl-6770hq/igt@i915_module_load@reload.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4129/fi-skl-6770hq/igt@i915_module_load@reload.html
+
+  * igt@i915_selftest@live_gem_contexts:
+    - fi-cfl-guc:         [PASS][7] -> [INCOMPLETE][8] ([CI#80] / [fdo#106070] / [i915#424])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7913/fi-cfl-guc/igt@i915_selftest@live_gem_contexts.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4129/fi-cfl-guc/igt@i915_selftest@live_gem_contexts.html
+
+  * igt@i915_selftest@live_gtt:
+    - fi-skl-6600u:       [PASS][9] -> [TIMEOUT][10] ([fdo#111732] / [fdo#112271])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7913/fi-skl-6600u/igt@i915_selftest@live_gtt.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4129/fi-skl-6600u/igt@i915_selftest@live_gtt.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [PASS][11] -> [FAIL][12] ([fdo#111096] / [i915#323])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7913/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4129/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:
+    - fi-skl-6770hq:      [PASS][13] -> [SKIP][14] ([fdo#109271]) +5 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7913/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4129/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
+
+  * igt@kms_pipe_crc_basic@read-crc-pipe-b:
+    - fi-skl-6770hq:      [PASS][15] -> [DMESG-WARN][16] ([i915#106])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7913/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4129/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+
+  
+  [CI#80]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/80
+  [fdo#106070]: https://bugs.freedesktop.org/show_bug.cgi?id=106070
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
+  [fdo#111732]: https://bugs.freedesktop.org/show_bug.cgi?id=111732
+  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
+  [i915#106]: https://gitlab.freedesktop.org/drm/intel/issues/106
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
+  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
+  [i915#45]: https://gitlab.freedesktop.org/drm/intel/issues/45
+  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
+
+
+Participating hosts (46 -> 46)
+------------------------------
+
+  Additional (6): fi-hsw-peppy fi-bdw-gvtdvm fi-bwr-2160 fi-bsw-kefka fi-skl-lmem fi-skl-6700k2 
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5435 -> IGTPW_4129
+
+  CI-20190529: 20190529
+  CI_DRM_7913: 79a47aba009d3a6d94a900c557a11cb7af59afaf @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4129: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4129/index.html
+  IGT_5435: 2b6d4476dde53c363b8808ed9f0dd5547ac78641 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4129/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
