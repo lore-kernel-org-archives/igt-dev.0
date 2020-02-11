@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 93D606E29D
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2020 02:31:40 +0000 (UTC)
-From: Imre Deak <imre.deak@intel.com>
-Date: Tue, 11 Feb 2020 04:31:08 +0200
-Message-Id: <20200211023108.25369-8-imre.deak@intel.com>
-In-Reply-To: <20200211023108.25369-1-imre.deak@intel.com>
-References: <20200211023108.25369-1-imre.deak@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v2 8/8] lib/igt_fb: Make sure tiled YUV
- framebuffers are fully cleared
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 11 Feb 2020 03:21:17 -0000
+Message-ID: <158139127794.23971.14842945669211020632@emeril.freedesktop.org>
+References: <20200211023108.25369-1-imre.deak@intel.com>
+In-Reply-To: <20200211023108.25369-1-imre.deak@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bv2=2C1/8=5D_lib/igt=5Fdraw=3A_Refactor_get=5F?=
+ =?utf-8?q?tiling_calls?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,123 +15,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Imre Deak <imre.deak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For tiled FBs that are mapped in an other way than a GTT map we need to
-clear all tile-rows. Clearing only the first stride*height bytes may
-leave tiles at the end of the FB uncleared.
+== Series Details ==
 
-v2:
-- Don't calculate the plane size for unused planes. (Matt)
+Series: series starting with [v2,1/8] lib/igt_draw: Refactor get_tiling calls
+URL   : https://patchwork.freedesktop.org/series/73268/
+State : success
 
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
----
- lib/igt_fb.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+== Summary ==
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index af3291a2..8bdb0a09 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -841,10 +841,21 @@ static void memset64(uint64_t *s, uint64_t c, size_t n)
- static void clear_yuv_buffer(struct igt_fb *fb)
- {
- 	bool full_range = fb->color_range == IGT_COLOR_YCBCR_FULL_RANGE;
-+	size_t plane_size[2];
- 	void *ptr;
- 
- 	igt_assert(igt_format_is_yuv(fb->drm_format));
- 
-+	for (int i = 0; i < lookup_drm_format(fb->drm_format)->num_planes; i++) {
-+		unsigned int tile_width, tile_height;
-+
-+		igt_assert_lt(i, ARRAY_SIZE(plane_size));
-+		igt_get_fb_tile_size(fb->fd, fb->modifier, fb->plane_bpp[i],
-+				     &tile_width, &tile_height);
-+		plane_size[i] = fb->strides[i] *
-+			ALIGN(fb->plane_height[i], tile_height);
-+	}
-+
- 	/* Ensure the framebuffer is preallocated */
- 	ptr = igt_fb_map_buffer(fb->fd, fb);
- 	igt_assert(*(uint32_t *)ptr == 0);
-@@ -853,48 +864,48 @@ static void clear_yuv_buffer(struct igt_fb *fb)
- 	case DRM_FORMAT_NV12:
- 		memset(ptr + fb->offsets[0],
- 		       full_range ? 0x00 : 0x10,
--		       fb->strides[0] * fb->plane_height[0]);
-+		       plane_size[0]);
- 		memset(ptr + fb->offsets[1],
- 		       0x80,
--		       fb->strides[1] * fb->plane_height[1]);
-+		       plane_size[1]);
- 		break;
- 	case DRM_FORMAT_XYUV8888:
- 		wmemset(ptr + fb->offsets[0], full_range ? 0x00008080 : 0x00108080,
--			fb->strides[0] * fb->plane_height[0] / sizeof(wchar_t));
-+			plane_size[0] / sizeof(wchar_t));
- 		break;
- 	case DRM_FORMAT_YUYV:
- 	case DRM_FORMAT_YVYU:
- 		wmemset(ptr + fb->offsets[0],
- 			full_range ? 0x80008000 : 0x80108010,
--			fb->strides[0] * fb->plane_height[0] / sizeof(wchar_t));
-+			plane_size[0] / sizeof(wchar_t));
- 		break;
- 	case DRM_FORMAT_UYVY:
- 	case DRM_FORMAT_VYUY:
- 		wmemset(ptr + fb->offsets[0],
- 			full_range ? 0x00800080 : 0x10801080,
--			fb->strides[0] * fb->plane_height[0] / sizeof(wchar_t));
-+			plane_size[0] / sizeof(wchar_t));
- 		break;
- 	case DRM_FORMAT_P010:
- 	case DRM_FORMAT_P012:
- 	case DRM_FORMAT_P016:
- 		wmemset(ptr, full_range ? 0 : 0x10001000,
--			fb->offsets[1] / sizeof(wchar_t));
-+			plane_size[0] / sizeof(wchar_t));
- 		wmemset(ptr + fb->offsets[1], 0x80008000,
--			fb->strides[1] * fb->plane_height[1] / sizeof(wchar_t));
-+			plane_size[1] / sizeof(wchar_t));
- 		break;
- 	case DRM_FORMAT_Y210:
- 	case DRM_FORMAT_Y212:
- 	case DRM_FORMAT_Y216:
- 		wmemset(ptr + fb->offsets[0],
- 			full_range ? 0x80000000 : 0x80001000,
--			fb->strides[0] * fb->plane_height[0] / sizeof(wchar_t));
-+			plane_size[0] / sizeof(wchar_t));
- 		break;
- 
- 	case DRM_FORMAT_XVYU2101010:
- 	case DRM_FORMAT_Y410:
- 		wmemset(ptr + fb->offsets[0],
- 			full_range ? 0x20000200 : 0x20010200,
--		fb->strides[0] * fb->plane_height[0] / sizeof(wchar_t));
-+			plane_size[0] / sizeof(wchar_t));
- 		break;
- 
- 	case DRM_FORMAT_XVYU12_16161616:
-@@ -903,7 +914,7 @@ static void clear_yuv_buffer(struct igt_fb *fb)
- 	case DRM_FORMAT_Y416:
- 		memset64(ptr + fb->offsets[0],
- 			 full_range ? 0x800000008000ULL : 0x800010008000ULL,
--			 fb->strides[0] * fb->plane_height[0] / sizeof(uint64_t));
-+			 plane_size[0] / sizeof(uint64_t));
- 		break;
- 	}
- 
--- 
-2.23.1
+CI Bug Log - changes from CI_DRM_7904 -> IGTPW_4124
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4124/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4124 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_close_race@basic-threads:
+    - fi-byt-n2820:       [PASS][1] -> [INCOMPLETE][2] ([i915#45])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7904/fi-byt-n2820/igt@gem_close_race@basic-threads.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4124/fi-byt-n2820/igt@gem_close_race@basic-threads.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live_gem_contexts:
+    - fi-cfl-8700k:       [INCOMPLETE][3] ([i915#424]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7904/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4124/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
+
+  * igt@i915_selftest@live_gtt:
+    - fi-skl-6600u:       [TIMEOUT][5] ([fdo#111732] / [fdo#112271]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7904/fi-skl-6600u/igt@i915_selftest@live_gtt.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4124/fi-skl-6600u/igt@i915_selftest@live_gtt.html
+
+  
+  [fdo#111732]: https://bugs.freedesktop.org/show_bug.cgi?id=111732
+  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
+  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
+  [i915#45]: https://gitlab.freedesktop.org/drm/intel/issues/45
+
+
+Participating hosts (46 -> 46)
+------------------------------
+
+  Additional (5): fi-kbl-soraka fi-hsw-peppy fi-kbl-7500u fi-hsw-4770 fi-gdg-551 
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5433 -> IGTPW_4124
+
+  CI-20190529: 20190529
+  CI_DRM_7904: 5de757f49fb13a3c0e42626e7c4b47c2d82b14a1 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4124: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4124/index.html
+  IGT_5433: 6a96c17f3a1b4e1f90b1a0b0ce42a7219875d1a4 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4124/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
