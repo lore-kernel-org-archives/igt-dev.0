@@ -1,13 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 81C706E47E
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2020 08:27:38 +0000 (UTC)
+Date: Tue, 11 Feb 2020 10:27:34 +0200
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20200211082734.wj6bptg2ka7psgqa@ahiler-desk1.fi.intel.com>
+References: <20200122231655.9702-1-juston.li@intel.com>
+ <157978751655.1144.297062955688673644@emeril.freedesktop.org>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 11 Feb 2020 03:21:17 -0000
-Message-ID: <158139127794.23971.14842945669211020632@emeril.freedesktop.org>
-References: <20200211023108.25369-1-imre.deak@intel.com>
-In-Reply-To: <20200211023108.25369-1-imre.deak@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bv2=2C1/8=5D_lib/igt=5Fdraw=3A_Refactor_get=5F?=
- =?utf-8?q?tiling_calls?=
+Content-Disposition: inline
+In-Reply-To: <157978751655.1144.297062955688673644@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bv5=2Ci-g-t=2C1/2=5D__include/drm-uapi=3A?=
+ =?utf-8?q?_Import_headers_from_3ff4c24bdb1f?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,90 +21,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Imre Deak <imre.deak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Juston Li <juston.li@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Thu, Jan 23, 2020 at 01:51:56PM +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: series starting with [v5,i-g-t,1/2] include/drm-uapi: Import headers from 3ff4c24bdb1f
+> URL   : https://patchwork.freedesktop.org/series/72429/
+> State : failure
+> 
+> == Summary ==
+> 
+> ERROR! This series introduces new undocumented tests:
+> 
+> gem_mmap_offset@open-flood
+> kms_getfb@getfb-handle-protection
+> kms_getfb@getfb2-accept-ccs
+> kms_getfb@getfb2-handle-closed
+> kms_getfb@getfb2-handle-not-fb
+> kms_getfb@getfb2-handle-protection
+> kms_getfb@getfb2-handle-zero
+> kms_getfb@getfb2-into-addfb2
+> 
+> Can you document them as per the requirement in the [CONTRIBUTING.md]?
+> 
+> [Documentation] has more details on how to do this.
+> 
+> Here are few examples:
+> https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
+> https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+> 
+> Thanks in advance!
+> 
+> [CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
+> [Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+> 
+> Other than that, pipeline status: SUCCESS.
+> 
+> see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/100200 for the overview.
+> 
+> == Logs ==
+> 
+> For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/100200
 
-Series: series starting with [v2,1/8] lib/igt_draw: Refactor get_tiling calls
-URL   : https://patchwork.freedesktop.org/series/73268/
-State : success
+Can you document the newly introduced tests? Otherwise looks good to
+merge.
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_7904 -> IGTPW_4124
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4124/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4124 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-byt-n2820:       [PASS][1] -> [INCOMPLETE][2] ([i915#45])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7904/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4124/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-cfl-8700k:       [INCOMPLETE][3] ([i915#424]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7904/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4124/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
-
-  * igt@i915_selftest@live_gtt:
-    - fi-skl-6600u:       [TIMEOUT][5] ([fdo#111732] / [fdo#112271]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7904/fi-skl-6600u/igt@i915_selftest@live_gtt.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4124/fi-skl-6600u/igt@i915_selftest@live_gtt.html
-
-  
-  [fdo#111732]: https://bugs.freedesktop.org/show_bug.cgi?id=111732
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
-  [i915#45]: https://gitlab.freedesktop.org/drm/intel/issues/45
-
-
-Participating hosts (46 -> 46)
-------------------------------
-
-  Additional (5): fi-kbl-soraka fi-hsw-peppy fi-kbl-7500u fi-hsw-4770 fi-gdg-551 
-  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5433 -> IGTPW_4124
-
-  CI-20190529: 20190529
-  CI_DRM_7904: 5de757f49fb13a3c0e42626e7c4b47c2d82b14a1 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4124: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4124/index.html
-  IGT_5433: 6a96c17f3a1b4e1f90b1a0b0ce42a7219875d1a4 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4124/index.html
+-- 
+Cheers,
+Arek
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
