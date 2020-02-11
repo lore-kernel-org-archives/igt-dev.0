@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5CB4D6E279
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2020 01:18:58 +0000 (UTC)
-Date: Tue, 11 Feb 2020 03:18:34 +0200
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D12456E286
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2020 01:27:17 +0000 (UTC)
+Date: Tue, 11 Feb 2020 03:26:53 +0200
 From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20200211011834.GC10361@ideak-desk.fi.intel.com>
+Message-ID: <20200211012653.GD10361@ideak-desk.fi.intel.com>
 References: <20200207191524.19362-1-imre.deak@intel.com>
- <20200207191524.19362-6-imre.deak@intel.com>
- <20200210231948.GS232048@mdroper-desk1.amr.corp.intel.com>
+ <20200207191524.19362-8-imre.deak@intel.com>
+ <20200210233446.GU232048@mdroper-desk1.amr.corp.intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200210231948.GS232048@mdroper-desk1.amr.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 6/8] tests/kms_frontbuffer_tracking:
- Skip GTT subtests on platforms w/o aperture
+In-Reply-To: <20200210233446.GU232048@mdroper-desk1.amr.corp.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 8/8] lib/igt_fb: Make sure tiled YUV
+ framebuffers are fully cleared
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,129 +29,121 @@ To: Matt Roper <matthew.d.roper@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Feb 10, 2020 at 03:19:48PM -0800, Matt Roper wrote:
-> On Fri, Feb 07, 2020 at 09:15:22PM +0200, Imre Deak wrote:
-> > Subtests that draw through a GTT mapping are not relevent on a platform w/o
-> > GTT aperture, so skip them.
-> 
-> Could this check be pushed down into check_test_requirements()?
-
-The requirement wouldn't be correct for all subtests and for some others
-we need to check something else than t->method.
-
-> Matt
-> 
+On Mon, Feb 10, 2020 at 03:34:46PM -0800, Matt Roper wrote:
+> On Fri, Feb 07, 2020 at 09:15:24PM +0200, Imre Deak wrote:
+> > For tiled FBs that are mapped in an other way than a GTT map we need to
+> > clear all tile-rows. Clearing only the first stride*height bytes may
+> > leave tiles at the end of the FB uncleared.
 > > 
 > > Signed-off-by: Imre Deak <imre.deak@intel.com>
 > > ---
-> >  tests/kms_frontbuffer_tracking.c | 32 ++++++++++++++++++++++++++++++++
-> >  1 file changed, 32 insertions(+)
+> >  lib/igt_fb.c | 30 ++++++++++++++++++++----------
+> >  1 file changed, 20 insertions(+), 10 deletions(-)
 > > 
-> > diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
-> > index 724f5d16..310c8b7b 100644
-> > --- a/tests/kms_frontbuffer_tracking.c
-> > +++ b/tests/kms_frontbuffer_tracking.c
-> > @@ -1934,6 +1934,9 @@ static void draw_subtest(const struct test_mode *t)
-> >  	struct modeset_params *params = pick_params(t);
-> >  	struct fb_region *target;
-> >  
-> > +	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
-> > +		    !gem_has_mappable_ggtt(drm.fd));
-> > +
-> >  	switch (t->screen) {
-> >  	case SCREEN_PRIM:
-> >  		if (t->method != IGT_DRAW_MMAP_GTT && t->plane == PLANE_PRI)
-> > @@ -2032,6 +2035,11 @@ static void multidraw_subtest(const struct test_mode *t)
-> >  			igt_debug("Methods %s and %s\n",
-> >  				  igt_draw_get_method_name(m1),
-> >  				  igt_draw_get_method_name(m2));
-> > +
-> > +			igt_skip_on((m1 == IGT_DRAW_MMAP_GTT ||
-> > +				     m2 == IGT_DRAW_MMAP_GTT) &&
-> > +				    !gem_has_mappable_ggtt(drm.fd));
-> > +
-> >  			for (r = 0; r < pattern->n_rects; r++) {
-> >  				used_method = (r % 2 == 0) ? m1 : m2;
-> >  
-> > @@ -2140,6 +2148,9 @@ static void badformat_subtest(const struct test_mode *t)
-> >   */
-> >  static void format_draw_subtest(const struct test_mode *t)
+> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> > index af3291a2..a4db0749 100644
+> > --- a/lib/igt_fb.c
+> > +++ b/lib/igt_fb.c
+> > @@ -841,10 +841,20 @@ static void memset64(uint64_t *s, uint64_t c, size_t n)
+> >  static void clear_yuv_buffer(struct igt_fb *fb)
 > >  {
-> > +	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
-> > +		    !gem_has_mappable_ggtt(drm.fd));
+> >  	bool full_range = fb->color_range == IGT_COLOR_YCBCR_FULL_RANGE;
+> > +	size_t plane_size[2];
+> >  	void *ptr;
+> >  
+> >  	igt_assert(igt_format_is_yuv(fb->drm_format));
+> >  
+> > +	for (int i = 0; i < min(ARRAY_SIZE(plane_size), fb->num_planes); i++) {
+> 
+> This will still calculate a plane_size[1] for packed YUV + CCS I think,
+> but I guess that doesn't hurt anything since it just never gets used
+> below.
+
+Yes, thanks for spotting that. This should be:
+	i < lookup_drm_format(fb->drm_format)->num_planes
+
+> Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+> 
+> 
+> Matt
+> 
+> > +		unsigned int tile_width, tile_height;
 > > +
-> >  	if (format_is_valid(t->feature, t->format))
-> >  		draw_subtest(t);
-> >  	else
-> > @@ -2276,6 +2287,9 @@ static void flip_subtest(const struct test_mode *t)
-> >  	struct draw_pattern_info *pattern = &pattern1;
-> >  	enum color bg_color;
-> >  
-> > +	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
-> > +		    !gem_has_mappable_ggtt(drm.fd));
+> > +		igt_get_fb_tile_size(fb->fd, fb->modifier, fb->plane_bpp[i],
+> > +				     &tile_width, &tile_height);
+> > +		plane_size[i] = fb->strides[i] *
+> > +			ALIGN(fb->plane_height[i], tile_height);
+> > +	}
 > > +
-> >  	switch (t->screen) {
-> >  	case SCREEN_PRIM:
-> >  		assertions |= ASSERT_LAST_ACTION_CHANGED;
-> > @@ -2335,6 +2349,9 @@ static void fliptrack_subtest(const struct test_mode *t, enum flip_type type)
-> >  	struct modeset_params *params = pick_params(t);
-> >  	struct draw_pattern_info *pattern = &pattern1;
+> >  	/* Ensure the framebuffer is preallocated */
+> >  	ptr = igt_fb_map_buffer(fb->fd, fb);
+> >  	igt_assert(*(uint32_t *)ptr == 0);
+> > @@ -853,48 +863,48 @@ static void clear_yuv_buffer(struct igt_fb *fb)
+> >  	case DRM_FORMAT_NV12:
+> >  		memset(ptr + fb->offsets[0],
+> >  		       full_range ? 0x00 : 0x10,
+> > -		       fb->strides[0] * fb->plane_height[0]);
+> > +		       plane_size[0]);
+> >  		memset(ptr + fb->offsets[1],
+> >  		       0x80,
+> > -		       fb->strides[1] * fb->plane_height[1]);
+> > +		       plane_size[1]);
+> >  		break;
+> >  	case DRM_FORMAT_XYUV8888:
+> >  		wmemset(ptr + fb->offsets[0], full_range ? 0x00008080 : 0x00108080,
+> > -			fb->strides[0] * fb->plane_height[0] / sizeof(wchar_t));
+> > +			plane_size[0] / sizeof(wchar_t));
+> >  		break;
+> >  	case DRM_FORMAT_YUYV:
+> >  	case DRM_FORMAT_YVYU:
+> >  		wmemset(ptr + fb->offsets[0],
+> >  			full_range ? 0x80008000 : 0x80108010,
+> > -			fb->strides[0] * fb->plane_height[0] / sizeof(wchar_t));
+> > +			plane_size[0] / sizeof(wchar_t));
+> >  		break;
+> >  	case DRM_FORMAT_UYVY:
+> >  	case DRM_FORMAT_VYUY:
+> >  		wmemset(ptr + fb->offsets[0],
+> >  			full_range ? 0x00800080 : 0x10801080,
+> > -			fb->strides[0] * fb->plane_height[0] / sizeof(wchar_t));
+> > +			plane_size[0] / sizeof(wchar_t));
+> >  		break;
+> >  	case DRM_FORMAT_P010:
+> >  	case DRM_FORMAT_P012:
+> >  	case DRM_FORMAT_P016:
+> >  		wmemset(ptr, full_range ? 0 : 0x10001000,
+> > -			fb->offsets[1] / sizeof(wchar_t));
+> > +			plane_size[0] / sizeof(wchar_t));
+> >  		wmemset(ptr + fb->offsets[1], 0x80008000,
+> > -			fb->strides[1] * fb->plane_height[1] / sizeof(wchar_t));
+> > +			plane_size[1] / sizeof(wchar_t));
+> >  		break;
+> >  	case DRM_FORMAT_Y210:
+> >  	case DRM_FORMAT_Y212:
+> >  	case DRM_FORMAT_Y216:
+> >  		wmemset(ptr + fb->offsets[0],
+> >  			full_range ? 0x80000000 : 0x80001000,
+> > -			fb->strides[0] * fb->plane_height[0] / sizeof(wchar_t));
+> > +			plane_size[0] / sizeof(wchar_t));
+> >  		break;
 > >  
-> > +	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
-> > +		    !gem_has_mappable_ggtt(drm.fd));
-> > +
-> >  	prepare_subtest(t, pattern);
+> >  	case DRM_FORMAT_XVYU2101010:
+> >  	case DRM_FORMAT_Y410:
+> >  		wmemset(ptr + fb->offsets[0],
+> >  			full_range ? 0x20000200 : 0x20010200,
+> > -		fb->strides[0] * fb->plane_height[0] / sizeof(wchar_t));
+> > +			plane_size[0] / sizeof(wchar_t));
+> >  		break;
 > >  
-> >  	create_fb(t->format, params->primary.fb->width, params->primary.fb->height,
-> > @@ -2383,6 +2400,9 @@ static void move_subtest(const struct test_mode *t)
-> >  	struct fb_region *reg = pick_target(t, params);
-> >  	bool repeat = false;
-> >  
-> > +	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
-> > +		    !gem_has_mappable_ggtt(drm.fd));
-> > +
-> >  	prepare_subtest(t, pattern);
-> >  
-> >  	/* Just paint the right color since we start at 0x0. */
-> > @@ -2434,6 +2454,9 @@ static void onoff_subtest(const struct test_mode *t)
-> >  	struct modeset_params *params = pick_params(t);
-> >  	struct draw_pattern_info *pattern = &pattern3;
-> >  
-> > +	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
-> > +		    !gem_has_mappable_ggtt(drm.fd));
-> > +
-> >  	prepare_subtest(t, pattern);
-> >  
-> >  	/* Just paint the right color since we start at 0x0. */
-> > @@ -2493,6 +2516,9 @@ static void fullscreen_plane_subtest(const struct test_mode *t)
-> >  	struct modeset_params *params = pick_params(t);
-> >  	int assertions;
-> >  
-> > +	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
-> > +		    !gem_has_mappable_ggtt(drm.fd));
-> > +
-> >  	prepare_subtest(t, pattern);
-> >  
-> >  	rect = pattern->get_rect(&params->primary, 0);
-> > @@ -2744,6 +2770,9 @@ static void farfromfence_subtest(const struct test_mode *t)
-> >  	int max_height, assertions = 0;
-> >  	int gen = intel_gen(intel_get_drm_devid(drm.fd));
-> >  
-> > +	igt_skip_on(t->method == IGT_DRAW_MMAP_GTT &&
-> > +		    !gem_has_mappable_ggtt(drm.fd));
-> > +
-> >  	switch (gen) {
-> >  	case 2:
-> >  		max_height = 2048;
-> > @@ -3025,6 +3054,9 @@ static void basic_subtest(const struct test_mode *t)
-> >  	fb1 = params->primary.fb;
-> >  
-> >  	for (r = 0, method = 0; method < IGT_DRAW_METHOD_COUNT; method++, r++) {
-> > +		igt_skip_on(method == IGT_DRAW_MMAP_GTT &&
-> > +			    !gem_has_mappable_ggtt(drm.fd));
-> > +
-> >  		if (r == pattern->n_rects) {
-> >  			params->primary.fb = (params->primary.fb == fb1) ? &fb2 : fb1;
+> >  	case DRM_FORMAT_XVYU12_16161616:
+> > @@ -903,7 +913,7 @@ static void clear_yuv_buffer(struct igt_fb *fb)
+> >  	case DRM_FORMAT_Y416:
+> >  		memset64(ptr + fb->offsets[0],
+> >  			 full_range ? 0x800000008000ULL : 0x800010008000ULL,
+> > -			 fb->strides[0] * fb->plane_height[0] / sizeof(uint64_t));
+> > +			 plane_size[0] / sizeof(uint64_t));
+> >  		break;
+> >  	}
 > >  
 > > -- 
 > > 2.23.1
