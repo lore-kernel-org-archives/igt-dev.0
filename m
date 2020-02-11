@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Dale B Stimson <dale.b.stimson@intel.com>
-Date: Mon, 10 Feb 2020 16:46:13 -0800
-Message-Id: <def58c82f6cabd1f811cca6d48d7dac1c1bd08f9.1581381780.git.dale.b.stimson@intel.com>
-In-Reply-To: <f0cabbe9cbe9873967b000dd64fb10394c3fc9bd.1581381780.git.dale.b.stimson@intel.com>
+Date: Mon, 10 Feb 2020 16:46:11 -0800
+Message-Id: <2f2d74a2aa0bb1ab0050bdeb5a272ae9d7f61c69.1581381780.git.dale.b.stimson@intel.com>
+In-Reply-To: <cover.1581381780.git.dale.b.stimson@intel.com>
 References: <cover.1581381780.git.dale.b.stimson@intel.com>
- <2f2d74a2aa0bb1ab0050bdeb5a272ae9d7f61c69.1581381780.git.dale.b.stimson@intel.com>
- <f0cabbe9cbe9873967b000dd64fb10394c3fc9bd.1581381780.git.dale.b.stimson@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/3] i915/gem_ctx_isolation: Check engine
- relative registers - Part 2
+Subject: [igt-dev] [PATCH i-g-t 1/3] i915/gem_mmio_base.c - get mmio_base
+ from debugfs (if possible)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,331 +21,430 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Modify previous i915/gem_ctx_isolation "Check engine relative registers"
-for modified mmio_base infrastructure.
-
 Signed-off-by: Dale B Stimson <dale.b.stimson@intel.com>
 ---
- tests/i915/gem_ctx_isolation.c | 87 +++++++++++++++++++---------------
- 1 file changed, 48 insertions(+), 39 deletions(-)
+ lib/Makefile.sources     |   2 +
+ lib/i915/gem_mmio_base.c | 346 +++++++++++++++++++++++++++++++++++++++
+ lib/i915/gem_mmio_base.h |  19 +++
+ lib/igt.h                |   1 +
+ lib/meson.build          |   1 +
+ 5 files changed, 369 insertions(+)
+ create mode 100644 lib/i915/gem_mmio_base.c
+ create mode 100644 lib/i915/gem_mmio_base.h
 
-diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
-index eff4b1df2..eec78c729 100644
---- a/tests/i915/gem_ctx_isolation.c
-+++ b/tests/i915/gem_ctx_isolation.c
-@@ -233,12 +233,12 @@ static bool ignore_register(uint32_t offset, uint32_t mmio_base)
- static void tmpl_regs(int fd,
- 		      uint32_t ctx,
- 		      const struct intel_execution_engine2 *e,
-+		      uint32_t mmio_base,
- 		      uint32_t handle,
- 		      uint32_t value)
- {
- 	const unsigned int gen_bit = 1 << intel_gen(intel_get_drm_devid(fd));
- 	const unsigned int engine_bit = ENGINE(e->class, e->instance);
--	const uint32_t mmio_base = gem_engine_mmio_base(fd, e->name);
- 	unsigned int regs_size;
- 	uint32_t *regs;
- 
-@@ -278,12 +278,12 @@ static void tmpl_regs(int fd,
- static uint32_t read_regs(int fd,
- 			  uint32_t ctx,
- 			  const struct intel_execution_engine2 *e,
-+			  uint32_t mmio_base,
- 			  unsigned int flags)
- {
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
- 	const unsigned int gen_bit = 1 << gen;
- 	const unsigned int engine_bit = ENGINE(e->class, e->instance);
--	const uint32_t mmio_base = gem_engine_mmio_base(fd, e->name);
- 	const bool r64b = gen >= 8;
- 	struct drm_i915_gem_exec_object2 obj[2];
- 	struct drm_i915_gem_relocation_entry *reloc;
-@@ -359,12 +359,12 @@ static uint32_t read_regs(int fd,
- static void write_regs(int fd,
- 		       uint32_t ctx,
- 		       const struct intel_execution_engine2 *e,
-+		       uint32_t mmio_base,
- 		       unsigned int flags,
- 		       uint32_t value)
- {
- 	const unsigned int gen_bit = 1 << intel_gen(intel_get_drm_devid(fd));
- 	const unsigned int engine_bit = ENGINE(e->class, e->instance);
--	const uint32_t mmio_base = gem_engine_mmio_base(fd, e->name);
- 	struct drm_i915_gem_exec_object2 obj;
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	unsigned int batch_size;
-@@ -420,13 +420,13 @@ static void write_regs(int fd,
- static void restore_regs(int fd,
- 			 uint32_t ctx,
- 			 const struct intel_execution_engine2 *e,
-+			 uint32_t mmio_base,
- 			 unsigned int flags,
- 			 uint32_t regs)
- {
- 	const unsigned int gen = intel_gen(intel_get_drm_devid(fd));
- 	const unsigned int gen_bit = 1 << gen;
- 	const unsigned int engine_bit = ENGINE(e->class, e->instance);
--	const uint32_t mmio_base = gem_engine_mmio_base(fd, e->name);
- 	const bool r64b = gen >= 8;
- 	struct drm_i915_gem_exec_object2 obj[2];
- 	struct drm_i915_gem_execbuffer2 execbuf;
-@@ -498,12 +498,12 @@ static void restore_regs(int fd,
- __attribute__((unused))
- static void dump_regs(int fd,
- 		      const struct intel_execution_engine2 *e,
-+		      uint32_t mmio_base,
- 		      unsigned int regs)
- {
- 	const int gen = intel_gen(intel_get_drm_devid(fd));
- 	const unsigned int gen_bit = 1 << gen;
- 	const unsigned int engine_bit = ENGINE(e->class, e->instance);
--	const uint32_t mmio_base = gem_engine_mmio_base(fd, e->name);
- 	unsigned int regs_size;
- 	uint32_t *out;
- 
-@@ -541,9 +541,9 @@ static void dump_regs(int fd,
- }
- 
- static void compare_regs(int fd, const struct intel_execution_engine2 *e,
-+			 uint32_t mmio_base,
- 			 uint32_t A, uint32_t B, const char *who)
- {
--	const uint32_t mmio_base = gem_engine_mmio_base(fd, e->name);
- 	unsigned int num_errors;
- 	unsigned int regs_size;
- 	uint32_t *a, *b;
-@@ -596,6 +596,7 @@ static void compare_regs(int fd, const struct intel_execution_engine2 *e,
- 
- static void nonpriv(int fd,
- 		    const struct intel_execution_engine2 *e,
-+		    uint32_t mmio_base,
- 		    unsigned int flags)
- {
- 	static const uint32_t values[] = {
-@@ -623,16 +624,16 @@ static void nonpriv(int fd,
- 
- 		ctx = gem_context_clone_with_engines(fd, 0);
- 
--		tmpl = read_regs(fd, ctx, e, flags);
--		regs[0] = read_regs(fd, ctx, e, flags);
-+		tmpl = read_regs(fd, ctx, e, mmio_base, flags);
-+		regs[0] = read_regs(fd, ctx, e, mmio_base, flags);
- 
--		tmpl_regs(fd, ctx, e, tmpl, values[v]);
-+		tmpl_regs(fd, ctx, e, mmio_base, tmpl, values[v]);
- 
- 		spin = igt_spin_new(fd, .ctx = ctx, .engine = e->flags);
- 
- 		igt_debug("%s[%d]: Setting all registers to 0x%08x\n",
- 			  __func__, v, values[v]);
--		write_regs(fd, ctx, e, flags, values[v]);
-+		write_regs(fd, ctx, e, mmio_base, flags, values[v]);
- 
- 		if (flags & DIRTY2) {
- 			uint32_t sw = gem_context_clone_with_engines(fd, 0);
-@@ -663,17 +664,17 @@ static void nonpriv(int fd,
- 			gem_context_destroy(fd, sw);
- 		}
- 
--		regs[1] = read_regs(fd, ctx, e, flags);
-+		regs[1] = read_regs(fd, ctx, e, mmio_base, flags);
- 
- 		/*
- 		 * Restore the original register values before the HW idles.
- 		 * Or else it may never restart!
- 		 */
--		restore_regs(fd, ctx, e, flags, regs[0]);
-+		restore_regs(fd, ctx, e, mmio_base, flags, regs[0]);
- 
- 		igt_spin_free(fd, spin);
- 
--		compare_regs(fd, e, tmpl, regs[1], "nonpriv read/writes");
-+		compare_regs(fd, e, mmio_base, tmpl, regs[1], "nonpriv read/writes");
- 
- 		for (int n = 0; n < ARRAY_SIZE(regs); n++)
- 			gem_close(fd, regs[n]);
-@@ -684,6 +685,7 @@ static void nonpriv(int fd,
- 
- static void isolation(int fd,
- 		      const struct intel_execution_engine2 *e,
-+		      uint32_t mmio_base,
- 		      unsigned int flags)
- {
- 	static const uint32_t values[] = {
-@@ -705,14 +707,14 @@ static void isolation(int fd,
- 		uint32_t ctx[2], regs[2], tmp;
- 
- 		ctx[0] = gem_context_clone_with_engines(fd, 0);
--		regs[0] = read_regs(fd, ctx[0], e, flags);
-+		regs[0] = read_regs(fd, ctx[0], e, mmio_base, flags);
- 
- 		spin = igt_spin_new(fd, .ctx = ctx[0], .engine = e->flags);
- 
- 		if (flags & DIRTY1) {
- 			igt_debug("%s[%d]: Setting all registers of ctx 0 to 0x%08x\n",
- 				  __func__, v, values[v]);
--			write_regs(fd, ctx[0], e, flags, values[v]);
-+			write_regs(fd, ctx[0], e, mmio_base, flags, values[v]);
- 		}
- 
- 		/*
-@@ -724,27 +726,27 @@ static void isolation(int fd,
- 		 * see the corruption from the previous context instead!
- 		 */
- 		ctx[1] = gem_context_clone_with_engines(fd, 0);
--		regs[1] = read_regs(fd, ctx[1], e, flags);
-+		regs[1] = read_regs(fd, ctx[1], e, mmio_base, flags);
- 
- 		if (flags & DIRTY2) {
- 			igt_debug("%s[%d]: Setting all registers of ctx 1 to 0x%08x\n",
- 				  __func__, v, ~values[v]);
--			write_regs(fd, ctx[1], e, flags, ~values[v]);
-+			write_regs(fd, ctx[1], e, mmio_base, flags, ~values[v]);
- 		}
- 
- 		/*
- 		 * Restore the original register values before the HW idles.
- 		 * Or else it may never restart!
- 		 */
--		tmp = read_regs(fd, ctx[0], e, flags);
--		restore_regs(fd, ctx[0], e, flags, regs[0]);
-+		tmp = read_regs(fd, ctx[0], e, mmio_base, flags);
-+		restore_regs(fd, ctx[0], e, mmio_base, flags, regs[0]);
- 
- 		igt_spin_free(fd, spin);
- 
- 		if (!(flags & DIRTY1))
--			compare_regs(fd, e, regs[0], tmp,
-+			compare_regs(fd, e, mmio_base, regs[0], tmp,
- 				     "two reads of the same ctx");
--		compare_regs(fd, e, regs[0], regs[1], "two virgin contexts");
-+		compare_regs(fd, e, mmio_base, regs[0], regs[1], "two virgin contexts");
- 
- 		for (int n = 0; n < ARRAY_SIZE(ctx); n++) {
- 			gem_close(fd, regs[n]);
-@@ -794,6 +796,7 @@ static void inject_reset_context(int fd, const struct intel_execution_engine2 *e
- 
- static void preservation(int fd,
- 			 const struct intel_execution_engine2 *e,
-+			 uint32_t mmio_base,
- 			 unsigned int flags)
- {
- 	static const uint32_t values[] = {
-@@ -814,15 +817,15 @@ static void preservation(int fd,
- 
- 	ctx[num_values] = gem_context_clone_with_engines(fd, 0);
- 	spin = igt_spin_new(fd, .ctx = ctx[num_values], .engine = e->flags);
--	regs[num_values][0] = read_regs(fd, ctx[num_values], e, flags);
-+	regs[num_values][0] = read_regs(fd, ctx[num_values], e, mmio_base, flags);
- 	for (int v = 0; v < num_values; v++) {
- 		ctx[v] = gem_context_clone_with_engines(fd, 0);
--		write_regs(fd, ctx[v], e, flags, values[v]);
-+		write_regs(fd, ctx[v], e, mmio_base, flags, values[v]);
- 
--		regs[v][0] = read_regs(fd, ctx[v], e, flags);
-+		regs[v][0] = read_regs(fd, ctx[v], e, mmio_base, flags);
- 
- 	}
--	gem_close(fd, read_regs(fd, ctx[num_values], e, flags));
-+	gem_close(fd, read_regs(fd, ctx[num_values], e, mmio_base, flags));
- 	igt_spin_free(fd, spin);
- 
- 	if (flags & RESET)
-@@ -855,21 +858,21 @@ static void preservation(int fd,
- 
- 	spin = igt_spin_new(fd, .ctx = ctx[num_values], .engine = e->flags);
- 	for (int v = 0; v < num_values; v++)
--		regs[v][1] = read_regs(fd, ctx[v], e, flags);
--	regs[num_values][1] = read_regs(fd, ctx[num_values], e, flags);
-+		regs[v][1] = read_regs(fd, ctx[v], e, mmio_base, flags);
-+	regs[num_values][1] = read_regs(fd, ctx[num_values], e, mmio_base, flags);
- 	igt_spin_free(fd, spin);
- 
- 	for (int v = 0; v < num_values; v++) {
- 		char buf[80];
- 
- 		snprintf(buf, sizeof(buf), "dirty %x context\n", values[v]);
--		compare_regs(fd, e, regs[v][0], regs[v][1], buf);
-+		compare_regs(fd, e, mmio_base, regs[v][0], regs[v][1], buf);
- 
- 		gem_close(fd, regs[v][0]);
- 		gem_close(fd, regs[v][1]);
- 		gem_context_destroy(fd, ctx[v]);
- 	}
--	compare_regs(fd, e, regs[num_values][0], regs[num_values][1], "clean");
-+	compare_regs(fd, e, mmio_base, regs[num_values][0], regs[num_values][1], "clean");
- 	gem_context_destroy(fd, ctx[num_values]);
- }
- 
-@@ -893,6 +896,8 @@ igt_main
- 	unsigned int has_context_isolation = 0;
- 	const struct intel_execution_engine2 *e;
- 	int fd = -1;
-+	struct eng_mmio_base_table_s *mbp;
-+	uint32_t mmio_base;
- 
- 	igt_fixture {
- 		int gen;
-@@ -911,34 +916,36 @@ igt_main
- 		igt_skip_on(gen > LAST_KNOWN_GEN);
- 	}
- 
--	/* __for_each_physical_engine switches context to all engines. */
-+	mbp = gem_engine_mmio_base_info_get(fd);
- 
-+	/* __for_each_physical_engine switches context to all engines. */
- 	__for_each_physical_engine(fd, e) {
- 		igt_subtest_group {
- 			igt_fixture {
- 				igt_require(has_context_isolation & (1 << e->class));
- 				gem_require_ring(fd, e->flags);
- 				igt_fork_hang_detector(fd);
-+				mmio_base = gem_engine_mmio_base(mbp, e->name);
- 			}
- 
- 			igt_subtest_f("%s-nonpriv", e->name)
--				nonpriv(fd, e, 0);
-+				nonpriv(fd, e, mmio_base, 0);
- 			igt_subtest_f("%s-nonpriv-switch", e->name)
--				nonpriv(fd, e, DIRTY2);
-+				nonpriv(fd, e, mmio_base, DIRTY2);
- 
- 			igt_subtest_f("%s-clean", e->name)
--				isolation(fd, e, 0);
-+				isolation(fd, e, mmio_base, 0);
- 			igt_subtest_f("%s-dirty-create", e->name)
--				isolation(fd, e, DIRTY1);
-+				isolation(fd, e, mmio_base, DIRTY1);
- 			igt_subtest_f("%s-dirty-switch", e->name)
--				isolation(fd, e, DIRTY2);
-+				isolation(fd, e, mmio_base, DIRTY2);
- 
- 			igt_subtest_f("%s-none", e->name)
--				preservation(fd, e, 0);
-+				preservation(fd, e, mmio_base, 0);
- 			igt_subtest_f("%s-S3", e->name)
--				preservation(fd, e, S3);
-+				preservation(fd, e, mmio_base, S3);
- 			igt_subtest_f("%s-S4", e->name)
--				preservation(fd, e, S4);
-+				preservation(fd, e, mmio_base, S4);
- 
- 			igt_fixture {
- 				igt_stop_hang_detector();
-@@ -946,9 +953,11 @@ igt_main
- 
- 			igt_subtest_f("%s-reset", e->name) {
- 				igt_hang_t hang = igt_allow_hang(fd, 0, 0);
--				preservation(fd, e, RESET);
-+				preservation(fd, e, mmio_base, RESET);
- 				igt_disallow_hang(fd, hang);
- 			}
- 		}
- 	}
+diff --git a/lib/Makefile.sources b/lib/Makefile.sources
+index 3e573f267..4c5d50d5d 100644
+--- a/lib/Makefile.sources
++++ b/lib/Makefile.sources
+@@ -7,6 +7,8 @@ lib_source_list =	 	\
+ 	i915/gem_context.h	\
+ 	i915/gem_engine_topology.c	\
+ 	i915/gem_engine_topology.h	\
++	i915/gem_mmio_base.c	\
++	i915/gem_mmio_base.h	\
+ 	i915/gem_scheduler.c	\
+ 	i915/gem_scheduler.h	\
+ 	i915/gem_submission.c	\
+diff --git a/lib/i915/gem_mmio_base.c b/lib/i915/gem_mmio_base.c
+new file mode 100644
+index 000000000..8718c092f
+--- /dev/null
++++ b/lib/i915/gem_mmio_base.c
+@@ -0,0 +1,346 @@
++//  Copyright (C) 2020 Intel Corporation
++//
++//  SPDX-License-Identifier: MIT
 +
-+	gem_engine_mmio_base_info_free(mbp);
- }
++#include <ctype.h>
++
++#include <fcntl.h>
++
++#include "igt.h"
++
++struct eng_mmio_base_s {
++	char       name[8];
++	uint32_t   mmio_base;
++};
++
++struct eng_mmio_base_table_s {
++	unsigned int           mb_cnt;
++	struct eng_mmio_base_s mb_tab[GEM_MAX_ENGINES];
++};
++
++
++static struct eng_mmio_base_table_s *_gem_engine_mmio_info_dup(
++	const struct eng_mmio_base_table_s *mbpi)
++{
++	struct eng_mmio_base_table_s *mbpo;
++	size_t nbytes;
++
++	nbytes = offsetof(typeof(struct eng_mmio_base_table_s), mb_tab[mbpi->mb_cnt]);
++	mbpo = malloc(nbytes);
++	igt_assert(mbpo);
++	memcpy(mbpo, mbpi, nbytes);
++
++	return mbpo;
++}
++
++void gem_engine_mmio_base_info_free(struct eng_mmio_base_table_s *mbp)
++{
++	free(mbp);
++}
++
++static void _gem_engine_mmio_info_legacy_add(struct eng_mmio_base_table_s *mbp,
++	const char *eng_name, uint32_t mmio_base)
++{
++	if (mmio_base) {
++		strncpy(mbp->mb_tab[mbp->mb_cnt].name, eng_name,
++			sizeof(mbp->mb_tab[0].name));
++		mbp->mb_tab[mbp->mb_cnt].mmio_base = mmio_base;
++		mbp->mb_cnt++;
++	}
++}
++
++/**
++ * _gem_engine_mmio_base_info_get_legacy:
++ * @fd_dev: file descriptor upon which device is open or -1 to use defaults.
++ *
++ * Provides per-engine mmio_base information from legacy built-in values
++ * for the case when the information is not otherwise available.
++ *
++ * Returns:
++ * Pointer to dynamically allocated struct eng_mmio_base_table_s describing
++ * engine config or NULL.
++ * The allocated size does not include unused engine entries.
++ * If non-NULL, it is caller's responsibility to free.
++ */
++static struct eng_mmio_base_table_s *_gem_engine_mmio_base_info_get_legacy(int fd_dev)
++{
++	int gen;
++	uint32_t mmio_base;
++	struct eng_mmio_base_table_s mbt;
++	struct eng_mmio_base_table_s *mbp;
++
++	memset(&mbt, 0, sizeof(mbt));
++
++	gen = intel_gen(intel_get_drm_devid(fd_dev));
++
++	/* The mmio_base values for engine instances 1 and higher cannot
++	 * be reliability determinated a priori. */
++
++	_gem_engine_mmio_info_legacy_add(&mbt, "rcs0", 0x2000);
++	_gem_engine_mmio_info_legacy_add(&mbt, "bcs0", 0x22000);
++
++	if (gen < 6)
++		mmio_base = 0x4000;
++	else if (gen < 11)
++		mmio_base = 0x12000;
++	else
++		mmio_base = 0x1c0000;
++	_gem_engine_mmio_info_legacy_add(&mbt, "vcs0", mmio_base);
++
++	if (gen < 11)
++		mmio_base = 0x1a000;
++	else
++		mmio_base = 0x1c8000;
++	_gem_engine_mmio_info_legacy_add(&mbt, "vecs0", mmio_base);
++
++	if (mbt.mb_cnt <= 0)
++		return NULL;
++
++	mbp = _gem_engine_mmio_info_dup(&mbt);
++
++	return mbp;
++}
++
++
++/**
++ * _gem_engine_mmio_base_info_get_debugfs:
++ * @fd_dev: file descriptor upon which device is open or -1 to use defaults.
++ *
++ * Obtains per-engine mmio_base information from debugfs.
++ *
++ * Returns:
++ * Pointer to dynamically allocated struct eng_mmio_base_table_s describing
++ * engine config or NULL.
++ * The allocated size does not include unused engine entries.
++ * If non-NULL, it is caller's responsibility to free.
++ *
++ * Looking in debugfs for per-engine instances of:
++ *	<engine_name>
++ *              ...
++ *		MMIO base: <u32_hex_number>
++ *
++ * Example of relevant lines from debugfs:
++ *	vcs0
++ *		MMIO base:  0x001c0000
++ *	vcs1
++ *		MMIO base:  0x001d0000
++ *
++ * In order to qualify as the introduction of a new per-engine section, an
++ * input line must consist solely of an engine name.  An engine name must
++ * be 7 or fewer characters in length and must consist of an engine class
++ * name of 3 or more lower case characters followed by an instance number.
++ */
++static struct eng_mmio_base_table_s *_gem_engine_mmio_base_info_get_debugfs(int fd_dev)
++{
++	static const char pth_ei[] = "i915_engine_info";
++	static const char str_mmio_base[] = "MMIO base:";
++	const size_t len_mmio_base = sizeof(str_mmio_base) - 1;
++	FILE *fpi;
++	char line_buf[128];
++	char *plne;
++	char *p_name;
++	char *pbeg;
++	size_t line_len;
++	struct eng_mmio_base_table_s mbt;
++	struct eng_mmio_base_table_s *mbp;
++	const size_t name_max = sizeof(mbt.mb_tab[0].name);
++	int ec;
++	int eng_found;
++	int nc;
++	int fd_ei;
++	int eof_seen;
++
++	fd_ei = igt_debugfs_open(fd_dev, pth_ei, O_RDONLY);
++	if (fd_ei < 0)
++		return NULL;
++
++	fpi = fdopen(fd_ei, "r");
++	if (!fpi) {
++		if (errno != ENOENT) {
++			igt_warn("open failed: %s: %s\n", pth_ei,
++				strerror(errno));
++		}
++		return NULL;
++	}
++
++	memset(&mbt, 0, sizeof(mbt));
++
++	ec = 0;
++	eng_found = 0;
++	eof_seen = 0;
++	while (!eof_seen) {
++		plne = fgets(line_buf, sizeof(line_buf), fpi);
++		if (!plne) {
++			eof_seen = 1;
++			plne = line_buf;
++			plne[0] = '\0';
++		}
++
++		if (plne[0]) {
++			/* Ignore lines that exceed allowed length. */
++			line_len = strlen(plne);
++			if (plne[line_len-1] != '\n') {
++				for (;;) {
++					plne = fgets(line_buf,
++						sizeof(line_buf), fpi);
++					if (!plne)
++						break;
++					line_len = strlen(plne);
++					if (plne[line_len-1] == '\n')
++						break;
++				}
++				continue;
++			}
++			plne[line_len-1] = '\0';
++
++			p_name = NULL;
++			nc = 0;
++			do {
++				for (; nc < name_max; nc++) {
++					if (!islower(plne[nc]))
++						break;
++				}
++				if (nc < 3)
++					break;
++				if (!isdigit(plne[nc]))
++					break;
++				for (; nc < name_max; nc++) {
++					if (!isdigit(plne[nc]))
++						break;
++				}
++				if ((nc >= name_max) || plne[nc])
++					break;
++				p_name = plne;
++			} while (0);
++		}
++
++		if (eof_seen || p_name) {
++			if (eng_found) {
++				eng_found = 0;
++				if ((ec + 1) >= GEM_MAX_ENGINES)
++					continue;
++				ec++;
++			}
++		}
++
++		if (p_name) {
++			strncpy(mbt.mb_tab[ec].name, p_name, nc);
++			eng_found = 1;
++			continue;
++		}
++
++		if (eng_found) {
++			pbeg = plne;
++			while (isspace(pbeg[0]))
++				pbeg++;
++			if (strncmp(pbeg, str_mmio_base, len_mmio_base) == 0) {
++				unsigned long int ulv;
++				uint32_t uiv;
++				char *ep;
++
++				pbeg += len_mmio_base;
++				ulv = strtoul(pbeg, &ep, 16);
++
++				uiv = (uint32_t) ulv;
++				igt_assert_f(((pbeg != ep) && (ulv == uiv)),
++					"invalid number: %s\n", plne);
++
++				while (isspace(*ep))
++					ep++;
++				igt_assert_f((!*ep),
++					"junk follows number: \"%s\"\n", plne);
++
++				mbt.mb_tab[ec].mmio_base = uiv;
++			}
++		}
++	}
++
++	if (fpi)
++		fclose(fpi);
++
++	mbt.mb_cnt = ec;
++
++	if (mbt.mb_cnt <= 0)
++		return NULL;
++
++	mbp = _gem_engine_mmio_info_dup(&mbt);
++
++	return mbp;
++}
++
++/**
++ * gem_engine_mmio_base_info_get:
++ * @fd_dev: file descriptor upon which device is open or -1 to use defaults.
++ *
++ * Obtains per-engine mmio_base information.  Multiple sub-functions will
++ * be tried in order of preference.
++ *
++ * Returns:
++ * Pointer to dynamically allocated struct eng_mmio_base_table_s describing
++ * engine config or NULL.
++ * The allocated size does not include unused engine entries.
++ * If non-NULL, it is caller's responsibility to free.
++ */
++struct eng_mmio_base_table_s *gem_engine_mmio_base_info_get(int fd_dev)
++{
++	struct eng_mmio_base_table_s *mbp = NULL;
++
++	/* If and when better ways are provided to find the mmio_base
++	 * information, they may be added them here in order of preference.
++	 */
++
++#if 0
++	if (!mbp)
++		mbp = _mmio_base_info_get_via_sysfs(fd_dev);
++#endif
++
++	if (!mbp)
++		mbp = _gem_engine_mmio_base_info_get_debugfs(fd_dev);
++
++	if (!mbp)
++		mbp = _gem_engine_mmio_base_info_get_legacy(fd_dev);
++
++	if (!mbp)
++		igt_warn("Per-engine mmio_base data is not present\n");
++
++	return mbp;
++}
++
++/**
++ * gem_engine_mmio_base_info_dump:
++ *
++ * Dumps engine mmio_base data.
++ *
++ * Returns: void
++ */
++void gem_engine_mmio_base_info_dump(const struct eng_mmio_base_table_s *mbp)
++{
++	int ix;
++	const struct eng_mmio_base_s *e_mb;
++
++	fprintf(stdout, "engine names and mmio_base addresses:\n");
++
++	for (ix = 0; ix < mbp->mb_cnt; ix++) {
++		e_mb = mbp->mb_tab + ix;
++		if (e_mb->mmio_base) {
++			fprintf(stdout, "%-8s 0x%8.8x\n",
++				e_mb->name, e_mb->mmio_base);
++		}
++	}
++}
++
++uint32_t gem_engine_mmio_base(const struct eng_mmio_base_table_s *mbp,
++	const char *eng_name)
++{
++	int ix;
++	const struct eng_mmio_base_s *e_mb;
++
++	for (ix = 0; ix < mbp->mb_cnt; ix++) {
++		e_mb = mbp->mb_tab + ix;
++		if (e_mb->mmio_base && !strcmp(eng_name, e_mb->name)) {
++			return e_mb->mmio_base;
++		}
++	}
++
++	return 0;
++}
+diff --git a/lib/i915/gem_mmio_base.h b/lib/i915/gem_mmio_base.h
+new file mode 100644
+index 000000000..1e138690f
+--- /dev/null
++++ b/lib/i915/gem_mmio_base.h
+@@ -0,0 +1,19 @@
++//  Copyright (C) 2020 Intel Corporation
++//
++//  SPDX-License-Identifier: MIT
++
++#ifndef GEM_MMIO_BASE_H
++#define GEM_MMIO_BASE_H
++
++struct eng_mmio_base_table_s;
++
++struct eng_mmio_base_table_s *gem_engine_mmio_base_info_get(int fd_dev);
++
++void gem_engine_mmio_base_info_free(struct eng_mmio_base_table_s *mbp);
++
++void gem_engine_mmio_base_info_dump(const struct eng_mmio_base_table_s *mbp);
++
++uint32_t gem_engine_mmio_base(const struct eng_mmio_base_table_s *mbp,
++	const char *eng_name);
++
++#endif /* GEM_MMIO_BASE_H */
+diff --git a/lib/igt.h b/lib/igt.h
+index a6c4e44d2..8e70dcb02 100644
+--- a/lib/igt.h
++++ b/lib/igt.h
+@@ -55,5 +55,6 @@
+ #include "rendercopy.h"
+ #include "i915/gem_mman.h"
+ #include "i915/gem_engine_topology.h"
++#include "i915/gem_mmio_base.h"
+ 
+ #endif /* IGT_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index e87e58036..def72c2bd 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -2,6 +2,7 @@ lib_sources = [
+ 	'drmtest.c',
+ 	'i915/gem_context.c',
+ 	'i915/gem_engine_topology.c',
++	'i915/gem_mmio_base.c',
+ 	'i915/gem_scheduler.c',
+ 	'i915/gem_submission.c',
+ 	'i915/gem_ring.c',
 -- 
 2.25.0
 
