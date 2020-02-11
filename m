@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E8916EE28
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2020 11:28:14 +0000 (UTC)
-Date: Tue, 11 Feb 2020 13:28:11 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200211112811.GO25209@platvala-desk.ger.corp.intel.com>
-References: <20200211111634.10802-1-jani.nikula@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28F426EA36
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2020 11:35:36 +0000 (UTC)
+Date: Tue, 11 Feb 2020 13:35:32 +0200
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20200211113532.t5vpad6vgqsovaub@ahiler-desk1.fi.intel.com>
+References: <20200129131753.12460-1-petri.latvala@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200211111634.10802-1-jani.nikula@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/pm_backlight: ensure driver is
- loaded before checking backlight
+In-Reply-To: <20200129131753.12460-1-petri.latvala@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] runner: Support dynamic subtests in
+ testlists
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,63 +22,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jani Nikula <jani.nikula@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Feb 11, 2020 at 01:16:34PM +0200, Jani Nikula wrote:
-> Checking the existence of the backlight interface before ensuring the
-> driver is loaded skips whenever the test is run without the driver
-> loaded. None of the tests would work properly if they were run as the
-> first thing or after tests that unload the driver.
+On Wed, Jan 29, 2020 at 03:17:52PM +0200, Petri Latvala wrote:
+> In a very rudimentary and undocumented manner, testlist files can now
+> have dynamic subtests specified. This feature is intended for very
+> special cases, and the main supported mode of operation with testlist
+> files is still the CI-style "run it all no matter what".
 > 
-> Open the driver (and thus probe it as needed) as the first thing.
+> The syntax for testlist files is:
 > 
-> (This is the low-hanging fruit. A proper test for skipping would be
-> based on the presence of embedded displays, not based on the presence of
-> the interface we're aiming to test.)
+> igt@binary@subtestname@dynamicsubtestname
 > 
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> As dynamic subtests are not easily listable, any helpers for
+> generating such testlists are not implemented.
+> 
+> If running in multiple-mode, subtests with dynamic subtests specified
+> will run in single-mode instead.
+> 
+> Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/45
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+both patches:
 
-> ---
->  tests/i915/i915_pm_backlight.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tests/i915/i915_pm_backlight.c b/tests/i915/i915_pm_backlight.c
-> index 08c07a5787bb..9753ef957c31 100644
-> --- a/tests/i915/i915_pm_backlight.c
-> +++ b/tests/i915/i915_pm_backlight.c
-> @@ -195,10 +195,6 @@ igt_main
->  		drmModeModeInfo *mode;
->  		igt_plane_t *primary;
->  
-> -		/* Get the max value and skip the whole test if sysfs interface not available */
-> -		igt_skip_on(backlight_read(&old, "brightness"));
-> -		igt_assert(backlight_read(&context.max, "max_brightness") > -1);
-> -
->  		/*
->  		 * Backlight tests requires the output to be enabled,
->  		 * try to enable all.
-> @@ -206,6 +202,10 @@ igt_main
->  		kmstest_set_vt_graphics_mode();
->  		igt_display_require(&display, drm_open_driver(DRIVER_INTEL));
->  
-> +		/* Get the max value and skip the whole test if sysfs interface not available */
-> +		igt_skip_on(backlight_read(&old, "brightness"));
-> +		igt_assert(backlight_read(&context.max, "max_brightness") > -1);
-> +
->  		/* should be ../../cardX-$output */
->  		igt_assert_lt(12, readlink(BACKLIGHT_PATH "/device", full_name, sizeof(full_name) - 1));
->  		name = basename(full_name);
-> -- 
-> 2.20.1
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Reviewed-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
