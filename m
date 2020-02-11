@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD01C6EEA3
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Feb 2020 16:15:16 +0000 (UTC)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 11 Feb 2020 16:15:08 +0000
+Message-Id: <20200211161508.1052436-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 11 Feb 2020 16:07:21 -0000
-Message-ID: <158143724171.23973.18335184932072798731@emeril.freedesktop.org>
-References: <20200211141820.29114-1-petri.latvala@intel.com>
-In-Reply-To: <20200211141820.29114-1-petri.latvala@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaW50ZWwt?=
- =?utf-8?q?ci=3A_Remove_blacklist_entries_for_removed_tests?=
+Subject: [igt-dev] [PATCH i-g-t] intel-ci: Drop b/c pipes from kms_busy fast
+ feedback
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,81 +15,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+The principle test for kms_busy is checking the synchronisation between
+on-going rendering to a framebuffer and its flip, that is independent of
+the pipe. As such for our fast feedback on driver health, we can look at
+the first pipe and assume any errors on the rest will be picked up later
+in the shards/idle runs.
 
-Series: intel-ci: Remove blacklist entries for removed tests
-URL   : https://patchwork.freedesktop.org/series/73303/
-State : success
+Each pass of kms_busy is about 25s.
 
-== Summary ==
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/intel-ci/fast-feedback.testlist | 2 --
+ 1 file changed, 2 deletions(-)
 
-CI Bug Log - changes from CI_DRM_7911 -> IGTPW_4127
-====================================================
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 467e11267..c0a2cce52 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -89,8 +89,6 @@ igt@kms_addfb_basic@unused-modifier
+ igt@kms_addfb_basic@unused-offsets
+ igt@kms_addfb_basic@unused-pitches
+ igt@kms_busy@basic-flip-pipe-a
+-igt@kms_busy@basic-flip-pipe-b
+-igt@kms_busy@basic-flip-pipe-c
+ igt@kms_chamelium@dp-hpd-fast
+ igt@kms_chamelium@dp-edid-read
+ igt@kms_chamelium@dp-crc-fast
+-- 
+2.25.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4127/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4127 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live_gtt:
-    - fi-kbl-7500u:       [PASS][1] -> [TIMEOUT][2] ([fdo#112271])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7911/fi-kbl-7500u/igt@i915_selftest@live_gtt.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4127/fi-kbl-7500u/igt@i915_selftest@live_gtt.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-7500u:       [PASS][3] -> [FAIL][4] ([fdo#111096] / [i915#323])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7911/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4127/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  
-  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
-
-
-Participating hosts (46 -> 46)
-------------------------------
-
-  Additional (7): fi-bdw-5557u fi-hsw-peppy fi-ivb-3770 fi-cfl-8109u fi-skl-lmem fi-skl-6600u fi-kbl-r 
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-kbl-7560u fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5435 -> IGTPW_4127
-
-  CI-20190529: 20190529
-  CI_DRM_7911: 5d64e9f8063c7649404c3182c1fd38499ee03059 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4127: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4127/index.html
-  IGT_5435: 2b6d4476dde53c363b8808ed9f0dd5547ac78641 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4127/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
