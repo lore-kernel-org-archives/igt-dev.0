@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 12 Feb 2020 22:36:09 -0000
-Message-ID: <158154696911.24265.1273030632291147813@emeril.freedesktop.org>
-References: <20200211023108.25369-1-imre.deak@intel.com>
-In-Reply-To: <20200211023108.25369-1-imre.deak@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bv2=2C1/8=5D_lib/igt=5Fdraw=3A_Refactor_get=5F?=
- =?utf-8?q?tiling_calls_=28rev4=29?=
+Date: Wed, 12 Feb 2020 23:30:07 -0000
+Message-ID: <158155020797.24264.15778909674363208087@emeril.freedesktop.org>
+References: <20200212223431.11060-1-dale.b.stimson@intel.com>
+In-Reply-To: <20200212223431.11060-1-dale.b.stimson@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_m?=
+ =?utf-8?q?mio=5Fbase_via_debugfs_infrastructure_+_gem=5Fctx=5Fisolation?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,113 +19,357 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Imre Deak <imre.deak@intel.com>
+To: Dale B Stimson <dale.b.stimson@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: series starting with [v2,1/8] lib/igt_draw: Refactor get_tiling calls (rev4)
-URL   : https://patchwork.freedesktop.org/series/73268/
-State : success
+Series: mmio_base via debugfs infrastructure + gem_ctx_isolation
+URL   : https://patchwork.freedesktop.org/series/73382/
+State : warning
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_7925 -> IGTPW_4139
-====================================================
+Did not get list of undocumented tests for this run, something is wrong!
 
-Summary
--------
+Other than that, pipeline status: FAILED.
 
-  **SUCCESS**
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/107939 for the overview.
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4139/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4139 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-hsw-4770r:       [PASS][1] -> [TIMEOUT][2] ([fdo#112271] / [i915#1084])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7925/fi-hsw-4770r/igt@gem_close_race@basic-threads.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4139/fi-hsw-4770r/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-cfl-guc:         [PASS][3] -> [INCOMPLETE][4] ([CI#80] / [fdo#106070] / [i915#424])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7925/fi-cfl-guc/igt@i915_selftest@live_gem_contexts.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4139/fi-cfl-guc/igt@i915_selftest@live_gem_contexts.html
-
-  * igt@i915_selftest@live_hangcheck:
-    - fi-icl-dsi:         [PASS][5] -> [INCOMPLETE][6] ([fdo#108569])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7925/fi-icl-dsi/igt@i915_selftest@live_hangcheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4139/fi-icl-dsi/igt@i915_selftest@live_hangcheck.html
-
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1616755):
+   #8 [intel_get_drm_devid+0xa5]
+   #9 [_gem_engine_mmio_base_info_get_legacy+0x2a]
+   #10 [gem_engine_mmio_base_info_get+0x2f]
+   #11 [__real_main894+0x3f]
+   #12 [main+0x23]
+   #13 [__libc_start_main+0xf3]
+   #14 [_start+0x2e]
+  -------
   
-#### Possible fixes ####
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1581549866:build_script
+  [0Ksection_start:1581549866:after_script
+  [0Ksection_end:1581549868:after_script
+  [0Ksection_start:1581549868:upload_artifacts_on_failure
+  [0Ksection_end:1581549873:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
-  * igt@gem_close_race@basic-threads:
-    - fi-hsw-peppy:       [TIMEOUT][7] ([fdo#112271] / [i915#1084]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7925/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4139/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-skl-6770hq:      [FAIL][9] ([i915#178]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7925/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4139/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live_gtt:
-    - {fi-tgl-dsi}:       [TIMEOUT][11] ([fdo#112126] / [fdo#112271]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7925/fi-tgl-dsi/igt@i915_selftest@live_gtt.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4139/fi-tgl-dsi/igt@i915_selftest@live_gtt.html
-
-  * igt@i915_selftest@live_hangcheck:
-    - fi-icl-y:           [INCOMPLETE][13] ([fdo#108569]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7925/fi-icl-y/igt@i915_selftest@live_hangcheck.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4139/fi-icl-y/igt@i915_selftest@live_hangcheck.html
-
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1616756):
+   #6 [__igt_fail_assert+0x470]
+   #7 [intel_get_drm_devid+0x97]
+   #8 [gem_engine_mmio_base_info_get+0x440]
+   #9 [__real_main894+0x14f]
+   #10 [main+0x29]
+   #11 [__libc_start_main+0xf3]
+   #12 [_start+0x2e]
+  -------
   
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1581549866:build_script
+  [0Ksection_start:1581549866:after_script
+  [0Ksection_end:1581549868:after_script
+  [0Ksection_start:1581549868:upload_artifacts_on_failure
+  [0Ksection_end:1581549872:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
-  [CI#80]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/80
-  [fdo#106070]: https://bugs.freedesktop.org/show_bug.cgi?id=106070
-  [fdo#108569]: https://bugs.freedesktop.org/show_bug.cgi?id=108569
-  [fdo#112126]: https://bugs.freedesktop.org/show_bug.cgi?id=112126
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#1084]: https://gitlab.freedesktop.org/drm/intel/issues/1084
-  [i915#178]: https://gitlab.freedesktop.org/drm/intel/issues/178
-  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
-  [i915#937]: https://gitlab.freedesktop.org/drm/intel/issues/937
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1616758):
+   #12 [main+0x2c]
+   #13 [__libc_start_main+0xe4]
+   #14 [_start+0x34]
+  qemu: uncaught target signal 6 (Aborted) - core dumped
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1581549889:build_script
+  [0Ksection_start:1581549889:after_script
+  [0Ksection_end:1581549891:after_script
+  [0Ksection_start:1581549891:upload_artifacts_on_failure
+  [0K[32;1mUploading artifacts...[0;m
+  build: found 1349 matching files                  [0;m 
+  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1616758 responseStatus[0;m=201 Created token[0;m=TQ8TMs1y
+  section_end:1581549898:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1616759):
+   #1 [sigset+0xf4]
+   #2 [gnu_get_libc_version+0x119]
+   #3 [gsignal+0x76]
+  qemu: uncaught target signal 6 (Aborted) - core dumped
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1581549892:build_script
+  [0Ksection_start:1581549892:after_script
+  [0Ksection_end:1581549894:after_script
+  [0Ksection_start:1581549894:upload_artifacts_on_failure
+  [0K[32;1mUploading artifacts...[0;m
+  build: found 1350 matching files                  [0;m 
+  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1616759 responseStatus[0;m=201 Created token[0;m=rd9qhKaG
+  section_end:1581549900:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
-Participating hosts (42 -> 45)
-------------------------------
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1616760):
+  gem_ctx_isolation: ../lib/igt_core.c:1539: igt_fail: Assertion `igt_can_fail()' failed.
+  Received signal SIGABRT.
+  Stack trace: 
+  qemu: uncaught target signal 6 (Aborted) - core dumped
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1581549903:build_script
+  [0Ksection_start:1581549903:after_script
+  [0Ksection_end:1581549904:after_script
+  [0Ksection_start:1581549904:upload_artifacts_on_failure
+  [0K[32;1mUploading artifacts...[0;m
+  build: found 1350 matching files                  [0;m 
+  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1616760 responseStatus[0;m=201 Created token[0;m=fivL7sfg
+  section_end:1581549915:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
-  Additional (9): fi-kbl-7560u fi-ivb-3770 fi-cfl-8109u fi-skl-6700k2 fi-skl-lmem fi-blb-e6850 fi-kbl-r fi-skl-6600u fi-snb-2600 
-  Missing    (6): fi-kbl-soraka fi-bsw-n3050 fi-byt-squawks fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1616840):
+   #6 [__igt_fail_assert+0x470]
+   #7 [intel_get_drm_devid+0x97]
+   #8 [gem_engine_mmio_base_info_get+0x440]
+   #9 [__real_main894+0x14f]
+   #10 [main+0x29]
+   #11 [__libc_start_main+0xf3]
+   #12 [_start+0x2e]
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1581549890:build_script
+  [0Ksection_start:1581549890:after_script
+  [0Ksection_end:1581549892:after_script
+  [0Ksection_start:1581549892:upload_artifacts_on_failure
+  [0Ksection_end:1581549893:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1616841):
+   #8 [intel_get_drm_devid+0xa5]
+   #9 [_gem_engine_mmio_base_info_get_legacy+0x2a]
+   #10 [gem_engine_mmio_base_info_get+0x2f]
+   #11 [__real_main894+0x3f]
+   #12 [main+0x23]
+   #13 [__libc_start_main+0xf3]
+   #14 [_start+0x2e]
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1581549899:build_script
+  [0Ksection_start:1581549899:after_script
+  [0Ksection_end:1581549901:after_script
+  [0Ksection_start:1581549901:upload_artifacts_on_failure
+  [0Ksection_end:1581549902:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
-Build changes
--------------
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1616842):
+   #6 [__igt_fail_assert+0x470]
+   #7 [intel_get_drm_devid+0x97]
+   #8 [gem_engine_mmio_base_info_get+0x440]
+   #9 [__real_main894+0x14f]
+   #10 [main+0x29]
+   #11 [__libc_start_main+0xf3]
+   #12 [_start+0x2e]
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1581549911:build_script
+  [0Ksection_start:1581549911:after_script
+  [0Ksection_end:1581549913:after_script
+  [0Ksection_start:1581549913:upload_artifacts_on_failure
+  [0Ksection_end:1581549914:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5437 -> IGTPW_4139
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1616843):
+   #12 [main+0x2c]
+   #13 [__libc_start_main+0xe4]
+   #14 [_start+0x34]
+  qemu: uncaught target signal 6 (Aborted) - core dumped
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1581549961:build_script
+  [0Ksection_start:1581549961:after_script
+  [0Ksection_end:1581549963:after_script
+  [0Ksection_start:1581549963:upload_artifacts_on_failure
+  [0K[32;1mUploading artifacts...[0;m
+  build: found 1350 matching files                  [0;m 
+  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1616843 responseStatus[0;m=201 Created token[0;m=m3HxuEM-
+  section_end:1581549975:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
-  CI-20190529: 20190529
-  CI_DRM_7925: b266b79c3de9874e0f991b6a9cc284a424094649 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4139: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4139/index.html
-  IGT_5437: ae42fedfd0c536c560e8e17b06d9c7b94a4e8f0c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1616844):
+   #1 [sigset+0xf4]
+   #2 [gnu_get_libc_version+0x119]
+   #3 [gsignal+0x76]
+  qemu: uncaught target signal 6 (Aborted) - core dumped
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1581549986:build_script
+  [0Ksection_start:1581549986:after_script
+  [0Ksection_end:1581549987:after_script
+  [0Ksection_start:1581549987:upload_artifacts_on_failure
+  [0K[32;1mUploading artifacts...[0;m
+  build: found 1350 matching files                  [0;m 
+  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1616844 responseStatus[0;m=201 Created token[0;m=dXvZLmDi
+  section_end:1581549998:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
+
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1616845):
+   #8 [intel_get_drm_devid+0xa5]
+   #9 [_gem_engine_mmio_base_info_get_legacy+0x2a]
+   #10 [gem_engine_mmio_base_info_get+0x2f]
+   #11 [__real_main894+0x3f]
+   #12 [main+0x23]
+   #13 [__libc_start_main+0xf3]
+   #14 [_start+0x2e]
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1581549929:build_script
+  [0Ksection_start:1581549929:after_script
+  [0Ksection_end:1581549931:after_script
+  [0Ksection_start:1581549931:upload_artifacts_on_failure
+  [0Ksection_end:1581549932:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1616846):
+  gem_ctx_isolation: ../lib/igt_core.c:1539: igt_fail: Assertion `igt_can_fail()' failed.
+  Received signal SIGABRT.
+  Stack trace: 
+  qemu: uncaught target signal 6 (Aborted) - core dumped
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1581549963:build_script
+  [0Ksection_start:1581549963:after_script
+  [0Ksection_end:1581549964:after_script
+  [0Ksection_start:1581549964:upload_artifacts_on_failure
+  [0K[32;1mUploading artifacts...[0;m
+  build: found 1349 matching files                  [0;m 
+  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1616846 responseStatus[0;m=201 Created token[0;m=qmWkrqDU
+  section_end:1581549975:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1616847):
+  gem_ctx_isolation: ../lib/igt_core.c:1539: igt_fail: Assertion `igt_can_fail()' failed.
+  Received signal SIGABRT.
+  Stack trace: 
+  qemu: uncaught target signal 6 (Aborted) - core dumped
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1581550000:build_script
+  [0Ksection_start:1581550000:after_script
+  [0Ksection_end:1581550001:after_script
+  [0Ksection_start:1581550001:upload_artifacts_on_failure
+  [0K[32;1mUploading artifacts...[0;m
+  build: found 1349 matching files                  [0;m 
+  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1616847 responseStatus[0;m=201 Created token[0;m=SLw67RLh
+  section_end:1581550012:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
+
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1616848):
+   #12 [main+0x2c]
+   #13 [__libc_start_main+0xe4]
+   #14 [_start+0x34]
+  qemu: uncaught target signal 6 (Aborted) - core dumped
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1581549999:build_script
+  [0Ksection_start:1581549999:after_script
+  [0Ksection_end:1581550000:after_script
+  [0Ksection_start:1581550000:upload_artifacts_on_failure
+  [0K[32;1mUploading artifacts...[0;m
+  build: found 1349 matching files                  [0;m 
+  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1616848 responseStatus[0;m=201 Created token[0;m=s8JxD4hw
+  section_end:1581550012:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
+
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1616925):
+   #1 [sigset+0xf4]
+   #2 [gnu_get_libc_version+0x119]
+   #3 [gsignal+0x76]
+  qemu: uncaught target signal 6 (Aborted) - core dumped
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1581550037:build_script
+  [0Ksection_start:1581550037:after_script
+  [0Ksection_end:1581550038:after_script
+  [0Ksection_start:1581550038:upload_artifacts_on_failure
+  [0K[32;1mUploading artifacts...[0;m
+  build: found 1350 matching files                  [0;m 
+  Uploading artifacts to coordinator... ok          [0;m  id[0;m=1616925 responseStatus[0;m=201 Created token[0;m=K64V2FVj
+  section_end:1581550049:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4139/index.html
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/107939
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
