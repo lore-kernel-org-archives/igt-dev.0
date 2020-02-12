@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2EF1F6EAD7
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2020 17:17:36 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Wed, 12 Feb 2020 19:17:32 +0200
-Message-Id: <20200212171732.2187-1-ville.syrjala@linux.intel.com>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B7446E06B
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2020 17:23:39 +0000 (UTC)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] benchmarks/gem_wsim: Avoid labs(unsigned
- long)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+References: <20200212171732.2187-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20200212171732.2187-1-ville.syrjala@linux.intel.com>
+Message-ID: <158152821352.11180.17793470304518026812@skylake-alporthouse-com>
+Date: Wed, 12 Feb 2020 17:23:33 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t] benchmarks/gem_wsim: Avoid
+ labs(unsigned long)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,30 +21,23 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KCi4u
-L2JlbmNobWFya3MvZ2VtX3dzaW0uYzogSW4gZnVuY3Rpb24g4oCYY2FsaWJyYXRlX25vcOKAmToK
-Li4vYmVuY2htYXJrcy9nZW1fd3NpbS5jOjI5OTk6NDogd2FybmluZzogdGFraW5nIHRoZSBhYnNv
-bHV0ZSB2YWx1ZSBvZiB1bnNpZ25lZCB0eXBlIOKAmGxvbmcgdW5zaWduZWQgaW504oCZIGhhcyBu
-byBlZmZlY3QgWy1XYWJzb2x1dGUtdmFsdWVdCiAyOTk5IHwgICAgbGFicyhzaXplIC0gbGFzdF9z
-aXplKSA+IChzaXplICogdG9sZXJhbmNlX3BjdCAvIDEwMCkpOwoKRnJhbmtseSB0aGUgd2Fybmlu
-ZyBsb29rcyBsaWtlIG5vbnNlbnNlIHRvIG1lLCB1bmxlc3MgdGhlIGNvbXBpbGVyCmFjdHVhbGx5
-IG9wdGltaXplcyB0aGUgbGFicygpIGF3YXkuIE90aGVyd2lzZSB0aGVyZSdzIGdvaW5nIHRvIGJl
-IGFuCmltcGxpY2l0IGNhc3QgdG8gc2lnbmVkIGxvbmcgYW55d2F5IHNpbmNlIHRoYXQncyB3aGF0
-IGxhYnMoKSB0YWtlcy4KQnV0IHRoZSB3YXJuaW5nIGlzIGVhc3kgZW5vdWdoIHRvIGF2b2lkIGhl
-cmUgc28gbGV0J3MgZG8gaXQuCgpTaWduZWQtb2ZmLWJ5OiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxl
-LnN5cmphbGFAbGludXguaW50ZWwuY29tPgotLS0KIGJlbmNobWFya3MvZ2VtX3dzaW0uYyB8IDIg
-Ky0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAt
-LWdpdCBhL2JlbmNobWFya3MvZ2VtX3dzaW0uYyBiL2JlbmNobWFya3MvZ2VtX3dzaW0uYwppbmRl
-eCAwZWYxY2YyOGY3NmYuLmFhZjNhMTYxOThkZiAxMDA2NDQKLS0tIGEvYmVuY2htYXJrcy9nZW1f
-d3NpbS5jCisrKyBiL2JlbmNobWFya3MvZ2VtX3dzaW0uYwpAQCAtMjk2OSw3ICsyOTY5LDcgQEAg
-c3RhdGljIHVuc2lnbmVkIGxvbmcgY2FsaWJyYXRlX25vcCh1bnNpZ25lZCBpbnQgdG9sZXJhbmNl
-X3BjdCwgc3RydWN0IGludGVsX2V4ZWMKIAkJLmJ1ZmZlcnNfcHRyID0gKHVpbnRwdHJfdCkmb2Jq
-LAogCQkuZmxhZ3MgPSBlbmdpbmUtPmZsYWdzCiAJfTsKLQl1bnNpZ25lZCBsb25nIHNpemUsIGxh
-c3Rfc2l6ZTsKKwlsb25nIHNpemUsIGxhc3Rfc2l6ZTsKIAlzdHJ1Y3QgdGltZXNwZWMgdF8wLCB0
-X2VuZDsKIAogCWNsb2NrX2dldHRpbWUoQ0xPQ0tfTU9OT1RPTklDLCAmdF8wKTsKLS0gCjIuMjQu
-MQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRl
-diBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0
-cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+UXVvdGluZyBWaWxsZSBTeXJqYWxhICgyMDIwLTAyLTEyIDE3OjE3OjMyKQo+IEZyb206IFZpbGxl
+IFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+Cj4gCj4gLi4vYmVuY2ht
+YXJrcy9nZW1fd3NpbS5jOiBJbiBmdW5jdGlvbiDigJhjYWxpYnJhdGVfbm9w4oCZOgo+IC4uL2Jl
+bmNobWFya3MvZ2VtX3dzaW0uYzoyOTk5OjQ6IHdhcm5pbmc6IHRha2luZyB0aGUgYWJzb2x1dGUg
+dmFsdWUgb2YgdW5zaWduZWQgdHlwZSDigJhsb25nIHVuc2lnbmVkIGludOKAmSBoYXMgbm8gZWZm
+ZWN0IFstV2Fic29sdXRlLXZhbHVlXQo+ICAyOTk5IHwgICAgbGFicyhzaXplIC0gbGFzdF9zaXpl
+KSA+IChzaXplICogdG9sZXJhbmNlX3BjdCAvIDEwMCkpOwo+IAo+IEZyYW5rbHkgdGhlIHdhcm5p
+bmcgbG9va3MgbGlrZSBub25zZW5zZSB0byBtZSwgdW5sZXNzIHRoZSBjb21waWxlcgo+IGFjdHVh
+bGx5IG9wdGltaXplcyB0aGUgbGFicygpIGF3YXkuIE90aGVyd2lzZSB0aGVyZSdzIGdvaW5nIHRv
+IGJlIGFuCj4gaW1wbGljaXQgY2FzdCB0byBzaWduZWQgbG9uZyBhbnl3YXkgc2luY2UgdGhhdCdz
+IHdoYXQgbGFicygpIHRha2VzLgo+IEJ1dCB0aGUgd2FybmluZyBpcyBlYXN5IGVub3VnaCB0byBh
+dm9pZCBoZXJlIHNvIGxldCdzIGRvIGl0Lgo+IAo+IFNpZ25lZC1vZmYtYnk6IFZpbGxlIFN5cmrD
+pGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+ClJldmlld2VkLWJ5OiBDaHJpcyBX
+aWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KLUNocmlzCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
+aWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
