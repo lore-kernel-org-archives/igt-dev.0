@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D2B596E0B6
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2020 16:58:16 +0000 (UTC)
-Date: Wed, 12 Feb 2020 18:57:51 +0200
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 523C76E0B6
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2020 17:02:53 +0000 (UTC)
+Date: Wed, 12 Feb 2020 19:01:19 +0200
 From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20200212165751.GA6428@ideak-desk.fi.intel.com>
+Message-ID: <20200212170119.GB6428@ideak-desk.fi.intel.com>
 References: <20200211023108.25369-1-imre.deak@intel.com>
- <20200211023108.25369-5-imre.deak@intel.com>
- <87zhdove9u.wl-ashutosh.dixit@intel.com>
- <20200212102356.GC4025@ideak-desk.fi.intel.com>
+ <20200211023108.25369-6-imre.deak@intel.com>
+ <87mu9ouznz.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200212102356.GC4025@ideak-desk.fi.intel.com>
-Subject: Re: [igt-dev] [PATCH v2 5/8] tests/kms_draw_crc: Fix generating
- reference CRCs on platforms w/o aperture
+In-Reply-To: <87mu9ouznz.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH v2 6/8] tests/kms_frontbuffer_tracking: Skip
+ GTT subtests on platforms w/o aperture
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,67 +29,24 @@ To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Feb 12, 2020 at 12:23:56PM +0200, Imre Deak wrote:
-> On Tue, Feb 11, 2020 at 04:29:49PM -0800, Dixit, Ashutosh wrote:
-> > On Mon, 10 Feb 2020 18:31:05 -0800, Imre Deak wrote:
-> > >
-> > > Generate reference CRCs by drawing through a CPU mapping, which is also
-> > > available on platforms w/o a GTT aperture.
-> > >
-> > > v2:
-> > > - Fix code comment in draw_method_subtest(). (Matt)
-> > >
-> > > Cc: Matt Roper <matthew.d.roper@intel.com>
-> > > Signed-off-by: Imre Deak <imre.deak@intel.com>
-> > > ---
-> > >  tests/kms_draw_crc.c | 6 +++---
-> > >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > >
-> > > diff --git a/tests/kms_draw_crc.c b/tests/kms_draw_crc.c
-> > > index 6de9feae..0e762ad1 100644
-> > > --- a/tests/kms_draw_crc.c
-> > > +++ b/tests/kms_draw_crc.c
-> > > @@ -183,11 +183,11 @@ static void draw_method_subtest(enum igt_draw_method method,
-> > >
-> > >	igt_require(format_is_supported(formats[format_index], tiling));
-> > >
-> > > -	/* Use IGT_DRAW_MMAP_GTT on an untiled buffer as the parameter for
-> > > +	/* Use IGT_DRAW_MMAP_CPU on an untiled buffer as the parameter for
-> > >	 * comparison. Cache the value so we don't recompute it for every single
-> > >	 * subtest. */
-> > >	if (!base_crcs[format_index].set) {
-> > > -		get_method_crc(IGT_DRAW_MMAP_GTT, formats[format_index],
-> > > +		get_method_crc(IGT_DRAW_MMAP_CPU, formats[format_index],
-> > >			       LOCAL_DRM_FORMAT_MOD_NONE,
-> > >			       &base_crcs[format_index].crc);
-> > >		base_crcs[format_index].set = true;
-> > > @@ -225,7 +225,7 @@ static void fill_fb_subtest(void)
-> > >	igt_create_fb(drm_fd, ms.mode->hdisplay, ms.mode->vdisplay,
-> > >		      DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE, &fb);
-> > >
-> > > -	igt_draw_rect_fb(drm_fd, bufmgr, NULL, &fb, IGT_DRAW_MMAP_GTT,
-> > > +	igt_draw_rect_fb(drm_fd, bufmgr, NULL, &fb, IGT_DRAW_MMAP_CPU,
-> > >			 0, 0, fb.width, fb.height, 0xFF);
-> > 
-> > Should be WC. CPU mapping will not work in all cases.
+On Tue, Feb 11, 2020 at 09:45:20PM -0800, Dixit, Ashutosh wrote:
+> On Mon, 10 Feb 2020 18:31:06 -0800, Imre Deak wrote:
+> > @@ -3025,6 +3042,9 @@ static void basic_subtest(const struct test_mode *t)
+> >	fb1 = params->primary.fb;
+> >
+> >	for (r = 0, method = 0; method < IGT_DRAW_METHOD_COUNT; method++, r++) {
+> > +		igt_skip_on(method == IGT_DRAW_MMAP_GTT &&
+> > +			    !gem_has_mappable_ggtt(drm.fd));
+> > +
 > 
-> I can't see why. This will result in a frontbuffer drawing that calls
-> DRM_IOCTL_I915_GEM_SW_FINISH, which should flush CPU caches if needed.
+> I don't think this is incorrect. It will result in the entire subtest being
+> skipped, for all methods, rather than only the GTT method. Need to use
+> 'continue' here.
 
-Ok, so it's not only about cache-flushing but WB mapping not working on
-local memory in general. 
+Right. The test doesn't expect that we skip any methods, but it looks
+easy to fix that. 
 
-That also means we have to disable subtests that draw to the FB through
-a CPU mapping, but I'll leave that for a follow-up (as we're missing the
-required queries for that).
-
-
-> 
-> --Imre
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+-Imre
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
