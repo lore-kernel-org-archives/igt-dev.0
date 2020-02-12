@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 523C76E0B6
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2020 17:02:53 +0000 (UTC)
-Date: Wed, 12 Feb 2020 19:01:19 +0200
-From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20200212170119.GB6428@ideak-desk.fi.intel.com>
-References: <20200211023108.25369-1-imre.deak@intel.com>
- <20200211023108.25369-6-imre.deak@intel.com>
- <87mu9ouznz.wl-ashutosh.dixit@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EF1F6EAD7
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2020 17:17:36 +0000 (UTC)
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+Date: Wed, 12 Feb 2020 19:17:32 +0200
+Message-Id: <20200212171732.2187-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <87mu9ouznz.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH v2 6/8] tests/kms_frontbuffer_tracking: Skip
- GTT subtests on platforms w/o aperture
+Subject: [igt-dev] [PATCH i-g-t] benchmarks/gem_wsim: Avoid labs(unsigned
+ long)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,34 +15,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: imre.deak@intel.com
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Feb 11, 2020 at 09:45:20PM -0800, Dixit, Ashutosh wrote:
-> On Mon, 10 Feb 2020 18:31:06 -0800, Imre Deak wrote:
-> > @@ -3025,6 +3042,9 @@ static void basic_subtest(const struct test_mode *t)
-> >	fb1 = params->primary.fb;
-> >
-> >	for (r = 0, method = 0; method < IGT_DRAW_METHOD_COUNT; method++, r++) {
-> > +		igt_skip_on(method == IGT_DRAW_MMAP_GTT &&
-> > +			    !gem_has_mappable_ggtt(drm.fd));
-> > +
-> 
-> I don't think this is incorrect. It will result in the entire subtest being
-> skipped, for all methods, rather than only the GTT method. Need to use
-> 'continue' here.
-
-Right. The test doesn't expect that we skip any methods, but it looks
-easy to fix that. 
-
--Imre
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KCi4u
+L2JlbmNobWFya3MvZ2VtX3dzaW0uYzogSW4gZnVuY3Rpb24g4oCYY2FsaWJyYXRlX25vcOKAmToK
+Li4vYmVuY2htYXJrcy9nZW1fd3NpbS5jOjI5OTk6NDogd2FybmluZzogdGFraW5nIHRoZSBhYnNv
+bHV0ZSB2YWx1ZSBvZiB1bnNpZ25lZCB0eXBlIOKAmGxvbmcgdW5zaWduZWQgaW504oCZIGhhcyBu
+byBlZmZlY3QgWy1XYWJzb2x1dGUtdmFsdWVdCiAyOTk5IHwgICAgbGFicyhzaXplIC0gbGFzdF9z
+aXplKSA+IChzaXplICogdG9sZXJhbmNlX3BjdCAvIDEwMCkpOwoKRnJhbmtseSB0aGUgd2Fybmlu
+ZyBsb29rcyBsaWtlIG5vbnNlbnNlIHRvIG1lLCB1bmxlc3MgdGhlIGNvbXBpbGVyCmFjdHVhbGx5
+IG9wdGltaXplcyB0aGUgbGFicygpIGF3YXkuIE90aGVyd2lzZSB0aGVyZSdzIGdvaW5nIHRvIGJl
+IGFuCmltcGxpY2l0IGNhc3QgdG8gc2lnbmVkIGxvbmcgYW55d2F5IHNpbmNlIHRoYXQncyB3aGF0
+IGxhYnMoKSB0YWtlcy4KQnV0IHRoZSB3YXJuaW5nIGlzIGVhc3kgZW5vdWdoIHRvIGF2b2lkIGhl
+cmUgc28gbGV0J3MgZG8gaXQuCgpTaWduZWQtb2ZmLWJ5OiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxl
+LnN5cmphbGFAbGludXguaW50ZWwuY29tPgotLS0KIGJlbmNobWFya3MvZ2VtX3dzaW0uYyB8IDIg
+Ky0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAt
+LWdpdCBhL2JlbmNobWFya3MvZ2VtX3dzaW0uYyBiL2JlbmNobWFya3MvZ2VtX3dzaW0uYwppbmRl
+eCAwZWYxY2YyOGY3NmYuLmFhZjNhMTYxOThkZiAxMDA2NDQKLS0tIGEvYmVuY2htYXJrcy9nZW1f
+d3NpbS5jCisrKyBiL2JlbmNobWFya3MvZ2VtX3dzaW0uYwpAQCAtMjk2OSw3ICsyOTY5LDcgQEAg
+c3RhdGljIHVuc2lnbmVkIGxvbmcgY2FsaWJyYXRlX25vcCh1bnNpZ25lZCBpbnQgdG9sZXJhbmNl
+X3BjdCwgc3RydWN0IGludGVsX2V4ZWMKIAkJLmJ1ZmZlcnNfcHRyID0gKHVpbnRwdHJfdCkmb2Jq
+LAogCQkuZmxhZ3MgPSBlbmdpbmUtPmZsYWdzCiAJfTsKLQl1bnNpZ25lZCBsb25nIHNpemUsIGxh
+c3Rfc2l6ZTsKKwlsb25nIHNpemUsIGxhc3Rfc2l6ZTsKIAlzdHJ1Y3QgdGltZXNwZWMgdF8wLCB0
+X2VuZDsKIAogCWNsb2NrX2dldHRpbWUoQ0xPQ0tfTU9OT1RPTklDLCAmdF8wKTsKLS0gCjIuMjQu
+MQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRl
+diBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0
+cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
