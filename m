@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC5816EA4D
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Feb 2020 11:02:07 +0000 (UTC)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 12 Feb 2020 11:01:44 -0000
-Message-ID: <158150530436.24263.16612394300199941722@emeril.freedesktop.org>
-References: <20200211212237.1269-1-juston.li@intel.com>
-In-Reply-To: <20200211212237.1269-1-juston.li@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bv6=2Ci-g-t=2C1/2=5D_include/drm-uapi=3A_Impor?=
- =?utf-8?q?t_headers_from_e62bf83aa1bb?=
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <d7e41438582999e2e22a557d443430da0d00c335.camel@intel.com>
+References: <20200212091401.26642-1-dominik.grzegorzek@intel.com>
+ <158150173353.5188.12750572995970677206@skylake-alporthouse-com>
+ <d7e41438582999e2e22a557d443430da0d00c335.camel@intel.com>
+Message-ID: <158150528740.11180.15746439470025810664@skylake-alporthouse-com>
+Date: Wed, 12 Feb 2020 11:01:27 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/gem_exec_alignment.c: Update to
+ be completable in a rational time.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,119 +19,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juston Li <juston.li@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Quoting Grzegorzek, Dominik (2020-02-12 10:55:50)
+> On Wed, 2020-02-12 at 10:02 +0000, Chris Wilson wrote:
+> > Quoting Dominik Grzegorzek (2020-02-12 09:14:01)
+> > > +       /*
+> > > +        * Due to the high complexity of searching holes in virtual
+> > > memory,
+> > > +        * number of objects has to be limited. The algorithm for
+> > > each alignment
+> > > +        * performs execbuffer multiple times and doubles number of
+> > > objects
+> > > +        * in every iteration till timeout is reached.
+> > > +        **/
+> > >         for (alignment = 4096; alignment < gtt_size; alignment <<=
+> > > 1) {
+> > > -               for (i = 0; i < count; i++)
+> > > -                       execobj[i].alignment = alignment;
+> > > +               alignment_set_timeout(TIMEOUT);
+> > > +               clock_gettime(CLOCK_MONOTONIC, &start);
+> > 
+> > I was thinking we made the timeout global and just run the test for a
+> > maximum of N secs and see how far into the alignment loop we get?
+> > 
+> > There's no reason to believe that higher power of two alignments
+> > provide
+> > any different path coverage, just as noted we find ourselves in
+> > increasingly fragmented virtual space. If you want a challenge,
+> > supplement this with a priority-inversion test case... (Where a low
+> > priority client can create a mess in their own address space, causing
+> > a
+> > delay [>10ms] of a high priority client. It's a clear and present
+> > bug.)
+> > -Chris
+> Is that priority-inversion test case cricial for you? What about
+> just making the timout global for now? 
 
-Series: series starting with [v6,i-g-t,1/2] include/drm-uapi: Import headers from e62bf83aa1bb
-URL   : https://patchwork.freedesktop.org/series/73334/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_7918 -> IGTPW_4134
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4134/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4134 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-hsw-peppy:       [PASS][1] -> [TIMEOUT][2] ([fdo#112271] / [i915#1084])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7918/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4134/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_selftest@live_hangcheck:
-    - fi-bsw-kefka:       [PASS][3] -> [INCOMPLETE][4] ([fdo#105876])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7918/fi-bsw-kefka/igt@i915_selftest@live_hangcheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4134/fi-bsw-kefka/igt@i915_selftest@live_hangcheck.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-ivb-3770:        [TIMEOUT][5] ([fdo#112271]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7918/fi-ivb-3770/igt@gem_close_race@basic-threads.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4134/fi-ivb-3770/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-guc:         [SKIP][7] ([fdo#109271]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7918/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4134/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-cfl-guc:         [INCOMPLETE][9] ([fdo#106070] / [i915#424]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7918/fi-cfl-guc/igt@i915_selftest@live_gem_contexts.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4134/fi-cfl-guc/igt@i915_selftest@live_gem_contexts.html
-
-  * igt@i915_selftest@live_gt_heartbeat:
-    - fi-bwr-2160:        [FAIL][11] -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7918/fi-bwr-2160/igt@i915_selftest@live_gt_heartbeat.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4134/fi-bwr-2160/igt@i915_selftest@live_gt_heartbeat.html
-
-  
-  [fdo#105876]: https://bugs.freedesktop.org/show_bug.cgi?id=105876
-  [fdo#106070]: https://bugs.freedesktop.org/show_bug.cgi?id=106070
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#1084]: https://gitlab.freedesktop.org/drm/intel/issues/1084
-  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
-
-
-Participating hosts (49 -> 45)
-------------------------------
-
-  Additional (4): fi-skl-guc fi-byt-n2820 fi-bsw-nick fi-bsw-n3050 
-  Missing    (8): fi-ilk-m540 fi-hsw-4200u fi-skl-6770hq fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5435 -> IGTPW_4134
-
-  CI-20190529: 20190529
-  CI_DRM_7918: d9dbc4c91c2c141a9492c88255231ef6aae6fbd9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4134: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4134/index.html
-  IGT_5435: 2b6d4476dde53c363b8808ed9f0dd5547ac78641 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@kms_getfb@getfb2-accept-ccs
-+igt@kms_getfb@getfb2-handle-closed
-+igt@kms_getfb@getfb2-handle-not-fb
-+igt@kms_getfb@getfb2-handle-protection
-+igt@kms_getfb@getfb2-handle-zero
-+igt@kms_getfb@getfb2-into-addfb2
-+igt@kms_getfb@getfb-handle-protection
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4134/index.html
+At the moment this is a benchmark purporting to be a test. Demonstrating
+that this can be abused to create a DoS is something we can use as a
+regression test (since we can set hard bounds on our level of service
+guarantees and assert that we do not violate them).
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
