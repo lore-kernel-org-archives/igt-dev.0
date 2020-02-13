@@ -1,9 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 13 Feb 2020 19:03:16 +0000
-Message-Id: <20200213190316.3693878-1-chris@chris-wilson.co.uk>
+From: Dale B Stimson <dale.b.stimson@intel.com>
+Date: Thu, 13 Feb 2020 11:26:06 -0800
+Message-Id: <20200213192606.63025-1-dale.b.stimson@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_flush: Forgo I915_EXEC_NORELOC
+Subject: [igt-dev] [PATCH i-g-t] lib/i915/gem_engine_topology.c -
+ intel_get_current_engine invalid result
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,53 +16,98 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As we do not maintain the contents of the batch buffers as we reuse and
-may move the objects between cycles, the requirements for
-I915_EXEC_NORELOC are not met. Rely on natural reloc skipping instead,
-so long as the ioctl overhead is less than the GPU, it should not have
-any impact on the incoherency detection rates.
+Function intel_get_current_engine() should return NULL (instead of
+engine 0) if there are no engines.
 
-Closes: https://gitlab.freedesktop.org/drm/intel/issues/1203
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Function intel_init_engine_list() should not store potential engine
+data in the output structure unless the engine is present.
+
+Function intel_init_engine_list() should arguably not filter the static
+engine list with gem_has_ring if fd == -1, so that subtests can still
+be individually invoked to show subtest FAIL instead of test notrun.
+
+Symptom: A device open failure in gem_ctx_isolation resulted in
+an endless __for_each_physical_engine "per-engine" loop with the
+purported last potential engine being processed every time.
+
+Diagnosis: device open (or debugfs open) failed, leaving fd == -1.
+Control skipped the rest of the initial igt_fixture block, after
+which an attempt was made to iterate through engines using macro
+__for_each_physical_engine.
+
+Macro __for_each_physical_engine called intel_init_engine_list()
+to initialize the loop control data.  Because fd == -1,
+intel_init_engine_list() fell back to using __for_each_static_engine().
+All of the engines in the static engine list are rejected due to
+gem_has_ring returning false (because of fd == -1), leaving 0 engines.
+That resulted in loop control data with engine_data.nengines == 0
+and the data for the last engine considered stored at index 0.
+
+Still in macro __for_each_physical_engine, intel_get_current_engine()
+was called to get the engine to process.  It should have returned NULL,
+but instead returned the engine entry at index 0, which
+had received information describing the last potential engine.
+This happened without end.
+
+Signed-off-by: Dale B Stimson <dale.b.stimson@intel.com>
 ---
- tests/i915/gem_exec_flush.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ lib/i915/gem_engine_topology.c | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/tests/i915/gem_exec_flush.c b/tests/i915/gem_exec_flush.c
-index 9b6f2ed19..513cde364 100644
---- a/tests/i915/gem_exec_flush.c
-+++ b/tests/i915/gem_exec_flush.c
-@@ -163,7 +163,7 @@ static void run(int fd, unsigned ring, int nchild, int timeout,
- 		memset(&execbuf, 0, sizeof(execbuf));
- 		execbuf.buffers_ptr = to_user_pointer(obj);
- 		execbuf.buffer_count = 3;
--		execbuf.flags = ring | (1 << 11) | (1<<12);
-+		execbuf.flags = ring | (1 << 12);
- 		if (gen < 6)
- 			execbuf.flags |= I915_EXEC_SECURE;
+diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
+index 9daa03df4..b8ed49bc9 100644
+--- a/lib/i915/gem_engine_topology.c
++++ b/lib/i915/gem_engine_topology.c
+@@ -156,10 +156,10 @@ static void query_engine_list(int fd, struct intel_engine_data *ed)
+ struct intel_execution_engine2 *
+ intel_get_current_engine(struct intel_engine_data *ed)
+ {
+-	if (!ed->n)
+-		ed->current_engine = &ed->engines[0];
+-	else if (ed->n >= ed->nengines)
++	if (ed->n >= ed->nengines)
+ 		ed->current_engine = NULL;
++	else if (!ed->n)
++		ed->current_engine = &ed->engines[0];
  
-@@ -251,7 +251,7 @@ static void run(int fd, unsigned ring, int nchild, int timeout,
- 			i = 16 * (idx % 64) + (idx / 64);
- 			obj[1].relocs_ptr = to_user_pointer(&reloc0[i]);
- 			obj[2].relocs_ptr = to_user_pointer(&reloc1[i]);
--			execbuf.batch_start_offset =  64*i;
-+			execbuf.batch_start_offset = 64 * i;
+ 	return ed->current_engine;
+ }
+@@ -222,18 +222,21 @@ struct intel_engine_data intel_init_engine_list(int fd, uint32_t ctx_id)
+ 		igt_debug("using pre-allocated engine list\n");
  
- overwrite:
- 			if ((flags & BEFORE) &&
-@@ -396,7 +396,7 @@ static void batch(int fd, unsigned ring, int nchild, int timeout,
- 		memset(&execbuf, 0, sizeof(execbuf));
- 		execbuf.buffers_ptr = to_user_pointer(obj);
- 		execbuf.buffer_count = 2;
--		execbuf.flags = ring | (1 << 11) | (1<<12);
-+		execbuf.flags = ring | (1 << 12);
- 		if (gen < 6)
- 			execbuf.flags |= I915_EXEC_SECURE;
- 
+ 		__for_each_static_engine(e2) {
+-			struct intel_execution_engine2 *__e2 =
+-				&engine_data.engines[engine_data.nengines];
+-
+-			strcpy(__e2->name, e2->name);
+-			__e2->instance   = e2->instance;
+-			__e2->class      = e2->class;
+-			__e2->flags      = e2->flags;
+-			__e2->is_virtual = false;
+-
+ 			if (igt_only_list_subtests() ||
+-			    gem_has_ring(fd, e2->flags))
++			    (fd < 0) ||
++			    gem_has_ring(fd, e2->flags)) {
++				struct intel_execution_engine2 *__e2 =
++					&engine_data.engines[
++					engine_data.nengines];
++
++				strcpy(__e2->name, e2->name);
++				__e2->instance   = e2->instance;
++				__e2->class      = e2->class;
++				__e2->flags      = e2->flags;
++				__e2->is_virtual = false;
++
+ 				engine_data.nengines++;
++                        }
+ 		}
+ 		return engine_data;
+ 	}
 -- 
 2.25.0
 
