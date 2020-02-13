@@ -1,10 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Dale B Stimson <dale.b.stimson@intel.com>
-Date: Wed, 12 Feb 2020 17:28:35 -0800
-Message-Id: <20200213012840.31472-1-dale.b.stimson@intel.com>
+Date: Wed, 12 Feb 2020 17:28:40 -0800
+Message-Id: <20200213012840.31472-6-dale.b.stimson@intel.com>
+In-Reply-To: <20200213012840.31472-1-dale.b.stimson@intel.com>
+References: <20200213012840.31472-1-dale.b.stimson@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 0/5] mmio_base via debugfs infrastructure
- + gem_ctx_isolation
+Subject: [igt-dev] [PATCH i-g-t v2 5/5] i915/gem_ctx_isolation.c - If
+ initialization fails, exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,106 +21,57 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-v2:
-- Introduce and use igt_exit_early() so that a failed initialization
-  (in igt_fixture) will not attempt to invoke the per-engine loop.
-- Initialize mmio_base db inside initial igt_fixture instead of after.
-- Some additional functions handle NULL input mmio_base db pointer.
-- Variables mbp and mmio_base initialized to NULL/0 so their values will
-  not be uninitialized for --list-subtests.
-- Failure to obtain an mmio_base db is now igt_debug instead of
-  igt_warn.
+At the start of igt_main, failure of the initial tests for successful
+initialization transfer control to the end of an igt_fixture block.
+From there, execution of the main per-engine loop is attempted.
+Instead, the test should be caused to exit.
 
-This patch series provides infrastructure to allow determination of i915
-per-engine mmio_base (which is otherwise sometimes hard to get).  The provided
-method uses debugfs mmio_base information if present.  Otherwise, a default
-determination is provided when possible.  Also, gem_ctx_isolation is modified
-to use the new infrastructure.
+If initialization fails, exit.
 
-For example, on TGL, gem_ctx_isolation (without these or similar changes)
-will fail for subtests that use engine vcs1.
+Signed-off-by: Dale B Stimson <dale.b.stimson@intel.com>
+---
+ tests/i915/gem_ctx_isolation.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-The patches in this series are as they are intended to be submitted (subject
-to comments), except I would like to squash the two gem_ctx_isolation
-"relative registers" patches into one (as discussed below).  Also, function
-gem_engine_mmio_base_info_dump() could be removed.
-
-On 2020-01-27, Chris wilson sent to the ML:
-  [igt-dev] [PATCH i-g-t 1/5] i915: Start putting the mmio_base to wider use
-  [igt-dev] [PATCH i-g-t 2/5] i915/gem_ctx_isolation: Check engine relative registers
-plus the following, which are not addressed here:
-  [igt-dev] [PATCH i-g-t 3/5] i915: Exercise preemption timeout controls in sysfs
-  [igt-dev] [PATCH i-g-t 4/5] i915: Exercise sysfs heartbeat controls
-  [igt-dev] [PATCH i-g-t 5/5] i915: Exercise timeslice sysfs property
-
-This patch list is:
-  i915/gem_mmio_base.c - get mmio_base from debugfs (if possible)
-  i915/gem_ctx_isolation: Check engine relative registers
-  i915/gem_ctx_isolation: Check engine relative registers - Part 2
-
-The first 2020-01-27 patch obtains mmio_base information via sysfs, and depends
-on a proposed kernel change that would provide the mmio_base information
-via sysfs.  It is unclear when or whether that kernel change will progress.
-
-The mmio_base information used by this patch series is available through
-debugfs now (as of kernel 5.4).  If the per-engine mmio_base information is
-ever added to sysfs, it would be easy to plug that into the infrastructure
-proposed here as an additional higher-priority source of that information.
-
-This submission replaces the first patch (switching from sysfs to debugfs),
-retains the second 2020-01-27 patch
-  i915/gem_ctx_isolation: Check engine relative registers
-and has a third patch that modifies the original second patch to support the
-altered API:
-  i915/gem_ctx_isolation: Check engine relative registers - Part 2
-
-I propose squashing the two gem_ctx_isolation "relative registers" patches
-into one patch with author == "Chris Wilson" if Chris agrees.
-
-Some differences from the 2020-01-27 patches:
-
-The mmio_base information is fetched once into local data structures, and
-is obtained from them thereafter instead of being fetched from the kernel
-everytime it is wanted.
-
-The function that obtains the mmio_base information is called by a particular
-test that wants it, and returns a handle through which the mmio_base can be
-requested for any particular engine.
-
-These patches introduce new source files lib/i915/gem_mmio_base.c
-and lib/i915/gem_mmio_base.h.  Should the code instead be placed into
-lib/i915/gem_engine_topology.c?
-
-Function gem_engine_mmio_base_info_dump presently exists to dump the
-mmio_base information to stdout for debugging or informational purposes.
-This function is not currently called.  I presume this function should
-be removed.  Is there any desire to keep it around for future use?
-
-The 2020-01-27 patches define function gem_engine_mmio_base() with its first
-parameter as "fd".  The new patches replace the first parameter with the
-mmio_base object handle.
-
-Chris Wilson (1):
-  i915/gem_ctx_isolation: Check engine relative registers
-
-Dale B Stimson (4):
-  i915/gem_mmio_base.c - get mmio_base from debugfs (if possible)
-  i915/gem_ctx_isolation: Check engine relative registers - Part 2
-  lib/igt_core.c - Introduce igt_exit_early()
-  i915/gem_ctx_isolation.c - If initialization fails, exit
-
- lib/Makefile.sources           |   2 +
- lib/i915/gem_mmio_base.c       | 353 +++++++++++++++++++++++++++++++++
- lib/i915/gem_mmio_base.h       |  19 ++
- lib/igt.h                      |   1 +
- lib/igt_core.c                 |  27 +++
- lib/igt_core.h                 |   1 +
- lib/meson.build                |   1 +
- tests/i915/gem_ctx_isolation.c | 244 ++++++++++++++---------
- 8 files changed, 556 insertions(+), 92 deletions(-)
- create mode 100644 lib/i915/gem_mmio_base.c
- create mode 100644 lib/i915/gem_mmio_base.h
-
+diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
+index 07ffbb84a..b11158dab 100644
+--- a/tests/i915/gem_ctx_isolation.c
++++ b/tests/i915/gem_ctx_isolation.c
+@@ -898,10 +898,13 @@ igt_main
+ 	int fd = -1;
+ 	struct eng_mmio_base_table_s *mbp = NULL;
+ 	uint32_t mmio_base = 0;
++	/* igt_fixture block is skipped if --list-subtests, so start with true. */
++	bool init_successful = true;
+ 
+ 	igt_fixture {
+ 		int gen;
+ 
++		init_successful = false;
+ 		fd = drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(fd);
+ 		igt_require(gem_has_contexts(fd));
+@@ -916,8 +919,20 @@ igt_main
+ 		igt_skip_on(gen > LAST_KNOWN_GEN);
+ 
+ 		mbp = gem_engine_mmio_base_info_get(fd);
++		init_successful = true;
+ 	}
+ 
++	if (!init_successful) {
++		igt_exit_early();
++	}
++
++	/**
++	 * With --list-subtests the above igt_fixture block is skipped and so
++	 * the device is not open.  Because fd < 0, __for_each_physical_engine
++	 * falls back to a static engine list, which will affect the output
++	 * of --list-subtests.
++	 */
++
+ 	/* __for_each_physical_engine switches context to all engines. */
+ 	__for_each_physical_engine(fd, e) {
+ 		igt_subtest_group {
 -- 
 2.25.0
 
