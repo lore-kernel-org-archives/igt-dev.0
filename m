@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F5026E2E9
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Feb 2020 12:03:06 +0000 (UTC)
-Date: Thu, 13 Feb 2020 14:03:03 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200213120303.GU25209@platvala-desk.ger.corp.intel.com>
-References: <20200213093041.10120-1-mika.kahola@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C3A46E2ED
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Feb 2020 13:39:11 +0000 (UTC)
+From: Jani Nikula <jani.nikula@intel.com>
+In-Reply-To: <20200211111634.10802-1-jani.nikula@intel.com>
+References: <20200211111634.10802-1-jani.nikula@intel.com>
+Date: Thu, 13 Feb 2020 15:39:06 +0200
+Message-ID: <87imkay5c5.fsf@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200213093041.10120-1-mika.kahola@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_ccs: Use correct CCS plane
- for semiplanar formats
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/pm_backlight: ensure driver is
+ loaded before checking backlight
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,38 +21,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mika Kahola <mika.kahola@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 13, 2020 at 11:30:41AM +0200, Mika Kahola wrote:
-> In case with semiplanar formats, we should use correct CCS plane
-> when these formats are under a test.
-> 
-> Signed-off-by: Mika Kahola <mika.kahola@intel.com>
+On Tue, 11 Feb 2020, Jani Nikula <jani.nikula@intel.com> wrote:
+> Checking the existence of the backlight interface before ensuring the
+> driver is loaded skips whenever the test is run without the driver
+> loaded. None of the tests would work properly if they were run as the
+> first thing or after tests that unload the driver.
+>
+> Open the driver (and thus probe it as needed) as the first thing.
+>
+> (This is the low-hanging fruit. A proper test for skipping would be
+> based on the presence of embedded displays, not based on the presence of
+> the interface we're aiming to test.)
+>
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+
+Pushed, thanks for the reviews.
+
+BR,
+Jani.
+
+
 > ---
->  lib/igt_fb.c    |  2 +-
->  lib/igt_fb.h    |  1 +
->  tests/kms_ccs.c | 27 ++++++++++++++++++++-------
->  3 files changed, 22 insertions(+), 8 deletions(-)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 8bdb0a09..0f8435a5 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -359,7 +359,7 @@ static const struct format_desc_struct *lookup_drm_format(uint32_t drm_format)
->  	return NULL;
->  }
+>  tests/i915/i915_pm_backlight.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/tests/i915/i915_pm_backlight.c b/tests/i915/i915_pm_backlight.c
+> index 08c07a5787bb..9753ef957c31 100644
+> --- a/tests/i915/i915_pm_backlight.c
+> +++ b/tests/i915/i915_pm_backlight.c
+> @@ -195,10 +195,6 @@ igt_main
+>  		drmModeModeInfo *mode;
+>  		igt_plane_t *primary;
 >  
-> -static bool igt_format_is_yuv_semiplanar(uint32_t format)
-> +bool igt_format_is_yuv_semiplanar(uint32_t format)
-
-
-New exported library function could use some docs if you don't mind!
-
+> -		/* Get the max value and skip the whole test if sysfs interface not available */
+> -		igt_skip_on(backlight_read(&old, "brightness"));
+> -		igt_assert(backlight_read(&context.max, "max_brightness") > -1);
+> -
+>  		/*
+>  		 * Backlight tests requires the output to be enabled,
+>  		 * try to enable all.
+> @@ -206,6 +202,10 @@ igt_main
+>  		kmstest_set_vt_graphics_mode();
+>  		igt_display_require(&display, drm_open_driver(DRIVER_INTEL));
+>  
+> +		/* Get the max value and skip the whole test if sysfs interface not available */
+> +		igt_skip_on(backlight_read(&old, "brightness"));
+> +		igt_assert(backlight_read(&context.max, "max_brightness") > -1);
+> +
+>  		/* should be ../../cardX-$output */
+>  		igt_assert_lt(12, readlink(BACKLIGHT_PATH "/device", full_name, sizeof(full_name) - 1));
+>  		name = basename(full_name);
 
 -- 
-Petri Latvala
+Jani Nikula, Intel Open Source Graphics Center
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
