@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C3A46E2ED
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Feb 2020 13:39:11 +0000 (UTC)
-From: Jani Nikula <jani.nikula@intel.com>
-In-Reply-To: <20200211111634.10802-1-jani.nikula@intel.com>
-References: <20200211111634.10802-1-jani.nikula@intel.com>
-Date: Thu, 13 Feb 2020 15:39:06 +0200
-Message-ID: <87imkay5c5.fsf@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD2B86E2E2
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Feb 2020 14:03:45 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+Date: Thu, 13 Feb 2020 14:03:43 +0000
+Message-ID: <16080a5c30ba2e85c8ba8bb921e0b7373be89146.camel@intel.com>
+References: <20200213093041.10120-1-mika.kahola@intel.com>
+ <20200213113126.GA6331@ideak-desk.fi.intel.com>
+In-Reply-To: <20200213113126.GA6331@ideak-desk.fi.intel.com>
+Content-Language: en-US
+Content-ID: <EB314EE07113DD40B81E8731A4950D11@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/pm_backlight: ensure driver is
- loaded before checking backlight
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_ccs: Use correct CCS plane
+ for semiplanar formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,62 +24,149 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: "Deak, Imre" <imre.deak@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 11 Feb 2020, Jani Nikula <jani.nikula@intel.com> wrote:
-> Checking the existence of the backlight interface before ensuring the
-> driver is loaded skips whenever the test is run without the driver
-> loaded. None of the tests would work properly if they were run as the
-> first thing or after tests that unload the driver.
->
-> Open the driver (and thus probe it as needed) as the first thing.
->
-> (This is the low-hanging fruit. A proper test for skipping would be
-> based on the presence of embedded displays, not based on the presence of
-> the interface we're aiming to test.)
->
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+On Thu, 2020-02-13 at 13:31 +0200, Imre Deak wrote:
+> On Thu, Feb 13, 2020 at 11:30:41AM +0200, Mika Kahola wrote:
+> > In case with semiplanar formats, we should use correct CCS plane
+> > when these formats are under a test.
+> > 
+> > Signed-off-by: Mika Kahola <mika.kahola@intel.com>
+> > ---
+> >  lib/igt_fb.c    |  2 +-
+> >  lib/igt_fb.h    |  1 +
+> >  tests/kms_ccs.c | 27 ++++++++++++++++++++-------
+> >  3 files changed, 22 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> > index 8bdb0a09..0f8435a5 100644
+> > --- a/lib/igt_fb.c
+> > +++ b/lib/igt_fb.c
+> > @@ -359,7 +359,7 @@ static const struct format_desc_struct
+> > *lookup_drm_format(uint32_t drm_format)
+> >  	return NULL;
+> >  }
+> >  
+> > -static bool igt_format_is_yuv_semiplanar(uint32_t format)
+> > +bool igt_format_is_yuv_semiplanar(uint32_t format)
+> >  {
+> >  	const struct format_desc_struct *f = lookup_drm_format(format);
+> >  
+> > diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+> > index 5ed9e35a..587f7a44 100644
+> > --- a/lib/igt_fb.h
+> > +++ b/lib/igt_fb.h
+> > @@ -201,6 +201,7 @@ uint32_t igt_drm_format_to_bpp(uint32_t
+> > drm_format);
+> >  const char *igt_format_str(uint32_t drm_format);
+> >  bool igt_fb_supported_format(uint32_t drm_format);
+> >  bool igt_format_is_yuv(uint32_t drm_format);
+> > +bool igt_format_is_yuv_semiplanar(uint32_t format);
+> >  bool igt_format_is_fp16(uint32_t drm_format);
+> >  int igt_format_plane_bpp(uint32_t drm_format, int plane);
+> >  void igt_format_array_fill(uint32_t **formats_array, unsigned int
+> > *count,
+> > diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
+> > index 35c4ceee..284cbbc8 100644
+> > --- a/tests/kms_ccs.c
+> > +++ b/tests/kms_ccs.c
+> > @@ -163,6 +163,16 @@ static void check_all_ccs_planes(int drm_fd,
+> > igt_fb_t *fb)
+> >  	}
+> >  }
+> >  
+> > +static int get_ccs_plane_index(uint32_t format)
+> > +{
+> > +	int index = 1;
+> > +
+> > +	if (igt_format_is_yuv_semiplanar(format))
+> > +		return 2;
+> > +
+> > +	return index;
+> > +}
+> > +
+> >  static void generate_fb(data_t *data, struct igt_fb *fb,
+> >  			int width, int height,
+> >  			enum test_fb_flags fb_flags)
+> > @@ -172,6 +182,7 @@ static void generate_fb(data_t *data, struct
+> > igt_fb *fb,
+> >  	uint64_t modifier;
+> >  	cairo_t *cr;
+> >  	int unit;
+> > +	int index;
+> >  	int ret;
+> >  
+> >  	if (intel_gen(intel_get_drm_devid(data->drm_fd)) >= 12)
+> > @@ -196,6 +207,8 @@ static void generate_fb(data_t *data, struct
+> > igt_fb *fb,
+> >  	else
+> >  		format = data->format;
+> >  
+> > +	index = get_ccs_plane_index(format);
+> > +
+> >  	igt_create_bo_for_fb(data->drm_fd, width, height, format,
+> > modifier, fb);
+> >  	igt_assert(fb->gem_handle > 0);
+> >  
+> > @@ -205,27 +218,27 @@ static void generate_fb(data_t *data, struct
+> > igt_fb *fb,
+> >  		if (fb_flags & FB_MISALIGN_AUX_STRIDE) {
+> >  			igt_skip_on_f(width <= 1024,
+> >  				      "FB already has the smallest
+> > possible stride\n");
+> > -			f.pitches[1] -= (unit/2);
+> > +			f.pitches[index] -= (unit/2);
+> >  		}
+> >  
+> >  		if (fb_flags & FB_SMALL_AUX_STRIDE) {
+> >  			igt_skip_on_f(width <= 1024,
+> >  				      "FB already has the smallest
+> > possible stride\n");
+> > -			f.pitches[1] = ALIGN(f.pitches[1]/2, unit);
+> > +			f.pitches[index] = ALIGN(f.pitches[1]/2, unit);
+> >  		}
+> >  
+> >  		if (fb_flags & FB_ZERO_AUX_STRIDE)
+> > -			f.pitches[1] = 0;
+> > +			f.pitches[index] = 0;
+> >  
+> >  		/* Put the CCS buffer on a different BO. */
+> >  		if (data->flags & TEST_BAD_CCS_HANDLE)
+> >  			f.handles[1] = gem_create(data->drm_fd, fb-
+> > >size);
+> 
+> The above needs to be updated as well.
+> 
+> Looks ok for the Y CCS plane. We should also check the UV CCS plane,
+> but
+> that can be added later. With the above fixed:
+> 
+> Reviewed-by: Imre Deak <imre.deak@intel.com>
+Thanks for the review! I'll fix the missing index. 
 
-Pushed, thanks for the reviews.
+For UV plane update I write a follow-up patch. 
 
-BR,
-Jani.
+I'll wait for CI results before pushing the patch upstream. 
 
-
-> ---
->  tests/i915/i915_pm_backlight.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/tests/i915/i915_pm_backlight.c b/tests/i915/i915_pm_backlight.c
-> index 08c07a5787bb..9753ef957c31 100644
-> --- a/tests/i915/i915_pm_backlight.c
-> +++ b/tests/i915/i915_pm_backlight.c
-> @@ -195,10 +195,6 @@ igt_main
->  		drmModeModeInfo *mode;
->  		igt_plane_t *primary;
->  
-> -		/* Get the max value and skip the whole test if sysfs interface not available */
-> -		igt_skip_on(backlight_read(&old, "brightness"));
-> -		igt_assert(backlight_read(&context.max, "max_brightness") > -1);
-> -
->  		/*
->  		 * Backlight tests requires the output to be enabled,
->  		 * try to enable all.
-> @@ -206,6 +202,10 @@ igt_main
->  		kmstest_set_vt_graphics_mode();
->  		igt_display_require(&display, drm_open_driver(DRIVER_INTEL));
->  
-> +		/* Get the max value and skip the whole test if sysfs interface not available */
-> +		igt_skip_on(backlight_read(&old, "brightness"));
-> +		igt_assert(backlight_read(&context.max, "max_brightness") > -1);
-> +
->  		/* should be ../../cardX-$output */
->  		igt_assert_lt(12, readlink(BACKLIGHT_PATH "/device", full_name, sizeof(full_name) - 1));
->  		name = basename(full_name);
-
--- 
-Jani Nikula, Intel Open Source Graphics Center
+> 
+> >  
+> >  		if (data->flags & TEST_NO_AUX_BUFFER) {
+> > -			f.handles[1] = 0;
+> > -			f.modifier[1] = 0;
+> > -			f.pitches[1] = 0;
+> > -			f.offsets[1] = 0;
+> > +			f.handles[index] = 0;
+> > +			f.modifier[index] = 0;
+> > +			f.pitches[index] = 0;
+> > +			f.offsets[index] = 0;
+> >  		}
+> >  	}
+> >  
+> > -- 
+> > 2.17.1
+> > 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
