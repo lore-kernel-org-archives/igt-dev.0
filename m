@@ -1,88 +1,175 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 13 Feb 2020 10:29:55 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200213082955.GT25209@platvala-desk.ger.corp.intel.com>
-References: <20200213012840.31472-1-dale.b.stimson@intel.com>
- <20200213012840.31472-6-dale.b.stimson@intel.com>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+References: <20200211192253.1120964-1-chris@chris-wilson.co.uk>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <1e8603fe-d4b8-5860-37cc-6ac381276e6d@linux.intel.com>
+Date: Thu, 13 Feb 2020 09:07:59 +0000
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200213012840.31472-6-dale.b.stimson@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 5/5] i915/gem_ctx_isolation.c - If
- initialization fails, exit
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
+In-Reply-To: <20200211192253.1120964-1-chris@chris-wilson.co.uk>
+Content-Language: en-US
+Subject: Re: [Intel-gfx] [igt-dev] [PATCH i-g-t] i915/gem_ctx_persistence:
+ Race context closure with replace-engines
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Dale B Stimson <dale.b.stimson@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Feb 12, 2020 at 05:28:40PM -0800, Dale B Stimson wrote:
-> At the start of igt_main, failure of the initial tests for successful
-> initialization transfer control to the end of an igt_fixture block.
-> From there, execution of the main per-engine loop is attempted.
-> Instead, the test should be caused to exit.
+
+On 11/02/2020 19:22, Chris Wilson wrote:
+> Tvrtko spotted a race condition between replacing a set of hanging
+> engines and closing the context. So exercise it.
 > 
-> If initialization fails, exit.
+> 5s is not much time to hit the small window, but a little bit of testing
+> several times a day is better than nothing.
 > 
-> Signed-off-by: Dale B Stimson <dale.b.stimson@intel.com>
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 > ---
->  tests/i915/gem_ctx_isolation.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
+>   tests/i915/gem_ctx_persistence.c | 93 ++++++++++++++++++++++++++++++++
+>   1 file changed, 93 insertions(+)
 > 
-> diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
-> index 07ffbb84a..b11158dab 100644
-> --- a/tests/i915/gem_ctx_isolation.c
-> +++ b/tests/i915/gem_ctx_isolation.c
-> @@ -898,10 +898,13 @@ igt_main
->  	int fd = -1;
->  	struct eng_mmio_base_table_s *mbp = NULL;
->  	uint32_t mmio_base = 0;
-> +	/* igt_fixture block is skipped if --list-subtests, so start with true. */
-> +	bool init_successful = true;
->  
->  	igt_fixture {
->  		int gen;
->  
-> +		init_successful = false;
->  		fd = drm_open_driver(DRIVER_INTEL);
->  		igt_require_gem(fd);
->  		igt_require(gem_has_contexts(fd));
-> @@ -916,8 +919,20 @@ igt_main
->  		igt_skip_on(gen > LAST_KNOWN_GEN);
->  
->  		mbp = gem_engine_mmio_base_info_get(fd);
-> +		init_successful = true;
->  	}
->  
-> +	if (!init_successful) {
-> +		igt_exit_early();
+> diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+> index 22f29d25e..6321dbe67 100644
+> --- a/tests/i915/gem_ctx_persistence.c
+> +++ b/tests/i915/gem_ctx_persistence.c
+> @@ -33,6 +33,7 @@
+>   #include "i915/gem_engine_topology.h"
+>   #include "i915/gem_ring.h"
+>   #include "i915/gem_submission.h"
+> +#include "igt_aux.h"
+>   #include "igt_debugfs.h"
+>   #include "igt_dummyload.h"
+>   #include "igt_gt.h"
+> @@ -803,6 +804,95 @@ static void replace_engines(int i915, const struct intel_execution_engine2 *e)
+>   	gem_quiescent_gpu(i915);
+>   }
+>   
+> +struct close_race {
+> +	int pipe[2];
+> +};
+> +
+> +static void race_set_engines(int i915, int fd)
+> +{
+> +	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, 1) = {
+> +		.engines = {}
+> +	};
+> +	struct drm_i915_gem_context_param param = {
+> +		.param = I915_CONTEXT_PARAM_ENGINES,
+> +		.value = to_user_pointer(&engines),
+> +		.size = sizeof(engines),
+> +	};
+> +
+> +	while (read(fd, &param.ctx_id, sizeof(param.ctx_id)) > 0) {
+> +		if (!param.ctx_id)
+> +			break;
+> +		__gem_context_set_param(i915, &param);
+> +	}
+> +}
+> +
+> +static void close_replace_race(int i915)
+> +{
+> +	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+> +	struct close_race *t;
+> +	int fence = -1;
+> +
+> +	/*
+> +	 * Tvrtko being the evil genius noticed that if we could successfully
+> +	 * replace a set of engines after the context had been closed, those
+> +	 * engines could escape oversight.
+> +	 */
+
+I think it would read better if you reworded this a bit not to mention 
+names and claimed attributes. :)
+
+> +
+> +	t = malloc(sizeof(*t) * ncpus);
+> +	igt_assert(t);
+> +
+> +	for (int i = 0; i < ncpus; i++)
+> +		igt_assert(pipe(t[i].pipe) == 0);
+> +
+> +	igt_fork(child, ncpus) {
+> +		close(t[child].pipe[1]);
+> +		race_set_engines(i915, t[child].pipe[0]);
 > +	}
 > +
+> +	for (int i = 0; i < ncpus; i++)
+> +		close(t[i].pipe[0]);
+> +
+> +	igt_until_timeout(5) {
+> +		igt_spin_t *spin;
+> +		uint32_t ctx;
+> +
+> +		ctx = gem_context_clone_with_engines(i915, 0);
+> +		gem_context_set_persistence(i915, ctx, true);
+> +
+> +		spin = igt_spin_new(i915, ctx, .flags = IGT_SPIN_FENCE_OUT);
+> +		for (int i = 0; i < ncpus; i++)
+> +			write(t[i].pipe[1], &ctx, sizeof(ctx));
 
-NAK. All this dancing around the infrastructure just makes changing
-the infrastructure later be awkward and produce weird errors.
+It's early so I hope I am not too confused, but drm client in the forked 
+process is a different one. So I think it needs to use threads to be 
+able to share.
 
-If something in the fixture failed, with this code you never enter the
-subtest, making the test result 'notrun' instead of the correct 'skip'
-or 'fail'.
+Regards,
 
-What is the problem this is trying to solve? Incorrect engine list
-used? If you have a subtest per static engine, all CI does is execute
-per static engine. Converting this test to use dynamic subtests for
-engines is the way forward.
+Tvrtko
 
-
--- 
-Petri Latvala
+> +
+> +		if (fence < 0) {
+> +			fence = spin->out_fence;
+> +		} else {
+> +			int tmp;
+> +
+> +			tmp = sync_fence_merge(fence, spin->out_fence);
+> +			close(fence);
+> +			close(spin->out_fence);
+> +
+> +			fence = tmp;
+> +		}
+> +		spin->out_fence = -1;
+> +
+> +		gem_context_destroy(i915, ctx);
+> +	}
+> +
+> +	for (int i = 0; i < ncpus; i++) {
+> +		uint32_t end = 0;
+> +		write(t[i].pipe[1], &end, sizeof(end));
+> +		close(t[i].pipe[1]);
+> +	}
+> +	igt_waitchildren();
+> +	free(t);
+> +
+> +	igt_assert(sync_fence_wait(fence, MSEC_PER_SEC / 2) == 0);
+> +	close(fence);
+> +
+> +	gem_quiescent_gpu(i915);
+> +}
+> +
+>   static void replace_engines_hostile(int i915,
+>   				    const struct intel_execution_engine2 *e)
+>   {
+> @@ -961,6 +1051,9 @@ igt_main
+>   					replace_engines_hostile(i915, e);
+>   			}
+>   		}
+> +
+> +		igt_subtest("close-replace-race")
+> +			close_replace_race(i915);
+>   	}
+>   
+>   	igt_fixture {
+> 
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
