@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 71B046E15F
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Feb 2020 11:31:53 +0000 (UTC)
-Date: Thu, 13 Feb 2020 13:31:26 +0200
-From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20200213113126.GA6331@ideak-desk.fi.intel.com>
-References: <20200213093041.10120-1-mika.kahola@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 13 Feb 2020 12:01:10 -0000
+Message-ID: <158159527008.17962.13210767314650890627@emeril.freedesktop.org>
+References: <20200213093041.10120-1-mika.kahola@intel.com>
 In-Reply-To: <20200213093041.10120-1-mika.kahola@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_ccs: Use correct CCS plane
- for semiplanar formats
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fccs=3A_Use_correct_CCS_plane_for_semiplanar_formats?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,7 +14,7 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: imre.deak@intel.com
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
@@ -27,126 +23,85 @@ To: Mika Kahola <mika.kahola@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 13, 2020 at 11:30:41AM +0200, Mika Kahola wrote:
-> In case with semiplanar formats, we should use correct CCS plane
-> when these formats are under a test.
-> 
-> Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-> ---
->  lib/igt_fb.c    |  2 +-
->  lib/igt_fb.h    |  1 +
->  tests/kms_ccs.c | 27 ++++++++++++++++++++-------
->  3 files changed, 22 insertions(+), 8 deletions(-)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 8bdb0a09..0f8435a5 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -359,7 +359,7 @@ static const struct format_desc_struct *lookup_drm_format(uint32_t drm_format)
->  	return NULL;
->  }
->  
-> -static bool igt_format_is_yuv_semiplanar(uint32_t format)
-> +bool igt_format_is_yuv_semiplanar(uint32_t format)
->  {
->  	const struct format_desc_struct *f = lookup_drm_format(format);
->  
-> diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-> index 5ed9e35a..587f7a44 100644
-> --- a/lib/igt_fb.h
-> +++ b/lib/igt_fb.h
-> @@ -201,6 +201,7 @@ uint32_t igt_drm_format_to_bpp(uint32_t drm_format);
->  const char *igt_format_str(uint32_t drm_format);
->  bool igt_fb_supported_format(uint32_t drm_format);
->  bool igt_format_is_yuv(uint32_t drm_format);
-> +bool igt_format_is_yuv_semiplanar(uint32_t format);
->  bool igt_format_is_fp16(uint32_t drm_format);
->  int igt_format_plane_bpp(uint32_t drm_format, int plane);
->  void igt_format_array_fill(uint32_t **formats_array, unsigned int *count,
-> diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
-> index 35c4ceee..284cbbc8 100644
-> --- a/tests/kms_ccs.c
-> +++ b/tests/kms_ccs.c
-> @@ -163,6 +163,16 @@ static void check_all_ccs_planes(int drm_fd, igt_fb_t *fb)
->  	}
->  }
->  
-> +static int get_ccs_plane_index(uint32_t format)
-> +{
-> +	int index = 1;
-> +
-> +	if (igt_format_is_yuv_semiplanar(format))
-> +		return 2;
-> +
-> +	return index;
-> +}
-> +
->  static void generate_fb(data_t *data, struct igt_fb *fb,
->  			int width, int height,
->  			enum test_fb_flags fb_flags)
-> @@ -172,6 +182,7 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
->  	uint64_t modifier;
->  	cairo_t *cr;
->  	int unit;
-> +	int index;
->  	int ret;
->  
->  	if (intel_gen(intel_get_drm_devid(data->drm_fd)) >= 12)
-> @@ -196,6 +207,8 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
->  	else
->  		format = data->format;
->  
-> +	index = get_ccs_plane_index(format);
-> +
->  	igt_create_bo_for_fb(data->drm_fd, width, height, format, modifier, fb);
->  	igt_assert(fb->gem_handle > 0);
->  
-> @@ -205,27 +218,27 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
->  		if (fb_flags & FB_MISALIGN_AUX_STRIDE) {
->  			igt_skip_on_f(width <= 1024,
->  				      "FB already has the smallest possible stride\n");
-> -			f.pitches[1] -= (unit/2);
-> +			f.pitches[index] -= (unit/2);
->  		}
->  
->  		if (fb_flags & FB_SMALL_AUX_STRIDE) {
->  			igt_skip_on_f(width <= 1024,
->  				      "FB already has the smallest possible stride\n");
-> -			f.pitches[1] = ALIGN(f.pitches[1]/2, unit);
-> +			f.pitches[index] = ALIGN(f.pitches[1]/2, unit);
->  		}
->  
->  		if (fb_flags & FB_ZERO_AUX_STRIDE)
-> -			f.pitches[1] = 0;
-> +			f.pitches[index] = 0;
->  
->  		/* Put the CCS buffer on a different BO. */
->  		if (data->flags & TEST_BAD_CCS_HANDLE)
->  			f.handles[1] = gem_create(data->drm_fd, fb->size);
+== Series Details ==
 
-The above needs to be updated as well.
+Series: tests/kms_ccs: Use correct CCS plane for semiplanar formats
+URL   : https://patchwork.freedesktop.org/series/73399/
+State : success
 
-Looks ok for the Y CCS plane. We should also check the UV CCS plane, but
-that can be added later. With the above fixed:
+== Summary ==
 
-Reviewed-by: Imre Deak <imre.deak@intel.com>
+CI Bug Log - changes from CI_DRM_7930 -> IGTPW_4145
+====================================================
 
->  
->  		if (data->flags & TEST_NO_AUX_BUFFER) {
-> -			f.handles[1] = 0;
-> -			f.modifier[1] = 0;
-> -			f.pitches[1] = 0;
-> -			f.offsets[1] = 0;
-> +			f.handles[index] = 0;
-> +			f.modifier[index] = 0;
-> +			f.pitches[index] = 0;
-> +			f.offsets[index] = 0;
->  		}
->  	}
->  
-> -- 
-> 2.17.1
-> 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4145/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4145 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_parallel@contexts:
+    - fi-byt-n2820:       [PASS][1] -> [TIMEOUT][2] ([fdo#112271] / [i915#1084])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7930/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4145/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
+
+  * igt@i915_selftest@live_blt:
+    - fi-hsw-4770r:       [PASS][3] -> [DMESG-FAIL][4] ([i915#725])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7930/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4145/fi-hsw-4770r/igt@i915_selftest@live_blt.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_close_race@basic-threads:
+    - fi-hsw-peppy:       [TIMEOUT][5] ([fdo#112271] / [i915#1084]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7930/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4145/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
+
+  * igt@i915_selftest@live_gt_contexts:
+    - fi-bwr-2160:        [FAIL][7] -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7930/fi-bwr-2160/igt@i915_selftest@live_gt_contexts.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4145/fi-bwr-2160/igt@i915_selftest@live_gt_contexts.html
+
+  
+  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
+  [i915#1084]: https://gitlab.freedesktop.org/drm/intel/issues/1084
+  [i915#725]: https://gitlab.freedesktop.org/drm/intel/issues/725
+
+
+Participating hosts (46 -> 44)
+------------------------------
+
+  Additional (5): fi-kbl-7500u fi-cfl-8109u fi-bsw-kefka fi-skl-lmem fi-blb-e6850 
+  Missing    (7): fi-ilk-m540 fi-ehl-1 fi-skl-6770hq fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5439 -> IGTPW_4145
+
+  CI-20190529: 20190529
+  CI_DRM_7930: efe748cc918711e2a9b9bf1a63a6c7b2747a4eb3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4145: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4145/index.html
+  IGT_5439: ed1f7d96d4d5d4565bcd3adb3a23b2002a25419e @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4145/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
