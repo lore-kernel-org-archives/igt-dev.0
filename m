@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A643B6F92A
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Feb 2020 13:26:40 +0000 (UTC)
+From: "Nedunoori, Sravan Kumar" <sravan.kumar.nedunoori@intel.com>
+Date: Fri, 14 Feb 2020 13:26:35 +0000
+Message-ID: <D01393EA3B18E04A886C14D534415A2E7FAA97@BGSMSX107.gar.corp.intel.com>
+References: <20200213045004.28209-1-sravan.kumar.nedunoori@intel.com>
+ <158163508169.4660.12334684324098797527@skylake-alporthouse-com>
+In-Reply-To: <158163508169.4660.12334684324098797527@skylake-alporthouse-com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 14 Feb 2020 13:25:10 -0000
-Message-ID: <158168671019.9932.11289654415348443944@emeril.freedesktop.org>
-References: <20200214125254.2420-1-satyavathi.k@intel.com>
-In-Reply-To: <20200214125254.2420-1-satyavathi.k@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
- =?utf-8?q?ests/i915/gem=5Fringfill=3AAdded_=5F=5Ffor=5Feach=5Fphysical=5F?=
- =?utf-8?q?engine_to_utilize_all_available_engines=2E?=
+Subject: Re: [igt-dev] [PATCH][PATCH i-g-t]
+ tests/i915/gem_write_read_ring_switch Removal of IGT Test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,55 +19,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: satyavat <satyavathi.k@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+>Given that outline, could we whip up a new pair of tests (implicit-read-fence, implicit-write-fence) for gem_exec_schedule?
+[Sravan] : Sure, will enhance the gem_exec_schedule with the Implicit-read/write-fence subtests. 
 
-Series: tests/i915/gem_ringfill:Added __for_each_physical_engine to utilize all available engines.
-URL   : https://patchwork.freedesktop.org/series/73463/
-State : failure
+Can we go ahead with the change/patch(gem_write_read_ring_switch) 
 
-== Summary ==
+-Sravan Kumar Nedunoori 
 
-ERROR! This series introduces new undocumented tests:
+-----Original Message-----
+From: Chris Wilson <chris@chris-wilson.co.uk> 
+Sent: Friday, February 14, 2020 4:35 AM
+To: igt-dev@lists.freedesktop.org; Nedunoori, Sravan Kumar <sravan.kumar.nedunoori@intel.com>
+Subject: Re: [igt-dev] [PATCH][PATCH i-g-t] tests/i915/gem_write_read_ring_switch Removal of IGT Test
 
-gem_ringfill@-S3
-gem_ringfill@-S4
-gem_ringfill@-bomb
-gem_ringfill@-child
-gem_ringfill@basic
-gem_ringfill@basic-fd
-gem_ringfill@basic-forked
-gem_ringfill@basic-hang
-gem_ringfill@basic-interruptible
+Quoting Sravan Kumar Nedunoori (2020-02-13 04:50:04)
+> Removal of this test, as it checks read/write syncpoints when 
+> switching rings and doesn't add anything to other tests.
 
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
+write/read sync. Ah, I was thinking about read/read and the only thing that came to mind as proving that would be the gem_busy/extended
 
-[Documentation] has more details on how to do this.
+Ok, this is covered by the gem_exec_whisper brute, but do we have a simple and clear test to show that writes are blocked by a reader?
 
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+for_each_physical_engine(writer)
+	dep = gem_create(4096);
+	for_each_physical_engine(reader) {
+		if (reader == write)
+			continue;
+		/* XXX with a few tweaks write a secret breadcrumb */
+		igt_spin_new(reader, .read = dep);
+	}
+	breadcrumb(write, dep); /* implicit fence -> queued after readers */
+	gem_quiescent_gpu(); /* cancels all spinners */
+	igt_assert_eq(breadcrumb == writers);
+}
+/* This can be reversed to test write->reader implicit fences */
 
-Thanks in advance!
+that feels very, very much like a test we have somewhere. But I couldn't put my finger on which one.
 
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+Given that outline, could we whip up a new pair of tests (implicit-read-fence, implicit-write-fence) for gem_exec_schedule?
 
-Other than that, pipeline status: SUCCESS.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/108686 for the overview.
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/108686
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
