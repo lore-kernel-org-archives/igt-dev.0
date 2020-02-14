@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1530D6E5CF
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Feb 2020 11:57:33 +0000 (UTC)
+Date: Fri, 14 Feb 2020 13:57:29 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200214115729.GW25209@platvala-desk.ger.corp.intel.com>
+References: <20200212132123.108506-1-arkadiusz.hiler@intel.com>
+ <20200212132123.108506-2-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 14 Feb 2020 11:07:00 -0000
-Message-ID: <158167842030.9931.17554901119308802885@emeril.freedesktop.org>
-References: <20200212124317.23017-1-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20200212124317.23017-1-janusz.krzysztofik@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?gem=5Fuserptr=5Fblits=3A_Enhance_invalid_mapping_exercise_=28re?=
- =?utf-8?b?djMp?=
+Content-Disposition: inline
+In-Reply-To: <20200212132123.108506-2-arkadiusz.hiler@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/9] lib/tests: Extract fork helpers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,435 +18,1045 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: tests/gem_userptr_blits: Enhance invalid mapping exercise (rev3)
-URL   : https://patchwork.freedesktop.org/series/72411/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_7921_full -> IGTPW_4136_full
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_4136_full:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * {igt@gem_userptr_blits@invalid-mmap-offset@gtt} (NEW):
-    - shard-glk:          NOTRUN -> [WARN][1] +3 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-glk5/igt@gem_userptr_blits@invalid-mmap-offset@gtt.html
-
-  * {igt@gem_userptr_blits@invalid-mmap-offset@uc} (NEW):
-    - shard-tglb:         NOTRUN -> [WARN][2] +3 similar issues
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb1/igt@gem_userptr_blits@invalid-mmap-offset@uc.html
-
-  * {igt@gem_userptr_blits@invalid-mmap-offset@wb} (NEW):
-    - shard-apl:          NOTRUN -> [WARN][3] +3 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-apl3/igt@gem_userptr_blits@invalid-mmap-offset@wb.html
-    - shard-iclb:         NOTRUN -> [WARN][4] +3 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb5/igt@gem_userptr_blits@invalid-mmap-offset@wb.html
-
-  * {igt@gem_userptr_blits@invalid-mmap-offset@wc} (NEW):
-    - shard-hsw:          NOTRUN -> [WARN][5] +3 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-hsw1/igt@gem_userptr_blits@invalid-mmap-offset@wc.html
-    - shard-kbl:          NOTRUN -> [WARN][6] +3 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-kbl2/igt@gem_userptr_blits@invalid-mmap-offset@wc.html
-    - shard-snb:          NOTRUN -> [WARN][7] +3 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-snb5/igt@gem_userptr_blits@invalid-mmap-offset@wc.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_7921_full and IGTPW_4136_full:
-
-### New IGT tests (5) ###
-
-  * igt@gem_userptr_blits@invalid-mmap-offset:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@gem_userptr_blits@invalid-mmap-offset@gtt:
-    - Statuses : 7 warn(s)
-    - Exec time: [0.01, 0.02] s
-
-  * igt@gem_userptr_blits@invalid-mmap-offset@uc:
-    - Statuses : 7 warn(s)
-    - Exec time: [0.00, 0.02] s
-
-  * igt@gem_userptr_blits@invalid-mmap-offset@wb:
-    - Statuses : 7 warn(s)
-    - Exec time: [0.00, 0.02] s
-
-  * igt@gem_userptr_blits@invalid-mmap-offset@wc:
-    - Statuses : 7 warn(s)
-    - Exec time: [0.00, 0.02] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4136_full that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_caching@reads:
-    - shard-hsw:          [PASS][8] -> [FAIL][9] ([i915#694]) +1 similar issue
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-hsw5/igt@gem_caching@reads.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-hsw5/igt@gem_caching@reads.html
-
-  * igt@gem_ctx_isolation@rcs0-s3:
-    - shard-kbl:          [PASS][10] -> [DMESG-WARN][11] ([i915#180]) +4 similar issues
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-kbl2/igt@gem_ctx_isolation@rcs0-s3.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-kbl4/igt@gem_ctx_isolation@rcs0-s3.html
-
-  * igt@gem_ctx_shared@exec-single-timeline-bsd:
-    - shard-iclb:         [PASS][12] -> [SKIP][13] ([fdo#110841])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb3/igt@gem_ctx_shared@exec-single-timeline-bsd.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb4/igt@gem_ctx_shared@exec-single-timeline-bsd.html
-
-  * igt@gem_exec_balancer@hang:
-    - shard-tglb:         [PASS][14] -> [TIMEOUT][15] ([fdo#112271])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-tglb3/igt@gem_exec_balancer@hang.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb2/igt@gem_exec_balancer@hang.html
-
-  * igt@gem_exec_schedule@pi-common-bsd:
-    - shard-iclb:         [PASS][16] -> [SKIP][17] ([i915#677])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb5/igt@gem_exec_schedule@pi-common-bsd.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb4/igt@gem_exec_schedule@pi-common-bsd.html
-
-  * igt@gem_exec_schedule@preempt-bsd:
-    - shard-iclb:         [PASS][18] -> [SKIP][19] ([fdo#112146]) +5 similar issues
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb3/igt@gem_exec_schedule@preempt-bsd.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb2/igt@gem_exec_schedule@preempt-bsd.html
-
-  * igt@gem_exec_schedule@preempt-queue-bsd1:
-    - shard-iclb:         [PASS][20] -> [SKIP][21] ([fdo#109276]) +20 similar issues
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb1/igt@gem_exec_schedule@preempt-queue-bsd1.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb8/igt@gem_exec_schedule@preempt-queue-bsd1.html
-
-  * igt@gem_ppgtt@flink-and-close-vma-leak:
-    - shard-tglb:         [PASS][22] -> [FAIL][23] ([i915#644])
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-tglb6/igt@gem_ppgtt@flink-and-close-vma-leak.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb8/igt@gem_ppgtt@flink-and-close-vma-leak.html
-
-  * igt@gem_userptr_blits@sync-unmap-cycles:
-    - shard-snb:          [PASS][24] -> [DMESG-WARN][25] ([fdo#111870] / [i915#478])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-snb6/igt@gem_userptr_blits@sync-unmap-cycles.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-snb4/igt@gem_userptr_blits@sync-unmap-cycles.html
-
-  * igt@gen9_exec_parse@allowed-all:
-    - shard-glk:          [PASS][26] -> [DMESG-WARN][27] ([i915#716])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-glk2/igt@gen9_exec_parse@allowed-all.html
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-glk3/igt@gen9_exec_parse@allowed-all.html
-
-  * igt@kms_big_fb@linear-32bpp-rotate-0:
-    - shard-tglb:         [PASS][28] -> [FAIL][29] ([i915#1172]) +1 similar issue
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-tglb6/igt@kms_big_fb@linear-32bpp-rotate-0.html
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb8/igt@kms_big_fb@linear-32bpp-rotate-0.html
-
-  * igt@kms_color@pipe-a-ctm-red-to-blue:
-    - shard-tglb:         [PASS][30] -> [FAIL][31] ([i915#1149]) +1 similar issue
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-tglb7/igt@kms_color@pipe-a-ctm-red-to-blue.html
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb1/igt@kms_color@pipe-a-ctm-red-to-blue.html
-
-  * igt@kms_cursor_crc@pipe-c-cursor-suspend:
-    - shard-glk:          [PASS][32] -> [INCOMPLETE][33] ([i915#58] / [k.org#198133])
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-glk1/igt@kms_cursor_crc@pipe-c-cursor-suspend.html
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-glk8/igt@kms_cursor_crc@pipe-c-cursor-suspend.html
-
-  * igt@kms_cursor_edge_walk@pipe-a-128x128-right-edge:
-    - shard-tglb:         [PASS][34] -> [FAIL][35] ([i915#70])
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-tglb1/igt@kms_cursor_edge_walk@pipe-a-128x128-right-edge.html
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb1/igt@kms_cursor_edge_walk@pipe-a-128x128-right-edge.html
-
-  * igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-atomic:
-    - shard-tglb:         [PASS][36] -> [FAIL][37] ([i915#1173])
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-tglb8/igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-atomic.html
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb2/igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-atomic.html
-
-  * igt@kms_draw_crc@draw-method-rgb565-pwrite-xtiled:
-    - shard-tglb:         [PASS][38] -> [DMESG-FAIL][39] ([i915#402]) +2 similar issues
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-tglb2/igt@kms_draw_crc@draw-method-rgb565-pwrite-xtiled.html
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb3/igt@kms_draw_crc@draw-method-rgb565-pwrite-xtiled.html
-
-  * igt@kms_draw_crc@draw-method-rgb565-render-untiled:
-    - shard-snb:          [PASS][40] -> [DMESG-WARN][41] ([i915#478])
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-snb6/igt@kms_draw_crc@draw-method-rgb565-render-untiled.html
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-snb4/igt@kms_draw_crc@draw-method-rgb565-render-untiled.html
-
-  * igt@kms_flip@flip-vs-expired-vblank-interruptible:
-    - shard-glk:          [PASS][42] -> [FAIL][43] ([i915#79])
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-glk5/igt@kms_flip@flip-vs-expired-vblank-interruptible.html
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-glk9/igt@kms_flip@flip-vs-expired-vblank-interruptible.html
-
-  * igt@kms_flip@flip-vs-suspend-interruptible:
-    - shard-apl:          [PASS][44] -> [DMESG-WARN][45] ([i915#180]) +3 similar issues
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-apl7/igt@kms_flip@flip-vs-suspend-interruptible.html
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-apl4/igt@kms_flip@flip-vs-suspend-interruptible.html
-
-  * igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-pwrite:
-    - shard-tglb:         [PASS][46] -> [SKIP][47] ([i915#668]) +3 similar issues
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-tglb2/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-pwrite.html
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb1/igt@kms_frontbuffer_tracking@fbcpsr-1p-offscren-pri-indfb-draw-pwrite.html
-
-  * igt@kms_psr@psr2_sprite_blt:
-    - shard-iclb:         [PASS][48] -> [SKIP][49] ([fdo#109441])
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb2/igt@kms_psr@psr2_sprite_blt.html
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb7/igt@kms_psr@psr2_sprite_blt.html
-
-  * igt@kms_rotation_crc@primary-x-tiled-reflect-x-180:
-    - shard-tglb:         [PASS][50] -> [DMESG-FAIL][51] ([i915#402] / [i915#65])
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-tglb8/igt@kms_rotation_crc@primary-x-tiled-reflect-x-180.html
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb7/igt@kms_rotation_crc@primary-x-tiled-reflect-x-180.html
-
-  * igt@kms_rotation_crc@primary-y-tiled-reflect-x-90:
-    - shard-tglb:         [PASS][52] -> [FAIL][53] ([i915#65])
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-tglb5/igt@kms_rotation_crc@primary-y-tiled-reflect-x-90.html
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb3/igt@kms_rotation_crc@primary-y-tiled-reflect-x-90.html
-
-  * igt@perf@gen12-mi-rpc:
-    - shard-tglb:         [PASS][54] -> [TIMEOUT][55] ([fdo#112271] / [i915#1085])
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-tglb7/igt@perf@gen12-mi-rpc.html
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb8/igt@perf@gen12-mi-rpc.html
-
-  * igt@perf_pmu@busy-vcs1:
-    - shard-iclb:         [PASS][56] -> [SKIP][57] ([fdo#112080]) +10 similar issues
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb4/igt@perf_pmu@busy-vcs1.html
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb5/igt@perf_pmu@busy-vcs1.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_caching@read-writes:
-    - shard-hsw:          [FAIL][58] ([i915#694]) -> [PASS][59]
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-hsw7/igt@gem_caching@read-writes.html
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-hsw7/igt@gem_caching@read-writes.html
-
-  * igt@gem_exec_schedule@pi-shared-iova-bsd:
-    - shard-iclb:         [SKIP][60] ([i915#677]) -> [PASS][61]
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb2/igt@gem_exec_schedule@pi-shared-iova-bsd.html
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb7/igt@gem_exec_schedule@pi-shared-iova-bsd.html
-
-  * igt@gem_exec_schedule@preempt-other-chain-bsd:
-    - shard-iclb:         [SKIP][62] ([fdo#112146]) -> [PASS][63] +4 similar issues
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb4/igt@gem_exec_schedule@preempt-other-chain-bsd.html
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb7/igt@gem_exec_schedule@preempt-other-chain-bsd.html
-
-  * igt@gem_mmap_gtt@basic-small-copy-xy:
-    - shard-snb:          [DMESG-WARN][64] ([i915#478]) -> [PASS][65]
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-snb6/igt@gem_mmap_gtt@basic-small-copy-xy.html
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-snb5/igt@gem_mmap_gtt@basic-small-copy-xy.html
-
-  * igt@i915_pm_dc@dc5-dpms:
-    - shard-iclb:         [FAIL][66] ([i915#447]) -> [PASS][67]
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb3/igt@i915_pm_dc@dc5-dpms.html
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb6/igt@i915_pm_dc@dc5-dpms.html
-
-  * igt@i915_pm_dc@dc6-psr:
-    - shard-iclb:         [FAIL][68] ([i915#454]) -> [PASS][69]
-   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb4/igt@i915_pm_dc@dc6-psr.html
-   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb2/igt@i915_pm_dc@dc6-psr.html
-
-  * igt@i915_pm_rps@reset:
-    - shard-iclb:         [FAIL][70] ([i915#413]) -> [PASS][71]
-   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb8/igt@i915_pm_rps@reset.html
-   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb7/igt@i915_pm_rps@reset.html
-
-  * igt@i915_selftest@live_gtt:
-    - shard-iclb:         [TIMEOUT][72] ([fdo#112271]) -> [PASS][73]
-   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb8/igt@i915_selftest@live_gtt.html
-   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb1/igt@i915_selftest@live_gtt.html
-
-  * igt@kms_big_fb@y-tiled-16bpp-rotate-270:
-    - shard-tglb:         [FAIL][74] ([i915#1172]) -> [PASS][75]
-   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-tglb1/igt@kms_big_fb@y-tiled-16bpp-rotate-270.html
-   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb6/igt@kms_big_fb@y-tiled-16bpp-rotate-270.html
-
-  * igt@kms_cursor_legacy@2x-nonblocking-modeset-vs-cursor-atomic:
-    - shard-glk:          [FAIL][76] ([i915#117] / [i915#133]) -> [PASS][77]
-   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-glk1/igt@kms_cursor_legacy@2x-nonblocking-modeset-vs-cursor-atomic.html
-   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-glk1/igt@kms_cursor_legacy@2x-nonblocking-modeset-vs-cursor-atomic.html
-
-  * igt@kms_draw_crc@draw-method-xrgb8888-mmap-gtt-ytiled:
-    - shard-tglb:         [DMESG-FAIL][78] ([i915#402]) -> [PASS][79] +1 similar issue
-   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-tglb1/igt@kms_draw_crc@draw-method-xrgb8888-mmap-gtt-ytiled.html
-   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb6/igt@kms_draw_crc@draw-method-xrgb8888-mmap-gtt-ytiled.html
-
-  * igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-pwrite:
-    - shard-glk:          [FAIL][80] ([i915#49]) -> [PASS][81]
-   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-glk1/igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-pwrite.html
-   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-glk2/igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-pwrite.html
-
-  * igt@kms_lease@simple_lease:
-    - shard-hsw:          [DMESG-WARN][82] ([i915#44]) -> [PASS][83]
-   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-hsw5/igt@kms_lease@simple_lease.html
-   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-hsw2/igt@kms_lease@simple_lease.html
-
-  * igt@kms_plane@plane-panning-bottom-right-suspend-pipe-b-planes:
-    - shard-apl:          [DMESG-WARN][84] ([i915#180]) -> [PASS][85] +4 similar issues
-   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-apl6/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-b-planes.html
-   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-apl1/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-b-planes.html
-
-  * igt@kms_plane@plane-panning-bottom-right-suspend-pipe-c-planes:
-    - shard-kbl:          [DMESG-WARN][86] ([i915#180]) -> [PASS][87] +2 similar issues
-   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-kbl2/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-c-planes.html
-   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-kbl7/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-c-planes.html
-
-  * igt@kms_plane_alpha_blend@pipe-a-alpha-opaque-fb:
-    - shard-tglb:         [FAIL][88] ([i915#1184]) -> [PASS][89]
-   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-tglb1/igt@kms_plane_alpha_blend@pipe-a-alpha-opaque-fb.html
-   [89]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb7/igt@kms_plane_alpha_blend@pipe-a-alpha-opaque-fb.html
-
-  * igt@kms_plane_lowres@pipe-a-tiling-x:
-    - shard-glk:          [FAIL][90] ([i915#899]) -> [PASS][91] +1 similar issue
-   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-glk1/igt@kms_plane_lowres@pipe-a-tiling-x.html
-   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-glk9/igt@kms_plane_lowres@pipe-a-tiling-x.html
-
-  * igt@kms_psr2_su@frontbuffer:
-    - shard-iclb:         [SKIP][92] ([fdo#109642] / [fdo#111068]) -> [PASS][93]
-   [92]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb3/igt@kms_psr2_su@frontbuffer.html
-   [93]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb2/igt@kms_psr2_su@frontbuffer.html
-
-  * igt@kms_psr@psr2_cursor_plane_onoff:
-    - shard-iclb:         [SKIP][94] ([fdo#109441]) -> [PASS][95]
-   [94]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb7/igt@kms_psr@psr2_cursor_plane_onoff.html
-   [95]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb2/igt@kms_psr@psr2_cursor_plane_onoff.html
-
-  * igt@kms_rotation_crc@multiplane-rotation-cropping-top:
-    - shard-tglb:         [FAIL][96] ([i915#199]) -> [PASS][97]
-   [96]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-tglb2/igt@kms_rotation_crc@multiplane-rotation-cropping-top.html
-   [97]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-tglb6/igt@kms_rotation_crc@multiplane-rotation-cropping-top.html
-
-  * igt@kms_vblank@pipe-b-ts-continuation-dpms-suspend:
-    - shard-kbl:          [INCOMPLETE][98] ([fdo#103665]) -> [PASS][99]
-   [98]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-kbl6/igt@kms_vblank@pipe-b-ts-continuation-dpms-suspend.html
-   [99]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-kbl7/igt@kms_vblank@pipe-b-ts-continuation-dpms-suspend.html
-
-  * igt@perf_pmu@busy-check-all-vcs1:
-    - shard-iclb:         [SKIP][100] ([fdo#112080]) -> [PASS][101] +12 similar issues
-   [100]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb6/igt@perf_pmu@busy-check-all-vcs1.html
-   [101]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb4/igt@perf_pmu@busy-check-all-vcs1.html
-
-  * igt@perf_pmu@cpu-hotplug:
-    - shard-hsw:          [INCOMPLETE][102] ([i915#61]) -> [PASS][103]
-   [102]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-hsw6/igt@perf_pmu@cpu-hotplug.html
-   [103]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-hsw8/igt@perf_pmu@cpu-hotplug.html
-
-  * igt@prime_mmap_coherency@write:
-    - shard-hsw:          [FAIL][104] ([i915#914]) -> [PASS][105]
-   [104]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-hsw2/igt@prime_mmap_coherency@write.html
-   [105]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-hsw7/igt@prime_mmap_coherency@write.html
-
-  * igt@prime_vgem@fence-wait-bsd2:
-    - shard-iclb:         [SKIP][106] ([fdo#109276]) -> [PASS][107] +13 similar issues
-   [106]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb8/igt@prime_vgem@fence-wait-bsd2.html
-   [107]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb4/igt@prime_vgem@fence-wait-bsd2.html
-
-  
-#### Warnings ####
-
-  * igt@gem_ctx_isolation@vcs1-nonpriv-switch:
-    - shard-iclb:         [SKIP][108] ([fdo#112080]) -> [FAIL][109] ([IGT#28])
-   [108]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7921/shard-iclb8/igt@gem_ctx_isolation@vcs1-nonpriv-switch.html
-   [109]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/shard-iclb1/igt@gem_ctx_isolation@vcs1-nonpriv-switch.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [IGT#28]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/28
-  [fdo#103665]: https://bugs.freedesktop.org/show_bug.cgi?id=103665
-  [fdo#109276]: https://bugs.freedesktop.org/show_bug.cgi?id=109276
-  [fdo#109441]: https://bugs.freedesktop.org/show_bug.cgi?id=109441
-  [fdo#109642]: https://bugs.freedesktop.org/show_bug.cgi?id=109642
-  [fdo#110841]: https://bugs.freedesktop.org/show_bug.cgi?id=110841
-  [fdo#111068]: https://bugs.freedesktop.org/show_bug.cgi?id=111068
-  [fdo#111870]: https://bugs.freedesktop.org/show_bug.cgi?id=111870
-  [fdo#112080]: https://bugs.freedesktop.org/show_bug.cgi?id=112080
-  [fdo#112146]: https://bugs.freedesktop.org/show_bug.cgi?id=112146
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#1085]: https://gitlab.freedesktop.org/drm/intel/issues/1085
-  [i915#1149]: https://gitlab.freedesktop.org/drm/intel/issues/1149
-  [i915#117]: https://gitlab.freedesktop.org/drm/intel/issues/117
-  [i915#1172]: https://gitlab.freedesktop.org/drm/intel/issues/1172
-  [i915#1173]: https://gitlab.freedesktop.org/drm/intel/issues/1173
-  [i915#1184]: https://gitlab.freedesktop.org/drm/intel/issues/1184
-  [i915#133]: https://gitlab.freedesktop.org/drm/intel/issues/133
-  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
-  [i915#199]: https://gitlab.freedesktop.org/drm/intel/issues/199
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#413]: https://gitlab.freedesktop.org/drm/intel/issues/413
-  [i915#44]: https://gitlab.freedesktop.org/drm/intel/issues/44
-  [i915#447]: https://gitlab.freedesktop.org/drm/intel/issues/447
-  [i915#454]: https://gitlab.freedesktop.org/drm/intel/issues/454
-  [i915#478]: https://gitlab.freedesktop.org/drm/intel/issues/478
-  [i915#49]: https://gitlab.freedesktop.org/drm/intel/issues/49
-  [i915#58]: https://gitlab.freedesktop.org/drm/intel/issues/58
-  [i915#61]: https://gitlab.freedesktop.org/drm/intel/issues/61
-  [i915#644]: https://gitlab.freedesktop.org/drm/intel/issues/644
-  [i915#65]: https://gitlab.freedesktop.org/drm/intel/issues/65
-  [i915#668]: https://gitlab.freedesktop.org/drm/intel/issues/668
-  [i915#677]: https://gitlab.freedesktop.org/drm/intel/issues/677
-  [i915#679]: https://gitlab.freedesktop.org/drm/intel/issues/679
-  [i915#694]: https://gitlab.freedesktop.org/drm/intel/issues/694
-  [i915#70]: https://gitlab.freedesktop.org/drm/intel/issues/70
-  [i915#716]: https://gitlab.freedesktop.org/drm/intel/issues/716
-  [i915#79]: https://gitlab.freedesktop.org/drm/intel/issues/79
-  [i915#899]: https://gitlab.freedesktop.org/drm/intel/issues/899
-  [i915#914]: https://gitlab.freedesktop.org/drm/intel/issues/914
-  [k.org#198133]: https://bugzilla.kernel.org/show_bug.cgi?id=198133
-
-
-Participating hosts (10 -> 8)
-------------------------------
-
-  Missing    (2): pig-skl-6260u pig-glk-j5005 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5436 -> IGTPW_4136
-  * Piglit: piglit_4509 -> None
-
-  CI-20190529: 20190529
-  CI_DRM_7921: d37a3233e5ce572a2093d0a7ad7f5558ae4e844a @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4136: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/index.html
-  IGT_5436: 00a64098aaae2ac3154841d76c7b034165380282 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4136/index.html
+On Wed, Feb 12, 2020 at 03:21:15PM +0200, Arkadiusz Hiler wrote:
+> Because of excessive 'copy and paste' we ended up with multiple copies
+> of almost the same fork helper. This patch extracts the do_fork helper
+> out and switches all the tests over to it.
+> 
+> Additionally, preemptively I have extracted the more fancy fork helper
+> that captures stderr/out + related functions out of igt_describe tests.
+> 
+> Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+
+
+> ---
+>  lib/tests/igt_assert.c               |  35 +++----
+>  lib/tests/igt_conflicting_args.c     |  25 ++---
+>  lib/tests/igt_describe.c             | 135 ++++++---------------------
+>  lib/tests/igt_dynamic_subtests.c     |  18 ----
+>  lib/tests/igt_fork.c                 |  71 ++++++--------
+>  lib/tests/igt_invalid_subtest_name.c |  18 ----
+>  lib/tests/igt_no_exit.c              |  18 ----
+>  lib/tests/igt_segfault.c             |  59 +++++-------
+>  lib/tests/igt_simulation.c           | 101 +++++++++-----------
+>  lib/tests/igt_tests_common.h         |  91 ++++++++++++++++++
+>  10 files changed, 232 insertions(+), 339 deletions(-)
+> 
+> diff --git a/lib/tests/igt_assert.c b/lib/tests/igt_assert.c
+> index 1caf5d88..c94ac698 100644
+> --- a/lib/tests/igt_assert.c
+> +++ b/lib/tests/igt_assert.c
+> @@ -38,8 +38,6 @@
+>  
+>  #include "igt_tests_common.h"
+>  
+> -char test[] = "test";
+> -char *argv_run[] = { test };
+>  void (*test_to_run)(void) = NULL;
+>  
+>  /*
+> @@ -55,26 +53,17 @@ void (*test_to_run)(void) = NULL;
+>  	exec_total++; \
+>  }
+>  
+> -static int do_fork(void)
+> +static void fake_test(void)
+>  {
+> -	int pid, status;
+> -	int argc;
+> -
+> -	switch (pid = fork()) {
+> -	case -1:
+> -		internal_assert(0);
+> -	case 0:
+> -		argc = ARRAY_SIZE(argv_run);
+> -		igt_simple_init(argc, argv_run);
+> -		test_to_run();
+> -		igt_exit();
+> -	default:
+> -		while (waitpid(pid, &status, 0) == -1 &&
+> -		       errno == EINTR)
+> -			;
+> -
+> -		return status;
+> -	}
+> +	char test[] = "test";
+> +	char *argv_run[] = { test };
+> +	int argc = ARRAY_SIZE(argv_run);
+> +
+> +	igt_simple_init(argc, argv_run);
+> +
+> +	test_to_run();
+> +
+> +	igt_exit();
+>  }
+>  
+>  static void test_cmpint_negative(void)
+> @@ -150,7 +139,7 @@ igt_main
+>  	 * we inherit the state from the parent, so ...
+>  	 */
+>  	test_to_run = test_cmpint_negative;
+> -	ret = do_fork();
+> +	ret = do_fork(fake_test);
+>  	igt_subtest("igt_cmpint_negative")
+>  		internal_assert_wexited(ret, IGT_EXIT_FAILURE);
+>  
+> @@ -158,7 +147,7 @@ igt_main
+>  		test_fd();
+>  
+>  	test_to_run = test_fd_negative;
+> -	ret = do_fork();
+> +	ret = do_fork(fake_test);
+>  	igt_subtest("igt_assert_fd_negative")
+>  		internal_assert_wexited(ret, IGT_EXIT_FAILURE);
+>  }
+> diff --git a/lib/tests/igt_conflicting_args.c b/lib/tests/igt_conflicting_args.c
+> index f600abd4..b644fd4b 100644
+> --- a/lib/tests/igt_conflicting_args.c
+> +++ b/lib/tests/igt_conflicting_args.c
+> @@ -43,25 +43,12 @@ static int opt_handler(int option, int option_index, void *input)
+>  	return 0;
+>  }
+>  
+> -static int do_fork(void)
+> +static void fake_test(void)
+>  {
+>  	char test_name[] = "test";
+> -
+>  	char *argv[] = { test_name };
+>  	int argc = ARRAY_SIZE(argv);
+>  
+> -	pid_t pid = fork();
+> -	internal_assert(pid != -1);
+> -
+> -	if (pid) {
+> -		int status;
+> -		while (waitpid(pid, &status, 0) == -1 && errno == EINTR)
+> -			;
+> -
+> -		return status;
+> -	}
+> -
+> -
+>  	igt_subtest_init_parse_opts(&argc, argv, short_options, long_options,
+>  				    "", opt_handler, NULL);
+>  	igt_subtest("dummy") {}
+> @@ -73,27 +60,27 @@ int main(int argc, char **argv)
+>  	/* no conflict */
+>  	long_options[0] = (struct option) { "iterations", required_argument, NULL, 'i'};
+>  	short_options = "";
+> -	internal_assert_wexited(do_fork(), 0);
+> +	internal_assert_wexited(do_fork(fake_test), 0);
+>  
+>  	/* conflict on short option */
+>  	long_options[0] = (struct option) { "iterations", required_argument, NULL, 'i'};
+>  	short_options = "h";
+> -	internal_assert_wsignaled(do_fork(), SIGABRT);
+> +	internal_assert_wsignaled(do_fork(fake_test), SIGABRT);
+>  
+>  	/* conflict on long option name */
+>  	long_options[0] = (struct option) { "help", required_argument, NULL, 'i'};
+>  	short_options = "";
+> -	internal_assert_wsignaled(do_fork(), SIGABRT);
+> +	internal_assert_wsignaled(do_fork(fake_test), SIGABRT);
+>  
+>  	/* conflict on long option 'val' representation vs short option */
+>  	long_options[0] = (struct option) { "iterations", required_argument, NULL, 'h'};
+>  	short_options = "";
+> -	internal_assert_wsignaled(do_fork(), SIGABRT);
+> +	internal_assert_wsignaled(do_fork(fake_test), SIGABRT);
+>  
+>  	/* conflict on long option 'val' representations */
+>  	long_options[0] = (struct option) { "iterations", required_argument, NULL, 500};
+>  	short_options = "";
+> -	internal_assert_wsignaled(do_fork(), SIGABRT);
+> +	internal_assert_wsignaled(do_fork(fake_test), SIGABRT);
+>  
+>  	return 0;
+>  }
+> diff --git a/lib/tests/igt_describe.c b/lib/tests/igt_describe.c
+> index 6f3a4319..7b4fa9af 100644
+> --- a/lib/tests/igt_describe.c
+> +++ b/lib/tests/igt_describe.c
+> @@ -28,9 +28,15 @@
+>  #include "drmtest.h"
+>  #include "igt_tests_common.h"
+>  
+> +char prog[] = "igt_describe";
+> +char fake_arg[100];
+> +char *fake_argv[] = {prog, fake_arg};
+> +int fake_argc = ARRAY_SIZE(fake_argv);
+> +
+>  IGT_TEST_DESCRIPTION("the top level description");
+> -static void fake_main(int argc, char **argv) {
+> -	igt_subtest_init(argc, argv);
+> +static void fake_main(void)
+> +{
+> +	igt_subtest_init(fake_argc, fake_argv);
+>  
+>  	igt_describe("Basic A");
+>  	igt_subtest("A")
+> @@ -101,33 +107,33 @@ static void fake_main(int argc, char **argv) {
+>  static const char DESCRIBE_ALL_OUTPUT[] = \
+>  	"the top level description\n"
+>  	"\n"
+> -	"SUB A ../lib/tests/igt_describe.c:36:\n"
+> +	"SUB A ../lib/tests/igt_describe.c:42:\n"
+>  	"  Basic A\n"
+>  	"\n"
+> -	"SUB B ../lib/tests/igt_describe.c:45:\n"
+> +	"SUB B ../lib/tests/igt_describe.c:51:\n"
+>  	"  Group with B, C & D\n"
+>  	"\n"
+>  	"  Basic B\n"
+>  	"\n"
+> -	"SUB C ../lib/tests/igt_describe.c:54:\n"
+> +	"SUB C ../lib/tests/igt_describe.c:60:\n"
+>  	"  Group with B, C & D\n"
+>  	"\n"
+>  	"  Group with C & D\n"
+>  	"\n"
+>  	"  Basic C\n"
+>  	"\n"
+> -	"SUB D ../lib/tests/igt_describe.c:58:\n"
+> +	"SUB D ../lib/tests/igt_describe.c:64:\n"
+>  	"  Group with B, C & D\n"
+>  	"\n"
+>  	"  Group with C & D\n"
+>  	"\n"
+> -	"SUB E ../lib/tests/igt_describe.c:66:\n"
+> +	"SUB E ../lib/tests/igt_describe.c:72:\n"
+>  	"  NO DOCUMENTATION!\n"
+>  	"\n"
+> -	"SUB F ../lib/tests/igt_describe.c:71:\n"
+> +	"SUB F ../lib/tests/igt_describe.c:77:\n"
+>  	"  NO DOCUMENTATION!\n"
+>  	"\n"
+> -	"SUB G ../lib/tests/igt_describe.c:80:\n"
+> +	"SUB G ../lib/tests/igt_describe.c:86:\n"
+>  	"  this description should be so long that it wraps itself nicely in the terminal this\n"
+>  	"  description should be so long that it wraps itself nicely in the terminal this description\n"
+>  	"  should be so long that it wraps itself nicely in the terminal this description should be so\n"
+> @@ -135,17 +141,17 @@ static const char DESCRIBE_ALL_OUTPUT[] = \
+>  	"  wraps itself nicely in the terminal this description should be so long that it wraps itself\n"
+>  	"  nicely in the terminal\n"
+>  	"\n"
+> -	"SUB F ../lib/tests/igt_describe.c:87:\n"
+> +	"SUB F ../lib/tests/igt_describe.c:93:\n"
+>  	"  verylongwordthatshoudlbeprintedeventhoughitspastthewrppinglimitverylongwordthatshoudlbeprintedeventhoughitspastthewrappinglimit\n"
+>  	"  verylongwordthatshoudlbeprintedeventhoughitspastthewrappinglimitverylongwordthatshoudlbeprintedeventhoughitspastthewrappinglimit\n"
+>  	"\n"
+> -	"SUB G ../lib/tests/igt_describe.c:91:\n"
+> +	"SUB G ../lib/tests/igt_describe.c:97:\n"
+>  	"  Subtest with dynamic subsubtests\n\n";
+>  
+>  static const char JUST_C_OUTPUT[] = \
+>  	"the top level description\n"
+>  	"\n"
+> -	"SUB C ../lib/tests/igt_describe.c:54:\n"
+> +	"SUB C ../lib/tests/igt_describe.c:60:\n"
+>  	"  Group with B, C & D\n"
+>  	"\n"
+>  	"  Group with C & D\n"
+> @@ -153,95 +159,22 @@ static const char JUST_C_OUTPUT[] = \
+>  	"  Basic C\n"
+>  	"\n";
+>  
+> -static void assert_pipe_empty(int fd)
+> -{
+> -	char buf[5];
+> -	internal_assert(0 == read(fd, buf, sizeof(buf)));
+> -}
+> -
+> -static void read_whole_pipe(int fd, char *buf, size_t buflen)
+> -{
+> -	ssize_t readlen;
+> -	off_t offset;
+> -
+> -	offset = 0;
+> -	while ((readlen = read(fd, buf+offset, buflen-offset))) {
+> -		if (readlen == -1) {
+> -			if (errno == EINTR) {
+> -				continue;
+> -			} else {
+> -				printf("read failed with %s\n", strerror(errno));
+> -				exit(1);
+> -			}
+> -		}
+> -		internal_assert(readlen != -1);
+> -		offset += readlen;
+> -	}
+> -}
+> -
+> -static pid_t do_fork(int argc, char **argv, int *out, int *err)
+> -{
+> -	int outfd[2], errfd[2];
+> -	pid_t pid;
+> -
+> -	internal_assert(pipe(outfd) != -1);
+> -	internal_assert(pipe(errfd) != -1);
+> -
+> -	pid = fork();
+> -	internal_assert(pid != -1);
+> -
+> -	if (pid == 0) {
+> -		while (dup2(outfd[1], STDOUT_FILENO) == -1 && errno == EINTR) {}
+> -		while (dup2(errfd[1], STDERR_FILENO) == -1 && errno == EINTR) {}
+> -
+> -		close(outfd[0]);
+> -		close(outfd[1]);
+> -		close(errfd[0]);
+> -		close(errfd[1]);
+> -
+> -		fake_main(argc, argv);
+> -
+> -		exit(-1);
+> -	} else {
+> -		/* close the writing ends */
+> -		close(outfd[1]);
+> -		close(errfd[1]);
+> -
+> -		*out = outfd[0];
+> -		*err = errfd[0];
+> -
+> -		return pid;
+> -	}
+> -}
+> -
+> -static int _wait(pid_t pid, int *status) {
+> -	int ret;
+> -
+> -	do {
+> -		ret = waitpid(pid, status, 0);
+> -	} while (ret == -1 && errno == EINTR);
+> -
+> -	return ret;
+> -}
+> -
+>  int main(int argc, char **argv)
+>  {
+> -	char prog[] = "igt_describe";
+>  	int status;
+>  	int outfd, errfd;
+> +	pid_t pid;
+>  
+>  	/* describe all subtest */ {
+>  		static char out[4096];
+> -		char arg[] = "--describe";
+> -		char *fake_argv[] = {prog, arg};
+> -		int fake_argc = ARRAY_SIZE(fake_argv);
+> +		strncpy(fake_arg, "--describe", sizeof(fake_arg));
+>  
+> -		pid_t pid = do_fork(fake_argc, fake_argv, &outfd, &errfd);
+> +		pid = do_fork_bg_with_pipes(fake_main, &outfd, &errfd);
+>  
+>  		read_whole_pipe(outfd, out, sizeof(out));
+>  		assert_pipe_empty(errfd);
+>  
+> -		internal_assert(_wait(pid, &status) != -1);
+> +		internal_assert(safe_wait(pid, &status) != -1);
+>  		internal_assert(WIFEXITED(status));
+>  		internal_assert(WEXITSTATUS(status) == IGT_EXIT_SUCCESS);
+>  		internal_assert(0 == strcmp(DESCRIBE_ALL_OUTPUT, out));
+> @@ -252,16 +185,14 @@ int main(int argc, char **argv)
+>  
+>  	/* describe C using a pattern */ {
+>  		static char out[4096];
+> -		char arg[] = "--describe=C";
+> -		char *fake_argv[] = {prog, arg};
+> -		int fake_argc = ARRAY_SIZE(fake_argv);
+> +		strncpy(fake_arg, "--describe=C", sizeof(fake_arg));
+>  
+> -		pid_t pid = do_fork(fake_argc, fake_argv, &outfd, &errfd);
+> +		pid = do_fork_bg_with_pipes(fake_main, &outfd, &errfd);
+>  
+>  		read_whole_pipe(outfd, out, sizeof(out));
+>  		assert_pipe_empty(errfd);
+>  
+> -		internal_assert(_wait(pid, &status) != -1);
+> +		internal_assert(safe_wait(pid, &status) != -1);
+>  		internal_assert(WIFEXITED(status));
+>  		internal_assert(WEXITSTATUS(status) == IGT_EXIT_SUCCESS);
+>  		internal_assert(0 == strcmp(JUST_C_OUTPUT, out));
+> @@ -272,15 +203,13 @@ int main(int argc, char **argv)
+>  
+>  	/* fail describing with a bad pattern */ {
+>  		static char err[4096];
+> -		char arg[] = "--describe=Z";
+> -		char *fake_argv[] = {prog, arg};
+> -		int fake_argc = ARRAY_SIZE(fake_argv);
+> +		strncpy(fake_arg, "--describe=Z", sizeof(fake_arg));
+>  
+> -		pid_t pid = do_fork(fake_argc, fake_argv, &outfd, &errfd);
+> +		pid = do_fork_bg_with_pipes(fake_main, &outfd, &errfd);
+>  
+>  		read_whole_pipe(errfd, err, sizeof(err));
+>  
+> -		internal_assert(_wait(pid, &status) != -1);
+> +		internal_assert(safe_wait(pid, &status) != -1);
+>  		internal_assert(WIFEXITED(status));
+>  		internal_assert(WEXITSTATUS(status) == IGT_EXIT_INVALID);
+>  		internal_assert(strstr(err, "Unknown subtest: Z"));
+> @@ -291,15 +220,13 @@ int main(int argc, char **argv)
+>  
+>  	/* trying to igt_describe a dynamic subsubtest should assert */ {
+>  		static char err[4096];
+> -		char arg[] = "--run-subtest=G";
+> -		char *fake_argv[] = {prog, arg};
+> -		int fake_argc = ARRAY_SIZE(fake_argv);
+> +		strncpy(fake_arg, "--run-subtest=G", sizeof(fake_arg));
+>  
+> -		pid_t pid = do_fork(fake_argc, fake_argv, &outfd, &errfd);
+> +		pid = do_fork_bg_with_pipes(fake_main, &outfd, &errfd);
+>  
+>  		read_whole_pipe(errfd, err, sizeof(err));
+>  
+> -		internal_assert(_wait(pid, &status) != -1);
+> +		internal_assert(safe_wait(pid, &status) != -1);
+>  		internal_assert_wsignaled(status, SIGABRT);
+>  
+>  		close(outfd);
+> diff --git a/lib/tests/igt_dynamic_subtests.c b/lib/tests/igt_dynamic_subtests.c
+> index 606104c5..bd1e1675 100644
+> --- a/lib/tests/igt_dynamic_subtests.c
+> +++ b/lib/tests/igt_dynamic_subtests.c
+> @@ -29,24 +29,6 @@
+>  
+>  #include "igt_tests_common.h"
+>  
+> -static int do_fork(void (*test_to_run)(void))
+> -{
+> -	int pid, status;
+> -
+> -	switch (pid = fork()) {
+> -	case -1:
+> -		internal_assert(0);
+> -	case 0:
+> -		test_to_run();
+> -	default:
+> -		while (waitpid(pid, &status, 0) == -1 &&
+> -		       errno == EINTR)
+> -			;
+> -
+> -		return status;
+> -	}
+> -}
+> -
+>  static void dynamic_subtest_in_normal_subtest(void)
+>  {
+>  	char prog[] = "igt_no_exit";
+> diff --git a/lib/tests/igt_fork.c b/lib/tests/igt_fork.c
+> index e30584fd..4fd0e0c8 100644
+> --- a/lib/tests/igt_fork.c
+> +++ b/lib/tests/igt_fork.c
+> @@ -35,37 +35,52 @@
+>  #include "igt_tests_common.h"
+>  
+>  char test[] = "test";
+> -char *argv_run[] = { test };
+> +char *fake_argv[] = { test };
+> +int fake_argc = ARRAY_SIZE(fake_argv);
+>  
+>  static void igt_fork_vs_skip(void)
+>  {
+> +	igt_simple_init(fake_argc, fake_argv);
+> +
+>  	igt_fork(i, 1) {
+>  		igt_skip("skipping");
+>  	}
+>  
+>  	igt_waitchildren();
+> +
+> +	igt_exit();
+>  }
+>  
+>  static void igt_fork_vs_assert(void)
+>  {
+> +	igt_simple_init(fake_argc, fake_argv);
+> +
+>  	igt_fork(i, 1) {
+>  		igt_assert(0);
+>  	}
+>  
+>  	igt_waitchildren();
+> +
+> +	igt_exit();
+>  }
+>  
+>  static void igt_fork_leak(void)
+>  {
+> +	igt_simple_init(fake_argc, fake_argv);
+> +
+>  	igt_fork(i, 1) {
+>  		sleep(10);
+>  	}
+> +
+> +	igt_exit();
+>  }
+>  
+>  static void plain_fork_leak(void)
+>  {
+>  	int pid;
+>  
+> +	igt_simple_init(fake_argc, fake_argv);
+> +
+>  	switch (pid = fork()) {
+>  	case -1:
+>  		internal_assert(0);
+> @@ -74,59 +89,21 @@ static void plain_fork_leak(void)
+>  	default:
+>  		exit(0);
+>  	}
+> +
+> +	igt_exit();
+>  }
+>  
+>  static void igt_fork_timeout_leak(void)
+>  {
+> +	igt_simple_init(fake_argc, fake_argv);
+> +
+>  	igt_fork(i, 1) {
+>  		sleep(10);
+>  	}
+>  
+>  	igt_waitchildren_timeout(1, "library test");
+> -}
+> -
+> -static int do_fork(void (*test_to_run)(void))
+> -{
+> -	int pid, status;
+> -	int argc;
+> -
+> -	switch (pid = fork()) {
+> -	case -1:
+> -		internal_assert(0);
+> -	case 0:
+> -		argc = ARRAY_SIZE(argv_run);
+> -		igt_simple_init(argc, argv_run);
+> -		test_to_run();
+> -		igt_exit();
+> -	default:
+> -		while (waitpid(pid, &status, 0) == -1 &&
+> -		       errno == EINTR)
+> -			;
+> -
+> -		return status;
+> -	}
+> -}
+> -
+> -static int do_subtest(void (*test_to_run)(void))
+> -{
+> -	int pid, status;
+> -	int argc;
+> -
+> -	switch (pid = fork()) {
+> -	case -1:
+> -		internal_assert(0);
+> -	case 0:
+> -		argc = ARRAY_SIZE(argv_run);
+> -		igt_subtest_init(argc, argv_run);
+> -		test_to_run();
+> -		igt_exit();
+> -	default:
+> -		while (waitpid(pid, &status, 0) == -1 &&
+> -		       errno == EINTR)
+> -			;
+>  
+> -		return status;
+> -	}
+> +	igt_exit();
+>  }
+>  
+>  static void subtest_leak(void)
+> @@ -135,6 +112,8 @@ static void subtest_leak(void)
+>  		mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+>  	const int num_children = 4096 / sizeof(*children);
+>  
+> +	igt_subtest_init(fake_argc, fake_argv);
+> +
+>  	igt_subtest("fork-leak") {
+>  		igt_fork(child, num_children)
+>  			children[child] = getpid();
+> @@ -148,6 +127,8 @@ static void subtest_leak(void)
+>  		assert(kill(children[i], 0) == -1 && errno == ESRCH);
+>  
+>  	munmap(children, 4096);
+> +
+> +	igt_exit();
+>  }
+>  
+>  int main(int argc, char **argv)
+> @@ -174,6 +155,6 @@ int main(int argc, char **argv)
+>  	ret = do_fork(plain_fork_leak);
+>  	internal_assert_wsignaled(ret, SIGABRT);
+>  
+> -	ret = do_subtest(subtest_leak);
+> +	ret = do_fork(subtest_leak);
+>  	internal_assert_wexited(ret, IGT_EXIT_FAILURE); /* not asserted! */
+>  }
+> diff --git a/lib/tests/igt_invalid_subtest_name.c b/lib/tests/igt_invalid_subtest_name.c
+> index 92e767ab..32c4bcbc 100644
+> --- a/lib/tests/igt_invalid_subtest_name.c
+> +++ b/lib/tests/igt_invalid_subtest_name.c
+> @@ -60,24 +60,6 @@ static void nonexisting_subtest(void)
+>  	igt_exit();
+>  }
+>  
+> -static int do_fork(void (*test_to_run)(void))
+> -{
+> -	int pid, status;
+> -
+> -	switch (pid = fork()) {
+> -	case -1:
+> -		internal_assert(0);
+> -	case 0:
+> -		test_to_run();
+> -	default:
+> -		while (waitpid(pid, &status, 0) == -1 &&
+> -		       errno == EINTR)
+> -			;
+> -
+> -		return status;
+> -	}
+> -}
+> -
+>  int main(int argc, char **argv)
+>  {
+>  	int ret;
+> diff --git a/lib/tests/igt_no_exit.c b/lib/tests/igt_no_exit.c
+> index 82f00b52..d303eba7 100644
+> --- a/lib/tests/igt_no_exit.c
+> +++ b/lib/tests/igt_no_exit.c
+> @@ -56,24 +56,6 @@ static void no_exit(void)
+>  		;
+>  }
+>  
+> -static int do_fork(void (*test_to_run)(void))
+> -{
+> -	int pid, status;
+> -
+> -	switch (pid = fork()) {
+> -	case -1:
+> -		internal_assert(0);
+> -	case 0:
+> -		test_to_run();
+> -	default:
+> -		while (waitpid(pid, &status, 0) == -1 &&
+> -		       errno == EINTR)
+> -			;
+> -
+> -		return status;
+> -	}
+> -}
+> -
+>  int main(int argc, char **argv)
+>  {
+>  	int ret;
+> diff --git a/lib/tests/igt_segfault.c b/lib/tests/igt_segfault.c
+> index 0d872f67..38c040a6 100644
+> --- a/lib/tests/igt_segfault.c
+> +++ b/lib/tests/igt_segfault.c
+> @@ -48,51 +48,38 @@
+>  bool simple;
+>  bool runa;
+>  bool runc;
+> -char test[] = "test";
+> -char *argv_run[] = { test };
+>  
+>  static void crashme(void)
+>  {
+>  	raise(SIGSEGV);
+>  }
+>  
+> -static int do_fork(void)
+> +static void fake_test(void)
+>  {
+> -	int pid, status;
+> -	int argc;
+> -
+> -	switch (pid = fork()) {
+> -	case -1:
+> -		internal_assert(0);
+> -	case 0:
+> -		argc = ARRAY_SIZE(argv_run);
+> -		if (simple) {
+> -			igt_simple_init(argc, argv_run);
+> -			crashme();
+> +	char prog[] = "test";
+> +	char *fake_argv[] = { prog };
+> +	int fake_argc = ARRAY_SIZE(fake_argv);
+>  
+> -			igt_exit();
+> -		} else {
+> -			igt_subtest_init(argc, argv_run);
+>  
+> -			if(runa)
+> -				igt_subtest("A")
+> -					;
+> +	if (simple) {
+> +		igt_simple_init(fake_argc, fake_argv);
+> +		crashme();
+>  
+> -			igt_subtest("B")
+> -				crashme();
+> +		igt_exit();
+> +	} else {
+> +		igt_subtest_init(fake_argc, fake_argv);
+> +		if(runa)
+> +			igt_subtest("A")
+> +				;
+>  
+> -			if(runc)
+> -				igt_subtest("C")
+> -					;
+> +		igt_subtest("B")
+> +			crashme();
+>  
+> -			igt_exit();
+> -		}
+> -	default:
+> -		while (waitpid(pid, &status, 0) == -1 &&
+> -		       errno == EINTR)
+> -			;
+> +		if(runc)
+> +			igt_subtest("C")
+> +				;
+>  
+> -		return status;
+> +		igt_exit();
+>  	}
+>  }
+>  
+> @@ -104,20 +91,20 @@ int main(int argc, char **argv)
+>  	runc=false;
+>  	igt_info("Simple test.\n");
+>  	fflush(stdout);
+> -	internal_assert_wsignaled(do_fork(), SIGSEGV);
+> +	internal_assert_wsignaled(do_fork(fake_test), SIGSEGV);
+>  
+>  	/* Test crash in a single subtest is reported */
+>  	simple = false;
+>  	igt_info("Single subtest.\n");
+>  	fflush(stdout);
+> -	internal_assert_wexited(do_fork(), SIGSEGV + 128);
+> +	internal_assert_wexited(do_fork(fake_test), SIGSEGV + 128);
+>  
+>  	/* Test crash in a subtest following a pass is reported */
+>  	simple = false;
+>  	runa=true;
+>  	igt_info("Passing then crashing subtest.\n");
+>  	fflush(stdout);
+> -	internal_assert_wexited(do_fork(), SIGSEGV + 128);
+> +	internal_assert_wexited(do_fork(fake_test), SIGSEGV + 128);
+>  
+>  	/* Test crash in a subtest preceeding a pass is reported */
+>  	simple = false;
+> @@ -125,7 +112,7 @@ int main(int argc, char **argv)
+>  	runc=true;
+>  	igt_info("Crashing then passing subtest.\n");
+>  	fflush(stdout);
+> -	internal_assert_wexited(do_fork(), SIGSEGV + 128);
+> +	internal_assert_wexited(do_fork(fake_test), SIGSEGV + 128);
+>  
+>  	return 0;
+>  }
+> diff --git a/lib/tests/igt_simulation.c b/lib/tests/igt_simulation.c
+> index 3f3cd88f..a0ea7000 100644
+> --- a/lib/tests/igt_simulation.c
+> +++ b/lib/tests/igt_simulation.c
+> @@ -40,59 +40,44 @@ bool list_subtests;
+>  bool in_fixture;
+>  bool in_subtest;
+>  
+> -char test[] = "test";
+> -char list[] = "--list-subtests";
+> -char *argv_list[] = { test, list };
+> -char *argv_run[] = { test };
+> -
+> -static int do_fork(void)
+> +static void fake_test(void)
+>  {
+> -	int pid, status;
+> +	char test[] = "test";
+> +	char list[] = "--list-subtests";
+> +	char *argv_list[] = { test, list };
+> +	char *argv_run[] = { test };
+>  	int argc;
+>  
+> -	switch (pid = fork()) {
+> -	case -1:
+> -		internal_assert(0);
+> -	case 0:
+> -		if (simple) {
+> -			argc = 1;
+> -			igt_simple_init(argc, argv_run);
+> +	if (simple) {
+> +		argc = 1;
+> +		igt_simple_init(argc, argv_run);
+>  
+> -			igt_skip_on_simulation();
+> +		igt_skip_on_simulation();
+>  
+> -			igt_exit();
+> +		igt_exit();
+> +	} else {
+> +		if (list_subtests) {
+> +			argc = 2;
+> +			igt_subtest_init(argc, argv_list);
+>  		} else {
+> -			if (list_subtests) {
+> -				argc = 2;
+> -				igt_subtest_init(argc, argv_list);
+> -			} else {
+> -				argc = 1;
+> -				igt_subtest_init(argc, argv_run);
+> -			}
+> -
+> -			if (in_fixture) {
+> -				igt_fixture
+> -					igt_skip_on_simulation();
+> -			} if (in_subtest) {
+> -				igt_subtest("sim")
+> -					igt_skip_on_simulation();
+> -			} else
+> -				igt_skip_on_simulation();
+> -
+> -			if (!in_subtest)
+> -				igt_subtest("foo")
+> -					;
+> -
+> -			igt_exit();
+> +			argc = 1;
+> +			igt_subtest_init(argc, argv_run);
+>  		}
+> -	default:
+> -		while (waitpid(pid, &status, 0) == -1 &&
+> -		       errno == EINTR)
+> -			;
+>  
+> -		internal_assert(WIFEXITED(status));
+> +		if (in_fixture) {
+> +			igt_fixture
+> +				igt_skip_on_simulation();
+> +		} if (in_subtest) {
+> +			igt_subtest("sim")
+> +				igt_skip_on_simulation();
+> +		} else
+> +			igt_skip_on_simulation();
+> +
+> +		if (!in_subtest)
+> +			igt_subtest("foo")
+> +				;
+>  
+> -		return status;
+> +		igt_exit();
+>  	}
+>  }
+>  
+> @@ -101,10 +86,10 @@ int main(int argc, char **argv)
+>  	/* simple tests */
+>  	simple = true;
+>  	internal_assert(setenv("INTEL_SIMULATION", "1", 1) == 0);
+> -	internal_assert(WEXITSTATUS(do_fork()) == IGT_EXIT_SKIP);
+> +	internal_assert(WEXITSTATUS(do_fork(fake_test)) == IGT_EXIT_SKIP);
+>  
+>  	internal_assert(setenv("INTEL_SIMULATION", "0", 1) == 0);
+> -	internal_assert(WEXITSTATUS(do_fork()) == IGT_EXIT_SUCCESS);
+> +	internal_assert(WEXITSTATUS(do_fork(fake_test)) == IGT_EXIT_SUCCESS);
+>  
+>  	/* subtests, list mode */
+>  	simple = false;
+> @@ -112,28 +97,28 @@ int main(int argc, char **argv)
+>  
+>  	in_fixture = false;
+>  	internal_assert(setenv("INTEL_SIMULATION", "1", 1) == 0);
+> -	internal_assert(WEXITSTATUS(do_fork()) == IGT_EXIT_SUCCESS);
+> +	internal_assert(WEXITSTATUS(do_fork(fake_test)) == IGT_EXIT_SUCCESS);
+>  
+>  	internal_assert(setenv("INTEL_SIMULATION", "0", 1) == 0);
+> -	internal_assert(WEXITSTATUS(do_fork()) == IGT_EXIT_SUCCESS);
+> +	internal_assert(WEXITSTATUS(do_fork(fake_test)) == IGT_EXIT_SUCCESS);
+>  
+>  	in_fixture = true;
+>  	internal_assert(setenv("INTEL_SIMULATION", "1", 1) == 0);
+> -	internal_assert(WEXITSTATUS(do_fork()) == IGT_EXIT_SUCCESS);
+> +	internal_assert(WEXITSTATUS(do_fork(fake_test)) == IGT_EXIT_SUCCESS);
+>  
+>  
+>  	internal_assert(setenv("INTEL_SIMULATION", "0", 1) == 0);
+> -	internal_assert(WEXITSTATUS(do_fork()) == IGT_EXIT_SUCCESS);
+> +	internal_assert(WEXITSTATUS(do_fork(fake_test)) == IGT_EXIT_SUCCESS);
+>  
+>  
+>  	in_fixture = false;
+>  	in_subtest = true;
+>  	internal_assert(setenv("INTEL_SIMULATION", "1", 1) == 0);
+> -	internal_assert(WEXITSTATUS(do_fork()) == IGT_EXIT_SUCCESS);
+> +	internal_assert(WEXITSTATUS(do_fork(fake_test)) == IGT_EXIT_SUCCESS);
+>  
+>  
+>  	internal_assert(setenv("INTEL_SIMULATION", "0", 1) == 0);
+> -	internal_assert(WEXITSTATUS(do_fork()) == IGT_EXIT_SUCCESS);
+> +	internal_assert(WEXITSTATUS(do_fork(fake_test)) == IGT_EXIT_SUCCESS);
+>  
+>  
+>  	/* subtest, run mode */
+> @@ -142,29 +127,29 @@ int main(int argc, char **argv)
+>  
+>  	in_fixture = false;
+>  	internal_assert(setenv("INTEL_SIMULATION", "1", 1) == 0);
+> -	internal_assert(WEXITSTATUS(do_fork()) == IGT_EXIT_SKIP);
+> +	internal_assert(WEXITSTATUS(do_fork(fake_test)) == IGT_EXIT_SKIP);
+>  
+>  	internal_assert(setenv("INTEL_SIMULATION", "0", 1) == 0);
+> -	internal_assert(WEXITSTATUS(do_fork()) == IGT_EXIT_SUCCESS);
+> +	internal_assert(WEXITSTATUS(do_fork(fake_test)) == IGT_EXIT_SUCCESS);
+>  
+>  
+>  	in_fixture = true;
+>  	internal_assert(setenv("INTEL_SIMULATION", "1", 1) == 0);
+> -	internal_assert(WEXITSTATUS(do_fork()) == IGT_EXIT_SKIP);
+> +	internal_assert(WEXITSTATUS(do_fork(fake_test)) == IGT_EXIT_SKIP);
+>  
+>  
+>  	internal_assert(setenv("INTEL_SIMULATION", "0", 1) == 0);
+> -	internal_assert(WEXITSTATUS(do_fork()) == IGT_EXIT_SUCCESS);
+> +	internal_assert(WEXITSTATUS(do_fork(fake_test)) == IGT_EXIT_SUCCESS);
+>  
+>  
+>  	in_fixture = false;
+>  	in_subtest = true;
+>  	internal_assert(setenv("INTEL_SIMULATION", "1", 1) == 0);
+> -	internal_assert(WEXITSTATUS(do_fork()) == IGT_EXIT_SKIP);
+> +	internal_assert(WEXITSTATUS(do_fork(fake_test)) == IGT_EXIT_SKIP);
+>  
+>  
+>  	internal_assert(setenv("INTEL_SIMULATION", "0", 1) == 0);
+> -	internal_assert(WEXITSTATUS(do_fork()) == IGT_EXIT_SUCCESS);
+> +	internal_assert(WEXITSTATUS(do_fork(fake_test)) == IGT_EXIT_SUCCESS);
+>  
+>  
+>  	return 0;
+> diff --git a/lib/tests/igt_tests_common.h b/lib/tests/igt_tests_common.h
+> index e66ee37c..b3da3b34 100644
+> --- a/lib/tests/igt_tests_common.h
+> +++ b/lib/tests/igt_tests_common.h
+> @@ -26,6 +26,8 @@
+>  #define IGT_LIB_TESTS_COMMON_H
+>  
+>  #include <assert.h>
+> +#include <sys/wait.h>
+> +#include <errno.h>
+>  
+>  /*
+>   * We need to hide assert from the cocci igt test refactor spatch.
+> @@ -46,4 +48,93 @@ static inline void internal_assert_wsignaled(int wstatus, int signal)
+>  	internal_assert(WIFSIGNALED(wstatus) &&
+>  			WTERMSIG(wstatus) == signal);
+>  }
+> +
+> +static inline int do_fork(void (*test_to_run)(void))
+> +{
+> +	int pid, status;
+> +
+> +	switch (pid = fork()) {
+> +	case -1:
+> +		internal_assert(0);
+> +	case 0:
+> +		test_to_run();
+> +	default:
+> +		while (waitpid(pid, &status, 0) == -1 &&
+> +		       errno == EINTR)
+> +			;
+> +
+> +		return status;
+> +	}
+> +}
+> +
+> +static inline pid_t do_fork_bg_with_pipes(void (*test_to_run)(void), int *out, int *err)
+> +{
+> +	int outfd[2], errfd[2];
+> +	pid_t pid;
+> +
+> +	internal_assert(pipe(outfd) != -1);
+> +	internal_assert(pipe(errfd) != -1);
+> +
+> +	pid = fork();
+> +	internal_assert(pid != -1);
+> +
+> +	if (pid == 0) {
+> +		while (dup2(outfd[1], STDOUT_FILENO) == -1 && errno == EINTR) {}
+> +		while (dup2(errfd[1], STDERR_FILENO) == -1 && errno == EINTR) {}
+> +
+> +		close(outfd[0]);
+> +		close(outfd[1]);
+> +		close(errfd[0]);
+> +		close(errfd[1]);
+> +
+> +		test_to_run();
+> +
+> +		exit(-1);
+> +	} else {
+> +		/* close the writing ends */
+> +		close(outfd[1]);
+> +		close(errfd[1]);
+> +
+> +		*out = outfd[0];
+> +		*err = errfd[0];
+> +
+> +		return pid;
+> +	}
+> +}
+> +
+> +static inline int safe_wait(pid_t pid, int *status) {
+> +	int ret;
+> +
+> +	do {
+> +		ret = waitpid(pid, status, 0);
+> +	} while (ret == -1 && errno == EINTR);
+> +
+> +	return ret;
+> +}
+> +
+> +static inline void assert_pipe_empty(int fd)
+> +{
+> +	char buf[5];
+> +	internal_assert(0 == read(fd, buf, sizeof(buf)));
+> +}
+> +
+> +static inline void read_whole_pipe(int fd, char *buf, size_t buflen)
+> +{
+> +	ssize_t readlen;
+> +	off_t offset;
+> +
+> +	offset = 0;
+> +	while ((readlen = read(fd, buf+offset, buflen-offset))) {
+> +		if (readlen == -1) {
+> +			if (errno == EINTR) {
+> +				continue;
+> +			} else {
+> +				printf("read failed with %s\n", strerror(errno));
+> +				exit(1);
+> +			}
+> +		}
+> +		internal_assert(readlen != -1);
+> +		offset += readlen;
+> +	}
+> +}
+>  #endif
+> -- 
+> 2.24.1
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
