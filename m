@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D78506E5D5
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Feb 2020 12:01:22 +0000 (UTC)
-Date: Fri, 14 Feb 2020 14:01:20 +0200
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A90D289010
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Feb 2020 12:05:37 +0000 (UTC)
+Date: Fri, 14 Feb 2020 14:05:35 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200214120120.GX25209@platvala-desk.ger.corp.intel.com>
+Message-ID: <20200214120535.GZ25209@platvala-desk.ger.corp.intel.com>
 References: <20200212132123.108506-1-arkadiusz.hiler@intel.com>
- <20200212132123.108506-3-arkadiusz.hiler@intel.com>
+ <20200212132123.108506-5-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200212132123.108506-3-arkadiusz.hiler@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/9] lib/tests: Add support for
- redirecting fork output to /dev/null
+In-Reply-To: <20200212132123.108506-5-arkadiusz.hiler@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/9] runner/runner_tests: Extract helper
+ for inspecting test result
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,89 +27,91 @@ To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Feb 12, 2020 at 03:21:16PM +0200, Arkadiusz Hiler wrote:
-> Trying to read interleaved writes is a bit tricky, so let's just use
-> /dev/null if we care about contents on only one of those pipes.
+On Wed, Feb 12, 2020 at 03:21:18PM +0200, Arkadiusz Hiler wrote:
+> to make this bit of code more readable and to reuse it in the following patch
 > 
 > Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 
 Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
-
 > ---
->  lib/tests/igt_tests_common.h | 35 +++++++++++++++++++++++++++--------
->  1 file changed, 27 insertions(+), 8 deletions(-)
+>  runner/runner_tests.c | 30 +++++++++++++++++-------------
+>  1 file changed, 17 insertions(+), 13 deletions(-)
 > 
-> diff --git a/lib/tests/igt_tests_common.h b/lib/tests/igt_tests_common.h
-> index b3da3b34..f285d657 100644
-> --- a/lib/tests/igt_tests_common.h
-> +++ b/lib/tests/igt_tests_common.h
-> @@ -28,6 +28,8 @@
->  #include <assert.h>
->  #include <sys/wait.h>
->  #include <errno.h>
-> +#include <sys/stat.h>
-> +#include <fcntl.h>
+> diff --git a/runner/runner_tests.c b/runner/runner_tests.c
+> index ed30b3f9..dd590f33 100644
+> --- a/runner/runner_tests.c
+> +++ b/runner/runner_tests.c
+> @@ -32,6 +32,16 @@ static const char testdatadir[] = TESTDATA_DIRECTORY;
+>  /* The total number of test binaries in runner/testdata/ */
+>  #define NUM_TESTDATA_BINARIES 4
 >  
->  /*
->   * We need to hide assert from the cocci igt test refactor spatch.
-> @@ -72,19 +74,32 @@ static inline pid_t do_fork_bg_with_pipes(void (*test_to_run)(void), int *out, i
->  	int outfd[2], errfd[2];
->  	pid_t pid;
->  
-> -	internal_assert(pipe(outfd) != -1);
-> -	internal_assert(pipe(errfd) != -1);
-> +	if (out != NULL)
-> +		internal_assert(pipe(outfd) != -1);
+> +static const char *igt_get_result(struct json_object *tests, const char* testname)
+> +{
+> +	struct json_object *obj;
 > +
-> +	if (err != NULL)
-> +		internal_assert(pipe(errfd) != -1);
->  
->  	pid = fork();
->  	internal_assert(pid != -1);
->  
->  	if (pid == 0) {
-> +		/* we'll leak the /dev/null fds, let them die with the forked
-> +		 * process, also close reading ends if they are any */
-> +		if (out == NULL)
-> +			outfd[1] = open("/dev/null", O_WRONLY);
-> +		else
-> +			close(outfd[0]);
+> +	igt_assert(json_object_object_get_ex(tests, testname, &obj));
+> +	igt_assert(json_object_object_get_ex(obj, "result", &obj));
 > +
-> +		if (err == NULL)
-> +			errfd[1] = open("/dev/null", O_WRONLY);
-> +		else
-> +			close(errfd[0]);
+> +	return json_object_get_string(obj);
+> +}
 > +
->  		while (dup2(outfd[1], STDOUT_FILENO) == -1 && errno == EINTR) {}
->  		while (dup2(errfd[1], STDERR_FILENO) == -1 && errno == EINTR) {}
+>  static void igt_assert_eqstr(const char *one, const char *two)
+>  {
+>  	if (one == NULL && two == NULL)
+> @@ -1432,7 +1442,7 @@ igt_main
 >  
-> -		close(outfd[0]);
->  		close(outfd[1]);
-> -		close(errfd[0]);
->  		close(errfd[1]);
+>  		igt_subtest("dynamic-subtests-in-testlist") {
+>  			struct execute_state state;
+> -			struct json_object *results, *obj;
+> +			struct json_object *results, *tests;
+>  			const char *argv[] = { "runner",
+>  					       "--test-list", filename,
+>  					       testdatadir,
+> @@ -1453,16 +1463,13 @@ igt_main
+>  			igt_assert_f((results = generate_results_json(dirfd)) != NULL,
+>  				     "Results parsing failed\n");
 >  
->  		test_to_run();
-> @@ -92,11 +107,15 @@ static inline pid_t do_fork_bg_with_pipes(void (*test_to_run)(void), int *out, i
->  		exit(-1);
->  	} else {
->  		/* close the writing ends */
-> -		close(outfd[1]);
-> -		close(errfd[1]);
-> +		if (out != NULL) {
-> +			close(outfd[1]);
-> +			*out = outfd[0];
-> +		}
+> -			obj = results;
+> -			igt_assert(json_object_object_get_ex(obj, "tests", &obj));
+> +			igt_assert(json_object_object_get_ex(results, "tests", &tests));
 >  
-> -		*out = outfd[0];
-> -		*err = errfd[0];
-> +		if (err != NULL) {
-> +			close(errfd[1]);
-> +			*err = errfd[0];
-> +		}
+>  			/* Check that the dynamic subtest we didn't request is not reported */
+> -			igt_assert(!json_object_object_get_ex(obj, "igt@dynamic@dynamic-subtest@failing", NULL));
+> +			igt_assert_no_result_for(tests, "igt@dynamic@dynamic-subtest@failing");
 >  
->  		return pid;
->  	}
+>  			/* Check that the dynamic subtest we did request is */
+> -			igt_assert(json_object_object_get_ex(obj, "igt@dynamic@dynamic-subtest@passing", &obj));
+> -			igt_assert(json_object_object_get_ex(obj, "result", &obj));
+> -			igt_assert_eqstr(json_object_get_string(obj), "pass");
+> +			igt_assert_eqstr(igt_get_result(tests, "igt@dynamic@dynamic-subtest@passing"), "pass");
+>  
+>  			igt_assert_eq(json_object_put(results), 1);
+>  		}
+> @@ -1490,7 +1497,7 @@ igt_main
+>  
+>  		igt_subtest("dynamic-subtest-failure-should-not-cause-warn") {
+>  			struct execute_state state;
+> -			struct json_object *results, *obj;
+> +			struct json_object *results, *tests;
+>  			const char *argv[] = { "runner",
+>  					       "-t", "dynamic",
+>  					       testdatadir,
+> @@ -1507,12 +1514,9 @@ igt_main
+>  			igt_assert_f((results = generate_results_json(dirfd)) != NULL,
+>  				     "Results parsing failed\n");
+>  
+> -			obj = results;
+> -			igt_assert(json_object_object_get_ex(obj, "tests", &obj));
+> -			igt_assert(json_object_object_get_ex(obj, "igt@dynamic@dynamic-subtest@passing", &obj));
+> -			igt_assert(json_object_object_get_ex(obj, "result", &obj));
+> +			igt_assert(json_object_object_get_ex(results, "tests", &tests));
+>  
+> -			igt_assert_eqstr(json_object_get_string(obj), "pass");
+> +			igt_assert_eqstr(igt_get_result(tests, "igt@dynamic@dynamic-subtest@passing"), "pass");
+>  
+>  			igt_assert_eq(json_object_put(results), 1);
+>  		}
 > -- 
 > 2.24.1
 > 
