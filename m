@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 464726F8A6
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Feb 2020 00:40:41 +0000 (UTC)
-From: Antonio Argenziano <antonio.argenziano@intel.com>
-Date: Thu, 13 Feb 2020 16:40:37 -0800
-Message-Id: <20200214004037.5847-1-antonio.argenziano@intel.com>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4DED86F8A6
+ for <igt-dev@lists.freedesktop.org>; Fri, 14 Feb 2020 00:48:35 +0000 (UTC)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/i915/gem_threaded_access_tiled:
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20200214004037.5847-1-antonio.argenziano@intel.com>
+References: <20200214004037.5847-1-antonio.argenziano@intel.com>
+Message-ID: <158164130041.7047.9315425229421344115@skylake-alporthouse-com>
+Date: Fri, 14 Feb 2020 00:48:20 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_threaded_access_tiled:
  Require fences
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -19,36 +21,30 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Antonio Argenziano <antonio.argenziano@intel.com>, igt-dev@lists.freedesktop.org
 Cc: Dixit@freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The test tries to allocate tiled objects which is not possible without
-fences.
+Quoting Antonio Argenziano (2020-02-14 00:40:37)
+> The test tries to allocate tiled objects which is not possible without
+> fences.
+> 
+> Signed-off-by: Antonio Argenziano <antonio.argenziano@intel.com>
+> Cc: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Dixit, Ashutosh <ashutosh.dixit@intel.com>
 
-Signed-off-by: Antonio Argenziano <antonio.argenziano@intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Dixit, Ashutosh <ashutosh.dixit@intel.com>
----
- tests/i915/gem_threaded_access_tiled.c | 2 ++
- 1 file changed, 2 insertions(+)
+All the test is doing is parallel page faulting/copying from an object
+and not try to determine if it saw any bogosity.
 
-diff --git a/tests/i915/gem_threaded_access_tiled.c b/tests/i915/gem_threaded_access_tiled.c
-index 64a00026..6442d589 100644
---- a/tests/i915/gem_threaded_access_tiled.c
-+++ b/tests/i915/gem_threaded_access_tiled.c
-@@ -98,6 +98,8 @@ igt_simple_main
- 	fd = drm_open_driver(DRIVER_INTEL);
- 	igt_assert(fd >= 0);
- 
-+	igt_require(gem_available_fences(fd) > 0);
-+
- 	bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
- 	igt_assert(bufmgr);
- 
--- 
-2.21.0
+Of one object, so not even any thrashing, or any page faults after the
+first. Virtually no contention or any time in the kernel at all.
 
+I don't see it increasing any path coverage through the kernel at all.
+A tiny bit in HW, but that is also done by gem_mmap_gtt/forked
+
+Nevertheless,
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
