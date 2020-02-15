@@ -1,462 +1,145 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Dale B Stimson <dale.b.stimson@intel.com>
-Date: Fri, 14 Feb 2020 18:33:30 -0800
-Message-Id: <20200215023331.41469-2-dale.b.stimson@intel.com>
-In-Reply-To: <20200215023331.41469-1-dale.b.stimson@intel.com>
-References: <20200215023331.41469-1-dale.b.stimson@intel.com>
+Date: Fri, 14 Feb 2020 18:34:21 -0800
+Message-Id: <20200215023421.41563-1-dale.b.stimson@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v4 1/2] i915/gem_mmio_base.c - get mmio_base
- from debugfs (if possible)
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: [Intel-gfx] [RFC i-g-t] lib/i915/gem_mmio_base.c - add support for
+ mmio_base via sysfs
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
+
+Obtaining mmio_base info via sysfs (if available).  This is in addition
+to the already existing support for obtaining that data via debugfs.
+The use of sysfs data is preferred.
+
+This patch depends upon the following proposed IGT patch, which is not
+presently merged:
+  i915/gem_mmio_base.c - get mmio_base from debugfs (if possible)
+
+The availability of sysfs info for mmio_base depends on the presence of
+these two proposed kernel patches, not presently merged:
+  drm/i915/gt: Expose engine properties via sysfs
+  drm/i915/gt: Expose engine->mmio_base via sysfs
 
 Signed-off-by: Dale B Stimson <dale.b.stimson@intel.com>
 ---
- lib/Makefile.sources     |   2 +
- lib/i915/gem_mmio_base.c | 353 +++++++++++++++++++++++++++++++++++++++
- lib/i915/gem_mmio_base.h |  19 +++
- lib/igt.h                |   1 +
- lib/meson.build          |   1 +
- 5 files changed, 376 insertions(+)
- create mode 100644 lib/i915/gem_mmio_base.c
- create mode 100644 lib/i915/gem_mmio_base.h
+ lib/i915/gem_mmio_base.c | 79 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 79 insertions(+)
 
-diff --git a/lib/Makefile.sources b/lib/Makefile.sources
-index 3e573f267..4c5d50d5d 100644
---- a/lib/Makefile.sources
-+++ b/lib/Makefile.sources
-@@ -7,6 +7,8 @@ lib_source_list =	 	\
- 	i915/gem_context.h	\
- 	i915/gem_engine_topology.c	\
- 	i915/gem_engine_topology.h	\
-+	i915/gem_mmio_base.c	\
-+	i915/gem_mmio_base.h	\
- 	i915/gem_scheduler.c	\
- 	i915/gem_scheduler.h	\
- 	i915/gem_submission.c	\
 diff --git a/lib/i915/gem_mmio_base.c b/lib/i915/gem_mmio_base.c
-new file mode 100644
-index 000000000..d1b83221a
---- /dev/null
+index 514f87f42..8a29a9150 100644
+--- a/lib/i915/gem_mmio_base.c
 +++ b/lib/i915/gem_mmio_base.c
-@@ -0,0 +1,353 @@
-+//  Copyright (C) 2020 Intel Corporation
-+//
-+//  SPDX-License-Identifier: MIT
-+
-+#include <ctype.h>
-+
-+#include <fcntl.h>
-+
-+#include "igt.h"
-+
-+struct eng_mmio_base_s {
-+	char       name[8];
-+	uint32_t   mmio_base;
-+};
-+
-+struct eng_mmio_base_table_s {
-+	unsigned int           mb_cnt;
-+	struct eng_mmio_base_s mb_tab[GEM_MAX_ENGINES];
-+};
-+
-+
-+static struct eng_mmio_base_table_s *_gem_engine_mmio_info_dup(
-+	const struct eng_mmio_base_table_s *mbpi)
-+{
-+	struct eng_mmio_base_table_s *mbpo;
-+	size_t nbytes;
-+
-+	nbytes = offsetof(typeof(struct eng_mmio_base_table_s), mb_tab[mbpi->mb_cnt]);
-+	mbpo = malloc(nbytes);
-+	igt_assert(mbpo);
-+	memcpy(mbpo, mbpi, nbytes);
-+
-+	return mbpo;
-+}
-+
-+void gem_engine_mmio_base_info_free(struct eng_mmio_base_table_s *mbp)
-+{
-+	if (mbp)
-+		free(mbp);
-+}
-+
-+static void _gem_engine_mmio_info_legacy_add(struct eng_mmio_base_table_s *mbp,
-+	const char *eng_name, uint32_t mmio_base)
-+{
-+	if (mmio_base) {
-+		strncpy(mbp->mb_tab[mbp->mb_cnt].name, eng_name,
-+			sizeof(mbp->mb_tab[0].name));
-+		mbp->mb_tab[mbp->mb_cnt].mmio_base = mmio_base;
-+		mbp->mb_cnt++;
-+	}
-+}
-+
-+/**
-+ * _gem_engine_mmio_base_info_get_legacy:
-+ * @fd_dev: file descriptor upon which device is open or -1 to use defaults.
-+ *
-+ * Provides per-engine mmio_base information from legacy built-in values
-+ * for the case when the information is not otherwise available.
-+ *
-+ * Returns:
-+ * Pointer to dynamically allocated struct eng_mmio_base_table_s describing
-+ * engine config or NULL.
-+ * The allocated size does not include unused engine entries.
-+ * If non-NULL, it is caller's responsibility to free.
-+ */
-+static struct eng_mmio_base_table_s *_gem_engine_mmio_base_info_get_legacy(int fd_dev)
-+{
-+	int gen;
-+	uint32_t mmio_base;
-+	struct eng_mmio_base_table_s mbt;
-+	struct eng_mmio_base_table_s *mbp;
-+
-+	memset(&mbt, 0, sizeof(mbt));
-+
-+	gen = intel_gen(intel_get_drm_devid(fd_dev));
-+
-+	/* The mmio_base values for engine instances 1 and higher cannot
-+	 * be reliability determinated a priori. */
-+
-+	_gem_engine_mmio_info_legacy_add(&mbt, "rcs0", 0x2000);
-+	_gem_engine_mmio_info_legacy_add(&mbt, "bcs0", 0x22000);
-+
-+	if (gen < 6)
-+		mmio_base = 0x4000;
-+	else if (gen < 11)
-+		mmio_base = 0x12000;
-+	else
-+		mmio_base = 0x1c0000;
-+	_gem_engine_mmio_info_legacy_add(&mbt, "vcs0", mmio_base);
-+
-+	if (gen < 11)
-+		mmio_base = 0x1a000;
-+	else
-+		mmio_base = 0x1c8000;
-+	_gem_engine_mmio_info_legacy_add(&mbt, "vecs0", mmio_base);
-+
-+	if (mbt.mb_cnt <= 0)
-+		return NULL;
-+
-+	mbp = _gem_engine_mmio_info_dup(&mbt);
-+
-+	return mbp;
-+}
-+
-+
-+/**
-+ * _gem_engine_mmio_base_info_get_debugfs:
-+ * @fd_dev: file descriptor upon which device is open or -1 to use defaults.
-+ *
-+ * Obtains per-engine mmio_base information from debugfs.
-+ *
-+ * Returns:
-+ * Pointer to dynamically allocated struct eng_mmio_base_table_s describing
-+ * engine config or NULL.
-+ * The allocated size does not include unused engine entries.
-+ * If non-NULL, it is caller's responsibility to free.
-+ *
-+ * Looking in debugfs for per-engine instances of:
-+ *	<engine_name>
-+ *              ...
-+ *		MMIO base: <u32_hex_number>
-+ *
-+ * Example of relevant lines from debugfs:
-+ *	vcs0
-+ *		MMIO base:  0x001c0000
-+ *	vcs1
-+ *		MMIO base:  0x001d0000
-+ *
-+ * In order to qualify as the introduction of a new per-engine section, an
-+ * input line must consist solely of an engine name.  An engine name must
-+ * be 7 or fewer characters in length and must consist of an engine class
-+ * name of 3 or more lower case characters followed by an instance number.
-+ */
-+static struct eng_mmio_base_table_s *_gem_engine_mmio_base_info_get_debugfs(int fd_dev)
-+{
-+	static const char pth_ei[] = "i915_engine_info";
-+	static const char str_mmio_base[] = "MMIO base:";
-+	const size_t len_mmio_base = sizeof(str_mmio_base) - 1;
-+	FILE *fpi;
-+	char line_buf[128];
-+	char *plne;
-+	char *p_name;
-+	char *pbeg;
-+	size_t line_len;
-+	struct eng_mmio_base_table_s mbt;
-+	struct eng_mmio_base_table_s *mbp;
-+	const size_t name_max = sizeof(mbt.mb_tab[0].name);
-+	int ec;
-+	int eng_found;
-+	int nc;
-+	int fd_ei;
-+	int eof_seen;
-+
-+	fd_ei = igt_debugfs_open(fd_dev, pth_ei, O_RDONLY);
-+	if (fd_ei < 0)
-+		return NULL;
-+
-+	fpi = fdopen(fd_ei, "r");
-+	if (!fpi) {
-+		if (errno != ENOENT) {
-+			igt_warn("open failed: %s: %s\n", pth_ei,
-+				strerror(errno));
-+		}
-+		return NULL;
-+	}
-+
-+	memset(&mbt, 0, sizeof(mbt));
-+
-+	ec = 0;
-+	eng_found = 0;
-+	eof_seen = 0;
-+	while (!eof_seen) {
-+		plne = fgets(line_buf, sizeof(line_buf), fpi);
-+		if (!plne) {
-+			eof_seen = 1;
-+			plne = line_buf;
-+			plne[0] = '\0';
-+		}
-+
-+		if (plne[0]) {
-+			/* Ignore lines that exceed allowed length. */
-+			line_len = strlen(plne);
-+			if (plne[line_len-1] != '\n') {
-+				for (;;) {
-+					plne = fgets(line_buf,
-+						sizeof(line_buf), fpi);
-+					if (!plne)
-+						break;
-+					line_len = strlen(plne);
-+					if (plne[line_len-1] == '\n')
-+						break;
-+				}
-+				continue;
-+			}
-+			plne[line_len-1] = '\0';
-+
-+			p_name = NULL;
-+			nc = 0;
-+			do {
-+				for (; nc < name_max; nc++) {
-+					if (!islower(plne[nc]))
-+						break;
-+				}
-+				if (nc < 3)
-+					break;
-+				if (!isdigit(plne[nc]))
-+					break;
-+				for (; nc < name_max; nc++) {
-+					if (!isdigit(plne[nc]))
-+						break;
-+				}
-+				if ((nc >= name_max) || plne[nc])
-+					break;
-+				p_name = plne;
-+			} while (0);
-+		}
-+
-+		if (eof_seen || p_name) {
-+			if (eng_found) {
-+				eng_found = 0;
-+				if ((ec + 1) >= GEM_MAX_ENGINES)
-+					continue;
-+				ec++;
-+			}
-+		}
-+
-+		if (p_name) {
-+			strncpy(mbt.mb_tab[ec].name, p_name, nc);
-+			eng_found = 1;
-+			continue;
-+		}
-+
-+		if (eng_found) {
-+			pbeg = plne;
-+			while (isspace(pbeg[0]))
-+				pbeg++;
-+			if (strncmp(pbeg, str_mmio_base, len_mmio_base) == 0) {
-+				unsigned long int ulv;
-+				uint32_t uiv;
-+				char *ep;
-+
-+				pbeg += len_mmio_base;
-+				ulv = strtoul(pbeg, &ep, 16);
-+
-+				uiv = (uint32_t) ulv;
-+				igt_assert_f(((pbeg != ep) && (ulv == uiv)),
-+					"invalid number: %s\n", plne);
-+
-+				while (isspace(*ep))
-+					ep++;
-+				igt_assert_f((!*ep),
-+					"junk follows number: \"%s\"\n", plne);
-+
-+				mbt.mb_tab[ec].mmio_base = uiv;
-+			}
-+		}
-+	}
-+
-+	if (fpi)
-+		fclose(fpi);
-+
-+	mbt.mb_cnt = ec;
-+
-+	if (mbt.mb_cnt <= 0)
-+		return NULL;
-+
-+	mbp = _gem_engine_mmio_info_dup(&mbt);
-+
-+	return mbp;
-+}
-+
-+/**
-+ * gem_engine_mmio_base_info_get:
-+ * @fd_dev: file descriptor upon which device is open or -1 to use defaults.
-+ *
-+ * Obtains per-engine mmio_base information.  Multiple sub-functions will
-+ * be tried in order of preference.
-+ *
-+ * Returns:
-+ * Pointer to dynamically allocated struct eng_mmio_base_table_s describing
-+ * engine config or NULL.
-+ * The allocated size does not include unused engine entries.
-+ * If non-NULL, it is caller's responsibility to free.
-+ */
-+struct eng_mmio_base_table_s *gem_engine_mmio_base_info_get(int fd_dev)
-+{
-+	struct eng_mmio_base_table_s *mbp = NULL;
-+
-+	/* If and when better ways are provided to find the mmio_base
-+	 * information, they may be added them here in order of preference.
-+	 */
-+
-+#if 0
-+	if (!mbp)
-+		mbp = _mmio_base_info_get_via_sysfs(fd_dev);
-+#endif
-+
-+	if (!mbp)
-+		mbp = _gem_engine_mmio_base_info_get_debugfs(fd_dev);
-+
-+	if (!mbp)
-+		mbp = _gem_engine_mmio_base_info_get_legacy(fd_dev);
-+
-+	if (!mbp)
-+		igt_debug("Per-engine mmio_base data is not present\n");
-+
-+	return mbp;
-+}
-+
-+/**
-+ * gem_engine_mmio_base_info_dump:
-+ *
-+ * Dumps engine mmio_base data.
-+ *
-+ * Returns: void
-+ */
-+void gem_engine_mmio_base_info_dump(const struct eng_mmio_base_table_s *mbp)
-+{
-+	int ix;
-+	const struct eng_mmio_base_s *e_mb;
-+
-+	if (!mbp)
-+		return;
-+
-+	fprintf(stdout, "engine names and mmio_base addresses:\n");
-+
-+	for (ix = 0; ix < mbp->mb_cnt; ix++) {
-+		e_mb = mbp->mb_tab + ix;
-+		if (e_mb->mmio_base) {
-+			fprintf(stdout, "%-8s 0x%8.8x\n",
-+				e_mb->name, e_mb->mmio_base);
-+		}
-+	}
-+}
-+
-+uint32_t gem_engine_mmio_base(const struct eng_mmio_base_table_s *mbp,
-+	const char *eng_name)
-+{
-+	int ix;
-+	const struct eng_mmio_base_s *e_mb;
-+
-+	if (!mbp)
-+		return 0;
-+
-+	for (ix = 0; ix < mbp->mb_cnt; ix++) {
-+		e_mb = mbp->mb_tab + ix;
-+		if (e_mb->mmio_base && !strcmp(eng_name, e_mb->name)) {
-+			return e_mb->mmio_base;
-+		}
-+	}
-+
-+	return 0;
-+}
-diff --git a/lib/i915/gem_mmio_base.h b/lib/i915/gem_mmio_base.h
-new file mode 100644
-index 000000000..1e138690f
---- /dev/null
-+++ b/lib/i915/gem_mmio_base.h
-@@ -0,0 +1,19 @@
-+//  Copyright (C) 2020 Intel Corporation
-+//
-+//  SPDX-License-Identifier: MIT
-+
-+#ifndef GEM_MMIO_BASE_H
-+#define GEM_MMIO_BASE_H
-+
-+struct eng_mmio_base_table_s;
-+
-+struct eng_mmio_base_table_s *gem_engine_mmio_base_info_get(int fd_dev);
-+
-+void gem_engine_mmio_base_info_free(struct eng_mmio_base_table_s *mbp);
-+
-+void gem_engine_mmio_base_info_dump(const struct eng_mmio_base_table_s *mbp);
-+
-+uint32_t gem_engine_mmio_base(const struct eng_mmio_base_table_s *mbp,
-+	const char *eng_name);
-+
-+#endif /* GEM_MMIO_BASE_H */
-diff --git a/lib/igt.h b/lib/igt.h
-index a6c4e44d2..8e70dcb02 100644
---- a/lib/igt.h
-+++ b/lib/igt.h
-@@ -55,5 +55,6 @@
- #include "rendercopy.h"
- #include "i915/gem_mman.h"
- #include "i915/gem_engine_topology.h"
-+#include "i915/gem_mmio_base.h"
+@@ -5,8 +5,11 @@
+ #include <ctype.h>
  
- #endif /* IGT_H */
-diff --git a/lib/meson.build b/lib/meson.build
-index e87e58036..def72c2bd 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -2,6 +2,7 @@ lib_sources = [
- 	'drmtest.c',
- 	'i915/gem_context.c',
- 	'i915/gem_engine_topology.c',
-+	'i915/gem_mmio_base.c',
- 	'i915/gem_scheduler.c',
- 	'i915/gem_submission.c',
- 	'i915/gem_ring.c',
+ #include <fcntl.h>
++#include <sys/types.h>
++#include <dirent.h>
+ 
+ #include "igt.h"
++#include "igt_sysfs.h"
+ 
+ struct eng_mmio_base_s {
+ 	char       name[8];
+@@ -102,6 +105,82 @@ static struct eng_mmio_base_table_s *_gem_engine_mmio_base_info_get_legacy(int f
+ 	return mbp;
+ }
+ 
++static struct eng_mmio_base_table_s *_gem_engine_mmio_base_info_get_sysfs(int fd_dev)
++{
++	struct eng_mmio_base_table_s mbt;
++	struct eng_mmio_base_table_s *mbp = NULL;
++	const size_t name_max = sizeof(mbt.mb_tab[0].name);
++	int fd_top = -1;
++	int fd_engines = -1;
++	int fd_this;
++	int fd_mmio_base;
++	DIR *dirp = NULL;
++	struct dirent *pde;
++	const char *eng_name;
++	ssize_t nb;
++	char rbuf[32];
++	unsigned long int ulv;
++	uint32_t uiv;
++
++	memset(&mbt, 0, sizeof(mbt));
++
++	fd_top = igt_sysfs_open(fd_dev);
++	if (fd_top < 0)
++		goto mbsf_cleanup;
++
++	fd_engines = openat(fd_top, "engine", O_RDONLY);
++	if (fd_engines < 0)
++		goto mbsf_cleanup;
++
++	dirp = fdopendir(fd_engines);
++	if (!dirp)
++		goto mbsf_cleanup;
++
++	for (;;) {
++		pde = readdir(dirp);
++		if (!pde)
++			break;
++
++		if ((pde->d_type == DT_DIR) || (pde->d_type == DT_UNKNOWN)) {
++			eng_name = pde->d_name;
++			if (eng_name[0] == '.')
++				continue;
++			fd_this = openat(fd_engines, eng_name, O_RDONLY);
++			if (fd_this < 0)
++				continue;
++			fd_mmio_base = openat(fd_this, "mmio_base", O_RDONLY);
++			close(fd_this);
++			if (fd_mmio_base < 0)
++				goto mbsf_cleanup;
++			nb = read(fd_mmio_base, rbuf, sizeof(rbuf));
++			close(fd_mmio_base);
++			if (nb > 0) {
++				ulv = strtoul(rbuf, NULL, 16);
++				uiv = (uint32_t) ulv;
++
++				strncpy(mbt.mb_tab[mbt.mb_cnt].name,
++					eng_name, name_max);
++				mbt.mb_tab[mbt.mb_cnt].mmio_base = uiv;
++				mbt.mb_cnt++;
++			}
++		}
++	}
++
++	if (mbt.mb_cnt > 0)
++		mbp = _gem_engine_mmio_info_dup(&mbt);
++
++mbsf_cleanup:
++	if (dirp)
++		closedir(dirp);
++
++	if (fd_engines >= 0)
++		close(fd_engines);
++	if (fd_top >= 0)
++		close(fd_top);
++
++	return mbp;
++}
++
+ 
+ /**
+  * _gem_engine_mmio_base_info_get_debugfs:
 -- 
 2.25.0
 
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
