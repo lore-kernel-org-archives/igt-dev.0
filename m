@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8776A6E8A0
- for <igt-dev@lists.freedesktop.org>; Sat, 15 Feb 2020 01:11:20 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B68756E89E
+ for <igt-dev@lists.freedesktop.org>; Sat, 15 Feb 2020 01:11:15 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Date: Fri, 14 Feb 2020 17:11:13 -0800
-Message-Id: <20200215011115.5838-3-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20200215011115.5838-1-umesh.nerlige.ramappa@intel.com>
-References: <20200215011115.5838-1-umesh.nerlige.ramappa@intel.com>
+Date: Fri, 14 Feb 2020 17:11:11 -0800
+Message-Id: <20200215011115.5838-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/4] lib/i915/perf: Add support for loading
- perf configurations
+Subject: [igt-dev] [PATCH i-g-t 0/4] Add perf OA tools for GPUvis
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,187 +21,90 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org, Joonas Lahtinen <joonas.lahtinen@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>, Lionel G Landwerlin <lionel.g.landwerlin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+The tools provided here enable capturing performance metrics from the i915
+driver and are used in conjunction with the GPUvis software here - 
 
-Add support for loading perf configurations used by gpuvis.
+https://github.com/mikesart/gpuvis
 
-v2: rebase fixes for igt list (Umesh)
+The changes required in GPUvis are wip and will be posted following the merge of
+these tools.
 
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
----
- lib/i915/perf.c | 138 ++++++++++++++++++++++++++++++++++++++++++++++++
- lib/i915/perf.h |   2 +
- 2 files changed, 140 insertions(+)
+For more information, view tools/i915-perf/README in this patch series
 
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index 1627f102..ae786701 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -20,8 +20,18 @@
-  * SOFTWARE.
-  */
- 
-+#include <assert.h>
-+#include <errno.h>
-+#include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-+#include <dirent.h>
-+#include <fcntl.h>
-+#include <sys/ioctl.h>
-+#include <sys/stat.h>
-+#include <sys/sysmacros.h>
-+#include <sys/types.h>
-+#include <unistd.h>
- 
- #include "intel_chipset.h"
- #include "perf.h"
-@@ -192,3 +202,131 @@ intel_perf_add_metric_set(struct intel_perf *perf,
- {
- 	igt_list_add_tail(&metric_set->link, &perf->metric_sets);
- }
-+
-+static bool
-+read_file_uint64(const char *file, uint64_t *value)
-+{
-+	char buf[32];
-+	int fd, n;
-+
-+	fd = open(file, 0);
-+	if (fd < 0)
-+		return false;
-+	n = read(fd, buf, sizeof (buf) - 1);
-+	close(fd);
-+	if (n < 0)
-+		return false;
-+
-+	buf[n] = '\0';
-+	*value = strtoull(buf, 0, 0);
-+
-+	return true;
-+}
-+
-+static int
-+get_card_for_fd(int fd)
-+{
-+	struct stat sb;
-+	int mjr, mnr;
-+	char buffer[128];
-+	DIR *drm_dir;
-+	struct dirent *entry;
-+	int retval = -1;
-+
-+	if (fstat(fd, &sb))
-+		return -1;
-+
-+	mjr = major(sb.st_rdev);
-+	mnr = minor(sb.st_rdev);
-+
-+	snprintf(buffer, sizeof(buffer), "/sys/dev/char/%d:%d/device/drm", mjr, mnr);
-+
-+	drm_dir = opendir(buffer);
-+	assert(drm_dir != NULL);
-+
-+	while ((entry = readdir(drm_dir))) {
-+		if (entry->d_type == DT_DIR && strncmp(entry->d_name, "card", 4) == 0) {
-+			retval = strtoull(entry->d_name + 4, NULL, 10);
-+			break;
-+		}
-+	}
-+
-+	closedir(drm_dir);
-+
-+	return retval;
-+}
-+
-+static void
-+load_metric_set_config(struct intel_perf_metric_set *metric_set, int drm_fd)
-+{
-+	struct drm_i915_perf_oa_config config;
-+	uint64_t config_id = 0;
-+
-+	memset(&config, 0, sizeof(config));
-+
-+	memcpy(config.uuid, metric_set->hw_config_guid, sizeof(config.uuid));
-+
-+	config.n_mux_regs = metric_set->n_mux_regs;
-+	config.mux_regs_ptr = (uintptr_t) metric_set->mux_regs;
-+
-+	config.n_boolean_regs = metric_set->n_b_counter_regs;
-+	config.boolean_regs_ptr = (uintptr_t) metric_set->b_counter_regs;
-+
-+	config.n_flex_regs = metric_set->n_flex_regs;
-+	config.flex_regs_ptr = (uintptr_t) metric_set->flex_regs;
-+
-+	while (ioctl(drm_fd, DRM_IOCTL_I915_PERF_ADD_CONFIG, &config) < 0 &&
-+	       (errno == EAGAIN || errno == EINTR));
-+
-+	metric_set->perf_oa_metrics_set = config_id;
-+}
-+
-+void
-+intel_perf_load_perf_configs(struct intel_perf *perf, int drm_fd)
-+{
-+	int drm_card = get_card_for_fd(drm_fd);
-+	struct dirent *entry;
-+	char metrics_path[128];
-+	DIR *metrics_dir;
-+	struct intel_perf_metric_set *metric_set;
-+
-+	snprintf(metrics_path, sizeof(metrics_path),
-+		 "/sys/class/drm/card%d/metrics", drm_card);
-+	metrics_dir = opendir(metrics_path);
-+	if (!metrics_dir)
-+		return;
-+
-+	while ((entry = readdir(metrics_dir))) {
-+		char *metric_id_path;
-+		uint64_t metric_id;
-+
-+		if (entry->d_type != DT_DIR)
-+			continue;
-+
-+		asprintf(&metric_id_path, "%s/%s/id",
-+			 metrics_path, entry->d_name);
-+
-+		if (!read_file_uint64(metric_id_path, &metric_id)) {
-+			free(metric_id_path);
-+			continue;
-+		}
-+
-+		free(metric_id_path);
-+
-+		igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
-+			if (!strcmp(metric_set->hw_config_guid, entry->d_name)) {
-+				metric_set->perf_oa_metrics_set = metric_id;
-+				break;
-+			}
-+		}
-+	}
-+
-+	closedir(metrics_dir);
-+
-+	igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
-+		if (metric_set->perf_oa_metrics_set)
-+			continue;
-+
-+		load_metric_set_config(metric_set, drm_fd);
-+	}
-+}
-diff --git a/lib/i915/perf.h b/lib/i915/perf.h
-index 5a091c46..0b66efe1 100644
---- a/lib/i915/perf.h
-+++ b/lib/i915/perf.h
-@@ -231,6 +231,8 @@ void intel_perf_add_logical_counter(struct intel_perf *perf,
- void intel_perf_add_metric_set(struct intel_perf *perf,
- 			       struct intel_perf_metric_set *metric_set);
- 
-+void intel_perf_load_perf_configs(struct intel_perf *perf, int drm_fd);
-+
- #ifdef __cplusplus
- };
- #endif
+Lionel Landwerlin (4):
+  lib/i915/perf: Add i915_perf library
+  lib/i915/perf: Add support for loading perf configurations
+  tools/i915/perf: Add i915 perf recorder tool
+  lib/i915/perf: Add i915 perf data reader
+
+ lib/i915-perf.pc.in                           |    10 +
+ lib/i915/perf-configs/README.md               |   115 +
+ lib/i915/perf-configs/codegen.py              |    33 +
+ lib/i915/perf-configs/guids.xml               |   282 +
+ lib/i915/perf-configs/mdapi-xml-convert.py    |  1000 +
+ lib/i915/perf-configs/oa-bdw.xml              | 15653 ++++++++++++++++
+ lib/i915/perf-configs/oa-bxt.xml              |  9595 ++++++++++
+ lib/i915/perf-configs/oa-cflgt2.xml           | 10866 +++++++++++
+ lib/i915/perf-configs/oa-cflgt3.xml           | 10933 +++++++++++
+ lib/i915/perf-configs/oa-chv.xml              |  9757 ++++++++++
+ lib/i915/perf-configs/oa-cnl.xml              | 10411 ++++++++++
+ lib/i915/perf-configs/oa-glk.xml              |  9346 +++++++++
+ lib/i915/perf-configs/oa-hsw.xml              |  4615 +++++
+ lib/i915/perf-configs/oa-icl.xml              | 11899 ++++++++++++
+ lib/i915/perf-configs/oa-kblgt2.xml           | 10866 +++++++++++
+ lib/i915/perf-configs/oa-kblgt3.xml           | 10933 +++++++++++
+ lib/i915/perf-configs/oa-sklgt2.xml           | 11895 ++++++++++++
+ lib/i915/perf-configs/oa-sklgt3.xml           | 10933 +++++++++++
+ lib/i915/perf-configs/oa-sklgt4.xml           | 10956 +++++++++++
+ lib/i915/perf-configs/perf-codegen.py         |   854 +
+ lib/i915/perf-configs/update-guids.py         |   230 +
+ lib/i915/perf.c                               |   332 +
+ lib/i915/perf.h                               |   240 +
+ lib/i915/perf_data.h                          |    88 +
+ lib/i915/perf_data_reader.c                   |   330 +
+ lib/i915/perf_data_reader.h                   |   103 +
+ lib/meson.build                               |    67 +
+ tools/i915-perf/README                        |    70 +
+ tools/i915-perf/i915_perf_configs.c           |   277 +
+ tools/i915-perf/i915_perf_control.c           |   133 +
+ tools/i915-perf/i915_perf_recorder.c          |   931 +
+ tools/i915-perf/i915_perf_recorder_commands.h |    39 +
+ tools/i915-perf/meson.build                   |    17 +
+ tools/meson.build                             |     1 +
+ 34 files changed, 153810 insertions(+)
+ create mode 100644 lib/i915-perf.pc.in
+ create mode 100644 lib/i915/perf-configs/README.md
+ create mode 100644 lib/i915/perf-configs/codegen.py
+ create mode 100644 lib/i915/perf-configs/guids.xml
+ create mode 100755 lib/i915/perf-configs/mdapi-xml-convert.py
+ create mode 100644 lib/i915/perf-configs/oa-bdw.xml
+ create mode 100644 lib/i915/perf-configs/oa-bxt.xml
+ create mode 100644 lib/i915/perf-configs/oa-cflgt2.xml
+ create mode 100644 lib/i915/perf-configs/oa-cflgt3.xml
+ create mode 100644 lib/i915/perf-configs/oa-chv.xml
+ create mode 100644 lib/i915/perf-configs/oa-cnl.xml
+ create mode 100644 lib/i915/perf-configs/oa-glk.xml
+ create mode 100644 lib/i915/perf-configs/oa-hsw.xml
+ create mode 100644 lib/i915/perf-configs/oa-icl.xml
+ create mode 100644 lib/i915/perf-configs/oa-kblgt2.xml
+ create mode 100644 lib/i915/perf-configs/oa-kblgt3.xml
+ create mode 100644 lib/i915/perf-configs/oa-sklgt2.xml
+ create mode 100644 lib/i915/perf-configs/oa-sklgt3.xml
+ create mode 100644 lib/i915/perf-configs/oa-sklgt4.xml
+ create mode 100755 lib/i915/perf-configs/perf-codegen.py
+ create mode 100755 lib/i915/perf-configs/update-guids.py
+ create mode 100644 lib/i915/perf.c
+ create mode 100644 lib/i915/perf.h
+ create mode 100644 lib/i915/perf_data.h
+ create mode 100644 lib/i915/perf_data_reader.c
+ create mode 100644 lib/i915/perf_data_reader.h
+ create mode 100644 tools/i915-perf/README
+ create mode 100644 tools/i915-perf/i915_perf_configs.c
+ create mode 100644 tools/i915-perf/i915_perf_control.c
+ create mode 100644 tools/i915-perf/i915_perf_recorder.c
+ create mode 100644 tools/i915-perf/i915_perf_recorder_commands.h
+ create mode 100644 tools/i915-perf/meson.build
+
 -- 
 2.20.1
 
