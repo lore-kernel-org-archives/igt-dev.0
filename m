@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D6AEE6E1EC
- for <igt-dev@lists.freedesktop.org>; Sun, 16 Feb 2020 18:09:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3F0346E182
+ for <igt-dev@lists.freedesktop.org>; Sun, 16 Feb 2020 18:09:19 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Sun, 16 Feb 2020 23:30:06 +0530
-Message-Id: <20200216180006.14439-3-anshuman.gupta@intel.com>
-In-Reply-To: <20200216180006.14439-1-anshuman.gupta@intel.com>
-References: <20200216180006.14439-1-anshuman.gupta@intel.com>
+Date: Sun, 16 Feb 2020 23:30:04 +0530
+Message-Id: <20200216180006.14439-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/i915_pm_dc: psr required only for
- dc*-psr tests
+Subject: [igt-dev] [PATCH i-g-t 0/2] DC states IGT misc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,45 +14,26 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RFBNUyBpZ3QgdGVzdHMgd2VyZSBza2lwcGluZyBmb3Igbm9uLXBzciBwYW5lbHMgZHVlIHRvCnBz
-cl9zaW5rX3N1cHBvcnQgc2luayBjaGVjayBhZGRlZCB0byBpZ3RfZml4dHVyZSgpIGF0CmNvbW1p
-dCA8NmNiZTZhZjM3MmEwMWJlNjMxMjEwNTY2NzlkNTQwNDM2ZmZkMGI2ND4uCkRQTVMgZGMgc3Rh
-dGUgaWd0IHRlc3QgZG9uJ3QgcmVxdWlyZSBwc3Jfc2lua19zdXBwb3J0LCBhcyBpdAp2YWxpZGF0
-ZXMgREMgc3RhdGVzIHdpdGggYWxsIGRpc3BsYXkgYmVpbmcgRFBNUyBvZmYuClJlbW92aW5nIHRo
-ZSBwc3Igc2luayBjaGVjayBmcm9tIGlndF9maXh0dXJlIGFuZCBhZGRpbmcKaXQgb25seSBmb3Ig
-ZGMqLSBwc3IgdGVzdHMuCgpDYzogQXJrYWRpdXN6IEhpbGVyIDxhcmthZGl1c3ouaGlsZXJAaW50
-ZWwuY29tPgpDYzogSm9zw6kgUm9iZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+
-ClNpZ25lZC1vZmYtYnk6IEFuc2h1bWFuIEd1cHRhIDxhbnNodW1hbi5ndXB0YUBpbnRlbC5jb20+
-Ci0tLQogdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMgfCAzICsrLQogMSBmaWxlIGNoYW5nZWQsIDIg
-aW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvaTkx
-NV9wbV9kYy5jIGIvdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMKaW5kZXggNGJjYTg1NTkuLjRjMzRm
-ZjlkIDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2k5MTVfcG1fZGMuYworKysgYi90ZXN0cy9pOTE1
-L2k5MTVfcG1fZGMuYwpAQCAtMzk1LDcgKzM5NSw2IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFy
-ICphcmd2W10pCiAJCWlndF9yZXF1aXJlKGlndF9zZXR1cF9ydW50aW1lX3BtKGRhdGEuZHJtX2Zk
-KSk7CiAJCWlndF9yZXF1aXJlKGlndF9wbV9kbWNfbG9hZGVkKGRhdGEuZGVidWdmc19mZCkpOwog
-CQlpZ3RfZGlzcGxheV9yZXF1aXJlKCZkYXRhLmRpc3BsYXksIGRhdGEuZHJtX2ZkKTsKLQkJaWd0
-X3JlcXVpcmUocHNyX3Npbmtfc3VwcG9ydChkYXRhLmRlYnVnZnNfZmQsIFBTUl9NT0RFXzEpKTsK
-IAkJLyogTWFrZSBzdXJlIG91ciBLZXJuZWwgc3VwcG9ydHMgTVNSIGFuZCB0aGUgbW9kdWxlIGlz
-IGxvYWRlZCAqLwogCQlpZ3RfcmVxdWlyZShpZ3Rfa21vZF9sb2FkKCJtc3IiLCBOVUxMKSA9PSAw
-KTsKIApAQCAtNDE1LDYgKzQxNCw3IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10p
-CiAJaWd0X3N1YnRlc3QoImRjNS1wc3IiKSB7CiAJCWRhdGEub3BfcHNyX21vZGUgPSBQU1JfTU9E
-RV8xOwogCQlwc3JfZW5hYmxlKGRhdGEuZGVidWdmc19mZCwgZGF0YS5vcF9wc3JfbW9kZSk7CisJ
-CWlndF9yZXF1aXJlKHBzcl9zaW5rX3N1cHBvcnQoZGF0YS5kZWJ1Z2ZzX2ZkLCBQU1JfTU9ERV8x
-KSk7CiAJCXRlc3RfZGNfc3RhdGVfcHNyKCZkYXRhLCBDSEVDS19EQzUpOwogCX0KIApAQCAtNDIz
-LDYgKzQyMyw3IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10pCiAJaWd0X3N1YnRl
-c3QoImRjNi1wc3IiKSB7CiAJCWRhdGEub3BfcHNyX21vZGUgPSBQU1JfTU9ERV8xOwogCQlwc3Jf
-ZW5hYmxlKGRhdGEuZGVidWdmc19mZCwgZGF0YS5vcF9wc3JfbW9kZSk7CisJCWlndF9yZXF1aXJl
-KHBzcl9zaW5rX3N1cHBvcnQoZGF0YS5kZWJ1Z2ZzX2ZkLCBQU1JfTU9ERV8xKSk7CiAJCWlndF9y
-ZXF1aXJlX2YoaWd0X3BtX3BjOF9wbHVzX3Jlc2lkZW5jaWVzX2VuYWJsZWQoZGF0YS5tc3JfZmQp
-LAogCQkJICAgICAgIlBDOCsgcmVzaWRlbmNpZXMgbm90IHN1cHBvcnRlZFxuIik7CiAJCXRlc3Rf
-ZGNfc3RhdGVfcHNyKCZkYXRhLCBDSEVDS19EQzYpOwotLSAKMi4yNC4wCgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdApp
-Z3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9y
-Zy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+*** BLURB HERE ***
+
+Anshuman Gupta (2):
+  tests/i915_pm_dc: Dump power_domain_info on DC test failures
+  tests/i915_pm_dc: psr required only for dc*-psr tests
+
+ tests/i915/i915_pm_dc.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+-- 
+2.24.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
