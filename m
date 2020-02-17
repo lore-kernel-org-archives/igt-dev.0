@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 17 Feb 2020 19:56:31 -0000
-Message-ID: <158196939119.16572.4639438934357727576@emeril.freedesktop.org>
-References: <20200218001710.16537-1-sreedhar.telukuntla@intel.com>
-In-Reply-To: <20200218001710.16537-1-sreedhar.telukuntla@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW50cm9k?=
- =?utf-8?q?uce_new_apis_for_coherent_mmap?=
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0179E6E9A7
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Feb 2020 20:03:31 +0000 (UTC)
+Received: by mail-pf1-x441.google.com with SMTP id s1so9459792pfh.10
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Feb 2020 12:03:31 -0800 (PST)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Mon, 17 Feb 2020 22:03:23 +0200
+Message-Id: <1581969803-15387-1-git-send-email-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_rotation_crc: limit maximum used
+ plane size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,103 +17,153 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Sreedhar Telukuntla <sreedhar.telukuntla@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+It shouldn't make difference here if used maximum available
+screen resolution or something smaller. Something smaller
+is much faster so limit maximum size to 640x480.
 
-Series: Introduce new apis for coherent mmap
-URL   : https://patchwork.freedesktop.org/series/73543/
-State : success
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ tests/kms_rotation_crc.c | 46 +++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 33 insertions(+), 13 deletions(-)
 
-== Summary ==
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index 2a7b10e..819897b 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -27,6 +27,8 @@
+ 
+ #define MAX_FENCES 32
+ #define MAXMULTIPLANESAMOUNT 2
++#define TEST_MAX_WIDTH 640
++#define TEST_MAX_HEIGHT 480
+ 
+ struct p_struct {
+ 	igt_plane_t *plane;
+@@ -65,6 +67,8 @@ typedef struct {
+ 
+ 	struct p_struct *multiplaneoldview;
+ 	struct p_point planepos[MAXMULTIPLANESAMOUNT];
++
++	bool use_native_resolution;
+ } data_t;
+ 
+ typedef struct {
+@@ -210,8 +214,13 @@ static void prepare_fbs(data_t *data, igt_output_t *output,
+ 
+ 	mode = igt_output_get_mode(output);
+ 	if (plane->type != DRM_PLANE_TYPE_CURSOR) {
+-		w = mode->hdisplay;
+-		h = mode->vdisplay;
++		if (data->use_native_resolution) {
++			w = mode->hdisplay;
++			h = mode->vdisplay;
++		} else {
++			w = min(TEST_MAX_WIDTH, mode->hdisplay);
++			h = min(TEST_MAX_HEIGHT, mode->vdisplay);
++		}
+ 
+ 		min_w = 256;
+ 		min_h = 256;
+@@ -404,8 +413,16 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
+ 
+ 			/* Only support partial covering primary plane on gen9+ */
+ 			if (plane_type == DRM_PLANE_TYPE_PRIMARY &&
+-			    i != rectangle && intel_gen(intel_get_drm_devid(data->gfx_fd)) < 9)
+-				continue;
++			    intel_gen(intel_get_drm_devid(data->gfx_fd)) < 9) {
++				if (i != rectangle)
++					continue;
++				else
++					data->use_native_resolution = true;
++				
++			} else {
++				data->use_native_resolution = false;
++			}
++			
+ 
+ 			if (!data->override_fmt) {
+ 				for (j = 0; j < plane->drm_plane->count_formats; j++) {
+@@ -493,7 +510,7 @@ static void pointlocation(data_t *data, planeinfos *p, drmModeModeInfo *mode,
+ 			  int c)
+ {
+ 	if (data->planepos[c].origo & p_right) {
+-		p[c].x1 = (int32_t)(data->planepos[c].x * mode->hdisplay
++		p[c].x1 = (int32_t)(data->planepos[c].x * min(TEST_MAX_WIDTH, mode->hdisplay)
+ 				+ mode->hdisplay);
+ 		p[c].x1 &= ~3;
+ 		/*
+@@ -504,17 +521,17 @@ static void pointlocation(data_t *data, planeinfos *p, drmModeModeInfo *mode,
+ 		 */
+ 		p[c].x1 -= mode->hdisplay & 2;
+ 	} else {
+-		p[c].x1 = (int32_t)(data->planepos[c].x * mode->hdisplay);
++		p[c].x1 = (int32_t)(data->planepos[c].x * min(TEST_MAX_WIDTH, mode->hdisplay));
+ 		p[c].x1 &= ~3;
+ 	}
+ 
+ 	if (data->planepos[c].origo & p_bottom) {
+-		p[c].y1 = (int32_t)(data->planepos[c].y * mode->vdisplay
++		p[c].y1 = (int32_t)(data->planepos[c].y * min(TEST_MAX_HEIGHT, mode->vdisplay)
+ 				+ mode->vdisplay);
+ 		p[c].y1 &= ~3;
+ 		p[c].y1 -= mode->vdisplay & 2;
+ 	} else {
+-		p[c].y1 = (int32_t)(data->planepos[c].y * mode->vdisplay);
++		p[c].y1 = (int32_t)(data->planepos[c].y * min(TEST_MAX_HEIGHT, mode->vdisplay));
+ 		p[c].y1 &= ~3;
+ 	}
+ }
+@@ -530,7 +547,7 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+ 	igt_output_t *output;
+ 	igt_crc_t retcrc_sw, retcrc_hw;
+ 	planeinfos p[2];
+-	int c;
++	int c, used_w, used_h;
+ 	struct p_struct *oldplanes;
+ 	drmModeModeInfo *mode;
+ 
+@@ -568,14 +585,17 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+ 		igt_display_require_output(display);
+ 		igt_display_commit2(display, COMMIT_ATOMIC);
+ 
++		used_w = min(TEST_MAX_WIDTH, mode->hdisplay);
++		used_h = min(TEST_MAX_HEIGHT, mode->vdisplay);
++
+ 		data->pipe_crc = igt_pipe_crc_new(data->gfx_fd, pipe,
+ 						  INTEL_PIPE_CRC_SOURCE_AUTO);
+ 		igt_pipe_crc_start(data->pipe_crc);
+ 
+ 		for (i = 0; i < ARRAY_SIZE(planeconfigs); i++) {
+ 			p[0].planetype = DRM_PLANE_TYPE_PRIMARY;
+-			p[0].width = (uint64_t)(planeconfigs[i].width * mode->hdisplay);
+-			p[0].height = (uint64_t)(planeconfigs[i].height * mode->vdisplay);
++			p[0].width = (uint64_t)(planeconfigs[i].width * used_w);
++			p[0].height = (uint64_t)(planeconfigs[i].height * used_h);
+ 			p[0].tiling = planeconfigs[i].tiling;
+ 			pointlocation(data, (planeinfos *)&p, mode, 0);
+ 
+@@ -584,8 +604,8 @@ static void test_multi_plane_rotation(data_t *data, enum pipe pipe)
+ 
+ 				for (j = 0; j < ARRAY_SIZE(planeconfigs); j++) {
+ 					p[1].planetype = DRM_PLANE_TYPE_OVERLAY;
+-					p[1].width = (uint64_t)(planeconfigs[j].width * mode->hdisplay);
+-					p[1].height = (uint64_t)(planeconfigs[j].height * mode->vdisplay);
++					p[1].width = (uint64_t)(planeconfigs[j].width * used_w);
++					p[1].height = (uint64_t)(planeconfigs[j].height * used_h);
+ 					p[1].tiling = planeconfigs[j].tiling;
+ 					pointlocation(data, (planeinfos *)&p,
+ 						      mode, 1);
+-- 
+2.7.4
 
-CI Bug Log - changes from CI_DRM_7957 -> IGTPW_4168
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4168 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-hsw-peppy:       [PASS][1] -> [INCOMPLETE][2] ([i915#694] / [i915#816])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-    - fi-byt-n2820:       [PASS][3] -> [INCOMPLETE][4] ([i915#45])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-cfl-8700k:       [PASS][5] -> [DMESG-FAIL][6] ([i915#623])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/fi-cfl-8700k/igt@i915_selftest@live_gem_contexts.html
-
-  * igt@i915_selftest@live_hangcheck:
-    - fi-icl-dsi:         [PASS][7] -> [INCOMPLETE][8] ([fdo#108569])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/fi-icl-dsi/igt@i915_selftest@live_hangcheck.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/fi-icl-dsi/igt@i915_selftest@live_hangcheck.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live_gtt:
-    - fi-kbl-7500u:       [TIMEOUT][9] ([fdo#112271]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/fi-kbl-7500u/igt@i915_selftest@live_gtt.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/fi-kbl-7500u/igt@i915_selftest@live_gtt.html
-    - fi-icl-u3:          [TIMEOUT][11] ([fdo#112271]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/fi-icl-u3/igt@i915_selftest@live_gtt.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/fi-icl-u3/igt@i915_selftest@live_gtt.html
-
-  
-  [fdo#108569]: https://bugs.freedesktop.org/show_bug.cgi?id=108569
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#45]: https://gitlab.freedesktop.org/drm/intel/issues/45
-  [i915#623]: https://gitlab.freedesktop.org/drm/intel/issues/623
-  [i915#694]: https://gitlab.freedesktop.org/drm/intel/issues/694
-  [i915#816]: https://gitlab.freedesktop.org/drm/intel/issues/816
-
-
-Participating hosts (46 -> 46)
-------------------------------
-
-  Additional (6): fi-skl-6770hq fi-bdw-gvtdvm fi-cfl-8109u fi-bsw-kefka fi-skl-lmem fi-skl-6600u 
-  Missing    (6): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5445 -> IGTPW_4168
-
-  CI-20190529: 20190529
-  CI_DRM_7957: 3ceb00d5a5d62566c5979edcbf06df2c15b62b80 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4168: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/index.html
-  IGT_5445: 21e523814d692978d6d04ba85eadd67fcbd88b7e @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
