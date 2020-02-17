@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 18C306E479
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Feb 2020 11:27:04 +0000 (UTC)
-Date: Mon, 17 Feb 2020 13:26:59 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200217112659.GJ25209@platvala-desk.ger.corp.intel.com>
-References: <20200214214829.4054673-1-chris@chris-wilson.co.uk>
- <20200217110130.GH25209@platvala-desk.ger.corp.intel.com>
- <20200217111728.GI25209@platvala-desk.ger.corp.intel.com>
- <158193856695.19707.9026913900892754337@skylake-alporthouse-com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85AD489D39
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Feb 2020 11:28:06 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+Date: Mon, 17 Feb 2020 11:28:03 +0000
+Message-ID: <ab821cbca4aab9cbecfc73fb06b6815d3531301b.camel@intel.com>
+References: <20200213093041.10120-1-mika.kahola@intel.com>
+ <20200213113126.GA6331@ideak-desk.fi.intel.com>
+In-Reply-To: <20200213113126.GA6331@ideak-desk.fi.intel.com>
+Content-Language: en-US
+Content-ID: <A09B5C32687A0346ADA4D7B9A244F062@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <158193856695.19707.9026913900892754337@skylake-alporthouse-com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib: Update selftests to use dynamic
- subtests
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_ccs: Use correct CCS plane
+ for semiplanar formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,26 +24,149 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org, Tomi Sarvela <tomi.p.sarvela@intel.com>
+To: "Deak, Imre" <imre.deak@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Feb 17, 2020 at 11:22:46AM +0000, Chris Wilson wrote:
-> Quoting Petri Latvala (2020-02-17 11:17:28)
-> > Oh, and in the same patch you can do this:
+Pushed with fix proposals received from Imre (plane index fix) andPetri (documentation). 
+
+Thanks for the reviews!
+
+-Mika-
+
+On Thu, 2020-02-13 at 13:31 +0200, Imre Deak wrote:
+> On Thu, Feb 13, 2020 at 11:30:41AM +0200, Mika Kahola wrote:
+> > In case with semiplanar formats, we should use correct CCS plane
+> > when these formats are under a test.
 > > 
-> > Find the ugliest line you can find in tests/igt_command_line.sh and
-> > change it to a prettier one.
+> > Signed-off-by: Mika Kahola <mika.kahola@intel.com>
+> > ---
+> >  lib/igt_fb.c    |  2 +-
+> >  lib/igt_fb.h    |  1 +
+> >  tests/kms_ccs.c | 27 ++++++++++++++++++++-------
+> >  3 files changed, 22 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> > index 8bdb0a09..0f8435a5 100644
+> > --- a/lib/igt_fb.c
+> > +++ b/lib/igt_fb.c
+> > @@ -359,7 +359,7 @@ static const struct format_desc_struct
+> > *lookup_drm_format(uint32_t drm_format)
+> >  	return NULL;
+> >  }
+> >  
+> > -static bool igt_format_is_yuv_semiplanar(uint32_t format)
+> > +bool igt_format_is_yuv_semiplanar(uint32_t format)
+> >  {
+> >  	const struct format_desc_struct *f = lookup_drm_format(format);
+> >  
+> > diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+> > index 5ed9e35a..587f7a44 100644
+> > --- a/lib/igt_fb.h
+> > +++ b/lib/igt_fb.h
+> > @@ -201,6 +201,7 @@ uint32_t igt_drm_format_to_bpp(uint32_t
+> > drm_format);
+> >  const char *igt_format_str(uint32_t drm_format);
+> >  bool igt_fb_supported_format(uint32_t drm_format);
+> >  bool igt_format_is_yuv(uint32_t drm_format);
+> > +bool igt_format_is_yuv_semiplanar(uint32_t format);
+> >  bool igt_format_is_fp16(uint32_t drm_format);
+> >  int igt_format_plane_bpp(uint32_t drm_format, int plane);
+> >  void igt_format_array_fill(uint32_t **formats_array, unsigned int
+> > *count,
+> > diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
+> > index 35c4ceee..284cbbc8 100644
+> > --- a/tests/kms_ccs.c
+> > +++ b/tests/kms_ccs.c
+> > @@ -163,6 +163,16 @@ static void check_all_ccs_planes(int drm_fd,
+> > igt_fb_t *fb)
+> >  	}
+> >  }
+> >  
+> > +static int get_ccs_plane_index(uint32_t format)
+> > +{
+> > +	int index = 1;
+> > +
+> > +	if (igt_format_is_yuv_semiplanar(format))
+> > +		return 2;
+> > +
+> > +	return index;
+> > +}
+> > +
+> >  static void generate_fb(data_t *data, struct igt_fb *fb,
+> >  			int width, int height,
+> >  			enum test_fb_flags fb_flags)
+> > @@ -172,6 +182,7 @@ static void generate_fb(data_t *data, struct
+> > igt_fb *fb,
+> >  	uint64_t modifier;
+> >  	cairo_t *cr;
+> >  	int unit;
+> > +	int index;
+> >  	int ret;
+> >  
+> >  	if (intel_gen(intel_get_drm_devid(data->drm_fd)) >= 12)
+> > @@ -196,6 +207,8 @@ static void generate_fb(data_t *data, struct
+> > igt_fb *fb,
+> >  	else
+> >  		format = data->format;
+> >  
+> > +	index = get_ccs_plane_index(format);
+> > +
+> >  	igt_create_bo_for_fb(data->drm_fd, width, height, format,
+> > modifier, fb);
+> >  	igt_assert(fb->gem_handle > 0);
+> >  
+> > @@ -205,27 +218,27 @@ static void generate_fb(data_t *data, struct
+> > igt_fb *fb,
+> >  		if (fb_flags & FB_MISALIGN_AUX_STRIDE) {
+> >  			igt_skip_on_f(width <= 1024,
+> >  				      "FB already has the smallest
+> > possible stride\n");
+> > -			f.pitches[1] -= (unit/2);
+> > +			f.pitches[index] -= (unit/2);
+> >  		}
+> >  
+> >  		if (fb_flags & FB_SMALL_AUX_STRIDE) {
+> >  			igt_skip_on_f(width <= 1024,
+> >  				      "FB already has the smallest
+> > possible stride\n");
+> > -			f.pitches[1] = ALIGN(f.pitches[1]/2, unit);
+> > +			f.pitches[index] = ALIGN(f.pitches[1]/2, unit);
+> >  		}
+> >  
+> >  		if (fb_flags & FB_ZERO_AUX_STRIDE)
+> > -			f.pitches[1] = 0;
+> > +			f.pitches[index] = 0;
+> >  
+> >  		/* Put the CCS buffer on a different BO. */
+> >  		if (data->flags & TEST_BAD_CCS_HANDLE)
+> >  			f.handles[1] = gem_create(data->drm_fd, fb-
+> > >size);
 > 
-> We can just delete it, right? Since with igt_subtest_with_dynamic() we
-> always define the test group and so --list always reports something.
-> Right?
-
-The if (and the fi), yes.
-
-
--- 
-Petri Latvala
+> The above needs to be updated as well.
+> 
+> Looks ok for the Y CCS plane. We should also check the UV CCS plane,
+> but
+> that can be added later. With the above fixed:
+> 
+> Reviewed-by: Imre Deak <imre.deak@intel.com>
+> 
+> >  
+> >  		if (data->flags & TEST_NO_AUX_BUFFER) {
+> > -			f.handles[1] = 0;
+> > -			f.modifier[1] = 0;
+> > -			f.pitches[1] = 0;
+> > -			f.offsets[1] = 0;
+> > +			f.handles[index] = 0;
+> > +			f.modifier[index] = 0;
+> > +			f.pitches[index] = 0;
+> > +			f.offsets[index] = 0;
+> >  		}
+> >  	}
+> >  
+> > -- 
+> > 2.17.1
+> > 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
