@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD5076E908
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Feb 2020 09:40:27 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D3A666E904
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Feb 2020 09:44:24 +0000 (UTC)
+Date: Mon, 17 Feb 2020 15:14:42 +0530
 From: Ramalingam C <ramalingam.c@intel.com>
-Date: Mon, 17 Feb 2020 15:10:45 +0530
-Message-Id: <20200217094045.6788-1-ramalingam.c@intel.com>
-In-Reply-To: <20200207134527.17205-2-ramalingam.c@intel.com>
+Message-ID: <20200217094442.GA6572@intel.com>
 References: <20200207134527.17205-2-ramalingam.c@intel.com>
+ <20200217094045.6788-1-ramalingam.c@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/i915_pm_rpm: mmap type based dynamic
- subtests
+Content-Disposition: inline
+In-Reply-To: <20200217094045.6788-1-ramalingam.c@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915_pm_rpm: mmap type based
+ dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,84 +26,94 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Tests for gem_mmap_gtt/cpu are replaced with dynamic subtests with
-the array of mmap_types passed to gem_mmap_offset.
+On 2020-02-17 at 15:10:45 +0530, Ramalingam C wrote:
+> Tests for gem_mmap_gtt/cpu are replaced with dynamic subtests with
+> the array of mmap_types passed to gem_mmap_offset.
+> 
+> Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
+> cc: Chris Wilson <chris@chris-wilson.co.uk>
+> ---
+>  tests/i915/i915_pm_rpm.c | 34 ++++++++++++++--------------------
+>  1 file changed, 14 insertions(+), 20 deletions(-)
+> 
+> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+> index 3d7343240802..0c2821122956 100644
+> --- a/tests/i915/i915_pm_rpm.c
+> +++ b/tests/i915/i915_pm_rpm.c
+> @@ -1007,7 +1007,7 @@ static void debugfs_forcewake_user_subtest(void)
+>  	igt_assert(wait_for_suspended());
+>  }
+>  
+> -static void gem_mmap_subtest(bool gtt_mmap)
+> +static void gem_mmap_args(const struct mmap_offset *t)
+>  {
+>  	int i;
+>  	uint32_t handle;
+> @@ -1019,14 +1019,9 @@ static void gem_mmap_subtest(bool gtt_mmap)
+>  
+>  	handle = gem_create(drm_fd, buf_size);
+>  
+> -	if (gtt_mmap) {
+> -		gem_buf = gem_mmap__gtt(drm_fd, handle, buf_size,
+> -					PROT_READ | PROT_WRITE);
+> -	}
+> -	else {
+> -		gem_buf = gem_mmap__cpu(drm_fd, handle, 0, buf_size, 0);
+> -	}
+> -
+> +	gem_buf = __gem_mmap_offset(drm_fd, handle, 0, buf_size,
+> +				    PROT_READ | PROT_WRITE, t->type);
+> +	igt_require(gem_buf);
+>  
+>  	for (i = 0; i < buf_size; i++)
+>  		gem_buf[i] = i & 0xFF;
+> @@ -1056,13 +1051,9 @@ static void gem_mmap_subtest(bool gtt_mmap)
+>  	 * suspended. */
+>  	disable_all_screens_and_wait(&ms_data);
+>  
+> -	if (gtt_mmap) {
+> -		gem_buf = gem_mmap__gtt(drm_fd, handle, buf_size,
+> -					PROT_READ | PROT_WRITE);
+> -	}
+> -	else {
+> -		gem_buf = gem_mmap__cpu(drm_fd, handle, 0, buf_size, 0);
+> -	}
+> +	gem_buf = __gem_mmap_offset(drm_fd, handle, 0, buf_size,
+> +				    PROT_READ | PROT_WRITE, t->type);
+> +	igt_require(gem_buf);
+>  
+>  	igt_assert(wait_for_suspended());
+>  
+> @@ -2014,10 +2005,13 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+>  		modeset_subtest(SCREEN_TYPE_NON_LPSP, 1, WAIT_STATUS | USE_DPMS);
+>  
+>  	/* GEM */
+> -	igt_subtest("gem-mmap-cpu")
+> -		gem_mmap_subtest(false);
+> -	igt_subtest("gem-mmap-gtt")
+> -		gem_mmap_subtest(true);
+> +	igt_subtest_with_dynamic("gem-mmap-type") {
+> +		for_each_mmap_offset_type(t) {
+> +			igt_dynamic_f("%s", t->name)
+> +				gem_mmap_args(t);
+> +		}
+> +	}
+Chris,
 
-Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
-cc: Chris Wilson <chris@chris-wilson.co.uk>
----
- tests/i915/i915_pm_rpm.c | 34 ++++++++++++++--------------------
- 1 file changed, 14 insertions(+), 20 deletions(-)
+This is what you suggested I guess. But what is the mmap_offset is not
+supported? shouldn't we have the legacy tests in such scenario?
 
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 3d7343240802..0c2821122956 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -1007,7 +1007,7 @@ static void debugfs_forcewake_user_subtest(void)
- 	igt_assert(wait_for_suspended());
- }
- 
--static void gem_mmap_subtest(bool gtt_mmap)
-+static void gem_mmap_args(const struct mmap_offset *t)
- {
- 	int i;
- 	uint32_t handle;
-@@ -1019,14 +1019,9 @@ static void gem_mmap_subtest(bool gtt_mmap)
- 
- 	handle = gem_create(drm_fd, buf_size);
- 
--	if (gtt_mmap) {
--		gem_buf = gem_mmap__gtt(drm_fd, handle, buf_size,
--					PROT_READ | PROT_WRITE);
--	}
--	else {
--		gem_buf = gem_mmap__cpu(drm_fd, handle, 0, buf_size, 0);
--	}
--
-+	gem_buf = __gem_mmap_offset(drm_fd, handle, 0, buf_size,
-+				    PROT_READ | PROT_WRITE, t->type);
-+	igt_require(gem_buf);
- 
- 	for (i = 0; i < buf_size; i++)
- 		gem_buf[i] = i & 0xFF;
-@@ -1056,13 +1051,9 @@ static void gem_mmap_subtest(bool gtt_mmap)
- 	 * suspended. */
- 	disable_all_screens_and_wait(&ms_data);
- 
--	if (gtt_mmap) {
--		gem_buf = gem_mmap__gtt(drm_fd, handle, buf_size,
--					PROT_READ | PROT_WRITE);
--	}
--	else {
--		gem_buf = gem_mmap__cpu(drm_fd, handle, 0, buf_size, 0);
--	}
-+	gem_buf = __gem_mmap_offset(drm_fd, handle, 0, buf_size,
-+				    PROT_READ | PROT_WRITE, t->type);
-+	igt_require(gem_buf);
- 
- 	igt_assert(wait_for_suspended());
- 
-@@ -2014,10 +2005,13 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		modeset_subtest(SCREEN_TYPE_NON_LPSP, 1, WAIT_STATUS | USE_DPMS);
- 
- 	/* GEM */
--	igt_subtest("gem-mmap-cpu")
--		gem_mmap_subtest(false);
--	igt_subtest("gem-mmap-gtt")
--		gem_mmap_subtest(true);
-+	igt_subtest_with_dynamic("gem-mmap-type") {
-+		for_each_mmap_offset_type(t) {
-+			igt_dynamic_f("%s", t->name)
-+				gem_mmap_args(t);
-+		}
-+	}
-+
- 	igt_subtest("gem-pread")
- 		gem_pread_subtest();
- 	igt_subtest("gem-execbuf")
--- 
-2.20.1
+Lmem specific tests are not added yet. We will add it in separate
+patches.
 
+-Ram
+> +
+>  	igt_subtest("gem-pread")
+>  		gem_pread_subtest();
+>  	igt_subtest("gem-execbuf")
+> -- 
+> 2.20.1
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
