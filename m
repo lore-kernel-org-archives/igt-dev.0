@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 70FB76E091
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Feb 2020 16:29:33 +0000 (UTC)
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20200218001710.16537-2-sreedhar.telukuntla@intel.com>
-References: <20200218001710.16537-1-sreedhar.telukuntla@intel.com>
- <20200218001710.16537-2-sreedhar.telukuntla@intel.com>
-Message-ID: <158195696525.19707.9349580960052193744@skylake-alporthouse-com>
-Date: Mon, 17 Feb 2020 16:29:25 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/i915/gem_mman: Add coherent
- mmap api support with set domain
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 17 Feb 2020 16:47:08 -0000
+Message-ID: <158195802899.16571.10897014690554881928@emeril.freedesktop.org>
+References: <20200217145042.829-1-petri.latvala@intel.com>
+In-Reply-To: <20200217145042.829-1-petri.latvala@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_runner=3A_Refactor_timeouting?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,140 +14,108 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Sreedhar Telukuntla <sreedhar.telukuntla@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Sreedhar Telukuntla (2020-02-18 00:17:09)
-> gem_mmap__device_coherent_domain api maps buffer object and returns
-> the memory domain to be used by the caller for subsequent set_domain
-> call for cpu access.
-> 
-> gem_mmap__device_coherent_sync api maps buffer object and also does
-> set_domain to make the memory ready for cpu access.
-> 
-> Signed-off-by: Sreedhar Telukuntla <sreedhar.telukuntla@intel.com>
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> ---
->  lib/i915/gem_mman.c | 76 ++++++++++++++++++++++++++++++++++++++++++---
->  lib/i915/gem_mman.h |  6 +++-
->  2 files changed, 77 insertions(+), 5 deletions(-)
-> 
-> diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
-> index 08ae6769..b8d20c07 100644
-> --- a/lib/i915/gem_mman.c
-> +++ b/lib/i915/gem_mman.c
-> @@ -345,21 +345,25 @@ void *gem_mmap_offset__wc(int fd, uint32_t handle, uint64_t offset,
->   * @offset: offset in the gem buffer of the mmap arena
->   * @size: size of the mmap arena
->   * @prot: memory protection bits as used by mmap()
-> + * @domain: cache  domain used for mmap
->   *
->   * Returns: A pointer to a block of linear device memory mapped into the
->   * process with WC semantics. When no WC is available try to mmap using GGTT.
->   */
->  void *__gem_mmap__device_coherent(int fd, uint32_t handle, uint64_t offset,
-> -                                 uint64_t size, unsigned prot)
-> +                                 uint64_t size, unsigned prot, uint32_t *domain)
->  {
->         void *ptr = __gem_mmap_offset(fd, handle, offset, size, prot,
->                                       I915_MMAP_OFFSET_WC);
->         if (!ptr)
->                 ptr = __gem_mmap__wc(fd, handle, offset, size, prot);
->  
-> -       if (!ptr)
-> -               ptr = __gem_mmap__gtt(fd, handle, size, prot);
-> +       *domain = I915_GEM_DOMAIN_WC;
->  
-> +       if (!ptr) {
-> +               ptr = __gem_mmap__gtt(fd, handle, size, prot);
-> +               *domain = I915_GEM_DOMAIN_GTT;
-> +       }
->         return ptr;
->  }
->  
-> @@ -382,15 +386,79 @@ void *gem_mmap__device_coherent(int fd, uint32_t handle, uint64_t offset,
->                                 uint64_t size, unsigned prot)
->  {
->         void *ptr;
-> +       uint32_t domain;
->  
->         igt_assert(offset == 0);
->  
-> -       ptr = __gem_mmap__device_coherent(fd, handle, offset, size, prot);
-> +       ptr = __gem_mmap__device_coherent(fd, handle, offset, size, prot, &domain);
->         igt_assert(ptr);
->  
->         return ptr;
->  }
->  
-> +/**
-> + * gem_mmap__device_coherent_domain:
-> + * @fd: open i915 drm file descriptor
-> + * @handle: gem buffer object handle
-> + * @offset: offset in the gem buffer of the mmap arena
-> + * @size: size of the mmap arena
-> + * @prot: memory protection bits as used by mmap()
-> + * @domain: memory domain to be used by the caller for set_domain after mmap
-> + *
-> + * Call __gem_mmap__device__coherent_domain(), asserts on fail.
-> + * Offset argument passed in function call must be 0. In the future
-> + * when driver will allow slice mapping of buffer object this restriction
-> + * will be removed.
-> + *
-> + * Returns: A pointer to the created memory mapping.
-> + */
-> +void *gem_mmap__device_coherent_domain(int fd, uint32_t handle, uint64_t offset,
-> +                               uint64_t size, unsigned prot, uint32_t *domain)
-> +{
-> +       void *ptr;
-> +
-> +       igt_assert(offset == 0);
-> +
-> +       ptr = __gem_mmap__device_coherent(fd, handle, offset, size, prot, domain);
-> +       igt_assert(ptr);
-> +
-> +       return ptr;
-> +}
-> +
-> +/**
-> + * gem_mmap__device_coherent_sync:
-> + * @fd: open i915 drm file descriptor
-> + * @handle: gem buffer object handle
-> + * @offset: offset in the gem buffer of the mmap arena
-> + * @size: size of the mmap arena
-> + * @prot: memory protection bits as used by mmap()
-> + *
-> + * Call __gem_mmap__device__coherent_sync(), asserts on fail.
-> + * Offset argument passed in function call must be 0. In the future
-> + * when driver will allow slice mapping of buffer object this restriction
-> + * will be removed.
-> + *
-> + * This function sets appropriate memory domain as well once the mapping is
-> + * complete and makes the memory ready for cpu access
-> + *
-> + * Returns: A pointer to the created memory mapping.
-> + */
-> +void *gem_mmap__device_coherent_sync(int fd, uint32_t handle, uint64_t offset,
-> +                               uint64_t size, unsigned prot)
-> +{
-> +       void *ptr;
-> +       uint32_t domain;
-> +
-> +       igt_assert(offset == 0);
-> +
-> +       ptr = gem_mmap__device_coherent_domain(fd, handle, offset, size, prot, &domain);
-> +       igt_assert(ptr);
-> +
-> +       gem_set_domain(fd, handle, domain, domain);
+== Series Details ==
 
-No. Read/write is important, especially when there are comments
-indicating that the api is being subverted and abused.
--Chris
+Series: series starting with [i-g-t,1/2] runner: Refactor timeouting
+URL   : https://patchwork.freedesktop.org/series/73539/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_7955 -> IGTPW_4166
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_4166 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4166, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4166/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4166:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-kbl-7500u:       NOTRUN -> [INCOMPLETE][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4166/fi-kbl-7500u/igt@gem_exec_suspend@basic-s0.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@gem_exec_suspend@basic-s0:
+    - {fi-kbl-7560u}:     NOTRUN -> [INCOMPLETE][2]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4166/fi-kbl-7560u/igt@gem_exec_suspend@basic-s0.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4166 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_close_race@basic-threads:
+    - fi-hsw-peppy:       [PASS][3] -> [INCOMPLETE][4] ([i915#694] / [i915#816])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7955/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4166/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#694]: https://gitlab.freedesktop.org/drm/intel/issues/694
+  [i915#816]: https://gitlab.freedesktop.org/drm/intel/issues/816
+  [i915#937]: https://gitlab.freedesktop.org/drm/intel/issues/937
+
+
+Participating hosts (51 -> 46)
+------------------------------
+
+  Additional (2): fi-kbl-7560u fi-kbl-7500u 
+  Missing    (7): fi-hsw-4770r fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5445 -> IGTPW_4166
+
+  CI-20190529: 20190529
+  CI_DRM_7955: 429740c5a92b11e3b649edb3ed4fd66237bd323e @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4166: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4166/index.html
+  IGT_5445: 21e523814d692978d6d04ba85eadd67fcbd88b7e @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4166/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
