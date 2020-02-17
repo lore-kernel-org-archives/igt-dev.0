@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6AD856E05A
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Feb 2020 14:22:00 +0000 (UTC)
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Date: Mon, 17 Feb 2020 16:21:50 +0200
+Message-Id: <20200217142155.501499-2-lionel.g.landwerlin@intel.com>
+In-Reply-To: <20200217142155.501499-1-lionel.g.landwerlin@intel.com>
+References: <20200217142155.501499-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 17 Feb 2020 14:19:03 -0000
-Message-ID: <158194914349.16572.15346914454954132410@emeril.freedesktop.org>
-References: <20200207134527.17205-1-ramalingam.c@intel.com>
-In-Reply-To: <20200207134527.17205-1-ramalingam.c@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2Cv2=2C1/2=5D_tests/intel=5Fdp=5Fcompli?=
- =?utf-8?q?ance=3A_use_device_coherent_mapping_instead_of_mmap=5Fgtt_=28re?=
- =?utf-8?b?djIp?=
+Subject: [igt-dev] [PATCH i-g-t 1/6] lib/intel_chipset: identify Elkhart Lake
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,83 +16,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ramalingam C <ramalingam.c@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+We'll need to identify this platform for performance tools.
 
-Series: series starting with [i-g-t,v2,1/2] tests/intel_dp_compliance: use device coherent mapping instead of mmap_gtt (rev2)
-URL   : https://patchwork.freedesktop.org/series/73148/
-State : success
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ lib/intel_chipset.h     | 1 +
+ lib/intel_device_info.c | 8 +++++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-== Summary ==
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index 2bd57f4f..929fac53 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -71,6 +71,7 @@ struct intel_device_info {
+ 	bool is_cometlake : 1;
+ 	bool is_cannonlake : 1;
+ 	bool is_icelake : 1;
++	bool is_elkhartlake : 1;
+ 	bool is_tigerlake : 1;
+ 	const char *codename;
+ };
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 4f96577d..07eeb7c5 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -309,6 +309,12 @@ static const struct intel_device_info intel_icelake_info = {
+ 	.codename = "icelake"
+ };
+ 
++static const struct intel_device_info intel_elkhartlake_info = {
++	.gen = BIT(10),
++	.is_elkhartlake = true,
++	.codename = ""
++};
++
+ static const struct intel_device_info intel_tigerlake_info = {
+ 	.gen = BIT(11),
+ 	.is_tigerlake = true,
+@@ -394,7 +400,7 @@ static const struct pci_id_match intel_device_match[] = {
+ 
+ 	INTEL_ICL_11_IDS(&intel_icelake_info),
+ 
+-	INTEL_EHL_IDS(&intel_icelake_info),
++	INTEL_EHL_IDS(&intel_elkhartlake_info),
+ 
+ 	INTEL_TGL_12_IDS(&intel_tigerlake_info),
+ 
+-- 
+2.25.0
 
-CI Bug Log - changes from CI_DRM_7954 -> IGTPW_4163
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4163/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4163 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-hsw-peppy:       [TIMEOUT][1] ([fdo#112271] / [i915#1084]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7954/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4163/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
-
-  
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#1084]: https://gitlab.freedesktop.org/drm/intel/issues/1084
-
-
-Participating hosts (50 -> 44)
-------------------------------
-
-  Additional (1): fi-ehl-1 
-  Missing    (7): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-bsw-kefka fi-kbl-7560u fi-byt-clapper 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5444 -> IGTPW_4163
-
-  CI-20190529: 20190529
-  CI_DRM_7954: d7c1791394faaa869d3442705413dac8c0ecd677 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4163: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4163/index.html
-  IGT_5444: c46bae259d427f53fcfcd5f05de0181a9e82d6fe @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@i915_pm_rpm@gem-mmap-type
--igt@i915_pm_rpm@gem-mmap-cpu
--igt@i915_pm_rpm@gem-mmap-gtt
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4163/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
