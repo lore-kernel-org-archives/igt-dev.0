@@ -1,20 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E30766EA84
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 20:26:13 +0000 (UTC)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 711B86E41D
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 22:56:26 +0000 (UTC)
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Date: Wed, 19 Feb 2020 00:56:14 +0200
+Message-Id: <20200218225620.668212-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-References: <20200217142155.501499-1-lionel.g.landwerlin@intel.com>
- <20200217142155.501499-5-lionel.g.landwerlin@intel.com>
- <158205226777.8112.12214621080932657728@skylake-alporthouse-com>
- <65c6891d-5ab0-183d-af4e-535790869a6d@intel.com>
- <158205461284.8112.894158485277245951@skylake-alporthouse-com>
- <f9f80042-89ff-2d98-924b-db18a2ac0bba@intel.com>
- <93c12289-5f39-478b-5e9d-e7a846e3122e@intel.com>
-In-Reply-To: <93c12289-5f39-478b-5e9d-e7a846e3122e@intel.com>
-Message-ID: <158205756906.8112.8630081801490371915@skylake-alporthouse-com>
-Date: Tue, 18 Feb 2020 20:26:09 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 4/6] tools: add i915 perf recorder tool
+Subject: [igt-dev] [PATCH i-g-t v2 0/6] New performance recording/replay
+ tools for i915-perf
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,63 +15,107 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBMaW9uZWwgTGFuZHdlcmxpbiAoMjAyMC0wMi0xOCAyMDoxNDoxMikKPiBPbiAxOC8w
-Mi8yMDIwIDIxOjQ5LCBMaW9uZWwgTGFuZHdlcmxpbiB3cm90ZToKPiA+IE9uIDE4LzAyLzIwMjAg
-MjE6MzYsIENocmlzIFdpbHNvbiB3cm90ZToKPiA+PiBRdW90aW5nIExpb25lbCBMYW5kd2VybGlu
-ICgyMDIwLTAyLTE4IDE5OjI1OjA4KQo+ID4+PiBPbiAxOC8wMi8yMDIwIDIwOjU3LCBDaHJpcyBX
-aWxzb24gd3JvdGU6Cj4gPj4+PiBRdW90aW5nIExpb25lbCBMYW5kd2VybGluICgyMDIwLTAyLTE3
-IDE0OjIxOjUzKQo+ID4+Pj4+IFNpZ25lZC1vZmYtYnk6IExpb25lbCBMYW5kd2VybGluIDxsaW9u
-ZWwuZy5sYW5kd2VybGluQGludGVsLmNvbT4KPiA+Pj4+PiAtLS0KPiA+Pj4+PiDCoMKgIGxpYi9p
-OTE1LXBlcmYucGMuaW7CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIHzCoMKgwqAgMSArCj4gPj4+Pj4gwqDCoCBsaWIvaTkxNS9wZXJmX2RhdGEuaMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAxMTgg
-KysKPiA+Pj4+PiDCoMKgIGxpYi9tZXNvbi5idWlsZMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqDCoMKgIDEgKwo+ID4+Pj4+IMKg
-wqAgbGliL3Rlc3RzL2k5MTVfcGVyZl9kYXRhX2FsaWdubWVudC5jwqDCoMKgwqDCoMKgwqDCoMKg
-IHzCoMKgIDQwICsKPiA+Pj4+PiDCoMKgIGxpYi90ZXN0cy9tZXNvbi5idWlsZMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqDCoMKgIDEgKwo+ID4+Pj4+
-IMKgwqAgdG9vbHMvaTkxNS1wZXJmL2k5MTVfcGVyZl9jb250cm9sLmPCoMKgwqDCoMKgwqDCoMKg
-wqDCoCB8wqAgMTMzICsrKwo+ID4+Pj4+IMKgwqAgdG9vbHMvaTkxNS1wZXJmL2k5MTVfcGVyZl9y
-ZWNvcmRlci5jwqDCoMKgwqDCoMKgwqDCoMKgIHwgMTA1MiAKPiA+Pj4+PiArKysrKysrKysrKysr
-KysrKwo+ID4+Pj4+IMKgwqAgdG9vbHMvaTkxNS1wZXJmL2k5MTVfcGVyZl9yZWNvcmRlcl9jb21t
-YW5kcy5oIHzCoMKgIDM5ICsKPiA+Pj4+PiDCoMKgIHRvb2xzL2k5MTUtcGVyZi9tZXNvbi5idWls
-ZMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqDCoCAxMSArCj4gPj4+Pj4g
-wqDCoCA5IGZpbGVzIGNoYW5nZWQsIDEzOTYgaW5zZXJ0aW9ucygrKQo+ID4+Pj4+IMKgwqAgY3Jl
-YXRlIG1vZGUgMTAwNjQ0IGxpYi9pOTE1L3BlcmZfZGF0YS5oCj4gPj4+Pj4gwqDCoCBjcmVhdGUg
-bW9kZSAxMDA2NDQgbGliL3Rlc3RzL2k5MTVfcGVyZl9kYXRhX2FsaWdubWVudC5jCj4gPj4+Pj4g
-wqDCoCBjcmVhdGUgbW9kZSAxMDA2NDQgdG9vbHMvaTkxNS1wZXJmL2k5MTVfcGVyZl9jb250cm9s
-LmMKPiA+Pj4+PiDCoMKgIGNyZWF0ZSBtb2RlIDEwMDY0NCB0b29scy9pOTE1LXBlcmYvaTkxNV9w
-ZXJmX3JlY29yZGVyLmMKPiA+Pj4+PiDCoMKgIGNyZWF0ZSBtb2RlIDEwMDY0NCB0b29scy9pOTE1
-LXBlcmYvaTkxNV9wZXJmX3JlY29yZGVyX2NvbW1hbmRzLmgKPiA+Pj4+Pgo+ID4+Pj4+IGRpZmYg
-LS1naXQgYS9saWIvaTkxNS1wZXJmLnBjLmluIGIvbGliL2k5MTUtcGVyZi5wYy5pbgo+ID4+Pj4+
-IGluZGV4IGU3MmVmZGMzLi44Y2ZhM2RiZSAxMDA2NDQKPiA+Pj4+PiAtLS0gYS9saWIvaTkxNS1w
-ZXJmLnBjLmluCj4gPj4+Pj4gKysrIGIvbGliL2k5MTUtcGVyZi5wYy5pbgo+ID4+Pj4+IEBAIC02
-LDUgKzYsNiBAQCBpbmNsdWRlZGlyPUBpbmNsdWRlZGlyQAo+ID4+Pj4+IMKgwqAgTmFtZTogaTkx
-NS1wZXJmCj4gPj4+Pj4gwqDCoCBEZXNjcmlwdGlvbjogaTkxNSBwZXJmIGxpYnJhcnkKPiA+Pj4+
-PiDCoMKgIFZlcnNpb246IEB2ZXJzaW9uQAo+ID4+Pj4+ICtSZXF1aXJlczogbGliZHJtCj4gPj4+
-PiBZb3Ugb25seSB1c2UgdGhlIHVBUEkgaGVhZGVycywgYW5kIHRoZXkgYXJlIGluIGluY2x1ZGUv
-ZHJtLXVhcGkvCj4gPj4+PiBSaWdodD8KPiA+Pj4+IC1DaHJpcwo+ID4+PiBGb3IgSUdUIHllYWgs
-IGJ1dCBmb3IgYW5vdGhlciBhcHBsaWNhdGlvbiB1c2luZyB0aGlzIGxpYnJhcnksIGl0IG5lZWRz
-Cj4gPj4+IHRoZSBkZXBlbmRlbmN5Lgo+ID4+IElzbid0IHRoYXQgYSBSZXF1aXJlcy5wcml2YXRl
-Ogo+ID4+IE5vIGxpbmthZ2UgcmVxdWlyZWQsIGJ1dCBoZWFkZXJzIGFyZT8KPiA+PiAtQ2hyaXMK
-PiA+Cj4gPiBUaGUgaGVhZGVycyBhcmUgYSBzdHJ1Y3R1cmUgcG9pbnRlciBmcm9tIGk5MTVfZHJt
-LmgKPiA+Cj4gPiBCdXQgSSBjYW4gcHJvYmFibHkgZm9yd2FyZCBkZWNsYXJlIHRoaXMgYW5kIHBv
-dGVudGlhbGx5IGRyb3AgdGhlIG5lZWQgCj4gPiBmb3IgYW55IGRlcCA6KQo+ID4KPiA+Cj4gPiAt
-TGlvbmVsIAo+IAo+IAo+IEFyZyBJIHdhcyB3cm9uZywgb25lIG9mIHRoZSBwYWNrZXQgaW4gdGhl
-IHBlcmZfZGF0YS5oIGVtYmVkcyB0aGUgCj4gdG9wb2xvZ3kgc3RydWN0dXJlIGZyb20gaTkxNV9k
-cm0uaC4KPiAKPiAKPiBJIGd1ZXNzIGl0IGNvdWxkIGJlIHJld3JpdHRlbiBqdXN0IGluIHRoZXJl
-LiBXaGF0IGRvIHlvdSB0aGluaz8KClB1bGwgaW4gdGhlIGhlYWRlciB2aWEgcGtnLWNvbmZpZywg
-d2Ugc2hvdWxkIHN0aWNrIHRvIGEgc2luZ2xlIGNhbm9uaWNhbApoZWFkZXIgZm9yIHRoZSBvdXRz
-aWRlIHdvcmxkLiBJIHRoaW5rIGl0IGlzIHBvc3NpYmxlIGZvciBvdXIgLnBjIHRvCmF2b2lkIHRo
-ZSBsaW5rYWdlOyB3ZSBqdXN0IHJpc2sgRWVybyBjb21wbGFpbmluZyBhYm91dCB0aGUgbWlsbGlv
-biBsaW5rcwppZiB3ZSBnZXQgaXQgd3JvbmcuCi1DaHJpcwpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxp
-c3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2lndC1kZXYK
+A v2 with only minor changes suggested by Chris.
+
+Cheers,
+
+Lionel Landwerlin (6):
+  lib/intel_chipset: identify Elkhart Lake
+  lib: Add i915_perf library
+  lib/i915-perf: Add support for loading perf configurations
+  tools: add i915 perf recorder tool
+  lib/i915-perf: add i915 perf data reader
+  tools: add i915-perf-reader
+
+ lib/i915-perf.pc.in                           |    11 +
+ lib/i915/perf-configs/README.md               |   115 +
+ lib/i915/perf-configs/codegen.py              |    33 +
+ lib/i915/perf-configs/guids.xml               |   319 +
+ lib/i915/perf-configs/mdapi-xml-convert.py    |  1006 +
+ lib/i915/perf-configs/oa-bdw.xml              | 15653 ++++++++++++++++
+ lib/i915/perf-configs/oa-bxt.xml              |  9595 ++++++++++
+ lib/i915/perf-configs/oa-cflgt2.xml           | 10866 +++++++++++
+ lib/i915/perf-configs/oa-cflgt3.xml           | 10933 +++++++++++
+ lib/i915/perf-configs/oa-chv.xml              |  9757 ++++++++++
+ lib/i915/perf-configs/oa-cnl.xml              | 10411 ++++++++++
+ lib/i915/perf-configs/oa-glk.xml              |  9346 +++++++++
+ lib/i915/perf-configs/oa-hsw.xml              |  4615 +++++
+ lib/i915/perf-configs/oa-icl.xml              | 11869 ++++++++++++
+ lib/i915/perf-configs/oa-kblgt2.xml           | 10866 +++++++++++
+ lib/i915/perf-configs/oa-kblgt3.xml           | 10933 +++++++++++
+ lib/i915/perf-configs/oa-lkf.xml              | 11803 ++++++++++++
+ lib/i915/perf-configs/oa-sklgt2.xml           | 11895 ++++++++++++
+ lib/i915/perf-configs/oa-sklgt3.xml           | 10933 +++++++++++
+ lib/i915/perf-configs/oa-sklgt4.xml           | 10956 +++++++++++
+ lib/i915/perf-configs/oa-tgl.xml              |  8491 +++++++++
+ lib/i915/perf-configs/oa_guid_registry.py     |    73 +
+ lib/i915/perf-configs/perf-codegen.py         |   850 +
+ lib/i915/perf-configs/update-guids.py         |   231 +
+ lib/i915/perf.c                               |   584 +
+ lib/i915/perf.h                               |   240 +
+ lib/i915/perf_data.h                          |   118 +
+ lib/i915/perf_data_reader.c                   |   383 +
+ lib/i915/perf_data_reader.h                   |   105 +
+ lib/intel_chipset.h                           |     1 +
+ lib/intel_device_info.c                       |     8 +-
+ lib/meson.build                               |    68 +
+ lib/tests/i915_perf_data_alignment.c          |    40 +
+ lib/tests/meson.build                         |     1 +
+ tools/i915-perf/i915_perf_configs.c           |   277 +
+ tools/i915-perf/i915_perf_control.c           |   133 +
+ tools/i915-perf/i915_perf_reader.c            |   279 +
+ tools/i915-perf/i915_perf_recorder.c          |  1052 ++
+ tools/i915-perf/i915_perf_recorder_commands.h |    39 +
+ tools/i915-perf/meson.build                   |    22 +
+ tools/meson.build                             |     1 +
+ 41 files changed, 174910 insertions(+), 1 deletion(-)
+ create mode 100644 lib/i915-perf.pc.in
+ create mode 100644 lib/i915/perf-configs/README.md
+ create mode 100644 lib/i915/perf-configs/codegen.py
+ create mode 100644 lib/i915/perf-configs/guids.xml
+ create mode 100755 lib/i915/perf-configs/mdapi-xml-convert.py
+ create mode 100644 lib/i915/perf-configs/oa-bdw.xml
+ create mode 100644 lib/i915/perf-configs/oa-bxt.xml
+ create mode 100644 lib/i915/perf-configs/oa-cflgt2.xml
+ create mode 100644 lib/i915/perf-configs/oa-cflgt3.xml
+ create mode 100644 lib/i915/perf-configs/oa-chv.xml
+ create mode 100644 lib/i915/perf-configs/oa-cnl.xml
+ create mode 100644 lib/i915/perf-configs/oa-glk.xml
+ create mode 100644 lib/i915/perf-configs/oa-hsw.xml
+ create mode 100644 lib/i915/perf-configs/oa-icl.xml
+ create mode 100644 lib/i915/perf-configs/oa-kblgt2.xml
+ create mode 100644 lib/i915/perf-configs/oa-kblgt3.xml
+ create mode 100644 lib/i915/perf-configs/oa-lkf.xml
+ create mode 100644 lib/i915/perf-configs/oa-sklgt2.xml
+ create mode 100644 lib/i915/perf-configs/oa-sklgt3.xml
+ create mode 100644 lib/i915/perf-configs/oa-sklgt4.xml
+ create mode 100644 lib/i915/perf-configs/oa-tgl.xml
+ create mode 100644 lib/i915/perf-configs/oa_guid_registry.py
+ create mode 100755 lib/i915/perf-configs/perf-codegen.py
+ create mode 100755 lib/i915/perf-configs/update-guids.py
+ create mode 100644 lib/i915/perf.c
+ create mode 100644 lib/i915/perf.h
+ create mode 100644 lib/i915/perf_data.h
+ create mode 100644 lib/i915/perf_data_reader.c
+ create mode 100644 lib/i915/perf_data_reader.h
+ create mode 100644 lib/tests/i915_perf_data_alignment.c
+ create mode 100644 tools/i915-perf/i915_perf_configs.c
+ create mode 100644 tools/i915-perf/i915_perf_control.c
+ create mode 100644 tools/i915-perf/i915_perf_reader.c
+ create mode 100644 tools/i915-perf/i915_perf_recorder.c
+ create mode 100644 tools/i915-perf/i915_perf_recorder_commands.h
+ create mode 100644 tools/i915-perf/meson.build
+
+--
+2.25.0
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
