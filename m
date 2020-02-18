@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C60889FA0
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 12:16:18 +0000 (UTC)
-From: sai gowtham <sai.gowtham.ch@intel.com>
-Date: Tue, 18 Feb 2020 17:45:49 +0530
-Message-Id: <20200218121549.12917-1-sai.gowtham.ch@intel.com>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB2E86E2BC
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 12:27:08 +0000 (UTC)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 18 Feb 2020 12:26:48 +0000
+Message-Id: <20200218122648.1252102-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] [PATCH i-g-t]tests/i915/gem_exec_create: Added
- __for_each_physical_engine to utilize all available engines.
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_schedule: Exercise implicit
+ ordering between engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,95 +19,105 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: sai.gowtham.ch@intel.com, igt-dev@lists.freedesktop.org
+To: intel-gfx@lists.freedsktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: saigowth <sai.gowtham.ch@intel.com>
+Check that reads are serialised after a write, and that a subsequent
+write is after all reads.
 
-Replaced the legacy for_each_engine* defines with the ones
-implemented in the gem_engine_topology library.
-
-Cc: Dec Katarzyna <katarzyna.dec@intel.com>
-Cc: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
-Signed-off-by: sai gowtham <sai.gowtham.ch@intel.com>
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Antonio Argenziano <antonio.argenziano@intel.com>
+Cc: Sravan Kumar Nedunoori <sravan.kumar.nedunoori@intel.com>
 ---
- tests/i915/gem_exec_create.c | 29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ tests/i915/gem_exec_schedule.c | 67 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
-diff --git a/tests/i915/gem_exec_create.c b/tests/i915/gem_exec_create.c
-index 102a161d..c70572af 100644
---- a/tests/i915/gem_exec_create.c
-+++ b/tests/i915/gem_exec_create.c
-@@ -58,14 +58,15 @@ static double elapsed(const struct timespec *start, const struct timespec *end)
+diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
+index a20985864..ff41551d0 100644
+--- a/tests/i915/gem_exec_schedule.c
++++ b/tests/i915/gem_exec_schedule.c
+@@ -241,6 +241,55 @@ static void fifo(int fd, unsigned ring)
+ 	igt_assert_eq_u32(result, 2);
+ }
  
- static void all(int fd, unsigned flags, int timeout, int ncpus)
++enum implicit_dir {
++	READ_WRITE = 0x1,
++	WRITE_READ = 0x2,
++};
++
++static void implicit_rw(int i915, unsigned ring, enum implicit_dir dir)
++{
++	IGT_CORK_FENCE(cork);
++	unsigned int count;
++	uint32_t scratch;
++	uint32_t result;
++	int fence;
++
++	count = 0;
++	for_each_physical_engine(other, i915) {
++		if (eb_ring(other) == ring)
++			continue;
++
++		count++;
++	}
++	igt_require(count);
++
++	scratch = gem_create(i915, 4096);
++	fence = igt_cork_plug(&cork, i915);
++
++	if (dir & WRITE_READ)
++		store_dword_fenced(i915, 0, ring, scratch, 0, -ring, fence, I915_GEM_DOMAIN_RENDER);
++
++	for_each_physical_engine(other, i915) {
++		if (eb_ring(other) == ring)
++			continue;
++
++		store_dword_fenced(i915, 0, ring, scratch, 0, eb_ring(other), fence, 0);
++	}
++
++	if (dir & READ_WRITE)
++		store_dword_fenced(i915, 0, ring, scratch, 0, ring, fence, I915_GEM_DOMAIN_RENDER);
++
++	unplug_show_queue(i915, &cork, ring);
++	close(fence);
++
++	result =  __sync_read_u32(i915, scratch, 0);
++	gem_close(i915, scratch);
++
++	igt_assert_neq_u32(result, -ring);
++	if (dir & READ_WRITE)
++		igt_assert_eq_u32(result, ring);
++}
++
+ static void independent(int fd, unsigned int engine)
  {
-+	const struct intel_execution_engine2 *e;
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	struct drm_i915_gem_exec_object2 obj;
- 	unsigned engines[16], nengine;
- 
- 	nengine = 0;
--	for_each_physical_engine(e, fd)
--		engines[nengine++] = eb_ring(e);
-+	__for_each_physical_engine(fd, e)
-+		engines[nengine++] = e->flags;
- 	igt_require(nengine);
- 
- 	memset(&obj, 0, sizeof(obj));
-@@ -86,38 +87,40 @@ static void all(int fd, unsigned flags, int timeout, int ncpus)
- 
- 	intel_detect_and_clear_missed_interrupts(fd);
- 	igt_fork(child, ncpus) {
-+		int i915;
- 		struct timespec start, now;
- 		unsigned long count;
- 		double time;
--
-+		i915 = gem_reopen_driver(fd);
-+		gem_context_copy_engines(fd, 0, i915, 0);
- 		count = 0;
- 		clock_gettime(CLOCK_MONOTONIC, &start);
- 		do {
- 			for (int loop = 0; loop < 1024; loop++) {
- 				for (int n = 0; n < nengine; n++) {
--					obj.handle =  gem_create(fd, 4096);
--					gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
-+					obj.handle =  gem_create(i915, 4096);
-+					gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
- 					execbuf.flags &= ~ENGINE_FLAGS;
- 					execbuf.flags |= engines[n];
--					gem_execbuf(fd, &execbuf);
-+					gem_execbuf(i915, &execbuf);
- 					if (flags & LEAK)
--						gem_madvise(fd, obj.handle, I915_MADV_DONTNEED);
-+						gem_madvise(i915, obj.handle, I915_MADV_DONTNEED);
- 					else
--						gem_close(fd, obj.handle);
-+						gem_close(i915, obj.handle);
- 				}
+ 	IGT_CORK_FENCE(cork);
+@@ -2042,6 +2091,24 @@ igt_main
+ 				fifo(fd, eb_ring(e));
  			}
- 			count += nengine * 1024;
- 			clock_gettime(CLOCK_MONOTONIC, &now);
- 		} while (elapsed(&start, &now) < timeout); /* Hang detection ~120s */
--		obj.handle =  gem_create(fd, 4096);
--		gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
-+		obj.handle =  gem_create(i915, 4096);
-+		gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
- 		for (int n = 0; n < nengine; n++) {
- 			execbuf.flags &= ~ENGINE_FLAGS;
- 			execbuf.flags |= engines[n];
--			gem_execbuf(fd, &execbuf);
-+			gem_execbuf(i915, &execbuf);
- 		}
--		gem_sync(fd, obj.handle);
--		gem_close(fd, obj.handle);
-+		gem_sync(i915, obj.handle);
-+		gem_close(i915, obj.handle);
- 		clock_gettime(CLOCK_MONOTONIC, &now);
  
- 		time = elapsed(&start, &now) / count;
++			igt_subtest_f("implicit-read-write-%s", e->name) {
++				igt_require(gem_ring_has_physical_engine(fd, eb_ring(e)));
++				igt_require(gem_can_store_dword(fd, eb_ring(e)));
++				implicit_rw(fd, eb_ring(e), READ_WRITE);
++			}
++
++			igt_subtest_f("implicit-write-read-%s", e->name) {
++				igt_require(gem_ring_has_physical_engine(fd, eb_ring(e)));
++				igt_require(gem_can_store_dword(fd, eb_ring(e)));
++				implicit_rw(fd, eb_ring(e), WRITE_READ);
++			}
++
++			igt_subtest_f("implicit-both-%s", e->name) {
++				igt_require(gem_ring_has_physical_engine(fd, eb_ring(e)));
++				igt_require(gem_can_store_dword(fd, eb_ring(e)));
++				implicit_rw(fd, eb_ring(e), READ_WRITE | WRITE_READ);
++			}
++
+ 			igt_subtest_f("independent-%s", e->name) {
+ 				igt_require(gem_ring_has_physical_engine(fd, eb_ring(e)));
+ 				igt_require(gem_can_store_dword(fd, eb_ring(e)));
 -- 
 2.25.0
 
