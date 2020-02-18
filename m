@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBE876E9F6
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 12:58:38 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E85566E9FF
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 13:35:23 +0000 (UTC)
+Date: Tue, 18 Feb 2020 14:35:21 +0100
 From: Katarzyna Dec <katarzyna.dec@intel.com>
-Date: Tue, 18 Feb 2020 13:58:33 +0100
-Message-Id: <20200218125833.29629-1-katarzyna.dec@intel.com>
-In-Reply-To: <20200218125333.29250-1-katarzyna.dec@intel.com>
+Message-ID: <20200218133521.GD16640@kdec5-desk.ger.corp.intel.com>
 References: <20200218125333.29250-1-katarzyna.dec@intel.com>
+ <158203061046.3043.4715913528366392727@skylake-alporthouse-com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] lib: Check if device is not wedged while
- opening fd
+Content-Disposition: inline
+In-Reply-To: <158203061046.3043.4715913528366392727@skylake-alporthouse-com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib: Check if device is not wedged
+ while opening fd
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,78 +23,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In rare cases it is possible to use wedged device in testing,
-what is causing to have false results. Let's abort any fd usage when
-GPU is wedged. Use sysfs to check status to make any environment happy.
+On Tue, Feb 18, 2020 at 12:56:50PM +0000, Chris Wilson wrote:
+> Quoting Katarzyna Dec (2020-02-18 12:53:33)
+> > In rare cases it is possible to use wedged device in testing,
+> > what is causing to have false results. Let's abort any fd usage when
+> > GPU is wedged. Use sysfs to check status to make any environment happy.
+> 
+> See igt_require_gem()
+> -Chris
 
-v2: removed unnecessary file
-
-Signed-off-by: Katarzyna Dec <katarzyna.dec@intel.com>
-Cc: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Petri Latvala <petri.latvala@intel.com>
----
- lib/drmtest.c    |  1 +
- lib/igt_device.c | 18 ++++++++++++++++++
- lib/igt_device.h |  2 ++
- 3 files changed, 21 insertions(+)
-
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 1fc39925..e770462e 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -476,6 +476,7 @@ int drm_open_driver(int chipset)
- 		}
- 	}
- 
-+	igt_fail_on_f(igt_device_is_wedged(fd), "Device is wedged.\n");
- 	return fd;
- }
- 
-diff --git a/lib/igt_device.c b/lib/igt_device.c
-index 07bb0a0d..6284aff7 100644
---- a/lib/igt_device.c
-+++ b/lib/igt_device.c
-@@ -236,3 +236,21 @@ struct pci_device *igt_device_get_pci_device(int fd)
- 
- 	return pci_dev;
- }
-+
-+/**
-+ * igt_device_is_wedged:
-+ * @fd: device fd
-+ *
-+ * Return true is device is wedged.
-+ */
-+bool igt_device_is_wedged(int fd)
-+{
-+	char buf[2];
-+
-+	igt_debugfs_read(fd, "i915_wedged", buf);
-+
-+	if (!strstr(buf, "0"))
-+		return true;
-+
-+	return false;
-+}
-diff --git a/lib/igt_device.h b/lib/igt_device.h
-index 278ba7a9..cb3f9b94 100644
---- a/lib/igt_device.h
-+++ b/lib/igt_device.h
-@@ -34,4 +34,6 @@ void igt_device_drop_master(int fd);
- int igt_device_get_card_index(int fd);
- struct pci_device *igt_device_get_pci_device(int fd);
- 
-+bool igt_device_is_wedged(int fd);
-+
- #endif /* __IGT_DEVICE_H__ */
--- 
-2.20.1
-
+You're right! Thanks :)
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
