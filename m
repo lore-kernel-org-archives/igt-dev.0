@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF1A06E3B7
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 18:52:07 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 920A789CA1
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 18:55:57 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Tue, 18 Feb 2020 18:55:55 +0000
+Message-ID: <13604d050046f846a66f13c26562298c2ccb97d6.camel@intel.com>
+References: <20200216180006.14439-1-anshuman.gupta@intel.com>
+ <20200216180006.14439-3-anshuman.gupta@intel.com>
+In-Reply-To: <20200216180006.14439-3-anshuman.gupta@intel.com>
+Content-Language: en-US
+Content-ID: <9AFFAE4F44C4414D806237F7C91D1A77@intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-References: <20200217142155.501499-1-lionel.g.landwerlin@intel.com>
- <20200217142155.501499-4-lionel.g.landwerlin@intel.com>
-In-Reply-To: <20200217142155.501499-4-lionel.g.landwerlin@intel.com>
-Message-ID: <158205192295.8112.16837698601608333438@skylake-alporthouse-com>
-Date: Tue, 18 Feb 2020 18:52:02 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 3/6] lib/i915: Add support for loading
- perf configurations
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915_pm_dc: psr required only
+ for dc*-psr tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,65 +20,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>, igt-dev@lists.freedesktop.org
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gupta,
+ Anshuman" <anshuman.gupta@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Lionel Landwerlin (2020-02-17 14:21:52)
-> +void
-> +intel_perf_load_perf_configs(struct intel_perf *perf, int drm_fd)
-> +{
-> +       int drm_card = get_card_for_fd(drm_fd);
-> +       struct dirent *entry;
-> +       char metrics_path[128];
-> +       DIR *metrics_dir;
-> +       struct intel_perf_metric_set *metric_set;
-> +
-> +       snprintf(metrics_path, sizeof(metrics_path),
-> +                "/sys/class/drm/card%d/metrics", drm_card);
-
-        if (fstat(i915, &st) || !S_ISCHR(st.st_mode))
-                return NULL;
-
-        snprintf(path, pathlen, "/sys/dev/char/%d:%d/metrics",
-                 major(st.st_rdev), minor(st.st_rdev));
-
-
-> +       metrics_dir = opendir(metrics_path);
-> +       if (!metrics_dir)
-> +               return;
-> +
-> +       while ((entry = readdir(metrics_dir))) {
-> +               char *metric_id_path;
-> +               uint64_t metric_id;
-> +
-> +               if (entry->d_type != DT_DIR)
-> +                       continue;
-> +
-> +               asprintf(&metric_id_path, "%s/%s/id",
-> +                        metrics_path, entry->d_name);
-
-I'd suggest using openat.
-
-> +
-> +               if (!read_file_uint64(metric_id_path, &metric_id)) {
-> +                       free(metric_id_path);
-> +                       continue;
-> +               }
-> +
-> +               free(metric_id_path);
-> +
-> +               igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
-> +                       if (!strcmp(metric_set->hw_config_guid, entry->d_name)) {
-> +                               metric_set->perf_oa_metrics_set = metric_id;
-> +                               break;
-> +                       }
-> +               }
-> +       }
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gU3VuLCAyMDIwLTAyLTE2IGF0IDIzOjMwICswNTMwLCBBbnNodW1hbiBHdXB0YSB3cm90ZToN
+Cj4gRFBNUyBpZ3QgdGVzdHMgd2VyZSBza2lwcGluZyBmb3Igbm9uLXBzciBwYW5lbHMgZHVlIHRv
+DQo+IHBzcl9zaW5rX3N1cHBvcnQgc2luayBjaGVjayBhZGRlZCB0byBpZ3RfZml4dHVyZSgpIGF0
+DQo+IGNvbW1pdCA8NmNiZTZhZjM3MmEwMWJlNjMxMjEwNTY2NzlkNTQwNDM2ZmZkMGI2ND4uDQo+
+IERQTVMgZGMgc3RhdGUgaWd0IHRlc3QgZG9uJ3QgcmVxdWlyZSBwc3Jfc2lua19zdXBwb3J0LCBh
+cyBpdA0KPiB2YWxpZGF0ZXMgREMgc3RhdGVzIHdpdGggYWxsIGRpc3BsYXkgYmVpbmcgRFBNUyBv
+ZmYuDQo+IFJlbW92aW5nIHRoZSBwc3Igc2luayBjaGVjayBmcm9tIGlndF9maXh0dXJlIGFuZCBh
+ZGRpbmcNCj4gaXQgb25seSBmb3IgZGMqLSBwc3IgdGVzdHMuDQoNCk1ha2VzIHNlbnNlLCBqdXN0
+IG1pc3NpbmcgdGhlIGlndF9yZXF1aXJlKHBzcikgaW4gZGMzY28tdnBiLXNpbXVsYXRpb24uDQoN
+Cj4gDQo+IENjOiBBcmthZGl1c3ogSGlsZXIgPGFya2FkaXVzei5oaWxlckBpbnRlbC5jb20+DQo+
+IENjOiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3NlLnNvdXphQGludGVsLmNvbT4NCj4gU2ln
+bmVkLW9mZi1ieTogQW5zaHVtYW4gR3VwdGEgPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT4NCj4g
+LS0tDQo+ICB0ZXN0cy9pOTE1L2k5MTVfcG1fZGMuYyB8IDMgKystDQo+ICAxIGZpbGUgY2hhbmdl
+ZCwgMiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVz
+dHMvaTkxNS9pOTE1X3BtX2RjLmMgYi90ZXN0cy9pOTE1L2k5MTVfcG1fZGMuYw0KPiBpbmRleCA0
+YmNhODU1OS4uNGMzNGZmOWQgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2k5MTUvaTkxNV9wbV9kYy5j
+DQo+ICsrKyBiL3Rlc3RzL2k5MTUvaTkxNV9wbV9kYy5jDQo+IEBAIC0zOTUsNyArMzk1LDYgQEAg
+aW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkNCj4gIAkJaWd0X3JlcXVpcmUoaWd0X3Nl
+dHVwX3J1bnRpbWVfcG0oZGF0YS5kcm1fZmQpKTsNCj4gIAkJaWd0X3JlcXVpcmUoaWd0X3BtX2Rt
+Y19sb2FkZWQoZGF0YS5kZWJ1Z2ZzX2ZkKSk7DQo+ICAJCWlndF9kaXNwbGF5X3JlcXVpcmUoJmRh
+dGEuZGlzcGxheSwgZGF0YS5kcm1fZmQpOw0KPiAtCQlpZ3RfcmVxdWlyZShwc3Jfc2lua19zdXBw
+b3J0KGRhdGEuZGVidWdmc19mZCwNCj4gUFNSX01PREVfMSkpOw0KPiAgCQkvKiBNYWtlIHN1cmUg
+b3VyIEtlcm5lbCBzdXBwb3J0cyBNU1IgYW5kIHRoZSBtb2R1bGUgaXMNCj4gbG9hZGVkICovDQo+
+ICAJCWlndF9yZXF1aXJlKGlndF9rbW9kX2xvYWQoIm1zciIsIE5VTEwpID09IDApOw0KPiAgDQo+
+IEBAIC00MTUsNiArNDE0LDcgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkNCj4g
+IAlpZ3Rfc3VidGVzdCgiZGM1LXBzciIpIHsNCj4gIAkJZGF0YS5vcF9wc3JfbW9kZSA9IFBTUl9N
+T0RFXzE7DQo+ICAJCXBzcl9lbmFibGUoZGF0YS5kZWJ1Z2ZzX2ZkLCBkYXRhLm9wX3Bzcl9tb2Rl
+KTsNCj4gKwkJaWd0X3JlcXVpcmUocHNyX3Npbmtfc3VwcG9ydChkYXRhLmRlYnVnZnNfZmQsDQo+
+IFBTUl9NT0RFXzEpKTsNCj4gIAkJdGVzdF9kY19zdGF0ZV9wc3IoJmRhdGEsIENIRUNLX0RDNSk7
+DQo+ICAJfQ0KPiAgDQo+IEBAIC00MjMsNiArNDIzLDcgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNo
+YXIgKmFyZ3ZbXSkNCj4gIAlpZ3Rfc3VidGVzdCgiZGM2LXBzciIpIHsNCj4gIAkJZGF0YS5vcF9w
+c3JfbW9kZSA9IFBTUl9NT0RFXzE7DQo+ICAJCXBzcl9lbmFibGUoZGF0YS5kZWJ1Z2ZzX2ZkLCBk
+YXRhLm9wX3Bzcl9tb2RlKTsNCj4gKwkJaWd0X3JlcXVpcmUocHNyX3Npbmtfc3VwcG9ydChkYXRh
+LmRlYnVnZnNfZmQsDQo+IFBTUl9NT0RFXzEpKTsNCj4gIAkJaWd0X3JlcXVpcmVfZihpZ3RfcG1f
+cGM4X3BsdXNfcmVzaWRlbmNpZXNfZW5hYmxlZChkYXRhLg0KPiBtc3JfZmQpLA0KPiAgCQkJICAg
+ICAgIlBDOCsgcmVzaWRlbmNpZXMgbm90IHN1cHBvcnRlZFxuIik7DQo+ICAJCXRlc3RfZGNfc3Rh
+dGVfcHNyKCZkYXRhLCBDSEVDS19EQzYpOw0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
+ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9pZ3QtZGV2Cg==
