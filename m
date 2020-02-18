@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 920A789CA1
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 18:55:57 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Tue, 18 Feb 2020 18:55:55 +0000
-Message-ID: <13604d050046f846a66f13c26562298c2ccb97d6.camel@intel.com>
-References: <20200216180006.14439-1-anshuman.gupta@intel.com>
- <20200216180006.14439-3-anshuman.gupta@intel.com>
-In-Reply-To: <20200216180006.14439-3-anshuman.gupta@intel.com>
-Content-Language: en-US
-Content-ID: <9AFFAE4F44C4414D806237F7C91D1A77@intel.com>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8BFEA6E4DE
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 18:57:52 +0000 (UTC)
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915_pm_dc: psr required only
- for dc*-psr tests
+From: Chris Wilson <chris@chris-wilson.co.uk>
+References: <20200217142155.501499-1-lionel.g.landwerlin@intel.com>
+ <20200217142155.501499-5-lionel.g.landwerlin@intel.com>
+In-Reply-To: <20200217142155.501499-5-lionel.g.landwerlin@intel.com>
+Message-ID: <158205226777.8112.12214621080932657728@skylake-alporthouse-com>
+Date: Tue, 18 Feb 2020 18:57:47 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t 4/6] tools: add i915 perf recorder tool
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,51 +17,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gupta,
- Anshuman" <anshuman.gupta@intel.com>
+To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gU3VuLCAyMDIwLTAyLTE2IGF0IDIzOjMwICswNTMwLCBBbnNodW1hbiBHdXB0YSB3cm90ZToN
-Cj4gRFBNUyBpZ3QgdGVzdHMgd2VyZSBza2lwcGluZyBmb3Igbm9uLXBzciBwYW5lbHMgZHVlIHRv
-DQo+IHBzcl9zaW5rX3N1cHBvcnQgc2luayBjaGVjayBhZGRlZCB0byBpZ3RfZml4dHVyZSgpIGF0
-DQo+IGNvbW1pdCA8NmNiZTZhZjM3MmEwMWJlNjMxMjEwNTY2NzlkNTQwNDM2ZmZkMGI2ND4uDQo+
-IERQTVMgZGMgc3RhdGUgaWd0IHRlc3QgZG9uJ3QgcmVxdWlyZSBwc3Jfc2lua19zdXBwb3J0LCBh
-cyBpdA0KPiB2YWxpZGF0ZXMgREMgc3RhdGVzIHdpdGggYWxsIGRpc3BsYXkgYmVpbmcgRFBNUyBv
-ZmYuDQo+IFJlbW92aW5nIHRoZSBwc3Igc2luayBjaGVjayBmcm9tIGlndF9maXh0dXJlIGFuZCBh
-ZGRpbmcNCj4gaXQgb25seSBmb3IgZGMqLSBwc3IgdGVzdHMuDQoNCk1ha2VzIHNlbnNlLCBqdXN0
-IG1pc3NpbmcgdGhlIGlndF9yZXF1aXJlKHBzcikgaW4gZGMzY28tdnBiLXNpbXVsYXRpb24uDQoN
-Cj4gDQo+IENjOiBBcmthZGl1c3ogSGlsZXIgPGFya2FkaXVzei5oaWxlckBpbnRlbC5jb20+DQo+
-IENjOiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3NlLnNvdXphQGludGVsLmNvbT4NCj4gU2ln
-bmVkLW9mZi1ieTogQW5zaHVtYW4gR3VwdGEgPGFuc2h1bWFuLmd1cHRhQGludGVsLmNvbT4NCj4g
-LS0tDQo+ICB0ZXN0cy9pOTE1L2k5MTVfcG1fZGMuYyB8IDMgKystDQo+ICAxIGZpbGUgY2hhbmdl
-ZCwgMiBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVz
-dHMvaTkxNS9pOTE1X3BtX2RjLmMgYi90ZXN0cy9pOTE1L2k5MTVfcG1fZGMuYw0KPiBpbmRleCA0
-YmNhODU1OS4uNGMzNGZmOWQgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2k5MTUvaTkxNV9wbV9kYy5j
-DQo+ICsrKyBiL3Rlc3RzL2k5MTUvaTkxNV9wbV9kYy5jDQo+IEBAIC0zOTUsNyArMzk1LDYgQEAg
-aW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkNCj4gIAkJaWd0X3JlcXVpcmUoaWd0X3Nl
-dHVwX3J1bnRpbWVfcG0oZGF0YS5kcm1fZmQpKTsNCj4gIAkJaWd0X3JlcXVpcmUoaWd0X3BtX2Rt
-Y19sb2FkZWQoZGF0YS5kZWJ1Z2ZzX2ZkKSk7DQo+ICAJCWlndF9kaXNwbGF5X3JlcXVpcmUoJmRh
-dGEuZGlzcGxheSwgZGF0YS5kcm1fZmQpOw0KPiAtCQlpZ3RfcmVxdWlyZShwc3Jfc2lua19zdXBw
-b3J0KGRhdGEuZGVidWdmc19mZCwNCj4gUFNSX01PREVfMSkpOw0KPiAgCQkvKiBNYWtlIHN1cmUg
-b3VyIEtlcm5lbCBzdXBwb3J0cyBNU1IgYW5kIHRoZSBtb2R1bGUgaXMNCj4gbG9hZGVkICovDQo+
-ICAJCWlndF9yZXF1aXJlKGlndF9rbW9kX2xvYWQoIm1zciIsIE5VTEwpID09IDApOw0KPiAgDQo+
-IEBAIC00MTUsNiArNDE0LDcgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkNCj4g
-IAlpZ3Rfc3VidGVzdCgiZGM1LXBzciIpIHsNCj4gIAkJZGF0YS5vcF9wc3JfbW9kZSA9IFBTUl9N
-T0RFXzE7DQo+ICAJCXBzcl9lbmFibGUoZGF0YS5kZWJ1Z2ZzX2ZkLCBkYXRhLm9wX3Bzcl9tb2Rl
-KTsNCj4gKwkJaWd0X3JlcXVpcmUocHNyX3Npbmtfc3VwcG9ydChkYXRhLmRlYnVnZnNfZmQsDQo+
-IFBTUl9NT0RFXzEpKTsNCj4gIAkJdGVzdF9kY19zdGF0ZV9wc3IoJmRhdGEsIENIRUNLX0RDNSk7
-DQo+ICAJfQ0KPiAgDQo+IEBAIC00MjMsNiArNDIzLDcgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNo
-YXIgKmFyZ3ZbXSkNCj4gIAlpZ3Rfc3VidGVzdCgiZGM2LXBzciIpIHsNCj4gIAkJZGF0YS5vcF9w
-c3JfbW9kZSA9IFBTUl9NT0RFXzE7DQo+ICAJCXBzcl9lbmFibGUoZGF0YS5kZWJ1Z2ZzX2ZkLCBk
-YXRhLm9wX3Bzcl9tb2RlKTsNCj4gKwkJaWd0X3JlcXVpcmUocHNyX3Npbmtfc3VwcG9ydChkYXRh
-LmRlYnVnZnNfZmQsDQo+IFBTUl9NT0RFXzEpKTsNCj4gIAkJaWd0X3JlcXVpcmVfZihpZ3RfcG1f
-cGM4X3BsdXNfcmVzaWRlbmNpZXNfZW5hYmxlZChkYXRhLg0KPiBtc3JfZmQpLA0KPiAgCQkJICAg
-ICAgIlBDOCsgcmVzaWRlbmNpZXMgbm90IHN1cHBvcnRlZFxuIik7DQo+ICAJCXRlc3RfZGNfc3Rh
-dGVfcHNyKCZkYXRhLCBDSEVDS19EQzYpOw0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
-ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9pZ3QtZGV2Cg==
+Quoting Lionel Landwerlin (2020-02-17 14:21:53)
+> Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+> ---
+>  lib/i915-perf.pc.in                           |    1 +
+>  lib/i915/perf_data.h                          |  118 ++
+>  lib/meson.build                               |    1 +
+>  lib/tests/i915_perf_data_alignment.c          |   40 +
+>  lib/tests/meson.build                         |    1 +
+>  tools/i915-perf/i915_perf_control.c           |  133 +++
+>  tools/i915-perf/i915_perf_recorder.c          | 1052 +++++++++++++++++
+>  tools/i915-perf/i915_perf_recorder_commands.h |   39 +
+>  tools/i915-perf/meson.build                   |   11 +
+>  9 files changed, 1396 insertions(+)
+>  create mode 100644 lib/i915/perf_data.h
+>  create mode 100644 lib/tests/i915_perf_data_alignment.c
+>  create mode 100644 tools/i915-perf/i915_perf_control.c
+>  create mode 100644 tools/i915-perf/i915_perf_recorder.c
+>  create mode 100644 tools/i915-perf/i915_perf_recorder_commands.h
+> 
+> diff --git a/lib/i915-perf.pc.in b/lib/i915-perf.pc.in
+> index e72efdc3..8cfa3dbe 100644
+> --- a/lib/i915-perf.pc.in
+> +++ b/lib/i915-perf.pc.in
+> @@ -6,5 +6,6 @@ includedir=@includedir@
+>  Name: i915-perf
+>  Description: i915 perf library
+>  Version: @version@
+> +Requires: libdrm
+
+You only use the uAPI headers, and they are in include/drm-uapi/
+Right?
+-Chris
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
