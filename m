@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
- [IPv6:2a00:1450:4864:20::344])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 780C16E192
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 08:29:37 +0000 (UTC)
-Received: by mail-wm1-x344.google.com with SMTP id g1so1802065wmh.4
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 00:29:37 -0800 (PST)
-From: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-Date: Tue, 18 Feb 2020 09:29:04 +0100
-Message-Id: <20200218082904.12327-1-tomeu.vizoso@collabora.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB0976E9B7
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 08:39:48 +0000 (UTC)
+From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+Date: Tue, 18 Feb 2020 13:52:39 +0530
+Message-Id: <20200218082240.21853-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib/igt_fb: Avoid hitting assertion on
- non-intel HW
+Subject: [igt-dev] [PATCH i-g-t v2 0/1] lib/i915/gem_ring : set the engine
+ to default context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,36 +19,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Recently a call to intel_get_drm_devid was added in a code path that
-gets run on all hardware.
+Copy the existing engine map from default context to 
+newly created  default context
 
-Restore the previous behavior by bailing out before we reach the assert.
+v2: addressed the review comments
 
-Signed-off-by: Tomeu Vizoso <tomeu.vizoso@collabora.com>
-Fixes: 8b90eefce9b4 ("lib/igt_fb: Use render copy/blit on platforms w/o HW detiling")
----
- lib/igt_fb.c | 3 +++
- 1 file changed, 3 insertions(+)
+Bommu Krishnaiah (1):
+  lib/i915/gem_ring : set the engine to default context
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 49a032f65c06..0c4fdc5d4889 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -1992,6 +1992,9 @@ static bool fast_blit_ok(const struct igt_fb *fb)
- 
- static bool blitter_ok(const struct igt_fb *fb)
- {
-+	if (!is_i915_device(fb->fd))
-+		return false;
-+
- 	if (is_ccs_modifier(fb->modifier))
- 		return false;
- 
+ lib/i915/gem_ring.c              | 8 ++++++--
+ lib/i915/gem_ring.h              | 2 +-
+ tests/i915/gem_busy.c            | 2 +-
+ tests/i915/gem_ctx_persistence.c | 2 +-
+ tests/i915/gem_eio.c             | 6 +++---
+ tests/i915/gem_exec_await.c      | 2 +-
+ tests/i915/gem_exec_fence.c      | 2 +-
+ tests/i915/gem_exec_latency.c    | 2 +-
+ tests/i915/gem_exec_schedule.c   | 6 +++---
+ tests/i915/gem_ringfill.c        | 2 +-
+ tests/perf_pmu.c                 | 2 +-
+ 11 files changed, 20 insertions(+), 16 deletions(-)
+
 -- 
-2.21.0
+2.25.0.4.g0ad7144999
 
 _______________________________________________
 igt-dev mailing list
