@@ -1,12 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2ECB46E9E2
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 10:59:33 +0000 (UTC)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 18 Feb 2020 10:43:24 -0000
-Message-ID: <158202260421.31430.16835365507045830790@emeril.freedesktop.org>
-References: <1581969803-15387-1-git-send-email-juhapekka.heikkila@gmail.com>
-In-Reply-To: <1581969803-15387-1-git-send-email-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Frotation=5Fcrc=3A_limit_maximum_used_plane_size?=
+From: Chris Wilson <chris@chris-wilson.co.uk>
+References: <20200207134527.17205-2-ramalingam.c@intel.com>
+ <20200217094045.6788-1-ramalingam.c@intel.com>
+ <20200217094442.GA6572@intel.com>
+ <158201194099.5228.14479505187034994340@skylake-alporthouse-com>
+ <3E576CE581B70742841A8994F80CE2EE4E457B0A@BGSMSX104.gar.corp.intel.com>
+In-Reply-To: <3E576CE581B70742841A8994F80CE2EE4E457B0A@BGSMSX104.gar.corp.intel.com>
+Message-ID: <158202356905.3043.12895598745804801523@skylake-alporthouse-com>
+Date: Tue, 18 Feb 2020 10:59:29 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915_pm_rpm: mmap type based
+ dynamic subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,108 +21,116 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "C, Ramalingam" <ramalingam.c@intel.com>, igt-dev <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Quoting C, Ramalingam (2020-02-18 09:07:39)
+> > -----Original Message-----
+> > From: Chris Wilson <chris@chris-wilson.co.uk>
+> > Sent: Tuesday, February 18, 2020 1:16 PM
+> > To: C, Ramalingam <ramalingam.c@intel.com>; igt-dev <igt-
+> > dev@lists.freedesktop.org>
+> > Subject: Re: [PATCH i-g-t] tests/i915_pm_rpm: mmap type based dynamic
+> > subtests
+> > 
+> > Quoting Ramalingam C (2020-02-17 09:44:42)
+> > > On 2020-02-17 at 15:10:45 +0530, Ramalingam C wrote:
+> > > > Tests for gem_mmap_gtt/cpu are replaced with dynamic subtests with
+> > > > the array of mmap_types passed to gem_mmap_offset.
+> > > >
+> > > > Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
+> > > > cc: Chris Wilson <chris@chris-wilson.co.uk>
+> > > > ---
+> > > >  tests/i915/i915_pm_rpm.c | 34 ++++++++++++++--------------------
+> > > >  1 file changed, 14 insertions(+), 20 deletions(-)
+> > > >
+> > > > diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+> > > > index 3d7343240802..0c2821122956 100644
+> > > > --- a/tests/i915/i915_pm_rpm.c
+> > > > +++ b/tests/i915/i915_pm_rpm.c
+> > > > @@ -1007,7 +1007,7 @@ static void
+> > debugfs_forcewake_user_subtest(void)
+> > > >       igt_assert(wait_for_suspended());  }
+> > > >
+> > > > -static void gem_mmap_subtest(bool gtt_mmap)
+> > > > +static void gem_mmap_args(const struct mmap_offset *t)
+> > > >  {
+> > > >       int i;
+> > > >       uint32_t handle;
+> > > > @@ -1019,14 +1019,9 @@ static void gem_mmap_subtest(bool
+> > gtt_mmap)
+> > > >
+> > > >       handle = gem_create(drm_fd, buf_size);
+> > > >
+> > > > -     if (gtt_mmap) {
+> > > > -             gem_buf = gem_mmap__gtt(drm_fd, handle, buf_size,
+> > > > -                                     PROT_READ | PROT_WRITE);
+> > > > -     }
+> > > > -     else {
+> > > > -             gem_buf = gem_mmap__cpu(drm_fd, handle, 0, buf_size, 0);
+> > > > -     }
+> > > > -
+> > > > +     gem_buf = __gem_mmap_offset(drm_fd, handle, 0, buf_size,
+> > > > +                                 PROT_READ | PROT_WRITE, t->type);
+> > > > +     igt_require(gem_buf);
+> > > >
+> > > >       for (i = 0; i < buf_size; i++)
+> > > >               gem_buf[i] = i & 0xFF; @@ -1056,13 +1051,9 @@ static
+> > > > void gem_mmap_subtest(bool gtt_mmap)
+> > > >        * suspended. */
+> > > >       disable_all_screens_and_wait(&ms_data);
+> > > >
+> > > > -     if (gtt_mmap) {
+> > > > -             gem_buf = gem_mmap__gtt(drm_fd, handle, buf_size,
+> > > > -                                     PROT_READ | PROT_WRITE);
+> > > > -     }
+> > > > -     else {
+> > > > -             gem_buf = gem_mmap__cpu(drm_fd, handle, 0, buf_size, 0);
+> > > > -     }
+> > > > +     gem_buf = __gem_mmap_offset(drm_fd, handle, 0, buf_size,
+> > > > +                                 PROT_READ | PROT_WRITE, t->type);
+> > > > +     igt_require(gem_buf);
+> > > >
+> > > >       igt_assert(wait_for_suspended());
+> > > >
+> > > > @@ -2014,10 +2005,13 @@ igt_main_args("", long_options, help_str,
+> > opt_handler, NULL)
+> > > >               modeset_subtest(SCREEN_TYPE_NON_LPSP, 1, WAIT_STATUS |
+> > > > USE_DPMS);
+> > > >
+> > > >       /* GEM */
+> > > > -     igt_subtest("gem-mmap-cpu")
+> > > > -             gem_mmap_subtest(false);
+> > > > -     igt_subtest("gem-mmap-gtt")
+> > > > -             gem_mmap_subtest(true);
+> > > > +     igt_subtest_with_dynamic("gem-mmap-type") {
+> > > > +             for_each_mmap_offset_type(t) {
+> > > > +                     igt_dynamic_f("%s", t->name)
+> > > > +                             gem_mmap_args(t);
+> > > > +             }
+> > > > +     }
+> > > Chris,
+> > >
+> > > This is what you suggested I guess. But what is the mmap_offset is not
+> > > supported? shouldn't we have the legacy tests in such scenario?
+> > 
+> > mmap-offset is a pure extension of mmap-gtt.
+> > 
+> > There's no point testing the plain mmap_ioctl in this test as that does not
+> > use i915 for fault handling; it is independent of our rpm.
+> 
+> Chris,
+> 
+> So I interpret this as no need for mmap_gtt in case of mmap_offset missing.
+> In that case do you think this patch is good to merge.?
 
-Series: tests/kms_rotation_crc: limit maximum used plane size
-URL   : https://patchwork.freedesktop.org/series/73547/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_5446 -> IGTPW_4169
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4169/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4169 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live_perf:
-    - fi-bsw-nick:        [PASS][1] -> [INCOMPLETE][2] ([i915#1247])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5446/fi-bsw-nick/igt@i915_selftest@live_perf.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4169/fi-bsw-nick/igt@i915_selftest@live_perf.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-byt-j1900:       [INCOMPLETE][3] ([i915#45]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5446/fi-byt-j1900/igt@gem_close_race@basic-threads.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4169/fi-byt-j1900/igt@gem_close_race@basic-threads.html
-    - fi-byt-n2820:       [INCOMPLETE][5] ([i915#45]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5446/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4169/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_selftest@live_execlists:
-    - fi-icl-y:           [DMESG-FAIL][7] ([fdo#108569]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5446/fi-icl-y/igt@i915_selftest@live_execlists.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4169/fi-icl-y/igt@i915_selftest@live_execlists.html
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-skl-lmem:        [INCOMPLETE][9] ([CI#80] / [i915#424]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5446/fi-skl-lmem/igt@i915_selftest@live_gem_contexts.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4169/fi-skl-lmem/igt@i915_selftest@live_gem_contexts.html
-    - fi-cml-s:           [DMESG-FAIL][11] ([i915#877]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5446/fi-cml-s/igt@i915_selftest@live_gem_contexts.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4169/fi-cml-s/igt@i915_selftest@live_gem_contexts.html
-
-  * igt@i915_selftest@live_gtt:
-    - fi-bxt-dsi:         [TIMEOUT][13] ([fdo#112271]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5446/fi-bxt-dsi/igt@i915_selftest@live_gtt.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4169/fi-bxt-dsi/igt@i915_selftest@live_gtt.html
-
-  
-  [CI#80]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/80
-  [fdo#108569]: https://bugs.freedesktop.org/show_bug.cgi?id=108569
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#1247]: https://gitlab.freedesktop.org/drm/intel/issues/1247
-  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
-  [i915#45]: https://gitlab.freedesktop.org/drm/intel/issues/45
-  [i915#877]: https://gitlab.freedesktop.org/drm/intel/issues/877
-
-
-Participating hosts (52 -> 46)
-------------------------------
-
-  Missing    (6): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5446 -> IGTPW_4169
-
-  CI-20190529: 20190529
-  CI_DRM_7958: af30970548f72cf8a37886f009e0cfe02b23c8a4 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4169: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4169/index.html
-  IGT_5446: 7a05faa0be53fa1544ec950290129d20e4101c72 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4169/index.html
+mmap-offset *is* mmap-gtt, just with a few extra modes. TYPE_GTT is
+identical to the original call to mmap_gtt_ioctl.
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
