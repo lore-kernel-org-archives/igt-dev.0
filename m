@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4342F89A20
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 06:34:11 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 57E606E13A
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Feb 2020 07:10:14 +0000 (UTC)
 From: satyavat <satyavathi.k@intel.com>
-Date: Tue, 18 Feb 2020 12:03:27 +0530
-Message-Id: <20200218063327.17950-1-satyavathi.k@intel.com>
+Date: Tue, 18 Feb 2020 12:39:30 +0530
+Message-Id: <20200218070930.18246-1-satyavathi.k@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH V3] [PATCH i-g-t][V3]
+Subject: [igt-dev] [PATCH V4] [PATCH i-g-t][V4]
  tests/i915/gem_ringfill:Added __for_each_physical_engine to utilize all
  available engines.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -38,6 +38,9 @@ V3
 Removed "-" from mode array
 removed Test name in dynamic subtest
 
+V4
+corrected fd handle in igt_fork
+
 Cc: Dec Katarzyna <katarzyna.dec@intel.com>
 Cc: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
 Signed-off-by: satyavat <satyavathi.k@intel.com>
@@ -46,7 +49,7 @@ Signed-off-by: satyavat <satyavathi.k@intel.com>
  1 file changed, 29 insertions(+), 31 deletions(-)
 
 diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
-index 4c73f4d9..024fc0a3 100644
+index 4c73f4d9..a2ae21e0 100644
 --- a/tests/i915/gem_ringfill.c
 +++ b/tests/i915/gem_ringfill.c
 @@ -96,7 +96,7 @@ static int setup_execbuf(int fd,
@@ -107,7 +110,7 @@ index 4c73f4d9..024fc0a3 100644
 -				setup_execbuf(fd, &execbuf, obj, reloc, ring);
 +				i915 = drm_open_driver(DRIVER_INTEL);
 +				gem_context_copy_engines(fd, 0, i915, 0);
-+				setup_execbuf(fd, &execbuf, obj, reloc, e);
++				setup_execbuf(i915, &execbuf, obj, reloc, e);
  			}
  			fill_ring(fd, &execbuf, flags, timeout);
  		}
