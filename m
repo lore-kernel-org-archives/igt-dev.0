@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+References: <20200218144702.1270825-1-chris@chris-wilson.co.uk>
+From: Antonio Argenziano <antonio.argenziano@intel.com>
+Message-ID: <5ad6c04e-4dc5-8dfd-fc0f-7a9e68dbd591@intel.com>
+Date: Tue, 18 Feb 2020 10:08:13 -0800
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <7c8a0bc1-3e3f-4551-7e62-9f21bed92192@intel.com>
-References: <20200218122648.1252102-1-chris@chris-wilson.co.uk>
- <20200218174219.1301127-1-chris@chris-wilson.co.uk>
- <7c8a0bc1-3e3f-4551-7e62-9f21bed92192@intel.com>
-Message-ID: <158204880357.8112.17918282201515978143@skylake-alporthouse-com>
-Date: Tue, 18 Feb 2020 18:00:03 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_exec_schedule: Exercise
- implicit ordering between engines
+In-Reply-To: <20200218144702.1270825-1-chris@chris-wilson.co.uk>
+Content-Language: en-US
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] lib: Don't specify a
+ non-existent blitter ring
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,95 +15,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Antonio Argenziano <antonio.argenziano@intel.com>, intel-gfx@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Antonio Argenziano (2020-02-18 17:56:10)
-> 
-> 
-> On 18/02/20 09:42, Chris Wilson wrote:
-> > Check that reads are serialised after a write, and that a subsequent
-> > write is after all reads.
-> > 
-> > Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> > Cc: Antonio Argenziano <antonio.argenziano@intel.com>
-> > Cc: Sravan Kumar Nedunoori <sravan.kumar.nedunoori@intel.com>
-> > ---
-> >   tests/i915/gem_exec_schedule.c | 73 ++++++++++++++++++++++++++++++++++
-> >   1 file changed, 73 insertions(+)
-> > 
-> > diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-> > index a20985864..cfd06aa55 100644
-> > --- a/tests/i915/gem_exec_schedule.c
-> > +++ b/tests/i915/gem_exec_schedule.c
-> > @@ -241,6 +241,61 @@ static void fifo(int fd, unsigned ring)
-> >       igt_assert_eq_u32(result, 2);
-> >   }
-> >   
-> > +enum implicit_dir {
-> > +     READ_WRITE = 0x1,
-> > +     WRITE_READ = 0x2,
-> > +};
-> > +
-> > +static void implicit_rw(int i915, unsigned ring, enum implicit_dir dir)
-> > +{
-> > +     IGT_CORK_FENCE(cork);
-> > +     unsigned int count;
-> > +     uint32_t scratch;
-> > +     uint32_t result;
-> > +     int fence;
-> > +
-> > +     count = 0;
-> > +     for_each_physical_engine(other, i915) {
-> > +             if (eb_ring(other) == ring)
-> > +                     continue;
-> > +
-> > +             count++;
-> > +     }
-> > +     igt_require(count);
-> > +
-> > +     scratch = gem_create(i915, 4096);
-> > +     fence = igt_cork_plug(&cork, i915);
-> > +
-> > +     if (dir & WRITE_READ)
-> > +             store_dword_fenced(i915, 0,
-> > +                                ring, scratch, 0, -ring,
-> > +                                fence, I915_GEM_DOMAIN_RENDER);
-> > +
-> > +     for_each_physical_engine(other, i915) {
-> > +             if (eb_ring(other) == ring)
-> > +                     continue;
-> > +
-> > +             store_dword_fenced(i915, 0,
-> > +                                eb_ring(other), scratch, 0, eb_ring(other),
-> > +                                fence, 0);
-> > +     }
-> > +
-> > +     if (dir & READ_WRITE)
-> > +             store_dword_fenced(i915, 0,
-> > +                                ring, scratch, 0, ring,
-> > +                                fence, I915_GEM_DOMAIN_RENDER);
-> > +
-> > +     unplug_show_queue(i915, &cork, ring);
-> > +     close(fence);
-> > +
-> > +     result =  __sync_read_u32(i915, scratch, 0);
-> > +     gem_close(i915, scratch);
-> > +
-> > +     igt_assert_neq_u32(result, -ring);
-> 
-> if (dir & WRITE_READ) ?
 
-We should never have -ring in there. If we have 2 billion engines, CI
-will timeout first. And ring should always be !0.
 
-Although the symmetry is pleasing.
--Chris
+On 18/02/20 06:47, Chris Wilson wrote:
+> I915_EXEC_BLT only exists on gen6+
+> 
+> Closes: https://gitlab.freedesktop.org/drm/intel/issues/1256
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+
+Acked-by: Antonio Argenziano <antonio.argenziano@intel.com>
+
+> ---
+>   lib/intel_batchbuffer.c | 23 ++++++++---------------
+>   1 file changed, 8 insertions(+), 15 deletions(-)
+> 
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index 5a00481cf..f1a45b473 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -695,20 +695,13 @@ fill_object(struct drm_i915_gem_exec_object2 *obj, uint32_t gem_handle,
+>   
+>   static void exec_blit(int fd,
+>   		      struct drm_i915_gem_exec_object2 *objs, uint32_t count,
+> -		      uint32_t batch_len /* in dwords */)
+> +		      int gen)
+>   {
+> -	struct drm_i915_gem_execbuffer2 exec;
+> -
+> -	exec.buffers_ptr = to_user_pointer(objs);
+> -	exec.buffer_count = count;
+> -	exec.batch_start_offset = 0;
+> -	exec.batch_len = batch_len * 4;
+> -	exec.DR1 = exec.DR4 = 0;
+> -	exec.num_cliprects = 0;
+> -	exec.cliprects_ptr = 0;
+> -	exec.flags = I915_EXEC_BLT;
+> -	i915_execbuffer2_set_context_id(exec, 0);
+> -	exec.rsvd2 = 0;
+> +	struct drm_i915_gem_execbuffer2 exec = {
+> +		.buffers_ptr = to_user_pointer(objs),
+> +		.buffer_count = count,
+> +		.flags = gen >= 6 ? I915_EXEC_BLT : 0,
+> +	};
+>   
+>   	gem_execbuf(fd, &exec);
+>   }
+> @@ -892,7 +885,7 @@ void igt_blitter_src_copy(int fd,
+>   	objs[0].flags |= EXEC_OBJECT_NEEDS_FENCE;
+>   	objs[1].flags |= EXEC_OBJECT_NEEDS_FENCE;
+>   
+> -	exec_blit(fd, objs, 3, ARRAY_SIZE(batch));
+> +	exec_blit(fd, objs, 3, gen);
+>   
+>   	gem_close(fd, batch_handle);
+>   }
+> @@ -985,7 +978,7 @@ void igt_blitter_fast_copy__raw(int fd,
+>   	fill_object(&objs[1], src_handle, NULL, 0);
+>   	fill_object(&objs[2], batch_handle, relocs, 2);
+>   
+> -	exec_blit(fd, objs, 3, ARRAY_SIZE(batch));
+> +	exec_blit(fd, objs, 3, intel_gen(intel_get_drm_devid(fd)));
+>   
+>   	gem_close(fd, batch_handle);
+>   }
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
