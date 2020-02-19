@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 345C66E5CF
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Feb 2020 12:40:13 +0000 (UTC)
-Date: Wed, 19 Feb 2020 14:40:09 +0200
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200219124009.ltfbshsnfjdp6dwg@ahiler-desk1.fi.intel.com>
-References: <20200219121940.18247-1-petri.latvala@intel.com>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 249176EBDA
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Feb 2020 13:23:40 +0000 (UTC)
 MIME-Version: 1.0
-Content-Disposition: inline
+From: Chris Wilson <chris@chris-wilson.co.uk>
 In-Reply-To: <20200219121940.18247-1-petri.latvala@intel.com>
+References: <20200219121940.18247-1-petri.latvala@intel.com>
+Message-ID: <158211860207.8112.2166645472651306406@skylake-alporthouse-com>
+Date: Wed, 19 Feb 2020 13:23:22 +0000
 Subject: Re: [igt-dev] [PATCH i-g-t] runner/resultgen: Provide output when
  test output is completely empty
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -22,11 +21,11 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Feb 19, 2020 at 02:19:40PM +0200, Petri Latvala wrote:
+Quoting Petri Latvala (2020-02-19 12:19:40)
 > If a machine is hard-hanging or otherwise rebooted at the correct
 > time, intermediary output files get created but nothing ever gets
 > written to them. That yields results that are completely empty and
@@ -38,10 +37,11 @@ On Wed, Feb 19, 2020 at 02:19:40PM +0200, Petri Latvala wrote:
 > The race for getting empty files is easier to hit than it seems. The
 > files get created by the runner before calling exec(), and there's
 > plenty of time to hit a really hard crash.
-> 
-> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Reviewed-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+
+Speaking of which, it would not be terrible if igt_runner periodically
+called sync() everytime it decided there were new logs to preserve.
+We should also probably remove/reduce the writeback delay.
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
