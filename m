@@ -1,13 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20200218144702.1270825-1-chris@chris-wilson.co.uk>
-From: Antonio Argenziano <antonio.argenziano@intel.com>
-Message-ID: <5ad6c04e-4dc5-8dfd-fc0f-7a9e68dbd591@intel.com>
-Date: Tue, 18 Feb 2020 10:08:13 -0800
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Wed, 19 Feb 2020 12:13:12 +0000
+Message-Id: <20200219121312.1428041-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-In-Reply-To: <20200218144702.1270825-1-chris@chris-wilson.co.uk>
-Content-Language: en-US
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] lib: Don't specify a
- non-existent blitter ring
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_vm_create: Call set-domain manually
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,78 +11,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Since we are secretly using execbuf to write into an object's location,
+then read back from the object we must manually handle the domain
+changes.
 
+Closes: https://gitlab.freedesktop.org/drm/intel/issues/314
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/i915/gem_vm_create.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-On 18/02/20 06:47, Chris Wilson wrote:
-> I915_EXEC_BLT only exists on gen6+
-> 
-> Closes: https://gitlab.freedesktop.org/drm/intel/issues/1256
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+diff --git a/tests/i915/gem_vm_create.c b/tests/i915/gem_vm_create.c
+index cbd273d9d..e14b07b5f 100644
+--- a/tests/i915/gem_vm_create.c
++++ b/tests/i915/gem_vm_create.c
+@@ -324,11 +324,15 @@ static void isolation(int i915)
+ 	gem_execbuf(i915, &eb); /* bind object into vm[0] */
+ 
+ 	/* Verify the trick with the assumed target address works */
++	gem_set_domain(i915, obj[0].handle,
++		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+ 	write_to_address(i915, ctx[0], obj[0].offset, 1);
+ 	gem_read(i915, obj[0].handle, 0, &result, sizeof(result));
+ 	igt_assert_eq(result, 1);
+ 
+ 	/* Now check that we can't write to vm[0] from second fd/vm */
++	gem_set_domain(i915, obj[0].handle,
++		       I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+ 	write_to_address(other, ctx[1], obj[0].offset, 2);
+ 	gem_read(i915, obj[0].handle, 0, &result, sizeof(result));
+ 	igt_assert_eq(result, 1);
+-- 
+2.25.0
 
-Acked-by: Antonio Argenziano <antonio.argenziano@intel.com>
-
-> ---
->   lib/intel_batchbuffer.c | 23 ++++++++---------------
->   1 file changed, 8 insertions(+), 15 deletions(-)
-> 
-> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
-> index 5a00481cf..f1a45b473 100644
-> --- a/lib/intel_batchbuffer.c
-> +++ b/lib/intel_batchbuffer.c
-> @@ -695,20 +695,13 @@ fill_object(struct drm_i915_gem_exec_object2 *obj, uint32_t gem_handle,
->   
->   static void exec_blit(int fd,
->   		      struct drm_i915_gem_exec_object2 *objs, uint32_t count,
-> -		      uint32_t batch_len /* in dwords */)
-> +		      int gen)
->   {
-> -	struct drm_i915_gem_execbuffer2 exec;
-> -
-> -	exec.buffers_ptr = to_user_pointer(objs);
-> -	exec.buffer_count = count;
-> -	exec.batch_start_offset = 0;
-> -	exec.batch_len = batch_len * 4;
-> -	exec.DR1 = exec.DR4 = 0;
-> -	exec.num_cliprects = 0;
-> -	exec.cliprects_ptr = 0;
-> -	exec.flags = I915_EXEC_BLT;
-> -	i915_execbuffer2_set_context_id(exec, 0);
-> -	exec.rsvd2 = 0;
-> +	struct drm_i915_gem_execbuffer2 exec = {
-> +		.buffers_ptr = to_user_pointer(objs),
-> +		.buffer_count = count,
-> +		.flags = gen >= 6 ? I915_EXEC_BLT : 0,
-> +	};
->   
->   	gem_execbuf(fd, &exec);
->   }
-> @@ -892,7 +885,7 @@ void igt_blitter_src_copy(int fd,
->   	objs[0].flags |= EXEC_OBJECT_NEEDS_FENCE;
->   	objs[1].flags |= EXEC_OBJECT_NEEDS_FENCE;
->   
-> -	exec_blit(fd, objs, 3, ARRAY_SIZE(batch));
-> +	exec_blit(fd, objs, 3, gen);
->   
->   	gem_close(fd, batch_handle);
->   }
-> @@ -985,7 +978,7 @@ void igt_blitter_fast_copy__raw(int fd,
->   	fill_object(&objs[1], src_handle, NULL, 0);
->   	fill_object(&objs[2], batch_handle, relocs, 2);
->   
-> -	exec_blit(fd, objs, 3, ARRAY_SIZE(batch));
-> +	exec_blit(fd, objs, 3, intel_gen(intel_get_drm_devid(fd)));
->   
->   	gem_close(fd, batch_handle);
->   }
-> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
