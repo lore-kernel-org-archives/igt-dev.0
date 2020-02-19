@@ -1,24 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F6916E7F1
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Feb 2020 14:03:04 +0000 (UTC)
-Date: Wed, 19 Feb 2020 16:03:02 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200219140302.GW25209@platvala-desk.ger.corp.intel.com>
-References: <20200219121940.18247-1-petri.latvala@intel.com>
- <158211860207.8112.2166645472651306406@skylake-alporthouse-com>
- <20200219132758.GT25209@platvala-desk.ger.corp.intel.com>
- <158211919553.8112.12156633649709340297@skylake-alporthouse-com>
- <20200219134503.GU25209@platvala-desk.ger.corp.intel.com>
- <158211999838.8112.4489972089827888546@skylake-alporthouse-com>
- <158212021432.8112.8061536783320558645@skylake-alporthouse-com>
- <20200219135659.GV25209@platvala-desk.ger.corp.intel.com>
- <158212079543.8112.5314215968286633128@skylake-alporthouse-com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <158212079543.8112.5314215968286633128@skylake-alporthouse-com>
-Subject: Re: [igt-dev] [PATCH i-g-t] runner/resultgen: Provide output when
- test output is completely empty
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 19 Feb 2020 14:15:47 -0000
+Message-ID: <158212174700.21061.4487199923398362876@emeril.freedesktop.org>
+References: <20200219133855.67829-1-emil.l.velikov@gmail.com>
+In-Reply-To: <20200219133855.67829-1-emil.l.velikov@gmail.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?s/core=5Fsetmaster=3A_new_test_for_drop/set_master_semantics?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,70 +14,98 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Emil Velikov <emil.l.velikov@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Feb 19, 2020 at 01:59:55PM +0000, Chris Wilson wrote:
-> Quoting Petri Latvala (2020-02-19 13:56:59)
-> > On Wed, Feb 19, 2020 at 01:50:14PM +0000, Chris Wilson wrote:
-> > > Quoting Chris Wilson (2020-02-19 13:46:38)
-> > > > Quoting Petri Latvala (2020-02-19 13:45:03)
-> > > > > On Wed, Feb 19, 2020 at 01:33:15PM +0000, Chris Wilson wrote:
-> > > > > > Quoting Petri Latvala (2020-02-19 13:27:58)
-> > > > > > > On Wed, Feb 19, 2020 at 01:23:22PM +0000, Chris Wilson wrote:
-> > > > > > > > Quoting Petri Latvala (2020-02-19 12:19:40)
-> > > > > > > > > If a machine is hard-hanging or otherwise rebooted at the correct
-> > > > > > > > > time, intermediary output files get created but nothing ever gets
-> > > > > > > > > written to them. That yields results that are completely empty and
-> > > > > > > > > hard to categorize or even sometimes detect automatically. Handle this
-> > > > > > > > > corner case explicitly with a custom text explaining what might have
-> > > > > > > > > happened to prod result analysis towards fixing the real issue instead
-> > > > > > > > > of wondering if test result processing is faulty.
-> > > > > > > > > 
-> > > > > > > > > The race for getting empty files is easier to hit than it seems. The
-> > > > > > > > > files get created by the runner before calling exec(), and there's
-> > > > > > > > > plenty of time to hit a really hard crash.
-> > > > > > > > 
-> > > > > > > > Speaking of which, it would not be terrible if igt_runner periodically
-> > > > > > > > called sync() everytime it decided there were new logs to preserve.
-> > > > > > > > We should also probably remove/reduce the writeback delay.
-> > > > > > > 
-> > > > > > > 
-> > > > > > > Does calling sync() sync more than fsyncdata()?
-> > > > > > 
-> > > > > > No manual entry for fsyncdata(), fdatasync()?
-> > > > > > sync/fsync includes metadata, fdatasync is just contents, unless
-> > > > > > metadata is required for data retrieval.
-> > > > > > 
-> > > > > > So for us, there really shouldn't be any difference between fdatasync
-> > > > > > and fsync (with the slight exception of last access timestamps).
-> > > > > 
-> > > > > Then what you're asking for is already there with --sync.
-> > > > 
-> > > > Do we use it? :)
-> > > 
-> > > I see that fdatasync() is used on the runner's output; are they all the
-> > > files that are retrieved after a crash? I'd feel more comfortable with
-> > > sync() as we purposefully do crash the system.
-> > 
-> > Yeah, any output written gets fdatasync()d immediately.
-> 
-> What about dmesg? Is that pulled from the runner's logs or from syslog?
-> I ask because we quite frequently see lost output in dmesg.txt
+== Series Details ==
 
-From /dev/kmsg directly. Reason for the discrepancy between runner's
-kernel logs and dmesg.txt is beyond me.
+Series: ts/core_setmaster: new test for drop/set master semantics
+URL   : https://patchwork.freedesktop.org/series/73650/
+State : warning
 
-Btw I've seen the difference go both ways so it's even more confusing.
+== Summary ==
 
+Did not get list of undocumented tests for this run, something is wrong!
 
--- 
-Petri Latvala
+Other than that, pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/110333 for the overview.
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1672066):
+   #3 [__assert_fail_base.cold+0xf]
+   #4 [__assert_fail+0x46]
+   #5 [subtest_leak+0xff]
+   #6 [main+0x16e]
+   #7 [__libc_start_main+0xf3]
+   #8 [_start+0x2e]
+  igt_fork: ../lib/tests/igt_tests_common.h:41: void internal_assert_wexited(int, int): Assertion `WIFEXITED(wstatus) && WEXITSTATUS(wstatus) == exitcode' failed.
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1582121608:build_script
+  [0Ksection_start:1582121608:after_script
+  [0Ksection_end:1582121610:after_script
+  [0Ksection_start:1582121610:upload_artifacts_on_failure
+  [0Ksection_end:1582121611:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
+
+test:test-list-diff has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1672071):
+  [0Ksection_start:1582121597:restore_cache
+  [0Ksection_end:1582121598:restore_cache
+  [0Ksection_start:1582121598:download_artifacts
+  [0K[32;1mDownloading artifacts for build:tests-debian-autotools (1672064)...[0;m
+  Downloading artifacts from coordinator... ok      [0;m  id[0;m=1672064 responseStatus[0;m=200 OK token[0;m=5wKH_VsJ
+  [32;1mDownloading artifacts for build:tests-debian-meson (1672059)...[0;m
+  Downloading artifacts from coordinator... ok      [0;m  id[0;m=1672059 responseStatus[0;m=200 OK token[0;m=CxeHLprz
+  section_end:1582121600:download_artifacts
+  [0Ksection_start:1582121600:build_script
+  [0K[0KAuthenticating with credentials from job payload (GitLab Registry)
+  [0;m[32;1m$ diff <(sed "s/ /\n/g" meson-test-list.txt| grep -v 'vc4\|v3d\|panfrost' | sort) <(sed "s/ /\n/g" autotools-test-list.txt | sort)[0;m
+  14d13
+  < core_setmaster
+  section_end:1582121602:build_script
+  [0Ksection_start:1582121602:after_script
+  [0Ksection_end:1582121603:after_script
+  [0Ksection_start:1582121603:upload_artifacts_on_failure
+  [0Ksection_end:1582121604:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1672080):
+   #3 [__assert_fail_base.cold+0xf]
+   #4 [__assert_fail+0x46]
+   #5 [subtest_leak+0xff]
+   #6 [main+0x16e]
+   #7 [__libc_start_main+0xf3]
+   #8 [_start+0x2e]
+  igt_fork: ../lib/tests/igt_tests_common.h:41: void internal_assert_wexited(int, int): Assertion `WIFEXITED(wstatus) && WEXITSTATUS(wstatus) == exitcode' failed.
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1582121626:build_script
+  [0Ksection_start:1582121626:after_script
+  [0Ksection_end:1582121627:after_script
+  [0Ksection_start:1582121627:upload_artifacts_on_failure
+  [0Ksection_end:1582121629:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/110333
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
