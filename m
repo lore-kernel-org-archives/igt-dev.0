@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8BD8589C29
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Feb 2020 03:42:43 +0000 (UTC)
-Date: Wed, 19 Feb 2020 09:04:16 +0530
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 725D96E06E
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Feb 2020 03:47:14 +0000 (UTC)
+Date: Wed, 19 Feb 2020 09:08:47 +0530
 From: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <20200219033416.GC7545@intel.com>
+Message-ID: <20200219033847.GD7545@intel.com>
 References: <20200216180006.14439-1-anshuman.gupta@intel.com>
- <20200216180006.14439-3-anshuman.gupta@intel.com>
- <13604d050046f846a66f13c26562298c2ccb97d6.camel@intel.com>
+ <20200216180006.14439-2-anshuman.gupta@intel.com>
+ <f3d385bd9e0487e3f6ab06c62619e1fb59197597.camel@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <13604d050046f846a66f13c26562298c2ccb97d6.camel@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915_pm_dc: psr required only
- for dc*-psr tests
+In-Reply-To: <f3d385bd9e0487e3f6ab06c62619e1fb59197597.camel@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915_pm_dc: Dump
+ power_domain_info on DC test failures
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,56 +20,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: "Souza, Jose" <jose.souza@intel.com>
 Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMjAyMC0wMi0xOSBhdCAwMDoyNTo1NSArMDUzMCwgU291emEsIEpvc2Ugd3JvdGU6Cj4gT24g
-U3VuLCAyMDIwLTAyLTE2IGF0IDIzOjMwICswNTMwLCBBbnNodW1hbiBHdXB0YSB3cm90ZToKPiA+
-IERQTVMgaWd0IHRlc3RzIHdlcmUgc2tpcHBpbmcgZm9yIG5vbi1wc3IgcGFuZWxzIGR1ZSB0bwo+
-ID4gcHNyX3Npbmtfc3VwcG9ydCBzaW5rIGNoZWNrIGFkZGVkIHRvIGlndF9maXh0dXJlKCkgYXQK
-PiA+IGNvbW1pdCA8NmNiZTZhZjM3MmEwMWJlNjMxMjEwNTY2NzlkNTQwNDM2ZmZkMGI2ND4uCj4g
-PiBEUE1TIGRjIHN0YXRlIGlndCB0ZXN0IGRvbid0IHJlcXVpcmUgcHNyX3Npbmtfc3VwcG9ydCwg
-YXMgaXQKPiA+IHZhbGlkYXRlcyBEQyBzdGF0ZXMgd2l0aCBhbGwgZGlzcGxheSBiZWluZyBEUE1T
-IG9mZi4KPiA+IFJlbW92aW5nIHRoZSBwc3Igc2luayBjaGVjayBmcm9tIGlndF9maXh0dXJlIGFu
-ZCBhZGRpbmcKPiA+IGl0IG9ubHkgZm9yIGRjKi0gcHNyIHRlc3RzLgo+IAo+IE1ha2VzIHNlbnNl
-LCBqdXN0IG1pc3NpbmcgdGhlIGlndF9yZXF1aXJlKHBzcikgaW4gZGMzY28tdnBiLXNpbXVsYXRp
-b24uClRoYW5rcyBmb3IgcmV2aWV3LCBkYzNjby12cGItc2ltdWxhdGlvbiBhbHJlYWR5IGhhZCBp
-Z3RfcmVxdWlyZV9mCmZvciBwc3Jfd2FpdF9lbnRyeSwgc28gZG8gd2UgcmVxdWlyZSBwc3Igc2lu
-ayBjaGVjayBvdmVyIHRoZXJlID8KUGxlYXNlIGNvcnJlY3QgbWUgaWYgaSBhbSB3cm9uZyBoZXJl
-LgpUaGFua3MsCkFuc2h1bWFuIEd1cHRhLiAKPiAKPiA+IAo+ID4gQ2M6IEFya2FkaXVzeiBIaWxl
-ciA8YXJrYWRpdXN6LmhpbGVyQGludGVsLmNvbT4KPiA+IENjOiBKb3PDqSBSb2JlcnRvIGRlIFNv
-dXphIDxqb3NlLnNvdXphQGludGVsLmNvbT4KPiA+IFNpZ25lZC1vZmYtYnk6IEFuc2h1bWFuIEd1
-cHRhIDxhbnNodW1hbi5ndXB0YUBpbnRlbC5jb20+Cj4gPiAtLS0KPiA+ICB0ZXN0cy9pOTE1L2k5
-MTVfcG1fZGMuYyB8IDMgKystCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwg
-MSBkZWxldGlvbigtKQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9pOTE1X3BtX2Rj
-LmMgYi90ZXN0cy9pOTE1L2k5MTVfcG1fZGMuYwo+ID4gaW5kZXggNGJjYTg1NTkuLjRjMzRmZjlk
-IDEwMDY0NAo+ID4gLS0tIGEvdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMKPiA+ICsrKyBiL3Rlc3Rz
-L2k5MTUvaTkxNV9wbV9kYy5jCj4gPiBAQCAtMzk1LDcgKzM5NSw2IEBAIGludCBtYWluKGludCBh
-cmdjLCBjaGFyICphcmd2W10pCj4gPiAgCQlpZ3RfcmVxdWlyZShpZ3Rfc2V0dXBfcnVudGltZV9w
-bShkYXRhLmRybV9mZCkpOwo+ID4gIAkJaWd0X3JlcXVpcmUoaWd0X3BtX2RtY19sb2FkZWQoZGF0
-YS5kZWJ1Z2ZzX2ZkKSk7Cj4gPiAgCQlpZ3RfZGlzcGxheV9yZXF1aXJlKCZkYXRhLmRpc3BsYXks
-IGRhdGEuZHJtX2ZkKTsKPiA+IC0JCWlndF9yZXF1aXJlKHBzcl9zaW5rX3N1cHBvcnQoZGF0YS5k
-ZWJ1Z2ZzX2ZkLAo+ID4gUFNSX01PREVfMSkpOwo+ID4gIAkJLyogTWFrZSBzdXJlIG91ciBLZXJu
-ZWwgc3VwcG9ydHMgTVNSIGFuZCB0aGUgbW9kdWxlIGlzCj4gPiBsb2FkZWQgKi8KPiA+ICAJCWln
-dF9yZXF1aXJlKGlndF9rbW9kX2xvYWQoIm1zciIsIE5VTEwpID09IDApOwo+ID4gIAo+ID4gQEAg
-LTQxNSw2ICs0MTQsNyBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQo+ID4gIAlp
-Z3Rfc3VidGVzdCgiZGM1LXBzciIpIHsKPiA+ICAJCWRhdGEub3BfcHNyX21vZGUgPSBQU1JfTU9E
-RV8xOwo+ID4gIAkJcHNyX2VuYWJsZShkYXRhLmRlYnVnZnNfZmQsIGRhdGEub3BfcHNyX21vZGUp
-Owo+ID4gKwkJaWd0X3JlcXVpcmUocHNyX3Npbmtfc3VwcG9ydChkYXRhLmRlYnVnZnNfZmQsCj4g
-PiBQU1JfTU9ERV8xKSk7Cj4gPiAgCQl0ZXN0X2RjX3N0YXRlX3BzcigmZGF0YSwgQ0hFQ0tfREM1
-KTsKPiA+ICAJfQo+ID4gIAo+ID4gQEAgLTQyMyw2ICs0MjMsNyBAQCBpbnQgbWFpbihpbnQgYXJn
-YywgY2hhciAqYXJndltdKQo+ID4gIAlpZ3Rfc3VidGVzdCgiZGM2LXBzciIpIHsKPiA+ICAJCWRh
-dGEub3BfcHNyX21vZGUgPSBQU1JfTU9ERV8xOwo+ID4gIAkJcHNyX2VuYWJsZShkYXRhLmRlYnVn
-ZnNfZmQsIGRhdGEub3BfcHNyX21vZGUpOwo+ID4gKwkJaWd0X3JlcXVpcmUocHNyX3Npbmtfc3Vw
-cG9ydChkYXRhLmRlYnVnZnNfZmQsCj4gPiBQU1JfTU9ERV8xKSk7Cj4gPiAgCQlpZ3RfcmVxdWly
-ZV9mKGlndF9wbV9wYzhfcGx1c19yZXNpZGVuY2llc19lbmFibGVkKGRhdGEuCj4gPiBtc3JfZmQp
-LAo+ID4gIAkJCSAgICAgICJQQzgrIHJlc2lkZW5jaWVzIG5vdCBzdXBwb3J0ZWRcbiIpOwo+ID4g
-IAkJdGVzdF9kY19zdGF0ZV9wc3IoJmRhdGEsIENIRUNLX0RDNik7Cl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
-ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
-aWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+On 2020-02-19 at 00:33:09 +0530, Souza, Jose wrote:
+> On Sun, 2020-02-16 at 23:30 +0530, Anshuman Gupta wrote:
+> > Dump i915_power_domain_info debugfs attribute on DC state
+> > test failures, it will help to identify culprit, which
+> > causes non zero refcount for "DC off" power well.
+> > 
+> > Cc: Animesh Manna <animesh.manna@intel.com>
+> > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> > ---
+> >  tests/i915/i915_pm_dc.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+> > index afcc10bc..4bca8559 100644
+> > --- a/tests/i915/i915_pm_dc.c
+> > +++ b/tests/i915/i915_pm_dc.c
+> > @@ -206,11 +206,13 @@ static bool dc_state_wait_entry(int debugfs_fd,
+> > int dc_flag, int prev_dc_count)
+> >  static void check_dc_counter(int debugfs_fd, int dc_flag, uint32_t
+> > prev_dc_count)
+> >  {
+> >  	char tmp[64];
+> > +	char file[64] = "i915_power_domain_info";
+> >  
+> >  	snprintf(tmp, sizeof(tmp), "%s", dc_flag & CHECK_DC3CO ?
+> > "DC3CO" :
+> >  		(dc_flag & CHECK_DC5 ? "DC5" : "DC6"));
+> >  	igt_assert_f(dc_state_wait_entry(debugfs_fd, dc_flag,
+> > prev_dc_count),
+> > -		     "%s state is not achieved\n", tmp);
+> > +		     "%s state is not achieved\n%s:\n%s\n",
+> > +		     tmp, file, igt_sysfs_get(debugfs_fd, file));
+> >  }
+> 
+> You are leaking the return of igt_sysfs_get() also why add the variable
+> file? 
+Thanks for review, i will fix the leak and will take a macro instead of file.
+Thanks,
+Anshuman Gupta. 
+> 
+> >  
+> >  static void setup_videoplayback(data_t *data)
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
