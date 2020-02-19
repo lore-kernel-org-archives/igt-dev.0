@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBB536EB72
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Feb 2020 11:06:16 +0000 (UTC)
-Date: Wed, 19 Feb 2020 13:06:10 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200219110610.GS25209@platvala-desk.ger.corp.intel.com>
-References: <20200218163540.12637-1-akeem.g.abodunrin@intel.com>
- <20200218163540.12637-2-akeem.g.abodunrin@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200218163540.12637-2-akeem.g.abodunrin@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tools/generate_cb_buffer: Add
- script to assemble CB kernel
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 19 Feb 2020 11:02:12 -0000
+Message-ID: <158211013299.21061.16813933471844414664@emeril.freedesktop.org>
+References: <20200218001710.16537-1-sreedhar.telukuntla@intel.com>
+In-Reply-To: <20200218001710.16537-1-sreedhar.telukuntla@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgSW50cm9k?=
+ =?utf-8?q?uce_new_apis_for_coherent_mmap?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,262 +14,288 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Akeem G Abodunrin <akeem.g.abodunrin@intel.com>
-Cc: tony.luck@intel.com, omer.aran@intel.com, jani.nikula@intel.com, chris.p.wilson@intel.com, david.c.stewart@intel.com, igt-dev@lists.freedesktop.org, pragyansri.pathi@intel.com, jon.bloomfield@intel.com, daniel.vetter@intel.com, mika.kuoppala@intel.com
+To: "Telukuntla, Sreedhar" <sreedhar.telukuntla@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Feb 18, 2020 at 08:35:40AM -0800, Akeem G Abodunrin wrote:
-> This patch adds script and applicable assembly sources, so that we can use
-> igt to assemble Clear Batch Buffer kernel for gen7 and gen7.5 devices -
-> Resultant header files would be imported to i915, and used as they are...
-> =
+== Series Details ==
 
-> With this patch, user need to have mesa configured on their platform,
-> before igt could be used to achieve the purpose of assembling the kernel
-> from source.
-> =
+Series: Introduce new apis for coherent mmap
+URL   : https://patchwork.freedesktop.org/series/73543/
+State : failure
 
-> This is needed for "Security mitigation for Intel Gen7/7.5 HWs"
-> Intel ID: PSIRT-TA-201910-001/CVEID: CVE-2019-14615
-> =
+== Summary ==
 
-> Signed-off-by: Akeem G Abodunrin <akeem.g.abodunrin@intel.com>
-> ---
->  scripts/asm_eu_kernel.sh                | 149 ++++++++++++++++++++++++
->  tools/assembly_source/hsw_clear_buf.asm | 141 ++++++++++++++++++++++
->  tools/assembly_source/ivb_clear_buf.asm | 139 ++++++++++++++++++++++
->  3 files changed, 429 insertions(+)
->  create mode 100755 scripts/asm_eu_kernel.sh
->  create mode 100644 tools/assembly_source/hsw_clear_buf.asm
->  create mode 100644 tools/assembly_source/ivb_clear_buf.asm
-> =
+CI Bug Log - changes from CI_DRM_7957_full -> IGTPW_4168_full
+====================================================
 
-> diff --git a/scripts/asm_eu_kernel.sh b/scripts/asm_eu_kernel.sh
-> new file mode 100755
-> index 00000000..f2669e52
-> --- /dev/null
-> +++ b/scripts/asm_eu_kernel.sh
-> @@ -0,0 +1,149 @@
-> +#!/bin/bash
-> +#
-> +# SPDX-License-Identifier: MIT
-> +#
-> +# Copyright =A9 2020 Intel Corporation
-> +#
-> +# Permission is hereby granted, free of charge, to any person obtaining a
-> +# copy of this software and associated documentation files (the "Softwar=
-e"),
-> +# to deal in the Software without restriction, including without limitat=
-ion
-> +# the rights to use, copy, modify, merge, publish, distribute, sublicens=
-e,
-> +# and/or sell copies of the Software, and to permit persons to whom the
-> +# Software is furnished to do so, subject to the following conditions:
-> +#
-> +# The above copyright notice and this permission notice (including the n=
-ext
-> +# paragraph) shall be included in all copies or substantial portions of =
-the
-> +# Software.
-> +#
-> +# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRES=
-S OR
-> +# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILIT=
-Y,
-> +# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHA=
-LL
-> +# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR O=
-THER
-> +# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> +# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DE=
-ALINGS
-> +# IN THE SOFTWARE.
-> +
-> +export ASSEMBLY_SOURCE=3D./tools/assembly_source
-> +
-> +function get_help {
-> +        echo "Usage:    asm_eu_kernel.sh [options]"
-> +        echo "Remember to run this as root"
+Summary
+-------
 
-I can't spot why this would need root.
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_4168_full absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4168_full, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4168_full:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@fbdev@mmap:
+    - shard-tglb:         [PASS][1] -> [SKIP][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-tglb5/igt@fbdev@mmap.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-tglb3/igt@fbdev@mmap.html
+    - shard-iclb:         [PASS][3] -> [SKIP][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-iclb3/igt@fbdev@mmap.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-iclb7/igt@fbdev@mmap.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4168_full that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@mmap:
+    - shard-apl:          [PASS][5] -> [SKIP][6] ([fdo#109271])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-apl6/igt@fbdev@mmap.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-apl2/igt@fbdev@mmap.html
+    - shard-glk:          [PASS][7] -> [SKIP][8] ([fdo#109271])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-glk2/igt@fbdev@mmap.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-glk3/igt@fbdev@mmap.html
+    - shard-hsw:          [PASS][9] -> [SKIP][10] ([fdo#109271])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-hsw7/igt@fbdev@mmap.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-hsw6/igt@fbdev@mmap.html
+    - shard-kbl:          [PASS][11] -> [SKIP][12] ([fdo#109271])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-kbl1/igt@fbdev@mmap.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-kbl2/igt@fbdev@mmap.html
+
+  * igt@gem_ctx_isolation@rcs0-s3:
+    - shard-kbl:          [PASS][13] -> [DMESG-WARN][14] ([i915#180]) +4 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-kbl1/igt@gem_ctx_isolation@rcs0-s3.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-kbl4/igt@gem_ctx_isolation@rcs0-s3.html
+
+  * igt@gem_exec_schedule@fifo-bsd1:
+    - shard-iclb:         [PASS][15] -> [SKIP][16] ([fdo#109276]) +14 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-iclb2/igt@gem_exec_schedule@fifo-bsd1.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-iclb8/igt@gem_exec_schedule@fifo-bsd1.html
+
+  * igt@gem_exec_schedule@preempt-other-chain-bsd:
+    - shard-iclb:         [PASS][17] -> [SKIP][18] ([fdo#112146]) +5 similar issues
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-iclb3/igt@gem_exec_schedule@preempt-other-chain-bsd.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-iclb1/igt@gem_exec_schedule@preempt-other-chain-bsd.html
+
+  * igt@i915_pm_rpm@modeset-stress-extra-wait:
+    - shard-glk:          [PASS][19] -> [DMESG-WARN][20] ([i915#118] / [i915#95])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-glk7/igt@i915_pm_rpm@modeset-stress-extra-wait.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-glk8/igt@i915_pm_rpm@modeset-stress-extra-wait.html
+
+  * igt@kms_busy@extended-modeset-hang-newfb-with-reset-render-pipe-c:
+    - shard-hsw:          [PASS][21] -> [INCOMPLETE][22] ([i915#61])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-hsw6/igt@kms_busy@extended-modeset-hang-newfb-with-reset-render-pipe-c.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-hsw7/igt@kms_busy@extended-modeset-hang-newfb-with-reset-render-pipe-c.html
+
+  * igt@kms_frontbuffer_tracking@fbc-suspend:
+    - shard-apl:          [PASS][23] -> [DMESG-WARN][24] ([i915#180]) +3 similar issues
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-apl6/igt@kms_frontbuffer_tracking@fbc-suspend.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-apl7/igt@kms_frontbuffer_tracking@fbc-suspend.html
+
+  * igt@perf_pmu@busy-no-semaphores-vcs1:
+    - shard-iclb:         [PASS][25] -> [SKIP][26] ([fdo#112080]) +9 similar issues
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-iclb1/igt@perf_pmu@busy-no-semaphores-vcs1.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-iclb6/igt@perf_pmu@busy-no-semaphores-vcs1.html
+
+  * igt@prime_mmap_coherency@ioctl-errors:
+    - shard-hsw:          [PASS][27] -> [FAIL][28] ([i915#831])
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-hsw1/igt@prime_mmap_coherency@ioctl-errors.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-hsw6/igt@prime_mmap_coherency@ioctl-errors.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_busy@busy-vcs1:
+    - shard-iclb:         [SKIP][29] ([fdo#112080]) -> [PASS][30] +15 similar issues
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-iclb6/igt@gem_busy@busy-vcs1.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-iclb4/igt@gem_busy@busy-vcs1.html
+
+  * igt@gem_busy@close-race:
+    - shard-tglb:         [INCOMPLETE][31] ([i915#977]) -> [PASS][32]
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-tglb7/igt@gem_busy@close-race.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-tglb2/igt@gem_busy@close-race.html
+
+  * {igt@gem_ctx_persistence@close-replace-race}:
+    - shard-tglb:         [FAIL][33] ([i915#1241]) -> [PASS][34]
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-tglb6/igt@gem_ctx_persistence@close-replace-race.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-tglb2/igt@gem_ctx_persistence@close-replace-race.html
+
+  * igt@gem_exec_schedule@pi-userfault-bsd:
+    - shard-iclb:         [SKIP][35] ([i915#677]) -> [PASS][36]
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-iclb4/igt@gem_exec_schedule@pi-userfault-bsd.html
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-iclb5/igt@gem_exec_schedule@pi-userfault-bsd.html
+
+  * igt@gem_exec_schedule@wide-bsd:
+    - shard-iclb:         [SKIP][37] ([fdo#112146]) -> [PASS][38] +4 similar issues
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-iclb4/igt@gem_exec_schedule@wide-bsd.html
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-iclb5/igt@gem_exec_schedule@wide-bsd.html
+
+  * igt@gem_partial_pwrite_pread@writes-after-reads-uncached:
+    - shard-hsw:          [FAIL][39] ([i915#694]) -> [PASS][40] +1 similar issue
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-hsw5/igt@gem_partial_pwrite_pread@writes-after-reads-uncached.html
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-hsw8/igt@gem_partial_pwrite_pread@writes-after-reads-uncached.html
+
+  * igt@gem_ppgtt@flink-and-close-vma-leak:
+    - shard-glk:          [FAIL][41] ([i915#644]) -> [PASS][42]
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-glk2/igt@gem_ppgtt@flink-and-close-vma-leak.html
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-glk1/igt@gem_ppgtt@flink-and-close-vma-leak.html
+    - shard-kbl:          [FAIL][43] ([i915#644]) -> [PASS][44]
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-kbl1/igt@gem_ppgtt@flink-and-close-vma-leak.html
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-kbl7/igt@gem_ppgtt@flink-and-close-vma-leak.html
+
+  * igt@gem_vm_create@isolation:
+    - shard-glk:          [FAIL][45] -> [PASS][46]
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-glk4/igt@gem_vm_create@isolation.html
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-glk4/igt@gem_vm_create@isolation.html
+
+  * igt@i915_pm_rps@waitboost:
+    - shard-tglb:         [FAIL][47] ([i915#413]) -> [PASS][48]
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-tglb8/igt@i915_pm_rps@waitboost.html
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-tglb3/igt@i915_pm_rps@waitboost.html
+    - shard-iclb:         [FAIL][49] ([i915#413]) -> [PASS][50]
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-iclb6/igt@i915_pm_rps@waitboost.html
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-iclb4/igt@i915_pm_rps@waitboost.html
+
+  * igt@kms_cursor_crc@pipe-a-cursor-suspend:
+    - shard-kbl:          [DMESG-WARN][51] ([i915#180]) -> [PASS][52] +6 similar issues
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-kbl6/igt@kms_cursor_crc@pipe-a-cursor-suspend.html
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-kbl4/igt@kms_cursor_crc@pipe-a-cursor-suspend.html
+
+  * igt@kms_flip@flip-vs-suspend:
+    - shard-kbl:          [DMESG-WARN][53] ([i915#180] / [i915#56]) -> [PASS][54]
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-kbl6/igt@kms_flip@flip-vs-suspend.html
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-kbl1/igt@kms_flip@flip-vs-suspend.html
+
+  * igt@kms_flip@flip-vs-suspend-interruptible:
+    - shard-apl:          [DMESG-WARN][55] ([i915#180]) -> [PASS][56] +4 similar issues
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-apl1/igt@kms_flip@flip-vs-suspend-interruptible.html
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-apl4/igt@kms_flip@flip-vs-suspend-interruptible.html
+    - shard-hsw:          [INCOMPLETE][57] ([i915#61]) -> [PASS][58]
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-hsw5/igt@kms_flip@flip-vs-suspend-interruptible.html
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-hsw7/igt@kms_flip@flip-vs-suspend-interruptible.html
+
+  * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-shrfb-plflip-blt:
+    - shard-glk:          [FAIL][59] ([i915#49]) -> [PASS][60]
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-glk8/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-shrfb-plflip-blt.html
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-glk8/igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-shrfb-plflip-blt.html
+
+  * igt@kms_frontbuffer_tracking@psr-modesetfrombusy:
+    - shard-tglb:         [SKIP][61] ([i915#668]) -> [PASS][62] +4 similar issues
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-tglb1/igt@kms_frontbuffer_tracking@psr-modesetfrombusy.html
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-tglb6/igt@kms_frontbuffer_tracking@psr-modesetfrombusy.html
+
+  * igt@kms_psr@no_drrs:
+    - shard-iclb:         [FAIL][63] ([i915#173]) -> [PASS][64]
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-iclb1/igt@kms_psr@no_drrs.html
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-iclb6/igt@kms_psr@no_drrs.html
+
+  * igt@kms_psr@psr2_primary_page_flip:
+    - shard-iclb:         [SKIP][65] ([fdo#109441]) -> [PASS][66] +1 similar issue
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-iclb7/igt@kms_psr@psr2_primary_page_flip.html
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-iclb2/igt@kms_psr@psr2_primary_page_flip.html
+
+  * igt@prime_busy@hang-bsd2:
+    - shard-iclb:         [SKIP][67] ([fdo#109276]) -> [PASS][68] +13 similar issues
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-iclb8/igt@prime_busy@hang-bsd2.html
+   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-iclb1/igt@prime_busy@hang-bsd2.html
+
+  
+#### Warnings ####
+
+  * igt@gem_tiled_blits@interruptible:
+    - shard-hsw:          [FAIL][69] ([i915#694]) -> [FAIL][70] ([i915#818])
+   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-hsw6/igt@gem_tiled_blits@interruptible.html
+   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-hsw2/igt@gem_tiled_blits@interruptible.html
+
+  * igt@gem_tiled_blits@normal:
+    - shard-hsw:          [FAIL][71] ([i915#818]) -> [FAIL][72] ([i915#694])
+   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-hsw2/igt@gem_tiled_blits@normal.html
+   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-hsw8/igt@gem_tiled_blits@normal.html
+
+  * igt@gem_userptr_blits@dmabuf-unsync:
+    - shard-snb:          [DMESG-WARN][73] ([fdo#110789] / [fdo#111870] / [i915#478]) -> [DMESG-WARN][74] ([fdo#111870] / [i915#478])
+   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7957/shard-snb6/igt@gem_userptr_blits@dmabuf-unsync.html
+   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/shard-snb1/igt@gem_userptr_blits@dmabuf-unsync.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109276]: https://bugs.freedesktop.org/show_bug.cgi?id=109276
+  [fdo#109441]: https://bugs.freedesktop.org/show_bug.cgi?id=109441
+  [fdo#110789]: https://bugs.freedesktop.org/show_bug.cgi?id=110789
+  [fdo#111870]: https://bugs.freedesktop.org/show_bug.cgi?id=111870
+  [fdo#112080]: https://bugs.freedesktop.org/show_bug.cgi?id=112080
+  [fdo#112146]: https://bugs.freedesktop.org/show_bug.cgi?id=112146
+  [i915#118]: https://gitlab.freedesktop.org/drm/intel/issues/118
+  [i915#1241]: https://gitlab.freedesktop.org/drm/intel/issues/1241
+  [i915#173]: https://gitlab.freedesktop.org/drm/intel/issues/173
+  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
+  [i915#413]: https://gitlab.freedesktop.org/drm/intel/issues/413
+  [i915#478]: https://gitlab.freedesktop.org/drm/intel/issues/478
+  [i915#49]: https://gitlab.freedesktop.org/drm/intel/issues/49
+  [i915#56]: https://gitlab.freedesktop.org/drm/intel/issues/56
+  [i915#61]: https://gitlab.freedesktop.org/drm/intel/issues/61
+  [i915#644]: https://gitlab.freedesktop.org/drm/intel/issues/644
+  [i915#668]: https://gitlab.freedesktop.org/drm/intel/issues/668
+  [i915#677]: https://gitlab.freedesktop.org/drm/intel/issues/677
+  [i915#694]: https://gitlab.freedesktop.org/drm/intel/issues/694
+  [i915#818]: https://gitlab.freedesktop.org/drm/intel/issues/818
+  [i915#831]: https://gitlab.freedesktop.org/drm/intel/issues/831
+  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+  [i915#977]: https://gitlab.freedesktop.org/drm/intel/issues/977
 
 
-> +        echo " "
-> +        echo "Please make sure your MESA tool is compiled, and run this =
-script from igt home directory"
+Participating hosts (10 -> 8)
+------------------------------
 
-Mesa written as "Mesa" and IGT written as "IGT". And it's "source root
-directory", not "home directory".
-
-Does the assembler require specific build options for Mesa? Note them here.
-
-> +        echo " "
-> +        echo "Options are:"
-> +        echo " -h                       display this help message, and e=
-xit"
-> +        echo " -g=3Dplatform              generation of device: use "hsw=
-" for gen7.5, and "ivb" for gen7 devices"
-> +        echo " -o=3Dname_of_file          output file to store result - =
-otherwise default would be used"
-
-output file to store result - default "name of the default filename"
-
-> +        echo " -m=3Dmesa                  directory specify mesa directo=
-ry"
-
-"Mesa source directory"
-
-> +        echo " "
-> +        echo " Usage example: \"scripts/asm_eu_kernel.sh -g hsw -o hsw_c=
-lear_buffer.h -m /home/OgbojuOde/intel_gpu/mesa\""
-
-For an example Mesa directory, use something that's more obviously a placeh=
-older.   -m /path/to/mesa/sources
+  Missing    (2): pig-skl-6260u pig-glk-j5005 
 
 
-This script writes two files, does it not? And -o only selects one of
-them, other being hardcoded... That could use a mention in the help
-text.
+Build changes
+-------------
 
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5445 -> IGTPW_4168
+  * Piglit: piglit_4509 -> None
 
-> +}
-> +
-> +function include_guard # $1=3Dfilename
-> +{
-> +	echo "__$(basename $1)__" | tr [:lower:] [:upper:] | tr [:punct:] _
-> +}
-> +
-> +function prefix_header # $1=3Dfilename $2=3Dcomment
-> +{
-> +	guard=3D$(include_guard $1)
-> +	comment=3D$2
-> +
-> +	cat <<EOF
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright =A9 2020 Intel Corporation
-> + *
-> + * Generate by: Intel-gpu-tools on $(date)
+  CI-20190529: 20190529
+  CI_DRM_7957: 3ceb00d5a5d62566c5979edcbf06df2c15b62b80 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4168: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/index.html
+  IGT_5445: 21e523814d692978d6d04ba85eadd67fcbd88b7e @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
 
-"Generated"
+== Logs ==
 
-"IGT Gpu Tools"
-
-
-> + */
-> +
-> +#ifndef $guard
-> +#define $guard
-> +
-> +#include <linux/types.h>
-> +
-> +/* $comment */
-> +EOF
-> +}
-> +
-> +function postfix_footer # filename
-> +{
-> +	guard=3D$(include_guard $1)
-> +
-> +	cat <<EOF
-> +
-> +
-> +#endif /* $guard */
-> +EOF
-> +}
-> +
-> +function asm_cb_kernel # as-root <args>
-> +{
-> +        if [ -f "$output_file" ]; then
-> +                echo -e "Warning: The \"$output_file\" file already exis=
-t - choose another file name"
-> +                echo -e "Otherwise, it will be overwritten, and default =
-file for i915 will be generated\n"
-> +        fi
-
-You print this warning, and yet still overwrite the file?
-
-
-> +
-> +        # Using i965_asm tool to assemble hex file from assembly source
-> +        $I965_ASM -g $gen_device -t c_literal  $input_asm_source -o $out=
-put_file
-> +
-> +        # Generate header file
-> +        if [ "$gen_device" =3D=3D "hsw" ]; then
-> +                echo "Generating gen7.5 CB Kernel header file \"gen7_5_c=
-learbuffer.h\" for i915 driver..."
-> +
-> +                i915_filename=3Dgen7_5_clearbuffer.h
-> +                prefix_header $i915_filename "Media CB Kernel for gen7.5=
- devices" > $i915_filename
-> +                cat $output_file >> $i915_filename
-> +                postfix_footer $i915_filename >> $i915_filename
-> +
-> +        elif [ "$gen_device" =3D=3D "ivb" ]; then
-> +                echo "Generating gen7 CB Kernel header file \"gen7_clear=
-buffer.h\" for i915 driver..."
-> +
-> +                i915_filename=3Dgen7_clearbuffer.h
-> +                prefix_header $i915_filename "Media CB Kernel for gen7 d=
-evices" > $i915_filename
-> +                cat $output_file >> $i915_filename
-> +                postfix_footer $i915_filename >> $i915_filename
-> +        fi
-> +}
-> +
-> +while getopts "hg:o:m:" opt; do
-> +	case $opt in
-> +		h) get_help; exit 0;;
-> +		g) gen_device=3D"$OPTARG" ;;
-> +		o) output_file=3D"$OPTARG" ;;
-> +                m) mesa_dir=3D"$OPTARG" ;;
-> +		\?)
-> +			echo "Unknown option: -$OPTARG"
-> +			get_help
-> +			exit 1
-> +			;;
-> +	esac
-> +done
-> +shift $(($OPTIND-1))
-> +
-> +if [ "x$1" !=3D "x" ]; then
-> +	echo "Unknown option: $1"
-> +	get_help
-> +	exit 1
-> +fi
-> +
-> +I965_ASM=3D"$mesa_dir/build/debug/src/intel/tools/i965_asm"
-> +if [ ! -f ${I965_ASM} ]; then
-> +        echo "i965_asm not found at ${I965_ASM}"
-> +        get_help
-> +        exit 1
-> +fi
-> +
-> +if [ "x$gen_device" !=3D "x" ]; then
-> +        if [ "$gen_device" =3D=3D "hsw" ]; then
-> +                input_asm_source=3D"${ASSEMBLY_SOURCE}/hsw_clear_buf.asm"
-> +        elif [ "$gen_device" =3D=3D "ivb" ]; then
-> +                input_asm_source=3D"${ASSEMBLY_SOURCE}/ivb_clear_buf.asm"
-> +        else
-> +                echo "Unknown platform specified"
-> +                get_help
-> +                exit 1
-> +        fi
-> +	asm_cb_kernel
-> +fi
-
-If -g is not given at all, the script exits silently.
-
-
-
--- =
-
-Petri Latvala
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4168/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
