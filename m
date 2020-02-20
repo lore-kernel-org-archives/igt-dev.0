@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD0B06EDBD
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 15:43:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3ABFF89DDF
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 15:46:10 +0000 (UTC)
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
 References: <20200220153209.210767-1-martin.peres@linux.intel.com>
 In-Reply-To: <20200220153209.210767-1-martin.peres@linux.intel.com>
-Message-ID: <158221338920.8112.6424522736784766890@skylake-alporthouse-com>
-Date: Thu, 20 Feb 2020 15:43:09 +0000
+Message-ID: <158221356538.8112.10760355305068621449@skylake-alporthouse-com>
+Date: Thu, 20 Feb 2020 15:46:05 +0000
 Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci: add a pre-merge blacklist to
  reduce the testing queue
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -26,25 +26,23 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Quoting Martin Peres (2020-02-20 15:32:09)
 > +###############################################################################
-> +# This test is reading one file at a time while being suspended, which makes
-> +# testing extremelly slow. This is somewhat of an edge case that is unlikely
-> +# to be hit, hence why it could be dropped from pre-merge testing. Here are the
-> +# execution time statistics:
+> +# Modern userspace does not depend on the GTT anymore, so let's drop the
+> +# slowest tests from pre-merge testing:
 > +#
-> +# - shard-skl: 0.5% (~1 minute)
-> +# - shard-kbl: 0.1% (~2 seconds)
-> +# - shard-apl: 0.1% (~2 seconds)
-> +# - shard-glk: 0.1% (~2 seconds)
-> +# - shard-icl: 0.6% (~1.5 minutes)
-> +# - shard-tgl: 0.7% (~1.5 minutes)
+> +# - shard-skl: 2.7% (~6.5 minutes)
+> +# - shard-kbl: 2% (~2.5 minutes)
+> +# - shard-apl: 4.7% (~8.5 minutes)
+> +# - shard-glk: 3.5% (~8 minutes)
+> +# - shard-icl: 4.2% (~8.5 minutes)
+> +# - shard-tgl: 2.5% (~4.5 minutes)
 > +#
 > +# Data acquired on 2020-02-20 by Martin Peres
 > +###############################################################################
-> +igt@i915_pm_rpm@debugfs-read
+> +igt@gem_fence_thrash@bo-write-verify-threaded-[xy]
+> +igt@gem_tiled_(wc|(|blits|fence_blits)@(normal|interruptible))
 
-You can say the debugfs-read is a developer-only feature, and it is the
-sysfs-read that must be kept working. However, the danger here is that
-we get random errors in other tests that would have been caught by this.
+So where's the pre-merge regression testing then?
+Just speed the tests up.
 -Chris
 _______________________________________________
 igt-dev mailing list
