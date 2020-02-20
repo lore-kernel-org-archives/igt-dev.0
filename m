@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 40BB26ED7C
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 13:09:53 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Thu, 20 Feb 2020 18:30:41 +0530
-Message-Id: <20200220130041.24141-3-anshuman.gupta@intel.com>
-In-Reply-To: <20200220130041.24141-1-anshuman.gupta@intel.com>
-References: <20200220130041.24141-1-anshuman.gupta@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D0D26E218
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 13:12:51 +0000 (UTC)
+From: Petri Latvala <petri.latvala@intel.com>
+Date: Thu, 20 Feb 2020 15:12:45 +0200
+Message-Id: <20200220131245.17108-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 2/2] tests/i915_pm_dc: psr required only
- for dc*-psr tests
+Subject: [igt-dev] [PATCH i-g-t] tools/i915-perf: Fix compiler warning
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,53 +14,108 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RFBNUyBpZ3QgdGVzdHMgd2VyZSBza2lwcGluZyBmb3Igbm9uLXBzciBwYW5lbHMgZHVlIHRvCnBz
-cl9zaW5rX3N1cHBvcnQgc2luayBjaGVjayBhZGRlZCB0byBpZ3RfZml4dHVyZSgpIGF0CmNvbW1p
-dCA8NmNiZTZhZjM3MmEwMWJlNjMxMjEwNTY2NzlkNTQwNDM2ZmZkMGI2ND4uCkRQTVMgZGMgc3Rh
-dGUgaWd0IHRlc3QgZG9uJ3QgcmVxdWlyZSBwc3Jfc2lua19zdXBwb3J0LCBhcyBpdAp2YWxpZGF0
-ZXMgREMgc3RhdGVzIHdpdGggYWxsIGRpc3BsYXkgYmVpbmcgRFBNUyBvZmYuClJlbW92aW5nIHRo
-ZSBwc3Igc2luayBjaGVjayBmcm9tIGlndF9maXh0dXJlIGFuZCBhZGRpbmcKaXQgb25seSBmb3Ig
-ZGMqLSBwc3IgdGVzdHMuCgp2MjoKLSBBZGRpbmcgcHNyIHNpbmsgY2hlY2sgdG8gZGMzY28gYW5k
-IG1vdmluZyBhaGVhZCBpdAogIGluIGRjNS82IHBzciB0ZXN0cy4gW0pvc2VdCgpDYzogQXJrYWRp
-dXN6IEhpbGVyIDxhcmthZGl1c3ouaGlsZXJAaW50ZWwuY29tPgpDYzogSm9zw6kgUm9iZXJ0byBk
-ZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IEFuc2h1bWFuIEd1
-cHRhIDxhbnNodW1hbi5ndXB0YUBpbnRlbC5jb20+Ci0tLQogdGVzdHMvaTkxNS9pOTE1X3BtX2Rj
-LmMgfCA0ICsrKy0KIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24o
-LSkKCmRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2k5MTVfcG1fZGMuYyBiL3Rlc3RzL2k5MTUvaTkx
-NV9wbV9kYy5jCmluZGV4IGZjNmZhYTE2Li5kY2FmODJmOCAxMDA2NDQKLS0tIGEvdGVzdHMvaTkx
-NS9pOTE1X3BtX2RjLmMKKysrIGIvdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMKQEAgLTM5OCw3ICsz
-OTgsNiBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQogCQlpZ3RfcmVxdWlyZShp
-Z3Rfc2V0dXBfcnVudGltZV9wbShkYXRhLmRybV9mZCkpOwogCQlpZ3RfcmVxdWlyZShpZ3RfcG1f
-ZG1jX2xvYWRlZChkYXRhLmRlYnVnZnNfZmQpKTsKIAkJaWd0X2Rpc3BsYXlfcmVxdWlyZSgmZGF0
-YS5kaXNwbGF5LCBkYXRhLmRybV9mZCk7Ci0JCWlndF9yZXF1aXJlKHBzcl9zaW5rX3N1cHBvcnQo
-ZGF0YS5kZWJ1Z2ZzX2ZkLCBQU1JfTU9ERV8xKSk7CiAJCS8qIE1ha2Ugc3VyZSBvdXIgS2VybmVs
-IHN1cHBvcnRzIE1TUiBhbmQgdGhlIG1vZHVsZSBpcyBsb2FkZWQgKi8KIAkJaWd0X3JlcXVpcmUo
-aWd0X2ttb2RfbG9hZCgibXNyIiwgTlVMTCkgPT0gMCk7CiAKQEAgLTQxMCwxMiArNDA5LDE0IEBA
-IGludCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10pCiAJaWd0X2Rlc2NyaWJlKCJJbiB0aGlz
-IHRlc3Qgd2UgbWFrZSBzdXJlIHRoYXQgc3lzdGVtIGVudGVycyBEQzNDTyAiCiAJCSAgICAgIndo
-ZW4gUFNSMiBpcyBhY3RpdmUgYW5kIHN5c3RlbSBpcyBpbiBTTEVFUCBzdGF0ZSIpOwogCWlndF9z
-dWJ0ZXN0KCJkYzNjby12cGItc2ltdWxhdGlvbiIpIHsKKwkJaWd0X3JlcXVpcmUocHNyX3Npbmtf
-c3VwcG9ydChkYXRhLmRlYnVnZnNfZmQsIFBTUl9NT0RFXzIpKTsKIAkJdGVzdF9kYzNjb192cGJf
-c2ltdWxhdGlvbigmZGF0YSk7CiAJfQogCiAJaWd0X2Rlc2NyaWJlKCJUaGlzIHRlc3QgdmFsaWRh
-dGVzIGRpc3BsYXkgZW5naW5lIGVudHJ5IHRvIERDNSBzdGF0ZSAiCiAJCSAgICAgIndoaWxlIFBT
-UiBpcyBhY3RpdmUiKTsKIAlpZ3Rfc3VidGVzdCgiZGM1LXBzciIpIHsKKwkJaWd0X3JlcXVpcmUo
-cHNyX3Npbmtfc3VwcG9ydChkYXRhLmRlYnVnZnNfZmQsIFBTUl9NT0RFXzEpKTsKIAkJZGF0YS5v
-cF9wc3JfbW9kZSA9IFBTUl9NT0RFXzE7CiAJCXBzcl9lbmFibGUoZGF0YS5kZWJ1Z2ZzX2ZkLCBk
-YXRhLm9wX3Bzcl9tb2RlKTsKIAkJdGVzdF9kY19zdGF0ZV9wc3IoJmRhdGEsIENIRUNLX0RDNSk7
-CkBAIC00MjQsNiArNDI1LDcgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFyZ3ZbXSkKIAlp
-Z3RfZGVzY3JpYmUoIlRoaXMgdGVzdCB2YWxpZGF0ZXMgZGlzcGxheSBlbmdpbmUgZW50cnkgdG8g
-REM2IHN0YXRlICIKIAkJICAgICAid2hpbGUgUFNSIGlzIGFjdGl2ZSIpOwogCWlndF9zdWJ0ZXN0
-KCJkYzYtcHNyIikgeworCQlpZ3RfcmVxdWlyZShwc3Jfc2lua19zdXBwb3J0KGRhdGEuZGVidWdm
-c19mZCwgUFNSX01PREVfMSkpOwogCQlkYXRhLm9wX3Bzcl9tb2RlID0gUFNSX01PREVfMTsKIAkJ
-cHNyX2VuYWJsZShkYXRhLmRlYnVnZnNfZmQsIGRhdGEub3BfcHNyX21vZGUpOwogCQlpZ3RfcmVx
-dWlyZV9mKGlndF9wbV9wYzhfcGx1c19yZXNpZGVuY2llc19lbmFibGVkKGRhdGEubXNyX2ZkKSwK
-LS0gCjIuMjQuMAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
-cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Use flexible array member in the first struct instead of two structs
+and a 0-length array so compiler knows we really meant to read and
+write past it.
+
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ tools/i915-perf/i915_perf_control.c           | 24 +++++++------------
+ tools/i915-perf/i915_perf_recorder.c          |  7 ++++--
+ tools/i915-perf/i915_perf_recorder_commands.h |  5 +---
+ 3 files changed, 15 insertions(+), 21 deletions(-)
+
+diff --git a/tools/i915-perf/i915_perf_control.c b/tools/i915-perf/i915_perf_control.c
+index a8d0d30f..3722f2b1 100644
+--- a/tools/i915-perf/i915_perf_control.c
++++ b/tools/i915-perf/i915_perf_control.c
+@@ -91,28 +91,22 @@ main(int argc, char *argv[])
+ 		if (dump_file[0] == '/') {
+ 			uint32_t total_len =
+ 				sizeof(struct recorder_command_base) + strlen(dump_file) + 1;
+-			struct {
+-				struct recorder_command_base base;
+-				struct recorder_command_dump dump;
+-			} *data = malloc(total_len);
++			struct recorder_command_base *data = malloc(total_len);
+ 
+-			data->base.command = RECORDER_COMMAND_DUMP;
+-			data->base.size = total_len;
+-			snprintf((char *) data->dump.path, strlen(dump_file) + 1, "%s", dump_file);
++			data->command = RECORDER_COMMAND_DUMP;
++			data->size = total_len;
++			snprintf((char *) data->path, strlen(dump_file) + 1, "%s", dump_file);
+ 
+ 			fwrite(data, total_len, 1, command_fifo_file);
+ 		} else {
+ 			char *cwd = get_current_dir_name();
+ 			uint32_t path_len = strlen(cwd) + 1 + strlen(dump_file) + 1;
+ 			uint32_t total_len = sizeof(struct recorder_command_base) + path_len;
+-			struct {
+-				struct recorder_command_base base;
+-				struct recorder_command_dump dump;
+-			} *data = malloc(total_len);
+-
+-			data->base.command = RECORDER_COMMAND_DUMP;
+-			data->base.size = total_len;
+-			snprintf((char *) data->dump.path, path_len, "%s/%s", cwd, dump_file);
++			struct recorder_command_base *data = malloc(total_len);
++
++			data->command = RECORDER_COMMAND_DUMP;
++			data->size = total_len;
++			snprintf((char *) data->path, path_len, "%s/%s", cwd, dump_file);
+ 
+ 			fwrite(data, total_len, 1, command_fifo_file);
+ 		}
+diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
+index 760cabf1..bd477746 100644
+--- a/tools/i915-perf/i915_perf_recorder.c
++++ b/tools/i915-perf/i915_perf_recorder.c
+@@ -605,12 +605,15 @@ read_command_file(struct recording_context *ctx)
+ 	switch (header.command) {
+ 	case RECORDER_COMMAND_DUMP: {
+ 		uint32_t len = header.size - sizeof(header), offset = 0;
+-		struct recorder_command_dump *dump = malloc(len);
++		struct recorder_command_base *dump = malloc(sizeof(header) + len);
+ 		FILE *file;
+ 
++		/* Not really needed since current code only accesses dump->path but for completeness... */
++		memcpy(dump, &header, sizeof(header));
++
+ 		while (offset < len &&
+ 		       ((ret = read(ctx->command_fifo_fd,
+-				    (void *) dump + offset, len - offset)) > 0
++				    (void *) dump->path + offset, len - offset)) > 0
+ 			|| errno == EAGAIN)) {
+ 			if (ret > 0)
+ 				offset += ret;
+diff --git a/tools/i915-perf/i915_perf_recorder_commands.h b/tools/i915-perf/i915_perf_recorder_commands.h
+index 4855d80f..5d84ca82 100644
+--- a/tools/i915-perf/i915_perf_recorder_commands.h
++++ b/tools/i915-perf/i915_perf_recorder_commands.h
+@@ -32,8 +32,5 @@ enum recorder_command {
+ struct recorder_command_base {
+ 	uint32_t command;
+ 	uint32_t size;
+-};
+-
+-struct recorder_command_dump {
+-	uint8_t path[0];
++	uint8_t path[];
+ };
+-- 
+2.20.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
