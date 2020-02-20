@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7221B6ED6F
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 12:52:16 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8760C8862C
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 12:58:42 +0000 (UTC)
+Date: Thu, 20 Feb 2020 14:58:39 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Date: Thu, 20 Feb 2020 14:52:06 +0200
-Message-Id: <20200220125207.16423-1-petri.latvala@intel.com>
+Message-ID: <20200220125839.GY25209@platvala-desk.ger.corp.intel.com>
+References: <20200220125152.1188880-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib: Update selftests to use dynamic
- subtests
+Content-Disposition: inline
+In-Reply-To: <20200220125152.1188880-1-lionel.g.landwerlin@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tools/i915-perf: workaround overzelous
+ compiler warnings
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,96 +22,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>, Petri Latvala <petri.latvala@intel.com>
+To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Chris Wilson <chris@chris-wilson.co.uk>
+On Thu, Feb 20, 2020 at 02:51:52PM +0200, Lionel Landwerlin wrote:
+> Give me a break :)
+> 
+> Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+> ---
+>  tools/i915-perf/i915_perf_control.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/i915-perf/i915_perf_control.c b/tools/i915-perf/i915_perf_control.c
+> index a8d0d30f..dcbc2f59 100644
+> --- a/tools/i915-perf/i915_perf_control.c
+> +++ b/tools/i915-perf/i915_perf_control.c
+> @@ -95,10 +95,12 @@ main(int argc, char *argv[])
+>  				struct recorder_command_base base;
+>  				struct recorder_command_dump dump;
+>  			} *data = malloc(total_len);
+> +			char *path = (char *) data->dump.path;
+>  
+>  			data->base.command = RECORDER_COMMAND_DUMP;
+>  			data->base.size = total_len;
+> -			snprintf((char *) data->dump.path, strlen(dump_file) + 1, "%s", dump_file);
+> +			snprintf(path, strlen(dump_file) + 1, "%s", dump_file);
+> +
 
-Use the new igt_subtest_with_dynamic to nicely group the dynamic
-subtests together.
+Same warning still. My compiler is clever enough to see that even with
+another pointer indirection, the area pointed at is an array of 0
+elements.
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>
-Acked-by: Petri Latvala <petri.latvala@intel.com>
-Acked-by: Tomi Sarvela <tomi.p.sarvela@intel.com>
----
- lib/igt_kmod.c            | 23 +++++++++++++++++++----
- tests/igt_command_line.sh |  9 ++-------
- 2 files changed, 21 insertions(+), 11 deletions(-)
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 05019c24..e701545d 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -21,6 +21,7 @@
-  * IN THE SOFTWARE.
-  */
- 
-+#include <ctype.h>
- #include <signal.h>
- #include <errno.h>
- 
-@@ -602,6 +603,18 @@ void igt_kselftest_fini(struct igt_kselftest *tst)
- 	kmod_module_unref(tst->kmod);
- }
- 
-+static const char *unfilter(const char *filter, const char *name)
-+{
-+	if (!filter)
-+		return name;
-+
-+	name += strlen(filter);
-+	if (!isalpha(*name))
-+		name++;
-+
-+	return name;
-+}
-+
- void igt_kselftests(const char *module_name,
- 		    const char *options,
- 		    const char *result,
-@@ -618,10 +631,12 @@ void igt_kselftests(const char *module_name,
- 		igt_require(igt_kselftest_begin(&tst) == 0);
- 
- 	igt_kselftest_get_tests(tst.kmod, filter, &tests);
--	igt_list_for_each_entry_safe(tl, tn, &tests, link) {
--		igt_subtest_f("%s", tl->name)
--			igt_kselftest_execute(&tst, tl, options, result);
--		free(tl);
-+	igt_subtest_with_dynamic(filter ?: "all") {
-+		igt_list_for_each_entry_safe(tl, tn, &tests, link) {
-+			igt_dynamic_f("%s", unfilter(filter, tl->name))
-+				igt_kselftest_execute(&tst, tl, options, result);
-+			free(tl);
-+		}
- 	}
- 
- 	igt_fixture {
-diff --git a/tests/igt_command_line.sh b/tests/igt_command_line.sh
-index 291b6526..5356877c 100755
---- a/tests/igt_command_line.sh
-+++ b/tests/igt_command_line.sh
-@@ -89,13 +89,8 @@ check_test ()
- 	fi
- 
- 	if [ $RET -eq 0 -a -z "$LIST" ]; then
--		# Subtest enumeration of kernel selftest launchers depends
--		# on the running kernel. If selftests are not enabled,
--		# they will output nothing and exit with 0.
--		if [ "$testname" != "i915_selftest" -a "$testname" != "drm_mm" -a "$testname" != "kms_selftest" -a "$testname" != "dmabuf" ]; then
--			echo "    test does seem to be using igt_main() (should have subtests) and yet --list-subtests is empty!"
--			fail $test
--		fi
-+		echo "    test does seem to be using igt_main() (should have subtests) and yet --list-subtests is empty!"
-+		fail $test
- 	fi
- }
- 
 -- 
-2.20.1
-
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
