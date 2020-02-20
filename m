@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00C8A6EE0D
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 20:22:50 +0000 (UTC)
-From: "Abodunrin, Akeem G" <akeem.g.abodunrin@intel.com>
-Date: Thu, 20 Feb 2020 20:22:48 +0000
-Message-ID: <CFEEE81102D91947B9CC368106979EBAC8A160B0@ORSMSX102.amr.corp.intel.com>
-References: <20200218163540.12637-1-akeem.g.abodunrin@intel.com>
- <20200218163540.12637-2-akeem.g.abodunrin@intel.com>
- <20200219110610.GS25209@platvala-desk.ger.corp.intel.com>
- <CFEEE81102D91947B9CC368106979EBAC8A1549D@ORSMSX102.amr.corp.intel.com>
- <20200220101058.GX25209@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <20200220101058.GX25209@platvala-desk.ger.corp.intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CAC9E6EE5E
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 21:13:23 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Thu, 20 Feb 2020 21:13:21 +0000
+Message-ID: <79ce994ef5f0fa20b838fec70d8b961cea20f4b5.camel@intel.com>
+References: <20200220130041.24141-1-anshuman.gupta@intel.com>
+ <20200220130041.24141-3-anshuman.gupta@intel.com>
+In-Reply-To: <20200220130041.24141-3-anshuman.gupta@intel.com>
 Content-Language: en-US
+Content-ID: <DA1025E04806AD47858EFE9CFB355832@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tools/generate_cb_buffer: Add
- script to assemble CB kernel
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] tests/i915_pm_dc: psr required
+ only for dc*-psr tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,67 +20,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "Luck, Tony" <tony.luck@intel.com>, "Aran, Omer" <omer.aran@intel.com>, "Nikula, Jani" <jani.nikula@intel.com>, "Wilson,
- Chris P" <chris.p.wilson@intel.com>, "Stewart,
- David C" <david.c.stewart@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pathi,
- Pragyansri" <pragyansri.pathi@intel.com>, "Bloomfield,
- Jon" <jon.bloomfield@intel.com>, "Vetter, Daniel" <daniel.vetter@intel.com>, "Kuoppala, Mika" <mika.kuoppala@intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gupta,
+ Anshuman" <anshuman.gupta@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> On Thu, Feb 20, 2020 at 03:06:09AM +0200, Abodunrin, Akeem G wrote:
-> > > > +export ASSEMBLY_SOURCE=./tools/assembly_source
-> > > > +
-> > > > +function get_help {
-> > > > +        echo "Usage:    asm_eu_kernel.sh [options]"
-> > > > +        echo "Remember to run this as root"
-> > >
-> > > I can't spot why this would need root.
-> > Since we are generating new file, and writing to it - the script
-> > definitely needs root access... otherwise commands like this "
-> > prefix_header $i915_filename "Media CB Kernel for gen7.5 devices""
-> > fails
-> 
-> That's no reason to need root. That's just a reason to need write access to the
-> directory where you're creating the files.
-> 
-> As you require the script to be run in IGT source root and writing to $cwd, you
-> need write access to IGT source root. Which shouldn't be root-owned.
-
-I got you - but I don't think this is a big deal - I will remove it in the next spin... but not sure it adds any value at this point.
-> 
-> 
-> > >
-> > >
-> > > > +        echo " "
-> > > > +        echo "Please make sure your MESA tool is compiled, and
-> > > > + run this script
-> > > from igt home directory"
-> > >
-> > > Mesa written as "Mesa" and IGT written as "IGT". And it's "source
-> > > root directory", not "home directory".
-> > >
-> > > Does the assembler require specific build options for Mesa? Note them here.
-> >
-> > Yes, it does - but the options are hardcoded in this script - so, mentioning them
-> in the help function is irrelevant...
-> 
-> I'm asking about the Mesa _build_ options. This script doesn't build Mesa, it just
-> uses it.
-> 
-> From a quick check that would be -Dtools=intel that is required.
-I don't think Mesa requires Kernel build options to work, AFAIK - it is a standalone tool that could be installed in different ways as mentioned here "https://www.mesa3d.org/install.html" - So, no need for that information.
-
-> 
-> 
-> 
-> --
-> Petri Latvala
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVGh1LCAyMDIwLTAyLTIwIGF0IDE4OjMwICswNTMwLCBBbnNodW1hbiBHdXB0YSB3cm90ZToN
+Cj4gRFBNUyBpZ3QgdGVzdHMgd2VyZSBza2lwcGluZyBmb3Igbm9uLXBzciBwYW5lbHMgZHVlIHRv
+DQo+IHBzcl9zaW5rX3N1cHBvcnQgc2luayBjaGVjayBhZGRlZCB0byBpZ3RfZml4dHVyZSgpIGF0
+DQo+IGNvbW1pdCA8NmNiZTZhZjM3MmEwMWJlNjMxMjEwNTY2NzlkNTQwNDM2ZmZkMGI2ND4uDQo+
+IERQTVMgZGMgc3RhdGUgaWd0IHRlc3QgZG9uJ3QgcmVxdWlyZSBwc3Jfc2lua19zdXBwb3J0LCBh
+cyBpdA0KPiB2YWxpZGF0ZXMgREMgc3RhdGVzIHdpdGggYWxsIGRpc3BsYXkgYmVpbmcgRFBNUyBv
+ZmYuDQo+IFJlbW92aW5nIHRoZSBwc3Igc2luayBjaGVjayBmcm9tIGlndF9maXh0dXJlIGFuZCBh
+ZGRpbmcNCj4gaXQgb25seSBmb3IgZGMqLSBwc3IgdGVzdHMuDQo+IA0KPiB2MjoNCj4gLSBBZGRp
+bmcgcHNyIHNpbmsgY2hlY2sgdG8gZGMzY28gYW5kIG1vdmluZyBhaGVhZCBpdA0KPiAgIGluIGRj
+NS82IHBzciB0ZXN0cy4gW0pvc2VdDQoNClJldmlld2VkLWJ5OiBKb3PDqSBSb2JlcnRvIGRlIFNv
+dXphIDxqb3NlLnNvdXphQGludGVsLmNvbT4NCg0KPiANCj4gQ2M6IEFya2FkaXVzeiBIaWxlciA8
+YXJrYWRpdXN6LmhpbGVyQGludGVsLmNvbT4NCj4gQ2M6IEpvc8OpIFJvYmVydG8gZGUgU291emEg
+PGpvc2Uuc291emFAaW50ZWwuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBBbnNodW1hbiBHdXB0YSA8
+YW5zaHVtYW4uZ3VwdGFAaW50ZWwuY29tPg0KPiAtLS0NCj4gIHRlc3RzL2k5MTUvaTkxNV9wbV9k
+Yy5jIHwgNCArKystDQo+ICAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAxIGRlbGV0
+aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMgYi90ZXN0
+cy9pOTE1L2k5MTVfcG1fZGMuYw0KPiBpbmRleCBmYzZmYWExNi4uZGNhZjgyZjggMTAwNjQ0DQo+
+IC0tLSBhL3Rlc3RzL2k5MTUvaTkxNV9wbV9kYy5jDQo+ICsrKyBiL3Rlc3RzL2k5MTUvaTkxNV9w
+bV9kYy5jDQo+IEBAIC0zOTgsNyArMzk4LDYgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKmFy
+Z3ZbXSkNCj4gIAkJaWd0X3JlcXVpcmUoaWd0X3NldHVwX3J1bnRpbWVfcG0oZGF0YS5kcm1fZmQp
+KTsNCj4gIAkJaWd0X3JlcXVpcmUoaWd0X3BtX2RtY19sb2FkZWQoZGF0YS5kZWJ1Z2ZzX2ZkKSk7
+DQo+ICAJCWlndF9kaXNwbGF5X3JlcXVpcmUoJmRhdGEuZGlzcGxheSwgZGF0YS5kcm1fZmQpOw0K
+PiAtCQlpZ3RfcmVxdWlyZShwc3Jfc2lua19zdXBwb3J0KGRhdGEuZGVidWdmc19mZCwNCj4gUFNS
+X01PREVfMSkpOw0KPiAgCQkvKiBNYWtlIHN1cmUgb3VyIEtlcm5lbCBzdXBwb3J0cyBNU1IgYW5k
+IHRoZSBtb2R1bGUgaXMNCj4gbG9hZGVkICovDQo+ICAJCWlndF9yZXF1aXJlKGlndF9rbW9kX2xv
+YWQoIm1zciIsIE5VTEwpID09IDApOw0KPiAgDQo+IEBAIC00MTAsMTIgKzQwOSwxNCBAQCBpbnQg
+bWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQ0KPiAgCWlndF9kZXNjcmliZSgiSW4gdGhpcyB0
+ZXN0IHdlIG1ha2Ugc3VyZSB0aGF0IHN5c3RlbSBlbnRlcnMNCj4gREMzQ08gIg0KPiAgCQkgICAg
+ICJ3aGVuIFBTUjIgaXMgYWN0aXZlIGFuZCBzeXN0ZW0gaXMgaW4gU0xFRVANCj4gc3RhdGUiKTsN
+Cj4gIAlpZ3Rfc3VidGVzdCgiZGMzY28tdnBiLXNpbXVsYXRpb24iKSB7DQo+ICsJCWlndF9yZXF1
+aXJlKHBzcl9zaW5rX3N1cHBvcnQoZGF0YS5kZWJ1Z2ZzX2ZkLA0KPiBQU1JfTU9ERV8yKSk7DQo+
+ICAJCXRlc3RfZGMzY29fdnBiX3NpbXVsYXRpb24oJmRhdGEpOw0KPiAgCX0NCj4gIA0KPiAgCWln
+dF9kZXNjcmliZSgiVGhpcyB0ZXN0IHZhbGlkYXRlcyBkaXNwbGF5IGVuZ2luZSBlbnRyeSB0byBE
+QzUNCj4gc3RhdGUgIg0KPiAgCQkgICAgICJ3aGlsZSBQU1IgaXMgYWN0aXZlIik7DQo+ICAJaWd0
+X3N1YnRlc3QoImRjNS1wc3IiKSB7DQo+ICsJCWlndF9yZXF1aXJlKHBzcl9zaW5rX3N1cHBvcnQo
+ZGF0YS5kZWJ1Z2ZzX2ZkLA0KPiBQU1JfTU9ERV8xKSk7DQo+ICAJCWRhdGEub3BfcHNyX21vZGUg
+PSBQU1JfTU9ERV8xOw0KPiAgCQlwc3JfZW5hYmxlKGRhdGEuZGVidWdmc19mZCwgZGF0YS5vcF9w
+c3JfbW9kZSk7DQo+ICAJCXRlc3RfZGNfc3RhdGVfcHNyKCZkYXRhLCBDSEVDS19EQzUpOw0KPiBA
+QCAtNDI0LDYgKzQyNSw3IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10pDQo+ICAJ
+aWd0X2Rlc2NyaWJlKCJUaGlzIHRlc3QgdmFsaWRhdGVzIGRpc3BsYXkgZW5naW5lIGVudHJ5IHRv
+IERDNg0KPiBzdGF0ZSAiDQo+ICAJCSAgICAgIndoaWxlIFBTUiBpcyBhY3RpdmUiKTsNCj4gIAlp
+Z3Rfc3VidGVzdCgiZGM2LXBzciIpIHsNCj4gKwkJaWd0X3JlcXVpcmUocHNyX3Npbmtfc3VwcG9y
+dChkYXRhLmRlYnVnZnNfZmQsDQo+IFBTUl9NT0RFXzEpKTsNCj4gIAkJZGF0YS5vcF9wc3JfbW9k
+ZSA9IFBTUl9NT0RFXzE7DQo+ICAJCXBzcl9lbmFibGUoZGF0YS5kZWJ1Z2ZzX2ZkLCBkYXRhLm9w
+X3Bzcl9tb2RlKTsNCj4gIAkJaWd0X3JlcXVpcmVfZihpZ3RfcG1fcGM4X3BsdXNfcmVzaWRlbmNp
+ZXNfZW5hYmxlZChkYXRhLg0KPiBtc3JfZmQpLA0KX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
+cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9pZ3QtZGV2Cg==
