@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8596D6ED06
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 09:04:24 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CBE786ED12
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 10:11:04 +0000 (UTC)
+Date: Thu, 20 Feb 2020 12:10:58 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200220101058.GX25209@platvala-desk.ger.corp.intel.com>
+References: <20200218163540.12637-1-akeem.g.abodunrin@intel.com>
+ <20200218163540.12637-2-akeem.g.abodunrin@intel.com>
+ <20200219110610.GS25209@platvala-desk.ger.corp.intel.com>
+ <CFEEE81102D91947B9CC368106979EBAC8A1549D@ORSMSX102.amr.corp.intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-References: <20200206110110.5399-1-ranjeet1.kumar@intel.com>
- <158133419181.5235.12047516556267303590@skylake-alporthouse-com>
- <274141C8A0A31546A510F01C1A9ED9F2BA71DE@BGSMSX101.gar.corp.intel.com>
- <158158096500.11180.5218028198982885077@skylake-alporthouse-com>
- <274141C8A0A31546A510F01C1A9ED9F2BAF223@BGSMSX101.gar.corp.intel.com>
-In-Reply-To: <274141C8A0A31546A510F01C1A9ED9F2BAF223@BGSMSX101.gar.corp.intel.com>
-Message-ID: <158218945785.8112.16911735026069399304@skylake-alporthouse-com>
-Date: Thu, 20 Feb 2020 09:04:17 +0000
-Subject: Re: [igt-dev] [PATCH] [PATCH
- i-g-t]test/i915/gem_pipe_control_store_loop: Removal of test
+Content-Disposition: inline
+In-Reply-To: <CFEEE81102D91947B9CC368106979EBAC8A1549D@ORSMSX102.amr.corp.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tools/generate_cb_buffer: Add
+ script to assemble CB kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,21 +25,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Kumar, Ranjeet1" <ranjeet1.kumar@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "Abodunrin, Akeem G" <akeem.g.abodunrin@intel.com>
+Cc: "Luck, Tony" <tony.luck@intel.com>, "Aran, Omer" <omer.aran@intel.com>, "Nikula, Jani" <jani.nikula@intel.com>, "Wilson,
+ Chris P" <chris.p.wilson@intel.com>, "Stewart,
+ David C" <david.c.stewart@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pathi,
+ Pragyansri" <pragyansri.pathi@intel.com>, "Bloomfield,
+ Jon" <jon.bloomfield@intel.com>, "Vetter, Daniel" <daniel.vetter@intel.com>, "Kuoppala, Mika" <mika.kuoppala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Kumar, Ranjeet1 (2020-02-20 08:50:42)
-> Hi Chris , 
-> 
-> This OUT_RELLOC instruction are covered in gem_exec_bad_domains, gem_write_read_ring_switch test too. 
->  I tried replacing OUT_RELLOC with OUT_RELLOC_FENCED and successfully tests got passed. 
+On Thu, Feb 20, 2020 at 03:06:09AM +0200, Abodunrin, Akeem G wrote:
+> > > +export ASSEMBLY_SOURCE=./tools/assembly_source
+> > > +
+> > > +function get_help {
+> > > +        echo "Usage:    asm_eu_kernel.sh [options]"
+> > > +        echo "Remember to run this as root"
+> > 
+> > I can't spot why this would need root.
+> Since we are generating new file, and writing to it - the script definitely needs root access... otherwise commands like this " prefix_header $i915_filename "Media CB Kernel for gen7.5 devices"" fails
 
-The test is a regression test developed because we found a bug in the
-kernel that was not being exercised (a race condition during retire). We
-need to be certain that we retain such coverage. E.g. if we were to
-reintroduce such a bug, would CI pick it up? [Always a useful exercise
-to determine the efficacy of CI.]
--Chris
+That's no reason to need root. That's just a reason to need write
+access to the directory where you're creating the files.
+
+As you require the script to be run in IGT source root and writing to
+$cwd, you need write access to IGT source root. Which shouldn't be
+root-owned.
+
+
+> > 
+> > 
+> > > +        echo " "
+> > > +        echo "Please make sure your MESA tool is compiled, and run this script
+> > from igt home directory"
+> > 
+> > Mesa written as "Mesa" and IGT written as "IGT". And it's "source root
+> > directory", not "home directory".
+> > 
+> > Does the assembler require specific build options for Mesa? Note them here.
+> 
+> Yes, it does - but the options are hardcoded in this script - so, mentioning them in the help function is irrelevant...
+
+I'm asking about the Mesa _build_ options. This script doesn't build
+Mesa, it just uses it.
+
+From a quick check that would be -Dtools=intel that is required.
+
+
+
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
