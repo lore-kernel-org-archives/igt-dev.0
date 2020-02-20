@@ -1,13 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 00C8A6EE0D
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 20:22:50 +0000 (UTC)
+From: "Abodunrin, Akeem G" <akeem.g.abodunrin@intel.com>
+Date: Thu, 20 Feb 2020 20:22:48 +0000
+Message-ID: <CFEEE81102D91947B9CC368106979EBAC8A160B0@ORSMSX102.amr.corp.intel.com>
+References: <20200218163540.12637-1-akeem.g.abodunrin@intel.com>
+ <20200218163540.12637-2-akeem.g.abodunrin@intel.com>
+ <20200219110610.GS25209@platvala-desk.ger.corp.intel.com>
+ <CFEEE81102D91947B9CC368106979EBAC8A1549D@ORSMSX102.amr.corp.intel.com>
+ <20200220101058.GX25209@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <20200220101058.GX25209@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 20 Feb 2020 19:56:31 -0000
-Message-ID: <158222859113.17408.610898952663262@emeril.freedesktop.org>
-References: <20200220174155.2162242-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200220174155.2162242-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9p?=
- =?utf-8?q?915=5Fpm=5Frpm=3A_Only_check_for_suspend_failures_after_each_de?=
- =?utf-8?q?bugfs_entry?=
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tools/generate_cb_buffer: Add
+ script to assemble CB kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,133 +22,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: "Latvala, Petri" <petri.latvala@intel.com>
+Cc: "Luck, Tony" <tony.luck@intel.com>, "Aran, Omer" <omer.aran@intel.com>, "Nikula, Jani" <jani.nikula@intel.com>, "Wilson,
+ Chris P" <chris.p.wilson@intel.com>, "Stewart,
+ David C" <david.c.stewart@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pathi,
+ Pragyansri" <pragyansri.pathi@intel.com>, "Bloomfield,
+ Jon" <jon.bloomfield@intel.com>, "Vetter, Daniel" <daniel.vetter@intel.com>, "Kuoppala, Mika" <mika.kuoppala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+> On Thu, Feb 20, 2020 at 03:06:09AM +0200, Abodunrin, Akeem G wrote:
+> > > > +export ASSEMBLY_SOURCE=./tools/assembly_source
+> > > > +
+> > > > +function get_help {
+> > > > +        echo "Usage:    asm_eu_kernel.sh [options]"
+> > > > +        echo "Remember to run this as root"
+> > >
+> > > I can't spot why this would need root.
+> > Since we are generating new file, and writing to it - the script
+> > definitely needs root access... otherwise commands like this "
+> > prefix_header $i915_filename "Media CB Kernel for gen7.5 devices""
+> > fails
+> 
+> That's no reason to need root. That's just a reason to need write access to the
+> directory where you're creating the files.
+> 
+> As you require the script to be run in IGT source root and writing to $cwd, you
+> need write access to IGT source root. Which shouldn't be root-owned.
 
-Series: i915/i915_pm_rpm: Only check for suspend failures after each debugfs entry
-URL   : https://patchwork.freedesktop.org/series/73729/
-State : success
+I got you - but I don't think this is a big deal - I will remove it in the next spin... but not sure it adds any value at this point.
+> 
+> 
+> > >
+> > >
+> > > > +        echo " "
+> > > > +        echo "Please make sure your MESA tool is compiled, and
+> > > > + run this script
+> > > from igt home directory"
+> > >
+> > > Mesa written as "Mesa" and IGT written as "IGT". And it's "source
+> > > root directory", not "home directory".
+> > >
+> > > Does the assembler require specific build options for Mesa? Note them here.
+> >
+> > Yes, it does - but the options are hardcoded in this script - so, mentioning them
+> in the help function is irrelevant...
+> 
+> I'm asking about the Mesa _build_ options. This script doesn't build Mesa, it just
+> uses it.
+> 
+> From a quick check that would be -Dtools=intel that is required.
+I don't think Mesa requires Kernel build options to work, AFAIK - it is a standalone tool that could be installed in different ways as mentioned here "https://www.mesa3d.org/install.html" - So, no need for that information.
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_7975 -> IGTPW_4203
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4203/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4203 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_mmap_gtt@basic:
-    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([CI#94] / [i915#402]) +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7975/fi-tgl-y/igt@gem_mmap_gtt@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4203/fi-tgl-y/igt@gem_mmap_gtt@basic.html
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-cml-s:           [PASS][3] -> [DMESG-FAIL][4] ([i915#877])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7975/fi-cml-s/igt@i915_selftest@live_gem_contexts.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4203/fi-cml-s/igt@i915_selftest@live_gem_contexts.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:
-    - fi-skl-6600u:       [PASS][5] -> [INCOMPLETE][6] ([i915#69])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7975/fi-skl-6600u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4203/fi-skl-6600u/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_close_race@basic-threads:
-    - fi-hsw-4770r:       [TIMEOUT][7] ([fdo#112271] / [i915#1084]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7975/fi-hsw-4770r/igt@gem_close_race@basic-threads.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4203/fi-hsw-4770r/igt@gem_close_race@basic-threads.html
-    - fi-byt-n2820:       [INCOMPLETE][9] ([i915#45]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7975/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4203/fi-byt-n2820/igt@gem_close_race@basic-threads.html
-
-  * igt@i915_selftest@live_execlists:
-    - fi-tgl-y:           [INCOMPLETE][11] ([CI#94] / [i915#647]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7975/fi-tgl-y/igt@i915_selftest@live_execlists.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4203/fi-tgl-y/igt@i915_selftest@live_execlists.html
-    - fi-icl-y:           [DMESG-FAIL][13] ([fdo#108569]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7975/fi-icl-y/igt@i915_selftest@live_execlists.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4203/fi-icl-y/igt@i915_selftest@live_execlists.html
-
-  * igt@kms_chamelium@dp-crc-fast:
-    - fi-cml-u2:          [FAIL][15] ([i915#262]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7975/fi-cml-u2/igt@kms_chamelium@dp-crc-fast.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4203/fi-cml-u2/igt@kms_chamelium@dp-crc-fast.html
-
-  * igt@prime_self_import@basic-llseek-bad:
-    - fi-tgl-y:           [DMESG-WARN][17] ([CI#94] / [i915#402]) -> [PASS][18] +1 similar issue
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7975/fi-tgl-y/igt@prime_self_import@basic-llseek-bad.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4203/fi-tgl-y/igt@prime_self_import@basic-llseek-bad.html
-
-  
-#### Warnings ####
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-7500u:       [FAIL][19] ([fdo#111096] / [i915#323]) -> [FAIL][20] ([fdo#111407])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7975/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4203/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  
-  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
-  [fdo#108569]: https://bugs.freedesktop.org/show_bug.cgi?id=108569
-  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
-  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#1084]: https://gitlab.freedesktop.org/drm/intel/issues/1084
-  [i915#262]: https://gitlab.freedesktop.org/drm/intel/issues/262
-  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#45]: https://gitlab.freedesktop.org/drm/intel/issues/45
-  [i915#647]: https://gitlab.freedesktop.org/drm/intel/issues/647
-  [i915#69]: https://gitlab.freedesktop.org/drm/intel/issues/69
-  [i915#877]: https://gitlab.freedesktop.org/drm/intel/issues/877
-
-
-Participating hosts (47 -> 46)
-------------------------------
-
-  Additional (5): fi-tgl-dsi fi-glk-dsi fi-bwr-2160 fi-snb-2520m fi-kbl-r 
-  Missing    (6): fi-ilk-m540 fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5453 -> IGTPW_4203
-
-  CI-20190529: 20190529
-  CI_DRM_7975: f66891f7bdc3c60bb6f06fd6bc0718a0bd975896 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4203: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4203/index.html
-  IGT_5453: cae9a5881ed2c5be2c2518a255740b612a927f9a @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4203/index.html
+> 
+> 
+> 
+> --
+> Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
