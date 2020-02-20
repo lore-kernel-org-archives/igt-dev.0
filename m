@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E182D6ED6F
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 12:52:16 +0000 (UTC)
-From: Petri Latvala <petri.latvala@intel.com>
-Date: Thu, 20 Feb 2020 14:52:07 +0200
-Message-Id: <20200220125207.16423-2-petri.latvala@intel.com>
-In-Reply-To: <20200220125207.16423-1-petri.latvala@intel.com>
-References: <20200220125207.16423-1-petri.latvala@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E86976ED6F
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 12:51:55 +0000 (UTC)
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Date: Thu, 20 Feb 2020 14:51:52 +0200
+Message-Id: <20200220125152.1188880-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] intel-ci: Kernel selftest changes to
- fast-feedback and blacklist
+Subject: [igt-dev] [PATCH i-g-t] tools/i915-perf: workaround overzelous
+ compiler warnings
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,49 +20,48 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Now that selftest launchers are enumerable, we can control them with
-fast-feedback.testlist and blacklist.txt. For now, apply the status
-quo.
+Give me a break :)
 
-Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tests/intel-ci/blacklist.txt          | 5 -----
- tests/intel-ci/fast-feedback.testlist | 4 ++++
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ tools/i915-perf/i915_perf_control.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-index 51d0417c..390e4fa0 100644
---- a/tests/intel-ci/blacklist.txt
-+++ b/tests/intel-ci/blacklist.txt
-@@ -1,10 +1,5 @@
- igt@meta_test(@.*)?
- ###############################################
--# Kernel selftests (run separately)
--###############################################
--igt@i915_selftest(@.*)?
--igt@drm_mm(@.*)?
--###############################################
- # Handle module reloads with great care!
- #
- # Reloading a module is more likely to leave
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 1b00485e..b41fb4a0 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -171,3 +171,7 @@ igt@vgem_basic@sysfs
- igt@vgem_basic@unload
- igt@i915_module_load@reload
- igt@i915_pm_rpm@module-reload
+diff --git a/tools/i915-perf/i915_perf_control.c b/tools/i915-perf/i915_perf_control.c
+index a8d0d30f..dcbc2f59 100644
+--- a/tools/i915-perf/i915_perf_control.c
++++ b/tools/i915-perf/i915_perf_control.c
+@@ -95,10 +95,12 @@ main(int argc, char *argv[])
+ 				struct recorder_command_base base;
+ 				struct recorder_command_dump dump;
+ 			} *data = malloc(total_len);
++			char *path = (char *) data->dump.path;
+ 
+ 			data->base.command = RECORDER_COMMAND_DUMP;
+ 			data->base.size = total_len;
+-			snprintf((char *) data->dump.path, strlen(dump_file) + 1, "%s", dump_file);
++			snprintf(path, strlen(dump_file) + 1, "%s", dump_file);
 +
-+# Kernel selftests
-+igt@i915_selftest@live
-+igt@dmabuf@all
+ 
+ 			fwrite(data, total_len, 1, command_fifo_file);
+ 		} else {
+@@ -109,10 +111,11 @@ main(int argc, char *argv[])
+ 				struct recorder_command_base base;
+ 				struct recorder_command_dump dump;
+ 			} *data = malloc(total_len);
++			char *path = (char *) data->dump.path;
+ 
+ 			data->base.command = RECORDER_COMMAND_DUMP;
+ 			data->base.size = total_len;
+-			snprintf((char *) data->dump.path, path_len, "%s/%s", cwd, dump_file);
++			snprintf(path, path_len, "%s/%s", cwd, dump_file);
+ 
+ 			fwrite(data, total_len, 1, command_fifo_file);
+ 		}
 -- 
-2.20.1
+2.25.0
 
 _______________________________________________
 igt-dev mailing list
