@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 97F966E215
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 14:32:51 +0000 (UTC)
-From: "Ramotowski, Maciej" <maciej.ramotowski@intel.com>
-Date: Thu, 20 Feb 2020 14:32:49 +0000
-Message-ID: <20200220143237.18855-1-maciej.ramotowski@intel.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] Reduce Docker images size
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 20 Feb 2020 14:47:16 -0000
+Message-ID: <158221003656.17408.10698623779768338321@emeril.freedesktop.org>
+References: <20200220131245.17108-1-petri.latvala@intel.com>
+In-Reply-To: <20200220131245.17108-1-petri.latvala@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdG9vbHMv?=
+ =?utf-8?q?i915-perf=3A_Fix_compiler_warning?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,357 +14,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Ramotowski, Maciej" <maciej.ramotowski@intel.com>, Oleg Vasilev <oleg.vasilev@intel.com>, "Latvala,
- Petri" <petri.latvala@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: Oleg Vasilev <oleg.vasilev@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Maciej Ramotowski <maciej.ramotowski@intel.com>
----
- Dockerfile.build-debian         | 39 ++++++++----------
- Dockerfile.build-debian-arm64   | 68 +++++++++++++++-----------------
- Dockerfile.build-debian-armhf   | 67 +++++++++++++++----------------
- Dockerfile.build-debian-minimal | 44 ++++++++++-----------
- Dockerfile.build-debian-mips    | 70 +++++++++++++++------------------
- 5 files changed, 132 insertions(+), 156 deletions(-)
+== Series Details ==
 
-diff --git a/Dockerfile.build-debian b/Dockerfile.build-debian
-index b143a532..6cf7a1f0 100644
---- a/Dockerfile.build-debian
-+++ b/Dockerfile.build-debian
-@@ -7,25 +7,20 @@ FROM $CI_REGISTRY_IMAGE/build-debian-minimal:commit-$CI_COMMIT_SHA
- # just few extra dependencies for building IGT with all the optional components
- # enabled
- 
--RUN apt-get update
--RUN apt-get install -y \
--			libunwind-dev \
--			libgsl-dev \
--			libasound2-dev \
--			libxmlrpc-core-c3-dev \
--			libjson-c-dev \
--			libcurl4-openssl-dev \
--			python-docutils \
--			valgrind \
--			peg \
--			libdrm-intel1
--
--# autotools build deps
--RUN apt-get install -y \
--			autoconf \
--			automake \
--			xutils-dev \
--			libtool \
--			make
--
--RUN apt-get clean
-+RUN apt-get update && apt-get install -y \
-+    autoconf \
-+    automake \
-+    libasound2-dev \
-+    libcurl4-openssl-dev \
-+    libdrm-intel1 \
-+    libgsl-dev \
-+    libjson-c-dev \
-+    libtool \
-+    libunwind-dev \
-+    libxmlrpc-core-c3-dev \
-+    make \
-+    peg \
-+    python-docutils \
-+    valgrind \
-+    xutils-dev \
-+ && rm -rf /var/lib/apt/lists/*
-diff --git a/Dockerfile.build-debian-arm64 b/Dockerfile.build-debian-arm64
-index 573c7096..924432bd 100644
---- a/Dockerfile.build-debian-arm64
-+++ b/Dockerfile.build-debian-arm64
-@@ -1,40 +1,34 @@
- FROM debian:buster
- 
--RUN apt-get update
--RUN apt-get install -y \
--			flex \
--			bison \
--			pkg-config \
--			x11proto-dri2-dev \
--			python-docutils \
--			valgrind \
--			peg
--
- RUN dpkg --add-architecture arm64
--RUN apt-get update
--RUN apt-get install -y \
--			gcc-aarch64-linux-gnu \
--			libatomic1:arm64 \
--			libpciaccess-dev:arm64 \
--			libkmod-dev:arm64 \
--			libprocps-dev:arm64 \
--			libunwind-dev:arm64 \
--			libdw-dev:arm64 \
--			zlib1g-dev:arm64 \
--			liblzma-dev:arm64 \
--			libcairo-dev:arm64 \
--			libpixman-1-dev:arm64 \
--			libudev-dev:arm64 \
--			libgsl-dev:arm64 \
--			libasound2-dev:arm64 \
--			libjson-c-dev:arm64 \
--			libcurl4-openssl-dev:arm64 \
--			libxrandr-dev:arm64 \
--			libxv-dev:arm64 \
--			meson \
--			libdrm-dev:arm64 \
--			qemu-user \
--			qemu-user-static
--
--
--RUN apt-get clean
-+RUN apt-get update && apt-get install -y \
-+    bison \
-+    flex \
-+    gcc-aarch64-linux-gnu \
-+    libasound2-dev:arm64 \
-+    libatomic1:arm64 \
-+    libcairo-dev:arm64 \
-+    libcurl4-openssl-dev:arm64 \
-+    libdrm-dev:arm64 \
-+    libdw-dev:arm64 \
-+    libgsl-dev:arm64 \
-+    libjson-c-dev:arm64 \
-+    libkmod-dev:arm64 \
-+    liblzma-dev:arm64 \
-+    libpciaccess-dev:arm64 \
-+    libpixman-1-dev:arm64 \
-+    libprocps-dev:arm64 \
-+    libudev-dev:arm64 \
-+    libunwind-dev:arm64 \
-+    libxrandr-dev:arm64 \
-+    libxv-dev:arm64 \
-+    meson \
-+    peg \
-+    pkg-config \
-+    python-docutils \
-+    qemu-user \
-+    qemu-user-static \
-+    valgrind \
-+    x11proto-dri2-dev \
-+    zlib1g-dev:arm64 \
-+ && rm -rf /var/lib/apt/lists/*
-diff --git a/Dockerfile.build-debian-armhf b/Dockerfile.build-debian-armhf
-index 737ca364..3752dc91 100644
---- a/Dockerfile.build-debian-armhf
-+++ b/Dockerfile.build-debian-armhf
-@@ -1,39 +1,34 @@
- FROM debian:buster
- 
--RUN apt-get update
--RUN apt-get install -y \
--			flex \
--			bison \
--			pkg-config \
--			x11proto-dri2-dev \
--			python-docutils \
--			valgrind \
--			peg
--
- RUN dpkg --add-architecture armhf
--RUN apt-get update
--RUN apt-get install -y \
--			gcc-arm-linux-gnueabihf \
--			libatomic1:armhf \
--			libpciaccess-dev:armhf \
--			libkmod-dev:armhf \
--			libprocps-dev:armhf \
--			libunwind-dev:armhf \
--			libdw-dev:armhf \
--			zlib1g-dev:armhf \
--			liblzma-dev:armhf \
--			libcairo-dev:armhf \
--			libpixman-1-dev:armhf \
--			libudev-dev:armhf \
--			libgsl-dev:armhf \
--			libasound2-dev:armhf \
--			libjson-c-dev:armhf \
--			libcurl4-openssl-dev:armhf \
--			libxrandr-dev:armhf \
--			libxv-dev:armhf \
--			meson \
--			libdrm-dev:armhf \
--			qemu-user \
--			qemu-user-static
--
--RUN apt-get clean
-+RUN apt-get update && apt-get install -y \
-+    bison \
-+    flex \
-+    gcc-arm-linux-gnueabihf \
-+    libasound2-dev:armhf \
-+    libatomic1:armhf \
-+    libcairo-dev:armhf \
-+    libcurl4-openssl-dev:armhf \
-+    libdrm-dev:armhf \
-+    libdw-dev:armhf \
-+    libgsl-dev:armhf \
-+    libjson-c-dev:armhf \
-+    libkmod-dev:armhf \
-+    liblzma-dev:armhf \
-+    libpciaccess-dev:armhf \
-+    libpixman-1-dev:armhf \
-+    libprocps-dev:armhf \
-+    libudev-dev:armhf \
-+    libunwind-dev:armhf \
-+    libxrandr-dev:armhf \
-+    libxv-dev:armhf \
-+    meson \
-+    peg \
-+    pkg-config \
-+    python-docutils \
-+    qemu-user \
-+    qemu-user-static \
-+    valgrind \
-+    x11proto-dri2-dev \
-+    zlib1g-dev:armhf \
-+ && rm -rf /var/lib/apt/lists/*
-diff --git a/Dockerfile.build-debian-minimal b/Dockerfile.build-debian-minimal
-index 64edf4b4..d0756be5 100644
---- a/Dockerfile.build-debian-minimal
-+++ b/Dockerfile.build-debian-minimal
-@@ -1,25 +1,23 @@
- FROM debian:buster
- 
--RUN apt-get update
--RUN apt-get install -y \
--			gcc \
--			flex \
--			bison \
--			pkg-config \
--			libatomic1 \
--			libpciaccess-dev \
--			libkmod-dev \
--			libprocps-dev \
--			libdw-dev \
--			zlib1g-dev \
--			liblzma-dev \
--			libcairo-dev \
--			libpixman-1-dev \
--			libudev-dev \
--			libxrandr-dev \
--			libxv-dev \
--			x11proto-dri2-dev \
--			meson \
--			libdrm-dev
--
--RUN apt-get clean
-+RUN apt-get update && apt-get install -y \
-+    bison \
-+    flex \
-+    gcc \
-+    libatomic1 \
-+    libcairo-dev \
-+    libdrm-dev \
-+    libdw-dev \
-+    libkmod-dev \
-+    liblzma-dev \
-+    libpciaccess-dev \
-+    libpixman-1-dev \
-+    libprocps-dev \
-+    libudev-dev \
-+    libxrandr-dev \
-+    libxv-dev \
-+    meson \
-+    pkg-config \
-+    x11proto-dri2-dev \
-+    zlib1g-dev \
-+ && rm -rf /var/lib/apt/lists/*
-diff --git a/Dockerfile.build-debian-mips b/Dockerfile.build-debian-mips
-index 7e4bacdf..e52d403b 100644
---- a/Dockerfile.build-debian-mips
-+++ b/Dockerfile.build-debian-mips
-@@ -2,42 +2,36 @@
- # https://bugs.debian.org/932725
- FROM debian:stretch-backports
- 
--RUN apt-get update
--RUN apt-get install -y \
--			flex \
--			bison \
--			pkg-config \
--			x11proto-dri2-dev \
--			python-docutils \
--			valgrind \
--			peg
--
- RUN dpkg --add-architecture mips
--RUN apt-get update
--RUN apt-get install -y \
--			gcc-mips-linux-gnu \
--			libatomic1:mips \
--			libpciaccess-dev:mips \
--			libkmod-dev:mips \
--			libprocps-dev:mips \
--			libunwind-dev:mips \
--			libdw-dev:mips \
--			zlib1g-dev:mips \
--			liblzma-dev:mips \
--			libcairo-dev:mips \
--			libpixman-1-dev:mips \
--			libudev-dev:mips \
--			libgsl-dev:mips \
--			libasound2-dev:mips \
--			libjson-c-dev:mips \
--			libcurl4-openssl-dev:mips \
--			libxrandr-dev:mips \
--			libxv-dev:mips
--
--RUN apt-get install -t stretch-backports -y \
--			meson \
--			libdrm-dev:mips \
--			qemu-user \
--			qemu-user-static
--
--RUN apt-get clean
-+RUN apt-get update && apt-get install -y \
-+    bison \
-+    flex \
-+    gcc-mips-linux-gnu \
-+    libasound2-dev:mips \
-+    libatomic1:mips \
-+    libcairo-dev:mips \
-+    libcurl4-openssl-dev:mips \
-+    libdw-dev:mips \
-+    libgsl-dev:mips \
-+    libjson-c-dev:mips \
-+    libkmod-dev:mips \
-+    liblzma-dev:mips \
-+    libpciaccess-dev:mips \
-+    libpixman-1-dev:mips \
-+    libprocps-dev:mips \
-+    libudev-dev:mips \
-+    libunwind-dev:mips \
-+    libxrandr-dev:mips \
-+    libxv-dev:mips \
-+    peg \
-+    pkg-config \
-+    python-docutils \
-+    valgrind \
-+    x11proto-dri2-dev \
-+    zlib1g-dev:mips \
-+ && apt-get install -t stretch-backports -y \
-+    libdrm-dev:mips \
-+    meson \
-+    qemu-user \
-+    qemu-user-static \
-+ && rm -rf /var/lib/apt/lists/*
--- 
-2.17.1
+Series: tools/i915-perf: Fix compiler warning
+URL   : https://patchwork.freedesktop.org/series/73714/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_7973 -> IGTPW_4195
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4195/index.html
+
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_7973 and IGTPW_4195:
+
+### New IGT tests (4) ###
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - Statuses : 1 dmesg-warn(s) 16 pass(s) 21 skip(s)
+    - Exec time: [0.0, 0.22] s
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - Statuses : 1 dmesg-warn(s) 28 pass(s) 9 skip(s)
+    - Exec time: [0.0, 4.95] s
+
+  * igt@i915_pm_rpm@basic-rte:
+    - Statuses : 1 dmesg-warn(s) 28 pass(s) 9 skip(s)
+    - Exec time: [0.67, 30.91] s
+
+  * igt@i915_pm_rps@basic-api:
+    - Statuses : 34 pass(s) 4 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4195 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_close_race@basic-threads:
+    - fi-hsw-peppy:       [PASS][1] -> [INCOMPLETE][2] ([i915#694] / [i915#816])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7973/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4195/fi-hsw-peppy/igt@gem_close_race@basic-threads.html
+
+  * igt@gem_mmap_gtt@basic:
+    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([CI#94] / [i915#402])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7973/fi-tgl-y/igt@gem_mmap_gtt@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4195/fi-tgl-y/igt@gem_mmap_gtt@basic.html
+
+  * igt@i915_selftest@live_gtt:
+    - fi-cfl-guc:         [PASS][5] -> [TIMEOUT][6] ([fdo#112271])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7973/fi-cfl-guc/igt@i915_selftest@live_gtt.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4195/fi-cfl-guc/igt@i915_selftest@live_gtt.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_parallel@contexts:
+    - fi-byt-n2820:       [FAIL][7] ([i915#694]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7973/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4195/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
+
+  * igt@gem_mmap@basic:
+    - fi-tgl-y:           [DMESG-WARN][9] ([CI#94] / [i915#402]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7973/fi-tgl-y/igt@gem_mmap@basic.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4195/fi-tgl-y/igt@gem_mmap@basic.html
+
+  * igt@i915_selftest@live_gem_contexts:
+    - fi-cml-s:           [DMESG-FAIL][11] ([i915#877]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7973/fi-cml-s/igt@i915_selftest@live_gem_contexts.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4195/fi-cml-s/igt@i915_selftest@live_gem_contexts.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          [FAIL][13] ([i915#217]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7973/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4195/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+#### Warnings ####
+
+  * igt@gem_exec_parallel@fds:
+    - fi-byt-n2820:       [FAIL][15] ([i915#694]) -> [TIMEOUT][16] ([fdo#112271] / [i915#1084])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7973/fi-byt-n2820/igt@gem_exec_parallel@fds.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4195/fi-byt-n2820/igt@gem_exec_parallel@fds.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [FAIL][17] ([fdo#111407]) -> [FAIL][18] ([fdo#111096] / [i915#323])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7973/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4195/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
+  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
+  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
+  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
+  [i915#1084]: https://gitlab.freedesktop.org/drm/intel/issues/1084
+  [i915#217]: https://gitlab.freedesktop.org/drm/intel/issues/217
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#694]: https://gitlab.freedesktop.org/drm/intel/issues/694
+  [i915#816]: https://gitlab.freedesktop.org/drm/intel/issues/816
+  [i915#877]: https://gitlab.freedesktop.org/drm/intel/issues/877
+
+
+Participating hosts (49 -> 43)
+------------------------------
+
+  Additional (5): fi-kbl-soraka fi-ivb-3770 fi-pnv-d510 fi-skl-lmem fi-kbl-7560u 
+  Missing    (11): fi-ilk-m540 fi-bxt-dsi fi-hsw-4200u fi-skl-6770hq fi-byt-squawks fi-bsw-cyan fi-cfl-8700k fi-ctg-p8600 fi-gdg-551 fi-kbl-8809g fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5453 -> IGTPW_4195
+
+  CI-20190529: 20190529
+  CI_DRM_7973: 07350317e4b2be54b1de7f1e73f77875df5e43f3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4195: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4195/index.html
+  IGT_5453: cae9a5881ed2c5be2c2518a255740b612a927f9a @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4195/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
