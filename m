@@ -1,12 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20200220153203.29571-1-janusz.krzysztofik@linux.intel.com>
-References: <20200220153203.29571-1-janusz.krzysztofik@linux.intel.com>
-Message-ID: <158221495468.8112.473694413094253324@skylake-alporthouse-com>
-Date: Thu, 20 Feb 2020 16:09:14 +0000
-Subject: Re: [igt-dev] [RFC PATCH i-g-t] lib/i915: Restrict mmap types to
- GTT if no MMAP_OFFSET support
+Date: Thu, 20 Feb 2020 16:53:01 +0000
+Message-Id: <20200220165301.1996742-1-chris@chris-wilson.co.uk>
+MIME-Version: 1.0
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_eio: Trim kms workload
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,49 +11,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBKYW51c3ogS3J6eXN6dG9maWsgKDIwMjAtMDItMjAgMTU6MzI6MDMpCj4gQ29tbWl0
-IGIwZGE4YmI3MDVjMCAoImxpYi9pOTE1OiBmb3JfZWFjaF9tbWFwX29mZnNldF90eXBlKCkiKQo+
-IGludHJvZHVjZWQgYSBtYWNybyB0aGF0IG1ha2VzIGl0IGVhc3kgdG8gcmVwZWF0IGEgdGVzdCBi
-b2R5IHdpdGhpbiBhCj4gbG9vcCBmb3IgZWFjaCBtbWFwLW9mZnNldCBtYXBwaW5nIHR5cGUgc3Vw
-cG9ydGVkIGJ5IHY0IG9mIGk5MTUgTU1BUF9HVFQKPiBBUEkuIEhvd2V2ZXIsIHdoZW4gcnVuIG9u
-IGFuIG9sZGVyIHZlcnNpb24gb2YgdGhlIGRyaXZlciwgdGhvc2UKPiBzdWJ0ZXN0cyBhcmUgYmVs
-aWV2ZWQgdG8gYmUgc3RpbGwgcmVwZWF0ZWQgZm9yIGVhY2gga25vd24gbW1hcC1vZmZzZXQKPiBt
-YXBwaW5nIHR5cGUgd2hpbGUgZWZmZWN0aXZlbHkgZXhlcmNpc2luZyBHVFQgbWFwcGluZyB0eXBl
-IG9ubHkuICBBcwo+IHRoYXQgbWF5IGJlIGNvbmZ1c2luZywgZml4IGl0Lgo+IAo+IEl0IGhhcyBi
-ZWVuIGFzc3VtZWQgdGhhdCB0aGUgbW9kaWZpZWQgbWFjcm8gaXMgc3RpbGwgc3VpdGFibGUgZm9y
-IHVzZQo+IGluc2lkZSBnZW1fbW1hcF9vZmZzZXQgdGVzdCBpdHNlbGYuICBXb3VsZCB0aGF0IG5v
-dCBiZSBjYXNlLAo+IGdlbV9tbWFwX29mZnNldCBjb3VsZCByZWRlZmluZSB0aGUgbWFjcm8gYmFj
-ayB0byBpdHMgaW5pdGlhbCBmb3JtIGZvcgo+IGludGVybmFsIHVzZS4KPiAKPiBTdWdnZXN0ZWQt
-Ynk6IE1pY2hhxYIgV2luaWFyc2tpIDxtaWNoYWwud2luaWFyc2tpQGludGVsLmNvbT4KPiBTaWdu
-ZWQtb2ZmLWJ5OiBKYW51c3ogS3J6eXN6dG9maWsgPGphbnVzei5rcnp5c3p0b2Zpa0BsaW51eC5p
-bnRlbC5jb20+Cj4gQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+
-IC0tLQo+ICBsaWIvaTkxNS9nZW1fbW1hbi5oICAgICAgICAgIHwgIDUgKysrLS0KPiAgdGVzdHMv
-aTkxNS9nZW1fY3R4X3NzZXUuYyAgICB8ICAyICstCj4gIHRlc3RzL2k5MTUvZ2VtX2V4ZWNfcGFy
-YW1zLmMgfCAgMiArLQo+ICB0ZXN0cy9pOTE1L2dlbV9tYWR2aXNlLmMgICAgIHwgMTggKysrKysr
-KysrKysrKystLS0tCj4gIHRlc3RzL2k5MTUvZ2VtX21tYXBfb2Zmc2V0LmMgfCAxMCArKysrKy0t
-LS0tCj4gIHRlc3RzL2k5MTUvaTkxNV9wbV9ycG0uYyAgICAgfCAgMiArLQo+ICA2IGZpbGVzIGNo
-YW5nZWQsIDI1IGluc2VydGlvbnMoKyksIDE0IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQg
-YS9saWIvaTkxNS9nZW1fbW1hbi5oIGIvbGliL2k5MTUvZ2VtX21tYW4uaAo+IGluZGV4IDRmYzZh
-MDE4Ni4uNDkxNzY3MDIzIDEwMDY0NAo+IC0tLSBhL2xpYi9pOTE1L2dlbV9tbWFuLmgKPiArKysg
-Yi9saWIvaTkxNS9nZW1fbW1hbi5oCj4gQEAgLTEwMSw5ICsxMDEsMTAgQEAgZXh0ZXJuIGNvbnN0
-IHN0cnVjdCBtbWFwX29mZnNldCB7Cj4gICAgICAgICB1bnNpZ25lZCBpbnQgZG9tYWluOwo+ICB9
-IG1tYXBfb2Zmc2V0X3R5cGVzW107Cj4gIAo+IC0jZGVmaW5lIGZvcl9lYWNoX21tYXBfb2Zmc2V0
-X3R5cGUoX190KSBcCj4gKyNkZWZpbmUgZm9yX2VhY2hfbW1hcF9vZmZzZXRfdHlwZShmZCwgX190
-KSBcCj4gICAgICAgICBmb3IgKGNvbnN0IHN0cnVjdCBtbWFwX29mZnNldCAqX190ID0gbW1hcF9v
-ZmZzZXRfdHlwZXM7IFwKPiAtICAgICAgICAgICAgKF9fdCktPm5hbWU7IFwKPiArICAgICAgICAg
-ICAgKF9fdCktPm5hbWUgJiYgKGdlbV9oYXNfbW1hcF9vZmZzZXQoZmQpIHx8IFwKPiArICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgIChfX3QpLT50eXBlID09IEk5MTVfTU1BUF9PRkZTRVRfR1RU
-KTsgXAoKU2lnaC4KCmV4dGVybiBib29sIGdlbV9oYXNfbW1hcF9vZmZzZXRfdHlwZShpbnQgaTkx
-NSwgY29uc3Qgc3RydWN0IG1tYXBfb2Zmc2V0ICp0KTsKCiYmIGdlbV9oYXNfbW1hcF9vZmZzZXRf
-dHlwZShmZCwgdCkKCmluIGNhc2Ugd2UgbmVlZCB0byBmaXggaXQgYWdhaW4gaW4gZnV0dXJlLgot
-Q2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0
-LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
-aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+We don't need to try reset-stress on every engine with the display, just
+once is enough to stress any interlinkage.
+
+This should reduce the runtime to 10s.
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Martin Peres <martin.peres@linux.intel.com>
+---
+ tests/i915/gem_eio.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
+index 0fe51efeb..1ec609410 100644
+--- a/tests/i915/gem_eio.c
++++ b/tests/i915/gem_eio.c
+@@ -898,8 +898,14 @@ static void test_kms(int i915, igt_display_t *dpy)
+ 
+ 	test_inflight(i915, 0);
+ 	if (gem_has_contexts(i915)) {
+-		test_reset_stress(i915, 0);
+-		test_reset_stress(i915, TEST_WEDGE);
++		uint32_t ctx = context_create_safe(i915);
++
++		reset_stress(i915, ctx,
++			     "default", I915_EXEC_DEFAULT, 0);
++		reset_stress(i915, ctx,
++			     "default", I915_EXEC_DEFAULT, TEST_WEDGE);
++
++		gem_context_destroy(i915, ctx);
+ 	}
+ 
+ 	*shared = 1;
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
