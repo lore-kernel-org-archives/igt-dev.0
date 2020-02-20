@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 883326E0F3
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 05:14:54 +0000 (UTC)
-From: priyanka.dandamudi@intel.com
-Date: Thu, 20 Feb 2020 10:44:32 +0530
-Message-Id: <20200220051432.21898-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_request_retire: Removal of test
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 20 Feb 2020 05:50:33 -0000
+Message-ID: <158217783380.17408.8543835441950236962@emeril.freedesktop.org>
+References: <20200220051432.21898-1-priyanka.dandamudi@intel.com>
+In-Reply-To: <20200220051432.21898-1-priyanka.dandamudi@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_i?=
+ =?utf-8?q?915/gem=5Frequest=5Fretire=3A_Removal_of_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,158 +14,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, priyanka.dandamudi@intel.com
+To: priyanka.dandamudi@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogUHJpeWFua2EgRGFuZGFtdWRpIDxwcml5YW5rYS5kYW5kYW11ZGlAaW50ZWwuY29tPgoK
-VGVzdCBpcyB0cnlpbmcgdG8gaGl0IGEgcmFjZSBjb25kaXRpb24gYnkgc3VibWl0dGluZyBzYW1l
-IGJ1ZmZlciBvYmplY3QKYmV0d2VlbiB0d28gY29udGV4dHMgb24gZGlmZmVyZW50IHJpbmdzLlNp
-bWlsYXIgc2NlbmFyaW8gY2FuIGJlIGZvdW5kIGluCmdlbV9jdHhfcGFyYW0gYW5kIGdlbV9leGVj
-X2N0eC5UaGlzIHRlc3QgZG9lc24ndCBhZGQgYW55dGhpbmcgdG8gb3RoZXIKdGVzdHMuU28scmVt
-b3ZpbmcgdGhlIHRlc3QuCgpDYzogVGFodmFuYWluZW4gSmFyaSA8amFyaS50YWh2YW5haW5lbkBp
-bnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IFByaXlhbmthIERhbmRhbXVkaSA8cHJpeWFua2EuZGFu
-ZGFtdWRpQGludGVsLmNvbT4KLS0tCiB0ZXN0cy9NYWtlZmlsZS5zb3VyY2VzICAgICAgICAgIHwg
-ICAzIC0KIHRlc3RzL2k5MTUvZ2VtX3JlcXVlc3RfcmV0aXJlLmMgfCAyMzUgLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0KIHRlc3RzL21lc29uLmJ1aWxkICAgICAgICAgICAgICAgfCAg
-IDEgLQogMyBmaWxlcyBjaGFuZ2VkLCAyMzkgZGVsZXRpb25zKC0pCiBkZWxldGUgbW9kZSAxMDA2
-NDQgdGVzdHMvaTkxNS9nZW1fcmVxdWVzdF9yZXRpcmUuYwoKZGlmZiAtLWdpdCBhL3Rlc3RzL01h
-a2VmaWxlLnNvdXJjZXMgYi90ZXN0cy9NYWtlZmlsZS5zb3VyY2VzCmluZGV4IDA3ZWMzYWYzLi5i
-NTRjZDUzOCAxMDA2NDQKLS0tIGEvdGVzdHMvTWFrZWZpbGUuc291cmNlcworKysgYi90ZXN0cy9N
-YWtlZmlsZS5zb3VyY2VzCkBAIC0zNTgsOSArMzU4LDYgQEAgZ2VtX3JlbmRlcl9saW5lYXJfYmxp
-dHNfU09VUkNFUyA9IGk5MTUvZ2VtX3JlbmRlcl9saW5lYXJfYmxpdHMuYwogVEVTVFNfcHJvZ3Mg
-Kz0gZ2VtX3JlbmRlcl90aWxlZF9ibGl0cwogZ2VtX3JlbmRlcl90aWxlZF9ibGl0c19TT1VSQ0VT
-ID0gaTkxNS9nZW1fcmVuZGVyX3RpbGVkX2JsaXRzLmMKIAotVEVTVFNfcHJvZ3MgKz0gZ2VtX3Jl
-cXVlc3RfcmV0aXJlCi1nZW1fcmVxdWVzdF9yZXRpcmVfU09VUkNFUyA9IGk5MTUvZ2VtX3JlcXVl
-c3RfcmV0aXJlLmMKLQogVEVTVFNfcHJvZ3MgKz0gZ2VtX3Jlc2V0X3N0YXRzCiBnZW1fcmVzZXRf
-c3RhdHNfU09VUkNFUyA9IGk5MTUvZ2VtX3Jlc2V0X3N0YXRzLmMKIApkaWZmIC0tZ2l0IGEvdGVz
-dHMvaTkxNS9nZW1fcmVxdWVzdF9yZXRpcmUuYyBiL3Rlc3RzL2k5MTUvZ2VtX3JlcXVlc3RfcmV0
-aXJlLmMKZGVsZXRlZCBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDdlZmVhMGI2Li4wMDAwMDAwMAot
-LS0gYS90ZXN0cy9pOTE1L2dlbV9yZXF1ZXN0X3JldGlyZS5jCisrKyAvZGV2L251bGwKQEAgLTEs
-MjM1ICswLDAgQEAKLS8qCi0gKiBDb3B5cmlnaHQgwqkgMjAxNSBJbnRlbCBDb3Jwb3JhdGlvbgot
-ICoKLSAqIFBlcm1pc3Npb24gaXMgaGVyZWJ5IGdyYW50ZWQsIGZyZWUgb2YgY2hhcmdlLCB0byBh
-bnkgcGVyc29uIG9idGFpbmluZyBhCi0gKiBjb3B5IG9mIHRoaXMgc29mdHdhcmUgYW5kIGFzc29j
-aWF0ZWQgZG9jdW1lbnRhdGlvbiBmaWxlcyAodGhlICJTb2Z0d2FyZSIpLAotICogdG8gZGVhbCBp
-biB0aGUgU29mdHdhcmUgd2l0aG91dCByZXN0cmljdGlvbiwgaW5jbHVkaW5nIHdpdGhvdXQgbGlt
-aXRhdGlvbgotICogdGhlIHJpZ2h0cyB0byB1c2UsIGNvcHksIG1vZGlmeSwgbWVyZ2UsIHB1Ymxp
-c2gsIGRpc3RyaWJ1dGUsIHN1YmxpY2Vuc2UsCi0gKiBhbmQvb3Igc2VsbCBjb3BpZXMgb2YgdGhl
-IFNvZnR3YXJlLCBhbmQgdG8gcGVybWl0IHBlcnNvbnMgdG8gd2hvbSB0aGUKLSAqIFNvZnR3YXJl
-IGlzIGZ1cm5pc2hlZCB0byBkbyBzbywgc3ViamVjdCB0byB0aGUgZm9sbG93aW5nIGNvbmRpdGlv
-bnM6Ci0gKgotICogVGhlIGFib3ZlIGNvcHlyaWdodCBub3RpY2UgYW5kIHRoaXMgcGVybWlzc2lv
-biBub3RpY2UgKGluY2x1ZGluZyB0aGUgbmV4dAotICogcGFyYWdyYXBoKSBzaGFsbCBiZSBpbmNs
-dWRlZCBpbiBhbGwgY29waWVzIG9yIHN1YnN0YW50aWFsIHBvcnRpb25zIG9mIHRoZQotICogU29m
-dHdhcmUuCi0gKgotICogVEhFIFNPRlRXQVJFIElTIFBST1ZJREVEICJBUyBJUyIsIFdJVEhPVVQg
-V0FSUkFOVFkgT0YgQU5ZIEtJTkQsIEVYUFJFU1MgT1IKLSAqIElNUExJRUQsIElOQ0xVRElORyBC
-VVQgTk9UIExJTUlURUQgVE8gVEhFIFdBUlJBTlRJRVMgT0YgTUVSQ0hBTlRBQklMSVRZLAotICog
-RklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UgQU5EIE5PTklORlJJTkdFTUVOVC4gIElO
-IE5PIEVWRU5UIFNIQUxMCi0gKiBUSEUgQVVUSE9SUyBPUiBDT1BZUklHSFQgSE9MREVSUyBCRSBM
-SUFCTEUgRk9SIEFOWSBDTEFJTSwgREFNQUdFUyBPUiBPVEhFUgotICogTElBQklMSVRZLCBXSEVU
-SEVSIElOIEFOIEFDVElPTiBPRiBDT05UUkFDVCwgVE9SVCBPUiBPVEhFUldJU0UsIEFSSVNJTkcK
-LSAqIEZST00sIE9VVCBPRiBPUiBJTiBDT05ORUNUSU9OIFdJVEggVEhFIFNPRlRXQVJFIE9SIFRI
-RSBVU0UgT1IgT1RIRVIgREVBTElOR1MKLSAqIElOIFRIRSBTT0ZUV0FSRS4KLSAqCi0gKiBBdXRo
-b3JzOgotICogICAgVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KLSAq
-Ci0gKi8KLQotLyoqIEBmaWxlIGdlbV9yZXF1ZXN0X3JldGlyZQotICoKLSAqIENvbGxlY3Rpb24g
-b2YgdGVzdHMgdGFyZ2V0aW5nIHJlcXVlc3QgcmV0aXJlbWVudCBjb2RlIHBhdGhzLgotICovCi0K
-LSNpbmNsdWRlICJpZ3QuaCIKLSNpbmNsdWRlIDxzdGRsaWIuaD4KLSNpbmNsdWRlIDxzdGRpby5o
-PgotI2luY2x1ZGUgPHN0cmluZy5oPgotI2luY2x1ZGUgPGZjbnRsLmg+Ci0jaW5jbHVkZSA8aW50
-dHlwZXMuaD4KLSNpbmNsdWRlIDxlcnJuby5oPgotI2luY2x1ZGUgPHN5cy9zdGF0Lmg+Ci0jaW5j
-bHVkZSA8c3lzL3RpbWUuaD4KLSNpbmNsdWRlIDxzeXMvbW1hbi5oPgotI2luY2x1ZGUgPHNpZ25h
-bC5oPgotI2luY2x1ZGUgPHB0aHJlYWQuaD4KLSNpbmNsdWRlIDx0aW1lLmg+Ci0KLSNpbmNsdWRl
-ICJkcm0uaCIKLSNpbmNsdWRlICJpOTE1X2RybS5oIgotCi0jaW5jbHVkZSAiaW50ZWxfYnVmbWdy
-LmgiCi0KLUlHVF9URVNUX0RFU0NSSVBUSU9OKCJDb2xsZWN0aW9uIG9mIHRlc3RzIHRhcmdldGlu
-ZyByZXF1ZXN0IHJldGlyZW1lbnQgY29kZSIKLQkJICAgICAiIHBhdGhzLiIpOwotCi0jZGVmaW5l
-IFdJRFRIIDQwOTYKLSNkZWZpbmUgSEVJR0hUIDQwOTYKLSNkZWZpbmUgQk9fU0laRSAoV0lEVEgg
-KiBIRUlHSFQgKiBzaXplb2YodWludDMyX3QpKQotCi1zdGF0aWMgdWludDMyX3QKLWJsaXQoaW50
-IGZkLCB1aW50MzJfdCBkc3QsIHVpbnQzMl90IHNyYywgdWludDMyX3QgY3R4X2lkKQotewotCWNv
-bnN0IHVuc2lnbmVkIGludCBjb3BpZXMgPSAxMDAwOwotCXVpbnQzMl90IGJhdGNoWzEyICogY29w
-aWVzICsgNV07Ci0Jc3RydWN0IGRybV9pOTE1X2dlbV9yZWxvY2F0aW9uX2VudHJ5IHJlbG9jWzIg
-KiBjb3BpZXNdOwotCXN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmplY3QyIG9ialszXTsKLQlz
-dHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNidWZmZXIyIGV4ZWM7Ci0JdWludDMyX3QgaGFuZGxlOwot
-CXVuc2lnbmVkIGludCBpID0gMCwgaiwgciA9IDA7Ci0KLQlmb3IgKGogPSAwOyBqIDwgY29waWVz
-OyBqKyspIHsKLQkJcmVsb2Nbcl0udGFyZ2V0X2hhbmRsZSA9IGRzdDsKLQkJcmVsb2Nbcl0uZGVs
-dGEgPSAwOwotCQlyZWxvY1tyXS5vZmZzZXQgPSAoaSArIDQpICogc2l6ZW9mKHVpbnQzMl90KTsK
-LQkJcmVsb2Nbcl0ucHJlc3VtZWRfb2Zmc2V0ID0gMDsKLQkJcmVsb2Nbcl0ucmVhZF9kb21haW5z
-ID0gSTkxNV9HRU1fRE9NQUlOX1JFTkRFUjsKLQkJcmVsb2Nbcl0ud3JpdGVfZG9tYWluID0gSTkx
-NV9HRU1fRE9NQUlOX1JFTkRFUjsKLQotCQlyKys7Ci0KLQkJcmVsb2Nbcl0udGFyZ2V0X2hhbmRs
-ZSA9IHNyYzsKLQkJcmVsb2Nbcl0uZGVsdGEgPSAwOwotCQlyZWxvY1tyXS5vZmZzZXQgPSAoaSAr
-IDcpICogc2l6ZW9mKHVpbnQzMl90KTsKLQkJaWYgKGludGVsX2dlbihpbnRlbF9nZXRfZHJtX2Rl
-dmlkKGZkKSkgPj0gOCkKLQkJCXJlbG9jW3JdLm9mZnNldCArPSBzaXplb2YodWludDMyX3QpOwot
-CQlyZWxvY1tyXS5wcmVzdW1lZF9vZmZzZXQgPSAwOwotCQlyZWxvY1tyXS5yZWFkX2RvbWFpbnMg
-PSBJOTE1X0dFTV9ET01BSU5fUkVOREVSOwotCQlyZWxvY1tyXS53cml0ZV9kb21haW4gPSAwOwot
-Ci0JCXIrKzsKLQotCQliYXRjaFtpKytdID0gWFlfU1JDX0NPUFlfQkxUX0NNRCB8Ci0JCQlYWV9T
-UkNfQ09QWV9CTFRfV1JJVEVfQUxQSEEgfAotCQkJWFlfU1JDX0NPUFlfQkxUX1dSSVRFX1JHQjsK
-LQkJaWYgKGludGVsX2dlbihpbnRlbF9nZXRfZHJtX2RldmlkKGZkKSkgPj0gOCkKLQkJCWJhdGNo
-W2kgLSAxXSB8PSA4OwotCQllbHNlCi0JCQliYXRjaFtpIC0gMV0gfD0gNjsKLQotCQliYXRjaFtp
-KytdID0gKDMgPDwgMjQpIHwgLyogMzIgYml0cyAqLwotCQkJKDB4Y2MgPDwgMTYpIHwgLyogY29w
-eSBST1AgKi8KLQkJCVdJRFRIKjQ7Ci0JCWJhdGNoW2krK10gPSAwOyAvKiBkc3QgeDEseTEgKi8K
-LQkJYmF0Y2hbaSsrXSA9IChIRUlHSFQgPDwgMTYpIHwgV0lEVEg7IC8qIGRzdCB4Mix5MiAqLwot
-CQliYXRjaFtpKytdID0gMDsgLyogZHN0IHJlbG9jICovCi0JCWlmIChpbnRlbF9nZW4oaW50ZWxf
-Z2V0X2RybV9kZXZpZChmZCkpID49IDgpCi0JCQliYXRjaFtpKytdID0gMDsKLQkJYmF0Y2hbaSsr
-XSA9IDA7IC8qIHNyYyB4MSx5MSAqLwotCQliYXRjaFtpKytdID0gV0lEVEgqNDsKLQkJYmF0Y2hb
-aSsrXSA9IDA7IC8qIHNyYyByZWxvYyAqLwotCQlpZiAoaW50ZWxfZ2VuKGludGVsX2dldF9kcm1f
-ZGV2aWQoZmQpKSA+PSA4KQotCQkJYmF0Y2hbaSsrXSA9IDA7Ci0JfQotCi0JYmF0Y2hbaSsrXSA9
-IE1JX0JBVENIX0JVRkZFUl9FTkQ7Ci0KLQl3aGlsZSAoaSAlIDQpCi0JCWJhdGNoW2krK10gPSBN
-SV9OT09QOwotCi0JaGFuZGxlID0gZ2VtX2NyZWF0ZShmZCwgc2l6ZW9mKGJhdGNoKSk7Ci0JZ2Vt
-X3dyaXRlKGZkLCBoYW5kbGUsIDAsIGJhdGNoLCBzaXplb2YoYmF0Y2gpKTsKLQotCW1lbXNldChv
-YmosIDAsIHNpemVvZihvYmopKTsKLQltZW1zZXQoJmV4ZWMsIDAsIHNpemVvZihleGVjKSk7Ci0K
-LQlvYmpbZXhlYy5idWZmZXJfY291bnQrK10uaGFuZGxlID0gZHN0OwotCWlmIChzcmMgIT0gZHN0
-KQotCQlvYmpbZXhlYy5idWZmZXJfY291bnQrK10uaGFuZGxlID0gc3JjOwotCW9ialtleGVjLmJ1
-ZmZlcl9jb3VudF0uaGFuZGxlID0gaGFuZGxlOwotCW9ialtleGVjLmJ1ZmZlcl9jb3VudF0ucmVs
-b2NhdGlvbl9jb3VudCA9IDIgKiBjb3BpZXM7Ci0Jb2JqW2V4ZWMuYnVmZmVyX2NvdW50XS5yZWxv
-Y3NfcHRyID0gdG9fdXNlcl9wb2ludGVyKHJlbG9jKTsKLQlleGVjLmJ1ZmZlcl9jb3VudCsrOwot
-CWV4ZWMuYnVmZmVyc19wdHIgPSB0b191c2VyX3BvaW50ZXIob2JqKTsKLQotCWV4ZWMuYmF0Y2hf
-bGVuID0gaSAqIHNpemVvZih1aW50MzJfdCk7Ci0JZXhlYy5mbGFncyA9IEk5MTVfRVhFQ19CTFQ7
-Ci0JaTkxNV9leGVjYnVmZmVyMl9zZXRfY29udGV4dF9pZChleGVjLCBjdHhfaWQpOwotCi0JZ2Vt
-X2V4ZWNidWYoZmQsICZleGVjKTsKLQotCXJldHVybiBoYW5kbGU7Ci19Ci0KLXN0YXRpYyB1aW50
-MzJfdAotbm9vcChpbnQgZmQsIHVpbnQzMl90IHNyYywgdWludDMyX3QgY3R4X2lkKQotewotCXVp
-bnQzMl90IGJhdGNoWzRdOwotCXN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmplY3QyIG9ialsy
-XTsKLQlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNidWZmZXIyIGV4ZWM7Ci0JdWludDMyX3QgaGFu
-ZGxlOwotCXVuc2lnbmVkIGludCBpID0gMDsKLQotCWJhdGNoW2krK10gPSBNSV9OT09QOwotCWJh
-dGNoW2krK10gPSBNSV9CQVRDSF9CVUZGRVJfRU5EOwotCWJhdGNoW2krK10gPSBNSV9OT09QOwot
-CWJhdGNoW2krK10gPSBNSV9OT09QOwotCi0JaGFuZGxlID0gZ2VtX2NyZWF0ZShmZCwgNDA5Nik7
-Ci0JZ2VtX3dyaXRlKGZkLCBoYW5kbGUsIDAsIGJhdGNoLCBzaXplb2YoYmF0Y2gpKTsKLQotCW1l
-bXNldChvYmosIDAsIHNpemVvZihvYmopKTsKLQltZW1zZXQoJmV4ZWMsIDAsIHNpemVvZihleGVj
-KSk7Ci0KLQlvYmpbZXhlYy5idWZmZXJfY291bnQrK10uaGFuZGxlID0gc3JjOwotCW9ialtleGVj
-LmJ1ZmZlcl9jb3VudF0uaGFuZGxlID0gaGFuZGxlOwotCW9ialtleGVjLmJ1ZmZlcl9jb3VudF0u
-cmVsb2NhdGlvbl9jb3VudCA9IDA7Ci0Jb2JqW2V4ZWMuYnVmZmVyX2NvdW50XS5yZWxvY3NfcHRy
-ID0gdG9fdXNlcl9wb2ludGVyKDApOwotCWV4ZWMuYnVmZmVyX2NvdW50Kys7Ci0JZXhlYy5idWZm
-ZXJzX3B0ciA9IHRvX3VzZXJfcG9pbnRlcihvYmopOwotCi0JZXhlYy5iYXRjaF9sZW4gPSBpICog
-c2l6ZW9mKHVpbnQzMl90KTsKLQlleGVjLmZsYWdzID0gSTkxNV9FWEVDX1JFTkRFUjsKLQlpOTE1
-X2V4ZWNidWZmZXIyX3NldF9jb250ZXh0X2lkKGV4ZWMsIGN0eF9pZCk7Ci0KLQlnZW1fZXhlY2J1
-ZihmZCwgJmV4ZWMpOwotCi0JcmV0dXJuIGhhbmRsZTsKLX0KLQotLyoKLSAqIEEgc2luZ2xlIGJv
-IGlzIG9wZXJhdGVkIGZyb20gYmF0Y2hidWZmZXJzIHN1Ym1pdHRlZCBmcm9tIHR3byBjb250ZXh0
-cyBhbmQgb24KLSAqIGRpZmZlcmVudCByaW5ncy4KLSAqIE9uZSBleGVjYnVmIGZpbmlzaGVzIHdh
-eSBhaGVhZCBvZiB0aGUgb3RoZXIgYXQgd2hpY2ggcG9pbnQgdGhlIHJlc3BlY3RpdmUKLSAqIGNv
-bnRleHQgaXMgZGVzdHJveWVkLgotICovCi1zdGF0aWMgdm9pZAotdGVzdF9yZXRpcmVfdm1hX25v
-dF9pbmFjdGl2ZShpbnQgZmQpCi17Ci0JdWludDMyX3QgY3R4X2lkOwotCXVpbnQzMl90IHNyYywg
-ZHN0OwotCXVpbnQzMl90IGJsaXRfYmIsIG5vb3BfYmI7Ci0KLQlpZ3RfcmVxdWlyZShIQVNfQkxU
-X1JJTkcoaW50ZWxfZ2V0X2RybV9kZXZpZChmZCkpKTsKLQotCWN0eF9pZCA9IGdlbV9jb250ZXh0
-X2NyZWF0ZShmZCk7Ci0KLQkvKiBDcmVhdGUgc29tZSBib3MgYmF0Y2ggYnVmZmVycyB3aWxsIG9w
-ZXJhdGUgb24uICovCi0Jc3JjID0gZ2VtX2NyZWF0ZShmZCwgQk9fU0laRSk7Ci0JZHN0ID0gZ2Vt
-X2NyZWF0ZShmZCwgQk9fU0laRSk7Ci0KLQkvKiBTdWJtaXQgYSBsb25nIHJ1bm5pbmcgYmF0Y2gu
-ICovCi0JYmxpdF9iYiA9IGJsaXQoZmQsIGRzdCwgc3JjLCAwKTsKLQotCS8qIFN1Ym1pdCBhIHF1
-aWNrIGJhdGNoIHJlZmVyZW5jaW5nIHRoZSBzYW1lIG9iamVjdC4gKi8KLQlub29wX2JiID0gbm9v
-cChmZCwgc3JjLCBjdHhfaWQpOwotCi0JLyogV2FpdCBmb3IgdGhlIHF1aWNrIGJhdGNoIHRvIGNv
-bXBsZXRlLiAqLwotCWdlbV9zeW5jKGZkLCBub29wX2JiKTsKLQlnZW1fY2xvc2UoZmQsIG5vb3Bf
-YmIpOwotCi0JLyogTm93IGRlc3Ryb3kgdGhlIGNvbnRleHQgaW4gd2hpY2ggdGhlIHF1aWNrIGJh
-dGNoIHdhcyBzdWJtaXR0ZWQuICovCi0JZ2VtX2NvbnRleHRfZGVzdHJveShmZCwgY3R4X2lkKTsK
-LQotCS8qIFdhaXQgZm9yIHRoZSBzbG93IGJhdGNoIHRvIGZpbmlzaCBhbmQgY2xlYW4gdXAuICov
-Ci0JZ2VtX3N5bmMoZmQsIGJsaXRfYmIpOwotCWdlbV9jbG9zZShmZCwgYmxpdF9iYik7Ci0KLQln
-ZW1fY2xvc2UoZmQsIHNyYyk7Ci0JZ2VtX2Nsb3NlKGZkLCBkc3QpOwotfQotCi1pbnQgZmQ7Ci0K
-LWlndF9tYWluCi17Ci0JaWd0X2ZpeHR1cmUgewotCQlmZCA9IGRybV9vcGVuX2RyaXZlcihEUklW
-RVJfSU5URUwpOwotCQlpZ3RfcmVxdWlyZV9nZW0oZmQpOwotCQlnZW1fcmVxdWlyZV9ibGl0dGVy
-KGZkKTsKLQotCQlnZW1fcmVxdWlyZV9jb250ZXh0cyhmZCk7Ci0JfQotCi0JaWd0X3N1YnRlc3Qo
-InJldGlyZS12bWEtbm90LWluYWN0aXZlIikKLQkJdGVzdF9yZXRpcmVfdm1hX25vdF9pbmFjdGl2
-ZShmZCk7Ci19CmRpZmYgLS1naXQgYS90ZXN0cy9tZXNvbi5idWlsZCBiL3Rlc3RzL21lc29uLmJ1
-aWxkCmluZGV4IGRjOWYzOWNkLi5lZjhmNWE4YyAxMDA2NDQKLS0tIGEvdGVzdHMvbWVzb24uYnVp
-bGQKKysrIGIvdGVzdHMvbWVzb24uYnVpbGQKQEAgLTE4NSw3ICsxODUsNiBAQCBpOTE1X3Byb2dz
-ID0gWwogCSdnZW1fcmVuZGVyX2NvcHlfcmVkdXgnLAogCSdnZW1fcmVuZGVyX2xpbmVhcl9ibGl0
-cycsCiAJJ2dlbV9yZW5kZXJfdGlsZWRfYmxpdHMnLAotCSdnZW1fcmVxdWVzdF9yZXRpcmUnLAog
-CSdnZW1fcmVzZXRfc3RhdHMnLAogCSdnZW1fcmluZ19zeW5jX2NvcHknLAogCSdnZW1fcmluZ19z
-eW5jX2xvb3AnLAotLSAKMi4yNS4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
-dG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ln
-dC1kZXYK
+== Series Details ==
+
+Series: i915/gem_request_retire: Removal of test
+URL   : https://patchwork.freedesktop.org/series/73689/
+State : warning
+
+== Summary ==
+
+Did not get list of undocumented tests for this run, something is wrong!
+
+Other than that, pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/110667 for the overview.
+
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1681446):
+  section_end:1582177523:get_sources
+  [0Ksection_start:1582177523:restore_cache
+  [0Ksection_end:1582177524:restore_cache
+  [0Ksection_start:1582177524:download_artifacts
+  [0K[32;1mDownloading artifacts for build:tests-fedora (1681436)...[0;m
+  Downloading artifacts from coordinator... ok      [0;m  id[0;m=1681436 responseStatus[0;m=200 OK token[0;m=H4dy7moh
+  [0;33mWARNING: build/tools/intel_audio_dump: write build/tools/intel_audio_dump: no space left on device (suppressing repeats)[0;m 
+  [0;33mWARNING: build/tools/null_state_gen/: mkdir build/tools/null_state_gen: no space left on device (suppressing repeats)[0;m 
+  [0;33mWARNING: build/tools/null_state_gen/: chmod build/tools/null_state_gen/: no such file or directory (suppressing repeats)[0;m 
+  [0;33mWARNING: build/tools/null_state_gen/: lchown build/tools/null_state_gen/: no such file or directory (suppressing repeats)[0;m 
+  section_end:1582177527:download_artifacts
+  [0Ksection_start:1582177527:build_script
+  [0K[0KAuthenticating with credentials from job payload (GitLab Registry)
+  [0;msection_end:1582177528:build_script
+  [0Ksection_start:1582177528:after_script
+  [0Ksection_end:1582177529:after_script
+  [0Ksection_start:1582177529:upload_artifacts_on_failure
+  [0Ksection_end:1582177531:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed (system failure): Error response from daemon: OCI runtime create failed: container_linux.go:344: starting container process caused "process_linux.go:424: container init caused \"rootfs_linux.go:58: mounting \\\"/var/cache/gitlab-runner/cache\\\" to rootfs \\\"/var/lib/docker/overlay2/03c6de301dba2c4c4d3676a656d6521e6c868c0ceda174cba43b2b4fce1f9f49/merged\\\" at \\\"/var/lib/docker/overlay2/03c6de301dba2c4c4d3676a656d6521e6c868c0ceda174cba43b2b4fce1f9f49/merged/cache\\\" caused \\\"mkdir /var/lib/docker/overlay2/03c6de301dba2c4c4d3676a656d6521e6c868c0ceda174cba43b2b4fce1f9f49/merged/cache: no space left on device\\\"\"": unknown (executor_docker.go:839:0s)
+  [0;m
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1681447):
+  
+  --- command ---
+  /builds/gfx-ci/igt-ci-tags/tests/igt_command_line.sh vc4_label_bo
+  --- stdout ---
+  tests/vc4_label_bo:
+    Checking invalid option handling...
+  FAIL: tests/vc4_label_bo
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1582177541:build_script
+  [0Ksection_start:1582177541:after_script
+  [0Ksection_end:1582177542:after_script
+  [0Ksection_start:1582177542:upload_artifacts_on_failure
+  [0Ksection_end:1582177543:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
+
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1681455):
+  
+  --- command ---
+  /builds/gfx-ci/igt-ci-tags/tests/igt_command_line.sh drm_read
+  --- stdout ---
+  tests/drm_read:
+    Checking invalid option handling...
+  FAIL: tests/drm_read
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1582177554:build_script
+  [0Ksection_start:1582177554:after_script
+  [0Ksection_end:1582177555:after_script
+  [0Ksection_start:1582177555:upload_artifacts_on_failure
+  [0Ksection_end:1582177557:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1681456):
+  281/282 assembler: test/not                     OK       0.01 s 
+  282/282 assembler: test/immediate               OK       0.01 s 
+  
+  Ok:                  279
+  Expected Fail:         3
+  Fail:                  0
+  Unexpected Pass:       0
+  Skipped:               0
+  Timeout:               0
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  section_end:1582177563:build_script
+  [0Ksection_start:1582177563:after_script
+  [0Ksection_end:1582177564:after_script
+  [0Ksection_start:1582177564:archive_cache
+  [0Ksection_end:1582177565:archive_cache
+  [0Ksection_start:1582177565:upload_artifacts_on_failure
+  [0Ksection_end:1582177567:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed (system failure): Error response from daemon: OCI runtime create failed: container_linux.go:344: starting container process caused "process_linux.go:424: container init caused \"rootfs_linux.go:58: mounting \\\"/var/lib/docker/volumes/ad04a429943ccabb23d1a50be9669f298d8df088fdacbe1566494899b9f30c7d/_data\\\" to rootfs \\\"/var/lib/docker/overlay2/56a493b0a4e6f83a3d8787580db95e3050ee012360ae64c174b865fca27bdc21/merged\\\" at \\\"/var/lib/docker/overlay2/56a493b0a4e6f83a3d8787580db95e3050ee012360ae64c174b865fca27bdc21/merged/builds\\\" caused \\\"mkdir /var/lib/docker/overlay2/56a493b0a4e6f83a3d8787580db95e3050ee012360ae64c174b865fca27bdc21/merged/builds: no space left on device\\\"\"": unknown (executor_docker.go:839:0s)
+  [0;m
+
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1681457):
+  
+  --- command ---
+  /builds/gfx-ci/igt-ci-tags/tests/igt_command_line.sh drm_read
+  --- stdout ---
+  tests/drm_read:
+    Checking invalid option handling...
+  FAIL: tests/drm_read
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1582177579:build_script
+  [0Ksection_start:1582177579:after_script
+  [0Ksection_end:1582177581:after_script
+  [0Ksection_start:1582177581:upload_artifacts_on_failure
+  [0Ksection_end:1582177582:upload_artifacts_on_failure
+  [0K[31;1mERROR: Job failed: exit code 1
+  [0;m
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/110667
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
