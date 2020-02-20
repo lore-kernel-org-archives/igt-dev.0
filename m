@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B73B16EDBD
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 15:50:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA3586EDBF
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 15:52:28 +0000 (UTC)
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
 References: <20200220153209.210767-1-martin.peres@linux.intel.com>
 In-Reply-To: <20200220153209.210767-1-martin.peres@linux.intel.com>
-Message-ID: <158221380406.8112.18309601206905414674@skylake-alporthouse-com>
-Date: Thu, 20 Feb 2020 15:50:04 +0000
+Message-ID: <158221394398.8112.3030544091167296957@skylake-alporthouse-com>
+Date: Thu, 20 Feb 2020 15:52:24 +0000
 Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci: add a pre-merge blacklist to
  reduce the testing queue
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -26,26 +26,21 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Quoting Martin Peres (2020-02-20 15:32:09)
 > +###############################################################################
-> +# This tests modesetting-vs-wedged which is a useful thing to check, but it
-> +# seems like it mostly catches unrelated issues which are better caught by
-> +# other tests.
+> +# This test virtually never failed, yet is responsible for a relatively big
+> +# execution time on some platforms:
 > +#
-> +# - shard-skl: 0.5% (~1 minute)
-> +# - shard-kbl: 1% (~1 minute)
+> +# - shard-skl: 1.3% (~3 minutes)
+> +# - shard-kbl: 0.3% (~0.3 minutes)
 > +# - shard-apl: 0.6% (~1 minute)
-> +# - shard-glk: 0.5% (~1 minute)
-> +# - shard-icl: 0.6% (~1.5 minutes)
-> +# - shard-tgl: 0.7% (~1.5 minutes)
+> +# - shard-glk: 0.4% (50 seconds)
+> +# - shard-icl: 0.1% (15 seconds)
+> +# - shard-tgl: 0.1% (15 seconds)
 > +#
 > +# Data acquired on 2020-02-20 by Martin Peres
 > +###############################################################################
-> +igt@gem_eio@kms
+> +igt@sw_sync@sync_expired_merge
 
-Hah. It caught novel issues, which have not been split out into separate
-regression tests.
-
-Making sure kms is robust is not a bad thing; you can easily speed this
-up by reducing the workload.
+Change from fixed workload to fixed runtime.
 -Chris
 _______________________________________________
 igt-dev mailing list
