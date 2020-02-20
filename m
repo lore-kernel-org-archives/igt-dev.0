@@ -1,14 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81F936ECE0
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 07:48:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8596D6ED06
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 09:04:24 +0000 (UTC)
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
-References: <20200220051432.21898-1-priyanka.dandamudi@intel.com>
-In-Reply-To: <20200220051432.21898-1-priyanka.dandamudi@intel.com>
-Message-ID: <158218486195.8112.17792417633553495989@skylake-alporthouse-com>
-Date: Thu, 20 Feb 2020 07:47:41 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_request_retire: Removal of test
+References: <20200206110110.5399-1-ranjeet1.kumar@intel.com>
+ <158133419181.5235.12047516556267303590@skylake-alporthouse-com>
+ <274141C8A0A31546A510F01C1A9ED9F2BA71DE@BGSMSX101.gar.corp.intel.com>
+ <158158096500.11180.5218028198982885077@skylake-alporthouse-com>
+ <274141C8A0A31546A510F01C1A9ED9F2BAF223@BGSMSX101.gar.corp.intel.com>
+In-Reply-To: <274141C8A0A31546A510F01C1A9ED9F2BAF223@BGSMSX101.gar.corp.intel.com>
+Message-ID: <158218945785.8112.16911735026069399304@skylake-alporthouse-com>
+Date: Thu, 20 Feb 2020 09:04:17 +0000
+Subject: Re: [igt-dev] [PATCH] [PATCH
+ i-g-t]test/i915/gem_pipe_control_store_loop: Removal of test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,20 +25,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, priyanka.dandamudi@intel.com
+To: "Kumar, Ranjeet1" <ranjeet1.kumar@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting priyanka.dandamudi@intel.com (2020-02-20 05:14:32)
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Quoting Kumar, Ranjeet1 (2020-02-20 08:50:42)
+> Hi Chris , 
 > 
-> Test is trying to hit a race condition by submitting same buffer object
-> between two contexts on different rings.Similar scenario can be found in
-> gem_ctx_param and gem_exec_ctx.This test doesn't add anything to other
-> tests.So,removing the test.
+> This OUT_RELLOC instruction are covered in gem_exec_bad_domains, gem_write_read_ring_switch test too. 
+>  I tried replacing OUT_RELLOC with OUT_RELLOC_FENCED and successfully tests got passed. 
 
-Neither of those try to replicate the bug found in this regression test.
-gem_ctx_persistence does have similar patterns. Are you sure we do have
-it covered?
+The test is a regression test developed because we found a bug in the
+kernel that was not being exercised (a race condition during retire). We
+need to be certain that we retain such coverage. E.g. if we were to
+reintroduce such a bug, would CI pick it up? [Always a useful exercise
+to determine the efficacy of CI.]
 -Chris
 _______________________________________________
 igt-dev mailing list
