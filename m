@@ -1,10 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Thu, 20 Feb 2020 16:32:03 +0100
-Message-Id: <20200220153203.29571-1-janusz.krzysztofik@linux.intel.com>
+Date: Thu, 20 Feb 2020 16:57:24 +0100
+Message-ID: <9103010.GsyPYnKGBp@jkrzyszt-desk.ger.corp.intel.com>
+In-Reply-To: <157529875955.27263.14886639874940144583@skylake-alporthouse-com>
+References: <20191113125240.3781-1-chris@chris-wilson.co.uk>
+ <8042207.s0vteSJg9S@jkrzyszt-desk.ger.corp.intel.com>
+ <157529875955.27263.14886639874940144583@skylake-alporthouse-com>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC PATCH i-g-t] lib/i915: Restrict mmap types to GTT if
- no MMAP_OFFSET support
+Subject: Re: [igt-dev] [PATCH i-g-t 9/9] i915: Exercise
+ I915_CONTEXT_PARAM_RINGSIZE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -12,119 +16,477 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Q29tbWl0IGIwZGE4YmI3MDVjMCAoImxpYi9pOTE1OiBmb3JfZWFjaF9tbWFwX29mZnNldF90eXBl
-KCkiKQppbnRyb2R1Y2VkIGEgbWFjcm8gdGhhdCBtYWtlcyBpdCBlYXN5IHRvIHJlcGVhdCBhIHRl
-c3QgYm9keSB3aXRoaW4gYQpsb29wIGZvciBlYWNoIG1tYXAtb2Zmc2V0IG1hcHBpbmcgdHlwZSBz
-dXBwb3J0ZWQgYnkgdjQgb2YgaTkxNSBNTUFQX0dUVApBUEkuIEhvd2V2ZXIsIHdoZW4gcnVuIG9u
-IGFuIG9sZGVyIHZlcnNpb24gb2YgdGhlIGRyaXZlciwgdGhvc2UKc3VidGVzdHMgYXJlIGJlbGll
-dmVkIHRvIGJlIHN0aWxsIHJlcGVhdGVkIGZvciBlYWNoIGtub3duIG1tYXAtb2Zmc2V0Cm1hcHBp
-bmcgdHlwZSB3aGlsZSBlZmZlY3RpdmVseSBleGVyY2lzaW5nIEdUVCBtYXBwaW5nIHR5cGUgb25s
-eS4gIEFzCnRoYXQgbWF5IGJlIGNvbmZ1c2luZywgZml4IGl0LgoKSXQgaGFzIGJlZW4gYXNzdW1l
-ZCB0aGF0IHRoZSBtb2RpZmllZCBtYWNybyBpcyBzdGlsbCBzdWl0YWJsZSBmb3IgdXNlCmluc2lk
-ZSBnZW1fbW1hcF9vZmZzZXQgdGVzdCBpdHNlbGYuICBXb3VsZCB0aGF0IG5vdCBiZSBjYXNlLApn
-ZW1fbW1hcF9vZmZzZXQgY291bGQgcmVkZWZpbmUgdGhlIG1hY3JvIGJhY2sgdG8gaXRzIGluaXRp
-YWwgZm9ybSBmb3IKaW50ZXJuYWwgdXNlLgoKU3VnZ2VzdGVkLWJ5OiBNaWNoYcWCIFdpbmlhcnNr
-aSA8bWljaGFsLndpbmlhcnNraUBpbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IEphbnVzeiBLcnp5
-c3p0b2ZpayA8amFudXN6LmtyenlzenRvZmlrQGxpbnV4LmludGVsLmNvbT4KQ2M6IENocmlzIFdp
-bHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgotLS0KIGxpYi9pOTE1L2dlbV9tbWFuLmgg
-ICAgICAgICAgfCAgNSArKystLQogdGVzdHMvaTkxNS9nZW1fY3R4X3NzZXUuYyAgICB8ICAyICst
-CiB0ZXN0cy9pOTE1L2dlbV9leGVjX3BhcmFtcy5jIHwgIDIgKy0KIHRlc3RzL2k5MTUvZ2VtX21h
-ZHZpc2UuYyAgICAgfCAxOCArKysrKysrKysrKysrKy0tLS0KIHRlc3RzL2k5MTUvZ2VtX21tYXBf
-b2Zmc2V0LmMgfCAxMCArKysrKy0tLS0tCiB0ZXN0cy9pOTE1L2k5MTVfcG1fcnBtLmMgICAgIHwg
-IDIgKy0KIDYgZmlsZXMgY2hhbmdlZCwgMjUgaW5zZXJ0aW9ucygrKSwgMTQgZGVsZXRpb25zKC0p
-CgpkaWZmIC0tZ2l0IGEvbGliL2k5MTUvZ2VtX21tYW4uaCBiL2xpYi9pOTE1L2dlbV9tbWFuLmgK
-aW5kZXggNGZjNmEwMTg2Li40OTE3NjcwMjMgMTAwNjQ0Ci0tLSBhL2xpYi9pOTE1L2dlbV9tbWFu
-LmgKKysrIGIvbGliL2k5MTUvZ2VtX21tYW4uaApAQCAtMTAxLDkgKzEwMSwxMCBAQCBleHRlcm4g
-Y29uc3Qgc3RydWN0IG1tYXBfb2Zmc2V0IHsKIAl1bnNpZ25lZCBpbnQgZG9tYWluOwogfSBtbWFw
-X29mZnNldF90eXBlc1tdOwogCi0jZGVmaW5lIGZvcl9lYWNoX21tYXBfb2Zmc2V0X3R5cGUoX190
-KSBcCisjZGVmaW5lIGZvcl9lYWNoX21tYXBfb2Zmc2V0X3R5cGUoZmQsIF9fdCkgXAogCWZvciAo
-Y29uc3Qgc3RydWN0IG1tYXBfb2Zmc2V0ICpfX3QgPSBtbWFwX29mZnNldF90eXBlczsgXAotCSAg
-ICAgKF9fdCktPm5hbWU7IFwKKwkgICAgIChfX3QpLT5uYW1lICYmIChnZW1faGFzX21tYXBfb2Zm
-c2V0KGZkKSB8fCBcCisJCQkgICAgIChfX3QpLT50eXBlID09IEk5MTVfTU1BUF9PRkZTRVRfR1RU
-KTsgXAogCSAgICAgKF9fdCkrKykKIAogI2VuZGlmIC8qIEdFTV9NTUFOX0ggKi8KZGlmZiAtLWdp
-dCBhL3Rlc3RzL2k5MTUvZ2VtX2N0eF9zc2V1LmMgYi90ZXN0cy9pOTE1L2dlbV9jdHhfc3NldS5j
-CmluZGV4IGQ1NThjOGJhYS4uM2JlZjExYjUxIDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2dlbV9j
-dHhfc3NldS5jCisrKyBiL3Rlc3RzL2k5MTUvZ2VtX2N0eF9zc2V1LmMKQEAgLTUzMSw3ICs1MzEs
-NyBAQCBpZ3RfbWFpbgogCQkJdGVzdF9pbnZhbGlkX3NzZXUoZmQpOwogCiAJCWlndF9zdWJ0ZXN0
-X3dpdGhfZHluYW1pYygibW1hcC1hcmdzIikgewotCQkJZm9yX2VhY2hfbW1hcF9vZmZzZXRfdHlw
-ZSh0KSB7CisJCQlmb3JfZWFjaF9tbWFwX29mZnNldF90eXBlKGZkLCB0KSB7CiAJCQkJaWd0X2R5
-bmFtaWNfZigiJXMiLCB0LT5uYW1lKQogCQkJCQl0ZXN0X21tYXBwZWRfYXJncyhmZCwgdCk7CiAJ
-CQl9CmRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9leGVjX3BhcmFtcy5jIGIvdGVzdHMvaTkx
-NS9nZW1fZXhlY19wYXJhbXMuYwppbmRleCBlMjkxMjY4NWIuLmNmN2VhMzA2NSAxMDA2NDQKLS0t
-IGEvdGVzdHMvaTkxNS9nZW1fZXhlY19wYXJhbXMuYworKysgYi90ZXN0cy9pOTE1L2dlbV9leGVj
-X3BhcmFtcy5jCkBAIC0yNDQsNyArMjQ0LDcgQEAgc3RhdGljIHZvaWQgbW1hcHBlZChpbnQgaTkx
-NSkKIAlidWYgPSBnZW1fY3JlYXRlKGk5MTUsIDQwOTYpOwogCWhhbmRsZSA9IGJhdGNoX2NyZWF0
-ZShpOTE1KTsKIAotCWZvcl9lYWNoX21tYXBfb2Zmc2V0X3R5cGUodCkgeyAvKiByZXBldGl0aXZl
-ISAqLworCWZvcl9lYWNoX21tYXBfb2Zmc2V0X3R5cGUoaTkxNSwgdCkgeyAvKiByZXBldGl0aXZl
-ISAqLwogCQlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNidWZmZXIyICpleGVjYnVmOwogCQlzdHJ1
-Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2JqZWN0MiAqZXhlYzsKIApkaWZmIC0tZ2l0IGEvdGVzdHMv
-aTkxNS9nZW1fbWFkdmlzZS5jIGIvdGVzdHMvaTkxNS9nZW1fbWFkdmlzZS5jCmluZGV4IGU4NzE2
-YTg5MS4uNTRjOWJlZmZmIDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2dlbV9tYWR2aXNlLmMKKysr
-IGIvdGVzdHMvaTkxNS9nZW1fbWFkdmlzZS5jCkBAIC02MiwxMiArNjIsMTMgQEAgZG9udG5lZWRf
-YmVmb3JlX21tYXAodm9pZCkKIAljaGFyICpwdHI7CiAJaW50IGZkOwogCi0JZm9yX2VhY2hfbW1h
-cF9vZmZzZXRfdHlwZSh0KSB7CisJZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX0lOVEVMKTsK
-KworCWZvcl9lYWNoX21tYXBfb2Zmc2V0X3R5cGUoZmQsIHQpIHsKIAkJc2lnaGFuZGxlcl90IG9s
-ZF9zaWdzZWd2LCBvbGRfc2lnYnVzOwogCiAJCWlndF9kZWJ1ZygiTWFwcGluZyBtb2RlOiAlc1xu
-IiwgdC0+bmFtZSk7CiAKLQkJZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX0lOVEVMKTsKIAkJ
-aGFuZGxlID0gZ2VtX2NyZWF0ZShmZCwgT0JKRUNUX1NJWkUpOwogCQlnZW1fbWFkdmlzZShmZCwg
-aGFuZGxlLCBJOTE1X01BRFZfRE9OVE5FRUQpOwogCkBAIC05Myw3ICs5NCwxMSBAQCBkb250bmVl
-ZF9iZWZvcmVfbW1hcCh2b2lkKQogCQltdW5tYXAocHRyLCBPQkpFQ1RfU0laRSk7CiAJCXNpZ25h
-bChTSUdCVVMsIG9sZF9zaWdzZWd2KTsKIAkJc2lnbmFsKFNJR1NFR1YsIG9sZF9zaWdidXMpOwor
-CisJCWZkID0gZHJtX29wZW5fZHJpdmVyKERSSVZFUl9JTlRFTCk7CiAJfQorCisJY2xvc2UoZmQp
-OwogfQogCiBzdGF0aWMgdm9pZApAQCAtMTAzLDEyICsxMDgsMTMgQEAgZG9udG5lZWRfYWZ0ZXJf
-bW1hcCh2b2lkKQogCWNoYXIgKnB0cjsKIAlpbnQgZmQ7CiAKLQlmb3JfZWFjaF9tbWFwX29mZnNl
-dF90eXBlKHQpIHsKKwlmZCA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJfSU5URUwpOworCisJZm9y
-X2VhY2hfbW1hcF9vZmZzZXRfdHlwZShmZCwgdCkgewogCQlzaWdoYW5kbGVyX3Qgb2xkX3NpZ3Nl
-Z3YsIG9sZF9zaWdidXM7CiAKIAkJaWd0X2RlYnVnKCJNYXBwaW5nIG1vZGU6ICVzXG4iLCB0LT5u
-YW1lKTsKIAotCQlmZCA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJfSU5URUwpOwogCQloYW5kbGUg
-PSBnZW1fY3JlYXRlKGZkLCBPQkpFQ1RfU0laRSk7CiAKIAkJcHRyID0gX19nZW1fbW1hcF9vZmZz
-ZXQoZmQsIGhhbmRsZSwgMCwgT0JKRUNUX1NJWkUsCkBAIC0xMzQsNyArMTQwLDExIEBAIGRvbnRu
-ZWVkX2FmdGVyX21tYXAodm9pZCkKIAkJbXVubWFwKHB0ciwgT0JKRUNUX1NJWkUpOwogCQlzaWdu
-YWwoU0lHQlVTLCBvbGRfc2lnYnVzKTsKIAkJc2lnbmFsKFNJR1NFR1YsIG9sZF9zaWdzZWd2KTsK
-KworCQlmZCA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJfSU5URUwpOwogCX0KKworCWNsb3NlKGZk
-KTsKIH0KIAogc3RhdGljIHZvaWQKZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX21tYXBfb2Zm
-c2V0LmMgYi90ZXN0cy9pOTE1L2dlbV9tbWFwX29mZnNldC5jCmluZGV4IGY0OWQxOGU2My4uMWVj
-OTYzYjI1IDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2dlbV9tbWFwX29mZnNldC5jCisrKyBiL3Rl
-c3RzL2k5MTUvZ2VtX21tYXBfb2Zmc2V0LmMKQEAgLTEyOCw3ICsxMjgsNyBAQCBzdGF0aWMgdm9p
-ZCBiYXNpY191YWYoaW50IGk5MTUpCiB7CiAJY29uc3QgdWludDMyX3Qgb2JqX3NpemUgPSA0MDk2
-OwogCi0JZm9yX2VhY2hfbW1hcF9vZmZzZXRfdHlwZSh0KSB7CisJZm9yX2VhY2hfbW1hcF9vZmZz
-ZXRfdHlwZShpOTE1LCB0KSB7CiAJCXVpbnQzMl90IGhhbmRsZSA9IGdlbV9jcmVhdGUoaTkxNSwg
-b2JqX3NpemUpOwogCQl1aW50OF90ICpleHBlY3RlZCwgKmJ1ZiwgKmFkZHI7CiAKQEAgLTE3Niw3
-ICsxNzYsNyBAQCBzdGF0aWMgdm9pZCBiYXNpY191YWYoaW50IGk5MTUpCiAKIHN0YXRpYyB2b2lk
-IGlzb2xhdGlvbihpbnQgaTkxNSkKIHsKLQlmb3JfZWFjaF9tbWFwX29mZnNldF90eXBlKHQpIHsK
-Kwlmb3JfZWFjaF9tbWFwX29mZnNldF90eXBlKGk5MTUsIHQpIHsKIAkJc3RydWN0IGRybV9pOTE1
-X2dlbV9tbWFwX29mZnNldCBtbWFwX2FyZyA9IHsKIAkJCS5mbGFncyA9IHQtPnR5cGUKIAkJfTsK
-QEAgLTI0NSw3ICsyNDUsNyBAQCBzdGF0aWMgdm9pZCBwZl9ub25ibG9jayhpbnQgaTkxNSkKIHsK
-IAlpZ3Rfc3Bpbl90ICpzcGluID0gaWd0X3NwaW5fbmV3KGk5MTUpOwogCi0JZm9yX2VhY2hfbW1h
-cF9vZmZzZXRfdHlwZSh0KSB7CisJZm9yX2VhY2hfbW1hcF9vZmZzZXRfdHlwZShpOTE1LCB0KSB7
-CiAJCXVpbnQzMl90ICpwdHI7CiAKIAkJcHRyID0gX19tbWFwX29mZnNldChpOTE1LCBzcGluLT5o
-YW5kbGUsIDAsIDQwOTYsCkBAIC0zMjQsNyArMzI0LDcgQEAgc3RhdGljIHZvaWQgb3Blbl9mbG9v
-ZChpbnQgaTkxNSwgaW50IHRpbWVvdXQpCiAJaGFuZGxlID0gZ2VtX2NyZWF0ZShpOTE1LCA0MDk2
-KTsKIAlkbWFidWYgPSBwcmltZV9oYW5kbGVfdG9fZmQoaTkxNSwgaGFuZGxlKTsKIAotCWZvcl9l
-YWNoX21tYXBfb2Zmc2V0X3R5cGUodCkgeworCWZvcl9lYWNoX21tYXBfb2Zmc2V0X3R5cGUoaTkx
-NSwgdCkgewogCQlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX21tYXBfb2Zmc2V0IGFyZyA9IHsKIAkJCS5o
-YW5kbGUgPSBoYW5kbGUsCiAJCQkuZmxhZ3MgPSB0LT50eXBlLApAQCAtMzUxLDcgKzM1MSw3IEBA
-IHN0YXRpYyB2b2lkIG9wZW5fZmxvb2QoaW50IGk5MTUsIGludCB0aW1lb3V0KQogCQl0bXAgPSBn
-ZW1fcmVvcGVuX2RyaXZlcihpOTE1KTsKIAkJaGFuZGxlID0gcHJpbWVfZmRfdG9faGFuZGxlKGk5
-MTUsIGRtYWJ1Zik7CiAKLQkJZm9yX2VhY2hfbW1hcF9vZmZzZXRfdHlwZSh0KSB7CisJCWZvcl9l
-YWNoX21tYXBfb2Zmc2V0X3R5cGUoaTkxNSwgdCkgewogCQkJc3RydWN0IGRybV9pOTE1X2dlbV9t
-bWFwX29mZnNldCBhcmcgPSB7CiAJCQkJLmhhbmRsZSA9IGhhbmRsZSwKIAkJCQkuZmxhZ3MgPSB0
-LT50eXBlLApkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9pOTE1X3BtX3JwbS5jIGIvdGVzdHMvaTkx
-NS9pOTE1X3BtX3JwbS5jCmluZGV4IDBjMjgyMTEyMi4uMWJlYzgwZGI3IDEwMDY0NAotLS0gYS90
-ZXN0cy9pOTE1L2k5MTVfcG1fcnBtLmMKKysrIGIvdGVzdHMvaTkxNS9pOTE1X3BtX3JwbS5jCkBA
-IC0yMDA2LDcgKzIwMDYsNyBAQCBpZ3RfbWFpbl9hcmdzKCIiLCBsb25nX29wdGlvbnMsIGhlbHBf
-c3RyLCBvcHRfaGFuZGxlciwgTlVMTCkKIAogCS8qIEdFTSAqLwogCWlndF9zdWJ0ZXN0X3dpdGhf
-ZHluYW1pYygiZ2VtLW1tYXAtdHlwZSIpIHsKLQkJZm9yX2VhY2hfbW1hcF9vZmZzZXRfdHlwZSh0
-KSB7CisJCWZvcl9lYWNoX21tYXBfb2Zmc2V0X3R5cGUoZHJtX2ZkLCB0KSB7CiAJCQlpZ3RfZHlu
-YW1pY19mKCIlcyIsIHQtPm5hbWUpCiAJCQkJZ2VtX21tYXBfYXJncyh0KTsKIAkJfQotLSAKMi4y
-MS4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3Qt
-ZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xp
-c3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+Hi Chris,
+
+On Monday, December 2, 2019 3:59:19 PM CET Chris Wilson wrote:
+> Quoting Janusz Krzysztofik (2019-12-02 14:42:58)
+> > Hi Chris,
+> > =
+
+> > I have a few questions rather than comments.  I hope they are worth spe=
+nding =
+
+> > your time.
+> > =
+
+> > On Wednesday, November 13, 2019 1:52:40 PM CET Chris Wilson wrote:
+> > > I915_CONTEXT_PARAM_RINGSIZE specifies how large to create the command
+> > > ringbuffer for logical ring contects. This directly affects the number
+> > =
+
+> > s/contects/contexts/
+> > =
+
+> > > of batches userspace can submit before blocking waiting for space.
+> > > =
+
+> > > Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+
+Have you got this patch still queued somewhere?  As UMD has accepted the =
+
+solution and are ready with changes on their side, I think we need to merge=
+ it =
+
+soon, and the kernel side as well.
+
+Thanks,
+Janusz
+
+
+> > > ---
+> > >  tests/Makefile.sources        |   3 +
+> > >  tests/i915/gem_ctx_ringsize.c | 296 ++++++++++++++++++++++++++++++++=
+++
+> > >  tests/meson.build             |   1 +
+> > >  3 files changed, 300 insertions(+)
+> > >  create mode 100644 tests/i915/gem_ctx_ringsize.c
+> > > =
+
+> > > diff --git a/tests/Makefile.sources b/tests/Makefile.sources
+> > > index e17d43155..801fc52f3 100644
+> > > --- a/tests/Makefile.sources
+> > > +++ b/tests/Makefile.sources
+> > > @@ -163,6 +163,9 @@ gem_ctx_param_SOURCES =3D i915/gem_ctx_param.c
+> > >  TESTS_progs +=3D gem_ctx_persistence
+> > >  gem_ctx_persistence_SOURCES =3D i915/gem_ctx_persistence.c
+> > >  =
+
+> > > +TESTS_progs +=3D gem_ctx_ringsize
+> > > +gem_ctx_ringsize_SOURCES =3D i915/gem_ctx_ringsize.c
+> > > +
+> > >  TESTS_progs +=3D gem_ctx_shared
+> > >  gem_ctx_shared_SOURCES =3D i915/gem_ctx_shared.c
+> > >  =
+
+> > > diff --git a/tests/i915/gem_ctx_ringsize.c b/tests/i915/gem_ctx_rings=
+ize.c
+> > > new file mode 100644
+> > > index 000000000..1450e8f0d
+> > > --- /dev/null
+> > > +++ b/tests/i915/gem_ctx_ringsize.c
+> > > @@ -0,0 +1,296 @@
+> > > +/*
+> > > + * Copyright =A9 2019 Intel Corporation
+> > > + *
+> > > + * Permission is hereby granted, free of charge, to any person obtai=
+ning a
+> > > + * copy of this software and associated documentation files (the "So=
+ftware"),
+> > > + * to deal in the Software without restriction, including without li=
+mitation
+> > > + * the rights to use, copy, modify, merge, publish, distribute, subl=
+icense,
+> > > + * and/or sell copies of the Software, and to permit persons to whom=
+ the
+> > > + * Software is furnished to do so, subject to the following conditio=
+ns:
+> > > + *
+> > > + * The above copyright notice and this permission notice (including =
+the next
+> > > + * paragraph) shall be included in all copies or substantial portion=
+s of the
+> > > + * Software.
+> > > + *
+> > > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, E=
+XPRESS OR
+> > > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTA=
+BILITY,
+> > > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVEN=
+T SHALL
+> > > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES=
+ OR OTHER
+> > > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, A=
+RISING
+> > > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTH=
+ER DEALINGS
+> > > + * IN THE SOFTWARE.
+> > > + */
+> > > +
+> > > +#include <errno.h>
+> > > +#include <fcntl.h>
+> > > +#include <inttypes.h>
+> > > +#include <sys/ioctl.h>
+> > > +#include <sys/types.h>
+> > > +#include <unistd.h>
+> > > +
+> > > +#include "drmtest.h" /* gem_quiescent_gpu()! */
+> > > +#include "i915/gem_context.h"
+> > > +#include "i915/gem_engine_topology.h"
+> > > +#include "ioctl_wrappers.h" /* gem_wait()! */
+> > > +#include "sw_sync.h"
+> > > +
+> > > +#define I915_CONTEXT_PARAM_RINGSIZE 0xc
+> > =
+
+> > How are we going to handle symbol redefinition conflict which arises as=
+ soon =
+
+> > as this symbol is also included from kernel headers (e.g. via =
+
+> > "i915/gem_engine_topology.h")?
+> =
+
+> Final version we copy the headers form the kernel. Conflicts remind us
+> when we forget.
+> =
+
+> > =
+
+> > > +
+> > > +static bool has_ringsize(int i915)
+> > > +{
+> > > +     struct drm_i915_gem_context_param p =3D {
+> > > +             .param =3D I915_CONTEXT_PARAM_RINGSIZE,
+> > > +     };
+> > > +
+> > > +     return __gem_context_get_param(i915, &p) =3D=3D 0;
+> > > +}
+> > > +
+> > > +static void test_idempotent(int i915)
+> > > +{
+> > > +     struct drm_i915_gem_context_param p =3D {
+> > > +             .param =3D I915_CONTEXT_PARAM_RINGSIZE,
+> > > +     };
+> > > +     uint32_t saved;
+> > > +
+> > > +     /*
+> > > +      * Simple test to verify that we are able to read back the same
+> > > +      * value as we set.
+> > > +      */
+> > > +
+> > > +     gem_context_get_param(i915, &p);
+> > > +     saved =3D p.value;
+> > > +
+> > > +     for (uint32_t x =3D 1 << 12; x <=3D 128 << 12; x <<=3D 1) {
+> > =
+
+> > I've noticed you are using two different notations for those minimum/ma=
+ximum =
+
+> > constants.  I think that may be confusing.  How about defining and usin=
+g =
+
+> > macros?  =
+
+> =
+
+> A range in pages...
+>  =
+
+> > > +             p.value =3D x;
+> > > +             gem_context_set_param(i915, &p);
+> > > +             gem_context_get_param(i915, &p);
+> > > +             igt_assert_eq_u32(p.value, x);
+> > > +     }
+> > > +
+> > > +     p.value =3D saved;
+> > > +     gem_context_set_param(i915, &p);
+> > > +}
+> > > +
+> > > +static void test_invalid(int i915)
+> > > +{
+> > > +     struct drm_i915_gem_context_param p =3D {
+> > > +             .param =3D I915_CONTEXT_PARAM_RINGSIZE,
+> > > +     };
+> > > +     uint64_t invalid[] =3D {
+> > > +             0, 1, 4095, 4097, 8191, 8193,
+> > > +             /* upper limit may be HW dependent, atm it is 512KiB */
+> > > +             (512 << 10) - 1, (512 << 10) + 1,
+> > =
+
+> > Here is an example of that different notation mentioned above.
+> =
+
+> And here written in KiB to match comments.
+> =
+
+> > =
+
+> > > +             -1, -1u
+> > > +     };
+> > > +     uint32_t saved;
+> > > +
+> > > +     gem_context_get_param(i915, &p);
+> > > +     saved =3D p.value;
+> > > +
+> > > +     for (int i =3D 0; i < ARRAY_SIZE(invalid); i++) {
+> > > +             p.value =3D invalid[i];
+> > > +             igt_assert_eq(__gem_context_set_param(i915, &p), -EINVA=
+L);
+> > > +             gem_context_get_param(i915, &p);
+> > > +             igt_assert_eq_u64(p.value, saved);
+> > > +     }
+> > > +}
+> > > +
+> > > +static int create_ext_ioctl(int i915,
+> > > +                         struct drm_i915_gem_context_create_ext *arg)
+> > > +{
+> > > +     int err;
+> > > +
+> > > +     err =3D 0;
+> > > +     if (igt_ioctl(i915, DRM_IOCTL_I915_GEM_CONTEXT_CREATE_EXT, arg)=
+) {
+> > > +             err =3D -errno;
+> > > +             igt_assume(err);
+> > > +     }
+> > > +
+> > > +     errno =3D 0;
+> > > +     return err;
+> > > +}
+> > =
+
+> > This helper looks like pretty standard for me.  Why there are no librar=
+y =
+
+> > functions for such generic operations?
+> =
+
+> Because no one has written that yet.
+> =
+
+> > =
+
+> > > +
+> > > +static void test_create(int i915)
+> > > +{
+> > > +     struct drm_i915_gem_context_create_ext_setparam p =3D {
+> > > +             .base =3D {
+> > > +                     .name =3D I915_CONTEXT_CREATE_EXT_SETPARAM,
+> > > +                     .next_extension =3D 0, /* end of chain */
+> > > +             },
+> > > +             .param =3D {
+> > > +                     .param =3D I915_CONTEXT_PARAM_RINGSIZE,
+> > > +                     .value =3D 512 << 10,
+> > > +             }
+> > > +     };
+> > > +     struct drm_i915_gem_context_create_ext create =3D {
+> > > +             .flags =3D I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
+> > > +             .extensions =3D to_user_pointer(&p),
+> > > +     };
+> > > +
+> > > +     igt_assert_eq(create_ext_ioctl(i915, &create),  0);
+> > > +
+> > > +     p.param.ctx_id =3D create.ctx_id;
+> > > +     p.param.value =3D 0;
+> > > +     gem_context_get_param(i915, &p.param);
+> > > +     igt_assert_eq(p.param.value, 512 << 10);
+> > > +
+> > > +     gem_context_destroy(i915, create.ctx_id);
+> > > +}
+> > > +
+> > > +static void test_clone(int i915)
+> > > +{
+> > > +     struct drm_i915_gem_context_create_ext_setparam p =3D {
+> > > +             .base =3D {
+> > > +                     .name =3D I915_CONTEXT_CREATE_EXT_SETPARAM,
+> > > +                     .next_extension =3D 0, /* end of chain */
+> > > +             },
+> > > +             .param =3D {
+> > > +                     .param =3D I915_CONTEXT_PARAM_RINGSIZE,
+> > > +                     .value =3D 512 << 10,
+> > > +             }
+> > > +     };
+> > > +     struct drm_i915_gem_context_create_ext create =3D {
+> > > +             .flags =3D I915_CONTEXT_CREATE_FLAGS_USE_EXTENSIONS,
+> > > +             .extensions =3D to_user_pointer(&p),
+> > > +     };
+> > > +
+> > > +     igt_assert_eq(create_ext_ioctl(i915, &create),  0);
+> > > +
+> > > +     p.param.ctx_id =3D gem_context_clone(i915, create.ctx_id,
+> > > +                                        I915_CONTEXT_CLONE_ENGINES, =
+0);
+> > > +     igt_assert_neq(p.param.ctx_id, create.ctx_id);
+> > > +     gem_context_destroy(i915, create.ctx_id);
+> > > +
+> > > +     p.param.value =3D 0;
+> > > +     gem_context_get_param(i915, &p.param);
+> > > +     igt_assert_eq(p.param.value, 512 << 10);
+> > > +
+> > > +     gem_context_destroy(i915, p.param.ctx_id);
+> > > +}
+> > > +
+> > > +static int __execbuf(int i915, struct drm_i915_gem_execbuffer2 *exec=
+buf)
+> > > +{
+> > > +     int err;
+> > > +
+> > > +     err =3D 0;
+> > > +     if (ioctl(i915, DRM_IOCTL_I915_GEM_EXECBUFFER2, execbuf))
+> > > +             err =3D -errno;
+> > > +
+> > > +     errno =3D 0;
+> > > +     return err;
+> > > +}
+> > =
+
+> > The above helper looks pretty the same as lib/ioctlwrappers.c:__gem_exe=
+cbuf().  =
+
+> > Does igt_assume(err) found in the latter matter so much that you use yo=
+ur own =
+
+> > version?
+> =
+
+> It's very, very different from that one.
+> =
+
+> > > +
+> > > +static uint32_t __batch_create(int i915, uint32_t offset)
+> > =
+
+> > This is always called with offset =3D 0, do we expect other values to b=
+e used =
+
+> > later?
+> =
+
+> Why not.
+>  =
+
+> > > +{
+> > > +     const uint32_t bbe =3D 0xa << 23;
+> > > +     uint32_t handle;
+> > > +
+> > > +     handle =3D gem_create(i915, ALIGN(offset + sizeof(bbe), 4096));
+> > =
+
+> > Why don't we rely on the driver making the alignment for us?
+> =
+
+> I'm used to being inside the kernel where it's expected to be correct.
+> =
+
+> > > +     gem_write(i915, handle, offset, &bbe, sizeof(bbe));
+> > > +
+> > > +     return handle;
+> > > +}
+> > > +
+> > > +static uint32_t batch_create(int i915)
+> > > +{
+> > > +     return __batch_create(i915, 0);
+> > > +}
+> > > +
+> > > +static unsigned int measure_inflight(int i915, unsigned int engine)
+> > > +{
+> > > +     IGT_CORK_FENCE(cork);
+> > > +     struct drm_i915_gem_exec_object2 obj =3D {
+> > > +             .handle =3D batch_create(i915)
+> > > +     };
+> > > +     struct drm_i915_gem_execbuffer2 execbuf =3D {
+> > > +             .buffers_ptr =3D to_user_pointer(&obj),
+> > > +             .buffer_count =3D 1,
+> > > +             .flags =3D engine | I915_EXEC_FENCE_IN,
+> > > +             .rsvd2 =3D igt_cork_plug(&cork, i915),
+> > > +     };
+> > > +     unsigned int count;
+> > > +
+> > > +     fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) | O_NONBLOCK);
+> > > +
+> > > +     gem_execbuf(i915, &execbuf);
+> > > +     for (count =3D 1; __execbuf(i915, &execbuf) =3D=3D 0; count++)
+> > > +             ;
+> > =
+
+> > Shouldn't we check if the reason for the failure is what we expect, i.e=
+., =
+
+> > -EWOULDBLOCK (or -EINTR)?  And why don't we put a time constraint on th=
+at loop =
+
+> > in case O_NONBLOCK handling is not supported (yet)?
+> =
+
+> Sure. The idea is that O_NONBLOCK is supported, otherwise we don't
+> have fast and precise feedback.
+> =
+
+> > > +static void test_resize(int i915,
+> > > +                     const struct intel_execution_engine2 *e,
+> > > +                     unsigned int flags)
+> > > +#define IDLE (1 << 0)
+> > > +{
+> > > +     struct drm_i915_gem_context_param p =3D {
+> > > +             .param =3D I915_CONTEXT_PARAM_RINGSIZE,
+> > > +     };
+> > > +     unsigned int prev[2] =3D {};
+> > > +     uint32_t saved;
+> > > +
+> > > +     gem_context_get_param(i915, &p);
+> > > +     saved =3D p.value;
+> > > +
+> > > +     gem_quiescent_gpu(i915);
+> > > +     for (p.value =3D 1 << 12; p.value <=3D 128 << 12; p.value <<=3D=
+ 1) {
+> > > +             unsigned int count;
+> > > +
+> > > +             gem_context_set_param(i915, &p);
+> > > +
+> > > +             count =3D measure_inflight(i915, e->flags);
+> > > +             igt_info("%s: %llx -> %d\n", e->name, p.value, count);
+> > > +             igt_assert(count > 3 * (prev[1] - prev[0]) / 4 + prev[1=
+]);
+> > =
+
+> > Where does this formula come from?  Why not just count =3D=3D 2 * prev[=
+1] ?
+> > What results should we expect in "active" vs. "idle" mode?
+> =
+
+> I've explained somewhere why it is not 2*prev... And there's a small
+> amount of imprecision (+-1 request). In test_resize is the comment:
+> =
+
+>         /*
+>          * The ringsize directly affects the number of batches we can have
+>          * inflight -- when we run out of room in the ring, the client is
+>          * blocked (or if O_NONBLOCK is specified, -EWOULDBLOCK is report=
+ed).
+>          * The kernel throttles the client when they enter the last 4KiB =
+page,
+>          * so as we double the size of the ring, we nearly double the num=
+ber
+>          * of requests we can fit as 2^n-1: i.e 0, 1, 3, 7, 15, 31 pages.
+>          */
+> =
+
+> -Chris
+> =
+
+
+
+
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
