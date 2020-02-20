@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA3586EDBF
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 15:52:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 32A7E6EDBF
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 15:58:49 +0000 (UTC)
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
 References: <20200220153209.210767-1-martin.peres@linux.intel.com>
 In-Reply-To: <20200220153209.210767-1-martin.peres@linux.intel.com>
-Message-ID: <158221394398.8112.3030544091167296957@skylake-alporthouse-com>
-Date: Thu, 20 Feb 2020 15:52:24 +0000
+Message-ID: <158221432442.8112.437409528288193655@skylake-alporthouse-com>
+Date: Thu, 20 Feb 2020 15:58:44 +0000
 Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci: add a pre-merge blacklist to
  reduce the testing queue
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -26,21 +26,23 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Quoting Martin Peres (2020-02-20 15:32:09)
 > +###############################################################################
-> +# This test virtually never failed, yet is responsible for a relatively big
-> +# execution time on some platforms:
+> +# These 2 tests are stressing the re-usability of objects. It does not look
+> +# like we have had issues with this outside of the gen7 ppgtt issue, which
+> +# does not counterbalance its overall execution time.
 > +#
-> +# - shard-skl: 1.3% (~3 minutes)
-> +# - shard-kbl: 0.3% (~0.3 minutes)
-> +# - shard-apl: 0.6% (~1 minute)
-> +# - shard-glk: 0.4% (50 seconds)
-> +# - shard-icl: 0.1% (15 seconds)
-> +# - shard-tgl: 0.1% (15 seconds)
+> +# - shard-skl: 2% (~5 minutes)
+> +# - shard-kbl: 1% (~1.5 minutes)
+> +# - shard-apl: 1.7% (~3 minutes)
+> +# - shard-glk: 1% (2.5 minutes)
+> +# - shard-icl: 0.5% (1 minute)
+> +# - shard-tgl: 0.5% (1 minute)
 > +#
 > +# Data acquired on 2020-02-20 by Martin Peres
 > +###############################################################################
-> +igt@sw_sync@sync_expired_merge
+> +igt@gem_exec_reuse@(baggage|contexts)
 
-Change from fixed workload to fixed runtime.
+File a bug; there's no reason why this should be greatly exceeding it's
+5s runtime. So presumably we waste too much time in the setup/teardown.
 -Chris
 _______________________________________________
 igt-dev mailing list
