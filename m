@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C34E6E890
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 01:13:41 +0000 (UTC)
-From: Akeem G Abodunrin <akeem.g.abodunrin@intel.com>
-Date: Wed, 19 Feb 2020 09:57:50 -0800
-Message-Id: <20200219175751.15293-1-akeem.g.abodunrin@intel.com>
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
+ [IPv6:2607:f8b0:4864:20::843])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4433A6E897
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 01:34:22 +0000 (UTC)
+Received: by mail-qt1-x843.google.com with SMTP id t13so1778995qto.3
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Feb 2020 17:34:22 -0800 (PST)
+From: Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
+Date: Wed, 19 Feb 2020 22:33:36 -0300
+Message-Id: <20200220013336.1979-1-gabrielabittencourt00@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 0/1] Support to assemble CB kernel for
- gen7
+Subject: [igt-dev] [PATCH] lib/igt_fb: Elimine repetitive verification
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,35 +21,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: akeem.g.abodunrin@intel.com, jon.bloomfield@intel.com, sudeep.dutt@intel.com, daniel.vetter@intel.com, joonas.lahtinen@linux.intel.com, jani.nikula@intel.com, chris.p.wilson@intel.com, prathap.kumar.valsan@intel.com, mika.kuoppala@intel.com, francesco.balestrieri@intel.com, ville.syrjala@linux.intel.com, petri.latvala@intel.com, igt-dev@lists.freedesktop.org
+To: gabrielabittencourt00@gmail.com, rodrigosiqueiramelo@gmail.com, Rodrigo.Siqueira@amd.com, manasi.d.navare@intel.com, lkcamp@listslibreplanetbr.org, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Summary
--------
-This is patch adds support to assemble CB kernel for gen7 and gen7.5
-devices. It is needed for "Security mitigation for Intel Gen7/7.5 HWs"
-Intel ID: PSIRT-TA-201910-001/CVEID: CVE-2019-14615.
+Clean return function by elimine repetitive verification on return
+functions. The function is_ccs_modifier returns true either if fb->modifier
+is equals I915_FORMAT_MOD_Y_TILED or I915_FORMAT_MOD_Yf_TILED. What makes
+possible to eliminate this verification on the return of the function:
+use_enginecopy. The function blitter_ok returns false whenever
+is_ccs_modifier returns true, so it's possible to eliminate the
+fb->modifier verifications on use_blitter also.
 
-Additional Note
----------------
-The changes in the IGT GPU tool require latest MESA tool to work
-correctly. Generated CB kernel are imported to i915 driver, without need
-for additional modifications.
+Signed-off-by: Gabriela Bittencourt <gabrielabittencourt00@gmail.com>
+---
+ lib/igt_fb.c | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
-
-Akeem G Abodunrin (1):
-  tools/generate_cb_buffer: Add script to assemble CB kernel
-
- scripts/asm_eu_kernel.sh                | 165 ++++++++++++++++++++++++
- tools/assembly_source/hsw_clear_buf.asm | 141 ++++++++++++++++++++
- tools/assembly_source/ivb_clear_buf.asm | 139 ++++++++++++++++++++
- 3 files changed, 445 insertions(+)
- create mode 100755 scripts/asm_eu_kernel.sh
- create mode 100644 tools/assembly_source/hsw_clear_buf.asm
- create mode 100644 tools/assembly_source/ivb_clear_buf.asm
-
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 0c4fdc5d..34a91320 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2026,21 +2026,14 @@ static bool blitter_ok(const struct igt_fb *fb)
+ 
+ static bool use_enginecopy(const struct igt_fb *fb)
+ {
+-	if (blitter_ok(fb))
+-		return false;
+-
+-	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+-	       is_ccs_modifier(fb->modifier) ||
+-	       !gem_has_mappable_ggtt(fb->fd);
++	return !blitter_ok(fb) &&
++	       (is_ccs_modifier(fb->modifier) ||
++		!gem_has_mappable_ggtt(fb->fd));
+ }
+ 
+ static bool use_blitter(const struct igt_fb *fb)
+ {
+-	if (!blitter_ok(fb))
+-		return false;
+-
+-	return fb->modifier == I915_FORMAT_MOD_Y_TILED ||
+-	       fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
++	return blitter_ok(fb) &&
+ 	       !gem_has_mappable_ggtt(fb->fd);
+ }
+ 
 -- 
-2.20.1
+2.25.0
 
 _______________________________________________
 igt-dev mailing list
