@@ -1,10 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 20 Feb 2020 09:41:32 +0000
-Message-Id: <20200220094134.1560435-1-chris@chris-wilson.co.uk>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Thu, 20 Feb 2020 13:36:20 +0100
+Message-ID: <1606396.cGsibyp3kr@jkrzyszt-desk.ger.corp.intel.com>
+In-Reply-To: <158143949995.3635.18328569070749519341@skylake-alporthouse-com>
+References: <20200211143048.12260-1-janusz.krzysztofik@linux.intel.com>
+ <158143949995.3635.18328569070749519341@skylake-alporthouse-com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/3] igt/kms_frontbuffer_tracking: Skip over
- IGT_DRAW_BLT when there's no BLT
+Subject: Re: [igt-dev] [RFC PATCH i-g-t v2] tests/gem_userptr_blits: Enhance
+ invalid mapping exercise
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -12,176 +15,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-If the blitter is not available, we cannot use it as a source for dirty
-rectangles. We shall have to rely on the other engines to create GPU
-dirty instead.
-
-v2: Try using lots of subgroup+fixtures
-
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
----
- tests/kms_frontbuffer_tracking.c | 57 ++++++++++++++++++++++++++++++--
- 1 file changed, 55 insertions(+), 2 deletions(-)
-
-diff --git a/tests/kms_frontbuffer_tracking.c b/tests/kms_frontbuffer_tracking.c
-index c4b4af43a..9e00fa2e1 100644
---- a/tests/kms_frontbuffer_tracking.c
-+++ b/tests/kms_frontbuffer_tracking.c
-@@ -3043,6 +3043,8 @@ static void basic_subtest(const struct test_mode *t)
- 	fb1 = params->primary.fb;
- 
- 	for (r = 0, method = 0; method < IGT_DRAW_METHOD_COUNT; method++) {
-+		if (method == IGT_DRAW_BLT && !gem_has_blitter(drm.fd))
-+			continue;
- 		if (method == IGT_DRAW_MMAP_GTT &&
- 		    !gem_has_mappable_ggtt(drm.fd))
- 			continue;
-@@ -3275,10 +3277,11 @@ static const char *flip_str(enum flip_type flip)
- 			continue;					   \
- 		if (!opt.show_hidden && t.fbs == FBS_SHARED &&		   \
- 		    (t.plane == PLANE_CUR || t.plane == PLANE_SPR))	   \
--			continue;
-+			continue;					   \
-+		igt_subtest_group {
- 
- 
--#define TEST_MODE_ITER_END } } } } } }
-+#define TEST_MODE_ITER_END } } } } } } }
- 
- struct option long_options[] = {
- 	{ "no-status-check",          0, 0, 's'},
-@@ -3324,6 +3327,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	}
- 
- 	TEST_MODE_ITER_BEGIN(t)
-+		igt_fixture {
-+			if (t.method == IGT_DRAW_BLT)
-+				gem_require_blitter(drm.fd);
-+		}
- 		igt_subtest_f("%s-%s-%s-%s-%s-draw-%s",
- 			      feature_str(t.feature),
- 			      pipes_str(t.pipes),
-@@ -3340,6 +3347,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    (!opt.show_hidden && t.method != IGT_DRAW_BLT))
- 			continue;
- 
-+		igt_fixture {
-+			if (t.method == IGT_DRAW_BLT)
-+				gem_require_blitter(drm.fd);
-+		}
-+
- 		for (t.flip = 0; t.flip < FLIP_COUNT; t.flip++)
- 			igt_subtest_f("%s-%s-%s-%s-%sflip-%s",
- 				      feature_str(t.feature),
-@@ -3358,6 +3370,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    (t.feature & FEATURE_FBC) == 0)
- 			continue;
- 
-+		igt_fixture {
-+			if (t.method == IGT_DRAW_BLT)
-+				gem_require_blitter(drm.fd);
-+		}
-+
- 		igt_subtest_f("%s-%s-%s-fliptrack",
- 			      feature_str(t.feature),
- 			      pipes_str(t.pipes),
-@@ -3371,6 +3388,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    t.plane == PLANE_PRI)
- 			continue;
- 
-+		igt_fixture {
-+			if (t.method == IGT_DRAW_BLT)
-+				gem_require_blitter(drm.fd);
-+		}
-+
- 		igt_subtest_f("%s-%s-%s-%s-%s-move",
- 			      feature_str(t.feature),
- 			      pipes_str(t.pipes),
-@@ -3394,6 +3416,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    t.plane != PLANE_SPR)
- 			continue;
- 
-+		igt_fixture {
-+			if (t.method == IGT_DRAW_BLT)
-+				gem_require_blitter(drm.fd);
-+		}
-+
- 		igt_subtest_f("%s-%s-%s-%s-%s-fullscreen",
- 			      feature_str(t.feature),
- 			      pipes_str(t.pipes),
-@@ -3410,6 +3437,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    (!opt.show_hidden && t.fbs != FBS_INDIVIDUAL))
- 			continue;
- 
-+		igt_fixture {
-+			if (t.method == IGT_DRAW_BLT)
-+				gem_require_blitter(drm.fd);
-+		}
-+
- 		igt_subtest_f("%s-%s-%s-%s-multidraw",
- 			      feature_str(t.feature),
- 			      pipes_str(t.pipes),
-@@ -3426,6 +3458,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    t.method != IGT_DRAW_MMAP_GTT)
- 			continue;
- 
-+		igt_fixture {
-+			if (t.method == IGT_DRAW_BLT)
-+				gem_require_blitter(drm.fd);
-+		}
-+
- 		igt_subtest_f("%s-farfromfence", feature_str(t.feature))
- 			farfromfence_subtest(&t);
- 	TEST_MODE_ITER_END
-@@ -3437,6 +3474,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    t.fbs != FBS_INDIVIDUAL)
- 			continue;
- 
-+		igt_fixture {
-+			if (t.method == IGT_DRAW_BLT)
-+				gem_require_blitter(drm.fd);
-+		}
-+
- 		for (t.format = 0; t.format < FORMAT_COUNT; t.format++) {
- 			/* Skip what we already tested. */
- 			if (t.format == FORMAT_DEFAULT)
-@@ -3456,6 +3498,12 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    t.plane != PLANE_PRI ||
- 		    t.method != IGT_DRAW_BLT)
- 			continue;
-+
-+		igt_fixture {
-+			if (t.method == IGT_DRAW_BLT)
-+				gem_require_blitter(drm.fd);
-+		}
-+
- 		igt_subtest_f("%s-%s-scaledprimary",
- 			      feature_str(t.feature),
- 			      fbs_str(t.fbs))
-@@ -3470,6 +3518,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		    t.method != IGT_DRAW_BLT)
- 			continue;
- 
-+		igt_fixture {
-+			if (t.method == IGT_DRAW_BLT)
-+				gem_require_blitter(drm.fd);
-+		}
-+
- 		igt_subtest_f("%s-modesetfrombusy", feature_str(t.feature))
- 			modesetfrombusy_subtest(&t);
- 
--- 
-2.25.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SGkgQ2hyaXMsCgpPbiBUdWVzZGF5LCBGZWJydWFyeSAxMSwgMjAyMCA1OjQ0OjU5IFBNIENFVCBD
+aHJpcyBXaWxzb24gd3JvdGU6Cj4gUXVvdGluZyBKYW51c3ogS3J6eXN6dG9maWsgKDIwMjAtMDIt
+MTEgMTQ6MzA6NDgpCj4gPiBAQCAtMjAwOSw4ICsyMDE2LDMxIEBAIGlndF9tYWluX2FyZ3MoImM6
+IiwgTlVMTCwgaGVscF9zdHIsIG9wdF9oYW5kbGVyLCAKTlVMTCkKPiA+ICAgICAgICAgICAgICAg
+ICBpZ3Rfc3VidGVzdCgiaW52YWxpZC1udWxsLXBvaW50ZXIiKQo+ID4gICAgICAgICAgICAgICAg
+ICAgICAgICAgdGVzdF9pbnZhbGlkX251bGxfcG9pbnRlcihmZCk7Cj4gPiAgCj4gPiAtICAgICAg
+ICAgICAgICAgaWd0X3N1YnRlc3QoImludmFsaWQtZ3R0LW1hcHBpbmciKQo+ID4gLSAgICAgICAg
+ICAgICAgICAgICAgICAgdGVzdF9pbnZhbGlkX2d0dF9tYXBwaW5nKGZkKTsKPiA+ICsgICAgICAg
+ICAgICAgICBpZ3RfZGVzY3JpYmUoIlZlcmlmeSB1c2VycHRyIG9uIHRvcCBvZiBHVFQgbWFwcGlu
+ZyB0byBHRU0gCm9iamVjdCB3aWxsIGZhaWwiKTsKPiA+ICsgICAgICAgICAgICAgICBpZ3Rfc3Vi
+dGVzdCgiaW52YWxpZC1ndHQtbWFwcGluZyIpIHsKPiA+ICsgICAgICAgICAgICAgICAgICAgICAg
+IGdlbV9yZXF1aXJlX21hcHBhYmxlX2dndHQoZmQpOwo+ID4gKyAgICAgICAgICAgICAgICAgICAg
+ICAgdGVzdF9pbnZhbGlkX21hcHBpbmcoZmQsIEk5MTVfTU1BUF9PRkZTRVRfR1RUKTsKPiA+ICsg
+ICAgICAgICAgICAgICB9Cj4gCj4gI2luY2x1ZGUgImk5MTUvZ2VtX21tYW4uaCIKPiBpZ3Rfc3Vi
+dGVzdF93aXRoX2R5bmFtaWMoImludmFsaWQtbW1hcC1vZmZzZXQiKSB7Cj4gCWZvcl9lYWNoX21t
+YXBfb2Zmc2V0X3R5cGUodCkgewo+IAkJaWd0X2R5bmFtaWNfZigiJXMiLCB0LT5uYW1lKQo+IAkJ
+CXRlc3RfaW52YWxpZF9tYXBwaW5nKGZkLCB0KTsKPiAKPiBJbiB0ZXN0X2ludmFsaWRfbWFwcGlu
+ZywgaW5zdGVhZCBvZiBkb19pb2N0bChNTUFQX09GRlNFVCkgdXNlCj4gaWd0X3JlcXVpcmUoaWd0
+X2lvY3RsKE1NQVBfT0ZGU0VULCAmYXJnKSA9PSAwKTsKCkluc3BpcmVkIGJ5IE1pY2hhxYIsIEkn
+dmUgcmV2aXNpdGVkIHRoaXMgY29uc3RydWN0IGFuZCBub3cgSSB0aGluayBhIGNvbmZ1c2luZyAK
+c2lkZSBlZmZlY3Qgb2YgaXQgbWF5IGJlIGV4cGVjdGVkLiAgV2hlbiBydW4gb24gYSBkcml2ZXIg
+d2l0aCBubyBtbWFwLW9mZnNldCAKc3VwcG9ydCwgaWd0X2lvY3RsKE1NQVBfT0ZGU0VULCAmYXJn
+KSB3b3VsZCBzdWNjZWVkIGZvciBlYWNoIHQtPnR5cGUgYW5kIHRoZSAKdGVzdCB3b3VsZCBjbGFp
+bSBzdWNjZXNzIGZvciBldmVyeSBtYXBwaW5nIHR5cGUuCgpTb21ldGhpbmcgbGlrZSB0aGlzIHNo
+b3VsZCBoZWxwOgoKCWlmICh0LT50eXBlICE9IEk5MTVfTU1BUF9PRkZTRVRfR1RUKQoJCWlndF9y
+ZXF1aXJlKGdlbV9oYXNfbW1hcF9vZmZzZXQoZmQpOwoKSWYgbXkgZmluZGluZyBvY2N1cnMgY29y
+cmVjdCwgSSdsbCB1cGRhdGUgbXkgcGF0Y2hlcyBhbmQgcmVzdWJtaXQuCgpUaGFua3MsCkphbnVz
+egoKCj4gCj4gKE9yIGlndF9yZXF1aXJlX2YgaWYgeW91IGxpa2UgdG8ga2VlcCB0aGUgc3BpZWwu
+KQo+IAo+IAkJfQo+IAl9Cj4gfQo+IAoKCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
+ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9pZ3QtZGV2Cg==
