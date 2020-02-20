@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8760C8862C
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 12:58:42 +0000 (UTC)
-Date: Thu, 20 Feb 2020 14:58:39 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200220125839.GY25209@platvala-desk.ger.corp.intel.com>
-References: <20200220125152.1188880-1-lionel.g.landwerlin@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 825556ED79
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Feb 2020 13:09:51 +0000 (UTC)
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+Date: Thu, 20 Feb 2020 18:30:40 +0530
+Message-Id: <20200220130041.24141-2-anshuman.gupta@intel.com>
+In-Reply-To: <20200220130041.24141-1-anshuman.gupta@intel.com>
+References: <20200220130041.24141-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200220125152.1188880-1-lionel.g.landwerlin@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tools/i915-perf: workaround overzelous
- compiler warnings
+Subject: [igt-dev] [PATCH i-g-t v2 1/2] tests/i915_pm_dc: Dump
+ power_domain_info on DC test failures
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,46 +17,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 20, 2020 at 02:51:52PM +0200, Lionel Landwerlin wrote:
-> Give me a break :)
-> 
-> Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-> ---
->  tools/i915-perf/i915_perf_control.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/i915-perf/i915_perf_control.c b/tools/i915-perf/i915_perf_control.c
-> index a8d0d30f..dcbc2f59 100644
-> --- a/tools/i915-perf/i915_perf_control.c
-> +++ b/tools/i915-perf/i915_perf_control.c
-> @@ -95,10 +95,12 @@ main(int argc, char *argv[])
->  				struct recorder_command_base base;
->  				struct recorder_command_dump dump;
->  			} *data = malloc(total_len);
-> +			char *path = (char *) data->dump.path;
->  
->  			data->base.command = RECORDER_COMMAND_DUMP;
->  			data->base.size = total_len;
-> -			snprintf((char *) data->dump.path, strlen(dump_file) + 1, "%s", dump_file);
-> +			snprintf(path, strlen(dump_file) + 1, "%s", dump_file);
-> +
-
-Same warning still. My compiler is clever enough to see that even with
-another pointer indirection, the area pointed at is an array of 0
-elements.
-
-
--- 
-Petri Latvala
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RHVtcCBpOTE1X3Bvd2VyX2RvbWFpbl9pbmZvIGRlYnVnZnMgYXR0cmlidXRlIG9uIERDIHN0YXRl
+CnRlc3QgZmFpbHVyZXMsIGl0IHdpbGwgaGVscCB0byBpZGVudGlmeSBjdWxwcml0LCB3aGljaApj
+YXVzZXMgbm9uIHplcm8gcmVmY291bnQgZm9yICJEQyBvZmYiIHBvd2VyIHdlbGwuCgp2MjoKLSBG
+aXggdGhlIG1lbSBsZWFrLiBbSm9zZV0KCkNjOiBBbmltZXNoIE1hbm5hIDxhbmltZXNoLm1hbm5h
+QGludGVsLmNvbT4KQ2M6IEpvc8OpIFJvYmVydG8gZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwu
+Y29tPgpTaWduZWQtb2ZmLWJ5OiBBbnNodW1hbiBHdXB0YSA8YW5zaHVtYW4uZ3VwdGFAaW50ZWwu
+Y29tPgotLS0KIHRlc3RzL2k5MTUvaTkxNV9wbV9kYy5jIHwgOSArKysrKysrKy0KIDEgZmlsZSBj
+aGFuZ2VkLCA4IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS90ZXN0
+cy9pOTE1L2k5MTVfcG1fZGMuYyBiL3Rlc3RzL2k5MTUvaTkxNV9wbV9kYy5jCmluZGV4IGFmY2Mx
+MGJjLi5mYzZmYWExNiAxMDA2NDQKLS0tIGEvdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMKKysrIGIv
+dGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMKQEAgLTM5LDYgKzM5LDEwIEBACiAjZGVmaW5lIENIRUNL
+X0RDNgkoMSA8PCAxKQogI2RlZmluZSBDSEVDS19EQzNDTwkoMSA8PCAyKQogCisjZGVmaW5lIFBX
+Ul9ET01BSU5fSU5GTyAiaTkxNV9wb3dlcl9kb21haW5faW5mbyIKKworY2hhciAqcHdyX2Rtbl9p
+bmZvOworCiB0eXBlZGVmIHN0cnVjdCB7CiAJZG91YmxlIHIsIGcsIGI7CiB9IGNvbG9yX3Q7CkBA
+IC0yMTAsNyArMjE0LDggQEAgc3RhdGljIHZvaWQgY2hlY2tfZGNfY291bnRlcihpbnQgZGVidWdm
+c19mZCwgaW50IGRjX2ZsYWcsIHVpbnQzMl90IHByZXZfZGNfY291bnQKIAlzbnByaW50Zih0bXAs
+IHNpemVvZih0bXApLCAiJXMiLCBkY19mbGFnICYgQ0hFQ0tfREMzQ08gPyAiREMzQ08iIDoKIAkJ
+KGRjX2ZsYWcgJiBDSEVDS19EQzUgPyAiREM1IiA6ICJEQzYiKSk7CiAJaWd0X2Fzc2VydF9mKGRj
+X3N0YXRlX3dhaXRfZW50cnkoZGVidWdmc19mZCwgZGNfZmxhZywgcHJldl9kY19jb3VudCksCi0J
+CSAgICAgIiVzIHN0YXRlIGlzIG5vdCBhY2hpZXZlZFxuIiwgdG1wKTsKKwkJICAgICAiJXMgc3Rh
+dGUgaXMgbm90IGFjaGlldmVkXG4lczpcbiVzXG4iLCB0bXAsIFBXUl9ET01BSU5fSU5GTywKKwkJ
+ICAgICBwd3JfZG1uX2luZm8gPSBpZ3Rfc3lzZnNfZ2V0KGRlYnVnZnNfZmQsIFBXUl9ET01BSU5f
+SU5GTykpOwogfQogCiBzdGF0aWMgdm9pZCBzZXR1cF92aWRlb3BsYXliYWNrKGRhdGFfdCAqZGF0
+YSkKQEAgLTQ0MSw2ICs0NDYsOCBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQog
+CX0KIAogCWlndF9maXh0dXJlIHsKKwkJaWYgKHB3cl9kbW5faW5mbykKKwkJCWZyZWUocHdyX2Rt
+bl9pbmZvKTsKIAkJY2xvc2UoZGF0YS5kZWJ1Z2ZzX2ZkKTsKIAkJY2xvc2UoZGF0YS5tc3JfZmQp
+OwogCQlkaXNwbGF5X2ZpbmkoJmRhdGEpOwotLSAKMi4yNC4wCgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2lndC1kZXYK
