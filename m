@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E6DE06E271
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2020 11:25:08 +0000 (UTC)
-From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
-Date: Fri, 21 Feb 2020 11:25:04 +0000
-Message-ID: <F959E33BDD0A9E4E9BE35174E15E72EC01983322@BGSMSX109.gar.corp.intel.com>
-References: <20200220051432.21898-1-priyanka.dandamudi@intel.com>
- <158218486195.8112.17792417633553495989@skylake-alporthouse-com>
-In-Reply-To: <158218486195.8112.17792417633553495989@skylake-alporthouse-com>
-Content-Language: en-US
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E1526E271
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2020 11:27:33 +0000 (UTC)
+Date: Fri, 21 Feb 2020 13:27:30 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200221112730.GE25209@platvala-desk.ger.corp.intel.com>
+References: <20200220153209.210767-1-martin.peres@linux.intel.com>
+ <20200221102033.GC25209@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_request_retire: Removal of test
+Content-Disposition: inline
+In-Reply-To: <20200221102033.GC25209@platvala-desk.ger.corp.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci: add a pre-merge blacklist to
+ reduce the testing queue
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,36 +23,80 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Martin Peres <martin.peres@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thanks Chris, 
-
-"gem_ctx_param" AFAIU, in this program it relies on a quirk of execbuf that it does not try to move a VMA , and so that  having used an object in one context, it will have the same address in the next context that shared the VM. 
-Having said that, I would also go through gem_ctx_persistance as per your suggestion.
-
-Regards,
-Priyanka
-
-
-
------Original Message-----
-From: Chris Wilson <chris@chris-wilson.co.uk> 
-Sent: 20 February 2020 01:18 PM
-To: igt-dev@lists.freedesktop.org; Dandamudi, Priyanka <priyanka.dandamudi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_request_retire: Removal of test
-
-Quoting priyanka.dandamudi@intel.com (2020-02-20 05:14:32)
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+On Fri, Feb 21, 2020 at 12:20:33PM +0200, Petri Latvala wrote:
+> On Thu, Feb 20, 2020 at 05:32:09PM +0200, Martin Peres wrote:
+> > When arriving at the office on Monday morning, the reported queue
+> > size was ~100 hours. This defeats the point of pre-merge testing and
+> > vastly exceeds our target of ~6 hours.
+> > 
+> > We have a lot of work needed to reduce testing time, but this patches
+> > reduces the reported run time by 15-30% depending on the platforms:
+> > 
+> >  - shard-skl: 23.9 -> 18.2 minutes (18.5%)
+> >  - shard-kbl: 21.2 -> 16.2 minutes (20%)
+> >  - shard-apl: 25.9 -> 18.5 minutes (24.3%)
+> >  - shard-glk: 24.7 -> 17.6 minutes (24.8%)
+> >  - shard-icl: 25.1 -> 16.7 minutes (28.7%)
+> >  - shard-tgl: 28.2 -> 19.6 minutes (26.4%)
+> > 
+> > The reason why the reported runtime is so low compared to the
+> > actual time is due to:
+> > 
+> >  - Unaccounted time spent outside of the IGT subtests (exec(), fixtures)
+> >  - Unaccounted time spent in suspend (monotonic clock, 20s / suspend)
+> >  - Boot time / extra reboots between shards to workaround kernel failures
+> >  - Intel GFX CI shard scheduling overhead
+> >  - More?
+> > 
+> > Tomi and Petri are working on reducing these overheads by detecting the
+> > bad conditions and rebooting the machine only at this point rather than
+> > between every single shard, and increasing the size of the shard test
+> > lists to reduce the per-shard CI overhead.
+> > 
+> > Because of this, the actual savings are way smaller in percentage
+> > but still compound over the tens of executions we do per week:
+> > 
+> >  - shard-skl: ~58 -> ~52 minutes
+> >  - shard-kbl: ~50 -> ~45 minutes
+> >  - shard-apl: ~53 -> ~46 minutes
+> >  - shard-glk: ~38 -> ~31 minutes
+> >  - shard-icl: ~47 -> ~39 minutes
+> >  - shard-tgl: ~60 -> ~51 minutes
+> > 
+> > More work needed, but we'll get there :)
+> > 
+> > Signed-off-by: Martin Peres <martin.peres@linux.intel.com>
+> > ---
+> >  tests/intel-ci/README                  |   7 +
+> >  tests/intel-ci/blacklist-pre-merge.txt | 221 +++++++++++++++++++++++++
 > 
-> Test is trying to hit a race condition by submitting same buffer 
-> object between two contexts on different rings.Similar scenario can be 
-> found in gem_ctx_param and gem_exec_ctx.This test doesn't add anything 
-> to other tests.So,removing the test.
+> 
+> With a drive-by addition of a forgotten blacklist.txt, squash this in:
+> 
+> diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
+> index b3abb848..62811e92 100644
+> --- a/tests/intel-ci/meson.build
+> +++ b/tests/intel-ci/meson.build
+> @@ -3,6 +3,8 @@ intelci_files = [
+>    'fast-feedback.testlist',
+>    'meta.testlist',
+>    'README',
+> +  'blacklist.txt',
+> +  'blacklist-pre-merge.txt',
+>  ]
+>  
+>  install_data(sources : intelci_files, install_dir : datadir)
 
-Neither of those try to replicate the bug found in this regression test.
-gem_ctx_persistence does have similar patterns. Are you sure we do have it covered?
--Chris
+
+With Martin's IRL ack to squashing this, the patch is now merged.
+
+
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
