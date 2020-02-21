@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 21 Feb 2020 12:10:16 -0000
-Message-ID: <158228701618.7919.288469605672261504@emeril.freedesktop.org>
-References: <20200221094321.2534304-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200221094321.2534304-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_i?=
- =?utf-8?q?915=3A_Exercise_I915=5FCONTEXT=5FPARAM=5FRINGSIZE_=28rev2=29?=
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
+ [IPv6:2a00:1450:4864:20::241])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3FB78897EF
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2020 12:08:14 +0000 (UTC)
+Received: by mail-lj1-x241.google.com with SMTP id n18so1928850ljo.7
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2020 04:08:14 -0800 (PST)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Fri, 21 Feb 2020 14:08:07 +0200
+Message-Id: <1582286887-23159-1-git-send-email-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_cursor_legacy: increase timeout
+ for nonblocking flip wait
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,53 +17,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+When run on more than one monitor there may be modeset in queue
+which will block flip. Kernel will timeout with modeset at
+ten seconds so lets wait in test also that same ten seconds at
+maximum.
 
-Series: i915: Exercise I915_CONTEXT_PARAM_RINGSIZE (rev2)
-URL   : https://patchwork.freedesktop.org/series/73750/
-State : failure
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ tests/kms_cursor_legacy.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-== Summary ==
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index f41f68d..f2f1c09 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -251,7 +251,7 @@ static void flip_nonblocking(igt_display_t *display, enum pipe pipe_id, bool ato
+ 	igt_plane_t *primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+ 	int ret;
+ 
+-	igt_set_timeout(1, "Scheduling page flip\n");
++	igt_set_timeout(10, "Scheduling page flip\n");
+ 	if (!atomic) {
+ 		/* Schedule a nonblocking flip for the next vblank */
+ 		do {
+-- 
+2.7.4
 
-ERROR! This series introduces new undocumented tests:
-
-gem_ctx_ringsize
-gem_ctx_ringsize@active
-gem_ctx_ringsize@clone
-gem_ctx_ringsize@create
-gem_ctx_ringsize@idempotent
-gem_ctx_ringsize@idle
-gem_ctx_ringsize@invalid
-
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
-
-[Documentation] has more details on how to do this.
-
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
-
-Thanks in advance!
-
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-
-Other than that, pipeline status: SUCCESS.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/111239 for the overview.
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/111239
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
