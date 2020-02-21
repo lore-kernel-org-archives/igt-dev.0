@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 46BB689DB2
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2020 09:00:57 +0000 (UTC)
-From: Martin Peres <martin.peres@linux.intel.com>
-Date: Fri, 21 Feb 2020 11:00:47 +0200
-Message-Id: <20200221090047.221255-1-martin.peres@linux.intel.com>
-In-Reply-To: <20200220153209.210767-1-martin.peres@linux.intel.com>
-References: <20200220153209.210767-1-martin.peres@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] intel-ci: add a pre-merge blacklist to
- reduce the testing queue
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 21 Feb 2020 09:30:20 -0000
+Message-ID: <158227742073.7916.10741931818420037780@emeril.freedesktop.org>
+References: <20200219142445.69061-1-emil.l.velikov@gmail.com>
+In-Reply-To: <20200219142445.69061-1-emil.l.velikov@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdHMvY29y?=
+ =?utf-8?q?e=5Fsetmaster=3A_new_test_for_drop/set_master_semantics_=28rev2?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,304 +15,323 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Emil Velikov <emil.l.velikov@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When arriving at the office on Monday morning, the reported queue
-size was ~100 hours. This defeats the point of pre-merge testing and
-vastly exceeds our target of ~6 hours.
+== Series Details ==
 
-We have a lot of work needed to reduce testing time, but this patches
-reduces the reported run time by 15-30% depending on the platforms:
+Series: ts/core_setmaster: new test for drop/set master semantics (rev2)
+URL   : https://patchwork.freedesktop.org/series/73650/
+State : success
 
- - shard-skl: 23.9 -> 18.2 minutes (18.5%)
- - shard-kbl: 21.2 -> 16.2 minutes (20%)
- - shard-apl: 25.9 -> 18.5 minutes (24.3%)
- - shard-glk: 24.7 -> 17.6 minutes (24.8%)
- - shard-icl: 25.1 -> 16.7 minutes (28.7%)
- - shard-tgl: 28.2 -> 19.6 minutes (26.4%)
+== Summary ==
 
-The reason why the reported runtime is so low compared to the
-actual time is due to:
+CI Bug Log - changes from IGT_5451_full -> IGTPW_4186_full
+====================================================
 
- - Unaccounted time spent outside of the IGT subtests (exec(), fixtures)
- - Unaccounted time spent in suspend (monotonic clock, 20s / suspend)
- - Boot time / extra reboots between shards to workaround kernel failures
- - Intel GFX CI shard scheduling overhead
- - More?
+Summary
+-------
 
-Tomi and Petri are working on reducing these overheads by detecting the
-bad conditions and rebooting the machine only at this point rather than
-between every single shard, and increasing the size of the shard test
-lists to reduce the per-shard CI overhead.
+  **SUCCESS**
 
-Because of this, the actual savings are way smaller in percentage
-but still compound over the tens of executions we do per week:
+  No regressions found.
 
- - shard-skl: ~58 -> ~52 minutes
- - shard-kbl: ~50 -> ~45 minutes
- - shard-apl: ~53 -> ~46 minutes
- - shard-glk: ~38 -> ~31 minutes
- - shard-icl: ~47 -> ~39 minutes
- - shard-tgl: ~60 -> ~51 minutes
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/index.html
 
-More work needed, but we'll get there :)
+Possible new issues
+-------------------
 
-v2:
- - Avoid using | in the regular expressions (Petri Latvala)
- - Update the description for igt@gem_pwrite@big-.* (Chris Wilson)
- - Drop igt@sw_sync@sync_expired_merge (fixed by Chris Wilson)
- - Drop igt@gem_eio@kms (fixed by Chris Wilson)
- - Drop igt@perf@gen12-mi-rpc as it is serious kernel bug (Chris Wilson)
- - Add links to issues tracking this for all blacklisted item
+  Here are the unknown changes that may have been introduced in IGTPW_4186_full:
 
-NOTICE: The above numbers have not been edited for the v2 since
-        blacklisting or improving the runtime dramatically yields the
-        same results, and only igt@perf@gen12-mi-rpc is back to being
-        slow.
+### IGT changes ###
 
-Signed-off-by: Martin Peres <martin.peres@linux.intel.com>
----
- tests/intel-ci/README                  |   7 +
- tests/intel-ci/blacklist-pre-merge.txt | 204 +++++++++++++++++++++++++
- 2 files changed, 211 insertions(+)
- create mode 100644 tests/intel-ci/blacklist-pre-merge.txt
+#### Possible regressions ####
 
-diff --git a/tests/intel-ci/README b/tests/intel-ci/README
-index e3289933..07b32b54 100644
---- a/tests/intel-ci/README
-+++ b/tests/intel-ci/README
-@@ -37,6 +37,13 @@ blacklist.txt
- This file contains regular expressions (one per line) for tests that
- are not to be executed in full suite test rounds.
- 
-+=======================
-+blacklist-pre-merge.txt
-+=======================
-+
-+This file contains regular expressions (one per line) for tests that
-+are not to be executed in pre-merge full suite test rounds.
-+
- =============
- meta.testlist
- =============
-diff --git a/tests/intel-ci/blacklist-pre-merge.txt b/tests/intel-ci/blacklist-pre-merge.txt
-new file mode 100644
-index 00000000..be30bdfe
---- /dev/null
-+++ b/tests/intel-ci/blacklist-pre-merge.txt
-@@ -0,0 +1,204 @@
-+###############################################################################
-+# This test has caught regressions in the past, but the feature is rarely used
-+# by our users, yet it is responsible a significant portion of our execution
-+# time:
-+#
-+# - shard-skl: 10.2% (~22 minutes)
-+# - shard-kbl: 6% (~8 minutes)
-+# - shard-apl: 3.9% (~7 minutes)
-+# - shard-glk: 8% (~18 minutes)
-+# - shard-icl: 11% (~22 minutes)
-+# - shard-tgl: 7.1% (~14 minutes)
-+#
-+# Some patches already appeared to reduce the run time so this will likely not
-+# remain for long.
-+#
-+# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1280
-+#
-+# Data acquired on 2020-02-19 by Martin Peres
-+###############################################################################
-+igt@kms_rotation_crc@.*
-+
-+
-+###############################################################################
-+# These 4 tests catching a lot of unrelated issues and are responsible for a
-+# significant portion of our execution time:
-+#
-+# - shard-skl: 1.6% (~4 minutes)
-+# - shard-kbl: 0.4% (30 seconds)
-+# - shard-apl: 0.2% (20 seconds)
-+# - shard-glk: 0.2% (30 seconds)
-+# - shard-icl: 6% (~12 minutes)
-+# - shard-tgl: 6% (~12 minutes)
-+#
-+# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1281
-+#
-+# Data acquired on 2020-02-19 by Martin Peres
-+###############################################################################
-+igt@i915_pm_rpm@legacy-planes(-dpms)?
-+igt@i915_pm_rpm@universal-planes(-dpms)?
-+
-+
-+###############################################################################
-+# These tests are checking the obj->mm.get_page cache which is used for all
-+# page lookups in the driver by using a rather outdated method (pwrite) because
-+# it is harder to predictably exercise the cache from userspace.
-+#
-+# Until these 8 tests are replaced with a kernel selftest and removed from IGT,
-+# let's blacklist them for pre-merge testing as they are responsible for a
-+# significant portion of our execution time:
-+#
-+# - shard-skl: 0.1% (~15 seconds)
-+# - shard-kbl: 3.5% (~4.5 minutes)
-+# - shard-apl: 10% (~18 minutes)
-+# - shard-glk: 6.3% (~14 minutes)
-+# - shard-icl: 1.7% (~3.5 minutes)
-+# - shard-tgl: 1.6% (~3 minutes)
-+#
-+# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1283
-+#
-+# Data acquired on 2020-02-19 by Martin Peres
-+###############################################################################
-+igt@gem_pwrite@big-.*
-+
-+
-+###############################################################################
-+# These 4 tests are covering an edge case which should never be hit by users
-+# unless we already are in a bad situation, yet they are responsible for a
-+# significant portion of our execution time:
-+#
-+# - shard-skl: 2% (~5 minutes)
-+# - shard-kbl: 4% (~5 minutes)
-+# - shard-apl: 2.7% (~5 minutes)
-+# - shard-glk: 4.5% (~10 minutes)
-+# - shard-icl: 2.5% (~5 minutes)
-+# - shard-tgl: 3.5% (~7 minutes)
-+#
-+# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1284
-+#
-+# Data acquired on 2020-02-20 by Martin Peres
-+###############################################################################
-+igt@kms_flip@flip-vs-modeset-vs-hang(-interruptible)?
-+igt@kms_flip@flip-vs-panning-vs-hang(-interruptible)?
-+
-+
-+###############################################################################
-+# These 28 tests are covering an edge case which should never be hit by users
-+# unless we already are in a bad situation, yet they are responsible for a
-+# significant portion of our execution time:
-+#
-+# - shard-skl: 1.7% (~4 minutes)
-+# - shard-kbl: 2.8% (~3.5 minutes)
-+# - shard-apl: 2.2% (~4 minutes)
-+# - shard-glk: 1.8% (~4 minutes)
-+# - shard-icl: 1.9% (~4 minutes)
-+# - shard-tgl: 2.8% (~5.5 minutes)
-+#
-+# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1285
-+#
-+# Data acquired on 2020-02-20 by Martin Peres
-+###############################################################################
-+igt@kms_busy@.*hang.*
-+
-+
-+###############################################################################
-+# This test is reading one file at a time while being suspended, which makes
-+# testing extremelly slow. This is a developer-only feature which is also used
-+# by IGT extensively so removing it may make it harder for developers to
-+# understand what they regressed, but given the amount of time we can save, I
-+# this is an acceptable trade-off (easy-to-read report vs CI exec time):
-+#
-+# - shard-skl: 0.5% (~1 minute)
-+# - shard-kbl: 0.1% (~2 seconds)
-+# - shard-apl: 0.1% (~2 seconds)
-+# - shard-glk: 0.1% (~2 seconds)
-+# - shard-icl: 0.6% (~1.5 minutes)
-+# - shard-tgl: 0.7% (~1.5 minutes)
-+#
-+# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1279
-+#
-+# Data acquired on 2020-02-20 by Martin Peres
-+###############################################################################
-+igt@i915_pm_rpm@debugfs-read
-+
-+
-+###############################################################################
-+# Modern userspace does not depend on the GTT anymore, so let's drop the
-+# slowest tests from pre-merge testing:
-+#
-+# - shard-skl: 2.7% (~6.5 minutes)
-+# - shard-kbl: 2% (~2.5 minutes)
-+# - shard-apl: 4.7% (~8.5 minutes)
-+# - shard-glk: 3.5% (~8 minutes)
-+# - shard-icl: 4.2% (~8.5 minutes)
-+# - shard-tgl: 2.5% (~4.5 minutes)
-+#
-+# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1286
-+#
-+# Data acquired on 2020-02-20 by Martin Peres
-+###############################################################################
-+igt@gem_fence_thrash@bo-write-verify-threaded-[xy]
-+igt@gem_tiled_blits@interruptible
-+igt@gem_tiled_fence_blits@normal
-+igt@gem_tiled_blits@normal
-+igt@gem_tiled_wc
-+
-+
-+###############################################################################
-+# This is a useful test, but it mostly tests the HW rather than the driver.
-+# Very few regressions should be caught by this test as the driver code should
-+# be relatively left untouched. Hopefully, it will get optimized to be made
-+# useful in pre-merge as well:
-+#
-+# - shard-skl: 1% (~2.5 minutes)
-+# - shard-kbl: 1.5% (~2 minutes)
-+# - shard-apl: 1.4% (~2.5 minutes)
-+# - shard-glk: 2% (~4.5 minutes)
-+# - shard-icl: 2.7% (~5.5 minutes)
-+# - shard-tgl: 2.3% (~4.5 minutes)
-+#
-+# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1287
-+#
-+# Data acquired on 2020-02-20 by Martin Peres
-+###############################################################################
-+igt@kms_plane@pixel-format-pipe-[a-d]-planes(-source-clamping)?
-+
-+
-+###############################################################################
-+# This test is doing nothing more than waiting for the driver to be suspended
-+# before issueing a modeset. However, it never failed while testing for this
-+# in the past year, so we probably just want to drop the amount of rounds to
-+# reduce the runtime, but let's just blacklist it in pre-merge for now:
-+#
-+# - shard-skl: 1% (~2.5 minute)
-+# - shard-kbl: 0.9% (~1 minute)
-+# - shard-apl: 0.6% (~1 minute)
-+# - shard-glk: 0.5% (~1 minute)
-+# - shard-icl: 1.1% (~2.5 minutes)
-+# - shard-tgl: 1.4% (~2.5 minutes)
-+#
-+# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1288
-+#
-+# Data acquired on 2020-02-20 by Martin Peres
-+###############################################################################
-+igt@i915_pm_rpm@modeset-stress-extra-wait
-+
-+
-+###############################################################################
-+# These 2 tests are stressing the re-usability of objects. It does not look
-+# like we have had issues with this outside of the gen7 ppgtt issue, which
-+# does not counterbalance its overall execution time.
-+#
-+# - shard-skl: 2% (~5 minutes)
-+# - shard-kbl: 1% (~1.5 minutes)
-+# - shard-apl: 1.7% (~3 minutes)
-+# - shard-glk: 1% (2.5 minutes)
-+# - shard-icl: 0.5% (1 minute)
-+# - shard-tgl: 0.5% (1 minute)
-+#
-+# Issue: https://gitlab.freedesktop.org/drm/intel/issues/1289
-+#
-+# Data acquired on 2020-02-20 by Martin Peres
-+###############################################################################
-+igt@gem_exec_reuse@baggage
-+igt@gem_exec_reuse@contexts
--- 
-2.25.0
+  * {igt@core_setmaster@master-drop-set-user} (NEW):
+    - shard-iclb:         NOTRUN -> [FAIL][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-iclb1/igt@core_setmaster@master-drop-set-user.html
+    - shard-kbl:          NOTRUN -> [FAIL][2]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-kbl6/igt@core_setmaster@master-drop-set-user.html
+    - shard-snb:          NOTRUN -> [FAIL][3]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-snb1/igt@core_setmaster@master-drop-set-user.html
+    - shard-tglb:         NOTRUN -> [FAIL][4]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-tglb5/igt@core_setmaster@master-drop-set-user.html
+    - shard-apl:          NOTRUN -> [FAIL][5]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-apl7/igt@core_setmaster@master-drop-set-user.html
+    - shard-glk:          NOTRUN -> [FAIL][6]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-glk4/igt@core_setmaster@master-drop-set-user.html
+    - shard-hsw:          NOTRUN -> [FAIL][7]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-hsw1/igt@core_setmaster@master-drop-set-user.html
 
+  
+New tests
+---------
+
+  New tests have been introduced between IGT_5451_full and IGTPW_4186_full:
+
+### New IGT tests (3) ###
+
+  * igt@core_setmaster@master-drop-set-root:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.00, 0.01] s
+
+  * igt@core_setmaster@master-drop-set-shared-fd:
+    - Statuses : 7 pass(s)
+    - Exec time: [0.01, 0.04] s
+
+  * igt@core_setmaster@master-drop-set-user:
+    - Statuses : 7 fail(s)
+    - Exec time: [0.02, 0.04] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4186_full that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_ctx_isolation@rcs0-s3:
+    - shard-kbl:          [PASS][8] -> [INCOMPLETE][9] ([fdo#103665])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-kbl2/igt@gem_ctx_isolation@rcs0-s3.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-kbl2/igt@gem_ctx_isolation@rcs0-s3.html
+
+  * igt@gem_exec_schedule@pi-distinct-iova-bsd:
+    - shard-iclb:         [PASS][10] -> [SKIP][11] ([i915#677]) +1 similar issue
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-iclb6/igt@gem_exec_schedule@pi-distinct-iova-bsd.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-iclb4/igt@gem_exec_schedule@pi-distinct-iova-bsd.html
+
+  * igt@gem_exec_schedule@pi-ringfull-bsd:
+    - shard-iclb:         [PASS][12] -> [SKIP][13] ([fdo#112146]) +6 similar issues
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-iclb8/igt@gem_exec_schedule@pi-ringfull-bsd.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-iclb4/igt@gem_exec_schedule@pi-ringfull-bsd.html
+
+  * igt@gem_partial_pwrite_pread@write-uncached:
+    - shard-hsw:          [PASS][14] -> [FAIL][15] ([i915#694])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-hsw6/igt@gem_partial_pwrite_pread@write-uncached.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-hsw2/igt@gem_partial_pwrite_pread@write-uncached.html
+
+  * igt@gem_workarounds@suspend-resume-context:
+    - shard-apl:          [PASS][16] -> [DMESG-WARN][17] ([i915#180]) +5 similar issues
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-apl3/igt@gem_workarounds@suspend-resume-context.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-apl1/igt@gem_workarounds@suspend-resume-context.html
+
+  * igt@i915_suspend@sysfs-reader:
+    - shard-kbl:          [PASS][18] -> [DMESG-WARN][19] ([i915#180]) +1 similar issue
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-kbl6/igt@i915_suspend@sysfs-reader.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-kbl7/igt@i915_suspend@sysfs-reader.html
+
+  * igt@kms_cursor_crc@pipe-c-cursor-256x85-onscreen:
+    - shard-apl:          [PASS][20] -> [FAIL][21] ([i915#54])
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-apl7/igt@kms_cursor_crc@pipe-c-cursor-256x85-onscreen.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-apl1/igt@kms_cursor_crc@pipe-c-cursor-256x85-onscreen.html
+
+  * igt@kms_cursor_legacy@2x-flip-vs-cursor-atomic:
+    - shard-glk:          [PASS][22] -> [FAIL][23] ([i915#72])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-glk5/igt@kms_cursor_legacy@2x-flip-vs-cursor-atomic.html
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-glk2/igt@kms_cursor_legacy@2x-flip-vs-cursor-atomic.html
+
+  * igt@kms_flip@dpms-vs-vblank-race:
+    - shard-hsw:          [PASS][24] -> [INCOMPLETE][25] ([CI#80] / [i915#61])
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-hsw8/igt@kms_flip@dpms-vs-vblank-race.html
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-hsw5/igt@kms_flip@dpms-vs-vblank-race.html
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-pwrite:
+    - shard-tglb:         [PASS][26] -> [SKIP][27] ([i915#668])
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-tglb6/igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-pwrite.html
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-tglb1/igt@kms_frontbuffer_tracking@fbcpsr-rgb101010-draw-pwrite.html
+
+  * igt@kms_psr@psr2_sprite_mmap_gtt:
+    - shard-iclb:         [PASS][28] -> [SKIP][29] ([fdo#109441]) +1 similar issue
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-iclb2/igt@kms_psr@psr2_sprite_mmap_gtt.html
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-iclb8/igt@kms_psr@psr2_sprite_mmap_gtt.html
+
+  * igt@perf_pmu@busy-no-semaphores-vcs1:
+    - shard-iclb:         [PASS][30] -> [SKIP][31] ([fdo#112080]) +9 similar issues
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-iclb4/igt@perf_pmu@busy-no-semaphores-vcs1.html
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-iclb8/igt@perf_pmu@busy-no-semaphores-vcs1.html
+
+  * igt@prime_vgem@fence-wait-bsd2:
+    - shard-iclb:         [PASS][32] -> [SKIP][33] ([fdo#109276]) +21 similar issues
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-iclb1/igt@prime_vgem@fence-wait-bsd2.html
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-iclb3/igt@prime_vgem@fence-wait-bsd2.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_busy@busy-vcs1:
+    - shard-iclb:         [SKIP][34] ([fdo#112080]) -> [PASS][35] +18 similar issues
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-iclb8/igt@gem_busy@busy-vcs1.html
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-iclb4/igt@gem_busy@busy-vcs1.html
+
+  * {igt@gem_ctx_persistence@close-replace-race}:
+    - shard-tglb:         [INCOMPLETE][36] -> [PASS][37]
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-tglb3/igt@gem_ctx_persistence@close-replace-race.html
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-tglb3/igt@gem_ctx_persistence@close-replace-race.html
+    - shard-iclb:         [INCOMPLETE][38] -> [PASS][39]
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-iclb8/igt@gem_ctx_persistence@close-replace-race.html
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-iclb1/igt@gem_ctx_persistence@close-replace-race.html
+
+  * igt@gem_exec_balancer@bonded-slice:
+    - shard-kbl:          [FAIL][40] -> [PASS][41]
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-kbl4/igt@gem_exec_balancer@bonded-slice.html
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-kbl4/igt@gem_exec_balancer@bonded-slice.html
+
+  * igt@gem_exec_balancer@smoke:
+    - shard-iclb:         [SKIP][42] ([fdo#110854]) -> [PASS][43]
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-iclb6/igt@gem_exec_balancer@smoke.html
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-iclb4/igt@gem_exec_balancer@smoke.html
+
+  * {igt@gem_exec_schedule@implicit-read-write-bsd1}:
+    - shard-iclb:         [SKIP][44] ([fdo#109276] / [i915#677]) -> [PASS][45] +1 similar issue
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-iclb8/igt@gem_exec_schedule@implicit-read-write-bsd1.html
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-iclb2/igt@gem_exec_schedule@implicit-read-write-bsd1.html
+
+  * {igt@gem_exec_schedule@implicit-write-read-bsd}:
+    - shard-iclb:         [SKIP][46] ([i915#677]) -> [PASS][47]
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-iclb1/igt@gem_exec_schedule@implicit-write-read-bsd.html
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-iclb7/igt@gem_exec_schedule@implicit-write-read-bsd.html
+
+  * igt@gem_exec_schedule@in-order-bsd:
+    - shard-iclb:         [SKIP][48] ([fdo#112146]) -> [PASS][49] +4 similar issues
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-iclb4/igt@gem_exec_schedule@in-order-bsd.html
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-iclb5/igt@gem_exec_schedule@in-order-bsd.html
+
+  * igt@gem_exec_schedule@promotion-bsd1:
+    - shard-iclb:         [SKIP][50] ([fdo#109276]) -> [PASS][51] +21 similar issues
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-iclb5/igt@gem_exec_schedule@promotion-bsd1.html
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-iclb4/igt@gem_exec_schedule@promotion-bsd1.html
+
+  * igt@gem_tiled_blits@interruptible:
+    - shard-hsw:          [FAIL][52] ([i915#694]) -> [PASS][53]
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-hsw5/igt@gem_tiled_blits@interruptible.html
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-hsw5/igt@gem_tiled_blits@interruptible.html
+
+  * igt@kms_cursor_crc@pipe-b-cursor-suspend:
+    - shard-apl:          [DMESG-WARN][54] ([i915#180]) -> [PASS][55] +2 similar issues
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-apl4/igt@kms_cursor_crc@pipe-b-cursor-suspend.html
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-apl3/igt@kms_cursor_crc@pipe-b-cursor-suspend.html
+
+  * igt@kms_flip@flip-vs-expired-vblank:
+    - shard-kbl:          [FAIL][56] ([i915#79]) -> [PASS][57]
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-kbl2/igt@kms_flip@flip-vs-expired-vblank.html
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-kbl6/igt@kms_flip@flip-vs-expired-vblank.html
+
+  * igt@kms_plane@pixel-format-pipe-b-planes:
+    - shard-snb:          [DMESG-WARN][58] ([i915#478]) -> [PASS][59]
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-snb4/igt@kms_plane@pixel-format-pipe-b-planes.html
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-snb1/igt@kms_plane@pixel-format-pipe-b-planes.html
+
+  * igt@kms_plane_lowres@pipe-a-tiling-y:
+    - shard-glk:          [FAIL][60] ([i915#899]) -> [PASS][61]
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-glk9/igt@kms_plane_lowres@pipe-a-tiling-y.html
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-glk6/igt@kms_plane_lowres@pipe-a-tiling-y.html
+
+  * igt@kms_psr@psr2_sprite_plane_move:
+    - shard-iclb:         [SKIP][62] ([fdo#109441]) -> [PASS][63] +2 similar issues
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-iclb7/igt@kms_psr@psr2_sprite_plane_move.html
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-iclb2/igt@kms_psr@psr2_sprite_plane_move.html
+
+  * igt@kms_vblank@pipe-a-ts-continuation-suspend:
+    - shard-kbl:          [DMESG-WARN][64] ([i915#180]) -> [PASS][65] +4 similar issues
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-kbl6/igt@kms_vblank@pipe-a-ts-continuation-suspend.html
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-kbl2/igt@kms_vblank@pipe-a-ts-continuation-suspend.html
+
+  * igt@perf@gen12-mi-rpc:
+    - shard-tglb:         [TIMEOUT][66] ([fdo#112271] / [i915#1085]) -> [PASS][67]
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-tglb1/igt@perf@gen12-mi-rpc.html
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-tglb7/igt@perf@gen12-mi-rpc.html
+
+  * igt@prime_mmap_coherency@ioctl-errors:
+    - shard-hsw:          [FAIL][68] ([i915#831]) -> [PASS][69]
+   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-hsw7/igt@prime_mmap_coherency@ioctl-errors.html
+   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-hsw7/igt@prime_mmap_coherency@ioctl-errors.html
+
+  
+#### Warnings ####
+
+  * igt@gem_ctx_isolation@vcs1-nonpriv:
+    - shard-iclb:         [SKIP][70] ([fdo#112080]) -> [FAIL][71] ([IGT#28])
+   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-iclb3/igt@gem_ctx_isolation@vcs1-nonpriv.html
+   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-iclb4/igt@gem_ctx_isolation@vcs1-nonpriv.html
+
+  * igt@i915_pm_dc@dc6-dpms:
+    - shard-tglb:         [FAIL][72] ([i915#454]) -> [SKIP][73] ([i915#468])
+   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-tglb1/igt@i915_pm_dc@dc6-dpms.html
+   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-tglb2/igt@i915_pm_dc@dc6-dpms.html
+
+  * igt@i915_pm_dc@dc6-psr:
+    - shard-tglb:         [SKIP][74] ([i915#468]) -> [FAIL][75] ([i915#454])
+   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-tglb2/igt@i915_pm_dc@dc6-psr.html
+   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-tglb7/igt@i915_pm_dc@dc6-psr.html
+
+  * igt@i915_pm_rpm@fences-dpms:
+    - shard-snb:          [SKIP][76] ([fdo#109271]) -> [INCOMPLETE][77] ([i915#82])
+   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5451/shard-snb2/igt@i915_pm_rpm@fences-dpms.html
+   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/shard-snb4/igt@i915_pm_rpm@fences-dpms.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [CI#80]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/80
+  [IGT#28]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/28
+  [fdo#103665]: https://bugs.freedesktop.org/show_bug.cgi?id=103665
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109276]: https://bugs.freedesktop.org/show_bug.cgi?id=109276
+  [fdo#109441]: https://bugs.freedesktop.org/show_bug.cgi?id=109441
+  [fdo#110854]: https://bugs.freedesktop.org/show_bug.cgi?id=110854
+  [fdo#112080]: https://bugs.freedesktop.org/show_bug.cgi?id=112080
+  [fdo#112146]: https://bugs.freedesktop.org/show_bug.cgi?id=112146
+  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
+  [i915#1085]: https://gitlab.freedesktop.org/drm/intel/issues/1085
+  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
+  [i915#454]: https://gitlab.freedesktop.org/drm/intel/issues/454
+  [i915#468]: https://gitlab.freedesktop.org/drm/intel/issues/468
+  [i915#478]: https://gitlab.freedesktop.org/drm/intel/issues/478
+  [i915#54]: https://gitlab.freedesktop.org/drm/intel/issues/54
+  [i915#58]: https://gitlab.freedesktop.org/drm/intel/issues/58
+  [i915#61]: https://gitlab.freedesktop.org/drm/intel/issues/61
+  [i915#668]: https://gitlab.freedesktop.org/drm/intel/issues/668
+  [i915#677]: https://gitlab.freedesktop.org/drm/intel/issues/677
+  [i915#694]: https://gitlab.freedesktop.org/drm/intel/issues/694
+  [i915#72]: https://gitlab.freedesktop.org/drm/intel/issues/72
+  [i915#79]: https://gitlab.freedesktop.org/drm/intel/issues/79
+  [i915#82]: https://gitlab.freedesktop.org/drm/intel/issues/82
+  [i915#831]: https://gitlab.freedesktop.org/drm/intel/issues/831
+  [i915#899]: https://gitlab.freedesktop.org/drm/intel/issues/899
+  [k.org#198133]: https://bugzilla.kernel.org/show_bug.cgi?id=198133
+
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5451 -> IGTPW_4186
+
+  CI-20190529: 20190529
+  CI_DRM_7965: e2896d5957301e0411d7048e724d4dc5c96450ea @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4186: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/index.html
+  IGT_5451: 1c42f971d37a066da3e588783611ab08d5afbded @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4186/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
