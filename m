@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20200220165301.1996742-1-chris@chris-wilson.co.uk>
+References: <20200220165721.2056191-1-chris@chris-wilson.co.uk>
 From: Martin Peres <martin.peres@linux.intel.com>
-Message-ID: <8a1d8cc5-dbb4-88f4-06d9-ccaa79c41f0c@linux.intel.com>
-Date: Fri, 21 Feb 2020 09:20:43 +0200
+Message-ID: <d0d76a0d-d9f6-93fe-0149-6c755a33715a@linux.intel.com>
+Date: Fri, 21 Feb 2020 09:24:21 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200220165301.1996742-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200220165721.2056191-1-chris@chris-wilson.co.uk>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_eio: Trim kms workload
+Subject: Re: [igt-dev] [PATCH i-g-t] sw_sync: Use fixed runtime for
+ sync_expired_merge
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,52 +23,65 @@ To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-02-20 18:53, Chris Wilson wrote:
-> We don't need to try reset-stress on every engine with the display, just
-> once is enough to stress any interlinkage.
-
-If you say so :)
-
-> 
-> This should reduce the runtime to 10s.
-
-That would be appreciated!
-
+On 2020-02-20 18:57, Chris Wilson wrote:
+> Convert from using a fixed number of iterations (1 million), to using a
+> fixed runtime so that we have predictable (and shorter!) run times across
+> a wide variety of machines.
 > 
 > Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 > Cc: Martin Peres <martin.peres@linux.intel.com>
 
-The only difference between the previous behaviour and the new one
-introduced by the patch is that reset_stress() is called for only the
-default exec engine as opposed to all of them previously. So, the patch is:
+Thanks for making this test more reasonable :) Strength is in execution
+count, not execution time :)
 
 Reviewed-by: Martin Peres <martin.peres@linux.intel.com>
 
 > ---
->  tests/i915/gem_eio.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+>  tests/sw_sync.c | 17 +++++++----------
+>  1 file changed, 7 insertions(+), 10 deletions(-)
 > 
-> diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
-> index 0fe51efeb..1ec609410 100644
-> --- a/tests/i915/gem_eio.c
-> +++ b/tests/i915/gem_eio.c
-> @@ -898,8 +898,14 @@ static void test_kms(int i915, igt_display_t *dpy)
+> diff --git a/tests/sw_sync.c b/tests/sw_sync.c
+> index 626b6d39f..6e439496d 100644
+> --- a/tests/sw_sync.c
+> +++ b/tests/sw_sync.c
+> @@ -747,30 +747,27 @@ static void test_sync_multi_producer_single_consumer(void)
 >  
->  	test_inflight(i915, 0);
->  	if (gem_has_contexts(i915)) {
-> -		test_reset_stress(i915, 0);
-> -		test_reset_stress(i915, TEST_WEDGE);
-> +		uint32_t ctx = context_create_safe(i915);
-> +
-> +		reset_stress(i915, ctx,
-> +			     "default", I915_EXEC_DEFAULT, 0);
-> +		reset_stress(i915, ctx,
-> +			     "default", I915_EXEC_DEFAULT, TEST_WEDGE);
-> +
-> +		gem_context_destroy(i915, ctx);
+>  static void test_sync_expired_merge(void)
+>  {
+> -	int iterations = 1 << 20;
+>  	int timeline;
+> -	int i;
+> -	int fence_expired, fence_merged;
+> +	int expired;
+>  
+>  	timeline = sw_sync_timeline_create();
+>  
+>  	sw_sync_timeline_inc(timeline, 100);
+> -	fence_expired = sw_sync_timeline_create_fence(timeline, 1);
+> -	igt_assert_f(sync_fence_wait(fence_expired, 0) == 0,
+> +	expired = sw_sync_timeline_create_fence(timeline, 1);
+> +	igt_assert_f(sync_fence_wait(expired, 0) == 0,
+>  	             "Failure waiting for expired fence\n");
+>  
+> -	fence_merged = sync_fence_merge(fence_expired, fence_expired);
+> -	close(fence_merged);
+> +	close(sync_fence_merge(expired, expired));
+>  
+> -	for (i = 0; i < iterations; i++) {
+> -		int fence = sync_fence_merge(fence_expired, fence_expired);
+> +	igt_until_timeout(2) {
+> +		int fence = sync_fence_merge(expired, expired);
+>  
+>  		igt_assert_f(sync_fence_wait(fence, -1) == 0,
+>  			     "Failure waiting on fence\n");
+>  		close(fence);
 >  	}
 >  
->  	*shared = 1;
+> -	close(fence_expired);
+> +	close(expired);
+>  }
+>  
+>  static void test_sync_random_merge(void)
 > 
 _______________________________________________
 igt-dev mailing list
