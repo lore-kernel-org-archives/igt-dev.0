@@ -1,9 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri, 21 Feb 2020 19:38:08 +0000
-Message-Id: <20200221193808.2849185-1-chris@chris-wilson.co.uk>
+References: <20200215023331.41469-1-dale.b.stimson@intel.com>
+ <20200215023331.41469-2-dale.b.stimson@intel.com>
+From: "Fosha, Robert M" <robert.m.fosha@intel.com>
+Message-ID: <abdf004b-ffd2-03aa-67ae-29db978bce62@intel.com>
+Date: Fri, 21 Feb 2020 13:41:53 -0800
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915: Drop gem_exec_reuse
+In-Reply-To: <20200215023331.41469-2-dale.b.stimson@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t v4 1/2] i915/gem_mmio_base.c
+ - get mmio_base from debugfs (if possible)
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -11,157 +16,452 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+To: Dale B Stimson <dale.b.stimson@intel.com>, igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhlIHRlc3QgdGhyb3dzIGEgbGFyZ2UgbnVtYmVyIG9mIG9iamVjdHMgYXQgdGhlIEdQVSBhY3Jv
-c3MgbWFueQpiYXRjaGVzLiBJdCBvbmx5IHNlcnZlcyB0byB0cnkgYW5kIGFzc2VzcyB0aGUgc2Nh
-bGluZyBpbXBhY3QsIHdpdGhvdXQKZG9pbmcgYW55IGNvbmZvcm1hbmNlIGNoZWNraW5nLCBub3Ig
-YW5hbHlzaW5nIHNhaWQgaW1wYWN0IG9mIHNjYWxpbmcuClRoZSBvbmx5IGVmZmVjdGl2ZSBjb3Zl
-cmFnZSBpdCBnaXZlcyB1cyBpcyBvbiBtdWx0aS1lbmdpbmUgcmV1c2UsIHdoaWNoCmFueSBvZiB0
-aGUgc3RyZXNzIHRlc3RzIChnZW1fZXhlY19wYXJhbGxlbCwgZ2VtX2V4ZWNfd2hpc3BlcikgcHJv
-dmlkZSwKYW5kIHRoZXkgZG8gdmFsaWRhdGUhCgpJIGhhdmUgbm8gZG91YnQgdGhhdCBpZiB3ZSBh
-cmUgcHJlc2VudGVkIHdpdGggYSBjb25jcmV0ZSBwcm9ibGVtLCBvcgpidWcsIGluIHRoaXMgYXJl
-YSB3ZSB3aWxsIGJlIG1vdGl2YXRlZCB0byB3cml0ZSBhIG1vcmUgcHJlY2lzZSB0ZXN0CmNhc2Uu
-CgpDbG9zZXM6IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVz
-LzEyODkKU2lnbmVkLW9mZi1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28u
-dWs+CkNjOiBNYXJ0aW4gUGVyZXMgPG1hcnRpbi5wZXJlc0BsaW51eC5pbnRlbC5jb20+Ci0tLQog
-dGVzdHMvTWFrZWZpbGUuc291cmNlcyAgICAgICAgICAgICAgICAgfCAgIDMgLQogdGVzdHMvaTkx
-NS9nZW1fZXhlY19yZXVzZS5jICAgICAgICAgICAgfCAxODIgLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLQogdGVzdHMvaW50ZWwtY2kvYmxhY2tsaXN0LXByZS1tZXJnZS50eHQgfCAgMjAgLS0tCiB0
-ZXN0cy9tZXNvbi5idWlsZCAgICAgICAgICAgICAgICAgICAgICB8ICAgMSAtCiA0IGZpbGVzIGNo
-YW5nZWQsIDIwNiBkZWxldGlvbnMoLSkKIGRlbGV0ZSBtb2RlIDEwMDY0NCB0ZXN0cy9pOTE1L2dl
-bV9leGVjX3JldXNlLmMKCmRpZmYgLS1naXQgYS90ZXN0cy9NYWtlZmlsZS5zb3VyY2VzIGIvdGVz
-dHMvTWFrZWZpbGUuc291cmNlcwppbmRleCA3NmNmOTlkYTUuLjEwOTEzZTg2YiAxMDA2NDQKLS0t
-IGEvdGVzdHMvTWFrZWZpbGUuc291cmNlcworKysgYi90ZXN0cy9NYWtlZmlsZS5zb3VyY2VzCkBA
-IC0yNDcsOSArMjQ3LDYgQEAgZ2VuOV9leGVjX3BhcnNlX1NPVVJDRVMgPSBpOTE1L2dlbjlfZXhl
-Y19wYXJzZS5jCiBURVNUU19wcm9ncyArPSBnZW1fZXhlY19yZWxvYwogZ2VtX2V4ZWNfcmVsb2Nf
-U09VUkNFUyA9IGk5MTUvZ2VtX2V4ZWNfcmVsb2MuYwogCi1URVNUU19wcm9ncyArPSBnZW1fZXhl
-Y19yZXVzZQotZ2VtX2V4ZWNfcmV1c2VfU09VUkNFUyA9IGk5MTUvZ2VtX2V4ZWNfcmV1c2UuYwot
-CiBURVNUU19wcm9ncyArPSBnZW1fZXhlY19zY2hlZHVsZQogZ2VtX2V4ZWNfc2NoZWR1bGVfU09V
-UkNFUyA9IGk5MTUvZ2VtX2V4ZWNfc2NoZWR1bGUuYwogCmRpZmYgLS1naXQgYS90ZXN0cy9pOTE1
-L2dlbV9leGVjX3JldXNlLmMgYi90ZXN0cy9pOTE1L2dlbV9leGVjX3JldXNlLmMKZGVsZXRlZCBm
-aWxlIG1vZGUgMTAwNjQ0CmluZGV4IDk3MWViNDEzNy4uMDAwMDAwMDAwCi0tLSBhL3Rlc3RzL2k5
-MTUvZ2VtX2V4ZWNfcmV1c2UuYworKysgL2Rldi9udWxsCkBAIC0xLDE4MiArMCwwIEBACi0vKgot
-ICogQ29weXJpZ2h0IMKpIDIwMTcgSW50ZWwgQ29ycG9yYXRpb24KLSAqCi0gKiBQZXJtaXNzaW9u
-IGlzIGhlcmVieSBncmFudGVkLCBmcmVlIG9mIGNoYXJnZSwgdG8gYW55IHBlcnNvbiBvYnRhaW5p
-bmcgYQotICogY29weSBvZiB0aGlzIHNvZnR3YXJlIGFuZCBhc3NvY2lhdGVkIGRvY3VtZW50YXRp
-b24gZmlsZXMgKHRoZSAiU29mdHdhcmUiKSwKLSAqIHRvIGRlYWwgaW4gdGhlIFNvZnR3YXJlIHdp
-dGhvdXQgcmVzdHJpY3Rpb24sIGluY2x1ZGluZyB3aXRob3V0IGxpbWl0YXRpb24KLSAqIHRoZSBy
-aWdodHMgdG8gdXNlLCBjb3B5LCBtb2RpZnksIG1lcmdlLCBwdWJsaXNoLCBkaXN0cmlidXRlLCBz
-dWJsaWNlbnNlLAotICogYW5kL29yIHNlbGwgY29waWVzIG9mIHRoZSBTb2Z0d2FyZSwgYW5kIHRv
-IHBlcm1pdCBwZXJzb25zIHRvIHdob20gdGhlCi0gKiBTb2Z0d2FyZSBpcyBmdXJuaXNoZWQgdG8g
-ZG8gc28sIHN1YmplY3QgdG8gdGhlIGZvbGxvd2luZyBjb25kaXRpb25zOgotICoKLSAqIFRoZSBh
-Ym92ZSBjb3B5cmlnaHQgbm90aWNlIGFuZCB0aGlzIHBlcm1pc3Npb24gbm90aWNlIChpbmNsdWRp
-bmcgdGhlIG5leHQKLSAqIHBhcmFncmFwaCkgc2hhbGwgYmUgaW5jbHVkZWQgaW4gYWxsIGNvcGll
-cyBvciBzdWJzdGFudGlhbCBwb3J0aW9ucyBvZiB0aGUKLSAqIFNvZnR3YXJlLgotICoKLSAqIFRI
-RSBTT0ZUV0FSRSBJUyBQUk9WSURFRCAiQVMgSVMiLCBXSVRIT1VUIFdBUlJBTlRZIE9GIEFOWSBL
-SU5ELCBFWFBSRVNTIE9SCi0gKiBJTVBMSUVELCBJTkNMVURJTkcgQlVUIE5PVCBMSU1JVEVEIFRP
-IFRIRSBXQVJSQU5USUVTIE9GIE1FUkNIQU5UQUJJTElUWSwKLSAqIEZJVE5FU1MgRk9SIEEgUEFS
-VElDVUxBUiBQVVJQT1NFIEFORCBOT05JTkZSSU5HRU1FTlQuICBJTiBOTyBFVkVOVCBTSEFMTAot
-ICogVEhFIEFVVEhPUlMgT1IgQ09QWVJJR0hUIEhPTERFUlMgQkUgTElBQkxFIEZPUiBBTlkgQ0xB
-SU0sIERBTUFHRVMgT1IgT1RIRVIKLSAqIExJQUJJTElUWSwgV0hFVEhFUiBJTiBBTiBBQ1RJT04g
-T0YgQ09OVFJBQ1QsIFRPUlQgT1IgT1RIRVJXSVNFLCBBUklTSU5HCi0gKiBGUk9NLCBPVVQgT0Yg
-T1IgSU4gQ09OTkVDVElPTiBXSVRIIFRIRSBTT0ZUV0FSRSBPUiBUSEUgVVNFIE9SIE9USEVSIERF
-QUxJTkdTCi0gKiBJTiBUSEUgU09GVFdBUkUuCi0gKi8KLQotI2luY2x1ZGUgPGxpbWl0cy5oPgot
-I2luY2x1ZGUgPHN5cy9yZXNvdXJjZS5oPgotCi0jaW5jbHVkZSAiaWd0LmgiCi0jaW5jbHVkZSAi
-aWd0X2F1eC5oIgotCi1JR1RfVEVTVF9ERVNDUklQVElPTigiSW5zcGVjdCBzY2FsaW5nIHdpdGgg
-bGFyZ2UgbnVtYmVyIG9mIHJldXNlZCBvYmplY3RzIik7Ci0KLXN0cnVjdCBub29wIHsKLQlzdHJ1
-Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2JqZWN0MiAqb2JqOwotCXVpbnQzMl90IGJhdGNoOwotCXVp
-bnQzMl90ICpoYW5kbGVzOwotCXVuc2lnbmVkIGludCBuaGFuZGxlczsKLQl1bnNpZ25lZCBpbnQg
-bWF4X2FnZTsKLQlpbnQgZmQ7Ci19OwotCi1zdGF0aWMgdm9pZCBub29wKHN0cnVjdCBub29wICpu
-LAotCQkgdW5zaWduZWQgcmluZywgdW5zaWduZWQgY3R4LAotCQkgdW5zaWduZWQgaW50IGNvdW50
-LCB1bnNpZ25lZCBpbnQgb2Zmc2V0KQotewotCXN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY2J1ZmZl
-cjIgZXhlY2J1ZjsKLQl1bnNpZ25lZCBpbnQgaTsKLQotCWZvciAoaSA9IDA7IGkgPCBjb3VudDsg
-aSsrKQotCQluLT5vYmpbaV0uaGFuZGxlID0gbi0+aGFuZGxlc1soaSArIG9mZnNldCkgJiAobi0+
-bmhhbmRsZXMtMSldOwotCW4tPm9ialtpXS5oYW5kbGUgPSBuLT5iYXRjaDsKLQotCW1lbXNldCgm
-ZXhlY2J1ZiwgMCwgc2l6ZW9mKGV4ZWNidWYpKTsKLQlleGVjYnVmLmJ1ZmZlcnNfcHRyID0gdG9f
-dXNlcl9wb2ludGVyKG4tPm9iaik7Ci0JZXhlY2J1Zi5idWZmZXJfY291bnQgPSBjb3VudCArIDE7
-Ci0JZXhlY2J1Zi5mbGFncyA9IHJpbmcgfCAxIDw8IDEyOwotCWV4ZWNidWYucnN2ZDEgPSBjdHg7
-Ci0JZ2VtX2V4ZWNidWYobi0+ZmQsICZleGVjYnVmKTsKLX0KLQotc3RhdGljIHVpbnQ2NF90IG1h
-eF9vcGVuX2ZpbGVzKHZvaWQpCi17Ci0Jc3RydWN0IHJsaW1pdCBybGltOwotCi0JaWYgKGdldHJs
-aW1pdChSTElNSVRfTk9GSUxFLCAmcmxpbSkpCi0JCXJsaW0ucmxpbV9jdXIgPSA2NCA8PCAxMDsK
-LQotCWlndF9pbmZvKCJQcm9jZXNzIGxpbWl0IGZvciBmaWxlIGRlc2NyaXB0b3JzIGlzICVsdVxu
-IiwKLQkJIChsb25nKXJsaW0ucmxpbV9jdXIpOwotCXJldHVybiBybGltLnJsaW1fY3VyOwotfQot
-Ci1zdGF0aWMgdW5zaWduZWQgaW50IG1heF9uZmQodm9pZCkKLXsKLQl1aW50NjRfdCB2ZnMgPSB2
-ZnNfZmlsZV9tYXgoKTsKLQl1aW50NjRfdCBmZCA9IG1heF9vcGVuX2ZpbGVzKCk7Ci0JdWludDY0
-X3QgbWluID0gZmQgPCB2ZnMgPyBmZCA6IHZmczsKLQlpZiAobWluID4gSU5UX01BWCkKLQkJbWlu
-ID0gSU5UX01BWDsKLQlyZXR1cm4gbWluOwotfQotCi1pZ3RfbWFpbgotewotCXN0cnVjdCBub29w
-IG5vOwotCXVuc2lnbmVkIGVuZ2luZXNbMTZdOwotCXVuc2lnbmVkIG5lbmdpbmU7Ci0JdW5zaWdu
-ZWQgbjsKLQotCWlndF9maXh0dXJlIHsKLQkJdWludDY0X3QgZ3R0X3NpemUsIG1heDsKLQkJdWlu
-dDMyX3QgYmJlID0gTUlfQkFUQ0hfQlVGRkVSX0VORDsKLQotCQlpZ3RfYWxsb3dfdW5saW1pdGVk
-X2ZpbGVzKCk7Ci0KLQkJbm8uZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX0lOVEVMKTsKLQkJ
-aWd0X3JlcXVpcmVfZ2VtKG5vLmZkKTsKLQotCQlpZ3RfZm9ya19oYW5nX2RldGVjdG9yKG5vLmZk
-KTsKLQotCQlndHRfc2l6ZSA9IChnZW1fYXBlcnR1cmVfc2l6ZShuby5mZCkgLyAyKSA+PiAxMjsK
-LQkJaWYgKGd0dF9zaXplID4gSU5UX01BWCAvIHNpemVvZigqbm8uaGFuZGxlcykpCi0JCQlndHRf
-c2l6ZSA9IElOVF9NQVggLyBzaXplb2YoKm5vLmhhbmRsZXMpOwotCi0JCW1heCA9IG1heF9uZmQo
-KSAtIDE2OwotCQlpZiAobWF4IDwgZ3R0X3NpemUpCi0JCQlndHRfc2l6ZSA9IG1heDsKLQotCQlu
-by5uaGFuZGxlcyA9IDEgPDwgKGlndF9mbHMoZ3R0X3NpemUpIC0gMSk7Ci0JCWludGVsX3JlcXVp
-cmVfbWVtb3J5KG5vLm5oYW5kbGVzLCA0MDk2LCBDSEVDS19SQU0pOwotCi0JCW5vLm1heF9hZ2Ug
-PSBuby5uaGFuZGxlcyAvIDI7Ci0KLQkJbm8uaGFuZGxlcyA9IG1hbGxvYyhzaXplb2YoKm5vLmhh
-bmRsZXMpICogbm8ubmhhbmRsZXMpOwotCQlmb3IgKG4gPSAwOyBuIDwgbm8ubmhhbmRsZXM7IG4r
-KykKLQkJCW5vLmhhbmRsZXNbbl0gPSBnZW1fY3JlYXRlKG5vLmZkLCA0MDk2KTsKLQotCQluby5v
-YmogPSBtYWxsb2Moc2l6ZW9mKHN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmplY3QyKSAqIChu
-by5tYXhfYWdlICsgMSkpOwotCi0JCW5lbmdpbmUgPSAwOwotCQlmb3JfZWFjaF9waHlzaWNhbF9l
-bmdpbmUoZSwgbm8uZmQpCi0JCQllbmdpbmVzW25lbmdpbmUrK10gPSBlYl9yaW5nKGUpOwotCQlp
-Z3RfcmVxdWlyZShuZW5naW5lKTsKLQotCQluby5iYXRjaCA9IGdlbV9jcmVhdGUobm8uZmQsIDQw
-OTYpOwotCQlnZW1fd3JpdGUobm8uZmQsIG5vLmJhdGNoLCAwLCAmYmJlLCBzaXplb2YoYmJlKSk7
-Ci0JfQotCi0JaWd0X3N1YnRlc3RfZigic2luZ2xlIikgewotCQl1bnNpZ25lZCBpbnQgdGltZW91
-dCA9IDU7Ci0JCXVuc2lnbmVkIGxvbmcgYWdlID0gMDsKLQotCQlpZ3RfdW50aWxfdGltZW91dCh0
-aW1lb3V0KQotCQkJZm9yIChuID0gMDsgbiA8IG5lbmdpbmU7IG4rKykKLQkJCQlub29wKCZubywg
-ZW5naW5lc1tuXSwgMCwgMCwgYWdlKyspOwotCQlnZW1fc3luYyhuby5mZCwgbm8uYmF0Y2gpOwot
-CQlpZ3RfaW5mbygiQ29tcGxldGVkICVsdSBjeWNsZXNcbiIsIGFnZSk7Ci0JfQotCi0JaWd0X3N1
-YnRlc3RfZigiYmFnZ2FnZSIpIHsKLQkJdW5zaWduZWQgaW50IHRpbWVvdXQgPSA1OwotCQl1bnNp
-Z25lZCBsb25nIGFnZSA9IDA7Ci0KLQkJaWd0X3VudGlsX3RpbWVvdXQodGltZW91dCkKLQkJCWZv
-ciAobiA9IDA7IG4gPCBuZW5naW5lOyBuKyspCi0JCQkJbm9vcCgmbm8sIGVuZ2luZXNbbl0sIDAs
-Ci0JCQkJICAgICBuby5tYXhfYWdlLCBhZ2UrKyk7Ci0JCWdlbV9zeW5jKG5vLmZkLCBuby5iYXRj
-aCk7Ci0JCWlndF9pbmZvKCJDb21wbGV0ZWQgJWx1IGN5Y2xlc1xuIiwgYWdlKTsKLQl9Ci0KLQlp
-Z3Rfc3VidGVzdF9mKCJjb250ZXh0cyIpIHsKLQkJdW5zaWduZWQgaW50IHRpbWVvdXQgPSA1Owot
-CQl1bnNpZ25lZCBsb25nIGN0eF9hZ2UgPSAwOwotCQl1bnNpZ25lZCBsb25nIG9ial9hZ2UgPSAw
-OwotCQljb25zdCB1bnNpZ25lZCBpbnQgbmNvbnRleHRzID0gMTAyNDsKLQkJdWludDMyX3QgY29u
-dGV4dHNbbmNvbnRleHRzXTsKLQotCQlnZW1fcmVxdWlyZV9jb250ZXh0cyhuby5mZCk7Ci0KLQkJ
-Zm9yIChuID0gMDsgbiA8IG5jb250ZXh0czsgbisrKQotCQkJY29udGV4dHNbbl0gPSBnZW1fY29u
-dGV4dF9jcmVhdGUobm8uZmQpOwotCi0JCWlndF91bnRpbF90aW1lb3V0KHRpbWVvdXQpIHsKLQkJ
-CWZvciAobiA9IDA7IG4gPCBuZW5naW5lOyBuKyspIHsKLQkJCQlub29wKCZubywgZW5naW5lc1tu
-XSwKLQkJCQkgICAgIGNvbnRleHRzW2N0eF9hZ2UgJSBuY29udGV4dHNdLAotCQkJCSAgICAgbm8u
-bWF4X2FnZSwgb2JqX2FnZSk7Ci0JCQkJb2JqX2FnZSsrOwotCQkJfQotCQkJY3R4X2FnZSsrOwot
-CQl9Ci0JCWdlbV9zeW5jKG5vLmZkLCBuby5iYXRjaCk7Ci0JCWlndF9pbmZvKCJDb21wbGV0ZWQg
-JWx1IGN5Y2xlcyBhY3Jvc3MgJWx1IGNvbnRleHQgc3dpdGNoZXNcbiIsCi0JCQkgb2JqX2FnZSwg
-Y3R4X2FnZSk7Ci0KLQkJZm9yIChuID0gMDsgbiA8IG5jb250ZXh0czsgbisrKQotCQkJZ2VtX2Nv
-bnRleHRfZGVzdHJveShuby5mZCwgY29udGV4dHNbbl0pOwotCX0KLQotCWlndF9maXh0dXJlCi0J
-CWlndF9zdG9wX2hhbmdfZGV0ZWN0b3IoKTsKLX0KZGlmZiAtLWdpdCBhL3Rlc3RzL2ludGVsLWNp
-L2JsYWNrbGlzdC1wcmUtbWVyZ2UudHh0IGIvdGVzdHMvaW50ZWwtY2kvYmxhY2tsaXN0LXByZS1t
-ZXJnZS50eHQKaW5kZXggYmUzMGJkZmUyLi4wNzBmM2IzMmMgMTAwNjQ0Ci0tLSBhL3Rlc3RzL2lu
-dGVsLWNpL2JsYWNrbGlzdC1wcmUtbWVyZ2UudHh0CisrKyBiL3Rlc3RzL2ludGVsLWNpL2JsYWNr
-bGlzdC1wcmUtbWVyZ2UudHh0CkBAIC0xODIsMjMgKzE4MiwzIEBAIGlndEBrbXNfcGxhbmVAcGl4
-ZWwtZm9ybWF0LXBpcGUtW2EtZF0tcGxhbmVzKC1zb3VyY2UtY2xhbXBpbmcpPwogIyBEYXRhIGFj
-cXVpcmVkIG9uIDIwMjAtMDItMjAgYnkgTWFydGluIFBlcmVzCiAjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjCiBpZ3RAaTkxNV9wbV9ycG1AbW9kZXNldC1zdHJlc3MtZXh0cmEtd2FpdAotCi0KLSMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMKLSMgVGhlc2UgMiB0ZXN0cyBhcmUgc3RyZXNzaW5nIHRoZSByZS11
-c2FiaWxpdHkgb2Ygb2JqZWN0cy4gSXQgZG9lcyBub3QgbG9vawotIyBsaWtlIHdlIGhhdmUgaGFk
-IGlzc3VlcyB3aXRoIHRoaXMgb3V0c2lkZSBvZiB0aGUgZ2VuNyBwcGd0dCBpc3N1ZSwgd2hpY2gK
-LSMgZG9lcyBub3QgY291bnRlcmJhbGFuY2UgaXRzIG92ZXJhbGwgZXhlY3V0aW9uIHRpbWUuCi0j
-Ci0jIC0gc2hhcmQtc2tsOiAyJSAofjUgbWludXRlcykKLSMgLSBzaGFyZC1rYmw6IDElICh+MS41
-IG1pbnV0ZXMpCi0jIC0gc2hhcmQtYXBsOiAxLjclICh+MyBtaW51dGVzKQotIyAtIHNoYXJkLWds
-azogMSUgKDIuNSBtaW51dGVzKQotIyAtIHNoYXJkLWljbDogMC41JSAoMSBtaW51dGUpCi0jIC0g
-c2hhcmQtdGdsOiAwLjUlICgxIG1pbnV0ZSkKLSMKLSMgSXNzdWU6IGh0dHBzOi8vZ2l0bGFiLmZy
-ZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzEyODkKLSMKLSMgRGF0YSBhY3F1aXJlZCBv
-biAyMDIwLTAyLTIwIGJ5IE1hcnRpbiBQZXJlcwotIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIwotaWd0
-QGdlbV9leGVjX3JldXNlQGJhZ2dhZ2UKLWlndEBnZW1fZXhlY19yZXVzZUBjb250ZXh0cwpkaWZm
-IC0tZ2l0IGEvdGVzdHMvbWVzb24uYnVpbGQgYi90ZXN0cy9tZXNvbi5idWlsZAppbmRleCA0YmE5
-NzNhNWQuLmRjYzVlN2I2YSAxMDA2NDQKLS0tIGEvdGVzdHMvbWVzb24uYnVpbGQKKysrIGIvdGVz
-dHMvbWVzb24uYnVpbGQKQEAgLTE0OCw3ICsxNDgsNiBAQCBpOTE1X3Byb2dzID0gWwogCSdnZW43
-X2V4ZWNfcGFyc2UnLAogCSdnZW45X2V4ZWNfcGFyc2UnLAogCSdnZW1fZXhlY19yZWxvYycsCi0J
-J2dlbV9leGVjX3JldXNlJywKIAknZ2VtX2V4ZWNfc2NoZWR1bGUnLAogCSdnZW1fZXhlY19zdG9y
-ZScsCiAJJ2dlbV9leGVjX3N1c3BlbmQnLAotLSAKMi4yNS4xCgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2lndC1kZXYK
+
+
+On 2/14/20 6:33 PM, Dale B Stimson wrote:
+> Signed-off-by: Dale B Stimson <dale.b.stimson@intel.com>
+
+Acked-by: Robert M. Fosha <robert.m.fosha@intel.com>
+
+> ---
+>   lib/Makefile.sources     |   2 +
+>   lib/i915/gem_mmio_base.c | 353 +++++++++++++++++++++++++++++++++++++++
+>   lib/i915/gem_mmio_base.h |  19 +++
+>   lib/igt.h                |   1 +
+>   lib/meson.build          |   1 +
+>   5 files changed, 376 insertions(+)
+>   create mode 100644 lib/i915/gem_mmio_base.c
+>   create mode 100644 lib/i915/gem_mmio_base.h
+>
+> diff --git a/lib/Makefile.sources b/lib/Makefile.sources
+> index 3e573f267..4c5d50d5d 100644
+> --- a/lib/Makefile.sources
+> +++ b/lib/Makefile.sources
+> @@ -7,6 +7,8 @@ lib_source_list =	 	\
+>   	i915/gem_context.h	\
+>   	i915/gem_engine_topology.c	\
+>   	i915/gem_engine_topology.h	\
+> +	i915/gem_mmio_base.c	\
+> +	i915/gem_mmio_base.h	\
+>   	i915/gem_scheduler.c	\
+>   	i915/gem_scheduler.h	\
+>   	i915/gem_submission.c	\
+> diff --git a/lib/i915/gem_mmio_base.c b/lib/i915/gem_mmio_base.c
+> new file mode 100644
+> index 000000000..d1b83221a
+> --- /dev/null
+> +++ b/lib/i915/gem_mmio_base.c
+> @@ -0,0 +1,353 @@
+> +//  Copyright (C) 2020 Intel Corporation
+> +//
+> +//  SPDX-License-Identifier: MIT
+> +
+> +#include <ctype.h>
+> +
+> +#include <fcntl.h>
+> +
+> +#include "igt.h"
+> +
+> +struct eng_mmio_base_s {
+> +	char       name[8];
+> +	uint32_t   mmio_base;
+> +};
+> +
+> +struct eng_mmio_base_table_s {
+> +	unsigned int           mb_cnt;
+> +	struct eng_mmio_base_s mb_tab[GEM_MAX_ENGINES];
+> +};
+> +
+> +
+> +static struct eng_mmio_base_table_s *_gem_engine_mmio_info_dup(
+> +	const struct eng_mmio_base_table_s *mbpi)
+> +{
+> +	struct eng_mmio_base_table_s *mbpo;
+> +	size_t nbytes;
+> +
+> +	nbytes = offsetof(typeof(struct eng_mmio_base_table_s), mb_tab[mbpi->mb_cnt]);
+> +	mbpo = malloc(nbytes);
+> +	igt_assert(mbpo);
+> +	memcpy(mbpo, mbpi, nbytes);
+> +
+> +	return mbpo;
+> +}
+> +
+> +void gem_engine_mmio_base_info_free(struct eng_mmio_base_table_s *mbp)
+> +{
+> +	if (mbp)
+> +		free(mbp);
+> +}
+> +
+> +static void _gem_engine_mmio_info_legacy_add(struct eng_mmio_base_table_s *mbp,
+> +	const char *eng_name, uint32_t mmio_base)
+> +{
+> +	if (mmio_base) {
+> +		strncpy(mbp->mb_tab[mbp->mb_cnt].name, eng_name,
+> +			sizeof(mbp->mb_tab[0].name));
+> +		mbp->mb_tab[mbp->mb_cnt].mmio_base = mmio_base;
+> +		mbp->mb_cnt++;
+> +	}
+> +}
+> +
+> +/**
+> + * _gem_engine_mmio_base_info_get_legacy:
+> + * @fd_dev: file descriptor upon which device is open or -1 to use defaults.
+> + *
+> + * Provides per-engine mmio_base information from legacy built-in values
+> + * for the case when the information is not otherwise available.
+> + *
+> + * Returns:
+> + * Pointer to dynamically allocated struct eng_mmio_base_table_s describing
+> + * engine config or NULL.
+> + * The allocated size does not include unused engine entries.
+> + * If non-NULL, it is caller's responsibility to free.
+> + */
+> +static struct eng_mmio_base_table_s *_gem_engine_mmio_base_info_get_legacy(int fd_dev)
+> +{
+> +	int gen;
+> +	uint32_t mmio_base;
+> +	struct eng_mmio_base_table_s mbt;
+> +	struct eng_mmio_base_table_s *mbp;
+> +
+> +	memset(&mbt, 0, sizeof(mbt));
+> +
+> +	gen = intel_gen(intel_get_drm_devid(fd_dev));
+> +
+> +	/* The mmio_base values for engine instances 1 and higher cannot
+> +	 * be reliability determinated a priori. */
+> +
+> +	_gem_engine_mmio_info_legacy_add(&mbt, "rcs0", 0x2000);
+> +	_gem_engine_mmio_info_legacy_add(&mbt, "bcs0", 0x22000);
+> +
+> +	if (gen < 6)
+> +		mmio_base = 0x4000;
+> +	else if (gen < 11)
+> +		mmio_base = 0x12000;
+> +	else
+> +		mmio_base = 0x1c0000;
+> +	_gem_engine_mmio_info_legacy_add(&mbt, "vcs0", mmio_base);
+> +
+> +	if (gen < 11)
+> +		mmio_base = 0x1a000;
+> +	else
+> +		mmio_base = 0x1c8000;
+> +	_gem_engine_mmio_info_legacy_add(&mbt, "vecs0", mmio_base);
+> +
+> +	if (mbt.mb_cnt <= 0)
+> +		return NULL;
+> +
+> +	mbp = _gem_engine_mmio_info_dup(&mbt);
+> +
+> +	return mbp;
+> +}
+> +
+> +
+> +/**
+> + * _gem_engine_mmio_base_info_get_debugfs:
+> + * @fd_dev: file descriptor upon which device is open or -1 to use defaults.
+> + *
+> + * Obtains per-engine mmio_base information from debugfs.
+> + *
+> + * Returns:
+> + * Pointer to dynamically allocated struct eng_mmio_base_table_s describing
+> + * engine config or NULL.
+> + * The allocated size does not include unused engine entries.
+> + * If non-NULL, it is caller's responsibility to free.
+> + *
+> + * Looking in debugfs for per-engine instances of:
+> + *	<engine_name>
+> + *              ...
+> + *		MMIO base: <u32_hex_number>
+> + *
+> + * Example of relevant lines from debugfs:
+> + *	vcs0
+> + *		MMIO base:  0x001c0000
+> + *	vcs1
+> + *		MMIO base:  0x001d0000
+> + *
+> + * In order to qualify as the introduction of a new per-engine section, an
+> + * input line must consist solely of an engine name.  An engine name must
+> + * be 7 or fewer characters in length and must consist of an engine class
+> + * name of 3 or more lower case characters followed by an instance number.
+> + */
+> +static struct eng_mmio_base_table_s *_gem_engine_mmio_base_info_get_debugfs(int fd_dev)
+> +{
+> +	static const char pth_ei[] = "i915_engine_info";
+> +	static const char str_mmio_base[] = "MMIO base:";
+> +	const size_t len_mmio_base = sizeof(str_mmio_base) - 1;
+> +	FILE *fpi;
+> +	char line_buf[128];
+> +	char *plne;
+> +	char *p_name;
+> +	char *pbeg;
+> +	size_t line_len;
+> +	struct eng_mmio_base_table_s mbt;
+> +	struct eng_mmio_base_table_s *mbp;
+> +	const size_t name_max = sizeof(mbt.mb_tab[0].name);
+> +	int ec;
+> +	int eng_found;
+> +	int nc;
+> +	int fd_ei;
+> +	int eof_seen;
+> +
+> +	fd_ei = igt_debugfs_open(fd_dev, pth_ei, O_RDONLY);
+> +	if (fd_ei < 0)
+> +		return NULL;
+> +
+> +	fpi = fdopen(fd_ei, "r");
+> +	if (!fpi) {
+> +		if (errno != ENOENT) {
+> +			igt_warn("open failed: %s: %s\n", pth_ei,
+> +				strerror(errno));
+> +		}
+> +		return NULL;
+> +	}
+> +
+> +	memset(&mbt, 0, sizeof(mbt));
+> +
+> +	ec = 0;
+> +	eng_found = 0;
+> +	eof_seen = 0;
+> +	while (!eof_seen) {
+> +		plne = fgets(line_buf, sizeof(line_buf), fpi);
+> +		if (!plne) {
+> +			eof_seen = 1;
+> +			plne = line_buf;
+> +			plne[0] = '\0';
+> +		}
+> +
+> +		if (plne[0]) {
+> +			/* Ignore lines that exceed allowed length. */
+> +			line_len = strlen(plne);
+> +			if (plne[line_len-1] != '\n') {
+> +				for (;;) {
+> +					plne = fgets(line_buf,
+> +						sizeof(line_buf), fpi);
+> +					if (!plne)
+> +						break;
+> +					line_len = strlen(plne);
+> +					if (plne[line_len-1] == '\n')
+> +						break;
+> +				}
+> +				continue;
+> +			}
+> +			plne[line_len-1] = '\0';
+> +
+> +			p_name = NULL;
+> +			nc = 0;
+> +			do {
+> +				for (; nc < name_max; nc++) {
+> +					if (!islower(plne[nc]))
+> +						break;
+> +				}
+> +				if (nc < 3)
+> +					break;
+> +				if (!isdigit(plne[nc]))
+> +					break;
+> +				for (; nc < name_max; nc++) {
+> +					if (!isdigit(plne[nc]))
+> +						break;
+> +				}
+> +				if ((nc >= name_max) || plne[nc])
+> +					break;
+> +				p_name = plne;
+> +			} while (0);
+> +		}
+> +
+> +		if (eof_seen || p_name) {
+> +			if (eng_found) {
+> +				eng_found = 0;
+> +				if ((ec + 1) >= GEM_MAX_ENGINES)
+> +					continue;
+> +				ec++;
+> +			}
+> +		}
+> +
+> +		if (p_name) {
+> +			strncpy(mbt.mb_tab[ec].name, p_name, nc);
+> +			eng_found = 1;
+> +			continue;
+> +		}
+> +
+> +		if (eng_found) {
+> +			pbeg = plne;
+> +			while (isspace(pbeg[0]))
+> +				pbeg++;
+> +			if (strncmp(pbeg, str_mmio_base, len_mmio_base) == 0) {
+> +				unsigned long int ulv;
+> +				uint32_t uiv;
+> +				char *ep;
+> +
+> +				pbeg += len_mmio_base;
+> +				ulv = strtoul(pbeg, &ep, 16);
+> +
+> +				uiv = (uint32_t) ulv;
+> +				igt_assert_f(((pbeg != ep) && (ulv == uiv)),
+> +					"invalid number: %s\n", plne);
+> +
+> +				while (isspace(*ep))
+> +					ep++;
+> +				igt_assert_f((!*ep),
+> +					"junk follows number: \"%s\"\n", plne);
+> +
+> +				mbt.mb_tab[ec].mmio_base = uiv;
+> +			}
+> +		}
+> +	}
+> +
+> +	if (fpi)
+> +		fclose(fpi);
+> +
+> +	mbt.mb_cnt = ec;
+> +
+> +	if (mbt.mb_cnt <= 0)
+> +		return NULL;
+> +
+> +	mbp = _gem_engine_mmio_info_dup(&mbt);
+> +
+> +	return mbp;
+> +}
+> +
+> +/**
+> + * gem_engine_mmio_base_info_get:
+> + * @fd_dev: file descriptor upon which device is open or -1 to use defaults.
+> + *
+> + * Obtains per-engine mmio_base information.  Multiple sub-functions will
+> + * be tried in order of preference.
+> + *
+> + * Returns:
+> + * Pointer to dynamically allocated struct eng_mmio_base_table_s describing
+> + * engine config or NULL.
+> + * The allocated size does not include unused engine entries.
+> + * If non-NULL, it is caller's responsibility to free.
+> + */
+> +struct eng_mmio_base_table_s *gem_engine_mmio_base_info_get(int fd_dev)
+> +{
+> +	struct eng_mmio_base_table_s *mbp = NULL;
+> +
+> +	/* If and when better ways are provided to find the mmio_base
+> +	 * information, they may be added them here in order of preference.
+> +	 */
+> +
+> +#if 0
+> +	if (!mbp)
+> +		mbp = _mmio_base_info_get_via_sysfs(fd_dev);
+> +#endif
+> +
+> +	if (!mbp)
+> +		mbp = _gem_engine_mmio_base_info_get_debugfs(fd_dev);
+> +
+> +	if (!mbp)
+> +		mbp = _gem_engine_mmio_base_info_get_legacy(fd_dev);
+> +
+> +	if (!mbp)
+> +		igt_debug("Per-engine mmio_base data is not present\n");
+> +
+> +	return mbp;
+> +}
+> +
+> +/**
+> + * gem_engine_mmio_base_info_dump:
+> + *
+> + * Dumps engine mmio_base data.
+> + *
+> + * Returns: void
+> + */
+> +void gem_engine_mmio_base_info_dump(const struct eng_mmio_base_table_s *mbp)
+> +{
+> +	int ix;
+> +	const struct eng_mmio_base_s *e_mb;
+> +
+> +	if (!mbp)
+> +		return;
+> +
+> +	fprintf(stdout, "engine names and mmio_base addresses:\n");
+> +
+> +	for (ix = 0; ix < mbp->mb_cnt; ix++) {
+> +		e_mb = mbp->mb_tab + ix;
+> +		if (e_mb->mmio_base) {
+> +			fprintf(stdout, "%-8s 0x%8.8x\n",
+> +				e_mb->name, e_mb->mmio_base);
+> +		}
+> +	}
+> +}
+> +
+> +uint32_t gem_engine_mmio_base(const struct eng_mmio_base_table_s *mbp,
+> +	const char *eng_name)
+> +{
+> +	int ix;
+> +	const struct eng_mmio_base_s *e_mb;
+> +
+> +	if (!mbp)
+> +		return 0;
+> +
+> +	for (ix = 0; ix < mbp->mb_cnt; ix++) {
+> +		e_mb = mbp->mb_tab + ix;
+> +		if (e_mb->mmio_base && !strcmp(eng_name, e_mb->name)) {
+> +			return e_mb->mmio_base;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> diff --git a/lib/i915/gem_mmio_base.h b/lib/i915/gem_mmio_base.h
+> new file mode 100644
+> index 000000000..1e138690f
+> --- /dev/null
+> +++ b/lib/i915/gem_mmio_base.h
+> @@ -0,0 +1,19 @@
+> +//  Copyright (C) 2020 Intel Corporation
+> +//
+> +//  SPDX-License-Identifier: MIT
+> +
+> +#ifndef GEM_MMIO_BASE_H
+> +#define GEM_MMIO_BASE_H
+> +
+> +struct eng_mmio_base_table_s;
+> +
+> +struct eng_mmio_base_table_s *gem_engine_mmio_base_info_get(int fd_dev);
+> +
+> +void gem_engine_mmio_base_info_free(struct eng_mmio_base_table_s *mbp);
+> +
+> +void gem_engine_mmio_base_info_dump(const struct eng_mmio_base_table_s *mbp);
+> +
+> +uint32_t gem_engine_mmio_base(const struct eng_mmio_base_table_s *mbp,
+> +	const char *eng_name);
+> +
+> +#endif /* GEM_MMIO_BASE_H */
+> diff --git a/lib/igt.h b/lib/igt.h
+> index a6c4e44d2..8e70dcb02 100644
+> --- a/lib/igt.h
+> +++ b/lib/igt.h
+> @@ -55,5 +55,6 @@
+>   #include "rendercopy.h"
+>   #include "i915/gem_mman.h"
+>   #include "i915/gem_engine_topology.h"
+> +#include "i915/gem_mmio_base.h"
+>   
+>   #endif /* IGT_H */
+> diff --git a/lib/meson.build b/lib/meson.build
+> index e87e58036..def72c2bd 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -2,6 +2,7 @@ lib_sources = [
+>   	'drmtest.c',
+>   	'i915/gem_context.c',
+>   	'i915/gem_engine_topology.c',
+> +	'i915/gem_mmio_base.c',
+>   	'i915/gem_scheduler.c',
+>   	'i915/gem_submission.c',
+>   	'i915/gem_ring.c',
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
