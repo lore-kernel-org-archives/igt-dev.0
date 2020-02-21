@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 270A788071
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2020 08:11:21 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 062586EEB3
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2020 08:11:48 +0000 (UTC)
 References: <20200220153209.210767-1-martin.peres@linux.intel.com>
- <158221380406.8112.18309601206905414674@skylake-alporthouse-com>
+ <158221394398.8112.3030544091167296957@skylake-alporthouse-com>
 From: Martin Peres <martin.peres@linux.intel.com>
-Message-ID: <56a02b41-4c19-3adc-a380-b6be633b89f2@linux.intel.com>
-Date: Fri, 21 Feb 2020 10:11:18 +0200
+Message-ID: <17c9b20d-5808-809d-1b55-713032797d1a@linux.intel.com>
+Date: Fri, 21 Feb 2020 10:11:45 +0200
 MIME-Version: 1.0
-In-Reply-To: <158221380406.8112.18309601206905414674@skylake-alporthouse-com>
+In-Reply-To: <158221394398.8112.3030544091167296957@skylake-alporthouse-com>
 Content-Language: en-US
 Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci: add a pre-merge blacklist to
  reduce the testing queue
@@ -26,31 +26,26 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-02-20 17:50, Chris Wilson wrote:
+On 2020-02-20 17:52, Chris Wilson wrote:
 > Quoting Martin Peres (2020-02-20 15:32:09)
 >> +###############################################################################
->> +# This tests modesetting-vs-wedged which is a useful thing to check, but it
->> +# seems like it mostly catches unrelated issues which are better caught by
->> +# other tests.
+>> +# This test virtually never failed, yet is responsible for a relatively big
+>> +# execution time on some platforms:
 >> +#
->> +# - shard-skl: 0.5% (~1 minute)
->> +# - shard-kbl: 1% (~1 minute)
+>> +# - shard-skl: 1.3% (~3 minutes)
+>> +# - shard-kbl: 0.3% (~0.3 minutes)
 >> +# - shard-apl: 0.6% (~1 minute)
->> +# - shard-glk: 0.5% (~1 minute)
->> +# - shard-icl: 0.6% (~1.5 minutes)
->> +# - shard-tgl: 0.7% (~1.5 minutes)
+>> +# - shard-glk: 0.4% (50 seconds)
+>> +# - shard-icl: 0.1% (15 seconds)
+>> +# - shard-tgl: 0.1% (15 seconds)
 >> +#
 >> +# Data acquired on 2020-02-20 by Martin Peres
 >> +###############################################################################
->> +igt@gem_eio@kms
+>> +igt@sw_sync@sync_expired_merge
 > 
-> Hah. It caught novel issues, which have not been split out into separate
-> regression tests.
-> 
-> Making sure kms is robust is not a bad thing; you can easily speed this
-> up by reducing the workload.
+> Change from fixed workload to fixed runtime.
 
-Thanks for your patch! I dropped this hunk :)
+Thanks! I reviewed your patch and dropped this hunk :)
 
 > -Chris
 > 
