@@ -1,12 +1,13 @@
 Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri, 21 Feb 2020 13:56:20 +0000
-Message-Id: <20200221135620.2794706-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200220174155.2162242-1-chris@chris-wilson.co.uk>
-References: <20200220174155.2162242-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t] i915/i915_pm_rpm: Only check for suspend
- failures after each debugfs entry
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <1959904.mUKtKn5uA7@jkrzyszt-desk.ger.corp.intel.com>
+References: <20200221094321.2534304-1-chris@chris-wilson.co.uk>
+ <1959904.mUKtKn5uA7@jkrzyszt-desk.ger.corp.intel.com>
+Message-ID: <158229398130.6499.3207948325166302915@skylake-alporthouse-com>
+Date: Fri, 21 Feb 2020 14:06:21 +0000
+Subject: Re: [Intel-gfx] [PATCH i-g-t] i915: Exercise
+ I915_CONTEXT_PARAM_RINGSIZE
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
@@ -18,57 +19,49 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: intel-gfx-bounces@lists.freedesktop.org
 Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Since we check before and then after each debugfs entry, we do not need
-to check before each time as well. We will error out as soon as it does
-fail, at all other times we know the system to be idle.
+Quoting Janusz Krzysztofik (2020-02-21 13:57:26)
+> Hi Chris,
+> 
+> On Friday, February 21, 2020 10:43:21 AM CET Chris Wilson wrote:
+> > +static unsigned int measure_inflight(int i915, unsigned int engine, int timeout)
+> > +{
+> > +     IGT_CORK_FENCE(cork);
+> > +     struct drm_i915_gem_exec_object2 obj = {
+> > +             .handle = batch_create(i915)
+> > +     };
+> > +     struct drm_i915_gem_execbuffer2 execbuf = {
+> > +             .buffers_ptr = to_user_pointer(&obj),
+> > +             .buffer_count = 1,
+> > +             .flags = engine | I915_EXEC_FENCE_IN,
+> > +             .rsvd2 = igt_cork_plug(&cork, i915),
+> > +     };
+> > +     unsigned int count;
+> > +     int err;
+> > +
+> > +     fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) | O_NONBLOCK);
+> > +     igt_set_timeout(timeout, "execbuf blocked!");
+> > +
+> > +     gem_execbuf(i915, &execbuf);
+> > +     for (count = 1; (err = __execbuf(i915, &execbuf)) == 0; count++)
+> > +             ;
+> > +     igt_assert_eq(err, -EWOULDBLOCK);
+> > +     close(execbuf.rsvd2);
+> > +
+> > +     igt_reset_timeout();
+> 
+> Why not right after the 'for' loop is exited?  Don't we unnecessarily risk 
+> a race condition?
 
-No impact on runtime for glk (which apparently is one of the better
-behaving systems).
-
-v2: Assert that we are currently suspended prior to opening the file,
-i.e. that nothing else is waking up the device behind our backs.
-
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Martin Peres <martin.peres@linux.intel.com>
----
- tests/i915/i915_pm_rpm.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 0c2821122..36416a9db 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -183,6 +183,14 @@ static enum pc8_status get_pc8_status(void)
- 		return PC8_DISABLED;
- }
- 
-+static bool is_suspended(void)
-+{
-+	if (has_pc8 && !has_runtime_pm)
-+		return get_pc8_status() == PC8_ENABLED;
-+	else
-+		return igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_SUSPENDED;
-+}
-+
- static bool wait_for_pc8_status(enum pc8_status status)
- {
- 	return igt_wait(get_pc8_status() == status, 10000, 100);
-@@ -932,7 +940,7 @@ static int read_entry(const char *filepath,
- 	int fd;
- 	int rc;
- 
--	igt_assert_f(wait_for_suspended(), "Before opening: %s (%s)\n",
-+	igt_assert_f(is_suspended(), "Before opening: %s (%s)\n",
- 		     filepath + pathinfo->base, filepath);
- 
- 	fd = open(filepath, O_RDONLY | O_NONBLOCK);
--- 
-2.25.1
-
+Just style, I like the grouping of the extended gem_execbuf() into a
+single visual block. Either way it's a few instructions, negligible in
+the grand scheme of unserialised code. We need a considerable safety
+factor in any case, and yet small enough that we don't accidentally pass
+with a random hangcheck.
+-Chris
 _______________________________________________
 Intel-gfx mailing list
 Intel-gfx@lists.freedesktop.org
