@@ -1,13 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C0B46EF24
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2020 09:58:22 +0000 (UTC)
+Date: Fri, 21 Feb 2020 11:58:16 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200221095816.GZ25209@platvala-desk.ger.corp.intel.com>
+References: <20200218163540.12637-1-akeem.g.abodunrin@intel.com>
+ <20200218163540.12637-2-akeem.g.abodunrin@intel.com>
+ <20200219110610.GS25209@platvala-desk.ger.corp.intel.com>
+ <CFEEE81102D91947B9CC368106979EBAC8A1549D@ORSMSX102.amr.corp.intel.com>
+ <20200220101058.GX25209@platvala-desk.ger.corp.intel.com>
+ <CFEEE81102D91947B9CC368106979EBAC8A160B0@ORSMSX102.amr.corp.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 21 Feb 2020 09:42:34 -0000
-Message-ID: <158227815461.7916.17316974251336981289@emeril.freedesktop.org>
-References: <20200220153209.210767-1-martin.peres@linux.intel.com>
-In-Reply-To: <20200220153209.210767-1-martin.peres@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaW50ZWwt?=
- =?utf-8?q?ci=3A_add_a_pre-merge_blacklist_to_reduce_the_testing_queue_=28?=
- =?utf-8?q?rev2=29?=
+Content-Disposition: inline
+In-Reply-To: <CFEEE81102D91947B9CC368106979EBAC8A160B0@ORSMSX102.amr.corp.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tools/generate_cb_buffer: Add
+ script to assemble CB kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,110 +23,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Martin Peres <martin.peres@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Abodunrin, Akeem G" <akeem.g.abodunrin@intel.com>
+Cc: "Luck, Tony" <tony.luck@intel.com>, "Aran, Omer" <omer.aran@intel.com>, "Nikula, Jani" <jani.nikula@intel.com>, "Wilson,
+ Chris P" <chris.p.wilson@intel.com>, "Stewart,
+ David C" <david.c.stewart@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pathi,
+ Pragyansri" <pragyansri.pathi@intel.com>, "Bloomfield,
+ Jon" <jon.bloomfield@intel.com>, "Vetter, Daniel" <daniel.vetter@intel.com>, "Kuoppala, Mika" <mika.kuoppala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: intel-ci: add a pre-merge blacklist to reduce the testing queue (rev2)
-URL   : https://patchwork.freedesktop.org/series/73720/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_7979 -> IGTPW_4205
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4205/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4205 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live_hangcheck:
-    - fi-icl-guc:         [PASS][1] -> [INCOMPLETE][2] ([fdo#108569])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7979/fi-icl-guc/igt@i915_selftest@live_hangcheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4205/fi-icl-guc/igt@i915_selftest@live_hangcheck.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-7500u:       [PASS][3] -> [FAIL][4] ([fdo#111407])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7979/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4205/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s4-devices:
-    - fi-tgl-y:           [INCOMPLETE][5] ([CI#94] / [i915#460]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7979/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4205/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
-
-  * igt@i915_selftest@live_gt_lrc:
-    - {fi-tgl-u}:         [DMESG-FAIL][7] ([i915#1233]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7979/fi-tgl-u/igt@i915_selftest@live_gt_lrc.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4205/fi-tgl-u/igt@i915_selftest@live_gt_lrc.html
-
-  
-#### Warnings ####
-
-  * igt@gem_exec_parallel@contexts:
-    - fi-byt-n2820:       [TIMEOUT][9] ([fdo#112271] / [i915#1084]) -> [FAIL][10] ([i915#694])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_7979/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4205/fi-byt-n2820/igt@gem_exec_parallel@contexts.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
-  [fdo#108569]: https://bugs.freedesktop.org/show_bug.cgi?id=108569
-  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
-  [fdo#112271]: https://bugs.freedesktop.org/show_bug.cgi?id=112271
-  [i915#1084]: https://gitlab.freedesktop.org/drm/intel/issues/1084
-  [i915#1233]: https://gitlab.freedesktop.org/drm/intel/issues/1233
-  [i915#460]: https://gitlab.freedesktop.org/drm/intel/issues/460
-  [i915#694]: https://gitlab.freedesktop.org/drm/intel/issues/694
+On Thu, Feb 20, 2020 at 10:22:48PM +0200, Abodunrin, Akeem G wrote:
+> > On Thu, Feb 20, 2020 at 03:06:09AM +0200, Abodunrin, Akeem G wrote:
+> > > > > +export ASSEMBLY_SOURCE=./tools/assembly_source
+> > > > > +
+> > > > > +function get_help {
+> > > > > +        echo "Usage:    asm_eu_kernel.sh [options]"
+> > > > > +        echo "Remember to run this as root"
+> > > >
+> > > > I can't spot why this would need root.
+> > > Since we are generating new file, and writing to it - the script
+> > > definitely needs root access... otherwise commands like this "
+> > > prefix_header $i915_filename "Media CB Kernel for gen7.5 devices""
+> > > fails
+> > 
+> > That's no reason to need root. That's just a reason to need write access to the
+> > directory where you're creating the files.
+> > 
+> > As you require the script to be run in IGT source root and writing to $cwd, you
+> > need write access to IGT source root. Which shouldn't be root-owned.
+> 
+> I got you - but I don't think this is a big deal - I will remove it in the next spin... but not sure it adds any value at this point.
+> > 
+> > 
+> > > >
+> > > >
+> > > > > +        echo " "
+> > > > > +        echo "Please make sure your MESA tool is compiled, and
+> > > > > + run this script
+> > > > from igt home directory"
+> > > >
+> > > > Mesa written as "Mesa" and IGT written as "IGT". And it's "source
+> > > > root directory", not "home directory".
+> > > >
+> > > > Does the assembler require specific build options for Mesa? Note them here.
+> > >
+> > > Yes, it does - but the options are hardcoded in this script - so, mentioning them
+> > in the help function is irrelevant...
+> > 
+> > I'm asking about the Mesa _build_ options. This script doesn't build Mesa, it just
+> > uses it.
+> > 
+> > From a quick check that would be -Dtools=intel that is required.
+> I don't think Mesa requires Kernel build options to work, AFAIK - it is a standalone tool that could be installed in different ways as mentioned here "https://www.mesa3d.org/install.html" - So, no need for that information.
 
 
-Participating hosts (45 -> 40)
-------------------------------
-
-  Additional (4): fi-ivb-3770 fi-glk-dsi fi-bwr-2160 fi-bsw-n3050 
-  Missing    (9): fi-ilk-m540 fi-hsw-4200u fi-hsw-peppy fi-ilk-650 fi-ctg-p8600 fi-gdg-551 fi-skl-lmem fi-byt-clapper fi-bdw-samus 
+Kernel build options? When I said Mesa, I meant Mesa. The line that
+states "make sure your Mesa tool is compiled" needs to add " with
+-Dtools=intel " because the assembler won't be there otherwise!
 
 
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5453 -> IGTPW_4205
-
-  CI-20190529: 20190529
-  CI_DRM_7979: 45d61ea8faa5bdb50719bed2de3dd2ef8e6f5a12 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4205: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4205/index.html
-  IGT_5453: cae9a5881ed2c5be2c2518a255740b612a927f9a @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4205/index.html
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
