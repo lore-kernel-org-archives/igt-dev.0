@@ -1,126 +1,64 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Fri, 21 Feb 2020 12:17:01 +0100
-Message-Id: <20200221111701.30006-3-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20200221111701.30006-1-janusz.krzysztofik@linux.intel.com>
-References: <20200221111701.30006-1-janusz.krzysztofik@linux.intel.com>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [RFC PATCH i-g-t v2 2/2] tests/gem_userptr_blits:
- Exercise mmap-offset mapping to userptr
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <37e6fded-72f3-6480-6ed8-6591c2d2733b@linux.intel.com>
+References: <20200220174155.2162242-1-chris@chris-wilson.co.uk>
+ <023b88f4-7b98-a376-aee1-db09cec21a98@linux.intel.com>
+ <158227331733.3099.1298656919493160116@skylake-alporthouse-com>
+ <37e6fded-72f3-6480-6ed8-6591c2d2733b@linux.intel.com>
+Message-ID: <158229334931.6499.15177905985585454217@skylake-alporthouse-com>
+Date: Fri, 21 Feb 2020 13:55:49 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/i915_pm_rpm: Only check for
+ suspend failures after each debugfs entry
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, Matthew Auld <matthew.auld@intel.com>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Martin Peres <martin.peres@linux.intel.com>, intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Currently unavoidable lockedp loop related to userptr MMU notifier
-exists in the i915 driver.  For that reason, attempts to set up a
-mmap-offset (or mmap-gtt) mapping to a userptr object may be now
-preventively rejected by the driver.
+Quoting Martin Peres (2020-02-21 08:28:16)
+> On 2020-02-21 10:21, Chris Wilson wrote:
+> > Quoting Martin Peres (2020-02-21 07:33:59)
+> >> On 2020-02-20 19:41, Chris Wilson wrote:
+> >>> Since we check before and then after each debugfs entry, we do not need
+> >>> to check before each time as well. We will error out as soon as it does
+> >>> fail, at all other times we know the system to be idle.
+> >>>
+> >>> No impact on runtime for glk (which apparently is one of the better
+> >>> behaving systems).
+> >>>
+> >>> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> >>> Cc: Martin Peres <martin.peres@linux.intel.com>
+> >>
+> >> I don't like this patch because the first read might not have the gpu
+> >> suspended, and there shouldn't be much overhead in checking twice rather
+> >> than once.
+> >>
+> >> What's your rationale here?
+> > 
+> > We always do a check before after each file. We start in a known state,
+> > and expect to be able to return to that suspended state, and the _real_
+> > guts of the test is that any device access is accounted for.
+> > 
+> > assert(suspended) would be a better check for non-interference.
+> 
+> I would feel better with assert(suspended) added, but would it really
+> speed anything up since I assume wait_for_suspended() should be
+> instantaneous if we are already suspended, right?
 
-A test should exists which checks for that.  Would a mapping attempt
-succeed, the test should trigger the MMU notifier in a way that is
-proven to result in the lockdep slpat.
-
-As that exercise is strictly userptr related, it has been decided to
-add it as a new subtest to gem_userptr_blits.  The new subtest examines
-userptr interaction with every supported mmap-offset type mapping on
-top of it.
-
-v2: Move the subtest from gem_mmap_offset to gem_userptr_blits,
-  - use dynamic subtests (Chris),
-  - don't FAIL but SKIP on mmap-offset attempt failure (Chris),
-  - on success, try to anger lockdep (Chris).
-
-Suggested-by: Chris Wilson <chris@chris-wilson.co.uk
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>
----
-In order to be able to prove the proposed method of angering lockdep
-actually works,  I'm going to submit a kernel patch that reverts commit
-f6c26b555e14 ("drm/i915: Never allow userptr into the new mapping
-types") to be tested on Trybot together with this one, so at least
-non-GTT mmap-offset attempts succeed and the MMU notifier is triggered.
-
-Thanks,
-Janusz
-
- tests/i915/gem_userptr_blits.c | 42 ++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
-
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index fcad374ef..5f716a3ea 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -797,6 +797,42 @@ static int test_map_fixed_invalidate(int fd, uint32_t flags)
- 	return 0;
- }
- 
-+static void test_mmap_offset_invalidate(int fd, const struct mmap_offset *t)
-+{
-+	void *ptr, *map;
-+	uint32_t handle;
-+
-+	/* check if mmap_offset type is supported by hardware, skip if not */
-+	handle = gem_create(fd, PAGE_SIZE);
-+	map = __gem_mmap_offset(fd, handle, 0, PAGE_SIZE,
-+				PROT_READ | PROT_WRITE, t->type);
-+	igt_require_f(map,
-+		      "HW & kernel support for mmap_offset(%s)\n", t->name);
-+	munmap(map, PAGE_SIZE);
-+	gem_close(fd, handle);
-+
-+	/* create userptr object */
-+	igt_assert_eq(posix_memalign(&ptr, PAGE_SIZE, PAGE_SIZE), 0);
-+	gem_userptr(fd, ptr, PAGE_SIZE, 0, userptr_flags, &handle);
-+
-+	/* set up mmap-offset mapping on top of the object, skip if refused */
-+	map = __gem_mmap_offset(fd, handle, 0, PAGE_SIZE,
-+				PROT_READ | PROT_WRITE, t->type);
-+	igt_skip_on_f(!map && errno == -ENODEV,
-+		      "lockdep loop preventive failure possibly occurred\n");
-+	igt_assert(map);
-+
-+	/* set object pages in order to activate MMU notifier for it */
-+	gem_set_domain(fd, handle, t->domain, t->domain);
-+
-+	/* trigger the notifier */
-+	munmap(ptr, PAGE_SIZE);
-+
-+	/* cleanup */
-+	munmap(map, PAGE_SIZE);
-+	gem_close(fd, handle);
-+}
-+
- static int test_forbidden_ops(int fd)
- {
- 	struct drm_i915_gem_pread gem_pread;
-@@ -2170,6 +2206,12 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
- 			}
- 		}
- 
-+		igt_describe("Invalidate pages of userptr with mmap-offset on top");
-+		igt_subtest_with_dynamic("mmap-offset-invalidate")
-+			for_each_mmap_offset_type(fd, t)
-+				igt_dynamic_f("%s", t->name)
-+					test_mmap_offset_invalidate(fd, t);
-+
- 		igt_subtest("coherency-sync")
- 			test_coherency(fd, count);
- 
--- 
-2.21.0
-
+No, only if there was some random bug, we would now get a failure rather
+than papering it over.
+-Chris
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
