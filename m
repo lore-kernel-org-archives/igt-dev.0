@@ -1,13 +1,13 @@
 Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <1959904.mUKtKn5uA7@jkrzyszt-desk.ger.corp.intel.com>
-References: <20200221094321.2534304-1-chris@chris-wilson.co.uk>
- <1959904.mUKtKn5uA7@jkrzyszt-desk.ger.corp.intel.com>
-Message-ID: <158229398130.6499.3207948325166302915@skylake-alporthouse-com>
-Date: Fri, 21 Feb 2020 14:06:21 +0000
-Subject: Re: [Intel-gfx] [PATCH i-g-t] i915: Exercise
- I915_CONTEXT_PARAM_RINGSIZE
+In-Reply-To: <20200221111701.30006-2-janusz.krzysztofik@linux.intel.com>
+References: <20200221111701.30006-1-janusz.krzysztofik@linux.intel.com>
+ <20200221111701.30006-2-janusz.krzysztofik@linux.intel.com>
+Message-ID: <158229472453.6499.5647755301301891180@skylake-alporthouse-com>
+Date: Fri, 21 Feb 2020 14:18:44 +0000
+Subject: Re: [Intel-gfx] [RFC PATCH i-g-t v2 1/2] lib/i915: Restrict mmap
+ types to GTT if no MMAP_OFFSET support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
@@ -15,54 +15,36 @@ List-Post: <mailto:intel-gfx@lists.freedesktop.org>
 List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: intel-gfx-bounces@lists.freedesktop.org
 Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Janusz Krzysztofik (2020-02-21 13:57:26)
-> Hi Chris,
-> 
-> On Friday, February 21, 2020 10:43:21 AM CET Chris Wilson wrote:
-> > +static unsigned int measure_inflight(int i915, unsigned int engine, int timeout)
-> > +{
-> > +     IGT_CORK_FENCE(cork);
-> > +     struct drm_i915_gem_exec_object2 obj = {
-> > +             .handle = batch_create(i915)
-> > +     };
-> > +     struct drm_i915_gem_execbuffer2 execbuf = {
-> > +             .buffers_ptr = to_user_pointer(&obj),
-> > +             .buffer_count = 1,
-> > +             .flags = engine | I915_EXEC_FENCE_IN,
-> > +             .rsvd2 = igt_cork_plug(&cork, i915),
-> > +     };
-> > +     unsigned int count;
-> > +     int err;
-> > +
-> > +     fcntl(i915, F_SETFL, fcntl(i915, F_GETFL) | O_NONBLOCK);
-> > +     igt_set_timeout(timeout, "execbuf blocked!");
-> > +
-> > +     gem_execbuf(i915, &execbuf);
-> > +     for (count = 1; (err = __execbuf(i915, &execbuf)) == 0; count++)
-> > +             ;
-> > +     igt_assert_eq(err, -EWOULDBLOCK);
-> > +     close(execbuf.rsvd2);
-> > +
-> > +     igt_reset_timeout();
-> 
-> Why not right after the 'for' loop is exited?  Don't we unnecessarily risk 
-> a race condition?
-
-Just style, I like the grouping of the extended gem_execbuf() into a
-single visual block. Either way it's a few instructions, negligible in
-the grand scheme of unserialised code. We need a considerable safety
-factor in any case, and yet small enough that we don't accidentally pass
-with a random hangcheck.
--Chris
-_______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+UXVvdGluZyBKYW51c3ogS3J6eXN6dG9maWsgKDIwMjAtMDItMjEgMTE6MTc6MDApCj4gQ29tbWl0
+IGIwZGE4YmI3MDVjMCAoImxpYi9pOTE1OiBmb3JfZWFjaF9tbWFwX29mZnNldF90eXBlKCkiKQo+
+IGludHJvZHVjZWQgYSBtYWNybyB0aGF0IG1ha2VzIGl0IGVhc3kgdG8gcmVwZWF0IGEgdGVzdCBi
+b2R5IHdpdGhpbiBhCj4gbG9vcCBmb3IgZWFjaCBtbWFwLW9mZnNldCBtYXBwaW5nIHR5cGUgc3Vw
+cG9ydGVkIGJ5IHY0IG9mIGk5MTUgTU1BUF9HVFQKPiBBUEkuIEhvd2V2ZXIsIHdoZW4gcnVuIG9u
+IGFuIG9sZGVyIHZlcnNpb24gb2YgdGhlIGRyaXZlciwgdGhvc2UKPiBzdWJ0ZXN0cyBhcmUgYmVs
+aWV2ZWQgdG8gYmUgc3RpbGwgcmVwZWF0ZWQgZm9yIGVhY2gga25vd24gbW1hcC1vZmZzZXQKPiBt
+YXBwaW5nIHR5cGUgd2hpbGUgZWZmZWN0aXZlbHkgZXhlcmNpc2luZyBHVFQgbWFwcGluZyB0eXBl
+IG9ubHkuICBBcwo+IHRoYXQgbWF5IGJlIGNvbmZ1c2luZywgZml4IGl0Lgo+IAo+IEl0IGhhcyBi
+ZWVuIGFzc3VtZWQgdGhhdCB0aGUgbW9kaWZpZWQgbWFjcm8gaXMgc3RpbGwgc3VpdGFibGUgZm9y
+IHVzZQo+IGluc2lkZSBnZW1fbW1hcF9vZmZzZXQgdGVzdCBpdHNlbGYuICBXb3VsZCB0aGF0IG5v
+dCBiZSBjYXNlLAo+IGdlbV9tbWFwX29mZnNldCBjb3VsZCByZWRlZmluZSB0aGUgbWFjcm8gYmFj
+ayB0byBpdHMgaW5pdGlhbCBmb3JtIGZvcgo+IGludGVybmFsIHVzZS4KPiAKPiB2MjogTW92ZSBl
+eHRyYSBjb25kaXRpb24gdG8gYSBzZXBhcmF0ZSBmdW5jdGlvbiBhbmQgY2FsbCBpdCB2aWEKPiAg
+ICAgZm9yX2VhY2hfaWYoKSwgaW4gY2FzZSB3ZSBuZWVkIHRvIGZpeCBpdCBhZ2FpbiBpbiBmdXR1
+cmUgKENocmlzKQo+IHYzOiBGaXggYmxpbmQgY29weS1wYXN0ZQo+IAo+IFN1Z2dlc3RlZC1ieTog
+TWljaGHFgiBXaW5pYXJza2kgPG1pY2hhbC53aW5pYXJza2lAaW50ZWwuY29tPgo+IFNpZ25lZC1v
+ZmYtYnk6IEphbnVzeiBLcnp5c3p0b2ZpayA8amFudXN6LmtyenlzenRvZmlrQGxpbnV4LmludGVs
+LmNvbT4KPiBDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+CgpSZXZp
+ZXdlZC1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+CltJIHdhcyBq
+dXN0IHdhaXRpbmcgZm9yIHRoZSBwcmV2aW91cyBzZW5kIHRvIGhpdCB0aGUgc2hhcmRzIGFzIEkg
+d2FzIHRvbwpsYXp5IHRvIGNoZWNrIG15c2VsZl0KLUNocmlzCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCkludGVsLWdmeCBtYWlsaW5nIGxpc3QKSW50ZWwt
+Z2Z4QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2ludGVsLWdmeAo=
