@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20200220165721.2056191-1-chris@chris-wilson.co.uk>
+References: <20200220174155.2162242-1-chris@chris-wilson.co.uk>
 From: Martin Peres <martin.peres@linux.intel.com>
-Message-ID: <d0d76a0d-d9f6-93fe-0149-6c755a33715a@linux.intel.com>
-Date: Fri, 21 Feb 2020 09:24:21 +0200
+Message-ID: <023b88f4-7b98-a376-aee1-db09cec21a98@linux.intel.com>
+Date: Fri, 21 Feb 2020 09:33:59 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200220165721.2056191-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200220174155.2162242-1-chris@chris-wilson.co.uk>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] sw_sync: Use fixed runtime for
- sync_expired_merge
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/i915_pm_rpm: Only check for
+ suspend failures after each debugfs entry
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,65 +23,46 @@ To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-02-20 18:57, Chris Wilson wrote:
-> Convert from using a fixed number of iterations (1 million), to using a
-> fixed runtime so that we have predictable (and shorter!) run times across
-> a wide variety of machines.
+On 2020-02-20 19:41, Chris Wilson wrote:
+> Since we check before and then after each debugfs entry, we do not need
+> to check before each time as well. We will error out as soon as it does
+> fail, at all other times we know the system to be idle.
+> 
+> No impact on runtime for glk (which apparently is one of the better
+> behaving systems).
 > 
 > Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 > Cc: Martin Peres <martin.peres@linux.intel.com>
 
-Thanks for making this test more reasonable :) Strength is in execution
-count, not execution time :)
+I don't like this patch because the first read might not have the gpu
+suspended, and there shouldn't be much overhead in checking twice rather
+than once.
 
-Reviewed-by: Martin Peres <martin.peres@linux.intel.com>
+What's your rationale here?
+
+To me, the issue is that some platforms suspend in milliseconds while
+some take seconds, and that might be indicative a real bug in the driver.
+
+Martin
 
 > ---
->  tests/sw_sync.c | 17 +++++++----------
->  1 file changed, 7 insertions(+), 10 deletions(-)
+>  tests/i915/i915_pm_rpm.c | 3 ---
+>  1 file changed, 3 deletions(-)
 > 
-> diff --git a/tests/sw_sync.c b/tests/sw_sync.c
-> index 626b6d39f..6e439496d 100644
-> --- a/tests/sw_sync.c
-> +++ b/tests/sw_sync.c
-> @@ -747,30 +747,27 @@ static void test_sync_multi_producer_single_consumer(void)
+> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+> index 0c2821122..bf412b5cc 100644
+> --- a/tests/i915/i915_pm_rpm.c
+> +++ b/tests/i915/i915_pm_rpm.c
+> @@ -932,9 +932,6 @@ static int read_entry(const char *filepath,
+>  	int fd;
+>  	int rc;
 >  
->  static void test_sync_expired_merge(void)
->  {
-> -	int iterations = 1 << 20;
->  	int timeline;
-> -	int i;
-> -	int fence_expired, fence_merged;
-> +	int expired;
->  
->  	timeline = sw_sync_timeline_create();
->  
->  	sw_sync_timeline_inc(timeline, 100);
-> -	fence_expired = sw_sync_timeline_create_fence(timeline, 1);
-> -	igt_assert_f(sync_fence_wait(fence_expired, 0) == 0,
-> +	expired = sw_sync_timeline_create_fence(timeline, 1);
-> +	igt_assert_f(sync_fence_wait(expired, 0) == 0,
->  	             "Failure waiting for expired fence\n");
->  
-> -	fence_merged = sync_fence_merge(fence_expired, fence_expired);
-> -	close(fence_merged);
-> +	close(sync_fence_merge(expired, expired));
->  
-> -	for (i = 0; i < iterations; i++) {
-> -		int fence = sync_fence_merge(fence_expired, fence_expired);
-> +	igt_until_timeout(2) {
-> +		int fence = sync_fence_merge(expired, expired);
->  
->  		igt_assert_f(sync_fence_wait(fence, -1) == 0,
->  			     "Failure waiting on fence\n");
->  		close(fence);
->  	}
->  
-> -	close(fence_expired);
-> +	close(expired);
->  }
->  
->  static void test_sync_random_merge(void)
+> -	igt_assert_f(wait_for_suspended(), "Before opening: %s (%s)\n",
+> -		     filepath + pathinfo->base, filepath);
+> -
+>  	fd = open(filepath, O_RDONLY | O_NONBLOCK);
+>  	if (fd < 0) {
+>  		igt_debug("Failed to open '%s': %m\n", filepath);
 > 
 _______________________________________________
 igt-dev mailing list
