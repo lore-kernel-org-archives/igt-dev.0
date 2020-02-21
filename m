@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB0B86F475
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2020 15:09:45 +0000 (UTC)
-References: <20200221134134.1275235-1-lionel.g.landwerlin@intel.com>
- <158229749227.6499.4384301944862761954@skylake-alporthouse-com>
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <91f8e287-e9b5-6888-80cc-fabb4804b1ef@intel.com>
-Date: Fri, 21 Feb 2020 17:09:42 +0200
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F05A6F489
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Feb 2020 15:38:32 +0000 (UTC)
+From: Akeem G Abodunrin <akeem.g.abodunrin@intel.com>
+Date: Fri, 21 Feb 2020 00:22:42 -0800
+Message-Id: <20200221082243.19807-1-akeem.g.abodunrin@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <158229749227.6499.4384301944862761954@skylake-alporthouse-com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf: reuse the new i915-perf
- library
+Subject: [igt-dev] [PATCH i-g-t v4 0/1] Support to assemble CB kernel for
+ gen7
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,28 +15,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
+To: akeem.g.abodunrin@intel.com, jon.bloomfield@intel.com, sudeep.dutt@intel.com, daniel.vetter@intel.com, joonas.lahtinen@linux.intel.com, jani.nikula@intel.com, chris.p.wilson@intel.com, prathap.kumar.valsan@intel.com, mika.kuoppala@intel.com, francesco.balestrieri@intel.com, ville.syrjala@linux.intel.com, petri.latvala@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 21/02/2020 17:04, Chris Wilson wrote:
-> Quoting Lionel Landwerlin (2020-02-21 13:41:34)
->> Now that most configs are stored inside IGT along with their uuid, we
->> can just source the correct one for that internal library.
->>
->> Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-> Looked at several replacements, and the intel_perf_for_fd(), looks sane.
->
-> Acked-by: Chris Wilson <chris@chris-wilson.co.uk>
-> -Chris
+Summary
+-------
+This is patch adds support to assemble CB kernel for gen7 and gen7.5
+devices. It is needed for "Security mitigation for Intel Gen7/7.5 HWs"
+Intel ID: PSIRT-TA-201910-001/CVEID: CVE-2019-14615.
 
-Thanks. Next step : removing generated code from i915.
+Additional Note
+---------------
+The changes in the IGT GPU tool require latest Mesa tool to work
+correctly. Generated CB kernel are imported to i915 driver, without need
+for additional modifications. Users can use assembly sources provided
+with this patch, and Mesa/igt to assemble CB kernel for verifications.
 
+Akeem G Abodunrin (1):
+  tools/generate_cb_buffer: Add script to assemble CB kernel
 
--Lionel
+ scripts/asm_eu_kernel.sh                | 153 ++++++++++++++++++++++++
+ tools/assembly_source/hsw_clear_buf.asm | 141 ++++++++++++++++++++++
+ tools/assembly_source/ivb_clear_buf.asm | 139 +++++++++++++++++++++
+ 3 files changed, 433 insertions(+)
+ create mode 100755 scripts/asm_eu_kernel.sh
+ create mode 100644 tools/assembly_source/hsw_clear_buf.asm
+ create mode 100644 tools/assembly_source/ivb_clear_buf.asm
+
+-- 
+2.20.1
 
 _______________________________________________
 igt-dev mailing list
