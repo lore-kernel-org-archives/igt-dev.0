@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D0866E9B0
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2020 22:48:28 +0000 (UTC)
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-References: <20200224150358.1472416-1-lionel.g.landwerlin@intel.com>
- <20200224150358.1472416-2-lionel.g.landwerlin@intel.com>
-In-Reply-To: <20200224150358.1472416-2-lionel.g.landwerlin@intel.com>
-Message-ID: <158258450363.26598.11244006457853766017@skylake-alporthouse-com>
-Date: Mon, 24 Feb 2020 22:48:23 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/i915/perf: fix subslice
- availability testing
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 24 Feb 2020 23:12:09 -0000
+Message-ID: <158258592977.28361.15838110607482455919@emeril.freedesktop.org>
+References: <20200224215650.39624-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200224215650.39624-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_i?=
+ =?utf-8?q?915/gem=5Fctx=5Fpersistence=3A_Check_precision_of_hostile_cance?=
+ =?utf-8?q?llation?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,37 +15,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>, igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Lionel Landwerlin (2020-02-24 15:03:58)
-> Fixes the perf oa-formats tests on Gen9LP.
-> 
-> Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-> Fixes: 53f8f541ca ("lib: Add i915_perf library")
-> ---
->  lib/i915/perf.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-> index 9977c745..5b5b7f90 100644
-> --- a/lib/i915/perf.c
-> +++ b/lib/i915/perf.c
-> @@ -157,7 +157,7 @@ intel_perf_for_devinfo(uint32_t device_id,
->  
->                 perf->devinfo.slice_mask |= 1ULL << s;
->                 for (uint32_t ss = 0; ss < topology->max_subslices; ss++) {
-> -                       if (!subslice_available(topology, 0, s))
-> +                       if (!subslice_available(topology, s, ss))
->                                 continue;
+== Series Details ==
 
-Yes, that does seem to match the arguments better.
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
--Chris
+Series: i915/gem_ctx_persistence: Check precision of hostile cancellation
+URL   : https://patchwork.freedesktop.org/series/73874/
+State : failure
+
+== Summary ==
+
+ERROR! This series introduces new undocumented tests:
+
+gem_ctx_persistence@saturated-hostile
+
+Can you document them as per the requirement in the [CONTRIBUTING.md]?
+
+[Documentation] has more details on how to do this.
+
+Here are few examples:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+
+Thanks in advance!
+
+[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
+[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+
+Other than that, pipeline status: SUCCESS.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/112211 for the overview.
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/112211
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
