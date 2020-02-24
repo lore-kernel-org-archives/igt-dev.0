@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A6416E52D
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B4536E52C
  for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2020 15:04:03 +0000 (UTC)
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Date: Mon, 24 Feb 2020 17:03:57 +0200
-Message-Id: <20200224150358.1472416-1-lionel.g.landwerlin@intel.com>
+Date: Mon, 24 Feb 2020 17:03:58 +0200
+Message-Id: <20200224150358.1472416-2-lionel.g.landwerlin@intel.com>
+In-Reply-To: <20200224150358.1472416-1-lionel.g.landwerlin@intel.com>
+References: <20200224150358.1472416-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/perf: add some debug prints
+Subject: [igt-dev] [PATCH i-g-t 2/2] lib/i915/perf: fix subslice
+ availability testing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,37 +24,27 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Helps debug on shards.
+Fixes the perf oa-formats tests on Gen9LP.
 
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Fixes: 53f8f541ca ("lib: Add i915_perf library")
 ---
- tests/perf.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ lib/i915/perf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/perf.c b/tests/perf.c
-index d9bac561..7b11f668 100644
---- a/tests/perf.c
-+++ b/tests/perf.c
-@@ -847,7 +847,8 @@ gen8_sanity_check_test_oa_reports(uint32_t *oa_report0, uint32_t *oa_report1,
- 					    format.c_off);
- 		uint32_t delta = c1[j] - c0[j];
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index 9977c745..5b5b7f90 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -157,7 +157,7 @@ intel_perf_for_devinfo(uint32_t device_id,
  
--		igt_debug("C%d: delta = %"PRIu32"\n", j, delta);
-+		igt_debug("C%d: delta = %"PRIu32", max_delta=%"PRIu32"\n",
-+			  j, delta, max_delta);
- 		igt_assert(delta <= max_delta);
- 	}
- }
-@@ -863,6 +864,9 @@ init_sys_info(void)
- 	intel_perf = intel_perf_for_fd(drm_fd);
- 	igt_require(intel_perf);
+ 		perf->devinfo.slice_mask |= 1ULL << s;
+ 		for (uint32_t ss = 0; ss < topology->max_subslices; ss++) {
+-			if (!subslice_available(topology, 0, s))
++			if (!subslice_available(topology, s, ss))
+ 				continue;
  
-+	igt_debug("n_eu_slices: %"PRIu64"\n", intel_perf->devinfo.n_eu_slices);
-+	igt_debug("n_eu_sub_slices: %"PRIu64"\n", intel_perf->devinfo.n_eu_sub_slices);
-+	igt_debug("n_eus: %"PRIu64"\n", intel_perf->devinfo.n_eus);
- 	igt_debug("timestamp_frequency = %"PRIu64"\n",
- 		  intel_perf->devinfo.timestamp_frequency);
- 	igt_assert_neq(intel_perf->devinfo.timestamp_frequency, 0);
+ 			perf->devinfo.subslice_mask |= 1ULL << (s * bits_per_subslice + ss);
 -- 
 2.25.1
 
