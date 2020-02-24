@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 825946E20E
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2020 09:24:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 135BF6E20E
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2020 09:24:23 +0000 (UTC)
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Date: Mon, 24 Feb 2020 11:24:17 +0200
-Message-Id: <20200224092418.1450732-1-lionel.g.landwerlin@intel.com>
+Date: Mon, 24 Feb 2020 11:24:18 +0200
+Message-Id: <20200224092418.1450732-2-lionel.g.landwerlin@intel.com>
+In-Reply-To: <20200224092418.1450732-1-lionel.g.landwerlin@intel.com>
+References: <20200224092418.1450732-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/i915/perf: fix loading
- configurations
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/perf: debug trace when
+ configuration loading fails
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,43 +24,29 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The configuration ID created is returned not passed by argument.
-
-This would lead the verify first test in the perf tests to fail.
+Helps debugging.
 
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Fixes: 3fd64d9fb8 ("lib/i915-perf: Add support for loading perf configurations")
 ---
- lib/i915/perf.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tests/perf.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/lib/i915/perf.c b/lib/i915/perf.c
-index 35b9aff9..1adf1393 100644
---- a/lib/i915/perf.c
-+++ b/lib/i915/perf.c
-@@ -427,7 +427,7 @@ static void
- load_metric_set_config(struct intel_perf_metric_set *metric_set, int drm_fd)
- {
- 	struct drm_i915_perf_oa_config config;
--	uint64_t config_id = 0;
-+	int ret;
+diff --git a/tests/perf.c b/tests/perf.c
+index 4c77f558..d9bac561 100644
+--- a/tests/perf.c
++++ b/tests/perf.c
+@@ -898,8 +898,10 @@ init_sys_info(void)
  
- 	memset(&config, 0, sizeof(config));
+ 	intel_perf_load_perf_configs(intel_perf, drm_fd);
  
-@@ -442,10 +442,11 @@ load_metric_set_config(struct intel_perf_metric_set *metric_set, int drm_fd)
- 	config.n_flex_regs = metric_set->n_flex_regs;
- 	config.flex_regs_ptr = (uintptr_t) metric_set->flex_regs;
+-	if (test_set->perf_oa_metrics_set == 0)
++	if (test_set->perf_oa_metrics_set == 0) {
++		igt_debug("Unable to load configurations\n");
+ 		return false;
++	}
  
--	while (ioctl(drm_fd, DRM_IOCTL_I915_PERF_ADD_CONFIG, &config) < 0 &&
-+	while ((ret = ioctl(drm_fd, DRM_IOCTL_I915_PERF_ADD_CONFIG, &config)) < 0 &&
- 	       (errno == EAGAIN || errno == EINTR));
+ 	oa_exp_1_millisec = max_oa_exponent_for_period_lte(1000000);
  
--	metric_set->perf_oa_metrics_set = config_id;
-+	if (ret >= 0)
-+		metric_set->perf_oa_metrics_set = ret;
- }
- 
- void
 -- 
 2.25.1
 
