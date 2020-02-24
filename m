@@ -1,13 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A47606E9B2
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2020 23:17:49 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Mon, 24 Feb 2020 23:17:47 +0000
+Message-ID: <034c1dbf156f5578ec7ad76fb074a68015812d70.camel@intel.com>
+References: <20200123190029.19882-1-jose.souza@intel.com>
+ <20200224051842.GF7545@intel.com>
+In-Reply-To: <20200224051842.GF7545@intel.com>
+Content-Language: en-US
+Content-ID: <5140B6A2BECE5D46B0D9073E9DC9FB66@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 24 Feb 2020 23:12:09 -0000
-Message-ID: <158258592977.28361.15838110607482455919@emeril.freedesktop.org>
-References: <20200224215650.39624-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200224215650.39624-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_i?=
- =?utf-8?q?915/gem=5Fctx=5Fpersistence=3A_Check_precision_of_hostile_cance?=
- =?utf-8?q?llation?=
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_su: Print the SU blocks
+ mismatches
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,48 +20,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: i915/gem_ctx_persistence: Check precision of hostile cancellation
-URL   : https://patchwork.freedesktop.org/series/73874/
-State : failure
-
-== Summary ==
-
-ERROR! This series introduces new undocumented tests:
-
-gem_ctx_persistence@saturated-hostile
-
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
-
-[Documentation] has more details on how to do this.
-
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
-
-Thanks in advance!
-
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-
-Other than that, pipeline status: SUCCESS.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/112211 for the overview.
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/112211
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gTW9uLCAyMDIwLTAyLTI0IGF0IDEwOjQ4ICswNTMwLCBBbnNodW1hbiBHdXB0YSB3cm90ZToN
+Cj4gT24gMjAyMC0wMS0yMyBhdCAxMTowMDoyOSAtMDgwMCwgSm9zw6kgUm9iZXJ0byBkZSBTb3V6
+YSB3cm90ZToNCj4gPiBUaGlzIHdpbGwgaGVscCB1cyBkZWJ1ZyBmYWlsdXJlcyBpbiB0aGlzIHRl
+c3QuDQo+ID4gDQo+ID4gU2lnbmVkLW9mZi1ieTogSm9zw6kgUm9iZXJ0byBkZSBTb3V6YSA8am9z
+ZS5zb3V6YUBpbnRlbC5jb20+DQo+ID4gLS0tDQo+ID4gIHRlc3RzL2ttc19wc3IyX3N1LmMgfCA3
+ICsrKysrLS0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDUgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlv
+bnMoLSkNCj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX3BzcjJfc3UuYyBiL3Rlc3Rz
+L2ttc19wc3IyX3N1LmMNCj4gPiBpbmRleCBmMjI0NGIyOS4uOWY0MGM3MzUgMTAwNjQ0DQo+ID4g
+LS0tIGEvdGVzdHMva21zX3BzcjJfc3UuYw0KPiA+ICsrKyBiL3Rlc3RzL2ttc19wc3IyX3N1LmMN
+Cj4gPiBAQCAtMTgzLDkgKzE4MywxMyBAQCBzdGF0aWMgYm9vbCB1cGRhdGVfc2NyZWVuX2FuZF90
+ZXN0KGRhdGFfdA0KPiA+ICpkYXRhKQ0KPiA+ICAJCWlndF9hc3NlcnRfZihkYXRhLT5vcCwgIk9w
+ZXJhdGlvbiBub3QgaGFuZGxlZFxuIik7DQo+ID4gIAl9DQo+ID4gIA0KPiA+IC0JaWYgKHBzcjJf
+d2FpdF9zdShkYXRhLT5kZWJ1Z2ZzX2ZkLCAmc3VfYmxvY2tzKSkNCj4gPiArCWlmIChwc3IyX3dh
+aXRfc3UoZGF0YS0+ZGVidWdmc19mZCwgJnN1X2Jsb2NrcykpIHsNCj4gPiAgCQlyZXQgPSBzdV9i
+bG9ja3MgPT0gRVhQRUNURURfTlVNX1NVX0JMT0NLUzsNCj4gPiAgDQo+ID4gKwkJaWYgKCFyZXQp
+DQo+ID4gKwkJCWlndF9kZWJ1ZygiTm90IG1hdGNoaW5nIFNVIGJsb2NrcyByZWFkOiAldVxuIiwN
+Cj4gPiBzdV9ibG9ja3MpOw0KPiBBRkFJVSB0aGlzIHdpbGwgcHJpbnQgdGhlIFNVIGJsb2NrIGZv
+ciAwdGggZnJhbWUsIGFuZCBsb29rcyBsaWtlDQo+IHRoaXMgdGVzdCBhbHNvIGludGVyZXN0ZWQg
+b25seSBpbiAwdGggZnJhbWUsIGkgYW0ganVzdCBjdXJpb3VzIGhlcmUNCj4gdG8ga25vdyB0aGUg
+DQo+IHVzZSBjYXNlIG9mIFNVIGJsb2NrIGZvciBsYXN0IDggZnJhbWVzLg0KDQowdGggZnJhbWU/
+DQpJdCB3YWl0cyB1cCB0byA0MG1pbGkgdG8gYWxzbyBoYW5kbGUgMzBoeiBwYW5lbHMsIDEwMDAv
+MzA9MzNtaWxpLg0KVGhlIFNVIGJsb2NrcyBzaG91bGQgYmUga2VwdCBzZXQgdW50aWwgbmV4dCBm
+bGlwIG9yIGZyb250YnVmZmVyDQptb2RpZmljYXRpb24uDQoNCj4gPiArCX0NCj4gPiArDQo+ID4g
+IAlyZXR1cm4gcmV0Ow0KPiA+ICB9DQo+ID4gIA0KPiA+IEBAIC0yMDYsNyArMjEwLDYgQEAgc3Rh
+dGljIHZvaWQgcnVuKGRhdGFfdCAqZGF0YSkNCj4gPiAgCQkJcmVzdWx0ID0gdXBkYXRlX3NjcmVl
+bl9hbmRfdGVzdChkYXRhKTsNCj4gPiAgCX0NCj4gPiAgDQo+ID4gLQlpZ3RfZGVidWcoIlNjcmVl
+biBjaGFuZ2VzOiAldVxuIiwgZGF0YS0+c2NyZWVuX2NoYW5nZXMpOw0KPiBJTUhPIHRoaXMgc2Vl
+bXMgdW5yZWFsdGVkIHRvIHRoaXMgcGF0Y2ggY29uc2lkZXJpbmcgaXRzIGNvbW1pdCBsb2csDQo+
+IGNvdWxkIHUgcGxlYXNlDQo+IGFkZCBzb21lIGRlc2NyaXB0aW9uIGFib3V0IHJlbW92YWwgb2Yg
+dGhpcyBsb2cuDQoNCldpbGwgYWRkLCBpdCBpcyByZW1vdmluZyB0aGlzIHVzZWxlc3MgZGVidWcg
+bWVzc2FnZSBJIHByb2JhYmx5IHRvdWdodA0KdGhhdCBzY3JlZW5fY2hhbmdlcyB3b3VsZCBoYXZl
+IHRoZSBpbmZvcm1hdGlvbiB0aGF0IEknbSBhZGRpbmcgaW4gdGhlDQpibG9jayBhZGRlZCBpbiB0
+aGUgcGF0Y2guDQoNCj4gVGhhbmtzLA0KPiBBbnNodW1hbiBHdXB0YS4NCj4gPiAgCWlndF9hc3Nl
+cnRfZihyZXN1bHQsDQo+ID4gIAkJICAgICAiTm8gbWF0Y2hpbmcgc2VsZWN0aXZlIHVwZGF0ZSBi
+bG9ja3MgcmVhZCBmcm9tDQo+ID4gZGVidWdmc1xuIik7DQo+ID4gIH0NCj4gPiAtLSANCj4gPiAy
+LjI1LjANCj4gPiANCj4gPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXw0KPiA+IGlndC1kZXYgbWFpbGluZyBsaXN0DQo+ID4gaWd0LWRldkBsaXN0cy5mcmVl
+ZGVza3RvcC5vcmcNCj4gPiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
+c3RpbmZvL2lndC1kZXYNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
