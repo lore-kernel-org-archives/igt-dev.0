@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0AF636E853
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2020 18:47:28 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C01E6E902
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Feb 2020 19:38:20 +0000 (UTC)
 From: "Abodunrin, Akeem G" <akeem.g.abodunrin@intel.com>
-Date: Mon, 24 Feb 2020 18:47:26 +0000
-Message-ID: <CFEEE81102D91947B9CC368106979EBAC8A18E66@ORSMSX102.amr.corp.intel.com>
+Date: Mon, 24 Feb 2020 19:38:18 +0000
+Message-ID: <CFEEE81102D91947B9CC368106979EBAC8A18F6F@ORSMSX102.amr.corp.intel.com>
 References: <20200221082243.19807-1-akeem.g.abodunrin@intel.com>
  <20200221082243.19807-2-akeem.g.abodunrin@intel.com>
  <20200224094808.GA3839@platvala-desk.ger.corp.intel.com>
- <20200224134758.GY13686@intel.com>
-In-Reply-To: <20200224134758.GY13686@intel.com>
+In-Reply-To: <20200224094808.GA3839@platvala-desk.ger.corp.intel.com>
 Content-Language: en-US
 MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t v4 1/1] tools/generate_cb_buffer: Add
@@ -21,114 +20,159 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, "Latvala, Petri" <petri.latvala@intel.com>
+To: "Latvala, Petri" <petri.latvala@intel.com>
 Cc: "Nikula, Jani" <jani.nikula@intel.com>, "Wilson,
  Chris P" <chris.p.wilson@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Bloomfield,
  Jon" <jon.bloomfield@intel.com>, "Vetter, Daniel" <daniel.vetter@intel.com>, "Kuoppala, Mika" <mika.kuoppala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiBPbiBNb24sIEZlYiAyNCwgMjAyMCBhdCAxMTo0ODowOEFNICswMjAwLCBQZXRyaSBMYXR2YWxh
-IHdyb3RlOg0KPiA+IE9uIEZyaSwgRmViIDIxLCAyMDIwIGF0IDEyOjIyOjQzQU0gLTA4MDAsIEFr
-ZWVtIEcgQWJvZHVucmluIHdyb3RlOg0KPiA+ID4gVGhpcyBwYXRjaCBhZGRzIHNjcmlwdCBhbmQg
-YXBwbGljYWJsZSBhc3NlbWJseSBzb3VyY2VzLCBzbyB0aGF0IHdlDQo+ID4gPiBjYW4gdXNlIGln
-dCB0byBhc3NlbWJsZSBDbGVhciBCYXRjaCBCdWZmZXIga2VybmVsIGZvciBnZW43IGFuZA0KPiA+
-ID4gZ2VuNy41IGRldmljZXMgLSBSZXN1bHRhbnQgaGVhZGVyIGZpbGVzIHdvdWxkIGJlIGltcG9y
-dGVkIHRvIGk5MTUsIGFuZA0KPiB1c2VkIGFzIHRoZXkgYXJlLi4uDQo+ID4gPg0KPiA+ID4gV2l0
-aCB0aGlzIHBhdGNoLCB1c2VyIG5lZWQgdG8gaGF2ZSBtZXNhIGNvbmZpZ3VyZWQgb24gdGhlaXIN
-Cj4gPiA+IHBsYXRmb3JtLCBiZWZvcmUgaWd0IGNvdWxkIGJlIHVzZWQgdG8gYWNoaWV2ZSB0aGUg
-cHVycG9zZSBvZg0KPiA+ID4gYXNzZW1ibGluZyB0aGUga2VybmVsIGZyb20gc291cmNlLg0KPiA+
-ID4NCj4gPiA+IFRoaXMgaXMgbmVlZGVkIGZvciAiU2VjdXJpdHkgbWl0aWdhdGlvbiBmb3IgSW50
-ZWwgR2VuNy83LjUgSFdzIg0KPiA+ID4gSW50ZWwgSUQ6IFBTSVJULVRBLTIwMTkxMC0wMDEvQ1ZF
-SUQ6IENWRS0yMDE5LTE0NjE1DQo+ID4gPg0KPiA+ID4gdjI6IEFkZHJlc3NlZCBmb3JtYXR0aW5n
-LCAtZyBvcHRpb24gYW5kIG90aGVyIG1pbm9yIGlzc3VlcyAoUGV0cmkpDQo+ID4gPiBWMzogVXBk
-YXRlIHNjcmlwdCBkdWUgdG8gc3VnZ2VzdGVkIGNoYW5nZXMgaW4gaTkxNSwgYW5kIE1lc2EgdG9v
-bA0KPiA+ID4gdjQ6IFVwZGF0ZSBoZWxwIGNvbW1lbnQgd2l0aCBNZXNhIGJ1aWxkIG9wdGlvbiB3
-aXRoIG1lc29uIChQZXRyaSkNCj4gPiA+DQo+ID4gPiBDYzogVmlsbGUgU3lyasOkbMOkIDx2aWxs
-ZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4NCj4gPiA+IENjOiBKYW5pIE5pa3VsYSA8amFuaS5u
-aWt1bGFAaW50ZWwuY29tPg0KPiA+ID4gQ2M6IEpvb25hcyBMYWh0aW5lbiA8am9vbmFzLmxhaHRp
-bmVuQGxpbnV4LmludGVsLmNvbT4NCj4gPiA+IENjOiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2
-YWxhQGludGVsLmNvbT4NCj4gPiA+IENjOiBCbG9vbWZpZWxkIEpvbiA8am9uLmJsb29tZmllbGRA
-aW50ZWwuY29tPg0KPiA+ID4gU2lnbmVkLW9mZi1ieTogQWtlZW0gRyBBYm9kdW5yaW4gPGFrZWVt
-LmcuYWJvZHVucmluQGludGVsLmNvbT4NCj4gPiA+IC0tLQ0KPiA+ID4gIHNjcmlwdHMvYXNtX2V1
-X2tlcm5lbC5zaCAgICAgICAgICAgICAgICB8IDE1MyArKysrKysrKysrKysrKysrKysrKysrKysN
-Cj4gPiA+ICB0b29scy9hc3NlbWJseV9zb3VyY2UvaHN3X2NsZWFyX2J1Zi5hc20gfCAxNDENCj4g
-PiA+ICsrKysrKysrKysrKysrKysrKysrKysgIHRvb2xzL2Fzc2VtYmx5X3NvdXJjZS9pdmJfY2xl
-YXJfYnVmLmFzbSB8DQo+ID4gPiAxMzkgKysrKysrKysrKysrKysrKysrKysrDQo+ID4gPiAgMyBm
-aWxlcyBjaGFuZ2VkLCA0MzMgaW5zZXJ0aW9ucygrKQ0KPiA+ID4gIGNyZWF0ZSBtb2RlIDEwMDc1
-NSBzY3JpcHRzL2FzbV9ldV9rZXJuZWwuc2ggIGNyZWF0ZSBtb2RlIDEwMDY0NA0KPiA+ID4gdG9v
-bHMvYXNzZW1ibHlfc291cmNlL2hzd19jbGVhcl9idWYuYXNtDQo+ID4gPiAgY3JlYXRlIG1vZGUg
-MTAwNjQ0IHRvb2xzL2Fzc2VtYmx5X3NvdXJjZS9pdmJfY2xlYXJfYnVmLmFzbQ0KPiA+ID4NCj4g
-PiA+IGRpZmYgLS1naXQgYS9zY3JpcHRzL2FzbV9ldV9rZXJuZWwuc2ggYi9zY3JpcHRzL2FzbV9l
-dV9rZXJuZWwuc2ggbmV3DQo+ID4gPiBmaWxlIG1vZGUgMTAwNzU1IGluZGV4IDAwMDAwMDAwLi4x
-OTU4ODI5Yw0KPiA+ID4gLS0tIC9kZXYvbnVsbA0KPiA+ID4gKysrIGIvc2NyaXB0cy9hc21fZXVf
-a2VybmVsLnNoDQo+ID4gPiBAQCAtMCwwICsxLDE1MyBAQA0KPiA+ID4gKyMhL2Jpbi9iYXNoDQo+
-ID4gPiArIw0KPiA+ID4gKyMgU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVA0KPiA+ID4gKyMN
-Cj4gPiA+ICsjIENvcHlyaWdodCDCqSAyMDIwIEludGVsIENvcnBvcmF0aW9uICMgIyBQZXJtaXNz
-aW9uIGlzIGhlcmVieQ0KPiA+ID4gK2dyYW50ZWQsIGZyZWUgb2YgY2hhcmdlLCB0byBhbnkgcGVy
-c29uIG9idGFpbmluZyBhICMgY29weSBvZiB0aGlzDQo+ID4gPiArc29mdHdhcmUgYW5kIGFzc29j
-aWF0ZWQgZG9jdW1lbnRhdGlvbiBmaWxlcyAodGhlICJTb2Z0d2FyZSIpLCAjIHRvDQo+ID4gPiAr
-ZGVhbCBpbiB0aGUgU29mdHdhcmUgd2l0aG91dCByZXN0cmljdGlvbiwgaW5jbHVkaW5nIHdpdGhv
-dXQNCj4gPiA+ICtsaW1pdGF0aW9uICMgdGhlIHJpZ2h0cyB0byB1c2UsIGNvcHksIG1vZGlmeSwg
-bWVyZ2UsIHB1Ymxpc2gsDQo+ID4gPiArZGlzdHJpYnV0ZSwgc3VibGljZW5zZSwgIyBhbmQvb3Ig
-c2VsbCBjb3BpZXMgb2YgdGhlIFNvZnR3YXJlLCBhbmQNCj4gPiA+ICt0byBwZXJtaXQgcGVyc29u
-cyB0byB3aG9tIHRoZSAjIFNvZnR3YXJlIGlzIGZ1cm5pc2hlZCB0byBkbyBzbywgc3ViamVjdA0K
-PiB0byB0aGUgZm9sbG93aW5nIGNvbmRpdGlvbnM6DQo+ID4gPiArIw0KPiA+ID4gKyMgVGhlIGFi
-b3ZlIGNvcHlyaWdodCBub3RpY2UgYW5kIHRoaXMgcGVybWlzc2lvbiBub3RpY2UgKGluY2x1ZGlu
-Zw0KPiA+ID4gK3RoZSBuZXh0ICMgcGFyYWdyYXBoKSBzaGFsbCBiZSBpbmNsdWRlZCBpbiBhbGwg
-Y29waWVzIG9yDQo+ID4gPiArc3Vic3RhbnRpYWwgcG9ydGlvbnMgb2YgdGhlICMgU29mdHdhcmUu
-DQo+ID4gPiArIw0KPiA+ID4gKyMgVEhFIFNPRlRXQVJFIElTIFBST1ZJREVEICJBUyBJUyIsIFdJ
-VEhPVVQgV0FSUkFOVFkgT0YgQU5ZDQo+IEtJTkQsDQo+ID4gPiArRVhQUkVTUyBPUiAjIElNUExJ
-RUQsIElOQ0xVRElORyBCVVQgTk9UIExJTUlURUQgVE8gVEhFDQo+IFdBUlJBTlRJRVMNCj4gPiA+
-ICtPRiBNRVJDSEFOVEFCSUxJVFksICMgRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0Ug
-QU5EDQo+ID4gPiArTk9OSU5GUklOR0VNRU5ULiAgSU4gTk8gRVZFTlQgU0hBTEwgIyBUSEUgQVVU
-SE9SUyBPUg0KPiBDT1BZUklHSFQNCj4gPiA+ICtIT0xERVJTIEJFIExJQUJMRSBGT1IgQU5ZIENM
-QUlNLCBEQU1BR0VTIE9SIE9USEVSICMgTElBQklMSVRZLA0KPiA+ID4gK1dIRVRIRVIgSU4gQU4g
-QUNUSU9OIE9GIENPTlRSQUNULCBUT1JUIE9SIE9USEVSV0lTRSwgQVJJU0lORw0KPiAjDQo+ID4g
-PiArRlJPTSwgT1VUIE9GIE9SIElOIENPTk5FQ1RJT04gV0lUSCBUSEUgU09GVFdBUkUgT1IgVEhF
-IFVTRQ0KPiBPUiBPVEhFUiBERUFMSU5HUyAjIElOIFRIRSBTT0ZUV0FSRS4NCj4gPiA+ICsNCj4g
-PiA+ICtleHBvcnQgQVNTRU1CTFlfU09VUkNFPS4vdG9vbHMvYXNzZW1ibHlfc291cmNlDQo+ID4g
-PiArDQo+ID4gPiArZnVuY3Rpb24gZ2V0X2hlbHAgew0KPiA+ID4gKyAgICAgICAgZWNobyAiVXNh
-Z2U6ICAgIGFzbV9ldV9rZXJuZWwuc2ggW29wdGlvbnNdIg0KPiA+ID4gKyAgICAgICAgZWNobyAi
-Tm90ZTogaHN3X2NsZWFyX2tlcm5lbC5jL2l2Yl9jbGVhcl9rZXJuZWwuYyBhdXRvbWF0aWNhbGx5
-DQo+IGdlbmVyYXRlZCBieSB0aGlzIHNjcmlwdCBzaG91bGQgbmV2ZXIgYmUgbW9kaWZpZWQgLSBp
-dCB3b3VsZCBiZSBpbXBvcnRlZCB0bw0KPiBpOTE1LCB0byB1c2UgYXMgaXQgaXMuLi4iDQo+ID4g
-PiArICAgICAgICBlY2hvICIgIg0KPiA+ID4gKyAgICAgICAgZWNobyAiUGxlYXNlIG1ha2Ugc3Vy
-ZSB5b3VyIE1lc2EgdG9vbCBpcyBjb21waWxlZCB3aXRoICItDQo+IER0b29scz1pbnRlbCIgYW5k
-ICItRGRyaS1kcml2ZXJzPWk5NjUiLCBhbmQgcnVuIHRoaXMgc2NyaXB0IGZyb20gSUdUIHNvdXJj
-ZQ0KPiByb290IGRpcmVjdG9yeSINCj4gPiA+ICsgICAgICAgIGVjaG8gIiAiDQo+ID4gPiArICAg
-ICAgICBlY2hvICJPcHRpb25zIGFyZToiDQo+ID4gPiArICAgICAgICBlY2hvICIgLWggICAgICAg
-ICAgICAgICAgICAgICAgIGRpc3BsYXkgdGhpcyBoZWxwIG1lc3NhZ2UsIGFuZCBleGl0Ig0KPiA+
-ID4gKyAgICAgICAgZWNobyAiIC1nPXBsYXRmb3JtICAgICAgICAgICAgICBnZW5lcmF0aW9uIG9m
-IGRldmljZTogdXNlICJoc3ciIGZvcg0KPiBnZW43LjUsIGFuZCAiaXZiIiBmb3IgZ2VuNyBkZXZp
-Y2VzIg0KPiA+ID4gKyAgICAgICAgZWNobyAiIC1vPW5hbWVfb2ZfZmlsZSAgICAgICAgICBvdXRw
-dXQgZmlsZSB0byBzdG9yZSBNZXNhIGFzc2VtYmxlZCBjLQ0KPiBsaXRlcmFsIGZvciB0aGUgZGV2
-aWNlIC0gSWYgbm9uZSBzcGVjaWZpZWQsIGRlZmF1bHQgZmlsZSB3aWxsIGJlIHVzZWQgLSBpdmIv
-aHN3LQ0KPiBjYl9hc3NlbWJsZWQiDQo+ID4gPiArICAgICAgICBlY2hvICIgLW09bWVzYSAgICAg
-ICAgICAgICAgICAgIE1lc2Egc291cmNlIGRpcmVjdG9yeSINCkFzIHBvaW50ZWQgb3V0IGhlcmUs
-IHVzZXIgb25seSBzcGVjaWZ5IE1lc2Egc291cmNlIGRpcmVjdG9yeS4uLg0KDQo+ID4gPiArCWVz
-YWMNCj4gPiA+ICtkb25lDQo+ID4gPiArc2hpZnQgJCgoJE9QVElORC0xKSkNCj4gPiA+ICsNCj4g
-PiA+ICtpZiBbICJ4JDEiICE9ICJ4IiBdOyB0aGVuDQo+ID4gPiArCWVjaG8gLWUgIlVua25vd24g
-b3B0aW9uOiAkMVxuIg0KPiA+ID4gKwlnZXRfaGVscA0KPiA+ID4gKwlleGl0IDENCj4gPiA+ICtm
-aQ0KPiA+ID4gKw0KPiA+ID4gK0k5NjVfQVNNPSIkbWVzYV9kaXIvYnVpbGQvZGVidWcvc3JjL2lu
-dGVsL3Rvb2xzL2k5NjVfYXNtIg0KPiA+DQo+ID4gU2hvdWxkIHRoaXMgYmUgJG1lc2FfZGlyL2J1
-aWxkL3NyYy9pbnRlbC90b29scy9pOTY1X2FzbSBpbnN0ZWFkPw0KIA0KPiBCb3RoIGFzc3VtZSB0
-aGUgdXNlciBzcGVjaWVkIHRoZSBidWlsZCBkaXJlY3RseSBleGFjdGx5IGxpa2Ugc28gd2hlbiBi
-dWlsZGluZw0KPiBNZXNhLiBXZSBzaG91bGQgcHJvYmFibHkgYXNrIHRoZSB1c2VyIHRvIHBvaW50
-IGF0IGVpdGhlciB0aGUgYmluYXJ5IGl0c2VsZiBvcg0KPiB0aGUgYnVpbGQgZGlyZWN0b3J5Lg0K
-DQpZZXMsIHdlIGNvdWxkIGRvIHRoYXQgLSBidXQgdGhhdCB3b3VsZCBiZSBhIGxvbmcgImNvbXBs
-ZXgiIGNvbW1hbmQgbGluZSBvcHRpb24gZm9yIHRoZSBzY3JpcHQg8J+Yig0KTWF5IGJlIHdlIGNh
-biBjaGVjayBmb3IgdmFyaW91cyBvcHRpb25zIHdoZXJlIGJpbmFyeSBjb3VsZCBiZSBpbiB0aGUg
-c2NyaXB0IC0gSSBkb24ndCBrbm93IGhvdyBtYW55IG90aGVyIGJ1aWxkIG9wdGlvbnMgTWVzYSBo
-YXMsIGJ1dCB3ZSBrbm93IHRoYXQgdGhpcyBpcyBjb21tb24gIiBzcmMvaW50ZWwvdG9vbHMvaTk2
-NV9hc20iLCB3aGF0IHByZWNlZGVzIHRoYXQgaXMgdGhlIG9wdGlvbmFsIHBhcnQgbm93LiANCg0K
-VGhhdCBiZWluZyBzYWlkLCB3ZSBjYW4gYWx3YXlzIHVwZGF0ZSB0aGlzIHNjcmlwdCwgZXNwZWNp
-YWxseSBpZiBhbnl0aGluZyBjaGFuZ2VzIGluIE1lc2EgLSBidXQgc2luY2UgdGhpcyBhZGRyZXNz
-IHNlY3VyaXR5IGlzc3VlLCBJIGhvbmVzdGx5IGRvbid0IGtub3cgaG93IGxvbmcgd2UgY2FuIGFm
-Zm9yZCB0byBkZWxheSB0aGlzLCBhbmQgb3RoZXIgcmVsYXRlZCBwYXRjaGVzLg0KDQpUaGFua3Ms
-DQp+QWtlZW0NCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBz
-Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+> > +export ASSEMBLY_SOURCE=./tools/assembly_source
+> > +
+> > +function get_help {
+> > +        echo "Usage:    asm_eu_kernel.sh [options]"
+> > +        echo "Note: hsw_clear_kernel.c/ivb_clear_kernel.c automatically
+> generated by this script should never be modified - it would be imported to
+> i915, to use as it is..."
+> > +        echo " "
+> > +        echo "Please make sure your Mesa tool is compiled with "-
+> Dtools=intel" and "-Ddri-drivers=i965", and run this script from IGT source
+> root directory"
+> > +        echo " "
+> > +        echo "Options are:"
+> > +        echo " -h                       display this help message, and exit"
+> > +        echo " -g=platform              generation of device: use "hsw" for gen7.5,
+> and "ivb" for gen7 devices"
+> > +        echo " -o=name_of_file          output file to store Mesa assembled c-
+> literal for the device - If none specified, default file will be used - ivb/hsw-
+> cb_assembled"
+> > +        echo " -m=mesa                  Mesa source directory"
+> > +        echo " "
+> > +        echo " Usage example: \"scripts/asm_eu_kernel.sh -g hsw -o
+> hsw_clear_buffer.h -m /path/to/Mesa/source/directory\""
+> > +}
+> > +
+> > +function include_array # $1=array_name {
+> > +	echo "static const u32 $(basename $1)_clear_kernel[] = {"
+> > +}
+> > +function prefix_header # $1=filename $2=comment {
+> > +	array_name=$(include_array $1)
+> > +
+> > +	cat <<EOF
+> > +// SPDX-License-Identifier: MIT
+> > +/*
+> > + * Copyright (c) 2020 Intel Corporation
+> > + *
+> > + * Generated by: IGT Gpu Tools on $(date)  */
+> > +
+> > +$array_name
+> > +EOF
+> > +}
+> > +
+> > +function postfix_footer # filename
+> > +{
+> > +	cat <<EOF
+> > +};
+> > +EOF
+> > +}
+> > +
+> > +function check_output_file #check output file {
+> > +        if [ "x$output_file" != "x" ]; then
+> > +                if [ -f "$output_file" ]; then
+> > +                        echo -e "Warning: The \"$output_file\" file already exist -
+> choose another file\n"
+> > +                        get_help
+> > +                        exit 1
+> > +                fi
+> > +        else
+> > +                # It is okay to overwrite default file created
+> > +                echo -e "Output file not specified - using default file
+> \"$gen_device-cb_assembled\"\n"
+> > +                output_file="$gen_device-cb_assembled"
+> > +        fi
+> > +}
+> > +function asm_cb_kernel # as-root <args> {
+> > +        check_output_file
+> > +
+> > +        # Using i965_asm tool to assemble hex file from assembly source
+> > +        $I965_ASM -g $gen_device -t c_literal  $input_asm_source -o
+> > + $output_file
+> > +
+> > +        # Generate header file
+> > +        if [ "$gen_device" == "hsw" ]; then
+> > +                echo "Generating gen7.5 CB Kernel assembled file
+> \"hsw_clear_kernel.c\" for i915 driver..."
+> > +
+> > +                i915_filename=hsw_clear_kernel.c
+> > +                prefix_header $gen_device > $i915_filename
+> > +                cat $output_file >> $i915_filename
+> > +                postfix_footer $i915_filename >> $i915_filename
+> > +
+> > +        elif [ "$gen_device" == "ivb" ]; then
+> > +                echo "Generating gen7 CB Kernel assembled file
+> \"ivb_clear_kernel.c\" for i915 driver..."
+> > +
+> > +                i915_filename=ivb_clear_kernel.c
+> > +                prefix_header $gen_device > $i915_filename
+> > +                cat $output_file >> $i915_filename
+> > +                postfix_footer $i915_filename >> $i915_filename
+> > +        fi
+> > +}
+> > +
+> > +while getopts "hg:o:m:" opt; do
+> > +	case $opt in
+> > +		h) get_help; exit 0;;
+> > +		g) gen_device="$OPTARG" ;;
+> > +		o) output_file="$OPTARG" ;;
+> > +                m) mesa_dir="$OPTARG" ;;
+> > +		\?)
+> > +			echo -e "Unknown option: -$OPTARG\n"
+> > +			get_help
+> > +			exit 1
+> > +			;;
+> > +	esac
+> > +done
+> > +shift $(($OPTIND-1))
+> > +
+> > +if [ "x$1" != "x" ]; then
+> > +	echo -e "Unknown option: $1\n"
+> > +	get_help
+> > +	exit 1
+> > +fi
+> > +
+> > +I965_ASM="$mesa_dir/build/debug/src/intel/tools/i965_asm"
+> 
+> Should this be $mesa_dir/build/src/intel/tools/i965_asm instead?
+> 
+> 
+> After changing that I get
+> 
+> # scripts/asm_eu_kernel.sh -m ~/src/mesa -ghsw Output file not specified -
+> using default file "hsw-cb_assembled"
+> 
+> ./tools/assembly_source/hsw_clear_buf.asm: 71: syntax error at "<"
+> Generating gen7.5 CB Kernel assembled file "hsw_clear_kernel.c" for i915
+> driver...
+> 
+> 
+> And then 'hsw-cb_assembled' is an empty file, 'hsw_clear_kernel.c'
+> contains an empty array but the script exited with success...
+> 
+> Line 71 in the asm is
+> shr(1)          g3<1>D          sr0<0,1,0>D     12D             { align1 1N };
+> 
+> 
+> 
+> --
+> Petri Latvala
+Yes, that is true - I might have forgotten to mention in the cover letter that changes to Mesa might have not been merged yet, albeit I mentioned that " The changes in the IGT GPU tool require latest Mesa tool to work correctly"  So, without new changes to assembler/disassembler in the Mesa tool, you will see those error messages.
+
+Regards,
+~Akeem
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
