@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F03836EB45
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2020 16:55:48 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 18A806E22D
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2020 16:56:57 +0000 (UTC)
 From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Date: Tue, 25 Feb 2020 18:55:33 +0200
-Message-ID: <20200225165533.213942-1-arkadiusz.hiler@intel.com>
+Date: Tue, 25 Feb 2020 18:56:41 +0200
+Message-ID: <20200225165641.214143-1-arkadiusz.hiler@intel.com>
 In-Reply-To: <20200225165246.213606-1-arkadiusz.hiler@intel.com>
 References: <20200225165246.213606-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 4/9] runner/runner_tests: Extract helper for
- inspecting test result
+Subject: [igt-dev] [PATCH i-g-t 7/9] lib/chamelium: Make it clear that
+ function asserts
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,95 +25,93 @@ To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-to make this bit of code more readable and to reuse it in the following patch
+chamelium_wait_reachable() is asserting internally if the chamelium not
+reachable. Let's make it return bool instead and create
+void chamelium_assert_reachable() that fails the run.
+
+v2: Add docs (Petri)
 
 Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 ---
- runner/runner_tests.c | 37 ++++++++++++++++++++++++-------------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+ lib/igt_chamelium.c   | 24 +++++++++++++++++++++---
+ lib/igt_chamelium.h   |  3 ++-
+ tests/kms_chamelium.c |  4 ++--
+ 3 files changed, 25 insertions(+), 6 deletions(-)
 
-diff --git a/runner/runner_tests.c b/runner/runner_tests.c
-index 2f4e0abb..139ee9fd 100644
---- a/runner/runner_tests.c
-+++ b/runner/runner_tests.c
-@@ -32,6 +32,23 @@ static const char testdatadir[] = TESTDATA_DIRECTORY;
- /* The total number of test binaries in runner/testdata/ */
- #define NUM_TESTDATA_BINARIES 4
+diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+index b347682d..28706012 100644
+--- a/lib/igt_chamelium.c
++++ b/lib/igt_chamelium.c
+@@ -374,11 +374,29 @@ static bool __chamelium_is_reachable(struct chamelium *chamelium)
+ 	return true;
+ }
  
-+static const char *igt_get_result(struct json_object *tests, const char* testname)
-+{
-+	struct json_object *obj;
-+
-+	igt_assert(json_object_object_get_ex(tests, testname, &obj));
-+	igt_assert(json_object_object_get_ex(obj, "result", &obj));
-+
-+	return json_object_get_string(obj);
-+}
-+
-+static void igt_assert_no_result_for(struct json_object *tests, const char* testname)
-+{
-+	struct json_object *obj;
-+	igt_assert(!json_object_object_get_ex(tests, testname, &obj));
-+}
-+
-+
- static void igt_assert_eqstr(const char *one, const char *two)
+-void chamelium_wait_reachable(struct chamelium *chamelium, int timeout)
++/**
++ * chamelium_wait_reachable:
++ * @chamelium: The Chamelium instance to use
++ * @timeout: Time (in seconds) to wait for chamelium to be reachable
++ *
++ * Returns: %true if the Chamelium is reachable, %false otherwise.
++ */
++bool chamelium_wait_reachable(struct chamelium *chamelium, int timeout)
  {
- 	if (one == NULL && two == NULL)
-@@ -1438,7 +1455,7 @@ igt_main
+-	bool chamelium_online = igt_wait(__chamelium_is_reachable(chamelium),
+-					 timeout * 1000, 100);
++	return igt_wait(__chamelium_is_reachable(chamelium),
++			timeout * 1000, 100);
++}
  
- 		igt_subtest("dynamic-subtests-in-testlist") {
- 			struct execute_state state;
--			struct json_object *results, *obj;
-+			struct json_object *results, *tests;
- 			const char *argv[] = { "runner",
- 					       "--test-list", filename,
- 					       testdatadir,
-@@ -1459,16 +1476,13 @@ igt_main
- 			igt_assert_f((results = generate_results_json(dirfd)) != NULL,
- 				     "Results parsing failed\n");
++/**
++ * chamelium_assert_reachable:
++ * @chamelium: The Chamelium instance to use
++ * @timeout: Time (in seconds) to wait for chamelium to be reachable
++ *
++ * Asserts that the chamelium is reachable.
++ */
++void chamelium_assert_reachable(struct chamelium *chamelium, int timeout)
++{
++	bool chamelium_online = chamelium_wait_reachable(chamelium, timeout);
+ 	igt_assert_f(chamelium_online,
+ 		     "Couldn't connect to Chamelium for %ds", timeout);
+ }
+diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
+index d03c924a..db6803b1 100644
+--- a/lib/igt_chamelium.h
++++ b/lib/igt_chamelium.h
+@@ -112,7 +112,8 @@ drmModeConnector *chamelium_port_get_connector(struct chamelium *chamelium,
+ 					       bool reprobe);
+ const char *chamelium_port_get_name(struct chamelium_port *port);
  
--			obj = results;
--			igt_assert(json_object_object_get_ex(obj, "tests", &obj));
-+			igt_assert(json_object_object_get_ex(results, "tests", &tests));
+-void chamelium_wait_reachable(struct chamelium *chamelium, int timeout);
++bool chamelium_wait_reachable(struct chamelium *chamelium, int timeout);
++void chamelium_assert_reachable(struct chamelium *chamelium, int timeout);
+ void chamelium_plug(struct chamelium *chamelium, struct chamelium_port *port);
+ void chamelium_unplug(struct chamelium *chamelium, struct chamelium_port *port);
+ bool chamelium_is_plugged(struct chamelium *chamelium,
+diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
+index 5c4a1892..8243d2ef 100644
+--- a/tests/kms_chamelium.c
++++ b/tests/kms_chamelium.c
+@@ -376,7 +376,7 @@ try_suspend_resume_hpd(data_t *data, struct chamelium_port *port,
  
- 			/* Check that the dynamic subtest we didn't request is not reported */
--			igt_assert(!json_object_object_get_ex(obj, "igt@dynamic@dynamic-subtest@failing", NULL));
-+			igt_assert_no_result_for(tests, "igt@dynamic@dynamic-subtest@failing");
+ 	igt_system_suspend_autoresume(state, test);
+ 	igt_assert(wait_for_hotplug(mon, &timeout));
+-	chamelium_wait_reachable(data->chamelium, ONLINE_TIMEOUT);
++	chamelium_assert_reachable(data->chamelium, ONLINE_TIMEOUT);
  
- 			/* Check that the dynamic subtest we did request is */
--			igt_assert(json_object_object_get_ex(obj, "igt@dynamic@dynamic-subtest@passing", &obj));
--			igt_assert(json_object_object_get_ex(obj, "result", &obj));
--			igt_assert_eqstr(json_object_get_string(obj), "pass");
-+			igt_assert_eqstr(igt_get_result(tests, "igt@dynamic@dynamic-subtest@passing"), "pass");
+ 	if (port) {
+ 		igt_assert_eq(reprobe_connector(data, port), target_state);
+@@ -493,7 +493,7 @@ test_suspend_resume_edid_change(data_t *data, struct chamelium_port *port,
  
- 			igt_assert_eq(json_object_put(results), 1);
- 		}
-@@ -1496,7 +1510,7 @@ igt_main
+ 	igt_system_suspend_autoresume(state, test);
+ 	igt_assert(igt_hotplug_detected(mon, HOTPLUG_TIMEOUT));
+-	chamelium_wait_reachable(data->chamelium, ONLINE_TIMEOUT);
++	chamelium_assert_reachable(data->chamelium, ONLINE_TIMEOUT);
  
- 		igt_subtest("dynamic-subtest-failure-should-not-cause-warn") {
- 			struct execute_state state;
--			struct json_object *results, *obj;
-+			struct json_object *results, *tests;
- 			const char *argv[] = { "runner",
- 					       "-t", "dynamic",
- 					       testdatadir,
-@@ -1513,12 +1527,9 @@ igt_main
- 			igt_assert_f((results = generate_results_json(dirfd)) != NULL,
- 				     "Results parsing failed\n");
+ 	get_connectors_link_status_failed(data, link_status_failed[1]);
  
--			obj = results;
--			igt_assert(json_object_object_get_ex(obj, "tests", &obj));
--			igt_assert(json_object_object_get_ex(obj, "igt@dynamic@dynamic-subtest@passing", &obj));
--			igt_assert(json_object_object_get_ex(obj, "result", &obj));
-+			igt_assert(json_object_object_get_ex(results, "tests", &tests));
- 
--			igt_assert_eqstr(json_object_get_string(obj), "pass");
-+			igt_assert_eqstr(igt_get_result(tests, "igt@dynamic@dynamic-subtest@passing"), "pass");
- 
- 			igt_assert_eq(json_object_put(results), 1);
- 		}
 -- 
 2.24.1
 
