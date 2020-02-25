@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 336E96E22D
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2020 16:57:43 +0000 (UTC)
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Date: Tue, 25 Feb 2020 18:57:18 +0200
-Message-ID: <20200225165718.214268-1-arkadiusz.hiler@intel.com>
-In-Reply-To: <20200225165246.213606-1-arkadiusz.hiler@intel.com>
-References: <20200225165246.213606-1-arkadiusz.hiler@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 56A686EB7B
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Feb 2020 18:17:43 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Tue, 25 Feb 2020 18:17:33 +0000
+Message-ID: <383628f063895a6b731e9176a48475304a40ace8.camel@intel.com>
+References: <20200123190029.19882-1-jose.souza@intel.com>
+ <20200224051842.GF7545@intel.com>
+ <034c1dbf156f5578ec7ad76fb074a68015812d70.camel@intel.com>
+ <20200225040048.GG7545@intel.com>
+In-Reply-To: <20200225040048.GG7545@intel.com>
+Content-Language: en-US
+Content-ID: <3C6A61AA4241314ABB05E2B0D0A3DFCE@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 9/9] lib/kms: Try to plug all Chamelium
- ports, abort if it fails
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_su: Print the SU blocks
+ mismatches
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,268 +22,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Using chamelium as a display for non-chamelium-aware test is
-challenging. The board can be left in multiple different states after
-kms_chamelium tests even though we have atexit() handlers and other
-measures which try to assure that all ports are plugged in. Sadly this
-is not 100% reliable. We also had a few boards hard hanging (happens
-very seldom) and requiring manual intervention.
-
-This leads to changes in the testing configuration - we may end up with
-any number of connectors plugged in which makes a lot of kms_ tests to
-flip between skip and pass depending on a run.
-
-In an attempt to make connectors state less random this patch makes
-igt_display_require() chamelium-aware. If chamelium is configured for
-given machine we try to reach it and make sure everything is plugged in.
-If we fail to do so we abort the execution because the testing
-configuration is an unknown.
-
-For machines without a configured chamelium this boils down to a nop.
-
-I have run a bunch of tests and measured how much time we spend in the
-Chamelium section of igt_display_require() (n = 1000) with chamelium
-configured:
-
-    Min: 0.0030s     Max:    0.0113s
-    Avg: 0.0089s     Median: 0.0089s
-
-With ~1000 of KMS subtests in a run it's only a mere 9s.
-
-This will however add a bit of extra execution time to test skips
-because of doing kmstest_set_vt_graphics_mode() and
-igt_display_require() before even checking whether Chamelium is
-configured.
-
-v2: do kmstest_set_vt_graphics_mode() before requiring display (Petri)
-
-Fixes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/20
-Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
----
- lib/igt_chamelium.c         | 55 +++++++++++++++++++++++++++++++++++--
- lib/igt_chamelium.h         |  1 +
- lib/igt_kms.c               | 18 ++++++++++++
- tests/kms_chamelium.c       | 13 +++++----
- tests/kms_color_chamelium.c |  7 +++--
- 5 files changed, 83 insertions(+), 11 deletions(-)
-
-diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-index 874e161b..3c9faeeb 100644
---- a/lib/igt_chamelium.c
-+++ b/lib/igt_chamelium.c
-@@ -1992,7 +1992,13 @@ static size_t chamelium_get_video_ports(struct chamelium *chamelium,
- 	int res_len, i, port_id;
- 	size_t port_ids_len = 0;
- 
--	res = chamelium_rpc(chamelium, NULL, "GetSupportedInputs", "()");
-+	res = __chamelium_rpc(chamelium, NULL, "GetSupportedInputs", "()");
-+	if (chamelium->env.fault_occurred) {
-+		igt_debug("Chamelium RPC call failed: %s\n",
-+		     chamelium->env.fault_string);
-+
-+		return -1;
-+	}
- 	res_len = xmlrpc_array_size(&chamelium->env, res);
- 	for (i = 0; i < res_len; i++) {
- 		xmlrpc_array_read_item(&chamelium->env, res, i, &res_port);
-@@ -2195,6 +2201,8 @@ static bool chamelium_autodiscover(struct chamelium *chamelium, int drm_fd)
- 	candidate_ports_len = chamelium_get_video_ports(chamelium,
- 							candidate_ports);
- 
-+	igt_assert(candidate_ports_len > 0);
-+
- 	igt_debug("Starting Chamelium port auto-discovery on %zu ports\n",
- 		  candidate_ports_len);
- 	igt_gettime(&start);
-@@ -2313,14 +2321,14 @@ static bool chamelium_read_config(struct chamelium *chamelium)
- 	GError *error = NULL;
- 
- 	if (!igt_key_file) {
--		igt_warn("No configuration file available for chamelium\n");
-+		igt_debug("No configuration file available for chamelium\n");
- 		return false;
- 	}
- 
- 	chamelium->url = g_key_file_get_string(igt_key_file, "Chamelium", "URL",
- 					       &error);
- 	if (!chamelium->url) {
--		igt_warn("Couldn't read chamelium URL from config file: %s\n",
-+		igt_debug("Couldn't read chamelium URL from config file: %s\n",
- 			 error->message);
- 		return false;
- 	}
-@@ -2416,6 +2424,9 @@ error:
-  * Chamelium configuration. This must be called first before trying to use the
-  * chamelium.
-  *
-+ * Needs to happen *after* igt_display_require() as otherwise the board will
-+ * get reset.
-+ *
-  * If we fail to establish a connection with the chamelium, fail to find a
-  * configured connector, etc. we fail the current test.
-  *
-@@ -2495,6 +2506,44 @@ void chamelium_deinit(struct chamelium *chamelium)
- 	free(chamelium);
- }
- 
-+bool chamelium_plug_all(struct chamelium *chamelium)
-+{
-+	size_t port_count;
-+	int port_ids[CHAMELIUM_MAX_PORTS];
-+	xmlrpc_value *v;
-+	v = __chamelium_rpc(chamelium, NULL, "Reset", "()");
-+
-+	if (v != NULL)
-+		xmlrpc_DECREF(v);
-+
-+	if (chamelium->env.fault_occurred) {
-+		igt_debug("Chamelium RPC call failed: %s\n",
-+		     chamelium->env.fault_string);
-+
-+		return false;
-+	}
-+
-+	port_count = chamelium_get_video_ports(chamelium, port_ids);
-+	if (port_count <= 0)
-+		return false;
-+
-+	for (int i = 0; i < port_count; ++i) {
-+		v = __chamelium_rpc(chamelium, NULL, "Plug", "(i)", port_ids[i]);
-+
-+		if (v != NULL)
-+			xmlrpc_DECREF(v);
-+
-+		if (chamelium->env.fault_occurred) {
-+			igt_debug("Chamelium RPC call failed: %s\n",
-+			     chamelium->env.fault_string);
-+
-+			return false;
-+		}
-+	}
-+
-+	return true;
-+}
-+
- igt_constructor {
- 	/* Frame dumps can be large, so we need to be able to handle very large
- 	 * responses
-diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
-index 3b9a1242..fb273b1a 100644
---- a/lib/igt_chamelium.h
-+++ b/lib/igt_chamelium.h
-@@ -217,5 +217,6 @@ void chamelium_crop_analog_frame(struct chamelium_frame_dump *dump, int width,
- void chamelium_destroy_frame_dump(struct chamelium_frame_dump *dump);
- void chamelium_destroy_audio_file(struct chamelium_audio_file *audio_file);
- void chamelium_infoframe_destroy(struct chamelium_infoframe *infoframe);
-+bool chamelium_plug_all(struct chamelium *chamelium);
- 
- #endif /* IGT_CHAMELIUM_H */
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 54de45e5..7f9fafb3 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -58,6 +58,9 @@
- #include "igt_device.h"
- #include "igt_sysfs.h"
- #include "sw_sync.h"
-+#ifdef HAVE_CHAMELIUM
-+#include "igt_chamelium.h"
-+#endif
- 
- /**
-  * SECTION:igt_kms
-@@ -1886,6 +1889,21 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	if (!resources)
- 		goto out;
- 
-+#ifdef HAVE_CHAMELIUM
-+	{
-+		struct chamelium *chamelium;
-+
-+		chamelium = chamelium_init_rpc_only();
-+		if (chamelium) {
-+			igt_abort_on_f(!chamelium_wait_reachable(chamelium, 20),
-+				       "cannot reach the configured chamelium!\n");
-+			igt_abort_on_f(!chamelium_plug_all(chamelium),
-+				       "failed to plug all the chamelium ports!\n");
-+			chamelium_deinit_rpc_only(chamelium);
-+		}
-+	}
-+#endif
-+
- 	/*
- 	 * We cache the number of pipes, that number is a physical limit of the
- 	 * hardware and cannot change of time (for now, at least).
-diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
-index 8243d2ef..f127de8c 100644
---- a/tests/kms_chamelium.c
-+++ b/tests/kms_chamelium.c
-@@ -2622,7 +2622,14 @@ igt_main
- 	size_t i;
- 
- 	igt_fixture {
-+		/* So fbcon doesn't try to reprobe things itself */
-+		kmstest_set_vt_graphics_mode();
-+
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-+		igt_display_require(&data.display, data.drm_fd);
-+		igt_require(data.display.is_atomic);
-+
-+		/* we need to initalize chamelium after igt_display_require */
- 		data.chamelium = chamelium_init(data.drm_fd);
- 		igt_require(data.chamelium);
- 
-@@ -2633,12 +2640,6 @@ igt_main
- 			data.edids[i] = chamelium_new_edid(data.chamelium,
- 							   get_edid(i));
- 		}
--
--		/* So fbcon doesn't try to reprobe things itself */
--		kmstest_set_vt_graphics_mode();
--
--		igt_display_require(&data.display, data.drm_fd);
--		igt_require(data.display.is_atomic);
- 	}
- 
- 	igt_describe("DisplayPort tests");
-diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
-index 34a1888c..7f5a911c 100644
---- a/tests/kms_color_chamelium.c
-+++ b/tests/kms_color_chamelium.c
-@@ -724,6 +724,11 @@ igt_main
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 		if (is_i915_device(data.drm_fd))
- 			data.devid = intel_get_drm_devid(data.drm_fd);
-+
-+		igt_display_require(&data.display, data.drm_fd);
-+		igt_require(data.display.is_atomic);
-+
-+		/* we need to initalize chamelium after igt_display_require */
- 		data.chamelium = chamelium_init(data.drm_fd);
- 		igt_require(data.chamelium);
- 
-@@ -734,8 +739,6 @@ igt_main
- 			igt_skip("No ports connected\n");
- 
- 		kmstest_set_vt_graphics_mode();
--		igt_display_require(&data.display, data.drm_fd);
--		igt_require(data.display.is_atomic);
- 	}
- 
- 	for_each_pipe_static(pipe)
--- 
-2.24.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVHVlLCAyMDIwLTAyLTI1IGF0IDA5OjMwICswNTMwLCBBbnNodW1hbiBHdXB0YSB3cm90ZToN
+Cj4gT24gMjAyMC0wMi0yNSBhdCAwNDo0Nzo0NyArMDUzMCwgU291emEsIEpvc2Ugd3JvdGU6DQo+
+ID4gT24gTW9uLCAyMDIwLTAyLTI0IGF0IDEwOjQ4ICswNTMwLCBBbnNodW1hbiBHdXB0YSB3cm90
+ZToNCj4gPiA+IE9uIDIwMjAtMDEtMjMgYXQgMTE6MDA6MjkgLTA4MDAsIEpvc8OpIFJvYmVydG8g
+ZGUgU291emEgd3JvdGU6DQo+ID4gPiA+IFRoaXMgd2lsbCBoZWxwIHVzIGRlYnVnIGZhaWx1cmVz
+IGluIHRoaXMgdGVzdC4NCj4gPiA+ID4gDQo+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IEpvc8OpIFJv
+YmVydG8gZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwuY29tPg0KPiA+ID4gPiAtLS0NCj4gPiA+
+ID4gIHRlc3RzL2ttc19wc3IyX3N1LmMgfCA3ICsrKysrLS0NCj4gPiA+ID4gIDEgZmlsZSBjaGFu
+Z2VkLCA1IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+ID4gPiA+IA0KPiA+ID4gPiBk
+aWZmIC0tZ2l0IGEvdGVzdHMva21zX3BzcjJfc3UuYyBiL3Rlc3RzL2ttc19wc3IyX3N1LmMNCj4g
+PiA+ID4gaW5kZXggZjIyNDRiMjkuLjlmNDBjNzM1IDEwMDY0NA0KPiA+ID4gPiAtLS0gYS90ZXN0
+cy9rbXNfcHNyMl9zdS5jDQo+ID4gPiA+ICsrKyBiL3Rlc3RzL2ttc19wc3IyX3N1LmMNCj4gPiA+
+ID4gQEAgLTE4Myw5ICsxODMsMTMgQEAgc3RhdGljIGJvb2wgdXBkYXRlX3NjcmVlbl9hbmRfdGVz
+dChkYXRhX3QNCj4gPiA+ID4gKmRhdGEpDQo+ID4gPiA+ICAJCWlndF9hc3NlcnRfZihkYXRhLT5v
+cCwgIk9wZXJhdGlvbiBub3QNCj4gPiA+ID4gaGFuZGxlZFxuIik7DQo+ID4gPiA+ICAJfQ0KPiA+
+ID4gPiAgDQo+ID4gPiA+IC0JaWYgKHBzcjJfd2FpdF9zdShkYXRhLT5kZWJ1Z2ZzX2ZkLCAmc3Vf
+YmxvY2tzKSkNCj4gPiA+ID4gKwlpZiAocHNyMl93YWl0X3N1KGRhdGEtPmRlYnVnZnNfZmQsICZz
+dV9ibG9ja3MpKSB7DQo+ID4gPiA+ICAJCXJldCA9IHN1X2Jsb2NrcyA9PSBFWFBFQ1RFRF9OVU1f
+U1VfQkxPQ0tTOw0KPiA+ID4gPiAgDQo+ID4gPiA+ICsJCWlmICghcmV0KQ0KPiA+ID4gPiArCQkJ
+aWd0X2RlYnVnKCJOb3QgbWF0Y2hpbmcgU1UgYmxvY2tzIHJlYWQ6DQo+ID4gPiA+ICV1XG4iLA0K
+PiA+ID4gPiBzdV9ibG9ja3MpOw0KPiA+ID4gQUZBSVUgdGhpcyB3aWxsIHByaW50IHRoZSBTVSBi
+bG9jayBmb3IgMHRoIGZyYW1lLCBhbmQgbG9va3MgbGlrZQ0KPiA+ID4gdGhpcyB0ZXN0IGFsc28g
+aW50ZXJlc3RlZCBvbmx5IGluIDB0aCBmcmFtZSwgaSBhbSBqdXN0IGN1cmlvdXMNCj4gPiA+IGhl
+cmUNCj4gPiA+IHRvIGtub3cgdGhlIA0KPiA+ID4gdXNlIGNhc2Ugb2YgU1UgYmxvY2sgZm9yIGxh
+c3QgOCBmcmFtZXMuDQo+ID4gDQo+ID4gMHRoIGZyYW1lPw0KPiBJIHJlZmVycmVkIFBTUjJfU1Vf
+QkxPQ0tfU1RSX0xPT0tVUCAiUFNSMiBTVSBibG9ja3M6XG4wXHQiICwgYXMgMHRoDQo+IGZyYW1l
+Lg0KPiBGcmFtZTogIFBTUjIgU1UgYmxvY2tzOg0KPiAwICAgICAgIDANCj4gMSAgICAgICAwDQo+
+IC0tLS0tLS0tLQ0KPiA3ICAgICAgIDANCj4gV2hhdCBhcmUgdGhlIHVzZSBvZiBvdGhlciA3IGZy
+YW1lcy4NCg0KV2FzIHVzZWQgdG8gZGVidWcgUFNSMiBkdXJpbmcgZGV2ZWxvcG1lbnQsIHdlIGNv
+dWxkIHNlZSBob3cgbWFueQ0Kc2VsZWN0aXZlIHVwZGF0ZSBibG9ja3MgZWFjaCBvZiB0aGUgcGFz
+dCA4IGhhZCBieSBqdXN0IHJlYWRpbmcgMw0KcmVnaXN0ZXJzLiBBbnl3YXlzIHBzcjJfd2FpdF9z
+dSgpIG9ubHkgY2FyZXMgYWJvdXQgdGhlIGxhc3QgZnJhbWUuDQoNCj4gVGhhbmtzLA0KPiBBbnNo
+dW1hbiBHdXB0YS4NCj4gPiBJdCB3YWl0cyB1cCB0byA0MG1pbGkgdG8gYWxzbyBoYW5kbGUgMzBo
+eiBwYW5lbHMsIDEwMDAvMzA9MzNtaWxpLg0KPiA+IFRoZSBTVSBibG9ja3Mgc2hvdWxkIGJlIGtl
+cHQgc2V0IHVudGlsIG5leHQgZmxpcCBvciBmcm9udGJ1ZmZlcg0KPiA+IG1vZGlmaWNhdGlvbi4N
+Cj4gPiANCj4gPiA+ID4gKwl9DQo+ID4gPiA+ICsNCj4gPiA+ID4gIAlyZXR1cm4gcmV0Ow0KPiA+
+ID4gPiAgfQ0KPiA+ID4gPiAgDQo+ID4gPiA+IEBAIC0yMDYsNyArMjEwLDYgQEAgc3RhdGljIHZv
+aWQgcnVuKGRhdGFfdCAqZGF0YSkNCj4gPiA+ID4gIAkJCXJlc3VsdCA9IHVwZGF0ZV9zY3JlZW5f
+YW5kX3Rlc3QoZGF0YSk7DQo+ID4gPiA+ICAJfQ0KPiA+ID4gPiAgDQo+ID4gPiA+IC0JaWd0X2Rl
+YnVnKCJTY3JlZW4gY2hhbmdlczogJXVcbiIsIGRhdGEtDQo+ID4gPiA+ID5zY3JlZW5fY2hhbmdl
+cyk7DQo+ID4gPiBJTUhPIHRoaXMgc2VlbXMgdW5yZWFsdGVkIHRvIHRoaXMgcGF0Y2ggY29uc2lk
+ZXJpbmcgaXRzIGNvbW1pdA0KPiA+ID4gbG9nLA0KPiA+ID4gY291bGQgdSBwbGVhc2UNCj4gPiA+
+IGFkZCBzb21lIGRlc2NyaXB0aW9uIGFib3V0IHJlbW92YWwgb2YgdGhpcyBsb2cuDQo+ID4gDQo+
+ID4gV2lsbCBhZGQsIGl0IGlzIHJlbW92aW5nIHRoaXMgdXNlbGVzcyBkZWJ1ZyBtZXNzYWdlIEkg
+cHJvYmFibHkNCj4gPiB0b3VnaHQNCj4gPiB0aGF0IHNjcmVlbl9jaGFuZ2VzIHdvdWxkIGhhdmUg
+dGhlIGluZm9ybWF0aW9uIHRoYXQgSSdtIGFkZGluZyBpbg0KPiA+IHRoZQ0KPiA+IGJsb2NrIGFk
+ZGVkIGluIHRoZSBwYXRjaC4NCj4gPiANCj4gPiA+IFRoYW5rcywNCj4gPiA+IEFuc2h1bWFuIEd1
+cHRhLg0KPiA+ID4gPiAgCWlndF9hc3NlcnRfZihyZXN1bHQsDQo+ID4gPiA+ICAJCSAgICAgIk5v
+IG1hdGNoaW5nIHNlbGVjdGl2ZSB1cGRhdGUgYmxvY2tzIHJlYWQNCj4gPiA+ID4gZnJvbQ0KPiA+
+ID4gPiBkZWJ1Z2ZzXG4iKTsNCj4gPiA+ID4gIH0NCj4gPiA+ID4gLS0gDQo+ID4gPiA+IDIuMjUu
+MA0KPiA+ID4gPiANCj4gPiA+ID4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18NCj4gPiA+ID4gaWd0LWRldiBtYWlsaW5nIGxpc3QNCj4gPiA+ID4gaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gPiA+ID4gaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
+cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2DQpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3Rz
+LmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
+c3RpbmZvL2lndC1kZXYK
