@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 403256E291
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Feb 2020 12:48:10 +0000 (UTC)
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 26 Feb 2020 12:59:00 -0000
+Message-ID: <158272194028.21012.15362911743603718516@emeril.freedesktop.org>
 References: <20200226054634.6611-1-bhanuprakash.modem@intel.com>
 In-Reply-To: <20200226054634.6611-1-bhanuprakash.modem@intel.com>
-Message-ID: <158272128487.2462.16646110850325580560@skylake-alporthouse-com>
-Date: Wed, 26 Feb 2020 12:48:04 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/gem_lut_handle: Minor fixes
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Flut=5Fhandle=3A_Minor_fixes?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,82 +14,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: bhanuprakash.modem@intel.com, igt-dev@lists.freedesktop.org
+To: bhanuprakash.modem@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting bhanuprakash.modem@intel.com (2020-02-26 05:46:34)
-> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> 
-> Remove redundent logics.
-> After exec, destroy BO properly.
-> Remove unnecessary & unused macros.
-> 
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  tests/i915/gem_lut_handle.c | 12 ++++--------
->  1 file changed, 4 insertions(+), 8 deletions(-)
-> 
-> diff --git a/tests/i915/gem_lut_handle.c b/tests/i915/gem_lut_handle.c
-> index fec65dd8..367d8bdf 100644
-> --- a/tests/i915/gem_lut_handle.c
-> +++ b/tests/i915/gem_lut_handle.c
-> @@ -41,10 +41,6 @@
->  IGT_TEST_DESCRIPTION("Exercises the basic execbuffer using the handle LUT"
->                      " interface.");
->  
-> -#define BATCH_SIZE             (1024*1024)
-> -
-> -#define LOCAL_I915_EXEC_HANDLE_LUT (1<<12)
-> -
->  #define NORMAL 0
->  #define USE_LUT 0x1
->  #define BROKEN 0x2
-> @@ -80,7 +76,7 @@ static int exec(int fd, uint32_t handle, unsigned int flags)
->         execbuf.num_cliprects = 0;
->         execbuf.DR1 = 0;
->         execbuf.DR4 = 0;
-> -       execbuf.flags = flags & USE_LUT ? LOCAL_I915_EXEC_HANDLE_LUT : 0;
-> +       execbuf.flags = flags & USE_LUT ? I915_EXEC_HANDLE_LUT : 0;
->         i915_execbuffer2_set_context_id(execbuf, 0);
->         execbuf.rsvd2 = 0;
->  
-> @@ -147,7 +143,7 @@ static int many_exec(int fd, uint32_t batch, int num_exec, int num_reloc, unsign
->         execbuf.num_cliprects = 0;
->         execbuf.DR1 = 0;
->         execbuf.DR4 = 0;
-> -       execbuf.flags = flags & USE_LUT ? LOCAL_I915_EXEC_HANDLE_LUT : 0;
-> +       execbuf.flags = flags & USE_LUT ? I915_EXEC_HANDLE_LUT : 0;
->         i915_execbuffer2_set_context_id(execbuf, 0);
->         execbuf.rsvd2 = 0;
->  
-> @@ -180,8 +176,6 @@ igt_simple_main
->         fail(exec(fd, handle, BROKEN));
->  
->         igt_skip_on(exec(fd, handle, USE_LUT));
-> -
-> -       do_or_die(exec(fd, handle, USE_LUT));
+== Series Details ==
 
-You never know, might be significant. And no harm so I'd leave and just
-do a simple patch that removes the LOCAL define.
+Series: tests/i915/gem_lut_handle: Minor fixes
+URL   : https://patchwork.freedesktop.org/series/73938/
+State : success
 
->         fail(exec(fd, handle, USE_LUT | BROKEN));
->  
->         for (i = 2; i <= SLOW_QUICK(65536, 8); i *= 2) {
-> @@ -228,4 +222,6 @@ igt_simple_main
->                 fail(many_exec(fd, handle, i+1, i, USE_LUT | BROKEN));
->                 fail(many_exec(fd, handle, i+1, i+1, USE_LUT | BROKEN));
->         }
-> +
-> +       gem_close(fd, handle);
+== Summary ==
 
-But we don't close the fd either. The point of the exercise was to leave
-it all for process termination.
--Chris
+CI Bug Log - changes from IGT_5467 -> IGTPW_4225
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4225/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4225 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [PASS][1] -> [FAIL][2] ([fdo#111407])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5467/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4225/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live_gem_contexts:
+    - fi-cml-s:           [DMESG-FAIL][3] ([i915#877]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5467/fi-cml-s/igt@i915_selftest@live_gem_contexts.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4225/fi-cml-s/igt@i915_selftest@live_gem_contexts.html
+
+  
+  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
+  [i915#877]: https://gitlab.freedesktop.org/drm/intel/issues/877
+
+
+Participating hosts (49 -> 46)
+------------------------------
+
+  Additional (2): fi-skl-6770hq fi-tgl-y 
+  Missing    (5): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5467 -> IGTPW_4225
+
+  CI-20190529: 20190529
+  CI_DRM_8005: 81f641f60edbfa1ccb169689206f0af360a06e31 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4225: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4225/index.html
+  IGT_5467: 2684f182424582c66e67bcbbda77cd60901627b8 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4225/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
