@@ -1,15 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Wed, 26 Feb 2020 13:57:46 +0100
+Message-Id: <20200226125746.12249-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <836f0076-cc40-46dc-6e8f-97a70ee1c2e7@linux.intel.com>
-References: <20200224215650.39624-1-chris@chris-wilson.co.uk>
- <6ad2e8c7-f3e3-a43e-ea4c-92ab57d69b06@linux.intel.com>
- <158265431375.3656.10896445408963081099@skylake-alporthouse-com>
- <836f0076-cc40-46dc-6e8f-97a70ee1c2e7@linux.intel.com>
-Message-ID: <158265492696.3656.2504165860689786333@skylake-alporthouse-com>
-Date: Tue, 25 Feb 2020 18:22:07 +0000
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] i915/gem_ctx_persistence:
- Check precision of hostile cancellation
+Subject: [igt-dev] [PATCH i-g-t v3] tests/gem_userptr_blits: Refresh
+ map-fixed-invalidate* subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,44 +12,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Tvrtko Ursulin (2020-02-25 18:18:12)
-> 
-> On 25/02/2020 18:11, Chris Wilson wrote:
-> > Quoting Tvrtko Ursulin (2020-02-25 18:08:14)
-> >>
-> >> On 24/02/2020 21:56, Chris Wilson wrote:
-> >>> Check that if we have to remove a hostile request from a non-persistent
-> >>> context, we do so without harming any other concurrent users.
-> >>>
-> >>> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> >>> ---
-> >>> +     /* All other spinners should be left unharmed */
-> >>> +     gem_quiescent_gpu(i915);
-> >>> +     igt_assert_eq(sync_fence_wait(fence, reset_timeout_ms), 0);
-> >>> +     igt_assert_eq(sync_fence_status(fence), 1);
-> >>
-> >> I don't quite get this test. Why would other spinners be unharmed? They
-> >> are non-preemptible as well. And non-persistent spinner is alone on the
-> >> engine. So what aspect you wanted to test?
-> > 
-> > Per-engine reset. Termination of the non-persistent context should be
-> > clean and precise, we don't allow creation of non-persistent contexts
-> > unless we have that level of surgical precision. Otherwise it becomes a
-> > new attack vector.
-> 
-> If it is just engine reset then it does what it says on the tin.
-
-I shall update the description to clarify that then :)
--Chris
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+bWFwLWZpeGVkLWludmFsaWRhdGUqIHN1YnRlc3RzIHV0aWxpemUgZ2VtX3NldF90aWxpbmcoKSB3
+aGljaCBtYXkgZmFpbCwKZS5nLiBvbiBoYXJkd2FyZSB3aXRoIG5vIG1hcHBhYmxlIGFwZXJ0dXJl
+LCBkdWUgdG8gbWlzc2luZyBmZW5jZXMuClNraXAgdGhvc2Ugc3VidGVzdHMgaWYgZmVuY2VzIGFy
+ZSBub3QgYXZhaWxhYmxlLgoKTW9yZW92ZXIsIHRob3NlIHN1YnRlc3RzIHVzZSBHRU1fTU1BUF9H
+VFQgSU9DVEwgd2hpY2ggaGFzIGJlZW4gcmVwbGFjZWQKYnkgR0VNX01NQVBfT0ZGU0VUIHRoYXQg
+c3VwcG9ydHMgb3RoZXIgbWFwcGluZyB0eXBlcywgbm90IG9ubHkgR1RULgpVc2UgdGhlIG5ldyBJ
+T0NUTCBhbmQgZHluYW1pY2FsbHkgZXhhbWluZSBhbGwgTU1BUF9PRkZTRVQgdHlwZXMKc3VwcG9y
+dGVkIGJ5IGhhcmR3YXJlLgoKdjI6IEV4YW1pbmUgYWxsIHN1cHBvcnRlZCBNTUFQX09GRlNFVCB0
+eXBlcywgbm90IG9ubHkgdGhlIGZpcnN0IG9uZQogICAgdGhhdCB3b3JrcywKICAtIGFkZCBzdWJ0
+ZXN0IGRlc2NyaXB0aW9uLgp2MzogUmVmcmVzaCBvbiB0b3Agb2YgY29tbWl0IDM4NGU3ZWNiNzQ2
+NCAoImxpYi9pOTE1OiBSZXN0cmljdCBtbWFwCiAgICB0eXBlcyB0byBHVFQgaWYgbm8gTU1BUF9P
+RkZTRVQgc3VwcG9ydCIpLgoKU2lnbmVkLW9mZi1ieTogSmFudXN6IEtyenlzenRvZmlrIDxqYW51
+c3oua3J6eXN6dG9maWtAbGludXguaW50ZWwuY29tPgpDYzogTWljaGHFgiBXaW5pYXJza2kgPG1p
+Y2hhbC53aW5pYXJza2lAaW50ZWwuY29tPgotLS0KIHRlc3RzL2k5MTUvZ2VtX3VzZXJwdHJfYmxp
+dHMuYyB8IDQzICsrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFu
+Z2VkLCAyOSBpbnNlcnRpb25zKCspLCAxNCBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS90ZXN0
+cy9pOTE1L2dlbV91c2VycHRyX2JsaXRzLmMgYi90ZXN0cy9pOTE1L2dlbV91c2VycHRyX2JsaXRz
+LmMKaW5kZXggZmNhZDM3NGVmLi4yOGExOGMwM2QgMTAwNjQ0Ci0tLSBhL3Rlc3RzL2k5MTUvZ2Vt
+X3VzZXJwdHJfYmxpdHMuYworKysgYi90ZXN0cy9pOTE1L2dlbV91c2VycHRyX2JsaXRzLmMKQEAg
+LTcyMiw3ICs3MjIsOCBAQCBzdGF0aWMgdm9pZCB0ZXN0X2ZvcmtlZF9hY2Nlc3MoaW50IGZkKQog
+CQkJCSAgTUFQX0ZJWEVEX0lOVkFMSURBVEVfQlVTWSB8IFwKIAkJCQkgIE1BUF9GSVhFRF9JTlZB
+TElEQVRFX0dFVF9QQUdFUykKIAotc3RhdGljIGludCB0ZXN0X21hcF9maXhlZF9pbnZhbGlkYXRl
+KGludCBmZCwgdWludDMyX3QgZmxhZ3MpCitzdGF0aWMgaW50IHRlc3RfbWFwX2ZpeGVkX2ludmFs
+aWRhdGUoaW50IGZkLCB1aW50MzJfdCBmbGFncywKKwkJCQkgICAgIGNvbnN0IHN0cnVjdCBtbWFw
+X29mZnNldCAqdCkKIHsKIAljb25zdCBzaXplX3QgcHRyX3NpemUgPSBzaXplb2YobGluZWFyKSAr
+IDIqUEFHRV9TSVpFOwogCWNvbnN0IGludCBudW1faGFuZGxlcyA9IChmbGFncyAmIE1BUF9GSVhF
+RF9JTlZBTElEQVRFX09WRVJMQVApID8gMiA6IDE7CkBAIC03NDEsNyArNzQyLDcgQEAgc3RhdGlj
+IGludCB0ZXN0X21hcF9maXhlZF9pbnZhbGlkYXRlKGludCBmZCwgdWludDMyX3QgZmxhZ3MpCiAJ
+Zm9yIChjaGFyICpmaXhlZCA9IChjaGFyICopcHRyLCAqZW5kID0gZml4ZWQgKyBwdHJfc2l6ZTsK
+IAkgICAgIGZpeGVkICsgMipQQUdFX1NJWkUgPD0gZW5kOwogCSAgICAgZml4ZWQgKz0gUEFHRV9T
+SVpFKSB7Ci0JCXN0cnVjdCBkcm1faTkxNV9nZW1fbW1hcF9ndHQgbW1hcF9ndHQ7CisJCXN0cnVj
+dCBkcm1faTkxNV9nZW1fbW1hcF9vZmZzZXQgbW1hcF9vZmZzZXQ7CiAJCXVpbnQzMl90ICptYXA7
+CiAKIAkJbWFwID0gbW1hcChwdHIsIHB0cl9zaXplLCBQUk9UX1JFQUQgfCBQUk9UX1dSSVRFLApA
+QCAtNzUwLDkgKzc1MSwxMyBAQCBzdGF0aWMgaW50IHRlc3RfbWFwX2ZpeGVkX2ludmFsaWRhdGUo
+aW50IGZkLCB1aW50MzJfdCBmbGFncykKIAkJaWd0X2Fzc2VydChtYXAgIT0gTUFQX0ZBSUxFRCk7
+CiAJCWlndF9hc3NlcnQobWFwID09IHB0cik7CiAKLQkJbWVtc2V0KCZtbWFwX2d0dCwgMCwgc2l6
+ZW9mKG1tYXBfZ3R0KSk7Ci0JCW1tYXBfZ3R0LmhhbmRsZSA9IGdlbV9jcmVhdGUoZmQsIDIqUEFH
+RV9TSVpFKTsKLQkJZG9faW9jdGwoZmQsIERSTV9JT0NUTF9JOTE1X0dFTV9NTUFQX0dUVCwgJm1t
+YXBfZ3R0KTsKKwkJbWVtc2V0KCZtbWFwX29mZnNldCwgMCwgc2l6ZW9mKG1tYXBfb2Zmc2V0KSk7
+CisJCW1tYXBfb2Zmc2V0LmhhbmRsZSA9IGdlbV9jcmVhdGUoZmQsIDIgKiBQQUdFX1NJWkUpOwor
+CQltbWFwX29mZnNldC5mbGFncyA9IHQtPnR5cGU7CisJCWlndF9za2lwX29uX2YoaWd0X2lvY3Rs
+KGZkLCBEUk1fSU9DVExfSTkxNV9HRU1fTU1BUF9PRkZTRVQsCisJCQkJCSZtbWFwX29mZnNldCks
+CisJCQkgICAgICAiSFcgJiBrZXJuZWwgc3VwcG9ydCBmb3IgbW1hcF9vZmZzZXQoJXMpXG4iLAor
+CQkJICAgICAgdC0+bmFtZSk7CiAKIAkJaWYgKGZsYWdzICYgTUFQX0ZJWEVEX0lOVkFMSURBVEVf
+R0VUX1BBR0VTKQogCQkJaWd0X2Fzc2VydF9lcShfX2dlbV9zZXRfZG9tYWluKGZkLCBoYW5kbGVb
+MF0sCkBAIC03NjYsMTEgKzc3MSwxMSBAQCBzdGF0aWMgaW50IHRlc3RfbWFwX2ZpeGVkX2ludmFs
+aWRhdGUoaW50IGZkLCB1aW50MzJfdCBmbGFncykKIAkJbWFwID0gbW1hcChmaXhlZCwgMipQQUdF
+X1NJWkUsCiAJCQkgICBQUk9UX1JFQUQgfCBQUk9UX1dSSVRFLAogCQkJICAgTUFQX1NIQVJFRCB8
+IE1BUF9GSVhFRCwKLQkJCSAgIGZkLCBtbWFwX2d0dC5vZmZzZXQpOworCQkJICAgZmQsIG1tYXBf
+b2Zmc2V0Lm9mZnNldCk7CiAJCWlndF9hc3NlcnQobWFwICE9IE1BUF9GQUlMRUQpOwogCQlpZ3Rf
+YXNzZXJ0KG1hcCA9PSAodWludDMyX3QgKilmaXhlZCk7CiAKLQkJZ2VtX3NldF90aWxpbmcoZmQs
+IG1tYXBfZ3R0LmhhbmRsZSwgSTkxNV9USUxJTkdfTk9ORSwgMCk7CisJCWdlbV9zZXRfdGlsaW5n
+KGZkLCBtbWFwX29mZnNldC5oYW5kbGUsIEk5MTVfVElMSU5HX05PTkUsIDApOwogCQkqbWFwID0g
+MHhkZWFkOwogCiAJCWlmIChmbGFncyAmIE1BUF9GSVhFRF9JTlZBTElEQVRFX0dFVF9QQUdFUykg
+ewpAQCAtNzg0LDEwICs3ODksMTAgQEAgc3RhdGljIGludCB0ZXN0X21hcF9maXhlZF9pbnZhbGlk
+YXRlKGludCBmZCwgdWludDMyX3QgZmxhZ3MpCiAJCQloYW5kbGVbMF0gPSBjcmVhdGVfdXNlcnB0
+cihmZCwgMCwgcHRyICsgUEFHRV9TSVpFL3NpemVvZigqcHRyKSk7CiAJCX0KIAotCQlnZW1fc2V0
+X3RpbGluZyhmZCwgbW1hcF9ndHQuaGFuZGxlLCBJOTE1X1RJTElOR19ZLCA1MTIgKiA0KTsKKwkJ
+Z2VtX3NldF90aWxpbmcoZmQsIG1tYXBfb2Zmc2V0LmhhbmRsZSwgSTkxNV9USUxJTkdfWSwgNTEy
+ICogNCk7CiAJCSoodWludDMyX3QqKW1hcCA9IDB4YmVlZjsKIAotCQlnZW1fY2xvc2UoZmQsIG1t
+YXBfZ3R0LmhhbmRsZSk7CisJCWdlbV9jbG9zZShmZCwgbW1hcF9vZmZzZXQuaGFuZGxlKTsKIAl9
+CiAKIAlmb3IgKGludCBpID0gMDsgaSA8IG51bV9oYW5kbGVzOyBpKyspCkBAIC0yMTYyLDExICsy
+MTY3LDIxIEBAIGlndF9tYWluX2FyZ3MoImM6IiwgTlVMTCwgaGVscF9zdHIsIG9wdF9oYW5kbGVy
+LCBOVUxMKQogCQkJdGVzdF9pbnZhbGlkYXRlX2Nsb3NlX3JhY2UoZmQsIHRydWUsIDIpOwogCiAJ
+CWZvciAodW5zaWduZWQgZmxhZ3MgPSAwOyBmbGFncyA8IEFMTF9NQVBfRklYRURfSU5WQUxJREFU
+RSArIDE7IGZsYWdzKyspIHsKLQkJCWlndF9zdWJ0ZXN0X2YoIm1hcC1maXhlZC1pbnZhbGlkYXRl
+JXMlcyVzIiwKLQkJCQkgICAgICBmbGFncyAmIE1BUF9GSVhFRF9JTlZBTElEQVRFX09WRVJMQVAg
+PyAiLW92ZXJsYXAiIDogIiIsCi0JCQkJICAgICAgZmxhZ3MgJiBNQVBfRklYRURfSU5WQUxJREFU
+RV9CVVNZID8gIi1idXN5IiA6ICIiLAotCQkJCSAgICAgIGZsYWdzICYgTUFQX0ZJWEVEX0lOVkFM
+SURBVEVfR0VUX1BBR0VTID8gIi1ndXAiIDogIiIpIHsKLQkJCQl0ZXN0X21hcF9maXhlZF9pbnZh
+bGlkYXRlKGZkLCBmbGFncyk7CisJCQlpZ3RfZGVzY3JpYmUoIlRyeSB0byBhbmdlciBsb2NrZGVw
+IHdpdGggTU1VIG5vdGlmaWVyIHN0aWxsIGFjdGl2ZSBhZnRlciBNQVBfRklYRUQgcmVtYXAiKTsK
+KwkJCWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pY19mKCJtYXAtZml4ZWQtaW52YWxpZGF0ZSVzJXMl
+cyIsCisJCQkJCWZsYWdzICYgTUFQX0ZJWEVEX0lOVkFMSURBVEVfT1ZFUkxBUCA/CisJCQkJCQkJ
+Ii1vdmVybGFwIiA6ICIiLAorCQkJCQlmbGFncyAmIE1BUF9GSVhFRF9JTlZBTElEQVRFX0JVU1kg
+PworCQkJCQkJCSItYnVzeSIgOiAiIiwKKwkJCQkJZmxhZ3MgJiBNQVBfRklYRURfSU5WQUxJREFU
+RV9HRVRfUEFHRVMgPworCQkJCQkJCSItZ3VwIiA6ICIiKSB7CisJCQkJaWd0X3JlcXVpcmVfZihn
+ZW1fYXZhaWxhYmxlX2ZlbmNlcyhmZCksCisJCQkJCSAgICAgICJIVyAmIGtlcm5lbCBzdXBwb3J0
+IGZvciB0aWxpbmdcbiIpOworCisJCQkJZm9yX2VhY2hfbW1hcF9vZmZzZXRfdHlwZShmZCwgdCkK
+KwkJCQkJaWd0X2R5bmFtaWNfZigiJXMiLCB0LT5uYW1lKQorCQkJCQkJdGVzdF9tYXBfZml4ZWRf
+aW52YWxpZGF0ZShmZCwKKwkJCQkJCQkJICAgICAgZmxhZ3MsIHQpOwogCQkJfQogCQl9CiAKLS0g
+CjIuMjEuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+aWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
+Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
