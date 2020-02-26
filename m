@@ -1,20 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F4206E139
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Feb 2020 07:52:43 +0000 (UTC)
-Date: Wed, 26 Feb 2020 13:14:26 +0530
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <20200226074425.GH7545@intel.com>
-References: <20200123190029.19882-1-jose.souza@intel.com>
- <20200224051842.GF7545@intel.com>
- <034c1dbf156f5578ec7ad76fb074a68015812d70.camel@intel.com>
- <20200225040048.GG7545@intel.com>
- <383628f063895a6b731e9176a48475304a40ace8.camel@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 06FCF6E2DE
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Feb 2020 08:23:52 +0000 (UTC)
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Date: Wed, 26 Feb 2020 10:23:48 +0200
+Message-Id: <20200226082348.1575427-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <383628f063895a6b731e9176a48475304a40ace8.camel@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_su: Print the SU blocks
- mismatches
+Subject: [igt-dev] [PATCH i-g-t] lib/i915/perf: reenable perf tests on
+ cometlake
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,73 +15,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Souza, Jose" <jose.souza@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMjAyMC0wMi0yNSBhdCAyMzo0NzozMyArMDUzMCwgU291emEsIEpvc2Ugd3JvdGU6Cj4gT24g
-VHVlLCAyMDIwLTAyLTI1IGF0IDA5OjMwICswNTMwLCBBbnNodW1hbiBHdXB0YSB3cm90ZToKPiA+
-IE9uIDIwMjAtMDItMjUgYXQgMDQ6NDc6NDcgKzA1MzAsIFNvdXphLCBKb3NlIHdyb3RlOgo+ID4g
-PiBPbiBNb24sIDIwMjAtMDItMjQgYXQgMTA6NDggKzA1MzAsIEFuc2h1bWFuIEd1cHRhIHdyb3Rl
-Ogo+ID4gPiA+IE9uIDIwMjAtMDEtMjMgYXQgMTE6MDA6MjkgLTA4MDAsIEpvc8OpIFJvYmVydG8g
-ZGUgU291emEgd3JvdGU6Cj4gPiA+ID4gPiBUaGlzIHdpbGwgaGVscCB1cyBkZWJ1ZyBmYWlsdXJl
-cyBpbiB0aGlzIHRlc3QuCj4gPiA+ID4gPiAKPiA+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IEpvc8Op
-IFJvYmVydG8gZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwuY29tPgo+ID4gPiA+ID4gLS0tCj4g
-PiA+ID4gPiAgdGVzdHMva21zX3BzcjJfc3UuYyB8IDcgKysrKystLQo+ID4gPiA+ID4gIDEgZmls
-ZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCj4gPiA+ID4gPiAKPiA+
-ID4gPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfcHNyMl9zdS5jIGIvdGVzdHMva21zX3BzcjJf
-c3UuYwo+ID4gPiA+ID4gaW5kZXggZjIyNDRiMjkuLjlmNDBjNzM1IDEwMDY0NAo+ID4gPiA+ID4g
-LS0tIGEvdGVzdHMva21zX3BzcjJfc3UuYwo+ID4gPiA+ID4gKysrIGIvdGVzdHMva21zX3BzcjJf
-c3UuYwo+ID4gPiA+ID4gQEAgLTE4Myw5ICsxODMsMTMgQEAgc3RhdGljIGJvb2wgdXBkYXRlX3Nj
-cmVlbl9hbmRfdGVzdChkYXRhX3QKPiA+ID4gPiA+ICpkYXRhKQo+ID4gPiA+ID4gIAkJaWd0X2Fz
-c2VydF9mKGRhdGEtPm9wLCAiT3BlcmF0aW9uIG5vdAo+ID4gPiA+ID4gaGFuZGxlZFxuIik7Cj4g
-PiA+ID4gPiAgCX0KPiA+ID4gPiA+ICAKPiA+ID4gPiA+IC0JaWYgKHBzcjJfd2FpdF9zdShkYXRh
-LT5kZWJ1Z2ZzX2ZkLCAmc3VfYmxvY2tzKSkKPiA+ID4gPiA+ICsJaWYgKHBzcjJfd2FpdF9zdShk
-YXRhLT5kZWJ1Z2ZzX2ZkLCAmc3VfYmxvY2tzKSkgewo+ID4gPiA+ID4gIAkJcmV0ID0gc3VfYmxv
-Y2tzID09IEVYUEVDVEVEX05VTV9TVV9CTE9DS1M7Cj4gPiA+ID4gPiAgCj4gPiA+ID4gPiArCQlp
-ZiAoIXJldCkKPiA+ID4gPiA+ICsJCQlpZ3RfZGVidWcoIk5vdCBtYXRjaGluZyBTVSBibG9ja3Mg
-cmVhZDoKPiA+ID4gPiA+ICV1XG4iLAo+ID4gPiA+ID4gc3VfYmxvY2tzKTsKPiA+ID4gPiBBRkFJ
-VSB0aGlzIHdpbGwgcHJpbnQgdGhlIFNVIGJsb2NrIGZvciAwdGggZnJhbWUsIGFuZCBsb29rcyBs
-aWtlCj4gPiA+ID4gdGhpcyB0ZXN0IGFsc28gaW50ZXJlc3RlZCBvbmx5IGluIDB0aCBmcmFtZSwg
-aSBhbSBqdXN0IGN1cmlvdXMKPiA+ID4gPiBoZXJlCj4gPiA+ID4gdG8ga25vdyB0aGUgCj4gPiA+
-ID4gdXNlIGNhc2Ugb2YgU1UgYmxvY2sgZm9yIGxhc3QgOCBmcmFtZXMuCj4gPiA+IAo+ID4gPiAw
-dGggZnJhbWU/Cj4gPiBJIHJlZmVycmVkIFBTUjJfU1VfQkxPQ0tfU1RSX0xPT0tVUCAiUFNSMiBT
-VSBibG9ja3M6XG4wXHQiICwgYXMgMHRoCj4gPiBmcmFtZS4KPiA+IEZyYW1lOiAgUFNSMiBTVSBi
-bG9ja3M6Cj4gPiAwICAgICAgIDAKPiA+IDEgICAgICAgMAo+ID4gLS0tLS0tLS0tCj4gPiA3ICAg
-ICAgIDAKPiA+IFdoYXQgYXJlIHRoZSB1c2Ugb2Ygb3RoZXIgNyBmcmFtZXMuCj4gCj4gV2FzIHVz
-ZWQgdG8gZGVidWcgUFNSMiBkdXJpbmcgZGV2ZWxvcG1lbnQsIHdlIGNvdWxkIHNlZSBob3cgbWFu
-eQo+IHNlbGVjdGl2ZSB1cGRhdGUgYmxvY2tzIGVhY2ggb2YgdGhlIHBhc3QgOCBoYWQgYnkganVz
-dCByZWFkaW5nIDMKPiByZWdpc3RlcnMuIEFueXdheXMgcHNyMl93YWl0X3N1KCkgb25seSBjYXJl
-cyBhYm91dCB0aGUgbGFzdCBmcmFtZS4KVGhhbmtzIGZvciBleHBsYWluaW5nIHRoaXMuCllvdSBj
-YW4gdXNlIG15IFJCIHdpdGggc29tZSBkZXNjcmlwdGlvbiBmb3IgcmVtb3ZhbCBvZiBsb2cuClJl
-dmlld2VkLWJ5OiBBbnNodW1hbiBHdXB0YSA8YW5zaHVtYW4uZ3VwdGFAaW50ZWwuY29tPgpUaGFu
-a3MsCkFuc2h1bWFuIEd1cHRhLgo+IAo+ID4gVGhhbmtzLAo+ID4gQW5zaHVtYW4gR3VwdGEuCj4g
-PiA+IEl0IHdhaXRzIHVwIHRvIDQwbWlsaSB0byBhbHNvIGhhbmRsZSAzMGh6IHBhbmVscywgMTAw
-MC8zMD0zM21pbGkuCj4gPiA+IFRoZSBTVSBibG9ja3Mgc2hvdWxkIGJlIGtlcHQgc2V0IHVudGls
-IG5leHQgZmxpcCBvciBmcm9udGJ1ZmZlcgo+ID4gPiBtb2RpZmljYXRpb24uCj4gPiA+IAo+ID4g
-PiA+ID4gKwl9Cj4gPiA+ID4gPiArCj4gPiA+ID4gPiAgCXJldHVybiByZXQ7Cj4gPiA+ID4gPiAg
-fQo+ID4gPiA+ID4gIAo+ID4gPiA+ID4gQEAgLTIwNiw3ICsyMTAsNiBAQCBzdGF0aWMgdm9pZCBy
-dW4oZGF0YV90ICpkYXRhKQo+ID4gPiA+ID4gIAkJCXJlc3VsdCA9IHVwZGF0ZV9zY3JlZW5fYW5k
-X3Rlc3QoZGF0YSk7Cj4gPiA+ID4gPiAgCX0KPiA+ID4gPiA+ICAKPiA+ID4gPiA+IC0JaWd0X2Rl
-YnVnKCJTY3JlZW4gY2hhbmdlczogJXVcbiIsIGRhdGEtCj4gPiA+ID4gPiA+c2NyZWVuX2NoYW5n
-ZXMpOwo+ID4gPiA+IElNSE8gdGhpcyBzZWVtcyB1bnJlYWx0ZWQgdG8gdGhpcyBwYXRjaCBjb25z
-aWRlcmluZyBpdHMgY29tbWl0Cj4gPiA+ID4gbG9nLAo+ID4gPiA+IGNvdWxkIHUgcGxlYXNlCj4g
-PiA+ID4gYWRkIHNvbWUgZGVzY3JpcHRpb24gYWJvdXQgcmVtb3ZhbCBvZiB0aGlzIGxvZy4KPiA+
-ID4gCj4gPiA+IFdpbGwgYWRkLCBpdCBpcyByZW1vdmluZyB0aGlzIHVzZWxlc3MgZGVidWcgbWVz
-c2FnZSBJIHByb2JhYmx5Cj4gPiA+IHRvdWdodAo+ID4gPiB0aGF0IHNjcmVlbl9jaGFuZ2VzIHdv
-dWxkIGhhdmUgdGhlIGluZm9ybWF0aW9uIHRoYXQgSSdtIGFkZGluZyBpbgo+ID4gPiB0aGUKPiA+
-ID4gYmxvY2sgYWRkZWQgaW4gdGhlIHBhdGNoLgo+ID4gPiAKPiA+ID4gPiBUaGFua3MsCj4gPiA+
-ID4gQW5zaHVtYW4gR3VwdGEuCj4gPiA+ID4gPiAgCWlndF9hc3NlcnRfZihyZXN1bHQsCj4gPiA+
-ID4gPiAgCQkgICAgICJObyBtYXRjaGluZyBzZWxlY3RpdmUgdXBkYXRlIGJsb2NrcyByZWFkCj4g
-PiA+ID4gPiBmcm9tCj4gPiA+ID4gPiBkZWJ1Z2ZzXG4iKTsKPiA+ID4gPiA+ICB9Cj4gPiA+ID4g
-PiAtLSAKPiA+ID4gPiA+IDIuMjUuMAo+ID4gPiA+ID4gCj4gPiA+ID4gPiBfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwo+ID4gPiA+ID4gaWd0LWRldiBtYWls
-aW5nIGxpc3QKPiA+ID4gPiA+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4gPiA+ID4g
-PiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+The perf code coming from gputop assumed that devinfo for
+cometlake/coffeelake used the same entry (devinfo->is_coffeelake).
+
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Fixes: 53f8f541ca ("lib: Add i915_perf library")
+---
+ lib/i915/perf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index a5dd3eab..babfe633 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -219,7 +219,7 @@ intel_perf_for_devinfo(uint32_t device_id,
+ 	} else if (devinfo->is_geminilake) {
+ 		perf->devinfo.eu_threads_count = 6;
+ 		intel_perf_load_metrics_glk(perf);
+-	} else if (devinfo->is_coffeelake) {
++	} else if (devinfo->is_coffeelake || devinfo->is_cometlake) {
+ 		switch (devinfo->gt) {
+ 		case 2:
+ 			intel_perf_load_metrics_cflgt2(perf);
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
