@@ -1,13 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB12E6E26C
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Feb 2020 23:55:16 +0000 (UTC)
+From: "Abodunrin, Akeem G" <akeem.g.abodunrin@intel.com>
+Date: Wed, 26 Feb 2020 23:55:15 +0000
+Message-ID: <CFEEE81102D91947B9CC368106979EBAC8A1D7AC@ORSMSX102.amr.corp.intel.com>
+References: <20200224174217.84103-1-akeem.g.abodunrin@intel.com>
+ <20200224174217.84103-2-akeem.g.abodunrin@intel.com>
+ <20200226085836.GH3839@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <20200226085836.GH3839@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 26 Feb 2020 21:50:26 -0000
-Message-ID: <158275382667.21009.15111876005049178668@emeril.freedesktop.org>
-References: <20200221205054.19734-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20200221205054.19734-1-ville.syrjala@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/3=5D_lib/igt=5Fdebugfs=3A_Add_igt?=
- =?utf-8?b?X2NyY19nZXRfZm9yX2ZyYW1lKCkgKHJldjMp?=
+Subject: Re: [igt-dev] [PATCH i-g-t v5 1/1] tools/generate_cb_buffer: Add
+ script to assemble CB kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,105 +20,176 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Latvala, Petri" <petri.latvala@intel.com>
+Cc: "Nikula, Jani" <jani.nikula@intel.com>, "Wilson,
+ Chris P" <chris.p.wilson@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Bloomfield,
+ Jon" <jon.bloomfield@intel.com>, "Vetter, Daniel" <daniel.vetter@intel.com>, "Kuoppala, Mika" <mika.kuoppala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: series starting with [i-g-t,1/3] lib/igt_debugfs: Add igt_crc_get_for_frame() (rev3)
-URL   : https://patchwork.freedesktop.org/series/73793/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_5470 -> IGTPW_4230
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4230/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4230 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_exec_suspend@basic-s4-devices:
-    - fi-tgl-y:           [PASS][1] -> [FAIL][2] ([CI#94])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5470/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4230/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
-
-  * igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling:
-    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([CI#94] / [i915#402]) +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5470/fi-tgl-y/igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4230/fi-tgl-y/igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-7500u:       [PASS][5] -> [FAIL][6] ([fdo#111096] / [i915#323])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5470/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4230/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_flink_basic@flink-lifetime:
-    - fi-tgl-y:           [DMESG-WARN][7] ([CI#94] / [i915#402]) -> [PASS][8] +1 similar issue
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5470/fi-tgl-y/igt@gem_flink_basic@flink-lifetime.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4230/fi-tgl-y/igt@gem_flink_basic@flink-lifetime.html
-
-  * igt@i915_selftest@live_gem_contexts:
-    - fi-cml-s:           [DMESG-FAIL][9] ([i915#877]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5470/fi-cml-s/igt@i915_selftest@live_gem_contexts.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4230/fi-cml-s/igt@i915_selftest@live_gem_contexts.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
-  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
-  [i915#1233]: https://gitlab.freedesktop.org/drm/intel/issues/1233
-  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#877]: https://gitlab.freedesktop.org/drm/intel/issues/877
 
 
-Participating hosts (50 -> 45)
-------------------------------
+> -----Original Message-----
+> From: Latvala, Petri <petri.latvala@intel.com>
+> Sent: Wednesday, February 26, 2020 12:59 AM
+> To: Abodunrin, Akeem G <akeem.g.abodunrin@intel.com>
+> Cc: Bloomfield, Jon <jon.bloomfield@intel.com>; Dutt, Sudeep
+> <sudeep.dutt@intel.com>; Vetter, Daniel <daniel.vetter@intel.com>;
+> joonas.lahtinen@linux.intel.com; Nikula, Jani <jani.nikula@intel.com>; Wi=
+lson,
+> Chris P <chris.p.wilson@intel.com>; Kumar Valsan, Prathap
+> <prathap.kumar.valsan@intel.com>; Kuoppala, Mika
+> <mika.kuoppala@intel.com>; Balestrieri, Francesco
+> <francesco.balestrieri@intel.com>; ville.syrjala@linux.intel.com; igt-
+> dev@lists.freedesktop.org
+> Subject: Re: [PATCH i-g-t v5 1/1] tools/generate_cb_buffer: Add script to
+> assemble CB kernel
+> =
 
-  Additional (1): fi-kbl-soraka 
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-bdw-samus 
+> On Mon, Feb 24, 2020 at 09:42:17AM -0800, Akeem G Abodunrin wrote:
+> > This patch adds script and applicable assembly sources, so that we can
+> > use igt to assemble Clear Batch Buffer kernel for gen7 and gen7.5
+> > devices - Resultant header files would be imported to i915, and used as=
+ they
+> are...
+> >
+> > With this patch, user need to have mesa configured on their platform,
+> > before igt could be used to achieve the purpose of assembling the
+> > kernel from source.
+> >
+> > This is needed for "Security mitigation for Intel Gen7/7.5 HWs"
+> > Intel ID: PSIRT-TA-201910-001/CVEID: CVE-2019-14615
+> >
+> > v2: Addressed formatting, -g option and other minor issues (Petri)
+> > v3: Update script due to suggested changes in i915, and Mesa tool
+> > v4: Update help comment with Mesa build option with meson (Petri)
+> > v5: Modify how user specify i965_asm - script now takes binary,
+> > instead of Mesa tool source directory (Ville).
+> >
+> > Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> > Cc: Jani Nikula <jani.nikula@intel.com>
+> > Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> > Cc: Petri Latvala <petri.latvala@intel.com>
+> > Cc: Bloomfield Jon <jon.bloomfield@intel.com>
+> > Signed-off-by: Akeem G Abodunrin <akeem.g.abodunrin@intel.com>
+> > ---
+> >  scripts/asm_eu_kernel.sh                | 158 ++++++++++++++++++++++++
+> >  tools/assembly_source/hsw_clear_buf.asm | 141 +++++++++++++++++++++
+> > tools/assembly_source/ivb_clear_buf.asm | 139 +++++++++++++++++++++
+> >  3 files changed, 438 insertions(+)
+> >  create mode 100755 scripts/asm_eu_kernel.sh  create mode 100644
+> > tools/assembly_source/hsw_clear_buf.asm
+> >  create mode 100644 tools/assembly_source/ivb_clear_buf.asm
+> >
+> > diff --git a/scripts/asm_eu_kernel.sh b/scripts/asm_eu_kernel.sh new
+> > file mode 100755 index 00000000..ddf44b38
+> > --- /dev/null
+> > +++ b/scripts/asm_eu_kernel.sh
+> > @@ -0,0 +1,158 @@
+> > +#!/bin/bash
+> > +#
+> > +# SPDX-License-Identifier: MIT
+> > +#
+> > +# Copyright =A9 2020 Intel Corporation
+> > +#
+> > +# Permission is hereby granted, free of charge, to any person
+> > +obtaining a # copy of this software and associated documentation
+> > +files (the "Software"), # to deal in the Software without
+> > +restriction, including without limitation # the rights to use, copy,
+> > +modify, merge, publish, distribute, sublicense, # and/or sell copies
+> > +of the Software, and to permit persons to whom the # Software is furni=
+shed
+> to do so, subject to the following conditions:
+> > +#
+> > +# The above copyright notice and this permission notice (including
+> > +the next # paragraph) shall be included in all copies or substantial
+> > +portions of the # Software.
+> > +#
+> > +# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+> > +EXPRESS OR # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+> OF
+> > +MERCHANTABILITY, # FITNESS FOR A PARTICULAR PURPOSE AND
+> > +NONINFRINGEMENT.  IN NO EVENT SHALL # THE AUTHORS OR COPYRIGHT
+> > +HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER # LIABILITY,
+> > +WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING #
+> FROM,
+> > +OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+> DEALINGS # IN THE SOFTWARE.
+> > +
+> > +export ASSEMBLY_SOURCE=3D./tools/assembly_source
+> > +
+> > +function get_help {
+> > +        echo "Usage:    asm_eu_kernel.sh [options]"
+> > +        echo "Note: hsw_clear_kernel.c/ivb_clear_kernel.c automatically
+> generated by this script should never be modified - it would be imported =
+to i915,
+> to use as it is..."
+> > +        echo " "
+> > +        echo "Please make sure your Mesa tool is compiled with "-Dtool=
+s=3Dintel"
+> and "-Ddri-drivers=3Di965", and run this script from IGT source root dire=
+ctory"
+> > +        echo " "
+> > +        echo "Options are:"
+> > +        echo " -h                       display this help message, and=
+ exit"
+> > +        echo " -g=3Dplatform              generation of device: use "h=
+sw" for gen7.5,
+> and "ivb" for gen7 devices"
+> > +        echo " -o=3Dname_of_file          output file to store Mesa as=
+sembled c-
+> literal for the device - If none specified, default file will be used - i=
+vb/hsw-
+> cb_assembled"
+> > +        echo " -m=3Dmesa                  Path to Mesa i965_asm binary"
+> =
 
+> What Ville said was that the name of the build directory can be something=
+ other
+> than 'build'. Within that build directory the path to i965_asm binary is =
+always
+> src/intel/tools/i965_asm. But that's just bikeshedding at this point.
+> =
 
-Build changes
--------------
+> I was able to test the script now, thanks Akeem for the Mesa side changes=
+ link.
+> =
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5470 -> IGTPW_4230
+> There's only the cosmetic things left to fix on IGT's side and then this =
+can be
+> merged as soon as the Mesa side is merged. Namely, names:
+> =
 
-  CI-20190529: 20190529
-  CI_DRM_8008: 13b6e2575f2c05722679bc1c9d0b97c13bde49a1 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4230: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4230/index.html
-  IGT_5470: 386b71eb9de6610107bf3cbc523b9a68243c6213 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+> The patch subject talks about tools/generate_cb_buffer but no such file is
+> created with it. The name asm_eu_kernel.sh sounds a bit too generic when =
+this
+> is for very particular shaders to assemble. Speaking of shaders, we alrea=
+dy have
+> a directory for shader sources where they should go.
+> =
 
-== Logs ==
+> Suggestions for naming:
+> =
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4230/index.html
+> The assembly sources could go to lib/i915/shaders/clear_buffer/hsw.asm
+> and lib/i915/shaders/clear_buffer/ivb.asm
+> =
+
+> The script itself could be called scripts/generate_cb_shader.sh or someth=
+ing.
+> Not sure what the correct terminology is for these shaders.
+> =
+
+> Opinions, people who are better at naming than me?
+
+All changes in Mesa have been merged... and I addressed naming issue mentio=
+ned here, and updated script to reflect Mesa new c-literal output format - =
+automated files (hsw_clear_kernel.c and ivb_clear_kernel.c) generated for i=
+915 still the same, no difference, except of course date... =
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
