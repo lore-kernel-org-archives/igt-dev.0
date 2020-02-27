@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 501FA6ECA4
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2020 12:44:25 +0000 (UTC)
-From: Jani Nikula <jani.nikula@linux.intel.com>
-In-Reply-To: <20200227084149.588-1-anshuman.gupta@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 81EC66E8C2
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2020 12:55:52 +0000 (UTC)
+Date: Thu, 27 Feb 2020 14:55:48 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <20200227125548.GN13686@intel.com>
 References: <20200227084149.588-1-anshuman.gupta@intel.com>
-Date: Thu, 27 Feb 2020 14:44:18 +0200
-Message-ID: <874kvcryhp.fsf@intel.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200227084149.588-1-anshuman.gupta@intel.com>
 Subject: Re: [igt-dev] [RFC i-g-t] LPSP igt test on TGL
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -16,54 +17,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anshuman Gupta <anshuman.gupta@intel.com>, igt-dev@lists.freedesktop.org
-Cc: martin.peres@intel.com
+To: Anshuman Gupta <anshuman.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org, martin.peres@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 27 Feb 2020, Anshuman Gupta <anshuman.gupta@intel.com> wrote:
-> Above block diagram depicts lpsp on TGL, while earlier development of
-> lpsp igt test it has been assumed that every non-edp panel is not a
-> lpsp panel but it is not true on TGL, any HDMI/DP panel connected on
-> pipe A and connected to PORT_{A,B,C} is lpsp panel, and DSI panel is
-> also lpsp panel.
->
-> Currently i915_pm_lpsp igt has been categorized in edp-native and non-edp subtest.
-> non-edp subtest require the fix to validate the lpsp panels.
-> My solution approach to check the port on which DP/HDMI connector is currently 
-> connected.
-> if (port <= PORT_C)
->     lpsp_should_be_enabled.
-> else
->     lpsp_should_be_disabled.
->  
-> Currently there are two igt i915_pm_lpsp, i915_pm_rpm require to know
-> the port of DP/HDMI connector, so we need a igt library function for
-> that.
->
-> I am looking to parse the i915_display_info to get the port
-> information, but at same time it seems a fragile solution to me as any
-> change in i915_display_info will break the test, but i don't have any
-> other idea to get the port information.
->
-> Please provide your opinion and feedback for the above solution approach.
+On Thu, Feb 27, 2020 at 02:11:49PM +0530, Anshuman Gupta wrote:
+> +------------------------------------------------------------------------=
+-------+
+> |                                                                        =
+       |
+> |                                                                        =
+       |
+> |                                                                        =
+       |
+> |   +--------------------+        +-------------+         +------------+ =
+       |
+> |   |                    |        |             |         |            | =
+       |
+> |   |    PIPE A          |        | DP/HDMI     |         |   PORT_A   | =
+       |
+> |   |                    +--------+ TRANSCODER  +---------+            | =
+       |
+> |   |                    |        |             |         |            | =
+       |
+> |   +--------------------+        +------------->         +------------> =
+       |
+> |                                 |             |         |            | =
+       |
+> |                                 |             |         |   PORT_B   | =
+       |
+> |                                 |             |         |            | =
+       |
+> |                                 |             |         |            | =
+       |
+> |                                 +------------->         +------------> =
+       |
+> |                                 |             |         |            | =
+       |
+> |                                 | DSI         |         |   PORT_C   | =
+       |
+> |                                 | TRANSCODER  |         |            | =
+       |
+> |                                 +------------->         +------------+ =
+       |
+> |                                 |             |                        =
+       |
+> |                                 |             |                        =
+       |
+> |                                 |             |                        =
+       |
+> |                                 |             |                        =
+       |
+> |                                 |             |                        =
+       |
+> |                                 |             |                        =
+       |
+> |                                 |             |                        =
+       |
+> |                                 +-------------+                        =
+       |
+> |                                                                        =
+       |
+> |                   LPSP on Tigerlake                                    =
+       |
+> |                                                                        =
+       |
+> +------------------------------------------------------------------------=
+-------+
+> =
 
-I'd add a connector specific debugfs file that tells you whether LPSS
-(Low Power Single Pipe, for those who want to know what the acronym
-means) is possible and whether it's enabled. Alternatively add the info
-about LPSS to i915_display_info. But AFAICT there's no need for
-userspace to know about the port. This also avoids reading the
-HSW_PWR_WELL_CTL2 register directly.
+> Above block diagram depicts lpsp on TGL, while earlier development of lps=
+p igt test
+> it has been assumed that every non-edp panel is not a lpsp panel but it i=
+s not true
+> on TGL,
 
-BR,
-Jani.
+It wasn't necessarily true on earlier platforms either. I don't know if
+this makes any sense whatsoever. Probably a better way to validate would
+be to check that the resulting power domains make sense for various
+single pipe configurations.
 
+-- =
 
--- 
-Jani Nikula, Intel Open Source Graphics Center
+Ville Syrj=E4l=E4
+Intel
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
