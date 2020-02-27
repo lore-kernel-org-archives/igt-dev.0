@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A5126EC8F
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2020 11:10:19 +0000 (UTC)
-References: <20200227101724.1620389-1-lionel.g.landwerlin@intel.com>
- <158279901604.8627.8025260404770607562@skylake-alporthouse-com>
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <826e8f8d-2517-6ac7-7abd-2b8bf5f38897@intel.com>
-Date: Thu, 27 Feb 2020 13:10:16 +0200
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 667EC898C0
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2020 11:38:57 +0000 (UTC)
+References: <20200220125207.16423-1-petri.latvala@intel.com>
+ <20200220125207.16423-2-petri.latvala@intel.com>
+From: Martin Peres <martin.peres@linux.intel.com>
+Message-ID: <cd539f54-df4c-a5f4-67b6-22c2b760bf70@linux.intel.com>
+Date: Thu, 27 Feb 2020 13:38:52 +0200
 MIME-Version: 1.0
-In-Reply-To: <158279901604.8627.8025260404770607562@skylake-alporthouse-com>
+In-Reply-To: <20200220125207.16423-2-petri.latvala@intel.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf: add a stress test
- opening/closing the stream
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] intel-ci: Kernel selftest changes
+ to fast-feedback and blacklist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,71 +19,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 27/02/2020 12:23, Chris Wilson wrote:
-> Quoting Lionel Landwerlin (2020-02-27 10:17:24)
->> This appears to trigger hard hangs...
-> Didn't even require a bg load!
+On 2020-02-20 14:52, Petri Latvala wrote:
+> Now that selftest launchers are enumerable, we can control them with
+> fast-feedback.testlist and blacklist.txt. For now, apply the status
+> quo.
 
+This patch series will end up being a no-op on Intel CI since we were
+appending the selftests as part of BAT testing. With this change done,
+CI will be able to drop this extra test list, and simplify execution.
 
-Good point actually... I think there was still a glxgears running.
+I renamed the tests in cibuglog, so this patch series is:
 
+Acked-by: Martin Peres <martin.peres@linux.intel.com>
 
->> Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
->> ---
->>   tests/perf.c | 31 +++++++++++++++++++++++++++++++
->>   1 file changed, 31 insertions(+)
->>
->> diff --git a/tests/perf.c b/tests/perf.c
->> index d9bac561..d9ff4edb 100644
->> --- a/tests/perf.c
->> +++ b/tests/perf.c
->> @@ -3995,6 +3995,34 @@ test_rc6_disable(void)
->>          igt_assert_neq(n_events_end - n_events_start, 0);
->>   }
->>   
->> +static void
->> +test_stress_open_close(void)
->> +{
->> +       igt_until_timeout(2) {
->> +               int oa_exponent = 5; /* 5 micro seconds */
->> +               uint64_t properties[] = {
->> +                       /* XXX: even without periodic sampling we have to
->> +                        * specify at least one sample layout property...
->> +                        */
->> +                       DRM_I915_PERF_PROP_SAMPLE_OA, true,
->> +
->> +                       /* OA unit configuration */
->> +                       DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
->> +                       DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
->> +                       DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
->> +               };
->> +               struct drm_i915_perf_open_param param = {
->> +                       .flags = I915_PERF_FLAG_FD_CLOEXEC |
->> +                                I915_PERF_FLAG_DISABLED, /* XXX: open disabled */
->> +                       .num_properties = sizeof(properties) / 16,
-> #define NUM_PROPERTIES(p) (sizeof(p) / (2 * sizeof(uint64_t)))
->
-> [and probably crib the kernels assert_pointer_is_array()]
->
->> +                       .properties_ptr = to_user_pointer(properties),
->> +               };
->> +
->> +               stream_fd = __perf_open(drm_fd, &param, false);
->> +               __perf_close(stream_fd);
-> Ok, that looks as basic as can be -- I was struggling to decide what the
-> minimum parameters were :)
->
-> Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
-> -Chris
+And it is ready to merge from my PoV.
 
-
+Martin
+> 
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>
+> ---
+>  tests/intel-ci/blacklist.txt          | 5 -----
+>  tests/intel-ci/fast-feedback.testlist | 4 ++++
+>  2 files changed, 4 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+> index 51d0417c..390e4fa0 100644
+> --- a/tests/intel-ci/blacklist.txt
+> +++ b/tests/intel-ci/blacklist.txt
+> @@ -1,10 +1,5 @@
+>  igt@meta_test(@.*)?
+>  ###############################################
+> -# Kernel selftests (run separately)
+> -###############################################
+> -igt@i915_selftest(@.*)?
+> -igt@drm_mm(@.*)?
+> -###############################################
+>  # Handle module reloads with great care!
+>  #
+>  # Reloading a module is more likely to leave
+> diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+> index 1b00485e..b41fb4a0 100644
+> --- a/tests/intel-ci/fast-feedback.testlist
+> +++ b/tests/intel-ci/fast-feedback.testlist
+> @@ -171,3 +171,7 @@ igt@vgem_basic@sysfs
+>  igt@vgem_basic@unload
+>  igt@i915_module_load@reload
+>  igt@i915_pm_rpm@module-reload
+> +
+> +# Kernel selftests
+> +igt@i915_selftest@live
+> +igt@dmabuf@all
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
