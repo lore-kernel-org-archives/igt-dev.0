@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBBB16EC6F
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2020 09:15:32 +0000 (UTC)
-Date: Thu, 27 Feb 2020 11:15:28 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200227091528.GJ3839@platvala-desk.ger.corp.intel.com>
-References: <20200227000925.16988-1-akeem.g.abodunrin@intel.com>
- <20200227000925.16988-2-akeem.g.abodunrin@intel.com>
- <20200227091313.GI3839@platvala-desk.ger.corp.intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E12B6EC8A
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Feb 2020 10:17:28 +0000 (UTC)
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Date: Thu, 27 Feb 2020 12:17:24 +0200
+Message-Id: <20200227101724.1620389-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200227091313.GI3839@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v6 1/1] tools/generate_cb_kernel: Add
- script to assemble CB kernel
+Subject: [igt-dev] [PATCH i-g-t] tests/perf: add a stress test
+ opening/closing the stream
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,57 +15,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Akeem G Abodunrin <akeem.g.abodunrin@intel.com>
-Cc: tony.luck@intel.com, jani.nikula@intel.com, chris.p.wilson@intel.com, igt-dev@lists.freedesktop.org, jon.bloomfield@intel.com, daniel.vetter@intel.com, mika.kuoppala@intel.com
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Feb 27, 2020 at 11:13:13AM +0200, Petri Latvala wrote:
-> On Thu, Feb 27, 2020 at 12:09:25AM +0000, Akeem G Abodunrin wrote:
-> > This patch adds script and applicable assembly sources, so that we can =
-use
-> > igt to assemble Clear Batch Buffer kernel for gen7 and gen7.5 devices -
-> > Resultant header files would be imported to i915, and used as they are.=
-..
-> > =
+This appears to trigger hard hangs...
 
-> > With this patch, user need to have mesa configured on their platform,
-> > before igt could be used to achieve the purpose of assembling the kernel
-> > from source.
-> > =
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ tests/perf.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-> > This is needed for "Security mitigation for Intel Gen7/7.5 HWs"
-> > Intel ID: PSIRT-TA-201910-001/CVEID: CVE-2019-14615
-> > =
+diff --git a/tests/perf.c b/tests/perf.c
+index d9bac561..d9ff4edb 100644
+--- a/tests/perf.c
++++ b/tests/perf.c
+@@ -3995,6 +3995,34 @@ test_rc6_disable(void)
+ 	igt_assert_neq(n_events_end - n_events_start, 0);
+ }
+ 
++static void
++test_stress_open_close(void)
++{
++	igt_until_timeout(2) {
++		int oa_exponent = 5; /* 5 micro seconds */
++		uint64_t properties[] = {
++			/* XXX: even without periodic sampling we have to
++			 * specify at least one sample layout property...
++			 */
++			DRM_I915_PERF_PROP_SAMPLE_OA, true,
++
++			/* OA unit configuration */
++			DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
++			DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
++			DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
++		};
++		struct drm_i915_perf_open_param param = {
++			.flags = I915_PERF_FLAG_FD_CLOEXEC |
++			         I915_PERF_FLAG_DISABLED, /* XXX: open disabled */
++			.num_properties = sizeof(properties) / 16,
++			.properties_ptr = to_user_pointer(properties),
++		};
++
++		stream_fd = __perf_open(drm_fd, &param, false);
++		__perf_close(stream_fd);
++	}
++}
++
+ static int __i915_perf_add_config(int fd, struct drm_i915_perf_oa_config *config)
+ {
+ 	int ret = igt_ioctl(fd, DRM_IOCTL_I915_PERF_ADD_CONFIG, config);
+@@ -4590,6 +4618,9 @@ igt_main
+ 	igt_subtest("rc6-disable")
+ 		test_rc6_disable();
+ 
++	igt_subtest("stress-open-close")
++		test_stress_open_close();
++
+ 	igt_subtest("invalid-create-userspace-config")
+ 		test_invalid_create_userspace_config();
+ 
+-- 
+2.25.1
 
-> > v2: Addressed formatting, -g option and other minor issues (Petri)
-> > v3: Update script due to suggested changes in i915, and Mesa tool
-> > v4: Update help comment with Mesa build option with meson (Petri)
-> > v5: Modify how user specify i965_asm - script now takes binary, instead
-> > of Mesa tool source directory (Ville).
-> > v6: Update script to reflect Mesa tool final changes to assemble CB
-> > kernel - and renamed files based on Petri's suggestion...
-> > =
-
-> > Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > Cc: Jani Nikula <jani.nikula@intel.com>
-> > Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> > Cc: Petri Latvala <petri.latvala@intel.com>
-> > Cc: Bloomfield Jon <jon.bloomfield@intel.com>
-> > Signed-off-by: Akeem G Abodunrin <akeem.g.abodunrin@intel.com>
-> =
-
-> Patch subject slightly off but I'll change that when merging.
-
-Which is done now.
-
-
--- =
-
-Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
