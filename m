@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A852C6F3FC
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2020 11:13:41 +0000 (UTC)
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Date: Fri, 28 Feb 2020 13:13:38 +0200
-Message-Id: <20200228111338.1669251-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] tests/perf: add a stress test
- opening/closing the stream
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 28 Feb 2020 11:15:13 -0000
+Message-ID: <158288851352.7475.6325193241529905464@emeril.freedesktop.org>
+References: <20200228104340.2895082-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200228104340.2895082-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/5=5D_i915=3A_Start_putting_the?=
+ =?utf-8?q?_mmio=5Fbase_to_wider_use?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,93 +15,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This appears to trigger hard hangs...
+== Series Details ==
 
-v2: Add NUM_PROPERTIES()
-    Add describe
-    Add background load
+Series: series starting with [i-g-t,1/5] i915: Start putting the mmio_base to wider use
+URL   : https://patchwork.freedesktop.org/series/74073/
+State : failure
 
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk> (v1)
----
- tests/perf.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+== Summary ==
 
-diff --git a/tests/perf.c b/tests/perf.c
-index d9bac561..14645047 100644
---- a/tests/perf.c
-+++ b/tests/perf.c
-@@ -85,6 +85,8 @@ IGT_TEST_DESCRIPTION("Test the i915 perf metrics streaming interface");
- 
- #define MAX_OA_BUF_SIZE (16 * 1024 * 1024)
- 
-+#define NUM_PROPERTIES(p) (sizeof(p) / (2 * sizeof(uint64_t)))
-+
- struct accumulator {
- #define MAX_RAW_OA_COUNTERS 62
- 	enum drm_i915_oa_format format;
-@@ -3995,6 +3997,40 @@ test_rc6_disable(void)
- 	igt_assert_neq(n_events_end - n_events_start, 0);
- }
- 
-+static void
-+test_stress_open_close(void)
-+{
-+	load_helper_init();
-+	load_helper_run(HIGH);
-+
-+	igt_until_timeout(2) {
-+		int oa_exponent = 5; /* 5 micro seconds */
-+		uint64_t properties[] = {
-+			/* XXX: even without periodic sampling we have to
-+			 * specify at least one sample layout property...
-+			 */
-+			DRM_I915_PERF_PROP_SAMPLE_OA, true,
-+
-+			/* OA unit configuration */
-+			DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
-+			DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-+			DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
-+		};
-+		struct drm_i915_perf_open_param param = {
-+			.flags = I915_PERF_FLAG_FD_CLOEXEC |
-+			         I915_PERF_FLAG_DISABLED, /* XXX: open disabled */
-+			.num_properties = NUM_PROPERTIES(properties),
-+			.properties_ptr = to_user_pointer(properties),
-+		};
-+
-+		stream_fd = __perf_open(drm_fd, &param, false);
-+		__perf_close(stream_fd);
-+	}
-+
-+	load_helper_stop();
-+	load_helper_fini();
-+}
-+
- static int __i915_perf_add_config(int fd, struct drm_i915_perf_oa_config *config)
- {
- 	int ret = igt_ioctl(fd, DRM_IOCTL_I915_PERF_ADD_CONFIG, config);
-@@ -4590,6 +4626,10 @@ igt_main
- 	igt_subtest("rc6-disable")
- 		test_rc6_disable();
- 
-+	igt_describe("Stress tests opening & closing the i915-perf stream in a busy loop");
-+	igt_subtest("stress-open-close")
-+		test_stress_open_close();
-+
- 	igt_subtest("invalid-create-userspace-config")
- 		test_invalid_create_userspace_config();
- 
--- 
-2.25.1
+ERROR! This series introduces new undocumented tests:
 
+sysfs_heartbeat_interval
+sysfs_heartbeat_interval@idempotent
+sysfs_heartbeat_interval@invalid
+sysfs_heartbeat_interval@long
+sysfs_heartbeat_interval@mixed
+sysfs_heartbeat_interval@nopreempt
+sysfs_heartbeat_interval@off
+sysfs_heartbeat_interval@precise
+sysfs_preempt_timeout
+sysfs_preempt_timeout@idempotent
+sysfs_preempt_timeout@invalid
+sysfs_preempt_timeout@off
+sysfs_preempt_timeout@timeout
+sysfs_timeslice_duration
+sysfs_timeslice_duration@duration
+sysfs_timeslice_duration@idempotent
+sysfs_timeslice_duration@invalid
+sysfs_timeslice_duration@off
+sysfs_timeslice_duration@timeout
+
+Can you document them as per the requirement in the [CONTRIBUTING.md]?
+
+[Documentation] has more details on how to do this.
+
+Here are few examples:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+
+Thanks in advance!
+
+[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
+[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+
+Other than that, pipeline status: SUCCESS.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/113849 for the overview.
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/113849
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
