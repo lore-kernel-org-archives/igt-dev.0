@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 89BA16F4B2
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2020 18:48:03 +0000 (UTC)
-Date: Fri, 28 Feb 2020 20:47:57 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20200228184757.GI13686@intel.com>
-References: <20200228182229.1860-1-ville.syrjala@linux.intel.com>
- <16fda11b6ae81113adf15f16cc96bc1811e8321f.camel@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <16fda11b6ae81113adf15f16cc96bc1811e8321f.camel@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915_pm_dc: Move PSR checks
- back to individual subtests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 28 Feb 2020 19:16:07 -0000
+Message-ID: <158291736736.7474.4357342661349920014@emeril.freedesktop.org>
+References: <20200228182229.1860-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20200228182229.1860-1-ville.syrjala@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/i915=5Fpm=5Fdc=3A_Move_P?=
+ =?utf-8?q?SR_checks_back_to_individual_subtests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,94 +15,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Souza, Jose" <jose.souza@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Feb 28, 2020 at 06:32:17PM +0000, Souza, Jose wrote:
-> Anshuman already send a fix for this one:
-> https://patchwork.freedesktop.org/series/73509/
+== Series Details ==
 
-Ah, cool. I'll presume someone will pushed it eventually.
+Series: series starting with [i-g-t,1/2] tests/i915_pm_dc: Move PSR checks back to individual subtests
+URL   : https://patchwork.freedesktop.org/series/74091/
+State : success
 
-> =
+== Summary ==
 
-> ping Anushaman on the change in the second patch.
-> =
+CI Bug Log - changes from CI_DRM_8032 -> IGTPW_4240
+====================================================
 
-> On Fri, 2020-02-28 at 20:22 +0200, Ville Syrjala wrote:
-> > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > =
+Summary
+-------
 
-> > The dpms tests don't need PSR. So move the PSR check back into
-> > the subtests that need it.
-> > =
+  **SUCCESS**
 
-> > Cc: Jos=E9 Roberto de Souza <jose.souza@intel.com>
-> > Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> > Fixes: 6cbe6af372a0 ("tests/i915_pm_dc: Use psr_sink_support instead
-> > of reimplement it again")
-> > Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > ---
-> >  tests/i915/i915_pm_dc.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > =
+  No regressions found.
 
-> > diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
-> > index afcc10bc7e20..6975f165be7f 100644
-> > --- a/tests/i915/i915_pm_dc.c
-> > +++ b/tests/i915/i915_pm_dc.c
-> > @@ -393,7 +393,6 @@ int main(int argc, char *argv[])
-> >  		igt_require(igt_setup_runtime_pm(data.drm_fd));
-> >  		igt_require(igt_pm_dmc_loaded(data.debugfs_fd));
-> >  		igt_display_require(&data.display, data.drm_fd);
-> > -		igt_require(psr_sink_support(data.debugfs_fd,
-> > PSR_MODE_1));
-> >  		/* Make sure our Kernel supports MSR and the module is
-> > loaded */
-> >  		igt_require(igt_kmod_load("msr", NULL) =3D=3D 0);
-> >  =
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4240/index.html
 
-> > @@ -405,6 +404,7 @@ int main(int argc, char *argv[])
-> >  	igt_describe("In this test we make sure that system enters
-> > DC3CO "
-> >  		     "when PSR2 is active and system is in SLEEP
-> > state");
-> >  	igt_subtest("dc3co-vpb-simulation") {
-> > +		igt_require(psr_sink_support(data.debugfs_fd,
-> > PSR_MODE_1));
-> >  		test_dc3co_vpb_simulation(&data);
-> >  	}
-> >  =
+Known issues
+------------
 
-> > @@ -412,6 +412,7 @@ int main(int argc, char *argv[])
-> >  		     "while PSR is active");
-> >  	igt_subtest("dc5-psr") {
-> >  		data.op_psr_mode =3D PSR_MODE_1;
-> > +		igt_require(psr_sink_support(data.debugfs_fd,
-> > PSR_MODE_1));
-> >  		psr_enable(data.debugfs_fd, data.op_psr_mode);
-> >  		test_dc_state_psr(&data, CHECK_DC5);
-> >  	}
-> > @@ -420,6 +421,7 @@ int main(int argc, char *argv[])
-> >  		     "while PSR is active");
-> >  	igt_subtest("dc6-psr") {
-> >  		data.op_psr_mode =3D PSR_MODE_1;
-> > +		igt_require(psr_sink_support(data.debugfs_fd,
-> > PSR_MODE_1));
-> >  		psr_enable(data.debugfs_fd, data.op_psr_mode);
-> >  		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.
-> > msr_fd),
-> >  			      "PC8+ residencies not supported\n");
+  Here are the changes found in IGTPW_4240 that come from known issues:
 
--- =
+### IGT changes ###
 
-Ville Syrj=E4l=E4
-Intel
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gem_contexts:
+    - fi-cml-s:           [PASS][1] -> [DMESG-FAIL][2] ([i915#877])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8032/fi-cml-s/igt@i915_selftest@live@gem_contexts.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4240/fi-cml-s/igt@i915_selftest@live@gem_contexts.html
+
+  * igt@kms_addfb_basic@addfb25-bad-modifier:
+    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([CI#94] / [i915#402]) +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8032/fi-tgl-y/igt@kms_addfb_basic@addfb25-bad-modifier.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4240/fi-tgl-y/igt@kms_addfb_basic@addfb25-bad-modifier.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [FAIL][5] ([fdo#111096] / [i915#323]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8032/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4240/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@prime_self_import@basic-llseek-bad:
+    - fi-tgl-y:           [DMESG-WARN][7] ([CI#94] / [i915#402]) -> [PASS][8] +1 similar issue
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8032/fi-tgl-y/igt@prime_self_import@basic-llseek-bad.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4240/fi-tgl-y/igt@prime_self_import@basic-llseek-bad.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-kbl-guc:         [FAIL][9] ([i915#704]) -> [SKIP][10] ([fdo#109271])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8032/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4240/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+
+  
+  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#704]: https://gitlab.freedesktop.org/drm/intel/issues/704
+  [i915#877]: https://gitlab.freedesktop.org/drm/intel/issues/877
+
+
+Participating hosts (47 -> 43)
+------------------------------
+
+  Additional (4): fi-byt-j1900 fi-bdw-5557u fi-bsw-kefka fi-kbl-r 
+  Missing    (8): fi-ilk-m540 fi-tgl-dsi fi-bsw-n3050 fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-kbl-7560u fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5477 -> IGTPW_4240
+
+  CI-20190529: 20190529
+  CI_DRM_8032: e61f34133ad908d4b455344daa7b4edb9fcf680c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4240: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4240/index.html
+  IGT_5477: 3fe5828f45fc533ba4d9ee84dbb5aea320ce61bc @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4240/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
