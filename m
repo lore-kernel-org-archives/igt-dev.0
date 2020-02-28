@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 071476F465
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2020 14:33:37 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 289D66E02C
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2020 14:42:16 +0000 (UTC)
+Date: Fri, 28 Feb 2020 16:42:13 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <20200228144213.GF13686@intel.com>
+References: <1582810023-28424-1-git-send-email-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <37d68435-ac43-ccf3-db03-bbd4ef632e2e@linux.intel.com>
-References: <20200218082240.21853-1-krishnaiah.bommu@intel.com>
- <20200218082240.21853-2-krishnaiah.bommu@intel.com>
- <9c896736-164d-f79e-13ca-da6b242f2bd4@linux.intel.com>
- <158289729413.24106.11399579225916670468@skylake-alporthouse-com>
- <37d68435-ac43-ccf3-db03-bbd4ef632e2e@linux.intel.com>
-Message-ID: <158290040068.24106.10947994564032893411@skylake-alporthouse-com>
-Date: Fri, 28 Feb 2020 14:33:20 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/1] lib/i915/gem_ring : set the
- engine to default context
+Content-Disposition: inline
+In-Reply-To: <1582810023-28424-1-git-send-email-juhapekka.heikkila@gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_rotation_crc: remove
+ redundant work
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,107 +18,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bommu Krishnaiah <krishnaiah.bommu@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Tvrtko Ursulin (2020-02-28 14:23:46)
-> 
-> On 28/02/2020 13:41, Chris Wilson wrote:
-> > Quoting Tvrtko Ursulin (2020-02-28 11:15:14)
-> >>
-> >> On 18/02/2020 08:22, Bommu Krishnaiah wrote:
-> >>> Copy the existing engine map from default context to
-> >>> newly created  default context
-> >>>
-> >>> v2: addressed review comments
-> >>>
-> >>> Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-> >>> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> >>> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> >>> ---
-> >>>    lib/i915/gem_ring.c              | 8 ++++++--
-> >>>    lib/i915/gem_ring.h              | 2 +-
-> >>>    tests/i915/gem_busy.c            | 2 +-
-> >>>    tests/i915/gem_ctx_persistence.c | 2 +-
-> >>>    tests/i915/gem_eio.c             | 6 +++---
-> >>>    tests/i915/gem_exec_await.c      | 2 +-
-> >>>    tests/i915/gem_exec_fence.c      | 2 +-
-> >>>    tests/i915/gem_exec_latency.c    | 2 +-
-> >>>    tests/i915/gem_exec_schedule.c   | 6 +++---
-> >>>    tests/i915/gem_ringfill.c        | 2 +-
-> >>>    tests/perf_pmu.c                 | 2 +-
-> >>>    11 files changed, 20 insertions(+), 16 deletions(-)
-> >>>
-> >>> diff --git a/lib/i915/gem_ring.c b/lib/i915/gem_ring.c
-> >>> index 99f4741c..14abfb16 100644
-> >>> --- a/lib/i915/gem_ring.c
-> >>> +++ b/lib/i915/gem_ring.c
-> >>> @@ -143,11 +143,15 @@ __gem_measure_ring_inflight(int fd, unsigned int engine, enum measure_ring_flags
-> >>>     * Number of batches that fit in the ring
-> >>>     */
-> >>>    unsigned int
-> >>> -gem_measure_ring_inflight(int fd, unsigned int engine, enum measure_ring_flags flags)
-> >>> +gem_measure_ring_inflight(int sfd, unsigned int engine, enum measure_ring_flags flags, bool copy_engine_map)
-> >>>    {
-> >>>        unsigned int min = ~0u;
-> >>> +     int fd;
-> >>>    
-> >>> -     fd = gem_reopen_driver(fd);
-> >>> +     fd = gem_reopen_driver(sfd);
-> >>> +
-> >>> +     if (copy_engine_map)
-> >>> +             gem_context_copy_engines(sfd, 0, fd, 0);
-> >>
-> >> Would querying the context for presence of engine map be too hacky? It
-> >> would avoid having to change the prototype etc. I guess it would be
-> >> hacky since it could incorrectly imply from which kind of context
-> >> 'engine' comes.
-> >>
-> >> Perhaps proper fix it to pass in fd/ctx tuple in here and then decide
-> >> locally. That sounds better to me than the bool. Chris, your opinion?
-> > 
-> > I was just planning on adding USE_ENGINE to flags.
-> > 
-> > The reason we had to add gem_reopen_driver() here was someone converted
-> > some tests to __for_each_physical_engine but later on in the same test
-> > we used gem_measure_ring_inflight with a legacy ring. So I was wary of
-> > that breaking again, and thought the exercise of making the USE_ENGINE
-> > explicit would be useful review of the callers.
-> 
-> What would be the meaning of USE_ENGINE, I don't follow.
+On Thu, Feb 27, 2020 at 03:27:03PM +0200, Juha-Pekka Heikkila wrote:
+> removed fb does not take part into final crc comparisons.
+> =
 
-Currently engine means ring so USE_ENGINE would make engine mean
-engine. :)
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>  tests/kms_rotation_crc.c | 13 -------------
+>  1 file changed, 13 deletions(-)
+> =
 
-> I agree there is some attractiveness in marking the callers and so 
-> making the "kind" of 'engine' explicit (and audited), however that 
-> process in general is also very tedious and error prone.
-> 
-> Ctx+engine tuplet sounds more robust. If ctx has engine map we copy it 
-> after re-opening the driver.
-> 
-> Or you want to drop re-opening? Then I don't see what a new flag could do.
+> diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+> index 58bebf3..164eade 100644
+> --- a/tests/kms_rotation_crc.c
+> +++ b/tests/kms_rotation_crc.c
+> @@ -54,7 +54,6 @@ typedef struct {
+>  	igt_display_t display;
+>  	struct igt_fb fb;
+>  	struct igt_fb fb_reference;
+> -	struct igt_fb fb_unrotated;
+>  	struct igt_fb fb_flip;
+>  	igt_crc_t ref_crc;
+>  	igt_crc_t flip_crc;
+> @@ -156,7 +155,6 @@ static void remove_fbs(data_t *data)
+>  {
+>  	igt_remove_fb(data->gfx_fd, &data->fb);
+>  	igt_remove_fb(data->gfx_fd, &data->fb_reference);
+> -	igt_remove_fb(data->gfx_fd, &data->fb_unrotated);
+>  	igt_remove_fb(data->gfx_fd, &data->fb_flip);
+>  }
+>  =
 
-I did think we could drop the re-open, but reopen is nice to get around
-any prior state on the old fd affecting the measurement. So keep it.
+> @@ -306,17 +304,6 @@ static void prepare_fbs(data_t *data, igt_output_t *=
+output,
+>  	igt_pipe_crc_get_current(display->drm_fd, data->pipe_crc, &data->ref_cr=
+c);
+>  =
 
-What I think would be useful for future API is to use
-intel_execution_engine2 (someone come up with a better name please!) as
-our primary designator for physical engines. Then this would be
+>  	/*
+> -	 * Prepare the non-rotated reference fb.
+> -	 */
+> -	igt_create_fb(data->gfx_fd, ref_w, ref_h, pixel_format, tiling, &data->=
+fb_unrotated);
+> -	paint_squares(data, IGT_ROTATION_0, &data->fb_unrotated, 1.0);
+> -	igt_plane_set_fb(plane, &data->fb_unrotated);
+> -	igt_plane_set_rotation(plane, IGT_ROTATION_0);
+> -	if (plane->type !=3D DRM_PLANE_TYPE_CURSOR)
+> -		igt_plane_set_position(plane, data->pos_x, data->pos_y);
+> -	igt_display_commit2(display, COMMIT_ATOMIC);
+> -
+> -	/*
 
-i915 = gem_reopen_driver(i915);
-gem_context_set_engine(i915, 0, e->class, e->instance);
+Looks unused indeed.
 
-And we would always use eb.flags=0 for the measurement.
+Reviewed-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
 
-That way there's less ambiguity and we always have enough to create a
-new ctx->engines[] map if desired.
--Chris
+
+>  	 * Prepare the plane with an non-rotated fb let the hw rotate it.
+>  	 */
+>  	igt_create_fb(data->gfx_fd, w, h, pixel_format, tiling, &data->fb);
+> -- =
+
+> 2.7.4
+> =
+
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+-- =
+
+Ville Syrj=E4l=E4
+Intel
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
