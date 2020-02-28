@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53E096F3FA
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2020 11:15:20 +0000 (UTC)
-References: <20200218082240.21853-1-krishnaiah.bommu@intel.com>
- <20200218082240.21853-2-krishnaiah.bommu@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <9c896736-164d-f79e-13ca-da6b242f2bd4@linux.intel.com>
-Date: Fri, 28 Feb 2020 11:15:14 +0000
 MIME-Version: 1.0
-In-Reply-To: <20200218082240.21853-2-krishnaiah.bommu@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/1] lib/i915/gem_ring : set the
- engine to default context
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 28 Feb 2020 11:52:44 -0000
+Message-ID: <158289076411.7474.18047683065064853653@emeril.freedesktop.org>
+References: <20200228104340.2895082-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200228104340.2895082-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/5=5D_i915=3A_Start_putting_the_mmio?=
+ =?utf-8?q?=5Fbase_to_wider_use?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,239 +15,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Bommu Krishnaiah <krishnaiah.bommu@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+== Series Details ==
 
-On 18/02/2020 08:22, Bommu Krishnaiah wrote:
-> Copy the existing engine map from default context to
-> newly created  default context
-> 
-> v2: addressed review comments
-> 
-> Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> ---
->   lib/i915/gem_ring.c              | 8 ++++++--
->   lib/i915/gem_ring.h              | 2 +-
->   tests/i915/gem_busy.c            | 2 +-
->   tests/i915/gem_ctx_persistence.c | 2 +-
->   tests/i915/gem_eio.c             | 6 +++---
->   tests/i915/gem_exec_await.c      | 2 +-
->   tests/i915/gem_exec_fence.c      | 2 +-
->   tests/i915/gem_exec_latency.c    | 2 +-
->   tests/i915/gem_exec_schedule.c   | 6 +++---
->   tests/i915/gem_ringfill.c        | 2 +-
->   tests/perf_pmu.c                 | 2 +-
->   11 files changed, 20 insertions(+), 16 deletions(-)
-> 
-> diff --git a/lib/i915/gem_ring.c b/lib/i915/gem_ring.c
-> index 99f4741c..14abfb16 100644
-> --- a/lib/i915/gem_ring.c
-> +++ b/lib/i915/gem_ring.c
-> @@ -143,11 +143,15 @@ __gem_measure_ring_inflight(int fd, unsigned int engine, enum measure_ring_flags
->    * Number of batches that fit in the ring
->    */
->   unsigned int
-> -gem_measure_ring_inflight(int fd, unsigned int engine, enum measure_ring_flags flags)
-> +gem_measure_ring_inflight(int sfd, unsigned int engine, enum measure_ring_flags flags, bool copy_engine_map)
->   {
->   	unsigned int min = ~0u;
-> +	int fd;
->   
-> -	fd = gem_reopen_driver(fd);
-> +	fd = gem_reopen_driver(sfd);
-> +
-> +	if (copy_engine_map)
-> +		gem_context_copy_engines(sfd, 0, fd, 0);
+Series: series starting with [i-g-t,1/5] i915: Start putting the mmio_base to wider use
+URL   : https://patchwork.freedesktop.org/series/74073/
+State : success
 
-Would querying the context for presence of engine map be too hacky? It 
-would avoid having to change the prototype etc. I guess it would be 
-hacky since it could incorrectly imply from which kind of context 
-'engine' comes.
+== Summary ==
 
-Perhaps proper fix it to pass in fd/ctx tuple in here and then decide 
-locally. That sounds better to me than the bool. Chris, your opinion?
+CI Bug Log - changes from IGT_5475 -> IGTPW_4238
+====================================================
 
-Regards,
+Summary
+-------
 
-Tvrtko
+  **SUCCESS**
 
->   
->   	/* When available, disable execbuf throttling */
->   	fcntl(fd, F_SETFD, fcntl(fd, F_GETFD) | O_NONBLOCK);
-> diff --git a/lib/i915/gem_ring.h b/lib/i915/gem_ring.h
-> index c69adce0..94b68865 100644
-> --- a/lib/i915/gem_ring.h
-> +++ b/lib/i915/gem_ring.h
-> @@ -31,6 +31,6 @@ enum measure_ring_flags {
->   };
->   
->   unsigned int
-> -gem_measure_ring_inflight(int fd, unsigned int engine, enum measure_ring_flags flags);
-> +gem_measure_ring_inflight(int fd, unsigned int engine, enum measure_ring_flags flags, bool copy_engine_map);
->   
->   #endif /* GEM_RING_H */
-> diff --git a/tests/i915/gem_busy.c b/tests/i915/gem_busy.c
-> index 2f1b04e3..2efa84b1 100644
-> --- a/tests/i915/gem_busy.c
-> +++ b/tests/i915/gem_busy.c
-> @@ -309,7 +309,7 @@ static void xchg_u32(void *array, unsigned i, unsigned j)
->   static void close_race(int fd)
->   {
->   	const unsigned int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-> -	const unsigned int nhandles = gem_measure_ring_inflight(fd, ALL_ENGINES, 0) / 2;
-> +	const unsigned int nhandles = gem_measure_ring_inflight(fd, ALL_ENGINES, 0, false) / 2;
->   	unsigned int engines[16], nengine;
->   	unsigned long *control;
->   	uint32_t *handles;
-> diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
-> index feb8fbd0..e2481635 100644
-> --- a/tests/i915/gem_ctx_persistence.c
-> +++ b/tests/i915/gem_ctx_persistence.c
-> @@ -436,7 +436,7 @@ static void test_nonpersistent_file(int i915)
->   
->   static void test_nonpersistent_queued(int i915, unsigned int engine)
->   {
-> -	const int count = gem_measure_ring_inflight(i915, engine, 0);
-> +	const int count = gem_measure_ring_inflight(i915, engine, 0, true);
->   	igt_spin_t *spin;
->   	int fence = -1;
->   	uint32_t ctx;
-> diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
-> index 0fe51efe..6a0cfdd5 100644
-> --- a/tests/i915/gem_eio.c
-> +++ b/tests/i915/gem_eio.c
-> @@ -449,7 +449,7 @@ static void test_inflight(int fd, unsigned int wait)
->   	igt_require_gem(fd);
->   	igt_require(gem_has_exec_fence(fd));
->   
-> -	max = gem_measure_ring_inflight(fd, -1, 0);
-> +	max = gem_measure_ring_inflight(fd, -1, 0, false);
->   	igt_require(max > 1);
->   	max = min(max - 1, ARRAY_SIZE(fence));
->   	igt_debug("Using %d inflight batches\n", max);
-> @@ -512,7 +512,7 @@ static void test_inflight_suspend(int fd)
->   	igt_spin_t *hang;
->   	int max;
->   
-> -	max = gem_measure_ring_inflight(fd, -1, 0);
-> +	max = gem_measure_ring_inflight(fd, -1, 0, false);
->   	igt_require(max > 1);
->   	max = min(max - 1, ARRAY_SIZE(fence));
->   	igt_debug("Using %d inflight batches\n", max);
-> @@ -766,7 +766,7 @@ static void reset_stress(int fd, uint32_t ctx0,
->   	igt_stats_t stats;
->   	int max;
->   
-> -	max = gem_measure_ring_inflight(fd, engine, 0);
-> +	max = gem_measure_ring_inflight(fd, engine, 0, false);
->   	max = max / 2 - 1; /* assume !execlists and a shared ring */
->   	igt_require(max > 0);
->   	igt_debug("Using %d inflight batches for %s\n", max, name);
-> diff --git a/tests/i915/gem_exec_await.c b/tests/i915/gem_exec_await.c
-> index 7817b483..1c1aeae1 100644
-> --- a/tests/i915/gem_exec_await.c
-> +++ b/tests/i915/gem_exec_await.c
-> @@ -241,7 +241,7 @@ igt_main
->   		igt_require_gem(device);
->   		gem_submission_print_method(device);
->   
-> -		ring_size = gem_measure_ring_inflight(device, ALL_ENGINES, 0) - 10;
-> +		ring_size = gem_measure_ring_inflight(device, ALL_ENGINES, 0, false) - 10;
->   		if (!gem_has_execlists(device))
->   			ring_size /= 2;
->   		igt_info("Ring size: %d batches\n", ring_size);
-> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-> index 36488ea7..b0eca26a 100644
-> --- a/tests/i915/gem_exec_fence.c
-> +++ b/tests/i915/gem_exec_fence.c
-> @@ -1525,7 +1525,7 @@ igt_main
->   		long ring_size = 0;
->   
->   		igt_fixture {
-> -			ring_size = gem_measure_ring_inflight(i915, ALL_ENGINES, 0) - 1;
-> +			ring_size = gem_measure_ring_inflight(i915, ALL_ENGINES, 0, false) - 1;
->   			igt_info("Ring size: %ld batches\n", ring_size);
->   			igt_require(ring_size);
->   
-> diff --git a/tests/i915/gem_exec_latency.c b/tests/i915/gem_exec_latency.c
-> index 3d99182a..f16d603b 100644
-> --- a/tests/i915/gem_exec_latency.c
-> +++ b/tests/i915/gem_exec_latency.c
-> @@ -661,7 +661,7 @@ igt_main
->   
->   		gem_submission_print_method(device);
->   
-> -		ring_size = gem_measure_ring_inflight(device, ALL_ENGINES, 0);
-> +		ring_size = gem_measure_ring_inflight(device, ALL_ENGINES, 0, false);
->   		igt_info("Ring size: %d batches\n", ring_size);
->   		igt_require(ring_size > 8);
->   		ring_size -= 8; /* leave some spare */
-> diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-> index a2098586..1dbd77e6 100644
-> --- a/tests/i915/gem_exec_schedule.c
-> +++ b/tests/i915/gem_exec_schedule.c
-> @@ -1170,7 +1170,7 @@ static void deep(int fd, unsigned ring)
->   		ctx[n] = gem_context_create(fd);
->   	}
->   
-> -	nreq = gem_measure_ring_inflight(fd, ring, 0) / (4 * XS) * MAX_CONTEXTS;
-> +	nreq = gem_measure_ring_inflight(fd, ring, 0, false) / (4 * XS) * MAX_CONTEXTS;
->   	if (nreq > max_req)
->   		nreq = max_req;
->   	igt_info("Using %d requests (prio range %d)\n", nreq, max_req);
-> @@ -1316,7 +1316,7 @@ static int __execbuf(int fd, struct drm_i915_gem_execbuffer2 *execbuf)
->   static void wide(int fd, unsigned ring)
->   {
->   	struct timespec tv = {};
-> -	unsigned int ring_size = gem_measure_ring_inflight(fd, ring, MEASURE_RING_NEW_CTX);
-> +	unsigned int ring_size = gem_measure_ring_inflight(fd, ring, MEASURE_RING_NEW_CTX, false);
->   
->   	IGT_CORK_FENCE(cork);
->   	uint32_t result;
-> @@ -1366,7 +1366,7 @@ static void reorder_wide(int fd, unsigned ring)
->   	struct drm_i915_gem_exec_object2 obj[2];
->   	struct drm_i915_gem_execbuffer2 execbuf;
->   	struct timespec tv = {};
-> -	unsigned int ring_size = gem_measure_ring_inflight(fd, ring, MEASURE_RING_NEW_CTX);
-> +	unsigned int ring_size = gem_measure_ring_inflight(fd, ring, MEASURE_RING_NEW_CTX, false);
->   	IGT_CORK_FENCE(cork);
->   	uint32_t result, target;
->   	uint32_t result_read[1024];
-> diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
-> index 4c73f4d9..fe4d6561 100644
-> --- a/tests/i915/gem_ringfill.c
-> +++ b/tests/i915/gem_ringfill.c
-> @@ -272,7 +272,7 @@ igt_main
->   			master = true;
->   		}
->   
-> -		ring_size = gem_measure_ring_inflight(fd, ALL_ENGINES, 0);
-> +		ring_size = gem_measure_ring_inflight(fd, ALL_ENGINES, 0, false);
->   		igt_info("Ring size: %d batches\n", ring_size);
->   		igt_require(ring_size);
->   	}
-> diff --git a/tests/perf_pmu.c b/tests/perf_pmu.c
-> index fe383867..75615701 100644
-> --- a/tests/perf_pmu.c
-> +++ b/tests/perf_pmu.c
-> @@ -1281,7 +1281,7 @@ static void cpu_hotplug(int gem_fd)
->   
->   static int target_num_interrupts(int i915)
->   {
-> -	return min(gem_measure_ring_inflight(i915, I915_EXEC_DEFAULT, 0), 30);
-> +	return min(gem_measure_ring_inflight(i915, I915_EXEC_DEFAULT, 0, false), 30);
->   }
->   
->   static void
-> 
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4238/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4238:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@runner@aborted:
+    - {fi-tgl-u}:         NOTRUN -> [FAIL][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4238/fi-tgl-u/igt@runner@aborted.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4238 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-hsw-peppy:       [PASS][2] -> [DMESG-WARN][3] ([i915#44])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5475/fi-hsw-peppy/igt@kms_frontbuffer_tracking@basic.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4238/fi-hsw-peppy/igt@kms_frontbuffer_tracking@basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-skl-6770hq:      [DMESG-WARN][4] ([i915#92]) -> [PASS][5] +1 similar issue
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5475/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4238/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
+    - fi-kbl-guc:         [SKIP][6] ([fdo#109271]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5475/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4238/fi-kbl-guc/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@gem_contexts:
+    - fi-cml-s:           [DMESG-FAIL][8] ([i915#877]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5475/fi-cml-s/igt@i915_selftest@live@gem_contexts.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4238/fi-cml-s/igt@i915_selftest@live@gem_contexts.html
+
+  * igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:
+    - fi-skl-6770hq:      [SKIP][10] ([fdo#109271]) -> [PASS][11] +5 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5475/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4238/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
+
+  * igt@kms_pipe_crc_basic@read-crc-pipe-b:
+    - fi-skl-6770hq:      [DMESG-WARN][12] ([i915#106]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5475/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4238/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#106]: https://gitlab.freedesktop.org/drm/intel/issues/106
+  [i915#1233]: https://gitlab.freedesktop.org/drm/intel/issues/1233
+  [i915#44]: https://gitlab.freedesktop.org/drm/intel/issues/44
+  [i915#877]: https://gitlab.freedesktop.org/drm/intel/issues/877
+  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
+
+
+Participating hosts (52 -> 44)
+------------------------------
+
+  Missing    (8): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-cfl-guc fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5475 -> IGTPW_4238
+
+  CI-20190529: 20190529
+  CI_DRM_8026: 6ce18c241dde9ee20b19ff42f8198552a57ab259 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4238: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4238/index.html
+  IGT_5475: ca52e3cb94072f8a6c59f6379f569f79e71a088b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@sysfs_heartbeat_interval@idempotent
++igt@sysfs_heartbeat_interval@invalid
++igt@sysfs_heartbeat_interval@long
++igt@sysfs_heartbeat_interval@mixed
++igt@sysfs_heartbeat_interval@nopreempt
++igt@sysfs_heartbeat_interval@off
++igt@sysfs_heartbeat_interval@precise
++igt@sysfs_preempt_timeout@idempotent
++igt@sysfs_preempt_timeout@invalid
++igt@sysfs_preempt_timeout@off
++igt@sysfs_preempt_timeout@timeout
++igt@sysfs_timeslice_duration@duration
++igt@sysfs_timeslice_duration@idempotent
++igt@sysfs_timeslice_duration@invalid
++igt@sysfs_timeslice_duration@off
++igt@sysfs_timeslice_duration@timeout
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4238/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
