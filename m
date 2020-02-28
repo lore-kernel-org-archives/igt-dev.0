@@ -1,16 +1,14 @@
 Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-Date: Sat, 29 Feb 2020 01:51:24 +0200
+Date: Sat, 29 Feb 2020 01:34:48 +0200
 From: Andi Shyti <andi@etezian.org>
-Message-ID: <20200228235124.GF11891@jack.zhora.eu>
+Message-ID: <20200228233448.GE11891@jack.zhora.eu>
 References: <20200228104340.2895082-1-chris@chris-wilson.co.uk>
- <20200228104340.2895082-3-chris@chris-wilson.co.uk>
- <20200228232704.GD11891@jack.zhora.eu>
- <158293277426.29794.2343133378704199477@skylake-alporthouse-com>
+ <20200228104340.2895082-4-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <158293277426.29794.2343133378704199477@skylake-alporthouse-com>
-Subject: Re: [Intel-gfx] [PATCH i-g-t 3/5] i915: Exercise preemption timeout
- controls in sysfs
+In-Reply-To: <20200228104340.2895082-4-chris@chris-wilson.co.uk>
+Subject: Re: [Intel-gfx] [PATCH i-g-t 4/5] i915: Exercise sysfs heartbeat
+ controls
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
@@ -26,31 +24,19 @@ To: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> > > +void dyn_sysfs_engines(int i915, int engines, const char *file,
-> > > +                    void (*test)(int, int))
-> > > +{
-> > > +     char buf[512];
-> > > +     int len;
-> > > +
-> > > +     lseek(engines, 0, SEEK_SET);
-> > > +     while ((len = syscall(SYS_getdents64, engines, buf, sizeof(buf))) > 0) {
-> > > +             void *ptr = buf;
-> > > +
-> > > +             while (len) {
-> > > +                     struct linux_dirent64 {
-> > > +                             ino64_t        d_ino;
-> > > +                             off64_t        d_off;
-> > > +                             unsigned short d_reclen;
-> > > +                             unsigned char  d_type;
-> > > +                             char           d_name[];
-> > > +                     } *de = ptr;
-> > 
-> > what is the need for having your own linux_dirent64?
+On Fri, Feb 28, 2020 at 10:43:39AM +0000, Chris Wilson wrote:
+> We [will] expose various per-engine scheduling controls. One of which,
+> 'heartbeat_duration_ms', defines how often we send a heartbeat down the
+> engine to check upon the health of the engine. If a heartbeat does not
+> complete within the interval (or two), the engine is declared hung.
 > 
-> fdopendir() takes ownership of the fd, preventing reuse. And
-> fdopendir(dup()) is getting ridiculous.
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 
-why not using dirent64?
+Someone with not a good eye might swear to have read this patch
+once, and at patch 5/5 he will ask again the same question.
+
+Why don't we put together in a library the things that patch
+3/4/5 have in common?
 
 Andi
 _______________________________________________
