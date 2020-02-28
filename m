@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E75AC6F4AF
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2020 18:32:20 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Fri, 28 Feb 2020 18:32:17 +0000
-Message-ID: <16fda11b6ae81113adf15f16cc96bc1811e8321f.camel@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89BA16F4B2
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Feb 2020 18:48:03 +0000 (UTC)
+Date: Fri, 28 Feb 2020 20:47:57 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <20200228184757.GI13686@intel.com>
 References: <20200228182229.1860-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20200228182229.1860-1-ville.syrjala@linux.intel.com>
-Content-Language: en-US
-Content-ID: <9418F2ADF5BF59478BE63C3737B2D85C@intel.com>
+ <16fda11b6ae81113adf15f16cc96bc1811e8321f.camel@intel.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <16fda11b6ae81113adf15f16cc96bc1811e8321f.camel@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/i915_pm_dc: Move PSR checks
  back to individual subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -19,57 +19,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Gupta,
- Anshuman" <anshuman.gupta@intel.com>
+To: "Souza, Jose" <jose.souza@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QW5zaHVtYW4gYWxyZWFkeSBzZW5kIGEgZml4IGZvciB0aGlzIG9uZToNCmh0dHBzOi8vcGF0Y2h3
-b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvNzM1MDkvDQoNCnBpbmcgQW51c2hhbWFuIG9uIHRo
-ZSBjaGFuZ2UgaW4gdGhlIHNlY29uZCBwYXRjaC4NCg0KT24gRnJpLCAyMDIwLTAyLTI4IGF0IDIw
-OjIyICswMjAwLCBWaWxsZSBTeXJqYWxhIHdyb3RlOg0KPiBGcm9tOiBWaWxsZSBTeXJqw6Rsw6Qg
-PHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPg0KPiANCj4gVGhlIGRwbXMgdGVzdHMgZG9u
-J3QgbmVlZCBQU1IuIFNvIG1vdmUgdGhlIFBTUiBjaGVjayBiYWNrIGludG8NCj4gdGhlIHN1YnRl
-c3RzIHRoYXQgbmVlZCBpdC4NCj4gDQo+IENjOiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3Nl
-LnNvdXphQGludGVsLmNvbT4NCj4gQ2M6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6LmhpbGVy
-QGludGVsLmNvbT4NCj4gRml4ZXM6IDZjYmU2YWYzNzJhMCAoInRlc3RzL2k5MTVfcG1fZGM6IFVz
-ZSBwc3Jfc2lua19zdXBwb3J0IGluc3RlYWQNCj4gb2YgcmVpbXBsZW1lbnQgaXQgYWdhaW4iKQ0K
-PiBTaWduZWQtb2ZmLWJ5OiBWaWxsZSBTeXJqw6Rsw6QgPHZpbGxlLnN5cmphbGFAbGludXguaW50
-ZWwuY29tPg0KPiAtLS0NCj4gIHRlc3RzL2k5MTUvaTkxNV9wbV9kYy5jIHwgNCArKystDQo+ICAx
-IGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZm
-IC0tZ2l0IGEvdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMgYi90ZXN0cy9pOTE1L2k5MTVfcG1fZGMu
-Yw0KPiBpbmRleCBhZmNjMTBiYzdlMjAuLjY5NzVmMTY1YmU3ZiAxMDA2NDQNCj4gLS0tIGEvdGVz
-dHMvaTkxNS9pOTE1X3BtX2RjLmMNCj4gKysrIGIvdGVzdHMvaTkxNS9pOTE1X3BtX2RjLmMNCj4g
-QEAgLTM5Myw3ICszOTMsNiBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqYXJndltdKQ0KPiAg
-CQlpZ3RfcmVxdWlyZShpZ3Rfc2V0dXBfcnVudGltZV9wbShkYXRhLmRybV9mZCkpOw0KPiAgCQlp
-Z3RfcmVxdWlyZShpZ3RfcG1fZG1jX2xvYWRlZChkYXRhLmRlYnVnZnNfZmQpKTsNCj4gIAkJaWd0
-X2Rpc3BsYXlfcmVxdWlyZSgmZGF0YS5kaXNwbGF5LCBkYXRhLmRybV9mZCk7DQo+IC0JCWlndF9y
-ZXF1aXJlKHBzcl9zaW5rX3N1cHBvcnQoZGF0YS5kZWJ1Z2ZzX2ZkLA0KPiBQU1JfTU9ERV8xKSk7
-DQo+ICAJCS8qIE1ha2Ugc3VyZSBvdXIgS2VybmVsIHN1cHBvcnRzIE1TUiBhbmQgdGhlIG1vZHVs
-ZSBpcw0KPiBsb2FkZWQgKi8NCj4gIAkJaWd0X3JlcXVpcmUoaWd0X2ttb2RfbG9hZCgibXNyIiwg
-TlVMTCkgPT0gMCk7DQo+ICANCj4gQEAgLTQwNSw2ICs0MDQsNyBAQCBpbnQgbWFpbihpbnQgYXJn
-YywgY2hhciAqYXJndltdKQ0KPiAgCWlndF9kZXNjcmliZSgiSW4gdGhpcyB0ZXN0IHdlIG1ha2Ug
-c3VyZSB0aGF0IHN5c3RlbSBlbnRlcnMNCj4gREMzQ08gIg0KPiAgCQkgICAgICJ3aGVuIFBTUjIg
-aXMgYWN0aXZlIGFuZCBzeXN0ZW0gaXMgaW4gU0xFRVANCj4gc3RhdGUiKTsNCj4gIAlpZ3Rfc3Vi
-dGVzdCgiZGMzY28tdnBiLXNpbXVsYXRpb24iKSB7DQo+ICsJCWlndF9yZXF1aXJlKHBzcl9zaW5r
-X3N1cHBvcnQoZGF0YS5kZWJ1Z2ZzX2ZkLA0KPiBQU1JfTU9ERV8xKSk7DQo+ICAJCXRlc3RfZGMz
-Y29fdnBiX3NpbXVsYXRpb24oJmRhdGEpOw0KPiAgCX0NCj4gIA0KPiBAQCAtNDEyLDYgKzQxMiw3
-IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10pDQo+ICAJCSAgICAgIndoaWxlIFBT
-UiBpcyBhY3RpdmUiKTsNCj4gIAlpZ3Rfc3VidGVzdCgiZGM1LXBzciIpIHsNCj4gIAkJZGF0YS5v
-cF9wc3JfbW9kZSA9IFBTUl9NT0RFXzE7DQo+ICsJCWlndF9yZXF1aXJlKHBzcl9zaW5rX3N1cHBv
-cnQoZGF0YS5kZWJ1Z2ZzX2ZkLA0KPiBQU1JfTU9ERV8xKSk7DQo+ICAJCXBzcl9lbmFibGUoZGF0
-YS5kZWJ1Z2ZzX2ZkLCBkYXRhLm9wX3Bzcl9tb2RlKTsNCj4gIAkJdGVzdF9kY19zdGF0ZV9wc3Io
-JmRhdGEsIENIRUNLX0RDNSk7DQo+ICAJfQ0KPiBAQCAtNDIwLDYgKzQyMSw3IEBAIGludCBtYWlu
-KGludCBhcmdjLCBjaGFyICphcmd2W10pDQo+ICAJCSAgICAgIndoaWxlIFBTUiBpcyBhY3RpdmUi
-KTsNCj4gIAlpZ3Rfc3VidGVzdCgiZGM2LXBzciIpIHsNCj4gIAkJZGF0YS5vcF9wc3JfbW9kZSA9
-IFBTUl9NT0RFXzE7DQo+ICsJCWlndF9yZXF1aXJlKHBzcl9zaW5rX3N1cHBvcnQoZGF0YS5kZWJ1
-Z2ZzX2ZkLA0KPiBQU1JfTU9ERV8xKSk7DQo+ICAJCXBzcl9lbmFibGUoZGF0YS5kZWJ1Z2ZzX2Zk
-LCBkYXRhLm9wX3Bzcl9tb2RlKTsNCj4gIAkJaWd0X3JlcXVpcmVfZihpZ3RfcG1fcGM4X3BsdXNf
-cmVzaWRlbmNpZXNfZW5hYmxlZChkYXRhLg0KPiBtc3JfZmQpLA0KPiAgCQkJICAgICAgIlBDOCsg
-cmVzaWRlbmNpZXMgbm90IHN1cHBvcnRlZFxuIik7DQpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3Rz
-LmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2lndC1kZXYK
+On Fri, Feb 28, 2020 at 06:32:17PM +0000, Souza, Jose wrote:
+> Anshuman already send a fix for this one:
+> https://patchwork.freedesktop.org/series/73509/
+
+Ah, cool. I'll presume someone will pushed it eventually.
+
+> =
+
+> ping Anushaman on the change in the second patch.
+> =
+
+> On Fri, 2020-02-28 at 20:22 +0200, Ville Syrjala wrote:
+> > From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> > =
+
+> > The dpms tests don't need PSR. So move the PSR check back into
+> > the subtests that need it.
+> > =
+
+> > Cc: Jos=E9 Roberto de Souza <jose.souza@intel.com>
+> > Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+> > Fixes: 6cbe6af372a0 ("tests/i915_pm_dc: Use psr_sink_support instead
+> > of reimplement it again")
+> > Signed-off-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> > ---
+> >  tests/i915/i915_pm_dc.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > =
+
+> > diff --git a/tests/i915/i915_pm_dc.c b/tests/i915/i915_pm_dc.c
+> > index afcc10bc7e20..6975f165be7f 100644
+> > --- a/tests/i915/i915_pm_dc.c
+> > +++ b/tests/i915/i915_pm_dc.c
+> > @@ -393,7 +393,6 @@ int main(int argc, char *argv[])
+> >  		igt_require(igt_setup_runtime_pm(data.drm_fd));
+> >  		igt_require(igt_pm_dmc_loaded(data.debugfs_fd));
+> >  		igt_display_require(&data.display, data.drm_fd);
+> > -		igt_require(psr_sink_support(data.debugfs_fd,
+> > PSR_MODE_1));
+> >  		/* Make sure our Kernel supports MSR and the module is
+> > loaded */
+> >  		igt_require(igt_kmod_load("msr", NULL) =3D=3D 0);
+> >  =
+
+> > @@ -405,6 +404,7 @@ int main(int argc, char *argv[])
+> >  	igt_describe("In this test we make sure that system enters
+> > DC3CO "
+> >  		     "when PSR2 is active and system is in SLEEP
+> > state");
+> >  	igt_subtest("dc3co-vpb-simulation") {
+> > +		igt_require(psr_sink_support(data.debugfs_fd,
+> > PSR_MODE_1));
+> >  		test_dc3co_vpb_simulation(&data);
+> >  	}
+> >  =
+
+> > @@ -412,6 +412,7 @@ int main(int argc, char *argv[])
+> >  		     "while PSR is active");
+> >  	igt_subtest("dc5-psr") {
+> >  		data.op_psr_mode =3D PSR_MODE_1;
+> > +		igt_require(psr_sink_support(data.debugfs_fd,
+> > PSR_MODE_1));
+> >  		psr_enable(data.debugfs_fd, data.op_psr_mode);
+> >  		test_dc_state_psr(&data, CHECK_DC5);
+> >  	}
+> > @@ -420,6 +421,7 @@ int main(int argc, char *argv[])
+> >  		     "while PSR is active");
+> >  	igt_subtest("dc6-psr") {
+> >  		data.op_psr_mode =3D PSR_MODE_1;
+> > +		igt_require(psr_sink_support(data.debugfs_fd,
+> > PSR_MODE_1));
+> >  		psr_enable(data.debugfs_fd, data.op_psr_mode);
+> >  		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.
+> > msr_fd),
+> >  			      "PC8+ residencies not supported\n");
+
+-- =
+
+Ville Syrj=E4l=E4
+Intel
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
