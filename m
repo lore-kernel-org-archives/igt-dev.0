@@ -1,17 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 816DC6EA22
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2020 08:54:00 +0000 (UTC)
-Date: Tue, 3 Mar 2020 14:15:30 +0530
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <20200303084530.GG9735@intel.com>
-References: <20200227084149.588-1-anshuman.gupta@intel.com>
- <874kvcryhp.fsf@intel.com> <20200303042733.GE9735@intel.com>
- <87wo81q1kx.fsf@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 917266EA42
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2020 09:03:31 +0000 (UTC)
+From: satyavat <satyavathi.k@intel.com>
+Date: Tue,  3 Mar 2020 14:32:25 +0530
+Message-Id: <20200303090225.7192-1-satyavathi.k@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <87wo81q1kx.fsf@intel.com>
-Subject: Re: [igt-dev] [RFC i-g-t] LPSP igt test on TGL
+Subject: [igt-dev] [PATCH V6] [PATCH i-g-t][V6]
+ tests/i915/gem_ringfill:Added __for_each_physical_engine to utilize all
+ available engines.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,80 +20,176 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, martin.peres@intel.com
+To: satyavathi.k@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-03-03 at 10:34:06 +0200, Jani Nikula wrote:
-> On Tue, 03 Mar 2020, Anshuman Gupta <anshuman.gupta@intel.com> wrote:
-> > On 2020-02-27 at 14:44:18 +0200, Jani Nikula wrote:
-> >> On Thu, 27 Feb 2020, Anshuman Gupta <anshuman.gupta@intel.com> wrote:
-> >> > Above block diagram depicts lpsp on TGL, while earlier development of
-> >> > lpsp igt test it has been assumed that every non-edp panel is not a
-> >> > lpsp panel but it is not true on TGL, any HDMI/DP panel connected on
-> >> > pipe A and connected to PORT_{A,B,C} is lpsp panel, and DSI panel is
-> >> > also lpsp panel.
-> >> >
-> >> > Currently i915_pm_lpsp igt has been categorized in edp-native and non-edp subtest.
-> >> > non-edp subtest require the fix to validate the lpsp panels.
-> >> > My solution approach to check the port on which DP/HDMI connector is currently 
-> >> > connected.
-> >> > if (port <= PORT_C)
-> >> >     lpsp_should_be_enabled.
-> >> > else
-> >> >     lpsp_should_be_disabled.
-> >> >  
-> >> > Currently there are two igt i915_pm_lpsp, i915_pm_rpm require to know
-> >> > the port of DP/HDMI connector, so we need a igt library function for
-> >> > that.
-> >> >
-> >> > I am looking to parse the i915_display_info to get the port
-> >> > information, but at same time it seems a fragile solution to me as any
-> >> > change in i915_display_info will break the test, but i don't have any
-> >> > other idea to get the port information.
-> >> >
-> >> > Please provide your opinion and feedback for the above solution approach.
-> >> 
-> >> I'd add a connector specific debugfs file that tells you whether LPSS
-> >> (Low Power Single Pipe, for those who want to know what the acronym
-> >> means) is possible and whether it's enabled. Alternatively add the info
-> >> about LPSS to i915_display_info. But AFAICT there's no need for
-> >> userspace to know about the port. This also avoids reading the
-> >> HSW_PWR_WELL_CTL2 register directly.
-> > Thanks Jani and Ville for your feedback and suggestion, based upon your feedback
-> > i have following solution approach.
-> > Add a connector specific debugfs attributes i915_lpsp_cpable.
-> > for ecah connector if it is lpsp capable, do modeset with pipe A crtc 
-> > on that connector and validate if power wells above  pg2 are turned off
-> > by using i915_power_domain_info. 
-> 
-> Why not add a debugfs file that will tell you both, instead of forcing
-> the userspace to know about the connection between lpsp and pg2?
-IMHO a DP/HDMI connector may not be connected to pipe A crtc in default mode.
-So via igt we can have modeset on Pipe A with DP/HDMI connector and can 
-validate lpsp for DP/HDMI connector.
-Please correct me if am wrong.
-Thanks,
-Anshuman Gupta.
-> 
-> BR,
-> Jani.
-> 
-> 
-> 
-> >
-> > Thanks ,
-> > Anshuman
-> >> 
-> >> BR,
-> >> Jani.
-> >> 
-> >> 
-> >> -- 
-> >> Jani Nikula, Intel Open Source Graphics Center
-> 
-> -- 
-> Jani Nikula, Intel Open Source Graphics Center
+Replaced the legacy for_each_engine* defines with the ones implemented
+in the gem_engine_topology library.
+
+subtest that is modified: Ringfill
+
+Corrected subtest name in fast-feedback.testlist from,
+basic-default-forked --> basic-forked
+
+Cc: Dec Katarzyna <katarzyna.dec@intel.com>
+Cc: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
+Signed-off-by: satyavat <satyavathi.k@intel.com>
+---
+ tests/i915/gem_ringfill.c             | 52 +++++++++++++--------------
+ tests/intel-ci/fast-feedback.testlist |  2 +-
+ 2 files changed, 26 insertions(+), 28 deletions(-)
+
+diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
+index 4c73f4d9..24af3b6c 100644
+--- a/tests/i915/gem_ringfill.c
++++ b/tests/i915/gem_ringfill.c
+@@ -96,7 +96,7 @@ static int setup_execbuf(int fd,
+ 			 struct drm_i915_gem_execbuffer2 *execbuf,
+ 			 struct drm_i915_gem_exec_object2 *obj,
+ 			 struct drm_i915_gem_relocation_entry *reloc,
+-			 unsigned int ring)
++			 const struct intel_execution_engine2 *e)
+ {
+ 	const int gen = intel_gen(intel_get_drm_devid(fd));
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+@@ -109,7 +109,7 @@ static int setup_execbuf(int fd,
+ 	memset(reloc, 0, 1024*sizeof(*reloc));
+ 
+ 	execbuf->buffers_ptr = to_user_pointer(obj);
+-	execbuf->flags = ring | (1 << 11) | (1 << 12);
++	execbuf->flags = e->flags | (1 << 11) | (1 << 12);
+ 
+ 	if (gen > 3 && gen < 6)
+ 		execbuf->flags |= I915_EXEC_SECURE;
+@@ -170,25 +170,25 @@ static int setup_execbuf(int fd,
+ 	return 0;
+ }
+ 
+-static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
++static void run_test(int fd, const struct intel_execution_engine2 *e, unsigned flags, unsigned timeout)
+ {
++	int i915;
+ 	struct drm_i915_gem_exec_object2 obj[2];
+ 	struct drm_i915_gem_relocation_entry reloc[1024];
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	igt_hang_t hang;
+ 
+-	gem_require_ring(fd, ring);
+-	igt_require(gem_can_store_dword(fd, ring));
++	igt_require(gem_class_can_store_dword(fd, e->class));
+ 
+ 	if (flags & (SUSPEND | HIBERNATE))
+-		run_test(fd, ring, 0, 0);
++		run_test(fd, e, 0, 0);
+ 
+ 	gem_quiescent_gpu(fd);
+-	igt_require(setup_execbuf(fd, &execbuf, obj, reloc, ring) == 0);
++	igt_require(setup_execbuf(fd, &execbuf, obj, reloc, e) == 0);
+ 
+ 	memset(&hang, 0, sizeof(hang));
+ 	if (flags & HANG)
+-		hang = igt_hang_ring(fd, ring & ~(3<<13));
++		hang = igt_hang_ring(fd, e->flags & ~(3<<13));
+ 
+ 	if (flags & (CHILD | FORKED | BOMB)) {
+ 		int nchild;
+@@ -203,8 +203,9 @@ static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
+ 		igt_debug("Forking %d children\n", nchild);
+ 		igt_fork(child, nchild) {
+ 			if (flags & NEWFD) {
+-				fd = drm_open_driver(DRIVER_INTEL);
+-				setup_execbuf(fd, &execbuf, obj, reloc, ring);
++				i915 = drm_open_driver(DRIVER_INTEL);
++				gem_context_copy_engines(fd, 0, i915, 0);
++				setup_execbuf(i915, &execbuf, obj, reloc, e);
+ 			}
+ 			fill_ring(fd, &execbuf, flags, timeout);
+ 		}
+@@ -235,11 +236,12 @@ static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
+ 	gem_quiescent_gpu(fd);
+ 
+ 	if (flags & (SUSPEND | HIBERNATE))
+-		run_test(fd, ring, 0, 0);
++		run_test(fd, e, 0, 0);
+ }
+ 
+ igt_main
+ {
++	const struct intel_execution_engine2 *e;
+ 	const struct {
+ 		const char *suffix;
+ 		unsigned flags;
+@@ -249,12 +251,12 @@ igt_main
+ 		{ "", 0, 0, true},
+ 		{ "-interruptible", INTERRUPTIBLE, 1, true },
+ 		{ "-hang", HANG, 10, true },
+-		{ "-child", CHILD, 0 },
++		{ "child", CHILD, 0 },
+ 		{ "-forked", FORKED, 0, true },
+ 		{ "-fd", FORKED | NEWFD, 0, true },
+-		{ "-bomb", BOMB | NEWFD | INTERRUPTIBLE, 150 },
+-		{ "-S3", BOMB | SUSPEND, 30 },
+-		{ "-S4", BOMB | HIBERNATE, 30 },
++		{ "bomb", BOMB | NEWFD | INTERRUPTIBLE, 150 },
++		{ "S3", BOMB | SUSPEND, 30 },
++		{ "S4", BOMB | HIBERNATE, 30 },
+ 		{ NULL }
+ 	}, *m;
+ 	bool master = false;
+@@ -265,7 +267,7 @@ igt_main
+ 
+ 		fd = drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(fd);
+-		igt_require(gem_can_store_dword(fd, 0));
++		igt_require(gem_class_can_store_dword(fd, 0));
+ 		gen = intel_gen(intel_get_drm_devid(fd));
+ 		if (gen > 3 && gen < 6) { /* ctg and ilk need secure batches */
+ 			igt_device_set_master(fd);
+@@ -276,21 +278,17 @@ igt_main
+ 		igt_info("Ring size: %d batches\n", ring_size);
+ 		igt_require(ring_size);
+ 	}
+-
+ 	for (m = modes; m->suffix; m++) {
+-		const struct intel_execution_engine *e;
+-
+-		for (e = intel_execution_engines; e->name; e++) {
+-			igt_subtest_f("%s%s%s",
+-				      m->basic && !e->exec_id ? "basic-" : "",
+-				      e->name,
+-				      m->suffix) {
+-				igt_skip_on(m->flags & NEWFD && master);
+-				run_test(fd, eb_ring(e), m->flags, m->timeout);
++
++		igt_skip_on(m->flags & NEWFD && master);
++		igt_subtest_with_dynamic_f("%s%s", m->basic  ? "basic" : "",  m->suffix) {
++			__for_each_physical_engine(fd, e) {
++				igt_dynamic_f("%s", e->name) {
++					run_test(fd, e, m->flags, m->timeout);
++				}
+ 			}
+ 		}
+ 	}
+-
+ 	igt_fixture
+ 		close(fd);
+ }
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 1b00485e..d5a72db3 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -39,7 +39,7 @@ igt@gem_mmap@basic
+ igt@gem_mmap_gtt@basic
+ igt@gem_render_linear_blits@basic
+ igt@gem_render_tiled_blits@basic
+-igt@gem_ringfill@basic-default-forked
++igt@gem_ringfill@basic-forked
+ igt@gem_sync@basic-all
+ igt@gem_sync@basic-each
+ igt@gem_tiled_blits@basic
+-- 
+2.25.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
