@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 589416E977
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2020 10:44:36 +0000 (UTC)
-From: Jani Nikula <jani.nikula@linux.intel.com>
-In-Reply-To: <20200303084530.GG9735@intel.com>
-References: <20200227084149.588-1-anshuman.gupta@intel.com>
- <874kvcryhp.fsf@intel.com> <20200303042733.GE9735@intel.com>
- <87wo81q1kx.fsf@intel.com> <20200303084530.GG9735@intel.com>
-Date: Tue, 03 Mar 2020 12:44:30 +0200
-Message-ID: <87lfohpvjl.fsf@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B8DD46E968
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2020 11:14:44 +0000 (UTC)
+Date: Tue, 3 Mar 2020 13:14:42 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200303111442.GN3839@platvala-desk.ger.corp.intel.com>
+References: <20200303103412.29563-1-daniel.t.mrzyglod@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [RFC i-g-t] LPSP igt test on TGL
+Content-Disposition: inline
+In-Reply-To: <20200303103412.29563-1-daniel.t.mrzyglod@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib: move upper_32_bits() and
+ lower_32_bits() to library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,37 +22,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anshuman Gupta <anshuman.gupta@intel.com>
-Cc: igt-dev@lists.freedesktop.org, martin.peres@intel.com
+To: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 03 Mar 2020, Anshuman Gupta <anshuman.gupta@intel.com> wrote:
-> On 2020-03-03 at 10:34:06 +0200, Jani Nikula wrote:
->> On Tue, 03 Mar 2020, Anshuman Gupta <anshuman.gupta@intel.com> wrote:
->> > On 2020-02-27 at 14:44:18 +0200, Jani Nikula wrote:
->> >> On Thu, 27 Feb 2020, Anshuman Gupta <anshuman.gupta@intel.com> wrote:
->> > Add a connector specific debugfs attributes i915_lpsp_cpable.
->> > for ecah connector if it is lpsp capable, do modeset with pipe A crtc 
->> > on that connector and validate if power wells above  pg2 are turned off
->> > by using i915_power_domain_info. 
->> 
->> Why not add a debugfs file that will tell you both, instead of forcing
->> the userspace to know about the connection between lpsp and pg2?
-> IMHO a DP/HDMI connector may not be connected to pipe A crtc in default mode.
+On Tue, Mar 03, 2020 at 11:34:12AM +0100, Daniel Mrzyglod wrote:
+> Move inline upper_32_bits() and lower_32_bits() function from tests to
+> library. Functiom will be usefull for elsewhere use.
+> 
+> Cc: Katarzyna Dec <katarzyna.dec@intel.com>
+> Signed-off-by: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
+> ---
+>  lib/ioctl_wrappers.h        | 20 ++++++++++++++++++++
+>  tests/i915/gem_exec_fence.c | 10 ----------
+>  2 files changed, 20 insertions(+), 10 deletions(-)
+> 
+> diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+> index 7614e688c..17f54b2f9 100644
+> --- a/lib/ioctl_wrappers.h
+> +++ b/lib/ioctl_wrappers.h
+> @@ -244,4 +244,24 @@ static inline void *from_user_pointer(uint64_t u64)
+>  	return (void *)(uintptr_t)u64;
+>  }
+>  
+> +/**
+> + * lower_32_bits
+> + *
+> + * return bits 0-31 of a number
+> + */
+> +static inline uint32_t lower_32_bits(uint64_t x)
+> +{
+> +	return x & 0xffffffff;
+> +}
+> +
+> +/**
+> + * lower_32_bits
+> + *
+> + * return bits 32-63 of a number
 
-What is default mode?
+upper_
 
-> So via igt we can have modeset on Pipe A with DP/HDMI connector and can 
-> validate lpsp for DP/HDMI connector.
-> Please correct me if am wrong.
+Does the name need a colon : after it to be recognized? Can you build
+docs and check that these appear?
 
-Sorry, I am not sure what you're asking.
-
-BR,
-Jani.
 
 -- 
-Jani Nikula, Intel Open Source Graphics Center
+Petri Latvala
+
+
+
+> + */
+> +static inline uint32_t upper_32_bits(uint64_t x)
+> +{
+> +	return x >> 32;
+> +}
+> +
+>  #endif /* IOCTL_WRAPPERS_H */
+> diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+> index 9b3735325..ebd0f931f 100644
+> --- a/tests/i915/gem_exec_fence.c
+> +++ b/tests/i915/gem_exec_fence.c
+> @@ -590,16 +590,6 @@ static uint32_t batch_create(int fd)
+>  	return handle;
+>  }
+>  
+> -static inline uint32_t lower_32_bits(uint64_t x)
+> -{
+> -	return x & 0xffffffff;
+> -}
+> -
+> -static inline uint32_t upper_32_bits(uint64_t x)
+> -{
+> -	return x >> 32;
+> -}
+> -
+>  static void test_keep_in_fence(int fd, const struct intel_execution_engine2 *e)
+>  {
+>  	struct sigaction sa = { .sa_handler = alarm_handler };
+> -- 
+> 2.21.1
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
