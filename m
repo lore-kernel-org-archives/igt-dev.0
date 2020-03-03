@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 809F46EA67
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2020 13:13:17 +0000 (UTC)
-Date: Tue, 3 Mar 2020 15:13:15 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200303131315.GO3839@platvala-desk.ger.corp.intel.com>
-References: <20200302173314.378918-1-emil.l.velikov@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200302173314.378918-1-emil.l.velikov@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3] ts/core_setmaster: new test for
- drop/set master semantics
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 03 Mar 2020 13:14:30 -0000
+Message-ID: <158324127056.15380.2847209239054912597@emeril.freedesktop.org>
+References: <20200303121509.29662-1-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20200303121509.29662-1-janusz.krzysztofik@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?gem=5Fuserptr=5Fblits=3A_Refresh_other_now_MMAP=5FGTT_dependent?=
+ =?utf-8?q?_subtests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,190 +15,114 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Emil Velikov <emil.l.velikov@gmail.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Mar 02, 2020 at 05:33:14PM +0000, Emil Velikov wrote:
-> From: Emil Velikov <emil.velikov@collabora.com>
-> =
+== Series Details ==
 
-> This test adds three distinct subtests:
->  - drop/set master as root
->  - drop/set master as non-root
->  - drop/set master for a shared fd
-> =
+Series: tests/gem_userptr_blits: Refresh other now MMAP_GTT dependent subtests
+URL   : https://patchwork.freedesktop.org/series/74201/
+State : success
 
-> Currently the second subtest will fail, with kernel patch to address
-> that has been submitted.
-> =
+== Summary ==
 
-> v2: Add to the autotools build
-> v3:
->  - Add igt_describe()
->  - Use igt_fixture() for tweak_perm
->  - Enhance comments
-> =
+CI Bug Log - changes from CI_DRM_8054 -> IGTPW_4248
+====================================================
 
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> Signed-off-by: Emil Velikov <emil.velikov@collabora.com>
-> ---
->  tests/Makefile.sources |   1 +
->  tests/core_setmaster.c | 206 +++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build      |   1 +
->  3 files changed, 208 insertions(+)
->  create mode 100644 tests/core_setmaster.c
-> =
+Summary
+-------
 
-> diff --git a/tests/Makefile.sources b/tests/Makefile.sources
-> index b87d6333..5da36a91 100644
-> --- a/tests/Makefile.sources
-> +++ b/tests/Makefile.sources
-> @@ -18,6 +18,7 @@ TESTS_progs =3D \
->  	core_getclient \
->  	core_getstats \
->  	core_getversion \
-> +	core_setmaster \
->  	core_setmaster_vs_auth \
->  	debugfs_test \
->  	dmabuf \
-> diff --git a/tests/core_setmaster.c b/tests/core_setmaster.c
-> new file mode 100644
-> index 00000000..58ed9771
-> --- /dev/null
-> +++ b/tests/core_setmaster.c
-> @@ -0,0 +1,206 @@
-> +/*
-> + * Copyright =A9 2020 Collabora, Ltd.
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a
-> + * copy of this software and associated documentation files (the "Softwa=
-re"),
-> + * to deal in the Software without restriction, including without limita=
-tion
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
-se,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the =
-next
-> + * paragraph) shall be included in all copies or substantial portions of=
- the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
-SS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
-TY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
-ALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
-OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
-NG
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
-EALINGS
-> + * IN THE SOFTWARE.
-> + *
-> + * Authors:
-> + *    Emil Velikov <emil.l.velikov@gmail.com>
-> + *
-> + */
-> +
-> +/*
-> + * Testcase: Check that drop/setMaster behaves correctly wrt root/user a=
-ccess
-> + *
-> + * Test checks if the ioctls succeed or fail, depending if the applicati=
-ons was
-> + * run with root, user privileges or if we have separate privileged arbi=
-trator.
-> + */
-> +
-> +#include "igt.h"
-> +#include <unistd.h>
-> +#include <stdlib.h>
-> +#include <stdio.h>
-> +#include <string.h>
-> +#include <sys/stat.h>
-> +
-> +IGT_TEST_DESCRIPTION("Check that Drop/SetMaster behaves correctly wrt ro=
-ot/user"
-> +		     " access");
-> +
-> +static bool is_master(int fd)
-> +{
-> +	/* FIXME: replace with drmIsMaster once we bumped libdrm version */
-> +	return drmAuthMagic(fd, 0) !=3D -EACCES;
-> +}
-> +
-> +static void check_drop_set(void)
-> +{
-> +	int master;
-> +
-> +	master =3D __drm_open_driver(DRIVER_ANY);
-> +
-> +	/* Ensure we have a valid device. This is _extremely_ unlikely to
-> +	 * trigger as tweak_perm() aims to ensure we have the correct rights.
-> +	 * Although:
-> +	 * - according to the manual igt_drop_root() + igt_skip() is broken
+  **SUCCESS**
 
-I asked for clarification on this and didn't get a reply. I'm not
-seeing such a mention. Well, there is the text warning about
-igt_drop_root() and atexit handlers and recommending the use of
-igt_drop_root() in a child process to avoid issues, and this is in a
-child process.
+  No regressions found.
 
-Whatever I'm missing here surely also applies to igt_assert as well?
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4248/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4248 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s4-devices:
+    - fi-tgl-y:           [PASS][1] -> [FAIL][2] ([CI#94])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8054/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4248/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+
+  * igt@kms_addfb_basic@framebuffer-vs-set-tiling:
+    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([CI#94] / [i915#402]) +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8054/fi-tgl-y/igt@kms_addfb_basic@framebuffer-vs-set-tiling.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4248/fi-tgl-y/igt@kms_addfb_basic@framebuffer-vs-set-tiling.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_flink_basic@bad-open:
+    - fi-tgl-y:           [DMESG-WARN][5] ([CI#94] / [i915#402]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8054/fi-tgl-y/igt@gem_flink_basic@bad-open.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4248/fi-tgl-y/igt@gem_flink_basic@bad-open.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-icl-u2:          [FAIL][7] ([i915#217]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8054/fi-icl-u2/igt@kms_chamelium@common-hpd-after-suspend.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4248/fi-icl-u2/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  
+#### Warnings ####
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [FAIL][9] ([fdo#111096] / [i915#323]) -> [FAIL][10] ([fdo#111407])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8054/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4248/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
+  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
+  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
+  [i915#217]: https://gitlab.freedesktop.org/drm/intel/issues/217
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
 
 
-> +	 * - there is _no_ guarantee that we'll open a device handled by
-> +	 * tweak_perm()
+Participating hosts (51 -> 45)
+------------------------------
 
-This is a point that came to mind later, the building blocks for that
-guarantee are in igt_device_scan.
-
-1) If filter already set (test being run with --device), use that
-   filter (igt_device_filter_get or so). Otherwise loop through the
-   generated card%u names, using drm:/dev/dri/card%u as the
-   filter. igt_device_scan.c stuff already has a list of all possible
-   devices but I don't see an easy way to get to the list.
-
-2) igt_device_card_match() gets you a card
-
-3) card->card should be the path to /dev/dri to chmod on
-
-4) igt_open_card(card) gives you an fd to that card
+  Additional (1): fi-skl-6770hq 
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
 
 
-> +	 * - having a device is integral part of the test
+Build changes
+-------------
 
-It's an integral part of all tests. The issue with the use of
-igt_require vs igt_assert is whether it's a prerequisite or the thing
-you're actually testing.
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5484 -> IGTPW_4248
 
-
-> +	 */
-> +	igt_assert_neq(master, -1);
-> +
-> +	/* At this point we're master capable due to:
-> +	 * - being root - always
-> +	 * - normal user - as the only drm only drm client (on this VT)
-> +	 */
-> +	igt_assert_eq(is_master(master), true);
-
-Just igt_assert(is_master(master))
+  CI-20190529: 20190529
+  CI_DRM_8054: 00395f50bbdc5b9eb3e287e85465566d1ec094a6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4248: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4248/index.html
+  IGT_5484: 91b36b61e76901a2bd09fe93ac7bf7b8a60f258c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
 
--- =
 
-Petri Latvala
+== Testlist changes ==
+
++igt@gem_userptr_blits@process-exit-mmap
++igt@gem_userptr_blits@process-exit-mmap-busy
+-igt@gem_userptr_blits@process-exit-gtt
+-igt@gem_userptr_blits@process-exit-gtt-busy
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4248/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
