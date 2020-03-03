@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4D106EA74
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2020 14:28:49 +0000 (UTC)
-MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DA3A6EA75
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Mar 2020 14:34:03 +0000 (UTC)
+From: "Melkaveri, Arjun" <arjun.melkaveri@intel.com>
+Date: Tue, 3 Mar 2020 14:33:58 +0000
+Message-ID: <CA3CE573A55781488FA37084931071AB14D92616@BGSMSX105.gar.corp.intel.com>
 References: <20200207125941.22974-1-arjun.melkaveri@intel.com>
-In-Reply-To: <20200207125941.22974-1-arjun.melkaveri@intel.com>
-Message-ID: <158324572493.6031.13719344880691742608@skylake-alporthouse-com>
-Date: Tue, 03 Mar 2020 14:28:44 +0000
+ <158324572493.6031.13719344880691742608@skylake-alporthouse-com>
+In-Reply-To: <158324572493.6031.13719344880691742608@skylake-alporthouse-com>
+Content-Language: en-US
+MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH V3] [PATCH i-g-t] gem_ctx_create:Adjusted test
  to use __for_each_physical_engine to utilize all available engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -21,8 +23,15 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
+
+
+-----Original Message-----
+From: Chris Wilson <chris@chris-wilson.co.uk> 
+Sent: Tuesday, March 3, 2020 7:59 PM
+To: Melkaveri, Arjun <arjun.melkaveri@intel.com>; igt-dev@lists.freedesktop.org
+Subject: Re: [igt-dev] [PATCH V3] [PATCH i-g-t] gem_ctx_create:Adjusted test to use __for_each_physical_engine to utilize all available engines
 
 Quoting Arjun Melkaveri (2020-02-07 12:59:41)
 > @@ -179,11 +195,22 @@ static void active(int fd, unsigned engine, int timeout, int ncpus)
@@ -50,9 +59,12 @@ Quoting Arjun Melkaveri (2020-02-07 12:59:41)
 >                                         execbuf.flags = engines[n];
 >                                         gem_execbuf(fd, &execbuf);
 
-Ahem. The point of the test was to create a new context, not keep using
-a dead context.
+Ahem. The point of the test was to create a new context, not keep using a dead context.
 -Chris
+
+Will correct it and send patch  , saw where I have gone wrong now . 
+
+-Arjun 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
