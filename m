@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 48C186E190
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Mar 2020 14:50:37 +0000 (UTC)
-Received: by mail-pf1-x441.google.com with SMTP id l184so1078251pfl.7
- for <igt-dev@lists.freedesktop.org>; Wed, 04 Mar 2020 06:50:37 -0800 (PST)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Wed,  4 Mar 2020 16:50:27 +0200
-Message-Id: <1583333427-18040-1-git-send-email-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_cursor_legacy: increase timeout
- for nonblocking flip wait
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 04 Mar 2020 16:15:30 -0000
+Message-ID: <158333853020.426.18157269566590035931@emeril.freedesktop.org>
+References: <20200304132457.13258-1-tvrtko.ursulin@linux.intel.com>
+In-Reply-To: <20200304132457.13258-1-tvrtko.ursulin@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgZ2VtX3dz?=
+ =?utf-8?q?im=3A_Fix_calibration_for_default_and_virtual_engine?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,30 +14,112 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-V2hlbiBydW4gb24gbW9yZSB0aGFuIG9uZSBtb25pdG9yIHRoZXJlIG1heSBiZSBtb2Rlc2V0IGlu
-IHF1ZXVlCndoaWNoIHdpbGwgYmxvY2sgZmxpcC4gS2VybmVsIHdpbGwgdGltZW91dCB3aXRoIG1v
-ZGVzZXQgYXQKdGVuIHNlY29uZHMgc28gbGV0cyB3YWl0IGluIHRlc3QgYWxzbyB0aGF0IHNhbWUg
-dGVuIHNlY29uZHMgYXQKbWF4aW11bS4KClYyIFZpbGxlIFN5cmrDpGzDpDogbGV0cyBqdXN0IHdh
-aXQgZm9yIGZpdmUgc2Vjb25kcwoKU2lnbmVkLW9mZi1ieTogSnVoYS1QZWtrYSBIZWlra2lsYSA8
-anVoYXBla2thLmhlaWtraWxhQGdtYWlsLmNvbT4KLS0tCiB0ZXN0cy9rbXNfY3Vyc29yX2xlZ2Fj
-eS5jIHwgMiArLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0p
-CgpkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2N1cnNvcl9sZWdhY3kuYyBiL3Rlc3RzL2ttc19jdXJz
-b3JfbGVnYWN5LmMKaW5kZXggZjQxZjY4ZC4uZDVmOTViOCAxMDA2NDQKLS0tIGEvdGVzdHMva21z
-X2N1cnNvcl9sZWdhY3kuYworKysgYi90ZXN0cy9rbXNfY3Vyc29yX2xlZ2FjeS5jCkBAIC0yNTEs
-NyArMjUxLDcgQEAgc3RhdGljIHZvaWQgZmxpcF9ub25ibG9ja2luZyhpZ3RfZGlzcGxheV90ICpk
-aXNwbGF5LCBlbnVtIHBpcGUgcGlwZV9pZCwgYm9vbCBhdG8KIAlpZ3RfcGxhbmVfdCAqcHJpbWFy
-eSA9IGlndF9waXBlX2dldF9wbGFuZV90eXBlKHBpcGUsIERSTV9QTEFORV9UWVBFX1BSSU1BUlkp
-OwogCWludCByZXQ7CiAKLQlpZ3Rfc2V0X3RpbWVvdXQoMSwgIlNjaGVkdWxpbmcgcGFnZSBmbGlw
-XG4iKTsKKwlpZ3Rfc2V0X3RpbWVvdXQoNSwgIlNjaGVkdWxpbmcgcGFnZSBmbGlwXG4iKTsKIAlp
-ZiAoIWF0b21pYykgewogCQkvKiBTY2hlZHVsZSBhIG5vbmJsb2NraW5nIGZsaXAgZm9yIHRoZSBu
-ZXh0IHZibGFuayAqLwogCQlkbyB7Ci0tIAoyLjcuNAoKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0
-cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9s
-aXN0aW5mby9pZ3QtZGV2Cg==
+== Series Details ==
+
+Series: gem_wsim: Fix calibration for default and virtual engine
+URL   : https://patchwork.freedesktop.org/series/74267/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8065 -> IGTPW_4257
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4257/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4257:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@i915_selftest@live@active:
+    - {fi-tgl-dsi}:       [PASS][1] -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8065/fi-tgl-dsi/igt@i915_selftest@live@active.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4257/fi-tgl-dsi/igt@i915_selftest@live@active.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4257 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@prime_self_import@basic-llseek-size:
+    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([CI#94] / [i915#402]) +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8065/fi-tgl-y/igt@prime_self_import@basic-llseek-size.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4257/fi-tgl-y/igt@prime_self_import@basic-llseek-size.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_addfb_basic@addfb25-modifier-no-flag:
+    - fi-tgl-y:           [DMESG-WARN][5] ([CI#94] / [i915#402]) -> [PASS][6] +1 similar issue
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8065/fi-tgl-y/igt@kms_addfb_basic@addfb25-modifier-no-flag.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4257/fi-tgl-y/igt@kms_addfb_basic@addfb25-modifier-no-flag.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [FAIL][7] ([fdo#111096] / [i915#323]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8065/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4257/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
+  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (45 -> 46)
+------------------------------
+
+  Additional (8): fi-byt-j1900 fi-glk-dsi fi-gdg-551 fi-ivb-3770 fi-elk-e7500 fi-skl-lmem fi-kbl-7560u fi-bsw-nick 
+  Missing    (7): fi-icl-1065g7 fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5491 -> IGTPW_4257
+
+  CI-20190529: 20190529
+  CI_DRM_8065: e50ed1b1ef982f7648ca558f1cfd16ad3190e094 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4257: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4257/index.html
+  IGT_5491: d52794b426ae16630cc1e0354ae435ec98f6174b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4257/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
