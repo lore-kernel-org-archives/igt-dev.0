@@ -1,13 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20200304092901.2347-1-tvrtko.ursulin@linux.intel.com>
-From: Brian Welty <brian.welty@intel.com>
-Message-ID: <730444dd-9f81-55c5-e201-96540d76e436@intel.com>
-Date: Wed, 4 Mar 2020 09:34:56 -0800
+From: Matthew Auld <matthew.auld@intel.com>
+Date: Wed,  4 Mar 2020 20:52:43 +0000
+Message-Id: <20200304205243.106854-1-matthew.auld@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200304092901.2347-1-tvrtko.ursulin@linux.intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915/query: Do not assert engine
- info rsvd being zero
+Subject: [igt-dev] [PATCH] i915/gem_exec_params: add test_invalid_batch_start
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,48 +15,59 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Sanity check that kernel rejects too large batch_start_offset.
 
-On 3/4/2020 1:29 AM, Tvrtko Ursulin wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> 
-> These are not input fields and i915 currently leaves them untouched.
-> 
-> In the spirit of trusting the query as the authoritative source of
-> information, stop asserting these output only reserved fields are zero.
-> 
-> This should prevent the test from auto-failing if we extend the data in
-> the future.
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Cc: Brian Welty <brian.welty@intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/i915/gem_exec_params.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-Reviewed-by: Brian Welty <brian.welty@intel.com>
+diff --git a/tests/i915/gem_exec_params.c b/tests/i915/gem_exec_params.c
+index cf7ea306..afc8d2c7 100644
+--- a/tests/i915/gem_exec_params.c
++++ b/tests/i915/gem_exec_params.c
+@@ -268,6 +268,23 @@ static void mmapped(int i915)
+ 	gem_close(i915, buf);
+ }
+ 
++static void test_invalid_batch_start(int fd)
++{
++	struct drm_i915_gem_exec_object2 exec = {
++		.handle = batch_create(fd),
++	};
++	struct drm_i915_gem_execbuffer2 execbuf = {
++		.buffers_ptr = to_user_pointer(&exec),
++		.buffer_count = 1,
++		.batch_start_offset = 4096, /* space jump */
++	};
++
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EINVAL);
++
++	gem_sync(fd, exec.handle);
++	gem_close(fd, exec.handle);
++}
++
+ struct drm_i915_gem_execbuffer2 execbuf;
+ struct drm_i915_gem_exec_object2 gem_exec[1];
+ uint32_t batch[2] = {MI_BATCH_BUFFER_END};
+@@ -507,6 +524,9 @@ igt_main
+ 	igt_subtest("batch-first")
+ 		test_batch_first(fd);
+ 
++	igt_subtest("invalid-batch-start-offset")
++		test_invalid_batch_start(fd);
++
+ #define DIRT(name) \
+ 	igt_subtest(#name "-dirt") { \
+ 		execbuf.flags = 0; \
+-- 
+2.20.1
 
-> ---
->  tests/i915/i915_query.c | 5 -----
->  1 file changed, 5 deletions(-)
-> 
-> diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
-> index 71807425fbc4..e7c6fc91e32b 100644
-> --- a/tests/i915/i915_query.c
-> +++ b/tests/i915/i915_query.c
-> @@ -690,11 +690,6 @@ static void engines(int fd)
->  			  engine->flags,
->  			  engine->capabilities);
->  
-> -		/* MBZ fields. */
-> -		igt_assert_eq(engine->rsvd0, 0);
-> -		igt_assert_eq(engine->rsvd1[0], 0);
-> -		igt_assert_eq(engine->rsvd1[1], 0);
-> -
->  		switch (engine->engine.engine_class) {
->  		case I915_ENGINE_CLASS_RENDER:
->  			/* Will be tested later. */
-> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
