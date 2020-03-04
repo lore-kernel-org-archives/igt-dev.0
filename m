@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 04 Mar 2020 16:15:30 -0000
-Message-ID: <158333853020.426.18157269566590035931@emeril.freedesktop.org>
-References: <20200304132457.13258-1-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20200304132457.13258-1-tvrtko.ursulin@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgZ2VtX3dz?=
- =?utf-8?q?im=3A_Fix_calibration_for_default_and_virtual_engine?=
+Date: Wed, 04 Mar 2020 16:36:48 -0000
+Message-ID: <158333980865.426.17727048971579229652@emeril.freedesktop.org>
+References: <1583333427-18040-1-git-send-email-juhapekka.heikkila@gmail.com>
+In-Reply-To: <1583333427-18040-1-git-send-email-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fcursor=5Flegacy=3A_increase_timeout_for_nonblocking_flip_?=
+ =?utf-8?q?wait_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,19 +20,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: gem_wsim: Fix calibration for default and virtual engine
-URL   : https://patchwork.freedesktop.org/series/74267/
+Series: tests/kms_cursor_legacy: increase timeout for nonblocking flip wait (rev2)
+URL   : https://patchwork.freedesktop.org/series/73767/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_8065 -> IGTPW_4257
+CI Bug Log - changes from CI_DRM_8065 -> IGTPW_4258
 ====================================================
 
 Summary
@@ -41,39 +42,26 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4257/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4258/index.html
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_4257:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_selftest@live@active:
-    - {fi-tgl-dsi}:       [PASS][1] -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8065/fi-tgl-dsi/igt@i915_selftest@live@active.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4257/fi-tgl-dsi/igt@i915_selftest@live@active.html
-
-  
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_4257 that come from known issues:
+  Here are the changes found in IGTPW_4258 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@prime_self_import@basic-llseek-size:
-    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([CI#94] / [i915#402]) +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8065/fi-tgl-y/igt@prime_self_import@basic-llseek-size.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4257/fi-tgl-y/igt@prime_self_import@basic-llseek-size.html
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-skl-6600u:       [PASS][1] -> [INCOMPLETE][2] ([i915#69])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8065/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4258/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@gem_mmap_gtt@basic:
+    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([CI#94] / [i915#402])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8065/fi-tgl-y/igt@gem_mmap_gtt@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4258/fi-tgl-y/igt@gem_mmap_gtt@basic.html
 
   
 #### Possible fixes ####
@@ -81,27 +69,18 @@ Known issues
   * igt@kms_addfb_basic@addfb25-modifier-no-flag:
     - fi-tgl-y:           [DMESG-WARN][5] ([CI#94] / [i915#402]) -> [PASS][6] +1 similar issue
    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8065/fi-tgl-y/igt@kms_addfb_basic@addfb25-modifier-no-flag.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4257/fi-tgl-y/igt@kms_addfb_basic@addfb25-modifier-no-flag.html
-
-  * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-7500u:       [FAIL][7] ([fdo#111096] / [i915#323]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8065/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4257/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4258/fi-tgl-y/igt@kms_addfb_basic@addfb25-modifier-no-flag.html
 
   
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
   [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
-  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
-  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
   [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#69]: https://gitlab.freedesktop.org/drm/intel/issues/69
 
 
-Participating hosts (45 -> 46)
+Participating hosts (45 -> 45)
 ------------------------------
 
-  Additional (8): fi-byt-j1900 fi-glk-dsi fi-gdg-551 fi-ivb-3770 fi-elk-e7500 fi-skl-lmem fi-kbl-7560u fi-bsw-nick 
+  Additional (7): fi-byt-j1900 fi-glk-dsi fi-gdg-551 fi-ivb-3770 fi-elk-e7500 fi-skl-lmem fi-bsw-nick 
   Missing    (7): fi-icl-1065g7 fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
 
 
@@ -109,16 +88,16 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_5491 -> IGTPW_4257
+  * IGT: IGT_5491 -> IGTPW_4258
 
   CI-20190529: 20190529
   CI_DRM_8065: e50ed1b1ef982f7648ca558f1cfd16ad3190e094 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4257: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4257/index.html
+  IGTPW_4258: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4258/index.html
   IGT_5491: d52794b426ae16630cc1e0354ae435ec98f6174b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4257/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4258/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
