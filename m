@@ -1,12 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Wed,  4 Mar 2020 10:58:39 +0100
-Message-Id: <20200304095841.8781-2-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20200304095841.8781-1-janusz.krzysztofik@linux.intel.com>
-References: <20200304095841.8781-1-janusz.krzysztofik@linux.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Wed,  4 Mar 2020 11:13:06 +0000
+Message-Id: <20200304111306.2438943-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/3] tests/gem_userptr_blits: More
- effectively set pages before invalidation
+Subject: [igt-dev] [PATCH i-g-t] i915/i915_pm_rpm: Flush pm-idle before
+ waiting for suspend
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,35 +16,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-It has been observed that mmap-offset-invalidate@wb subtest has never
-triggered a lockdep loop complain.  To fix it, don't use the ->domain
-field of a mapping type being examined, always set read and write
-domains to I915_GEM_DOMAIN_GTT instead.
+After we may have deliberately woken the device up for reading the
+debugfs/sysfs file, we then wait for the system to suspend again before
+trying the next. Speed up the wait by first flushing the pm-idle.
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+"Slowest file + suspend: /sys/kernel/debug/dri/0/i915_forcewake_user
+took 3951.33ms!"
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/i915/gem_userptr_blits.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/i915/i915_pm_rpm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index cd1a3af27..8148d7d76 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -821,7 +821,7 @@ static void test_mmap_offset_invalidate(int fd, const struct mmap_offset *t)
- 	igt_require_f(map, "mmap-offset banned, lockdep loop prevention\n");
+diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+index 9118e8953..db035ef86 100644
+--- a/tests/i915/i915_pm_rpm.c
++++ b/tests/i915/i915_pm_rpm.c
+@@ -964,6 +964,7 @@ static int read_entry(const char *filepath,
  
- 	/* set object pages in order to activate MMU notifier for it */
--	gem_set_domain(fd, handle, t->domain, t->domain);
-+	gem_set_domain(fd, handle, I915_GEM_DOMAIN_GTT, I915_GEM_DOMAIN_GTT);
+ 	close(fd);
  
- 	/* trigger the notifier */
- 	munmap(ptr, PAGE_SIZE);
++	igt_drop_caches_set(drm_fd, DROP_IDLE); /* flush pm-idle */
+ 	igt_assert_f(wait_for_suspended(), "After closing: %s (%s)\n",
+ 		     filepath + pathinfo->base, filepath);
+ 
 -- 
-2.21.1
+2.25.1
 
 _______________________________________________
 igt-dev mailing list
