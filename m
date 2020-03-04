@@ -1,19 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 19F216EB55
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Mar 2020 17:51:57 +0000 (UTC)
-Date: Wed, 4 Mar 2020 09:51:56 -0800
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Message-ID: <20200304175156.GB13041@orsosgc001.amr.corp.intel.com>
-References: <20200303223813.3866-1-umesh.nerlige.ramappa@intel.com>
- <20200303223813.3866-2-umesh.nerlige.ramappa@intel.com>
- <20200303225708.GA13041@orsosgc001.amr.corp.intel.com>
- <617834be-69dc-faf0-baf5-d302162b2b5d@intel.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <617834be-69dc-faf0-baf5-d302162b2b5d@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/6] test/perf: Drop caches when closing
- perf stream
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EACDD89CA4
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Mar 2020 19:16:24 +0000 (UTC)
+From: Kunal Joshi <kunal1.joshi@intel.com>
+Date: Wed,  4 Mar 2020 17:48:15 +0530
+Message-Id: <1583324295-22013-1-git-send-email-kunal1.joshi@intel.com>
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_chamelium: Add support to
+ validate YUV pixel formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,81 +14,117 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Kunal Joshi <kunal1.joshi@intel.com>, petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCBNYXIgMDQsIDIwMjAgYXQgMTA6NDU6NTVBTSArMDIwMCwgTGlvbmVsIExhbmR3ZXJs
-aW4gd3JvdGU6Cj5PbiAwNC8wMy8yMDIwIDAwOjU3LCBVbWVzaCBOZXJsaWdlIFJhbWFwcGEgd3Jv
-dGU6Cj4+T24gVHVlLCBNYXIgMDMsIDIwMjAgYXQgMDI6Mzg6MDhQTSAtMDgwMCwgVW1lc2ggTmVy
-bGlnZSBSYW1hcHBhIHdyb3RlOgo+Pj5SdW5uaW5nIC4vYnVpbGQvdGVzdHMvcGVyZiB3aWxsIHJ1
-biBhbGwgdGhlIHBlcmYgc3VidGVzdHMgaW4gYSBzZXF1ZW5jZS4KPj4+V2hlbiBydW5uaW5nIHRl
-c3RzIGluIGEgc2VxdWVuY2UsIHN1YnNlcXVlbnQgdGVzdHMgbWF5IG5vdCBydW4gd2l0aCBhCj4+
-PmNsZWFuIHNsYXRlLiBGb3IgcmVzb3VyY2VzIHRoYXQgYXJlIGxhemlseSByZWxlYXNlZCwgZHJv
-cCBjYWNoZXMgaW4KPj4+X19wZXJmX2Nsb3NlLgo+Pgo+PkhpIExpb25lbCwgQ2hyaXMsCj4+Cj4+
-SSBub3RpY2UgYW4gaXNzdWUgb24gVEdMIHdoZW4gcnVubmluZyB0aGUgZW50aXJlIHN1aXRlIG9m
-IHBlcmYgCj4+dGVzdHMuwqAgSW4gbXkgc2V0dXAsIHRoZSBwb2xsaW5nIHRlc3Qgd2FzIGZhaWxp
-bmcgd2l0aCBpbnZhbGlkIAo+PnJlcG9ydHMgYmVpbmcgc2VlbiBpbiB0aGUgYmVnaW5uaW5nIG9m
-IHRoZSBPQSBidWZmZXIuIFRoaXMgaXNzdWUgaXMgCj4+c2VlbiBtb3JlIHByb21pbmVudGx5IHdp
-dGggdGhlIG5ld2x5IGFkZGVkIHN1YnRlc3RzIHdoaWNoIGNhbGwgCj4+cGVyZl9vcGVuIGFuZCBw
-ZXJmX2Nsb3NlIGEgY291cGxlIG9mIHRpbWVzIChzYXkgCj4+YmxvY2tpbmctd2l0aC1pbnRlcnJ1
-cHQpLgo+Pgo+PldoYXQgSSBzZWUgaW4gc29tZSBydW5zIGlzIHRoYXQgdGhlIHNlY29uZCB0ZXN0
-IHdvdWxkIHJlc3VsdCBpbiBhIAo+PmJ1bmNoIG9mIHVubGFuZGVkIHJlcG9ydHMgaW4gdGhlIGJl
-Z2lubmluZyBvZiB0aGUgT0EgYnVmZmVyLiAKPj5Bc3N1bWluZyB0aGF0IHdlIGFyZSBhbHJlYWR5
-IHdhaXRpbmcgZm9yIHRoZSBOT0EgY29uZmlnIHdpdGggYSAKPj5ub2Ffd2FpdCBibywgSSB0cmll
-ZCB0byBsb29rIGludG8gdGhpcyBmdXJ0aGVyLgo+Pgo+PmZyZWVfb2FfYnVmZmVyIGlzIGNhbGxl
-ZCB0byBmcmVlIHRoZSBvYV9idWZmZXIgYm8gYW5kIHRoaXMgd29yayBpcyAKPj5kZWZlcnJlZCBi
-eSB0aGUgZHJpdmVyLiBJZiBhIHRlc3QgaXMgY2FsbGVkIGJlZm9yZSB0aGlzIGZyZWUgCj4+Y29t
-cGxldGVzLCB3ZSBzZWUgdGhlIGlzc3VlLiBKdXN0IHRvIHRlc3Qgb3V0IHRoaXMgdGhlb3J5LCBp
-ZiBJIAo+PmNvbW1lbnQgb3V0IHRoZSBmcmVlX29hX2J1ZmZlciBlbnRpcmVseSwgSSBzZWUgdGhh
-dCB0aGUgdGVzdHMgcGFzcyAKPj53aXRob3V0IGFueSBpc3N1ZXMgc2luY2UgbmV3IGd0dCBtZW1v
-cnkgaXMgYmVpbmcgYWxsb2NhdGVkIGVhY2ggCj4+dGltZS4KPj4KPj5JIGd1ZXNzIHRoZSBkZWZl
-cnJlZCBmcmVlIGFuZCB0aGUgbmV3IGFsbG9jYXRpb24gb2YgdGhlIE9BIGJ1ZmZlciAKPj5mb3Ig
-c3Vic2VxdWVudCB0ZXN0IGhhcyBzb21ldGhpbmcgbWlzc2luZy4gTWF5YmUgVExCcyBub3QgYmVp
-bmcgCj4+ZHJvcHBlZD8gSSBpbWFnaW5lIHRoZSBPQSB1bml0IG1pZ2h0IHdyaXRlIHZhbGlkIHJl
-cG9ydHMgc29tZXdoZXJlIAo+PmJhc2VkIG9uIHdoYXQgaXQgc2VlcyBpbiB0aGUgVExCcyBhbmQg
-Y3B1IGlzIGxvb2tpbmcgZm9yIHRoZW0gCj4+ZWxzZXdoZXJlICh1bnRpbCB0aGUgZnJlZSBjb21w
-bGV0ZXMpLiBKdXN0IGEgdGhlb3J5IHRob3VnaC4gTGV0IG1lIAo+Pmtub3cgd2hhdCB5b3UgdGhp
-bmsuCj4+Cj4+Rm9yIG5vdyBpZ3RfZHJvcF9jYWNoZXNfc2V0KERST1BfRlJFRUQpIGlzIHdoYXQg
-aXMgaGVscGluZyBhbmQgaGVuY2UgCj4+dGhpcyBwYXRjaC4KPgo+Cj5IZXkgVW1lc2gsCj4KPgo+
-SSBndWVzcyB0aGlzIGNvdWxkIGJlIGZpeGVkIGJ5IHRoaXMgY29tbWl0IDoKPgo+Cj5jb21taXQg
-NGI0ZTk3M2Q1ZWI4OTI0NGI2N2QzMjIzYjYwZjc1MmQwNDc5ZjI1Mwo+QXV0aG9yOiBDaHJpcyBX
-aWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KPkRhdGU6wqDCoCBNb24gTWFyIDIgMDg6
-NTc6NTcgMjAyMCArMDAwMAo+Cj7CoMKgwqAgZHJtL2k5MTUvcGVyZjogUmVpbnRyb2R1Y2Ugd2Fp
-dCBvbiBPQSBjb25maWd1cmF0aW9uIGNvbXBsZXRpb24KPgo+SWYgeW91IGNhbiBnaXZlIHRoaXMg
-Y29tbWl0IGEgdHJ5IG9yIHJlYmFzZSBvbiBkcm0tdGlwIGl0IHdvdWxkIGJlIAo+Z3JlYXQgdG8g
-Y29uZmlybS4KCkkgdGhvdWdodCB0aGlzIGNvbW1pdCB3YXMgZW5zdXJpbmcgdGhhdCB0aGUgbm9h
-X3dhaXQgaXMgZXhlY3V0ZWQgCmNvbXBsZXRlbHkgYmVmb3JlIHdlIGVuYWJsZSB0aGUgT0EgYnVm
-ZmVyIGNhcHR1cmVzLiBUaGF0IHN0aWxsIGRvZXMgbm90IApleHBsYWluIHdoeSB0aGUgaXNzdWUg
-Z29lcyBhd2F5IGZvciBtZSB3aGVuIEkgY29tbWVudCBvdXQgCmZyZWVfb2FfYnVmZmVyLgoKVGhh
-bmtzLApVbWVzaAoKPgo+T3RoZXJ3aXNlIHdlIG1pZ2h0IG5lZWQgbW9yZSBkaWdnaW5nIHRvIGZp
-Z3VyZSB3aGF0J3MgZ29pbmcgb24uCj4KPgo+VGhhbmtzLAo+Cj4KPi1MaW9uZWwKPgo+Cj4+Cj4+
-VGhhbmtzLAo+PlVtZXNoCj4+Cj4+Pgo+Pj5TaWduZWQtb2ZmLWJ5OiBVbWVzaCBOZXJsaWdlIFJh
-bWFwcGEgPHVtZXNoLm5lcmxpZ2UucmFtYXBwYUBpbnRlbC5jb20+Cj4+Pi0tLQo+Pj50ZXN0cy9w
-ZXJmLmMgfCA3ICsrKysrKy0KPj4+MSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgMSBk
-ZWxldGlvbigtKQo+Pj4KPj4+ZGlmZiAtLWdpdCBhL3Rlc3RzL3BlcmYuYyBiL3Rlc3RzL3BlcmYu
-Ywo+Pj5pbmRleCA1ZTgxODAzMC4uMTg5YzZhYTEgMTAwNjQ0Cj4+Pi0tLSBhL3Rlc3RzL3BlcmYu
-Ywo+Pj4rKysgYi90ZXN0cy9wZXJmLmMKPj4+QEAgLTI0NCw2ICsyNDQsMTIgQEAgX19wZXJmX2Ns
-b3NlKGludCBmZCkKPj4+wqDCoMKgwqDCoMKgwqAgY2xvc2UocG1fZmQpOwo+Pj7CoMKgwqDCoMKg
-wqDCoCBwbV9mZCA9IC0xOwo+Pj7CoMKgwqDCoH0KPj4+Kwo+Pj4rwqDCoMKgIC8qIFdoZW4gcnVu
-bmluZyB0ZXN0cyBpbiBhIHNlcXVlbmNlLCBzdWJzZXF1ZW50IHRlc3RzIG1heSBub3QgCj4+PnJ1
-biB3aXRoIGEKPj4+K8KgwqDCoMKgICogY2xlYW4gc2xhdGUuIEZvciByZXNvdXJjZXMgdGhhdCBh
-cmUgbGF6aWx5IHJlbGVhc2VkLCAKPj4+Y2xlYW51cCBoZXJlLgo+Pj4rwqDCoMKgwqAgKi8KPj4+
-K8KgwqDCoCBpZiAoZHJtX2ZkID49IDAgJiYgIWdldGdpZCgpICYmICFnZXR1aWQoKSkKPj4+K8Kg
-wqDCoMKgwqDCoMKgIGdlbV9xdWllc2NlbnRfZ3B1KGRybV9mZCk7Cj4+Pn0KPj4+Cj4+PnN0YXRp
-YyBpbnQKPj4+QEAgLTM5OTMsNyArMzk5OSw2IEBAIHRlc3RfcmM2X2Rpc2FibGUodm9pZCkKPj4+
-wqDCoMKgwqBpZ3RfYXNzZXJ0X2VxKG5fZXZlbnRzX2VuZCAtIG5fZXZlbnRzX3N0YXJ0LCAwKTsK
-Pj4+Cj4+PsKgwqDCoMKgX19wZXJmX2Nsb3NlKHN0cmVhbV9mZCk7Cj4+Pi3CoMKgwqAgZ2VtX3F1
-aWVzY2VudF9ncHUoZHJtX2ZkKTsKPj4+Cj4+PsKgwqDCoMKgbl9ldmVudHNfc3RhcnQgPSByYzZf
-cmVzaWRlbmN5X21zKCk7Cj4+PsKgwqDCoMKgbmFub3NsZWVwKCYoc3RydWN0IHRpbWVzcGVjKXsg
-LnR2X3NlYyA9IDEsIC50dl9uc2VjID0gMCB9LCBOVUxMKTsKPj4+LS0gCj4+PjIuMjAuMQo+Pj4K
-Pj4+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPj4+aWd0
-LWRldiBtYWlsaW5nIGxpc3QKPj4+aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKPj4+aHR0
-cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cj4KPgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1h
-aWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZy
-ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+Currently, only hard coded pixel formats are validated which are not
+generic for all the platforms which leads to false alarms.
+Added support to validate only those pixel formats which are supported
+by platform.
+
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/kms_chamelium.c | 70 +++++++++++++++++++++++----------------------------
+ 1 file changed, 32 insertions(+), 38 deletions(-)
+
+diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
+index 5c4a189..d6d63c6 100644
+--- a/tests/kms_chamelium.c
++++ b/tests/kms_chamelium.c
+@@ -2612,6 +2612,14 @@ static const struct edid *get_edid(enum test_edid edid)
+ 			if (chamelium_port_get_type(port) == \
+ 			    DRM_MODE_CONNECTOR_ ## type__)
+ 
++#define connector_subtest_start(name__, type__)              \
++	igt_subtest_with_dynamic(name__)                     \
++		for_each_port(p, port)                       \
++			if (chamelium_port_get_type(port) == \
++			    DRM_MODE_CONNECTOR_ ## type__) {
++
++#define connector_subtest_end }
++
+ static data_t data;
+ 
+ IGT_TEST_DESCRIPTION("Tests requiring a Chamelium board");
+@@ -2872,44 +2880,30 @@ igt_main
+ 						   CHAMELIUM_CHECK_CRC);
+ 
+ 		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-nv12", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_NV12,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-nv16", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_NV16,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-nv21", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_NV21,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-nv61", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_NV61,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-yu12", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_YUV420,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-yu16", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_YUV422,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-yv12", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_YVU420,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-yv16", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_YVU422,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
++		connector_subtest_start("hdmi-yuv", HDMIA)
++			int k;
++			igt_output_t *output;
++			igt_plane_t *primary;
++
++			output = prepare_output(&data, port, TEST_EDID_BASE);
++			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++			igt_assert(primary);
++
++			for (k = 0; k < primary->format_mod_count; k++) {
++
++				if (!igt_fb_supported_format(primary->formats[k]))
++					continue;
++
++				if (!(igt_format_is_yuv(primary->formats[k])
++				   && primary->modifiers[k] != LOCAL_DRM_FORMAT_MOD_NONE))
++					continue;
++
++				igt_dynamic_f("%c%c%c%c", IGT_FORMAT_ARGS(primary->formats[k]))
++					test_display_one_mode(&data, port, primary->formats[k],
++							      CHAMELIUM_CHECK_CHECKERBOARD,
++							      1);
++			}
++		connector_subtest_end
+ 
+ 		igt_describe(test_display_planes_random_desc);
+ 		connector_subtest("hdmi-cmp-planes-random", HDMIA)
+-- 
+2.7.4
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
