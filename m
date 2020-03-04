@@ -1,13 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Date: Wed,  4 Mar 2020 09:29:01 +0000
+Message-Id: <20200304092901.2347-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-From: Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <87r1y95x0f.fsf@gaia.fi.intel.com>
-References: <20200303140327.1535286-1-chris@chris-wilson.co.uk>
- <87r1y95x0f.fsf@gaia.fi.intel.com>
-Message-ID: <158324624580.6031.4377056183773987481@skylake-alporthouse-com>
-Date: Tue, 03 Mar 2020 14:37:25 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_exec_parallel: Try to trim
- runtime
+Subject: [igt-dev] [PATCH i-g-t] tests/i915/query: Do not assert engine info
+ rsvd being zero
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,56 +16,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mika Kuoppala <mika.kuoppala@linux.intel.com>, intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Intel-gfx@lists.freedesktop.org, Brian Welty <brian.welty@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Mika Kuoppala (2020-03-03 14:33:04)
-> Chris Wilson <chris@chris-wilson.co.uk> writes:
-> 
-> > In all likelihood the runtime is consumed by the thread setup, but just
-> > in case it is dominated by the execbuf, make sure that is bounded.
-> >
-> > Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> > ---
-> >  tests/i915/gem_exec_parallel.c | 28 ++++++++++++++++------------
-> >  1 file changed, 16 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/tests/i915/gem_exec_parallel.c b/tests/i915/gem_exec_parallel.c
-> > index 0d4d6c628..586f85080 100644
-> > --- a/tests/i915/gem_exec_parallel.c
-> > +++ b/tests/i915/gem_exec_parallel.c
-> > @@ -42,22 +42,26 @@
-> >  
-> >  #define VERIFY 0
-> >  
-> > +static inline uint32_t hash32(uint32_t val)
-> > +{
-> > +#define GOLDEN_RATIO_32 0x61C88647
-> > +     return val * GOLDEN_RATIO_32;
-> > +}
-> > +
-> >  static void check_bo(int fd, uint32_t handle, int pass)
-> >  {
-> > -     uint32_t *map;
-> > -     int i;
-> > +     uint32_t x = hash32(handle * pass) % 1024;
-> >  
-> >       igt_debug("Verifying result (pass=%d, handle=%d)\n", pass, handle);
-> > -     map = gem_mmap__cpu(fd, handle, 0, 4096, PROT_READ);
-> > -     gem_set_domain(fd, handle, I915_GEM_DOMAIN_CPU, 0);
-> > -     for (i = 0; i < 1024; i++)
-> > -             igt_assert_eq(map[i], i);
-> > -     munmap(map, 4096);
-> > +     gem_read(fd, handle, x * sizeof(x), &x, sizeof(x));
-> > +     igt_assert_eq_u32(x, x);
-> 
-> This caught my eye.
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-Fine, I'll read it into a second var.
+These are not input fields and i915 currently leaves them untouched.
 
-I thought it looked odd :)
--Chris
+In the spirit of trusting the query as the authoritative source of
+information, stop asserting these output only reserved fields are zero.
+
+This should prevent the test from auto-failing if we extend the data in
+the future.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Brian Welty <brian.welty@intel.com>
+---
+ tests/i915/i915_query.c | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/tests/i915/i915_query.c b/tests/i915/i915_query.c
+index 71807425fbc4..e7c6fc91e32b 100644
+--- a/tests/i915/i915_query.c
++++ b/tests/i915/i915_query.c
+@@ -690,11 +690,6 @@ static void engines(int fd)
+ 			  engine->flags,
+ 			  engine->capabilities);
+ 
+-		/* MBZ fields. */
+-		igt_assert_eq(engine->rsvd0, 0);
+-		igt_assert_eq(engine->rsvd1[0], 0);
+-		igt_assert_eq(engine->rsvd1[1], 0);
+-
+ 		switch (engine->engine.engine_class) {
+ 		case I915_ENGINE_CLASS_RENDER:
+ 			/* Will be tested later. */
+-- 
+2.20.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
