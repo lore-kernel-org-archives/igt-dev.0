@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C6486E0BF
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2020 13:43:52 +0000 (UTC)
-Date: Thu, 5 Mar 2020 15:43:49 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200305134349.GU3839@platvala-desk.ger.corp.intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F08E06E313
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2020 13:48:06 +0000 (UTC)
+Date: Thu, 5 Mar 2020 15:48:03 +0200
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20200305134803.yycimuwifmbsvdtg@ahiler-desk1.fi.intel.com>
 References: <20200305105520.313-1-maciej.ramotowski@intel.com>
  <20200305121041.GT3839@platvala-desk.ger.corp.intel.com>
  <02518fd40a2748e08516f9a6790685ec@intel.com>
@@ -19,27 +19,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: "Ramotowski, Maciej" <maciej.ramotowski@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Latvala,
+ Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Mar 05, 2020 at 03:39:22PM +0200, Ramotowski, Maciej wrote:
-> Yes I did use git send-email I did pre-check with --dry-run option it shows 8bit for encoding. Should I try to resend it?
-
-Please do, but recreate the patch after
-
- git config --local format.subjectPrefix "PATCH i-g-t"
-
-and send test mails to intel-gfx-trybot@lists.freedesktop.org
-
-
--- 
-Petri Latvala
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVGh1LCBNYXIgMDUsIDIwMjAgYXQgMDM6Mzk6MjJQTSArMDIwMCwgUmFtb3Rvd3NraSwgTWFj
+aWVqIHdyb3RlOgo+IFllcyBJIGRpZCB1c2UgZ2l0IHNlbmQtZW1haWwgSSBkaWQgcHJlLWNoZWNr
+IHdpdGggLS1kcnktcnVuIG9wdGlvbiBpdCBzaG93cyA4Yml0IGZvciBlbmNvZGluZy4gU2hvdWxk
+IEkgdHJ5IHRvIHJlc2VuZCBpdD8KPiAKPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQo+IEZy
+b206IExhdHZhbGEsIFBldHJpIAo+IFNlbnQ6IFRodXJzZGF5LCBNYXJjaCA1LCAyMDIwIDE6MTEg
+UE0KPiBUbzogUmFtb3Rvd3NraSwgTWFjaWVqIDxtYWNpZWoucmFtb3Rvd3NraUBpbnRlbC5jb20+
+Cj4gQ2M6IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBIaWxlciwgQXJrYWRpdXN6IDxh
+cmthZGl1c3ouaGlsZXJAaW50ZWwuY29tPgo+IFN1YmplY3Q6IFJlOiBbUEFUQ0hdIC5naXRsYWIt
+Y2k6IFJlZHVjZSBEb2NrZXIgaW1hZ2VzIHNpemUKPiAKPiBJbiB5b3VyIG1haWwgaGVhZGVyOgo+
+IENvbnRlbnQtVHJhbnNmZXItRW5jb2Rpbmc6IGJhc2U2NAo+IAo+IAo+IFRoYXQncyB3aHkgaXQg
+ZG9lc24ndCBhcHBseSBpbiBDSSwgYW5kIGdpdCBhbSBoZXJlIHRvbyBjYW5ub3QgY29wZSB3aXRo
+IHRoZSBlbmNvZGluZy4gRGlkIHlvdSB1c2UgZ2l0IHNlbmQtZW1haWwgdG8gc2VuZCB0aGUgcGF0
+Y2g/IElmIG5vdCwgcGxlYXNlIGRvLgoKJSB3Z2V0IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNr
+dG9wLm9yZy9hcGkvMS4wL3Nlcmllcy83NDAwMy9yZXZpc2lvbnMvMi9tYm94LyAtTyBtLnBhdGNo
+Ci0tMjAyMC0wMy0wNSAxNTo0MjoxNy0tICBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5v
+cmcvYXBpLzEuMC9zZXJpZXMvNzQwMDMvcmV2aXNpb25zLzIvbWJveC8KUmVzb2x2aW5nIHBhdGNo
+d29yay5mcmVlZGVza3RvcC5vcmcgKHBhdGNod29yay5mcmVlZGVza3RvcC5vcmcpLi4uIDEzMS4y
+NTIuMjEwLjE2NywgMjYxMDoxMDoyMDo3MjI6YTgwMDpmZjpmZWVlOjU2Y2YKQ29ubmVjdGluZyB0
+byBwYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnIChwYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnKXwx
+MzEuMjUyLjIxMC4xNjd8OjQ0My4uLiBjb25uZWN0ZWQuCkhUVFAgcmVxdWVzdCBzZW50LCBhd2Fp
+dGluZyByZXNwb25zZS4uLiAyMDAgT0sKTGVuZ3RoOiAxNjQ3OCAoMTZLKSBbdGV4dC9wbGFpbl0K
+U2F2aW5nIHRvOiDigJhtLnBhdGNo4oCZCgptLnBhdGNoICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIDEwMCVbPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT5dICAxNi4wOUsgIDgwLjhLQi9zICAgIGlu
+IDAuMnMKCjIwMjAtMDMtMDUgMTU6NDI6MTkgKDgwLjggS0IvcykgLSDigJhtLnBhdGNo4oCZIHNh
+dmVkIFsxNjQ3OC8xNjQ3OF0KCiUgZ2l0IGFtIG0ucGF0Y2gKQXBwbHlpbmc6IC5naXRsYWItY2k6
+IFJlZHVjZSBEb2NrZXIgaW1hZ2VzIHNpemUKZXJyb3I6IHBhdGNoIGZhaWxlZDogRG9ja2VyZmls
+ZS5idWlsZC1kZWJpYW46NwplcnJvcjogRG9ja2VyZmlsZS5idWlsZC1kZWJpYW46IHBhdGNoIGRv
+ZXMgbm90IGFwcGx5CmVycm9yOiBwYXRjaCBmYWlsZWQ6IERvY2tlcmZpbGUuYnVpbGQtZGViaWFu
+LWFybTY0OjEKZXJyb3I6IERvY2tlcmZpbGUuYnVpbGQtZGViaWFuLWFybTY0OiBwYXRjaCBkb2Vz
+IG5vdCBhcHBseQplcnJvcjogcGF0Y2ggZmFpbGVkOiBEb2NrZXJmaWxlLmJ1aWxkLWRlYmlhbi1h
+cm1oZjoxCmVycm9yOiBEb2NrZXJmaWxlLmJ1aWxkLWRlYmlhbi1hcm1oZjogcGF0Y2ggZG9lcyBu
+b3QgYXBwbHkKZXJyb3I6IHBhdGNoIGZhaWxlZDogRG9ja2VyZmlsZS5idWlsZC1kZWJpYW4tbWlu
+aW1hbDoxCmVycm9yOiBEb2NrZXJmaWxlLmJ1aWxkLWRlYmlhbi1taW5pbWFsOiBwYXRjaCBkb2Vz
+IG5vdCBhcHBseQplcnJvcjogcGF0Y2ggZmFpbGVkOiBEb2NrZXJmaWxlLmJ1aWxkLWRlYmlhbi1t
+aXBzOjIKZXJyb3I6IERvY2tlcmZpbGUuYnVpbGQtZGViaWFuLW1pcHM6IHBhdGNoIGRvZXMgbm90
+IGFwcGx5CmVycm9yOiBwYXRjaCBmYWlsZWQ6IERvY2tlcmZpbGUuYnVpbGQtZmVkb3JhOjEKZXJy
+b3I6IERvY2tlcmZpbGUuYnVpbGQtZmVkb3JhOiBwYXRjaCBkb2VzIG5vdCBhcHBseQpQYXRjaCBm
+YWlsZWQgYXQgMDAwMSAuZ2l0bGFiLWNpOiBSZWR1Y2UgRG9ja2VyIGltYWdlcyBzaXplCmhpbnQ6
+IFVzZSAnZ2l0IGFtIC0tc2hvdy1jdXJyZW50LXBhdGNoJyB0byBzZWUgdGhlIGZhaWxlZCBwYXRj
+aApXaGVuIHlvdSBoYXZlIHJlc29sdmVkIHRoaXMgcHJvYmxlbSwgcnVuICJnaXQgYW0gLS1jb250
+aW51ZSIuCklmIHlvdSBwcmVmZXIgdG8gc2tpcCB0aGlzIHBhdGNoLCBydW4gImdpdCBhbSAtLXNr
+aXAiIGluc3RlYWQuClRvIHJlc3RvcmUgdGhlIG9yaWdpbmFsIGJyYW5jaCBhbmQgc3RvcCBwYXRj
+aGluZywgcnVuICJnaXQgYW0gLS1hYm9ydCIuCgpTbyBpdCdzIG5vdCBiYXNlNjQuIExldCBtZSBz
+ZWUgd2hhdCBhY3R1YWxseSBnb2VzIHdyb25nLiBZb3UgY2FuIGdldCB0aGUKdW5lbmNvZGVkIHBh
+dGNoIGhlcmU6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC8zNTY1MjQv
+cmF3LwoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0
+LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
+aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
