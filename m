@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 05 Mar 2020 09:54:31 -0000
-Message-ID: <158340207132.17235.16531486287458910382@emeril.freedesktop.org>
-References: <20200304205243.106854-1-matthew.auld@intel.com>
-In-Reply-To: <20200304205243.106854-1-matthew.auld@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_i?=
- =?utf-8?q?915/gem=5Fexec=5Fparams=3A_add_test=5Finvalid=5Fbatch=5Fstart?=
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A43F66E0A2
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2020 10:01:48 +0000 (UTC)
+From: Kunal Joshi <kunal1.joshi@intel.com>
+Date: Thu,  5 Mar 2020 08:33:32 +0530
+Message-Id: <1583377412-25870-3-git-send-email-kunal1.joshi@intel.com>
+In-Reply-To: <1583377412-25870-1-git-send-email-kunal1.joshi@intel.com>
+References: <1583377412-25870-1-git-send-email-kunal1.joshi@intel.com>
+Subject: [igt-dev] [PATCH 2/2] tests/kms_chamelium: Add support to validate
+ RGB/YUV pixel formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,47 +16,182 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Matthew Auld <matthew.auld@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Kunal Joshi <kunal1.joshi@intel.com>, petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Currently, only hard coded pixel formats are validated which are not
+generic for all the platforms which leads to SKIPS.
+Added support to validate only those pixel formats which are supported by
+platform. Both RGB and YUV pixel formats are covered.
 
-Series: i915/gem_exec_params: add test_invalid_batch_start
-URL   : https://patchwork.freedesktop.org/series/74288/
-State : failure
 
-== Summary ==
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/kms_chamelium.c | 136 ++++++++++++++++++--------------------------------
+ 1 file changed, 48 insertions(+), 88 deletions(-)
 
-ERROR! This series introduces new undocumented tests:
+diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
+index 5c4a189..d56c68d 100644
+--- a/tests/kms_chamelium.c
++++ b/tests/kms_chamelium.c
+@@ -2816,100 +2816,60 @@ igt_main
+ 			test_display_all_modes(&data, port, DRM_FORMAT_XRGB8888,
+ 					       CHAMELIUM_CHECK_CRC, 3);
+ 
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-crc-argb8888", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_ARGB8888,
+-					      CHAMELIUM_CHECK_CRC, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-crc-abgr8888", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_ABGR8888,
+-					      CHAMELIUM_CHECK_CRC, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-crc-xrgb8888", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_XRGB8888,
+-					      CHAMELIUM_CHECK_CRC, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-crc-xbgr8888", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_XBGR8888,
+-					      CHAMELIUM_CHECK_CRC, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-crc-rgb888", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_RGB888,
+-					      CHAMELIUM_CHECK_CRC, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-crc-bgr888", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_BGR888,
+-					      CHAMELIUM_CHECK_CRC, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-crc-rgb565", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_RGB565,
+-					      CHAMELIUM_CHECK_CRC, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-crc-bgr565", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_BGR565,
+-					      CHAMELIUM_CHECK_CRC, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-crc-argb1555", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_ARGB1555,
+-					      CHAMELIUM_CHECK_CRC, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-crc-xrgb1555", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_XRGB1555,
+-					      CHAMELIUM_CHECK_CRC, 1);
++		igt_describe(test_display_one_mode_desc);
++		connector_subtest_start("hdmi-rgb-pixel-format", HDMIA)
++			int k;
++			igt_output_t *output;
++			igt_plane_t *primary;
++
++			output = prepare_output(&data, port, TEST_EDID_BASE);
++			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++			igt_assert(primary);
++
++			for (k = 0; k < primary->format_mod_count; k++) {
++				if (!igt_fb_supported_format(primary->formats[k]))
++					continue;
++
++				if ((igt_format_is_yuv(primary->formats[k]) ||
++				     primary->modifiers[k] != LOCAL_DRM_FORMAT_MOD_NONE))
++					continue;
++
++				igt_dynamic_f("testing-format-%c%c%c%c", IGT_FORMAT_ARGS_CODE(primary->formats[k]))
++					test_display_one_mode(&data, port, primary->formats[k],
++							      CHAMELIUM_CHECK_CRC,
++							      1);
++			}
++		connector_subtest_end
+ 
+ 		igt_describe(test_display_planes_random_desc);
+ 		connector_subtest("hdmi-crc-planes-random", HDMIA)
+ 			test_display_planes_random(&data, port,
+ 						   CHAMELIUM_CHECK_CRC);
+ 
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-nv12", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_NV12,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-nv16", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_NV16,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-nv21", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_NV21,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-nv61", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_NV61,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-yu12", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_YUV420,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-yu16", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_YUV422,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-yv12", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_YVU420,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+-
+-		igt_describe(test_display_one_mode_desc);
+-		connector_subtest("hdmi-cmp-yv16", HDMIA)
+-			test_display_one_mode(&data, port, DRM_FORMAT_YVU422,
+-					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
++		igt_describe(test_display_one_mode_desc);
++		connector_subtest_start("hdmi-yuv-pixel-format", HDMIA)
++			int k;
++			igt_output_t *output;
++			igt_plane_t *primary;
++
++			output = prepare_output(&data, port, TEST_EDID_BASE);
++			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++			igt_assert(primary);
++
++			for (k = 0; k < primary->format_mod_count; k++) {
++				if (!igt_fb_supported_format(primary->formats[k]))
++					continue;
++
++				if (!(igt_format_is_yuv(primary->formats[k]) &&
++				     primary->modifiers[k] != LOCAL_DRM_FORMAT_MOD_NONE))
++					continue;
++
++				igt_dynamic_f("testing-format-%c%c%c%c", IGT_FORMAT_ARGS_CODE(primary->formats[k]))
++					test_display_one_mode(&data, port, primary->formats[k],
++							      CHAMELIUM_CHECK_CHECKERBOARD,
++							      1);
++			}
++		connector_subtest_end
+ 
+ 		igt_describe(test_display_planes_random_desc);
+ 		connector_subtest("hdmi-cmp-planes-random", HDMIA)
+-- 
+2.7.4
 
-gem_exec_params@invalid-batch-start-offset
-
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
-
-[Documentation] has more details on how to do this.
-
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
-
-Thanks in advance!
-
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-
-Other than that, pipeline status: SUCCESS.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/116002 for the overview.
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/116002
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
