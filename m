@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49BFB6E2DD
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2020 11:54:36 +0000 (UTC)
+Date: Thu, 5 Mar 2020 13:54:33 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200305115433.GS3839@platvala-desk.ger.corp.intel.com>
+References: <1583324295-22013-1-git-send-email-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 05 Mar 2020 11:47:56 -0000
-Message-ID: <158340887682.17236.15455686463247193494@emeril.freedesktop.org>
-References: <20200305111522.2674305-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200305111522.2674305-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fexec=5Fbalancer=3A_Exercise_bonded-payload_synchronisation?=
+Content-Disposition: inline
+In-Reply-To: <1583324295-22013-1-git-send-email-kunal1.joshi@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_chamelium: Add support to
+ validate YUV pixel formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,93 +18,112 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Kunal Joshi <kunal1.joshi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Wed, Mar 04, 2020 at 05:48:15PM +0530, Kunal Joshi wrote:
+> Currently, only hard coded pixel formats are validated which are not
+> generic for all the platforms which leads to false alarms.
+> Added support to validate only those pixel formats which are supported
+> by platform.
+> 
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> ---
+>  tests/kms_chamelium.c | 70 +++++++++++++++++++++++----------------------------
+>  1 file changed, 32 insertions(+), 38 deletions(-)
+> 
+> diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
+> index 5c4a189..d6d63c6 100644
+> --- a/tests/kms_chamelium.c
+> +++ b/tests/kms_chamelium.c
+> @@ -2612,6 +2612,14 @@ static const struct edid *get_edid(enum test_edid edid)
+>  			if (chamelium_port_get_type(port) == \
+>  			    DRM_MODE_CONNECTOR_ ## type__)
+>  
+> +#define connector_subtest_start(name__, type__)              \
+> +	igt_subtest_with_dynamic(name__)                     \
+> +		for_each_port(p, port)                       \
+> +			if (chamelium_port_get_type(port) == \
+> +			    DRM_MODE_CONNECTOR_ ## type__) {
+> +
+> +#define connector_subtest_end }
+> +
+>  static data_t data;
+>  
+>  IGT_TEST_DESCRIPTION("Tests requiring a Chamelium board");
+> @@ -2872,44 +2880,30 @@ igt_main
+>  						   CHAMELIUM_CHECK_CRC);
+>  
+>  		igt_describe(test_display_one_mode_desc);
+> -		connector_subtest("hdmi-cmp-nv12", HDMIA)
+> -			test_display_one_mode(&data, port, DRM_FORMAT_NV12,
+> -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+> -
+> -		igt_describe(test_display_one_mode_desc);
+> -		connector_subtest("hdmi-cmp-nv16", HDMIA)
+> -			test_display_one_mode(&data, port, DRM_FORMAT_NV16,
+> -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+> -
+> -		igt_describe(test_display_one_mode_desc);
+> -		connector_subtest("hdmi-cmp-nv21", HDMIA)
+> -			test_display_one_mode(&data, port, DRM_FORMAT_NV21,
+> -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+> -
+> -		igt_describe(test_display_one_mode_desc);
+> -		connector_subtest("hdmi-cmp-nv61", HDMIA)
+> -			test_display_one_mode(&data, port, DRM_FORMAT_NV61,
+> -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+> -
+> -		igt_describe(test_display_one_mode_desc);
+> -		connector_subtest("hdmi-cmp-yu12", HDMIA)
+> -			test_display_one_mode(&data, port, DRM_FORMAT_YUV420,
+> -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+> -
+> -		igt_describe(test_display_one_mode_desc);
+> -		connector_subtest("hdmi-cmp-yu16", HDMIA)
+> -			test_display_one_mode(&data, port, DRM_FORMAT_YUV422,
+> -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+> -
+> -		igt_describe(test_display_one_mode_desc);
+> -		connector_subtest("hdmi-cmp-yv12", HDMIA)
+> -			test_display_one_mode(&data, port, DRM_FORMAT_YVU420,
+> -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+> -
+> -		igt_describe(test_display_one_mode_desc);
+> -		connector_subtest("hdmi-cmp-yv16", HDMIA)
+> -			test_display_one_mode(&data, port, DRM_FORMAT_YVU422,
+> -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
+> +		connector_subtest_start("hdmi-yuv", HDMIA)
+> +			int k;
+> +			igt_output_t *output;
+> +			igt_plane_t *primary;
+> +
+> +			output = prepare_output(&data, port, TEST_EDID_BASE);
+> +			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +			igt_assert(primary);
+> +
+> +			for (k = 0; k < primary->format_mod_count; k++) {
+> +
+> +				if (!igt_fb_supported_format(primary->formats[k]))
+> +					continue;
+> +
+> +				if (!(igt_format_is_yuv(primary->formats[k])
+> +				   && primary->modifiers[k] != LOCAL_DRM_FORMAT_MOD_NONE))
+> +					continue;
 
-Series: i915/gem_exec_balancer: Exercise bonded-payload synchronisation
-URL   : https://patchwork.freedesktop.org/series/74327/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_5493 -> IGTPW_4264
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4264/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4264 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@active:
-    - fi-icl-y:           [DMESG-FAIL][1] ([i915#765]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5493/fi-icl-y/igt@i915_selftest@live@active.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4264/fi-icl-y/igt@i915_selftest@live@active.html
-
-  * igt@i915_selftest@live@gem_contexts:
-    - fi-cfl-8700k:       [INCOMPLETE][3] ([i915#424]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5493/fi-cfl-8700k/igt@i915_selftest@live@gem_contexts.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4264/fi-cfl-8700k/igt@i915_selftest@live@gem_contexts.html
-
-  * igt@kms_addfb_basic@addfb25-bad-modifier:
-    - fi-tgl-y:           [DMESG-WARN][5] ([CI#94] / [i915#402]) -> [PASS][6] +1 similar issue
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5493/fi-tgl-y/igt@kms_addfb_basic@addfb25-bad-modifier.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4264/fi-tgl-y/igt@kms_addfb_basic@addfb25-bad-modifier.html
-
-  
-  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
-  [i915#765]: https://gitlab.freedesktop.org/drm/intel/issues/765
+Can you structure this if statement in another way? if-inside-an-if or
+convert !(a && b) to (!a || !b). I had to read it three times and then
+open it in an editor to help me see what parens are what and how much
+that ! negates.
 
 
-Participating hosts (44 -> 44)
-------------------------------
-
-  Additional (7): fi-kbl-soraka fi-bdw-5557u fi-cfl-8109u fi-bsw-kefka fi-skl-lmem fi-bsw-nick fi-skl-6600u 
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-bsw-cyan fi-ctg-p8600 fi-kbl-x1275 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5493 -> IGTPW_4264
-
-  CI-20190529: 20190529
-  CI_DRM_8068: f8e69af5cca45947ebce78f677b75b0ecc4ba744 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4264: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4264/index.html
-  IGT_5493: 41422f8384047e2ec4c4cb896f6955bf51490f53 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@gem_exec_balancer@bonded-early
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4264/index.html
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
