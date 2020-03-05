@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 966266E358
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2020 15:31:22 +0000 (UTC)
-Date: Thu, 5 Mar 2020 14:03:14 +0530
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B8EBC6EBCE
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2020 15:40:47 +0000 (UTC)
+Date: Thu, 5 Mar 2020 14:12:38 +0530
 From: Kunal Joshi <kunal1.joshi@intel.com>
-Message-ID: <20200305083313.GA4267@intel.com>
-References: <1583324295-22013-1-git-send-email-kunal1.joshi@intel.com>
- <20200305115433.GS3839@platvala-desk.ger.corp.intel.com>
+Message-ID: <20200305084238.GB4267@intel.com>
+References: <1583379218-30115-1-git-send-email-kunal1.joshi@intel.com>
+ <1583379218-30115-3-git-send-email-kunal1.joshi@intel.com>
+ <20200305130115.GI13686@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200305115433.GS3839@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_chamelium: Add support to
- validate YUV pixel formats
+In-Reply-To: <20200305130115.GI13686@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] tests/kms_chamelium: Add support
+ to validate RGB/YUV pixel formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,115 +20,155 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
+To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-03-05 at 13:54:33 +0200, Petri Latvala wrote:
-> On Wed, Mar 04, 2020 at 05:48:15PM +0530, Kunal Joshi wrote:
-> > Currently, only hard coded pixel formats are validated which are not
-> > generic for all the platforms which leads to false alarms.
-> > Added support to validate only those pixel formats which are supported
-> > by platform.
-> > 
-> > Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> > ---
-> >  tests/kms_chamelium.c | 70 +++++++++++++++++++++++----------------------------
-> >  1 file changed, 32 insertions(+), 38 deletions(-)
-> > 
-> > diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
-> > index 5c4a189..d6d63c6 100644
-> > --- a/tests/kms_chamelium.c
-> > +++ b/tests/kms_chamelium.c
-> > @@ -2612,6 +2612,14 @@ static const struct edid *get_edid(enum test_edid edid)
-> >  			if (chamelium_port_get_type(port) == \
-> >  			    DRM_MODE_CONNECTOR_ ## type__)
-> >  
-> > +#define connector_subtest_start(name__, type__)              \
-> > +	igt_subtest_with_dynamic(name__)                     \
-> > +		for_each_port(p, port)                       \
-> > +			if (chamelium_port_get_type(port) == \
-> > +			    DRM_MODE_CONNECTOR_ ## type__) {
-> > +
-> > +#define connector_subtest_end }
-> > +
-> >  static data_t data;
-> >  
-> >  IGT_TEST_DESCRIPTION("Tests requiring a Chamelium board");
-> > @@ -2872,44 +2880,30 @@ igt_main
-> >  						   CHAMELIUM_CHECK_CRC);
-> >  
-> >  		igt_describe(test_display_one_mode_desc);
-> > -		connector_subtest("hdmi-cmp-nv12", HDMIA)
-> > -			test_display_one_mode(&data, port, DRM_FORMAT_NV12,
-> > -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
-> > -
-> > -		igt_describe(test_display_one_mode_desc);
-> > -		connector_subtest("hdmi-cmp-nv16", HDMIA)
-> > -			test_display_one_mode(&data, port, DRM_FORMAT_NV16,
-> > -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
-> > -
-> > -		igt_describe(test_display_one_mode_desc);
-> > -		connector_subtest("hdmi-cmp-nv21", HDMIA)
-> > -			test_display_one_mode(&data, port, DRM_FORMAT_NV21,
-> > -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
-> > -
-> > -		igt_describe(test_display_one_mode_desc);
-> > -		connector_subtest("hdmi-cmp-nv61", HDMIA)
-> > -			test_display_one_mode(&data, port, DRM_FORMAT_NV61,
-> > -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
-> > -
-> > -		igt_describe(test_display_one_mode_desc);
-> > -		connector_subtest("hdmi-cmp-yu12", HDMIA)
-> > -			test_display_one_mode(&data, port, DRM_FORMAT_YUV420,
-> > -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
-> > -
-> > -		igt_describe(test_display_one_mode_desc);
-> > -		connector_subtest("hdmi-cmp-yu16", HDMIA)
-> > -			test_display_one_mode(&data, port, DRM_FORMAT_YUV422,
-> > -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
-> > -
-> > -		igt_describe(test_display_one_mode_desc);
-> > -		connector_subtest("hdmi-cmp-yv12", HDMIA)
-> > -			test_display_one_mode(&data, port, DRM_FORMAT_YVU420,
-> > -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
-> > -
-> > -		igt_describe(test_display_one_mode_desc);
-> > -		connector_subtest("hdmi-cmp-yv16", HDMIA)
-> > -			test_display_one_mode(&data, port, DRM_FORMAT_YVU422,
-> > -					      CHAMELIUM_CHECK_CHECKERBOARD, 1);
-> > +		connector_subtest_start("hdmi-yuv", HDMIA)
-> > +			int k;
-> > +			igt_output_t *output;
-> > +			igt_plane_t *primary;
-> > +
-> > +			output = prepare_output(&data, port, TEST_EDID_BASE);
-> > +			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> > +			igt_assert(primary);
-> > +
-> > +			for (k = 0; k < primary->format_mod_count; k++) {
-> > +
-> > +				if (!igt_fb_supported_format(primary->formats[k]))
-> > +					continue;
-> > +
-> > +				if (!(igt_format_is_yuv(primary->formats[k])
-> > +				   && primary->modifiers[k] != LOCAL_DRM_FORMAT_MOD_NONE))
-> > +					continue;
-> 
-> Can you structure this if statement in another way? if-inside-an-if or
-> convert !(a && b) to (!a || !b). I had to read it three times and then
-> open it in an editor to help me see what parens are what and how much
-> that ! negates.
-> 
-> 
-Thanks petri for the comment
-I have addressed your comment in the new patch series
-> -- 
-> Petri Latvala
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gMjAyMC0wMy0wNSBhdCAxNTowMToxNSArMDIwMCwgVmlsbGUgU3lyasOkbMOkIHdyb3RlOgo+
+IE9uIFRodSwgTWFyIDA1LCAyMDIwIGF0IDA5OjAzOjM4QU0gKzA1MzAsIEt1bmFsIEpvc2hpIHdy
+b3RlOgo+ID4gQ3VycmVudGx5LCBvbmx5IGhhcmQgY29kZWQgcGl4ZWwgZm9ybWF0cyBhcmUgdmFs
+aWRhdGVkIHdoaWNoIGFyZSBub3QKPiA+IGdlbmVyaWMgZm9yIGFsbCB0aGUgcGxhdGZvcm1zIHdo
+aWNoIGxlYWRzIHRvIFNLSVBTLgo+ID4gQWRkZWQgc3VwcG9ydCB0byB2YWxpZGF0ZSBvbmx5IHRo
+b3NlIHBpeGVsIGZvcm1hdHMgd2hpY2ggYXJlIHN1cHBvcnRlZCBieQo+ID4gcGxhdGZvcm0uIEJv
+dGggUkdCIGFuZCBZVVYgcGl4ZWwgZm9ybWF0cyBhcmUgY292ZXJlZC4KPiA+IAo+ID4gU2lnbmVk
+LW9mZi1ieTogS3VuYWwgSm9zaGkgPGt1bmFsMS5qb3NoaUBpbnRlbC5jb20+Cj4gPiAtLS0KPiA+
+ICB0ZXN0cy9rbXNfY2hhbWVsaXVtLmMgfCAxNDAgKysrKysrKysrKysrKysrKysrKy0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgNTQgaW5zZXJ0aW9u
+cygrKSwgODYgZGVsZXRpb25zKC0pCj4gPiAKPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfY2hh
+bWVsaXVtLmMgYi90ZXN0cy9rbXNfY2hhbWVsaXVtLmMKPiA+IGluZGV4IDVjNGExODkuLjVjOTYw
+MTcgMTAwNjQ0Cj4gPiAtLS0gYS90ZXN0cy9rbXNfY2hhbWVsaXVtLmMKPiA+ICsrKyBiL3Rlc3Rz
+L2ttc19jaGFtZWxpdW0uYwo+ID4gQEAgLTI2MTIsNiArMjYxMiwxNCBAQCBzdGF0aWMgY29uc3Qg
+c3RydWN0IGVkaWQgKmdldF9lZGlkKGVudW0gdGVzdF9lZGlkIGVkaWQpCj4gPiAgCQkJaWYgKGNo
+YW1lbGl1bV9wb3J0X2dldF90eXBlKHBvcnQpID09IFwKPiA+ICAJCQkgICAgRFJNX01PREVfQ09O
+TkVDVE9SXyAjIyB0eXBlX18pCj4gPiAgCj4gPiArI2RlZmluZSBjb25uZWN0b3Jfc3VidGVzdF9z
+dGFydChuYW1lX18sIHR5cGVfXykgICAgICAgICAgICAgIFwKPiA+ICsgICAgICAgIGlndF9zdWJ0
+ZXN0X3dpdGhfZHluYW1pYyhuYW1lX18pICAgICAgICAgICAgICAgICAgICAgXAo+ID4gKyAgICAg
+ICAgICAgICAgICBmb3JfZWFjaF9wb3J0KHAsIHBvcnQpICAgICAgICAgICAgICAgICAgICAgICBc
+Cj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgaWYgKGNoYW1lbGl1bV9wb3J0X2dldF90eXBl
+KHBvcnQpID09IFwKPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgRFJNX01PREVfQ09O
+TkVDVE9SXyAjIyB0eXBlX18pIHsKPiA+ICsKPiA+ICsjZGVmaW5lIGNvbm5lY3Rvcl9zdWJ0ZXN0
+X2VuZCB9Cj4gPiArCj4gPiAgc3RhdGljIGRhdGFfdCBkYXRhOwo+ID4gIAo+ID4gIElHVF9URVNU
+X0RFU0NSSVBUSU9OKCJUZXN0cyByZXF1aXJpbmcgYSBDaGFtZWxpdW0gYm9hcmQiKTsKPiA+IEBA
+IC0yODE3LDU0ICsyODI1LDI5IEBAIGlndF9tYWluCj4gPiAgCQkJCQkgICAgICAgQ0hBTUVMSVVN
+X0NIRUNLX0NSQywgMyk7Cj4gPiAgCj4gPiAgCQlpZ3RfZGVzY3JpYmUodGVzdF9kaXNwbGF5X29u
+ZV9tb2RlX2Rlc2MpOwo+ID4gLQkJY29ubmVjdG9yX3N1YnRlc3QoImhkbWktY3JjLWFyZ2I4ODg4
+IiwgSERNSUEpCj4gPiAtCQkJdGVzdF9kaXNwbGF5X29uZV9tb2RlKCZkYXRhLCBwb3J0LCBEUk1f
+Rk9STUFUX0FSR0I4ODg4LAo+ID4gLQkJCQkJICAgICAgQ0hBTUVMSVVNX0NIRUNLX0NSQywgMSk7
+Cj4gPiAtCj4gPiAtCQlpZ3RfZGVzY3JpYmUodGVzdF9kaXNwbGF5X29uZV9tb2RlX2Rlc2MpOwo+
+ID4gLQkJY29ubmVjdG9yX3N1YnRlc3QoImhkbWktY3JjLWFiZ3I4ODg4IiwgSERNSUEpCj4gPiAt
+CQkJdGVzdF9kaXNwbGF5X29uZV9tb2RlKCZkYXRhLCBwb3J0LCBEUk1fRk9STUFUX0FCR1I4ODg4
+LAo+ID4gLQkJCQkJICAgICAgQ0hBTUVMSVVNX0NIRUNLX0NSQywgMSk7Cj4gPiAtCj4gPiAtCQlp
+Z3RfZGVzY3JpYmUodGVzdF9kaXNwbGF5X29uZV9tb2RlX2Rlc2MpOwo+ID4gLQkJY29ubmVjdG9y
+X3N1YnRlc3QoImhkbWktY3JjLXhyZ2I4ODg4IiwgSERNSUEpCj4gPiAtCQkJdGVzdF9kaXNwbGF5
+X29uZV9tb2RlKCZkYXRhLCBwb3J0LCBEUk1fRk9STUFUX1hSR0I4ODg4LAo+ID4gLQkJCQkJICAg
+ICAgQ0hBTUVMSVVNX0NIRUNLX0NSQywgMSk7Cj4gPiAtCj4gPiAtCQlpZ3RfZGVzY3JpYmUodGVz
+dF9kaXNwbGF5X29uZV9tb2RlX2Rlc2MpOwo+ID4gLQkJY29ubmVjdG9yX3N1YnRlc3QoImhkbWkt
+Y3JjLXhiZ3I4ODg4IiwgSERNSUEpCj4gPiAtCQkJdGVzdF9kaXNwbGF5X29uZV9tb2RlKCZkYXRh
+LCBwb3J0LCBEUk1fRk9STUFUX1hCR1I4ODg4LAo+ID4gLQkJCQkJICAgICAgQ0hBTUVMSVVNX0NI
+RUNLX0NSQywgMSk7Cj4gPiAtCj4gPiAtCQlpZ3RfZGVzY3JpYmUodGVzdF9kaXNwbGF5X29uZV9t
+b2RlX2Rlc2MpOwo+ID4gLQkJY29ubmVjdG9yX3N1YnRlc3QoImhkbWktY3JjLXJnYjg4OCIsIEhE
+TUlBKQo+ID4gLQkJCXRlc3RfZGlzcGxheV9vbmVfbW9kZSgmZGF0YSwgcG9ydCwgRFJNX0ZPUk1B
+VF9SR0I4ODgsCj4gPiAtCQkJCQkgICAgICBDSEFNRUxJVU1fQ0hFQ0tfQ1JDLCAxKTsKPiA+IC0K
+PiA+IC0JCWlndF9kZXNjcmliZSh0ZXN0X2Rpc3BsYXlfb25lX21vZGVfZGVzYyk7Cj4gPiAtCQlj
+b25uZWN0b3Jfc3VidGVzdCgiaGRtaS1jcmMtYmdyODg4IiwgSERNSUEpCj4gPiAtCQkJdGVzdF9k
+aXNwbGF5X29uZV9tb2RlKCZkYXRhLCBwb3J0LCBEUk1fRk9STUFUX0JHUjg4OCwKPiA+IC0JCQkJ
+CSAgICAgIENIQU1FTElVTV9DSEVDS19DUkMsIDEpOwo+ID4gLQo+ID4gLQkJaWd0X2Rlc2NyaWJl
+KHRlc3RfZGlzcGxheV9vbmVfbW9kZV9kZXNjKTsKPiA+IC0JCWNvbm5lY3Rvcl9zdWJ0ZXN0KCJo
+ZG1pLWNyYy1yZ2I1NjUiLCBIRE1JQSkKPiA+IC0JCQl0ZXN0X2Rpc3BsYXlfb25lX21vZGUoJmRh
+dGEsIHBvcnQsIERSTV9GT1JNQVRfUkdCNTY1LAo+ID4gLQkJCQkJICAgICAgQ0hBTUVMSVVNX0NI
+RUNLX0NSQywgMSk7Cj4gPiAtCj4gPiAtCQlpZ3RfZGVzY3JpYmUodGVzdF9kaXNwbGF5X29uZV9t
+b2RlX2Rlc2MpOwo+ID4gLQkJY29ubmVjdG9yX3N1YnRlc3QoImhkbWktY3JjLWJncjU2NSIsIEhE
+TUlBKQo+ID4gLQkJCXRlc3RfZGlzcGxheV9vbmVfbW9kZSgmZGF0YSwgcG9ydCwgRFJNX0ZPUk1B
+VF9CR1I1NjUsCj4gPiAtCQkJCQkgICAgICBDSEFNRUxJVU1fQ0hFQ0tfQ1JDLCAxKTsKPiA+IC0K
+PiA+IC0JCWlndF9kZXNjcmliZSh0ZXN0X2Rpc3BsYXlfb25lX21vZGVfZGVzYyk7Cj4gPiAtCQlj
+b25uZWN0b3Jfc3VidGVzdCgiaGRtaS1jcmMtYXJnYjE1NTUiLCBIRE1JQSkKPiA+IC0JCQl0ZXN0
+X2Rpc3BsYXlfb25lX21vZGUoJmRhdGEsIHBvcnQsIERSTV9GT1JNQVRfQVJHQjE1NTUsCj4gPiAt
+CQkJCQkgICAgICBDSEFNRUxJVU1fQ0hFQ0tfQ1JDLCAxKTsKPiA+IC0KPiA+IC0JCWlndF9kZXNj
+cmliZSh0ZXN0X2Rpc3BsYXlfb25lX21vZGVfZGVzYyk7Cj4gPiAtCQljb25uZWN0b3Jfc3VidGVz
+dCgiaGRtaS1jcmMteHJnYjE1NTUiLCBIRE1JQSkKPiA+IC0JCQl0ZXN0X2Rpc3BsYXlfb25lX21v
+ZGUoJmRhdGEsIHBvcnQsIERSTV9GT1JNQVRfWFJHQjE1NTUsCj4gPiAtCQkJCQkgICAgICBDSEFN
+RUxJVU1fQ0hFQ0tfQ1JDLCAxKTsKPiA+ICsJCWNvbm5lY3Rvcl9zdWJ0ZXN0X3N0YXJ0KCJoZG1p
+LXJnYi1waXhlbC1mb3JtYXQiLCBIRE1JQSkKPiA+ICsJCQlpbnQgazsKPiA+ICsJCQlpZ3Rfb3V0
+cHV0X3QgKm91dHB1dDsKPiA+ICsJCQlpZ3RfcGxhbmVfdCAqcHJpbWFyeTsKPiA+ICsKPiA+ICsJ
+CQlvdXRwdXQgPSBwcmVwYXJlX291dHB1dCgmZGF0YSwgcG9ydCwgVEVTVF9FRElEX0JBU0UpOwo+
+ID4gKwkJCXByaW1hcnkgPSBpZ3Rfb3V0cHV0X2dldF9wbGFuZV90eXBlKG91dHB1dCwgRFJNX1BM
+QU5FX1RZUEVfUFJJTUFSWSk7Cj4gPiArCQkJaWd0X2Fzc2VydChwcmltYXJ5KTsKPiA+ICsKPiA+
+ICsJCQlmb3IgKGsgPSAwOyBrIDwgcHJpbWFyeS0+Zm9ybWF0X21vZF9jb3VudDsgaysrKSB7Cj4g
+PiArCQkJCWlmICghaWd0X2ZiX3N1cHBvcnRlZF9mb3JtYXQocHJpbWFyeS0+Zm9ybWF0c1trXSkp
+Cj4gPiArCQkJCQljb250aW51ZTsKPiA+ICsKPiA+ICsJCQkJaWYgKChpZ3RfZm9ybWF0X2lzX3l1
+dihwcmltYXJ5LT5mb3JtYXRzW2tdKSB8fAo+ID4gKwkJCQkgICAgIHByaW1hcnktPm1vZGlmaWVy
+c1trXSAhPSBMT0NBTF9EUk1fRk9STUFUX01PRF9OT05FKSkKPiA+ICsJCQkJCWNvbnRpbnVlOwo+
+ID4gKwo+ID4gKwkJCQlpZ3RfZHluYW1pY19mKCJ0ZXN0aW5nLWZvcm1hdC0lYyVjJWMlYyIsIElH
+VF9GT1JNQVRfQVJHU19DT0RFKHByaW1hcnktPmZvcm1hdHNba10pKQo+IAo+IFdlIGhhdmUgYSBp
+Z3RfZm9ybWF0X3N0cigpIHdoaWNoIGlzIHByb2JhYmx5IGJldHRlciBmb3Igc3R1ZmYgbGlrZSB0
+aGlzLgo+IAoKVGhhbmtzIHZpbGxlIGZvciBwb2ludGluZyB0aGF0IG91dApJIHRyaWVkIHVzaW5n
+IGlndF9mb3JtYXRfc3RyKCkKYnV0IGl0IGRvZXNuJ3Qgc2VlbSB0byBzdXBwb3J0IHRoYXQgaSB0
+cmllZCBpdCBsaWtlIGJlbG93CgppZ3RfZHluYW1pY19mKCIlcyIsaWd0X2Zvcm1hdF9zdHIoInRl
+c3RpbmctZm9ybWF0LSVjJWMlYyVjIiwKCQkJCSAgSUdUX0ZPUk1BVF9BUkdTX0NPREUocHJpbWFy
+eS0+Zm9ybWF0c1trXSkpCgpDYW4gaSB1c2UgaWd0X2R5bmFtaWNfZj8KYmVjYXVzZSBpdCBhbHNv
+IGFjY2VwdHMgYSBwcmludGYgZm9ybWF0IHN0cmluZwpodHRwczovL2RybS5wYWdlcy5mcmVlZGVz
+a3RvcC5vcmcvaWd0LWdwdS10b29scy9pZ3QtZ3B1LXRvb2xzLUNvcmUuaHRtbCNpZ3Qtc3VidGVz
+dC13aXRoLWR5bmFtaWMKPiA+ICsJCQkJCXRlc3RfZGlzcGxheV9vbmVfbW9kZSgmZGF0YSwgcG9y
+dCwgcHJpbWFyeS0+Zm9ybWF0c1trXSwKPiA+ICsJCQkJCQkJICAgICAgQ0hBTUVMSVVNX0NIRUNL
+X0NSQywKPiA+ICsJCQkJCQkJICAgICAgMSk7Cj4gPiArCQkJfQo+ID4gKwkJY29ubmVjdG9yX3N1
+YnRlc3RfZW5kCj4gPiAgCj4gPiAgCQlpZ3RfZGVzY3JpYmUodGVzdF9kaXNwbGF5X3BsYW5lc19y
+YW5kb21fZGVzYyk7Cj4gPiAgCQljb25uZWN0b3Jfc3VidGVzdCgiaGRtaS1jcmMtcGxhbmVzLXJh
+bmRvbSIsIEhETUlBKQo+ID4gQEAgLTI4NzIsNDQgKzI4NTUsMjkgQEAgaWd0X21haW4KPiA+ICAJ
+CQkJCQkgICBDSEFNRUxJVU1fQ0hFQ0tfQ1JDKTsKPiA+ICAKPiA+ICAJCWlndF9kZXNjcmliZSh0
+ZXN0X2Rpc3BsYXlfb25lX21vZGVfZGVzYyk7Cj4gPiAtCQljb25uZWN0b3Jfc3VidGVzdCgiaGRt
+aS1jbXAtbnYxMiIsIEhETUlBKQo+ID4gLQkJCXRlc3RfZGlzcGxheV9vbmVfbW9kZSgmZGF0YSwg
+cG9ydCwgRFJNX0ZPUk1BVF9OVjEyLAo+ID4gLQkJCQkJICAgICAgQ0hBTUVMSVVNX0NIRUNLX0NI
+RUNLRVJCT0FSRCwgMSk7Cj4gPiAtCj4gPiAtCQlpZ3RfZGVzY3JpYmUodGVzdF9kaXNwbGF5X29u
+ZV9tb2RlX2Rlc2MpOwo+ID4gLQkJY29ubmVjdG9yX3N1YnRlc3QoImhkbWktY21wLW52MTYiLCBI
+RE1JQSkKPiA+IC0JCQl0ZXN0X2Rpc3BsYXlfb25lX21vZGUoJmRhdGEsIHBvcnQsIERSTV9GT1JN
+QVRfTlYxNiwKPiA+IC0JCQkJCSAgICAgIENIQU1FTElVTV9DSEVDS19DSEVDS0VSQk9BUkQsIDEp
+Owo+ID4gLQo+ID4gLQkJaWd0X2Rlc2NyaWJlKHRlc3RfZGlzcGxheV9vbmVfbW9kZV9kZXNjKTsK
+PiA+IC0JCWNvbm5lY3Rvcl9zdWJ0ZXN0KCJoZG1pLWNtcC1udjIxIiwgSERNSUEpCj4gPiAtCQkJ
+dGVzdF9kaXNwbGF5X29uZV9tb2RlKCZkYXRhLCBwb3J0LCBEUk1fRk9STUFUX05WMjEsCj4gPiAt
+CQkJCQkgICAgICBDSEFNRUxJVU1fQ0hFQ0tfQ0hFQ0tFUkJPQVJELCAxKTsKPiA+IC0KPiA+IC0J
+CWlndF9kZXNjcmliZSh0ZXN0X2Rpc3BsYXlfb25lX21vZGVfZGVzYyk7Cj4gPiAtCQljb25uZWN0
+b3Jfc3VidGVzdCgiaGRtaS1jbXAtbnY2MSIsIEhETUlBKQo+ID4gLQkJCXRlc3RfZGlzcGxheV9v
+bmVfbW9kZSgmZGF0YSwgcG9ydCwgRFJNX0ZPUk1BVF9OVjYxLAo+ID4gLQkJCQkJICAgICAgQ0hB
+TUVMSVVNX0NIRUNLX0NIRUNLRVJCT0FSRCwgMSk7Cj4gPiAtCj4gPiAtCQlpZ3RfZGVzY3JpYmUo
+dGVzdF9kaXNwbGF5X29uZV9tb2RlX2Rlc2MpOwo+ID4gLQkJY29ubmVjdG9yX3N1YnRlc3QoImhk
+bWktY21wLXl1MTIiLCBIRE1JQSkKPiA+IC0JCQl0ZXN0X2Rpc3BsYXlfb25lX21vZGUoJmRhdGEs
+IHBvcnQsIERSTV9GT1JNQVRfWVVWNDIwLAo+ID4gLQkJCQkJICAgICAgQ0hBTUVMSVVNX0NIRUNL
+X0NIRUNLRVJCT0FSRCwgMSk7Cj4gPiAtCj4gPiAtCQlpZ3RfZGVzY3JpYmUodGVzdF9kaXNwbGF5
+X29uZV9tb2RlX2Rlc2MpOwo+ID4gLQkJY29ubmVjdG9yX3N1YnRlc3QoImhkbWktY21wLXl1MTYi
+LCBIRE1JQSkKPiA+IC0JCQl0ZXN0X2Rpc3BsYXlfb25lX21vZGUoJmRhdGEsIHBvcnQsIERSTV9G
+T1JNQVRfWVVWNDIyLAo+ID4gLQkJCQkJICAgICAgQ0hBTUVMSVVNX0NIRUNLX0NIRUNLRVJCT0FS
+RCwgMSk7Cj4gPiAtCj4gPiAtCQlpZ3RfZGVzY3JpYmUodGVzdF9kaXNwbGF5X29uZV9tb2RlX2Rl
+c2MpOwo+ID4gLQkJY29ubmVjdG9yX3N1YnRlc3QoImhkbWktY21wLXl2MTIiLCBIRE1JQSkKPiA+
+IC0JCQl0ZXN0X2Rpc3BsYXlfb25lX21vZGUoJmRhdGEsIHBvcnQsIERSTV9GT1JNQVRfWVZVNDIw
+LAo+ID4gLQkJCQkJICAgICAgQ0hBTUVMSVVNX0NIRUNLX0NIRUNLRVJCT0FSRCwgMSk7Cj4gPiAt
+Cj4gPiAtCQlpZ3RfZGVzY3JpYmUodGVzdF9kaXNwbGF5X29uZV9tb2RlX2Rlc2MpOwo+ID4gLQkJ
+Y29ubmVjdG9yX3N1YnRlc3QoImhkbWktY21wLXl2MTYiLCBIRE1JQSkKPiA+IC0JCQl0ZXN0X2Rp
+c3BsYXlfb25lX21vZGUoJmRhdGEsIHBvcnQsIERSTV9GT1JNQVRfWVZVNDIyLAo+ID4gLQkJCQkJ
+ICAgICAgQ0hBTUVMSVVNX0NIRUNLX0NIRUNLRVJCT0FSRCwgMSk7Cj4gPiArCQljb25uZWN0b3Jf
+c3VidGVzdF9zdGFydCgiaGRtaS15dXYtcGl4ZWwtZm9ybWF0IiwgSERNSUEpCj4gPiArCQkJaW50
+IGs7Cj4gPiArCQkJaWd0X291dHB1dF90ICpvdXRwdXQ7Cj4gPiArCQkJaWd0X3BsYW5lX3QgKnBy
+aW1hcnk7Cj4gPiArCj4gPiArCQkJb3V0cHV0ID0gcHJlcGFyZV9vdXRwdXQoJmRhdGEsIHBvcnQs
+IFRFU1RfRURJRF9CQVNFKTsKPiA+ICsJCQlwcmltYXJ5ID0gaWd0X291dHB1dF9nZXRfcGxhbmVf
+dHlwZShvdXRwdXQsIERSTV9QTEFORV9UWVBFX1BSSU1BUlkpOwo+ID4gKwkJCWlndF9hc3NlcnQo
+cHJpbWFyeSk7Cj4gPiArCj4gPiArCQkJZm9yIChrID0gMDsgayA8IHByaW1hcnktPmZvcm1hdF9t
+b2RfY291bnQ7IGsrKykgewo+ID4gKwkJCQlpZiAoIWlndF9mYl9zdXBwb3J0ZWRfZm9ybWF0KHBy
+aW1hcnktPmZvcm1hdHNba10pKQo+ID4gKwkJCQkJY29udGludWU7Cj4gPiArCj4gPiArCQkJCWlm
+ICghKGlndF9mb3JtYXRfaXNfeXV2KHByaW1hcnktPmZvcm1hdHNba10pICYmCj4gPiArCQkJCSAg
+ICAgcHJpbWFyeS0+bW9kaWZpZXJzW2tdICE9IExPQ0FMX0RSTV9GT1JNQVRfTU9EX05PTkUpKQo+
+ID4gKwkJCQkJY29udGludWU7Cj4gPiArCj4gPiArCQkJCWlndF9keW5hbWljX2YoInRlc3Rpbmct
+Zm9ybWF0LSVjJWMlYyVjIiwgSUdUX0ZPUk1BVF9BUkdTX0NPREUocHJpbWFyeS0+Zm9ybWF0c1tr
+XSkpCj4gPiArCQkJCQl0ZXN0X2Rpc3BsYXlfb25lX21vZGUoJmRhdGEsIHBvcnQsIHByaW1hcnkt
+PmZvcm1hdHNba10sCj4gPiArCQkJCQkJCSAgICAgIENIQU1FTElVTV9DSEVDS19DSEVDS0VSQk9B
+UkQsCj4gPiArCQkJCQkJCSAgICAgIDEpOwo+ID4gKwkJCX0KPiA+ICsJCWNvbm5lY3Rvcl9zdWJ0
+ZXN0X2VuZAo+ID4gIAo+ID4gIAkJaWd0X2Rlc2NyaWJlKHRlc3RfZGlzcGxheV9wbGFuZXNfcmFu
+ZG9tX2Rlc2MpOwo+ID4gIAkJY29ubmVjdG9yX3N1YnRlc3QoImhkbWktY21wLXBsYW5lcy1yYW5k
+b20iLCBIRE1JQSkKPiA+IC0tIAo+ID4gMi43LjQKPiA+IAo+ID4gX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPiA+IGlndC1kZXYgbWFpbGluZyBsaXN0Cj4g
+PiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwo+ID4gaHR0cHM6Ly9saXN0cy5mcmVlZGVz
+a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cj4gCj4gLS0gCj4gVmlsbGUgU3lyasOk
+bMOkCj4gSW50ZWwKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
+cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
