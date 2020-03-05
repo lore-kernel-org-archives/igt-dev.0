@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 229856EBC4
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2020 14:01:09 +0000 (UTC)
-Date: Thu, 5 Mar 2020 16:00:44 +0200
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200305140044.khoujwlswhx7i76e@ahiler-desk1.fi.intel.com>
-References: <20200305105520.313-1-maciej.ramotowski@intel.com>
- <20200305121041.GT3839@platvala-desk.ger.corp.intel.com>
- <02518fd40a2748e08516f9a6790685ec@intel.com>
- <20200305134803.yycimuwifmbsvdtg@ahiler-desk1.fi.intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6706C6E0CE
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Mar 2020 15:07:18 +0000 (UTC)
+From: "Mrzyglod, Daniel T" <daniel.t.mrzyglod@intel.com>
+Date: Thu, 5 Mar 2020 15:07:15 +0000
+Message-ID: <9640fceaa2465ca1e2b05f8d16af3e39e36a5e6a.camel@intel.com>
+References: <20200303103412.29563-1-daniel.t.mrzyglod@intel.com>
+ <20200303111442.GN3839@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <20200303111442.GN3839@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
+Content-ID: <7F444819E584844397695624280046C9@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200305134803.yycimuwifmbsvdtg@ahiler-desk1.fi.intel.com>
-Subject: Re: [igt-dev] [PATCH] .gitlab-ci: Reduce Docker images size
+Subject: Re: [igt-dev] [PATCH i-g-t] lib: move upper_32_bits() and
+ lower_32_bits() to library
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,71 +20,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Ramotowski, Maciej" <maciej.ramotowski@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Latvala,
- Petri" <petri.latvala@intel.com>
+To: "Latvala, Petri" <petri.latvala@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBNYXIgMDUsIDIwMjAgYXQgMDM6NDg6MDZQTSArMDIwMCwgQXJrYWRpdXN6IEhpbGVy
-IHdyb3RlOgo+IE9uIFRodSwgTWFyIDA1LCAyMDIwIGF0IDAzOjM5OjIyUE0gKzAyMDAsIFJhbW90
-b3dza2ksIE1hY2llaiB3cm90ZToKPiA+IFllcyBJIGRpZCB1c2UgZ2l0IHNlbmQtZW1haWwgSSBk
-aWQgcHJlLWNoZWNrIHdpdGggLS1kcnktcnVuIG9wdGlvbiBpdCBzaG93cyA4Yml0IGZvciBlbmNv
-ZGluZy4gU2hvdWxkIEkgdHJ5IHRvIHJlc2VuZCBpdD8KPiA+IAo+ID4gLS0tLS1PcmlnaW5hbCBN
-ZXNzYWdlLS0tLS0KPiA+IEZyb206IExhdHZhbGEsIFBldHJpIAo+ID4gU2VudDogVGh1cnNkYXks
-IE1hcmNoIDUsIDIwMjAgMToxMSBQTQo+ID4gVG86IFJhbW90b3dza2ksIE1hY2llaiA8bWFjaWVq
-LnJhbW90b3dza2lAaW50ZWwuY29tPgo+ID4gQ2M6IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnOyBIaWxlciwgQXJrYWRpdXN6IDxhcmthZGl1c3ouaGlsZXJAaW50ZWwuY29tPgo+ID4gU3Vi
-amVjdDogUmU6IFtQQVRDSF0gLmdpdGxhYi1jaTogUmVkdWNlIERvY2tlciBpbWFnZXMgc2l6ZQo+
-ID4gCj4gPiBJbiB5b3VyIG1haWwgaGVhZGVyOgo+ID4gQ29udGVudC1UcmFuc2Zlci1FbmNvZGlu
-ZzogYmFzZTY0Cj4gPiAKPiA+IAo+ID4gVGhhdCdzIHdoeSBpdCBkb2Vzbid0IGFwcGx5IGluIENJ
-LCBhbmQgZ2l0IGFtIGhlcmUgdG9vIGNhbm5vdCBjb3BlIHdpdGggdGhlIGVuY29kaW5nLiBEaWQg
-eW91IHVzZSBnaXQgc2VuZC1lbWFpbCB0byBzZW5kIHRoZSBwYXRjaD8gSWYgbm90LCBwbGVhc2Ug
-ZG8uCj4gCj4gJSB3Z2V0IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9hcGkvMS4w
-L3Nlcmllcy83NDAwMy9yZXZpc2lvbnMvMi9tYm94LyAtTyBtLnBhdGNoCj4gLS0yMDIwLTAzLTA1
-IDE1OjQyOjE3LS0gIGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9hcGkvMS4wL3Nl
-cmllcy83NDAwMy9yZXZpc2lvbnMvMi9tYm94Lwo+IFJlc29sdmluZyBwYXRjaHdvcmsuZnJlZWRl
-c2t0b3Aub3JnIChwYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnKS4uLiAxMzEuMjUyLjIxMC4xNjcs
-IDI2MTA6MTA6MjA6NzIyOmE4MDA6ZmY6ZmVlZTo1NmNmCj4gQ29ubmVjdGluZyB0byBwYXRjaHdv
-cmsuZnJlZWRlc2t0b3Aub3JnIChwYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnKXwxMzEuMjUyLjIx
-MC4xNjd8OjQ0My4uLiBjb25uZWN0ZWQuCj4gSFRUUCByZXF1ZXN0IHNlbnQsIGF3YWl0aW5nIHJl
-c3BvbnNlLi4uIDIwMCBPSwo+IExlbmd0aDogMTY0NzggKDE2SykgW3RleHQvcGxhaW5dCj4gU2F2
-aW5nIHRvOiDigJhtLnBhdGNo4oCZCj4gCj4gbS5wYXRjaCAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAxMDAlWz09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0+XSAgMTYuMDlLICA4MC44S0IvcyAgICBp
-biAwLjJzCj4gCj4gMjAyMC0wMy0wNSAxNTo0MjoxOSAoODAuOCBLQi9zKSAtIOKAmG0ucGF0Y2ji
-gJkgc2F2ZWQgWzE2NDc4LzE2NDc4XQo+IAo+ICUgZ2l0IGFtIG0ucGF0Y2gKPiBBcHBseWluZzog
-LmdpdGxhYi1jaTogUmVkdWNlIERvY2tlciBpbWFnZXMgc2l6ZQo+IGVycm9yOiBwYXRjaCBmYWls
-ZWQ6IERvY2tlcmZpbGUuYnVpbGQtZGViaWFuOjcKPiBlcnJvcjogRG9ja2VyZmlsZS5idWlsZC1k
-ZWJpYW46IHBhdGNoIGRvZXMgbm90IGFwcGx5Cj4gZXJyb3I6IHBhdGNoIGZhaWxlZDogRG9ja2Vy
-ZmlsZS5idWlsZC1kZWJpYW4tYXJtNjQ6MQo+IGVycm9yOiBEb2NrZXJmaWxlLmJ1aWxkLWRlYmlh
-bi1hcm02NDogcGF0Y2ggZG9lcyBub3QgYXBwbHkKPiBlcnJvcjogcGF0Y2ggZmFpbGVkOiBEb2Nr
-ZXJmaWxlLmJ1aWxkLWRlYmlhbi1hcm1oZjoxCj4gZXJyb3I6IERvY2tlcmZpbGUuYnVpbGQtZGVi
-aWFuLWFybWhmOiBwYXRjaCBkb2VzIG5vdCBhcHBseQo+IGVycm9yOiBwYXRjaCBmYWlsZWQ6IERv
-Y2tlcmZpbGUuYnVpbGQtZGViaWFuLW1pbmltYWw6MQo+IGVycm9yOiBEb2NrZXJmaWxlLmJ1aWxk
-LWRlYmlhbi1taW5pbWFsOiBwYXRjaCBkb2VzIG5vdCBhcHBseQo+IGVycm9yOiBwYXRjaCBmYWls
-ZWQ6IERvY2tlcmZpbGUuYnVpbGQtZGViaWFuLW1pcHM6Mgo+IGVycm9yOiBEb2NrZXJmaWxlLmJ1
-aWxkLWRlYmlhbi1taXBzOiBwYXRjaCBkb2VzIG5vdCBhcHBseQo+IGVycm9yOiBwYXRjaCBmYWls
-ZWQ6IERvY2tlcmZpbGUuYnVpbGQtZmVkb3JhOjEKPiBlcnJvcjogRG9ja2VyZmlsZS5idWlsZC1m
-ZWRvcmE6IHBhdGNoIGRvZXMgbm90IGFwcGx5Cj4gUGF0Y2ggZmFpbGVkIGF0IDAwMDEgLmdpdGxh
-Yi1jaTogUmVkdWNlIERvY2tlciBpbWFnZXMgc2l6ZQo+IGhpbnQ6IFVzZSAnZ2l0IGFtIC0tc2hv
-dy1jdXJyZW50LXBhdGNoJyB0byBzZWUgdGhlIGZhaWxlZCBwYXRjaAo+IFdoZW4geW91IGhhdmUg
-cmVzb2x2ZWQgdGhpcyBwcm9ibGVtLCBydW4gImdpdCBhbSAtLWNvbnRpbnVlIi4KPiBJZiB5b3Ug
-cHJlZmVyIHRvIHNraXAgdGhpcyBwYXRjaCwgcnVuICJnaXQgYW0gLS1za2lwIiBpbnN0ZWFkLgo+
-IFRvIHJlc3RvcmUgdGhlIG9yaWdpbmFsIGJyYW5jaCBhbmQgc3RvcCBwYXRjaGluZywgcnVuICJn
-aXQgYW0gLS1hYm9ydCIuCj4gCj4gU28gaXQncyBub3QgYmFzZTY0LiBMZXQgbWUgc2VlIHdoYXQg
-YWN0dWFsbHkgZ29lcyB3cm9uZy4gWW91IGNhbiBnZXQgdGhlCj4gdW5lbmNvZGVkIHBhdGNoIGhl
-cmU6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9wYXRjaC8zNTY1MjQvcmF3LwoK
-MDAwMDAwMzAgIDY1IDJlIDYyIDc1IDY5IDZjIDY0IDJkICA2NCA2NSA2MiA2OSA2MSA2ZSAwZCAw
-YSAgfGUuYnVpbGQtZGViaWFuLi58CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgXl5eXl4gQ1JMRgoKVGhpcyBtYWtlcyB0aGUgY29udGV4dCB0byBu
-b3QgbWF0Y2ggd2hpY2ggbWFrZXMgdGhpcyBwYXRjaCB0byBub3QgYXBwbHkuCgpQbGVhc2UgbWFr
-ZSBzdXJlIHRoYXQgd2hlbiB5b3UgYXJlIHNlbmRpbmcgZW1haWxzIHlvdXIgc2V0dXAgZG9lcyBu
-b3QKY29udmVydCB0aGUgbGluZSBlbmRpbmdzIDotKQoKLS0gCkNoZWVycywKQXJlawpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcg
-bGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNr
-dG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+On Tue, 2020-03-03 at 13:14 +0200, Petri Latvala wrote:
+> On Tue, Mar 03, 2020 at 11:34:12AM +0100, Daniel Mrzyglod wrote:
+> > Move inline upper_32_bits() and lower_32_bits() function from tests
+> > to
+> > library. Functiom will be usefull for elsewhere use.
+> > 
+> > Cc: Katarzyna Dec <katarzyna.dec@intel.com>
+> > Signed-off-by: Daniel Mrzyglod <daniel.t.mrzyglod@intel.com>
+> > ---
+> >  lib/ioctl_wrappers.h        | 20 ++++++++++++++++++++
+> >  tests/i915/gem_exec_fence.c | 10 ----------
+> >  2 files changed, 20 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
+> > index 7614e688c..17f54b2f9 100644
+> > --- a/lib/ioctl_wrappers.h
+> > +++ b/lib/ioctl_wrappers.h
+> > @@ -244,4 +244,24 @@ static inline void *from_user_pointer(uint64_t
+> > u64)
+> >  	return (void *)(uintptr_t)u64;
+> >  }
+> >  
+> > +/**
+> > + * lower_32_bits
+> > + *
+> > + * return bits 0-31 of a number
+> > + */
+> > +static inline uint32_t lower_32_bits(uint64_t x)
+> > +{
+> > +	return x & 0xffffffff;
+> > +}
+> > +
+> > +/**
+> > + * lower_32_bits
+> > + *
+> > + * return bits 32-63 of a number
+> 
+> upper_
+> 
+> Does the name need a colon : after it to be recognized? Can you build
+> docs and check that these appear?
+> 
+> 
+
+I will fix docs error. 
+static inlines will not apper there are no references in docs for any
+static inline in code
+
+Daniel 
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
