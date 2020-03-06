@@ -1,20 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27A556E454
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Mar 2020 07:07:09 +0000 (UTC)
-Date: Fri, 6 Mar 2020 05:39:01 +0530
-From: Kunal Joshi <kunal1.joshi@intel.com>
-Message-ID: <20200306000900.GA10934@intel.com>
-References: <1583379218-30115-1-git-send-email-kunal1.joshi@intel.com>
- <1583379218-30115-3-git-send-email-kunal1.joshi@intel.com>
- <20200305130115.GI13686@intel.com>
- <20200305084238.GB4267@intel.com>
- <20200305165010.GO13686@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200305165010.GO13686@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] tests/kms_chamelium: Add support
- to validate RGB/YUV pixel formats
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 06 Mar 2020 07:47:29 -0000
+Message-ID: <158348084982.3082.6940094546744602756@emeril.freedesktop.org>
+References: <1583452975-8507-1-git-send-email-kunal1.joshi@intel.com>
+In-Reply-To: <1583452975-8507-1-git-send-email-kunal1.joshi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fchamelium=3A_Add_support_to_validate_RGB/YUV_pixel_format?=
+ =?utf-8?q?s?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,109 +15,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: Kunal Joshi <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMjAyMC0wMy0wNSBhdCAxODo1MDoxMCArMDIwMCwgVmlsbGUgU3lyasOkbMOkIHdyb3RlOgo+
-IE9uIFRodSwgTWFyIDA1LCAyMDIwIGF0IDAyOjEyOjM4UE0gKzA1MzAsIEt1bmFsIEpvc2hpIHdy
-b3RlOgo+ID4gT24gMjAyMC0wMy0wNSBhdCAxNTowMToxNSArMDIwMCwgVmlsbGUgU3lyasOkbMOk
-IHdyb3RlOgo+ID4gPiBPbiBUaHUsIE1hciAwNSwgMjAyMCBhdCAwOTowMzozOEFNICswNTMwLCBL
-dW5hbCBKb3NoaSB3cm90ZToKPiA+ID4gPiBDdXJyZW50bHksIG9ubHkgaGFyZCBjb2RlZCBwaXhl
-bCBmb3JtYXRzIGFyZSB2YWxpZGF0ZWQgd2hpY2ggYXJlIG5vdAo+ID4gPiA+IGdlbmVyaWMgZm9y
-IGFsbCB0aGUgcGxhdGZvcm1zIHdoaWNoIGxlYWRzIHRvIFNLSVBTLgo+ID4gPiA+IEFkZGVkIHN1
-cHBvcnQgdG8gdmFsaWRhdGUgb25seSB0aG9zZSBwaXhlbCBmb3JtYXRzIHdoaWNoIGFyZSBzdXBw
-b3J0ZWQgYnkKPiA+ID4gPiBwbGF0Zm9ybS4gQm90aCBSR0IgYW5kIFlVViBwaXhlbCBmb3JtYXRz
-IGFyZSBjb3ZlcmVkLgo+ID4gPiA+IAo+ID4gPiA+IFNpZ25lZC1vZmYtYnk6IEt1bmFsIEpvc2hp
-IDxrdW5hbDEuam9zaGlAaW50ZWwuY29tPgo+ID4gPiA+IC0tLQo+ID4gPiA+ICB0ZXN0cy9rbXNf
-Y2hhbWVsaXVtLmMgfCAxNDAgKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0KPiA+ID4gPiAgMSBmaWxlIGNoYW5nZWQsIDU0IGluc2VydGlvbnMoKyksIDg2
-IGRlbGV0aW9ucygtKQo+ID4gPiA+IAo+ID4gPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfY2hh
-bWVsaXVtLmMgYi90ZXN0cy9rbXNfY2hhbWVsaXVtLmMKPiA+ID4gPiBpbmRleCA1YzRhMTg5Li41
-Yzk2MDE3IDEwMDY0NAo+ID4gPiA+IC0tLSBhL3Rlc3RzL2ttc19jaGFtZWxpdW0uYwo+ID4gPiA+
-ICsrKyBiL3Rlc3RzL2ttc19jaGFtZWxpdW0uYwo+ID4gPiA+IEBAIC0yNjEyLDYgKzI2MTIsMTQg
-QEAgc3RhdGljIGNvbnN0IHN0cnVjdCBlZGlkICpnZXRfZWRpZChlbnVtIHRlc3RfZWRpZCBlZGlk
-KQo+ID4gPiA+ICAJCQlpZiAoY2hhbWVsaXVtX3BvcnRfZ2V0X3R5cGUocG9ydCkgPT0gXAo+ID4g
-PiA+ICAJCQkgICAgRFJNX01PREVfQ09OTkVDVE9SXyAjIyB0eXBlX18pCj4gPiA+ID4gIAo+ID4g
-PiA+ICsjZGVmaW5lIGNvbm5lY3Rvcl9zdWJ0ZXN0X3N0YXJ0KG5hbWVfXywgdHlwZV9fKSAgICAg
-ICAgICAgICAgXAo+ID4gPiA+ICsgICAgICAgIGlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYyhuYW1l
-X18pICAgICAgICAgICAgICAgICAgICAgXAo+ID4gPiA+ICsgICAgICAgICAgICAgICAgZm9yX2Vh
-Y2hfcG9ydChwLCBwb3J0KSAgICAgICAgICAgICAgICAgICAgICAgXAo+ID4gPiA+ICsgICAgICAg
-ICAgICAgICAgICAgICAgICBpZiAoY2hhbWVsaXVtX3BvcnRfZ2V0X3R5cGUocG9ydCkgPT0gXAo+
-ID4gPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgRFJNX01PREVfQ09OTkVDVE9SXyAj
-IyB0eXBlX18pIHsKPiA+ID4gPiArCj4gPiA+ID4gKyNkZWZpbmUgY29ubmVjdG9yX3N1YnRlc3Rf
-ZW5kIH0KPiA+ID4gPiArCj4gPiA+ID4gIHN0YXRpYyBkYXRhX3QgZGF0YTsKPiA+ID4gPiAgCj4g
-PiA+ID4gIElHVF9URVNUX0RFU0NSSVBUSU9OKCJUZXN0cyByZXF1aXJpbmcgYSBDaGFtZWxpdW0g
-Ym9hcmQiKTsKPiA+ID4gPiBAQCAtMjgxNyw1NCArMjgyNSwyOSBAQCBpZ3RfbWFpbgo+ID4gPiA+
-ICAJCQkJCSAgICAgICBDSEFNRUxJVU1fQ0hFQ0tfQ1JDLCAzKTsKPiA+ID4gPiAgCj4gPiA+ID4g
-IAkJaWd0X2Rlc2NyaWJlKHRlc3RfZGlzcGxheV9vbmVfbW9kZV9kZXNjKTsKPiA+ID4gPiAtCQlj
-b25uZWN0b3Jfc3VidGVzdCgiaGRtaS1jcmMtYXJnYjg4ODgiLCBIRE1JQSkKPiA+ID4gPiAtCQkJ
-dGVzdF9kaXNwbGF5X29uZV9tb2RlKCZkYXRhLCBwb3J0LCBEUk1fRk9STUFUX0FSR0I4ODg4LAo+
-ID4gPiA+IC0JCQkJCSAgICAgIENIQU1FTElVTV9DSEVDS19DUkMsIDEpOwo+ID4gPiA+IC0KPiA+
-ID4gPiAtCQlpZ3RfZGVzY3JpYmUodGVzdF9kaXNwbGF5X29uZV9tb2RlX2Rlc2MpOwo+ID4gPiA+
-IC0JCWNvbm5lY3Rvcl9zdWJ0ZXN0KCJoZG1pLWNyYy1hYmdyODg4OCIsIEhETUlBKQo+ID4gPiA+
-IC0JCQl0ZXN0X2Rpc3BsYXlfb25lX21vZGUoJmRhdGEsIHBvcnQsIERSTV9GT1JNQVRfQUJHUjg4
-ODgsCj4gPiA+ID4gLQkJCQkJICAgICAgQ0hBTUVMSVVNX0NIRUNLX0NSQywgMSk7Cj4gPiA+ID4g
-LQo+ID4gPiA+IC0JCWlndF9kZXNjcmliZSh0ZXN0X2Rpc3BsYXlfb25lX21vZGVfZGVzYyk7Cj4g
-PiA+ID4gLQkJY29ubmVjdG9yX3N1YnRlc3QoImhkbWktY3JjLXhyZ2I4ODg4IiwgSERNSUEpCj4g
-PiA+ID4gLQkJCXRlc3RfZGlzcGxheV9vbmVfbW9kZSgmZGF0YSwgcG9ydCwgRFJNX0ZPUk1BVF9Y
-UkdCODg4OCwKPiA+ID4gPiAtCQkJCQkgICAgICBDSEFNRUxJVU1fQ0hFQ0tfQ1JDLCAxKTsKPiA+
-ID4gPiAtCj4gPiA+ID4gLQkJaWd0X2Rlc2NyaWJlKHRlc3RfZGlzcGxheV9vbmVfbW9kZV9kZXNj
-KTsKPiA+ID4gPiAtCQljb25uZWN0b3Jfc3VidGVzdCgiaGRtaS1jcmMteGJncjg4ODgiLCBIRE1J
-QSkKPiA+ID4gPiAtCQkJdGVzdF9kaXNwbGF5X29uZV9tb2RlKCZkYXRhLCBwb3J0LCBEUk1fRk9S
-TUFUX1hCR1I4ODg4LAo+ID4gPiA+IC0JCQkJCSAgICAgIENIQU1FTElVTV9DSEVDS19DUkMsIDEp
-Owo+ID4gPiA+IC0KPiA+ID4gPiAtCQlpZ3RfZGVzY3JpYmUodGVzdF9kaXNwbGF5X29uZV9tb2Rl
-X2Rlc2MpOwo+ID4gPiA+IC0JCWNvbm5lY3Rvcl9zdWJ0ZXN0KCJoZG1pLWNyYy1yZ2I4ODgiLCBI
-RE1JQSkKPiA+ID4gPiAtCQkJdGVzdF9kaXNwbGF5X29uZV9tb2RlKCZkYXRhLCBwb3J0LCBEUk1f
-Rk9STUFUX1JHQjg4OCwKPiA+ID4gPiAtCQkJCQkgICAgICBDSEFNRUxJVU1fQ0hFQ0tfQ1JDLCAx
-KTsKPiA+ID4gPiAtCj4gPiA+ID4gLQkJaWd0X2Rlc2NyaWJlKHRlc3RfZGlzcGxheV9vbmVfbW9k
-ZV9kZXNjKTsKPiA+ID4gPiAtCQljb25uZWN0b3Jfc3VidGVzdCgiaGRtaS1jcmMtYmdyODg4Iiwg
-SERNSUEpCj4gPiA+ID4gLQkJCXRlc3RfZGlzcGxheV9vbmVfbW9kZSgmZGF0YSwgcG9ydCwgRFJN
-X0ZPUk1BVF9CR1I4ODgsCj4gPiA+ID4gLQkJCQkJICAgICAgQ0hBTUVMSVVNX0NIRUNLX0NSQywg
-MSk7Cj4gPiA+ID4gLQo+ID4gPiA+IC0JCWlndF9kZXNjcmliZSh0ZXN0X2Rpc3BsYXlfb25lX21v
-ZGVfZGVzYyk7Cj4gPiA+ID4gLQkJY29ubmVjdG9yX3N1YnRlc3QoImhkbWktY3JjLXJnYjU2NSIs
-IEhETUlBKQo+ID4gPiA+IC0JCQl0ZXN0X2Rpc3BsYXlfb25lX21vZGUoJmRhdGEsIHBvcnQsIERS
-TV9GT1JNQVRfUkdCNTY1LAo+ID4gPiA+IC0JCQkJCSAgICAgIENIQU1FTElVTV9DSEVDS19DUkMs
-IDEpOwo+ID4gPiA+IC0KPiA+ID4gPiAtCQlpZ3RfZGVzY3JpYmUodGVzdF9kaXNwbGF5X29uZV9t
-b2RlX2Rlc2MpOwo+ID4gPiA+IC0JCWNvbm5lY3Rvcl9zdWJ0ZXN0KCJoZG1pLWNyYy1iZ3I1NjUi
-LCBIRE1JQSkKPiA+ID4gPiAtCQkJdGVzdF9kaXNwbGF5X29uZV9tb2RlKCZkYXRhLCBwb3J0LCBE
-Uk1fRk9STUFUX0JHUjU2NSwKPiA+ID4gPiAtCQkJCQkgICAgICBDSEFNRUxJVU1fQ0hFQ0tfQ1JD
-LCAxKTsKPiA+ID4gPiAtCj4gPiA+ID4gLQkJaWd0X2Rlc2NyaWJlKHRlc3RfZGlzcGxheV9vbmVf
-bW9kZV9kZXNjKTsKPiA+ID4gPiAtCQljb25uZWN0b3Jfc3VidGVzdCgiaGRtaS1jcmMtYXJnYjE1
-NTUiLCBIRE1JQSkKPiA+ID4gPiAtCQkJdGVzdF9kaXNwbGF5X29uZV9tb2RlKCZkYXRhLCBwb3J0
-LCBEUk1fRk9STUFUX0FSR0IxNTU1LAo+ID4gPiA+IC0JCQkJCSAgICAgIENIQU1FTElVTV9DSEVD
-S19DUkMsIDEpOwo+ID4gPiA+IC0KPiA+ID4gPiAtCQlpZ3RfZGVzY3JpYmUodGVzdF9kaXNwbGF5
-X29uZV9tb2RlX2Rlc2MpOwo+ID4gPiA+IC0JCWNvbm5lY3Rvcl9zdWJ0ZXN0KCJoZG1pLWNyYy14
-cmdiMTU1NSIsIEhETUlBKQo+ID4gPiA+IC0JCQl0ZXN0X2Rpc3BsYXlfb25lX21vZGUoJmRhdGEs
-IHBvcnQsIERSTV9GT1JNQVRfWFJHQjE1NTUsCj4gPiA+ID4gLQkJCQkJICAgICAgQ0hBTUVMSVVN
-X0NIRUNLX0NSQywgMSk7Cj4gPiA+ID4gKwkJY29ubmVjdG9yX3N1YnRlc3Rfc3RhcnQoImhkbWkt
-cmdiLXBpeGVsLWZvcm1hdCIsIEhETUlBKQo+ID4gPiA+ICsJCQlpbnQgazsKPiA+ID4gPiArCQkJ
-aWd0X291dHB1dF90ICpvdXRwdXQ7Cj4gPiA+ID4gKwkJCWlndF9wbGFuZV90ICpwcmltYXJ5Owo+
-ID4gPiA+ICsKPiA+ID4gPiArCQkJb3V0cHV0ID0gcHJlcGFyZV9vdXRwdXQoJmRhdGEsIHBvcnQs
-IFRFU1RfRURJRF9CQVNFKTsKPiA+ID4gPiArCQkJcHJpbWFyeSA9IGlndF9vdXRwdXRfZ2V0X3Bs
-YW5lX3R5cGUob3V0cHV0LCBEUk1fUExBTkVfVFlQRV9QUklNQVJZKTsKPiA+ID4gPiArCQkJaWd0
-X2Fzc2VydChwcmltYXJ5KTsKPiA+ID4gPiArCj4gPiA+ID4gKwkJCWZvciAoayA9IDA7IGsgPCBw
-cmltYXJ5LT5mb3JtYXRfbW9kX2NvdW50OyBrKyspIHsKPiA+ID4gPiArCQkJCWlmICghaWd0X2Zi
-X3N1cHBvcnRlZF9mb3JtYXQocHJpbWFyeS0+Zm9ybWF0c1trXSkpCj4gPiA+ID4gKwkJCQkJY29u
-dGludWU7Cj4gPiA+ID4gKwo+ID4gPiA+ICsJCQkJaWYgKChpZ3RfZm9ybWF0X2lzX3l1dihwcmlt
-YXJ5LT5mb3JtYXRzW2tdKSB8fAo+ID4gPiA+ICsJCQkJICAgICBwcmltYXJ5LT5tb2RpZmllcnNb
-a10gIT0gTE9DQUxfRFJNX0ZPUk1BVF9NT0RfTk9ORSkpCj4gPiA+ID4gKwkJCQkJY29udGludWU7
-Cj4gPiA+ID4gKwo+ID4gPiA+ICsJCQkJaWd0X2R5bmFtaWNfZigidGVzdGluZy1mb3JtYXQtJWMl
-YyVjJWMiLCBJR1RfRk9STUFUX0FSR1NfQ09ERShwcmltYXJ5LT5mb3JtYXRzW2tdKSkKPiA+ID4g
-Cj4gPiA+IFdlIGhhdmUgYSBpZ3RfZm9ybWF0X3N0cigpIHdoaWNoIGlzIHByb2JhYmx5IGJldHRl
-ciBmb3Igc3R1ZmYgbGlrZSB0aGlzLgo+ID4gPiAKPiA+IAo+ID4gVGhhbmtzIHZpbGxlIGZvciBw
-b2ludGluZyB0aGF0IG91dAo+ID4gSSB0cmllZCB1c2luZyBpZ3RfZm9ybWF0X3N0cigpCj4gPiBi
-dXQgaXQgZG9lc24ndCBzZWVtIHRvIHN1cHBvcnQgdGhhdCBpIHRyaWVkIGl0IGxpa2UgYmVsb3cK
-PiA+IAo+ID4gaWd0X2R5bmFtaWNfZigiJXMiLGlndF9mb3JtYXRfc3RyKCJ0ZXN0aW5nLWZvcm1h
-dC0lYyVjJWMlYyIsCj4gPiAJCQkJICBJR1RfRk9STUFUX0FSR1NfQ09ERShwcmltYXJ5LT5mb3Jt
-YXRzW2tdKSkKPiAKPiBJIGRvbid0IGtub3cgd2hhdCB5b3UncmUgdHJ5aW5nIHRvIGRvIHRoZXJl
-Lgo+IAo+IGlndF9keW5hbWljX2YoInRlc3RpbmctZm9ybWF0LSVzIiwgaWd0X2Zvcm1hdF9zdHIo
-Zm9ybWF0KSkKPiBvciB3aGF0ZXZlci4KPiAKVmlsbGUgZ290IHlvdXIgcG9pbnQgaSBoYXZlIGFk
-ZHJlc3NlZCB5b3VyIGNvbW1lbnQgaW4gdGhlIG5leHQgdmVyc2lvbgoKPiAtLSAKPiBWaWxsZSBT
-eXJqw6Rsw6QKPiBJbnRlbAoKVGhhbmtzIGFuZCByZWdhcmRzCkt1bmFsCl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
-dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+== Series Details ==
+
+Series: tests/kms_chamelium: Add support to validate RGB/YUV pixel formats
+URL   : https://patchwork.freedesktop.org/series/74368/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8074 -> IGTPW_4270
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4270/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4270 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@prime_self_import@basic-with_two_bos:
+    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([CI#94] / [i915#402]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8074/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4270/fi-tgl-y/igt@prime_self_import@basic-with_two_bos.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s4-devices:
+    - fi-tgl-y:           [FAIL][3] ([CI#94]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8074/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4270/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [FAIL][5] ([fdo#111096] / [i915#323]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8074/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4270/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@prime_vgem@basic-gtt:
+    - fi-tgl-y:           [DMESG-WARN][7] ([CI#94] / [i915#402]) -> [PASS][8] +1 similar issue
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8074/fi-tgl-y/igt@prime_vgem@basic-gtt.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4270/fi-tgl-y/igt@prime_vgem@basic-gtt.html
+
+  
+  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
+  [fdo#111096]: https://bugs.freedesktop.org/show_bug.cgi?id=111096
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+
+
+Participating hosts (50 -> 41)
+------------------------------
+
+  Additional (1): fi-kbl-7560u 
+  Missing    (10): fi-kbl-soraka fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-gdg-551 fi-byt-clapper fi-bsw-nick fi-bdw-samus fi-kbl-r 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5495 -> IGTPW_4270
+
+  CI-20190529: 20190529
+  CI_DRM_8074: 0dd63259839ca847514d9999749219635f311015 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4270: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4270/index.html
+  IGT_5495: 22df72de8affcec22d9f354bb6148d77f60cc580 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@kms_chamelium@hdmi-rgb-pixel-format
++igt@kms_chamelium@hdmi-yuv-pixel-format
+-igt@kms_chamelium@hdmi-cmp-nv12
+-igt@kms_chamelium@hdmi-cmp-nv16
+-igt@kms_chamelium@hdmi-cmp-nv21
+-igt@kms_chamelium@hdmi-cmp-nv61
+-igt@kms_chamelium@hdmi-cmp-yu12
+-igt@kms_chamelium@hdmi-cmp-yu16
+-igt@kms_chamelium@hdmi-cmp-yv12
+-igt@kms_chamelium@hdmi-cmp-yv16
+-igt@kms_chamelium@hdmi-crc-abgr8888
+-igt@kms_chamelium@hdmi-crc-argb1555
+-igt@kms_chamelium@hdmi-crc-argb8888
+-igt@kms_chamelium@hdmi-crc-bgr565
+-igt@kms_chamelium@hdmi-crc-bgr888
+-igt@kms_chamelium@hdmi-crc-rgb565
+-igt@kms_chamelium@hdmi-crc-rgb888
+-igt@kms_chamelium@hdmi-crc-xbgr8888
+-igt@kms_chamelium@hdmi-crc-xrgb1555
+-igt@kms_chamelium@hdmi-crc-xrgb8888
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4270/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
