@@ -1,25 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com
- [IPv6:2607:f8b0:4864:20::e42])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6948B6ED46
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Mar 2020 16:32:59 +0000 (UTC)
-Received: by mail-vs1-xe42.google.com with SMTP id n6so1914190vsc.3
- for <igt-dev@lists.freedesktop.org>; Fri, 06 Mar 2020 08:32:59 -0800 (PST)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B887B6E4CB
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Mar 2020 17:15:12 +0000 (UTC)
+From: don.hiatt@intel.com
+Date: Fri,  6 Mar 2020 09:28:29 -0800
+Message-Id: <20200306172829.45696-1-don.hiatt@intel.com>
 MIME-Version: 1.0
-References: <20200302173314.378918-1-emil.l.velikov@gmail.com>
- <20200303131315.GO3839@platvala-desk.ger.corp.intel.com>
- <CACvgo51-Tp34pGVaimqNfD=USdc8PuNskxs7H0=swHqxoLDFwQ@mail.gmail.com>
- <20200304112511.GQ3839@platvala-desk.ger.corp.intel.com>
- <CACvgo503OJUtDz0JLp3ot-=eXdKuryws4DLxvYX4CxF4GfqAkg@mail.gmail.com>
- <20200304141717.GR3839@platvala-desk.ger.corp.intel.com>
- <CACvgo51TWNKBiqZhbbhSbEg9jf9ZUEKT07oEMGqVknWva9k6ag@mail.gmail.com>
- <20200306142806.GY3839@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <20200306142806.GY3839@platvala-desk.ger.corp.intel.com>
-From: Emil Velikov <emil.l.velikov@gmail.com>
-Date: Fri, 6 Mar 2020 16:32:19 +0000
-Message-ID: <CACvgo523NjixBgqZL9naqmga4XtxRkSRUB8rukL9wfVWePwETg@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3] ts/core_setmaster: new test for
- drop/set master semantics
+Subject: [igt-dev] [PATCH i-g-t] lib/igt_pm: Adjust pm status check timeout
+ and log timing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,36 +19,68 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: IGT development <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, 6 Mar 2020 at 14:28, Petri Latvala <petri.latvala@intel.com> wrote:
+From: Don Hiatt <don.hiatt@intel.com>
 
-> It is _extremely_ likely that we (i915 CI) could sometimes run
-> igt@i915_module_load@reload right before this test. Or
-> igt@i915_selftest@live. When we do, there's no /dev/dri/card0 at the
-> time of chmodding but is at the time of __drm_open_driver().
->
-If I understand you correctly, if a test which does rmmod/modprobe
-fails, the CI will still continue to run other tests.
+Increase the overall time we wait to achieve the desired runtime
+status to 15 seconds to fix an occasional timeout and do so
+in 1 second increments to speed up exiting. Also log the
+amount of time we waited to get a handle on how much variation
+we run into.
 
-Personally it seems to me that any follow-up tests would be
-'incorrect' or misleading at the very least.
-As such I imagined that the CI will stop at this point.
+Signed-off-by: Don Hiatt <don.hiatt@intel.com>
+---
+ lib/igt_pm.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-If that's doable and something people are interested in, as follow-up
-one can drop the implicit modprobe from _all_ the drm_open_driver()
-calls. Thus getting IGT coverage closer to a real-world use-case - aka
-udev does the loading.
+diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+index 9d441e1b76ff..13675fca0c9d 100644
+--- a/lib/igt_pm.c
++++ b/lib/igt_pm.c
+@@ -747,8 +747,8 @@ static const char *_pm_status_name(enum igt_runtime_pm_status status)
+  * igt_wait_for_pm_status:
+  * @status: desired runtime PM status
+  *
+- * Waits until for the driver to switch to into the desired runtime PM status,
+- * with a 10 second timeout.
++ * Waits for the driver to switch into the desired runtime PM status,
++ * with up to a 15 second timeout in 1 second increments.
+  *
+  * Returns:
+  * True if the desired runtime PM status was attained, false if the operation
+@@ -758,7 +758,7 @@ bool igt_wait_for_pm_status(enum igt_runtime_pm_status status)
+ {
+ 	enum igt_runtime_pm_status expected = status;
+ 	bool ret;
+-	int fd;
++	int fd, i;
+ 
+ 	if (__igt_pm_power < 0)
+ 		return false;
+@@ -766,8 +766,16 @@ bool igt_wait_for_pm_status(enum igt_runtime_pm_status status)
+ 	fd = openat(__igt_pm_power, "runtime_status", O_RDONLY);
+ 	igt_assert_f(fd >= 0, "Can't open runtime_status\n");
+ 
+-	ret = igt_wait((status = __igt_get_runtime_pm_status(fd)) == expected,
+-		       10000, 100);
++	for (i=1; i < 16; ++i) {
++		ret = igt_wait((status = __igt_get_runtime_pm_status(fd)) == expected,
++				1000, 100);
++
++		if (ret) {
++			igt_info("Got expected (%s) runtime pm status in %d second(s)\n",
++				 _pm_status_name(expected), i);
++			break;
++		}
++	}
+ 	close(fd);
+ 
+ 	if (!ret)
+-- 
+2.25.0
 
-Either way, all of this is a brain dump which illustrates my confusion
-on the topic.
-Thanks a million for the help.
-
-Will send v4 with the workaround + a comment in a moment.
-
--Emil
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
