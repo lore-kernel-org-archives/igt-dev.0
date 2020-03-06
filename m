@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2EB146E0EE
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Mar 2020 11:23:58 +0000 (UTC)
-Date: Fri, 6 Mar 2020 13:23:54 +0200
-From: Andi Shyti <andi.shyti@intel.com>
-Message-ID: <20200306112354.GC1398@intel.intel>
-References: <20200218121549.12917-1-sai.gowtham.ch@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9995D6ED05
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Mar 2020 12:50:11 +0000 (UTC)
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+Date: Fri,  6 Mar 2020 14:50:01 +0200
+Message-Id: <20200306125002.21316-3-ville.syrjala@linux.intel.com>
+In-Reply-To: <20200306125002.21316-1-ville.syrjala@linux.intel.com>
+References: <20200306125002.21316-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200218121549.12917-1-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH] [PATCH i-g-t]tests/i915/gem_exec_create:
- Added __for_each_physical_engine to utilize all available engines.
+Subject: [igt-dev] [PATCH i-g-t 3/4] tools/intel_reg: Add support for
+ register access via the MCHBAR mirror
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,25 +17,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: sai gowtham <sai.gowtham.ch@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi,
-
-On Tue, Feb 18, 2020 at 05:45:49PM +0530, sai gowtham wrote:
-> From: saigowth <sai.gowtham.ch@intel.com>
-
-don't know if someone told you already, can you please use your
-real full name in the commit?
-
-Thanks,
-Andi
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KClJl
+bWVtYmVyaW5nIHRoZSBNQ0hCQVIgbWlycm9yIG9mZnNldCBpcyB0b28gbXVjaCB3b3JrLiBNYWtl
+IHRoZSB0b29sCnJlbWVtYmVyIGl0IGZvciBtZS4KClNpZ25lZC1vZmYtYnk6IFZpbGxlIFN5cmrD
+pGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRlbC5jb20+Ci0tLQogdG9vbHMvaW50ZWxfcmVn
+LmMgICAgICB8IDE3ICsrKysrKysrKysrKysrKysrCiB0b29scy9pbnRlbF9yZWdfc3BlYy5jIHwg
+MTUgKysrKysrKysrKysrKysrCiB0b29scy9pbnRlbF9yZWdfc3BlYy5oIHwgIDQgKysrKwogMyBm
+aWxlcyBjaGFuZ2VkLCAzNiBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvdG9vbHMvaW50ZWxf
+cmVnLmMgYi90b29scy9pbnRlbF9yZWcuYwppbmRleCA3ZjhkZGJkOGU5MjcuLjY5YWYwZjVhMTlm
+ZiAxMDA2NDQKLS0tIGEvdG9vbHMvaW50ZWxfcmVnLmMKKysrIGIvdG9vbHMvaW50ZWxfcmVnLmMK
+QEAgLTE4NSw2ICsxODUsOSBAQCBzdGF0aWMgYm9vbCBwb3J0X2lzX21taW8oZW51bSBwb3J0X2Fk
+ZHIgcG9ydCkKIAljYXNlIFBPUlRfTU1JT18zMjoKIAljYXNlIFBPUlRfTU1JT18xNjoKIAljYXNl
+IFBPUlRfTU1JT184OgorCWNhc2UgUE9SVF9NQ0hCQVJfMzI6CisJY2FzZSBQT1JUX01DSEJBUl8x
+NjoKKwljYXNlIFBPUlRfTUNIQkFSXzg6CiAJCXJldHVybiB0cnVlOwogCWRlZmF1bHQ6CiAJCXJl
+dHVybiBmYWxzZTsKQEAgLTM2NiwyMCArMzY5LDM0IEBAIHN0YXRpYyBpbnQgcmVnaXN0ZXJfc3Jt
+KHN0cnVjdCBjb25maWcgKmNvbmZpZywgc3RydWN0IHJlZyAqcmVnLAogCXJldHVybiB2YWw7CiB9
+CiAKK3N0YXRpYyB1aW50MzJfdCBtY2Jhcl9vZmZzZXQodWludDMyX3QgZGV2aWQpCit7CisJcmV0
+dXJuIGludGVsX2dlbihkZXZpZCkgPj0gNiA/IDB4MTQwMDAwIDogMHgxMDAwMDsKK30KKwogc3Rh
+dGljIGludCByZWFkX3JlZ2lzdGVyKHN0cnVjdCBjb25maWcgKmNvbmZpZywgc3RydWN0IHJlZyAq
+cmVnLCB1aW50MzJfdCAqdmFscCkKIHsKIAl1aW50MzJfdCB2YWwgPSAwOwogCiAJc3dpdGNoIChy
+ZWctPnBvcnRfZGVzYy5wb3J0KSB7CisJY2FzZSBQT1JUX01DSEJBUl8zMjoKKwkJcmVnLT5tbWlv
+X29mZnNldCA9IG1jYmFyX29mZnNldChjb25maWctPmRldmlkKTsKKwkJLyogZmFsbCB0aHJvdWdo
+ICovCiAJY2FzZSBQT1JUX01NSU9fMzI6CiAJCWlmIChyZWctPmVuZ2luZSkKIAkJCXZhbCA9IHJl
+Z2lzdGVyX3NybShjb25maWcsIHJlZywgTlVMTCk7CiAJCWVsc2UKIAkJCXZhbCA9IElOUkVHKHJl
+Zy0+bW1pb19vZmZzZXQgKyByZWctPmFkZHIpOwogCQlicmVhazsKKwljYXNlIFBPUlRfTUNIQkFS
+XzE2OgorCQlyZWctPm1taW9fb2Zmc2V0ID0gbWNiYXJfb2Zmc2V0KGNvbmZpZy0+ZGV2aWQpOwor
+CQkvKiBmYWxsIHRocm91Z2ggKi8KIAljYXNlIFBPUlRfTU1JT18xNjoKIAkJdmFsID0gSU5SRUcx
+NihyZWctPm1taW9fb2Zmc2V0ICsgcmVnLT5hZGRyKTsKIAkJYnJlYWs7CisJY2FzZSBQT1JUX01D
+SEJBUl84OgorCQlyZWctPm1taW9fb2Zmc2V0ID0gbWNiYXJfb2Zmc2V0KGNvbmZpZy0+ZGV2aWQp
+OworCQkvKiBmYWxsIHRocm91Z2ggKi8KIAljYXNlIFBPUlRfTU1JT184OgogCQl2YWwgPSBJTlJF
+RzgocmVnLT5tbWlvX29mZnNldCArIHJlZy0+YWRkcik7CiAJCWJyZWFrOwpkaWZmIC0tZ2l0IGEv
+dG9vbHMvaW50ZWxfcmVnX3NwZWMuYyBiL3Rvb2xzL2ludGVsX3JlZ19zcGVjLmMKaW5kZXggN2Mx
+YzZlZDM0YTllLi5kYWRkODQ0NzMwZjAgMTAwNjQ0Ci0tLSBhL3Rvb2xzL2ludGVsX3JlZ19zcGVj
+LmMKKysrIGIvdG9vbHMvaW50ZWxfcmVnX3NwZWMuYwpAQCAtNDgsNiArNDgsMjEgQEAgc3RhdGlj
+IGNvbnN0IHN0cnVjdCBwb3J0X2Rlc2MgcG9ydF9kZXNjc1tdID0gewogCQkucG9ydCA9IFBPUlRf
+TU1JT184LAogCQkuc3RyaWRlID0gMSwKIAl9LAorCXsKKwkJLm5hbWUgPSAibWNoYmFyIiwKKwkJ
+LnBvcnQgPSBQT1JUX01DSEJBUl8zMiwKKwkJLnN0cmlkZSA9IDQsCisJfSwKKwl7CisJCS5uYW1l
+ID0gIm1jaGJhcjE2IiwKKwkJLnBvcnQgPSBQT1JUX01DSEJBUl8xNiwKKwkJLnN0cmlkZSA9IDIs
+CisJfSwKKwl7CisJCS5uYW1lID0gIm1jaGJhcjgiLAorCQkucG9ydCA9IFBPUlRfTUNIQkFSXzgs
+CisJCS5zdHJpZGUgPSAxLAorCX0sCiAJewogCQkubmFtZSA9ICJwb3J0aW8iLAogCQkucG9ydCA9
+IFBPUlRfUE9SVElPLApkaWZmIC0tZ2l0IGEvdG9vbHMvaW50ZWxfcmVnX3NwZWMuaCBiL3Rvb2xz
+L2ludGVsX3JlZ19zcGVjLmgKaW5kZXggMjlmNGQ5YWUyYTQ3Li5mYzI3YTlhNjJmNmYgMTAwNjQ0
+Ci0tLSBhL3Rvb2xzL2ludGVsX3JlZ19zcGVjLmgKKysrIGIvdG9vbHMvaW50ZWxfcmVnX3NwZWMu
+aApAQCAtMjksNiArMjksMTAgQEAgZW51bSBwb3J0X2FkZHIgewogCVBPUlRfTU1JT18xNiwKIAlQ
+T1JUX01NSU9fOCwKIAorCVBPUlRfTUNIQkFSXzMyLAorCVBPUlRfTUNIQkFSXzE2LAorCVBPUlRf
+TUNIQkFSXzgsCisKIAlQT1JUX1BPUlRJTywKIAogCVBPUlRfTk9ORSA9IDAsCi0tIAoyLjI0LjEK
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYg
+bWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMu
+ZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
