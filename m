@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5EF6989E0D
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2020 08:49:11 +0000 (UTC)
-From: Jani Nikula <jani.nikula@linux.intel.com>
-In-Reply-To: <20200307211751.22125-4-mohammed.khajapasha@intel.com>
-References: <20200307211751.22125-1-mohammed.khajapasha@intel.com>
- <20200307211751.22125-4-mohammed.khajapasha@intel.com>
-Date: Mon, 09 Mar 2020 10:49:20 +0200
-Message-ID: <87d09lnca7.fsf@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] kms/test: Pass correct pipe value
- to print pipe name
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 09 Mar 2020 08:57:20 -0000
+Message-ID: <158374424098.9449.12157754394994006707@emeril.freedesktop.org>
+References: <20200307211751.22125-1-mohammed.khajapasha@intel.com>
+In-Reply-To: <20200307211751.22125-1-mohammed.khajapasha@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?est/kms=3A_Add_support_for_display_with_non-contiguous_pipes?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,44 +14,141 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mohammed Khajapasha <mohammed.khajapasha@intel.com>, igt-dev@lists.freedesktop.org
+To: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Sun, 08 Mar 2020, Mohammed Khajapasha <mohammed.khajapasha@intel.com> wrote:
-> currently kmstest_pipe_name() fn gets the pipe index
-> value to print the pipe name, but with non-contiguous
-> display, pipe index is not always same as pipe name.
->
-> for example: if PIPE_A is disabled in kernel, PIPE_B,C & D
-> get registered with 0,1 & 2 indexes in mode config's crtc list
-> and kmstest_pipe_name() always prints PIPE_A for 0 index
-> which is actually PIPE_B in kernel.
+== Series Details ==
 
-IMO if you have enum pipe pipe in IGT, it should match the kernel pipe.
+Series: test/kms: Add support for display with non-contiguous pipes
+URL   : https://patchwork.freedesktop.org/series/74431/
+State : warning
 
-If you have crtc indexes in igt, then you should call them crtc indexes,
-*not* pipes.
+== Summary ==
 
-Otherwise you'll end up completely lost when a pipe is a pipe and when
-it's not.
+Did not get list of undocumented tests for this run, something is wrong!
 
->  	igt_info("Running test on pipe %s with resolution %dx%d and sprite size %dx%d alpha %i\n",
-> -		 kmstest_pipe_name(pipe), mode->hdisplay, mode->vdisplay,
-> +		 kmstest_pipe_name(display->pipes[pipe].pipe), mode->hdisplay, mode->vdisplay,
+Other than that, pipeline status: FAILED.
 
-For example in changes like this my only conclusion is that the pipe is
-not really a pipe, but something else. So you should probably not call
-it a pipe to begin with.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/117422 for the overview.
 
-BR,
-Jani.
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1867407):
+  --- stdout ---
+  tests/kms_plane_multiple:
+    Checking invalid option handling...
+    Checking valid option handling...
+    Checking subtest enumeration...
+      test does seem to be using igt_main() (should have subtests) and yet --list-subtests is empty!
+  FAIL: tests/kms_plane_multiple
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1583743716:build_script
+  section_start:1583743716:after_script
+  section_end:1583743717:after_script
+  section_start:1583743717:upload_artifacts_on_failure
+  section_end:1583743719:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+  
 
--- 
-Jani Nikula, Intel Open Source Graphics Center
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1867413):
+    Checking valid option handling...
+    Checking subtest enumeration...
+      test does seem to be using igt_main() (should have subtests) and yet --list-subtests is empty!
+  FAIL: tests/kms_plane_multiple
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1583743853:build_script
+  section_start:1583743853:after_script
+  section_end:1583743855:after_script
+  section_start:1583743855:upload_artifacts_on_failure
+  Uploading artifacts...
+  build: found 1367 matching files                   
+  Uploading artifacts to coordinator... ok            id=1867413 responseStatus=201 Created token=QihTyF6M
+  section_end:1583743865:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1867412):
+    Checking valid option handling...
+    Checking subtest enumeration...
+      test does seem to be using igt_main() (should have subtests) and yet --list-subtests is empty!
+  FAIL: tests/kms_plane_lowres
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1583743824:build_script
+  section_start:1583743824:after_script
+  section_end:1583743826:after_script
+  section_start:1583743826:upload_artifacts_on_failure
+  Uploading artifacts...
+  build: found 1369 matching files                   
+  Uploading artifacts to coordinator... ok            id=1867412 responseStatus=201 Created token=Q2SFDAgq
+  section_end:1583743835:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1867408):
+  --- stdout ---
+  tests/kms_plane_multiple:
+    Checking invalid option handling...
+    Checking valid option handling...
+    Checking subtest enumeration...
+      test does seem to be using igt_main() (should have subtests) and yet --list-subtests is empty!
+  FAIL: tests/kms_plane_multiple
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1583743723:build_script
+  section_start:1583743723:after_script
+  section_end:1583743724:after_script
+  section_start:1583743724:upload_artifacts_on_failure
+  section_end:1583743726:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1867415):
+    Checking valid option handling...
+    Checking subtest enumeration...
+      test does seem to be using igt_main() (should have subtests) and yet --list-subtests is empty!
+  FAIL: tests/kms_plane_multiple
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1583744103:build_script
+  section_start:1583744103:after_script
+  section_end:1583744105:after_script
+  section_start:1583744105:upload_artifacts_on_failure
+  Uploading artifacts...
+  build: found 1367 matching files                   
+  Uploading artifacts to coordinator... ok            id=1867415 responseStatus=201 Created token=Q7jPbghv
+  section_end:1583744115:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/117422
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
