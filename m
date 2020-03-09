@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 28ACE6E128
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2020 08:24:25 +0000 (UTC)
-From: Jani Nikula <jani.nikula@linux.intel.com>
-In-Reply-To: <20200306125002.21316-3-ville.syrjala@linux.intel.com>
-References: <20200306125002.21316-1-ville.syrjala@linux.intel.com>
- <20200306125002.21316-3-ville.syrjala@linux.intel.com>
-Date: Mon, 09 Mar 2020 10:24:34 +0200
-Message-ID: <87pndmlyv1.fsf@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tools/intel_reg: Add support for
- register access via the MCHBAR mirror
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 09 Mar 2020 08:32:00 -0000
+Message-ID: <158374272084.9450.11606716761563660474@emeril.freedesktop.org>
+References: <20200309075100.29834-1-dominik.grzegorzek@intel.com>
+In-Reply-To: <20200309075100.29834-1-dominik.grzegorzek@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
+ =?utf-8?q?ests/gem=5Fexec=5Falignment=2Ec=3A_Add_priority_inversion_test?=
+ =?utf-8?q?=2E?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,69 +15,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAwNiBNYXIgMjAyMCwgVmlsbGUgU3lyamFsYSA8dmlsbGUuc3lyamFsYUBsaW51eC5p
-bnRlbC5jb20+IHdyb3RlOgo+IEZyb206IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBs
-aW51eC5pbnRlbC5jb20+Cj4KPiBSZW1lbWJlcmluZyB0aGUgTUNIQkFSIG1pcnJvciBvZmZzZXQg
-aXMgdG9vIG11Y2ggd29yay4gTWFrZSB0aGUgdG9vbAo+IHJlbWVtYmVyIGl0IGZvciBtZS4KPgo+
-IFNpZ25lZC1vZmYtYnk6IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRl
-bC5jb20+Cj4gLS0tCj4gIHRvb2xzL2ludGVsX3JlZy5jICAgICAgfCAxNyArKysrKysrKysrKysr
-KysrKwo+ICB0b29scy9pbnRlbF9yZWdfc3BlYy5jIHwgMTUgKysrKysrKysrKysrKysrCj4gIHRv
-b2xzL2ludGVsX3JlZ19zcGVjLmggfCAgNCArKysrCj4gIDMgZmlsZXMgY2hhbmdlZCwgMzYgaW5z
-ZXJ0aW9ucygrKQo+Cj4gZGlmZiAtLWdpdCBhL3Rvb2xzL2ludGVsX3JlZy5jIGIvdG9vbHMvaW50
-ZWxfcmVnLmMKPiBpbmRleCA3ZjhkZGJkOGU5MjcuLjY5YWYwZjVhMTlmZiAxMDA2NDQKPiAtLS0g
-YS90b29scy9pbnRlbF9yZWcuYwo+ICsrKyBiL3Rvb2xzL2ludGVsX3JlZy5jCj4gQEAgLTE4NSw2
-ICsxODUsOSBAQCBzdGF0aWMgYm9vbCBwb3J0X2lzX21taW8oZW51bSBwb3J0X2FkZHIgcG9ydCkK
-PiAgCWNhc2UgUE9SVF9NTUlPXzMyOgo+ICAJY2FzZSBQT1JUX01NSU9fMTY6Cj4gIAljYXNlIFBP
-UlRfTU1JT184Ogo+ICsJY2FzZSBQT1JUX01DSEJBUl8zMjoKPiArCWNhc2UgUE9SVF9NQ0hCQVJf
-MTY6Cj4gKwljYXNlIFBPUlRfTUNIQkFSXzg6Cj4gIAkJcmV0dXJuIHRydWU7Cj4gIAlkZWZhdWx0
-Ogo+ICAJCXJldHVybiBmYWxzZTsKPiBAQCAtMzY2LDIwICszNjksMzQgQEAgc3RhdGljIGludCBy
-ZWdpc3Rlcl9zcm0oc3RydWN0IGNvbmZpZyAqY29uZmlnLCBzdHJ1Y3QgcmVnICpyZWcsCj4gIAly
-ZXR1cm4gdmFsOwo+ICB9Cj4gIAo+ICtzdGF0aWMgdWludDMyX3QgbWNiYXJfb2Zmc2V0KHVpbnQz
-Ml90IGRldmlkKQo+ICt7Cj4gKwlyZXR1cm4gaW50ZWxfZ2VuKGRldmlkKSA+PSA2ID8gMHgxNDAw
-MDAgOiAweDEwMDAwOwo+ICt9Cj4gKwo+ICBzdGF0aWMgaW50IHJlYWRfcmVnaXN0ZXIoc3RydWN0
-IGNvbmZpZyAqY29uZmlnLCBzdHJ1Y3QgcmVnICpyZWcsIHVpbnQzMl90ICp2YWxwKQo+ICB7Cj4g
-IAl1aW50MzJfdCB2YWwgPSAwOwo+ICAKPiAgCXN3aXRjaCAocmVnLT5wb3J0X2Rlc2MucG9ydCkg
-ewo+ICsJY2FzZSBQT1JUX01DSEJBUl8zMjoKPiArCQlyZWctPm1taW9fb2Zmc2V0ID0gbWNiYXJf
-b2Zmc2V0KGNvbmZpZy0+ZGV2aWQpOwo+ICsJCS8qIGZhbGwgdGhyb3VnaCAqLwoKSSB0aGluayBp
-dCB3b3VsZCBiZSBiZXR0ZXIgdG8gaGFuZGxlIHRoaXMgZWFybGllciwgYXQgcGFyc2VfcG9ydF9k
-ZXNjKCkKb3IgcGFyc2VfcmVnKCkgbGV2ZWwuIEkgdGhpbmsgaGF2aW5nIHRoaXMgaGVyZSBtaWdo
-dCBzY3JldyB3aXRoIHRoZQphYmlsaXR5IHRvIGhhbmRsZSB0aGUgbWNoYmFyICJwb3J0cyIgbmlj
-ZWx5IGluIHRoZSByZWcgc3BlYy4gT3IgZGVjb2RlCnRoZW0uCgpUaGlzIGJlaW5nIGRldmlkIHNw
-ZWNpZmljIG1ha2VzIGl0IGEgYml0IGhhcmRlciBJIGd1ZXNzLgoKQlIsCkphbmkuCgoKPiAgCWNh
-c2UgUE9SVF9NTUlPXzMyOgo+ICAJCWlmIChyZWctPmVuZ2luZSkKPiAgCQkJdmFsID0gcmVnaXN0
-ZXJfc3JtKGNvbmZpZywgcmVnLCBOVUxMKTsKPiAgCQllbHNlCj4gIAkJCXZhbCA9IElOUkVHKHJl
-Zy0+bW1pb19vZmZzZXQgKyByZWctPmFkZHIpOwo+ICAJCWJyZWFrOwo+ICsJY2FzZSBQT1JUX01D
-SEJBUl8xNjoKPiArCQlyZWctPm1taW9fb2Zmc2V0ID0gbWNiYXJfb2Zmc2V0KGNvbmZpZy0+ZGV2
-aWQpOwo+ICsJCS8qIGZhbGwgdGhyb3VnaCAqLwo+ICAJY2FzZSBQT1JUX01NSU9fMTY6Cj4gIAkJ
-dmFsID0gSU5SRUcxNihyZWctPm1taW9fb2Zmc2V0ICsgcmVnLT5hZGRyKTsKPiAgCQlicmVhazsK
-PiArCWNhc2UgUE9SVF9NQ0hCQVJfODoKPiArCQlyZWctPm1taW9fb2Zmc2V0ID0gbWNiYXJfb2Zm
-c2V0KGNvbmZpZy0+ZGV2aWQpOwo+ICsJCS8qIGZhbGwgdGhyb3VnaCAqLwo+ICAJY2FzZSBQT1JU
-X01NSU9fODoKPiAgCQl2YWwgPSBJTlJFRzgocmVnLT5tbWlvX29mZnNldCArIHJlZy0+YWRkcik7
-Cj4gIAkJYnJlYWs7Cj4gZGlmZiAtLWdpdCBhL3Rvb2xzL2ludGVsX3JlZ19zcGVjLmMgYi90b29s
-cy9pbnRlbF9yZWdfc3BlYy5jCj4gaW5kZXggN2MxYzZlZDM0YTllLi5kYWRkODQ0NzMwZjAgMTAw
-NjQ0Cj4gLS0tIGEvdG9vbHMvaW50ZWxfcmVnX3NwZWMuYwo+ICsrKyBiL3Rvb2xzL2ludGVsX3Jl
-Z19zcGVjLmMKPiBAQCAtNDgsNiArNDgsMjEgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBwb3J0X2Rl
-c2MgcG9ydF9kZXNjc1tdID0gewo+ICAJCS5wb3J0ID0gUE9SVF9NTUlPXzgsCj4gIAkJLnN0cmlk
-ZSA9IDEsCj4gIAl9LAo+ICsJewo+ICsJCS5uYW1lID0gIm1jaGJhciIsCj4gKwkJLnBvcnQgPSBQ
-T1JUX01DSEJBUl8zMiwKPiArCQkuc3RyaWRlID0gNCwKPiArCX0sCj4gKwl7Cj4gKwkJLm5hbWUg
-PSAibWNoYmFyMTYiLAo+ICsJCS5wb3J0ID0gUE9SVF9NQ0hCQVJfMTYsCj4gKwkJLnN0cmlkZSA9
-IDIsCj4gKwl9LAo+ICsJewo+ICsJCS5uYW1lID0gIm1jaGJhcjgiLAo+ICsJCS5wb3J0ID0gUE9S
-VF9NQ0hCQVJfOCwKPiArCQkuc3RyaWRlID0gMSwKPiArCX0sCj4gIAl7Cj4gIAkJLm5hbWUgPSAi
-cG9ydGlvIiwKPiAgCQkucG9ydCA9IFBPUlRfUE9SVElPLAo+IGRpZmYgLS1naXQgYS90b29scy9p
-bnRlbF9yZWdfc3BlYy5oIGIvdG9vbHMvaW50ZWxfcmVnX3NwZWMuaAo+IGluZGV4IDI5ZjRkOWFl
-MmE0Ny4uZmMyN2E5YTYyZjZmIDEwMDY0NAo+IC0tLSBhL3Rvb2xzL2ludGVsX3JlZ19zcGVjLmgK
-PiArKysgYi90b29scy9pbnRlbF9yZWdfc3BlYy5oCj4gQEAgLTI5LDYgKzI5LDEwIEBAIGVudW0g
-cG9ydF9hZGRyIHsKPiAgCVBPUlRfTU1JT18xNiwKPiAgCVBPUlRfTU1JT184LAo+ICAKPiArCVBP
-UlRfTUNIQkFSXzMyLAo+ICsJUE9SVF9NQ0hCQVJfMTYsCj4gKwlQT1JUX01DSEJBUl84LAo+ICsK
-PiAgCVBPUlRfUE9SVElPLAo+ICAKPiAgCVBPUlRfTk9ORSA9IDAsCgotLSAKSmFuaSBOaWt1bGEs
-IEludGVsIE9wZW4gU291cmNlIEdyYXBoaWNzIENlbnRlcgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxp
-c3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFu
-L2xpc3RpbmZvL2lndC1kZXYK
+== Series Details ==
+
+Series: tests/gem_exec_alignment.c: Add priority inversion test.
+URL   : https://patchwork.freedesktop.org/series/74430/
+State : failure
+
+== Summary ==
+
+ERROR! This series introduces new undocumented tests:
+
+gem_exec_alignment@pi
+
+Can you document them as per the requirement in the [CONTRIBUTING.md]?
+
+[Documentation] has more details on how to do this.
+
+Here are few examples:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+
+Thanks in advance!
+
+[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
+[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+
+Other than that, pipeline status: SUCCESS.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/117416 for the overview.
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/117416
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
