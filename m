@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 09 Mar 2020 08:42:19 -0000
-Message-ID: <158374333925.9450.15023492112879328870@emeril.freedesktop.org>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5EF6989E0D
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2020 08:49:11 +0000 (UTC)
+From: Jani Nikula <jani.nikula@linux.intel.com>
+In-Reply-To: <20200307211751.22125-4-mohammed.khajapasha@intel.com>
 References: <20200307211751.22125-1-mohammed.khajapasha@intel.com>
-In-Reply-To: <20200307211751.22125-1-mohammed.khajapasha@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?/kms=3A_Add_support_for_display_with_non-contiguous_pipes?=
+ <20200307211751.22125-4-mohammed.khajapasha@intel.com>
+Date: Mon, 09 Mar 2020 10:49:20 +0200
+Message-ID: <87d09lnca7.fsf@intel.com>
+MIME-Version: 1.0
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] kms/test: Pass correct pipe value
+ to print pipe name
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,77 +18,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Mohammed Khajapasha <mohammed.khajapasha@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Sun, 08 Mar 2020, Mohammed Khajapasha <mohammed.khajapasha@intel.com> wrote:
+> currently kmstest_pipe_name() fn gets the pipe index
+> value to print the pipe name, but with non-contiguous
+> display, pipe index is not always same as pipe name.
+>
+> for example: if PIPE_A is disabled in kernel, PIPE_B,C & D
+> get registered with 0,1 & 2 indexes in mode config's crtc list
+> and kmstest_pipe_name() always prints PIPE_A for 0 index
+> which is actually PIPE_B in kernel.
 
-Series: test/kms: Add support for display with non-contiguous pipes
-URL   : https://patchwork.freedesktop.org/series/74431/
-State : failure
+IMO if you have enum pipe pipe in IGT, it should match the kernel pipe.
 
-== Summary ==
+If you have crtc indexes in igt, then you should call them crtc indexes,
+*not* pipes.
 
-IGT patchset build failed on latest successful build
-2e23cf6f63fc6ba1d9543f8327698d6f21813cec i915/gem_exec_nop: One more parallel nop variant
+Otherwise you'll end up completely lost when a pipe is a pipe and when
+it's not.
 
-  Checking invalid option handling...
-  Checking valid option handling...
-  Checking subtest enumeration...
-    test does seem to be using igt_main() (should have subtests) and yet --list-subtests is empty!
-FAIL: tests/kms_plane_alpha_blend
--------
+>  	igt_info("Running test on pipe %s with resolution %dx%d and sprite size %dx%d alpha %i\n",
+> -		 kmstest_pipe_name(pipe), mode->hdisplay, mode->vdisplay,
+> +		 kmstest_pipe_name(display->pipes[pipe].pipe), mode->hdisplay, mode->vdisplay,
 
- 72/283 testcase check: kms_plane_cursor        FAIL     0.22 s (exit status 1)
+For example in changes like this my only conclusion is that the pipe is
+not really a pipe, but something else. So you should probably not call
+it a pipe to begin with.
 
---- command ---
-/home/cidrm/igt-gpu-tools/tests/igt_command_line.sh kms_plane_cursor
---- stdout ---
-tests/kms_plane_cursor:
-  Checking invalid option handling...
-  Checking valid option handling...
-  Checking subtest enumeration...
-    test does seem to be using igt_main() (should have subtests) and yet --list-subtests is empty!
-FAIL: tests/kms_plane_cursor
--------
+BR,
+Jani.
 
- 73/283 testcase check: kms_plane_lowres        FAIL     0.17 s (exit status 1)
-
---- command ---
-/home/cidrm/igt-gpu-tools/tests/igt_command_line.sh kms_plane_lowres
---- stdout ---
-tests/kms_plane_lowres:
-  Checking invalid option handling...
-  Checking valid option handling...
-  Checking subtest enumeration...
-    test does seem to be using igt_main() (should have subtests) and yet --list-subtests is empty!
-FAIL: tests/kms_plane_lowres
--------
-
- 74/283 testcase check: kms_plane_multiple      FAIL     0.16 s (exit status 1)
-
---- command ---
-/home/cidrm/igt-gpu-tools/tests/igt_command_line.sh kms_plane_multiple
---- stdout ---
-tests/kms_plane_multiple:
-  Checking invalid option handling...
-  Checking valid option handling...
-  Checking subtest enumeration...
-    test does seem to be using igt_main() (should have subtests) and yet --list-subtests is empty!
-FAIL: tests/kms_plane_multiple
--------
-
-Full log written to /home/cidrm/igt-gpu-tools/build/meson-logs/testlog.txt
-FAILED: meson-test 
-/usr/bin/python3 -u /usr/bin/meson test --no-rebuild --print-errorlogs
-ninja: build stopped: subcommand failed.
-
+-- 
+Jani Nikula, Intel Open Source Graphics Center
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
