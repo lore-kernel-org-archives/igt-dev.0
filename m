@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFFCB6E2C0
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2020 08:05:15 +0000 (UTC)
-Date: Mon, 9 Mar 2020 06:37:08 +0530
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B0E2389123
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2020 08:08:02 +0000 (UTC)
+Date: Mon, 9 Mar 2020 06:39:54 +0530
 From: Kunal Joshi <kunal1.joshi@intel.com>
-Message-ID: <20200309010708.GA27253@intel.com>
+Message-ID: <20200309010954.GB27253@intel.com>
 References: <1583452975-8507-1-git-send-email-kunal1.joshi@intel.com>
  <1583452975-8507-2-git-send-email-kunal1.joshi@intel.com>
- <20200306130612.GX3839@platvala-desk.ger.corp.intel.com>
+ <20200306142920.a3g65eixtqkwnucc@ahiler-desk1.fi.intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200306130612.GX3839@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <20200306142920.a3g65eixtqkwnucc@ahiler-desk1.fi.intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/kms_chamelium: Add support to
  validate RGB/YUV pixel formats
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -24,10 +24,10 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-03-06 at 15:06:12 +0200, Petri Latvala wrote:
+On 2020-03-06 at 16:29:20 +0200, Arkadiusz Hiler wrote:
 > On Fri, Mar 06, 2020 at 05:32:55AM +0530, Kunal Joshi wrote:
 > > Currently, only hard coded pixel formats are validated which are not
 > > generic across platforms which leads to SKIPS.
@@ -60,22 +60,60 @@ On 2020-03-06 at 15:06:12 +0200, Petri Latvala wrote:
 > > +
 > > +#define connector_subtest_end }
 > 
-> I'd prefer these macros without { and } and for the caller to write
-> them. That helps editors supply the correct indentation. I guess that
-> makes the _end macro useless, so just #define connector_subtest.
+> I agree with petri on having explicit {}. All the other macros are
+> following that, e.g.: igt_subtest.
+> 
+Ok will do that arek.
+> #define connector_subtest_start(name__, type__)              \
+>        igt_subtest_with_dynamic(name__)                     \
+>                for_each_port(p, port)                       \
+>                        if (chamelium_port_get_type(port) == \
+>                            DRM_MODE_CONNECTOR_ ## type__)
 > 
 > 
+> connector_subtest_start("hdmi-rgb-pixel-format", HDMIA) {
+>  /* ... */
+> }
+> 
+> > @@ -2817,54 +2825,31 @@ igt_main
+> >  					       CHAMELIUM_CHECK_CRC, 3);
+> >  
+> >  		igt_describe(test_display_one_mode_desc);
+> > -		connector_subtest("hdmi-crc-argb8888", HDMIA)
+> > -			test_display_one_mode(&data, port, DRM_FORMAT_ARGB8888,
+> > -					      CHAMELIUM_CHECK_CRC, 1);
+> > -
+> > -		igt_describe(test_display_one_mode_desc);
+> > -		connector_subtest("hdmi-crc-abgr8888", HDMIA)
+> > -			test_display_one_mode(&data, port, DRM_FORMAT_ABGR8888,
+> > -					      CHAMELIUM_CHECK_CRC, 1);
+> > -
+> > -		igt_describe(test_display_one_mode_desc);
+> > -		connector_subtest("hdmi-crc-xrgb8888", HDMIA)
+> > -			test_display_one_mode(&data, port, DRM_FORMAT_XRGB8888,
+> > -					      CHAMELIUM_CHECK_CRC, 1);
+> > +		connector_subtest_start("hdmi-rgb-pixel-format", HDMIA)
+> 
+> you are dropping few thing from the titles, especially information that
+> this is chamelium CRC tests
+> 
+> how about naming them:
+>   hdmi-crc-nonplanar-formats instead of rgb
+>   hdmi-crc-planar-formats instead of yuv
+>
+> and then having the dunamic subsubtests named after the format alone, so
+> the end result would be like this:
+> 
+> igt@kms_chamelium@hdmi-crc-nonplanar-formats@rgb888
+> 
+Ok followed, will address it in next version
 
-Agree with you petri.
-Will correct it in the patch
-
+Thanks arek
+> other than that looks good to me, thanks! :-)
+> 
 > -- 
-> Petri Latvala
-
-
-Thanks
-Kunal
-
+> Cheers,
+> Arek
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
