@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3C056E260
- for <igt-dev@lists.freedesktop.org>; Sat,  7 Mar 2020 21:19:27 +0000 (UTC)
-From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Sun,  8 Mar 2020 02:47:50 +0530
-Message-Id: <20200307211751.22125-3-mohammed.khajapasha@intel.com>
-In-Reply-To: <20200307211751.22125-1-mohammed.khajapasha@intel.com>
-References: <20200307211751.22125-1-mohammed.khajapasha@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28ACE6E128
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Mar 2020 08:24:25 +0000 (UTC)
+From: Jani Nikula <jani.nikula@linux.intel.com>
+In-Reply-To: <20200306125002.21316-3-ville.syrjala@linux.intel.com>
+References: <20200306125002.21316-1-ville.syrjala@linux.intel.com>
+ <20200306125002.21316-3-ville.syrjala@linux.intel.com>
+Date: Mon, 09 Mar 2020 10:24:34 +0200
+Message-ID: <87pndmlyv1.fsf@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/3] test/kms: Loop for enable pipes only in
- static iteration
+Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tools/intel_reg: Add support for
+ register access via the MCHBAR mirror
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,287 +18,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Ville Syrjala <ville.syrjala@linux.intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In non-contiguous pipes display, the static iteration of pipes
-in test can cause iteration over disabled pipes and segmentation
-fault in test.
-
-for example, if PIPE_C,D are disabled and PIPE_A,B are enabled
-in kernel, test case will iterate over PIPE_C,D in
-for_each_pipe_static() even pipes C,D disabled and cause
-segmentation fault while accessing pipes display pipes.
-
-Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
----
- lib/igt_kms.h                 | 7 +++++--
- tests/kms_busy.c              | 2 +-
- tests/kms_ccs.c               | 2 +-
- tests/kms_color.c             | 2 +-
- tests/kms_color_chamelium.c   | 2 +-
- tests/kms_concurrent.c        | 2 +-
- tests/kms_cursor_crc.c        | 2 +-
- tests/kms_cursor_edge_walk.c  | 2 +-
- tests/kms_cursor_legacy.c     | 2 +-
- tests/kms_pipe_crc_basic.c    | 2 +-
- tests/kms_plane.c             | 2 +-
- tests/kms_plane_alpha_blend.c | 2 +-
- tests/kms_plane_cursor.c      | 2 +-
- tests/kms_plane_lowres.c      | 2 +-
- tests/kms_plane_multiple.c    | 2 +-
- tests/kms_plane_scaling.c     | 2 +-
- tests/kms_universal_plane.c   | 2 +-
- tests/kms_vblank.c            | 2 +-
- 18 files changed, 22 insertions(+), 19 deletions(-)
-
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index cd3fdbc0..b534ae64 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -494,8 +494,11 @@ static inline bool igt_output_is_connected(igt_output_t *output)
-  * This should be used to enumerate per-pipe subtests since it has no runtime
-  * depencies.
-  */
--#define for_each_pipe_static(pipe) \
--	for (pipe = 0; pipe < IGT_MAX_PIPES; pipe++)
-+#define for_each_pipe_static(display, __pipe)	\
-+	for (int p__ = (__pipe) = 0;	\
-+			__pipe < IGT_MAX_PIPES && p__ < (display)->n_pipes; __pipe++, p__++)	\
-+			for_each_if ((((display)->pipes[(p__)].pipe) == __pipe))
-+
- 
- /**
-  * for_each_pipe:
-diff --git a/tests/kms_busy.c b/tests/kms_busy.c
-index 7e495fe2..eaf2b297 100644
---- a/tests/kms_busy.c
-+++ b/tests/kms_busy.c
-@@ -317,7 +317,7 @@ igt_main
- 		}
- 	}
- 
--	for_each_pipe_static(n) igt_subtest_group {
-+	for_each_pipe_static(&display, n) igt_subtest_group {
- 		igt_hang_t hang;
- 
- 		errno = 0;
-diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
-index bc34aec5..c2864030 100644
---- a/tests/kms_ccs.c
-+++ b/tests/kms_ccs.c
-@@ -474,7 +474,7 @@ igt_main_args("c", NULL, help_str, opt_handler, NULL)
- 		igt_display_require(&data.display, data.drm_fd);
- 	}
- 
--	for_each_pipe_static(pipe) {
-+	for_each_pipe_static(&data.display, pipe) {
- 		const char *pipe_name = kmstest_pipe_name(pipe);
- 
- 		data.pipe = pipe;
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 7f2fbd4a..18077306 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -840,7 +840,7 @@ igt_main
- 		igt_display_require(&data.display, data.drm_fd);
- 	}
- 
--	for_each_pipe_static(pipe)
-+	for_each_pipe_static(&data.display, pipe)
- 		igt_subtest_group
- 			run_tests_for_pipe(&data, pipe);
- 
-diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
-index 34a1888c..65a4812b 100644
---- a/tests/kms_color_chamelium.c
-+++ b/tests/kms_color_chamelium.c
-@@ -738,7 +738,7 @@ igt_main
- 		igt_require(data.display.is_atomic);
- 	}
- 
--	for_each_pipe_static(pipe)
-+	for_each_pipe_static(&data.display, pipe)
- 		igt_subtest_group
- 			run_tests_for_pipe(&data, pipe);
- 	igt_describe("Negative test case gamma lut size");
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index 14ca5fab..34e4a8bd 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -395,7 +395,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		igt_require(data.display.is_atomic);
- 	}
- 
--	for_each_pipe_static(pipe) {
-+	for_each_pipe_static(&data.display, pipe) {
- 		igt_subtest_group
- 			run_tests_for_pipe(&data, pipe);
- 	}
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index f105e295..b337da9c 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -819,7 +819,7 @@ igt_main
- 	data.cursor_max_w = cursor_width;
- 	data.cursor_max_h = cursor_height;
- 
--	for_each_pipe_static(pipe)
-+	for_each_pipe_static(&data.display, pipe)
- 		igt_subtest_group
- 			run_tests_on_pipe(&data, pipe);
- 
-diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-index 6feb32a8..600848f8 100644
---- a/tests/kms_cursor_edge_walk.c
-+++ b/tests/kms_cursor_edge_walk.c
-@@ -324,7 +324,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		igt_display_require(&data.display, data.drm_fd);
- 	}
- 
--	for_each_pipe_static(data.pipe) {
-+	for_each_pipe_static(&data.display, data.pipe) {
- 		igt_subtest_group {
- 			igt_fixture {
- 				igt_display_require_output_on_pipe(&data.display, data.pipe);
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index f41f68d8..4be9b114 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -1376,7 +1376,7 @@ igt_main
- 
- 	igt_subtest_group {
- 		enum pipe n;
--		for_each_pipe_static(n) {
-+		for_each_pipe_static(&display, n) {
- 			errno = 0;
- 
- 			igt_fixture {
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index d169b7bd..9f0af59f 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -173,7 +173,7 @@ igt_main
- 	igt_subtest("bad-source")
- 		test_bad_source(&data);
- 
--	for_each_pipe_static(pipe) {
-+	for_each_pipe_static(&data.display, pipe) {
- 		igt_subtest_f("read-crc-pipe-%s", kmstest_pipe_name(pipe))
- 			test_read_crc(&data, pipe, 0);
- 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 805795cd..d65b827d 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -1016,7 +1016,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		igt_display_require(&data.display, data.drm_fd);
- 	}
- 
--	for_each_pipe_static(pipe)
-+	for_each_pipe_static(&data.display, pipe)
- 		run_tests_for_pipe_plane(&data, pipe);
- 
- 	igt_fixture {
-diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
-index 085099f8..9bd00e94 100644
---- a/tests/kms_plane_alpha_blend.c
-+++ b/tests/kms_plane_alpha_blend.c
-@@ -571,7 +571,7 @@ igt_main
- 		igt_require(data.display.is_atomic);
- 	}
- 
--	for_each_pipe_static(pipe)
-+	for_each_pipe_static(&data.display, pipe)
- 		igt_subtest_group
- 			run_subtests(&data, pipe);
- 
-diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
-index adcdf5e8..91ba1513 100644
---- a/tests/kms_plane_cursor.c
-+++ b/tests/kms_plane_cursor.c
-@@ -316,7 +316,7 @@ igt_main
- 		igt_display_require_output(&data.display);
- 	}
- 
--	for_each_pipe_static(pipe)
-+	for_each_pipe_static(&data.display, pipe)
- 		for (i = 0; i < ARRAY_SIZE(cursor_sizes); ++i) {
- 			int size = cursor_sizes[i];
- 
-diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-index 012b25e3..a31cad62 100644
---- a/tests/kms_plane_lowres.c
-+++ b/tests/kms_plane_lowres.c
-@@ -299,7 +299,7 @@ igt_main
- 		igt_require(data.display.is_atomic);
- 	}
- 
--	for_each_pipe_static(pipe) {
-+	for_each_pipe_static(&data.display, pipe) {
- 		data.pipe = pipe;
- 		igt_subtest_f("pipe-%s-tiling-none", kmstest_pipe_name(pipe))
- 			test_planes_on_pipe(&data, LOCAL_DRM_FORMAT_MOD_NONE);
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 899b6c5e..7954fef1 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -441,7 +441,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		igt_require(data.display.is_atomic);
- 	}
- 
--	for_each_pipe_static(pipe) {
-+	for_each_pipe_static(&data.display, pipe) {
- 		igt_describe("Check that the kernel handles atomic updates of "
- 			     "multiple planes correctly by changing their "
- 			     "geometry and making sure the changes are "
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 19087286..d3a3ef61 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -700,7 +700,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		igt_require(data.display.is_atomic);
- 	}
- 
--	for_each_pipe_static(pipe) igt_subtest_group {
-+	for_each_pipe_static(&data.display, pipe) igt_subtest_group {
- 		igt_output_t *output;
- 
- 		igt_fixture {
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 676be633..fefb15d9 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -800,7 +800,7 @@ igt_main
- 		igt_display_require(&data.display, data.drm_fd);
- 	}
- 
--	for_each_pipe_static(pipe) {
-+	for_each_pipe_static(&data.display, pipe) {
- 		igt_subtest_group
- 			run_tests_for_pipe(&data, pipe);
- 	}
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index a895ab80..3cd57364 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -528,7 +528,7 @@ igt_main
- 	igt_subtest("crtc-id")
- 		crtc_id_subtest(&data, fd);
- 
--	for_each_pipe_static(data.pipe)
-+	for_each_pipe_static(&data.display, data.pipe)
- 		igt_subtest_group
- 			run_subtests_for_pipe(&data);
- }
--- 
-2.24.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gRnJpLCAwNiBNYXIgMjAyMCwgVmlsbGUgU3lyamFsYSA8dmlsbGUuc3lyamFsYUBsaW51eC5p
+bnRlbC5jb20+IHdyb3RlOgo+IEZyb206IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBs
+aW51eC5pbnRlbC5jb20+Cj4KPiBSZW1lbWJlcmluZyB0aGUgTUNIQkFSIG1pcnJvciBvZmZzZXQg
+aXMgdG9vIG11Y2ggd29yay4gTWFrZSB0aGUgdG9vbAo+IHJlbWVtYmVyIGl0IGZvciBtZS4KPgo+
+IFNpZ25lZC1vZmYtYnk6IFZpbGxlIFN5cmrDpGzDpCA8dmlsbGUuc3lyamFsYUBsaW51eC5pbnRl
+bC5jb20+Cj4gLS0tCj4gIHRvb2xzL2ludGVsX3JlZy5jICAgICAgfCAxNyArKysrKysrKysrKysr
+KysrKwo+ICB0b29scy9pbnRlbF9yZWdfc3BlYy5jIHwgMTUgKysrKysrKysrKysrKysrCj4gIHRv
+b2xzL2ludGVsX3JlZ19zcGVjLmggfCAgNCArKysrCj4gIDMgZmlsZXMgY2hhbmdlZCwgMzYgaW5z
+ZXJ0aW9ucygrKQo+Cj4gZGlmZiAtLWdpdCBhL3Rvb2xzL2ludGVsX3JlZy5jIGIvdG9vbHMvaW50
+ZWxfcmVnLmMKPiBpbmRleCA3ZjhkZGJkOGU5MjcuLjY5YWYwZjVhMTlmZiAxMDA2NDQKPiAtLS0g
+YS90b29scy9pbnRlbF9yZWcuYwo+ICsrKyBiL3Rvb2xzL2ludGVsX3JlZy5jCj4gQEAgLTE4NSw2
+ICsxODUsOSBAQCBzdGF0aWMgYm9vbCBwb3J0X2lzX21taW8oZW51bSBwb3J0X2FkZHIgcG9ydCkK
+PiAgCWNhc2UgUE9SVF9NTUlPXzMyOgo+ICAJY2FzZSBQT1JUX01NSU9fMTY6Cj4gIAljYXNlIFBP
+UlRfTU1JT184Ogo+ICsJY2FzZSBQT1JUX01DSEJBUl8zMjoKPiArCWNhc2UgUE9SVF9NQ0hCQVJf
+MTY6Cj4gKwljYXNlIFBPUlRfTUNIQkFSXzg6Cj4gIAkJcmV0dXJuIHRydWU7Cj4gIAlkZWZhdWx0
+Ogo+ICAJCXJldHVybiBmYWxzZTsKPiBAQCAtMzY2LDIwICszNjksMzQgQEAgc3RhdGljIGludCBy
+ZWdpc3Rlcl9zcm0oc3RydWN0IGNvbmZpZyAqY29uZmlnLCBzdHJ1Y3QgcmVnICpyZWcsCj4gIAly
+ZXR1cm4gdmFsOwo+ICB9Cj4gIAo+ICtzdGF0aWMgdWludDMyX3QgbWNiYXJfb2Zmc2V0KHVpbnQz
+Ml90IGRldmlkKQo+ICt7Cj4gKwlyZXR1cm4gaW50ZWxfZ2VuKGRldmlkKSA+PSA2ID8gMHgxNDAw
+MDAgOiAweDEwMDAwOwo+ICt9Cj4gKwo+ICBzdGF0aWMgaW50IHJlYWRfcmVnaXN0ZXIoc3RydWN0
+IGNvbmZpZyAqY29uZmlnLCBzdHJ1Y3QgcmVnICpyZWcsIHVpbnQzMl90ICp2YWxwKQo+ICB7Cj4g
+IAl1aW50MzJfdCB2YWwgPSAwOwo+ICAKPiAgCXN3aXRjaCAocmVnLT5wb3J0X2Rlc2MucG9ydCkg
+ewo+ICsJY2FzZSBQT1JUX01DSEJBUl8zMjoKPiArCQlyZWctPm1taW9fb2Zmc2V0ID0gbWNiYXJf
+b2Zmc2V0KGNvbmZpZy0+ZGV2aWQpOwo+ICsJCS8qIGZhbGwgdGhyb3VnaCAqLwoKSSB0aGluayBp
+dCB3b3VsZCBiZSBiZXR0ZXIgdG8gaGFuZGxlIHRoaXMgZWFybGllciwgYXQgcGFyc2VfcG9ydF9k
+ZXNjKCkKb3IgcGFyc2VfcmVnKCkgbGV2ZWwuIEkgdGhpbmsgaGF2aW5nIHRoaXMgaGVyZSBtaWdo
+dCBzY3JldyB3aXRoIHRoZQphYmlsaXR5IHRvIGhhbmRsZSB0aGUgbWNoYmFyICJwb3J0cyIgbmlj
+ZWx5IGluIHRoZSByZWcgc3BlYy4gT3IgZGVjb2RlCnRoZW0uCgpUaGlzIGJlaW5nIGRldmlkIHNw
+ZWNpZmljIG1ha2VzIGl0IGEgYml0IGhhcmRlciBJIGd1ZXNzLgoKQlIsCkphbmkuCgoKPiAgCWNh
+c2UgUE9SVF9NTUlPXzMyOgo+ICAJCWlmIChyZWctPmVuZ2luZSkKPiAgCQkJdmFsID0gcmVnaXN0
+ZXJfc3JtKGNvbmZpZywgcmVnLCBOVUxMKTsKPiAgCQllbHNlCj4gIAkJCXZhbCA9IElOUkVHKHJl
+Zy0+bW1pb19vZmZzZXQgKyByZWctPmFkZHIpOwo+ICAJCWJyZWFrOwo+ICsJY2FzZSBQT1JUX01D
+SEJBUl8xNjoKPiArCQlyZWctPm1taW9fb2Zmc2V0ID0gbWNiYXJfb2Zmc2V0KGNvbmZpZy0+ZGV2
+aWQpOwo+ICsJCS8qIGZhbGwgdGhyb3VnaCAqLwo+ICAJY2FzZSBQT1JUX01NSU9fMTY6Cj4gIAkJ
+dmFsID0gSU5SRUcxNihyZWctPm1taW9fb2Zmc2V0ICsgcmVnLT5hZGRyKTsKPiAgCQlicmVhazsK
+PiArCWNhc2UgUE9SVF9NQ0hCQVJfODoKPiArCQlyZWctPm1taW9fb2Zmc2V0ID0gbWNiYXJfb2Zm
+c2V0KGNvbmZpZy0+ZGV2aWQpOwo+ICsJCS8qIGZhbGwgdGhyb3VnaCAqLwo+ICAJY2FzZSBQT1JU
+X01NSU9fODoKPiAgCQl2YWwgPSBJTlJFRzgocmVnLT5tbWlvX29mZnNldCArIHJlZy0+YWRkcik7
+Cj4gIAkJYnJlYWs7Cj4gZGlmZiAtLWdpdCBhL3Rvb2xzL2ludGVsX3JlZ19zcGVjLmMgYi90b29s
+cy9pbnRlbF9yZWdfc3BlYy5jCj4gaW5kZXggN2MxYzZlZDM0YTllLi5kYWRkODQ0NzMwZjAgMTAw
+NjQ0Cj4gLS0tIGEvdG9vbHMvaW50ZWxfcmVnX3NwZWMuYwo+ICsrKyBiL3Rvb2xzL2ludGVsX3Jl
+Z19zcGVjLmMKPiBAQCAtNDgsNiArNDgsMjEgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBwb3J0X2Rl
+c2MgcG9ydF9kZXNjc1tdID0gewo+ICAJCS5wb3J0ID0gUE9SVF9NTUlPXzgsCj4gIAkJLnN0cmlk
+ZSA9IDEsCj4gIAl9LAo+ICsJewo+ICsJCS5uYW1lID0gIm1jaGJhciIsCj4gKwkJLnBvcnQgPSBQ
+T1JUX01DSEJBUl8zMiwKPiArCQkuc3RyaWRlID0gNCwKPiArCX0sCj4gKwl7Cj4gKwkJLm5hbWUg
+PSAibWNoYmFyMTYiLAo+ICsJCS5wb3J0ID0gUE9SVF9NQ0hCQVJfMTYsCj4gKwkJLnN0cmlkZSA9
+IDIsCj4gKwl9LAo+ICsJewo+ICsJCS5uYW1lID0gIm1jaGJhcjgiLAo+ICsJCS5wb3J0ID0gUE9S
+VF9NQ0hCQVJfOCwKPiArCQkuc3RyaWRlID0gMSwKPiArCX0sCj4gIAl7Cj4gIAkJLm5hbWUgPSAi
+cG9ydGlvIiwKPiAgCQkucG9ydCA9IFBPUlRfUE9SVElPLAo+IGRpZmYgLS1naXQgYS90b29scy9p
+bnRlbF9yZWdfc3BlYy5oIGIvdG9vbHMvaW50ZWxfcmVnX3NwZWMuaAo+IGluZGV4IDI5ZjRkOWFl
+MmE0Ny4uZmMyN2E5YTYyZjZmIDEwMDY0NAo+IC0tLSBhL3Rvb2xzL2ludGVsX3JlZ19zcGVjLmgK
+PiArKysgYi90b29scy9pbnRlbF9yZWdfc3BlYy5oCj4gQEAgLTI5LDYgKzI5LDEwIEBAIGVudW0g
+cG9ydF9hZGRyIHsKPiAgCVBPUlRfTU1JT18xNiwKPiAgCVBPUlRfTU1JT184LAo+ICAKPiArCVBP
+UlRfTUNIQkFSXzMyLAo+ICsJUE9SVF9NQ0hCQVJfMTYsCj4gKwlQT1JUX01DSEJBUl84LAo+ICsK
+PiAgCVBPUlRfUE9SVElPLAo+ICAKPiAgCVBPUlRfTk9ORSA9IDAsCgotLSAKSmFuaSBOaWt1bGEs
+IEludGVsIE9wZW4gU291cmNlIEdyYXBoaWNzIENlbnRlcgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxp
+c3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2lndC1kZXYK
