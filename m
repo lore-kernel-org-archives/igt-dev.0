@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4DAE76E8B4
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Mar 2020 16:30:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 32DEC6E8B5
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Mar 2020 16:30:05 +0000 (UTC)
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Date: Tue, 10 Mar 2020 18:29:45 +0200
-Message-Id: <20200310162946.2335031-1-lionel.g.landwerlin@intel.com>
+Date: Tue, 10 Mar 2020 18:29:46 +0200
+Message-Id: <20200310162946.2335031-2-lionel.g.landwerlin@intel.com>
+In-Reply-To: <20200310162946.2335031-1-lionel.g.landwerlin@intel.com>
+References: <20200310162946.2335031-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/i915/perf: remove generation code
- for mathml render
+Subject: [igt-dev] [PATCH i-g-t 2/2] lib/i915/perf: break generated code in
+ separate files
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,228 +24,498 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Gputop had support for generating mathml figures of the post
-processing equations. It's not useful here.
+Initially all the generated code was per generation. Eventually we
+grouped it into a single file to reuse as much as possible equation
+code (this reduce binary size by a factor). So many equations are just
+the same from generation to generation.
+
+But this generated file is 200k lines long...
+
+This change puts all the metrics into a single file and then breaks
+down the metric sets per generation.
 
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- lib/i915/perf-configs/perf-codegen.py | 168 +++-----------------------
- 1 file changed, 17 insertions(+), 151 deletions(-)
+ lib/i915/perf-configs/perf-codegen.py | 311 +++++++++++++++++---------
+ lib/i915/perf.c                       |  18 +-
+ lib/meson.build                       |  21 +-
+ 3 files changed, 241 insertions(+), 109 deletions(-)
 
 diff --git a/lib/i915/perf-configs/perf-codegen.py b/lib/i915/perf-configs/perf-codegen.py
-index 24c5514d..ac3ad683 100755
+index ac3ad683..e001fc84 100755
 --- a/lib/i915/perf-configs/perf-codegen.py
 +++ b/lib/i915/perf-configs/perf-codegen.py
-@@ -36,109 +36,6 @@ c = None
- hashed_funcs = {}
- xml_equations = None
+@@ -252,33 +252,51 @@ def data_type_to_ctype(ret_type):
  
--def check_operand_type(set, arg):
--    if arg.isdigit():
--        return "\n<mn>" + arg + "</mn>"
--    elif arg[0] == "$":
--        if arg in set.counter_vars:
--            description = set.counter_vars[arg].get('description')
--        elif arg in hw_vars and 'desc' in hw_vars[arg]:
--            description = hw_vars[arg]['desc'];
--        else:
--            description = None
--
--        if description != None:
--            return "\n<maction actiontype='tooltip'>\n<mi>" + arg + "</mi>\n<mtext>" + description + "</mtext>\n</maction>"
--        else:
--            return "<mi>" + arg + "</mi>"
--    return arg
--
--# http://en.cppreference.com/w/c/language/operator_precedence
--and_precedence = 8
--shft_precedence = 5
--mul_precedence = 3
--add_precedence = 2
--sub_precedence = 2
--default_precedence = 16 #a high value which denotes no brackets needed
--
--def put_brackets(arg):
--    return "\n<mtext>(</mtext>" + arg + "\n<mtext>)</mtext>"
--
--def mathml_splice_add(set, args):
--    operand_0 = check_operand_type(set, args[0][0])
--    operand_1 = check_operand_type(set, args[1][0])
--    if args[0][1] < add_precedence:
--        operand_0 = put_brackets(args[0][0])
--    if args[1][1] < add_precedence:
--        operand_1 = put_brackets(args[1][0])
--    return [operand_1 + "\n<mo>+</mo>" + operand_0, add_precedence]
--
--def mathml_splice_div(set, args):
--    operand_0 = check_operand_type(set, args[0][0])
--    operand_1 = check_operand_type(set, args[1][0])
--    return ["\n<mfrac>\n<mrow>" + operand_1 + "\n</mrow>\n<mrow>" + operand_0 + "</mrow>\n</mfrac>", default_precedence]
--
--def mathml_splice_max(set, args):
--    operand_0 = check_operand_type(set, args[0][0])
--    operand_1 = check_operand_type(set, args[1][0])
--    return ["\n<mtext>max ( </mtext>" + operand_1 + "\n<mtext> , </mtext>" + operand_0 + "\n<mtext> ) </mtext>", default_precedence]
--
--def mathml_splice_mul(set, args):
--    operand_0 = check_operand_type(set, args[0][0])
--    operand_1 = check_operand_type(set, args[1][0])
--    if args[0][1] < mul_precedence:
--        operand_0 = put_brackets(args[0][0])
--    if args[1][1] < mul_precedence:
--        operand_1 = put_brackets(args[1][0])
--    return [operand_1 + "\n<mo>*</mo>" + operand_0, mul_precedence]
--
--def mathml_splice_sub(set, args):
--    operand_0 = check_operand_type(set, args[0][0])
--    operand_1 = check_operand_type(set, args[1][0])
--    if args[0][1] < sub_precedence:
--        operand_0 = put_brackets(args[0][0])
--    if args[1][1] < sub_precedence:
--        operand_1 = put_brackets(args[1][0])
--    return [operand_1 + "\n<mo>-</mo>" + operand_0, sub_precedence]
--
--def mathml_splice_read(set, args):
--    return ["\n<maction actiontype='tooltip'>\n<mi>" + args[1][0] + args[0][0] + "</mi>\n<mtext>placeholder</mtext>\n</maction>", default_precedence]
--
--def mathml_splice_read_reg(set, args):
--    return ["\n<maction actiontype='tooltip'>\n<mi>" + args[0][0] + "</mi>\n<mtext>placeholder</mtext>\n</maction>", default_precedence]
--
--def mathml_splice_min(set, args):
--    operand_0 = check_operand_type(set, args[0][0])
--    operand_1 = check_operand_type(set, args[1][0])
--    return ["\n<mtext>min ( </mtext>" + operand_1 + "\n<mtext> , </mtext>" + operand_0 + "\n<mtext> ) </mtext>", default_precedence]
--
--def mathml_splice_lshft(set, args):
--    operand_0 = check_operand_type(set, args[0][0])
--    operand_1 = check_operand_type(set, args[1][0])
--    if args[0][1] < shft_precedence:
--        operand_0 = put_brackets(args[0][0])
--    if args[1][1] < shft_precedence:
--        operand_1 = put_brackets(args[1][0])
--    return [operand_1 + "\n<mo>&lt;&lt;</mo>" + operand_0, shft_precedence]
--
--def mathml_splice_rshft(set, args):
--    operand_0 = check_operand_type(set, args[0][0])
--    operand_1 = check_operand_type(set, args[1][0])
--    if args[0][1] < mul_precedence:
--        operand_0 = put_brackets(args[0][0])
--    if args[1][1] < mul_precedence:
--        operand_1 = put_brackets(args[1][0])
--    return [operand_1 + "\n<mo>&gt;&gt;</mo>" + operand_0, mul_precedence]
--
--def mathml_splice_and(set, args):
--    operand_0 = check_operand_type(set, args[0][0])
--    operand_1 = check_operand_type(set, args[1][0])
--    if args[0][1] < and_precedence:
--        operand_0 = put_brackets(args[0][0])
--    if args[1][1] < and_precedence:
--        operand_1 = put_brackets(args[1][0])
--    return [operand_1 + "\n<mo>&amp;</mo>" + operand_0, and_precedence]
--
- def emit_fadd(tmp_id, args):
-     c("double tmp{0} = {1} + {2};".format(tmp_id, args[1], args[0]))
-     return tmp_id + 1
-@@ -212,22 +109,22 @@ def emit_and(tmp_id, args):
-     return tmp_id + 1
  
- ops = {}
--#                     (n operands, emitter1, emitter2)
--ops["FADD"]     = (2, emit_fadd, mathml_splice_add)
--ops["FDIV"]     = (2, emit_fdiv, mathml_splice_div)
--ops["FMAX"]     = (2, emit_fmax, mathml_splice_max)
--ops["FMUL"]     = (2, emit_fmul, mathml_splice_mul)
--ops["FSUB"]     = (2, emit_fsub, mathml_splice_sub)
--ops["READ"]     = (2, emit_read, mathml_splice_read)
--ops["READ_REG"] = (1, emit_read_reg, mathml_splice_read_reg)
--ops["UADD"]     = (2, emit_uadd, mathml_splice_add)
--ops["UDIV"]     = (2, emit_udiv, mathml_splice_div)
--ops["UMUL"]     = (2, emit_umul, mathml_splice_mul)
--ops["USUB"]     = (2, emit_usub, mathml_splice_sub)
--ops["UMIN"]     = (2, emit_umin, mathml_splice_min)
--ops["<<"]       = (2, emit_lshft, mathml_splice_lshft)
--ops[">>"]       = (2, emit_rshft, mathml_splice_rshft)
--ops["AND"]      = (2, emit_and, mathml_splice_and)
-+#                     (n operands, emitter)
-+ops["FADD"]     = (2, emit_fadd)
-+ops["FDIV"]     = (2, emit_fdiv)
-+ops["FMAX"]     = (2, emit_fmax)
-+ops["FMUL"]     = (2, emit_fmul)
-+ops["FSUB"]     = (2, emit_fsub)
-+ops["READ"]     = (2, emit_read)
-+ops["READ_REG"] = (1, emit_read_reg)
-+ops["UADD"]     = (2, emit_uadd)
-+ops["UDIV"]     = (2, emit_udiv)
-+ops["UMUL"]     = (2, emit_umul)
-+ops["USUB"]     = (2, emit_usub)
-+ops["UMIN"]     = (2, emit_umin)
-+ops["<<"]       = (2, emit_lshft)
-+ops[">>"]       = (2, emit_rshft)
-+ops["AND"]      = (2, emit_and)
+ def output_counter_read(gen, set, counter):
++    if counter.read_hash in hashed_funcs:
++        return
++
+     c("\n")
+     c("/* {0} :: {1} */".format(set.name, counter.get('name')))
  
- def brkt(subexp):
-     if " " in subexp:
-@@ -270,27 +167,6 @@ hw_vars = {
-         "$QueryMode": { 'c': "perf->devinfo.query_mode" },
- }
++    ret_type = counter.get('data_type')
++    ret_ctype = data_type_to_ctype(ret_type)
++    read_eq = counter.get('equation')
++
++    c(ret_ctype)
++    c(counter.read_sym + "(const struct intel_perf *perf,\n")
++    c.indent(len(counter.read_sym) + 1)
++    c("const struct intel_perf_metric_set *metric_set,\n")
++    c("uint64_t *accumulator)\n")
++    c.outdent(len(counter.read_sym) + 1)
++
++    c("{")
++    c.indent(4)
++
++    output_rpn_equation_code(set, counter, read_eq)
++
++    c.outdent(4)
++    c("}")
++
++    hashed_funcs[counter.read_hash] = counter.read_sym
++
++
++def output_counter_read_definition(gen, set, counter):
+     if counter.read_hash in hashed_funcs:
+-        c("#define %s \\" % counter.read_sym)
+-        c.indent(4)
+-        c("%s" % hashed_funcs[counter.read_hash])
+-        c.outdent(4)
++        h("#define %s \\" % counter.read_sym)
++        h.indent(4)
++        h("%s" % hashed_funcs[counter.read_hash])
++        h.outdent(4)
+     else:
+         ret_type = counter.get('data_type')
+         ret_ctype = data_type_to_ctype(ret_type)
+         read_eq = counter.get('equation')
  
--def splice_mathml_expression(set, equation, tag):
--    tokens = equation.split()
--    mathml_stack = []
--    tmp_xml_operand = ""
--    for token in tokens:
--        if not mathml_stack:
--            token = check_operand_type(set, token)
--        mathml_stack.append([token, default_precedence])
--        while mathml_stack and mathml_stack[-1][0] in ops:
--            op = mathml_stack.pop()[0]
--            argc, callback, mathml_callback = ops[op]
--            xml_args = []
--            for i in range(0, argc):
--                xml_operand = mathml_stack.pop()
--                xml_args.append(xml_operand)
--            tmp_xml_operand = mathml_callback(set, xml_args)
--            mathml_stack.append(tmp_xml_operand)
--    xml_string = mathml_stack.pop()[0]
--    equation_descr = "<mi>" + tag + "</mi><mo> = </mo>"
--    return "<mathml_" + tag + ">" + equation_descr + xml_string + "</mathml_" + tag + ">"
+-        c("static " + ret_ctype)
+-        c(counter.read_sym + "(const struct intel_perf *perf,\n")
+-        c.indent(len(counter.read_sym) + 1)
+-        c("const struct intel_perf_metric_set *metric_set,\n")
+-        c("uint64_t *accumulator)\n")
+-        c.outdent(len(counter.read_sym) + 1)
 -
- def output_rpn_equation_code(set, counter, equation):
-     c("/* RPN equation: " + equation + " */")
-     tokens = equation.split()
-@@ -302,7 +178,7 @@ def output_rpn_equation_code(set, counter, equation):
-         stack.append(token)
-         while stack and stack[-1] in ops:
-             op = stack.pop()
--            argc, callback, mathml_callback = ops[op]
-+            argc, callback = ops[op]
-             args = []
-             for i in range(0, argc):
-                 operand = stack.pop()
-@@ -656,7 +532,6 @@ def main():
-     parser = argparse.ArgumentParser()
-     parser.add_argument("--header", help="Header file to write")
-     parser.add_argument("--code", help="C file to write")
--    parser.add_argument("--xml-out", help="Output XML files (adding mathml equations)")
-     parser.add_argument("xml_files", nargs='+', help="List of xml metrics files to process")
- 
-     args = parser.parse_args()
-@@ -669,15 +544,6 @@ def main():
-     for xml_file in args.xml_files:
-         gens.append(Gen(xml_file))
- 
--    if args.xml_out:
--        for gen in gens:
--            for set in gen.sets:
--                for counter in set.counters:
--                    xml_equation = splice_mathml_expression(set, counter.get('equation'), "EQ")
--                    counter.append(et.fromstring(xml_equation))
--            gen.xml.write(gen.filename)
+-        c("{")
+-        c.indent(4)
 -
+-        output_rpn_equation_code(set, counter, read_eq)
 -
-     copyright = textwrap.dedent("""\
-         /* Autogenerated file, DO NOT EDIT manually! generated by {}
-          *
+-        c.outdent(4)
+-        c("}")
++        h(ret_ctype)
++        h(counter.read_sym + "(const struct intel_perf *perf,\n")
++        h.indent(len(counter.read_sym) + 1)
++        h("const struct intel_perf_metric_set *metric_set,\n")
++        h("uint64_t *accumulator);\n")
++        h.outdent(len(counter.read_sym) + 1)
+ 
+         hashed_funcs[counter.read_hash] = counter.read_sym
+ 
+@@ -289,33 +307,57 @@ def output_counter_max(gen, set, counter):
+     if not max_eq or max_eq == "100":
+         return
+ 
++    if counter.max_hash in hashed_funcs:
++        return
++
+     c("\n")
+     c("/* {0} :: {1} */".format(set.name, counter.get('name')))
+ 
++    ret_type = counter.get('data_type')
++    ret_ctype = data_type_to_ctype(ret_type)
++
++    c(ret_ctype)
++    c(counter.max_sym + "(const struct intel_perf *perf,\n")
++    c.indent(len(counter.max_sym) + 1)
++    c("const struct intel_perf_metric_set *metric_set,\n")
++    c("uint64_t *accumulator)\n")
++    c.outdent(len(counter.max_sym) + 1)
++
++    c("{")
++    c.indent(4)
++
++    output_rpn_equation_code(set, counter, max_eq)
++
++    c.outdent(4)
++    c("}")
++
++    hashed_funcs[counter.max_hash] = counter.max_sym
++
++
++def output_counter_max_definition(gen, set, counter):
++    max_eq = counter.get('max_equation')
++
++    if not max_eq or max_eq == "100":
++        return
++
+     if counter.max_hash in hashed_funcs:
+-        c("#define %s \\" % counter.max_sym)
+-        c.indent(4)
+-        c("%s" % hashed_funcs[counter.max_hash])
+-        c.outdent(4)
++        h("#define %s \\" % counter.max_sym)
++        h.indent(4)
++        h("%s" % hashed_funcs[counter.max_hash])
++        h.outdent(4)
++        h("\n")
+     else:
+         ret_type = counter.get('data_type')
+         ret_ctype = data_type_to_ctype(ret_type)
+ 
+-        c("static " + ret_ctype)
++        h(ret_ctype)
+ 
+-        c(counter.max_sym + "(const struct intel_perf *perf,\n")
+-        c.indent(len(counter.max_sym) + 1)
+-        c("const struct intel_perf_metric_set *metric_set,\n")
+-        c("uint64_t *accumulator)\n")
+-        c.outdent(len(counter.max_sym) + 1)
+-
+-        c("{")
+-        c.indent(4)
+-
+-        output_rpn_equation_code(set, counter, max_eq)
+-
+-        c.outdent(4)
+-        c("}")
++        h(counter.max_sym + "(const struct intel_perf *perf,")
++        h.indent(len(counter.max_sym) + 1)
++        h("const struct intel_perf_metric_set *metric_set,")
++        h("uint64_t *accumulator);")
++        h.outdent(len(counter.max_sym) + 1)
++        h("\n")
+ 
+         hashed_funcs[counter.max_hash] = counter.max_sym
+ 
+@@ -524,65 +566,13 @@ class Gen:
+             self.sets.append(Set(self, xml_set))
+ 
+ 
+-def main():
+-    global c
+-    global h
+-    global xml_equations
++def generate_equations(args, gens):
++    global hashed_funcs
+ 
+-    parser = argparse.ArgumentParser()
+-    parser.add_argument("--header", help="Header file to write")
+-    parser.add_argument("--code", help="C file to write")
+-    parser.add_argument("xml_files", nargs='+', help="List of xml metrics files to process")
+-
+-    args = parser.parse_args()
+-
+-    # Note: either arg may == None
+-    h = codegen.Codegen(args.header)
+-    c = codegen.Codegen(args.code)
+-
+-    gens = []
+-    for xml_file in args.xml_files:
+-        gens.append(Gen(xml_file))
+-
+-    copyright = textwrap.dedent("""\
+-        /* Autogenerated file, DO NOT EDIT manually! generated by {}
+-         *
+-         * Copyright (c) 2018 Intel Corporation
+-         *
+-         * Permission is hereby granted, free of charge, to any person obtaining a
+-         * copy of this software and associated documentation files (the "Software"),
+-         * to deal in the Software without restriction, including without limitation
+-         * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+-         * and/or sell copies of the Software, and to permit persons to whom the
+-         * Software is furnished to do so, subject to the following conditions:
+-         *
+-         * The above copyright notice and this permission notice (including the next
+-         * paragraph) shall be included in all copies or substantial portions of the
+-         * Software.
+-         *
+-         * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+-         * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+-         * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+-         * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+-         * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+-         * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+-         * DEALINGS IN THE SOFTWARE.
+-         */
+-
+-        """).format(os.path.basename(__file__))
+-
+-    h(copyright)
+-    c(copyright)
+-    c(textwrap.dedent("""\
+-        #include <stddef.h>
+-        #include <stdint.h>
+-        #include <stdbool.h>
+-        #include <assert.h>
+-
+-        """))
+-
+-    c("#include \"" + os.path.basename(args.header) + "\"")
++    header_file = os.path.basename(args.header)
++    header_define = header_file.replace('.', '_').upper()
+ 
++    hashed_funcs = {}
+     c(textwrap.dedent("""\
+         #include <stdlib.h>
+         #include <string.h>
+@@ -590,11 +580,12 @@ def main():
+         #include <i915_drm.h>
+ 
+         #include "i915/perf.h"
++        #include "%s"
+ 
+         #define MIN(x, y) (((x) < (y)) ? (x) : (y))
+         #define MAX(a, b) (((a) > (b)) ? (a) : (b))
+ 
+-        static double
++        double
+         percentage_max_callback_float(const struct intel_perf *perf,
+                                       const struct intel_perf_metric_set *metric_set,
+                                       uint64_t *accumulator)
+@@ -602,7 +593,7 @@ def main():
+            return 100;
+         }
+ 
+-        static uint64_t
++        uint64_t
+         percentage_max_callback_uint64(const struct intel_perf *perf,
+                                        const struct intel_perf_metric_set *metric_set,
+                                        uint64_t *accumulator)
+@@ -610,7 +601,7 @@ def main():
+            return 100;
+         }
+ 
+-        """))
++        """ % os.path.basename(args.header)))
+ 
+     # Print out all equation functions.
+     for gen in gens:
+@@ -619,6 +610,60 @@ def main():
+                 output_counter_read(gen, set, counter)
+                 output_counter_max(gen, set, counter)
+ 
++    hashed_funcs = {}
++    h(textwrap.dedent("""\
++        #ifndef __%s__
++        #define __%s__
++
++        #include <stddef.h>
++        #include <stdint.h>
++        #include <stdbool.h>
++
++        struct intel_perf;
++        struct intel_perf_metric_set;
++
++        double
++        percentage_max_callback_float(const struct intel_perf *perf,
++                                      const struct intel_perf_metric_set *metric_set,
++                                      uint64_t *accumulator);
++        uint64_t
++        percentage_max_callback_uint64(const struct intel_perf *perf,
++                                       const struct intel_perf_metric_set *metric_set,
++                                       uint64_t *accumulator);
++
++        """ % (header_define, header_define)))
++
++    # Print out all equation functions.
++    for gen in gens:
++        for set in gen.sets:
++            for counter in set.counters:
++                output_counter_read_definition(gen, set, counter)
++                output_counter_max_definition(gen, set, counter)
++
++    h(textwrap.dedent("""\
++
++        #endif /* __%s__ */
++        """ % header_define))
++
++
++def generate_metric_sets(args, gens):
++    header_file = os.path.basename(args.header)
++    header_define = header_file.replace('.', '_').upper()
++
++    c(textwrap.dedent("""\
++        #include <stddef.h>
++        #include <stdint.h>
++        #include <stdlib.h>
++        #include <stdbool.h>
++        #include <assert.h>
++
++        #include "i915_drm.h"
++
++        """))
++
++    c("#include \"{0}\"".format(os.path.basename(args.header)))
++    c("#include \"{0}\"".format(os.path.basename(args.equation_include)))
++
+     # Print out all set registration functions for each set in each
+     # generation.
+     for gen in gens:
+@@ -679,15 +724,12 @@ def main():
+             c("}\n")
+ 
+     h(textwrap.dedent("""\
+-        #pragma once
++        #ifndef %s
++        #define %s
+ 
+         #include "i915/perf.h"
+ 
+-        #ifdef __cplusplus
+-        extern "C" {
+-        #endif
+-
+-        """))
++        """ % (header_define, header_define)))
+ 
+     # Print out all set registration functions for each generation.
+     for gen in gens:
+@@ -705,11 +747,68 @@ def main():
+         c("}")
+ 
+     h(textwrap.dedent("""\
+-        #ifdef __cplusplus
+-        } /* extern C */
+-        #endif
++        #endif /* %s */
++        """ % header_define))
++
++
++def main():
++    global c
++    global h
++    global xml_equations
++
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--header", help="Header file to write")
++    parser.add_argument("--code", help="C file to write")
++    parser.add_argument("--equations", help="Output equations", action="store_true")
++    parser.add_argument("--metric_sets", help="Output metric sets", action="store_true")
++    parser.add_argument("--equation-include", help="Equation header file")
++    parser.add_argument("xml_files", nargs='+', help="List of xml metrics files to process")
++
++    args = parser.parse_args()
++
++    # Note: either arg may == None
++    h = codegen.Codegen(args.header)
++    c = codegen.Codegen(args.code)
++
++    gens = []
++    for xml_file in args.xml_files:
++        gens.append(Gen(xml_file))
++
++    copyright = textwrap.dedent("""\
++        /* Autogenerated file, DO NOT EDIT manually! generated by {}
++         *
++         * Copyright (c) 2018 Intel Corporation
++         *
++         * Permission is hereby granted, free of charge, to any person obtaining a
++         * copy of this software and associated documentation files (the "Software"),
++         * to deal in the Software without restriction, including without limitation
++         * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++         * and/or sell copies of the Software, and to permit persons to whom the
++         * Software is furnished to do so, subject to the following conditions:
++         *
++         * The above copyright notice and this permission notice (including the next
++         * paragraph) shall be included in all copies or substantial portions of the
++         * Software.
++         *
++         * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++         * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++         * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++         * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++         * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++         * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
++         * DEALINGS IN THE SOFTWARE.
++         */
++
++        """).format(os.path.basename(__file__))
++
++    h(copyright)
++    c(copyright)
++
++    if args.equations:
++        generate_equations(args, gens)
++    if args.metric_sets:
++        generate_metric_sets(args, gens)
+ 
+-        """))
+ 
+ 
+ if __name__ == '__main__':
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index babfe633..8d3e188a 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -37,7 +37,23 @@
+ 
+ #include "intel_chipset.h"
+ #include "perf.h"
+-#include "i915_perf_metrics.h"
++
++#include "i915_perf_metrics_hsw.h"
++#include "i915_perf_metrics_bdw.h"
++#include "i915_perf_metrics_chv.h"
++#include "i915_perf_metrics_sklgt2.h"
++#include "i915_perf_metrics_sklgt3.h"
++#include "i915_perf_metrics_sklgt4.h"
++#include "i915_perf_metrics_kblgt2.h"
++#include "i915_perf_metrics_kblgt3.h"
++#include "i915_perf_metrics_cflgt2.h"
++#include "i915_perf_metrics_cflgt3.h"
++#include "i915_perf_metrics_bxt.h"
++#include "i915_perf_metrics_glk.h"
++#include "i915_perf_metrics_cnl.h"
++#include "i915_perf_metrics_icl.h"
++#include "i915_perf_metrics_ehl.h"
++#include "i915_perf_metrics_tgl.h"
+ 
+ static int
+ perf_ioctl(int fd, unsigned long request, void *arg)
+diff --git a/lib/meson.build b/lib/meson.build
+index 8112bec4..f3649615 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -195,16 +195,33 @@ foreach hw : i915_perf_hardware
+ endforeach
+ 
+ i915_perf_files += custom_target(
+-  'i915-perf-metrics',
++  'i915-perf-equations',
+   input : i915_xml_files,
+-  output : [ 'i915_perf_metrics.c', 'i915_perf_metrics.h' ],
++  output : [ 'i915_perf_equations.c', 'i915_perf_equations.h' ],
+   command : [
+     find_program('i915/perf-configs/perf-codegen.py'),
+     '--code', '@OUTPUT0@',
+     '--header', '@OUTPUT1@',
++    '--equations',
+     '@INPUT@',
+   ])
+ 
++foreach hw : i915_perf_hardware
++  i915_perf_files += custom_target(
++    'i915-perf-metrics-@0@'.format(hw),
++    input : 'i915/perf-configs/oa-@0@.xml'.format(hw),
++    output : [ 'i915_perf_metrics_@0@.c'.format(hw),
++               'i915_perf_metrics_@0@.h'.format(hw), ],
++    command : [
++      find_program('i915/perf-configs/perf-codegen.py'),
++      '--code', '@OUTPUT0@',
++      '--header', '@OUTPUT1@',
++      '--metric_sets',
++      '--equation-include', 'i915_perf_equations.h',
++      '@INPUT@',
++    ])
++endforeach
++
+ lib_igt_i915_perf_build = shared_library(
+   'i915_perf',
+   i915_perf_files,
 -- 
 2.25.1
 
