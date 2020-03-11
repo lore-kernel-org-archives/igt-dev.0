@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 96E946E49B
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Mar 2020 16:58:09 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E41B6E9C4
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Mar 2020 17:26:59 +0000 (UTC)
 From: "Souza, Jose" <jose.souza@intel.com>
-Date: Wed, 11 Mar 2020 16:57:55 +0000
-Message-ID: <3895684d26e5dc2cad336148c3d3cbabd435ce3e.camel@intel.com>
+Date: Wed, 11 Mar 2020 17:26:55 +0000
+Message-ID: <951ff0446086d459dcf1d695feeae7c516e5ca34.camel@intel.com>
 References: <20200311004235.138072-1-jose.souza@intel.com>
- <20200311004235.138072-3-jose.souza@intel.com>
- <20200311073041.GB14594@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <20200311073041.GB14594@platvala-desk.ger.corp.intel.com>
+ <158390487186.13951.5692218179213545289@emeril.freedesktop.org>
+In-Reply-To: <158390487186.13951.5692218179213545289@emeril.freedesktop.org>
 Content-Language: en-US
-Content-ID: <A5964F5ED8D7C14BA776A9FD2714F480@intel.com>
+Content-ID: <21FABCDA0AD809438254296FCA319197@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 3/4] tests/kms_frontbuffer_tracking: Enable
- positive test on linear tiling
+Subject: Re: [igt-dev]
+ =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bv2=2C1/4=5D_tests/kms=5Ffrontbuffer=5Ftr?=
+ =?utf-8?q?acking=3A_Add_tiling_to_test=5Fmode?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,40 +22,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gV2VkLCAyMDIwLTAzLTExIGF0IDA5OjMwICswMjAwLCBQZXRyaSBMYXR2YWxhIHdyb3RlOg0K
-PiBPbiBUdWUsIE1hciAxMCwgMjAyMCBhdCAwNTo0MjozNFBNIC0wNzAwLCBKb3PDqSBSb2JlcnRv
-IGRlIFNvdXphDQo+IHdyb3RlOg0KPiA+IGk5MTUgaXMgbWFraW5nIGZlbmNlcyBub3QgbWFuZGF0
-b3J5IHRvIGVuYWJsZSBGQkMgaW4gbmV3ZXINCj4gPiBwbGF0Zm9ybXMuDQo+ID4gQXMgQlNwZWMg
-ZG8gbm90IGhhdmUgcmVzdHJpY3Rpb25zIGFnYWluc3QgdGlsaW5nIGZvcm1hdHMgdG8gZW5hYmxl
-DQo+ID4gRkJDIGl0IHdpbGwgYmUgcG9zc2libGUgdG8gZW5hYmxlIEZCQyB3aXRoIGxpbmVhciB0
-aWxpbmcsIHNvIGxldHMNCj4gPiB0ZXN0DQo+ID4gaXQuDQo+ID4gDQo+ID4gdjI6DQo+ID4gLSBj
-aGFuZ2VkIGZyb20gR0VOMTEgdG8gR0VOOSBmb2xsb3dpbmcga2VybmVsIHBhdGNoZXMNCj4gPiAN
-Cj4gPiBDYzogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4N
-Cj4gPiBTaWduZWQtb2ZmLWJ5OiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3NlLnNvdXphQGlu
-dGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAgdGVzdHMva21zX2Zyb250YnVmZmVyX3RyYWNraW5nLmMg
-fCA0ICsrKysNCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKQ0KPiA+IA0KPiA+
-IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcuYw0KPiA+IGIvdGVz
-dHMva21zX2Zyb250YnVmZmVyX3RyYWNraW5nLmMNCj4gPiBpbmRleCAxMmJhOWJiYS4uNzZiZDIy
-ZTYgMTAwNjQ0DQo+ID4gLS0tIGEvdGVzdHMva21zX2Zyb250YnVmZmVyX3RyYWNraW5nLmMNCj4g
-PiArKysgYi90ZXN0cy9rbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcuYw0KPiA+IEBAIC0yMTcyLDEx
-ICsyMTcyLDE1IEBAIHN0YXRpYyB2b2lkIGZvcm1hdF9kcmF3X3N1YnRlc3QoY29uc3QNCj4gPiBz
-dHJ1Y3QgdGVzdF9tb2RlICp0KQ0KPiA+ICANCj4gPiAgc3RhdGljIGJvb2wgdGlsaW5nX2lzX3Zh
-bGlkKGludCBmZWF0dXJlX2ZsYWdzLCBlbnVtIHRpbGluZ190eXBlDQo+ID4gdGlsaW5nKQ0KPiA+
-ICB7DQo+ID4gKwlpbnQgZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2RldmlkKGRybS5mZCk7DQo+ID4g
-Kw0KPiA+ICAJaWYgKCEoZmVhdHVyZV9mbGFncyAmIEZFQVRVUkVfRkJDKSkNCj4gPiAgCQlyZXR1
-cm4gdHJ1ZTsNCj4gPiAgDQo+ID4gIAlzd2l0Y2ggKHRpbGluZykgew0KPiA+ICAJY2FzZSBUSUxJ
-TkdfTElORUFSOg0KPiA+ICsJCWlmIChBVF9MRUFTVF9HRU4oZGV2aWQsIDkpKQ0KPiA+ICsJCQly
-ZXR1cm4gdHJ1ZTsNCj4gPiAgCQlyZXR1cm4gZmFsc2U7DQo+IA0KPiByZXR1cm4gQVRfTEVBU1Rf
-R0VOKGRldmlkLCA5KTsNCj4gDQo+ID8NCj4gDQoNClllYWgsIHNvdW5kcyBiZXR0ZXIuDQpXaWxs
-IGRvIHRoaXMgY2hhbmdlDQoNCj4gDQo+IA0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
-ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
-by9pZ3QtZGV2Cg==
+On Wed, 2020-03-11 at 05:34 +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: series starting with [v2,1/4] tests/kms_frontbuffer_tracking:
+> Add tiling to test_mode
+> URL   : https://patchwork.freedesktop.org/series/74549/
+> State : failure
+> 
+> == Summary ==
+> 
+> ERROR! This series introduces new undocumented tests:
+> 
+> kms_frontbuffer_tracking@fbc-tiling-linear
+> kms_frontbuffer_tracking@fbc-tiling-y
+> kms_frontbuffer_tracking@fbcdrrs-tiling-linear
+> kms_frontbuffer_tracking@fbcdrrs-tiling-y
+> kms_frontbuffer_tracking@fbcpsr-tiling-linear
+> kms_frontbuffer_tracking@fbcpsr-tiling-y
+> kms_frontbuffer_tracking@fbcpsrdrrs-tiling-linear
+> kms_frontbuffer_tracking@fbcpsrdrrs-tiling-y
+> 
+
+Forgot that
+Will be adding:
+igt_describe("Test the tiling formats, if the
+tiling format supports FBC do the basic drawing test if not set the
+mode and test if FBC is disabled");
+
+> Can you document them as per the requirement in the
+> [CONTRIBUTING.md]?
+> 
+> [Documentation] has more details on how to do this.
+> 
+> Here are few examples:
+> https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
+> https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+> 
+> Thanks in advance!
+> 
+> [CONTRIBUTING.md]: 
+> https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
+> [Documentation]: 
+> https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+> 
+> Other than that, pipeline status: SUCCESS.
+> 
+> see 
+> https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/118421
+> for the overview.
+> 
+> == Logs ==
+> 
+> For more details see: 
+> https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/118421
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
