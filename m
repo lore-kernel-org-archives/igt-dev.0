@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A9F9489A34
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Mar 2020 08:23:33 +0000 (UTC)
-Date: Wed, 11 Mar 2020 10:23:31 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200311082331.GC14594@platvala-desk.ger.corp.intel.com>
-References: <1579494027-2018-1-git-send-email-kunal1.joshi@intel.com>
- <1579494027-2018-2-git-send-email-kunal1.joshi@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49ED589E69
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Mar 2020 08:28:32 +0000 (UTC)
+From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Date: Wed, 11 Mar 2020 08:28:26 +0000
+Message-ID: <7172aef013314080b562c813869f2d2e@intel.com>
+References: <20200309165617.499759-1-emil.l.velikov@gmail.com>
+ <158385582495.5456.12185226106672613147@emeril.freedesktop.org>
+ <20200311071557.GA14594@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <20200311071557.GA14594@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1579494027-2018-2-git-send-email-kunal1.joshi@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/3] Make basic chamelium function
- accessible to other tests.
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdC9j?=
+ =?utf-8?q?ore=5Fsetmaster=3A_new_test_for_drop/set_master_semantics_=28re?=
+ =?utf-8?b?djIp?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,200 +22,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Kunal Joshi <kunal1.joshi@intel.com>, Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: igt-dev@lists.freedesktop.org, martin.peres@intel.com
+To: "Latvala, Petri" <petri.latvala@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Jan 20, 2020 at 09:50:25AM +0530, Kunal Joshi wrote:
-> There are many use case where we can integrate chamelium with other tests,
-> Migrating some of basic chamelium functions to igt_chamelium lib to avoid
-> Code rewriting.
-> 
-> v2: Moved one more function reset_state from tests/kms_chamelium to
-> lib/igt_chamelium.
-> 
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->  lib/igt_chamelium.c   | 85 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_chamelium.h   | 28 +++++++++++++++++
->  tests/kms_chamelium.c | 81 +-----------------------------------------------
->  3 files changed, 114 insertions(+), 80 deletions(-)
-> 
-> diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-> index 9971f51..8b910bf 100644
-> --- a/lib/igt_chamelium.c
-> +++ b/lib/igt_chamelium.c
-> @@ -132,6 +132,91 @@ static struct chamelium *cleanup_instance;
->  static void chamelium_do_calculate_fb_crc(cairo_surface_t *fb_surface,
->  					  igt_crc_t *out);
->  
-> +void
-> +require_displayport_connector_present(struct data_chamelium_t *data,
-> +							    unsigned int type)
-> +{
-> +	int i, count = 0;
-> +	bool found = false;
-> +
-> +	for (i = 0; i < data->port_count && !found; i++) {
-> +		if (chamelium_port_get_type(data->ports[i]) == type)
-> +			count++;
-> +		if (count == 2)
-> +			found = true;
-> +	}
-> +	igt_require_f(found,
-> +		"Need atleast 2 ports of type %s connected, found %d\n",
-> +		kmstest_connector_type_str(type), count);
-> +}
-
-For a helper, this could use some generalizing. It's called "require
-displayport connector" but requires exactly 2 connectors of a given
-type, not displayport. The name also needs to be prefixed with
-chamelium_. chamelium_require_connectors(chamelium, type, count)?
-
-Comment below for data_chamelium_t usage.
-
-> +
-> +drmModeConnection
-> +reprobe_connector(struct data_chamelium_t *data, struct chamelium_port *port)
-> +{
-> +	drmModeConnector *connector;
-> +	drmModeConnection status;
-> +
-> +	igt_debug("Reprobing %s...\n", chamelium_port_get_name(port));
-> +	connector = chamelium_port_get_connector(data->chamelium, port, true);
-> +	igt_assert(connector);
-> +	status = connector->connection;
-> +
-> +	drmModeFreeConnector(connector);
-> +	return status;
-> +}
-
-As a library function, this functions looks redundant. Just keep
-copies of that function in the tests IMHO.
-
-
-> +
-> +const char *connection_str(drmModeConnection c)
-> +{
-> +	switch (c) {
-> +	case DRM_MODE_CONNECTED:
-> +		return "connected";
-> +	case DRM_MODE_DISCONNECTED:
-> +		return "disconnected";
-> +	case DRM_MODE_UNKNOWNCONNECTION:
-> +		return "unknown";
-> +	}
-> +	assert(0); /* unreachable */
-> +}
-
-Isn't this just kmstest_connector_status_str()?
-
-> +
-> +void
-> +wait_for_connector(struct data_chamelium_t *data, struct chamelium_port *port,
-> +		   drmModeConnection status)
-> +{
-> +	igt_debug("Waiting for %s to get %s...\n",
-> +		chamelium_port_get_name(port), connection_str(status));
-> +
-> +	/*
-> +	 * Rely on simple reprobing so we don't fail tests that don't require
-> +	 * that hpd events work in the event that hpd doesn't work on the system
-> +	 */
-> +	igt_until_timeout(HOTPLUG_TIMEOUT) {
-> +	if (reprobe_connector(data, port) == status)
-> +		return;
-> +
-> +	usleep(50000);
-> +
-> +	}
-> +	igt_assert_f(false, "Timed out waiting for %s to get %s\n",
-> +		chamelium_port_get_name(port), connection_str(status));
-> +}
-> +
-> +void
-> +reset_state(struct data_chamelium_t *data, struct chamelium_port *port)
-> +{
-> +	int p;
-> +
-> +	chamelium_reset(data->chamelium);
-> +
-> +	if (port) {
-> +		wait_for_connector(data, port, DRM_MODE_DISCONNECTED);
-> +	} else {
-> +		for (p = 0; p < data->port_count; p++) {
-> +			port = data->ports[p];
-> +			wait_for_connector(data, port, DRM_MODE_DISCONNECTED);
-> +		}
-> +	}
-> +}
-> +
-
-I'm fairly certain we already have helpers for doing these operations,
-or if we don't, we don't need them in lib.
-
-
->  /**
->   * chamelium_get_ports:
->   * @chamelium: The Chamelium instance to use
-> diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
-> index 08705a9..71080f4 100644
-> --- a/lib/igt_chamelium.h
-> +++ b/lib/igt_chamelium.h
-> @@ -25,6 +25,8 @@
->  
->  #ifndef IGT_CHAMELIUM_H
->  #define IGT_CHAMELIUM_H
-> +#define TEST_EDID_COUNT 5
-> +#define HOTPLUG_TIMEOUT 20
->  
->  #include "config.h"
->  
-> @@ -32,6 +34,7 @@
->  #include <xf86drmMode.h>
->  
->  #include "igt_debugfs.h"
-> +#include "igt_kms.h"
->  
->  struct igt_fb;
->  struct edid;
-> @@ -81,6 +84,17 @@ struct chamelium_infoframe {
->  
->  struct chamelium_edid;
->  
-> +struct data_chamelium_t {
-> +	struct chamelium *chamelium;
-> +	struct chamelium_port **ports;
-> +	igt_display_t display;
-> +	int port_count;
-> +
-> +	int drm_fd;
-> +
-> +	struct chamelium_edid *edids[TEST_EDID_COUNT];
-> +};
-> +
-
-This struct is entirely tests/kms_chamelium.c specific. Make the new
-lib helpers take a struct chamelium* instead. Why kms_chamelium even
-has this intermediary storage for all this data is beyond my expertise
-but I'm not seeing it.
-
-From a quick look, the only thing the new lib functions would need is
-access to the chamelium ports, and they can be retrieved with
-chamelium_get_ports(). 
-
-
-CC'ing Arek for comments with his chamelium lib expertise.
-
-
--- 
-Petri Latvala
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+UGV0cmksICBBZGRyZXNzZWQgdGhlIGlzc3VlIGFuZCByZS1yZXBvcnRlZC4NCg0KTGFrc2htaS4N
+Ci0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBMYXR2YWxhLCBQZXRyaSA8cGV0cmku
+bGF0dmFsYUBpbnRlbC5jb20+IA0KU2VudDogV2VkbmVzZGF5LCBNYXJjaCAxMSwgMjAyMCA5OjE2
+IEFNDQpUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IFZ1ZHVtLCBMYWtzaG1pbmFy
+YXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1bUBpbnRlbC5jb20+DQpDYzogRW1pbCBWZWxpa292
+IDxlbWlsLmwudmVsaWtvdkBnbWFpbC5jb20+DQpTdWJqZWN0OiBSZTogW2lndC1kZXZdIOKclyBG
+aS5DSS5JR1Q6IGZhaWx1cmUgZm9yIHRlc3QvY29yZV9zZXRtYXN0ZXI6IG5ldyB0ZXN0IGZvciBk
+cm9wL3NldCBtYXN0ZXIgc2VtYW50aWNzIChyZXYyKQ0KDQpPbiBUdWUsIE1hciAxMCwgMjAyMCBh
+dCAwMzo1NzowNFBNICswMDAwLCBQYXRjaHdvcmsgd3JvdGU6DQo+ID09IFNlcmllcyBEZXRhaWxz
+ID09DQo+IA0KPiBTZXJpZXM6IHRlc3QvY29yZV9zZXRtYXN0ZXI6IG5ldyB0ZXN0IGZvciBkcm9w
+L3NldCBtYXN0ZXIgc2VtYW50aWNzIChyZXYyKQ0KPiBVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3Jr
+LmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvNzQ0MDAvDQo+IFN0YXRlIDogZmFpbHVyZQ0KPiANCj4g
+PT0gU3VtbWFyeSA9PQ0KPiANCj4gQ0kgQnVnIExvZyAtIGNoYW5nZXMgZnJvbSBDSV9EUk1fODEw
+Nl9mdWxsIC0+IElHVFBXXzQyODJfZnVsbCANCj4gPT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PQ0KPiANCj4gU3VtbWFyeQ0KPiAtLS0tLS0tDQo+IA0K
+PiAgICoqRkFJTFVSRSoqDQo+IA0KPiAgIFNlcmlvdXMgdW5rbm93biBjaGFuZ2VzIGNvbWluZyB3
+aXRoIElHVFBXXzQyODJfZnVsbCBhYnNvbHV0ZWx5IG5lZWQgdG8gYmUNCj4gICB2ZXJpZmllZCBt
+YW51YWxseS4NCj4gICANCj4gICBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMgaGF2
+ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNoYW5nZXMNCj4gICBpbnRyb2R1Y2VkIGluIElHVFBX
+XzQyODJfZnVsbCwgcGxlYXNlIG5vdGlmeSB5b3VyIGJ1ZyB0ZWFtIHRvIGFsbG93IHRoZW0NCj4g
+ICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZh
+bHNlIHBvc2l0aXZlcyBpbiBDSS4NCj4gDQo+ICAgRXh0ZXJuYWwgVVJMOiANCj4gaHR0cHM6Ly9p
+bnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV180MjgyL2luZGV4Lmh0bWwNCj4g
+DQo+IFBvc3NpYmxlIG5ldyBpc3N1ZXMNCj4gLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiANCj4gICBI
+ZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQgbWF5IGhhdmUgYmVlbiBpbnRyb2R1Y2Vk
+IGluIElHVFBXXzQyODJfZnVsbDoNCj4gDQo+ICMjIyBJR1QgY2hhbmdlcyAjIyMNCj4gDQo+ICMj
+IyMgUG9zc2libGUgcmVncmVzc2lvbnMgIyMjIw0KPiANCj4gICAqIHtpZ3RAY29yZV9zZXRtYXN0
+ZXJAbWFzdGVyLWRyb3Atc2V0LXVzZXJ9IChORVcpOg0KPiAgICAgLSBzaGFyZC1pY2xiOiAgICAg
+ICAgIE5PVFJVTiAtPiBbRkFJTF1bMV0NCj4gICAgWzFdOiBodHRwczovL2ludGVsLWdmeC1jaS4w
+MS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzQyODIvc2hhcmQtaWNsYjMvaWd0QGNvcmVfc2V0bWFz
+dGVyQG1hc3Rlci1kcm9wLXNldC11c2VyLmh0bWwNCj4gICAgIC0gc2hhcmQta2JsOiAgICAgICAg
+ICBOT1RSVU4gLT4gW0ZBSUxdWzJdDQo+ICAgIFsyXTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
+b3JnL3RyZWUvZHJtLXRpcC9JR1RQV180MjgyL3NoYXJkLWtibDEvaWd0QGNvcmVfc2V0bWFzdGVy
+QG1hc3Rlci1kcm9wLXNldC11c2VyLmh0bWwNCj4gICAgIC0gc2hhcmQtc25iOiAgICAgICAgICBO
+T1RSVU4gLT4gW0ZBSUxdWzNdDQo+ICAgIFszXTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3Jn
+L3RyZWUvZHJtLXRpcC9JR1RQV180MjgyL3NoYXJkLXNuYjQvaWd0QGNvcmVfc2V0bWFzdGVyQG1h
+c3Rlci1kcm9wLXNldC11c2VyLmh0bWwNCj4gICAgIC0gc2hhcmQtdGdsYjogICAgICAgICBOT1RS
+VU4gLT4gW0ZBSUxdWzRdDQo+ICAgIFs0XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3Ry
+ZWUvZHJtLXRpcC9JR1RQV180MjgyL3NoYXJkLXRnbGIyL2lndEBjb3JlX3NldG1hc3RlckBtYXN0
+ZXItZHJvcC1zZXQtdXNlci5odG1sDQo+ICAgICAtIHNoYXJkLWFwbDogICAgICAgICAgTk9UUlVO
+IC0+IFtGQUlMXVs1XQ0KPiAgICBbNV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVl
+L2RybS10aXAvSUdUUFdfNDI4Mi9zaGFyZC1hcGwyL2lndEBjb3JlX3NldG1hc3RlckBtYXN0ZXIt
+ZHJvcC1zZXQtdXNlci5odG1sDQo+ICAgICAtIHNoYXJkLWdsazogICAgICAgICAgTk9UUlVOIC0+
+IFtGQUlMXVs2XQ0KPiAgICBbNl06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2Ry
+bS10aXAvSUdUUFdfNDI4Mi9zaGFyZC1nbGszL2lndEBjb3JlX3NldG1hc3RlckBtYXN0ZXItZHJv
+cC1zZXQtdXNlci5odG1sDQo+ICAgICAtIHNoYXJkLWhzdzogICAgICAgICAgTk9UUlVOIC0+IFtG
+QUlMXVs3XQ0KPiAgICBbN106IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9k
+cm0tdGlwL0lHVFBXXzQyODIvc2hhcmQtaHN3Ny9pZ3RAY29yDQo+IGVfc2V0bWFzdGVyQG1hc3Rl
+ci1kcm9wLXNldC11c2VyLmh0bWwNCj4gDQo+ICAgKiBpZ3RAa21zX2ZsaXBAbW9kZXNldC12cy12
+YmxhbmstcmFjZToNCj4gICAgIC0gc2hhcmQta2JsOiAgICAgICAgICBbUEFTU11bOF0gLT4gW0lO
+Q09NUExFVEVdWzldICsxIHNpbWlsYXIgaXNzdWUNCj4gICAgWzhdOiBodHRwczovL2ludGVsLWdm
+eC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV84MTA2L3NoYXJkLWtibDMvaWd0QGttc19m
+bGlwQG1vZGVzZXQtdnMtdmJsYW5rLXJhY2UuaHRtbA0KPiAgICBbOV06IA0KPiBodHRwczovL2lu
+dGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzQyODIvc2hhcmQta2JsMy9pZ3RA
+a21zDQo+IF9mbGlwQG1vZGVzZXQtdnMtdmJsYW5rLXJhY2UuaHRtbA0KDQpMYWtzaG1pLCBpZ3RA
+a21zX2ZsaXBAbW9kZXNldC12cy12YmxhbmstcmFjZSBpcyBhIGZhbHNlIHBvc2l0aXZlLg0KDQoN
+Cj4gDQo+ICAgDQo+IE5ldyB0ZXN0cw0KPiAtLS0tLS0tLS0NCj4gDQo+ICAgTmV3IHRlc3RzIGhh
+dmUgYmVlbiBpbnRyb2R1Y2VkIGJldHdlZW4gQ0lfRFJNXzgxMDZfZnVsbCBhbmQgSUdUUFdfNDI4
+Ml9mdWxsOg0KPiANCj4gIyMjIE5ldyBJR1QgdGVzdHMgKDMpICMjIw0KPiANCj4gICAqIGlndEBj
+b3JlX3NldG1hc3RlckBtYXN0ZXItZHJvcC1zZXQtcm9vdDoNCj4gICAgIC0gU3RhdHVzZXMgOiA3
+IHBhc3MocykNCj4gICAgIC0gRXhlYyB0aW1lOiBbMC4wMSwgMC4wMl0gcw0KPiANCj4gICAqIGln
+dEBjb3JlX3NldG1hc3RlckBtYXN0ZXItZHJvcC1zZXQtc2hhcmVkLWZkOg0KPiAgICAgLSBTdGF0
+dXNlcyA6IDcgcGFzcyhzKQ0KPiAgICAgLSBFeGVjIHRpbWU6IFswLjAxLCAwLjAzXSBzDQo+IA0K
+PiAgICogaWd0QGNvcmVfc2V0bWFzdGVyQG1hc3Rlci1kcm9wLXNldC11c2VyOg0KPiAgICAgLSBT
+dGF0dXNlcyA6IDcgZmFpbChzKQ0KPiAgICAgLSBFeGVjIHRpbWU6IFswLjAxLCAwLjA0XSBzDQo+
+DQoNCkFuZCB0aGVzZSBsb29rIGFzIGV4cGVjdGVkLiBMYWtzaG1pLCBoZWFkcy11cCwgdGhlIGZh
+aWx1cmUgb24gaWd0QGNvcmVfc2V0bWFzdGVyQG1hc3Rlci1kcm9wLXNldC11c2VyIGFib3ZlIHdp
+bGwgYXBwZWFyIGluIHBvc3QtbWVyZ2Ugc29vbi4gQWJvdmUgbG9ncyBjYW4gYmUgdXNlZCB0byBm
+aWxlIHRoZSBidWcgcmVwb3J0IG5vdy4NCg0KUGF0Y2ggbWVyZ2VkLCB0aGFua3MuDQoNCg0KLS0N
+ClBldHJpIExhdHZhbGENCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpJbnRlbCBGaW5sYW5kIE95ClJlZ2lzdGVyZWQg
+QWRkcmVzczogUEwgMjgxLCAwMDE4MSBIZWxzaW5raSAKQnVzaW5lc3MgSWRlbnRpdHkgQ29kZTog
+MDM1NzYwNiAtIDQgCkRvbWljaWxlZCBpbiBIZWxzaW5raSAKClRoaXMgZS1tYWlsIGFuZCBhbnkg
+YXR0YWNobWVudHMgbWF5IGNvbnRhaW4gY29uZmlkZW50aWFsIG1hdGVyaWFsIGZvcgp0aGUgc29s
+ZSB1c2Ugb2YgdGhlIGludGVuZGVkIHJlY2lwaWVudChzKS4gQW55IHJldmlldyBvciBkaXN0cmli
+dXRpb24KYnkgb3RoZXJzIGlzIHN0cmljdGx5IHByb2hpYml0ZWQuIElmIHlvdSBhcmUgbm90IHRo
+ZSBpbnRlbmRlZApyZWNpcGllbnQsIHBsZWFzZSBjb250YWN0IHRoZSBzZW5kZXIgYW5kIGRlbGV0
+ZSBhbGwgY29waWVzLgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
+dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
