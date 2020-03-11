@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 11 Mar 2020 15:42:21 -0000
-Message-ID: <158394134169.13949.7292350442392084634@emeril.freedesktop.org>
+Date: Wed, 11 Mar 2020 15:46:27 -0000
+Message-ID: <158394158754.13949.10397652549112634503@emeril.freedesktop.org>
 References: <20200311093448.4103262-1-chris@chris-wilson.co.uk>
 In-Reply-To: <20200311093448.4103262-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_s?=
- =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/5=5D_lib/i915=3A_Create_a_cont?=
- =?utf-8?q?ext_wrapping_one_specific_engine?=
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/5=5D_lib/i915=3A_Create_a_context_w?=
+ =?utf-8?q?rapping_one_specific_engine?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,48 +32,114 @@ State : failure
 
 == Summary ==
 
-ERROR! This series introduces new undocumented tests:
+CI Bug Log - changes from CI_DRM_8120 -> IGTPW_4291
+====================================================
 
-sysfs_heartbeat_interval
-sysfs_heartbeat_interval@idempotent
-sysfs_heartbeat_interval@invalid
-sysfs_heartbeat_interval@long
-sysfs_heartbeat_interval@mixed
-sysfs_heartbeat_interval@nopreempt
-sysfs_heartbeat_interval@off
-sysfs_heartbeat_interval@precise
-sysfs_preempt_timeout
-sysfs_preempt_timeout@idempotent
-sysfs_preempt_timeout@invalid
-sysfs_preempt_timeout@off
-sysfs_preempt_timeout@timeout
-sysfs_timeslice_duration
-sysfs_timeslice_duration@duration
-sysfs_timeslice_duration@idempotent
-sysfs_timeslice_duration@invalid
-sysfs_timeslice_duration@off
-sysfs_timeslice_duration@timeout
+Summary
+-------
 
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
+  **FAILURE**
 
-[Documentation] has more details on how to do this.
+  Serious unknown changes coming with IGTPW_4291 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4291, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4291/index.html
 
-Thanks in advance!
+Possible new issues
+-------------------
 
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+  Here are the unknown changes that may have been introduced in IGTPW_4291:
 
-Other than that, pipeline status: SUCCESS.
+### IGT changes ###
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/118604 for the overview.
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-cfl-8700k:       [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8120/fi-cfl-8700k/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4291/fi-cfl-8700k/igt@i915_selftest@live@execlists.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4291 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_parallel@contexts:
+    - fi-tgl-y:           [PASS][3] -> [INCOMPLETE][4] ([CI#94] / [i915#470] / [i915#529])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8120/fi-tgl-y/igt@gem_exec_parallel@contexts.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4291/fi-tgl-y/igt@gem_exec_parallel@contexts.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gem_contexts:
+    - fi-skl-lmem:        [INCOMPLETE][5] ([i915#424]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8120/fi-skl-lmem/igt@i915_selftest@live@gem_contexts.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4291/fi-skl-lmem/igt@i915_selftest@live@gem_contexts.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-kbl-soraka:      [DMESG-FAIL][7] ([i915#541]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8120/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4291/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+
+  
+  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
+  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
+  [i915#470]: https://gitlab.freedesktop.org/drm/intel/issues/470
+  [i915#529]: https://gitlab.freedesktop.org/drm/intel/issues/529
+  [i915#541]: https://gitlab.freedesktop.org/drm/intel/issues/541
+
+
+Participating hosts (49 -> 43)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5505 -> IGTPW_4291
+
+  CI-20190529: 20190529
+  CI_DRM_8120: ce66c439df71f01b018803664c4a50fc61255788 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4291: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4291/index.html
+  IGT_5505: 8973d811f3fdfb4ace4aabab2095ce0309881648 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@sysfs_heartbeat_interval@idempotent
++igt@sysfs_heartbeat_interval@invalid
++igt@sysfs_heartbeat_interval@long
++igt@sysfs_heartbeat_interval@mixed
++igt@sysfs_heartbeat_interval@nopreempt
++igt@sysfs_heartbeat_interval@off
++igt@sysfs_heartbeat_interval@precise
++igt@sysfs_preempt_timeout@idempotent
++igt@sysfs_preempt_timeout@invalid
++igt@sysfs_preempt_timeout@off
++igt@sysfs_preempt_timeout@timeout
++igt@sysfs_timeslice_duration@duration
++igt@sysfs_timeslice_duration@idempotent
++igt@sysfs_timeslice_duration@invalid
++igt@sysfs_timeslice_duration@off
++igt@sysfs_timeslice_duration@timeout
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/118604
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4291/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
