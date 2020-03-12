@@ -1,11 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 12 Mar 2020 11:52:27 -0000
-Message-ID: <158401394725.4948.16211640469686394816@emeril.freedesktop.org>
+Date: Thu, 12 Mar 2020 11:57:53 -0000
+Message-ID: <158401427350.4950.8823205069194007700@emeril.freedesktop.org>
 References: <20200312095944.7477-1-petri.latvala@intel.com>
 In-Reply-To: <20200312095944.7477-1-petri.latvala@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
  =?utf-8?q?_starting_with_=5Bi-g-t=2C1/3=5D_runner=3A_Handle_outputs_befor?=
  =?utf-8?q?e_checking_for_timeout?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -28,7 +28,7 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Series: series starting with [i-g-t,1/3] runner: Handle outputs before checking for timeout
 URL   : https://patchwork.freedesktop.org/series/74636/
-State : failure
+State : success
 
 == Summary ==
 
@@ -38,32 +38,12 @@ CI Bug Log - changes from IGT_5506 -> IGTPW_4297
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_4297 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_4297, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4297/index.html
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_4297:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@gt_contexts:
-    - fi-snb-2520m:       [PASS][1] -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5506/fi-snb-2520m/igt@i915_selftest@live@gt_contexts.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4297/fi-snb-2520m/igt@i915_selftest@live@gt_contexts.html
-
-  
 Known issues
 ------------
 
@@ -74,9 +54,14 @@ Known issues
 #### Issues hit ####
 
   * igt@i915_selftest@live@execlists:
-    - fi-kbl-soraka:      [PASS][3] -> [DMESG-FAIL][4] ([i915#841])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5506/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4297/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+    - fi-kbl-soraka:      [PASS][1] -> [DMESG-FAIL][2] ([i915#841])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5506/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4297/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@gt_contexts:
+    - fi-snb-2520m:       [PASS][3] -> [DMESG-FAIL][4] ([i915#1435])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5506/fi-snb-2520m/igt@i915_selftest@live@gt_contexts.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4297/fi-snb-2520m/igt@i915_selftest@live@gt_contexts.html
 
   
 #### Possible fixes ####
@@ -112,6 +97,7 @@ Known issues
 
   [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
   [fdo#112406]: https://bugs.freedesktop.org/show_bug.cgi?id=112406
+  [i915#1435]: https://gitlab.freedesktop.org/drm/intel/issues/1435
   [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
   [i915#666]: https://gitlab.freedesktop.org/drm/intel/issues/666
   [i915#841]: https://gitlab.freedesktop.org/drm/intel/issues/841
