@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41E7F6EAB7
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2020 13:18:49 +0000 (UTC)
-References: <20200310030741.13164-1-umesh.nerlige.ramappa@intel.com>
- <a96e4004-3c72-d39e-4ba7-02c582ff6538@intel.com>
- <20200310175741.GD9651@orsosgc001.amr.corp.intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D0236EAB8
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2020 13:28:22 +0000 (UTC)
+References: <20200310190024.6627-1-umesh.nerlige.ramappa@intel.com>
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <fea23c96-d595-26d6-9410-cb65eb2dae58@intel.com>
-Date: Thu, 12 Mar 2020 15:18:47 +0200
+Message-ID: <3cb5c86f-af13-5243-00fd-55192022933d@intel.com>
+Date: Thu, 12 Mar 2020 15:28:20 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200310175741.GD9651@orsosgc001.amr.corp.intel.com>
+In-Reply-To: <20200310190024.6627-1-umesh.nerlige.ramappa@intel.com>
 Content-Language: en-US
 Subject: Re: [igt-dev] [PATCH i-g-t] test/perf: Add test to verify OA TLB
  invalidation
@@ -20,135 +18,175 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris.p.wilson@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>, igt-dev@lists.freedesktop.org, Chris Wilson <chris.p.wilson@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMTAvMDMvMjAyMCAxOTo1NywgVW1lc2ggTmVybGlnZSBSYW1hcHBhIHdyb3RlOgo+IE9uIFR1
-ZSwgTWFyIDEwLCAyMDIwIGF0IDExOjAyOjAwQU0gKzAyMDAsIExpb25lbCBMYW5kd2VybGluIHdy
-b3RlOgo+PiBPbiAxMC8wMy8yMDIwIDA1OjA3LCBVbWVzaCBOZXJsaWdlIFJhbWFwcGEgd3JvdGU6
-Cj4+PiBSdW4gMiBwb2xsaW5nIHRlc3RzIGJhY2sgdG8gYmFjayBhbmQgY29tcGFyZSB0aGUgbnVt
-YmVyIG9mIE9BIHJlcG9ydHMKPj4+IGNhcHR1cmVkLiBNYWtlIHN1cmUgdGhlIG51bWJlciBvZiBy
-ZXBvcnRzIGFyZSBhbG1vc3Qgc2FtZS4KPj4+Cj4+PiBTaWduZWQtb2ZmLWJ5OiBVbWVzaCBOZXJs
-aWdlIFJhbWFwcGEgPHVtZXNoLm5lcmxpZ2UucmFtYXBwYUBpbnRlbC5jb20+Cj4+PiAtLS0KPj4+
-IMKgdGVzdHMvcGVyZi5jIHwgOTcgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKwo+Pj4gwqAxIGZpbGUgY2hhbmdlZCwgOTcgaW5zZXJ0aW9ucygrKQo+
-Pj4KPj4+IGRpZmYgLS1naXQgYS90ZXN0cy9wZXJmLmMgYi90ZXN0cy9wZXJmLmMKPj4+IGluZGV4
-IDVlODE4MDMwLi4yMzk0YWRjNCAxMDA2NDQKPj4+IC0tLSBhL3Rlc3RzL3BlcmYuYwo+Pj4gKysr
-IGIvdGVzdHMvcGVyZi5jCj4+PiBAQCAtMjI2NSw2ICsyMjY1LDk3IEBAIHRlc3RfcG9sbGluZyh2
-b2lkKQo+Pj4gwqDCoMKgwqAgX19wZXJmX2Nsb3NlKHN0cmVhbV9mZCk7Cj4+PiDCoH0KPj4+ICtz
-dGF0aWMgaW50Cj4+PiArbnVtX3ZhbGlkX3JlcG9ydHNfY2FwdHVyZWQoc3RydWN0IGRybV9pOTE1
-X3BlcmZfb3Blbl9wYXJhbSAqcGFyYW0pCj4+PiArewo+Pj4gK8KgwqDCoCB1aW50OF90IGJ1Zlsx
-MDI0ICogMTAyNF07Cj4+PiArwqDCoMKgIGludDY0X3QgdGlja19ucyA9IDEwMDAwMDAwMDAgLyBz
-eXNjb25mKF9TQ19DTEtfVENLKTsKPj4+ICvCoMKgwqAgaW50NjRfdCB0ZXN0X2R1cmF0aW9uX25z
-ID0gdGlja19ucyAqIDUgKiAxMDA7IC8qIDUgc2Vjb25kcyAqLwo+Pj4gK8KgwqDCoCBpbnQ2NF90
-IHN0YXJ0LCBlbmQ7Cj4+PiArwqDCoMKgIGludCBudW1fcmVwb3J0cyA9IDA7Cj4+PiArCj4+PiAr
-wqDCoMKgIHN0cmVhbV9mZCA9IF9fcGVyZl9vcGVuKGRybV9mZCwgcGFyYW0sIHRydWUpOwo+Pj4g
-Kwo+Pj4gK8KgwqDCoCBpZ3RfZGVidWcoInRpY2sgbGVuZ3RoID0gJWRucywgdGVzdCBkdXJhdGlv
-biA9ICUiUFJJdTY0Im5zXG4iLAo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoCAoaW50KXRpY2tfbnMs
-IHRlc3RfZHVyYXRpb25fbnMpOwo+Pj4gKwo+Pj4gK8KgwqDCoCBzdGFydCA9IGdldF90aW1lKCk7
-Cj4+PiArwqDCoMKgIGRvX2lvY3RsKHN0cmVhbV9mZCwgSTkxNV9QRVJGX0lPQ1RMX0VOQUJMRSwg
-MCk7Cj4+PiArwqDCoMKgIGZvciAoLyogbm9wICovOyAoKGVuZCA9IGdldF90aW1lKCkpIC0gc3Rh
-cnQpIDwgCj4+PiB0ZXN0X2R1cmF0aW9uX25zOyAvKiBub3AgKi8pIHsKPj4+ICvCoMKgwqDCoMKg
-wqDCoCBzdHJ1Y3QgcG9sbGZkIHBvbGxmZCA9IHsgLmZkID0gc3RyZWFtX2ZkLCAuZXZlbnRzID0g
-UE9MTElOIH07Cj4+PiArwqDCoMKgwqDCoMKgwqAgc3RydWN0IGRybV9pOTE1X3BlcmZfcmVjb3Jk
-X2hlYWRlciAqaGVhZGVyOwo+Pj4gK8KgwqDCoMKgwqDCoMKgIGludCByZXQ7Cj4+PiArCj4+PiAr
-wqDCoMKgwqDCoMKgwqAgd2hpbGUgKChyZXQgPSBwb2xsKCZwb2xsZmQsIDEsIC0xKSkgPCAwICYm
-Cj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBlcnJubyA9PSBFSU5UUikKPj4+ICvC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgIDsKPj4+ICvCoMKgwqDCoMKgwqDCoCBpZ3RfYXNzZXJ0X2Vx
-KHJldCwgMSk7Cj4+PiArwqDCoMKgwqDCoMKgwqAgaWd0X2Fzc2VydChwb2xsZmQucmV2ZW50cyAm
-IFBPTExJTik7Cj4+Cj4+Cj4+IEkgZ3Vlc3MgeW91IGNhbiBkcm9wIHRoZSBwb2xsKCkgaWYgeW91
-IGRyb3AgdGhlIAo+PiBJOTE1X1BFUkZfRkxBR19GRF9OT05CTE9DSyBiZWxvdy4KPj4KPj4gVGhh
-dCB3YXkgeW91ciByZWFkcyBhcmUgYmxvY2tpbmcuCj4+Cj4+Cj4+IE9yIGlmIHlvdSB3YW50IG1v
-cmUgYWNjdXJhY3ksIHlvdSBjYW4gY29tcHV0ZSB0aGUgYW1vdW50IG9mIHBvbGwoKSAKPj4gdGlt
-ZW91dCBiYXNlZCBvZiB0ZXN0X2R1cmF0aW9uX25zIGFuZCBleGl0IHRoZSBsb29wIGVhcmxpZXIu
-Cj4+Cj4KPiBJbiB0aGUgZmFpbHVyZSBjYXNlLCBJIGFjdHVhbGx5IHNlZSB6ZXJvIHZhbGlkIHJl
-cG9ydHMgaW4gNSBzZWNvbmRzLCAKPiBzbyB0aGUgYmxvY2tpbmcgcmVhZCB3b3VsZCBibG9jayBl
-bmRsZXNzbHkuIFBvbGwgd2lsbCBpbnN0ZWFkIHJldHVybiAKPiBpbmRpY2F0aW5nIHRoYXQgcmVw
-b3J0cyBhcmUgYXZhaWxhYmxlIChldmVuIGlmIHJlcG9ydHMgYXJlIGludmFsaWQpLgo+Cj4gSSB0
-aGluayBhZGRpbmcgYSBwb2xsIHRpbWVvdXQgYmFzZWQgb24gdGhlIHRlc3QgZHVyYXRpb24gaXMg
-YSBnb29kIAo+IGlkZWEgaW4gY2FzZSB0aGUgcG9sbCBiZWhhdmlvciBjaGFuZ2VzIGluIGZ1dHVy
-ZS4KPgo+Pgo+Pj4gKwo+Pj4gK8KgwqDCoMKgwqDCoMKgIHdoaWxlICgocmV0ID0gcmVhZChzdHJl
-YW1fZmQsIGJ1Ziwgc2l6ZW9mKGJ1ZikpKSA8IDAgJiYKPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIGVycm5vID09IEVJTlRSKQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgOwo+
-Pj4gKwo+Pj4gK8KgwqDCoMKgwqDCoMKgIC8qIHBvbGwgY2hlY2tzIGlmIHRoZSB0YWlsIGhhcyBh
-ZHZhbmNlZCBvbiB0aGUgT0EgYnVmZmVyLCBidXQKPj4+ICvCoMKgwqDCoMKgwqDCoMKgICogZG9l
-cyBub3QgY2hlY2sgaWYgdGhlIHJlcG9ydHMgYXJlIHZhbGlkLiBPbiByZWFkLCB0aGUgCj4+PiBk
-cml2ZXIKPj4+ICvCoMKgwqDCoMKgwqDCoMKgICogY2hlY2tzIGlmIHRoZSByZXBvcnRzIGFyZSB2
-YWxpZCBvciBub3QuIGlmIG5vbmUgb2YgdGhlCj4+PiArwqDCoMKgwqDCoMKgwqDCoCAqIHJlcG9y
-dHMgYXJlIHZhbGlkLCBpdCByZXR1cm5zIEVBR0FJTi4gRUFHQUlOIHNob3VsZCBhbHNvCj4+PiAr
-wqDCoMKgwqDCoMKgwqDCoCAqIHN1ZmZpY2UgdG8gc2hvdyB0aGF0IHRoZSBUTEIgaW52YWxpZGF0
-aW9uIGZhaWxlZCwgYnV0IHdlIAo+Pj4gd2lsbAo+Pj4gK8KgwqDCoMKgwqDCoMKgwqAgKiB0cnkg
-Zm9yIGEgbW9yZSBjb25jcmV0ZSBjaGVjay4gSWdub3JlIHJlYWQgZXJyb3JzIGhlcmUuCj4+PiAr
-wqDCoMKgwqDCoMKgwqDCoCAqLwo+Pj4gK8KgwqDCoMKgwqDCoMKgIGlmIChyZXQgPCAwKQo+Pj4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY29udGludWU7Cj4+PiArCj4+PiArwqDCoMKgwqDCoMKg
-wqAgZm9yIChpbnQgb2Zmc2V0ID0gMDsgb2Zmc2V0IDwgcmV0OyBvZmZzZXQgKz0gaGVhZGVyLT5z
-aXplKSB7Cj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBoZWFkZXIgPSAodm9pZCAqKShidWYg
-KyBvZmZzZXQpOwo+Pj4gKwo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgKGhlYWRlci0+
-dHlwZSA9PSBEUk1fSTkxNV9QRVJGX1JFQ09SRF9TQU1QTEUpIHsKPj4+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgdWludDMyX3QgKnJlcG9ydCA9ICh2b2lkICopKGhlYWRlciArIDEp
-Owo+Pj4gKwo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoKHJlcG9ydFsw
-XSA+PiBPQVJFUE9SVF9SRUFTT05fU0hJRlQpICYKPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCBPQVJFUE9SVF9SRUFTT05fVElNRVIpCj4+PiArwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbnVtX3JlcG9ydHMrKzsKPj4+ICvCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgIH0KPj4+ICvCoMKgwqDCoMKgwqDCoCB9Cj4+PiArwqDCoMKgIH0KPj4+ICvC
-oMKgwqAgX19wZXJmX2Nsb3NlKHN0cmVhbV9mZCk7Cj4+PiArCj4+PiArwqDCoMKgIHJldHVybiBu
-dW1fcmVwb3J0czsKPj4+ICt9Cj4+PiArCj4+PiArc3RhdGljIHZvaWQKPj4+ICtnZW4xMl90ZXN0
-X29hX3RsYl9pbnZhbGlkYXRlKHZvaWQpCj4+PiArewo+Pj4gK8KgwqDCoCBpbnQgb2FfZXhwb25l
-bnQgPSBtYXhfb2FfZXhwb25lbnRfZm9yX3BlcmlvZF9sdGUoMzAwMDAwMDApOwo+Pj4gK8KgwqDC
-oCB1aW50NjRfdCBwcm9wZXJ0aWVzW10gPSB7Cj4+PiArwqDCoMKgwqDCoMKgwqAgRFJNX0k5MTVf
-UEVSRl9QUk9QX1NBTVBMRV9PQSwgdHJ1ZSwKPj4+ICsKPj4+ICvCoMKgwqDCoMKgwqDCoCBEUk1f
-STkxNV9QRVJGX1BST1BfT0FfTUVUUklDU19TRVQsIAo+Pj4gdGVzdF9zZXQtPnBlcmZfb2FfbWV0
-cmljc19zZXQsCj4+PiArwqDCoMKgwqDCoMKgwqAgRFJNX0k5MTVfUEVSRl9QUk9QX09BX0ZPUk1B
-VCwgdGVzdF9zZXQtPnBlcmZfb2FfZm9ybWF0LAo+Pj4gK8KgwqDCoMKgwqDCoMKgIERSTV9JOTE1
-X1BFUkZfUFJPUF9PQV9FWFBPTkVOVCwgb2FfZXhwb25lbnQsCj4+PiArwqDCoMKgIH07Cj4+PiAr
-wqDCoMKgIHN0cnVjdCBkcm1faTkxNV9wZXJmX29wZW5fcGFyYW0gcGFyYW0gPSB7Cj4+PiArwqDC
-oMKgwqDCoMKgwqAgLmZsYWdzID0gSTkxNV9QRVJGX0ZMQUdfRkRfQ0xPRVhFQyB8Cj4+PiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCBJOTE1X1BFUkZfRkxBR19ESVNBQkxFRCB8Cj4+PiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCBJOTE1X1BFUkZfRkxBR19GRF9OT05CTE9DSywKPj4+ICvCoMKgwqDC
-oMKgwqDCoCAubnVtX3Byb3BlcnRpZXMgPSBzaXplb2YocHJvcGVydGllcykgLyAxNiwKPj4+ICvC
-oMKgwqDCoMKgwqDCoCAucHJvcGVydGllc19wdHIgPSB0b191c2VyX3BvaW50ZXIocHJvcGVydGll
-cyksCj4+PiArwqDCoMKgIH07Cj4+PiArwqDCoMKgIGludCBudW1fcmVwb3J0czEsIG51bV9yZXBv
-cnRzMjsKPj4+ICsKPj4+ICvCoMKgwqAgLyogQ2FwdHVyZSByZXBvcnRzIGZvciA1IHNlY29uZHMg
-dHdpY2UgYW5kIHRoZW4gbWFrZSBzdXJlIHlvdSAKPj4+IGdldCBhcm91bmQKPj4+ICvCoMKgwqDC
-oCAqIHRoZSBzYW1lIG51bWJlciBvZiByZXBvcnRzLiBJbiB0aGUgY2FzZSBvZiBmYWlsdXJlLCB0
-aGUgCj4+PiBudW1iZXIgb2YKPj4+ICvCoMKgwqDCoCAqIHJlcG9ydHMgd2lsbCB2YXJ5IGxhcmdl
-bHkgc2luY2UgdGhlIGJlZ2lubmluZyBvZiB0aGUgT0EgYnVmZmVyCj4+PiArwqDCoMKgwqAgKiB3
-aWxsIGhhdmUgaW52YWxpZCBlbnRyaWVzLgo+Pj4gK8KgwqDCoMKgICovCj4+Cj4+Cj4+IEkgdGhv
-dWdodCB5b3Ugd2VyZSBhbHNvIG5vdGljaW5nIGNvcnJ1cHRpb24gaW4gdGhlIGRhdGEuCj4KPiBJ
-IGRvbid0IHNlZSBjb3JydXB0aW9uIG9mIE9BIHJlcG9ydHMuIEp1c3QgbWlzc2luZyByZXBvcnRz
-IGluIHRoZSAKPiBiZWdpbm5pbmcgb2YgT0EgYnVmZmVyLiBBbGwgcmVwb3J0cyBhcmUgemVyb2Vk
-IG91dC4KPgo+IFdoZW4gdHJ5aW5nIHRoZSBpbnRlcnJ1cHQgcGF0Y2hlcywgSSBzYXcgYSByYW5k
-b20gcmVib290IHdpdGggCj4gYmxvY2tpbmctd2l0aC1pbnRlcnJ1cHQgKG9yIGFueSBvZiB0aGUg
-b3RoZXIgc3VidGVzdHMgdGhhdCByYW4gCj4gbXVsdGlwbGUgY2FzZXMpLiBNeSB0aGVvcnkgd2Fz
-IHRoYXQgT0EgaXMgd3JpdGluZyByZXBvcnRzIHRvIG9hIGJ1ZmZlciAKPiBtZW1vcnkgZnJvbSBw
-cmV2aW91cyBpdGVyYXRpb24uIFRoYXQgZmFpbHVyZS9yZWJvb3QgZG9lcyBub3Qgb2NjdXIgCj4g
-YW55bW9yZSB3aXRoIHRoaXMgcGF0Y2ggKGludmFsaWRhdGluZyB0bGIpLgo+Cj4gVGhhbmtzLAo+
-IFVtZXNoCgoKVGhhbmtzIGZvciB0aGUgZXhwbGFuYXRpb24uCgoKLUxpb25lbAoKCj4KPj4KPj4g
-U2VlbXMgbGlrZSBpdCB3b3VsZCBiZSBhbiBlYXNpZXIgY2hhcmFjdGVyaXphdGlvbiBvZiB0aGUg
-ZmFpbHVyZSB0aGFuIAo+PiB0aGUgbnVtYmVyIG9mIHJlcG9ydHMgKHNpbmNlIHRoZSBudW1iZXIg
-Y2FuIHZhcnkgZm9yIGEgb3RoZXIgcmVhc29ucykuCj4+Cj4+IFdoYXQgZG8geW91IHRoaW5rPwo+
-Pgo+Pgo+PiAtTGlvbmVsCj4+Cj4+Cj4+PiArwqDCoMKgIG51bV9yZXBvcnRzMSA9IG51bV92YWxp
-ZF9yZXBvcnRzX2NhcHR1cmVkKCZwYXJhbSk7Cj4+PiArwqDCoMKgIG51bV9yZXBvcnRzMiA9IG51
-bV92YWxpZF9yZXBvcnRzX2NhcHR1cmVkKCZwYXJhbSk7Cj4+PiArCj4+PiArwqDCoMKgIGlndF9k
-ZWJ1ZygibnVtX3JlcG9ydHMxID0gJWQsIG51bV9yZXBvcnRzMiA9ICVkXG4iLCAKPj4+IG51bV9y
-ZXBvcnRzMSwgbnVtX3JlcG9ydHMyKTsKPj4+ICvCoMKgwqAgaWd0X2Fzc2VydChudW1fcmVwb3J0
-czIgPiAwLjk1ICogbnVtX3JlcG9ydHMxKTsKPj4+ICt9Cj4+PiArCj4+PiArCj4+PiDCoHN0YXRp
-YyB2b2lkCj4+PiDCoHRlc3RfYnVmZmVyX2ZpbGwodm9pZCkKPj4+IMKgewo+Pj4gQEAgLTQ2MjIs
-NiArNDcxMywxMiBAQCBpZ3RfbWFpbgo+Pj4gZ2VuOF90ZXN0X3NpbmdsZV9jdHhfcmVuZGVyX3Rh
-cmdldF93cml0ZXNfYV9jb3VudGVyKCk7Cj4+PiDCoMKgwqDCoCB9Cj4+PiArwqDCoMKgIGlndF9k
-ZXNjcmliZSgiVGVzdCBPQSBUTEIgaW52YWxpZGF0ZSIpOwo+Pj4gK8KgwqDCoCBpZ3Rfc3VidGVz
-dCgiZ2VuMTItb2EtdGxiLWludmFsaWRhdGUiKSB7Cj4+PiArwqDCoMKgwqDCoMKgwqAgaWd0X3Jl
-cXVpcmUoaW50ZWxfZ2VuKGRldmlkKSA+PSAxMik7Cj4+PiArwqDCoMKgwqDCoMKgwqAgZ2VuMTJf
-dGVzdF9vYV90bGJfaW52YWxpZGF0ZSgpOwo+Pj4gK8KgwqDCoCB9Cj4+PiArCj4+PiDCoMKgwqDC
-oCBpZ3RfZGVzY3JpYmUoIk1lYXN1cmUgcGVyZm9ybWFuY2UgZm9yIGEgc3BlY2lmaWMgY29udGV4
-dCB1c2luZyAKPj4+IE9BUiBpbiBHZW4gMTIiKTsKPj4+IMKgwqDCoMKgIGlndF9zdWJ0ZXN0KCJn
-ZW4xMi11bnByaXZpbGVnZWQtc2luZ2xlLWN0eC1jb3VudGVycyIpIHsKPj4+IMKgwqDCoMKgwqDC
-oMKgwqAgaWd0X3JlcXVpcmUoaW50ZWxfZ2VuKGRldmlkKSA+PSAxMik7Cj4+Cj4+CgpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcg
-bGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNr
-dG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+On 10/03/2020 21:00, Umesh Nerlige Ramappa wrote:
+> Run 2 polling tests back to back and compare the number of OA reports
+> captured. Make sure the number of reports are almost same.
+>
+> v2: Add timeout to poll (Lionel)
+>
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> ---
+>   tests/perf.c | 99 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 99 insertions(+)
+>
+> diff --git a/tests/perf.c b/tests/perf.c
+> index 5e818030..fea9da1c 100644
+> --- a/tests/perf.c
+> +++ b/tests/perf.c
+> @@ -2265,6 +2265,99 @@ test_polling(void)
+>   	__perf_close(stream_fd);
+>   }
+>   
+> +static int
+> +num_valid_reports_captured(struct drm_i915_perf_open_param *param)
+> +{
+> +	uint8_t buf[1024 * 1024];
+> +	int64_t tick_ns = 1000000000 / sysconf(_SC_CLK_TCK);
+> +#define DURATION_SEC 5 /* 5 seconds */
+> +	int64_t test_duration_ns = tick_ns * DURATION_SEC * 100;
+
+
+Why do you need ticks? poll work in milliseconds.
+
+Can't we stick on milliseconds or nanoseconds?
+
+
+> +	int64_t start, end;
+> +	int num_reports = 0;
+> +
+> +	stream_fd = __perf_open(drm_fd, param, true);
+> +
+> +	igt_debug("tick length = %dns, test duration = %"PRIu64"ns\n",
+> +		  (int)tick_ns, test_duration_ns);
+> +
+> +	start = get_time();
+> +	do_ioctl(stream_fd, I915_PERF_IOCTL_ENABLE, 0);
+> +	for (/* nop */; ((end = get_time()) - start) < test_duration_ns; /* nop */) {
+> +		struct pollfd pollfd = { .fd = stream_fd, .events = POLLIN };
+> +		struct drm_i915_perf_record_header *header;
+> +		int ret;
+> +
+> +		/* we do not want to wait longer than the test duration here */
+> +		while ((ret = poll(&pollfd, 1, DURATION_SEC * 1000)) < 0 &&
+> +		       errno == EINTR)
+
+
+You need to deduct the remaining time for the poll.
+
+Otherwise you depending on how you're synced with the kernel timeout you 
+might capture one more timeout period than what you need for 5s.
+
+
+You could use ppoll if you want more precise timings.
+
+
+> +			;
+> +		igt_assert_eq(ret, 1);
+> +		igt_assert(pollfd.revents & POLLIN);
+> +
+> +		while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 &&
+> +		       errno == EINTR)
+> +			;
+> +
+> +		/* poll checks if the tail has advanced on the OA buffer, but
+> +		 * does not check if the reports are valid. On read, the driver
+> +		 * checks if the reports are valid or not. if none of the
+> +		 * reports are valid, it returns EAGAIN. EAGAIN should also
+> +		 * suffice to show that the TLB invalidation failed, but we will
+> +		 * try for a more concrete check. Ignore read errors here.
+> +		 */
+> +		if (ret < 0)
+> +			continue;
+> +
+> +		for (int offset = 0; offset < ret; offset += header->size) {
+> +			header = (void *)(buf + offset);
+> +
+> +			if (header->type == DRM_I915_PERF_RECORD_SAMPLE) {
+> +				uint32_t *report = (void *)(header + 1);
+> +
+> +				if ((report[0] >> OAREPORT_REASON_SHIFT) &
+> +				    OAREPORT_REASON_TIMER)
+> +					num_reports++;
+> +			}
+> +		}
+> +	}
+> +	__perf_close(stream_fd);
+> +
+> +	return num_reports;
+> +}
+> +
+> +static void
+> +gen12_test_oa_tlb_invalidate(void)
+> +{
+> +	int oa_exponent = max_oa_exponent_for_period_lte(30000000);
+> +	uint64_t properties[] = {
+> +		DRM_I915_PERF_PROP_SAMPLE_OA, true,
+> +
+> +		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+> +		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
+> +		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
+> +	};
+> +	struct drm_i915_perf_open_param param = {
+> +		.flags = I915_PERF_FLAG_FD_CLOEXEC |
+> +			I915_PERF_FLAG_DISABLED |
+> +			I915_PERF_FLAG_FD_NONBLOCK,
+> +		.num_properties = sizeof(properties) / 16,
+> +		.properties_ptr = to_user_pointer(properties),
+> +	};
+> +	int num_reports1, num_reports2;
+> +	
+> +	/* Capture reports for 5 seconds twice and then make sure you get around
+> +	 * the same number of reports. In the case of failure, the number of
+> +	 * reports will vary largely since the beginning of the OA buffer
+> +	 * will have invalid entries.
+> +	 */
+
+
+I think a better approach would be to estimate how many reports you 
+should get for 5s and then verify that both captures are within a delta 
+of that expectation.
+
+That way if we fail twice the number of reports we should be getting, 
+we'll be notified.
+
+
+-Lionel
+
+
+> +	num_reports1 = num_valid_reports_captured(&param);
+> +	num_reports2 = num_valid_reports_captured(&param);
+> +
+> +	igt_debug("num_reports1 = %d, num_reports2 = %d\n", num_reports1, num_reports2);
+> +	igt_assert(num_reports2 > 0.95 * num_reports1);
+> +}
+> +
+> +
+>   static void
+>   test_buffer_fill(void)
+>   {
+> @@ -4622,6 +4715,12 @@ igt_main
+>   		gen8_test_single_ctx_render_target_writes_a_counter();
+>   	}
+>   
+> +	igt_describe("Test OA TLB invalidate");
+> +	igt_subtest("gen12-oa-tlb-invalidate") {
+> +		igt_require(intel_gen(devid) >= 12);
+> +		gen12_test_oa_tlb_invalidate();
+> +	}
+> +
+>   	igt_describe("Measure performance for a specific context using OAR in Gen 12");
+>   	igt_subtest("gen12-unprivileged-single-ctx-counters") {
+>   		igt_require(intel_gen(devid) >= 12);
+
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
