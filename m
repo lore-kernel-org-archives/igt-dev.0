@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 715AA6E52A
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Mar 2020 23:53:45 +0000 (UTC)
-From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
-Date: Wed, 11 Mar 2020 16:54:46 -0700
-Message-Id: <20200311235447.195238-3-jose.souza@intel.com>
-In-Reply-To: <20200311235447.195238-1-jose.souza@intel.com>
-References: <20200311235447.195238-1-jose.souza@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v3 3/4] tests/kms_frontbuffer_tracking: Enable
- positive test on linear tiling
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 12 Mar 2020 00:19:27 -0000
+Message-ID: <158397236787.4949.6343199058382454277@emeril.freedesktop.org>
+References: <20200311235447.195238-1-jose.souza@intel.com>
+In-Reply-To: <20200311235447.195238-1-jose.souza@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bv3=2C1/4=5D_tests/kms=5Ffrontbuffer=5Ftr?=
+ =?utf-8?q?acking=3A_Add_tiling_to_test=5Fmode?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,34 +15,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: =?utf-8?q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-aTkxNSBpcyBtYWtpbmcgZmVuY2VzIG5vdCBtYW5kYXRvcnkgdG8gZW5hYmxlIEZCQyBpbiBuZXdl
-ciBwbGF0Zm9ybXMuCkFzIEJTcGVjIGRvIG5vdCBoYXZlIHJlc3RyaWN0aW9ucyBhZ2FpbnN0IHRp
-bGluZyBmb3JtYXRzIHRvIGVuYWJsZQpGQkMgaXQgd2lsbCBiZSBwb3NzaWJsZSB0byBlbmFibGUg
-RkJDIHdpdGggbGluZWFyIHRpbGluZywgc28gbGV0cyB0ZXN0Cml0LgoKdjI6Ci0gY2hhbmdlZCBm
-cm9tIEdFTjExIHRvIEdFTjkgZm9sbG93aW5nIGtlcm5lbCBwYXRjaGVzCgpDYzogVmlsbGUgU3ly
-asOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KQ2M6IFBldHJpIExhdHZhbGEg
-PHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgpTaWduZWQtb2ZmLWJ5OiBKb3PDqSBSb2JlcnRvIGRl
-IFNvdXphIDxqb3NlLnNvdXphQGludGVsLmNvbT4KLS0tCiB0ZXN0cy9rbXNfZnJvbnRidWZmZXJf
-dHJhY2tpbmcuYyB8IDQgKysrLQogMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMSBk
-ZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19mcm9udGJ1ZmZlcl90cmFja2luZy5j
-IGIvdGVzdHMva21zX2Zyb250YnVmZmVyX3RyYWNraW5nLmMKaW5kZXggY2FmOWFhZDMuLjU3M2Fk
-YjI1IDEwMDY0NAotLS0gYS90ZXN0cy9rbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcuYworKysgYi90
-ZXN0cy9rbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcuYwpAQCAtMjE3MiwxMiArMjE3MiwxNCBAQCBz
-dGF0aWMgdm9pZCBmb3JtYXRfZHJhd19zdWJ0ZXN0KGNvbnN0IHN0cnVjdCB0ZXN0X21vZGUgKnQp
-CiAKIHN0YXRpYyBib29sIHRpbGluZ19pc192YWxpZChpbnQgZmVhdHVyZV9mbGFncywgZW51bSB0
-aWxpbmdfdHlwZSB0aWxpbmcpCiB7CisJaW50IGRldmlkID0gaW50ZWxfZ2V0X2RybV9kZXZpZChk
-cm0uZmQpOworCiAJaWYgKCEoZmVhdHVyZV9mbGFncyAmIEZFQVRVUkVfRkJDKSkKIAkJcmV0dXJu
-IHRydWU7CiAKIAlzd2l0Y2ggKHRpbGluZykgewogCWNhc2UgVElMSU5HX0xJTkVBUjoKLQkJcmV0
-dXJuIGZhbHNlOworCQlyZXR1cm4gQVRfTEVBU1RfR0VOKGRldmlkLCA5KTsKIAljYXNlIFRJTElO
-R19YOgogCWNhc2UgVElMSU5HX1k6CiAJCXJldHVybiB0cnVlOwotLSAKMi4yNS4xCgpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcg
-bGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNr
-dG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+== Series Details ==
+
+Series: series starting with [v3,1/4] tests/kms_frontbuffer_tracking: Add tiling to test_mode
+URL   : https://patchwork.freedesktop.org/series/74606/
+State : warning
+
+== Summary ==
+
+Did not get list of undocumented tests for this run, something is wrong!
+
+Other than that, pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/118820 for the overview.
+
+build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/1907991):
+  Running with gitlab-runner 12.8.0 (1b659122)
+    on fdo-packet-m1xl-4 enRL7Lrv
+  section_start:1583972117:prepare_executor
+  Using Docker executor with image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  section_end:1583972117:prepare_executor
+  section_start:1583972117:prepare_script
+  section_end:1583972237:prepare_script
+  section_start:1583972237:upload_artifacts_on_failure
+  section_end:1583972237:upload_artifacts_on_failure
+  ERROR: Job failed (system failure): Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running? (executor_docker.go:716:120s)
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/118820
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
