@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B8886EACF
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2020 14:04:49 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Thu, 12 Mar 2020 19:26:39 +0530
-Message-Id: <20200312135642.13845-3-anshuman.gupta@intel.com>
-In-Reply-To: <20200312135642.13845-1-anshuman.gupta@intel.com>
-References: <20200312135642.13845-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/5] tests/i915_pm_lpsp: lpsp platform
- agnostic support
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 12 Mar 2020 18:10:58 -0000
+Message-ID: <158403665854.4948.10804695370272978250@emeril.freedesktop.org>
+References: <20200311235447.195238-1-jose.souza@intel.com>
+In-Reply-To: <20200311235447.195238-1-jose.souza@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bv3=2C1/4=5D_tests/kms=5Ffrontbuffer=5Ftrackin?=
+ =?utf-8?q?g=3A_Add_tiling_to_test=5Fmode?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,411 +15,345 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: jani.nikula@intel.com
+To: "Souza, Jose" <jose.souza@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Current implementation of lpsp igt test, assumed that every non-edp
-panel isn't a lpsp panel but it is not true on TGL anymore,
-any HDMI/DP/DSI panel connected on pipe A and connected to PORT_{A,B,C}
-can drive LPSP.
-Even on older Gen9 platform a DP panel can drive lpsp on Port A.
-This requires complete design change in current lpsp igt for a platform
-agnostic support.
+== Series Details ==
 
-The new igt approach is relies on connector specific debugfs
-attribute i915_lpsp_info, which exposes whether an output is capable
-of driving lpsp and whether lpsp is enabled.
+Series: series starting with [v3,1/4] tests/kms_frontbuffer_tracking: Add tiling to test_mode
+URL   : https://patchwork.freedesktop.org/series/74606/
+State : success
 
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
----
- tests/i915/i915_pm_lpsp.c | 286 +++++++++++++++++++++++---------------
- 1 file changed, 174 insertions(+), 112 deletions(-)
+== Summary ==
 
-diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
-index 42938e10..ae6d080e 100644
---- a/tests/i915/i915_pm_lpsp.c
-+++ b/tests/i915/i915_pm_lpsp.c
-@@ -25,49 +25,112 @@
-  */
- 
- #include "igt.h"
-+#include "igt_kmod.h"
-+#include "igt_pm.h"
-+#include "igt_sysfs.h"
- #include <sys/types.h>
- #include <sys/stat.h>
- #include <fcntl.h>
- #include <unistd.h>
- 
-+#define MAX_SINK_LPSP_INFO_BUF_LEN	5000
- 
--static bool supports_lpsp(uint32_t devid)
-+#define PWR_DOMAIN_INFO "i915_power_domain_info"
-+
-+const char *snd_module[10] = {"snd_hda_codec_hdmi", "snd_hda_intel", "snd_hda_codec", "snd_hda_core", NULL};
-+
-+typedef struct {
-+	int drm_fd;
-+	int debugfs_fd;
-+	uint32_t devid;
-+	char *pwr_dmn_info;
-+	igt_display_t display;
-+	struct igt_fb fb;
-+	drmModeModeInfo *mode;
-+	igt_output_t *output;
-+} data_t;
-+
-+static void debugfs_read(int fd, const char *param, char *buf, int len)
- {
--	return IS_HASWELL(devid) || IS_BROADWELL(devid);
-+	len = igt_debugfs_simple_read(fd, param, buf, len);
-+	if (len < 0)
-+		igt_assert_eq(len, -ENODEV);
- }
- 
--static bool lpsp_is_enabled(int drm_fd)
-+static bool lpsp_is_enabled(data_t *data)
- {
--	uint32_t val;
-+	char buf[MAX_SINK_LPSP_INFO_BUF_LEN];
-+	int fd;
-+
-+	fd = igt_debugfs_connector_dir(data->drm_fd, data->output->name,
-+				       O_RDONLY);
-+	igt_require(fd >= 0);
-+
-+	debugfs_read(fd, "i915_lpsp_info", buf, sizeof(buf));
-+	close(fd);
- 
--	val = INREG(HSW_PWR_WELL_CTL2);
--	return !(val & HSW_PWR_WELL_STATE_ENABLED);
-+	return strstr(buf, "LPSP enabled");
- }
- 
--/* The LPSP mode is all about an enabled pipe, but we expect to also be in the
-- * low power mode when no pipes are enabled, so do this check anyway. */
--static void screens_disabled_subtest(int drm_fd, drmModeResPtr drm_res)
-+/*
-+ * The LPSP mode is all about an enabled pipe, but we expect to also be in the
-+ * low power mode when no pipes are enabled, so do this check anyway.
-+ */
-+static void screens_disabled_subtest(data_t *data, drmModeResPtr drm_res)
- {
--	kmstest_unset_all_crtcs(drm_fd, drm_res);
--	igt_assert(lpsp_is_enabled(drm_fd));
-+	igt_output_t *output;
-+
-+	kmstest_unset_all_crtcs(data->drm_fd, drm_res);
-+	for_each_connected_output(&data->display, output) {
-+		data->output = output;
-+		igt_assert(lpsp_is_enabled(data));
-+	}
- }
- 
--static uint32_t create_fb(int drm_fd, int width, int height)
-+static void check_output_lpsp(data_t *data)
- {
--	struct igt_fb fb;
-+	if (igt_output_is_lpsp_capable(data->drm_fd, data->output))
-+		igt_assert_f(lpsp_is_enabled(data), "%s: lpsp is not enabled\n%s:\n%s\n",
-+			     data->output->name, PWR_DOMAIN_INFO, data->pwr_dmn_info =
-+			     igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
-+	else
-+		igt_assert(!lpsp_is_enabled(data));
-+}
- 
--	return igt_create_pattern_fb(drm_fd, width, height, DRM_FORMAT_XRGB8888,
--				     LOCAL_DRM_FORMAT_MOD_NONE, &fb);
-+static void setup_lpsp_output(data_t *data)
-+{
-+	igt_plane_t *primary;
-+
-+	primary = igt_output_get_plane_type(data->output,
-+					    DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_create_pattern_fb(data->drm_fd,
-+			      data->mode->hdisplay, data->mode->vdisplay,
-+			      DRM_FORMAT_XRGB8888,
-+			      LOCAL_DRM_FORMAT_MOD_NONE,
-+			      &data->fb);
-+	igt_plane_set_fb(primary, &data->fb);
-+	igt_display_commit(&data->display);
-+}
-+
-+static void cleanup_lpsp_output(data_t *data)
-+{
-+	igt_plane_t *primary;
-+
-+	primary = igt_output_get_plane_type(data->output,
-+					    DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_output_set_pipe(data->output, PIPE_NONE);
-+	igt_display_commit(&data->display);
-+	igt_remove_fb(data->drm_fd, &data->fb);
- }
- 
--static void edp_subtest(int drm_fd, drmModeResPtr drm_res,
--			drmModeConnectorPtr *drm_connectors, uint32_t devid,
--			bool use_panel_fitter)
-+static void edp_subtest(data_t *data, bool use_panel_fitter)
- {
--	int i, rc;
--	uint32_t crtc_id = 0, buffer_id = 0;
--	drmModeConnectorPtr connector = NULL;
--	drmModeModeInfoPtr mode = NULL;
-+	igt_display_t *display = &data->display;
-+	igt_output_t *output;
-+	int valid_output;
-+
- 	drmModeModeInfo std_1024_mode = {
- 		.clock = 65000,
- 		.hdisplay = 1024,
-@@ -86,23 +149,19 @@ static void edp_subtest(int drm_fd, drmModeResPtr drm_res,
- 		.name = "Custom 1024x768",
- 	};
- 
--	kmstest_unset_all_crtcs(drm_fd, drm_res);
--
--	for (i = 0; i < drm_res->count_connectors; i++) {
--		drmModeConnectorPtr c = drm_connectors[i];
-+	for_each_connected_output(display, output) {
-+		drmModeConnectorPtr c = output->config.connector;
- 
- 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
- 			continue;
--		if (c->connection != DRM_MODE_CONNECTED)
-+		if (!igt_pipe_connector_valid(PIPE_A, output))
- 			continue;
- 
--		if (!use_panel_fitter && c->count_modes) {
--			connector = c;
--			mode = &c->modes[0];
--			break;
--		}
-+		/* set output pipe = PIPE_A for LPSP */
-+		igt_output_set_pipe(output, PIPE_A);
-+		data->output = output;
-+
- 		if (use_panel_fitter) {
--			connector = c;
- 
- 			/* This is one of the modes Xorg creates for panels, so
- 			 * it should work just fine. Notice that Gens that
-@@ -113,124 +172,127 @@ static void edp_subtest(int drm_fd, drmModeResPtr drm_res,
- 				   c->modes[0].hdisplay > 1024);
- 			igt_assert(c->count_modes &&
- 				   c->modes[0].vdisplay > 768);
--			mode = &std_1024_mode;
--			break;
-+			data->mode = &std_1024_mode;
-+			igt_output_override_mode(output, data->mode);
-+		} else {
-+			data->mode = igt_output_get_mode(output);
- 		}
--	}
--	igt_require(connector);
- 
--	crtc_id = kmstest_find_crtc_for_connector(drm_fd, drm_res, connector,
--						  0);
--	buffer_id = create_fb(drm_fd, mode->hdisplay, mode->vdisplay);
-+		setup_lpsp_output(data);
-+
-+		if (use_panel_fitter && IS_HASWELL(data->devid))
-+			igt_assert(!lpsp_is_enabled(data));
-+		else
-+			check_output_lpsp(data);
- 
--	igt_assert(buffer_id);
--	igt_assert(connector);
--	igt_assert(mode);
-+		cleanup_lpsp_output(data);
-+		valid_output++;
-+	}
- 
--	rc = drmModeSetCrtc(drm_fd, crtc_id, buffer_id, 0, 0,
--			    &connector->connector_id, 1, mode);
--	igt_assert_eq(rc, 0);
-+	igt_require_f(valid_output, "No edp connector found\n");
-+}
- 
--	if (use_panel_fitter) {
--		if (IS_HASWELL(devid))
--			igt_assert(!lpsp_is_enabled(drm_fd));
--		else
--			igt_assert(lpsp_is_enabled(drm_fd));
--	} else {
--		igt_assert(lpsp_is_enabled(drm_fd));
-+static bool unload_snd_hda_core_module(void)
-+{
-+	int i;
-+
-+	/* unbind snd_hda_intel */
-+	kick_snd_hda_intel();
-+
-+	for (i = 0; snd_module[i]; i++) {
-+		if (igt_kmod_is_loaded(snd_module[i]) &&
-+		    igt_kmod_unload(snd_module[i], KMOD_REMOVE_FORCE)) {
-+			igt_warn("Could not unload %s\n", snd_module[i]);
-+			igt_kmod_list_loaded();
-+			igt_lsof("/dev/snd");
-+			return false;
-+		}
- 	}
-+
-+	return true;
- }
- 
--static void non_edp_subtest(int drm_fd, drmModeResPtr drm_res,
--			    drmModeConnectorPtr *drm_connectors)
-+static void load_snd_hda_core_module(void)
- {
--	int i, rc;
--	uint32_t crtc_id = 0, buffer_id = 0;
--	drmModeConnectorPtr connector = NULL;
--	drmModeModeInfoPtr mode = NULL;
-+	igt_kmod_load("snd_hda_core", NULL);
-+}
-+
-+static void non_edp_subtest(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	igt_output_t *output;
-+	int valid_output;
- 
--	kmstest_unset_all_crtcs(drm_fd, drm_res);
-+	/* DP/HDMI panel requires to drive lpsp without audio */
-+	igt_require(unload_snd_hda_core_module());
- 
--	for (i = 0; i < drm_res->count_connectors; i++) {
--		drmModeConnectorPtr c = drm_connectors[i];
-+	/* Cleanup if edp igt test get skipped*/
-+	cleanup_lpsp_output(data);
-+
-+	for_each_connected_output(display, output) {
-+		drmModeConnectorPtr c = output->config.connector;
- 
- 		if (c->connector_type == DRM_MODE_CONNECTOR_eDP)
- 			continue;
- 		if (c->connection != DRM_MODE_CONNECTED)
- 			continue;
-+		if (!igt_pipe_connector_valid(PIPE_A, output))
-+			continue;
- 
--		if (c->count_modes) {
--			connector = c;
--			mode = &c->modes[0];
--			break;
--		}
-+		igt_output_set_pipe(output, PIPE_A);
-+		data->output = output;
-+		data->mode = igt_output_get_mode(output);
-+		setup_lpsp_output(data);
-+		check_output_lpsp(data);
-+		cleanup_lpsp_output(data);
-+		load_snd_hda_core_module();
-+		valid_output++;
- 	}
--	igt_require(connector);
- 
--	crtc_id = kmstest_find_crtc_for_connector(drm_fd, drm_res, connector,
--						  0);
--	buffer_id = create_fb(drm_fd, mode->hdisplay, mode->vdisplay);
--
--	igt_assert(buffer_id);
--	igt_assert(mode);
--
--	rc = drmModeSetCrtc(drm_fd, crtc_id, buffer_id, 0, 0,
--			    &connector->connector_id, 1, mode);
--	igt_assert_eq(rc, 0);
--
--	igt_assert(!lpsp_is_enabled(drm_fd));
-+	igt_require_f(valid_output, "No non-edp connector found\n");
- }
- 
- #define MAX_CONNECTORS 32
- 
--int drm_fd;
--uint32_t devid;
--drmModeResPtr drm_res;
--drmModeConnectorPtr drm_connectors[MAX_CONNECTORS];
--struct intel_mmio_data mmio_data;
-+IGT_TEST_DESCRIPTION("These tests validates display Low Power Single Pipe configurations");
- igt_main
- {
--	igt_fixture {
--		int i;
--
--		drm_fd = drm_open_driver_master(DRIVER_INTEL);
--		igt_require(drm_fd >= 0);
-+	data_t data = {};
-+	drmModeResPtr drm_res;
- 
--		devid = intel_get_drm_devid(drm_fd);
-+	igt_fixture {
- 
--		drm_res = drmModeGetResources(drm_fd);
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+		igt_require(data.drm_fd >= 0);
-+		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
-+		igt_require(data.debugfs_fd >= 0);
-+		drm_res = drmModeGetResources(data.drm_fd);
- 		igt_require(drm_res);
- 		igt_assert(drm_res->count_connectors <= MAX_CONNECTORS);
--
--		for (i = 0; i < drm_res->count_connectors; i++)
--			drm_connectors[i] = drmModeGetConnectorCurrent(drm_fd,
--							drm_res->connectors[i]);
--
- 		igt_pm_enable_audio_runtime_pm();
--
--		igt_require(supports_lpsp(devid));
--
--		intel_register_access_init(&mmio_data, intel_get_pci_device(), 0, drm_fd);
--
- 		kmstest_set_vt_graphics_mode();
-+		data.devid = intel_get_drm_devid(data.drm_fd);
-+		igt_display_require(&data.display, data.drm_fd);
- 	}
- 
-+	igt_describe("This test validates lpsp while all crtc are disabled");
- 	igt_subtest("screens-disabled")
--		screens_disabled_subtest(drm_fd, drm_res);
-+		screens_disabled_subtest(&data, drm_res);
-+	igt_describe("This test validates lpsp on eDP panel");
- 	igt_subtest("edp-native")
--		edp_subtest(drm_fd, drm_res, drm_connectors, devid, false);
-+		edp_subtest(&data, false);
-+	igt_describe("This test validates lpsp on eDP panel while forcing panel_fitter");
- 	igt_subtest("edp-panel-fitter")
--		edp_subtest(drm_fd, drm_res, drm_connectors, devid, true);
-+		edp_subtest(&data, true);
-+	igt_describe("This test validates lpsp on DP/HDMI/DSI panels");
- 	igt_subtest("non-edp")
--		non_edp_subtest(drm_fd, drm_res, drm_connectors);
-+		non_edp_subtest(&data);
- 
- 	igt_fixture {
--		int i;
--
--		intel_register_access_fini(&mmio_data);
--		for (i = 0; i < drm_res->count_connectors; i++)
--			drmModeFreeConnector(drm_connectors[i]);
-+		free(data.pwr_dmn_info);
-+		load_snd_hda_core_module();
- 		drmModeFreeResources(drm_res);
--		close(drm_fd);
-+		close(data.drm_fd);
-+		igt_display_fini(&data.display);
- 	}
- }
--- 
-2.25.1
+CI Bug Log - changes from CI_DRM_8124_full -> IGTPW_4292_full
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4292_full:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@kms_frontbuffer_tracking@fbc-tiling-y} (NEW):
+    - shard-snb:          NOTRUN -> [FAIL][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-snb6/igt@kms_frontbuffer_tracking@fbc-tiling-y.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * {igt@gem_userptr_blits@map-fixed-invalidate-busy-gup@gtt}:
+    - shard-hsw:          NOTRUN -> [DMESG-WARN][2]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-hsw6/igt@gem_userptr_blits@map-fixed-invalidate-busy-gup@gtt.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_8124_full and IGTPW_4292_full:
+
+### New IGT tests (4) ###
+
+  * igt@kms_frontbuffer_tracking@fbc-tiling-linear:
+    - Statuses : 6 pass(s) 1 skip(s)
+    - Exec time: [0.0, 9.39] s
+
+  * igt@kms_frontbuffer_tracking@fbc-tiling-y:
+    - Statuses : 1 fail(s) 5 pass(s) 1 skip(s)
+    - Exec time: [0.0, 2.93] s
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-tiling-linear:
+    - Statuses : 2 pass(s) 5 skip(s)
+    - Exec time: [0.0, 10.94] s
+
+  * igt@kms_frontbuffer_tracking@fbcpsr-tiling-y:
+    - Statuses : 2 pass(s) 5 skip(s)
+    - Exec time: [0.0, 4.93] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4292_full that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_eio@hibernate:
+    - shard-hsw:          [PASS][3] -> [INCOMPLETE][4] ([i915#61])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-hsw1/igt@gem_eio@hibernate.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-hsw7/igt@gem_eio@hibernate.html
+
+  * igt@gem_exec_params@mmapped:
+    - shard-hsw:          [PASS][5] -> [DMESG-WARN][6] ([i915#478])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-hsw6/igt@gem_exec_params@mmapped.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-hsw5/igt@gem_exec_params@mmapped.html
+    - shard-snb:          [PASS][7] -> [DMESG-WARN][8] ([i915#478])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-snb4/igt@gem_exec_params@mmapped.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-snb6/igt@gem_exec_params@mmapped.html
+
+  * igt@gem_exec_schedule@implicit-read-write-bsd1:
+    - shard-iclb:         [PASS][9] -> [SKIP][10] ([fdo#109276] / [i915#677])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb2/igt@gem_exec_schedule@implicit-read-write-bsd1.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb5/igt@gem_exec_schedule@implicit-read-write-bsd1.html
+
+  * igt@gem_exec_schedule@pi-shared-iova-bsd:
+    - shard-iclb:         [PASS][11] -> [SKIP][12] ([i915#677])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb6/igt@gem_exec_schedule@pi-shared-iova-bsd.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb1/igt@gem_exec_schedule@pi-shared-iova-bsd.html
+
+  * igt@gem_exec_schedule@preempt-self-bsd:
+    - shard-iclb:         [PASS][13] -> [SKIP][14] ([fdo#112146]) +4 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb8/igt@gem_exec_schedule@preempt-self-bsd.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb1/igt@gem_exec_schedule@preempt-self-bsd.html
+
+  * igt@gem_exec_store@cachelines-vcs1:
+    - shard-iclb:         [PASS][15] -> [SKIP][16] ([fdo#112080]) +15 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb2/igt@gem_exec_store@cachelines-vcs1.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb5/igt@gem_exec_store@cachelines-vcs1.html
+
+  * igt@gem_ppgtt@flink-and-close-vma-leak:
+    - shard-iclb:         [PASS][17] -> [FAIL][18] ([i915#644])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb4/igt@gem_ppgtt@flink-and-close-vma-leak.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb1/igt@gem_ppgtt@flink-and-close-vma-leak.html
+
+  * igt@gen9_exec_parse@allowed-all:
+    - shard-glk:          [PASS][19] -> [INCOMPLETE][20] ([i915#58] / [k.org#198133])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-glk6/igt@gen9_exec_parse@allowed-all.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-glk3/igt@gen9_exec_parse@allowed-all.html
+
+  * igt@i915_pm_rps@reset:
+    - shard-iclb:         [PASS][21] -> [FAIL][22] ([i915#413]) +1 similar issue
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb2/igt@i915_pm_rps@reset.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb5/igt@i915_pm_rps@reset.html
+
+  * igt@i915_suspend@fence-restore-tiled2untiled:
+    - shard-apl:          [PASS][23] -> [DMESG-WARN][24] ([i915#180]) +4 similar issues
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-apl4/igt@i915_suspend@fence-restore-tiled2untiled.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-apl2/igt@i915_suspend@fence-restore-tiled2untiled.html
+
+  * igt@kms_cursor_crc@pipe-c-cursor-suspend:
+    - shard-kbl:          [PASS][25] -> [DMESG-WARN][26] ([i915#180]) +3 similar issues
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-kbl2/igt@kms_cursor_crc@pipe-c-cursor-suspend.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-kbl1/igt@kms_cursor_crc@pipe-c-cursor-suspend.html
+
+  * igt@kms_psr2_su@frontbuffer:
+    - shard-iclb:         [PASS][27] -> [SKIP][28] ([fdo#109642] / [fdo#111068])
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb2/igt@kms_psr2_su@frontbuffer.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb6/igt@kms_psr2_su@frontbuffer.html
+
+  * igt@kms_psr@psr2_cursor_plane_onoff:
+    - shard-iclb:         [PASS][29] -> [SKIP][30] ([fdo#109441]) +1 similar issue
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb2/igt@kms_psr@psr2_cursor_plane_onoff.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb3/igt@kms_psr@psr2_cursor_plane_onoff.html
+
+  * igt@kms_setmode@basic:
+    - shard-kbl:          [PASS][31] -> [FAIL][32] ([i915#31])
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-kbl7/igt@kms_setmode@basic.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-kbl7/igt@kms_setmode@basic.html
+
+  * igt@prime_busy@hang-bsd2:
+    - shard-iclb:         [PASS][33] -> [SKIP][34] ([fdo#109276]) +24 similar issues
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb2/igt@prime_busy@hang-bsd2.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb7/igt@prime_busy@hang-bsd2.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_busy@busy-vcs1:
+    - shard-iclb:         [SKIP][35] ([fdo#112080]) -> [PASS][36] +10 similar issues
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb8/igt@gem_busy@busy-vcs1.html
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb4/igt@gem_busy@busy-vcs1.html
+
+  * igt@gem_exec_schedule@implicit-both-bsd1:
+    - shard-iclb:         [SKIP][37] ([fdo#109276] / [i915#677]) -> [PASS][38] +1 similar issue
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb5/igt@gem_exec_schedule@implicit-both-bsd1.html
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb1/igt@gem_exec_schedule@implicit-both-bsd1.html
+
+  * igt@gem_exec_schedule@pi-distinct-iova-bsd:
+    - shard-iclb:         [SKIP][39] ([i915#677]) -> [PASS][40] +3 similar issues
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb4/igt@gem_exec_schedule@pi-distinct-iova-bsd.html
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb8/igt@gem_exec_schedule@pi-distinct-iova-bsd.html
+
+  * igt@gem_exec_schedule@wide-bsd:
+    - shard-iclb:         [SKIP][41] ([fdo#112146]) -> [PASS][42] +6 similar issues
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb2/igt@gem_exec_schedule@wide-bsd.html
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb7/igt@gem_exec_schedule@wide-bsd.html
+
+  * igt@gem_exec_whisper@basic-fds-forked:
+    - shard-tglb:         [TIMEOUT][43] ([i915#1408]) -> [PASS][44]
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-tglb3/igt@gem_exec_whisper@basic-fds-forked.html
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-tglb5/igt@gem_exec_whisper@basic-fds-forked.html
+
+  * igt@gem_userptr_blits@sync-unmap:
+    - shard-snb:          [DMESG-WARN][45] ([fdo#111870] / [i915#478]) -> [PASS][46]
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-snb5/igt@gem_userptr_blits@sync-unmap.html
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-snb6/igt@gem_userptr_blits@sync-unmap.html
+    - shard-hsw:          [DMESG-WARN][47] ([fdo#111870]) -> [PASS][48]
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-hsw7/igt@gem_userptr_blits@sync-unmap.html
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-hsw5/igt@gem_userptr_blits@sync-unmap.html
+
+  * igt@i915_pm_dc@dc6-psr:
+    - shard-iclb:         [FAIL][49] ([i915#454]) -> [PASS][50]
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb6/igt@i915_pm_dc@dc6-psr.html
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb3/igt@i915_pm_dc@dc6-psr.html
+
+  * igt@i915_selftest@live@execlists:
+    - shard-apl:          [INCOMPLETE][51] ([fdo#103927] / [i915#656]) -> [PASS][52]
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-apl6/igt@i915_selftest@live@execlists.html
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-apl1/igt@i915_selftest@live@execlists.html
+
+  * igt@kms_cursor_crc@pipe-a-cursor-suspend:
+    - shard-kbl:          [INCOMPLETE][53] ([i915#155]) -> [PASS][54] +1 similar issue
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-kbl1/igt@kms_cursor_crc@pipe-a-cursor-suspend.html
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-kbl1/igt@kms_cursor_crc@pipe-a-cursor-suspend.html
+
+  * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-indfb-pgflip-blt:
+    - shard-glk:          [FAIL][55] ([i915#49]) -> [PASS][56]
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-glk2/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-indfb-pgflip-blt.html
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-glk1/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-indfb-pgflip-blt.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - shard-tglb:         [SKIP][57] ([i915#433]) -> [PASS][58]
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-tglb5/igt@kms_hdmi_inject@inject-audio.html
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-tglb1/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_plane@plane-panning-bottom-right-suspend-pipe-a-planes:
+    - shard-kbl:          [DMESG-WARN][59] ([i915#180]) -> [PASS][60] +1 similar issue
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-kbl1/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-a-planes.html
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-kbl7/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-a-planes.html
+
+  * igt@kms_plane_lowres@pipe-a-tiling-x:
+    - shard-glk:          [FAIL][61] ([i915#899]) -> [PASS][62]
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-glk6/igt@kms_plane_lowres@pipe-a-tiling-x.html
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-glk6/igt@kms_plane_lowres@pipe-a-tiling-x.html
+
+  * igt@kms_psr2_su@page_flip:
+    - shard-iclb:         [SKIP][63] ([fdo#109642] / [fdo#111068]) -> [PASS][64]
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb6/igt@kms_psr2_su@page_flip.html
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb2/igt@kms_psr2_su@page_flip.html
+
+  * igt@kms_psr@psr2_sprite_render:
+    - shard-iclb:         [SKIP][65] ([fdo#109441]) -> [PASS][66]
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb7/igt@kms_psr@psr2_sprite_render.html
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb2/igt@kms_psr@psr2_sprite_render.html
+
+  * igt@kms_vblank@pipe-a-ts-continuation-suspend:
+    - shard-apl:          [DMESG-WARN][67] ([i915#180]) -> [PASS][68] +3 similar issues
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-apl8/igt@kms_vblank@pipe-a-ts-continuation-suspend.html
+   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-apl8/igt@kms_vblank@pipe-a-ts-continuation-suspend.html
+
+  * igt@prime_busy@after-bsd2:
+    - shard-iclb:         [SKIP][69] ([fdo#109276]) -> [PASS][70] +11 similar issues
+   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-iclb8/igt@prime_busy@after-bsd2.html
+   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-iclb2/igt@prime_busy@after-bsd2.html
+
+  
+#### Warnings ####
+
+  * igt@gem_ctx_persistence@close-replace-race:
+    - shard-tglb:         [INCOMPLETE][71] ([i915#1402]) -> [TIMEOUT][72] ([i915#1340])
+   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-tglb3/igt@gem_ctx_persistence@close-replace-race.html
+   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-tglb7/igt@gem_ctx_persistence@close-replace-race.html
+    - shard-kbl:          [INCOMPLETE][73] ([i915#1402]) -> [TIMEOUT][74] ([i915#1340])
+   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-kbl7/igt@gem_ctx_persistence@close-replace-race.html
+   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-kbl7/igt@gem_ctx_persistence@close-replace-race.html
+
+  * igt@runner@aborted:
+    - shard-kbl:          ([FAIL][75], [FAIL][76]) ([i915#1389] / [i915#1402] / [i915#92]) -> [FAIL][77] ([i915#92])
+   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-kbl7/igt@runner@aborted.html
+   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-kbl7/igt@runner@aborted.html
+   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-kbl7/igt@runner@aborted.html
+    - shard-apl:          ([FAIL][78], [FAIL][79], [FAIL][80]) ([fdo#103927] / [i915#1402] / [i915#529]) -> [FAIL][81] ([i915#1402])
+   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-apl2/igt@runner@aborted.html
+   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-apl1/igt@runner@aborted.html
+   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-apl6/igt@runner@aborted.html
+   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-apl7/igt@runner@aborted.html
+    - shard-glk:          [FAIL][82] ([i915#1402] / [k.org#202321]) -> [FAIL][83] ([k.org#202321])
+   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8124/shard-glk4/igt@runner@aborted.html
+   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/shard-glk3/igt@runner@aborted.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#103927]: https://bugs.freedesktop.org/show_bug.cgi?id=103927
+  [fdo#109276]: https://bugs.freedesktop.org/show_bug.cgi?id=109276
+  [fdo#109441]: https://bugs.freedesktop.org/show_bug.cgi?id=109441
+  [fdo#109642]: https://bugs.freedesktop.org/show_bug.cgi?id=109642
+  [fdo#111068]: https://bugs.freedesktop.org/show_bug.cgi?id=111068
+  [fdo#111870]: https://bugs.freedesktop.org/show_bug.cgi?id=111870
+  [fdo#112080]: https://bugs.freedesktop.org/show_bug.cgi?id=112080
+  [fdo#112146]: https://bugs.freedesktop.org/show_bug.cgi?id=112146
+  [i915#1340]: https://gitlab.freedesktop.org/drm/intel/issues/1340
+  [i915#1389]: https://gitlab.freedesktop.org/drm/intel/issues/1389
+  [i915#1402]: https://gitlab.freedesktop.org/drm/intel/issues/1402
+  [i915#1408]: https://gitlab.freedesktop.org/drm/intel/issues/1408
+  [i915#155]: https://gitlab.freedesktop.org/drm/intel/issues/155
+  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
+  [i915#31]: https://gitlab.freedesktop.org/drm/intel/issues/31
+  [i915#413]: https://gitlab.freedesktop.org/drm/intel/issues/413
+  [i915#433]: https://gitlab.freedesktop.org/drm/intel/issues/433
+  [i915#454]: https://gitlab.freedesktop.org/drm/intel/issues/454
+  [i915#478]: https://gitlab.freedesktop.org/drm/intel/issues/478
+  [i915#49]: https://gitlab.freedesktop.org/drm/intel/issues/49
+  [i915#529]: https://gitlab.freedesktop.org/drm/intel/issues/529
+  [i915#58]: https://gitlab.freedesktop.org/drm/intel/issues/58
+  [i915#61]: https://gitlab.freedesktop.org/drm/intel/issues/61
+  [i915#644]: https://gitlab.freedesktop.org/drm/intel/issues/644
+  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
+  [i915#677]: https://gitlab.freedesktop.org/drm/intel/issues/677
+  [i915#899]: https://gitlab.freedesktop.org/drm/intel/issues/899
+  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
+  [k.org#198133]: https://bugzilla.kernel.org/show_bug.cgi?id=198133
+  [k.org#202321]: https://bugzilla.kernel.org/show_bug.cgi?id=202321
+
+
+Participating hosts (10 -> 8)
+------------------------------
+
+  Missing    (2): pig-skl-6260u pig-glk-j5005 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5505 -> IGTPW_4292
+  * Piglit: piglit_4509 -> None
+
+  CI-20190529: 20190529
+  CI_DRM_8124: b720e4b68d27d8d72bbe56abfcdc91ef2bebc2c3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4292: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/index.html
+  IGT_5505: 8973d811f3fdfb4ace4aabab2095ce0309881648 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4292/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
