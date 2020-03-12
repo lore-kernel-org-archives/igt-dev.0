@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14B036E0E8
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2020 09:12:03 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEE3C6E0E8
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2020 09:11:55 +0000 (UTC)
 From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Date: Thu, 12 Mar 2020 10:09:31 +0100
-Message-Id: <20200312090933.20001-2-dominik.grzegorzek@intel.com>
-In-Reply-To: <20200312090933.20001-1-dominik.grzegorzek@intel.com>
-References: <20200312090933.20001-1-dominik.grzegorzek@intel.com>
+Date: Thu, 12 Mar 2020 10:09:30 +0100
+Message-Id: <20200312090933.20001-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/3] tests/gem_exec_alignment.c: Timeout
- alarm wrappers
+Subject: [igt-dev] [PATCH i-g-t 0/3] tests/gem_exec_alignment.c: Update
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,41 +15,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SW1wbGVtZW50YXRpb24gb2YgdGltZW91dCBmdW5jdGlvbnMgaW4gZ2VtX2V4ZWNfYWxpZ25tZW50
-LmMuCgpTaWduZWQtb2ZmLWJ5OiBEb21pbmlrIEdyemVnb3J6ZWsgPGRvbWluaWsuZ3J6ZWdvcnpl
-a0BpbnRlbC5jb20+CkNjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenlu
-c2tpQGludGVsLmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVr
-PgotLS0KIHRlc3RzL2k5MTUvZ2VtX2V4ZWNfYWxpZ25tZW50LmMgfCAzMiArKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKwogMSBmaWxlIGNoYW5nZWQsIDMyIGluc2VydGlvbnMoKykKCmRp
-ZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9leGVjX2FsaWdubWVudC5jIGIvdGVzdHMvaTkxNS9n
-ZW1fZXhlY19hbGlnbm1lbnQuYwppbmRleCBhMTA1NzFjOS4uYjdjMTE5NDcgMTAwNjQ0Ci0tLSBh
-L3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfYWxpZ25tZW50LmMKKysrIGIvdGVzdHMvaTkxNS9nZW1fZXhl
-Y19hbGlnbm1lbnQuYwpAQCAtMzYsNiArMzYsNyBAQAogI2luY2x1ZGUgPGVycm5vLmg+CiAjaW5j
-bHVkZSA8c3lzL3N0YXQuaD4KICNpbmNsdWRlIDxzeXMvdGltZS5oPgorI2luY2x1ZGUgPHNpZ25h
-bC5oPgogI2luY2x1ZGUgImRybS5oIgogCiBJR1RfVEVTVF9ERVNDUklQVElPTigiRXhlcmNpc2Vz
-IHRoZSBiYXNpYyBleGVjYnVmZmVyIHVzaW5nIG9iamVjdCBhbGlnbm1lbnRzIik7CkBAIC02NSw2
-ICs2NiwzNyBAQCBzdGF0aWMgdWludDMyX3QgZmlsZV9tYXgodm9pZCkKIAlyZXR1cm4gbWF4Owog
-fQogCitzdGF0aWMgYm9vbCB0aW1lZF9vdXQ7CitzdGF0aWMgdm9pZCBhbGlnbm1lbnRfYWxhcm1f
-aGFuZGxlcihpbnQgc2lnbmFsKQoreworCWlndF9kZWJ1ZygiYWxpZ25tZW50IHRlc3QgdGltZWQg
-b3V0IVxuIik7CisJdGltZWRfb3V0ID0gdHJ1ZTsKK30KKworc3RhdGljIHZvaWQgYWxpZ25tZW50
-X3NldF90aW1lb3V0KHVuc2lnbmVkIGludCBzZWMsIHVuc2lnbmVkIGludCB1c2VjKQoreworCXN0
-cnVjdCBzaWdhY3Rpb24gc2EgPSB7fTsKKwlzdHJ1Y3QgaXRpbWVydmFsIGl0diA9IHt9OworCisJ
-c2Euc2FfaGFuZGxlciA9IGFsaWdubWVudF9hbGFybV9oYW5kbGVyOworCXNpZ2VtcHR5c2V0KCZz
-YS5zYV9tYXNrKTsKKwlzYS5zYV9mbGFncyA9IDA7CisJc2lnYWN0aW9uKFNJR0FMUk0sICZzYSwg
-TlVMTCk7CisKKwl0aW1lZF9vdXQgPSBmYWxzZTsKKwlpdHYuaXRfdmFsdWUudHZfc2VjID0gc2Vj
-OworCWl0di5pdF92YWx1ZS50dl91c2VjID0gdXNlYzsKKwlzZXRpdGltZXIoSVRJTUVSX1JFQUws
-ICZpdHYsIE5VTEwpOworfQorCitzdGF0aWMgaW5saW5lIHZvaWQgYWxpZ25tZW50X3Jlc2V0X3Rp
-bWVvdXQodm9pZCkKK3sKKwlzdHJ1Y3QgaXRpbWVydmFsIGl0diA9IHt9OworCisJc2lnYWN0aW9u
-KFNJR0FMUk0sIE5VTEwsIE5VTEwpOworCXNldGl0aW1lcihJVElNRVJfUkVBTCwgJml0diwgTlVM
-TCk7Cit9CisKIHN0YXRpYyB2b2lkIG1hbnkoaW50IGZkKQogewogCXVpbnQzMl90IGJiZSA9IE1J
-X0JBVENIX0JVRkZFUl9FTkQ7Ci0tIAoyLjIwLjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMu
-ZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlz
-dGluZm8vaWd0LWRldgo=
+Changes modify many subtest, and implement priority inversion test
+case. Splited into three patches due to code sections shared between 
+pi and many subtest. "PATCH i-g-t 1/3 tests/gem_exec_alignment.c: Timeout
+alarm wrappers" has no sense without at least one of next patches. 
+
+Dominik Grzegorzek (3):
+  tests/gem_exec_alignment.c: Timeout alarm wrappers
+  tests/gem_exec_alignment.c: Update subtest many
+  tests/gem_exec_alignment.c: Add priority inversion test
+
+ tests/i915/gem_exec_alignment.c | 283 +++++++++++++++++++++++++++++---
+ 1 file changed, 260 insertions(+), 23 deletions(-)
+
+-- 
+2.20.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
