@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36D9789D8A
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2020 10:06:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 079FA89D00
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2020 10:09:52 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20200312090933.20001-1-dominik.grzegorzek@intel.com>
-References: <20200312090933.20001-1-dominik.grzegorzek@intel.com>
+In-Reply-To: <20200312095944.7477-3-petri.latvala@intel.com>
+References: <20200312095944.7477-1-petri.latvala@intel.com>
+ <20200312095944.7477-3-petri.latvala@intel.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158400758071.10732.3610902622324796292@build.alporthouse.com>
-Date: Thu, 12 Mar 2020 10:06:20 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 0/3] tests/gem_exec_alignment.c: Update
- subtests
+Message-ID: <158400778911.10732.9893379942780927697@build.alporthouse.com>
+Date: Thu, 12 Mar 2020 10:09:49 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] runner: Read all kernel logs when
+ there are logs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,37 +22,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>, igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Dominik Grzegorzek (2020-03-12 09:09:30)
-> Changes modify many subtest, and implement priority inversion test
-> case. Splited into three patches due to code sections shared between 
-> pi and many subtest. "PATCH i-g-t 1/3 tests/gem_exec_alignment.c: Timeout
-> alarm wrappers" has no sense without at least one of next patches. 
+Quoting Petri Latvala (2020-03-12 09:59:44)
+> Instead of reading one record at a time between select() calls and
+> tainted-checks etc, use the same at-the-end dmesg dumper whenever
+> there's activity in /dev/kmsg. It's possible that the occasional chunk
+> of missing dmesg we're sometimes hitting is due to reading too slowly,
+> especially if there's a huge gem traceback.
 > 
-> Dominik Grzegorzek (3):
->   tests/gem_exec_alignment.c: Timeout alarm wrappers
->   tests/gem_exec_alignment.c: Update subtest many
+> Also print a clear message if we hit a log buffer underrun so we know
+> it.
+> 
+> Reference: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/79
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
 
-This still doesn't do quite what you would expect as it continues to
-eat the signal anyway. In short it is no better than doing,
-
-struct timespec tv = {}
-
-for (alignment = 4096; alignment < gtt_size && igt_seconds_elapsed(&tv) < 5; alignment <<= 1)
-
->   tests/gem_exec_alignment.c: Add priority inversion test
-
-Here, you don't want to try and fill the whole gtt and risk running for
-several hundred seconds, but instead tune the fragmentation so that you
-can reasonably expect it to take over 5s. i.e. use the slow
-fragmentation loop from -many to consume 5s, and use the next alignment
-up (on the already fragmented gtt) for the low-priority client.
-
-Then don't use the SIGARLM for the high priority client, just measure
-the elapsed time. Also fix up the igt_debug so that the L/H labels refer
-to the right clients.
+Looks reasonable, the proof is in the pudding.
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+for the series.
 -Chris
 _______________________________________________
 igt-dev mailing list
