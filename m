@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B775B6E0E8
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Mar 2020 09:12:11 +0000 (UTC)
-From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Date: Thu, 12 Mar 2020 10:09:32 +0100
-Message-Id: <20200312090933.20001-3-dominik.grzegorzek@intel.com>
-In-Reply-To: <20200312090933.20001-1-dominik.grzegorzek@intel.com>
-References: <20200312090933.20001-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/3] tests/gem_exec_alignment.c: Update
- subtest many
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 12 Mar 2020 09:32:10 -0000
+Message-ID: <158400553039.4947.16149660014324897434@emeril.freedesktop.org>
+References: <20200312090933.20001-1-dominik.grzegorzek@intel.com>
+In-Reply-To: <20200312090933.20001-1-dominik.grzegorzek@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
+ =?utf-8?q?ests/gem=5Fexec=5Falignment=2Ec=3A_Update_subtests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,85 +14,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VXBkYXRlZCBzdWJ0ZXN0IG1hbnksIHRoYXQgd2FzIHVudXNhYmxlIGR1ZSB0byB0aGUgbG9uZwp0
-aW1lIG9mIGV4ZWN1dGlvbi4gRm9yIHRoYXQgcHVycG9zZSBnbG9iYWwgdGltZW91dCB3YXMgYWRk
-ZWQuCgpTaWduZWQtb2ZmLWJ5OiBEb21pbmlrIEdyemVnb3J6ZWsgPGRvbWluaWsuZ3J6ZWdvcnpl
-a0BpbnRlbC5jb20+CkNjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenlu
-c2tpQGludGVsLmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVr
-PgotLS0KIHRlc3RzL2k5MTUvZ2VtX2V4ZWNfYWxpZ25tZW50LmMgfCA2MiArKysrKysrKysrKysr
-KysrKysrKystLS0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA0MCBpbnNlcnRpb25zKCspLCAy
-MiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9leGVjX2FsaWdubWVu
-dC5jIGIvdGVzdHMvaTkxNS9nZW1fZXhlY19hbGlnbm1lbnQuYwppbmRleCBiN2MxMTk0Ny4uMDM1
-M2QwMmIgMTAwNjQ0Ci0tLSBhL3Rlc3RzL2k5MTUvZ2VtX2V4ZWNfYWxpZ25tZW50LmMKKysrIGIv
-dGVzdHMvaTkxNS9nZW1fZXhlY19hbGlnbm1lbnQuYwpAQCAtMzksNiArMzksOCBAQAogI2luY2x1
-ZGUgPHNpZ25hbC5oPgogI2luY2x1ZGUgImRybS5oIgogCisjZGVmaW5lIE1BTllfVElNRU9VVCAx
-MAorCiBJR1RfVEVTVF9ERVNDUklQVElPTigiRXhlcmNpc2VzIHRoZSBiYXNpYyBleGVjYnVmZmVy
-IHVzaW5nIG9iamVjdCBhbGlnbm1lbnRzIik7CiAKIHN0YXRpYyB1aW50MzJfdCBmaW5kX2xhc3Rf
-Yml0KHVpbnQ2NF90IHgpCkBAIC0xMDIsOCArMTA0LDkgQEAgc3RhdGljIHZvaWQgbWFueShpbnQg
-ZmQpCiAJdWludDMyX3QgYmJlID0gTUlfQkFUQ0hfQlVGRkVSX0VORDsKIAlzdHJ1Y3QgZHJtX2k5
-MTVfZ2VtX2V4ZWNfb2JqZWN0MiAqZXhlY29iajsKIAlzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNi
-dWZmZXIyIGV4ZWNidWY7Ci0JdWludDY0X3QgZ3R0X3NpemUsIHJhbV9zaXplOwotCXVpbnQ2NF90
-IGFsaWdubWVudCwgbWF4X2FsaWdubWVudCwgY291bnQsIGk7CisJdWludDY0X3QgZ3R0X3NpemUs
-IHJhbV9zaXplLCBmbGFnczsKKwl1aW50NjRfdCBhbGlnbm1lbnQsIG1heF9hbGlnbm1lbnQsIGNv
-dW50LCBtYXhfY291bnQsIGN1cnJfY291bnQsIGk7CisJaW50IHJldDsKIAogCWd0dF9zaXplID0g
-Z2VtX2FwZXJ0dXJlX3NpemUoZmQpOwogCWlmICghZ2VtX3VzZXNfZnVsbF9wcGd0dChmZCkpCkBA
-IC0xMTgsNyArMTIxLDkgQEAgc3RhdGljIHZvaWQgbWFueShpbnQgZmQpCiAJCW1heF9hbGlnbm1l
-bnQgPSA0MDk2OwogCWVsc2UKIAkJbWF4X2FsaWdubWVudCA9IDF1bGwgPDwgKG1heF9hbGlnbm1l
-bnQgLSAxKTsKLQljb3VudCA9IGd0dF9zaXplIC8gbWF4X2FsaWdubWVudCAvIDI7CisJbWF4X2Nv
-dW50ID0gY291bnQgPSBndHRfc2l6ZSAvIG1heF9hbGlnbm1lbnQgLyAyOworCisJZmxhZ3MgPSAo
-Z3R0X3NpemUtMSkgPj4gMzIgPyAxPDwzIDogMDsgLyogRVhFQ19PQkpFQ1RfU1VQUE9SVFNfNDhC
-X0FERFJFU1MgKi8KIAogCWlndF9pbmZvKCJndHRfc2l6ZT0lbGxkIE1pQiwgbWF4LWFsaWdubWVu
-dD0lbGxkLCBjb3VudD0lbGxkXG4iLAogCQkgKGxvbmcgbG9uZylndHRfc2l6ZS8xMDI0LzEwMjQs
-CkBAIC0xMzEsNDAgKzEzNiw1MyBAQCBzdGF0aWMgdm9pZCBtYW55KGludCBmZCkKIAogCWZvciAo
-aSA9IDA7IGkgPCBjb3VudDsgaSsrKSB7CiAJCWV4ZWNvYmpbaV0uaGFuZGxlID0gZ2VtX2NyZWF0
-ZShmZCwgNDA5Nik7Ci0JCWlmICgoZ3R0X3NpemUtMSkgPj4gMzIpCi0JCQlleGVjb2JqW2ldLmZs
-YWdzID0gMTw8MzsgLyogRVhFQ19PQkpFQ1RfU1VQUE9SVFNfNDhCX0FERFJFU1MgKi8KKwkJZXhl
-Y29ialtpXS5mbGFncyA9IGZsYWdzOwogCX0KIAlleGVjb2JqW2ldLmhhbmRsZSA9IGdlbV9jcmVh
-dGUoZmQsIDQwOTYpOwotCWlmICgoZ3R0X3NpemUtMSkgPj4gMzIpCi0JCWV4ZWNvYmpbaV0uZmxh
-Z3MgPSAxPDwzOyAvKiBFWEVDX09CSkVDVF9TVVBQT1JUU180OEJfQUREUkVTUyAqLworCWV4ZWNv
-YmpbaV0uZmxhZ3MgPSBmbGFnczsKIAlnZW1fd3JpdGUoZmQsIGV4ZWNvYmpbaV0uaGFuZGxlLCAw
-LCAmYmJlLCBzaXplb2YoYmJlKSk7CiAKKwogCW1lbXNldCgmZXhlY2J1ZiwgMCwgc2l6ZW9mKGV4
-ZWNidWYpKTsKIAlleGVjYnVmLmJ1ZmZlcnNfcHRyID0gdG9fdXNlcl9wb2ludGVyKGV4ZWNvYmop
-OwogCWV4ZWNidWYuYnVmZmVyX2NvdW50ID0gY291bnQgKyAxOwogCWlndF9yZXF1aXJlKF9fZ2Vt
-X2V4ZWNidWYoZmQsICZleGVjYnVmKSA9PSAwKTsKIAotCWZvciAoYWxpZ25tZW50ID0gNDA5Njsg
-YWxpZ25tZW50IDwgZ3R0X3NpemU7IGFsaWdubWVudCA8PD0gMSkgewotCQlmb3IgKGkgPSAwOyBp
-IDwgY291bnQ7IGkrKykKLQkJCWV4ZWNvYmpbaV0uYWxpZ25tZW50ID0gYWxpZ25tZW50OworCWFs
-aWdubWVudF9zZXRfdGltZW91dChNQU5ZX1RJTUVPVVQsIDApOworCisJZm9yIChhbGlnbm1lbnQg
-PSA0MDk2OyBhbGlnbm1lbnQgPCBndHRfc2l6ZSAmJiAhdGltZWRfb3V0OyBhbGlnbm1lbnQgPDw9
-IDEpIHsKIAkJaWYgKGFsaWdubWVudCA+IG1heF9hbGlnbm1lbnQpIHsKIAkJCXVpbnQ2NF90IGZh
-Y3RvciA9IGFsaWdubWVudCAvIG1heF9hbGlnbm1lbnQ7Ci0JCQlleGVjYnVmLmJ1ZmZlcl9jb3Vu
-dCA9IDIqY291bnQgLyBmYWN0b3I7Ci0JCQlleGVjYnVmLmJ1ZmZlcnNfcHRyID0KLQkJCQl0b191
-c2VyX3BvaW50ZXIoZXhlY29iaiArIGNvdW50IC0gZXhlY2J1Zi5idWZmZXJfY291bnQgKyAxKTsK
-KwkJCW1heF9jb3VudCA9IDIgKiBjb3VudCAvIGZhY3RvcjsKIAkJfQogCi0JCWlndF9kZWJ1Zygi
-dGVzdGluZyAlbGxkIHggYWxpZ25tZW50PSUjbGx4IFslZGJdXG4iLAotCQkJICAobG9uZyBsb25n
-KWV4ZWNidWYuYnVmZmVyX2NvdW50IC0gMSwKLQkJCSAgKGxvbmcgbG9uZylhbGlnbm1lbnQsCi0J
-CQkgIGZpbmRfbGFzdF9iaXQoYWxpZ25tZW50KS0xKTsKLQkJZ2VtX2V4ZWNidWYoZmQsICZleGVj
-YnVmKTsKLQkJZm9yKGkgPSBjb3VudCAtIGV4ZWNidWYuYnVmZmVyX2NvdW50ICsgMTsgaSA8IGNv
-dW50OyBpKyspIHsKLQkJCWlndF9hc3NlcnRfZXFfdTY0KGV4ZWNvYmpbaV0uYWxpZ25tZW50LCBh
-bGlnbm1lbnQpOwotCQkJaWd0X2Fzc2VydF9lcV91NjQoZXhlY29ialtpXS5vZmZzZXQgJSBhbGln
-bm1lbnQsIDApOworCQlmb3IgKGkgPSAwOyBpIDwgY291bnQ7IGkrKykKKwkJCWV4ZWNvYmpbaV0u
-YWxpZ25tZW50ID0gYWxpZ25tZW50OworCisJCWZvciAoY3Vycl9jb3VudCA9IDE7IGN1cnJfY291
-bnQgPCBtYXhfY291bnQ7IGN1cnJfY291bnQgPDw9IDEpIHsKKworCQkJZXhlY2J1Zi5idWZmZXJf
-Y291bnQgPSBjdXJyX2NvdW50OworCQkJZXhlY2J1Zi5idWZmZXJzX3B0ciA9CisJCQkJCXRvX3Vz
-ZXJfcG9pbnRlcihleGVjb2JqICsgY291bnQgLSBleGVjYnVmLmJ1ZmZlcl9jb3VudCArIDEpOwor
-CisJCQlpZ3RfZGVidWcoInRlc3RpbmcgJWxsZCB4IGFsaWdubWVudD0lI2xseCBbJWRiXVxuIiwK
-KwkJCQkgIChsb25nIGxvbmcpZXhlY2J1Zi5idWZmZXJfY291bnQsCisJCQkJICAobG9uZyBsb25n
-KWFsaWdubWVudCwKKwkJCQkgIGZpbmRfbGFzdF9iaXQoYWxpZ25tZW50KS0xKTsKKwkJCXJldCA9
-IF9fZ2VtX2V4ZWNidWYoZmQsICZleGVjYnVmKTsKKworCQkJaWYgKHRpbWVkX291dCkKKwkJCQli
-cmVhazsKKworCQkJaWd0X2Fzc2VydF9lcShyZXQsIDApOworCisJCQlmb3IgKGkgPSBjb3VudCAt
-IGV4ZWNidWYuYnVmZmVyX2NvdW50ICsgMTsgaSA8IGNvdW50OyBpKyspIHsKKwkJCQlpZ3RfYXNz
-ZXJ0X2VxX3U2NChleGVjb2JqW2ldLmFsaWdubWVudCwgYWxpZ25tZW50KTsKKwkJCQlpZ3RfYXNz
-ZXJ0X2VxX3U2NChleGVjb2JqW2ldLm9mZnNldCAlIGFsaWdubWVudCwgMCk7CisJCQl9CiAJCX0K
-IAl9Ci0KKwlhbGlnbm1lbnRfcmVzZXRfdGltZW91dCgpOwogCWZvciAoaSA9IDA7IGkgPCBjb3Vu
-dDsgaSsrKQogCQlnZW1fY2xvc2UoZmQsIGV4ZWNvYmpbaV0uaGFuZGxlKTsKIAlnZW1fY2xvc2Uo
-ZmQsIGV4ZWNvYmpbaV0uaGFuZGxlKTsKLS0gCjIuMjAuMQoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9pZ3QtZGV2Cg==
+== Series Details ==
+
+Series: tests/gem_exec_alignment.c: Update subtests
+URL   : https://patchwork.freedesktop.org/series/74633/
+State : failure
+
+== Summary ==
+
+ERROR! This series introduces new undocumented tests:
+
+gem_exec_alignment@pi
+
+Can you document them as per the requirement in the [CONTRIBUTING.md]?
+
+[Documentation] has more details on how to do this.
+
+Here are few examples:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+
+Thanks in advance!
+
+[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
+[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+
+Other than that, pipeline status: SUCCESS.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/118931 for the overview.
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/118931
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
