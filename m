@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 12 Mar 2020 10:47:43 -0000
-Message-ID: <158401006340.4948.4521090663125655960@emeril.freedesktop.org>
-References: <20200312095137.551252-1-arkadiusz.hiler@intel.com>
-In-Reply-To: <20200312095137.551252-1-arkadiusz.hiler@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Fchamelium=3A_Don?=
- =?utf-8?q?=27t_use_CCS_modifiers_in_random_plane_setup?=
+Date: Thu, 12 Mar 2020 11:11:32 -0000
+Message-ID: <158401149226.4948.13339602930663732265@emeril.freedesktop.org>
+References: <20200312095944.7477-1-petri.latvala@intel.com>
+In-Reply-To: <20200312095944.7477-1-petri.latvala@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/3=5D_runner=3A_Handle_outputs_befor?=
+ =?utf-8?q?e_checking_for_timeout?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,84 +20,124 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: series starting with [i-g-t,1/2] tests/kms_chamelium: Don't use CCS modifiers in random plane setup
-URL   : https://patchwork.freedesktop.org/series/74635/
-State : success
+Series: series starting with [i-g-t,1/3] runner: Handle outputs before checking for timeout
+URL   : https://patchwork.freedesktop.org/series/74636/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from IGT_5506 -> IGTPW_4296
+CI Bug Log - changes from IGT_5506 -> IGTPW_4297
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with IGTPW_4297 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4297, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4296/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4297/index.html
 
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4297:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@gt_contexts:
+    - fi-snb-2520m:       [PASS][1] -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5506/fi-snb-2520m/igt@i915_selftest@live@gt_contexts.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4297/fi-snb-2520m/igt@i915_selftest@live@gt_contexts.html
+
+  
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_4296 that come from known issues:
+  Here are the changes found in IGTPW_4297 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
   * igt@i915_selftest@live@execlists:
-    - fi-glk-dsi:         [PASS][1] -> [INCOMPLETE][2] ([i915#1430] / [i915#58] / [k.org#198133])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5506/fi-glk-dsi/igt@i915_selftest@live@execlists.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4296/fi-glk-dsi/igt@i915_selftest@live@execlists.html
+    - fi-kbl-soraka:      [PASS][3] -> [DMESG-FAIL][4] ([i915#841])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5506/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4297/fi-kbl-soraka/igt@i915_selftest@live@execlists.html
 
   
 #### Possible fixes ####
 
-  * igt@i915_selftest@live@active:
-    - fi-bxt-dsi:         [DMESG-FAIL][3] ([i915#666]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5506/fi-bxt-dsi/igt@i915_selftest@live@active.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4296/fi-bxt-dsi/igt@i915_selftest@live@active.html
+  * igt@gem_exec_suspend@basic-s4-devices:
+    - fi-tgl-y:           [FAIL][5] ([CI#94]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5506/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4297/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
 
-  * igt@i915_selftest@live@execlists:
-    - fi-skl-6770hq:      [INCOMPLETE][5] ([i915#1430]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5506/fi-skl-6770hq/igt@i915_selftest@live@execlists.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4296/fi-skl-6770hq/igt@i915_selftest@live@execlists.html
+  * igt@i915_selftest@live@active:
+    - fi-bxt-dsi:         [DMESG-FAIL][7] ([i915#666]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5506/fi-bxt-dsi/igt@i915_selftest@live@active.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4297/fi-bxt-dsi/igt@i915_selftest@live@active.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-kbl-soraka:      [DMESG-FAIL][9] ([fdo#112406]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5506/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4297/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [FAIL][11] ([i915#323]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5506/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4297/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  * igt@kms_flip@basic-flip-vs-dpms:
+    - {fi-kbl-7560u}:     [FAIL][13] ([i915#998]) -> [PASS][14] +5 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5506/fi-kbl-7560u/igt@kms_flip@basic-flip-vs-dpms.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4297/fi-kbl-7560u/igt@kms_flip@basic-flip-vs-dpms.html
 
   
-  [i915#1430]: https://gitlab.freedesktop.org/drm/intel/issues/1430
-  [i915#58]: https://gitlab.freedesktop.org/drm/intel/issues/58
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
+  [fdo#112406]: https://bugs.freedesktop.org/show_bug.cgi?id=112406
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
   [i915#666]: https://gitlab.freedesktop.org/drm/intel/issues/666
-  [k.org#198133]: https://bugzilla.kernel.org/show_bug.cgi?id=198133
+  [i915#841]: https://gitlab.freedesktop.org/drm/intel/issues/841
+  [i915#998]: https://gitlab.freedesktop.org/drm/intel/issues/998
 
 
-Participating hosts (47 -> 40)
+Participating hosts (47 -> 42)
 ------------------------------
 
-  Missing    (7): fi-kbl-soraka fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-elk-e7500 fi-kbl-7560u fi-byt-clapper 
+  Missing    (5): fi-hsw-4200u fi-skl-6770hq fi-byt-squawks fi-bsw-cyan fi-byt-clapper 
 
 
 Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_5506 -> IGTPW_4296
+  * IGT: IGT_5506 -> IGTPW_4297
 
   CI-20190529: 20190529
   CI_DRM_8126: 2bd9e989a5653d4cd710e9dd2b42b0a080f1add8 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4296: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4296/index.html
+  IGTPW_4297: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4297/index.html
   IGT_5506: 59fd8a0d01dac58dc6c7d86ef391ed4393ab5aae @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4296/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4297/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
