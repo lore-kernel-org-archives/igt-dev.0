@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1177F6EBD6
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Mar 2020 14:26:25 +0000 (UTC)
+References: <20200312075126.8188-1-swati2.sharma@intel.com>
+From: Martin Peres <martin.peres@linux.intel.com>
+Message-ID: <414eeca0-e925-0efc-7a88-19d7f19dad61@linux.intel.com>
+Date: Fri, 13 Mar 2020 16:26:18 +0200
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 13 Mar 2020 14:01:20 -0000
-Message-ID: <158410808011.30352.16026019045656566734@emeril.freedesktop.org>
-References: <20200313132556.26038-1-swati2.sharma@intel.com>
-In-Reply-To: <20200313132556.26038-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fhdr=3A_Made_debug_info_more_evident?=
+In-Reply-To: <20200312075126.8188-1-swati2.sharma@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_atomic: add test to
+ validate immutable zpos
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,103 +18,290 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Swati Sharma <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On 2020-03-12 09:51, Swati Sharma wrote:
+> i915 implements immutable zpos property whereas the existing test
+> case is written to validate mutable zpos.
+> 
+> Added new sub-test to validate immutable zpos. In the test, to validate
+> reported zpos of the plane is correct by making sure a full-screen plane
+> covers all other planes with the lower zpos, and the plane with the next
+> available zpos is indeed partially covering the full-screen plane.
+> 
+> v2: -Removed intel only checks [Martin]
+>     -Used XRGB8888 pixel format as used in other IGTs
+>     -Added documentation [Martin]
+>     -Removed skip, instead continue if plane doesn't support zpos [Martin]
+>     -Sorted planes in increasing order of zpos [Martin]
+> 
+> Issue: https://gitlab.freedesktop.org/drm/intel/issues/404
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>  tests/kms_atomic.c | 156 ++++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 146 insertions(+), 10 deletions(-)
+> 
+> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+> index 8462d128..2a6a407e 100644
+> --- a/tests/kms_atomic.c
+> +++ b/tests/kms_atomic.c
+> @@ -121,7 +121,7 @@ static void plane_check_current_state(igt_plane_t *plane, const uint64_t *values
+>  }
+>  
+>  static void plane_commit(igt_plane_t *plane, enum igt_commit_style s,
+> -                                enum kms_atomic_check_relax relax)
+> +                         enum kms_atomic_check_relax relax)
+>  {
+>  	igt_display_commit2(plane->pipe->display, s);
+>  	plane_check_current_state(plane, plane->values, relax);
+> @@ -277,9 +277,9 @@ static uint32_t plane_get_igt_format(igt_plane_t *plane)
+>  }
+>  
+>  static void
+> -plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
+> -			   igt_plane_t *primary, igt_plane_t *overlay,
+> -			   uint32_t format_primary, uint32_t format_overlay)
+> +plane_primary_overlay_mutable_zpos(igt_pipe_t *pipe, igt_output_t *output,
+> +			           igt_plane_t *primary, igt_plane_t *overlay,
+> +			           uint32_t format_primary, uint32_t format_overlay)
+>  {
+>  	struct igt_fb fb_primary, fb_overlay;
+>  	drmModeModeInfo *mode = igt_output_get_mode(output);
+> @@ -320,7 +320,7 @@ plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
+>  	igt_plane_set_prop_value(overlay, IGT_PLANE_ZPOS, 1);
+>  
+>  	igt_info("Committing with overlay on top, it has a hole "\
+> -		  "through which the primary should be seen\n");
+> +		 "through which the primary should be seen\n");
+>  	plane_commit(primary, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
+>  
+>  	igt_assert_eq_u64(igt_plane_get_prop(primary, IGT_PLANE_ZPOS), 0);
+> @@ -346,7 +346,7 @@ plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
+>  	igt_put_cairo_ctx(pipe->display->drm_fd, &fb_primary, cr);
+>  
+>  	igt_info("Committing with a hole in the primary through "\
+> -		  "which the underlay should be seen\n");
+> +		 "which the underlay should be seen\n");
+>  	plane_commit(primary, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
+>  
+>  	/* reset it back to initial state */
+> @@ -358,6 +358,127 @@ plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
+>  	igt_assert_eq_u64(igt_plane_get_prop(overlay, IGT_PLANE_ZPOS), 1);
+>  }
+>  
+> +static void
+> +plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
+> +		     igt_output_t *output)
+> +{
+> +	cairo_t *cr;
+> +	int min_idx;
+> +	struct igt_fb fb_ref;
+> +	igt_plane_t *primary;
+> +	drmModeModeInfo *mode;
+> +	igt_pipe_crc_t *pipe_crc;
+> +	igt_crc_t ref_crc, new_crc;
+> +	int n_planes = pipe->n_planes;
+> +	igt_plane_t *plane_ptr[n_planes];
+> +	igt_plane_t *plane_lower, *plane_upper;
+> +	uint32_t w_lower, h_lower, w_upper, h_upper;
+> +
+> +	mode = igt_output_get_mode(output);
 
-Series: tests/kms_hdr: Made debug info more evident
-URL   : https://patchwork.freedesktop.org/series/74675/
-State : success
+Make sure to set a low resolution so that we don't run out of memory
+bandwidth when having a ton of planes enabled.
 
-== Summary ==
+> +	primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+> +
+> +	/* for lower plane */
+> +	w_lower = mode->hdisplay;
+> +	h_lower = mode->vdisplay;
+> +
+> +	/* for upper plane */
+> +	w_upper = mode->hdisplay / 2;
+> +	h_upper = mode->vdisplay / 2;
+> +
+> +	igt_create_color_fb(display->drm_fd,
+> +			    w_lower, h_lower,
+> +			    DRM_FORMAT_XRGB8888,
+> +			    I915_TILING_NONE,
+> +			    0.0, 0.0, 0.0, &fb_ref);
+> +
+> +	/* create reference image */
+> +	cr = igt_get_cairo_ctx(display->drm_fd, &fb_ref);
+> +	igt_assert(cairo_status(cr) == 0);
+> +	igt_paint_color(cr, 0, 0, w_lower, h_lower, 0.0, 0.0, 1.0);
+> +	igt_paint_color(cr, w_upper / 2, h_upper / 2, w_upper, h_upper, 1.0, 1.0, 0.0);
+> +	igt_put_cairo_ctx(display->drm_fd, &fb_ref, cr);
+> +	igt_plane_set_fb(primary, &fb_ref);
+> +	igt_display_commit2(display, COMMIT_ATOMIC);
+> +
+> +	/* create the pipe_crc object for this pipe */
+> +	pipe_crc = igt_pipe_crc_new(pipe->display->drm_fd, pipe->pipe,
+> +				    INTEL_PIPE_CRC_SOURCE_AUTO);
+> +
+> +	/* get reference crc */
+> +	igt_pipe_crc_start(pipe_crc);
+> +	igt_pipe_crc_get_current(display->drm_fd, pipe_crc, &ref_crc);
+> +
+> +	igt_plane_set_fb(primary, NULL);
+> +
+> +	/* sort planes in increasing order of zpos */
+> +	for (int k = 0; k < n_planes; k++)
+> +		plane_ptr[k] = &display->pipes[pipe->pipe].planes[k];
+> +
+> +	for (int l = 0; l < n_planes - 1; l++) {
+> +		min_idx = l;
+> +		for (int m = l + 1; m < n_planes; m++) {
+> +			int zpos1, zpos2;
+> +
+> +			if (!igt_plane_has_prop(plane_ptr[min_idx], IGT_PLANE_ZPOS) ||
+> +			    !igt_plane_has_prop(plane_ptr[m], IGT_PLANE_ZPOS))
+> +				continue;
+> +
+> +			zpos1 = igt_plane_get_prop(plane_ptr[min_idx], IGT_PLANE_ZPOS);
+> +			zpos2 = igt_plane_get_prop(plane_ptr[m], IGT_PLANE_ZPOS);
+> +
+> +			if (zpos1 == zpos2)
+> +				continue;
+> +
+> +			if (zpos2 < zpos1)
+> +				min_idx = m;
+> +		}
+> +
+> +		igt_swap(plane_ptr[min_idx], plane_ptr[l]);
+> +	}
+> +
+> +	/* checking only pairs of plane in increasing fashion
+> +	 * to avoid combinatorial explosion
+> +	 */
+> +	for (int i = 0; i < n_planes - 1; i++) {
+> +		struct igt_fb fb_lower, fb_upper;
+> +
+> +		plane_lower = plane_ptr[i];
+> +		plane_upper = plane_ptr[i + 1];
+> +
+> +		if ((plane_lower->type == DRM_PLANE_TYPE_CURSOR) ||
+> +		    (plane_upper->type == DRM_PLANE_TYPE_CURSOR))
+> +			continue;
+> +
+> +		igt_create_color_fb(display->drm_fd,
+> +				    w_lower, h_lower,
+> +				    DRM_FORMAT_XRGB8888,
+> +				    I915_TILING_NONE,
+> +				    0.0, 0.0, 1.0, &fb_lower);
+> +
+> +		igt_create_color_fb(display->drm_fd,
+> +				    w_upper, h_upper,
+> +				    DRM_FORMAT_XRGB8888,
+> +				    I915_TILING_NONE,
+> +				    1.0, 1.0, 0.0, &fb_upper);
 
-CI Bug Log - changes from CI_DRM_8133 -> IGTPW_4301
-====================================================
+Do you need to re-create the fb at every loop?
 
-Summary
--------
+> +
+> +		igt_plane_set_position(plane_lower, 0, 0);
+> +		igt_plane_set_fb(plane_lower, &fb_lower);
+> +
+> +		igt_plane_set_position(plane_upper, w_upper / 2, h_upper / 2);
+> +		igt_plane_set_fb(plane_upper, &fb_upper);
+> +
+> +		igt_info("Committing with the plane[%d] underneath "\
+> +			 "plane[%d]\n", i, (i + 1));
+> +		igt_display_commit2(display, COMMIT_ATOMIC);
+> +		igt_pipe_crc_get_current(pipe->display->drm_fd, pipe_crc, &new_crc);
+> +
+> +		igt_assert_crc_equal(&ref_crc, &new_crc);
+> +
+> +		igt_plane_set_fb(plane_lower, NULL);
+> +		igt_plane_set_fb(plane_upper, NULL);
 
-  **SUCCESS**
+So, you don't set all the planes under the lower one to another color or
+something?
 
-  No regressions found.
+> +	}
+> +}
+> +
+>  static void plane_overlay(igt_pipe_t *pipe, igt_output_t *output, igt_plane_t *plane)
+>  {
+>  	drmModeModeInfo *mode = igt_output_get_mode(output);
+> @@ -987,14 +1108,18 @@ igt_main
+>  		plane_primary(pipe_obj, primary, &fb);
+>  	}
+>  
+> -	igt_subtest("plane_primary_overlay_zpos") {
+> +	igt_describe("Tests mutable zpos where zpos is modified for "\
+> +		     "primary and overlay planes, order of planes is validated "\
+> +		     "visually where top plane has hole through which underlay plane "\
+> +		     "can be seen");
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4301/index.html
+The wording is a little odd and the description is more focused on the
+how, rather than what it is trying to check.
 
-Known issues
-------------
+How about: "Verify that the overlay plane can cover the primary one (and
+vice versa) by changing their zpos property."
 
-  Here are the changes found in IGTPW_4301 that come from known issues:
+> +	igt_subtest("plane_primary_overlay_mutable_zpos") {
+>  		uint32_t format_primary = DRM_FORMAT_ARGB8888;
+>  		uint32_t format_overlay = DRM_FORMAT_ARGB1555;
+>  
+>  		igt_plane_t *overlay =
+>  			igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_OVERLAY);
+> -
+>  		igt_require(overlay);
+> +
+>  		igt_require(igt_plane_has_prop(primary, IGT_PLANE_ZPOS));
+>  		igt_require(igt_plane_has_prop(overlay, IGT_PLANE_ZPOS));
+>  
+> @@ -1002,8 +1127,18 @@ igt_main
+>  		igt_require(igt_plane_has_format_mod(overlay, format_overlay, 0x0));
+>  
+>  		igt_output_set_pipe(output, pipe);
+> -		plane_primary_overlay_zpos(pipe_obj, output, primary, overlay,
+> -					   format_primary, format_overlay);
+> +		plane_primary_overlay_mutable_zpos(pipe_obj, output, primary, overlay,
+> +						   format_primary, format_overlay);
+> +	}
+> +
+> +	igt_describe("Tests immutable zpos where zpos cannot be modified such that "\
+> +		     "reported zpos of the plane is correct by making sure a "\
+> +		     "full-screen plane covers all other planes with the lower zpos,"\
+> +		     "and the plane with the next available zpos is indeed partially "\
+> +		     "covering the full-screen plane");
 
-### IGT changes ###
+How about: "Verify the reported zpos property of planes by making sure
+only higher zpos planes cover the lower zpos ones".
 
-#### Issues hit ####
+> +	igt_subtest("plane_immutable_zpos") {
 
-  * igt@i915_selftest@live@execlists:
-    - fi-skl-lmem:        [PASS][1] -> [INCOMPLETE][2] ([i915#1430] / [i915#656])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8133/fi-skl-lmem/igt@i915_selftest@live@execlists.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4301/fi-skl-lmem/igt@i915_selftest@live@execlists.html
-    - fi-skl-6600u:       [PASS][3] -> [INCOMPLETE][4] ([i915#1430] / [i915#656])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8133/fi-skl-6600u/igt@i915_selftest@live@execlists.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4301/fi-skl-6600u/igt@i915_selftest@live@execlists.html
+Do we want a per-pipe test? The current exec time is [0.14, 0.37] s, so
+good job here, and we could test every pipe!
 
-  
-#### Possible fixes ####
+Anyway, all of these comments are nit picks. If you fix the description,
+this is:
+Reviewed-by: Martin Peres <martin.peres@linux.intel.com>
 
-  * igt@gem_exec_parallel@fds:
-    - fi-skl-guc:         [INCOMPLETE][5] -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8133/fi-skl-guc/igt@gem_exec_parallel@fds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4301/fi-skl-guc/igt@gem_exec_parallel@fds.html
+Martin
 
-  * igt@gem_exec_suspend@basic-s4-devices:
-    - fi-tgl-y:           [FAIL][7] ([CI#94]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8133/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4301/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-glk-dsi:         [INCOMPLETE][9] ([i915#58] / [i915#656] / [k.org#198133]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8133/fi-glk-dsi/igt@i915_selftest@live@execlists.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4301/fi-glk-dsi/igt@i915_selftest@live@execlists.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
-  [i915#1430]: https://gitlab.freedesktop.org/drm/intel/issues/1430
-  [i915#460]: https://gitlab.freedesktop.org/drm/intel/issues/460
-  [i915#58]: https://gitlab.freedesktop.org/drm/intel/issues/58
-  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
-  [k.org#198133]: https://bugzilla.kernel.org/show_bug.cgi?id=198133
-
-
-Participating hosts (36 -> 45)
-------------------------------
-
-  Additional (12): fi-kbl-soraka fi-bdw-5557u fi-byt-j1900 fi-skl-6770hq fi-hsw-peppy fi-bwr-2160 fi-snb-2520m fi-gdg-551 fi-cfl-8109u fi-bsw-kefka fi-blb-e6850 fi-bsw-nick 
-  Missing    (3): fi-byt-clapper fi-bdw-samus fi-hsw-4200u 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5508 -> IGTPW_4301
-
-  CI-20190529: 20190529
-  CI_DRM_8133: e9912ab15be5d104fafd00c5e72361ae3b8839a5 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4301: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4301/index.html
-  IGT_5508: 89d644600a1a9f08794cc7106b63758df40ce1d8 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4301/index.html
+> +		igt_output_set_pipe(output, pipe);
+> +		plane_immutable_zpos(&display, pipe_obj, output);
+>  	}
+>  
+>  	igt_subtest("test_only") {
+> @@ -1011,6 +1146,7 @@ igt_main
+>  
+>  		test_only(pipe_obj, primary, output);
+>  	}
+> +
+>  	igt_subtest("plane_cursor_legacy") {
+>  		igt_plane_t *cursor =
+>  			igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_CURSOR);
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
