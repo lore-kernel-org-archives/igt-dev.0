@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 77C696EBF6
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Mar 2020 15:28:20 +0000 (UTC)
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Date: Fri, 13 Mar 2020 15:28:14 +0000
-Message-ID: <831DB337B4FC724CAB57663657DD9025D10211C6@BGSMSX110.gar.corp.intel.com>
-References: <20200312075126.8188-1-swati2.sharma@intel.com>
- <414eeca0-e925-0efc-7a88-19d7f19dad61@linux.intel.com>
-In-Reply-To: <414eeca0-e925-0efc-7a88-19d7f19dad61@linux.intel.com>
-Content-Language: en-US
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B2AF36EBF9
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Mar 2020 15:29:31 +0000 (UTC)
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Date: Fri, 13 Mar 2020 17:29:11 +0200
+Message-ID: <20200313152911.580802-2-arkadiusz.hiler@intel.com>
+In-Reply-To: <20200313152911.580802-1-arkadiusz.hiler@intel.com>
+References: <20200313152911.580802-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_atomic: add test to
- validate immutable zpos
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_chamelium: Get rid of
+ dp-link-status subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,296 +21,236 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Martin Peres <martin.peres@linux.intel.com>, "Sharma, Swati2" <swati2.sharma@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Martin Peres <martin.peres@intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi Swati,
+The test is making Chamelium's receiver signal a need for retraining to
+the upstream, which i915 handles correctly. Then it asserts a number of
+conditions that are neither a part of the DisplayPort spec, conformance
+test suite or the current driver's behavior.
 
-I think we can avoid the sorting if we use 'zpos %  num_planes' as the index.
-Something like:
-plane_ptr[zpos % n_planes]  = &display->pipes[pipe].planes[i]
+The test needs a complete rethinking. Let's remove it instead of letting
+it bitrot further.
 
--Ankit
+Fixes: https://gitlab.freedesktop.org/drm/intel/issues/1059
+Cc: Martin Peres <martin.peres@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+---
+ lib/igt_chamelium.c   |  15 -----
+ lib/igt_chamelium.h   |   3 -
+ tests/kms_chamelium.c | 147 ------------------------------------------
+ 3 files changed, 165 deletions(-)
 
------Original Message-----
-From: Martin Peres <martin.peres@linux.intel.com> 
-Sent: Friday, March 13, 2020 7:56 PM
-To: Sharma, Swati2 <swati2.sharma@intel.com>; igt-dev@lists.freedesktop.org
-Cc: maarten.lankhorst@linux.intel.com; Hiler, Arkadiusz <arkadiusz.hiler@intel.com>; Latvala, Petri <petri.latvala@intel.com>; Nautiyal, Ankit K <ankit.k.nautiyal@intel.com>
-Subject: Re: [PATCH i-g-t v2] tests/kms_atomic: add test to validate immutable zpos
+diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+index aaf17d51..2a4930ec 100644
+--- a/lib/igt_chamelium.c
++++ b/lib/igt_chamelium.c
+@@ -1206,21 +1206,6 @@ void chamelium_infoframe_destroy(struct chamelium_infoframe *infoframe)
+ 	free(infoframe);
+ }
+ 
+-bool chamelium_supports_trigger_link_failure(struct chamelium *chamelium)
+-{
+-	return chamelium_supports_method(chamelium, "TriggerLinkFailure");
+-}
+-
+-/**
+- * chamelium_trigger_link_failure: trigger a link failure on the provided port.
+- */
+-void chamelium_trigger_link_failure(struct chamelium *chamelium,
+-				    struct chamelium_port *port)
+-{
+-	xmlrpc_DECREF(chamelium_rpc(chamelium, port, "TriggerLinkFailure",
+-				    "(i)", port->id));
+-}
+-
+ bool chamelium_has_audio_support(struct chamelium *chamelium,
+ 				 struct chamelium_port *port)
+ {
+diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
+index d03c924a..bdfdd546 100644
+--- a/lib/igt_chamelium.h
++++ b/lib/igt_chamelium.h
+@@ -161,9 +161,6 @@ struct chamelium_infoframe *
+ chamelium_get_last_infoframe(struct chamelium *chamelium,
+ 			     struct chamelium_port *port,
+ 			     enum chamelium_infoframe_type type);
+-bool chamelium_supports_trigger_link_failure(struct chamelium *chamelium);
+-void chamelium_trigger_link_failure(struct chamelium *chamelium,
+-				    struct chamelium_port *port);
+ bool chamelium_has_audio_support(struct chamelium *chamelium,
+ 				 struct chamelium_port *port);
+ void chamelium_get_audio_channel_mapping(struct chamelium *chamelium,
+diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
+index 2acac1e4..3d0b429a 100644
+--- a/tests/kms_chamelium.c
++++ b/tests/kms_chamelium.c
+@@ -578,149 +578,6 @@ enable_output(data_t *data,
+ 	drmModeFreeConnector(connector);
+ }
+ 
+-static bool find_mode(const drmModeModeInfo *list, size_t list_len,
+-		      const drmModeModeInfo *mode)
+-{
+-	size_t i;
+-
+-	for (i = 0; i < list_len; i++) {
+-		if (memcmp(&list[i], mode, sizeof(*mode)) == 0) {
+-			return true;
+-		}
+-	}
+-
+-	return false;
+-}
+-
+-static void check_modes_subset(const drmModeModeInfo *prev, size_t prev_len,
+-			       const drmModeModeInfo *cur, size_t cur_len)
+-{
+-	size_t i;
+-
+-	for (i = 0; i < cur_len; i++) {
+-		igt_assert_f(find_mode(prev, prev_len, &cur[i]),
+-			     "Got new mode %s after link status failure\n",
+-			     cur[i].name);
+-	}
+-
+-	igt_assert(cur_len <= prev_len); /* safety net */
+-	igt_debug("New mode list contains %zu less modes\n",
+-		  prev_len - cur_len);
+-}
+-
+-static bool are_fallback_modes(const drmModeModeInfo *modes, size_t modes_len)
+-{
+-	igt_assert(modes_len > 0);
+-
+-	return modes[0].hdisplay <= 1024 && modes[0].vdisplay <= 768;
+-}
+-
+-static const char test_link_status_desc[] =
+-	"Simulate a series of link failures, check we get a uevent each time "
+-	"with the link-status property set to BAD and the list of modes "
+-	"shrinks (or stays the same), until we reach fallback modes";
+-static void
+-test_link_status(data_t *data, struct chamelium_port *port)
+-{
+-	drmModeConnector *connector;
+-	igt_output_t *output;
+-	igt_plane_t *primary;
+-	drmModeModeInfo *prev_modes;
+-	size_t prev_modes_len;
+-	drmModeModeInfo mode = {0};
+-	uint32_t link_status_id;
+-	uint64_t link_status;
+-	bool has_prop;
+-	unsigned int fb_id = 0;
+-	struct igt_fb fb;
+-	struct udev_monitor *mon;
+-
+-	igt_require(chamelium_supports_trigger_link_failure(data->chamelium));
+-
+-	reset_state(data, port);
+-
+-	output = prepare_output(data, port, TEST_EDID_BASE);
+-	connector = chamelium_port_get_connector(data->chamelium, port, false);
+-	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+-	igt_assert(primary);
+-
+-	has_prop = kmstest_get_property(data->drm_fd, connector->connector_id,
+-					DRM_MODE_OBJECT_CONNECTOR,
+-					"link-status", &link_status_id,
+-					&link_status, NULL);
+-	igt_require(has_prop);
+-	igt_assert_f(link_status == DRM_MODE_LINK_STATUS_GOOD,
+-		     "Expected link status to be %d initially, got %"PRIu64"\n",
+-		     DRM_MODE_LINK_STATUS_GOOD, link_status);
+-
+-	igt_debug("Connector has %d modes\n", connector->count_modes);
+-	prev_modes_len = connector->count_modes;
+-	prev_modes = malloc(prev_modes_len * sizeof(drmModeModeInfo));
+-	memcpy(prev_modes, connector->modes,
+-	       prev_modes_len * sizeof(drmModeModeInfo));
+-
+-	mon = igt_watch_hotplug();
+-
+-	while (1) {
+-		if (link_status == DRM_MODE_LINK_STATUS_BAD) {
+-			igt_output_set_prop_value(output,
+-						  IGT_CONNECTOR_LINK_STATUS,
+-						  DRM_MODE_LINK_STATUS_GOOD);
+-		}
+-
+-		if (memcmp(&connector->modes[0], &mode, sizeof(mode)) != 0) {
+-			igt_assert(connector->count_modes > 0);
+-			mode = connector->modes[0];
+-			igt_debug("Modesetting with %s\n", mode.name);
+-			if (fb_id > 0)
+-				igt_remove_fb(data->drm_fd, &fb);
+-			fb_id = igt_create_color_pattern_fb(data->drm_fd,
+-							    mode.hdisplay,
+-							    mode.vdisplay,
+-							    DRM_FORMAT_XRGB8888,
+-							    LOCAL_DRM_FORMAT_MOD_NONE,
+-							    0, 0, 0, &fb);
+-			igt_assert(fb_id > 0);
+-			enable_output(data, port, output, &mode, &fb);
+-		} else {
+-			igt_display_commit2(&data->display, COMMIT_ATOMIC);
+-		}
+-
+-		igt_debug("Triggering link failure\n");
+-		chamelium_trigger_link_failure(data->chamelium, port);
+-
+-		igt_assert(igt_hotplug_detected(mon, HOTPLUG_TIMEOUT));
+-		igt_assert_eq(reprobe_connector(data, port),
+-			      DRM_MODE_CONNECTED);
+-
+-		igt_flush_hotplugs(mon);
+-
+-		drmModeFreeConnector(connector);
+-		connector = chamelium_port_get_connector(data->chamelium, port,
+-							 false);
+-		link_status = igt_output_get_prop(output, IGT_CONNECTOR_LINK_STATUS);
+-		igt_assert_f(link_status == DRM_MODE_LINK_STATUS_BAD,
+-			     "Expected link status to be %d after link failure, "
+-			     "got %"PRIu64"\n",
+-			     DRM_MODE_LINK_STATUS_BAD, link_status);
+-		check_modes_subset(prev_modes, prev_modes_len,
+-				   connector->modes, connector->count_modes);
+-		prev_modes_len = connector->count_modes;
+-		memcpy(prev_modes, connector->modes,
+-		       connector->count_modes * sizeof(drmModeModeInfo));
+-
+-		if (are_fallback_modes(connector->modes, connector->count_modes)) {
+-			igt_debug("Reached fallback modes\n");
+-			break;
+-		}
+-	}
+-
+-	igt_cleanup_hotplug(mon);
+-	igt_remove_fb(data->drm_fd, &fb);
+-	free(prev_modes);
+-	drmModeFreeConnector(connector);
+-}
+-
+ static void chamelium_paint_xr24_pattern(uint32_t *data,
+ 					 size_t width, size_t height,
+ 					 size_t stride, size_t block_size)
+@@ -2693,10 +2550,6 @@ igt_main
+ 			test_hpd_storm_disable(&data, port,
+ 					       HPD_STORM_PULSE_INTERVAL_DP);
+ 
+-		igt_describe(test_link_status_desc);
+-		connector_subtest("dp-link-status", DisplayPort)
+-			test_link_status(&data, port);
+-
+ 		igt_describe(test_suspend_resume_edid_change_desc);
+ 		connector_subtest("dp-edid-change-during-suspend", DisplayPort)
+ 			test_suspend_resume_edid_change(&data, port,
+-- 
+2.24.1
 
-On 2020-03-12 09:51, Swati Sharma wrote:
-> i915 implements immutable zpos property whereas the existing test case 
-> is written to validate mutable zpos.
-> 
-> Added new sub-test to validate immutable zpos. In the test, to 
-> validate reported zpos of the plane is correct by making sure a 
-> full-screen plane covers all other planes with the lower zpos, and the 
-> plane with the next available zpos is indeed partially covering the full-screen plane.
-> 
-> v2: -Removed intel only checks [Martin]
->     -Used XRGB8888 pixel format as used in other IGTs
->     -Added documentation [Martin]
->     -Removed skip, instead continue if plane doesn't support zpos [Martin]
->     -Sorted planes in increasing order of zpos [Martin]
-> 
-> Issue: https://gitlab.freedesktop.org/drm/intel/issues/404
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->  tests/kms_atomic.c | 156 
-> ++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 146 insertions(+), 10 deletions(-)
-> 
-> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c index 
-> 8462d128..2a6a407e 100644
-> --- a/tests/kms_atomic.c
-> +++ b/tests/kms_atomic.c
-> @@ -121,7 +121,7 @@ static void plane_check_current_state(igt_plane_t 
-> *plane, const uint64_t *values  }
->  
->  static void plane_commit(igt_plane_t *plane, enum igt_commit_style s,
-> -                                enum kms_atomic_check_relax relax)
-> +                         enum kms_atomic_check_relax relax)
->  {
->  	igt_display_commit2(plane->pipe->display, s);
->  	plane_check_current_state(plane, plane->values, relax); @@ -277,9 
-> +277,9 @@ static uint32_t plane_get_igt_format(igt_plane_t *plane)  }
->  
->  static void
-> -plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
-> -			   igt_plane_t *primary, igt_plane_t *overlay,
-> -			   uint32_t format_primary, uint32_t format_overlay)
-> +plane_primary_overlay_mutable_zpos(igt_pipe_t *pipe, igt_output_t *output,
-> +			           igt_plane_t *primary, igt_plane_t *overlay,
-> +			           uint32_t format_primary, uint32_t format_overlay)
->  {
->  	struct igt_fb fb_primary, fb_overlay;
->  	drmModeModeInfo *mode = igt_output_get_mode(output); @@ -320,7 
-> +320,7 @@ plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
->  	igt_plane_set_prop_value(overlay, IGT_PLANE_ZPOS, 1);
->  
->  	igt_info("Committing with overlay on top, it has a hole "\
-> -		  "through which the primary should be seen\n");
-> +		 "through which the primary should be seen\n");
->  	plane_commit(primary, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
->  
->  	igt_assert_eq_u64(igt_plane_get_prop(primary, IGT_PLANE_ZPOS), 0); 
-> @@ -346,7 +346,7 @@ plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
->  	igt_put_cairo_ctx(pipe->display->drm_fd, &fb_primary, cr);
->  
->  	igt_info("Committing with a hole in the primary through "\
-> -		  "which the underlay should be seen\n");
-> +		 "which the underlay should be seen\n");
->  	plane_commit(primary, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
->  
->  	/* reset it back to initial state */ @@ -358,6 +358,127 @@ 
-> plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
->  	igt_assert_eq_u64(igt_plane_get_prop(overlay, IGT_PLANE_ZPOS), 1);  
-> }
->  
-> +static void
-> +plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
-> +		     igt_output_t *output)
-> +{
-> +	cairo_t *cr;
-> +	int min_idx;
-> +	struct igt_fb fb_ref;
-> +	igt_plane_t *primary;
-> +	drmModeModeInfo *mode;
-> +	igt_pipe_crc_t *pipe_crc;
-> +	igt_crc_t ref_crc, new_crc;
-> +	int n_planes = pipe->n_planes;
-> +	igt_plane_t *plane_ptr[n_planes];
-> +	igt_plane_t *plane_lower, *plane_upper;
-> +	uint32_t w_lower, h_lower, w_upper, h_upper;
-> +
-> +	mode = igt_output_get_mode(output);
-
-Make sure to set a low resolution so that we don't run out of memory bandwidth when having a ton of planes enabled.
-
-> +	primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +	/* for lower plane */
-> +	w_lower = mode->hdisplay;
-> +	h_lower = mode->vdisplay;
-> +
-> +	/* for upper plane */
-> +	w_upper = mode->hdisplay / 2;
-> +	h_upper = mode->vdisplay / 2;
-> +
-> +	igt_create_color_fb(display->drm_fd,
-> +			    w_lower, h_lower,
-> +			    DRM_FORMAT_XRGB8888,
-> +			    I915_TILING_NONE,
-> +			    0.0, 0.0, 0.0, &fb_ref);
-> +
-> +	/* create reference image */
-> +	cr = igt_get_cairo_ctx(display->drm_fd, &fb_ref);
-> +	igt_assert(cairo_status(cr) == 0);
-> +	igt_paint_color(cr, 0, 0, w_lower, h_lower, 0.0, 0.0, 1.0);
-> +	igt_paint_color(cr, w_upper / 2, h_upper / 2, w_upper, h_upper, 1.0, 1.0, 0.0);
-> +	igt_put_cairo_ctx(display->drm_fd, &fb_ref, cr);
-> +	igt_plane_set_fb(primary, &fb_ref);
-> +	igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +	/* create the pipe_crc object for this pipe */
-> +	pipe_crc = igt_pipe_crc_new(pipe->display->drm_fd, pipe->pipe,
-> +				    INTEL_PIPE_CRC_SOURCE_AUTO);
-> +
-> +	/* get reference crc */
-> +	igt_pipe_crc_start(pipe_crc);
-> +	igt_pipe_crc_get_current(display->drm_fd, pipe_crc, &ref_crc);
-> +
-> +	igt_plane_set_fb(primary, NULL);
-> +
-> +	/* sort planes in increasing order of zpos */
-> +	for (int k = 0; k < n_planes; k++)
-> +		plane_ptr[k] = &display->pipes[pipe->pipe].planes[k];
-> +
-> +	for (int l = 0; l < n_planes - 1; l++) {
-> +		min_idx = l;
-> +		for (int m = l + 1; m < n_planes; m++) {
-> +			int zpos1, zpos2;
-> +
-> +			if (!igt_plane_has_prop(plane_ptr[min_idx], IGT_PLANE_ZPOS) ||
-> +			    !igt_plane_has_prop(plane_ptr[m], IGT_PLANE_ZPOS))
-> +				continue;
-> +
-> +			zpos1 = igt_plane_get_prop(plane_ptr[min_idx], IGT_PLANE_ZPOS);
-> +			zpos2 = igt_plane_get_prop(plane_ptr[m], IGT_PLANE_ZPOS);
-> +
-> +			if (zpos1 == zpos2)
-> +				continue;
-> +
-> +			if (zpos2 < zpos1)
-> +				min_idx = m;
-> +		}
-> +
-> +		igt_swap(plane_ptr[min_idx], plane_ptr[l]);
-> +	}
-> +
-> +	/* checking only pairs of plane in increasing fashion
-> +	 * to avoid combinatorial explosion
-> +	 */
-> +	for (int i = 0; i < n_planes - 1; i++) {
-> +		struct igt_fb fb_lower, fb_upper;
-> +
-> +		plane_lower = plane_ptr[i];
-> +		plane_upper = plane_ptr[i + 1];
-> +
-> +		if ((plane_lower->type == DRM_PLANE_TYPE_CURSOR) ||
-> +		    (plane_upper->type == DRM_PLANE_TYPE_CURSOR))
-> +			continue;
-> +
-> +		igt_create_color_fb(display->drm_fd,
-> +				    w_lower, h_lower,
-> +				    DRM_FORMAT_XRGB8888,
-> +				    I915_TILING_NONE,
-> +				    0.0, 0.0, 1.0, &fb_lower);
-> +
-> +		igt_create_color_fb(display->drm_fd,
-> +				    w_upper, h_upper,
-> +				    DRM_FORMAT_XRGB8888,
-> +				    I915_TILING_NONE,
-> +				    1.0, 1.0, 0.0, &fb_upper);
-
-Do you need to re-create the fb at every loop?
-
-> +
-> +		igt_plane_set_position(plane_lower, 0, 0);
-> +		igt_plane_set_fb(plane_lower, &fb_lower);
-> +
-> +		igt_plane_set_position(plane_upper, w_upper / 2, h_upper / 2);
-> +		igt_plane_set_fb(plane_upper, &fb_upper);
-> +
-> +		igt_info("Committing with the plane[%d] underneath "\
-> +			 "plane[%d]\n", i, (i + 1));
-> +		igt_display_commit2(display, COMMIT_ATOMIC);
-> +		igt_pipe_crc_get_current(pipe->display->drm_fd, pipe_crc, 
-> +&new_crc);
-> +
-> +		igt_assert_crc_equal(&ref_crc, &new_crc);
-> +
-> +		igt_plane_set_fb(plane_lower, NULL);
-> +		igt_plane_set_fb(plane_upper, NULL);
-
-So, you don't set all the planes under the lower one to another color or something?
-
-> +	}
-> +}
-> +
->  static void plane_overlay(igt_pipe_t *pipe, igt_output_t *output, 
-> igt_plane_t *plane)  {
->  	drmModeModeInfo *mode = igt_output_get_mode(output); @@ -987,14 
-> +1108,18 @@ igt_main
->  		plane_primary(pipe_obj, primary, &fb);
->  	}
->  
-> -	igt_subtest("plane_primary_overlay_zpos") {
-> +	igt_describe("Tests mutable zpos where zpos is modified for "\
-> +		     "primary and overlay planes, order of planes is validated "\
-> +		     "visually where top plane has hole through which underlay plane "\
-> +		     "can be seen");
-
-The wording is a little odd and the description is more focused on the how, rather than what it is trying to check.
-
-How about: "Verify that the overlay plane can cover the primary one (and vice versa) by changing their zpos property."
-
-> +	igt_subtest("plane_primary_overlay_mutable_zpos") {
->  		uint32_t format_primary = DRM_FORMAT_ARGB8888;
->  		uint32_t format_overlay = DRM_FORMAT_ARGB1555;
->  
->  		igt_plane_t *overlay =
->  			igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_OVERLAY);
-> -
->  		igt_require(overlay);
-> +
->  		igt_require(igt_plane_has_prop(primary, IGT_PLANE_ZPOS));
->  		igt_require(igt_plane_has_prop(overlay, IGT_PLANE_ZPOS));
->  
-> @@ -1002,8 +1127,18 @@ igt_main
->  		igt_require(igt_plane_has_format_mod(overlay, format_overlay, 
-> 0x0));
->  
->  		igt_output_set_pipe(output, pipe);
-> -		plane_primary_overlay_zpos(pipe_obj, output, primary, overlay,
-> -					   format_primary, format_overlay);
-> +		plane_primary_overlay_mutable_zpos(pipe_obj, output, primary, overlay,
-> +						   format_primary, format_overlay);
-> +	}
-> +
-> +	igt_describe("Tests immutable zpos where zpos cannot be modified such that "\
-> +		     "reported zpos of the plane is correct by making sure a "\
-> +		     "full-screen plane covers all other planes with the lower zpos,"\
-> +		     "and the plane with the next available zpos is indeed partially "\
-> +		     "covering the full-screen plane");
-
-How about: "Verify the reported zpos property of planes by making sure only higher zpos planes cover the lower zpos ones".
-
-> +	igt_subtest("plane_immutable_zpos") {
-
-Do we want a per-pipe test? The current exec time is [0.14, 0.37] s, so good job here, and we could test every pipe!
-
-Anyway, all of these comments are nit picks. If you fix the description, this is:
-Reviewed-by: Martin Peres <martin.peres@linux.intel.com>
-
-Martin
-
-> +		igt_output_set_pipe(output, pipe);
-> +		plane_immutable_zpos(&display, pipe_obj, output);
->  	}
->  
->  	igt_subtest("test_only") {
-> @@ -1011,6 +1146,7 @@ igt_main
->  
->  		test_only(pipe_obj, primary, output);
->  	}
-> +
->  	igt_subtest("plane_cursor_legacy") {
->  		igt_plane_t *cursor =
->  			igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_CURSOR);
-> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
