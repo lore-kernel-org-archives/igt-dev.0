@@ -1,20 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from 2.mo173.mail-out.ovh.net (2.mo173.mail-out.ovh.net
- [178.33.251.49])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 92FB06E057
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Mar 2020 22:09:49 +0000 (UTC)
-Received: from player728.ha.ovh.net (unknown [10.110.115.233])
- by mo173.mail-out.ovh.net (Postfix) with ESMTP id EB57D135199
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Mar 2020 23:02:18 +0100 (CET)
-Date: Sat, 14 Mar 2020 00:02:12 +0200
-From: Andi Shyti <andi@etezian.org>
-Message-ID: <20200313220212.GA27848@jack.zhora.eu>
+Date: Sat, 14 Mar 2020 00:21:39 +0200
+From: Andi Shyti <andi.shyti@intel.com>
+Message-ID: <20200313222139.GC3001@intel.intel>
 References: <20200311093448.4103262-1-chris@chris-wilson.co.uk>
+ <20200311093448.4103262-2-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200311093448.4103262-1-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 1/5] lib/i915: Create a
- context wrapping one specific engine
+In-Reply-To: <20200311093448.4103262-2-chris@chris-wilson.co.uk>
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t 2/5] lib/i915: Dynamic
+ subtest constructor for sysfs/engines
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -32,12 +26,22 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Hi Chris,
 
-On Wed, Mar 11, 2020 at 09:34:44AM +0000, Chris Wilson wrote:
-> Quite frequently we want to execute on one precise engine, so add a
-> convenience routine to create a context that contains only that engine
-> in the default [0] slot.
-> 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> +	lseek(engines, 0, SEEK_SET);
+> +	while ((len = syscall(SYS_getdents64, engines, buf, sizeof(buf))) > 0) {
+> +		void *ptr = buf;
+> +
+> +		while (len) {
+> +			struct linux_dirent64 {
+> +				ino64_t        d_ino;
+> +				off64_t        d_off;
+> +				unsigned short d_reclen;
+> +				unsigned char  d_type;
+> +				char           d_name[];
+> +			} *de = ptr;
+
+it's unfortunate to be in the situation of doing this, But I
+don't see better alternative, it needs to be fixed in the
+glibc :(
 
 Reviewed-by: Andi Shyti <andi.shyti@intel.com>
 
