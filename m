@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1177F6EBD6
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Mar 2020 14:26:25 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 77C696EBF6
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Mar 2020 15:28:20 +0000 (UTC)
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+Date: Fri, 13 Mar 2020 15:28:14 +0000
+Message-ID: <831DB337B4FC724CAB57663657DD9025D10211C6@BGSMSX110.gar.corp.intel.com>
 References: <20200312075126.8188-1-swati2.sharma@intel.com>
-From: Martin Peres <martin.peres@linux.intel.com>
-Message-ID: <414eeca0-e925-0efc-7a88-19d7f19dad61@linux.intel.com>
-Date: Fri, 13 Mar 2020 16:26:18 +0200
-MIME-Version: 1.0
-In-Reply-To: <20200312075126.8188-1-swati2.sharma@intel.com>
+ <414eeca0-e925-0efc-7a88-19d7f19dad61@linux.intel.com>
+In-Reply-To: <414eeca0-e925-0efc-7a88-19d7f19dad61@linux.intel.com>
 Content-Language: en-US
+MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_atomic: add test to
  validate immutable zpos
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -22,18 +23,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
-Cc: petri.latvala@intel.com
+To: Martin Peres <martin.peres@linux.intel.com>, "Sharma, Swati2" <swati2.sharma@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Latvala, Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Hi Swati,
+
+I think we can avoid the sorting if we use 'zpos %  num_planes' as the index.
+Something like:
+plane_ptr[zpos % n_planes]  = &display->pipes[pipe].planes[i]
+
+-Ankit
+
+-----Original Message-----
+From: Martin Peres <martin.peres@linux.intel.com> 
+Sent: Friday, March 13, 2020 7:56 PM
+To: Sharma, Swati2 <swati2.sharma@intel.com>; igt-dev@lists.freedesktop.org
+Cc: maarten.lankhorst@linux.intel.com; Hiler, Arkadiusz <arkadiusz.hiler@intel.com>; Latvala, Petri <petri.latvala@intel.com>; Nautiyal, Ankit K <ankit.k.nautiyal@intel.com>
+Subject: Re: [PATCH i-g-t v2] tests/kms_atomic: add test to validate immutable zpos
+
 On 2020-03-12 09:51, Swati Sharma wrote:
-> i915 implements immutable zpos property whereas the existing test
-> case is written to validate mutable zpos.
+> i915 implements immutable zpos property whereas the existing test case 
+> is written to validate mutable zpos.
 > 
-> Added new sub-test to validate immutable zpos. In the test, to validate
-> reported zpos of the plane is correct by making sure a full-screen plane
-> covers all other planes with the lower zpos, and the plane with the next
-> available zpos is indeed partially covering the full-screen plane.
+> Added new sub-test to validate immutable zpos. In the test, to 
+> validate reported zpos of the plane is correct by making sure a 
+> full-screen plane covers all other planes with the lower zpos, and the 
+> plane with the next available zpos is indeed partially covering the full-screen plane.
 > 
 > v2: -Removed intel only checks [Martin]
 >     -Used XRGB8888 pixel format as used in other IGTs
@@ -44,24 +60,24 @@ On 2020-03-12 09:51, Swati Sharma wrote:
 > Issue: https://gitlab.freedesktop.org/drm/intel/issues/404
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->  tests/kms_atomic.c | 156 ++++++++++++++++++++++++++++++++++++++++++---
+>  tests/kms_atomic.c | 156 
+> ++++++++++++++++++++++++++++++++++++++++++---
 >  1 file changed, 146 insertions(+), 10 deletions(-)
 > 
-> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
-> index 8462d128..2a6a407e 100644
+> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c index 
+> 8462d128..2a6a407e 100644
 > --- a/tests/kms_atomic.c
 > +++ b/tests/kms_atomic.c
-> @@ -121,7 +121,7 @@ static void plane_check_current_state(igt_plane_t *plane, const uint64_t *values
->  }
+> @@ -121,7 +121,7 @@ static void plane_check_current_state(igt_plane_t 
+> *plane, const uint64_t *values  }
 >  
 >  static void plane_commit(igt_plane_t *plane, enum igt_commit_style s,
 > -                                enum kms_atomic_check_relax relax)
 > +                         enum kms_atomic_check_relax relax)
 >  {
 >  	igt_display_commit2(plane->pipe->display, s);
->  	plane_check_current_state(plane, plane->values, relax);
-> @@ -277,9 +277,9 @@ static uint32_t plane_get_igt_format(igt_plane_t *plane)
->  }
+>  	plane_check_current_state(plane, plane->values, relax); @@ -277,9 
+> +277,9 @@ static uint32_t plane_get_igt_format(igt_plane_t *plane)  }
 >  
 >  static void
 > -plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
@@ -72,8 +88,8 @@ On 2020-03-12 09:51, Swati Sharma wrote:
 > +			           uint32_t format_primary, uint32_t format_overlay)
 >  {
 >  	struct igt_fb fb_primary, fb_overlay;
->  	drmModeModeInfo *mode = igt_output_get_mode(output);
-> @@ -320,7 +320,7 @@ plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
+>  	drmModeModeInfo *mode = igt_output_get_mode(output); @@ -320,7 
+> +320,7 @@ plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
 >  	igt_plane_set_prop_value(overlay, IGT_PLANE_ZPOS, 1);
 >  
 >  	igt_info("Committing with overlay on top, it has a hole "\
@@ -81,7 +97,7 @@ On 2020-03-12 09:51, Swati Sharma wrote:
 > +		 "through which the primary should be seen\n");
 >  	plane_commit(primary, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
 >  
->  	igt_assert_eq_u64(igt_plane_get_prop(primary, IGT_PLANE_ZPOS), 0);
+>  	igt_assert_eq_u64(igt_plane_get_prop(primary, IGT_PLANE_ZPOS), 0); 
 > @@ -346,7 +346,7 @@ plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
 >  	igt_put_cairo_ctx(pipe->display->drm_fd, &fb_primary, cr);
 >  
@@ -90,10 +106,10 @@ On 2020-03-12 09:51, Swati Sharma wrote:
 > +		 "which the underlay should be seen\n");
 >  	plane_commit(primary, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
 >  
->  	/* reset it back to initial state */
-> @@ -358,6 +358,127 @@ plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
->  	igt_assert_eq_u64(igt_plane_get_prop(overlay, IGT_PLANE_ZPOS), 1);
->  }
+>  	/* reset it back to initial state */ @@ -358,6 +358,127 @@ 
+> plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
+>  	igt_assert_eq_u64(igt_plane_get_prop(overlay, IGT_PLANE_ZPOS), 1);  
+> }
 >  
 > +static void
 > +plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
@@ -113,8 +129,7 @@ On 2020-03-12 09:51, Swati Sharma wrote:
 > +
 > +	mode = igt_output_get_mode(output);
 
-Make sure to set a low resolution so that we don't run out of memory
-bandwidth when having a ton of planes enabled.
+Make sure to set a low resolution so that we don't run out of memory bandwidth when having a ton of planes enabled.
 
 > +	primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
 > +
@@ -214,23 +229,23 @@ Do you need to re-create the fb at every loop?
 > +		igt_info("Committing with the plane[%d] underneath "\
 > +			 "plane[%d]\n", i, (i + 1));
 > +		igt_display_commit2(display, COMMIT_ATOMIC);
-> +		igt_pipe_crc_get_current(pipe->display->drm_fd, pipe_crc, &new_crc);
+> +		igt_pipe_crc_get_current(pipe->display->drm_fd, pipe_crc, 
+> +&new_crc);
 > +
 > +		igt_assert_crc_equal(&ref_crc, &new_crc);
 > +
 > +		igt_plane_set_fb(plane_lower, NULL);
 > +		igt_plane_set_fb(plane_upper, NULL);
 
-So, you don't set all the planes under the lower one to another color or
-something?
+So, you don't set all the planes under the lower one to another color or something?
 
 > +	}
 > +}
 > +
->  static void plane_overlay(igt_pipe_t *pipe, igt_output_t *output, igt_plane_t *plane)
->  {
->  	drmModeModeInfo *mode = igt_output_get_mode(output);
-> @@ -987,14 +1108,18 @@ igt_main
+>  static void plane_overlay(igt_pipe_t *pipe, igt_output_t *output, 
+> igt_plane_t *plane)  {
+>  	drmModeModeInfo *mode = igt_output_get_mode(output); @@ -987,14 
+> +1108,18 @@ igt_main
 >  		plane_primary(pipe_obj, primary, &fb);
 >  	}
 >  
@@ -240,11 +255,9 @@ something?
 > +		     "visually where top plane has hole through which underlay plane "\
 > +		     "can be seen");
 
-The wording is a little odd and the description is more focused on the
-how, rather than what it is trying to check.
+The wording is a little odd and the description is more focused on the how, rather than what it is trying to check.
 
-How about: "Verify that the overlay plane can cover the primary one (and
-vice versa) by changing their zpos property."
+How about: "Verify that the overlay plane can cover the primary one (and vice versa) by changing their zpos property."
 
 > +	igt_subtest("plane_primary_overlay_mutable_zpos") {
 >  		uint32_t format_primary = DRM_FORMAT_ARGB8888;
@@ -259,7 +272,8 @@ vice versa) by changing their zpos property."
 >  		igt_require(igt_plane_has_prop(overlay, IGT_PLANE_ZPOS));
 >  
 > @@ -1002,8 +1127,18 @@ igt_main
->  		igt_require(igt_plane_has_format_mod(overlay, format_overlay, 0x0));
+>  		igt_require(igt_plane_has_format_mod(overlay, format_overlay, 
+> 0x0));
 >  
 >  		igt_output_set_pipe(output, pipe);
 > -		plane_primary_overlay_zpos(pipe_obj, output, primary, overlay,
@@ -274,16 +288,13 @@ vice versa) by changing their zpos property."
 > +		     "and the plane with the next available zpos is indeed partially "\
 > +		     "covering the full-screen plane");
 
-How about: "Verify the reported zpos property of planes by making sure
-only higher zpos planes cover the lower zpos ones".
+How about: "Verify the reported zpos property of planes by making sure only higher zpos planes cover the lower zpos ones".
 
 > +	igt_subtest("plane_immutable_zpos") {
 
-Do we want a per-pipe test? The current exec time is [0.14, 0.37] s, so
-good job here, and we could test every pipe!
+Do we want a per-pipe test? The current exec time is [0.14, 0.37] s, so good job here, and we could test every pipe!
 
-Anyway, all of these comments are nit picks. If you fix the description,
-this is:
+Anyway, all of these comments are nit picks. If you fix the description, this is:
 Reviewed-by: Martin Peres <martin.peres@linux.intel.com>
 
 Martin
