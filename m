@@ -1,19 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from us-smtp-delivery-74.mimecast.com
  (us-smtp-delivery-74.mimecast.com [63.128.21.74])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C7C16E479
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2020 16:13:32 +0000 (UTC)
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
- [10.5.11.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E23036E46B
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2020 16:18:39 +0000 (UTC)
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
+ [10.5.11.22])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7783010BE8BB
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2020 16:11:35 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 88F367346F
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2020 16:05:06 +0000 (UTC)
 From: Lyude <lyude@redhat.com>
-Date: Mon, 16 Mar 2020 12:11:28 -0400
-Message-Id: <20200316161132.29833-1-lyude@redhat.com>
+Date: Mon, 16 Mar 2020 12:04:52 -0400
+Message-Id: <20200316160452.29636-1-lyude@redhat.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 0/4] Fixes for GCC 10's -fcommon default
+Subject: [igt-dev] [PATCH i-g-t] lib/tests/igt_describe: Use __FILE__ in
+ JUST_C_OUTPUT and DESCRIBE_ALL_OUTPUT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,28 +31,84 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lyude Paul <lyude@redhat.com>
 
-It appears that since GCC 10, -fcommon has become the default over the
-previous -fno-common causing igt builds to fail by default. Likewise,
-we've also started setting -fcommon by default when building RPMs in
-Fedora (likewise, this has broken igt-gpu-tools builds for a while and
-I'm only just now getting to fixing it). So, let's fix the issues this
-introduced and make -fcommon the default in igt as well to prevent
-breakages from this in the future.
+We currently manually specify the name of the source file by-hand here,
+however this causes problems if the user tries to build with compile
+flags like -fdebug-prefix-map since the source file names will then
+differ from what's hardcoded here - causing tests to fail.
 
-Lyude Paul (4):
-  lib/igt_core: Make igt_subtest_jmpbuf/igt_dynamic_jmpbuf extern
-  lib/rendercopy_gen*: Make cc/viewport static
-  assembler/gen4asm.h: Make struct src_operand extern
-  meson: Add -fcommon to cc_flags
+So, fix that by using __FILE__ instead.
 
- assembler/gen4asm.h   | 2 +-
- lib/igt_core.c        | 3 +++
- lib/igt_core.h        | 4 ++--
- lib/rendercopy_gen8.c | 4 ++--
- lib/rendercopy_gen9.c | 4 ++--
- meson.build           | 1 +
- 6 files changed, 11 insertions(+), 7 deletions(-)
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+---
+ lib/tests/igt_describe.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
+diff --git a/lib/tests/igt_describe.c b/lib/tests/igt_describe.c
+index 6f3a4319..94d42fbe 100644
+--- a/lib/tests/igt_describe.c
++++ b/lib/tests/igt_describe.c
+@@ -101,33 +101,33 @@ static void fake_main(int argc, char **argv) {
+ static const char DESCRIBE_ALL_OUTPUT[] = \
+ 	"the top level description\n"
+ 	"\n"
+-	"SUB A ../lib/tests/igt_describe.c:36:\n"
++	"SUB A " __FILE__ ":36:\n"
+ 	"  Basic A\n"
+ 	"\n"
+-	"SUB B ../lib/tests/igt_describe.c:45:\n"
++	"SUB B " __FILE__ ":45:\n"
+ 	"  Group with B, C & D\n"
+ 	"\n"
+ 	"  Basic B\n"
+ 	"\n"
+-	"SUB C ../lib/tests/igt_describe.c:54:\n"
++	"SUB C " __FILE__ ":54:\n"
+ 	"  Group with B, C & D\n"
+ 	"\n"
+ 	"  Group with C & D\n"
+ 	"\n"
+ 	"  Basic C\n"
+ 	"\n"
+-	"SUB D ../lib/tests/igt_describe.c:58:\n"
++	"SUB D " __FILE__ ":58:\n"
+ 	"  Group with B, C & D\n"
+ 	"\n"
+ 	"  Group with C & D\n"
+ 	"\n"
+-	"SUB E ../lib/tests/igt_describe.c:66:\n"
++	"SUB E " __FILE__ ":66:\n"
+ 	"  NO DOCUMENTATION!\n"
+ 	"\n"
+-	"SUB F ../lib/tests/igt_describe.c:71:\n"
++	"SUB F " __FILE__ ":71:\n"
+ 	"  NO DOCUMENTATION!\n"
+ 	"\n"
+-	"SUB G ../lib/tests/igt_describe.c:80:\n"
++	"SUB G " __FILE__ ":80:\n"
+ 	"  this description should be so long that it wraps itself nicely in the terminal this\n"
+ 	"  description should be so long that it wraps itself nicely in the terminal this description\n"
+ 	"  should be so long that it wraps itself nicely in the terminal this description should be so\n"
+@@ -135,17 +135,17 @@ static const char DESCRIBE_ALL_OUTPUT[] = \
+ 	"  wraps itself nicely in the terminal this description should be so long that it wraps itself\n"
+ 	"  nicely in the terminal\n"
+ 	"\n"
+-	"SUB F ../lib/tests/igt_describe.c:87:\n"
++	"SUB F " __FILE__ ":87:\n"
+ 	"  verylongwordthatshoudlbeprintedeventhoughitspastthewrppinglimitverylongwordthatshoudlbeprintedeventhoughitspastthewrappinglimit\n"
+ 	"  verylongwordthatshoudlbeprintedeventhoughitspastthewrappinglimitverylongwordthatshoudlbeprintedeventhoughitspastthewrappinglimit\n"
+ 	"\n"
+-	"SUB G ../lib/tests/igt_describe.c:91:\n"
++	"SUB G " __FILE__ ":91:\n"
+ 	"  Subtest with dynamic subsubtests\n\n";
+ 
+ static const char JUST_C_OUTPUT[] = \
+ 	"the top level description\n"
+ 	"\n"
+-	"SUB C ../lib/tests/igt_describe.c:54:\n"
++	"SUB C " __FILE__ ":54:\n"
+ 	"  Group with B, C & D\n"
+ 	"\n"
+ 	"  Group with C & D\n"
 -- 
 2.24.1
 
