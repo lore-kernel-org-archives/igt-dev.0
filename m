@@ -1,20 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from us-smtp-delivery-74.mimecast.com
- (us-smtp-delivery-74.mimecast.com [63.128.21.74])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E23036E46B
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2020 16:18:39 +0000 (UTC)
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 88F367346F
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2020 16:05:06 +0000 (UTC)
-From: Lyude <lyude@redhat.com>
-Date: Mon, 16 Mar 2020 12:04:52 -0400
-Message-Id: <20200316160452.29636-1-lyude@redhat.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib/tests/igt_describe: Use __FILE__ in
- JUST_C_OUTPUT and DESCRIBE_ALL_OUTPUT
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 16 Mar 2020 17:16:40 -0000
+Message-ID: <158437900080.18994.9642769659662414743@emeril.freedesktop.org>
+References: <20200316161132.29833-1-lyude@redhat.com>
+In-Reply-To: <20200316161132.29833-1-lyude@redhat.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgRml4ZXMg?=
+ =?utf-8?q?for_GCC_10=27s_-fcommon_default?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,96 +14,113 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Lyude <lyude@redhat.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lyude Paul <lyude@redhat.com>
+== Series Details ==
 
-We currently manually specify the name of the source file by-hand here,
-however this causes problems if the user tries to build with compile
-flags like -fdebug-prefix-map since the source file names will then
-differ from what's hardcoded here - causing tests to fail.
+Series: Fixes for GCC 10's -fcommon default
+URL   : https://patchwork.freedesktop.org/series/74749/
+State : success
 
-So, fix that by using __FILE__ instead.
+== Summary ==
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- lib/tests/igt_describe.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+CI Bug Log - changes from CI_DRM_8137 -> IGTPW_4310
+====================================================
 
-diff --git a/lib/tests/igt_describe.c b/lib/tests/igt_describe.c
-index 6f3a4319..94d42fbe 100644
---- a/lib/tests/igt_describe.c
-+++ b/lib/tests/igt_describe.c
-@@ -101,33 +101,33 @@ static void fake_main(int argc, char **argv) {
- static const char DESCRIBE_ALL_OUTPUT[] = \
- 	"the top level description\n"
- 	"\n"
--	"SUB A ../lib/tests/igt_describe.c:36:\n"
-+	"SUB A " __FILE__ ":36:\n"
- 	"  Basic A\n"
- 	"\n"
--	"SUB B ../lib/tests/igt_describe.c:45:\n"
-+	"SUB B " __FILE__ ":45:\n"
- 	"  Group with B, C & D\n"
- 	"\n"
- 	"  Basic B\n"
- 	"\n"
--	"SUB C ../lib/tests/igt_describe.c:54:\n"
-+	"SUB C " __FILE__ ":54:\n"
- 	"  Group with B, C & D\n"
- 	"\n"
- 	"  Group with C & D\n"
- 	"\n"
- 	"  Basic C\n"
- 	"\n"
--	"SUB D ../lib/tests/igt_describe.c:58:\n"
-+	"SUB D " __FILE__ ":58:\n"
- 	"  Group with B, C & D\n"
- 	"\n"
- 	"  Group with C & D\n"
- 	"\n"
--	"SUB E ../lib/tests/igt_describe.c:66:\n"
-+	"SUB E " __FILE__ ":66:\n"
- 	"  NO DOCUMENTATION!\n"
- 	"\n"
--	"SUB F ../lib/tests/igt_describe.c:71:\n"
-+	"SUB F " __FILE__ ":71:\n"
- 	"  NO DOCUMENTATION!\n"
- 	"\n"
--	"SUB G ../lib/tests/igt_describe.c:80:\n"
-+	"SUB G " __FILE__ ":80:\n"
- 	"  this description should be so long that it wraps itself nicely in the terminal this\n"
- 	"  description should be so long that it wraps itself nicely in the terminal this description\n"
- 	"  should be so long that it wraps itself nicely in the terminal this description should be so\n"
-@@ -135,17 +135,17 @@ static const char DESCRIBE_ALL_OUTPUT[] = \
- 	"  wraps itself nicely in the terminal this description should be so long that it wraps itself\n"
- 	"  nicely in the terminal\n"
- 	"\n"
--	"SUB F ../lib/tests/igt_describe.c:87:\n"
-+	"SUB F " __FILE__ ":87:\n"
- 	"  verylongwordthatshoudlbeprintedeventhoughitspastthewrppinglimitverylongwordthatshoudlbeprintedeventhoughitspastthewrappinglimit\n"
- 	"  verylongwordthatshoudlbeprintedeventhoughitspastthewrappinglimitverylongwordthatshoudlbeprintedeventhoughitspastthewrappinglimit\n"
- 	"\n"
--	"SUB G ../lib/tests/igt_describe.c:91:\n"
-+	"SUB G " __FILE__ ":91:\n"
- 	"  Subtest with dynamic subsubtests\n\n";
- 
- static const char JUST_C_OUTPUT[] = \
- 	"the top level description\n"
- 	"\n"
--	"SUB C ../lib/tests/igt_describe.c:54:\n"
-+	"SUB C " __FILE__ ":54:\n"
- 	"  Group with B, C & D\n"
- 	"\n"
- 	"  Group with C & D\n"
--- 
-2.24.1
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4310/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4310 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bxt-dsi:         [PASS][1] -> [INCOMPLETE][2] ([fdo#103927] / [i915#656])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-bxt-dsi/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4310/fi-bxt-dsi/igt@i915_selftest@live@execlists.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s4-devices:
+    - fi-tgl-y:           [FAIL][3] ([CI#94]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4310/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          [FAIL][5] ([i915#217]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4310/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-kbl-guc:         [SKIP][7] ([fdo#109271]) -> [FAIL][8] ([i915#665] / [i915#704])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4310/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [FAIL][9] ([i915#323]) -> [FAIL][10] ([fdo#111407])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4310/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
+  [fdo#103927]: https://bugs.freedesktop.org/show_bug.cgi?id=103927
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
+  [fdo#112259]: https://bugs.freedesktop.org/show_bug.cgi?id=112259
+  [i915#1430]: https://gitlab.freedesktop.org/drm/intel/issues/1430
+  [i915#217]: https://gitlab.freedesktop.org/drm/intel/issues/217
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
+  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
+  [i915#665]: https://gitlab.freedesktop.org/drm/intel/issues/665
+  [i915#704]: https://gitlab.freedesktop.org/drm/intel/issues/704
+
+
+Participating hosts (48 -> 42)
+------------------------------
+
+  Additional (1): fi-tgl-dsi 
+  Missing    (7): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-cfl-8700k fi-gdg-551 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5510 -> IGTPW_4310
+
+  CI-20190529: 20190529
+  CI_DRM_8137: 5786b5e77cc17a1b494b9bdf3c3f29eedc2e2e7d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4310: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4310/index.html
+  IGT_5510: e100092d50105463f58db531fa953c70cc58bb10 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4310/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
