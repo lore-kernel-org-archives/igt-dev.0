@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 238466E212
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2020 17:41:08 +0000 (UTC)
-Date: Mon, 16 Mar 2020 23:11:09 +0530
-From: Ramalingam C <ramalingam.c@intel.com>
-Message-ID: <20200316174109.GA17722@intel.com>
-References: <b5b2e573ecc9e1c9acb0ee39684508ef1ca47e69.1583905340.git.ashutosh.dixit@intel.com>
- <21b7a8754e777213b9e81b0e0b1385801c8c1139.1583975712.git.ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <21b7a8754e777213b9e81b0e0b1385801c8c1139.1583975712.git.ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/i915_pm_rpm: use device coherent
- mapping instead of mmap_gtt
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 16 Mar 2020 17:44:52 -0000
+Message-ID: <158438069213.18996.9759381174937747643@emeril.freedesktop.org>
+References: <20200316160452.29636-1-lyude@redhat.com>
+In-Reply-To: <20200316160452.29636-1-lyude@redhat.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL3Rl?=
+ =?utf-8?q?sts/igt=5Fdescribe=3A_Use_=5F=5FFILE=5F=5F_in_JUST=5FC=5FOUTPUT?=
+ =?utf-8?q?_and_DESCRIBE=5FALL=5FOUTPUT?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,113 +15,101 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: Lyude <lyude@redhat.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-03-11 at 18:17:14 -0700, Ashutosh Dixit wrote:
-> From: Ramalingam C <ramalingam.c@intel.com>
-> 
-> Since on new discrete GPUs we dont have the mappable aperture, if that
-> is acceptable for the test purpose, we should use GEM_MMAP_OFFSET.
-> Hence using gem_mmap_device_coherent() which wraps the mmap options in
-> the order of gem_mmap_offset / gem_mmap / mmap_gtt
-> 
-> In case of fencing/gtt related tests, we mandate the existance of the
-> mmap_gtt.
-> 
-> v2:
->   3 tests are skipped based on mappable aperture and tiling support
-> 
-> v3: check for fences before enabling tiling (Ashutosh)
-> 
-> v4: s/gem_set_tiling/__gem_set_tiling/ (Chris)
-> 
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Thanks for the review Ashutosh. Merged this patch.
+== Series Details ==
 
--Ram
-> Signed-off--by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> Signed-off-by: Ramalingam C <ramalingam.c@intel.com>
-> ---
->  tests/i915/i915_pm_rpm.c | 24 +++++++++++++++++-------
->  1 file changed, 17 insertions(+), 7 deletions(-)
-> 
-> diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-> index 9118e8953..7c2ef3bf1 100644
-> --- a/tests/i915/i915_pm_rpm.c
-> +++ b/tests/i915/i915_pm_rpm.c
-> @@ -1559,7 +1559,7 @@ static void fill_igt_fb(struct igt_fb *fb, uint32_t color)
->  	int i;
->  	uint32_t *ptr;
->  
-> -	ptr = gem_mmap__gtt(drm_fd, fb->gem_handle, fb->size, PROT_WRITE);
-> +	ptr = gem_mmap__device_coherent(drm_fd, fb->gem_handle, 0, fb->size, PROT_WRITE);
->  	for (i = 0; i < fb->size/sizeof(uint32_t); i++)
->  		ptr[i] = color;
->  	igt_assert(munmap(ptr, fb->size) == 0);
-> @@ -1629,7 +1629,7 @@ static void cursor_subtest(bool dpms)
->  	 * hopefully it has some fences around it. */
->  	rc = drmModeRmFB(drm_fd, cursor_fb3.fb_id);
->  	igt_assert_eq(rc, 0);
-> -	gem_set_tiling(drm_fd, cursor_fb3.gem_handle, false, cursor_fb3.strides[0]);
-> +	__gem_set_tiling(drm_fd, cursor_fb3.gem_handle, false, cursor_fb3.strides[0]);
->  	igt_assert(wait_for_suspended());
->  
->  	rc = drmModeSetCursor(drm_fd, crtc_id, cursor_fb3.gem_handle,
-> @@ -2051,8 +2051,10 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->  		gem_execbuf_subtest();
->  	igt_subtest("gem-idle")
->  		gem_idle_subtest();
-> -	igt_subtest("gem-evict-pwrite")
-> +	igt_subtest("gem-evict-pwrite") {
-> +		gem_require_mappable_ggtt(drm_fd);
->  		gem_evict_pwrite_subtest();
-> +	}
->  
->  	/* Planes and cursors */
->  	igt_subtest("cursor")
-> @@ -2085,10 +2087,14 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->  		dpms_mode_unset_subtest(SCREEN_TYPE_LPSP);
->  	igt_subtest("dpms-mode-unset-non-lpsp")
->  		dpms_mode_unset_subtest(SCREEN_TYPE_NON_LPSP);
-> -	igt_subtest("fences")
-> +	igt_subtest("fences") {
-> +		gem_require_mappable_ggtt(drm_fd);
->  		fences_subtest(false);
-> -	igt_subtest("fences-dpms")
-> +	}
-> +	igt_subtest("fences-dpms") {
-> +		gem_require_mappable_ggtt(drm_fd);
->  		fences_subtest(true);
-> +	}
->  
->  	/* Modeset stress */
->  	igt_subtest("modeset-lpsp-stress")
-> @@ -2129,10 +2135,14 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
->  		gem_execbuf_stress_subtest(rounds, WAIT_STATUS | WAIT_EXTRA);
->  
->  	/* power-wake reference tests */
-> -	igt_subtest("pm-tiling")
-> +	igt_subtest("pm-tiling") {
-> +		gem_require_mappable_ggtt(drm_fd);
->  		pm_test_tiling();
-> -	igt_subtest("pm-caching")
-> +	}
-> +	igt_subtest("pm-caching") {
-> +		gem_require_mappable_ggtt(drm_fd);
->  		pm_test_caching();
-> +	}
->  
->  	igt_fixture
->  		teardown_environment();
-> -- 
-> 2.25.0
-> 
+Series: lib/tests/igt_describe: Use __FILE__ in JUST_C_OUTPUT and DESCRIBE_ALL_OUTPUT
+URL   : https://patchwork.freedesktop.org/series/74751/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8137 -> IGTPW_4311
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4311/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4311 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-icl-u2:          [FAIL][1] ([i915#217]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4311/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+    - fi-kbl-7500u:       [FAIL][3] ([i915#323]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4311/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+#### Warnings ####
+
+  * igt@gem_linear_blits@basic:
+    - fi-glk-dsi:         [SKIP][5] ([fdo#109271]) -> [INCOMPLETE][6] ([i915#58] / [k.org#198133])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-glk-dsi/igt@gem_linear_blits@basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4311/fi-glk-dsi/igt@gem_linear_blits@basic.html
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-kbl-guc:         [SKIP][7] ([fdo#109271]) -> [FAIL][8] ([i915#138])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4311/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-kbl-guc:         [SKIP][9] ([fdo#109271]) -> [FAIL][10] ([i915#579])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4311/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#138]: https://gitlab.freedesktop.org/drm/intel/issues/138
+  [i915#217]: https://gitlab.freedesktop.org/drm/intel/issues/217
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
+  [i915#579]: https://gitlab.freedesktop.org/drm/intel/issues/579
+  [i915#58]: https://gitlab.freedesktop.org/drm/intel/issues/58
+  [k.org#198133]: https://bugzilla.kernel.org/show_bug.cgi?id=198133
+
+
+Participating hosts (48 -> 44)
+------------------------------
+
+  Additional (2): fi-skl-6770hq fi-tgl-dsi 
+  Missing    (6): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-cfl-8700k fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5510 -> IGTPW_4311
+
+  CI-20190529: 20190529
+  CI_DRM_8137: 5786b5e77cc17a1b494b9bdf3c3f29eedc2e2e7d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4311: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4311/index.html
+  IGT_5510: e100092d50105463f58db531fa953c70cc58bb10 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4311/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
