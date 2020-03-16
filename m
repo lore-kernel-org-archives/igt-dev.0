@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0959489D44
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2020 09:52:52 +0000 (UTC)
-References: <20200313174235.19440-1-umesh.nerlige.ramappa@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 053DE89308
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2020 09:52:06 +0000 (UTC)
+References: <20200313195316.7494-1-umesh.nerlige.ramappa@intel.com>
+ <20200313195316.7494-4-umesh.nerlige.ramappa@intel.com>
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <85b5ba2a-e818-69de-e720-89d62acfce3d@intel.com>
-Date: Mon, 16 Mar 2020 11:52:47 +0200
+Message-ID: <6774f930-2ec7-68e5-1e88-2f557499d335@intel.com>
+Date: Mon, 16 Mar 2020 11:52:00 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200313174235.19440-1-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20200313195316.7494-4-umesh.nerlige.ramappa@intel.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] test/perf: Add test to verify OA TLB
- invalidation
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tools: Allow user to set poll delay
+ in i915 perf recorder
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,133 +23,123 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>, igt-dev@lists.freedesktop.org, Chris Wilson <chris.p.wilson@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>, igt-dev@lists.freedesktop.org, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 13/03/2020 19:42, Umesh Nerlige Ramappa wrote:
-> Run 2 blocking tests back to back and compare the number of OA reports
-> captured. Make sure the number of reports are within an acceptable range
-> of the expected number of reports.
->
-> v2: Drop poll and use blocking IO (Lionel)
-> v3: Verify number of expected reports for both tests (Lionel)
+On 13/03/2020 21:53, Umesh Nerlige Ramappa wrote:
+> Add poll delay parameter to the i915-perf-recorder tool so that the user
+> can set the frequency of the poll timer that checks for available
+> reports in the OA buffer.
 >
 > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+
+Couple of nits below.
+
+Either way :
+
 Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+
+
+Thanks!
+
 > ---
->   tests/perf.c | 92 ++++++++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 92 insertions(+)
+>   tools/i915-perf/i915_perf_recorder.c | 37 +++++++++++++++++++++++++---
+>   1 file changed, 34 insertions(+), 3 deletions(-)
 >
-> diff --git a/tests/perf.c b/tests/perf.c
-> index 5e818030..b757e307 100644
-> --- a/tests/perf.c
-> +++ b/tests/perf.c
-> @@ -2265,6 +2265,92 @@ test_polling(void)
->   	__perf_close(stream_fd);
->   }
+> diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
+> index 6bbc451e..60b7b732 100644
+> --- a/tools/i915-perf/i915_perf_recorder.c
+> +++ b/tools/i915-perf/i915_perf_recorder.c
+> @@ -353,14 +353,31 @@ struct recording_context {
+>   
+>   	const char *command_fifo;
+>   	int command_fifo_fd;
+> +
+> +	uint32_t poll_delay;
+Maybe just use a uint64_t as it's the type used by the kernel interface.
+>   };
 >   
 > +static int
-> +num_valid_reports_captured(struct drm_i915_perf_open_param *param,
-> +			   int64_t *duration_ns)
+> +perf_revision(int drm_fd)
 > +{
-> +	uint8_t buf[1024 * 1024];
-> +	int64_t start, end;
-> +	int num_reports = 0;
+> +	drm_i915_getparam_t gp;
+> +	int value = 1;
 > +
-> +	igt_debug("Expected duration = %lu\n", *duration_ns);
+> +	gp.param = I915_PARAM_PERF_REVISION;
+> +	gp.value = &value;
+> +	perf_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
 > +
-> +	stream_fd = __perf_open(drm_fd, param, true);
-> +
-> +	start = get_time();
-> +	do_ioctl(stream_fd, I915_PERF_IOCTL_ENABLE, 0);
-> +	for (/* nop */; ((end = get_time()) - start) < *duration_ns; /* nop */) {
-> +		struct drm_i915_perf_record_header *header;
-> +		int ret;
-> +
-> +		while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 &&
-> +		       errno == EINTR)
-> +			;
-> +
-> +		igt_assert(ret > 0);
-> +
-> +		for (int offset = 0; offset < ret; offset += header->size) {
-> +			header = (void *)(buf + offset);
-> +
-> +			if (header->type == DRM_I915_PERF_RECORD_SAMPLE) {
-> +				uint32_t *report = (void *)(header + 1);
-> +
-> +				if ((report[0] >> OAREPORT_REASON_SHIFT) &
-> +				    OAREPORT_REASON_TIMER)
-> +					num_reports++;
-> +			}
-> +		}
-> +	}
-> +	__perf_close(stream_fd);
-> +
-> +	*duration_ns = end - start;
-> +
-> +	igt_debug("Actual duration = %lu\n", *duration_ns);
-> +
-> +	return num_reports;
+> +	return value;
 > +}
 > +
-> +static void
-> +gen12_test_oa_tlb_invalidate(void)
-> +{
-> +	int oa_exponent = max_oa_exponent_for_period_lte(30000000);
-> +	uint64_t properties[] = {
-> +		DRM_I915_PERF_PROP_SAMPLE_OA, true,
-> +
-> +		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
-> +		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-> +		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
-> +	};
-> +	struct drm_i915_perf_open_param param = {
-> +		.flags = I915_PERF_FLAG_FD_CLOEXEC |
-> +			I915_PERF_FLAG_DISABLED,
-> +		.num_properties = sizeof(properties) / 16,
-> +		.properties_ptr = to_user_pointer(properties),
-> +	};
-> +	int num_reports1, num_reports2, num_expected_reports;
-> +	int64_t duration;
-> +	
-> +	/* Capture reports for 5 seconds twice and then make sure you get around
-> +	 * the same number of reports. In the case of failure, the number of
-> +	 * reports will vary largely since the beginning of the OA buffer
-> +	 * will have invalid entries.
-> +	 */
-> +	duration = 5LL * NSEC_PER_SEC;
-> +	num_reports1 = num_valid_reports_captured(&param, &duration);
-> +	num_expected_reports = duration / oa_exponent_to_ns(oa_exponent);
-> +	igt_debug("expected num reports = %d\n", num_expected_reports);
-> +	igt_debug("actual num reports = %d\n", num_reports1);
-> +	igt_assert(num_reports1 > 0.95 * num_expected_reports);
-> +
-> +	duration = 5LL * NSEC_PER_SEC;
-> +	num_reports2 = num_valid_reports_captured(&param, &duration);
-> +	num_expected_reports = duration / oa_exponent_to_ns(oa_exponent);
-> +	igt_debug("expected num reports = %d\n", num_expected_reports);
-> +	igt_debug("actual num reports = %d\n", num_reports2);
-> +	igt_assert(num_reports2 > 0.95 * num_expected_reports);
-> +}
-> +
-> +
->   static void
->   test_buffer_fill(void)
+>   static int
+>   perf_open(struct recording_context *ctx)
 >   {
-> @@ -4622,6 +4708,12 @@ igt_main
->   		gen8_test_single_ctx_render_target_writes_a_counter();
->   	}
+>   	uint64_t properties[DRM_I915_PERF_PROP_MAX * 2];
+>   	struct drm_i915_perf_open_param param;
+> -	int p = 0, stream_fd;
+> +	int p = 0, stream_fd, revision;
+> +
+> +	revision = perf_revision(ctx->drm_fd);
 >   
-> +	igt_describe("Test OA TLB invalidate");
-> +	igt_subtest("gen12-oa-tlb-invalidate") {
-> +		igt_require(intel_gen(devid) >= 12);
-> +		gen12_test_oa_tlb_invalidate();
+>   	properties[p++] = DRM_I915_PERF_PROP_SAMPLE_OA;
+>   	properties[p++] = true;
+> @@ -374,6 +391,11 @@ perf_open(struct recording_context *ctx)
+>   	properties[p++] = DRM_I915_PERF_PROP_OA_EXPONENT;
+>   	properties[p++] = ctx->oa_exponent;
+>   
+> +	if (revision >= 4) {
+> +		properties[p++] = DRM_I915_PERF_PROP_POLL_OA_DELAY;
+> +		properties[p++] = ctx->poll_delay;
 > +	}
 > +
->   	igt_describe("Measure performance for a specific context using OAR in Gen 12");
->   	igt_subtest("gen12-unprivileged-single-ctx-counters") {
->   		igt_require(intel_gen(devid) >= 12);
+>   	memset(&param, 0, sizeof(param));
+>   	param.flags = 0;
+>   	param.flags |= I915_PERF_FLAG_FD_CLOEXEC | I915_PERF_FLAG_FD_NONBLOCK;
+> @@ -720,7 +742,10 @@ usage(const char *name)
+>   		"                                       (To use with i915-perf-control)\n"
+>   		"     --output,             -o <path>   Output file (default = i915_perf.record)\n"
+>   		"     --cpu-clock,          -k <path>   Cpu clock to use for correlations\n"
+> -		"                                       Values: boot, mono, mono_raw (default = mono)\n",
+> +		"                                       Values: boot, mono, mono_raw (default = mono)\n"
+> +		"     --poll-delay          -P <value>  Polling interval in microseconds used by a timer in the driver to query\n"
+> +		"                                       for OA reports periodically\n"
+> +		"                                       (default = 5000), Minimum = 100.\n",
+>   		name);
+>   }
+>   
+> @@ -762,6 +787,7 @@ main(int argc, char *argv[])
+>   		{"size",                 required_argument, 0, 's'},
+>   		{"command-fifo",         required_argument, 0, 'f'},
+>   		{"cpu-clock",            required_argument, 0, 'k'},
+> +		{"poll-delay",           required_argument, 0, 'P'},
+>   		{0, 0, 0, 0}
+>   	};
+>   	const struct {
+> @@ -788,9 +814,11 @@ main(int argc, char *argv[])
+>   
+>   		.command_fifo = I915_PERF_RECORD_FIFO_PATH,
+>   		.command_fifo_fd = -1,
+> +
+> +		.poll_delay = 5 * 1000 * 1000,
+>   	};
+>   
+> -	while ((opt = getopt_long(argc, argv, "hc:p:m:Co:s:f:k:", long_options, NULL)) != -1) {
+> +	while ((opt = getopt_long(argc, argv, "hc:p:m:Co:s:f:k:P:", long_options, NULL)) != -1) {
+>   		switch (opt) {
+>   		case 'h':
+>   			usage(argv[0]);
+> @@ -832,6 +860,9 @@ main(int argc, char *argv[])
+>   			}
+>   			break;
+>   		}
+> +		case 'P':
+> +			ctx.poll_delay = MAX(100, atoi(optarg)) * 1000;
+atol() just to be sure?
+> +			break;
+>   		default:
+>   			fprintf(stderr, "Internal error: "
+>   				"unexpected getopt value: %d\n", opt);
 
 
 _______________________________________________
