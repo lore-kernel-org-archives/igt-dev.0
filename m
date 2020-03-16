@@ -1,42 +1,51 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Mon, 16 Mar 2020 09:45:41 +0100
-Message-Id: <20200316084543.15421-1-janusz.krzysztofik@linux.intel.com>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Mon, 16 Mar 2020 10:54:27 +0000
+Message-Id: <20200316105427.517192-2-chris@chris-wilson.co.uk>
+In-Reply-To: <20200316105427.517192-1-chris@chris-wilson.co.uk>
+References: <20200316105427.517192-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [RESUBMIT PATCH 0/2] tests/gem_userptr_blits: Refresh
- other now MMAP_GTT dependent subtests
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Subject: [igt-dev] [PATCH i-g-t 2/2] i915/sysfs_heartbeat_interval: Check
+ for support prior to 'nopreempt' test
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Together with recently submitted patches, this series concludes
-MMAP_OFFSET related changes required for gem_userptr_blits.
+To turn off preemption, we now require per-engine resets.
 
-Thanks,
-Janusz
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/i915/sysfs_heartbeat_interval.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Janusz Krzysztofik (2):
-  tests/gem_userptr_blits: Refresh readonly-mmap-unsync exercise
-  tests/gem_userptr_blits: Refresh other now MMAP_GTT dependent subtests
-
- tests/i915/gem_userptr_blits.c | 129 ++++++++++++++++++++++++---------
- 1 file changed, 95 insertions(+), 34 deletions(-)
-
+diff --git a/tests/i915/sysfs_heartbeat_interval.c b/tests/i915/sysfs_heartbeat_interval.c
+index 0ba19b263..ef131a16c 100644
+--- a/tests/i915/sysfs_heartbeat_interval.c
++++ b/tests/i915/sysfs_heartbeat_interval.c
+@@ -227,7 +227,7 @@ static void test_nopreempt(int i915, int engine)
+ 	 */
+ 
+ 	/* Test heartbeats with forced preemption  disabled */
+-	igt_sysfs_printf(engine, "preempt_timeout_ms", "%u", 0);
++	igt_require(igt_sysfs_printf(engine, "preempt_timeout_ms", "%u", 0) > 0);
+ 
+ 	igt_assert(igt_sysfs_scanf(engine, ATTR, "%u", &saved) == 1);
+ 	igt_debug("Initial %s:%u\n", ATTR, saved);
 -- 
-2.21.1
+2.25.1
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
