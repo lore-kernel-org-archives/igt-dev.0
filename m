@@ -1,12 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 16 Mar 2020 10:54:27 +0000
-Message-Id: <20200316105427.517192-2-chris@chris-wilson.co.uk>
-In-Reply-To: <20200316105427.517192-1-chris@chris-wilson.co.uk>
-References: <20200316105427.517192-1-chris@chris-wilson.co.uk>
+Date: Mon, 16 Mar 2020 10:54:26 +0000
+Message-Id: <20200316105427.517192-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] i915/sysfs_heartbeat_interval: Check
- for support prior to 'nopreempt' test
+Subject: [igt-dev] [PATCH i-g-t 1/2] intel-ci: Tweak blacklist for very long
+ running stability tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,29 +17,34 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-To turn off preemption, we now require per-engine resets.
+To exclude yynamic tests just use  their group name?
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Petri Latvala <petri.latvala@intel.com>
 ---
- tests/i915/sysfs_heartbeat_interval.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/intel-ci/blacklist.txt | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/i915/sysfs_heartbeat_interval.c b/tests/i915/sysfs_heartbeat_interval.c
-index 0ba19b263..ef131a16c 100644
---- a/tests/i915/sysfs_heartbeat_interval.c
-+++ b/tests/i915/sysfs_heartbeat_interval.c
-@@ -227,7 +227,7 @@ static void test_nopreempt(int i915, int engine)
- 	 */
- 
- 	/* Test heartbeats with forced preemption  disabled */
--	igt_sysfs_printf(engine, "preempt_timeout_ms", "%u", 0);
-+	igt_require(igt_sysfs_printf(engine, "preempt_timeout_ms", "%u", 0) > 0);
- 
- 	igt_assert(igt_sysfs_scanf(engine, ATTR, "%u", &saved) == 1);
- 	igt_debug("Initial %s:%u\n", ATTR, saved);
+diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+index 948b47569..184c23c37 100644
+--- a/tests/intel-ci/blacklist.txt
++++ b/tests/intel-ci/blacklist.txt
+@@ -60,9 +60,9 @@ igt@gem_sync@(?!.*basic).*
+ igt@gem_tiled_swapping@(?!non-threaded).*
+ igt@gem_userptr_blits@(major|minor|forked|mlocked|swapping).*
+ igt@gem_wait@.*hang.*
+-igt@sysfs_heartbeat_timeout@long.*
+-igt@sysfs_preemption_timeout@off.*
+-igt@sysfs_timeslice_duration@off.*
++igt@sysfs_heartbeat_timeout@long
++igt@sysfs_preemption_timeout@off
++igt@sysfs_timeslice_duration@off
+ ###############################################
+ # GEM: Not worth fixing
+ ###############################################
 -- 
 2.25.1
 
