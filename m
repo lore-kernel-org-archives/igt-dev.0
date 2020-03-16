@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 16 Mar 2020 12:49:36 -0000
-Message-ID: <158436297649.18995.965306038894344326@emeril.freedesktop.org>
-References: <20200313195316.7494-1-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20200313195316.7494-1-umesh.nerlige.ramappa@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVGVzdCBj?=
- =?utf-8?q?onfigurable_poll_delay_in_perf_OA_=28rev2=29?=
+Date: Mon, 16 Mar 2020 13:13:47 -0000
+Message-ID: <158436442799.18995.16959088972383274004@emeril.freedesktop.org>
+References: <20200314000016.16629-1-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20200314000016.16629-1-umesh.nerlige.ramappa@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdC9w?=
+ =?utf-8?q?erf=3A_Add_test_to_verify_OA_TLB_invalidation_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,13 +25,13 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: Test configurable poll delay in perf OA (rev2)
-URL   : https://patchwork.freedesktop.org/series/74655/
+Series: test/perf: Add test to verify OA TLB invalidation (rev4)
+URL   : https://patchwork.freedesktop.org/series/74477/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_8137 -> IGTPW_4304
+CI Bug Log - changes from CI_DRM_8137 -> IGTPW_4306
 ====================================================
 
 Summary
@@ -41,49 +41,61 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4304/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4306/index.html
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_4304 that come from known issues:
+  Here are the changes found in IGTPW_4306 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@i915_selftest@live@gem_contexts:
-    - fi-cfl-8700k:       [PASS][1] -> [INCOMPLETE][2] ([i915#424])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-cfl-8700k/igt@i915_selftest@live@gem_contexts.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4304/fi-cfl-8700k/igt@i915_selftest@live@gem_contexts.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-icl-dsi:         [PASS][3] -> [INCOMPLETE][4] ([fdo#108569])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-icl-dsi/igt@i915_selftest@live@hangcheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4304/fi-icl-dsi/igt@i915_selftest@live@hangcheck.html
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - fi-bsw-n3050:       [PASS][1] -> [FAIL][2] ([i915#34])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4306/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-wf_vblank.html
 
   
 #### Possible fixes ####
 
+  * igt@gem_exec_suspend@basic-s4-devices:
+    - fi-tgl-y:           [FAIL][3] ([CI#94]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4306/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-cfl-8700k:       [INCOMPLETE][5] ([i915#656]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-cfl-8700k/igt@i915_selftest@live@execlists.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4306/fi-cfl-8700k/igt@i915_selftest@live@execlists.html
+
   * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-icl-u2:          [FAIL][5] ([i915#217]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4304/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
-    - fi-kbl-7500u:       [FAIL][7] ([i915#323]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4304/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+    - fi-icl-u2:          [FAIL][7] ([i915#217]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4306/fi-icl-u2/igt@kms_chamelium@hdmi-hpd-fast.html
 
   
-  [fdo#108569]: https://bugs.freedesktop.org/show_bug.cgi?id=108569
+#### Warnings ####
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [FAIL][9] ([i915#323]) -> [FAIL][10] ([fdo#111407])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4306/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
+  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
   [i915#217]: https://gitlab.freedesktop.org/drm/intel/issues/217
   [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
-  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
+  [i915#34]: https://gitlab.freedesktop.org/drm/intel/issues/34
+  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
 
 
-Participating hosts (48 -> 44)
+Participating hosts (48 -> 45)
 ------------------------------
 
-  Additional (1): fi-tgl-dsi 
+  Additional (2): fi-skl-6770hq fi-tgl-dsi 
   Missing    (5): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
 
 
@@ -91,23 +103,22 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_5510 -> IGTPW_4304
+  * IGT: IGT_5510 -> IGTPW_4306
 
   CI-20190529: 20190529
   CI_DRM_8137: 5786b5e77cc17a1b494b9bdf3c3f29eedc2e2e7d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4304: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4304/index.html
+  IGTPW_4306: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4306/index.html
   IGT_5510: e100092d50105463f58db531fa953c70cc58bb10 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
 
 
 == Testlist changes ==
 
-+igt@perf@blocking-parameterized
-+igt@perf@polling-parameterized
++igt@perf@gen12-oa-tlb-invalidate
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4304/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4306/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
