@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 16 Mar 2020 14:02:54 -0000
-Message-ID: <158436737489.18994.12077727644904564478@emeril.freedesktop.org>
+Date: Mon, 16 Mar 2020 14:27:17 -0000
+Message-ID: <158436883755.18996.7418091851807198585@emeril.freedesktop.org>
 References: <20200316120323.22497-1-dominik.grzegorzek@intel.com>
 In-Reply-To: <20200316120323.22497-1-dominik.grzegorzek@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
- =?utf-8?q?ests/gem=5Fexec=5Falignment=2Ec=3A_Update_subtests_=28rev2=29?=
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?gem=5Fexec=5Falignment=2Ec=3A_Update_subtests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,34 +27,82 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Series: tests/gem_exec_alignment.c: Update subtests (rev2)
 URL   : https://patchwork.freedesktop.org/series/74633/
-State : failure
+State : success
 
 == Summary ==
 
-ERROR! This series introduces new undocumented tests:
+CI Bug Log - changes from CI_DRM_8137 -> IGTPW_4309
+====================================================
 
-gem_exec_alignment@pi
+Summary
+-------
 
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
+  **SUCCESS**
 
-[Documentation] has more details on how to do this.
+  No regressions found.
 
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4309/index.html
 
-Thanks in advance!
+Known issues
+------------
 
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+  Here are the changes found in IGTPW_4309 that come from known issues:
 
-Other than that, pipeline status: SUCCESS.
+### IGT changes ###
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/120170 for the overview.
+#### Issues hit ####
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-icl-u2:          [PASS][1] -> [FAIL][2] ([i915#217])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-icl-u2/igt@kms_chamelium@common-hpd-after-suspend.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4309/fi-icl-u2/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s4-devices:
+    - fi-tgl-y:           [FAIL][3] ([CI#94]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4309/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [FAIL][5] ([i915#323]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8137/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4309/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+  [CI#94]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/94
+  [i915#217]: https://gitlab.freedesktop.org/drm/intel/issues/217
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
+
+
+Participating hosts (48 -> 44)
+------------------------------
+
+  Additional (1): fi-tgl-dsi 
+  Missing    (5): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5510 -> IGTPW_4309
+
+  CI-20190529: 20190529
+  CI_DRM_8137: 5786b5e77cc17a1b494b9bdf3c3f29eedc2e2e7d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4309: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4309/index.html
+  IGT_5510: e100092d50105463f58db531fa953c70cc58bb10 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@gem_exec_alignment@pi
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/120170
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4309/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
