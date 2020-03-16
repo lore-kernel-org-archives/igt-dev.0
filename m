@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 605736E4D4
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2020 23:10:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E92C6E4CF
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2020 23:11:40 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20200316161132.29833-4-lyude@redhat.com>
+In-Reply-To: <20200316161132.29833-2-lyude@redhat.com>
 References: <20200316161132.29833-1-lyude@redhat.com>
- <20200316161132.29833-4-lyude@redhat.com>
+ <20200316161132.29833-2-lyude@redhat.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158440022133.29860.261292486914974615@build.alporthouse.com>
-Date: Mon, 16 Mar 2020 23:10:21 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] assembler/gen4asm.h: Make struct
- src_operand extern
+Message-ID: <158440029619.29860.10787891189820447800@build.alporthouse.com>
+Date: Mon, 16 Mar 2020 23:11:36 +0000
+Subject: Re: [igt-dev] [PATCH i-g-t 1/4] lib/igt_core: Make
+ igt_subtest_jmpbuf/igt_dynamic_jmpbuf extern
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,47 +25,31 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Lyude <lyude@redhat.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Lyude (2020-03-16 16:11:31)
+Quoting Lyude (2020-03-16 16:11:29)
 > From: Lyude Paul <lyude@redhat.com>
 > 
-> Another spot where we fail compilation with -fcommon, due to src_operand
-> getting included in multiple translation units without being marked as
-> extern:
+> Since gcc 10, -fno-common has become the default (vs. -fcommon). As a
+> result, gcc is much stricter about missing extern and static keywords
+> and causes our build to fail in anything including igt_core.h:
 > 
 > /usr/bin/ld:
-> assembler/1ca89e8@@intel-gen4asm@exe/meson-generated_gram.c.o:assembler/gen4asm.h:119:
-> multiple definition of `src_operand';
-> assembler/1ca89e8@@intel-gen4asm@exe/meson-generated_lex.c.o:assembler/gen4asm.h:119:
-> first defined here
+> lib/libigt-i915_gem_context_c.a(i915_gem_context.c.o):lib/igt_core.h:149:
+> multiple definition of `igt_dynamic_jmpbuf';
+> lib/libigt-drmtest_c.a(drmtest.c.o):lib/igt_core.h:149: first defined
+> here
 > /usr/bin/ld:
-> assembler/1ca89e8@@intel-gen4asm@exe/main.c.o:assembler/gen4asm.h:119:
-> multiple definition of `src_operand';
-> assembler/1ca89e8@@intel-gen4asm@exe/meson-generated_lex.c.o:assembler/gen4asm.h:119:
-> first defined here
+> lib/libigt-i915_gem_context_c.a(i915_gem_context.c.o):lib/igt_core.h:148:
+> multiple definition of `igt_subtest_jmpbuf';
+> lib/libigt-drmtest_c.a(drmtest.c.o):lib/igt_core.h:148: first defined
+> here
 > 
-> So, fix this by marking struct src_operand as extern.
+> So, fix this by marking these as extern and declaring them in
+> lib/igt_core.c.
 > 
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
->  assembler/gen4asm.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/assembler/gen4asm.h b/assembler/gen4asm.h
-> index 6b957e28..7845060c 100644
-> --- a/assembler/gen4asm.h
-> +++ b/assembler/gen4asm.h
-> @@ -111,7 +111,7 @@ struct regtype {
->   * This structure is the internal representation of source operands in the
->   * parser.
->   */
-> -struct src_operand {
-> +extern struct src_operand {
->         struct brw_reg reg;
->         int default_region;
->         uint32_t imm32; /* set if src_operand is expressing a branch offset */
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
 
-I think this was a typedef, and I can't see any definition for the
-src_operand so I think this declaration can be safely deleted.
+One might be tempted to start marking up library private symbols.
 -Chris
 _______________________________________________
 igt-dev mailing list
