@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 860036E4D4
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2020 23:08:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 605736E4D4
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Mar 2020 23:10:25 +0000 (UTC)
 MIME-Version: 1.0
 In-Reply-To: <20200316161132.29833-4-lyude@redhat.com>
 References: <20200316161132.29833-1-lyude@redhat.com>
  <20200316161132.29833-4-lyude@redhat.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158440011145.28425.13841812360548720712@build.alporthouse.com>
-Date: Mon, 16 Mar 2020 23:08:31 +0000
+Message-ID: <158440022133.29860.261292486914974615@build.alporthouse.com>
+Date: Mon, 16 Mar 2020 23:10:21 +0000
 Subject: Re: [igt-dev] [PATCH i-g-t 3/4] assembler/gen4asm.h: Make struct
  src_operand extern
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -64,8 +64,8 @@ Quoting Lyude (2020-03-16 16:11:31)
 >         int default_region;
 >         uint32_t imm32; /* set if src_operand is expressing a branch offset */
 
-I suspect this was a typedef. I can't see any definition for the struct
-src_operand src_operand, and I think it can be deleted.
+I think this was a typedef, and I can't see any definition for the
+src_operand so I think this declaration can be safely deleted.
 -Chris
 _______________________________________________
 igt-dev mailing list
