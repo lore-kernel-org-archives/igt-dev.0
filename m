@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D8CB6E059
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Mar 2020 17:51:23 +0000 (UTC)
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F089B8929F
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Mar 2020 09:31:06 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20200313174235.19440-1-umesh.nerlige.ramappa@intel.com>
-References: <20200313174235.19440-1-umesh.nerlige.ramappa@intel.com>
-From: Chris Wilson <chris.p.wilson@intel.com>
-Message-ID: <158412188063.8571.1183170198139991322@build.alporthouse.com>
-Date: Fri, 13 Mar 2020 17:51:20 +0000
-Subject: Re: [igt-dev] [PATCH i-g-t] test/perf: Add test to verify OA TLB
- invalidation
+In-Reply-To: <20200317053247.14489-1-priyanka.dandamudi@intel.com>
+References: <20200317053247.14489-1-priyanka.dandamudi@intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Message-ID: <158443744294.29852.17561209181016515023@build.alporthouse.com>
+Date: Tue, 17 Mar 2020 09:30:42 +0000
+Subject: Re: [igt-dev] [PATCH] [PATCH i-g-t] i915/gem_ring_sync_copy:
+ Removal of test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,50 +21,25 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel G Landwerlin <lionel.g.landwerlin@intel.com>, Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, priyanka.dandamudi@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Umesh Nerlige Ramappa (2020-03-13 17:42:35)
-> @@ -4622,6 +4708,12 @@ igt_main
->                 gen8_test_single_ctx_render_target_writes_a_counter();
->         }
->  
-> +       igt_describe("Test OA TLB invalidate");
-> +       igt_subtest("gen12-oa-tlb-invalidate") {
-> +               igt_require(intel_gen(devid) >= 12);
-> +               gen12_test_oa_tlb_invalidate();
-> +       }
-> +
->         igt_describe("Measure performance for a specific context using OAR in Gen 12");
->         igt_subtest("gen12-unprivileged-single-ctx-counters") {
->                 igt_require(intel_gen(devid) >= 12);
+Quoting priyanka.dandamudi@intel.com (2020-03-17 05:32:47)
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> 
+> Test is trying to verify the implicit order fencing. Similar scenario can
+> be found in gem_exec_schedule. This test doesn't add anything to other
+> tests. So, removing the test.
+> 
+> Cc: Tahvanainen Jari <jari.tahvanainen@intel.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+> ---
+>  tests/Makefile.sources          |   3 -
+>  tests/i915/gem_ring_sync_copy.c | 375 --------------------------------
 
-Something you might like to add is:
-
-	igt_subtest_group {
-		igt_fixture igt_require(intel_gen(devid) >= 12);
-
-		igt_describe("Test OA TLB invalidate");
-		igt_subtest("gen12-oa-tlb-invalidate")
-			gen12_test_oa_tlb_invalidate();
-
-		igt_describe("Measure performance for a specific context using OAR in Gen 12");
-		igt_subtest("gen12-unprivileged-single-ctx-counters")
-		...
-	}
-
-To combat the redundancy and add some visual grouping.
+You can also send a patch to remove gem_ring_sync_loop.c as that is
+covered by one the many gem_sync subtests.
 -Chris
----------------------------------------------------------------------
-Intel Corporation (UK) Limited
-Registered No. 1134945 (England)
-Registered Office: Pipers Way, Swindon SN3 1RJ
-VAT No: 860 2173 47
-
-This e-mail and any attachments may contain confidential material for
-the sole use of the intended recipient(s). Any review or distribution
-by others is strictly prohibited. If you are not the intended
-recipient, please contact the sender and delete all copies.
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
