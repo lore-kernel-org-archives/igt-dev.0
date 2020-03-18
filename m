@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 18 Mar 2020 01:22:29 -0000
-Message-ID: <158449454908.25100.6615431760389636716@emeril.freedesktop.org>
-References: <20200318004914.236815-1-lyude@redhat.com>
-In-Reply-To: <20200318004914.236815-1-lyude@redhat.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_s?=
- =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Fpipe=5Fcrc=5F?=
- =?utf-8?q?basic=3A_Use_igt=5Fdisplay=5Frequire=5Foutput=5Fon=5Fpipe=28=29?=
+Date: Wed, 18 Mar 2020 01:26:30 -0000
+Message-ID: <158449479056.25100.3128862501542387752@emeril.freedesktop.org>
+References: <20200318004659.236341-1-lyude@redhat.com>
+In-Reply-To: <20200318004659.236341-1-lyude@redhat.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=3A_Generate_reference_CRCs_for_partial_coverage_too?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,41 +25,81 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: series starting with [i-g-t,1/2] tests/kms_pipe_crc_basic: Use igt_display_require_output_on_pipe()
-URL   : https://patchwork.freedesktop.org/series/74808/
-State : failure
+Series: tests/kms_plane: Generate reference CRCs for partial coverage too
+URL   : https://patchwork.freedesktop.org/series/74806/
+State : success
 
 == Summary ==
 
-ERROR! This series introduces new undocumented tests:
+CI Bug Log - changes from CI_DRM_8145 -> IGTPW_4315
+====================================================
 
-kms_pipe_crc_basic@disable-crc-after-crtc-pipe-A
-kms_pipe_crc_basic@disable-crc-after-crtc-pipe-B
-kms_pipe_crc_basic@disable-crc-after-crtc-pipe-C
-kms_pipe_crc_basic@disable-crc-after-crtc-pipe-D
-kms_pipe_crc_basic@disable-crc-after-crtc-pipe-E
-kms_pipe_crc_basic@disable-crc-after-crtc-pipe-F
+Summary
+-------
 
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
+  **SUCCESS**
 
-[Documentation] has more details on how to do this.
+  No regressions found.
 
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4315/index.html
 
-Thanks in advance!
+Known issues
+------------
 
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+  Here are the changes found in IGTPW_4315 that come from known issues:
 
-Other than that, pipeline status: SUCCESS.
+### IGT changes ###
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/120970 for the overview.
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-skl-guc:         [PASS][1] -> [INCOMPLETE][2] ([i915#1430] / [i915#656])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8145/fi-skl-guc/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4315/fi-skl-guc/igt@i915_selftest@live@execlists.html
+    - fi-cfl-guc:         [PASS][3] -> [INCOMPLETE][4] ([i915#656])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8145/fi-cfl-guc/igt@i915_selftest@live@execlists.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4315/fi-cfl-guc/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@gem_contexts:
+    - fi-cml-s:           [PASS][5] -> [DMESG-FAIL][6] ([i915#877])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8145/fi-cml-s/igt@i915_selftest@live@gem_contexts.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4315/fi-cml-s/igt@i915_selftest@live@gem_contexts.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-bwr-2160:        [INCOMPLETE][7] ([i915#489]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8145/fi-bwr-2160/igt@i915_selftest@live@hangcheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4315/fi-bwr-2160/igt@i915_selftest@live@hangcheck.html
+
+  
+  [i915#1430]: https://gitlab.freedesktop.org/drm/intel/issues/1430
+  [i915#489]: https://gitlab.freedesktop.org/drm/intel/issues/489
+  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
+  [i915#877]: https://gitlab.freedesktop.org/drm/intel/issues/877
+
+
+Participating hosts (46 -> 38)
+------------------------------
+
+  Missing    (8): fi-ehl-1 fi-hsw-4200u fi-glk-dsi fi-byt-squawks fi-bsw-cyan fi-kbl-7500u fi-skl-lmem fi-byt-clapper 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5518 -> IGTPW_4315
+
+  CI-20190529: 20190529
+  CI_DRM_8145: 5e893da0b8c2bfec015c5eaa7981e1ffab1d7c9c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4315: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4315/index.html
+  IGT_5518: ee05a571255783837b18d626c4dff6cd9613cee2 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/120970
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4315/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
