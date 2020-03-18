@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from us-smtp-delivery-74.mimecast.com
- (us-smtp-delivery-74.mimecast.com [63.128.21.74])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AFD4D6E849
+ (us-smtp-delivery-74.mimecast.com [216.205.24.74])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A5326E260
  for <igt-dev@lists.freedesktop.org>; Wed, 18 Mar 2020 01:00:55 +0000 (UTC)
 From: Lyude <lyude@redhat.com>
-Date: Tue, 17 Mar 2020 21:00:45 -0400
-Message-Id: <20200318010047.237024-3-lyude@redhat.com>
+Date: Tue, 17 Mar 2020 21:00:44 -0400
+Message-Id: <20200318010047.237024-2-lyude@redhat.com>
 In-Reply-To: <20200318010047.237024-1-lyude@redhat.com>
 References: <20200318010047.237024-1-lyude@redhat.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/4] lib/igt_debugfs: Add
- igt_debugfs_pipe_dir()
+Subject: [igt-dev] [PATCH i-g-t 1/4] lib/igt_core: Add igt_require_fd()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,66 +27,36 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lyude Paul <lyude@redhat.com>
 
-Like igt_debugfs_connector_dir(), but for pipes instead.
+Like igt_assert_fd(), but using igt_require() instead
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- lib/igt_debugfs.c | 29 +++++++++++++++++++++++++++++
- lib/igt_debugfs.h |  1 +
- 2 files changed, 30 insertions(+)
+ lib/igt_core.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-index bf6be552..3c3b11e1 100644
---- a/lib/igt_debugfs.c
-+++ b/lib/igt_debugfs.c
-@@ -260,6 +260,35 @@ int igt_debugfs_connector_dir(int device, char *conn_name, int mode)
- 	return ret;
- }
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index fae5f59e..b66336cf 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -1008,6 +1008,18 @@ void igt_describe_f(const char *fmt, ...);
+ 	else igt_debug("Test requirement passed: %s\n", #expr); \
+ } while (0)
  
 +/**
-+ * igt_debugfs_pipe_dir:
-+ * @device: fd of the device
-+ * @pipe: index of pipe
-+ * @mode: mode bits as used by open()
++ * igt_require_fd:
++ * @fd: file descriptor
 + *
-+ * This opens the debugfs directory corresponding to the pipe index on the
-+ * device for use with igt_sysfs_get() and related functions.
++ * Skips (sub-) test if the given file descriptor is invalid.
 + *
-+ * Returns:
-+ * The directory fd, or -1 on failure.
++ * Like igt_require(), but displays the values being compared on failure instead
++ * of simply printing the stringified expression..
 + */
-+int igt_debugfs_pipe_dir(int device, int pipe, int mode)
-+{
-+	char buf[128];
-+	int dir, ret;
-+
-+	dir = igt_debugfs_dir(device);
-+	if (dir < 0)
-+		return dir;
-+
-+	snprintf(buf, sizeof(buf), "crtc-%d", pipe);
-+	ret = openat(dir, buf, mode);
-+
-+	close(dir);
-+
-+	return ret;
-+}
++#define igt_require_fd(fd) \
++	igt_require_f(fd >= 0, "file descriptor " #fd " failed\n");
 +
  /**
-  * igt_debugfs_open:
-  * @filename: name of the debugfs node to open
-diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-index 7d1a6175..15741a40 100644
---- a/lib/igt_debugfs.h
-+++ b/lib/igt_debugfs.h
-@@ -36,6 +36,7 @@ char *igt_debugfs_path(int device, char *path, int pathlen);
- 
- int igt_debugfs_dir(int device);
- int igt_debugfs_connector_dir(int device, char *conn_name, int mode);
-+int igt_debugfs_pipe_dir(int device, int pipe, int mode);
- 
- int igt_debugfs_open(int fd, const char *filename, int mode);
- void __igt_debugfs_read(int fd, const char *filename, char *buf, int size);
+  * igt_skip_on_f:
+  * @expr: condition to test
 -- 
 2.24.1
 
