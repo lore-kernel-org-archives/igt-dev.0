@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Wed, 18 Mar 2020 10:12:18 +0200
+Date: Wed, 18 Mar 2020 10:19:13 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200318081218.GI9497@platvala-desk.ger.corp.intel.com>
+Message-ID: <20200318081913.GJ9497@platvala-desk.ger.corp.intel.com>
 References: <20200318010047.237024-1-lyude@redhat.com>
- <20200318010047.237024-2-lyude@redhat.com>
+ <20200318010047.237024-5-lyude@redhat.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200318010047.237024-2-lyude@redhat.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/4] lib/igt_core: Add igt_require_fd()
+In-Reply-To: <20200318010047.237024-5-lyude@redhat.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/4] tests: Add nouveau-crc tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,64 +15,139 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Lyude <lyude@redhat.com>
 Cc: igt-dev@lists.freedesktop.org, nouveau@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 17, 2020 at 09:00:44PM -0400, Lyude wrote:
+On Tue, Mar 17, 2020 at 09:00:47PM -0400, Lyude wrote:
 > From: Lyude Paul <lyude@redhat.com>
-> 
-> Like igt_assert_fd(), but using igt_require() instead
-> 
+> =
+
+> We're finally getting CRC support in nouveau, so let's start testing
+> this in igt as well! While the normal CRC capture tests are nice,
+> there's a number of Nvidia-specific hardware characteristics that we
+> need to test as well.
+> =
+
+> The most important one is known as a "notifier context flip". Basically,
+> Nvidia GPUs store generated CRCs in an allocated memory region, referred
+> to as the notifier context, that the driver programs itself. Strangely,
+> this region can only hold a limited number of CRC entries, and once it
+> runs out of available entries the hardware simply sets an overrun bit
+> and stops writing any new CRC entries.
+> =
+
+> Since igt-gpu-tools doesn't really have an expectation of only being
+> able to grab a limited number of CRCs, we work around this in nouveau by
+> allocating two separate CRC notifier regions each time we start
+> capturing CRCs, and then flip between them whenever we get close to
+> filling our currently programmed notifier context. While this keeps the
+> number of CRC entries we lose to an absolute minimum, we are guaranteed
+> to lose exactly one CRC entry between context flips. Thus, we add some
+> tests to ensure that nouveau handles these flips correctly
+> (pipe-[A-F]-ctx-flip-detection), and that igt itself is also able to
+> handle them correctly (pipe-[A-F]-ctx-flip-skip-current-frame). Since
+> these tests use a debugfs interface to manually control the notifier
+> context flip threshold, we also add one test to ensure that any flip
+> thresholds we set are cleared after a single CRC capture
+> (ctx-flip-threshold-reset-after-capture).
+> =
+
+> In addition, we also add some simple tests to test Nvidia-specific CRC
+> sources.
+> =
+
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 > ---
->  lib/igt_core.h | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/lib/igt_core.h b/lib/igt_core.h
-> index fae5f59e..b66336cf 100644
-> --- a/lib/igt_core.h
-> +++ b/lib/igt_core.h
-> @@ -1008,6 +1008,18 @@ void igt_describe_f(const char *fmt, ...);
->  	else igt_debug("Test requirement passed: %s\n", #expr); \
->  } while (0)
->  
-> +/**
-> + * igt_require_fd:
-> + * @fd: file descriptor
-> + *
-> + * Skips (sub-) test if the given file descriptor is invalid.
-> + *
-> + * Like igt_require(), but displays the values being compared on failure instead
-> + * of simply printing the stringified expression..
+>  lib/drmtest.c       |  10 ++
+>  lib/drmtest.h       |   2 +
+>  tests/meson.build   |   1 +
+>  tests/nouveau_crc.c | 396 ++++++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 409 insertions(+)
+>  create mode 100644 tests/nouveau_crc.c
+> =
 
-igt_assert_fd has this documentation comment, but that's mistakenly
-copypasted from igt_assert_eq and pals. Let's not propagate the
-copypaste error further.
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index 1fc39925..53c01754 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -112,6 +112,11 @@ bool is_i915_device(int fd)
+>  	return __is_device(fd, "i915");
+>  }
+>  =
 
-
--- 
-Petri Latvala
-
-
-> + */
-> +#define igt_require_fd(fd) \
-> +	igt_require_f(fd >= 0, "file descriptor " #fd " failed\n");
+> +bool is_nouveau_device(int fd)
+> +{
+> +	return __is_device(fd, "nouveau");
+> +}
 > +
+>  bool is_vc4_device(int fd)
+>  {
+>  	return __is_device(fd, "vc4");
+> @@ -537,6 +542,11 @@ void igt_require_intel(int fd)
+>  	igt_require(is_i915_device(fd) && has_known_intel_chipset(fd));
+>  }
+>  =
+
+> +void igt_require_nouveau(int fd)
+> +{
+> +	igt_require(is_nouveau_device(fd));
+> +}
+> +
+>  void igt_require_vc4(int fd)
+>  {
+>  	igt_require(is_vc4_device(fd));
+> diff --git a/lib/drmtest.h b/lib/drmtest.h
+> index 632c616b..4937e9d2 100644
+> --- a/lib/drmtest.h
+> +++ b/lib/drmtest.h
+> @@ -97,10 +97,12 @@ void gem_quiescent_gpu(int fd);
+>  =
+
+>  void igt_require_amdgpu(int fd);
+>  void igt_require_intel(int fd);
+> +void igt_require_nouveau(int fd);
+>  void igt_require_vc4(int fd);
+>  =
+
+>  bool is_amdgpu_device(int fd);
+>  bool is_i915_device(int fd);
+> +bool is_nouveau_device(int fd);
+>  bool is_vc4_device(int fd);
+>  =
+
 >  /**
->   * igt_skip_on_f:
->   * @expr: condition to test
-> -- 
-> 2.24.1
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 7629afde..9ff74cc6 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -70,6 +70,7 @@ test_progs =3D [
+>  	'kms_vblank',
+>  	'kms_vrr',
+>  	'meta_test',
+> +	'nouveau_crc',
+>  	'panfrost_get_param',
+>  	'panfrost_gem_new',
+>  	'panfrost_prime',
+> diff --git a/tests/nouveau_crc.c b/tests/nouveau_crc.c
+> new file mode 100644
+> index 00000000..09e17a6f
+> --- /dev/null
+> +++ b/tests/nouveau_crc.c
+> @@ -0,0 +1,396 @@
+> +/*
+> + * Copyright =A9 2019 Red Hat Inc.
+
+Verify that the authoring year is correct.
+
+
+-- =
+
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
