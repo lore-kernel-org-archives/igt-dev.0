@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com
- [IPv6:2a00:1450:4864:20::141])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0A3189F6F
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Mar 2020 20:16:40 +0000 (UTC)
-Received: by mail-lf1-x141.google.com with SMTP id j15so21574800lfk.6
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Mar 2020 13:16:40 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Wed, 18 Mar 2020 22:16:31 +0200
-Message-Id: <20200318201631.14580-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_multiple: Avoid CRC buffer
- overflows
+MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 18 Mar 2020 21:03:21 -0000
+Message-ID: <158456540186.25102.7748058532001840183@emeril.freedesktop.org>
+References: <20200318201631.14580-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20200318201631.14580-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Fmultiple=3A_Avoid_CRC_buffer_overflows?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,56 +14,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Change test initialization so CRC buffer will not become full
-on slower machines.
+== Series Details ==
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/kms_plane_multiple.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Series: tests/kms_plane_multiple: Avoid CRC buffer overflows
+URL   : https://patchwork.freedesktop.org/series/74846/
+State : success
 
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 255cd34a..78769933 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -121,8 +121,7 @@ get_reference_crc(data_t *data, igt_output_t *output, enum pipe pipe,
- 	ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
- 	igt_skip_on(ret != 0);
- 
--	igt_pipe_crc_start(data->pipe_crc);
--	igt_pipe_crc_get_single(data->pipe_crc, &data->ref_crc);
-+	igt_pipe_crc_collect_crc(data->pipe_crc, &data->ref_crc);
- }
- 
- static void
-@@ -257,6 +256,7 @@ prepare_planes(data_t *data, enum pipe pipe_id, color_t *color,
- 
- 		igt_plane_set_position(data->plane[i], x[i], y[i]);
- 		igt_plane_set_fb(data->plane[i], &data->fb[i]);
-+		igt_pipe_crc_drain(data->pipe_crc);
- 	}
- 
- 	/* primary plane */
-@@ -330,6 +330,8 @@ test_plane_position_with_output(data_t *data, enum pipe pipe,
- 		 igt_output_name(output), kmstest_pipe_name(pipe), c,
- 		 info, opt.seed);
- 
-+	igt_pipe_crc_start(data->pipe_crc);
-+
- 	i = 0;
- 	while (i < iterations || loop_forever) {
- 		/* randomize planes and set up the holes */
--- 
-2.17.1
+== Summary ==
 
+CI Bug Log - changes from CI_DRM_8154 -> IGTPW_4322
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4322/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4322 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bxt-dsi:         [PASS][1] -> [INCOMPLETE][2] ([fdo#103927] / [i915#656])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8154/fi-bxt-dsi/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4322/fi-bxt-dsi/igt@i915_selftest@live@execlists.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@active:
+    - {fi-tgl-dsi}:       [DMESG-FAIL][3] -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8154/fi-tgl-dsi/igt@i915_selftest@live@active.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4322/fi-tgl-dsi/igt@i915_selftest@live@active.html
+
+  * igt@i915_selftest@live@execlists:
+    - {fi-kbl-7560u}:     [INCOMPLETE][5] ([fdo#112259] / [i915#1430] / [i915#656]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8154/fi-kbl-7560u/igt@i915_selftest@live@execlists.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4322/fi-kbl-7560u/igt@i915_selftest@live@execlists.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#103927]: https://bugs.freedesktop.org/show_bug.cgi?id=103927
+  [fdo#112259]: https://bugs.freedesktop.org/show_bug.cgi?id=112259
+  [i915#1430]: https://gitlab.freedesktop.org/drm/intel/issues/1430
+  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
+
+
+Participating hosts (47 -> 42)
+------------------------------
+
+  Additional (1): fi-skl-guc 
+  Missing    (6): fi-ilk-m540 fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5522 -> IGTPW_4322
+
+  CI-20190529: 20190529
+  CI_DRM_8154: 937a904e393752c47b8dfdeed993f04fd75af74d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4322: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4322/index.html
+  IGT_5522: bd2b01af69c9720d54e68a8702a23e4ff3637746 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4322/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
