@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B7EDD6EA05
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Mar 2020 11:42:13 +0000 (UTC)
-From: Mika Kahola <mika.kahola@intel.com>
-Date: Thu, 19 Mar 2020 13:42:06 +0200
-Message-Id: <20200319114206.1307-1-mika.kahola@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Test for maximum
- number of planes
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 19 Mar 2020 12:29:55 -0000
+Message-ID: <158462099520.17935.9277220397792553660@emeril.freedesktop.org>
+References: <20200319114206.1307-1-mika.kahola@intel.com>
+In-Reply-To: <20200319114206.1307-1-mika.kahola@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fconcurrent=3A_Test_for_maximum_number_of_planes?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,97 +14,102 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Mika Kahola <mika.kahola@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In some cases we ran out of bandwidth when executiong a test.
-An error such as this can be seen on dmesg
+== Series Details ==
 
-"Bandwidth 16632 MB/s exceeds max available 6553 MB/s (7 active planes)"
+Series: tests/kms_concurrent: Test for maximum number of planes
+URL   : https://patchwork.freedesktop.org/series/74872/
+State : success
 
-The patch tests first, how many planes the platform can support with
-the given resolution. The actual test is then performed by using the
-calculated maximum number of planes instead of maximum number of planes
-that the platform supports.
+== Summary ==
 
-Signed-off-by: Mika Kahola <mika.kahola@intel.com>
----
- tests/kms_concurrent.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+CI Bug Log - changes from CI_DRM_8159 -> IGTPW_4324
+====================================================
 
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index 14ca5fab..61137139 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -196,20 +196,19 @@ prepare_planes(data_t *data, enum pipe pipe, int max_planes,
- }
- 
- static void
--test_plane_position_with_output(data_t *data, enum pipe pipe, igt_output_t *output)
-+test_plane_position_with_output(data_t *data, enum pipe pipe, int max_planes,
-+				igt_output_t *output)
- {
- 	int i;
- 	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
- 	bool loop_forever = opt.iterations == LOOP_FOREVER ? true : false;
--	int max_planes = data->display.pipes[pipe].n_planes;
- 
- 	igt_pipe_refresh(&data->display, pipe, true);
- 
- 	i = 0;
- 	while (i < iterations || loop_forever) {
- 		prepare_planes(data, pipe, max_planes, output);
--		igt_display_commit2(&data->display, COMMIT_ATOMIC);
--
-+		igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
- 		i++;
- 	}
- }
-@@ -242,7 +241,7 @@ get_lowres_mode(data_t *data, const drmModeModeInfo *mode_default,
- 	return mode;
- }
- 
--static void
-+static int
- test_resolution_with_output(data_t *data, enum pipe pipe, igt_output_t *output)
- {
- 	const drmModeModeInfo *mode_hi, *mode_lo;
-@@ -294,6 +293,8 @@ test_resolution_with_output(data_t *data, enum pipe pipe, igt_output_t *output)
- 
- 		i++;
- 	}
-+
-+	return max_planes;
- }
- 
- static void
-@@ -301,6 +302,7 @@ run_test(data_t *data, enum pipe pipe, igt_output_t *output)
- {
- 	int connected_outs;
- 	int n_planes = data->display.pipes[pipe].n_planes;
-+	int max_planes = n_planes;
- 
- 	if (!opt.user_seed)
- 		opt.seed = time(NULL);
-@@ -311,9 +313,10 @@ run_test(data_t *data, enum pipe pipe, igt_output_t *output)
- 			 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
- 
- 		test_init(data, pipe, n_planes, output);
-+		max_planes = test_resolution_with_output(data, pipe, output);
- 
- 		igt_fork(child, 1) {
--			test_plane_position_with_output(data, pipe, output);
-+			test_plane_position_with_output(data, pipe, max_planes, output);
- 		}
- 
- 		test_resolution_with_output(data, pipe, output);
--- 
-2.20.1
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4324/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4324 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-glk-dsi:         [PASS][1] -> [INCOMPLETE][2] ([i915#58] / [i915#656] / [k.org#198133])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8159/fi-glk-dsi/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4324/fi-glk-dsi/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@gem_contexts:
+    - fi-skl-lmem:        [PASS][3] -> [DMESG-FAIL][4] ([i915#933])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8159/fi-skl-lmem/igt@i915_selftest@live@gem_contexts.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4324/fi-skl-lmem/igt@i915_selftest@live@gem_contexts.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-cml-u2:          [INCOMPLETE][5] ([i915#283] / [i915#656]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8159/fi-cml-u2/igt@i915_selftest@live@execlists.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4324/fi-cml-u2/igt@i915_selftest@live@execlists.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-kbl-guc:         [FAIL][7] ([i915#665] / [i915#704]) -> [SKIP][8] ([fdo#109271])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8159/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4324/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#283]: https://gitlab.freedesktop.org/drm/intel/issues/283
+  [i915#58]: https://gitlab.freedesktop.org/drm/intel/issues/58
+  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
+  [i915#665]: https://gitlab.freedesktop.org/drm/intel/issues/665
+  [i915#704]: https://gitlab.freedesktop.org/drm/intel/issues/704
+  [i915#933]: https://gitlab.freedesktop.org/drm/intel/issues/933
+  [k.org#198133]: https://bugzilla.kernel.org/show_bug.cgi?id=198133
+
+
+Participating hosts (43 -> 36)
+------------------------------
+
+  Additional (1): fi-bwr-2160 
+  Missing    (8): fi-kbl-soraka fi-bdw-5557u fi-byt-squawks fi-bsw-cyan fi-kbl-7500u fi-gdg-551 fi-byt-clapper fi-skl-6600u 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5522 -> IGTPW_4324
+
+  CI-20190529: 20190529
+  CI_DRM_8159: 00b2e0f1e7b3ea36379d68855f46a86400935411 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4324: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4324/index.html
+  IGT_5522: bd2b01af69c9720d54e68a8702a23e4ff3637746 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4324/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
