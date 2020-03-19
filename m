@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 19 Mar 2020 19:09:24 -0000
-Message-ID: <158464496470.17933.17356301786373930765@emeril.freedesktop.org>
+Date: Thu, 19 Mar 2020 19:29:15 -0000
+Message-ID: <158464615502.17932.7925739798704125907@emeril.freedesktop.org>
 References: <20200319180322.5451-1-juhapekka.heikkila@gmail.com>
 In-Reply-To: <20200319180322.5451-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
- =?utf-8?q?ests/kms=5Fbig=5Ffb=3A_Add_max_HW_stride_length_tests?=
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fbig=5Ffb=3A_Add_max_HW_stride_length_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -31,45 +31,108 @@ State : failure
 
 == Summary ==
 
-ERROR! This series introduces new undocumented tests:
+CI Bug Log - changes from CI_DRM_8160 -> IGTPW_4330
+====================================================
 
-kms_big_fb@linear-max-hw-stride-32bpp-rotate-0
-kms_big_fb@linear-max-hw-stride-32bpp-rotate-180
-kms_big_fb@linear-max-hw-stride-64bpp-rotate-0
-kms_big_fb@linear-max-hw-stride-64bpp-rotate-180
-kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0
-kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180
-kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-0
-kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-180
-kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0
-kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180
-kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0
-kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180
-kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-0
-kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180
-kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0
-kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180
+Summary
+-------
 
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
+  **FAILURE**
 
-[Documentation] has more details on how to do this.
+  Serious unknown changes coming with IGTPW_4330 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4330, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4330/index.html
 
-Thanks in advance!
+Possible new issues
+-------------------
 
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+  Here are the unknown changes that may have been introduced in IGTPW_4330:
 
-Other than that, pipeline status: SUCCESS.
+### IGT changes ###
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/121914 for the overview.
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-bwr-2160:        [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8160/fi-bwr-2160/igt@i915_selftest@live@gt_pm.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4330/fi-bwr-2160/igt@i915_selftest@live@gt_pm.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4330 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gem_contexts:
+    - fi-cfl-8700k:       [PASS][3] -> [INCOMPLETE][4] ([i915#424])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8160/fi-cfl-8700k/igt@i915_selftest@live@gem_contexts.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4330/fi-cfl-8700k/igt@i915_selftest@live@gem_contexts.html
+    - fi-cfl-guc:         [PASS][5] -> [INCOMPLETE][6] ([fdo#106070] / [i915#424])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8160/fi-cfl-guc/igt@i915_selftest@live@gem_contexts.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4330/fi-cfl-guc/igt@i915_selftest@live@gem_contexts.html
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [PASS][7] -> [FAIL][8] ([i915#323])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8160/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4330/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+  [fdo#106070]: https://bugs.freedesktop.org/show_bug.cgi?id=106070
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
+  [i915#424]: https://gitlab.freedesktop.org/drm/intel/issues/424
+
+
+Participating hosts (37 -> 41)
+------------------------------
+
+  Additional (7): fi-bsw-n3050 fi-byt-j1900 fi-cfl-8109u fi-skl-6700k2 fi-kbl-7560u fi-bsw-nick fi-skl-6600u 
+  Missing    (3): fi-byt-clapper fi-byt-squawks fi-bsw-cyan 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5523 -> IGTPW_4330
+
+  CI-20190529: 20190529
+  CI_DRM_8160: 6ba1729e5025761ab74914f6b8aa3288f493e9c7 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4330: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4330/index.html
+  IGT_5523: cf6d524007ac51a7d5a48503ea3dd5f01fd4ebab @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@kms_big_fb@linear-max-hw-stride-32bpp-rotate-0
++igt@kms_big_fb@linear-max-hw-stride-32bpp-rotate-180
++igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-0
++igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-180
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0
++igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-0
++igt@kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-180
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-0
++igt@kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0
++igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0
++igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0
++igt@kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/121914
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4330/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
