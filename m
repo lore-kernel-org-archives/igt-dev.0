@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from us-smtp-delivery-74.mimecast.com
- (us-smtp-delivery-74.mimecast.com [216.205.24.74])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C8696EA44
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Mar 2020 17:41:00 +0000 (UTC)
-From: Lyude <lyude@redhat.com>
-Date: Thu, 19 Mar 2020 13:40:39 -0400
-Message-Id: <20200319174039.205689-1-lyude@redhat.com>
-In-Reply-To: <20200316161132.29833-4-lyude@redhat.com>
-References: <20200316161132.29833-4-lyude@redhat.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] assembler/gen4asm.h: Remove struct
- src_operand src_operand variable
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 19 Mar 2020 17:53:43 -0000
+Message-ID: <158464042368.17934.4025888215128378874@emeril.freedesktop.org>
+References: <20200318004914.236815-1-lyude@redhat.com>
+In-Reply-To: <20200318004914.236815-1-lyude@redhat.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Fpipe=5Fcrc=5F?=
+ =?utf-8?q?basic=3A_Use_igt=5Fdisplay=5Frequire=5Foutput=5Fon=5Fpipe=28=29?=
+ =?utf-8?q?_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,58 +16,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+To: Lyude <lyude@redhat.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lyude Paul <lyude@redhat.com>
+== Series Details ==
 
-Another spot where we fail compilation with -fcommon, due to src_operand
-getting included in multiple translation units without being marked as
-extern:
+Series: series starting with [i-g-t,1/2] tests/kms_pipe_crc_basic: Use igt_display_require_output_on_pipe() (rev2)
+URL   : https://patchwork.freedesktop.org/series/74808/
+State : failure
 
-/usr/bin/ld:
-assembler/1ca89e8@@intel-gen4asm@exe/meson-generated_gram.c.o:assembler/gen4asm.h:119:
-multiple definition of `src_operand';
-assembler/1ca89e8@@intel-gen4asm@exe/meson-generated_lex.c.o:assembler/gen4asm.h:119:
-first defined here
-/usr/bin/ld:
-assembler/1ca89e8@@intel-gen4asm@exe/main.c.o:assembler/gen4asm.h:119:
-multiple definition of `src_operand';
-assembler/1ca89e8@@intel-gen4asm@exe/meson-generated_lex.c.o:assembler/gen4asm.h:119:
-first defined here
+== Summary ==
 
-However, we never actually refer to this variable - only its type
-definition. So, just remove the declaration entirely.
+ERROR! This series introduces new undocumented tests:
 
-Changes since v1:
-* Don't make src_operand extern - just remove the variable declaration
-  entirely, we only ever use the typedef - Chris Wilson
+kms_pipe_crc_basic@disable-crc-after-crtc-pipe-A
+kms_pipe_crc_basic@disable-crc-after-crtc-pipe-B
+kms_pipe_crc_basic@disable-crc-after-crtc-pipe-C
+kms_pipe_crc_basic@disable-crc-after-crtc-pipe-D
+kms_pipe_crc_basic@disable-crc-after-crtc-pipe-E
+kms_pipe_crc_basic@disable-crc-after-crtc-pipe-F
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- assembler/gen4asm.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Can you document them as per the requirement in the [CONTRIBUTING.md]?
 
-diff --git a/assembler/gen4asm.h b/assembler/gen4asm.h
-index 6b957e28..9537d457 100644
---- a/assembler/gen4asm.h
-+++ b/assembler/gen4asm.h
-@@ -116,7 +116,7 @@ struct src_operand {
- 	int default_region;
- 	uint32_t imm32; /* set if src_operand is expressing a branch offset */
- 	char *reloc_target; /* bspec: branching instructions JIP and UIP are source operands */
--} src_operand;
-+};
- 
- typedef struct {
-     enum {
--- 
-2.25.1
+[Documentation] has more details on how to do this.
 
+Here are few examples:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+
+Thanks in advance!
+
+[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
+[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+
+Other than that, pipeline status: SUCCESS.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/121874 for the overview.
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/121874
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
