@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
- [IPv6:2a00:1450:4864:20::242])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 75F896E081
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Mar 2020 19:37:05 +0000 (UTC)
-Received: by mail-lj1-x242.google.com with SMTP id u15so3593620lji.10
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Mar 2020 12:37:05 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Thu, 19 Mar 2020 21:36:44 +0200
-Message-Id: <20200319193644.7417-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Add max HW stride length
- tests
+MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 19 Mar 2020 20:04:44 -0000
+Message-ID: <158464828439.17935.5164899994929919390@emeril.freedesktop.org>
+References: <20200319193644.7417-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20200319193644.7417-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
+ =?utf-8?q?ests/kms=5Fbig=5Ffb=3A_Add_max_HW_stride_length_tests_=28rev2?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,161 +15,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Test maximum HW stride lenghts. On Intel HW from gen5 up to
-Gen10 maximum HW stride lenght is 32K. On Gen11 when using
-64bpp formats strides can reach up to 64k. These test try
-exact maximum HW strides so gtt remapping will not come in
-play.
+== Series Details ==
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/kms_big_fb.c | 87 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 84 insertions(+), 3 deletions(-)
+Series: tests/kms_big_fb: Add max HW stride length tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/74883/
+State : failure
 
-diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-index eb144da9..b825362e 100644
---- a/tests/kms_big_fb.c
-+++ b/tests/kms_big_fb.c
-@@ -48,6 +48,9 @@ typedef struct {
- 	igt_render_copyfunc_t render_copy;
- 	drm_intel_bufmgr *bufmgr;
- 	struct intel_batchbuffer *batch;
-+	bool max_hw_stride_test;
-+	int hw_stride;
-+	int max_hw_fb_width;
- } data_t;
- 
- static void init_buf(data_t *data,
-@@ -163,9 +166,6 @@ static void max_fb_size(data_t *data, int *width, int *height,
- 	uint64_t size;
- 	int i = 0;
- 
--	*width = data->max_fb_width;
--	*height = data->max_fb_height;
--
- 	/* max fence stride is only 8k bytes on gen3 */
- 	if (intel_gen(data->devid) < 4 &&
- 	    format == DRM_FORMAT_XRGB8888)
-@@ -419,6 +419,14 @@ static bool test_pipe(data_t *data)
- 
- static void test_scanout(data_t *data)
- {
-+	if (data->max_hw_stride_test) {
-+		data->big_fb_width = data->max_hw_fb_width;
-+		data->big_fb_height = data->max_hw_fb_width;
-+	} else {
-+		data->big_fb_width = data->max_fb_width;
-+		data->big_fb_height = data->max_fb_height;
-+	}
-+
- 	max_fb_size(data, &data->big_fb_width, &data->big_fb_height,
- 		    data->format, data->modifier);
- 
-@@ -570,6 +578,28 @@ test_addfb(data_t *data)
- 	gem_close(data->drm_fd, bo);
- }
- 
-+/*
-+ * TODO: adapt i9xx_plane_max_stride(..) here from intel_display.c
-+ * in kernel sources to support older gen for max hw stride length
-+ * testing.
-+ */
-+static void
-+set_max_hw_stride(data_t *data)
-+{
-+	if (intel_gen(data->devid) < 11) {
-+		data->hw_stride = 32768;
-+	} else {
-+		switch (data->modifier) {
-+		case DRM_FORMAT_MOD_LINEAR:
-+			data->hw_stride = 65536-64;
-+			break;
-+		default:
-+			data->hw_stride = 65536;
-+			break;
-+		}
-+	}
-+}
-+
- static data_t data;
- 
- static const struct {
-@@ -649,6 +679,8 @@ igt_main
- 
- 		data.bufmgr = drm_intel_bufmgr_gem_init(data.drm_fd, 4096);
- 		data.batch = intel_batchbuffer_alloc(data.bufmgr, data.devid);
-+
-+		data.max_hw_stride_test = false;
- 	}
- 
- 	/*
-@@ -704,6 +736,55 @@ igt_main
- 		}
- 	}
- 
-+	data.max_hw_stride_test = true;
-+	/*
-+	 * Run max hw stride length tests on gen5 and later.
-+	 */
-+	for (int i = 0; i < ARRAY_SIZE(modifiers); i++) {
-+		data.modifier = modifiers[i].modifier;
-+
-+		set_max_hw_stride(&data);
-+
-+		for (int j = 0; j < ARRAY_SIZE(formats); j++) {
-+			/*
-+			 * try only those formats which can show full lenght. 8K is
-+			 * the magic maximum pixels in Intel HW. Here 32K is used
-+			 * to have CI test results consistent for all platforms,
-+			 * 32K is smallest number possbily coming to hw_stride
-+			 * from above if{}else{}..
-+			 */
-+			if (32768 / (formats[j].bpp >> 3) > 8192)
-+				continue;
-+
-+			data.format = formats[j].format;
-+
-+			for (int k = 0; k < ARRAY_SIZE(rotations); k++) {
-+				data.rotation = rotations[k].rotation;
-+				/*
-+				 * Seems any format currently coming here will not support
-+				 * 90/270 rotations so skip those rotations.
-+				 */
-+				if (data.rotation&(IGT_ROTATION_90|IGT_ROTATION_270))
-+					continue;
-+
-+				igt_subtest_f("%s-max-hw-stride-%dbpp-rotate-%d", modifiers[i].name,
-+					      formats[j].bpp, rotations[k].angle) {
-+					igt_describe("test maximum hardware supported stride length for given bpp and modifiers.");
-+					igt_require(intel_gen(intel_get_drm_devid(data.drm_fd)) >=5);
-+					data.max_hw_fb_width = data.hw_stride / (formats[j].bpp >> 3);
-+					igt_require(data.format == DRM_FORMAT_C8 ||
-+						    igt_fb_supported_format(data.format));
-+					igt_require(igt_display_has_format_mod(&data.display, data.format, data.modifier));
-+					test_scanout(&data);
-+				}
-+			}
-+
-+			igt_fixture
-+				cleanup_fb(&data);
-+		}
-+	}
-+	data.max_hw_stride_test = false;
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 
--- 
-2.17.1
+== Summary ==
 
+ERROR! This series introduces new undocumented tests:
+
+kms_big_fb@linear-max-hw-stride-32bpp-rotate-0
+kms_big_fb@linear-max-hw-stride-32bpp-rotate-180
+kms_big_fb@linear-max-hw-stride-64bpp-rotate-0
+kms_big_fb@linear-max-hw-stride-64bpp-rotate-180
+kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-0
+kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180
+kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-0
+kms_big_fb@x-tiled-max-hw-stride-64bpp-rotate-180
+kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0
+kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-180
+kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-0
+kms_big_fb@y-tiled-max-hw-stride-64bpp-rotate-180
+kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-0
+kms_big_fb@yf-tiled-max-hw-stride-32bpp-rotate-180
+kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-0
+kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180
+
+Can you document them as per the requirement in the [CONTRIBUTING.md]?
+
+[Documentation] has more details on how to do this.
+
+Here are few examples:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+
+Thanks in advance!
+
+[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
+[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+
+Other than that, pipeline status: SUCCESS.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/121928 for the overview.
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/121928
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
