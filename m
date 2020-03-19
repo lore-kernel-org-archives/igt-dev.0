@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 19 Mar 2020 18:06:47 -0000
-Message-ID: <158464120750.17932.11457429769359072748@emeril.freedesktop.org>
-References: <20200318004914.236815-1-lyude@redhat.com>
-In-Reply-To: <20200318004914.236815-1-lyude@redhat.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Fpipe=5Fcrc=5Fbasic?=
- =?utf-8?b?OiBVc2UgaWd0X2Rpc3BsYXlfcmVxdWlyZV9vdXRwdXRfb25fcGlwZSgpIChy?=
- =?utf-8?q?ev2=29?=
+Date: Thu, 19 Mar 2020 18:29:51 -0000
+Message-ID: <158464259197.17934.11056320750009774003@emeril.freedesktop.org>
+References: <20200316160452.29636-1-lyude@redhat.com>
+In-Reply-To: <20200316160452.29636-1-lyude@redhat.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL3Rl?=
+ =?utf-8?q?sts/igt=5Fdescribe=3A_Use_=5F=5FFILE=5F=5F_in_JUST=5FC=5FOUTPUT?=
+ =?utf-8?q?_and_DESCRIBE=5FALL=5FOUTPUT_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,74 +26,89 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: series starting with [i-g-t,1/2] tests/kms_pipe_crc_basic: Use igt_display_require_output_on_pipe() (rev2)
-URL   : https://patchwork.freedesktop.org/series/74808/
-State : success
+Series: lib/tests/igt_describe: Use __FILE__ in JUST_C_OUTPUT and DESCRIBE_ALL_OUTPUT (rev2)
+URL   : https://patchwork.freedesktop.org/series/74751/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_8160 -> IGTPW_4327
+CI Bug Log - changes from CI_DRM_8160 -> IGTPW_4328
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with IGTPW_4328 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4328, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4327/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4328/index.html
 
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4328:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_prop_blob@basic:
+    - fi-apl-guc:         [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8160/fi-apl-guc/igt@kms_prop_blob@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4328/fi-apl-guc/igt@kms_prop_blob@basic.html
+
+  
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_4327 that come from known issues:
+  Here are the changes found in IGTPW_4328 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
+  * igt@i915_selftest@live@gem_contexts:
+    - fi-skl-lmem:        [PASS][3] -> [DMESG-FAIL][4] ([i915#933])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8160/fi-skl-lmem/igt@i915_selftest@live@gem_contexts.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4328/fi-skl-lmem/igt@i915_selftest@live@gem_contexts.html
+
   * igt@kms_chamelium@hdmi-hpd-fast:
-    - fi-kbl-7500u:       [PASS][1] -> [FAIL][2] ([fdo#111407])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8160/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4327/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+    - fi-kbl-7500u:       [PASS][5] -> [FAIL][6] ([i915#323])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8160/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4328/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
 
   
-  [fdo#111407]: https://bugs.freedesktop.org/show_bug.cgi?id=111407
+  [i915#323]: https://gitlab.freedesktop.org/drm/intel/issues/323
+  [i915#933]: https://gitlab.freedesktop.org/drm/intel/issues/933
 
 
 Participating hosts (37 -> 40)
 ------------------------------
 
-  Additional (7): fi-bsw-n3050 fi-byt-j1900 fi-cfl-8109u fi-skl-6700k2 fi-kbl-7560u fi-bsw-nick fi-skl-6600u 
-  Missing    (4): fi-bsw-kefka fi-byt-clapper fi-byt-squawks fi-bsw-cyan 
+  Additional (6): fi-bsw-n3050 fi-byt-j1900 fi-cfl-8109u fi-skl-6600u fi-bsw-nick fi-skl-6700k2 
+  Missing    (3): fi-byt-clapper fi-byt-squawks fi-bsw-cyan 
 
 
 Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_5523 -> IGTPW_4327
+  * IGT: IGT_5523 -> IGTPW_4328
 
   CI-20190529: 20190529
   CI_DRM_8160: 6ba1729e5025761ab74914f6b8aa3288f493e9c7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4327: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4327/index.html
+  IGTPW_4328: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4328/index.html
   IGT_5523: cf6d524007ac51a7d5a48503ea3dd5f01fd4ebab @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-a
-+igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-b
-+igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-c
-+igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-d
-+igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-e
-+igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-f
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4327/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4328/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
