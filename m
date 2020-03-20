@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 84DA66EAFF
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2020 10:20:21 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Date: Fri, 20 Mar 2020 10:20:17 +0000
-Message-ID: <54ea2c280c0e47c3aeeed57ba9275b5d@intel.com>
-References: <20200316160452.29636-1-lyude@redhat.com>
- <158464259197.17934.11056320750009774003@emeril.freedesktop.org>
- <20200320095425.GP9497@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <20200320095425.GP9497@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E2C06EAFF
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2020 10:28:38 +0000 (UTC)
+Date: Fri, 20 Mar 2020 12:28:35 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200320102835.GQ9497@platvala-desk.ger.corp.intel.com>
+References: <20200320090340.27836-1-ankit.k.nautiyal@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbGliL3Rl?=
- =?utf-8?q?sts/igt=5Fdescribe=3A_Use_=5F=5FFILE=5F=5F_in_JUST=5FC=5FOUTPUT?=
- =?utf-8?q?_and_DESCRIBE=5FALL=5FOUTPUT_=28rev2=29?=
+Content-Disposition: inline
+In-Reply-To: <20200320090340.27836-1-ankit.k.nautiyal@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_content_protection: Bifurcate
+ tests into HDCP1.4 & 2.2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,89 +18,314 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Q3JlYXRlZCBhIG5ldyBpc3N1ZSBhbmQgcmUtcmVwb3J0ZWQgdGhlIHJlc3VsdHMuDQoNCkxha3No
-bWkuDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBMYXR2YWxhLCBQZXRyaSA8
-cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+IA0KU2VudDogRnJpZGF5LCBNYXJjaCAyMCwgMjAyMCAx
-MTo1NCBBTQ0KVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnOyBWdWR1bSwgTGFrc2ht
-aW5hcmF5YW5hIDxsYWtzaG1pbmFyYXlhbmEudnVkdW1AaW50ZWwuY29tPg0KQ2M6IEx5dWRlIDxs
-eXVkZUByZWRoYXQuY29tPg0KU3ViamVjdDogUmU6IFtpZ3QtZGV2XSDinJcgRmkuQ0kuQkFUOiBm
-YWlsdXJlIGZvciBsaWIvdGVzdHMvaWd0X2Rlc2NyaWJlOiBVc2UgX19GSUxFX18gaW4gSlVTVF9D
-X09VVFBVVCBhbmQgREVTQ1JJQkVfQUxMX09VVFBVVCAocmV2MikNCg0KT24gVGh1LCBNYXIgMTks
-IDIwMjAgYXQgMDY6Mjk6NTFQTSArMDAwMCwgUGF0Y2h3b3JrIHdyb3RlOg0KPiA9PSBTZXJpZXMg
-RGV0YWlscyA9PQ0KPiANCj4gU2VyaWVzOiBsaWIvdGVzdHMvaWd0X2Rlc2NyaWJlOiBVc2UgX19G
-SUxFX18gaW4gSlVTVF9DX09VVFBVVCBhbmQgREVTQ1JJQkVfQUxMX09VVFBVVCAocmV2MikNCj4g
-VVJMICAgOiBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzc0NzUxLw0K
-PiBTdGF0ZSA6IGZhaWx1cmUNCj4gDQo+ID09IFN1bW1hcnkgPT0NCj4gDQo+IENJIEJ1ZyBMb2cg
-LSBjaGFuZ2VzIGZyb20gQ0lfRFJNXzgxNjAgLT4gSUdUUFdfNDMyOCANCj4gPT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQ0KPiANCj4gU3VtbWFyeQ0K
-PiAtLS0tLS0tDQo+IA0KPiAgICoqRkFJTFVSRSoqDQo+IA0KPiAgIFNlcmlvdXMgdW5rbm93biBj
-aGFuZ2VzIGNvbWluZyB3aXRoIElHVFBXXzQzMjggYWJzb2x1dGVseSBuZWVkIHRvIGJlDQo+ICAg
-dmVyaWZpZWQgbWFudWFsbHkuDQo+ICAgDQo+ICAgSWYgeW91IHRoaW5rIHRoZSByZXBvcnRlZCBj
-aGFuZ2VzIGhhdmUgbm90aGluZyB0byBkbyB3aXRoIHRoZSBjaGFuZ2VzDQo+ICAgaW50cm9kdWNl
-ZCBpbiBJR1RQV180MzI4LCBwbGVhc2Ugbm90aWZ5IHlvdXIgYnVnIHRlYW0gdG8gYWxsb3cgdGhl
-bQ0KPiAgIHRvIGRvY3VtZW50IHRoaXMgbmV3IGZhaWx1cmUgbW9kZSwgd2hpY2ggd2lsbCByZWR1
-Y2UgZmFsc2UgcG9zaXRpdmVzIGluIENJLg0KPiANCj4gICBFeHRlcm5hbCBVUkw6IA0KPiBodHRw
-czovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzQzMjgvaW5kZXguaHRt
-bA0KPiANCj4gUG9zc2libGUgbmV3IGlzc3Vlcw0KPiAtLS0tLS0tLS0tLS0tLS0tLS0tDQo+IA0K
-PiAgIEhlcmUgYXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVuIGludHJv
-ZHVjZWQgaW4gSUdUUFdfNDMyODoNCj4gDQo+ICMjIyBJR1QgY2hhbmdlcyAjIyMNCj4gDQo+ICMj
-IyMgUG9zc2libGUgcmVncmVzc2lvbnMgIyMjIw0KPiANCj4gICAqIGlndEBrbXNfcHJvcF9ibG9i
-QGJhc2ljOg0KPiAgICAgLSBmaS1hcGwtZ3VjOiAgICAgICAgIFtQQVNTXVsxXSAtPiBbRkFJTF1b
-Ml0NCj4gICAgWzFdOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJ
-X0RSTV84MTYwL2ZpLWFwbC1ndWMvaWd0QGttc19wcm9wX2Jsb2JAYmFzaWMuaHRtbA0KPiAgICBb
-Ml06IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzQz
-MjgvZmktYXBsLWd1Yy9pZ3RAa21zDQo+IF9wcm9wX2Jsb2JAYmFzaWMuaHRtbA0KDQoNCkxha3No
-bWksIGZhbHNlIHBvc2l0aXZlIGhlcmUuDQoNCg0KLS0NClBldHJpIExhdHZhbGENCg0KDQoNCj4g
-DQo+ICAgDQo+IEtub3duIGlzc3Vlcw0KPiAtLS0tLS0tLS0tLS0NCj4gDQo+ICAgSGVyZSBhcmUg
-dGhlIGNoYW5nZXMgZm91bmQgaW4gSUdUUFdfNDMyOCB0aGF0IGNvbWUgZnJvbSBrbm93biBpc3N1
-ZXM6DQo+IA0KPiAjIyMgSUdUIGNoYW5nZXMgIyMjDQo+IA0KPiAjIyMjIElzc3VlcyBoaXQgIyMj
-Iw0KPiANCj4gICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAZ2VtX2NvbnRleHRzOg0KPiAgICAg
-LSBmaS1za2wtbG1lbTogICAgICAgIFtQQVNTXVszXSAtPiBbRE1FU0ctRkFJTF1bNF0gKFtpOTE1
-IzkzM10pDQo+ICAgIFszXTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRp
-cC9DSV9EUk1fODE2MC9maS1za2wtbG1lbS9pZ3RAaTkxNV9zZWxmdGVzdEBsaXZlQGdlbV9jb250
-ZXh0cy5odG1sDQo+ICAgIFs0XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJt
-LXRpcC9JR1RQV180MzI4L2ZpLXNrbC1sbWVtL2lndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAZ2VtX2Nv
-bnRleHRzLmh0bWwNCj4gDQo+ICAgKiBpZ3RAa21zX2NoYW1lbGl1bUBoZG1pLWhwZC1mYXN0Og0K
-PiAgICAgLSBmaS1rYmwtNzUwMHU6ICAgICAgIFtQQVNTXVs1XSAtPiBbRkFJTF1bNl0gKFtpOTE1
-IzMyM10pDQo+ICAgIFs1XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRp
-cC9DSV9EUk1fODE2MC9maS1rYmwtNzUwMHUvaWd0QGttc19jaGFtZWxpdW1AaGRtaS1ocGQtZmFz
-dC5odG1sDQo+ICAgIFs2XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRp
-cC9JR1RQV180MzI4L2ZpLWtibC03NTAwdS9pZ3RAa21zX2NoYW1lbGl1bUBoZG1pLWhwZC1mYXN0
-Lmh0bWwNCj4gDQo+ICAgDQo+ICAgW2k5MTUjMzIzXTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0
-b3Aub3JnL2RybS9pbnRlbC9pc3N1ZXMvMzIzDQo+ICAgW2k5MTUjOTMzXTogaHR0cHM6Ly9naXRs
-YWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9pc3N1ZXMvOTMzDQo+IA0KPiANCj4gUGFydGlj
-aXBhdGluZyBob3N0cyAoMzcgLT4gNDApDQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LQ0KPiANCj4gICBBZGRpdGlvbmFsICg2KTogZmktYnN3LW4zMDUwIGZpLWJ5dC1qMTkwMCBmaS1j
-ZmwtODEwOXUgZmktc2tsLTY2MDB1IGZpLWJzdy1uaWNrIGZpLXNrbC02NzAwazIgDQo+ICAgTWlz
-c2luZyAgICAoMyk6IGZpLWJ5dC1jbGFwcGVyIGZpLWJ5dC1zcXVhd2tzIGZpLWJzdy1jeWFuIA0K
-PiANCj4gDQo+IEJ1aWxkIGNoYW5nZXMNCj4gLS0tLS0tLS0tLS0tLQ0KPiANCj4gICAqIENJOiBD
-SS0yMDE5MDUyOSAtPiBOb25lDQo+ICAgKiBJR1Q6IElHVF81NTIzIC0+IElHVFBXXzQzMjgNCj4g
-DQo+ICAgQ0ktMjAxOTA1Mjk6IDIwMTkwNTI5DQo+ICAgQ0lfRFJNXzgxNjA6IDZiYTE3MjllNTAy
-NTc2MWFiNzQ5MTRmNmI4YWEzMjg4ZjQ5M2U5YzcgQCBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9w
-Lm9yZy9nZngtY2kvbGludXgNCj4gICBJR1RQV180MzI4OiBodHRwczovL2ludGVsLWdmeC1jaS4w
-MS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzQzMjgvaW5kZXguaHRtbA0KPiAgIElHVF81NTIzOiBj
-ZjZkNTI0MDA3YWM1MWE3ZDVhNDg1MDNlYTNkZDVmMDFmZDRlYmFiIEAgZ2l0Oi8vYW5vbmdpdC5m
-cmVlZGVza3RvcC5vcmcveG9yZy9hcHAvaW50ZWwtZ3B1LXRvb2xzDQo+IA0KPiA9PSBMb2dzID09
-DQo+IA0KPiBGb3IgbW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3Jn
-L3RyZWUvZHJtLXRpcC9JR1RQV180MzI4L2luZGV4Lmh0bWwNCj4gX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18NCj4gaWd0LWRldiBtYWlsaW5nIGxpc3QNCj4g
-aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
-cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2DQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KSW50ZWwgRmlubGFu
-ZCBPeQpSZWdpc3RlcmVkIEFkZHJlc3M6IFBMIDI4MSwgMDAxODEgSGVsc2lua2kgCkJ1c2luZXNz
-IElkZW50aXR5IENvZGU6IDAzNTc2MDYgLSA0IApEb21pY2lsZWQgaW4gSGVsc2lua2kgCgpUaGlz
-IGUtbWFpbCBhbmQgYW55IGF0dGFjaG1lbnRzIG1heSBjb250YWluIGNvbmZpZGVudGlhbCBtYXRl
-cmlhbCBmb3IKdGhlIHNvbGUgdXNlIG9mIHRoZSBpbnRlbmRlZCByZWNpcGllbnQocykuIEFueSBy
-ZXZpZXcgb3IgZGlzdHJpYnV0aW9uCmJ5IG90aGVycyBpcyBzdHJpY3RseSBwcm9oaWJpdGVkLiBJ
-ZiB5b3UgYXJlIG5vdCB0aGUgaW50ZW5kZWQKcmVjaXBpZW50LCBwbGVhc2UgY29udGFjdCB0aGUg
-c2VuZGVyIGFuZCBkZWxldGUgYWxsIGNvcGllcy4KX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
-cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9pZ3QtZGV2Cg==
+On Fri, Mar 20, 2020 at 02:33:40PM +0530, Ankit Nautiyal wrote:
+> Currently, the test kms_content_protection does not distinguish
+> between HDCP1.4 and HDCP2.2 tests. Since the driver by default
+> always chooses HDCP2.2 protocol if the panel supports HDCP1.4 &
+> HDCP2.2, HDCP1.4 does not get tested.
+> 
+> This patch makes two versions of the existing subtests for testing
+> HDCP1.4 and HDCP2.2. For forcing the driver to use HDCP1.4, the
+> kernel module 'mei_hdcp' responsible for HDCP2.2 authentication,
+> is unloaded before HDCP1.4 tests. Once the HDCP1.4 tests are
+> completed, the module is re-loaded.
+> 
+> This patch also makes the existing subtests as dynamic sub-subtests
+> based on all outputs supporting the protocol under test.
+> This helps in running together all HDCP1.4 tests for all outputs
+> that support HDCP1.4, avoiding the need of loading and unloading
+> of 'mei_hdcp' module for each test.
+> 
+> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+> ---
+>  tests/kms_content_protection.c | 185 ++++++++++++++++++++-------------
+>  1 file changed, 113 insertions(+), 72 deletions(-)
+> 
+> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+> index 3b9cedcb..1472e987 100644
+> --- a/tests/kms_content_protection.c
+> +++ b/tests/kms_content_protection.c
+> @@ -59,6 +59,9 @@ struct data {
+>  #define HDCP_CONTENT_TYPE_0				0
+>  #define HDCP_CONTENT_TYPE_1				1
+>  
+> +#define HDCP_14						0
+> +#define HDCP_22						1
+> +
+>  #define LIC_PERIOD_MSEC				(4 * 1000)
+>  /* Kernel retry count=3, Max time per authentication allowed = 6Sec */
+>  #define KERNEL_AUTH_TIME_ALLOWED_MSEC		(3 *  6 * 1000)
+> @@ -593,44 +596,6 @@ static bool sink_hdcp2_capable(igt_output_t *output)
+>  	return strstr(buf, "HDCP2.2");
+>  }
+>  
+> -static void
+> -test_content_protection(enum igt_commit_style s, int content_type)
+> -{
+> -	igt_display_t *display = &data.display;
+> -	igt_output_t *output;
+> -	int valid_tests = 0;
+> -
+> -	if (data.cp_tests & CP_MEI_RELOAD)
+> -		igt_require_f(igt_kmod_is_loaded("mei_hdcp"),
+> -			      "mei_hdcp module is not loaded\n");
+> -
+> -	for_each_connected_output(display, output) {
+> -		if (!output->props[IGT_CONNECTOR_CONTENT_PROTECTION])
+> -			continue;
+> -
+> -		if (!output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE] &&
+> -		    content_type)
+> -			continue;
+> -
+> -		igt_info("CP Test execution on %s\n", output->name);
+> -
+> -		if (content_type && !sink_hdcp2_capable(output)) {
+> -			igt_info("\tSkip %s (Sink has no HDCP2.2 support)\n",
+> -				 output->name);
+> -			continue;
+> -		} else if (!sink_hdcp_capable(output)) {
+> -			igt_info("\tSkip %s (Sink has no HDCP support)\n",
+> -				 output->name);
+> -			continue;
+> -		}
+> -
+> -		test_content_protection_on_output(output, s, content_type);
+> -		valid_tests++;
+> -	}
+> -
+> -	igt_require_f(valid_tests, "No connector found with HDCP capability\n");
+> -}
+> -
+>  static void test_content_protection_cleanup(void)
+>  {
+>  	igt_display_t *display = &data.display;
+> @@ -651,58 +616,63 @@ static void test_content_protection_cleanup(void)
+>  	}
+>  }
+>  
+> -igt_main
+> -{
+> -	igt_fixture {
+> -		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> +static bool
+> +is_valid_output(igt_output_t *output, int content_type) {
+> +	if (!output->props[IGT_CONNECTOR_CONTENT_PROTECTION])
+> +		return false;
+>  
+> -		igt_display_require(&data.display, data.drm_fd);
+> +	if (!output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE] && content_type)
+> +		return false;
+> +
+> +	if (content_type && !sink_hdcp2_capable(output)) {
+> +		igt_info("\tSkip %s (Sink has no HDCP2.2 support)\n",
+> +			 output->name);
+> +		return false;
+> +
+> +	} else if (!sink_hdcp_capable(output)) {
+> +		igt_info("\tSkip %s (Sink has no HDCP support)\n",
+> +			 output->name);
+> +		return false;
+>  	}
+> +	return true;
+> +}
+>  
+> -	igt_subtest("legacy") {
+> +static void
+> +test_content_protection_dynamic(igt_output_t *output, int content_type)
+> +{
+> +
+> +	igt_dynamic_f("legacy-%s", output->name) {
+>  		data.cp_tests = 0;
+> -		test_content_protection(COMMIT_LEGACY, HDCP_CONTENT_TYPE_0);
+> +		test_content_protection_on_output(output, COMMIT_LEGACY,
+> +						  content_type);
+>  	}
+>  
+> -	igt_subtest("atomic") {
+> +	igt_dynamic_f("atomic-%s", output->name) {
+>  		igt_require(data.display.is_atomic);
+>  		data.cp_tests = 0;
+> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
+> +		test_content_protection_on_output(output, COMMIT_ATOMIC,
+> +						  content_type);
+>  	}
+>  
+> -	igt_subtest("atomic-dpms") {
+> +	igt_dynamic_f("atomic-dpms-%s", output->name) {
+>  		igt_require(data.display.is_atomic);
+>  		data.cp_tests = CP_DPMS;
+> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
+> +		test_content_protection_on_output(output, COMMIT_ATOMIC,
+> +						  content_type);
+>  	}
+>  
+> -	igt_subtest("LIC") {
+> +	igt_dynamic_f("LIC-%s", output->name) {
+>  		igt_require(data.display.is_atomic);
+>  		data.cp_tests = CP_LIC;
+> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
+> +		test_content_protection_on_output(output, COMMIT_ATOMIC,
+> +						  content_type);
+>  	}
+>  
+> -	igt_subtest("type1") {
+> -		igt_require(data.display.is_atomic);
+> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
+> -	}
+> -
+> -	igt_subtest("mei_interface") {
+> -		igt_require(data.display.is_atomic);
+> -		data.cp_tests = CP_MEI_RELOAD;
+> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
+> -	}
+> -
+> -	igt_subtest("content_type_change") {
+> -		igt_require(data.display.is_atomic);
+> -		data.cp_tests = CP_TYPE_CHANGE;
+> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
+> -	}
+> -
+> -	igt_subtest("uevent") {
+> +	igt_dynamic_f("uevent-%s", output->name) {
+>  		igt_require(data.display.is_atomic);
+>  		data.cp_tests = CP_UEVENT;
+> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
+> +		test_content_protection_on_output(output, COMMIT_ATOMIC,
+> +						  content_type);
+>  	}
+>  
+>  	/*
+> @@ -713,7 +683,7 @@ igt_main
+>  	 *  either of these options, we test SRM writing from userspace and
+>  	 *  validation of the same at kernel. Something is better than nothing.
+>  	 */
+> -	igt_subtest("srm") {
+> +	igt_dynamic_f("srm-%s", output->name) {
+>  		bool ret;
+>  
+>  		igt_require(data.display.is_atomic);
+> @@ -721,7 +691,78 @@ igt_main
+>  		ret = write_srm_as_fw((const __u8 *)facsimile_srm,
+>  				      sizeof(facsimile_srm));
+>  		igt_assert_f(ret, "SRM update failed");
+> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
+> +		test_content_protection_on_output(output, COMMIT_ATOMIC,
+> +						  content_type);
+> +	}
+> +
+> +	/*
+> +	 * The tests mei_interface and content_type_change are meant only
+> +	 * for HDCP2.2 protocol, hence ignore for HDCP1.4.
+> +	 */
+> +	if (content_type != HDCP_CONTENT_TYPE_1)
+> +		return;
+> +
+> +	igt_dynamic_f("mei_interface-%s", output->name) {
+> +		igt_require(data.display.is_atomic);
+> +		data.cp_tests = CP_MEI_RELOAD;
+> +		test_content_protection_on_output(output, COMMIT_ATOMIC,
+> +						  content_type);
+> +	}
+> +
+> +	igt_dynamic_f("content_type_change-%s", output->name) {
+> +		igt_require(data.display.is_atomic);
+> +		data.cp_tests = CP_TYPE_CHANGE;
+> +		test_content_protection_on_output(output, COMMIT_ATOMIC,
+> +						  content_type);
+> +	}
+> +}
+> +
+> +igt_main
+> +{
+> +	int i;
+> +	struct cp_protocol {
+> +		const char *name;
+> +		int content_type;
+> +	} protocol[] = {
+> +		{ "hdcp-1_4", HDCP_CONTENT_TYPE_0 },
+> +		{ "hdcp-2_2", HDCP_CONTENT_TYPE_1 } };
+> +
+> +	igt_fixture {
+> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> +
+> +		igt_display_require(&data.display, data.drm_fd);
+> +	}
+> +
+> +	for (i = 0; i < 2; i++) {
+> +		bool force_mei_hdcp_off = false;
+> +
+> +		/* In case a panel supports both HDCP2.2 and HDCP1.4 protocols,
+> +		 * HDCP2.2 is always chosen as default by the driver, even for
+> +		 * the TYPE 0 content.
+> +		 *
+> +		 * To forcefully test HDCP1.4, mei_hdcp module needs to be
+> +		 * unloaded. This takes away the HDCP2.2 support from the
+> +		 * platform, and HDCP1.4 can be tested. After the test the
+> +		 * module is loaded again and HDCP2.2 support gets re-enabled.
+> +		 */
+> +		if (i == HDCP_14 && igt_kmod_is_loaded("mei_hdcp")) {
+> +			igt_kmod_unload("mei_hdcp", 0);
+> +			force_mei_hdcp_off = true;
+> +		}
+
+Move this and the kmod_load block that is below into the
+subtest. Doing igt_kmod_{,un}load() outside of a fixture/subtest is
+invalid.
+
+Like this:
+
+igt_subtest_with_dynamic_f(...) {
+  if (...) {
+    kmod_unload();
+    force = true;
+  }
+
+  for_each_connected_output(...) {
+     ...
+  }
+
+  if (force)
+     kmod_load();
+}
+
+Do we want to assert that unload succeeded? And only load mei_hdcp
+back if it _was_ loaded?
+
+-- 
+Petri Latvala
+
+
+
+> +
+> +		igt_subtest_with_dynamic_f("%s", protocol[i].name) {
+> +			igt_output_t *output;
+> +			int content_type = protocol[i].content_type;
+> +
+> +			for_each_connected_output(&data.display, output) {
+> +				if (!is_valid_output(output, content_type))
+> +					continue;
+> +				test_content_protection_dynamic(output,
+> +								content_type);
+> +			}
+> +		}
+> +		if (force_mei_hdcp_off)
+> +			igt_kmod_load("mei_hdcp", NULL);
+>  	}
+>  
+>  	igt_fixture {
+> -- 
+> 2.17.1
+> 
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
