@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 844C66E171
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2020 15:36:40 +0000 (UTC)
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Fri, 20 Mar 2020 16:36:23 +0100
-Message-Id: <20200320153623.4780-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib: Fix device lists not cleaned up
- sufficiently before rescan
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 20 Mar 2020 15:53:27 -0000
+Message-ID: <158471960748.11036.8169258144732191578@emeril.freedesktop.org>
+References: <20200319140608.25405-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20200319140608.25405-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fplane=5Fmultiple=3A_Avoid_CRC_buffer_overflows_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,66 +14,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: "Kahola, Mika" <mika.kahola@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Some effort is already taken to clean up previous content of device
-lists before forced device rescan is performed but it is not
-sufficient.  An attempt to use forced device rescan in a test results
-in that test crashing or spinning until being killed by OOM killer.
-Fix it.
+== Series Details ==
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- lib/igt_device_scan.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+Series: tests/kms_plane_multiple: Avoid CRC buffer overflows (rev3)
+URL   : https://patchwork.freedesktop.org/series/74846/
+State : success
 
-diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-index b3f79c81e..db4da30d3 100644
---- a/lib/igt_device_scan.c
-+++ b/lib/igt_device_scan.c
-@@ -353,14 +353,11 @@ static void set_vendor_device(struct igt_device *dev)
- 	dev->device = strndup(pci_id + 5, 4);
- }
- 
--/* Allocate arrays for keeping scanned devices */
-+/* Initialize lists for keeping scanned devices */
- static bool prepare_scan(void)
- {
--	if (igt_devs.all.prev == NULL || igt_devs.all.next == NULL)
--		IGT_INIT_LIST_HEAD(&igt_devs.all);
--
--	if (igt_devs.filtered.prev == NULL || igt_devs.filtered.next == NULL)
--		IGT_INIT_LIST_HEAD(&igt_devs.filtered);
-+	IGT_INIT_LIST_HEAD(&igt_devs.all);
-+	IGT_INIT_LIST_HEAD(&igt_devs.filtered);
- 
- 	return true;
- }
-@@ -595,8 +592,15 @@ void igt_devices_scan(bool force)
- {
- 	if (force && igt_devs.devs_scanned) {
- 		struct igt_device *dev, *tmp;
-+
-+		igt_list_for_each_entry_safe(dev, tmp, &igt_devs.filtered,
-+					     link) {
-+			igt_list_del(&dev->link);
-+			free(dev);
-+		}
- 		igt_list_for_each_entry_safe(dev, tmp, &igt_devs.all, link) {
- 			igt_device_free(dev);
-+			igt_list_del(&dev->link);
- 			free(dev);
- 		}
- 
--- 
-2.21.1
+== Summary ==
 
+CI Bug Log - changes from CI_DRM_8166 -> IGTPW_4335
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4335/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4335 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-cfl-8700k:       [PASS][1] -> [INCOMPLETE][2] ([i915#1430] / [i915#656])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8166/fi-cfl-8700k/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4335/fi-cfl-8700k/igt@i915_selftest@live@execlists.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-skl-6700k2:      [INCOMPLETE][3] ([i915#656]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8166/fi-skl-6700k2/igt@i915_selftest@live@execlists.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4335/fi-skl-6700k2/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@gem_contexts:
+    - fi-cml-s:           [DMESG-FAIL][5] ([i915#877]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8166/fi-cml-s/igt@i915_selftest@live@gem_contexts.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4335/fi-cml-s/igt@i915_selftest@live@gem_contexts.html
+    - fi-cfl-guc:         [DMESG-FAIL][7] ([i915#730] / [i915#933]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8166/fi-cfl-guc/igt@i915_selftest@live@gem_contexts.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4335/fi-cfl-guc/igt@i915_selftest@live@gem_contexts.html
+
+  
+  [i915#1430]: https://gitlab.freedesktop.org/drm/intel/issues/1430
+  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
+  [i915#730]: https://gitlab.freedesktop.org/drm/intel/issues/730
+  [i915#877]: https://gitlab.freedesktop.org/drm/intel/issues/877
+  [i915#933]: https://gitlab.freedesktop.org/drm/intel/issues/933
+
+
+Participating hosts (50 -> 44)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5526 -> IGTPW_4335
+
+  CI-20190529: 20190529
+  CI_DRM_8166: 424db30dffb5504090c2b8ea4a387d6c358bbc50 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4335: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4335/index.html
+  IGT_5526: f49ebeee9f54d6f23c60a842f75f65561d452ab0 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4335/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
