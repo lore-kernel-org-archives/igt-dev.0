@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D4876EB1C
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2020 12:23:00 +0000 (UTC)
-Date: Fri, 20 Mar 2020 14:22:57 +0200
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7470B6EB1C
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Mar 2020 12:24:42 +0000 (UTC)
+Date: Fri, 20 Mar 2020 14:24:40 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200320122257.GT9497@platvala-desk.ger.corp.intel.com>
-References: <20200316160452.29636-1-lyude@redhat.com>
+Message-ID: <20200320122440.GU9497@platvala-desk.ger.corp.intel.com>
+References: <20200316161132.29833-4-lyude@redhat.com>
+ <20200319174039.205689-1-lyude@redhat.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200316160452.29636-1-lyude@redhat.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/tests/igt_describe: Use __FILE__ in
- JUST_C_OUTPUT and DESCRIBE_ALL_OUTPUT
+In-Reply-To: <20200319174039.205689-1-lyude@redhat.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] assembler/gen4asm.h: Remove struct
+ src_operand src_operand variable
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,97 +27,54 @@ To: Lyude <lyude@redhat.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Mar 16, 2020 at 12:04:52PM -0400, Lyude wrote:
+On Thu, Mar 19, 2020 at 01:40:39PM -0400, Lyude wrote:
 > From: Lyude Paul <lyude@redhat.com>
 > 
-> We currently manually specify the name of the source file by-hand here,
-> however this causes problems if the user tries to build with compile
-> flags like -fdebug-prefix-map since the source file names will then
-> differ from what's hardcoded here - causing tests to fail.
+> Another spot where we fail compilation with -fcommon, due to src_operand
+> getting included in multiple translation units without being marked as
+> extern:
 > 
-> So, fix that by using __FILE__ instead.
+> /usr/bin/ld:
+> assembler/1ca89e8@@intel-gen4asm@exe/meson-generated_gram.c.o:assembler/gen4asm.h:119:
+> multiple definition of `src_operand';
+> assembler/1ca89e8@@intel-gen4asm@exe/meson-generated_lex.c.o:assembler/gen4asm.h:119:
+> first defined here
+> /usr/bin/ld:
+> assembler/1ca89e8@@intel-gen4asm@exe/main.c.o:assembler/gen4asm.h:119:
+> multiple definition of `src_operand';
+> assembler/1ca89e8@@intel-gen4asm@exe/meson-generated_lex.c.o:assembler/gen4asm.h:119:
+> first defined here
+> 
+> However, we never actually refer to this variable - only its type
+> definition. So, just remove the declaration entirely.
+> 
+> Changes since v1:
+> * Don't make src_operand extern - just remove the variable declaration
+>   entirely, we only ever use the typedef - Chris Wilson
 > 
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 
-This also fixes building when the build directory is not directly in
-source root.
-
-
 Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
-
 > ---
->  lib/tests/igt_describe.c | 20 ++++++++++----------
->  1 file changed, 10 insertions(+), 10 deletions(-)
+>  assembler/gen4asm.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/lib/tests/igt_describe.c b/lib/tests/igt_describe.c
-> index 6f3a4319..94d42fbe 100644
-> --- a/lib/tests/igt_describe.c
-> +++ b/lib/tests/igt_describe.c
-> @@ -101,33 +101,33 @@ static void fake_main(int argc, char **argv) {
->  static const char DESCRIBE_ALL_OUTPUT[] = \
->  	"the top level description\n"
->  	"\n"
-> -	"SUB A ../lib/tests/igt_describe.c:36:\n"
-> +	"SUB A " __FILE__ ":36:\n"
->  	"  Basic A\n"
->  	"\n"
-> -	"SUB B ../lib/tests/igt_describe.c:45:\n"
-> +	"SUB B " __FILE__ ":45:\n"
->  	"  Group with B, C & D\n"
->  	"\n"
->  	"  Basic B\n"
->  	"\n"
-> -	"SUB C ../lib/tests/igt_describe.c:54:\n"
-> +	"SUB C " __FILE__ ":54:\n"
->  	"  Group with B, C & D\n"
->  	"\n"
->  	"  Group with C & D\n"
->  	"\n"
->  	"  Basic C\n"
->  	"\n"
-> -	"SUB D ../lib/tests/igt_describe.c:58:\n"
-> +	"SUB D " __FILE__ ":58:\n"
->  	"  Group with B, C & D\n"
->  	"\n"
->  	"  Group with C & D\n"
->  	"\n"
-> -	"SUB E ../lib/tests/igt_describe.c:66:\n"
-> +	"SUB E " __FILE__ ":66:\n"
->  	"  NO DOCUMENTATION!\n"
->  	"\n"
-> -	"SUB F ../lib/tests/igt_describe.c:71:\n"
-> +	"SUB F " __FILE__ ":71:\n"
->  	"  NO DOCUMENTATION!\n"
->  	"\n"
-> -	"SUB G ../lib/tests/igt_describe.c:80:\n"
-> +	"SUB G " __FILE__ ":80:\n"
->  	"  this description should be so long that it wraps itself nicely in the terminal this\n"
->  	"  description should be so long that it wraps itself nicely in the terminal this description\n"
->  	"  should be so long that it wraps itself nicely in the terminal this description should be so\n"
-> @@ -135,17 +135,17 @@ static const char DESCRIBE_ALL_OUTPUT[] = \
->  	"  wraps itself nicely in the terminal this description should be so long that it wraps itself\n"
->  	"  nicely in the terminal\n"
->  	"\n"
-> -	"SUB F ../lib/tests/igt_describe.c:87:\n"
-> +	"SUB F " __FILE__ ":87:\n"
->  	"  verylongwordthatshoudlbeprintedeventhoughitspastthewrppinglimitverylongwordthatshoudlbeprintedeventhoughitspastthewrappinglimit\n"
->  	"  verylongwordthatshoudlbeprintedeventhoughitspastthewrappinglimitverylongwordthatshoudlbeprintedeventhoughitspastthewrappinglimit\n"
->  	"\n"
-> -	"SUB G ../lib/tests/igt_describe.c:91:\n"
-> +	"SUB G " __FILE__ ":91:\n"
->  	"  Subtest with dynamic subsubtests\n\n";
+> diff --git a/assembler/gen4asm.h b/assembler/gen4asm.h
+> index 6b957e28..9537d457 100644
+> --- a/assembler/gen4asm.h
+> +++ b/assembler/gen4asm.h
+> @@ -116,7 +116,7 @@ struct src_operand {
+>  	int default_region;
+>  	uint32_t imm32; /* set if src_operand is expressing a branch offset */
+>  	char *reloc_target; /* bspec: branching instructions JIP and UIP are source operands */
+> -} src_operand;
+> +};
 >  
->  static const char JUST_C_OUTPUT[] = \
->  	"the top level description\n"
->  	"\n"
-> -	"SUB C ../lib/tests/igt_describe.c:54:\n"
-> +	"SUB C " __FILE__ ":54:\n"
->  	"  Group with B, C & D\n"
->  	"\n"
->  	"  Group with C & D\n"
+>  typedef struct {
+>      enum {
 > -- 
-> 2.24.1
+> 2.25.1
 > 
 > _______________________________________________
 > igt-dev mailing list
