@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 19EEE89C3F
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2020 06:55:28 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42E6A89D4F
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2020 07:00:40 +0000 (UTC)
 From: "Peres, Martin" <martin.peres@intel.com>
-Date: Mon, 23 Mar 2020 06:55:25 +0000
-Message-ID: <ed6f16b6a7384617b0214849ce0c6ed3@intel.com>
+Date: Mon, 23 Mar 2020 07:00:33 +0000
+Message-ID: <dc41f07863814ad48c905120bb278a71@intel.com>
 References: <20200323063248.5261-1-anshuman.gupta@intel.com>
- <20200323063248.5261-2-anshuman.gupta@intel.com>
+ <20200323063248.5261-4-anshuman.gupta@intel.com>
 Content-Language: en-US
 Content-Type: multipart/mixed;
- boundary="_002_ed6f16b6a7384617b0214849ce0c6ed3intelcom_"
+ boundary="_002_dc41f07863814ad48c905120bb278a71intelcom_"
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/5] lib/igt_pm: Add lib func to get
- lpsp capability
+Subject: Re: [igt-dev] [PATCH i-g-t v2 3/5] tests/i915_pm_lpsp: Skip
+ panel-fitter subtest for 1024x768 panels
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,90 +26,50 @@ To: "Gupta, Anshuman" <anshuman.gupta@intel.com>, "igt-dev@lists.freedesktop.org
 Cc: "Peres, Martin" <martin.peres@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---_002_ed6f16b6a7384617b0214849ce0c6ed3intelcom_
+--_002_dc41f07863814ad48c905120bb278a71intelcom_
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 
 On 2020-03-23 08:32, Anshuman Gupta wrote:=0A=
-> This lib function evaluate the lpsp capability from=0A=
-> the connector specific debugfs attribute i915_lpsp_info.=0A=
+> It makes sense to skip the test if edp-panel native resoultion=0A=
+> is limted to 1024x768 rather than failing the test.=0A=
+=0A=
+Acked-by: Martin Peres <martin.peres@linux.intel.com>=0A=
 > =0A=
 > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>=0A=
 > ---=0A=
->  lib/igt_pm.c | 27 +++++++++++++++++++++++++++=0A=
->  lib/igt_pm.h |  1 +=0A=
->  2 files changed, 28 insertions(+)=0A=
+>  tests/i915/i915_pm_lpsp.c | 8 ++++----=0A=
+>  1 file changed, 4 insertions(+), 4 deletions(-)=0A=
 > =0A=
-> diff --git a/lib/igt_pm.c b/lib/igt_pm.c=0A=
-> index 9d441e1b..7a6cab7c 100644=0A=
-> --- a/lib/igt_pm.c=0A=
-> +++ b/lib/igt_pm.c=0A=
-> @@ -37,6 +37,7 @@=0A=
->  #include <dirent.h>=0A=
->  =0A=
->  #include "drmtest.h"=0A=
-> +#include "igt_kms.h"=0A=
->  #include "igt_pm.h"=0A=
->  #include "igt_aux.h"=0A=
->  #include "igt_sysfs.h"=0A=
-> @@ -827,3 +828,29 @@ bool igt_pm_pc8_plus_residencies_enabled(int msr_fd)=
-=0A=
->  =0A=
->  	return true;=0A=
->  }=0A=
-> +=0A=
-> +/**=0A=
-> + * igt_output_is_lpsp_capable:=0A=
-> + * @drm_fd: fd to drm device=0A=
-> + * @output: igt output for which lpsp capability need to be evaluated=0A=
-> + * Check lpsp capability for a given output.=0A=
-> + *=0A=
-> + * Returns:=0A=
-> + * True if given output is lpsp capable otherwise false.=0A=
-> + */=0A=
-> +bool igt_output_is_lpsp_capable(int drm_fd, igt_output_t *output)=0A=
-=0A=
-Do we have a file for i915-specific features? If not, maybe prefixing=0A=
-the function with i915 would help readers understand that this is an=0A=
-i915-specific function.=0A=
-=0A=
-> +{=0A=
-> +	char buf[256];=0A=
-> +	int fd, len;=0A=
-> +=0A=
-> +	fd =3D igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);=0A=
-> +	igt_require(fd >=3D 0);=0A=
-> +	len =3D igt_debugfs_simple_read(fd, "i915_lpsp_info", buf, sizeof(buf))=
-;=0A=
-> +=0A=
-> +	if (len < 0)=0A=
-> +		igt_assert_eq(len, -ENODEV);=0A=
-> +=0A=
-> +	close(fd);=0A=
-> +=0A=
-> +	return strstr(buf, "LPSP capable");=0A=
-> +}=0A=
-> diff --git a/lib/igt_pm.h b/lib/igt_pm.h=0A=
-> index 5e438452..076d8c27 100644=0A=
-> --- a/lib/igt_pm.h=0A=
-> +++ b/lib/igt_pm.h=0A=
-> @@ -53,5 +53,6 @@ enum igt_runtime_pm_status igt_get_runtime_pm_status(vo=
-id);=0A=
->  bool igt_wait_for_pm_status(enum igt_runtime_pm_status status);=0A=
->  bool igt_pm_dmc_loaded(int debugfs);=0A=
->  bool igt_pm_pc8_plus_residencies_enabled(int msr_fd);=0A=
-> +bool igt_output_is_lpsp_capable(int drm_fd, igt_output_t *output);=0A=
->  =0A=
->  #endif /* IGT_PM_H */=0A=
+> diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c=0A=
+> index e400c92e..0ce694e6 100644=0A=
+> --- a/tests/i915/i915_pm_lpsp.c=0A=
+> +++ b/tests/i915/i915_pm_lpsp.c=0A=
+> @@ -179,10 +179,10 @@ static void edp_subtest(data_t *data, bool use_pane=
+l_fitter)=0A=
+>  			 * support LPSP are too new for panels with native=0A=
+>  			 * 1024x768 resolution, so this should force the panel=0A=
+>  			 * fitter. */=0A=
+> -			igt_assert(c->count_modes &&=0A=
+> -				   c->modes[0].hdisplay > 1024);=0A=
+> -			igt_assert(c->count_modes &&=0A=
+> -				   c->modes[0].vdisplay > 768);=0A=
+> +			igt_require(c->count_modes &&=0A=
+> +				    c->modes[0].hdisplay > 1024);=0A=
+> +			igt_require(c->count_modes &&=0A=
+> +				    c->modes[0].vdisplay > 768);=0A=
+>  			data->mode =3D &std_1024_mode;=0A=
+>  			igt_output_override_mode(output, data->mode);=0A=
+>  		} else {=0A=
 > =0A=
 =0A=
 
---_002_ed6f16b6a7384617b0214849ce0c6ed3intelcom_
+--_002_dc41f07863814ad48c905120bb278a71intelcom_
 Content-Type: application/pgp-keys; name="pEpkey.asc"
 Content-Description: pEpkey.asc
 Content-Disposition: attachment; filename="pEpkey.asc"; size=1774;
-	creation-date="Mon, 23 Mar 2020 06:55:25 GMT";
-	modification-date="Mon, 23 Mar 2020 06:55:25 GMT"
+	creation-date="Mon, 23 Mar 2020 07:00:33 GMT";
+	modification-date="Mon, 23 Mar 2020 07:00:33 GMT"
 Content-Transfer-Encoding: base64
 
 LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tCgptUUVOQkYzazA1Z0JDQUN5WmhP
@@ -145,7 +105,7 @@ T3Q1Mjl3V3pTCnhJRjBvRnZPY3NlZ2ErL3FPK1hSNHNjbUJ1K3NUVU5FQnA1NWYyc0ptOWllVlU5
 SXUwM2JYVnBMZGV3dTNtMEIKTTVtaAo9YzJPTwotLS0tLUVORCBQR1AgUFVCTElDIEtFWSBCTE9D
 Sy0tLS0tCg==
 
---_002_ed6f16b6a7384617b0214849ce0c6ed3intelcom_
+--_002_dc41f07863814ad48c905120bb278a71intelcom_
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -156,4 +116,4 @@ igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
---_002_ed6f16b6a7384617b0214849ce0c6ed3intelcom_--
+--_002_dc41f07863814ad48c905120bb278a71intelcom_--
