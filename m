@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2BE51895C3
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2020 06:33:46 +0000 (UTC)
-Date: Mon, 23 Mar 2020 12:03:49 +0530
-From: Ramalingam C <ramalingam.c@intel.com>
-Message-ID: <20200323063347.GA28970@intel.com>
-References: <20200320090340.27836-1-ankit.k.nautiyal@intel.com>
- <414609087dad419caa67e95008d3c2ec@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 658EA89D7D
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2020 06:44:57 +0000 (UTC)
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+Date: Mon, 23 Mar 2020 12:02:45 +0530
+Message-Id: <20200323063248.5261-3-anshuman.gupta@intel.com>
+In-Reply-To: <20200323063248.5261-1-anshuman.gupta@intel.com>
+References: <20200323063248.5261-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <414609087dad419caa67e95008d3c2ec@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_content_protection: Bifurcate
- tests into HDCP1.4 & 2.2
+Subject: [igt-dev] [PATCH i-g-t v2 2/5] tests/i915_pm_lpsp: lpsp platform
+ agnostic support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,321 +21,422 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Peres, Martin" <martin.peres@intel.com>, Jani Nikula <jani.nikula@intel.com>, Daniel Vetter <daniel@ffwll.ch>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Latvala,
- Petri" <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: martin.peres@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-03-20 at 21:33:25 +0530, Peres, Martin wrote:
-> On 2020-03-20 11:03, Ankit Nautiyal wrote:
-> > Currently, the test kms_content_protection does not distinguish
-> > between HDCP1.4 and HDCP2.2 tests. Since the driver by default
-> > always chooses HDCP2.2 protocol if the panel supports HDCP1.4 &
-> > HDCP2.2, HDCP1.4 does not get tested.
-> 
-> Thanks for working on it!
-> 
-> > 
-> > This patch makes two versions of the existing subtests for testing
-> > HDCP1.4 and HDCP2.2. For forcing the driver to use HDCP1.4, the
-> > kernel module 'mei_hdcp' responsible for HDCP2.2 authentication,
-> > is unloaded before HDCP1.4 tests. Once the HDCP1.4 tests are
-> > completed, the module is re-loaded.
-> > 
-> > This patch also makes the existing subtests as dynamic sub-subtests
-> > based on all outputs supporting the protocol under test.
-> > This helps in running together all HDCP1.4 tests for all outputs
-> > that support HDCP1.4, avoiding the need of loading and unloading
-> > of 'mei_hdcp' module for each test.
-> 
-> That sounds like a complicated process which won't scale to future
-> versions of HDCP (no reason to assume they will stop pumping them out).
-> 
-> How about adding a debugfs file that lists the supported hdcp versions
-> for every connector, says which one is being used right now, and
-> force-disable one or many so as to be able to validate all the cases?
-I agree with Martin's suggestion.
+Current implementation of lpsp igt test, assumed that every non-edp
+panel isn't a lpsp panel but it is not true on TGL anymore,
+any HDMI/DP/DSI panel connected on pipe A and connected to PORT_{A,B,C}
+can drive LPSP.
+Even on older Gen9 platform a DP panel can drive lpsp on Port A.
+This requires complete design change in current lpsp igt for a platform
+agnostic support.
 
-mei_hdcp.ko will control hdcp2.2 untill the ME FW handles the hdcp2.2. And
-we are aware that ME FW is not playing that roll in upcoming platforms.
+The new igt approach is relies on connector specific debugfs
+attribute i915_lpsp_info, which exposes whether an output is capable
+of driving lpsp and whether lpsp is enabled.
 
-So we need to device a generic solution applicable for all platforms to
-choose the HDCP version that we want to test.
+v2:
+- CI failures fixup.
 
-I propose lets add a debugfs called "i915_hdcp_ver_request" per connector
-and which will set the bits of intel_hdcp->debugfs_ver_request representing
-the HDCP versions.
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+---
+ tests/i915/i915_pm_lpsp.c | 303 +++++++++++++++++++++++---------------
+ 1 file changed, 186 insertions(+), 117 deletions(-)
 
-IGT can check the i915_hdcp_sink_capability for the supported HDCP
-versions of the setup and set the required HDCP version through "i915_hdcp_ver_request"
+diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
+index 42938e10..e400c92e 100644
+--- a/tests/i915/i915_pm_lpsp.c
++++ b/tests/i915/i915_pm_lpsp.c
+@@ -25,49 +25,125 @@
+  */
+ 
+ #include "igt.h"
++#include "igt_kmod.h"
++#include "igt_pm.h"
++#include "igt_sysfs.h"
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <unistd.h>
+ 
++#define MAX_SINK_LPSP_INFO_BUF_LEN	5000
+ 
+-static bool supports_lpsp(uint32_t devid)
++#define PWR_DOMAIN_INFO "i915_power_domain_info"
++
++const char *snd_module[10] = {"snd_hda_codec_hdmi", "snd_hda_intel", "snd_hda_codec", "snd_hda_core", NULL};
++
++typedef struct {
++	int drm_fd;
++	int debugfs_fd;
++	uint32_t devid;
++	char *pwr_dmn_info;
++	igt_display_t display;
++	struct igt_fb fb;
++	drmModeModeInfo *mode;
++	igt_output_t *output;
++} data_t;
++
++static void debugfs_read(int fd, const char *param, char *buf, int len)
+ {
+-	return IS_HASWELL(devid) || IS_BROADWELL(devid);
++	len = igt_debugfs_simple_read(fd, param, buf, len);
++	if (len < 0)
++		igt_assert_eq(len, -ENODEV);
+ }
+ 
+-static bool lpsp_is_enabled(int drm_fd)
++static bool lpsp_is_enabled(data_t *data)
+ {
+-	uint32_t val;
++	char buf[MAX_SINK_LPSP_INFO_BUF_LEN];
++	int fd;
++
++	fd = igt_debugfs_connector_dir(data->drm_fd, data->output->name,
++				       O_RDONLY);
++	igt_require(fd >= 0);
++
++	debugfs_read(fd, "i915_lpsp_info", buf, sizeof(buf));
++	close(fd);
+ 
+-	val = INREG(HSW_PWR_WELL_CTL2);
+-	return !(val & HSW_PWR_WELL_STATE_ENABLED);
++	return strstr(buf, "LPSP enabled");
+ }
+ 
+-/* The LPSP mode is all about an enabled pipe, but we expect to also be in the
+- * low power mode when no pipes are enabled, so do this check anyway. */
+-static void screens_disabled_subtest(int drm_fd, drmModeResPtr drm_res)
++/*
++ * The LPSP mode is all about an enabled pipe, but we expect to also be in the
++ * low power mode when no pipes are enabled, so do this check anyway.
++ */
++static void screens_disabled_subtest(data_t *data)
+ {
+-	kmstest_unset_all_crtcs(drm_fd, drm_res);
+-	igt_assert(lpsp_is_enabled(drm_fd));
++	igt_output_t *output;
++	enum pipe pipe;
++	igt_plane_t *primary;
++
++	for_each_pipe_with_single_output(&data->display, pipe, output) {
++		data->output = output;
++		igt_output_set_pipe(data->output, pipe);
++		primary = igt_output_get_plane_type(data->output,
++						    DRM_PLANE_TYPE_PRIMARY);
++		igt_plane_set_fb(primary, NULL);
++		igt_display_commit(&data->display);
++	}
++
++	igt_assert(lpsp_is_enabled(data));
+ }
+ 
+-static uint32_t create_fb(int drm_fd, int width, int height)
++static void check_output_lpsp(data_t *data)
+ {
+-	struct igt_fb fb;
++	if (igt_output_is_lpsp_capable(data->drm_fd, data->output))
++		igt_assert_f(lpsp_is_enabled(data), "%s: lpsp is not enabled\n%s:\n%s\n",
++			     data->output->name, PWR_DOMAIN_INFO, data->pwr_dmn_info =
++			     igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
++	else
++		igt_assert(!lpsp_is_enabled(data));
++}
+ 
+-	return igt_create_pattern_fb(drm_fd, width, height, DRM_FORMAT_XRGB8888,
+-				     LOCAL_DRM_FORMAT_MOD_NONE, &fb);
++static void setup_lpsp_output(data_t *data)
++{
++	igt_plane_t *primary;
++
++	/* set output pipe = PIPE_A for LPSP */
++	igt_output_set_pipe(data->output, PIPE_A);
++	primary = igt_output_get_plane_type(data->output,
++					    DRM_PLANE_TYPE_PRIMARY);
++	igt_plane_set_fb(primary, NULL);
++	igt_create_pattern_fb(data->drm_fd,
++			      data->mode->hdisplay, data->mode->vdisplay,
++			      DRM_FORMAT_XRGB8888,
++			      LOCAL_DRM_FORMAT_MOD_NONE,
++			      &data->fb);
++	igt_plane_set_fb(primary, &data->fb);
++	igt_display_commit(&data->display);
++}
++
++static void cleanup_lpsp_output(data_t *data)
++{
++	igt_plane_t *primary;
++
++	if (!data->output)
++		return;
++
++	primary = igt_output_get_plane_type(data->output,
++					    DRM_PLANE_TYPE_PRIMARY);
++	igt_plane_set_fb(primary, NULL);
++	igt_output_set_pipe(data->output, PIPE_NONE);
++	igt_display_commit(&data->display);
++	igt_remove_fb(data->drm_fd, &data->fb);
++	data->output = NULL;
+ }
+ 
+-static void edp_subtest(int drm_fd, drmModeResPtr drm_res,
+-			drmModeConnectorPtr *drm_connectors, uint32_t devid,
+-			bool use_panel_fitter)
++static void edp_subtest(data_t *data, bool use_panel_fitter)
+ {
+-	int i, rc;
+-	uint32_t crtc_id = 0, buffer_id = 0;
+-	drmModeConnectorPtr connector = NULL;
+-	drmModeModeInfoPtr mode = NULL;
++	igt_display_t *display = &data->display;
++	igt_output_t *output;
++	int valid_output;
++
+ 	drmModeModeInfo std_1024_mode = {
+ 		.clock = 65000,
+ 		.hdisplay = 1024,
+@@ -86,23 +162,17 @@ static void edp_subtest(int drm_fd, drmModeResPtr drm_res,
+ 		.name = "Custom 1024x768",
+ 	};
+ 
+-	kmstest_unset_all_crtcs(drm_fd, drm_res);
+-
+-	for (i = 0; i < drm_res->count_connectors; i++) {
+-		drmModeConnectorPtr c = drm_connectors[i];
++	for_each_connected_output(display, output) {
++		drmModeConnectorPtr c = output->config.connector;
+ 
+ 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
+ 			continue;
+-		if (c->connection != DRM_MODE_CONNECTED)
++		if (!igt_pipe_connector_valid(PIPE_A, output))
+ 			continue;
+ 
+-		if (!use_panel_fitter && c->count_modes) {
+-			connector = c;
+-			mode = &c->modes[0];
+-			break;
+-		}
++		data->output = output;
++
+ 		if (use_panel_fitter) {
+-			connector = c;
+ 
+ 			/* This is one of the modes Xorg creates for panels, so
+ 			 * it should work just fine. Notice that Gens that
+@@ -113,124 +183,123 @@ static void edp_subtest(int drm_fd, drmModeResPtr drm_res,
+ 				   c->modes[0].hdisplay > 1024);
+ 			igt_assert(c->count_modes &&
+ 				   c->modes[0].vdisplay > 768);
+-			mode = &std_1024_mode;
+-			break;
++			data->mode = &std_1024_mode;
++			igt_output_override_mode(output, data->mode);
++		} else {
++			data->mode = igt_output_get_mode(output);
+ 		}
+-	}
+-	igt_require(connector);
+ 
+-	crtc_id = kmstest_find_crtc_for_connector(drm_fd, drm_res, connector,
+-						  0);
+-	buffer_id = create_fb(drm_fd, mode->hdisplay, mode->vdisplay);
++		setup_lpsp_output(data);
++
++		if (use_panel_fitter && IS_HASWELL(data->devid))
++			igt_assert(!lpsp_is_enabled(data));
++		else
++			check_output_lpsp(data);
+ 
+-	igt_assert(buffer_id);
+-	igt_assert(connector);
+-	igt_assert(mode);
++		cleanup_lpsp_output(data);
++		valid_output++;
++	}
+ 
+-	rc = drmModeSetCrtc(drm_fd, crtc_id, buffer_id, 0, 0,
+-			    &connector->connector_id, 1, mode);
+-	igt_assert_eq(rc, 0);
++	igt_require_f(valid_output, "No edp connector found\n");
++}
+ 
+-	if (use_panel_fitter) {
+-		if (IS_HASWELL(devid))
+-			igt_assert(!lpsp_is_enabled(drm_fd));
+-		else
+-			igt_assert(lpsp_is_enabled(drm_fd));
+-	} else {
+-		igt_assert(lpsp_is_enabled(drm_fd));
++static bool unload_snd_hda_core_module(void)
++{
++	int i;
++
++	/* unbind snd_hda_intel */
++	kick_snd_hda_intel();
++
++	for (i = 0; snd_module[i]; i++) {
++		if (igt_kmod_is_loaded(snd_module[i]) &&
++		    igt_kmod_unload(snd_module[i], KMOD_REMOVE_FORCE)) {
++			igt_warn("Could not unload %s\n", snd_module[i]);
++			igt_kmod_list_loaded();
++			igt_lsof("/dev/snd");
++			return false;
++		}
+ 	}
++
++	return true;
+ }
+ 
+-static void non_edp_subtest(int drm_fd, drmModeResPtr drm_res,
+-			    drmModeConnectorPtr *drm_connectors)
++static void load_snd_hda_core_module(void)
+ {
+-	int i, rc;
+-	uint32_t crtc_id = 0, buffer_id = 0;
+-	drmModeConnectorPtr connector = NULL;
+-	drmModeModeInfoPtr mode = NULL;
++	igt_kmod_load("snd_hda_core", NULL);
++}
++
++static void non_edp_subtest(data_t *data)
++{
++	igt_display_t *display = &data->display;
++	igt_output_t *output;
++	int valid_output;
+ 
+-	kmstest_unset_all_crtcs(drm_fd, drm_res);
++	/* DP/HDMI panel requires to drive lpsp without audio */
++	igt_require(unload_snd_hda_core_module());
+ 
+-	for (i = 0; i < drm_res->count_connectors; i++) {
+-		drmModeConnectorPtr c = drm_connectors[i];
++	for_each_connected_output(display, output) {
++		drmModeConnectorPtr c = output->config.connector;
+ 
+ 		if (c->connector_type == DRM_MODE_CONNECTOR_eDP)
+ 			continue;
+ 		if (c->connection != DRM_MODE_CONNECTED)
+ 			continue;
++		if (!igt_pipe_connector_valid(PIPE_A, output))
++			continue;
+ 
+-		if (c->count_modes) {
+-			connector = c;
+-			mode = &c->modes[0];
+-			break;
+-		}
++		data->output = output;
++		data->mode = igt_output_get_mode(output);
++		setup_lpsp_output(data);
++		check_output_lpsp(data);
++		cleanup_lpsp_output(data);
++		load_snd_hda_core_module();
++		valid_output++;
+ 	}
+-	igt_require(connector);
+-
+-	crtc_id = kmstest_find_crtc_for_connector(drm_fd, drm_res, connector,
+-						  0);
+-	buffer_id = create_fb(drm_fd, mode->hdisplay, mode->vdisplay);
+ 
+-	igt_assert(buffer_id);
+-	igt_assert(mode);
+-
+-	rc = drmModeSetCrtc(drm_fd, crtc_id, buffer_id, 0, 0,
+-			    &connector->connector_id, 1, mode);
+-	igt_assert_eq(rc, 0);
+-
+-	igt_assert(!lpsp_is_enabled(drm_fd));
++	igt_require_f(valid_output, "No non-edp connector found\n");
+ }
+ 
+-#define MAX_CONNECTORS 32
+-
+-int drm_fd;
+-uint32_t devid;
+-drmModeResPtr drm_res;
+-drmModeConnectorPtr drm_connectors[MAX_CONNECTORS];
+-struct intel_mmio_data mmio_data;
++IGT_TEST_DESCRIPTION("These tests validates display Low Power Single Pipe configurations");
+ igt_main
+ {
+-	igt_fixture {
+-		int i;
+-
+-		drm_fd = drm_open_driver_master(DRIVER_INTEL);
+-		igt_require(drm_fd >= 0);
+-
+-		devid = intel_get_drm_devid(drm_fd);
++	data_t data = {};
+ 
+-		drm_res = drmModeGetResources(drm_fd);
+-		igt_require(drm_res);
+-		igt_assert(drm_res->count_connectors <= MAX_CONNECTORS);
+-
+-		for (i = 0; i < drm_res->count_connectors; i++)
+-			drm_connectors[i] = drmModeGetConnectorCurrent(drm_fd,
+-							drm_res->connectors[i]);
++	igt_fixture {
+ 
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		igt_require(data.drm_fd >= 0);
++		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
++		igt_require(data.debugfs_fd >= 0);
+ 		igt_pm_enable_audio_runtime_pm();
+-
+-		igt_require(supports_lpsp(devid));
+-
+-		intel_register_access_init(&mmio_data, intel_get_pci_device(), 0, drm_fd);
+-
+ 		kmstest_set_vt_graphics_mode();
++		data.devid = intel_get_drm_devid(data.drm_fd);
++		igt_display_require(&data.display, data.drm_fd);
++		igt_require(igt_pm_dmc_loaded(data.debugfs_fd));
+ 	}
+ 
++	igt_describe("This test validates lpsp while all crtc are disabled");
+ 	igt_subtest("screens-disabled")
+-		screens_disabled_subtest(drm_fd, drm_res);
++		screens_disabled_subtest(&data);
++	igt_describe("This test validates lpsp on eDP panel");
+ 	igt_subtest("edp-native")
+-		edp_subtest(drm_fd, drm_res, drm_connectors, devid, false);
++		edp_subtest(&data, false);
++	igt_fixture
++		cleanup_lpsp_output(&data);
++	igt_describe("This test validates lpsp on eDP panel while forcing panel_fitter");
+ 	igt_subtest("edp-panel-fitter")
+-		edp_subtest(drm_fd, drm_res, drm_connectors, devid, true);
++		edp_subtest(&data, true);
++	igt_fixture
++		cleanup_lpsp_output(&data);
++	igt_describe("This test validates lpsp on DP/HDMI/DSI panels");
+ 	igt_subtest("non-edp")
+-		non_edp_subtest(drm_fd, drm_res, drm_connectors);
++		non_edp_subtest(&data);
++	igt_fixture
++		cleanup_lpsp_output(&data);
+ 
+ 	igt_fixture {
+-		int i;
+-
+-		intel_register_access_fini(&mmio_data);
+-		for (i = 0; i < drm_res->count_connectors; i++)
+-			drmModeFreeConnector(drm_connectors[i]);
+-		drmModeFreeResources(drm_res);
+-		close(drm_fd);
++		free(data.pwr_dmn_info);
++		load_snd_hda_core_module();
++		close(data.drm_fd);
++		igt_display_fini(&data.display);
+ 	}
+ }
+-- 
+2.25.2
 
-I915 will refer this debugfs_ver_request along with hdcpx_capability while
-starting the HDCP authentication of that/any version.
-
-Martin and JaniN,
-Do we have any concern in this approach? This is just to choose the hdcp
-version for testing purpose.
-
--Ram
-
-> 
-> Martin
-> > 
-> > Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> > ---
-> >  tests/kms_content_protection.c | 185 ++++++++++++++++++++-------------
-> >  1 file changed, 113 insertions(+), 72 deletions(-)
-> > 
-> > diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-> > index 3b9cedcb..1472e987 100644
-> > --- a/tests/kms_content_protection.c
-> > +++ b/tests/kms_content_protection.c
-> > @@ -59,6 +59,9 @@ struct data {
-> >  #define HDCP_CONTENT_TYPE_0				0
-> >  #define HDCP_CONTENT_TYPE_1				1
-> >  
-> > +#define HDCP_14						0
-> > +#define HDCP_22						1
-> > +
-> >  #define LIC_PERIOD_MSEC				(4 * 1000)
-> >  /* Kernel retry count=3, Max time per authentication allowed = 6Sec */
-> >  #define KERNEL_AUTH_TIME_ALLOWED_MSEC		(3 *  6 * 1000)
-> > @@ -593,44 +596,6 @@ static bool sink_hdcp2_capable(igt_output_t *output)
-> >  	return strstr(buf, "HDCP2.2");
-> >  }
-> >  
-> > -static void
-> > -test_content_protection(enum igt_commit_style s, int content_type)
-> > -{
-> > -	igt_display_t *display = &data.display;
-> > -	igt_output_t *output;
-> > -	int valid_tests = 0;
-> > -
-> > -	if (data.cp_tests & CP_MEI_RELOAD)
-> > -		igt_require_f(igt_kmod_is_loaded("mei_hdcp"),
-> > -			      "mei_hdcp module is not loaded\n");
-> > -
-> > -	for_each_connected_output(display, output) {
-> > -		if (!output->props[IGT_CONNECTOR_CONTENT_PROTECTION])
-> > -			continue;
-> > -
-> > -		if (!output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE] &&
-> > -		    content_type)
-> > -			continue;
-> > -
-> > -		igt_info("CP Test execution on %s\n", output->name);
-> > -
-> > -		if (content_type && !sink_hdcp2_capable(output)) {
-> > -			igt_info("\tSkip %s (Sink has no HDCP2.2 support)\n",
-> > -				 output->name);
-> > -			continue;
-> > -		} else if (!sink_hdcp_capable(output)) {
-> > -			igt_info("\tSkip %s (Sink has no HDCP support)\n",
-> > -				 output->name);
-> > -			continue;
-> > -		}
-> > -
-> > -		test_content_protection_on_output(output, s, content_type);
-> > -		valid_tests++;
-> > -	}
-> > -
-> > -	igt_require_f(valid_tests, "No connector found with HDCP capability\n");
-> > -}
-> > -
-> >  static void test_content_protection_cleanup(void)
-> >  {
-> >  	igt_display_t *display = &data.display;
-> > @@ -651,58 +616,63 @@ static void test_content_protection_cleanup(void)
-> >  	}
-> >  }
-> >  
-> > -igt_main
-> > -{
-> > -	igt_fixture {
-> > -		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> > +static bool
-> > +is_valid_output(igt_output_t *output, int content_type) {
-> > +	if (!output->props[IGT_CONNECTOR_CONTENT_PROTECTION])
-> > +		return false;
-> >  
-> > -		igt_display_require(&data.display, data.drm_fd);
-> > +	if (!output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE] && content_type)
-> > +		return false;
-> > +
-> > +	if (content_type && !sink_hdcp2_capable(output)) {
-> > +		igt_info("\tSkip %s (Sink has no HDCP2.2 support)\n",
-> > +			 output->name);
-> > +		return false;
-> > +
-> > +	} else if (!sink_hdcp_capable(output)) {
-> > +		igt_info("\tSkip %s (Sink has no HDCP support)\n",
-> > +			 output->name);
-> > +		return false;
-> >  	}
-> > +	return true;
-> > +}
-> >  
-> > -	igt_subtest("legacy") {
-> > +static void
-> > +test_content_protection_dynamic(igt_output_t *output, int content_type)
-> > +{
-> > +
-> > +	igt_dynamic_f("legacy-%s", output->name) {
-> >  		data.cp_tests = 0;
-> > -		test_content_protection(COMMIT_LEGACY, HDCP_CONTENT_TYPE_0);
-> > +		test_content_protection_on_output(output, COMMIT_LEGACY,
-> > +						  content_type);
-> >  	}
-> >  
-> > -	igt_subtest("atomic") {
-> > +	igt_dynamic_f("atomic-%s", output->name) {
-> >  		igt_require(data.display.is_atomic);
-> >  		data.cp_tests = 0;
-> > -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-> > +		test_content_protection_on_output(output, COMMIT_ATOMIC,
-> > +						  content_type);
-> >  	}
-> >  
-> > -	igt_subtest("atomic-dpms") {
-> > +	igt_dynamic_f("atomic-dpms-%s", output->name) {
-> >  		igt_require(data.display.is_atomic);
-> >  		data.cp_tests = CP_DPMS;
-> > -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-> > +		test_content_protection_on_output(output, COMMIT_ATOMIC,
-> > +						  content_type);
-> >  	}
-> >  
-> > -	igt_subtest("LIC") {
-> > +	igt_dynamic_f("LIC-%s", output->name) {
-> >  		igt_require(data.display.is_atomic);
-> >  		data.cp_tests = CP_LIC;
-> > -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-> > +		test_content_protection_on_output(output, COMMIT_ATOMIC,
-> > +						  content_type);
-> >  	}
-> >  
-> > -	igt_subtest("type1") {
-> > -		igt_require(data.display.is_atomic);
-> > -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
-> > -	}
-> > -
-> > -	igt_subtest("mei_interface") {
-> > -		igt_require(data.display.is_atomic);
-> > -		data.cp_tests = CP_MEI_RELOAD;
-> > -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
-> > -	}
-> > -
-> > -	igt_subtest("content_type_change") {
-> > -		igt_require(data.display.is_atomic);
-> > -		data.cp_tests = CP_TYPE_CHANGE;
-> > -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
-> > -	}
-> > -
-> > -	igt_subtest("uevent") {
-> > +	igt_dynamic_f("uevent-%s", output->name) {
-> >  		igt_require(data.display.is_atomic);
-> >  		data.cp_tests = CP_UEVENT;
-> > -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-> > +		test_content_protection_on_output(output, COMMIT_ATOMIC,
-> > +						  content_type);
-> >  	}
-> >  
-> >  	/*
-> > @@ -713,7 +683,7 @@ igt_main
-> >  	 *  either of these options, we test SRM writing from userspace and
-> >  	 *  validation of the same at kernel. Something is better than nothing.
-> >  	 */
-> > -	igt_subtest("srm") {
-> > +	igt_dynamic_f("srm-%s", output->name) {
-> >  		bool ret;
-> >  
-> >  		igt_require(data.display.is_atomic);
-> > @@ -721,7 +691,78 @@ igt_main
-> >  		ret = write_srm_as_fw((const __u8 *)facsimile_srm,
-> >  				      sizeof(facsimile_srm));
-> >  		igt_assert_f(ret, "SRM update failed");
-> > -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-> > +		test_content_protection_on_output(output, COMMIT_ATOMIC,
-> > +						  content_type);
-> > +	}
-> > +
-> > +	/*
-> > +	 * The tests mei_interface and content_type_change are meant only
-> > +	 * for HDCP2.2 protocol, hence ignore for HDCP1.4.
-> > +	 */
-> > +	if (content_type != HDCP_CONTENT_TYPE_1)
-> > +		return;
-> > +
-> > +	igt_dynamic_f("mei_interface-%s", output->name) {
-> > +		igt_require(data.display.is_atomic);
-> > +		data.cp_tests = CP_MEI_RELOAD;
-> > +		test_content_protection_on_output(output, COMMIT_ATOMIC,
-> > +						  content_type);
-> > +	}
-> > +
-> > +	igt_dynamic_f("content_type_change-%s", output->name) {
-> > +		igt_require(data.display.is_atomic);
-> > +		data.cp_tests = CP_TYPE_CHANGE;
-> > +		test_content_protection_on_output(output, COMMIT_ATOMIC,
-> > +						  content_type);
-> > +	}
-> > +}
-> > +
-> > +igt_main
-> > +{
-> > +	int i;
-> > +	struct cp_protocol {
-> > +		const char *name;
-> > +		int content_type;
-> > +	} protocol[] = {
-> > +		{ "hdcp-1_4", HDCP_CONTENT_TYPE_0 },
-> > +		{ "hdcp-2_2", HDCP_CONTENT_TYPE_1 } };
-> > +
-> > +	igt_fixture {
-> > +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> > +
-> > +		igt_display_require(&data.display, data.drm_fd);
-> > +	}
-> > +
-> > +	for (i = 0; i < 2; i++) {
-> > +		bool force_mei_hdcp_off = false;
-> > +
-> > +		/* In case a panel supports both HDCP2.2 and HDCP1.4 protocols,
-> > +		 * HDCP2.2 is always chosen as default by the driver, even for
-> > +		 * the TYPE 0 content.
-> > +		 *
-> > +		 * To forcefully test HDCP1.4, mei_hdcp module needs to be
-> > +		 * unloaded. This takes away the HDCP2.2 support from the
-> > +		 * platform, and HDCP1.4 can be tested. After the test the
-> > +		 * module is loaded again and HDCP2.2 support gets re-enabled.
-> > +		 */
-> > +		if (i == HDCP_14 && igt_kmod_is_loaded("mei_hdcp")) {
-> > +			igt_kmod_unload("mei_hdcp", 0);
-> > +			force_mei_hdcp_off = true;
-> > +		}
-> > +
-> > +		igt_subtest_with_dynamic_f("%s", protocol[i].name) {
-> > +			igt_output_t *output;
-> > +			int content_type = protocol[i].content_type;
-> > +
-> > +			for_each_connected_output(&data.display, output) {
-> > +				if (!is_valid_output(output, content_type))
-> > +					continue;
-> > +				test_content_protection_dynamic(output,
-> > +								content_type);
-> > +			}
-> > +		}
-> > +		if (force_mei_hdcp_off)
-> > +			igt_kmod_load("mei_hdcp", NULL);
-> >  	}
-> >  
-> >  	igt_fixture {
-> > 
-> 
-
-pub   RSA 2048/33A53379 2019-12-02 Martin Peres <martin.peres@linux.intel.com>
-> sub   RSA 2048/C5E7DE5F 2019-12-02
-> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
