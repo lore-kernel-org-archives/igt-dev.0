@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61FD289E33
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2020 10:53:56 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20200323083920.7544-1-arjun.melkaveri@intel.com>
-References: <20200323083920.7544-1-arjun.melkaveri@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158496083224.17851.17744025631776061468@build.alporthouse.com>
-Date: Mon, 23 Mar 2020 10:53:52 +0000
-Subject: Re: [igt-dev] [PATCH] [PATCH i-g-t][V2]tests/i915/gem_ctx_create:
- Reverted device reopen logic
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 23 Mar 2020 11:08:21 -0000
+Message-ID: <158496170196.9807.14136947326326944622@emeril.freedesktop.org>
+References: <20200323084828.20695-1-imre.deak@intel.com>
+In-Reply-To: <20200323084828.20695-1-imre.deak@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fchamelium=3A_Fix_waiting_for_hotplug_uevents?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,46 +14,73 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org
+To: Imre Deak <imre.deak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Arjun Melkaveri (2020-03-23 08:39:20)
-> Removed gem_reopen_driver and gem_context_copy_engines
-> logic from code as it is not recommended.
-> No reopen after fork is needed .
-> 
-> V2:
-> Added gem_context_copy_engines to copy engines over.
-> 
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
-> Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
-> ---
->  tests/i915/gem_ctx_create.c | 44 +++++--------------------------------
->  1 file changed, 6 insertions(+), 38 deletions(-)
-> 
-> diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
-> index 2d477226..61a25d5b 100644
-> --- a/tests/i915/gem_ctx_create.c
-> +++ b/tests/i915/gem_ctx_create.c
-> @@ -100,11 +100,10 @@ static void files(int core, int timeout, const int ncpus)
->         igt_fork(child, ncpus) {
->                 struct timespec start, end;
->                 unsigned count = 0;
-> -               int fd;
->  
->                 clock_gettime(CLOCK_MONOTONIC, &start);
->                 do {
-> -                       fd = gem_reopen_driver(core);
-> +                       int fd = drm_open_driver(DRIVER_INTEL);
+== Series Details ==
 
-gem_reopen_driver() is an improvement over drm_open_driver() in this
-circumstance.
--Chris
+Series: tests/kms_chamelium: Fix waiting for hotplug uevents
+URL   : https://patchwork.freedesktop.org/series/74966/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8175 -> IGTPW_4341
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4341/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4341 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - fi-bsw-n3050:       [PASS][1] -> [FAIL][2] ([i915#34])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8175/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4341/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+  [i915#34]: https://gitlab.freedesktop.org/drm/intel/issues/34
+
+
+Participating hosts (47 -> 41)
+------------------------------
+
+  Missing    (6): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-gdg-551 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5527 -> IGTPW_4341
+
+  CI-20190529: 20190529
+  CI_DRM_8175: 75b2b15f2ab26f5373a13ece8e5d40b472333d0e @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4341: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4341/index.html
+  IGT_5527: 0ab05a51a059645d2e12e553a1de1d97451f57c5 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4341/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
