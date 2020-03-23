@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9221289343
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2020 04:01:20 +0000 (UTC)
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D969D89ED6
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2020 05:04:29 +0000 (UTC)
 References: <20200320090340.27836-1-ankit.k.nautiyal@intel.com>
- <20200320124615.GA22075@intel.com>
+ <414609087dad419caa67e95008d3c2ec@intel.com>
 From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Message-ID: <29c1765c-18d8-95b8-8782-afa99ad49f98@intel.com>
-Date: Mon, 23 Mar 2020 09:31:17 +0530
+Message-ID: <aae888e6-b9fc-5ffb-57f5-645b7dad8b19@intel.com>
+Date: Mon, 23 Mar 2020 10:34:22 +0530
 MIME-Version: 1.0
-In-Reply-To: <20200320124615.GA22075@intel.com>
+In-Reply-To: <414609087dad419caa67e95008d3c2ec@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_content_protection: Bifurcate
  tests into HDCP1.4 & 2.2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -22,19 +22,20 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ramalingam C <ramalingam.c@intel.com>
-Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com
+To: "Peres, Martin" <martin.peres@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Latvala, Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
 
-On 3/20/2020 6:16 PM, Ramalingam C wrote:
-> On 2020-03-20 at 14:33:40 +0530, Ankit Nautiyal wrote:
+On 3/20/2020 9:33 PM, Peres, Martin wrote:
+> On 2020-03-20 11:03, Ankit Nautiyal wrote:
 >> Currently, the test kms_content_protection does not distinguish
 >> between HDCP1.4 and HDCP2.2 tests. Since the driver by default
 >> always chooses HDCP2.2 protocol if the panel supports HDCP1.4 &
 >> HDCP2.2, HDCP1.4 does not get tested.
->>
+> Thanks for working on it!
+>
 >> This patch makes two versions of the existing subtests for testing
 >> HDCP1.4 and HDCP2.2. For forcing the driver to use HDCP1.4, the
 >> kernel module 'mei_hdcp' responsible for HDCP2.2 authentication,
@@ -46,8 +47,45 @@ On 3/20/2020 6:16 PM, Ramalingam C wrote:
 >> This helps in running together all HDCP1.4 tests for all outputs
 >> that support HDCP1.4, avoiding the need of loading and unloading
 >> of 'mei_hdcp' module for each test.
-> Thanks for taking this up. Long pending item in to-do list.
+> That sounds like a complicated process which won't scale to future
+> versions of HDCP (no reason to assume they will stop pumping them out).
 >
+> How about adding a debugfs file that lists the supported hdcp versions
+> for every connector, says which one is being used right now, and
+> force-disable one or many so as to be able to validate all the cases?
+>
+> Martin
+
+If I understand correctly, the debugfs will tell two things:
+
+i) The currently selected version for a platform say 'global_hdcp_version'.
+The platform will always go with this version of HDCP. So by default it 
+is HDCP2.2 for a platform (say KBL), but we can select to use HDCP1.4.
+
+ii) The list of connectors supporting the selected platforms.
+So if global_hdcp_version is set to be HDCP2.2, only connectors that 
+support HDCP2.2 will be listed.
+
+The test will then become simpler. Reading from the debugfs and start 
+with lowest version going to highest supported.
+1) Set the global_hdcp_version to hdcp_version[i]
+2) Loop for each connector, listed for selected version.
+3) set appropriate connector properties.
+4) Validate.
+
+The work of making sure, that selected version is chosen, will then lie 
+with the driver.
+So for KBL/ICL/TGL etc,  default is HDCP2.2, setting to HDCP1.4, it 
+might need to unload mei_hdcp.
+For next platforms and version, the work might be something different.
+
+I hope I get it right to some extent :) Thanks for the comments.
+
+
+Regards,
+Ankit
+
+
 >> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 >> ---
 >>   tests/kms_content_protection.c | 185 ++++++++++++++++++++-------------
@@ -62,14 +100,6 @@ On 3/20/2020 6:16 PM, Ramalingam C wrote:
 >>   #define HDCP_CONTENT_TYPE_1				1
 >>   
 >> +#define HDCP_14						0
-> #define HDCP14 HDCP_CONTENT_TYPE_0 ?
-
-We can use the content type macro, I was using the HDCP14, and HDCP22 as 
-array index, than as related directly to content type.
-So if new version HDCP23 comes, and still supports type-1, we still need 
-HDCP23 as index '2'.
-But my case is just hypothetical. We can do what is practical.
-
 >> +#define HDCP_22						1
 >> +
 >>   #define LIC_PERIOD_MSEC				(4 * 1000)
@@ -239,11 +269,6 @@ But my case is just hypothetical. We can do what is practical.
 >> +	 * for HDCP2.2 protocol, hence ignore for HDCP1.4.
 >> +	 */
 >> +	if (content_type != HDCP_CONTENT_TYPE_1)
-> We can move this as igt_require into the subtests of mei and type
-> change.
-
-Alright, I will try that out.
-
 >> +		return;
 >> +
 >> +	igt_dynamic_f("mei_interface-%s", output->name) {
@@ -268,10 +293,6 @@ Alright, I will try that out.
 >> +		const char *name;
 >> +		int content_type;
 >> +	} protocol[] = {
-> Could we name it as hdcp_version ? Will be easily giving the purpose...
-
-Yes that makes more sense. Will change that in next patch.
-
 >> +		{ "hdcp-1_4", HDCP_CONTENT_TYPE_0 },
 >> +		{ "hdcp-2_2", HDCP_CONTENT_TYPE_1 } };
 >> +
@@ -282,10 +303,6 @@ Yes that makes more sense. Will change that in next patch.
 >> +	}
 >> +
 >> +	for (i = 0; i < 2; i++) {
-> Could we use the array_size of protocol/hdcp_spec_ver
-
-Agreed.
-
 >> +		bool force_mei_hdcp_off = false;
 >> +
 >> +		/* In case a panel supports both HDCP2.2 and HDCP1.4 protocols,
@@ -299,16 +316,6 @@ Agreed.
 >> +		 */
 >> +		if (i == HDCP_14 && igt_kmod_is_loaded("mei_hdcp")) {
 >> +			igt_kmod_unload("mei_hdcp", 0);
-> As petri mentioned, we need to assert on unload and load also.
-> With that this might need to be moved into subtest. Not sure whether
-> this can be kept out of output loop. Please check.
->
-> -Ram
-
-Agreed to both. Will fix this in next version
-
-Thanks,
-Ankit
 >> +			force_mei_hdcp_off = true;
 >> +		}
 >> +
@@ -328,8 +335,6 @@ Ankit
 >>   	}
 >>   
 >>   	igt_fixture {
->> -- 
->> 2.17.1
 >>
 
 _______________________________________________
