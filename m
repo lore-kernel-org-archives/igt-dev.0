@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 95B1789DD5
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2020 08:19:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6E82989E39
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2020 08:33:16 +0000 (UTC)
+From: "Melkaveri, Arjun" <arjun.melkaveri@intel.com>
+Date: Mon, 23 Mar 2020 08:33:07 +0000
+Message-ID: <CA3CE573A55781488FA37084931071AB14DBC480@BGSMSX105.gar.corp.intel.com>
 References: <20200323064607.7041-1-arjun.melkaveri@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <543e3b99-53b4-d72e-1711-f207dd7a64f6@linux.intel.com>
-Date: Mon, 23 Mar 2020 08:19:28 +0000
-MIME-Version: 1.0
-In-Reply-To: <20200323064607.7041-1-arjun.melkaveri@intel.com>
+ <543e3b99-53b4-d72e-1711-f207dd7a64f6@linux.intel.com>
+In-Reply-To: <543e3b99-53b4-d72e-1711-f207dd7a64f6@linux.intel.com>
 Content-Language: en-US
+MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH] [PATCH i-g-t]tests/i915/gem_ctx_create:
  Reverted device reopen logic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -18,17 +19,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arjun Melkaveri <arjun.melkaveri@intel.com>, igt-dev@lists.freedesktop.org
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 
+
+Thanks 
+Arjun M
+
+-----Original Message-----
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com> 
+Sent: Monday, March 23, 2020 1:49 PM
+To: Melkaveri, Arjun <arjun.melkaveri@intel.com>; igt-dev@lists.freedesktop.org
+Subject: Re: [igt-dev] [PATCH] [PATCH i-g-t]tests/i915/gem_ctx_create: Reverted device reopen logic
+
+
 On 23/03/2020 06:46, Arjun Melkaveri wrote:
-> Removed gem_reopen_driver and gem_context_copy_engines
-> logic from code as it is not recommended.
+> Removed gem_reopen_driver and gem_context_copy_engines logic from code 
+> as it is not recommended.
 > No reopen after fork is needed .
 > 
 > Cc: Chris Wilson <chris@chris-wilson.co.uk>
@@ -38,7 +50,7 @@ On 23/03/2020 06:46, Arjun Melkaveri wrote:
 >   tests/i915/gem_ctx_create.c | 45 +++++--------------------------------
 >   1 file changed, 6 insertions(+), 39 deletions(-)
 > 
-> diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
+> diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c 
 > index 2d477226..4f160ea9 100644
 > --- a/tests/i915/gem_ctx_create.c
 > +++ b/tests/i915/gem_ctx_create.c
@@ -54,13 +66,15 @@ On 23/03/2020 06:46, Arjun Melkaveri wrote:
 > -			gem_context_copy_engines(core, 0, fd, 0);
 > +			int fd = drm_open_driver(DRIVER_INTEL);
 
-Here it looks like you need to copy engines over, since drm_open_driver 
-means a new default context.
+Here it looks like you need to copy engines over, since drm_open_driver means a new default context.
 
 Regards,
 
 Tvrtko
 
+Ah , missed it . Will correct it now . 
+
+-Arjun
 >   
 >   			obj.handle = gem_open(fd, name);
 >   			execbuf.flags &= ~ENGINE_FLAGS;
@@ -111,8 +125,9 @@ Tvrtko
 > -
 >   		gem_sync(fd, obj.handle);
 >   		clock_gettime(CLOCK_MONOTONIC, &end);
->   		igt_info("[%d] Context creation + execution: %.3f us\n",
-> @@ -325,18 +301,9 @@ static void maximum(int fd, int ncpus, unsigned mode)
+>   		igt_info("[%d] Context creation + execution: %.3f us\n", @@ 
+> -325,18 +301,9 @@ static void maximum(int fd, int ncpus, unsigned 
+> mode)
 >   
 >   	igt_fork(child, ncpus) {
 >   		struct timespec start, end;
@@ -131,8 +146,8 @@ Tvrtko
 > +		obj[0].handle = gem_create(fd, 4096);
 >   
 >   		clock_gettime(CLOCK_MONOTONIC, &start);
->   		for (int repeat = 0; repeat < 3; repeat++) {
-> @@ -347,13 +314,13 @@ static void maximum(int fd, int ncpus, unsigned mode)
+>   		for (int repeat = 0; repeat < 3; repeat++) { @@ -347,13 +314,13 @@ 
+> static void maximum(int fd, int ncpus, unsigned mode)
 >   				execbuf.rsvd1 = contexts[i];
 >   				for (unsigned long j = 0; j < all_nengine; j++) {
 >   					execbuf.flags = all_engines[j];
