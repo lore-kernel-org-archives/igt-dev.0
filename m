@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82DEB89907
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2020 08:40:58 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-Date: Mon, 23 Mar 2020 08:40:55 +0000
-Message-ID: <943ee0c6cebf4a4aa7485bfa8379fa0c@intel.com>
-References: <20200319114206.1307-1-mika.kahola@intel.com>
- <f836094b-d9b4-c172-2215-179f13a0c181@gmail.com>
-In-Reply-To: <f836094b-d9b4-c172-2215-179f13a0c181@gmail.com>
-Content-Language: en-US
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 236F489907
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2020 08:40:25 +0000 (UTC)
+From: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Date: Mon, 23 Mar 2020 14:09:20 +0530
+Message-Id: <20200323083920.7544-1-arjun.melkaveri@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Test for maximum
- number of planes
+Subject: [igt-dev] [PATCH] [PATCH i-g-t][V2]tests/i915/gem_ctx_create:
+ Reverted device reopen logic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,114 +19,128 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Pushed! 
+Removed gem_reopen_driver and gem_context_copy_engines
+logic from code as it is not recommended.
+No reopen after fork is needed .
 
-Thanks for the review!
+V2:
+Added gem_context_copy_engines to copy engines over.
 
-Cheers,
-Mika
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
+Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+---
+ tests/i915/gem_ctx_create.c | 44 +++++--------------------------------
+ 1 file changed, 6 insertions(+), 38 deletions(-)
 
------Original Message-----
-From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Juha-Pekka Heikkila
-Sent: Thursday, March 19, 2020 6:35 PM
-To: igt-dev@lists.freedesktop.org
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Test for maximum number of planes
+diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c
+index 2d477226..61a25d5b 100644
+--- a/tests/i915/gem_ctx_create.c
++++ b/tests/i915/gem_ctx_create.c
+@@ -100,11 +100,10 @@ static void files(int core, int timeout, const int ncpus)
+ 	igt_fork(child, ncpus) {
+ 		struct timespec start, end;
+ 		unsigned count = 0;
+-		int fd;
+ 
+ 		clock_gettime(CLOCK_MONOTONIC, &start);
+ 		do {
+-			fd = gem_reopen_driver(core);
++			int fd = drm_open_driver(DRIVER_INTEL);
+ 			gem_context_copy_engines(core, 0, fd, 0);
+ 
+ 			obj.handle = gem_open(fd, name);
+@@ -160,15 +159,6 @@ static void active(int fd, const struct intel_execution_engine2 *e,
+ 	if (ncpus < 0) {
+ 		igt_fork(child, ppgtt_nengine) {
+ 			unsigned long count = 0;
+-			int i915;
+-
+-			i915 = gem_reopen_driver(fd);
+-			/*
+-			 * Ensure the gpu is idle by launching
+-			 * a nop execbuf and stalling for it
+-			 */
+-			gem_quiescent_gpu(i915);
+-			gem_context_copy_engines(fd, 0, i915, 0);
+ 
+ 			if (ppgtt_engines[child] == e->flags)
+ 				continue;
+@@ -192,21 +182,10 @@ static void active(int fd, const struct intel_execution_engine2 *e,
+ 	igt_fork(child, ncpus) {
+ 		struct timespec start, end;
+ 		unsigned count = 0;
+-		int i915;
+-		uint32_t ctx;
+-
+-		i915 = gem_reopen_driver(fd);
+-		/*
+-		 * Ensure the gpu is idle by launching
+-		 * a nop execbuf and stalling for it.
+-		 */
+-		gem_quiescent_gpu(i915);
+-		ctx = gem_context_create(i915);
+-		gem_context_copy_engines(fd, 0, i915, ctx);
+ 
+ 		clock_gettime(CLOCK_MONOTONIC, &start);
+ 		do {
+-			execbuf.rsvd1 = gem_context_clone_with_engines(fd, ctx);
++			execbuf.rsvd1 = gem_context_clone_with_engines(fd, 0);
+ 			for (unsigned n = 0; n < nengine; n++) {
+ 				execbuf.flags = engines[n];
+ 				gem_execbuf(fd, &execbuf);
+@@ -217,8 +196,6 @@ static void active(int fd, const struct intel_execution_engine2 *e,
+ 			clock_gettime(CLOCK_MONOTONIC, &end);
+ 		} while (elapsed(&start, &end) < timeout);
+ 
+-		gem_context_destroy(fd, ctx);
+-
+ 		gem_sync(fd, obj.handle);
+ 		clock_gettime(CLOCK_MONOTONIC, &end);
+ 		igt_info("[%d] Context creation + execution: %.3f us\n",
+@@ -325,18 +302,9 @@ static void maximum(int fd, int ncpus, unsigned mode)
+ 
+ 	igt_fork(child, ncpus) {
+ 		struct timespec start, end;
+-		int i915;
+-
+-		i915 = gem_reopen_driver(fd);
+-		/*
+-		 * Ensure the gpu is idle by launching
+-		 * a nop execbuf and stalling for it.
+-		 */
+-		gem_quiescent_gpu(i915);
+-		gem_context_copy_engines(fd, 0, i915, 0);
+ 
+ 		hars_petruska_f54_1_random_perturb(child);
+-		obj[0].handle = gem_create(i915, 4096);
++		obj[0].handle = gem_create(fd, 4096);
+ 
+ 		clock_gettime(CLOCK_MONOTONIC, &start);
+ 		for (int repeat = 0; repeat < 3; repeat++) {
+@@ -347,13 +315,13 @@ static void maximum(int fd, int ncpus, unsigned mode)
+ 				execbuf.rsvd1 = contexts[i];
+ 				for (unsigned long j = 0; j < all_nengine; j++) {
+ 					execbuf.flags = all_engines[j];
+-					gem_execbuf(i915, &execbuf);
++					gem_execbuf(fd, &execbuf);
+ 				}
+ 			}
+ 		}
+-		gem_sync(i915, obj[0].handle);
++		gem_sync(fd, obj[0].handle);
+ 		clock_gettime(CLOCK_MONOTONIC, &end);
+-		gem_close(i915, obj[0].handle);
++		gem_close(fd, obj[0].handle);
+ 
+ 		igt_info("[%d] Context execution: %.3f us\n", child,
+ 			 elapsed(&start, &end) / (3 * count * all_nengine) * 1e6);
+-- 
+2.25.1
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
-On 19.3.2020 13.42, Mika Kahola wrote:
-> In some cases we ran out of bandwidth when executiong a test.
-> An error such as this can be seen on dmesg
-> 
-> "Bandwidth 16632 MB/s exceeds max available 6553 MB/s (7 active planes)"
-> 
-> The patch tests first, how many planes the platform can support with 
-> the given resolution. The actual test is then performed by using the 
-> calculated maximum number of planes instead of maximum number of 
-> planes that the platform supports.
-> 
-> Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-> ---
->   tests/kms_concurrent.c | 15 +++++++++------
->   1 file changed, 9 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c index 
-> 14ca5fab..61137139 100644
-> --- a/tests/kms_concurrent.c
-> +++ b/tests/kms_concurrent.c
-> @@ -196,20 +196,19 @@ prepare_planes(data_t *data, enum pipe pipe, int max_planes,
->   }
->   
->   static void
-> -test_plane_position_with_output(data_t *data, enum pipe pipe, 
-> igt_output_t *output)
-> +test_plane_position_with_output(data_t *data, enum pipe pipe, int max_planes,
-> +				igt_output_t *output)
->   {
->   	int i;
->   	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
->   	bool loop_forever = opt.iterations == LOOP_FOREVER ? true : false;
-> -	int max_planes = data->display.pipes[pipe].n_planes;
->   
->   	igt_pipe_refresh(&data->display, pipe, true);
->   
->   	i = 0;
->   	while (i < iterations || loop_forever) {
->   		prepare_planes(data, pipe, max_planes, output);
-> -		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> -
-> +		igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
->   		i++;
->   	}
->   }
-> @@ -242,7 +241,7 @@ get_lowres_mode(data_t *data, const drmModeModeInfo *mode_default,
->   	return mode;
->   }
->   
-> -static void
-> +static int
->   test_resolution_with_output(data_t *data, enum pipe pipe, igt_output_t *output)
->   {
->   	const drmModeModeInfo *mode_hi, *mode_lo; @@ -294,6 +293,8 @@ 
-> test_resolution_with_output(data_t *data, enum pipe pipe, igt_output_t 
-> *output)
->   
->   		i++;
->   	}
-> +
-> +	return max_planes;
->   }
->   
->   static void
-> @@ -301,6 +302,7 @@ run_test(data_t *data, enum pipe pipe, igt_output_t *output)
->   {
->   	int connected_outs;
->   	int n_planes = data->display.pipes[pipe].n_planes;
-> +	int max_planes = n_planes;
->   
->   	if (!opt.user_seed)
->   		opt.seed = time(NULL);
-> @@ -311,9 +313,10 @@ run_test(data_t *data, enum pipe pipe, igt_output_t *output)
->   			 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
->   
->   		test_init(data, pipe, n_planes, output);
-> +		max_planes = test_resolution_with_output(data, pipe, output);
->   
->   		igt_fork(child, 1) {
-> -			test_plane_position_with_output(data, pipe, output);
-> +			test_plane_position_with_output(data, pipe, max_planes, output);
->   		}
->   
->   		test_resolution_with_output(data, pipe, output);
-> 
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
