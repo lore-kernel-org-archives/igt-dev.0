@@ -1,18 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C95E289E1D
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2020 15:35:18 +0000 (UTC)
-From: "Melkaveri, Arjun" <arjun.melkaveri@intel.com>
-Date: Mon, 23 Mar 2020 15:34:04 +0000
-Message-ID: <CA3CE573A55781488FA37084931071AB14DBD071@BGSMSX105.gar.corp.intel.com>
-References: <20200323083920.7544-1-arjun.melkaveri@intel.com>
- <158496083224.17851.17744025631776061468@build.alporthouse.com>
- <CA3CE573A55781488FA37084931071AB14DBCFCD@BGSMSX105.gar.corp.intel.com>
-In-Reply-To: <CA3CE573A55781488FA37084931071AB14DBCFCD@BGSMSX105.gar.corp.intel.com>
-Content-Language: en-US
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8EB276E21D
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2020 15:43:21 +0000 (UTC)
+Date: Mon, 23 Mar 2020 21:03:23 +0530
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+Message-ID: <20200323153322.GB7154@intel.com>
+References: <20200323063248.5261-1-anshuman.gupta@intel.com>
+ <20200323063248.5261-3-anshuman.gupta@intel.com>
+ <824e1dd4da7f47e8b7598ac3c6d9f2fd@intel.com>
+ <20200323074605.GC26511@intel.com>
+ <alpine.DEB.2.21.2003231436460.2957@eliteleevi.tm.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH] [PATCH i-g-t][V2]tests/i915/gem_ctx_create:
- Reverted device reopen logic
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.21.2003231436460.2957@eliteleevi.tm.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/5] tests/i915_pm_lpsp: lpsp
+ platform agnostic support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,76 +26,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Peres,
+ Martin" <martin.peres@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-Thanks 
-Arjun M
-
------Original Message-----
-From: Melkaveri, Arjun 
-Sent: Monday, March 23, 2020 8:47 PM
-To: 'Chris Wilson' <chris@chris-wilson.co.uk>; igt-dev@lists.freedesktop.org
-Subject: RE: [igt-dev] [PATCH] [PATCH i-g-t][V2]tests/i915/gem_ctx_create: Reverted device reopen logic
-
-
-
-Thanks
-Arjun M
-
------Original Message-----
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Sent: Monday, March 23, 2020 4:24 PM
-To: Melkaveri, Arjun <arjun.melkaveri@intel.com>; igt-dev@lists.freedesktop.org
-Subject: Re: [igt-dev] [PATCH] [PATCH i-g-t][V2]tests/i915/gem_ctx_create: Reverted device reopen logic
-
-Quoting Arjun Melkaveri (2020-03-23 08:39:20)
-> Removed gem_reopen_driver and gem_context_copy_engines logic from code 
-> as it is not recommended.
-> No reopen after fork is needed .
+On 2020-03-23 at 14:48:03 +0200, Kai Vehmanen wrote:
+> Hey,
 > 
-> V2:
-> Added gem_context_copy_engines to copy engines over.
+> On Mon, 23 Mar 2020, Anshuman Gupta wrote:
 > 
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
-> Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
-> ---
->  tests/i915/gem_ctx_create.c | 44
-> +++++--------------------------------
->  1 file changed, 6 insertions(+), 38 deletions(-)
+> > On 2020-03-23 at 12:30:08 +0530, Peres, Martin wrote:
+> > > On 2020-03-23 08:32, Anshuman Gupta wrote:
+> > > > +	/* DP/HDMI panel requires to drive lpsp without audio */
+> > > > +	igt_require(unload_snd_hda_core_module());
+> > > 
+> > > I'm not super happy with having to unload modules that it would be very
+> > > easy to forget to re-add and would make audio tests fail :s
 > 
-> diff --git a/tests/i915/gem_ctx_create.c b/tests/i915/gem_ctx_create.c 
-> index 2d477226..61a25d5b 100644
-> --- a/tests/i915/gem_ctx_create.c
-> +++ b/tests/i915/gem_ctx_create.c
-> @@ -100,11 +100,10 @@ static void files(int core, int timeout, const int ncpus)
->         igt_fork(child, ncpus) {
->                 struct timespec start, end;
->                 unsigned count = 0;
-> -               int fd;
->  
->                 clock_gettime(CLOCK_MONOTONIC, &start);
->                 do {
-> -                       fd = gem_reopen_driver(core);
-> +                       int fd = drm_open_driver(DRIVER_INTEL);
-
-gem_reopen_driver() is an improvement over drm_open_driver() in this circumstance.
--Chris
-
-This changes were done based on Tvrtko's comment . 
-To be clear . In Fork we need to use  gem_reopen_driver for drm_open_driver() only . 
-If we are using FD  , opened  in main function  , then we can avoid using  gem_reopen_driver ? 
-
--Arjun 
-
-Will withdraw this change . Not info from Tvrtko . 
-If there is existing fd available and new one used from inside the test then we have to go with this scenario . 
-Also depends on case by case 
-
--Arjun 
+> at least this may be painful to maintain. We have three audio drivers in 
+> active use (HDA snd-hda-intel, SST DSP and SOF DSP -> drivers is selected 
+> at runtime dependsing on hw generation, enabled features and the available 
+> DSP FW), and the modules you need to unload are different for all three, 
+> and may change over time. So not so nice to maintain if you need to 
+> support a large variety of hardware targets.
+> 
+> > > IMO, if the DUT is not playing sound, we should be able to enter LPSP.
+> > > If no, then I would consider this a driver bug for wasting energy
+> > > sending 0s to the screen.
+> > i915 contorls AUDIO power domain on request of i915_audio_component_ops
+> > get_power/put_power, which is an external dependency.
+> > Despite unloading the module, it fails to enter lpsp for HDMI panels, 
+> > audio driver didn't invoke the put_power to release the i915 power resources.
+> > It seems bug with audio driver interface.
+> 
+> Yes, this sounds like a plain bug. Audio should never keep powers
+> on unless it needs it for some actual use-case.
+Thanks kai for your comment based upon your comment, i investigated
+it and found, while enabling crtc i915 also gets ref count
+for AUDIO_POWER_DOMAIN if there is valid ELD.
+This was failing the test.
+Thanks,
+Anshuman Gupta.
+> 
+> > My plan was to raise a gitlab bug based upon lpsp failure due to
+> > AUDIO_POWER_DOMAIN non-zero ref count despite there was no audio 
+> > module.
+> > > 
+> > > Thoughts on this?
+> > I agree with you, if there is no audio is being played from DP/hdmi
+> > we should be able to enter lpsp, but it seems audio codec requires 
+> > power at the time of codec probe itself.
+> > @Kai Vehmanen may be the best one to confirm hdmi-codec behavior?
+> 
+> Yes, audio codec asks for i915 power when it is probed, and also whenever 
+> it uses the HDA bus. But when it is idle, it will release i915 power via 
+> put_power. One possible problem could be that the audio driver is uilt 
+> without runtime pm support. Then it will indeed keep a ref to i915 
+> power all the time. Can you provide a bit of data about the 
+> case (which hardware, kernel config used, possible dmesg log of error)?
+> 
+> Br, Kai (Sound Open Firmware (SOF) team)
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
