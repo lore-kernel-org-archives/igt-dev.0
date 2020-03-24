@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DFEE86E50E
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Mar 2020 18:16:03 +0000 (UTC)
+Date: Tue, 24 Mar 2020 20:15:59 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <20200324181559.GA13686@intel.com>
+References: <20200117181418.18755-1-jose.souza@intel.com>
+ <20200117181418.18755-2-jose.souza@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 24 Mar 2020 14:54:21 -0000
-Message-ID: <158506166118.5745.10735125120731254364@emeril.freedesktop.org>
-References: <20200324125233.56308-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200324125233.56308-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgaTkxNS9p?=
- =?utf-8?q?915=5Fpm=5Frc6=5Fresidency=3A_Make_ringbuffer_rc6_fast?=
+Content-Disposition: inline
+In-Reply-To: <20200117181418.18755-2-jose.souza@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests: Add tests for DP MST
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,308 +18,433 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: =?iso-8859-1?Q?Jos=E9?= Roberto de Souza <jose.souza@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Fri, Jan 17, 2020 at 10:14:18AM -0800, Jos=E9 Roberto de Souza wrote:
+> Test DP MST corner cases.
+> =
 
-Series: i915/i915_pm_rc6_residency: Make ringbuffer rc6 fast
-URL   : https://patchwork.freedesktop.org/series/75011/
-State : success
+> Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> Signed-off-by: Jos=E9 Roberto de Souza <jose.souza@intel.com>
+> ---
+>  tests/Makefile.sources |   1 +
+>  tests/kms_mst.c        | 347 +++++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build      |   1 +
+>  3 files changed, 349 insertions(+)
+>  create mode 100644 tests/kms_mst.c
+> =
 
-== Summary ==
+> diff --git a/tests/Makefile.sources b/tests/Makefile.sources
+> index 806eb02d..68794ed3 100644
+> --- a/tests/Makefile.sources
+> +++ b/tests/Makefile.sources
+> @@ -59,6 +59,7 @@ TESTS_progs =3D \
+>  	kms_lease \
+>  	kms_legacy_colorkey \
+>  	kms_mmap_write_crc \
+> +	kms_mst \
+>  	kms_panel_fitting \
+>  	kms_pipe_b_c_ivb \
+>  	kms_pipe_crc_basic \
+> diff --git a/tests/kms_mst.c b/tests/kms_mst.c
+> new file mode 100644
+> index 00000000..7cc01417
+> --- /dev/null
+> +++ b/tests/kms_mst.c
+> @@ -0,0 +1,347 @@
+> +#include <ctype.h>
+> +#include <string.h>
+> +
+> +#include "igt.h"
+> +
+> +IGT_TEST_DESCRIPTION("Test DP MST corner cases.");
+> +/*
+> + * It is testing only the first MST port found, to test multiple ports o=
+r force
+> + * test in a specific port changes will be needed
+> + */
+> +
+> +#define SQUARE_SIZE 100
+> +#define MAX_MST_OUTPUTS 3
+> +#define RESOLUTION_H 1920
+> +#define RESOLUTION_V 1080
+> +#define ANOTHER_RESOLUTION_H 1024
+> +#define ANOTHER_RESOLUTION_V 768
 
-CI Bug Log - changes from IGT_5534_full -> IGTPW_4345_full
-====================================================
-
-Summary
--------
-
-  **WARNING**
-
-  Minor unknown changes coming with IGTPW_4345_full need to be verified
-  manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_4345_full, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_4345_full:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@gem_ctx_isolation@rcs0-s3:
-    - shard-kbl:          [DMESG-WARN][1] ([i915#180]) -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-kbl4/igt@gem_ctx_isolation@rcs0-s3.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-kbl6/igt@gem_ctx_isolation@rcs0-s3.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4345_full that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_busy@extended-parallel-vcs1:
-    - shard-iclb:         [PASS][3] -> [SKIP][4] ([fdo#112080]) +8 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-iclb1/igt@gem_busy@extended-parallel-vcs1.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-iclb5/igt@gem_busy@extended-parallel-vcs1.html
-
-  * igt@gem_ctx_shared@exec-single-timeline-bsd:
-    - shard-iclb:         [PASS][5] -> [SKIP][6] ([fdo#110841])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-iclb8/igt@gem_ctx_shared@exec-single-timeline-bsd.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-iclb1/igt@gem_ctx_shared@exec-single-timeline-bsd.html
-
-  * igt@gem_exec_schedule@implicit-write-read-bsd1:
-    - shard-iclb:         [PASS][7] -> [SKIP][8] ([fdo#109276] / [i915#677])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-iclb4/igt@gem_exec_schedule@implicit-write-read-bsd1.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-iclb3/igt@gem_exec_schedule@implicit-write-read-bsd1.html
-
-  * igt@gem_exec_schedule@independent-bsd2:
-    - shard-iclb:         [PASS][9] -> [SKIP][10] ([fdo#109276]) +23 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-iclb2/igt@gem_exec_schedule@independent-bsd2.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-iclb5/igt@gem_exec_schedule@independent-bsd2.html
-
-  * igt@gem_exec_schedule@pi-shared-iova-bsd:
-    - shard-iclb:         [PASS][11] -> [SKIP][12] ([i915#677])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-iclb8/igt@gem_exec_schedule@pi-shared-iova-bsd.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-iclb1/igt@gem_exec_schedule@pi-shared-iova-bsd.html
-
-  * igt@gem_exec_schedule@preemptive-hang-bsd:
-    - shard-iclb:         [PASS][13] -> [SKIP][14] ([fdo#112146]) +11 similar issues
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-iclb5/igt@gem_exec_schedule@preemptive-hang-bsd.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-iclb4/igt@gem_exec_schedule@preemptive-hang-bsd.html
-
-  * igt@gem_workarounds@suspend-resume-context:
-    - shard-glk:          [PASS][15] -> [INCOMPLETE][16] ([i915#58] / [k.org#198133])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-glk9/igt@gem_workarounds@suspend-resume-context.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-glk9/igt@gem_workarounds@suspend-resume-context.html
-
-  * igt@gem_workarounds@suspend-resume-fd:
-    - shard-kbl:          [PASS][17] -> [DMESG-WARN][18] ([i915#180]) +2 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-kbl4/igt@gem_workarounds@suspend-resume-fd.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-kbl4/igt@gem_workarounds@suspend-resume-fd.html
-
-  * igt@i915_pm_rpm@modeset-non-lpsp:
-    - shard-glk:          [PASS][19] -> [SKIP][20] ([fdo#109271])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-glk2/igt@i915_pm_rpm@modeset-non-lpsp.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-glk4/igt@i915_pm_rpm@modeset-non-lpsp.html
-    - shard-hsw:          [PASS][21] -> [SKIP][22] ([fdo#109271])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-hsw8/igt@i915_pm_rpm@modeset-non-lpsp.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-hsw4/igt@i915_pm_rpm@modeset-non-lpsp.html
-
-  * igt@kms_atomic_transition@1x-modeset-transitions-nonblocking:
-    - shard-snb:          [PASS][23] -> [SKIP][24] ([fdo#109271]) +1 similar issue
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-snb4/igt@kms_atomic_transition@1x-modeset-transitions-nonblocking.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-snb2/igt@kms_atomic_transition@1x-modeset-transitions-nonblocking.html
-
-  * igt@kms_cursor_crc@pipe-b-cursor-dpms:
-    - shard-glk:          [PASS][25] -> [FAIL][26] ([i915#54])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-glk5/igt@kms_cursor_crc@pipe-b-cursor-dpms.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-glk9/igt@kms_cursor_crc@pipe-b-cursor-dpms.html
-
-  * igt@kms_cursor_crc@pipe-c-cursor-256x256-onscreen:
-    - shard-apl:          [PASS][27] -> [FAIL][28] ([i915#54]) +2 similar issues
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-apl4/igt@kms_cursor_crc@pipe-c-cursor-256x256-onscreen.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-apl4/igt@kms_cursor_crc@pipe-c-cursor-256x256-onscreen.html
-
-  * igt@kms_flip@2x-wf_vblank-ts-check:
-    - shard-hsw:          [PASS][29] -> [INCOMPLETE][30] ([i915#61])
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-hsw8/igt@kms_flip@2x-wf_vblank-ts-check.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-hsw5/igt@kms_flip@2x-wf_vblank-ts-check.html
-
-  * igt@kms_flip@flip-vs-suspend:
-    - shard-apl:          [PASS][31] -> [DMESG-WARN][32] ([i915#180])
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-apl3/igt@kms_flip@flip-vs-suspend.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-apl7/igt@kms_flip@flip-vs-suspend.html
-
-  * igt@kms_psr@psr2_primary_mmap_gtt:
-    - shard-iclb:         [PASS][33] -> [SKIP][34] ([fdo#109441]) +1 similar issue
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-iclb2/igt@kms_psr@psr2_primary_mmap_gtt.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-iclb7/igt@kms_psr@psr2_primary_mmap_gtt.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_schedule@fifo-bsd:
-    - shard-iclb:         [SKIP][35] ([fdo#112146]) -> [PASS][36] +2 similar issues
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-iclb2/igt@gem_exec_schedule@fifo-bsd.html
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-iclb8/igt@gem_exec_schedule@fifo-bsd.html
-
-  * igt@gem_exec_schedule@implicit-read-write-bsd1:
-    - shard-iclb:         [SKIP][37] ([fdo#109276] / [i915#677]) -> [PASS][38] +1 similar issue
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-iclb7/igt@gem_exec_schedule@implicit-read-write-bsd1.html
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-iclb2/igt@gem_exec_schedule@implicit-read-write-bsd1.html
-
-  * igt@gem_exec_schedule@pi-userfault-bsd:
-    - shard-iclb:         [SKIP][39] ([i915#677]) -> [PASS][40] +1 similar issue
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-iclb1/igt@gem_exec_schedule@pi-userfault-bsd.html
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-iclb7/igt@gem_exec_schedule@pi-userfault-bsd.html
-
-  * igt@gem_workarounds@suspend-resume-context:
-    - shard-apl:          [DMESG-WARN][41] ([i915#180]) -> [PASS][42] +2 similar issues
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-apl6/igt@gem_workarounds@suspend-resume-context.html
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-apl4/igt@gem_workarounds@suspend-resume-context.html
-
-  * igt@kms_cursor_crc@pipe-b-cursor-suspend:
-    - shard-apl:          [FAIL][43] ([i915#54]) -> [PASS][44]
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-apl7/igt@kms_cursor_crc@pipe-b-cursor-suspend.html
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-apl2/igt@kms_cursor_crc@pipe-b-cursor-suspend.html
-    - shard-kbl:          [FAIL][45] ([i915#54]) -> [PASS][46]
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-kbl6/igt@kms_cursor_crc@pipe-b-cursor-suspend.html
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-kbl1/igt@kms_cursor_crc@pipe-b-cursor-suspend.html
-
-  * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-blt:
-    - shard-glk:          [FAIL][47] ([i915#49]) -> [PASS][48]
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-glk1/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-blt.html
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-glk8/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-blt.html
-
-  * igt@kms_plane@plane-panning-bottom-right-suspend-pipe-c-planes:
-    - shard-kbl:          [DMESG-WARN][49] ([i915#180]) -> [PASS][50] +1 similar issue
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-kbl1/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-c-planes.html
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-kbl1/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-c-planes.html
-
-  * igt@kms_psr2_su@frontbuffer:
-    - shard-iclb:         [SKIP][51] ([fdo#109642] / [fdo#111068]) -> [PASS][52] +1 similar issue
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-iclb5/igt@kms_psr2_su@frontbuffer.html
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-iclb2/igt@kms_psr2_su@frontbuffer.html
-
-  * igt@kms_psr@psr2_primary_page_flip:
-    - shard-iclb:         [SKIP][53] ([fdo#109441]) -> [PASS][54] +1 similar issue
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-iclb1/igt@kms_psr@psr2_primary_page_flip.html
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-iclb2/igt@kms_psr@psr2_primary_page_flip.html
-
-  * igt@kms_setmode@basic:
-    - shard-apl:          [FAIL][55] ([i915#31]) -> [PASS][56]
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-apl8/igt@kms_setmode@basic.html
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-apl4/igt@kms_setmode@basic.html
-    - shard-hsw:          [FAIL][57] ([i915#31]) -> [PASS][58]
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-hsw5/igt@kms_setmode@basic.html
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-hsw8/igt@kms_setmode@basic.html
-
-  * igt@perf@gen12-mi-rpc:
-    - shard-tglb:         [FAIL][59] ([i915#1085]) -> [PASS][60]
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-tglb6/igt@perf@gen12-mi-rpc.html
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-tglb3/igt@perf@gen12-mi-rpc.html
-
-  * igt@perf_pmu@busy-no-semaphores-vcs1:
-    - shard-iclb:         [SKIP][61] ([fdo#112080]) -> [PASS][62] +8 similar issues
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-iclb6/igt@perf_pmu@busy-no-semaphores-vcs1.html
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-iclb4/igt@perf_pmu@busy-no-semaphores-vcs1.html
-
-  * igt@prime_vgem@fence-wait-bsd2:
-    - shard-iclb:         [SKIP][63] ([fdo#109276]) -> [PASS][64] +14 similar issues
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-iclb5/igt@prime_vgem@fence-wait-bsd2.html
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-iclb2/igt@prime_vgem@fence-wait-bsd2.html
-
-  
-#### Warnings ####
-
-  * igt@gem_userptr_blits@dmabuf-sync:
-    - shard-snb:          [DMESG-WARN][65] ([fdo#111870] / [i915#478]) -> [DMESG-WARN][66] ([fdo#110789] / [fdo#111870] / [i915#478]) +1 similar issue
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-snb6/igt@gem_userptr_blits@dmabuf-sync.html
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-snb5/igt@gem_userptr_blits@dmabuf-sync.html
-
-  * igt@gem_userptr_blits@map-fixed-invalidate-busy-gup@gtt:
-    - shard-snb:          [DMESG-WARN][67] ([i915#478]) -> [DMESG-WARN][68] ([fdo#110789] / [i915#478]) +1 similar issue
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-snb2/igt@gem_userptr_blits@map-fixed-invalidate-busy-gup@gtt.html
-   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-snb1/igt@gem_userptr_blits@map-fixed-invalidate-busy-gup@gtt.html
-
-  * igt@gem_userptr_blits@map-fixed-invalidate-overlap-busy-gup@gtt:
-    - shard-hsw:          [DMESG-WARN][69] ([i915#478]) -> [DMESG-WARN][70] ([fdo#110789] / [i915#478]) +1 similar issue
-   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-hsw4/igt@gem_userptr_blits@map-fixed-invalidate-overlap-busy-gup@gtt.html
-   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-hsw2/igt@gem_userptr_blits@map-fixed-invalidate-overlap-busy-gup@gtt.html
-
-  * igt@gem_userptr_blits@sync-unmap:
-    - shard-hsw:          [DMESG-WARN][71] ([fdo#111870]) -> [DMESG-WARN][72] ([fdo#110789] / [fdo#111870]) +1 similar issue
-   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-hsw6/igt@gem_userptr_blits@sync-unmap.html
-   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-hsw8/igt@gem_userptr_blits@sync-unmap.html
-
-  * igt@i915_pm_dc@dc6-dpms:
-    - shard-tglb:         [FAIL][73] ([i915#454]) -> [SKIP][74] ([i915#468])
-   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-tglb1/igt@i915_pm_dc@dc6-dpms.html
-   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-tglb2/igt@i915_pm_dc@dc6-dpms.html
-
-  * igt@i915_pm_dc@dc6-psr:
-    - shard-snb:          [SKIP][75] ([fdo#109271]) -> [INCOMPLETE][76] ([i915#82])
-   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-snb4/igt@i915_pm_dc@dc6-psr.html
-   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-snb6/igt@i915_pm_dc@dc6-psr.html
-
-  * igt@i915_pm_rpm@modeset-non-lpsp:
-    - shard-iclb:         [SKIP][77] ([fdo#110892]) -> [SKIP][78] ([i915#1316])
-   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-iclb7/igt@i915_pm_rpm@modeset-non-lpsp.html
-   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-iclb5/igt@i915_pm_rpm@modeset-non-lpsp.html
-    - shard-tglb:         [SKIP][79] ([fdo#111644] / [i915#1397]) -> [SKIP][80] ([IGT#35] / [i915#1316])
-   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5534/shard-tglb7/igt@i915_pm_rpm@modeset-non-lpsp.html
-   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/shard-tglb5/igt@i915_pm_rpm@modeset-non-lpsp.html
-
-  
-  [IGT#35]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/35
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109276]: https://bugs.freedesktop.org/show_bug.cgi?id=109276
-  [fdo#109441]: https://bugs.freedesktop.org/show_bug.cgi?id=109441
-  [fdo#109642]: https://bugs.freedesktop.org/show_bug.cgi?id=109642
-  [fdo#110789]: https://bugs.freedesktop.org/show_bug.cgi?id=110789
-  [fdo#110841]: https://bugs.freedesktop.org/show_bug.cgi?id=110841
-  [fdo#110892]: https://bugs.freedesktop.org/show_bug.cgi?id=110892
-  [fdo#111068]: https://bugs.freedesktop.org/show_bug.cgi?id=111068
-  [fdo#111644]: https://bugs.freedesktop.org/show_bug.cgi?id=111644
-  [fdo#111870]: https://bugs.freedesktop.org/show_bug.cgi?id=111870
-  [fdo#112080]: https://bugs.freedesktop.org/show_bug.cgi?id=112080
-  [fdo#112146]: https://bugs.freedesktop.org/show_bug.cgi?id=112146
-  [i915#1085]: https://gitlab.freedesktop.org/drm/intel/issues/1085
-  [i915#1316]: https://gitlab.freedesktop.org/drm/intel/issues/1316
-  [i915#1397]: https://gitlab.freedesktop.org/drm/intel/issues/1397
-  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
-  [i915#31]: https://gitlab.freedesktop.org/drm/intel/issues/31
-  [i915#454]: https://gitlab.freedesktop.org/drm/intel/issues/454
-  [i915#468]: https://gitlab.freedesktop.org/drm/intel/issues/468
-  [i915#478]: https://gitlab.freedesktop.org/drm/intel/issues/478
-  [i915#49]: https://gitlab.freedesktop.org/drm/intel/issues/49
-  [i915#54]: https://gitlab.freedesktop.org/drm/intel/issues/54
-  [i915#58]: https://gitlab.freedesktop.org/drm/intel/issues/58
-  [i915#61]: https://gitlab.freedesktop.org/drm/intel/issues/61
-  [i915#677]: https://gitlab.freedesktop.org/drm/intel/issues/677
-  [i915#82]: https://gitlab.freedesktop.org/drm/intel/issues/82
-  [k.org#198133]: https://bugzilla.kernel.org/show_bug.cgi?id=198133
+There a quite a lot of assumptions in this test. In genral I get
+the feeling this should be more of a general "test all the modeset
+combinations" type of thing. It would then get run for all kinds of
+other cases with similar behaviour (eg. port sync). =
 
 
-Participating hosts (8 -> 8)
-------------------------------
+In fact I wonder if something like kms_atomic_transitions doesn't
+already hit these cases? I think that's pretty much what it's supposed
+to do.
 
-  No changes in participating hosts
 
+> +
+> +typedef struct {
+> +	int drm_fd;
+> +	igt_display_t display;
+> +	igt_output_t *mst_output[MAX_MST_OUTPUTS];
+> +	struct igt_fb fb[MAX_MST_OUTPUTS];
+> +	uint8_t mst_connectors, prepared;
+> +} data_t;
+> +
+> +static drmModeModeInfo *find_mode(igt_output_t *output, uint16_t h, uint=
+16_t v,
+> +				  uint32_t *mode_clock)
+> +{
+> +	drmModeModeInfo *ret =3D NULL;
+> +	int i;
+> +
+> +	for (i =3D 0; i < output->config.connector->count_modes; i++) {
+> +		drmModeModeInfo *mode;
+> +
+> +		mode =3D &output->config.connector->modes[i];
+> +		if (mode->hdisplay !=3D h ||
+> +		    mode->vdisplay !=3D v)
+> +			continue;
+> +
+> +		if (mode_clock && *mode_clock && mode->clock !=3D *mode_clock)
+> +			continue;
+> +
+> +		if (mode_clock && !*mode_clock)
+> +			*mode_clock =3D mode->clock;
+> +
+> +		ret =3D mode;
+> +
+> +		break;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static int16_t get_parent_conn_id(const char *mst_path)
+> +{
+> +	int i;
+> +	char buffer[6];
+> +
+> +	if (mst_path[0] !=3D 'm' || mst_path[1] !=3D 's' || mst_path[2] !=3D 't=
+' ||
+> +	    mst_path[3] !=3D ':')
+> +		return -1;
+> +
+> +	/* Unlikely to need more than 5 digits to represent a connector id */
+> +	for (i =3D 4; i < 9; i++) {
+> +		if (!isdigit(mst_path[i]))
+> +			break;
+> +	}
+> +
+> +	if (i =3D=3D 4)
+> +		return -1;
+> +
+> +	i =3D i - 4;
+> +	memcpy(buffer, &mst_path[4], i);
+> +	buffer[i] =3D 0;
+> +	return atoi(buffer);
+> +}
+> +
+> +static void search_mst_outputs(data_t *data)
+> +{
+> +	igt_display_t *display =3D &data->display;
+> +	igt_output_t *output;
+> +	uint32_t clock =3D 0;
+> +	int16_t parent_conn =3D -1;
+> +
+> +	for_each_connected_output(display, output) {
+> +		drmModePropertyBlobPtr blob;
+> +		char mst_path_buffer[32];
+> +		drmModeModeInfo *mode;
+> +		uint64_t val;
+> +
+> +		igt_output_set_pipe(output, PIPE_NONE);
+> +
+> +		if (data->mst_connectors =3D=3D MAX_MST_OUTPUTS)
+> +			continue;
+> +
+> +		if (!igt_output_has_prop(output, IGT_CONNECTOR_PATH)) {
+> +			igt_debug("\tno patch prop\n");
+> +			continue;
+> +		}
+> +
+> +		val =3D igt_output_get_prop(output, IGT_CONNECTOR_PATH);
+> +		blob =3D drmModeGetPropertyBlob(data->drm_fd, val);
+> +		strncpy(mst_path_buffer, (const char *)blob->data,
+> +			sizeof(mst_path_buffer) - 1);
+> +		drmModeFreePropertyBlob(blob);
+> +
+> +		if (parent_conn !=3D -1) {
+> +			if (get_parent_conn_id(mst_path_buffer) !=3D parent_conn)
+> +				continue;
+> +		} else {
+> +			parent_conn =3D get_parent_conn_id(mst_path_buffer);
+> +			igt_info("MST parent connector %i\n", parent_conn);
+> +		}
+> +
+> +		mode =3D find_mode(output, RESOLUTION_H, RESOLUTION_V, &clock);
+> +		if (!mode) {
+> +			igt_info("MST connector %s[%s] found but no compatible mode found\n",
+> +				 output->name, mst_path_buffer);
+> +			continue;
+> +		}
+> +
+> +		igt_info("Added MST connector %s[%s]\n", output->name, mst_path_buffer=
+);
+> +
+> +		igt_output_override_mode(output, mode);
+> +		data->mst_output[data->mst_connectors] =3D output;
+> +		data->mst_connectors++;
+> +	}
+> +
+> +	igt_require_f(data->mst_connectors, "No MST connector found\n");
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +}
+> +
+> +static void prepare(data_t *data, uint8_t n_outputs)
+> +{
+> +	igt_output_t *output;
+> +	uint8_t i;
+> +
+> +	for (i =3D 0; i < data->mst_connectors && i < n_outputs; i++) {
+> +		const drmModeModeInfo *mode;
+> +		igt_plane_t *primary;
+> +		double r, g, b;
+> +		cairo_t *cr;
+> +
+> +		output =3D data->mst_output[i];
+> +		mode =3D igt_output_get_mode(output);
+> +
+> +		igt_output_set_pipe(output, PIPE_A + i);
+> +
+> +		primary =3D igt_output_get_plane_type(output,
+> +						    DRM_PLANE_TYPE_PRIMARY);
+> +		igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+> +				    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
+> +				    1.0, 1.0, 1.0, &data->fb[i]);
+> +
+> +		cr =3D igt_get_cairo_ctx(data->drm_fd, &data->fb[i]);
+> +
+> +		/* paint square in different color */
+> +		switch (i % 4) {
+> +		case 0:
+> +			r =3D 1.0;
+> +			g =3D b =3D 0.0;
+> +			break;
+> +		case 1:
+> +			g =3D 1.0;
+> +			r =3D b =3D 0.0;
+> +			break;
+> +		case 2:
+> +			b =3D 1.0;
+> +			r =3D g =3D 0.0;
+> +			break;
+> +		default:
+> +		case 4:
+> +			r =3D g =3D b =3D 0.0;
+> +			break;
+> +		}
+> +		igt_paint_color_alpha(cr, 0, 0, SQUARE_SIZE, SQUARE_SIZE,
+> +				      r, g, b, 1.0);
+> +
+> +		igt_plane_set_fb(primary, &data->fb[i]);
+> +		igt_put_cairo_ctx(data->drm_fd,  &data->fb[i], cr);
+> +	}
+> +
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +	data->prepared =3D n_outputs;
+> +}
+> +
+> +static void change_resolution(data_t *data, bool all)
+> +{
+> +	igt_output_t *output;
+> +	uint32_t clock =3D 0;
+> +	uint8_t i;
+> +
+> +	for (i =3D 0; i < data->mst_connectors; i++) {
+> +		drmModeModeInfo *mode;
+> +
+> +		output =3D data->mst_output[i];
+> +		if (output->pending_pipe =3D=3D PIPE_NONE)
+> +			continue;
+> +
+> +		mode =3D find_mode(output, ANOTHER_RESOLUTION_H,
+> +				 ANOTHER_RESOLUTION_V, &clock);
+> +		if (!mode) {
+> +			igt_info("New resolution not found on %s skipping it\n",
+> +				 output->name);
+> +			igt_output_set_pipe(output, PIPE_NONE);
+> +			continue;
+> +		}
+> +
+> +		igt_output_override_mode(output, mode);
+> +
+> +		if (!all)
+> +			break;
+> +	}
+> +
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +}
+> +
+> +static void restore_resolution(data_t *data)
+> +{
+> +	igt_output_t *output;
+> +	uint32_t clock =3D 0;
+> +	uint8_t i;
+> +
+> +	for (i =3D 0; i < data->mst_connectors; i++) {
+> +		drmModeModeInfo *mode;
+> +
+> +		output =3D data->mst_output[i];
+> +		mode =3D find_mode(output, RESOLUTION_H, RESOLUTION_V, &clock);
+> +		/*
+> +		 * No need to check because this mode was already found in
+> +		 * search_mst_outputs()
+> +		 */
+> +		igt_output_override_mode(output, mode);
+> +		/* Reenable any sink left off in change_resolution() */
+> +		igt_output_set_pipe(output, PIPE_A + i);
+> +	}
+> +
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +}
+> +
+> +static void cleanup(data_t *data)
+> +{
+> +	uint8_t i;
+> +
+> +	for (i =3D 0; i < data->prepared; i++) {
+> +		igt_output_t *output =3D data->mst_output[i];
+> +		igt_plane_t *primary;
+> +
+> +		primary =3D igt_output_get_plane_type(output,
+> +						    DRM_PLANE_TYPE_PRIMARY);
+> +		igt_plane_set_fb(primary, NULL);
+> +		igt_output_set_pipe(output, PIPE_NONE);
+> +	}
+> +
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +
+> +	for (i =3D 0; i < data->prepared; i++)
+> +		igt_remove_fb(data->drm_fd, &data->fb[i]);
+> +}
+> +
+> +int main(int argc, char *argv[])
+> +{
+> +	data_t data =3D {};
+> +
+> +	igt_subtest_init_parse_opts(&argc, argv, "", NULL,
+> +				    NULL, NULL, NULL);
+> +	igt_skip_on_simulation();
+> +
+> +	igt_fixture {
+> +		data.drm_fd =3D drm_open_driver_master(DRIVER_INTEL);
+> +		kmstest_set_vt_graphics_mode();
+> +
+> +		igt_display_require(&data.display, data.drm_fd);
+> +		search_mst_outputs(&data);
+> +	}
+> +
+> +	igt_describe("Enable all MST streams in the same port");
+> +	igt_subtest_f("all_enabled") {
+> +		prepare(&data, data.mst_connectors);
+> +		igt_debug_manual_check("all", "all streams enabled");
+> +		cleanup(&data);
+> +	}
+> +
+> +	igt_describe("Test change the master CRTC of the MST stream");
+> +	igt_subtest_f("change_master") {
+> +		enum pipe pipe;
+> +
+> +		igt_require(data.mst_connectors >=3D 2);
+> +
+> +		prepare(&data, 2);
+> +		igt_debug_manual_check("all", "dual output");
+> +
+> +		pipe =3D data.mst_output[0]->pending_pipe;
+> +		igt_output_set_pipe(data.mst_output[0], PIPE_NONE);
+> +		igt_display_commit2(&data.display, COMMIT_ATOMIC);
+> +		igt_debug_manual_check("all", "first MST stream disabled");
+> +
+> +		igt_output_set_pipe(data.mst_output[0], pipe);
+> +		igt_display_commit2(&data.display, COMMIT_ATOMIC);
+> +		igt_debug_manual_check("all", "dual output");
+> +
+> +		pipe =3D data.mst_output[1]->pending_pipe;
+> +		igt_output_set_pipe(data.mst_output[1], PIPE_NONE);
+> +		igt_display_commit2(&data.display, COMMIT_ATOMIC);
+> +		igt_debug_manual_check("all", "second MST stream disabled");
+> +
+> +		igt_output_set_pipe(data.mst_output[1], pipe);
+> +		igt_display_commit2(&data.display, COMMIT_ATOMIC);
+> +		igt_debug_manual_check("all", "dual output");
+> +
+> +		cleanup(&data);
+> +	}
+> +
+> +	igt_describe("Test change the resolution off all MST streams");
+> +	igt_subtest_f("change_resolution") {
+> +		prepare(&data, data.mst_connectors);
+> +		igt_debug_manual_check("all", "regular resolution in all streams");
+> +
+> +		change_resolution(&data, true);
+> +		igt_debug_manual_check("all", "new resolution set in compatible stream=
+s");
+> +
+> +		restore_resolution(&data);
+> +		igt_debug_manual_check("all", "regular resolution in all streams again=
+");
+> +		cleanup(&data);
+> +	}
+> +
+> +	igt_describe("Test do a fullmodeset in the master CRTC of the MST strea=
+m");
+> +	igt_subtest_f("fullmodeset_master") {
+> +		prepare(&data, data.mst_connectors);
+> +		igt_debug_manual_check("all", "regular resolution in all streams");
+> +
+> +		change_resolution(&data, false);
+> +		igt_debug_manual_check("all", "new resolution in the first stream");
+> +
+> +		restore_resolution(&data);
+> +		igt_debug_manual_check("all", "regular resolution in all streams again=
+");
+> +		cleanup(&data);
+> +	}
+> +
+> +	igt_fixture {
+> +		igt_display_reset(&data.display);
+> +		igt_display_fini(&data.display);
+> +	}
+> +
+> +	igt_exit();
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index a79d22ba..a552301b 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -43,6 +43,7 @@ test_progs =3D [
+>  	'kms_lease',
+>  	'kms_legacy_colorkey',
+>  	'kms_mmap_write_crc',
+> +	'kms_mst',
+>  	'kms_panel_fitting',
+>  	'kms_pipe_b_c_ivb',
+>  	'kms_pipe_crc_basic',
+> -- =
 
-Build changes
--------------
+> 2.25.0
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5534 -> IGTPW_4345
+-- =
 
-  CI-20190529: 20190529
-  CI_DRM_8182: e5245084567cd7f6f93b07baaebf8a2b4d914620 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4345: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/index.html
-  IGT_5534: cc5d8b4a1bd398fc68271fd9fefc939181db6a2d @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4345/index.html
+Ville Syrj=E4l=E4
+Intel
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
