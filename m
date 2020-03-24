@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2BCE66E082
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Mar 2020 06:15:49 +0000 (UTC)
-Date: Tue, 24 Mar 2020 11:35:52 +0530
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <20200324060551.GA12157@intel.com>
-References: <20200323063248.5261-1-anshuman.gupta@intel.com>
- <20200323063248.5261-2-anshuman.gupta@intel.com>
- <ed6f16b6a7384617b0214849ce0c6ed3@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <ed6f16b6a7384617b0214849ce0c6ed3@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/5] lib/igt_pm: Add lib func to get
- lpsp capability
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 24 Mar 2020 08:12:41 -0000
+Message-ID: <158503756186.4558.4862625904528816745@emeril.freedesktop.org>
+References: <20200323204621.173722-1-jose.souza@intel.com>
+In-Reply-To: <20200323204621.173722-1-jose.souza@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_s?=
+ =?utf-8?q?eries_starting_with_=5Bi-g-t=2Cv5=2C1/7=5D_tests/kms=5Ffrontbuf?=
+ =?utf-8?q?fer=5Ftracking=3A_Add_tiling_to_test=5Fmode?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,96 +15,141 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Peres, Martin" <martin.peres@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: =?utf-8?q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-03-23 at 12:25:25 +0530, Peres, Martin wrote:
-> On 2020-03-23 08:32, Anshuman Gupta wrote:
-> > This lib function evaluate the lpsp capability from
-> > the connector specific debugfs attribute i915_lpsp_info.
-> > 
-> > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> > ---
-> >  lib/igt_pm.c | 27 +++++++++++++++++++++++++++
-> >  lib/igt_pm.h |  1 +
-> >  2 files changed, 28 insertions(+)
-> > 
-> > diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-> > index 9d441e1b..7a6cab7c 100644
-> > --- a/lib/igt_pm.c
-> > +++ b/lib/igt_pm.c
-> > @@ -37,6 +37,7 @@
-> >  #include <dirent.h>
-> >  
-> >  #include "drmtest.h"
-> > +#include "igt_kms.h"
-> >  #include "igt_pm.h"
-> >  #include "igt_aux.h"
-> >  #include "igt_sysfs.h"
-> > @@ -827,3 +828,29 @@ bool igt_pm_pc8_plus_residencies_enabled(int msr_fd)
-> >  
-> >  	return true;
-> >  }
-> > +
-> > +/**
-> > + * igt_output_is_lpsp_capable:
-> > + * @drm_fd: fd to drm device
-> > + * @output: igt output for which lpsp capability need to be evaluated
-> > + * Check lpsp capability for a given output.
-> > + *
-> > + * Returns:
-> > + * True if given output is lpsp capable otherwise false.
-> > + */
-> > +bool igt_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
-> 
-> Do we have a file for i915-specific features? If not, maybe prefixing
-> the function with i915 would help readers understand that this is an
-> i915-specific function.
-I am unable to find any igt lib file for i915-features.
-IMO this is a power feature, igt_pm.c suits it.
-I will change the prefix to i915_ but all other 
-function in this file are using igt_ prefix,
-i hope that will not be an issue.
-Thanks,
-Anshuman Gupta. 
-> 
-> > +{
-> > +	char buf[256];
-> > +	int fd, len;
-> > +
-> > +	fd = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
-> > +	igt_require(fd >= 0);
-> > +	len = igt_debugfs_simple_read(fd, "i915_lpsp_info", buf, sizeof(buf));
-> > +
-> > +	if (len < 0)
-> > +		igt_assert_eq(len, -ENODEV);
-> > +
-> > +	close(fd);
-> > +
-> > +	return strstr(buf, "LPSP capable");
-> > +}
-> > diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-> > index 5e438452..076d8c27 100644
-> > --- a/lib/igt_pm.h
-> > +++ b/lib/igt_pm.h
-> > @@ -53,5 +53,6 @@ enum igt_runtime_pm_status igt_get_runtime_pm_status(void);
-> >  bool igt_wait_for_pm_status(enum igt_runtime_pm_status status);
-> >  bool igt_pm_dmc_loaded(int debugfs);
-> >  bool igt_pm_pc8_plus_residencies_enabled(int msr_fd);
-> > +bool igt_output_is_lpsp_capable(int drm_fd, igt_output_t *output);
-> >  
-> >  #endif /* IGT_PM_H */
-> > 
-> 
+== Series Details ==
 
-> pub  2048R/33A53379 2019-12-02 Martin Peres <martin.peres@linux.intel.com>
-> sub  2048R/C5E7DE5F 2019-12-02 [expires: 2020-12-01]
+Series: series starting with [i-g-t,v5,1/7] tests/kms_frontbuffer_tracking: Add tiling to test_mode
+URL   : https://patchwork.freedesktop.org/series/74987/
+State : warning
 
+== Summary ==
+
+Did not get list of undocumented tests for this run, something is wrong!
+
+Other than that, pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/123383 for the overview.
+
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/2030279):
+   #6 [igt_fail+0x11e]
+   #7 [__igt_fail_assert+0x114]
+   #8 [intel_get_drm_devid+0xa5]
+   #9 [__real_main3351+0x1248]
+   #10 [main+0x30]
+   #11 [__libc_start_main+0xf3]
+   #12 [_start+0x2e]
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1584999917:build_script
+  section_start:1584999917:after_script
+  section_end:1584999918:after_script
+  section_start:1584999918:upload_artifacts_on_failure
+  section_end:1584999920:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/2030307):
+   #10 [main+0x3c]
+   #11 [__libc_start_main+0xe4]
+   #12 [_start+0x34]
+  qemu: uncaught target signal 6 (Aborted) - core dumped
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1585000082:build_script
+  section_start:1585000082:after_script
+  section_end:1585000084:after_script
+  section_start:1585000084:upload_artifacts_on_failure
+  Uploading artifacts...
+  build: found 1388 matching files                   
+  Uploading artifacts to coordinator... ok            id=2030307 responseStatus=201 Created token=QrwSkwVu
+  section_end:1585000095:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/2030282):
+   #1 [sigset+0xf4]
+   #2 [gnu_get_libc_version+0x119]
+   #3 [gsignal+0x76]
+  qemu: uncaught target signal 6 (Aborted) - core dumped
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1585000011:build_script
+  section_start:1585000011:after_script
+  section_end:1585000012:after_script
+  section_start:1585000012:upload_artifacts_on_failure
+  Uploading artifacts...
+  build: found 1388 matching files                   
+  Uploading artifacts to coordinator... ok            id=2030282 responseStatus=201 Created token=EXuLGmZW
+  section_end:1585000022:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/2030280):
+   #5 [igt_fail+0xd9]
+   #6 [__igt_fail_assert+0x127]
+   #7 [intel_get_drm_devid+0x97]
+   #8 [__real_main3351+0x447f]
+   #9 [main+0x36]
+   #10 [__libc_start_main+0xf3]
+   #11 [_start+0x2e]
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1584999938:build_script
+  section_start:1584999938:after_script
+  section_end:1584999940:after_script
+  section_start:1584999940:upload_artifacts_on_failure
+  section_end:1584999942:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+  
+
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/2030281):
+  kms_frontbuffer_tracking: ../lib/igt_core.c:1543: igt_fail: Assertion `igt_can_fail()' failed.
+  Received signal SIGABRT.
+  Stack trace: 
+  qemu: uncaught target signal 6 (Aborted) - core dumped
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1584999994:build_script
+  section_start:1584999994:after_script
+  section_end:1584999996:after_script
+  section_start:1584999996:upload_artifacts_on_failure
+  Uploading artifacts...
+  build: found 1388 matching files                   
+  Uploading artifacts to coordinator... ok            id=2030281 responseStatus=201 Created token=vdmgyBrv
+  section_end:1585000006:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/123383
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
