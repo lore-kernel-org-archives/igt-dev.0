@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4ECD896FA
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Mar 2020 20:45:08 +0000 (UTC)
-From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
-Date: Mon, 23 Mar 2020 13:46:21 -0700
-Message-Id: <20200323204621.173722-7-jose.souza@intel.com>
-In-Reply-To: <20200323204621.173722-1-jose.souza@intel.com>
-References: <20200323204621.173722-1-jose.souza@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2BCE66E082
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Mar 2020 06:15:49 +0000 (UTC)
+Date: Tue, 24 Mar 2020 11:35:52 +0530
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+Message-ID: <20200324060551.GA12157@intel.com>
+References: <20200323063248.5261-1-anshuman.gupta@intel.com>
+ <20200323063248.5261-2-anshuman.gupta@intel.com>
+ <ed6f16b6a7384617b0214849ce0c6ed3@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v5 7/7] DO_NOT_MERGE: Revert
- "tests/kms_fbcon_fbt: Handle FBC enabled on fbcon in GEN9+"
+Content-Disposition: inline
+In-Reply-To: <ed6f16b6a7384617b0214849ce0c6ed3@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 1/5] lib/igt_pm: Add lib func to get
+ lpsp capability
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,77 +20,97 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: "Peres, Martin" <martin.peres@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UmV2ZXJ0aW5nIHRoaXMgb25lIGFzIHRoZSBrZXJuZWwgcGF0Y2hlcyBkaWQgbm90IGxhbmRlZCB5
-ZXQgc28gaXQgd291bGQKY2F1c2UgQ0kgdG8gZmFpbC4KClNpZ25lZC1vZmYtYnk6IEpvc8OpIFJv
-YmVydG8gZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwuY29tPgotLS0KIHRlc3RzL2ttc19mYmNv
-bl9mYnQuYyB8IDQyICsrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQog
-MSBmaWxlIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKyksIDI4IGRlbGV0aW9ucygtKQoKZGlmZiAt
-LWdpdCBhL3Rlc3RzL2ttc19mYmNvbl9mYnQuYyBiL3Rlc3RzL2ttc19mYmNvbl9mYnQuYwppbmRl
-eCAwODFkNTdmNi4uYjgwMDBhMjQgMTAwNjQ0Ci0tLSBhL3Rlc3RzL2ttc19mYmNvbl9mYnQuYwor
-KysgYi90ZXN0cy9rbXNfZmJjb25fZmJ0LmMKQEAgLTQyLDcgKzQyLDYgQEAgc3RydWN0IGRybV9p
-bmZvIHsKIAlpbnQgZGVidWdmc19mZDsKIAlkcm1Nb2RlUmVzUHRyIHJlczsKIAlkcm1Nb2RlQ29u
-bmVjdG9yUHRyIGNvbm5lY3RvcnNbTUFYX0NPTk5FQ1RPUlNdOwotCWludCBkZXZpZDsKIH07CiAK
-IHN0YXRpYyB2b2lkIHdhaXRfdXNlcihjb25zdCBjaGFyICptc2cpCkBAIC02OCw4ICs2Nyw2IEBA
-IHN0YXRpYyB2b2lkIHNldHVwX2RybShzdHJ1Y3QgZHJtX2luZm8gKmRybSkKIAkJZHJtLT5jb25u
-ZWN0b3JzW2ldID0gZHJtTW9kZUdldENvbm5lY3RvckN1cnJlbnQoZHJtLT5mZCwKIAkJCQkJCWRy
-bS0+cmVzLT5jb25uZWN0b3JzW2ldKTsKIAotCWRybS0+ZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2Rl
-dmlkKGRybS0+ZmQpOwotCiAJa21zdGVzdF9zZXRfdnRfZ3JhcGhpY3NfbW9kZSgpOwogfQogCkBA
-IC0xNDIsMzAgKzEzOSwxOSBAQCBzdGF0aWMgYm9vbCBmYmNfd2FpdF91bnRpbF9kaXNhYmxlZChp
-bnQgZGVidWdmc19mZCkKIAlyZXR1cm4gcjsKIH0KIAotc3RhdGljIGJvb2wgZmJjX25vdF9jb21w
-cmVzc2luZ19lbmFibGVkKGludCBkZWJ1Z2ZzX2ZkKQotewotCWNoYXIgYnVmWzEyOF07Ci0KLQlp
-Z3RfZGVidWdmc19zaW1wbGVfcmVhZChkZWJ1Z2ZzX2ZkLCAiaTkxNV9mYmNfc3RhdHVzIiwgYnVm
-LAotCQkJCXNpemVvZihidWYpKTsKLQlyZXR1cm4gc3Ryc3RyKGJ1ZiwgIkZCQyBlbmFibGVkXG5D
-b21wcmVzc2luZzogbm8iKTsKLX0KLQotc3RhdGljIGJvb2wgZmJjX3dhaXRfdW50aWxfdXBkYXRl
-KHN0cnVjdCBkcm1faW5mbyAqZHJtKQorc3RhdGljIGJvb2wgZmJjX3dhaXRfdW50aWxfdXBkYXRl
-KGludCBkZWJ1Z2ZzKQogewogCS8qCi0JICogQXMgbm93IGtlcm5lbCBlbmFibGVzIEZCQyBvbiBs
-aW5lYXIgc3VyZmFjZXMgb24gR0VOOSssIGNoZWNrIGlmIHRoZQotCSAqIGZiY29uIGN1cnNvciBi
-bGlua2luZyBpcyBjYXVzaW5nIHRoZSBGQkMgdG8gdW5jb21wcmVzcyB0aGUKLQkgKiBmcmFtZWJ1
-ZmZlci4KKwkgKiBGQkMgaXMgbm90IGV4cGVjdGVkIHRvIGJlIGVuYWJsZWQgYmVjYXVzZSBmYmNv
-biBkbyBub3QgdXNlcyBhIHRpbGVkCisJICogZnJhbWVidWZmZXIgc28gYSBmZW5jZSBjYW4gbm90
-IGJlIHNldHVwIG9uIHRoZSBmcmFtZWJ1ZmZlciBhbmQgRkJDCisJICogY29kZSByZXF1aXJlcyBh
-IGZlbmNlIHRvIGFjY3VyYXRlIHRyYWNrIGZyb250YnVmZmVyIG1vZGlmaWNhdGlvbnMKKwkgKiAo
-d2hhdCBtYXliZSBpcyBub3QgbmVjZXNzYXJ5IGFueW1vcmUgYXMgd2Ugbm93IGhhdmUKKwkgKiBp
-bnRlbF9mYmNfaW52YWxpZGF0ZSgpL2ZsdXNoKCkpLgogCSAqCi0JICogRm9yIG9sZGVyIEdFTnMg
-RkJDIGlzIHN0aWxsIGV4cGVjdGVkIHRvIGJlIGRpc2FibGVkIGFzIGl0IHN0aWxsCi0JICogcmVs
-aWVzIG9uIGEgdGlsZWQgYW5kIGZlbmNlYWJsZSBmcmFtZWJ1ZmZlciB0byB0cmFjayBtb2RpZmlj
-YXRpb25zLgorCSAqIElmIG9uZSBkYXkgZmJjb24gc3RhcnRzIHRvIHVzZSBhIHRpbGVkIGZyYW1l
-YnVmZmVyIHdlIHdvdWxkIG5lZWQgdG8KKwkgKiBjaGVjayB0aGUgJ0NvbXByZXNzaW5nJyBzdGF0
-dXMgYXMgaW4gZWFjaCBibGluayBpdCB3b3VsZCBiZSBkaXNhYmxlZC4KIAkgKi8KLQlpZiAoQVRf
-TEVBU1RfR0VOKGRybS0+ZGV2aWQsIDkpKQotCQlyZXR1cm4gaWd0X3dhaXQoZmJjX25vdF9jb21w
-cmVzc2luZ19lbmFibGVkKGRybS0+ZGVidWdmc19mZCksCi0JCQkJMjAwMCwgMSk7Ci0JZWxzZQot
-CQlyZXR1cm4gZmJjX3dhaXRfdW50aWxfZGlzYWJsZWQoZHJtLT5kZWJ1Z2ZzX2ZkKTsKKwlyZXR1
-cm4gZmJjX3dhaXRfdW50aWxfZGlzYWJsZWQoZGVidWdmcyk7CiB9CiAKIHR5cGVkZWYgYm9vbCAo
-KmNvbm5lY3Rvcl9wb3NzaWJsZV9mbikoZHJtTW9kZUNvbm5lY3RvclB0ciBjb25uZWN0b3IpOwpA
-QCAtMjM0LDkgKzIyMCw5IEBAIHN0YXRpYyBib29sIHBzcl9zdXBwb3J0ZWRfb25fY2hpcHNldChp
-bnQgZGVidWdmc19mZCkKIAlyZXR1cm4gcHNyX3Npbmtfc3VwcG9ydChkZWJ1Z2ZzX2ZkLCBQU1Jf
-TU9ERV8xKTsKIH0KIAotc3RhdGljIGJvb2wgcHNyX3dhaXRfdW50aWxfdXBkYXRlKHN0cnVjdCBk
-cm1faW5mbyAqZHJtKQorc3RhdGljIGJvb2wgcHNyX3dhaXRfdW50aWxfdXBkYXRlKGludCBkZWJ1
-Z2ZzX2ZkKQogewotCXJldHVybiBwc3JfbG9uZ193YWl0X3VwZGF0ZShkcm0tPmRlYnVnZnNfZmQs
-IFBTUl9NT0RFXzEpOworCXJldHVybiBwc3JfbG9uZ193YWl0X3VwZGF0ZShkZWJ1Z2ZzX2ZkLCBQ
-U1JfTU9ERV8xKTsKIH0KIAogc3RhdGljIHZvaWQgZGlzYWJsZV9mZWF0dXJlcyhpbnQgZGVidWdm
-c19mZCkKQEAgLTI1OSw3ICsyNDUsNyBAQCBzdGF0aWMgaW5saW5lIHZvaWQgcHNyX2RlYnVnZnNf
-ZW5hYmxlKGludCBkZWJ1Z2ZzX2ZkKQogc3RydWN0IGZlYXR1cmUgewogCWJvb2wgKCpzdXBwb3J0
-ZWRfb25fY2hpcHNldCkoaW50IGRlYnVnZnNfZmQpOwogCWJvb2wgKCp3YWl0X3VudGlsX2VuYWJs
-ZWQpKGludCBkZWJ1Z2ZzX2ZkKTsKLQlib29sICgqd2FpdF91bnRpbF91cGRhdGUpKHN0cnVjdCBk
-cm1faW5mbyAqZHJtKTsKKwlib29sICgqd2FpdF91bnRpbF91cGRhdGUpKGludCBkZWJ1Z2ZzX2Zk
-KTsKIAlib29sICgqY29ubmVjdG9yX3Bvc3NpYmxlX2ZuKShkcm1Nb2RlQ29ubmVjdG9yUHRyIGNv
-bm5lY3Rvcik7CiAJdm9pZCAoKmVuYWJsZSkoaW50IGRlYnVnZnNfZmQpOwogfSBmYmMgPSB7CkBA
-IC0zMDksMTMgKzI5NSwxMyBAQCBzdGF0aWMgdm9pZCBzdWJ0ZXN0KHN0cnVjdCBkcm1faW5mbyAq
-ZHJtLCBzdHJ1Y3QgZmVhdHVyZSAqZmVhdHVyZSwgYm9vbCBzdXNwZW5kKQogCXNsZWVwKDMpOwog
-CiAJd2FpdF91c2VyKCJCYWNrIHRvIGZiY29uLiIpOwotCWlndF9hc3NlcnQoZmVhdHVyZS0+d2Fp
-dF91bnRpbF91cGRhdGUoZHJtKSk7CisJaWd0X2Fzc2VydChmZWF0dXJlLT53YWl0X3VudGlsX3Vw
-ZGF0ZShkcm0tPmRlYnVnZnNfZmQpKTsKIAogCWlmIChzdXNwZW5kKSB7CiAJCWlndF9zeXN0ZW1f
-c3VzcGVuZF9hdXRvcmVzdW1lKFNVU1BFTkRfU1RBVEVfTUVNLAogCQkJCQkgICAgICBTVVNQRU5E
-X1RFU1RfTk9ORSk7CiAJCXNsZWVwKDUpOwotCQlpZ3RfYXNzZXJ0KGZlYXR1cmUtPndhaXRfdW50
-aWxfdXBkYXRlKGRybSkpOworCQlpZ3RfYXNzZXJ0KGZlYXR1cmUtPndhaXRfdW50aWxfdXBkYXRl
-KGRybS0+ZGVidWdmc19mZCkpOwogCX0KIH0KIAotLSAKMi4yNS4yCgpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
-ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
-YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+On 2020-03-23 at 12:25:25 +0530, Peres, Martin wrote:
+> On 2020-03-23 08:32, Anshuman Gupta wrote:
+> > This lib function evaluate the lpsp capability from
+> > the connector specific debugfs attribute i915_lpsp_info.
+> > 
+> > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> > ---
+> >  lib/igt_pm.c | 27 +++++++++++++++++++++++++++
+> >  lib/igt_pm.h |  1 +
+> >  2 files changed, 28 insertions(+)
+> > 
+> > diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+> > index 9d441e1b..7a6cab7c 100644
+> > --- a/lib/igt_pm.c
+> > +++ b/lib/igt_pm.c
+> > @@ -37,6 +37,7 @@
+> >  #include <dirent.h>
+> >  
+> >  #include "drmtest.h"
+> > +#include "igt_kms.h"
+> >  #include "igt_pm.h"
+> >  #include "igt_aux.h"
+> >  #include "igt_sysfs.h"
+> > @@ -827,3 +828,29 @@ bool igt_pm_pc8_plus_residencies_enabled(int msr_fd)
+> >  
+> >  	return true;
+> >  }
+> > +
+> > +/**
+> > + * igt_output_is_lpsp_capable:
+> > + * @drm_fd: fd to drm device
+> > + * @output: igt output for which lpsp capability need to be evaluated
+> > + * Check lpsp capability for a given output.
+> > + *
+> > + * Returns:
+> > + * True if given output is lpsp capable otherwise false.
+> > + */
+> > +bool igt_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
+> 
+> Do we have a file for i915-specific features? If not, maybe prefixing
+> the function with i915 would help readers understand that this is an
+> i915-specific function.
+I am unable to find any igt lib file for i915-features.
+IMO this is a power feature, igt_pm.c suits it.
+I will change the prefix to i915_ but all other 
+function in this file are using igt_ prefix,
+i hope that will not be an issue.
+Thanks,
+Anshuman Gupta. 
+> 
+> > +{
+> > +	char buf[256];
+> > +	int fd, len;
+> > +
+> > +	fd = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
+> > +	igt_require(fd >= 0);
+> > +	len = igt_debugfs_simple_read(fd, "i915_lpsp_info", buf, sizeof(buf));
+> > +
+> > +	if (len < 0)
+> > +		igt_assert_eq(len, -ENODEV);
+> > +
+> > +	close(fd);
+> > +
+> > +	return strstr(buf, "LPSP capable");
+> > +}
+> > diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+> > index 5e438452..076d8c27 100644
+> > --- a/lib/igt_pm.h
+> > +++ b/lib/igt_pm.h
+> > @@ -53,5 +53,6 @@ enum igt_runtime_pm_status igt_get_runtime_pm_status(void);
+> >  bool igt_wait_for_pm_status(enum igt_runtime_pm_status status);
+> >  bool igt_pm_dmc_loaded(int debugfs);
+> >  bool igt_pm_pc8_plus_residencies_enabled(int msr_fd);
+> > +bool igt_output_is_lpsp_capable(int drm_fd, igt_output_t *output);
+> >  
+> >  #endif /* IGT_PM_H */
+> > 
+> 
+
+> pub  2048R/33A53379 2019-12-02 Martin Peres <martin.peres@linux.intel.com>
+> sub  2048R/C5E7DE5F 2019-12-02 [expires: 2020-12-01]
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
