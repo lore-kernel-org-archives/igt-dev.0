@@ -1,16 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFEE86E50E
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Mar 2020 18:16:03 +0000 (UTC)
-Date: Tue, 24 Mar 2020 20:15:59 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20200324181559.GA13686@intel.com>
-References: <20200117181418.18755-1-jose.souza@intel.com>
- <20200117181418.18755-2-jose.souza@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200117181418.18755-2-jose.souza@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests: Add tests for DP MST
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 24 Mar 2020 19:20:38 -0000
+Message-ID: <158507763877.5746.18119901039984779444@emeril.freedesktop.org>
+References: <20200318004914.236815-1-lyude@redhat.com>
+In-Reply-To: <20200318004914.236815-1-lyude@redhat.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Fpipe=5Fcrc=5Fbasic?=
+ =?utf-8?b?OiBVc2UgaWd0X2Rpc3BsYXlfcmVxdWlyZV9vdXRwdXRfb25fcGlwZSgpIChy?=
+ =?utf-8?q?ev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,433 +16,87 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?iso-8859-1?Q?Jos=E9?= Roberto de Souza <jose.souza@intel.com>
+To: Lyude Paul <lyude@redhat.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jan 17, 2020 at 10:14:18AM -0800, Jos=E9 Roberto de Souza wrote:
-> Test DP MST corner cases.
-> =
+== Series Details ==
 
-> Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> Signed-off-by: Jos=E9 Roberto de Souza <jose.souza@intel.com>
-> ---
->  tests/Makefile.sources |   1 +
->  tests/kms_mst.c        | 347 +++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build      |   1 +
->  3 files changed, 349 insertions(+)
->  create mode 100644 tests/kms_mst.c
-> =
+Series: series starting with [i-g-t,1/2] tests/kms_pipe_crc_basic: Use igt_display_require_output_on_pipe() (rev3)
+URL   : https://patchwork.freedesktop.org/series/74808/
+State : success
 
-> diff --git a/tests/Makefile.sources b/tests/Makefile.sources
-> index 806eb02d..68794ed3 100644
-> --- a/tests/Makefile.sources
-> +++ b/tests/Makefile.sources
-> @@ -59,6 +59,7 @@ TESTS_progs =3D \
->  	kms_lease \
->  	kms_legacy_colorkey \
->  	kms_mmap_write_crc \
-> +	kms_mst \
->  	kms_panel_fitting \
->  	kms_pipe_b_c_ivb \
->  	kms_pipe_crc_basic \
-> diff --git a/tests/kms_mst.c b/tests/kms_mst.c
-> new file mode 100644
-> index 00000000..7cc01417
-> --- /dev/null
-> +++ b/tests/kms_mst.c
-> @@ -0,0 +1,347 @@
-> +#include <ctype.h>
-> +#include <string.h>
-> +
-> +#include "igt.h"
-> +
-> +IGT_TEST_DESCRIPTION("Test DP MST corner cases.");
-> +/*
-> + * It is testing only the first MST port found, to test multiple ports o=
-r force
-> + * test in a specific port changes will be needed
-> + */
-> +
-> +#define SQUARE_SIZE 100
-> +#define MAX_MST_OUTPUTS 3
-> +#define RESOLUTION_H 1920
-> +#define RESOLUTION_V 1080
-> +#define ANOTHER_RESOLUTION_H 1024
-> +#define ANOTHER_RESOLUTION_V 768
+== Summary ==
 
-There a quite a lot of assumptions in this test. In genral I get
-the feeling this should be more of a general "test all the modeset
-combinations" type of thing. It would then get run for all kinds of
-other cases with similar behaviour (eg. port sync). =
+CI Bug Log - changes from CI_DRM_8183 -> IGTPW_4347
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4347/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4347 that come from known issues:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@i915_selftest@live@gem_contexts:
+    - fi-cfl-8700k:       [DMESG-FAIL][1] ([i915#481]) -> [DMESG-FAIL][2] ([i915#730] / [i915#933])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8183/fi-cfl-8700k/igt@i915_selftest@live@gem_contexts.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4347/fi-cfl-8700k/igt@i915_selftest@live@gem_contexts.html
+
+  
+  [i915#481]: https://gitlab.freedesktop.org/drm/intel/issues/481
+  [i915#730]: https://gitlab.freedesktop.org/drm/intel/issues/730
+  [i915#933]: https://gitlab.freedesktop.org/drm/intel/issues/933
 
 
-In fact I wonder if something like kms_atomic_transitions doesn't
-already hit these cases? I think that's pretty much what it's supposed
-to do.
+Participating hosts (45 -> 39)
+------------------------------
+
+  Additional (5): fi-kbl-7560u fi-kbl-7500u fi-cfl-8109u fi-skl-lmem fi-blb-e6850 
+  Missing    (11): fi-hsw-4200u fi-hsw-peppy fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-gdg-551 fi-ivb-3770 fi-bdw-samus fi-byt-clapper fi-bsw-nick fi-skl-6700k2 
 
 
-> +
-> +typedef struct {
-> +	int drm_fd;
-> +	igt_display_t display;
-> +	igt_output_t *mst_output[MAX_MST_OUTPUTS];
-> +	struct igt_fb fb[MAX_MST_OUTPUTS];
-> +	uint8_t mst_connectors, prepared;
-> +} data_t;
-> +
-> +static drmModeModeInfo *find_mode(igt_output_t *output, uint16_t h, uint=
-16_t v,
-> +				  uint32_t *mode_clock)
-> +{
-> +	drmModeModeInfo *ret =3D NULL;
-> +	int i;
-> +
-> +	for (i =3D 0; i < output->config.connector->count_modes; i++) {
-> +		drmModeModeInfo *mode;
-> +
-> +		mode =3D &output->config.connector->modes[i];
-> +		if (mode->hdisplay !=3D h ||
-> +		    mode->vdisplay !=3D v)
-> +			continue;
-> +
-> +		if (mode_clock && *mode_clock && mode->clock !=3D *mode_clock)
-> +			continue;
-> +
-> +		if (mode_clock && !*mode_clock)
-> +			*mode_clock =3D mode->clock;
-> +
-> +		ret =3D mode;
-> +
-> +		break;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int16_t get_parent_conn_id(const char *mst_path)
-> +{
-> +	int i;
-> +	char buffer[6];
-> +
-> +	if (mst_path[0] !=3D 'm' || mst_path[1] !=3D 's' || mst_path[2] !=3D 't=
-' ||
-> +	    mst_path[3] !=3D ':')
-> +		return -1;
-> +
-> +	/* Unlikely to need more than 5 digits to represent a connector id */
-> +	for (i =3D 4; i < 9; i++) {
-> +		if (!isdigit(mst_path[i]))
-> +			break;
-> +	}
-> +
-> +	if (i =3D=3D 4)
-> +		return -1;
-> +
-> +	i =3D i - 4;
-> +	memcpy(buffer, &mst_path[4], i);
-> +	buffer[i] =3D 0;
-> +	return atoi(buffer);
-> +}
-> +
-> +static void search_mst_outputs(data_t *data)
-> +{
-> +	igt_display_t *display =3D &data->display;
-> +	igt_output_t *output;
-> +	uint32_t clock =3D 0;
-> +	int16_t parent_conn =3D -1;
-> +
-> +	for_each_connected_output(display, output) {
-> +		drmModePropertyBlobPtr blob;
-> +		char mst_path_buffer[32];
-> +		drmModeModeInfo *mode;
-> +		uint64_t val;
-> +
-> +		igt_output_set_pipe(output, PIPE_NONE);
-> +
-> +		if (data->mst_connectors =3D=3D MAX_MST_OUTPUTS)
-> +			continue;
-> +
-> +		if (!igt_output_has_prop(output, IGT_CONNECTOR_PATH)) {
-> +			igt_debug("\tno patch prop\n");
-> +			continue;
-> +		}
-> +
-> +		val =3D igt_output_get_prop(output, IGT_CONNECTOR_PATH);
-> +		blob =3D drmModeGetPropertyBlob(data->drm_fd, val);
-> +		strncpy(mst_path_buffer, (const char *)blob->data,
-> +			sizeof(mst_path_buffer) - 1);
-> +		drmModeFreePropertyBlob(blob);
-> +
-> +		if (parent_conn !=3D -1) {
-> +			if (get_parent_conn_id(mst_path_buffer) !=3D parent_conn)
-> +				continue;
-> +		} else {
-> +			parent_conn =3D get_parent_conn_id(mst_path_buffer);
-> +			igt_info("MST parent connector %i\n", parent_conn);
-> +		}
-> +
-> +		mode =3D find_mode(output, RESOLUTION_H, RESOLUTION_V, &clock);
-> +		if (!mode) {
-> +			igt_info("MST connector %s[%s] found but no compatible mode found\n",
-> +				 output->name, mst_path_buffer);
-> +			continue;
-> +		}
-> +
-> +		igt_info("Added MST connector %s[%s]\n", output->name, mst_path_buffer=
-);
-> +
-> +		igt_output_override_mode(output, mode);
-> +		data->mst_output[data->mst_connectors] =3D output;
-> +		data->mst_connectors++;
-> +	}
-> +
-> +	igt_require_f(data->mst_connectors, "No MST connector found\n");
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +}
-> +
-> +static void prepare(data_t *data, uint8_t n_outputs)
-> +{
-> +	igt_output_t *output;
-> +	uint8_t i;
-> +
-> +	for (i =3D 0; i < data->mst_connectors && i < n_outputs; i++) {
-> +		const drmModeModeInfo *mode;
-> +		igt_plane_t *primary;
-> +		double r, g, b;
-> +		cairo_t *cr;
-> +
-> +		output =3D data->mst_output[i];
-> +		mode =3D igt_output_get_mode(output);
-> +
-> +		igt_output_set_pipe(output, PIPE_A + i);
-> +
-> +		primary =3D igt_output_get_plane_type(output,
-> +						    DRM_PLANE_TYPE_PRIMARY);
-> +		igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-> +				    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
-> +				    1.0, 1.0, 1.0, &data->fb[i]);
-> +
-> +		cr =3D igt_get_cairo_ctx(data->drm_fd, &data->fb[i]);
-> +
-> +		/* paint square in different color */
-> +		switch (i % 4) {
-> +		case 0:
-> +			r =3D 1.0;
-> +			g =3D b =3D 0.0;
-> +			break;
-> +		case 1:
-> +			g =3D 1.0;
-> +			r =3D b =3D 0.0;
-> +			break;
-> +		case 2:
-> +			b =3D 1.0;
-> +			r =3D g =3D 0.0;
-> +			break;
-> +		default:
-> +		case 4:
-> +			r =3D g =3D b =3D 0.0;
-> +			break;
-> +		}
-> +		igt_paint_color_alpha(cr, 0, 0, SQUARE_SIZE, SQUARE_SIZE,
-> +				      r, g, b, 1.0);
-> +
-> +		igt_plane_set_fb(primary, &data->fb[i]);
-> +		igt_put_cairo_ctx(data->drm_fd,  &data->fb[i], cr);
-> +	}
-> +
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +	data->prepared =3D n_outputs;
-> +}
-> +
-> +static void change_resolution(data_t *data, bool all)
-> +{
-> +	igt_output_t *output;
-> +	uint32_t clock =3D 0;
-> +	uint8_t i;
-> +
-> +	for (i =3D 0; i < data->mst_connectors; i++) {
-> +		drmModeModeInfo *mode;
-> +
-> +		output =3D data->mst_output[i];
-> +		if (output->pending_pipe =3D=3D PIPE_NONE)
-> +			continue;
-> +
-> +		mode =3D find_mode(output, ANOTHER_RESOLUTION_H,
-> +				 ANOTHER_RESOLUTION_V, &clock);
-> +		if (!mode) {
-> +			igt_info("New resolution not found on %s skipping it\n",
-> +				 output->name);
-> +			igt_output_set_pipe(output, PIPE_NONE);
-> +			continue;
-> +		}
-> +
-> +		igt_output_override_mode(output, mode);
-> +
-> +		if (!all)
-> +			break;
-> +	}
-> +
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +}
-> +
-> +static void restore_resolution(data_t *data)
-> +{
-> +	igt_output_t *output;
-> +	uint32_t clock =3D 0;
-> +	uint8_t i;
-> +
-> +	for (i =3D 0; i < data->mst_connectors; i++) {
-> +		drmModeModeInfo *mode;
-> +
-> +		output =3D data->mst_output[i];
-> +		mode =3D find_mode(output, RESOLUTION_H, RESOLUTION_V, &clock);
-> +		/*
-> +		 * No need to check because this mode was already found in
-> +		 * search_mst_outputs()
-> +		 */
-> +		igt_output_override_mode(output, mode);
-> +		/* Reenable any sink left off in change_resolution() */
-> +		igt_output_set_pipe(output, PIPE_A + i);
-> +	}
-> +
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +}
-> +
-> +static void cleanup(data_t *data)
-> +{
-> +	uint8_t i;
-> +
-> +	for (i =3D 0; i < data->prepared; i++) {
-> +		igt_output_t *output =3D data->mst_output[i];
-> +		igt_plane_t *primary;
-> +
-> +		primary =3D igt_output_get_plane_type(output,
-> +						    DRM_PLANE_TYPE_PRIMARY);
-> +		igt_plane_set_fb(primary, NULL);
-> +		igt_output_set_pipe(output, PIPE_NONE);
-> +	}
-> +
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +	for (i =3D 0; i < data->prepared; i++)
-> +		igt_remove_fb(data->drm_fd, &data->fb[i]);
-> +}
-> +
-> +int main(int argc, char *argv[])
-> +{
-> +	data_t data =3D {};
-> +
-> +	igt_subtest_init_parse_opts(&argc, argv, "", NULL,
-> +				    NULL, NULL, NULL);
-> +	igt_skip_on_simulation();
-> +
-> +	igt_fixture {
-> +		data.drm_fd =3D drm_open_driver_master(DRIVER_INTEL);
-> +		kmstest_set_vt_graphics_mode();
-> +
-> +		igt_display_require(&data.display, data.drm_fd);
-> +		search_mst_outputs(&data);
-> +	}
-> +
-> +	igt_describe("Enable all MST streams in the same port");
-> +	igt_subtest_f("all_enabled") {
-> +		prepare(&data, data.mst_connectors);
-> +		igt_debug_manual_check("all", "all streams enabled");
-> +		cleanup(&data);
-> +	}
-> +
-> +	igt_describe("Test change the master CRTC of the MST stream");
-> +	igt_subtest_f("change_master") {
-> +		enum pipe pipe;
-> +
-> +		igt_require(data.mst_connectors >=3D 2);
-> +
-> +		prepare(&data, 2);
-> +		igt_debug_manual_check("all", "dual output");
-> +
-> +		pipe =3D data.mst_output[0]->pending_pipe;
-> +		igt_output_set_pipe(data.mst_output[0], PIPE_NONE);
-> +		igt_display_commit2(&data.display, COMMIT_ATOMIC);
-> +		igt_debug_manual_check("all", "first MST stream disabled");
-> +
-> +		igt_output_set_pipe(data.mst_output[0], pipe);
-> +		igt_display_commit2(&data.display, COMMIT_ATOMIC);
-> +		igt_debug_manual_check("all", "dual output");
-> +
-> +		pipe =3D data.mst_output[1]->pending_pipe;
-> +		igt_output_set_pipe(data.mst_output[1], PIPE_NONE);
-> +		igt_display_commit2(&data.display, COMMIT_ATOMIC);
-> +		igt_debug_manual_check("all", "second MST stream disabled");
-> +
-> +		igt_output_set_pipe(data.mst_output[1], pipe);
-> +		igt_display_commit2(&data.display, COMMIT_ATOMIC);
-> +		igt_debug_manual_check("all", "dual output");
-> +
-> +		cleanup(&data);
-> +	}
-> +
-> +	igt_describe("Test change the resolution off all MST streams");
-> +	igt_subtest_f("change_resolution") {
-> +		prepare(&data, data.mst_connectors);
-> +		igt_debug_manual_check("all", "regular resolution in all streams");
-> +
-> +		change_resolution(&data, true);
-> +		igt_debug_manual_check("all", "new resolution set in compatible stream=
-s");
-> +
-> +		restore_resolution(&data);
-> +		igt_debug_manual_check("all", "regular resolution in all streams again=
-");
-> +		cleanup(&data);
-> +	}
-> +
-> +	igt_describe("Test do a fullmodeset in the master CRTC of the MST strea=
-m");
-> +	igt_subtest_f("fullmodeset_master") {
-> +		prepare(&data, data.mst_connectors);
-> +		igt_debug_manual_check("all", "regular resolution in all streams");
-> +
-> +		change_resolution(&data, false);
-> +		igt_debug_manual_check("all", "new resolution in the first stream");
-> +
-> +		restore_resolution(&data);
-> +		igt_debug_manual_check("all", "regular resolution in all streams again=
-");
-> +		cleanup(&data);
-> +	}
-> +
-> +	igt_fixture {
-> +		igt_display_reset(&data.display);
-> +		igt_display_fini(&data.display);
-> +	}
-> +
-> +	igt_exit();
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index a79d22ba..a552301b 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -43,6 +43,7 @@ test_progs =3D [
->  	'kms_lease',
->  	'kms_legacy_colorkey',
->  	'kms_mmap_write_crc',
-> +	'kms_mst',
->  	'kms_panel_fitting',
->  	'kms_pipe_b_c_ivb',
->  	'kms_pipe_crc_basic',
-> -- =
+Build changes
+-------------
 
-> 2.25.0
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5535 -> IGTPW_4347
 
--- =
+  CI-20190529: 20190529
+  CI_DRM_8183: 795894daf2cc32246af94541733e08649d082470 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4347: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4347/index.html
+  IGT_5535: d1dcf40cc6869ac858586c5ad9f09af6617ce2ee @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
-Ville Syrj=E4l=E4
-Intel
+
+
+== Testlist changes ==
+
++igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-a
++igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-b
++igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-c
++igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-d
++igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-e
++igt@kms_pipe_crc_basic@disable-crc-after-crtc-pipe-f
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4347/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
