@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5EA366E83C
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99FE36E83F
  for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2020 21:50:06 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Date: Wed, 25 Mar 2020 14:50:03 -0700
-Message-Id: <20200325215005.5489-2-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20200325215005.5489-1-umesh.nerlige.ramappa@intel.com>
-References: <20200325215005.5489-1-umesh.nerlige.ramappa@intel.com>
+Date: Wed, 25 Mar 2020 14:50:02 -0700
+Message-Id: <20200325215005.5489-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 1/3] include/drm-uapi: Update i915_drm.h for perf
- OA APIs
+Subject: [igt-dev] [PATCH i-g-t 0/3] Test configurable poll delay in perf OA
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,62 +21,20 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org, Lionel G Landwerlin <lionel.g.landwerlin@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Add tests that verify the configurable poll delay in perf OA.
 
-Add APIs to configure poll delay in perf OA.
+Lionel Landwerlin (2):
+  include/drm-uapi: Update i915_drm.h for perf OA APIs
+  tests/perf: new tests for parameterized OA buffer polling
 
-v2: (Umesh)
-- Remove interrupt and flush APIs
-- Change commit message
+Umesh Nerlige Ramappa (1):
+  tools: Allow user to set poll delay in i915 perf recorder
 
-v3: (Umesh)
-- Rebase
-- Rename uapi parameter used to set poll timer interval
+ include/drm-uapi/i915_drm.h          |  24 +++++
+ tests/perf.c                         | 144 ++++++++++++++++++++-------
+ tools/i915-perf/i915_perf_recorder.c |  38 ++++++-
+ 3 files changed, 165 insertions(+), 41 deletions(-)
 
-v4:
-- Update uapi comment to reflect the kerne uapi header (Ashutosh)
-
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
----
- include/drm-uapi/i915_drm.h | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index 3794e768..2b55af13 100644
---- a/include/drm-uapi/i915_drm.h
-+++ b/include/drm-uapi/i915_drm.h
-@@ -1969,6 +1969,30 @@ enum drm_i915_perf_property_id {
- 	 */
- 	DRM_I915_PERF_PROP_HOLD_PREEMPTION,
- 
-+	/**
-+	 * Specifying this pins all contexts to the specified SSEU power
-+	 * configuration for the duration of the recording.
-+	 *
-+	 * This parameter's value is a pointer to a struct
-+	 * drm_i915_gem_context_param_sseu.
-+	 *
-+	 * This property is available in perf revision 4.
-+	 */
-+	DRM_I915_PERF_PROP_GLOBAL_SSEU,
-+
-+	/**
-+	 * This optional parameter specifies the timer interval in nanoseconds
-+	 * at which the i915 driver will check the OA buffer for available data.
-+	 * Minimum allowed value is 100 microseconds. A default value is used by
-+	 * the driver if this parameter is not specified. Note that larger timer
-+	 * values will reduce cpu consumption during OA perf captures. However,
-+	 * excessively large values would potentially result in OA buffer
-+	 * overwrites as captures reach end of the OA buffer.
-+	 *
-+	 * This property is available in perf revision 5.
-+	 */
-+	DRM_I915_PERF_PROP_POLL_OA_PERIOD,
-+
- 	DRM_I915_PERF_PROP_MAX /* non-ABI */
- };
- 
 -- 
 2.20.1
 
