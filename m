@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68BC96E827
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2020 19:17:03 +0000 (UTC)
-From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
-Date: Wed, 25 Mar 2020 12:18:18 -0700
-Message-Id: <20200325191819.10196-4-jose.souza@intel.com>
-In-Reply-To: <20200325191819.10196-1-jose.souza@intel.com>
-References: <20200325191819.10196-1-jose.souza@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 398FE6E825
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2020 19:20:39 +0000 (UTC)
+References: <20200319225254.29840-1-umesh.nerlige.ramappa@intel.com>
+ <20200319225254.29840-4-umesh.nerlige.ramappa@intel.com>
+ <87ftdwtfsf.wl-ashutosh.dixit@intel.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <8840762f-5e2f-3d07-d84a-c2a79e62b091@intel.com>
+Date: Wed, 25 Mar 2020 21:20:37 +0200
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v6 without-hack-patches 4/5]
- tests/kms_fbcon_fbt: Reduce execution time
+In-Reply-To: <87ftdwtfsf.wl-ashutosh.dixit@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 3/3] tools: Allow user to set poll delay
+ in i915 perf recorder
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,45 +20,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>, Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RXZlcnkgdGltZSBmYmNfd2FpdF91bnRpbF9lbmFibGVkKCkgaXMgY2FsbGVkIGZyb20KZmJjX3dh
-aXRfdW50aWxfdXBkYXRlKCkgaXQgd2FzIHdhaXRpbmcgdGhlIHdob2xlIDUgc2Vjb25kcyBvZiB0
-aW1lb3V0CnRvIHJldHVybiBmYWxzZSBhcyBleHBlY3RlZC4KVG8gc2F2ZSBtb3N0IDk5JSBvZiB0
-aGlzIGFkZGluZyBoZXJlIGZiY193YWl0X3VudGlsX2Rpc2FibGVkKCkuCgp2NToKLSBGaXhlZCBm
-YmNfd2FpdF91bnRpbF91cGRhdGUoKSB0ZXN0CgpTaWduZWQtb2ZmLWJ5OiBKb3PDqSBSb2JlcnRv
-IGRlIFNvdXphIDxqb3NlLnNvdXphQGludGVsLmNvbT4KLS0tCiB0ZXN0cy9rbXNfZmJjb25fZmJ0
-LmMgfCAxOCArKysrKysrKysrKysrKy0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAxNCBpbnNlcnRpb25z
-KCspLCA0IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19mYmNvbl9mYnQuYyBi
-L3Rlc3RzL2ttc19mYmNvbl9mYnQuYwppbmRleCBlZDRjY2NiZS4uYjgwMDBhMjQgMTAwNjQ0Ci0t
-LSBhL3Rlc3RzL2ttc19mYmNvbl9mYnQuYworKysgYi90ZXN0cy9rbXNfZmJjb25fZmJ0LmMKQEAg
-LTExMywxOCArMTEzLDI4IEBAIHN0YXRpYyB2b2lkIGZiY19wcmludF9zdGF0dXMoaW50IGRlYnVn
-ZnNfZmQpCiAJaWd0X2RlYnVnKCJGQkMgc3RhdHVzOiAlc1xuIiwgYnVmKTsKIH0KIAotc3RhdGlj
-IGJvb2wgZmJjX2lzX2VuYWJsZWQoaW50IGRlYnVnZnNfZmQpCitzdGF0aWMgYm9vbCBmYmNfY2hl
-Y2tfc3RhdHVzKGludCBkZWJ1Z2ZzX2ZkLCBib29sIGVuYWJsZWQpCiB7CiAJY2hhciBidWZbMTI4
-XTsKIAogCWlndF9kZWJ1Z2ZzX3NpbXBsZV9yZWFkKGRlYnVnZnNfZmQsICJpOTE1X2ZiY19zdGF0
-dXMiLCBidWYsCiAJCQkJc2l6ZW9mKGJ1ZikpOwotCXJldHVybiBzdHJzdHIoYnVmLCAiRkJDIGVu
-YWJsZWRcbiIpOworCWlmIChlbmFibGVkKQorCQlyZXR1cm4gc3Ryc3RyKGJ1ZiwgIkZCQyBlbmFi
-bGVkXG4iKTsKKwllbHNlCisJCXJldHVybiBzdHJzdHIoYnVmLCAiRkJDIGRpc2FibGVkIik7CiB9
-CiAKIHN0YXRpYyBib29sIGZiY193YWl0X3VudGlsX2VuYWJsZWQoaW50IGRlYnVnZnNfZmQpCiB7
-Ci0JYm9vbCByID0gaWd0X3dhaXQoZmJjX2lzX2VuYWJsZWQoZGVidWdmc19mZCksIDUwMDAsIDEp
-OworCWJvb2wgciA9IGlndF93YWl0KGZiY19jaGVja19zdGF0dXMoZGVidWdmc19mZCwgdHJ1ZSks
-IDUwMDAsIDEpOworCWZiY19wcmludF9zdGF0dXMoZGVidWdmc19mZCk7CisJcmV0dXJuIHI7Cit9
-CisKK3N0YXRpYyBib29sIGZiY193YWl0X3VudGlsX2Rpc2FibGVkKGludCBkZWJ1Z2ZzX2ZkKQor
-eworCWJvb2wgciA9IGlndF93YWl0KGZiY19jaGVja19zdGF0dXMoZGVidWdmc19mZCwgZmFsc2Up
-LCA1MDAwLCAxKTsKIAlmYmNfcHJpbnRfc3RhdHVzKGRlYnVnZnNfZmQpOwogCXJldHVybiByOwog
-fQpAQCAtMTQxLDcgKzE1MSw3IEBAIHN0YXRpYyBib29sIGZiY193YWl0X3VudGlsX3VwZGF0ZShp
-bnQgZGVidWdmcykKIAkgKiBJZiBvbmUgZGF5IGZiY29uIHN0YXJ0cyB0byB1c2UgYSB0aWxlZCBm
-cmFtZWJ1ZmZlciB3ZSB3b3VsZCBuZWVkIHRvCiAJICogY2hlY2sgdGhlICdDb21wcmVzc2luZycg
-c3RhdHVzIGFzIGluIGVhY2ggYmxpbmsgaXQgd291bGQgYmUgZGlzYWJsZWQuCiAJICovCi0JcmV0
-dXJuICFmYmNfd2FpdF91bnRpbF9lbmFibGVkKGRlYnVnZnMpOworCXJldHVybiBmYmNfd2FpdF91
-bnRpbF9kaXNhYmxlZChkZWJ1Z2ZzKTsKIH0KIAogdHlwZWRlZiBib29sICgqY29ubmVjdG9yX3Bv
-c3NpYmxlX2ZuKShkcm1Nb2RlQ29ubmVjdG9yUHRyIGNvbm5lY3Rvcik7Ci0tIAoyLjI2LjAKCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFp
-bGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+On 25/03/2020 21:06, Dixit, Ashutosh wrote:
+> On Thu, 19 Mar 2020 15:52:54 -0700, Umesh Nerlige Ramappa wrote:
+>> Add poll delay parameter to the i915-perf-recorder tool so that the user
+>> can set the frequency of the poll timer that checks for available
+>> reports in the OA buffer.
+>>
+>> v2:
+>> - Change poll period parameter type to match kernel interface (Lionel)
+>> - Update to use poll period in the code (Ashutosh)
+>>
+>> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+>> Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+>> ---
+>>   tools/i915-perf/i915_perf_recorder.c | 37 +++++++++++++++++++++++++---
+>>   1 file changed, 34 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/tools/i915-perf/i915_perf_recorder.c b/tools/i915-perf/i915_perf_recorder.c
+>> index 6bbc451e..ca4f13ea 100644
+>> --- a/tools/i915-perf/i915_perf_recorder.c
+>> +++ b/tools/i915-perf/i915_perf_recorder.c
+>> @@ -374,6 +391,11 @@ perf_open(struct recording_context *ctx)
+>> 	properties[p++] = DRM_I915_PERF_PROP_OA_EXPONENT;
+>> 	properties[p++] = ctx->oa_exponent;
+>>
+>> +	if (revision >= 4) {
+> Isn't this revision >= 5?
+
+
+Well spotted :)
+
+
+>
+>> @@ -720,7 +742,10 @@ usage(const char *name)
+>> 		"                                       (To use with i915-perf-control)\n"
+>> 		"     --output,             -o <path>   Output file (default = i915_perf.record)\n"
+>> 		"     --cpu-clock,          -k <path>   Cpu clock to use for correlations\n"
+>> -		"                                       Values: boot, mono, mono_raw (default = mono)\n",
+>> +		"                                       Values: boot, mono, mono_raw (default = mono)\n"
+>> +		"     --poll-delay          -P <value>  Polling interval in microseconds used by a timer in the driver to query\n"
+> Call this poll-period too?
+>
+>> @@ -788,9 +814,11 @@ main(int argc, char *argv[])
+>>
+>> 		.command_fifo = I915_PERF_RECORD_FIFO_PATH,
+>> 		.command_fifo_fd = -1,
+>> +
+>> +		.poll_period = 5 * 1000 * 1000,
+> Put a comment above that this is 5 ms?
+>
+> Otherwise, one thing missing in the patch is that if timer poll period is
+> long we may need a larger buffer than the 4K buffer being used in
+> write_i915_perf_data(). To address this I have just posted the following
+> i915 patch:
+>
+> https://patchwork.freedesktop.org/series/75085/
+
+
+write_i915_perf_data() just pulls the data and writes it back into the output.
+It doesn't matter that it's 4k, it just needs to be bigger enough to hold at least one report.
+
+-Lionel
+
+>
+> So I think we should not increase the size of the buffer here but use the
+> kernel patch above to handle the small user read buffer
+> situation. Thoughts?
+> --
+> Ashutosh
+
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
