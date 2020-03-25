@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 25 Mar 2020 12:41:46 -0000
-Message-ID: <158514010679.29634.17438924045251020107@emeril.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C642D6E854
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Mar 2020 12:52:55 +0000 (UTC)
+Date: Wed, 25 Mar 2020 14:52:53 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200325125253.GZ9497@platvala-desk.ger.corp.intel.com>
 References: <20200325123318.240545-1-chris@chris-wilson.co.uk>
+MIME-Version: 1.0
+Content-Disposition: inline
 In-Reply-To: <20200325123318.240545-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_r?=
- =?utf-8?q?unner=3A_Only_show_the_kmsg_underflow/overflow_message_once?=
+Subject: Re: [igt-dev] [PATCH i-g-t] runner: Only show the kmsg
+ underflow/overflow message once
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,7 +18,6 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
@@ -23,66 +26,75 @@ To: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Wed, Mar 25, 2020 at 12:33:18PM +0000, Chris Wilson wrote:
+> Instead of repeating every single time we underflow the read from kmsg,
+> just once per test is enough warning.
+> 
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> ---
+>  runner/executor.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+> 
+> diff --git a/runner/executor.c b/runner/executor.c
+> index a56cb5d66..b26cb7bc7 100644
+> --- a/runner/executor.c
+> +++ b/runner/executor.c
+> @@ -549,6 +549,8 @@ static int dump_dmesg(int kmsgfd, int outfd)
+>  	int comparefd;
+>  	unsigned flags;
+>  	unsigned long long seq, cmpseq, usec;
+> +	bool underflow_once = false;
+> +	bool overflow_once = false;
+>  	char cont;
+>  	char buf[2048];
+>  	ssize_t r;
+> @@ -586,10 +588,16 @@ static int dump_dmesg(int kmsgfd, int outfd)
+>  		r = read(kmsgfd, buf, sizeof(buf));
+>  		if (r < 0) {
+>  			if (errno == EPIPE) {
+> -				errf("Warning: kernel log ringbuffer underflow, some records lost.\n");
+> +				if (!overflow_once) {
+> +					errf("Warning: kernel log ringbuffer underflow, some records lost.\n");
+> +					overflow_once = true;
+> +				}
 
-Series: runner: Only show the kmsg underflow/overflow message once
-URL   : https://patchwork.freedesktop.org/series/75072/
-State : warning
+if (!overflow_once)
+Warning: underflow
 
-== Summary ==
 
-Did not get list of undocumented tests for this run, something is wrong!
+And then
 
-Other than that, pipeline status: FAILED.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/124138 for the overview.
+if (!underflow_once)
+Warning: overflow
 
-build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/2053549):
-      ],
-      "Created": "2019-11-20T12:52:11.314879441Z",
-      "DockerVersion": "",
-      "Labels": {},
-      "Architecture": "amd64",
-      "Os": "linux",
-      "Layers": [
-          "sha256:6faa5c149a3696b478cdf88493dae7020ea609735e2078074cf15c9f9a587374"
-      ]
-  }
-  Skipping, already built
-  Getting image source signatures
-  time="2020-03-25T12:41:13Z" level=fatal msg="Error trying to reuse blob sha256:6faa5c149a3696b478cdf88493dae7020ea609735e2078074cf15c9f9a587374 at destination: Get https://gitlab.freedesktop.org/jwt/auth?account=gitlab-ci-token&scope=repository%3Agfx-ci%2Figt-ci-tags%2Fbuild-debian-arm64%3Apull%2Cpush&service=container_registry: net/http: TLS handshake timeout" 
-  section_end:1585140074:build_script
-  section_start:1585140074:after_script
-  section_end:1585140075:after_script
-  section_start:1585140075:upload_artifacts_on_failure
-  section_end:1585140076:upload_artifacts_on_failure
-  ERROR: Job failed: exit code 1
-  
 
-build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/2053551):
-      ],
-      "Created": "2019-11-20T12:57:39.183198159Z",
-      "DockerVersion": "",
-      "Labels": {},
-      "Architecture": "amd64",
-      "Os": "linux",
-      "Layers": [
-          "sha256:1ca91544b9f16a2d00191e28750d68ec6a73b9e39ff450b4a88d589239052a78"
-      ]
-  }
-  Skipping, already built
-  Getting image source signatures
-  time="2020-03-25T12:41:15Z" level=fatal msg="Error trying to reuse blob sha256:1ca91544b9f16a2d00191e28750d68ec6a73b9e39ff450b4a88d589239052a78 at destination: Head https://registry.freedesktop.org/v2/gfx-ci/igt-ci-tags/build-debian-mips/blobs/sha256:1ca91544b9f16a2d00191e28750d68ec6a73b9e39ff450b4a88d589239052a78: net/http: TLS handshake timeout" 
-  section_end:1585140075:build_script
-  section_start:1585140075:after_script
-  section_end:1585140077:after_script
-  section_start:1585140077:upload_artifacts_on_failure
-  section_end:1585140078:upload_artifacts_on_failure
-  ERROR: Job failed: exit code 1
 
-== Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/124138
+>  				continue;
+>  			} else if (errno == EINVAL) {
+> -				errf("Warning: Buffer too small for kernel log record, record lost.\n");
+> +				if (!underflow_once) {
+> +					errf("Warning: Buffer too small for kernel log record, record lost.\n");
+> +					underflow_once = true;
+> +				}
+
+I'd just not bother with once-proofing this case here. If it happens,
+we will fix it by increasing buf to 4k from 2k.
+
+For those in the audience, EINVAL happens when the next single kernel
+log record is larger than the read() buffer. Whereas EPIPE is about
+the number of log records that are unread.
+
+
+tl;dr: Just once-proof the EPIPE-underflow and call it underflow_once.
+
+Next order of business is hooking that underflow to cause dmesg-warn.
+
+
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
