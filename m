@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 63BD16E2E0
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2020 08:27:56 +0000 (UTC)
-Date: Thu, 26 Mar 2020 10:23:21 +0200
-From: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
-Message-ID: <20200326082321.GA8941@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 777866E894
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2020 08:49:31 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+Date: Thu, 26 Mar 2020 08:49:28 +0000
+Message-ID: <0e45654c04314f0b90ffc81359600a57@intel.com>
 References: <20200326070928.30377-1-mika.kahola@intel.com>
  <20200326080423.GA8829@intel.com>
  <ef3eb33fdd4b4b909bee6ea4021407aa@intel.com>
+ <20200326082321.GA8941@intel.com>
+In-Reply-To: <20200326082321.GA8941@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <ef3eb33fdd4b4b909bee6ea4021407aa@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Test maximum
  number of planes supported by the platform
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -24,29 +25,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Kahola, Mika" <mika.kahola@intel.com>
+To: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
 Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
+
+
+
+-----Original Message-----
+From: Lisovskiy, Stanislav <stanislav.lisovskiy@intel.com> 
+Sent: Thursday, March 26, 2020 10:23 AM
+To: Kahola, Mika <mika.kahola@intel.com>
+Cc: igt-dev@lists.freedesktop.org; juhapekka.heikkila@gmail.com
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Test maximum number of planes supported by the platform
 
 On Thu, Mar 26, 2020 at 10:20:10AM +0200, Kahola, Mika wrote:
 > 
 > 
 > -----Original Message-----
-> From: Lisovskiy, Stanislav <stanislav.lisovskiy@intel.com> 
+> From: Lisovskiy, Stanislav <stanislav.lisovskiy@intel.com>
 > Sent: Thursday, March 26, 2020 10:04 AM
 > To: Kahola, Mika <mika.kahola@intel.com>
 > Cc: igt-dev@lists.freedesktop.org; juhapekka.heikkla@gmail.com
-> Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Test maximum number of planes supported by the platform
+> Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Test 
+> maximum number of planes supported by the platform
 > 
 > On Thu, Mar 26, 2020 at 09:09:28AM +0200, Mika Kahola wrote:
 > > There was an error in commit 0ab05a51a059 on computing number of 
-> > maximum supported planes. This patch proposes a fix to this commit by 
-> > first computing the number of planes that are within platform's 
+> > maximum supported planes. This patch proposes a fix to this commit 
+> > by first computing the number of planes that are within platform's 
 > > bandwidth requirements, resets the display and then executes the actual testing.
 > > 
 > > Signed-off-by: Mika Kahola <mika.kahola@intel.com>
 > > ---
-> >  tests/kms_concurrent.c | 104 
+> >  tests/kms_concurrent.c | 104
 > > +++++++++++++++++++----------------------
 > >  1 file changed, 47 insertions(+), 57 deletions(-)
 > > 
@@ -55,10 +66,11 @@ On Thu, Mar 26, 2020 at 10:20:10AM +0200, Kahola, Mika wrote:
 > > --- a/tests/kms_concurrent.c
 > > +++ b/tests/kms_concurrent.c
 > > @@ -195,6 +195,27 @@ prepare_planes(data_t *data, enum pipe pipe, int max_planes,
-> >  	igt_plane_set_fb(data->plane[primary->index], 
+> >  	igt_plane_set_fb(data->plane[primary->index],
 > > &data->fb[primary->index]);  }
 > >  
-> > +static int test_bandwidth(data_t *data, enum pipe pipe, igt_output_t 
+> > +static int test_bandwidth(data_t *data, enum pipe pipe, 
+> > +igt_output_t
 > > +*output) {
 > > +
 > > +	int n_planes = data->display.pipes[pipe].n_planes;
@@ -90,13 +102,18 @@ On Thu, Mar 26, 2020 at 10:20:10AM +0200, Kahola, Mika wrote:
 > Thanks for the review!
 
 I think only global or static variables are initialized as 0(unless there is some sneak gcc option I'm not aware of).
-Static function itself doesn't make it's data static(in fact that naming is confusing, because static function is about
-scope basically while static data is completely different story)
+Static function itself doesn't make it's data static(in fact that naming is confusing, because static function is about scope basically while static data is completely different story)
 
 Got curious and built example even - nope it returns garbage :)
 
 Stan
 
+Local variables undefined. It can return a value whatever is in the stack at that moment. So no guarantees, what the initialized value is. 
+
+Anyway, I will remove the whole max_planes variable on v2 version.
+
+Cheers,
+Mika 
 > 
 > Cheers,
 > Mika
@@ -159,8 +176,8 @@ Stan
 > > -		igt_assert_lt(0, max_planes);
 > >  
 > >  		mode_hi = igt_output_get_mode(output);
-> >  		mode_lo = get_lowres_mode(data, mode_hi, output); @@ -293,48 
-> > +287,35 @@ test_resolution_with_output(data_t *data, enum pipe pipe, 
+> >  		mode_lo = get_lowres_mode(data, mode_hi, output); @@ -293,48
+> > +287,35 @@ test_resolution_with_output(data_t *data, enum pipe pipe,
 > > igt_output_t *output)
 > >  
 > >  		i++;
@@ -171,7 +188,7 @@ Stan
 > >  
 > >  static void
 > > -run_test(data_t *data, enum pipe pipe, igt_output_t *output)
-> > +run_test(data_t *data, enum pipe pipe, int max_planes, igt_output_t 
+> > +run_test(data_t *data, enum pipe pipe, int max_planes, igt_output_t
 > > +*output)
 > >  {
 > > -	int connected_outs;
