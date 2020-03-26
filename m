@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 634946E2CF
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2020 08:08:19 +0000 (UTC)
-Date: Thu, 26 Mar 2020 10:04:23 +0200
-From: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
-Message-ID: <20200326080423.GA8829@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 836446E2E6
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Mar 2020 08:20:13 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+Date: Thu, 26 Mar 2020 08:20:10 +0000
+Message-ID: <ef3eb33fdd4b4b909bee6ea4021407aa@intel.com>
 References: <20200326070928.30377-1-mika.kahola@intel.com>
+ <20200326080423.GA8829@intel.com>
+In-Reply-To: <20200326080423.GA8829@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200326070928.30377-1-mika.kahola@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Test maximum
  number of planes supported by the platform
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -22,31 +23,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mika Kahola <mika.kahola@intel.com>
-Cc: igt-dev@lists.freedesktop.org, juhapekka.heikkla@gmail.com
+To: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+
+
+-----Original Message-----
+From: Lisovskiy, Stanislav <stanislav.lisovskiy@intel.com> 
+Sent: Thursday, March 26, 2020 10:04 AM
+To: Kahola, Mika <mika.kahola@intel.com>
+Cc: igt-dev@lists.freedesktop.org; juhapekka.heikkla@gmail.com
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_concurrent: Test maximum number of planes supported by the platform
+
 On Thu, Mar 26, 2020 at 09:09:28AM +0200, Mika Kahola wrote:
-> There was an error in commit 0ab05a51a059 on computing number of maximum
-> supported planes. This patch proposes a fix to this commit by first computing
-> the number of planes that are within platform's bandwidth requirements, resets
-> the display and then executes the actual testing.
+> There was an error in commit 0ab05a51a059 on computing number of 
+> maximum supported planes. This patch proposes a fix to this commit by 
+> first computing the number of planes that are within platform's 
+> bandwidth requirements, resets the display and then executes the actual testing.
 > 
 > Signed-off-by: Mika Kahola <mika.kahola@intel.com>
 > ---
->  tests/kms_concurrent.c | 104 +++++++++++++++++++----------------------
+>  tests/kms_concurrent.c | 104 
+> +++++++++++++++++++----------------------
 >  1 file changed, 47 insertions(+), 57 deletions(-)
 > 
-> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-> index 61137139..98a115da 100644
+> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c index 
+> 61137139..98a115da 100644
 > --- a/tests/kms_concurrent.c
 > +++ b/tests/kms_concurrent.c
 > @@ -195,6 +195,27 @@ prepare_planes(data_t *data, enum pipe pipe, int max_planes,
->  	igt_plane_set_fb(data->plane[primary->index], &data->fb[primary->index]);
->  }
+>  	igt_plane_set_fb(data->plane[primary->index], 
+> &data->fb[primary->index]);  }
 >  
-> +static int test_bandwidth(data_t *data, enum pipe pipe, igt_output_t *output)
-> +{
+> +static int test_bandwidth(data_t *data, enum pipe pipe, igt_output_t 
+> +*output) {
 > +
 > +	int n_planes = data->display.pipes[pipe].n_planes;
 > +	int max_planes;
@@ -66,14 +77,18 @@ On Thu, Mar 26, 2020 at 09:09:28AM +0200, Mika Kahola wrote:
 > +	return max_planes;
 > +}
 
-This code might return uninitialized max_planes. For example you start cycle, igt_display_commit2 returns non-zero,
-then you break, but max_planes is left uninitialized and then garbage is returned. 
+This code might return uninitialized max_planes. For example you start cycle, igt_display_commit2 returns non-zero, then you break, but max_planes is left uninitialized and then garbage is returned. 
 
-You actually don't even need max_planes variable - could just return i - 1, thus avoiding unnecessary assignments
-or otherwise should initialize max_planes with 0.
+You actually don't even need max_planes variable - could just return i - 1, thus avoiding unnecessary assignments or otherwise should initialize max_planes with 0.
 
 Stan
 
+You're propably right. One shouldn't take granted that variable is initialized as 0. Actually, that wouldn't make any sense either. I'll go by returning i-1 as you proposed. 
+
+Thanks for the review!
+
+Cheers,
+Mika
 > +
 >  static void
 >  test_plane_position_with_output(data_t *data, enum pipe pipe, int max_planes,
@@ -93,8 +108,8 @@ Stan
 >  
 > -static int
 > +static void
->  test_resolution_with_output(data_t *data, enum pipe pipe, igt_output_t *output)
->  {
+>  test_resolution_with_output(data_t *data, enum pipe pipe, 
+> igt_output_t *output)  {
 >  	const drmModeModeInfo *mode_hi, *mode_lo;
 >  	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
 >  	bool loop_forever = opt.iterations == LOOP_FOREVER ? true : false;
@@ -133,8 +148,9 @@ Stan
 > -		igt_assert_lt(0, max_planes);
 >  
 >  		mode_hi = igt_output_get_mode(output);
->  		mode_lo = get_lowres_mode(data, mode_hi, output);
-> @@ -293,48 +287,35 @@ test_resolution_with_output(data_t *data, enum pipe pipe, igt_output_t *output)
+>  		mode_lo = get_lowres_mode(data, mode_hi, output); @@ -293,48 
+> +287,35 @@ test_resolution_with_output(data_t *data, enum pipe pipe, 
+> igt_output_t *output)
 >  
 >  		i++;
 >  	}
@@ -144,7 +160,8 @@ Stan
 >  
 >  static void
 > -run_test(data_t *data, enum pipe pipe, igt_output_t *output)
-> +run_test(data_t *data, enum pipe pipe, int max_planes, igt_output_t *output)
+> +run_test(data_t *data, enum pipe pipe, int max_planes, igt_output_t 
+> +*output)
 >  {
 > -	int connected_outs;
 > -	int n_planes = data->display.pipes[pipe].n_planes;
@@ -187,8 +204,7 @@ Stan
 >  }
 >  
 >  static void
->  run_tests_for_pipe(data_t *data, enum pipe pipe)
->  {
+>  run_tests_for_pipe(data_t *data, enum pipe pipe)  {
 >  	igt_output_t *output;
 > +	int max_planes;
 >  
@@ -216,7 +232,7 @@ Stan
 >  }
 >  
 >  static int opt_handler(int option, int option_index, void *input)
-> -- 
+> --
 > 2.20.1
 > 
 > _______________________________________________
