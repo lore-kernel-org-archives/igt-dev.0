@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D0BFD6E03D
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Mar 2020 00:27:53 +0000 (UTC)
-From: Swathi Dhanavanthri <swathi.dhanavanthri@intel.com>
-Date: Thu, 26 Mar 2020 17:23:01 -0700
-Message-Id: <20200327002301.16434-1-swathi.dhanavanthri@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3] lib: Sync i915_pciids.h with kernel
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 27 Mar 2020 01:11:03 -0000
+Message-ID: <158527146342.17236.10940625854336255083@emeril.freedesktop.org>
+References: <20200327002301.16434-1-swathi.dhanavanthri@intel.com>
+In-Reply-To: <20200327002301.16434-1-swathi.dhanavanthri@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliOiBz?=
+ =?utf-8?q?ync_i915=5Fpciids=2Eh_with_kernel_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,116 +14,99 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Changes:
-3882581753d1 ("drm/i915/tgl: Add new PCI IDs to TGL")
-v2: Separated U series CML IDs to be in sync with kernel
-8717c6b7414f ("Separate U series pci id from origianl list")
-v3: Updating lib/intel_device_info.c with the U series
+== Series Details ==
 
-Signed-off-by: Swathi Dhanavanthri <swathi.dhanavanthri@intel.com>
----
- lib/i915_pciids.h       | 32 +++++++++++++++++++-------------
- lib/intel_device_info.c |  2 ++
- 2 files changed, 21 insertions(+), 13 deletions(-)
+Series: lib: sync i915_pciids.h with kernel (rev6)
+URL   : https://patchwork.freedesktop.org/series/50957/
+State : success
 
-diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
-index 3e26a917..662d8351 100644
---- a/lib/i915_pciids.h
-+++ b/lib/i915_pciids.h
-@@ -446,23 +446,18 @@
- 
- /* CML GT1 */
- #define INTEL_CML_GT1_IDS(info)	\
--	INTEL_VGA_DEVICE(0x9B21, info), \
--	INTEL_VGA_DEVICE(0x9BAA, info), \
--	INTEL_VGA_DEVICE(0x9BAB, info), \
--	INTEL_VGA_DEVICE(0x9BAC, info), \
--	INTEL_VGA_DEVICE(0x9BA0, info), \
- 	INTEL_VGA_DEVICE(0x9BA5, info), \
- 	INTEL_VGA_DEVICE(0x9BA8, info), \
- 	INTEL_VGA_DEVICE(0x9BA4, info), \
- 	INTEL_VGA_DEVICE(0x9BA2, info)
- 
-+#define INTEL_CML_U_GT1_IDS(info) \
-+	INTEL_VGA_DEVICE(0x9B21, info), \
-+	INTEL_VGA_DEVICE(0x9BAA, info), \
-+	INTEL_VGA_DEVICE(0x9BAC, info)
-+
- /* CML GT2 */
- #define INTEL_CML_GT2_IDS(info)	\
--	INTEL_VGA_DEVICE(0x9B41, info), \
--	INTEL_VGA_DEVICE(0x9BCA, info), \
--	INTEL_VGA_DEVICE(0x9BCB, info), \
--	INTEL_VGA_DEVICE(0x9BCC, info), \
--	INTEL_VGA_DEVICE(0x9BC0, info), \
- 	INTEL_VGA_DEVICE(0x9BC5, info), \
- 	INTEL_VGA_DEVICE(0x9BC8, info), \
- 	INTEL_VGA_DEVICE(0x9BC4, info), \
-@@ -471,6 +466,11 @@
- 	INTEL_VGA_DEVICE(0x9BE6, info), \
- 	INTEL_VGA_DEVICE(0x9BF6, info)
- 
-+#define INTEL_CML_U_GT2_IDS(info) \
-+	INTEL_VGA_DEVICE(0x9B41, info), \
-+	INTEL_VGA_DEVICE(0x9BCA, info), \
-+	INTEL_VGA_DEVICE(0x9BCC, info)
-+
- #define INTEL_KBL_IDS(info) \
- 	INTEL_KBL_GT1_IDS(info), \
- 	INTEL_KBL_GT2_IDS(info), \
-@@ -536,7 +536,9 @@
- 	INTEL_WHL_U_GT3_IDS(info), \
- 	INTEL_AML_CFL_GT2_IDS(info), \
- 	INTEL_CML_GT1_IDS(info), \
--	INTEL_CML_GT2_IDS(info)
-+	INTEL_CML_GT2_IDS(info), \
-+	INTEL_CML_U_GT1_IDS(info), \
-+	INTEL_CML_U_GT2_IDS(info)
- 
- /* CNL */
- #define INTEL_CNL_PORT_F_IDS(info) \
-@@ -591,12 +593,16 @@
- 
- /* TGL */
- #define INTEL_TGL_12_IDS(info) \
--	INTEL_VGA_DEVICE(0x9A49, info), \
- 	INTEL_VGA_DEVICE(0x9A40, info), \
-+	INTEL_VGA_DEVICE(0x9A49, info), \
- 	INTEL_VGA_DEVICE(0x9A59, info), \
- 	INTEL_VGA_DEVICE(0x9A60, info), \
- 	INTEL_VGA_DEVICE(0x9A68, info), \
- 	INTEL_VGA_DEVICE(0x9A70, info), \
--	INTEL_VGA_DEVICE(0x9A78, info)
-+	INTEL_VGA_DEVICE(0x9A78, info), \
-+	INTEL_VGA_DEVICE(0x9AC0, info), \
-+	INTEL_VGA_DEVICE(0x9AC9, info), \
-+	INTEL_VGA_DEVICE(0x9AD9, info), \
-+	INTEL_VGA_DEVICE(0x9AF8, info)
- 
- #endif /* _I915_PCIIDS_H */
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index 208965d1..21f7a957 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -395,6 +395,8 @@ static const struct pci_id_match intel_device_match[] = {
- 
- 	INTEL_CML_GT1_IDS(&intel_cometlake_gt1_info),
- 	INTEL_CML_GT2_IDS(&intel_cometlake_gt2_info),
-+	INTEL_CML_U_GT1_IDS(&intel_cometlake_gt1_info),
-+	INTEL_CML_U_GT2_IDS(&intel_cometlake_gt2_info),
- 
- 	INTEL_CNL_IDS(&intel_cannonlake_info),
- 
--- 
-2.20.1
+== Summary ==
 
+CI Bug Log - changes from CI_DRM_8197 -> IGTPW_4361
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4361/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4361 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bxt-dsi:         [PASS][1] -> [INCOMPLETE][2] ([fdo#103927] / [i915#656])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8197/fi-bxt-dsi/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4361/fi-bxt-dsi/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@requests:
+    - fi-icl-u2:          [PASS][3] -> [INCOMPLETE][4] ([fdo#109644] / [fdo#110464])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8197/fi-icl-u2/igt@i915_selftest@live@requests.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4361/fi-icl-u2/igt@i915_selftest@live@requests.html
+    - fi-icl-guc:         [PASS][5] -> [INCOMPLETE][6] ([fdo#109644] / [fdo#110464])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8197/fi-icl-guc/igt@i915_selftest@live@requests.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4361/fi-icl-guc/igt@i915_selftest@live@requests.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-cml-u2:          [PASS][7] -> [DMESG-WARN][8] ([IGT#4])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8197/fi-cml-u2/igt@kms_chamelium@common-hpd-after-suspend.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4361/fi-cml-u2/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-bwr-2160:        [INCOMPLETE][9] -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8197/fi-bwr-2160/igt@i915_selftest@live@late_gt_pm.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4361/fi-bwr-2160/igt@i915_selftest@live@late_gt_pm.html
+
+  
+  [IGT#4]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/4
+  [fdo#103927]: https://bugs.freedesktop.org/show_bug.cgi?id=103927
+  [fdo#109644]: https://bugs.freedesktop.org/show_bug.cgi?id=109644
+  [fdo#110464]: https://bugs.freedesktop.org/show_bug.cgi?id=110464
+  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
+
+
+Participating hosts (44 -> 36)
+------------------------------
+
+  Additional (2): fi-kbl-r fi-kbl-7500u 
+  Missing    (10): fi-bdw-5557u fi-hsw-4200u fi-byt-j1900 fi-hsw-peppy fi-byt-squawks fi-bsw-cyan fi-skl-lmem fi-bdw-samus fi-bsw-nick fi-skl-6600u 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5539 -> IGTPW_4361
+
+  CI-20190529: 20190529
+  CI_DRM_8197: 198bab1da198b9d6d5c36d52704dd4abab6e81a8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4361: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4361/index.html
+  IGT_5539: e7aae12e37771a8b7796ba252574eb832a5839c3 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4361/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
