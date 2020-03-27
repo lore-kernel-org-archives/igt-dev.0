@@ -1,14 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 10F0A6EA29
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Mar 2020 13:20:12 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B0686EA2D
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Mar 2020 13:25:45 +0000 (UTC)
 References: <20200317071906.28879-1-swati2.sharma@intel.com>
- <20200324163115.GX13686@intel.com>
+ <d3e6151fe36b4871a87c08eef2850cca@intel.com>
 From: "Sharma, Swati2" <swati2.sharma@intel.com>
-Message-ID: <d59d2ca2-c280-1cc0-e897-860d5f9dffcc@intel.com>
-Date: Fri, 27 Mar 2020 18:50:07 +0530
+Message-ID: <b66d5904-8cd9-66b7-e6fe-2eb577ddaca8@intel.com>
+Date: Fri, 27 Mar 2020 18:55:40 +0530
 MIME-Version: 1.0
-In-Reply-To: <20200324163115.GX13686@intel.com>
+In-Reply-To: <d3e6151fe36b4871a87c08eef2850cca@intel.com>
 Content-Language: en-US
 Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/kms_atomic: add test to
  validate immutable zpos
@@ -19,215 +19,311 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com
+To: "Peres, Martin" <martin.peres@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Latvala, Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-CgpPbiAyNC1NYXItMjAgMTA6MDEgUE0sIFZpbGxlIFN5cmrDpGzDpCB3cm90ZToKPiBPbiBUdWUs
-IE1hciAxNywgMjAyMCBhdCAxMjo0OTowNlBNICswNTMwLCBTd2F0aSBTaGFybWEgd3JvdGU6Cj4+
-IGk5MTUgaW1wbGVtZW50cyBpbW11dGFibGUgenBvcyBwcm9wZXJ0eSB3aGVyZWFzIHRoZSBleGlz
-dGluZyB0ZXN0Cj4+IGNhc2UgaXMgd3JpdHRlbiB0byB2YWxpZGF0ZSBtdXRhYmxlIHpwb3MuCj4+
-Cj4+IEFkZGVkIGEgbmV3IHN1Yi10ZXN0IHRvIHZhbGlkYXRlIGltbXV0YWJsZSB6cG9zLiBUZXN0
-IHZhbGlkYXRlcwo+PiB0aGUgcmVwb3J0ZWQgenBvcyBwcm9wZXJ0eSBvZiBwbGFuZSBieSBtYWtp
-bmcgc3VyZSBvbmx5IGhpZ2hlcgo+PiB6cG9zIHBsYW5lIGNvdmVycyB0aGUgbG93ZXIgenBvcyBv
-bmUgKGxvd2VyIHBsYW5lIGNvdmVycyBmdWxsIHNjcmVlbiwKPj4gdXBwZXIgcGxhbmUgY292ZXJz
-IGhhbGYgc2NyZWVuKS4KPj4KPj4gT25seSB0d28gcGxhbmVzIGF0IGEgdGltZSBhcmUgdGVzdGVk
-IGluIGluY3JlYXNpbmcgZmFzaGlvbiB0byBhdm9pZAo+PiBjb21iaW5hdG9yaWFsIGV4cGxvc2lv
-bi4gQnkgdHJhbnNpdGl2ZSBwcm9wZXJ0eSwKPj4gaWYgKHAxLCB6MSkgPCAocDIsIHoyKSBhbmQg
-KHAyLCB6MikgPCAocDMsIHozKSB0aGVuIChwMSwgejEpIDwgKHAzLCB6MykKPj4KPj4gd2hlcmUg
-cCBhbmQgeiBkZW5vdGVzIHBsYW5lcyBhbmQgenBvcwo+Pgo+PiB2MjogLVJlbW92ZWQgaW50ZWwg
-b25seSBjaGVja3MgW01hcnRpbl0KPj4gICAgICAtVXNlZCBYUkdCODg4OCBwaXhlbCBmb3JtYXQg
-YXMgdXNlZCBpbiBvdGhlciBJR1RzCj4+ICAgICAgLUFkZGVkIGRvY3VtZW50YXRpb24gW01hcnRp
-bl0KPj4gICAgICAtUmVtb3ZlZCBza2lwLCBpbnN0ZWFkIGNvbnRpbnVlIGlmIHBsYW5lIGRvZXNu
-J3Qgc3VwcG9ydCB6cG9zIFtNYXJ0aW5dCj4+ICAgICAgLVNvcnRlZCBwbGFuZXMgaW4gaW5jcmVh
-c2luZyBvcmRlciBvZiB6cG9zIFtNYXJ0aW5dCj4+IHYzOiAtRml4IGRlc2NyaXB0aW9uIFtNYXJ0
-aW5dCj4+ICAgICAgLUF2b2lkIHNvcnRpbmcgW0Fua2l0XQo+PiB2NDogLUNoYW5nZSBpbiBjb21t
-aXQgbWVzc2FnZSBbQW5raXRdCj4+ICAgICAgLUZldyBtaW5vciBjaGFuZ2VzIFtBbmtpdF0KPj4K
-Pj4gSXNzdWU6IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVz
-LzQwNAo+PiBTaWduZWQtb2ZmLWJ5OiBTd2F0aSBTaGFybWEgPHN3YXRpMi5zaGFybWFAaW50ZWwu
-Y29tPgo+PiBSZXZpZXdlZC1ieTogTWFydGluIFBlcmVzIDxtYXJ0aW4ucGVyZXNAbGludXguaW50
-ZWwuY29tPgo+PiBSZXZpZXdlZC1ieTogQW5raXQgTmF1dGl5YWwgPGFua2l0LmsubmF1dGl5YWxA
-aW50ZWwuY29tPgo+PiAtLS0KPj4gICB0ZXN0cy9rbXNfYXRvbWljLmMgfCAxNjAgKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tCj4+ICAgMSBmaWxlIGNoYW5nZWQs
-IDE1MCBpbnNlcnRpb25zKCspLCAxMCBkZWxldGlvbnMoLSkKPj4KPj4gZGlmZiAtLWdpdCBhL3Rl
-c3RzL2ttc19hdG9taWMuYyBiL3Rlc3RzL2ttc19hdG9taWMuYwo+PiBpbmRleCA4NDYyZDEyOC4u
-NGNiMzRkNmQgMTAwNjQ0Cj4+IC0tLSBhL3Rlc3RzL2ttc19hdG9taWMuYwo+PiArKysgYi90ZXN0
-cy9rbXNfYXRvbWljLmMKPj4gQEAgLTEyMSw3ICsxMjEsNyBAQCBzdGF0aWMgdm9pZCBwbGFuZV9j
-aGVja19jdXJyZW50X3N0YXRlKGlndF9wbGFuZV90ICpwbGFuZSwgY29uc3QgdWludDY0X3QgKnZh
-bHVlcwo+PiAgIH0KPj4gICAKPj4gICBzdGF0aWMgdm9pZCBwbGFuZV9jb21taXQoaWd0X3BsYW5l
-X3QgKnBsYW5lLCBlbnVtIGlndF9jb21taXRfc3R5bGUgcywKPj4gLSAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgZW51bSBrbXNfYXRvbWljX2NoZWNrX3JlbGF4IHJlbGF4KQo+PiArICAg
-ICAgICAgICAgICAgICAgICAgICAgIGVudW0ga21zX2F0b21pY19jaGVja19yZWxheCByZWxheCkK
-Pj4gICB7Cj4+ICAgCWlndF9kaXNwbGF5X2NvbW1pdDIocGxhbmUtPnBpcGUtPmRpc3BsYXksIHMp
-Owo+PiAgIAlwbGFuZV9jaGVja19jdXJyZW50X3N0YXRlKHBsYW5lLCBwbGFuZS0+dmFsdWVzLCBy
-ZWxheCk7Cj4+IEBAIC0yNzcsOSArMjc3LDkgQEAgc3RhdGljIHVpbnQzMl90IHBsYW5lX2dldF9p
-Z3RfZm9ybWF0KGlndF9wbGFuZV90ICpwbGFuZSkKPj4gICB9Cj4+ICAgCj4+ICAgc3RhdGljIHZv
-aWQKPj4gLXBsYW5lX3ByaW1hcnlfb3ZlcmxheV96cG9zKGlndF9waXBlX3QgKnBpcGUsIGlndF9v
-dXRwdXRfdCAqb3V0cHV0LAo+PiAtCQkJICAgaWd0X3BsYW5lX3QgKnByaW1hcnksIGlndF9wbGFu
-ZV90ICpvdmVybGF5LAo+PiAtCQkJICAgdWludDMyX3QgZm9ybWF0X3ByaW1hcnksIHVpbnQzMl90
-IGZvcm1hdF9vdmVybGF5KQo+PiArcGxhbmVfcHJpbWFyeV9vdmVybGF5X211dGFibGVfenBvcyhp
-Z3RfcGlwZV90ICpwaXBlLCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCwKPj4gKwkJCSAgICAgICAgICAg
-aWd0X3BsYW5lX3QgKnByaW1hcnksIGlndF9wbGFuZV90ICpvdmVybGF5LAo+PiArCQkJICAgICAg
-ICAgICB1aW50MzJfdCBmb3JtYXRfcHJpbWFyeSwgdWludDMyX3QgZm9ybWF0X292ZXJsYXkpCj4+
-ICAgewo+PiAgIAlzdHJ1Y3QgaWd0X2ZiIGZiX3ByaW1hcnksIGZiX292ZXJsYXk7Cj4+ICAgCWRy
-bU1vZGVNb2RlSW5mbyAqbW9kZSA9IGlndF9vdXRwdXRfZ2V0X21vZGUob3V0cHV0KTsKPj4gQEAg
-LTMyMCw3ICszMjAsNyBAQCBwbGFuZV9wcmltYXJ5X292ZXJsYXlfenBvcyhpZ3RfcGlwZV90ICpw
-aXBlLCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCwKPj4gICAJaWd0X3BsYW5lX3NldF9wcm9wX3ZhbHVl
-KG92ZXJsYXksIElHVF9QTEFORV9aUE9TLCAxKTsKPj4gICAKPj4gICAJaWd0X2luZm8oIkNvbW1p
-dHRpbmcgd2l0aCBvdmVybGF5IG9uIHRvcCwgaXQgaGFzIGEgaG9sZSAiXAo+PiAtCQkgICJ0aHJv
-dWdoIHdoaWNoIHRoZSBwcmltYXJ5IHNob3VsZCBiZSBzZWVuXG4iKTsKPj4gKwkJICJ0aHJvdWdo
-IHdoaWNoIHRoZSBwcmltYXJ5IHNob3VsZCBiZSBzZWVuXG4iKTsKPj4gICAJcGxhbmVfY29tbWl0
-KHByaW1hcnksIENPTU1JVF9BVE9NSUMsIEFUT01JQ19SRUxBWF9OT05FKTsKPj4gICAKPj4gICAJ
-aWd0X2Fzc2VydF9lcV91NjQoaWd0X3BsYW5lX2dldF9wcm9wKHByaW1hcnksIElHVF9QTEFORV9a
-UE9TKSwgMCk7Cj4+IEBAIC0zNDYsNyArMzQ2LDcgQEAgcGxhbmVfcHJpbWFyeV9vdmVybGF5X3pw
-b3MoaWd0X3BpcGVfdCAqcGlwZSwgaWd0X291dHB1dF90ICpvdXRwdXQsCj4+ICAgCWlndF9wdXRf
-Y2Fpcm9fY3R4KHBpcGUtPmRpc3BsYXktPmRybV9mZCwgJmZiX3ByaW1hcnksIGNyKTsKPj4gICAK
-Pj4gICAJaWd0X2luZm8oIkNvbW1pdHRpbmcgd2l0aCBhIGhvbGUgaW4gdGhlIHByaW1hcnkgdGhy
-b3VnaCAiXAo+PiAtCQkgICJ3aGljaCB0aGUgdW5kZXJsYXkgc2hvdWxkIGJlIHNlZW5cbiIpOwo+
-PiArCQkgIndoaWNoIHRoZSB1bmRlcmxheSBzaG91bGQgYmUgc2VlblxuIik7Cj4+ICAgCXBsYW5l
-X2NvbW1pdChwcmltYXJ5LCBDT01NSVRfQVRPTUlDLCBBVE9NSUNfUkVMQVhfTk9ORSk7Cj4+ICAg
-Cj4+ICAgCS8qIHJlc2V0IGl0IGJhY2sgdG8gaW5pdGlhbCBzdGF0ZSAqLwo+PiBAQCAtMzU4LDYg
-KzM1OCwxMzYgQEAgcGxhbmVfcHJpbWFyeV9vdmVybGF5X3pwb3MoaWd0X3BpcGVfdCAqcGlwZSwg
-aWd0X291dHB1dF90ICpvdXRwdXQsCj4+ICAgCWlndF9hc3NlcnRfZXFfdTY0KGlndF9wbGFuZV9n
-ZXRfcHJvcChvdmVybGF5LCBJR1RfUExBTkVfWlBPUyksIDEpOwo+PiAgIH0KPj4gICAKPj4gK3N0
-YXRpYyB2b2lkCj4+ICtwbGFuZV9pbW11dGFibGVfenBvcyhpZ3RfZGlzcGxheV90ICpkaXNwbGF5
-LCBpZ3RfcGlwZV90ICpwaXBlLAo+PiArCQkgICAgIGlndF9vdXRwdXRfdCAqb3V0cHV0KQo+PiAr
-ewo+PiArCWNhaXJvX3QgKmNyOwo+PiArCXN0cnVjdCBpZ3RfZmIgZmJfcmVmOwo+PiArCWlndF9w
-bGFuZV90ICpwcmltYXJ5Owo+PiArCWRybU1vZGVNb2RlSW5mbyAqbW9kZTsKPj4gKwlpZ3RfcGlw
-ZV9jcmNfdCAqcGlwZV9jcmM7Cj4+ICsJaWd0X2NyY190IHJlZl9jcmMsIG5ld19jcmM7Cj4+ICsJ
-aW50IG5fcGxhbmVzID0gcGlwZS0+bl9wbGFuZXM7Cj4+ICsJaWd0X3BsYW5lX3QgKnBsYW5lX3B0
-cltuX3BsYW5lc107Cj4+ICsJdWludDMyX3Qgd19sb3dlciwgaF9sb3dlciwgd191cHBlciwgaF91
-cHBlcjsKPj4gKwo+PiArCWlndF9yZXF1aXJlKG5fcGxhbmVzID49IDIpOwo+PiArCj4+ICsJbW9k
-ZSA9IGlndF9vdXRwdXRfZ2V0X21vZGUob3V0cHV0KTsKPj4gKwlwcmltYXJ5ID0gaWd0X3BpcGVf
-Z2V0X3BsYW5lX3R5cGUocGlwZSwgRFJNX1BMQU5FX1RZUEVfUFJJTUFSWSk7Cj4+ICsKPj4gKwkv
-KiBmb3IgbG93ZXIgcGxhbmUgKi8KPj4gKwl3X2xvd2VyID0gbW9kZS0+aGRpc3BsYXk7Cj4+ICsJ
-aF9sb3dlciA9IG1vZGUtPnZkaXNwbGF5Owo+PiArCj4+ICsJLyogZm9yIHVwcGVyIHBsYW5lICov
-Cj4+ICsJd191cHBlciA9IG1vZGUtPmhkaXNwbGF5IC8gMjsKPj4gKwloX3VwcGVyID0gbW9kZS0+
-dmRpc3BsYXkgLyAyOwo+IAo+IEkgd291bGQgbWFrZSB0aGF0IGp1c3QgNjR4NjQgYWthLiBrbXNf
-cGxhbmUvcGl4ZWwtZm9ybWF0Ki4KRG9uZSBpbiB2NS4gV2l0aCB0aGF0IGFuZCBjaGFuZ2UgaW4g
-cGl4ZWwgZm9ybWF0IGFibGUgdG8gdmFsaWRhdGUgY3Vyc29yIApwbGFuZSBhc3dlbGwuCj4gCj4g
-UG90ZW50aWFsbHkgd2UgY291bGQgdXNlIGEgNjR4NjQgZm9yIGFsbCBwbGFuZXMgb24gbWFueSBw
-bGF0Zm9ybXMKPiBidXQgdGhhdCBtaWdodCBjb21wbGljYXRlIHRoZSBsb2dpYyBhIGJpdCBzbyBt
-YXliZSBhIGZ1bGxzY3JlZW4gcGxhbmUKPiBmb3IgdGhlIGxvd2VyciBwbGFuZSBpcyBmaW5lLgo+
-IAo+IEFsaHRvdWdoIHVzaW5nIGEgc21hbGxlciBzaXplIHRoZSBsb3dlciBwbGFuZSB3b3VsZCBi
-ZSBtb3JlIHJvYnVzdCBzaW5jZQo+IHRoZW4gd2UgY291bGQgc2VlIHRoYXQgdGhlIHVwZXIgcGxh
-bmUgbG9va3MgY29ycmVjdCBldmVuIGluIHBsYWNlcyB3aGVyZQo+IHRoZXJlJ3Mgbm8gcGxhbmUg
-YmVsb3cgaXQuCj4gCj4+ICsKPj4gKwlpZ3RfY3JlYXRlX2NvbG9yX2ZiKGRpc3BsYXktPmRybV9m
-ZCwKPj4gKwkJCSAgICB3X2xvd2VyLCBoX2xvd2VyLAo+PiArCQkJICAgIERSTV9GT1JNQVRfWFJH
-Qjg4ODgsCj4+ICsJCQkgICAgSTkxNV9USUxJTkdfTk9ORSwKPj4gKwkJCSAgICAwLjAsIDAuMCwg
-MC4wLCAmZmJfcmVmKTsKPj4gKwo+PiArCS8qIGNyZWF0ZSByZWZlcmVuY2UgaW1hZ2UgKi8KPj4g
-KwljciA9IGlndF9nZXRfY2Fpcm9fY3R4KGRpc3BsYXktPmRybV9mZCwgJmZiX3JlZik7Cj4+ICsJ
-aWd0X2Fzc2VydChjYWlyb19zdGF0dXMoY3IpID09IDApOwo+PiArCWlndF9wYWludF9jb2xvcihj
-ciwgMCwgMCwgd19sb3dlciwgaF9sb3dlciwgMC4wLCAwLjAsIDEuMCk7Cj4+ICsJaWd0X3BhaW50
-X2NvbG9yKGNyLCB3X3VwcGVyIC8gMiwgaF91cHBlciAvIDIsIHdfdXBwZXIsIGhfdXBwZXIsIDEu
-MCwgMS4wLCAwLjApOwo+PiArCWlndF9wdXRfY2Fpcm9fY3R4KGRpc3BsYXktPmRybV9mZCwgJmZi
-X3JlZiwgY3IpOwo+PiArCWlndF9wbGFuZV9zZXRfZmIocHJpbWFyeSwgJmZiX3JlZik7Cj4+ICsJ
-aWd0X2Rpc3BsYXlfY29tbWl0MihkaXNwbGF5LCBDT01NSVRfQVRPTUlDKTsKPj4gKwo+PiArCS8q
-IGNyZWF0ZSB0aGUgcGlwZV9jcmMgb2JqZWN0IGZvciB0aGlzIHBpcGUgKi8KPj4gKwlwaXBlX2Ny
-YyA9IGlndF9waXBlX2NyY19uZXcocGlwZS0+ZGlzcGxheS0+ZHJtX2ZkLCBwaXBlLT5waXBlLAo+
-PiArCQkJCSAgICBJTlRFTF9QSVBFX0NSQ19TT1VSQ0VfQVVUTyk7Cj4+ICsKPj4gKwkvKiBnZXQg
-cmVmZXJlbmNlIGNyYyAqLwo+PiArCWlndF9waXBlX2NyY19zdGFydChwaXBlX2NyYyk7Cj4+ICsJ
-aWd0X3BpcGVfY3JjX2dldF9jdXJyZW50KGRpc3BsYXktPmRybV9mZCwgcGlwZV9jcmMsICZyZWZf
-Y3JjKTsKPj4gKwo+PiArCWlndF9wbGFuZV9zZXRfZmIocHJpbWFyeSwgTlVMTCk7Cj4+ICsKPj4g
-Kwlmb3IgKGludCBrID0gMDsgayA8IG5fcGxhbmVzOyBrKyspIHsKPj4gKwkJaW50IHpwb3M7Cj4+
-ICsJCWlndF9wbGFuZV90ICp0ZW1wOwo+PiArCj4+ICsJCXRlbXAgPSAmZGlzcGxheS0+cGlwZXNb
-cGlwZS0+cGlwZV0ucGxhbmVzW2tdOwo+PiArCj4+ICsJCWlmICghaWd0X3BsYW5lX2hhc19wcm9w
-KHRlbXAsIElHVF9QTEFORV9aUE9TKSkKPj4gKwkJCWNvbnRpbnVlOwo+PiArCj4+ICsJCWFzc2Vy
-dCh6cG9zIDwgbl9wbGFuZXMpOwo+PiArCj4+ICsJCXpwb3MgPSBpZ3RfcGxhbmVfZ2V0X3Byb3Ao
-dGVtcCwgSUdUX1BMQU5FX1pQT1MpOwo+PiArCQlwbGFuZV9wdHJbenBvc10gPSB0ZW1wOwo+PiAr
-CX0KPj4gKwo+PiArCS8qCj4+ICsJICogY2hlY2tpbmcgb25seSBwYWlycyBvZiBwbGFuZSBpbiBp
-bmNyZWFzaW5nIGZhc2hpb24KPj4gKwkgKiB0byBhdm9pZCBjb21iaW5hdG9yaWFsIGV4cGxvc2lv
-bgo+PiArCSAqLwo+PiArCWZvciAoaW50IGkgPSAwOyBpIDwgbl9wbGFuZXMgLSAxOyBpKyspIHsK
-Pj4gKwkJaW50IGZiX2lkX2xvd2VyLCBmYl9pZF91cHBlcjsKPj4gKwkJc3RydWN0IGlndF9mYiBm
-Yl9sb3dlciwgZmJfdXBwZXI7Cj4+ICsJCWlndF9wbGFuZV90ICpwbGFuZV9sb3dlciwgKnBsYW5l
-X3VwcGVyOwo+PiArCj4+ICsJCWlmIChwbGFuZV9wdHJbaV0gIT0gTlVMTCkKPj4gKwkJCXBsYW5l
-X2xvd2VyID0gcGxhbmVfcHRyW2ldOwo+PiArCQllbHNlCj4+ICsJCQljb250aW51ZTsKPj4gKwo+
-PiArCQl3aGlsZSAoaSAgPCAobl9wbGFuZXMgLSAxKSkgewo+PiArCQkJaWYgKHBsYW5lX3B0cltp
-ICsgMV0gIT0gTlVMTCkgewo+PiArCQkJCXBsYW5lX3VwcGVyID0gcGxhbmVfcHRyW2kgKyAxXTsK
-Pj4gKwkJCQlicmVhazsKPj4gKwkJCX0gZWxzZSB7Cj4+ICsJCQkJaSsrOwo+PiArCQkJCWNvbnRp
-bnVlOwo+PiArCQkJfQo+PiArCQl9Cj4+ICsKPj4gKwkJaWYgKGkgPT0gKG5fcGxhbmVzIC0gMSkp
-Cj4+ICsJCQlicmVhazsKPiAKPiBJIGhhdmUgbm8gaWRlYSB3aGF0IHRoaXMgaXMgdHJ5aW5nIHRv
-IGRvLiBKdXN0Cj4gcGljayBwbGFuZVtpXSBhbmQgcGxhbmVbaSsxXSBhbmQgcHJvY2VlZCB3aXRo
-IHRoZSB0ZXN0Pwo+IApZZXMsIHRydWUuIEl0J3Mgbm90IHJlcXVpcmVkLgo+PiArCj4+ICsJCWlm
-ICgocGxhbmVfbG93ZXItPnR5cGUgPT0gRFJNX1BMQU5FX1RZUEVfQ1VSU09SKSB8fAo+PiArCQkJ
-CShwbGFuZV91cHBlci0+dHlwZSA9PSBEUk1fUExBTkVfVFlQRV9DVVJTT1IpKQo+PiArCQkJY29u
-dGludWU7Cj4gCj4gV2Ugd2FudCB0byB0ZXN0IGN1cnNvcnMgdG9vLgoKRG9uZSBpbiB2NS4KPiAK
-Pj4gKwo+PiArCQlmYl9pZF9sb3dlciA9IGlndF9jcmVhdGVfY29sb3JfZmIoZGlzcGxheS0+ZHJt
-X2ZkLAo+PiArCQkJCQkJICB3X2xvd2VyLCBoX2xvd2VyLAo+PiArCQkJCQkJICBEUk1fRk9STUFU
-X1hSR0I4ODg4LAo+PiArCQkJCQkJICBJOTE1X1RJTElOR19OT05FLAo+PiArCQkJCQkJICAwLjAs
-IDAuMCwgMS4wLCAmZmJfbG93ZXIpOwo+PiArCQlpZ3RfYXNzZXJ0KGZiX2lkX2xvd2VyKTsKPj4g
-Kwo+PiArCQlmYl9pZF91cHBlciA9IGlndF9jcmVhdGVfY29sb3JfZmIoZGlzcGxheS0+ZHJtX2Zk
-LAo+PiArCQkJCQkJICB3X3VwcGVyLCBoX3VwcGVyLAo+PiArCQkJCQkJICBEUk1fRk9STUFUX1hS
-R0I4ODg4LAo+PiArCQkJCQkJICBJOTE1X1RJTElOR19OT05FLAo+PiArCQkJCQkJICAxLjAsIDEu
-MCwgMC4wLCAmZmJfdXBwZXIpOwo+PiArCQlpZ3RfYXNzZXJ0KGZiX2lkX3VwcGVyKTsKPiAKPiBD
-cmVhdGluZyBuZXcgZmJzIGV2ZXJ5IGl0ZXJhdGlvbiBpcyBwb2ludGxlc3MuCj4gWW91IGFsc28g
-c2VlbSB0byBiZSBsZWFraW5nIHRoZXNlLgoKQ29ycmVjdCwgc29ycnkgZm9yIHRoaXMuIERvbmUg
-aW4gdjUuCj4gCj4+ICsKPj4gKwkJaWd0X3BsYW5lX3NldF9wb3NpdGlvbihwbGFuZV9sb3dlciwg
-MCwgMCk7Cj4+ICsJCWlndF9wbGFuZV9zZXRfZmIocGxhbmVfbG93ZXIsICZmYl9sb3dlcik7Cj4+
-ICsKPj4gKwkJaWd0X3BsYW5lX3NldF9wb3NpdGlvbihwbGFuZV91cHBlciwgd191cHBlciAvIDIs
-IGhfdXBwZXIgLyAyKTsKPj4gKwkJaWd0X3BsYW5lX3NldF9mYihwbGFuZV91cHBlciwgJmZiX3Vw
-cGVyKTsKPj4gKwo+PiArCQlpZ3RfaW5mbygiQ29tbWl0dGluZyB3aXRoIHRoZSBwbGFuZVslZF0g
-dW5kZXJuZWF0aCAiXAo+PiArCQkJICJwbGFuZVslZF1cbiIsIGksIChpICsgMSkpOwo+PiArCQlp
-Z3RfZGlzcGxheV9jb21taXQyKGRpc3BsYXksIENPTU1JVF9BVE9NSUMpOwo+PiArCQlpZ3RfcGlw
-ZV9jcmNfZ2V0X2N1cnJlbnQocGlwZS0+ZGlzcGxheS0+ZHJtX2ZkLCBwaXBlX2NyYywgJm5ld19j
-cmMpOwo+PiArCj4+ICsJCWlndF9hc3NlcnRfY3JjX2VxdWFsKCZyZWZfY3JjLCAmbmV3X2NyYyk7
-Cj4+ICsKPj4gKwkJaWd0X3BsYW5lX3NldF9mYihwbGFuZV9sb3dlciwgTlVMTCk7Cj4+ICsJCWln
-dF9wbGFuZV9zZXRfZmIocGxhbmVfdXBwZXIsIE5VTEwpOwo+PiArCX0KPj4gK30KPj4gKwo+PiAg
-IHN0YXRpYyB2b2lkIHBsYW5lX292ZXJsYXkoaWd0X3BpcGVfdCAqcGlwZSwgaWd0X291dHB1dF90
-ICpvdXRwdXQsIGlndF9wbGFuZV90ICpwbGFuZSkKPj4gICB7Cj4+ICAgCWRybU1vZGVNb2RlSW5m
-byAqbW9kZSA9IGlndF9vdXRwdXRfZ2V0X21vZGUob3V0cHV0KTsKPj4gQEAgLTk4NywxNCArMTEx
-NywxNiBAQCBpZ3RfbWFpbgo+PiAgIAkJcGxhbmVfcHJpbWFyeShwaXBlX29iaiwgcHJpbWFyeSwg
-JmZiKTsKPj4gICAJfQo+PiAgIAo+PiAtCWlndF9zdWJ0ZXN0KCJwbGFuZV9wcmltYXJ5X292ZXJs
-YXlfenBvcyIpIHsKPj4gKwlpZ3RfZGVzY3JpYmUoIlZlcmlmeSB0aGF0IHRoZSBvdmVybGF5IHBs
-YW5lIGNhbiBjb3ZlciB0aGUgcHJpbWFyeSBvbmUgKGFuZCAiXAo+PiArCQkgICAgICJ2aWNlIHZl
-cnNhKSBieSBjaGFuZ2luZyB0aGVpciB6cG9zIHByb3BlcnR5LiIpOwo+PiArCWlndF9zdWJ0ZXN0
-KCJwbGFuZV9wcmltYXJ5X292ZXJsYXlfbXV0YWJsZV96cG9zIikgewo+PiAgIAkJdWludDMyX3Qg
-Zm9ybWF0X3ByaW1hcnkgPSBEUk1fRk9STUFUX0FSR0I4ODg4Owo+PiAgIAkJdWludDMyX3QgZm9y
-bWF0X292ZXJsYXkgPSBEUk1fRk9STUFUX0FSR0IxNTU1Owo+PiAgIAo+PiAgIAkJaWd0X3BsYW5l
-X3QgKm92ZXJsYXkgPQo+PiAgIAkJCWlndF9waXBlX2dldF9wbGFuZV90eXBlKHBpcGVfb2JqLCBE
-Uk1fUExBTkVfVFlQRV9PVkVSTEFZKTsKPj4gLQo+PiAgIAkJaWd0X3JlcXVpcmUob3ZlcmxheSk7
-Cj4+ICsKPj4gICAJCWlndF9yZXF1aXJlKGlndF9wbGFuZV9oYXNfcHJvcChwcmltYXJ5LCBJR1Rf
-UExBTkVfWlBPUykpOwo+PiAgIAkJaWd0X3JlcXVpcmUoaWd0X3BsYW5lX2hhc19wcm9wKG92ZXJs
-YXksIElHVF9QTEFORV9aUE9TKSk7Cj4+ICAgCj4+IEBAIC0xMDAyLDggKzExMzQsMTUgQEAgaWd0
-X21haW4KPj4gICAJCWlndF9yZXF1aXJlKGlndF9wbGFuZV9oYXNfZm9ybWF0X21vZChvdmVybGF5
-LCBmb3JtYXRfb3ZlcmxheSwgMHgwKSk7Cj4+ICAgCj4+ICAgCQlpZ3Rfb3V0cHV0X3NldF9waXBl
-KG91dHB1dCwgcGlwZSk7Cj4+IC0JCXBsYW5lX3ByaW1hcnlfb3ZlcmxheV96cG9zKHBpcGVfb2Jq
-LCBvdXRwdXQsIHByaW1hcnksIG92ZXJsYXksCj4+IC0JCQkJCSAgIGZvcm1hdF9wcmltYXJ5LCBm
-b3JtYXRfb3ZlcmxheSk7Cj4+ICsJCXBsYW5lX3ByaW1hcnlfb3ZlcmxheV9tdXRhYmxlX3pwb3Mo
-cGlwZV9vYmosIG91dHB1dCwgcHJpbWFyeSwgb3ZlcmxheSwKPj4gKwkJCQkJICAgICAgICAgICBm
-b3JtYXRfcHJpbWFyeSwgZm9ybWF0X292ZXJsYXkpOwo+PiArCX0KPj4gKwo+PiArCWlndF9kZXNj
-cmliZSgiVmVyaWZ5IHRoZSByZXBvcnRlZCB6cG9zIHByb3BlcnR5IG9mIHBsYW5lcyBieSBtYWtp
-bmcgc3VyZSAiXAo+PiArCQkgICAgICJvbmx5IGhpZ2hlciB6cG9zIHBsYW5lcyBjb3ZlciB0aGUg
-bG93ZXIgenBvcyBvbmVzLiIpOwo+PiArCWlndF9zdWJ0ZXN0KCJwbGFuZV9pbW11dGFibGVfenBv
-cyIpIHsKPiAKPiAnLScgaXMgdGhlIG5vcm1hbCBkZWxpbWV0ZXIgaW4gc3VidGVzdCBuYW1lcy4K
-ClRoYW5rcyBmb3IgcG9pbnRpbmcgb3V0Lgo+IAo+PiArCQlpZ3Rfb3V0cHV0X3NldF9waXBlKG91
-dHB1dCwgcGlwZSk7Cj4+ICsJCXBsYW5lX2ltbXV0YWJsZV96cG9zKCZkaXNwbGF5LCBwaXBlX29i
-aiwgb3V0cHV0KTsKPj4gICAJfQo+IAo+IEkgZG9uJ3Qgc2VlIGFueXRoaW5nIHRoYXQgY2hlY2tz
-IHRoZSBwcm9wcyBhcmUgaW1tdXRhYmxlLiBBbmQgcHJvYmFibHkgd2UKPiBzaG91bGRuJ3QgZG8g
-YW55IHN1aGMgY2hlY2tzLiBJZS4gdGhlIHRlc3QgaXMgbW9yZSBvZiAiY2hlY2sgdGhlIGRlZmF1
-dAo+IHpwb3MgdmFsdWVzIGFyZSBjb3JyZWN0Ii4gQWx0aG91Z2ggaWYgdGhlIHByZXZpb3VzIHN1
-YnRlc3QgbWVzc2VzIHdpdGgKCkFncmVlZC4gV2VyZSB5b3UgZXhwZWN0aW5nIGFueSBjaGFuZ2Ug
-bmFtZSBpbiBzdWJ0ZXN0PwoKPiB0aGUgenBvcyAod2hpY2ggaXQgbG9va3MgbGlrZSBpdCB3aWxs
-KSB0aGVuIHRoaXMgd2lsbCB0ZXN0IGRpZmZlcmVudAo+IHRoaW5ncyBkZXBlbmRpbmcgb24gd2hl
-biBpdCBydW5zLgoKTXV0YWJsZSB6cG9zIGNoYW5nZXMgenBvcyB2YWx1ZSBiYWNrIHRvIGRlZmF1
-bHQuCgo+IAo+IFRoZSBvdGhlciBzdWJ0ZXN0IGFsc28gIHNlZW1zIG5lZWRsZXNzbHkgc3BlY2lm
-aWMgKGllLiBvbmx5IHRlc3QgYQo+IHNpbmdsZSBwYWlyIG9mIHBsYW5lcykuIE5vIGlkZWEgd2h5
-IGl0IHdhc24ndCBtYWRlIGdlbmVyaWMgYXMgd2VsbC4KClllYWggY29ycmVjdC4gSXQncyBub3Qg
-Z2VuZXJpYyBhc3dlbGwuCj4gCj4+ICAgCj4+ICAgCWlndF9zdWJ0ZXN0KCJ0ZXN0X29ubHkiKSB7
-Cj4gCj4gSHJtaC4gTG9va3MgbGlrZSB0aGlzIHRlc3QgaGFzIG5vbi1zdGFuZGFyZCBjb252ZW50
-aW9ucyA6KAoKU2VuZCBvdGhlciBwYXRjaCwgY2hhbmdpbmcgYWxsIHN1YnRlc3RzIHRvIHN0YW5k
-YXJkIGNvbnZlbnRpb25zLgo+IAo+IAo+PiBAQCAtMTAxMSw2ICsxMTUwLDcgQEAgaWd0X21haW4K
-Pj4gICAKPj4gICAJCXRlc3Rfb25seShwaXBlX29iaiwgcHJpbWFyeSwgb3V0cHV0KTsKPj4gICAJ
-fQo+PiArCj4+ICAgCWlndF9zdWJ0ZXN0KCJwbGFuZV9jdXJzb3JfbGVnYWN5Iikgewo+PiAgIAkJ
-aWd0X3BsYW5lX3QgKmN1cnNvciA9Cj4+ICAgCQkJaWd0X3BpcGVfZ2V0X3BsYW5lX3R5cGUocGlw
-ZV9vYmosIERSTV9QTEFORV9UWVBFX0NVUlNPUik7Cj4+IC0tIAo+PiAyLjI1LjEKPj4KPj4gX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPj4gaWd0LWRldiBt
-YWlsaW5nIGxpc3QKPj4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKPj4gaHR0cHM6Ly9s
-aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cj4gCgotLSAKflN3
-YXRpIFNoYXJtYQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
-czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+
+
+On 25-Mar-20 1:15 PM, Peres, Martin wrote:
+> On 2020-03-17 09:19, Swati Sharma wrote:
+>> i915 implements immutable zpos property whereas the existing test
+>> case is written to validate mutable zpos.
+>>
+>> Added a new sub-test to validate immutable zpos. Test validates
+>> the reported zpos property of plane by making sure only higher
+>> zpos plane covers the lower zpos one (lower plane covers full screen,
+>> upper plane covers half screen).
+>>
+>> Only two planes at a time are tested in increasing fashion to avoid
+>> combinatorial explosion. By transitive property,
+>> if (p1, z1) < (p2, z2) and (p2, z2) < (p3, z3) then (p1, z1) < (p3, z3)
+>>
+>> where p and z denotes planes and zpos
+>>
+>> v2: -Removed intel only checks [Martin]
+>>      -Used XRGB8888 pixel format as used in other IGTs
+>>      -Added documentation [Martin]
+>>      -Removed skip, instead continue if plane doesn't support zpos [Martin]
+>>      -Sorted planes in increasing order of zpos [Martin]
+>> v3: -Fix description [Martin]
+>>      -Avoid sorting [Ankit]
+>> v4: -Change in commit message [Ankit]
+>>      -Few minor changes [Ankit]
+>>
+>> Issue: https://gitlab.freedesktop.org/drm/intel/issues/404
+>> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+>> Reviewed-by: Martin Peres <martin.peres@linux.intel.com>
+>> Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+>> ---
+>>   tests/kms_atomic.c | 160 ++++++++++++++++++++++++++++++++++++++++++---
+>>   1 file changed, 150 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/tests/kms_atomic.c b/tests/kms_atomic.c
+>> index 8462d128..4cb34d6d 100644
+>> --- a/tests/kms_atomic.c
+>> +++ b/tests/kms_atomic.c
+>> @@ -121,7 +121,7 @@ static void plane_check_current_state(igt_plane_t *plane, const uint64_t *values
+>>   }
+>>   
+>>   static void plane_commit(igt_plane_t *plane, enum igt_commit_style s,
+>> -                                enum kms_atomic_check_relax relax)
+>> +                         enum kms_atomic_check_relax relax)
+>>   {
+>>   	igt_display_commit2(plane->pipe->display, s);
+>>   	plane_check_current_state(plane, plane->values, relax);
+>> @@ -277,9 +277,9 @@ static uint32_t plane_get_igt_format(igt_plane_t *plane)
+>>   }
+>>   
+>>   static void
+>> -plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
+>> -			   igt_plane_t *primary, igt_plane_t *overlay,
+>> -			   uint32_t format_primary, uint32_t format_overlay)
+>> +plane_primary_overlay_mutable_zpos(igt_pipe_t *pipe, igt_output_t *output,
+>> +			           igt_plane_t *primary, igt_plane_t *overlay,
+>> +			           uint32_t format_primary, uint32_t format_overlay)
+>>   {
+>>   	struct igt_fb fb_primary, fb_overlay;
+>>   	drmModeModeInfo *mode = igt_output_get_mode(output);
+>> @@ -320,7 +320,7 @@ plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
+>>   	igt_plane_set_prop_value(overlay, IGT_PLANE_ZPOS, 1);
+>>   
+>>   	igt_info("Committing with overlay on top, it has a hole "\
+>> -		  "through which the primary should be seen\n");
+>> +		 "through which the primary should be seen\n");
+>>   	plane_commit(primary, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
+>>   
+>>   	igt_assert_eq_u64(igt_plane_get_prop(primary, IGT_PLANE_ZPOS), 0);
+>> @@ -346,7 +346,7 @@ plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
+>>   	igt_put_cairo_ctx(pipe->display->drm_fd, &fb_primary, cr);
+>>   
+>>   	igt_info("Committing with a hole in the primary through "\
+>> -		  "which the underlay should be seen\n");
+>> +		 "which the underlay should be seen\n");
+>>   	plane_commit(primary, COMMIT_ATOMIC, ATOMIC_RELAX_NONE);
+>>   
+>>   	/* reset it back to initial state */
+>> @@ -358,6 +358,136 @@ plane_primary_overlay_zpos(igt_pipe_t *pipe, igt_output_t *output,
+>>   	igt_assert_eq_u64(igt_plane_get_prop(overlay, IGT_PLANE_ZPOS), 1);
+>>   }
+>>   
+>> +static void
+>> +plane_immutable_zpos(igt_display_t *display, igt_pipe_t *pipe,
+>> +		     igt_output_t *output)
+>> +{
+>> +	cairo_t *cr;
+>> +	struct igt_fb fb_ref;
+>> +	igt_plane_t *primary;
+>> +	drmModeModeInfo *mode;
+>> +	igt_pipe_crc_t *pipe_crc;
+>> +	igt_crc_t ref_crc, new_crc;
+>> +	int n_planes = pipe->n_planes;
+>> +	igt_plane_t *plane_ptr[n_planes];
+>> +	uint32_t w_lower, h_lower, w_upper, h_upper;
+>> +
+>> +	igt_require(n_planes >= 2);
+>> +
+>> +	mode = igt_output_get_mode(output);
+>> +	primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+>> +
+>> +	/* for lower plane */
+>> +	w_lower = mode->hdisplay;
+>> +	h_lower = mode->vdisplay;
+>> +
+>> +	/* for upper plane */
+>> +	w_upper = mode->hdisplay / 2;
+>> +	h_upper = mode->vdisplay / 2;
+>> +
+>> +	igt_create_color_fb(display->drm_fd,
+>> +			    w_lower, h_lower,
+>> +			    DRM_FORMAT_XRGB8888,
+>> +			    I915_TILING_NONE,
+>> +			    0.0, 0.0, 0.0, &fb_ref);
+>> +
+>> +	/* create reference image */
+>> +	cr = igt_get_cairo_ctx(display->drm_fd, &fb_ref);
+>> +	igt_assert(cairo_status(cr) == 0);
+>> +	igt_paint_color(cr, 0, 0, w_lower, h_lower, 0.0, 0.0, 1.0);
+>> +	igt_paint_color(cr, w_upper / 2, h_upper / 2, w_upper, h_upper, 1.0, 1.0, 0.0);
+>> +	igt_put_cairo_ctx(display->drm_fd, &fb_ref, cr);
+>> +	igt_plane_set_fb(primary, &fb_ref);
+>> +	igt_display_commit2(display, COMMIT_ATOMIC);
+>> +
+>> +	/* create the pipe_crc object for this pipe */
+>> +	pipe_crc = igt_pipe_crc_new(pipe->display->drm_fd, pipe->pipe,
+>> +				    INTEL_PIPE_CRC_SOURCE_AUTO);
+>> +
+>> +	/* get reference crc */
+>> +	igt_pipe_crc_start(pipe_crc);
+>> +	igt_pipe_crc_get_current(display->drm_fd, pipe_crc, &ref_crc);
+>> +
+>> +	igt_plane_set_fb(primary, NULL);
+>> +
+>> +	for (int k = 0; k < n_planes; k++) {
+>> +		int zpos;
+>> +		igt_plane_t *temp;
+>> +
+>> +		temp = &display->pipes[pipe->pipe].planes[k];
+>> +
+>> +		if (!igt_plane_has_prop(temp, IGT_PLANE_ZPOS))
+>> +			continue;
+>> +
+>> +		assert(zpos < n_planes);
+> 
+> I'll assume you get this fixed, as suggested by Petri (unspecified zpos
+> and igt_assert_lt).
+> 
+Done in v5.
+>> +
+>> +		zpos = igt_plane_get_prop(temp, IGT_PLANE_ZPOS);
+>> +		plane_ptr[zpos] = temp;
+>> +	}
+>> +
+>> +	/*
+>> +	 * checking only pairs of plane in increasing fashion
+>> +	 * to avoid combinatorial explosion
+>> +	 */
+>> +	for (int i = 0; i < n_planes - 1; i++) {
+>> +		int fb_id_lower, fb_id_upper;
+>> +		struct igt_fb fb_lower, fb_upper;
+>> +		igt_plane_t *plane_lower, *plane_upper;
+>> +
+>> +		if (plane_ptr[i] != NULL)
+>> +			plane_lower = plane_ptr[i];
+>> +		else
+>> +			continue;
+>> +
+>> +		while (i  < (n_planes - 1)) {
+>> +			if (plane_ptr[i + 1] != NULL) {
+>> +				plane_upper = plane_ptr[i + 1];
+>> +				break;
+>> +			} else {
+>> +				i++;
+>> +				continue;
+>> +			}
+>> +		}
+>> +
+>> +		if (i == (n_planes - 1))
+>> +			break;
+> 
+> This should be impossible to reach given that the for loop is i <
+> n_planes - 1
+> 
+> You can drop this.
+
+Done in v5.
+>> +
+>> +		if ((plane_lower->type == DRM_PLANE_TYPE_CURSOR) ||
+>> +				(plane_upper->type == DRM_PLANE_TYPE_CURSOR))
+>> +			continue;
+>> +
+>> +		fb_id_lower = igt_create_color_fb(display->drm_fd,
+>> +						  w_lower, h_lower,
+>> +						  DRM_FORMAT_XRGB8888,
+>> +						  I915_TILING_NONE,
+>> +						  0.0, 0.0, 1.0, &fb_lower);
+>> +		igt_assert(fb_id_lower);
+>> +
+>> +		fb_id_upper = igt_create_color_fb(display->drm_fd,
+>> +						  w_upper, h_upper,
+>> +						  DRM_FORMAT_XRGB8888,
+>> +						  I915_TILING_NONE,
+>> +						  1.0, 1.0, 0.0, &fb_upper);
+>> +		igt_assert(fb_id_upper);
+>> +
+>> +		igt_plane_set_position(plane_lower, 0, 0);
+>> +		igt_plane_set_fb(plane_lower, &fb_lower);
+>> +
+>> +		igt_plane_set_position(plane_upper, w_upper / 2, h_upper / 2);
+>> +		igt_plane_set_fb(plane_upper, &fb_upper);
+>> +
+>> +		igt_info("Committing with the plane[%d] underneath "\
+>> +			 "plane[%d]\n", i, (i + 1));
+>> +		igt_display_commit2(display, COMMIT_ATOMIC);
+>> +		igt_pipe_crc_get_current(pipe->display->drm_fd, pipe_crc, &new_crc);
+>> +
+>> +		igt_assert_crc_equal(&ref_crc, &new_crc);
+>> +
+>> +		igt_plane_set_fb(plane_lower, NULL);
+>> +		igt_plane_set_fb(plane_upper, NULL);
+>> +	}
+>> +}
+>> +
+>>   static void plane_overlay(igt_pipe_t *pipe, igt_output_t *output, igt_plane_t *plane)
+>>   {
+>>   	drmModeModeInfo *mode = igt_output_get_mode(output);
+>> @@ -987,14 +1117,16 @@ igt_main
+>>   		plane_primary(pipe_obj, primary, &fb);
+>>   	}
+>>   
+>> -	igt_subtest("plane_primary_overlay_zpos") {
+>> +	igt_describe("Verify that the overlay plane can cover the primary one (and "\
+>> +		     "vice versa) by changing their zpos property.");
+>> +	igt_subtest("plane_primary_overlay_mutable_zpos") {
+>>   		uint32_t format_primary = DRM_FORMAT_ARGB8888;
+>>   		uint32_t format_overlay = DRM_FORMAT_ARGB1555;
+>>   
+>>   		igt_plane_t *overlay =
+>>   			igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_OVERLAY);
+>> -
+>>   		igt_require(overlay);
+>> +
+>>   		igt_require(igt_plane_has_prop(primary, IGT_PLANE_ZPOS));
+>>   		igt_require(igt_plane_has_prop(overlay, IGT_PLANE_ZPOS));
+>>   
+>> @@ -1002,8 +1134,15 @@ igt_main
+>>   		igt_require(igt_plane_has_format_mod(overlay, format_overlay, 0x0));
+>>   
+>>   		igt_output_set_pipe(output, pipe);
+>> -		plane_primary_overlay_zpos(pipe_obj, output, primary, overlay,
+>> -					   format_primary, format_overlay);
+>> +		plane_primary_overlay_mutable_zpos(pipe_obj, output, primary, overlay,
+>> +					           format_primary, format_overlay);
+>> +	}
+>> +
+>> +	igt_describe("Verify the reported zpos property of planes by making sure "\
+>> +		     "only higher zpos planes cover the lower zpos ones.");
+> 
+> With what you have right now, you are checking planes only 2 by 2, as
+> opposed to keeping the planes under the "main" plane active, but with a
+> different color, in order to check for non-linearity between planes'
+> reported zpos. This would require really broken HW, but this is what the
+> test is about :s
+> 
+> To save memory bandwidth, we could have a 2x2 red fb that would be used
+> by all planes ;)
+> 
+> I am however OK with merging this now, as it is already a pretty good
+> test! With the changes suggested by Petri, this patch is:
+> 
+> Reviewed-by: Martin Peres <martin.peres@linux.intel.com>
+
+Thanks!
+> 
+>> +	igt_subtest("plane_immutable_zpos") {
+>> +		igt_output_set_pipe(output, pipe);
+>> +		plane_immutable_zpos(&display, pipe_obj, output);
+>>   	}
+>>   
+>>   	igt_subtest("test_only") {
+>> @@ -1011,6 +1150,7 @@ igt_main
+>>   
+>>   		test_only(pipe_obj, primary, output);
+>>   	}
+>> +
+>>   	igt_subtest("plane_cursor_legacy") {
+>>   		igt_plane_t *cursor =
+>>   			igt_pipe_get_plane_type(pipe_obj, DRM_PLANE_TYPE_CURSOR);
+>>
+> 
+
+-- 
+~Swati Sharma
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
