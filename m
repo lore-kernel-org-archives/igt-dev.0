@@ -1,20 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C935D6EA07
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Mar 2020 11:45:46 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-Date: Fri, 27 Mar 2020 11:45:44 +0000
-Message-ID: <d95e14097efa404882da3c3c855de046@intel.com>
-References: <20200326135322.9958-1-mika.kahola@intel.com>
- <158530355918.17234.3979276207416217813@emeril.freedesktop.org>
- <20200327102441.GB9497@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <20200327102441.GB9497@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fconcurrent=3A_Test_maximum_number_of_planes_supported_by_?=
- =?utf-8?q?the_platform_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 27 Mar 2020 12:07:40 -0000
+Message-ID: <158531086004.17237.12929166077507543366@emeril.freedesktop.org>
+References: <20200326135322.9958-1-mika.kahola@intel.com>
+In-Reply-To: <20200326135322.9958-1-mika.kahola@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/kms=5Fconcurrent=3A_Test_maximum_number_of_planes_supported_b?=
+ =?utf-8?q?y_the_platform_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,47 +15,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "Kahola, Mika" <mika.kahola@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBMYXR2YWxhLCBQZXRyaSA8cGV0
-cmkubGF0dmFsYUBpbnRlbC5jb20+IA0KU2VudDogRnJpZGF5LCBNYXJjaCAyNywgMjAyMCAxMjoy
-NSBQTQ0KVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQpDYzogS2Fob2xhLCBNaWth
-IDxtaWthLmthaG9sYUBpbnRlbC5jb20+DQpTdWJqZWN0OiBSZTogW2lndC1kZXZdIOKclyBGaS5D
-SS5JR1Q6IGZhaWx1cmUgZm9yIHRlc3RzL2ttc19jb25jdXJyZW50OiBUZXN0IG1heGltdW0gbnVt
-YmVyIG9mIHBsYW5lcyBzdXBwb3J0ZWQgYnkgdGhlIHBsYXRmb3JtIChyZXYzKQ0KDQpPbiBGcmks
-IE1hciAyNywgMjAyMCBhdCAxMDowNTo1OUFNICswMDAwLCBQYXRjaHdvcmsgd3JvdGU6DQo+ID09
-IFNlcmllcyBEZXRhaWxzID09DQo+IA0KPiBTZXJpZXM6IHRlc3RzL2ttc19jb25jdXJyZW50OiBU
-ZXN0IG1heGltdW0gbnVtYmVyIG9mIHBsYW5lcyBzdXBwb3J0ZWQgYnkgdGhlIHBsYXRmb3JtIChy
-ZXYzKQ0KPiBVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMv
-NzUxMDQvDQo+IFN0YXRlIDogZmFpbHVyZQ0KPiANCj4gPT0gU3VtbWFyeSA9PQ0KPiANCj4gQ0kg
-QnVnIExvZyAtIGNoYW5nZXMgZnJvbSBDSV9EUk1fODE5NF9mdWxsIC0+IElHVFBXXzQzNTlfZnVs
-bCANCj4gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PQ0KPiANCj4gU3VtbWFyeQ0KPiAtLS0tLS0tDQo+IA0KPiAgICoqRkFJTFVSRSoqDQo+IA0KPiAg
-IFNlcmlvdXMgdW5rbm93biBjaGFuZ2VzIGNvbWluZyB3aXRoIElHVFBXXzQzNTlfZnVsbCBhYnNv
-bHV0ZWx5IG5lZWQgdG8gYmUNCj4gICB2ZXJpZmllZCBtYW51YWxseS4NCj4gICANCj4gICBJZiB5
-b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhl
-IGNoYW5nZXMNCj4gICBpbnRyb2R1Y2VkIGluIElHVFBXXzQzNTlfZnVsbCwgcGxlYXNlIG5vdGlm
-eSB5b3VyIGJ1ZyB0ZWFtIHRvIGFsbG93IHRoZW0NCj4gICB0byBkb2N1bWVudCB0aGlzIG5ldyBm
-YWlsdXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4NCj4g
-DQo+ICAgRXh0ZXJuYWwgVVJMOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUv
-ZHJtLXRpcC9JR1RQV180MzU5L2luZGV4Lmh0bWwNCj4gDQo+IFBvc3NpYmxlIG5ldyBpc3N1ZXMN
-Cj4gLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiANCj4gICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFu
-Z2VzIHRoYXQgbWF5IGhhdmUgYmVlbiBpbnRyb2R1Y2VkIGluIElHVFBXXzQzNTlfZnVsbDoNCj4g
-DQo+ICMjIyBJR1QgY2hhbmdlcyAjIyMNCj4gDQo+ICMjIyMgUG9zc2libGUgcmVncmVzc2lvbnMg
-IyMjIw0KPiANCj4gICAqIGlndEBrbXNfY29uY3VycmVudEBwaXBlLWI6DQo+ICAgICAtIHNoYXJk
-LWhzdzogICAgICAgICAgW1BBU1NdWzFdIC0+IFtGQUlMXVsyXQ0KPiAgICBbMV06IGh0dHBzOi8v
-aW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvQ0lfRFJNXzgxOTQvc2hhcmQtaHN3NS9p
-Z3RAa21zX2NvbmN1cnJlbnRAcGlwZS1iLmh0bWwNCj4gICAgWzJdOiANCj4gaHR0cHM6Ly9pbnRl
-bC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV180MzU5L3NoYXJkLWhzdzcvaWd0QGtt
-cw0KPiBfY29uY3VycmVudEBwaXBlLWIuaHRtbA0KDQoNClB1c2hlZCBzZWNvbmRzIGJlZm9yZSB0
-aGlzIHJlc3VsdCBhcnJpdmVkLi4uDQoNCkZhaWwgd2FzIG9ubHkgb24gaHN3LiBJIHJldGVzdCB0
-aGlzIGFzIEkgZG9uJ3QgdGhpbmsgdGhpcyB3YXMgcmVsYXRlZCB0byB0aGlzIGNoYW5nZS4NCg0K
-LS0NClBldHJpIExhdHZhbGENCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRl
-dgo=
+== Series Details ==
+
+Series: tests/kms_concurrent: Test maximum number of planes supported by the platform (rev4)
+URL   : https://patchwork.freedesktop.org/series/75104/
+State : failure
+
+== Summary ==
+
+Applying: tests/kms_concurrent: Test maximum number of planes supported by the platform
+Using index info to reconstruct a base tree...
+M	tests/kms_concurrent.c
+Falling back to patching base and 3-way merge...
+Auto-merging tests/kms_concurrent.c
+CONFLICT (content): Merge conflict in tests/kms_concurrent.c
+Patch failed at 0001 tests/kms_concurrent: Test maximum number of planes supported by the platform
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
