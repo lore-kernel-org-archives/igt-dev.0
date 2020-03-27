@@ -1,19 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9534F6E9F0
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Mar 2020 10:24:43 +0000 (UTC)
-Date: Fri, 27 Mar 2020 12:24:41 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200327102441.GB9497@platvala-desk.ger.corp.intel.com>
-References: <20200326135322.9958-1-mika.kahola@intel.com>
- <158530355918.17234.3979276207416217813@emeril.freedesktop.org>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 672C96E9F4
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Mar 2020 10:34:54 +0000 (UTC)
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Date: Fri, 27 Mar 2020 12:34:52 +0200
+Message-Id: <20200327103453.3099730-2-lionel.g.landwerlin@intel.com>
+In-Reply-To: <20200327103453.3099730-1-lionel.g.landwerlin@intel.com>
+References: <20200327103453.3099730-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <158530355918.17234.3979276207416217813@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fconcurrent=3A_Test__maximum_number_of_planes_supported_by?=
- =?utf-8?q?_the_platform_=28rev3=29?=
+Subject: [igt-dev] [PATCH i-g-t 1/2] include: bump i915 header for new
+ feature
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,52 +24,46 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Mar 27, 2020 at 10:05:59AM +0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: tests/kms_concurrent: Test maximum number of planes supported by the platform (rev3)
-> URL   : https://patchwork.freedesktop.org/series/75104/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_8194_full -> IGTPW_4359_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_4359_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_4359_full, please notify your bug team to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4359/index.html
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_4359_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_concurrent@pipe-b:
->     - shard-hsw:          [PASS][1] -> [FAIL][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8194/shard-hsw5/igt@kms_concurrent@pipe-b.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4359/shard-hsw7/igt@kms_concurrent@pipe-b.html
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ include/drm-uapi/i915_drm.h | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-
-Pushed seconds before this result arrived...
-
-
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index db12ddd4..40ada96e 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -1980,6 +1980,27 @@ enum drm_i915_perf_property_id {
+ 	 */
+ 	DRM_I915_PERF_PROP_GLOBAL_SSEU,
+ 
++	/**
++	 * Specifies an array of u32 GEM context handles to filter reports
++	 * with.
++	 *
++	 * Using this parameter is incompatible with using
++	 * DRM_I915_PERF_PROP_CTX_HANDLE.
++	 *
++	 * This property is available in perf revision 5.
++	 */
++	DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY,
++
++	/**
++	 * Specifies the length of the array specified with
++	 * DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY.
++	 *
++	 * The length must be in the range [1, 4].
++	 *
++	 * This property is available in perf revision 5.
++	 */
++	DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY_LENGTH,
++
+ 	DRM_I915_PERF_PROP_MAX /* non-ABI */
+ };
+ 
 -- 
-Petri Latvala
+2.26.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
