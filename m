@@ -1,10 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 30 Mar 2020 10:21:14 +0100
-Message-Id: <20200330092117.810776-1-chris@chris-wilson.co.uk>
+Date: Mon, 30 Mar 2020 10:21:17 +0100
+Message-Id: <20200330092117.810776-4-chris@chris-wilson.co.uk>
+In-Reply-To: <20200330092117.810776-1-chris@chris-wilson.co.uk>
+References: <20200330092117.810776-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/4] i915/gem_bad_reloc: Reduce negative
- testing
+Subject: [igt-dev] [PATCH i-g-t 4/4] i915/gem_exec_parallel: Dynamise
+ per-engine tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,73 +22,83 @@ To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The plain negative-reloc tests do no execute anything on the GPU and so
-cannot determine if the GPU would fallover, they only exercise the
-kernel's placement which is uniform across the engines. We should also
-cover the engines with perhaps MI_STORE_DWORD, but for the moment the
-solitary exercise of blt remains.
+Convert the per-engine tests into a dynamic subtest.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/i915/gem_bad_reloc.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ tests/i915/gem_exec_parallel.c        | 28 ++++++++++++++-------------
+ tests/intel-ci/fast-feedback.testlist |  4 +---
+ 2 files changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/tests/i915/gem_bad_reloc.c b/tests/i915/gem_bad_reloc.c
-index 96c9babe6..57efc77c3 100644
---- a/tests/i915/gem_bad_reloc.c
-+++ b/tests/i915/gem_bad_reloc.c
-@@ -50,7 +50,7 @@ IGT_TEST_DESCRIPTION("Simulates SNA behaviour using negative self-relocations"
-  * than the total size of the GTT), the GPU will hang.
-  * See https://bugs.freedesktop.org/show_bug.cgi?id=78533
-  */
--static void negative_reloc(int fd, unsigned engine, unsigned flags)
-+static void negative_reloc(int fd, unsigned flags)
- {
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	struct drm_i915_gem_exec_object2 obj;
-@@ -60,7 +60,6 @@ static void negative_reloc(int fd, unsigned engine, unsigned flags)
- 	uint64_t *offsets;
- 	int i;
- 
--	gem_require_ring(fd, engine);
- 	igt_require(intel_gen(intel_get_drm_devid(fd)) >= 7);
- 
- 	memset(&obj, 0, sizeof(obj));
-@@ -70,7 +69,7 @@ static void negative_reloc(int fd, unsigned engine, unsigned flags)
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	execbuf.buffers_ptr = (uintptr_t)&obj;
- 	execbuf.buffer_count = 1;
--	execbuf.flags = engine | (flags & USE_LUT);
-+	execbuf.flags = flags & USE_LUT;
- 	igt_require(__gem_execbuf(fd, &execbuf) == 0);
- 
- 	igt_info("Found offset %lld for 4k batch\n", (long long)obj.offset);
-@@ -185,7 +184,6 @@ static void negative_reloc_blt(int fd)
- 
- igt_main
- {
--	const struct intel_execution_engine *e;
- 	int fd = -1;
- 
- 	igt_fixture {
-@@ -194,13 +192,11 @@ igt_main
- 		gem_require_blitter(fd);
+diff --git a/tests/i915/gem_exec_parallel.c b/tests/i915/gem_exec_parallel.c
+index 98316af40..66fe18534 100644
+--- a/tests/i915/gem_exec_parallel.c
++++ b/tests/i915/gem_exec_parallel.c
+@@ -196,7 +196,6 @@ static void all(int fd, struct intel_execution_engine2 *engine, unsigned flags)
+ 				engines[nengine++] = e->flags;
+ 		}
+ 	} else {
+-		igt_require(gem_class_can_store_dword(fd, engine->class));
+ 		engines[nengine++] = engine->flags;
+ 	}
+ 	igt_require(nengine);
+@@ -254,7 +253,7 @@ igt_main
+ 		const char *name;
+ 		unsigned flags;
+ 	} modes[] = {
+-		{ "", 0 },
++		{ "basic", 0 },
+ 		{ "contexts", CONTEXTS },
+ 		{ "fds", FDS },
+ 		{ NULL }
+@@ -268,18 +267,21 @@ igt_main
+ 		igt_fork_hang_detector(fd);
  	}
  
--	for (e = intel_execution_engines; e->name; e++) {
--		igt_subtest_f("negative-reloc-%s", e->name)
--			negative_reloc(fd, eb_ring(e), 0);
-+	igt_subtest("negative-reloc")
-+		negative_reloc(fd, 0);
+-	for (const struct mode *m = modes; m->name; m++)
+-		igt_subtest_f("%s", *m->name ? m->name : "basic")
+-			/* NULL value means all engines */
+-			all(fd, NULL, m->flags);
+-
+-	__for_each_physical_engine(fd, e) {
++	igt_subtest_with_dynamic("engines") {
+ 		for (const struct mode *m = modes; m->name; m++)
+-			igt_subtest_f("%s%s%s",
+-				      e->name,
+-				      *m->name ? "-" : "",
+-				      m->name)
+-				all(fd, e, m->flags);
++			igt_dynamic(m->name)
++				/* NULL value means all engines */
++				all(fd, NULL, m->flags);
++	}
++
++	for (const struct mode *m = modes; m->name; m++) {
++		igt_subtest_with_dynamic(m->name) {
++			__for_each_physical_engine(fd, e) {
++				if (gem_class_can_store_dword(fd, e->class))
++					igt_dynamic(e->name)
++						all(fd, e, m->flags);
++			}
++		}
+ 	}
  
--		igt_subtest_f("negative-reloc-lut-%s", e->name)
--			negative_reloc(fd, eb_ring(e), USE_LUT);
--	}
-+	igt_subtest("negative-reloc-lut")
-+		negative_reloc(fd, USE_LUT);
- 
- 	igt_subtest("negative-reloc-bltcopy")
- 		negative_reloc_blt(fd);
+ 	igt_fixture {
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index b41fb4a01..06367f822 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -21,9 +21,7 @@ igt@gem_exec_fence@basic-wait
+ igt@gem_exec_fence@basic-await
+ igt@gem_exec_fence@nb-await
+ igt@gem_exec_gttfill@basic
+-igt@gem_exec_parallel@basic
+-igt@gem_exec_parallel@contexts
+-igt@gem_exec_parallel@fds
++igt@gem_exec_parallel@engines
+ igt@gem_exec_store@basic-all
+ igt@gem_exec_suspend@basic
+ igt@gem_exec_suspend@basic-s0
 -- 
 2.26.0
 
