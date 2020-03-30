@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D250089D57
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Mar 2020 11:36:32 +0000 (UTC)
+From: "Melkaveri, Arjun" <arjun.melkaveri@intel.com>
+Date: Mon, 30 Mar 2020 11:36:27 +0000
+Message-ID: <CA3CE573A55781488FA37084931071AB14DC7867@BGSMSX105.gar.corp.intel.com>
+References: <20200327050435.8531-1-arjun.melkaveri@intel.com>
+ <158556591426.3228.18345820748109656581@build.alporthouse.com>
+In-Reply-To: <158556591426.3228.18345820748109656581@build.alporthouse.com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 30 Mar 2020 11:22:57 -0000
-Message-ID: <158556737791.13825.7706210207791406589@emeril.freedesktop.org>
-References: <20200330092117.810776-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200330092117.810776-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_s?=
- =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/4=5D_i915/gem=5Fbad=5Freloc=3A?=
- =?utf-8?q?_Reduce_negative_testing?=
+Subject: Re: [igt-dev] [PATCH] [PATCH
+ i-g-t][V2]tests/i915/gem_exec_nop:-Fixed Crash issue seen on few platform
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,51 +19,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
 
-Series: series starting with [i-g-t,1/4] i915/gem_bad_reloc: Reduce negative testing
-URL   : https://patchwork.freedesktop.org/series/75221/
-State : failure
 
-== Summary ==
+Thanks 
+Arjun M
 
-ERROR! This series introduces new undocumented tests:
+-----Original Message-----
+From: Chris Wilson <chris@chris-wilson.co.uk> 
+Sent: Monday, March 30, 2020 4:29 PM
+To: Melkaveri, Arjun <arjun.melkaveri@intel.com>; igt-dev@lists.freedesktop.org
+Subject: Re: [igt-dev] [PATCH] [PATCH i-g-t][V2]tests/i915/gem_exec_nop:-Fixed Crash issue seen on few platform
 
-gem_bad_reloc@negative-reloc
-gem_bad_reloc@negative-reloc-lut
-gem_exec_async@concurrent-writes
-gem_exec_capture@capture
-gem_exec_parallel@engines
+Quoting Arjun Melkaveri (2020-03-27 05:04:35)
+> Crash issue was seen w.r.t engines on different platforms.
+> Fixed this by initializing engine and engine name with maximum 
+> supported engines value.
+> 
+> V2:
+> 
+> Made changes for other tests using engine array.
+> 
+> Reviewed-by: Antonio Argenziano <antonio.argenziano@intel.com>
+> Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+> ---
+>  tests/i915/gem_exec_nop.c | 18 ++++++++++--------
+>  1 file changed, 10 insertions(+), 8 deletions(-)
+> 
+> diff --git a/tests/i915/gem_exec_nop.c b/tests/i915/gem_exec_nop.c 
+> index 6da6234f..823788f8 100644
+> --- a/tests/i915/gem_exec_nop.c
+> +++ b/tests/i915/gem_exec_nop.c
+> @@ -55,6 +55,7 @@
+>  
+>  #define MAX_PRIO LOCAL_I915_CONTEXT_MAX_USER_PRIORITY
+>  #define MIN_PRIO LOCAL_I915_CONTEXT_MIN_USER_PRIORITY
+> +#define GEM_MAX_ENGINES I915_EXEC_RING_MASK + 1
 
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
+I'm not that keen on GEM_ since it makes it seem like it's a fundamental limit, but in reality it's just the execbuf2 ABI.
 
-[Documentation] has more details on how to do this.
+Rather than squeeze in EB_ABI_MAX_ENGINES, I'd just use MAX_ENGINES for the local define.
 
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+#define I915_EXEC_MAX_ENGINES (I915_EXEC_RING_MASK + 1)
 
-Thanks in advance!
+although we will argue with ourselves for using I915_EXEC in our own gem_engine_topology, so maybe EXECBUF_MAX_ENGINES is good enough.
 
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+As for iterating multiple times, I was hoping that having derived the list of engines in gem_engine_topology, we would be able to reuse it!
+-Chris
 
-Other than that, pipeline status: SUCCESS.
+Thanks chris , I'll change it to EXECBUF_MAX_ENGINES and send patch for review.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/126057 for the overview.
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/126057
+-Arjun
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
