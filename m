@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 88A266E384
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Mar 2020 13:51:49 +0000 (UTC)
+From: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Date: Mon, 30 Mar 2020 19:20:39 +0530
+Message-Id: <20200330135039.19696-1-arjun.melkaveri@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 30 Mar 2020 13:49:59 -0000
-Message-ID: <158557619987.13827.11041048424302706133@emeril.freedesktop.org>
-References: <20200330124845.43086-1-lionel.g.landwerlin@intel.com>
-In-Reply-To: <20200330124845.43086-1-lionel.g.landwerlin@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdC9w?=
- =?utf-8?q?erf=3A_respect_gen11_restriction_in_disable_subslices?=
+Subject: [igt-dev] [PATCH] [PATCH i-g-t][V3]tests/i915/gem_exec_nop:-Fixed
+ Crash issue seen on few platform
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,74 +15,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Crash issue was seen w.r.t engines on different platforms.
+Fixed this by initializing engine and engine name with
+maximum supported engines value.
 
-Series: test/perf: respect gen11 restriction in disable subslices
-URL   : https://patchwork.freedesktop.org/series/75239/
-State : success
+V2:
 
-== Summary ==
+Made changes for other tests using engine array.
 
-CI Bug Log - changes from CI_DRM_8213 -> IGTPW_4374
-====================================================
+V3:
+Replaced GEM_MAX_ENGINES with EXECBUF_MAX_ENGINES.
 
-Summary
--------
+Reviewed-by: Antonio Argenziano <antonio.argenziano@intel.com>
+Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+---
+ tests/i915/gem_exec_nop.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-  **SUCCESS**
+diff --git a/tests/i915/gem_exec_nop.c b/tests/i915/gem_exec_nop.c
+index 6da6234f..21aba98a 100644
+--- a/tests/i915/gem_exec_nop.c
++++ b/tests/i915/gem_exec_nop.c
+@@ -55,6 +55,7 @@
+ 
+ #define MAX_PRIO LOCAL_I915_CONTEXT_MAX_USER_PRIORITY
+ #define MIN_PRIO LOCAL_I915_CONTEXT_MIN_USER_PRIORITY
++#define EXECBUF_MAX_ENGINES (I915_EXEC_RING_MASK + 1)
+ 
+ #define FORKED 1
+ #define CHAINED 2
+@@ -225,7 +226,7 @@ static void poll_sequential(int fd, const char *name, int timeout)
+ 	struct drm_i915_gem_exec_object2 obj[2];
+ 	struct drm_i915_gem_relocation_entry reloc[4], *r;
+ 	uint32_t *bbe[2], *state, *batch;
+-	unsigned engines[16], nengine, flags;
++	unsigned int engines[EXECBUF_MAX_ENGINES], nengine, flags;
+ 	struct timespec tv = {};
+ 	unsigned long cycles;
+ 	uint64_t elapsed;
+@@ -435,14 +436,15 @@ static void parallel(int fd, uint32_t handle, int timeout)
+ 	const struct intel_execution_engine2 *e;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+-	unsigned engines[16];
+-	char *names[16];
++	unsigned int engines[EXECBUF_MAX_ENGINES];
++	char *names[EXECBUF_MAX_ENGINES];
+ 	unsigned nengine;
+ 	unsigned long count;
+ 	double time, sum;
+ 
+ 	sum = 0;
+ 	nengine = 0;
++
+ 	__for_each_physical_engine(fd, e) {
+ 		engines[nengine] = e->flags;
+ 		names[nengine++] = strdup(e->name);
+@@ -497,8 +499,8 @@ static void independent(int fd, uint32_t handle, int timeout)
+ 	const struct intel_execution_engine2 *e;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+-	unsigned engines[16];
+-	char *names[16];
++	unsigned int engines[EXECBUF_MAX_ENGINES];
++	char *names[EXECBUF_MAX_ENGINES];
+ 	unsigned nengine;
+ 	unsigned long count;
+ 	double time, sum;
+@@ -621,7 +623,7 @@ static void series(int fd, uint32_t handle, int timeout)
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj;
+ 	struct timespec start, now, sync;
+-	unsigned engines[16];
++	unsigned int engines[EXECBUF_MAX_ENGINES];
+ 	unsigned nengine;
+ 	unsigned long count;
+ 	double time, max = 0, min = HUGE_VAL, sum = 0;
+@@ -711,7 +713,7 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+ 	const struct intel_execution_engine2 *e;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj[2];
+-	unsigned engines[16];
++	unsigned int engines[EXECBUF_MAX_ENGINES];
+ 	unsigned nengine;
+ 	double *results;
+ 	double time, sum;
+@@ -847,7 +849,7 @@ static void fence_signal(int fd, uint32_t handle,
+ 	struct drm_i915_gem_exec_object2 obj;
+ 	struct intel_execution_engine2 *__e;
+ 	struct timespec start, now;
+-	unsigned engines[16];
++	unsigned  int engines[EXECBUF_MAX_ENGINES];
+ 	unsigned nengine;
+ 	int *fences, n;
+ 	unsigned long count, signal;
+-- 
+2.25.1
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4374/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4374 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bxt-dsi:         [INCOMPLETE][1] ([i915#656]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8213/fi-bxt-dsi/igt@i915_selftest@live@execlists.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4374/fi-bxt-dsi/igt@i915_selftest@live@execlists.html
-
-  
-  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
-
-
-Participating hosts (47 -> 45)
-------------------------------
-
-  Additional (6): fi-hsw-4770r fi-bsw-n3050 fi-byt-j1900 fi-glk-dsi fi-kbl-7560u fi-tgl-y 
-  Missing    (8): fi-ilk-m540 fi-hsw-4200u fi-skl-6770hq fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5544 -> IGTPW_4374
-
-  CI-20190529: 20190529
-  CI_DRM_8213: 3cebf14c87d0d4508d4cc9c49db14061af752c37 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4374: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4374/index.html
-  IGT_5544: 477c562fc9932939083d732b77dd7b083c6bc0a1 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4374/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
