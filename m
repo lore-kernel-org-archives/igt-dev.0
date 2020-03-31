@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 100A76E7FE
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 10:45:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42DD56E7EF
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 10:45:06 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Tue, 31 Mar 2020 16:03:29 +0530
-Message-Id: <20200331103330.31211-6-anshuman.gupta@intel.com>
+Date: Tue, 31 Mar 2020 16:03:27 +0530
+Message-Id: <20200331103330.31211-4-anshuman.gupta@intel.com>
 In-Reply-To: <20200331103330.31211-1-anshuman.gupta@intel.com>
 References: <20200331103330.31211-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v4 5/6] tests/i915_pm_lpsp: screens-disabled
- subtest use igt_wait
+Subject: [igt-dev] [PATCH i-g-t v4 3/6] lib/igt_pm: Add lib func to get lpsp
+ capability
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,30 +25,84 @@ To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com, martin.peres@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When all screens are disabled, it takes some time to release
-eDP/DP AUX IO power domain ref count. Also, delayed audio codec
-disabling takes time to release AUDIO power domain ref-count,
-using igt_wait to check lpsp after disabling all screens.
+This lib function evaluate the lpsp capability from
+the connector specific debugfs attribute i915_lpsp_info.
+
+v2:
+- changed the lib function prefix igt_output_is_lpsp_capable
+  to i915_output_is_lpsp_capable. [Martin]
+v3:
+- early return for the connector which doesn't support
+  lpsp on any platform.
 
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/i915/i915_pm_lpsp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ lib/igt_pm.c | 36 ++++++++++++++++++++++++++++++++++++
+ lib/igt_pm.h |  1 +
+ 2 files changed, 37 insertions(+)
 
-diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
-index 74752f2f..a049a49e 100644
---- a/tests/i915/i915_pm_lpsp.c
-+++ b/tests/i915/i915_pm_lpsp.c
-@@ -89,7 +89,8 @@ static void screens_disabled_subtest(data_t *data)
- 	}
+diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+index 9d441e1b..5d5d37d5 100644
+--- a/lib/igt_pm.c
++++ b/lib/igt_pm.c
+@@ -37,6 +37,7 @@
+ #include <dirent.h>
  
- 	igt_require_f(valid_output, "No connected output found\n");
--	igt_assert_f(lpsp_is_enabled(data), "%s: lpsp is not enabled\n%s:\n%s\n",
-+	igt_assert_f(igt_wait(lpsp_is_enabled(data), 1000, 100),
-+		     "%s: lpsp is not enabled\n%s:\n%s\n",
- 		     data->output->name, PWR_DOMAIN_INFO, data->pwr_dmn_info =
- 		     igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
+ #include "drmtest.h"
++#include "igt_kms.h"
+ #include "igt_pm.h"
+ #include "igt_aux.h"
+ #include "igt_sysfs.h"
+@@ -827,3 +828,38 @@ bool igt_pm_pc8_plus_residencies_enabled(int msr_fd)
+ 
+ 	return true;
  }
++
++/**
++ * i915_output_is_lpsp_capable:
++ * @drm_fd: fd to drm device
++ * @output: igt output for which lpsp capability need to be evaluated
++ * Check lpsp capability for a given output.
++ *
++ * Returns:
++ * True if given output is lpsp capable otherwise false.
++ */
++bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
++{
++	drmModeConnectorPtr c = output->config.connector;
++	char buf[256];
++	int fd, len;
++
++	/* only eDP/DP/DSI/HDMI can support LPSP */
++	if (c->connector_type != DRM_MODE_CONNECTOR_eDP &&
++	    c->connector_type != DRM_MODE_CONNECTOR_DSI &&
++	    c->connector_type != DRM_MODE_CONNECTOR_DisplayPort &&
++	    c->connector_type != DRM_MODE_CONNECTOR_HDMIA &&
++	    c->connector_type != DRM_MODE_CONNECTOR_HDMIB)
++		return false;
++
++	fd = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
++	igt_require(fd >= 0);
++	len = igt_debugfs_simple_read(fd, "i915_lpsp_info", buf, sizeof(buf));
++
++	if (len < 0)
++		igt_assert_eq(len, -ENODEV);
++
++	close(fd);
++
++	return strstr(buf, "LPSP capable");
++}
+diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+index 5e438452..162d3ca3 100644
+--- a/lib/igt_pm.h
++++ b/lib/igt_pm.h
+@@ -53,5 +53,6 @@ enum igt_runtime_pm_status igt_get_runtime_pm_status(void);
+ bool igt_wait_for_pm_status(enum igt_runtime_pm_status status);
+ bool igt_pm_dmc_loaded(int debugfs);
+ bool igt_pm_pc8_plus_residencies_enabled(int msr_fd);
++bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output);
+ 
+ #endif /* IGT_PM_H */
 -- 
 2.26.0
 
