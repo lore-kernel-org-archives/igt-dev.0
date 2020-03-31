@@ -1,12 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 30 Mar 2020 10:21:17 +0100
-Message-Id: <20200330092117.810776-4-chris@chris-wilson.co.uk>
-In-Reply-To: <20200330092117.810776-1-chris@chris-wilson.co.uk>
-References: <20200330092117.810776-1-chris@chris-wilson.co.uk>
+Date: Tue, 31 Mar 2020 11:36:23 +0100
+Message-Id: <20200331103623.859601-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 4/4] i915/gem_exec_parallel: Dynamise
- per-engine tests
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_balancer: Check for bonding
+ support before exercising
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,86 +17,79 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Convert the per-engine tests into a dynamic subtest.
+Don't bother trying and failing to test bonding if the kernel doesn't
+even support it.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Andi Shyti <andi.shyti@intel.com>
 ---
- tests/i915/gem_exec_parallel.c        | 28 ++++++++++++++-------------
- tests/intel-ci/fast-feedback.testlist |  4 +---
- 2 files changed, 16 insertions(+), 16 deletions(-)
+ tests/i915/gem_exec_balancer.c | 34 +++++++++++++++++++++++++++-------
+ 1 file changed, 27 insertions(+), 7 deletions(-)
 
-diff --git a/tests/i915/gem_exec_parallel.c b/tests/i915/gem_exec_parallel.c
-index 98316af40..66fe18534 100644
---- a/tests/i915/gem_exec_parallel.c
-+++ b/tests/i915/gem_exec_parallel.c
-@@ -196,7 +196,6 @@ static void all(int fd, struct intel_execution_engine2 *engine, unsigned flags)
- 				engines[nengine++] = e->flags;
- 		}
- 	} else {
--		igt_require(gem_class_can_store_dword(fd, engine->class));
- 		engines[nengine++] = engine->flags;
- 	}
- 	igt_require(nengine);
-@@ -254,7 +253,7 @@ igt_main
- 		const char *name;
- 		unsigned flags;
- 	} modes[] = {
--		{ "", 0 },
-+		{ "basic", 0 },
- 		{ "contexts", CONTEXTS },
- 		{ "fds", FDS },
- 		{ NULL }
-@@ -268,18 +267,21 @@ igt_main
- 		igt_fork_hang_detector(fd);
- 	}
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index da8aff6de..9930e394d 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -1936,6 +1936,22 @@ static bool has_load_balancer(int i915)
+ 	return err == 0;
+ }
  
--	for (const struct mode *m = modes; m->name; m++)
--		igt_subtest_f("%s", *m->name ? m->name : "basic")
--			/* NULL value means all engines */
--			all(fd, NULL, m->flags);
--
--	__for_each_physical_engine(fd, e) {
-+	igt_subtest_with_dynamic("engines") {
- 		for (const struct mode *m = modes; m->name; m++)
--			igt_subtest_f("%s%s%s",
--				      e->name,
--				      *m->name ? "-" : "",
--				      m->name)
--				all(fd, e, m->flags);
-+			igt_dynamic(m->name)
-+				/* NULL value means all engines */
-+				all(fd, NULL, m->flags);
-+	}
++static bool has_bonding(int i915)
++{
++	I915_DEFINE_CONTEXT_ENGINES_BOND(bonds, 0) = {
++		.base.name = I915_CONTEXT_ENGINES_EXT_BOND,
++	};
++	struct i915_engine_class_instance ci = {};
++	uint32_t ctx;
++	int err;
 +
-+	for (const struct mode *m = modes; m->name; m++) {
-+		igt_subtest_with_dynamic(m->name) {
-+			__for_each_physical_engine(fd, e) {
-+				if (gem_class_can_store_dword(fd, e->class))
-+					igt_dynamic(e->name)
-+						all(fd, e, m->flags);
-+			}
-+		}
- 	}
++	ctx = gem_context_create(i915);
++	err = __set_load_balancer(i915, ctx, &ci, 1, &bonds);
++	gem_context_destroy(i915, ctx);
++
++	return err == 0;
++}
++
+ igt_main
+ {
+ 	int i915 = -1;
+@@ -1992,11 +2008,18 @@ igt_main
+ 	igt_subtest("smoke")
+ 		smoketest(i915, 20);
  
+-	igt_subtest("bonded-imm")
+-		bonded(i915, 0);
++	igt_subtest_group {
++		igt_fixture igt_require(has_bonding(i915));
++
++		igt_subtest("bonded-imm")
++			bonded(i915, 0);
++
++		igt_subtest("bonded-cork")
++			bonded(i915, CORK);
+ 
+-	igt_subtest("bonded-cork")
+-		bonded(i915, CORK);
++		igt_subtest("bonded-early")
++			bonded_early(i915);
++	}
+ 
+ 	igt_subtest("bonded-slice")
+ 		bonded_slice(i915);
+@@ -2007,9 +2030,6 @@ igt_main
+ 	igt_subtest("bonded-semaphore")
+ 		bonded_semaphore(i915);
+ 
+-	igt_subtest("bonded-early")
+-		bonded_early(i915);
+-
  	igt_fixture {
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index b41fb4a01..06367f822 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -21,9 +21,7 @@ igt@gem_exec_fence@basic-wait
- igt@gem_exec_fence@basic-await
- igt@gem_exec_fence@nb-await
- igt@gem_exec_gttfill@basic
--igt@gem_exec_parallel@basic
--igt@gem_exec_parallel@contexts
--igt@gem_exec_parallel@fds
-+igt@gem_exec_parallel@engines
- igt@gem_exec_store@basic-all
- igt@gem_exec_suspend@basic
- igt@gem_exec_suspend@basic-s0
+ 		igt_stop_hang_detector();
+ 	}
 -- 
 2.26.0
 
