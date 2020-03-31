@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A5E16E7FA
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 10:45:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 77D7A6E7EF
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 10:45:00 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Tue, 31 Mar 2020 16:03:25 +0530
-Message-Id: <20200331103330.31211-2-anshuman.gupta@intel.com>
-In-Reply-To: <20200331103330.31211-1-anshuman.gupta@intel.com>
-References: <20200331103330.31211-1-anshuman.gupta@intel.com>
+Date: Tue, 31 Mar 2020 16:03:24 +0530
+Message-Id: <20200331103330.31211-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v4 1/6] tests/i915_pm_lpsp: rename non-edp
- test to non-edp-lpsp
+Subject: [igt-dev] [PATCH i-g-t v4 0/6] lpsp platform agnostic support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,33 +22,30 @@ To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com, martin.peres@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-HASWELL/BROADWELL tests non-edp panel for non-lpsp
-i.e. tests HSW_GLOBAL power well should be enabled.
-There is ROI to check whethter power well enabled,
-if power well is not enabled then we would see all other
-types of display issue in other igt test.
+This series adds lpsp igt val platform agnostic support.
+This has been a big gap on igt validation side in order to 
+validate low power single pipe use cases.
 
-It make sense to rename the non-edp test to non-edp-lpsp
-as on gen9+ non-edp panel can also drive lpsp.
+v4 has added new pacthes to patchset to remove the unnecessary
+subtests.
 
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
----
- tests/i915/i915_pm_lpsp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This should be test with i915 lpsp support, which adds
+i915_lpsp_info debugfs.
 
-diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
-index 42938e10..5ef5fe71 100644
---- a/tests/i915/i915_pm_lpsp.c
-+++ b/tests/i915/i915_pm_lpsp.c
-@@ -221,7 +221,7 @@ igt_main
- 		edp_subtest(drm_fd, drm_res, drm_connectors, devid, false);
- 	igt_subtest("edp-panel-fitter")
- 		edp_subtest(drm_fd, drm_res, drm_connectors, devid, true);
--	igt_subtest("non-edp")
-+	igt_subtest("non-edp-lpsp")
- 		non_edp_subtest(drm_fd, drm_res, drm_connectors);
- 
- 	igt_fixture {
+Anshuman Gupta (6):
+  tests/i915_pm_lpsp: rename non-edp test to non-edp-lpsp
+  tests/i915_pm_lpsp: Nuke the panel-fitter test.
+  lib/igt_pm: Add lib func to get lpsp capability
+  tests/i915_pm_lpsp: lpsp platform agnostic support
+  tests/i915_pm_lpsp: screens-disabled subtest use igt_wait
+  tests/i915_pm_rpm: lpsp/non-lpsp screen mode_set_data
+
+ lib/igt_pm.c              |  36 +++++
+ lib/igt_pm.h              |   1 +
+ tests/i915/i915_pm_lpsp.c | 296 +++++++++++++++++---------------------
+ tests/i915/i915_pm_rpm.c  |  53 ++++---
+ 4 files changed, 202 insertions(+), 184 deletions(-)
+
 -- 
 2.26.0
 
