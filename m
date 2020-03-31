@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB3706E2E2
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 11:42:14 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B4BBC6E2EA
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 11:47:50 +0000 (UTC)
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Date: Tue, 31 Mar 2020 14:47:46 +0300
+Message-Id: <20200331114746.81898-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200331111911.122768-1-michal@hardline.pl>
-References: <20200331111911.122768-1-michal@hardline.pl>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158565491513.18289.11896229632743132807@build.alporthouse.com>
-Date: Tue, 31 Mar 2020 12:41:55 +0100
-Subject: Re: [igt-dev] [PATCH] lib/igt_dummyload: Use timerfd rather than
- SIGEV_THREAD
+Subject: [igt-dev] [PATCH i-g-t] tests/perf: add tests for triggered OA
+ reports
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,32 +15,321 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: michal@hardline.pl, igt-dev@lists.freedesktop.org
-Cc: michal.winiarski@intel.com
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBNaWNoYcWCIFdpbmlhcnNraSAoMjAyMC0wMy0zMSAxMjoxOToxMSkKPiAtc3RhdGlj
-IHZvaWQgbm90aWZ5KHVuaW9uIHNpZ3ZhbCBhcmcpCj4gK3N0YXRpYyB2b2lkICp0aW1lcl90aHJl
-YWQodm9pZCAqZGF0YSkKPiAgewo+IC0gICAgICAgaWd0X3NwaW5fdCAqc3BpbiA9IGFyZy5zaXZh
-bF9wdHI7Cj4gKyAgICAgICBpZ3Rfc3Bpbl90ICpzcGluID0gZGF0YTsKPiArICAgICAgIHN0cnVj
-dCBwb2xsZmQgcGZkOwo+ICsgICAgICAgaW50IHJldDsKPiAgCj4gLSAgICAgICBpZ3Rfc3Bpbl9l
-bmQoc3Bpbik7Cj4gKyAgICAgICBwZmQuZmQgPSBzcGluLT50aW1lcmZkOwo+ICsgICAgICAgcGZk
-LmV2ZW50cyA9IFBPTExJTjsKPiArCj4gKyAgICAgICByZXQgPSBwb2xsKCZwZmQsIDEsIC0xKTsK
-PiArICAgICAgIGlmIChyZXQgPj0gMCkKPiArICAgICAgICAgICAgICAgaWd0X3NwaW5fZW5kKHNw
-aW4pOwoKdWludDY0X3QgY291bnQ7CgppZiAocmVhZChzcGluLT50aW1lcl9mZCwgJmNvdW50LCBz
-aXplb2YoY291bnQpKSA+IDApCglpZ3Rfc3Bpbl9lbmQoc3Bpbik7Cgp3b3VsZCBzdWZmaWNlLiBO
-b3Qgc3VyZSBvZiB0aGUgY29tcGFyYXRpdmUgbGF0ZW5jeS4KCkhvd2V2ZXIsIHRoYXQgd291bGQg
-YWxsb3cgdXMgdG8gY2xvc2Uoc3Bpbi0+dGltZXJmZCkgZmlyc3QgaW4KY2FuY2VsbGF0aW9uLCB3
-b3VsZCBzaG91bGQgcmVwb3J0IC1FQ0FOQ0VMTEVEIHF1aWNrZXN0LgoKU28gb3ZlcmFsbCwgSSdt
-IGxlZnQgd2l0aCB0aGUgd29ycnkgb2YgYSB0aHJlYWQgcGVyIHRpbWVvdXQuIFRob3VnaCB3ZQpk
-byB0eXBpY2FsbHkgb25seSB1c2Ugb25lIHNwaW5uZXIgdGltZW91dCBhdCBhIHRpbWUsIHNvIGl0
-J3MgbWVyZWx5IHRoZQpvdmVyaGVhZCBvZiBjcmVhdGluZyBhIHRocmVhZCB3aGljaCBzaG91bGQg
-bm90IGJlIHNpZ25pZmljYW50LgoKT2ssIHNvIGp1c3QgdGhlIHF1ZXN0aW9uIG9mIHBvbGwoKSB2
-cyByZWFkKCkgW2FuZCBjb3JyZXNwb25kaW5nIGNsZWFudXAKb3JkZXJdIGFuZCB3ZSdyZSBnb29k
-LgotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-aWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
-Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+By whitelisting a couple of registers we can allow an application
+batch to trigger OA reports in the OA buffer by switching back & forth
+an inverter on the condition logic.
+
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ tests/perf.c | 260 ++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 258 insertions(+), 2 deletions(-)
+
+diff --git a/tests/perf.c b/tests/perf.c
+index c6f157a1..00c228be 100644
+--- a/tests/perf.c
++++ b/tests/perf.c
+@@ -52,6 +52,8 @@ IGT_TEST_DESCRIPTION("Test the i915 perf metrics streaming interface");
+ #define OAREPORT_REASON_SHIFT          19
+ #define OAREPORT_REASON_TIMER          (1<<0)
+ #define OAREPORT_REASON_INTERNAL       (3<<1)
++#define OAREPORT_REASON_TRIGGER1       (1<<1)
++#define OAREPORT_REASON_TRIGGER2       (1<<2)
+ #define OAREPORT_REASON_CTX_SWITCH     (1<<3)
+ #define OAREPORT_REASON_GO             (1<<4)
+ #define OAREPORT_REASON_CLK_RATIO      (1<<5)
+@@ -382,11 +384,18 @@ gen8_read_report_clock_ratios(uint32_t *report,
+ 	*unslice_freq_mhz = (unslice_freq * 16666) / 1000;
+ }
+ 
++static uint32_t
++gen8_report_reason(const uint32_t *report)
++{
++	return ((report[0] >> OAREPORT_REASON_SHIFT) &
++		OAREPORT_REASON_MASK);
++}
++
++
+ static const char *
+ gen8_read_report_reason(const uint32_t *report)
+ {
+-	uint32_t reason = ((report[0] >> OAREPORT_REASON_SHIFT) &
+-			   OAREPORT_REASON_MASK);
++	uint32_t reason = gen8_report_reason(report);
+ 
+ 	if (reason & (1<<0))
+ 		return "timer";
+@@ -3059,6 +3068,241 @@ emit_stall_timestamp_and_rpc(struct intel_batchbuffer *batch,
+ 	emit_report_perf_count(batch, dst, report_dst_offset, report_id);
+ }
+ 
++/* The following register all have the same layout. */
++#define OAREPORTTRIG2 (0x2744)
++#define   OAREPORTTRIG2_INVERT_A_0  (1 << 0)
++#define   OAREPORTTRIG2_INVERT_A_1  (1 << 1)
++#define   OAREPORTTRIG2_INVERT_A_2  (1 << 2)
++#define   OAREPORTTRIG2_INVERT_A_3  (1 << 3)
++#define   OAREPORTTRIG2_INVERT_A_4  (1 << 4)
++#define   OAREPORTTRIG2_INVERT_A_5  (1 << 5)
++#define   OAREPORTTRIG2_INVERT_A_6  (1 << 6)
++#define   OAREPORTTRIG2_INVERT_A_7  (1 << 7)
++#define   OAREPORTTRIG2_INVERT_A_8  (1 << 8)
++#define   OAREPORTTRIG2_INVERT_A_9  (1 << 9)
++#define   OAREPORTTRIG2_INVERT_A_10 (1 << 10)
++#define   OAREPORTTRIG2_INVERT_A_11 (1 << 11)
++#define   OAREPORTTRIG2_INVERT_A_12 (1 << 12)
++#define   OAREPORTTRIG2_INVERT_A_13 (1 << 13)
++#define   OAREPORTTRIG2_INVERT_A_14 (1 << 14)
++#define   OAREPORTTRIG2_INVERT_A_15 (1 << 15)
++#define   OAREPORTTRIG2_INVERT_B_0  (1 << 16)
++#define   OAREPORTTRIG2_INVERT_B_1  (1 << 17)
++#define   OAREPORTTRIG2_INVERT_B_2  (1 << 18)
++#define   OAREPORTTRIG2_INVERT_B_3  (1 << 19)
++#define   OAREPORTTRIG2_INVERT_C_0  (1 << 20)
++#define   OAREPORTTRIG2_INVERT_C_1  (1 << 21)
++#define   OAREPORTTRIG2_INVERT_D_0  (1 << 22)
++#define   OAREPORTTRIG2_THRESHOLD_ENABLE      (1 << 23)
++#define   OAREPORTTRIG2_REPORT_TRIGGER_ENABLE (1 << 31)
++#define OAREPORTTRIG6 (0x2754)
++#define GEN12_OAREPORTTRIG2 (0x2744)
++#define GEN12_OAREPORTTRIG6 (0x2754)
++
++static void
++emit_triggered_oa_report(struct intel_batchbuffer *batch,
++			 uint32_t trigger)
++{
++	/*
++	 * We have 2 trigger registers that each generate a different
++	 * report reason.
++	 */
++	static const uint32_t gen8_triggers[] = {
++		OAREPORTTRIG2,
++		OAREPORTTRIG6,
++	};
++	static const uint32_t gen12_triggers[] = {
++		GEN12_OAREPORTTRIG2,
++		GEN12_OAREPORTTRIG6,
++	};
++	const uint32_t *triggers = intel_gen(devid) >= 12 ? gen12_triggers : gen8_triggers;
++
++	assert(trigger <= 1);
++
++	BEGIN_BATCH(6, 0);
++	OUT_BATCH(MI_LOAD_REGISTER_IMM);
++	OUT_BATCH(triggers[trigger]);
++	OUT_BATCH(OAREPORTTRIG2_INVERT_C_1 |
++		  OAREPORTTRIG2_REPORT_TRIGGER_ENABLE);
++	OUT_BATCH(MI_LOAD_REGISTER_IMM);
++	OUT_BATCH(triggers[trigger]);
++	OUT_BATCH(OAREPORTTRIG2_INVERT_C_1 |
++		  OAREPORTTRIG2_INVERT_D_0 |
++		  OAREPORTTRIG2_REPORT_TRIGGER_ENABLE);
++	ADVANCE_BATCH();
++}
++
++static uint64_t
++rcs_timestmap_reg_read(int fd)
++{
++	struct drm_i915_reg_read rr = {
++		.offset = 0x2358 | I915_REG_READ_8B_WA, /* render ring timestamp */
++	};
++
++	do_ioctl(fd, DRM_IOCTL_I915_REG_READ, &rr);
++
++	return rr.val;
++}
++
++/*
++ * Verify that we can trigger OA reports into the OA buffer using
++ * MI_LRI.
++ */
++static void
++test_triggered_oa_reports(void)
++{
++	int oa_exponent = max_oa_exponent_for_period_lte(1000000);
++	uint64_t properties[] = {
++		DRM_I915_PERF_PROP_CTX_HANDLE, UINT64_MAX, /* updated below */
++
++		/* Note: we have to specify at least one sample property even
++		 * though we aren't interested in samples in this case
++		 */
++		DRM_I915_PERF_PROP_SAMPLE_OA, true,
++
++		/* OA unit configuration */
++		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
++		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
++		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
++
++		/* Note: no OA exponent specified in this case */
++	};
++	struct drm_i915_perf_open_param param = {
++		.flags = I915_PERF_FLAG_FD_CLOEXEC,
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	struct drm_i915_perf_record_header *header;
++	drm_intel_bufmgr *bufmgr;
++	drm_intel_context *context;
++	struct igt_helper_process child = {};
++	struct intel_batchbuffer *batch;
++	struct igt_buf src[2], dst[2];
++	uint64_t timestamp32_mask = (1ull << 32) - 1;
++	uint64_t timestamps[2];
++	uint32_t buf_size = 16 * 1024 * 1024;
++	uint8_t *buf = malloc(buf_size);
++	uint32_t ctx_id;
++	int width = 800;
++	int height = 600;
++	uint32_t trigger_counts[2] = { 0, };
++	int ret;
++
++	do {
++		igt_fork_helper(&child) {
++			bufmgr = drm_intel_bufmgr_gem_init(drm_fd, 4096);
++			drm_intel_bufmgr_gem_enable_reuse(bufmgr);
++
++			scratch_buf_init(bufmgr, &src[0], width, height, 0xff0000ff);
++			scratch_buf_init(bufmgr, &dst[0], width, height, 0x00ff00ff);
++			scratch_buf_init(bufmgr, &src[1], 2 * width, height, 0xff0000ff);
++			scratch_buf_init(bufmgr, &dst[1], 2 * width, height, 0x00ff00ff);
++
++			batch = intel_batchbuffer_alloc(bufmgr, devid);
++
++			context = drm_intel_gem_context_create(bufmgr);
++			igt_assert(context);
++
++			ret = drm_intel_gem_context_get_id(context, &ctx_id);
++			properties[1] = ctx_id;
++
++
++			timestamps[0] = rcs_timestmap_reg_read(drm_fd);
++
++			stream_fd = __perf_open(drm_fd, &param, false);
++
++			emit_triggered_oa_report(batch, 0);
++
++			render_copy(batch,
++				    context,
++				    &src[0], 0, 0, width, height,
++				    &dst[0], 0, 0);
++
++			emit_triggered_oa_report(batch, 0);
++
++			emit_triggered_oa_report(batch, 1);
++
++			render_copy(batch,
++				    context,
++				    &src[1], 0, 0, 2 * width, height,
++				    &dst[1], 0, 0);
++
++			emit_triggered_oa_report(batch, 1);
++
++			intel_batchbuffer_flush_with_context(batch, context);
++
++			timestamps[1] = rcs_timestmap_reg_read(drm_fd);
++
++			if (timestamps[1] < timestamps[0] ||
++			    (timestamps[1] & timestamp32_mask) < (timestamps[1] & timestamp32_mask)) {
++				igt_debug("Timestamp rollover, trying again\n");
++				exit(EAGAIN);
++			}
++
++			ret = i915_read_reports_until_timestamp(test_set->perf_oa_format,
++								buf, buf_size,
++								timestamps[0] & timestamp32_mask,
++								timestamps[1] & timestamp32_mask);
++
++			for (size_t offset = 0; offset < ret; offset += header->size) {
++				uint32_t *report;
++
++				header = (void *)(buf + offset);
++
++				igt_assert_eq(header->pad, 0); /* Reserved */
++
++				igt_assert_neq(header->type, DRM_I915_PERF_RECORD_OA_BUFFER_LOST);
++
++				if (header->type == DRM_I915_PERF_RECORD_OA_REPORT_LOST)
++					continue;
++
++				/* Currently the only other record type expected is a
++				 * _SAMPLE. Notably this test will need updating if
++				 * i915-perf is extended in the future with additional
++				 * record types.
++				 */
++				igt_assert_eq(header->type, DRM_I915_PERF_RECORD_SAMPLE);
++
++				report = (void *)(header + 1);
++
++				igt_debug("report ts=0x%08x hw_id=0x%08x reason=%s\n",
++					  report[1], report[2],
++					  gen8_read_report_reason(report));
++
++				if (gen8_report_reason(report) & OAREPORT_REASON_TRIGGER1) {
++					igt_assert_eq(trigger_counts[1], 0);
++					trigger_counts[0]++;
++				}
++				if (gen8_report_reason(report) & OAREPORT_REASON_TRIGGER2) {
++					igt_assert_eq(trigger_counts[0], 2);
++					trigger_counts[1]++;
++				}
++			}
++
++			igt_assert_eq(trigger_counts[0], 2);
++			igt_assert_eq(trigger_counts[1], 2);
++
++			for (int i = 0; i < ARRAY_SIZE(src); i++) {
++				drm_intel_bo_unreference(src[i].bo);
++				drm_intel_bo_unreference(dst[i].bo);
++			}
++
++			intel_batchbuffer_free(batch);
++			drm_intel_gem_context_destroy(context);
++			drm_intel_bufmgr_destroy(bufmgr);
++			__perf_close(stream_fd);
++		}
++
++		ret = igt_wait_helper(&child);
++
++		igt_assert(WEXITSTATUS(ret) == EAGAIN ||
++			   WEXITSTATUS(ret) == 0);
++
++	} while (WEXITSTATUS(ret) == EAGAIN);
++
++	free(buf);
++}
++
+ /* Tests the INTEL_performance_query use case where an unprivileged process
+  * should be able to configure the OA unit for per-context metrics (for a
+  * context associated with that process' drm file descriptor) and the counters
+@@ -5000,6 +5244,18 @@ igt_main
+ 			test_global_sseu_config();
+ 	}
+ 
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(i915_perf_revision(drm_fd) >= 6);
++		}
++
++		igt_describe("Verify that triggered reports work");
++		igt_subtest("triggered-oa-reports") {
++			igt_require(intel_gen(devid) >= 8);
++			test_triggered_oa_reports();
++		}
++	}
++
+ 	igt_subtest("invalid-create-userspace-config")
+ 		test_invalid_create_userspace_config();
+ 
+-- 
+2.26.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
