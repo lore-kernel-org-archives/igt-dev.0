@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 218DC6E5CC
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 10:12:34 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-Date: Tue, 31 Mar 2020 10:12:31 +0000
-Message-ID: <8948cf46ed2a48c88e87c50b713e0c45@intel.com>
-References: <20200330110229.4755-1-mika.kahola@intel.com>
- <20200331064440.GF9497@platvala-desk.ger.corp.intel.com>
- <fcb11df357404b83af8dade221c7047f@intel.com>
-In-Reply-To: <fcb11df357404b83af8dade221c7047f@intel.com>
-Content-Language: en-US
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A5E16E7FA
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 10:45:02 +0000 (UTC)
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+Date: Tue, 31 Mar 2020 16:03:25 +0530
+Message-Id: <20200331103330.31211-2-anshuman.gupta@intel.com>
+In-Reply-To: <20200331103330.31211-1-anshuman.gupta@intel.com>
+References: <20200331103330.31211-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_concurrent: Move bandwidth
- calculation to igt_fixture
+Subject: [igt-dev] [PATCH i-g-t v4 1/6] tests/i915_pm_lpsp: rename non-edp
+ test to non-edp-lpsp
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,105 +21,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Kahola, Mika" <mika.kahola@intel.com>, "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: jani.nikula@intel.com, martin.peres@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Kahola,
-> Mika
-> Sent: Tuesday, March 31, 2020 11:22 AM
-> To: Latvala, Petri <petri.latvala@intel.com>
-> Cc: igt-dev@lists.freedesktop.org
-> Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_concurrent: Move bandwidth
-> calculation to igt_fixture
-> 
-> 
-> 
-> -----Original Message-----
-> From: Latvala, Petri <petri.latvala@intel.com>
-> Sent: Tuesday, March 31, 2020 9:45 AM
-> To: Kahola, Mika <mika.kahola@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; juhapekka.heikkila@gmail.com; Lisovskiy,
-> Stanislav <stanislav.lisovskiy@intel.com>
-> Subject: Re: [PATCH i-g-t v3] tests/kms_concurrent: Move bandwidth calculation
-> to igt_fixture
-> 
-> On Mon, Mar 30, 2020 at 02:02:29PM +0300, Mika Kahola wrote:
-> > The commit 153b34b5353df8c18a87d ("tests/kms_concurrent:
-> > Test maximum number of planes supported by the platform") caused
-> > regression on HSW pipe B testing such as.
-> >
-> > IGT-Version: 1.25-gfd8248084 (x86_64) (Linux:
-> > 5.6.0-rc7-CI-CI_DRM_8194+ x86_64) Starting subtest: pipe-B Testing
-> > resolution with connector VGA-1 using pipe B with seed 1585245074
-> > child 0 died with signal 11, Segmentation fault Subtest pipe-B: FAIL
-> > (0.330s)
-> >
-> > To fix this, we need move bandwidth calculation routines into part of
-> > igt_fixture instead of calculating it just before actual testing. The
-> > patch takes the minimum of those maximum number of planes for given
-> output.
-> >
-> > v2: Limit bandwidth check only gen11+ (CI)
-> > v3: Loop child process 5x longer when running test with 1 iteration
-> > (CI)
-> >
-> > Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-> > ---
-> >  tests/kms_concurrent.c | 30 ++++++++++++++++--------------
-> >  1 file changed, 16 insertions(+), 14 deletions(-)
-> >
-> > diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c index
-> > 1403e990..31c5620a 100644
-> > --- a/tests/kms_concurrent.c
-> > +++ b/tests/kms_concurrent.c
-> > @@ -36,6 +36,7 @@ typedef struct {
-> >  	igt_display_t display;
-> >  	igt_plane_t **plane;
-> >  	struct igt_fb *fb;
-> > +	int max_planes;
-> >  } data_t;
-> >
-> >  /* Command line parameters. */
-> > @@ -223,13 +224,13 @@ test_plane_position_with_output(data_t *data,
-> enum pipe pipe, int max_planes,
-> >  				igt_output_t *output)
-> >  {
-> >  	int i;
-> > -	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
-> > +	int iterations = opt.iterations < 5 ? 1 : opt.iterations;
-> 
-> This changes nothing though for CI. You still use 1. In fact this just limits the
-> iterations to 1 for everyone who specifies more than 1, until they use 5 or more.
-> 
-> And still, this patch needs an actual explanation why the crash happened and
-> why doing the same calculation in a fixture help. Otherwise there's no guarantee
-> it won't happen again. Until proven otherwise, avoiding the crash is accidental.
-> 
-> I investigated this a bit further and I noticed that for yet unidentified reason the
-> bandwidth calculation returned different number of planes for pipe B. This was
-> too much to handle on actual test and therefore child exited too early.
-> 
-> There seems to be a simpler way of computing how many planes we can support
-> with the given bandwidth. I propose that we disregard this patch and I will
-> propose and test another kind of solution.
+HASWELL/BROADWELL tests non-edp panel for non-lpsp
+i.e. tests HSW_GLOBAL power well should be enabled.
+There is ROI to check whethter power well enabled,
+if power well is not enabled then we would see all other
+types of display issue in other igt test.
 
-What would be to best approach here? Should I first revert the original patch i.e.
+It make sense to rename the non-edp test to non-edp-lpsp
+as on gen9+ non-edp panel can also drive lpsp.
 
-commit 2b65609b1de3 ("tests/kms_concurrent: Test maximum number of planes supported by the platform")
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+---
+ tests/i915/i915_pm_lpsp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-and then provide a new patch that has similar functionality but the approach is different or should I just a provide a fix that removes bandwidth calculations and replaces that with a different approach?
+diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
+index 42938e10..5ef5fe71 100644
+--- a/tests/i915/i915_pm_lpsp.c
++++ b/tests/i915/i915_pm_lpsp.c
+@@ -221,7 +221,7 @@ igt_main
+ 		edp_subtest(drm_fd, drm_res, drm_connectors, devid, false);
+ 	igt_subtest("edp-panel-fitter")
+ 		edp_subtest(drm_fd, drm_res, drm_connectors, devid, true);
+-	igt_subtest("non-edp")
++	igt_subtest("non-edp-lpsp")
+ 		non_edp_subtest(drm_fd, drm_res, drm_connectors);
+ 
+ 	igt_fixture {
+-- 
+2.26.0
 
--Mika-
-> 
-> -Mika-
-> --
-> Petri Latvala
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
