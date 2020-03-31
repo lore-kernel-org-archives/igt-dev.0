@@ -1,17 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D35346E264
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 06:51:03 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-Date: Tue, 31 Mar 2020 06:51:01 +0000
-Message-ID: <e7baf8e74fcf4e65963c5f95c5887733@intel.com>
-References: <20200330110229.4755-1-mika.kahola@intel.com>
- <20200331064440.GF9497@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <20200331064440.GF9497@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BC5E6E563
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 07:36:57 +0000 (UTC)
+References: <20200327044250.64274-1-ashutosh.dixit@intel.com>
+ <87wo76s8or.wl-ashutosh.dixit@intel.com>
+ <91876d66-5ba8-0351-583e-8baf1ff4a1e1@intel.com>
+ <87v9mpsjqp.wl-ashutosh.dixit@intel.com>
+ <199e0a58-95d0-f88f-efef-12d59bacdd76@intel.com>
+ <87r1xdshml.wl-ashutosh.dixit@intel.com>
+ <87lfnhm52d.wl-ashutosh.dixit@intel.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <5fdba63f-3e17-7b20-663b-ffbe08294235@intel.com>
+Date: Tue, 31 Mar 2020 10:36:54 +0300
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_concurrent: Move bandwidth
- calculation to igt_fixture
+In-Reply-To: <87lfnhm52d.wl-ashutosh.dixit@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf: add a test for OA data
+ polling reads using "small" buffers
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,76 +24,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On 31/03/2020 09:06, Dixit, Ashutosh wrote:
+> On Fri, 27 Mar 2020 12:49:22 -0700, Dixit, Ashutosh wrote:
+>> On Fri, 27 Mar 2020 12:06:13 -0700, Lionel Landwerlin wrote:
+>>> On 27/03/2020 21:03, Dixit, Ashutosh wrote:
+>>>> On Fri, 27 Mar 2020 09:09:41 -0700, Lionel Landwerlin wrote:
+>>>>> On 27/03/2020 06:50, Dixit, Ashutosh wrote:
+>>>>>> On Thu, 26 Mar 2020 21:42:50 -0700, Ashutosh Dixit wrote:
+>>>>>>> diff --git a/tests/perf.c b/tests/perf.c
+>>>>>>> index 724f6f809..3dc757c3b 100644
+>>>>>>> --- a/tests/perf.c
+>>>>>>> +++ b/tests/perf.c
+>>>>>>> +static void test_polling_small_buf(void)
+>>>>>>> +{
+>>>>>> /snip/
+>>>>>>
+>>>>>>> +
+>>>>>>> +	igt_assert(abs(n_expect_read_bytes - n_bytes_read) < (0.10 * n_expect_read_bytes));
+>>>>>>> +}
+>>>>>>> +
+>>>>>> I'd be wary of a 90% match on slow platforms like Atom? Maybe 80% is safer?
+>>>>> Do we have any experiment showing them behaving differently?
+>>>> No I don't have any data, but considering that in previous stable versions
+>>>> we can only read < 10% of the data, I think it should be ok to go down to
+>>>> 80%? So that we don't start getting unnecessary false alarms in CI, even
+>>>> when the issue is fixed.
+>>> Okay, for the record I get somewhere between 93~95% of expected reports on
+>>> KBLGT2.
+>> Yes I tried it and saw that. I already gave a R-b so we could probably
+>> merge the patch after making that change (0.2 instead of 0.1 above), or do
+>> you want me to post a new version with the change? Thanks!
+> Actually there has been some change in the kernel, earlier like you I was
+> also getting around 94% with a 1 KB buffer, now I am getting about
+> 87%. I am getting 94% with a 1 MB buffer. Does the amount of expected data
+> in the test need to be modified? I can try to bisect tomorrow and see what
+> has done this, unless you already know. Thanks!
+
+Ah, that's probably the read() bug you're fixing...
+
+Are you running with the kernel patch : "drm/i915/perf: Do not clear 
+pollin for small user read buffers" ?
 
 
------Original Message-----
-From: Latvala, Petri <petri.latvala@intel.com> 
-Sent: Tuesday, March 31, 2020 9:45 AM
-To: Kahola, Mika <mika.kahola@intel.com>
-Cc: igt-dev@lists.freedesktop.org; juhapekka.heikkila@gmail.com; Lisovskiy, Stanislav <stanislav.lisovskiy@intel.com>
-Subject: Re: [PATCH i-g-t v3] tests/kms_concurrent: Move bandwidth calculation to igt_fixture
+-Lionel
 
-On Mon, Mar 30, 2020 at 02:02:29PM +0300, Mika Kahola wrote:
-> The commit 153b34b5353df8c18a87d ("tests/kms_concurrent:
-> Test maximum number of planes supported by the platform") caused 
-> regression on HSW pipe B testing such as.
-> 
-> IGT-Version: 1.25-gfd8248084 (x86_64) (Linux: 
-> 5.6.0-rc7-CI-CI_DRM_8194+ x86_64) Starting subtest: pipe-B Testing 
-> resolution with connector VGA-1 using pipe B with seed 1585245074 
-> child 0 died with signal 11, Segmentation fault Subtest pipe-B: FAIL 
-> (0.330s)
-> 
-> To fix this, we need move bandwidth calculation routines into part of 
-> igt_fixture instead of calculating it just before actual testing. The 
-> patch takes the minimum of those maximum number of planes for given output.
-> 
-> v2: Limit bandwidth check only gen11+ (CI)
-> v3: Loop child process 5x longer when running test with 1 iteration 
-> (CI)
-> 
-> Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-> ---
->  tests/kms_concurrent.c | 30 ++++++++++++++++--------------
->  1 file changed, 16 insertions(+), 14 deletions(-)
-> 
-> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c index 
-> 1403e990..31c5620a 100644
-> --- a/tests/kms_concurrent.c
-> +++ b/tests/kms_concurrent.c
-> @@ -36,6 +36,7 @@ typedef struct {
->  	igt_display_t display;
->  	igt_plane_t **plane;
->  	struct igt_fb *fb;
-> +	int max_planes;
->  } data_t;
->  
->  /* Command line parameters. */
-> @@ -223,13 +224,13 @@ test_plane_position_with_output(data_t *data, enum pipe pipe, int max_planes,
->  				igt_output_t *output)
->  {
->  	int i;
-> -	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
-> +	int iterations = opt.iterations < 5 ? 1 : opt.iterations;
-
-This changes nothing though for CI. You still use 1. In fact this just limits the iterations to 1 for everyone who specifies more than 1, until they use 5 or more.
-
-That's a typo.
-
-And still, this patch needs an actual explanation why the crash happened and why doing the same calculation in a fixture help. Otherwise there's no guarantee it won't happen again. Until proven otherwise, avoiding the crash is accidental.
-
-CI was clean this time around even though nothing has changed.
-
---
-Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
