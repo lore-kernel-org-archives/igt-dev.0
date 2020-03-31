@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 71FDE6E323
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 13:06:50 +0000 (UTC)
-From: Mika Kahola <mika.kahola@intel.com>
-Date: Tue, 31 Mar 2020 14:58:24 +0300
-Message-Id: <20200331115824.2481-3-mika.kahola@intel.com>
-In-Reply-To: <20200331115824.2481-1-mika.kahola@intel.com>
-References: <20200331115824.2481-1-mika.kahola@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A47F76E82E
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 13:53:02 +0000 (UTC)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] tests/kms_concurrent: Use maximum
- number of planes that display/platform combination supports
+In-Reply-To: <20200331111911.122768-1-michal@hardline.pl>
+References: <20200331111911.122768-1-michal@hardline.pl>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Message-ID: <158566277770.5852.214994794630023972@build.alporthouse.com>
+Date: Tue, 31 Mar 2020 14:52:57 +0100
+Subject: Re: [igt-dev] [PATCH] lib/igt_dummyload: Use timerfd rather than
+ SIGEV_THREAD
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,176 +17,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: petri.latvala@intel.com
+To: michal@hardline.pl, igt-dev@lists.freedesktop.org
+Cc: michal.winiarski@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-There was an error in
-
-commit 0ab05a51a059 ("tests/kms_concurrent: Test for maximum number of planes")
-
-that calculates the maximum number of supported planes. The patch proposes to
-test first if an atomic commit is successful with the selected number of planes.
-In case of a failure, the number of planes is reduced by one assuming that the
-failure was caused by bandwidth limit. The test loops at least as many iterations
-as there are planes defined by the platform.
-
-Signed-off-by: Mika Kahola <mika.kahola@intel.com>
----
- tests/kms_concurrent.c | 61 ++++++++++++------------------------------
- 1 file changed, 17 insertions(+), 44 deletions(-)
-
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index c212f6ec..5de155f6 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -204,19 +204,23 @@ test_plane_position_with_output(data_t *data, enum pipe pipe, int max_planes,
- 				igt_output_t *output)
- {
- 	int i;
--	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
-+	int iterations = opt.iterations < 1 ? max_planes : opt.iterations;
- 	bool loop_forever = opt.iterations == LOOP_FOREVER ? true : false;
-+	int ret;
- 
- 	igt_pipe_refresh(&data->display, pipe, true);
- 
- 	i = 0;
- 	while (i < iterations || loop_forever) {
- 		prepare_planes(data, pipe, max_planes, output);
--		igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
-+		ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
- 
- 		for (int c = 0; c < max_planes; c++)
- 			igt_remove_fb(data->drm_fd, &data->fb[c]);
- 
-+		if (ret != 0)
-+			max_planes > 1 ? max_planes-- : 1;
-+
- 		i++;
- 	}
- }
-@@ -249,44 +253,17 @@ get_lowres_mode(data_t *data, const drmModeModeInfo *mode_default,
- 	return mode;
- }
- 
--static int
--test_resolution_with_output(data_t *data, enum pipe pipe, igt_output_t *output)
-+static void
-+test_resolution_with_output(data_t *data, enum pipe pipe, int max_planes, igt_output_t *output)
- {
- 	const drmModeModeInfo *mode_hi, *mode_lo;
--	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
-+	int iterations = opt.iterations < 1 ? max_planes : opt.iterations;
- 	bool loop_forever = opt.iterations == LOOP_FOREVER ? true : false;
--	int i, c, ret;
--	int max_planes = data->display.pipes[pipe].n_planes;
--	igt_plane_t *primary;
--	drmModeModeInfo *mode;
-+	int i;
- 
- 	i = 0;
- 	while (i < iterations || loop_forever) {
- 		igt_output_set_pipe(output, pipe);
--		for (c = 0; c < max_planes; c++) {
--			igt_plane_t *plane = igt_output_get_plane(output, c);
--
--			if (plane->type != DRM_PLANE_TYPE_PRIMARY)
--				continue;
--			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
--			data->plane[primary->index] = primary;
--			mode = igt_output_get_mode(output);
--			igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
--						DRM_FORMAT_XRGB8888,
--						LOCAL_I915_FORMAT_MOD_X_TILED,
--						0.0f, 0.0f, 1.0f,
--						&data->fb[primary->index]);
--			igt_plane_set_fb(data->plane[primary->index], &data->fb[primary->index]);
--			ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
--			if (ret) {
--				igt_plane_set_fb(data->plane[i], NULL);
--				igt_remove_fb(data->drm_fd, &data->fb[i]);
--				data->plane[i] = NULL;
--				break;
--			}
--		}
--		max_planes = c;
--		igt_assert_lt(0, max_planes);
- 
- 		mode_hi = igt_output_get_mode(output);
- 		mode_lo = get_lowres_mode(data, mode_hi, output);
-@@ -301,16 +278,12 @@ test_resolution_with_output(data_t *data, enum pipe pipe, igt_output_t *output)
- 
- 		i++;
- 	}
--
--	return max_planes;
- }
- 
- static void
--run_test(data_t *data, enum pipe pipe, igt_output_t *output)
-+run_test(data_t *data, enum pipe pipe, int max_planes, igt_output_t *output)
- {
- 	int connected_outs;
--	int n_planes = data->display.pipes[pipe].n_planes;
--	int max_planes = n_planes;
- 
- 	if (!opt.user_seed)
- 		opt.seed = time(NULL);
-@@ -320,18 +293,17 @@ run_test(data_t *data, enum pipe pipe, igt_output_t *output)
- 		igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
- 			 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
- 
--		test_init(data, pipe, n_planes, output);
--		max_planes = test_resolution_with_output(data, pipe, output);
-+		test_init(data, pipe, max_planes, output);
- 
- 		igt_fork(child, 1) {
- 			test_plane_position_with_output(data, pipe, max_planes, output);
- 		}
- 
--		test_resolution_with_output(data, pipe, output);
-+		test_resolution_with_output(data, pipe, max_planes, output);
- 
- 		igt_waitchildren();
- 
--		test_fini(data, pipe, n_planes, output);
-+		test_fini(data, pipe, max_planes, output);
- 
- 		connected_outs++;
- 	}
-@@ -343,12 +315,13 @@ static void
- run_tests_for_pipe(data_t *data, enum pipe pipe)
- {
- 	igt_output_t *output;
-+	int n_planes = data->display.pipes[pipe].n_planes;
- 
- 	igt_fixture {
- 		int valid_tests = 0;
- 
- 		igt_skip_on(pipe >= data->display.n_pipes);
--		igt_require(data->display.pipes[pipe].n_planes > 0);
-+		igt_require(n_planes > 0);
- 
- 		for_each_valid_output_on_pipe(&data->display, pipe, output)
- 			valid_tests++;
-@@ -358,7 +331,7 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 
- 	igt_subtest_f("pipe-%s", kmstest_pipe_name(pipe))
- 		for_each_valid_output_on_pipe(&data->display, pipe, output)
--			run_test(data, pipe, output);
-+			run_test(data, pipe, n_planes, output);
- }
- 
- static int opt_handler(int option, int option_index, void *input)
--- 
-2.20.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+UXVvdGluZyBNaWNoYcWCIFdpbmlhcnNraSAoMjAyMC0wMy0zMSAxMjoxOToxMSkKPiBGcm9tOiBN
+aWNoYcWCIFdpbmlhcnNraSA8bWljaGFsLndpbmlhcnNraUBpbnRlbC5jb20+Cj4gCj4gU2luY2Ug
+dGltZXJfZGVsZXRlIGRvZXNuJ3QgZ2l2ZSB1cyBhbnkgZ3VhcmFudGVlcyB0aGF0IHRoZSB0aHJl
+YWQgYW5kCj4gaXRzIG5vdGlmeV9mdW5jdGlvbiBpc24ndCBjdXJyZW50bHkgcnVubmluZywgd2Ug
+Y2FuIGhpdCBhIHVzZS1hZnRlci1mcmVlCj4gaW4gYSByYWNlIGNvbmRpdGlvbiBzY2VuYXJpby4K
+PiBUaGlzIGNhdXNlcyBhIHNlZW1pbmdseSByYW5kb20gc2VnZmF1bHQgd2hlbiBpZ3Rfc3Bpbl9l
+bmQgZnJvbSBub3RpZnkKPiB0aHJlYWQgaXMgY2FsbGVkIGFmdGVyIGlndF9zcGluX2ZyZWUgd2Fz
+IGFscmVhZHkgY2FsbGVkIGZyb20gdGhlIG1haW4KPiB0aHJlYWQuCj4gTGV0J3MgZml4IHRoYXQg
+YnkgdXNpbmcgdGltZXJmZCBhbmQgbWFuYWdpbmcgdGhlIHRpbWVyIHRocmVhZCBvdXJzZWx2ZXMu
+Cj4gCj4gU2lnbmVkLW9mZi1ieTogTWljaGHFgiBXaW5pYXJza2kgPG1pY2hhbC53aW5pYXJza2lA
+aW50ZWwuY29tPgo+IENjOiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4K
+ClNlZW1zIEkgd2FzIGNvbmZ1c2VkIHdpdGggdGhlIG1lYW5pbmcgb2YgdGltZXJmZF9jYW5jZWxl
+ZCgpIGFuZCBpbWJ1ZWQKaXQgd2l0aCBwcm9wZXJ0aWVzIGl0IGRpZCBub3QgaGF2ZSwKUmV2aWV3
+ZWQtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgotQ2hyaXMKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
+aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
+ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
