@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4239D89C97
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 11:04:41 +0000 (UTC)
-Date: Tue, 31 Mar 2020 14:04:38 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200331110438.GI9497@platvala-desk.ger.corp.intel.com>
-References: <20200330110229.4755-1-mika.kahola@intel.com>
- <20200331064440.GF9497@platvala-desk.ger.corp.intel.com>
- <fcb11df357404b83af8dade221c7047f@intel.com>
- <8948cf46ed2a48c88e87c50b713e0c45@intel.com>
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com
+ [IPv6:2a00:1450:4864:20::144])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2100C6E81C
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 11:20:21 +0000 (UTC)
+Received: by mail-lf1-x144.google.com with SMTP id q5so16941927lfb.13
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 04:20:20 -0700 (PDT)
+From: =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal@hardline.pl>
+Date: Tue, 31 Mar 2020 13:19:11 +0200
+Message-Id: <20200331111911.122768-1-michal@hardline.pl>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <8948cf46ed2a48c88e87c50b713e0c45@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_concurrent: Move bandwidth
- calculation to igt_fixture
+Subject: [igt-dev] [PATCH] lib/igt_dummyload: Use timerfd rather than
+ SIGEV_THREAD
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,108 +18,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Kahola, Mika" <mika.kahola@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Mar 31, 2020 at 01:12:31PM +0300, Kahola, Mika wrote:
-> > -----Original Message-----
-> > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Kahola,
-> > Mika
-> > Sent: Tuesday, March 31, 2020 11:22 AM
-> > To: Latvala, Petri <petri.latvala@intel.com>
-> > Cc: igt-dev@lists.freedesktop.org
-> > Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_concurrent: Move bandwidth
-> > calculation to igt_fixture
-> > 
-> > 
-> > 
-> > -----Original Message-----
-> > From: Latvala, Petri <petri.latvala@intel.com>
-> > Sent: Tuesday, March 31, 2020 9:45 AM
-> > To: Kahola, Mika <mika.kahola@intel.com>
-> > Cc: igt-dev@lists.freedesktop.org; juhapekka.heikkila@gmail.com; Lisovskiy,
-> > Stanislav <stanislav.lisovskiy@intel.com>
-> > Subject: Re: [PATCH i-g-t v3] tests/kms_concurrent: Move bandwidth calculation
-> > to igt_fixture
-> > 
-> > On Mon, Mar 30, 2020 at 02:02:29PM +0300, Mika Kahola wrote:
-> > > The commit 153b34b5353df8c18a87d ("tests/kms_concurrent:
-> > > Test maximum number of planes supported by the platform") caused
-> > > regression on HSW pipe B testing such as.
-> > >
-> > > IGT-Version: 1.25-gfd8248084 (x86_64) (Linux:
-> > > 5.6.0-rc7-CI-CI_DRM_8194+ x86_64) Starting subtest: pipe-B Testing
-> > > resolution with connector VGA-1 using pipe B with seed 1585245074
-> > > child 0 died with signal 11, Segmentation fault Subtest pipe-B: FAIL
-> > > (0.330s)
-> > >
-> > > To fix this, we need move bandwidth calculation routines into part of
-> > > igt_fixture instead of calculating it just before actual testing. The
-> > > patch takes the minimum of those maximum number of planes for given
-> > output.
-> > >
-> > > v2: Limit bandwidth check only gen11+ (CI)
-> > > v3: Loop child process 5x longer when running test with 1 iteration
-> > > (CI)
-> > >
-> > > Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-> > > ---
-> > >  tests/kms_concurrent.c | 30 ++++++++++++++++--------------
-> > >  1 file changed, 16 insertions(+), 14 deletions(-)
-> > >
-> > > diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c index
-> > > 1403e990..31c5620a 100644
-> > > --- a/tests/kms_concurrent.c
-> > > +++ b/tests/kms_concurrent.c
-> > > @@ -36,6 +36,7 @@ typedef struct {
-> > >  	igt_display_t display;
-> > >  	igt_plane_t **plane;
-> > >  	struct igt_fb *fb;
-> > > +	int max_planes;
-> > >  } data_t;
-> > >
-> > >  /* Command line parameters. */
-> > > @@ -223,13 +224,13 @@ test_plane_position_with_output(data_t *data,
-> > enum pipe pipe, int max_planes,
-> > >  				igt_output_t *output)
-> > >  {
-> > >  	int i;
-> > > -	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
-> > > +	int iterations = opt.iterations < 5 ? 1 : opt.iterations;
-> > 
-> > This changes nothing though for CI. You still use 1. In fact this just limits the
-> > iterations to 1 for everyone who specifies more than 1, until they use 5 or more.
-> > 
-> > And still, this patch needs an actual explanation why the crash happened and
-> > why doing the same calculation in a fixture help. Otherwise there's no guarantee
-> > it won't happen again. Until proven otherwise, avoiding the crash is accidental.
-> > 
-> > I investigated this a bit further and I noticed that for yet unidentified reason the
-> > bandwidth calculation returned different number of planes for pipe B. This was
-> > too much to handle on actual test and therefore child exited too early.
-> > 
-> > There seems to be a simpler way of computing how many planes we can support
-> > with the given bandwidth. I propose that we disregard this patch and I will
-> > propose and test another kind of solution.
-> 
-> What would be to best approach here? Should I first revert the original patch i.e.
-> 
-> commit 2b65609b1de3 ("tests/kms_concurrent: Test maximum number of planes supported by the platform")
-> 
-> and then provide a new patch that has similar functionality but the approach is different or should I just a provide a fix that removes bandwidth calculations and replaces that with a different approach?
-
-
-Yeah if you want to revert and try a different approach, fine by me.
-
-
--- 
-Petri Latvala
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RnJvbTogTWljaGHFgiBXaW5pYXJza2kgPG1pY2hhbC53aW5pYXJza2lAaW50ZWwuY29tPgoKU2lu
+Y2UgdGltZXJfZGVsZXRlIGRvZXNuJ3QgZ2l2ZSB1cyBhbnkgZ3VhcmFudGVlcyB0aGF0IHRoZSB0
+aHJlYWQgYW5kCml0cyBub3RpZnlfZnVuY3Rpb24gaXNuJ3QgY3VycmVudGx5IHJ1bm5pbmcsIHdl
+IGNhbiBoaXQgYSB1c2UtYWZ0ZXItZnJlZQppbiBhIHJhY2UgY29uZGl0aW9uIHNjZW5hcmlvLgpU
+aGlzIGNhdXNlcyBhIHNlZW1pbmdseSByYW5kb20gc2VnZmF1bHQgd2hlbiBpZ3Rfc3Bpbl9lbmQg
+ZnJvbSBub3RpZnkKdGhyZWFkIGlzIGNhbGxlZCBhZnRlciBpZ3Rfc3Bpbl9mcmVlIHdhcyBhbHJl
+YWR5IGNhbGxlZCBmcm9tIHRoZSBtYWluCnRocmVhZC4KTGV0J3MgZml4IHRoYXQgYnkgdXNpbmcg
+dGltZXJmZCBhbmQgbWFuYWdpbmcgdGhlIHRpbWVyIHRocmVhZCBvdXJzZWx2ZXMuCgpTaWduZWQt
+b2ZmLWJ5OiBNaWNoYcWCIFdpbmlhcnNraSA8bWljaGFsLndpbmlhcnNraUBpbnRlbC5jb20+CkNj
+OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KLS0tCiBsaWIvaWd0X2R1
+bW15bG9hZC5jIHwgNDIgKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0t
+CiBsaWIvaWd0X2R1bW15bG9hZC5oIHwgIDMgKystCiAyIGZpbGVzIGNoYW5nZWQsIDI3IGluc2Vy
+dGlvbnMoKyksIDE4IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZHVtbXlsb2Fk
+LmMgYi9saWIvaWd0X2R1bW15bG9hZC5jCmluZGV4IDY1N2MzYzY0Li42OTRkOTA3ZCAxMDA2NDQK
+LS0tIGEvbGliL2lndF9kdW1teWxvYWQuYworKysgYi9saWIvaWd0X2R1bW15bG9hZC5jCkBAIC0y
+Niw2ICsyNiw3IEBACiAjaW5jbHVkZSA8c2lnbmFsLmg+CiAjaW5jbHVkZSA8cHRocmVhZC5oPgog
+I2luY2x1ZGUgPHN5cy9wb2xsLmg+CisjaW5jbHVkZSA8c3lzL3RpbWVyZmQuaD4KIAogI2luY2x1
+ZGUgPGk5MTVfZHJtLmg+CiAKQEAgLTM5NCwxMSArMzk1LDIwIEBAIGlndF9zcGluX2ZhY3Rvcnko
+aW50IGZkLCBjb25zdCBzdHJ1Y3QgaWd0X3NwaW5fZmFjdG9yeSAqb3B0cykKIAlyZXR1cm4gc3Bp
+bjsKIH0KIAotc3RhdGljIHZvaWQgbm90aWZ5KHVuaW9uIHNpZ3ZhbCBhcmcpCitzdGF0aWMgdm9p
+ZCAqdGltZXJfdGhyZWFkKHZvaWQgKmRhdGEpCiB7Ci0JaWd0X3NwaW5fdCAqc3BpbiA9IGFyZy5z
+aXZhbF9wdHI7CisJaWd0X3NwaW5fdCAqc3BpbiA9IGRhdGE7CisJc3RydWN0IHBvbGxmZCBwZmQ7
+CisJaW50IHJldDsKIAotCWlndF9zcGluX2VuZChzcGluKTsKKwlwZmQuZmQgPSBzcGluLT50aW1l
+cmZkOworCXBmZC5ldmVudHMgPSBQT0xMSU47CisKKwlyZXQgPSBwb2xsKCZwZmQsIDEsIC0xKTsK
+KwlpZiAocmV0ID49IDApCisJCWlndF9zcGluX2VuZChzcGluKTsKKworCXJldHVybiBOVUxMOwog
+fQogCiAvKioKQEAgLTQxMiwyOSArNDIyLDI0IEBAIHN0YXRpYyB2b2lkIG5vdGlmeSh1bmlvbiBz
+aWd2YWwgYXJnKQogICovCiB2b2lkIGlndF9zcGluX3NldF90aW1lb3V0KGlndF9zcGluX3QgKnNw
+aW4sIGludDY0X3QgbnMpCiB7Ci0JdGltZXJfdCB0aW1lcjsKLQlzdHJ1Y3Qgc2lnZXZlbnQgc2V2
+OwogCXN0cnVjdCBpdGltZXJzcGVjIGl0czsKKwlpbnQgdGltZXJmZDsKIAogCWlndF9hc3NlcnQo
+bnMgPiAwKTsKIAlpZiAoIXNwaW4pCiAJCXJldHVybjsKIAotCWlndF9hc3NlcnQoIXNwaW4tPnRp
+bWVyKTsKKwlpZ3RfYXNzZXJ0KCFzcGluLT50aW1lcmZkKTsKKwl0aW1lcmZkID0gdGltZXJmZF9j
+cmVhdGUoQ0xPQ0tfTU9OT1RPTklDLCAwKTsKKwlpZ3RfYXNzZXJ0KHRpbWVyZmQgPj0gMCk7CisJ
+c3Bpbi0+dGltZXJmZCA9IHRpbWVyZmQ7CiAKLQltZW1zZXQoJnNldiwgMCwgc2l6ZW9mKHNldikp
+OwotCXNldi5zaWdldl9ub3RpZnkgPSBTSUdFVl9USFJFQUQ7Ci0Jc2V2LnNpZ2V2X3ZhbHVlLnNp
+dmFsX3B0ciA9IHNwaW47Ci0Jc2V2LnNpZ2V2X25vdGlmeV9mdW5jdGlvbiA9IG5vdGlmeTsKLQlp
+Z3RfYXNzZXJ0KHRpbWVyX2NyZWF0ZShDTE9DS19NT05PVE9OSUMsICZzZXYsICZ0aW1lcikgPT0g
+MCk7Ci0JaWd0X2Fzc2VydCh0aW1lcik7CisJcHRocmVhZF9jcmVhdGUoJnNwaW4tPnRpbWVyX3Ro
+cmVhZCwgTlVMTCwgdGltZXJfdGhyZWFkLCBzcGluKTsKIAogCW1lbXNldCgmaXRzLCAwLCBzaXpl
+b2YoaXRzKSk7CiAJaXRzLml0X3ZhbHVlLnR2X3NlYyA9IG5zIC8gTlNFQ19QRVJfU0VDOwogCWl0
+cy5pdF92YWx1ZS50dl9uc2VjID0gbnMgJSBOU0VDX1BFUl9TRUM7Ci0JaWd0X2Fzc2VydCh0aW1l
+cl9zZXR0aW1lKHRpbWVyLCAwLCAmaXRzLCBOVUxMKSA9PSAwKTsKLQotCXNwaW4tPnRpbWVyID0g
+dGltZXI7CisJaWd0X2Fzc2VydCh0aW1lcmZkX3NldHRpbWUodGltZXJmZCwgMCwgJml0cywgTlVM
+TCkgPT0gMCk7CiB9CiAKIC8qKgpAQCAtNDg0LDggKzQ4OSwxMSBAQCB2b2lkIGlndF9zcGluX2Zy
+ZWUoaW50IGZkLCBpZ3Rfc3Bpbl90ICpzcGluKQogCWlndF9saXN0X2RlbCgmc3Bpbi0+bGluayk7
+CiAJcHRocmVhZF9tdXRleF91bmxvY2soJmxpc3RfbG9jayk7CiAKLQlpZiAoc3Bpbi0+dGltZXIp
+Ci0JCXRpbWVyX2RlbGV0ZShzcGluLT50aW1lcik7CisJaWYgKHNwaW4tPnRpbWVyZmQpIHsKKwkJ
+cHRocmVhZF9jYW5jZWwoc3Bpbi0+dGltZXJfdGhyZWFkKTsKKwkJaWd0X2Fzc2VydChwdGhyZWFk
+X2pvaW4oc3Bpbi0+dGltZXJfdGhyZWFkLCBOVUxMKSA9PSAwKTsKKwkJY2xvc2Uoc3Bpbi0+dGlt
+ZXJmZCk7CisJfQogCiAJaWd0X3NwaW5fZW5kKHNwaW4pOwogCWdlbV9tdW5tYXAoKHZvaWQgKiko
+KHVuc2lnbmVkIGxvbmcpc3Bpbi0+Y29uZGl0aW9uICYgKH40MDk1VUwpKSwKZGlmZiAtLWdpdCBh
+L2xpYi9pZ3RfZHVtbXlsb2FkLmggYi9saWIvaWd0X2R1bW15bG9hZC5oCmluZGV4IGNiNjk2MDA5
+Li5kZmJhMTIzYyAxMDA2NDQKLS0tIGEvbGliL2lndF9kdW1teWxvYWQuaAorKysgYi9saWIvaWd0
+X2R1bW15bG9hZC5oCkBAIC0zNCw3ICszNCw4IEBACiAKIHR5cGVkZWYgc3RydWN0IGlndF9zcGlu
+IHsKIAl1bnNpZ25lZCBpbnQgaGFuZGxlOwotCXRpbWVyX3QgdGltZXI7CisJaW50IHRpbWVyZmQ7
+CisJcHRocmVhZF90IHRpbWVyX3RocmVhZDsKIAlzdHJ1Y3QgaWd0X2xpc3RfaGVhZCBsaW5rOwog
+CiAJdWludDMyX3QgKmNvbmRpdGlvbjsKLS0gCjIuMjYuMAoKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
+aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9pZ3QtZGV2Cg==
