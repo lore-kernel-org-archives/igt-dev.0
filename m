@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A717C89823
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 12:09:25 +0000 (UTC)
-MIME-Version: 1.0
-In-Reply-To: <20200331115313.82148-1-lionel.g.landwerlin@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D3796E311
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 12:20:55 +0000 (UTC)
 References: <20200331115313.82148-1-lionel.g.landwerlin@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158565656174.18289.8088590257093001034@build.alporthouse.com>
-Date: Tue, 31 Mar 2020 13:09:21 +0100
+ <158565656174.18289.8088590257093001034@build.alporthouse.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <5a6d2f47-63bb-54f2-4ded-cebe1beb6991@intel.com>
+Date: Tue, 31 Mar 2020 15:20:52 +0300
+MIME-Version: 1.0
+In-Reply-To: <158565656174.18289.8088590257093001034@build.alporthouse.com>
+Content-Language: en-US
 Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/perf: add tests for multi
  context filtering
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -17,51 +19,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>, igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Lionel Landwerlin (2020-03-31 12:53:13)
-> +       /* Missing DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY. */
-> +       {
-> +               uint32_t context_ids[] = {
-> +                       0,
-> +                       0,
-> +               };
-> +               uint64_t properties[] = {
-> +                       /* Note: we have to specify at least one sample property even
-> +                        * though we aren't interested in samples in this case
-> +                        */
-> +                       DRM_I915_PERF_PROP_SAMPLE_OA, true,
-> +
-> +                       /* OA unit configuration */
-> +                       DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
-> +                       DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-> +
-> +                       /* Note: no OA exponent specified in this case */
-> +
-> +                       DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY_LENGTH, ARRAY_SIZE(context_ids),
-> +               };
-> +               struct drm_i915_perf_open_param param = {
-> +                       .flags = I915_PERF_FLAG_FD_CLOEXEC,
-> +                       .num_properties = sizeof(properties) / 16,
-> +                       .properties_ptr = to_user_pointer(properties),
-> +               };
-> +
-> +               do_ioctl_err(drm_fd, DRM_IOCTL_I915_PERF_OPEN, &param, EFAULT);
-> +       }
-> +}
+On 31/03/2020 15:09, Chris Wilson wrote:
+> Quoting Lionel Landwerlin (2020-03-31 12:53:13)
+>> +       /* Missing DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY. */
+>> +       {
+>> +               uint32_t context_ids[] = {
+>> +                       0,
+>> +                       0,
+>> +               };
+>> +               uint64_t properties[] = {
+>> +                       /* Note: we have to specify at least one sample property even
+>> +                        * though we aren't interested in samples in this case
+>> +                        */
+>> +                       DRM_I915_PERF_PROP_SAMPLE_OA, true,
+>> +
+>> +                       /* OA unit configuration */
+>> +                       DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+>> +                       DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
+>> +
+>> +                       /* Note: no OA exponent specified in this case */
+>> +
+>> +                       DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY_LENGTH, ARRAY_SIZE(context_ids),
+>> +               };
+>> +               struct drm_i915_perf_open_param param = {
+>> +                       .flags = I915_PERF_FLAG_FD_CLOEXEC,
+>> +                       .num_properties = sizeof(properties) / 16,
+>> +                       .properties_ptr = to_user_pointer(properties),
+>> +               };
+>> +
+>> +               do_ioctl_err(drm_fd, DRM_IOCTL_I915_PERF_OPEN, &param, EFAULT);
+>> +       }
+>> +}
+> Also
+> (CTX_HANDLE_ARRAY = -1, CTX_HANDLE_ARRAY_LENGTH = 4)
+> (CTX_HANDLE_ARRAY = &context_ids[], !IS_ALIGNED(CTX_HANDLE_ARRAY_LENGTH, 4))
+> (CTX_HANDLE_ARRAY = &context_ids[], CTX_HANDLE_ARRAY_LENGTH = -4)
+>
+> I'll take it as a given that passing unmapped pointers doesn't work :)
+> -Chris
 
-Also
-(CTX_HANDLE_ARRAY = -1, CTX_HANDLE_ARRAY_LENGTH = 4)
-(CTX_HANDLE_ARRAY = &context_ids[], !IS_ALIGNED(CTX_HANDLE_ARRAY_LENGTH, 4))
-(CTX_HANDLE_ARRAY = &context_ids[], CTX_HANDLE_ARRAY_LENGTH = -4)
+Ah... I'll check all of that. Thanks for the reminder :)
 
-I'll take it as a given that passing unmapped pointers doesn't work :)
--Chris
+
+-Lionel
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
