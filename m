@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D17626E30C
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B80D6E2FF
  for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 12:51:22 +0000 (UTC)
 From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Date: Tue, 31 Mar 2020 15:38:54 +0300
-Message-ID: <20200331123857.1212432-2-arkadiusz.hiler@intel.com>
-In-Reply-To: <20200331123857.1212432-1-arkadiusz.hiler@intel.com>
-References: <20200331123857.1212432-1-arkadiusz.hiler@intel.com>
+Date: Tue, 31 Mar 2020 15:38:53 +0300
+Message-ID: <20200331123857.1212432-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/4] lib/kms: Commit reasonable defaults on
- display init
+Subject: [igt-dev] [PATCH i-g-t 0/4] Chamelium and TypeC
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,31 +21,39 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We often end up with a leftover state from fbcon with a mode enabled on
-some of the connecters. Let's clean that up.
+With DP over TypeC there is a behavior change - now we need to disable the mode
+for our connector to get any hotplug events from it.
 
-Issue: https://gitlab.freedesktop.org/drm/intel/issues/323
-Cc: Imre Deak <imre.deak@intel.com>
-Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
----
- lib/igt_kms.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Imre is working on making the kernel side changes[0] to make TypeC behave same a
+a native DP but he is hitting issues with DDI timeouts[1]. Anyway, the new
+behavior is not entirely wrong either.
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 7f9fafb3..796da1fb 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -2066,6 +2066,10 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	/* Set reasonable default values for every object in the display. */
- 	igt_display_reset(display);
- 
-+	/* Commit those resonable defaults to clean up fbcon/etc leftover state */
-+	igt_display_commit2(display,
-+			    display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
-+
- out:
- 	LOG_UNINDENT(display);
- 
+The fallout when testing with chamelium (this includes all the kms_ tests where
+chamelium is used as a simple display) is quite extensive. We get a lot of flip
+flopping skips and straight up failures because the displays are not getting
+recognized.
+
+Regular userspace, on the other hand, issues disabling modeset each time we get
+a disconnect so we don't see any similar in the wild - this series makes our
+tests mimic that common behavior - we always start with disalbed modes and up to
+date connector state.
+
+To not loose any coverage I have also added test that verifies hotplugs
+while stuck with enabled mode explicitly.
+
+[0]: https://patchwork.freedesktop.org/series/75027/
+[1]: https://gitlab.freedesktop.org/drm/intel/-/issues/1069
+
+Arkadiusz Hiler (4):
+  lib/kms: Commit reasonable defaults on display init
+  lib/kms: Reprobe connector state after disabling modest
+  tests/kms_chamelium: Issue disabling modeset when resetting state
+  tests/kms_chamelium: Test HPD for different mode handling scenarios
+
+ lib/igt_kms.c         |  28 +++-
+ tests/kms_chamelium.c | 294 ++++++++++++++++++++++++++++--------------
+ 2 files changed, 219 insertions(+), 103 deletions(-)
+
 -- 
 2.24.1
 
