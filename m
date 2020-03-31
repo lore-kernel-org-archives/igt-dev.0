@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B4BBC6E2EA
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 11:47:50 +0000 (UTC)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 486406E0E5
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 11:53:18 +0000 (UTC)
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Date: Tue, 31 Mar 2020 14:47:46 +0300
-Message-Id: <20200331114746.81898-1-lionel.g.landwerlin@intel.com>
+Date: Tue, 31 Mar 2020 14:53:13 +0300
+Message-Id: <20200331115313.82148-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/perf: add tests for triggered OA
- reports
+Subject: [igt-dev] [PATCH i-g-t v2] tests/perf: add tests for multi context
+ filtering
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,140 +22,36 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-By whitelisting a couple of registers we can allow an application
-batch to trigger OA reports in the OA buffer by switching back & forth
-an inverter on the condition logic.
+Iris is using 2 GEM contexts for 3D & compute.
+
+v2: Check higher number of contexts
 
 Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tests/perf.c | 260 ++++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 258 insertions(+), 2 deletions(-)
+ tests/perf.c | 505 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 505 insertions(+)
 
 diff --git a/tests/perf.c b/tests/perf.c
-index c6f157a1..00c228be 100644
+index 00c228be..2e143f4f 100644
 --- a/tests/perf.c
 +++ b/tests/perf.c
-@@ -52,6 +52,8 @@ IGT_TEST_DESCRIPTION("Test the i915 perf metrics streaming interface");
- #define OAREPORT_REASON_SHIFT          19
- #define OAREPORT_REASON_TIMER          (1<<0)
- #define OAREPORT_REASON_INTERNAL       (3<<1)
-+#define OAREPORT_REASON_TRIGGER1       (1<<1)
-+#define OAREPORT_REASON_TRIGGER2       (1<<2)
- #define OAREPORT_REASON_CTX_SWITCH     (1<<3)
- #define OAREPORT_REASON_GO             (1<<4)
- #define OAREPORT_REASON_CLK_RATIO      (1<<5)
-@@ -382,11 +384,18 @@ gen8_read_report_clock_ratios(uint32_t *report,
- 	*unslice_freq_mhz = (unslice_freq * 16666) / 1000;
+@@ -3537,6 +3537,42 @@ hsw_test_single_ctx_counters(void)
+ 	igt_waitchildren();
  }
  
-+static uint32_t
-+gen8_report_reason(const uint32_t *report)
-+{
-+	return ((report[0] >> OAREPORT_REASON_SHIFT) &
-+		OAREPORT_REASON_MASK);
-+}
-+
-+
- static const char *
- gen8_read_report_reason(const uint32_t *report)
- {
--	uint32_t reason = ((report[0] >> OAREPORT_REASON_SHIFT) &
--			   OAREPORT_REASON_MASK);
-+	uint32_t reason = gen8_report_reason(report);
- 
- 	if (reason & (1<<0))
- 		return "timer";
-@@ -3059,6 +3068,241 @@ emit_stall_timestamp_and_rpc(struct intel_batchbuffer *batch,
- 	emit_report_perf_count(batch, dst, report_dst_offset, report_id);
- }
- 
-+/* The following register all have the same layout. */
-+#define OAREPORTTRIG2 (0x2744)
-+#define   OAREPORTTRIG2_INVERT_A_0  (1 << 0)
-+#define   OAREPORTTRIG2_INVERT_A_1  (1 << 1)
-+#define   OAREPORTTRIG2_INVERT_A_2  (1 << 2)
-+#define   OAREPORTTRIG2_INVERT_A_3  (1 << 3)
-+#define   OAREPORTTRIG2_INVERT_A_4  (1 << 4)
-+#define   OAREPORTTRIG2_INVERT_A_5  (1 << 5)
-+#define   OAREPORTTRIG2_INVERT_A_6  (1 << 6)
-+#define   OAREPORTTRIG2_INVERT_A_7  (1 << 7)
-+#define   OAREPORTTRIG2_INVERT_A_8  (1 << 8)
-+#define   OAREPORTTRIG2_INVERT_A_9  (1 << 9)
-+#define   OAREPORTTRIG2_INVERT_A_10 (1 << 10)
-+#define   OAREPORTTRIG2_INVERT_A_11 (1 << 11)
-+#define   OAREPORTTRIG2_INVERT_A_12 (1 << 12)
-+#define   OAREPORTTRIG2_INVERT_A_13 (1 << 13)
-+#define   OAREPORTTRIG2_INVERT_A_14 (1 << 14)
-+#define   OAREPORTTRIG2_INVERT_A_15 (1 << 15)
-+#define   OAREPORTTRIG2_INVERT_B_0  (1 << 16)
-+#define   OAREPORTTRIG2_INVERT_B_1  (1 << 17)
-+#define   OAREPORTTRIG2_INVERT_B_2  (1 << 18)
-+#define   OAREPORTTRIG2_INVERT_B_3  (1 << 19)
-+#define   OAREPORTTRIG2_INVERT_C_0  (1 << 20)
-+#define   OAREPORTTRIG2_INVERT_C_1  (1 << 21)
-+#define   OAREPORTTRIG2_INVERT_D_0  (1 << 22)
-+#define   OAREPORTTRIG2_THRESHOLD_ENABLE      (1 << 23)
-+#define   OAREPORTTRIG2_REPORT_TRIGGER_ENABLE (1 << 31)
-+#define OAREPORTTRIG6 (0x2754)
-+#define GEN12_OAREPORTTRIG2 (0x2744)
-+#define GEN12_OAREPORTTRIG6 (0x2754)
-+
-+static void
-+emit_triggered_oa_report(struct intel_batchbuffer *batch,
-+			 uint32_t trigger)
-+{
-+	/*
-+	 * We have 2 trigger registers that each generate a different
-+	 * report reason.
-+	 */
-+	static const uint32_t gen8_triggers[] = {
-+		OAREPORTTRIG2,
-+		OAREPORTTRIG6,
-+	};
-+	static const uint32_t gen12_triggers[] = {
-+		GEN12_OAREPORTTRIG2,
-+		GEN12_OAREPORTTRIG6,
-+	};
-+	const uint32_t *triggers = intel_gen(devid) >= 12 ? gen12_triggers : gen8_triggers;
-+
-+	assert(trigger <= 1);
-+
-+	BEGIN_BATCH(6, 0);
-+	OUT_BATCH(MI_LOAD_REGISTER_IMM);
-+	OUT_BATCH(triggers[trigger]);
-+	OUT_BATCH(OAREPORTTRIG2_INVERT_C_1 |
-+		  OAREPORTTRIG2_REPORT_TRIGGER_ENABLE);
-+	OUT_BATCH(MI_LOAD_REGISTER_IMM);
-+	OUT_BATCH(triggers[trigger]);
-+	OUT_BATCH(OAREPORTTRIG2_INVERT_C_1 |
-+		  OAREPORTTRIG2_INVERT_D_0 |
-+		  OAREPORTTRIG2_REPORT_TRIGGER_ENABLE);
-+	ADVANCE_BATCH();
-+}
-+
-+static uint64_t
-+rcs_timestmap_reg_read(int fd)
-+{
-+	struct drm_i915_reg_read rr = {
-+		.offset = 0x2358 | I915_REG_READ_8B_WA, /* render ring timestamp */
-+	};
-+
-+	do_ioctl(fd, DRM_IOCTL_I915_REG_READ, &rr);
-+
-+	return rr.val;
-+}
-+
-+/*
-+ * Verify that we can trigger OA reports into the OA buffer using
-+ * MI_LRI.
++/* HSW hardware produces untagged reports and either listen to the
++ * entire system or a given context. As a result it cannot support
++ * multi context filtering.
 + */
 +static void
-+test_triggered_oa_reports(void)
++hsw_test_multi_ctx_counters(void)
 +{
-+	int oa_exponent = max_oa_exponent_for_period_lte(1000000);
++	uint32_t context_ids[] = {
++		0,
++		0,
++		0,
++	};
 +	uint64_t properties[] = {
-+		DRM_I915_PERF_PROP_CTX_HANDLE, UINT64_MAX, /* updated below */
-+
 +		/* Note: we have to specify at least one sample property even
 +		 * though we aren't interested in samples in this case
 +		 */
@@ -164,162 +60,508 @@ index c6f157a1..00c228be 100644
 +		/* OA unit configuration */
 +		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
 +		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-+		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
 +
 +		/* Note: no OA exponent specified in this case */
++
++		DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY, to_user_pointer(&context_ids),
++		DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY_LENGTH, ARRAY_SIZE(context_ids),
 +	};
 +	struct drm_i915_perf_open_param param = {
 +		.flags = I915_PERF_FLAG_FD_CLOEXEC,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
++		.num_properties = sizeof(properties) / 16,
 +		.properties_ptr = to_user_pointer(properties),
 +	};
-+	struct drm_i915_perf_record_header *header;
-+	drm_intel_bufmgr *bufmgr;
-+	drm_intel_context *context;
++
++	do_ioctl_err(drm_fd, DRM_IOCTL_I915_PERF_OPEN, &param, ENODEV);
++}
++
+ /* Tests the INTEL_performance_query use case where an unprivileged process
+  * should be able to configure the OA unit for per-context metrics (for a
+  * context associated with that process' drm file descriptor) and the counters
+@@ -3983,6 +4019,348 @@ gen8_test_single_ctx_render_target_writes_a_counter(void)
+ 	} while (WEXITSTATUS(child_ret) == EAGAIN);
+ }
+ 
++/* Tests the INTEL_performance_query use case for Iris which uses 2
++ * GEM contexts for 3D & compute commands.
++ */
++static void
++gen8_test_multi_ctx_render_target_writes_a_counter(int n_filtered_context_handles)
++{
++	int child_ret;
 +	struct igt_helper_process child = {};
-+	struct intel_batchbuffer *batch;
-+	struct igt_buf src[2], dst[2];
-+	uint64_t timestamp32_mask = (1ull << 32) - 1;
-+	uint64_t timestamps[2];
-+	uint32_t buf_size = 16 * 1024 * 1024;
-+	uint8_t *buf = malloc(buf_size);
-+	uint32_t ctx_id;
-+	int width = 800;
-+	int height = 600;
-+	uint32_t trigger_counts[2] = { 0, };
-+	int ret;
++
++	igt_debug("Filtering with %d contexts\n", n_filtered_context_handles);
++
++	/* should be default, but just to be sure... */
++	write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", 1);
 +
 +	do {
++
 +		igt_fork_helper(&child) {
++			int oa_exponent = max_oa_exponent_for_period_lte(1000000);
++			/*
++			 * Use twice the amount of GEM context to
++			 * generate some noise in the reports.
++			 */
++			uint32_t n_context_handles = 2 * n_filtered_context_handles;
++			uint32_t *filtered_context_handles;
++			uint64_t properties[] = {
++				/* Note: we have to specify at least one sample
++				 * property even though we aren't interested in
++				 * samples in this case
++				 */
++				DRM_I915_PERF_PROP_SAMPLE_OA, true,
++
++				/* OA unit configuration */
++				DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
++				DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
++				DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
++
++				/* Note: no OA exponent specified in this case */
++
++				DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY, 0,
++				DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY_LENGTH, n_filtered_context_handles,
++			};
++			struct drm_i915_perf_open_param param = {
++				.flags = I915_PERF_FLAG_FD_CLOEXEC,
++				.num_properties = ARRAY_SIZE(properties) / 2,
++				.properties_ptr = to_user_pointer(properties),
++			};
++			size_t format_size = get_oa_format(test_set->perf_oa_format).size;
++			size_t sample_size = (sizeof(struct drm_i915_perf_record_header) +
++					      format_size);
++			uint32_t max_reports = MAX_OA_BUF_SIZE / format_size;
++			uint32_t buf_size = sample_size * max_reports * 1.5;
++			drm_intel_bufmgr *bufmgr;
++			struct intel_batchbuffer *batch;
++			struct igt_buf src[3], dst[3];
++			drm_intel_bo *mi_rpc_bo;
++			int width = 800;
++			int height = 600;
++			int ret, last_context_idx = -1, matching_context_idx;
++			uint8_t *buf = malloc(buf_size);
++			ssize_t len;
++			struct drm_i915_perf_record_header *header;
++			struct {
++				drm_intel_context *context;
++				uint32_t hw_id;
++				uint32_t *report0_32;
++				uint32_t *report1_32;
++				uint64_t timestamp0_64, timestamp1_64;
++				struct accumulator accumulator;
++				bool accumulate_started;
++				bool accumulate_done;
++			} *ctxs;
++			uint32_t *prev_report32;
++			bool all_accumlate_valid;
++
 +			bufmgr = drm_intel_bufmgr_gem_init(drm_fd, 4096);
 +			drm_intel_bufmgr_gem_enable_reuse(bufmgr);
 +
-+			scratch_buf_init(bufmgr, &src[0], width, height, 0xff0000ff);
-+			scratch_buf_init(bufmgr, &dst[0], width, height, 0x00ff00ff);
-+			scratch_buf_init(bufmgr, &src[1], 2 * width, height, 0xff0000ff);
-+			scratch_buf_init(bufmgr, &dst[1], 2 * width, height, 0x00ff00ff);
++			for (int i = 0; i < ARRAY_SIZE(src); i++) {
++				scratch_buf_init(bufmgr, &src[i], width, height, 0xff0000ff);
++				scratch_buf_init(bufmgr, &dst[i], width, height, 0x00ff00ff);
++			}
 +
 +			batch = intel_batchbuffer_alloc(bufmgr, devid);
 +
-+			context = drm_intel_gem_context_create(bufmgr);
-+			igt_assert(context);
++			filtered_context_handles = calloc(n_context_handles, sizeof(*filtered_context_handles));
++			igt_assert(filtered_context_handles);
 +
-+			ret = drm_intel_gem_context_get_id(context, &ctx_id);
-+			properties[1] = ctx_id;
++			properties[9] = to_user_pointer(filtered_context_handles);
 +
++			ctxs = calloc(n_context_handles, sizeof(*ctxs));
++			igt_assert(ctxs);
 +
-+			timestamps[0] = rcs_timestmap_reg_read(drm_fd);
++			for (int i = 0; i < n_context_handles; i++) {
++				ctxs[i].context = drm_intel_gem_context_create(bufmgr);
++				igt_assert(ctxs[i].context);
 +
++				ret = drm_intel_gem_context_get_id(ctxs[i].context,
++								   &filtered_context_handles[i]);
++				igt_assert_eq(ret, 0);
++				igt_assert_neq(ctxs[i].hw_id, 0xffffffff);
++
++				memset(&ctxs[i].accumulator, 0, sizeof(ctxs[i].accumulator));
++				ctxs[i].accumulator.format = test_set->perf_oa_format;
++				ctxs[i].accumulate_started = false;
++				ctxs[i].accumulate_done = false;
++			}
++
++			scratch_buf_memset(src[0].bo, width, height, 0xff0000ff);
++			scratch_buf_memset(dst[0].bo, width, height, 0x00ff00ff);
++
++			igt_debug("opening i915-perf stream\n");
 +			stream_fd = __perf_open(drm_fd, &param, false);
 +
-+			emit_triggered_oa_report(batch, 0);
++			mi_rpc_bo = drm_intel_bo_alloc(bufmgr, "mi_rpc dest bo", 4096 * n_context_handles, 64);
 +
-+			render_copy(batch,
-+				    context,
-+				    &src[0], 0, 0, width, height,
-+				    &dst[0], 0, 0);
++			ret = drm_intel_bo_map(mi_rpc_bo, true /* write enable */);
++			igt_assert_eq(ret, 0);
 +
-+			emit_triggered_oa_report(batch, 0);
++			memset(mi_rpc_bo->virtual, 0x80, mi_rpc_bo->size);
++			drm_intel_bo_unmap(mi_rpc_bo);
 +
-+			emit_triggered_oa_report(batch, 1);
++			/**/
++			for (int i = 0; i < n_context_handles; i++) {
++				uint32_t context_offset = i * 4096;
 +
-+			render_copy(batch,
-+				    context,
-+				    &src[1], 0, 0, 2 * width, height,
-+				    &dst[1], 0, 0);
++				emit_stall_timestamp_and_rpc(batch,
++							     mi_rpc_bo,
++							     512 + context_offset /* timestamp offset */,
++							     context_offset, /* report dst offset */
++							     0xdeadbeef + i); /* report id */
 +
-+			emit_triggered_oa_report(batch, 1);
++				/* Explicitly flush here (even though the render_copy() call
++				 * will itself flush before/after the copy) to clarify that
++				 * that the PIPE_CONTROL + MI_RPC commands will be in a
++				 * separate batch from the copy.
++				 */
++				intel_batchbuffer_flush_with_context(batch, ctxs[i].context);
 +
-+			intel_batchbuffer_flush_with_context(batch, context);
++				render_copy(batch,
++					    ctxs[i].context,
++					    &src[0], 0, 0, width, height,
++					    &dst[0], 0, 0);
 +
-+			timestamps[1] = rcs_timestmap_reg_read(drm_fd);
++				/* Another redundant flush to clarify batch bo is free to reuse */
++				intel_batchbuffer_flush_with_context(batch, ctxs[i].context);
 +
-+			if (timestamps[1] < timestamps[0] ||
-+			    (timestamps[1] & timestamp32_mask) < (timestamps[1] & timestamp32_mask)) {
-+				igt_debug("Timestamp rollover, trying again\n");
++				emit_stall_timestamp_and_rpc(batch,
++							     mi_rpc_bo,
++							     520 + context_offset /* timestamp offset */,
++							     256 + context_offset, /* report dst offset */
++							     0xbeefbeef + i); /* report id */
++
++				intel_batchbuffer_flush_with_context(batch, ctxs[i].context);
++			}
++
++			ret = drm_intel_bo_map(mi_rpc_bo, false /* write enable */);
++			igt_assert_eq(ret, 0);
++
++			/* Collect the data written by MI_RPC commands. */
++			for (int i = 0; i < n_context_handles; i++) {
++				uint32_t context_offset = i * 4096;
++
++				ctxs[i].report0_32 = mi_rpc_bo->virtual + context_offset;
++				ctxs[i].report1_32 = mi_rpc_bo->virtual + context_offset + 256;
++				ctxs[i].hw_id = ctxs[i].report0_32[2];
++
++				igt_debug("context%i: rpt_id=0x%x/0x%x ts=0x%x/0x%x hw_id=0x%x/0x%x\n",
++					  i,
++					  ctxs[i].report0_32[0], ctxs[i].report1_32[0],
++					  ctxs[i].report0_32[1], ctxs[i].report1_32[1],
++					  ctxs[i].report0_32[2], ctxs[i].report1_32[2]);
++
++				/* We can only guarantee the report
++				 * IDs to match on pinned contexts.
++				 */
++				if (i < n_filtered_context_handles)
++					igt_assert_eq(ctxs[i].report0_32[2], ctxs[i].report1_32[2]);
++
++				igt_assert_eq(ctxs[i].report0_32[0], 0xdeadbeef + i); /* report ID */
++				igt_assert_eq(ctxs[i].report1_32[0], 0xbeefbeef + i); /* report ID */
++
++				ctxs[i].timestamp0_64 = *(uint64_t *)(mi_rpc_bo->virtual + context_offset + 512);
++				ctxs[i].timestamp1_64 = *(uint64_t *)(mi_rpc_bo->virtual + context_offset + 520);
++			}
++
++			if (ctxs[n_context_handles - 1].report1_32[1] < ctxs[0].report0_32[1]) {
++				igt_debug("32bit timestamp rollover, trying again\n");
 +				exit(EAGAIN);
 +			}
 +
-+			ret = i915_read_reports_until_timestamp(test_set->perf_oa_format,
++			/* Read the entire OA buffer from first to last MI_RPC timestamp. */
++			len = i915_read_reports_until_timestamp(test_set->perf_oa_format,
 +								buf, buf_size,
-+								timestamps[0] & timestamp32_mask,
-+								timestamps[1] & timestamp32_mask);
++								ctxs[0].report0_32[1],
++								ctxs[n_context_handles - 1].report1_32[1]);
 +
-+			for (size_t offset = 0; offset < ret; offset += header->size) {
-+				uint32_t *report;
++			igt_assert(len > 0);
++			igt_debug("read %d bytes\n", (int)len);
++
++			/* Go through the OA buffer reports and assign data to
++			 * each context.
++			 */
++			for (size_t offset = 0; offset < len; offset += header->size) {
++				uint32_t *report32;
 +
 +				header = (void *)(buf + offset);
 +
 +				igt_assert_eq(header->pad, 0); /* Reserved */
 +
++				/* Currently the only test that should ever expect to
++				 * see a _BUFFER_LOST error is the buffer_fill test,
++				 * otherwise something bad has probably happened...
++				 */
 +				igt_assert_neq(header->type, DRM_I915_PERF_RECORD_OA_BUFFER_LOST);
 +
++				/* Loosing a timer report should not be an
++				 * issue. We should have all the details we need
++				 * just out of context switch reports.
++				 */
 +				if (header->type == DRM_I915_PERF_RECORD_OA_REPORT_LOST)
 +					continue;
 +
-+				/* Currently the only other record type expected is a
-+				 * _SAMPLE. Notably this test will need updating if
-+				 * i915-perf is extended in the future with additional
-+				 * record types.
++				/* Given how we've configured the i915-perf
++				 * stream, we should be left with only this type
++				 * of reports of the expected size.
 +				 */
 +				igt_assert_eq(header->type, DRM_I915_PERF_RECORD_SAMPLE);
++				igt_assert_eq(header->size, sample_size);
 +
-+				report = (void *)(header + 1);
++				report32 = (void *)(header + 1);
 +
-+				igt_debug("report ts=0x%08x hw_id=0x%08x reason=%s\n",
-+					  report[1], report[2],
-+					  gen8_read_report_reason(report));
 +
-+				if (gen8_report_reason(report) & OAREPORT_REASON_TRIGGER1) {
-+					igt_assert_eq(trigger_counts[1], 0);
-+					trigger_counts[0]++;
++				matching_context_idx = -1;
++				for (int i = 0; i < n_filtered_context_handles; i++) {
++					if (ctxs[i].report0_32[1] < report32[1] &&
++					    ctxs[i].report1_32[1] > report32[1]) {
++						matching_context_idx = i;
++						break;
++					}
 +				}
-+				if (gen8_report_reason(report) & OAREPORT_REASON_TRIGGER2) {
-+					igt_assert_eq(trigger_counts[0], 2);
-+					trigger_counts[1]++;
++
++				igt_debug("report hw_id=0x%08x(valid=%i) ts=0x%08x reason=%s matching_ctx=%i\n",
++					  report32[2], oa_report_ctx_is_valid(report32), report32[1],
++					  gen8_read_report_reason(report32), matching_context_idx);
++
++				/* Go through each context and try to attribute
++				 * the delta between this report and the
++				 * previous one to a particular context.
++				 */
++				if (last_context_idx != -1) {
++					uint32_t *acc_prev_report32 = prev_report32;
++					uint32_t *acc_report32 = report32;
++
++					/* Before this context's time, skip. */
++					if (ctxs[last_context_idx].report0_32[1] < acc_report32[1]) {
++
++						if (!ctxs[last_context_idx].accumulate_started)
++							acc_prev_report32 = ctxs[last_context_idx].report0_32;
++
++						if (ctxs[last_context_idx].report1_32[1] < acc_report32[1]) {
++							if (!ctxs[last_context_idx].accumulate_done) {
++								acc_report32 = ctxs[last_context_idx].report1_32;
++								ctxs[last_context_idx].accumulate_done = true;
++							} else {
++								acc_report32 = NULL;
++							}
++						}
++
++						if (acc_report32) {
++							igt_debug("   attributed to context=%i (last accumulation: %i)\n",
++								  last_context_idx,
++								  acc_report32 == ctxs[last_context_idx].report1_32);
++							accumulate_reports(&ctxs[last_context_idx].accumulator,
++									   acc_prev_report32, acc_report32);
++							ctxs[last_context_idx].accumulate_started = true;
++						}
++					}
 +				}
++
++				if (oa_report_ctx_is_valid(report32)) {
++					int next_context_idx = -1;
++
++					for (int i = 0; i < n_filtered_context_handles; i++) {
++						if (ctxs[i].hw_id == report32[2]) {
++							next_context_idx = i;
++							break;
++						}
++					}
++					igt_debug("   update last_context_idx=%i->%i\n",
++						  last_context_idx, next_context_idx);
++					/* We shouldn't find any context ID that
++					 * matches one of the context we didn't
++					 * pass to i915-perf.
++					 */
++					igt_assert(next_context_idx < n_filtered_context_handles);
++					last_context_idx = next_context_idx;
++				}
++
++				prev_report32 = report32;
 +			}
 +
-+			igt_assert_eq(trigger_counts[0], 2);
-+			igt_assert_eq(trigger_counts[1], 2);
++			all_accumlate_valid = true;
++			for (int i = 0; i < n_context_handles; i++) {
++				igt_debug("context%i written pixel=%lu\n",
++					  i, ctxs[i].accumulator.deltas[2 + 26]);
++
++				if (i < n_filtered_context_handles) {
++					if (ctxs[i].accumulator.deltas[2 + 26] != width * height)
++						all_accumlate_valid = false;
++				} else {
++					if (ctxs[i].accumulator.deltas[2 + 26] != 0)
++						all_accumlate_valid = false;
++				}
++			}
++			igt_assert(all_accumlate_valid);
++
++
++			drm_intel_bo_unmap(src[0].bo);
++			drm_intel_bo_unmap(dst[0].bo);
 +
 +			for (int i = 0; i < ARRAY_SIZE(src); i++) {
 +				drm_intel_bo_unreference(src[i].bo);
 +				drm_intel_bo_unreference(dst[i].bo);
 +			}
 +
++			drm_intel_bo_unmap(mi_rpc_bo);
++			drm_intel_bo_unreference(mi_rpc_bo);
 +			intel_batchbuffer_free(batch);
-+			drm_intel_gem_context_destroy(context);
++			for (int i = 0; i < n_context_handles; i++)
++				drm_intel_gem_context_destroy(ctxs[i].context);
 +			drm_intel_bufmgr_destroy(bufmgr);
 +			__perf_close(stream_fd);
 +		}
 +
-+		ret = igt_wait_helper(&child);
++		child_ret = igt_wait_helper(&child);
 +
-+		igt_assert(WEXITSTATUS(ret) == EAGAIN ||
-+			   WEXITSTATUS(ret) == 0);
++		igt_assert(WEXITSTATUS(child_ret) == EAGAIN ||
++			   WEXITSTATUS(child_ret) == 0);
 +
-+	} while (WEXITSTATUS(ret) == EAGAIN);
-+
-+	free(buf);
++	} while (WEXITSTATUS(child_ret) == EAGAIN);
 +}
 +
- /* Tests the INTEL_performance_query use case where an unprivileged process
-  * should be able to configure the OA unit for per-context metrics (for a
-  * context associated with that process' drm file descriptor) and the counters
-@@ -5000,6 +5244,18 @@ igt_main
- 			test_global_sseu_config();
+ static void gen12_single_ctx_helper(void)
+ {
+ 	uint64_t properties[] = {
+@@ -4390,6 +4768,104 @@ test_stress_open_close(void)
+ 	load_helper_fini();
+ }
+ 
++static void
++gen8_test_invalid_multi_ctx_params(void)
++{
++	/* Invalid context handle */
++	{
++		uint32_t context_ids[] = {
++			0xffffffff,
++			0,
++			0xdeadbeef,
++		};
++		uint64_t properties[] = {
++			/* Note: we have to specify at least one sample property even
++			 * though we aren't interested in samples in this case
++			 */
++			DRM_I915_PERF_PROP_SAMPLE_OA, true,
++
++			/* OA unit configuration */
++			DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
++			DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
++
++			/* Note: no OA exponent specified in this case */
++
++			DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY, to_user_pointer(&context_ids),
++			DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY_LENGTH, ARRAY_SIZE(context_ids),
++		};
++		struct drm_i915_perf_open_param param = {
++			.flags = I915_PERF_FLAG_FD_CLOEXEC,
++			.num_properties = sizeof(properties) / 16,
++			.properties_ptr = to_user_pointer(properties),
++		};
++
++		do_ioctl_err(drm_fd, DRM_IOCTL_I915_PERF_OPEN, &param, ENOENT);
++	}
++
++	/* Both DRM_I915_PERF_PROP_CTX_HANDLE &
++	 * DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY are invalid.
++	 */
++	{
++		uint32_t context_ids[] = {
++			0,
++			0,
++		};
++		uint64_t properties[] = {
++			DRM_I915_PERF_PROP_CTX_HANDLE, 0,
++
++			/* Note: we have to specify at least one sample property even
++			 * though we aren't interested in samples in this case
++			 */
++			DRM_I915_PERF_PROP_SAMPLE_OA, true,
++
++			/* OA unit configuration */
++			DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
++			DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
++
++			/* Note: no OA exponent specified in this case */
++
++			DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY, to_user_pointer(&context_ids),
++			DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY_LENGTH, ARRAY_SIZE(context_ids),
++		};
++		struct drm_i915_perf_open_param param = {
++			.flags = I915_PERF_FLAG_FD_CLOEXEC,
++			.num_properties = sizeof(properties) / 16,
++			.properties_ptr = to_user_pointer(properties),
++		};
++
++		do_ioctl_err(drm_fd, DRM_IOCTL_I915_PERF_OPEN, &param, EINVAL);
++	}
++
++	/* Missing DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY. */
++	{
++		uint32_t context_ids[] = {
++			0,
++			0,
++		};
++		uint64_t properties[] = {
++			/* Note: we have to specify at least one sample property even
++			 * though we aren't interested in samples in this case
++			 */
++			DRM_I915_PERF_PROP_SAMPLE_OA, true,
++
++			/* OA unit configuration */
++			DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
++			DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
++
++			/* Note: no OA exponent specified in this case */
++
++			DRM_I915_PERF_PROP_CTX_HANDLE_ARRAY_LENGTH, ARRAY_SIZE(context_ids),
++		};
++		struct drm_i915_perf_open_param param = {
++			.flags = I915_PERF_FLAG_FD_CLOEXEC,
++			.num_properties = sizeof(properties) / 16,
++			.properties_ptr = to_user_pointer(properties),
++		};
++
++		do_ioctl_err(drm_fd, DRM_IOCTL_I915_PERF_OPEN, &param, EFAULT);
++	}
++}
++
+ static uint64_t mask_minus_one(uint64_t mask)
+ {
+ 	unsigned int i;
+@@ -5256,6 +5732,35 @@ igt_main
+ 		}
  	}
  
 +	igt_subtest_group {
 +		igt_fixture {
-+			igt_require(i915_perf_revision(drm_fd) >= 6);
++			igt_require(i915_perf_revision(drm_fd) >= 7);
 +		}
 +
-+		igt_describe("Verify that triggered reports work");
-+		igt_subtest("triggered-oa-reports") {
++		igt_describe("Verify that multi context filtering does not work on HSW");
++		igt_subtest("unprivileged-multi-ctx-counters") {
++			igt_require(IS_HASWELL(devid));
++			hsw_test_multi_ctx_counters();
++		}
++
++		igt_describe("Verify invalid multi context parameters are rejected");
++		igt_subtest("invalid-multi-ctx-params") {
 +			igt_require(intel_gen(devid) >= 8);
-+			test_triggered_oa_reports();
++			gen8_test_invalid_multi_ctx_params();
++		}
++
++		igt_describe("Measure performance for a set of contexts");
++		igt_subtest("gen8-unprivileged-multi-ctx-counters") {
++			uint32_t n_contexts[] = {
++				1, 2, 4, 7, 13, 30,
++			};
++			igt_require(intel_gen(devid) >= 8);
++
++			for (int i = 0; i < ARRAY_SIZE(n_contexts); i++)
++				gen8_test_multi_ctx_render_target_writes_a_counter(n_contexts[i]);
 +		}
 +	}
 +
