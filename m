@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DAA506E81C
- for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 11:24:34 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-Date: Tue, 31 Mar 2020 11:24:32 +0000
-Message-ID: <751cd75d64bc4a66af98d1bf25b24305@intel.com>
-References: <20200330110229.4755-1-mika.kahola@intel.com>
- <20200331064440.GF9497@platvala-desk.ger.corp.intel.com>
- <fcb11df357404b83af8dade221c7047f@intel.com>
- <8948cf46ed2a48c88e87c50b713e0c45@intel.com>
- <20200331110438.GI9497@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <20200331110438.GI9497@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C10B6E81C
+ for <igt-dev@lists.freedesktop.org>; Tue, 31 Mar 2020 11:28:05 +0000 (UTC)
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_concurrent: Move bandwidth
- calculation to igt_fixture
+In-Reply-To: <20200331111911.122768-1-michal@hardline.pl>
+References: <20200331111911.122768-1-michal@hardline.pl>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Message-ID: <158565406100.18289.9399073868962768391@build.alporthouse.com>
+Date: Tue, 31 Mar 2020 12:27:41 +0100
+Subject: Re: [igt-dev] [PATCH] lib/igt_dummyload: Use timerfd rather than
+ SIGEV_THREAD
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,131 +17,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: michal@hardline.pl, igt-dev@lists.freedesktop.org
+Cc: michal.winiarski@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-> -----Original Message-----
-> From: Latvala, Petri <petri.latvala@intel.com>
-> Sent: Tuesday, March 31, 2020 2:05 PM
-> To: Kahola, Mika <mika.kahola@intel.com>
-> Cc: igt-dev@lists.freedesktop.org
-> Subject: Re: [PATCH i-g-t v3] tests/kms_concurrent: Move bandwidth calculation
-> to igt_fixture
-> 
-> On Tue, Mar 31, 2020 at 01:12:31PM +0300, Kahola, Mika wrote:
-> > > -----Original Message-----
-> > > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> > > Kahola, Mika
-> > > Sent: Tuesday, March 31, 2020 11:22 AM
-> > > To: Latvala, Petri <petri.latvala@intel.com>
-> > > Cc: igt-dev@lists.freedesktop.org
-> > > Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_concurrent: Move
-> > > bandwidth calculation to igt_fixture
-> > >
-> > >
-> > >
-> > > -----Original Message-----
-> > > From: Latvala, Petri <petri.latvala@intel.com>
-> > > Sent: Tuesday, March 31, 2020 9:45 AM
-> > > To: Kahola, Mika <mika.kahola@intel.com>
-> > > Cc: igt-dev@lists.freedesktop.org; juhapekka.heikkila@gmail.com;
-> > > Lisovskiy, Stanislav <stanislav.lisovskiy@intel.com>
-> > > Subject: Re: [PATCH i-g-t v3] tests/kms_concurrent: Move bandwidth
-> > > calculation to igt_fixture
-> > >
-> > > On Mon, Mar 30, 2020 at 02:02:29PM +0300, Mika Kahola wrote:
-> > > > The commit 153b34b5353df8c18a87d ("tests/kms_concurrent:
-> > > > Test maximum number of planes supported by the platform") caused
-> > > > regression on HSW pipe B testing such as.
-> > > >
-> > > > IGT-Version: 1.25-gfd8248084 (x86_64) (Linux:
-> > > > 5.6.0-rc7-CI-CI_DRM_8194+ x86_64) Starting subtest: pipe-B Testing
-> > > > resolution with connector VGA-1 using pipe B with seed 1585245074
-> > > > child 0 died with signal 11, Segmentation fault Subtest pipe-B:
-> > > > FAIL
-> > > > (0.330s)
-> > > >
-> > > > To fix this, we need move bandwidth calculation routines into part
-> > > > of igt_fixture instead of calculating it just before actual
-> > > > testing. The patch takes the minimum of those maximum number of
-> > > > planes for given
-> > > output.
-> > > >
-> > > > v2: Limit bandwidth check only gen11+ (CI)
-> > > > v3: Loop child process 5x longer when running test with 1
-> > > > iteration
-> > > > (CI)
-> > > >
-> > > > Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-> > > > ---
-> > > >  tests/kms_concurrent.c | 30 ++++++++++++++++--------------
-> > > >  1 file changed, 16 insertions(+), 14 deletions(-)
-> > > >
-> > > > diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c index
-> > > > 1403e990..31c5620a 100644
-> > > > --- a/tests/kms_concurrent.c
-> > > > +++ b/tests/kms_concurrent.c
-> > > > @@ -36,6 +36,7 @@ typedef struct {
-> > > >  	igt_display_t display;
-> > > >  	igt_plane_t **plane;
-> > > >  	struct igt_fb *fb;
-> > > > +	int max_planes;
-> > > >  } data_t;
-> > > >
-> > > >  /* Command line parameters. */
-> > > > @@ -223,13 +224,13 @@ test_plane_position_with_output(data_t
-> > > > *data,
-> > > enum pipe pipe, int max_planes,
-> > > >  				igt_output_t *output)
-> > > >  {
-> > > >  	int i;
-> > > > -	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
-> > > > +	int iterations = opt.iterations < 5 ? 1 : opt.iterations;
-> > >
-> > > This changes nothing though for CI. You still use 1. In fact this
-> > > just limits the iterations to 1 for everyone who specifies more than 1, until
-> they use 5 or more.
-> > >
-> > > And still, this patch needs an actual explanation why the crash
-> > > happened and why doing the same calculation in a fixture help.
-> > > Otherwise there's no guarantee it won't happen again. Until proven
-> otherwise, avoiding the crash is accidental.
-> > >
-> > > I investigated this a bit further and I noticed that for yet
-> > > unidentified reason the bandwidth calculation returned different
-> > > number of planes for pipe B. This was too much to handle on actual test and
-> therefore child exited too early.
-> > >
-> > > There seems to be a simpler way of computing how many planes we can
-> > > support with the given bandwidth. I propose that we disregard this
-> > > patch and I will propose and test another kind of solution.
-> >
-> > What would be to best approach here? Should I first revert the original patch
-> i.e.
-> >
-> > commit 2b65609b1de3 ("tests/kms_concurrent: Test maximum number of
-> > planes supported by the platform")
-> >
-> > and then provide a new patch that has similar functionality but the approach is
-> different or should I just a provide a fix that removes bandwidth calculations and
-> replaces that with a different approach?
-> 
-> 
-> Yeah if you want to revert and try a different approach, fine by me.
-> 
-Ok, I'll just revert the one and send a patch with different approach. Let's see what CI thinks this time.
-
-> 
-> --
-> Petri Latvala
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+UXVvdGluZyBNaWNoYcWCIFdpbmlhcnNraSAoMjAyMC0wMy0zMSAxMjoxOToxMSkKPiBGcm9tOiBN
+aWNoYcWCIFdpbmlhcnNraSA8bWljaGFsLndpbmlhcnNraUBpbnRlbC5jb20+Cj4gCj4gU2luY2Ug
+dGltZXJfZGVsZXRlIGRvZXNuJ3QgZ2l2ZSB1cyBhbnkgZ3VhcmFudGVlcyB0aGF0IHRoZSB0aHJl
+YWQgYW5kCj4gaXRzIG5vdGlmeV9mdW5jdGlvbiBpc24ndCBjdXJyZW50bHkgcnVubmluZywgd2Ug
+Y2FuIGhpdCBhIHVzZS1hZnRlci1mcmVlCj4gaW4gYSByYWNlIGNvbmRpdGlvbiBzY2VuYXJpby4K
+PiBUaGlzIGNhdXNlcyBhIHNlZW1pbmdseSByYW5kb20gc2VnZmF1bHQgd2hlbiBpZ3Rfc3Bpbl9l
+bmQgZnJvbSBub3RpZnkKPiB0aHJlYWQgaXMgY2FsbGVkIGFmdGVyIGlndF9zcGluX2ZyZWUgd2Fz
+IGFscmVhZHkgY2FsbGVkIGZyb20gdGhlIG1haW4KPiB0aHJlYWQuCj4gTGV0J3MgZml4IHRoYXQg
+YnkgdXNpbmcgdGltZXJmZCBhbmQgbWFuYWdpbmcgdGhlIHRpbWVyIHRocmVhZCBvdXJzZWx2ZXMu
+CgpPZmYgaGFuZCwgZG8geW91IGhhdmUgYSBmZWVsaW5nIG9uIGhvdyBhY2N1cmF0ZSB0aGlzIG1l
+dGhvZCBpcz8gSSBrZWVwCnJ1bm5pbmcgaW4gc2l0dWF0aW9ucyB3aGVyZSB0aGUgU0lHRVZfVEhS
+RUFEIGRpZCBub3Qgc2VlbSByZWxpYWJsZSBhbmQKdGhlIHNwaW5uZXIgbmV2ZXIgdGVybWluYXRl
+ZCAtLSBzbyBJIHdlbGNvbWUgYSBjaGFuY2UgdG8gZG8gc29tZXRoaW5nCmRpZmZlcmVudCAoZXZl
+biBpZiB1c2luZyB0aW1lcmZkICsgdGhyZWFkIGlzIGVmZmVjdGl2ZWx5IHdoYXQgZ2xpYmMgaXMK
+ZG9pbmcgYmVoaW5kIHRoZSBzY2VuZXMsIGFuZCB3aHkgSSBkaWRuJ3QgcmVhbGx5IGNvbmNlcm4g
+bXlzZWxmIHdpdGgKdHJ5aW5nIHRvIGRvIGJldHRlci4pCi1DaHJpcwpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
+ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
