@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 01 Apr 2020 06:16:32 -0000
-Message-ID: <158572179278.25628.7130524870558583747@emeril.freedesktop.org>
+Date: Wed, 01 Apr 2020 06:26:12 -0000
+Message-ID: <158572237228.25625.1685665020003287065@emeril.freedesktop.org>
 References: <20200331115824.2481-1-mika.kahola@intel.com>
 In-Reply-To: <20200331115824.2481-1-mika.kahola@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
- =?utf-8?q?s/kms=5Fconcurrent=3A_Calculate_maximum_number_of_planes_to_mee?=
- =?utf-8?q?t_bandwidth_requirement_=28rev2=29?=
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
+ =?utf-8?q?ests/kms=5Fconcurrent=3A_Calculate_maximum_number_of_planes_to_?=
+ =?utf-8?q?meet_bandwidth_requirement_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,64 +28,128 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Series: tests/kms_concurrent: Calculate maximum number of planes to meet bandwidth requirement (rev2)
 URL   : https://patchwork.freedesktop.org/series/75323/
-State : failure
+State : warning
 
 == Summary ==
 
-IGT patchset build failed on latest successful build
-98927dfde17aecaecfe67bb9853ceca326ca2b23 lib: Sync i915_pciids.h with kernel
+Did not get list of undocumented tests for this run, something is wrong!
 
-273/286 testcase check: amdgpu/amd_prime        OK       0.16 s 
-274/286 runner                                  OK       5.47 s 
-275/286 runner_json                             OK       0.12 s 
-276/286 assembler: test/mov                     OK       0.09 s 
-277/286 assembler: test/frc                     OK       0.04 s 
-278/286 assembler: test/regtype                 OK       0.06 s 
-279/286 assembler: test/rndd                    OK       0.08 s 
-280/286 assembler: test/rndu                    OK       0.03 s 
-281/286 assembler: test/rnde                    OK       0.07 s 
-282/286 assembler: test/rnde-intsrc             OK       0.07 s 
-283/286 assembler: test/rndz                    OK       0.04 s 
-284/286 assembler: test/lzd                     OK       0.06 s 
-285/286 assembler: test/not                     OK       0.05 s 
-286/286 assembler: test/immediate               OK       0.05 s 
+Other than that, pipeline status: FAILED.
 
-OK:       285
-FAIL:       1
-SKIP:       0
-TIMEOUT:    0
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/127022 for the overview.
 
+test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/2139162):
+   #0 [fatal_sig_handler+0x103]
+   #1 [killpg+0x40]
+   #2 [run_tests_for_pipe.constprop.0+0x3b]
+   #3 [__real_main371+0xb9]
+   #4 [main+0x30]
+   #5 [__libc_start_main+0xf3]
+   #6 [_start+0x2e]
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1585722222:build_script
+  section_start:1585722222:after_script
+  section_end:1585722224:after_script
+  section_start:1585722224:upload_artifacts_on_failure
+  section_end:1585722226:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+  
 
-The output from the failed tests:
+test:ninja-test-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/2139163):
+   #4 [main+0x3c]
+   #5 [__libc_start_main+0xe4]
+   #6 [_start+0x34]
+  qemu: uncaught target signal 11 (Segmentation fault) - core dumped
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1585722233:build_script
+  section_start:1585722233:after_script
+  section_end:1585722234:after_script
+  section_start:1585722234:upload_artifacts_on_failure
+  Uploading artifacts...
+  build: found 1388 matching files                   
+  Uploading artifacts to coordinator... ok            id=2139163 responseStatus=201 Created token=XVi3RSkz
+  section_end:1585722252:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+  
 
- 45/286 testcase check: kms_concurrent          FAIL     0.27 s (exit status 1)
+test:ninja-test-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/2139160):
+   #4 [main+0x26]
+   #5 [__libc_start_main+0x98]
+   #6 [_start+0x34]
+  qemu: uncaught target signal 11 (Segmentation fault) - core dumped
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1585722193:build_script
+  section_start:1585722193:after_script
+  section_end:1585722195:after_script
+  section_start:1585722195:upload_artifacts_on_failure
+  Uploading artifacts...
+  build: found 1388 matching files                   
+  Uploading artifacts to coordinator... ok            id=2139160 responseStatus=201 Created token=wzbxKXcx
+  section_end:1585722204:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+  
 
---- command ---
-/home/cidrm/igt-gpu-tools/tests/igt_command_line.sh kms_concurrent
---- stdout ---
-tests/kms_concurrent:
-  Checking invalid option handling...
-  Checking valid option handling...
-  Checking subtest enumeration...
-    test does not exit with 0 or 79 with --list-subtests!
-FAIL: tests/kms_concurrent
---- stderr ---
-Received signal SIGSEGV.
-Stack trace: 
- #0 [fatal_sig_handler+0xd6]
- #1 [killpg+0x40]
- #2 [run_tests_for_pipe.constprop.7+0x4a]
- #3 [__real_main371+0x5d]
- #4 [main+0x39]
- #5 [__libc_start_main+0xe7]
- #6 [_start+0x2a]
--------
+test:ninja-test-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/2139161):
+   #1 [run_tests_for_pipe+0x26]
+   #2 [__real_main371+0xc2]
+   #3 [main+0x36]
+   #4 [__libc_start_main+0xf3]
+   #5 [_start+0x2e]
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1585722238:build_script
+  section_start:1585722238:after_script
+  Running after_script
+  section_end:1585722239:after_script
+  section_start:1585722239:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  section_end:1585722241:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+  
 
-Full log written to /home/cidrm/igt-gpu-tools/build/meson-logs/testlog.txt
-FAILED: meson-test 
-/usr/bin/python3 -u /usr/bin/meson test --no-rebuild --print-errorlogs
-ninja: build stopped: subcommand failed.
+test:ninja-test-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/2139164):
+  --- stderr ---
+  Received signal SIGSEGV.
+  Stack trace: 
+  qemu: uncaught target signal 11 (Segmentation fault) - core dumped
+  -------
+  
+  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
+  FAILED: meson-test 
+  /usr/bin/meson test --no-rebuild --print-errorlogs
+  ninja: build stopped: subcommand failed.
+  section_end:1585722217:build_script
+  section_start:1585722217:after_script
+  section_end:1585722218:after_script
+  section_start:1585722218:upload_artifacts_on_failure
+  Uploading artifacts...
+  build: found 1388 matching files                   
+  Uploading artifacts to coordinator... ok            id=2139164 responseStatus=201 Created token=iaDYwLy2
+  section_end:1585722228:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
 
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/127022
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
