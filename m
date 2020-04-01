@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CA376E8DD
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2020 06:54:28 +0000 (UTC)
-From: Mika Kahola <mika.kahola@intel.com>
-Date: Wed,  1 Apr 2020 09:54:22 +0300
-Message-Id: <20200401065423.29345-2-mika.kahola@intel.com>
-In-Reply-To: <20200401065423.29345-1-mika.kahola@intel.com>
-References: <20200401065423.29345-1-mika.kahola@intel.com>
+References: <20200331103623.859601-1-chris@chris-wilson.co.uk>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <6575932f-0ca5-f620-fbb1-c0c61ba471a7@linux.intel.com>
+Date: Wed, 1 Apr 2020 15:12:57 +0100
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 1/2] Revert "tests/kms_concurrent: Test
- maximum number of planes supported by the platform"
+In-Reply-To: <20200331103623.859601-1-chris@chris-wilson.co.uk>
+Content-Language: en-US
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] i915/gem_exec_balancer:
+ Check for bonding support before exercising
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,190 +15,96 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: juhapekka.heikkila@intel.com, petri.latvala@intel.com
+To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This reverts commit 2b65609b1de355ca501b58b7b03208f81c87b585.
----
- tests/kms_concurrent.c | 102 +++++++++++++++++++++++------------------
- 1 file changed, 57 insertions(+), 45 deletions(-)
 
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index 1403e990..c212f6ec 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -199,25 +199,6 @@ prepare_planes(data_t *data, enum pipe pipe, int max_planes,
- 	free(size);
- }
- 
--static int test_bandwidth(data_t *data, enum pipe pipe, igt_output_t *output)
--{
--
--	int n_planes = data->display.pipes[pipe].n_planes;
--	int i;
--	int ret;
--
--	igt_pipe_refresh(&data->display, pipe, true);
--
--	for (i = 1; i <= n_planes; i++) {
--		prepare_planes(data, pipe, i, output);
--		ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC | DRM_MODE_ATOMIC_TEST_ONLY);
--		if (ret != 0)
--			break;
--	}
--
--	return i - 1;
--}
--
- static void
- test_plane_position_with_output(data_t *data, enum pipe pipe, int max_planes,
- 				igt_output_t *output)
-@@ -231,7 +212,7 @@ test_plane_position_with_output(data_t *data, enum pipe pipe, int max_planes,
- 	i = 0;
- 	while (i < iterations || loop_forever) {
- 		prepare_planes(data, pipe, max_planes, output);
--		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+		igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
- 
- 		for (int c = 0; c < max_planes; c++)
- 			igt_remove_fb(data->drm_fd, &data->fb[c]);
-@@ -268,17 +249,44 @@ get_lowres_mode(data_t *data, const drmModeModeInfo *mode_default,
- 	return mode;
- }
- 
--static void
-+static int
- test_resolution_with_output(data_t *data, enum pipe pipe, igt_output_t *output)
- {
- 	const drmModeModeInfo *mode_hi, *mode_lo;
- 	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
- 	bool loop_forever = opt.iterations == LOOP_FOREVER ? true : false;
--	int i;
-+	int i, c, ret;
-+	int max_planes = data->display.pipes[pipe].n_planes;
-+	igt_plane_t *primary;
-+	drmModeModeInfo *mode;
- 
- 	i = 0;
- 	while (i < iterations || loop_forever) {
- 		igt_output_set_pipe(output, pipe);
-+		for (c = 0; c < max_planes; c++) {
-+			igt_plane_t *plane = igt_output_get_plane(output, c);
-+
-+			if (plane->type != DRM_PLANE_TYPE_PRIMARY)
-+				continue;
-+			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+			data->plane[primary->index] = primary;
-+			mode = igt_output_get_mode(output);
-+			igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+						DRM_FORMAT_XRGB8888,
-+						LOCAL_I915_FORMAT_MOD_X_TILED,
-+						0.0f, 0.0f, 1.0f,
-+						&data->fb[primary->index]);
-+			igt_plane_set_fb(data->plane[primary->index], &data->fb[primary->index]);
-+			ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
-+			if (ret) {
-+				igt_plane_set_fb(data->plane[i], NULL);
-+				igt_remove_fb(data->drm_fd, &data->fb[i]);
-+				data->plane[i] = NULL;
-+				break;
-+			}
-+		}
-+		max_planes = c;
-+		igt_assert_lt(0, max_planes);
- 
- 		mode_hi = igt_output_get_mode(output);
- 		mode_lo = get_lowres_mode(data, mode_hi, output);
-@@ -293,35 +301,48 @@ test_resolution_with_output(data_t *data, enum pipe pipe, igt_output_t *output)
- 
- 		i++;
- 	}
-+
-+	return max_planes;
- }
- 
- static void
--run_test(data_t *data, enum pipe pipe, int max_planes, igt_output_t *output)
-+run_test(data_t *data, enum pipe pipe, igt_output_t *output)
- {
-+	int connected_outs;
-+	int n_planes = data->display.pipes[pipe].n_planes;
-+	int max_planes = n_planes;
-+
- 	if (!opt.user_seed)
- 		opt.seed = time(NULL);
- 
--	igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
--		 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
-+	connected_outs = 0;
-+	for_each_valid_output_on_pipe(&data->display, pipe, output) {
-+		igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
-+			 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
- 
--	test_init(data, pipe, max_planes, output);
--	igt_fork(child, 1) {
--		test_plane_position_with_output(data, pipe, max_planes, output);
--	}
-+		test_init(data, pipe, n_planes, output);
-+		max_planes = test_resolution_with_output(data, pipe, output);
-+
-+		igt_fork(child, 1) {
-+			test_plane_position_with_output(data, pipe, max_planes, output);
-+		}
- 
--	test_resolution_with_output(data, pipe, output);
-+		test_resolution_with_output(data, pipe, output);
- 
--	igt_waitchildren();
-+		igt_waitchildren();
- 
--	test_fini(data, pipe, max_planes, output);
-+		test_fini(data, pipe, n_planes, output);
- 
-+		connected_outs++;
-+	}
-+
-+	igt_skip_on(connected_outs == 0);
- }
- 
- static void
- run_tests_for_pipe(data_t *data, enum pipe pipe)
- {
- 	igt_output_t *output;
--	int max_planes;
- 
- 	igt_fixture {
- 		int valid_tests = 0;
-@@ -335,18 +356,9 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 		igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
- 	}
- 
--	igt_subtest_f("pipe-%s", kmstest_pipe_name(pipe)) {
--		for_each_valid_output_on_pipe(&data->display, pipe, output) {
--			int n_planes = data->display.pipes[pipe].n_planes;
--
--			test_init(data, pipe, n_planes, output);
--			max_planes = test_bandwidth(data, pipe, output);
--			test_fini(data, pipe, n_planes, output);
--
--			igt_display_reset(&data->display);
--			run_test(data, pipe, max_planes, output);
--		}
--	}
-+	igt_subtest_f("pipe-%s", kmstest_pipe_name(pipe))
-+		for_each_valid_output_on_pipe(&data->display, pipe, output)
-+			run_test(data, pipe, output);
- }
- 
- static int opt_handler(int option, int option_index, void *input)
--- 
-2.20.1
+On 31/03/2020 11:36, Chris Wilson wrote:
+> Don't bother trying and failing to test bonding if the kernel doesn't
+> even support it.
+> 
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> Cc: Andi Shyti <andi.shyti@intel.com>
+> ---
+>   tests/i915/gem_exec_balancer.c | 34 +++++++++++++++++++++++++++-------
+>   1 file changed, 27 insertions(+), 7 deletions(-)
+> 
+> diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+> index da8aff6de..9930e394d 100644
+> --- a/tests/i915/gem_exec_balancer.c
+> +++ b/tests/i915/gem_exec_balancer.c
+> @@ -1936,6 +1936,22 @@ static bool has_load_balancer(int i915)
+>   	return err == 0;
+>   }
+>   
+> +static bool has_bonding(int i915)
+> +{
+> +	I915_DEFINE_CONTEXT_ENGINES_BOND(bonds, 0) = {
+> +		.base.name = I915_CONTEXT_ENGINES_EXT_BOND,
+> +	};
 
+Doh why do we allow zero bonds.. to make for an easier probe of course! :))
+
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+
+Regards,
+
+Tvrtko
+
+> +	struct i915_engine_class_instance ci = {};
+> +	uint32_t ctx;
+> +	int err;
+> +
+> +	ctx = gem_context_create(i915);
+> +	err = __set_load_balancer(i915, ctx, &ci, 1, &bonds);
+> +	gem_context_destroy(i915, ctx);
+> +
+> +	return err == 0;
+> +}
+> +
+>   igt_main
+>   {
+>   	int i915 = -1;
+> @@ -1992,11 +2008,18 @@ igt_main
+>   	igt_subtest("smoke")
+>   		smoketest(i915, 20);
+>   
+> -	igt_subtest("bonded-imm")
+> -		bonded(i915, 0);
+> +	igt_subtest_group {
+> +		igt_fixture igt_require(has_bonding(i915));
+> +
+> +		igt_subtest("bonded-imm")
+> +			bonded(i915, 0);
+> +
+> +		igt_subtest("bonded-cork")
+> +			bonded(i915, CORK);
+>   
+> -	igt_subtest("bonded-cork")
+> -		bonded(i915, CORK);
+> +		igt_subtest("bonded-early")
+> +			bonded_early(i915);
+> +	}
+>   
+>   	igt_subtest("bonded-slice")
+>   		bonded_slice(i915);
+> @@ -2007,9 +2030,6 @@ igt_main
+>   	igt_subtest("bonded-semaphore")
+>   		bonded_semaphore(i915);
+>   
+> -	igt_subtest("bonded-early")
+> -		bonded_early(i915);
+> -
+>   	igt_fixture {
+>   		igt_stop_hang_detector();
+>   	}
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
