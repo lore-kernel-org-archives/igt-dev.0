@@ -1,10 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 30 Apr 2020 20:51:34 +0100
-Message-Id: <20200430195134.1044125-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] igt/gem_mmap_offset: Simulate gdb
- inspecting any mmap using ptrace()
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 01 Apr 2020 07:27:56 -0000
+Message-ID: <158572607650.25625.13228528585096779768@emeril.freedesktop.org>
+References: <20200401065423.29345-1-mika.kahola@intel.com>
+In-Reply-To: <20200401065423.29345-1-mika.kahola@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fconcurrent=3A_Calculate_maximum_number_of_planes_to_meet_?=
+ =?utf-8?q?bandwidth_requirement_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -12,145 +15,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+To: Mika Kahola <mika.kahola@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-gdb uses ptrace() to peek and poke bytes of the target's address space.
-The kernel must implement an vm_ops->access() handler or else gdb will
-be unable to inspect the pointer and report it as out-of-bounds. Worse
-than useless as it causes immediate suspicion of the valid GPU pointer.
+== Series Details ==
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
----
- tests/i915/gem_mmap_offset.c | 91 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 90 insertions(+), 1 deletion(-)
+Series: tests/kms_concurrent: Calculate maximum number of planes to meet bandwidth requirement (rev3)
+URL   : https://patchwork.freedesktop.org/series/75323/
+State : success
 
-diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
-index 1ec963b25..c10cf606f 100644
---- a/tests/i915/gem_mmap_offset.c
-+++ b/tests/i915/gem_mmap_offset.c
-@@ -23,9 +23,12 @@
- 
- #include <errno.h>
- #include <pthread.h>
-+#include <signal.h>
- #include <stdatomic.h>
--#include <sys/stat.h>
- #include <sys/ioctl.h>
-+#include <sys/ptrace.h>
-+#include <sys/stat.h>
-+#include <sys/wait.h>
- #include "drm.h"
- 
- #include "igt.h"
-@@ -265,6 +268,89 @@ static void pf_nonblock(int i915)
- 	igt_spin_free(i915, spin);
- }
- 
-+static void *memchr_inv(const void *s, int c, size_t n)
-+{
-+	const uint8_t *us = s;
-+	const uint8_t uc = c;
-+
-+#pragma GCC diagnostic push
-+#pragma GCC diagnostic ignored "-Wcast-qual"
-+	while (n--) {
-+		if (*us != uc)
-+			return (void *) us;
-+		us++;
-+	}
-+#pragma GCC diagnostic pop
-+
-+	return NULL;
-+}
-+
-+static void test_ptrace(int i915)
-+{
-+	const unsigned int SZ = 3 * 4096;
-+	unsigned long *ptr, *cpy;
-+	unsigned long AA, CC;
-+	uint32_t bo;
-+
-+	memset(&AA, 0xaa, sizeof(AA));
-+	memset(&CC, 0x55, sizeof(CC));
-+
-+	cpy = malloc(SZ);
-+	bo = gem_create(i915, SZ);
-+
-+	for_each_mmap_offset_type(i915, t) {
-+		igt_dynamic_f("%s", t->name) {
-+			pid_t pid;
-+
-+			ptr = __mmap_offset(i915, bo, 0, SZ,
-+					PROT_READ | PROT_WRITE,
-+					t->type);
-+			if (!ptr)
-+				continue;
-+
-+			memset(cpy, AA, SZ);
-+			memset(ptr, CC, SZ);
-+
-+			igt_assert(!memchr_inv(ptr, CC, SZ));
-+			igt_assert(!memchr_inv(cpy, AA, SZ));
-+
-+			igt_fork(child, 1) {
-+				ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-+				raise(SIGSTOP);
-+			}
-+
-+			/* Wait for the child to ready themselves [SIGSTOP] */
-+			pid = wait(NULL);
-+
-+			ptrace(PTRACE_ATTACH, pid, NULL, NULL);
-+			for (int i = 0; i < SZ / sizeof(long); i++) {
-+				long ret;
-+
-+				ret = ptrace(PTRACE_PEEKDATA, pid, ptr + i);
-+				igt_assert_eq_u64(ret, CC);
-+				cpy[i] = ret;
-+
-+				ret = ptrace(PTRACE_POKEDATA, pid, ptr + i, AA);
-+				igt_assert_eq(ret, 0l);
-+			}
-+			ptrace(PTRACE_DETACH, pid, NULL, NULL);
-+
-+			/* Wakeup the child for it to exit */
-+			kill(SIGCONT, pid);
-+			igt_waitchildren();
-+
-+			/* The two buffers should now be swapped */
-+			igt_assert(!memchr_inv(ptr, AA, SZ));
-+			igt_assert(!memchr_inv(cpy, CC, SZ));
-+
-+			munmap(ptr, SZ);
-+		}
-+	}
-+
-+	gem_close(i915, bo);
-+	free(cpy);
-+}
-+
- static void close_race(int i915, int timeout)
- {
- 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-@@ -530,6 +616,9 @@ igt_main
- 	igt_subtest_f("pf-nonblock")
- 		pf_nonblock(i915);
- 
-+	igt_subtest_with_dynamic("ptrace")
-+		test_ptrace(i915);
-+
- 	igt_describe("Check race between close and mmap offset between threads");
- 	igt_subtest_f("close-race")
- 		close_race(i915, 20);
--- 
-2.26.2
+== Summary ==
 
+CI Bug Log - changes from CI_DRM_8230 -> IGTPW_4388
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4388/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4388 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-cml-u2:          [PASS][1] -> [DMESG-WARN][2] ([IGT#4])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8230/fi-cml-u2/igt@kms_chamelium@common-hpd-after-suspend.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4388/fi-cml-u2/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  
+  [IGT#4]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/4
+
+
+Participating hosts (40 -> 40)
+------------------------------
+
+  Additional (7): fi-byt-j1900 fi-skl-guc fi-ilk-650 fi-kbl-7500u fi-hsw-4770 fi-bsw-kefka fi-skl-6700k2 
+  Missing    (7): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus fi-kbl-r 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5550 -> IGTPW_4388
+
+  CI-20190529: 20190529
+  CI_DRM_8230: fa9f8453ffb88a4fc4e36d68b84a7ff9bf90f769 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4388: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4388/index.html
+  IGT_5550: 98927dfde17aecaecfe67bb9853ceca326ca2b23 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4388/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
