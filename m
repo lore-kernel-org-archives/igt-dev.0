@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 01 Apr 2020 02:43:04 -0000
-Message-ID: <158570898426.25627.2582432312786699469@emeril.freedesktop.org>
-References: <20200331162320.968537-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200331162320.968537-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_i915/gem=5Fexec=5Freloc=3A_Dyn?=
- =?utf-8?q?amic_active_engine_tests_=28rev2=29?=
+Date: Wed, 01 Apr 2020 06:16:32 -0000
+Message-ID: <158572179278.25628.7130524870558583747@emeril.freedesktop.org>
+References: <20200331115824.2481-1-mika.kahola@intel.com>
+In-Reply-To: <20200331115824.2481-1-mika.kahola@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/kms=5Fconcurrent=3A_Calculate_maximum_number_of_planes_to_mee?=
+ =?utf-8?q?t_bandwidth_requirement_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,79 +20,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Mika Kahola <mika.kahola@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: series starting with [i-g-t,1/2] i915/gem_exec_reloc: Dynamic active engine tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/75332/
-State : success
+Series: tests/kms_concurrent: Calculate maximum number of planes to meet bandwidth requirement (rev2)
+URL   : https://patchwork.freedesktop.org/series/75323/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_8230 -> IGTPW_4385
-====================================================
+IGT patchset build failed on latest successful build
+98927dfde17aecaecfe67bb9853ceca326ca2b23 lib: Sync i915_pciids.h with kernel
 
-Summary
+273/286 testcase check: amdgpu/amd_prime        OK       0.16 s 
+274/286 runner                                  OK       5.47 s 
+275/286 runner_json                             OK       0.12 s 
+276/286 assembler: test/mov                     OK       0.09 s 
+277/286 assembler: test/frc                     OK       0.04 s 
+278/286 assembler: test/regtype                 OK       0.06 s 
+279/286 assembler: test/rndd                    OK       0.08 s 
+280/286 assembler: test/rndu                    OK       0.03 s 
+281/286 assembler: test/rnde                    OK       0.07 s 
+282/286 assembler: test/rnde-intsrc             OK       0.07 s 
+283/286 assembler: test/rndz                    OK       0.04 s 
+284/286 assembler: test/lzd                     OK       0.06 s 
+285/286 assembler: test/not                     OK       0.05 s 
+286/286 assembler: test/immediate               OK       0.05 s 
+
+OK:       285
+FAIL:       1
+SKIP:       0
+TIMEOUT:    0
+
+
+The output from the failed tests:
+
+ 45/286 testcase check: kms_concurrent          FAIL     0.27 s (exit status 1)
+
+--- command ---
+/home/cidrm/igt-gpu-tools/tests/igt_command_line.sh kms_concurrent
+--- stdout ---
+tests/kms_concurrent:
+  Checking invalid option handling...
+  Checking valid option handling...
+  Checking subtest enumeration...
+    test does not exit with 0 or 79 with --list-subtests!
+FAIL: tests/kms_concurrent
+--- stderr ---
+Received signal SIGSEGV.
+Stack trace: 
+ #0 [fatal_sig_handler+0xd6]
+ #1 [killpg+0x40]
+ #2 [run_tests_for_pipe.constprop.7+0x4a]
+ #3 [__real_main371+0x5d]
+ #4 [main+0x39]
+ #5 [__libc_start_main+0xe7]
+ #6 [_start+0x2a]
 -------
 
-  **SUCCESS**
+Full log written to /home/cidrm/igt-gpu-tools/build/meson-logs/testlog.txt
+FAILED: meson-test 
+/usr/bin/python3 -u /usr/bin/meson test --no-rebuild --print-errorlogs
+ninja: build stopped: subcommand failed.
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4385/index.html
-
-
-Changes
--------
-
-  No changes found
-
-
-Participating hosts (40 -> 41)
-------------------------------
-
-  Additional (8): fi-byt-j1900 fi-skl-guc fi-ilk-650 fi-kbl-7500u fi-hsw-4770 fi-bsw-kefka fi-bsw-nick fi-skl-6700k2 
-  Missing    (7): fi-hsw-4200u fi-bsw-n3050 fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5550 -> IGTPW_4385
-
-  CI-20190529: 20190529
-  CI_DRM_8230: fa9f8453ffb88a4fc4e36d68b84a7ff9bf90f769 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4385: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4385/index.html
-  IGT_5550: 98927dfde17aecaecfe67bb9853ceca326ca2b23 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@gem_exec_reloc@basic-parallel
-+igt@gem_exec_reloc@basic-spin
--igt@gem_exec_reloc@basic-active-blt
--igt@gem_exec_reloc@basic-active-bsd
--igt@gem_exec_reloc@basic-active-bsd1
--igt@gem_exec_reloc@basic-active-bsd2
--igt@gem_exec_reloc@basic-active-default
--igt@gem_exec_reloc@basic-active-render
--igt@gem_exec_reloc@basic-active-vebox
--igt@gem_exec_reloc@basic-spin-blt
--igt@gem_exec_reloc@basic-spin-bsd
--igt@gem_exec_reloc@basic-spin-bsd1
--igt@gem_exec_reloc@basic-spin-bsd2
--igt@gem_exec_reloc@basic-spin-default
--igt@gem_exec_reloc@basic-spin-render
--igt@gem_exec_reloc@basic-spin-vebox
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4385/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
