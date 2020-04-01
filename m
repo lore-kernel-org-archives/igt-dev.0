@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C89AB6E95F
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2020 16:30:30 +0000 (UTC)
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Date: Wed, 1 Apr 2020 19:29:12 +0300
-Message-ID: <20200401162912.1238692-1-arkadiusz.hiler@intel.com>
-In-Reply-To: <20200331123857.1212432-5-arkadiusz.hiler@intel.com>
-References: <20200331123857.1212432-5-arkadiusz.hiler@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46C526E969
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Apr 2020 16:55:13 +0000 (UTC)
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Date: Wed,  1 Apr 2020 19:55:07 +0300
+Message-Id: <20200401165508.366950-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 4/4] tests/kms_chamelium: Test HPD for
- different mode handling scenarios
+Subject: [igt-dev] [PATCH i-g-t v2 1/2] lib/i915/perf: remove generation
+ code for mathml render
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,484 +20,232 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The default scenario is now performing all hotplugs with modes disabled
-on all connectors. This is the quickest of the tests and represents
-userspace not caring about the new display (e.g. explicitly disabled).
+Gputop had support for generating mathml figures of the post
+processing equations. It's not useful here.
 
-*-hpd-enable-disable-mode covers the most common userspace behavior
-where each hotplug event is accompanied by a corresponding enabling /
-disabling commit.
-
-*-hpd-with-enabled-mode explicitly targets the scenario where we have
-mode enabled and never disable it as we do hotplugs to reproduce the
-issue we see with TypeC connectors for ICL and TGL.
-
-v2:
- - refresh igt_display output state after reprobing
- - get mode and set pipe only after we have connector plugged in
-
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Issue: https://gitlab.freedesktop.org/drm/intel/issues/323
-Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- lib/igt_kms.c         |   2 +-
- lib/igt_kms.h         |   1 +
- tests/kms_chamelium.c | 315 ++++++++++++++++++++++++++++--------------
- 3 files changed, 216 insertions(+), 102 deletions(-)
+ lib/i915/perf-configs/perf-codegen.py | 168 +++-----------------------
+ 1 file changed, 17 insertions(+), 151 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index b461818a..9fc9834a 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1666,7 +1666,7 @@ static void igt_display_log_shift(igt_display_t *display, int shift)
- 	igt_assert(display->log_shift >= 0);
+diff --git a/lib/i915/perf-configs/perf-codegen.py b/lib/i915/perf-configs/perf-codegen.py
+index 24c5514d..ac3ad683 100755
+--- a/lib/i915/perf-configs/perf-codegen.py
++++ b/lib/i915/perf-configs/perf-codegen.py
+@@ -36,109 +36,6 @@ c = None
+ hashed_funcs = {}
+ xml_equations = None
+ 
+-def check_operand_type(set, arg):
+-    if arg.isdigit():
+-        return "\n<mn>" + arg + "</mn>"
+-    elif arg[0] == "$":
+-        if arg in set.counter_vars:
+-            description = set.counter_vars[arg].get('description')
+-        elif arg in hw_vars and 'desc' in hw_vars[arg]:
+-            description = hw_vars[arg]['desc'];
+-        else:
+-            description = None
+-
+-        if description != None:
+-            return "\n<maction actiontype='tooltip'>\n<mi>" + arg + "</mi>\n<mtext>" + description + "</mtext>\n</maction>"
+-        else:
+-            return "<mi>" + arg + "</mi>"
+-    return arg
+-
+-# http://en.cppreference.com/w/c/language/operator_precedence
+-and_precedence = 8
+-shft_precedence = 5
+-mul_precedence = 3
+-add_precedence = 2
+-sub_precedence = 2
+-default_precedence = 16 #a high value which denotes no brackets needed
+-
+-def put_brackets(arg):
+-    return "\n<mtext>(</mtext>" + arg + "\n<mtext>)</mtext>"
+-
+-def mathml_splice_add(set, args):
+-    operand_0 = check_operand_type(set, args[0][0])
+-    operand_1 = check_operand_type(set, args[1][0])
+-    if args[0][1] < add_precedence:
+-        operand_0 = put_brackets(args[0][0])
+-    if args[1][1] < add_precedence:
+-        operand_1 = put_brackets(args[1][0])
+-    return [operand_1 + "\n<mo>+</mo>" + operand_0, add_precedence]
+-
+-def mathml_splice_div(set, args):
+-    operand_0 = check_operand_type(set, args[0][0])
+-    operand_1 = check_operand_type(set, args[1][0])
+-    return ["\n<mfrac>\n<mrow>" + operand_1 + "\n</mrow>\n<mrow>" + operand_0 + "</mrow>\n</mfrac>", default_precedence]
+-
+-def mathml_splice_max(set, args):
+-    operand_0 = check_operand_type(set, args[0][0])
+-    operand_1 = check_operand_type(set, args[1][0])
+-    return ["\n<mtext>max ( </mtext>" + operand_1 + "\n<mtext> , </mtext>" + operand_0 + "\n<mtext> ) </mtext>", default_precedence]
+-
+-def mathml_splice_mul(set, args):
+-    operand_0 = check_operand_type(set, args[0][0])
+-    operand_1 = check_operand_type(set, args[1][0])
+-    if args[0][1] < mul_precedence:
+-        operand_0 = put_brackets(args[0][0])
+-    if args[1][1] < mul_precedence:
+-        operand_1 = put_brackets(args[1][0])
+-    return [operand_1 + "\n<mo>*</mo>" + operand_0, mul_precedence]
+-
+-def mathml_splice_sub(set, args):
+-    operand_0 = check_operand_type(set, args[0][0])
+-    operand_1 = check_operand_type(set, args[1][0])
+-    if args[0][1] < sub_precedence:
+-        operand_0 = put_brackets(args[0][0])
+-    if args[1][1] < sub_precedence:
+-        operand_1 = put_brackets(args[1][0])
+-    return [operand_1 + "\n<mo>-</mo>" + operand_0, sub_precedence]
+-
+-def mathml_splice_read(set, args):
+-    return ["\n<maction actiontype='tooltip'>\n<mi>" + args[1][0] + args[0][0] + "</mi>\n<mtext>placeholder</mtext>\n</maction>", default_precedence]
+-
+-def mathml_splice_read_reg(set, args):
+-    return ["\n<maction actiontype='tooltip'>\n<mi>" + args[0][0] + "</mi>\n<mtext>placeholder</mtext>\n</maction>", default_precedence]
+-
+-def mathml_splice_min(set, args):
+-    operand_0 = check_operand_type(set, args[0][0])
+-    operand_1 = check_operand_type(set, args[1][0])
+-    return ["\n<mtext>min ( </mtext>" + operand_1 + "\n<mtext> , </mtext>" + operand_0 + "\n<mtext> ) </mtext>", default_precedence]
+-
+-def mathml_splice_lshft(set, args):
+-    operand_0 = check_operand_type(set, args[0][0])
+-    operand_1 = check_operand_type(set, args[1][0])
+-    if args[0][1] < shft_precedence:
+-        operand_0 = put_brackets(args[0][0])
+-    if args[1][1] < shft_precedence:
+-        operand_1 = put_brackets(args[1][0])
+-    return [operand_1 + "\n<mo>&lt;&lt;</mo>" + operand_0, shft_precedence]
+-
+-def mathml_splice_rshft(set, args):
+-    operand_0 = check_operand_type(set, args[0][0])
+-    operand_1 = check_operand_type(set, args[1][0])
+-    if args[0][1] < mul_precedence:
+-        operand_0 = put_brackets(args[0][0])
+-    if args[1][1] < mul_precedence:
+-        operand_1 = put_brackets(args[1][0])
+-    return [operand_1 + "\n<mo>&gt;&gt;</mo>" + operand_0, mul_precedence]
+-
+-def mathml_splice_and(set, args):
+-    operand_0 = check_operand_type(set, args[0][0])
+-    operand_1 = check_operand_type(set, args[1][0])
+-    if args[0][1] < and_precedence:
+-        operand_0 = put_brackets(args[0][0])
+-    if args[1][1] < and_precedence:
+-        operand_1 = put_brackets(args[1][0])
+-    return [operand_1 + "\n<mo>&amp;</mo>" + operand_0, and_precedence]
+-
+ def emit_fadd(tmp_id, args):
+     c("double tmp{0} = {1} + {2};".format(tmp_id, args[1], args[0]))
+     return tmp_id + 1
+@@ -212,22 +109,22 @@ def emit_and(tmp_id, args):
+     return tmp_id + 1
+ 
+ ops = {}
+-#                     (n operands, emitter1, emitter2)
+-ops["FADD"]     = (2, emit_fadd, mathml_splice_add)
+-ops["FDIV"]     = (2, emit_fdiv, mathml_splice_div)
+-ops["FMAX"]     = (2, emit_fmax, mathml_splice_max)
+-ops["FMUL"]     = (2, emit_fmul, mathml_splice_mul)
+-ops["FSUB"]     = (2, emit_fsub, mathml_splice_sub)
+-ops["READ"]     = (2, emit_read, mathml_splice_read)
+-ops["READ_REG"] = (1, emit_read_reg, mathml_splice_read_reg)
+-ops["UADD"]     = (2, emit_uadd, mathml_splice_add)
+-ops["UDIV"]     = (2, emit_udiv, mathml_splice_div)
+-ops["UMUL"]     = (2, emit_umul, mathml_splice_mul)
+-ops["USUB"]     = (2, emit_usub, mathml_splice_sub)
+-ops["UMIN"]     = (2, emit_umin, mathml_splice_min)
+-ops["<<"]       = (2, emit_lshft, mathml_splice_lshft)
+-ops[">>"]       = (2, emit_rshft, mathml_splice_rshft)
+-ops["AND"]      = (2, emit_and, mathml_splice_and)
++#                     (n operands, emitter)
++ops["FADD"]     = (2, emit_fadd)
++ops["FDIV"]     = (2, emit_fdiv)
++ops["FMAX"]     = (2, emit_fmax)
++ops["FMUL"]     = (2, emit_fmul)
++ops["FSUB"]     = (2, emit_fsub)
++ops["READ"]     = (2, emit_read)
++ops["READ_REG"] = (1, emit_read_reg)
++ops["UADD"]     = (2, emit_uadd)
++ops["UDIV"]     = (2, emit_udiv)
++ops["UMUL"]     = (2, emit_umul)
++ops["USUB"]     = (2, emit_usub)
++ops["UMIN"]     = (2, emit_umin)
++ops["<<"]       = (2, emit_lshft)
++ops[">>"]       = (2, emit_rshft)
++ops["AND"]      = (2, emit_and)
+ 
+ def brkt(subexp):
+     if " " in subexp:
+@@ -270,27 +167,6 @@ hw_vars = {
+         "$QueryMode": { 'c': "perf->devinfo.query_mode" },
  }
  
--static void igt_output_refresh(igt_output_t *output)
-+void igt_output_refresh(igt_output_t *output)
- {
- 	igt_display_t *display = output->display;
- 	unsigned long crtc_idx_mask = 0;
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index cd3fdbc0..adca59ac 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -423,6 +423,7 @@ igt_plane_t *igt_output_get_plane_type_index(igt_output_t *output,
- 					     int plane_type, int index);
- igt_output_t *igt_output_from_connector(igt_display_t *display,
-     drmModeConnector *connector);
-+void igt_output_refresh(igt_output_t *output);
- const drmModeModeInfo *igt_std_1024_mode_get(void);
- 
- igt_plane_t *igt_pipe_get_plane_type(igt_pipe_t *pipe, int plane_type);
-diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
-index 236e1010..3019d270 100644
---- a/tests/kms_chamelium.c
-+++ b/tests/kms_chamelium.c
-@@ -45,6 +45,12 @@ enum test_edid {
- };
- #define TEST_EDID_COUNT 5
- 
-+enum test_modeset_mode {
-+	TEST_MODESET_ON,
-+	TEST_MODESET_ON_OFF,
-+	TEST_MODESET_OFF,
-+};
-+
- typedef struct {
- 	struct chamelium *chamelium;
- 	struct chamelium_port **ports;
-@@ -111,12 +117,17 @@ reprobe_connector(data_t *data, struct chamelium_port *port)
- {
- 	drmModeConnector *connector;
- 	drmModeConnection status;
-+	igt_output_t *output;
- 
- 	igt_debug("Reprobing %s...\n", chamelium_port_get_name(port));
- 	connector = chamelium_port_get_connector(data->chamelium, port, true);
- 	igt_assert(connector);
- 	status = connector->connection;
- 
-+	/* let's make sure that igt_display is up to date too */
-+	output = igt_output_from_connector(&data->display, connector);
-+	igt_output_refresh(output);
-+
- 	drmModeFreeConnector(connector);
- 	return status;
- }
-@@ -294,14 +305,140 @@ reset_state(data_t *data, struct chamelium_port *port)
- 	}
- }
- 
-+static void chamelium_paint_xr24_pattern(uint32_t *data,
-+					 size_t width, size_t height,
-+					 size_t stride, size_t block_size)
-+{
-+	uint32_t colors[] = { 0xff000000,
-+			      0xffff0000,
-+			      0xff00ff00,
-+			      0xff0000ff,
-+			      0xffffffff };
-+	unsigned i, j;
-+
-+	for (i = 0; i < height; i++)
-+		for (j = 0; j < width; j++)
-+			*(data + i * stride / 4 + j) = colors[((j / block_size) + (i / block_size)) % 5];
-+}
-+
-+static int chamelium_get_pattern_fb(data_t *data, size_t width, size_t height,
-+				    uint32_t fourcc, size_t block_size,
-+				    struct igt_fb *fb)
-+{
-+	int fb_id;
-+	void *ptr;
-+
-+	igt_assert(fourcc == DRM_FORMAT_XRGB8888);
-+
-+	fb_id = igt_create_fb(data->drm_fd, width, height, fourcc,
-+			      LOCAL_DRM_FORMAT_MOD_NONE, fb);
-+	igt_assert(fb_id > 0);
-+
-+	ptr = igt_fb_map_buffer(fb->fd, fb);
-+	igt_assert(ptr);
-+
-+	chamelium_paint_xr24_pattern(ptr, width, height, fb->strides[0],
-+				     block_size);
-+	igt_fb_unmap_buffer(fb, ptr);
-+
-+	return fb_id;
-+}
-+
-+static void
-+enable_output(data_t *data,
-+	      struct chamelium_port *port,
-+	      igt_output_t *output,
-+	      drmModeModeInfo *mode,
-+	      struct igt_fb *fb)
-+{
-+	igt_display_t *display = output->display;
-+	igt_plane_t *primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	drmModeConnector *connector = chamelium_port_get_connector(
-+	    data->chamelium, port, false);
-+
-+	igt_assert(primary);
-+
-+	igt_plane_set_size(primary, mode->hdisplay, mode->vdisplay);
-+	igt_plane_set_fb(primary, fb);
-+	igt_output_override_mode(output, mode);
-+
-+	/* Clear any color correction values that might be enabled */
-+	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT))
-+		igt_pipe_obj_replace_prop_blob(primary->pipe, IGT_CRTC_DEGAMMA_LUT, NULL, 0);
-+	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT))
-+		igt_pipe_obj_replace_prop_blob(primary->pipe, IGT_CRTC_GAMMA_LUT, NULL, 0);
-+	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM))
-+		igt_pipe_obj_replace_prop_blob(primary->pipe, IGT_CRTC_CTM, NULL, 0);
-+
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	if (chamelium_port_get_type(port) == DRM_MODE_CONNECTOR_VGA)
-+		usleep(250000);
-+
-+	drmModeFreeConnector(connector);
-+}
-+
-+static enum pipe get_pipe_for_output(igt_display_t *display, igt_output_t *output)
-+{
-+	enum pipe pipe;
-+
-+	for_each_pipe(display, pipe) {
-+		if (igt_pipe_connector_valid(pipe, output)) {
-+			return pipe;
-+		}
-+	}
-+
-+	igt_assert_f(false, "No pipe found for output %s\n",
-+		     igt_output_name(output));
-+}
-+
-+static void create_fb_for_mode(data_t *data, struct igt_fb *fb, drmModeModeInfo *mode)
-+{
-+	int fb_id;
-+
-+	fb_id = chamelium_get_pattern_fb(data, mode->hdisplay, mode->vdisplay,
-+					 DRM_FORMAT_XRGB8888, 64, fb);
-+
-+	igt_assert(fb_id > 0);
-+}
-+
-+static drmModeModeInfo get_mode_for_port(struct chamelium *chamelium,
-+					 struct chamelium_port *port)
-+{
-+	drmModeConnector *connector = chamelium_port_get_connector(chamelium,
-+								   port, false);
-+	drmModeModeInfo mode;
-+	igt_assert(&connector->modes[0] != NULL);
-+	memcpy(&mode, &connector->modes[0], sizeof(mode));
-+	drmModeFreeConnector(connector);
-+	return mode;
-+}
-+
-+static igt_output_t *get_output_for_port(data_t *data,
-+					 struct chamelium_port *port)
-+{
-+	drmModeConnector *connector = chamelium_port_get_connector(data->chamelium,
-+								   port, false);
-+	igt_output_t *output = igt_output_from_connector(&data->display,
-+							 connector);
-+	drmModeFreeConnector(connector);
-+	igt_assert(output != NULL);
-+	return output;
-+}
-+
- static const char test_basic_hotplug_desc[] =
- 	"Check that we get uevents and updated connector status on "
- 	"hotplug and unplug";
- static void
--test_basic_hotplug(data_t *data, struct chamelium_port *port, int toggle_count)
-+test_hotplug(data_t *data, struct chamelium_port *port, int toggle_count,
-+	     enum test_modeset_mode modeset_mode)
- {
--	struct udev_monitor *mon = igt_watch_hotplug();
- 	int i;
-+	enum pipe pipe;
-+	struct igt_fb fb = {0};
-+	drmModeModeInfo mode;
-+	struct udev_monitor *mon = igt_watch_hotplug();
-+	igt_output_t *output = get_output_for_port(data, port);
- 
- 	reset_state(data, NULL);
- 	igt_hpd_storm_set_threshold(data->drm_fd, 0);
-@@ -316,15 +453,36 @@ test_basic_hotplug(data_t *data, struct chamelium_port *port, int toggle_count)
- 						 DRM_MODE_CONNECTED);
- 		igt_flush_hotplugs(mon);
- 
-+		if (modeset_mode == TEST_MODESET_ON_OFF ||
-+		    (modeset_mode == TEST_MODESET_ON && i == 0 )) {
-+			if (i == 0) {
-+				/* We can only get mode and pipe once we are connected */
-+				pipe = get_pipe_for_output(&data->display, output);
-+				mode = get_mode_for_port(data->chamelium, port);
-+				create_fb_for_mode(data, &fb, &mode);
-+			}
-+
-+			igt_output_set_pipe(output, pipe);
-+			enable_output(data, port, output, &mode, &fb);
-+		}
-+
- 		/* Now check if we get a hotplug from disconnection */
- 		chamelium_unplug(data->chamelium, port);
- 
- 		wait_for_connector_after_hotplug(data, mon, port,
- 						 DRM_MODE_DISCONNECTED);
-+
-+		igt_flush_hotplugs(mon);
-+
-+		if (modeset_mode == TEST_MODESET_ON_OFF) {
-+			igt_output_set_pipe(output, PIPE_NONE);
-+			igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+		}
- 	}
- 
- 	igt_cleanup_hotplug(mon);
- 	igt_hpd_storm_reset(data->drm_fd);
-+	igt_remove_fb(data->drm_fd, &fb);
- }
- 
- static const struct edid *get_edid(enum test_edid edid);
-@@ -530,10 +688,7 @@ prepare_output(data_t *data, struct chamelium_port *port, enum test_edid edid)
- {
- 	igt_display_t *display = &data->display;
- 	igt_output_t *output;
--	drmModeConnector *connector =
--		chamelium_port_get_connector(data->chamelium, port, false);
- 	enum pipe pipe;
--	bool found = false;
- 
- 	/* The chamelium's default EDID has a lot of resolutions, way more then
- 	 * we need to test. Additionally the default EDID doesn't support HDMI
-@@ -546,101 +701,17 @@ prepare_output(data_t *data, struct chamelium_port *port, enum test_edid edid)
- 
- 	igt_display_reset(display);
- 
--	output = igt_output_from_connector(display, connector);
-+	output = get_output_for_port(data, port);
- 
- 	/* Refresh pipe to update connected status */
- 	igt_output_set_pipe(output, PIPE_NONE);
- 
--	for_each_pipe(display, pipe) {
--		if (!igt_pipe_connector_valid(pipe, output))
--			continue;
+-def splice_mathml_expression(set, equation, tag):
+-    tokens = equation.split()
+-    mathml_stack = []
+-    tmp_xml_operand = ""
+-    for token in tokens:
+-        if not mathml_stack:
+-            token = check_operand_type(set, token)
+-        mathml_stack.append([token, default_precedence])
+-        while mathml_stack and mathml_stack[-1][0] in ops:
+-            op = mathml_stack.pop()[0]
+-            argc, callback, mathml_callback = ops[op]
+-            xml_args = []
+-            for i in range(0, argc):
+-                xml_operand = mathml_stack.pop()
+-                xml_args.append(xml_operand)
+-            tmp_xml_operand = mathml_callback(set, xml_args)
+-            mathml_stack.append(tmp_xml_operand)
+-    xml_string = mathml_stack.pop()[0]
+-    equation_descr = "<mi>" + tag + "</mi><mo> = </mo>"
+-    return "<mathml_" + tag + ">" + equation_descr + xml_string + "</mathml_" + tag + ">"
 -
--		found = true;
--		break;
--	}
--
--	igt_assert_f(found, "No pipe found for output %s\n", igt_output_name(output));
--
-+	pipe = get_pipe_for_output(display, output);
- 	igt_output_set_pipe(output, pipe);
+ def output_rpn_equation_code(set, counter, equation):
+     c("/* RPN equation: " + equation + " */")
+     tokens = equation.split()
+@@ -302,7 +178,7 @@ def output_rpn_equation_code(set, counter, equation):
+         stack.append(token)
+         while stack and stack[-1] in ops:
+             op = stack.pop()
+-            argc, callback, mathml_callback = ops[op]
++            argc, callback = ops[op]
+             args = []
+             for i in range(0, argc):
+                 operand = stack.pop()
+@@ -656,7 +532,6 @@ def main():
+     parser = argparse.ArgumentParser()
+     parser.add_argument("--header", help="Header file to write")
+     parser.add_argument("--code", help="C file to write")
+-    parser.add_argument("--xml-out", help="Output XML files (adding mathml equations)")
+     parser.add_argument("xml_files", nargs='+', help="List of xml metrics files to process")
  
--	drmModeFreeConnector(connector);
--
- 	return output;
- }
+     args = parser.parse_args()
+@@ -669,15 +544,6 @@ def main():
+     for xml_file in args.xml_files:
+         gens.append(Gen(xml_file))
  
--static void
--enable_output(data_t *data,
--	      struct chamelium_port *port,
--	      igt_output_t *output,
--	      drmModeModeInfo *mode,
--	      struct igt_fb *fb)
--{
--	igt_display_t *display = output->display;
--	igt_plane_t *primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
--	drmModeConnector *connector = chamelium_port_get_connector(
--	    data->chamelium, port, false);
+-    if args.xml_out:
+-        for gen in gens:
+-            for set in gen.sets:
+-                for counter in set.counters:
+-                    xml_equation = splice_mathml_expression(set, counter.get('equation'), "EQ")
+-                    counter.append(et.fromstring(xml_equation))
+-            gen.xml.write(gen.filename)
 -
--	igt_assert(primary);
 -
--	igt_plane_set_size(primary, mode->hdisplay, mode->vdisplay);
--	igt_plane_set_fb(primary, fb);
--	igt_output_override_mode(output, mode);
--
--	/* Clear any color correction values that might be enabled */
--	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_DEGAMMA_LUT))
--		igt_pipe_obj_replace_prop_blob(primary->pipe, IGT_CRTC_DEGAMMA_LUT, NULL, 0);
--	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_GAMMA_LUT))
--		igt_pipe_obj_replace_prop_blob(primary->pipe, IGT_CRTC_GAMMA_LUT, NULL, 0);
--	if (igt_pipe_obj_has_prop(primary->pipe, IGT_CRTC_CTM))
--		igt_pipe_obj_replace_prop_blob(primary->pipe, IGT_CRTC_CTM, NULL, 0);
--
--	igt_display_commit2(display, COMMIT_ATOMIC);
--
--	if (chamelium_port_get_type(port) == DRM_MODE_CONNECTOR_VGA)
--		usleep(250000);
--
--	drmModeFreeConnector(connector);
--}
--
--static void chamelium_paint_xr24_pattern(uint32_t *data,
--					 size_t width, size_t height,
--					 size_t stride, size_t block_size)
--{
--	uint32_t colors[] = { 0xff000000,
--			      0xffff0000,
--			      0xff00ff00,
--			      0xff0000ff,
--			      0xffffffff };
--	unsigned i, j;
--
--	for (i = 0; i < height; i++)
--		for (j = 0; j < width; j++)
--			*(data + i * stride / 4 + j) = colors[((j / block_size) + (i / block_size)) % 5];
--}
--
--static int chamelium_get_pattern_fb(data_t *data, size_t width, size_t height,
--				    uint32_t fourcc, size_t block_size,
--				    struct igt_fb *fb)
--{
--	int fb_id;
--	void *ptr;
--
--	igt_assert(fourcc == DRM_FORMAT_XRGB8888);
--
--	fb_id = igt_create_fb(data->drm_fd, width, height, fourcc,
--			      LOCAL_DRM_FORMAT_MOD_NONE, fb);
--	igt_assert(fb_id > 0);
--
--	ptr = igt_fb_map_buffer(fb->fd, fb);
--	igt_assert(ptr);
--
--	chamelium_paint_xr24_pattern(ptr, width, height, fb->strides[0],
--				     block_size);
--	igt_fb_unmap_buffer(fb, ptr);
--
--	return fb_id;
--}
--
- static void do_test_display(data_t *data, struct chamelium_port *port,
- 			    igt_output_t *output, drmModeModeInfo *mode,
- 			    uint32_t fourcc, enum chamelium_check check,
-@@ -2539,13 +2610,27 @@ igt_main
- 
- 		igt_describe(test_basic_hotplug_desc);
- 		connector_subtest("dp-hpd", DisplayPort)
--			test_basic_hotplug(&data, port,
--					   HPD_TOGGLE_COUNT_DP_HDMI);
-+			test_hotplug(&data, port,
-+				     HPD_TOGGLE_COUNT_DP_HDMI,
-+				     TEST_MODESET_OFF);
- 
- 		igt_describe(test_basic_hotplug_desc);
- 		connector_subtest("dp-hpd-fast", DisplayPort)
--			test_basic_hotplug(&data, port,
--					   HPD_TOGGLE_COUNT_FAST);
-+			test_hotplug(&data, port,
-+				     HPD_TOGGLE_COUNT_FAST,
-+				     TEST_MODESET_OFF);
-+
-+		igt_describe(test_basic_hotplug_desc);
-+		connector_subtest("dp-hpd-enable-disable-mode", DisplayPort)
-+			test_hotplug(&data, port,
-+				     HPD_TOGGLE_COUNT_FAST,
-+				     TEST_MODESET_ON_OFF);
-+
-+		igt_describe(test_basic_hotplug_desc);
-+		connector_subtest("dp-hpd-with-enabled-mode", DisplayPort)
-+			test_hotplug(&data, port,
-+				     HPD_TOGGLE_COUNT_FAST,
-+				     TEST_MODESET_ON);
- 
- 		igt_describe(test_edid_read_desc);
- 		connector_subtest("dp-edid-read", DisplayPort) {
-@@ -2634,13 +2719,27 @@ igt_main
- 
- 		igt_describe(test_basic_hotplug_desc);
- 		connector_subtest("hdmi-hpd", HDMIA)
--			test_basic_hotplug(&data, port,
--					   HPD_TOGGLE_COUNT_DP_HDMI);
-+			test_hotplug(&data, port,
-+				     HPD_TOGGLE_COUNT_DP_HDMI,
-+				     TEST_MODESET_OFF);
- 
- 		igt_describe(test_basic_hotplug_desc);
- 		connector_subtest("hdmi-hpd-fast", HDMIA)
--			test_basic_hotplug(&data, port,
--					   HPD_TOGGLE_COUNT_FAST);
-+			test_hotplug(&data, port,
-+				     HPD_TOGGLE_COUNT_FAST,
-+				     TEST_MODESET_OFF);
-+
-+		igt_describe(test_basic_hotplug_desc);
-+		connector_subtest("hdmi-hpd-enable-disable-mode", HDMIA)
-+			test_hotplug(&data, port,
-+				     HPD_TOGGLE_COUNT_FAST,
-+				     TEST_MODESET_ON_OFF);
-+
-+		igt_describe(test_basic_hotplug_desc);
-+		connector_subtest("hdmi-hpd-with-enabled-mode", HDMIA)
-+			test_hotplug(&data, port,
-+				     HPD_TOGGLE_COUNT_FAST,
-+				     TEST_MODESET_ON);
- 
- 		igt_describe(test_edid_read_desc);
- 		connector_subtest("hdmi-edid-read", HDMIA) {
-@@ -2795,11 +2894,25 @@ igt_main
- 
- 		igt_describe(test_basic_hotplug_desc);
- 		connector_subtest("vga-hpd", VGA)
--			test_basic_hotplug(&data, port, HPD_TOGGLE_COUNT_VGA);
-+			test_hotplug(&data, port, HPD_TOGGLE_COUNT_VGA,
-+				     TEST_MODESET_OFF);
- 
- 		igt_describe(test_basic_hotplug_desc);
- 		connector_subtest("vga-hpd-fast", VGA)
--			test_basic_hotplug(&data, port, HPD_TOGGLE_COUNT_FAST);
-+			test_hotplug(&data, port, HPD_TOGGLE_COUNT_FAST,
-+				     TEST_MODESET_OFF);
-+
-+		igt_describe(test_basic_hotplug_desc);
-+		connector_subtest("hdmi-hpd-enable-disable-mode", VGA)
-+			test_hotplug(&data, port,
-+				     HPD_TOGGLE_COUNT_FAST,
-+				     TEST_MODESET_ON_OFF);
-+
-+		igt_describe(test_basic_hotplug_desc);
-+		connector_subtest("hdmi-hpd-with-enabled-mode", VGA)
-+			test_hotplug(&data, port,
-+				     HPD_TOGGLE_COUNT_FAST,
-+				     TEST_MODESET_ON);
- 
- 		igt_describe(test_edid_read_desc);
- 		connector_subtest("vga-edid-read", VGA) {
+     copyright = textwrap.dedent("""\
+         /* Autogenerated file, DO NOT EDIT manually! generated by {}
+          *
 -- 
-2.24.1
+2.26.0
 
 _______________________________________________
 igt-dev mailing list
