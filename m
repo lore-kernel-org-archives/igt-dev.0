@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 01 Apr 2020 18:55:19 -0000
-Message-ID: <158576731971.25628.13426030331289754635@emeril.freedesktop.org>
+Date: Wed, 01 Apr 2020 19:08:36 -0000
+Message-ID: <158576811683.25628.1044913172599111860@emeril.freedesktop.org>
 References: <20200401182703.2027240-1-chris@chris-wilson.co.uk>
 In-Reply-To: <20200401182703.2027240-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_i?=
- =?utf-8?q?915/gem=5Fexec=5Falignment=3A_Exercise_potential_priority_inver?=
- =?utf-8?q?sion?=
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
+ =?utf-8?q?em=5Fexec=5Falignment=3A_Exercise_potential_priority_inversion?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,34 +27,79 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Series: i915/gem_exec_alignment: Exercise potential priority inversion
 URL   : https://patchwork.freedesktop.org/series/75379/
-State : failure
+State : success
 
 == Summary ==
 
-ERROR! This series introduces new undocumented tests:
+CI Bug Log - changes from IGT_5555 -> IGTPW_4394
+====================================================
 
-gem_exec_alignment@pi
+Summary
+-------
 
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
+  **SUCCESS**
 
-[Documentation] has more details on how to do this.
+  No regressions found.
 
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4394/index.html
 
-Thanks in advance!
+Known issues
+------------
 
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+  Here are the changes found in IGTPW_4394 that come from known issues:
 
-Other than that, pipeline status: SUCCESS.
+### IGT changes ###
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/127368 for the overview.
+#### Warnings ####
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-kbl-x1275:       [DMESG-WARN][1] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][2] ([i915#62] / [i915#92]) +4 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5555/fi-kbl-x1275/igt@gem_exec_suspend@basic-s0.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4394/fi-kbl-x1275/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-x1275:       [SKIP][3] ([fdo#109271]) -> [DMESG-FAIL][4] ([i915#62])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5555/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4394/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_force_connector_basic@force-edid:
+    - fi-kbl-x1275:       [DMESG-WARN][5] ([i915#62] / [i915#92]) -> [DMESG-WARN][6] ([i915#62] / [i915#92] / [i915#95]) +4 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5555/fi-kbl-x1275/igt@kms_force_connector_basic@force-edid.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4394/fi-kbl-x1275/igt@kms_force_connector_basic@force-edid.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
+  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+
+
+Participating hosts (50 -> 43)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5555 -> IGTPW_4394
+
+  CI-20190529: 20190529
+  CI_DRM_8233: 0862243a5514a9da625520bd4f554f8348077594 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4394: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4394/index.html
+  IGT_5555: 0737422b13d9676ec856cc5b96a4bb30330c42ff @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@gem_exec_alignment@pi
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/127368
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4394/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
