@@ -1,12 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Thu,  2 Apr 2020 15:00:57 +0100
+Message-Id: <20200402140057.330937-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 01 Apr 2020 19:08:36 -0000
-Message-ID: <158576811683.25628.1044913172599111860@emeril.freedesktop.org>
-References: <20200401182703.2027240-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200401182703.2027240-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fexec=5Falignment=3A_Exercise_potential_priority_inversion?=
+Subject: [igt-dev] [PATCH i-g-t] i915/perf_pmu: Exercise mixing perf reads
+ into i915 mmaps
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,92 +12,84 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Feed a fresh i915 mmap into a read(perf_fd) to teach lockdep about the
+potential lock chains should we take a pagefault into our vm_fault
+handlers from within perf.
 
-Series: i915/gem_exec_alignment: Exercise potential priority inversion
-URL   : https://patchwork.freedesktop.org/series/75379/
-State : success
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+---
+ tests/perf_pmu.c | 39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-== Summary ==
+diff --git a/tests/perf_pmu.c b/tests/perf_pmu.c
+index 259670f4b..1d6681d80 100644
+--- a/tests/perf_pmu.c
++++ b/tests/perf_pmu.c
+@@ -1827,6 +1827,35 @@ accuracy(int gem_fd, const struct intel_execution_engine2 *e,
+ 	assert_within(100.0 * busy_r, 100.0 * expected, 2);
+ }
+ 
++static void *create_mmap(int gem_fd, const struct mmap_offset *t, int sz)
++{
++	uint32_t handle;
++	void *ptr;
++
++	handle = gem_create(gem_fd, sz);
++	ptr = __gem_mmap_offset(gem_fd, handle, 0, sz, PROT_WRITE, t->type);
++	gem_close(gem_fd, handle);
++
++	return ptr;
++}
++
++static void
++faulting_read(int gem_fd, const struct mmap_offset *t)
++{
++	void *ptr;
++	int fd;
++
++	ptr = create_mmap(gem_fd, t, 4096);
++	igt_require(ptr != NULL);
++
++	fd = open_pmu(gem_fd, I915_PMU_ENGINE_BUSY(0, 0));
++	igt_require(fd != -1);
++	igt_assert_eq(read(fd, ptr, 4096), 2 * sizeof(uint64_t));
++	close(fd);
++
++	munmap(ptr, 4096);
++}
++
+ #define test_each_engine(T, i915, e) \
+ 	igt_subtest_with_dynamic(T) __for_each_physical_engine(i915, e) \
+ 		igt_dynamic_f("%s", e->name)
+@@ -1860,6 +1889,16 @@ igt_main
+ 	igt_subtest("invalid-init")
+ 		invalid_init(fd);
+ 
++	igt_subtest_with_dynamic("faulting-read") {
++		for_each_mmap_offset_type(fd, t) {
++			if (!gem_has_mmap_offset_type(fd, t))
++				continue;
++
++			igt_dynamic_f("%s", t->name)
++				faulting_read(fd, t);
++		}
++	}
++
+ 	/**
+ 	 * Test that a single engine metric can be initialized or it
+ 	 * is correctly rejected.
+-- 
+2.26.0
 
-CI Bug Log - changes from IGT_5555 -> IGTPW_4394
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4394/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4394 that come from known issues:
-
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@gem_exec_suspend@basic-s0:
-    - fi-kbl-x1275:       [DMESG-WARN][1] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][2] ([i915#62] / [i915#92]) +4 similar issues
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5555/fi-kbl-x1275/igt@gem_exec_suspend@basic-s0.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4394/fi-kbl-x1275/igt@gem_exec_suspend@basic-s0.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-x1275:       [SKIP][3] ([fdo#109271]) -> [DMESG-FAIL][4] ([i915#62])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5555/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4394/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-
-  * igt@kms_force_connector_basic@force-edid:
-    - fi-kbl-x1275:       [DMESG-WARN][5] ([i915#62] / [i915#92]) -> [DMESG-WARN][6] ([i915#62] / [i915#92] / [i915#95]) +4 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5555/fi-kbl-x1275/igt@kms_force_connector_basic@force-edid.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4394/fi-kbl-x1275/igt@kms_force_connector_basic@force-edid.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
-  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
-  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
-
-
-Participating hosts (50 -> 43)
-------------------------------
-
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5555 -> IGTPW_4394
-
-  CI-20190529: 20190529
-  CI_DRM_8233: 0862243a5514a9da625520bd4f554f8348077594 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4394: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4394/index.html
-  IGT_5555: 0737422b13d9676ec856cc5b96a4bb30330c42ff @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@gem_exec_alignment@pi
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4394/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
