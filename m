@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E28AD6EACD
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Apr 2020 17:23:15 +0000 (UTC)
+Date: Thu, 2 Apr 2020 19:23:13 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20200402172313.GA17522@zkempczy-mobl2>
+References: <20200320153623.4780-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 02 Apr 2020 17:04:05 -0000
-Message-ID: <158584704599.24294.2858814867362526508@emeril.freedesktop.org>
-References: <20200402122943.6583-1-imre.deak@intel.com>
-In-Reply-To: <20200402122943.6583-1-imre.deak@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fflip=3A_Skip_detiler_fences_subtest_on_platforms_w/o_aper?=
- =?utf-8?q?ture?=
+Content-Disposition: inline
+In-Reply-To: <20200320153623.4780-1-janusz.krzysztofik@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib: Fix device lists not cleaned up
+ sufficiently before rescan
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,84 +18,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Imre Deak <imre.deak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: tests/kms_flip: Skip detiler fences subtest on platforms w/o aperture
-URL   : https://patchwork.freedesktop.org/series/75416/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_5559 -> IGTPW_4398
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4398/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4398 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-cfl-8109u:       [INCOMPLETE][1] ([i915#656]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5559/fi-cfl-8109u/igt@i915_selftest@live@execlists.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4398/fi-cfl-8109u/igt@i915_selftest@live@execlists.html
-    - fi-bxt-dsi:         [INCOMPLETE][3] ([i915#656]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5559/fi-bxt-dsi/igt@i915_selftest@live@execlists.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4398/fi-bxt-dsi/igt@i915_selftest@live@execlists.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - fi-bsw-n3050:       [FAIL][5] ([i915#34]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5559/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4398/fi-bsw-n3050/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  
-  [i915#34]: https://gitlab.freedesktop.org/drm/intel/issues/34
-  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
-
-
-Participating hosts (48 -> 44)
-------------------------------
-
-  Additional (1): fi-kbl-7560u 
-  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5559 -> IGTPW_4398
-
-  CI-20190529: 20190529
-  CI_DRM_8238: 840f70602a47208a2f1e444ba276f412f10e38df @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4398: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4398/index.html
-  IGT_5559: d213e0c268e4bf2b619197b6125730b1affbf8d4 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4398/index.html
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gRnJpLCBNYXIgMjAsIDIwMjAgYXQgMDQ6MzY6MjNQTSArMDEwMCwgSmFudXN6IEtyenlzenRv
+ZmlrIHdyb3RlOgo+IFNvbWUgZWZmb3J0IGlzIGFscmVhZHkgdGFrZW4gdG8gY2xlYW4gdXAgcHJl
+dmlvdXMgY29udGVudCBvZiBkZXZpY2UKPiBsaXN0cyBiZWZvcmUgZm9yY2VkIGRldmljZSByZXNj
+YW4gaXMgcGVyZm9ybWVkIGJ1dCBpdCBpcyBub3QKPiBzdWZmaWNpZW50LiAgQW4gYXR0ZW1wdCB0
+byB1c2UgZm9yY2VkIGRldmljZSByZXNjYW4gaW4gYSB0ZXN0IHJlc3VsdHMKPiBpbiB0aGF0IHRl
+c3QgY3Jhc2hpbmcgb3Igc3Bpbm5pbmcgdW50aWwgYmVpbmcga2lsbGVkIGJ5IE9PTSBraWxsZXIu
+Cj4gRml4IGl0Lgo+IAo+IFNpZ25lZC1vZmYtYnk6IEphbnVzeiBLcnp5c3p0b2ZpayA8amFudXN6
+LmtyenlzenRvZmlrQGxpbnV4LmludGVsLmNvbT4KPiAtLS0KPiAgbGliL2lndF9kZXZpY2Vfc2Nh
+bi5jIHwgMTYgKysrKysrKysrKy0tLS0tLQo+ICAxIGZpbGUgY2hhbmdlZCwgMTAgaW5zZXJ0aW9u
+cygrKSwgNiBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9kZXZpY2Vfc2Nh
+bi5jIGIvbGliL2lndF9kZXZpY2Vfc2Nhbi5jCj4gaW5kZXggYjNmNzljODFlLi5kYjRkYTMwZDMg
+MTAwNjQ0Cj4gLS0tIGEvbGliL2lndF9kZXZpY2Vfc2Nhbi5jCj4gKysrIGIvbGliL2lndF9kZXZp
+Y2Vfc2Nhbi5jCj4gQEAgLTM1MywxNCArMzUzLDExIEBAIHN0YXRpYyB2b2lkIHNldF92ZW5kb3Jf
+ZGV2aWNlKHN0cnVjdCBpZ3RfZGV2aWNlICpkZXYpCj4gIAlkZXYtPmRldmljZSA9IHN0cm5kdXAo
+cGNpX2lkICsgNSwgNCk7Cj4gIH0KPiAgCj4gLS8qIEFsbG9jYXRlIGFycmF5cyBmb3Iga2VlcGlu
+ZyBzY2FubmVkIGRldmljZXMgKi8KPiArLyogSW5pdGlhbGl6ZSBsaXN0cyBmb3Iga2VlcGluZyBz
+Y2FubmVkIGRldmljZXMgKi8KPiAgc3RhdGljIGJvb2wgcHJlcGFyZV9zY2FuKHZvaWQpCj4gIHsK
+PiAtCWlmIChpZ3RfZGV2cy5hbGwucHJldiA9PSBOVUxMIHx8IGlndF9kZXZzLmFsbC5uZXh0ID09
+IE5VTEwpCj4gLQkJSUdUX0lOSVRfTElTVF9IRUFEKCZpZ3RfZGV2cy5hbGwpOwo+IC0KPiAtCWlm
+IChpZ3RfZGV2cy5maWx0ZXJlZC5wcmV2ID09IE5VTEwgfHwgaWd0X2RldnMuZmlsdGVyZWQubmV4
+dCA9PSBOVUxMKQo+IC0JCUlHVF9JTklUX0xJU1RfSEVBRCgmaWd0X2RldnMuZmlsdGVyZWQpOwo+
+ICsJSUdUX0lOSVRfTElTVF9IRUFEKCZpZ3RfZGV2cy5hbGwpOwo+ICsJSUdUX0lOSVRfTElTVF9I
+RUFEKCZpZ3RfZGV2cy5maWx0ZXJlZCk7CgpJIHRoaW5rIGFib3ZlIGNoYW5nZSBhY2NvcmRpbmcg
+dG8gdGhlIGNoYW5nZSBiZWxvdyBpcyBub3QgcmVxdWlyZWQuIAoKPiAgCj4gIAlyZXR1cm4gdHJ1
+ZTsKPiAgfQo+IEBAIC01OTUsOCArNTkyLDE1IEBAIHZvaWQgaWd0X2RldmljZXNfc2Nhbihib29s
+IGZvcmNlKQo+ICB7Cj4gIAlpZiAoZm9yY2UgJiYgaWd0X2RldnMuZGV2c19zY2FubmVkKSB7Cj4g
+IAkJc3RydWN0IGlndF9kZXZpY2UgKmRldiwgKnRtcDsKPiArCj4gKwkJaWd0X2xpc3RfZm9yX2Vh
+Y2hfZW50cnlfc2FmZShkZXYsIHRtcCwgJmlndF9kZXZzLmZpbHRlcmVkLAo+ICsJCQkJCSAgICAg
+bGluaykgewo+ICsJCQlpZ3RfbGlzdF9kZWwoJmRldi0+bGluayk7Cj4gKwkJCWZyZWUoZGV2KTsK
+PiArCQl9Cj4gIAkJaWd0X2xpc3RfZm9yX2VhY2hfZW50cnlfc2FmZShkZXYsIHRtcCwgJmlndF9k
+ZXZzLmFsbCwgbGluaykgewo+ICAJCQlpZ3RfZGV2aWNlX2ZyZWUoZGV2KTsKPiArCQkJaWd0X2xp
+c3RfZGVsKCZkZXYtPmxpbmspOwo+ICAJCQlmcmVlKGRldik7Cj4gIAkJfQo+ICAKPiAtLSAKPiAy
+LjIxLjEKPgoKWWVzLCB0aGF0IHBhcnQgaXMgd2hhdCB3ZSBuZWVkIHRvIGZpeCB0aGUgbGVhay4g
+CgpSZXZpZXdlZC1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNr
+aUBpbnRlbC5jb20+IApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
+dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
