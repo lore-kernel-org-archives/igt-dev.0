@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F1BB6E141
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Apr 2020 18:32:25 +0000 (UTC)
-Date: Thu, 2 Apr 2020 20:31:40 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20200402183140.GA18573@zkempczy-mobl2>
-References: <20200320153623.4780-1-janusz.krzysztofik@linux.intel.com>
- <20200402172313.GA17522@zkempczy-mobl2>
- <0e6d89a14d7a2b87bc888297ef83c5e43a748039.camel@linux.intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <0e6d89a14d7a2b87bc888297ef83c5e43a748039.camel@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib: Fix device lists not cleaned up
- sufficiently before rescan
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 02 Apr 2020 19:51:26 -0000
+Message-ID: <158585708609.24294.12053974356330389803@emeril.freedesktop.org>
+References: <20200402140057.330937-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200402140057.330937-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBpOTE1?=
+ =?utf-8?q?/perf=5Fpmu=3A_Exercise_mixing_perf_reads_into_i915_mmaps?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,63 +14,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBBcHIgMDIsIDIwMjAgYXQgMDg6MTI6MTVQTSArMDIwMCwgSmFudXN6IEtyenlzenRv
-ZmlrIHdyb3RlOgo+IEhpIFpieXN6ZWssCj4gCj4gVGhhbmtzIGZvciByZXZpZXcuCj4gCj4gT24g
-VGh1LCAyMDIwLTA0LTAyIGF0IDE5OjIzICswMjAwLCBaYmlnbmlldyBLZW1wY3p5xYRza2kgd3Jv
-dGU6Cj4gPiBPbiBGcmksIE1hciAyMCwgMjAyMCBhdCAwNDozNjoyM1BNICswMTAwLCBKYW51c3og
-S3J6eXN6dG9maWsgd3JvdGU6Cj4gPiA+IFNvbWUgZWZmb3J0IGlzIGFscmVhZHkgdGFrZW4gdG8g
-Y2xlYW4gdXAgcHJldmlvdXMgY29udGVudCBvZiBkZXZpY2UKPiA+ID4gbGlzdHMgYmVmb3JlIGZv
-cmNlZCBkZXZpY2UgcmVzY2FuIGlzIHBlcmZvcm1lZCBidXQgaXQgaXMgbm90Cj4gPiA+IHN1ZmZp
-Y2llbnQuICBBbiBhdHRlbXB0IHRvIHVzZSBmb3JjZWQgZGV2aWNlIHJlc2NhbiBpbiBhIHRlc3Qg
-cmVzdWx0cwo+ID4gPiBpbiB0aGF0IHRlc3QgY3Jhc2hpbmcgb3Igc3Bpbm5pbmcgdW50aWwgYmVp
-bmcga2lsbGVkIGJ5IE9PTSBraWxsZXIuCj4gPiA+IEZpeCBpdC4KPiA+ID4gCj4gPiA+IFNpZ25l
-ZC1vZmYtYnk6IEphbnVzeiBLcnp5c3p0b2ZpayA8amFudXN6LmtyenlzenRvZmlrQGxpbnV4Lmlu
-dGVsLmNvbT4KPiA+ID4gLS0tCj4gPiA+ICBsaWIvaWd0X2RldmljZV9zY2FuLmMgfCAxNiArKysr
-KysrKysrLS0tLS0tCj4gPiA+ICAxIGZpbGUgY2hhbmdlZCwgMTAgaW5zZXJ0aW9ucygrKSwgNiBk
-ZWxldGlvbnMoLSkKPiA+ID4gCj4gPiA+IGRpZmYgLS1naXQgYS9saWIvaWd0X2RldmljZV9zY2Fu
-LmMgYi9saWIvaWd0X2RldmljZV9zY2FuLmMKPiA+ID4gaW5kZXggYjNmNzljODFlLi5kYjRkYTMw
-ZDMgMTAwNjQ0Cj4gPiA+IC0tLSBhL2xpYi9pZ3RfZGV2aWNlX3NjYW4uYwo+ID4gPiArKysgYi9s
-aWIvaWd0X2RldmljZV9zY2FuLmMKPiA+ID4gQEAgLTM1MywxNCArMzUzLDExIEBAIHN0YXRpYyB2
-b2lkIHNldF92ZW5kb3JfZGV2aWNlKHN0cnVjdCBpZ3RfZGV2aWNlICpkZXYpCj4gPiA+ICAJZGV2
-LT5kZXZpY2UgPSBzdHJuZHVwKHBjaV9pZCArIDUsIDQpOwo+ID4gPiAgfQo+ID4gPiAgCj4gPiA+
-IC0vKiBBbGxvY2F0ZSBhcnJheXMgZm9yIGtlZXBpbmcgc2Nhbm5lZCBkZXZpY2VzICovCj4gPiA+
-ICsvKiBJbml0aWFsaXplIGxpc3RzIGZvciBrZWVwaW5nIHNjYW5uZWQgZGV2aWNlcyAqLwo+ID4g
-PiAgc3RhdGljIGJvb2wgcHJlcGFyZV9zY2FuKHZvaWQpCj4gPiA+ICB7Cj4gPiA+IC0JaWYgKGln
-dF9kZXZzLmFsbC5wcmV2ID09IE5VTEwgfHwgaWd0X2RldnMuYWxsLm5leHQgPT0gTlVMTCkKPiA+
-ID4gLQkJSUdUX0lOSVRfTElTVF9IRUFEKCZpZ3RfZGV2cy5hbGwpOwo+ID4gPiAtCj4gPiA+IC0J
-aWYgKGlndF9kZXZzLmZpbHRlcmVkLnByZXYgPT0gTlVMTCB8fCBpZ3RfZGV2cy5maWx0ZXJlZC5u
-ZXh0ID09IE5VTEwpCj4gPiA+IC0JCUlHVF9JTklUX0xJU1RfSEVBRCgmaWd0X2RldnMuZmlsdGVy
-ZWQpOwo+ID4gPiArCUlHVF9JTklUX0xJU1RfSEVBRCgmaWd0X2RldnMuYWxsKTsKPiA+ID4gKwlJ
-R1RfSU5JVF9MSVNUX0hFQUQoJmlndF9kZXZzLmZpbHRlcmVkKTsKPiA+IAo+ID4gSSB0aGluayBh
-Ym92ZSBjaGFuZ2UgYWNjb3JkaW5nIHRvIHRoZSBjaGFuZ2UgYmVsb3cgaXMgbm90IHJlcXVpcmVk
-LiAKPiAKPiBJbmRlZWQsIGJ1dCBJIGNhbiBzZWUgbm8gdXNlIGNhc2UgZm9yIGNvbmRpdGlvbmFs
-IGluaXRpYWxpc2F0aW9uIG9mIHRoZQo+IGxpc3RzLgo+IAo+ID4gCj4gPiA+ICAKPiA+ID4gIAly
-ZXR1cm4gdHJ1ZTsKPiA+ID4gIH0KPiA+ID4gQEAgLTU5NSw4ICs1OTIsMTUgQEAgdm9pZCBpZ3Rf
-ZGV2aWNlc19zY2FuKGJvb2wgZm9yY2UpCj4gPiA+ICB7Cj4gPiA+ICAJaWYgKGZvcmNlICYmIGln
-dF9kZXZzLmRldnNfc2Nhbm5lZCkgewo+ID4gPiAgCQlzdHJ1Y3QgaWd0X2RldmljZSAqZGV2LCAq
-dG1wOwo+ID4gPiArCj4gPiA+ICsJCWlndF9saXN0X2Zvcl9lYWNoX2VudHJ5X3NhZmUoZGV2LCB0
-bXAsICZpZ3RfZGV2cy5maWx0ZXJlZCwKPiA+ID4gKwkJCQkJICAgICBsaW5rKSB7Cj4gPiA+ICsJ
-CQlpZ3RfbGlzdF9kZWwoJmRldi0+bGluayk7Cj4gPiA+ICsJCQlmcmVlKGRldik7Cj4gPiA+ICsJ
-CX0KPiA+ID4gIAkJaWd0X2xpc3RfZm9yX2VhY2hfZW50cnlfc2FmZShkZXYsIHRtcCwgJmlndF9k
-ZXZzLmFsbCwgbGluaykgewo+ID4gPiAgCQkJaWd0X2RldmljZV9mcmVlKGRldik7Cj4gPiA+ICsJ
-CQlpZ3RfbGlzdF9kZWwoJmRldi0+bGluayk7Cj4gCj4gTG9va2luZyBhdCBpdCBhZ2FpbiwgSSB0
-aGluayB3ZSBzaG91bGQgYmV0dGVyIG1vdmUgZGVsZXRpb24gb2YgdGhlCj4gZGV2aWNlIGZyb20g
-dGhlIGxpc3QgdXAgb25lIGxpbmUgc28gd2UgYXJlIHN0aWxsIG1vcmUgc2FmZSBmcm9tIHVzZQo+
-IGFmdGVyIGZyZWUuICBQbGVhc2UgY29uZmlybSB5b3VyIFItYiBzdGlsbCBhcHBsaWVzIGluIHRo
-YXQgY2FzZS4KPiAKPiBUaGFua3MsCj4gSmFudXN6CgpZZXMsIHlvdSdyZSByaWdodCwgYmV0dGVy
-IGlzIHRvIGZyZWUgdGhlIGRldmljZSBvbmUgbGluZSBhZnRlciA6KQoKWWVzLCB5b3Ugc3RpbGwg
-Z290IG15IFItQi4KCi0tClpiaWduaWV3Cgo+IAo+IAo+ID4gPiAgCQkJZnJlZShkZXYpOwo+ID4g
-PiAgCQl9Cj4gPiA+ICAKPiA+ID4gLS0gCj4gPiA+IDIuMjEuMQo+ID4gPiAKPiA+IAo+ID4gWWVz
-LCB0aGF0IHBhcnQgaXMgd2hhdCB3ZSBuZWVkIHRvIGZpeCB0aGUgbGVhay4gCj4gPiAKPiA+IFJl
-dmlld2VkLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGlu
-dGVsLmNvbT4gCj4gCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0
-dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+== Series Details ==
+
+Series: i915/perf_pmu: Exercise mixing perf reads into i915 mmaps
+URL   : https://patchwork.freedesktop.org/series/75421/
+State : failure
+
+== Summary ==
+
+Applying: i915/perf_pmu: Exercise mixing perf reads into i915 mmaps
+Using index info to reconstruct a base tree...
+M	tests/perf_pmu.c
+Falling back to patching base and 3-way merge...
+Auto-merging tests/perf_pmu.c
+CONFLICT (content): Merge conflict in tests/perf_pmu.c
+Patch failed at 0001 i915/perf_pmu: Exercise mixing perf reads into i915 mmaps
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
