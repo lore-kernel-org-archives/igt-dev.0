@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9C27D6EA41
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Apr 2020 10:26:30 +0000 (UTC)
-Date: Thu, 2 Apr 2020 08:58:41 +0530
-From: Kunal Joshi <kunal1.joshi@intel.com>
-Message-ID: <20200402032841.GA13798@intel.com>
-References: <20200331123857.1212432-1-arkadiusz.hiler@intel.com>
- <20200331123857.1212432-4-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200331123857.1212432-4-arkadiusz.hiler@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] tests/kms_chamelium: Issue
- disabling modeset when resetting state
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 02 Apr 2020 10:31:50 -0000
+Message-ID: <158582351044.24295.4971134816324417139@emeril.freedesktop.org>
+References: <20200402081558.389129-1-lionel.g.landwerlin@intel.com>
+In-Reply-To: <20200402081558.389129-1-lionel.g.landwerlin@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2k5?=
+ =?utf-8?q?15/perf=3A_update_TGL_configs?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,50 +14,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>, imre.deak@intel.com, igt-dev@lists.freedesktop.org
+To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-03-31 at 15:38:56 +0300, Arkadiusz Hiler wrote:
-> Each tests resets the state to be sure it starts with a clean slate.
-> Let's add disabling modeset to the pile, to be sure that we get the
-> hotplug events and the connector state is correct.
-> 
-> Cc: Kunal Joshi <kunal1.joshi@intel.com>
-> Cc: Imre Deak <imre.deak@intel.com>
-> Issue: https://gitlab.freedesktop.org/drm/intel/issues/323
-> Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> ---
->  tests/kms_chamelium.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
-> index 08abd961..236e1010 100644
-> --- a/tests/kms_chamelium.c
-> +++ b/tests/kms_chamelium.c
-> @@ -273,7 +273,14 @@ check_analog_bridge(data_t *data, struct chamelium_port *port)
->  static void
->  reset_state(data_t *data, struct chamelium_port *port)
->  {
-> -	int p;
-> +	int p, i;
-> +
-> +	for (i = 0; i < data->display.n_outputs; i++) {
-> +		igt_output_t *output = &data->display.outputs[i];
-> +		igt_output_set_pipe(output, PIPE_NONE);
-> +	}
-> +
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
->  
->  	chamelium_reset(data->chamelium);
->  
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
-> -- 
-> 2.24.1
-> 
+== Series Details ==
+
+Series: lib/i915/perf: update TGL configs
+URL   : https://patchwork.freedesktop.org/series/75403/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_5558 -> IGTPW_4395
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4395/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4395 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@requests:
+    - fi-icl-u2:          [PASS][1] -> [INCOMPLETE][2] ([i915#1505] / [i915#1581])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5558/fi-icl-u2/igt@i915_selftest@live@requests.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4395/fi-icl-u2/igt@i915_selftest@live@requests.html
+
+  
+#### Warnings ####
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - fi-kbl-x1275:       [DMESG-WARN][3] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][4] ([i915#62] / [i915#92]) +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5558/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-modeset.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4395/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-modeset.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - fi-kbl-x1275:       [DMESG-WARN][5] ([i915#62] / [i915#92]) -> [DMESG-WARN][6] ([i915#62] / [i915#92] / [i915#95]) +6 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5558/fi-kbl-x1275/igt@kms_force_connector_basic@force-connector-state.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4395/fi-kbl-x1275/igt@kms_force_connector_basic@force-connector-state.html
+
+  
+  [i915#1505]: https://gitlab.freedesktop.org/drm/intel/issues/1505
+  [i915#1581]: https://gitlab.freedesktop.org/drm/intel/issues/1581
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
+  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+
+
+Participating hosts (51 -> 41)
+------------------------------
+
+  Missing    (10): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ivb-3770 fi-pnv-d510 fi-kbl-7560u fi-byt-clapper fi-bsw-nick fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5558 -> IGTPW_4395
+
+  CI-20190529: 20190529
+  CI_DRM_8236: 698ce59acca37b93bfcdee6899504be3eb113097 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4395: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4395/index.html
+  IGT_5558: 3b55a816300d80bc5e0b995cd41ee8c8649a1ea2 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4395/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
