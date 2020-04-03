@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0814C6E114
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Apr 2020 12:34:53 +0000 (UTC)
-Date: Fri, 3 Apr 2020 15:34:44 +0300
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F1186E10A
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Apr 2020 12:42:15 +0000 (UTC)
 From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20200403123444.GD13110@ideak-desk.fi.intel.com>
+Date: Fri,  3 Apr 2020 15:42:08 +0300
+Message-Id: <20200403124208.14234-1-imre.deak@intel.com>
+In-Reply-To: <20200402122943.6583-1-imre.deak@intel.com>
 References: <20200402122943.6583-1-imre.deak@intel.com>
- <ea1f8e6fc6056256f46d9cf1f0beb0b0bb3d53dc.camel@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <ea1f8e6fc6056256f46d9cf1f0beb0b0bb3d53dc.camel@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_flip: Skip detiler fences
- subtest on platforms w/o aperture
+Subject: [igt-dev] [PATCH v2] tests/kms_flip: Skip detiler fences subtest on
+ platforms w/o aperture
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,63 +17,38 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: imre.deak@intel.com
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Souza, Jose" <jose.souza@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Apr 02, 2020 at 11:21:08PM +0300, Souza, Jose wrote:
-> On Thu, 2020-04-02 at 15:29 +0300, Imre Deak wrote:
-> > On platforms w/o an aperture subtests using fences are not relevant,
-> > so
-> > skip them. This also fixes a use-after-free error happening as a
-> > side-effect of running the test on such platforms.
-> > 
-> > Signed-off-by: Imre Deak <imre.deak@intel.com>
-> > ---
-> >  tests/kms_flip.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-> > index 9ce83c53d..506c9c142 100755
-> > --- a/tests/kms_flip.c
-> > +++ b/tests/kms_flip.c
-> > @@ -216,6 +216,7 @@ static void emit_fence_stress(struct test_output
-> > *o)
-> >  
-> >  	igt_require(bufmgr);
-> >  
-> > +	igt_assert(num_fences);
-> >  	bo = calloc(sizeof(*bo), num_fences);
-> >  	exec = calloc(sizeof(*exec), num_fences+1);
-> >  	for (i = 0; i < num_fences - 1; i++) {
-> > @@ -1234,8 +1235,10 @@ static void run_test_on_crtc_set(struct
-> > test_output *o, int *crtc_idxs,
-> >  		o->fb_width *= 2;
-> >  
-> >  	tiling = LOCAL_DRM_FORMAT_MOD_NONE;
-> > -	if (o->flags & TEST_FENCE_STRESS)
-> > +	if (o->flags & TEST_FENCE_STRESS) {
-> > +		igt_require(gem_available_fences(drm_fd));
-> 
-> Would be better to skip on the begining of run_test() so less CI time
-> is wasted in those tests, right after:
-> igt_require((flags & TEST_HANG) == 0 || !is_wedged(drm_fd));
-
-run_pair() needs the same test then, but ok I can move the check
-earlier.
-
-> 
-> >  		tiling = LOCAL_I915_FORMAT_MOD_X_TILED;
-> > +	}
-> >  
-> >  	/* 256 MB is usually the maximum mappable aperture,
-> >  	 * (make it 4x times that to ensure failure) */
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gcGxhdGZvcm1zIHcvbyBhbiBhcGVydHVyZSBzdWJ0ZXN0cyB1c2luZyBmZW5jZXMgYXJlIG5v
+dCByZWxldmFudCwgc28Kc2tpcCB0aGVtLiBUaGlzIGFsc28gZml4ZXMgYSB1c2UtYWZ0ZXItZnJl
+ZSBlcnJvciBoYXBwZW5pbmcgYXMgYQpzaWRlLWVmZmVjdCBvZiBydW5uaW5nIHRoZSB0ZXN0IG9u
+IHN1Y2ggcGxhdGZvcm1zLgoKdjI6IENhbGwgaWd0X3JlcXVpcmUoKSBlYXJsaWVyIHRvIHNwZWVk
+IHVwIHJ1bnRpbWUuIChKb3PDqSkKCkNjOiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3NlLnNv
+dXphQGludGVsLmNvbT4KU2lnbmVkLW9mZi1ieTogSW1yZSBEZWFrIDxpbXJlLmRlYWtAaW50ZWwu
+Y29tPgotLS0KIHRlc3RzL2ttc19mbGlwLmMgfCA1ICsrKysrCiAxIGZpbGUgY2hhbmdlZCwgNSBp
+bnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2ZsaXAuYyBiL3Rlc3RzL2ttc19m
+bGlwLmMKaW5kZXggOWNlODNjNTNkLi4yNTRmZWYzYWUgMTAwNzU1Ci0tLSBhL3Rlc3RzL2ttc19m
+bGlwLmMKKysrIGIvdGVzdHMva21zX2ZsaXAuYwpAQCAtMjE2LDYgKzIxNiw3IEBAIHN0YXRpYyB2
+b2lkIGVtaXRfZmVuY2Vfc3RyZXNzKHN0cnVjdCB0ZXN0X291dHB1dCAqbykKIAogCWlndF9yZXF1
+aXJlKGJ1Zm1ncik7CiAKKwlpZ3RfYXNzZXJ0KG51bV9mZW5jZXMpOwogCWJvID0gY2FsbG9jKHNp
+emVvZigqYm8pLCBudW1fZmVuY2VzKTsKIAlleGVjID0gY2FsbG9jKHNpemVvZigqZXhlYyksIG51
+bV9mZW5jZXMrMSk7CiAJZm9yIChpID0gMDsgaSA8IG51bV9mZW5jZXMgLSAxOyBpKyspIHsKQEAg
+LTEzMzksNiArMTM0MCw4IEBAIHN0YXRpYyBpbnQgcnVuX3Rlc3QoaW50IGR1cmF0aW9uLCBpbnQg
+ZmxhZ3MpCiAJaW50IGksIG4sIG1vZGVzID0gMDsKIAogCWlndF9yZXF1aXJlKChmbGFncyAmIFRF
+U1RfSEFORykgPT0gMCB8fCAhaXNfd2VkZ2VkKGRybV9mZCkpOworCWlndF9yZXF1aXJlKChmbGFn
+cyAmIFRFU1RfRkVOQ0VfU1RSRVNTKSAmJgorCQkgICAgZ2VtX2F2YWlsYWJsZV9mZW5jZXMoZHJt
+X2ZkKSk7CiAKIAlyZXNvdXJjZXMgPSBkcm1Nb2RlR2V0UmVzb3VyY2VzKGRybV9mZCk7CiAJaWd0
+X3JlcXVpcmUocmVzb3VyY2VzKTsKQEAgLTEzOTYsNiArMTM5OSw4IEBAIHN0YXRpYyBpbnQgcnVu
+X3BhaXIoaW50IGR1cmF0aW9uLCBpbnQgZmxhZ3MpCiAJaW50IGksIGosIG0sIG4sIG1vZGVzID0g
+MDsKIAogCWlndF9yZXF1aXJlKChmbGFncyAmIFRFU1RfSEFORykgPT0gMCB8fCAhaXNfd2VkZ2Vk
+KGRybV9mZCkpOworCWlndF9yZXF1aXJlKChmbGFncyAmIFRFU1RfRkVOQ0VfU1RSRVNTKSAmJgor
+CQkgICAgZ2VtX2F2YWlsYWJsZV9mZW5jZXMoZHJtX2ZkKSk7CiAKIAlyZXNvdXJjZXMgPSBkcm1N
+b2RlR2V0UmVzb3VyY2VzKGRybV9mZCk7CiAJaWd0X3JlcXVpcmUocmVzb3VyY2VzKTsKLS0gCjIu
+MjMuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0
+LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
+aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
