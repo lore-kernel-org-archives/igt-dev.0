@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F1186E10A
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Apr 2020 12:42:15 +0000 (UTC)
-From: Imre Deak <imre.deak@intel.com>
-Date: Fri,  3 Apr 2020 15:42:08 +0300
-Message-Id: <20200403124208.14234-1-imre.deak@intel.com>
-In-Reply-To: <20200402122943.6583-1-imre.deak@intel.com>
-References: <20200402122943.6583-1-imre.deak@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC6F36EB82
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Apr 2020 13:04:11 +0000 (UTC)
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Date: Fri, 3 Apr 2020 16:03:03 +0300
+Message-ID: <20200403130306.1272436-3-arkadiusz.hiler@intel.com>
+In-Reply-To: <20200403130306.1272436-1-arkadiusz.hiler@intel.com>
+References: <20200403130306.1272436-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v2] tests/kms_flip: Skip detiler fences subtest on
- platforms w/o aperture
+Subject: [igt-dev] [PATCH i-g-t 3/6] lib/kms: Commit reasonable defaults on
+ display init
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,38 +17,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gcGxhdGZvcm1zIHcvbyBhbiBhcGVydHVyZSBzdWJ0ZXN0cyB1c2luZyBmZW5jZXMgYXJlIG5v
-dCByZWxldmFudCwgc28Kc2tpcCB0aGVtLiBUaGlzIGFsc28gZml4ZXMgYSB1c2UtYWZ0ZXItZnJl
-ZSBlcnJvciBoYXBwZW5pbmcgYXMgYQpzaWRlLWVmZmVjdCBvZiBydW5uaW5nIHRoZSB0ZXN0IG9u
-IHN1Y2ggcGxhdGZvcm1zLgoKdjI6IENhbGwgaWd0X3JlcXVpcmUoKSBlYXJsaWVyIHRvIHNwZWVk
-IHVwIHJ1bnRpbWUuIChKb3PDqSkKCkNjOiBKb3PDqSBSb2JlcnRvIGRlIFNvdXphIDxqb3NlLnNv
-dXphQGludGVsLmNvbT4KU2lnbmVkLW9mZi1ieTogSW1yZSBEZWFrIDxpbXJlLmRlYWtAaW50ZWwu
-Y29tPgotLS0KIHRlc3RzL2ttc19mbGlwLmMgfCA1ICsrKysrCiAxIGZpbGUgY2hhbmdlZCwgNSBp
-bnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2ZsaXAuYyBiL3Rlc3RzL2ttc19m
-bGlwLmMKaW5kZXggOWNlODNjNTNkLi4yNTRmZWYzYWUgMTAwNzU1Ci0tLSBhL3Rlc3RzL2ttc19m
-bGlwLmMKKysrIGIvdGVzdHMva21zX2ZsaXAuYwpAQCAtMjE2LDYgKzIxNiw3IEBAIHN0YXRpYyB2
-b2lkIGVtaXRfZmVuY2Vfc3RyZXNzKHN0cnVjdCB0ZXN0X291dHB1dCAqbykKIAogCWlndF9yZXF1
-aXJlKGJ1Zm1ncik7CiAKKwlpZ3RfYXNzZXJ0KG51bV9mZW5jZXMpOwogCWJvID0gY2FsbG9jKHNp
-emVvZigqYm8pLCBudW1fZmVuY2VzKTsKIAlleGVjID0gY2FsbG9jKHNpemVvZigqZXhlYyksIG51
-bV9mZW5jZXMrMSk7CiAJZm9yIChpID0gMDsgaSA8IG51bV9mZW5jZXMgLSAxOyBpKyspIHsKQEAg
-LTEzMzksNiArMTM0MCw4IEBAIHN0YXRpYyBpbnQgcnVuX3Rlc3QoaW50IGR1cmF0aW9uLCBpbnQg
-ZmxhZ3MpCiAJaW50IGksIG4sIG1vZGVzID0gMDsKIAogCWlndF9yZXF1aXJlKChmbGFncyAmIFRF
-U1RfSEFORykgPT0gMCB8fCAhaXNfd2VkZ2VkKGRybV9mZCkpOworCWlndF9yZXF1aXJlKChmbGFn
-cyAmIFRFU1RfRkVOQ0VfU1RSRVNTKSAmJgorCQkgICAgZ2VtX2F2YWlsYWJsZV9mZW5jZXMoZHJt
-X2ZkKSk7CiAKIAlyZXNvdXJjZXMgPSBkcm1Nb2RlR2V0UmVzb3VyY2VzKGRybV9mZCk7CiAJaWd0
-X3JlcXVpcmUocmVzb3VyY2VzKTsKQEAgLTEzOTYsNiArMTM5OSw4IEBAIHN0YXRpYyBpbnQgcnVu
-X3BhaXIoaW50IGR1cmF0aW9uLCBpbnQgZmxhZ3MpCiAJaW50IGksIGosIG0sIG4sIG1vZGVzID0g
-MDsKIAogCWlndF9yZXF1aXJlKChmbGFncyAmIFRFU1RfSEFORykgPT0gMCB8fCAhaXNfd2VkZ2Vk
-KGRybV9mZCkpOworCWlndF9yZXF1aXJlKChmbGFncyAmIFRFU1RfRkVOQ0VfU1RSRVNTKSAmJgor
-CQkgICAgZ2VtX2F2YWlsYWJsZV9mZW5jZXMoZHJtX2ZkKSk7CiAKIAlyZXNvdXJjZXMgPSBkcm1N
-b2RlR2V0UmVzb3VyY2VzKGRybV9mZCk7CiAJaWd0X3JlcXVpcmUocmVzb3VyY2VzKTsKLS0gCjIu
-MjMuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0
-LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9s
-aXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+We often end up with a leftover state from fbcon with a mode enabled on
+some of the connecters. Let's clean that up.
+
+Issue: https://gitlab.freedesktop.org/drm/intel/issues/323
+Cc: Imre Deak <imre.deak@intel.com>
+Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+---
+ lib/igt_kms.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 7f9fafb3..796da1fb 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -2066,6 +2066,10 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+ 	/* Set reasonable default values for every object in the display. */
+ 	igt_display_reset(display);
+ 
++	/* Commit those resonable defaults to clean up fbcon/etc leftover state */
++	igt_display_commit2(display,
++			    display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
++
+ out:
+ 	LOG_UNINDENT(display);
+ 
+-- 
+2.24.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
