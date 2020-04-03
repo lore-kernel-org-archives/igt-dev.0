@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 03 Apr 2020 10:15:41 -0000
-Message-ID: <158590894137.13349.5125478299703601171@emeril.freedesktop.org>
+Date: Fri, 03 Apr 2020 10:23:23 -0000
+Message-ID: <158590940386.13351.17852309979848006624@emeril.freedesktop.org>
 References: <20200403091704.32232-1-karthik.b.s@intel.com>
 In-Reply-To: <20200403091704.32232-1-karthik.b.s@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
- =?utf-8?q?ests/kms=5Fasync=3A_Add_test_to_validate_asynchronous_flips?=
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fasync=3A_Add_test_to_validate_asynchronous_flips?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,36 +27,89 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Series: tests/kms_async: Add test to validate asynchronous flips
 URL   : https://patchwork.freedesktop.org/series/75453/
-State : failure
+State : success
 
 == Summary ==
 
-ERROR! This series introduces new undocumented tests:
+CI Bug Log - changes from CI_DRM_8243 -> IGTPW_4400
+====================================================
 
-kms_async
-kms_async@async-flip-with-page-flip-events
-kms_async@async-flip-without-page-flip-events
+Summary
+-------
 
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
+  **SUCCESS**
 
-[Documentation] has more details on how to do this.
+  No regressions found.
 
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4400/index.html
 
-Thanks in advance!
+Known issues
+------------
 
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+  Here are the changes found in IGTPW_4400 that come from known issues:
 
-Other than that, pipeline status: SUCCESS.
+### IGT changes ###
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/127990 for the overview.
+#### Issues hit ####
+
+  * igt@gem_tiled_fence_blits@basic:
+    - fi-blb-e6850:       [PASS][1] -> [DMESG-WARN][2] ([i915#1612])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8243/fi-blb-e6850/igt@gem_tiled_fence_blits@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4400/fi-blb-e6850/igt@gem_tiled_fence_blits@basic.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-cml-u2:          [PASS][3] -> [FAIL][4] ([i915#262])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8243/fi-cml-u2/igt@kms_chamelium@dp-crc-fast.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4400/fi-cml-u2/igt@kms_chamelium@dp-crc-fast.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-icl-dsi:         [INCOMPLETE][5] ([i915#189]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8243/fi-icl-dsi/igt@i915_pm_rpm@module-reload.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4400/fi-icl-dsi/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-bxt-dsi:         [INCOMPLETE][7] ([i915#656]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8243/fi-bxt-dsi/igt@i915_selftest@live@execlists.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4400/fi-bxt-dsi/igt@i915_selftest@live@execlists.html
+
+  
+  [i915#1612]: https://gitlab.freedesktop.org/drm/intel/issues/1612
+  [i915#189]: https://gitlab.freedesktop.org/drm/intel/issues/189
+  [i915#262]: https://gitlab.freedesktop.org/drm/intel/issues/262
+  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
+
+
+Participating hosts (41 -> 43)
+------------------------------
+
+  Additional (8): fi-skl-6770hq fi-bwr-2160 fi-snb-2520m fi-ivb-3770 fi-cfl-8109u fi-skl-lmem fi-byt-n2820 fi-skl-6600u 
+  Missing    (6): fi-tgl-dsi fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5560 -> IGTPW_4400
+
+  CI-20190529: 20190529
+  CI_DRM_8243: 45ccb1b8606b6ba1a5d4f8a8b4dda27bd8dbb04c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4400: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4400/index.html
+  IGT_5560: 213062c7dcf0cbc8069cbb5f91acbc494def33fd @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@kms_async@async-flip-without-page-flip-events
++igt@kms_async@async-flip-with-page-flip-events
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/127990
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4400/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
