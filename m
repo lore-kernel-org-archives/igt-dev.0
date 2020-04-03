@@ -1,99 +1,56 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-References: <20200402140057.330937-1-chris@chris-wilson.co.uk>
- <158583646743.5852.9331967495457501342@build.alporthouse.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <e2c3f26b-5276-4600-26b2-f7a0776b47e6@linux.intel.com>
-Date: Thu, 2 Apr 2020 17:10:44 +0100
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Fri,  3 Apr 2020 13:47:27 +0200
+Message-Id: <20200403114727.27760-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <158583646743.5852.9331967495457501342@build.alporthouse.com>
-Content-Language: en-US
-Subject: Re: [Intel-gfx] [igt-dev] [PATCH i-g-t] i915/perf_pmu: Exercise
- mixing perf reads into i915 mmaps
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Subject: [igt-dev] [PATCH i-g-t v2] lib: Fix device lists not cleaned up
+ sufficiently before rescan
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 02/04/2020 15:07, Chris Wilson wrote:
-> Quoting Chris Wilson (2020-04-02 15:00:57)
->> Feed a fresh i915 mmap into a read(perf_fd) to teach lockdep about the
->> potential lock chains should we take a pagefault into our vm_fault
->> handlers from within perf.
->>
->> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
->> Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
->> ---
->>   tests/perf_pmu.c | 39 +++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 39 insertions(+)
->>
->> diff --git a/tests/perf_pmu.c b/tests/perf_pmu.c
->> index 259670f4b..1d6681d80 100644
->> --- a/tests/perf_pmu.c
->> +++ b/tests/perf_pmu.c
->> @@ -1827,6 +1827,35 @@ accuracy(int gem_fd, const struct intel_execution_engine2 *e,
->>          assert_within(100.0 * busy_r, 100.0 * expected, 2);
->>   }
->>   
->> +static void *create_mmap(int gem_fd, const struct mmap_offset *t, int sz)
->> +{
->> +       uint32_t handle;
->> +       void *ptr;
->> +
->> +       handle = gem_create(gem_fd, sz);
->> +       ptr = __gem_mmap_offset(gem_fd, handle, 0, sz, PROT_WRITE, t->type);
->> +       gem_close(gem_fd, handle);
->> +
->> +       return ptr;
->> +}
->> +
->> +static void
->> +faulting_read(int gem_fd, const struct mmap_offset *t)
->> +{
->> +       void *ptr;
->> +       int fd;
->> +
->> +       ptr = create_mmap(gem_fd, t, 4096);
->> +       igt_require(ptr != NULL);
->> +
->> +       fd = open_pmu(gem_fd, I915_PMU_ENGINE_BUSY(0, 0));
->> +       igt_require(fd != -1);
->> +       igt_assert_eq(read(fd, ptr, 4096), 2 * sizeof(uint64_t));
->> +       close(fd);
->> +
->> +       munmap(ptr, 4096);
->> +}
->> +
->>   #define test_each_engine(T, i915, e) \
->>          igt_subtest_with_dynamic(T) __for_each_physical_engine(i915, e) \
->>                  igt_dynamic_f("%s", e->name)
->> @@ -1860,6 +1889,16 @@ igt_main
->>          igt_subtest("invalid-init")
->>                  invalid_init(fd);
->>   
->> +       igt_subtest_with_dynamic("faulting-read") {
->> +               for_each_mmap_offset_type(fd, t) {
->> +                       if (!gem_has_mmap_offset_type(fd, t))
->> +                               continue;
-> 
-> Redundant, for_each_mmap_offset_type() includes the skip.
-
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-
-Regards,
-
-Tvrtko
-_______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+U29tZSBlZmZvcnQgaXMgYWxyZWFkeSB0YWtlbiB0byBjbGVhbiB1cCBwcmV2aW91cyBjb250ZW50
+IG9mIGRldmljZQpsaXN0cyBiZWZvcmUgZm9yY2VkIGRldmljZSByZXNjYW4gaXMgcGVyZm9ybWVk
+IGJ1dCBpdCBpcyBub3QKc3VmZmljaWVudC4gIEFuIGF0dGVtcHQgdG8gdXNlIGZvcmNlZCBkZXZp
+Y2UgcmVzY2FuIGluIGEgdGVzdCByZXN1bHRzCmluIHRoYXQgdGVzdCBjcmFzaGluZyBvciBzcGlu
+bmluZyB1bnRpbCBiZWluZyBraWxsZWQgYnkgT09NIGtpbGxlci4KRml4IGl0LgoKdjI6IFJlbW92
+ZSBkZXZpY2UgZnJvbSB0aGUgbGlzdCBiZWZvcmUgZGV2aWNlIGF0dHJpYnV0ZXMgYXJlIGRlc3Ry
+b3llZAoKU2lnbmVkLW9mZi1ieTogSmFudXN6IEtyenlzenRvZmlrIDxqYW51c3oua3J6eXN6dG9m
+aWtAbGludXguaW50ZWwuY29tPgpSZXZpZXdlZC1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6
+Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Ci0tLQogbGliL2lndF9kZXZpY2Vfc2Nhbi5j
+IHwgMTYgKysrKysrKysrKy0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKyks
+IDYgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2lndF9kZXZpY2Vfc2Nhbi5jIGIvbGli
+L2lndF9kZXZpY2Vfc2Nhbi5jCmluZGV4IGNmN2M0ZDk1MS4uMzBhOTcwNGE1IDEwMDY0NAotLS0g
+YS9saWIvaWd0X2RldmljZV9zY2FuLmMKKysrIGIvbGliL2lndF9kZXZpY2Vfc2Nhbi5jCkBAIC0z
+NTMsMTQgKzM1MywxMSBAQCBzdGF0aWMgdm9pZCBzZXRfdmVuZG9yX2RldmljZShzdHJ1Y3QgaWd0
+X2RldmljZSAqZGV2KQogCWRldi0+ZGV2aWNlID0gc3RybmR1cChwY2lfaWQgKyA1LCA0KTsKIH0K
+IAotLyogQWxsb2NhdGUgYXJyYXlzIGZvciBrZWVwaW5nIHNjYW5uZWQgZGV2aWNlcyAqLworLyog
+SW5pdGlhbGl6ZSBsaXN0cyBmb3Iga2VlcGluZyBzY2FubmVkIGRldmljZXMgKi8KIHN0YXRpYyBi
+b29sIHByZXBhcmVfc2Nhbih2b2lkKQogewotCWlmIChpZ3RfZGV2cy5hbGwucHJldiA9PSBOVUxM
+IHx8IGlndF9kZXZzLmFsbC5uZXh0ID09IE5VTEwpCi0JCUlHVF9JTklUX0xJU1RfSEVBRCgmaWd0
+X2RldnMuYWxsKTsKLQotCWlmIChpZ3RfZGV2cy5maWx0ZXJlZC5wcmV2ID09IE5VTEwgfHwgaWd0
+X2RldnMuZmlsdGVyZWQubmV4dCA9PSBOVUxMKQotCQlJR1RfSU5JVF9MSVNUX0hFQUQoJmlndF9k
+ZXZzLmZpbHRlcmVkKTsKKwlJR1RfSU5JVF9MSVNUX0hFQUQoJmlndF9kZXZzLmFsbCk7CisJSUdU
+X0lOSVRfTElTVF9IRUFEKCZpZ3RfZGV2cy5maWx0ZXJlZCk7CiAKIAlyZXR1cm4gdHJ1ZTsKIH0K
+QEAgLTU5NSw3ICs1OTIsMTQgQEAgdm9pZCBpZ3RfZGV2aWNlc19zY2FuKGJvb2wgZm9yY2UpCiB7
+CiAJaWYgKGZvcmNlICYmIGlndF9kZXZzLmRldnNfc2Nhbm5lZCkgewogCQlzdHJ1Y3QgaWd0X2Rl
+dmljZSAqZGV2LCAqdG1wOworCisJCWlndF9saXN0X2Zvcl9lYWNoX2VudHJ5X3NhZmUoZGV2LCB0
+bXAsICZpZ3RfZGV2cy5maWx0ZXJlZCwKKwkJCQkJICAgICBsaW5rKSB7CisJCQlpZ3RfbGlzdF9k
+ZWwoJmRldi0+bGluayk7CisJCQlmcmVlKGRldik7CisJCX0KIAkJaWd0X2xpc3RfZm9yX2VhY2hf
+ZW50cnlfc2FmZShkZXYsIHRtcCwgJmlndF9kZXZzLmFsbCwgbGluaykgeworCQkJaWd0X2xpc3Rf
+ZGVsKCZkZXYtPmxpbmspOwogCQkJaWd0X2RldmljZV9mcmVlKGRldik7CiAJCQlmcmVlKGRldik7
+CiAJCX0KLS0gCjIuMjEuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
+cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+Cg==
