@@ -1,10 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Fri,  3 Apr 2020 13:47:27 +0200
-Message-Id: <20200403114727.27760-1-janusz.krzysztofik@linux.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Fri,  3 Apr 2020 14:24:14 +0100
+Message-Id: <20200403132414.920346-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] lib: Fix device lists not cleaned up
- sufficiently before rescan
+Subject: [igt-dev] [PATCH i-g-t] lib: Bump estimates for object overhead
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -12,45 +11,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-U29tZSBlZmZvcnQgaXMgYWxyZWFkeSB0YWtlbiB0byBjbGVhbiB1cCBwcmV2aW91cyBjb250ZW50
-IG9mIGRldmljZQpsaXN0cyBiZWZvcmUgZm9yY2VkIGRldmljZSByZXNjYW4gaXMgcGVyZm9ybWVk
-IGJ1dCBpdCBpcyBub3QKc3VmZmljaWVudC4gIEFuIGF0dGVtcHQgdG8gdXNlIGZvcmNlZCBkZXZp
-Y2UgcmVzY2FuIGluIGEgdGVzdCByZXN1bHRzCmluIHRoYXQgdGVzdCBjcmFzaGluZyBvciBzcGlu
-bmluZyB1bnRpbCBiZWluZyBraWxsZWQgYnkgT09NIGtpbGxlci4KRml4IGl0LgoKdjI6IFJlbW92
-ZSBkZXZpY2UgZnJvbSB0aGUgbGlzdCBiZWZvcmUgZGV2aWNlIGF0dHJpYnV0ZXMgYXJlIGRlc3Ry
-b3llZAoKU2lnbmVkLW9mZi1ieTogSmFudXN6IEtyenlzenRvZmlrIDxqYW51c3oua3J6eXN6dG9m
-aWtAbGludXguaW50ZWwuY29tPgpSZXZpZXdlZC1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6
-Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Ci0tLQogbGliL2lndF9kZXZpY2Vfc2Nhbi5j
-IHwgMTYgKysrKysrKysrKy0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKyks
-IDYgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2lndF9kZXZpY2Vfc2Nhbi5jIGIvbGli
-L2lndF9kZXZpY2Vfc2Nhbi5jCmluZGV4IGNmN2M0ZDk1MS4uMzBhOTcwNGE1IDEwMDY0NAotLS0g
-YS9saWIvaWd0X2RldmljZV9zY2FuLmMKKysrIGIvbGliL2lndF9kZXZpY2Vfc2Nhbi5jCkBAIC0z
-NTMsMTQgKzM1MywxMSBAQCBzdGF0aWMgdm9pZCBzZXRfdmVuZG9yX2RldmljZShzdHJ1Y3QgaWd0
-X2RldmljZSAqZGV2KQogCWRldi0+ZGV2aWNlID0gc3RybmR1cChwY2lfaWQgKyA1LCA0KTsKIH0K
-IAotLyogQWxsb2NhdGUgYXJyYXlzIGZvciBrZWVwaW5nIHNjYW5uZWQgZGV2aWNlcyAqLworLyog
-SW5pdGlhbGl6ZSBsaXN0cyBmb3Iga2VlcGluZyBzY2FubmVkIGRldmljZXMgKi8KIHN0YXRpYyBi
-b29sIHByZXBhcmVfc2Nhbih2b2lkKQogewotCWlmIChpZ3RfZGV2cy5hbGwucHJldiA9PSBOVUxM
-IHx8IGlndF9kZXZzLmFsbC5uZXh0ID09IE5VTEwpCi0JCUlHVF9JTklUX0xJU1RfSEVBRCgmaWd0
-X2RldnMuYWxsKTsKLQotCWlmIChpZ3RfZGV2cy5maWx0ZXJlZC5wcmV2ID09IE5VTEwgfHwgaWd0
-X2RldnMuZmlsdGVyZWQubmV4dCA9PSBOVUxMKQotCQlJR1RfSU5JVF9MSVNUX0hFQUQoJmlndF9k
-ZXZzLmZpbHRlcmVkKTsKKwlJR1RfSU5JVF9MSVNUX0hFQUQoJmlndF9kZXZzLmFsbCk7CisJSUdU
-X0lOSVRfTElTVF9IRUFEKCZpZ3RfZGV2cy5maWx0ZXJlZCk7CiAKIAlyZXR1cm4gdHJ1ZTsKIH0K
-QEAgLTU5NSw3ICs1OTIsMTQgQEAgdm9pZCBpZ3RfZGV2aWNlc19zY2FuKGJvb2wgZm9yY2UpCiB7
-CiAJaWYgKGZvcmNlICYmIGlndF9kZXZzLmRldnNfc2Nhbm5lZCkgewogCQlzdHJ1Y3QgaWd0X2Rl
-dmljZSAqZGV2LCAqdG1wOworCisJCWlndF9saXN0X2Zvcl9lYWNoX2VudHJ5X3NhZmUoZGV2LCB0
-bXAsICZpZ3RfZGV2cy5maWx0ZXJlZCwKKwkJCQkJICAgICBsaW5rKSB7CisJCQlpZ3RfbGlzdF9k
-ZWwoJmRldi0+bGluayk7CisJCQlmcmVlKGRldik7CisJCX0KIAkJaWd0X2xpc3RfZm9yX2VhY2hf
-ZW50cnlfc2FmZShkZXYsIHRtcCwgJmlndF9kZXZzLmFsbCwgbGluaykgeworCQkJaWd0X2xpc3Rf
-ZGVsKCZkZXYtPmxpbmspOwogCQkJaWd0X2RldmljZV9mcmVlKGRldik7CiAJCQlmcmVlKGRldik7
-CiAJCX0KLS0gCjIuMjEuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
-cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
-Cg==
+We are dramatically underestimating the overhead for an active object
+and its inodes.
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ lib/intel_os.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/intel_os.c b/lib/intel_os.c
+index 8458d39a1..2bb0c981a 100644
+--- a/lib/intel_os.c
++++ b/lib/intel_os.c
+@@ -306,7 +306,7 @@ int __intel_check_memory(uint64_t count, uint64_t size, unsigned mode,
+ 			 uint64_t *out_required, uint64_t *out_total)
+ {
+ /* rough estimate of how many bytes the kernel requires to track each object */
+-#define KERNEL_BO_OVERHEAD 512
++#define KERNEL_BO_OVERHEAD 8192 /* 2k for an object, 2k for an inode, etc */
+ 	uint64_t required, total;
+ 
+ 	required = count;
+-- 
+2.26.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
