@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C06FB6E3A8
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2020 12:38:17 +0000 (UTC)
-Date: Mon, 6 Apr 2020 15:38:13 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200406123813.dpr553jtdnrsknbt@ahiler-desk1.fi.intel.com>
-References: <20200403130306.1272436-1-arkadiusz.hiler@intel.com>
- <20200406091135.GB29716@ideak-desk.fi.intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2CEEA6E3B7
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2020 13:15:45 +0000 (UTC)
+From: Petri Latvala <petri.latvala@intel.com>
+Date: Mon,  6 Apr 2020 16:15:40 +0300
+Message-Id: <20200406131540.14404-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200406091135.GB29716@ideak-desk.fi.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/6] tests/kms_vblank: Make sure that we
- have a mode set
+Subject: [igt-dev] [PATCH i-g-t] igt_core: Add --version
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,63 +18,62 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Imre Deak <imre.deak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Apr 06, 2020 at 12:11:35PM +0300, Imre Deak wrote:
-> On Fri, Apr 03, 2020 at 04:03:01PM +0300, Arkadiusz Hiler wrote:
-> > Subtest 'invalid' was depending on a "leftover" mode set by something
-> > external (usually fbcon) in order to work.
-> > 
-> > Let's make the test more robust by setting the mode explicitly.
-> > 
-> > Cc: Imre Deak <imre.deak@intel.com>
-> > Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> > ---
-> >  tests/kms_vblank.c | 14 ++++++++++++++
-> >  1 file changed, 14 insertions(+)
-> > 
-> > diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-> > index a895ab80..edf8581e 100644
-> > --- a/tests/kms_vblank.c
-> > +++ b/tests/kms_vblank.c
-> > @@ -472,9 +472,22 @@ static void invalid_subtest(data_t *data, int fd)
-> >  {
-> >  	union drm_wait_vblank vbl;
-> >  	unsigned long valid_flags;
-> > +	enum pipe pipe;
-> > +	igt_output_t* output;
-> > +	bool found = false;
-> >  
-> >  	igt_display_require_output_on_pipe(&data->display, 0);
-> 
-> Is the above needed still?
+To help verify correct deployment, add a --version flag that just
+prints the IGT-Version text.
 
-nope, removed 
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Tomi Sarvela <tomi.p.sarvela@intel.com>
+Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+---
+ lib/igt_core.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-> > +	/* we need to have a mode set, otherwise we will get EINVAL no matter what */
-> > +	for_each_pipe_with_single_output(&data->display, pipe, output) {
-> > +		data->pipe = pipe;
-> > +		found = true;
-> > +		break;
-> > +	}
-> 
-> So far pipe A was assumed. I guess it's better to make it more flexible,
-> but then you have to add kmstest_get_vbl_flag() to the request flags
-> too.
-
-Yeah, I have blanked on that. I have added "base_flags" that will have
-this + DRM_VBLANK_RELATIVE set and use this as the initial value.
-
-You can already see it on Trybot as I am experimenting with a fix for 0
-outputs becoming a fail instead of a skip:
-
-https://patchwork.freedesktop.org/patch/360280/?series=75545&rev=1
-
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 77862498..3f7b9f68 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -320,6 +320,7 @@ enum {
+ 	OPT_SKIP_CRC,
+ 	OPT_TRACE_OOPS,
+ 	OPT_DEVICE,
++	OPT_VERSION,
+ 	OPT_HELP = 'h'
+ };
+ 
+@@ -685,6 +686,7 @@ static void print_usage(const char *help_str, bool output_on_stderr)
+ 		   "  --help-description\n"
+ 		   "  --describe\n"
+ 		   "  --device filter\n"
++		   "  --version\n"
+ 		   "  --help|-h\n");
+ 	if (help_str)
+ 		fprintf(f, "%s\n", help_str);
+@@ -859,6 +861,7 @@ static int common_init(int *argc, char **argv,
+ 		{"skip-crc-compare",  no_argument,       NULL, OPT_SKIP_CRC},
+ 		{"trace-on-oops",     no_argument,       NULL, OPT_TRACE_OOPS},
+ 		{"device",            required_argument, NULL, OPT_DEVICE},
++		{"version",           no_argument,       NULL, OPT_VERSION},
+ 		{"help",              no_argument,       NULL, OPT_HELP},
+ 		{0, 0, 0, 0}
+ 	};
+@@ -998,6 +1001,10 @@ static int common_init(int *argc, char **argv,
+ 			}
+ 			igt_device_filter_set(optarg);
+ 			break;
++		case OPT_VERSION:
++			print_version();
++			ret = -1;
++			goto out;
+ 		case OPT_HELP:
+ 			print_usage(help_str, false);
+ 			ret = -1;
 -- 
-Cheers,
-Arek
+2.20.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
