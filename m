@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 70EBB6E40F
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2020 15:30:04 +0000 (UTC)
-MIME-Version: 1.0
-In-Reply-To: <20200406092549.24154-1-arjun.melkaveri@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D93D06E429
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2020 15:44:35 +0000 (UTC)
+From: "Melkaveri, Arjun" <arjun.melkaveri@intel.com>
+Date: Mon, 6 Apr 2020 15:44:30 +0000
+Message-ID: <CA3CE573A55781488FA37084931071AB14DD5976@BGSMSX105.gar.corp.intel.com>
 References: <20200406092549.24154-1-arjun.melkaveri@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158618699864.6356.977322746988786249@build.alporthouse.com>
-Date: Mon, 06 Apr 2020 16:29:58 +0100
+ <158618699864.6356.977322746988786249@build.alporthouse.com>
+In-Reply-To: <158618699864.6356.977322746988786249@build.alporthouse.com>
+Content-Language: en-US
+MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH] [PATCH i-g-t][V2]tests/i915/gem_sync.c :Added
  __for_each_physical_engine to utilize all available
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -17,93 +19,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Arjun Melkaveri (2020-04-06 10:25:49)
-> Replaced the legacy for_each_engine* defines with the ones
-> implemented in the gem_engine_topology library.
-> 
-> Used  gem_context_clone_with_engines
-> to make sure that engine index was potentially created
-> based on a  default context with engine map configured.
-> 
-> Added gem_reopen_driver and gem_context_copy_engines
-> to transfer the engine map from parent fd default
-> context.
-> 
-> V2:
-> Added Legacy engine coverage for sync_ring and sync_all.
-> 
-> Cc: Dec Katarzyna <katarzyna.dec@intel.com>
-> Cc: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
-> Signed-off-by: sai gowtham <sai.gowtham.ch@intel.com>
-> Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
-> ---
->  tests/i915/gem_sync.c | 566 +++++++++++++++++++++++++-----------------
->  1 file changed, 343 insertions(+), 223 deletions(-)
-> 
-> diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
-> index 2ef55ecc..8efa0668 100644
-> --- a/tests/i915/gem_sync.c
-> +++ b/tests/i915/gem_sync.c
-> @@ -79,52 +79,56 @@ out:
->  }
->  
->  static void
-> -sync_ring(int fd, unsigned ring, int num_children, int timeout)
-> +sync_ring(int fd, const struct intel_execution_engine2 *e,
-> +         int num_children, int timeout)
->  {
-
-ALL_ENGINES is compatible with the engine index interface. That will
-greatly reduce the churn and eyesore.
-
-> +       const struct intel_execution_engine2 *e2;
->         unsigned engines[16];
->         const char *names[16];
->         int num_engines = 0;
->  
-> -       if (ring == ALL_ENGINES) {
-> -               for_each_physical_engine(e, fd) {
-> -                       names[num_engines] = e->name;
-> -                       engines[num_engines++] = eb_ring(e);
-> +       if (!e) {
-> +               __for_each_physical_engine(fd, e2) {
-> +                       names[num_engines] = e2->name;
-> +                       engines[num_engines++] = e2->flags;
->                         if (num_engines == ARRAY_SIZE(engines))
->                                 break;
->                 }
->  
->                 num_children *= num_engines;
->         } else {
-> -               gem_require_ring(fd, ring);
->                 names[num_engines] = NULL;
-> -               engines[num_engines++] = ring;
-> +               engines[num_engines++] = e->flags;
->         }
->  
->         intel_detect_and_clear_missed_interrupts(fd);
->         igt_fork(child, num_children) {
-> +               int i915;
->                 const uint32_t bbe = MI_BATCH_BUFFER_END;
->                 struct drm_i915_gem_exec_object2 object;
->                 struct drm_i915_gem_execbuffer2 execbuf;
->                 double start, elapsed;
->                 unsigned long cycles;
->  
-> +               i915 = gem_reopen_driver(fd);
-> +               gem_context_copy_engines(fd, 0, i915, 0);
-
-Please do randomly, completely and utterly change the test to do
-something else than was originally intended.
--Chris
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+DQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogQ2hyaXMgV2lsc29uIDxjaHJpc0Bj
+aHJpcy13aWxzb24uY28udWs+IA0KU2VudDogTW9uZGF5LCBBcHJpbCA2LCAyMDIwIDk6MDAgUE0N
+ClRvOiBNZWxrYXZlcmksIEFyanVuIDxhcmp1bi5tZWxrYXZlcmlAaW50ZWwuY29tPjsgaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNClN1YmplY3Q6IFJlOiBbaWd0LWRldl0gW1BBVENIXSBb
+UEFUQ0ggaS1nLXRdW1YyXXRlc3RzL2k5MTUvZ2VtX3N5bmMuYyA6QWRkZWQgX19mb3JfZWFjaF9w
+aHlzaWNhbF9lbmdpbmUgdG8gdXRpbGl6ZSBhbGwgYXZhaWxhYmxlDQoNClF1b3RpbmcgQXJqdW4g
+TWVsa2F2ZXJpICgyMDIwLTA0LTA2IDEwOjI1OjQ5KQ0KPiBSZXBsYWNlZCB0aGUgbGVnYWN5IGZv
+cl9lYWNoX2VuZ2luZSogZGVmaW5lcyB3aXRoIHRoZSBvbmVzIGltcGxlbWVudGVkIA0KPiBpbiB0
+aGUgZ2VtX2VuZ2luZV90b3BvbG9neSBsaWJyYXJ5Lg0KPiANCj4gVXNlZCAgZ2VtX2NvbnRleHRf
+Y2xvbmVfd2l0aF9lbmdpbmVzDQo+IHRvIG1ha2Ugc3VyZSB0aGF0IGVuZ2luZSBpbmRleCB3YXMg
+cG90ZW50aWFsbHkgY3JlYXRlZCBiYXNlZCBvbiBhICANCj4gZGVmYXVsdCBjb250ZXh0IHdpdGgg
+ZW5naW5lIG1hcCBjb25maWd1cmVkLg0KPiANCj4gQWRkZWQgZ2VtX3Jlb3Blbl9kcml2ZXIgYW5k
+IGdlbV9jb250ZXh0X2NvcHlfZW5naW5lcyB0byB0cmFuc2ZlciB0aGUgDQo+IGVuZ2luZSBtYXAg
+ZnJvbSBwYXJlbnQgZmQgZGVmYXVsdCBjb250ZXh0Lg0KPiANCj4gVjI6DQo+IEFkZGVkIExlZ2Fj
+eSBlbmdpbmUgY292ZXJhZ2UgZm9yIHN5bmNfcmluZyBhbmQgc3luY19hbGwuDQo+IA0KPiBDYzog
+RGVjIEthdGFyenluYSA8a2F0YXJ6eW5hLmRlY0BpbnRlbC5jb20+DQo+IENjOiBVcnN1bGluIFR2
+cnRrbyA8dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBzYWkgZ293
+dGhhbSA8c2FpLmdvd3RoYW0uY2hAaW50ZWwuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBBcmp1biBN
+ZWxrYXZlcmkgPGFyanVuLm1lbGthdmVyaUBpbnRlbC5jb20+DQo+IC0tLQ0KPiAgdGVzdHMvaTkx
+NS9nZW1fc3luYy5jIHwgNTY2IA0KPiArKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0t
+LS0tLS0tLS0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAzNDMgaW5zZXJ0aW9ucygrKSwgMjIzIGRlbGV0
+aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX3N5bmMuYyBiL3Rlc3Rz
+L2k5MTUvZ2VtX3N5bmMuYyBpbmRleCANCj4gMmVmNTVlY2MuLjhlZmEwNjY4IDEwMDY0NA0KPiAt
+LS0gYS90ZXN0cy9pOTE1L2dlbV9zeW5jLmMNCj4gKysrIGIvdGVzdHMvaTkxNS9nZW1fc3luYy5j
+DQo+IEBAIC03OSw1MiArNzksNTYgQEAgb3V0Og0KPiAgfQ0KPiAgDQo+ICBzdGF0aWMgdm9pZA0K
+PiAtc3luY19yaW5nKGludCBmZCwgdW5zaWduZWQgcmluZywgaW50IG51bV9jaGlsZHJlbiwgaW50
+IHRpbWVvdXQpDQo+ICtzeW5jX3JpbmcoaW50IGZkLCBjb25zdCBzdHJ1Y3QgaW50ZWxfZXhlY3V0
+aW9uX2VuZ2luZTIgKmUsDQo+ICsgICAgICAgICBpbnQgbnVtX2NoaWxkcmVuLCBpbnQgdGltZW91
+dCkNCj4gIHsNCg0KQUxMX0VOR0lORVMgaXMgY29tcGF0aWJsZSB3aXRoIHRoZSBlbmdpbmUgaW5k
+ZXggaW50ZXJmYWNlLiBUaGF0IHdpbGwgZ3JlYXRseSByZWR1Y2UgdGhlIGNodXJuIGFuZCBleWVz
+b3JlLg0KDQo+ICsgICAgICAgY29uc3Qgc3RydWN0IGludGVsX2V4ZWN1dGlvbl9lbmdpbmUyICpl
+MjsNCj4gICAgICAgICB1bnNpZ25lZCBlbmdpbmVzWzE2XTsNCj4gICAgICAgICBjb25zdCBjaGFy
+ICpuYW1lc1sxNl07DQo+ICAgICAgICAgaW50IG51bV9lbmdpbmVzID0gMDsNCj4gIA0KPiAtICAg
+ICAgIGlmIChyaW5nID09IEFMTF9FTkdJTkVTKSB7DQo+IC0gICAgICAgICAgICAgICBmb3JfZWFj
+aF9waHlzaWNhbF9lbmdpbmUoZSwgZmQpIHsNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgbmFt
+ZXNbbnVtX2VuZ2luZXNdID0gZS0+bmFtZTsNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgZW5n
+aW5lc1tudW1fZW5naW5lcysrXSA9IGViX3JpbmcoZSk7DQo+ICsgICAgICAgaWYgKCFlKSB7DQo+
+ICsgICAgICAgICAgICAgICBfX2Zvcl9lYWNoX3BoeXNpY2FsX2VuZ2luZShmZCwgZTIpIHsNCj4g
+KyAgICAgICAgICAgICAgICAgICAgICAgbmFtZXNbbnVtX2VuZ2luZXNdID0gZTItPm5hbWU7DQo+
+ICsgICAgICAgICAgICAgICAgICAgICAgIGVuZ2luZXNbbnVtX2VuZ2luZXMrK10gPSBlMi0+Zmxh
+Z3M7DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIGlmIChudW1fZW5naW5lcyA9PSBBUlJBWV9T
+SVpFKGVuZ2luZXMpKQ0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOw0K
+PiAgICAgICAgICAgICAgICAgfQ0KPiAgDQo+ICAgICAgICAgICAgICAgICBudW1fY2hpbGRyZW4g
+Kj0gbnVtX2VuZ2luZXM7DQo+ICAgICAgICAgfSBlbHNlIHsNCj4gLSAgICAgICAgICAgICAgIGdl
+bV9yZXF1aXJlX3JpbmcoZmQsIHJpbmcpOw0KPiAgICAgICAgICAgICAgICAgbmFtZXNbbnVtX2Vu
+Z2luZXNdID0gTlVMTDsNCj4gLSAgICAgICAgICAgICAgIGVuZ2luZXNbbnVtX2VuZ2luZXMrK10g
+PSByaW5nOw0KPiArICAgICAgICAgICAgICAgZW5naW5lc1tudW1fZW5naW5lcysrXSA9IGUtPmZs
+YWdzOw0KPiAgICAgICAgIH0NCj4gIA0KPiAgICAgICAgIGludGVsX2RldGVjdF9hbmRfY2xlYXJf
+bWlzc2VkX2ludGVycnVwdHMoZmQpOw0KPiAgICAgICAgIGlndF9mb3JrKGNoaWxkLCBudW1fY2hp
+bGRyZW4pIHsNCj4gKyAgICAgICAgICAgICAgIGludCBpOTE1Ow0KPiAgICAgICAgICAgICAgICAg
+Y29uc3QgdWludDMyX3QgYmJlID0gTUlfQkFUQ0hfQlVGRkVSX0VORDsNCj4gICAgICAgICAgICAg
+ICAgIHN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmplY3QyIG9iamVjdDsNCj4gICAgICAgICAg
+ICAgICAgIHN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY2J1ZmZlcjIgZXhlY2J1ZjsNCj4gICAgICAg
+ICAgICAgICAgIGRvdWJsZSBzdGFydCwgZWxhcHNlZDsNCj4gICAgICAgICAgICAgICAgIHVuc2ln
+bmVkIGxvbmcgY3ljbGVzOw0KPiAgDQo+ICsgICAgICAgICAgICAgICBpOTE1ID0gZ2VtX3Jlb3Bl
+bl9kcml2ZXIoZmQpOw0KPiArICAgICAgICAgICAgICAgZ2VtX2NvbnRleHRfY29weV9lbmdpbmVz
+KGZkLCAwLCBpOTE1LCAwKTsNCg0KUGxlYXNlIGRvIHJhbmRvbWx5LCBjb21wbGV0ZWx5IGFuZCB1
+dHRlcmx5IGNoYW5nZSB0aGUgdGVzdCB0byBkbyBzb21ldGhpbmcgZWxzZSB0aGFuIHdhcyBvcmln
+aW5hbGx5IGludGVuZGVkLg0KLUNocmlzDQoNCkFwb2xvZ2llcyBhcyB0aGlzIHdhcyBpbmhlcml0
+ZWQgcGF0Y2ggLCBJIGRpZCBub3QgY2hlY2sgaXQgLg0KDQpXaWxsIHJldmVydCBiYWNrIHRvIG9y
+aWdpbmFsIGNvZGUgYW5kIHJlbW92ZSAgZ2VtIHJlb3BlbiBhbmQgZ2VtIGNvbnRleHQgY29weSBl
+bmdpbmUgIC4NCg0KS2VlcCBpdCBpbiBsaW5lIHdpdGggb25lIG9mIGNvbW1lbnQgSSBnb3QgZm9y
+IG90aGVyIGNoYW5nZSAsIGdlbV9yZW9wZW5fZHJpdmVyIA0KU2hvdWxkbuKAmXQgYmUgdXNlZCAg
+YW5kIHdlIGNhbiBwYXNzIG9uIEZEIGRpcmVjdGx5IC4NCg0KQWxzbyBhZGQgYmFjayBBTExfRU5H
+SU5FUyAuIA0KDQpUaGFua3MgDQpBcmp1biBNDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZy
+ZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2lndC1kZXYK
