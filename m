@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 06 Apr 2020 10:48:15 -0000
-Message-ID: <158617009573.4194.1196679865240237258@emeril.freedesktop.org>
-References: <20200406085309.1585743-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200406085309.1585743-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9w?=
- =?utf-8?q?erf=5Fpmu=3A_Add_the_missing_igt=5Fdynamic_to_dynamic_rcs*_test?=
- =?utf-8?q?_selection?=
+Date: Mon, 06 Apr 2020 11:10:42 -0000
+Message-ID: <158617144247.4191.13422625169003532927@emeril.freedesktop.org>
+References: <20200406092024.1640627-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200406092024.1640627-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9z?=
+ =?utf-8?q?uspend=3A_Suspend_once_before_taking_forcewake_to_confirm_suspe?=
+ =?utf-8?q?nd?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,13 +26,13 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: i915/perf_pmu: Add the missing igt_dynamic to dynamic rcs* test selection
-URL   : https://patchwork.freedesktop.org/series/75533/
+Series: i915/suspend: Suspend once before taking forcewake to confirm suspend
+URL   : https://patchwork.freedesktop.org/series/75538/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_5572 -> IGTPW_4407
+CI Bug Log - changes from IGT_5572 -> IGTPW_4408
 ====================================================
 
 Summary
@@ -42,12 +42,12 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4407/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4408/index.html
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_4407 that come from known issues:
+  Here are the changes found in IGTPW_4408 that come from known issues:
 
 ### IGT changes ###
 
@@ -56,7 +56,7 @@ Known issues
   * igt@i915_pm_rpm@basic-rte:
     - fi-icl-dsi:         [INCOMPLETE][1] ([i915#189]) -> [PASS][2]
    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5572/fi-icl-dsi/igt@i915_pm_rpm@basic-rte.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4407/fi-icl-dsi/igt@i915_pm_rpm@basic-rte.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4408/fi-icl-dsi/igt@i915_pm_rpm@basic-rte.html
 
   
   [i915#189]: https://gitlab.freedesktop.org/drm/intel/issues/189
@@ -72,16 +72,16 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_5572 -> IGTPW_4407
+  * IGT: IGT_5572 -> IGTPW_4408
 
   CI-20190529: 20190529
   CI_DRM_8259: 450fc86b62651336f9b5fde79c068df7b4c95aa4 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4407: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4407/index.html
+  IGTPW_4408: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4408/index.html
   IGT_5572: 6c124b5c8501d900966c033ac86c3dc55c16a2da @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4407/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4408/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
