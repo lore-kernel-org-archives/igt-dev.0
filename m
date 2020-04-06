@@ -1,9 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon,  6 Apr 2020 10:37:26 +0100
-Message-Id: <20200406093726.1640834-1-chris@chris-wilson.co.uk>
+Date: Mon,  6 Apr 2020 12:00:26 +0100
+Message-Id: <20200406110026.1641189-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_tiled_fence_blits: Trim workload
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_busy: Drop i915_hangcheck_info
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,92 +19,27 @@ To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Similar to gem_tiled_blits and gem_linear_blits, we only need to just
-force the system to be thrashing the GTT for the test to be effective,
-so trim the working set to just a be one element larger than could fit,
-and parallelise the checking across multiple cpus.
+All the information for hangcheck is pulled into i915_engine_info so the
+separate dump is redundant.
 
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/1586
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Andi Shyti <andi.shyti@intel.com>
 ---
- tests/i915/gem_tiled_fence_blits.c | 37 ++++++++++++------------------
- 1 file changed, 15 insertions(+), 22 deletions(-)
+ tests/i915/gem_busy.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tests/i915/gem_tiled_fence_blits.c b/tests/i915/gem_tiled_fence_blits.c
-index 62fd13285..9de099485 100644
---- a/tests/i915/gem_tiled_fence_blits.c
-+++ b/tests/i915/gem_tiled_fence_blits.c
-@@ -156,7 +156,6 @@ static void run_test(int fd, int count)
- 		eb.flags = I915_EXEC_BLT;
- 
- 	count |= 1;
--	igt_info("Using %d 1MiB buffers\n", count);
- 
- 	bo = malloc(count * (sizeof(*bo) + sizeof(*bo_start_val)));
- 	igt_assert(bo);
-@@ -168,19 +167,6 @@ static void run_test(int fd, int count)
- 		start += width * height;
- 	}
- 
--	for (int dst = 0; dst < count; dst++) {
--		int src = count - dst - 1;
--
--		if (src == dst)
--			continue;
--
--		reloc[0].target_handle = obj[0].handle = bo[dst];
--		reloc[1].target_handle = obj[1].handle = bo[src];
--
--		gem_execbuf(fd, &eb);
--		bo_start_val[dst] = bo_start_val[src];
--	}
--
- 	for (int i = 0; i < count * 4; i++) {
- 		int src = random() % count;
- 		int dst = random() % count;
-@@ -208,6 +194,8 @@ static void run_test(int fd, int count)
- 
- igt_main
- {
-+	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
-+	uint64_t count = 0;
- 	int fd;
- 
- 	igt_fixture {
-@@ -215,20 +203,25 @@ igt_main
- 		igt_require_gem(fd);
- 		gem_require_blitter(fd);
- 		gem_require_mappable_ggtt(fd);
-+
-+		count = gem_aperture_size(fd);
-+		if (count >> 32)
-+			count = MAX_32b;
-+		count = 3 + count / (1024 * 1024);
-+		igt_require(count > 1);
-+		intel_require_memory(count, 1024 * 1024 , CHECK_RAM);
-+
-+		igt_debug("Using %'"PRIu64" 1MiB buffers\n", count);
-+		count = (count + ncpus - 1) / ncpus;
- 	}
- 
- 	igt_subtest("basic")
- 		run_test (fd, 2);
- 
- 	igt_subtest("normal") {
--		uint64_t count;
--
--		count = gem_aperture_size(fd);
--		if (count >> 32)
--			count = MAX_32b;
--		count = 3 * count / bo_size / 2;
--		intel_require_memory(count, bo_size, CHECK_RAM);
--		run_test(fd, count);
-+		igt_fork(child, ncpus)
-+			run_test(fd, count);
-+		igt_waitchildren();
- 	}
- 
- 	igt_fixture
+diff --git a/tests/i915/gem_busy.c b/tests/i915/gem_busy.c
+index 64e6fe6bd..5e4e2d939 100644
+--- a/tests/i915/gem_busy.c
++++ b/tests/i915/gem_busy.c
+@@ -452,7 +452,6 @@ static void basic(int fd, const struct intel_execution_engine2 *e, unsigned flag
+ 	while (gem_bo_busy(fd, spin->handle)) {
+ 		if (igt_seconds_elapsed(&tv) > timeout) {
+ 			igt_debugfs_dump(fd, "i915_engine_info");
+-			igt_debugfs_dump(fd, "i915_hangcheck_info");
+ 			igt_assert_f(igt_seconds_elapsed(&tv) < timeout,
+ 				     "%s batch did not complete within %ds\n",
+ 				     flags & HANG ? "Hanging" : "Normal",
 -- 
 2.26.0
 
