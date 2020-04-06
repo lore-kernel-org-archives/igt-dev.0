@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D8B56E048
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2020 09:38:31 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Date: Mon, 6 Apr 2020 09:38:27 +0000
-Message-ID: <cde69ea4f107426fa971f7f1e0fd1466@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89A8689D86
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2020 09:36:26 +0000 (UTC)
+Date: Mon, 6 Apr 2020 12:36:16 +0300
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20200406093616.nuehvsseattaqzsf@ahiler-desk1.fi.intel.com>
 References: <20200403114727.27760-1-janusz.krzysztofik@linux.intel.com>
  <158594195773.13350.14284714012767143910@emeril.freedesktop.org>
- <20200406093616.nuehvsseattaqzsf@ahiler-desk1.fi.intel.com>
-In-Reply-To: <20200406093616.nuehvsseattaqzsf@ahiler-desk1.fi.intel.com>
-Content-Language: en-US
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <158594195773.13350.14284714012767143910@emeril.freedesktop.org>
 Subject: Re: [igt-dev]
  =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliOiBG?=
  =?utf-8?q?ix_device_lists_not_cleaned_up_sufficiently_before_rescan_=28re?=
@@ -22,67 +21,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Hiler, Arkadiusz" <arkadiusz.hiler@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Peres, Martin" <martin.peres@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Lakshmi <lakshminarayana.vudum@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T2suIEkgaGF2ZSByZS1yZXBvcnRlZCBiZWxvdyBpc3N1ZXMsIGxvb2tzIGxpa2Ugd2UgaGF2ZSBh
-IGxvbmcgcXVldWUuDQoNCkxha3NobWkuDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJv
-bTogSGlsZXIsIEFya2FkaXVzeiA8YXJrYWRpdXN6LmhpbGVyQGludGVsLmNvbT4gDQpTZW50OiBN
-b25kYXksIEFwcmlsIDYsIDIwMjAgMTI6MzYgUE0NClRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
-dG9wLm9yZw0KQ2M6IEphbnVzeiBLcnp5c3p0b2ZpayA8amFudXN6LmtyenlzenRvZmlrQGxpbnV4
-LmludGVsLmNvbT47IFZ1ZHVtLCBMYWtzaG1pbmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1
-bUBpbnRlbC5jb20+DQpTdWJqZWN0OiBSZTogW2lndC1kZXZdIOKclyBGaS5DSS5JR1Q6IGZhaWx1
-cmUgZm9yIGxpYjogRml4IGRldmljZSBsaXN0cyBub3QgY2xlYW5lZCB1cCBzdWZmaWNpZW50bHkg
-YmVmb3JlIHJlc2NhbiAocmV2MikNCg0KT24gRnJpLCBBcHIgMDMsIDIwMjAgYXQgMDc6MjU6NTdQ
-TSArMDAwMCwgUGF0Y2h3b3JrIHdyb3RlOg0KPiA9PSBTZXJpZXMgRGV0YWlscyA9PQ0KPiANCj4g
-U2VyaWVzOiBsaWI6IEZpeCBkZXZpY2UgbGlzdHMgbm90IGNsZWFuZWQgdXAgc3VmZmljaWVudGx5
-IGJlZm9yZSByZXNjYW4gKHJldjIpDQo+IFVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRl
-c2t0b3Aub3JnL3Nlcmllcy83NDkyOS8NCj4gU3RhdGUgOiBmYWlsdXJlDQo+IA0KPiBQb3NzaWJs
-ZSBuZXcgaXNzdWVzDQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gDQo+ICAgSGVyZSBhcmUgdGhl
-IHVua25vd24gY2hhbmdlcyB0aGF0IG1heSBoYXZlIGJlZW4gaW50cm9kdWNlZCBpbiBJR1RQV180
-NDAxX2Z1bGw6DQo+IA0KPiAjIyMgSUdUIGNoYW5nZXMgIyMjDQo+IA0KPiAjIyMjIFBvc3NpYmxl
-IHJlZ3Jlc3Npb25zICMjIyMNCj4gDQo+ICAgKiBpZ3RAZ2VtX2Vpb0ByZXNldC1zdHJlc3M6DQo+
-ICAgICAtIHNoYXJkLXRnbGI6ICAgICAgICAgW1BBU1NdWzFdIC0+IFtJTkNPTVBMRVRFXVsyXQ0K
-PiAgICBbMV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUXzU1
-NjEvc2hhcmQtdGdsYjEvaWd0QGdlbV9laW9AcmVzZXQtc3RyZXNzLmh0bWwNCj4gICAgWzJdOiBo
-dHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzQ0MDEvc2hhcmQt
-dGdsYjgvaWd0QGdlbV9laW9AcmVzZXQtc3RyZXNzLmh0bWwNCj4gDQo+ICAgKiBpZ3RAZ2VtX21t
-YXBfZ3R0QGhhbmc6DQo+ICAgICAtIHNoYXJkLWljbGI6ICAgICAgICAgW1BBU1NdWzNdIC0+IFtG
-QUlMXVs0XQ0KPiAgICBbM106IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10
-aXAvSUdUXzU1NjEvc2hhcmQtaWNsYjEvaWd0QGdlbV9tbWFwX2d0dEBoYW5nLmh0bWwNCj4gICAg
-WzRdOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzQ0MDEv
-c2hhcmQtaWNsYjcvaWd0QGdlbV9tbWFwX2d0dEBoYW5nLmh0bWwNCj4gDQo+ICAgKiBpZ3RAZ2Vt
-X3RpbGVkX3N3YXBwaW5nQG5vbi10aHJlYWRlZDoNCj4gICAgIC0gc2hhcmQtYXBsOiAgICAgICAg
-ICBbUEFTU11bNV0gLT4gW0ZBSUxdWzZdDQo+ICAgIFs1XTogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RfNTU2MS9zaGFyZC1hcGw4L2lndEBnZW1fdGlsZWRfc3dh
-cHBpbmdAbm9uLXRocmVhZGVkLmh0bWwNCj4gICAgWzZdOiBodHRwczovL2ludGVsLWdmeC1jaS4w
-MS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzQ0MDEvc2hhcmQtYXBsNy9pZ3RAZ2VtX3RpbGVkX3N3
-YXBwaW5nQG5vbi10aHJlYWRlZC5odG1sDQo+ICAgICAtIHNoYXJkLWdsazogICAgICAgICAgW1BB
-U1NdWzddIC0+IFtGQUlMXVs4XQ0KPiAgICBbN106IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
-Zy90cmVlL2RybS10aXAvSUdUXzU1NjEvc2hhcmQtZ2xrOS9pZ3RAZ2VtX3RpbGVkX3N3YXBwaW5n
-QG5vbi10aHJlYWRlZC5odG1sDQo+ICAgIFs4XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3Jn
-L3RyZWUvZHJtLXRpcC9JR1RQV180NDAxL3NoYXJkLWdsazkvaWd0QGdlbV90aWxlZF9zd2FwcGlu
-Z0Bub24tdGhyZWFkZWQuaHRtbA0KPiAgICAgLSBzaGFyZC1rYmw6ICAgICAgICAgIFtQQVNTXVs5
-XSAtPiBbRkFJTF1bMTBdDQo+ICAgIFs5XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3Ry
-ZWUvZHJtLXRpcC9JR1RfNTU2MS9zaGFyZC1rYmw2L2lndEBnZW1fdGlsZWRfc3dhcHBpbmdAbm9u
-LXRocmVhZGVkLmh0bWwNCj4gICAgWzEwXTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3Ry
-ZWUvZHJtLXRpcC9JR1RQV180NDAxL3NoYXJkLWtibDYvaWd0QGdlbV90aWxlZF9zd2FwcGluZ0Bu
-b24tdGhyZWFkZWQuaHRtbA0KDQpBIGJ1bmNoIG9mIHVucmVsYXRlZCBHRU0gZmFpbHVyZXMuDQoN
-Ck90aGVyIHRoYW4gdGhhdCB0aGUgcmVzdWx0cyBsb29rIGNsZWFuLCBzbyBJIGhhdmUgbWVyZ2Vk
-IHRoZSBwYXRjaC4NClRoYW5rcyENCg0KLS0gDQpDaGVlcnMsDQpBcmVrDQotLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
-SW50ZWwgRmlubGFuZCBPeQpSZWdpc3RlcmVkIEFkZHJlc3M6IFBMIDI4MSwgMDAxODEgSGVsc2lu
-a2kgCkJ1c2luZXNzIElkZW50aXR5IENvZGU6IDAzNTc2MDYgLSA0IApEb21pY2lsZWQgaW4gSGVs
-c2lua2kgCgpUaGlzIGUtbWFpbCBhbmQgYW55IGF0dGFjaG1lbnRzIG1heSBjb250YWluIGNvbmZp
-ZGVudGlhbCBtYXRlcmlhbCBmb3IKdGhlIHNvbGUgdXNlIG9mIHRoZSBpbnRlbmRlZCByZWNpcGll
-bnQocykuIEFueSByZXZpZXcgb3IgZGlzdHJpYnV0aW9uCmJ5IG90aGVycyBpcyBzdHJpY3RseSBw
-cm9oaWJpdGVkLiBJZiB5b3UgYXJlIG5vdCB0aGUgaW50ZW5kZWQKcmVjaXBpZW50LCBwbGVhc2Ug
-Y29udGFjdCB0aGUgc2VuZGVyIGFuZCBkZWxldGUgYWxsIGNvcGllcy4KX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0
-LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On Fri, Apr 03, 2020 at 07:25:57PM +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: lib: Fix device lists not cleaned up sufficiently before rescan (rev2)
+> URL   : https://patchwork.freedesktop.org/series/74929/
+> State : failure
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_4401_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_eio@reset-stress:
+>     - shard-tglb:         [PASS][1] -> [INCOMPLETE][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5561/shard-tglb1/igt@gem_eio@reset-stress.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4401/shard-tglb8/igt@gem_eio@reset-stress.html
+> 
+>   * igt@gem_mmap_gtt@hang:
+>     - shard-iclb:         [PASS][3] -> [FAIL][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5561/shard-iclb1/igt@gem_mmap_gtt@hang.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4401/shard-iclb7/igt@gem_mmap_gtt@hang.html
+> 
+>   * igt@gem_tiled_swapping@non-threaded:
+>     - shard-apl:          [PASS][5] -> [FAIL][6]
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5561/shard-apl8/igt@gem_tiled_swapping@non-threaded.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4401/shard-apl7/igt@gem_tiled_swapping@non-threaded.html
+>     - shard-glk:          [PASS][7] -> [FAIL][8]
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5561/shard-glk9/igt@gem_tiled_swapping@non-threaded.html
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4401/shard-glk9/igt@gem_tiled_swapping@non-threaded.html
+>     - shard-kbl:          [PASS][9] -> [FAIL][10]
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5561/shard-kbl6/igt@gem_tiled_swapping@non-threaded.html
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4401/shard-kbl6/igt@gem_tiled_swapping@non-threaded.html
+
+A bunch of unrelated GEM failures.
+
+Other than that the results look clean, so I have merged the patch.
+Thanks!
+
+-- 
+Cheers,
+Arek
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
