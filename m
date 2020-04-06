@@ -1,12 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Mon,  6 Apr 2020 18:32:36 +0200
-Message-Id: <20200406163237.28293-2-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20200406163237.28293-1-janusz.krzysztofik@linux.intel.com>
-References: <20200406163237.28293-1-janusz.krzysztofik@linux.intel.com>
+Date: Mon,  6 Apr 2020 18:32:35 +0200
+Message-Id: <20200406163237.28293-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/gem_userptr_blits: Refresh
- readonly-mmap-unsync exercise
+Subject: [igt-dev] [PATCH i-g-t v2 0/2] tests/gem_userptr_blits: Refresh
+ still MMAP_GTT dependent subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,55 +12,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>, Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VXBncmFkZSB0aGUgc3VidGVzdCB0byB1c2UgTU1BUF9HVFQgQVBJIHY0IChha2EgTU1BUF9PRkZT
-RVQpLApkeW5hbWljYWxseSBleGFtaW5lIGVhY2ggbWFwcGluZyB0eXBlIHN1cHBvcnRlZCBieSBp
-OTE1IGRyaXZlci4KClNpZ25lZC1vZmYtYnk6IEphbnVzeiBLcnp5c3p0b2ZpayA8amFudXN6Lmty
-enlzenRvZmlrQGxpbnV4LmludGVsLmNvbT4KUmV2aWV3ZWQtYnk6IFpiaWduaWV3IEtlbXBjennF
-hHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgotLS0KIHRlc3RzL2k5MTUvZ2Vt
-X3VzZXJwdHJfYmxpdHMuYyB8IDIxICsrKysrKysrKysrKysrKystLS0tLQogMSBmaWxlIGNoYW5n
-ZWQsIDE2IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMv
-aTkxNS9nZW1fdXNlcnB0cl9ibGl0cy5jIGIvdGVzdHMvaTkxNS9nZW1fdXNlcnB0cl9ibGl0cy5j
-CmluZGV4IGJlY2VkMjk4YS4uOTc1Y2Q5ZGFiIDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2dlbV91
-c2VycHRyX2JsaXRzLmMKKysrIGIvdGVzdHMvaTkxNS9nZW1fdXNlcnB0cl9ibGl0cy5jCkBAIC0x
-Mjc3LDcgKzEyNzcsNyBAQCBzdGF0aWMgdm9pZCBzaWdqbXBfaGFuZGxlcihpbnQgc2lnKQogCXNp
-Z2xvbmdqbXAoc2lnam1wLCBzaWcpOwogfQogCi1zdGF0aWMgdm9pZCB0ZXN0X3JlYWRvbmx5X21t
-YXAoaW50IGk5MTUpCitzdGF0aWMgdm9pZCB0ZXN0X3JlYWRvbmx5X21tYXAoaW50IGk5MTUsIGNv
-bnN0IHN0cnVjdCBtbWFwX29mZnNldCAqdCkKIHsKIAljaGFyICpvcmlnaW5hbCwgKnJlc3VsdDsK
-IAl1aW50MzJfdCBoYW5kbGU7CkBAIC0xMjk0LDYgKzEyOTQsMTQgQEAgc3RhdGljIHZvaWQgdGVz
-dF9yZWFkb25seV9tbWFwKGludCBpOTE1KQogCSAqIG9uIHRoZSBHUFUgYXMgd2VsbC4KIAkgKi8K
-IAorCWhhbmRsZSA9IGdlbV9jcmVhdGUoaTkxNSwgUEFHRV9TSVpFKTsKKwlwdHIgPSBfX2dlbV9t
-bWFwX29mZnNldChpOTE1LCBoYW5kbGUsIDAsIFBBR0VfU0laRSwKKwkJCQlQUk9UX1JFQUQgfCBQ
-Uk9UX1dSSVRFLCB0LT50eXBlKTsKKwlnZW1fY2xvc2UoaTkxNSwgaGFuZGxlKTsKKwlpZ3RfcmVx
-dWlyZV9mKHB0ciwgIkhXICYga2VybmVsIHN1cHBvcnQgZm9yIG1tYXAtb2Zmc2V0KCVzKVxuIiwK
-KwkJICAgICAgdC0+bmFtZSk7CisJbXVubWFwKHB0ciwgUEFHRV9TSVpFKTsKKwogCWlndF9yZXF1
-aXJlKGlndF9zZXR1cF9jbGZsdXNoKCkpOwogCiAJc3ogPSAxNiA8PCAxMjsKQEAgLTEzMDcsMTEg
-KzEzMTUsMTEgQEAgc3RhdGljIHZvaWQgdGVzdF9yZWFkb25seV9tbWFwKGludCBpOTE1KQogCWln
-dF9jbGZsdXNoX3JhbmdlKHBhZ2VzLCBzeik7CiAJb3JpZ2luYWwgPSBnX2NvbXB1dGVfY2hlY2tz
-dW1fZm9yX2RhdGEoR19DSEVDS1NVTV9TSEExLCBwYWdlcywgc3opOwogCi0JcHRyID0gX19nZW1f
-bW1hcF9fZ3R0KGk5MTUsIGhhbmRsZSwgc3osIFBST1RfV1JJVEUpOworCXB0ciA9IF9fZ2VtX21t
-YXBfb2Zmc2V0KGk5MTUsIGhhbmRsZSwgMCwgc3osIFBST1RfV1JJVEUsIHQtPnR5cGUpOwogCWln
-dF9hc3NlcnQocHRyID09IE5VTEwpOwogCiAJLyogT3B0aW9uYWwga2VybmVsIHN1cHBvcnQgZm9y
-IEdUVCBtbWFwcyBvZiB1c2VycHRyICovCi0JcHRyID0gX19nZW1fbW1hcF9fZ3R0KGk5MTUsIGhh
-bmRsZSwgc3osIFBST1RfUkVBRCk7CisJcHRyID0gX19nZW1fbW1hcF9vZmZzZXQoaTkxNSwgaGFu
-ZGxlLCAwLCBzeiwgUFJPVF9SRUFELCB0LT50eXBlKTsKIAlnZW1fY2xvc2UoaTkxNSwgaGFuZGxl
-KTsKIAogCWlmIChwdHIpIHsgLyogQ2hlY2sgdGhhdCBhIHdyaXRlIGludG8gdGhlIEdUVCByZWFk
-b25seSBtYXAgZmFpbHMgKi8KQEAgLTIxMTAsOCArMjExOCwxMSBAQCBpZ3RfbWFpbl9hcmdzKCJj
-OiIsIE5VTEwsIGhlbHBfc3RyLCBvcHRfaGFuZGxlciwgTlVMTCkKIAkJaWd0X3N1YnRlc3QoInJl
-YWRvbmx5LXVuc3luYyIpCiAJCQl0ZXN0X3JlYWRvbmx5KGZkKTsKIAotCQlpZ3Rfc3VidGVzdCgi
-cmVhZG9ubHktbW1hcC11bnN5bmMiKQotCQkJdGVzdF9yZWFkb25seV9tbWFwKGZkKTsKKwkJaWd0
-X2Rlc2NyaWJlKCJFeGFtaW5lIG1tYXAtb2Zmc2V0IG1hcHBpbmcgdG8gcmVhZC1vbmx5IHVzZXJw
-dHIiKTsKKwkJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJyZWFkb25seS1tbWFwLXVuc3luYyIp
-CisJCQlmb3JfZWFjaF9tbWFwX29mZnNldF90eXBlKGZkLCB0KQorCQkJCWlndF9keW5hbWljKHQt
-Pm5hbWUpCisJCQkJCXRlc3RfcmVhZG9ubHlfbW1hcChmZCwgdCk7CiAKIAkJaWd0X3N1YnRlc3Qo
-InJlYWRvbmx5LXB3cml0ZS11bnN5bmMiKQogCQkJdGVzdF9yZWFkb25seV9wd3JpdGUoZmQpOwot
-LSAKMi4yMS4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
-czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+Refresh subtests which are still using pre-v4 MMAP_GTT API.
+
+v2: Patch 2/2: clear 'map' before reuse (Zbigniew).
+
+Janusz Krzysztofik (2):
+  tests/gem_userptr_blits: Refresh readonly-mmap-unsync exercise
+  tests/gem_userptr_blits: Refresh other still MMAP_GTT dependent
+    subtests
+
+ tests/i915/gem_userptr_blits.c | 132 ++++++++++++++++++++++++---------
+ 1 file changed, 97 insertions(+), 35 deletions(-)
+
+-- 
+2.21.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
