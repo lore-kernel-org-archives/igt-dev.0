@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA96C6E30E
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2020 09:14:01 +0000 (UTC)
-From: Arjun Melkaveri <arjun.melkaveri@intel.com>
-Date: Mon,  6 Apr 2020 14:42:46 +0530
-Message-Id: <20200406091246.23951-1-arjun.melkaveri@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B7FF6E2EC
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2020 09:19:25 +0000 (UTC)
+From: "Melkaveri, Arjun" <arjun.melkaveri@intel.com>
+Date: Mon, 6 Apr 2020 09:19:20 +0000
+Message-ID: <CA3CE573A55781488FA37084931071AB14DD503F@BGSMSX105.gar.corp.intel.com>
+References: <20200406091246.23951-1-arjun.melkaveri@intel.com>
+In-Reply-To: <20200406091246.23951-1-arjun.melkaveri@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] [PATCH i-g-t][V2]tests/i915/gem_sync.c :Added
+Subject: Re: [igt-dev] [PATCH] [PATCH i-g-t][V2]tests/i915/gem_sync.c :Added
  __for_each_physical_engine to utilize all available
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -19,19 +22,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Replaced the legacy for_each_engine* defines with the ones
-implemented in the gem_engine_topology library.
+Changes and version is continuing of review from 
+https://patchwork.freedesktop.org/patch/355243/?series=73955&rev=1 
+
+Thanks 
+Arjun M
+
+-----Original Message-----
+From: Melkaveri, Arjun <arjun.melkaveri@intel.com> 
+Sent: Monday, April 6, 2020 2:43 PM
+To: Melkaveri, Arjun <arjun.melkaveri@intel.com>; igt-dev@lists.freedesktop.org
+Subject: [PATCH] [PATCH i-g-t][V2]tests/i915/gem_sync.c :Added __for_each_physical_engine to utilize all available
+
+Replaced the legacy for_each_engine* defines with the ones implemented in the gem_engine_topology library.
 
 Used  gem_context_clone_with_engines
-to make sure that engine index was potentially created
-based on a  default context with engine map configured.
+to make sure that engine index was potentially created based on a  default context with engine map configured.
 
-Added gem_reopen_driver and gem_context_copy_engines
-to transfer the engine map from parent fd default
-context.
+Added gem_reopen_driver and gem_context_copy_engines to transfer the engine map from parent fd default context.
 
 V2:
 Added Legacy engine coverage for sync_ring and sync_all.
@@ -44,8 +55,7 @@ Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
  tests/i915/gem_sync.c | 566 +++++++++++++++++++++++++-----------------
  1 file changed, 343 insertions(+), 223 deletions(-)
 
-diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
-index 2ef55ecc..8efa0668 100644
+diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c index 2ef55ecc..8efa0668 100644
 --- a/tests/i915/gem_sync.c
 +++ b/tests/i915/gem_sync.c
 @@ -79,52 +79,56 @@ out:
@@ -117,8 +127,7 @@ index 2ef55ecc..8efa0668 100644
 +				gem_sync(i915, object.handle);
  			} while (++cycles & 1023);
  		} while ((elapsed = gettime() - start) < timeout);
- 		igt_info("%s%sompleted %ld cycles: %.3f us\n",
-@@ -132,14 +136,14 @@ sync_ring(int fd, unsigned ring, int num_children, int timeout)
+ 		igt_info("%s%sompleted %ld cycles: %.3f us\n", @@ -132,14 +136,14 @@ sync_ring(int fd, unsigned ring, int num_children, int timeout)
  			 names[child % num_engines] ? " c" : "C",
  			 cycles, elapsed*1e6/cycles);
  
@@ -126,16 +135,14 @@ index 2ef55ecc..8efa0668 100644
 +		gem_close(i915, object.handle);
  	}
  	igt_waitchildren_timeout(timeout+10, NULL);
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
- }
+ 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);  }
  
  static void
 -idle_ring(int fd, unsigned ring, int timeout)
 +idle_ring(int fd, const struct intel_execution_engine2 *e, int timeout)
  {
  	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct drm_i915_gem_exec_object2 object;
-@@ -147,7 +151,6 @@ idle_ring(int fd, unsigned ring, int timeout)
+ 	struct drm_i915_gem_exec_object2 object; @@ -147,7 +151,6 @@ idle_ring(int fd, unsigned ring, int timeout)
  	double start, elapsed;
  	unsigned long cycles;
  
@@ -152,8 +159,7 @@ index 2ef55ecc..8efa0668 100644
  	gem_execbuf(fd, &execbuf);
  	gem_sync(fd, object.handle);
  
-@@ -178,32 +181,34 @@ idle_ring(int fd, unsigned ring, int timeout)
- }
+@@ -178,32 +181,34 @@ idle_ring(int fd, unsigned ring, int timeout)  }
  
  static void
 -wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
@@ -195,8 +201,7 @@ index 2ef55ecc..8efa0668 100644
 +		int i915;
  		const uint32_t bbe = MI_BATCH_BUFFER_END;
  		struct drm_i915_gem_exec_object2 object;
- 		struct drm_i915_gem_execbuffer2 execbuf;
-@@ -211,9 +216,11 @@ wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
+ 		struct drm_i915_gem_execbuffer2 execbuf; @@ -211,9 +216,11 @@ wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
  		unsigned long cycles;
  		igt_spin_t *spin;
  
@@ -209,8 +214,7 @@ index 2ef55ecc..8efa0668 100644
 +		gem_write(i915, object.handle, 0, &bbe, sizeof(bbe));
  
  		memset(&execbuf, 0, sizeof(execbuf));
- 		execbuf.buffers_ptr = to_user_pointer(&object);
-@@ -226,10 +233,10 @@ wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
+ 		execbuf.buffers_ptr = to_user_pointer(&object); @@ -226,10 +233,10 @@ wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
  						IGT_SPIN_FAST));
  		igt_assert(igt_spin_has_poll(spin));
  
@@ -267,8 +271,7 @@ index 2ef55ecc..8efa0668 100644
 +		gem_close(i915, object.handle);
  	}
  	igt_waitchildren_timeout(2*timeout, NULL);
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
- }
+ 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);  }
  
 -static void active_ring(int fd, unsigned ring, int timeout)
 +static void active_ring(int fd, const struct intel_execution_engine2 *e,
@@ -347,8 +350,7 @@ index 2ef55ecc..8efa0668 100644
  
  		igt_info("%s%sompleted %ld cycles: %.3f us\n",
  			 names[child % num_engines] ?: "",
-@@ -357,32 +368,34 @@ static void active_ring(int fd, unsigned ring, int timeout)
- }
+@@ -357,32 +368,34 @@ static void active_ring(int fd, unsigned ring, int timeout)  }
  
  static void
 -active_wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
@@ -390,8 +392,7 @@ index 2ef55ecc..8efa0668 100644
 +		int i915;
  		const uint32_t bbe = MI_BATCH_BUFFER_END;
  		struct drm_i915_gem_exec_object2 object;
- 		struct drm_i915_gem_execbuffer2 execbuf;
-@@ -390,36 +403,38 @@ active_wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
+ 		struct drm_i915_gem_execbuffer2 execbuf; @@ -390,36 +403,38 @@ active_wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
  		unsigned long cycles;
  		igt_spin_t *spin[2];
  
@@ -491,8 +492,7 @@ index 2ef55ecc..8efa0668 100644
 +		gem_close(i915, object.handle);
  	}
  	igt_waitchildren_timeout(2*timeout, NULL);
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
- }
+ 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);  }
  
  static void
 -store_ring(int fd, unsigned ring, int num_children, int timeout)
@@ -536,8 +536,7 @@ index 2ef55ecc..8efa0668 100644
 +		int i915;
  		const uint32_t bbe = MI_BATCH_BUFFER_END;
  		struct drm_i915_gem_exec_object2 object[2];
- 		struct drm_i915_gem_relocation_entry reloc[1024];
-@@ -527,6 +544,8 @@ store_ring(int fd, unsigned ring, int num_children, int timeout)
+ 		struct drm_i915_gem_relocation_entry reloc[1024]; @@ -527,6 +544,8 @@ store_ring(int fd, unsigned ring, int num_children, int timeout)
  		unsigned long cycles;
  		uint32_t *batch, *b;
  
@@ -545,8 +544,7 @@ index 2ef55ecc..8efa0668 100644
 +		gem_context_copy_engines(fd, 0, i915, 0);
  		memset(&execbuf, 0, sizeof(execbuf));
  		execbuf.buffers_ptr = to_user_pointer(object);
- 		execbuf.flags = engines[child % num_engines];
-@@ -536,20 +555,20 @@ store_ring(int fd, unsigned ring, int num_children, int timeout)
+ 		execbuf.flags = engines[child % num_engines]; @@ -536,20 +555,20 @@ store_ring(int fd, unsigned ring, int num_children, int timeout)
  			execbuf.flags |= I915_EXEC_SECURE;
  
  		memset(object, 0, sizeof(object));
@@ -592,8 +590,7 @@ index 2ef55ecc..8efa0668 100644
 +				gem_sync(i915, object[1].handle);
  			} while (++cycles & 1023);
  		} while ((elapsed = gettime() - start) < timeout);
- 		igt_info("%s%sompleted %ld cycles: %.3f us\n",
-@@ -598,16 +617,18 @@ store_ring(int fd, unsigned ring, int num_children, int timeout)
+ 		igt_info("%s%sompleted %ld cycles: %.3f us\n", @@ -598,16 +617,18 @@ store_ring(int fd, unsigned ring, int num_children, int timeout)
  			 names[child % num_engines] ? " c" : "C",
  			 cycles, elapsed*1e6/cycles);
  
@@ -603,8 +600,7 @@ index 2ef55ecc..8efa0668 100644
 +		gem_close(i915, object[0].handle);
  	}
  	igt_waitchildren_timeout(timeout+10, NULL);
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
- }
+ 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);  }
  
  static void
 -switch_ring(int fd, unsigned ring, int num_children, int timeout)
@@ -651,8 +647,7 @@ index 2ef55ecc..8efa0668 100644
 +		uint32_t ctx;
  		struct context {
  			struct drm_i915_gem_exec_object2 object[2];
- 			struct drm_i915_gem_relocation_entry reloc[1024];
-@@ -643,7 +665,13 @@ switch_ring(int fd, unsigned ring, int num_children, int timeout)
+ 			struct drm_i915_gem_relocation_entry reloc[1024]; @@ -643,7 +665,13 @@ switch_ring(int fd, unsigned ring, int num_children, int timeout)
  		} contexts[2];
  		double elapsed, baseline;
  		unsigned long cycles;
@@ -697,8 +692,7 @@ index 2ef55ecc..8efa0668 100644
 +			gem_set_domain(i915, c->object[1].handle,
  					I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
  
- 			memset(c->reloc, 0, sizeof(c->reloc));
-@@ -707,8 +735,8 @@ switch_ring(int fd, unsigned ring, int num_children, int timeout)
+ 			memset(c->reloc, 0, sizeof(c->reloc)); @@ -707,8 +735,8 @@ switch_ring(int fd, unsigned ring, int num_children, int timeout)
  			igt_assert((b - batch)*sizeof(uint32_t) < sz);
  			munmap(batch, sz);
  			c->execbuf.buffer_count = 2;
@@ -757,9 +751,7 @@ index 2ef55ecc..8efa0668 100644
 +			gem_context_destroy(i915, contexts[i].execbuf.rsvd1);
  		}
  	}
- 	igt_waitchildren_timeout(timeout+10, NULL);
-@@ -803,7 +831,8 @@ static void *waiter(void *arg)
- }
+ 	igt_waitchildren_timeout(timeout+10, NULL); @@ -803,7 +831,8 @@ static void *waiter(void *arg)  }
  
  static void
 -__store_many(int fd, unsigned ring, int timeout, unsigned long *cycles)
@@ -767,8 +759,7 @@ index 2ef55ecc..8efa0668 100644
 +	     int timeout, unsigned long *cycles)
  {
  	const int gen = intel_gen(intel_get_drm_devid(fd));
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
-@@ -817,7 +846,7 @@ __store_many(int fd, unsigned ring, int timeout, unsigned long *cycles)
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END; @@ -817,7 +846,7 @@ __store_many(int fd, unsigned ring, int timeout, unsigned long *cycles)
  
  	memset(&execbuf, 0, sizeof(execbuf));
  	execbuf.buffers_ptr = to_user_pointer(object);
@@ -777,12 +768,12 @@ index 2ef55ecc..8efa0668 100644
  	execbuf.flags |= LOCAL_I915_EXEC_NO_RELOC;
  	execbuf.flags |= LOCAL_I915_EXEC_HANDLE_LUT;
  	if (gen < 6)
-@@ -931,8 +960,9 @@ __store_many(int fd, unsigned ring, int timeout, unsigned long *cycles)
- }
+@@ -931,8 +960,9 @@ __store_many(int fd, unsigned ring, int timeout, unsigned long *cycles)  }
  
  static void
 -store_many(int fd, unsigned ring, int timeout)
-+store_many(int fd, const struct intel_execution_engine2 *e, int timeout)
++store_many(int fd, const struct intel_execution_engine2 *e, int 
++timeout)
  {
 +	const struct intel_execution_engine2 *e2;
  	unsigned long *shared;
@@ -820,10 +811,7 @@ index 2ef55ecc..8efa0668 100644
  		names[n++] = NULL;
  	}
  
-@@ -1025,15 +1054,16 @@ sync_all(int fd, int num_children, int timeout)
- static void
- store_all(int fd, int num_children, int timeout)
- {
+@@ -1025,15 +1054,16 @@ sync_all(int fd, int num_children, int timeout)  static void  store_all(int fd, int num_children, int timeout)  {
 +	const struct intel_execution_engine2 *e;
  	const int gen = intel_gen(intel_get_drm_devid(fd));
  	unsigned engines[16];
@@ -847,8 +835,7 @@ index 2ef55ecc..8efa0668 100644
 +		int i915;
  		const uint32_t bbe = MI_BATCH_BUFFER_END;
  		struct drm_i915_gem_exec_object2 object[2];
- 		struct drm_i915_gem_relocation_entry reloc[1024];
-@@ -1049,6 +1080,8 @@ store_all(int fd, int num_children, int timeout)
+ 		struct drm_i915_gem_relocation_entry reloc[1024]; @@ -1049,6 +1080,8 @@ store_all(int fd, int num_children, int timeout)
  		unsigned long cycles;
  		uint32_t *batch, *b;
  
@@ -856,8 +843,7 @@ index 2ef55ecc..8efa0668 100644
 +		gem_context_copy_engines(fd, 0, i915, 0);
  		memset(&execbuf, 0, sizeof(execbuf));
  		execbuf.buffers_ptr = to_user_pointer(object);
- 		execbuf.flags |= LOCAL_I915_EXEC_NO_RELOC;
-@@ -1057,20 +1090,20 @@ store_all(int fd, int num_children, int timeout)
+ 		execbuf.flags |= LOCAL_I915_EXEC_NO_RELOC; @@ -1057,20 +1090,20 @@ store_all(int fd, int num_children, int timeout)
  			execbuf.flags |= I915_EXEC_SECURE;
  
  		memset(object, 0, sizeof(object));
@@ -915,8 +901,7 @@ index 2ef55ecc..8efa0668 100644
 +		gem_close(i915, object[0].handle);
  	}
  	igt_waitchildren_timeout(timeout+10, NULL);
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
- }
+ 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);  }
  
  static void
 -preempt(int fd, unsigned ring, int num_children, int timeout)
@@ -1226,7 +1211,7 @@ index 2ef55ecc..8efa0668 100644
  	igt_fixture {
  		igt_stop_hang_detector();
  		close(fd);
--- 
+--
 2.25.1
 
 _______________________________________________
