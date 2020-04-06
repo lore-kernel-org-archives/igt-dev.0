@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 89A8689D86
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2020 09:36:26 +0000 (UTC)
-Date: Mon, 6 Apr 2020 12:36:16 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200406093616.nuehvsseattaqzsf@ahiler-desk1.fi.intel.com>
-References: <20200403114727.27760-1-janusz.krzysztofik@linux.intel.com>
- <158594195773.13350.14284714012767143910@emeril.freedesktop.org>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DCD06E048
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Apr 2020 09:50:32 +0000 (UTC)
+Date: Mon, 6 Apr 2020 12:50:21 +0300
+From: Imre Deak <imre.deak@intel.com>
+Message-ID: <20200406095021.GC29716@ideak-desk.fi.intel.com>
+References: <20200403130306.1272436-1-arkadiusz.hiler@intel.com>
+ <20200403130306.1272436-2-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <158594195773.13350.14284714012767143910@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliOiBG?=
- =?utf-8?q?ix_device_lists_not_cleaned_up_sufficiently_before_rescan_=28re?=
- =?utf-8?b?djIp?=
+In-Reply-To: <20200403130306.1272436-2-arkadiusz.hiler@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/6] tests/kms_dp_dsc: Explicitly enable
+ mode before DSC checks
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,59 +19,191 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: imre.deak@intel.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Lakshmi <lakshminarayana.vudum@intel.com>
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Apr 03, 2020 at 07:25:57PM +0000, Patchwork wrote:
-> == Series Details ==
+On Fri, Apr 03, 2020 at 04:03:02PM +0300, Arkadiusz Hiler wrote:
+> The test was depending on a leftover mode set by something external
+> (usually fbcon) in order to work.
 > 
-> Series: lib: Fix device lists not cleaned up sufficiently before rescan (rev2)
-> URL   : https://patchwork.freedesktop.org/series/74929/
-> State : failure
+> Let's create the FB once ahead of any testing, set a mode and check for
+> DSC support.
 > 
-> Possible new issues
-> -------------------
+> Few extra cleanups:
+>  * remove unused fields in data_t
+>  * properly free connector
+>  * don't recreate FB while iterating over pipes
 > 
->   Here are the unknown changes that may have been introduced in IGTPW_4401_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@gem_eio@reset-stress:
->     - shard-tglb:         [PASS][1] -> [INCOMPLETE][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5561/shard-tglb1/igt@gem_eio@reset-stress.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4401/shard-tglb8/igt@gem_eio@reset-stress.html
-> 
->   * igt@gem_mmap_gtt@hang:
->     - shard-iclb:         [PASS][3] -> [FAIL][4]
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5561/shard-iclb1/igt@gem_mmap_gtt@hang.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4401/shard-iclb7/igt@gem_mmap_gtt@hang.html
-> 
->   * igt@gem_tiled_swapping@non-threaded:
->     - shard-apl:          [PASS][5] -> [FAIL][6]
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5561/shard-apl8/igt@gem_tiled_swapping@non-threaded.html
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4401/shard-apl7/igt@gem_tiled_swapping@non-threaded.html
->     - shard-glk:          [PASS][7] -> [FAIL][8]
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5561/shard-glk9/igt@gem_tiled_swapping@non-threaded.html
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4401/shard-glk9/igt@gem_tiled_swapping@non-threaded.html
->     - shard-kbl:          [PASS][9] -> [FAIL][10]
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5561/shard-kbl6/igt@gem_tiled_swapping@non-threaded.html
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4401/shard-kbl6/igt@gem_tiled_swapping@non-threaded.html
+> Cc: Imre Deak <imre.deak@intel.com>
+> Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 
-A bunch of unrelated GEM failures.
+Looks ok:
+Reviewed-by: Imre Deak <imre.deak@intel.com>
 
-Other than that the results look clean, so I have merged the patch.
-Thanks!
-
--- 
-Cheers,
-Arek
+> ---
+>  tests/kms_dp_dsc.c | 73 +++++++++++++++++++++++++++++++++-------------
+>  1 file changed, 53 insertions(+), 20 deletions(-)
+> 
+> diff --git a/tests/kms_dp_dsc.c b/tests/kms_dp_dsc.c
+> index e2e3aaa0..7107fe59 100644
+> --- a/tests/kms_dp_dsc.c
+> +++ b/tests/kms_dp_dsc.c
+> @@ -52,15 +52,11 @@ enum dsc_test_type
+>  typedef struct {
+>  	int drm_fd;
+>  	int debugfs_fd;
+> -	uint32_t id;
+>  	igt_display_t display;
+>  	struct igt_fb fb_test_pattern;
+>  	igt_output_t *output;
+> -	int mode_valid;
+>  	drmModeModeInfo *mode;
+>  	drmModeConnector *connector;
+> -	drmModeEncoder *encoder;
+> -	int crtc;
+>  	enum pipe pipe;
+>  	char conn_name[128];
+>  } data_t;
+> @@ -168,7 +164,6 @@ static void test_cleanup(data_t *data)
+>  						    DRM_PLANE_TYPE_PRIMARY);
+>  		igt_plane_set_fb(primary, NULL);
+>  		igt_display_commit(&data->display);
+> -		igt_remove_fb(data->drm_fd, &data->fb_test_pattern);
+>  	}
+>  }
+>  
+> @@ -185,8 +180,6 @@ static void kms_dp_dsc_exit_handler(int sig)
+>  static void update_display(data_t *data, enum dsc_test_type test_type)
+>  {
+>  	igt_plane_t *primary;
+> -	data->mode = igt_output_get_mode(data->output);
+> -	data->connector = data->output->config.connector;
+>  
+>  	if (data->connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
+>  	    data->pipe == PIPE_A) {
+> @@ -206,11 +199,6 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+>  		force_dp_dsc_enable(data);
+>  
+>  		igt_output_set_pipe(data->output, data->pipe);
+> -		igt_create_pattern_fb(data->drm_fd, data->mode->hdisplay,
+> -				      data->mode->vdisplay,
+> -				      DRM_FORMAT_XRGB8888,
+> -				      LOCAL_DRM_FORMAT_MOD_NONE,
+> -				      &data->fb_test_pattern);
+>  		primary = igt_output_get_plane_type(data->output,
+>  						    DRM_PLANE_TYPE_PRIMARY);
+>  
+> @@ -236,16 +224,52 @@ static void update_display(data_t *data, enum dsc_test_type test_type)
+>  	}
+>  }
+>  
+> -static void run_test(data_t *data, igt_output_t *output,
+> -		     enum dsc_test_type test_type)
+> +static void prepare_output(data_t *data, igt_output_t *output)
+>  {
+> +	igt_plane_t *primary;
+>  	enum pipe pipe;
+> +	bool found = false;
+> +	drmModeModeInfo *mode;
+>  
+> -	for_each_pipe(&data->display, pipe) {
+> +	igt_display_reset(&data->display);
+>  
+> +	for_each_pipe(&data->display, pipe) {
+>  		if (igt_pipe_connector_valid(pipe, output)) {
+>  			data->pipe = pipe;
+>  			data->output = output;
+> +			data->connector = data->output->config.connector;
+> +			found = true;
+> +			break;
+> +		}
+> +	}
+> +
+> +	igt_assert_f(found, "No valid pipe for connector %s\n", data->conn_name);
+> +
+> +	mode = igt_output_get_mode(data->output);
+> +
+> +	igt_output_set_pipe(data->output, data->pipe);
+> +	igt_create_pattern_fb(data->drm_fd, mode->hdisplay,
+> +			      mode->vdisplay,
+> +			      DRM_FORMAT_XRGB8888,
+> +			      LOCAL_DRM_FORMAT_MOD_NONE,
+> +			      &data->fb_test_pattern);
+> +
+> +	igt_output_set_pipe(data->output, data->pipe);
+> +	primary = igt_output_get_plane_type(data->output,
+> +					    DRM_PLANE_TYPE_PRIMARY);
+> +
+> +	igt_plane_set_fb(primary, &data->fb_test_pattern);
+> +	igt_display_commit(&data->display);
+> +}
+> +
+> +static void run_test(data_t *data, enum dsc_test_type test_type)
+> +{
+> +	enum pipe pipe;
+> +
+> +	for_each_pipe(&data->display, pipe) {
+> +
+> +		if (igt_pipe_connector_valid(pipe, data->output)) {
+> +			data->pipe = pipe;
+>  			update_display(data, test_type);
+>  			test_cleanup(data);
+>  		}
+> @@ -281,31 +305,40 @@ igt_main
+>  				if (connector->connection != DRM_MODE_CONNECTED ||
+>  				    connector->connector_type !=
+>  				    tests[test_cnt])
+> -					continue;
+> +					goto loop_cleanup;
+> +
+>  				output = igt_output_from_connector(&data.display, connector);
+>  				sprintf(data.conn_name, "%s-%d",
+>  					kmstest_connector_type_str(connector->connector_type),
+>  					connector->connector_type_id);
+> +
+> +				/* we need to have output enabled to do the DSC checks below */
+> +				prepare_output(&data, output);
+> +
+>  				if(!is_dp_dsc_supported(&data)) {
+>  					igt_debug("DSC not supported on connector %s \n",
+>  						  data.conn_name);
+> -					continue;
+> +					goto loop_cleanup;
+>  				}
+> +
+>  				if (connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
+>  				    !is_dp_fec_supported(&data)) {
+>  					igt_debug("DSC cannot be enabled without FEC on %s\n",
+>  						  data.conn_name);
+> -					continue;
+> +					goto loop_cleanup;
+>  				}
+>  				test_conn_cnt++;
+> -				run_test(&data, output, test_basic_dsc_enable);
+> +				run_test(&data, test_basic_dsc_enable);
+> +
+> +loop_cleanup:
+> +				drmModeFreeConnector(connector);
+> +				igt_remove_fb(data.drm_fd, &data.fb_test_pattern);
+>  			}
+>  			igt_skip_on(test_conn_cnt == 0);
+>  		}
+>  	}
+>  
+>  	igt_fixture {
+> -		drmModeFreeConnector(connector);
+>  		drmModeFreeResources(res);
+>  		close(data.debugfs_fd);
+>  		close(data.drm_fd);
+> -- 
+> 2.24.1
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
