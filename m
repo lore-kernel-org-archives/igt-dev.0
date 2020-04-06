@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 06 Apr 2020 16:52:11 -0000
-Message-ID: <158619193123.4194.5148066640214376546@emeril.freedesktop.org>
-References: <20200406135150.29697-1-petri.latvala@intel.com>
-In-Reply-To: <20200406135150.29697-1-petri.latvala@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBydW5u?=
- =?utf-8?q?er=3A_Add_--version_to_igt=5Frunner?=
+Date: Mon, 06 Apr 2020 16:52:31 -0000
+Message-ID: <158619195120.4192.7169178654979840832@emeril.freedesktop.org>
+References: <20200406131540.14404-1-petri.latvala@intel.com>
+In-Reply-To: <20200406131540.14404-1-petri.latvala@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaWd0X2Nv?=
+ =?utf-8?q?re=3A_Add_--version?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,66 +25,62 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: runner: Add --version to igt_runner
-URL   : https://patchwork.freedesktop.org/series/75549/
-State : failure
+Series: igt_core: Add --version
+URL   : https://patchwork.freedesktop.org/series/75547/
+State : success
 
 == Summary ==
 
-IGT patchset build failed on latest successful build
-6c124b5c8501d900966c033ac86c3dc55c16a2da lib: Fix device lists not cleaned up sufficiently before rescan
+CI Bug Log - changes from CI_DRM_8261 -> IGTPW_4413
+====================================================
 
-[503/552] Linking target tools/intel_gpu_time.
-[504/552] Linking target tools/intel_gpu_frequency.
-[505/552] Linking target tools/intel_firmware_decode.
-[506/552] Linking target tools/intel_gtt.
-[507/552] Linking target tools/intel_guc_logger.
-[508/552] Linking target tools/intel_lid.
-[509/552] Linking target tools/intel_infoframes.
-[510/552] Linking target tools/intel_panel_fitter.
-[511/552] Linking target tools/dpcd_reg.
-[512/552] Linking target tools/intel_opregion_decode.
-[513/552] Linking target tools/intel_reg_checker.
-[514/552] Linking target tools/intel_residency.
-[515/552] Linking target tools/intel_stepping.
-[516/552] Linking target tools/intel_vbt_decode.
-[517/552] Linking target tools/intel_watermark.
-[518/552] Linking target tools/intel_gem_info.
-[519/552] Linking target tools/intel_gvtg_test.
-[520/552] Linking target tools/lsgpu.
-[521/552] Linking target tools/intel_dump_decode.
-[522/552] Linking target tools/intel_error_decode.
-[523/552] Linking target tools/intel_l3_parity.
-[524/552] Linking target tools/intel_perf_counters.
-[525/552] Linking target tools/intel_framebuffer_dump.
-[526/552] Linking target tools/intel_dp_compliance.
-[527/552] Linking target tools/i915-perf/i915-perf-configs.
-[528/552] Linking target tools/intel_reg.
-[529/552] Linking target tools/amd_hdmi_compliance.
-[530/552] Linking target tools/i915-perf/i915-perf-recorder.
-[531/552] Linking target tools/i915-perf/i915-perf-reader.
-[532/552] Linking target runner/testdata/successtest.
-[533/552] Linking target tools/null_state_gen/intel_null_state_gen.
-[534/552] Linking target runner/testdata/no-subtests.
-[535/552] Linking target runner/testdata/abort-fixture.
-[536/552] Linking target runner/testdata/skippers.
-[537/552] Linking target runner/testdata/dynamic.
-[538/552] Linking target runner/testdata/abort.
-[539/552] Linking target runner/testdata/abort-dynamic.
-[540/552] Compiling C object 'runner/runner@@igt_runner@sta/settings.c.o'.
-[541/552] Linking target runner/testdata/abort-simple.
-[542/552] Linking static target runner/libigt_runner.a.
-[543/552] Linking target runner/igt_results.
-[544/552] Linking target runner/runner_test.
-[545/552] Linking target runner/runner_json_test.
-[546/552] Linking target runner/igt_runner.
-[547/552] Linking target runner/igt_resume.
-[548/552] Compiling C object 'assembler/assembler@@intel-gen4asm@exe/meson-generated_lex.c.o'.
-[549/552] Compiling C object 'assembler/assembler@@intel-gen4asm@exe/meson-generated_gram.c.o'.
-[550/552] Compiling C object 'assembler/assembler@@intel-gen4asm@exe/main.c.o'.
-[551/552] Linking target assembler/intel-gen4disasm.
-[552/552] Linking target assembler/intel-gen4asm.
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4413/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4413 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-cml-u2:          [DMESG-WARN][1] -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8261/fi-cml-u2/igt@kms_chamelium@dp-crc-fast.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4413/fi-cml-u2/igt@kms_chamelium@dp-crc-fast.html
+
+  
+
+
+Participating hosts (53 -> 47)
+------------------------------
+
+  Additional (1): fi-kbl-7560u 
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5572 -> IGTPW_4413
+
+  CI-20190529: 20190529
+  CI_DRM_8261: 80b64adc6f5ffeb1c69996737dbdc5ad275d8e6c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4413: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4413/index.html
+  IGT_5572: 6c124b5c8501d900966c033ac86c3dc55c16a2da @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4413/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
