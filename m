@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F156B6E82A
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2020 11:00:13 +0000 (UTC)
-Date: Tue, 7 Apr 2020 14:00:07 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200407110007.GM9497@platvala-desk.ger.corp.intel.com>
-References: <20200401065423.29345-1-mika.kahola@intel.com>
- <20200401065423.29345-2-mika.kahola@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200401065423.29345-2-mika.kahola@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] Revert "tests/kms_concurrent:
- Test maximum number of planes supported by the platform"
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 07 Apr 2020 11:04:24 -0000
+Message-ID: <158625746447.26327.11633296291940989841@emeril.freedesktop.org>
+References: <20200407101338.1340310-1-arkadiusz.hiler@intel.com>
+In-Reply-To: <20200407101338.1340310-1-arkadiusz.hiler@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Fchamelium=3A_Fix_d?=
+ =?utf-8?q?p-mode-timings_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,196 +15,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mika Kahola <mika.kahola@intel.com>
-Cc: igt-dev@lists.freedesktop.org, juhapekka.heikkila@intel.com
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Apr 01, 2020 at 09:54:22AM +0300, Mika Kahola wrote:
-> This reverts commit 2b65609b1de355ca501b58b7b03208f81c87b585.
+== Series Details ==
 
-S-o-b missing. With that added,
-Acked-by: Petri Latvala <petri.latvala@intel.com>
+Series: series starting with [i-g-t,1/2] tests/kms_chamelium: Fix dp-mode-timings test
+URL   : https://patchwork.freedesktop.org/series/75606/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8264 -> IGTPW_4423
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4423/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4423 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s4-devices:
+    - fi-tgl-y:           [FAIL][1] ([i915#1158]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8264/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4423/fi-tgl-y/igt@gem_exec_suspend@basic-s4-devices.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - fi-icl-y:           [INCOMPLETE][3] ([i915#1580]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8264/fi-icl-y/igt@i915_selftest@live@hangcheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4423/fi-icl-y/igt@i915_selftest@live@hangcheck.html
+
+  
+  [i915#1158]: https://gitlab.freedesktop.org/drm/intel/issues/1158
+  [i915#1580]: https://gitlab.freedesktop.org/drm/intel/issues/1580
 
 
-> ---
->  tests/kms_concurrent.c | 102 +++++++++++++++++++++++------------------
->  1 file changed, 57 insertions(+), 45 deletions(-)
-> 
-> diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-> index 1403e990..c212f6ec 100644
-> --- a/tests/kms_concurrent.c
-> +++ b/tests/kms_concurrent.c
-> @@ -199,25 +199,6 @@ prepare_planes(data_t *data, enum pipe pipe, int max_planes,
->  	free(size);
->  }
->  
-> -static int test_bandwidth(data_t *data, enum pipe pipe, igt_output_t *output)
-> -{
-> -
-> -	int n_planes = data->display.pipes[pipe].n_planes;
-> -	int i;
-> -	int ret;
-> -
-> -	igt_pipe_refresh(&data->display, pipe, true);
-> -
-> -	for (i = 1; i <= n_planes; i++) {
-> -		prepare_planes(data, pipe, i, output);
-> -		ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC | DRM_MODE_ATOMIC_TEST_ONLY);
-> -		if (ret != 0)
-> -			break;
-> -	}
-> -
-> -	return i - 1;
-> -}
-> -
->  static void
->  test_plane_position_with_output(data_t *data, enum pipe pipe, int max_planes,
->  				igt_output_t *output)
-> @@ -231,7 +212,7 @@ test_plane_position_with_output(data_t *data, enum pipe pipe, int max_planes,
->  	i = 0;
->  	while (i < iterations || loop_forever) {
->  		prepare_planes(data, pipe, max_planes, output);
-> -		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +		igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
->  
->  		for (int c = 0; c < max_planes; c++)
->  			igt_remove_fb(data->drm_fd, &data->fb[c]);
-> @@ -268,17 +249,44 @@ get_lowres_mode(data_t *data, const drmModeModeInfo *mode_default,
->  	return mode;
->  }
->  
-> -static void
-> +static int
->  test_resolution_with_output(data_t *data, enum pipe pipe, igt_output_t *output)
->  {
->  	const drmModeModeInfo *mode_hi, *mode_lo;
->  	int iterations = opt.iterations < 1 ? 1 : opt.iterations;
->  	bool loop_forever = opt.iterations == LOOP_FOREVER ? true : false;
-> -	int i;
-> +	int i, c, ret;
-> +	int max_planes = data->display.pipes[pipe].n_planes;
-> +	igt_plane_t *primary;
-> +	drmModeModeInfo *mode;
->  
->  	i = 0;
->  	while (i < iterations || loop_forever) {
->  		igt_output_set_pipe(output, pipe);
-> +		for (c = 0; c < max_planes; c++) {
-> +			igt_plane_t *plane = igt_output_get_plane(output, c);
-> +
-> +			if (plane->type != DRM_PLANE_TYPE_PRIMARY)
-> +				continue;
-> +			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +			data->plane[primary->index] = primary;
-> +			mode = igt_output_get_mode(output);
-> +			igt_create_color_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-> +						DRM_FORMAT_XRGB8888,
-> +						LOCAL_I915_FORMAT_MOD_X_TILED,
-> +						0.0f, 0.0f, 1.0f,
-> +						&data->fb[primary->index]);
-> +			igt_plane_set_fb(data->plane[primary->index], &data->fb[primary->index]);
-> +			ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
-> +			if (ret) {
-> +				igt_plane_set_fb(data->plane[i], NULL);
-> +				igt_remove_fb(data->drm_fd, &data->fb[i]);
-> +				data->plane[i] = NULL;
-> +				break;
-> +			}
-> +		}
-> +		max_planes = c;
-> +		igt_assert_lt(0, max_planes);
->  
->  		mode_hi = igt_output_get_mode(output);
->  		mode_lo = get_lowres_mode(data, mode_hi, output);
-> @@ -293,35 +301,48 @@ test_resolution_with_output(data_t *data, enum pipe pipe, igt_output_t *output)
->  
->  		i++;
->  	}
-> +
-> +	return max_planes;
->  }
->  
->  static void
-> -run_test(data_t *data, enum pipe pipe, int max_planes, igt_output_t *output)
-> +run_test(data_t *data, enum pipe pipe, igt_output_t *output)
->  {
-> +	int connected_outs;
-> +	int n_planes = data->display.pipes[pipe].n_planes;
-> +	int max_planes = n_planes;
-> +
->  	if (!opt.user_seed)
->  		opt.seed = time(NULL);
->  
-> -	igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
-> -		 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
-> +	connected_outs = 0;
-> +	for_each_valid_output_on_pipe(&data->display, pipe, output) {
-> +		igt_info("Testing resolution with connector %s using pipe %s with seed %d\n",
-> +			 igt_output_name(output), kmstest_pipe_name(pipe), opt.seed);
->  
-> -	test_init(data, pipe, max_planes, output);
-> -	igt_fork(child, 1) {
-> -		test_plane_position_with_output(data, pipe, max_planes, output);
-> -	}
-> +		test_init(data, pipe, n_planes, output);
-> +		max_planes = test_resolution_with_output(data, pipe, output);
-> +
-> +		igt_fork(child, 1) {
-> +			test_plane_position_with_output(data, pipe, max_planes, output);
-> +		}
->  
-> -	test_resolution_with_output(data, pipe, output);
-> +		test_resolution_with_output(data, pipe, output);
->  
-> -	igt_waitchildren();
-> +		igt_waitchildren();
->  
-> -	test_fini(data, pipe, max_planes, output);
-> +		test_fini(data, pipe, n_planes, output);
->  
-> +		connected_outs++;
-> +	}
-> +
-> +	igt_skip_on(connected_outs == 0);
->  }
->  
->  static void
->  run_tests_for_pipe(data_t *data, enum pipe pipe)
->  {
->  	igt_output_t *output;
-> -	int max_planes;
->  
->  	igt_fixture {
->  		int valid_tests = 0;
-> @@ -335,18 +356,9 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
->  		igt_require_f(valid_tests, "no valid crtc/connector combinations found\n");
->  	}
->  
-> -	igt_subtest_f("pipe-%s", kmstest_pipe_name(pipe)) {
-> -		for_each_valid_output_on_pipe(&data->display, pipe, output) {
-> -			int n_planes = data->display.pipes[pipe].n_planes;
-> -
-> -			test_init(data, pipe, n_planes, output);
-> -			max_planes = test_bandwidth(data, pipe, output);
-> -			test_fini(data, pipe, n_planes, output);
-> -
-> -			igt_display_reset(&data->display);
-> -			run_test(data, pipe, max_planes, output);
-> -		}
-> -	}
-> +	igt_subtest_f("pipe-%s", kmstest_pipe_name(pipe))
-> +		for_each_valid_output_on_pipe(&data->display, pipe, output)
-> +			run_test(data, pipe, output);
->  }
->  
->  static int opt_handler(int option, int option_index, void *input)
-> -- 
-> 2.20.1
-> 
+Participating hosts (53 -> 47)
+------------------------------
+
+  Additional (1): fi-kbl-7560u 
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5573 -> IGTPW_4423
+
+  CI-20190529: 20190529
+  CI_DRM_8264: e0104585f880a64d4a9b40803cf4fb51ab499f7c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4423: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4423/index.html
+  IGT_5573: 9c582425d6b4fc1de9fc2ffc8015cc6f0a0d3e98 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4423/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
