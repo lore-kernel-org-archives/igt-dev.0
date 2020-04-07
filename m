@@ -1,21 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
- [IPv6:2a00:1450:4864:20::344])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 13C3889819
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2020 17:07:24 +0000 (UTC)
-Received: by mail-wm1-x344.google.com with SMTP id t203so2477384wmt.2
- for <igt-dev@lists.freedesktop.org>; Tue, 07 Apr 2020 10:07:23 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC88889ED3
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2020 17:11:49 +0000 (UTC)
+Date: Tue, 7 Apr 2020 20:10:51 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <20200407171051.GI6112@intel.com>
 References: <20200407110904.13008-1-juhapekka.heikkila@gmail.com>
  <20200407153602.GD6112@intel.com>
  <7889c8d7-7aed-9ebb-7103-9fa798b4097c@gmail.com>
  <20200407160830.GE6112@intel.com>
  <ea5604be-51ca-31a5-5330-281125c79156@gmail.com>
-Message-ID: <0db0f75f-ea12-f04a-7bcc-254c98c9d4ad@gmail.com>
-Date: Tue, 7 Apr 2020 20:07:16 +0300
+ <0db0f75f-ea12-f04a-7bcc-254c98c9d4ad@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <ea5604be-51ca-31a5-5330-281125c79156@gmail.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <0db0f75f-ea12-f04a-7bcc-254c98c9d4ad@gmail.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: survive cdclk caused
  modeset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -25,77 +23,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gNy40LjIwMjAgMTkuMjIsIEp1aGEtUGVra2EgSGVpa2tpbGEgd3JvdGU6Cj4gT24gNy40LjIw
-MjAgMTkuMDgsIFZpbGxlIFN5cmrDpGzDpCB3cm90ZToKPj4gT24gVHVlLCBBcHIgMDcsIDIwMjAg
-YXQgMDY6NTQ6MDlQTSArMDMwMCwgSnVoYS1QZWtrYSBIZWlra2lsYSB3cm90ZToKPj4+IE9uIDcu
-NC4yMDIwIDE4LjM2LCBWaWxsZSBTeXJqw6Rsw6Qgd3JvdGU6Cj4+Pj4gT24gVHVlLCBBcHIgMDcs
-IDIwMjAgYXQgMDI6MDk6MDRQTSArMDMwMCwgSnVoYS1QZWtrYSBIZWlra2lsYSB3cm90ZToKPj4+
-Pj4gVGhpcyBjaGFuZ2Ugd2lsbCBzbG93IHRoaXMgdGVzdCBkb3duIGEgYml0LiBJbiBtaWQgdGVz
-dCBzdGFydGluZwo+Pj4+PiB0byB1c2UgaGlnaGVyIGJwcCBwaXhlbCBmb3JtYXQgKHNheSA2NGJw
-cCkgY2FuIGNhdXNlIG1vZGVzZXQuCj4+Pj4+IFVzZSBibG9ja2luZyBjb21taXQgc28gdGhlcmUn
-cyB3YWl0IGZvciBtb2Rlc2V0IHRvIGhhcHBlbi4KPj4+Pgo+Pj4+IFdlIGFscmVhZHkgd2FpdCBm
-b3IgdGhlIGV2ZW50IHRoZSBuZXh0IHRpbWUgYXJvdW5kLiBTbyB0aGlzCj4+Pj4gZG9lc24ndCBt
-YWtlIHNlbnNlIHRvIG1lLgo+Pj4KPj4+IFRoZXJlJ3MgdGhvc2UgbG9ncyBsaWtlIHRoaXMKPj4+
-IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvZHJtdGlwXzQ3MC9maS1p
-Y2wtZ3VjL2lndEBrbXNfcGxhbmVAcGl4ZWwtZm9ybWF0LXBpcGUtYy1wbGFuZXMtc291cmNlLWNs
-YW1waW5nLmh0bWwgCj4+Pgo+Pj4KPj4+IHdoZXJlIGdvaW5nIHRvIDY0YnBwIHBpeGVsIGZvcm1h
-dCB3aWxsIGNhdXNlIG1vZGVzZXQgYW5kIGZhaWwgcnVubmluZwo+Pj4gdGVzdC4KPj4KPj4gSG1t
-LiBTZWVtcyB3ZSBkb24ndCBoYXZlIGRybS5kZWJ1Zz0weDEwIGVuYWJsZWQgc28gd2UgZG9uJ3Qg
-c2VlIHRoZQo+PiBhY3R1YWwgZGVidWcgbWVzc2FnZSA6KCBBbnl3YXlzLCB0aGUgcmVhbCBidWcg
-c2VlbXMgdG8gYmUgdGhlIGxhY2sgb2YKPj4gQUxMT1dfTU9ERVNFVC4KPiAKPiBJJ2xsIHRyeSB0
-aGF0IGFuZCBzZWUgaG93IGl0IGNoYW5nZXMgc2l0dWF0aW9uLiBJIG9yaWdpbmFsbHkgaGFkIGlk
-ZWEgCj4gbW9kZXNldCB3aWxsIGJsb2NrIHRoZSBmbGlwIGFuZCBtYWtpbmcgdGhpcyBjb21taXQg
-YmxvY2tpbmcgd291bGQgYWx3YXlzIAo+IGZvcmNlIHRoaW5ncyBhbHdheXMgaW50byBjb3JyZWN0
-IG9yZGVyIGFzIGN1cnJlbnQgdGVzdCBkaWRuJ3QgZmFpbCBldmVyeSAKPiB0aW1lIGZvciBtZS4K
-CkhhdmluZyB0aGF0IGNvbW1pdCBzYXlpbmcKCmlndF9kaXNwbGF5X2NvbW1pdF9hdG9taWMoJmRh
-dGEtPmRpc3BsYXksCglEUk1fTU9ERV9BVE9NSUNfQUxMT1dfTU9ERVNFVCB8CglEUk1fTU9ERV9B
-VE9NSUNfTk9OQkxPQ0sgfAoJRFJNX01PREVfUEFHRV9GTElQX0VWRU5ULCBOVUxMKTsKCkkgc2Vl
-IHRlc3QgZmFpbGluZyBhcyBiZWZvcmUgc28gaXQgd2lsbCBub3QgYWxvbmUgZml4IHRoaXMgaXNz
-dWUuIE9uIG15IApJQ0wgYm94IHRoZSB0ZXN0IGZhaWwgbWF5YmUgMS81IHRpbWVzLCB3aXRoIHRo
-ZSBwYXRjaCBvbiBsaXN0IGl0IG5ldmVyIApmYWlsZWQgc28gZmFyLgoKPiAKPj4KPj4+IEkgd2Fz
-IHRlc3RpbmcgdGhpcyBvbiBJQ0wgYW5kIHNlZSBlcnJvcnMgcmFuZG9tbHksIG9uIGNpIHRob3Nl
-Cj4+PiBzZWVtIHRvIGJlIGxlc3MgcmFuZG9tLiBNYWtpbmcgdGhpcyBvbmUgY29tbWl0IGJsb2Nr
-aW5nIHdpbGwgY2F1c2UKPj4+IG1vZGVzZXQgdG8gc2V0dGxlIHdpdGhvdXQgaW50ZXJydXB0aW5n
-IHRlc3QsIGF0IGxlYXN0IG9uIG15IElDTC4KPj4+Cj4+PiBJZiB0aGVyZSdzIGEgd2F5IHRvIHNv
-cnQgdGhvc2UgcGl4ZWwgZm9ybWF0cyBhY2NvcmRpbmcgdG8gYnBwIGFuZCBzdGFydAo+Pj4gd2l0
-aCBoaWdoZXN0IHRoZXJlJ3Mgbm8gbmVlZCBmb3IgdGhpcy4KPj4+Cj4+Pj4KPj4+Pj4KPj4+Pj4g
-Rml4ZXM6IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzEy
-MTQKPj4+Pj4gU2lnbmVkLW9mZi1ieTogSnVoYS1QZWtrYSBIZWlra2lsYSA8anVoYXBla2thLmhl
-aWtraWxhQGdtYWlsLmNvbT4KPj4+Pj4gLS0tCj4+Pj4+IMKgwqAgdGVzdHMva21zX3BsYW5lLmMg
-fCA2ICsrLS0tLQo+Pj4+PiDCoMKgIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDQg
-ZGVsZXRpb25zKC0pCj4+Pj4+Cj4+Pj4+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfcGxhbmUuYyBi
-L3Rlc3RzL2ttc19wbGFuZS5jCj4+Pj4+IGluZGV4IDgwNTc5NWNkLi4yMzI0ZmI2ZSAxMDA2NDQK
-Pj4+Pj4gLS0tIGEvdGVzdHMva21zX3BsYW5lLmMKPj4+Pj4gKysrIGIvdGVzdHMva21zX3BsYW5l
-LmMKPj4+Pj4gQEAgLTU2OSwxMiArNTY5LDEwIEBAIHN0YXRpYyB2b2lkIGNhcHR1cmVfZm9ybWF0
-X2NyY3MoZGF0YV90ICpkYXRhLCAKPj4+Pj4gZW51bSBwaXBlIHBpcGUsCj4+Pj4+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgIGlmIChkYXRhLT5kaXNwbGF5LmlzX2F0b21pYykgewo+Pj4+PiDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgIC8qCj4+Pj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-KiBVc2Ugbm9uLWJsb2NraW5nIGNvbW1pdHMgdG8gYWxsb3cgdGhlIG5leHQgZmIKPj4+Pj4gLcKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIHRvIGJlIHByZXBhcmVkIGluIHBhcmFsbGVsIHdoaWxl
-IHRoZSBjdXJyZW50IGZiCj4+Pj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKiBhd2FpdHMg
-dG8gYmUgbGF0Y2hlZC4KPj4+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIFVzZSBibG9j
-a2luZyBjb21taXQgYmVjYXVzZSB0aGVyZSBtYXliZQo+Pj4+PiArwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgICogbW9kZXNldCB3aGVuIGdvaW5nIHRvIGhpZ2hlciBicHAgcGl4ZWwgZm9ybWF0Lgo+
-Pj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKi8KPj4+Pj4gwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoCBpZ3RfZGlzcGxheV9jb21taXRfYXRvbWljKCZkYXRhLT5kaXNwbGF5
-LAo+Pj4+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgRFJNX01PREVfQVRPTUlDX05PTkJMT0NLIHwKPj4+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgRFJNX01PREVfUEFHRV9GTElQX0VW
-RU5ULCBOVUxMKTsKPj4+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqAgfSBlbHNlIHsKPj4+Pj4gwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAvKgo+Pj4+PiAtLSAKPj4+Pj4gMi4xNy4xCj4+Pj4+
-Cj4+Pj4+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4+
-Pj4+IGlndC1kZXYgbWFpbGluZyBsaXN0Cj4+Pj4+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnCj4+Pj4+IGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8v
-aWd0LWRldgo+Pj4+Cj4+Cj4gCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
-Lm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
-ZXYK
+On Tue, Apr 07, 2020 at 08:07:16PM +0300, Juha-Pekka Heikkila wrote:
+> On 7.4.2020 19.22, Juha-Pekka Heikkila wrote:
+> > On 7.4.2020 19.08, Ville Syrj=E4l=E4 wrote:
+> >> On Tue, Apr 07, 2020 at 06:54:09PM +0300, Juha-Pekka Heikkila wrote:
+> >>> On 7.4.2020 18.36, Ville Syrj=E4l=E4 wrote:
+> >>>> On Tue, Apr 07, 2020 at 02:09:04PM +0300, Juha-Pekka Heikkila wrote:
+> >>>>> This change will slow this test down a bit. In mid test starting
+> >>>>> to use higher bpp pixel format (say 64bpp) can cause modeset.
+> >>>>> Use blocking commit so there's wait for modeset to happen.
+> >>>>
+> >>>> We already wait for the event the next time around. So this
+> >>>> doesn't make sense to me.
+> >>>
+> >>> There's those logs like this
+> >>> https://intel-gfx-ci.01.org/tree/drm-tip/drmtip_470/fi-icl-guc/igt@km=
+s_plane@pixel-format-pipe-c-planes-source-clamping.html =
+
+> >>>
+> >>>
+> >>> where going to 64bpp pixel format will cause modeset and fail running
+> >>> test.
+> >>
+> >> Hmm. Seems we don't have drm.debug=3D0x10 enabled so we don't see the
+> >> actual debug message :( Anyways, the real bug seems to be the lack of
+> >> ALLOW_MODESET.
+> > =
+
+> > I'll try that and see how it changes situation. I originally had idea =
+
+> > modeset will block the flip and making this commit blocking would alway=
+s =
+
+> > force things always into correct order as current test didn't fail ever=
+y =
+
+> > time for me.
+> =
+
+> Having that commit saying
+> =
+
+> igt_display_commit_atomic(&data->display,
+> 	DRM_MODE_ATOMIC_ALLOW_MODESET |
+> 	DRM_MODE_ATOMIC_NONBLOCK |
+> 	DRM_MODE_PAGE_FLIP_EVENT, NULL);
+> =
+
+> I see test failing as before so it will not alone fix this issue. On my =
+
+> ICL box the test fail maybe 1/5 times, with the patch on list it never =
+
+> failed so far.
+
+Why does it fail?
+
+> =
+
+> > =
+
+> >>
+> >>> I was testing this on ICL and see errors randomly, on ci those
+> >>> seem to be less random. Making this one commit blocking will cause
+> >>> modeset to settle without interrupting test, at least on my ICL.
+> >>>
+> >>> If there's a way to sort those pixel formats according to bpp and sta=
+rt
+> >>> with highest there's no need for this.
+> >>>
+> >>>>
+> >>>>>
+> >>>>> Fixes: https://gitlab.freedesktop.org/drm/intel/issues/1214
+> >>>>> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> >>>>> ---
+> >>>>> =A0=A0 tests/kms_plane.c | 6 ++----
+> >>>>> =A0=A0 1 file changed, 2 insertions(+), 4 deletions(-)
+> >>>>>
+> >>>>> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> >>>>> index 805795cd..2324fb6e 100644
+> >>>>> --- a/tests/kms_plane.c
+> >>>>> +++ b/tests/kms_plane.c
+> >>>>> @@ -569,12 +569,10 @@ static void capture_format_crcs(data_t *data, =
+
+> >>>>> enum pipe pipe,
+> >>>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (data->display.is_atomic) {
+> >>>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /*
+> >>>>> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * Use non-blocking commits to=
+ allow the next fb
+> >>>>> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * to be prepared in parallel =
+while the current fb
+> >>>>> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * awaits to be latched.
+> >>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * Use blocking commit because=
+ there maybe
+> >>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * modeset when going to highe=
+r bpp pixel format.
+> >>>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 */
+> >>>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 igt_display_commit_atomi=
+c(&data->display,
+> >>>>> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0 DRM_MODE_ATOMIC_NONBLOCK |
+> >>>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0 DRM_MODE_PAGE_FLIP_EVENT, NULL);
+> >>>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 } else {
+> >>>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /*
+> >>>>> -- =
+
+> >>>>> 2.17.1
+> >>>>>
+> >>>>> _______________________________________________
+> >>>>> igt-dev mailing list
+> >>>>> igt-dev@lists.freedesktop.org
+> >>>>> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+> >>>>
+> >>
+> > =
+
+
+-- =
+
+Ville Syrj=E4l=E4
+Intel
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
