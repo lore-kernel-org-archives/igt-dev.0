@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4454F6E5CE
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2020 08:34:50 +0000 (UTC)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 07 Apr 2020 08:33:39 -0000
-Message-ID: <158624841918.26326.6854523875005251525@emeril.freedesktop.org>
-References: <20200407083105.1692124-1-chris@chris-wilson.co.uk>
 In-Reply-To: <20200407083105.1692124-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBydW5u?=
- =?utf-8?q?er=3A_Show_why_we_dump_the_task_state?=
+References: <20200407083105.1692124-1-chris@chris-wilson.co.uk>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Message-ID: <158624848612.6356.18364805561695088787@build.alporthouse.com>
+Date: Tue, 07 Apr 2020 09:34:46 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t] runner: Show why we dump the task state
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,91 +16,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogcnVubmVyOiBTaG93IHdoeSB3ZSBkdW1wIHRo
-ZSB0YXNrIHN0YXRlClVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nl
-cmllcy83NTU5OS8KU3RhdGUgOiBmYWlsdXJlCgo9PSBTdW1tYXJ5ID09CgpJR1QgcGF0Y2hzZXQg
-YnVpbGQgZmFpbGVkIG9uIGxhdGVzdCBzdWNjZXNzZnVsIGJ1aWxkCjljNTgyNDI1ZDZiNGZjMWRl
-OWZjMmZmYzgwMTVjYzZmMGEwZDNlOTggaTkxNS9pOTE1X2hhbmdtYW46IERyb3AgbGFzdCByZWZl
-cmVuY2UgdG8gYnlnb25lICdpOTE1X2Vycm9yX3N0YXRlJwoKWzM1Ny80MDhdIExpbmtpbmcgdGFy
-Z2V0IHRvb2xzL2ludGVsX2Rpc3BsYXlfcG9sbGVyLgpbMzU4LzQwOF0gTGlua2luZyB0YXJnZXQg
-dG9vbHMvaW50ZWxfZm9yY2V3YWtlZC4KWzM1OS80MDhdIExpbmtpbmcgdGFyZ2V0IHRvb2xzL2lu
-dGVsX2dwdV90aW1lLgpbMzYwLzQwOF0gTGlua2luZyB0YXJnZXQgdG9vbHMvaW50ZWxfZ3B1X2Zy
-ZXF1ZW5jeS4KWzM2MS80MDhdIExpbmtpbmcgdGFyZ2V0IHRvb2xzL2ludGVsX2Zpcm13YXJlX2Rl
-Y29kZS4KWzM2Mi80MDhdIExpbmtpbmcgdGFyZ2V0IHRvb2xzL2ludGVsX2d0dC4KWzM2My80MDhd
-IExpbmtpbmcgdGFyZ2V0IHRvb2xzL2ludGVsX2d1Y19sb2dnZXIuClszNjQvNDA4XSBMaW5raW5n
-IHRhcmdldCB0b29scy9pbnRlbF9saWQuClszNjUvNDA4XSBMaW5raW5nIHRhcmdldCB0b29scy9p
-bnRlbF9pbmZvZnJhbWVzLgpbMzY2LzQwOF0gTGlua2luZyB0YXJnZXQgdG9vbHMvaW50ZWxfcGFu
-ZWxfZml0dGVyLgpbMzY3LzQwOF0gTGlua2luZyB0YXJnZXQgdG9vbHMvZHBjZF9yZWcuClszNjgv
-NDA4XSBMaW5raW5nIHRhcmdldCB0b29scy9pbnRlbF9vcHJlZ2lvbl9kZWNvZGUuClszNjkvNDA4
-XSBMaW5raW5nIHRhcmdldCB0b29scy9pbnRlbF9yZWdfY2hlY2tlci4KWzM3MC80MDhdIExpbmtp
-bmcgdGFyZ2V0IHRvb2xzL2ludGVsX3Jlc2lkZW5jeS4KWzM3MS80MDhdIExpbmtpbmcgdGFyZ2V0
-IHRvb2xzL2ludGVsX3N0ZXBwaW5nLgpbMzcyLzQwOF0gTGlua2luZyB0YXJnZXQgdG9vbHMvaW50
-ZWxfdmJ0X2RlY29kZS4KWzM3My80MDhdIExpbmtpbmcgdGFyZ2V0IHRvb2xzL2ludGVsX3dhdGVy
-bWFyay4KWzM3NC80MDhdIExpbmtpbmcgdGFyZ2V0IHRvb2xzL2ludGVsX2dlbV9pbmZvLgpbMzc1
-LzQwOF0gTGlua2luZyB0YXJnZXQgdG9vbHMvaW50ZWxfZ3Z0Z190ZXN0LgpbMzc2LzQwOF0gTGlu
-a2luZyB0YXJnZXQgdG9vbHMvbHNncHUuClszNzcvNDA4XSBMaW5raW5nIHRhcmdldCB0b29scy9p
-bnRlbF9kdW1wX2RlY29kZS4KWzM3OC80MDhdIExpbmtpbmcgdGFyZ2V0IHRvb2xzL2ludGVsX2Vy
-cm9yX2RlY29kZS4KWzM3OS80MDhdIExpbmtpbmcgdGFyZ2V0IHRvb2xzL2ludGVsX2wzX3Bhcml0
-eS4KWzM4MC80MDhdIExpbmtpbmcgdGFyZ2V0IHRvb2xzL2ludGVsX3BlcmZfY291bnRlcnMuClsz
-ODEvNDA4XSBMaW5raW5nIHRhcmdldCB0b29scy9pbnRlbF9mcmFtZWJ1ZmZlcl9kdW1wLgpbMzgy
-LzQwOF0gTGlua2luZyB0YXJnZXQgdG9vbHMvaW50ZWxfZHBfY29tcGxpYW5jZS4KWzM4My80MDhd
-IExpbmtpbmcgdGFyZ2V0IHRvb2xzL2k5MTUtcGVyZi9pOTE1LXBlcmYtY29uZmlncy4KWzM4NC80
-MDhdIExpbmtpbmcgdGFyZ2V0IHRvb2xzL2ludGVsX3JlZy4KWzM4NS80MDhdIExpbmtpbmcgdGFy
-Z2V0IHRvb2xzL2FtZF9oZG1pX2NvbXBsaWFuY2UuClszODYvNDA4XSBMaW5raW5nIHRhcmdldCB0
-b29scy9pOTE1LXBlcmYvaTkxNS1wZXJmLXJlY29yZGVyLgpbMzg3LzQwOF0gTGlua2luZyB0YXJn
-ZXQgdG9vbHMvaTkxNS1wZXJmL2k5MTUtcGVyZi1yZWFkZXIuClszODgvNDA4XSBMaW5raW5nIHRh
-cmdldCBydW5uZXIvdGVzdGRhdGEvc3VjY2Vzc3Rlc3QuClszODkvNDA4XSBMaW5raW5nIHRhcmdl
-dCB0b29scy9udWxsX3N0YXRlX2dlbi9pbnRlbF9udWxsX3N0YXRlX2dlbi4KWzM5MC80MDhdIExp
-bmtpbmcgdGFyZ2V0IHJ1bm5lci90ZXN0ZGF0YS9uby1zdWJ0ZXN0cy4KWzM5MS80MDhdIExpbmtp
-bmcgdGFyZ2V0IHJ1bm5lci90ZXN0ZGF0YS9hYm9ydC1maXh0dXJlLgpbMzkyLzQwOF0gTGlua2lu
-ZyB0YXJnZXQgcnVubmVyL3Rlc3RkYXRhL3NraXBwZXJzLgpbMzkzLzQwOF0gTGlua2luZyB0YXJn
-ZXQgcnVubmVyL3Rlc3RkYXRhL2R5bmFtaWMuClszOTQvNDA4XSBMaW5raW5nIHRhcmdldCBydW5u
-ZXIvdGVzdGRhdGEvYWJvcnQuClszOTUvNDA4XSBMaW5raW5nIHRhcmdldCBydW5uZXIvdGVzdGRh
-dGEvYWJvcnQtZHluYW1pYy4KWzM5Ni80MDhdIExpbmtpbmcgdGFyZ2V0IHJ1bm5lci90ZXN0ZGF0
-YS9hYm9ydC1zaW1wbGUuClszOTcvNDA4XSBDb21waWxpbmcgQyBvYmplY3QgJ3J1bm5lci9ydW5u
-ZXJAQGlndF9ydW5uZXJAc3RhL2V4ZWN1dG9yLmMubycuCkZBSUxFRDogcnVubmVyL3J1bm5lckBA
-aWd0X3J1bm5lckBzdGEvZXhlY3V0b3IuYy5vIApjY2FjaGUgY2MgLUlydW5uZXIvcnVubmVyQEBp
-Z3RfcnVubmVyQHN0YSAtSXJ1bm5lciAtSS4uL3J1bm5lciAtSS4uL2luY2x1ZGUvZHJtLXVhcGkg
-LUlsaWIgLUkuLi9saWIgLUkuLi9saWIvc3R1YnMvc3lzY2FsbHMgLUkuIC1JLi4vIC1JL3Vzci9p
-bmNsdWRlL2pzb24tYyAtSS91c3IvaW5jbHVkZS9nbGliLTIuMCAtSS91c3IvbGliL3g4Nl82NC1s
-aW51eC1nbnUvZ2xpYi0yLjAvaW5jbHVkZSAtSS9ob21lL2NpZHJtL2tlcm5lbF9oZWFkZXJzL2lu
-Y2x1ZGUgLWZkaWFnbm9zdGljcy1jb2xvcj1hbHdheXMgLXBpcGUgLURfRklMRV9PRkZTRVRfQklU
-Uz02NCAtV2FsbCAtV2ludmFsaWQtcGNoIC1XZXh0cmEgLXN0ZD1nbnUxMSAtTzIgLWcgLURfR05V
-X1NPVVJDRSAtaW5jbHVkZSBjb25maWcuaCAtRF9GT1JUSUZZX1NPVVJDRT0yIC1XYmFkLWZ1bmN0
-aW9uLWNhc3QgLVdkZWNsYXJhdGlvbi1hZnRlci1zdGF0ZW1lbnQgLVdmb3JtYXQ9MiAtV2ltcGxp
-Y2l0LWZhbGx0aHJvdWdoPTAgLVdsb2dpY2FsLW9wIC1XbWlzc2luZy1kZWNsYXJhdGlvbnMgLVdt
-aXNzaW5nLWZvcm1hdC1hdHRyaWJ1dGUgLVdtaXNzaW5nLW5vcmV0dXJuIC1XbWlzc2luZy1wcm90
-b3R5cGVzIC1XbmVzdGVkLWV4dGVybnMgLVdvbGQtc3R5bGUtZGVmaW5pdGlvbiAtV3BvaW50ZXIt
-YXJpdGggLVdyZWR1bmRhbnQtZGVjbHMgLVdzaGFkb3cgLVdzdHJpY3QtcHJvdG90eXBlcyAtV3Vu
-aW5pdGlhbGl6ZWQgLVd1bnVzZWQgLVduby1jbG9iYmVyZWQgLVduby1tYXliZS11bmluaXRpYWxp
-emVkIC1Xbm8tbWlzc2luZy1maWVsZC1pbml0aWFsaXplcnMgLVduby1wb2ludGVyLWFyaXRoIC1X
-bm8tc2lnbi1jb21wYXJlIC1Xbm8tdHlwZS1saW1pdHMgLVduby11bnVzZWQtcGFyYW1ldGVyIC1X
-bm8tdW51c2VkLXJlc3VsdCAtV2Vycm9yPWFkZHJlc3MgLVdlcnJvcj1hcnJheS1ib3VuZHMgLVdl
-cnJvcj1pbXBsaWNpdCAtV2Vycm9yPWluaXQtc2VsZiAtV2Vycm9yPWludC10by1wb2ludGVyLWNh
-c3QgLVdlcnJvcj1tYWluIC1XZXJyb3I9bWlzc2luZy1icmFjZXMgLVdlcnJvcj1ub25udWxsIC1X
-ZXJyb3I9cG9pbnRlci10by1pbnQtY2FzdCAtV2Vycm9yPXJldHVybi10eXBlIC1XZXJyb3I9c2Vx
-dWVuY2UtcG9pbnQgLVdlcnJvcj10cmlncmFwaHMgLVdlcnJvcj13cml0ZS1zdHJpbmdzIC1mbm8t
-YnVpbHRpbi1tYWxsb2MgLWZuby1idWlsdGluLWNhbGxvYyAtZmNvbW1vbiAtZlBJQyAtREhBVkVf
-T1BJTkc9MSAgLU1EIC1NUSAncnVubmVyL3J1bm5lckBAaWd0X3J1bm5lckBzdGEvZXhlY3V0b3Iu
-Yy5vJyAtTUYgJ3J1bm5lci9ydW5uZXJAQGlndF9ydW5uZXJAc3RhL2V4ZWN1dG9yLmMuby5kJyAt
-byAncnVubmVyL3J1bm5lckBAaWd0X3J1bm5lckBzdGEvZXhlY3V0b3IuYy5vJyAtYyAuLi9ydW5u
-ZXIvZXhlY3V0b3IuYwouLi9ydW5uZXIvZXhlY3V0b3IuYzogSW4gZnVuY3Rpb24g4oCYc2hvd19r
-ZXJuZWxfdGFza19zdGF0ZeKAmToKLi4vcnVubmVyL2V4ZWN1dG9yLmM6Njg1OjI1OiBlcnJvcjog
-4oCYT19XUk9ObFnigJkgdW5kZWNsYXJlZCAoZmlyc3QgdXNlIGluIHRoaXMgZnVuY3Rpb24pOyBk
-aWQgeW91IG1lYW4g4oCYT19XUk9OTFnigJk/CiAgZmQgPSBvcGVuKCIvZGV2L2ttc2ciLCBPX1dS
-T05sWSk7CiAgICAgICAgICAgICAgICAgICAgICAgICBefn5+fn5+fgogICAgICAgICAgICAgICAg
-ICAgICAgICAgT19XUk9OTFkKLi4vcnVubmVyL2V4ZWN1dG9yLmM6Njg1OjI1OiBub3RlOiBlYWNo
-IHVuZGVjbGFyZWQgaWRlbnRpZmllciBpcyByZXBvcnRlZCBvbmx5IG9uY2UgZm9yIGVhY2ggZnVu
-Y3Rpb24gaXQgYXBwZWFycyBpbgpuaW5qYTogYnVpbGQgc3RvcHBlZDogc3ViY29tbWFuZCBmYWls
-ZWQuCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3Qt
-ZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xp
-c3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+Quoting Chris Wilson (2020-04-07 09:31:05)
+> Include the reason why we are dumping the task state (test timeout) in
+> the kmsg log prior to the task state. Hopefully this helps when reading
+> the dump.
+> 
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> ---
+>  runner/executor.c | 25 ++++++++++++++++---------
+>  1 file changed, 16 insertions(+), 9 deletions(-)
+> 
+> diff --git a/runner/executor.c b/runner/executor.c
+> index 1b69f9c57..25e3187a3 100644
+> --- a/runner/executor.c
+> +++ b/runner/executor.c
+> @@ -678,9 +678,20 @@ static bool sysrq(char cmd)
+>         return success;
+>  }
+>  
+> -static void show_kernel_task_state(void)
+> +static const char *show_kernel_task_state(const char *msg)
+>  {
+> +       int fd;
+> +
+> +       fd = open("/dev/kmsg", O_WRONlY);
+
+Yeah, I haven't had coffee.
+-Chris
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
