@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90B0C6E8C9
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2020 18:12:30 +0000 (UTC)
-Date: Tue, 7 Apr 2020 21:12:26 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20200407181226.GM6112@intel.com>
-References: <20200407163525.75416-1-jose.souza@intel.com>
- <20200407163525.75416-2-jose.souza@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200407163525.75416-2-jose.souza@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v6 2/2] tests/kms_fbcon_fbt: Handle FBC
- enabled on fbcon in GEN9+
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 07 Apr 2020 18:14:33 -0000
+Message-ID: <158628327369.26326.6264961053663874341@emeril.freedesktop.org>
+References: <20200407163525.75416-1-jose.souza@intel.com>
+In-Reply-To: <20200407163525.75416-1-jose.souza@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2Cv6=2C1/2=5D_tests/kms=5Ffbcon=5Ffbt?=
+ =?utf-8?q?=3A_Reduce_execution_time?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,155 +15,136 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?iso-8859-1?Q?Jos=E9?= Roberto de Souza <jose.souza@intel.com>
+To: =?utf-8?q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Apr 07, 2020 at 09:35:25AM -0700, Jos=E9 Roberto de Souza wrote:
-> As now kernel enables FBC on linear surfaces on GEN9+, it will allow
-> FBC to be enabled on fbcon, so doing the changes he to tests this new
-> case.
-> =
+== Series Details ==
 
-> Signed-off-by: Jos=E9 Roberto de Souza <jose.souza@intel.com>
-> ---
->  tests/kms_fbcon_fbt.c | 42 ++++++++++++++++++++++++++++--------------
->  1 file changed, 28 insertions(+), 14 deletions(-)
-> =
+Series: series starting with [i-g-t,v6,1/2] tests/kms_fbcon_fbt: Reduce execution time
+URL   : https://patchwork.freedesktop.org/series/75628/
+State : success
 
-> diff --git a/tests/kms_fbcon_fbt.c b/tests/kms_fbcon_fbt.c
-> index b8000a24..dba6c6b1 100644
-> --- a/tests/kms_fbcon_fbt.c
-> +++ b/tests/kms_fbcon_fbt.c
-> @@ -42,6 +42,7 @@ struct drm_info {
->  	int debugfs_fd;
->  	drmModeResPtr res;
->  	drmModeConnectorPtr connectors[MAX_CONNECTORS];
-> +	int devid;
+== Summary ==
 
-uint32_t
+CI Bug Log - changes from CI_DRM_8266 -> IGTPW_4427
+====================================================
 
-Series is
-Reviewed-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+Summary
+-------
 
->  };
->  =
+  **WARNING**
 
->  static void wait_user(const char *msg)
-> @@ -67,6 +68,8 @@ static void setup_drm(struct drm_info *drm)
->  		drm->connectors[i] =3D drmModeGetConnectorCurrent(drm->fd,
->  						drm->res->connectors[i]);
->  =
+  Minor unknown changes coming with IGTPW_4427 need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4427, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-> +	drm->devid =3D intel_get_drm_devid(drm->fd);
-> +
->  	kmstest_set_vt_graphics_mode();
->  }
->  =
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4427/index.html
 
-> @@ -139,19 +142,30 @@ static bool fbc_wait_until_disabled(int debugfs_fd)
->  	return r;
->  }
->  =
+Possible new issues
+-------------------
 
-> -static bool fbc_wait_until_update(int debugfs)
-> +static bool fbc_not_compressing_enabled(int debugfs_fd)
-> +{
-> +	char buf[128];
-> +
-> +	igt_debugfs_simple_read(debugfs_fd, "i915_fbc_status", buf,
-> +				sizeof(buf));
-> +	return strstr(buf, "FBC enabled\nCompressing: no");
-> +}
-> +
-> +static bool fbc_wait_until_update(struct drm_info *drm)
->  {
->  	/*
-> -	 * FBC is not expected to be enabled because fbcon do not uses a tiled
-> -	 * framebuffer so a fence can not be setup on the framebuffer and FBC
-> -	 * code requires a fence to accurate track frontbuffer modifications
-> -	 * (what maybe is not necessary anymore as we now have
-> -	 * intel_fbc_invalidate()/flush()).
-> +	 * As now kernel enables FBC on linear surfaces on GEN9+, check if the
-> +	 * fbcon cursor blinking is causing the FBC to uncompress the
-> +	 * framebuffer.
->  	 *
-> -	 * If one day fbcon starts to use a tiled framebuffer we would need to
-> -	 * check the 'Compressing' status as in each blink it would be disabled.
-> +	 * For older GENs FBC is still expected to be disabled as it still
-> +	 * relies on a tiled and fenceable framebuffer to track modifications.
->  	 */
-> -	return fbc_wait_until_disabled(debugfs);
-> +	if (AT_LEAST_GEN(drm->devid, 9))
-> +		return igt_wait(fbc_not_compressing_enabled(drm->debugfs_fd),
-> +				2500, 1);
-> +	else
-> +		return fbc_wait_until_disabled(drm->debugfs_fd);
->  }
->  =
+  Here are the unknown changes that may have been introduced in IGTPW_4427:
 
->  typedef bool (*connector_possible_fn)(drmModeConnectorPtr connector);
-> @@ -220,9 +234,9 @@ static bool psr_supported_on_chipset(int debugfs_fd)
->  	return psr_sink_support(debugfs_fd, PSR_MODE_1);
->  }
->  =
+### IGT changes ###
 
-> -static bool psr_wait_until_update(int debugfs_fd)
-> +static bool psr_wait_until_update(struct drm_info *drm)
->  {
-> -	return psr_long_wait_update(debugfs_fd, PSR_MODE_1);
-> +	return psr_long_wait_update(drm->debugfs_fd, PSR_MODE_1);
->  }
->  =
+#### Warnings ####
 
->  static void disable_features(int debugfs_fd)
-> @@ -245,7 +259,7 @@ static inline void psr_debugfs_enable(int debugfs_fd)
->  struct feature {
->  	bool (*supported_on_chipset)(int debugfs_fd);
->  	bool (*wait_until_enabled)(int debugfs_fd);
-> -	bool (*wait_until_update)(int debugfs_fd);
-> +	bool (*wait_until_update)(struct drm_info *drm);
->  	bool (*connector_possible_fn)(drmModeConnectorPtr connector);
->  	void (*enable)(int debugfs_fd);
->  } fbc =3D {
-> @@ -295,13 +309,13 @@ static void subtest(struct drm_info *drm, struct fe=
-ature *feature, bool suspend)
->  	sleep(3);
->  =
+  * igt@kms_busy@basic@modeset:
+    - fi-kbl-x1275:       [DMESG-FAIL][1] ([i915#62]) -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8266/fi-kbl-x1275/igt@kms_busy@basic@modeset.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4427/fi-kbl-x1275/igt@kms_busy@basic@modeset.html
 
->  	wait_user("Back to fbcon.");
-> -	igt_assert(feature->wait_until_update(drm->debugfs_fd));
-> +	igt_assert(feature->wait_until_update(drm));
->  =
+  
+Known issues
+------------
 
->  	if (suspend) {
->  		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
->  					      SUSPEND_TEST_NONE);
->  		sleep(5);
-> -		igt_assert(feature->wait_until_update(drm->debugfs_fd));
-> +		igt_assert(feature->wait_until_update(drm));
->  	}
->  }
->  =
+  Here are the changes found in IGTPW_4427 that come from known issues:
 
-> -- =
+### IGT changes ###
 
-> 2.26.0
-> =
+#### Issues hit ####
 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-cml-u2:          [PASS][3] -> [FAIL][4] ([i915#262])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8266/fi-cml-u2/igt@kms_chamelium@dp-crc-fast.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4427/fi-cml-u2/igt@kms_chamelium@dp-crc-fast.html
 
--- =
+  
+#### Possible fixes ####
 
-Ville Syrj=E4l=E4
-Intel
+  * igt@kms_chamelium@dp-edid-read:
+    - fi-cml-u2:          [FAIL][5] ([i915#976]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8266/fi-cml-u2/igt@kms_chamelium@dp-edid-read.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4427/fi-cml-u2/igt@kms_chamelium@dp-edid-read.html
+
+  * igt@kms_flip@basic-flip-vs-dpms:
+    - fi-skl-6770hq:      [SKIP][7] ([fdo#109271]) -> [PASS][8] +24 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8266/fi-skl-6770hq/igt@kms_flip@basic-flip-vs-dpms.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4427/fi-skl-6770hq/igt@kms_flip@basic-flip-vs-dpms.html
+
+  
+#### Warnings ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-kbl-x1275:       [DMESG-WARN][9] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][10] ([i915#62] / [i915#92]) +7 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8266/fi-kbl-x1275/igt@gem_exec_suspend@basic-s3.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4427/fi-kbl-x1275/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-kbl-guc:         [FAIL][11] ([i915#665] / [i915#704]) -> [SKIP][12] ([fdo#109271])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8266/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4427/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-x1275:       [DMESG-FAIL][13] ([i915#62]) -> [SKIP][14] ([fdo#109271])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8266/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4427/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - fi-kbl-x1275:       [DMESG-WARN][15] ([i915#62] / [i915#92]) -> [DMESG-WARN][16] ([i915#62] / [i915#92] / [i915#95]) +3 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8266/fi-kbl-x1275/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4427/fi-kbl-x1275/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#262]: https://gitlab.freedesktop.org/drm/intel/issues/262
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+  [i915#665]: https://gitlab.freedesktop.org/drm/intel/issues/665
+  [i915#704]: https://gitlab.freedesktop.org/drm/intel/issues/704
+  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
+  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+  [i915#976]: https://gitlab.freedesktop.org/drm/intel/issues/976
+
+
+Participating hosts (54 -> 46)
+------------------------------
+
+  Missing    (8): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5575 -> IGTPW_4427
+
+  CI-20190529: 20190529
+  CI_DRM_8266: 0a87487ec64e737ec508dda4dd57662857e65f85 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4427: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4427/index.html
+  IGT_5575: 75641939835558eb3e338a70f12025c19afcb896 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4427/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
