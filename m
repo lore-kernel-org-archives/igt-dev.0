@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 07DBA6E10F
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2020 15:36:05 +0000 (UTC)
-Date: Tue, 7 Apr 2020 18:36:02 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20200407153602.GD6112@intel.com>
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
+ [IPv6:2a00:1450:4864:20::344])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E561A89C55
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2020 15:54:16 +0000 (UTC)
+Received: by mail-wm1-x344.google.com with SMTP id d77so2259767wmd.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 07 Apr 2020 08:54:16 -0700 (PDT)
 References: <20200407110904.13008-1-juhapekka.heikkila@gmail.com>
+ <20200407153602.GD6112@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <7889c8d7-7aed-9ebb-7103-9fa798b4097c@gmail.com>
+Date: Tue, 7 Apr 2020 18:54:09 +0300
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200407110904.13008-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20200407153602.GD6112@intel.com>
+Content-Language: en-US
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: survive cdclk caused
  modeset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -18,67 +22,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Reply-To: juhapekka.heikkila@gmail.com
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Apr 07, 2020 at 02:09:04PM +0300, Juha-Pekka Heikkila wrote:
-> This change will slow this test down a bit. In mid test starting
-> to use higher bpp pixel format (say 64bpp) can cause modeset.
-> Use blocking commit so there's wait for modeset to happen.
-
-We already wait for the event the next time around. So this
-doesn't make sense to me.
-
-> =
-
-> Fixes: https://gitlab.freedesktop.org/drm/intel/issues/1214
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->  tests/kms_plane.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> =
-
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 805795cd..2324fb6e 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -569,12 +569,10 @@ static void capture_format_crcs(data_t *data, enum =
-pipe pipe,
->  =
-
->  		if (data->display.is_atomic) {
->  			/*
-> -			 * Use non-blocking commits to allow the next fb
-> -			 * to be prepared in parallel while the current fb
-> -			 * awaits to be latched.
-> +			 * Use blocking commit because there maybe
-> +			 * modeset when going to higher bpp pixel format.
->  			 */
->  			igt_display_commit_atomic(&data->display,
-> -						  DRM_MODE_ATOMIC_NONBLOCK |
->  						  DRM_MODE_PAGE_FLIP_EVENT, NULL);
->  		} else {
->  			/*
-> -- =
-
-> 2.17.1
-> =
-
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
--- =
-
-Ville Syrj=E4l=E4
-Intel
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gNy40LjIwMjAgMTguMzYsIFZpbGxlIFN5cmrDpGzDpCB3cm90ZToKPiBPbiBUdWUsIEFwciAw
+NywgMjAyMCBhdCAwMjowOTowNFBNICswMzAwLCBKdWhhLVBla2thIEhlaWtraWxhIHdyb3RlOgo+
+PiBUaGlzIGNoYW5nZSB3aWxsIHNsb3cgdGhpcyB0ZXN0IGRvd24gYSBiaXQuIEluIG1pZCB0ZXN0
+IHN0YXJ0aW5nCj4+IHRvIHVzZSBoaWdoZXIgYnBwIHBpeGVsIGZvcm1hdCAoc2F5IDY0YnBwKSBj
+YW4gY2F1c2UgbW9kZXNldC4KPj4gVXNlIGJsb2NraW5nIGNvbW1pdCBzbyB0aGVyZSdzIHdhaXQg
+Zm9yIG1vZGVzZXQgdG8gaGFwcGVuLgo+IAo+IFdlIGFscmVhZHkgd2FpdCBmb3IgdGhlIGV2ZW50
+IHRoZSBuZXh0IHRpbWUgYXJvdW5kLiBTbyB0aGlzCj4gZG9lc24ndCBtYWtlIHNlbnNlIHRvIG1l
+LgoKVGhlcmUncyB0aG9zZSBsb2dzIGxpa2UgdGhpcwpodHRwczovL2ludGVsLWdmeC1jaS4wMS5v
+cmcvdHJlZS9kcm0tdGlwL2RybXRpcF80NzAvZmktaWNsLWd1Yy9pZ3RAa21zX3BsYW5lQHBpeGVs
+LWZvcm1hdC1waXBlLWMtcGxhbmVzLXNvdXJjZS1jbGFtcGluZy5odG1sCgp3aGVyZSBnb2luZyB0
+byA2NGJwcCBwaXhlbCBmb3JtYXQgd2lsbCBjYXVzZSBtb2Rlc2V0IGFuZCBmYWlsIHJ1bm5pbmcg
+CnRlc3QuIEkgd2FzIHRlc3RpbmcgdGhpcyBvbiBJQ0wgYW5kIHNlZSBlcnJvcnMgcmFuZG9tbHks
+IG9uIGNpIHRob3NlIApzZWVtIHRvIGJlIGxlc3MgcmFuZG9tLiBNYWtpbmcgdGhpcyBvbmUgY29t
+bWl0IGJsb2NraW5nIHdpbGwgY2F1c2UgCm1vZGVzZXQgdG8gc2V0dGxlIHdpdGhvdXQgaW50ZXJy
+dXB0aW5nIHRlc3QsIGF0IGxlYXN0IG9uIG15IElDTC4KCklmIHRoZXJlJ3MgYSB3YXkgdG8gc29y
+dCB0aG9zZSBwaXhlbCBmb3JtYXRzIGFjY29yZGluZyB0byBicHAgYW5kIHN0YXJ0IAp3aXRoIGhp
+Z2hlc3QgdGhlcmUncyBubyBuZWVkIGZvciB0aGlzLgoKPiAKPj4KPj4gRml4ZXM6IGh0dHBzOi8v
+Z2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzEyMTQKPj4gU2lnbmVkLW9m
+Zi1ieTogSnVoYS1QZWtrYSBIZWlra2lsYSA8anVoYXBla2thLmhlaWtraWxhQGdtYWlsLmNvbT4K
+Pj4gLS0tCj4+ICAgdGVzdHMva21zX3BsYW5lLmMgfCA2ICsrLS0tLQo+PiAgIDEgZmlsZSBjaGFu
+Z2VkLCAyIGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS90
+ZXN0cy9rbXNfcGxhbmUuYyBiL3Rlc3RzL2ttc19wbGFuZS5jCj4+IGluZGV4IDgwNTc5NWNkLi4y
+MzI0ZmI2ZSAxMDA2NDQKPj4gLS0tIGEvdGVzdHMva21zX3BsYW5lLmMKPj4gKysrIGIvdGVzdHMv
+a21zX3BsYW5lLmMKPj4gQEAgLTU2OSwxMiArNTY5LDEwIEBAIHN0YXRpYyB2b2lkIGNhcHR1cmVf
+Zm9ybWF0X2NyY3MoZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSwKPj4gICAKPj4gICAJCWlm
+IChkYXRhLT5kaXNwbGF5LmlzX2F0b21pYykgewo+PiAgIAkJCS8qCj4+IC0JCQkgKiBVc2Ugbm9u
+LWJsb2NraW5nIGNvbW1pdHMgdG8gYWxsb3cgdGhlIG5leHQgZmIKPj4gLQkJCSAqIHRvIGJlIHBy
+ZXBhcmVkIGluIHBhcmFsbGVsIHdoaWxlIHRoZSBjdXJyZW50IGZiCj4+IC0JCQkgKiBhd2FpdHMg
+dG8gYmUgbGF0Y2hlZC4KPj4gKwkJCSAqIFVzZSBibG9ja2luZyBjb21taXQgYmVjYXVzZSB0aGVy
+ZSBtYXliZQo+PiArCQkJICogbW9kZXNldCB3aGVuIGdvaW5nIHRvIGhpZ2hlciBicHAgcGl4ZWwg
+Zm9ybWF0Lgo+PiAgIAkJCSAqLwo+PiAgIAkJCWlndF9kaXNwbGF5X2NvbW1pdF9hdG9taWMoJmRh
+dGEtPmRpc3BsYXksCj4+IC0JCQkJCQkgIERSTV9NT0RFX0FUT01JQ19OT05CTE9DSyB8Cj4+ICAg
+CQkJCQkJICBEUk1fTU9ERV9QQUdFX0ZMSVBfRVZFTlQsIE5VTEwpOwo+PiAgIAkJfSBlbHNlIHsK
+Pj4gICAJCQkvKgo+PiAtLSAKPj4gMi4xNy4xCj4+Cj4+IF9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCj4+IGlndC1kZXYgbWFpbGluZyBsaXN0Cj4+IGlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4+IGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo+IAoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
+cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9pZ3QtZGV2Cg==
