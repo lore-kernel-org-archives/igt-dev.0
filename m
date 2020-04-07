@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82A2D6E907
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2020 21:51:56 +0000 (UTC)
-From: Bob Paauwe <bob.j.paauwe@intel.com>
-Date: Tue,  7 Apr 2020 14:51:46 -0700
-Message-Id: <20200407215146.5331-1-bob.j.paauwe@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15C2F6E923
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2020 22:23:03 +0000 (UTC)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH-i-g-t] lib/color_encoding: Fix up support for XYUV
- format.
+In-Reply-To: <20200407220435.217727-1-andi@etezian.org>
+References: <20200407220435.217727-1-andi@etezian.org>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Message-ID: <158629817980.15078.16359961228648249395@build.alporthouse.com>
+Date: Tue, 07 Apr 2020 23:22:59 +0100
+Subject: Re: [igt-dev] [PATCH] tests/i915_pm_sseu: remove broken test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,51 +20,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Andi Shyti <andi@etezian.org>, Intel IGT <igt-dev@lists.freedesktop.org>
+Cc: Andi Shyti <andi@etezian.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add XYUV8888 to the list of DRM Formats to test.
+Quoting Andi Shyti (2020-04-07 23:04:35)
+> From: Andi Shyti <andi.shyti@intel.com>
+> 
+> the i915_pm_sseu test is disabled by default and anyway basked on
+> a broken debugfs interface on its way to be removed.
+> 
+> Remove it.
 
-Also fix the byte order for the format.
-
-Signed-off-by: Bob Paauwe <bob.j.paauwe@intel.com>
----
- lib/igt_color_encoding.c | 1 +
- lib/igt_fb.c             | 6 +++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
-index 7de6d5ab..a7bd2b22 100644
---- a/lib/igt_color_encoding.c
-+++ b/lib/igt_color_encoding.c
-@@ -160,6 +160,7 @@ static const struct color_encoding_format {
- 	{ DRM_FORMAT_XVYU2101010, 1023.f, 64.f, 940.f, 64.f, 512.f, 960.f },
- 	{ DRM_FORMAT_XVYU12_16161616, 65520.f, 4096.f, 60160.f, 4096.f, 32768.f, 61440.f },
- 	{ DRM_FORMAT_XVYU16161616, 65535.f, 4096.f, 60160.f, 4096.f, 32768.f, 61440.f },
-+	{ DRM_FORMAT_XYUV8888, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
- };
+The plan was to replace it with a selftest, but that never materialised
+and can be offloaded to anyone looking to do dynamic sseu.
  
- static const struct color_encoding_format *lookup_fourcc(uint32_t fourcc)
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 0fb8db12..5ed586e7 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -2721,9 +2721,9 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
- 		break;
- 
- 	case DRM_FORMAT_XYUV8888:
--		params->y_offset = fb->offsets[0] + 1;
--		params->u_offset = fb->offsets[0] + 2;
--		params->v_offset = fb->offsets[0] + 3;
-+		params->y_offset = fb->offsets[0] + 2;
-+		params->u_offset = fb->offsets[0] + 1;
-+		params->v_offset = fb->offsets[0] + 0;
- 		break;
- 	}
- }
--- 
-2.21.0
+> Signed-off-by: Andi Shyti <andi.shyti@intel.com>
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
 
+Throw in a Closes: so that gitlab can automatically close the associated
+bugs.
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
