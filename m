@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5BC4C6E871
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2020 13:19:18 +0000 (UTC)
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Date: Tue, 7 Apr 2020 16:19:07 +0300
-Message-ID: <20200407131907.1350478-1-arkadiusz.hiler@intel.com>
-In-Reply-To: <20200407131633.1350311-1-arkadiusz.hiler@intel.com>
-References: <20200407131633.1350311-1-arkadiusz.hiler@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B29156E875
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2020 13:19:06 +0000 (UTC)
+References: <20200402081558.389129-1-lionel.g.landwerlin@intel.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <a6e7119c-5831-25fa-a574-908891eb148d@intel.com>
+Date: Tue, 7 Apr 2020 16:19:05 +0300
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 6/7] tests/kms_chamelium: Issue disabling
- modeset when resetting state
+In-Reply-To: <20200402081558.389129-1-lionel.g.landwerlin@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/i915/perf: update TGL configs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,49 +17,21 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Each tests resets the state to be sure it starts with a clean slate.
-Let's add disabling modeset to the pile, to be sure that we get the
-hotplug events and the connector state is correct.
+On 02/04/2020 11:15, Lionel Landwerlin wrote:
+> Some HW woes are forcing us to store EU activity counters in a
+> different way.
+>
+> Signed-off-by: Lionel Landwerlin<lionel.g.landwerlin@intel.com>
+> ---
 
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Issue: https://gitlab.freedesktop.org/drm/intel/issues/323
-Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
----
- tests/kms_chamelium.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
-index 08abd961..236e1010 100644
---- a/tests/kms_chamelium.c
-+++ b/tests/kms_chamelium.c
-@@ -273,7 +273,14 @@ check_analog_bridge(data_t *data, struct chamelium_port *port)
- static void
- reset_state(data_t *data, struct chamelium_port *port)
- {
--	int p;
-+	int p, i;
-+
-+	for (i = 0; i < data->display.n_outputs; i++) {
-+		igt_output_t *output = &data->display.outputs[i];
-+		igt_output_set_pipe(output, PIPE_NONE);
-+	}
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
- 	chamelium_reset(data->chamelium);
- 
--- 
-2.24.1
+Ping?
 
 _______________________________________________
 igt-dev mailing list
