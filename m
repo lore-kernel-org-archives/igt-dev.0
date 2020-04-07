@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D6936E811
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2020 10:07:51 +0000 (UTC)
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue,  7 Apr 2020 11:07:32 +0100
-Message-Id: <20200407100732.1787231-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200407083105.1692124-1-chris@chris-wilson.co.uk>
-References: <20200407083105.1692124-1-chris@chris-wilson.co.uk>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 08CA26E80B
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2020 10:13:53 +0000 (UTC)
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Date: Tue, 7 Apr 2020 13:13:37 +0300
+Message-ID: <20200407101338.1340310-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] runner: Show why we dump the task state
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_chamelium: Fix
+ dp-mode-timings test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,92 +20,53 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Include the reason why we are dumping the task state (test timeout) in
-the kmsg log prior to the task state. Hopefully this helps when reading
-the dump.
+Chamelium provides us with hsync_offset value which is read form its
+receiver register described as "Hsync start edge to H active start
+edge", vsync_offest is analogous.
 
-v2: Use asprintf to combine the strings into one to avoid error prone
-manual string handling and enjoy one single write() into the kmsg.
+Let's calculate the correct things on IGT side.
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+v2: keep the original checks for HDMI (Petri)
+
 Cc: Petri Latvala <petri.latvala@intel.com>
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 ---
- runner/executor.c | 38 +++++++++++++++++++++++++++++---------
- 1 file changed, 29 insertions(+), 9 deletions(-)
+ tests/kms_chamelium.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/runner/executor.c b/runner/executor.c
-index 1b69f9c57..64ebe9616 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -27,6 +27,9 @@
- #include "executor.h"
- #include "output_strings.h"
+diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
+index 77c203d3..69c9de4e 100644
+--- a/tests/kms_chamelium.c
++++ b/tests/kms_chamelium.c
+@@ -915,10 +915,20 @@ static void check_mode(struct chamelium *chamelium, struct chamelium_port *port,
+ 	chamelium_port_get_video_params(chamelium, port, &video_params);
  
-+#define KMSG_HEADER "[IGT] "
-+#define KMSG_WARN "<4>"
+ 	mode_clock = (double) mode->clock / 1000;
+-	mode_hsync_offset = mode->hsync_start - mode->hdisplay;
+-	mode_vsync_offset = mode->vsync_start - mode->vdisplay;
 +
- static struct {
- 	int *fds;
- 	size_t num_dogs;
-@@ -678,9 +681,30 @@ static bool sysrq(char cmd)
- 	return success;
- }
- 
--static void show_kernel_task_state(void)
-+static void kmsg_log(const char *prefix, const char *msg)
- {
-+	char *str = NULL;
-+	int len, fd;
-+
-+	len = asprintf(&str, "%s%s%s", prefix, KMSG_HEADER, msg);
-+	if (!str)
-+		return;
-+
-+	fd = open("/dev/kmsg", O_WRONLY);
-+	if (fd != -1) {
-+		write(fd, str, len);
-+		close(fd);
++	if (chamelium_port_get_type(port) == DRM_MODE_CONNECTOR_DisplayPort) {
++		/* this is what chamelium understands as offsets for DP */
++		mode_hsync_offset = mode->htotal - mode->hsync_start;
++		mode_vsync_offset = mode->vtotal - mode->vsync_start;
++	} else {
++		/* and this is what they are for other connectors */
++		mode_hsync_offset = mode->hsync_start - mode->hdisplay;
++		mode_vsync_offset = mode->vsync_start - mode->vdisplay;
 +	}
 +
-+	free(str);
-+}
+ 	mode_hsync_width = mode->hsync_end - mode->hsync_start;
+ 	mode_vsync_width = mode->vsync_end - mode->vsync_start;
 +
-+static const char *show_kernel_task_state(const char *msg)
-+{
-+	kmsg_log(KMSG_WARN, msg);
- 	sysrq('t');
-+
-+	return msg;
- }
+ 	mode_hsync_polarity = !!(mode->flags & DRM_MODE_FLAG_PHSYNC);
+ 	mode_vsync_polarity = !!(mode->flags & DRM_MODE_FLAG_PVSYNC);
  
- static const char *need_to_timeout(struct settings *settings,
-@@ -725,16 +749,12 @@ static const char *need_to_timeout(struct settings *settings,
- 		return "Killing the test because the kernel is tainted.\n";
- 
- 	if (settings->per_test_timeout != 0 &&
--	    time_since_subtest > settings->per_test_timeout) {
--		show_kernel_task_state();
--		return "Per-test timeout exceeded. Killing the current test with SIGQUIT.\n";
--	}
-+	    time_since_subtest > settings->per_test_timeout)
-+		return show_kernel_task_state("Per-test timeout exceeded. Killing the current test with SIGQUIT.\n");
- 
- 	if (settings->inactivity_timeout != 0 &&
--	    time_since_activity > settings->inactivity_timeout) {
--		show_kernel_task_state();
--		return "Inactivity timeout exceeded. Killing the current test with SIGQUIT.\n";
--	}
-+	    time_since_activity > settings->inactivity_timeout)
-+		return show_kernel_task_state("Inactivity timeout exceeded. Killing the current test with SIGQUIT.\n");
- 
- 	return NULL;
- }
 -- 
-2.26.0
+2.24.1
 
 _______________________________________________
 igt-dev mailing list
