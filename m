@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 07DBA6E10F
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2020 15:36:05 +0000 (UTC)
+Date: Tue, 7 Apr 2020 18:36:02 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <20200407153602.GD6112@intel.com>
+References: <20200407110904.13008-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 07 Apr 2020 14:29:41 -0000
-Message-ID: <158626978131.26325.593429526037697376@emeril.freedesktop.org>
-References: <20200407134716.8872-1-arjun.melkaveri@intel.com>
-In-Reply-To: <20200407134716.8872-1-arjun.melkaveri@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915/gem=5Fsync=2Ec_=3AAdded_=5F=5Ffor=5Feach=5Fphysical=5Fengi?=
- =?utf-8?q?ne_to_utilize_all_available_=28rev5=29?=
+Content-Disposition: inline
+In-Reply-To: <20200407110904.13008-1-juhapekka.heikkila@gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: survive cdclk caused
+ modeset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,81 +18,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arjun Melkaveri <arjun.melkaveri@intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Tue, Apr 07, 2020 at 02:09:04PM +0300, Juha-Pekka Heikkila wrote:
+> This change will slow this test down a bit. In mid test starting
+> to use higher bpp pixel format (say 64bpp) can cause modeset.
+> Use blocking commit so there's wait for modeset to happen.
 
-Series: tests/i915/gem_sync.c :Added __for_each_physical_engine to utilize all available (rev5)
-URL   : https://patchwork.freedesktop.org/series/75536/
-State : success
+We already wait for the event the next time around. So this
+doesn't make sense to me.
 
-== Summary ==
+> =
 
-CI Bug Log - changes from IGT_5574 -> IGTPW_4426
-====================================================
+> Fixes: https://gitlab.freedesktop.org/drm/intel/issues/1214
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>  tests/kms_plane.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> =
 
-Summary
--------
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index 805795cd..2324fb6e 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -569,12 +569,10 @@ static void capture_format_crcs(data_t *data, enum =
+pipe pipe,
+>  =
 
-  **SUCCESS**
+>  		if (data->display.is_atomic) {
+>  			/*
+> -			 * Use non-blocking commits to allow the next fb
+> -			 * to be prepared in parallel while the current fb
+> -			 * awaits to be latched.
+> +			 * Use blocking commit because there maybe
+> +			 * modeset when going to higher bpp pixel format.
+>  			 */
+>  			igt_display_commit_atomic(&data->display,
+> -						  DRM_MODE_ATOMIC_NONBLOCK |
+>  						  DRM_MODE_PAGE_FLIP_EVENT, NULL);
+>  		} else {
+>  			/*
+> -- =
 
-  No regressions found.
+> 2.17.1
+> =
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4426/index.html
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
-Known issues
-------------
+-- =
 
-  Here are the changes found in IGTPW_4426 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-cml-u2:          [DMESG-WARN][1] ([IGT#4]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5574/fi-cml-u2/igt@kms_chamelium@common-hpd-after-suspend.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4426/fi-cml-u2/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  
-  [IGT#4]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/4
-
-
-Participating hosts (53 -> 47)
-------------------------------
-
-  Additional (1): fi-kbl-7560u 
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5574 -> IGTPW_4426
-
-  CI-20190529: 20190529
-  CI_DRM_8264: e0104585f880a64d4a9b40803cf4fb51ab499f7c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4426: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4426/index.html
-  IGT_5574: 15e8ffecfd55d3d632491b73ed981e4467145a4b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+++ 19 lines
---- 91 lines
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4426/index.html
+Ville Syrj=E4l=E4
+Intel
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
