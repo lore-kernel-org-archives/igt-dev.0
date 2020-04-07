@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 259606E884
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Apr 2020 14:07:13 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20200407134716.8872-1-arjun.melkaveri@intel.com>
-References: <20200407134716.8872-1-arjun.melkaveri@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158626842871.8918.2286037412899032345@build.alporthouse.com>
-Date: Tue, 07 Apr 2020 15:07:08 +0100
-Subject: Re: [igt-dev] [PATCH] [PATCH i-g-t][V4]tests/i915/gem_sync.c :Added
- __for_each_physical_engine to utilize all available
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 07 Apr 2020 14:08:12 -0000
+Message-ID: <158626849228.26325.2110003050545457439@emeril.freedesktop.org>
+References: <20200407131633.1350311-1-arkadiusz.hiler@intel.com>
+In-Reply-To: <20200407131633.1350311-1-arkadiusz.hiler@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/7=5D_tests/kms=5Fvblank=3A_Make_sur?=
+ =?utf-8?q?e_that_we_have_a_mode_set?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,361 +15,168 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Arjun Melkaveri (2020-04-07 14:47:16)
-> Replaced the legacy for_each_engine* defines with the ones
-> implemented in the gem_engine_topology library.
-> 
-> Used  gem_context_clone_with_engines
-> to make sure that engine index was potentially created
-> based on a  default context with engine map configured.
-> 
-> Added gem_reopen_driver and gem_context_copy_engines
-> to transfer the engine map from parent fd default
-> context.
-> 
-> V2:
-> Added Legacy engine coverage for sync_ring and sync_all.
-> 
-> V3:
-> Added back ALL_ENGINES. Corrected Test cases that used
-> gem_reopen_driver in fork. Which was not recommended.
-> 
-> V4:
-> Removed gem_require_ring and gem_can_store_dword.
+== Series Details ==
 
-Well that was silly.
- 
-> Cc: Dec Katarzyna <katarzyna.dec@intel.com>
-> Cc: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
-> Signed-off-by: sai gowtham <sai.gowtham.ch@intel.com>
-> Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
-> ---
->  tests/i915/gem_sync.c | 231 ++++++++++++++++++++++++++++--------------
->  1 file changed, 156 insertions(+), 75 deletions(-)
-> 
-> diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
-> index 2ef55ecc..b80fd56c 100644
-> --- a/tests/i915/gem_sync.c
-> +++ b/tests/i915/gem_sync.c
-> @@ -81,21 +81,21 @@ out:
->  static void
->  sync_ring(int fd, unsigned ring, int num_children, int timeout)
->  {
-> +       const struct intel_execution_engine2 *e2;
->         unsigned engines[16];
->         const char *names[16];
->         int num_engines = 0;
->  
->         if (ring == ALL_ENGINES) {
-> -               for_each_physical_engine(e, fd) {
-> -                       names[num_engines] = e->name;
-> -                       engines[num_engines++] = eb_ring(e);
-> +               __for_each_physical_engine(fd, e2) {
-> +                       names[num_engines] = e2->name;
-> +                       engines[num_engines++] = e2->flags;
->                         if (num_engines == ARRAY_SIZE(engines))
->                                 break;
->                 }
->  
->                 num_children *= num_engines;
->         } else {
-> -               gem_require_ring(fd, ring);
->                 names[num_engines] = NULL;
->                 engines[num_engines++] = ring;
->         }
-> @@ -180,24 +180,23 @@ idle_ring(int fd, unsigned ring, int timeout)
->  static void
->  wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
->  {
-> +       const struct intel_execution_engine2 *e2;
->         unsigned engines[16];
->         const char *names[16];
->         int num_engines = 0;
->  
->         if (ring == ALL_ENGINES) {
-> -               for_each_physical_engine(e, fd) {
-> -                       if (!gem_can_store_dword(fd, eb_ring(e)))
-> +               __for_each_physical_engine(fd, e2) {
-> +                       if (!gem_class_can_store_dword(fd, e2->class))
->                                 continue;
->  
-> -                       names[num_engines] = e->name;
-> -                       engines[num_engines++] = eb_ring(e);
-> +                       names[num_engines] = e2->name;
-> +                       engines[num_engines++] = e2->flags;
->                         if (num_engines == ARRAY_SIZE(engines))
->                                 break;
->                 }
->                 igt_require(num_engines);
->         } else {
-> -               gem_require_ring(fd, ring);
-> -               igt_require(gem_can_store_dword(fd, ring));
->                 names[num_engines] = NULL;
->                 engines[num_engines++] = ring;
->         }
-> @@ -292,24 +291,23 @@ wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
->  
->  static void active_ring(int fd, unsigned ring, int timeout)
->  {
-> +       const struct intel_execution_engine2 *e2;
->         unsigned engines[16];
->         const char *names[16];
->         int num_engines = 0;
->  
->         if (ring == ALL_ENGINES) {
-> -               for_each_physical_engine(e, fd) {
-> -                       if (!gem_can_store_dword(fd, eb_ring(e)))
-> +               __for_each_physical_engine(fd, e2) {
-> +                       if (!gem_class_can_store_dword(fd, e2->class))
->                                 continue;
->  
-> -                       names[num_engines] = e->name;
-> -                       engines[num_engines++] = eb_ring(e);
-> +                       names[num_engines] = e2->name;
-> +                       engines[num_engines++] = e2->flags;
->                         if (num_engines == ARRAY_SIZE(engines))
->                                 break;
->                 }
->                 igt_require(num_engines);
->         } else {
-> -               gem_require_ring(fd, ring);
-> -               igt_require(gem_can_store_dword(fd, ring));
->                 names[num_engines] = NULL;
->                 engines[num_engines++] = ring;
->         }
-> @@ -359,24 +357,23 @@ static void active_ring(int fd, unsigned ring, int timeout)
->  static void
->  active_wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
->  {
-> +       const struct intel_execution_engine2 *e2;
->         unsigned engines[16];
->         const char *names[16];
->         int num_engines = 0;
->  
->         if (ring == ALL_ENGINES) {
-> -               for_each_physical_engine(e, fd) {
-> -                       if (!gem_can_store_dword(fd, eb_ring(e)))
-> +               __for_each_physical_engine(fd, e2) {
-> +                       if (!gem_class_can_store_dword(fd, e2->class))
->                                 continue;
->  
-> -                       names[num_engines] = e->name;
-> -                       engines[num_engines++] = eb_ring(e);
-> +                       names[num_engines] = e2->name;
-> +                       engines[num_engines++] = e2->flags;
->                         if (num_engines == ARRAY_SIZE(engines))
->                                 break;
->                 }
->                 igt_require(num_engines);
->         } else {
-> -               gem_require_ring(fd, ring);
-> -               igt_require(gem_can_store_dword(fd, ring));
->                 names[num_engines] = NULL;
->                 engines[num_engines++] = ring;
->         }
-> @@ -493,26 +490,25 @@ active_wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
->  static void
->  store_ring(int fd, unsigned ring, int num_children, int timeout)
->  {
-> +       const struct intel_execution_engine2 *e2;
->         const int gen = intel_gen(intel_get_drm_devid(fd));
->         unsigned engines[16];
->         const char *names[16];
->         int num_engines = 0;
->  
->         if (ring == ALL_ENGINES) {
-> -               for_each_physical_engine(e, fd) {
-> -                       if (!gem_can_store_dword(fd, eb_ring(e)))
-> +               __for_each_physical_engine(fd, e2) {
-> +                       if (!gem_class_can_store_dword(fd, e2->class))
->                                 continue;
->  
-> -                       names[num_engines] = e->name;
-> -                       engines[num_engines++] = eb_ring(e);
-> +                       names[num_engines] = e2->name;
-> +                       engines[num_engines++] = e2->flags;
->                         if (num_engines == ARRAY_SIZE(engines))
->                                 break;
->                 }
->  
->                 num_children *= num_engines;
->         } else {
-> -               gem_require_ring(fd, ring);
-> -               igt_require(gem_can_store_dword(fd, ring));
->                 names[num_engines] = NULL;
->                 engines[num_engines++] = ring;
->         }
-> @@ -608,6 +604,7 @@ store_ring(int fd, unsigned ring, int num_children, int timeout)
->  static void
->  switch_ring(int fd, unsigned ring, int num_children, int timeout)
->  {
-> +       const struct intel_execution_engine2 *e2;
->         const int gen = intel_gen(intel_get_drm_devid(fd));
->         unsigned engines[16];
->         const char *names[16];
-> @@ -616,20 +613,18 @@ switch_ring(int fd, unsigned ring, int num_children, int timeout)
->         gem_require_contexts(fd);
->  
->         if (ring == ALL_ENGINES) {
-> -               for_each_physical_engine(e, fd) {
-> -                       if (!gem_can_store_dword(fd, eb_ring(e)))
-> +               __for_each_physical_engine(fd, e2) {
-> +                       if (!gem_class_can_store_dword(fd, e2->class))
->                                 continue;
->  
-> -                       names[num_engines] = e->name;
-> -                       engines[num_engines++] = eb_ring(e);
-> +                       names[num_engines] = e2->name;
-> +                       engines[num_engines++] = e2->flags;
->                         if (num_engines == ARRAY_SIZE(engines))
->                                 break;
->                 }
->  
->                 num_children *= num_engines;
->         } else {
-> -               gem_require_ring(fd, ring);
-> -               igt_require(gem_can_store_dword(fd, ring));
->                 names[num_engines] = NULL;
->                 engines[num_engines++] = ring;
->         }
-> @@ -933,6 +928,7 @@ __store_many(int fd, unsigned ring, int timeout, unsigned long *cycles)
->  static void
->  store_many(int fd, unsigned ring, int timeout)
->  {
-> +       const struct intel_execution_engine2 *e2;
->         unsigned long *shared;
->         const char *names[16];
->         int n = 0;
-> @@ -943,22 +939,20 @@ store_many(int fd, unsigned ring, int timeout)
->         intel_detect_and_clear_missed_interrupts(fd);
->  
->         if (ring == ALL_ENGINES) {
-> -               for_each_physical_engine(e, fd) {
-> -                       if (!gem_can_store_dword(fd, eb_ring(e)))
-> +               __for_each_physical_engine(fd, e2) {
-> +                       if (!gem_class_can_store_dword(fd, e2->class))
->                                 continue;
->  
->                         igt_fork(child, 1)
->                                 __store_many(fd,
-> -                                            eb_ring(e),
-> +                                            e2->flags,
->                                              timeout,
->                                              &shared[n]);
->  
-> -                       names[n++] = e->name;
-> +                       names[n++] = e2->name;
->                 }
->                 igt_waitchildren();
->         } else {
-> -               gem_require_ring(fd, ring);
-> -               igt_require(gem_can_store_dword(fd, ring));
->                 __store_many(fd, ring, timeout, &shared[n]);
->                 names[n++] = NULL;
->         }
-> @@ -1025,15 +1019,16 @@ sync_all(int fd, int num_children, int timeout)
->  static void
->  store_all(int fd, int num_children, int timeout)
->  {
-> +       const struct intel_execution_engine2 *e;
->         const int gen = intel_gen(intel_get_drm_devid(fd));
->         unsigned engines[16];
->         int num_engines = 0;
->  
-> -       for_each_physical_engine(e, fd) {
-> -               if (!gem_can_store_dword(fd, eb_ring(e)))
-> +       __for_each_physical_engine(fd, e) {
-> +               if (!gem_class_can_store_dword(fd, e->class))
->                         continue;
->  
-> -               engines[num_engines++] = eb_ring(e);
-> +               engines[num_engines++] = e->flags;
->                 if (num_engines == ARRAY_SIZE(engines))
->                         break;
->         }
-> @@ -1132,22 +1127,22 @@ store_all(int fd, int num_children, int timeout)
->  static void
->  preempt(int fd, unsigned ring, int num_children, int timeout)
->  {
-> +       const struct intel_execution_engine2 *e2;
->         unsigned engines[16];
->         const char *names[16];
->         int num_engines = 0;
->         uint32_t ctx[2];
->  
->         if (ring == ALL_ENGINES) {
-> -               for_each_physical_engine(e, fd) {
-> -                       names[num_engines] = e->name;
-> -                       engines[num_engines++] = eb_ring(e);
-> +               __for_each_physical_engine(fd, e2) {
-> +                       names[num_engines] = e2->name;
-> +                       engines[num_engines++] = e2->flags;
->                         if (num_engines == ARRAY_SIZE(engines))
->                                 break;
->                 }
->  
->                 num_children *= num_engines;
->         } else {
-> -               gem_require_ring(fd, ring);
->                 names[num_engines] = NULL;
->                 engines[num_engines++] = ring;
->         }
-> @@ -1209,6 +1204,7 @@ preempt(int fd, unsigned ring, int num_children, int timeout)
->  
->  igt_main
->  {
-> +       const struct intel_execution_engine2 *e2;
->         const struct intel_execution_engine *e;
->         const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
->         int fd = -1;
-> @@ -1222,31 +1218,114 @@ igt_main
->                 igt_fork_hang_detector(fd);
->         }
->  
-> +       /* Legacy testing must be first. */
->         for (e = intel_execution_engines; e->name; e++) {
-> -               igt_subtest_f("%s", e->name)
-> -                       sync_ring(fd, eb_ring(e), 1, 20);
-> -               igt_subtest_f("idle-%s", e->name)
-> -                       idle_ring(fd, eb_ring(e), 20);
-> -               igt_subtest_f("active-%s", e->name)
-> -                       active_ring(fd, eb_ring(e), 20);
-> -               igt_subtest_f("wakeup-%s", e->name)
-> -                       wakeup_ring(fd, eb_ring(e), 20, 1);
-> -               igt_subtest_f("active-wakeup-%s", e->name)
-> -                       active_wakeup_ring(fd, eb_ring(e), 20, 1);
-> -               igt_subtest_f("double-wakeup-%s", e->name)
-> -                       wakeup_ring(fd, eb_ring(e), 20, 2);
-> -               igt_subtest_f("store-%s", e->name)
-> -                       store_ring(fd, eb_ring(e), 1, 20);
-> -               igt_subtest_f("switch-%s", e->name)
-> -                       switch_ring(fd, eb_ring(e), 1, 20);
-> -               igt_subtest_f("forked-switch-%s", e->name)
-> -                       switch_ring(fd, eb_ring(e), ncpus, 20);
-> -               igt_subtest_f("many-%s", e->name)
-> -                       store_many(fd, eb_ring(e), 20);
-> -               igt_subtest_f("forked-%s", e->name)
-> -                       sync_ring(fd, eb_ring(e), ncpus, 20);
-> -               igt_subtest_f("forked-store-%s", e->name)
-> -                       store_ring(fd, eb_ring(e), ncpus, 20);
-> +               struct intel_execution_engine2 e2__;
-> +
-> +               e2__ = gem_eb_flags_to_engine(eb_ring(e));
-> +               if (e2__.flags == -1)
-> +                       continue;
+Series: series starting with [i-g-t,1/7] tests/kms_vblank: Make sure that we have a mode set
+URL   : https://patchwork.freedesktop.org/series/75615/
+State : failure
 
-Beep. Try again.
+== Summary ==
 
-Maybe look at some of the conversions Tvrtko did as a guide.
-28e25ad1f1f987450f017d7f99548d2d7727d388
--Chris
+CI Bug Log - changes from IGT_5574 -> IGTPW_4425
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_4425 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4425, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4425/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4425:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_psr@cursor_plane_move:
+    - fi-icl-u2:          [PASS][1] -> [SKIP][2] +3 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5574/fi-icl-u2/igt@kms_psr@cursor_plane_move.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4425/fi-icl-u2/igt@kms_psr@cursor_plane_move.html
+
+  * igt@kms_psr@sprite_plane_onoff:
+    - fi-tgl-y:           [PASS][3] -> [SKIP][4] +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5574/fi-tgl-y/igt@kms_psr@sprite_plane_onoff.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4425/fi-tgl-y/igt@kms_psr@sprite_plane_onoff.html
+    - fi-icl-guc:         [PASS][5] -> [SKIP][6] +3 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5574/fi-icl-guc/igt@kms_psr@sprite_plane_onoff.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4425/fi-icl-guc/igt@kms_psr@sprite_plane_onoff.html
+    - fi-cml-s:           [PASS][7] -> [SKIP][8] +3 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5574/fi-cml-s/igt@kms_psr@sprite_plane_onoff.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4425/fi-cml-s/igt@kms_psr@sprite_plane_onoff.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - {fi-tgl-u}:         [SKIP][9] ([i915#668]) -> [SKIP][10] +3 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5574/fi-tgl-u/igt@kms_psr@primary_mmap_gtt.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4425/fi-tgl-u/igt@kms_psr@primary_mmap_gtt.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4425 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:
+    - fi-skl-6770hq:      [PASS][11] -> [FAIL][12] ([i915#220]) +8 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5574/fi-skl-6770hq/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4425/fi-skl-6770hq/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
+
+  * igt@kms_psr@cursor_plane_move:
+    - fi-kbl-r:           [PASS][13] -> [SKIP][14] ([fdo#109271]) +3 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5574/fi-kbl-r/igt@kms_psr@cursor_plane_move.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4425/fi-kbl-r/igt@kms_psr@cursor_plane_move.html
+    - fi-kbl-soraka:      [PASS][15] -> [SKIP][16] ([fdo#109271]) +3 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5574/fi-kbl-soraka/igt@kms_psr@cursor_plane_move.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4425/fi-kbl-soraka/igt@kms_psr@cursor_plane_move.html
+
+  * igt@kms_psr@primary_mmap_gtt:
+    - fi-cml-u2:          [PASS][17] -> [SKIP][18] ([fdo#110189]) +3 similar issues
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5574/fi-cml-u2/igt@kms_psr@primary_mmap_gtt.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4425/fi-cml-u2/igt@kms_psr@primary_mmap_gtt.html
+
+  * igt@kms_psr@primary_page_flip:
+    - fi-skl-6600u:       [PASS][19] -> [SKIP][20] ([fdo#109271]) +3 similar issues
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5574/fi-skl-6600u/igt@kms_psr@primary_page_flip.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4425/fi-skl-6600u/igt@kms_psr@primary_page_flip.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-cml-u2:          [DMESG-WARN][21] ([IGT#4]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5574/fi-cml-u2/igt@kms_chamelium@common-hpd-after-suspend.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4425/fi-cml-u2/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  
+#### Warnings ####
+
+  * igt@kms_psr@cursor_plane_move:
+    - fi-whl-u:           [SKIP][23] ([fdo#109271] / [i915#668]) -> [SKIP][24] ([fdo#109271]) +3 similar issues
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5574/fi-whl-u/igt@kms_psr@cursor_plane_move.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4425/fi-whl-u/igt@kms_psr@cursor_plane_move.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [IGT#4]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/4
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#110189]: https://bugs.freedesktop.org/show_bug.cgi?id=110189
+  [i915#220]: https://gitlab.freedesktop.org/drm/intel/issues/220
+  [i915#668]: https://gitlab.freedesktop.org/drm/intel/issues/668
+
+
+Participating hosts (53 -> 47)
+------------------------------
+
+  Additional (1): fi-kbl-7560u 
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5574 -> IGTPW_4425
+
+  CI-20190529: 20190529
+  CI_DRM_8264: e0104585f880a64d4a9b40803cf4fb51ab499f7c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4425: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4425/index.html
+  IGT_5574: 15e8ffecfd55d3d632491b73ed981e4467145a4b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@kms_chamelium@dp-hpd-enable-disable-mode
++igt@kms_chamelium@dp-hpd-with-enabled-mode
++igt@kms_chamelium@hdmi-hpd-enable-disable-mode
++igt@kms_chamelium@hdmi-hpd-with-enabled-mode
++igt@kms_chamelium@vga-hpd-enable-disable-mode
++igt@kms_chamelium@vga-hpd-with-enabled-mode
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4425/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
