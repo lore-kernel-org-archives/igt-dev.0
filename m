@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 08 Apr 2020 12:05:59 -0000
-Message-ID: <158634755980.19347.7071656404836672743@emeril.freedesktop.org>
-References: <20200408102408.1959598-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200408102408.1959598-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Iga21zX2Zs?=
- =?utf-8?q?ip=3A_Reduce_hang_tests_to_minimum_duration?=
+Date: Wed, 08 Apr 2020 13:26:34 -0000
+Message-ID: <158635239407.19346.6213790098863891764@emeril.freedesktop.org>
+References: <20200408125946.2054864-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200408125946.2054864-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_i?=
+ =?utf-8?q?915/i915=5Fpm=5Frc6=5Fresidency=3A_Show_where_the_time_is_spent?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,89 +25,42 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: kms_flip: Reduce hang tests to minimum duration
-URL   : https://patchwork.freedesktop.org/series/75665/
-State : success
+Series: i915/i915_pm_rc6_residency: Show where the time is spent
+URL   : https://patchwork.freedesktop.org/series/75673/
+State : warning
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_8274 -> IGTPW_4430
-====================================================
+Did not get list of undocumented tests for this run, something is wrong!
 
-Summary
--------
+Other than that, pipeline status: FAILED.
 
-  **SUCCESS**
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/129933 for the overview.
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4430/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4430 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_module_load@reload:
-    - fi-skl-6770hq:      [PASS][1] -> [DMESG-WARN][2] ([i915#203]) +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8274/fi-skl-6770hq/igt@i915_module_load@reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4430/fi-skl-6770hq/igt@i915_module_load@reload.html
-
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-cml-u2:          [PASS][3] -> [DMESG-WARN][4] ([IGT#4])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8274/fi-cml-u2/igt@kms_chamelium@common-hpd-after-suspend.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4430/fi-cml-u2/igt@kms_chamelium@common-hpd-after-suspend.html
-
-  * igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:
-    - fi-skl-6770hq:      [PASS][5] -> [SKIP][6] ([fdo#109271]) +5 similar issues
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8274/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4430/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-
-  * igt@kms_pipe_crc_basic@read-crc-pipe-b:
-    - fi-skl-6770hq:      [PASS][7] -> [DMESG-WARN][8] ([i915#106])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8274/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4430/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@basic-rte:
-    - fi-hsw-4770:        [SKIP][9] ([fdo#109271]) -> [PASS][10] +2 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8274/fi-hsw-4770/igt@i915_pm_rpm@basic-rte.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4430/fi-hsw-4770/igt@i915_pm_rpm@basic-rte.html
-
-  
-  [IGT#4]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/4
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#106]: https://gitlab.freedesktop.org/drm/intel/issues/106
-  [i915#203]: https://gitlab.freedesktop.org/drm/intel/issues/203
-
-
-Participating hosts (51 -> 47)
-------------------------------
-
-  Additional (1): fi-kbl-7560u 
-  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5580 -> IGTPW_4430
-
-  CI-20190529: 20190529
-  CI_DRM_8274: 860acd37e552def563b63ac3f77ad002b58fada0 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4430: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4430/index.html
-  IGT_5580: fb488389a7a263b649361ec9c29e8b3b69851122 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/2224155):
+  Pulling docker image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  section_end:1586352140:prepare_executor
+  section_start:1586352140:prepare_script
+  Preparing environment
+  Running on runner-z2CifdYy-project-3185-concurrent-2 via gst-htz-3...
+  section_end:1586352143:prepare_script
+  section_start:1586352143:get_sources
+  Getting source from Git repository
+  Fetching changes...
+  Initialized empty Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Created fresh repository.
+  error: RPC failed; curl 92 HTTP/2 stream 0 was not closed cleanly: PROTOCOL_ERROR (err 1)
+  fatal: the remote end hung up unexpectedly
+  section_end:1586352205:get_sources
+  section_start:1586352205:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  section_end:1586352207:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4430/index.html
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/129933
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
