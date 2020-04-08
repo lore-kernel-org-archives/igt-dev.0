@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C4526E12F
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Apr 2020 14:16:22 +0000 (UTC)
+Date: Wed, 8 Apr 2020 17:15:39 +0300
+From: Imre Deak <imre.deak@intel.com>
+Message-ID: <20200408141539.GA28695@ideak-desk.fi.intel.com>
+References: <20200407131633.1350311-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 08 Apr 2020 13:46:25 -0000
-Message-ID: <158635358590.19346.2527123467453191556@emeril.freedesktop.org>
-References: <20200408125946.2054864-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200408125946.2054864-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9p?=
- =?utf-8?q?915=5Fpm=5Frc6=5Fresidency=3A_Show_where_the_time_is_spent?=
+Content-Disposition: inline
+In-Reply-To: <20200407131633.1350311-1-arkadiusz.hiler@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/7] tests/kms_vblank: Make sure that we
+ have a mode set
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,90 +18,108 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
+Reply-To: imre.deak@intel.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Tue, Apr 07, 2020 at 04:16:27PM +0300, Arkadiusz Hiler wrote:
+> Subtest 'invalid' was depending on a "leftover" mode set by something
+> external (usually fbcon) in order to work.
+> 
+> Let's make the test more robust by setting the mode explicitly.
+> 
+> v2: set flag for the pipe we are using (Imre)
+> 
+> Cc: Imre Deak <imre.deak@intel.com>
+> Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+> ---
+>  tests/kms_vblank.c | 27 ++++++++++++++++++++++-----
+>  1 file changed, 22 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+> index a895ab80..7b5f3426 100644
+> --- a/tests/kms_vblank.c
+> +++ b/tests/kms_vblank.c
+> @@ -472,12 +472,26 @@ static void invalid_subtest(data_t *data, int fd)
+>  {
+>  	union drm_wait_vblank vbl;
+>  	unsigned long valid_flags;
+> +	enum pipe pipe;
+> +	igt_output_t* output;
+> +	bool found = false;
+> +	int base_flags;
+> +
+> +	/* we need to have a mode set, otherwise we will get EINVAL no matter what */
+> +	for_each_pipe_with_single_output(&data->display, pipe, output) {
+> +		data->pipe = pipe;
+> +		found = true;
+> +		break;
+> +	}
+> +
+> +	igt_require_f(found, "No outputs connected = no vblanks\n");
+> +	prepare_crtc(data, fd, output);
+>  
+> -	igt_display_require_output_on_pipe(&data->display, 0);
+> +	base_flags = _DRM_VBLANK_RELATIVE | kmstest_get_vbl_flag(data->pipe);
+>  
+>  	/* First check all is well with a simple query */
+>  	memset(&vbl, 0, sizeof(vbl));
+> -	vbl.request.type = DRM_VBLANK_RELATIVE;
+> +	vbl.request.type = base_flags;
+>  	igt_assert_eq(wait_vblank(fd, &vbl), 0);
+>  
+>  	valid_flags = (_DRM_VBLANK_TYPES_MASK |
+> @@ -486,7 +500,9 @@ static void invalid_subtest(data_t *data, int fd)
+>  
+>  	/* pick some interesting invalid permutations */
+>  	memset(&vbl, 0, sizeof(vbl));
+> -	vbl.request.type = _DRM_VBLANK_RELATIVE | ~valid_flags;
+> +	vbl.request.type = base_flags;
+> +	vbl.request.type |= kmstest_get_vbl_flag(data->pipe);
+> +	vbl.request.type |= ~valid_flags;
 
-Series: i915/i915_pm_rc6_residency: Show where the time is spent
-URL   : https://patchwork.freedesktop.org/series/75673/
-State : success
+Or just vbl.request.type = base_flags | ~valid_flags; ?
 
-== Summary ==
+>  	igt_assert_eq(wait_vblank(fd, &vbl), -EINVAL);
+>  	for (int bit = 0; bit < 32; bit++) {
+>  		int err;
+> @@ -495,7 +511,7 @@ static void invalid_subtest(data_t *data, int fd)
+>  			continue;
+>  
+>  		memset(&vbl, 0, sizeof(vbl));
+> -		vbl.request.type = _DRM_VBLANK_RELATIVE | (1 << bit);
+> +		vbl.request.type = base_flags | (1 << bit);
+>  		err = wait_vblank(fd, &vbl);
+>  		igt_assert_f(err == -EINVAL,
+>  			     "vblank wait with invalid request.type bit %d [0x%08x] did not report -EINVAL, got %d\n",
+> @@ -504,10 +520,11 @@ static void invalid_subtest(data_t *data, int fd)
+>  
+>  	/* check the maximum pipe, nobody should have that many pipes! */
+>  	memset(&vbl, 0, sizeof(vbl));
+> -	vbl.request.type = _DRM_VBLANK_RELATIVE;
+> +	vbl.request.type = base_flags;
+>  	vbl.request.type |= _DRM_VBLANK_SECONDARY;
+>  	vbl.request.type |= _DRM_VBLANK_FLAGS_MASK;
+>  	igt_assert_eq(wait_vblank(fd, &vbl), -EINVAL);
 
-CI Bug Log - changes from CI_DRM_8275 -> IGTPW_4431
-====================================================
+Semi-unrelated, but not sure what the 'maximum pipe' means, or how this
+will pass now if it's not pipe A we use. I think it wants to test a
+non-existing or disabled pipe, which needs to be fixed. (as a follow-up)
 
-Summary
--------
+Reviewed-by: Imre Deak <imre.deak@intel.com>
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4431/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4431 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * {igt@gem_wait@busy@all}:
-    - fi-bwr-2160:        [FAIL][1] -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8275/fi-bwr-2160/igt@gem_wait@busy@all.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4431/fi-bwr-2160/igt@gem_wait@busy@all.html
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - fi-icl-dsi:         [INCOMPLETE][3] ([i915#189]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8275/fi-icl-dsi/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4431/fi-icl-dsi/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  
-#### Warnings ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-x1275:       [FAIL][5] -> [SKIP][6] ([fdo#109271])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8275/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4431/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#189]: https://gitlab.freedesktop.org/drm/intel/issues/189
-
-
-Participating hosts (52 -> 46)
-------------------------------
-
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5581 -> IGTPW_4431
-
-  CI-20190529: 20190529
-  CI_DRM_8275: f2a4da2bcd576d1b56aeb53600e8a0b710117a20 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4431: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4431/index.html
-  IGT_5581: ab0620e555119ec55f12ba9ab9e6e9246d407648 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4431/index.html
+> +	cleanup_crtc(data, fd, output);
+>  }
+>  
+>  igt_main
+> -- 
+> 2.24.1
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
