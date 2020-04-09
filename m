@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com
- [IPv6:2a00:1450:4864:20::144])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0C516EC10
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2020 16:14:07 +0000 (UTC)
-Received: by mail-lf1-x144.google.com with SMTP id r17so82133lff.2
- for <igt-dev@lists.freedesktop.org>; Thu, 09 Apr 2020 09:14:07 -0700 (PDT)
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
+ [IPv6:2a00:1450:4864:20::242])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A048B6EC0F
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2020 16:14:06 +0000 (UTC)
+Received: by mail-lj1-x242.google.com with SMTP id q19so229511ljp.9
+ for <igt-dev@lists.freedesktop.org>; Thu, 09 Apr 2020 09:14:06 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Thu,  9 Apr 2020 19:13:42 +0300
-Message-Id: <20200409161344.31934-7-juhapekka.heikkila@gmail.com>
+Date: Thu,  9 Apr 2020 19:13:41 +0300
+Message-Id: <20200409161344.31934-6-juhapekka.heikkila@gmail.com>
 In-Reply-To: <20200409161344.31934-1-juhapekka.heikkila@gmail.com>
 References: <20200409161344.31934-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] [PATCH i-g-t 6/8] RFC igt/params: use igt_params_set_save
- for igt_set_module_param*
+Subject: [igt-dev] [PATCH i-g-t 5/8] RFC igt/params: add generic saving
+ module parameter set
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,83 +30,106 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Jani Nikula <jani.nikula@intel.com>
 
-Unify parameter access. Based on original patch from Jani Nikula.
-
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/igt_params.c | 35 ++++++++++++-----------------------
- 1 file changed, 12 insertions(+), 23 deletions(-)
+ lib/igt_params.c | 56 ++++++++++++++++++++++++++++++++++++++++--------
+ lib/igt_params.h |  3 +++
+ 2 files changed, 50 insertions(+), 9 deletions(-)
 
 diff --git a/lib/igt_params.c b/lib/igt_params.c
-index 8de47b02..83ff2155 100644
+index fe4b1df3..8de47b02 100644
 --- a/lib/igt_params.c
 +++ b/lib/igt_params.c
-@@ -33,6 +33,7 @@
- #include "igt_core.h"
- #include "igt_params.h"
- #include "igt_sysfs.h"
-+#include "igt_debugfs.h"
- 
- struct module_param_data {
- 	char *path;
-@@ -111,11 +112,18 @@ static int __igt_params_open(int device, char **outpath)
- {
- 	int dir, params = -1;
- 
--	dir = igt_sysfs_open(device);
-+	dir = igt_debugfs_dir(device);
- 	if (dir >= 0) {
- 		params = openat(dir,
--				"device/driver/module/parameters",
-+				"i915_params",
- 				O_RDONLY);
-+		if (outpath != NULL) {
-+			/*
-+			 * Caller is responsible to free this.
-+			 */
-+			char* path = malloc(PATH_MAX);
-+			*outpath = igt_debugfs_path(device, path, PATH_MAX);
-+		}
- 		close(dir);
- 	}
- 
-@@ -232,21 +240,9 @@ bool igt_params_set_save(int device, const char *parameter, const char *fmt, ...
-  */
- void igt_set_module_param(const char *name, const char *val)
- {
--	const char *path = "/sys/module/i915/parameters";
--	int dir;
--
--	dir = open(path, O_RDONLY);
--	igt_assert(dir >= 0);
--
--	igt_params_save(dir, path, name);
--
--	igt_assert(igt_sysfs_set(dir, name, val));
--
--	igt_assert(close(dir) == 0);
-+	igt_assert(igt_params_set_save(-1, name, "%s", val));
+@@ -153,6 +153,29 @@ int igt_params_open(int device)
+ 	return __igt_params_open(device, NULL);
  }
  
--#define PARAM_VALUE_MAX_SZ 16
--
++__attribute__((format(printf, 3, 0)))
++static bool __igt_params_set(int device, const char *parameter,
++			     const char *fmt, va_list ap, bool save)
++{
++	char *path = NULL;
++	int dir;
++	int ret;
++
++	dir = __igt_params_open(device, save ? &path : NULL);
++	if (dir < 0)
++		return false;
++
++	if (save)
++		igt_params_save(dir, path, parameter);
++
++	ret = igt_sysfs_vprintf(dir, parameter, fmt, ap);
++
++	close(dir);
++	free(path);
++
++	return ret > 0;
++}
++
  /**
-  * igt_set_module_param_int:
-  * @name: i915.ko parameter name
-@@ -257,12 +253,5 @@ void igt_set_module_param(const char *name, const char *val)
-  */
- void igt_set_module_param_int(const char *name, int val)
+  * igt_params_set:
+  * @device: fd of the device
+@@ -164,20 +187,35 @@ int igt_params_open(int device)
+ bool igt_params_set(int device, const char *parameter, const char *fmt, ...)
  {
--	char str[PARAM_VALUE_MAX_SZ];
--	int n;
+ 	va_list ap;
+-	int dir;
+-	int ret;
 -
--	n = snprintf(str, PARAM_VALUE_MAX_SZ, "%d\n", val);
--	igt_assert_f(n < PARAM_VALUE_MAX_SZ,
--		     "Need to increase PARAM_VALUE_MAX_SZ\n");
--
--	igt_set_module_param(name, str);
-+	igt_assert(igt_params_set_save(-1, name, "%d", val));
+-	dir = igt_params_open(device);
+-	if (dir < 0)
+-		return false;
++	bool ret;
+ 
+ 	va_start(ap, fmt);
+-	ret = igt_sysfs_vprintf(dir, parameter, fmt, ap);
++	ret = __igt_params_set(device, parameter, fmt, ap, false);
+ 	va_end(ap);
+ 
+-	close(dir);
++	return ret;
++}
+ 
+-	return ret > 0;
++/**
++ * igt_params_set_save:
++ * @device: fd of the device (or -1 to default to Intel)
++ * @parameter: the name of the parameter to set
++ * @fmt: printf-esque format string
++ *
++ * Save the original value to be restored.
++ *
++ * Returns true on success
++ */
++bool igt_params_set_save(int device, const char *parameter, const char *fmt, ...)
++{
++	va_list ap;
++	bool ret;
++
++	va_start(ap, fmt);
++	ret = __igt_params_set(device, parameter, fmt, ap, true);
++	va_end(ap);
++
++	return ret;
  }
+ 
+ /**
+diff --git a/lib/igt_params.h b/lib/igt_params.h
+index 52eed77f..1b750d23 100644
+--- a/lib/igt_params.h
++++ b/lib/igt_params.h
+@@ -31,6 +31,9 @@ int igt_params_open(int device);
+ __attribute__((format(printf, 3, 4)))
+ bool igt_params_set(int device, const char *parameter, const char *fmt, ...);
+ 
++__attribute__((format(printf, 3, 4)))
++bool igt_params_set_save(int device, const char *parameter, const char *fmt, ...);
++
+ void igt_set_module_param(const char *name, const char *val);
+ void igt_set_module_param_int(const char *name, int val);
+ 
 -- 
 2.17.1
 
