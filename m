@@ -1,17 +1,29 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
- [IPv6:2a00:1450:4864:20::142])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A63836EC0A
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2020 16:14:09 +0000 (UTC)
-Received: by mail-lf1-x142.google.com with SMTP id m19so34124lfq.13
- for <igt-dev@lists.freedesktop.org>; Thu, 09 Apr 2020 09:14:09 -0700 (PDT)
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
+ [IPv6:2a00:1450:4864:20::441])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28F3D6EC05
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2020 16:50:53 +0000 (UTC)
+Received: by mail-wr1-x441.google.com with SMTP id i10so6394252wrv.10
+ for <igt-dev@lists.freedesktop.org>; Thu, 09 Apr 2020 09:50:53 -0700 (PDT)
+References: <20200407110904.13008-1-juhapekka.heikkila@gmail.com>
+ <20200407153602.GD6112@intel.com>
+ <7889c8d7-7aed-9ebb-7103-9fa798b4097c@gmail.com>
+ <20200407160830.GE6112@intel.com>
+ <ea5604be-51ca-31a5-5330-281125c79156@gmail.com>
+ <0db0f75f-ea12-f04a-7bcc-254c98c9d4ad@gmail.com>
+ <20200407171051.GI6112@intel.com>
+ <3e40352e-dabf-2e61-4da1-66b026f87db2@gmail.com>
+ <20200407174250.GK6112@intel.com>
+ <387b80b3-811d-4308-2ea6-c01b058d64a8@gmail.com>
+ <20200409160807.GW6112@intel.com>
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Thu,  9 Apr 2020 19:13:44 +0300
-Message-Id: <20200409161344.31934-9-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20200409161344.31934-1-juhapekka.heikkila@gmail.com>
-References: <20200409161344.31934-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] [PATCH i-g-t 8/8] RFC tests/gem_eio: switch to using
- igt_params_set()
+Message-ID: <b30f37d6-8276-4f10-a2c1-bc29ec5c7094@gmail.com>
+Date: Thu, 9 Apr 2020 19:50:43 +0300
+MIME-Version: 1.0
+In-Reply-To: <20200409160807.GW6112@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: survive cdclk caused
+ modeset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,238 +31,151 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: juhapekka.heikkila@gmail.com
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Jani Nikula <jani.nikula@intel.com>
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Jani Nikula <jani.nikula@intel.com>
-
-Based on patch from Jani Nikula.
-
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/i915/gem_eio.c | 57 +++++++++++++++++++-------------------------
- 1 file changed, 24 insertions(+), 33 deletions(-)
-
-diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
-index 1ec60941..ad59f83a 100644
---- a/tests/i915/gem_eio.c
-+++ b/tests/i915/gem_eio.c
-@@ -52,20 +52,11 @@
- 
- IGT_TEST_DESCRIPTION("Test that specific ioctls report a wedged GPU (EIO).");
- 
--static bool i915_reset_control(bool enable)
-+static bool i915_reset_control(int fd, bool enable)
- {
--	const char *path = "/sys/module/i915/parameters/reset";
--	int fd, ret;
--
- 	igt_debug("%s GPU reset\n", enable ? "Enabling" : "Disabling");
- 
--	fd = open(path, O_RDWR);
--	igt_require(fd >= 0);
--
--	ret = write(fd, &"01"[enable], 1) == 1;
--	close(fd);
--
--	return ret;
-+	return igt_params_set(fd, "reset", "%d", enable);
- }
- 
- static void trigger_reset(int fd)
-@@ -106,9 +97,9 @@ static void wedge_gpu(int fd)
- 	/* First idle the GPU then disable GPU resets before injecting a hang */
- 	gem_quiescent_gpu(fd);
- 
--	igt_require(i915_reset_control(false));
-+	igt_require(i915_reset_control(fd, false));
- 	manual_hang(fd);
--	igt_assert(i915_reset_control(true));
-+	igt_assert(i915_reset_control(fd, true));
- }
- 
- static int __gem_throttle(int fd)
-@@ -346,7 +337,7 @@ static void __test_banned(int fd)
- 	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
- 
- 	gem_quiescent_gpu(fd);
--	igt_require(i915_reset_control(true));
-+	igt_require(i915_reset_control(fd, true));
- 
- 	igt_until_timeout(5) {
- 		igt_spin_t *hang;
-@@ -404,9 +395,9 @@ static void test_wait(int fd, unsigned int flags, unsigned int wait)
- 	 */
- 
- 	if (flags & TEST_WEDGE)
--		igt_require(i915_reset_control(false));
-+		igt_require(i915_reset_control(fd, false));
- 	else
--		igt_require(i915_reset_control(true));
-+		igt_require(i915_reset_control(fd, true));
- 
- 	hang = spin_sync(fd, 0, I915_EXEC_DEFAULT);
- 
-@@ -415,7 +406,7 @@ static void test_wait(int fd, unsigned int flags, unsigned int wait)
- 
- 	igt_spin_free(fd, hang);
- 
--	igt_require(i915_reset_control(true));
-+	igt_require(i915_reset_control(fd, true));
- 
- 	trigger_reset(fd);
- 	close(fd);
-@@ -430,12 +421,12 @@ static void test_suspend(int fd, int state)
- 	igt_system_suspend_autoresume(state, SUSPEND_TEST_DEVICES);
- 
- 	/* Check we can suspend when the driver is already wedged */
--	igt_require(i915_reset_control(false));
-+	igt_require(i915_reset_control(fd, false));
- 	manual_hang(fd);
- 
- 	igt_system_suspend_autoresume(state, SUSPEND_TEST_DEVICES);
- 
--	igt_require(i915_reset_control(true));
-+	igt_require(i915_reset_control(fd, true));
- 	trigger_reset(fd);
- 	close(fd);
- }
-@@ -470,7 +461,7 @@ static void test_inflight(int fd, unsigned int wait)
- 
- 		gem_quiescent_gpu(fd);
- 		igt_debug("Starting %s on engine '%s'\n", __func__, e->name);
--		igt_require(i915_reset_control(false));
-+		igt_require(i915_reset_control(fd, false));
- 
- 		hang = spin_sync(fd, 0, eb_ring(e));
- 		obj[0].handle = hang->handle;
-@@ -495,7 +486,7 @@ static void test_inflight(int fd, unsigned int wait)
- 		}
- 		igt_spin_free(fd, hang);
- 
--		igt_assert(i915_reset_control(true));
-+		igt_assert(i915_reset_control(fd, true));
- 		trigger_reset(fd);
- 
- 		gem_close(fd, obj[1].handle);
-@@ -520,7 +511,7 @@ static void test_inflight_suspend(int fd)
- 	fd = gem_reopen_driver(fd);
- 	igt_require_gem(fd);
- 	igt_require(gem_has_exec_fence(fd));
--	igt_require(i915_reset_control(false));
-+	igt_require(i915_reset_control(fd, false));
- 
- 	memset(obj, 0, sizeof(obj));
- 	obj[0].flags = EXEC_OBJECT_WRITE;
-@@ -553,7 +544,7 @@ static void test_inflight_suspend(int fd)
- 	}
- 	igt_spin_free(fd, hang);
- 
--	igt_assert(i915_reset_control(true));
-+	igt_assert(i915_reset_control(fd, true));
- 	trigger_reset(fd);
- 	close(fd);
- }
-@@ -601,7 +592,7 @@ static void test_inflight_contexts(int fd, unsigned int wait)
- 		gem_quiescent_gpu(fd);
- 
- 		igt_debug("Starting %s on engine '%s'\n", __func__, e->name);
--		igt_require(i915_reset_control(false));
-+		igt_require(i915_reset_control(fd, false));
- 
- 		memset(obj, 0, sizeof(obj));
- 		obj[0].flags = EXEC_OBJECT_WRITE;
-@@ -636,7 +627,7 @@ static void test_inflight_contexts(int fd, unsigned int wait)
- 		igt_spin_free(fd, hang);
- 		gem_close(fd, obj[1].handle);
- 
--		igt_assert(i915_reset_control(true));
-+		igt_assert(i915_reset_control(fd, true));
- 		trigger_reset(fd);
- 
- 		for (unsigned int n = 0; n < ARRAY_SIZE(ctx); n++)
-@@ -663,7 +654,7 @@ static void test_inflight_external(int fd)
- 
- 	fence = igt_cork_plug(&cork, fd);
- 
--	igt_require(i915_reset_control(false));
-+	igt_require(i915_reset_control(fd, false));
- 	hang = __spin_poll(fd, 0, 0);
- 
- 	memset(&obj, 0, sizeof(obj));
-@@ -695,7 +686,7 @@ static void test_inflight_external(int fd)
- 	close(fence);
- 
- 	igt_spin_free(fd, hang);
--	igt_assert(i915_reset_control(true));
-+	igt_assert(i915_reset_control(fd, true));
- 	trigger_reset(fd);
- 	close(fd);
- }
-@@ -714,7 +705,7 @@ static void test_inflight_internal(int fd, unsigned int wait)
- 	fd = gem_reopen_driver(fd);
- 	igt_require_gem(fd);
- 
--	igt_require(i915_reset_control(false));
-+	igt_require(i915_reset_control(fd, false));
- 	hang = spin_sync(fd, 0, 0);
- 
- 	memset(obj, 0, sizeof(obj));
-@@ -745,7 +736,7 @@ static void test_inflight_internal(int fd, unsigned int wait)
- 	}
- 	igt_spin_free(fd, hang);
- 
--	igt_assert(i915_reset_control(true));
-+	igt_assert(i915_reset_control(fd, true));
- 	trigger_reset(fd);
- 	close(fd);
- }
-@@ -781,7 +772,7 @@ static void reset_stress(int fd, uint32_t ctx0,
- 
- 		gem_quiescent_gpu(fd);
- 
--		igt_require(i915_reset_control(flags & TEST_WEDGE ?
-+		igt_require(i915_reset_control(fd, flags & TEST_WEDGE ?
- 					       false : true));
- 
- 		/*
-@@ -803,7 +794,7 @@ static void reset_stress(int fd, uint32_t ctx0,
- 		igt_assert_eq(sync_fence_status(hang->out_fence), -EIO);
- 
- 		/* Unwedge by forcing a reset. */
--		igt_assert(i915_reset_control(true));
-+		igt_assert(i915_reset_control(fd, true));
- 		trigger_reset(fd);
- 
- 		gem_quiescent_gpu(fd);
-@@ -918,7 +909,7 @@ static int fd = -1;
- static void
- exit_handler(int sig)
- {
--	i915_reset_control(true);
-+	i915_reset_control(fd, true);
- 	igt_force_gpu_reset(fd);
- }
- 
-@@ -933,7 +924,7 @@ igt_main
- 
- 		igt_allow_hang(fd, 0, 0);
- 
--		igt_require(i915_reset_control(true));
-+		igt_require(i915_reset_control(fd, true));
- 		igt_force_gpu_reset(fd);
- 		igt_install_exit_handler(exit_handler);
- 	}
--- 
-2.17.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gOS40LjIwMjAgMTkuMDgsIFZpbGxlIFN5cmrDpGzDpCB3cm90ZToKPiBPbiBXZWQsIEFwciAw
+OCwgMjAyMCBhdCAxMDowODozMVBNICswMzAwLCBKdWhhLVBla2thIEhlaWtraWxhIHdyb3RlOgo+
+PiBPbiA3LjQuMjAyMCAyMC40MiwgVmlsbGUgU3lyasOkbMOkIHdyb3RlOgo+Pj4gT24gVHVlLCBB
+cHIgMDcsIDIwMjAgYXQgMDg6MjQ6MDFQTSArMDMwMCwgSnVoYS1QZWtrYSBIZWlra2lsYSB3cm90
+ZToKPj4+PiBPbiA3LjQuMjAyMCAyMC4xMCwgVmlsbGUgU3lyasOkbMOkIHdyb3RlOgo+Pj4+PiBP
+biBUdWUsIEFwciAwNywgMjAyMCBhdCAwODowNzoxNlBNICswMzAwLCBKdWhhLVBla2thIEhlaWtr
+aWxhIHdyb3RlOgo+Pj4+Pj4gT24gNy40LjIwMjAgMTkuMjIsIEp1aGEtUGVra2EgSGVpa2tpbGEg
+d3JvdGU6Cj4+Pj4+Pj4gT24gNy40LjIwMjAgMTkuMDgsIFZpbGxlIFN5cmrDpGzDpCB3cm90ZToK
+Pj4+Pj4+Pj4gT24gVHVlLCBBcHIgMDcsIDIwMjAgYXQgMDY6NTQ6MDlQTSArMDMwMCwgSnVoYS1Q
+ZWtrYSBIZWlra2lsYSB3cm90ZToKPj4+Pj4+Pj4+IE9uIDcuNC4yMDIwIDE4LjM2LCBWaWxsZSBT
+eXJqw6Rsw6Qgd3JvdGU6Cj4+Pj4+Pj4+Pj4gT24gVHVlLCBBcHIgMDcsIDIwMjAgYXQgMDI6MDk6
+MDRQTSArMDMwMCwgSnVoYS1QZWtrYSBIZWlra2lsYSB3cm90ZToKPj4+Pj4+Pj4+Pj4gVGhpcyBj
+aGFuZ2Ugd2lsbCBzbG93IHRoaXMgdGVzdCBkb3duIGEgYml0LiBJbiBtaWQgdGVzdCBzdGFydGlu
+Zwo+Pj4+Pj4+Pj4+PiB0byB1c2UgaGlnaGVyIGJwcCBwaXhlbCBmb3JtYXQgKHNheSA2NGJwcCkg
+Y2FuIGNhdXNlIG1vZGVzZXQuCj4+Pj4+Pj4+Pj4+IFVzZSBibG9ja2luZyBjb21taXQgc28gdGhl
+cmUncyB3YWl0IGZvciBtb2Rlc2V0IHRvIGhhcHBlbi4KPj4+Pj4+Pj4+Pgo+Pj4+Pj4+Pj4+IFdl
+IGFscmVhZHkgd2FpdCBmb3IgdGhlIGV2ZW50IHRoZSBuZXh0IHRpbWUgYXJvdW5kLiBTbyB0aGlz
+Cj4+Pj4+Pj4+Pj4gZG9lc24ndCBtYWtlIHNlbnNlIHRvIG1lLgo+Pj4+Pj4+Pj4KPj4+Pj4+Pj4+
+IFRoZXJlJ3MgdGhvc2UgbG9ncyBsaWtlIHRoaXMKPj4+Pj4+Pj4+IGh0dHBzOi8vaW50ZWwtZ2Z4
+LWNpLjAxLm9yZy90cmVlL2RybS10aXAvZHJtdGlwXzQ3MC9maS1pY2wtZ3VjL2lndEBrbXNfcGxh
+bmVAcGl4ZWwtZm9ybWF0LXBpcGUtYy1wbGFuZXMtc291cmNlLWNsYW1waW5nLmh0bWwKPj4+Pj4+
+Pj4+Cj4+Pj4+Pj4+Pgo+Pj4+Pj4+Pj4gd2hlcmUgZ29pbmcgdG8gNjRicHAgcGl4ZWwgZm9ybWF0
+IHdpbGwgY2F1c2UgbW9kZXNldCBhbmQgZmFpbCBydW5uaW5nCj4+Pj4+Pj4+PiB0ZXN0Lgo+Pj4+
+Pj4+Pgo+Pj4+Pj4+PiBIbW0uIFNlZW1zIHdlIGRvbid0IGhhdmUgZHJtLmRlYnVnPTB4MTAgZW5h
+YmxlZCBzbyB3ZSBkb24ndCBzZWUgdGhlCj4+Pj4+Pj4+IGFjdHVhbCBkZWJ1ZyBtZXNzYWdlIDoo
+IEFueXdheXMsIHRoZSByZWFsIGJ1ZyBzZWVtcyB0byBiZSB0aGUgbGFjayBvZgo+Pj4+Pj4+PiBB
+TExPV19NT0RFU0VULgo+Pj4+Pj4+Cj4+Pj4+Pj4gSSdsbCB0cnkgdGhhdCBhbmQgc2VlIGhvdyBp
+dCBjaGFuZ2VzIHNpdHVhdGlvbi4gSSBvcmlnaW5hbGx5IGhhZCBpZGVhCj4+Pj4+Pj4gbW9kZXNl
+dCB3aWxsIGJsb2NrIHRoZSBmbGlwIGFuZCBtYWtpbmcgdGhpcyBjb21taXQgYmxvY2tpbmcgd291
+bGQgYWx3YXlzCj4+Pj4+Pj4gZm9yY2UgdGhpbmdzIGFsd2F5cyBpbnRvIGNvcnJlY3Qgb3JkZXIg
+YXMgY3VycmVudCB0ZXN0IGRpZG4ndCBmYWlsIGV2ZXJ5Cj4+Pj4+Pj4gdGltZSBmb3IgbWUuCj4+
+Pj4+Pgo+Pj4+Pj4gSGF2aW5nIHRoYXQgY29tbWl0IHNheWluZwo+Pj4+Pj4KPj4+Pj4+IGlndF9k
+aXNwbGF5X2NvbW1pdF9hdG9taWMoJmRhdGEtPmRpc3BsYXksCj4+Pj4+PiAJRFJNX01PREVfQVRP
+TUlDX0FMTE9XX01PREVTRVQgfAo+Pj4+Pj4gCURSTV9NT0RFX0FUT01JQ19OT05CTE9DSyB8Cj4+
+Pj4+PiAJRFJNX01PREVfUEFHRV9GTElQX0VWRU5ULCBOVUxMKTsKPj4+Pj4+Cj4+Pj4+PiBJIHNl
+ZSB0ZXN0IGZhaWxpbmcgYXMgYmVmb3JlIHNvIGl0IHdpbGwgbm90IGFsb25lIGZpeCB0aGlzIGlz
+c3VlLiBPbiBteQo+Pj4+Pj4gSUNMIGJveCB0aGUgdGVzdCBmYWlsIG1heWJlIDEvNSB0aW1lcywg
+d2l0aCB0aGUgcGF0Y2ggb24gbGlzdCBpdCBuZXZlcgo+Pj4+Pj4gZmFpbGVkIHNvIGZhci4KPj4+
+Pj4KPj4+Pj4gV2h5IGRvZXMgaXQgZmFpbD8KPj4+Pgo+Pj4+Cj4+Pj4gVGhpcyBpcyBmYWlsdXJl
+IHdpdGggQUxMT1dfTU9ERVNFVAo+Pj4+IC0tLQo+Pj4+IChrbXNfcGxhbmU6MzEyMzgpIGlndF9r
+bXMtREVCVUc6IGRpc3BsYXk6IH0KPj4+PiAoa21zX3BsYW5lOjMxMjM4KSBpZ3Rfa21zLUNSSVRJ
+Q0FMOiBUZXN0IGFzc2VydGlvbiBmYWlsdXJlIGZ1bmN0aW9uCj4+Pj4gaWd0X2Rpc3BsYXlfY29t
+bWl0X2F0b21pYywgZmlsZSAuLi9saWIvaWd0X2ttcy5jOjM1MDg6Cj4+Pj4gKGttc19wbGFuZToz
+MTIzOCkgaWd0X2ttcy1DUklUSUNBTDogRmFpbGVkIGFzc2VydGlvbjogcmV0ID09IDAKPj4+PiAo
+a21zX3BsYW5lOjMxMjM4KSBpZ3Rfa21zLUNSSVRJQ0FMOiBMYXN0IGVycm5vOiAxNiwgRGV2aWNl
+IG9yIHJlc291cmNlIGJ1c3kKPj4+PiAoa21zX3BsYW5lOjMxMjM4KSBpZ3Rfa21zLUNSSVRJQ0FM
+OiBlcnJvcjogLTE2ICE9IDAKPj4+PiAoa21zX3BsYW5lOjMxMjM4KSBpZ3RfY29yZS1JTkZPOiBT
+dGFjayB0cmFjZToKPj4+PiAoa21zX3BsYW5lOjMxMjM4KSBpZ3RfY29yZS1JTkZPOiAgICMwIC4u
+L2xpYi9pZ3RfY29yZS5jOjE2NzYKPj4+PiBfX2lndF9mYWlsX2Fzc2VydCgpCj4+Pj4gKGttc19w
+bGFuZTozMTIzOCkgaWd0X2NvcmUtSU5GTzogICAjMSBbaWd0X2Rpc3BsYXlfY29tbWl0X2F0b21p
+YysweDQ0XQo+Pj4+IChrbXNfcGxhbmU6MzEyMzgpIGlndF9jb3JlLUlORk86ICAgIzIgLi4vdGVz
+dHMva21zX3BsYW5lLmM6NTk5Cj4+Pj4gY2FwdHVyZV9mb3JtYXRfY3Jjcy5jb25zdHByb3AuMTQo
+KQo+Pj4+IChrbXNfcGxhbmU6MzEyMzgpIGlndF9jb3JlLUlORk86ICAgIzMgLi4vdGVzdHMva21z
+X3BsYW5lLmM6NjUyCj4+Pj4gdGVzdF9mb3JtYXRfcGxhbmVfY29sb3JzLmNvbnN0cHJvcC4xMygp
+Cj4+Pj4gKGttc19wbGFuZTozMTIzOCkgaWd0X2NvcmUtSU5GTzogICAjNCAuLi90ZXN0cy9rbXNf
+cGxhbmUuYzo3MjgKPj4+PiB0ZXN0X3BpeGVsX2Zvcm1hdHMuY29uc3Rwcm9wLjkoKQo+Pj4+IChr
+bXNfcGxhbmU6MzEyMzgpIGlndF9jb3JlLUlORk86ICAgIzUgLi4vdGVzdHMva21zX3BsYW5lLmM6
+OTUwCj4+Pj4gcnVuX3Rlc3RzX2Zvcl9waXBlX3BsYW5lLmNvbnN0cHJvcC44KCkKPj4+PiAoa21z
+X3BsYW5lOjMxMjM4KSBpZ3RfY29yZS1JTkZPOiAgICM2IC4uL3Rlc3RzL2ttc19wbGFuZS5jOjEw
+MTkKPj4+PiBfX3JlYWxfbWFpbjEwMDYoKQo+Pj4+IChrbXNfcGxhbmU6MzEyMzgpIGlndF9jb3Jl
+LUlORk86ICAgIzcgLi4vdGVzdHMva21zX3BsYW5lLmM6MTAwNiBtYWluKCkKPj4+PiAoa21zX3Bs
+YW5lOjMxMjM4KSBpZ3RfY29yZS1JTkZPOiAgICM4IC4uL2NzdS9saWJjLXN0YXJ0LmM6MzQ0Cj4+
+Pj4gX19saWJjX3N0YXJ0X21haW4oKQo+Pj4+IChrbXNfcGxhbmU6MzEyMzgpIGlndF9jb3JlLUlO
+Rk86ICAgIzkgW19zdGFydCsweDJhXQo+Pj4+ICoqKiogIEVORCAgKioqKgo+Pj4+IFN0YWNrIHRy
+YWNlOgo+Pj4+ICAgICAgIzAgLi4vbGliL2lndF9jb3JlLmM6MTY3NiBfX2lndF9mYWlsX2Fzc2Vy
+dCgpCj4+Pj4gICAgICAjMSBbaWd0X2Rpc3BsYXlfY29tbWl0X2F0b21pYysweDQ0XQo+Pj4+ICAg
+ICAgIzIgLi4vdGVzdHMva21zX3BsYW5lLmM6NTk5IGNhcHR1cmVfZm9ybWF0X2NyY3MuY29uc3Rw
+cm9wLjE0KCkKPj4+PiAgICAgICMzIC4uL3Rlc3RzL2ttc19wbGFuZS5jOjY1MiB0ZXN0X2Zvcm1h
+dF9wbGFuZV9jb2xvcnMuY29uc3Rwcm9wLjEzKCkKPj4+PiAgICAgICM0IC4uL3Rlc3RzL2ttc19w
+bGFuZS5jOjcyOCB0ZXN0X3BpeGVsX2Zvcm1hdHMuY29uc3Rwcm9wLjkoKQo+Pj4+ICAgICAgIzUg
+Li4vdGVzdHMva21zX3BsYW5lLmM6OTUwIHJ1bl90ZXN0c19mb3JfcGlwZV9wbGFuZS5jb25zdHBy
+b3AuOCgpCj4+Pj4gICAgICAjNiAuLi90ZXN0cy9rbXNfcGxhbmUuYzoxMDE5IF9fcmVhbF9tYWlu
+MTAwNigpCj4+Pj4gICAgICAjNyAuLi90ZXN0cy9rbXNfcGxhbmUuYzoxMDA2IG1haW4oKQo+Pj4+
+ICAgICAgIzggLi4vY3N1L2xpYmMtc3RhcnQuYzozNDQgX19saWJjX3N0YXJ0X21haW4oKQo+Pj4+
+ICAgICAgIzkgW19zdGFydCsweDJhXQo+Pj4+IFN1YnRlc3QgcGl4ZWwtZm9ybWF0LXBpcGUtQS1w
+bGFuZXMtc291cmNlLWNsYW1waW5nOiBGQUlMICgyMi41NDNzKQo+Pj4KPj4+IFRoYXQgZG9lc24n
+dCB0ZWxsIGFueW9uZSBhbnl0aGluZyB1c2VmdWwuIE9ubHkga2VybmVsIGxvZ3MgY2FuIGhlbHAK
+Pj4+IGRpYWdub3NlIHRoZSBwcm9ibGVtLgo+Pj4KPj4+Cj4+Pj4gLS0KPj4+Pgo+Pj4+IEZhaWx1
+cmUgaXMgZWJ1c3kuIEl0IHNlZW1zIHJvdW5kIHdoZXJlIGl0IGtpY2sgbWUgb3V0IGlzIG5vdCBh
+bHdheXMgdGhlCj4+Pj4gc2FtZS4KPj4+Cj4+PiBIbW0uIFNvdW5kcyBsaWtlIHdlIGhhdmUgYSBy
+YWNlIGJldHdlZW4gc2VuZGluZyB0aGUgZXZlbnQgdnMuIHN1Ym1pdHRpbmcKPj4+IGEgbmV3IGNv
+bW1pdCA6KAo+Pj4KPj4+IEhtbS4gV2hhdCB3YXNuJ3QgdGhlcmUgYSBwYXRjaCBmcm9tIERhbmll
+bCB0byBjb252ZXJ0IG1vZGVzZXQgY29tbWl0cyB0bwo+Pj4gYmxvY2tpbmcgdG8gImZpeCIgYSBy
+YWNlIGp1c3QgbGlrZSB0aGlzPyBBaCwgeWVhaCBpdCB3YXMgRUJVU1kgZHVlIHRvCj4+PiBtdWx0
+aXBsZSBwaXBlcyBhbmQgbm9ibG9ja2luZyBtb2Rlc2V0cy4gRG8geW91IGhhdmUgbXVsdGlwbGUg
+cGlwZXMKPj4+IGVuYWJsYWQgd2hlbiBpdCBmYWlscz8gVGhhdCBjb3VsZCBjZXJ0YWlubHkgZXhw
+bGFpbiB0aGUgcmFjZS4KPj4+Cj4+Cj4+IFF1aWNrbHkgbG9va2luZyB0aGVyZSBzaG91bGRuJ3Qg
+YmUgbXVsdGlwbGUgcGlwZXMgZW5hYmxlZC4gVGVzdCBpcyBvbmUKPj4gb2YgdGhvc2Ugc2ltcGxl
+IGxvb3BzIHRoYXQgc3RhcnQgd2l0aCBmb3JfZWFjaF9wbGFuZV9vbl9waXBlKC4uKXsuLn0gYW5k
+Cj4+IGRpZmZlcmVudCBwaXBlcyBhcmUgcnVuIGFzIGRpZmZlcmVudCB0ZXN0cy4KPiAKPiBDYW4n
+dCBzZWUgYW55dGhpbmcgZWxzZSByZXR1cm5pbmcgLUVCVVNZIGV4Y2VwdCBpZiBmbGlwX2RvbmUg
+aXMgbm90Cj4gY29tcGxldGVkLCBhbmQgdGhhdCBvbmUgc2hvdWxkIGJlIGRvbmUgYmVmb3JlIHdl
+IHNlbmQgdGhlIGV2ZW50Lgo+IAoKSSB0aGluayB0aGF0IG1vZGVzZXQgc29tZWhvdyBhZmZlY3Rz
+IGJ1c3luZXNzLiBJIGNhbiB0cnkgdGhpcyB0ZXN0IHcvbyAKNjRicHAgZm9ybWF0cyBqdXN0IHRv
+IGNoZWNrIG91dCBpdCB3aWxsIG5vdCBmYWlsIG90aGVyd2lzZSB3aXRoIHNhbWUgCmtlcm5lbC9t
+YWNoaW5lLiBOb3cgaXQgc2VlbXMgd2hlbiBpdCdzIGJ1c3kgaXQncyBhdCB0aGUgbW9tZW50IG9m
+IG1vZGVzZXQuCgo+Pgo+Pj4+Cj4+Pj4+Cj4+Pj4+Pgo+Pj4+Pj4+Cj4+Pj4+Pj4+Cj4+Pj4+Pj4+
+PiBJIHdhcyB0ZXN0aW5nIHRoaXMgb24gSUNMIGFuZCBzZWUgZXJyb3JzIHJhbmRvbWx5LCBvbiBj
+aSB0aG9zZQo+Pj4+Pj4+Pj4gc2VlbSB0byBiZSBsZXNzIHJhbmRvbS4gTWFraW5nIHRoaXMgb25l
+IGNvbW1pdCBibG9ja2luZyB3aWxsIGNhdXNlCj4+Pj4+Pj4+PiBtb2Rlc2V0IHRvIHNldHRsZSB3
+aXRob3V0IGludGVycnVwdGluZyB0ZXN0LCBhdCBsZWFzdCBvbiBteSBJQ0wuCj4+Pj4+Pj4+Pgo+
+Pj4+Pj4+Pj4gSWYgdGhlcmUncyBhIHdheSB0byBzb3J0IHRob3NlIHBpeGVsIGZvcm1hdHMgYWNj
+b3JkaW5nIHRvIGJwcCBhbmQgc3RhcnQKPj4+Pj4+Pj4+IHdpdGggaGlnaGVzdCB0aGVyZSdzIG5v
+IG5lZWQgZm9yIHRoaXMuCj4+Pj4+Pj4+Pgo+Pj4+Pj4+Pj4+Cj4+Pj4+Pj4+Pj4+Cj4+Pj4+Pj4+
+Pj4+IEZpeGVzOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2ludGVsL2lzc3Vl
+cy8xMjE0Cj4+Pj4+Pj4+Pj4+IFNpZ25lZC1vZmYtYnk6IEp1aGEtUGVra2EgSGVpa2tpbGEgPGp1
+aGFwZWtrYS5oZWlra2lsYUBnbWFpbC5jb20+Cj4+Pj4+Pj4+Pj4+IC0tLQo+Pj4+Pj4+Pj4+PiAg
+ICDCoMKgIHRlc3RzL2ttc19wbGFuZS5jIHwgNiArKy0tLS0KPj4+Pj4+Pj4+Pj4gICAgwqDCoCAx
+IGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo+Pj4+Pj4+Pj4+
+Pgo+Pj4+Pj4+Pj4+PiBkaWZmIC0tZ2l0IGEvdGVzdHMva21zX3BsYW5lLmMgYi90ZXN0cy9rbXNf
+cGxhbmUuYwo+Pj4+Pj4+Pj4+PiBpbmRleCA4MDU3OTVjZC4uMjMyNGZiNmUgMTAwNjQ0Cj4+Pj4+
+Pj4+Pj4+IC0tLSBhL3Rlc3RzL2ttc19wbGFuZS5jCj4+Pj4+Pj4+Pj4+ICsrKyBiL3Rlc3RzL2tt
+c19wbGFuZS5jCj4+Pj4+Pj4+Pj4+IEBAIC01NjksMTIgKzU2OSwxMCBAQCBzdGF0aWMgdm9pZCBj
+YXB0dXJlX2Zvcm1hdF9jcmNzKGRhdGFfdCAqZGF0YSwKPj4+Pj4+Pj4+Pj4gZW51bSBwaXBlIHBp
+cGUsCj4+Pj4+Pj4+Pj4+ICAgIMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlmIChkYXRhLT5kaXNwbGF5
+LmlzX2F0b21pYykgewo+Pj4+Pj4+Pj4+PiAgICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+IC8qCj4+Pj4+Pj4+Pj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKiBVc2Ugbm9uLWJsb2Nr
+aW5nIGNvbW1pdHMgdG8gYWxsb3cgdGhlIG5leHQgZmIKPj4+Pj4+Pj4+Pj4gLcKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCAqIHRvIGJlIHByZXBhcmVkIGluIHBhcmFsbGVsIHdoaWxlIHRoZSBjdXJy
+ZW50IGZiCj4+Pj4+Pj4+Pj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKiBhd2FpdHMgdG8g
+YmUgbGF0Y2hlZC4KPj4+Pj4+Pj4+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqIFVzZSBi
+bG9ja2luZyBjb21taXQgYmVjYXVzZSB0aGVyZSBtYXliZQo+Pj4+Pj4+Pj4+PiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgICogbW9kZXNldCB3aGVuIGdvaW5nIHRvIGhpZ2hlciBicHAgcGl4ZWwg
+Zm9ybWF0Lgo+Pj4+Pj4+Pj4+PiAgICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKi8K
+Pj4+Pj4+Pj4+Pj4gICAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZ3RfZGlzcGxheV9j
+b21taXRfYXRvbWljKCZkYXRhLT5kaXNwbGF5LAo+Pj4+Pj4+Pj4+PiAtwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgRFJNX01PREVfQVRPTUlDX05PTkJM
+T0NLIHwKPj4+Pj4+Pj4+Pj4gICAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgRFJNX01PREVfUEFHRV9GTElQX0VWRU5ULCBOVUxMKTsKPj4+
+Pj4+Pj4+Pj4gICAgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfSBlbHNlIHsKPj4+Pj4+Pj4+Pj4gICAg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAvKgo+Pj4+Pj4+Pj4+PiAtLSAKPj4+Pj4+Pj4+
+Pj4gMi4xNy4xCj4+Pj4+Pj4+Pj4+Cj4+Pj4+Pj4+Pj4+IF9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCj4+Pj4+Pj4+Pj4+IGlndC1kZXYgbWFpbGluZyBsaXN0
+Cj4+Pj4+Pj4+Pj4+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4+Pj4+Pj4+Pj4+IGh0
+dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo+Pj4+
+Pj4+Pj4+Cj4+Pj4+Pj4+Cj4+Pj4+Pj4KPj4+Pj4KPj4+Cj4gCgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2lndC1kZXYK
