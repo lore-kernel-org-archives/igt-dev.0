@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3D806E21A
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2020 13:33:59 +0000 (UTC)
-From: Petri Latvala <petri.latvala@intel.com>
-Date: Thu,  9 Apr 2020 16:33:55 +0300
-Message-Id: <20200409133355.9606-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] CONTRIBUTING: Document guidelines for
- interface deprecation
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 09 Apr 2020 14:24:50 -0000
+Message-ID: <158644229059.11552.4469244368199550956@emeril.freedesktop.org>
+References: <20200409133355.9606-1-petri.latvala@intel.com>
+In-Reply-To: <20200409133355.9606-1-petri.latvala@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQ09OVFJJ?=
+ =?utf-8?q?BUTING=3A_Document_guidelines_for_interface_deprecation?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,41 +14,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
----
- CONTRIBUTING.md | 6 ++++++
- 1 file changed, 6 insertions(+)
+== Series Details ==
 
-diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
-index 6d1294ad..2ab8a48f 100644
---- a/CONTRIBUTING.md
-+++ b/CONTRIBUTING.md
-@@ -30,6 +30,12 @@ The Code
-   provided by the igt library. The semantic patch lib/igt.cocci can help with
-   more automatic conversions.
- 
-+- Tests that use kernel interfaces (uapi, sysfs, or even debugfs) that
-+  become deprecated in favour of new interfaces should have fallbacks
-+  to the deprecated interfaces if the new stuff is not present in the
-+  running kernel. The same IGT version can be used to test the tip of
-+  development along with stable kernel releases that way.
-+
- [igt-describe]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
- 
- 
--- 
-2.20.1
+Series: CONTRIBUTING: Document guidelines for interface deprecation
+URL   : https://patchwork.freedesktop.org/series/75749/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from IGT_5586 -> IGTPW_4441
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4441/index.html
+
+
+Changes
+-------
+
+  No changes found
+
+
+Participating hosts (54 -> 47)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5586 -> IGTPW_4441
+
+  CI-20190529: 20190529
+  CI_DRM_8283: a6f4f55d343fea03e11e754b1094dda8cf2538ac @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4441: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4441/index.html
+  IGT_5586: 29fad328e6a1b105c8d688cafe19b1b5c19ad0c8 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4441/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
