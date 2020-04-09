@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 09 Apr 2020 11:28:20 -0000
-Message-ID: <158643170050.11549.1657447272800616502@emeril.freedesktop.org>
+Date: Thu, 09 Apr 2020 11:40:14 -0000
+Message-ID: <158643241419.11549.5820379878259907846@emeril.freedesktop.org>
 References: <20200402110729.18305-1-mika.kahola@intel.com>
 In-Reply-To: <20200402110729.18305-1-mika.kahola@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/kms=5Fcursor=5Flegacy=3A_Wait_for_an_extra_vblank_=28rev3?=
- =?utf-8?q?=29?=
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fcursor=5Flegacy=3A_Wait_for_an_extra_vblank_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,40 +27,50 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Series: tests/kms_cursor_legacy: Wait for an extra vblank (rev3)
 URL   : https://patchwork.freedesktop.org/series/75413/
-State : warning
+State : success
 
 == Summary ==
 
-Did not get list of undocumented tests for this run, something is wrong!
+CI Bug Log - changes from CI_DRM_8283 -> IGTPW_4439
+====================================================
 
-Other than that, pipeline status: FAILED.
+Summary
+-------
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/130359 for the overview.
+  **SUCCESS**
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/2235256):
-  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-bf7f5717e41977b0ab49e3e9cf8540f58b38fa6d ...
-  Using docker image sha256:47a8063079b291849f7909d2b6b54f3cf13b909f8f90be38166db80fd5634b5f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-bf7f5717e41977b0ab49e3e9cf8540f58b38fa6d ...
-  section_end:1586431098:prepare_executor
-  section_start:1586431098:prepare_script
-  Preparing environment
-  Running on runner-z2CifdYy-project-3185-concurrent-0 via gst-htz-3...
-  section_end:1586431103:prepare_script
-  section_start:1586431103:get_sources
-  Getting source from Git repository
-  Fetching changes...
-  Initialized empty Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Created fresh repository.
-  error: RPC failed; curl 92 HTTP/2 stream 0 was not closed cleanly: PROTOCOL_ERROR (err 1)
-  fatal: the remote end hung up unexpectedly
-  section_end:1586431165:get_sources
-  section_start:1586431165:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  section_end:1586431166:upload_artifacts_on_failure
-  ERROR: Job failed: exit code 1
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4439/index.html
+
+
+Changes
+-------
+
+  No changes found
+
+
+Participating hosts (52 -> 47)
+------------------------------
+
+  Additional (1): fi-skl-6770hq 
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5585 -> IGTPW_4439
+
+  CI-20190529: 20190529
+  CI_DRM_8283: a6f4f55d343fea03e11e754b1094dda8cf2538ac @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4439: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4439/index.html
+  IGT_5585: 13c0be2fe8669fef08c0d1c44b147c43d1f53d2b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/130359
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4439/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
