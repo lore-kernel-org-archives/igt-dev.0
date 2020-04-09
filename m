@@ -1,25 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E31716E245
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2020 16:08:11 +0000 (UTC)
-Date: Thu, 9 Apr 2020 19:08:07 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20200409160807.GW6112@intel.com>
-References: <20200407110904.13008-1-juhapekka.heikkila@gmail.com>
- <20200407153602.GD6112@intel.com>
- <7889c8d7-7aed-9ebb-7103-9fa798b4097c@gmail.com>
- <20200407160830.GE6112@intel.com>
- <ea5604be-51ca-31a5-5330-281125c79156@gmail.com>
- <0db0f75f-ea12-f04a-7bcc-254c98c9d4ad@gmail.com>
- <20200407171051.GI6112@intel.com>
- <3e40352e-dabf-2e61-4da1-66b026f87db2@gmail.com>
- <20200407174250.GK6112@intel.com>
- <387b80b3-811d-4308-2ea6-c01b058d64a8@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <387b80b3-811d-4308-2ea6-c01b058d64a8@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: survive cdclk caused
- modeset
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com
+ [IPv6:2a00:1450:4864:20::143])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BFCEF6EC0C
+ for <igt-dev@lists.freedesktop.org>; Thu,  9 Apr 2020 16:14:03 +0000 (UTC)
+Received: by mail-lf1-x143.google.com with SMTP id f8so38860lfe.12
+ for <igt-dev@lists.freedesktop.org>; Thu, 09 Apr 2020 09:14:03 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Thu,  9 Apr 2020 19:13:38 +0300
+Message-Id: <20200409161344.31934-3-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20200409161344.31934-1-juhapekka.heikkila@gmail.com>
+References: <20200409161344.31934-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] [PATCH i-g-t 2/8] RFC lib/params: start renaming
+ functions igt_params_*
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,217 +19,312 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Jani Nikula <jani.nikula@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Apr 08, 2020 at 10:08:31PM +0300, Juha-Pekka Heikkila wrote:
-> On 7.4.2020 20.42, Ville Syrj=E4l=E4 wrote:
-> > On Tue, Apr 07, 2020 at 08:24:01PM +0300, Juha-Pekka Heikkila wrote:
-> >> On 7.4.2020 20.10, Ville Syrj=E4l=E4 wrote:
-> >>> On Tue, Apr 07, 2020 at 08:07:16PM +0300, Juha-Pekka Heikkila wrote:
-> >>>> On 7.4.2020 19.22, Juha-Pekka Heikkila wrote:
-> >>>>> On 7.4.2020 19.08, Ville Syrj=E4l=E4 wrote:
-> >>>>>> On Tue, Apr 07, 2020 at 06:54:09PM +0300, Juha-Pekka Heikkila wrot=
-e:
-> >>>>>>> On 7.4.2020 18.36, Ville Syrj=E4l=E4 wrote:
-> >>>>>>>> On Tue, Apr 07, 2020 at 02:09:04PM +0300, Juha-Pekka Heikkila wr=
-ote:
-> >>>>>>>>> This change will slow this test down a bit. In mid test starting
-> >>>>>>>>> to use higher bpp pixel format (say 64bpp) can cause modeset.
-> >>>>>>>>> Use blocking commit so there's wait for modeset to happen.
-> >>>>>>>>
-> >>>>>>>> We already wait for the event the next time around. So this
-> >>>>>>>> doesn't make sense to me.
-> >>>>>>>
-> >>>>>>> There's those logs like this
-> >>>>>>> https://intel-gfx-ci.01.org/tree/drm-tip/drmtip_470/fi-icl-guc/ig=
-t@kms_plane@pixel-format-pipe-c-planes-source-clamping.html
-> >>>>>>>
-> >>>>>>>
-> >>>>>>> where going to 64bpp pixel format will cause modeset and fail run=
-ning
-> >>>>>>> test.
-> >>>>>>
-> >>>>>> Hmm. Seems we don't have drm.debug=3D0x10 enabled so we don't see =
-the
-> >>>>>> actual debug message :( Anyways, the real bug seems to be the lack=
- of
-> >>>>>> ALLOW_MODESET.
-> >>>>>
-> >>>>> I'll try that and see how it changes situation. I originally had id=
-ea
-> >>>>> modeset will block the flip and making this commit blocking would a=
-lways
-> >>>>> force things always into correct order as current test didn't fail =
-every
-> >>>>> time for me.
-> >>>>
-> >>>> Having that commit saying
-> >>>>
-> >>>> igt_display_commit_atomic(&data->display,
-> >>>> 	DRM_MODE_ATOMIC_ALLOW_MODESET |
-> >>>> 	DRM_MODE_ATOMIC_NONBLOCK |
-> >>>> 	DRM_MODE_PAGE_FLIP_EVENT, NULL);
-> >>>>
-> >>>> I see test failing as before so it will not alone fix this issue. On=
- my
-> >>>> ICL box the test fail maybe 1/5 times, with the patch on list it nev=
-er
-> >>>> failed so far.
-> >>>
-> >>> Why does it fail?
-> >>
-> >>
-> >> This is failure with ALLOW_MODESET
-> >> ---
-> >> (kms_plane:31238) igt_kms-DEBUG: display: }
-> >> (kms_plane:31238) igt_kms-CRITICAL: Test assertion failure function
-> >> igt_display_commit_atomic, file ../lib/igt_kms.c:3508:
-> >> (kms_plane:31238) igt_kms-CRITICAL: Failed assertion: ret =3D=3D 0
-> >> (kms_plane:31238) igt_kms-CRITICAL: Last errno: 16, Device or resource=
- busy
-> >> (kms_plane:31238) igt_kms-CRITICAL: error: -16 !=3D 0
-> >> (kms_plane:31238) igt_core-INFO: Stack trace:
-> >> (kms_plane:31238) igt_core-INFO:   #0 ../lib/igt_core.c:1676
-> >> __igt_fail_assert()
-> >> (kms_plane:31238) igt_core-INFO:   #1 [igt_display_commit_atomic+0x44]
-> >> (kms_plane:31238) igt_core-INFO:   #2 ../tests/kms_plane.c:599
-> >> capture_format_crcs.constprop.14()
-> >> (kms_plane:31238) igt_core-INFO:   #3 ../tests/kms_plane.c:652
-> >> test_format_plane_colors.constprop.13()
-> >> (kms_plane:31238) igt_core-INFO:   #4 ../tests/kms_plane.c:728
-> >> test_pixel_formats.constprop.9()
-> >> (kms_plane:31238) igt_core-INFO:   #5 ../tests/kms_plane.c:950
-> >> run_tests_for_pipe_plane.constprop.8()
-> >> (kms_plane:31238) igt_core-INFO:   #6 ../tests/kms_plane.c:1019
-> >> __real_main1006()
-> >> (kms_plane:31238) igt_core-INFO:   #7 ../tests/kms_plane.c:1006 main()
-> >> (kms_plane:31238) igt_core-INFO:   #8 ../csu/libc-start.c:344
-> >> __libc_start_main()
-> >> (kms_plane:31238) igt_core-INFO:   #9 [_start+0x2a]
-> >> ****  END  ****
-> >> Stack trace:
-> >>     #0 ../lib/igt_core.c:1676 __igt_fail_assert()
-> >>     #1 [igt_display_commit_atomic+0x44]
-> >>     #2 ../tests/kms_plane.c:599 capture_format_crcs.constprop.14()
-> >>     #3 ../tests/kms_plane.c:652 test_format_plane_colors.constprop.13()
-> >>     #4 ../tests/kms_plane.c:728 test_pixel_formats.constprop.9()
-> >>     #5 ../tests/kms_plane.c:950 run_tests_for_pipe_plane.constprop.8()
-> >>     #6 ../tests/kms_plane.c:1019 __real_main1006()
-> >>     #7 ../tests/kms_plane.c:1006 main()
-> >>     #8 ../csu/libc-start.c:344 __libc_start_main()
-> >>     #9 [_start+0x2a]
-> >> Subtest pixel-format-pipe-A-planes-source-clamping: FAIL (22.543s)
-> > =
+From: Jani Nikula <jani.nikula@intel.com>
 
-> > That doesn't tell anyone anything useful. Only kernel logs can help
-> > diagnose the problem.
-> > =
+based on patch from Jani Nikula.
 
-> > =
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ lib/drmtest.c                         |  2 +-
+ lib/i915/gem_submission.c             |  2 +-
+ lib/igt_aux.c                         |  3 +--
+ lib/igt_gt.c                          |  2 +-
+ lib/igt_params.c                      | 12 +++++-------
+ lib/igt_params.h                      |  5 ++---
+ tests/i915/gem_ctx_exec.c             |  2 +-
+ tests/i915/gem_ctx_persistence.c      |  9 ++++-----
+ tests/i915/gem_mmap_gtt.c             |  2 +-
+ tests/i915/gem_reset_stats.c          |  6 ++----
+ tests/i915/sysfs_heartbeat_interval.c |  3 ++-
+ tests/i915/sysfs_preempt_timeout.c    |  3 ++-
+ tests/i915/sysfs_timeslice_duration.c |  3 ++-
+ 13 files changed, 25 insertions(+), 29 deletions(-)
 
-> >> --
-> >>
-> >> Failure is ebusy. It seems round where it kick me out is not always the
-> >> same.
-> > =
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 1fc39925..17067843 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -393,7 +393,7 @@ static void __cancel_work_at_exit(int fd)
+ {
+ 	igt_terminate_spins(); /* for older kernels */
+ 
+-	igt_sysfs_set_parameter(fd, "reset", "%x", -1u /* any method */);
++	igt_params_set(fd, "reset", "%x", -1u /* any method */);
+ 	igt_drop_caches_set(fd,
+ 			    /* cancel everything */
+ 			    DROP_RESET_ACTIVE | DROP_RESET_SEQNO |
+diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
+index bb58a207..4d80eb6a 100644
+--- a/lib/i915/gem_submission.c
++++ b/lib/i915/gem_submission.c
+@@ -78,7 +78,7 @@ unsigned gem_submission_method(int fd)
+ 
+ 	int dir;
+ 
+-	dir = igt_sysfs_open_parameters(fd);
++	dir = igt_params_open(fd);
+ 	if (dir < 0)
+ 		return 0;
+ 
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index c55b2916..fba34933 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -514,8 +514,7 @@ void igt_fork_hang_detector(int fd)
+ 	 * they are a test failure!) and so the loss of per-engine reset
+ 	 * functionality is not an issue.
+ 	 */
+-	igt_assert(igt_sysfs_set_parameter
+-		   (fd, "reset", "%d", 1 /* only global reset */));
++	igt_assert(igt_params_set(fd, "reset", "%d", 1 /* only global reset */));
+ 
+ 	signal(SIGIO, sig_abort);
+ 	igt_fork_helper(&hang_detector)
+diff --git a/lib/igt_gt.c b/lib/igt_gt.c
+index 22340a3d..cedb142d 100644
+--- a/lib/igt_gt.c
++++ b/lib/igt_gt.c
+@@ -188,7 +188,7 @@ igt_hang_t igt_allow_hang(int fd, unsigned ctx, unsigned flags)
+ 		__gem_context_set_param(fd, &param);
+ 		allow_reset = INT_MAX; /* any reset method */
+ 	}
+-	igt_require(igt_sysfs_set_parameter(fd, "reset", "%d", allow_reset));
++	igt_require(igt_params_set(fd, "reset", "%d", allow_reset));
+ 
+ 	if (!igt_check_boolean_env_var("IGT_HANG_WITHOUT_RESET", false))
+ 		igt_require(has_gpu_reset(fd));
+diff --git a/lib/igt_params.c b/lib/igt_params.c
+index 4bd2b1f2..f220e73b 100644
+--- a/lib/igt_params.c
++++ b/lib/igt_params.c
+@@ -126,7 +126,7 @@ static void igt_save_module_param(const char *name, const char *file_path)
+ }
+ 
+ /**
+- * igt_sysfs_open_parameters:
++ * igt_params_open:
+  * @device: fd of the device
+  *
+  * This opens the module parameters directory (under sysfs) corresponding
+@@ -135,7 +135,7 @@ static void igt_save_module_param(const char *name, const char *file_path)
+  * Returns:
+  * The directory fd, or -1 on failure.
+  */
+-int igt_sysfs_open_parameters(int device)
++int igt_params_open(int device)
+ {
+ 	int dir, params = -1;
+ 
+@@ -165,22 +165,20 @@ int igt_sysfs_open_parameters(int device)
+ }
+ 
+ /**
+- * igt_sysfs_set_parameters:
++ * igt_params_set:
+  * @device: fd of the device
+  * @parameter: the name of the parameter to set
+  * @fmt: printf-esque format string
+  *
+  * Returns true on success
+  */
+-bool igt_sysfs_set_parameter(int device,
+-			     const char *parameter,
+-			     const char *fmt, ...)
++bool igt_params_set(int device, const char *parameter, const char *fmt, ...)
+ {
+ 	va_list ap;
+ 	int dir;
+ 	int ret;
+ 
+-	dir = igt_sysfs_open_parameters(device);
++	dir = igt_params_open(device);
+ 	if (dir < 0)
+ 		return false;
+ 
+diff --git a/lib/igt_params.h b/lib/igt_params.h
+index cf0fd18f..52eed77f 100644
+--- a/lib/igt_params.h
++++ b/lib/igt_params.h
+@@ -26,11 +26,10 @@
+ 
+ #include <stdbool.h>
+ 
+-int igt_sysfs_open_parameters(int device);
++int igt_params_open(int device);
+ 
+ __attribute__((format(printf, 3, 4)))
+-bool igt_sysfs_set_parameter(int device, const char *parameter,
+-			     const char *fmt, ...);
++bool igt_params_set(int device, const char *parameter, const char *fmt, ...);
+ 
+ void igt_set_module_param(const char *name, const char *val);
+ void igt_set_module_param_int(const char *name, int val);
+diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
+index ad2f9e54..bc2a352c 100644
+--- a/tests/i915/gem_ctx_exec.c
++++ b/tests/i915/gem_ctx_exec.c
+@@ -276,7 +276,7 @@ static void nohangcheck_hostile(int i915)
+ 
+ 	i915 = gem_reopen_driver(i915);
+ 
+-	dir = igt_sysfs_open_parameters(i915);
++	dir = igt_params_open(i915);
+ 	igt_require(dir != -1);
+ 
+ 	ctx = gem_context_create(i915);
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index 965b788b..cdaa87aa 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -95,7 +95,7 @@ static void enable_hangcheck(int i915)
+ {
+ 	int dir;
+ 
+-	dir = igt_sysfs_open_parameters(i915);
++	dir = igt_params_open(i915);
+ 	if (dir < 0) /* no parameters, must be default! */
+ 		return;
+ 
+@@ -361,7 +361,7 @@ static void test_nohangcheck_hostile(int i915)
+ 	 * we forcibly terminate that context.
+ 	 */
+ 
+-	dir = igt_sysfs_open_parameters(i915);
++	dir = igt_params_open(i915);
+ 	igt_require(dir != -1);
+ 
+ 	igt_require(__enable_hangcheck(dir, false));
+@@ -398,7 +398,7 @@ static void test_nohangcheck_hang(int i915)
+ 
+ 	igt_require(!gem_has_cmdparser(i915, ALL_ENGINES));
+ 
+-	dir = igt_sysfs_open_parameters(i915);
++	dir = igt_params_open(i915);
+ 	igt_require(dir != -1);
+ 
+ 	igt_require(__enable_hangcheck(dir, false));
+@@ -1090,8 +1090,7 @@ igt_main
+ 		igt_require_gem(i915);
+ 
+ 		/* Restore the reset modparam if left clobbered */
+-		igt_assert(igt_sysfs_set_parameter
+-			   (i915, "reset", "%d", -1 /* any [default] reset */));
++		igt_assert(igt_params_set(i915, "reset", "%d", -1));
+ 
+ 		enable_hangcheck(i915);
+ 		igt_install_exit_handler(exit_handler);
+diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
+index 1f4655af..32c92287 100644
+--- a/tests/i915/gem_mmap_gtt.c
++++ b/tests/i915/gem_mmap_gtt.c
+@@ -580,7 +580,7 @@ test_hang(int fd)
+ 	int dir;
+ 
+ 	hang = igt_allow_hang(fd, 0, 0);
+-	igt_require(igt_sysfs_set_parameter(fd, "reset", "1")); /* global */
++	igt_require(igt_params_set(fd, "reset", "1")); /* global */
+ 
+ 	control = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+ 	igt_assert(control != MAP_FAILED);
+diff --git a/tests/i915/gem_reset_stats.c b/tests/i915/gem_reset_stats.c
+index 9c7b6645..8ea090d8 100644
+--- a/tests/i915/gem_reset_stats.c
++++ b/tests/i915/gem_reset_stats.c
+@@ -784,8 +784,7 @@ igt_main
+ 
+ 		has_reset_stats = gem_has_reset_stats(fd);
+ 
+-		igt_assert(igt_sysfs_set_parameter
+-			   (fd, "reset", "%d", 1 /* only global reset */));
++		igt_assert(igt_params_set(fd, "reset", "%d", 1 /* only global reset */));
+ 
+ 		using_full_reset = !gem_engine_reset_enabled(fd) &&
+ 				   gem_gpu_reset_enabled(fd);
+@@ -846,8 +845,7 @@ igt_main
+ 		int fd;
+ 
+ 		fd = drm_open_driver(DRIVER_INTEL);
+-		igt_assert(igt_sysfs_set_parameter
+-			   (fd, "reset", "%d", INT_MAX /* any reset method */));
++		igt_assert(igt_params_set(fd, "reset", "%d", INT_MAX /* any reset method */));
+ 		close(fd);
+ 	}
+ }
+diff --git a/tests/i915/sysfs_heartbeat_interval.c b/tests/i915/sysfs_heartbeat_interval.c
+index 662f4865..d1924f95 100644
+--- a/tests/i915/sysfs_heartbeat_interval.c
++++ b/tests/i915/sysfs_heartbeat_interval.c
+@@ -31,6 +31,7 @@
+ #include <sys/wait.h>
+ #include <unistd.h>
+ 
++#include "igt_params.h"
+ #include "drmtest.h" /* gem_quiescent_gpu()! */
+ #include "i915/gem_engine_topology.h"
+ #include "igt_dummyload.h"
+@@ -52,7 +53,7 @@ static void enable_hangcheck(int i915, bool state)
+ {
+ 	int dir;
+ 
+-	dir = igt_sysfs_open_parameters(i915);
++	dir = igt_params_open(i915);
+ 	if (dir < 0) /* no parameters, must be default! */
+ 		return;
+ 
+diff --git a/tests/i915/sysfs_preempt_timeout.c b/tests/i915/sysfs_preempt_timeout.c
+index a7e93a4d..8a52dfb9 100644
+--- a/tests/i915/sysfs_preempt_timeout.c
++++ b/tests/i915/sysfs_preempt_timeout.c
+@@ -29,6 +29,7 @@
+ #include <sys/types.h>
+ #include <unistd.h>
+ 
++#include "igt_params.h"
+ #include "drmtest.h" /* gem_quiescent_gpu()! */
+ #include "i915/gem_engine_topology.h"
+ #include "igt_dummyload.h"
+@@ -51,7 +52,7 @@ static bool enable_hangcheck(int i915, bool state)
+ 	bool success;
+ 	int dir;
+ 
+-	dir = igt_sysfs_open_parameters(i915);
++	dir = igt_params_open(i915);
+ 	if (dir < 0) /* no parameters, must be default! */
+ 		return false;
+ 
+diff --git a/tests/i915/sysfs_timeslice_duration.c b/tests/i915/sysfs_timeslice_duration.c
+index b983df43..123b9e19 100644
+--- a/tests/i915/sysfs_timeslice_duration.c
++++ b/tests/i915/sysfs_timeslice_duration.c
+@@ -29,6 +29,7 @@
+ #include <sys/types.h>
+ #include <unistd.h>
+ 
++#include "igt_params.h"
+ #include "drmtest.h" /* gem_quiescent_gpu()! */
+ #include "i915/gem_engine_topology.h"
+ #include "i915/gem_mman.h"
+@@ -61,7 +62,7 @@ static bool enable_hangcheck(int i915, bool state)
+ 	bool success;
+ 	int dir;
+ 
+-	dir = igt_sysfs_open_parameters(i915);
++	dir = igt_params_open(i915);
+ 	if (dir < 0) /* no parameters, must be default! */
+ 		return false;
+ 
+-- 
+2.17.1
 
-> > Hmm. Sounds like we have a race between sending the event vs. submitting
-> > a new commit :(
-> > =
-
-> > Hmm. What wasn't there a patch from Daniel to convert modeset commits to
-> > blocking to "fix" a race just like this? Ah, yeah it was EBUSY due to
-> > multiple pipes and noblocking modesets. Do you have multiple pipes
-> > enablad when it fails? That could certainly explain the race.
-> > =
-
-> =
-
-> Quickly looking there shouldn't be multiple pipes enabled. Test is one =
-
-> of those simple loops that start with for_each_plane_on_pipe(..){..} and =
-
-> different pipes are run as different tests.
-
-Can't see anything else returning -EBUSY except if flip_done is not
-completed, and that one should be done before we send the event.
-
-> =
-
-> >>
-> >>>
-> >>>>
-> >>>>>
-> >>>>>>
-> >>>>>>> I was testing this on ICL and see errors randomly, on ci those
-> >>>>>>> seem to be less random. Making this one commit blocking will cause
-> >>>>>>> modeset to settle without interrupting test, at least on my ICL.
-> >>>>>>>
-> >>>>>>> If there's a way to sort those pixel formats according to bpp and=
- start
-> >>>>>>> with highest there's no need for this.
-> >>>>>>>
-> >>>>>>>>
-> >>>>>>>>>
-> >>>>>>>>> Fixes: https://gitlab.freedesktop.org/drm/intel/issues/1214
-> >>>>>>>>> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.co=
-m>
-> >>>>>>>>> ---
-> >>>>>>>>>   =A0=A0 tests/kms_plane.c | 6 ++----
-> >>>>>>>>>   =A0=A0 1 file changed, 2 insertions(+), 4 deletions(-)
-> >>>>>>>>>
-> >>>>>>>>> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> >>>>>>>>> index 805795cd..2324fb6e 100644
-> >>>>>>>>> --- a/tests/kms_plane.c
-> >>>>>>>>> +++ b/tests/kms_plane.c
-> >>>>>>>>> @@ -569,12 +569,10 @@ static void capture_format_crcs(data_t *d=
-ata,
-> >>>>>>>>> enum pipe pipe,
-> >>>>>>>>>   =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (data->display.is_atomic) {
-> >>>>>>>>>   =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /*
-> >>>>>>>>> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * Use non-blocking commit=
-s to allow the next fb
-> >>>>>>>>> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * to be prepared in paral=
-lel while the current fb
-> >>>>>>>>> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * awaits to be latched.
-> >>>>>>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * Use blocking commit bec=
-ause there maybe
-> >>>>>>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 * modeset when going to h=
-igher bpp pixel format.
-> >>>>>>>>>   =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 */
-> >>>>>>>>>   =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 igt_display_commit=
-_atomic(&data->display,
-> >>>>>>>>> -=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0 DRM_MODE_ATOMIC_NONBLOCK |
-> >>>>>>>>>   =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0 DRM_MODE_PAGE_FLIP_EVENT, NULL);
-> >>>>>>>>>   =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 } else {
-> >>>>>>>>>   =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 /*
-> >>>>>>>>> -- =
-
-> >>>>>>>>> 2.17.1
-> >>>>>>>>>
-> >>>>>>>>> _______________________________________________
-> >>>>>>>>> igt-dev mailing list
-> >>>>>>>>> igt-dev@lists.freedesktop.org
-> >>>>>>>>> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-> >>>>>>>>
-> >>>>>>
-> >>>>>
-> >>>
-> > =
-
-
--- =
-
-Ville Syrj=E4l=E4
-Intel
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
