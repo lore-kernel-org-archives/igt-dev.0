@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Sun, 12 Apr 2020 11:49:00 -0000
-Message-ID: <158669214016.22940.4730028691618373722@emeril.freedesktop.org>
-References: <20200412112131.2752212-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200412112131.2752212-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaW50ZWwt?=
- =?utf-8?q?ci=3A_Restore_premerge_testing_of_heavy_reloc_testing?=
+Date: Sun, 12 Apr 2020 00:29:17 -0000
+Message-ID: <158665135768.22939.14147643159411981386@emeril.freedesktop.org>
+References: <20200411111427.2749626-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200411111427.2749626-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_igt=3A_Allow_=27=3A=27_in_subt?=
+ =?utf-8?q?est_names?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,13 +26,13 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: intel-ci: Restore premerge testing of heavy reloc testing
-URL   : https://patchwork.freedesktop.org/series/75843/
+Series: series starting with [i-g-t,1/2] igt: Allow ':' in subtest names
+URL   : https://patchwork.freedesktop.org/series/75832/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_5588 -> IGTPW_4450
+CI Bug Log - changes from IGT_5588_full -> IGTPW_4448_full
 ====================================================
 
 Summary
@@ -41,69 +42,937 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4450/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4448/index.html
 
-Known issues
-------------
+Possible new issues
+-------------------
 
-  Here are the changes found in IGTPW_4450 that come from known issues:
+  Here are the unknown changes that may have been introduced in IGTPW_4448_full:
 
 ### IGT changes ###
 
-#### Possible fixes ####
+#### Possible regressions ####
 
-  * igt@kms_chamelium@common-hpd-after-suspend:
-    - fi-cml-u2:          [DMESG-WARN][1] ([IGT#4]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5588/fi-cml-u2/igt@kms_chamelium@common-hpd-after-suspend.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4450/fi-cml-u2/igt@kms_chamelium@common-hpd-after-suspend.html
+  * {igt@kms_flip@basic-flip-vs-dpms@c::dp-1} (NEW):
+    - shard-kbl:          NOTRUN -> [INCOMPLETE][1] +128 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4448/shard-kbl1/igt@kms_flip@basic-flip-vs-dpms@c::dp-1.html
 
-  
-#### Warnings ####
+  * {igt@kms_flip@bo-too-big@c::edp-1} (NEW):
+    - shard-tglb:         NOTRUN -> [INCOMPLETE][2] +179 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4448/shard-tglb5/igt@kms_flip@bo-too-big@c::edp-1.html
 
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-x1275:       [SKIP][3] ([fdo#109271]) -> [FAIL][4] ([i915#62] / [i915#95])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5588/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4450/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+  * {igt@kms_flip@flip-vs-rmfb-interruptible@a::dp-1} (NEW):
+    - shard-apl:          NOTRUN -> [INCOMPLETE][3] +127 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4448/shard-apl3/igt@kms_flip@flip-vs-rmfb-interruptible@a::dp-1.html
 
-  * igt@runner@aborted:
-    - fi-kbl-8809g:       [FAIL][5] ([i915#1569] / [i915#192] / [i915#193] / [i915#194]) -> [FAIL][6] ([i915#1423] / [i915#656])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5588/fi-kbl-8809g/igt@runner@aborted.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4450/fi-kbl-8809g/igt@runner@aborted.html
+  * {igt@kms_flip@plain-flip-fb-recreate-interruptible@b::edp-1} (NEW):
+    - shard-iclb:         NOTRUN -> [INCOMPLETE][4] +134 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4448/shard-iclb7/igt@kms_flip@plain-flip-fb-recreate-interruptible@b::edp-1.html
 
   
-  [IGT#4]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/issues/4
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1423]: https://gitlab.freedesktop.org/drm/intel/issues/1423
-  [i915#1569]: https://gitlab.freedesktop.org/drm/intel/issues/1569
-  [i915#192]: https://gitlab.freedesktop.org/drm/intel/issues/192
-  [i915#193]: https://gitlab.freedesktop.org/drm/intel/issues/193
-  [i915#194]: https://gitlab.freedesktop.org/drm/intel/issues/194
-  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
-  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
-  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+#### Suppressed ####
 
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
 
-Participating hosts (51 -> 45)
-------------------------------
+  * {igt@gem_wait@busy@bcs0}:
+    - shard-glk:          [PASS][5] -> [FAIL][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5588/shard-glk2/igt@gem_wait@busy@bcs0.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4448/shard-glk1/igt@gem_wait@busy@bcs0.html
 
-  Additional (1): fi-skl-lmem 
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
+  
+New tests
+---------
 
+  New tests have been introduced between IGT_5588_full and IGTPW_4448_full:
 
-Build changes
--------------
+### New IGT tests (972) ###
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5588 -> IGTPW_4450
+  * igt@kms_flip@2x-absolute-wf_vblank-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
 
-  CI-20190529: 20190529
-  CI_DRM_8291: ef6b9e8bc3134d7261f080ceb5158b16447a4793 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4450: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4450/index.html
-  IGT_5588: 83182c9b2dee30f9e49b980606802de2bbf8d218 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+  * igt@kms_flip@2x-absolute-wf_vblank-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-absolute-wf_vblank-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-absolute-wf_vblank-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-absolute-wf_vblank-interruptible@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-absolute-wf_vblank-interruptible@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-absolute-wf_vblank@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-absolute-wf_vblank@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-absolute-wf_vblank@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-absolute-wf_vblank@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-absolute-wf_vblank@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-absolute-wf_vblank@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-absolute-wf_vblank-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-absolute-wf_vblank-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-absolute-wf_vblank-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-absolute-wf_vblank-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-absolute-wf_vblank-interruptible@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-absolute-wf_vblank-interruptible@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-absolute-wf_vblank@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-absolute-wf_vblank@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-absolute-wf_vblank@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-absolute-wf_vblank@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-absolute-wf_vblank@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-absolute-wf_vblank@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-wf_vblank@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-wf_vblank@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-wf_vblank@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-wf_vblank@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-wf_vblank@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-blocking-wf_vblank@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-busy-flip@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-busy-flip@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-busy-flip@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-busy-flip@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-busy-flip@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-busy-flip@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-dpms-vs-vblank-race-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-dpms-vs-vblank-race-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-dpms-vs-vblank-race-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-dpms-vs-vblank-race-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-dpms-vs-vblank-race-interruptible@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-dpms-vs-vblank-race-interruptible@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-dpms-vs-vblank-race@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-dpms-vs-vblank-race@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-dpms-vs-vblank-race@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-dpms-vs-vblank-race@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-dpms-vs-vblank-race@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-dpms-vs-vblank-race@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-absolute-wf_vblank-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-absolute-wf_vblank-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-absolute-wf_vblank-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-absolute-wf_vblank-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-absolute-wf_vblank-interruptible@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-absolute-wf_vblank-interruptible@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-absolute-wf_vblank@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-absolute-wf_vblank@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-absolute-wf_vblank@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-absolute-wf_vblank@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-absolute-wf_vblank@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-absolute-wf_vblank@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-blocking-wf-vblank@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-blocking-wf-vblank@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-blocking-wf-vblank@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-blocking-wf-vblank@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-blocking-wf-vblank@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-blocking-wf-vblank@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset-interruptible@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset-interruptible@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-dpms@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-expired-vblank@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-expired-vblank@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-expired-vblank@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-expired-vblank@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-expired-vblank@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-expired-vblank@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-fences-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-fences-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-fences-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-fences-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-fences-interruptible@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-fences-interruptible@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-fences@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-fences@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-fences@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-fences@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-fences@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-fences@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-modeset-vs-hang@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-modeset-vs-hang@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-modeset-vs-hang@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-modeset-vs-hang@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-modeset-vs-hang@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-modeset-vs-hang@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-modeset@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-modeset@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-modeset@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-modeset@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-modeset@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-modeset@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning-interruptible@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning-interruptible@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning-vs-hang@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning-vs-hang@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning-vs-hang@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning-vs-hang@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning-vs-hang@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning-vs-hang@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-panning@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-rmfb-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-rmfb-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-rmfb-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-rmfb-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-rmfb-interruptible@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-rmfb-interruptible@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-rmfb@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-rmfb@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-rmfb@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-rmfb@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-rmfb@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-rmfb@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-suspend-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-suspend-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-suspend-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-suspend-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-suspend-interruptible@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-suspend-interruptible@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-suspend@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-suspend@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-suspend@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-suspend@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-suspend@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-suspend@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-wf_vblank-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-wf_vblank-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-wf_vblank-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-wf_vblank-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-wf_vblank-interruptible@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-wf_vblank-interruptible@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-wf_vblank@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-wf_vblank@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-wf_vblank@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-wf_vblank@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-wf_vblank@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-flip-vs-wf_vblank@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-modeset-vs-vblank-race-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-modeset-vs-vblank-race-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-modeset-vs-vblank-race-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-modeset-vs-vblank-race-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-modeset-vs-vblank-race-interruptible@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-modeset-vs-vblank-race-interruptible@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-modeset-vs-vblank-race@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-modeset-vs-vblank-race@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-modeset-vs-vblank-race@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-modeset-vs-vblank-race@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-modeset-vs-vblank-race@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-modeset-vs-vblank-race@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-nonexisting-fb-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-nonexisting-fb-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-nonexisting-fb-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-nonexisting-fb-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-nonexisting-fb-interruptible@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-nonexisting-fb-interruptible@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-nonexisting-fb@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-nonexisting-fb@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-nonexisting-fb@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-nonexisting-fb@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-nonexisting-fb@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-nonexisting-fb@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-fb-recreate-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-fb-recreate-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-fb-recreate-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-fb-recreate-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-fb-recreate-interruptible@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-fb-recreate-interruptible@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-fb-recreate@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-fb-recreate@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-fb-recreate@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-fb-recreate@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-fb-recreate@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-fb-recreate@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-interruptible@b:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-interruptible@b:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-ts-check-interruptible@a:b::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-ts-check-interruptible@a:b::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-ts-check-interruptible@a:c::hdmi-a-1:hdmi-a-2:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x-plain-flip-ts-check-interruptible@a:c::vga-1:hdmi-a-1:
+    - Statuses : 1 incomplete(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_flip@2x
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4450/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4448/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
