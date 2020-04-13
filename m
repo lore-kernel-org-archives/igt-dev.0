@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 730A089F89
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Apr 2020 15:55:37 +0000 (UTC)
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Date: Mon, 13 Apr 2020 08:55:32 -0700
-Message-Id: <20200413155533.11914-3-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20200413155533.11914-1-umesh.nerlige.ramappa@intel.com>
-References: <20200413155533.11914-1-umesh.nerlige.ramappa@intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA2AD89FA7
+ for <igt-dev@lists.freedesktop.org>; Mon, 13 Apr 2020 17:29:44 +0000 (UTC)
+From: "Ruhl, Michael J" <michael.j.ruhl@intel.com>
+Date: Mon, 13 Apr 2020 17:29:40 +0000
+Message-ID: <14063C7AD467DE4B82DEDB5C278E8663FFFE202E@FMSMSX108.amr.corp.intel.com>
+References: <20200413020509.678-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20200413020509.678-1-ashutosh.dixit@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/3] tests/perf: new tests for OA interrupt
+Subject: Re: [igt-dev] [PATCH i-g-t] igt/gem_shrink: Fix reversed logic when
+ mmap fails
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,304 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Lionel G Landwerlin <lionel.g.landwerlin@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+>-----Original Message-----
+>From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
+>Ashutosh Dixit
+>Sent: Sunday, April 12, 2020 10:05 PM
+>To: igt-dev@lists.freedesktop.org
+>Cc: Chris Wilson <chris@chris-wilson.co.uk>
+>Subject: [igt-dev] [PATCH i-g-t] igt/gem_shrink: Fix reversed logic when mmap
+>fails
+>
+>Can't touch the memory if mmap returns MAP_FAILED.
+>
+>Fixes: 9cff3be127("igt/gem_shrink: Reduce oom spam")
+>Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+>---
+> tests/i915/gem_shrink.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/tests/i915/gem_shrink.c b/tests/i915/gem_shrink.c
+>index 11aa9efc1..bb55a4a78 100644
+>--- a/tests/i915/gem_shrink.c
+>+++ b/tests/i915/gem_shrink.c
+>@@ -274,7 +274,7 @@ static void leak(int fd, uint64_t alloc)
+> 	ptr = mmap(NULL, alloc, PROT_READ | PROT_WRITE,
+> 		   MAP_ANON | MAP_PRIVATE | MAP_POPULATE,
+> 		   -1, 0);
+>-	if (ptr != (char *)-1)
+>+	if (ptr == (char *)-1)
 
-Those tests verify that the interrupt wakes up userspace waiting on
-the perf stream either with poll() or with read().
+AKA MAP_FAILED?
 
-v2: (Umesh)
-  - If the fill_time is small enough then we will have 1 or 2 valid
-    reports available before we even can call a read(). The blocking read()
-    will check for reports in OA buffer prior to blocking for new
-    reports. To enable the blocking with interrupt tests to work as expected,
-    let the fill time be large so that the sampling rate is large enough
-    for the blocking read to actually block.
+M
 
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 
-with '#' will be ignored, and an empty message aborts the commit.
----
- include/drm-uapi/i915_drm.h |  13 ++-
- tests/perf.c                | 210 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 222 insertions(+), 1 deletion(-)
-
-diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
-index 2b55af13..1b35952d 100644
---- a/include/drm-uapi/i915_drm.h
-+++ b/include/drm-uapi/i915_drm.h
-@@ -1987,12 +1987,23 @@ enum drm_i915_perf_property_id {
- 	 * the driver if this parameter is not specified. Note that larger timer
- 	 * values will reduce cpu consumption during OA perf captures. However,
- 	 * excessively large values would potentially result in OA buffer
--	 * overwrites as captures reach end of the OA buffer.
-+	 * overwrites as captures reach end of the OA buffer. A value of 0 means
-+	 * no hrtimer will be started.
- 	 *
- 	 * This property is available in perf revision 5.
- 	 */
- 	DRM_I915_PERF_PROP_POLL_OA_PERIOD,
- 
-+	/**
-+	 * Specifying this property sets up the interrupt mechanism for the OA
-+	 * buffer in i915. This option in conjuction with a long polling period
-+	 * for avaibility of OA data can reduce CPU load significantly if you
-+	 * do not care about OA data being read as soon as it's available.
-+	 *
-+	 * This property is available in perf revision 6.
-+	 */
-+	DRM_I915_PERF_PROP_OA_ENABLE_INTERRUPT,
-+
- 	DRM_I915_PERF_PROP_MAX /* non-ABI */
- };
- 
-diff --git a/tests/perf.c b/tests/perf.c
-index ca12090a..d9f5b2c0 100644
---- a/tests/perf.c
-+++ b/tests/perf.c
-@@ -450,6 +450,20 @@ oa_exponent_to_ns(int exponent)
-        return 1000000000ULL * (2ULL << exponent) / intel_perf->devinfo.timestamp_frequency;
- }
- 
-+static int
-+find_oa_exponent_for_buffer_fill_time(size_t oa_buf_size, size_t report_size, uint64_t fill_time_ns)
-+{
-+       size_t n_reports = oa_buf_size / report_size;
-+
-+       for (int e = 1; e < 32; e++) {
-+               if (fill_time_ns < oa_exponent_to_ns(e) * n_reports)
-+                       return e;
-+       }
-+
-+       igt_assert(!"reached");
-+       return -1;
-+}
-+
- static bool
- oa_report_is_periodic(uint32_t oa_exponent, const uint32_t *report)
- {
-@@ -2434,6 +2448,111 @@ gen12_test_oa_tlb_invalidate(void)
- }
- 
- 
-+static void
-+test_interrupt(uint64_t oa_exponent,
-+	       uint64_t kernel_oa_poll_delay,
-+	       bool use_interrupt,
-+	       bool expect_buffer_lost,
-+	       bool use_polling,
-+	       uint32_t expect_min_reports)
-+{
-+	uint64_t properties[] = {
-+		/* Include OA reports in samples */
-+		DRM_I915_PERF_PROP_SAMPLE_OA, true,
-+
-+		/* OA unit configuration */
-+		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
-+		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-+		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
-+		DRM_I915_PERF_PROP_OA_ENABLE_INTERRUPT, use_interrupt,
-+
-+		/* Kernel configuration */
-+		DRM_I915_PERF_PROP_POLL_OA_PERIOD, kernel_oa_poll_delay,
-+	};
-+	struct drm_i915_perf_open_param param = {
-+		.flags = I915_PERF_FLAG_FD_CLOEXEC |
-+			I915_PERF_FLAG_DISABLED |
-+			(use_polling ? I915_PERF_FLAG_FD_NONBLOCK : 0),
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	struct pollfd pollfd = { .events = POLLIN };
-+	struct drm_i915_perf_record_header *header;
-+	uint32_t n_reports = 0;
-+	bool buffer_lost = false;
-+	uint8_t *buf = malloc(MAX_OA_BUF_SIZE);
-+	int ret;
-+
-+	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
-+	pollfd.fd = stream_fd;
-+
-+	igt_debug("OA period = %s, ",
-+		  pretty_print_oa_period(oa_exponent_to_ns(oa_exponent)));
-+	igt_debug("OA poll delay = %s, use interrupt = %i, "
-+		  "expected min report = %u\n",
-+		  pretty_print_oa_period(kernel_oa_poll_delay),
-+		  use_interrupt, expect_min_reports);
-+
-+	do_ioctl(stream_fd, I915_PERF_IOCTL_ENABLE, 0);
-+
-+	if (use_polling) {
-+		while ((ret = poll(&pollfd, 1, -1)) < 0 &&
-+		       errno == EINTR)
-+			;
-+		igt_assert_eq(ret, 1);
-+		igt_assert(pollfd.revents & POLLIN);
-+	}
-+
-+	while ((ret = read(stream_fd, buf, MAX_OA_BUF_SIZE)) < 0 &&
-+	       errno == EINTR)
-+		;
-+
-+	if (ret < 0)
-+		igt_debug("Unexpected error when reading after poll = %d\n", errno);
-+	igt_assert_neq(ret, -1);
-+
-+	__perf_close(stream_fd);
-+
-+	/* For Haswell reports don't contain a well defined reason
-+	 * field we so assume all reports to be 'periodic'. For gen8+
-+	 * we want to to consider that the HW automatically writes some
-+	 * non periodic reports (e.g. on context switch) which might
-+	 * lead to more successful read()s than expected due to
-+	 * periodic sampling and we don't want these extra reads to
-+	 * cause the test to fail...
-+	 */
-+	for (int offset = 0; offset < ret; offset += header->size) {
-+		header = (void *)(buf + offset);
-+
-+		switch (header->type) {
-+		case DRM_I915_PERF_RECORD_SAMPLE:
-+			n_reports++;
-+			break;
-+		case DRM_I915_PERF_RECORD_OA_BUFFER_LOST:
-+			buffer_lost = true;
-+			break;
-+		}
-+	}
-+
-+	igt_debug("Got %i report(s)\n", n_reports);
-+
-+	igt_assert_eq(buffer_lost, expect_buffer_lost);
-+
-+	/*
-+	 * Leave a 5% error margin for 2 reasons :
-+	 *
-+	 * - the tail pointer race condition might remove a couple of
-+	 *   reports because things have not yet landed in memory.
-+	 *
-+	 * - the OA unit sometimes drop a writing a report here and
-+	 *   there, the algorithm is linked to pressure on memory
-+	 *   controller but undocumented.
-+	 */
-+	igt_assert_lte(expect_min_reports * 0.95, n_reports);
-+
-+	free(buf);
-+}
-+
- static void
- test_buffer_fill(void)
- {
-@@ -4975,6 +5094,52 @@ igt_main
- 			      5 * 1000 * 1000 /* default 2ms hrtimer */);
- 	}
- 
-+	igt_describe("Test blocking read with interrupt and different hrtimer frequencies");
-+	igt_subtest("blocking-with-interrupt") {
-+		uint64_t target_fill_time = /* 5000ms */ 5000 * 1000 * 1000ul;
-+		size_t report_size = get_oa_format(test_set->perf_oa_format).size;
-+		uint32_t max_reports = MAX_OA_BUF_SIZE / report_size;
-+		int oa_exponent =
-+			find_oa_exponent_for_buffer_fill_time(MAX_OA_BUF_SIZE,
-+							      report_size, target_fill_time);
-+		uint64_t fill_time = oa_exponent_to_ns(oa_exponent) *
-+			(MAX_OA_BUF_SIZE / report_size);
-+
-+		igt_require(i915_perf_revision(drm_fd) >= 6);
-+
-+		/*
-+		 * We should be waken up by the HR timer but too late,
-+		 * so we'll loose reports.
-+		 */
-+		test_interrupt(oa_exponent,
-+			       fill_time + fill_time / 2,
-+			       false /* interrupt */, true /* loss */, false /* use_polling */,
-+			       0);
-+
-+		/*
-+		 * We should get woken up by the HR timer and get the
-+		 * appropriate number of report.
-+		 */
-+		test_interrupt(oa_exponent,
-+			       /* 500us */ 500 * 1000,
-+			       false /* interrupt */, false /* no loss */, false /* use_polling */,
-+			       (500 * 1000 * max_reports) / fill_time);
-+
-+
-+		/* We should be waken up by the interrupt first. */
-+		test_interrupt(oa_exponent,
-+			       2 * fill_time,
-+			       true /* interrupt */, false /* no loss */, false /* use_polling */,
-+			       max_reports / 2);
-+
-+		/* We should be waken up by the HR timer first. */
-+		test_interrupt(oa_exponent,
-+			       fill_time / 4,
-+			       true /* interrupt */, false /* no loss */, false /* use_polling */,
-+			       (fill_time / 4) * max_reports / fill_time);
-+	}
-+
-+
- 	igt_describe("Test polled read with default hrtimer frequency");
- 	igt_subtest("polling") {
- 		test_polling(40 * 1000 * 1000 /* 40ms oa period */,
-@@ -4998,6 +5163,51 @@ igt_main
- 	igt_subtest("polling-small-buf")
- 		test_polling_small_buf();
- 
-+	igt_describe("Test polled read with interrupt and different hrtimer frequencies");
-+	igt_subtest("polling-with-interrupt") {
-+		uint64_t target_fill_time = /* 1000ms */ 1000 * 1000 * 1000ul;
-+		size_t report_size = get_oa_format(test_set->perf_oa_format).size;
-+		uint32_t max_reports = MAX_OA_BUF_SIZE / report_size;
-+		int oa_exponent =
-+			find_oa_exponent_for_buffer_fill_time(MAX_OA_BUF_SIZE,
-+							      report_size, target_fill_time);
-+		uint64_t fill_time = oa_exponent_to_ns(oa_exponent) *
-+			(MAX_OA_BUF_SIZE / report_size);
-+
-+		igt_require(i915_perf_revision(drm_fd) >= 6);
-+
-+		/*
-+		 * We should be waken up by the HR timer but too late,
-+		 * so we'll loose reports.
-+		 */
-+		test_interrupt(oa_exponent,
-+			       fill_time + fill_time / 2,
-+			       false /* interrupt */, true /* loss */, true /* use_polling */,
-+			       0);
-+
-+		/*
-+		 * We should get woken up by the HR timer and get the
-+		 * appropriate number of report.
-+		 */
-+		test_interrupt(oa_exponent,
-+			       /* 500us */ 500 * 1000,
-+			       false /* interrupt */, false /* no loss */, true /* use_polling */,
-+			       (500 * 1000 * max_reports) / fill_time);
-+
-+
-+		/* We should be waken up by the interrupt first. */
-+		test_interrupt(oa_exponent,
-+			       2 * fill_time,
-+			       true /* interrupt */, false /* no loss */, true /* use_polling */,
-+			       max_reports / 2);
-+
-+		/* We should be waken up by the HR timer first. */
-+		test_interrupt(oa_exponent,
-+			       fill_time / 4,
-+			       true /* interrupt */, false /* no loss */, true /* use_polling */,
-+			       (fill_time / 4) * max_reports / fill_time);
-+	}
-+
- 	igt_subtest("short-reads")
- 		test_short_reads();
- 
--- 
-2.20.1
-
+> 		return;
+>
+> 	while (alloc) {
+>--
+>2.26.0
+>
+>_______________________________________________
+>igt-dev mailing list
+>igt-dev@lists.freedesktop.org
+>https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
