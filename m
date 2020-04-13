@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CBA06E03F
- for <igt-dev@lists.freedesktop.org>; Mon, 13 Apr 2020 02:05:22 +0000 (UTC)
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Sun, 12 Apr 2020 19:05:09 -0700
-Message-Id: <20200413020509.678-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] igt/gem_shrink: Fix reversed logic when
- mmap fails
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 13 Apr 2020 03:32:08 -0000
+Message-ID: <158674872890.9317.1066959469986945826@emeril.freedesktop.org>
+References: <20200413020509.678-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20200413020509.678-1-ashutosh.dixit@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaWd0L2dl?=
+ =?utf-8?q?m=5Fshrink=3A_Fix_reversed_logic_when_mmap_fails?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,38 +14,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Can't touch the memory if mmap returns MAP_FAILED.
+== Series Details ==
 
-Fixes: 9cff3be127("igt/gem_shrink: Reduce oom spam")
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/i915/gem_shrink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Series: igt/gem_shrink: Fix reversed logic when mmap fails
+URL   : https://patchwork.freedesktop.org/series/75853/
+State : success
 
-diff --git a/tests/i915/gem_shrink.c b/tests/i915/gem_shrink.c
-index 11aa9efc1..bb55a4a78 100644
---- a/tests/i915/gem_shrink.c
-+++ b/tests/i915/gem_shrink.c
-@@ -274,7 +274,7 @@ static void leak(int fd, uint64_t alloc)
- 	ptr = mmap(NULL, alloc, PROT_READ | PROT_WRITE,
- 		   MAP_ANON | MAP_PRIVATE | MAP_POPULATE,
- 		   -1, 0);
--	if (ptr != (char *)-1)
-+	if (ptr == (char *)-1)
- 		return;
- 
- 	while (alloc) {
--- 
-2.26.0
+== Summary ==
 
+CI Bug Log - changes from CI_DRM_8293 -> IGTPW_4451
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4451/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4451 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - fi-bwr-2160:        [PASS][1] -> [FAIL][2] ([i915#34])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8293/fi-bwr-2160/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4451/fi-bwr-2160/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+  [i915#34]: https://gitlab.freedesktop.org/drm/intel/issues/34
+
+
+Participating hosts (51 -> 46)
+------------------------------
+
+  Additional (1): fi-kbl-7560u 
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5589 -> IGTPW_4451
+
+  CI-20190529: 20190529
+  CI_DRM_8293: a5f88c99deb8e117d62a1514a1efecfddb9ed52b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4451: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4451/index.html
+  IGT_5589: 31962324ac86f029e2841e56e97c42cf9d572956 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4451/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
