@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 14 Apr 2020 12:10:52 -0000
-Message-ID: <158686625267.30378.6709389514299245501@emeril.freedesktop.org>
-References: <20200413102144.19302-1-karthik.b.s@intel.com>
-In-Reply-To: <20200413102144.19302-1-karthik.b.s@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fmultipipe=5Fmodeset=3A_Add_test_to_validate_max_pipe_conf?=
- =?utf-8?q?iguration?=
+Date: Tue, 14 Apr 2020 12:33:37 -0000
+Message-ID: <158686761747.30378.17515014015268438952@emeril.freedesktop.org>
+References: <20200413155533.11914-1-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20200413155533.11914-1-umesh.nerlige.ramappa@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVGVzdCBp?=
+ =?utf-8?q?nterrupts_in_perf_OA?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,19 +19,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: tests/kms_multipipe_modeset: Add test to validate max pipe configuration
-URL   : https://patchwork.freedesktop.org/series/75876/
+Series: Test interrupts in perf OA
+URL   : https://patchwork.freedesktop.org/series/75885/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_8294 -> IGTPW_4452
+CI Bug Log - changes from CI_DRM_8294 -> IGTPW_4453
 ====================================================
 
 Summary
@@ -42,35 +41,30 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4452/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4453/index.html
 
-Possible new issues
--------------------
+Known issues
+------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_4452:
+  Here are the changes found in IGTPW_4453 that come from known issues:
 
 ### IGT changes ###
 
-#### Suppressed ####
+#### Issues hit ####
 
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * {igt@gem_wait@wait@all}:
-    - fi-byt-n2820:       [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8294/fi-byt-n2820/igt@gem_wait@wait@all.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4452/fi-byt-n2820/igt@gem_wait@wait@all.html
+  * igt@i915_selftest@live@active:
+    - fi-skl-lmem:        [PASS][1] -> [DMESG-FAIL][2] ([i915#666])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8294/fi-skl-lmem/igt@i915_selftest@live@active.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4453/fi-skl-lmem/igt@i915_selftest@live@active.html
 
   
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
+  [i915#666]: https://gitlab.freedesktop.org/drm/intel/issues/666
 
 
-
-Participating hosts (48 -> 44)
+Participating hosts (48 -> 45)
 ------------------------------
 
-  Additional (1): fi-kbl-r 
+  Additional (2): fi-kbl-7560u fi-kbl-r 
   Missing    (5): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
 
 
@@ -78,22 +72,23 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_5589 -> IGTPW_4452
+  * IGT: IGT_5589 -> IGTPW_4453
 
   CI-20190529: 20190529
   CI_DRM_8294: b1631d3c1d7ff53437d9e67f740e2c6057de4fea @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4452: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4452/index.html
+  IGTPW_4453: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4453/index.html
   IGT_5589: 31962324ac86f029e2841e56e97c42cf9d572956 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
 
 
 == Testlist changes ==
 
-+igt@kms_multipipe_modeset@multipipe-modeset
++igt@perf@blocking-with-interrupt
++igt@perf@polling-with-interrupt
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4452/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4453/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
