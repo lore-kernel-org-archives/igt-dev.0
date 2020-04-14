@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E9E88961D
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2020 09:28:26 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BECB6E1E5
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2020 09:48:48 +0000 (UTC)
+Date: Tue, 14 Apr 2020 12:48:45 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200414094845.GO9497@platvala-desk.ger.corp.intel.com>
+References: <20200411111427.2749626-1-chris@chris-wilson.co.uk>
+ <20200411111427.2749626-2-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-In-Reply-To: <14063C7AD467DE4B82DEDB5C278E8663FFFE2240@FMSMSX108.amr.corp.intel.com>
-References: <20200413182525.1581-1-ashutosh.dixit@intel.com>
- <14063C7AD467DE4B82DEDB5C278E8663FFFE2240@FMSMSX108.amr.corp.intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158685650224.24284.2994445661079380369@build.alporthouse.com>
-Date: Tue, 14 Apr 2020 10:28:22 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t] igt/gem_shrink: Fix reversed logic when
- mmap fails
+Content-Disposition: inline
+In-Reply-To: <20200411111427.2749626-2-chris@chris-wilson.co.uk>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] kms_flip: Convert to dynamic CRTC
+ test groups
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,40 +19,156 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>, "Ruhl,
- Michael J" <michael.j.ruhl@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBSdWhsLCBNaWNoYWVsIEogKDIwMjAtMDQtMTMgMTk6Mjc6NDIpCj4gPi0tLS0tT3Jp
-Z2luYWwgTWVzc2FnZS0tLS0tCj4gPkZyb206IERpeGl0LCBBc2h1dG9zaCA8YXNodXRvc2guZGl4
-aXRAaW50ZWwuY29tPgo+ID5TZW50OiBNb25kYXksIEFwcmlsIDEzLCAyMDIwIDI6MjUgUE0KPiA+
-VG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4gPkNjOiBDaHJpcyBXaWxzb24gPGNo
-cmlzQGNocmlzLXdpbHNvbi5jby51az47IFJ1aGwsIE1pY2hhZWwgSgo+ID48bWljaGFlbC5qLnJ1
-aGxAaW50ZWwuY29tPgo+ID5TdWJqZWN0OiBbUEFUQ0ggaS1nLXRdIGlndC9nZW1fc2hyaW5rOiBG
-aXggcmV2ZXJzZWQgbG9naWMgd2hlbiBtbWFwIGZhaWxzCj4gPgo+ID5DYW4ndCB0b3VjaCB0aGUg
-bWVtb3J5IGlmIG1tYXAgcmV0dXJucyBNQVBfRkFJTEVELgo+ID4KPiA+djI6IHMvKGNoYXIgKikt
-MSkvTUFQX0ZBSUxFRC8gKE1pa2UgUnVobCkKPiAKPiDwn5iKCj4gCj4gUmV2aWV3ZWQtYnk6IE1p
-Y2hhZWwgSi4gUnVobCA8bWljaGFlbC5qLnJ1aGxAaW50ZWwuY29tPgo+IAo+ID5GaXhlczogOWNm
-ZjNiZTEyNygiaWd0L2dlbV9zaHJpbms6IFJlZHVjZSBvb20gc3BhbSIpCj4gPlNpZ25lZC1vZmYt
-Ynk6IEFzaHV0b3NoIERpeGl0IDxhc2h1dG9zaC5kaXhpdEBpbnRlbC5jb20+Cj4gPi0tLQo+ID4g
-dGVzdHMvaTkxNS9nZW1fc2hyaW5rLmMgfCAyICstCj4gPiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNl
-cnRpb24oKyksIDEgZGVsZXRpb24oLSkKPiA+Cj4gPmRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dl
-bV9zaHJpbmsuYyBiL3Rlc3RzL2k5MTUvZ2VtX3Nocmluay5jCj4gPmluZGV4IDExYWE5ZWZjMS4u
-ZTQzNDYxM2ViIDEwMDY0NAo+ID4tLS0gYS90ZXN0cy9pOTE1L2dlbV9zaHJpbmsuYwo+ID4rKysg
-Yi90ZXN0cy9pOTE1L2dlbV9zaHJpbmsuYwo+ID5AQCAtMjc0LDcgKzI3NCw3IEBAIHN0YXRpYyB2
-b2lkIGxlYWsoaW50IGZkLCB1aW50NjRfdCBhbGxvYykKPiA+ICAgICAgIHB0ciA9IG1tYXAoTlVM
-TCwgYWxsb2MsIFBST1RfUkVBRCB8IFBST1RfV1JJVEUsCj4gPiAgICAgICAgICAgICAgICAgIE1B
-UF9BTk9OIHwgTUFQX1BSSVZBVEUgfCBNQVBfUE9QVUxBVEUsCj4gPiAgICAgICAgICAgICAgICAg
-IC0xLCAwKTsKPiA+LSAgICAgIGlmIChwdHIgIT0gKGNoYXIgKiktMSkKPiA+KyAgICAgIGlmIChw
-dHIgPT0gTUFQX0ZBSUxFRCkKPiA+ICAgICAgICAgICAgICAgcmV0dXJuOwoKSSBoYWQgdG8gZG91
-YmxlIGNoZWNrIHRoYXQgaW4gYSBmdW5jdGlvbiBjYWxsZWQgbGVhaygpIHdlIHdlcmVuJ3QKYWN0
-dWFsbHkgd2FpdGluZyBmb3IgdGhlIGZhaWx1cmUuIEJ1dCBubywgdGhpcyBmdW5jdGlvbiBhbGxv
-Y2F0ZXMgYW5kCm1ha2VzIHN1cmUgdGhhdCBpdCBpcyBwb3B1bGF0ZWQgYW5kIGZhdWx0ZWQsIHRo
-ZW4gbGVha3MgaXQuCgpSZXZpZXdlZC1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxz
-b24uY28udWs+Ci1DaHJpcwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
-ZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+On Sat, Apr 11, 2020 at 12:14:27PM +0100, Chris Wilson wrote:
+> Use igt_dynamic_f for the dynamic discovered CRTC sets for each test.
+> 
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Martin Peres <martin.peres@linux.intel.com>
+> ---
+>  tests/kms_flip.c | 93 ++++++++++++++++++++++++------------------------
+>  1 file changed, 47 insertions(+), 46 deletions(-)
+> 
+> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+> index 4535ecc8b..41d33f75a 100755
+> --- a/tests/kms_flip.c
+> +++ b/tests/kms_flip.c
+> @@ -1185,52 +1185,17 @@ static void calibrate_ts(struct test_output *o, int crtc_idx)
+>  	o->vblank_interval = mean;
+>  }
+>  
+> -static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+> -				 int crtc_count, int duration_ms)
+> +static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+> +				   int crtc_count, int duration_ms)
+>  {
+> -	char test_name[128];
+> -	unsigned elapsed;
+>  	unsigned bo_size = 0;
+> +	bool vblank = true;
+> +	unsigned elapsed;
+>  	uint64_t tiling;
+>  	int i;
+> -	bool vblank = true;
+> -
+> -	switch (crtc_count) {
+> -	case RUN_TEST:
+> -		connector_find_preferred_mode(o->_connector[0], crtc_idxs[0], o);
+> -		if (!o->mode_valid)
+> -			return;
+> -		snprintf(test_name, sizeof(test_name),
+> -			 "%s on pipe %s, connector %s-%d",
+> -			 igt_subtest_name(),
+> -			 kmstest_pipe_name(o->_pipe[0]),
+> -			 kmstest_connector_type_str(o->kconnector[0]->connector_type),
+> -			 o->kconnector[0]->connector_type_id);
+> -		break;
+> -	case RUN_PAIR:
+> -		connector_find_compatible_mode(crtc_idxs[0], crtc_idxs[1], o);
+> -		if (!o->mode_valid)
+> -			return;
+> -		snprintf(test_name, sizeof(test_name),
+> -			 "%s on pipe %s:%s, connector %s-%d:%s-%d",
+> -			 igt_subtest_name(),
+> -			 kmstest_pipe_name(o->_pipe[0]),
+> -			 kmstest_pipe_name(o->_pipe[1]),
+> -			 kmstest_connector_type_str(o->kconnector[0]->connector_type),
+> -			 o->kconnector[0]->connector_type_id,
+> -			 kmstest_connector_type_str(o->kconnector[1]->connector_type),
+> -			 o->kconnector[1]->connector_type_id);
+> -		break;
+> -	default:
+> -		igt_assert(0);
+> -	}
+> -
+> -	igt_assert_eq(o->count, crtc_count);
+>  
+>  	last_connector = o->kconnector[0];
+>  
+> -	igt_info("Beginning %s\n", test_name);
+> -
+>  	if (o->flags & TEST_PAN)
+>  		o->fb_width *= 2;
+>  
+> @@ -1274,7 +1239,6 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+>  		 */
+>  		igt_assert_f(crtc_count > 1 || crtc_idxs[0] < 2,
+>  			     "set_mode may only fail on the 3rd pipe or in multiple crtc tests\n");
+> -		igt_info("\n%s: SKIPPED\n\n", test_name);
+>  		goto out;
+>  	}
+>  	igt_assert(fb_is_bound(o, o->fb_ids[0]));
+> @@ -1322,8 +1286,6 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+>  	if (o->flags & TEST_VBLANK)
+>  		check_final_state(o, &o->vblank_state, elapsed);
+>  
+> -	igt_info("\n%s: PASSED\n\n", test_name);
+> -
+>  out:
+>  	igt_remove_fb(drm_fd, &o->fb_info[2]);
+>  	igt_remove_fb(drm_fd, &o->fb_info[1]);
+> @@ -1334,6 +1296,45 @@ out:
+>  	free_test_output(o);
+>  }
+>  
+> +static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+> +				 int crtc_count, int duration_ms)
+> +{
+> +	char test_name[128];
+> +
+> +	switch (crtc_count) {
+> +	case RUN_TEST:
+> +		connector_find_preferred_mode(o->_connector[0], crtc_idxs[0], o);
+> +		if (!o->mode_valid)
+> +			return;
+> +		snprintf(test_name, sizeof(test_name),
+> +			 "%s::%s-%d",
+> +			 kmstest_pipe_name(o->_pipe[0]),
+> +			 kmstest_connector_type_str(o->kconnector[0]->connector_type),
+> +			 o->kconnector[0]->connector_type_id);
+> +		break;
+> +	case RUN_PAIR:
+> +		connector_find_compatible_mode(crtc_idxs[0], crtc_idxs[1], o);
+> +		if (!o->mode_valid)
+> +			return;
+> +		snprintf(test_name, sizeof(test_name),
+> +			 "%s:%s::%s-%d:%s-%d",
+> +			 kmstest_pipe_name(o->_pipe[0]),
+> +			 kmstest_pipe_name(o->_pipe[1]),
+> +			 kmstest_connector_type_str(o->kconnector[0]->connector_type),
+> +			 o->kconnector[0]->connector_type_id,
+> +			 kmstest_connector_type_str(o->kconnector[1]->connector_type),
+> +			 o->kconnector[1]->connector_type_id);
+
+
+While in principle I have nothing against expanding the alphabet of
+valid subtest name, it brings in repercussions that I'm not
+comfortable reviewing before at least three cups of coffee and even
+then I'll have to require some unit tests in the scary json tests
+directory. My runner-comms branch would help immensely for the parsing
+of these subtest names in runner but alas ETIME...
+
+Is it too unreadable to name these as
+
+"pipe-%s-%s-%d" for RUN_TEST ("pipe-A-eDP-1")
+
+"pipe-%s-pipe-%s-%s-%d-%s-%d" for RUN_PAIR
+("pipe-A-pipe-B-eDP-1-DP-2")
+
+?
+
+
+-- 
+Petri Latvala
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
