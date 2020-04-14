@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B16EC6E09C
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2020 16:34:53 +0000 (UTC)
-Date: Tue, 14 Apr 2020 21:55:06 +0530
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <20200414162506.GI5533@intel.com>
-References: <20200409053951.26929-1-anshuman.gupta@intel.com>
- <20200409053951.26929-3-anshuman.gupta@intel.com>
- <fa141fa2-5e0e-a68d-99b4-cd3abf93610b@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C953E89CDE
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2020 16:41:45 +0000 (UTC)
+From: Arjun Melkaveri <arjun.melkaveri@intel.com>
+Date: Tue, 14 Apr 2020 22:10:16 +0530
+Message-Id: <20200414164016.13205-1-arjun.melkaveri@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <fa141fa2-5e0e-a68d-99b4-cd3abf93610b@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v5 2/5] lib/igt_pm: Add lib func to get
- lpsp capability
+Subject: [igt-dev] [PATCH] [PATCH i-g-t][V6]tests/i915/gem_sync.c :Added
+ __for_each_physical_engine to utilize all available
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,105 +19,555 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Manna, Animesh" <animesh.manna@intel.com>
-Cc: igt-dev@lists.freedesktop.org, jani.nikula@intel.com, martin.peres@intel.com
+To: arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-04-14 at 21:56:47 +0530, Manna, Animesh wrote:
-> 
-> On 09-04-2020 11:09, Anshuman Gupta wrote:
-> >This lib function evaluate the lpsp capability from
-> >the connector specific debugfs attribute i915_lpsp_info.
-> >
-> >v2:
-> >- changed the lib function prefix igt_output_is_lpsp_capable
-> >   to i915_output_is_lpsp_capable. [Martin]
-> >v3:
-> >- early return for the connector which doesn't support
-> >   lpsp on any platform.
-> >v4:
-> >- debugfs entry changed from i915_lpsp_info to i915_lpsp_capability.
-> >
-> >Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> >---
-> >  lib/igt_pm.c | 37 +++++++++++++++++++++++++++++++++++++
-> >  lib/igt_pm.h |  1 +
-> >  2 files changed, 38 insertions(+)
-> >
-> >diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-> >index 9d441e1b..3418b69a 100644
-> >--- a/lib/igt_pm.c
-> >+++ b/lib/igt_pm.c
-> >@@ -37,6 +37,7 @@
-> >  #include <dirent.h>
-> >  #include "drmtest.h"
-> >+#include "igt_kms.h"
-> >  #include "igt_pm.h"
-> >  #include "igt_aux.h"
-> >  #include "igt_sysfs.h"
-> >@@ -827,3 +828,39 @@ bool igt_pm_pc8_plus_residencies_enabled(int msr_fd)
-> >  	return true;
-> >  }
-> >+
-> >+/**
-> >+ * i915_output_is_lpsp_capable:
-> >+ * @drm_fd: fd to drm device
-> >+ * @output: igt output for which lpsp capability need to be evaluated
-> >+ * Check lpsp capability for a given output.
-> >+ *
-> >+ * Returns:
-> >+ * True if given output is lpsp capable otherwise false.
-> >+ */
-> >+bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
-> >+{
-> >+	drmModeConnectorPtr c = output->config.connector;
-> >+	char buf[256];
-> >+	int fd, len;
-> >+
-> >+	/* only eDP/DP/DSI/HDMI can support LPSP */
-> >+	if (c->connector_type != DRM_MODE_CONNECTOR_eDP &&
-> >+	    c->connector_type != DRM_MODE_CONNECTOR_DSI &&
-> >+	    c->connector_type != DRM_MODE_CONNECTOR_DisplayPort &&
-> >+	    c->connector_type != DRM_MODE_CONNECTOR_HDMIA &&
-> >+	    c->connector_type != DRM_MODE_CONNECTOR_HDMIB)
-> >+		return false;
-> 
-> We can avoid check for Connector type as already taken care in kernel... rt?
-Thanks for review animesh.
-kernel will not create the debugfs for legacy connector in that case there will
-not be any entry, as there will not be any entry later this function assert on
-the debugfs entry, which will fail the test.
-That is why connector check is there to return the capability false, when
-there is no entry. 
-Thanks,
-Anshuman Gupta.
-> 
-> Regards,
-> Animesh
-> 
-> >+
-> >+	fd = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
-> >+	igt_require(fd >= 0);
-> >+	len = igt_debugfs_simple_read(fd, "i915_lpsp_capability",
-> >+				      buf, sizeof(buf));
-> >+
-> >+	if (len < 0)
-> >+		igt_assert_eq(len, -ENODEV);
-> >+
-> >+	close(fd);
-> >+
-> >+	return strstr(buf, "LPSP: capable");
-> >+}
-> >diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-> >index 5e438452..162d3ca3 100644
-> >--- a/lib/igt_pm.h
-> >+++ b/lib/igt_pm.h
-> >@@ -53,5 +53,6 @@ enum igt_runtime_pm_status igt_get_runtime_pm_status(void);
-> >  bool igt_wait_for_pm_status(enum igt_runtime_pm_status status);
-> >  bool igt_pm_dmc_loaded(int debugfs);
-> >  bool igt_pm_pc8_plus_residencies_enabled(int msr_fd);
-> >+bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output);
-> >  #endif /* IGT_PM_H */
+Replaced the legacy for_each_engine* defines with the ones
+implemented in the gem_engine_topology library.
+
+Used  gem_context_clone_with_engines
+to make sure that engine index was potentially created
+based on a  default context with engine map configured.
+
+Added Legacy engine coverage for sync_ring and sync_all.
+
+Divided tests into static for ALL_Engine test cases
+and dynamic for multiple engine .
+
+Cc: Dec Katarzyna <katarzyna.dec@intel.com>
+Cc: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
+Signed-off-by: sai gowtham <sai.gowtham.ch@intel.com>
+Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+---
+ tests/i915/gem_sync.c | 278 +++++++++++++++++++++++++++---------------
+ 1 file changed, 179 insertions(+), 99 deletions(-)
+
+diff --git a/tests/i915/gem_sync.c b/tests/i915/gem_sync.c
+index 2ef55ecc..9c9a4319 100644
+--- a/tests/i915/gem_sync.c
++++ b/tests/i915/gem_sync.c
+@@ -24,6 +24,9 @@
+ #include <time.h>
+ #include <pthread.h>
+ 
++#include "igt_debugfs.h"
++#include "igt_dummyload.h"
++#include "igt_gt.h"
+ #include "igt.h"
+ #include "igt_sysfs.h"
+ 
+@@ -37,6 +40,9 @@
+ #define MIN_PRIO LOCAL_I915_CONTEXT_MIN_USER_PRIORITY
+ 
+ #define ENGINE_MASK  (I915_EXEC_RING_MASK | LOCAL_I915_EXEC_BSD_MASK)
++#define RESET_TIMEOUT_MS (2 * MSEC_PER_SEC)
++static unsigned long reset_timeout_ms = RESET_TIMEOUT_MS;
++#define NSEC_PER_MSEC (1000 * 1000ull)
+ 
+ IGT_TEST_DESCRIPTION("Basic check of ring<->ring write synchronisation.");
+ 
+@@ -78,24 +84,36 @@ out:
+ 	return ts.tv_sec + 1e-9*ts.tv_nsec;
+ }
+ 
++static void cleanup(int i915)
++{
++	igt_drop_caches_set(i915,
++			    /* cancel everything */
++			    DROP_RESET_ACTIVE | DROP_RESET_SEQNO |
++			    /* cleanup */
++			    DROP_ACTIVE | DROP_RETIRE | DROP_IDLE | DROP_FREED);
++	igt_require_gem(i915);
++}
++
++
+ static void
+ sync_ring(int fd, unsigned ring, int num_children, int timeout)
+ {
++	const struct intel_execution_engine2 *e2;
+ 	unsigned engines[16];
+ 	const char *names[16];
+ 	int num_engines = 0;
+ 
+ 	if (ring == ALL_ENGINES) {
+-		for_each_physical_engine(e, fd) {
+-			names[num_engines] = e->name;
+-			engines[num_engines++] = eb_ring(e);
++		__for_each_physical_engine(fd, e2) {
++			names[num_engines] = e2->name;
++			engines[num_engines++] = e2->flags;
+ 			if (num_engines == ARRAY_SIZE(engines))
+ 				break;
+ 		}
+ 
+ 		num_children *= num_engines;
+ 	} else {
+-		gem_require_ring(fd, ring);
++		igt_require(gem_can_store_dword(fd, ring));
+ 		names[num_engines] = NULL;
+ 		engines[num_engines++] = ring;
+ 	}
+@@ -139,7 +157,7 @@ sync_ring(int fd, unsigned ring, int num_children, int timeout)
+ }
+ 
+ static void
+-idle_ring(int fd, unsigned ring, int timeout)
++idle_ring(int fd, unsigned int ring, int num_children, int timeout)
+ {
+ 	const uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	struct drm_i915_gem_exec_object2 object;
+@@ -180,23 +198,23 @@ idle_ring(int fd, unsigned ring, int timeout)
+ static void
+ wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
+ {
++	const struct intel_execution_engine2 *e2;
+ 	unsigned engines[16];
+ 	const char *names[16];
+ 	int num_engines = 0;
+ 
+ 	if (ring == ALL_ENGINES) {
+-		for_each_physical_engine(e, fd) {
+-			if (!gem_can_store_dword(fd, eb_ring(e)))
++		__for_each_physical_engine(fd, e2) {
++			if (!gem_class_can_store_dword(fd, e2->class))
+ 				continue;
+ 
+-			names[num_engines] = e->name;
+-			engines[num_engines++] = eb_ring(e);
++			names[num_engines] = e2->name;
++			engines[num_engines++] = e2->flags;
+ 			if (num_engines == ARRAY_SIZE(engines))
+ 				break;
+ 		}
+ 		igt_require(num_engines);
+ 	} else {
+-		gem_require_ring(fd, ring);
+ 		igt_require(gem_can_store_dword(fd, ring));
+ 		names[num_engines] = NULL;
+ 		engines[num_engines++] = ring;
+@@ -290,25 +308,26 @@ wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
+ 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
+ }
+ 
+-static void active_ring(int fd, unsigned ring, int timeout)
++static void active_ring(int fd, unsigned int ring,
++			int num_children, int timeout)
+ {
++	const struct intel_execution_engine2 *e2;
+ 	unsigned engines[16];
+ 	const char *names[16];
+ 	int num_engines = 0;
+ 
+ 	if (ring == ALL_ENGINES) {
+-		for_each_physical_engine(e, fd) {
+-			if (!gem_can_store_dword(fd, eb_ring(e)))
++		__for_each_physical_engine(fd, e2) {
++			if (!gem_class_can_store_dword(fd, e2->class))
+ 				continue;
+ 
+-			names[num_engines] = e->name;
+-			engines[num_engines++] = eb_ring(e);
++			names[num_engines] = e2->name;
++			engines[num_engines++] = e2->flags;
+ 			if (num_engines == ARRAY_SIZE(engines))
+ 				break;
+ 		}
+ 		igt_require(num_engines);
+ 	} else {
+-		gem_require_ring(fd, ring);
+ 		igt_require(gem_can_store_dword(fd, ring));
+ 		names[num_engines] = NULL;
+ 		engines[num_engines++] = ring;
+@@ -359,23 +378,23 @@ static void active_ring(int fd, unsigned ring, int timeout)
+ static void
+ active_wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
+ {
++	const struct intel_execution_engine2 *e2;
+ 	unsigned engines[16];
+ 	const char *names[16];
+ 	int num_engines = 0;
+ 
+ 	if (ring == ALL_ENGINES) {
+-		for_each_physical_engine(e, fd) {
+-			if (!gem_can_store_dword(fd, eb_ring(e)))
++		__for_each_physical_engine(fd, e2) {
++			if (!gem_class_can_store_dword(fd, e2->class))
+ 				continue;
+ 
+-			names[num_engines] = e->name;
+-			engines[num_engines++] = eb_ring(e);
++			names[num_engines] = e2->name;
++			engines[num_engines++] = e2->flags;
+ 			if (num_engines == ARRAY_SIZE(engines))
+ 				break;
+ 		}
+ 		igt_require(num_engines);
+ 	} else {
+-		gem_require_ring(fd, ring);
+ 		igt_require(gem_can_store_dword(fd, ring));
+ 		names[num_engines] = NULL;
+ 		engines[num_engines++] = ring;
+@@ -493,25 +512,25 @@ active_wakeup_ring(int fd, unsigned ring, int timeout, int wlen)
+ static void
+ store_ring(int fd, unsigned ring, int num_children, int timeout)
+ {
++	const struct intel_execution_engine2 *e2;
+ 	const int gen = intel_gen(intel_get_drm_devid(fd));
+ 	unsigned engines[16];
+ 	const char *names[16];
+ 	int num_engines = 0;
+ 
+ 	if (ring == ALL_ENGINES) {
+-		for_each_physical_engine(e, fd) {
+-			if (!gem_can_store_dword(fd, eb_ring(e)))
++		__for_each_physical_engine(fd, e2) {
++			if (!gem_class_can_store_dword(fd, e2->class))
+ 				continue;
+ 
+-			names[num_engines] = e->name;
+-			engines[num_engines++] = eb_ring(e);
++			names[num_engines] = e2->name;
++			engines[num_engines++] = e2->flags;
+ 			if (num_engines == ARRAY_SIZE(engines))
+ 				break;
+ 		}
+ 
+ 		num_children *= num_engines;
+ 	} else {
+-		gem_require_ring(fd, ring);
+ 		igt_require(gem_can_store_dword(fd, ring));
+ 		names[num_engines] = NULL;
+ 		engines[num_engines++] = ring;
+@@ -608,6 +627,7 @@ store_ring(int fd, unsigned ring, int num_children, int timeout)
+ static void
+ switch_ring(int fd, unsigned ring, int num_children, int timeout)
+ {
++	const struct intel_execution_engine2 *e2;
+ 	const int gen = intel_gen(intel_get_drm_devid(fd));
+ 	unsigned engines[16];
+ 	const char *names[16];
+@@ -616,19 +636,18 @@ switch_ring(int fd, unsigned ring, int num_children, int timeout)
+ 	gem_require_contexts(fd);
+ 
+ 	if (ring == ALL_ENGINES) {
+-		for_each_physical_engine(e, fd) {
+-			if (!gem_can_store_dword(fd, eb_ring(e)))
++		__for_each_physical_engine(fd, e2) {
++			if (!gem_class_can_store_dword(fd, e2->class))
+ 				continue;
+ 
+-			names[num_engines] = e->name;
+-			engines[num_engines++] = eb_ring(e);
++			names[num_engines] = e2->name;
++			engines[num_engines++] = e2->flags;
+ 			if (num_engines == ARRAY_SIZE(engines))
+ 				break;
+ 		}
+ 
+ 		num_children *= num_engines;
+ 	} else {
+-		gem_require_ring(fd, ring);
+ 		igt_require(gem_can_store_dword(fd, ring));
+ 		names[num_engines] = NULL;
+ 		engines[num_engines++] = ring;
+@@ -931,8 +950,9 @@ __store_many(int fd, unsigned ring, int timeout, unsigned long *cycles)
+ }
+ 
+ static void
+-store_many(int fd, unsigned ring, int timeout)
++store_many(int fd, unsigned int ring, int num_children, int timeout)
+ {
++	const struct intel_execution_engine2 *e2;
+ 	unsigned long *shared;
+ 	const char *names[16];
+ 	int n = 0;
+@@ -943,21 +963,20 @@ store_many(int fd, unsigned ring, int timeout)
+ 	intel_detect_and_clear_missed_interrupts(fd);
+ 
+ 	if (ring == ALL_ENGINES) {
+-		for_each_physical_engine(e, fd) {
+-			if (!gem_can_store_dword(fd, eb_ring(e)))
++		__for_each_physical_engine(fd, e2) {
++			if (!gem_class_can_store_dword(fd, e2->class))
+ 				continue;
+ 
+ 			igt_fork(child, 1)
+ 				__store_many(fd,
+-					     eb_ring(e),
++					     e2->flags,
+ 					     timeout,
+ 					     &shared[n]);
+ 
+-			names[n++] = e->name;
++			names[n++] = e2->name;
+ 		}
+ 		igt_waitchildren();
+ 	} else {
+-		gem_require_ring(fd, ring);
+ 		igt_require(gem_can_store_dword(fd, ring));
+ 		__store_many(fd, ring, timeout, &shared[n]);
+ 		names[n++] = NULL;
+@@ -1025,15 +1044,16 @@ sync_all(int fd, int num_children, int timeout)
+ static void
+ store_all(int fd, int num_children, int timeout)
+ {
++	const struct intel_execution_engine2 *e;
+ 	const int gen = intel_gen(intel_get_drm_devid(fd));
+ 	unsigned engines[16];
+ 	int num_engines = 0;
+ 
+-	for_each_physical_engine(e, fd) {
+-		if (!gem_can_store_dword(fd, eb_ring(e)))
++	__for_each_physical_engine(fd, e) {
++		if (!gem_class_can_store_dword(fd, e->class))
+ 			continue;
+ 
+-		engines[num_engines++] = eb_ring(e);
++		engines[num_engines++] = e->flags;
+ 		if (num_engines == ARRAY_SIZE(engines))
+ 			break;
+ 	}
+@@ -1132,22 +1152,22 @@ store_all(int fd, int num_children, int timeout)
+ static void
+ preempt(int fd, unsigned ring, int num_children, int timeout)
+ {
++	const struct intel_execution_engine2 *e2;
+ 	unsigned engines[16];
+ 	const char *names[16];
+ 	int num_engines = 0;
+ 	uint32_t ctx[2];
+ 
+ 	if (ring == ALL_ENGINES) {
+-		for_each_physical_engine(e, fd) {
+-			names[num_engines] = e->name;
+-			engines[num_engines++] = eb_ring(e);
++		__for_each_physical_engine(fd, e2) {
++			names[num_engines] = e2->name;
++			engines[num_engines++] = e2->flags;
+ 			if (num_engines == ARRAY_SIZE(engines))
+ 				break;
+ 		}
+ 
+ 		num_children *= num_engines;
+ 	} else {
+-		gem_require_ring(fd, ring);
+ 		names[num_engines] = NULL;
+ 		engines[num_engines++] = ring;
+ 	}
+@@ -1207,76 +1227,99 @@ preempt(int fd, unsigned ring, int num_children, int timeout)
+ 	gem_context_destroy(fd, ctx[0]);
+ }
+ 
++static void do_test(void (*test)(int i915, unsigned int engine,
++		    int num_children, int test_timeout),
++		    int i915, unsigned int engine, int num_children,
++		    int test_timeout, const char *name)
++{
++#define ATTR "preempt_timeout_ms"
++	int timeout = -1;
++
++	cleanup(i915);
++
++	gem_engine_property_scanf(i915, name, ATTR, "%d", &timeout);
++	if (timeout != -1) {
++		igt_require(gem_engine_property_printf(i915, name,
++						       ATTR, "%d", 50) > 0);
++		reset_timeout_ms = 200;
++	}
++
++	test(i915, engine, num_children, test_timeout);
++	gem_quiescent_gpu(i915);
++}
++
+ igt_main
+ {
+-	const struct intel_execution_engine *e;
+ 	const int ncpus = sysconf(_SC_NPROCESSORS_ONLN);
+ 	int fd = -1;
+ 
++	struct {
++		const char *name;
++		void (*func)(int fd, unsigned int engine,
++			     int num_children, int timeout);
++		int num_children;
++		int timeout;
++	} *test, allengine[] = {
++		{ "basic-each", sync_ring, 1, 2},
++		{ "basic-store-each", store_ring, 1, 2},
++		{ "basic-many-each", store_many, 0, 2},
++		{ "switch-each", switch_ring, 1, 20},
++		{ "forked-switch-each", switch_ring, ncpus, 20},
++		{ "forked-each", sync_ring, ncpus, 20},
++		{ "forked-store-each", store_ring, ncpus, 20},
++		{ "active-each", active_ring, 0, 20},
++		{ "wakeup-each", wakeup_ring, 20, 1},
++		{ "active-wakeup-each", active_wakeup_ring, 20, 1},
++		{ "double-wakeup-each", wakeup_ring, 20, 2},
++		{ NULL, NULL },
++	}, tests[] = {
++		{ "default", sync_ring, 1, 20},
++		{ "idle", idle_ring, 0, 20},
++		{ "active", active_ring, 0, 20},
++		{ "wakeup", wakeup_ring, 20, 1},
++		{ "active-wakeup", active_wakeup_ring, 20, 1},
++		{ "double-wakeup", wakeup_ring, 20, 2},
++		{ "store", store_ring, 1, 20},
++		{ "switch", switch_ring, 1, 20},
++		{ "forked-switch", switch_ring, ncpus, 20},
++		{ "many", store_many, 0, 20},
++		{ "forked", sync_ring, ncpus, 20},
++		{ "forked-store", store_ring, ncpus, 20},
++		{ NULL, NULL },
++	};
++
++
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(fd);
+ 		gem_submission_print_method(fd);
+ 		gem_scheduler_print_capability(fd);
+-
+ 		igt_fork_hang_detector(fd);
+ 	}
+ 
+-	for (e = intel_execution_engines; e->name; e++) {
+-		igt_subtest_f("%s", e->name)
+-			sync_ring(fd, eb_ring(e), 1, 20);
+-		igt_subtest_f("idle-%s", e->name)
+-			idle_ring(fd, eb_ring(e), 20);
+-		igt_subtest_f("active-%s", e->name)
+-			active_ring(fd, eb_ring(e), 20);
+-		igt_subtest_f("wakeup-%s", e->name)
+-			wakeup_ring(fd, eb_ring(e), 20, 1);
+-		igt_subtest_f("active-wakeup-%s", e->name)
+-			active_wakeup_ring(fd, eb_ring(e), 20, 1);
+-		igt_subtest_f("double-wakeup-%s", e->name)
+-			wakeup_ring(fd, eb_ring(e), 20, 2);
+-		igt_subtest_f("store-%s", e->name)
+-			store_ring(fd, eb_ring(e), 1, 20);
+-		igt_subtest_f("switch-%s", e->name)
+-			switch_ring(fd, eb_ring(e), 1, 20);
+-		igt_subtest_f("forked-switch-%s", e->name)
+-			switch_ring(fd, eb_ring(e), ncpus, 20);
+-		igt_subtest_f("many-%s", e->name)
+-			store_many(fd, eb_ring(e), 20);
+-		igt_subtest_f("forked-%s", e->name)
+-			sync_ring(fd, eb_ring(e), ncpus, 20);
+-		igt_subtest_f("forked-store-%s", e->name)
+-			store_ring(fd, eb_ring(e), ncpus, 20);
+-	}
++	/* legacy of selecting engines. */
+ 
+-	igt_subtest("basic-each")
+-		sync_ring(fd, ALL_ENGINES, 1, 2);
+-	igt_subtest("basic-store-each")
+-		store_ring(fd, ALL_ENGINES, 1, 2);
+-	igt_subtest("basic-many-each")
+-		store_many(fd, ALL_ENGINES, 2);
+-	igt_subtest("switch-each")
+-		switch_ring(fd, ALL_ENGINES, 1, 20);
+-	igt_subtest("forked-switch-each")
+-		switch_ring(fd, ALL_ENGINES, ncpus, 20);
+-	igt_subtest("forked-each")
+-		sync_ring(fd, ALL_ENGINES, ncpus, 20);
+-	igt_subtest("forked-store-each")
+-		store_ring(fd, ALL_ENGINES, ncpus, 20);
+-	igt_subtest("active-each")
+-		active_ring(fd, ALL_ENGINES, 20);
+-	igt_subtest("wakeup-each")
+-		wakeup_ring(fd, ALL_ENGINES, 20, 1);
+-	igt_subtest("active-wakeup-each")
+-		active_wakeup_ring(fd, ALL_ENGINES, 20, 1);
+-	igt_subtest("double-wakeup-each")
+-		wakeup_ring(fd, ALL_ENGINES, 20, 2);
++	igt_subtest_group {
++		for (test = tests; test->name; test++) {
++			igt_subtest_with_dynamic_f("legacy-engines-%s",
++						   test->name) {
++				for_each_physical_engine(e, fd) {
++					igt_dynamic_f("%s", e->name) {
++						do_test(test->func,
++							fd, eb_ring(e),
++							test->num_children,
++							test->timeout,
++							e->full_name);
++					}
++				}
++			}
++		}
++	}
+ 
+ 	igt_subtest("basic-all")
+ 		sync_all(fd, 1, 2);
+ 	igt_subtest("basic-store-all")
+ 		store_all(fd, 1, 2);
+-
+ 	igt_subtest("all")
+ 		sync_all(fd, 1, 20);
+ 	igt_subtest("store-all")
+@@ -1286,7 +1329,42 @@ igt_main
+ 	igt_subtest("forked-store-all")
+ 		store_all(fd, ncpus, 20);
+ 
++	/* All Engines */
++	igt_subtest_group {
++		for (test = allengine; test->name; test++) {
++			igt_subtest_f("%s", test->name) {
++				do_test(test->func,
++					fd, ALL_ENGINES,
++					test->num_children,
++					test->timeout,
++					test->name);
++			}
++		}
++	}
++
++	/* New way of selecting engines. */
+ 	igt_subtest_group {
++		const struct intel_execution_engine2 *e;
++
++		for (test = tests; test->name; test++) {
++			igt_subtest_with_dynamic_f("%s", test->name) {
++				__for_each_physical_engine(fd, e) {
++					igt_dynamic_f("%s", e->name) {
++						do_test(test->func,
++							fd, e->flags,
++							test->num_children,
++							test->timeout,
++							e->name);
++					}
++				}
++			}
++		}
++	}
++
++
++	igt_subtest_group {
++		const struct intel_execution_engine2 *e;
++
+ 		igt_fixture {
+ 			gem_require_contexts(fd);
+ 			igt_require(gem_scheduler_has_ctx_priority(fd));
+@@ -1295,10 +1373,12 @@ igt_main
+ 
+ 		igt_subtest("preempt-all")
+ 			preempt(fd, ALL_ENGINES, 1, 20);
+-
+-		for (e = intel_execution_engines; e->name; e++) {
+-			igt_subtest_f("preempt-%s", e->name)
+-				preempt(fd, eb_ring(e), ncpus, 20);
++		igt_subtest_with_dynamic("preempt") {
++			__for_each_physical_engine(fd, e) {
++				/* Requires master for STORE_DWORD on gen4/5 */
++				igt_dynamic_f("%s", e->name)
++					preempt(fd, e->flags, ncpus, 20);
++			}
+ 		}
+ 	}
+ 
+-- 
+2.25.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
