@@ -1,20 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3FB66897FD
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2020 15:23:35 +0000 (UTC)
-From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
-Date: Tue, 14 Apr 2020 15:23:32 +0000
-Message-ID: <7f72961d10da4925b54d8f94feae115f@intel.com>
-References: <20200414081447.1451675-1-arkadiusz.hiler@intel.com>
- <158687082382.30377.4522458170885477400@emeril.freedesktop.org>
- <20200414133107.l2ellrxszmiskyuo@ahiler-desk1.fi.intel.com>
-In-Reply-To: <20200414133107.l2ellrxszmiskyuo@ahiler-desk1.fi.intel.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/3=5D_test/kms=5Fchamelium=3A_Start_?=
- =?utf-8?q?with_disabling_modeset?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 14 Apr 2020 15:27:54 -0000
+Message-ID: <158687807461.30379.3799875543804145224@emeril.freedesktop.org>
+References: <20200414141746.11706-1-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20200414141746.11706-1-janusz.krzysztofik@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHM6?=
+ =?utf-8?q?_Add_a_test_for_device_hot_unplug_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,55 +14,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Hiler, Arkadiusz" <arkadiusz.hiler@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QXJlaywgSSBoYXZlIGFkZHJlc3NlZCBhbmQgcmUtcmVwb3J0ZWQgdGhlIGlzc3VlLiANCg0KTGFr
-c2htaS4NCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBIaWxlciwgQXJrYWRpdXN6
-IDxhcmthZGl1c3ouaGlsZXJAaW50ZWwuY29tPiANClNlbnQ6IFR1ZXNkYXksIEFwcmlsIDE0LCAy
-MDIwIDQ6MzEgUE0NClRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KQ2M6IFZ1ZHVt
-LCBMYWtzaG1pbmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1bUBpbnRlbC5jb20+DQpTdWJq
-ZWN0OiBSZTog4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVzIHN0YXJ0aW5nIHdpdGgg
-W2ktZy10LDEvM10gdGVzdC9rbXNfY2hhbWVsaXVtOiBTdGFydCB3aXRoIGRpc2FibGluZyBtb2Rl
-c2V0DQoNCk9uIFR1ZSwgQXByIDE0LCAyMDIwIGF0IDAxOjI3OjAzUE0gKzAwMDAsIFBhdGNod29y
-ayB3cm90ZToNCj4gPT0gU2VyaWVzIERldGFpbHMgPT0NCj4gDQo+IFNlcmllczogc2VyaWVzIHN0
-YXJ0aW5nIHdpdGggW2ktZy10LDEvM10gdGVzdC9rbXNfY2hhbWVsaXVtOiBTdGFydCB3aXRoIGRp
-c2FibGluZyBtb2Rlc2V0DQo+IFVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Au
-b3JnL3Nlcmllcy83NTkxMC8NCj4gU3RhdGUgOiBmYWlsdXJlDQo+IA0KPiA9PSBTdW1tYXJ5ID09
-DQo+IA0KPiBDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIENJX0RSTV84Mjk0IC0+IElHVFBXXzQ0
-NTUgDQo+ID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT0NCj4gDQo+IFN1bW1hcnkNCj4gLS0tLS0tLQ0KPiANCj4gICAqKkZBSUxVUkUqKg0KPiANCj4g
-ICBTZXJpb3VzIHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0aCBJR1RQV180NDU1IGFic29sdXRl
-bHkgbmVlZCB0byBiZQ0KPiAgIHZlcmlmaWVkIG1hbnVhbGx5Lg0KPiAgIA0KPiAgIElmIHlvdSB0
-aGluayB0aGUgcmVwb3J0ZWQgY2hhbmdlcyBoYXZlIG5vdGhpbmcgdG8gZG8gd2l0aCB0aGUgY2hh
-bmdlcw0KPiAgIGludHJvZHVjZWQgaW4gSUdUUFdfNDQ1NSwgcGxlYXNlIG5vdGlmeSB5b3VyIGJ1
-ZyB0ZWFtIHRvIGFsbG93IHRoZW0NCj4gICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJlIG1v
-ZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4NCj4gDQo+ICAgRXh0
-ZXJuYWwgVVJMOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9J
-R1RQV180NDU1L2luZGV4Lmh0bWwNCj4gDQo+IFBvc3NpYmxlIG5ldyBpc3N1ZXMNCj4gLS0tLS0t
-LS0tLS0tLS0tLS0tLQ0KPiANCj4gICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQg
-bWF5IGhhdmUgYmVlbiBpbnRyb2R1Y2VkIGluIElHVFBXXzQ0NTU6DQo+IA0KPiAjIyMgSUdUIGNo
-YW5nZXMgIyMjDQo+IA0KPiAjIyMjIFBvc3NpYmxlIHJlZ3Jlc3Npb25zICMjIyMNCj4gDQo+ICAg
-KiBpZ3RAaTkxNV9zZWxmdGVzdEBsaXZlQGd0X2NvbnRleHRzOg0KPiAgICAgLSBmaS1id3ItMjE2
-MDogICAgICAgIFtQQVNTXVsxXSAtPiBbRE1FU0ctV0FSTl1bMl0NCj4gICAgWzFdOiBodHRwczov
-L2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV84Mjk0L2ZpLWJ3ci0yMTYw
-L2lndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAZ3RfY29udGV4dHMuaHRtbA0KPiAgICBbMl06IA0KPiBo
-dHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzQ0NTUvZmktYndy
-LTIxNjAvaWd0QGk5DQo+IDE1X3NlbGZ0ZXN0QGxpdmVAZ3RfY29udGV4dHMuaHRtbA0KDQoNCkhl
-eSBMYWtzaG1pLA0KDQpUaGlzIGlzIGEgc2VsZnRlc3QgZmFpbHVyZSB0aGF0IGlzIG5vdCByZWxh
-dGVkIHRvIHRoaXMgY2hhbmdlLg0KDQotLQ0KQ2hlZXJzLA0KQXJlaw0KLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCklu
-dGVsIEZpbmxhbmQgT3kKUmVnaXN0ZXJlZCBBZGRyZXNzOiBQTCAyODEsIDAwMTgxIEhlbHNpbmtp
-IApCdXNpbmVzcyBJZGVudGl0eSBDb2RlOiAwMzU3NjA2IC0gNCAKRG9taWNpbGVkIGluIEhlbHNp
-bmtpIAoKVGhpcyBlLW1haWwgYW5kIGFueSBhdHRhY2htZW50cyBtYXkgY29udGFpbiBjb25maWRl
-bnRpYWwgbWF0ZXJpYWwgZm9yCnRoZSBzb2xlIHVzZSBvZiB0aGUgaW50ZW5kZWQgcmVjaXBpZW50
-KHMpLiBBbnkgcmV2aWV3IG9yIGRpc3RyaWJ1dGlvbgpieSBvdGhlcnMgaXMgc3RyaWN0bHkgcHJv
-aGliaXRlZC4gSWYgeW91IGFyZSBub3QgdGhlIGludGVuZGVkCnJlY2lwaWVudCwgcGxlYXNlIGNv
-bnRhY3QgdGhlIHNlbmRlciBhbmQgZGVsZXRlIGFsbCBjb3BpZXMuCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
-ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
-aWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+== Series Details ==
+
+Series: tests: Add a test for device hot unplug (rev3)
+URL   : https://patchwork.freedesktop.org/series/75692/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8295 -> IGTPW_4459
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4459/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4459 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-skl-6600u:       [INCOMPLETE][1] ([i915#69]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8295/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4459/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
+
+  
+  [i915#69]: https://gitlab.freedesktop.org/drm/intel/issues/69
+
+
+Participating hosts (49 -> 43)
+------------------------------
+
+  Missing    (6): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5589 -> IGTPW_4459
+
+  CI-20190529: 20190529
+  CI_DRM_8295: 4cb6dbe0a641129fd07ad1fbfcd6e7b4f03ec5c1 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4459: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4459/index.html
+  IGT_5589: 31962324ac86f029e2841e56e97c42cf9d572956 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@core_hotunplug@hotunbind-lateclose
++igt@core_hotunplug@hotunplug-lateclose
++igt@core_hotunplug@unbind-rebind
++igt@core_hotunplug@unplug-rescan
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4459/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
