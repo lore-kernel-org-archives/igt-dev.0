@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM04-CO1-obe.outbound.protection.outlook.com
- (mail-eopbgr690053.outbound.protection.outlook.com [40.107.69.53])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 034896E199
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2020 13:00:13 +0000 (UTC)
-References: <20190128154211.19558-1-nicholas.kazlauskas@amd.com>
- <CAKMK7uEhtWP3En4seViodQ+cigt0nQJf3bP=w+0=gvLRY3-2+Q@mail.gmail.com>
-From: "Kazlauskas, Nicholas" <nicholas.kazlauskas@amd.com>
-Message-ID: <e9f40cc9-bef5-ba19-7184-76da30f86c76@amd.com>
-Date: Tue, 14 Apr 2020 09:00:08 -0400
-In-Reply-To: <CAKMK7uEhtWP3En4seViodQ+cigt0nQJf3bP=w+0=gvLRY3-2+Q@mail.gmail.com>
-Content-Language: en-US
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests: Add variable refresh rate
- tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 14 Apr 2020 13:03:30 -0000
+Message-ID: <158686941001.30376.15675532722491557210@emeril.freedesktop.org>
+References: <20200413182525.1581-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20200413182525.1581-1-ashutosh.dixit@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaWd0L2dl?=
+ =?utf-8?q?m=5Fshrink=3A_Fix_reversed_logic_when_mmap_fails_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,106 +14,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Daniel Vetter <daniel.vetter@ffwll.ch>, "Wentland, Harry" <harry.wentland@amd.com>, Alex Deucher <alexdeucher@gmail.com>
-Cc: IGT development <igt-dev@lists.freedesktop.org>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-04-14 6:52 a.m., Daniel Vetter wrote:
->> +/* Performs an asynchronous non-blocking page-flip on a pipe. */
->> +static int
->> +do_flip(data_t *data, enum pipe pipe_id, igt_fb_t *fb)
->> +{
->> +       igt_pipe_t *pipe = &data->display.pipes[pipe_id];
->> +       int ret;
->> +
->> +       igt_set_timeout(1, "Scheduling page flip\n");
->> +
->> +       /*
->> +        * Only the legacy flip ioctl supports async flips.
->> +        * It's also non-blocking, but returns -EBUSY if flipping too fast.
->> +        * 2x monitor tests will need async flips in the atomic API.
->> +        */
-> 
-> Uh, if this is also how your amdgpu userspace works we've just fucked
-> up the uapi for good :-/
-> 
-> FLIP_ASYNC = please tear
-> 
-> VRR = please don't strictly obey the vrefresh, but very much dont tear
-> 
-> Tying them together means we're deeply mixing things up.
-> 
-> Also amdgpu is still using it's own flip implementation, which makes
-> me wonder whether VRR would even work with atomic, or whether that's
-> also butchered ...
-> 
-> How I thought this stuff was supposed to work:
-> 
-> - VRR_ENABLED controls whether we do VRR
-> - since atomic is awesome you can change that on every frame
-> - VRR has nothing to do with ASYNC
-> 
-> So a) do I read this correctly b) how do we get out of this hole (and
-> maybe c) amdgpu really needs to remove
-> amdgpu_display_crtc_page_flip_target asap).
-> 
-> Manasi pointed this out to me, so adding a few more people here.
-> -Daniel
+== Series Details ==
 
-Adaptive sync is an extended front porch that ends upon some signaling 
-from the driver is almost always tied to a page flip.
+Series: igt/gem_shrink: Fix reversed logic when mmap fails (rev2)
+URL   : https://patchwork.freedesktop.org/series/75853/
+State : success
 
-FLIP_ASYNC is a mechanism to flip immediately without waiting for any 
-double buffering from the driver or hardware, potentially causing tearing.
+== Summary ==
 
-This test uses FLIP_ASYNC to precisely position when the flip occurs 
-from userspace within the VBLANK to end the frame at the midpoint 
-between the min and max range.
+CI Bug Log - changes from CI_DRM_8294 -> IGTPW_4454
+====================================================
 
-But it doesn't really need to be FLIP_ASYNC to make this work, explicit 
-fencing is probably the better solution here for all drivers.
+Summary
+-------
 
-This test only really worked by accident for testing amdgpu. We have 
-internal stalls in the driver to prevent an immediate flip from 
-occurring more than once per frame, so if you try to flip in the 
-extended front porch you end up hitting that stall and the returned 
-timestamp is a frame ahead.
+  **SUCCESS**
 
-The other part of this test that's sort of an issue is that this is 
-effectively a measurement for how fast you can immediate flip - which is 
-good for catching performance regressions in the driver, and good for 
-consistent VRR behavior, but not exactly related to the test.
+  No regressions found.
 
-The way FLIP_ASYNC should probably work in amdgpu is:
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4454/index.html
 
-1) No stalls
-2) Return -EBUSY if we're in the middle of a frame already, or even 
-allow the commit to happen in the same frame since the hardware supports it
 
-Not sure how userspace is equipped to handle that though.
+Changes
+-------
 
-Regards,
-Nicholas Kazlauskas
+  No changes found
 
-> 
->> +       do {
->> +               ret = drmModePageFlip(data->drm_fd, pipe->crtc_id,
->> +                                     fb->fb_id,
->> +                                     DRM_MODE_PAGE_FLIP_EVENT |
->> +                                     DRM_MODE_PAGE_FLIP_ASYNC,
->> +                                     data);
->> +       } while (ret == -EBUSY);
->> +
->> +       igt_assert_eq(ret, 0);
->> +       igt_reset_timeout();
->> +
->> +       return 0;
->> +}
 
+Participating hosts (48 -> 44)
+------------------------------
+
+  Additional (2): fi-kbl-7560u fi-kbl-r 
+  Missing    (6): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-cfl-8700k fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5589 -> IGTPW_4454
+
+  CI-20190529: 20190529
+  CI_DRM_8294: b1631d3c1d7ff53437d9e67f740e2c6057de4fea @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4454: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4454/index.html
+  IGT_5589: 31962324ac86f029e2841e56e97c42cf9d572956 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4454/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
