@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 367CF6E065
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2020 10:47:38 +0000 (UTC)
-Date: Tue, 14 Apr 2020 13:47:35 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200414104735.GP9497@platvala-desk.ger.corp.intel.com>
-References: <20200414102800.2867147-1-chris@chris-wilson.co.uk>
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
+ [IPv6:2607:f8b0:4864:20::242])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1FBB36E079
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2020 10:52:55 +0000 (UTC)
+Received: by mail-oi1-x242.google.com with SMTP id k9so10012380oia.8
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2020 03:52:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200414102800.2867147-1-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [PATCH i-g-t] kms_flip: Convert to dynamic CRTC test
- groups
+References: <20190128154211.19558-1-nicholas.kazlauskas@amd.com>
+In-Reply-To: <20190128154211.19558-1-nicholas.kazlauskas@amd.com>
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
+Date: Tue, 14 Apr 2020 12:52:43 +0200
+Message-ID: <CAKMK7uEhtWP3En4seViodQ+cigt0nQJf3bP=w+0=gvLRY3-2+Q@mail.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests: Add variable refresh rate
+ tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,207 +24,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>, "Wentland,
+ Harry" <harry.wentland@amd.com>, Alex Deucher <alexdeucher@gmail.com>
+Cc: IGT development <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Apr 14, 2020 at 11:28:00AM +0100, Chris Wilson wrote:
-> Use igt_dynamic_f for the dynamic discovered CRTC sets for each test.
-> 
-> v2:
-> The subsubtest names are slightly more compact and forced to conform to
-> igt_runner/piglit rules:
-> 
-> 	A-eDP1
-> 	AB-eDP1-eDP2
-> 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> Cc: Martin Peres <martin.peres@linux.intel.com>
-> ---
-
-
-Let's see now.
-
-1) No test renames, just added reporting for the subparts
-
-2) Straightforward conversion
-
-
-Unless CI finds something hilarious,
-
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-
-
-
->  tests/kms_flip.c | 93 ++++++++++++++++++++++++------------------------
->  1 file changed, 47 insertions(+), 46 deletions(-)
-> 
-> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-> index 4535ecc8b..5e3e196c0 100755
-> --- a/tests/kms_flip.c
-> +++ b/tests/kms_flip.c
-> @@ -1185,52 +1185,17 @@ static void calibrate_ts(struct test_output *o, int crtc_idx)
->  	o->vblank_interval = mean;
->  }
->  
-> -static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
-> -				 int crtc_count, int duration_ms)
-> +static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
-> +				   int crtc_count, int duration_ms)
->  {
-> -	char test_name[128];
-> -	unsigned elapsed;
->  	unsigned bo_size = 0;
-> +	bool vblank = true;
-> +	unsigned elapsed;
->  	uint64_t tiling;
->  	int i;
-> -	bool vblank = true;
-> -
-> -	switch (crtc_count) {
-> -	case RUN_TEST:
-> -		connector_find_preferred_mode(o->_connector[0], crtc_idxs[0], o);
-> -		if (!o->mode_valid)
-> -			return;
-> -		snprintf(test_name, sizeof(test_name),
-> -			 "%s on pipe %s, connector %s-%d",
-> -			 igt_subtest_name(),
-> -			 kmstest_pipe_name(o->_pipe[0]),
-> -			 kmstest_connector_type_str(o->kconnector[0]->connector_type),
-> -			 o->kconnector[0]->connector_type_id);
-> -		break;
-> -	case RUN_PAIR:
-> -		connector_find_compatible_mode(crtc_idxs[0], crtc_idxs[1], o);
-> -		if (!o->mode_valid)
-> -			return;
-> -		snprintf(test_name, sizeof(test_name),
-> -			 "%s on pipe %s:%s, connector %s-%d:%s-%d",
-> -			 igt_subtest_name(),
-> -			 kmstest_pipe_name(o->_pipe[0]),
-> -			 kmstest_pipe_name(o->_pipe[1]),
-> -			 kmstest_connector_type_str(o->kconnector[0]->connector_type),
-> -			 o->kconnector[0]->connector_type_id,
-> -			 kmstest_connector_type_str(o->kconnector[1]->connector_type),
-> -			 o->kconnector[1]->connector_type_id);
-> -		break;
-> -	default:
-> -		igt_assert(0);
-> -	}
-> -
-> -	igt_assert_eq(o->count, crtc_count);
->  
->  	last_connector = o->kconnector[0];
->  
-> -	igt_info("Beginning %s\n", test_name);
-> -
->  	if (o->flags & TEST_PAN)
->  		o->fb_width *= 2;
->  
-> @@ -1274,7 +1239,6 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
->  		 */
->  		igt_assert_f(crtc_count > 1 || crtc_idxs[0] < 2,
->  			     "set_mode may only fail on the 3rd pipe or in multiple crtc tests\n");
-> -		igt_info("\n%s: SKIPPED\n\n", test_name);
->  		goto out;
->  	}
->  	igt_assert(fb_is_bound(o, o->fb_ids[0]));
-> @@ -1322,8 +1286,6 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
->  	if (o->flags & TEST_VBLANK)
->  		check_final_state(o, &o->vblank_state, elapsed);
->  
-> -	igt_info("\n%s: PASSED\n\n", test_name);
-> -
->  out:
->  	igt_remove_fb(drm_fd, &o->fb_info[2]);
->  	igt_remove_fb(drm_fd, &o->fb_info[1]);
-> @@ -1334,6 +1296,45 @@ out:
->  	free_test_output(o);
->  }
->  
-> +static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
-> +				 int crtc_count, int duration_ms)
+> +/* Performs an asynchronous non-blocking page-flip on a pipe. */
+> +static int
+> +do_flip(data_t *data, enum pipe pipe_id, igt_fb_t *fb)
 > +{
-> +	char test_name[128];
+> +       igt_pipe_t *pipe = &data->display.pipes[pipe_id];
+> +       int ret;
 > +
-> +	switch (crtc_count) {
-> +	case RUN_TEST:
-> +		connector_find_preferred_mode(o->_connector[0], crtc_idxs[0], o);
-> +		if (!o->mode_valid)
-> +			return;
-> +		snprintf(test_name, sizeof(test_name),
-> +			 "%s-%s%d",
-> +			 kmstest_pipe_name(o->_pipe[0]),
-> +			 kmstest_connector_type_str(o->kconnector[0]->connector_type),
-> +			 o->kconnector[0]->connector_type_id);
-> +		break;
-> +	case RUN_PAIR:
-> +		connector_find_compatible_mode(crtc_idxs[0], crtc_idxs[1], o);
-> +		if (!o->mode_valid)
-> +			return;
-> +		snprintf(test_name, sizeof(test_name),
-> +			 "%s%s-%s%d-%s%d",
-> +			 kmstest_pipe_name(o->_pipe[0]),
-> +			 kmstest_pipe_name(o->_pipe[1]),
-> +			 kmstest_connector_type_str(o->kconnector[0]->connector_type),
-> +			 o->kconnector[0]->connector_type_id,
-> +			 kmstest_connector_type_str(o->kconnector[1]->connector_type),
-> +			 o->kconnector[1]->connector_type_id);
-> +		break;
-> +	default:
-> +		igt_assert(0);
-> +	}
+> +       igt_set_timeout(1, "Scheduling page flip\n");
 > +
-> +	igt_assert_eq(o->count, crtc_count);
+> +       /*
+> +        * Only the legacy flip ioctl supports async flips.
+> +        * It's also non-blocking, but returns -EBUSY if flipping too fast.
+> +        * 2x monitor tests will need async flips in the atomic API.
+> +        */
+
+Uh, if this is also how your amdgpu userspace works we've just fucked
+up the uapi for good :-/
+
+FLIP_ASYNC = please tear
+
+VRR = please don't strictly obey the vrefresh, but very much dont tear
+
+Tying them together means we're deeply mixing things up.
+
+Also amdgpu is still using it's own flip implementation, which makes
+me wonder whether VRR would even work with atomic, or whether that's
+also butchered ...
+
+How I thought this stuff was supposed to work:
+
+- VRR_ENABLED controls whether we do VRR
+- since atomic is awesome you can change that on every frame
+- VRR has nothing to do with ASYNC
+
+So a) do I read this correctly b) how do we get out of this hole (and
+maybe c) amdgpu really needs to remove
+amdgpu_display_crtc_page_flip_target asap).
+
+Manasi pointed this out to me, so adding a few more people here.
+-Daniel
+
+> +       do {
+> +               ret = drmModePageFlip(data->drm_fd, pipe->crtc_id,
+> +                                     fb->fb_id,
+> +                                     DRM_MODE_PAGE_FLIP_EVENT |
+> +                                     DRM_MODE_PAGE_FLIP_ASYNC,
+> +                                     data);
+> +       } while (ret == -EBUSY);
 > +
-> +	igt_dynamic_f("%s", test_name)
-> +		__run_test_on_crtc_set(o, crtc_idxs, crtc_count, duration_ms);
+> +       igt_assert_eq(ret, 0);
+> +       igt_reset_timeout();
+> +
+> +       return 0;
 > +}
-> +
->  static int run_test(int duration, int flags)
->  {
->  	struct test_output o;
-> @@ -1584,7 +1585,7 @@ igt_main
->  		test_nonblocking_read(drm_fd);
->  
->  	for (i = 0; i < sizeof(tests) / sizeof (tests[0]); i++) {
-> -		igt_subtest_f("%s%s",
-> +		igt_subtest_with_dynamic_f("%s%s",
->  			      tests[i].flags & TEST_BASIC ? "basic-" : "",
->  			      tests[i].name)
->  			run_test(tests[i].duration, tests[i].flags);
-> @@ -1592,7 +1593,7 @@ igt_main
->  		if (tests[i].flags & TEST_NO_2X_OUTPUT)
->  			continue;
->  
-> -		igt_subtest_f( "2x-%s", tests[i].name)
-> +		igt_subtest_with_dynamic_f("2x-%s", tests[i].name)
->  			run_pair(tests[i].duration, tests[i].flags);
->  	}
->  
-> @@ -1618,13 +1619,13 @@ igt_main
->  		if (tests[i].flags & (TEST_EINVAL | TEST_EBUSY | TEST_HANG))
->  			continue;
->  
-> -		igt_subtest_f( "%s-interruptible", tests[i].name)
-> +		igt_subtest_with_dynamic_f("%s-interruptible", tests[i].name)
->  			run_test(tests[i].duration, tests[i].flags);
->  
->  		if (tests[i].flags & TEST_NO_2X_OUTPUT)
->  			continue;
->  
-> -		igt_subtest_f( "2x-%s-interruptible", tests[i].name)
-> +		igt_subtest_with_dynamic_f("2x-%s-interruptible", tests[i].name)
->  			run_pair(tests[i].duration, tests[i].flags);
->  	}
->  	igt_stop_signal_helper();
-> -- 
-> 2.26.0
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
++41 (0) 79 365 57 48 - http://blog.ffwll.ch
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
