@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52C9489CD4
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2020 08:15:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 874DE89CD4
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2020 08:15:13 +0000 (UTC)
 From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Date: Tue, 14 Apr 2020 11:14:45 +0300
-Message-ID: <20200414081447.1451675-1-arkadiusz.hiler@intel.com>
+Date: Tue, 14 Apr 2020 11:14:46 +0300
+Message-ID: <20200414081447.1451675-2-arkadiusz.hiler@intel.com>
+In-Reply-To: <20200414081447.1451675-1-arkadiusz.hiler@intel.com>
+References: <20200414081447.1451675-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/3] test/kms_chamelium: Start with
- disabling modeset
+Subject: [igt-dev] [PATCH i-g-t 2/3] tests/kms_chamelium: Issue disabling
+ modeset when resetting state
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,38 +25,39 @@ To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Doing disabling modeset from igt_display_require() is quite tricky, as
-there are some tests that depend on the leftover mode set by fbcon in
-order to work + PSR debugfs checks seem to behave a bit weird.
+Each tests resets the state to be sure it starts with a clean slate.
+Let's add disabling modeset to the pile, to be sure that we get the
+hotplug events and the connector state is correct.
 
-While those issues are being worked on let's do a disabling modeset
-between igt_display_require() and chamelium_init() so port
-auto-discovery works reliably on all configurations.
-
-Issue: https://gitlab.freedesktop.org/drm/intel/issues/323
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Issue: https://gitlab.freedesktop.org/drm/intel/issues/323
 Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_chamelium.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tests/kms_chamelium.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
-index e5cfa633..b7207ef9 100644
+index b7207ef9..63ae077d 100644
 --- a/tests/kms_chamelium.c
 +++ b/tests/kms_chamelium.c
-@@ -2520,6 +2520,12 @@ igt_main
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_require(data.display.is_atomic);
- 
-+		/*
-+		 * XXX: disabling modeset, can be removed when
-+		 * igt_display_require will start doing this for us
-+		 */
-+		igt_display_commit2(&data.display, COMMIT_ATOMIC);
+@@ -273,7 +273,14 @@ check_analog_bridge(data_t *data, struct chamelium_port *port)
+ static void
+ reset_state(data_t *data, struct chamelium_port *port)
+ {
+-	int p;
++	int p, i;
 +
- 		/* we need to initalize chamelium after igt_display_require */
- 		data.chamelium = chamelium_init(data.drm_fd);
- 		igt_require(data.chamelium);
++	for (i = 0; i < data->display.n_outputs; i++) {
++		igt_output_t *output = &data->display.outputs[i];
++		igt_output_set_pipe(output, PIPE_NONE);
++	}
++
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+ 	chamelium_reset(data->chamelium);
+ 
 -- 
 2.24.1
 
