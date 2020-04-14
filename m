@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 56EB0890D4
- for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2020 10:16:20 +0000 (UTC)
-From: Karthik B S <karthik.b.s@intel.com>
-Date: Tue, 14 Apr 2020 15:41:09 +0530
-Message-Id: <20200414101109.28762-1-karthik.b.s@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B0C46E065
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2020 10:28:44 +0000 (UTC)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 14 Apr 2020 11:28:00 +0100
+Message-Id: <20200414102800.2867147-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] tests/kms_async: Add test to validate
- asynchronous flips
+Subject: [igt-dev] [PATCH i-g-t] kms_flip: Convert to dynamic CRTC test
+ groups
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,161 +15,192 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QXN5bmNocm9ub3VzIGZsaXBzIGFyZSBpc3N1ZWQgdXNpbmcgdGhlIHBhZ2UgZmxpcCBJT0NUTC4K
-VGhlIHRlc3QgY29uc2lzdHMgb2YgdHdvIHN1YnRlc3RzLiBUaGUgZmlyc3Qgc3VidGVzdCB3YWl0
-cyBmb3IKdGhlIHBhZ2UgZmxpcCBldmVudCB0byBiZSByZWNlaXZlZCBiZWZvcmUgZ2l2aW5nIHRo
-ZSBuZXh0IGZsaXAsCmFuZCB0aGUgc2Vjb25kIHN1YnRlc3QgZG9lc24ndCB3YWl0IGZvciBwYWdl
-IGZsaXAgZXZlbnRzLgoKVGhlIHRlc3QgcGFzc2VzIGlmIHRoZSBJT0NUTCBpcyBzdWNjZXNzZnVs
-LgoKdjI6IEFkZCBhdXRob3JzIGluIHRoZSB0ZXN0IGZpbGUuIChQYXVsbykKICAgIFJlZHVjZSB0
-aGUgcnVuIHRpbWUgYW5kIHRpbWVvdXRzIHRvIHN1aXQgSUdUIG5lZWRzLiAoUGF1bG8pCiAgICBS
-ZXBsYWNlIGlndF9kZWJ1ZydzIHdpdGggaWd0X2Fzc2VydCdzIHRvIGNhdGNoIHNsb3cgZmxpcHMu
-IChQYXVsbykKICAgIEZvbGxvdyBJR1QgY29kaW5nIHN0eWxlIHJlZ2FyZGluZyBzcGFjZXMuIChQ
-YXVsbykKICAgIE1ha2Ugc2V0IHVwIGNvZGUgcGFydCBvZiBpZ3RfZml4dHVyZS4gKFBhdWxvKQog
-ICAgU2tpcCB0aGUgdGVzdCBpZiBhc3luYyBmbGlwcyBhcmUgbm90IHN1cHBvcnRlZC4gKFBhdWxv
-KQogICAgUmVwbGFjZSBzdWdnZXN0ZWQtYnkuIChQYXVsbykKICAgIEFkZGVkIGRlc2NyaXB0aW9u
-IGZvciB0ZXN0IGFuZCBzdWJ0ZXN0cy4KClNpZ25lZC1vZmYtYnk6IFBhdWxvIFphbm9uaSA8cGF1
-bG8uci56YW5vbmlAaW50ZWwuY29tPgpTaWduZWQtb2ZmLWJ5OiBLYXJ0aGlrIEIgUyA8a2FydGhp
-ay5iLnNAaW50ZWwuY29tPgotLS0KIHRlc3RzL01ha2VmaWxlLnNvdXJjZXMgfCAgIDEgKwogdGVz
-dHMva21zX2FzeW5jLmMgICAgICB8IDI0MyArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKwogdGVzdHMvbWVzb24uYnVpbGQgICAgICB8ICAgMSArCiAzIGZpbGVzIGNoYW5n
-ZWQsIDI0NSBpbnNlcnRpb25zKCspCiBjcmVhdGUgbW9kZSAxMDA2NDQgdGVzdHMva21zX2FzeW5j
-LmMKCmRpZmYgLS1naXQgYS90ZXN0cy9NYWtlZmlsZS5zb3VyY2VzIGIvdGVzdHMvTWFrZWZpbGUu
-c291cmNlcwppbmRleCA0ZTQ0Yzk4Yy4uZWVkZjRmY2IgMTAwNjQ0Ci0tLSBhL3Rlc3RzL01ha2Vm
-aWxlLnNvdXJjZXMKKysrIGIvdGVzdHMvTWFrZWZpbGUuc291cmNlcwpAQCAtMjksNiArMjksNyBA
-QCBURVNUU19wcm9ncyA9IFwKIAlmYmRldiBcCiAJa21zXzNkIFwKIAlrbXNfYWRkZmJfYmFzaWMg
-XAorCWttc19hc3luYyBcCiAJa21zX2F0b21pYyBcCiAJa21zX2F0b21pY19pbnRlcnJ1cHRpYmxl
-IFwKIAlrbXNfYXRvbWljX3RyYW5zaXRpb24gXApkaWZmIC0tZ2l0IGEvdGVzdHMva21zX2FzeW5j
-LmMgYi90ZXN0cy9rbXNfYXN5bmMuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAw
-MC4uNjAzMWZmNGUKLS0tIC9kZXYvbnVsbAorKysgYi90ZXN0cy9rbXNfYXN5bmMuYwpAQCAtMCww
-ICsxLDI0MyBAQAorLyoKKyAqIENvcHlyaWdodCDCqSAyMDIwIEludGVsIENvcnBvcmF0aW9uCisg
-KgorICogUGVybWlzc2lvbiBpcyBoZXJlYnkgZ3JhbnRlZCwgZnJlZSBvZiBjaGFyZ2UsIHRvIGFu
-eSBwZXJzb24gb2J0YWluaW5nIGEKKyAqIGNvcHkgb2YgdGhpcyBzb2Z0d2FyZSBhbmQgYXNzb2Np
-YXRlZCBkb2N1bWVudGF0aW9uIGZpbGVzICh0aGUgIlNvZnR3YXJlIiksCisgKiB0byBkZWFsIGlu
-IHRoZSBTb2Z0d2FyZSB3aXRob3V0IHJlc3RyaWN0aW9uLCBpbmNsdWRpbmcgd2l0aG91dCBsaW1p
-dGF0aW9uCisgKiB0aGUgcmlnaHRzIHRvIHVzZSwgY29weSwgbW9kaWZ5LCBtZXJnZSwgcHVibGlz
-aCwgZGlzdHJpYnV0ZSwgc3VibGljZW5zZSwKKyAqIGFuZC9vciBzZWxsIGNvcGllcyBvZiB0aGUg
-U29mdHdhcmUsIGFuZCB0byBwZXJtaXQgcGVyc29ucyB0byB3aG9tIHRoZQorICogU29mdHdhcmUg
-aXMgZnVybmlzaGVkIHRvIGRvIHNvLCBzdWJqZWN0IHRvIHRoZSBmb2xsb3dpbmcgY29uZGl0aW9u
-czoKKyAqCisgKiBUaGUgYWJvdmUgY29weXJpZ2h0IG5vdGljZSBhbmQgdGhpcyBwZXJtaXNzaW9u
-IG5vdGljZSAoaW5jbHVkaW5nIHRoZSBuZXh0CisgKiBwYXJhZ3JhcGgpIHNoYWxsIGJlIGluY2x1
-ZGVkIGluIGFsbCBjb3BpZXMgb3Igc3Vic3RhbnRpYWwgcG9ydGlvbnMgb2YgdGhlCisgKiBTb2Z0
-d2FyZS4KKyAqCisgKiBUSEUgU09GVFdBUkUgSVMgUFJPVklERUQgIkFTIElTIiwgV0lUSE9VVCBX
-QVJSQU5UWSBPRiBBTlkgS0lORCwgRVhQUkVTUyBPUgorICogSU1QTElFRCwgSU5DTFVESU5HIEJV
-VCBOT1QgTElNSVRFRCBUTyBUSEUgV0FSUkFOVElFUyBPRiBNRVJDSEFOVEFCSUxJVFksCisgKiBG
-SVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRSBBTkQgTk9OSU5GUklOR0VNRU5ULiAgSU4g
-Tk8gRVZFTlQgU0hBTEwKKyAqIFRIRSBBVVRIT1JTIE9SIENPUFlSSUdIVCBIT0xERVJTIEJFIExJ
-QUJMRSBGT1IgQU5ZIENMQUlNLCBEQU1BR0VTIE9SIE9USEVSCisgKiBMSUFCSUxJVFksIFdIRVRI
-RVIgSU4gQU4gQUNUSU9OIE9GIENPTlRSQUNULCBUT1JUIE9SIE9USEVSV0lTRSwgQVJJU0lORwor
-ICogRlJPTSwgT1VUIE9GIE9SIElOIENPTk5FQ1RJT04gV0lUSCBUSEUgU09GVFdBUkUgT1IgVEhF
-IFVTRSBPUiBPVEhFUiBERUFMSU5HUworICogSU4gVEhFIFNPRlRXQVJFLgorICoKKyAqIEF1dGhv
-cnM6CisgKiAgUGF1bG8gWmFub25pIDxwYXVsby5yLnphbm9uaUBpbnRlbC5jb20+CisgKiAgS2Fy
-dGhpayBCIFMgPGthcnRoaWsuYi5zQGludGVsLmNvbT4KKyAqLworCisjaW5jbHVkZSAiaWd0Lmgi
-CisjaW5jbHVkZSAiaWd0X2F1eC5oIgorI2luY2x1ZGUgPHN5cy9pb2N0bC5oPgorI2luY2x1ZGUg
-PHBvbGwuaD4KKworI2RlZmluZSBCVUZTIDQKKyNkZWZpbmUgV0FSTV9VUF9USU1FIDEKKyNkZWZp
-bmUgUlVOX1RJTUUgMgorI2RlZmluZSBUSFJFU0hPTEQgMTAgLyogVE9ETzogTWF5IG5lZWQgdHVu
-aW5nICovCisKK0lHVF9URVNUX0RFU0NSSVBUSU9OKCJUZXN0IGFzeW5jaHJvdXMgcGFnZSBmbGlw
-cy4iKTsKKwordHlwZWRlZiBzdHJ1Y3QgeworCWludCBkcm1fZmQ7CisJdWludDMyX3QgY3J0Y19p
-ZDsKKwlzdHJ1Y3QgaWd0X2ZiIGJ1ZnNbQlVGU107CisJaWd0X2Rpc3BsYXlfdCBkaXNwbGF5Owor
-fSBkYXRhX3Q7CisKK3VpbnQzMl90IHJlZnJlc2hfcmF0ZTsKKworc3RhdGljIGRybU1vZGVDb25u
-ZWN0b3JQdHIgZmluZF9jb25uZWN0b3JfZm9yX21vZGVzZXQoZGF0YV90ICpkYXRhKQoreworCWln
-dF9vdXRwdXRfdCAqb3V0cHV0OworCWRybU1vZGVDb25uZWN0b3JQdHIgcmV0ID0gTlVMTDsKKwor
-CWZvcl9lYWNoX2Nvbm5lY3RlZF9vdXRwdXQoJmRhdGEtPmRpc3BsYXksIG91dHB1dCkgeworCQlp
-ZiAob3V0cHV0LT5jb25maWcuY29ubmVjdG9yLT5jb3VudF9tb2RlcyA+IDApIHsKKwkJCXJldCA9
-IG91dHB1dC0+Y29uZmlnLmNvbm5lY3RvcjsKKwkJCWJyZWFrOworCQl9CisJfQorCisJaWd0X2Fz
-c2VydF9mKHJldCwgIkNvbm5lY3RvciBOT1QgZm91bmRcbiIpOworCXJldHVybiByZXQ7Cit9CisK
-K3N0YXRpYyB2b2lkIGZsaXBfaGFuZGxlcihpbnQgZmRfLCB1bnNpZ25lZCBpbnQgc2VxdWVuY2Us
-IHVuc2lnbmVkIGludCB0dl9zZWMsCisJCQkgdW5zaWduZWQgaW50IHR2X3VzZWMsIHZvaWQgKl9k
-YXRhKQoreworCXN0YXRpYyB1bnNpZ25lZCBpbnQgbGFzdF9tczsKKwlzdGF0aWMgYm9vbCBmbGFn
-OworCXVuc2lnbmVkIGludCBjdXJfbXMsIGZsaXBfaW50ZXJ2YWw7CisKKwlpZ3RfYXNzZXJ0KF9k
-YXRhID09IE5VTEwpOworCisJY3VyX21zID0gdHZfc2VjICogMTAwMCArIHR2X3VzZWMgLyAxMDAw
-OworCWZsaXBfaW50ZXJ2YWwgPSBjdXJfbXMgLSBsYXN0X21zOworCisJaWd0X2RlYnVnKCJGbGlw
-IGludGVydmFsOiAlZG1zLCBzZXF1ZW5jZSA9ICV1XG4iLCBmbGlwX2ludGVydmFsLCBzZXF1ZW5j
-ZSk7CisKKwlpZiAoIWZsYWcpCisJCWZsYWcgPSAxOworCWVsc2UKKwkJaWd0X2Fzc2VydF9mKGZs
-aXBfaW50ZXJ2YWwgPD0gMTAwMCAvIChyZWZyZXNoX3JhdGUgKiBUSFJFU0hPTEQpLAorCQkJICAg
-ICAiRmxpcCBpbnRlcnZhbCBub3Qgc2lnbmlmaWNhbnRseSBzbWFsbGVyIHRoYW4gdmJsYW5rIGlu
-dGVydmFsXG4iKTsKKworCWxhc3RfbXMgPSBjdXJfbXM7Cit9CisKK3N0YXRpYyB2b2lkIHdhaXRf
-ZmxpcF9ldmVudChkYXRhX3QgKmRhdGEpCit7CisJaW50IHJldDsKKwlkcm1FdmVudENvbnRleHQg
-ZXZjdHg7CisJc3RydWN0IHBvbGxmZCBwZmQ7CisKKwlldmN0eC52ZXJzaW9uID0gMjsKKwlldmN0
-eC52YmxhbmtfaGFuZGxlciA9IE5VTEw7CisJZXZjdHgucGFnZV9mbGlwX2hhbmRsZXIgPSBmbGlw
-X2hhbmRsZXI7CisKKwlwZmQuZmQgPSBkYXRhLT5kcm1fZmQ7CisJcGZkLmV2ZW50cyA9IFBPTExJ
-TjsKKwlwZmQucmV2ZW50cyA9IDA7CisKKwlyZXQgPSBwb2xsKCZwZmQsIDEsIDIwMDApOworCisJ
-c3dpdGNoIChyZXQpIHsKKwljYXNlIDA6CisJCWlndF9hc3NlcnRfZigwLCAiRmxpcCBUaW1lb3V0
-XG4iKTsKKwkJYnJlYWs7CisJY2FzZSAxOgorCQlyZXQgPSBkcm1IYW5kbGVFdmVudChkYXRhLT5k
-cm1fZmQsICZldmN0eCk7CisJCWlndF9hc3NlcnQocmV0ID09IDApOworCQlicmVhazsKKwlkZWZh
-dWx0OgorCQkvKiB1bmV4cGVjdGVkICovCisJCWlndF9hc3NlcnQoMCk7CisJfQorfQorCitzdGF0
-aWMgdm9pZCBtYWtlX2ZiKGRhdGFfdCAqZGF0YSwgc3RydWN0IGlndF9mYiAqZmIsCisJCSAgICBk
-cm1Nb2RlQ29ubmVjdG9yUHRyIGNvbm5lY3RvciwgaW50IGluZGV4KQoreworCXVpbnQzMl90IHdp
-ZHRoLCBoZWlnaHQ7CisJaW50IHJlY193aWR0aDsKKworCXdpZHRoID0gY29ubmVjdG9yLT5tb2Rl
-c1swXS5oZGlzcGxheTsKKwloZWlnaHQgPSBjb25uZWN0b3ItPm1vZGVzWzBdLnZkaXNwbGF5Owor
-CisJcmVjX3dpZHRoID0gd2lkdGggLyAoQlVGUyAqIDIpOworCisJaWd0X2NyZWF0ZV9mYihkYXRh
-LT5kcm1fZmQsIHdpZHRoLCBoZWlnaHQsIERSTV9GT1JNQVRfQVJHQjg4ODgsCisJCSAgICAgIExP
-Q0FMX0k5MTVfRk9STUFUX01PRF9YX1RJTEVELCBmYik7CisJaWd0X2RyYXdfZmlsbF9mYihkYXRh
-LT5kcm1fZmQsIGZiLCAweDg4KTsKKwlpZ3RfZHJhd19yZWN0X2ZiKGRhdGEtPmRybV9mZCwgTlVM
-TCwgTlVMTCwgZmIsIElHVF9EUkFXX01NQVBfQ1BVLAorCQkJIHJlY193aWR0aCAqIDIgKyByZWNf
-d2lkdGggKiBpbmRleCwKKwkJCSBoZWlnaHQgLyA0LCByZWNfd2lkdGgsCisJCQkgaGVpZ2h0IC8g
-MiwgcmFuZCgpKTsKK30KKworc3RhdGljIHZvaWQgdGVzdF9hc3luY19mbGlwKGRhdGFfdCAqZGF0
-YSwgYm9vbCB3YWl0X2Zvcl9mbGlwcykKK3sKKwlpbnQgcmV0LCBmcmFtZSwgd2FybV9lbmRfZnJh
-bWU7CisJbG9uZyBsb25nIGludCBmcHM7CisJc3RydWN0IHRpbWV2YWwgc3RhcnQsIGVuZCwgZGlm
-ZjsKKwlib29sIHdhcm1pbmdfdXAgPSB0cnVlOworCisJZ2V0dGltZW9mZGF5KCZzdGFydCwgTlVM
-TCk7CisJZnJhbWUgPSAxOworCWRvIHsKKwkJaW50IGZsYWdzID0gRFJNX01PREVfUEFHRV9GTElQ
-X0FTWU5DOworCisJCWlmICh3YWl0X2Zvcl9mbGlwcykKKwkJCWZsYWdzIHw9IERSTV9NT0RFX1BB
-R0VfRkxJUF9FVkVOVDsKKworCQlyZXQgPSBkcm1Nb2RlUGFnZUZsaXAoZGF0YS0+ZHJtX2ZkLCBk
-YXRhLT5jcnRjX2lkLAorCQkJCSAgICAgIGRhdGEtPmJ1ZnNbZnJhbWUgJSA0XS5mYl9pZCwKKwkJ
-CQkgICAgICBmbGFncywgTlVMTCk7CisKKwkJaWd0X2Fzc2VydChyZXQgPT0gMCB8fCByZXQgPT0g
-LUVCVVNZKTsKKworCQlpZiAod2FpdF9mb3JfZmxpcHMpCisJCQl3YWl0X2ZsaXBfZXZlbnQoZGF0
-YSk7CisKKwkJZ2V0dGltZW9mZGF5KCZlbmQsIE5VTEwpOworCQl0aW1lcnN1YigmZW5kLCAmc3Rh
-cnQsICZkaWZmKTsKKworCQkvKiAxcyBvZiB3YXJtLXVwIHRpbWUgZm9yIHRoZSBmcmVxIHRvIHN0
-YWJpbGl6ZSAqLworCQlpZiAod2FybWluZ191cCAmJiBkaWZmLnR2X3NlYyA+PSBXQVJNX1VQX1RJ
-TUUpIHsKKwkJCXdhcm1pbmdfdXAgPSBmYWxzZTsKKwkJCXdhcm1fZW5kX2ZyYW1lID0gZnJhbWU7
-CisJCQlzdGFydCA9IGVuZDsKKwkJfQorCisJCWZyYW1lKys7CisJfSB3aGlsZSAoZGlmZi50dl9z
-ZWMgPCBSVU5fVElNRSk7CisKKwlmcHMgPSAoZnJhbWUgLSB3YXJtX2VuZF9mcmFtZSkgKiAxMDAw
-IC8gUlVOX1RJTUU7CisJaWd0X2Fzc2VydF9mKChmcHMgLyAxMDAwKSA+IChyZWZyZXNoX3JhdGUg
-KiBUSFJFU0hPTEQpLAorCQkgICAgICJGUFMgc2hvdWxkIGJlIHNpZ25pZmljYW50bHkgaGlnaGVy
-IHRoYW4gdGhlIHJlZnJlc2ggcmF0ZVxuIik7Cit9CisKK3N0YXRpYyBib29sIGhhc19hc3luYyhp
-bnQgZmQpCit7CisJc3RydWN0IGRybV9nZXRfY2FwIGNhcCA9IHsgLmNhcGFiaWxpdHkgPSBEUk1f
-Q0FQX0FTWU5DX1BBR0VfRkxJUCB9OworCisJaW9jdGwoZmQsIERSTV9JT0NUTF9HRVRfQ0FQLCAm
-Y2FwKTsKKwlyZXR1cm4gY2FwLnZhbHVlOworfQorCitpZ3RfbWFpbgoreworCWRhdGFfdCBkYXRh
-OworCWRybU1vZGVSZXNQdHIgcmVzOworCWRybU1vZGVDb25uZWN0b3JQdHIgY29ubmVjdG9yOwor
-CWludCBpLCByZXQ7CisJYm9vbCBhc3luY19jYXBhYmxlOworCisJaWd0X2ZpeHR1cmUgeworCQlk
-YXRhLmRybV9mZCA9IGRybV9vcGVuX2RyaXZlcl9tYXN0ZXIoRFJJVkVSX0lOVEVMKTsKKwkJa21z
-dGVzdF9zZXRfdnRfZ3JhcGhpY3NfbW9kZSgpOworCQlpZ3RfZGlzcGxheV9yZXF1aXJlKCZkYXRh
-LmRpc3BsYXksIGRhdGEuZHJtX2ZkKTsKKwkJaWd0X2Rpc3BsYXlfcmVxdWlyZV9vdXRwdXQoJmRh
-dGEuZGlzcGxheSk7CisKKwkJYXN5bmNfY2FwYWJsZSA9IGhhc19hc3luYyhkYXRhLmRybV9mZCk7
-CisJCWlndF9yZXF1aXJlX2YoYXN5bmNfY2FwYWJsZSwgIkFzeW5jIEZsaXAgaXMgbm90IHN1cHBv
-cnRlZFxuIik7CisJfQorCisJaWd0X2Rlc2NyaWJlKCJNYWtlIHN1cmUga2VybmVsIGlzIGFibGUg
-dG8gYWNjZXB0IGFzeW5jaHJvbm91cyBmbGlwcyBhdCBhIGZhc3QgcGFjZS4iKTsKKwlpZ3Rfc3Vi
-dGVzdF9ncm91cCB7CisJCWlndF9maXh0dXJlIHsKKwkJCXJlcyA9IGRybU1vZGVHZXRSZXNvdXJj
-ZXMoZGF0YS5kcm1fZmQpOworCQkJaWd0X2Fzc2VydChyZXMpOworCisJCQlrbXN0ZXN0X3Vuc2V0
-X2FsbF9jcnRjcyhkYXRhLmRybV9mZCwgcmVzKTsKKworCQkJY29ubmVjdG9yID0gZmluZF9jb25u
-ZWN0b3JfZm9yX21vZGVzZXQoJmRhdGEpOworCQkJZGF0YS5jcnRjX2lkID0ga21zdGVzdF9maW5k
-X2NydGNfZm9yX2Nvbm5lY3RvcihkYXRhLmRybV9mZCwKKwkJCQkJCQkJICAgICAgIHJlcywgY29u
-bmVjdG9yLCAwKTsKKworCQkJcmVmcmVzaF9yYXRlID0gY29ubmVjdG9yLT5tb2Rlc1swXS52cmVm
-cmVzaDsKKworCQkJZm9yIChpID0gMDsgaSA8IEJVRlM7IGkrKykKKwkJCQltYWtlX2ZiKCZkYXRh
-LCAmZGF0YS5idWZzW2ldLCBjb25uZWN0b3IsIGkpOworCisJCQlyZXQgPSBkcm1Nb2RlU2V0Q3J0
-YyhkYXRhLmRybV9mZCwgZGF0YS5jcnRjX2lkLCBkYXRhLmJ1ZnNbMF0uZmJfaWQsIDAsIDAsCisJ
-CQkJCSAgICAgJmNvbm5lY3Rvci0+Y29ubmVjdG9yX2lkLCAxLCAmY29ubmVjdG9yLT5tb2Rlc1sw
-XSk7CisJCQlpZ3RfYXNzZXJ0KHJldCA9PSAwKTsKKwkJfQorCisJCWlndF9kZXNjcmliZSgiV2Fp
-dCBmb3IgcGFnZSBmbGlwIGV2ZW50cyBpbiBiZXR3ZWVuIHN1Y2Nlc3NpdmUgYXN5bmNocm9ub3Vz
-IGZsaXBzIik7CisJCWlndF9zdWJ0ZXN0KCJhc3luYy1mbGlwLXdpdGgtcGFnZS1mbGlwLWV2ZW50
-cyIpCisJCQl0ZXN0X2FzeW5jX2ZsaXAoJmRhdGEsIHRydWUpOworCQlpZ3RfZGVzY3JpYmUoIkRP
-IE5PVCB3YWl0IGZvciBwYWdlIGZsaXAgZXZlbnRzIGluIGJldHdlZW4gc3VjY2Vzc2l2ZSBhc3lu
-Y2hyb25vdXMgZmxpcHMiKTsKKwkJaWd0X3N1YnRlc3QoImFzeW5jLWZsaXAtd2l0aG91dC1wYWdl
-LWZsaXAtZXZlbnRzIikKKwkJCXRlc3RfYXN5bmNfZmxpcCgmZGF0YSwgZmFsc2UpOworCisJCWln
-dF9maXh0dXJlIHsKKwkJCWZvciAoaSA9IDA7IGkgPCBCVUZTOyBpKyspCisJCQkJaWd0X3JlbW92
-ZV9mYihkYXRhLmRybV9mZCwgJmRhdGEuYnVmc1tpXSk7CisJCX0KKwl9CisKKwlpZ3RfZml4dHVy
-ZQorCQlpZ3RfZGlzcGxheV9maW5pKCZkYXRhLmRpc3BsYXkpOworfQpkaWZmIC0tZ2l0IGEvdGVz
-dHMvbWVzb24uYnVpbGQgYi90ZXN0cy9tZXNvbi5idWlsZAppbmRleCBlODgyZjRkYy4uMDgzMGIx
-YzkgMTAwNjQ0Ci0tLSBhL3Rlc3RzL21lc29uLmJ1aWxkCisrKyBiL3Rlc3RzL21lc29uLmJ1aWxk
-CkBAIC0xMyw2ICsxMyw3IEBAIHRlc3RfcHJvZ3MgPSBbCiAJJ2ZiZGV2JywKIAkna21zXzNkJywK
-IAkna21zX2FkZGZiX2Jhc2ljJywKKwkna21zX2FzeW5jJywKIAkna21zX2F0b21pYycsCiAJJ2tt
-c19hdG9taWNfaW50ZXJydXB0aWJsZScsCiAJJ2ttc19hdG9taWNfdHJhbnNpdGlvbicsCi0tIAoy
-LjIyLjAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
-dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+Use igt_dynamic_f for the dynamic discovered CRTC sets for each test.
+
+v2:
+The subsubtest names are slightly more compact and forced to conform to
+igt_runner/piglit rules:
+
+	A-eDP1
+	AB-eDP1-eDP2
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Martin Peres <martin.peres@linux.intel.com>
+---
+ tests/kms_flip.c | 93 ++++++++++++++++++++++++------------------------
+ 1 file changed, 47 insertions(+), 46 deletions(-)
+
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index 4535ecc8b..5e3e196c0 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -1185,52 +1185,17 @@ static void calibrate_ts(struct test_output *o, int crtc_idx)
+ 	o->vblank_interval = mean;
+ }
+ 
+-static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+-				 int crtc_count, int duration_ms)
++static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
++				   int crtc_count, int duration_ms)
+ {
+-	char test_name[128];
+-	unsigned elapsed;
+ 	unsigned bo_size = 0;
++	bool vblank = true;
++	unsigned elapsed;
+ 	uint64_t tiling;
+ 	int i;
+-	bool vblank = true;
+-
+-	switch (crtc_count) {
+-	case RUN_TEST:
+-		connector_find_preferred_mode(o->_connector[0], crtc_idxs[0], o);
+-		if (!o->mode_valid)
+-			return;
+-		snprintf(test_name, sizeof(test_name),
+-			 "%s on pipe %s, connector %s-%d",
+-			 igt_subtest_name(),
+-			 kmstest_pipe_name(o->_pipe[0]),
+-			 kmstest_connector_type_str(o->kconnector[0]->connector_type),
+-			 o->kconnector[0]->connector_type_id);
+-		break;
+-	case RUN_PAIR:
+-		connector_find_compatible_mode(crtc_idxs[0], crtc_idxs[1], o);
+-		if (!o->mode_valid)
+-			return;
+-		snprintf(test_name, sizeof(test_name),
+-			 "%s on pipe %s:%s, connector %s-%d:%s-%d",
+-			 igt_subtest_name(),
+-			 kmstest_pipe_name(o->_pipe[0]),
+-			 kmstest_pipe_name(o->_pipe[1]),
+-			 kmstest_connector_type_str(o->kconnector[0]->connector_type),
+-			 o->kconnector[0]->connector_type_id,
+-			 kmstest_connector_type_str(o->kconnector[1]->connector_type),
+-			 o->kconnector[1]->connector_type_id);
+-		break;
+-	default:
+-		igt_assert(0);
+-	}
+-
+-	igt_assert_eq(o->count, crtc_count);
+ 
+ 	last_connector = o->kconnector[0];
+ 
+-	igt_info("Beginning %s\n", test_name);
+-
+ 	if (o->flags & TEST_PAN)
+ 		o->fb_width *= 2;
+ 
+@@ -1274,7 +1239,6 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 		 */
+ 		igt_assert_f(crtc_count > 1 || crtc_idxs[0] < 2,
+ 			     "set_mode may only fail on the 3rd pipe or in multiple crtc tests\n");
+-		igt_info("\n%s: SKIPPED\n\n", test_name);
+ 		goto out;
+ 	}
+ 	igt_assert(fb_is_bound(o, o->fb_ids[0]));
+@@ -1322,8 +1286,6 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 	if (o->flags & TEST_VBLANK)
+ 		check_final_state(o, &o->vblank_state, elapsed);
+ 
+-	igt_info("\n%s: PASSED\n\n", test_name);
+-
+ out:
+ 	igt_remove_fb(drm_fd, &o->fb_info[2]);
+ 	igt_remove_fb(drm_fd, &o->fb_info[1]);
+@@ -1334,6 +1296,45 @@ out:
+ 	free_test_output(o);
+ }
+ 
++static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
++				 int crtc_count, int duration_ms)
++{
++	char test_name[128];
++
++	switch (crtc_count) {
++	case RUN_TEST:
++		connector_find_preferred_mode(o->_connector[0], crtc_idxs[0], o);
++		if (!o->mode_valid)
++			return;
++		snprintf(test_name, sizeof(test_name),
++			 "%s-%s%d",
++			 kmstest_pipe_name(o->_pipe[0]),
++			 kmstest_connector_type_str(o->kconnector[0]->connector_type),
++			 o->kconnector[0]->connector_type_id);
++		break;
++	case RUN_PAIR:
++		connector_find_compatible_mode(crtc_idxs[0], crtc_idxs[1], o);
++		if (!o->mode_valid)
++			return;
++		snprintf(test_name, sizeof(test_name),
++			 "%s%s-%s%d-%s%d",
++			 kmstest_pipe_name(o->_pipe[0]),
++			 kmstest_pipe_name(o->_pipe[1]),
++			 kmstest_connector_type_str(o->kconnector[0]->connector_type),
++			 o->kconnector[0]->connector_type_id,
++			 kmstest_connector_type_str(o->kconnector[1]->connector_type),
++			 o->kconnector[1]->connector_type_id);
++		break;
++	default:
++		igt_assert(0);
++	}
++
++	igt_assert_eq(o->count, crtc_count);
++
++	igt_dynamic_f("%s", test_name)
++		__run_test_on_crtc_set(o, crtc_idxs, crtc_count, duration_ms);
++}
++
+ static int run_test(int duration, int flags)
+ {
+ 	struct test_output o;
+@@ -1584,7 +1585,7 @@ igt_main
+ 		test_nonblocking_read(drm_fd);
+ 
+ 	for (i = 0; i < sizeof(tests) / sizeof (tests[0]); i++) {
+-		igt_subtest_f("%s%s",
++		igt_subtest_with_dynamic_f("%s%s",
+ 			      tests[i].flags & TEST_BASIC ? "basic-" : "",
+ 			      tests[i].name)
+ 			run_test(tests[i].duration, tests[i].flags);
+@@ -1592,7 +1593,7 @@ igt_main
+ 		if (tests[i].flags & TEST_NO_2X_OUTPUT)
+ 			continue;
+ 
+-		igt_subtest_f( "2x-%s", tests[i].name)
++		igt_subtest_with_dynamic_f("2x-%s", tests[i].name)
+ 			run_pair(tests[i].duration, tests[i].flags);
+ 	}
+ 
+@@ -1618,13 +1619,13 @@ igt_main
+ 		if (tests[i].flags & (TEST_EINVAL | TEST_EBUSY | TEST_HANG))
+ 			continue;
+ 
+-		igt_subtest_f( "%s-interruptible", tests[i].name)
++		igt_subtest_with_dynamic_f("%s-interruptible", tests[i].name)
+ 			run_test(tests[i].duration, tests[i].flags);
+ 
+ 		if (tests[i].flags & TEST_NO_2X_OUTPUT)
+ 			continue;
+ 
+-		igt_subtest_f( "2x-%s-interruptible", tests[i].name)
++		igt_subtest_with_dynamic_f("2x-%s-interruptible", tests[i].name)
+ 			run_pair(tests[i].duration, tests[i].flags);
+ 	}
+ 	igt_stop_signal_helper();
+-- 
+2.26.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
