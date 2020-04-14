@@ -1,12 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3FB66897FD
+ for <igt-dev@lists.freedesktop.org>; Tue, 14 Apr 2020 15:23:35 +0000 (UTC)
+From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Date: Tue, 14 Apr 2020 15:23:32 +0000
+Message-ID: <7f72961d10da4925b54d8f94feae115f@intel.com>
+References: <20200414081447.1451675-1-arkadiusz.hiler@intel.com>
+ <158687082382.30377.4522458170885477400@emeril.freedesktop.org>
+ <20200414133107.l2ellrxszmiskyuo@ahiler-desk1.fi.intel.com>
+In-Reply-To: <20200414133107.l2ellrxszmiskyuo@ahiler-desk1.fi.intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 14 Apr 2020 15:05:13 -0000
-Message-ID: <158687671376.30376.17732789322710105733@emeril.freedesktop.org>
-References: <20200414102800.2867147-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200414102800.2867147-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Iga21zX2Zs?=
- =?utf-8?q?ip=3A_Convert_to_dynamic_CRTC_test_groups_=28rev3=29?=
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/3=5D_test/kms=5Fchamelium=3A_Start_?=
+ =?utf-8?q?with_disabling_modeset?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,524 +22,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: "Hiler, Arkadiusz" <arkadiusz.hiler@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: kms_flip: Convert to dynamic CRTC test groups (rev3)
-URL   : https://patchwork.freedesktop.org/series/75827/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_8295 -> IGTPW_4458
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4458/index.html
-
-New tests
----------
-
-  New tests have been introduced between CI_DRM_8295 and IGTPW_4458:
-
-### New IGT tests (108) ###
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-dp1:
-    - Statuses : 6 pass(s)
-    - Exec time: [2.35, 7.15] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-dp2:
-    - Statuses : 6 pass(s)
-    - Exec time: [2.30, 3.79] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-dsi1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.05, 7.41] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-dvi-d1:
-    - Statuses : 1 pass(s)
-    - Exec time: [5.53] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-edp1:
-    - Statuses : 14 pass(s)
-    - Exec time: [3.75, 12.10] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-hdmi-a1:
-    - Statuses : 7 pass(s)
-    - Exec time: [2.41, 10.50] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-hdmi-a2:
-    - Statuses : 5 pass(s)
-    - Exec time: [2.33, 6.84] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-lvds1:
-    - Statuses : 1 pass(s)
-    - Exec time: [6.55] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-vga1:
-    - Statuses : 10 pass(s)
-    - Exec time: [5.13, 10.36] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@b-dp1:
-    - Statuses : 6 pass(s)
-    - Exec time: [2.31, 7.10] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@b-dp2:
-    - Statuses : 6 pass(s)
-    - Exec time: [2.29, 3.81] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@b-dsi1:
-    - Statuses : 4 pass(s)
-    - Exec time: [5.99, 7.50] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@b-dvi-d1:
-    - Statuses : 1 pass(s)
-    - Exec time: [5.42] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@b-edp1:
-    - Statuses : 14 pass(s)
-    - Exec time: [3.45, 12.93] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@b-hdmi-a1:
-    - Statuses : 7 pass(s)
-    - Exec time: [2.34, 10.34] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@b-hdmi-a2:
-    - Statuses : 5 pass(s)
-    - Exec time: [2.34, 6.74] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@b-lvds1:
-    - Statuses : 1 pass(s)
-    - Exec time: [6.32] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@b-vga1:
-    - Statuses : 8 pass(s)
-    - Exec time: [5.14, 10.30] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@c-dp1:
-    - Statuses : 6 pass(s)
-    - Exec time: [2.32, 7.11] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@c-dp2:
-    - Statuses : 6 pass(s)
-    - Exec time: [2.30, 3.78] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@c-dsi1:
-    - Statuses : 4 pass(s)
-    - Exec time: [5.65, 7.48] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@c-edp1:
-    - Statuses : 13 pass(s)
-    - Exec time: [3.46, 8.44] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a1:
-    - Statuses : 3 pass(s)
-    - Exec time: [2.34, 6.74] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a2:
-    - Statuses : 6 pass(s)
-    - Exec time: [2.33, 20.54] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@c-vga1:
-    - Statuses : 2 pass(s)
-    - Exec time: [6.76, 6.81] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@d-dsi1:
-    - Statuses : 1 pass(s)
-    - Exec time: [5.95] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@d-edp1:
-    - Statuses : 2 pass(s)
-    - Exec time: [6.29, 6.91] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-dp1:
-    - Statuses : 6 pass(s)
-    - Exec time: [2.33, 7.17] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-dp2:
-    - Statuses : 6 pass(s)
-    - Exec time: [2.31, 3.77] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-dsi1:
-    - Statuses : 4 pass(s)
-    - Exec time: [5.99, 7.43] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-dvi-d1:
-    - Statuses : 1 pass(s)
-    - Exec time: [5.36] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-edp1:
-    - Statuses : 14 pass(s)
-    - Exec time: [3.71, 11.46] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a1:
-    - Statuses : 7 pass(s)
-    - Exec time: [2.37, 10.47] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a2:
-    - Statuses : 5 pass(s)
-    - Exec time: [2.29, 6.80] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-lvds1:
-    - Statuses : 1 pass(s)
-    - Exec time: [6.54] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-vga1:
-    - Statuses : 10 pass(s)
-    - Exec time: [5.13, 10.50] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-dp1:
-    - Statuses : 6 pass(s)
-    - Exec time: [2.30, 7.14] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-dp2:
-    - Statuses : 6 pass(s)
-    - Exec time: [2.30, 3.77] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-dsi1:
-    - Statuses : 4 pass(s)
-    - Exec time: [5.68, 7.50] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-dvi-d1:
-    - Statuses : 1 pass(s)
-    - Exec time: [5.38] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-edp1:
-    - Statuses : 14 pass(s)
-    - Exec time: [3.46, 12.51] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-hdmi-a1:
-    - Statuses : 7 pass(s)
-    - Exec time: [2.30, 10.22] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-hdmi-a2:
-    - Statuses : 5 pass(s)
-    - Exec time: [2.29, 6.74] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-lvds1:
-    - Statuses : 1 pass(s)
-    - Exec time: [6.30] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-vga1:
-    - Statuses : 9 pass(s)
-    - Exec time: [5.08, 10.23] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@c-dp1:
-    - Statuses : 6 pass(s)
-    - Exec time: [2.31, 7.13] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@c-dp2:
-    - Statuses : 6 pass(s)
-    - Exec time: [2.30, 3.75] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@c-dsi1:
-    - Statuses : 4 pass(s)
-    - Exec time: [5.59, 7.50] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@c-edp1:
-    - Statuses : 13 pass(s)
-    - Exec time: [3.47, 8.45] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@c-hdmi-a1:
-    - Statuses : 3 pass(s)
-    - Exec time: [2.30, 6.72] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@c-hdmi-a2:
-    - Statuses : 6 pass(s)
-    - Exec time: [2.30, 20.38] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@c-vga1:
-    - Statuses : 2 pass(s)
-    - Exec time: [6.81, 6.85] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@d-dsi1:
-    - Statuses : 1 pass(s)
-    - Exec time: [5.92] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@d-edp1:
-    - Statuses : 2 pass(s)
-    - Exec time: [6.17, 6.90] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1:
-    - Statuses : 6 pass(s)
-    - Exec time: [1.82, 4.02] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-dp2:
-    - Statuses : 6 pass(s)
-    - Exec time: [1.53, 2.35] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-dsi1:
-    - Statuses : 4 pass(s)
-    - Exec time: [3.64, 4.18] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-dvi-d1:
-    - Statuses : 1 pass(s)
-    - Exec time: [3.30] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-edp1:
-    - Statuses : 14 pass(s)
-    - Exec time: [2.62, 6.70] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-hdmi-a1:
-    - Statuses : 7 pass(s)
-    - Exec time: [1.61, 5.78] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-hdmi-a2:
-    - Statuses : 5 pass(s)
-    - Exec time: [1.54, 3.75] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-lvds1:
-    - Statuses : 1 pass(s)
-    - Exec time: [3.87] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-vga1:
-    - Statuses : 10 pass(s)
-    - Exec time: [2.95, 5.62] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-dp1:
-    - Statuses : 6 pass(s)
-    - Exec time: [1.54, 4.02] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-dp2:
-    - Statuses : 6 pass(s)
-    - Exec time: [1.53, 2.36] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-dsi1:
-    - Statuses : 4 pass(s)
-    - Exec time: [3.53, 4.13] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-dvi-d1:
-    - Statuses : 1 pass(s)
-    - Exec time: [3.34] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:
-    - Statuses : 14 pass(s)
-    - Exec time: [2.62, 6.66] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-hdmi-a1:
-    - Statuses : 7 pass(s)
-    - Exec time: [1.54, 5.70] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-hdmi-a2:
-    - Statuses : 5 pass(s)
-    - Exec time: [1.54, 3.71] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-lvds1:
-    - Statuses : 1 pass(s)
-    - Exec time: [3.89] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-vga1:
-    - Statuses : 9 pass(s)
-    - Exec time: [2.90, 5.54] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-dp1:
-    - Statuses : 6 pass(s)
-    - Exec time: [1.55, 4.02] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-dp2:
-    - Statuses : 6 pass(s)
-    - Exec time: [1.53, 2.35] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-dsi1:
-    - Statuses : 4 pass(s)
-    - Exec time: [3.51, 4.13] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - Statuses : 13 pass(s)
-    - Exec time: [2.62, 5.25] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a1:
-    - Statuses : 3 pass(s)
-    - Exec time: [1.54, 3.71] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a2:
-    - Statuses : 6 pass(s)
-    - Exec time: [1.54, 10.81] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-vga1:
-    - Statuses : 2 pass(s)
-    - Exec time: [3.75, 3.93] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-dsi1:
-    - Statuses : 1 pass(s)
-    - Exec time: [3.52] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@d-edp1:
-    - Statuses : 2 pass(s)
-    - Exec time: [3.90, 4.64] s
-
-  * igt@kms_flip@basic-plain-flip@a-dp1:
-    - Statuses : 6 pass(s)
-    - Exec time: [1.49, 3.75] s
-
-  * igt@kms_flip@basic-plain-flip@a-dp2:
-    - Statuses : 6 pass(s)
-    - Exec time: [1.19, 2.10] s
-
-  * igt@kms_flip@basic-plain-flip@a-dsi1:
-    - Statuses : 4 pass(s)
-    - Exec time: [3.40, 3.90] s
-
-  * igt@kms_flip@basic-plain-flip@a-dvi-d1:
-    - Statuses : 1 pass(s)
-    - Exec time: [2.85] s
-
-  * igt@kms_flip@basic-plain-flip@a-edp1:
-    - Statuses : 14 pass(s)
-    - Exec time: [2.27, 6.42] s
-
-  * igt@kms_flip@basic-plain-flip@a-hdmi-a1:
-    - Statuses : 7 pass(s)
-    - Exec time: [1.26, 5.35] s
-
-  * igt@kms_flip@basic-plain-flip@a-hdmi-a2:
-    - Statuses : 5 pass(s)
-    - Exec time: [1.21, 3.47] s
-
-  * igt@kms_flip@basic-plain-flip@a-lvds1:
-    - Statuses : 1 pass(s)
-    - Exec time: [3.46] s
-
-  * igt@kms_flip@basic-plain-flip@a-vga1:
-    - Statuses : 10 pass(s)
-    - Exec time: [2.66, 5.35] s
-
-  * igt@kms_flip@basic-plain-flip@b-dp1:
-    - Statuses : 6 pass(s)
-    - Exec time: [1.21, 3.74] s
-
-  * igt@kms_flip@basic-plain-flip@b-dp2:
-    - Statuses : 6 pass(s)
-    - Exec time: [1.20, 2.09] s
-
-  * igt@kms_flip@basic-plain-flip@b-dsi1:
-    - Statuses : 4 pass(s)
-    - Exec time: [3.28, 3.85] s
-
-  * igt@kms_flip@basic-plain-flip@b-dvi-d1:
-    - Statuses : 1 pass(s)
-    - Exec time: [2.88] s
-
-  * igt@kms_flip@basic-plain-flip@b-edp1:
-    - Statuses : 14 pass(s)
-    - Exec time: [2.24, 6.38] s
-
-  * igt@kms_flip@basic-plain-flip@b-hdmi-a1:
-    - Statuses : 7 pass(s)
-    - Exec time: [1.21, 5.28] s
-
-  * igt@kms_flip@basic-plain-flip@b-hdmi-a2:
-    - Statuses : 5 pass(s)
-    - Exec time: [1.21, 3.44] s
-
-  * igt@kms_flip@basic-plain-flip@b-lvds1:
-    - Statuses : 1 pass(s)
-    - Exec time: [3.40] s
-
-  * igt@kms_flip@basic-plain-flip@b-vga1:
-    - Statuses : 9 pass(s)
-    - Exec time: [2.61, 5.26] s
-
-  * igt@kms_flip@basic-plain-flip@c-dp1:
-    - Statuses : 6 pass(s)
-    - Exec time: [1.21, 3.74] s
-
-  * igt@kms_flip@basic-plain-flip@c-dp2:
-    - Statuses : 6 pass(s)
-    - Exec time: [1.20, 2.10] s
-
-  * igt@kms_flip@basic-plain-flip@c-dsi1:
-    - Statuses : 4 pass(s)
-    - Exec time: [3.26, 3.84] s
-
-  * igt@kms_flip@basic-plain-flip@c-edp1:
-    - Statuses : 13 pass(s)
-    - Exec time: [2.24, 4.99] s
-
-  * igt@kms_flip@basic-plain-flip@c-hdmi-a1:
-    - Statuses : 3 pass(s)
-    - Exec time: [1.21, 3.42] s
-
-  * igt@kms_flip@basic-plain-flip@c-hdmi-a2:
-    - Statuses : 6 pass(s)
-    - Exec time: [1.21, 10.38] s
-
-  * igt@kms_flip@basic-plain-flip@c-vga1:
-    - Statuses : 2 pass(s)
-    - Exec time: [3.49] s
-
-  * igt@kms_flip@basic-plain-flip@d-dsi1:
-    - Statuses : 1 pass(s)
-    - Exec time: [3.28] s
-
-  * igt@kms_flip@basic-plain-flip@d-edp1:
-    - Statuses : 2 pass(s)
-    - Exec time: [3.71, 4.36] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4458 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@active:
-    - fi-bdw-5557u:       [PASS][1] -> [DMESG-FAIL][2] ([i915#765])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8295/fi-bdw-5557u/igt@i915_selftest@live@active.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4458/fi-bdw-5557u/igt@i915_selftest@live@active.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-skl-6600u:       [INCOMPLETE][3] ([i915#69]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8295/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4458/fi-skl-6600u/igt@gem_exec_suspend@basic-s3.html
-
-  
-  [i915#69]: https://gitlab.freedesktop.org/drm/intel/issues/69
-  [i915#765]: https://gitlab.freedesktop.org/drm/intel/issues/765
-
-
-Participating hosts (49 -> 43)
-------------------------------
-
-  Missing    (6): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5589 -> IGTPW_4458
-
-  CI-20190529: 20190529
-  CI_DRM_8295: 4cb6dbe0a641129fd07ad1fbfcd6e7b4f03ec5c1 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4458: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4458/index.html
-  IGT_5589: 31962324ac86f029e2841e56e97c42cf9d572956 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4458/index.html
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+QXJlaywgSSBoYXZlIGFkZHJlc3NlZCBhbmQgcmUtcmVwb3J0ZWQgdGhlIGlzc3VlLiANCg0KTGFr
+c2htaS4NCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBIaWxlciwgQXJrYWRpdXN6
+IDxhcmthZGl1c3ouaGlsZXJAaW50ZWwuY29tPiANClNlbnQ6IFR1ZXNkYXksIEFwcmlsIDE0LCAy
+MDIwIDQ6MzEgUE0NClRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KQ2M6IFZ1ZHVt
+LCBMYWtzaG1pbmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1bUBpbnRlbC5jb20+DQpTdWJq
+ZWN0OiBSZTog4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVzIHN0YXJ0aW5nIHdpdGgg
+W2ktZy10LDEvM10gdGVzdC9rbXNfY2hhbWVsaXVtOiBTdGFydCB3aXRoIGRpc2FibGluZyBtb2Rl
+c2V0DQoNCk9uIFR1ZSwgQXByIDE0LCAyMDIwIGF0IDAxOjI3OjAzUE0gKzAwMDAsIFBhdGNod29y
+ayB3cm90ZToNCj4gPT0gU2VyaWVzIERldGFpbHMgPT0NCj4gDQo+IFNlcmllczogc2VyaWVzIHN0
+YXJ0aW5nIHdpdGggW2ktZy10LDEvM10gdGVzdC9rbXNfY2hhbWVsaXVtOiBTdGFydCB3aXRoIGRp
+c2FibGluZyBtb2Rlc2V0DQo+IFVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Au
+b3JnL3Nlcmllcy83NTkxMC8NCj4gU3RhdGUgOiBmYWlsdXJlDQo+IA0KPiA9PSBTdW1tYXJ5ID09
+DQo+IA0KPiBDSSBCdWcgTG9nIC0gY2hhbmdlcyBmcm9tIENJX0RSTV84Mjk0IC0+IElHVFBXXzQ0
+NTUgDQo+ID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT0NCj4gDQo+IFN1bW1hcnkNCj4gLS0tLS0tLQ0KPiANCj4gICAqKkZBSUxVUkUqKg0KPiANCj4g
+ICBTZXJpb3VzIHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0aCBJR1RQV180NDU1IGFic29sdXRl
+bHkgbmVlZCB0byBiZQ0KPiAgIHZlcmlmaWVkIG1hbnVhbGx5Lg0KPiAgIA0KPiAgIElmIHlvdSB0
+aGluayB0aGUgcmVwb3J0ZWQgY2hhbmdlcyBoYXZlIG5vdGhpbmcgdG8gZG8gd2l0aCB0aGUgY2hh
+bmdlcw0KPiAgIGludHJvZHVjZWQgaW4gSUdUUFdfNDQ1NSwgcGxlYXNlIG5vdGlmeSB5b3VyIGJ1
+ZyB0ZWFtIHRvIGFsbG93IHRoZW0NCj4gICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJlIG1v
+ZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4NCj4gDQo+ICAgRXh0
+ZXJuYWwgVVJMOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9J
+R1RQV180NDU1L2luZGV4Lmh0bWwNCj4gDQo+IFBvc3NpYmxlIG5ldyBpc3N1ZXMNCj4gLS0tLS0t
+LS0tLS0tLS0tLS0tLQ0KPiANCj4gICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQg
+bWF5IGhhdmUgYmVlbiBpbnRyb2R1Y2VkIGluIElHVFBXXzQ0NTU6DQo+IA0KPiAjIyMgSUdUIGNo
+YW5nZXMgIyMjDQo+IA0KPiAjIyMjIFBvc3NpYmxlIHJlZ3Jlc3Npb25zICMjIyMNCj4gDQo+ICAg
+KiBpZ3RAaTkxNV9zZWxmdGVzdEBsaXZlQGd0X2NvbnRleHRzOg0KPiAgICAgLSBmaS1id3ItMjE2
+MDogICAgICAgIFtQQVNTXVsxXSAtPiBbRE1FU0ctV0FSTl1bMl0NCj4gICAgWzFdOiBodHRwczov
+L2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV84Mjk0L2ZpLWJ3ci0yMTYw
+L2lndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAZ3RfY29udGV4dHMuaHRtbA0KPiAgICBbMl06IA0KPiBo
+dHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzQ0NTUvZmktYndy
+LTIxNjAvaWd0QGk5DQo+IDE1X3NlbGZ0ZXN0QGxpdmVAZ3RfY29udGV4dHMuaHRtbA0KDQoNCkhl
+eSBMYWtzaG1pLA0KDQpUaGlzIGlzIGEgc2VsZnRlc3QgZmFpbHVyZSB0aGF0IGlzIG5vdCByZWxh
+dGVkIHRvIHRoaXMgY2hhbmdlLg0KDQotLQ0KQ2hlZXJzLA0KQXJlaw0KLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCklu
+dGVsIEZpbmxhbmQgT3kKUmVnaXN0ZXJlZCBBZGRyZXNzOiBQTCAyODEsIDAwMTgxIEhlbHNpbmtp
+IApCdXNpbmVzcyBJZGVudGl0eSBDb2RlOiAwMzU3NjA2IC0gNCAKRG9taWNpbGVkIGluIEhlbHNp
+bmtpIAoKVGhpcyBlLW1haWwgYW5kIGFueSBhdHRhY2htZW50cyBtYXkgY29udGFpbiBjb25maWRl
+bnRpYWwgbWF0ZXJpYWwgZm9yCnRoZSBzb2xlIHVzZSBvZiB0aGUgaW50ZW5kZWQgcmVjaXBpZW50
+KHMpLiBBbnkgcmV2aWV3IG9yIGRpc3RyaWJ1dGlvbgpieSBvdGhlcnMgaXMgc3RyaWN0bHkgcHJv
+aGliaXRlZC4gSWYgeW91IGFyZSBub3QgdGhlIGludGVuZGVkCnJlY2lwaWVudCwgcGxlYXNlIGNv
+bnRhY3QgdGhlIHNlbmRlciBhbmQgZGVsZXRlIGFsbCBjb3BpZXMuCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
+aWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
