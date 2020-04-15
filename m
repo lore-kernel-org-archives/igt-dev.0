@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 15 Apr 2020 14:02:30 -0000
-Message-ID: <158695935071.21013.4693166297154900585@emeril.freedesktop.org>
-References: <20200409053951.26929-1-anshuman.gupta@intel.com>
-In-Reply-To: <20200409053951.26929-1-anshuman.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbHBzcCBw?=
- =?utf-8?q?latform_agnostic_support_=28rev8=29?=
+Date: Wed, 15 Apr 2020 14:25:11 -0000
+Message-ID: <158696071133.21013.515130988392559564@emeril.freedesktop.org>
+References: <20200415131515.7507-1-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20200415131515.7507-1-janusz.krzysztofik@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHM6?=
+ =?utf-8?q?_Add_a_test_for_device_hot_unplug_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,19 +19,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anshuman Gupta <anshuman.gupta@intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: lpsp platform agnostic support (rev8)
-URL   : https://patchwork.freedesktop.org/series/74647/
+Series: tests: Add a test for device hot unplug (rev4)
+URL   : https://patchwork.freedesktop.org/series/75692/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_5591 -> IGTPW_4467
+CI Bug Log - changes from IGT_5591 -> IGTPW_4468
 ====================================================
 
 Summary
@@ -41,61 +41,55 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4467/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4468/index.html
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_4467 that come from known issues:
+  Here are the changes found in IGTPW_4468 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@i915_pm_rpm@basic-rte:
-    - fi-icl-dsi:         [PASS][1] -> [INCOMPLETE][2] ([i915#189])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5591/fi-icl-dsi/igt@i915_pm_rpm@basic-rte.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4467/fi-icl-dsi/igt@i915_pm_rpm@basic-rte.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-8809g:       [PASS][3] -> [SKIP][4] ([fdo#109271])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5591/fi-kbl-8809g/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4467/fi-kbl-8809g/igt@i915_pm_rpm@module-reload.html
+  * igt@i915_selftest@live@hangcheck:
+    - fi-bwr-2160:        [PASS][1] -> [INCOMPLETE][2] ([i915#489])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5591/fi-bwr-2160/igt@i915_selftest@live@hangcheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4468/fi-bwr-2160/igt@i915_selftest@live@hangcheck.html
 
   
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#189]: https://gitlab.freedesktop.org/drm/intel/issues/189
+  [i915#489]: https://gitlab.freedesktop.org/drm/intel/issues/489
 
 
-Participating hosts (52 -> 44)
+Participating hosts (52 -> 45)
 ------------------------------
 
-  Missing    (8): fi-bdw-samus fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-kbl-7560u fi-byt-clapper fi-skl-6600u 
+  Missing    (7): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
 
 
 Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_5591 -> IGTPW_4467
+  * IGT: IGT_5591 -> IGTPW_4468
 
   CI-20190529: 20190529
   CI_DRM_8301: 7d2bdd2df0d18945bb274de8bc7560e14779e346 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4467: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4467/index.html
+  IGTPW_4468: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4468/index.html
   IGT_5591: f57b7fdbe8d04ce3edf0433a03c7d9d5c3d96680 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
 
 
 == Testlist changes ==
 
-+igt@i915_pm_lpsp@kms-lpsp
--igt@i915_pm_lpsp@edp-native
--igt@i915_pm_lpsp@edp-panel-fitter
--igt@i915_pm_lpsp@non-edp
++igt@core_hotunplug@hotunbind-lateclose
++igt@core_hotunplug@hotunplug-lateclose
++igt@core_hotunplug@unbind-rebind
++igt@core_hotunplug@unplug-rescan
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4467/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4468/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
