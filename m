@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E03906EA67
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Apr 2020 21:22:21 +0000 (UTC)
+From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
+Date: Wed, 15 Apr 2020 14:24:06 -0700
+Message-Id: <20200415212406.102082-1-jose.souza@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 15 Apr 2020 15:16:54 -0000
-Message-ID: <158696381486.21016.2637961232229486799@emeril.freedesktop.org>
-References: <20200414190509.2868509-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200414190509.2868509-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliOiBV?=
- =?utf-8?q?se_read=28=29_for_timerfd_timeout_detection_=28rev3=29?=
+Subject: [igt-dev] [PATCH i-g-t] tools/registers/tgl: Fix tigerlake_delta
+ file decode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,63 +15,26 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: lib: Use read() for timerfd timeout detection (rev3)
-URL   : https://patchwork.freedesktop.org/series/75940/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_5591 -> IGTPW_4469
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4469/index.html
-
-
-Changes
--------
-
-  No changes found
-
-
-Participating hosts (52 -> 46)
-------------------------------
-
-  Missing    (6): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5591 -> IGTPW_4469
-
-  CI-20190529: 20190529
-  CI_DRM_8301: 7d2bdd2df0d18945bb274de8bc7560e14779e346 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4469: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4469/index.html
-  IGT_5591: f57b7fdbe8d04ce3edf0433a03c7d9d5c3d96680 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4469/index.html
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SXQgd2FzIG1pc3NpbmcgYSAiKSIgdG8gYmUgcHJvcGVybHkgcGFyc2VkLgoKU2lnbmVkLW9mZi1i
+eTogSm9zw6kgUm9iZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+Ci0tLQogdG9v
+bHMvcmVnaXN0ZXJzL3RpZ2VybGFrZV9kZWx0YS50eHQgfCAyICstCiAxIGZpbGUgY2hhbmdlZCwg
+MSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKCmRpZmYgLS1naXQgYS90b29scy9yZWdpc3Rl
+cnMvdGlnZXJsYWtlX2RlbHRhLnR4dCBiL3Rvb2xzL3JlZ2lzdGVycy90aWdlcmxha2VfZGVsdGEu
+dHh0CmluZGV4IGU4MjA0OWI5OS4uYzdmYzJkYzI0IDEwMDY0NAotLS0gYS90b29scy9yZWdpc3Rl
+cnMvdGlnZXJsYWtlX2RlbHRhLnR4dAorKysgYi90b29scy9yZWdpc3RlcnMvdGlnZXJsYWtlX2Rl
+bHRhLnR4dApAQCAtMTEwLDcgKzExMCw3IEBACiAoJ1BMQU5FX0NPTE9SX0NUTF81X0QnLCAnMHg3
+MzVjYycsICcnKQogKCdQTEFORV9DT0xPUl9DVExfNl9EJywgJzB4NzM2Y2MnLCAnJykKICgnUExB
+TkVfQ09MT1JfQ1RMXzdfRCcsICcweDczN2NjJywgJycpCi0oJ1BMQU5FX09GRlNFVF8xX0QnLCAn
+MHg3MzFhNCcsICcnCisoJ1BMQU5FX09GRlNFVF8xX0QnLCAnMHg3MzFhNCcsICcnKQogKCdQTEFO
+RV9PRkZTRVRfMl9EJywgJzB4NzMyYTQnLCAnJykKICgnUExBTkVfT0ZGU0VUXzNfRCcsICcweDcz
+M2E0JywgJycpCiAoJ1BMQU5FX09GRlNFVF80X0QnLCAnMHg3MzRhNCcsICcnKQotLSAKMi4yNi4x
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
+IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
+LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
