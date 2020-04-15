@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 853DD6E22D
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Apr 2020 05:24:05 +0000 (UTC)
+From: Kunal Joshi <kunal1.joshi@intel.com>
+Date: Thu, 16 Apr 2020 03:56:19 +0530
+Message-Id: <20200415222619.10293-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 15 Apr 2020 21:52:30 -0000
-Message-ID: <158698755095.21014.5053959418937640740@emeril.freedesktop.org>
-References: <20200415212406.102082-1-jose.souza@intel.com>
-In-Reply-To: <20200415212406.102082-1-jose.souza@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdG9vbHMv?=
- =?utf-8?q?registers/tgl=3A_Fix_tigerlake=5Fdelta_file_decode?=
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_chamelium: Capture on type-c
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,94 +14,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: arkadiusz.hiler@intel.com, igt-dev@lists.freedesktop.org, imre.deak@intel.com
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+When we try to capture from chamelium it sends hpd pulse 
+when it needs fsm handling but on type-c connector we
+dodn't get it when the modeset is enabled, disabling
+modeset so  we get hpd pulse.
 
-Series: tools/registers/tgl: Fix tigerlake_delta file decode
-URL   : https://patchwork.freedesktop.org/series/75989/
-State : success
+Cc: Hiler Arkadiusz <arkadiusz.hiler@intel.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Issue: https://gitlab.freedesktop.org/drm/intel/issues/262
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/kms_chamelium.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-== Summary ==
+diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
+index 8b20bbb..3639f5a 100644
+--- a/tests/kms_chamelium.c
++++ b/tests/kms_chamelium.c
+@@ -672,7 +672,6 @@ test_suspend_resume_edid_change(data_t *data, struct chamelium_port *port,
+ 	get_connectors_link_status_failed(data, link_status_failed[0]);
+ 
+ 	igt_flush_hotplugs(mon);
+-
+ 	igt_system_suspend_autoresume(state, test);
+ 	igt_assert(igt_hotplug_detected(mon, HOTPLUG_TIMEOUT));
+ 	chamelium_assert_reachable(data->chamelium, ONLINE_TIMEOUT);
+@@ -841,6 +840,11 @@ static void test_display_all_modes(data_t *data, struct chamelium_port *port,
+ 		bridge = check_analog_bridge(data, port);
+ 
+ 	for (i = 0; i < connector->count_modes; i++) {
++	        output = prepare_output(data, port, TEST_EDID_BASE);
++	        connector = chamelium_port_get_connector(data->chamelium, port, false);
++	        primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++	        igt_assert(primary);
++	        igt_require(igt_plane_has_format_mod(primary, fourcc, LOCAL_DRM_FORMAT_MOD_NONE));
+ 		drmModeModeInfo *mode = &connector->modes[i];
+ 
+ 		if (check == CHAMELIUM_CHECK_ANALOG && bridge &&
+@@ -848,6 +852,7 @@ static void test_display_all_modes(data_t *data, struct chamelium_port *port,
+ 			continue;
+ 
+ 		do_test_display(data, port, output, mode, fourcc, check, count);
++		reset_state(data, port);
+ 	}
+ 
+ 	drmModeFreeConnector(connector);
+@@ -876,6 +881,10 @@ test_display_frame_dump(data_t *data, struct chamelium_port *port)
+ 	igt_assert(primary);
+ 
+ 	for (i = 0; i < connector->count_modes; i++) {
++		output = prepare_output(data, port, TEST_EDID_BASE);
++		connector = chamelium_port_get_connector(data->chamelium, port, false);
++		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++		igt_assert(primary);
+ 		mode = &connector->modes[i];
+ 		fb_id = igt_create_color_pattern_fb(data->drm_fd,
+ 						    mode->hdisplay, mode->vdisplay,
+@@ -896,6 +905,7 @@ test_display_frame_dump(data_t *data, struct chamelium_port *port)
+ 		}
+ 
+ 		igt_remove_fb(data->drm_fd, &fb);
++		reset_state(data, port);
+ 	}
+ 
+ 	drmModeFreeConnector(connector);
+@@ -2506,7 +2516,6 @@ test_hpd_storm_detect(data_t *data, struct chamelium_port *port, int width)
+ {
+ 	struct udev_monitor *mon;
+ 	int count = 0;
+-
+ 	igt_require_hpd_storm_ctl(data->drm_fd);
+ 	reset_state(data, port);
+ 
+-- 
+2.7.4
 
-CI Bug Log - changes from CI_DRM_8303 -> IGTPW_4470
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4470/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_4470:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * {igt@gem_wait@busy@all}:
-    - fi-hsw-peppy:       [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8303/fi-hsw-peppy/igt@gem_wait@busy@all.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4470/fi-hsw-peppy/igt@gem_wait@busy@all.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4470 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:
-    - fi-skl-6770hq:      [SKIP][3] ([fdo#109271]) -> [PASS][4] +20 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8303/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4470/fi-skl-6770hq/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-
-
-Participating hosts (52 -> 46)
-------------------------------
-
-  Missing    (6): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5591 -> IGTPW_4470
-
-  CI-20190529: 20190529
-  CI_DRM_8303: b4a7df71d1c1750120242e457c68b4de425977fd @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4470: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4470/index.html
-  IGT_5591: f57b7fdbe8d04ce3edf0433a03c7d9d5c3d96680 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4470/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
