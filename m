@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 146036EB4E
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Apr 2020 19:13:40 +0000 (UTC)
+From: "Souza, Jose" <jose.souza@intel.com>
+Date: Thu, 16 Apr 2020 19:13:39 +0000
+Message-ID: <43ec55cff438da038d7c4dd0f5485884a4ae298d.camel@intel.com>
+References: <20200415212406.102082-1-jose.souza@intel.com>
+ <20200416071027.GU9497@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <20200416071027.GU9497@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
+Content-ID: <FEA1D48467AC4147B1DECCCCDC0E8DD3@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 16 Apr 2020 18:17:03 -0000
-Message-ID: <158706102312.20884.4429666388926648432@emeril.freedesktop.org>
-References: <20200416172933.30533-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20200416172933.30533-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fbig=5Ffb=3A_Allow_modeset_to_survive_change_of_cdclk?=
+Subject: Re: [igt-dev] [PATCH i-g-t] tools/registers/tgl: Fix
+ tigerlake_delta file decode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,109 +20,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Latvala, Petri" <petri.latvala@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: tests/kms_big_fb: Allow modeset to survive change of cdclk
-URL   : https://patchwork.freedesktop.org/series/76042/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_8311 -> IGTPW_4478
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4478/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_4478:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - {fi-tgl-dsi}:       [PASS][1] -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8311/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4478/fi-tgl-dsi/igt@i915_selftest@live@gt_heartbeat.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4478 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-icl-dsi:         [PASS][3] -> [DMESG-FAIL][4] ([i915#1314])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8311/fi-icl-dsi/igt@i915_selftest@live@execlists.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4478/fi-icl-dsi/igt@i915_selftest@live@execlists.html
-
-  * igt@i915_selftest@live@gt_lrc:
-    - fi-bwr-2160:        [PASS][5] -> [INCOMPLETE][6] ([i915#489])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8311/fi-bwr-2160/igt@i915_selftest@live@gt_lrc.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4478/fi-bwr-2160/igt@i915_selftest@live@gt_lrc.html
-
-  
-#### Warnings ####
-
-  * igt@runner@aborted:
-    - fi-bwr-2160:        [FAIL][7] -> [FAIL][8] ([i915#489])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8311/fi-bwr-2160/igt@runner@aborted.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4478/fi-bwr-2160/igt@runner@aborted.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1314]: https://gitlab.freedesktop.org/drm/intel/issues/1314
-  [i915#489]: https://gitlab.freedesktop.org/drm/intel/issues/489
-
-
-Participating hosts (51 -> 45)
-------------------------------
-
-  Missing    (6): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5593 -> IGTPW_4478
-
-  CI-20190529: 20190529
-  CI_DRM_8311: 19367bb5e65eaf0719597b3ff244fd1c2ea12bda @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4478: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4478/index.html
-  IGT_5593: 1c658f5e46598ae93345177d4981ef54704daec6 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4478/index.html
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVGh1LCAyMDIwLTA0LTE2IGF0IDEwOjEwICswMzAwLCBQZXRyaSBMYXR2YWxhIHdyb3RlOg0K
+PiBPbiBXZWQsIEFwciAxNSwgMjAyMCBhdCAwMjoyNDowNlBNIC0wNzAwLCBKb3PDqSBSb2JlcnRv
+IGRlIFNvdXphDQo+IHdyb3RlOg0KPiA+IEl0IHdhcyBtaXNzaW5nIGEgIikiIHRvIGJlIHByb3Bl
+cmx5IHBhcnNlZC4NCj4gPiANCj4gPiBTaWduZWQtb2ZmLWJ5OiBKb3PDqSBSb2JlcnRvIGRlIFNv
+dXphIDxqb3NlLnNvdXphQGludGVsLmNvbT4NCj4gDQo+IFJldmlld2VkLWJ5OiBQZXRyaSBMYXR2
+YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4NCg0KVGhhbmtzLCBwdXNoZWQuDQoNCj4gDQo+
+IA0KPiA+IC0tLQ0KPiA+ICB0b29scy9yZWdpc3RlcnMvdGlnZXJsYWtlX2RlbHRhLnR4dCB8IDIg
+Ky0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+
+ID4gDQo+ID4gZGlmZiAtLWdpdCBhL3Rvb2xzL3JlZ2lzdGVycy90aWdlcmxha2VfZGVsdGEudHh0
+DQo+ID4gYi90b29scy9yZWdpc3RlcnMvdGlnZXJsYWtlX2RlbHRhLnR4dA0KPiA+IGluZGV4IGU4
+MjA0OWI5OS4uYzdmYzJkYzI0IDEwMDY0NA0KPiA+IC0tLSBhL3Rvb2xzL3JlZ2lzdGVycy90aWdl
+cmxha2VfZGVsdGEudHh0DQo+ID4gKysrIGIvdG9vbHMvcmVnaXN0ZXJzL3RpZ2VybGFrZV9kZWx0
+YS50eHQNCj4gPiBAQCAtMTEwLDcgKzExMCw3IEBADQo+ID4gICgnUExBTkVfQ09MT1JfQ1RMXzVf
+RCcsICcweDczNWNjJywgJycpDQo+ID4gICgnUExBTkVfQ09MT1JfQ1RMXzZfRCcsICcweDczNmNj
+JywgJycpDQo+ID4gICgnUExBTkVfQ09MT1JfQ1RMXzdfRCcsICcweDczN2NjJywgJycpDQo+ID4g
+LSgnUExBTkVfT0ZGU0VUXzFfRCcsICcweDczMWE0JywgJycNCj4gPiArKCdQTEFORV9PRkZTRVRf
+MV9EJywgJzB4NzMxYTQnLCAnJykNCj4gPiAgKCdQTEFORV9PRkZTRVRfMl9EJywgJzB4NzMyYTQn
+LCAnJykNCj4gPiAgKCdQTEFORV9PRkZTRVRfM19EJywgJzB4NzMzYTQnLCAnJykNCj4gPiAgKCdQ
+TEFORV9PRkZTRVRfNF9EJywgJzB4NzM0YTQnLCAnJykNCj4gPiAtLSANCj4gPiAyLjI2LjENCj4g
+PiANCj4gPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0K
+PiA+IGlndC1kZXYgbWFpbGluZyBsaXN0DQo+ID4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
+cmcNCj4gPiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ln
+dC1kZXYNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
+dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
