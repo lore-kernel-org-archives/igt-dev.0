@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
- [IPv6:2a00:1450:4864:20::343])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 38A8E6E3B5
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 07:35:16 +0000 (UTC)
-Received: by mail-wm1-x343.google.com with SMTP id x4so1882105wmj.1
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 00:35:16 -0700 (PDT)
-References: <20200416172933.30533-1-juhapekka.heikkila@gmail.com>
- <20200416174225.GL6112@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <83c8e359-5c8a-7f29-a59d-4e53ad48a317@gmail.com>
-Date: Fri, 17 Apr 2020 10:35:08 +0300
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5098B6E3B5
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 07:39:42 +0000 (UTC)
+Date: Fri, 17 Apr 2020 13:09:26 +0530
+From: Ramalingam C <ramalingam.c@intel.com>
+Message-ID: <20200417073926.GA13102@intel.com>
+References: <1587024219-3447-1-git-send-email-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200416174225.GL6112@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Allow modeset to
- survive change of cdclk
+Content-Disposition: inline
+In-Reply-To: <1587024219-3447-1-git-send-email-nidhi1.gupta@intel.com>
+Subject: Re: [igt-dev] [PATCH v2] Add eDP support in Link Layer Compliance
+ Tool
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,47 +18,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+To: Nidhi Gupta <nidhi1.gupta@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMTYuNC4yMDIwIDIwLjQyLCBWaWxsZSBTeXJqw6Rsw6Qgd3JvdGU6Cj4gT24gVGh1LCBBcHIg
-MTYsIDIwMjAgYXQgMDg6Mjk6MzNQTSArMDMwMCwgSnVoYS1QZWtrYSBIZWlra2lsYSB3cm90ZToK
-Pj4gV2hlbiB0ZXN0aW5nIDY0YnBwIGZvcm1hdHMgdGhlcmUgd2lsbCBjb21lIG1vZGVzZXQgdG8g
-Y2hhbmdlIGNkY2xrLgo+PiBBbGxvdyBtb2Rlc2V0cyBvbiBjb21taXRzIHNvIGNvbW1pdHMgd2ls
-bCBub3QgcHJvZHVjZSBlcnJvci4KPj4KPj4gU2lnbmVkLW9mZi1ieTogSnVoYS1QZWtrYSBIZWlr
-a2lsYSA8anVoYXBla2thLmhlaWtraWxhQGdtYWlsLmNvbT4KPj4gLS0tCj4+ICAgdGVzdHMva21z
-X2JpZ19mYi5jIHwgNSArKystLQo+PiAgIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyks
-IDIgZGVsZXRpb25zKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfYmlnX2ZiLmMgYi90
-ZXN0cy9rbXNfYmlnX2ZiLmMKPj4gaW5kZXggZWIxNDRkYTkuLmRhYmQxNmYzIDEwMDY0NAo+PiAt
-LS0gYS90ZXN0cy9rbXNfYmlnX2ZiLmMKPj4gKysrIGIvdGVzdHMva21zX2JpZ19mYi5jCj4+IEBA
-IC0yOTQsNiArMjk0LDcgQEAgc3RhdGljIGJvb2wgdGVzdF9wbGFuZShkYXRhX3QgKmRhdGEpCj4+
-ICAgCQkgKi8KPj4gICAJCWlmIChpID09IDAgJiYgZGF0YS0+ZGlzcGxheS5pc19hdG9taWMgJiYK
-Pj4gICAJCSAgICBpZ3RfZGlzcGxheV90cnlfY29tbWl0X2F0b21pYygmZGF0YS0+ZGlzcGxheSwK
-Pj4gKwkJCQkJCSAgRFJNX01PREVfQVRPTUlDX0FMTE9XX01PREVTRVQgfAo+PiAgIAkJCQkJCSAg
-RFJNX01PREVfQVRPTUlDX1RFU1RfT05MWSwKPj4gICAJCQkJCQkgIE5VTEwpICE9IDApIHsKPj4g
-ICAJCQlpZiAoaWd0X3BsYW5lX2hhc19wcm9wKHBsYW5lLCBJR1RfUExBTkVfUk9UQVRJT04pKQo+
-PiBAQCAtMzE4LDggKzMxOSw4IEBAIHN0YXRpYyBib29sIHRlc3RfcGxhbmUoZGF0YV90ICpkYXRh
-KQo+PiAgIAkJY29weV9wYXR0ZXJuKGRhdGEsIHNtYWxsX2ZiLCAwLCAwLCBiaWdfZmIsIHgsIHks
-Cj4+ICAgCQkJICAgICBzbWFsbF9mYi0+d2lkdGgsIHNtYWxsX2ZiLT5oZWlnaHQpOwo+PiAgIAo+
-PiAtCQlpZ3RfZGlzcGxheV9jb21taXQyKCZkYXRhLT5kaXNwbGF5LCBkYXRhLT5kaXNwbGF5Lmlz
-X2F0b21pYyA/Cj4+IC0JCQkJICAgIENPTU1JVF9BVE9NSUMgOiBDT01NSVRfVU5JVkVSU0FMKTsK
-Pj4gKwkJaWd0X2Rpc3BsYXlfY29tbWl0MigmZGF0YS0+ZGlzcGxheSwgRFJNX01PREVfQVRPTUlD
-X0FMTE9XX01PREVTRVQgfAo+IAo+IFRoYXQncyBub3QgaG93IHlvdSB1c2UgaWd0X2Rpc3BsYXlf
-Y29tbWl0MigpLiBBbmQgaXQgYWxzbwo+IHBhc3NlcyBEUk1fTU9ERV9BVE9NSUNfQUxMT1dfTU9E
-RVNFVCB0byBpZ3RfYXRvbWljX2NvbW1pdCgpLgoKWWVhLCBJJ2xsIGZpeCB0aGF0LiBTZWVtcyBp
-dCB3YXMgdG9vIGxhdGUgaG91cnMgeWVzdGVyZGF5IG1ha2luZyB0aGF0IHBhdGNoLgoKPiAKPj4g
-KwkJCQkgICAgZGF0YS0+ZGlzcGxheS5pc19hdG9taWMgPyBDT01NSVRfQVRPTUlDIDogQ09NTUlU
-X1VOSVZFUlNBTCk7Cj4+ICAgCj4+ICAgCj4+ICAgCQlpZ3RfcGlwZV9jcmNfY29sbGVjdF9jcmMo
-ZGF0YS0+cGlwZV9jcmMsICZzbWFsbF9jcmMpOwo+PiAtLSAKPj4gMi4yNi4wCj4+Cj4+IF9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4+IGlndC1kZXYgbWFp
-bGluZyBsaXN0Cj4+IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCj4+IGh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo+IAoKX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxp
-c3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
-cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On 2020-04-16 at 13:33:39 +0530, Nidhi Gupta wrote:
+> Adding eDP support for Link Layer Compliance tool
+> of DP-PHY test automation. Current Implementation
+> of this compliance tool can be used for dp and eDP
+> both. Hence extending to eDP too.
+> 
+> Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+> Reviewed-by: Animesh Manna <animesh.manna@intel.com>
+
+Thanks for the patch and review. Merged the patch.
+
+-Ram.
+
+> ---
+>  tools/intel_dp_compliance.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/intel_dp_compliance.c b/tools/intel_dp_compliance.c
+> index 2d42cb1..f26108b 100644
+> --- a/tools/intel_dp_compliance.c
+> +++ b/tools/intel_dp_compliance.c
+> @@ -849,7 +849,8 @@ int update_display(int mode, bool is_compliance_test)
+>  		conn = &connectors[cnt];
+>  		conn->id = resources->connectors[cnt];
+>  		c = drmModeGetConnector(drm_fd, conn->id);
+> -		if (c->connector_type == DRM_MODE_CONNECTOR_DisplayPort &&
+> +		if ((c->connector_type == DRM_MODE_CONNECTOR_DisplayPort ||
+> +		    c->connector_type == DRM_MODE_CONNECTOR_eDP) &&
+>  		    c->connection == DRM_MODE_CONNECTED) {
+>  			test_connector_id = c->connector_id;
+>  			conn->connector = c;
+> -- 
+> 2.7.4
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
