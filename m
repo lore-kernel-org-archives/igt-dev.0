@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EBADD6EB87
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 10:22:38 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <158703182515.5570.1971964259948334386@build.alporthouse.com>
-References: <20200416093918.3061840-1-chris@chris-wilson.co.uk>
- <20200416094805.GV9497@platvala-desk.ger.corp.intel.com>
- <158703182515.5570.1971964259948334386@build.alporthouse.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158711893731.5570.12825518017312689772@build.alporthouse.com>
-Date: Fri, 17 Apr 2020 11:22:17 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t] runner: More task debug!
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 17 Apr 2020 10:02:58 -0000
+Message-ID: <158711777897.10464.13557052273761817873@emeril.freedesktop.org>
+References: <20200417092424.4392-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20200417092424.4392-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fbig=5Ffb=3A_Allow_modeset_to_surivive_change_of_cdclk?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,42 +14,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Chris Wilson (2020-04-16 11:10:25)
-> Quoting Petri Latvala (2020-04-16 10:48:05)
-> > On Thu, Apr 16, 2020 at 10:39:18AM +0100, Chris Wilson wrote:
-> > > In a few cases, we hit a timeout where no process appears to be
-> > > deadlocked (i.e. tasks stuck in 'D' with intertwined stacks) but
-> > > everything appears to be running happily. Often, they appear to be
-> > > fighting over the shrinker, so one naturally presumes we are running low
-> > > on memory. But for tests that were designed to run with ample memory to
-> > > spare, that is a little disconcerting and I would like to know where the
-> > > memory actually went.
-> > > 
-> > > sysrq('m'): Will dump current memory info to your console
-> > > 
-> > > Sounds like that should do the trick.
-> > > 
-> > > Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> > > Cc: Petri Latvala <petri.latvala@intel.com>
-> > 
-> > If indeed 'm' does what you want and not just useless crud like first
-> > two lines of /proc/meminfo,
-> 
-> It calls into show_mem(), the same as used for oom and panics. Sounds
-> promising. /Fortunately/ we have some timeouts so we will get to see
-> what happens in practice.
+== Series Details ==
 
-Well we won't, because all the timeouts are being filtered by
-blacklist-premerge! Nvm, nothing like testing on production.
--Chris
+Series: tests/kms_big_fb: Allow modeset to surivive change of cdclk
+URL   : https://patchwork.freedesktop.org/series/76077/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8314 -> IGTPW_4479
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4479/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4479 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-icl-dsi:         [PASS][1] -> [INCOMPLETE][2] ([i915#189])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8314/fi-icl-dsi/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4479/fi-icl-dsi/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live@gt_pm:
+    - fi-tgl-y:           [DMESG-FAIL][3] ([i915#1725]) -> [INCOMPLETE][4] ([i915#1725])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8314/fi-tgl-y/igt@i915_selftest@live@gt_pm.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4479/fi-tgl-y/igt@i915_selftest@live@gt_pm.html
+
+  
+  [i915#1725]: https://gitlab.freedesktop.org/drm/intel/issues/1725
+  [i915#189]: https://gitlab.freedesktop.org/drm/intel/issues/189
+
+
+Participating hosts (51 -> 46)
+------------------------------
+
+  Additional (1): fi-kbl-soraka 
+  Missing    (6): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5598 -> IGTPW_4479
+
+  CI-20190529: 20190529
+  CI_DRM_8314: e8a432aa7e81e2bf5b6d4b23e3598f9fea947b83 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4479: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4479/index.html
+  IGT_5598: 276b8a3f24837e009ff38512f7eeb07029e52616 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4479/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
