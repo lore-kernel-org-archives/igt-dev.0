@@ -1,22 +1,22 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [207.211.31.81])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A292E6E932
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 19:49:41 +0000 (UTC)
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A8ACE6E959
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 19:49:44 +0000 (UTC)
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
  [10.5.11.16])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E9E991084445
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 19:49:37 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0DBC28017FF
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 19:49:39 +0000 (UTC)
 From: Lyude <lyude@redhat.com>
-Date: Fri, 17 Apr 2020 15:49:27 -0400
-Message-Id: <20200417194931.39774-2-lyude@redhat.com>
+Date: Fri, 17 Apr 2020 15:49:29 -0400
+Message-Id: <20200417194931.39774-4-lyude@redhat.com>
 In-Reply-To: <20200417194931.39774-1-lyude@redhat.com>
 References: <20200417194931.39774-1-lyude@redhat.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 1/5] lib/igt_core: Fix igt_assert_fd()
- documentation
+Subject: [igt-dev] [PATCH i-g-t v2 3/5] lib/igt_debugfs: Add
+ igt_debugfs_pipe_dir()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,29 +33,66 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lyude Paul <lyude@redhat.com>
 
-As Petri Latvala pointed out, some of the documentation in this macro is
-mistakenly copied from the other igt_assert*() macros. Let's fix that.
+Like igt_debugfs_connector_dir(), but for pipes instead.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- lib/igt_core.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/igt_debugfs.c | 29 +++++++++++++++++++++++++++++
+ lib/igt_debugfs.h |  1 +
+ 2 files changed, 30 insertions(+)
 
-diff --git a/lib/igt_core.h b/lib/igt_core.h
-index b97fa2fa..3f69b072 100644
---- a/lib/igt_core.h
-+++ b/lib/igt_core.h
-@@ -966,8 +966,8 @@ void igt_describe_f(const char *fmt, ...);
-  *
-  * Fails (sub-) test if the given file descriptor is invalid.
-  *
-- * Like igt_assert(), but displays the values being compared on failure instead
-- * of simply printing the stringified expression.
-+ * Like igt_assert(), but displays the stringified identifier that was supposed
-+ * to contain a valid fd on failure.
-  */
- #define igt_assert_fd(fd) \
- 	igt_assert_f(fd >= 0, "file descriptor " #fd " failed\n");
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index bf6be552..3c3b11e1 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -260,6 +260,35 @@ int igt_debugfs_connector_dir(int device, char *conn_name, int mode)
+ 	return ret;
+ }
+ 
++/**
++ * igt_debugfs_pipe_dir:
++ * @device: fd of the device
++ * @pipe: index of pipe
++ * @mode: mode bits as used by open()
++ *
++ * This opens the debugfs directory corresponding to the pipe index on the
++ * device for use with igt_sysfs_get() and related functions.
++ *
++ * Returns:
++ * The directory fd, or -1 on failure.
++ */
++int igt_debugfs_pipe_dir(int device, int pipe, int mode)
++{
++	char buf[128];
++	int dir, ret;
++
++	dir = igt_debugfs_dir(device);
++	if (dir < 0)
++		return dir;
++
++	snprintf(buf, sizeof(buf), "crtc-%d", pipe);
++	ret = openat(dir, buf, mode);
++
++	close(dir);
++
++	return ret;
++}
++
+ /**
+  * igt_debugfs_open:
+  * @filename: name of the debugfs node to open
+diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+index 7d1a6175..15741a40 100644
+--- a/lib/igt_debugfs.h
++++ b/lib/igt_debugfs.h
+@@ -36,6 +36,7 @@ char *igt_debugfs_path(int device, char *path, int pathlen);
+ 
+ int igt_debugfs_dir(int device);
+ int igt_debugfs_connector_dir(int device, char *conn_name, int mode);
++int igt_debugfs_pipe_dir(int device, int pipe, int mode);
+ 
+ int igt_debugfs_open(int fd, const char *filename, int mode);
+ void __igt_debugfs_read(int fd, const char *filename, char *buf, int size);
 -- 
 2.25.1
 
