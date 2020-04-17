@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 59CD76EBDB
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 13:17:19 +0000 (UTC)
-Date: Fri, 17 Apr 2020 16:17:13 +0300
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3237D6E225
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 13:18:20 +0000 (UTC)
+Date: Fri, 17 Apr 2020 16:18:16 +0300
 From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20200417131713.GM6112@intel.com>
-References: <20200417092424.4392-1-juhapekka.heikkila@gmail.com>
+Message-ID: <20200417131816.GN6112@intel.com>
+References: <20200417101855.7759-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200417092424.4392-1-juhapekka.heikkila@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_big_fb: Allow modeset to
- surivive change of cdclk
+In-Reply-To: <20200417101855.7759-1-juhapekka.heikkila@gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: survive cdclk caused
+ modeset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,51 +26,40 @@ To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Apr 17, 2020 at 12:24:24PM +0300, Juha-Pekka Heikkila wrote:
-> When testing 64bpp formats there will come modeset to change cdclk.
-> Allow modesets on atomic commits so commits will not produce error.
+On Fri, Apr 17, 2020 at 01:18:54PM +0300, Juha-Pekka Heikkila wrote:
+> In mid test starting to use higher bpp pixel format (say 64bpp)
+> can cause modeset. Allow that modeset to happen.
+> =
+
+> v2 Ville Syrj=E4l=E4: use DRM_MODE_ATOMIC_ALLOW_MODESET instead
+> of blocking.
+> =
+
+> Fixes: https://gitlab.freedesktop.org/drm/intel/issues/1214
 > =
 
 > Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+
+Reviewed-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+
 > ---
->  tests/kms_big_fb.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>  tests/kms_plane.c | 1 +
+>  1 file changed, 1 insertion(+)
 > =
 
-> diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c
-> index eb144da9..8ea7b5d1 100644
-> --- a/tests/kms_big_fb.c
-> +++ b/tests/kms_big_fb.c
-> @@ -294,6 +294,7 @@ static bool test_plane(data_t *data)
->  		 */
->  		if (i =3D=3D 0 && data->display.is_atomic &&
->  		    igt_display_try_commit_atomic(&data->display,
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index 805795cd..c6ead813 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -574,6 +574,7 @@ static void capture_format_crcs(data_t *data, enum pi=
+pe pipe,
+>  			 * awaits to be latched.
+>  			 */
+>  			igt_display_commit_atomic(&data->display,
 > +						  DRM_MODE_ATOMIC_ALLOW_MODESET |
->  						  DRM_MODE_ATOMIC_TEST_ONLY,
->  						  NULL) !=3D 0) {
->  			if (igt_plane_has_prop(plane, IGT_PLANE_ROTATION))
-> @@ -318,8 +319,11 @@ static bool test_plane(data_t *data)
->  		copy_pattern(data, small_fb, 0, 0, big_fb, x, y,
->  			     small_fb->width, small_fb->height);
->  =
-
-> -		igt_display_commit2(&data->display, data->display.is_atomic ?
-> -				    COMMIT_ATOMIC : COMMIT_UNIVERSAL);
-> +		if (data->display.is_atomic) {
-> +			igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODES=
-ET, NULL);
-
-As I said, igt_display_commit2() already passes in
-DRM_MODE_ATOMIC_ALLOW_MODESET so this should not be necessary.
-
-> +		} else {
-> +			igt_display_commit2(&data->display, COMMIT_UNIVERSAL);
-> +		}
->  =
-
->  =
-
->  		igt_pipe_crc_collect_crc(data->pipe_crc, &small_crc);
+>  						  DRM_MODE_ATOMIC_NONBLOCK |
+>  						  DRM_MODE_PAGE_FLIP_EVENT, NULL);
+>  		} else {
 > -- =
 
 > 2.26.0
