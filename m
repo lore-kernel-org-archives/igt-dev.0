@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D202E6E112
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 16:27:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A16C76E117
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 16:54:25 +0000 (UTC)
+Date: Fri, 17 Apr 2020 22:14:40 +0530
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+Message-ID: <20200417164440.GO5533@intel.com>
 References: <20200409053951.26929-1-anshuman.gupta@intel.com>
  <20200409053951.26929-4-anshuman.gupta@intel.com>
  <26fc49ab-bf41-41e4-d3ff-5d7455d64b79@intel.com>
  <20200417152850.GM5533@intel.com>
-From: "Manna, Animesh" <animesh.manna@intel.com>
-Message-ID: <798f4455-63ec-fba1-352c-a46d04b86880@intel.com>
-Date: Fri, 17 Apr 2020 21:57:25 +0530
+ <798f4455-63ec-fba1-352c-a46d04b86880@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200417152850.GM5533@intel.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <798f4455-63ec-fba1-352c-a46d04b86880@intel.com>
 Subject: Re: [igt-dev] [PATCH i-g-t v5 3/5] tests/i915_pm_lpsp: lpsp
  platform agnostic support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -21,832 +22,270 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1101167864=="
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anshuman Gupta <anshuman.gupta@intel.com>
+To: "Manna, Animesh" <animesh.manna@intel.com>
 Cc: igt-dev@lists.freedesktop.org, jani.nikula@intel.com, martin.peres@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is a multi-part message in MIME format.
---===============1101167864==
-Content-Type: multipart/alternative;
- boundary="------------503DE8A9A822A3F20CC2B9F8"
-Content-Language: en-US
-
-This is a multi-part message in MIME format.
---------------503DE8A9A822A3F20CC2B9F8
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: 8bit
-
-
-On 17-04-2020 20:58, Anshuman Gupta wrote:
-> On 2020-04-17 at 19:52:00 +0530, Manna, Animesh wrote:
->> On 09-04-2020 11:09, Anshuman Gupta wrote:
->>> Current implementation of lpsp igt test, assumed that every non-edp
->>> panel isn't a lpsp panel but it is not true on TGL anymore,
->>> any HDMI/DP/DSI panel connected on pipe A and connected to PORT_{A,B,C}
->>> can drive LPSP.
->>> Even on older Gen9 platform a DP panel can drive lpsp on Port A.
->>> This requires complete design change in current lpsp igt for a platform
->>> agnostic support.
->>>
->>> The new igt approach is relies on connector specific
->>> i915_lpsp_capability and i915_lpsp_status debugfs attributes,
->>> these debugfs exposes whether an output is capable of driving lpsp
->>> and lpsp is enabled.
->>>
->>> Nuking edp-native and non-edp test, introducing a new dynamic
->>> igt subtest kms-lpsp, which validates lpsp on each connected output
->>> and skip the subtest if output is not lpsp capable.
->>>
->>> v2:
->>> - CI failures fixup.
->>> v3:
->>> - removed unloading of snd_modules. [Martin]
->>> v4:
->>> - Don't test non-lpsp(if lpsp disabled), no ROI to test that.
->>> - nuke panel-fitter test.
->>> v5:
->>> - Added dynamic subtest and igt changes according to kernel
->>>    debugfs i915_lpsp_status changes.
->>>
->>> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
->>> ---
->>>   tests/i915/i915_pm_lpsp.c | 285 +++++++++++++++-----------------------
->>>   1 file changed, 114 insertions(+), 171 deletions(-)
->>>
->>> diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
->>> index 08f82e7c..7be23e6c 100644
->>> --- a/tests/i915/i915_pm_lpsp.c
->>> +++ b/tests/i915/i915_pm_lpsp.c
->>> @@ -25,210 +25,153 @@
->>>    */
->>>   #include "igt.h"
->>> +#include "igt_kmod.h"
->>> +#include "igt_pm.h"
->>> +#include "igt_sysfs.h"
->>>   #include <sys/types.h>
->>>   #include <sys/stat.h>
->>>   #include <fcntl.h>
->>>   #include <unistd.h>
->>> +#define MAX_SINK_LPSP_INFO_BUF_LEN	4096
->>> -static bool supports_lpsp(uint32_t devid)
->>> -{
->>> -	return IS_HASWELL(devid) || IS_BROADWELL(devid);
->>> -}
->>> +#define PWR_DOMAIN_INFO "i915_power_domain_info"
->>> -static bool lpsp_is_enabled(int drm_fd)
->>> +typedef struct {
->>> +	int drm_fd;
->>> +	int debugfs_fd;
->>> +	uint32_t devid;
->>> +	char *pwr_dmn_info;
->>> +	igt_display_t display;
->>> +	struct igt_fb fb;
->>> +	drmModeModeInfo *mode;
->>> +	igt_output_t *output;
->>> +} data_t;
->>> +
->>> +static bool lpsp_is_enabled(data_t *data)
->>>   {
->>> -	uint32_t val;
->>> +	char buf[MAX_SINK_LPSP_INFO_BUF_LEN];
->>> +	int len;
->>> -	val = INREG(HSW_PWR_WELL_CTL2);
->>> -	return !(val & HSW_PWR_WELL_STATE_ENABLED);
->>> -}
->>> +	len = igt_debugfs_simple_read(data->debugfs_fd, "i915_lpsp_status",
->>> +				      buf, sizeof(buf));
->>> +	if (len < 0)
->>> +		igt_assert_eq(len, -ENODEV);
->>> -/* The LPSP mode is all about an enabled pipe, but we expect to also be in the
->>> - * low power mode when no pipes are enabled, so do this check anyway. */
->>> -static void screens_disabled_subtest(int drm_fd, drmModeResPtr drm_res)
->>> -{
->>> -	kmstest_unset_all_crtcs(drm_fd, drm_res);
->>> -	igt_assert(lpsp_is_enabled(drm_fd));
->>> +	return strstr(buf, "LPSP: enabled");
->>>   }
->>> -static uint32_t create_fb(int drm_fd, int width, int height)
->>> +/*
->>> + * The LPSP mode is all about an enabled pipe, but we expect to also be in the
->>> + * low power mode when no pipes are enabled, so do this check anyway.
->>> + */
->> All pipe disabled in not same as lpsp. I feel the idea behind lpsp is single
->> pipe usage with least power consumption ... there maybe no display
->> connected.
-> Yes you are correct that is the same above comment has mentioned that "LPSP mode
-> is all about an enabled pipe", but here test method checks for lpsp when all screens
-> are disbaled i.e. all crtc are disabled, that is almost same as there is no display
-> connected with respect to power consumption.
->>> +static void screens_disabled_subtest(data_t *data)
->>>   {
->>> -	struct igt_fb fb;
->>> +	igt_output_t *output;
->>> +	int valid_output = 0;
->>> +	enum pipe pipe;
->>> +
->>> +	for_each_pipe_with_single_output(&data->display, pipe, output) {
->>> +		data->output = output;
->>> +		igt_output_set_pipe(data->output, PIPE_NONE);
->> Passing PIPE_NONE and testing lpsp maybe not the right thing here. We may
->> not have connector but need to enable a single pipe to test lpsp...  rt?
-> PIPE_NONE commit will disbale a crtc, when all crtc gets disbaled, all power well
-> except PG1 will be disbaled, PG1 is controlled by DMC.
-
-I do not think DC9 is controlled by DMC, during all crtc disable driver will disable all power-well and enter into DC9, no role of DMC here ... am I missing anything?
-
-Regards,
-Animesh
-
-> So testing lpsp is here is one of the test case, i.e we want to test power well associated
-> to PIPE_B should be turned off. There may be a bug in driver that when all crtc are disbaled
-> PIPE_B  associated  power is not turned off, that is what this test validated.
-> Enabling a pipe for lpsp will get covered in kms-lpsp test.
-> Thanks,
-> Anshuman Gupta.
->> Regards,
->>
->> Animesh
->>
->>> +		igt_display_commit(&data->display);
->>> +		valid_output++;
->>> +	}
->>> -	return igt_create_pattern_fb(drm_fd, width, height, DRM_FORMAT_XRGB8888,
->>> -				     LOCAL_DRM_FORMAT_MOD_NONE, &fb);
->>> +	igt_require_f(valid_output, "No connected output found\n");
->>> +	igt_assert_f(lpsp_is_enabled(data), "lpsp is not enabled\n%s:\n%s\n",
->>> +		     PWR_DOMAIN_INFO, data->pwr_dmn_info =
->>> +		     igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
->>>   }
->>> -static void edp_subtest(int drm_fd, drmModeResPtr drm_res,
->>> -			drmModeConnectorPtr *drm_connectors, uint32_t devid,
->>> -			bool use_panel_fitter)
->>> +static void setup_lpsp_output(data_t *data)
->>>   {
->>> -	int i, rc;
->>> -	uint32_t crtc_id = 0, buffer_id = 0;
->>> -	drmModeConnectorPtr connector = NULL;
->>> -	drmModeModeInfoPtr mode = NULL;
->>> -	drmModeModeInfo std_1024_mode = {
->>> -		.clock = 65000,
->>> -		.hdisplay = 1024,
->>> -		.hsync_start = 1048,
->>> -		.hsync_end = 1184,
->>> -		.htotal = 1344,
->>> -		.hskew = 0,
->>> -		.vdisplay = 768,
->>> -		.vsync_start = 771,
->>> -		.vsync_end = 777,
->>> -		.vtotal = 806,
->>> -		.vscan = 0,
->>> -		.vrefresh = 60,
->>> -		.flags = 0xA,
->>> -		.type = 0x40,
->>> -		.name = "Custom 1024x768",
->>> -	};
->>> -
->>> -	kmstest_unset_all_crtcs(drm_fd, drm_res);
->>> -
->>> -	for (i = 0; i < drm_res->count_connectors; i++) {
->>> -		drmModeConnectorPtr c = drm_connectors[i];
->>> -
->>> -		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
->>> -			continue;
->>> -		if (c->connection != DRM_MODE_CONNECTED)
->>> -			continue;
->>> -
->>> -		if (!use_panel_fitter && c->count_modes) {
->>> -			connector = c;
->>> -			mode = &c->modes[0];
->>> -			break;
->>> -		}
->>> -		if (use_panel_fitter) {
->>> -			connector = c;
->>> -
->>> -			/* This is one of the modes Xorg creates for panels, so
->>> -			 * it should work just fine. Notice that Gens that
->>> -			 * support LPSP are too new for panels with native
->>> -			 * 1024x768 resolution, so this should force the panel
->>> -			 * fitter. */
->>> -			igt_assert(c->count_modes &&
->>> -				   c->modes[0].hdisplay > 1024);
->>> -			igt_assert(c->count_modes &&
->>> -				   c->modes[0].vdisplay > 768);
->>> -			mode = &std_1024_mode;
->>> -			break;
->>> -		}
->>> -	}
->>> -	igt_require(connector);
->>> -
->>> -	crtc_id = kmstest_find_crtc_for_connector(drm_fd, drm_res, connector,
->>> -						  0);
->>> -	buffer_id = create_fb(drm_fd, mode->hdisplay, mode->vdisplay);
->>> -
->>> -	igt_assert(buffer_id);
->>> -	igt_assert(connector);
->>> -	igt_assert(mode);
->>> -
->>> -	rc = drmModeSetCrtc(drm_fd, crtc_id, buffer_id, 0, 0,
->>> -			    &connector->connector_id, 1, mode);
->>> -	igt_assert_eq(rc, 0);
->>> -
->>> -	if (use_panel_fitter) {
->>> -		if (IS_HASWELL(devid))
->>> -			igt_assert(!lpsp_is_enabled(drm_fd));
->>> -		else
->>> -			igt_assert(lpsp_is_enabled(drm_fd));
->>> -	} else {
->>> -		igt_assert(lpsp_is_enabled(drm_fd));
->>> -	}
->>> +	igt_plane_t *primary;
->>> +
->>> +	/* set output pipe = PIPE_A for LPSP */
->>> +	igt_output_set_pipe(data->output, PIPE_A);
->>> +	primary = igt_output_get_plane_type(data->output,
->>> +					    DRM_PLANE_TYPE_PRIMARY);
->>> +	igt_plane_set_fb(primary, NULL);
->>> +	igt_create_pattern_fb(data->drm_fd,
->>> +			      data->mode->hdisplay, data->mode->vdisplay,
->>> +			      DRM_FORMAT_XRGB8888,
->>> +			      LOCAL_DRM_FORMAT_MOD_NONE,
->>> +			      &data->fb);
->>> +	igt_plane_set_fb(primary, &data->fb);
->>> +	igt_display_commit(&data->display);
->>>   }
->>> -static void non_edp_subtest(int drm_fd, drmModeResPtr drm_res,
->>> -			    drmModeConnectorPtr *drm_connectors)
->>> +static void test_cleanup(data_t *data)
->>>   {
->>> -	int i, rc;
->>> -	uint32_t crtc_id = 0, buffer_id = 0;
->>> -	drmModeConnectorPtr connector = NULL;
->>> -	drmModeModeInfoPtr mode = NULL;
->>> -
->>> -	kmstest_unset_all_crtcs(drm_fd, drm_res);
->>> -
->>> -	for (i = 0; i < drm_res->count_connectors; i++) {
->>> -		drmModeConnectorPtr c = drm_connectors[i];
->>> -
->>> -		if (c->connector_type == DRM_MODE_CONNECTOR_eDP)
->>> -			continue;
->>> -		if (c->connection != DRM_MODE_CONNECTED)
->>> -			continue;
->>> -
->>> -		if (c->count_modes) {
->>> -			connector = c;
->>> -			mode = &c->modes[0];
->>> -			break;
->>> -		}
->>> -	}
->>> -	igt_require(connector);
->>> -
->>> -	crtc_id = kmstest_find_crtc_for_connector(drm_fd, drm_res, connector,
->>> -						  0);
->>> -	buffer_id = create_fb(drm_fd, mode->hdisplay, mode->vdisplay);
->>> -
->>> -	igt_assert(buffer_id);
->>> -	igt_assert(mode);
->>> -
->>> -	rc = drmModeSetCrtc(drm_fd, crtc_id, buffer_id, 0, 0,
->>> -			    &connector->connector_id, 1, mode);
->>> -	igt_assert_eq(rc, 0);
->>> -
->>> -	igt_assert(!lpsp_is_enabled(drm_fd));
->>> +	igt_plane_t *primary;
->>> +
->>> +	if (!data->output || data->output->pending_pipe == PIPE_NONE)
->>> +		return;
->>> +
->>> +	primary = igt_output_get_plane_type(data->output,
->>> +					    DRM_PLANE_TYPE_PRIMARY);
->>> +	igt_plane_set_fb(primary, NULL);
->>> +	igt_output_set_pipe(data->output, PIPE_NONE);
->>> +	igt_display_commit(&data->display);
->>> +	igt_remove_fb(data->drm_fd, &data->fb);
->>> +	data->output = NULL;
->>>   }
->>> -#define MAX_CONNECTORS 32
->>> +static void test_lpsp(data_t *data)
->>> +{
->>> +	/* LPSP is low power single pipe usages i.e. PIPE_A */
->>> +	igt_require(igt_pipe_connector_valid(PIPE_A, data->output));
->>> +	igt_require_f(i915_output_is_lpsp_capable(data->drm_fd, data->output),
->>> +		      "output is not lpsp capable\n");
->>> +
->>> +	data->mode = igt_output_get_mode(data->output);
->>> +	setup_lpsp_output(data);
->>> +	igt_assert_f(lpsp_is_enabled(data), "%s: lpsp is not enabled\n%s:\n%s\n",
->>> +		     data->output->name, PWR_DOMAIN_INFO, data->pwr_dmn_info =
->>> +		     igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
->>> +}
->>> -int drm_fd;
->>> -uint32_t devid;
->>> -drmModeResPtr drm_res;
->>> -drmModeConnectorPtr drm_connectors[MAX_CONNECTORS];
->>> -struct intel_mmio_data mmio_data;
->>> +IGT_TEST_DESCRIPTION("These tests validates display Low Power Single Pipe configurations");
->>>   igt_main
->>>   {
->>> -	igt_fixture {
->>> -		int i;
->>> -
->>> -		drm_fd = drm_open_driver_master(DRIVER_INTEL);
->>> -		igt_require(drm_fd >= 0);
->>> -
->>> -		devid = intel_get_drm_devid(drm_fd);
->>> -
->>> -		drm_res = drmModeGetResources(drm_fd);
->>> -		igt_require(drm_res);
->>> -		igt_assert(drm_res->count_connectors <= MAX_CONNECTORS);
->>> +	data_t data = {};
->>> -		for (i = 0; i < drm_res->count_connectors; i++)
->>> -			drm_connectors[i] = drmModeGetConnectorCurrent(drm_fd,
->>> -							drm_res->connectors[i]);
->>> +	igt_fixture {
->>> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
->>> +		igt_require(data.drm_fd >= 0);
->>> +		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
->>> +		igt_require(data.debugfs_fd >= 0);
->>>   		igt_pm_enable_audio_runtime_pm();
->>> -
->>> -		igt_require(supports_lpsp(devid));
->>> -
->>> -		intel_register_access_init(&mmio_data, intel_get_pci_device(), 0, drm_fd);
->>> -
->>>   		kmstest_set_vt_graphics_mode();
->>> +		data.devid = intel_get_drm_devid(data.drm_fd);
->>> +		igt_display_require(&data.display, data.drm_fd);
->>> +		igt_require(igt_pm_dmc_loaded(data.debugfs_fd));
->>>   	}
->>> +	igt_describe("This test validates lpsp while all crtc are disabled");
->>>   	igt_subtest("screens-disabled")
->>> -		screens_disabled_subtest(drm_fd, drm_res);
->>> -	igt_subtest("edp-native")
->>> -		edp_subtest(drm_fd, drm_res, drm_connectors, devid, false);
->>> -	igt_subtest("non-edp")
->>> -		non_edp_subtest(drm_fd, drm_res, drm_connectors);
->>> +		screens_disabled_subtest(&data);
->>> -	igt_fixture {
->>> -		int i;
->>> +	igt_describe("This test validates lpsp on all connected outputs on low power PIPE_A");
->>> +	igt_subtest_with_dynamic_f("kms-lpsp") {
->>> +		igt_display_t *display = &data.display;
->>> +		igt_output_t *output;
->>> -		intel_register_access_fini(&mmio_data);
->>> -		for (i = 0; i < drm_res->count_connectors; i++)
->>> -			drmModeFreeConnector(drm_connectors[i]);
->>> -		drmModeFreeResources(drm_res);
->>> -		close(drm_fd);
->>> +		for_each_connected_output(display, output) {
->>> +			igt_dynamic_f("kms-lpsp-%s", output->name) {
->>> +				data.output = output;
->>> +				test_lpsp(&data);
->>> +			}
->>> +
->>> +			test_cleanup(&data);
->>> +		}
->>> +	}
->>> +
->>> +	igt_fixture {
->>> +		free(data.pwr_dmn_info);
->>> +		close(data.drm_fd);
->>> +		igt_display_fini(&data.display);
->>>   	}
->>>   }
-
---------------503DE8A9A822A3F20CC2B9F8
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 17-04-2020 20:58, Anshuman Gupta
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20200417152850.GM5533@intel.com">
-      <pre class="moz-quote-pre" wrap="">On 2020-04-17 at 19:52:00 +0530, Manna, Animesh wrote:
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">
-On 09-04-2020 11:09, Anshuman Gupta wrote:
-</pre>
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">Current implementation of lpsp igt test, assumed that every non-edp
-panel isn't a lpsp panel but it is not true on TGL anymore,
-any HDMI/DP/DSI panel connected on pipe A and connected to PORT_{A,B,C}
-can drive LPSP.
-Even on older Gen9 platform a DP panel can drive lpsp on Port A.
-This requires complete design change in current lpsp igt for a platform
-agnostic support.
-
-The new igt approach is relies on connector specific
-i915_lpsp_capability and i915_lpsp_status debugfs attributes,
-these debugfs exposes whether an output is capable of driving lpsp
-and lpsp is enabled.
-
-Nuking edp-native and non-edp test, introducing a new dynamic
-igt subtest kms-lpsp, which validates lpsp on each connected output
-and skip the subtest if output is not lpsp capable.
-
-v2:
-- CI failures fixup.
-v3:
-- removed unloading of snd_modules. [Martin]
-v4:
-- Don't test non-lpsp(if lpsp disabled), no ROI to test that.
-- nuke panel-fitter test.
-v5:
-- Added dynamic subtest and igt changes according to kernel
-  debugfs i915_lpsp_status changes.
-
-Signed-off-by: Anshuman Gupta <a class="moz-txt-link-rfc2396E" href="mailto:anshuman.gupta@intel.com">&lt;anshuman.gupta@intel.com&gt;</a>
----
- tests/i915/i915_pm_lpsp.c | 285 +++++++++++++++-----------------------
- 1 file changed, 114 insertions(+), 171 deletions(-)
-
-diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
-index 08f82e7c..7be23e6c 100644
---- a/tests/i915/i915_pm_lpsp.c
-+++ b/tests/i915/i915_pm_lpsp.c
-@@ -25,210 +25,153 @@
-  */
- #include "igt.h"
-+#include "igt_kmod.h"
-+#include "igt_pm.h"
-+#include "igt_sysfs.h"
- #include &lt;sys/types.h&gt;
- #include &lt;sys/stat.h&gt;
- #include &lt;fcntl.h&gt;
- #include &lt;unistd.h&gt;
-+#define MAX_SINK_LPSP_INFO_BUF_LEN	4096
--static bool supports_lpsp(uint32_t devid)
--{
--	return IS_HASWELL(devid) || IS_BROADWELL(devid);
--}
-+#define PWR_DOMAIN_INFO "i915_power_domain_info"
--static bool lpsp_is_enabled(int drm_fd)
-+typedef struct {
-+	int drm_fd;
-+	int debugfs_fd;
-+	uint32_t devid;
-+	char *pwr_dmn_info;
-+	igt_display_t display;
-+	struct igt_fb fb;
-+	drmModeModeInfo *mode;
-+	igt_output_t *output;
-+} data_t;
-+
-+static bool lpsp_is_enabled(data_t *data)
- {
--	uint32_t val;
-+	char buf[MAX_SINK_LPSP_INFO_BUF_LEN];
-+	int len;
--	val = INREG(HSW_PWR_WELL_CTL2);
--	return !(val &amp; HSW_PWR_WELL_STATE_ENABLED);
--}
-+	len = igt_debugfs_simple_read(data-&gt;debugfs_fd, "i915_lpsp_status",
-+				      buf, sizeof(buf));
-+	if (len &lt; 0)
-+		igt_assert_eq(len, -ENODEV);
--/* The LPSP mode is all about an enabled pipe, but we expect to also be in the
-- * low power mode when no pipes are enabled, so do this check anyway. */
--static void screens_disabled_subtest(int drm_fd, drmModeResPtr drm_res)
--{
--	kmstest_unset_all_crtcs(drm_fd, drm_res);
--	igt_assert(lpsp_is_enabled(drm_fd));
-+	return strstr(buf, "LPSP: enabled");
- }
--static uint32_t create_fb(int drm_fd, int width, int height)
-+/*
-+ * The LPSP mode is all about an enabled pipe, but we expect to also be in the
-+ * low power mode when no pipes are enabled, so do this check anyway.
-+ */
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">All pipe disabled in not same as lpsp. I feel the idea behind lpsp is single
-pipe usage with least power consumption ... there maybe no display
-connected.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">Yes you are correct that is the same above comment has mentioned that "LPSP mode
-is all about an enabled pipe", but here test method checks for lpsp when all screens 
-are disbaled i.e. all crtc are disabled, that is almost same as there is no display
-connected with respect to power consumption.
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">+static void screens_disabled_subtest(data_t *data)
- {
--	struct igt_fb fb;
-+	igt_output_t *output;
-+	int valid_output = 0;
-+	enum pipe pipe;
-+
-+	for_each_pipe_with_single_output(&amp;data-&gt;display, pipe, output) {
-+		data-&gt;output = output;
-+		igt_output_set_pipe(data-&gt;output, PIPE_NONE);
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">
-Passing PIPE_NONE and testing lpsp maybe not the right thing here. We may
-not have connector but need to enable a single pipe to test lpsp...  rt?
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">PIPE_NONE commit will disbale a crtc, when all crtc gets disbaled, all power well
-except PG1 will be disbaled, PG1 is controlled by DMC.</pre>
-    </blockquote>
-    <pre>I do not think DC9 is controlled by DMC, during all crtc disable driver will disable all power-well and enter into DC9, no role of DMC here ... am I missing anything?
-
-Regards,
-Animesh
-</pre>
-    <blockquote type="cite" cite="mid:20200417152850.GM5533@intel.com">
-      <pre class="moz-quote-pre" wrap="">
-So testing lpsp is here is one of the test case, i.e we want to test power well associated
-to PIPE_B should be turned off. There may be a bug in driver that when all crtc are disbaled
-PIPE_B  associated  power is not turned off, that is what this test validated.
-Enabling a pipe for lpsp will get covered in kms-lpsp test.
-Thanks,
-Anshuman Gupta.
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">
-Regards,
-
-Animesh
-
-</pre>
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">+		igt_display_commit(&amp;data-&gt;display);
-+		valid_output++;
-+	}
--	return igt_create_pattern_fb(drm_fd, width, height, DRM_FORMAT_XRGB8888,
--				     LOCAL_DRM_FORMAT_MOD_NONE, &amp;fb);
-+	igt_require_f(valid_output, "No connected output found\n");
-+	igt_assert_f(lpsp_is_enabled(data), "lpsp is not enabled\n%s:\n%s\n",
-+		     PWR_DOMAIN_INFO, data-&gt;pwr_dmn_info =
-+		     igt_sysfs_get(data-&gt;debugfs_fd, PWR_DOMAIN_INFO));
- }
--static void edp_subtest(int drm_fd, drmModeResPtr drm_res,
--			drmModeConnectorPtr *drm_connectors, uint32_t devid,
--			bool use_panel_fitter)
-+static void setup_lpsp_output(data_t *data)
- {
--	int i, rc;
--	uint32_t crtc_id = 0, buffer_id = 0;
--	drmModeConnectorPtr connector = NULL;
--	drmModeModeInfoPtr mode = NULL;
--	drmModeModeInfo std_1024_mode = {
--		.clock = 65000,
--		.hdisplay = 1024,
--		.hsync_start = 1048,
--		.hsync_end = 1184,
--		.htotal = 1344,
--		.hskew = 0,
--		.vdisplay = 768,
--		.vsync_start = 771,
--		.vsync_end = 777,
--		.vtotal = 806,
--		.vscan = 0,
--		.vrefresh = 60,
--		.flags = 0xA,
--		.type = 0x40,
--		.name = "Custom 1024x768",
--	};
--
--	kmstest_unset_all_crtcs(drm_fd, drm_res);
--
--	for (i = 0; i &lt; drm_res-&gt;count_connectors; i++) {
--		drmModeConnectorPtr c = drm_connectors[i];
--
--		if (c-&gt;connector_type != DRM_MODE_CONNECTOR_eDP)
--			continue;
--		if (c-&gt;connection != DRM_MODE_CONNECTED)
--			continue;
--
--		if (!use_panel_fitter &amp;&amp; c-&gt;count_modes) {
--			connector = c;
--			mode = &amp;c-&gt;modes[0];
--			break;
--		}
--		if (use_panel_fitter) {
--			connector = c;
--
--			/* This is one of the modes Xorg creates for panels, so
--			 * it should work just fine. Notice that Gens that
--			 * support LPSP are too new for panels with native
--			 * 1024x768 resolution, so this should force the panel
--			 * fitter. */
--			igt_assert(c-&gt;count_modes &amp;&amp;
--				   c-&gt;modes[0].hdisplay &gt; 1024);
--			igt_assert(c-&gt;count_modes &amp;&amp;
--				   c-&gt;modes[0].vdisplay &gt; 768);
--			mode = &amp;std_1024_mode;
--			break;
--		}
--	}
--	igt_require(connector);
--
--	crtc_id = kmstest_find_crtc_for_connector(drm_fd, drm_res, connector,
--						  0);
--	buffer_id = create_fb(drm_fd, mode-&gt;hdisplay, mode-&gt;vdisplay);
--
--	igt_assert(buffer_id);
--	igt_assert(connector);
--	igt_assert(mode);
--
--	rc = drmModeSetCrtc(drm_fd, crtc_id, buffer_id, 0, 0,
--			    &amp;connector-&gt;connector_id, 1, mode);
--	igt_assert_eq(rc, 0);
--
--	if (use_panel_fitter) {
--		if (IS_HASWELL(devid))
--			igt_assert(!lpsp_is_enabled(drm_fd));
--		else
--			igt_assert(lpsp_is_enabled(drm_fd));
--	} else {
--		igt_assert(lpsp_is_enabled(drm_fd));
--	}
-+	igt_plane_t *primary;
-+
-+	/* set output pipe = PIPE_A for LPSP */
-+	igt_output_set_pipe(data-&gt;output, PIPE_A);
-+	primary = igt_output_get_plane_type(data-&gt;output,
-+					    DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_create_pattern_fb(data-&gt;drm_fd,
-+			      data-&gt;mode-&gt;hdisplay, data-&gt;mode-&gt;vdisplay,
-+			      DRM_FORMAT_XRGB8888,
-+			      LOCAL_DRM_FORMAT_MOD_NONE,
-+			      &amp;data-&gt;fb);
-+	igt_plane_set_fb(primary, &amp;data-&gt;fb);
-+	igt_display_commit(&amp;data-&gt;display);
- }
--static void non_edp_subtest(int drm_fd, drmModeResPtr drm_res,
--			    drmModeConnectorPtr *drm_connectors)
-+static void test_cleanup(data_t *data)
- {
--	int i, rc;
--	uint32_t crtc_id = 0, buffer_id = 0;
--	drmModeConnectorPtr connector = NULL;
--	drmModeModeInfoPtr mode = NULL;
--
--	kmstest_unset_all_crtcs(drm_fd, drm_res);
--
--	for (i = 0; i &lt; drm_res-&gt;count_connectors; i++) {
--		drmModeConnectorPtr c = drm_connectors[i];
--
--		if (c-&gt;connector_type == DRM_MODE_CONNECTOR_eDP)
--			continue;
--		if (c-&gt;connection != DRM_MODE_CONNECTED)
--			continue;
--
--		if (c-&gt;count_modes) {
--			connector = c;
--			mode = &amp;c-&gt;modes[0];
--			break;
--		}
--	}
--	igt_require(connector);
--
--	crtc_id = kmstest_find_crtc_for_connector(drm_fd, drm_res, connector,
--						  0);
--	buffer_id = create_fb(drm_fd, mode-&gt;hdisplay, mode-&gt;vdisplay);
--
--	igt_assert(buffer_id);
--	igt_assert(mode);
--
--	rc = drmModeSetCrtc(drm_fd, crtc_id, buffer_id, 0, 0,
--			    &amp;connector-&gt;connector_id, 1, mode);
--	igt_assert_eq(rc, 0);
--
--	igt_assert(!lpsp_is_enabled(drm_fd));
-+	igt_plane_t *primary;
-+
-+	if (!data-&gt;output || data-&gt;output-&gt;pending_pipe == PIPE_NONE)
-+		return;
-+
-+	primary = igt_output_get_plane_type(data-&gt;output,
-+					    DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_output_set_pipe(data-&gt;output, PIPE_NONE);
-+	igt_display_commit(&amp;data-&gt;display);
-+	igt_remove_fb(data-&gt;drm_fd, &amp;data-&gt;fb);
-+	data-&gt;output = NULL;
- }
--#define MAX_CONNECTORS 32
-+static void test_lpsp(data_t *data)
-+{
-+	/* LPSP is low power single pipe usages i.e. PIPE_A */
-+	igt_require(igt_pipe_connector_valid(PIPE_A, data-&gt;output));
-+	igt_require_f(i915_output_is_lpsp_capable(data-&gt;drm_fd, data-&gt;output),
-+		      "output is not lpsp capable\n");
-+
-+	data-&gt;mode = igt_output_get_mode(data-&gt;output);
-+	setup_lpsp_output(data);
-+	igt_assert_f(lpsp_is_enabled(data), "%s: lpsp is not enabled\n%s:\n%s\n",
-+		     data-&gt;output-&gt;name, PWR_DOMAIN_INFO, data-&gt;pwr_dmn_info =
-+		     igt_sysfs_get(data-&gt;debugfs_fd, PWR_DOMAIN_INFO));
-+}
--int drm_fd;
--uint32_t devid;
--drmModeResPtr drm_res;
--drmModeConnectorPtr drm_connectors[MAX_CONNECTORS];
--struct intel_mmio_data mmio_data;
-+IGT_TEST_DESCRIPTION("These tests validates display Low Power Single Pipe configurations");
- igt_main
- {
--	igt_fixture {
--		int i;
--
--		drm_fd = drm_open_driver_master(DRIVER_INTEL);
--		igt_require(drm_fd &gt;= 0);
--
--		devid = intel_get_drm_devid(drm_fd);
--
--		drm_res = drmModeGetResources(drm_fd);
--		igt_require(drm_res);
--		igt_assert(drm_res-&gt;count_connectors &lt;= MAX_CONNECTORS);
-+	data_t data = {};
--		for (i = 0; i &lt; drm_res-&gt;count_connectors; i++)
--			drm_connectors[i] = drmModeGetConnectorCurrent(drm_fd,
--							drm_res-&gt;connectors[i]);
-+	igt_fixture {
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+		igt_require(data.drm_fd &gt;= 0);
-+		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
-+		igt_require(data.debugfs_fd &gt;= 0);
- 		igt_pm_enable_audio_runtime_pm();
--
--		igt_require(supports_lpsp(devid));
--
--		intel_register_access_init(&amp;mmio_data, intel_get_pci_device(), 0, drm_fd);
--
- 		kmstest_set_vt_graphics_mode();
-+		data.devid = intel_get_drm_devid(data.drm_fd);
-+		igt_display_require(&amp;data.display, data.drm_fd);
-+		igt_require(igt_pm_dmc_loaded(data.debugfs_fd));
- 	}
-+	igt_describe("This test validates lpsp while all crtc are disabled");
- 	igt_subtest("screens-disabled")
--		screens_disabled_subtest(drm_fd, drm_res);
--	igt_subtest("edp-native")
--		edp_subtest(drm_fd, drm_res, drm_connectors, devid, false);
--	igt_subtest("non-edp")
--		non_edp_subtest(drm_fd, drm_res, drm_connectors);
-+		screens_disabled_subtest(&amp;data);
--	igt_fixture {
--		int i;
-+	igt_describe("This test validates lpsp on all connected outputs on low power PIPE_A");
-+	igt_subtest_with_dynamic_f("kms-lpsp") {
-+		igt_display_t *display = &amp;data.display;
-+		igt_output_t *output;
--		intel_register_access_fini(&amp;mmio_data);
--		for (i = 0; i &lt; drm_res-&gt;count_connectors; i++)
--			drmModeFreeConnector(drm_connectors[i]);
--		drmModeFreeResources(drm_res);
--		close(drm_fd);
-+		for_each_connected_output(display, output) {
-+			igt_dynamic_f("kms-lpsp-%s", output-&gt;name) {
-+				data.output = output;
-+				test_lpsp(&amp;data);
-+			}
-+
-+			test_cleanup(&amp;data);
-+		}
-+	}
-+
-+	igt_fixture {
-+		free(data.pwr_dmn_info);
-+		close(data.drm_fd);
-+		igt_display_fini(&amp;data.display);
- 	}
- }
-</pre>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-  </body>
-</html>
-
---------------503DE8A9A822A3F20CC2B9F8--
-
---===============1101167864==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============1101167864==--
+T24gMjAyMC0wNC0xNyBhdCAyMTo1NzoyNSArMDUzMCwgTWFubmEsIEFuaW1lc2ggd3JvdGU6Cj4g
+Cj4gT24gMTctMDQtMjAyMCAyMDo1OCwgQW5zaHVtYW4gR3VwdGEgd3JvdGU6Cj4gPk9uIDIwMjAt
+MDQtMTcgYXQgMTk6NTI6MDAgKzA1MzAsIE1hbm5hLCBBbmltZXNoIHdyb3RlOgo+ID4+T24gMDkt
+MDQtMjAyMCAxMTowOSwgQW5zaHVtYW4gR3VwdGEgd3JvdGU6Cj4gPj4+Q3VycmVudCBpbXBsZW1l
+bnRhdGlvbiBvZiBscHNwIGlndCB0ZXN0LCBhc3N1bWVkIHRoYXQgZXZlcnkgbm9uLWVkcAo+ID4+
+PnBhbmVsIGlzbid0IGEgbHBzcCBwYW5lbCBidXQgaXQgaXMgbm90IHRydWUgb24gVEdMIGFueW1v
+cmUsCj4gPj4+YW55IEhETUkvRFAvRFNJIHBhbmVsIGNvbm5lY3RlZCBvbiBwaXBlIEEgYW5kIGNv
+bm5lY3RlZCB0byBQT1JUX3tBLEIsQ30KPiA+Pj5jYW4gZHJpdmUgTFBTUC4KPiA+Pj5FdmVuIG9u
+IG9sZGVyIEdlbjkgcGxhdGZvcm0gYSBEUCBwYW5lbCBjYW4gZHJpdmUgbHBzcCBvbiBQb3J0IEEu
+Cj4gPj4+VGhpcyByZXF1aXJlcyBjb21wbGV0ZSBkZXNpZ24gY2hhbmdlIGluIGN1cnJlbnQgbHBz
+cCBpZ3QgZm9yIGEgcGxhdGZvcm0KPiA+Pj5hZ25vc3RpYyBzdXBwb3J0Lgo+ID4+Pgo+ID4+PlRo
+ZSBuZXcgaWd0IGFwcHJvYWNoIGlzIHJlbGllcyBvbiBjb25uZWN0b3Igc3BlY2lmaWMKPiA+Pj5p
+OTE1X2xwc3BfY2FwYWJpbGl0eSBhbmQgaTkxNV9scHNwX3N0YXR1cyBkZWJ1Z2ZzIGF0dHJpYnV0
+ZXMsCj4gPj4+dGhlc2UgZGVidWdmcyBleHBvc2VzIHdoZXRoZXIgYW4gb3V0cHV0IGlzIGNhcGFi
+bGUgb2YgZHJpdmluZyBscHNwCj4gPj4+YW5kIGxwc3AgaXMgZW5hYmxlZC4KPiA+Pj4KPiA+Pj5O
+dWtpbmcgZWRwLW5hdGl2ZSBhbmQgbm9uLWVkcCB0ZXN0LCBpbnRyb2R1Y2luZyBhIG5ldyBkeW5h
+bWljCj4gPj4+aWd0IHN1YnRlc3Qga21zLWxwc3AsIHdoaWNoIHZhbGlkYXRlcyBscHNwIG9uIGVh
+Y2ggY29ubmVjdGVkIG91dHB1dAo+ID4+PmFuZCBza2lwIHRoZSBzdWJ0ZXN0IGlmIG91dHB1dCBp
+cyBub3QgbHBzcCBjYXBhYmxlLgo+ID4+Pgo+ID4+PnYyOgo+ID4+Pi0gQ0kgZmFpbHVyZXMgZml4
+dXAuCj4gPj4+djM6Cj4gPj4+LSByZW1vdmVkIHVubG9hZGluZyBvZiBzbmRfbW9kdWxlcy4gW01h
+cnRpbl0KPiA+Pj52NDoKPiA+Pj4tIERvbid0IHRlc3Qgbm9uLWxwc3AoaWYgbHBzcCBkaXNhYmxl
+ZCksIG5vIFJPSSB0byB0ZXN0IHRoYXQuCj4gPj4+LSBudWtlIHBhbmVsLWZpdHRlciB0ZXN0Lgo+
+ID4+PnY1Ogo+ID4+Pi0gQWRkZWQgZHluYW1pYyBzdWJ0ZXN0IGFuZCBpZ3QgY2hhbmdlcyBhY2Nv
+cmRpbmcgdG8ga2VybmVsCj4gPj4+ICAgZGVidWdmcyBpOTE1X2xwc3Bfc3RhdHVzIGNoYW5nZXMu
+Cj4gPj4+Cj4gPj4+U2lnbmVkLW9mZi1ieTogQW5zaHVtYW4gR3VwdGEgPGFuc2h1bWFuLmd1cHRh
+QGludGVsLmNvbT4KPiA+Pj4tLS0KPiA+Pj4gIHRlc3RzL2k5MTUvaTkxNV9wbV9scHNwLmMgfCAy
+ODUgKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiA+Pj4gIDEgZmlsZSBj
+aGFuZ2VkLCAxMTQgaW5zZXJ0aW9ucygrKSwgMTcxIGRlbGV0aW9ucygtKQo+ID4+Pgo+ID4+PmRp
+ZmYgLS1naXQgYS90ZXN0cy9pOTE1L2k5MTVfcG1fbHBzcC5jIGIvdGVzdHMvaTkxNS9pOTE1X3Bt
+X2xwc3AuYwo+ID4+PmluZGV4IDA4ZjgyZTdjLi43YmUyM2U2YyAxMDA2NDQKPiA+Pj4tLS0gYS90
+ZXN0cy9pOTE1L2k5MTVfcG1fbHBzcC5jCj4gPj4+KysrIGIvdGVzdHMvaTkxNS9pOTE1X3BtX2xw
+c3AuYwo+ID4+PkBAIC0yNSwyMTAgKzI1LDE1MyBAQAo+ID4+PiAgICovCj4gPj4+ICAjaW5jbHVk
+ZSAiaWd0LmgiCj4gPj4+KyNpbmNsdWRlICJpZ3Rfa21vZC5oIgo+ID4+PisjaW5jbHVkZSAiaWd0
+X3BtLmgiCj4gPj4+KyNpbmNsdWRlICJpZ3Rfc3lzZnMuaCIKPiA+Pj4gICNpbmNsdWRlIDxzeXMv
+dHlwZXMuaD4KPiA+Pj4gICNpbmNsdWRlIDxzeXMvc3RhdC5oPgo+ID4+PiAgI2luY2x1ZGUgPGZj
+bnRsLmg+Cj4gPj4+ICAjaW5jbHVkZSA8dW5pc3RkLmg+Cj4gPj4+KyNkZWZpbmUgTUFYX1NJTktf
+TFBTUF9JTkZPX0JVRl9MRU4JNDA5Ngo+ID4+Pi1zdGF0aWMgYm9vbCBzdXBwb3J0c19scHNwKHVp
+bnQzMl90IGRldmlkKQo+ID4+Pi17Cj4gPj4+LQlyZXR1cm4gSVNfSEFTV0VMTChkZXZpZCkgfHwg
+SVNfQlJPQURXRUxMKGRldmlkKTsKPiA+Pj4tfQo+ID4+PisjZGVmaW5lIFBXUl9ET01BSU5fSU5G
+TyAiaTkxNV9wb3dlcl9kb21haW5faW5mbyIKPiA+Pj4tc3RhdGljIGJvb2wgbHBzcF9pc19lbmFi
+bGVkKGludCBkcm1fZmQpCj4gPj4+K3R5cGVkZWYgc3RydWN0IHsKPiA+Pj4rCWludCBkcm1fZmQ7
+Cj4gPj4+KwlpbnQgZGVidWdmc19mZDsKPiA+Pj4rCXVpbnQzMl90IGRldmlkOwo+ID4+PisJY2hh
+ciAqcHdyX2Rtbl9pbmZvOwo+ID4+PisJaWd0X2Rpc3BsYXlfdCBkaXNwbGF5Owo+ID4+PisJc3Ry
+dWN0IGlndF9mYiBmYjsKPiA+Pj4rCWRybU1vZGVNb2RlSW5mbyAqbW9kZTsKPiA+Pj4rCWlndF9v
+dXRwdXRfdCAqb3V0cHV0Owo+ID4+Pit9IGRhdGFfdDsKPiA+Pj4rCj4gPj4+K3N0YXRpYyBib29s
+IGxwc3BfaXNfZW5hYmxlZChkYXRhX3QgKmRhdGEpCj4gPj4+ICB7Cj4gPj4+LQl1aW50MzJfdCB2
+YWw7Cj4gPj4+KwljaGFyIGJ1ZltNQVhfU0lOS19MUFNQX0lORk9fQlVGX0xFTl07Cj4gPj4+Kwlp
+bnQgbGVuOwo+ID4+Pi0JdmFsID0gSU5SRUcoSFNXX1BXUl9XRUxMX0NUTDIpOwo+ID4+Pi0JcmV0
+dXJuICEodmFsICYgSFNXX1BXUl9XRUxMX1NUQVRFX0VOQUJMRUQpOwo+ID4+Pi19Cj4gPj4+Kwls
+ZW4gPSBpZ3RfZGVidWdmc19zaW1wbGVfcmVhZChkYXRhLT5kZWJ1Z2ZzX2ZkLCAiaTkxNV9scHNw
+X3N0YXR1cyIsCj4gPj4+KwkJCQkgICAgICBidWYsIHNpemVvZihidWYpKTsKPiA+Pj4rCWlmIChs
+ZW4gPCAwKQo+ID4+PisJCWlndF9hc3NlcnRfZXEobGVuLCAtRU5PREVWKTsKPiA+Pj4tLyogVGhl
+IExQU1AgbW9kZSBpcyBhbGwgYWJvdXQgYW4gZW5hYmxlZCBwaXBlLCBidXQgd2UgZXhwZWN0IHRv
+IGFsc28gYmUgaW4gdGhlCj4gPj4+LSAqIGxvdyBwb3dlciBtb2RlIHdoZW4gbm8gcGlwZXMgYXJl
+IGVuYWJsZWQsIHNvIGRvIHRoaXMgY2hlY2sgYW55d2F5LiAqLwo+ID4+Pi1zdGF0aWMgdm9pZCBz
+Y3JlZW5zX2Rpc2FibGVkX3N1YnRlc3QoaW50IGRybV9mZCwgZHJtTW9kZVJlc1B0ciBkcm1fcmVz
+KQo+ID4+Pi17Cj4gPj4+LQlrbXN0ZXN0X3Vuc2V0X2FsbF9jcnRjcyhkcm1fZmQsIGRybV9yZXMp
+Owo+ID4+Pi0JaWd0X2Fzc2VydChscHNwX2lzX2VuYWJsZWQoZHJtX2ZkKSk7Cj4gPj4+KwlyZXR1
+cm4gc3Ryc3RyKGJ1ZiwgIkxQU1A6IGVuYWJsZWQiKTsKPiA+Pj4gIH0KPiA+Pj4tc3RhdGljIHVp
+bnQzMl90IGNyZWF0ZV9mYihpbnQgZHJtX2ZkLCBpbnQgd2lkdGgsIGludCBoZWlnaHQpCj4gPj4+
+Ky8qCj4gPj4+KyAqIFRoZSBMUFNQIG1vZGUgaXMgYWxsIGFib3V0IGFuIGVuYWJsZWQgcGlwZSwg
+YnV0IHdlIGV4cGVjdCB0byBhbHNvIGJlIGluIHRoZQo+ID4+PisgKiBsb3cgcG93ZXIgbW9kZSB3
+aGVuIG5vIHBpcGVzIGFyZSBlbmFibGVkLCBzbyBkbyB0aGlzIGNoZWNrIGFueXdheS4KPiA+Pj4r
+ICovCj4gPj5BbGwgcGlwZSBkaXNhYmxlZCBpbiBub3Qgc2FtZSBhcyBscHNwLiBJIGZlZWwgdGhl
+IGlkZWEgYmVoaW5kIGxwc3AgaXMgc2luZ2xlCj4gPj5waXBlIHVzYWdlIHdpdGggbGVhc3QgcG93
+ZXIgY29uc3VtcHRpb24gLi4uIHRoZXJlIG1heWJlIG5vIGRpc3BsYXkKPiA+PmNvbm5lY3RlZC4K
+PiA+WWVzIHlvdSBhcmUgY29ycmVjdCB0aGF0IGlzIHRoZSBzYW1lIGFib3ZlIGNvbW1lbnQgaGFz
+IG1lbnRpb25lZCB0aGF0ICJMUFNQIG1vZGUKPiA+aXMgYWxsIGFib3V0IGFuIGVuYWJsZWQgcGlw
+ZSIsIGJ1dCBoZXJlIHRlc3QgbWV0aG9kIGNoZWNrcyBmb3IgbHBzcCB3aGVuIGFsbCBzY3JlZW5z
+Cj4gPmFyZSBkaXNiYWxlZCBpLmUuIGFsbCBjcnRjIGFyZSBkaXNhYmxlZCwgdGhhdCBpcyBhbG1v
+c3Qgc2FtZSBhcyB0aGVyZSBpcyBubyBkaXNwbGF5Cj4gPmNvbm5lY3RlZCB3aXRoIHJlc3BlY3Qg
+dG8gcG93ZXIgY29uc3VtcHRpb24uCj4gPj4+K3N0YXRpYyB2b2lkIHNjcmVlbnNfZGlzYWJsZWRf
+c3VidGVzdChkYXRhX3QgKmRhdGEpCj4gPj4+ICB7Cj4gPj4+LQlzdHJ1Y3QgaWd0X2ZiIGZiOwo+
+ID4+PisJaWd0X291dHB1dF90ICpvdXRwdXQ7Cj4gPj4+KwlpbnQgdmFsaWRfb3V0cHV0ID0gMDsK
+PiA+Pj4rCWVudW0gcGlwZSBwaXBlOwo+ID4+PisKPiA+Pj4rCWZvcl9lYWNoX3BpcGVfd2l0aF9z
+aW5nbGVfb3V0cHV0KCZkYXRhLT5kaXNwbGF5LCBwaXBlLCBvdXRwdXQpIHsKPiA+Pj4rCQlkYXRh
+LT5vdXRwdXQgPSBvdXRwdXQ7Cj4gPj4+KwkJaWd0X291dHB1dF9zZXRfcGlwZShkYXRhLT5vdXRw
+dXQsIFBJUEVfTk9ORSk7Cj4gPj5QYXNzaW5nIFBJUEVfTk9ORSBhbmQgdGVzdGluZyBscHNwIG1h
+eWJlIG5vdCB0aGUgcmlnaHQgdGhpbmcgaGVyZS4gV2UgbWF5Cj4gPj5ub3QgaGF2ZSBjb25uZWN0
+b3IgYnV0IG5lZWQgdG8gZW5hYmxlIGEgc2luZ2xlIHBpcGUgdG8gdGVzdCBscHNwLi4uwqAgcnQ/
+Cj4gPlBJUEVfTk9ORSBjb21taXQgd2lsbCBkaXNiYWxlIGEgY3J0Yywgd2hlbiBhbGwgY3J0YyBn
+ZXRzIGRpc2JhbGVkLCBhbGwgcG93ZXIgd2VsbAo+ID5leGNlcHQgUEcxIHdpbGwgYmUgZGlzYmFs
+ZWQsIFBHMSBpcyBjb250cm9sbGVkIGJ5IERNQy4KPiAKPiBJIGRvIG5vdCB0aGluayBEQzkgaXMg
+Y29udHJvbGxlZCBieSBETUMsIGR1cmluZyBhbGwgY3J0YyBkaXNhYmxlIGRyaXZlciB3aWxsIGRp
+c2FibGUgYWxsIHBvd2VyLXdlbGwgYW5kIGVudGVyIGludG8gREM5LCBubyByb2xlIG9mIERNQyBo
+ZXJlIC4uLiBhbSBJIG1pc3NpbmcgYW55dGhpbmc/CnllcyBEQzkgaXMgbm90IGNvbnRyb2xsZWQg
+YnkgRE1DLCBhbmQgaTkxNSBwcm9ncmFtIERDOSBpbiBjYXNlIG9mIHJ1bnRpbWUgc3VzcGVuZCBv
+ciBzeXN0ZW0gd2lkZSBzdXNwZW5kLCBzbyBEQzkgYSBkZWVwZXIgc3RhdGUgZGVwZW5kcyBvbiBp
+OTE1IHN1c3BlbmQsIGxldCdzIHRoaW5rIGFib3V0IGEgdXNlIGNhc2Ugd2hlbiBhbGwgQ1JUQyBh
+cmUgZGlzYWJsZWQgYnV0IGdlbSBoYXMgdmFsaWQgcnVuIHRpbWUgdXNhZ2VzIGNvdW50IG9yIGxl
+dCdzIHNheSBpOTE1IGRldmljZSBpcyBhbHdheXMgb24gaS5lICgvc3lzL2J1cy9wY2kvZGV2aWNl
+cy8wMDAwXDowMFw6MDIuMC9wb3dlci9jb250cm9sIGF0dHJpYnV0ZSBpbiBvbiksIGluIHRob3Nl
+IGNhc2VzIHJ1bnRpbWUgc3RhdHVzIHdpbGwgYmUgYWx3YXlzIGFjdGl2ZSwgc28gaSB0aGluayB0
+ZXN0IG1ldGhvZCB0byB2YWxpZGF0ZSBQSVBFX0IgYXNzb2NpYXRlZCBwb3dlciB3ZWxsIGlzIHZh
+bGlkIGhlcmUgd2hlbiBhbGwgY3J0YyBhcmUgZGlzYmFsZWQgaS5lLiBhbGwgZGlzcGxheSBhcmUg
+b2ZmLgpXZSB3YW50IHZhbGlkYXRlIGEgaW50ZXJtZWRpYXRlIHBvd2VyIHN0YXRlIGhlcmUsIHdo
+aWNoIGlzIGEgdmFsaWQgdXNlIGNhc2UuClBsZWFzZSBjb3JyZWN0IG1lIGlmIG15IHRob3VnaHQg
+cHJvY2VzcyBhYm91dCB0ZXN0IG1ldGhvZCBpcyB3cm9uZy4KVGhhbmtzICwKQW5zaHVtYW4gR3Vw
+dGEuCj4gCj4gUmVnYXJkcywKPiBBbmltZXNoCj4gCj4gPlNvIHRlc3RpbmcgbHBzcCBpcyBoZXJl
+IGlzIG9uZSBvZiB0aGUgdGVzdCBjYXNlLCBpLmUgd2Ugd2FudCB0byB0ZXN0IHBvd2VyIHdlbGwg
+YXNzb2NpYXRlZAo+ID50byBQSVBFX0Igc2hvdWxkIGJlIHR1cm5lZCBvZmYuIFRoZXJlIG1heSBi
+ZSBhIGJ1ZyBpbiBkcml2ZXIgdGhhdCB3aGVuIGFsbCBjcnRjIGFyZSBkaXNiYWxlZAo+ID5QSVBF
+X0IgIGFzc29jaWF0ZWQgIHBvd2VyIGlzIG5vdCB0dXJuZWQgb2ZmLCB0aGF0IGlzIHdoYXQgdGhp
+cyB0ZXN0IHZhbGlkYXRlZC4KPiA+RW5hYmxpbmcgYSBwaXBlIGZvciBscHNwIHdpbGwgZ2V0IGNv
+dmVyZWQgaW4ga21zLWxwc3AgdGVzdC4KPiA+VGhhbmtzLAo+ID5BbnNodW1hbiBHdXB0YS4KPiA+
+PlJlZ2FyZHMsCj4gPj4KPiA+PkFuaW1lc2gKPiA+Pgo+ID4+PisJCWlndF9kaXNwbGF5X2NvbW1p
+dCgmZGF0YS0+ZGlzcGxheSk7Cj4gPj4+KwkJdmFsaWRfb3V0cHV0Kys7Cj4gPj4+Kwl9Cj4gPj4+
+LQlyZXR1cm4gaWd0X2NyZWF0ZV9wYXR0ZXJuX2ZiKGRybV9mZCwgd2lkdGgsIGhlaWdodCwgRFJN
+X0ZPUk1BVF9YUkdCODg4OCwKPiA+Pj4tCQkJCSAgICAgTE9DQUxfRFJNX0ZPUk1BVF9NT0RfTk9O
+RSwgJmZiKTsKPiA+Pj4rCWlndF9yZXF1aXJlX2YodmFsaWRfb3V0cHV0LCAiTm8gY29ubmVjdGVk
+IG91dHB1dCBmb3VuZFxuIik7Cj4gPj4+KwlpZ3RfYXNzZXJ0X2YobHBzcF9pc19lbmFibGVkKGRh
+dGEpLCAibHBzcCBpcyBub3QgZW5hYmxlZFxuJXM6XG4lc1xuIiwKPiA+Pj4rCQkgICAgIFBXUl9E
+T01BSU5fSU5GTywgZGF0YS0+cHdyX2Rtbl9pbmZvID0KPiA+Pj4rCQkgICAgIGlndF9zeXNmc19n
+ZXQoZGF0YS0+ZGVidWdmc19mZCwgUFdSX0RPTUFJTl9JTkZPKSk7Cj4gPj4+ICB9Cj4gPj4+LXN0
+YXRpYyB2b2lkIGVkcF9zdWJ0ZXN0KGludCBkcm1fZmQsIGRybU1vZGVSZXNQdHIgZHJtX3JlcywK
+PiA+Pj4tCQkJZHJtTW9kZUNvbm5lY3RvclB0ciAqZHJtX2Nvbm5lY3RvcnMsIHVpbnQzMl90IGRl
+dmlkLAo+ID4+Pi0JCQlib29sIHVzZV9wYW5lbF9maXR0ZXIpCj4gPj4+K3N0YXRpYyB2b2lkIHNl
+dHVwX2xwc3Bfb3V0cHV0KGRhdGFfdCAqZGF0YSkKPiA+Pj4gIHsKPiA+Pj4tCWludCBpLCByYzsK
+PiA+Pj4tCXVpbnQzMl90IGNydGNfaWQgPSAwLCBidWZmZXJfaWQgPSAwOwo+ID4+Pi0JZHJtTW9k
+ZUNvbm5lY3RvclB0ciBjb25uZWN0b3IgPSBOVUxMOwo+ID4+Pi0JZHJtTW9kZU1vZGVJbmZvUHRy
+IG1vZGUgPSBOVUxMOwo+ID4+Pi0JZHJtTW9kZU1vZGVJbmZvIHN0ZF8xMDI0X21vZGUgPSB7Cj4g
+Pj4+LQkJLmNsb2NrID0gNjUwMDAsCj4gPj4+LQkJLmhkaXNwbGF5ID0gMTAyNCwKPiA+Pj4tCQku
+aHN5bmNfc3RhcnQgPSAxMDQ4LAo+ID4+Pi0JCS5oc3luY19lbmQgPSAxMTg0LAo+ID4+Pi0JCS5o
+dG90YWwgPSAxMzQ0LAo+ID4+Pi0JCS5oc2tldyA9IDAsCj4gPj4+LQkJLnZkaXNwbGF5ID0gNzY4
+LAo+ID4+Pi0JCS52c3luY19zdGFydCA9IDc3MSwKPiA+Pj4tCQkudnN5bmNfZW5kID0gNzc3LAo+
+ID4+Pi0JCS52dG90YWwgPSA4MDYsCj4gPj4+LQkJLnZzY2FuID0gMCwKPiA+Pj4tCQkudnJlZnJl
+c2ggPSA2MCwKPiA+Pj4tCQkuZmxhZ3MgPSAweEEsCj4gPj4+LQkJLnR5cGUgPSAweDQwLAo+ID4+
+Pi0JCS5uYW1lID0gIkN1c3RvbSAxMDI0eDc2OCIsCj4gPj4+LQl9Owo+ID4+Pi0KPiA+Pj4tCWtt
+c3Rlc3RfdW5zZXRfYWxsX2NydGNzKGRybV9mZCwgZHJtX3Jlcyk7Cj4gPj4+LQo+ID4+Pi0JZm9y
+IChpID0gMDsgaSA8IGRybV9yZXMtPmNvdW50X2Nvbm5lY3RvcnM7IGkrKykgewo+ID4+Pi0JCWRy
+bU1vZGVDb25uZWN0b3JQdHIgYyA9IGRybV9jb25uZWN0b3JzW2ldOwo+ID4+Pi0KPiA+Pj4tCQlp
+ZiAoYy0+Y29ubmVjdG9yX3R5cGUgIT0gRFJNX01PREVfQ09OTkVDVE9SX2VEUCkKPiA+Pj4tCQkJ
+Y29udGludWU7Cj4gPj4+LQkJaWYgKGMtPmNvbm5lY3Rpb24gIT0gRFJNX01PREVfQ09OTkVDVEVE
+KQo+ID4+Pi0JCQljb250aW51ZTsKPiA+Pj4tCj4gPj4+LQkJaWYgKCF1c2VfcGFuZWxfZml0dGVy
+ICYmIGMtPmNvdW50X21vZGVzKSB7Cj4gPj4+LQkJCWNvbm5lY3RvciA9IGM7Cj4gPj4+LQkJCW1v
+ZGUgPSAmYy0+bW9kZXNbMF07Cj4gPj4+LQkJCWJyZWFrOwo+ID4+Pi0JCX0KPiA+Pj4tCQlpZiAo
+dXNlX3BhbmVsX2ZpdHRlcikgewo+ID4+Pi0JCQljb25uZWN0b3IgPSBjOwo+ID4+Pi0KPiA+Pj4t
+CQkJLyogVGhpcyBpcyBvbmUgb2YgdGhlIG1vZGVzIFhvcmcgY3JlYXRlcyBmb3IgcGFuZWxzLCBz
+bwo+ID4+Pi0JCQkgKiBpdCBzaG91bGQgd29yayBqdXN0IGZpbmUuIE5vdGljZSB0aGF0IEdlbnMg
+dGhhdAo+ID4+Pi0JCQkgKiBzdXBwb3J0IExQU1AgYXJlIHRvbyBuZXcgZm9yIHBhbmVscyB3aXRo
+IG5hdGl2ZQo+ID4+Pi0JCQkgKiAxMDI0eDc2OCByZXNvbHV0aW9uLCBzbyB0aGlzIHNob3VsZCBm
+b3JjZSB0aGUgcGFuZWwKPiA+Pj4tCQkJICogZml0dGVyLiAqLwo+ID4+Pi0JCQlpZ3RfYXNzZXJ0
+KGMtPmNvdW50X21vZGVzICYmCj4gPj4+LQkJCQkgICBjLT5tb2Rlc1swXS5oZGlzcGxheSA+IDEw
+MjQpOwo+ID4+Pi0JCQlpZ3RfYXNzZXJ0KGMtPmNvdW50X21vZGVzICYmCj4gPj4+LQkJCQkgICBj
+LT5tb2Rlc1swXS52ZGlzcGxheSA+IDc2OCk7Cj4gPj4+LQkJCW1vZGUgPSAmc3RkXzEwMjRfbW9k
+ZTsKPiA+Pj4tCQkJYnJlYWs7Cj4gPj4+LQkJfQo+ID4+Pi0JfQo+ID4+Pi0JaWd0X3JlcXVpcmUo
+Y29ubmVjdG9yKTsKPiA+Pj4tCj4gPj4+LQljcnRjX2lkID0ga21zdGVzdF9maW5kX2NydGNfZm9y
+X2Nvbm5lY3Rvcihkcm1fZmQsIGRybV9yZXMsIGNvbm5lY3RvciwKPiA+Pj4tCQkJCQkJICAwKTsK
+PiA+Pj4tCWJ1ZmZlcl9pZCA9IGNyZWF0ZV9mYihkcm1fZmQsIG1vZGUtPmhkaXNwbGF5LCBtb2Rl
+LT52ZGlzcGxheSk7Cj4gPj4+LQo+ID4+Pi0JaWd0X2Fzc2VydChidWZmZXJfaWQpOwo+ID4+Pi0J
+aWd0X2Fzc2VydChjb25uZWN0b3IpOwo+ID4+Pi0JaWd0X2Fzc2VydChtb2RlKTsKPiA+Pj4tCj4g
+Pj4+LQlyYyA9IGRybU1vZGVTZXRDcnRjKGRybV9mZCwgY3J0Y19pZCwgYnVmZmVyX2lkLCAwLCAw
+LAo+ID4+Pi0JCQkgICAgJmNvbm5lY3Rvci0+Y29ubmVjdG9yX2lkLCAxLCBtb2RlKTsKPiA+Pj4t
+CWlndF9hc3NlcnRfZXEocmMsIDApOwo+ID4+Pi0KPiA+Pj4tCWlmICh1c2VfcGFuZWxfZml0dGVy
+KSB7Cj4gPj4+LQkJaWYgKElTX0hBU1dFTEwoZGV2aWQpKQo+ID4+Pi0JCQlpZ3RfYXNzZXJ0KCFs
+cHNwX2lzX2VuYWJsZWQoZHJtX2ZkKSk7Cj4gPj4+LQkJZWxzZQo+ID4+Pi0JCQlpZ3RfYXNzZXJ0
+KGxwc3BfaXNfZW5hYmxlZChkcm1fZmQpKTsKPiA+Pj4tCX0gZWxzZSB7Cj4gPj4+LQkJaWd0X2Fz
+c2VydChscHNwX2lzX2VuYWJsZWQoZHJtX2ZkKSk7Cj4gPj4+LQl9Cj4gPj4+KwlpZ3RfcGxhbmVf
+dCAqcHJpbWFyeTsKPiA+Pj4rCj4gPj4+KwkvKiBzZXQgb3V0cHV0IHBpcGUgPSBQSVBFX0EgZm9y
+IExQU1AgKi8KPiA+Pj4rCWlndF9vdXRwdXRfc2V0X3BpcGUoZGF0YS0+b3V0cHV0LCBQSVBFX0Ep
+Owo+ID4+PisJcHJpbWFyeSA9IGlndF9vdXRwdXRfZ2V0X3BsYW5lX3R5cGUoZGF0YS0+b3V0cHV0
+LAo+ID4+PisJCQkJCSAgICBEUk1fUExBTkVfVFlQRV9QUklNQVJZKTsKPiA+Pj4rCWlndF9wbGFu
+ZV9zZXRfZmIocHJpbWFyeSwgTlVMTCk7Cj4gPj4+KwlpZ3RfY3JlYXRlX3BhdHRlcm5fZmIoZGF0
+YS0+ZHJtX2ZkLAo+ID4+PisJCQkgICAgICBkYXRhLT5tb2RlLT5oZGlzcGxheSwgZGF0YS0+bW9k
+ZS0+dmRpc3BsYXksCj4gPj4+KwkJCSAgICAgIERSTV9GT1JNQVRfWFJHQjg4ODgsCj4gPj4+KwkJ
+CSAgICAgIExPQ0FMX0RSTV9GT1JNQVRfTU9EX05PTkUsCj4gPj4+KwkJCSAgICAgICZkYXRhLT5m
+Yik7Cj4gPj4+KwlpZ3RfcGxhbmVfc2V0X2ZiKHByaW1hcnksICZkYXRhLT5mYik7Cj4gPj4+Kwlp
+Z3RfZGlzcGxheV9jb21taXQoJmRhdGEtPmRpc3BsYXkpOwo+ID4+PiAgfQo+ID4+Pi1zdGF0aWMg
+dm9pZCBub25fZWRwX3N1YnRlc3QoaW50IGRybV9mZCwgZHJtTW9kZVJlc1B0ciBkcm1fcmVzLAo+
+ID4+Pi0JCQkgICAgZHJtTW9kZUNvbm5lY3RvclB0ciAqZHJtX2Nvbm5lY3RvcnMpCj4gPj4+K3N0
+YXRpYyB2b2lkIHRlc3RfY2xlYW51cChkYXRhX3QgKmRhdGEpCj4gPj4+ICB7Cj4gPj4+LQlpbnQg
+aSwgcmM7Cj4gPj4+LQl1aW50MzJfdCBjcnRjX2lkID0gMCwgYnVmZmVyX2lkID0gMDsKPiA+Pj4t
+CWRybU1vZGVDb25uZWN0b3JQdHIgY29ubmVjdG9yID0gTlVMTDsKPiA+Pj4tCWRybU1vZGVNb2Rl
+SW5mb1B0ciBtb2RlID0gTlVMTDsKPiA+Pj4tCj4gPj4+LQlrbXN0ZXN0X3Vuc2V0X2FsbF9jcnRj
+cyhkcm1fZmQsIGRybV9yZXMpOwo+ID4+Pi0KPiA+Pj4tCWZvciAoaSA9IDA7IGkgPCBkcm1fcmVz
+LT5jb3VudF9jb25uZWN0b3JzOyBpKyspIHsKPiA+Pj4tCQlkcm1Nb2RlQ29ubmVjdG9yUHRyIGMg
+PSBkcm1fY29ubmVjdG9yc1tpXTsKPiA+Pj4tCj4gPj4+LQkJaWYgKGMtPmNvbm5lY3Rvcl90eXBl
+ID09IERSTV9NT0RFX0NPTk5FQ1RPUl9lRFApCj4gPj4+LQkJCWNvbnRpbnVlOwo+ID4+Pi0JCWlm
+IChjLT5jb25uZWN0aW9uICE9IERSTV9NT0RFX0NPTk5FQ1RFRCkKPiA+Pj4tCQkJY29udGludWU7
+Cj4gPj4+LQo+ID4+Pi0JCWlmIChjLT5jb3VudF9tb2Rlcykgewo+ID4+Pi0JCQljb25uZWN0b3Ig
+PSBjOwo+ID4+Pi0JCQltb2RlID0gJmMtPm1vZGVzWzBdOwo+ID4+Pi0JCQlicmVhazsKPiA+Pj4t
+CQl9Cj4gPj4+LQl9Cj4gPj4+LQlpZ3RfcmVxdWlyZShjb25uZWN0b3IpOwo+ID4+Pi0KPiA+Pj4t
+CWNydGNfaWQgPSBrbXN0ZXN0X2ZpbmRfY3J0Y19mb3JfY29ubmVjdG9yKGRybV9mZCwgZHJtX3Jl
+cywgY29ubmVjdG9yLAo+ID4+Pi0JCQkJCQkgIDApOwo+ID4+Pi0JYnVmZmVyX2lkID0gY3JlYXRl
+X2ZiKGRybV9mZCwgbW9kZS0+aGRpc3BsYXksIG1vZGUtPnZkaXNwbGF5KTsKPiA+Pj4tCj4gPj4+
+LQlpZ3RfYXNzZXJ0KGJ1ZmZlcl9pZCk7Cj4gPj4+LQlpZ3RfYXNzZXJ0KG1vZGUpOwo+ID4+Pi0K
+PiA+Pj4tCXJjID0gZHJtTW9kZVNldENydGMoZHJtX2ZkLCBjcnRjX2lkLCBidWZmZXJfaWQsIDAs
+IDAsCj4gPj4+LQkJCSAgICAmY29ubmVjdG9yLT5jb25uZWN0b3JfaWQsIDEsIG1vZGUpOwo+ID4+
+Pi0JaWd0X2Fzc2VydF9lcShyYywgMCk7Cj4gPj4+LQo+ID4+Pi0JaWd0X2Fzc2VydCghbHBzcF9p
+c19lbmFibGVkKGRybV9mZCkpOwo+ID4+PisJaWd0X3BsYW5lX3QgKnByaW1hcnk7Cj4gPj4+Kwo+
+ID4+PisJaWYgKCFkYXRhLT5vdXRwdXQgfHwgZGF0YS0+b3V0cHV0LT5wZW5kaW5nX3BpcGUgPT0g
+UElQRV9OT05FKQo+ID4+PisJCXJldHVybjsKPiA+Pj4rCj4gPj4+KwlwcmltYXJ5ID0gaWd0X291
+dHB1dF9nZXRfcGxhbmVfdHlwZShkYXRhLT5vdXRwdXQsCj4gPj4+KwkJCQkJICAgIERSTV9QTEFO
+RV9UWVBFX1BSSU1BUlkpOwo+ID4+PisJaWd0X3BsYW5lX3NldF9mYihwcmltYXJ5LCBOVUxMKTsK
+PiA+Pj4rCWlndF9vdXRwdXRfc2V0X3BpcGUoZGF0YS0+b3V0cHV0LCBQSVBFX05PTkUpOwo+ID4+
+PisJaWd0X2Rpc3BsYXlfY29tbWl0KCZkYXRhLT5kaXNwbGF5KTsKPiA+Pj4rCWlndF9yZW1vdmVf
+ZmIoZGF0YS0+ZHJtX2ZkLCAmZGF0YS0+ZmIpOwo+ID4+PisJZGF0YS0+b3V0cHV0ID0gTlVMTDsK
+PiA+Pj4gIH0KPiA+Pj4tI2RlZmluZSBNQVhfQ09OTkVDVE9SUyAzMgo+ID4+PitzdGF0aWMgdm9p
+ZCB0ZXN0X2xwc3AoZGF0YV90ICpkYXRhKQo+ID4+Pit7Cj4gPj4+KwkvKiBMUFNQIGlzIGxvdyBw
+b3dlciBzaW5nbGUgcGlwZSB1c2FnZXMgaS5lLiBQSVBFX0EgKi8KPiA+Pj4rCWlndF9yZXF1aXJl
+KGlndF9waXBlX2Nvbm5lY3Rvcl92YWxpZChQSVBFX0EsIGRhdGEtPm91dHB1dCkpOwo+ID4+PisJ
+aWd0X3JlcXVpcmVfZihpOTE1X291dHB1dF9pc19scHNwX2NhcGFibGUoZGF0YS0+ZHJtX2ZkLCBk
+YXRhLT5vdXRwdXQpLAo+ID4+PisJCSAgICAgICJvdXRwdXQgaXMgbm90IGxwc3AgY2FwYWJsZVxu
+Iik7Cj4gPj4+Kwo+ID4+PisJZGF0YS0+bW9kZSA9IGlndF9vdXRwdXRfZ2V0X21vZGUoZGF0YS0+
+b3V0cHV0KTsKPiA+Pj4rCXNldHVwX2xwc3Bfb3V0cHV0KGRhdGEpOwo+ID4+PisJaWd0X2Fzc2Vy
+dF9mKGxwc3BfaXNfZW5hYmxlZChkYXRhKSwgIiVzOiBscHNwIGlzIG5vdCBlbmFibGVkXG4lczpc
+biVzXG4iLAo+ID4+PisJCSAgICAgZGF0YS0+b3V0cHV0LT5uYW1lLCBQV1JfRE9NQUlOX0lORk8s
+IGRhdGEtPnB3cl9kbW5faW5mbyA9Cj4gPj4+KwkJICAgICBpZ3Rfc3lzZnNfZ2V0KGRhdGEtPmRl
+YnVnZnNfZmQsIFBXUl9ET01BSU5fSU5GTykpOwo+ID4+Pit9Cj4gPj4+LWludCBkcm1fZmQ7Cj4g
+Pj4+LXVpbnQzMl90IGRldmlkOwo+ID4+Pi1kcm1Nb2RlUmVzUHRyIGRybV9yZXM7Cj4gPj4+LWRy
+bU1vZGVDb25uZWN0b3JQdHIgZHJtX2Nvbm5lY3RvcnNbTUFYX0NPTk5FQ1RPUlNdOwo+ID4+Pi1z
+dHJ1Y3QgaW50ZWxfbW1pb19kYXRhIG1taW9fZGF0YTsKPiA+Pj4rSUdUX1RFU1RfREVTQ1JJUFRJ
+T04oIlRoZXNlIHRlc3RzIHZhbGlkYXRlcyBkaXNwbGF5IExvdyBQb3dlciBTaW5nbGUgUGlwZSBj
+b25maWd1cmF0aW9ucyIpOwo+ID4+PiAgaWd0X21haW4KPiA+Pj4gIHsKPiA+Pj4tCWlndF9maXh0
+dXJlIHsKPiA+Pj4tCQlpbnQgaTsKPiA+Pj4tCj4gPj4+LQkJZHJtX2ZkID0gZHJtX29wZW5fZHJp
+dmVyX21hc3RlcihEUklWRVJfSU5URUwpOwo+ID4+Pi0JCWlndF9yZXF1aXJlKGRybV9mZCA+PSAw
+KTsKPiA+Pj4tCj4gPj4+LQkJZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2RldmlkKGRybV9mZCk7Cj4g
+Pj4+LQo+ID4+Pi0JCWRybV9yZXMgPSBkcm1Nb2RlR2V0UmVzb3VyY2VzKGRybV9mZCk7Cj4gPj4+
+LQkJaWd0X3JlcXVpcmUoZHJtX3Jlcyk7Cj4gPj4+LQkJaWd0X2Fzc2VydChkcm1fcmVzLT5jb3Vu
+dF9jb25uZWN0b3JzIDw9IE1BWF9DT05ORUNUT1JTKTsKPiA+Pj4rCWRhdGFfdCBkYXRhID0ge307
+Cj4gPj4+LQkJZm9yIChpID0gMDsgaSA8IGRybV9yZXMtPmNvdW50X2Nvbm5lY3RvcnM7IGkrKykK
+PiA+Pj4tCQkJZHJtX2Nvbm5lY3RvcnNbaV0gPSBkcm1Nb2RlR2V0Q29ubmVjdG9yQ3VycmVudChk
+cm1fZmQsCj4gPj4+LQkJCQkJCQlkcm1fcmVzLT5jb25uZWN0b3JzW2ldKTsKPiA+Pj4rCWlndF9m
+aXh0dXJlIHsKPiA+Pj4rCQlkYXRhLmRybV9mZCA9IGRybV9vcGVuX2RyaXZlcl9tYXN0ZXIoRFJJ
+VkVSX0lOVEVMKTsKPiA+Pj4rCQlpZ3RfcmVxdWlyZShkYXRhLmRybV9mZCA+PSAwKTsKPiA+Pj4r
+CQlkYXRhLmRlYnVnZnNfZmQgPSBpZ3RfZGVidWdmc19kaXIoZGF0YS5kcm1fZmQpOwo+ID4+PisJ
+CWlndF9yZXF1aXJlKGRhdGEuZGVidWdmc19mZCA+PSAwKTsKPiA+Pj4gIAkJaWd0X3BtX2VuYWJs
+ZV9hdWRpb19ydW50aW1lX3BtKCk7Cj4gPj4+LQo+ID4+Pi0JCWlndF9yZXF1aXJlKHN1cHBvcnRz
+X2xwc3AoZGV2aWQpKTsKPiA+Pj4tCj4gPj4+LQkJaW50ZWxfcmVnaXN0ZXJfYWNjZXNzX2luaXQo
+Jm1taW9fZGF0YSwgaW50ZWxfZ2V0X3BjaV9kZXZpY2UoKSwgMCwgZHJtX2ZkKTsKPiA+Pj4tCj4g
+Pj4+ICAJCWttc3Rlc3Rfc2V0X3Z0X2dyYXBoaWNzX21vZGUoKTsKPiA+Pj4rCQlkYXRhLmRldmlk
+ID0gaW50ZWxfZ2V0X2RybV9kZXZpZChkYXRhLmRybV9mZCk7Cj4gPj4+KwkJaWd0X2Rpc3BsYXlf
+cmVxdWlyZSgmZGF0YS5kaXNwbGF5LCBkYXRhLmRybV9mZCk7Cj4gPj4+KwkJaWd0X3JlcXVpcmUo
+aWd0X3BtX2RtY19sb2FkZWQoZGF0YS5kZWJ1Z2ZzX2ZkKSk7Cj4gPj4+ICAJfQo+ID4+PisJaWd0
+X2Rlc2NyaWJlKCJUaGlzIHRlc3QgdmFsaWRhdGVzIGxwc3Agd2hpbGUgYWxsIGNydGMgYXJlIGRp
+c2FibGVkIik7Cj4gPj4+ICAJaWd0X3N1YnRlc3QoInNjcmVlbnMtZGlzYWJsZWQiKQo+ID4+Pi0J
+CXNjcmVlbnNfZGlzYWJsZWRfc3VidGVzdChkcm1fZmQsIGRybV9yZXMpOwo+ID4+Pi0JaWd0X3N1
+YnRlc3QoImVkcC1uYXRpdmUiKQo+ID4+Pi0JCWVkcF9zdWJ0ZXN0KGRybV9mZCwgZHJtX3Jlcywg
+ZHJtX2Nvbm5lY3RvcnMsIGRldmlkLCBmYWxzZSk7Cj4gPj4+LQlpZ3Rfc3VidGVzdCgibm9uLWVk
+cCIpCj4gPj4+LQkJbm9uX2VkcF9zdWJ0ZXN0KGRybV9mZCwgZHJtX3JlcywgZHJtX2Nvbm5lY3Rv
+cnMpOwo+ID4+PisJCXNjcmVlbnNfZGlzYWJsZWRfc3VidGVzdCgmZGF0YSk7Cj4gPj4+LQlpZ3Rf
+Zml4dHVyZSB7Cj4gPj4+LQkJaW50IGk7Cj4gPj4+KwlpZ3RfZGVzY3JpYmUoIlRoaXMgdGVzdCB2
+YWxpZGF0ZXMgbHBzcCBvbiBhbGwgY29ubmVjdGVkIG91dHB1dHMgb24gbG93IHBvd2VyIFBJUEVf
+QSIpOwo+ID4+PisJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljX2YoImttcy1scHNwIikgewo+ID4+
+PisJCWlndF9kaXNwbGF5X3QgKmRpc3BsYXkgPSAmZGF0YS5kaXNwbGF5Owo+ID4+PisJCWlndF9v
+dXRwdXRfdCAqb3V0cHV0Owo+ID4+Pi0JCWludGVsX3JlZ2lzdGVyX2FjY2Vzc19maW5pKCZtbWlv
+X2RhdGEpOwo+ID4+Pi0JCWZvciAoaSA9IDA7IGkgPCBkcm1fcmVzLT5jb3VudF9jb25uZWN0b3Jz
+OyBpKyspCj4gPj4+LQkJCWRybU1vZGVGcmVlQ29ubmVjdG9yKGRybV9jb25uZWN0b3JzW2ldKTsK
+PiA+Pj4tCQlkcm1Nb2RlRnJlZVJlc291cmNlcyhkcm1fcmVzKTsKPiA+Pj4tCQljbG9zZShkcm1f
+ZmQpOwo+ID4+PisJCWZvcl9lYWNoX2Nvbm5lY3RlZF9vdXRwdXQoZGlzcGxheSwgb3V0cHV0KSB7
+Cj4gPj4+KwkJCWlndF9keW5hbWljX2YoImttcy1scHNwLSVzIiwgb3V0cHV0LT5uYW1lKSB7Cj4g
+Pj4+KwkJCQlkYXRhLm91dHB1dCA9IG91dHB1dDsKPiA+Pj4rCQkJCXRlc3RfbHBzcCgmZGF0YSk7
+Cj4gPj4+KwkJCX0KPiA+Pj4rCj4gPj4+KwkJCXRlc3RfY2xlYW51cCgmZGF0YSk7Cj4gPj4+KwkJ
+fQo+ID4+PisJfQo+ID4+PisKPiA+Pj4rCWlndF9maXh0dXJlIHsKPiA+Pj4rCQlmcmVlKGRhdGEu
+cHdyX2Rtbl9pbmZvKTsKPiA+Pj4rCQljbG9zZShkYXRhLmRybV9mZCk7Cj4gPj4+KwkJaWd0X2Rp
+c3BsYXlfZmluaSgmZGF0YS5kaXNwbGF5KTsKPiA+Pj4gIAl9Cj4gPj4+ICB9Cl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0
+CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
