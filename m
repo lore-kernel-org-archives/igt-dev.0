@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [205.139.110.61])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2AD416EB0C
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 21:10:35 +0000 (UTC)
+ [207.211.31.81])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DA396EB13
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 21:10:37 +0000 (UTC)
 From: Lyude <lyude@redhat.com>
-Date: Fri, 17 Apr 2020 17:10:21 -0400
-Message-Id: <20200417211025.109574-2-lyude@redhat.com>
+Date: Fri, 17 Apr 2020 17:10:24 -0400
+Message-Id: <20200417211025.109574-5-lyude@redhat.com>
 In-Reply-To: <20200417211025.109574-1-lyude@redhat.com>
 References: <20200417211025.109574-1-lyude@redhat.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3 1/5] lib/igt_core: Fix igt_assert_fd()
- documentation
+Subject: [igt-dev] [PATCH i-g-t v3 4/5] lib/igt_kms: Hook up connector
+ dithering prop
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,29 +27,66 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lyude Paul <lyude@redhat.com>
 
-As Petri Latvala pointed out, some of the documentation in this macro is
-mistakenly copied from the other igt_assert*() macros. Let's fix that.
+Nvidia display hardware provides a set of flexible dithering options for
+CRTCs. This dithering is actually noticeable in the CRC output for all
+available tap points, and can be seen as CRC values for identical frames
+cycling between either 2 or 4 values repeatedly (each one of these
+values is a different dithering phase applied to the source output). Of
+course, this is very likely to break tests using CRC readback since we
+don't expect the CRC to change if the source content hasn't changed.
+
+So, hook up support for configuring the dithering property and reset it
+to off from igt_display_reset() when applicable.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- lib/igt_core.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/igt_kms.c | 6 ++++++
+ lib/igt_kms.h | 1 +
+ 2 files changed, 7 insertions(+)
 
-diff --git a/lib/igt_core.h b/lib/igt_core.h
-index b97fa2fa..3f69b072 100644
---- a/lib/igt_core.h
-+++ b/lib/igt_core.h
-@@ -966,8 +966,8 @@ void igt_describe_f(const char *fmt, ...);
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index e9621e7e..d45adfaf 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -421,6 +421,7 @@ const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
+ 	[IGT_CONNECTOR_LINK_STATUS] = "link-status",
+ 	[IGT_CONNECTOR_MAX_BPC] = "max bpc",
+ 	[IGT_CONNECTOR_HDR_OUTPUT_METADATA] = "HDR_OUTPUT_METADATA",
++	[IGT_CONNECTOR_DITHERING_MODE] = "dithering mode",
+ };
+ 
+ /*
+@@ -1802,6 +1803,10 @@ static void igt_output_reset(igt_output_t *output)
+ 	if (igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA))
+ 		igt_output_set_prop_value(output,
+ 					  IGT_CONNECTOR_HDR_OUTPUT_METADATA, 0);
++
++	if (igt_output_has_prop(output, IGT_CONNECTOR_DITHERING_MODE))
++		igt_output_set_prop_enum(output, IGT_CONNECTOR_DITHERING_MODE,
++					 "off");
+ }
+ 
+ /**
+@@ -1816,6 +1821,7 @@ static void igt_output_reset(igt_output_t *output)
+  * - %IGT_CONNECTOR_BROADCAST_RGB (if applicable)
+  *   %IGT_CONNECTOR_CONTENT_PROTECTION (if applicable)
+  *   %IGT_CONNECTOR_HDR_OUTPUT_METADATA (if applicable)
++ * - %IGT_CONNECTOR_DITHERING_MODE (if applicable)
+  * - igt_output_override_mode() to default.
   *
-  * Fails (sub-) test if the given file descriptor is invalid.
-  *
-- * Like igt_assert(), but displays the values being compared on failure instead
-- * of simply printing the stringified expression.
-+ * Like igt_assert(), but displays the stringified identifier that was supposed
-+ * to contain a valid fd on failure.
-  */
- #define igt_assert_fd(fd) \
- 	igt_assert_f(fd >= 0, "file descriptor " #fd " failed\n");
+  * For pipes:
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index adca59ac..4899e765 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -127,6 +127,7 @@ enum igt_atomic_connector_properties {
+        IGT_CONNECTOR_LINK_STATUS,
+        IGT_CONNECTOR_MAX_BPC,
+        IGT_CONNECTOR_HDR_OUTPUT_METADATA,
++       IGT_CONNECTOR_DITHERING_MODE,
+        IGT_NUM_CONNECTOR_PROPS
+ };
+ 
 -- 
 2.25.1
 
