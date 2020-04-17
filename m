@@ -1,22 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
  [205.139.110.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A8ACE6E959
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 19:49:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B86E36E932
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 19:49:48 +0000 (UTC)
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
  [10.5.11.16])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0DBC28017FF
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 19:49:39 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 64DB5801E5D
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 19:49:37 +0000 (UTC)
 From: Lyude <lyude@redhat.com>
-Date: Fri, 17 Apr 2020 15:49:29 -0400
-Message-Id: <20200417194931.39774-4-lyude@redhat.com>
-In-Reply-To: <20200417194931.39774-1-lyude@redhat.com>
-References: <20200417194931.39774-1-lyude@redhat.com>
+Date: Fri, 17 Apr 2020 15:49:26 -0400
+Message-Id: <20200417194931.39774-1-lyude@redhat.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 3/5] lib/igt_debugfs: Add
- igt_debugfs_pipe_dir()
+Subject: [igt-dev] [PATCH i-g-t v2 0/5] Add nouveau-crc tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -33,66 +30,41 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lyude Paul <lyude@redhat.com>
 
-Like igt_debugfs_connector_dir(), but for pipes instead.
+Nouveau has finally gotten CRC support, hooray! Well, it's under review
+at least:
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- lib/igt_debugfs.c | 29 +++++++++++++++++++++++++++++
- lib/igt_debugfs.h |  1 +
- 2 files changed, 30 insertions(+)
+https://patchwork.freedesktop.org/series/74804/
+(it has a cover letter, but nouveau's mailing list configuration has
+blocked the email so I'm waiting for a moderator to fix that)
 
-diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
-index bf6be552..3c3b11e1 100644
---- a/lib/igt_debugfs.c
-+++ b/lib/igt_debugfs.c
-@@ -260,6 +260,35 @@ int igt_debugfs_connector_dir(int device, char *conn_name, int mode)
- 	return ret;
- }
- 
-+/**
-+ * igt_debugfs_pipe_dir:
-+ * @device: fd of the device
-+ * @pipe: index of pipe
-+ * @mode: mode bits as used by open()
-+ *
-+ * This opens the debugfs directory corresponding to the pipe index on the
-+ * device for use with igt_sysfs_get() and related functions.
-+ *
-+ * Returns:
-+ * The directory fd, or -1 on failure.
-+ */
-+int igt_debugfs_pipe_dir(int device, int pipe, int mode)
-+{
-+	char buf[128];
-+	int dir, ret;
-+
-+	dir = igt_debugfs_dir(device);
-+	if (dir < 0)
-+		return dir;
-+
-+	snprintf(buf, sizeof(buf), "crtc-%d", pipe);
-+	ret = openat(dir, buf, mode);
-+
-+	close(dir);
-+
-+	return ret;
-+}
-+
- /**
-  * igt_debugfs_open:
-  * @filename: name of the debugfs node to open
-diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-index 7d1a6175..15741a40 100644
---- a/lib/igt_debugfs.h
-+++ b/lib/igt_debugfs.h
-@@ -36,6 +36,7 @@ char *igt_debugfs_path(int device, char *path, int pathlen);
- 
- int igt_debugfs_dir(int device);
- int igt_debugfs_connector_dir(int device, char *conn_name, int mode);
-+int igt_debugfs_pipe_dir(int device, int pipe, int mode);
- 
- int igt_debugfs_open(int fd, const char *filename, int mode);
- void __igt_debugfs_read(int fd, const char *filename, char *buf, int size);
+So, this series adds the relevant tests for it since nvidia's CRC
+implementation has some rather interesting design choices that needed to
+be worked around.
+
+Changes since v1:
+* fix documentation errors Petri pointed out
+* Fix documentation for igt_require_fd()
+* Fix copyright year in tests/nouveau_crc.c
+
+Lyude Paul (5):
+  lib/igt_core: Fix igt_assert_fd() documentation
+  lib/igt_core: Add igt_require_fd()
+  lib/igt_debugfs: Add igt_debugfs_pipe_dir()
+  lib/igt_kms: Hook up connector dithering prop
+  tests: Add nouveau-crc tests
+
+ lib/drmtest.c       |  10 ++
+ lib/drmtest.h       |   2 +
+ lib/igt_core.h      |  16 +-
+ lib/igt_debugfs.c   |  29 ++++
+ lib/igt_debugfs.h   |   1 +
+ lib/igt_kms.c       |   6 +
+ lib/igt_kms.h       |   1 +
+ tests/meson.build   |   1 +
+ tests/nouveau_crc.c | 396 ++++++++++++++++++++++++++++++++++++++++++++
+ 9 files changed, 460 insertions(+), 2 deletions(-)
+ create mode 100644 tests/nouveau_crc.c
+
 -- 
 2.25.1
 
