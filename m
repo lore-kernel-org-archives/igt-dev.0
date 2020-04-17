@@ -1,12 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D984C6EC1B
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Apr 2020 14:09:06 +0000 (UTC)
+References: <20200409053951.26929-3-anshuman.gupta@intel.com>
+ <20200415124859.2144-1-anshuman.gupta@intel.com>
+From: "Manna, Animesh" <animesh.manna@intel.com>
+Message-ID: <7f45dbbe-a9ac-3728-4b5b-a8a80be01c29@intel.com>
+Date: Fri, 17 Apr 2020 19:38:58 +0530
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 17 Apr 2020 13:57:31 -0000
-Message-ID: <158713185118.10466.6390419561576854884@emeril.freedesktop.org>
-References: <20200417125645.3176650-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200417125645.3176650-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fexec=5Fbalancer=3A_Kick_tasklets_harder?=
+In-Reply-To: <20200415124859.2144-1-anshuman.gupta@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t v5 2/5] lib/igt_pm: Add lib func to get
+ lpsp capability
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,106 +19,222 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============1870446907=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: Anshuman Gupta <anshuman.gupta@intel.com>, igt-dev@lists.freedesktop.org
+Cc: jani.nikula@intel.com, martin.peres@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+This is a multi-part message in MIME format.
+--===============1870446907==
+Content-Type: multipart/alternative;
+ boundary="------------1F6CD200559A1E35C97DC9FE"
+Content-Language: en-US
 
-Series: i915/gem_exec_balancer: Kick tasklets harder
-URL   : https://patchwork.freedesktop.org/series/76091/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_8315 -> IGTPW_4483
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4483/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4483 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-icl-dsi:         [PASS][1] -> [INCOMPLETE][2] ([i915#189])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8315/fi-icl-dsi/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4483/fi-icl-dsi/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-tgl-y:           [PASS][3] -> [INCOMPLETE][4] ([i915#1662])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8315/fi-tgl-y/igt@i915_selftest@live@execlists.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4483/fi-tgl-y/igt@i915_selftest@live@execlists.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-skl-6770hq:      [FAIL][5] ([i915#178]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8315/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4483/fi-skl-6770hq/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@requests:
-    - fi-icl-guc:         [INCOMPLETE][7] ([i915#1581]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8315/fi-icl-guc/igt@i915_selftest@live@requests.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4483/fi-icl-guc/igt@i915_selftest@live@requests.html
-
-  
-#### Warnings ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-x1275:       [SKIP][9] ([fdo#109271]) -> [FAIL][10] ([i915#62])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8315/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4483/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1581]: https://gitlab.freedesktop.org/drm/intel/issues/1581
-  [i915#1662]: https://gitlab.freedesktop.org/drm/intel/issues/1662
-  [i915#178]: https://gitlab.freedesktop.org/drm/intel/issues/178
-  [i915#189]: https://gitlab.freedesktop.org/drm/intel/issues/189
-  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+This is a multi-part message in MIME format.
+--------------1F6CD200559A1E35C97DC9FE
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
-Participating hosts (51 -> 44)
-------------------------------
+On 15-04-2020 18:18, Anshuman Gupta wrote:
+> This lib function evaluate the lpsp capability from
+> the connector specific debugfs attribute i915_lpsp_info.
+>
+> v2:
+> - changed the lib function prefix igt_output_is_lpsp_capable
+>    to i915_output_is_lpsp_capable. [Martin]
+> v3:
+> - early return for the connector which doesn't support
+>    lpsp on any platform.
+> v4:
+> - debugfs entry changed from i915_lpsp_info to i915_lpsp_capability.
+> v5:
+> - return lpsp capability false if i915_lpsp_capability debugfs is not
+>    present. [Animesh]
+>
+> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 
-  Additional (1): fi-kbl-7560u 
-  Missing    (8): fi-kbl-soraka fi-hsw-4200u fi-bdw-gvtdvm fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+looks good to me.
+Reviewed-by: Animesh Manna <animesh.manna@intel.com>
 
+> ---
+>   lib/igt_pm.c | 29 +++++++++++++++++++++++++++++
+>   lib/igt_pm.h |  1 +
+>   2 files changed, 30 insertions(+)
+>
+> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+> index 9d441e1b..b409ec46 100644
+> --- a/lib/igt_pm.c
+> +++ b/lib/igt_pm.c
+> @@ -37,6 +37,7 @@
+>   #include <dirent.h>
+>   
+>   #include "drmtest.h"
+> +#include "igt_kms.h"
+>   #include "igt_pm.h"
+>   #include "igt_aux.h"
+>   #include "igt_sysfs.h"
+> @@ -827,3 +828,31 @@ bool igt_pm_pc8_plus_residencies_enabled(int msr_fd)
+>   
+>   	return true;
+>   }
+> +
+> +/**
+> + * i915_output_is_lpsp_capable:
+> + * @drm_fd: fd to drm device
+> + * @output: igt output for which lpsp capability need to be evaluated
+> + * Check lpsp capability for a given output.
+> + *
+> + * Returns:
+> + * True if given output is lpsp capable otherwise false.
+> + */
+> +bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
+> +{
+> +	char buf[256];
+> +	int fd, len;
+> +
+> +	fd = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
+> +	igt_require(fd >= 0);
+> +	len = igt_debugfs_simple_read(fd, "i915_lpsp_capability",
+> +				      buf, sizeof(buf));
+> +
+> +	/* if i915_lpsp_capability not present return the capability as false */
+> +	if (len < 0)
+> +		return false;
+> +
+> +	close(fd);
+> +
+> +	return strstr(buf, "LPSP: capable");
+> +}
+> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+> index 5e438452..162d3ca3 100644
+> --- a/lib/igt_pm.h
+> +++ b/lib/igt_pm.h
+> @@ -53,5 +53,6 @@ enum igt_runtime_pm_status igt_get_runtime_pm_status(void);
+>   bool igt_wait_for_pm_status(enum igt_runtime_pm_status status);
+>   bool igt_pm_dmc_loaded(int debugfs);
+>   bool igt_pm_pc8_plus_residencies_enabled(int msr_fd);
+> +bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output);
+>   
+>   #endif /* IGT_PM_H */
 
-Build changes
--------------
+--------------1F6CD200559A1E35C97DC9FE
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5599 -> IGTPW_4483
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 15-04-2020 18:18, Anshuman Gupta
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20200415124859.2144-1-anshuman.gupta@intel.com">
+      <pre class="moz-quote-pre" wrap="">This lib function evaluate the lpsp capability from
+the connector specific debugfs attribute i915_lpsp_info.
 
-  CI-20190529: 20190529
-  CI_DRM_8315: cf2c3255ec72dfcb37385181a362cbf8e6cfdd15 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4483: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4483/index.html
-  IGT_5599: cdb07101dda33e2fcb0f4c2aa199c47159d88f35 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+v2:
+- changed the lib function prefix igt_output_is_lpsp_capable
+  to i915_output_is_lpsp_capable. [Martin]
+v3:
+- early return for the connector which doesn't support
+  lpsp on any platform.
+v4:
+- debugfs entry changed from i915_lpsp_info to i915_lpsp_capability.
+v5:
+- return lpsp capability false if i915_lpsp_capability debugfs is not
+  present. [Animesh]
 
-== Logs ==
+Signed-off-by: Anshuman Gupta <a class="moz-txt-link-rfc2396E" href="mailto:anshuman.gupta@intel.com">&lt;anshuman.gupta@intel.com&gt;</a></pre>
+    </blockquote>
+    <pre>looks good to me.
+Reviewed-by: Animesh Manna <a class="moz-txt-link-rfc2396E" href="mailto:animesh.manna@intel.com">&lt;animesh.manna@intel.com&gt;</a>
+</pre>
+    <blockquote type="cite"
+      cite="mid:20200415124859.2144-1-anshuman.gupta@intel.com">
+      <pre class="moz-quote-pre" wrap="">
+---
+ lib/igt_pm.c | 29 +++++++++++++++++++++++++++++
+ lib/igt_pm.h |  1 +
+ 2 files changed, 30 insertions(+)
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4483/index.html
+diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+index 9d441e1b..b409ec46 100644
+--- a/lib/igt_pm.c
++++ b/lib/igt_pm.c
+@@ -37,6 +37,7 @@
+ #include &lt;dirent.h&gt;
+ 
+ #include "drmtest.h"
++#include "igt_kms.h"
+ #include "igt_pm.h"
+ #include "igt_aux.h"
+ #include "igt_sysfs.h"
+@@ -827,3 +828,31 @@ bool igt_pm_pc8_plus_residencies_enabled(int msr_fd)
+ 
+ 	return true;
+ }
++
++/**
++ * i915_output_is_lpsp_capable:
++ * @drm_fd: fd to drm device
++ * @output: igt output for which lpsp capability need to be evaluated
++ * Check lpsp capability for a given output.
++ *
++ * Returns:
++ * True if given output is lpsp capable otherwise false.
++ */
++bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
++{
++	char buf[256];
++	int fd, len;
++
++	fd = igt_debugfs_connector_dir(drm_fd, output-&gt;name, O_RDONLY);
++	igt_require(fd &gt;= 0);
++	len = igt_debugfs_simple_read(fd, "i915_lpsp_capability",
++				      buf, sizeof(buf));
++
++	/* if i915_lpsp_capability not present return the capability as false */
++	if (len &lt; 0)
++		return false;
++
++	close(fd);
++
++	return strstr(buf, "LPSP: capable");
++}
+diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+index 5e438452..162d3ca3 100644
+--- a/lib/igt_pm.h
++++ b/lib/igt_pm.h
+@@ -53,5 +53,6 @@ enum igt_runtime_pm_status igt_get_runtime_pm_status(void);
+ bool igt_wait_for_pm_status(enum igt_runtime_pm_status status);
+ bool igt_pm_dmc_loaded(int debugfs);
+ bool igt_pm_pc8_plus_residencies_enabled(int msr_fd);
++bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output);
+ 
+ #endif /* IGT_PM_H */
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------1F6CD200559A1E35C97DC9FE--
+
+--===============1870446907==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1870446907==--
