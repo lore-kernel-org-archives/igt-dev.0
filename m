@@ -1,78 +1,153 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-Date: Thu, 16 Apr 2020 16:04:49 +0200
-From: Maxime Ripard <maxime@cerno.tech>
-Message-ID: <20200416140449.mmws2pycjuy3ag6m@gilmour.lan>
-References: <20191022005952.tkdtftzbxk4b2lzk@smtp.gmail.com>
- <20200415094203.stjco4xo4uw23vmh@gilmour.lan>
- <20200416124942.6nxyf5m3ogmr4nva@smtp.gmail.com>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Fri, 17 Apr 2020 13:56:45 +0100
+Message-Id: <20200417125645.3176650-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-In-Reply-To: <20200416124942.6nxyf5m3ogmr4nva@smtp.gmail.com>
-Subject: Re: [Intel-gfx] [PATCH v7 i-g-t 3/4] lib: Add function to hash a
- framebuffer
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============1260350645=="
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Cc: Simon Ser <contact@emersion.fr>, intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org, nd <nd@arm.com>
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_balancer: Kick tasklets harder
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>, arjun.melkaveri@intel.com, tvrtko.ursulin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
+Tasklet scheduling can unfortunately be quite predicated. Where we are
+only caring about workload distribution and not initial execution
+latency (see kick_kthreads), make that kick more precise.
 
---===============1260350645==
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="m7lnjywpj57oofkt"
-Content-Disposition: inline
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ lib/igt_debugfs.h              |  7 +++++++
+ tests/i915/gem_exec_balancer.c | 28 +++++++++++++++++-----------
+ 2 files changed, 24 insertions(+), 11 deletions(-)
 
-
---m7lnjywpj57oofkt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-Hi,
-
-On Thu, Apr 16, 2020 at 08:49:42AM -0400, Rodrigo Siqueira wrote:
-> First of all, thank you a lot for your review and for testing this
-> patchset. I'm going to prepare a new version trying to address all
-> issues highlight by you, Petri, and Simon (I'm already working in a new
-> version).
-
-That would be awesome, thanks :)
-
-> Just a note, I run this test on top of VKMS in a virtual machine (x86).
-
-Yeah, that's what I assumed. Cc me when the new version will be ready,
-I'll give it a shot on an arm32 board.
-
-Maxime
-
---m7lnjywpj57oofkt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXphmAQAKCRDj7w1vZxhR
-xV3eAQDY9P4oSmeV1VU/Ac1+gWZCcvhJgmBSZMxDff6aSVzcXAD+IbuLthbnOFAh
-2oJ+X3bDfutGJUvw/t4LNhzqZdgHbQI=
-=QbXy
------END PGP SIGNATURE-----
-
---m7lnjywpj57oofkt--
-
---===============1260350645==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+index 7d1a6175e..768341387 100644
+--- a/lib/igt_debugfs.h
++++ b/lib/igt_debugfs.h
+@@ -181,6 +181,13 @@ void igt_require_hpd_storm_ctl(int fd);
+  * which will flush any RCU callbacks and deferred tasks.
+  */
+ #define DROP_RCU 0x200
++/**
++ * DROP_TASKLETS:
++ *
++ * Flushes the softirq tasklets on each CPU, such as used by the execution
++ * threads.
++ */
++#define DROP_TASKLETS 0x400
+ /**
+  * DROP_ALL:
+  *
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index e9a893e90..9ec5a146e 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -24,6 +24,7 @@
+ #include <sched.h>
+ 
+ #include "igt.h"
++#include "igt_debugfs.h"
+ #include "igt_gt.h"
+ #include "igt_perf.h"
+ #include "i915/gem_ring.h"
+@@ -405,17 +406,20 @@ static void invalid_bonds(int i915)
+ 	gem_context_destroy(i915, p.ctx_id);
+ }
+ 
+-static void kick_kthreads(void)
++static void kick_kthreads(int i915)
+ {
+-	usleep(20 * 1000); /* 20ms should be enough for ksoftirqd! */
++	if (igt_drop_caches_has(i915, DROP_TASKLETS))
++		igt_drop_caches_set(i915, DROP_TASKLETS);
++	else
++		usleep(20 * 1000); /* 20ms should be enough for ksoftirqd! */
+ }
+ 
+-static double measure_load(int pmu, int period_us)
++static double measure_load(int i915, int pmu, int period_us)
+ {
+ 	uint64_t data[2];
+ 	uint64_t d_t, d_v;
+ 
+-	kick_kthreads();
++	kick_kthreads(i915);
+ 
+ 	igt_assert_eq(read(pmu, data, sizeof(data)), sizeof(data));
+ 	d_v = -data[0];
+@@ -430,13 +434,14 @@ static double measure_load(int pmu, int period_us)
+ 	return d_v / (double)d_t;
+ }
+ 
+-static double measure_min_load(int pmu, unsigned int num, int period_us)
++static double
++measure_min_load(int i915, int pmu, unsigned int num, int period_us)
+ {
+ 	uint64_t data[2 + num];
+ 	uint64_t d_t, d_v[num];
+ 	uint64_t min = -1, max = 0;
+ 
+-	kick_kthreads();
++	kick_kthreads(i915);
+ 
+ 	igt_assert_eq(read(pmu, data, sizeof(data)), sizeof(data));
+ 	for (unsigned int n = 0; n < num; n++)
+@@ -464,12 +469,13 @@ static double measure_min_load(int pmu, unsigned int num, int period_us)
+ 	return min / (double)d_t;
+ }
+ 
+-static void measure_all_load(int pmu, double *v, unsigned int num, int period_us)
++static void
++measure_all_load(int i915, int pmu, double *v, unsigned int num, int period_us)
+ {
+ 	uint64_t data[2 + num];
+ 	uint64_t d_t, d_v[num];
+ 
+-	kick_kthreads();
++	kick_kthreads(i915);
+ 
+ 	igt_assert_eq(read(pmu, data, sizeof(data)), sizeof(data));
+ 	for (unsigned int n = 0; n < num; n++)
+@@ -527,7 +533,7 @@ static void check_individual_engine(int i915,
+ 						  ci[idx].engine_instance));
+ 
+ 	spin = igt_spin_new(i915, .ctx = ctx, .engine = idx + 1);
+-	load = measure_load(pmu, 10000);
++	load = measure_load(i915, pmu, 10000);
+ 	igt_spin_free(i915, spin);
+ 
+ 	close(pmu);
+@@ -676,7 +682,7 @@ static void bonded(int i915, unsigned int flags)
+ 				igt_spin_free(i915, plug);
+ 			}
+ 
+-			measure_all_load(pmu[0], v, limit + 1, 10000);
++			measure_all_load(i915, pmu[0], v, limit + 1, 10000);
+ 			igt_spin_free(i915, spin);
+ 
+ 			igt_assert_f(v[bond] > 0.90,
+@@ -1512,7 +1518,7 @@ static void full(int i915, unsigned int flags)
+ 			close(fence);
+ 		}
+ 
+-		load = measure_min_load(pmu[0], count, 10000);
++		load = measure_min_load(i915, pmu[0], count, 10000);
+ 		igt_spin_free(i915, spin);
+ 
+ 		close(pmu[0]);
+-- 
+2.26.0
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
-
---===============1260350645==--
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
