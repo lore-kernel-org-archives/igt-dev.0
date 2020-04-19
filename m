@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
- [IPv6:2a00:1450:4864:20::241])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A9426E0A1
- for <igt-dev@lists.freedesktop.org>; Sun, 19 Apr 2020 15:18:00 +0000 (UTC)
-Received: by mail-lj1-x241.google.com with SMTP id u6so7138364ljl.6
- for <igt-dev@lists.freedesktop.org>; Sun, 19 Apr 2020 08:18:00 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Sun, 19 Apr 2020 18:17:46 +0300
-Message-Id: <20200419151750.3863-5-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20200419151750.3863-1-juhapekka.heikkila@gmail.com>
+MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sun, 19 Apr 2020 15:31:47 -0000
+Message-ID: <158731030744.15015.15337700302499180758@emeril.freedesktop.org>
 References: <20200419151750.3863-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] [PATCH i-g-t 4/8] params open with path return
+In-Reply-To: <20200419151750.3863-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_U?=
+ =?utf-8?q?se_device_dependant_module_parameters?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,76 +14,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Jani Nikula <jani.nikula@intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Jani Nikula <jani.nikula@intel.com>
+== Series Details ==
 
----
- lib/igt_params.c | 29 ++++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+Series: Use device dependant module parameters
+URL   : https://patchwork.freedesktop.org/series/76163/
+State : warning
 
-diff --git a/lib/igt_params.c b/lib/igt_params.c
-index b5ac1266..fe4b1df3 100644
---- a/lib/igt_params.c
-+++ b/lib/igt_params.c
-@@ -107,17 +107,7 @@ static void igt_params_save(int dir, const char *path, const char *name)
- 	module_params = data;
- }
- 
--/**
-- * igt_params_open:
-- * @device: fd of the device
-- *
-- * This opens the module parameters directory (under sysfs) corresponding
-- * to the device for use with igt_sysfs_set() and igt_sysfs_get().
-- *
-- * Returns:
-- * The directory fd, or -1 on failure.
-- */
--int igt_params_open(int device)
-+static int __igt_params_open(int device, char **outpath)
- {
- 	int dir, params = -1;
- 
-@@ -141,11 +131,28 @@ int igt_params_open(int device)
- 
- 		sprintf(path, "/sys/module/%s/parameters", name);
- 		params = open(path, O_RDONLY);
-+		if (params >= 0 && outpath)
-+			*outpath = strdup(path);
- 	}
- 
- 	return params;
- }
- 
-+/**
-+ * igt_params_open:
-+ * @device: fd of the device
-+ *
-+ * This opens the module parameters directory (under sysfs) corresponding
-+ * to the device for use with igt_sysfs_set() and igt_sysfs_get().
-+ *
-+ * Returns:
-+ * The directory fd, or -1 on failure.
-+ */
-+int igt_params_open(int device)
-+{
-+	return __igt_params_open(device, NULL);
-+}
-+
- /**
-  * igt_params_set:
-  * @device: fd of the device
--- 
-2.17.1
+== Summary ==
 
+Did not get list of undocumented tests for this run, something is wrong!
+
+Other than that, pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/134147 for the overview.
+
+containers:igt has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/2338956):
+  
+  Skipping Git submodules setup
+  section_end:1587310256:get_sources
+  section_start:1587310256:restore_cache
+  section_end:1587310258:restore_cache
+  section_start:1587310258:download_artifacts
+  Downloading artifacts for build:tests-fedora (2338938)...
+  Downloading artifacts from coordinator... ok        id=2338938 responseStatus=200 OK token=8Yzfbjnn
+  section_end:1587310263:download_artifacts
+  section_start:1587310263:build_script
+  Authenticating with credentials from job payload (GitLab Registry)
+  $ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  Error: error authenticating creds for "registry.freedesktop.org": unexpected http code: 403 (Forbidden), URL: https://gitlab.freedesktop.org/jwt/auth?account=gitlab-ci-token&service=container_registry
+  section_end:1587310264:build_script
+  section_start:1587310264:after_script
+  section_end:1587310266:after_script
+  section_start:1587310266:upload_artifacts_on_failure
+  section_end:1587310268:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/134147
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
