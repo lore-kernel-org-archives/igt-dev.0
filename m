@@ -1,9 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri, 17 Apr 2020 13:56:45 +0100
-Message-Id: <20200417125645.3176650-1-chris@chris-wilson.co.uk>
+From: "Melkaveri, Arjun" <arjun.melkaveri@intel.com>
+Date: Sun, 19 Apr 2020 12:55:53 +0000
+Message-ID: <CA3CE573A55781488FA37084931071AB14DF8E31@BGSMSX105.gar.corp.intel.com>
+References: <20200417125645.3176650-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200417125645.3176650-1-chris@chris-wilson.co.uk>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_balancer: Kick tasklets harder
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_exec_balancer: Kick tasklets
+ harder
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,13 +19,26 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>, arjun.melkaveri@intel.com, tvrtko.ursulin@intel.com
+To: Chris Wilson <chris@chris-wilson.co.uk>, "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Ursulin,
+ Tvrtko" <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Tasklet scheduling can unfortunately be quite predicated. Where we are
-only caring about workload distribution and not initial execution
-latency (see kick_kthreads), make that kick more precise.
+HI Chris , 
+As Discussed , are you planning to change the load %age for full-* subtests ? 
+igt_assert_f(load > 0.90 to 66 % ? 
+
+Thanks 
+Arjun M
+
+-----Original Message-----
+From: Chris Wilson <chris@chris-wilson.co.uk> 
+Sent: Friday, April 17, 2020 6:27 PM
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org; Melkaveri, Arjun <arjun.melkaveri@intel.com>; Ursulin, Tvrtko <tvrtko.ursulin@intel.com>; Chris Wilson <chris@chris-wilson.co.uk>
+Subject: [PATCH i-g-t] i915/gem_exec_balancer: Kick tasklets harder
+
+Tasklet scheduling can unfortunately be quite predicated. Where we are only caring about workload distribution and not initial execution latency (see kick_kthreads), make that kick more precise.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
@@ -29,8 +46,7 @@ Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
  tests/i915/gem_exec_balancer.c | 28 +++++++++++++++++-----------
  2 files changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
-index 7d1a6175e..768341387 100644
+diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h index 7d1a6175e..768341387 100644
 --- a/lib/igt_debugfs.h
 +++ b/lib/igt_debugfs.h
 @@ -181,6 +181,13 @@ void igt_require_hpd_storm_ctl(int fd);
@@ -40,15 +56,15 @@ index 7d1a6175e..768341387 100644
 +/**
 + * DROP_TASKLETS:
 + *
-+ * Flushes the softirq tasklets on each CPU, such as used by the execution
++ * Flushes the softirq tasklets on each CPU, such as used by the 
++execution
 + * threads.
 + */
 +#define DROP_TASKLETS 0x400
  /**
   * DROP_ALL:
   *
-diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index e9a893e90..9ec5a146e 100644
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c index e9a893e90..9ec5a146e 100644
 --- a/tests/i915/gem_exec_balancer.c
 +++ b/tests/i915/gem_exec_balancer.c
 @@ -24,6 +24,7 @@
@@ -100,14 +116,14 @@ index e9a893e90..9ec5a146e 100644
 +	kick_kthreads(i915);
  
  	igt_assert_eq(read(pmu, data, sizeof(data)), sizeof(data));
- 	for (unsigned int n = 0; n < num; n++)
-@@ -464,12 +469,13 @@ static double measure_min_load(int pmu, unsigned int num, int period_us)
+ 	for (unsigned int n = 0; n < num; n++) @@ -464,12 +469,13 @@ static double measure_min_load(int pmu, unsigned int num, int period_us)
  	return min / (double)d_t;
  }
  
 -static void measure_all_load(int pmu, double *v, unsigned int num, int period_us)
 +static void
-+measure_all_load(int i915, int pmu, double *v, unsigned int num, int period_us)
++measure_all_load(int i915, int pmu, double *v, unsigned int num, int 
++period_us)
  {
  	uint64_t data[2 + num];
  	uint64_t d_t, d_v[num];
@@ -116,8 +132,7 @@ index e9a893e90..9ec5a146e 100644
 +	kick_kthreads(i915);
  
  	igt_assert_eq(read(pmu, data, sizeof(data)), sizeof(data));
- 	for (unsigned int n = 0; n < num; n++)
-@@ -527,7 +533,7 @@ static void check_individual_engine(int i915,
+ 	for (unsigned int n = 0; n < num; n++) @@ -527,7 +533,7 @@ static void check_individual_engine(int i915,
  						  ci[idx].engine_instance));
  
  	spin = igt_spin_new(i915, .ctx = ctx, .engine = idx + 1);
@@ -144,7 +159,7 @@ index e9a893e90..9ec5a146e 100644
  		igt_spin_free(i915, spin);
  
  		close(pmu[0]);
--- 
+--
 2.26.0
 
 _______________________________________________
