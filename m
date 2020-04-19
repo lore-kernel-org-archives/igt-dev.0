@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
- [IPv6:2a00:1450:4864:20::244])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AFEC6E0C1
- for <igt-dev@lists.freedesktop.org>; Sun, 19 Apr 2020 15:18:01 +0000 (UTC)
-Received: by mail-lj1-x244.google.com with SMTP id l19so4599120lje.10
- for <igt-dev@lists.freedesktop.org>; Sun, 19 Apr 2020 08:18:01 -0700 (PDT)
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
+ [IPv6:2a00:1450:4864:20::241])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 992026E0A1
+ for <igt-dev@lists.freedesktop.org>; Sun, 19 Apr 2020 15:17:59 +0000 (UTC)
+Received: by mail-lj1-x241.google.com with SMTP id b2so1661134ljp.4
+ for <igt-dev@lists.freedesktop.org>; Sun, 19 Apr 2020 08:17:59 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Sun, 19 Apr 2020 18:17:47 +0300
-Message-Id: <20200419151750.3863-6-juhapekka.heikkila@gmail.com>
+Date: Sun, 19 Apr 2020 18:17:45 +0300
+Message-Id: <20200419151750.3863-4-juhapekka.heikkila@gmail.com>
 In-Reply-To: <20200419151750.3863-1-juhapekka.heikkila@gmail.com>
 References: <20200419151750.3863-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] [PATCH i-g-t 5/8] igt/params: add generic saving module
- parameter set
+Subject: [igt-dev] [PATCH i-g-t 3/8] lib/params: overhaul param saving
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,105 +29,174 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Jani Nikula <jani.nikula@intel.com>
 
+More generic, use existing functions.
+
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
- lib/igt_params.c | 56 ++++++++++++++++++++++++++++++++++++++++--------
- lib/igt_params.h |  3 +++
- 2 files changed, 50 insertions(+), 9 deletions(-)
+ lib/igt_params.c | 101 +++++++++++++++++++----------------------------
+ 1 file changed, 41 insertions(+), 60 deletions(-)
 
 diff --git a/lib/igt_params.c b/lib/igt_params.c
-index fe4b1df3..8de47b02 100644
+index f220e73b..b5ac1266 100644
 --- a/lib/igt_params.c
 +++ b/lib/igt_params.c
-@@ -153,6 +153,29 @@ int igt_params_open(int device)
- 	return __igt_params_open(device, NULL);
- }
+@@ -34,92 +34,74 @@
+ #include "igt_params.h"
+ #include "igt_sysfs.h"
  
-+__attribute__((format(printf, 3, 0)))
-+static bool __igt_params_set(int device, const char *parameter,
-+			     const char *fmt, va_list ap, bool save)
-+{
-+	char *path = NULL;
-+	int dir;
-+	int ret;
-+
-+	dir = __igt_params_open(device, save ? &path : NULL);
-+	if (dir < 0)
-+		return false;
-+
-+	if (save)
-+		igt_params_save(dir, path, parameter);
-+
-+	ret = igt_sysfs_vprintf(dir, parameter, fmt, ap);
-+
-+	close(dir);
-+	free(path);
-+
-+	return ret > 0;
-+}
-+
- /**
-  * igt_params_set:
-  * @device: fd of the device
-@@ -164,20 +187,35 @@ int igt_params_open(int device)
- bool igt_params_set(int device, const char *parameter, const char *fmt, ...)
- {
- 	va_list ap;
--	int dir;
--	int ret;
+-#define MODULE_PARAM_DIR "/sys/module/i915/parameters/"
+-#define PARAM_NAME_MAX_SZ 32
+-#define PARAM_VALUE_MAX_SZ 16
+-#define PARAM_FILE_PATH_MAX_SZ (strlen(MODULE_PARAM_DIR) + PARAM_NAME_MAX_SZ)
 -
--	dir = igt_params_open(device);
--	if (dir < 0)
--		return false;
-+	bool ret;
+ struct module_param_data {
+-	char name[PARAM_NAME_MAX_SZ];
+-	char original_value[PARAM_VALUE_MAX_SZ];
++	char *path;
++	char *name;
++	char *original_value;
  
- 	va_start(ap, fmt);
--	ret = igt_sysfs_vprintf(dir, parameter, fmt, ap);
-+	ret = __igt_params_set(device, parameter, fmt, ap, false);
- 	va_end(ap);
+ 	struct module_param_data *next;
+ };
+ struct module_param_data *module_params = NULL;
  
--	close(dir);
-+	return ret;
-+}
+-static void igt_module_param_exit_handler(int sig)
++static void igt_params_exit_handler(int sig)
+ {
+-	const size_t dir_len = strlen(MODULE_PARAM_DIR);
+-	char file_path[PARAM_FILE_PATH_MAX_SZ];
+ 	struct module_param_data *data;
+-	int fd;
+-
+-	/* We don't need to assert string sizes on this function since they were
+-	 * already checked before being stored on the lists. Besides,
+-	 * igt_assert() is not AS-Safe. */
+-	strcpy(file_path, MODULE_PARAM_DIR);
++	int dir;
  
--	return ret > 0;
-+/**
-+ * igt_params_set_save:
-+ * @device: fd of the device (or -1 to default to Intel)
-+ * @parameter: the name of the parameter to set
-+ * @fmt: printf-esque format string
-+ *
-+ * Save the original value to be restored.
-+ *
-+ * Returns true on success
-+ */
-+bool igt_params_set_save(int device, const char *parameter, const char *fmt, ...)
-+{
-+	va_list ap;
-+	bool ret;
+ 	for (data = module_params; data != NULL; data = data->next) {
+-		strcpy(file_path + dir_len, data->name);
+-
+-		fd = open(file_path, O_RDWR);
+-		if (fd >= 0) {
+-			int size = strlen (data->original_value);
+-
+-			if (size != write(fd, data->original_value, size)) {
+-				const char msg[] = "WARNING: Module parameters "
+-					"may not have been reset to their "
+-					"original values\n";
+-				assert(write(STDERR_FILENO, msg, sizeof(msg))
+-				       == sizeof(msg));
+-			}
+-
+-			close(fd);
++		dir = open(data->path, O_RDONLY);
 +
-+	va_start(ap, fmt);
-+	ret = __igt_params_set(device, parameter, fmt, ap, true);
-+	va_end(ap);
++		if (!igt_sysfs_set(dir, data->name, data->original_value)) {
++			const char msg[] = "WARNING: Module parameters "
++				"may not have been reset to their "
++				"original values\n";
++			assert(write(STDERR_FILENO, msg, sizeof(msg))
++			       == sizeof(msg));
+ 		}
 +
-+	return ret;
++		close(dir);
+ 	}
+ 	/* free() is not AS-Safe, so we can't call it here. */
  }
  
  /**
-diff --git a/lib/igt_params.h b/lib/igt_params.h
-index 52eed77f..1b750d23 100644
---- a/lib/igt_params.h
-+++ b/lib/igt_params.h
-@@ -31,6 +31,9 @@ int igt_params_open(int device);
- __attribute__((format(printf, 3, 4)))
- bool igt_params_set(int device, const char *parameter, const char *fmt, ...);
+- * igt_save_module_param:
+- * @name: name of the i915.ko module parameter
+- * @file_path: full sysfs file path for the parameter
++ * igt_params_save:
++ * @dir: file handle for path
++ * @path: full path to the sysfs directory
++ * @name: name of the sysfs attribute
+  *
+- * Reads the current value of an i915.ko module parameter, saves it on an array,
+- * then installs an exit handler to restore it when the program exits.
++ * Reads the current value of a sysfs attribute, saves it on an array, then
++ * installs an exit handler to restore it when the program exits.
+  *
+  * It is safe to call this function multiple times for the same parameter.
+  *
+  * Notice that this function is called by igt_set_module_param(), so that one -
+  * or one of its wrappers - is the only function the test programs need to call.
+  */
+-static void igt_save_module_param(const char *name, const char *file_path)
++static void igt_params_save(int dir, const char *path, const char *name)
+ {
+ 	struct module_param_data *data;
+-	size_t n;
+-	int fd;
  
-+__attribute__((format(printf, 3, 4)))
-+bool igt_params_set_save(int device, const char *parameter, const char *fmt, ...);
+ 	/* Check if this parameter is already saved. */
+ 	for (data = module_params; data != NULL; data = data->next)
+-		if (strncmp(data->name, name, PARAM_NAME_MAX_SZ) == 0)
++		if (strcmp(data->path, path) == 0 &&
++		    strcmp(data->name, name) == 0)
+ 			return;
+ 
+ 	if (!module_params)
+-		igt_install_exit_handler(igt_module_param_exit_handler);
++		igt_install_exit_handler(igt_params_exit_handler);
+ 
+ 	data = calloc(1, sizeof (*data));
+ 	igt_assert(data);
+ 
+-	strncpy(data->name, name, PARAM_NAME_MAX_SZ - 1);
+-
+-	fd = open(file_path, O_RDONLY);
+-	igt_assert(fd >= 0);
++	data->path = strdup(path);
++	igt_assert(data->path);
+ 
+-	n = read(fd, data->original_value, PARAM_VALUE_MAX_SZ);
+-	igt_assert_f(n > 0 && n < PARAM_VALUE_MAX_SZ,
+-		     "Need to increase PARAM_VALUE_MAX_SZ\n");
++	data->name = strdup(name);
++	igt_assert(data->name);
+ 
+-	igt_assert(close(fd) == 0);
++	data->original_value = igt_sysfs_get(dir, name);
++	igt_assert(data->original_value);
+ 
+ 	data->next = module_params;
+ 	module_params = data;
+@@ -205,22 +187,21 @@ bool igt_params_set(int device, const char *parameter, const char *fmt, ...)
+  */
+ void igt_set_module_param(const char *name, const char *val)
+ {
+-	char file_path[PARAM_FILE_PATH_MAX_SZ];
+-	size_t len = strlen(val);
+-	int fd;
++	const char *path = "/sys/module/i915/parameters";
++	int dir;
+ 
+-	igt_assert_f(strlen(name) < PARAM_NAME_MAX_SZ,
+-		     "Need to increase PARAM_NAME_MAX_SZ\n");
+-	strcpy(file_path, MODULE_PARAM_DIR);
+-	strcpy(file_path + strlen(MODULE_PARAM_DIR), name);
++	dir = open(path, O_RDONLY);
++	igt_assert(dir >= 0);
+ 
+-	igt_save_module_param(name, file_path);
++	igt_params_save(dir, path, name);
+ 
+-	fd = open(file_path, O_RDWR);
+-	igt_assert(write(fd, val, len) == len);
+-	igt_assert(close(fd) == 0);
++	igt_assert(igt_sysfs_set(dir, name, val));
 +
- void igt_set_module_param(const char *name, const char *val);
- void igt_set_module_param_int(const char *name, int val);
++	igt_assert(close(dir) == 0);
+ }
  
++#define PARAM_VALUE_MAX_SZ 16
++
+ /**
+  * igt_set_module_param_int:
+  * @name: i915.ko parameter name
 -- 
 2.17.1
 
