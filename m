@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C28E86E46C
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2020 08:00:11 +0000 (UTC)
-Date: Mon, 20 Apr 2020 06:32:27 +0530
-From: Kunal Joshi <kunal1.joshi@intel.com>
-Message-ID: <20200420010227.GA12778@intel.com>
-References: <20200419212613.11505-1-kunal1.joshi@intel.com>
- <20200420075512.ehv5w2yiikymql5h@ahiler-desk1.fi.intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200420075512.ehv5w2yiikymql5h@ahiler-desk1.fi.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_chamelium: Capture on
- type-c
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 20 Apr 2020 09:03:42 -0000
+Message-ID: <158737342200.29876.362437176087847095@emeril.freedesktop.org>
+References: <20200420064656.6787-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20200420064656.6787-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fbig=5Ffb=3A_Allow_modeset_to_surivive_change_of_cdclk_=28?=
+ =?utf-8?q?rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,35 +15,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>, igt-dev@lists.freedesktop.org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-04-20 at 10:55:12 +0300, Arkadiusz Hiler wrote:
-> On Mon, Apr 20, 2020 at 02:56:13AM +0530, Kunal Joshi wrote:
-> > Refreshing the connector everytime and also resetting the
-> > state to get HPD reliably.
-> 
-> Code looks good, but please consider adding a bit more of explanation
-> here, something like:
-> 
-> Chamelium uses HPD pulses to singal the need for a receiver reset using
-> DPMS cycle. Some connectors (e.g. DP over TypeC) have limitations and
-> will receive just a single such pulse and discard the rest. This lasts
-> until we disable the mode completetly and only then reenable it.
-> 
-> Receiver reset is always required after we set a new mode, so let's
-> disable the mode (reset_state() does that) before we switch to a new
-> mode. With this we will get the HPD pulses reliably for each iteration
-> over all the supoprted modes.
-> 
-> There are alse targeted test for HPD pulse handling - dp-hpd-*.
->
-Yes arek will add this explanation in the commit keeping your rb
-Thanks Kunal.
+== Series Details ==
+
+Series: tests/kms_big_fb: Allow modeset to surivive change of cdclk (rev2)
+URL   : https://patchwork.freedesktop.org/series/76077/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8327 -> IGTPW_4490
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_4490 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4490, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4490/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4490:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-skl-lmem:        [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8327/fi-skl-lmem/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4490/fi-skl-lmem/igt@i915_selftest@live@execlists.html
+
+  
+
+
+Participating hosts (49 -> 44)
+------------------------------
+
+  Additional (1): fi-kbl-7560u 
+  Missing    (6): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-bdw-samus fi-byt-clapper fi-skl-6700k2 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5602 -> IGTPW_4490
+
+  CI-20190529: 20190529
+  CI_DRM_8327: 17e0a63ab93b19ea2bfccd9a0425c93e52a65246 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4490: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4490/index.html
+  IGT_5602: a8fcccd15dcc2dd409edd23785a2d6f6e85fb682 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4490/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
