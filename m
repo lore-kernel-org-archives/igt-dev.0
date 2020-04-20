@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C5136E598
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2020 14:03:43 +0000 (UTC)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Mon, 20 Apr 2020 15:03:12 +0100
+Message-Id: <20200420140312.3401290-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 20 Apr 2020 13:10:58 -0000
-Message-ID: <158738825800.29874.5062884436238336077@emeril.freedesktop.org>
-References: <20200420121747.23816-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20200420121747.23816-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgVXNlIGRl?=
- =?utf-8?q?vice_dependant_module_parameters_=28rev2=29?=
+Subject: [igt-dev] [PATCH i-g-t] kms_atomic_transition: Make the available
+ pipe discovery dynamic
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,104 +15,154 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+All of the per-plane tests are run on all available matching pipes. A
+natural case for igt_subtest_with_dynamic + igt_dynamic_f
 
-Series: Use device dependant module parameters (rev2)
-URL   : https://patchwork.freedesktop.org/series/76163/
-State : failure
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Petri Latvala <petri.latvala@intel.com>
+---
+ tests/kms_atomic_transition.c | 86 +++++++++++++++++++++--------------
+ 1 file changed, 52 insertions(+), 34 deletions(-)
 
-== Summary ==
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index 44f01109d..d28a8cdf5 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -924,71 +924,89 @@ igt_main
+ 		for_each_pipe_with_valid_output(&display, pipe, output)
+ 			run_primary_test(&display, pipe, output);
+ 
+-	igt_subtest("plane-all-transition")
+-		for_each_pipe_with_valid_output(&display, pipe, output)
+-			run_transition_test(&display, pipe, output, TRANSITION_PLANES, false, false);
++	igt_subtest_with_dynamic("plane-all-transition") {
++		for_each_pipe_with_valid_output(&display, pipe, output) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				run_transition_test(&display, pipe, output, TRANSITION_PLANES, false, false);
++		}
++	}
+ 
+-	igt_subtest("plane-all-transition-fencing")
+-		for_each_pipe_with_valid_output(&display, pipe, output)
+-			run_transition_test(&display, pipe, output, TRANSITION_PLANES, false, true);
++	igt_subtest_with_dynamic("plane-all-transition-fencing") {
++		for_each_pipe_with_valid_output(&display, pipe, output) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				run_transition_test(&display, pipe, output, TRANSITION_PLANES, false, true);
++		}
++	}
+ 
+-	igt_subtest("plane-all-transition-nonblocking")
+-		for_each_pipe_with_valid_output(&display, pipe, output)
+-			run_transition_test(&display, pipe, output, TRANSITION_PLANES, true, false);
++	igt_subtest_with_dynamic("plane-all-transition-nonblocking") {
++		for_each_pipe_with_valid_output(&display, pipe, output) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				run_transition_test(&display, pipe, output, TRANSITION_PLANES, true, false);
++		}
++	}
+ 
+-	igt_subtest("plane-all-transition-nonblocking-fencing")
+-		for_each_pipe_with_valid_output(&display, pipe, output)
+-			run_transition_test(&display, pipe, output, TRANSITION_PLANES, true, true);
++	igt_subtest_with_dynamic("plane-all-transition-nonblocking-fencing") {
++		for_each_pipe_with_valid_output(&display, pipe, output) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				run_transition_test(&display, pipe, output, TRANSITION_PLANES, true, true);
++		}
++	}
+ 
+-	igt_subtest("plane-use-after-nonblocking-unbind")
+-		for_each_pipe_with_valid_output(&display, pipe, output)
+-			run_transition_test(&display, pipe, output, TRANSITION_AFTER_FREE, true, false);
++	igt_subtest_with_dynamic("plane-use-after-nonblocking-unbind") {
++		for_each_pipe_with_valid_output(&display, pipe, output) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				run_transition_test(&display, pipe, output, TRANSITION_AFTER_FREE, true, false);
++		}
++	}
+ 
+-	igt_subtest("plane-use-after-nonblocking-unbind-fencing")
+-		for_each_pipe_with_valid_output(&display, pipe, output)
+-			run_transition_test(&display, pipe, output, TRANSITION_AFTER_FREE, true, true);
++	igt_subtest_with_dynamic("plane-use-after-nonblocking-unbind-fencing") {
++		for_each_pipe_with_valid_output(&display, pipe, output) {
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				run_transition_test(&display, pipe, output, TRANSITION_AFTER_FREE, true, true);
++		}
++	}
+ 
+ 	/*
+ 	 * Test modeset cases on internal panels separately with a reduced
+ 	 * number of combinations, to avoid long runtimes due to modesets on
+ 	 * panels with long power cycle delays.
+ 	 */
+-	igt_subtest("plane-all-modeset-transition")
++	igt_subtest_with_dynamic("plane-all-modeset-transition")
+ 		for_each_pipe_with_valid_output(&display, pipe, output) {
+ 			if (output_is_internal_panel(output))
+ 				continue;
+-			run_transition_test(&display, pipe, output, TRANSITION_MODESET, false, false);
++
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				run_transition_test(&display, pipe, output, TRANSITION_MODESET, false, false);
+ 		}
+ 
+-	igt_subtest("plane-all-modeset-transition-fencing")
++	igt_subtest_with_dynamic("plane-all-modeset-transition-fencing")
+ 		for_each_pipe_with_valid_output(&display, pipe, output) {
+ 			if (output_is_internal_panel(output))
+ 				continue;
+-			run_transition_test(&display, pipe, output, TRANSITION_MODESET, false, true);
+-		}
+ 
+-	igt_subtest("plane-all-modeset-transition-internal-panels") {
+-		int tested = 0;
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				run_transition_test(&display, pipe, output, TRANSITION_MODESET, false, true);
++		}
+ 
++	igt_subtest_with_dynamic("plane-all-modeset-transition-internal-panels") {
+ 		for_each_pipe_with_valid_output(&display, pipe, output) {
+ 			if (!output_is_internal_panel(output))
+ 				continue;
+-			run_transition_test(&display, pipe, output, TRANSITION_MODESET_FAST, false, false);
+-			tested++;
++
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				run_transition_test(&display, pipe, output, TRANSITION_MODESET_FAST, false, false);
+ 		}
+-		igt_skip_on_f(!tested, "No output with internal panel found\n");
+ 	}
+ 
+-	igt_subtest("plane-all-modeset-transition-fencing-internal-panels") {
+-		int tested = 0;
+-
++	igt_subtest_with_dynamic("plane-all-modeset-transition-fencing-internal-panels") {
+ 		for_each_pipe_with_valid_output(&display, pipe, output) {
+ 			if (!output_is_internal_panel(output))
+ 				continue;
+-			run_transition_test(&display, pipe, output, TRANSITION_MODESET_FAST, false, true);
+-			tested++;
++
++			igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
++				run_transition_test(&display, pipe, output, TRANSITION_MODESET_FAST, false, true);
+ 		}
+-		igt_skip_on_f(!tested, "No output with internal panel found\n");
+ 	}
+ 
+ 	igt_subtest("plane-toggle-modeset-transition")
+-- 
+2.26.1
 
-CI Bug Log - changes from CI_DRM_8328 -> IGTPW_4492
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_4492 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_4492, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4492/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_4492:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-hsw-4770:        [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8328/fi-hsw-4770/igt@kms_force_connector_basic@force-load-detect.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4492/fi-hsw-4770/igt@kms_force_connector_basic@force-load-detect.html
-    - fi-elk-e7500:       [PASS][3] -> [FAIL][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8328/fi-elk-e7500/igt@kms_force_connector_basic@force-load-detect.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4492/fi-elk-e7500/igt@kms_force_connector_basic@force-load-detect.html
-    - fi-ivb-3770:        [PASS][5] -> [FAIL][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8328/fi-ivb-3770/igt@kms_force_connector_basic@force-load-detect.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4492/fi-ivb-3770/igt@kms_force_connector_basic@force-load-detect.html
-    - fi-byt-j1900:       [PASS][7] -> [FAIL][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8328/fi-byt-j1900/igt@kms_force_connector_basic@force-load-detect.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4492/fi-byt-j1900/igt@kms_force_connector_basic@force-load-detect.html
-    - fi-blb-e6850:       [PASS][9] -> [FAIL][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8328/fi-blb-e6850/igt@kms_force_connector_basic@force-load-detect.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4492/fi-blb-e6850/igt@kms_force_connector_basic@force-load-detect.html
-    - fi-pnv-d510:        [PASS][11] -> [FAIL][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8328/fi-pnv-d510/igt@kms_force_connector_basic@force-load-detect.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4492/fi-pnv-d510/igt@kms_force_connector_basic@force-load-detect.html
-    - fi-snb-2520m:       [PASS][13] -> [FAIL][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8328/fi-snb-2520m/igt@kms_force_connector_basic@force-load-detect.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4492/fi-snb-2520m/igt@kms_force_connector_basic@force-load-detect.html
-    - fi-gdg-551:         [PASS][15] -> [FAIL][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8328/fi-gdg-551/igt@kms_force_connector_basic@force-load-detect.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4492/fi-gdg-551/igt@kms_force_connector_basic@force-load-detect.html
-    - fi-bwr-2160:        [PASS][17] -> [FAIL][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8328/fi-bwr-2160/igt@kms_force_connector_basic@force-load-detect.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4492/fi-bwr-2160/igt@kms_force_connector_basic@force-load-detect.html
-    - fi-snb-2600:        [PASS][19] -> [FAIL][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8328/fi-snb-2600/igt@kms_force_connector_basic@force-load-detect.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4492/fi-snb-2600/igt@kms_force_connector_basic@force-load-detect.html
-
-  
-
-
-Participating hosts (50 -> 43)
-------------------------------
-
-  Missing    (7): fi-cml-u2 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5602 -> IGTPW_4492
-
-  CI-20190529: 20190529
-  CI_DRM_8328: 77c1f57ceed8844ac2eccde781f540fae4e6604d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4492: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4492/index.html
-  IGT_5602: a8fcccd15dcc2dd409edd23785a2d6f6e85fb682 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4492/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
