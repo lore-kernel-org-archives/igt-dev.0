@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3954C6E526
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2020 12:18:03 +0000 (UTC)
-Received: by mail-pg1-x541.google.com with SMTP id x26so4947860pgc.10
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2020 05:18:03 -0700 (PDT)
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 74AF66E51C
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2020 12:18:10 +0000 (UTC)
+Received: by mail-pj1-x1043.google.com with SMTP id a32so4494306pje.5
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Apr 2020 05:18:10 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Mon, 20 Apr 2020 15:17:43 +0300
-Message-Id: <20200420121747.23816-5-juhapekka.heikkila@gmail.com>
+Date: Mon, 20 Apr 2020 15:17:46 +0300
+Message-Id: <20200420121747.23816-8-juhapekka.heikkila@gmail.com>
 In-Reply-To: <20200420121747.23816-1-juhapekka.heikkila@gmail.com>
 References: <20200420121747.23816-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 4/8] params open with path return
+Subject: [igt-dev] [PATCH i-g-t 7/8] lib/debugfs: use regular module param
+ functions for prefault_disable
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,62 +30,76 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Jani Nikula <jani.nikula@intel.com>
 
----
- lib/igt_params.c | 29 ++++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+Functional change switches from igt_require to igt_assert on errors.
 
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+---
+ benchmarks/gem_exec_reloc.c |  2 +-
+ lib/igt_params.c            | 24 ++++++++++++++++++++++++
+ lib/igt_params.h            |  7 +++++++
+ 3 files changed, 32 insertions(+), 1 deletion(-)
+
+diff --git a/benchmarks/gem_exec_reloc.c b/benchmarks/gem_exec_reloc.c
+index 0a2454cb..d7841b58 100644
+--- a/benchmarks/gem_exec_reloc.c
++++ b/benchmarks/gem_exec_reloc.c
+@@ -38,7 +38,7 @@
+ #include "drm.h"
+ #include "intel_reg.h"
+ #include "ioctl_wrappers.h"
+-#include "igt_debugfs.h"
++#include "igt_params.h"
+ #include "drmtest.h"
+ #include "i915/gem_mman.h"
+ 
 diff --git a/lib/igt_params.c b/lib/igt_params.c
-index b5ac1266..fe4b1df3 100644
+index db7f7eb8..eb52a7c9 100644
 --- a/lib/igt_params.c
 +++ b/lib/igt_params.c
-@@ -107,17 +107,7 @@ static void igt_params_save(int dir, const char *path, const char *name)
- 	module_params = data;
- }
- 
--/**
-- * igt_params_open:
-- * @device: fd of the device
-- *
-- * This opens the module parameters directory (under sysfs) corresponding
-- * to the device for use with igt_sysfs_set() and igt_sysfs_get().
-- *
-- * Returns:
-- * The directory fd, or -1 on failure.
-- */
--int igt_params_open(int device)
-+static int __igt_params_open(int device, char **outpath)
+@@ -300,3 +300,27 @@ void igt_set_module_param_int(const char *name, int val)
  {
- 	int dir, params = -1;
- 
-@@ -141,11 +131,28 @@ int igt_params_open(int device)
- 
- 		sprintf(path, "/sys/module/%s/parameters", name);
- 		params = open(path, O_RDONLY);
-+		if (params >= 0 && outpath)
-+			*outpath = strdup(path);
- 	}
- 
- 	return params;
+ 	igt_assert(igt_params_set_save(-1, name, "%d", val));
  }
- 
++
 +/**
-+ * igt_params_open:
-+ * @device: fd of the device
++ * igt_disable_prefault:
 + *
-+ * This opens the module parameters directory (under sysfs) corresponding
-+ * to the device for use with igt_sysfs_set() and igt_sysfs_get().
++ * Disable prefaulting in certain gem ioctls through the module param. As usual
++ * this installs an exit handler to clean up and re-enable prefaulting even when
++ * the test exited abnormally.
 + *
-+ * Returns:
-+ * The directory fd, or -1 on failure.
++ * igt_enable_prefault() will enable normale operation again.
 + */
-+int igt_params_open(int device)
++void igt_disable_prefault(void)
 +{
-+	return __igt_params_open(device, NULL);
++	igt_require(igt_params_set_save(-1, "prefault_disable", "Y"));
 +}
 +
- /**
-  * igt_params_set:
-  * @device: fd of the device
++/**
++ * igt_enable_prefault:
++ *
++ * Enable prefault (again) through the module param.
++ */
++void igt_enable_prefault(void)
++{
++	igt_require(igt_params_set_save(-1, "prefault_disable", "N"));
++}
+diff --git a/lib/igt_params.h b/lib/igt_params.h
+index 1b750d23..f18ea436 100644
+--- a/lib/igt_params.h
++++ b/lib/igt_params.h
+@@ -37,4 +37,11 @@ bool igt_params_set_save(int device, const char *parameter, const char *fmt, ...
+ void igt_set_module_param(const char *name, const char *val);
+ void igt_set_module_param_int(const char *name, int val);
+ 
++/*
++ * Prefault control
++ */
++
++void igt_disable_prefault(void);
++void igt_enable_prefault(void);
++
+ #endif /* __IGT_PARAMS_H__ */
 -- 
 2.26.0
 
