@@ -1,13 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E1D06E116
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Apr 2020 18:22:38 +0000 (UTC)
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Date: Tue, 21 Apr 2020 11:22:37 -0700
-Message-Id: <20200421182237.7743-1-umesh.nerlige.ramappa@intel.com>
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
+ [IPv6:2a00:1450:4864:20::441])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A3FCD6E116
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Apr 2020 18:30:07 +0000 (UTC)
+Received: by mail-wr1-x441.google.com with SMTP id f13so17651603wrm.13
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Apr 2020 11:30:07 -0700 (PDT)
+References: <20200421161725.12249-1-juhapekka.heikkila@gmail.com>
+ <20200421161725.12249-8-juhapekka.heikkila@gmail.com>
+ <158749264502.11203.2272792297388581562@build.alporthouse.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <6df922c2-fead-47b2-a447-7d224803cff6@gmail.com>
+Date: Tue, 21 Apr 2020 21:30:00 +0300
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/perf: Fix B0 counter check in
- gen12-mi-rpc
+In-Reply-To: <158749264502.11203.2272792297388581562@build.alporthouse.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 7/8] lib/debugfs: use regular module
+ param functions for prefault_disable
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,38 +23,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
+Reply-To: juhapekka.heikkila@gmail.com
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Lionel G Landwerlin <lionel.g.landwerlin@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
+Cc: Jani Nikula <jani.nikula@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The gen12-mi-rpc test checks for B0 counter to be zero, however,
-occassionally the counter reads a non-zero value. To ensure the test
-works as expected, we check B0 with the preset value.
+On 21.4.2020 21.10, Chris Wilson wrote:
+> Quoting Juha-Pekka Heikkila (2020-04-21 17:17:24)
+>> From: Jani Nikula <jani.nikula@intel.com>
+>>
+>> Functional change switches from igt_require to igt_assert on errors.
+> 
+> Adding entirely unused functions for fun?
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/1085
----
- tests/perf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+That probably is from legacy, Jani's igt branch that I took was not very 
+new.
 
-diff --git a/tests/perf.c b/tests/perf.c
-index b7d5e50e..9d0ed45c 100644
---- a/tests/perf.c
-+++ b/tests/perf.c
-@@ -3002,7 +3002,7 @@ gen12_test_mi_rpc(void)
- 	 */
- 	igt_assert_eq(report32[0], REPORT_ID);
- 	igt_assert_neq(report32[1], 0);
--	igt_assert_eq(report32[format.b_off >> 2], 0);
-+	igt_assert_neq(report32[format.b_off >> 2], 0x80808080);
- 	igt_assert_eq(report32[format_size_32], 0x80808080);
- 
- 	drm_intel_bo_unmap(bo);
--- 
-2.20.1
+Chris, you have opinion about patch 6/8 on what's going on there? 
+There's in __igt_params_open(..) those two blocks of file checking which 
+on first block is checking if wanted parameter file is in selected 
+device directory and second block is just about 'guessing' default 
+device name. I'm somehow thinking there would be easier way for those 
+but I didn't find other way so I ended up reading and parsing files. It 
+seems to work but not feeling comfortable with it.
+
+/Juha-Pekka
 
 _______________________________________________
 igt-dev mailing list
