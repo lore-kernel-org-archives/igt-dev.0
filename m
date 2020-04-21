@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com
- [IPv6:2a00:1450:4864:20::143])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4350B6E08C
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Apr 2020 16:17:35 +0000 (UTC)
-Received: by mail-lf1-x143.google.com with SMTP id g10so11115450lfj.13
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Apr 2020 09:17:35 -0700 (PDT)
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
+ [IPv6:2a00:1450:4864:20::241])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF82E6E2E0
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Apr 2020 16:17:37 +0000 (UTC)
+Received: by mail-lj1-x241.google.com with SMTP id l19so12072465lje.10
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Apr 2020 09:17:37 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Tue, 21 Apr 2020 19:17:21 +0300
-Message-Id: <20200421161725.12249-5-juhapekka.heikkila@gmail.com>
+Date: Tue, 21 Apr 2020 19:17:23 +0300
+Message-Id: <20200421161725.12249-7-juhapekka.heikkila@gmail.com>
 In-Reply-To: <20200421161725.12249-1-juhapekka.heikkila@gmail.com>
 References: <20200421161725.12249-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] [PATCH i-g-t 4/8] params open with path return
+Subject: [igt-dev] [PATCH i-g-t 6/8] igt/params: use igt_params_set_save for
+ igt_set_module_param*
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,65 +28,210 @@ To: igt-dev@lists.freedesktop.org
 Cc: Jani Nikula <jani.nikula@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Jani Nikula <jani.nikula@intel.com>
+Unify parameter access.
 
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/igt_params.c | 29 ++++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+ lib/igt_params.c | 133 +++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 100 insertions(+), 33 deletions(-)
 
 diff --git a/lib/igt_params.c b/lib/igt_params.c
-index b5ac1266..fe4b1df3 100644
+index 8de47b02..369d224c 100644
 --- a/lib/igt_params.c
 +++ b/lib/igt_params.c
-@@ -107,17 +107,7 @@ static void igt_params_save(int dir, const char *path, const char *name)
+@@ -27,12 +27,14 @@
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <sys/ioctl.h>
++#include <sys/stat.h>
+ 
+ #include <i915_drm.h>
+ 
+ #include "igt_core.h"
+ #include "igt_params.h"
+ #include "igt_sysfs.h"
++#include "igt_debugfs.h"
+ 
+ struct module_param_data {
+ 	char *path;
+@@ -107,15 +109,59 @@ static void igt_params_save(int dir, const char *path, const char *name)
  	module_params = data;
  }
  
--/**
-- * igt_params_open:
-- * @device: fd of the device
-- *
-- * This opens the module parameters directory (under sysfs) corresponding
-- * to the device for use with igt_sysfs_set() and igt_sysfs_get().
-- *
-- * Returns:
-- * The directory fd, or -1 on failure.
-- */
--int igt_params_open(int device)
-+static int __igt_params_open(int device, char **outpath)
+-static int __igt_params_open(int device, char **outpath)
++static int __igt_params_open(int device, char **outpath, const char *param)
  {
  	int dir, params = -1;
++	struct stat buffer;
++	char searchname[64];
++	char searchpath[PATH_MAX];
++	char *foundname, *ctx;
  
-@@ -141,11 +131,28 @@ int igt_params_open(int device)
- 
- 		sprintf(path, "/sys/module/%s/parameters", name);
- 		params = open(path, O_RDONLY);
-+		if (params >= 0 && outpath)
-+			*outpath = strdup(path);
+-	dir = igt_sysfs_open(device);
++	dir = igt_debugfs_dir(device);
+ 	if (dir >= 0) {
+-		params = openat(dir,
+-				"device/driver/module/parameters",
+-				O_RDONLY);
++		int devname;
++
++		devname = openat(dir, "name", O_RDONLY);
++		igt_assert(devname >= 0);
++
++		read(devname, searchname, sizeof(searchname));
++		close(devname);
++
++		foundname = strtok_r(searchname, " ", &ctx);
++		igt_assert(foundname);
++
++		snprintf(searchpath, PATH_MAX, "%s_params", foundname);
++		params = openat(dir, searchpath, O_RDONLY);
++
++		if (params >= 0) {
++			char *debugfspath = malloc(PATH_MAX);
++
++			igt_debugfs_path(device, debugfspath, PATH_MAX);
++			if (param != NULL) {
++				char filepath[PATH_MAX];
++
++				snprintf(filepath, PATH_MAX, "%s/%s",
++					 debugfspath, param);
++
++				if (stat(filepath, &buffer) == 0) {
++					if (outpath != NULL)
++						*outpath = debugfspath;
++					else
++						free(debugfspath);
++				} else {
++					free(debugfspath);
++					close(params);
++					params = -1;
++				}
++			} else if (outpath != NULL) {
++				/*
++				 * Caller is responsible to free this.
++				 */
++				*outpath = debugfspath;
++			} else {
++				free(debugfspath);
++			}
++		}
+ 		close(dir);
  	}
  
- 	return params;
+@@ -124,11 +170,51 @@ static int __igt_params_open(int device, char **outpath)
+ 		char name[32] = "";
+ 		char path[PATH_MAX];
+ 
+-		memset(&version, 0, sizeof(version));
+-		version.name_len = sizeof(name);
+-		version.name = name;
+-		ioctl(device, DRM_IOCTL_VERSION, &version);
+-
++		if (device == -1) {
++			/*
++			 * find default device
++			 */
++			int file, i;
++			const char *debugfs_root = igt_debugfs_mount();
++
++			igt_assert(debugfs_root);
++
++			for (i = 0; i < 63; i++) {
++				char testpath[PATH_MAX];
++
++				snprintf(searchpath, PATH_MAX,
++					 "%s/dri/%d/name", debugfs_root, i);
++
++				file = open(searchpath, O_RDONLY);
++
++				if (file < 0)
++					continue;
++
++				read(file, searchname, sizeof(searchname));
++				close(file);
++
++				foundname = strtok_r(searchname, " ", &ctx);
++				if (!foundname)
++					continue;
++
++				snprintf(testpath, PATH_MAX,
++					 "/sys/module/%s/parameters",
++					 foundname);
++
++				if (stat(testpath, &buffer) == 0 &&
++				    S_ISDIR(buffer.st_mode)) {
++					memcpy(name, foundname,
++					       (sizeof(name) < strlen(foundname) ?
++					       sizeof(name) : strlen(foundname)));
++					break;
++				}
++			}
++		} else {
++			memset(&version, 0, sizeof(version));
++			version.name_len = sizeof(name);
++			version.name = name;
++			ioctl(device, DRM_IOCTL_VERSION, &version);
++		}
+ 		sprintf(path, "/sys/module/%s/parameters", name);
+ 		params = open(path, O_RDONLY);
+ 		if (params >= 0 && outpath)
+@@ -150,7 +236,7 @@ static int __igt_params_open(int device, char **outpath)
+  */
+ int igt_params_open(int device)
+ {
+-	return __igt_params_open(device, NULL);
++	return __igt_params_open(device, NULL, NULL);
  }
  
-+/**
-+ * igt_params_open:
-+ * @device: fd of the device
-+ *
-+ * This opens the module parameters directory (under sysfs) corresponding
-+ * to the device for use with igt_sysfs_set() and igt_sysfs_get().
-+ *
-+ * Returns:
-+ * The directory fd, or -1 on failure.
-+ */
-+int igt_params_open(int device)
-+{
-+	return __igt_params_open(device, NULL);
-+}
-+
+ __attribute__((format(printf, 3, 0)))
+@@ -161,7 +247,7 @@ static bool __igt_params_set(int device, const char *parameter,
+ 	int dir;
+ 	int ret;
+ 
+-	dir = __igt_params_open(device, save ? &path : NULL);
++	dir = __igt_params_open(device, save ? &path : NULL, parameter);
+ 	if (dir < 0)
+ 		return false;
+ 
+@@ -232,21 +318,9 @@ bool igt_params_set_save(int device, const char *parameter, const char *fmt, ...
+  */
+ void igt_set_module_param(const char *name, const char *val)
+ {
+-	const char *path = "/sys/module/i915/parameters";
+-	int dir;
+-
+-	dir = open(path, O_RDONLY);
+-	igt_assert(dir >= 0);
+-
+-	igt_params_save(dir, path, name);
+-
+-	igt_assert(igt_sysfs_set(dir, name, val));
+-
+-	igt_assert(close(dir) == 0);
++	igt_assert(igt_params_set_save(-1, name, "%s", val));
+ }
+ 
+-#define PARAM_VALUE_MAX_SZ 16
+-
  /**
-  * igt_params_set:
-  * @device: fd of the device
+  * igt_set_module_param_int:
+  * @name: i915.ko parameter name
+@@ -257,12 +331,5 @@ void igt_set_module_param(const char *name, const char *val)
+  */
+ void igt_set_module_param_int(const char *name, int val)
+ {
+-	char str[PARAM_VALUE_MAX_SZ];
+-	int n;
+-
+-	n = snprintf(str, PARAM_VALUE_MAX_SZ, "%d\n", val);
+-	igt_assert_f(n < PARAM_VALUE_MAX_SZ,
+-		     "Need to increase PARAM_VALUE_MAX_SZ\n");
+-
+-	igt_set_module_param(name, str);
++	igt_assert(igt_params_set_save(-1, name, "%d", val));
+ }
 -- 
 2.17.1
 
