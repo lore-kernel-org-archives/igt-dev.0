@@ -1,23 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
- [IPv6:2a00:1450:4864:20::441])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 49FD96E2F9
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Apr 2020 18:59:52 +0000 (UTC)
-Received: by mail-wr1-x441.google.com with SMTP id i10so17803465wrv.10
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Apr 2020 11:59:52 -0700 (PDT)
-References: <20200421161725.12249-1-juhapekka.heikkila@gmail.com>
- <20200421161725.12249-8-juhapekka.heikkila@gmail.com>
- <158749264502.11203.2272792297388581562@build.alporthouse.com>
- <6df922c2-fead-47b2-a447-7d224803cff6@gmail.com>
- <158749418519.11203.15109734100555990375@build.alporthouse.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <cc21fa6e-582a-69af-def1-572a3def50e6@gmail.com>
-Date: Tue, 21 Apr 2020 21:59:46 +0300
 MIME-Version: 1.0
-In-Reply-To: <158749418519.11203.15109734100555990375@build.alporthouse.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 7/8] lib/debugfs: use regular module
- param functions for prefault_disable
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 21 Apr 2020 19:00:40 -0000
+Message-ID: <158749564062.17662.3119515316785654850@emeril.freedesktop.org>
+References: <20200421182237.7743-1-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20200421182237.7743-1-umesh.nerlige.ramappa@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?perf=3A_Fix_B0_counter_check_in_gen12-mi-rpc?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,45 +14,109 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
-Cc: Jani Nikula <jani.nikula@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 21.4.2020 21.36, Chris Wilson wrote:
-> Quoting Juha-Pekka Heikkila (2020-04-21 19:30:00)
->> On 21.4.2020 21.10, Chris Wilson wrote:
->>> Quoting Juha-Pekka Heikkila (2020-04-21 17:17:24)
->>>> From: Jani Nikula <jani.nikula@intel.com>
->>>>
->>>> Functional change switches from igt_require to igt_assert on errors.
->>>
->>> Adding entirely unused functions for fun?
->>
->> That probably is from legacy, Jani's igt branch that I took was not very
->> new.
->>
->> Chris, you have opinion about patch 6/8 on what's going on there?
->> There's in __igt_params_open(..) those two blocks of file checking which
->> on first block is checking if wanted parameter file is in selected
->> device directory and second block is just about 'guessing' default
->> device name. I'm somehow thinking there would be easier way for those
->> but I didn't find other way so I ended up reading and parsing files. It
->> seems to work but not feeling comfortable with it.
-> 
-> Heh, not guilty of igt_set_module_param(). I would rip out any implicit
-> device lookup and make sure there's always a device fd to work with. If
-> that is not possible, then make the module name a parameter.
+== Series Details ==
 
-I'll need to give it some thought with making module name as parameter. 
-There's not many tests that would require change but those tests will 
-need to be added with some code that will recognize what driver are they on.
+Series: tests/perf: Fix B0 counter check in gen12-mi-rpc
+URL   : https://patchwork.freedesktop.org/series/76278/
+State : failure
 
-/Juha-Pekka
+== Summary ==
+
+CI Bug Log - changes from IGT_5604 -> IGTPW_4497
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_4497 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4497, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4497/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4497:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@workarounds:
+    - fi-byt-j1900:       [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5604/fi-byt-j1900/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4497/fi-byt-j1900/igt@i915_selftest@live@workarounds.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4497 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - fi-kbl-soraka:      [DMESG-FAIL][3] ([i915#541]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5604/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4497/fi-kbl-soraka/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@gt_mocs:
+    - fi-snb-2600:        [FAIL][5] ([i915#1763]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5604/fi-snb-2600/igt@i915_selftest@live@gt_mocs.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4497/fi-snb-2600/igt@i915_selftest@live@gt_mocs.html
+
+  
+#### Warnings ####
+
+  * igt@amdgpu/amd_basic@query-info:
+    - fi-bwr-2160:        [FAIL][7] -> [SKIP][8] ([fdo#109271])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5604/fi-bwr-2160/igt@amdgpu/amd_basic@query-info.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4497/fi-bwr-2160/igt@amdgpu/amd_basic@query-info.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1763]: https://gitlab.freedesktop.org/drm/intel/issues/1763
+  [i915#541]: https://gitlab.freedesktop.org/drm/intel/issues/541
+
+
+Participating hosts (49 -> 43)
+------------------------------
+
+  Additional (1): fi-kbl-7560u 
+  Missing    (7): fi-cml-u2 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5604 -> IGTPW_4497
+
+  CI-20190529: 20190529
+  CI_DRM_8345: e1fa8774e58e663bec8257f678c2f8fd17088292 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4497: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4497/index.html
+  IGT_5604: 18cc19ece602ba552a8386222b49e7e82820f9aa @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4497/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
