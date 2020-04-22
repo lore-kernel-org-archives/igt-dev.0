@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B8056EA1D
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Apr 2020 15:48:00 +0000 (UTC)
-Date: Wed, 22 Apr 2020 08:47:45 -0700
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Message-ID: <20200422154745.GA27960@orsosgc001.amr.corp.intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B70A66E83A
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Apr 2020 16:01:40 +0000 (UTC)
 References: <20200421182237.7743-1-umesh.nerlige.ramappa@intel.com>
  <5559c6ff-8cba-7f84-0490-879a5dc3e2dc@intel.com>
+ <20200422154745.GA27960@orsosgc001.amr.corp.intel.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <73157a64-e11a-b62e-0d2c-6ac8d9e4b320@intel.com>
+Date: Wed, 22 Apr 2020 19:01:22 +0300
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <5559c6ff-8cba-7f84-0490-879a5dc3e2dc@intel.com>
+In-Reply-To: <20200422154745.GA27960@orsosgc001.amr.corp.intel.com>
+Content-Language: en-US
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf: Fix B0 counter check in
  gen12-mi-rpc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -19,60 +20,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Apr 21, 2020 at 11:06:27PM +0300, Lionel Landwerlin wrote:
->On 21/04/2020 21:22, Umesh Nerlige Ramappa wrote:
->>The gen12-mi-rpc test checks for B0 counter to be zero, however,
->>occassionally the counter reads a non-zero value. To ensure the test
->>works as expected, we check B0 with the preset value.
->
->
->What the value being reported?
->
->
->Sounds like we should ask around see if there isn't a deeper problem 
->with the HW configuration.
->
-
-I have seen values 0x121 and 0x1ec. The issue occurs sometimes on 
-reboots. Subsequent runs I see that the counter is 0.
-
-Thanks,
-Umesh
-
->
->-Lionel
->
->
->>
->>Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
->>Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/1085
->>---
->>  tests/perf.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->>diff --git a/tests/perf.c b/tests/perf.c
->>index b7d5e50e..9d0ed45c 100644
->>--- a/tests/perf.c
->>+++ b/tests/perf.c
->>@@ -3002,7 +3002,7 @@ gen12_test_mi_rpc(void)
->>  	 */
->>  	igt_assert_eq(report32[0], REPORT_ID);
->>  	igt_assert_neq(report32[1], 0);
->>-	igt_assert_eq(report32[format.b_off >> 2], 0);
->>+	igt_assert_neq(report32[format.b_off >> 2], 0x80808080);
->>  	igt_assert_eq(report32[format_size_32], 0x80808080);
->>  	drm_intel_bo_unmap(bo);
->
->
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gMjIvMDQvMjAyMCAxODo0NywgVW1lc2ggTmVybGlnZSBSYW1hcHBhIHdyb3RlOgo+IE9uIFR1
+ZSwgQXByIDIxLCAyMDIwIGF0IDExOjA2OjI3UE0gKzAzMDAsIExpb25lbCBMYW5kd2VybGluIHdy
+b3RlOgo+PiBPbiAyMS8wNC8yMDIwIDIxOjIyLCBVbWVzaCBOZXJsaWdlIFJhbWFwcGEgd3JvdGU6
+Cj4+PiBUaGUgZ2VuMTItbWktcnBjIHRlc3QgY2hlY2tzIGZvciBCMCBjb3VudGVyIHRvIGJlIHpl
+cm8sIGhvd2V2ZXIsCj4+PiBvY2Nhc3Npb25hbGx5IHRoZSBjb3VudGVyIHJlYWRzIGEgbm9uLXpl
+cm8gdmFsdWUuIFRvIGVuc3VyZSB0aGUgdGVzdAo+Pj4gd29ya3MgYXMgZXhwZWN0ZWQsIHdlIGNo
+ZWNrIEIwIHdpdGggdGhlIHByZXNldCB2YWx1ZS4KPj4KPj4KPj4gV2hhdCB0aGUgdmFsdWUgYmVp
+bmcgcmVwb3J0ZWQ/Cj4+Cj4+Cj4+IFNvdW5kcyBsaWtlIHdlIHNob3VsZCBhc2sgYXJvdW5kIHNl
+ZSBpZiB0aGVyZSBpc24ndCBhIGRlZXBlciBwcm9ibGVtIAo+PiB3aXRoIHRoZSBIVyBjb25maWd1
+cmF0aW9uLgo+Pgo+Cj4gSSBoYXZlIHNlZW4gdmFsdWVzIDB4MTIxIGFuZCAweDFlYy4gVGhlIGlz
+c3VlIG9jY3VycyBzb21ldGltZXMgb24gCj4gcmVib290cy4gU3Vic2VxdWVudCBydW5zIEkgc2Vl
+IHRoYXQgdGhlIGNvdW50ZXIgaXMgMC4KPgo+IFRoYW5rcywKPiBVbWVzaAoKCk9oLi4uIEkgdGhv
+dWdodCB0aGlzIHRlc3Qgd2FzIHVzaW5nIHNhbml0eV9jaGVja19yZXBvcnRzKCkgb24gZGVsdGFz
+IApiZXR3ZWVuIDIgcmVwb3J0cy4KClllYWggSSBndWVzcyB5b3VyIGNoYW5nZSBpcyBmaW5lIHRo
+ZW4uCgpUaGUgdGVzdCBjb3VsZCBiZSBpbXByb3ZlZCB3aXRoIHNhbml0eV9jaGVja19yZXBvcnRz
+LgoKCi1MaW9uZWwKCgo+Cj4+Cj4+IC1MaW9uZWwKPj4KPj4KPj4+Cj4+PiBTaWduZWQtb2ZmLWJ5
+OiBVbWVzaCBOZXJsaWdlIFJhbWFwcGEgPHVtZXNoLm5lcmxpZ2UucmFtYXBwYUBpbnRlbC5jb20+
+Cj4+PiBGaXhlczogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC8tL2lz
+c3Vlcy8xMDg1Cj4+PiAtLS0KPj4+IMKgdGVzdHMvcGVyZi5jIHwgMiArLQo+Pj4gwqAxIGZpbGUg
+Y2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKPj4+Cj4+PiBkaWZmIC0tZ2l0
+IGEvdGVzdHMvcGVyZi5jIGIvdGVzdHMvcGVyZi5jCj4+PiBpbmRleCBiN2Q1ZTUwZS4uOWQwZWQ0
+NWMgMTAwNjQ0Cj4+PiAtLS0gYS90ZXN0cy9wZXJmLmMKPj4+ICsrKyBiL3Rlc3RzL3BlcmYuYwo+
+Pj4gQEAgLTMwMDIsNyArMzAwMiw3IEBAIGdlbjEyX3Rlc3RfbWlfcnBjKHZvaWQpCj4+PiDCoMKg
+wqDCoMKgICovCj4+PiDCoMKgwqDCoCBpZ3RfYXNzZXJ0X2VxKHJlcG9ydDMyWzBdLCBSRVBPUlRf
+SUQpOwo+Pj4gwqDCoMKgwqAgaWd0X2Fzc2VydF9uZXEocmVwb3J0MzJbMV0sIDApOwo+Pj4gLcKg
+wqDCoCBpZ3RfYXNzZXJ0X2VxKHJlcG9ydDMyW2Zvcm1hdC5iX29mZiA+PiAyXSwgMCk7Cj4+PiAr
+wqDCoMKgIGlndF9hc3NlcnRfbmVxKHJlcG9ydDMyW2Zvcm1hdC5iX29mZiA+PiAyXSwgMHg4MDgw
+ODA4MCk7Cj4+PiDCoMKgwqDCoCBpZ3RfYXNzZXJ0X2VxKHJlcG9ydDMyW2Zvcm1hdF9zaXplXzMy
+XSwgMHg4MDgwODA4MCk7Cj4+PiDCoMKgwqDCoCBkcm1faW50ZWxfYm9fdW5tYXAoYm8pOwo+Pgo+
+PgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRl
+diBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0
+cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
