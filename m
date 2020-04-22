@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4499C6E35F
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Apr 2020 08:36:41 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 332CE6E370
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Apr 2020 08:43:06 +0000 (UTC)
+Date: Wed, 22 Apr 2020 11:43:03 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200422084303.GF9497@platvala-desk.ger.corp.intel.com>
+References: <20200421161725.12249-1-juhapekka.heikkila@gmail.com>
+ <20200421161725.12249-3-juhapekka.heikkila@gmail.com>
+ <20200422082818.GD9497@platvala-desk.ger.corp.intel.com>
+ <87a733dil7.fsf@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200422083349.GE9497@platvala-desk.ger.corp.intel.com>
-References: <20200422081011.3523086-1-chris@chris-wilson.co.uk>
- <20200422081258.3542431-1-chris@chris-wilson.co.uk>
- <20200422083349.GE9497@platvala-desk.ger.corp.intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158754459592.11203.9839200188400166169@build.alporthouse.com>
-Date: Wed, 22 Apr 2020 09:36:35 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/i915_pm_rpm: Split the planes into
- dynamic subtests
+Content-Disposition: inline
+In-Reply-To: <87a733dil7.fsf@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/8] lib/params: start renaming
+ functions igt_params_*
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,65 +25,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Petri Latvala (2020-04-22 09:33:49)
-> On Wed, Apr 22, 2020 at 09:12:58AM +0100, Chris Wilson wrote:
-> > Use the dynamic subtests to allow the user to individually run the
-> > per-plane rpm tests.
-> > 
-> > Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> > Cc: Petri Latvala <petri.latvala@intel.com>
-> > ---
-> >  tests/i915/i915_pm_rpm.c | 18 +++++++-----------
-> >  1 file changed, 7 insertions(+), 11 deletions(-)
-> > 
-> > diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-> > index 4f8124dc4..a34e78b6b 100644
-> > --- a/tests/i915/i915_pm_rpm.c
-> > +++ b/tests/i915/i915_pm_rpm.c
-> > @@ -1778,7 +1778,7 @@ static void test_one_plane(bool dpms, uint32_t plane_id,
-> >  /* This one also triggered WARNs on our driver at some point in time. */
-> >  static void planes_subtest(bool universal, bool dpms)
-> >  {
-> > -     int i, rc, planes_tested = 0, crtc_idx;
-> > +     int i, rc, crtc_idx;
-> >       drmModePlaneResPtr planes;
-> >  
-> >       igt_require(default_mode_params);
-> > @@ -1803,8 +1803,8 @@ static void planes_subtest(bool universal, bool dpms)
-> >  
-> >                       type = universal ? get_plane_type(plane->plane_id) :
-> >                                          PLANE_OVERLAY;
-> > -                     test_one_plane(dpms, plane->plane_id, type);
-> > -                     planes_tested++;
-> > +                     igt_dynamic_f("plane-%d\n", plane->plane_id)
-> > +                             test_one_plane(dpms, plane->plane_id, type);
-> >               }
-> >               drmModeFreePlane(plane);
-> >       }
-> > @@ -1813,10 +1813,6 @@ static void planes_subtest(bool universal, bool dpms)
-> >       if (universal) {
-> >               rc = drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 0);
-> >               igt_assert_eq(rc, 0);
-> > -
-> > -             igt_assert_lte(3, planes_tested);
-> > -     } else {
-> > -             igt_assert_lte(1, planes_tested);
+On Wed, Apr 22, 2020 at 11:34:44AM +0300, Jani Nikula wrote:
+> On Wed, 22 Apr 2020, Petri Latvala <petri.latvala@intel.com> wrote:
+> > On Tue, Apr 21, 2020 at 07:17:19PM +0300, Juha-Pekka Heikkila wrote:
+> >> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> >> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> >> ---
+> >>  lib/drmtest.c                         |  2 +-
+> >>  lib/i915/gem_submission.c             |  2 +-
+> >>  lib/igt_aux.c                         |  3 +--
+> >>  lib/igt_gt.c                          |  2 +-
+> >>  lib/igt_params.c                      | 12 +++++-------
+> >>  lib/igt_params.h                      |  5 ++---
+> >>  tests/i915/gem_ctx_exec.c             |  2 +-
+> >>  tests/i915/gem_ctx_persistence.c      |  9 ++++-----
+> >>  tests/i915/gem_mmap_gtt.c             |  2 +-
+> >>  tests/i915/gem_reset_stats.c          |  6 ++----
+> >>  tests/i915/sysfs_heartbeat_interval.c |  3 ++-
+> >>  tests/i915/sysfs_preempt_timeout.c    |  3 ++-
+> >>  tests/i915/sysfs_timeslice_duration.c |  3 ++-
+> >>  13 files changed, 25 insertions(+), 29 deletions(-)
+> >> 
+> >> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> >> index 1fc39925..17067843 100644
+> >> --- a/lib/drmtest.c
+> >> +++ b/lib/drmtest.c
+> >> @@ -393,7 +393,7 @@ static void __cancel_work_at_exit(int fd)
+> >>  {
+> >>  	igt_terminate_spins(); /* for older kernels */
+> >>  
+> >> -	igt_sysfs_set_parameter(fd, "reset", "%x", -1u /* any method */);
+> >> +	igt_params_set(fd, "reset", "%x", -1u /* any method */);
+> >
+> >
+> > Hmm. Now that we're renaming anyway, we have a good chance to consider
+> > if the name is good.
+> >
+> > igt_module_params_set()? No, the point of this series is to make the
+> > params not module-specific. igt_device_params_set()?
+> >
+> > I don't have a strong opinion on this and I can live with
+> > igt_params_set() as well. Just calling out for opinions! Arek?
+> >
+> > As for the patch, whatever the name, straight up renames all around.
+> > Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 > 
-> Sure, we cannot have these asserts anymore when people can run a
-> limited set. Do we need to check them somewhere else?
-> 
-> Hang on, what was the point of these asserts? Asserting that we have
-> at least 3 universal planes? And at least 1 of non-universal? Wtf?
+> The way I envisioned it is that it would look at the debugfs for device
+> params, and if they don't exist, it should fall back to the module
+> params for older kernels. Hence just igt_params_set to avoid being
+> specific about device vs. module. Also, shorter.
 
-I'm glad I wasn't the only one asking that :)
+I was more concerned with the confusion between params for the kernel
+vs params for other operations. But I'm well prepared to accept that
+the confusion exists only in my own head.
 
-This isn't even a test for the universal/legacy API, it's just checking
-that we don't get runtime errors when poking them.
--Chris
+
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
