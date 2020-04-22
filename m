@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B8056EA1D
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Apr 2020 15:48:00 +0000 (UTC)
+Date: Wed, 22 Apr 2020 08:47:45 -0700
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Message-ID: <20200422154745.GA27960@orsosgc001.amr.corp.intel.com>
+References: <20200421182237.7743-1-umesh.nerlige.ramappa@intel.com>
+ <5559c6ff-8cba-7f84-0490-879a5dc3e2dc@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 22 Apr 2020 15:06:15 -0000
-Message-ID: <158756797584.5179.756210818882799432@emeril.freedesktop.org>
-References: <20200422143709.3671173-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200422143709.3671173-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgaTkxNS9p?=
- =?utf-8?q?915=5Fpm=5Frpm=3A_No_=27=5Cn=27_required_in_the_igt=5Fdynamic?=
- =?utf-8?q?=5Ff_name!?=
+Content-Disposition: inline
+In-Reply-To: <5559c6ff-8cba-7f84-0490-879a5dc3e2dc@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf: Fix B0 counter check in
+ gen12-mi-rpc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,109 +19,59 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Tue, Apr 21, 2020 at 11:06:27PM +0300, Lionel Landwerlin wrote:
+>On 21/04/2020 21:22, Umesh Nerlige Ramappa wrote:
+>>The gen12-mi-rpc test checks for B0 counter to be zero, however,
+>>occassionally the counter reads a non-zero value. To ensure the test
+>>works as expected, we check B0 with the preset value.
+>
+>
+>What the value being reported?
+>
+>
+>Sounds like we should ask around see if there isn't a deeper problem 
+>with the HW configuration.
+>
 
-Series: i915/i915_pm_rpm: No '\n' required in the igt_dynamic_f name!
-URL   : https://patchwork.freedesktop.org/series/76341/
-State : failure
+I have seen values 0x121 and 0x1ec. The issue occurs sometimes on 
+reboots. Subsequent runs I see that the counter is 0.
 
-== Summary ==
+Thanks,
+Umesh
 
-CI Bug Log - changes from IGT_5605 -> IGTPW_4500
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_4500 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_4500, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4500/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_4500:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_module_load@reload:
-    - fi-byt-j1900:       [PASS][1] -> [FAIL][2] +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5605/fi-byt-j1900/igt@i915_module_load@reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4500/fi-byt-j1900/igt@i915_module_load@reload.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4500 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-byt-j1900:       [PASS][3] -> [SKIP][4] ([fdo#109271])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5605/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4500/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@sanitycheck:
-    - fi-bwr-2160:        [PASS][5] -> [INCOMPLETE][6] ([i915#489])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5605/fi-bwr-2160/igt@i915_selftest@live@sanitycheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4500/fi-bwr-2160/igt@i915_selftest@live@sanitycheck.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-icl-y:           [INCOMPLETE][7] ([i915#1580]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5605/fi-icl-y/igt@i915_selftest@live@hangcheck.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4500/fi-icl-y/igt@i915_selftest@live@hangcheck.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1580]: https://gitlab.freedesktop.org/drm/intel/issues/1580
-  [i915#489]: https://gitlab.freedesktop.org/drm/intel/issues/489
-
-
-Participating hosts (48 -> 42)
-------------------------------
-
-  Additional (1): fi-kbl-7560u 
-  Missing    (7): fi-cml-u2 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-kbl-7500u fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5605 -> IGTPW_4500
-
-  CI-20190529: 20190529
-  CI_DRM_8348: 71482e0c1b4ce12ad43e790a0c03d671caf1eb54 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4500: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4500/index.html
-  IGT_5605: 47dce767120eb0c70ecfa46e14a3d4228e9b8ea4 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4500/index.html
+>
+>-Lionel
+>
+>
+>>
+>>Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+>>Fixes: https://gitlab.freedesktop.org/drm/intel/-/issues/1085
+>>---
+>>  tests/perf.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>>diff --git a/tests/perf.c b/tests/perf.c
+>>index b7d5e50e..9d0ed45c 100644
+>>--- a/tests/perf.c
+>>+++ b/tests/perf.c
+>>@@ -3002,7 +3002,7 @@ gen12_test_mi_rpc(void)
+>>  	 */
+>>  	igt_assert_eq(report32[0], REPORT_ID);
+>>  	igt_assert_neq(report32[1], 0);
+>>-	igt_assert_eq(report32[format.b_off >> 2], 0);
+>>+	igt_assert_neq(report32[format.b_off >> 2], 0x80808080);
+>>  	igt_assert_eq(report32[format_size_32], 0x80808080);
+>>  	drm_intel_bo_unmap(bo);
+>
+>
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
