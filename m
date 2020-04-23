@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 10F126E41B
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Apr 2020 11:14:20 +0000 (UTC)
+Date: Thu, 23 Apr 2020 14:14:17 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200423111417.GJ9497@platvala-desk.ger.corp.intel.com>
+References: <20200413102144.19302-1-karthik.b.s@intel.com>
+ <20200422081701.GB9497@platvala-desk.ger.corp.intel.com>
+ <8ce2d68b-b9a5-42ef-28ee-61089c41c222@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 23 Apr 2020 10:27:54 -0000
-Message-ID: <158763767474.26748.7852120584445593950@emeril.freedesktop.org>
-References: <20200422230151.29558-1-kunal1.joshi@intel.com>
-In-Reply-To: <20200422230151.29558-1-kunal1.joshi@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fchamelium=3A_Capture_on_type-c_=28rev4=29?=
+Content-Disposition: inline
+In-Reply-To: <8ce2d68b-b9a5-42ef-28ee-61089c41c222@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_multipipe_modeset: Add test
+ to validate max pipe configuration
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,110 +20,222 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Kunal Joshi <kunal1.joshi@intel.com>
+To: Karthik B S <karthik.b.s@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Thu, Apr 23, 2020 at 03:20:34PM +0530, Karthik B S wrote:
+> Thanks a lot for the review.
+> =
 
-Series: tests/kms_chamelium: Capture on type-c (rev4)
-URL   : https://patchwork.freedesktop.org/series/76004/
-State : failure
+> On 4/22/2020 1:47 PM, Petri Latvala wrote:
+> > On Mon, Apr 13, 2020 at 03:51:44PM +0530, Karthik B S wrote:
+> > > Added test to validate max pipe configuration for a platform.
+> > > In the test, the reference CRC is collected first by doing modeset
+> > > on all the outputs individually.Then a simultaneous modeset is
+> > > done on all the outputs and the CRC is collected. This is compared
+> > > with the reference CRC.
+> > > =
 
-== Summary ==
+> > > If the number of outputs connected is less than the number of pipes
+> > > supported by the platform, then the test skips.
+> > > =
 
-CI Bug Log - changes from CI_DRM_8351 -> IGTPW_4502
-====================================================
+> > > This test is added to verify if the max pipe configuration for a
+> > > given platform is working fine. Even though there are other tests
+> > > which test multipipe configuration, they test some other functionalit=
+ies
+> > > as well together with multipipe. This is a stand alone test that
+> > > intends to only verify simultaneous modeset at the max pipe configura=
+tion.
+> > > =
 
-Summary
--------
+> > > Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> > > ---
+> > >   tests/Makefile.sources        |   1 +
+> > >   tests/kms_multipipe_modeset.c | 180 +++++++++++++++++++++++++++++++=
++++
+> > >   tests/meson.build             |   1 +
+> > >   3 files changed, 182 insertions(+)
+> > >   create mode 100644 tests/kms_multipipe_modeset.c
+> > > =
 
-  **FAILURE**
+> > > diff --git a/tests/Makefile.sources b/tests/Makefile.sources
+> > > index 4e44c98c..903c5671 100644
+> > > --- a/tests/Makefile.sources
+> > > +++ b/tests/Makefile.sources
+> > > @@ -60,6 +60,7 @@ TESTS_progs =3D \
+> > >   	kms_lease \
+> > >   	kms_legacy_colorkey \
+> > >   	kms_mmap_write_crc \
+> > > +	kms_multipipe_modeset \
+> > >   	kms_panel_fitting \
+> > >   	kms_pipe_b_c_ivb \
+> > >   	kms_pipe_crc_basic \
+> > > diff --git a/tests/kms_multipipe_modeset.c b/tests/kms_multipipe_mode=
+set.c
+> > > new file mode 100644
+> > > index 00000000..11328165
+> > > --- /dev/null
+> > > +++ b/tests/kms_multipipe_modeset.c
+> > > @@ -0,0 +1,180 @@
+> > > +/*
+> > > + * Copyright =A9 2020 Intel Corporation
+> > > + *
+> > > + * Permission is hereby granted, free of charge, to any person obtai=
+ning a
+> > > + * copy of this software and associated documentation files (the "So=
+ftware"),
+> > > + * to deal in the Software without restriction, including without li=
+mitation
+> > > + * the rights to use, copy, modify, merge, publish, distribute, subl=
+icense,
+> > > + * and/or sell copies of the Software, and to permit persons to whom=
+ the
+> > > + * Software is furnished to do so, subject to the following conditio=
+ns:
+> > > + *
+> > > + * The above copyright notice and this permission notice (including =
+the next
+> > > + * paragraph) shall be included in all copies or substantial portion=
+s of the
+> > > + * Software.
+> > > + *
+> > > + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, E=
+XPRESS OR
+> > > + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTA=
+BILITY,
+> > > + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVEN=
+T SHALL
+> > > + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES=
+ OR OTHER
+> > > + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, A=
+RISING
+> > > + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTH=
+ER DEALINGS
+> > > + * IN THE SOFTWARE.
+> > > + *
+> > > + * Author:
+> > > + *  Karthik B S <karthik.b.s@intel.com>
+> > > + */
+> > > +
+> > > +#include "igt.h"
+> > > +
+> > > +IGT_TEST_DESCRIPTION("Test simultaneous modeset on all the supported=
+ pipes");
+> > > +
+> > > +typedef struct {
+> > > +	int drm_fd;
+> > > +	igt_display_t display;
+> > > +	struct igt_fb fb;
+> > > +} data_t;
+> > > +
+> > > +static void run_test(data_t *data, int valid_outputs)
+> > > +{
+> > > +	igt_output_t *output;
+> > > +	igt_pipe_crc_t *pipe_crcs[IGT_MAX_PIPES] =3D { 0 };
+> > > +	igt_crc_t ref_crcs[IGT_MAX_PIPES], new_crcs[IGT_MAX_PIPES];
+> > > +	igt_display_t *display =3D &data->display;
+> > > +	int width =3D 0, height =3D 0, i, count =3D 0;
+> > > +	int output_to_pipe[valid_outputs];
+> > > +	igt_pipe_t *pipe;
+> > > +	igt_plane_t *plane;
+> > > +	drmModeModeInfo *mode;
+> > > +
+> > > +	for_each_connected_output(display, output) {
+> > > +		mode =3D igt_output_get_mode(output);
+> > > +		igt_assert(mode);
+> > > +
+> > > +		igt_output_set_pipe(output, PIPE_NONE);
+> > > +
+> > > +		width =3D max(width, mode->hdisplay);
+> > > +		height =3D max(height, mode->vdisplay);
+> > > +	}
+> > > +
+> > > +	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8=
+888,
+> > > +			      LOCAL_DRM_FORMAT_MOD_NONE, &data->fb);
+> > > +
+> > > +	/* Make pipe-ouput mapping which will be used unchanged across the =
+test */
+> > =
 
-  Serious unknown changes coming with IGTPW_4502 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_4502, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+> > Typo, pipe-output
+> > =
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4502/index.html
+> Noted. I'll fix this.
+> > =
 
-Possible new issues
--------------------
+> > > +	for_each_pipe(display, i) {
+> > > +		count =3D 0;
+> > > +		for_each_connected_output(display, output) {
+> > > +			if (igt_pipe_connector_valid(i, output) &&
+> > > +			    output->pending_pipe =3D=3D PIPE_NONE) {
+> > > +				igt_output_set_pipe(output, i);
+> > > +				output_to_pipe[count] =3D i;
+> > > +				break;
+> > > +			}
+> > > +			count++;
+> > > +		}
+> > > +	}
+> > > +
+> > > +	/* Collect reference CRC by Committing individually on all outputs*/
+> > > +	for_each_pipe(display, i) {
+> > > +		pipe =3D &display->pipes[i];
+> > > +		plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+> > > +
+> > > +		mode =3D NULL;
+> > > +
+> > > +		if (is_i915_device(display->drm_fd))
+> > > +			pipe_crcs[i] =3D igt_pipe_crc_new(display->drm_fd, i,
+> > > +							INTEL_PIPE_CRC_SOURCE_AUTO);
+> > > +
+> > > +		count =3D 0;
+> > > +		for_each_connected_output(display, output) {
+> > > +			if (output_to_pipe[count] =3D=3D pipe->pipe) {
+> > > +				igt_output_set_pipe(output, i);
+> > > +				mode =3D igt_output_get_mode(output);
+> > > +				igt_assert(mode);
+> > > +			} else
+> > > +				igt_output_set_pipe(output, PIPE_NONE);
+> > > +			count++;
+> > > +		}
+> > > +
+> > > +		igt_plane_set_fb(plane, &data->fb);
+> > > +		igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
+> > > +		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+> > > +
+> > > +		igt_display_commit2(display, COMMIT_ATOMIC);
+> > > +		igt_pipe_crc_collect_crc(pipe_crcs[i], &ref_crcs[i]);
+> > =
 
-  Here are the unknown changes that may have been introduced in IGTPW_4502:
+> > This will crash on non-i915. igt_pipe_crc_collect_crc needs a non-NULL =
+pipe_crc.
+> > =
 
-### IGT changes ###
+> Could you please suggest how I can handle this?
+> Does it mean I'll have to make the test Intel specific?
 
-#### Possible regressions ####
+No, you just need to make sure i915 and non-i915 take non-crashing paths.
 
-  * igt@i915_selftest@live@execlists:
-    - fi-cml-u2:          [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8351/fi-cml-u2/igt@i915_selftest@live@execlists.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4502/fi-cml-u2/igt@i915_selftest@live@execlists.html
+If the test is absolutely useless without crc support, do the crc handling
+unconditionally, but call igt_require_pipe_crc() first.
 
-  * igt@kms_chamelium@dp-frame-dump:
-    - fi-icl-u2:          NOTRUN -> [FAIL][3] +2 similar issues
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4502/fi-icl-u2/igt@kms_chamelium@dp-frame-dump.html
+If the test is somewhat useful without crc support, add the
+is_i915_device() check for both the creation of the object and the
+collecting as well. Although the check should be something like
+igt_has_pipe_crc(), which doesn't exist...
 
-  
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * {igt@kms_chamelium@hdmi-hpd-with-enabled-mode}:
-    - fi-kbl-7500u:       NOTRUN -> [DMESG-WARN][4]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4502/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-with-enabled-mode.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4502 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_timelines:
-    - fi-bwr-2160:        [INCOMPLETE][5] ([i915#489]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8351/fi-bwr-2160/igt@i915_selftest@live@gt_timelines.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4502/fi-bwr-2160/igt@i915_selftest@live@gt_timelines.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#489]: https://gitlab.freedesktop.org/drm/intel/issues/489
+I prefer the igt_require_pipe_crc() option myself.
 
 
-Participating hosts (50 -> 44)
-------------------------------
+-- =
 
-  Missing    (6): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5608 -> IGTPW_4502
-
-  CI-20190529: 20190529
-  CI_DRM_8351: 63580ab8ee4dc3b1b824be6637085ac6b2c8ba6d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4502: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4502/index.html
-  IGT_5608: e7bcaf1dd251d454706c7cd64282f531aec50183 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4502/index.html
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
