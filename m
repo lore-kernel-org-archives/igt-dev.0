@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1EE616E13A
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Apr 2020 05:59:37 +0000 (UTC)
-From: Kunal Joshi <kunal1.joshi@intel.com>
-Date: Thu, 23 Apr 2020 04:31:50 +0530
-Message-Id: <20200422230151.29558-2-kunal1.joshi@intel.com>
-In-Reply-To: <20200422230151.29558-1-kunal1.joshi@intel.com>
-References: <20200422230151.29558-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v3 1/2] tests/kms_chamelium: Capture on type-c
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 23 Apr 2020 06:58:00 -0000
+Message-ID: <158762508005.26749.5138189701145635274@emeril.freedesktop.org>
+References: <20200422230151.29558-1-kunal1.joshi@intel.com>
+In-Reply-To: <20200422230151.29558-1-kunal1.joshi@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fchamelium=3A_Capture_on_type-c_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,195 +14,103 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: arkadiusz.hiler@intel.com, igt-dev@lists.freedesktop.org, imre.deak@intel.com
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
+To: Kunal Joshi <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Chamelium uses HPD pulses to signal the need for a receiver reset
-using DPMS cycle.Some connectors (e.g. DP over TypeC) have limitations
-and will receive just a single such pulse and discard the rest.
-This lasts until we disable the mode completetly and only then reenable it.
+== Series Details ==
 
-Receiver reset is always required after we set a new mode, so let's disable
-the mode (reset_state() does that) before we switch to a new mode.
-With this we will get the HPD pulses reliably for each iteration over
-all the supoprted modes.
+Series: tests/kms_chamelium: Capture on type-c (rev3)
+URL   : https://patchwork.freedesktop.org/series/76004/
+State : failure
 
-v2: Correction in code flow (Arek)
+== Summary ==
 
-v3: Modified commit message. (Arek)
+CI Bug Log - changes from CI_DRM_8350 -> IGTPW_4501
+====================================================
 
-Cc: Hiler Arkadiusz <arkadiusz.hiler@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Issue: https://gitlab.freedesktop.org/drm/intel/issues/262
-Suggested-by: Hiler Arkadiusz <arkadiusz.hiler@intel.com>
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-Reviewed-by: Hiler Arkadiusz <arkadiusz.hiler@intel.com>
----
- tests/kms_chamelium.c | 110 ++++++++++++++++++++++++++++--------------
- 1 file changed, 74 insertions(+), 36 deletions(-)
+Summary
+-------
 
-diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
-index 8b20bbbc..421a9006 100644
---- a/tests/kms_chamelium.c
-+++ b/tests/kms_chamelium.c
-@@ -823,34 +823,53 @@ static void test_display_all_modes(data_t *data, struct chamelium_port *port,
- 				   uint32_t fourcc, enum chamelium_check check,
- 				   int count)
- {
--	igt_output_t *output;
--	igt_plane_t *primary;
--	drmModeConnector *connector;
- 	bool bridge;
--	int i;
--
--	reset_state(data, port);
--
--	output = prepare_output(data, port, TEST_EDID_BASE);
--	connector = chamelium_port_get_connector(data->chamelium, port, false);
--	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
--	igt_assert(primary);
--	igt_require(igt_plane_has_format_mod(primary, fourcc, LOCAL_DRM_FORMAT_MOD_NONE));
-+	int i, count_modes;
- 
- 	if (check == CHAMELIUM_CHECK_ANALOG)
- 		bridge = check_analog_bridge(data, port);
- 
--	for (i = 0; i < connector->count_modes; i++) {
--		drmModeModeInfo *mode = &connector->modes[i];
-+	i = 0;
-+	do {
-+		igt_output_t *output;
-+		igt_plane_t *primary;
-+		drmModeConnector *connector;
-+		drmModeModeInfo *mode;
-+
-+		/*
-+		 * let's reset state each mode so we will get the
-+		 * HPD pulses realibably
-+		 */
-+		reset_state(data, port);
-+
-+		/*
-+		 * modes may change due to mode pruining and link issues, so we
-+		 * need to refresh the connector
-+		 */
-+		output = prepare_output(data, port, TEST_EDID_BASE);
-+		connector = chamelium_port_get_connector(data->chamelium, port,
-+							 false);
-+		primary = igt_output_get_plane_type(output,
-+						    DRM_PLANE_TYPE_PRIMARY);
-+		igt_assert(primary);
-+		igt_require(igt_plane_has_format_mod(primary, fourcc,
-+			    LOCAL_DRM_FORMAT_MOD_NONE));
-+
-+		/* we may skip some modes due to above but that's ok */
-+		count_modes = connector->count_modes;
-+		if (i >= count_modes)
-+			break;
-+
-+		mode = &connector->modes[i];
- 
- 		if (check == CHAMELIUM_CHECK_ANALOG && bridge &&
- 		    prune_vga_mode(data, mode))
- 			continue;
- 
--		do_test_display(data, port, output, mode, fourcc, check, count);
--	}
--
--	drmModeFreeConnector(connector);
-+		do_test_display(data, port, output, mode, fourcc, check,
-+				count);
-+		drmModeFreeConnector(connector);
-+	} while (++i < count_modes);
- }
- 
- static const char test_display_frame_dump_desc[] =
-@@ -860,23 +879,43 @@ static const char test_display_frame_dump_desc[] =
- static void
- test_display_frame_dump(data_t *data, struct chamelium_port *port)
- {
--	igt_output_t *output;
--	igt_plane_t *primary;
--	struct igt_fb fb;
--	struct chamelium_frame_dump *frame;
--	drmModeModeInfo *mode;
--	drmModeConnector *connector;
--	int fb_id, i, j;
- 
--	reset_state(data, port);
-+	int i, count_modes;
- 
--	output = prepare_output(data, port, TEST_EDID_BASE);
--	connector = chamelium_port_get_connector(data->chamelium, port, false);
--	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
--	igt_assert(primary);
-+	i = 0;
-+	do {
-+		igt_output_t *output;
-+		igt_plane_t *primary;
-+		struct igt_fb fb;
-+		struct chamelium_frame_dump *frame;
-+		drmModeModeInfo *mode;
-+		drmModeConnector *connector;
-+		int fb_id, j;
-+
-+		/*
-+		 * let's reset state each mode so we will get the
-+		 * HPD pulses realibably
-+		 */
-+		reset_state(data, port);
-+
-+		/*
-+		 * modes may change due to mode pruining and link issues, so we
-+		 * need to refresh the connector
-+		 */
-+		output = prepare_output(data, port, TEST_EDID_BASE);
-+		connector = chamelium_port_get_connector(data->chamelium, port,
-+							 false);
-+		primary = igt_output_get_plane_type(output,
-+						    DRM_PLANE_TYPE_PRIMARY);
-+		igt_assert(primary);
-+
-+		/* we may skip some modes due to above but that's ok */
-+		count_modes = connector->count_modes;
-+		if (i >= count_modes)
-+			break;
- 
--	for (i = 0; i < connector->count_modes; i++) {
- 		mode = &connector->modes[i];
-+
- 		fb_id = igt_create_color_pattern_fb(data->drm_fd,
- 						    mode->hdisplay, mode->vdisplay,
- 						    DRM_FORMAT_XRGB8888,
-@@ -889,16 +928,15 @@ test_display_frame_dump(data_t *data, struct chamelium_port *port)
- 		igt_debug("Reading frame dumps from Chamelium...\n");
- 		chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 5);
- 		for (j = 0; j < 5; j++) {
--			frame = chamelium_read_captured_frame(
--			    data->chamelium, j);
-+			frame = chamelium_read_captured_frame(data->chamelium,
-+							      j);
- 			chamelium_assert_frame_eq(data->chamelium, frame, &fb);
- 			chamelium_destroy_frame_dump(frame);
- 		}
- 
- 		igt_remove_fb(data->drm_fd, &fb);
--	}
--
--	drmModeFreeConnector(connector);
-+		drmModeFreeConnector(connector);
-+	} while (++i < count_modes);
- }
- 
- #define MODE_CLOCK_ACCURACY 0.05 /* 5% */
--- 
-2.25.1
+  **FAILURE**
 
+  Serious unknown changes coming with IGTPW_4501 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4501, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4501/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4501:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_chamelium@dp-hpd-after-hibernate:
+    - fi-icl-u2:          NOTRUN -> [FAIL][1] +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4501/fi-icl-u2/igt@kms_chamelium@dp-hpd-after-hibernate.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4501 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-tgl-y:           [PASS][2] -> [INCOMPLETE][3] ([i915#1662])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8350/fi-tgl-y/igt@i915_selftest@live@execlists.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4501/fi-tgl-y/igt@i915_selftest@live@execlists.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-x1275:       [FAIL][4] ([i915#62]) -> [SKIP][5] ([fdo#109271])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8350/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4501/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1662]: https://gitlab.freedesktop.org/drm/intel/issues/1662
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+
+
+Participating hosts (48 -> 42)
+------------------------------
+
+  Additional (1): fi-icl-dsi 
+  Missing    (7): fi-cml-u2 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-kbl-7500u fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5606 -> IGTPW_4501
+
+  CI-20190529: 20190529
+  CI_DRM_8350: 018bab6d1c4ac37bff9306384383fab59750e140 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4501: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4501/index.html
+  IGT_5606: 678afb3954bec6227c8762756a0ad6d9946d49b2 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4501/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
