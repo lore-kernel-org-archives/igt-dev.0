@@ -1,11 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Date: Thu, 23 Apr 2020 21:26:02 -0400
-Message-Id: <20200424012605.2279679-2-rodrigosiqueiramelo@gmail.com>
+Date: Thu, 23 Apr 2020 21:26:04 -0400
+Message-Id: <20200424012605.2279679-4-rodrigosiqueiramelo@gmail.com>
 In-Reply-To: <20200424012605.2279679-1-rodrigosiqueiramelo@gmail.com>
 References: <20200424012605.2279679-1-rodrigosiqueiramelo@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v8 1/4] lib/igt_kms: Add writeback support
+Subject: [igt-dev] [PATCH i-g-t v8 3/4] lib: Add function to hash a
+ framebuffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,172 +24,126 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Brian Starkey <rodrigosiqueiramelo@gmail.com>
 
-Add support in igt_kms for writeback connectors, with the ability
-to attach framebuffers.
+To use writeback buffers as a CRC source, we need to be able to hash
+them. Implement a simple FVA-1a hashing routine for this purpose.
 
-v5: Rebase and add DRM_CLIENT_CAP_WRITEBACK_CONNECTORS before
-drmModeGetResources()
+Doing a bytewise hash on the framebuffer directly can be very slow if
+the memory is noncached. By making a copy of each line in the FB first
+(which can take advantage of word-access speedup), we can do the hash
+on a cached copy, which is much faster (10x speedup on my platform).
+
+Changes since V7 (Maxime Ripard):
+* Maxime Ripard:
+  - Replace `gem_mmap__gtt` by `igt_fb_map_buffer` on `igt_fb_get_crc()`
+* Rodrigo Siqueira:
+  - Rename igt_fb_get_crc to igt_fb_get_fnv1a_crc
+
+Changes since V6 (Simon Ser):
+* Use plain uint32_t for FNV1a_OFFSET_BIAS and FNV1a_PRIME
+* Return -EINVAL in case fb->num_planes != 1
+* Just copy fb->width * cpp instead of copy the whole stride
+
+v5: use igt_memcpy_from_wc() instead of plain memcpy, as suggested by
+    Chris Wilson
 
 Signed-off-by: Brian Starkey <brian.starkey@arm.com>
-[rebased and updated to the latest igt style]
+[rebased and updated to the most recent API]
 Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
-[rebased and updated to the latest igt style]
+[rebased and updated]
 Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
 Reviewed-by: Simon Ser <simon.ser@intel.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
 ---
- lib/igt_kms.c | 57 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  6 ++++++
- 2 files changed, 63 insertions(+)
+ lib/igt_fb.c | 63 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_fb.h |  2 ++
+ 2 files changed, 65 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index e9621e7e..67053d8b 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -421,6 +421,9 @@ const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
- 	[IGT_CONNECTOR_LINK_STATUS] = "link-status",
- 	[IGT_CONNECTOR_MAX_BPC] = "max bpc",
- 	[IGT_CONNECTOR_HDR_OUTPUT_METADATA] = "HDR_OUTPUT_METADATA",
-+	[IGT_CONNECTOR_WRITEBACK_PIXEL_FORMATS] = "WRITEBACK_PIXEL_FORMATS",
-+	[IGT_CONNECTOR_WRITEBACK_FB_ID] = "WRITEBACK_FB_ID",
-+	[IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR] = "WRITEBACK_OUT_FENCE_PTR",
- };
- 
- /*
-@@ -653,6 +656,7 @@ static const struct type_name connector_type_names[] = {
- 	{ DRM_MODE_CONNECTOR_VIRTUAL, "Virtual" },
- 	{ DRM_MODE_CONNECTOR_DSI, "DSI" },
- 	{ DRM_MODE_CONNECTOR_DPI, "DPI" },
-+	{ DRM_MODE_CONNECTOR_WRITEBACK, "Writeback" },
- 	{}
- };
- 
-@@ -1802,6 +1806,14 @@ static void igt_output_reset(igt_output_t *output)
- 	if (igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA))
- 		igt_output_set_prop_value(output,
- 					  IGT_CONNECTOR_HDR_OUTPUT_METADATA, 0);
-+
-+	if (igt_output_has_prop(output, IGT_CONNECTOR_WRITEBACK_FB_ID))
-+		igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_FB_ID, 0);
-+	if (igt_output_has_prop(output, IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR)) {
-+		igt_output_clear_prop_changed(output, IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR);
-+		output->writeback_out_fence_fd = -1;
-+	}
-+
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 5ed586e7..562206b1 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -3785,6 +3785,69 @@ bool igt_fb_supported_format(uint32_t drm_format)
+ 	return true;
  }
  
- /**
-@@ -1885,6 +1897,8 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 
- 	display->drm_fd = drm_fd;
- 
-+	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_WRITEBACK_CONNECTORS, 1);
-+
- 	resources = drmModeGetResources(display->drm_fd);
- 	if (!resources)
- 		goto out;
-@@ -2193,6 +2207,11 @@ static void igt_output_fini(igt_output_t *output)
- 	kmstest_free_connector_config(&output->config);
- 	free(output->name);
- 	output->name = NULL;
-+
-+	if (output->writeback_out_fence_fd != -1) {
-+		close(output->writeback_out_fence_fd);
-+		output->writeback_out_fence_fd = -1;
-+	}
- }
- 
- /**
-@@ -3255,6 +3274,11 @@ static void igt_atomic_prepare_connector_commit(igt_output_t *output, drmModeAto
- 					  output->props[i],
- 					  output->values[i]));
- 	}
-+
-+	if (output->writeback_out_fence_fd != -1) {
-+		close(output->writeback_out_fence_fd);
-+		output->writeback_out_fence_fd = -1;
-+	}
- }
- 
- /*
-@@ -3377,6 +3401,16 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
- 		else
- 			/* no modeset in universal commit, no change to crtc. */
- 			output->changed &= 1 << IGT_CONNECTOR_CRTC_ID;
-+
-+		if (s == COMMIT_ATOMIC) {
-+			if (igt_output_is_prop_changed(output, IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR))
-+				igt_assert(output->writeback_out_fence_fd >= 0);
-+
-+			output->values[IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR] = 0;
-+			output->values[IGT_CONNECTOR_WRITEBACK_FB_ID] = 0;
-+			igt_output_clear_prop_changed(output, IGT_CONNECTOR_WRITEBACK_FB_ID);
-+			igt_output_clear_prop_changed(output, IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR);
-+		}
- 	}
- 
- 	if (display->first_commit) {
-@@ -4049,6 +4083,29 @@ void igt_pipe_request_out_fence(igt_pipe_t *pipe)
- 	igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_OUT_FENCE_PTR, (ptrdiff_t)&pipe->out_fence_fd);
- }
- 
-+/**
-+ * igt_output_set_writeback_fb:
-+ * @output: Target output
-+ * @fb: Target framebuffer
++/*
++ * This implements the FNV-1a hashing algorithm instead of CRC, for
++ * simplicity
++ * http://www.isthe.com/chongo/tech/comp/fnv/index.html
 + *
-+ * This function sets the given @fb to be used as the target framebuffer for the
-+ * writeback engine at the next atomic commit. It will also request a writeback
-+ * out fence that will contain the fd number of the out fence created by KMS if
-+ * the given @fb is valid.
++ * hash = offset_basis
++ * for each octet_of_data to be hashed
++ *         hash = hash xor octet_of_data
++ *         hash = hash * FNV_prime
++ * return hash
++ *
++ * 32 bit offset_basis = 2166136261
++ * 32 bit FNV_prime = 224 + 28 + 0x93 = 16777619
 + */
-+void igt_output_set_writeback_fb(igt_output_t *output, struct igt_fb *fb)
++int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
 +{
-+	igt_display_t *display = output->display;
++	const uint32_t FNV1a_OFFSET_BIAS = 2166136261;
++	const uint32_t FNV1a_PRIME = 16777619;
++	uint32_t hash;
++	void *map;
++	char *ptr, *line = NULL;
++	int x, y, cpp = igt_drm_format_to_bpp(fb->drm_format) / 8;
++	uint32_t stride = calc_plane_stride(fb, 0);
 +
-+	LOG(display, "%s: output_set_writeback_fb(%d)\n", output->name, fb ? fb->fb_id : 0);
++	if (fb->num_planes != 1)
++		return -EINVAL;
 +
-+	igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_FB_ID, fb ? fb->fb_id : 0);
-+	/* only request a writeback out fence if the framebuffer is valid */
-+	if (fb)
-+		igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR,
-+					  (ptrdiff_t)&output->writeback_out_fence_fd);
++	ptr = igt_fb_map_buffer(fb->fd, fb);
++	igt_assert(ptr);
++	map = ptr;
++
++	/*
++	 * Framebuffers are often uncached, which can make byte-wise accesses
++	 * very slow. We copy each line of the FB into a local buffer to speed
++	 * up the hashing.
++	 */
++	line = malloc(stride);
++	if (!line) {
++		munmap(map, fb->size);
++		return -ENOMEM;
++	}
++
++	hash = FNV1a_OFFSET_BIAS;
++
++	for (y = 0; y < fb->height; y++, ptr += stride) {
++
++		igt_memcpy_from_wc(line, ptr, fb->width * cpp);
++
++		for (x = 0; x < fb->width * cpp; x++) {
++			hash ^= line[x];
++			hash *= FNV1a_PRIME;
++		}
++	}
++
++	crc->n_words = 1;
++	crc->crc[0] = hash;
++
++	free(line);
++	igt_fb_unmap_buffer(fb, map);
++
++	return 0;
 +}
 +
  /**
-  * igt_wait_for_vblank_count:
-  * @drm_fd: A drm file descriptor
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index adca59ac..aa082ef6 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -127,6 +127,9 @@ enum igt_atomic_connector_properties {
-        IGT_CONNECTOR_LINK_STATUS,
-        IGT_CONNECTOR_MAX_BPC,
-        IGT_CONNECTOR_HDR_OUTPUT_METADATA,
-+       IGT_CONNECTOR_WRITEBACK_PIXEL_FORMATS,
-+       IGT_CONNECTOR_WRITEBACK_FB_ID,
-+       IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR,
-        IGT_NUM_CONNECTOR_PROPS
- };
+  * igt_format_is_yuv:
+  * @drm_format: drm fourcc
+diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+index 587f7a44..4221d8b9 100644
+--- a/lib/igt_fb.h
++++ b/lib/igt_fb.h
+@@ -207,5 +207,7 @@ int igt_format_plane_bpp(uint32_t drm_format, int plane);
+ void igt_format_array_fill(uint32_t **formats_array, unsigned int *count,
+ 			   bool allow_yuv);
  
-@@ -366,6 +369,8 @@ typedef struct {
- 	bool use_override_mode;
- 	drmModeModeInfo override_mode;
- 
-+	int32_t writeback_out_fence_fd;
++int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc);
 +
- 	/* bitmask of changed properties */
- 	uint64_t changed;
+ #endif /* __IGT_FB_H__ */
  
-@@ -425,6 +430,7 @@ igt_output_t *igt_output_from_connector(igt_display_t *display,
-     drmModeConnector *connector);
- void igt_output_refresh(igt_output_t *output);
- const drmModeModeInfo *igt_std_1024_mode_get(void);
-+void igt_output_set_writeback_fb(igt_output_t *output, struct igt_fb *fb);
- 
- igt_plane_t *igt_pipe_get_plane_type(igt_pipe_t *pipe, int plane_type);
- int igt_pipe_count_plane_type(igt_pipe_t *pipe, int plane_type);
 -- 
 2.26.0
 
