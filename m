@@ -1,20 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D95AB6EB68
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Apr 2020 22:35:13 +0000 (UTC)
-References: <20200421182237.7743-1-umesh.nerlige.ramappa@intel.com>
- <5559c6ff-8cba-7f84-0490-879a5dc3e2dc@intel.com>
- <20200422154745.GA27960@orsosgc001.amr.corp.intel.com>
- <73157a64-e11a-b62e-0d2c-6ac8d9e4b320@intel.com>
- <20200424180724.GB27960@orsosgc001.amr.corp.intel.com>
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <0c68a5d3-35a2-3f94-e6a7-77cb1df7bb31@intel.com>
-Date: Sat, 25 Apr 2020 01:34:56 +0300
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E21B6E071
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2020 07:35:28 +0000 (UTC)
+Date: Mon, 27 Apr 2020 06:07:44 +0530
+From: Kunal Joshi <kunal1.joshi@intel.com>
+Message-ID: <20200427003744.GA20741@intel.com>
+References: <20200422230151.29558-1-kunal1.joshi@intel.com>
+ <158762508005.26749.5138189701145635274@emeril.freedesktop.org>
 MIME-Version: 1.0
-In-Reply-To: <20200424180724.GB27960@orsosgc001.amr.corp.intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/perf: Fix B0 counter check in
- gen12-mi-rpc
+Content-Disposition: inline
+In-Reply-To: <158762508005.26749.5138189701145635274@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fchamelium=3A_Capture_on_type-c_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,52 +20,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, arkadiusz.hiler@intel.com, imre.deak@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMjQvMDQvMjAyMCAyMTowNywgVW1lc2ggTmVybGlnZSBSYW1hcHBhIHdyb3RlOgo+IE9uIFdl
-ZCwgQXByIDIyLCAyMDIwIGF0IDA3OjAxOjIyUE0gKzAzMDAsIExpb25lbCBMYW5kd2VybGluIHdy
-b3RlOgo+PiBPbiAyMi8wNC8yMDIwIDE4OjQ3LCBVbWVzaCBOZXJsaWdlIFJhbWFwcGEgd3JvdGU6
-Cj4+PiBPbiBUdWUsIEFwciAyMSwgMjAyMCBhdCAxMTowNjoyN1BNICswMzAwLCBMaW9uZWwgTGFu
-ZHdlcmxpbiB3cm90ZToKPj4+PiBPbiAyMS8wNC8yMDIwIDIxOjIyLCBVbWVzaCBOZXJsaWdlIFJh
-bWFwcGEgd3JvdGU6Cj4+Pj4+IFRoZSBnZW4xMi1taS1ycGMgdGVzdCBjaGVja3MgZm9yIEIwIGNv
-dW50ZXIgdG8gYmUgemVybywgaG93ZXZlciwKPj4+Pj4gb2NjYXNzaW9uYWxseSB0aGUgY291bnRl
-ciByZWFkcyBhIG5vbi16ZXJvIHZhbHVlLiBUbyBlbnN1cmUgdGhlIHRlc3QKPj4+Pj4gd29ya3Mg
-YXMgZXhwZWN0ZWQsIHdlIGNoZWNrIEIwIHdpdGggdGhlIHByZXNldCB2YWx1ZS4KPj4+Pgo+Pj4+
-Cj4+Pj4gV2hhdCB0aGUgdmFsdWUgYmVpbmcgcmVwb3J0ZWQ/Cj4+Pj4KPj4+Pgo+Pj4+IFNvdW5k
-cyBsaWtlIHdlIHNob3VsZCBhc2sgYXJvdW5kIHNlZSBpZiB0aGVyZSBpc24ndCBhIGRlZXBlciAK
-Pj4+PiBwcm9ibGVtIHdpdGggdGhlIEhXIGNvbmZpZ3VyYXRpb24uCj4+Pj4KPj4+Cj4+PiBJIGhh
-dmUgc2VlbiB2YWx1ZXMgMHgxMjEgYW5kIDB4MWVjLiBUaGUgaXNzdWUgb2NjdXJzIHNvbWV0aW1l
-cyBvbiAKPj4+IHJlYm9vdHMuIFN1YnNlcXVlbnQgcnVucyBJIHNlZSB0aGF0IHRoZSBjb3VudGVy
-IGlzIDAuCj4+Pgo+Pj4gVGhhbmtzLAo+Pj4gVW1lc2gKPj4KPj4KPj4gT2guLi4gSSB0aG91Z2h0
-IHRoaXMgdGVzdCB3YXMgdXNpbmcgc2FuaXR5X2NoZWNrX3JlcG9ydHMoKSBvbiBkZWx0YXMgCj4+
-IGJldHdlZW4gMiByZXBvcnRzLgo+Pgo+PiBZZWFoIEkgZ3Vlc3MgeW91ciBjaGFuZ2UgaXMgZmlu
-ZSB0aGVuLgo+Pgo+PiBUaGUgdGVzdCBjb3VsZCBiZSBpbXByb3ZlZCB3aXRoIHNhbml0eV9jaGVj
-a19yZXBvcnRzLgo+Pgo+Cj4gQWdyZWVkLiBGb3Igbm93LCB0aGUgdGVzdCBpcyBvbmx5IGNoZWNr
-aW5nIGlmIHRoZSByZXBvcnQgbGFuZGVkIAo+IGVudGlyZWx5LiBQbGVhc2UgbGV0IG1lIGtub3cg
-aWYgdGhpcyBpcyBnb29kIGVub3VnaCBmb3IgYW4gUi1iLgo+Cj4gVGhhbmtzLAo+IFVtZXNoCgoK
-UmV2aWV3ZWQtYnk6IExpb25lbCBMYW5kd2VybGluIDxsaW9uZWwuZy5sYW5kd2VybGluQGludGVs
-LmNvbT4KCgo+Cj4+Cj4+IC1MaW9uZWwKPj4KPj4KPj4+Cj4+Pj4KPj4+PiAtTGlvbmVsCj4+Pj4K
-Pj4+Pgo+Pj4+Pgo+Pj4+PiBTaWduZWQtb2ZmLWJ5OiBVbWVzaCBOZXJsaWdlIFJhbWFwcGEgCj4+
-Pj4+IDx1bWVzaC5uZXJsaWdlLnJhbWFwcGFAaW50ZWwuY29tPgo+Pj4+PiBGaXhlczogaHR0cHM6
-Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC8tL2lzc3Vlcy8xMDg1Cj4+Pj4+IC0t
-LQo+Pj4+PiDCoHRlc3RzL3BlcmYuYyB8IDIgKy0KPj4+Pj4gwqAxIGZpbGUgY2hhbmdlZCwgMSBp
-bnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkKPj4+Pj4KPj4+Pj4gZGlmZiAtLWdpdCBhL3Rlc3Rz
-L3BlcmYuYyBiL3Rlc3RzL3BlcmYuYwo+Pj4+PiBpbmRleCBiN2Q1ZTUwZS4uOWQwZWQ0NWMgMTAw
-NjQ0Cj4+Pj4+IC0tLSBhL3Rlc3RzL3BlcmYuYwo+Pj4+PiArKysgYi90ZXN0cy9wZXJmLmMKPj4+
-Pj4gQEAgLTMwMDIsNyArMzAwMiw3IEBAIGdlbjEyX3Rlc3RfbWlfcnBjKHZvaWQpCj4+Pj4+IMKg
-wqDCoMKgwqAgKi8KPj4+Pj4gwqDCoMKgwqAgaWd0X2Fzc2VydF9lcShyZXBvcnQzMlswXSwgUkVQ
-T1JUX0lEKTsKPj4+Pj4gwqDCoMKgwqAgaWd0X2Fzc2VydF9uZXEocmVwb3J0MzJbMV0sIDApOwo+
-Pj4+PiAtwqDCoMKgIGlndF9hc3NlcnRfZXEocmVwb3J0MzJbZm9ybWF0LmJfb2ZmID4+IDJdLCAw
-KTsKPj4+Pj4gK8KgwqDCoCBpZ3RfYXNzZXJ0X25lcShyZXBvcnQzMltmb3JtYXQuYl9vZmYgPj4g
-Ml0sIDB4ODA4MDgwODApOwo+Pj4+PiDCoMKgwqDCoCBpZ3RfYXNzZXJ0X2VxKHJlcG9ydDMyW2Zv
-cm1hdF9zaXplXzMyXSwgMHg4MDgwODA4MCk7Cj4+Pj4+IMKgwqDCoMKgIGRybV9pbnRlbF9ib191
-bm1hcChibyk7Cj4+Pj4KPj4+Pgo+PgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVz
-a3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9p
-Z3QtZGV2Cg==
+On 2020-04-23 at 06:58:00 +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/kms_chamelium: Capture on type-c (rev3)
+> URL   : https://patchwork.freedesktop.org/series/76004/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_8350 -> IGTPW_4501
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_4501 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_4501, please notify your bug team to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4501/index.html
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_4501:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_chamelium@dp-hpd-after-hibernate:
+>     - fi-icl-u2:          NOTRUN -> [FAIL][1] +1 similar issue
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4501/fi-icl-u2/igt@kms_chamelium@dp-hpd-after-hibernate.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_4501 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@i915_selftest@live@execlists:
+>     - fi-tgl-y:           [PASS][2] -> [INCOMPLETE][3] ([i915#1662])
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8350/fi-tgl-y/igt@i915_selftest@live@execlists.html
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4501/fi-tgl-y/igt@i915_selftest@live@execlists.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@i915_pm_rpm@module-reload:
+>     - fi-kbl-x1275:       [FAIL][4] ([i915#62]) -> [SKIP][5] ([fdo#109271])
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8350/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4501/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+> 
+>   
+>   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+>   [i915#1662]: https://gitlab.freedesktop.org/drm/intel/issues/1662
+>   [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+> 
+> 
+> Participating hosts (48 -> 42)
+> ------------------------------
+> 
+>   Additional (1): fi-icl-dsi 
+>   Missing    (7): fi-cml-u2 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-kbl-7500u fi-byt-clapper fi-bdw-samus 
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_5606 -> IGTPW_4501
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_8350: 018bab6d1c4ac37bff9306384383fab59750e140 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_4501: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4501/index.html
+>   IGT_5606: 678afb3954bec6227c8762756a0ad6d9946d49b2 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4501/index.html
+
+Tests unrelated to kms_chamelium can be considered as noise.
+Other than that failing of dp-hpd-after-hibernate is not
+related to change.
+dp-crc-single which is failing is part of the change but still
+we do better as previously all tests which do chamelium_capture()
+were failing.
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
