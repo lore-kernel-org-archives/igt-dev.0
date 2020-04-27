@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 062BA6E0E8
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Apr 2020 08:40:42 +0000 (UTC)
-Date: Mon, 27 Apr 2020 11:40:37 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200427084037.GP9497@platvala-desk.ger.corp.intel.com>
-References: <20200420140312.3401290-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200420140312.3401290-1-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [PATCH i-g-t] kms_atomic_transition: Make the
- available pipe discovery dynamic
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 27 Apr 2020 08:43:29 -0000
+Message-ID: <158797700969.26356.3827219402770775737@emeril.freedesktop.org>
+References: <20200422111952.16969-1-petri.latvala@intel.com>
+In-Reply-To: <20200422111952.16969-1-petri.latvala@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBzZXJp?=
+ =?utf-8?q?es_starting_with_=5Bi-g-t=2C1/3=5D_runner=3A_Add_--prune-dynami?=
+ =?utf-8?q?c-results_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,38 +15,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Apr 20, 2020 at 03:03:12PM +0100, Chris Wilson wrote:
-> All of the per-plane tests are run on all available matching pipes. A
-> natural case for igt_subtest_with_dynamic + igt_dynamic_f
-> 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Petri Latvala <petri.latvala@intel.com>
-> ---
+== Series Details ==
 
+Series: series starting with [i-g-t,1/3] runner: Add --prune-dynamic-results (rev2)
+URL   : https://patchwork.freedesktop.org/series/76330/
+State : failure
 
-A side note, now that this change has been in effect for a bit and
-properly skips when no matching pipe/output combos are found:
+== Summary ==
 
-We're using for_each_pipe_with_valid_output, omitting the loop
-elements with a (non-)internal panel. However, that loop only loops
-through pipes, trying one output valid for that pipe. In effect, we
-only test internal panels even if we have non-internal outputs
-available, if the pipe can also drive the internal panel's output.
+Applying: runner: Add --prune-dynamic-results
+Applying: TO BE SQUASHED OVER: Copy dynamic-subtests json test
+Patch failed at 0002 TO BE SQUASHED OVER: Copy dynamic-subtests json test
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
-Maarten, do we really need the non/internal panel separation for this
-test?
-
-
--- 
-Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
