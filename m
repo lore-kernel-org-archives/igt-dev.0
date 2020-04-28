@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
  [IPv6:2607:f8b0:4864:20::441])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78D726EBFC
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 20:24:01 +0000 (UTC)
-Received: by mail-pf1-x441.google.com with SMTP id p25so11332506pfn.11
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 13:24:01 -0700 (PDT)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B4C186E891
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 20:23:57 +0000 (UTC)
+Received: by mail-pf1-x441.google.com with SMTP id y25so11344982pfn.5
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 13:23:57 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Tue, 28 Apr 2020 23:22:53 +0300
-Message-Id: <20200428202255.31309-6-juhapekka.heikkila@gmail.com>
+Date: Tue, 28 Apr 2020 23:22:52 +0300
+Message-Id: <20200428202255.31309-5-juhapekka.heikkila@gmail.com>
 In-Reply-To: <20200428202255.31309-1-juhapekka.heikkila@gmail.com>
 References: <20200428202255.31309-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 5/7] igt/params: add generic saving module
- parameter set
+Subject: [igt-dev] [PATCH i-g-t 4/7] lib/params: add igt_params_open() which
+ will return path
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -30,107 +30,63 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Jani Nikula <jani.nikula@intel.com>
 
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/igt_params.c | 57 ++++++++++++++++++++++++++++++++++++++++--------
- lib/igt_params.h |  3 +++
- 2 files changed, 51 insertions(+), 9 deletions(-)
+ lib/igt_params.c | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
 diff --git a/lib/igt_params.c b/lib/igt_params.c
-index fe4b1df3..d9cf986c 100644
+index b5ac1266..fe4b1df3 100644
 --- a/lib/igt_params.c
 +++ b/lib/igt_params.c
-@@ -153,6 +153,29 @@ int igt_params_open(int device)
- 	return __igt_params_open(device, NULL);
+@@ -107,17 +107,7 @@ static void igt_params_save(int dir, const char *path, const char *name)
+ 	module_params = data;
  }
  
-+__attribute__((format(printf, 3, 0)))
-+static bool __igt_params_set(int device, const char *parameter,
-+			     const char *fmt, va_list ap, bool save)
+-/**
+- * igt_params_open:
+- * @device: fd of the device
+- *
+- * This opens the module parameters directory (under sysfs) corresponding
+- * to the device for use with igt_sysfs_set() and igt_sysfs_get().
+- *
+- * Returns:
+- * The directory fd, or -1 on failure.
+- */
+-int igt_params_open(int device)
++static int __igt_params_open(int device, char **outpath)
+ {
+ 	int dir, params = -1;
+ 
+@@ -141,11 +131,28 @@ int igt_params_open(int device)
+ 
+ 		sprintf(path, "/sys/module/%s/parameters", name);
+ 		params = open(path, O_RDONLY);
++		if (params >= 0 && outpath)
++			*outpath = strdup(path);
+ 	}
+ 
+ 	return params;
+ }
+ 
++/**
++ * igt_params_open:
++ * @device: fd of the device
++ *
++ * This opens the module parameters directory (under sysfs) corresponding
++ * to the device for use with igt_sysfs_set() and igt_sysfs_get().
++ *
++ * Returns:
++ * The directory fd, or -1 on failure.
++ */
++int igt_params_open(int device)
 +{
-+	char *path = NULL;
-+	int dir;
-+	int ret;
-+
-+	dir = __igt_params_open(device, save ? &path : NULL);
-+	if (dir < 0)
-+		return false;
-+
-+	if (save)
-+		igt_params_save(dir, path, parameter);
-+
-+	ret = igt_sysfs_vprintf(dir, parameter, fmt, ap);
-+
-+	close(dir);
-+	free(path);
-+
-+	return ret > 0;
++	return __igt_params_open(device, NULL);
 +}
 +
  /**
   * igt_params_set:
   * @device: fd of the device
-@@ -164,20 +187,36 @@ int igt_params_open(int device)
- bool igt_params_set(int device, const char *parameter, const char *fmt, ...)
- {
- 	va_list ap;
--	int dir;
--	int ret;
--
--	dir = igt_params_open(device);
--	if (dir < 0)
--		return false;
-+	bool ret;
- 
- 	va_start(ap, fmt);
--	ret = igt_sysfs_vprintf(dir, parameter, fmt, ap);
-+	ret = __igt_params_set(device, parameter, fmt, ap, false);
- 	va_end(ap);
- 
--	close(dir);
-+	return ret;
-+}
- 
--	return ret > 0;
-+/**
-+ * igt_params_set_save:
-+ * @device: fd of the device or -1 to default to first matching starting from
-+ *	    zero. See __igt_params_open()
-+ * @parameter: the name of the parameter to set
-+ * @fmt: printf-esque format string
-+ *
-+ * Save the original value to be restored.
-+ *
-+ * Returns true on success
-+ */
-+bool igt_params_set_save(int device, const char *parameter, const char *fmt, ...)
-+{
-+	va_list ap;
-+	bool ret;
-+
-+	va_start(ap, fmt);
-+	ret = __igt_params_set(device, parameter, fmt, ap, true);
-+	va_end(ap);
-+
-+	return ret;
- }
- 
- /**
-diff --git a/lib/igt_params.h b/lib/igt_params.h
-index 52eed77f..1b750d23 100644
---- a/lib/igt_params.h
-+++ b/lib/igt_params.h
-@@ -31,6 +31,9 @@ int igt_params_open(int device);
- __attribute__((format(printf, 3, 4)))
- bool igt_params_set(int device, const char *parameter, const char *fmt, ...);
- 
-+__attribute__((format(printf, 3, 4)))
-+bool igt_params_set_save(int device, const char *parameter, const char *fmt, ...);
-+
- void igt_set_module_param(const char *name, const char *val);
- void igt_set_module_param_int(const char *name, int val);
- 
 -- 
 2.26.0
 
