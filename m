@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0BE088FDA
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 08:34:06 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-Date: Tue, 28 Apr 2020 08:34:03 +0000
-Message-ID: <d8df5047d3134befbf0b2edbf936091f@intel.com>
-References: <20200427080601.19785-1-mika.kahola@intel.com>
- <20200428082440.GA13964@intel.com>
-In-Reply-To: <20200428082440.GA13964@intel.com>
-Content-Language: en-US
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED2B46E340
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 10:13:09 +0000 (UTC)
+From: Karthik B S <karthik.b.s@intel.com>
+Date: Tue, 28 Apr 2020 15:38:32 +0530
+Message-Id: <20200428100832.7612-1-karthik.b.s@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [RFC PATCH i-g-t] tests/kms_ccs: CCS Clear Color test
+Subject: [igt-dev] [PATCH i-g-t v3] tests/kms_multipipe_modeset: Add test to
+ validate max pipe configuration
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,385 +15,139 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-
-> -----Original Message-----
-> From: Lisovskiy, Stanislav <stanislav.lisovskiy@intel.com>
-> Sent: Tuesday, April 28, 2020 11:25 AM
-> To: Kahola, Mika <mika.kahola@intel.com>
-> Cc: igt-dev@lists.freedesktop.org
-> Subject: Re: [igt-dev] [RFC PATCH i-g-t] tests/kms_ccs: CCS Clear Color test
-> 
-> On Mon, Apr 27, 2020 at 11:06:01AM +0300, Mika Kahola wrote:
-> > This is a RFC patch that proposes to test CCS clear color capability.
-> >
-> > Especially, comments related to clearing a solid color are welcomed as
-> > the clearfunc as it is presented here is inspired by rendercopy
-> > function and therefore the order might need some tweaking.
-> >
-> > Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-> > ---
-> >  lib/igt_fb.c            |  29 +++++++++
-> >  lib/intel_batchbuffer.c |  10 +++
-> >  lib/intel_batchbuffer.h |   6 ++
-> >  lib/rendercopy.h        |   4 ++
-> >  lib/rendercopy_gen9.c   | 132
-> ++++++++++++++++++++++++++++++++++++++++
-> >  tests/kms_ccs.c         |  16 ++++-
-> >  6 files changed, 196 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/lib/igt_fb.c b/lib/igt_fb.c index 5ed586e7..6d72b6cf
-> > 100644
-> > --- a/lib/igt_fb.c
-> > +++ b/lib/igt_fb.c
-> > @@ -481,6 +481,11 @@ void igt_get_fb_tile_size(int fd, uint64_t modifier, int
-> fb_bpp,
-> >  	}
-> >  }
-> >
-> > +static bool is_gen12_cc_ccs_modifier(uint64_t modifier) {
-> > +	return modifier ==
-> LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC;
-> > +}
-> > +
-> >  static bool is_gen12_mc_ccs_modifier(uint64_t modifier)  {
-> >  	return modifier ==
-> LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS;
-> > @@ -2146,6 +2151,26 @@ static bool use_vebox_copy(const struct igt_fb
-> *src_fb,
-> >  	       igt_format_is_yuv(dst_fb->drm_format);
-> >  }
-> >
-> > +static void clear_fb_with_engine(const struct igt_fb *dst_fb,
-> > +uint32_t color) {
-> > +	struct igt_buf dst;
-> > +	drm_intel_bufmgr *bufmgr;
-> > +	struct intel_batchbuffer *batch;
-> > +	igt_render_clearfunc_t render_clear = NULL;
-> > +	int devid = intel_get_drm_devid(dst_fb->fd);
-> > +
-> > +	render_clear = igt_get_render_clearfunc(devid);
-> > +
-> > +	bufmgr = drm_intel_bufmgr_gem_init(dst_fb->fd, 4096);
-> > +	batch = intel_batchbuffer_alloc(bufmgr, devid);
-> > +
-> > +	render_clear(batch,
-> > +		     &dst,
-> > +		     0, 0,
-> > +		     dst_fb->plane_width[0], dst_fb->plane_height[0],
-> > +		     color);
-> > +}
-> > +
-> >  /**
-> >   * copy_with_engine:
-> >   * @blit: context for the copy operation @@ -2185,6 +2210,8 @@ static
-> > void copy_with_engine(struct fb_blit_upload *blit,
-> >  		vebox_copy(blit->batch, &src,
-> >  			   dst_fb->plane_width[0], dst_fb->plane_height[0],
-> >  			   &dst);
-> > +	else if (is_gen12_cc_ccs_modifier(dst_fb->modifier))
-> > +		clear_fb_with_engine(dst_fb, 0x0000ff);
-> >  	else
-> >  		render_copy(blit->batch, NULL,
-> >  			    &src,
-> > @@ -2337,6 +2364,8 @@ static void setup_linear_mapping(struct
-> > fb_blit_upload *blit)
-> >
-> >  		if (blit->batch)
-> >  			copy_with_engine(blit, &linear->fb, fb);
-> > +		else if (is_gen12_cc_ccs_modifier(fb->modifier))
-> > +			clear_fb_with_engine(&linear->fb, 0x0000ff);
-> >  		else
-> >  			blitcopy(&linear->fb, fb);
-> >
-> > diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c index
-> > f1a45b47..fb5b49a4 100644
-> > --- a/lib/intel_batchbuffer.c
-> > +++ b/lib/intel_batchbuffer.c
-> > @@ -1090,6 +1090,16 @@ igt_vebox_copyfunc_t
-> igt_get_vebox_copyfunc(int devid)
-> >  	return copy;
-> >  }
-> >
-> > +igt_render_clearfunc_t igt_get_render_clearfunc(int devid) {
-> > +	igt_render_clearfunc_t clear = NULL;
-> > +
-> > +	if (IS_GEN12(devid))
-> > +		clear = gen12_render_clearfunc;
-> > +
-> > +	return clear;
-> > +}
-> > +
-> >  /**
-> >   * igt_get_media_fillfunc:
-> >   * @devid: pci device id
-> > diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h index
-> > 442f3a18..fe831575 100644
-> > --- a/lib/intel_batchbuffer.h
-> > +++ b/lib/intel_batchbuffer.h
-> > @@ -367,6 +367,12 @@ typedef void (*igt_vebox_copyfunc_t)(struct
-> > intel_batchbuffer *batch,
-> >
-> >  igt_vebox_copyfunc_t igt_get_vebox_copyfunc(int devid);
-> >
-> > +typedef void (*igt_render_clearfunc_t)(struct intel_batchbuffer *batch,
-> > +				       const struct igt_buf *dst, unsigned dst_x,
-> unsigned dst_y,
-> > +				       unsigned width, unsigned height,
-> > +				       uint32_t color);
-> > +igt_render_clearfunc_t igt_get_render_clearfunc(int devid);
-> > +
-> >  /**
-> >   * igt_fillfunc_t:
-> >   * @batch: batchbuffer object
-> > diff --git a/lib/rendercopy.h b/lib/rendercopy.h index
-> > e0577cac..e75a1def 100644
-> > --- a/lib/rendercopy.h
-> > +++ b/lib/rendercopy.h
-> > @@ -23,6 +23,10 @@ static inline void emit_vertex_normalized(struct
-> intel_batchbuffer *batch,
-> >  	OUT_BATCH(u.ui);
-> >  }
-> >
-> > +void gen12_render_clearfunc(struct intel_batchbuffer *batch,
-> > +			    const struct igt_buf *dst, unsigned dst_x, unsigned
-> dst_y,
-> > +			    unsigned width, unsigned height,
-> > +			    uint32_t color);
-> >  void gen12_render_copyfunc(struct intel_batchbuffer *batch,
-> >  			   drm_intel_context *context,
-> >  			   const struct igt_buf *src, unsigned src_x, unsigned
-> src_y, diff
-> > --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c index
-> > 85ae4cab..b82b6c94 100644
-> > --- a/lib/rendercopy_gen9.c
-> > +++ b/lib/rendercopy_gen9.c
-> > @@ -1110,6 +1110,120 @@ void _gen9_render_copyfunc(struct
-> intel_batchbuffer *batch,
-> >  	intel_batchbuffer_reset(batch);
-> >  }
-> >
-> > +static
-> > +void _gen12_render_clearfunc(struct intel_batchbuffer *batch,
-> > +			     drm_intel_context *context,
-> > +			     const struct igt_buf *dst, unsigned dst_x,
-> > +			     unsigned dst_y, unsigned width, unsigned height,
-> > +			     drm_intel_bo *aux_pgtable_bo,
-> > +			     const uint32_t ps_kernel[][4],
-> > +			     uint32_t ps_kernel_size)
-> > +{
-> > +	uint32_t ps_sampler_state, ps_kernel_off;
-> > +	uint32_t scissor_state;
-> > +	uint32_t vertex_buffer;
-> > +	uint32_t batch_end;
-> > +	uint32_t aux_pgtable_state;
-> > +
-> > +	intel_batchbuffer_flush_with_context(batch, context);
-> > +
-> > +	intel_batchbuffer_align(batch, 8);
-> > +
-> > +	batch->ptr = &batch->buffer[BATCH_STATE_SPLIT];
-> > +
-> > +	annotation_init(&aub_annotations);
-> > +
-> > +	ps_sampler_state  = gen8_create_sampler(batch);
-> > +	ps_kernel_off = gen8_fill_ps(batch, ps_kernel, ps_kernel_size);
-> > +	vertex_buffer = gen7_fill_vertex_buffer_data(batch, NULL,
-> > +						     0, 0,
-> > +						     dst_x, dst_y,
-> > +						     width, height);
-> > +	cc.cc_state = gen6_create_cc_state(batch);
-> > +	cc.blend_state = gen8_create_blend_state(batch);
-> > +	viewport.cc_state = gen6_create_cc_viewport(batch);
-> > +	viewport.sf_clip_state = gen7_create_sf_clip_viewport(batch);
-> > +	scissor_state = gen6_create_scissor_rect(batch);
-> > +
-> > +	aux_pgtable_state = gen12_create_aux_pgtable_state(batch,
-> > +							   aux_pgtable_bo);
-> > +
-> > +	/* TODO: there is other state which isn't setup */
-> > +
-> > +	assert(batch->ptr < &batch->buffer[4095]);
-> > +
-> > +	batch->ptr = batch->buffer;
-> > +
-> > +	/* Start emitting the commands. The order roughly follows the mesa
-> blorp
-> > +	 * order */
-> > +	OUT_BATCH(G4X_PIPELINE_SELECT | PIPELINE_SELECT_3D |
-> > +				GEN9_PIPELINE_SELECTION_MASK);
-> > +
-> > +	gen12_emit_aux_pgtable_state(batch, aux_pgtable_state, true);
-> > +
-> > +	gen8_emit_sip(batch);
-> > +
-> > +	gen7_emit_push_constants(batch);
-> > +
-> > +	gen9_emit_state_base_address(batch);
-> > +
-> > +	OUT_BATCH(GEN7_3DSTATE_VIEWPORT_STATE_POINTERS_CC);
-> > +	OUT_BATCH(viewport.cc_state);
-> > +	OUT_BATCH(GEN8_3DSTATE_VIEWPORT_STATE_POINTERS_SF_CLIP);
-> > +	OUT_BATCH(viewport.sf_clip_state);
-> > +
-> > +	gen7_emit_urb(batch);
-> > +
-> > +	gen8_emit_cc(batch);
-> > +
-> > +	gen8_emit_multisample(batch);
-> > +
-> > +	gen8_emit_null_state(batch);
-> > +
-> > +	OUT_BATCH(GEN7_3DSTATE_STREAMOUT | (5 - 2));
-> > +	OUT_BATCH(0);
-> > +	OUT_BATCH(0);
-> > +	OUT_BATCH(0);
-> > +	OUT_BATCH(0);
-> > +
-> > +	gen7_emit_clip(batch);
-> > +
-> > +	gen8_emit_sf(batch);
-> > +
-> > +	gen8_emit_ps(batch, ps_kernel_off);
-> > +
-> > +	OUT_BATCH(GEN7_3DSTATE_SAMPLER_STATE_POINTERS_PS);
-> > +	OUT_BATCH(ps_sampler_state);
-> > +
-> > +	OUT_BATCH(GEN8_3DSTATE_SCISSOR_STATE_POINTERS);
-> > +	OUT_BATCH(scissor_state);
-> > +
-> > +	gen9_emit_depth(batch);
-> > +
-> > +	gen7_emit_clear(batch);
-> > +
-> > +	gen6_emit_drawing_rectangle(batch, dst);
-> > +
-> > +	gen7_emit_vertex_buffer(batch, vertex_buffer);
-> > +	gen6_emit_vertex_elements(batch);
-> > +
-> > +	gen8_emit_vf_topology(batch);
-> > +	gen8_emit_primitive(batch, vertex_buffer);
-> > +
-> > +	OUT_BATCH(MI_BATCH_BUFFER_END);
-> > +
-> > +	batch_end = intel_batchbuffer_align(batch, 8);
-> > +	assert(batch_end < BATCH_STATE_SPLIT);
-> > +	annotation_add_batch(&aub_annotations, batch_end);
-> > +
-> > +	dump_batch(batch);
-> > +
-> > +	annotation_flush(&aub_annotations, batch);
-> > +
-> > +	gen6_render_flush(batch, context, batch_end);
-> > +	intel_batchbuffer_reset(batch);
-> > +}
-> > +
-> >  void gen9_render_copyfunc(struct intel_batchbuffer *batch,
-> >  			  drm_intel_context *context,
-> >  			  const struct igt_buf *src, unsigned src_x, unsigned
-> src_y, @@
-> > -1153,3 +1267,21 @@ void gen12_render_copyfunc(struct
-> > intel_batchbuffer *batch,
-> >
-> >  	gen12_aux_pgtable_cleanup(&pgtable_info);
-> >  }
-> > +
-> > +void gen12_render_clearfunc(struct intel_batchbuffer *batch,
-> > +			    const struct igt_buf *dst, unsigned dst_x, unsigned
-> dst_y,
-> > +			    unsigned width, unsigned height,
-> > +			    uint32_t color)
-> > +{
-> > +	struct aux_pgtable_info pgtable_info = { };
-> > +
-> > +	gen12_aux_pgtable_init(&pgtable_info, batch->bufmgr, NULL, dst);
-> > +
-> > +	_gen12_render_clearfunc(batch, NULL,
-> > +				dst, dst_x, dst_y, 0, 0,
-> > +				pgtable_info.pgtable_bo,
-> > +				gen12_render_copy,
-> > +				sizeof(gen12_render_copy));
-> > +
-> > +	gen12_aux_pgtable_cleanup(&pgtable_info);
-> > +}
-> 
-> Is it intentional or TODO that currently the color parameter is actually not used
-> here, despite being declared?
-
-That's still TODO.
-
-The whole idea about this RFC patch was to collect ideas on how the clear color feature should be tested.
-> 
-> Stan
-> 
-> > diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c index
-> > bc34aec5..3d3a5b1b 100644
-> > --- a/tests/kms_ccs.c
-> > +++ b/tests/kms_ccs.c
-> > @@ -38,6 +38,7 @@ enum test_flags {
-> >  	TEST_NO_AUX_BUFFER		= 1 << 5,
-> >  	TEST_BAD_CCS_HANDLE		= 1 << 6,
-> >  	TEST_BAD_AUX_STRIDE		= 1 << 7,
-> > +	TEST_CLEAR_COLOR                = 1 << 8,
-> >  };
-> >
-> >  #define TEST_FAIL_ON_ADDFB2 \
-> > @@ -249,6 +250,13 @@ static void generate_fb(data_t *data, struct igt_fb
-> *fb,
-> >  		igt_put_cairo_ctx(data->drm_fd, fb, cr);
-> >  	}
-> >
-> > +	if (data->flags & TEST_CLEAR_COLOR) {
-> > +		cr = igt_get_cairo_ctx(data->drm_fd, fb);
-> > +		igt_paint_color(cr, 0, 0, width, height,
-> > +				colors[0].r, colors[0].g, colors[0].b);
-> > +		igt_put_cairo_ctx(data->drm_fd, fb, cr);
-> > +	}
-> > +
-> >  	ret = drmIoctl(data->drm_fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f);
-> >  	if (data->flags & TEST_FAIL_ON_ADDFB2) {
-> >  		igt_assert_eq(ret, -1);
-> > @@ -380,7 +388,8 @@ static int test_ccs(data_t *data)
-> >  	igt_crc_t crc, ref_crc;
-> >  	enum test_fb_flags fb_flags = 0;
-> >
-> > -	if (data->flags & TEST_CRC) {
-> > +	if (data->flags & TEST_CRC ||
-> > +	    data->flags & TEST_CLEAR_COLOR) {
-> >  		data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
-> > INTEL_PIPE_CRC_SOURCE_AUTO);
-> >
-> >  		if (try_config(data, fb_flags | FB_COMPRESSED, &ref_crc) &&
-> @@
-> > -530,6 +539,11 @@ igt_main_args("c", NULL, help_str, opt_handler, NULL)
-> >  		igt_describe("Test with bad AUX stride with given CCS
-> modifier");
-> >  		igt_subtest_f("pipe-%s-bad-aux-stride", pipe_name)
-> >  			test_output(&data);
-> > +
-> > +		data.flags = TEST_CLEAR_COLOR;
-> > +		igt_describe("Test clear color with solid red color");
-> > +		igt_subtest_f("pipe-%s-clear-color", pipe_name)
-> > +			test_output(&data);
-> >  	}
-> >
-> >  	igt_fixture
-> > --
-> > 2.20.1
-> >
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+QWRkZWQgdGVzdCB0byB2YWxpZGF0ZSBtYXggcGlwZSBjb25maWd1cmF0aW9uIGZvciBhIHBsYXRm
+b3JtLgpJbiB0aGUgdGVzdCwgdGhlIHJlZmVyZW5jZSBDUkMgaXMgY29sbGVjdGVkIGZpcnN0IGJ5
+IGRvaW5nIG1vZGVzZXQKb24gYWxsIHRoZSBvdXRwdXRzIGluZGl2aWR1YWxseS5UaGVuIGEgc2lt
+dWx0YW5lb3VzIG1vZGVzZXQgaXMKZG9uZSBvbiBhbGwgdGhlIG91dHB1dHMgYW5kIHRoZSBDUkMg
+aXMgY29sbGVjdGVkLiBUaGlzIGlzIGNvbXBhcmVkCndpdGggdGhlIHJlZmVyZW5jZSBDUkMuCgpJ
+ZiB0aGUgbnVtYmVyIG9mIG91dHB1dHMgY29ubmVjdGVkIGlzIGxlc3MgdGhhbiB0aGUgbnVtYmVy
+IG9mIHBpcGVzCnN1cHBvcnRlZCBieSB0aGUgcGxhdGZvcm0sIHRoZW4gdGhlIHRlc3Qgc2tpcHMu
+CgpUaGlzIHRlc3QgaXMgYWRkZWQgdG8gdmVyaWZ5IGlmIHRoZSBtYXggcGlwZSBjb25maWd1cmF0
+aW9uIGZvciBhCmdpdmVuIHBsYXRmb3JtIGlzIHdvcmtpbmcgZmluZS4gRXZlbiB0aG91Z2ggdGhl
+cmUgYXJlIG90aGVyIHRlc3RzCndoaWNoIHRlc3QgbXVsdGlwaXBlIGNvbmZpZ3VyYXRpb24sIHRo
+ZXkgdGVzdCBzb21lIG90aGVyIGZ1bmN0aW9uYWxpdGllcwphcyB3ZWxsIHRvZ2V0aGVyIHdpdGgg
+bXVsdGlwaXBlLiBUaGlzIGlzIGEgc3RhbmQgYWxvbmUgdGVzdCB0aGF0CmludGVuZHMgdG8gb25s
+eSB2ZXJpZnkgc2ltdWx0YW5lb3VzIG1vZGVzZXQgYXQgdGhlIG1heCBwaXBlIGNvbmZpZ3VyYXRp
+b24uCgp2MjogLUZpeCBUeXBvIGluIGNvbW1lbnQgKFBldHJpKQogICAgLVVzZSBpZ3RfcmVxdWly
+ZV9waXBlX2NyYygpIHRvIHByZXZlbnQgY3Jhc2ggaW4gbm9uIGk5MTUgY2FzZSAoUGV0cmkpCiAg
+ICAtUHJpbnQgdGhlIG51bWJlciBvZiBvdXRwdXRzIGFuZCBwaXBlcyBpbiBpZ3RfcmVxdWlyZSgp
+IGZvcgogICAgIGRlYnVnZ2luZyBhaWQgKFBldHJpKQoKdjM6IC1DaGFuZ2UgdGhlIHN1YnRlc3Qg
+bmFtZSAoUGV0cmkpCiAgICAtQXZvaWQgbXVsdGlwbGUgbG9vcHMgYW5kIHJlbW92ZSB0aGUgb3V0
+cHV0X3RvX3BpcGUgdmFyaWFibGUsCiAgICAgYnkgbWFraW5nIHRoZSBvdXRwdXQgdG8gcGlwZSBt
+YXBwaW5nIGZpeGVkIChBbmtpdCkKClNpZ25lZC1vZmYtYnk6IEthcnRoaWsgQiBTIDxrYXJ0aGlr
+LmIuc0BpbnRlbC5jb20+ClJldmlld2VkLWJ5OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxh
+QGludGVsLmNvbT4KLS0tCiB0ZXN0cy9NYWtlZmlsZS5zb3VyY2VzICAgICAgICB8ICAgMSArCiB0
+ZXN0cy9rbXNfbXVsdGlwaXBlX21vZGVzZXQuYyB8IDE1NiArKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrCiB0ZXN0cy9tZXNvbi5idWlsZCAgICAgICAgICAgICB8ICAgMSArCiAzIGZp
+bGVzIGNoYW5nZWQsIDE1OCBpbnNlcnRpb25zKCspCiBjcmVhdGUgbW9kZSAxMDA2NDQgdGVzdHMv
+a21zX211bHRpcGlwZV9tb2Rlc2V0LmMKCmRpZmYgLS1naXQgYS90ZXN0cy9NYWtlZmlsZS5zb3Vy
+Y2VzIGIvdGVzdHMvTWFrZWZpbGUuc291cmNlcwppbmRleCAzMmNiYmY0Zi4uYzQ1MGZhMGUgMTAw
+NjQ0Ci0tLSBhL3Rlc3RzL01ha2VmaWxlLnNvdXJjZXMKKysrIGIvdGVzdHMvTWFrZWZpbGUuc291
+cmNlcwpAQCAtNjEsNiArNjEsNyBAQCBURVNUU19wcm9ncyA9IFwKIAlrbXNfbGVhc2UgXAogCWtt
+c19sZWdhY3lfY29sb3JrZXkgXAogCWttc19tbWFwX3dyaXRlX2NyYyBcCisJa21zX211bHRpcGlw
+ZV9tb2Rlc2V0IFwKIAlrbXNfcGFuZWxfZml0dGluZyBcCiAJa21zX3BpcGVfYl9jX2l2YiBcCiAJ
+a21zX3BpcGVfY3JjX2Jhc2ljIFwKZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19tdWx0aXBpcGVfbW9k
+ZXNldC5jIGIvdGVzdHMva21zX211bHRpcGlwZV9tb2Rlc2V0LmMKbmV3IGZpbGUgbW9kZSAxMDA2
+NDQKaW5kZXggMDAwMDAwMDAuLmZiMGI5NjYyCi0tLSAvZGV2L251bGwKKysrIGIvdGVzdHMva21z
+X211bHRpcGlwZV9tb2Rlc2V0LmMKQEAgLTAsMCArMSwxNTYgQEAKKy8qCisgKiBDb3B5cmlnaHQg
+wqkgMjAyMCBJbnRlbCBDb3Jwb3JhdGlvbgorICoKKyAqIFBlcm1pc3Npb24gaXMgaGVyZWJ5IGdy
+YW50ZWQsIGZyZWUgb2YgY2hhcmdlLCB0byBhbnkgcGVyc29uIG9idGFpbmluZyBhCisgKiBjb3B5
+IG9mIHRoaXMgc29mdHdhcmUgYW5kIGFzc29jaWF0ZWQgZG9jdW1lbnRhdGlvbiBmaWxlcyAodGhl
+ICJTb2Z0d2FyZSIpLAorICogdG8gZGVhbCBpbiB0aGUgU29mdHdhcmUgd2l0aG91dCByZXN0cmlj
+dGlvbiwgaW5jbHVkaW5nIHdpdGhvdXQgbGltaXRhdGlvbgorICogdGhlIHJpZ2h0cyB0byB1c2Us
+IGNvcHksIG1vZGlmeSwgbWVyZ2UsIHB1Ymxpc2gsIGRpc3RyaWJ1dGUsIHN1YmxpY2Vuc2UsCisg
+KiBhbmQvb3Igc2VsbCBjb3BpZXMgb2YgdGhlIFNvZnR3YXJlLCBhbmQgdG8gcGVybWl0IHBlcnNv
+bnMgdG8gd2hvbSB0aGUKKyAqIFNvZnR3YXJlIGlzIGZ1cm5pc2hlZCB0byBkbyBzbywgc3ViamVj
+dCB0byB0aGUgZm9sbG93aW5nIGNvbmRpdGlvbnM6CisgKgorICogVGhlIGFib3ZlIGNvcHlyaWdo
+dCBub3RpY2UgYW5kIHRoaXMgcGVybWlzc2lvbiBub3RpY2UgKGluY2x1ZGluZyB0aGUgbmV4dAor
+ICogcGFyYWdyYXBoKSBzaGFsbCBiZSBpbmNsdWRlZCBpbiBhbGwgY29waWVzIG9yIHN1YnN0YW50
+aWFsIHBvcnRpb25zIG9mIHRoZQorICogU29mdHdhcmUuCisgKgorICogVEhFIFNPRlRXQVJFIElT
+IFBST1ZJREVEICJBUyBJUyIsIFdJVEhPVVQgV0FSUkFOVFkgT0YgQU5ZIEtJTkQsIEVYUFJFU1Mg
+T1IKKyAqIElNUExJRUQsIElOQ0xVRElORyBCVVQgTk9UIExJTUlURUQgVE8gVEhFIFdBUlJBTlRJ
+RVMgT0YgTUVSQ0hBTlRBQklMSVRZLAorICogRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBP
+U0UgQU5EIE5PTklORlJJTkdFTUVOVC4gIElOIE5PIEVWRU5UIFNIQUxMCisgKiBUSEUgQVVUSE9S
+UyBPUiBDT1BZUklHSFQgSE9MREVSUyBCRSBMSUFCTEUgRk9SIEFOWSBDTEFJTSwgREFNQUdFUyBP
+UiBPVEhFUgorICogTElBQklMSVRZLCBXSEVUSEVSIElOIEFOIEFDVElPTiBPRiBDT05UUkFDVCwg
+VE9SVCBPUiBPVEhFUldJU0UsIEFSSVNJTkcKKyAqIEZST00sIE9VVCBPRiBPUiBJTiBDT05ORUNU
+SU9OIFdJVEggVEhFIFNPRlRXQVJFIE9SIFRIRSBVU0UgT1IgT1RIRVIgREVBTElOR1MKKyAqIElO
+IFRIRSBTT0ZUV0FSRS4KKyAqCisgKiBBdXRob3I6CisgKiAgS2FydGhpayBCIFMgPGthcnRoaWsu
+Yi5zQGludGVsLmNvbT4KKyAqLworCisjaW5jbHVkZSAiaWd0LmgiCisKK0lHVF9URVNUX0RFU0NS
+SVBUSU9OKCJUZXN0IHNpbXVsdGFuZW91cyBtb2Rlc2V0IG9uIGFsbCB0aGUgc3VwcG9ydGVkIHBp
+cGVzIik7CisKK3R5cGVkZWYgc3RydWN0IHsKKwlpbnQgZHJtX2ZkOworCWlndF9kaXNwbGF5X3Qg
+ZGlzcGxheTsKKwlzdHJ1Y3QgaWd0X2ZiIGZiOworfSBkYXRhX3Q7CisKK3N0YXRpYyB2b2lkIHJ1
+bl90ZXN0KGRhdGFfdCAqZGF0YSwgaW50IHZhbGlkX291dHB1dHMpCit7CisJaWd0X291dHB1dF90
+ICpvdXRwdXQ7CisJaWd0X3BpcGVfY3JjX3QgKnBpcGVfY3Jjc1tJR1RfTUFYX1BJUEVTXSA9IHsg
+MCB9OworCWlndF9jcmNfdCByZWZfY3Jjc1tJR1RfTUFYX1BJUEVTXSwgbmV3X2NyY3NbSUdUX01B
+WF9QSVBFU107CisJaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSA9ICZkYXRhLT5kaXNwbGF5OworCWlu
+dCB3aWR0aCA9IDAsIGhlaWdodCA9IDAsIGkgPSAwOworCWlndF9waXBlX3QgKnBpcGU7CisJaWd0
+X3BsYW5lX3QgKnBsYW5lOworCWRybU1vZGVNb2RlSW5mbyAqbW9kZTsKKworCWZvcl9lYWNoX2Nv
+bm5lY3RlZF9vdXRwdXQoZGlzcGxheSwgb3V0cHV0KSB7CisJCW1vZGUgPSBpZ3Rfb3V0cHV0X2dl
+dF9tb2RlKG91dHB1dCk7CisJCWlndF9hc3NlcnQobW9kZSk7CisKKwkJaWd0X291dHB1dF9zZXRf
+cGlwZShvdXRwdXQsIFBJUEVfTk9ORSk7CisKKwkJd2lkdGggPSBtYXgod2lkdGgsIG1vZGUtPmhk
+aXNwbGF5KTsKKwkJaGVpZ2h0ID0gbWF4KGhlaWdodCwgbW9kZS0+dmRpc3BsYXkpOworCX0KKwor
+CWlndF9jcmVhdGVfcGF0dGVybl9mYihkYXRhLT5kcm1fZmQsIHdpZHRoLCBoZWlnaHQsIERSTV9G
+T1JNQVRfWFJHQjg4ODgsCisJCQkgICAgICBMT0NBTF9EUk1fRk9STUFUX01PRF9OT05FLCAmZGF0
+YS0+ZmIpOworCisJLyogQ29sbGVjdCByZWZlcmVuY2UgQ1JDIGJ5IENvbW1pdHRpbmcgaW5kaXZp
+ZHVhbGx5IG9uIGFsbCBvdXRwdXRzKi8KKwlmb3JfZWFjaF9jb25uZWN0ZWRfb3V0cHV0KGRpc3Bs
+YXksIG91dHB1dCkgeworCQlwaXBlID0gJmRpc3BsYXktPnBpcGVzW2ldOworCQlwbGFuZSA9IGln
+dF9waXBlX2dldF9wbGFuZV90eXBlKHBpcGUsIERSTV9QTEFORV9UWVBFX1BSSU1BUlkpOworCisJ
+CW1vZGUgPSBOVUxMOworCisJCXBpcGVfY3Jjc1tpXSA9IGlndF9waXBlX2NyY19uZXcoZGlzcGxh
+eS0+ZHJtX2ZkLCBpLAorCQkJCQkJSU5URUxfUElQRV9DUkNfU09VUkNFX0FVVE8pOworCisJCWln
+dF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBpKTsKKwkJbW9kZSA9IGlndF9vdXRwdXRfZ2V0X21v
+ZGUob3V0cHV0KTsKKwkJaWd0X2Fzc2VydChtb2RlKTsKKworCQlpZ3RfcGxhbmVfc2V0X2ZiKHBs
+YW5lLCAmZGF0YS0+ZmIpOworCQlpZ3RfZmJfc2V0X3NpemUoJmRhdGEtPmZiLCBwbGFuZSwgbW9k
+ZS0+aGRpc3BsYXksIG1vZGUtPnZkaXNwbGF5KTsKKwkJaWd0X3BsYW5lX3NldF9zaXplKHBsYW5l
+LCBtb2RlLT5oZGlzcGxheSwgbW9kZS0+dmRpc3BsYXkpOworCisJCWlndF9kaXNwbGF5X2NvbW1p
+dDIoZGlzcGxheSwgQ09NTUlUX0FUT01JQyk7CisJCWlndF9waXBlX2NyY19jb2xsZWN0X2NyYyhw
+aXBlX2NyY3NbaV0sICZyZWZfY3Jjc1tpXSk7CisJCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0
+LCBQSVBFX05PTkUpOworCQlpKys7CisJfQorCisJaSA9IDA7CisJLyogU2ltdWx0YW5lb3VzbHkg
+Y29tbWl0IG9uIGFsbCBvdXRwdXRzICovCisJZm9yX2VhY2hfY29ubmVjdGVkX291dHB1dChkaXNw
+bGF5LCBvdXRwdXQpIHsKKwkJcGlwZSA9ICZkaXNwbGF5LT5waXBlc1tpXTsKKwkJcGxhbmUgPSBp
+Z3RfcGlwZV9nZXRfcGxhbmVfdHlwZShwaXBlLCBEUk1fUExBTkVfVFlQRV9QUklNQVJZKTsKKwor
+CQltb2RlID0gTlVMTDsKKworCQlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dCwgaSk7CisJCW1v
+ZGUgPSBpZ3Rfb3V0cHV0X2dldF9tb2RlKG91dHB1dCk7CisJCWlndF9hc3NlcnQobW9kZSk7CisK
+KwkJaWd0X3BsYW5lX3NldF9mYihwbGFuZSwgJmRhdGEtPmZiKTsKKwkJaWd0X2ZiX3NldF9zaXpl
+KCZkYXRhLT5mYiwgcGxhbmUsIG1vZGUtPmhkaXNwbGF5LCBtb2RlLT52ZGlzcGxheSk7CisJCWln
+dF9wbGFuZV9zZXRfc2l6ZShwbGFuZSwgbW9kZS0+aGRpc3BsYXksIG1vZGUtPnZkaXNwbGF5KTsK
+KwkJaSsrOworCX0KKworCWlndF9kaXNwbGF5X2NvbW1pdDIoZGlzcGxheSwgQ09NTUlUX0FUT01J
+Qyk7CisKKwkvKiBDUkMgVmVyaWZpY2F0aW9uICovCisJZm9yIChpID0gMDsgaSA8IHZhbGlkX291
+dHB1dHM7IGkrKykgeworCQlpZ3RfcGlwZV9jcmNfY29sbGVjdF9jcmMocGlwZV9jcmNzW2ldLCAm
+bmV3X2NyY3NbaV0pOworCQlpZ3RfYXNzZXJ0X2NyY19lcXVhbCgmcmVmX2NyY3NbaV0sICZuZXdf
+Y3Jjc1tpXSk7CisJfQorCisJaWd0X3BsYW5lX3NldF9mYihwbGFuZSwgTlVMTCk7CisJaWd0X3Jl
+bW92ZV9mYihkYXRhLT5kcm1fZmQsICZkYXRhLT5mYik7Cit9CisKK3N0YXRpYyB2b2lkIHRlc3Rf
+bXVsdGlwaXBlKGRhdGFfdCAqZGF0YSkKK3sKKwlpZ3Rfb3V0cHV0X3QgKm91dHB1dDsKKwlpbnQg
+dmFsaWRfb3V0cHV0cyA9IDAsIG51bV9waXBlczsKKworCW51bV9waXBlcyA9IGlndF9kaXNwbGF5
+X2dldF9uX3BpcGVzKCZkYXRhLT5kaXNwbGF5KTsKKwlmb3JfZWFjaF9jb25uZWN0ZWRfb3V0cHV0
+KCZkYXRhLT5kaXNwbGF5LCBvdXRwdXQpCisJCXZhbGlkX291dHB1dHMrKzsKKworCWlndF9yZXF1
+aXJlX2YodmFsaWRfb3V0cHV0cyA9PSBudW1fcGlwZXMsCisJCSAgICAgICJOdW1iZXIgb2YgY29u
+bmVjdGVkIG91dHB1dHMoJWQpIG5vdCBlcXVhbCB0byB0aGUgIgorCQkgICAgICAibnVtYmVyIG9m
+IHBpcGVzIHN1cHBvcnRlZCglZClcbiIsIHZhbGlkX291dHB1dHMsIG51bV9waXBlcyk7CisKKwly
+dW5fdGVzdChkYXRhLCB2YWxpZF9vdXRwdXRzKTsKK30KKworaWd0X21haW4KK3sKKwlkYXRhX3Qg
+ZGF0YTsKKwlkcm1Nb2RlUmVzUHRyIHJlczsKKworCWlndF9maXh0dXJlIHsKKwkJZGF0YS5kcm1f
+ZmQgPSBkcm1fb3Blbl9kcml2ZXJfbWFzdGVyKERSSVZFUl9BTlkpOworCQlrbXN0ZXN0X3NldF92
+dF9ncmFwaGljc19tb2RlKCk7CisKKwkJaWd0X3JlcXVpcmVfcGlwZV9jcmMoZGF0YS5kcm1fZmQp
+OworCQlpZ3RfZGlzcGxheV9yZXF1aXJlKCZkYXRhLmRpc3BsYXksIGRhdGEuZHJtX2ZkKTsKKwor
+CQlyZXMgPSBkcm1Nb2RlR2V0UmVzb3VyY2VzKGRhdGEuZHJtX2ZkKTsKKwkJaWd0X2Fzc2VydChy
+ZXMpOworCisJCWttc3Rlc3RfdW5zZXRfYWxsX2NydGNzKGRhdGEuZHJtX2ZkLCByZXMpOworCX0K
+KworCWlndF9kZXNjcmliZSgiVmVyaWZ5IGlmIHNpbXVsdGFuZW91cyBtb2Rlc2V0cyBvbiBhbGwg
+dGhlIHN1cHBvcnRlZCAiCisJCSAgICAgInBpcGVzIGlzIHN1Y2Nlc3NmdWwuIFZhbGlkYXRlIHVz
+aW5nIENSQyB2ZXJpZmljYXRpb24iKTsKKwlpZ3Rfc3VidGVzdCgiYmFzaWMtbWF4LXBpcGUtY3Jj
+LWNoZWNrIikKKwkJdGVzdF9tdWx0aXBpcGUoJmRhdGEpOworCisJaWd0X2ZpeHR1cmUKKwkJaWd0
+X2Rpc3BsYXlfZmluaSgmZGF0YS5kaXNwbGF5KTsKK30KZGlmZiAtLWdpdCBhL3Rlc3RzL21lc29u
+LmJ1aWxkIGIvdGVzdHMvbWVzb24uYnVpbGQKaW5kZXggMGJkY2ZiZTQuLjg4ZTQ4NzViIDEwMDY0
+NAotLS0gYS90ZXN0cy9tZXNvbi5idWlsZAorKysgYi90ZXN0cy9tZXNvbi5idWlsZApAQCAtNDUs
+NiArNDUsNyBAQCB0ZXN0X3Byb2dzID0gWwogCSdrbXNfbGVhc2UnLAogCSdrbXNfbGVnYWN5X2Nv
+bG9ya2V5JywKIAkna21zX21tYXBfd3JpdGVfY3JjJywKKwkna21zX211bHRpcGlwZV9tb2Rlc2V0
+JywKIAkna21zX3BhbmVsX2ZpdHRpbmcnLAogCSdrbXNfcGlwZV9iX2NfaXZiJywKIAkna21zX3Bp
+cGVfY3JjX2Jhc2ljJywKLS0gCjIuMjIuMAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
+ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9pZ3QtZGV2Cg==
