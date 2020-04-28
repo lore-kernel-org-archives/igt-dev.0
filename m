@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3D1C6EBFC
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 20:24:06 +0000 (UTC)
-Received: by mail-pf1-x443.google.com with SMTP id x15so11357389pfa.1
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 13:24:06 -0700 (PDT)
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E1FF6EBFD
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 20:24:11 +0000 (UTC)
+Received: by mail-pj1-x1041.google.com with SMTP id a31so66447pje.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 13:24:11 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Tue, 28 Apr 2020 23:22:54 +0300
-Message-Id: <20200428202255.31309-7-juhapekka.heikkila@gmail.com>
+Date: Tue, 28 Apr 2020 23:22:55 +0300
+Message-Id: <20200428202255.31309-8-juhapekka.heikkila@gmail.com>
 In-Reply-To: <20200428202255.31309-1-juhapekka.heikkila@gmail.com>
 References: <20200428202255.31309-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 6/7] igt/params: use igt_params_set_save for
- igt_set_module_param*
+Subject: [igt-dev] [PATCH i-g-t 7/7] tests/gem_eio: switch to using
+ igt_params_set()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,214 +28,222 @@ To: igt-dev@lists.freedesktop.org
 Cc: Jani Nikula <jani.nikula@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Unify parameter access. Here is also decided 'default' device
-if -1 is specified as device. Derault being that device
-which is first to match requirements, starting search
-from zero upwards.
-
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/igt_params.c | 134 +++++++++++++++++++++++++++++++++++------------
- 1 file changed, 100 insertions(+), 34 deletions(-)
+ tests/i915/gem_eio.c | 57 +++++++++++++++++++-------------------------
+ 1 file changed, 24 insertions(+), 33 deletions(-)
 
-diff --git a/lib/igt_params.c b/lib/igt_params.c
-index d9cf986c..dc35f233 100644
---- a/lib/igt_params.c
-+++ b/lib/igt_params.c
-@@ -27,12 +27,14 @@
- #include <stdbool.h>
- #include <stdio.h>
- #include <sys/ioctl.h>
-+#include <sys/stat.h>
+diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
+index 1ec60941..ad59f83a 100644
+--- a/tests/i915/gem_eio.c
++++ b/tests/i915/gem_eio.c
+@@ -52,20 +52,11 @@
  
- #include <i915_drm.h>
+ IGT_TEST_DESCRIPTION("Test that specific ioctls report a wedged GPU (EIO).");
  
- #include "igt_core.h"
- #include "igt_params.h"
- #include "igt_sysfs.h"
-+#include "igt_debugfs.h"
+-static bool i915_reset_control(bool enable)
++static bool i915_reset_control(int fd, bool enable)
+ {
+-	const char *path = "/sys/module/i915/parameters/reset";
+-	int fd, ret;
+-
+ 	igt_debug("%s GPU reset\n", enable ? "Enabling" : "Disabling");
  
- struct module_param_data {
- 	char *path;
-@@ -107,15 +109,59 @@ static void igt_params_save(int dir, const char *path, const char *name)
- 	module_params = data;
+-	fd = open(path, O_RDWR);
+-	igt_require(fd >= 0);
+-
+-	ret = write(fd, &"01"[enable], 1) == 1;
+-	close(fd);
+-
+-	return ret;
++	return igt_params_set(fd, "reset", "%d", enable);
  }
  
--static int __igt_params_open(int device, char **outpath)
-+static int __igt_params_open(int device, char **outpath, const char *param)
- {
- 	int dir, params = -1;
-+	struct stat buffer;
-+	char searchname[64];
-+	char searchpath[PATH_MAX];
-+	char *foundname, *ctx;
+ static void trigger_reset(int fd)
+@@ -106,9 +97,9 @@ static void wedge_gpu(int fd)
+ 	/* First idle the GPU then disable GPU resets before injecting a hang */
+ 	gem_quiescent_gpu(fd);
  
--	dir = igt_sysfs_open(device);
-+	dir = igt_debugfs_dir(device);
- 	if (dir >= 0) {
--		params = openat(dir,
--				"device/driver/module/parameters",
--				O_RDONLY);
-+		int devname;
-+
-+		devname = openat(dir, "name", O_RDONLY);
-+		igt_assert(devname >= 0);
-+
-+		read(devname, searchname, sizeof(searchname));
-+		close(devname);
-+
-+		foundname = strtok_r(searchname, " ", &ctx);
-+		igt_assert(foundname);
-+
-+		snprintf(searchpath, PATH_MAX, "%s_params", foundname);
-+		params = openat(dir, searchpath, O_RDONLY);
-+
-+		if (params >= 0) {
-+			char *debugfspath = malloc(PATH_MAX);
-+
-+			igt_debugfs_path(device, debugfspath, PATH_MAX);
-+			if (param != NULL) {
-+				char filepath[PATH_MAX];
-+
-+				snprintf(filepath, PATH_MAX, "%s/%s",
-+					 debugfspath, param);
-+
-+				if (stat(filepath, &buffer) == 0) {
-+					if (outpath != NULL)
-+						*outpath = debugfspath;
-+					else
-+						free(debugfspath);
-+				} else {
-+					free(debugfspath);
-+					close(params);
-+					params = -1;
-+				}
-+			} else if (outpath != NULL) {
-+				/*
-+				 * Caller is responsible to free this.
-+				 */
-+				*outpath = debugfspath;
-+			} else {
-+				free(debugfspath);
-+			}
-+		}
- 		close(dir);
+-	igt_require(i915_reset_control(false));
++	igt_require(i915_reset_control(fd, false));
+ 	manual_hang(fd);
+-	igt_assert(i915_reset_control(true));
++	igt_assert(i915_reset_control(fd, true));
+ }
+ 
+ static int __gem_throttle(int fd)
+@@ -346,7 +337,7 @@ static void __test_banned(int fd)
+ 	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
+ 
+ 	gem_quiescent_gpu(fd);
+-	igt_require(i915_reset_control(true));
++	igt_require(i915_reset_control(fd, true));
+ 
+ 	igt_until_timeout(5) {
+ 		igt_spin_t *hang;
+@@ -404,9 +395,9 @@ static void test_wait(int fd, unsigned int flags, unsigned int wait)
+ 	 */
+ 
+ 	if (flags & TEST_WEDGE)
+-		igt_require(i915_reset_control(false));
++		igt_require(i915_reset_control(fd, false));
+ 	else
+-		igt_require(i915_reset_control(true));
++		igt_require(i915_reset_control(fd, true));
+ 
+ 	hang = spin_sync(fd, 0, I915_EXEC_DEFAULT);
+ 
+@@ -415,7 +406,7 @@ static void test_wait(int fd, unsigned int flags, unsigned int wait)
+ 
+ 	igt_spin_free(fd, hang);
+ 
+-	igt_require(i915_reset_control(true));
++	igt_require(i915_reset_control(fd, true));
+ 
+ 	trigger_reset(fd);
+ 	close(fd);
+@@ -430,12 +421,12 @@ static void test_suspend(int fd, int state)
+ 	igt_system_suspend_autoresume(state, SUSPEND_TEST_DEVICES);
+ 
+ 	/* Check we can suspend when the driver is already wedged */
+-	igt_require(i915_reset_control(false));
++	igt_require(i915_reset_control(fd, false));
+ 	manual_hang(fd);
+ 
+ 	igt_system_suspend_autoresume(state, SUSPEND_TEST_DEVICES);
+ 
+-	igt_require(i915_reset_control(true));
++	igt_require(i915_reset_control(fd, true));
+ 	trigger_reset(fd);
+ 	close(fd);
+ }
+@@ -470,7 +461,7 @@ static void test_inflight(int fd, unsigned int wait)
+ 
+ 		gem_quiescent_gpu(fd);
+ 		igt_debug("Starting %s on engine '%s'\n", __func__, e->name);
+-		igt_require(i915_reset_control(false));
++		igt_require(i915_reset_control(fd, false));
+ 
+ 		hang = spin_sync(fd, 0, eb_ring(e));
+ 		obj[0].handle = hang->handle;
+@@ -495,7 +486,7 @@ static void test_inflight(int fd, unsigned int wait)
+ 		}
+ 		igt_spin_free(fd, hang);
+ 
+-		igt_assert(i915_reset_control(true));
++		igt_assert(i915_reset_control(fd, true));
+ 		trigger_reset(fd);
+ 
+ 		gem_close(fd, obj[1].handle);
+@@ -520,7 +511,7 @@ static void test_inflight_suspend(int fd)
+ 	fd = gem_reopen_driver(fd);
+ 	igt_require_gem(fd);
+ 	igt_require(gem_has_exec_fence(fd));
+-	igt_require(i915_reset_control(false));
++	igt_require(i915_reset_control(fd, false));
+ 
+ 	memset(obj, 0, sizeof(obj));
+ 	obj[0].flags = EXEC_OBJECT_WRITE;
+@@ -553,7 +544,7 @@ static void test_inflight_suspend(int fd)
  	}
+ 	igt_spin_free(fd, hang);
  
-@@ -124,12 +170,51 @@ static int __igt_params_open(int device, char **outpath)
- 		char name[32] = "";
- 		char path[PATH_MAX];
+-	igt_assert(i915_reset_control(true));
++	igt_assert(i915_reset_control(fd, true));
+ 	trigger_reset(fd);
+ 	close(fd);
+ }
+@@ -601,7 +592,7 @@ static void test_inflight_contexts(int fd, unsigned int wait)
+ 		gem_quiescent_gpu(fd);
  
--		memset(&version, 0, sizeof(version));
--		version.name_len = sizeof(name);
--		version.name = name;
--		ioctl(device, DRM_IOCTL_VERSION, &version);
--
--		sprintf(path, "/sys/module/%s/parameters", name);
-+		if (device == -1) {
-+			/*
-+			 * find default device
-+			 */
-+			int file, i;
-+			const char *debugfs_root = igt_debugfs_mount();
-+
-+			igt_assert(debugfs_root);
-+
-+			for (i = 0; i < 63; i++) {
-+				char testpath[PATH_MAX];
-+
-+				snprintf(searchpath, PATH_MAX,
-+					 "%s/dri/%d/name", debugfs_root, i);
-+
-+				file = open(searchpath, O_RDONLY);
-+
-+				if (file < 0)
-+					continue;
-+
-+				read(file, searchname, sizeof(searchname));
-+				close(file);
-+
-+				foundname = strtok_r(searchname, " ", &ctx);
-+				if (!foundname)
-+					continue;
-+
-+				snprintf(testpath, PATH_MAX,
-+					 "/sys/module/%s/parameters",
-+					 foundname);
-+
-+				if (stat(testpath, &buffer) == 0 &&
-+				    S_ISDIR(buffer.st_mode)) {
-+					snprintf(name, sizeof(name), "%s",
-+						 foundname);
-+					break;
-+				}
-+			}
-+		} else {
-+			memset(&version, 0, sizeof(version));
-+			version.name_len = sizeof(name);
-+			version.name = name;
-+			ioctl(device, DRM_IOCTL_VERSION, &version);
-+		}
-+		snprintf(path, sizeof(path), "/sys/module/%s/parameters", name);
- 		params = open(path, O_RDONLY);
- 		if (params >= 0 && outpath)
- 			*outpath = strdup(path);
-@@ -150,7 +235,7 @@ static int __igt_params_open(int device, char **outpath)
-  */
- int igt_params_open(int device)
+ 		igt_debug("Starting %s on engine '%s'\n", __func__, e->name);
+-		igt_require(i915_reset_control(false));
++		igt_require(i915_reset_control(fd, false));
+ 
+ 		memset(obj, 0, sizeof(obj));
+ 		obj[0].flags = EXEC_OBJECT_WRITE;
+@@ -636,7 +627,7 @@ static void test_inflight_contexts(int fd, unsigned int wait)
+ 		igt_spin_free(fd, hang);
+ 		gem_close(fd, obj[1].handle);
+ 
+-		igt_assert(i915_reset_control(true));
++		igt_assert(i915_reset_control(fd, true));
+ 		trigger_reset(fd);
+ 
+ 		for (unsigned int n = 0; n < ARRAY_SIZE(ctx); n++)
+@@ -663,7 +654,7 @@ static void test_inflight_external(int fd)
+ 
+ 	fence = igt_cork_plug(&cork, fd);
+ 
+-	igt_require(i915_reset_control(false));
++	igt_require(i915_reset_control(fd, false));
+ 	hang = __spin_poll(fd, 0, 0);
+ 
+ 	memset(&obj, 0, sizeof(obj));
+@@ -695,7 +686,7 @@ static void test_inflight_external(int fd)
+ 	close(fence);
+ 
+ 	igt_spin_free(fd, hang);
+-	igt_assert(i915_reset_control(true));
++	igt_assert(i915_reset_control(fd, true));
+ 	trigger_reset(fd);
+ 	close(fd);
+ }
+@@ -714,7 +705,7 @@ static void test_inflight_internal(int fd, unsigned int wait)
+ 	fd = gem_reopen_driver(fd);
+ 	igt_require_gem(fd);
+ 
+-	igt_require(i915_reset_control(false));
++	igt_require(i915_reset_control(fd, false));
+ 	hang = spin_sync(fd, 0, 0);
+ 
+ 	memset(obj, 0, sizeof(obj));
+@@ -745,7 +736,7 @@ static void test_inflight_internal(int fd, unsigned int wait)
+ 	}
+ 	igt_spin_free(fd, hang);
+ 
+-	igt_assert(i915_reset_control(true));
++	igt_assert(i915_reset_control(fd, true));
+ 	trigger_reset(fd);
+ 	close(fd);
+ }
+@@ -781,7 +772,7 @@ static void reset_stress(int fd, uint32_t ctx0,
+ 
+ 		gem_quiescent_gpu(fd);
+ 
+-		igt_require(i915_reset_control(flags & TEST_WEDGE ?
++		igt_require(i915_reset_control(fd, flags & TEST_WEDGE ?
+ 					       false : true));
+ 
+ 		/*
+@@ -803,7 +794,7 @@ static void reset_stress(int fd, uint32_t ctx0,
+ 		igt_assert_eq(sync_fence_status(hang->out_fence), -EIO);
+ 
+ 		/* Unwedge by forcing a reset. */
+-		igt_assert(i915_reset_control(true));
++		igt_assert(i915_reset_control(fd, true));
+ 		trigger_reset(fd);
+ 
+ 		gem_quiescent_gpu(fd);
+@@ -918,7 +909,7 @@ static int fd = -1;
+ static void
+ exit_handler(int sig)
  {
--	return __igt_params_open(device, NULL);
-+	return __igt_params_open(device, NULL, NULL);
+-	i915_reset_control(true);
++	i915_reset_control(fd, true);
+ 	igt_force_gpu_reset(fd);
  }
  
- __attribute__((format(printf, 3, 0)))
-@@ -161,7 +246,7 @@ static bool __igt_params_set(int device, const char *parameter,
- 	int dir;
- 	int ret;
+@@ -933,7 +924,7 @@ igt_main
  
--	dir = __igt_params_open(device, save ? &path : NULL);
-+	dir = __igt_params_open(device, save ? &path : NULL, parameter);
- 	if (dir < 0)
- 		return false;
+ 		igt_allow_hang(fd, 0, 0);
  
-@@ -233,21 +318,9 @@ bool igt_params_set_save(int device, const char *parameter, const char *fmt, ...
-  */
- void igt_set_module_param(const char *name, const char *val)
- {
--	const char *path = "/sys/module/i915/parameters";
--	int dir;
--
--	dir = open(path, O_RDONLY);
--	igt_assert(dir >= 0);
--
--	igt_params_save(dir, path, name);
--
--	igt_assert(igt_sysfs_set(dir, name, val));
--
--	igt_assert(close(dir) == 0);
-+	igt_assert(igt_params_set_save(-1, name, "%s", val));
- }
- 
--#define PARAM_VALUE_MAX_SZ 16
--
- /**
-  * igt_set_module_param_int:
-  * @name: i915.ko parameter name
-@@ -258,12 +331,5 @@ void igt_set_module_param(const char *name, const char *val)
-  */
- void igt_set_module_param_int(const char *name, int val)
- {
--	char str[PARAM_VALUE_MAX_SZ];
--	int n;
--
--	n = snprintf(str, PARAM_VALUE_MAX_SZ, "%d\n", val);
--	igt_assert_f(n < PARAM_VALUE_MAX_SZ,
--		     "Need to increase PARAM_VALUE_MAX_SZ\n");
--
--	igt_set_module_param(name, str);
-+	igt_assert(igt_params_set_save(-1, name, "%d", val));
- }
+-		igt_require(i915_reset_control(true));
++		igt_require(i915_reset_control(fd, true));
+ 		igt_force_gpu_reset(fd);
+ 		igt_install_exit_handler(exit_handler);
+ 	}
 -- 
 2.26.0
 
