@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9E1FF6EBFD
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 20:24:11 +0000 (UTC)
-Received: by mail-pj1-x1041.google.com with SMTP id a31so66447pje.1
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 13:24:11 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Tue, 28 Apr 2020 23:22:55 +0300
-Message-Id: <20200428202255.31309-8-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20200428202255.31309-1-juhapekka.heikkila@gmail.com>
-References: <20200428202255.31309-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 7/7] tests/gem_eio: switch to using
- igt_params_set()
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 28 Apr 2020 21:16:24 -0000
+Message-ID: <158810858488.17772.6909744878212846735@emeril.freedesktop.org>
+References: <20200428202255.31309-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20200428202255.31309-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVXNlIGRl?=
+ =?utf-8?q?vice_dependant_module_parameters_=28rev5=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,233 +14,76 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Jani Nikula <jani.nikula@intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/i915/gem_eio.c | 57 +++++++++++++++++++-------------------------
- 1 file changed, 24 insertions(+), 33 deletions(-)
+== Series Details ==
 
-diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
-index 1ec60941..ad59f83a 100644
---- a/tests/i915/gem_eio.c
-+++ b/tests/i915/gem_eio.c
-@@ -52,20 +52,11 @@
- 
- IGT_TEST_DESCRIPTION("Test that specific ioctls report a wedged GPU (EIO).");
- 
--static bool i915_reset_control(bool enable)
-+static bool i915_reset_control(int fd, bool enable)
- {
--	const char *path = "/sys/module/i915/parameters/reset";
--	int fd, ret;
--
- 	igt_debug("%s GPU reset\n", enable ? "Enabling" : "Disabling");
- 
--	fd = open(path, O_RDWR);
--	igt_require(fd >= 0);
--
--	ret = write(fd, &"01"[enable], 1) == 1;
--	close(fd);
--
--	return ret;
-+	return igt_params_set(fd, "reset", "%d", enable);
- }
- 
- static void trigger_reset(int fd)
-@@ -106,9 +97,9 @@ static void wedge_gpu(int fd)
- 	/* First idle the GPU then disable GPU resets before injecting a hang */
- 	gem_quiescent_gpu(fd);
- 
--	igt_require(i915_reset_control(false));
-+	igt_require(i915_reset_control(fd, false));
- 	manual_hang(fd);
--	igt_assert(i915_reset_control(true));
-+	igt_assert(i915_reset_control(fd, true));
- }
- 
- static int __gem_throttle(int fd)
-@@ -346,7 +337,7 @@ static void __test_banned(int fd)
- 	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
- 
- 	gem_quiescent_gpu(fd);
--	igt_require(i915_reset_control(true));
-+	igt_require(i915_reset_control(fd, true));
- 
- 	igt_until_timeout(5) {
- 		igt_spin_t *hang;
-@@ -404,9 +395,9 @@ static void test_wait(int fd, unsigned int flags, unsigned int wait)
- 	 */
- 
- 	if (flags & TEST_WEDGE)
--		igt_require(i915_reset_control(false));
-+		igt_require(i915_reset_control(fd, false));
- 	else
--		igt_require(i915_reset_control(true));
-+		igt_require(i915_reset_control(fd, true));
- 
- 	hang = spin_sync(fd, 0, I915_EXEC_DEFAULT);
- 
-@@ -415,7 +406,7 @@ static void test_wait(int fd, unsigned int flags, unsigned int wait)
- 
- 	igt_spin_free(fd, hang);
- 
--	igt_require(i915_reset_control(true));
-+	igt_require(i915_reset_control(fd, true));
- 
- 	trigger_reset(fd);
- 	close(fd);
-@@ -430,12 +421,12 @@ static void test_suspend(int fd, int state)
- 	igt_system_suspend_autoresume(state, SUSPEND_TEST_DEVICES);
- 
- 	/* Check we can suspend when the driver is already wedged */
--	igt_require(i915_reset_control(false));
-+	igt_require(i915_reset_control(fd, false));
- 	manual_hang(fd);
- 
- 	igt_system_suspend_autoresume(state, SUSPEND_TEST_DEVICES);
- 
--	igt_require(i915_reset_control(true));
-+	igt_require(i915_reset_control(fd, true));
- 	trigger_reset(fd);
- 	close(fd);
- }
-@@ -470,7 +461,7 @@ static void test_inflight(int fd, unsigned int wait)
- 
- 		gem_quiescent_gpu(fd);
- 		igt_debug("Starting %s on engine '%s'\n", __func__, e->name);
--		igt_require(i915_reset_control(false));
-+		igt_require(i915_reset_control(fd, false));
- 
- 		hang = spin_sync(fd, 0, eb_ring(e));
- 		obj[0].handle = hang->handle;
-@@ -495,7 +486,7 @@ static void test_inflight(int fd, unsigned int wait)
- 		}
- 		igt_spin_free(fd, hang);
- 
--		igt_assert(i915_reset_control(true));
-+		igt_assert(i915_reset_control(fd, true));
- 		trigger_reset(fd);
- 
- 		gem_close(fd, obj[1].handle);
-@@ -520,7 +511,7 @@ static void test_inflight_suspend(int fd)
- 	fd = gem_reopen_driver(fd);
- 	igt_require_gem(fd);
- 	igt_require(gem_has_exec_fence(fd));
--	igt_require(i915_reset_control(false));
-+	igt_require(i915_reset_control(fd, false));
- 
- 	memset(obj, 0, sizeof(obj));
- 	obj[0].flags = EXEC_OBJECT_WRITE;
-@@ -553,7 +544,7 @@ static void test_inflight_suspend(int fd)
- 	}
- 	igt_spin_free(fd, hang);
- 
--	igt_assert(i915_reset_control(true));
-+	igt_assert(i915_reset_control(fd, true));
- 	trigger_reset(fd);
- 	close(fd);
- }
-@@ -601,7 +592,7 @@ static void test_inflight_contexts(int fd, unsigned int wait)
- 		gem_quiescent_gpu(fd);
- 
- 		igt_debug("Starting %s on engine '%s'\n", __func__, e->name);
--		igt_require(i915_reset_control(false));
-+		igt_require(i915_reset_control(fd, false));
- 
- 		memset(obj, 0, sizeof(obj));
- 		obj[0].flags = EXEC_OBJECT_WRITE;
-@@ -636,7 +627,7 @@ static void test_inflight_contexts(int fd, unsigned int wait)
- 		igt_spin_free(fd, hang);
- 		gem_close(fd, obj[1].handle);
- 
--		igt_assert(i915_reset_control(true));
-+		igt_assert(i915_reset_control(fd, true));
- 		trigger_reset(fd);
- 
- 		for (unsigned int n = 0; n < ARRAY_SIZE(ctx); n++)
-@@ -663,7 +654,7 @@ static void test_inflight_external(int fd)
- 
- 	fence = igt_cork_plug(&cork, fd);
- 
--	igt_require(i915_reset_control(false));
-+	igt_require(i915_reset_control(fd, false));
- 	hang = __spin_poll(fd, 0, 0);
- 
- 	memset(&obj, 0, sizeof(obj));
-@@ -695,7 +686,7 @@ static void test_inflight_external(int fd)
- 	close(fence);
- 
- 	igt_spin_free(fd, hang);
--	igt_assert(i915_reset_control(true));
-+	igt_assert(i915_reset_control(fd, true));
- 	trigger_reset(fd);
- 	close(fd);
- }
-@@ -714,7 +705,7 @@ static void test_inflight_internal(int fd, unsigned int wait)
- 	fd = gem_reopen_driver(fd);
- 	igt_require_gem(fd);
- 
--	igt_require(i915_reset_control(false));
-+	igt_require(i915_reset_control(fd, false));
- 	hang = spin_sync(fd, 0, 0);
- 
- 	memset(obj, 0, sizeof(obj));
-@@ -745,7 +736,7 @@ static void test_inflight_internal(int fd, unsigned int wait)
- 	}
- 	igt_spin_free(fd, hang);
- 
--	igt_assert(i915_reset_control(true));
-+	igt_assert(i915_reset_control(fd, true));
- 	trigger_reset(fd);
- 	close(fd);
- }
-@@ -781,7 +772,7 @@ static void reset_stress(int fd, uint32_t ctx0,
- 
- 		gem_quiescent_gpu(fd);
- 
--		igt_require(i915_reset_control(flags & TEST_WEDGE ?
-+		igt_require(i915_reset_control(fd, flags & TEST_WEDGE ?
- 					       false : true));
- 
- 		/*
-@@ -803,7 +794,7 @@ static void reset_stress(int fd, uint32_t ctx0,
- 		igt_assert_eq(sync_fence_status(hang->out_fence), -EIO);
- 
- 		/* Unwedge by forcing a reset. */
--		igt_assert(i915_reset_control(true));
-+		igt_assert(i915_reset_control(fd, true));
- 		trigger_reset(fd);
- 
- 		gem_quiescent_gpu(fd);
-@@ -918,7 +909,7 @@ static int fd = -1;
- static void
- exit_handler(int sig)
- {
--	i915_reset_control(true);
-+	i915_reset_control(fd, true);
- 	igt_force_gpu_reset(fd);
- }
- 
-@@ -933,7 +924,7 @@ igt_main
- 
- 		igt_allow_hang(fd, 0, 0);
- 
--		igt_require(i915_reset_control(true));
-+		igt_require(i915_reset_control(fd, true));
- 		igt_force_gpu_reset(fd);
- 		igt_install_exit_handler(exit_handler);
- 	}
--- 
-2.26.0
+Series: Use device dependant module parameters (rev5)
+URL   : https://patchwork.freedesktop.org/series/76163/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8387 -> IGTPW_4513
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4513/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4513 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@execlists:
+    - {fi-tgl-dsi}:       [DMESG-FAIL][1] ([i915#656]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8387/fi-tgl-dsi/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4513/fi-tgl-dsi/igt@i915_selftest@live@execlists.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
+
+
+Participating hosts (50 -> 43)
+------------------------------
+
+  Missing    (7): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-kbl-7500u fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5614 -> IGTPW_4513
+
+  CI-20190529: 20190529
+  CI_DRM_8387: 2f06b2b1d33997d1fb16564959f0ebee8a26b632 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4513: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4513/index.html
+  IGT_5614: d095827add11d4e8158b87683971ee659749d9a4 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4513/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
