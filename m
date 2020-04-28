@@ -1,21 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
- [IPv6:2a00:1450:4864:20::441])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E15F06EBB3
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 19:04:21 +0000 (UTC)
-Received: by mail-wr1-x441.google.com with SMTP id k13so26026305wrw.7
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 12:04:21 -0700 (PDT)
-References: <20200421161725.12249-1-juhapekka.heikkila@gmail.com>
- <20200421161725.12249-7-juhapekka.heikkila@gmail.com>
- <20200428125427.GT9497@platvala-desk.ger.corp.intel.com>
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
+ [IPv6:2a00:1450:4864:20::343])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 678BE6E0C2
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 19:29:27 +0000 (UTC)
+Received: by mail-wm1-x343.google.com with SMTP id u16so26976wmc.5
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Apr 2020 12:29:27 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <167782ca-4758-e2a5-2021-6d04c2552ee6@gmail.com>
-Date: Tue, 28 Apr 2020 22:04:14 +0300
+References: <20200421161725.12249-1-juhapekka.heikkila@gmail.com>
+ <20200421161725.12249-4-juhapekka.heikkila@gmail.com>
+ <20200428122622.GQ9497@platvala-desk.ger.corp.intel.com>
+ <60ba83a4-e002-792e-c383-95c471ab21bd@gmail.com>
+Message-ID: <21aa2106-6938-24f9-a792-cbfecb9c8790@gmail.com>
+Date: Tue, 28 Apr 2020 22:29:16 +0300
 MIME-Version: 1.0
-In-Reply-To: <20200428125427.GT9497@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <60ba83a4-e002-792e-c383-95c471ab21bd@gmail.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 6/8] igt/params: use igt_params_set_save
- for igt_set_module_param*
+Subject: Re: [igt-dev] [PATCH i-g-t 3/8] lib/params: overhaul param saving
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,183 +24,143 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: juhapekka.heikkila@gmail.com
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 28.4.2020 15.54, Petri Latvala wrote:
-> On Tue, Apr 21, 2020 at 07:17:23PM +0300, Juha-Pekka Heikkila wrote:
->> Unify parameter access.
->>
->> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
->> ---
->>   lib/igt_params.c | 133 +++++++++++++++++++++++++++++++++++------------
->>   1 file changed, 100 insertions(+), 33 deletions(-)
->>
->> diff --git a/lib/igt_params.c b/lib/igt_params.c
->> index 8de47b02..369d224c 100644
->> --- a/lib/igt_params.c
->> +++ b/lib/igt_params.c
->> @@ -27,12 +27,14 @@
->>   #include <stdbool.h>
->>   #include <stdio.h>
->>   #include <sys/ioctl.h>
->> +#include <sys/stat.h>
->>   
->>   #include <i915_drm.h>
->>   
->>   #include "igt_core.h"
->>   #include "igt_params.h"
->>   #include "igt_sysfs.h"
->> +#include "igt_debugfs.h"
->>   
->>   struct module_param_data {
->>   	char *path;
->> @@ -107,15 +109,59 @@ static void igt_params_save(int dir, const char *path, const char *name)
->>   	module_params = data;
->>   }
->>   
->> -static int __igt_params_open(int device, char **outpath)
->> +static int __igt_params_open(int device, char **outpath, const char *param)
->>   {
->>   	int dir, params = -1;
->> +	struct stat buffer;
->> +	char searchname[64];
->> +	char searchpath[PATH_MAX];
->> +	char *foundname, *ctx;
->>   
->> -	dir = igt_sysfs_open(device);
->> +	dir = igt_debugfs_dir(device);
->>   	if (dir >= 0) {
->> -		params = openat(dir,
->> -				"device/driver/module/parameters",
->> -				O_RDONLY);
->> +		int devname;
->> +
->> +		devname = openat(dir, "name", O_RDONLY);
->> +		igt_assert(devname >= 0);
->> +
->> +		read(devname, searchname, sizeof(searchname));
->> +		close(devname);
->> +
->> +		foundname = strtok_r(searchname, " ", &ctx);
->> +		igt_assert(foundname);
->> +
->> +		snprintf(searchpath, PATH_MAX, "%s_params", foundname);
->> +		params = openat(dir, searchpath, O_RDONLY);
->> +
->> +		if (params >= 0) {
->> +			char *debugfspath = malloc(PATH_MAX);
->> +
->> +			igt_debugfs_path(device, debugfspath, PATH_MAX);
->> +			if (param != NULL) {
->> +				char filepath[PATH_MAX];
->> +
->> +				snprintf(filepath, PATH_MAX, "%s/%s",
->> +					 debugfspath, param);
->> +
->> +				if (stat(filepath, &buffer) == 0) {
->> +					if (outpath != NULL)
->> +						*outpath = debugfspath;
->> +					else
->> +						free(debugfspath);
->> +				} else {
->> +					free(debugfspath);
->> +					close(params);
->> +					params = -1;
->> +				}
->> +			} else if (outpath != NULL) {
->> +				/*
->> +				 * Caller is responsible to free this.
->> +				 */
->> +				*outpath = debugfspath;
->> +			} else {
->> +				free(debugfspath);
->> +			}
->> +		}
->>   		close(dir);
->>   	}
->>   
->> @@ -124,11 +170,51 @@ static int __igt_params_open(int device, char **outpath)
->>   		char name[32] = "";
->>   		char path[PATH_MAX];
->>   
->> -		memset(&version, 0, sizeof(version));
->> -		version.name_len = sizeof(name);
->> -		version.name = name;
->> -		ioctl(device, DRM_IOCTL_VERSION, &version);
->> -
->> +		if (device == -1) {
->> +			/*
->> +			 * find default device
->> +			 */
-> 
-> Oh, here's the defaulting.
-> 
-> Like stated in the replies for one of the other patches, I'm not
-> greatly fond of carrying around a concept of a "default" device. Are
-> there users of -1 today?
-
-There was handful of those, kms_busy comes first to my mind since I was 
-looking at it today. Agreed this defaulting doesn't sound good idea but 
-I'd first put plumbing in place and once there's no users scrap it. 
-There's for example kms_force_connector_basic@force-load-detect test 
-which I cannot now go test how it go if change this behavior since it 
-says igt_require(connector->connector_type == DRM_MODE_CONNECTOR_VGA)
-
-> 
-> This is also considerably more code that one would expect from just
-> "use params_set_save" as the subject states.
-> 
-> 
-> 
-> 
->> +			int file, i;
->> +			const char *debugfs_root = igt_debugfs_mount();
->> +
->> +			igt_assert(debugfs_root);
->> +
->> +			for (i = 0; i < 63; i++) {
->> +				char testpath[PATH_MAX];
->> +
->> +				snprintf(searchpath, PATH_MAX,
->> +					 "%s/dri/%d/name", debugfs_root, i);
->> +
->> +				file = open(searchpath, O_RDONLY);
->> +
->> +				if (file < 0)
->> +					continue;
->> +
->> +				read(file, searchname, sizeof(searchname));
->> +				close(file);
->> +
->> +				foundname = strtok_r(searchname, " ", &ctx);
->> +				if (!foundname)
->> +					continue;
->> +
->> +				snprintf(testpath, PATH_MAX,
->> +					 "/sys/module/%s/parameters",
->> +					 foundname);
->> +
->> +				if (stat(testpath, &buffer) == 0 &&
->> +				    S_ISDIR(buffer.st_mode)) {
->> +					memcpy(name, foundname,
->> +					       (sizeof(name) < strlen(foundname) ?
->> +					       sizeof(name) : strlen(foundname)));
-> 
-> If foundname is larger than the array, doesn't this leave 'name'
-> without a nul-termination?
-
-ah, I got caught by the famous buffer overflow thingy. I'll fix.
-
-Thanks for the comments.
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gMjguNC4yMDIwIDIxLjQwLCBKdWhhLVBla2thIEhlaWtraWxhIHdyb3RlOgo+IE9uIDI4LjQu
+MjAyMCAxNS4yNiwgUGV0cmkgTGF0dmFsYSB3cm90ZToKPj4gT24gVHVlLCBBcHIgMjEsIDIwMjAg
+YXQgMDc6MTc6MjBQTSArMDMwMCwgSnVoYS1QZWtrYSBIZWlra2lsYSB3cm90ZToKPj4+IEZyb206
+IEphbmkgTmlrdWxhIDxqYW5pLm5pa3VsYUBpbnRlbC5jb20+Cj4+Pgo+Pj4gTW9yZSBnZW5lcmlj
+LCB1c2UgZXhpc3RpbmcgZnVuY3Rpb25zLgo+Pj4KPj4+IFNpZ25lZC1vZmYtYnk6IEphbmkgTmlr
+dWxhIDxqYW5pLm5pa3VsYUBpbnRlbC5jb20+Cj4+PiBTaWduZWQtb2ZmLWJ5OiBKdWhhLVBla2th
+IEhlaWtraWxhIDxqdWhhcGVra2EuaGVpa2tpbGFAZ21haWwuY29tPgo+Pj4gLS0tCj4+PiDCoCBs
+aWIvaWd0X3BhcmFtcy5jIHwgMTAxICsrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tCj4+PiDCoCAxIGZpbGUgY2hhbmdlZCwgNDEgaW5zZXJ0aW9ucygrKSwgNjAg
+ZGVsZXRpb25zKC0pCj4+Pgo+Pj4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfcGFyYW1zLmMgYi9saWIv
+aWd0X3BhcmFtcy5jCj4+PiBpbmRleCBmMjIwZTczYi4uYjVhYzEyNjYgMTAwNjQ0Cj4+PiAtLS0g
+YS9saWIvaWd0X3BhcmFtcy5jCj4+PiArKysgYi9saWIvaWd0X3BhcmFtcy5jCj4+PiBAQCAtMzQs
+OTIgKzM0LDc0IEBACj4+PiDCoCAjaW5jbHVkZSAiaWd0X3BhcmFtcy5oIgo+Pj4gwqAgI2luY2x1
+ZGUgImlndF9zeXNmcy5oIgo+Pj4gLSNkZWZpbmUgTU9EVUxFX1BBUkFNX0RJUiAiL3N5cy9tb2R1
+bGUvaTkxNS9wYXJhbWV0ZXJzLyIKPj4+IC0jZGVmaW5lIFBBUkFNX05BTUVfTUFYX1NaIDMyCj4+
+PiAtI2RlZmluZSBQQVJBTV9WQUxVRV9NQVhfU1ogMTYKPj4+IC0jZGVmaW5lIFBBUkFNX0ZJTEVf
+UEFUSF9NQVhfU1ogKHN0cmxlbihNT0RVTEVfUEFSQU1fRElSKSArIAo+Pj4gUEFSQU1fTkFNRV9N
+QVhfU1opCj4+PiAtCj4+PiDCoCBzdHJ1Y3QgbW9kdWxlX3BhcmFtX2RhdGEgewo+Pj4gLcKgwqDC
+oCBjaGFyIG5hbWVbUEFSQU1fTkFNRV9NQVhfU1pdOwo+Pj4gLcKgwqDCoCBjaGFyIG9yaWdpbmFs
+X3ZhbHVlW1BBUkFNX1ZBTFVFX01BWF9TWl07Cj4+PiArwqDCoMKgIGNoYXIgKnBhdGg7Cj4+PiAr
+wqDCoMKgIGNoYXIgKm5hbWU7Cj4+PiArwqDCoMKgIGNoYXIgKm9yaWdpbmFsX3ZhbHVlOwo+Pj4g
+wqDCoMKgwqDCoCBzdHJ1Y3QgbW9kdWxlX3BhcmFtX2RhdGEgKm5leHQ7Cj4+PiDCoCB9Owo+Pj4g
+wqAgc3RydWN0IG1vZHVsZV9wYXJhbV9kYXRhICptb2R1bGVfcGFyYW1zID0gTlVMTDsKPj4+IC1z
+dGF0aWMgdm9pZCBpZ3RfbW9kdWxlX3BhcmFtX2V4aXRfaGFuZGxlcihpbnQgc2lnKQo+Pj4gK3N0
+YXRpYyB2b2lkIGlndF9wYXJhbXNfZXhpdF9oYW5kbGVyKGludCBzaWcpCj4+PiDCoCB7Cj4+PiAt
+wqDCoMKgIGNvbnN0IHNpemVfdCBkaXJfbGVuID0gc3RybGVuKE1PRFVMRV9QQVJBTV9ESVIpOwo+
+Pj4gLcKgwqDCoCBjaGFyIGZpbGVfcGF0aFtQQVJBTV9GSUxFX1BBVEhfTUFYX1NaXTsKPj4+IMKg
+wqDCoMKgwqAgc3RydWN0IG1vZHVsZV9wYXJhbV9kYXRhICpkYXRhOwo+Pj4gLcKgwqDCoCBpbnQg
+ZmQ7Cj4+PiAtCj4+PiAtwqDCoMKgIC8qIFdlIGRvbid0IG5lZWQgdG8gYXNzZXJ0IHN0cmluZyBz
+aXplcyBvbiB0aGlzIGZ1bmN0aW9uIHNpbmNlIAo+Pj4gdGhleSB3ZXJlCj4+PiAtwqDCoMKgwqAg
+KiBhbHJlYWR5IGNoZWNrZWQgYmVmb3JlIGJlaW5nIHN0b3JlZCBvbiB0aGUgbGlzdHMuIEJlc2lk
+ZXMsCj4+PiAtwqDCoMKgwqAgKiBpZ3RfYXNzZXJ0KCkgaXMgbm90IEFTLVNhZmUuICovCj4+PiAt
+wqDCoMKgIHN0cmNweShmaWxlX3BhdGgsIE1PRFVMRV9QQVJBTV9ESVIpOwo+Pj4gK8KgwqDCoCBp
+bnQgZGlyOwo+Pj4gwqDCoMKgwqDCoCBmb3IgKGRhdGEgPSBtb2R1bGVfcGFyYW1zOyBkYXRhICE9
+IE5VTEw7IGRhdGEgPSBkYXRhLT5uZXh0KSB7Cj4+PiAtwqDCoMKgwqDCoMKgwqAgc3RyY3B5KGZp
+bGVfcGF0aCArIGRpcl9sZW4sIGRhdGEtPm5hbWUpOwo+Pj4gLQo+Pj4gLcKgwqDCoMKgwqDCoMKg
+IGZkID0gb3BlbihmaWxlX3BhdGgsIE9fUkRXUik7Cj4+PiAtwqDCoMKgwqDCoMKgwqAgaWYgKGZk
+ID49IDApIHsKPj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGludCBzaXplID0gc3RybGVuIChk
+YXRhLT5vcmlnaW5hbF92YWx1ZSk7Cj4+PiAtCj4+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBp
+ZiAoc2l6ZSAhPSB3cml0ZShmZCwgZGF0YS0+b3JpZ2luYWxfdmFsdWUsIHNpemUpKSB7Cj4+PiAt
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNvbnN0IGNoYXIgbXNnW10gPSAiV0FSTklO
+RzogTW9kdWxlIHBhcmFtZXRlcnMgIgo+Pj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgICJtYXkgbm90IGhhdmUgYmVlbiByZXNldCB0byB0aGVpciAiCj4+PiAtwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIm9yaWdpbmFsIHZhbHVlc1xuIjsKPj4+
+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgYXNzZXJ0KHdyaXRlKFNUREVSUl9GSUxF
+Tk8sIG1zZywgc2l6ZW9mKG1zZykpCj4+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgPT0gc2l6ZW9mKG1zZykpOwo+Pj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgfQo+Pj4gLQo+Pj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY2xvc2UoZmQpOwo+Pj4gK8Kg
+wqDCoMKgwqDCoMKgIGRpciA9IG9wZW4oZGF0YS0+cGF0aCwgT19SRE9OTFkpOwo+Pj4gKwo+Pj4g
+K8KgwqDCoMKgwqDCoMKgIGlmICghaWd0X3N5c2ZzX3NldChkaXIsIGRhdGEtPm5hbWUsIGRhdGEt
+Pm9yaWdpbmFsX3ZhbHVlKSkgewo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY29uc3QgY2hh
+ciBtc2dbXSA9ICJXQVJOSU5HOiBNb2R1bGUgcGFyYW1ldGVycyAiCj4+PiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgICJtYXkgbm90IGhhdmUgYmVlbiByZXNldCB0byB0aGVpciAiCj4+
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICJvcmlnaW5hbCB2YWx1ZXNcbiI7Cj4+
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBhc3NlcnQod3JpdGUoU1RERVJSX0ZJTEVOTywgbXNn
+LCBzaXplb2YobXNnKSkKPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+PT0gc2l6ZW9mKG1zZykpOwo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgIH0KPj4+ICsKPj4+ICvCoMKg
+wqDCoMKgwqDCoCBjbG9zZShkaXIpOwo+Pj4gwqDCoMKgwqDCoCB9Cj4+PiDCoMKgwqDCoMKgIC8q
+IGZyZWUoKSBpcyBub3QgQVMtU2FmZSwgc28gd2UgY2FuJ3QgY2FsbCBpdCBoZXJlLiAqLwo+Pj4g
+wqAgfQo+Pj4gwqAgLyoqCj4+PiAtICogaWd0X3NhdmVfbW9kdWxlX3BhcmFtOgo+Pj4gLSAqIEBu
+YW1lOiBuYW1lIG9mIHRoZSBpOTE1LmtvIG1vZHVsZSBwYXJhbWV0ZXIKPj4+IC0gKiBAZmlsZV9w
+YXRoOiBmdWxsIHN5c2ZzIGZpbGUgcGF0aCBmb3IgdGhlIHBhcmFtZXRlcgo+Pj4gKyAqIGlndF9w
+YXJhbXNfc2F2ZToKPj4+ICsgKiBAZGlyOiBmaWxlIGhhbmRsZSBmb3IgcGF0aAo+Pj4gKyAqIEBw
+YXRoOiBmdWxsIHBhdGggdG8gdGhlIHN5c2ZzIGRpcmVjdG9yeQo+Pj4gKyAqIEBuYW1lOiBuYW1l
+IG9mIHRoZSBzeXNmcyBhdHRyaWJ1dGUKPj4+IMKgwqAgKgo+Pj4gLSAqIFJlYWRzIHRoZSBjdXJy
+ZW50IHZhbHVlIG9mIGFuIGk5MTUua28gbW9kdWxlIHBhcmFtZXRlciwgc2F2ZXMgaXQgCj4+PiBv
+biBhbiBhcnJheSwKPj4+IC0gKiB0aGVuIGluc3RhbGxzIGFuIGV4aXQgaGFuZGxlciB0byByZXN0
+b3JlIGl0IHdoZW4gdGhlIHByb2dyYW0gZXhpdHMuCj4+PiArICogUmVhZHMgdGhlIGN1cnJlbnQg
+dmFsdWUgb2YgYSBzeXNmcyBhdHRyaWJ1dGUsIHNhdmVzIGl0IG9uIGFuIAo+Pj4gYXJyYXksIHRo
+ZW4KPj4+ICsgKiBpbnN0YWxscyBhbiBleGl0IGhhbmRsZXIgdG8gcmVzdG9yZSBpdCB3aGVuIHRo
+ZSBwcm9ncmFtIGV4aXRzLgo+Pj4gwqDCoCAqCj4+PiDCoMKgICogSXQgaXMgc2FmZSB0byBjYWxs
+IHRoaXMgZnVuY3Rpb24gbXVsdGlwbGUgdGltZXMgZm9yIHRoZSBzYW1lIAo+Pj4gcGFyYW1ldGVy
+Lgo+Pj4gwqDCoCAqCj4+PiDCoMKgICogTm90aWNlIHRoYXQgdGhpcyBmdW5jdGlvbiBpcyBjYWxs
+ZWQgYnkgaWd0X3NldF9tb2R1bGVfcGFyYW0oKSwgCj4+PiBzbyB0aGF0IG9uZSAtCj4+PiDCoMKg
+ICogb3Igb25lIG9mIGl0cyB3cmFwcGVycyAtIGlzIHRoZSBvbmx5IGZ1bmN0aW9uIHRoZSB0ZXN0
+IHByb2dyYW1zIAo+Pj4gbmVlZCB0byBjYWxsLgo+Pj4gwqDCoCAqLwo+Pj4gLXN0YXRpYyB2b2lk
+IGlndF9zYXZlX21vZHVsZV9wYXJhbShjb25zdCBjaGFyICpuYW1lLCBjb25zdCBjaGFyIAo+Pj4g
+KmZpbGVfcGF0aCkKPj4+ICtzdGF0aWMgdm9pZCBpZ3RfcGFyYW1zX3NhdmUoaW50IGRpciwgY29u
+c3QgY2hhciAqcGF0aCwgY29uc3QgY2hhciAKPj4+ICpuYW1lKQo+Pj4gwqAgewo+Pj4gwqDCoMKg
+wqDCoCBzdHJ1Y3QgbW9kdWxlX3BhcmFtX2RhdGEgKmRhdGE7Cj4+PiAtwqDCoMKgIHNpemVfdCBu
+Owo+Pj4gLcKgwqDCoCBpbnQgZmQ7Cj4+PiDCoMKgwqDCoMKgIC8qIENoZWNrIGlmIHRoaXMgcGFy
+YW1ldGVyIGlzIGFscmVhZHkgc2F2ZWQuICovCj4+PiDCoMKgwqDCoMKgIGZvciAoZGF0YSA9IG1v
+ZHVsZV9wYXJhbXM7IGRhdGEgIT0gTlVMTDsgZGF0YSA9IGRhdGEtPm5leHQpCj4+PiAtwqDCoMKg
+wqDCoMKgwqAgaWYgKHN0cm5jbXAoZGF0YS0+bmFtZSwgbmFtZSwgUEFSQU1fTkFNRV9NQVhfU1op
+ID09IDApCj4+PiArwqDCoMKgwqDCoMKgwqAgaWYgKHN0cmNtcChkYXRhLT5wYXRoLCBwYXRoKSA9
+PSAwICYmCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzdHJjbXAoZGF0YS0+bmFtZSwgbmFt
+ZSkgPT0gMCkKPj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybjsKPj4+IMKgwqDC
+oMKgwqAgaWYgKCFtb2R1bGVfcGFyYW1zKQo+Pj4gLcKgwqDCoMKgwqDCoMKgIGlndF9pbnN0YWxs
+X2V4aXRfaGFuZGxlcihpZ3RfbW9kdWxlX3BhcmFtX2V4aXRfaGFuZGxlcik7Cj4+PiArwqDCoMKg
+wqDCoMKgwqAgaWd0X2luc3RhbGxfZXhpdF9oYW5kbGVyKGlndF9wYXJhbXNfZXhpdF9oYW5kbGVy
+KTsKPj4+IMKgwqDCoMKgwqAgZGF0YSA9IGNhbGxvYygxLCBzaXplb2YgKCpkYXRhKSk7Cj4+PiDC
+oMKgwqDCoMKgIGlndF9hc3NlcnQoZGF0YSk7Cj4+PiAtwqDCoMKgIHN0cm5jcHkoZGF0YS0+bmFt
+ZSwgbmFtZSwgUEFSQU1fTkFNRV9NQVhfU1ogLSAxKTsKPj4+IC0KPj4+IC3CoMKgwqAgZmQgPSBv
+cGVuKGZpbGVfcGF0aCwgT19SRE9OTFkpOwo+Pj4gLcKgwqDCoCBpZ3RfYXNzZXJ0KGZkID49IDAp
+Owo+Pj4gK8KgwqDCoCBkYXRhLT5wYXRoID0gc3RyZHVwKHBhdGgpOwo+Pj4gK8KgwqDCoCBpZ3Rf
+YXNzZXJ0KGRhdGEtPnBhdGgpOwo+Pj4gLcKgwqDCoCBuID0gcmVhZChmZCwgZGF0YS0+b3JpZ2lu
+YWxfdmFsdWUsIFBBUkFNX1ZBTFVFX01BWF9TWik7Cj4+PiAtwqDCoMKgIGlndF9hc3NlcnRfZihu
+ID4gMCAmJiBuIDwgUEFSQU1fVkFMVUVfTUFYX1NaLAo+Pj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCAiTmVlZCB0byBpbmNyZWFzZSBQQVJBTV9WQUxVRV9NQVhfU1pcbiIpOwo+Pj4gK8KgwqDC
+oCBkYXRhLT5uYW1lID0gc3RyZHVwKG5hbWUpOwo+Pj4gK8KgwqDCoCBpZ3RfYXNzZXJ0KGRhdGEt
+Pm5hbWUpOwo+Pj4gLcKgwqDCoCBpZ3RfYXNzZXJ0KGNsb3NlKGZkKSA9PSAwKTsKPj4+ICvCoMKg
+wqAgZGF0YS0+b3JpZ2luYWxfdmFsdWUgPSBpZ3Rfc3lzZnNfZ2V0KGRpciwgbmFtZSk7Cj4+PiAr
+wqDCoMKgIGlndF9hc3NlcnQoZGF0YS0+b3JpZ2luYWxfdmFsdWUpOwo+Pj4gwqDCoMKgwqDCoCBk
+YXRhLT5uZXh0ID0gbW9kdWxlX3BhcmFtczsKPj4+IMKgwqDCoMKgwqAgbW9kdWxlX3BhcmFtcyA9
+IGRhdGE7Cj4+PiBAQCAtMjA1LDIyICsxODcsMjEgQEAgYm9vbCBpZ3RfcGFyYW1zX3NldChpbnQg
+ZGV2aWNlLCBjb25zdCBjaGFyIAo+Pj4gKnBhcmFtZXRlciwgY29uc3QgY2hhciAqZm10LCAuLi4p
+Cj4+PiDCoMKgICovCj4+PiDCoCB2b2lkIGlndF9zZXRfbW9kdWxlX3BhcmFtKGNvbnN0IGNoYXIg
+Km5hbWUsIGNvbnN0IGNoYXIgKnZhbCkKPj4+IMKgIHsKPj4+IC3CoMKgwqAgY2hhciBmaWxlX3Bh
+dGhbUEFSQU1fRklMRV9QQVRIX01BWF9TWl07Cj4+PiAtwqDCoMKgIHNpemVfdCBsZW4gPSBzdHJs
+ZW4odmFsKTsKPj4+IC3CoMKgwqAgaW50IGZkOwo+Pj4gK8KgwqDCoCBjb25zdCBjaGFyICpwYXRo
+ID0gIi9zeXMvbW9kdWxlL2k5MTUvcGFyYW1ldGVycyI7Cj4+PiArwqDCoMKgIGludCBkaXI7Cj4+
+PiAtwqDCoMKgIGlndF9hc3NlcnRfZihzdHJsZW4obmFtZSkgPCBQQVJBTV9OQU1FX01BWF9TWiwK
+Pj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIk5lZWQgdG8gaW5jcmVhc2UgUEFSQU1fTkFN
+RV9NQVhfU1pcbiIpOwo+Pj4gLcKgwqDCoCBzdHJjcHkoZmlsZV9wYXRoLCBNT0RVTEVfUEFSQU1f
+RElSKTsKPj4+IC3CoMKgwqAgc3RyY3B5KGZpbGVfcGF0aCArIHN0cmxlbihNT0RVTEVfUEFSQU1f
+RElSKSwgbmFtZSk7Cj4+PiArwqDCoMKgIGRpciA9IG9wZW4ocGF0aCwgT19SRE9OTFkpOwo+Pj4g
+K8KgwqDCoCBpZ3RfYXNzZXJ0KGRpciA+PSAwKTsKPj4+IC3CoMKgwqAgaWd0X3NhdmVfbW9kdWxl
+X3BhcmFtKG5hbWUsIGZpbGVfcGF0aCk7Cj4+PiArwqDCoMKgIGlndF9wYXJhbXNfc2F2ZShkaXIs
+IHBhdGgsIG5hbWUpOwo+Pj4gLcKgwqDCoCBmZCA9IG9wZW4oZmlsZV9wYXRoLCBPX1JEV1IpOwo+
+Pj4gLcKgwqDCoCBpZ3RfYXNzZXJ0KHdyaXRlKGZkLCB2YWwsIGxlbikgPT0gbGVuKTsKPj4+IC3C
+oMKgwqAgaWd0X2Fzc2VydChjbG9zZShmZCkgPT0gMCk7Cj4+PiArwqDCoMKgIGlndF9hc3NlcnQo
+aWd0X3N5c2ZzX3NldChkaXIsIG5hbWUsIHZhbCkpOwo+Pj4gKwo+Pj4gK8KgwqDCoCBpZ3RfYXNz
+ZXJ0KGNsb3NlKGRpcikgPT0gMCk7Cj4+PiDCoCB9Cj4+PiArI2RlZmluZSBQQVJBTV9WQUxVRV9N
+QVhfU1ogMTYKPj4+ICsKPj4KPj4gSXMgdGhpcyBkZWZpbmUgc3RpbGwgbmVlZGVkIGZvciBzb21l
+dGhpbmc/Cj4gCj4gTG9vayBsaWtlIGl0IGhhcyBtb3ZlZCBpbnNpZGUgaWd0X2F1eC5jIHNvIGl0
+J3Mgbm90IG5lZWRlZCBoZXJlLCBJJ2xsIAo+IHRha2UgaXQgYXdheS4KCkFjdHVhbGx5LCBpdCB3
+YXMgdXNlZCBieSBjb2RlIGJlbG93IGl0LiBJdCBiYXNpY2FsbHkgaXMgYXNzdW1wdGlvbiAKaW50
+ZWdlciBleHBhbmRzIHRvIHN0cmluZyB0aGF0IHdpbGwgYmUgUEFSQU1fVkFMVUVfTUFYX1NaIGxl
+bmd0aCBhdCBtYXhpbXVtLgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5v
+cmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2
+Cg==
