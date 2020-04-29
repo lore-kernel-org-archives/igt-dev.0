@@ -1,11 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-In-Reply-To: <20200427090014.10041-1-tvrtko.ursulin@linux.intel.com>
-References: <20200427090014.10041-1-tvrtko.ursulin@linux.intel.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158797832517.17035.11396007512401587276@build.alporthouse.com>
-Date: Mon, 27 Apr 2020 10:05:25 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t] gem_wsim: Fix preempt period assert
+Date: Wed, 29 Apr 2020 15:51:13 +0100
+Message-Id: <20200429145113.588577-1-chris@chris-wilson.co.uk>
+MIME-Version: 1.0
+Subject: [igt-dev] [PATCH i-g-t] perf: Flush the work between rounds of
+ gen8-unprivileged-single-ctx-counter
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,49 +16,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Tvrtko Ursulin (2020-04-27 10:00:14)
-> From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> 
-> Recently added assert in a common helper used for calculating batch
-> duration and preemption period is harmful when preemption is disabled on a
-> context. Split out into low level and high level helper and use the former
-> for preemption period queries.
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> ---
->  benchmarks/gem_wsim.c | 15 ++++++++++++---
->  1 file changed, 12 insertions(+), 3 deletions(-)
-> 
-> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-> index 81f47b86d619..ad4edb936920 100644
-> --- a/benchmarks/gem_wsim.c
-> +++ b/benchmarks/gem_wsim.c
-> @@ -1151,7 +1151,7 @@ __get_ctx(struct workload *wrk, const struct w_step *w)
->  }
->  
->  static unsigned long
-> -get_bb_sz(const struct w_step *w, unsigned int duration)
-> +__get_bb_sz(const struct w_step *w, unsigned int duration)
->  {
->         enum intel_engine_id engine = w->engine;
->         struct ctx *ctx = __get_ctx(w->wrk, w);
-> @@ -1165,6 +1165,15 @@ get_bb_sz(const struct w_step *w, unsigned int duration)
->         d = ALIGN(duration * engine_calib_map[engine] * sizeof(uint32_t) /
->                   nop_calibration_us,
->                   sizeof(uint32_t));
+Wait until the GPU is idle before starting a fresh round of probing
+gen8-unprivileged-single-ctx-counter. This avoids building up a huge
+backlog of render copies, hogging buffers and stale contexts, and
+invoking the oomkiller.
 
-Preempt disabled == w->preempt_us = 0 => duration = 0.
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ tests/perf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Ok, that follows that d is expected to be 0. And the caller expands to
-at least a page.
+diff --git a/tests/perf.c b/tests/perf.c
+index 74fc8fd87..2d23a02c6 100644
+--- a/tests/perf.c
++++ b/tests/perf.c
+@@ -3787,6 +3787,7 @@ gen8_test_single_ctx_render_target_writes_a_counter(void)
+ 			drm_intel_gem_context_destroy(context1);
+ 			drm_intel_bufmgr_destroy(bufmgr);
+ 			__perf_close(stream_fd);
++			gem_quiescent_gpu(drm_fd);
+ 		}
+ 
+ 		child_ret = igt_wait_helper(&child);
+-- 
+2.26.2
 
-Not really convinced the assert is worth it, but
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
--Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
