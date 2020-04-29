@@ -1,41 +1,86 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-In-Reply-To: <c989a6dc-152c-7a6f-5ca4-7732c5f66c61@intel.com>
-References: <20200429145113.588577-1-chris@chris-wilson.co.uk>
- <c989a6dc-152c-7a6f-5ca4-7732c5f66c61@intel.com>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158817253952.4620.8004487048097223425@build.alporthouse.com>
-Date: Wed, 29 Apr 2020 16:02:19 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t] perf: Flush the work between rounds of
+Date: Wed, 29 Apr 2020 16:05:00 +0100
+Message-Id: <20200429150500.588743-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200429145113.588577-1-chris@chris-wilson.co.uk>
+References: <20200429145113.588577-1-chris@chris-wilson.co.uk>
+MIME-Version: 1.0
+Subject: [Intel-gfx] [PATCH i-g-t] perf: Flush the work between rounds of
  gen8-unprivileged-single-ctx-counter
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>, intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Lionel Landwerlin (2020-04-29 15:57:41)
-> Oh... Is that on a low end platform?
+Wait until the GPU is idle before starting a fresh round of probing
+gen8-unprivileged-single-ctx-counter. This avoids building up a huge
+backlog of render copies, hogging buffers and stale contexts, and
+invoking the oomkiller.
 
-glk. But it was mostly that it got stuck in the rut of hitting -EAGAIN.
+v2: Release everything before starting again.
 
-/* This needs to be investigated... From time
- * to time, the work we kick off doesn't seem
- * to happen. WTH?? */
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ tests/perf.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-Hmm. And that's before we release everything, so yes the leak is real
-and not being slow.
--Chris
+diff --git a/tests/perf.c b/tests/perf.c
+index 74fc8fd87..7bde46af8 100644
+--- a/tests/perf.c
++++ b/tests/perf.c
+@@ -3762,19 +3762,9 @@ gen8_test_single_ctx_render_target_writes_a_counter(void)
+ 			igt_assert_eq(ret, 0);
+ 
+ 			ret = memcmp(src[0].bo->virtual, dst[0].bo->virtual, 4 * width * height);
+-			if (ret != 0) {
+-				accumulator_print(&accumulator, "total");
+-				/* This needs to be investigated... From time
+-				 * to time, the work we kick off doesn't seem
+-				 * to happen. WTH?? */
+-				exit(EAGAIN);
+-			}
+-
+ 			drm_intel_bo_unmap(src[0].bo);
+ 			drm_intel_bo_unmap(dst[0].bo);
+ 
+-			igt_assert_eq(accumulator.deltas[2 + 26], width * height);
+-
+ 			for (int i = 0; i < ARRAY_SIZE(src); i++) {
+ 				drm_intel_bo_unreference(src[i].bo);
+ 				drm_intel_bo_unreference(dst[i].bo);
+@@ -3787,6 +3777,17 @@ gen8_test_single_ctx_render_target_writes_a_counter(void)
+ 			drm_intel_gem_context_destroy(context1);
+ 			drm_intel_bufmgr_destroy(bufmgr);
+ 			__perf_close(stream_fd);
++			gem_quiescent_gpu(drm_fd);
++
++			if (ret != 0) {
++				accumulator_print(&accumulator, "total");
++				/* This needs to be investigated... From time
++				 * to time, the work we kick off doesn't seem
++				 * to happen. WTH?? */
++				exit(EAGAIN);
++			}
++
++			igt_assert_eq(accumulator.deltas[2 + 26], width * height);
+ 		}
+ 
+ 		child_ret = igt_wait_helper(&child);
+-- 
+2.26.2
+
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
