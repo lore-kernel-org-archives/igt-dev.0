@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 38EF26E9E4
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Apr 2020 06:17:46 +0000 (UTC)
-From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Date: Wed, 29 Apr 2020 11:42:27 +0530
-Message-Id: <20200429061227.20343-2-krishnaiah.bommu@intel.com>
-In-Reply-To: <20200429061227.20343-1-krishnaiah.bommu@intel.com>
-References: <20200429061227.20343-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/1] tests/i915/gem_exec_reloc: free the
- spin in proper place
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 29 Apr 2020 06:50:52 -0000
+Message-ID: <158814305210.6699.7866689269848303750@emeril.freedesktop.org>
+References: <20200429061227.20343-1-krishnaiah.bommu@intel.com>
+In-Reply-To: <20200429061227.20343-1-krishnaiah.bommu@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fexec=5Freloc=3A_free_the_spin_in_proper_place?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,61 +14,73 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+To: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
----
- tests/i915/gem_exec_reloc.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+== Series Details ==
 
-diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
-index 4112e145..643ac4bf 100644
---- a/tests/i915/gem_exec_reloc.c
-+++ b/tests/i915/gem_exec_reloc.c
-@@ -453,6 +453,8 @@ static void basic_reloc(int fd, unsigned before, unsigned after, unsigned flags)
- 
- 		gem_execbuf(fd, &execbuf);
- 
-+		igt_spin_free(fd, spin);
-+
- 		if (after) {
- 			char *wc;
- 
-@@ -479,8 +481,6 @@ static void basic_reloc(int fd, unsigned before, unsigned after, unsigned flags)
- 			igt_assert_eq_u64(reloc.presumed_offset, offset);
- 		igt_assert_eq_u64(obj.offset, offset);
- 
--		igt_spin_free(fd, spin);
--
- 		/* Simulate relocation */
- 		if (flags & NORELOC) {
- 			obj.offset += OBJSZ;
-@@ -521,6 +521,8 @@ static void basic_reloc(int fd, unsigned before, unsigned after, unsigned flags)
- 
- 		gem_execbuf(fd, &execbuf);
- 
-+		igt_spin_free(fd, spin);
-+
- 		if (after) {
- 			char *wc;
- 
-@@ -547,7 +549,6 @@ static void basic_reloc(int fd, unsigned before, unsigned after, unsigned flags)
- 			igt_assert_eq_u64(reloc.presumed_offset, offset);
- 		igt_assert_eq_u64(obj.offset, offset);
- 
--		igt_spin_free(fd, spin);
- 		if (trash)
- 			gem_close(fd, trash);
- 	}
--- 
-2.25.1
+Series: tests/i915/gem_exec_reloc: free the spin in proper place
+URL   : https://patchwork.freedesktop.org/series/76694/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8389 -> IGTPW_4514
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4514/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4514 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@debugfs_test@read_all_entries:
+    - fi-bsw-nick:        [INCOMPLETE][1] ([i915#1250]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8389/fi-bsw-nick/igt@debugfs_test@read_all_entries.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4514/fi-bsw-nick/igt@debugfs_test@read_all_entries.html
+
+  
+  [i915#1250]: https://gitlab.freedesktop.org/drm/intel/issues/1250
+
+
+Participating hosts (50 -> 42)
+------------------------------
+
+  Missing    (8): fi-bxt-dsi fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-kbl-7500u fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5614 -> IGTPW_4514
+
+  CI-20190529: 20190529
+  CI_DRM_8389: 1d38debe80c663ca881860cae696ffd5f02de95e @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4514: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4514/index.html
+  IGT_5614: d095827add11d4e8158b87683971ee659749d9a4 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4514/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
