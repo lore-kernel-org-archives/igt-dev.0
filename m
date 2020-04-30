@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 30 Apr 2020 10:45:36 +0100
-Message-Id: <20200430094536.767299-1-chris@chris-wilson.co.uk>
+Date: Thu, 30 Apr 2020 19:01:02 +0100
+Message-Id: <20200430180102.879208-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] perf: Bump the timestamp tolerance for
- really slow devices
+Subject: [igt-dev] [PATCH i-g-t] i915/perf_pmu: Attempt to unload i915 while
+ the PMU is active
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,56 +17,165 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>, tvrtko.ursulin@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Slow devices with low CS frequencies may take longer than expected
-between the PIPECONTROL timestamp and the OA timestamp, hovering just
-above the arbitrary 500ns threshold. The discrepancy seems relatively
-stable, just the device taking longer than anticipated without affecting
-the results, so make the threshold a little more lenient.
+If the PMU is active, it will be utilising the driver internals for its
+sampling. Therefore we must not remove the driver while PMU is still
+awake! Hence try to unload the module while the pmu is open.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tests/perf.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ tests/perf_pmu.c | 96 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 94 insertions(+), 2 deletions(-)
 
-diff --git a/tests/perf.c b/tests/perf.c
-index 5d3c68789..b1e2a2e64 100644
---- a/tests/perf.c
-+++ b/tests/perf.c
-@@ -3415,13 +3415,13 @@ gen8_test_single_ctx_render_target_writes_a_counter(void)
- 			uint64_t timestamp0_64, timestamp1_64;
- 			uint32_t delta_ts64, delta_oa32;
- 			uint64_t delta_ts64_ns, delta_oa32_ns;
--			uint32_t delta_delta;
- 			int width = 800;
- 			int height = 600;
- 			uint32_t ctx_id = 0xffffffff; /* invalid handle */
- 			uint32_t ctx1_id = 0xffffffff;  /* invalid handle */
- 			uint32_t current_ctx_id = 0xffffffff;
- 			uint32_t n_invalid_ctx = 0;
-+			int delta_delta;
- 			int ret;
- 			struct accumulator accumulator = {
- 				.format = test_set->perf_oa_format
-@@ -3589,12 +3589,10 @@ gen8_test_single_ctx_render_target_writes_a_counter(void)
+diff --git a/tests/perf_pmu.c b/tests/perf_pmu.c
+index b9ca6a493..cc475a090 100644
+--- a/tests/perf_pmu.c
++++ b/tests/perf_pmu.c
+@@ -28,6 +28,7 @@
+ #include <fcntl.h>
+ #include <inttypes.h>
+ #include <errno.h>
++#include <signal.h>
+ #include <sys/stat.h>
+ #include <sys/time.h>
+ #include <sys/times.h>
+@@ -39,6 +40,8 @@
  
- 			/* The delta as calculated via the PIPE_CONTROL timestamp or
- 			 * the OA report timestamps should be almost identical but
--			 * allow a 500 nanoseconds margin.
-+			 * allow a 2 microsecond margin.
- 			 */
--			delta_delta = delta_ts64_ns > delta_oa32_ns ?
--				(delta_ts64_ns - delta_oa32_ns) :
--				(delta_oa32_ns - delta_ts64_ns);
--			if (delta_delta > 500) {
-+			delta_delta = delta_ts64_ns - delta_oa32_ns;
-+			if (abs(delta_delta) > 2000) {
- 				igt_debug("Too slow %d; skipping\n",
- 					  delta_delta);
- 				ret = EAGAIN;
+ #include "igt.h"
+ #include "igt_core.h"
++#include "igt_device.h"
++#include "igt_kmod.h"
+ #include "igt_perf.h"
+ #include "igt_sysfs.h"
+ #include "igt_pm.h"
+@@ -930,6 +933,7 @@ event_wait(int gem_fd, const struct intel_execution_engine2 *e)
+ 	igt_require(has_secure_batches(fd));
+ 	igt_skip_on(IS_VALLEYVIEW(devid) || IS_CHERRYVIEW(devid));
+ 
++	igt_device_set_master(gem_fd);
+ 	kmstest_set_vt_graphics_mode();
+ 	igt_display_require(&data.display, gem_fd);
+ 
+@@ -1860,6 +1864,85 @@ static void faulting_read(int gem_fd, const struct mmap_offset *t)
+ 	munmap(ptr, 4096);
+ }
+ 
++static int unload_i915(void)
++{
++	/* unbind vt */
++	bind_fbcon(false);
++
++	if (igt_kmod_is_loaded("snd_hda_intel")) {
++		igt_terminate_process(SIGTERM, "alsactl");
++
++		/* unbind snd_hda_intel */
++		kick_snd_hda_intel();
++
++		if (igt_kmod_unload("snd_hda_intel", 0)) {
++			igt_info("Failed to unload snd_hda_intel\n");
++			return -EBUSY;
++		}
++	}
++
++	if (igt_kmod_is_loaded("snd_hdmi_lpe_audio")) {
++		igt_terminate_process(SIGTERM, "alsactl");
++
++		if (igt_kmod_unload("snd_hdmi_lpe_audio", 0)) {
++			igt_info("Failed to unload snd_hmdi_lpe_audio\n");
++			return -EBUSY;
++		}
++	}
++
++	if (igt_kmod_is_loaded("i915")) {
++		if (igt_kmod_unload("i915", 0)) {
++			igt_info("Failed to unload i915\n");
++			return -EBUSY;
++		}
++	}
++
++	return 0;
++}
++
++static void test_unload(void)
++{
++	const struct intel_execution_engine2 *e;
++	uint64_t *buf;
++	int count;
++	int i915;
++	int fd;
++
++	igt_require(unload_i915() == 0);
++	i915 = __drm_open_driver(DRIVER_INTEL);
++
++	fd = open_group(i915, I915_PMU_REQUESTED_FREQUENCY, -1);
++	open_group(fd, I915_PMU_ACTUAL_FREQUENCY, fd);
++	count = 2;
++
++	__for_each_physical_engine(i915, e) {
++		open_group(i915,
++			   I915_PMU_ENGINE_BUSY(e->class, e->instance),
++			   fd);
++		open_group(i915,
++			   I915_PMU_ENGINE_SEMA(e->class, e->instance),
++			   fd);
++		open_group(i915,
++			   I915_PMU_ENGINE_WAIT(e->class, e->instance),
++			   fd);
++		count += 3;
++	}
++
++	close(i915);
++
++	buf = calloc(count + 1, sizeof(uint64_t));
++	igt_assert(buf);
++
++	pmu_read_multi(fd, count, buf);
++	igt_assert_eq(unload_i915(), -EBUSY);
++	pmu_read_multi(fd, count, buf);
++
++	close(fd);
++	igt_assert_eq(unload_i915(), 0);
++
++	free(buf);
++}
++
+ #define test_each_engine(T, i915, e) \
+ 	igt_subtest_with_dynamic(T) __for_each_physical_engine(i915, e) \
+ 		igt_dynamic_f("%s", e->name)
+@@ -1878,7 +1961,7 @@ igt_main
+ 	int fd = -1;
+ 
+ 	igt_fixture {
+-		fd = drm_open_driver_master(DRIVER_INTEL);
++		fd = __drm_open_driver(DRIVER_INTEL);
+ 
+ 		igt_require_gem(fd);
+ 		igt_require(i915_perf_type_id(fd) > 0);
+@@ -2101,7 +2184,7 @@ igt_main
+ 		int render_fd = -1;
+ 
+ 		igt_fixture {
+-			render_fd = drm_open_driver_render(DRIVER_INTEL);
++			render_fd = __drm_open_driver_render(DRIVER_INTEL);
+ 			igt_require_gem(render_fd);
+ 
+ 			gem_quiescent_gpu(fd);
+@@ -2116,4 +2199,13 @@ igt_main
+ 			close(render_fd);
+ 		}
+ 	}
++
++	igt_fixture {
++		close(fd);
++	}
++
++	igt_subtest("module-unload") {
++		for (int pass = 0; pass < 3; pass++)
++			test_unload();
++	}
+ }
 -- 
 2.26.2
 
