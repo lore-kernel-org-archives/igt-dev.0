@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-In-Reply-To: <158827339698.31920.9116764027113635709@emeril.freedesktop.org>
-References: <20200430094536.767299-1-chris@chris-wilson.co.uk>
- <158827339698.31920.9116764027113635709@emeril.freedesktop.org>
-Subject: Re:  =?unknown-8bit?b?4pyT?= Fi.CI.IGT: success for perf: Bump the timestamp tolerance for really slow devices
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158827378096.7361.14409399577383305410@build.alporthouse.com>
-Date: Thu, 30 Apr 2020 20:09:40 +0100
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 30 Apr 2020 19:13:08 -0000
+Message-ID: <158827398882.31921.6753021053772981804@emeril.freedesktop.org>
+References: <20200430180102.879208-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200430180102.879208-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9w?=
+ =?utf-8?q?erf=5Fpmu=3A_Attempt_to_unload_i915_while_the_PMU_is_active_=28?=
+ =?utf-8?q?rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,24 +15,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Patchwork <patchwork@emeril.freedesktop.org>, igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Patchwork (2020-04-30 20:03:16)
->   * igt@perf@gen8-unprivileged-single-ctx-counters:
->     - shard-apl:          [TIMEOUT][65] -> [PASS][66]
->    [65]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8401/shard-apl8/igt@perf@gen8-unprivileged-single-ctx-counters.html
->    [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4518/shard-apl1/igt@perf@gen8-unprivileged-single-ctx-counters.html
->     - shard-glk:          [TIMEOUT][67] -> [PASS][68]
->    [67]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8401/shard-glk6/igt@perf@gen8-unprivileged-single-ctx-counters.html
->    [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4518/shard-glk5/igt@perf@gen8-unprivileged-single-ctx-counters.html
+== Series Details ==
 
-Bingo.
--Chris
+Series: i915/perf_pmu: Attempt to unload i915 while the PMU is active (rev2)
+URL   : https://patchwork.freedesktop.org/series/76778/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8402 -> IGTPW_4522
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4522/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4522 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_chamelium@dp-edid-read:
+    - fi-cml-u2:          [FAIL][1] ([i915#976]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8402/fi-cml-u2/igt@kms_chamelium@dp-edid-read.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4522/fi-cml-u2/igt@kms_chamelium@dp-edid-read.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-kbl-guc:         [SKIP][3] ([fdo#109271]) -> [FAIL][4] ([i915#665] / [i915#704])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8402/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4522/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#665]: https://gitlab.freedesktop.org/drm/intel/issues/665
+  [i915#704]: https://gitlab.freedesktop.org/drm/intel/issues/704
+  [i915#976]: https://gitlab.freedesktop.org/drm/intel/issues/976
+
+
+Participating hosts (51 -> 44)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5618 -> IGTPW_4522
+
+  CI-20190529: 20190529
+  CI_DRM_8402: b34c04ed51aaaab63716e7491db86c83aab4e095 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4522: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4522/index.html
+  IGT_5618: 9a94fb4b5ebb82185fb52a1709366458597a62ab @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@perf_pmu@module-unload
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4522/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
