@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E1C526E1A4
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Apr 2020 09:29:29 +0000 (UTC)
-Date: Thu, 30 Apr 2020 12:29:25 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200430092925.d7jb25g36az3byet@ahiler-desk1.fi.intel.com>
-References: <20200429154902.201712-1-arkadiusz.hiler@intel.com>
- <20200429154902.201712-3-arkadiusz.hiler@intel.com>
- <20200430090148.GA9497@platvala-desk.ger.corp.intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E15DA6E20B
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Apr 2020 10:29:54 +0000 (UTC)
+References: <20200428100832.7612-1-karthik.b.s@intel.com>
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+Message-ID: <ca6bf30e-126c-72ff-4cfb-701e8c46898d@intel.com>
+Date: Thu, 30 Apr 2020 15:59:51 +0530
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200430090148.GA9497@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/drmtest: Introduce
- __drm_open_driver_another
+In-Reply-To: <20200428100832.7612-1-karthik.b.s@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_multipipe_modeset: Add
+ test to validate max pipe configuration
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,212 +17,148 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Karthik B S <karthik.b.s@intel.com>, igt-dev@lists.freedesktop.org
+Cc: petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Apr 30, 2020 at 12:01:48PM +0300, Petri Latvala wrote:
-> On Wed, Apr 29, 2020 at 06:49:02PM +0300, Arkadiusz Hiler wrote:
-> > __drm_open_driver_another(int idx, ...) is a counterpart to
-> > __drm_open_driver(..) with the following changes:
-> > 
-> > If device filters are provided the idx-th filter is used and the first
-> > matching device is selected.
-> > 
-> > Consecutive calls to it, with increasing idx (starting from zero) are
-> > guaranteed to return fd of a different /dev/dri/ node than the previous
-> > calls or -1.
-> > 
-> > Counterparts to other existing drm_open_*() should be introduced in
-> > similar fashion as the need arises.
-> > 
-> > kms_prime test is converted to use this new call and dumb buffers
-> > directly.
-> 
-> If there's going to be new revisions of this series, can the kms_prime
-> changes be split to a separate patch?
-
-yep
-
-> > Cc: Petri Latvala <petri.latvala@intel.com>
-> > Cc: Mika Kahola <mika.kahola@intel.com>
-> > Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> > ---
-> >  lib/drmtest.c     | 163 +++++++++++++++++++++++++++++++++++++++-------
-> >  lib/drmtest.h     |   1 +
-> >  tests/kms_prime.c | 107 ++++++++++++++++++------------
-> >  3 files changed, 208 insertions(+), 63 deletions(-)
-> > 
-> > diff --git a/lib/drmtest.c b/lib/drmtest.c
-> > index 7b2fd337..538fcf65 100644
-> > --- a/lib/drmtest.c
-> > +++ b/lib/drmtest.c
-> > @@ -339,6 +387,87 @@ static bool __get_the_first_card(struct igt_device_card *card)
-> >  	return false;
-> >  }
-> >  
-> > +/**
-> > + * __drm_open_driver_another:
-> > + * @idx: index of the device you are opening
-> > + * @chipset: OR'd flags for each chipset to search, eg. #DRIVER_INTEL
-> > + *
-> > + * This function is intended to be used instead of drm_open_driver() for tests
-> > + * that are opening multiple /dev/dri/card* nodes, usually for the purpose of
-> > + * multi-GPU testing.
-> > + *
-> > + * This function opens device in the following order:
-> > + *
-> > + * 1. when --device arguments are present:
-> > + *   * device scanning is executed,
-> > + *   * idx-th filter (starting with 0, filters are semicolon separated) is used
-> > + *   * if there is no idx-th filter, goto 2
-> > + *   * first device maching the filter is selected
-> > + *   * if it's already opened (for indexes = 0..idx-1) we fail with -1
-> > + *   * otherwise open the device and return the fd
-> > + *
-> > + * 2. compatibility mode - open the first DRM device we can find that is not
-> > + *    already opened for indexes 0..idx-1, searching up to 16 device nodes
-> > + *
-> > + * The test is reponsible to test the interaction between devices in both
-> > + * directions if applicable.
-> > + *
-> > + * Example:
-> > + *
-> > + * |[<!-- language="c" -->
-> > + * igt_subtest_with_dynamic("basic") {
-> > + * 	int first_fd = -1;
-> > + * 	int second_fd = -1;
-> > + *
-> > + * 	first_fd = __drm_open_driver_another(0, DRIVER_ANY);
-> > + * 	igt_require(first_fd >= 0);
-> > + *
-> > + * 	second_fd = __drm_open_driver_another(1, DRIVER_ANY);
-> > + * 	igt_require(second_fd >= 0);
-> > + *
-> > + * 	if (can_do_foo(first_fd, second_fd))
-> > + * 		igt_dynamic("first-to-second")
-> > + * 			test_basic_from_to(first_fd, second_fd);
-> > + *
-> > + * 	if (can_do_foo(second_fd, first_fd))
-> > + * 		igt_dynamic("second-to-first")
-> > + * 			test_basic_from_to(second_fd, first_fd);
-> > + *
-> > + * 	close(first_fd);
-> > + * 	close(second_fd);
-> > + * }
-> > + * ]|
-> > + *
-> > + * Returns:
-> > + * An open DRM fd or -1 on error
-> > + */
-> > +int __drm_open_driver_another(int idx, int chipset)
-> > +{
-> > +	int fd = -1;
-> > +	if (igt_device_filter_count() > idx) {
-> > +		bool found;
-> > +		struct igt_device_card card;
-> > +
-> > +		found = __get_card_for_nth_filter(idx, &card);
-> > +
-> > +		if (!found || !strlen(card.card))
-> > +			igt_warn("No card matches the filter!\n");
-> > +		else if (_is_already_opened(card.card, idx))
-> > +			igt_warn("card maching filter %d is already opened\n", idx);
-> > +		else
-> > +			fd = __open_driver_exact(card.card, chipset);
-> > +
-> > +	} else {
-> > +		/* no filter for device idx, let's open whatever is available */
-> > +		fd = __open_driver("/dev/dri/card", 0, chipset, idx);
-> > +	}
-> 
-> 
-> Hmm, took me a while to grasp the full flow from drm_open_driver() to
-> __try_modprobe() and pals and how that's changed with this...
-> 
-> The difference between drm_open_driver() and __drm_open_driver() is
-> that the latter doesn't install i915-specific atexit() handlers. Do we
-> need that kind of functionality for _another()?
-
-And skips if fd < 0.
-
-Similar atexit() handler would be necessary for tests that use
-_another() with any workload submission, so I would say, yeah, we would
-eventually need it and it makes sense to have it as the default one.
-
-It's not needed for this particular test though, so I haven't bothered
-to create it yet.
-
-> Is it documented that anyone using device filters will need to
-> modprobe themselves if they target a driver that we normally modprobe?
-
-Good catch, let's add:
-
- found = __get_card_for_nth_filter(idx, &card);
-+
-+if (!found) {
-+	__try_modprobe(chipset);
-+	found = __get_card_for_nth_filter(idx, &card);
-+}
-
-> > diff --git a/tests/kms_prime.c b/tests/kms_prime.c
-> > index 3241c514..8cb2ca2a 100644
-> > --- a/tests/kms_prime.c
-> > +++ b/tests/kms_prime.c
-> > @@ -228,29 +249,35 @@ static void test_crc(int exporter_fd, int importer_fd)
-> >  	igt_display_fini(&display);
-> >  }
-> >  
-> > -static void run_test_crc(int export_chipset, int import_chipset)
-> > -{
-> > -	int importer_fd = -1;
-> > -	int exporter_fd = -1;
-> > -
-> > -	exporter_fd = drm_open_driver(export_chipset);
-> > -	importer_fd = drm_open_driver_master(import_chipset);
-> > -
-> > -	igt_require(has_prime_export(exporter_fd));
-> > -	igt_require(has_prime_import(importer_fd));
-> > -	igt_require_pipe_crc(importer_fd);
-> > -
-> > -	test_crc(exporter_fd, importer_fd);
-> > -	close(importer_fd);
-> > -	close(exporter_fd);
-> > -}
-> > -
-> >  igt_main
-> >  {
-> > -	igt_fixture {
-> > +	igt_fixture
-> >  		kmstest_set_vt_graphics_mode();
-> > +
-> > +	igt_describe("Make a dumb color buffer, export to another device and"
-> > +		     " compare the CRCs with a buffer native to that device");
-> > +	igt_subtest_with_dynamic("basic-crc") {
-> > +		int first_fd = -1;
-> > +		int second_fd = -1;
-> > +
-> > +		/* ANY = anything that is not VGEM */
-> > +		first_fd = __drm_open_driver_another(0, DRIVER_ANY | DRIVER_VGEM);
-> > +		igt_require(first_fd >= 0);
-> > +
-> > +		second_fd = __drm_open_driver_another(1, DRIVER_ANY | DRIVER_VGEM);
-> > +		igt_require(second_fd >= 0);
-> 
-> For people not using filters, we can get some predictability for this
-> by only using DRIVER_VGEM for the second_fd, can't we?
-
-This would force strict ordering on filters - if you want to use vgem it
-would always need to be the second one. I would like to avoid that.
-
--- 
-Cheers,
-Arek
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+TEdUTS4KCkFja2VkLWJ5OiBBbmtpdCBOYXV0aXlhbCA8YW5raXQuay5uYXV0aXlhbEBpbnRlbC5j
+b20+CgoKT24gNC8yOC8yMDIwIDM6MzggUE0sIEthcnRoaWsgQiBTIHdyb3RlOgo+IEFkZGVkIHRl
+c3QgdG8gdmFsaWRhdGUgbWF4IHBpcGUgY29uZmlndXJhdGlvbiBmb3IgYSBwbGF0Zm9ybS4KPiBJ
+biB0aGUgdGVzdCwgdGhlIHJlZmVyZW5jZSBDUkMgaXMgY29sbGVjdGVkIGZpcnN0IGJ5IGRvaW5n
+IG1vZGVzZXQKPiBvbiBhbGwgdGhlIG91dHB1dHMgaW5kaXZpZHVhbGx5LlRoZW4gYSBzaW11bHRh
+bmVvdXMgbW9kZXNldCBpcwo+IGRvbmUgb24gYWxsIHRoZSBvdXRwdXRzIGFuZCB0aGUgQ1JDIGlz
+IGNvbGxlY3RlZC4gVGhpcyBpcyBjb21wYXJlZAo+IHdpdGggdGhlIHJlZmVyZW5jZSBDUkMuCj4K
+PiBJZiB0aGUgbnVtYmVyIG9mIG91dHB1dHMgY29ubmVjdGVkIGlzIGxlc3MgdGhhbiB0aGUgbnVt
+YmVyIG9mIHBpcGVzCj4gc3VwcG9ydGVkIGJ5IHRoZSBwbGF0Zm9ybSwgdGhlbiB0aGUgdGVzdCBz
+a2lwcy4KPgo+IFRoaXMgdGVzdCBpcyBhZGRlZCB0byB2ZXJpZnkgaWYgdGhlIG1heCBwaXBlIGNv
+bmZpZ3VyYXRpb24gZm9yIGEKPiBnaXZlbiBwbGF0Zm9ybSBpcyB3b3JraW5nIGZpbmUuIEV2ZW4g
+dGhvdWdoIHRoZXJlIGFyZSBvdGhlciB0ZXN0cwo+IHdoaWNoIHRlc3QgbXVsdGlwaXBlIGNvbmZp
+Z3VyYXRpb24sIHRoZXkgdGVzdCBzb21lIG90aGVyIGZ1bmN0aW9uYWxpdGllcwo+IGFzIHdlbGwg
+dG9nZXRoZXIgd2l0aCBtdWx0aXBpcGUuIFRoaXMgaXMgYSBzdGFuZCBhbG9uZSB0ZXN0IHRoYXQK
+PiBpbnRlbmRzIHRvIG9ubHkgdmVyaWZ5IHNpbXVsdGFuZW91cyBtb2Rlc2V0IGF0IHRoZSBtYXgg
+cGlwZSBjb25maWd1cmF0aW9uLgo+Cj4gdjI6IC1GaXggVHlwbyBpbiBjb21tZW50IChQZXRyaSkK
+PiAgICAgIC1Vc2UgaWd0X3JlcXVpcmVfcGlwZV9jcmMoKSB0byBwcmV2ZW50IGNyYXNoIGluIG5v
+biBpOTE1IGNhc2UgKFBldHJpKQo+ICAgICAgLVByaW50IHRoZSBudW1iZXIgb2Ygb3V0cHV0cyBh
+bmQgcGlwZXMgaW4gaWd0X3JlcXVpcmUoKSBmb3IKPiAgICAgICBkZWJ1Z2dpbmcgYWlkIChQZXRy
+aSkKPgo+IHYzOiAtQ2hhbmdlIHRoZSBzdWJ0ZXN0IG5hbWUgKFBldHJpKQo+ICAgICAgLUF2b2lk
+IG11bHRpcGxlIGxvb3BzIGFuZCByZW1vdmUgdGhlIG91dHB1dF90b19waXBlIHZhcmlhYmxlLAo+
+ICAgICAgIGJ5IG1ha2luZyB0aGUgb3V0cHV0IHRvIHBpcGUgbWFwcGluZyBmaXhlZCAoQW5raXQp
+Cj4KPiBTaWduZWQtb2ZmLWJ5OiBLYXJ0aGlrIEIgUyA8a2FydGhpay5iLnNAaW50ZWwuY29tPgo+
+IFJldmlld2VkLWJ5OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KPiAt
+LS0KPiAgIHRlc3RzL01ha2VmaWxlLnNvdXJjZXMgICAgICAgIHwgICAxICsKPiAgIHRlc3RzL2tt
+c19tdWx0aXBpcGVfbW9kZXNldC5jIHwgMTU2ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysKPiAgIHRlc3RzL21lc29uLmJ1aWxkICAgICAgICAgICAgIHwgICAxICsKPiAgIDMgZmls
+ZXMgY2hhbmdlZCwgMTU4IGluc2VydGlvbnMoKykKPiAgIGNyZWF0ZSBtb2RlIDEwMDY0NCB0ZXN0
+cy9rbXNfbXVsdGlwaXBlX21vZGVzZXQuYwo+Cj4gZGlmZiAtLWdpdCBhL3Rlc3RzL01ha2VmaWxl
+LnNvdXJjZXMgYi90ZXN0cy9NYWtlZmlsZS5zb3VyY2VzCj4gaW5kZXggMzJjYmJmNGYuLmM0NTBm
+YTBlIDEwMDY0NAo+IC0tLSBhL3Rlc3RzL01ha2VmaWxlLnNvdXJjZXMKPiArKysgYi90ZXN0cy9N
+YWtlZmlsZS5zb3VyY2VzCj4gQEAgLTYxLDYgKzYxLDcgQEAgVEVTVFNfcHJvZ3MgPSBcCj4gICAJ
+a21zX2xlYXNlIFwKPiAgIAlrbXNfbGVnYWN5X2NvbG9ya2V5IFwKPiAgIAlrbXNfbW1hcF93cml0
+ZV9jcmMgXAo+ICsJa21zX211bHRpcGlwZV9tb2Rlc2V0IFwKPiAgIAlrbXNfcGFuZWxfZml0dGlu
+ZyBcCj4gICAJa21zX3BpcGVfYl9jX2l2YiBcCj4gICAJa21zX3BpcGVfY3JjX2Jhc2ljIFwKPiBk
+aWZmIC0tZ2l0IGEvdGVzdHMva21zX211bHRpcGlwZV9tb2Rlc2V0LmMgYi90ZXN0cy9rbXNfbXVs
+dGlwaXBlX21vZGVzZXQuYwo+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4gaW5kZXggMDAwMDAwMDAu
+LmZiMGI5NjYyCj4gLS0tIC9kZXYvbnVsbAo+ICsrKyBiL3Rlc3RzL2ttc19tdWx0aXBpcGVfbW9k
+ZXNldC5jCj4gQEAgLTAsMCArMSwxNTYgQEAKPiArLyoKPiArICogQ29weXJpZ2h0IMKpIDIwMjAg
+SW50ZWwgQ29ycG9yYXRpb24KPiArICoKPiArICogUGVybWlzc2lvbiBpcyBoZXJlYnkgZ3JhbnRl
+ZCwgZnJlZSBvZiBjaGFyZ2UsIHRvIGFueSBwZXJzb24gb2J0YWluaW5nIGEKPiArICogY29weSBv
+ZiB0aGlzIHNvZnR3YXJlIGFuZCBhc3NvY2lhdGVkIGRvY3VtZW50YXRpb24gZmlsZXMgKHRoZSAi
+U29mdHdhcmUiKSwKPiArICogdG8gZGVhbCBpbiB0aGUgU29mdHdhcmUgd2l0aG91dCByZXN0cmlj
+dGlvbiwgaW5jbHVkaW5nIHdpdGhvdXQgbGltaXRhdGlvbgo+ICsgKiB0aGUgcmlnaHRzIHRvIHVz
+ZSwgY29weSwgbW9kaWZ5LCBtZXJnZSwgcHVibGlzaCwgZGlzdHJpYnV0ZSwgc3VibGljZW5zZSwK
+PiArICogYW5kL29yIHNlbGwgY29waWVzIG9mIHRoZSBTb2Z0d2FyZSwgYW5kIHRvIHBlcm1pdCBw
+ZXJzb25zIHRvIHdob20gdGhlCj4gKyAqIFNvZnR3YXJlIGlzIGZ1cm5pc2hlZCB0byBkbyBzbywg
+c3ViamVjdCB0byB0aGUgZm9sbG93aW5nIGNvbmRpdGlvbnM6Cj4gKyAqCj4gKyAqIFRoZSBhYm92
+ZSBjb3B5cmlnaHQgbm90aWNlIGFuZCB0aGlzIHBlcm1pc3Npb24gbm90aWNlIChpbmNsdWRpbmcg
+dGhlIG5leHQKPiArICogcGFyYWdyYXBoKSBzaGFsbCBiZSBpbmNsdWRlZCBpbiBhbGwgY29waWVz
+IG9yIHN1YnN0YW50aWFsIHBvcnRpb25zIG9mIHRoZQo+ICsgKiBTb2Z0d2FyZS4KPiArICoKPiAr
+ICogVEhFIFNPRlRXQVJFIElTIFBST1ZJREVEICJBUyBJUyIsIFdJVEhPVVQgV0FSUkFOVFkgT0Yg
+QU5ZIEtJTkQsIEVYUFJFU1MgT1IKPiArICogSU1QTElFRCwgSU5DTFVESU5HIEJVVCBOT1QgTElN
+SVRFRCBUTyBUSEUgV0FSUkFOVElFUyBPRiBNRVJDSEFOVEFCSUxJVFksCj4gKyAqIEZJVE5FU1Mg
+Rk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFIEFORCBOT05JTkZSSU5HRU1FTlQuICBJTiBOTyBFVkVO
+VCBTSEFMTAo+ICsgKiBUSEUgQVVUSE9SUyBPUiBDT1BZUklHSFQgSE9MREVSUyBCRSBMSUFCTEUg
+Rk9SIEFOWSBDTEFJTSwgREFNQUdFUyBPUiBPVEhFUgo+ICsgKiBMSUFCSUxJVFksIFdIRVRIRVIg
+SU4gQU4gQUNUSU9OIE9GIENPTlRSQUNULCBUT1JUIE9SIE9USEVSV0lTRSwgQVJJU0lORwo+ICsg
+KiBGUk9NLCBPVVQgT0YgT1IgSU4gQ09OTkVDVElPTiBXSVRIIFRIRSBTT0ZUV0FSRSBPUiBUSEUg
+VVNFIE9SIE9USEVSIERFQUxJTkdTCj4gKyAqIElOIFRIRSBTT0ZUV0FSRS4KPiArICoKPiArICog
+QXV0aG9yOgo+ICsgKiAgS2FydGhpayBCIFMgPGthcnRoaWsuYi5zQGludGVsLmNvbT4KPiArICov
+Cj4gKwo+ICsjaW5jbHVkZSAiaWd0LmgiCj4gKwo+ICtJR1RfVEVTVF9ERVNDUklQVElPTigiVGVz
+dCBzaW11bHRhbmVvdXMgbW9kZXNldCBvbiBhbGwgdGhlIHN1cHBvcnRlZCBwaXBlcyIpOwo+ICsK
+PiArdHlwZWRlZiBzdHJ1Y3Qgewo+ICsJaW50IGRybV9mZDsKPiArCWlndF9kaXNwbGF5X3QgZGlz
+cGxheTsKPiArCXN0cnVjdCBpZ3RfZmIgZmI7Cj4gK30gZGF0YV90Owo+ICsKPiArc3RhdGljIHZv
+aWQgcnVuX3Rlc3QoZGF0YV90ICpkYXRhLCBpbnQgdmFsaWRfb3V0cHV0cykKPiArewo+ICsJaWd0
+X291dHB1dF90ICpvdXRwdXQ7Cj4gKwlpZ3RfcGlwZV9jcmNfdCAqcGlwZV9jcmNzW0lHVF9NQVhf
+UElQRVNdID0geyAwIH07Cj4gKwlpZ3RfY3JjX3QgcmVmX2NyY3NbSUdUX01BWF9QSVBFU10sIG5l
+d19jcmNzW0lHVF9NQVhfUElQRVNdOwo+ICsJaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSA9ICZkYXRh
+LT5kaXNwbGF5Owo+ICsJaW50IHdpZHRoID0gMCwgaGVpZ2h0ID0gMCwgaSA9IDA7Cj4gKwlpZ3Rf
+cGlwZV90ICpwaXBlOwo+ICsJaWd0X3BsYW5lX3QgKnBsYW5lOwo+ICsJZHJtTW9kZU1vZGVJbmZv
+ICptb2RlOwo+ICsKPiArCWZvcl9lYWNoX2Nvbm5lY3RlZF9vdXRwdXQoZGlzcGxheSwgb3V0cHV0
+KSB7Cj4gKwkJbW9kZSA9IGlndF9vdXRwdXRfZ2V0X21vZGUob3V0cHV0KTsKPiArCQlpZ3RfYXNz
+ZXJ0KG1vZGUpOwo+ICsKPiArCQlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dCwgUElQRV9OT05F
+KTsKPiArCj4gKwkJd2lkdGggPSBtYXgod2lkdGgsIG1vZGUtPmhkaXNwbGF5KTsKPiArCQloZWln
+aHQgPSBtYXgoaGVpZ2h0LCBtb2RlLT52ZGlzcGxheSk7Cj4gKwl9Cj4gKwo+ICsJaWd0X2NyZWF0
+ZV9wYXR0ZXJuX2ZiKGRhdGEtPmRybV9mZCwgd2lkdGgsIGhlaWdodCwgRFJNX0ZPUk1BVF9YUkdC
+ODg4OCwKPiArCQkJICAgICAgTE9DQUxfRFJNX0ZPUk1BVF9NT0RfTk9ORSwgJmRhdGEtPmZiKTsK
+PiArCj4gKwkvKiBDb2xsZWN0IHJlZmVyZW5jZSBDUkMgYnkgQ29tbWl0dGluZyBpbmRpdmlkdWFs
+bHkgb24gYWxsIG91dHB1dHMqLwo+ICsJZm9yX2VhY2hfY29ubmVjdGVkX291dHB1dChkaXNwbGF5
+LCBvdXRwdXQpIHsKPiArCQlwaXBlID0gJmRpc3BsYXktPnBpcGVzW2ldOwo+ICsJCXBsYW5lID0g
+aWd0X3BpcGVfZ2V0X3BsYW5lX3R5cGUocGlwZSwgRFJNX1BMQU5FX1RZUEVfUFJJTUFSWSk7Cj4g
+Kwo+ICsJCW1vZGUgPSBOVUxMOwo+ICsKPiArCQlwaXBlX2NyY3NbaV0gPSBpZ3RfcGlwZV9jcmNf
+bmV3KGRpc3BsYXktPmRybV9mZCwgaSwKPiArCQkJCQkJSU5URUxfUElQRV9DUkNfU09VUkNFX0FV
+VE8pOwo+ICsKPiArCQlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dCwgaSk7Cj4gKwkJbW9kZSA9
+IGlndF9vdXRwdXRfZ2V0X21vZGUob3V0cHV0KTsKPiArCQlpZ3RfYXNzZXJ0KG1vZGUpOwo+ICsK
+PiArCQlpZ3RfcGxhbmVfc2V0X2ZiKHBsYW5lLCAmZGF0YS0+ZmIpOwo+ICsJCWlndF9mYl9zZXRf
+c2l6ZSgmZGF0YS0+ZmIsIHBsYW5lLCBtb2RlLT5oZGlzcGxheSwgbW9kZS0+dmRpc3BsYXkpOwo+
+ICsJCWlndF9wbGFuZV9zZXRfc2l6ZShwbGFuZSwgbW9kZS0+aGRpc3BsYXksIG1vZGUtPnZkaXNw
+bGF5KTsKPiArCj4gKwkJaWd0X2Rpc3BsYXlfY29tbWl0MihkaXNwbGF5LCBDT01NSVRfQVRPTUlD
+KTsKPiArCQlpZ3RfcGlwZV9jcmNfY29sbGVjdF9jcmMocGlwZV9jcmNzW2ldLCAmcmVmX2NyY3Nb
+aV0pOwo+ICsJCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBQSVBFX05PTkUpOwo+ICsJCWkr
+KzsKPiArCX0KPiArCj4gKwlpID0gMDsKPiArCS8qIFNpbXVsdGFuZW91c2x5IGNvbW1pdCBvbiBh
+bGwgb3V0cHV0cyAqLwo+ICsJZm9yX2VhY2hfY29ubmVjdGVkX291dHB1dChkaXNwbGF5LCBvdXRw
+dXQpIHsKPiArCQlwaXBlID0gJmRpc3BsYXktPnBpcGVzW2ldOwo+ICsJCXBsYW5lID0gaWd0X3Bp
+cGVfZ2V0X3BsYW5lX3R5cGUocGlwZSwgRFJNX1BMQU5FX1RZUEVfUFJJTUFSWSk7Cj4gKwo+ICsJ
+CW1vZGUgPSBOVUxMOwo+ICsKPiArCQlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dCwgaSk7Cj4g
+KwkJbW9kZSA9IGlndF9vdXRwdXRfZ2V0X21vZGUob3V0cHV0KTsKPiArCQlpZ3RfYXNzZXJ0KG1v
+ZGUpOwo+ICsKPiArCQlpZ3RfcGxhbmVfc2V0X2ZiKHBsYW5lLCAmZGF0YS0+ZmIpOwo+ICsJCWln
+dF9mYl9zZXRfc2l6ZSgmZGF0YS0+ZmIsIHBsYW5lLCBtb2RlLT5oZGlzcGxheSwgbW9kZS0+dmRp
+c3BsYXkpOwo+ICsJCWlndF9wbGFuZV9zZXRfc2l6ZShwbGFuZSwgbW9kZS0+aGRpc3BsYXksIG1v
+ZGUtPnZkaXNwbGF5KTsKPiArCQlpKys7Cj4gKwl9Cj4gKwo+ICsJaWd0X2Rpc3BsYXlfY29tbWl0
+MihkaXNwbGF5LCBDT01NSVRfQVRPTUlDKTsKPiArCj4gKwkvKiBDUkMgVmVyaWZpY2F0aW9uICov
+Cj4gKwlmb3IgKGkgPSAwOyBpIDwgdmFsaWRfb3V0cHV0czsgaSsrKSB7Cj4gKwkJaWd0X3BpcGVf
+Y3JjX2NvbGxlY3RfY3JjKHBpcGVfY3Jjc1tpXSwgJm5ld19jcmNzW2ldKTsKPiArCQlpZ3RfYXNz
+ZXJ0X2NyY19lcXVhbCgmcmVmX2NyY3NbaV0sICZuZXdfY3Jjc1tpXSk7Cj4gKwl9Cj4gKwo+ICsJ
+aWd0X3BsYW5lX3NldF9mYihwbGFuZSwgTlVMTCk7Cj4gKwlpZ3RfcmVtb3ZlX2ZiKGRhdGEtPmRy
+bV9mZCwgJmRhdGEtPmZiKTsKPiArfQo+ICsKPiArc3RhdGljIHZvaWQgdGVzdF9tdWx0aXBpcGUo
+ZGF0YV90ICpkYXRhKQo+ICt7Cj4gKwlpZ3Rfb3V0cHV0X3QgKm91dHB1dDsKPiArCWludCB2YWxp
+ZF9vdXRwdXRzID0gMCwgbnVtX3BpcGVzOwo+ICsKPiArCW51bV9waXBlcyA9IGlndF9kaXNwbGF5
+X2dldF9uX3BpcGVzKCZkYXRhLT5kaXNwbGF5KTsKPiArCWZvcl9lYWNoX2Nvbm5lY3RlZF9vdXRw
+dXQoJmRhdGEtPmRpc3BsYXksIG91dHB1dCkKPiArCQl2YWxpZF9vdXRwdXRzKys7Cj4gKwo+ICsJ
+aWd0X3JlcXVpcmVfZih2YWxpZF9vdXRwdXRzID09IG51bV9waXBlcywKPiArCQkgICAgICAiTnVt
+YmVyIG9mIGNvbm5lY3RlZCBvdXRwdXRzKCVkKSBub3QgZXF1YWwgdG8gdGhlICIKPiArCQkgICAg
+ICAibnVtYmVyIG9mIHBpcGVzIHN1cHBvcnRlZCglZClcbiIsIHZhbGlkX291dHB1dHMsIG51bV9w
+aXBlcyk7Cj4gKwo+ICsJcnVuX3Rlc3QoZGF0YSwgdmFsaWRfb3V0cHV0cyk7Cj4gK30KPiArCj4g
+K2lndF9tYWluCj4gK3sKPiArCWRhdGFfdCBkYXRhOwo+ICsJZHJtTW9kZVJlc1B0ciByZXM7Cj4g
+Kwo+ICsJaWd0X2ZpeHR1cmUgewo+ICsJCWRhdGEuZHJtX2ZkID0gZHJtX29wZW5fZHJpdmVyX21h
+c3RlcihEUklWRVJfQU5ZKTsKPiArCQlrbXN0ZXN0X3NldF92dF9ncmFwaGljc19tb2RlKCk7Cj4g
+Kwo+ICsJCWlndF9yZXF1aXJlX3BpcGVfY3JjKGRhdGEuZHJtX2ZkKTsKPiArCQlpZ3RfZGlzcGxh
+eV9yZXF1aXJlKCZkYXRhLmRpc3BsYXksIGRhdGEuZHJtX2ZkKTsKPiArCj4gKwkJcmVzID0gZHJt
+TW9kZUdldFJlc291cmNlcyhkYXRhLmRybV9mZCk7Cj4gKwkJaWd0X2Fzc2VydChyZXMpOwo+ICsK
+PiArCQlrbXN0ZXN0X3Vuc2V0X2FsbF9jcnRjcyhkYXRhLmRybV9mZCwgcmVzKTsKPiArCX0KPiAr
+Cj4gKwlpZ3RfZGVzY3JpYmUoIlZlcmlmeSBpZiBzaW11bHRhbmVvdXMgbW9kZXNldHMgb24gYWxs
+IHRoZSBzdXBwb3J0ZWQgIgo+ICsJCSAgICAgInBpcGVzIGlzIHN1Y2Nlc3NmdWwuIFZhbGlkYXRl
+IHVzaW5nIENSQyB2ZXJpZmljYXRpb24iKTsKPiArCWlndF9zdWJ0ZXN0KCJiYXNpYy1tYXgtcGlw
+ZS1jcmMtY2hlY2siKQo+ICsJCXRlc3RfbXVsdGlwaXBlKCZkYXRhKTsKPiArCj4gKwlpZ3RfZml4
+dHVyZQo+ICsJCWlndF9kaXNwbGF5X2ZpbmkoJmRhdGEuZGlzcGxheSk7Cj4gK30KPiBkaWZmIC0t
+Z2l0IGEvdGVzdHMvbWVzb24uYnVpbGQgYi90ZXN0cy9tZXNvbi5idWlsZAo+IGluZGV4IDBiZGNm
+YmU0Li44OGU0ODc1YiAxMDA2NDQKPiAtLS0gYS90ZXN0cy9tZXNvbi5idWlsZAo+ICsrKyBiL3Rl
+c3RzL21lc29uLmJ1aWxkCj4gQEAgLTQ1LDYgKzQ1LDcgQEAgdGVzdF9wcm9ncyA9IFsKPiAgIAkn
+a21zX2xlYXNlJywKPiAgIAkna21zX2xlZ2FjeV9jb2xvcmtleScsCj4gICAJJ2ttc19tbWFwX3dy
+aXRlX2NyYycsCj4gKwkna21zX211bHRpcGlwZV9tb2Rlc2V0JywKPiAgIAkna21zX3BhbmVsX2Zp
+dHRpbmcnLAo+ICAgCSdrbXNfcGlwZV9iX2NfaXZiJywKPiAgIAkna21zX3BpcGVfY3JjX2Jhc2lj
+JywKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
+ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
