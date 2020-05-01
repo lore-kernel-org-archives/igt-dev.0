@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 30 Apr 2020 21:16:35 -0000
-Message-ID: <158828139514.31920.6496308061958754364@emeril.freedesktop.org>
-References: <20200430195134.1044125-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200430195134.1044125-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaWd0L2dl?=
- =?utf-8?q?m=5Fmmap=5Foffset=3A_Simulate_gdb_inspecting_any_mmap_using_ptr?=
- =?utf-8?b?YWNlKCk=?=
+References: <20200430194151.1003933-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200430194151.1003933-1-chris@chris-wilson.co.uk>
+From: Matthew Auld <matthew.william.auld@gmail.com>
+Date: Fri, 1 May 2020 15:58:29 +0100
+Message-ID: <CAM0jSHNw98i2TMn+n_up_u_zaic=Lu5piUzK1UJgkkwaBQRzLg@mail.gmail.com>
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] i915/gem_mmap_gtt: Simulate
+ gdb inspecting a GTT mmap using ptrace()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,79 +14,108 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Intel Graphics Development <intel-gfx@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Thu, 30 Apr 2020 at 20:42, Chris Wilson <chris@chris-wilson.co.uk> wrote:
+>
+> gdb uses ptrace() to peek and poke bytes of the target's address space.
+> The kernel must implement an vm_ops->access() handler or else gdb will
+> be unable to inspect the pointer and report it as out-of-bounds. Worse
+> than useless as it causes immediate suspicion of the valid GTT pointer.
+>
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> ---
+>  tests/i915/gem_mmap_gtt.c | 79 ++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 78 insertions(+), 1 deletion(-)
+>
+> diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
+> index 1f4655af4..38b4d02d7 100644
+> --- a/tests/i915/gem_mmap_gtt.c
+> +++ b/tests/i915/gem_mmap_gtt.c
+> @@ -34,8 +34,11 @@
+>  #include <inttypes.h>
+>  #include <pthread.h>
+>  #include <errno.h>
+> -#include <sys/stat.h>
+> +#include <signal.h>
+>  #include <sys/ioctl.h>
+> +#include <sys/ptrace.h>
+> +#include <sys/stat.h>
+> +#include <sys/wait.h>
+>  #include "drm.h"
+>
+>  #include "igt.h"
+> @@ -501,6 +504,78 @@ test_write_gtt(int fd)
+>         munmap(src, OBJECT_SIZE);
+>  }
+>
+> +static void *memchr_inv(const void *s, int c, size_t n)
+> +{
+> +       const uint8_t *us = s;
+> +       const uint8_t uc = c;
+> +
+> +#pragma GCC diagnostic push
+> +#pragma GCC diagnostic ignored "-Wcast-qual"
+> +       while (n--) {
+> +               if (*us != uc)
+> +                       return (void *) us;
+> +               us++;
+> +       }
+> +#pragma GCC diagnostic pop
+> +
+> +       return NULL;
+> +}
+> +
+> +static void
+> +test_ptrace(int fd)
+> +{
+> +       unsigned long AA, CC;
+> +       unsigned long *gtt, *cpy;
+> +       uint32_t bo;
+> +       pid_t pid;
+> +
+> +       memset(&AA, 0xaa, sizeof(AA));
+> +       memset(&CC, 0x55, sizeof(CC));
+> +
+> +       cpy = malloc(OBJECT_SIZE);
+> +       memset(cpy, AA, OBJECT_SIZE);
+> +
+> +       bo = gem_create(fd, OBJECT_SIZE);
+> +       gtt = mmap_bo(fd, bo, OBJECT_SIZE);
+> +       memset(gtt, CC, OBJECT_SIZE);
+> +       gem_close(fd, bo);
+> +
+> +       igt_assert(!memchr_inv(gtt, CC, OBJECT_SIZE));
+> +       igt_assert(!memchr_inv(cpy, AA, OBJECT_SIZE));
+> +
+> +       igt_fork(child, 1) {
+> +               ptrace(PTRACE_TRACEME, 0, NULL, NULL);
+> +               raise(SIGSTOP);
+> +       }
+> +
+> +       /* Wait for the child to ready themselves [SIGSTOP] */
+> +       pid = wait(NULL);
+> +
+> +       ptrace(PTRACE_ATTACH, pid, NULL, NULL);
+> +       for (int i = 0; i < OBJECT_SIZE / sizeof(long); i++) {
+> +               long ret;
+> +
+> +               ret = ptrace(PTRACE_PEEKDATA, pid, gtt + i);
+> +               igt_assert_eq_u64(ret, CC);
+> +               cpy[i] = ret;
+> +
+> +               ret = ptrace(PTRACE_POKEDATA, pid, gtt + i, AA);
+> +               igt_assert_eq(ret, 0l);
 
-Series: igt/gem_mmap_offset: Simulate gdb inspecting any mmap using ptrace()
-URL   : https://patchwork.freedesktop.org/series/76786/
-State : success
+igt_assert_eq_u64() ?
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_8403 -> IGTPW_4524
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4524/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4524 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_engines:
-    - fi-bwr-2160:        [INCOMPLETE][1] ([i915#489]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8403/fi-bwr-2160/igt@i915_selftest@live@gt_engines.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4524/fi-bwr-2160/igt@i915_selftest@live@gt_engines.html
-
-  
-  [i915#489]: https://gitlab.freedesktop.org/drm/intel/issues/489
-
-
-Participating hosts (51 -> 43)
-------------------------------
-
-  Missing    (8): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5619 -> IGTPW_4524
-
-  CI-20190529: 20190529
-  CI_DRM_8403: 09978e99929f6e5acfe1e959f6499a134f210887 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4524: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4524/index.html
-  IGT_5619: 94de923ca8d4cc8f532b8062d87aaad9da6ef956 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@gem_mmap_offset@ptrace
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4524/index.html
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
