@@ -1,10 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3AF8C89DBC
+ for <igt-dev@lists.freedesktop.org>; Sat,  2 May 2020 08:09:09 +0000 (UTC)
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Sun, 31 May 2020 20:13:07 +0100
-Message-Id: <20200531191307.180023-1-chris@chris-wilson.co.uk>
+Date: Sat,  2 May 2020 09:09:02 +0100
+Message-Id: <20200502080902.1536701-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_balancer: Disable pre-parser
- for rewritten batches
+Subject: [igt-dev] [PATCH i-g-t] intel-ci: Only skip the hanging
+ gem_exec_fence tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,73 +19,34 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-As we rewrite the batches on the fly to implement the non-preemptible
-lock, we need to tell Tigerlake to read the batch afresh each time.
-Amusingly, the disable is a part of an arb-check, so we have to be
-careful not to include the arbitration point inside our unpreemptible
-loop.
+gem_exec_fence includes a bunch of functional syncobj tests that are
+currently being skipped due to an eagerness to avoid the intentionally
+very slow hang tests.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/i915/gem_exec_balancer.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ tests/intel-ci/blacklist.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index 026f8347e..0e3b52900 100644
---- a/tests/i915/gem_exec_balancer.c
-+++ b/tests/i915/gem_exec_balancer.c
-@@ -1350,6 +1350,11 @@ static void __bonded_dual(int i915,
- 	*out = cycles;
- }
- 
-+static uint32_t preparser_disable(void)
-+{
-+	return 0x5 << 23 | 1 << 8 | 1; /* preparser masked disable */
-+}
-+
- static uint32_t sync_from(int i915, uint32_t addr, uint32_t target)
- {
- 	uint32_t handle = gem_create(i915, 4096);
-@@ -1363,14 +1368,14 @@ static uint32_t sync_from(int i915, uint32_t addr, uint32_t target)
- 	*cs++ = 0;
- 	*cs++ = 0;
- 
--	*cs++ = MI_NOOP;
-+	*cs++ = preparser_disable();
- 	*cs++ = MI_NOOP;
- 	*cs++ = MI_NOOP;
- 	*cs++ = MI_NOOP;
- 
- 	/* wait for them to cancel us */
- 	*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | 1;
--	*cs++ = addr + 16;
-+	*cs++ = addr + 24;
- 	*cs++ = 0;
- 
- 	/* self-heal */
-@@ -1393,14 +1398,14 @@ static uint32_t sync_to(int i915, uint32_t addr, uint32_t target)
- 
- 	cs = map = gem_mmap__device_coherent(i915, handle, 0, 4096, PROT_WRITE);
- 
--	*cs++ = MI_NOOP;
-+	*cs++ = preparser_disable();
- 	*cs++ = MI_NOOP;
- 	*cs++ = MI_NOOP;
- 	*cs++ = MI_NOOP;
- 
- 	/* wait to be cancelled */
- 	*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | 1;
--	*cs++ = addr;
-+	*cs++ = addr + 8;
- 	*cs++ = 0;
- 
- 	/* cancel their spin as a compliment */
+diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+index 08333afff..ecbec5080 100644
+--- a/tests/intel-ci/blacklist.txt
++++ b/tests/intel-ci/blacklist.txt
+@@ -26,7 +26,7 @@ igt@gem_evict_alignment(@.*)?
+ igt@gem_evict_everything(@.*)?
+ igt@gem_exec_big@(?!.*single).*
+ igt@gem_exec_capture@many-(?!4K-).*
+-igt@gem_exec_fence@(?!.*basic).*
++igt@gem_exec_fence@.*hang.*
+ igt@gem_exec_flush@(?!.*basic).*
+ igt@gem_exec_latency(@.*)?
+ igt@gem_exec_lut_handle(@.*)?
 -- 
-2.27.0.rc2
+2.26.2
 
 _______________________________________________
 igt-dev mailing list
