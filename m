@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 765EF6E326
- for <igt-dev@lists.freedesktop.org>; Mon,  4 May 2020 07:37:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4ADEF6E326
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 May 2020 07:37:58 +0000 (UTC)
 From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Date: Mon, 4 May 2020 10:37:05 +0300
-Message-ID: <20200504073707.268608-1-arkadiusz.hiler@intel.com>
+Date: Mon, 4 May 2020 10:37:07 +0300
+Message-ID: <20200504073707.268608-3-arkadiusz.hiler@intel.com>
+In-Reply-To: <20200504073707.268608-1-arkadiusz.hiler@intel.com>
+References: <20200504073707.268608-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/3] lib: Support multiple filters
+Subject: [igt-dev] [PATCH i-g-t 3/3] test/kms_prime: Use
+ drm_open_driver_another
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,155 +17,262 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhpcyBwYXRjaCBicmluZ3MgYmFjayBzdXBwb3J0IGZvciBtdWx0aXBsZSBmaWx0ZXJzIHRoYXQg
-d2FzIGluIHRoZQpvcmlnaW5hbCBzZXJpZXMgYnkgWmJ5c3play4KCldlIGNhbiBub3cgdGFrZSBt
-dWx0aXBsZSwgc2VtaWNvbG9uIHNlcGFyYXRlZCBmaWx0ZXJzLiBSaWdodCBub3cgdGhlCnRlc3Rz
-IGFyZSB1c2luZyBvbmx5IHRoZSBmaXJzdCBmaWx0ZXIuCgp2MjogZHJvcCB1bm5lY2Vzc2FyeSBj
-aGVjayBiZWZvcmUgZm9yLWxvb3AgKFBldHJpKQoKQ2M6IFBldHJpIExhdHZhbGEgPHBldHJpLmxh
-dHZhbGFAaW50ZWwuY29tPgpDYzogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1w
-Y3p5bnNraUBpbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRp
-dXN6LmhpbGVyQGludGVsLmNvbT4KUmV2aWV3ZWQtYnk6IFBldHJpIExhdHZhbGEgPHBldHJpLmxh
-dHZhbGFAaW50ZWwuY29tPgotLS0KIGxpYi9kcm10ZXN0LmMgICAgICAgICAgfCAgOCArKy0tCiBs
-aWIvaWd0X2NvcmUuYyAgICAgICAgIHwgMTQgKysrLS0tLQogbGliL2lndF9kZXZpY2Vfc2Nhbi5j
-ICB8IDg3ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLQogbGliL2ln
-dF9kZXZpY2Vfc2Nhbi5oICB8ICA4ICsrLS0KIHRlc3RzL2NvcmVfaG90dW5wbHVnLmMgfCAgMyAr
-LQogNSBmaWxlcyBjaGFuZ2VkLCA4MSBpbnNlcnRpb25zKCspLCAzOSBkZWxldGlvbnMoLSkKCmRp
-ZmYgLS1naXQgYS9saWIvZHJtdGVzdC5jIGIvbGliL2RybXRlc3QuYwppbmRleCAxZmMzOTkyNS4u
-N2IyZmQzMzcgMTAwNjQ0Ci0tLSBhL2xpYi9kcm10ZXN0LmMKKysrIGIvbGliL2RybXRlc3QuYwpA
-QCAtMzI0LDggKzMyNCw4IEBAIHN0YXRpYyBib29sIF9fZ2V0X3RoZV9maXJzdF9jYXJkKHN0cnVj
-dCBpZ3RfZGV2aWNlX2NhcmQgKmNhcmQpCiB7CiAJY29uc3QgY2hhciAqZmlsdGVyOwogCi0JaWYg
-KGlndF9kZXZpY2VfaXNfZmlsdGVyX3NldCgpKSB7Ci0JCWZpbHRlciA9IGlndF9kZXZpY2VfZmls
-dGVyX2dldCgpOworCWlmIChpZ3RfZGV2aWNlX2ZpbHRlcl9jb3VudCgpID4gMCkgeworCQlmaWx0
-ZXIgPSBpZ3RfZGV2aWNlX2ZpbHRlcl9nZXQoMCk7CiAJCWlndF9pbmZvKCJMb29raW5nIGZvciBk
-ZXZpY2VzIHRvIG9wZW4gdXNpbmcgZmlsdGVyOiAlc1xuIiwgZmlsdGVyKTsKIAogCQlpZiAoaWd0
-X2RldmljZV9jYXJkX21hdGNoKGZpbHRlciwgY2FyZCkpIHsKQEAgLTM1NCw3ICszNTQsNyBAQCBz
-dGF0aWMgYm9vbCBfX2dldF90aGVfZmlyc3RfY2FyZChzdHJ1Y3QgaWd0X2RldmljZV9jYXJkICpj
-YXJkKQogICovCiBpbnQgX19kcm1fb3Blbl9kcml2ZXIoaW50IGNoaXBzZXQpCiB7Ci0JaWYgKGln
-dF9kZXZpY2VfaXNfZmlsdGVyX3NldCgpKSB7CisJaWYgKGlndF9kZXZpY2VfZmlsdGVyX2NvdW50
-KCkgPiAwKSB7CiAJCWJvb2wgZm91bmQ7CiAJCXN0cnVjdCBpZ3RfZGV2aWNlX2NhcmQgY2FyZDsK
-IApAQCAtMzcxLDcgKzM3MSw3IEBAIGludCBfX2RybV9vcGVuX2RyaXZlcihpbnQgY2hpcHNldCkK
-IAogaW50IF9fZHJtX29wZW5fZHJpdmVyX3JlbmRlcihpbnQgY2hpcHNldCkKIHsKLQlpZiAoaWd0
-X2RldmljZV9pc19maWx0ZXJfc2V0KCkpIHsKKwlpZiAoaWd0X2RldmljZV9maWx0ZXJfY291bnQo
-KSA+IDApIHsKIAkJYm9vbCBmb3VuZDsKIAkJc3RydWN0IGlndF9kZXZpY2VfY2FyZCBjYXJkOwog
-CmRpZmYgLS1naXQgYS9saWIvaWd0X2NvcmUuYyBiL2xpYi9pZ3RfY29yZS5jCmluZGV4IDNmN2I5
-ZjY4Li5iYjhkMDE3NyAxMDA2NDQKLS0tIGEvbGliL2lndF9jb3JlLmMKKysrIGIvbGliL2lndF9j
-b3JlLmMKQEAgLTI0OSw3ICsyNDksNyBAQAogICoJRnJhbWVEdW1wUGF0aD0vdG1wICMgVGhlIHBh
-dGggdG8gZHVtcCBmcmFtZXMgdGhhdCBmYWlsIGNvbXBhcmlzb24gY2hlY2tzCiAgKgogICoJJm51
-bTsgRGV2aWNlIHNlbGVjdGlvbiBmaWx0ZXIKLSAqCURldmljZT1wY2k6dmVuZG9yPTgwODYsY2Fy
-ZD0wO3ZnZW06CisgKglEZXZpY2U9cGNpOnZlbmRvcj04MDg2LGNhcmQ9MDtzeXM6L3N5cy9kZXZp
-Y2VzL3BsYXRmb3JtL3ZnZW0KICAqCiAgKgkmbnVtOyBUaGUgZm9sbG93aW5nIHNlY3Rpb24gaXMg
-dXNlZCBmb3IgY29uZmlndXJpbmcgdGhlIERldmljZSBVbmRlciBUZXN0LgogICoJJm51bTsgSXQg
-aXMgbm90IG1hbmRhdG9yeSBhbmQgYWxsb3dzIG92ZXJyaWRpbmcgZGVmYXVsdCB2YWx1ZXMuCkBA
-IC02ODUsNyArNjg1LDcgQEAgc3RhdGljIHZvaWQgcHJpbnRfdXNhZ2UoY29uc3QgY2hhciAqaGVs
-cF9zdHIsIGJvb2wgb3V0cHV0X29uX3N0ZGVycikKIAkJICAgIiAgLS1za2lwLWNyYy1jb21wYXJl
-XG4iCiAJCSAgICIgIC0taGVscC1kZXNjcmlwdGlvblxuIgogCQkgICAiICAtLWRlc2NyaWJlXG4i
-Ci0JCSAgICIgIC0tZGV2aWNlIGZpbHRlclxuIgorCQkgICAiICAtLWRldmljZSBmaWx0ZXJzXG4i
-CiAJCSAgICIgIC0tdmVyc2lvblxuIgogCQkgICAiICAtLWhlbHB8LWhcbiIpOwogCWlmIChoZWxw
-X3N0cikKQEAgLTc3OCw3ICs3NzgsNyBAQCBzdGF0aWMgdm9pZCBjb21tb25faW5pdF9jb25maWco
-dm9pZCkKIAkJaWd0X3NldF9hdXRvcmVzdW1lX2RlbGF5KHJldCk7CiAKIAkvKiBBZGRpbmcgZmls
-dGVycywgb3JkZXIgLmlndHJjLCBJR1RfREVWSUNFLCAtLWRldmljZSBmaWx0ZXIgKi8KLQlpZiAo
-aWd0X2RldmljZV9pc19maWx0ZXJfc2V0KCkpCisJaWYgKGlndF9kZXZpY2VfZmlsdGVyX2NvdW50
-KCkgPiAwKQogCQlpZ3RfZGVidWcoIk5vdGljZTogdXNpbmcgLS1kZXZpY2UgZmlsdGVyczpcbiIp
-OwogCWVsc2UgewogCQlpZiAoaWd0X3JjX2RldmljZSkgewpAQCAtNzkzLDE0ICs3OTMsMTQgQEAg
-c3RhdGljIHZvaWQgY29tbW9uX2luaXRfY29uZmlnKHZvaWQpCiAJCQkJCSAgIkNvbW1vbjo6RGV2
-aWNlOlxuIik7CiAJCX0KIAkJaWYgKGlndF9yY19kZXZpY2UpIHsKLQkJCWlndF9kZXZpY2VfZmls
-dGVyX3NldChpZ3RfcmNfZGV2aWNlKTsKKwkJCWlndF9kZXZpY2VfZmlsdGVyX2FkZChpZ3RfcmNf
-ZGV2aWNlKTsKIAkJCWZyZWUoaWd0X3JjX2RldmljZSk7CiAJCQlpZ3RfcmNfZGV2aWNlID0gTlVM
-TDsKIAkJfQogCX0KIAotCWlmIChpZ3RfZGV2aWNlX2lzX2ZpbHRlcl9zZXQoKSkKLQkJaWd0X2Rl
-YnVnKCJbJXNdXG4iLCBpZ3RfZGV2aWNlX2ZpbHRlcl9nZXQoKSk7CisJZm9yIChpbnQgaSA9IDA7
-IGkgPCBpZ3RfZGV2aWNlX2ZpbHRlcl9jb3VudCgpOyBpKyspCisJCWlndF9kZWJ1ZygiWyVzXVxu
-IiwgaWd0X2RldmljZV9maWx0ZXJfZ2V0KGkpKTsKIH0KIAogc3RhdGljIHZvaWQgY29tbW9uX2lu
-aXRfZW52KHZvaWQpCkBAIC05OTksNyArOTk5LDcgQEAgc3RhdGljIGludCBjb21tb25faW5pdChp
-bnQgKmFyZ2MsIGNoYXIgKiphcmd2LAogCQkJCWZyZWUoaWd0X3JjX2RldmljZSk7CiAJCQkJaWd0
-X3JjX2RldmljZSA9IE5VTEw7CiAJCQl9Ci0JCQlpZ3RfZGV2aWNlX2ZpbHRlcl9zZXQob3B0YXJn
-KTsKKwkJCWlndF9kZXZpY2VfZmlsdGVyX2FkZChvcHRhcmcpOwogCQkJYnJlYWs7CiAJCWNhc2Ug
-T1BUX1ZFUlNJT046CiAJCQlwcmludF92ZXJzaW9uKCk7CmRpZmYgLS1naXQgYS9saWIvaWd0X2Rl
-dmljZV9zY2FuLmMgYi9saWIvaWd0X2RldmljZV9zY2FuLmMKaW5kZXggMzBhOTcwNGEuLjYwMWQ2
-ZmIwIDEwMDY0NAotLS0gYS9saWIvaWd0X2RldmljZV9zY2FuLmMKKysrIGIvbGliL2lndF9kZXZp
-Y2Vfc2Nhbi5jCkBAIC0xMDE0LDE2ICsxMDE0LDIxIEBAIHZvaWQgaWd0X2RldmljZV9wcmludF9m
-aWx0ZXJfdHlwZXModm9pZCkKIAl9CiB9CiAKLXN0YXRpYyBjaGFyICpkZXZpY2VfZmlsdGVyOwor
-c3RydWN0IGRldmljZV9maWx0ZXIgeworCWNoYXIgZmlsdGVyW05BTUVfTUFYXTsKKwlzdHJ1Y3Qg
-aWd0X2xpc3RfaGVhZCBsaW5rOworfTsKKworc3RhdGljIElHVF9MSVNUX0hFQUQoZGV2aWNlX2Zp
-bHRlcnMpOwogCiAvKioKLSAqIGlndF9kZXZpY2VfaXNfZmlsdGVyX3NldAorICogaWd0X2Rldmlj
-ZV9maWx0ZXJfY291bnQKICAqCi0gKiBSZXR1cm5zIHdoZXRoZXIgd2UgaGF2ZSBhIGZpbHRlciBz
-ZXQuCisgKiBSZXR1cm5zIG51bWJlciBvZiBmaWx0ZXJzIGNvbGxlY3RlZCBpbiB0aGUgZmlsdGVy
-IGxpc3QuCiAgKi8KLWJvb2wgaWd0X2RldmljZV9pc19maWx0ZXJfc2V0KHZvaWQpCitpbnQgaWd0
-X2RldmljZV9maWx0ZXJfY291bnQodm9pZCkKIHsKLQlyZXR1cm4gZGV2aWNlX2ZpbHRlciAhPSBO
-VUxMOworCXJldHVybiBpZ3RfbGlzdF9sZW5ndGgoJmRldmljZV9maWx0ZXJzKTsKIH0KIAogLyog
-Q2hlY2sgZG9lcyBmaWx0ZXIgaXMgdmFsaWQuIEl0IGNoZWNrczoKQEAgLTEwNTQsNDMgKzEwNTks
-NzkgQEAgc3RhdGljIGJvb2wgaXNfZmlsdGVyX3ZhbGlkKGNvbnN0IGNoYXIgKmZzdHIpCiB9CiAK
-IC8qKgotICogaWd0X2RldmljZV9maWx0ZXJfc2V0Ci0gKiBAZmlsdGVyOiBmaWx0ZXIgdGhhdCBz
-aG91bGQgYmUgc2V0IGdsb2JhbGx5CisgKiBpZ3RfZGV2aWNlX2ZpbHRlcl9hZGQKKyAqIEBmaWx0
-ZXJzOiBmaWx0ZXIocykgdG8gYmUgc3RvcmVkIGluIGZpbHRlciBhcnJheQorICoKKyAqIEZ1bmN0
-aW9uIGFsbG93cyBwYXNzaW5nIHNpbmdsZSBvciBtb3JlIGZpbHRlcnMgd2l0aGluIG9uZSBzdHJp
-bmcuIFRoaXMgaXMKKyAqIGZvciBDSSB3aGVuIGl0IGNhbiBleHRyYWN0IGZpbHRlciBmcm9tIGVu
-dmlyb25tZW50IHZhcmlhYmxlIChhbmQgaXQgbXVzdAorICogYmUgc2luZ2xlIHN0cmluZykuIFNv
-IGlmIEBmaWx0ZXIgY29udGFpbnMgc2VtaWNvbG9uICc7JyBpdCB0cmVhdHMKKyAqIGVhY2ggcGFy
-dCBhcyBzZXBhcmF0ZSBmaWx0ZXIgYW5kIGFkZHMgdG8gdGhlIGZpbHRlciBhcnJheS4KKyAqCisg
-KiBSZXR1cm5zIG51bWJlciBvZiBmaWx0ZXJzIGFkZGVkIHRvIGZpbHRlciBhcnJheS4gQ2FuIGJl
-IGdyZWF0ZXIgdGhhbgorICogMSBpZiBAZmlsdGVycyBjb250YWlucyBtb3JlIHRoYW4gb25lIGZp
-bHRlciBzZXBhcmF0ZWQgYnkgc2VtaWNvbG9uLgogICovCi12b2lkIGlndF9kZXZpY2VfZmlsdGVy
-X3NldChjb25zdCBjaGFyICpmaWx0ZXIpCitpbnQgaWd0X2RldmljZV9maWx0ZXJfYWRkKGNvbnN0
-IGNoYXIgKmZpbHRlcnMpCiB7Ci0JaWYgKCFpc19maWx0ZXJfdmFsaWQoZmlsdGVyKSkgewotCQlp
-Z3Rfd2FybigiSW52YWxpZCBmaWx0ZXI6ICVzXG4iLCBmaWx0ZXIpOwotCQlyZXR1cm47CisJY2hh
-ciAqZHVwLCAqZHVwX29yaWcsICpmaWx0ZXI7CisJaW50IGNvdW50ID0gMDsKKworCWR1cCA9IHN0
-cmR1cChmaWx0ZXJzKTsKKwlkdXBfb3JpZyA9IGR1cDsKKworCXdoaWxlICgoZmlsdGVyID0gc3Ry
-c2VwKCZkdXAsICI7IikpKSB7CisJCWJvb2wgaXNfdmFsaWQgPSBpc19maWx0ZXJfdmFsaWQoZmls
-dGVyKTsKKwkJaWd0X3dhcm5fb24oIWlzX3ZhbGlkKTsKKwkJaWYgKGlzX3ZhbGlkKSB7CisJCQlz
-dHJ1Y3QgZGV2aWNlX2ZpbHRlciAqZGYgPSBtYWxsb2Moc2l6ZW9mKCpkZikpOworCQkJc3RybmNw
-eShkZi0+ZmlsdGVyLCBmaWx0ZXIsIHNpemVvZihkZi0+ZmlsdGVyKS0xKTsKKwkJCWlndF9saXN0
-X2FkZF90YWlsKCZkZi0+bGluaywgJmRldmljZV9maWx0ZXJzKTsKKwkJCWNvdW50Kys7CisJCX0K
-IAl9CiAKLQlpZiAoZGV2aWNlX2ZpbHRlciAhPSBOVUxMKQotCQlmcmVlKGRldmljZV9maWx0ZXIp
-OworCWZyZWUoZHVwX29yaWcpOwogCi0JZGV2aWNlX2ZpbHRlciA9IHN0cmR1cChmaWx0ZXIpOwor
-CXJldHVybiBjb3VudDsKIH0KIAogLyoqCi0gKiBpZ3RfZGV2aWNlX2ZpbHRlcl9mcmVlCisgKiBp
-Z3RfZGV2aWNlX2ZpbHRlcl9mcmVlX2FsbAogICoKLSAqIEZyZWUgdGhlIGZpbHRlciB0aGF0IHdl
-IHN0b3JlIGludGVybmFsbHksIGVmZmVjdGl2ZWx5IHVuc2V0dGluZyBpdC4KKyAqIEZyZWUgYWxs
-IGZpbHRlcnMgd2l0aGluIGFycmF5LgogICovCi12b2lkIGlndF9kZXZpY2VfZmlsdGVyX2ZyZWUo
-dm9pZCkKK3ZvaWQgaWd0X2RldmljZV9maWx0ZXJfZnJlZV9hbGwodm9pZCkKIHsKLQlpZiAoZGV2
-aWNlX2ZpbHRlciAhPSBOVUxMKQotCQlmcmVlKGRldmljZV9maWx0ZXIpOworCXN0cnVjdCBkZXZp
-Y2VfZmlsdGVyICpmaWx0ZXIsICp0bXA7CiAKLQlkZXZpY2VfZmlsdGVyID0gTlVMTDsKKwlpZ3Rf
-bGlzdF9mb3JfZWFjaF9lbnRyeV9zYWZlKGZpbHRlciwgdG1wLCAmZGV2aWNlX2ZpbHRlcnMsIGxp
-bmspIHsKKwkJaWd0X2xpc3RfZGVsKCZmaWx0ZXItPmxpbmspOworCQlmcmVlKGZpbHRlcik7CisJ
-fQogfQogCiAvKioKICAqIGlndF9kZXZpY2VfZmlsdGVyX2dldAorICogQG51bTogTnVtYmVyIG9m
-IGZpbHRlciBmcm9tIGZpbHRlciBhcnJheQogICoKLSAqIFJldHVybnMgZmlsdGVyIHN0cmluZyBv
-ciBOVUxMIGlmIG5vdCBzZXQKKyAqIFJldHVybnMgZmlsdGVyIHN0cmluZyBvciBOVUxMIGlmIEBu
-dW0gaXMgb3V0IG9mIHJhbmdlIG9mIGZpbHRlciBhcnJheS4KICAqLwotY29uc3QgY2hhciAqaWd0
-X2RldmljZV9maWx0ZXJfZ2V0KHZvaWQpCitjb25zdCBjaGFyICppZ3RfZGV2aWNlX2ZpbHRlcl9n
-ZXQoaW50IG51bSkKIHsKLQlyZXR1cm4gZGV2aWNlX2ZpbHRlcjsKKwlzdHJ1Y3QgZGV2aWNlX2Zp
-bHRlciAqZmlsdGVyOworCWludCBpID0gMDsKKworCWlmIChudW0gPCAwKQorCQlyZXR1cm4gTlVM
-TDsKKworCisJaWd0X2xpc3RfZm9yX2VhY2hfZW50cnkoZmlsdGVyLCAmZGV2aWNlX2ZpbHRlcnMs
-IGxpbmspIHsKKwkJaWYgKGkgPT0gbnVtKQorCQkJcmV0dXJuIGZpbHRlci0+ZmlsdGVyOworCQlp
-Kys7CisJfQorCisKKwlyZXR1cm4gTlVMTDsKIH0KIAogc3RhdGljIGJvb2wgaWd0X2RldmljZV9m
-aWx0ZXJfYXBwbHkoY29uc3QgY2hhciAqZnN0cikKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZGV2aWNl
-X3NjYW4uaCBiL2xpYi9pZ3RfZGV2aWNlX3NjYW4uaAppbmRleCA0NGM5OWRlYy4uMjRlYWZlNjIg
-MTAwNjQ0Ci0tLSBhL2xpYi9pZ3RfZGV2aWNlX3NjYW4uaAorKysgYi9saWIvaWd0X2RldmljZV9z
-Y2FuLmgKQEAgLTUwLDEwICs1MCwxMCBAQCB2b2lkIGlndF9kZXZpY2VfcHJpbnRfZmlsdGVyX3R5
-cGVzKHZvaWQpOwogICogSUdUIGNhbiBzdG9yZS9yZXRyaWV2ZSBmaWx0ZXJzIHBhc3NlZCBieSB1
-c2VyIHVzaW5nICctLWRldmljZScgYXJncy4KICAqLwogCi1ib29sIGlndF9kZXZpY2VfaXNfZmls
-dGVyX3NldCh2b2lkKTsKLXZvaWQgaWd0X2RldmljZV9maWx0ZXJfc2V0KGNvbnN0IGNoYXIgKmZp
-bHRlcik7Ci12b2lkIGlndF9kZXZpY2VfZmlsdGVyX2ZyZWUodm9pZCk7Ci1jb25zdCBjaGFyICpp
-Z3RfZGV2aWNlX2ZpbHRlcl9nZXQodm9pZCk7CitpbnQgaWd0X2RldmljZV9maWx0ZXJfY291bnQo
-dm9pZCk7CitpbnQgaWd0X2RldmljZV9maWx0ZXJfYWRkKGNvbnN0IGNoYXIgKmZpbHRlcik7Cit2
-b2lkIGlndF9kZXZpY2VfZmlsdGVyX2ZyZWVfYWxsKHZvaWQpOworY29uc3QgY2hhciAqaWd0X2Rl
-dmljZV9maWx0ZXJfZ2V0KGludCBudW0pOwogCiAvKiBVc2UgZmlsdGVyIHRvIG1hdGNoIHRoZSBk
-ZXZpY2UgYW5kIGZpbGwgY2FyZCBzdHJ1Y3R1cmUgKi8KIGJvb2wgaWd0X2RldmljZV9jYXJkX21h
-dGNoKGNvbnN0IGNoYXIgKmZpbHRlciwgc3RydWN0IGlndF9kZXZpY2VfY2FyZCAqY2FyZCk7CmRp
-ZmYgLS1naXQgYS90ZXN0cy9jb3JlX2hvdHVucGx1Zy5jIGIvdGVzdHMvY29yZV9ob3R1bnBsdWcu
-YwppbmRleCBmOWNmYzhjMy4uZGVkNTNmZDUgMTAwNjQ0Ci0tLSBhL3Rlc3RzL2NvcmVfaG90dW5w
-bHVnLmMKKysrIGIvdGVzdHMvY29yZV9ob3R1bnBsdWcuYwpAQCAtMTY3LDcgKzE2Nyw4IEBAIHN0
-YXRpYyB2b2lkIHNldF9maWx0ZXJfZnJvbV9kZXZpY2UoaW50IGZkKQogCXN0cm5jYXQocGF0aCwg
-Ii9kZXZpY2UiLCBQQVRIX01BWCAtIHN0cmxlbihwYXRoKSk7CiAJaWd0X2Fzc2VydChyZWFscGF0
-aChwYXRoLCBkc3QpKTsKIAotCWlndF9kZXZpY2VfZmlsdGVyX3NldChmaWx0ZXIpOworCWlndF9k
-ZXZpY2VfZmlsdGVyX2ZyZWVfYWxsKCk7CisJaWd0X2RldmljZV9maWx0ZXJfYWRkKGZpbHRlcik7
-CiB9CiAKIC8qIFN1YnRlc3RzICovCi0tIAoyLjI1LjIKCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4v
-bGlzdGluZm8vaWd0LWRldgo=
+The test now uses dumb buffers explicitly instead of the vgem helpers.
+
+By default the first two devices that are matching provided chipset requirements
+are used (ANY + VGEM). This is sensitive to enumeration order, but as long as
+there are only two devices it's fine - PRIME will get tested both directions.
+
+IGT-Version: 1.25-g0b58fd8c (x86_64) (Linux: 5.7.0-rc2-CI-CI_DRM_8370+ x86_64)
+Starting subtest: basic-crc
+Starting dynamic subtest: first-to-second
+Test requirement not met in function igt_require_pipe_crc, file ../lib/igt_debugfs.c:522:
+Test requirement: fstatat(dir, "crtc-0/crc/control", &stat, 0) == 0
+CRCs not supported on this platform
+Last errno: 2, No such file or directory
+Dynamic subtest first-to-second: SKIP (0,000s)
+Starting dynamic subtest: second-to-first
+Dynamic subtest second-to-first: SUCCESS (1,779s)
+Subtest basic-crc: SUCCESS (2,024s)
+
+In case there are more than two devices you can specify which ones should be
+used or force ordering, e.g.:
+
+sys:/sys/devices/pci0000:00/0000:00:02.0
+    subsystem       : pci
+    drm card        : /dev/dri/card0
+    drm render      : /dev/dri/renderD128
+    vendor          : 8086
+    device          : 9A49
+
+sys:/sys/devices/platform/vgem
+    subsystem       : platform
+    drm card        : /dev/dri/card1
+    drm render      : /dev/dri/renderD129
+
+IGT-Version: 1.25-g0b58fd8c (x86_64) (Linux: 5.7.0-rc2-CI-CI_DRM_8370+ x86_64)
+Starting subtest: basic-crc
+Looking for devices to open using filter 0: sys:/sys/devices/platform/vgem
+Filter matched /dev/dri/card1 | /dev/dri/renderD129
+Looking for devices to open using filter 1: pci:vendor=Intel
+Filter matched /dev/dri/card0 | /dev/dri/renderD128
+Starting dynamic subtest: first-to-second
+Dynamic subtest first-to-second: SUCCESS (1,978s)
+Starting dynamic subtest: second-to-first
+Test requirement not met in function igt_require_pipe_crc, file ../lib/igt_debugfs.c:522:
+Test requirement: fstatat(dir, "crtc-0/crc/control", &stat, 0) == 0
+CRCs not supported on this platform
+Last errno: 2, No such file or directory
+Dynamic subtest second-to-first: SKIP (0,000s)
+Subtest basic-crc: SUCCESS (2,944s)
+
+Cc: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+---
+ tests/kms_prime.c | 107 +++++++++++++++++++++++++++++-----------------
+ 1 file changed, 67 insertions(+), 40 deletions(-)
+
+diff --git a/tests/kms_prime.c b/tests/kms_prime.c
+index 3241c514..8cb2ca2a 100644
+--- a/tests/kms_prime.c
++++ b/tests/kms_prime.c
+@@ -22,12 +22,19 @@
+  */
+ 
+ #include "igt.h"
+-#include "igt_vgem.h"
++#include "igt_device.h"
+ 
+ #include <sys/ioctl.h>
+ #include <sys/poll.h>
+ #include <time.h>
+ 
++struct dumb_bo {
++	uint32_t handle;
++	uint32_t width, height;
++	uint32_t bpp, pitch;
++	uint64_t size;
++};
++
+ struct crc_info {
+ 	igt_crc_t crc;
+ 	char *str;
+@@ -67,23 +74,24 @@ static bool has_prime_export(int fd)
+ }
+ 
+ static igt_output_t *setup_display(int importer_fd, igt_display_t *display,
+-				   enum pipe pipe)
++				   enum pipe *pipe)
+ {
+ 	igt_output_t *output;
++	bool found = false;
+ 
+-	igt_display_require(display, importer_fd);
+-	igt_skip_on(pipe >= display->n_pipes);
+-	output = igt_get_single_output_for_pipe(display, pipe);
++	for_each_pipe_with_valid_output(display, *pipe, output) {
++		found = true;
++		break;
++	}
+ 
+-	igt_require_f(output, "No connector found for pipe %s\n",
+-		      kmstest_pipe_name(pipe));
++	igt_require_f(found, "No valid connector/pipe found\n");
+ 
+ 	igt_display_reset(display);
+-	igt_output_set_pipe(output, pipe);
++	igt_output_set_pipe(output, *pipe);
+ 	return output;
+ }
+ 
+-static void prepare_scratch(int exporter_fd, struct vgem_bo *scratch,
++static void prepare_scratch(int exporter_fd, struct dumb_bo *scratch,
+ 			    drmModeModeInfo *mode, uint32_t color)
+ {
+ 	uint32_t *ptr;
+@@ -91,16 +99,27 @@ static void prepare_scratch(int exporter_fd, struct vgem_bo *scratch,
+ 	scratch->width = mode->hdisplay;
+ 	scratch->height = mode->vdisplay;
+ 	scratch->bpp = 32;
+-	vgem_create(exporter_fd, scratch);
+ 
+-	ptr = vgem_mmap(exporter_fd, scratch, PROT_WRITE);
++	scratch->handle = kmstest_dumb_create(exporter_fd,
++			scratch->width,
++			scratch->height,
++			scratch->bpp,
++			&scratch->pitch,
++			&scratch->size);
++
++
++	ptr = kmstest_dumb_map_buffer(exporter_fd,
++				      scratch->handle,
++				      scratch->size,
++				      PROT_WRITE);
++
+ 	for (size_t idx = 0; idx < scratch->size / sizeof(*ptr); ++idx)
+ 		ptr[idx] = color;
+ 
+ 	munmap(ptr, scratch->size);
+ }
+ 
+-static void prepare_fb(int importer_fd, struct vgem_bo *scratch, struct igt_fb *fb)
++static void prepare_fb(int importer_fd, struct dumb_bo *scratch, struct igt_fb *fb)
+ {
+ 	enum igt_color_encoding color_encoding = IGT_COLOR_YCBCR_BT709;
+ 	enum igt_color_range color_range = IGT_COLOR_YCBCR_LIMITED_RANGE;
+@@ -126,6 +145,7 @@ static void import_fb(int importer_fd, struct igt_fb *fb,
+ 			    DRM_FORMAT_XRGB8888,
+ 			    handles, pitches, offsets,
+ 			    &fb->fb_id, 0);
++
+ 	igt_assert(ret == 0);
+ }
+ 
+@@ -162,19 +182,19 @@ static void test_crc(int exporter_fd, int importer_fd)
+ 	igt_display_t display;
+ 	igt_output_t *output;
+ 	igt_pipe_crc_t *pipe_crc;
+-	enum pipe pipe = PIPE_A;
++	enum pipe pipe;
+ 	struct igt_fb fb;
+ 	int dmabuf_fd;
+-	struct vgem_bo scratch = {}; /* despite the name, it suits for any
+-				      * gem-compatible device
+-				      * TODO: rename
+-				      */
++	struct dumb_bo scratch = {};
++	bool crc_equal;
+ 	int i, j;
+ 	drmModeModeInfo *mode;
+ 
+-	bool crc_equal = false;
++	igt_device_set_master(importer_fd);
++	igt_require_pipe_crc(importer_fd);
++	igt_display_require(&display, importer_fd);
+ 
+-	output = setup_display(importer_fd, &display, pipe);
++	output = setup_display(importer_fd, &display, &pipe);
+ 
+ 	mode = igt_output_get_mode(output);
+ 	pipe_crc = igt_pipe_crc_new(importer_fd, pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
+@@ -188,6 +208,7 @@ static void test_crc(int exporter_fd, int importer_fd)
+ 		import_fb(importer_fd, &fb, dmabuf_fd, scratch.pitch);
+ 		close(dmabuf_fd);
+ 
++
+ 		colors[i].prime_crc.name = "prime";
+ 		collect_crc_for_fb(importer_fd, &fb, &display, output,
+ 				   pipe_crc, colors[i].color, &colors[i].prime_crc);
+@@ -228,29 +249,35 @@ static void test_crc(int exporter_fd, int importer_fd)
+ 	igt_display_fini(&display);
+ }
+ 
+-static void run_test_crc(int export_chipset, int import_chipset)
+-{
+-	int importer_fd = -1;
+-	int exporter_fd = -1;
+-
+-	exporter_fd = drm_open_driver(export_chipset);
+-	importer_fd = drm_open_driver_master(import_chipset);
+-
+-	igt_require(has_prime_export(exporter_fd));
+-	igt_require(has_prime_import(importer_fd));
+-	igt_require_pipe_crc(importer_fd);
+-
+-	test_crc(exporter_fd, importer_fd);
+-	close(importer_fd);
+-	close(exporter_fd);
+-}
+-
+ igt_main
+ {
+-	igt_fixture {
++	igt_fixture
+ 		kmstest_set_vt_graphics_mode();
++
++	igt_describe("Make a dumb color buffer, export to another device and"
++		     " compare the CRCs with a buffer native to that device");
++	igt_subtest_with_dynamic("basic-crc") {
++		int first_fd = -1;
++		int second_fd = -1;
++
++		/* ANY = anything that is not VGEM */
++		first_fd = __drm_open_driver_another(0, DRIVER_ANY | DRIVER_VGEM);
++		igt_require(first_fd >= 0);
++
++		second_fd = __drm_open_driver_another(1, DRIVER_ANY | DRIVER_VGEM);
++		igt_require(second_fd >= 0);
++
++		if (has_prime_export(first_fd) &&
++		    has_prime_import(second_fd))
++			igt_dynamic("first-to-second")
++				test_crc(first_fd, second_fd);
++
++		if (has_prime_import(first_fd) &&
++		    has_prime_export(second_fd))
++			igt_dynamic("second-to-first")
++				test_crc(second_fd, first_fd);
++
++		close(first_fd);
++		close(second_fd);
+ 	}
+-	igt_describe("Make a dumb buffer inside vgem, fill it, export to another device and compare the CRC");
+-	igt_subtest("basic-crc")
+-		run_test_crc(DRIVER_VGEM, DRIVER_ANY);
+ }
+-- 
+2.25.2
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
