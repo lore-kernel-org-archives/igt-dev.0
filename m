@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC9BA89C83
- for <igt-dev@lists.freedesktop.org>; Mon,  4 May 2020 11:57:03 +0000 (UTC)
-Date: Mon, 4 May 2020 14:56:59 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200504115659.bdp7faed46cfalux@ahiler-desk1.fi.intel.com>
-References: <20200424012605.2279679-1-rodrigosiqueiramelo@gmail.com>
- <158769307213.10802.8234685696201811102@emeril.freedesktop.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <158769307213.10802.8234685696201811102@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_A?=
- =?utf-8?q?dd_support_for_testing_writeback_connectors_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 04 May 2020 12:15:14 -0000
+Message-ID: <158859451483.5816.5672253919574984721@emeril.freedesktop.org>
+References: <20200504112623.285610-1-arkadiusz.hiler@intel.com>
+In-Reply-To: <20200504112623.285610-1-arkadiusz.hiler@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/3=5D_lib/igt=5Fcore=3A_Make_assert_?=
+ =?utf-8?q?on_invalid_magic_blocks_nesting_more_verbose?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,46 +15,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Apr 24, 2020 at 01:51:12AM +0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: Add support for testing writeback connectors (rev2)
-> URL   : https://patchwork.freedesktop.org/series/68352/
-> State : failure
-> 
-> == Summary ==
-> 
-> ERROR! This series introduces new undocumented tests:
-> 
-> kms_writeback
-> 
-> Can you document them as per the requirement in the [CONTRIBUTING.md]?
-> 
-> [Documentation] has more details on how to do this.
-> 
-> Here are few examples:
-> https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-> https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
-> 
-> Thanks in advance!
-> 
-> [CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-> [Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+== Series Details ==
 
-Hey Rodrigo,
+Series: series starting with [i-g-t,1/3] lib/igt_core: Make assert on invalid magic blocks nesting more verbose
+URL   : https://patchwork.freedesktop.org/series/76900/
+State : success
 
-Can you add short test descriptions as explained above?
+== Summary ==
 
--- 
-Cheers,
-Arek
+CI Bug Log - changes from CI_DRM_8417 -> IGTPW_4529
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4529 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@gt_timelines:
+    - fi-bwr-2160:        [PASS][1] -> [INCOMPLETE][2] ([i915#489])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/fi-bwr-2160/igt@i915_selftest@live@gt_timelines.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/fi-bwr-2160/igt@i915_selftest@live@gt_timelines.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-x1275:       [SKIP][3] ([fdo#109271]) -> [FAIL][4] ([i915#62])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#489]: https://gitlab.freedesktop.org/drm/intel/issues/489
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+
+
+Participating hosts (52 -> 44)
+------------------------------
+
+  Missing    (8): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5628 -> IGTPW_4529
+
+  CI-20190529: 20190529
+  CI_DRM_8417: 7f9142d29c789842bd79245dd6623df9f15ba746 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4529: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/index.html
+  IGT_5628: 652a3fd8966345fa5498904ce80a2027a6782783 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
