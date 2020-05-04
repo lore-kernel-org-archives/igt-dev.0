@@ -1,7 +1,7 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon,  4 May 2020 10:52:52 +0100
-Message-Id: <20200504095252.1885585-1-chris@chris-wilson.co.uk>
+Date: Mon,  4 May 2020 20:31:12 +0100
+Message-Id: <20200504193112.2382452-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t] i915/gem_ctx_exec: Exploit resource
  contention to verify execbuf independence
@@ -25,11 +25,11 @@ another client.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/i915/gem_ctx_exec.c | 100 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 99 insertions(+), 1 deletion(-)
+ tests/i915/gem_ctx_exec.c | 122 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 121 insertions(+), 1 deletion(-)
 
 diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
-index ad2f9e545..fbc575cea 100644
+index ad2f9e545..d7cd56424 100644
 --- a/tests/i915/gem_ctx_exec.c
 +++ b/tests/i915/gem_ctx_exec.c
 @@ -35,8 +35,9 @@
@@ -43,25 +43,49 @@ index ad2f9e545..fbc575cea 100644
  #include <sys/time.h>
  
  #include <drm.h>
-@@ -331,6 +332,100 @@ static void nohangcheck_hostile(int i915)
+@@ -331,6 +332,122 @@ static void nohangcheck_hostile(int i915)
  	close(i915);
  }
  
 +static void kill_children(int sig)
 +{
-+	signal(sig, SIG_IGN);
++	sighandler_t old;
++
++	old = signal(sig, SIG_IGN);
 +	kill(-getpgrp(), sig);
-+	signal(sig, SIG_DFL);
++	signal(sig, old);
 +}
 +
-+static void pi_active(int fd)
++static bool has_persistence(int i915)
 +{
-+	igt_spin_t *spin = igt_spin_new(fd);
++	struct drm_i915_gem_context_param p = {
++		.param = I915_CONTEXT_PARAM_PERSISTENCE,
++	};
++	uint64_t saved;
++
++	if (__gem_context_get_param(i915, &p))
++		return false;
++
++	saved = p.value;
++	p.value = 0;
++	if (__gem_context_set_param(i915, &p))
++		return false;
++
++	p.value = saved;
++	return __gem_context_set_param(i915, &p) == 0;
++}
++
++static void pi_active(int i915)
++{
++	igt_spin_t *spin = igt_spin_new(i915);
 +	unsigned long count = 0;
 +	bool blocked = false;
 +	struct pollfd pfd;
 +	int lnk[2];
 +	int *done;
++
++	igt_require(gem_scheduler_enabled(i915));
++	igt_require(has_persistence(i915)); /* for graceful error recovery */
 +
 +	done = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
 +	igt_assert(done != MAP_FAILED);
@@ -71,25 +95,23 @@ index ad2f9e545..fbc575cea 100644
 +	igt_fork(child, 1) {
 +		struct sigaction sa = { .sa_handler = alarm_handler };
 +
-+		igt_unshare_spins();
 +		sigaction(SIGHUP, &sa, NULL);
 +
-+		count = 1;
 +		do {
-+			struct drm_i915_gem_execbuffer2 execbuf;
-+			uint32_t ctx_id;
++			uint32_t ctx;
 +
-+			if (__gem_context_clone(fd, 0,
-+						I915_CONTEXT_CLONE_ENGINES,
-+						0, &ctx_id))
++			if (__gem_context_clone(i915, 0,
++						I915_CONTEXT_CLONE_ENGINES |
++						I915_CONTEXT_CLONE_VM,
++						0, &ctx))
 +				break;
 +
++			gem_context_set_persistence(i915, ctx, false);
 +			if (READ_ONCE(*done))
 +				break;
 +
-+			execbuf = spin->execbuf;
-+			execbuf.rsvd1 = ctx_id;
-+			if (__execbuf(fd, &execbuf))
++			spin->execbuf.rsvd1 = ctx;
++			if (__execbuf(i915, &spin->execbuf))
 +				break;
 +
 +			count++;
@@ -101,7 +123,7 @@ index ad2f9e545..fbc575cea 100644
 +	pfd.events = POLLIN;
 +	close(lnk[1]);
 +
-+	igt_until_timeout(60) {
++	igt_until_timeout(90) {
 +		if (poll(&pfd, 1, 1000) == 0) {
 +			igt_info("Child blocked after %lu active contexts\n",
 +				 count);
@@ -120,7 +142,7 @@ index ad2f9e545..fbc575cea 100644
 +		itv.it_value.tv_usec = 250000; /* 250ms */
 +		setitimer(ITIMER_REAL, &itv, NULL);
 +
-+		igt_assert_f(__execbuf(fd, &spin->execbuf) == 0,
++		igt_assert_f(__execbuf(i915, &spin->execbuf) == 0,
 +			     "Active execbuf blocked for more than 250ms by %lu child contexts\n",
 +			     count);
 +
@@ -135,7 +157,7 @@ index ad2f9e545..fbc575cea 100644
 +	*done = 1;
 +	kill_children(SIGHUP);
 +	igt_waitchildren();
-+	gem_quiescent_gpu(fd);
++	gem_quiescent_gpu(i915);
 +	close(lnk[0]);
 +
 +	munmap(done, 4096);
@@ -144,7 +166,7 @@ index ad2f9e545..fbc575cea 100644
  igt_main
  {
  	const uint32_t batch[2] = { 0, MI_BATCH_BUFFER_END };
-@@ -375,6 +470,9 @@ igt_main
+@@ -375,6 +492,9 @@ igt_main
  	igt_subtest("basic-nohangcheck")
  		nohangcheck_hostile(fd);
  
