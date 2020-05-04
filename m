@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 63AF56E391
- for <igt-dev@lists.freedesktop.org>; Mon,  4 May 2020 11:26:38 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 17F476E391
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 May 2020 11:27:03 +0000 (UTC)
 From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Date: Mon, 4 May 2020 14:26:21 +0300
-Message-ID: <20200504112623.285610-1-arkadiusz.hiler@intel.com>
+Date: Mon, 4 May 2020 14:26:23 +0300
+Message-ID: <20200504112623.285610-3-arkadiusz.hiler@intel.com>
+In-Reply-To: <20200504112623.285610-1-arkadiusz.hiler@intel.com>
+References: <20200504112623.285610-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/3] lib/igt_core: Make assert on invalid
- magic blocks nesting more verbose
+Subject: [igt-dev] [PATCH i-g-t 3/3] lib/tests: Add tests for magic control
+ blocks nesting
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,157 +17,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Instead of ending the execution with cryptic assert let's actually print
-a message explaining the reason and point towards igt_core's documentation.
-
-I am sticking with assert() instead of abort() because of the
-semi-useful stacktraces it produces.
-
-Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
----
- lib/igt_core.c | 55 ++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 42 insertions(+), 13 deletions(-)
-
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index 3f7b9f68..43f0ba8b 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -343,6 +343,21 @@ static bool stderr_needs_sentinel = false;
- 
- static int _igt_dynamic_tests_executed = -1;
- 
-+__attribute__((format(printf, 2, 3)))
-+static void internal_assert(bool cond, const char *format, ...)
-+{
-+	if (!cond) {
-+		va_list ap;
-+
-+		va_start(ap, format);
-+		vfprintf(stderr, format, ap);
-+		va_end(ap);
-+		fprintf(stderr, "please refer to lib/igt_core documentation\n");
-+
-+		assert(0);
-+	}
-+}
-+
- const char *igt_test_name(void)
- {
- 	return command_str;
-@@ -540,8 +555,12 @@ uint64_t igt_nsec_elapsed(struct timespec *start)
- 
- bool __igt_fixture(void)
- {
--	assert(!in_fixture);
--	assert(test_with_subtests);
-+	internal_assert(!in_fixture,
-+			"nesting multiple igt_fixtures is invalid\n");
-+	internal_assert(!in_subtest,
-+			"nesting igt_fixture in igt_subtest is invalid\n");
-+	internal_assert(test_with_subtests,
-+			"igt_fixture in igt_simple_main is invalid\n");
- 
- 	if (igt_only_list_subtests())
- 		return false;
-@@ -1202,7 +1221,9 @@ static bool valid_name_for_subtest(const char *subtest_name)
-  */
- bool __igt_run_subtest(const char *subtest_name, const char *file, const int line)
- {
--	assert(!igt_can_fail());
-+	internal_assert(!igt_can_fail(),
-+			"igt_subtest can be nested only in igt_main"
-+			" or igt_subtest_group\n");
- 
- 	if (!valid_name_for_subtest(subtest_name)) {
- 		igt_critical("Invalid subtest name \"%s\".\n",
-@@ -1257,8 +1278,8 @@ bool __igt_run_subtest(const char *subtest_name, const char *file, const int lin
- 
- bool __igt_run_dynamic_subtest(const char *dynamic_subtest_name)
- {
--	assert(in_subtest);
--	assert(_igt_dynamic_tests_executed >= 0);
-+	internal_assert(in_subtest && _igt_dynamic_tests_executed >= 0,
-+			"igt_dynamic is allowed only inside igt_subtest_with_dynamic\n");
- 
- 	if (!valid_name_for_subtest(dynamic_subtest_name)) {
- 			igt_critical("Invalid dynamic subtest name \"%s\".\n",
-@@ -1311,7 +1332,8 @@ bool igt_only_list_subtests(void)
- 
- void __igt_subtest_group_save(int *save, int *desc)
- {
--	assert(test_with_subtests);
-+	internal_assert(test_with_subtests,
-+			"igt_subtest_group is not allowed in igt_simple_main\n");
- 
- 	if (__current_description[0] != '\0') {
- 		struct description_node *new = calloc(1, sizeof(*new));
-@@ -1414,7 +1436,8 @@ void igt_skip(const char *f, ...)
- 	va_list args;
- 	skipped_one = true;
- 
--	assert(!test_child);
-+	internal_assert(!test_child,
-+			"skips are not allowed in forks\n");
- 
- 	if (!igt_only_list_subtests()) {
- 		va_start(args, f);
-@@ -1427,7 +1450,9 @@ void igt_skip(const char *f, ...)
- 		exit_subtest("SKIP");
- 	} else if (test_with_subtests) {
- 		skip_subtests_henceforth = SKIP;
--		assert(in_fixture);
-+		internal_assert(in_fixture,
-+			"skipping is allowed only in fixtures, subtests"
-+			" or igt_simple_main\n");
- 		__igt_fixture_end();
- 	} else {
- 		igt_exitcode = IGT_EXIT_SKIP;
-@@ -1547,7 +1572,8 @@ void igt_fail(int exitcode)
- 	if (in_subtest) {
- 		exit_subtest("FAIL");
- 	} else {
--		assert(igt_can_fail());
-+		internal_assert(igt_can_fail(), "failing test is only allowed"
-+				" in fixtures, subtests and igt_simple_main");
- 
- 		if (in_fixture) {
- 			skip_subtests_henceforth = FAIL;
-@@ -1612,8 +1638,9 @@ void igt_describe_f(const char *fmt, ...)
- 	int ret;
- 	va_list args;
- 
--	if (in_subtest && _igt_dynamic_tests_executed >= 0)
--		assert(!"Documenting dynamic subsubtests is impossible. Document the subtest instead.");
-+	internal_assert(!in_subtest || _igt_dynamic_tests_executed < 0,
-+			"Documenting dynamic subsubtests is impossible."
-+			" Document the subtest instead.");
- 
- 	if (!describe_subtests)
- 		return;
-@@ -2224,8 +2251,10 @@ static void children_exit_handler(int sig)
- 
- bool __igt_fork(void)
- {
--	assert(!test_with_subtests || in_subtest);
--	assert(!test_child);
-+	internal_assert(!test_with_subtests || in_subtest,
-+			"forking is only allowed in subtests or igt_simple_main\n");
-+	internal_assert(!test_child,
-+			"forking is not allowed from already forked children\n");
- 
- 	igt_install_exit_handler(children_exit_handler);
- 
--- 
-2.25.2
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Q2M6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgpTaWduZWQtb2ZmLWJ5
+OiBBcmthZGl1c3ogSGlsZXIgPGFya2FkaXVzei5oaWxlckBpbnRlbC5jb20+Ci0tLQogbGliL3Rl
+c3RzL2lndF9uZXN0aW5nLmMgICAgICB8IDI2MSArKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKwogbGliL3Rlc3RzL2lndF90ZXN0c19jb21tb24uaCB8ICAgNSArCiBsaWIvdGVzdHMv
+bWVzb24uYnVpbGQgICAgICAgIHwgICAxICsKIDMgZmlsZXMgY2hhbmdlZCwgMjY3IGluc2VydGlv
+bnMoKykKIGNyZWF0ZSBtb2RlIDEwMDY0NCBsaWIvdGVzdHMvaWd0X25lc3RpbmcuYwoKZGlmZiAt
+LWdpdCBhL2xpYi90ZXN0cy9pZ3RfbmVzdGluZy5jIGIvbGliL3Rlc3RzL2lndF9uZXN0aW5nLmMK
+bmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAuLmRlNjc0YjZiCi0tLSAvZGV2L251
+bGwKKysrIGIvbGliL3Rlc3RzL2lndF9uZXN0aW5nLmMKQEAgLTAsMCArMSwyNjEgQEAKKy8qCisg
+KiBDb3B5cmlnaHQgwqkgMjAyMCBJbnRlbCBDb3Jwb3JhdGlvbgorICoKKyAqIFBlcm1pc3Npb24g
+aXMgaGVyZWJ5IGdyYW50ZWQsIGZyZWUgb2YgY2hhcmdlLCB0byBhbnkgcGVyc29uIG9idGFpbmlu
+ZyBhCisgKiBjb3B5IG9mIHRoaXMgc29mdHdhcmUgYW5kIGFzc29jaWF0ZWQgZG9jdW1lbnRhdGlv
+biBmaWxlcyAodGhlICJTb2Z0d2FyZSIpLAorICogdG8gZGVhbCBpbiB0aGUgU29mdHdhcmUgd2l0
+aG91dCByZXN0cmljdGlvbiwgaW5jbHVkaW5nIHdpdGhvdXQgbGltaXRhdGlvbgorICogdGhlIHJp
+Z2h0cyB0byB1c2UsIGNvcHksIG1vZGlmeSwgbWVyZ2UsIHB1Ymxpc2gsIGRpc3RyaWJ1dGUsIHN1
+YmxpY2Vuc2UsCisgKiBhbmQvb3Igc2VsbCBjb3BpZXMgb2YgdGhlIFNvZnR3YXJlLCBhbmQgdG8g
+cGVybWl0IHBlcnNvbnMgdG8gd2hvbSB0aGUKKyAqIFNvZnR3YXJlIGlzIGZ1cm5pc2hlZCB0byBk
+byBzbywgc3ViamVjdCB0byB0aGUgZm9sbG93aW5nIGNvbmRpdGlvbnM6CisgKgorICogVGhlIGFi
+b3ZlIGNvcHlyaWdodCBub3RpY2UgYW5kIHRoaXMgcGVybWlzc2lvbiBub3RpY2UgKGluY2x1ZGlu
+ZyB0aGUgbmV4dAorICogcGFyYWdyYXBoKSBzaGFsbCBiZSBpbmNsdWRlZCBpbiBhbGwgY29waWVz
+IG9yIHN1YnN0YW50aWFsIHBvcnRpb25zIG9mIHRoZQorICogU29mdHdhcmUuCisgKgorICogVEhF
+IFNPRlRXQVJFIElTIFBST1ZJREVEICJBUyBJUyIsIFdJVEhPVVQgV0FSUkFOVFkgT0YgQU5ZIEtJ
+TkQsIEVYUFJFU1MgT1IKKyAqIElNUExJRUQsIElOQ0xVRElORyBCVVQgTk9UIExJTUlURUQgVE8g
+VEhFIFdBUlJBTlRJRVMgT0YgTUVSQ0hBTlRBQklMSVRZLAorICogRklUTkVTUyBGT1IgQSBQQVJU
+SUNVTEFSIFBVUlBPU0UgQU5EIE5PTklORlJJTkdFTUVOVC4gIElOIE5PIEVWRU5UIFNIQUxMCisg
+KiBUSEUgQVVUSE9SUyBPUiBDT1BZUklHSFQgSE9MREVSUyBCRSBMSUFCTEUgRk9SIEFOWSBDTEFJ
+TSwgREFNQUdFUyBPUiBPVEhFUgorICogTElBQklMSVRZLCBXSEVUSEVSIElOIEFOIEFDVElPTiBP
+RiBDT05UUkFDVCwgVE9SVCBPUiBPVEhFUldJU0UsIEFSSVNJTkcKKyAqIEZST00sIE9VVCBPRiBP
+UiBJTiBDT05ORUNUSU9OIFdJVEggVEhFIFNPRlRXQVJFIE9SIFRIRSBVU0UgT1IgT1RIRVIgREVB
+TElOR1MKKyAqIElOIFRIRSBTT0ZUV0FSRS4KKyAqCisgKi8KKworI2luY2x1ZGUgImlndF9jb3Jl
+LmgiCisjaW5jbHVkZSAiaWd0X3Rlc3RzX2NvbW1vbi5oIgorI2luY2x1ZGUgImRybXRlc3QuaCIK
+KworY2hhciB0ZXN0W10gPSAidGVzdCI7CitjaGFyICpmYWtlX2FyZ3ZbXSA9IHsgdGVzdCB9Owor
+aW50IGZha2VfYXJnYyA9IEFSUkFZX1NJWkUoZmFrZV9hcmd2KTsKKworc3RhdGljIHZvaWQgYWxs
+X3ZhbGlkX3NpbXBsZV90ZXN0KHZvaWQpCit7CisJaWd0X3NpbXBsZV9pbml0KGZha2VfYXJnYywg
+ZmFrZV9hcmd2KTsKKworCWlndF9za2lwKCJvOiIpOworCWlndF9hc3NlcnQoZmFsc2UpOworCisJ
+aWd0X2V4aXQoKTsKK30KKworc3RhdGljIHZvaWQgYWxsX3ZhbGlkKHZvaWQpCit7CisJaWd0X3N1
+YnRlc3RfaW5pdChmYWtlX2FyZ2MsIGZha2VfYXJndik7CisKKwlpZ3RfZml4dHVyZSB7CisJfQor
+CisJaWd0X3N1YnRlc3RfZ3JvdXAgeworCQlpZ3Rfc3VidGVzdF9ncm91cCB7CisJCX0KKworCQlp
+Z3RfZml4dHVyZSB7CisJCX0KKworCQlpZ3Rfc3VidGVzdCgiYSIpCisJCXsKKwkJCWlndF9za2lw
+KCJvOlxuIik7CisJCX0KKworCQlpZ3Rfc3VidGVzdCgiYiIpCisJCXsKKwkJCWlndF9hc3NlcnQo
+ZmFsc2UpOworCQl9CisKKwkJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJjIikgeworCQkJaWd0
+X2R5bmFtaWMoImQiKQorCQkJeworCQkJCWlndF9za2lwKCJvOlxuIik7CisJCQl9CisKKwkJCWln
+dF9keW5hbWljKCJlIikKKwkJCXsKKwkJCQlpZ3RfYXNzZXJ0KGZhbHNlKTsKKwkJCX0KKwkJfQor
+CisJCWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygiZiIpIHsKKwkJCWlndF9za2lwKCJvOlxuIik7
+CisJCX0KKworCQlpZ3Rfc3VidGVzdF93aXRoX2R5bmFtaWMoImciKSB7CisJCX0KKwl9CisKKwlp
+Z3RfZXhpdCgpOworfQorCitzdGF0aWMgdm9pZCBpbnZhbGlkX3N1YnRlc3RfaW5fc2ltcGxlX3Rl
+c3Qodm9pZCkKK3sKKwlpZ3Rfc2ltcGxlX2luaXQoZmFrZV9hcmdjLCBmYWtlX2FyZ3YpOworCisJ
+aWd0X3N1YnRlc3QoImEiKSB7CisJfQorCisJaWd0X2V4aXQoKTsKK30KKworc3RhdGljIHZvaWQg
+aW52YWxpZF9zdWJ0ZXN0X2dyb3VwX2luX3NpbXBsZV90ZXN0KHZvaWQpCit7CisJaWd0X3NpbXBs
+ZV9pbml0KGZha2VfYXJnYywgZmFrZV9hcmd2KTsKKworCWlndF9zdWJ0ZXN0X2dyb3VwIHsKKwl9
+CisKKwlpZ3RfZXhpdCgpOworfQorCitzdGF0aWMgdm9pZCBpbnZhbGlkX3N1YnRlc3Rfd2l0aF9k
+eW5hbWljX2luX3NpbXBsZV90ZXN0KHZvaWQpCit7CisJaWd0X3NpbXBsZV9pbml0KGZha2VfYXJn
+YywgZmFrZV9hcmd2KTsKKworCWlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygiYSIpIHsKKwl9CisK
+KwlpZ3RfZXhpdCgpOworfQorCitzdGF0aWMgdm9pZCBpbnZhbGlkX2R5bmFtaWNfaW5fc2ltcGxl
+X3Rlc3Qodm9pZCkKK3sKKwlpZ3Rfc2ltcGxlX2luaXQoZmFrZV9hcmdjLCBmYWtlX2FyZ3YpOwor
+CisJaWd0X2R5bmFtaWMoImEiKSB7CisJfQorCisJaWd0X2V4aXQoKTsKK30KKworc3RhdGljIHZv
+aWQgaW52YWxpZF9maXh0dXJlX2luX2ZpeHR1cmUodm9pZCkKK3sKKwlpZ3Rfc3VidGVzdF9pbml0
+KGZha2VfYXJnYywgZmFrZV9hcmd2KTsKKworCWlndF9maXh0dXJlIHsKKwkJaWd0X2ZpeHR1cmUg
+eworCQl9CisJfQorCisJaWd0X2V4aXQoKTsKK30KKworc3RhdGljIHZvaWQgaW52YWxpZF9zdWJ0
+ZXN0X2luX3N1YnRlc3Qodm9pZCkKK3sKKwlpZ3Rfc3VidGVzdF9pbml0KGZha2VfYXJnYywgZmFr
+ZV9hcmd2KTsKKworCWlndF9zdWJ0ZXN0KCJhIikgeworCQlpZ3Rfc3VidGVzdCgiYiIpIHsKKwkJ
+fQorCX0KKworCWlndF9leGl0KCk7Cit9CisKK3N0YXRpYyB2b2lkIGludmFsaWRfdG9wX2xldmVs
+X2R5bmFtaWModm9pZCkKK3sKKwlpZ3Rfc3VidGVzdF9pbml0KGZha2VfYXJnYywgZmFrZV9hcmd2
+KTsKKworCWlndF9keW5hbWljKCJhIikgeworCX0KKworCWlndF9leGl0KCk7Cit9CisKK3N0YXRp
+YyB2b2lkIGludmFsaWRfZHluYW1pY19pbl9yZWd1bGFyX3N1YnRlc3Qodm9pZCkKK3sKKwlpZ3Rf
+c3VidGVzdF9pbml0KGZha2VfYXJnYywgZmFrZV9hcmd2KTsKKworCWlndF9zdWJ0ZXN0KCJhIikg
+eworCQlpZ3RfZHluYW1pYygiYiIpIHsKKwkJfQorCX0KKworCWlndF9leGl0KCk7Cit9CisKK3N0
+YXRpYyB2b2lkIGludmFsaWRfZml4dHVyZV9pbl9zdWJ0ZXN0KHZvaWQpCit7CisJaWd0X3N1YnRl
+c3RfaW5pdChmYWtlX2FyZ2MsIGZha2VfYXJndik7CisKKwlpZ3Rfc3VidGVzdCgiYSIpIHsKKwkJ
+aWd0X2ZpeHR1cmUgeworCQl9CisJfQorCisJaWd0X2V4aXQoKTsKK30KKworc3RhdGljIHZvaWQg
+aW52YWxpZF90b3BfbGV2ZWxfc2tpcCh2b2lkKQoreworCWlndF9zdWJ0ZXN0X2luaXQoZmFrZV9h
+cmdjLCBmYWtlX2FyZ3YpOworCisJaWd0X3NraXAoIm86XG4iKTsKKworCWlndF9leGl0KCk7Cit9
+CisKK3N0YXRpYyB2b2lkIGludmFsaWRfdG9wX2xldmVsX2Fzc2VydCh2b2lkKQoreworCWlndF9z
+dWJ0ZXN0X2luaXQoZmFrZV9hcmdjLCBmYWtlX2FyZ3YpOworCisJaWd0X2Fzc2VydChmYWxzZSk7
+CisKKwlpZ3RfZXhpdCgpOworfQorCitzdGF0aWMgdm9pZCBpbnZhbGlkX2R5bmFtaWNfaW5fZHlu
+YW1pYyh2b2lkKQoreworCWlndF9zdWJ0ZXN0X2luaXQoZmFrZV9hcmdjLCBmYWtlX2FyZ3YpOwor
+CisJaWd0X3N1YnRlc3Rfd2l0aF9keW5hbWljKCJhIikgeworCQlpZ3RfZHluYW1pYygiYiIpIHsK
+KwkJCWlndF9keW5hbWljKCJjIikgeworCQkJfQorCQl9CisJfQorCisJaWd0X2V4aXQoKTsKK30K
+KwordHlwZWRlZiB2b2lkICgqZm9ya19mdW4pKHZvaWQpOworCitpbnQgbWFpbihpbnQgYXJnYywg
+Y2hhciAqKmFyZ3YpCit7CisJaW50IHN0YXR1czsKKworCS8qIHRlc3QgdGhlIGludmFsaWQgbmVz
+dGluZyBzY2VuYXJpb3MgKi8geworCQlmb3JrX2Z1biBzaG91bGRfc2lnYWJvcnRbXSA9IHsKKwkJ
+CWludmFsaWRfc3VidGVzdF9pbl9zaW1wbGVfdGVzdCwKKwkJCWludmFsaWRfc3VidGVzdF9ncm91
+cF9pbl9zaW1wbGVfdGVzdCwKKwkJCWludmFsaWRfc3VidGVzdF93aXRoX2R5bmFtaWNfaW5fc2lt
+cGxlX3Rlc3QsCisJCQlpbnZhbGlkX2R5bmFtaWNfaW5fc2ltcGxlX3Rlc3QsCisJCQlpbnZhbGlk
+X2ZpeHR1cmVfaW5fZml4dHVyZSwKKwkJCWludmFsaWRfc3VidGVzdF9pbl9zdWJ0ZXN0LAorCQkJ
+aW52YWxpZF90b3BfbGV2ZWxfZHluYW1pYywKKwkJCWludmFsaWRfZHluYW1pY19pbl9yZWd1bGFy
+X3N1YnRlc3QsCisJCQlpbnZhbGlkX2ZpeHR1cmVfaW5fc3VidGVzdCwKKwkJCWludmFsaWRfdG9w
+X2xldmVsX3NraXAsCisJCQlpbnZhbGlkX3RvcF9sZXZlbF9hc3NlcnQsCisJCQlpbnZhbGlkX2R5
+bmFtaWNfaW5fZHluYW1pYywKKwkJfTsKKworCQlmb3IgKGludCBpID0gMDsgaSA8IEFSUkFZX1NJ
+WkUoc2hvdWxkX3NpZ2Fib3J0KTsgKytpKSB7CisJCQlzdGF0dXMgPSBkb19mb3JrKHNob3VsZF9z
+aWdhYm9ydFtpXSk7CisJCQlpbnRlcm5hbF9hc3NlcnRfd3NpZ25hbGVkKHN0YXR1cywgU0lHQUJS
+VCk7CisJCX0KKwl9CisKKwkvKiB0ZXN0IHRoZSB2YWxpZCBuZXN0aW5nIHNjZW5hcmlvcyAqLyB7
+CisJCWZvcmtfZnVuIHNob3VsZF9ub3Rfc2lnbmFsW10gPSB7CisJCQlhbGxfdmFsaWRfc2ltcGxl
+X3Rlc3QsCisJCQlhbGxfdmFsaWQsCisJCX07CisKKwkJZm9yIChpbnQgaSA9IDA7IGkgPCBBUlJB
+WV9TSVpFKHNob3VsZF9ub3Rfc2lnbmFsKTsgKytpKSB7CisJCQlzdGF0dXMgPSBkb19mb3JrKHNo
+b3VsZF9ub3Rfc2lnbmFsW2ldKTsKKwkJCWludGVybmFsX2Fzc2VydF9ub3Rfd3NpZ25hbGVkKHN0
+YXR1cyk7CisJCX0KKwl9CisKKwlyZXR1cm4gMDsKK30KZGlmZiAtLWdpdCBhL2xpYi90ZXN0cy9p
+Z3RfdGVzdHNfY29tbW9uLmggYi9saWIvdGVzdHMvaWd0X3Rlc3RzX2NvbW1vbi5oCmluZGV4IGYy
+ODVkNjU3Li5mYThhZDkyMCAxMDA2NDQKLS0tIGEvbGliL3Rlc3RzL2lndF90ZXN0c19jb21tb24u
+aAorKysgYi9saWIvdGVzdHMvaWd0X3Rlc3RzX2NvbW1vbi5oCkBAIC01MSw2ICs1MSwxMSBAQCBz
+dGF0aWMgaW5saW5lIHZvaWQgaW50ZXJuYWxfYXNzZXJ0X3dzaWduYWxlZChpbnQgd3N0YXR1cywg
+aW50IHNpZ25hbCkKIAkJCVdURVJNU0lHKHdzdGF0dXMpID09IHNpZ25hbCk7CiB9CiAKK3N0YXRp
+YyBpbmxpbmUgdm9pZCBpbnRlcm5hbF9hc3NlcnRfbm90X3dzaWduYWxlZChpbnQgd3N0YXR1cykK
+K3sKKwlpbnRlcm5hbF9hc3NlcnQoIVdJRlNJR05BTEVEKHdzdGF0dXMpKTsKK30KKwogc3RhdGlj
+IGlubGluZSBpbnQgZG9fZm9yayh2b2lkICgqdGVzdF90b19ydW4pKHZvaWQpKQogewogCWludCBw
+aWQsIHN0YXR1czsKZGlmZiAtLWdpdCBhL2xpYi90ZXN0cy9tZXNvbi5idWlsZCBiL2xpYi90ZXN0
+cy9tZXNvbi5idWlsZAppbmRleCAyMmFhMTlkYS4uNDdlZjMwM2EgMTAwNjQ0Ci0tLSBhL2xpYi90
+ZXN0cy9tZXNvbi5idWlsZAorKysgYi9saWIvdGVzdHMvbWVzb24uYnVpbGQKQEAgLTEyLDYgKzEy
+LDcgQEAgbGliX3Rlc3RzID0gWwogCSdpZ3RfZm9ya19oZWxwZXInLAogCSdpZ3RfbGlzdF9vbmx5
+JywKIAknaWd0X2ludmFsaWRfc3VidGVzdF9uYW1lJywKKwknaWd0X25lc3RpbmcnLAogCSdpZ3Rf
+bm9fZXhpdCcsCiAJJ2lndF9zZWdmYXVsdCcsCiAJJ2lndF9zaW11bGF0aW9uJywKLS0gCjIuMjUu
+MgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRl
+diBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0
+cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
