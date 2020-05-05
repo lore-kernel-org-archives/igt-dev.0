@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5DBC6897E4
- for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2020 07:41:28 +0000 (UTC)
-Date: Tue, 5 May 2020 10:41:25 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200505074125.GO9497@platvala-desk.ger.corp.intel.com>
-References: <20200428202255.31309-1-juhapekka.heikkila@gmail.com>
- <20200428202255.31309-8-juhapekka.heikkila@gmail.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFBC76E581
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2020 08:52:28 +0000 (UTC)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200428202255.31309-8-juhapekka.heikkila@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 7/7] tests/gem_eio: switch to using
- igt_params_set()
+In-Reply-To: <20200502080902.1536701-1-chris@chris-wilson.co.uk>
+References: <20200502080902.1536701-1-chris@chris-wilson.co.uk>
+From: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Date: Tue, 05 May 2020 11:52:23 +0300
+Message-ID: <158866874381.6429.5564141674654634518@jlahtine-desk.ger.corp.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] intel-ci: Only skip the hanging
+ gem_exec_fence tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,233 +21,33 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Apr 28, 2020 at 11:22:55PM +0300, Juha-Pekka Heikkila wrote:
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-
-
-> ---
->  tests/i915/gem_eio.c | 57 +++++++++++++++++++-------------------------
->  1 file changed, 24 insertions(+), 33 deletions(-)
+Quoting Chris Wilson (2020-05-02 11:09:02)
+> gem_exec_fence includes a bunch of functional syncobj tests that are
+> currently being skipped due to an eagerness to avoid the intentionally
+> very slow hang tests.
 > 
-> diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
-> index 1ec60941..ad59f83a 100644
-> --- a/tests/i915/gem_eio.c
-> +++ b/tests/i915/gem_eio.c
-> @@ -52,20 +52,11 @@
->  
->  IGT_TEST_DESCRIPTION("Test that specific ioctls report a wedged GPU (EIO).");
->  
-> -static bool i915_reset_control(bool enable)
-> +static bool i915_reset_control(int fd, bool enable)
->  {
-> -	const char *path = "/sys/module/i915/parameters/reset";
-> -	int fd, ret;
-> -
->  	igt_debug("%s GPU reset\n", enable ? "Enabling" : "Disabling");
->  
-> -	fd = open(path, O_RDWR);
-> -	igt_require(fd >= 0);
-> -
-> -	ret = write(fd, &"01"[enable], 1) == 1;
-> -	close(fd);
-> -
-> -	return ret;
-> +	return igt_params_set(fd, "reset", "%d", enable);
->  }
->  
->  static void trigger_reset(int fd)
-> @@ -106,9 +97,9 @@ static void wedge_gpu(int fd)
->  	/* First idle the GPU then disable GPU resets before injecting a hang */
->  	gem_quiescent_gpu(fd);
->  
-> -	igt_require(i915_reset_control(false));
-> +	igt_require(i915_reset_control(fd, false));
->  	manual_hang(fd);
-> -	igt_assert(i915_reset_control(true));
-> +	igt_assert(i915_reset_control(fd, true));
->  }
->  
->  static int __gem_throttle(int fd)
-> @@ -346,7 +337,7 @@ static void __test_banned(int fd)
->  	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
->  
->  	gem_quiescent_gpu(fd);
-> -	igt_require(i915_reset_control(true));
-> +	igt_require(i915_reset_control(fd, true));
->  
->  	igt_until_timeout(5) {
->  		igt_spin_t *hang;
-> @@ -404,9 +395,9 @@ static void test_wait(int fd, unsigned int flags, unsigned int wait)
->  	 */
->  
->  	if (flags & TEST_WEDGE)
-> -		igt_require(i915_reset_control(false));
-> +		igt_require(i915_reset_control(fd, false));
->  	else
-> -		igt_require(i915_reset_control(true));
-> +		igt_require(i915_reset_control(fd, true));
->  
->  	hang = spin_sync(fd, 0, I915_EXEC_DEFAULT);
->  
-> @@ -415,7 +406,7 @@ static void test_wait(int fd, unsigned int flags, unsigned int wait)
->  
->  	igt_spin_free(fd, hang);
->  
-> -	igt_require(i915_reset_control(true));
-> +	igt_require(i915_reset_control(fd, true));
->  
->  	trigger_reset(fd);
->  	close(fd);
-> @@ -430,12 +421,12 @@ static void test_suspend(int fd, int state)
->  	igt_system_suspend_autoresume(state, SUSPEND_TEST_DEVICES);
->  
->  	/* Check we can suspend when the driver is already wedged */
-> -	igt_require(i915_reset_control(false));
-> +	igt_require(i915_reset_control(fd, false));
->  	manual_hang(fd);
->  
->  	igt_system_suspend_autoresume(state, SUSPEND_TEST_DEVICES);
->  
-> -	igt_require(i915_reset_control(true));
-> +	igt_require(i915_reset_control(fd, true));
->  	trigger_reset(fd);
->  	close(fd);
->  }
-> @@ -470,7 +461,7 @@ static void test_inflight(int fd, unsigned int wait)
->  
->  		gem_quiescent_gpu(fd);
->  		igt_debug("Starting %s on engine '%s'\n", __func__, e->name);
-> -		igt_require(i915_reset_control(false));
-> +		igt_require(i915_reset_control(fd, false));
->  
->  		hang = spin_sync(fd, 0, eb_ring(e));
->  		obj[0].handle = hang->handle;
-> @@ -495,7 +486,7 @@ static void test_inflight(int fd, unsigned int wait)
->  		}
->  		igt_spin_free(fd, hang);
->  
-> -		igt_assert(i915_reset_control(true));
-> +		igt_assert(i915_reset_control(fd, true));
->  		trigger_reset(fd);
->  
->  		gem_close(fd, obj[1].handle);
-> @@ -520,7 +511,7 @@ static void test_inflight_suspend(int fd)
->  	fd = gem_reopen_driver(fd);
->  	igt_require_gem(fd);
->  	igt_require(gem_has_exec_fence(fd));
-> -	igt_require(i915_reset_control(false));
-> +	igt_require(i915_reset_control(fd, false));
->  
->  	memset(obj, 0, sizeof(obj));
->  	obj[0].flags = EXEC_OBJECT_WRITE;
-> @@ -553,7 +544,7 @@ static void test_inflight_suspend(int fd)
->  	}
->  	igt_spin_free(fd, hang);
->  
-> -	igt_assert(i915_reset_control(true));
-> +	igt_assert(i915_reset_control(fd, true));
->  	trigger_reset(fd);
->  	close(fd);
->  }
-> @@ -601,7 +592,7 @@ static void test_inflight_contexts(int fd, unsigned int wait)
->  		gem_quiescent_gpu(fd);
->  
->  		igt_debug("Starting %s on engine '%s'\n", __func__, e->name);
-> -		igt_require(i915_reset_control(false));
-> +		igt_require(i915_reset_control(fd, false));
->  
->  		memset(obj, 0, sizeof(obj));
->  		obj[0].flags = EXEC_OBJECT_WRITE;
-> @@ -636,7 +627,7 @@ static void test_inflight_contexts(int fd, unsigned int wait)
->  		igt_spin_free(fd, hang);
->  		gem_close(fd, obj[1].handle);
->  
-> -		igt_assert(i915_reset_control(true));
-> +		igt_assert(i915_reset_control(fd, true));
->  		trigger_reset(fd);
->  
->  		for (unsigned int n = 0; n < ARRAY_SIZE(ctx); n++)
-> @@ -663,7 +654,7 @@ static void test_inflight_external(int fd)
->  
->  	fence = igt_cork_plug(&cork, fd);
->  
-> -	igt_require(i915_reset_control(false));
-> +	igt_require(i915_reset_control(fd, false));
->  	hang = __spin_poll(fd, 0, 0);
->  
->  	memset(&obj, 0, sizeof(obj));
-> @@ -695,7 +686,7 @@ static void test_inflight_external(int fd)
->  	close(fence);
->  
->  	igt_spin_free(fd, hang);
-> -	igt_assert(i915_reset_control(true));
-> +	igt_assert(i915_reset_control(fd, true));
->  	trigger_reset(fd);
->  	close(fd);
->  }
-> @@ -714,7 +705,7 @@ static void test_inflight_internal(int fd, unsigned int wait)
->  	fd = gem_reopen_driver(fd);
->  	igt_require_gem(fd);
->  
-> -	igt_require(i915_reset_control(false));
-> +	igt_require(i915_reset_control(fd, false));
->  	hang = spin_sync(fd, 0, 0);
->  
->  	memset(obj, 0, sizeof(obj));
-> @@ -745,7 +736,7 @@ static void test_inflight_internal(int fd, unsigned int wait)
->  	}
->  	igt_spin_free(fd, hang);
->  
-> -	igt_assert(i915_reset_control(true));
-> +	igt_assert(i915_reset_control(fd, true));
->  	trigger_reset(fd);
->  	close(fd);
->  }
-> @@ -781,7 +772,7 @@ static void reset_stress(int fd, uint32_t ctx0,
->  
->  		gem_quiescent_gpu(fd);
->  
-> -		igt_require(i915_reset_control(flags & TEST_WEDGE ?
-> +		igt_require(i915_reset_control(fd, flags & TEST_WEDGE ?
->  					       false : true));
->  
->  		/*
-> @@ -803,7 +794,7 @@ static void reset_stress(int fd, uint32_t ctx0,
->  		igt_assert_eq(sync_fence_status(hang->out_fence), -EIO);
->  
->  		/* Unwedge by forcing a reset. */
-> -		igt_assert(i915_reset_control(true));
-> +		igt_assert(i915_reset_control(fd, true));
->  		trigger_reset(fd);
->  
->  		gem_quiescent_gpu(fd);
-> @@ -918,7 +909,7 @@ static int fd = -1;
->  static void
->  exit_handler(int sig)
->  {
-> -	i915_reset_control(true);
-> +	i915_reset_control(fd, true);
->  	igt_force_gpu_reset(fd);
->  }
->  
-> @@ -933,7 +924,7 @@ igt_main
->  
->  		igt_allow_hang(fd, 0, 0);
->  
-> -		igt_require(i915_reset_control(true));
-> +		igt_require(i915_reset_control(fd, true));
->  		igt_force_gpu_reset(fd);
->  		igt_install_exit_handler(exit_handler);
->  	}
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+
+Reviewed-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+
+Regards, Joonas
+
+> +++ b/tests/intel-ci/blacklist.txt
+> @@ -26,7 +26,7 @@ igt@gem_evict_alignment(@.*)?
+>  igt@gem_evict_everything(@.*)?
+>  igt@gem_exec_big@(?!.*single).*
+>  igt@gem_exec_capture@many-(?!4K-).*
+> -igt@gem_exec_fence@(?!.*basic).*
+> +igt@gem_exec_fence@.*hang.*
+>  igt@gem_exec_flush@(?!.*basic).*
+>  igt@gem_exec_latency(@.*)?
+>  igt@gem_exec_lut_handle(@.*)?
 > -- 
-> 2.26.0
+> 2.26.2
 > 
 > _______________________________________________
 > igt-dev mailing list
