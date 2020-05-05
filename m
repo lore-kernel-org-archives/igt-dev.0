@@ -1,12 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 523456E351
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2020 14:09:19 +0000 (UTC)
+Date: Tue, 5 May 2020 17:09:12 +0300
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20200505140912.pqtw6yyplacaop5u@ahiler-desk1.fi.intel.com>
+References: <20200428202255.31309-1-juhapekka.heikkila@gmail.com>
+ <20200428202255.31309-6-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 05 May 2020 14:11:11 -0000
-Message-ID: <158868787165.25913.12190970803031643183@emeril.freedesktop.org>
-References: <20200505132032.827-1-anshuman.gupta@intel.com>
-In-Reply-To: <20200505132032.827-1-anshuman.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbHBzcCBw?=
- =?utf-8?q?latform_agnostic_support_=28rev9=29?=
+Content-Disposition: inline
+In-Reply-To: <20200428202255.31309-6-juhapekka.heikkila@gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 5/7] igt/params: add generic saving
+ module parameter set
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,91 +19,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anshuman Gupta <anshuman.gupta@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Tue, Apr 28, 2020 at 11:22:53PM +0300, Juha-Pekka Heikkila wrote:
+> From: Jani Nikula <jani.nikula@intel.com>
+> 
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>  lib/igt_params.c | 57 ++++++++++++++++++++++++++++++++++++++++--------
+>  lib/igt_params.h |  3 +++
+>  2 files changed, 51 insertions(+), 9 deletions(-)
+> 
+> diff --git a/lib/igt_params.c b/lib/igt_params.c
+> index fe4b1df3..d9cf986c 100644
+> --- a/lib/igt_params.c
+> +++ b/lib/igt_params.c
+> @@ -153,6 +153,29 @@ int igt_params_open(int device)
+>  	return __igt_params_open(device, NULL);
+>  }
+>  
+> +__attribute__((format(printf, 3, 0)))
 
-Series: lpsp platform agnostic support (rev9)
-URL   : https://patchwork.freedesktop.org/series/74647/
-State : success
+this is using a va_list, not "...", so this format attirbue should not
+be here
 
-== Summary ==
+> +static bool __igt_params_set(int device, const char *parameter,
+> +			     const char *fmt, va_list ap, bool save)
+> +{
+> +	char *path = NULL;
+> +	int dir;
+> +	int ret;
+> +
+> +	dir = __igt_params_open(device, save ? &path : NULL);
+> +	if (dir < 0)
+> +		return false;
+> +
+> +	if (save)
+> +		igt_params_save(dir, path, parameter);
+> +
+> +	ret = igt_sysfs_vprintf(dir, parameter, fmt, ap);
+> +
+> +	close(dir);
+> +	free(path);
+> +
+> +	return ret > 0;
+> +}
+> +
+>  /**
+>   * igt_params_set:
+>   * @device: fd of the device
+> @@ -164,20 +187,36 @@ int igt_params_open(int device)
+>  bool igt_params_set(int device, const char *parameter, const char *fmt, ...)
+>  {
+>  	va_list ap;
+> -	int dir;
+> -	int ret;
+> -
+> -	dir = igt_params_open(device);
+> -	if (dir < 0)
+> -		return false;
+> +	bool ret;
+>  
+>  	va_start(ap, fmt);
+> -	ret = igt_sysfs_vprintf(dir, parameter, fmt, ap);
+> +	ret = __igt_params_set(device, parameter, fmt, ap, false);
+>  	va_end(ap);
+>  
+> -	close(dir);
+> +	return ret;
+> +}
+>  
+> -	return ret > 0;
+> +/**
+> + * igt_params_set_save:
+> + * @device: fd of the device or -1 to default to first matching starting from
+> + *	    zero. See __igt_params_open()
+> + * @parameter: the name of the parameter to set
+> + * @fmt: printf-esque format string
+> + *
+> + * Save the original value to be restored.
 
-CI Bug Log - changes from IGT_5633 -> IGTPW_4534
-====================================================
+this needs a bit more explanation
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4534/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4534 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-8809g:       [PASS][1] -> [SKIP][2] ([fdo#109271])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5633/fi-kbl-8809g/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4534/fi-kbl-8809g/igt@i915_pm_rpm@module-reload.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_pm:
-    - fi-bwr-2160:        [INCOMPLETE][3] ([i915#489]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5633/fi-bwr-2160/igt@i915_selftest@live@gt_pm.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4534/fi-bwr-2160/igt@i915_selftest@live@gt_pm.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#489]: https://gitlab.freedesktop.org/drm/intel/issues/489
+1. mention that it's basically _params_save followed by _params_set
+2. mention that the value is resoted by atexit handler, but refer to the
+   _params_save for details
 
 
-Participating hosts (50 -> 43)
-------------------------------
+> + *
+> + * Returns true on success
+> + */
+> +bool igt_params_set_save(int device, const char *parameter, const char *fmt, ...)
 
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+_save_and_set
 
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5633 -> IGTPW_4534
-
-  CI-20190529: 20190529
-  CI_DRM_8430: 2daa6f8cad645f49a898158190a20a893b4aabe3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4534: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4534/index.html
-  IGT_5633: c8c2e5ed5cd8e4b7a69a903f3f1653612086abcc @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@i915_pm_lpsp@kms-lpsp
--igt@i915_pm_lpsp@edp-native
--igt@i915_pm_lpsp@edp-panel-fitter
--igt@i915_pm_lpsp@non-edp
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4534/index.html
+-- 
+Cheers,
+Arek
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
