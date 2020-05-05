@@ -1,13 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com
+ [IPv6:2a00:1450:4864:20::443])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E622D89791
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2020 18:44:12 +0000 (UTC)
+Received: by mail-wr1-x443.google.com with SMTP id h9so4018260wrt.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 05 May 2020 11:44:12 -0700 (PDT)
+References: <20200428202255.31309-1-juhapekka.heikkila@gmail.com>
+ <20200428202255.31309-5-juhapekka.heikkila@gmail.com>
+ <20200505070719.GL9497@platvala-desk.ger.corp.intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <b7cb48ba-ff54-fdb0-fd22-38466a0ec74e@gmail.com>
+Date: Tue, 5 May 2020 21:44:05 +0300
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 05 May 2020 15:00:27 -0000
-Message-ID: <158869082768.25912.9223175059714999899@emeril.freedesktop.org>
-References: <20200505133836.2873640-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200505133836.2873640-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_lib/i915=3A_Report_scheduler_c?=
- =?utf-8?q?aps_for_timeslicing?=
+In-Reply-To: <20200505070719.GL9497@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t 4/7] lib/params: add igt_params_open()
+ which will return path
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,88 +23,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
+Reply-To: juhapekka.heikkila@gmail.com
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On 5.5.2020 10.07, Petri Latvala wrote:
+> On Tue, Apr 28, 2020 at 11:22:52PM +0300, Juha-Pekka Heikkila wrote:
+>> From: Jani Nikula <jani.nikula@intel.com>
+>>
+>> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> 
+> Restore author's S-o-b and
 
-Series: series starting with [i-g-t,1/2] lib/i915: Report scheduler caps for timeslicing
-URL   : https://patchwork.freedesktop.org/series/76956/
-State : success
+I've been trying to advertise on cover letter about this but maybe Jani 
+didn't see it there. Original patch doesn't have Jani's S-o-b. If Jani 
+comment about it I could add it here.
 
-== Summary ==
+> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+> 
+> 
+>> ---
+>>   lib/igt_params.c | 29 ++++++++++++++++++-----------
+>>   1 file changed, 18 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/lib/igt_params.c b/lib/igt_params.c
+>> index b5ac1266..fe4b1df3 100644
+>> --- a/lib/igt_params.c
+>> +++ b/lib/igt_params.c
+>> @@ -107,17 +107,7 @@ static void igt_params_save(int dir, const char *path, const char *name)
+>>   	module_params = data;
+>>   }
+>>   
+>> -/**
+>> - * igt_params_open:
+>> - * @device: fd of the device
+>> - *
+>> - * This opens the module parameters directory (under sysfs) corresponding
+>> - * to the device for use with igt_sysfs_set() and igt_sysfs_get().
+>> - *
+>> - * Returns:
+>> - * The directory fd, or -1 on failure.
+>> - */
+>> -int igt_params_open(int device)
+>> +static int __igt_params_open(int device, char **outpath)
+>>   {
+>>   	int dir, params = -1;
+>>   
+>> @@ -141,11 +131,28 @@ int igt_params_open(int device)
+>>   
+>>   		sprintf(path, "/sys/module/%s/parameters", name);
+>>   		params = open(path, O_RDONLY);
+>> +		if (params >= 0 && outpath)
+>> +			*outpath = strdup(path);
+>>   	}
+>>   
+>>   	return params;
+>>   }
+>>   
+>> +/**
+>> + * igt_params_open:
+>> + * @device: fd of the device
+>> + *
+>> + * This opens the module parameters directory (under sysfs) corresponding
+>> + * to the device for use with igt_sysfs_set() and igt_sysfs_get().
+>> + *
+>> + * Returns:
+>> + * The directory fd, or -1 on failure.
+>> + */
+>> +int igt_params_open(int device)
+>> +{
+>> +	return __igt_params_open(device, NULL);
+>> +}
+>> +
+>>   /**
+>>    * igt_params_set:
+>>    * @device: fd of the device
+>> -- 
+>> 2.26.0
+>>
+>> _______________________________________________
+>> igt-dev mailing list
+>> igt-dev@lists.freedesktop.org
+>> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
-CI Bug Log - changes from IGT_5633 -> IGTPW_4535
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4535/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4535 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@uncore:
-    - fi-bwr-2160:        [PASS][1] -> [INCOMPLETE][2] ([i915#489])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5633/fi-bwr-2160/igt@i915_selftest@live@uncore.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4535/fi-bwr-2160/igt@i915_selftest@live@uncore.html
-
-  
-  [i915#489]: https://gitlab.freedesktop.org/drm/intel/issues/489
-
-
-Participating hosts (50 -> 44)
-------------------------------
-
-  Additional (1): fi-kbl-7560u 
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5633 -> IGTPW_4535
-
-  CI-20190529: 20190529
-  CI_DRM_8430: 2daa6f8cad645f49a898158190a20a893b4aabe3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4535: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4535/index.html
-  IGT_5633: c8c2e5ed5cd8e4b7a69a903f3f1653612086abcc @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@gem_exec_fence@syncobj-future
-+igt@gem_exec_fence@syncobj-future-deadlock
-+igt@gem_exec_fence@syncobj-future-past
-+igt@gem_exec_fence@syncobj-future-self
-+igt@gem_exec_fence@syncobj-future-self-submit
-+igt@gem_exec_fence@syncobj-future-submit
-+igt@gem_exec_fence@syncobj-future-submit-deadlock
-+igt@gem_exec_fence@syncobj-future-submit-past
-+igt@gem_exec_fence@syncobj-incomplete-wait-submit
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4535/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
