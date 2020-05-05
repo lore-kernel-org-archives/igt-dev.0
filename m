@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DA006E228
- for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2020 13:32:46 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Tue,  5 May 2020 18:50:31 +0530
-Message-Id: <20200505132032.827-6-anshuman.gupta@intel.com>
-In-Reply-To: <20200505132032.827-1-anshuman.gupta@intel.com>
-References: <20200505132032.827-1-anshuman.gupta@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C6EEF6E260
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2020 14:04:43 +0000 (UTC)
+Date: Tue, 5 May 2020 17:04:39 +0300
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20200505140439.sskwgfoocljh2rrs@ahiler-desk1.fi.intel.com>
+References: <20200428202255.31309-1-juhapekka.heikkila@gmail.com>
+ <20200428202255.31309-3-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v6 5/6] tests/i915_pm_lpsp: screens-disabled
- subtest use igt_wait
+Content-Disposition: inline
+In-Reply-To: <20200428202255.31309-3-juhapekka.heikkila@gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/7] lib/params: start renaming
+ functions igt_params_*
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,41 +23,52 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: jani.nikula@intel.com
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When all screens are disabled, it takes some time to release
-eDP/DP AUX IO power domain ref count. Also, delayed audio codec
-disabling takes time to release AUDIO power domain ref-count,
-using igt_wait to check lpsp after disabling all screens.
+On Tue, Apr 28, 2020 at 11:22:50PM +0300, Juha-Pekka Heikkila wrote:
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+> ---
+>  lib/drmtest.c                         |  2 +-
+>  lib/i915/gem_submission.c             |  2 +-
+>  lib/igt_aux.c                         |  3 +--
+>  lib/igt_gt.c                          |  2 +-
+>  lib/igt_params.c                      | 12 +++++-------
+>  lib/igt_params.h                      |  5 ++---
+>  tests/i915/gem_ctx_exec.c             |  2 +-
+>  tests/i915/gem_ctx_persistence.c      |  9 ++++-----
+>  tests/i915/gem_mmap_gtt.c             |  2 +-
+>  tests/i915/gem_reset_stats.c          |  6 ++----
+>  tests/i915/sysfs_heartbeat_interval.c |  3 ++-
+>  tests/i915/sysfs_preempt_timeout.c    |  3 ++-
+>  tests/i915/sysfs_timeslice_duration.c |  3 ++-
+>  13 files changed, 25 insertions(+), 29 deletions(-)
+> 
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index 1fc39925..17067843 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -393,7 +393,7 @@ static void __cancel_work_at_exit(int fd)
+>  {
+>  	igt_terminate_spins(); /* for older kernels */
+>  
+> -	igt_sysfs_set_parameter(fd, "reset", "%x", -1u /* any method */);
+> +	igt_params_set(fd, "reset", "%x", -1u /* any method */);
 
-v2:
-- Added a code comment for delay of igt_wait. [Animesh]
+With #define MODULE_PARAM_DIR "/sys/module/i915/parameters/"
+and the debugfs interface everything here is i915-specific.
 
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
----
- tests/i915/i915_pm_lpsp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+i915_param_ prefix would be better as it both suggests that we are
+dealing with i915 module parameters instead of some elusive IGT
+framework params and doesn't create illusion that this is
+driver-agnostic.
 
-diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
-index 56980de2..986bfc03 100644
---- a/tests/i915/i915_pm_lpsp.c
-+++ b/tests/i915/i915_pm_lpsp.c
-@@ -81,7 +81,9 @@ static void screens_disabled_subtest(data_t *data)
- 	}
- 
- 	igt_require_f(valid_output, "No connected output found\n");
--	igt_assert_f(lpsp_is_enabled(data), "lpsp is not enabled\n%s:\n%s\n",
-+	/* eDP panel may have power_cycle_delay of 600ms, 1sec delay is safer */
-+	igt_assert_f(igt_wait(lpsp_is_enabled(data), 1000, 100),
-+		     "lpsp is not enabled\n%s:\n%s\n",
- 		     PWR_DOMAIN_INFO, data->pwr_dmn_info =
- 		     igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
- }
 -- 
-2.26.0
-
+Cheers,
+Arek
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
