@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D8EE46E5BD
- for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2020 14:22:46 +0000 (UTC)
-Date: Tue, 5 May 2020 17:22:42 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200505142242.amdxbkl62rje7x5y@ahiler-desk1.fi.intel.com>
-References: <20200428202255.31309-1-juhapekka.heikkila@gmail.com>
- <20200428202255.31309-7-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200428202255.31309-7-juhapekka.heikkila@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 6/7] igt/params: use igt_params_set_save
- for igt_set_module_param*
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 05 May 2020 15:00:27 -0000
+Message-ID: <158869082768.25912.9223175059714999899@emeril.freedesktop.org>
+References: <20200505133836.2873640-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200505133836.2873640-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_lib/i915=3A_Report_scheduler_c?=
+ =?utf-8?q?aps_for_timeslicing?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,65 +15,88 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Apr 28, 2020 at 11:22:54PM +0300, Juha-Pekka Heikkila wrote:
-> Unify parameter access. Here is also decided 'default' device
-> if -1 is specified as device. Derault being that device
-> which is first to match requirements, starting search
-> from zero upwards.
-> 
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->  lib/igt_params.c | 134 +++++++++++++++++++++++++++++++++++------------
->  1 file changed, 100 insertions(+), 34 deletions(-)
-> 
-> diff --git a/lib/igt_params.c b/lib/igt_params.c
-> index d9cf986c..dc35f233 100644
-> --- a/lib/igt_params.c
-> +++ b/lib/igt_params.c
-> @@ -27,12 +27,14 @@
->  #include <stdbool.h>
->  #include <stdio.h>
->  #include <sys/ioctl.h>
-> +#include <sys/stat.h>
->  
->  #include <i915_drm.h>
->  
->  #include "igt_core.h"
->  #include "igt_params.h"
->  #include "igt_sysfs.h"
-> +#include "igt_debugfs.h"
->  
->  struct module_param_data {
->  	char *path;
-> @@ -107,15 +109,59 @@ static void igt_params_save(int dir, const char *path, const char *name)
->  	module_params = data;
->  }
->  
-> -static int __igt_params_open(int device, char **outpath)
-> +static int __igt_params_open(int device, char **outpath, const char *param)
+== Series Details ==
 
-Please add a function documentation block on top of this. Deciphering
-the role of the new "param" argument in the context of this function
-from the code alone is really hard. You should also mention how it being
-set vs it being NULL affect the outcome.
+Series: series starting with [i-g-t,1/2] lib/i915: Report scheduler caps for timeslicing
+URL   : https://patchwork.freedesktop.org/series/76956/
+State : success
 
-I would appreciate a bit more contet on this change in the commit
-message, especially about the sysfs -> debugfs switch.
+== Summary ==
 
-If I got your intention right, the code LGTM.
+CI Bug Log - changes from IGT_5633 -> IGTPW_4535
+====================================================
 
--- 
-Cheers,
-Arek
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4535/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4535 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@uncore:
+    - fi-bwr-2160:        [PASS][1] -> [INCOMPLETE][2] ([i915#489])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5633/fi-bwr-2160/igt@i915_selftest@live@uncore.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4535/fi-bwr-2160/igt@i915_selftest@live@uncore.html
+
+  
+  [i915#489]: https://gitlab.freedesktop.org/drm/intel/issues/489
+
+
+Participating hosts (50 -> 44)
+------------------------------
+
+  Additional (1): fi-kbl-7560u 
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5633 -> IGTPW_4535
+
+  CI-20190529: 20190529
+  CI_DRM_8430: 2daa6f8cad645f49a898158190a20a893b4aabe3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4535: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4535/index.html
+  IGT_5633: c8c2e5ed5cd8e4b7a69a903f3f1653612086abcc @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@gem_exec_fence@syncobj-future
++igt@gem_exec_fence@syncobj-future-deadlock
++igt@gem_exec_fence@syncobj-future-past
++igt@gem_exec_fence@syncobj-future-self
++igt@gem_exec_fence@syncobj-future-self-submit
++igt@gem_exec_fence@syncobj-future-submit
++igt@gem_exec_fence@syncobj-future-submit-deadlock
++igt@gem_exec_fence@syncobj-future-submit-past
++igt@gem_exec_fence@syncobj-incomplete-wait-submit
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4535/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
