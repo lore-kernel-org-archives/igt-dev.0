@@ -1,7 +1,7 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon,  4 May 2020 20:31:12 +0100
-Message-Id: <20200504193112.2382452-1-chris@chris-wilson.co.uk>
+Date: Tue,  5 May 2020 11:27:02 +0100
+Message-Id: <20200505102702.2607265-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t] i915/gem_ctx_exec: Exploit resource
  contention to verify execbuf independence
@@ -29,7 +29,7 @@ Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
  1 file changed, 121 insertions(+), 1 deletion(-)
 
 diff --git a/tests/i915/gem_ctx_exec.c b/tests/i915/gem_ctx_exec.c
-index ad2f9e545..d7cd56424 100644
+index ad2f9e545..97a1e0d32 100644
 --- a/tests/i915/gem_ctx_exec.c
 +++ b/tests/i915/gem_ctx_exec.c
 @@ -35,8 +35,9 @@
@@ -166,15 +166,15 @@ index ad2f9e545..d7cd56424 100644
  igt_main
  {
  	const uint32_t batch[2] = { 0, MI_BATCH_BUFFER_END };
-@@ -375,6 +492,9 @@ igt_main
- 	igt_subtest("basic-nohangcheck")
- 		nohangcheck_hostile(fd);
+@@ -369,6 +486,9 @@ igt_main
+ 	igt_subtest("eviction")
+ 		big_exec(fd, handle, 0);
  
 +	igt_subtest("basic-pi-active")
 +		pi_active(fd);
 +
- 	igt_subtest("reset-pin-leak") {
- 		int i;
+ 	igt_subtest("basic-norecovery")
+ 		norecovery(fd);
  
 -- 
 2.26.2
