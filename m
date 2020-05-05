@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78F066E248
- for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2020 13:32:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6C216E22C
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2020 13:32:48 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Tue,  5 May 2020 18:50:30 +0530
-Message-Id: <20200505132032.827-5-anshuman.gupta@intel.com>
+Date: Tue,  5 May 2020 18:50:32 +0530
+Message-Id: <20200505132032.827-7-anshuman.gupta@intel.com>
 In-Reply-To: <20200505132032.827-1-anshuman.gupta@intel.com>
 References: <20200505132032.827-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v6 4/6] test/i915_pm_lpsp: Skip
- screens-disabled test for DC state platforms
+Subject: [igt-dev] [PATCH i-g-t v6 6/6] tests/i915_pm_rpm: lpsp/non-lpsp
+ screen mode_set_data
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,37 +25,191 @@ To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-screens-disabled test is only valid for the plaforms like HSW/BDW
-where PG1 is Always-ON power domain, so these platform test lpsp
-with all screen disabled i.e validate PG2 when all screen are
-disabled.
-DC state i.e DMC f/w supported platforms don't have any ROI to validate
-screen-disabled subtest as existing dc*-dpms i915_pm_dc subtest
-already validate it implicitly.
-This should save some CI-Cycles.
+Initialize the mode set params for lpsp/non-lpsp screen
+based upon their output lpsp capability instead
+of edp/non-edp output type.
 
+v2:
+- CI failures fixup.
+v3:
+- changes according to lib function igt_output_is_lpsp_capable
+  prefix chnaged to i915_output_is_lpsp_capable.
+
+Acked-by: Martin Peres <martin.peres@linux.intel.com>
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/i915/i915_pm_lpsp.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tests/i915/i915_pm_rpm.c | 53 +++++++++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 23 deletions(-)
 
-diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
-index 8d2e23fe..56980de2 100644
---- a/tests/i915/i915_pm_lpsp.c
-+++ b/tests/i915/i915_pm_lpsp.c
-@@ -172,8 +172,11 @@ igt_main
+diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
+index fedef872..cb355a53 100644
+--- a/tests/i915/i915_pm_rpm.c
++++ b/tests/i915/i915_pm_rpm.c
+@@ -94,6 +94,7 @@ struct mode_set_data {
+ 	drmModeResPtr res;
+ 	drmModeConnectorPtr connectors[MAX_CONNECTORS];
+ 	drmModePropertyBlobPtr edids[MAX_CONNECTORS];
++	igt_display_t display;
+ 
+ 	uint32_t devid;
+ };
+@@ -254,29 +255,29 @@ static bool init_modeset_params_for_type(struct mode_set_data *data,
+ {
+ 	drmModeConnectorPtr connector = NULL;
+ 	drmModeModeInfoPtr mode = NULL;
++	igt_output_t *output = NULL;
++	igt_display_t *display = &data->display;
+ 
+-	if (!data->res)
++	if (!data->res || !display)
+ 		return false;
+ 
+-	for (int i = 0; i < data->res->count_connectors; i++) {
+-		drmModeConnectorPtr c = data->connectors[i];
++	for_each_connected_output(display, output) {
++		drmModeConnectorPtr c = output->config.connector;
+ 
+ 		if (type == SCREEN_TYPE_LPSP &&
+-		    c->connector_type != DRM_MODE_CONNECTOR_eDP)
++		     !i915_output_is_lpsp_capable(drm_fd, output))
+ 			continue;
+ 
+ 		if (type == SCREEN_TYPE_NON_LPSP &&
+-		    c->connector_type == DRM_MODE_CONNECTOR_eDP)
++		    i915_output_is_lpsp_capable(drm_fd, output))
+ 			continue;
+ 
+-		if (c->connection == DRM_MODE_CONNECTED && c->count_modes) {
+-			connector = c;
+-			mode = &c->modes[0];
+-			break;
+-		}
++		connector = c;
++		mode = igt_output_get_mode(output);
++		break;
  	}
  
- 	igt_describe("This test validates lpsp while all crtc are disabled");
--	igt_subtest("screens-disabled")
-+	igt_subtest("screens-disabled") {
-+		igt_skip_on_f(openat(data.debugfs_fd, "i915_dmc_info", O_RDONLY) > 0,
-+			      "DC states supported platform don't have ROI for this subtest\n");
- 		screens_disabled_subtest(&data);
-+	}
+-	if (!connector)
++	if (!connector || !mode)
+ 		return false;
  
- 	igt_describe("This test validates lpsp on all connected outputs on low power PIPE_A");
- 	igt_subtest_with_dynamic_f("kms-lpsp") {
+ 	igt_create_pattern_fb(drm_fd, mode->hdisplay, mode->vdisplay,
+@@ -397,6 +398,7 @@ static void init_mode_set_data(struct mode_set_data *data)
+ 		kmstest_set_vt_graphics_mode();
+ 	}
+ 
++	igt_display_require(&data->display, drm_fd);
+ 	data->devid = intel_get_drm_devid(drm_fd);
+ 	init_modeset_cached_params(&ms_data);
+ }
+@@ -410,6 +412,8 @@ static void fini_mode_set_data(struct mode_set_data *data)
+ 		}
+ 		drmModeFreeResources(data->res);
+ 	}
++
++	igt_display_fini(&data->display);
+ }
+ 
+ static void get_drm_info(struct compare_data *data)
+@@ -760,7 +764,7 @@ static void dump_file(int dir, const char *filename)
+ 	free(contents);
+ }
+ 
+-static bool setup_environment(void)
++static bool setup_environment(bool display_disabled)
+ {
+ 	if (has_runtime_pm)
+ 		goto out;
+@@ -772,7 +776,8 @@ static bool setup_environment(void)
+ 	debugfs = igt_debugfs_dir(drm_fd);
+ 	igt_require(debugfs != -1);
+ 
+-	init_mode_set_data(&ms_data);
++	if (!display_disabled)
++		init_mode_set_data(&ms_data);
+ 
+ 	igt_pm_enable_sata_link_power_management();
+ 
+@@ -785,13 +790,14 @@ static bool setup_environment(void)
+ 	igt_require(igt_pm_dmc_loaded(debugfs));
+ 
+ out:
+-	disable_all_screens(&ms_data);
++	if (!display_disabled)
++		disable_all_screens(&ms_data);
+ 	dump_file(debugfs, "i915_runtime_pm_status");
+ 
+ 	return wait_for_suspended();
+ }
+ 
+-static void teardown_environment(void)
++static void teardown_environment(bool display_disabled)
+ {
+ 	close(msr_fd);
+ 	if (has_pc8)
+@@ -801,7 +807,8 @@ static void teardown_environment(void)
+ 
+ 	igt_pm_restore_sata_link_power_management();
+ 
+-	fini_mode_set_data(&ms_data);
++	if (!display_disabled)
++		fini_mode_set_data(&ms_data);
+ 
+ 	close(debugfs);
+ 	close(drm_fd);
+@@ -2004,7 +2011,7 @@ static struct option long_options[] = {
+ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ {
+ 	igt_subtest("basic-rte") {
+-		igt_assert(setup_environment());
++		igt_assert(setup_environment(false));
+ 		basic_subtest();
+ 	}
+ 
+@@ -2012,7 +2019,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	 * PC8+. We don't want bug reports from cases where the machine is just
+ 	 * not properly configured. */
+ 	igt_fixture
+-		igt_require(setup_environment());
++		igt_require(setup_environment(false));
+ 
+ 	if (stay)
+ 		igt_subtest("stay")
+@@ -2142,7 +2149,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	}
+ 
+ 	igt_fixture
+-		teardown_environment();
++		teardown_environment(false);
+ 
+ 	igt_subtest("module-reload") {
+ 		igt_debug("Reload w/o display\n");
+@@ -2151,9 +2158,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		igt_kmsg(KMSG_INFO "Reloading i915 w/o display\n");
+ 		igt_assert_eq(igt_i915_driver_load("disable_display=1 mmio_debug=-1"), 0);
+ 
+-		igt_assert(setup_environment());
++		igt_assert(setup_environment(true));
+ 		igt_assert(igt_wait(device_in_pci_d3(), 2000, 100));
+-		teardown_environment();
++		teardown_environment(true);
+ 
+ 		igt_debug("Reload as normal\n");
+ 		igt_i915_driver_unload();
+@@ -2161,11 +2168,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		igt_kmsg(KMSG_INFO "Reloading i915 as normal\n");
+ 		igt_assert_eq(igt_i915_driver_load("mmio_debug=-1"), 0);
+ 
+-		igt_assert(setup_environment());
++		igt_assert(setup_environment(false));
+ 		igt_assert(igt_wait(device_in_pci_d3(), 2000, 100));
+ 		if (enable_one_screen_with_type(&ms_data, SCREEN_TYPE_ANY))
+ 			drm_resources_equal_subtest();
+-		teardown_environment();
++		teardown_environment(false);
+ 
+ 		/* Remove our mmio_debugging module */
+ 		igt_i915_driver_unload();
 -- 
 2.26.0
 
