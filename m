@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 04 May 2020 21:33:52 -0000
-Message-ID: <158862803206.5817.10052975495255112826@emeril.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 256F689C80
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2020 06:36:15 +0000 (UTC)
+Date: Tue, 5 May 2020 09:36:13 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200505063613.GH9497@platvala-desk.ger.corp.intel.com>
 References: <20200504112623.285610-1-arkadiusz.hiler@intel.com>
+MIME-Version: 1.0
+Content-Disposition: inline
 In-Reply-To: <20200504112623.285610-1-arkadiusz.hiler@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/3=5D_lib/igt=5Fcore=3A_Make_assert_?=
- =?utf-8?q?on_invalid_magic_blocks_nesting_more_verbose?=
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib/igt_core: Make assert on
+ invalid magic blocks nesting more verbose
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,7 +18,6 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
@@ -24,257 +26,162 @@ To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Mon, May 04, 2020 at 02:26:21PM +0300, Arkadiusz Hiler wrote:
+> Instead of ending the execution with cryptic assert let's actually print
+> a message explaining the reason and point towards igt_core's documentation.
+> 
+> I am sticking with assert() instead of abort() because of the
+> semi-useful stacktraces it produces.
+> 
+> Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+> ---
+>  lib/igt_core.c | 55 ++++++++++++++++++++++++++++++++++++++------------
+>  1 file changed, 42 insertions(+), 13 deletions(-)
+> 
+> diff --git a/lib/igt_core.c b/lib/igt_core.c
+> index 3f7b9f68..43f0ba8b 100644
+> --- a/lib/igt_core.c
+> +++ b/lib/igt_core.c
+> @@ -343,6 +343,21 @@ static bool stderr_needs_sentinel = false;
+>  
+>  static int _igt_dynamic_tests_executed = -1;
+>  
+> +__attribute__((format(printf, 2, 3)))
+> +static void internal_assert(bool cond, const char *format, ...)
+> +{
+> +	if (!cond) {
+> +		va_list ap;
+> +
+> +		va_start(ap, format);
+> +		vfprintf(stderr, format, ap);
+> +		va_end(ap);
+> +		fprintf(stderr, "please refer to lib/igt_core documentation\n");
+> +
+> +		assert(0);
+> +	}
+> +}
+> +
+>  const char *igt_test_name(void)
+>  {
+>  	return command_str;
+> @@ -540,8 +555,12 @@ uint64_t igt_nsec_elapsed(struct timespec *start)
+>  
+>  bool __igt_fixture(void)
+>  {
+> -	assert(!in_fixture);
+> -	assert(test_with_subtests);
+> +	internal_assert(!in_fixture,
+> +			"nesting multiple igt_fixtures is invalid\n");
+> +	internal_assert(!in_subtest,
+> +			"nesting igt_fixture in igt_subtest is invalid\n");
+> +	internal_assert(test_with_subtests,
+> +			"igt_fixture in igt_simple_main is invalid\n");
+>  
+>  	if (igt_only_list_subtests())
+>  		return false;
+> @@ -1202,7 +1221,9 @@ static bool valid_name_for_subtest(const char *subtest_name)
+>   */
+>  bool __igt_run_subtest(const char *subtest_name, const char *file, const int line)
+>  {
+> -	assert(!igt_can_fail());
+> +	internal_assert(!igt_can_fail(),
+> +			"igt_subtest can be nested only in igt_main"
+> +			" or igt_subtest_group\n");
+>  
+>  	if (!valid_name_for_subtest(subtest_name)) {
+>  		igt_critical("Invalid subtest name \"%s\".\n",
+> @@ -1257,8 +1278,8 @@ bool __igt_run_subtest(const char *subtest_name, const char *file, const int lin
+>  
+>  bool __igt_run_dynamic_subtest(const char *dynamic_subtest_name)
+>  {
+> -	assert(in_subtest);
+> -	assert(_igt_dynamic_tests_executed >= 0);
+> +	internal_assert(in_subtest && _igt_dynamic_tests_executed >= 0,
+> +			"igt_dynamic is allowed only inside igt_subtest_with_dynamic\n");
+>  
+>  	if (!valid_name_for_subtest(dynamic_subtest_name)) {
+>  			igt_critical("Invalid dynamic subtest name \"%s\".\n",
+> @@ -1311,7 +1332,8 @@ bool igt_only_list_subtests(void)
+>  
+>  void __igt_subtest_group_save(int *save, int *desc)
+>  {
+> -	assert(test_with_subtests);
+> +	internal_assert(test_with_subtests,
+> +			"igt_subtest_group is not allowed in igt_simple_main\n");
+>  
+>  	if (__current_description[0] != '\0') {
+>  		struct description_node *new = calloc(1, sizeof(*new));
+> @@ -1414,7 +1436,8 @@ void igt_skip(const char *f, ...)
+>  	va_list args;
+>  	skipped_one = true;
+>  
+> -	assert(!test_child);
+> +	internal_assert(!test_child,
+> +			"skips are not allowed in forks\n");
+>  
+>  	if (!igt_only_list_subtests()) {
+>  		va_start(args, f);
+> @@ -1427,7 +1450,9 @@ void igt_skip(const char *f, ...)
+>  		exit_subtest("SKIP");
+>  	} else if (test_with_subtests) {
+>  		skip_subtests_henceforth = SKIP;
+> -		assert(in_fixture);
+> +		internal_assert(in_fixture,
+> +			"skipping is allowed only in fixtures, subtests"
+> +			" or igt_simple_main\n");
+>  		__igt_fixture_end();
+>  	} else {
+>  		igt_exitcode = IGT_EXIT_SKIP;
+> @@ -1547,7 +1572,8 @@ void igt_fail(int exitcode)
+>  	if (in_subtest) {
+>  		exit_subtest("FAIL");
+>  	} else {
+> -		assert(igt_can_fail());
+> +		internal_assert(igt_can_fail(), "failing test is only allowed"
+> +				" in fixtures, subtests and igt_simple_main");
+>  
+>  		if (in_fixture) {
+>  			skip_subtests_henceforth = FAIL;
+> @@ -1612,8 +1638,9 @@ void igt_describe_f(const char *fmt, ...)
+>  	int ret;
+>  	va_list args;
+>  
+> -	if (in_subtest && _igt_dynamic_tests_executed >= 0)
+> -		assert(!"Documenting dynamic subsubtests is impossible. Document the subtest instead.");
+> +	internal_assert(!in_subtest || _igt_dynamic_tests_executed < 0,
+> +			"Documenting dynamic subsubtests is impossible."
+> +			" Document the subtest instead.");
 
-Series: series starting with [i-g-t,1/3] lib/igt_core: Make assert on invalid magic blocks nesting more verbose
-URL   : https://patchwork.freedesktop.org/series/76900/
-State : failure
+This is the only internal_assert call with capitalized text.
 
-== Summary ==
+With more consistency applied,
 
-CI Bug Log - changes from CI_DRM_8417_full -> IGTPW_4529_full
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_4529_full absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_4529_full, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_4529_full:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@gem_ctx_persistence@engines-hostile@bcs0:
-    - shard-kbl:          [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-kbl7/igt@gem_ctx_persistence@engines-hostile@bcs0.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-kbl6/igt@gem_ctx_persistence@engines-hostile@bcs0.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4529_full that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_ctx_persistence@engines-hostile@bcs0:
-    - shard-iclb:         [PASS][3] -> [FAIL][4] ([i915#1622])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-iclb5/igt@gem_ctx_persistence@engines-hostile@bcs0.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-iclb6/igt@gem_ctx_persistence@engines-hostile@bcs0.html
-
-  * igt@gem_eio@in-flight-suspend:
-    - shard-apl:          [PASS][5] -> [DMESG-WARN][6] ([i915#180])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-apl8/igt@gem_eio@in-flight-suspend.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-apl6/igt@gem_eio@in-flight-suspend.html
-
-  * igt@gen9_exec_parse@allowed-all:
-    - shard-kbl:          [PASS][7] -> [DMESG-WARN][8] ([i915#1436] / [i915#716])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-kbl7/igt@gen9_exec_parse@allowed-all.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-kbl3/igt@gen9_exec_parse@allowed-all.html
-
-  * igt@kms_cursor_crc@pipe-a-cursor-suspend:
-    - shard-kbl:          [PASS][9] -> [DMESG-WARN][10] ([i915#180]) +7 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-kbl3/igt@kms_cursor_crc@pipe-a-cursor-suspend.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-kbl2/igt@kms_cursor_crc@pipe-a-cursor-suspend.html
-
-  * igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic:
-    - shard-glk:          [PASS][11] -> [FAIL][12] ([i915#72])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-glk6/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-glk9/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic.html
-
-  * igt@kms_draw_crc@draw-method-rgb565-mmap-wc-untiled:
-    - shard-glk:          [PASS][13] -> [FAIL][14] ([i915#52] / [i915#54]) +1 similar issue
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-glk1/igt@kms_draw_crc@draw-method-rgb565-mmap-wc-untiled.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-glk2/igt@kms_draw_crc@draw-method-rgb565-mmap-wc-untiled.html
-
-  * igt@kms_mmap_write_crc@main:
-    - shard-kbl:          [PASS][15] -> [FAIL][16] ([i915#93] / [i915#95])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-kbl2/igt@kms_mmap_write_crc@main.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-kbl7/igt@kms_mmap_write_crc@main.html
-
-  * igt@kms_pipe_crc_basic@read-crc-pipe-a:
-    - shard-apl:          [PASS][17] -> [FAIL][18] ([i915#53] / [i915#95])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-apl3/igt@kms_pipe_crc_basic@read-crc-pipe-a.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-apl8/igt@kms_pipe_crc_basic@read-crc-pipe-a.html
-    - shard-kbl:          [PASS][19] -> [FAIL][20] ([i915#53] / [i915#93] / [i915#95])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-kbl2/igt@kms_pipe_crc_basic@read-crc-pipe-a.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-kbl1/igt@kms_pipe_crc_basic@read-crc-pipe-a.html
-
-  * igt@kms_plane_cursor@pipe-a-overlay-size-64:
-    - shard-apl:          [PASS][21] -> [FAIL][22] ([i915#1559] / [i915#95])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-apl2/igt@kms_plane_cursor@pipe-a-overlay-size-64.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-apl2/igt@kms_plane_cursor@pipe-a-overlay-size-64.html
-
-  * igt@kms_psr@psr2_primary_page_flip:
-    - shard-iclb:         [PASS][23] -> [SKIP][24] ([fdo#109441]) +2 similar issues
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-iclb2/igt@kms_psr@psr2_primary_page_flip.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-iclb6/igt@kms_psr@psr2_primary_page_flip.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s0:
-    - shard-tglb:         [INCOMPLETE][25] -> [PASS][26]
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-tglb8/igt@gem_exec_suspend@basic-s0.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-tglb2/igt@gem_exec_suspend@basic-s0.html
-
-  * igt@kms_cursor_crc@pipe-a-cursor-128x42-random:
-    - shard-kbl:          [FAIL][27] ([i915#54] / [i915#93] / [i915#95]) -> [PASS][28] +1 similar issue
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-kbl3/igt@kms_cursor_crc@pipe-a-cursor-128x42-random.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-kbl4/igt@kms_cursor_crc@pipe-a-cursor-128x42-random.html
-
-  * igt@kms_cursor_legacy@all-pipes-torture-move:
-    - shard-iclb:         [DMESG-WARN][29] ([i915#128]) -> [PASS][30]
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-iclb4/igt@kms_cursor_legacy@all-pipes-torture-move.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-iclb7/igt@kms_cursor_legacy@all-pipes-torture-move.html
-
-  * igt@kms_draw_crc@draw-method-rgb565-render-untiled:
-    - shard-glk:          [FAIL][31] ([i915#52] / [i915#54]) -> [PASS][32] +5 similar issues
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-glk9/igt@kms_draw_crc@draw-method-rgb565-render-untiled.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-glk6/igt@kms_draw_crc@draw-method-rgb565-render-untiled.html
-
-  * {igt@kms_flip@flip-vs-suspend-interruptible@c-dp1}:
-    - shard-apl:          [DMESG-WARN][33] ([i915#180]) -> [PASS][34] +5 similar issues
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-apl4/igt@kms_flip@flip-vs-suspend-interruptible@c-dp1.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-apl3/igt@kms_flip@flip-vs-suspend-interruptible@c-dp1.html
-
-  * {igt@kms_flip@flip-vs-suspend-interruptible@c-hdmi-a1}:
-    - shard-hsw:          [INCOMPLETE][35] ([i915#61]) -> [PASS][36]
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-hsw4/igt@kms_flip@flip-vs-suspend-interruptible@c-hdmi-a1.html
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-hsw7/igt@kms_flip@flip-vs-suspend-interruptible@c-hdmi-a1.html
-
-  * {igt@kms_flip@flip-vs-suspend@a-dp1}:
-    - shard-kbl:          [DMESG-WARN][37] ([i915#180] / [i915#93] / [i915#95]) -> [PASS][38]
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-kbl2/igt@kms_flip@flip-vs-suspend@a-dp1.html
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-kbl3/igt@kms_flip@flip-vs-suspend@a-dp1.html
-
-  * {igt@kms_flip@flip-vs-suspend@c-dp1}:
-    - shard-kbl:          [DMESG-WARN][39] ([i915#180]) -> [PASS][40] +1 similar issue
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-kbl2/igt@kms_flip@flip-vs-suspend@c-dp1.html
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-kbl3/igt@kms_flip@flip-vs-suspend@c-dp1.html
-
-  * igt@kms_flip_tiling@flip-changes-tiling-yf:
-    - shard-kbl:          [FAIL][41] ([i915#699] / [i915#93] / [i915#95]) -> [PASS][42]
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-kbl3/igt@kms_flip_tiling@flip-changes-tiling-yf.html
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-kbl4/igt@kms_flip_tiling@flip-changes-tiling-yf.html
-    - shard-apl:          [FAIL][43] ([i915#95]) -> [PASS][44] +1 similar issue
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-apl8/igt@kms_flip_tiling@flip-changes-tiling-yf.html
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-apl6/igt@kms_flip_tiling@flip-changes-tiling-yf.html
-
-  * igt@kms_plane_alpha_blend@pipe-a-coverage-7efc:
-    - shard-apl:          [FAIL][45] ([fdo#108145] / [i915#265] / [i915#95]) -> [PASS][46] +1 similar issue
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-apl8/igt@kms_plane_alpha_blend@pipe-a-coverage-7efc.html
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-apl2/igt@kms_plane_alpha_blend@pipe-a-coverage-7efc.html
-
-  * igt@kms_psr@psr2_primary_mmap_cpu:
-    - shard-iclb:         [SKIP][47] ([fdo#109441]) -> [PASS][48] +2 similar issues
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-iclb4/igt@kms_psr@psr2_primary_mmap_cpu.html
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-iclb2/igt@kms_psr@psr2_primary_mmap_cpu.html
-
-  * {igt@perf@blocking-parameterized}:
-    - shard-iclb:         [FAIL][49] ([i915#1542]) -> [PASS][50]
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-iclb7/igt@perf@blocking-parameterized.html
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-iclb1/igt@perf@blocking-parameterized.html
-
-  
-#### Warnings ####
-
-  * igt@i915_pm_dc@dc3co-vpb-simulation:
-    - shard-iclb:         [SKIP][51] ([i915#588]) -> [SKIP][52] ([i915#658])
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-iclb2/igt@i915_pm_dc@dc3co-vpb-simulation.html
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-iclb6/igt@i915_pm_dc@dc3co-vpb-simulation.html
-
-  * igt@i915_pm_rpm@pm-tiling:
-    - shard-snb:          [INCOMPLETE][53] ([i915#82]) -> [SKIP][54] ([fdo#109271])
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-snb1/igt@i915_pm_rpm@pm-tiling.html
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-snb6/igt@i915_pm_rpm@pm-tiling.html
-
-  * igt@kms_content_protection@uevent:
-    - shard-kbl:          [FAIL][55] ([i915#357] / [i915#93] / [i915#95]) -> [FAIL][56] ([i915#357])
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-kbl7/igt@kms_content_protection@uevent.html
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-kbl3/igt@kms_content_protection@uevent.html
-    - shard-apl:          [FAIL][57] ([i915#357] / [i915#95]) -> [FAIL][58] ([i915#357])
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-apl2/igt@kms_content_protection@uevent.html
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-apl2/igt@kms_content_protection@uevent.html
-
-  * igt@kms_fbcon_fbt@fbc-suspend:
-    - shard-kbl:          [FAIL][59] ([i915#93] / [i915#95]) -> [DMESG-FAIL][60] ([i915#180] / [i915#95])
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-kbl7/igt@kms_fbcon_fbt@fbc-suspend.html
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-kbl4/igt@kms_fbcon_fbt@fbc-suspend.html
-
-  * igt@kms_plane@plane-panning-bottom-right-suspend-pipe-c-planes:
-    - shard-kbl:          [DMESG-WARN][61] ([i915#180]) -> [INCOMPLETE][62] ([i915#155])
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8417/shard-kbl4/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-c-planes.html
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/shard-kbl2/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-c-planes.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#108145]: https://bugs.freedesktop.org/show_bug.cgi?id=108145
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109441]: https://bugs.freedesktop.org/show_bug.cgi?id=109441
-  [i915#128]: https://gitlab.freedesktop.org/drm/intel/issues/128
-  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
-  [i915#1542]: https://gitlab.freedesktop.org/drm/intel/issues/1542
-  [i915#155]: https://gitlab.freedesktop.org/drm/intel/issues/155
-  [i915#1559]: https://gitlab.freedesktop.org/drm/intel/issues/1559
-  [i915#1622]: https://gitlab.freedesktop.org/drm/intel/issues/1622
-  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
-  [i915#265]: https://gitlab.freedesktop.org/drm/intel/issues/265
-  [i915#357]: https://gitlab.freedesktop.org/drm/intel/issues/357
-  [i915#52]: https://gitlab.freedesktop.org/drm/intel/issues/52
-  [i915#53]: https://gitlab.freedesktop.org/drm/intel/issues/53
-  [i915#54]: https://gitlab.freedesktop.org/drm/intel/issues/54
-  [i915#588]: https://gitlab.freedesktop.org/drm/intel/issues/588
-  [i915#61]: https://gitlab.freedesktop.org/drm/intel/issues/61
-  [i915#658]: https://gitlab.freedesktop.org/drm/intel/issues/658
-  [i915#699]: https://gitlab.freedesktop.org/drm/intel/issues/699
-  [i915#716]: https://gitlab.freedesktop.org/drm/intel/issues/716
-  [i915#72]: https://gitlab.freedesktop.org/drm/intel/issues/72
-  [i915#82]: https://gitlab.freedesktop.org/drm/intel/issues/82
-  [i915#93]: https://gitlab.freedesktop.org/drm/intel/issues/93
-  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
 
-Participating hosts (10 -> 8)
-------------------------------
-
-  Missing    (2): pig-skl-6260u pig-glk-j5005 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5628 -> IGTPW_4529
-  * Piglit: piglit_4509 -> None
-
-  CI-20190529: 20190529
-  CI_DRM_8417: 7f9142d29c789842bd79245dd6623df9f15ba746 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4529: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/index.html
-  IGT_5628: 652a3fd8966345fa5498904ce80a2027a6782783 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4529/index.html
+>  
+>  	if (!describe_subtests)
+>  		return;
+> @@ -2224,8 +2251,10 @@ static void children_exit_handler(int sig)
+>  
+>  bool __igt_fork(void)
+>  {
+> -	assert(!test_with_subtests || in_subtest);
+> -	assert(!test_child);
+> +	internal_assert(!test_with_subtests || in_subtest,
+> +			"forking is only allowed in subtests or igt_simple_main\n");
+> +	internal_assert(!test_child,
+> +			"forking is not allowed from already forked children\n");
+>  
+>  	igt_install_exit_handler(children_exit_handler);
+>  
+> -- 
+> 2.25.2
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
