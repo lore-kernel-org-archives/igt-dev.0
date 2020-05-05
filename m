@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E74626E0D7
- for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2020 13:32:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78F066E248
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2020 13:32:44 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Tue,  5 May 2020 18:50:27 +0530
-Message-Id: <20200505132032.827-2-anshuman.gupta@intel.com>
+Date: Tue,  5 May 2020 18:50:30 +0530
+Message-Id: <20200505132032.827-5-anshuman.gupta@intel.com>
 In-Reply-To: <20200505132032.827-1-anshuman.gupta@intel.com>
 References: <20200505132032.827-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v6 1/6] tests/i915_pm_lpsp: Nuke the
- panel-fitter test
+Subject: [igt-dev] [PATCH i-g-t v6 4/6] test/i915_pm_lpsp: Skip
+ screens-disabled test for DC state platforms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,36 +25,37 @@ To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-panel-fitter subtest is only applicable to HASWELL/BROADWELL.
-It just tests non-lpsp(lpsp disabled) when panel fitter is
-enforced by std 1024x768 mode.
-There is no ROI to test non-lpsp kind of thing,
-If HSW_GLOBAL power well is not enabled we would see
-other display issues in other display tests.
-
-Gen9+ platform has display scaling feature in built per
-pipe, as lpsp is all about low power single pipe (PIPE A)
-usage, gen9+ platforms also don't require panel-fitter subtest.
-This should save some CI cycles.
+screens-disabled test is only valid for the plaforms like HSW/BDW
+where PG1 is Always-ON power domain, so these platform test lpsp
+with all screen disabled i.e validate PG2 when all screen are
+disabled.
+DC state i.e DMC f/w supported platforms don't have any ROI to validate
+screen-disabled subtest as existing dc*-dpms i915_pm_dc subtest
+already validate it implicitly.
+This should save some CI-Cycles.
 
 Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/i915/i915_pm_lpsp.c | 2 --
- 1 file changed, 2 deletions(-)
+ tests/i915/i915_pm_lpsp.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
-index 42938e10..08f82e7c 100644
+index 8d2e23fe..56980de2 100644
 --- a/tests/i915/i915_pm_lpsp.c
 +++ b/tests/i915/i915_pm_lpsp.c
-@@ -219,8 +219,6 @@ igt_main
- 		screens_disabled_subtest(drm_fd, drm_res);
- 	igt_subtest("edp-native")
- 		edp_subtest(drm_fd, drm_res, drm_connectors, devid, false);
--	igt_subtest("edp-panel-fitter")
--		edp_subtest(drm_fd, drm_res, drm_connectors, devid, true);
- 	igt_subtest("non-edp")
- 		non_edp_subtest(drm_fd, drm_res, drm_connectors);
+@@ -172,8 +172,11 @@ igt_main
+ 	}
  
+ 	igt_describe("This test validates lpsp while all crtc are disabled");
+-	igt_subtest("screens-disabled")
++	igt_subtest("screens-disabled") {
++		igt_skip_on_f(openat(data.debugfs_fd, "i915_dmc_info", O_RDONLY) > 0,
++			      "DC states supported platform don't have ROI for this subtest\n");
+ 		screens_disabled_subtest(&data);
++	}
+ 
+ 	igt_describe("This test validates lpsp on all connected outputs on low power PIPE_A");
+ 	igt_subtest_with_dynamic_f("kms-lpsp") {
 -- 
 2.26.0
 
