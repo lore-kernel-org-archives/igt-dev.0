@@ -1,149 +1,107 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue,  5 May 2020 13:13:18 +0100
-Message-Id: <20200505121318.2816478-1-chris@chris-wilson.co.uk>
+Date: Tue,  5 May 2020 14:38:35 +0100
+Message-Id: <20200505133836.2873640-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t] lib/i915: Reset all engine properties to
- defaults prior to the start of a test
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Subject: [igt-dev] [PATCH i-g-t 1/2] lib/i915: Report scheduler caps for
+ timeslicing
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We need each test in an isolated context, so that bad results from one
-test do not interfere with the next. In particular, we want to clean up
-the device and reset it to the defaults so that they are known for the
-next test, and the test can focus on behaviour it wants to control.
-
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 ---
- lib/i915/gem.c | 83 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
+ include/drm-uapi/i915_drm.h |  8 +++++---
+ lib/i915/gem_scheduler.c    | 15 +++++++++++++++
+ lib/i915/gem_scheduler.h    |  1 +
+ 3 files changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/lib/i915/gem.c b/lib/i915/gem.c
-index b2717ba6a..6fa8abf21 100644
---- a/lib/i915/gem.c
-+++ b/lib/i915/gem.c
-@@ -22,6 +22,7 @@
-  *
-  */
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index 2b55af13a..a222b6bfb 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -523,6 +523,7 @@ typedef struct drm_i915_irq_wait {
+ #define   I915_SCHEDULER_CAP_PREEMPTION	(1ul << 2)
+ #define   I915_SCHEDULER_CAP_SEMAPHORES	(1ul << 3)
+ #define   I915_SCHEDULER_CAP_ENGINE_BUSY_STATS	(1ul << 4)
++#define   I915_SCHEDULER_CAP_TIMESLICING	(1ul << 5)
  
-+#include <dirent.h>
- #include <fcntl.h>
- #include <sys/ioctl.h>
+ #define I915_PARAM_HUC_STATUS		 42
  
-@@ -30,6 +31,87 @@
- #include "igt_debugfs.h"
- #include "igt_sysfs.h"
- 
-+static void __restore_defaults(int engine)
-+{
-+	struct dirent *de;
-+	int defaults;
-+	DIR *dir;
-+
-+	defaults = openat(engine, ".defaults", O_RDONLY);
-+	if (defaults < 0)
-+		return;
-+
-+	dir = fdopendir(defaults);
-+	if (!dir) {
-+		close(defaults);
-+		return;
-+	}
-+
-+	while ((de = readdir(dir))) {
-+		char buf[256];
-+		int fd, len;
-+
-+		if (*de->d_name == '.')
-+			continue;
-+
-+		fd = openat(defaults, de->d_name, O_RDONLY);
-+		if (fd < 0)
-+			continue;
-+
-+		len = read(fd, buf, sizeof(buf));
-+		close(fd);
-+
-+		fd = openat(engine, de->d_name, O_WRONLY);
-+		if (fd < 0)
-+			continue;
-+
-+		write(fd, buf, len);
-+		close(fd);
-+	}
-+
-+	closedir(dir);
-+}
-+
-+static void restore_defaults(int i915)
-+{
-+	struct dirent *de;
-+	int engines;
-+	DIR *dir;
-+	int sys;
-+
-+	sys = igt_sysfs_open(i915);
-+	if (sys < 0)
-+		return;
-+
-+	engines = openat(sys, "engine", O_RDONLY);
-+	if (engines < 0)
-+		goto close_sys;
-+
-+	dir = fdopendir(engines);
-+	if (!dir) {
-+		close(engines);
-+		goto close_sys;
-+	}
-+
-+	while ((de = readdir(dir))) {
-+		int engine;
-+
-+		if (*de->d_name == '.')
-+			continue;
-+
-+		engine = openat(engines, de->d_name, O_RDONLY);
-+		if (engine < 0)
-+			continue;
-+
-+		__restore_defaults(engine);
-+		close(engine);
-+	}
-+
-+	closedir(dir);
-+close_sys:
-+	close(sys);
-+}
-+
- static void reset_device(int i915)
- {
- 	int dir;
-@@ -66,6 +148,7 @@ void igt_require_gem(int i915)
- 	 * sequences of batches.
+@@ -1040,9 +1041,10 @@ struct drm_i915_gem_exec_fence {
  	 */
- 	reset_device(i915);
-+	restore_defaults(i915);
+ 	__u32 handle;
  
- 	err = 0;
- 	if (ioctl(i915, DRM_IOCTL_I915_GEM_THROTTLE)) {
+-#define I915_EXEC_FENCE_WAIT            (1<<0)
+-#define I915_EXEC_FENCE_SIGNAL          (1<<1)
+-#define __I915_EXEC_FENCE_UNKNOWN_FLAGS (-(I915_EXEC_FENCE_SIGNAL << 1))
++#define I915_EXEC_FENCE_WAIT            (1u << 0)
++#define I915_EXEC_FENCE_SIGNAL          (1u << 1)
++#define I915_EXEC_FENCE_WAIT_SUBMIT     (1u << 2)
++#define __I915_EXEC_FENCE_UNKNOWN_FLAGS (-(I915_EXEC_FENCE_WAIT_SUBMIT << 1))
+ 	__u32 flags;
+ };
+ 
+diff --git a/lib/i915/gem_scheduler.c b/lib/i915/gem_scheduler.c
+index 1beb85dec..a1dc694e5 100644
+--- a/lib/i915/gem_scheduler.c
++++ b/lib/i915/gem_scheduler.c
+@@ -131,6 +131,19 @@ bool gem_scheduler_has_engine_busy_stats(int fd)
+ 		I915_SCHEDULER_CAP_ENGINE_BUSY_STATS;
+ }
+ 
++/**
++ * gem_scheduler_has_timeslicing:
++ * @fd: open i915 drm file descriptor
++ *
++ * Feature test macro to query whether the driver supports using HW preemption
++ * to implement timeslicing of userspace batches. This allows userspace to
++ * implement micro-level scheduling within their own batches.
++ */
++bool gem_scheduler_has_timeslicing(int fd)
++{
++	return gem_scheduler_capability(fd) & I915_SCHEDULER_CAP_TIMESLICING;
++}
++
+ /**
+  * gem_scheduler_print_capability:
+  * @fd: open i915 drm file descriptor
+@@ -151,6 +164,8 @@ void gem_scheduler_print_capability(int fd)
+ 		igt_info(" - With preemption enabled\n");
+ 	if (caps & I915_SCHEDULER_CAP_SEMAPHORES)
+ 		igt_info(" - With HW semaphores enabled\n");
++	if (caps & I915_SCHEDULER_CAP_TIMESLICING)
++		igt_info(" - With user timeslicing enabled\n");
+ 	if (caps & I915_SCHEDULER_CAP_ENGINE_BUSY_STATS)
+ 		igt_info(" - With engine busy statistics\n");
+ }
+diff --git a/lib/i915/gem_scheduler.h b/lib/i915/gem_scheduler.h
+index 14bd4cac4..d43e84bd2 100644
+--- a/lib/i915/gem_scheduler.h
++++ b/lib/i915/gem_scheduler.h
+@@ -32,6 +32,7 @@ bool gem_scheduler_has_ctx_priority(int fd);
+ bool gem_scheduler_has_preemption(int fd);
+ bool gem_scheduler_has_semaphores(int fd);
+ bool gem_scheduler_has_engine_busy_stats(int fd);
++bool gem_scheduler_has_timeslicing(int fd);
+ void gem_scheduler_print_capability(int fd);
+ 
+ #endif /* GEM_SCHEDULER_H */
 -- 
 2.26.2
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
