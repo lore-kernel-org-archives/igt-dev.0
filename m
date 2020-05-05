@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98E086E0D7
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2020 13:32:36 +0000 (UTC)
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+Date: Tue,  5 May 2020 18:50:26 +0530
+Message-Id: <20200505132032.827-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 05 May 2020 13:16:07 -0000
-Message-ID: <158868456761.25912.16484624900194329077@emeril.freedesktop.org>
-References: <20200505121318.2816478-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200505121318.2816478-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBsaWIv?=
- =?utf-8?q?i915=3A_Reset_all_engine_properties_to_defaults_prior_to_the_st?=
- =?utf-8?q?art_of_a_test?=
+Subject: [igt-dev] [PATCH i-g-t v6 0/6] lpsp platform agnostic support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,28 +14,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: jani.nikula@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+This series adds lpsp igt val platform agnostic support.
 
-Series: lib/i915: Reset all engine properties to defaults prior to the start of a test
-URL   : https://patchwork.freedesktop.org/series/76951/
-State : failure
+v6 has fixed the few review comment provided by Animesh
+by adding a new patch in patchset.
 
-== Summary ==
+Anshuman Gupta (6):
+  tests/i915_pm_lpsp: Nuke the panel-fitter test
+  lib/igt_pm: Add lib func to get lpsp capability
+  tests/i915_pm_lpsp: lpsp platform agnostic support
+  test/i915_pm_lpsp: Skip screens-disabled test for DC state platforms
+  tests/i915_pm_lpsp: screens-disabled subtest use igt_wait
+  tests/i915_pm_rpm: lpsp/non-lpsp screen mode_set_data
 
-Applying: lib/i915: Reset all engine properties to defaults prior to the start of a test
-Patch failed at 0001 lib/i915: Reset all engine properties to defaults prior to the start of a test
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+ lib/igt_pm.c              |  29 ++++
+ lib/igt_pm.h              |   1 +
+ tests/i915/i915_pm_lpsp.c | 308 +++++++++++++++++---------------------
+ tests/i915/i915_pm_rpm.c  |  53 ++++---
+ 4 files changed, 198 insertions(+), 193 deletions(-)
+
+-- 
+2.26.0
 
 _______________________________________________
 igt-dev mailing list
