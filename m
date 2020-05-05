@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
- [IPv6:2a00:1450:4864:20::341])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 49A4889791
- for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2020 18:44:58 +0000 (UTC)
-Received: by mail-wm1-x341.google.com with SMTP id g12so3468262wmh.3
- for <igt-dev@lists.freedesktop.org>; Tue, 05 May 2020 11:44:58 -0700 (PDT)
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
+ [IPv6:2a00:1450:4864:20::444])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7BA3F89D8A
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 May 2020 18:46:27 +0000 (UTC)
+Received: by mail-wr1-x444.google.com with SMTP id k1so3997536wrx.4
+ for <igt-dev@lists.freedesktop.org>; Tue, 05 May 2020 11:46:27 -0700 (PDT)
 References: <20200428202255.31309-1-juhapekka.heikkila@gmail.com>
  <20200428202255.31309-6-juhapekka.heikkila@gmail.com>
- <20200505071604.GM9497@platvala-desk.ger.corp.intel.com>
+ <20200505140912.pqtw6yyplacaop5u@ahiler-desk1.fi.intel.com>
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <dc01f926-409c-3884-f1d1-48e40e1f1e2c@gmail.com>
-Date: Tue, 5 May 2020 21:44:51 +0300
+Message-ID: <a9c3b9e6-1f2c-6e08-7c61-74f4aeead861@gmail.com>
+Date: Tue, 5 May 2020 21:46:18 +0300
 MIME-Version: 1.0
-In-Reply-To: <20200505071604.GM9497@platvala-desk.ger.corp.intel.com>
+In-Reply-To: <20200505140912.pqtw6yyplacaop5u@ahiler-desk1.fi.intel.com>
 Content-Language: en-US
 Subject: Re: [igt-dev] [PATCH i-g-t 5/7] igt/params: add generic saving
  module parameter set
@@ -28,11 +28,11 @@ Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 Cc: igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 5.5.2020 10.16, Petri Latvala wrote:
+On 5.5.2020 17.09, Arkadiusz Hiler wrote:
 > On Tue, Apr 28, 2020 at 11:22:53PM +0300, Juha-Pekka Heikkila wrote:
 >> From: Jani Nikula <jani.nikula@intel.com>
 >>
@@ -52,6 +52,13 @@ On 5.5.2020 10.16, Petri Latvala wrote:
 >>   }
 >>   
 >> +__attribute__((format(printf, 3, 0)))
+> 
+> this is using a va_list, not "...", so this format attirbue should not
+> be here
+> 
+
+Good catch
+
 >> +static bool __igt_params_set(int device, const char *parameter,
 >> +			     const char *fmt, va_list ap, bool save)
 >> +{
@@ -103,69 +110,34 @@ On 5.5.2020 10.16, Petri Latvala wrote:
 >> + * igt_params_set_save:
 >> + * @device: fd of the device or -1 to default to first matching starting from
 >> + *	    zero. See __igt_params_open()
-> 
-> 
-> This documentation is still only understandable if you already know what it does.
-> 
-> "-- to default to the first /dev/dri/cardX device, starting from zero" ?
-> 
-> "See <a function without documentation>" in generated documentation is
-> less than useful as well... Maybe just drop that sentence altogether
-> from docs, point to the function in a normal comment? Or link to
-> igt_debugfs_path() that will do the actual -1 handling...
-> 
-> With better docs,
-> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-
-These were generally in line with how sysfs was documented but I agree 
-it's more fun to read code where there are more hints on what's going 
-on. I'll checkout those comment blocks what's all the stuff that could 
-be said there.
-
-> 
-> 
-> 
 >> + * @parameter: the name of the parameter to set
 >> + * @fmt: printf-esque format string
 >> + *
 >> + * Save the original value to be restored.
+> 
+> this needs a bit more explanation
+> 
+> 1. mention that it's basically _params_save followed by _params_set
+> 2. mention that the value is resoted by atexit handler, but refer to the
+>     _params_save for details
+> 
+
+As I replied to Petri on same patch, this is generally in line how sysfs 
+is documented but totally agree it's more fun to read code with more 
+hints what's going on. It makes it easier to see if code and comments 
+disagree -- usually that's a sign both are wrong. I'll see what I can 
+come up with my inner poet.
+
+Thanks for the comments guys, I'll make some changes and send new set.
+
+> 
 >> + *
 >> + * Returns true on success
 >> + */
 >> +bool igt_params_set_save(int device, const char *parameter, const char *fmt, ...)
->> +{
->> +	va_list ap;
->> +	bool ret;
->> +
->> +	va_start(ap, fmt);
->> +	ret = __igt_params_set(device, parameter, fmt, ap, true);
->> +	va_end(ap);
->> +
->> +	return ret;
->>   }
->>   
->>   /**
->> diff --git a/lib/igt_params.h b/lib/igt_params.h
->> index 52eed77f..1b750d23 100644
->> --- a/lib/igt_params.h
->> +++ b/lib/igt_params.h
->> @@ -31,6 +31,9 @@ int igt_params_open(int device);
->>   __attribute__((format(printf, 3, 4)))
->>   bool igt_params_set(int device, const char *parameter, const char *fmt, ...);
->>   
->> +__attribute__((format(printf, 3, 4)))
->> +bool igt_params_set_save(int device, const char *parameter, const char *fmt, ...);
->> +
->>   void igt_set_module_param(const char *name, const char *val);
->>   void igt_set_module_param_int(const char *name, int val);
->>   
->> -- 
->> 2.26.0
->>
->> _______________________________________________
->> igt-dev mailing list
->> igt-dev@lists.freedesktop.org
->> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+> 
+> _save_and_set
+> 
 
 _______________________________________________
 igt-dev mailing list
