@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C6C586E049
- for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2020 15:58:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B0BA76E049
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2020 15:58:37 +0000 (UTC)
 From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Date: Wed, 6 May 2020 18:58:02 +0300
-Message-ID: <20200506155803.358220-1-arkadiusz.hiler@intel.com>
+Date: Wed, 6 May 2020 18:58:03 +0300
+Message-ID: <20200506155803.358220-2-arkadiusz.hiler@intel.com>
+In-Reply-To: <20200506155803.358220-1-arkadiusz.hiler@intel.com>
+References: <20200506155803.358220-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/igt_chamelium: Sleep when doing
- autodiscovery
+Subject: [igt-dev] [PATCH i-g-t 2/2] lib/igt_kms: Make igt_display_require()
+ + chamelium more robust
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,87 +22,158 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Autodiscovery was wrongly assuming that whenever we do chamelium_plug()
-the connector state change is immediate.
+1. We don't reset Chamelium, as this generates extra unplug events if
+   any of the ports is already connected which is often the case
 
-It was working most of the time for native connectors, but may explain
-some of the flip-flopping skips.
+2. We try to plug all the chamelium ports, it's a noop if they are
+   already plugged
 
-The problem got only more serious with the advent of LSPcons as USB-C,
-where we have much things happening on the signal path, introducing
-delays.
+2. We wait for all the ports being connected:
+   - if the port mapping is provided: wait for the ports to be connected
+   - if there is no mapping: sleep(10) and hope for the best
 
-So for the sake of reliability this change introduces sleep(10) between
-plug and reprobe. The number is about 2 * the_most_pathological_case_observed.
-
-Also the discovery step is performed only if there is no static port
-mapping set up. After the discovery is done, IGT prints the mapping
-ready to be pasted into .igtrc.
-
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
 Cc: Imre Deak <imre.deak@intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 ---
- lib/igt_chamelium.c | 28 ++++++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+ lib/igt_chamelium.c | 87 +++++++++++++++++++++++++++++++++++++++------
+ lib/igt_chamelium.h |  2 ++
+ lib/igt_kms.c       |  2 ++
+ 3 files changed, 80 insertions(+), 11 deletions(-)
 
 diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-index c704b84f..28be5248 100644
+index 28be5248..69ad8378 100644
 --- a/lib/igt_chamelium.c
 +++ b/lib/igt_chamelium.c
-@@ -82,6 +82,14 @@
-  *
-  */
+@@ -2532,17 +2532,6 @@ bool chamelium_plug_all(struct chamelium *chamelium)
+ 	size_t port_count;
+ 	int port_ids[CHAMELIUM_MAX_PORTS];
+ 	xmlrpc_value *v;
+-	v = __chamelium_rpc(chamelium, NULL, "Reset", "()");
+-
+-	if (v != NULL)
+-		xmlrpc_DECREF(v);
+-
+-	if (chamelium->env.fault_occurred) {
+-		igt_debug("Chamelium RPC call failed: %s\n",
+-		     chamelium->env.fault_string);
+-
+-		return false;
+-	}
  
-+/*
-+ * We cannot expect chamelium_plug() to take effect imediately.
-+ *
-+ * Especially with modern, more complex hardware where we may have LSPcons and
-+ * USB controllers in the way.
-+ */
-+#define CHAMELIUM_HOTPLUG_DETECTION_DELAY 10
-+
- struct chamelium_edid {
- 	struct chamelium *chamelium;
- 	struct edid *base;
-@@ -2231,6 +2239,10 @@ static bool chamelium_autodiscover(struct chamelium *chamelium, int drm_fd)
- 		chamelium_plug(chamelium, port);
- 	}
+ 	port_count = chamelium_get_video_ports(chamelium, port_ids);
+ 	if (port_count <= 0)
+@@ -2565,6 +2554,82 @@ bool chamelium_plug_all(struct chamelium *chamelium)
+ 	return true;
+ }
  
-+	igt_info("Sleeping %d seconds for the hotplug to take effect.\n",
-+		 CHAMELIUM_HOTPLUG_DETECTION_DELAY);
-+	sleep(CHAMELIUM_HOTPLUG_DETECTION_DELAY);
++bool chamelium_wait_all_configured_ports_connected(struct chamelium *chamelium, int drm_fd)
++{
++	drmModeRes *res;
++	drmModeConnector *connector;
++	char **group_list;
++	char *group;
++	bool ret = true;
 +
- 	/* Reprobe connectors and build the mapping */
- 	res = drmModeGetResources(drm_fd);
- 	if (!res)
-@@ -2448,8 +2460,20 @@ struct chamelium *chamelium_init(int drm_fd)
- 	if (!chamelium_read_port_mappings(chamelium, drm_fd))
- 		goto error;
- 
--	if (!chamelium_autodiscover(chamelium, drm_fd))
--		goto error;
-+	if (chamelium->port_count == 0) {
-+		igt_info("Chamelium configured without port mapping, "
-+			 "performing autodiscovery\n");
++	int connectors[CHAMELIUM_MAX_PORTS];
++	int connectors_count = 0;
 +
-+		if (!chamelium_autodiscover(chamelium, drm_fd))
-+			goto error;
++	res = drmModeGetResources(drm_fd);
 +
-+		if (chamelium->port_count != 0)
-+			igt_info("\nConsider adding the following to your .igtrc:\n");
-+		for (int i = 0; i < chamelium->port_count; ++i) {
-+			igt_info("[Chamelium:%s]\n", chamelium->ports[i].name);
-+			igt_info("ChameliumPortID=%d\n\n", chamelium->ports[i].id);
++	group_list = g_key_file_get_groups(igt_key_file, NULL);
++
++	for (int i = 0; group_list[i] != NULL; i++) {
++		char *map_name;
++		group = group_list[i];
++
++		if (!strstr(group, "Chamelium:"))
++			continue;
++
++		igt_assert(chamelium->port_count <= CHAMELIUM_MAX_PORTS);
++
++		map_name = group + (sizeof("Chamelium:") - 1);
++
++		for (int j = 0;
++		     j < res->count_connectors;
++		     j++) {
++			char name[50];
++
++			connector = drmModeGetConnectorCurrent(
++			    drm_fd, res->connectors[j]);
++
++			/* We have to generate the connector name on our own */
++			snprintf(name, 50, "%s-%u",
++				 kmstest_connector_type_str(connector->connector_type),
++				 connector->connector_type_id);
++
++
++			if (strcmp(name, map_name) == 0) {
++				igt_assert(connectors_count < CHAMELIUM_MAX_PORTS);
++				connectors[connectors_count++] = connector->connector_id;
++				break;
++			}
++
++			drmModeFreeConnector(connector);
 +		}
 +	}
++
++	drmModeFreeResources(res);
++
++	if (connectors_count == 0) {
++		igt_info("No chamelium port mappping, sleeping for %d seconds "
++			 "for the hotplug to take effect",
++			 CHAMELIUM_HOTPLUG_DETECTION_DELAY);
++		sleep(CHAMELIUM_HOTPLUG_DETECTION_DELAY);
++		return true;
++	}
++
++	igt_until_timeout(CHAMELIUM_HOTPLUG_DETECTION_DELAY) {
++		ret = true;
++		for (int i = 0; i < connectors_count; ++i) {
++			connector = drmModeGetConnector(drm_fd, connectors[i]);
++			if (connector->connection != DRM_MODE_CONNECTED)
++				ret = false;
++			drmModeFreeConnector(connector);
++		}
++
++		if (ret)
++			break;
++	}
++
++	return ret;
++}
++
+ igt_constructor {
+ 	/* Frame dumps can be large, so we need to be able to handle very large
+ 	 * responses
+diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
+index c29741b4..359f4ab3 100644
+--- a/lib/igt_chamelium.h
++++ b/lib/igt_chamelium.h
+@@ -215,5 +215,7 @@ void chamelium_destroy_frame_dump(struct chamelium_frame_dump *dump);
+ void chamelium_destroy_audio_file(struct chamelium_audio_file *audio_file);
+ void chamelium_infoframe_destroy(struct chamelium_infoframe *infoframe);
+ bool chamelium_plug_all(struct chamelium *chamelium);
++bool chamelium_wait_all_configured_ports_connected(struct chamelium *chamelium,
++						   int drm_fd);
  
- 	cleanup_instance = chamelium;
- 	igt_install_exit_handler(chamelium_exit_handler);
+ #endif /* IGT_CHAMELIUM_H */
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index e9621e7e..d4cbc1c5 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -1899,6 +1899,8 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+ 				       "cannot reach the configured chamelium!\n");
+ 			igt_abort_on_f(!chamelium_plug_all(chamelium),
+ 				       "failed to plug all the chamelium ports!\n");
++			igt_abort_on_f(!chamelium_wait_all_configured_ports_connected(chamelium, drm_fd),
++				       "not all configured chamelium ports are connected!\n");
+ 			chamelium_deinit_rpc_only(chamelium);
+ 		}
+ 	}
 -- 
 2.25.2
 
