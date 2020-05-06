@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1624C6E211
- for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2020 04:54:31 +0000 (UTC)
-From: sai gowtham <sai.gowtham.ch@intel.com>
-Date: Wed,  6 May 2020 10:23:54 +0530
-Message-Id: <20200506045354.19122-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t][V2] tests/i915/gem_ringfill:Adjusted test
- to utilize all available engines.
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 06 May 2020 05:39:47 -0000
+Message-ID: <158874358740.11895.5907322752057176716@emeril.freedesktop.org>
+References: <20200506045354.19122-1-sai.gowtham.ch@intel.com>
+In-Reply-To: <20200506045354.19122-1-sai.gowtham.ch@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fringfill=3AAdjusted_test_to_utilize_all_available_en?=
+ =?utf-8?q?gines=2E_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,187 +15,185 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: sai.gowtham.ch@intel.com, igt-dev@lists.freedesktop.org
+To: sai gowtham <sai.gowtham.ch@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Replaced the legacy for_each_engine* defines with the ones implemented
-in the gem_engine_topology library.
+== Series Details ==
 
-Added legacy engine coverage and changed subtest name in fast-feedback.testlist
-from basic-default-forked -->legacy-basic-default-forked.
+Series: tests/i915/gem_ringfill:Adjusted test to utilize all available engines. (rev2)
+URL   : https://patchwork.freedesktop.org/series/76772/
+State : success
 
-Cc: Dec Katarzyna <katarzyna.dec@intel.com>
-Cc: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
-Signed-off-by: satyavat <satyavathi.k@intel.com>
-Signed-off-by: sai gowtham <sai.gowtham.ch@intel.com>
----
- tests/i915/gem_ringfill.c             | 72 ++++++++++++++++-----------
- tests/intel-ci/fast-feedback.testlist |  2 +-
- 2 files changed, 44 insertions(+), 30 deletions(-)
+== Summary ==
 
-diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
-index 4c73f4d9..4cc74e44 100644
---- a/tests/i915/gem_ringfill.c
-+++ b/tests/i915/gem_ringfill.c
-@@ -96,7 +96,7 @@ static int setup_execbuf(int fd,
- 			 struct drm_i915_gem_execbuffer2 *execbuf,
- 			 struct drm_i915_gem_exec_object2 *obj,
- 			 struct drm_i915_gem_relocation_entry *reloc,
--			 unsigned int ring)
-+			 const struct intel_execution_engine2 *e)
- {
- 	const int gen = intel_gen(intel_get_drm_devid(fd));
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
-@@ -109,7 +109,7 @@ static int setup_execbuf(int fd,
- 	memset(reloc, 0, 1024*sizeof(*reloc));
- 
- 	execbuf->buffers_ptr = to_user_pointer(obj);
--	execbuf->flags = ring | (1 << 11) | (1 << 12);
-+	execbuf->flags = e->flags | (1 << 11) | (1 << 12);
- 
- 	if (gen > 3 && gen < 6)
- 		execbuf->flags |= I915_EXEC_SECURE;
-@@ -170,25 +170,25 @@ static int setup_execbuf(int fd,
- 	return 0;
- }
- 
--static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
-+static void run_test(int fd, const struct intel_execution_engine2 *e, unsigned flags, unsigned timeout)
- {
-+	int i915;
- 	struct drm_i915_gem_exec_object2 obj[2];
- 	struct drm_i915_gem_relocation_entry reloc[1024];
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	igt_hang_t hang;
- 
--	gem_require_ring(fd, ring);
--	igt_require(gem_can_store_dword(fd, ring));
-+	igt_require(gem_class_can_store_dword(fd, e->class));
- 
- 	if (flags & (SUSPEND | HIBERNATE))
--		run_test(fd, ring, 0, 0);
-+		run_test(fd, e, 0, 0);
- 
- 	gem_quiescent_gpu(fd);
--	igt_require(setup_execbuf(fd, &execbuf, obj, reloc, ring) == 0);
-+	igt_require(setup_execbuf(fd, &execbuf, obj, reloc, e) == 0);
- 
- 	memset(&hang, 0, sizeof(hang));
- 	if (flags & HANG)
--		hang = igt_hang_ring(fd, ring & ~(3<<13));
-+		hang = igt_hang_ring(fd, e->flags & ~(3<<13));
- 
- 	if (flags & (CHILD | FORKED | BOMB)) {
- 		int nchild;
-@@ -203,8 +203,9 @@ static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
- 		igt_debug("Forking %d children\n", nchild);
- 		igt_fork(child, nchild) {
- 			if (flags & NEWFD) {
--				fd = drm_open_driver(DRIVER_INTEL);
--				setup_execbuf(fd, &execbuf, obj, reloc, ring);
-+				i915 = drm_open_driver(DRIVER_INTEL);
-+				gem_context_copy_engines(fd, 0, i915, 0);
-+				setup_execbuf(i915, &execbuf, obj, reloc, e);
- 			}
- 			fill_ring(fd, &execbuf, flags, timeout);
- 		}
-@@ -235,26 +236,28 @@ static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
- 	gem_quiescent_gpu(fd);
- 
- 	if (flags & (SUSPEND | HIBERNATE))
--		run_test(fd, ring, 0, 0);
-+		run_test(fd, e, 0, 0);
- }
- 
- igt_main
- {
-+	const struct intel_execution_engine2 *e2;
-+	const struct intel_execution_engine *e;
- 	const struct {
- 		const char *suffix;
- 		unsigned flags;
- 		unsigned timeout;
- 		bool basic;
- 	} modes[] = {
--		{ "", 0, 0, true},
--		{ "-interruptible", INTERRUPTIBLE, 1, true },
--		{ "-hang", HANG, 10, true },
--		{ "-child", CHILD, 0 },
--		{ "-forked", FORKED, 0, true },
--		{ "-fd", FORKED | NEWFD, 0, true },
--		{ "-bomb", BOMB | NEWFD | INTERRUPTIBLE, 150 },
--		{ "-S3", BOMB | SUSPEND, 30 },
--		{ "-S4", BOMB | HIBERNATE, 30 },
-+		{ "default", 0, 0, true},
-+		{ "interruptible", INTERRUPTIBLE, 1, true },
-+		{ "hang", HANG, 10, true },
-+		{ "child", CHILD, 0 },
-+		{ "forked", FORKED, 0, true },
-+		{ "fd", FORKED | NEWFD, 0, true },
-+		{ "bomb", BOMB | NEWFD | INTERRUPTIBLE, 150 },
-+		{ "S3", BOMB | SUSPEND, 30 },
-+		{ "S4", BOMB | HIBERNATE, 30 },
- 		{ NULL }
- 	}, *m;
- 	bool master = false;
-@@ -276,17 +279,28 @@ igt_main
- 		igt_info("Ring size: %d batches\n", ring_size);
- 		igt_require(ring_size);
- 	}
--
- 	for (m = modes; m->suffix; m++) {
--		const struct intel_execution_engine *e;
--
--		for (e = intel_execution_engines; e->name; e++) {
--			igt_subtest_f("%s%s%s",
--				      m->basic && !e->exec_id ? "basic-" : "",
--				      e->name,
--				      m->suffix) {
-+		/* Legacy testing must be first. */
-+		igt_subtest_with_dynamic_f("legacy-%s", m->suffix) {
-+			for (e = intel_execution_engines; e->name; e++) {
-+				struct intel_execution_engine2 e2__;
-+				e2__ = gem_eb_flags_to_engine(eb_ring(e));
-+				if (e2__.flags == -1)
-+					continue;
-+				e2 = &e2__;
- 				igt_skip_on(m->flags & NEWFD && master);
--				run_test(fd, eb_ring(e), m->flags, m->timeout);
-+				igt_dynamic_f("%s%s",
-+						m->basic && !e2->instance ? "basic-" : "",
-+					e2->name)
-+					run_test(fd, e2, m->flags, m->timeout);
-+			}
-+		}
-+		igt_skip_on(m->flags & NEWFD && master);
-+		igt_subtest_with_dynamic_f("%s%s", m->basic  ? "basic-" : "",  m->suffix) {
-+			__for_each_physical_engine(fd, e2) {
-+				igt_dynamic_f("%s", e2->name) {
-+					run_test(fd, e2, m->flags, m->timeout);
-+				}
- 			}
- 		}
- 	}
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 2ccad438..8a50e6c3 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -35,7 +35,7 @@ igt@gem_mmap@basic
- igt@gem_mmap_gtt@basic
- igt@gem_render_linear_blits@basic
- igt@gem_render_tiled_blits@basic
+CI Bug Log - changes from IGT_5635 -> IGTPW_4537
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4537/index.html
+
+New tests
+---------
+
+  New tests have been introduced between IGT_5635 and IGTPW_4537:
+
+### New IGT tests (2) ###
+
+  * igt@gem_ringfill@legacy-forked:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_ringfill@legacy-forked@default:
+    - Statuses : 38 pass(s)
+    - Exec time: [0.03, 0.24] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4537 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@active:
+    - fi-icl-y:           [PASS][1] -> [DMESG-FAIL][2] ([i915#765])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5635/fi-icl-y/igt@i915_selftest@live@active.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4537/fi-icl-y/igt@i915_selftest@live@active.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-x1275:       [SKIP][3] ([fdo#109271]) -> [FAIL][4] ([i915#62])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5635/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4537/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+  [i915#765]: https://gitlab.freedesktop.org/drm/intel/issues/765
+
+
+Participating hosts (49 -> 43)
+------------------------------
+
+  Additional (1): fi-bdw-gvtdvm 
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5635 -> IGTPW_4537
+
+  CI-20190529: 20190529
+  CI_DRM_8433: db68fed086f2ddcdc30e0d9ca5faaba5e55d0d01 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4537: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4537/index.html
+  IGT_5635: e83abfca61d407d12eee4d25bb0e8686337a7791 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@gem_ringfill@basic-fd
++igt@gem_ringfill@basic-forked
++igt@gem_ringfill@basic-hang
++igt@gem_ringfill@basic-interruptible
++igt@gem_ringfill@bomb
++igt@gem_ringfill@child
++igt@gem_ringfill@legacy-bomb
++igt@gem_ringfill@legacy-child
++igt@gem_ringfill@legacy-default
++igt@gem_ringfill@legacy-fd
++igt@gem_ringfill@legacy-forked
++igt@gem_ringfill@legacy-hang
++igt@gem_ringfill@legacy-interruptible
++igt@gem_ringfill@legacy-s3
++igt@gem_ringfill@legacy-s4
++igt@gem_ringfill@s3
++igt@gem_ringfill@s4
+-igt@gem_ringfill@basic-default-fd
 -igt@gem_ringfill@basic-default-forked
-+igt@gem_ringfill@legacy-forked@default
- igt@gem_sync@basic-all
- igt@gem_sync@basic-each
- igt@gem_tiled_blits@basic
--- 
-2.25.0
+-igt@gem_ringfill@basic-default-hang
+-igt@gem_ringfill@basic-default-interruptible
+-igt@gem_ringfill@blt
+-igt@gem_ringfill@blt-bomb
+-igt@gem_ringfill@blt-child
+-igt@gem_ringfill@blt-fd
+-igt@gem_ringfill@blt-forked
+-igt@gem_ringfill@blt-hang
+-igt@gem_ringfill@blt-interruptible
+-igt@gem_ringfill@blt-s3
+-igt@gem_ringfill@blt-s4
+-igt@gem_ringfill@bsd
+-igt@gem_ringfill@bsd1
+-igt@gem_ringfill@bsd1-bomb
+-igt@gem_ringfill@bsd1-child
+-igt@gem_ringfill@bsd1-fd
+-igt@gem_ringfill@bsd1-forked
+-igt@gem_ringfill@bsd1-hang
+-igt@gem_ringfill@bsd1-interruptible
+-igt@gem_ringfill@bsd1-s3
+-igt@gem_ringfill@bsd1-s4
+-igt@gem_ringfill@bsd2
+-igt@gem_ringfill@bsd2-bomb
+-igt@gem_ringfill@bsd2-child
+-igt@gem_ringfill@bsd2-fd
+-igt@gem_ringfill@bsd2-forked
+-igt@gem_ringfill@bsd2-hang
+-igt@gem_ringfill@bsd2-interruptible
+-igt@gem_ringfill@bsd2-s3
+-igt@gem_ringfill@bsd2-s4
+-igt@gem_ringfill@bsd-bomb
+-igt@gem_ringfill@bsd-child
+-igt@gem_ringfill@bsd-fd
+-igt@gem_ringfill@bsd-forked
+-igt@gem_ringfill@bsd-hang
+-igt@gem_ringfill@bsd-interruptible
+-igt@gem_ringfill@bsd-s3
+-igt@gem_ringfill@bsd-s4
+-igt@gem_ringfill@default-bomb
+-igt@gem_ringfill@default-child
+-igt@gem_ringfill@default-s3
+-igt@gem_ringfill@default-s4
+-igt@gem_ringfill@render
+-igt@gem_ringfill@render-bomb
+-igt@gem_ringfill@render-child
+-igt@gem_ringfill@render-fd
+-igt@gem_ringfill@render-forked
+-igt@gem_ringfill@render-hang
+-igt@gem_ringfill@render-interruptible
+-igt@gem_ringfill@render-s3
+-igt@gem_ringfill@render-s4
+-igt@gem_ringfill@vebox
+-igt@gem_ringfill@vebox-bomb
+-igt@gem_ringfill@vebox-child
+-igt@gem_ringfill@vebox-fd
+-igt@gem_ringfill@vebox-forked
+-igt@gem_ringfill@vebox-hang
+-igt@gem_ringfill@vebox-interruptible
+-igt@gem_ringfill@vebox-s3
+-igt@gem_ringfill@vebox-s4
 
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4537/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
