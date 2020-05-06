@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B0D86E05D
- for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2020 06:02:06 +0000 (UTC)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D88289A75
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2020 07:35:02 +0000 (UTC)
+Date: Wed, 6 May 2020 10:34:54 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200506073454.GU9497@platvala-desk.ger.corp.intel.com>
+References: <20200428202255.31309-1-juhapekka.heikkila@gmail.com>
+ <20200428202255.31309-7-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200506045354.19122-1-sai.gowtham.ch@intel.com>
-References: <20200506045354.19122-1-sai.gowtham.ch@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158874489237.11789.2125532991114580066@build.alporthouse.com>
-Date: Wed, 06 May 2020 07:01:32 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t][V2] tests/i915/gem_ringfill:Adjusted
- test to utilize all available engines.
+Content-Disposition: inline
+In-Reply-To: <20200428202255.31309-7-juhapekka.heikkila@gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 6/7] igt/params: use igt_params_set_save
+ for igt_set_module_param*
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,55 +23,236 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting sai gowtham (2020-05-06 05:53:54)
-> @@ -203,8 +203,9 @@ static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
->                 igt_debug("Forking %d children\n", nchild);
->                 igt_fork(child, nchild) {
->                         if (flags & NEWFD) {
-> -                               fd = drm_open_driver(DRIVER_INTEL);
-> -                               setup_execbuf(fd, &execbuf, obj, reloc, ring);
-> +                               i915 = drm_open_driver(DRIVER_INTEL);
-> +                               gem_context_copy_engines(fd, 0, i915, 0);
-> +                               setup_execbuf(i915, &execbuf, obj, reloc, e);
->                         }
->                         fill_ring(fd, &execbuf, flags, timeout);
+On Tue, Apr 28, 2020 at 11:22:54PM +0300, Juha-Pekka Heikkila wrote:
+> Unify parameter access. Here is also decided 'default' device
+> if -1 is specified as device. Derault being that device
+> which is first to match requirements, starting search
+> from zero upwards.
+> 
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>  lib/igt_params.c | 134 +++++++++++++++++++++++++++++++++++------------
+>  1 file changed, 100 insertions(+), 34 deletions(-)
+> 
+> diff --git a/lib/igt_params.c b/lib/igt_params.c
+> index d9cf986c..dc35f233 100644
+> --- a/lib/igt_params.c
+> +++ b/lib/igt_params.c
+> @@ -27,12 +27,14 @@
+>  #include <stdbool.h>
+>  #include <stdio.h>
+>  #include <sys/ioctl.h>
+> +#include <sys/stat.h>
+>  
+>  #include <i915_drm.h>
+>  
+>  #include "igt_core.h"
+>  #include "igt_params.h"
+>  #include "igt_sysfs.h"
+> +#include "igt_debugfs.h"
+>  
+>  struct module_param_data {
+>  	char *path;
+> @@ -107,15 +109,59 @@ static void igt_params_save(int dir, const char *path, const char *name)
+>  	module_params = data;
+>  }
+>  
+> -static int __igt_params_open(int device, char **outpath)
+> +static int __igt_params_open(int device, char **outpath, const char *param)
+>  {
+>  	int dir, params = -1;
+> +	struct stat buffer;
+> +	char searchname[64];
+> +	char searchpath[PATH_MAX];
+> +	char *foundname, *ctx;
+>  
+> -	dir = igt_sysfs_open(device);
+> +	dir = igt_debugfs_dir(device);
+>  	if (dir >= 0) {
+> -		params = openat(dir,
+> -				"device/driver/module/parameters",
+> -				O_RDONLY);
+> +		int devname;
+> +
+> +		devname = openat(dir, "name", O_RDONLY);
+> +		igt_assert(devname >= 0);
+> +
+> +		read(devname, searchname, sizeof(searchname));
+> +		close(devname);
+> +
+> +		foundname = strtok_r(searchname, " ", &ctx);
+> +		igt_assert(foundname);
 
-NEWFD broken.
+This assert and the one above, I wonder if it makes more sense to
+igt_require instead. Do we want to claim it's a kernel bug if the
+driver doesn't want to reveal its name?
 
-> @@ -276,17 +279,28 @@ igt_main
->                 igt_info("Ring size: %d batches\n", ring_size);
->                 igt_require(ring_size);
->         }
+
+Either way, the code looks funky with its control flow, but
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+
+
+> +
+> +		snprintf(searchpath, PATH_MAX, "%s_params", foundname);
+> +		params = openat(dir, searchpath, O_RDONLY);
+> +
+> +		if (params >= 0) {
+> +			char *debugfspath = malloc(PATH_MAX);
+> +
+> +			igt_debugfs_path(device, debugfspath, PATH_MAX);
+> +			if (param != NULL) {
+> +				char filepath[PATH_MAX];
+> +
+> +				snprintf(filepath, PATH_MAX, "%s/%s",
+> +					 debugfspath, param);
+> +
+> +				if (stat(filepath, &buffer) == 0) {
+> +					if (outpath != NULL)
+> +						*outpath = debugfspath;
+> +					else
+> +						free(debugfspath);
+> +				} else {
+> +					free(debugfspath);
+> +					close(params);
+> +					params = -1;
+> +				}
+> +			} else if (outpath != NULL) {
+> +				/*
+> +				 * Caller is responsible to free this.
+> +				 */
+> +				*outpath = debugfspath;
+> +			} else {
+> +				free(debugfspath);
+> +			}
+> +		}
+>  		close(dir);
+>  	}
+>  
+> @@ -124,12 +170,51 @@ static int __igt_params_open(int device, char **outpath)
+>  		char name[32] = "";
+>  		char path[PATH_MAX];
+>  
+> -		memset(&version, 0, sizeof(version));
+> -		version.name_len = sizeof(name);
+> -		version.name = name;
+> -		ioctl(device, DRM_IOCTL_VERSION, &version);
 > -
->         for (m = modes; m->suffix; m++) {
-> -               const struct intel_execution_engine *e;
+> -		sprintf(path, "/sys/module/%s/parameters", name);
+> +		if (device == -1) {
+> +			/*
+> +			 * find default device
+> +			 */
+> +			int file, i;
+> +			const char *debugfs_root = igt_debugfs_mount();
+> +
+> +			igt_assert(debugfs_root);
+> +
+> +			for (i = 0; i < 63; i++) {
+> +				char testpath[PATH_MAX];
+> +
+> +				snprintf(searchpath, PATH_MAX,
+> +					 "%s/dri/%d/name", debugfs_root, i);
+> +
+> +				file = open(searchpath, O_RDONLY);
+> +
+> +				if (file < 0)
+> +					continue;
+> +
+> +				read(file, searchname, sizeof(searchname));
+> +				close(file);
+> +
+> +				foundname = strtok_r(searchname, " ", &ctx);
+> +				if (!foundname)
+> +					continue;
+> +
+> +				snprintf(testpath, PATH_MAX,
+> +					 "/sys/module/%s/parameters",
+> +					 foundname);
+> +
+> +				if (stat(testpath, &buffer) == 0 &&
+> +				    S_ISDIR(buffer.st_mode)) {
+> +					snprintf(name, sizeof(name), "%s",
+> +						 foundname);
+> +					break;
+> +				}
+> +			}
+> +		} else {
+> +			memset(&version, 0, sizeof(version));
+> +			version.name_len = sizeof(name);
+> +			version.name = name;
+> +			ioctl(device, DRM_IOCTL_VERSION, &version);
+> +		}
+> +		snprintf(path, sizeof(path), "/sys/module/%s/parameters", name);
+>  		params = open(path, O_RDONLY);
+>  		if (params >= 0 && outpath)
+>  			*outpath = strdup(path);
+> @@ -150,7 +235,7 @@ static int __igt_params_open(int device, char **outpath)
+>   */
+>  int igt_params_open(int device)
+>  {
+> -	return __igt_params_open(device, NULL);
+> +	return __igt_params_open(device, NULL, NULL);
+>  }
+>  
+>  __attribute__((format(printf, 3, 0)))
+> @@ -161,7 +246,7 @@ static bool __igt_params_set(int device, const char *parameter,
+>  	int dir;
+>  	int ret;
+>  
+> -	dir = __igt_params_open(device, save ? &path : NULL);
+> +	dir = __igt_params_open(device, save ? &path : NULL, parameter);
+>  	if (dir < 0)
+>  		return false;
+>  
+> @@ -233,21 +318,9 @@ bool igt_params_set_save(int device, const char *parameter, const char *fmt, ...
+>   */
+>  void igt_set_module_param(const char *name, const char *val)
+>  {
+> -	const char *path = "/sys/module/i915/parameters";
+> -	int dir;
 > -
-> -               for (e = intel_execution_engines; e->name; e++) {
-> -                       igt_subtest_f("%s%s%s",
-> -                                     m->basic && !e->exec_id ? "basic-" : "",
-> -                                     e->name,
-> -                                     m->suffix) {
-> +               /* Legacy testing must be first. */
-> +               igt_subtest_with_dynamic_f("legacy-%s", m->suffix) {
-> +                       for (e = intel_execution_engines; e->name; e++) {
-> +                               struct intel_execution_engine2 e2__;
-> +                               e2__ = gem_eb_flags_to_engine(eb_ring(e));
-> +                               if (e2__.flags == -1)
-> +                                       continue;
-> +                               e2 = &e2__;
->                                 igt_skip_on(m->flags & NEWFD && master);
-> -                               run_test(fd, eb_ring(e), m->flags, m->timeout);
-> +                               igt_dynamic_f("%s%s",
-> +                                               m->basic && !e2->instance ? "basic-" : "",
-> +                                       e2->name)
-> +                                       run_test(fd, e2, m->flags, m->timeout);
-> +                       }
-
-Farcical.
--Chris
+> -	dir = open(path, O_RDONLY);
+> -	igt_assert(dir >= 0);
+> -
+> -	igt_params_save(dir, path, name);
+> -
+> -	igt_assert(igt_sysfs_set(dir, name, val));
+> -
+> -	igt_assert(close(dir) == 0);
+> +	igt_assert(igt_params_set_save(-1, name, "%s", val));
+>  }
+>  
+> -#define PARAM_VALUE_MAX_SZ 16
+> -
+>  /**
+>   * igt_set_module_param_int:
+>   * @name: i915.ko parameter name
+> @@ -258,12 +331,5 @@ void igt_set_module_param(const char *name, const char *val)
+>   */
+>  void igt_set_module_param_int(const char *name, int val)
+>  {
+> -	char str[PARAM_VALUE_MAX_SZ];
+> -	int n;
+> -
+> -	n = snprintf(str, PARAM_VALUE_MAX_SZ, "%d\n", val);
+> -	igt_assert_f(n < PARAM_VALUE_MAX_SZ,
+> -		     "Need to increase PARAM_VALUE_MAX_SZ\n");
+> -
+> -	igt_set_module_param(name, str);
+> +	igt_assert(igt_params_set_save(-1, name, "%d", val));
+>  }
+> -- 
+> 2.26.0
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
