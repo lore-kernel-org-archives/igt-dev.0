@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 126886E04A
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2020 15:02:54 +0000 (UTC)
+From: sai gowtham <sai.gowtham.ch@intel.com>
+Date: Wed,  6 May 2020 20:32:18 +0530
+Message-Id: <20200506150218.3811-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 06 May 2020 14:52:16 -0000
-Message-ID: <158877673621.11898.17909956119496550909@emeril.freedesktop.org>
-References: <20200506142218.3098955-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200506142218.3098955-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_i915/gem=5Fexec=5Fschedule=3A_?=
- =?utf-8?q?Exercise_timeslicing_along_an_engine?=
+Subject: [igt-dev] [PATCH i-g-t][V3]tests/i915/gem_ringfill: Adjusted test
+ to utilize all available engines.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,70 +15,116 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: sai.gowtham.ch@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Replaced the legacy for_each_engine* defines with the ones implemented
+in the gem_engine_topology library.
 
-Series: series starting with [i-g-t,1/2] i915/gem_exec_schedule: Exercise timeslicing along an engine
-URL   : https://patchwork.freedesktop.org/series/76997/
-State : success
+Added legacy engine coverage and changed subtest name in
+fast-feedback.testlist
+from basic-default-forked -->legacy-basic-forked@default.
 
-== Summary ==
+Cc: Dec Katarzyna <katarzyna.dec@intel.com>
+Cc: Ursulin Tvrtko <tvrtko.ursulin@intel.com>
+Signed-off-by: satyavat <satyavathi.k@intel.com>
+Signed-off-by: sai gowtham <sai.gowtham.ch@intel.com>
+---
+ tests/i915/gem_ringfill.c             | 42 ++++++++++++++++++---------
+ tests/intel-ci/fast-feedback.testlist |  2 +-
+ 2 files changed, 30 insertions(+), 14 deletions(-)
 
-CI Bug Log - changes from IGT_5635 -> IGTPW_4538
-====================================================
+diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
+index 4c73f4d9..60b2eab6 100644
+--- a/tests/i915/gem_ringfill.c
++++ b/tests/i915/gem_ringfill.c
+@@ -240,6 +240,8 @@ static void run_test(int fd, unsigned ring, unsigned flags, unsigned timeout)
+ 
+ igt_main
+ {
++	const struct intel_execution_engine *e;
++	const struct intel_execution_engine2 *e2;
+ 	const struct {
+ 		const char *suffix;
+ 		unsigned flags;
+@@ -249,12 +251,12 @@ igt_main
+ 		{ "", 0, 0, true},
+ 		{ "-interruptible", INTERRUPTIBLE, 1, true },
+ 		{ "-hang", HANG, 10, true },
+-		{ "-child", CHILD, 0 },
++		{ "child", CHILD, 0 },
+ 		{ "-forked", FORKED, 0, true },
+ 		{ "-fd", FORKED | NEWFD, 0, true },
+-		{ "-bomb", BOMB | NEWFD | INTERRUPTIBLE, 150 },
+-		{ "-S3", BOMB | SUSPEND, 30 },
+-		{ "-S4", BOMB | HIBERNATE, 30 },
++		{ "bomb", BOMB | NEWFD | INTERRUPTIBLE, 150 },
++		{ "S3", BOMB | SUSPEND, 30 },
++		{ "S4", BOMB | HIBERNATE, 30 },
+ 		{ NULL }
+ 	}, *m;
+ 	bool master = false;
+@@ -276,17 +278,31 @@ igt_main
+ 		igt_info("Ring size: %d batches\n", ring_size);
+ 		igt_require(ring_size);
+ 	}
++	/* Legacy for selecting rings. */
++	for (m = modes; m->suffix; m++) {
++		igt_subtest_with_dynamic_f("legacy-%s%s",
++				m->basic ? "basic" : "", m->suffix) {
++			for (e = intel_execution_engines; e->name; e++) {
++				igt_dynamic_f("%s", e->name) {
++					igt_skip_on(m->flags & NEWFD && master);
++					run_test(fd, eb_ring(e),
++							m->flags,
++							m->timeout);
++				}
+ 
++			}
++		}
++	}
+ 	for (m = modes; m->suffix; m++) {
+-		const struct intel_execution_engine *e;
+-
+-		for (e = intel_execution_engines; e->name; e++) {
+-			igt_subtest_f("%s%s%s",
+-				      m->basic && !e->exec_id ? "basic-" : "",
+-				      e->name,
+-				      m->suffix) {
+-				igt_skip_on(m->flags & NEWFD && master);
+-				run_test(fd, eb_ring(e), m->flags, m->timeout);
++		igt_subtest_with_dynamic_f("%s%s",
++				m->basic ? "basic" : "", m->suffix) {
++			__for_each_physical_engine(fd, e2) {
++				igt_dynamic_f("%s", e2->name) {
++					igt_skip_on(m->flags & NEWFD && master);
++					run_test(fd, e2->flags,
++							m->flags,
++							m->timeout);
++				}
+ 			}
+ 		}
+ 	}
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 2ccad438..994f15e5 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -35,7 +35,7 @@ igt@gem_mmap@basic
+ igt@gem_mmap_gtt@basic
+ igt@gem_render_linear_blits@basic
+ igt@gem_render_tiled_blits@basic
+-igt@gem_ringfill@basic-default-forked
++igt@gem_ringfill@legacy-basic-forked@default
+ igt@gem_sync@basic-all
+ igt@gem_sync@basic-each
+ igt@gem_tiled_blits@basic
+-- 
+2.25.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4538/index.html
-
-
-Changes
--------
-
-  No changes found
-
-
-Participating hosts (49 -> 42)
-------------------------------
-
-  Additional (1): fi-bdw-gvtdvm 
-  Missing    (8): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-kbl-x1275 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5635 -> IGTPW_4538
-
-  CI-20190529: 20190529
-  CI_DRM_8433: db68fed086f2ddcdc30e0d9ca5faaba5e55d0d01 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4538: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4538/index.html
-  IGT_5635: e83abfca61d407d12eee4d25bb0e8686337a7791 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@gem_exec_fence@submit
-+igt@gem_exec_schedule@timeslicing
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4538/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
