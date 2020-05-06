@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0BA76E049
- for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2020 15:58:37 +0000 (UTC)
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Date: Wed, 6 May 2020 18:58:03 +0300
-Message-ID: <20200506155803.358220-2-arkadiusz.hiler@intel.com>
-In-Reply-To: <20200506155803.358220-1-arkadiusz.hiler@intel.com>
-References: <20200506155803.358220-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] lib/igt_kms: Make igt_display_require()
- + chamelium more robust
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 06 May 2020 16:16:28 -0000
+Message-ID: <158878178874.11898.15249592072350325089@emeril.freedesktop.org>
+References: <20200506150218.3811-1-sai.gowtham.ch@intel.com>
+In-Reply-To: <20200506150218.3811-1-sai.gowtham.ch@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?i915/gem=5Fringfill=3A_Adjusted_test_to_utilize_all_available_e?=
+ =?utf-8?q?ngines=2E?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,166 +15,177 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: sai gowtham <sai.gowtham.ch@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-1. We don't reset Chamelium, as this generates extra unplug events if
-   any of the ports is already connected which is often the case
+== Series Details ==
 
-2. We try to plug all the chamelium ports, it's a noop if they are
-   already plugged
+Series: tests/i915/gem_ringfill: Adjusted test to utilize all available engines.
+URL   : https://patchwork.freedesktop.org/series/77001/
+State : success
 
-2. We wait for all the ports being connected:
-   - if the port mapping is provided: wait for the ports to be connected
-   - if there is no mapping: sleep(10) and hope for the best
+== Summary ==
 
-Cc: Petri Latvala <petri.latvala@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
----
- lib/igt_chamelium.c | 87 +++++++++++++++++++++++++++++++++++++++------
- lib/igt_chamelium.h |  2 ++
- lib/igt_kms.c       |  2 ++
- 3 files changed, 80 insertions(+), 11 deletions(-)
+CI Bug Log - changes from CI_DRM_8434 -> IGTPW_4539
+====================================================
 
-diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-index 28be5248..69ad8378 100644
---- a/lib/igt_chamelium.c
-+++ b/lib/igt_chamelium.c
-@@ -2532,17 +2532,6 @@ bool chamelium_plug_all(struct chamelium *chamelium)
- 	size_t port_count;
- 	int port_ids[CHAMELIUM_MAX_PORTS];
- 	xmlrpc_value *v;
--	v = __chamelium_rpc(chamelium, NULL, "Reset", "()");
--
--	if (v != NULL)
--		xmlrpc_DECREF(v);
--
--	if (chamelium->env.fault_occurred) {
--		igt_debug("Chamelium RPC call failed: %s\n",
--		     chamelium->env.fault_string);
--
--		return false;
--	}
- 
- 	port_count = chamelium_get_video_ports(chamelium, port_ids);
- 	if (port_count <= 0)
-@@ -2565,6 +2554,82 @@ bool chamelium_plug_all(struct chamelium *chamelium)
- 	return true;
- }
- 
-+bool chamelium_wait_all_configured_ports_connected(struct chamelium *chamelium, int drm_fd)
-+{
-+	drmModeRes *res;
-+	drmModeConnector *connector;
-+	char **group_list;
-+	char *group;
-+	bool ret = true;
-+
-+	int connectors[CHAMELIUM_MAX_PORTS];
-+	int connectors_count = 0;
-+
-+	res = drmModeGetResources(drm_fd);
-+
-+	group_list = g_key_file_get_groups(igt_key_file, NULL);
-+
-+	for (int i = 0; group_list[i] != NULL; i++) {
-+		char *map_name;
-+		group = group_list[i];
-+
-+		if (!strstr(group, "Chamelium:"))
-+			continue;
-+
-+		igt_assert(chamelium->port_count <= CHAMELIUM_MAX_PORTS);
-+
-+		map_name = group + (sizeof("Chamelium:") - 1);
-+
-+		for (int j = 0;
-+		     j < res->count_connectors;
-+		     j++) {
-+			char name[50];
-+
-+			connector = drmModeGetConnectorCurrent(
-+			    drm_fd, res->connectors[j]);
-+
-+			/* We have to generate the connector name on our own */
-+			snprintf(name, 50, "%s-%u",
-+				 kmstest_connector_type_str(connector->connector_type),
-+				 connector->connector_type_id);
-+
-+
-+			if (strcmp(name, map_name) == 0) {
-+				igt_assert(connectors_count < CHAMELIUM_MAX_PORTS);
-+				connectors[connectors_count++] = connector->connector_id;
-+				break;
-+			}
-+
-+			drmModeFreeConnector(connector);
-+		}
-+	}
-+
-+	drmModeFreeResources(res);
-+
-+	if (connectors_count == 0) {
-+		igt_info("No chamelium port mappping, sleeping for %d seconds "
-+			 "for the hotplug to take effect",
-+			 CHAMELIUM_HOTPLUG_DETECTION_DELAY);
-+		sleep(CHAMELIUM_HOTPLUG_DETECTION_DELAY);
-+		return true;
-+	}
-+
-+	igt_until_timeout(CHAMELIUM_HOTPLUG_DETECTION_DELAY) {
-+		ret = true;
-+		for (int i = 0; i < connectors_count; ++i) {
-+			connector = drmModeGetConnector(drm_fd, connectors[i]);
-+			if (connector->connection != DRM_MODE_CONNECTED)
-+				ret = false;
-+			drmModeFreeConnector(connector);
-+		}
-+
-+		if (ret)
-+			break;
-+	}
-+
-+	return ret;
-+}
-+
- igt_constructor {
- 	/* Frame dumps can be large, so we need to be able to handle very large
- 	 * responses
-diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
-index c29741b4..359f4ab3 100644
---- a/lib/igt_chamelium.h
-+++ b/lib/igt_chamelium.h
-@@ -215,5 +215,7 @@ void chamelium_destroy_frame_dump(struct chamelium_frame_dump *dump);
- void chamelium_destroy_audio_file(struct chamelium_audio_file *audio_file);
- void chamelium_infoframe_destroy(struct chamelium_infoframe *infoframe);
- bool chamelium_plug_all(struct chamelium *chamelium);
-+bool chamelium_wait_all_configured_ports_connected(struct chamelium *chamelium,
-+						   int drm_fd);
- 
- #endif /* IGT_CHAMELIUM_H */
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index e9621e7e..d4cbc1c5 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1899,6 +1899,8 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 				       "cannot reach the configured chamelium!\n");
- 			igt_abort_on_f(!chamelium_plug_all(chamelium),
- 				       "failed to plug all the chamelium ports!\n");
-+			igt_abort_on_f(!chamelium_wait_all_configured_ports_connected(chamelium, drm_fd),
-+				       "not all configured chamelium ports are connected!\n");
- 			chamelium_deinit_rpc_only(chamelium);
- 		}
- 	}
--- 
-2.25.2
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4539/index.html
+
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_8434 and IGTPW_4539:
+
+### New IGT tests (2) ###
+
+  * igt@gem_ringfill@legacy-basic-forked:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_ringfill@legacy-basic-forked@default:
+    - Statuses : 38 pass(s)
+    - Exec time: [0.03, 0.24] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4539 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-glk-dsi:         [PASS][1] -> [INCOMPLETE][2] ([i915#58] / [k.org#198133])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8434/fi-glk-dsi/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4539/fi-glk-dsi/igt@i915_selftest@live@execlists.html
+
+  
+  [i915#58]: https://gitlab.freedesktop.org/drm/intel/issues/58
+  [k.org#198133]: https://bugzilla.kernel.org/show_bug.cgi?id=198133
+
+
+Participating hosts (50 -> 42)
+------------------------------
+
+  Missing    (8): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-bwr-2160 fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5635 -> IGTPW_4539
+
+  CI-20190529: 20190529
+  CI_DRM_8434: 2951bac393beb4f095468de8b7cc53c8e3a092c2 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4539: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4539/index.html
+  IGT_5635: e83abfca61d407d12eee4d25bb0e8686337a7791 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@gem_ringfill@basic
++igt@gem_ringfill@basic-fd
++igt@gem_ringfill@basic-forked
++igt@gem_ringfill@basic-hang
++igt@gem_ringfill@basic-interruptible
++igt@gem_ringfill@bomb
++igt@gem_ringfill@child
++igt@gem_ringfill@legacy-basic
++igt@gem_ringfill@legacy-basic-fd
++igt@gem_ringfill@legacy-basic-forked
++igt@gem_ringfill@legacy-basic-hang
++igt@gem_ringfill@legacy-basic-interruptible
++igt@gem_ringfill@legacy-bomb
++igt@gem_ringfill@legacy-child
++igt@gem_ringfill@legacy-s3
++igt@gem_ringfill@legacy-s4
++igt@gem_ringfill@s3
++igt@gem_ringfill@s4
+-igt@gem_ringfill@basic-default
+-igt@gem_ringfill@basic-default-fd
+-igt@gem_ringfill@basic-default-forked
+-igt@gem_ringfill@basic-default-hang
+-igt@gem_ringfill@basic-default-interruptible
+-igt@gem_ringfill@blt
+-igt@gem_ringfill@blt-bomb
+-igt@gem_ringfill@blt-child
+-igt@gem_ringfill@blt-fd
+-igt@gem_ringfill@blt-forked
+-igt@gem_ringfill@blt-hang
+-igt@gem_ringfill@blt-interruptible
+-igt@gem_ringfill@blt-s3
+-igt@gem_ringfill@blt-s4
+-igt@gem_ringfill@bsd
+-igt@gem_ringfill@bsd1
+-igt@gem_ringfill@bsd1-bomb
+-igt@gem_ringfill@bsd1-child
+-igt@gem_ringfill@bsd1-fd
+-igt@gem_ringfill@bsd1-forked
+-igt@gem_ringfill@bsd1-hang
+-igt@gem_ringfill@bsd1-interruptible
+-igt@gem_ringfill@bsd1-s3
+-igt@gem_ringfill@bsd1-s4
+-igt@gem_ringfill@bsd2
+-igt@gem_ringfill@bsd2-bomb
+-igt@gem_ringfill@bsd2-child
+-igt@gem_ringfill@bsd2-fd
+-igt@gem_ringfill@bsd2-forked
+-igt@gem_ringfill@bsd2-hang
+-igt@gem_ringfill@bsd2-interruptible
+-igt@gem_ringfill@bsd2-s3
+-igt@gem_ringfill@bsd2-s4
+-igt@gem_ringfill@bsd-bomb
+-igt@gem_ringfill@bsd-child
+-igt@gem_ringfill@bsd-fd
+-igt@gem_ringfill@bsd-forked
+-igt@gem_ringfill@bsd-hang
+-igt@gem_ringfill@bsd-interruptible
+-igt@gem_ringfill@bsd-s3
+-igt@gem_ringfill@bsd-s4
+-igt@gem_ringfill@default-bomb
+-igt@gem_ringfill@default-child
+-igt@gem_ringfill@default-s3
+-igt@gem_ringfill@default-s4
+-igt@gem_ringfill@render
+-igt@gem_ringfill@render-bomb
+-igt@gem_ringfill@render-child
+-igt@gem_ringfill@render-fd
+-igt@gem_ringfill@render-forked
+-igt@gem_ringfill@render-hang
+-igt@gem_ringfill@render-interruptible
+-igt@gem_ringfill@render-s3
+-igt@gem_ringfill@render-s4
+-igt@gem_ringfill@vebox
+-igt@gem_ringfill@vebox-bomb
+-igt@gem_ringfill@vebox-child
+-igt@gem_ringfill@vebox-fd
+-igt@gem_ringfill@vebox-forked
+-igt@gem_ringfill@vebox-hang
+-igt@gem_ringfill@vebox-interruptible
+-igt@gem_ringfill@vebox-s3
+-igt@gem_ringfill@vebox-s4
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4539/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
