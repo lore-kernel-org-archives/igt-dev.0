@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 87F496E8D1
- for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2020 19:35:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7045E6E8D1
+ for <igt-dev@lists.freedesktop.org>; Wed,  6 May 2020 19:37:08 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20200406135709.569315-1-lionel.g.landwerlin@intel.com>
+In-Reply-To: <158879373263.927.2919752195989238677@build.alporthouse.com>
 References: <20200406135709.569315-1-lionel.g.landwerlin@intel.com>
+ <20200406135709.569315-2-lionel.g.landwerlin@intel.com>
+ <158879373263.927.2919752195989238677@build.alporthouse.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158879375467.927.1577496594445139870@build.alporthouse.com>
-Date: Wed, 06 May 2020 20:35:54 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t v3 1/2] include: bump i915 header for
- new feature
+Message-ID: <158879382464.927.7925876876584308575@build.alporthouse.com>
+Date: Wed, 06 May 2020 20:37:04 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t v3 2/2] tests/perf: add tests for multi
+ context filtering
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,9 +26,22 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Lionel Landwerlin (2020-04-06 14:57:08)
-> Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Acked-by: Chris Wilson <chris@chris-wilson.co.uk>
+Quoting Chris Wilson (2020-05-06 20:35:32)
+> Quoting Lionel Landwerlin (2020-04-06 14:57:09)
+> > Iris is using 2 GEM contexts for 3D & compute.
+> > 
+> > v2: Check higher number of contexts
+> > 
+> > v3: Test unmapped memory pointers (Chris)
+> > 
+> > Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+> 
+> I trust you know the details of the report layout much better than I do,
+> so I just looked at the api coverage and was happy,
+> Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+
+That being said, I didn't spot feeding in ctx->engine[rcs0, rcs0...] and
+checking that all are reported?
 -Chris
 _______________________________________________
 igt-dev mailing list
