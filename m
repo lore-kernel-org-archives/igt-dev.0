@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C1C206E96D
- for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2020 10:32:04 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Thu,  7 May 2020 15:52:10 +0530
-Message-Id: <20200507102210.23599-6-anshuman.gupta@intel.com>
-In-Reply-To: <20200507102210.23599-1-anshuman.gupta@intel.com>
-References: <20200507102210.23599-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v7 5/5] tests/i915_pm_rpm: lpsp/non-lpsp
- screen mode_set_data
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 07 May 2020 11:07:52 -0000
+Message-ID: <158884967255.2188.8989328627947827272@emeril.freedesktop.org>
+References: <20200507102210.23599-1-anshuman.gupta@intel.com>
+In-Reply-To: <20200507102210.23599-1-anshuman.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgbHBzcCBw?=
+ =?utf-8?q?latform_agnostic_support_=28rev10=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,203 +14,107 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: jani.nikula@intel.com
+To: Anshuman Gupta <anshuman.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Initialize the mode set params for lpsp/non-lpsp screen
-based upon their output lpsp capability instead
-of edp/non-edp output type.
+== Series Details ==
 
-v2:
-- CI failures fixup.
-v3:
-- changes according to lib function igt_output_is_lpsp_capable,
-  prefix changed to i915_output_is_lpsp_capable.
+Series: lpsp platform agnostic support (rev10)
+URL   : https://patchwork.freedesktop.org/series/74647/
+State : failure
 
-Acked-by: Martin Peres <martin.peres@linux.intel.com>
-Reviewed-by: Animesh Manna <animesh.manna@intel.com>
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
----
- tests/i915/i915_pm_rpm.c | 53 +++++++++++++++++++++++-----------------
- 1 file changed, 30 insertions(+), 23 deletions(-)
+== Summary ==
 
-diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index fedef872..cb355a53 100644
---- a/tests/i915/i915_pm_rpm.c
-+++ b/tests/i915/i915_pm_rpm.c
-@@ -94,6 +94,7 @@ struct mode_set_data {
- 	drmModeResPtr res;
- 	drmModeConnectorPtr connectors[MAX_CONNECTORS];
- 	drmModePropertyBlobPtr edids[MAX_CONNECTORS];
-+	igt_display_t display;
- 
- 	uint32_t devid;
- };
-@@ -254,29 +255,29 @@ static bool init_modeset_params_for_type(struct mode_set_data *data,
- {
- 	drmModeConnectorPtr connector = NULL;
- 	drmModeModeInfoPtr mode = NULL;
-+	igt_output_t *output = NULL;
-+	igt_display_t *display = &data->display;
- 
--	if (!data->res)
-+	if (!data->res || !display)
- 		return false;
- 
--	for (int i = 0; i < data->res->count_connectors; i++) {
--		drmModeConnectorPtr c = data->connectors[i];
-+	for_each_connected_output(display, output) {
-+		drmModeConnectorPtr c = output->config.connector;
- 
- 		if (type == SCREEN_TYPE_LPSP &&
--		    c->connector_type != DRM_MODE_CONNECTOR_eDP)
-+		     !i915_output_is_lpsp_capable(drm_fd, output))
- 			continue;
- 
- 		if (type == SCREEN_TYPE_NON_LPSP &&
--		    c->connector_type == DRM_MODE_CONNECTOR_eDP)
-+		    i915_output_is_lpsp_capable(drm_fd, output))
- 			continue;
- 
--		if (c->connection == DRM_MODE_CONNECTED && c->count_modes) {
--			connector = c;
--			mode = &c->modes[0];
--			break;
--		}
-+		connector = c;
-+		mode = igt_output_get_mode(output);
-+		break;
- 	}
- 
--	if (!connector)
-+	if (!connector || !mode)
- 		return false;
- 
- 	igt_create_pattern_fb(drm_fd, mode->hdisplay, mode->vdisplay,
-@@ -397,6 +398,7 @@ static void init_mode_set_data(struct mode_set_data *data)
- 		kmstest_set_vt_graphics_mode();
- 	}
- 
-+	igt_display_require(&data->display, drm_fd);
- 	data->devid = intel_get_drm_devid(drm_fd);
- 	init_modeset_cached_params(&ms_data);
- }
-@@ -410,6 +412,8 @@ static void fini_mode_set_data(struct mode_set_data *data)
- 		}
- 		drmModeFreeResources(data->res);
- 	}
-+
-+	igt_display_fini(&data->display);
- }
- 
- static void get_drm_info(struct compare_data *data)
-@@ -760,7 +764,7 @@ static void dump_file(int dir, const char *filename)
- 	free(contents);
- }
- 
--static bool setup_environment(void)
-+static bool setup_environment(bool display_disabled)
- {
- 	if (has_runtime_pm)
- 		goto out;
-@@ -772,7 +776,8 @@ static bool setup_environment(void)
- 	debugfs = igt_debugfs_dir(drm_fd);
- 	igt_require(debugfs != -1);
- 
--	init_mode_set_data(&ms_data);
-+	if (!display_disabled)
-+		init_mode_set_data(&ms_data);
- 
- 	igt_pm_enable_sata_link_power_management();
- 
-@@ -785,13 +790,14 @@ static bool setup_environment(void)
- 	igt_require(igt_pm_dmc_loaded(debugfs));
- 
- out:
--	disable_all_screens(&ms_data);
-+	if (!display_disabled)
-+		disable_all_screens(&ms_data);
- 	dump_file(debugfs, "i915_runtime_pm_status");
- 
- 	return wait_for_suspended();
- }
- 
--static void teardown_environment(void)
-+static void teardown_environment(bool display_disabled)
- {
- 	close(msr_fd);
- 	if (has_pc8)
-@@ -801,7 +807,8 @@ static void teardown_environment(void)
- 
- 	igt_pm_restore_sata_link_power_management();
- 
--	fini_mode_set_data(&ms_data);
-+	if (!display_disabled)
-+		fini_mode_set_data(&ms_data);
- 
- 	close(debugfs);
- 	close(drm_fd);
-@@ -2004,7 +2011,7 @@ static struct option long_options[] = {
- igt_main_args("", long_options, help_str, opt_handler, NULL)
- {
- 	igt_subtest("basic-rte") {
--		igt_assert(setup_environment());
-+		igt_assert(setup_environment(false));
- 		basic_subtest();
- 	}
- 
-@@ -2012,7 +2019,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	 * PC8+. We don't want bug reports from cases where the machine is just
- 	 * not properly configured. */
- 	igt_fixture
--		igt_require(setup_environment());
-+		igt_require(setup_environment(false));
- 
- 	if (stay)
- 		igt_subtest("stay")
-@@ -2142,7 +2149,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 	}
- 
- 	igt_fixture
--		teardown_environment();
-+		teardown_environment(false);
- 
- 	igt_subtest("module-reload") {
- 		igt_debug("Reload w/o display\n");
-@@ -2151,9 +2158,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		igt_kmsg(KMSG_INFO "Reloading i915 w/o display\n");
- 		igt_assert_eq(igt_i915_driver_load("disable_display=1 mmio_debug=-1"), 0);
- 
--		igt_assert(setup_environment());
-+		igt_assert(setup_environment(true));
- 		igt_assert(igt_wait(device_in_pci_d3(), 2000, 100));
--		teardown_environment();
-+		teardown_environment(true);
- 
- 		igt_debug("Reload as normal\n");
- 		igt_i915_driver_unload();
-@@ -2161,11 +2168,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		igt_kmsg(KMSG_INFO "Reloading i915 as normal\n");
- 		igt_assert_eq(igt_i915_driver_load("mmio_debug=-1"), 0);
- 
--		igt_assert(setup_environment());
-+		igt_assert(setup_environment(false));
- 		igt_assert(igt_wait(device_in_pci_d3(), 2000, 100));
- 		if (enable_one_screen_with_type(&ms_data, SCREEN_TYPE_ANY))
- 			drm_resources_equal_subtest();
--		teardown_environment();
-+		teardown_environment(false);
- 
- 		/* Remove our mmio_debugging module */
- 		igt_i915_driver_unload();
--- 
-2.26.0
+CI Bug Log - changes from IGT_5638 -> IGTPW_4542
+====================================================
 
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_4542 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4542, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4542/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4542:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@runner@aborted:
+    - fi-bsw-kefka:       NOTRUN -> [FAIL][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4542/fi-bsw-kefka/igt@runner@aborted.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4542 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-bsw-kefka:       [PASS][2] -> [INCOMPLETE][3] ([i915#151] / [i915#392])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5638/fi-bsw-kefka/igt@i915_pm_rpm@module-reload.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4542/fi-bsw-kefka/igt@i915_pm_rpm@module-reload.html
+    - fi-kbl-8809g:       [PASS][4] -> [SKIP][5] ([fdo#109271])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5638/fi-kbl-8809g/igt@i915_pm_rpm@module-reload.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4542/fi-kbl-8809g/igt@i915_pm_rpm@module-reload.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#151]: https://gitlab.freedesktop.org/drm/intel/issues/151
+  [i915#392]: https://gitlab.freedesktop.org/drm/intel/issues/392
+
+
+Participating hosts (49 -> 44)
+------------------------------
+
+  Additional (2): fi-bdw-gvtdvm fi-kbl-7560u 
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5638 -> IGTPW_4542
+
+  CI-20190529: 20190529
+  CI_DRM_8441: 6c0ee41a7c3201ef2a89800234803a95f65989be @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4542: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4542/index.html
+  IGT_5638: 50868ab3c532a86aa147fb555b69a1078c572b13 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@i915_pm_lpsp@kms-lpsp
+-igt@i915_pm_lpsp@edp-native
+-igt@i915_pm_lpsp@edp-panel-fitter
+-igt@i915_pm_lpsp@non-edp
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4542/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
