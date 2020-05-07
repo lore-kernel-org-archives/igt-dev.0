@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0FC2C6EA60
- for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2020 20:17:11 +0000 (UTC)
-Date: Thu, 7 May 2020 23:16:28 +0300
-From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20200507201628.GC10497@ideak-desk.fi.intel.com>
-References: <20200506155803.358220-1-arkadiusz.hiler@intel.com>
- <20200506155803.358220-2-arkadiusz.hiler@intel.com>
- <20200507195305.GB10497@ideak-desk.fi.intel.com>
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9AB036E1B6
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2020 19:10:23 +0000 (UTC)
+Received: by mail-pj1-x1043.google.com with SMTP id a5so3065202pjh.2
+ for <igt-dev@lists.freedesktop.org>; Thu, 07 May 2020 12:10:23 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Thu,  7 May 2020 22:09:44 +0300
+Message-Id: <20200507190944.19520-8-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20200507190944.19520-1-juhapekka.heikkila@gmail.com>
+References: <20200507190944.19520-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200507195305.GB10497@ideak-desk.fi.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/igt_kms: Make
- igt_display_require() + chamelium more robust
+Subject: [igt-dev] [PATCH i-g-t 7/7] tests/gem_eio: switch to using
+ igt_params_set()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,191 +20,234 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: imre.deak@intel.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jani Nikula <jani.nikula@intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, May 07, 2020 at 10:53:05PM +0300, Imre Deak wrote:
-> On Wed, May 06, 2020 at 06:58:03PM +0300, Arkadiusz Hiler wrote:
-> > 1. We don't reset Chamelium, as this generates extra unplug events if
-> >    any of the ports is already connected which is often the case
-> > 
-> > 2. We try to plug all the chamelium ports, it's a noop if they are
-> >    already plugged
-> > 
-> > 2. We wait for all the ports being connected:
-> >    - if the port mapping is provided: wait for the ports to be connected
-> >    - if there is no mapping: sleep(10) and hope for the best
-> > 
-> > Cc: Petri Latvala <petri.latvala@intel.com>
-> > Cc: Imre Deak <imre.deak@intel.com>
-> > Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> > ---
-> >  lib/igt_chamelium.c | 87 +++++++++++++++++++++++++++++++++++++++------
-> >  lib/igt_chamelium.h |  2 ++
-> >  lib/igt_kms.c       |  2 ++
-> >  3 files changed, 80 insertions(+), 11 deletions(-)
-> > 
-> > diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-> > index 28be5248..69ad8378 100644
-> > --- a/lib/igt_chamelium.c
-> > +++ b/lib/igt_chamelium.c
-> > @@ -2532,17 +2532,6 @@ bool chamelium_plug_all(struct chamelium *chamelium)
-> >  	size_t port_count;
-> >  	int port_ids[CHAMELIUM_MAX_PORTS];
-> >  	xmlrpc_value *v;
-> > -	v = __chamelium_rpc(chamelium, NULL, "Reset", "()");
-> > -
-> > -	if (v != NULL)
-> > -		xmlrpc_DECREF(v);
-> > -
-> > -	if (chamelium->env.fault_occurred) {
-> > -		igt_debug("Chamelium RPC call failed: %s\n",
-> > -		     chamelium->env.fault_string);
-> > -
-> > -		return false;
-> > -	}
-> 
-> The reset could've been added for some stability issue in Chamelium, so
-> imo better to remove it in a separate patch.
-> 
-> >  	port_count = chamelium_get_video_ports(chamelium, port_ids);
-> >  	if (port_count <= 0)
-> > @@ -2565,6 +2554,82 @@ bool chamelium_plug_all(struct chamelium *chamelium)
-> >  	return true;
-> >  }
-> >  
-> > +bool chamelium_wait_all_configured_ports_connected(struct chamelium *chamelium, int drm_fd)
-> > +{
-> > +	drmModeRes *res;
-> > +	drmModeConnector *connector;
-> > +	char **group_list;
-> > +	char *group;
-> > +	bool ret = true;
-> > +
-> > +	int connectors[CHAMELIUM_MAX_PORTS];
-> > +	int connectors_count = 0;
-> > +
-> > +	res = drmModeGetResources(drm_fd);
-> > +
-> > +	group_list = g_key_file_get_groups(igt_key_file, NULL);
-> > +
-> > +	for (int i = 0; group_list[i] != NULL; i++) {
-> > +		char *map_name;
-> > +		group = group_list[i];
-> > +
-> > +		if (!strstr(group, "Chamelium:"))
-> > +			continue;
-> > +
-> > +		igt_assert(chamelium->port_count <= CHAMELIUM_MAX_PORTS);
-> > +
-> > +		map_name = group + (sizeof("Chamelium:") - 1);
-> > +
-> > +		for (int j = 0;
-> > +		     j < res->count_connectors;
-> > +		     j++) {
-> > +			char name[50];
-> > +
-> > +			connector = drmModeGetConnectorCurrent(
-> > +			    drm_fd, res->connectors[j]);
-> > +
-> > +			/* We have to generate the connector name on our own */
-> > +			snprintf(name, 50, "%s-%u",
-> > +				 kmstest_connector_type_str(connector->connector_type),
-> > +				 connector->connector_type_id);
-> > +
-> > +
-> > +			if (strcmp(name, map_name) == 0) {
-> > +				igt_assert(connectors_count < CHAMELIUM_MAX_PORTS);
-> > +				connectors[connectors_count++] = connector->connector_id;
-> > +				break;
-> > +			}
-> > +
-> > +			drmModeFreeConnector(connector);
-> > +		}
-> > +	}
-> > +
-> > +	drmModeFreeResources(res);
-> 
-> Couldn't you reuse chamelium_read_port_mappings()?
-> 
-> > +	if (connectors_count == 0) {
-> > +		igt_info("No chamelium port mappping, sleeping for %d seconds "
-> > +			 "for the hotplug to take effect",
-> > +			 CHAMELIUM_HOTPLUG_DETECTION_DELAY);
-> > +		sleep(CHAMELIUM_HOTPLUG_DETECTION_DELAY);
-> > +		return true;
-> > +	}
-> 
-> In igt_chamlium this makes the startup delay 20 sec now with the
-> detection delay added in the previous patch.
-> 
-> Would it make sense to change autodiscover to retry detection for 10 sec
-> instead, which you could call from here? Then you could also call
-> autodiscover without the unconditional sleep in the previous patch.
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+---
+ tests/i915/gem_eio.c | 57 +++++++++++++++++++-------------------------
+ 1 file changed, 24 insertions(+), 33 deletions(-)
 
-Ah that wouldn't work, since we don't know how many connectors to wait
-for:/ But I'd avoid doing twice the detection delay, for instance by
-removing it from the previous patch, since chamelium_init() is always
-called after igt_display_require().
+diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
+index a1259067..e0d8390f 100644
+--- a/tests/i915/gem_eio.c
++++ b/tests/i915/gem_eio.c
+@@ -53,20 +53,11 @@
+ 
+ IGT_TEST_DESCRIPTION("Test that specific ioctls report a wedged GPU (EIO).");
+ 
+-static bool i915_reset_control(bool enable)
++static bool i915_reset_control(int fd, bool enable)
+ {
+-	const char *path = "/sys/module/i915/parameters/reset";
+-	int fd, ret;
+-
+ 	igt_debug("%s GPU reset\n", enable ? "Enabling" : "Disabling");
+ 
+-	fd = open(path, O_RDWR);
+-	igt_require(fd >= 0);
+-
+-	ret = write(fd, &"01"[enable], 1) == 1;
+-	close(fd);
+-
+-	return ret;
++	return igt_params_set(fd, "reset", "%d", enable);
+ }
+ 
+ static void trigger_reset(int fd)
+@@ -107,9 +98,9 @@ static void wedge_gpu(int fd)
+ 	/* First idle the GPU then disable GPU resets before injecting a hang */
+ 	gem_quiescent_gpu(fd);
+ 
+-	igt_require(i915_reset_control(false));
++	igt_require(i915_reset_control(fd, false));
+ 	manual_hang(fd);
+-	igt_assert(i915_reset_control(true));
++	igt_assert(i915_reset_control(fd, true));
+ }
+ 
+ static int __gem_throttle(int fd)
+@@ -347,7 +338,7 @@ static void __test_banned(int fd)
+ 	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
+ 
+ 	gem_quiescent_gpu(fd);
+-	igt_require(i915_reset_control(true));
++	igt_require(i915_reset_control(fd, true));
+ 
+ 	igt_until_timeout(5) {
+ 		igt_spin_t *hang;
+@@ -405,9 +396,9 @@ static void test_wait(int fd, unsigned int flags, unsigned int wait)
+ 	 */
+ 
+ 	if (flags & TEST_WEDGE)
+-		igt_require(i915_reset_control(false));
++		igt_require(i915_reset_control(fd, false));
+ 	else
+-		igt_require(i915_reset_control(true));
++		igt_require(i915_reset_control(fd, true));
+ 
+ 	hang = spin_sync(fd, 0, I915_EXEC_DEFAULT);
+ 
+@@ -416,7 +407,7 @@ static void test_wait(int fd, unsigned int flags, unsigned int wait)
+ 
+ 	igt_spin_free(fd, hang);
+ 
+-	igt_require(i915_reset_control(true));
++	igt_require(i915_reset_control(fd, true));
+ 
+ 	trigger_reset(fd);
+ 	close(fd);
+@@ -431,12 +422,12 @@ static void test_suspend(int fd, int state)
+ 	igt_system_suspend_autoresume(state, SUSPEND_TEST_DEVICES);
+ 
+ 	/* Check we can suspend when the driver is already wedged */
+-	igt_require(i915_reset_control(false));
++	igt_require(i915_reset_control(fd, false));
+ 	manual_hang(fd);
+ 
+ 	igt_system_suspend_autoresume(state, SUSPEND_TEST_DEVICES);
+ 
+-	igt_require(i915_reset_control(true));
++	igt_require(i915_reset_control(fd, true));
+ 	trigger_reset(fd);
+ 	close(fd);
+ }
+@@ -471,7 +462,7 @@ static void test_inflight(int fd, unsigned int wait)
+ 
+ 		gem_quiescent_gpu(fd);
+ 		igt_debug("Starting %s on engine '%s'\n", __func__, e->name);
+-		igt_require(i915_reset_control(false));
++		igt_require(i915_reset_control(fd, false));
+ 
+ 		hang = spin_sync(fd, 0, eb_ring(e));
+ 		obj[0].handle = hang->handle;
+@@ -496,7 +487,7 @@ static void test_inflight(int fd, unsigned int wait)
+ 		}
+ 		igt_spin_free(fd, hang);
+ 
+-		igt_assert(i915_reset_control(true));
++		igt_assert(i915_reset_control(fd, true));
+ 		trigger_reset(fd);
+ 
+ 		gem_close(fd, obj[1].handle);
+@@ -521,7 +512,7 @@ static void test_inflight_suspend(int fd)
+ 	fd = gem_reopen_driver(fd);
+ 	igt_require_gem(fd);
+ 	igt_require(gem_has_exec_fence(fd));
+-	igt_require(i915_reset_control(false));
++	igt_require(i915_reset_control(fd, false));
+ 
+ 	memset(obj, 0, sizeof(obj));
+ 	obj[0].flags = EXEC_OBJECT_WRITE;
+@@ -554,7 +545,7 @@ static void test_inflight_suspend(int fd)
+ 	}
+ 	igt_spin_free(fd, hang);
+ 
+-	igt_assert(i915_reset_control(true));
++	igt_assert(i915_reset_control(fd, true));
+ 	trigger_reset(fd);
+ 	close(fd);
+ }
+@@ -602,7 +593,7 @@ static void test_inflight_contexts(int fd, unsigned int wait)
+ 		gem_quiescent_gpu(fd);
+ 
+ 		igt_debug("Starting %s on engine '%s'\n", __func__, e->name);
+-		igt_require(i915_reset_control(false));
++		igt_require(i915_reset_control(fd, false));
+ 
+ 		memset(obj, 0, sizeof(obj));
+ 		obj[0].flags = EXEC_OBJECT_WRITE;
+@@ -637,7 +628,7 @@ static void test_inflight_contexts(int fd, unsigned int wait)
+ 		igt_spin_free(fd, hang);
+ 		gem_close(fd, obj[1].handle);
+ 
+-		igt_assert(i915_reset_control(true));
++		igt_assert(i915_reset_control(fd, true));
+ 		trigger_reset(fd);
+ 
+ 		for (unsigned int n = 0; n < ARRAY_SIZE(ctx); n++)
+@@ -664,7 +655,7 @@ static void test_inflight_external(int fd)
+ 
+ 	fence = igt_cork_plug(&cork, fd);
+ 
+-	igt_require(i915_reset_control(false));
++	igt_require(i915_reset_control(fd, false));
+ 	hang = __spin_poll(fd, 0, 0);
+ 
+ 	memset(&obj, 0, sizeof(obj));
+@@ -696,7 +687,7 @@ static void test_inflight_external(int fd)
+ 	close(fence);
+ 
+ 	igt_spin_free(fd, hang);
+-	igt_assert(i915_reset_control(true));
++	igt_assert(i915_reset_control(fd, true));
+ 	trigger_reset(fd);
+ 	close(fd);
+ }
+@@ -715,7 +706,7 @@ static void test_inflight_internal(int fd, unsigned int wait)
+ 	fd = gem_reopen_driver(fd);
+ 	igt_require_gem(fd);
+ 
+-	igt_require(i915_reset_control(false));
++	igt_require(i915_reset_control(fd, false));
+ 	hang = spin_sync(fd, 0, 0);
+ 
+ 	memset(obj, 0, sizeof(obj));
+@@ -746,7 +737,7 @@ static void test_inflight_internal(int fd, unsigned int wait)
+ 	}
+ 	igt_spin_free(fd, hang);
+ 
+-	igt_assert(i915_reset_control(true));
++	igt_assert(i915_reset_control(fd, true));
+ 	trigger_reset(fd);
+ 	close(fd);
+ }
+@@ -782,7 +773,7 @@ static void reset_stress(int fd, uint32_t ctx0,
+ 
+ 		gem_quiescent_gpu(fd);
+ 
+-		igt_require(i915_reset_control(flags & TEST_WEDGE ?
++		igt_require(i915_reset_control(fd, flags & TEST_WEDGE ?
+ 					       false : true));
+ 
+ 		/*
+@@ -804,7 +795,7 @@ static void reset_stress(int fd, uint32_t ctx0,
+ 		igt_assert_eq(sync_fence_status(hang->out_fence), -EIO);
+ 
+ 		/* Unwedge by forcing a reset. */
+-		igt_assert(i915_reset_control(true));
++		igt_assert(i915_reset_control(fd, true));
+ 		trigger_reset(fd);
+ 
+ 		gem_quiescent_gpu(fd);
+@@ -919,7 +910,7 @@ static int fd = -1;
+ static void
+ exit_handler(int sig)
+ {
+-	i915_reset_control(true);
++	i915_reset_control(fd, true);
+ 	igt_force_gpu_reset(fd);
+ }
+ 
+@@ -934,7 +925,7 @@ igt_main
+ 
+ 		igt_allow_hang(fd, 0, 0);
+ 
+-		igt_require(i915_reset_control(true));
++		igt_require(i915_reset_control(fd, true));
+ 		igt_force_gpu_reset(fd);
+ 		igt_install_exit_handler(exit_handler);
+ 	}
+-- 
+2.26.0
 
-> > +
-> > +	igt_until_timeout(CHAMELIUM_HOTPLUG_DETECTION_DELAY) {
-> > +		ret = true;
-> > +		for (int i = 0; i < connectors_count; ++i) {
-> > +			connector = drmModeGetConnector(drm_fd, connectors[i]);
-> > +			if (connector->connection != DRM_MODE_CONNECTED)
-> > +				ret = false;
-> > +			drmModeFreeConnector(connector);
-> > +		}
-> > +
-> > +		if (ret)
-> > +			break;
-> > +	}
-> > +
-> > +	return ret;
-> > +}
-> > +
-> >  igt_constructor {
-> >  	/* Frame dumps can be large, so we need to be able to handle very large
-> >  	 * responses
-> > diff --git a/lib/igt_chamelium.h b/lib/igt_chamelium.h
-> > index c29741b4..359f4ab3 100644
-> > --- a/lib/igt_chamelium.h
-> > +++ b/lib/igt_chamelium.h
-> > @@ -215,5 +215,7 @@ void chamelium_destroy_frame_dump(struct chamelium_frame_dump *dump);
-> >  void chamelium_destroy_audio_file(struct chamelium_audio_file *audio_file);
-> >  void chamelium_infoframe_destroy(struct chamelium_infoframe *infoframe);
-> >  bool chamelium_plug_all(struct chamelium *chamelium);
-> > +bool chamelium_wait_all_configured_ports_connected(struct chamelium *chamelium,
-> > +						   int drm_fd);
-> >  
-> >  #endif /* IGT_CHAMELIUM_H */
-> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> > index e9621e7e..d4cbc1c5 100644
-> > --- a/lib/igt_kms.c
-> > +++ b/lib/igt_kms.c
-> > @@ -1899,6 +1899,8 @@ void igt_display_require(igt_display_t *display, int drm_fd)
-> >  				       "cannot reach the configured chamelium!\n");
-> >  			igt_abort_on_f(!chamelium_plug_all(chamelium),
-> >  				       "failed to plug all the chamelium ports!\n");
-> > +			igt_abort_on_f(!chamelium_wait_all_configured_ports_connected(chamelium, drm_fd),
-> > +				       "not all configured chamelium ports are connected!\n");
-> >  			chamelium_deinit_rpc_only(chamelium);
-> >  		}
-> >  	}
-> > -- 
-> > 2.25.2
-> > 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
