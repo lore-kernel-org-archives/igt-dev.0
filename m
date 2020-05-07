@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A8896E964
- for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2020 10:09:35 +0000 (UTC)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A7766E96E
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2020 10:31:53 +0000 (UTC)
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+Date: Thu,  7 May 2020 15:52:06 +0530
+Message-Id: <20200507102210.23599-2-anshuman.gupta@intel.com>
+In-Reply-To: <20200507102210.23599-1-anshuman.gupta@intel.com>
+References: <20200507102210.23599-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200507100733.GY9497@platvala-desk.ger.corp.intel.com>
-References: <20200507084550.656091-1-chris@chris-wilson.co.uk>
- <20200507094035.GW9497@platvala-desk.ger.corp.intel.com>
- <158884471985.20858.11402141781774451488@build.alporthouse.com>
- <20200507095334.GX9497@platvala-desk.ger.corp.intel.com>
- <158884589537.20858.5990224932149378860@build.alporthouse.com>
- <20200507100733.GY9497@platvala-desk.ger.corp.intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158884617175.20858.16849598565841218464@build.alporthouse.com>
-Date: Thu, 07 May 2020 11:09:31 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/i915: Split igt_require_gem() into
- i915/
+Subject: [igt-dev] [PATCH i-g-t v7 1/5] tests/i915_pm_lpsp: Nuke the
+ panel-fitter test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,70 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: jani.nikula@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Petri Latvala (2020-05-07 11:07:33)
-> On Thu, May 07, 2020 at 11:04:55AM +0100, Chris Wilson wrote:
-> > Quoting Petri Latvala (2020-05-07 10:53:34)
-> > > On Thu, May 07, 2020 at 10:45:19AM +0100, Chris Wilson wrote:
-> > > > Quoting Petri Latvala (2020-05-07 10:40:35)
-> > > > > On Thu, May 07, 2020 at 09:45:50AM +0100, Chris Wilson wrote:
-> > > > > > +void igt_require_gem(int i915)
-> > > > > > +{
-> > > > > > +     int err;
-> > > > > > +
-> > > > > > +     igt_require_intel(i915);
-> > > > > > +
-> > > > > > +     /*
-> > > > > > +      * We only want to use the throttle-ioctl for its -EIO reporting
-> > > > > > +      * of a wedged device, not for actually waiting on outstanding
-> > > > > > +      * requests! So create a new drm_file for the device that is clean.
-> > > > > > +      */
-> > > > > > +     i915 = gem_reopen_driver(i915);
-> > > > > > +
-> > > > > > +     /*
-> > > > > > +      * Reset the global seqno at the start of each test. This ensures that
-> > > > > > +      * the test will not wrap unless it explicitly sets up seqno wrapping
-> > > > > > +      * itself, which avoids accidentally hanging when setting up long
-> > > > > > +      * sequences of batches.
-> > > > > > +      */
-> > > > > > +     reset_device(i915);
-> > > > > > +
-> > > > > > +     err = 0;
-> > > > > > +     if (ioctl(i915, DRM_IOCTL_I915_GEM_THROTTLE)) {
-> > > > > > +             err = -errno;
-> > > > > > +             igt_assume(err);
-> > > > > > +     }
-> > > > > > +
-> > > > > > +     close(i915);
-> > > > > > +
-> > > > > > +     igt_require_f(err == 0, "Unresponsive i915/GEM device\n");
-> > > > > 
-> > > > > 
-> > > > > Food for thought (not for this patch): Using igt_abort_f() for this instead?
-> > > > 
-> > > > Not everything requires gem? But yeah, it's pretty common to have a pile
-> > > > of skips after toasting the GPU.
-> > > 
-> > > Generally if the GPU is toast there's really no point in testing
-> > > further, even if they don't require gem. I'd rather have that in CI
-> > > than flip-flopping skips. Validation is a different matter.
-> > > 
-> > > Martin can probably give a good opinion on that.
-> > 
-> > Who gets the blame for igt_abort_f? We want it like igt@runner@aborted
-> > that it says couldn't continue after blah.
-> 
-> The test that called it.
-> 
-> Now, that puts the blame on the test that didn't cause the state, but
-> so does igt_require.
+panel-fitter subtest is only applicable to HASWELL/BROADWELL.
+It just tests non-lpsp(lpsp disabled) when panel fitter is
+enforced by std 1024x768 mode.
+There is no ROI to test non-lpsp kind of thing,
+If HSW_GLOBAL power well is not enabled we would see
+other display issues in other display tests.
 
-igt_require is blameless. Filing bugs for it is just a waste of
-everybody's time.
--Chris
+Gen9+ platform has display scaling feature in built per
+pipe, as lpsp is all about low power single pipe (PIPE A)
+usage, gen9+ platforms also don't require panel-fitter subtest.
+This should save some CI cycles.
+
+Reviewed-by: Animesh Manna <animesh.manna@intel.com>
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+---
+ tests/i915/i915_pm_lpsp.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
+index 42938e10..08f82e7c 100644
+--- a/tests/i915/i915_pm_lpsp.c
++++ b/tests/i915/i915_pm_lpsp.c
+@@ -219,8 +219,6 @@ igt_main
+ 		screens_disabled_subtest(drm_fd, drm_res);
+ 	igt_subtest("edp-native")
+ 		edp_subtest(drm_fd, drm_res, drm_connectors, devid, false);
+-	igt_subtest("edp-panel-fitter")
+-		edp_subtest(drm_fd, drm_res, drm_connectors, devid, true);
+ 	igt_subtest("non-edp")
+ 		non_edp_subtest(drm_fd, drm_res, drm_connectors);
+ 
+-- 
+2.26.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
