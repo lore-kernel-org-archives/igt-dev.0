@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B7F306EA4E
- for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2020 19:05:51 +0000 (UTC)
-Date: Thu, 7 May 2020 22:05:11 +0300
-From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20200507190511.GA10497@ideak-desk.fi.intel.com>
-References: <20200506155803.358220-1-arkadiusz.hiler@intel.com>
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 047EE6EA5B
+ for <igt-dev@lists.freedesktop.org>; Thu,  7 May 2020 19:09:58 +0000 (UTC)
+Received: by mail-pf1-x444.google.com with SMTP id d184so3470619pfd.4
+ for <igt-dev@lists.freedesktop.org>; Thu, 07 May 2020 12:09:57 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Thu,  7 May 2020 22:09:37 +0300
+Message-Id: <20200507190944.19520-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200506155803.358220-1-arkadiusz.hiler@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_chamelium: Sleep when doing
- autodiscovery
+Subject: [igt-dev] [PATCH i-g-t 0/7] Use device dependant module parameters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,100 +17,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: imre.deak@intel.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Kunal Joshi <kunal1.joshi@intel.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, May 06, 2020 at 06:58:02PM +0300, Arkadiusz Hiler wrote:
-> Autodiscovery was wrongly assuming that whenever we do chamelium_plug()
-> the connector state change is immediate.
-> 
-> It was working most of the time for native connectors, but may explain
-> some of the flip-flopping skips.
-> 
-> The problem got only more serious with the advent of LSPcons as USB-C,
-> where we have much things happening on the signal path, introducing
-> delays.
-> 
-> So for the sake of reliability this change introduces sleep(10) between
-> plug and reprobe. The number is about 2 * the_most_pathological_case_observed.
-> 
-> Also the discovery step is performed only if there is no static port
-> mapping set up. After the discovery is done, IGT prints the mapping
-> ready to be pasted into .igtrc.
-> 
-> Cc: Kunal Joshi <kunal1.joshi@intel.com>
-> Cc: Imre Deak <imre.deak@intel.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Rebased and fixed Jani's work. Patches which didn't change I did maintain
+Jani's authorship. These changes match to my kernel where there is path
+/sys/kernel/debug/dri/<device>/i915_params/
 
-Reviewed-by: Imre Deak <imre.deak@intel.com>
+Special part is the search of 'default device' in patch
+'use igt_params_set_save for igt_set_module_param*'. Don't know if it is 
+the most obvious way nor do I know will this work on non-Intel driver.
 
-> ---
->  lib/igt_chamelium.c | 28 ++++++++++++++++++++++++++--
->  1 file changed, 26 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-> index c704b84f..28be5248 100644
-> --- a/lib/igt_chamelium.c
-> +++ b/lib/igt_chamelium.c
-> @@ -82,6 +82,14 @@
->   *
->   */
->  
-> +/*
-> + * We cannot expect chamelium_plug() to take effect imediately.
-> + *
-> + * Especially with modern, more complex hardware where we may have LSPcons and
-> + * USB controllers in the way.
-> + */
-> +#define CHAMELIUM_HOTPLUG_DETECTION_DELAY 10
-> +
->  struct chamelium_edid {
->  	struct chamelium *chamelium;
->  	struct edid *base;
-> @@ -2231,6 +2239,10 @@ static bool chamelium_autodiscover(struct chamelium *chamelium, int drm_fd)
->  		chamelium_plug(chamelium, port);
->  	}
->  
-> +	igt_info("Sleeping %d seconds for the hotplug to take effect.\n",
-> +		 CHAMELIUM_HOTPLUG_DETECTION_DELAY);
-> +	sleep(CHAMELIUM_HOTPLUG_DETECTION_DELAY);
-> +
->  	/* Reprobe connectors and build the mapping */
->  	res = drmModeGetResources(drm_fd);
->  	if (!res)
-> @@ -2448,8 +2460,20 @@ struct chamelium *chamelium_init(int drm_fd)
->  	if (!chamelium_read_port_mappings(chamelium, drm_fd))
->  		goto error;
->  
-> -	if (!chamelium_autodiscover(chamelium, drm_fd))
-> -		goto error;
-> +	if (chamelium->port_count == 0) {
-> +		igt_info("Chamelium configured without port mapping, "
-> +			 "performing autodiscovery\n");
-> +
-> +		if (!chamelium_autodiscover(chamelium, drm_fd))
-> +			goto error;
-> +
-> +		if (chamelium->port_count != 0)
-> +			igt_info("\nConsider adding the following to your .igtrc:\n");
-> +		for (int i = 0; i < chamelium->port_count; ++i) {
-> +			igt_info("[Chamelium:%s]\n", chamelium->ports[i].name);
-> +			igt_info("ChameliumPortID=%d\n\n", chamelium->ports[i].id);
-> +		}
-> +	}
->  
->  	cleanup_instance = chamelium;
->  	igt_install_exit_handler(chamelium_exit_handler);
-> -- 
-> 2.25.2
-> 
+Patch #4 Jani had not added S-o-b, will be added if Jani comment.
+
+Fixed (commenting)issues pointed by Petri and Arkadiusz.
+
+/Juha-Pekka
+
+Jani Nikula (4):
+  lib/params: add igt_params.c for module parameter access
+  lib/params: overhaul param saving
+  lib/params: add igt_params_open() which will return path
+  igt/params: add generic saving module parameter set
+
+Juha-Pekka Heikkila (3):
+  lib/params: start renaming functions igt_params_*
+  igt/params: use igt_params_set_save for igt_set_module_param*
+  tests/gem_eio: switch to using igt_params_set()
+
+ lib/Makefile.sources                  |   2 +
+ lib/drmtest.c                         |   2 +-
+ lib/i915/gem_submission.c             |   3 +-
+ lib/igt.h                             |   1 +
+ lib/igt_aux.c                         | 146 +----------
+ lib/igt_aux.h                         |   3 -
+ lib/igt_gt.c                          |   3 +-
+ lib/igt_params.c                      | 362 ++++++++++++++++++++++++++
+ lib/igt_params.h                      |  40 +++
+ lib/igt_psr.c                         |   1 +
+ lib/igt_sysfs.c                       |  68 -----
+ lib/igt_sysfs.h                       |   5 -
+ lib/meson.build                       |   1 +
+ tests/i915/gem_ctx_exec.c             |   2 +-
+ tests/i915/gem_ctx_persistence.c      |  10 +-
+ tests/i915/gem_eio.c                  |  57 ++--
+ tests/i915/gem_mmap_gtt.c             |   2 +-
+ tests/i915/gem_reset_stats.c          |   6 +-
+ tests/i915/sysfs_heartbeat_interval.c |   3 +-
+ tests/i915/sysfs_preempt_timeout.c    |   3 +-
+ tests/i915/sysfs_timeslice_duration.c |   3 +-
+ 21 files changed, 453 insertions(+), 270 deletions(-)
+ create mode 100644 lib/igt_params.c
+ create mode 100644 lib/igt_params.h
+
+-- 
+2.26.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
