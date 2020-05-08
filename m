@@ -1,159 +1,44 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed,  6 May 2020 15:22:17 +0100
-Message-Id: <20200506142218.3098955-1-chris@chris-wilson.co.uk>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Fri,  8 May 2020 15:56:29 +0200
+Message-Id: <20200508135631.8099-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t 1/2] i915/gem_exec_schedule: Exercise
- timeslicing along an engine
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Subject: [igt-dev] [PATCH i-g-t 0/2] tests/gem_exec_nop: Remove submission
+ batching
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
----
- tests/i915/gem_exec_schedule.c | 107 +++++++++++++++++++++++++++++++++
- 1 file changed, 107 insertions(+)
+Execbuf requests are now submitted by subtests in batches of 1024
+repetitions.  That may be too many under some circumstances (e.g.,
+intensive logging output) and subtests may take far more time than
+expected.
 
-diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-index 7274ffbf3..a1523277b 100644
---- a/tests/i915/gem_exec_schedule.c
-+++ b/tests/i915/gem_exec_schedule.c
-@@ -418,6 +418,110 @@ static void smoketest(int fd, unsigned ring, unsigned timeout)
- 	}
- }
- 
-+static uint32_t timeslicing_batches(int i915, uint32_t *offset)
-+{
-+        uint32_t handle = gem_create(i915, 4096);
-+        uint32_t cs[256];
-+
-+	*offset += 4000;
-+	for (int pair = 0; pair <= 1; pair++) {
-+		int x = 1;
-+		int i = 0;
-+
-+		for (int step = 0; step < 8; step++) {
-+			if (pair) {
-+				cs[i++] =
-+					MI_SEMAPHORE_WAIT |
-+					MI_SEMAPHORE_POLL |
-+					MI_SEMAPHORE_SAD_EQ_SDD |
-+					(4 - 2);
-+				cs[i++] = x++;
-+				cs[i++] = *offset;
-+				cs[i++] = 0;
-+			}
-+
-+			cs[i++] = MI_STORE_DWORD_IMM;
-+			cs[i++] = *offset;
-+			cs[i++] = 0;
-+			cs[i++] = x++;
-+
-+			if (!pair) {
-+				cs[i++] =
-+					MI_SEMAPHORE_WAIT |
-+					MI_SEMAPHORE_POLL |
-+					MI_SEMAPHORE_SAD_EQ_SDD |
-+					(4 - 2);
-+				cs[i++] = x++;
-+				cs[i++] = *offset;
-+				cs[i++] = 0;
-+			}
-+		}
-+
-+		cs[i++] = MI_BATCH_BUFFER_END;
-+		igt_assert(i < ARRAY_SIZE(cs));
-+		gem_write(i915, handle, pair * sizeof(cs), cs, sizeof(cs));
-+	}
-+
-+	*offset = sizeof(cs);
-+        return handle;
-+}
-+
-+static void semaphore_timeslice(int i915, unsigned int engine)
-+{
-+	unsigned int offset = 24 << 20;
-+	struct drm_i915_gem_exec_object2 obj = {
-+		.offset = offset,
-+		.flags = EXEC_OBJECT_PINNED,
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf  = {
-+		.buffers_ptr = to_user_pointer(&obj),
-+		.buffer_count = 1,
-+	};
-+	uint32_t result;
-+	int out;
-+
-+	/*
-+	 * Create a pair of interlocking batches, that ping pong
-+	 * between each other, and only advance one step at a time.
-+	 * We require the kernel to preempt at each semaphore and
-+	 * switch to the other batch in order to advance.
-+	 */
-+
-+	igt_require(gem_scheduler_has_semaphores(i915));
-+	igt_require(gem_scheduler_has_preemption(i915));
-+	igt_require(intel_gen(intel_get_drm_devid(i915)) >= 8);
-+
-+	obj.handle = timeslicing_batches(i915, &offset);
-+
-+	execbuf.flags = engine | I915_EXEC_FENCE_OUT;
-+	execbuf.batch_start_offset = 0;
-+	gem_execbuf_wr(i915, &execbuf);
-+
-+	/* No coupling between requests; free to timeslice */
-+
-+	execbuf.rsvd1 = gem_context_clone_with_engines(i915, 0);
-+	execbuf.rsvd2 >>= 32;
-+	execbuf.flags = engine | I915_EXEC_FENCE_OUT;
-+	execbuf.batch_start_offset = offset;
-+	gem_execbuf_wr(i915, &execbuf);
-+	gem_context_destroy(i915, execbuf.rsvd1);
-+
-+	gem_sync(i915, obj.handle);
-+
-+	/* no hangs! */
-+	out = execbuf.rsvd2;
-+	igt_assert_eq(sync_fence_status(out), 1);
-+	close(out);
-+
-+	out = execbuf.rsvd2 >> 32;
-+	igt_assert_eq(sync_fence_status(out), 1);
-+	close(out);
-+
-+	gem_read(i915, obj.handle, 4000, &result, sizeof(result));
-+	igt_assert_eq(result, 16);
-+	gem_close(i915, obj.handle);
-+}
-+
- static uint32_t __batch_create(int i915, uint32_t offset)
- {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
-@@ -2128,6 +2232,9 @@ igt_main
- 			igt_require(gem_scheduler_has_ctx_priority(fd));
- 		}
- 
-+		test_each_engine("timeslicing", fd, e)
-+			semaphore_timeslice(fd, e->flags);
-+
- 		igt_subtest("semaphore-user")
- 			semaphore_userlock(fd);
- 		igt_subtest("semaphore-codependency")
+Kill obsolete showcase for an old GuC failure, then remove submission
+batching from subtests which don't require submicrosecond precision.
+
+Janusz Krzysztofik (2):
+  tests/gem_exec_nop: Kill obsolete pass/fail metric
+  tests/gem_exec_nop: Remove submission batching
+
+ tests/i915/gem_exec_nop.c | 137 ++++++++++++++++----------------------
+ 1 file changed, 59 insertions(+), 78 deletions(-)
+
 -- 
-2.26.2
+2.21.1
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
