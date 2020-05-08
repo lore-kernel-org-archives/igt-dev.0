@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0B1B6E2A0
- for <igt-dev@lists.freedesktop.org>; Fri,  8 May 2020 22:05:47 +0000 (UTC)
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Fri,  8 May 2020 15:05:41 -0700
-Message-Id: <20200508220541.1796-1-ashutosh.dixit@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE50A6E2A3
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 May 2020 22:08:10 +0000 (UTC)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] igt/gem_shrink: touch each page in
+In-Reply-To: <20200508220541.1796-1-ashutosh.dixit@intel.com>
+References: <20200508220541.1796-1-ashutosh.dixit@intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Message-ID: <158897568679.22081.3580432208328239556@build.alporthouse.com>
+Date: Fri, 08 May 2020 23:08:06 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t] igt/gem_shrink: touch each page in
  pwrite_/pread_
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -19,45 +21,20 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-pwrite_() and pread_() purport to read each page but weren't.
+Quoting Ashutosh Dixit (2020-05-08 23:05:41)
+> pwrite_() and pread_() purport to read each page but weren't.
+> 
+> v2: Keep subpage iteration (Chris)
+> 
+> Reported-by: CQ Tang <cq.tang@intel.com>
+> Fixes: 88bfe6ac41 ("igt/gem_shrink: Add pread/pwrite stress)
+> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-v2: Keep subpage iteration (Chris)
-
-Reported-by: CQ Tang <cq.tang@intel.com>
-Fixes: 88bfe6ac41 ("igt/gem_shrink: Add pread/pwrite stress)
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/i915/gem_shrink.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tests/i915/gem_shrink.c b/tests/i915/gem_shrink.c
-index c9964ccc0..10d639423 100644
---- a/tests/i915/gem_shrink.c
-+++ b/tests/i915/gem_shrink.c
-@@ -58,7 +58,7 @@ static void pwrite_(int fd, uint64_t alloc)
- 	uint32_t tmp;
- 	uint32_t handle = gem_create(fd, alloc);
- 	for (int page = 0; page < alloc>>12; page++)
--		gem_write(fd, handle, (page + page % 4095) & ~3, &tmp, 4);
-+		gem_write(fd, handle, ((page << 12) + page % 4095) & ~3, &tmp, 4);
- 	gem_madvise(fd, handle, I915_MADV_DONTNEED);
- }
- 
-@@ -67,7 +67,7 @@ static void pread_(int fd, uint64_t alloc)
- 	uint32_t tmp;
- 	uint32_t handle = gem_create(fd, alloc);
- 	for (int page = 0; page < alloc>>12; page++)
--		gem_read(fd, handle, (page + page % 4095) & ~3, &tmp, 4);
-+		gem_read(fd, handle, ((page << 12) + page % 4095) & ~3, &tmp, 4);
- 	gem_madvise(fd, handle, I915_MADV_DONTNEED);
- }
- 
--- 
-2.26.0
-
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
