@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 752CA6EAF0
- for <igt-dev@lists.freedesktop.org>; Fri,  8 May 2020 11:07:25 +0000 (UTC)
-From: Jani Nikula <jani.nikula@intel.com>
-In-Reply-To: <20200507190944.19520-5-juhapekka.heikkila@gmail.com>
-References: <20200507190944.19520-1-juhapekka.heikkila@gmail.com>
- <20200507190944.19520-5-juhapekka.heikkila@gmail.com>
-Date: Fri, 08 May 2020 14:07:20 +0300
-Message-ID: <87r1vu65xz.fsf@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 4/7] lib/params: add igt_params_open()
- which will return path
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 08 May 2020 14:35:30 -0000
+Message-ID: <158894853089.22721.1692187489982942433@emeril.freedesktop.org>
+References: <20200508135631.8099-1-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20200508135631.8099-1-janusz.krzysztofik@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?gem=5Fexec=5Fnop=3A_Remove_submission_batching?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,90 +14,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, 07 May 2020, Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com> wrote:
-> From: Jani Nikula <jani.nikula@intel.com>
->
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+== Series Details ==
 
-I no longer have recollection how much of this is mine, and how much is
-JP's. In any case, for the parts I've contributed,
+Series: tests/gem_exec_nop: Remove submission batching
+URL   : https://patchwork.freedesktop.org/series/77077/
+State : success
 
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+== Summary ==
 
-Feel free to retain or take authorship as you feel just.
+CI Bug Log - changes from IGT_5642 -> IGTPW_4548
+====================================================
 
-BR,
-Jani.
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4548/index.html
 
 
-> ---
->  lib/igt_params.c | 29 ++++++++++++++++++-----------
->  1 file changed, 18 insertions(+), 11 deletions(-)
->
-> diff --git a/lib/igt_params.c b/lib/igt_params.c
-> index b5ac1266..fe4b1df3 100644
-> --- a/lib/igt_params.c
-> +++ b/lib/igt_params.c
-> @@ -107,17 +107,7 @@ static void igt_params_save(int dir, const char *path, const char *name)
->  	module_params = data;
->  }
->  
-> -/**
-> - * igt_params_open:
-> - * @device: fd of the device
-> - *
-> - * This opens the module parameters directory (under sysfs) corresponding
-> - * to the device for use with igt_sysfs_set() and igt_sysfs_get().
-> - *
-> - * Returns:
-> - * The directory fd, or -1 on failure.
-> - */
-> -int igt_params_open(int device)
-> +static int __igt_params_open(int device, char **outpath)
->  {
->  	int dir, params = -1;
->  
-> @@ -141,11 +131,28 @@ int igt_params_open(int device)
->  
->  		sprintf(path, "/sys/module/%s/parameters", name);
->  		params = open(path, O_RDONLY);
-> +		if (params >= 0 && outpath)
-> +			*outpath = strdup(path);
->  	}
->  
->  	return params;
->  }
->  
-> +/**
-> + * igt_params_open:
-> + * @device: fd of the device
-> + *
-> + * This opens the module parameters directory (under sysfs) corresponding
-> + * to the device for use with igt_sysfs_set() and igt_sysfs_get().
-> + *
-> + * Returns:
-> + * The directory fd, or -1 on failure.
-> + */
-> +int igt_params_open(int device)
-> +{
-> +	return __igt_params_open(device, NULL);
-> +}
-> +
->  /**
->   * igt_params_set:
->   * @device: fd of the device
+Changes
+-------
 
--- 
-Jani Nikula, Intel Open Source Graphics Center
+  No changes found
+
+
+Participating hosts (48 -> 41)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-gdg-551 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5642 -> IGTPW_4548
+
+  CI-20190529: 20190529
+  CI_DRM_8452: 8dbf7b1ac5c55b27306ba1a8cc3dc0e1ef9938e8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4548: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4548/index.html
+  IGT_5642: d1ce4abb01c70f7be6e777b6d45442663c4b830e @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4548/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
