@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 467496EABF
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 May 2020 09:24:37 +0000 (UTC)
+From: Kunal Joshi <kunal1.joshi@intel.com>
+Date: Fri,  8 May 2020 07:56:54 +0530
+Message-Id: <20200508022655.5059-2-kunal1.joshi@intel.com>
+In-Reply-To: <20200508022655.5059-1-kunal1.joshi@intel.com>
+References: <20200508022655.5059-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 08 May 2020 07:09:23 -0000
-Message-ID: <158892176384.22723.11971515815136643832@emeril.freedesktop.org>
-References: <20200507190944.19520-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20200507190944.19520-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgVXNlIGRl?=
- =?utf-8?q?vice_dependant_module_parameters_=28rev9=29?=
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_chamelium Fix DP FSM in
+ dp-mode-timings
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,81 +17,99 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
+To: arkadiusz.hiler@intel.com, igt-dev@lists.freedesktop.org, imre.deak@intel.com
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Receiver reset is always required after we set a new mode, so let's disable
+the mode (reset_state() does that) before we switch to a new mode.
+With this we will get the HPD pulses reliably for each iteration over
+all the supoprted modes.
 
-Series: Use device dependant module parameters (rev9)
-URL   : https://patchwork.freedesktop.org/series/76163/
-State : success
+For more details
+Refer commit: c8dc1fd926a550308b971ca7d83fe0a927a38152
 
-== Summary ==
+Cc: Hiler Arkadiusz <arkadiusz.hiler@intel.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Issue: https://gitlab.freedesktop.org/drm/intel/issues/262
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/kms_chamelium.c | 43 ++++++++++++++++++++++++++++---------------
+ 1 file changed, 28 insertions(+), 15 deletions(-)
 
-CI Bug Log - changes from CI_DRM_8449 -> IGTPW_4546
-====================================================
+diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
+index 421a9006..4fe26d61 100644
+--- a/tests/kms_chamelium.c
++++ b/tests/kms_chamelium.c
+@@ -1017,23 +1017,37 @@ static const char test_mode_timings_desc[] =
+ 	"mode detected by the Chamelium receiver matches the mode we set";
+ static void test_mode_timings(data_t *data, struct chamelium_port *port)
+ {
+-	igt_output_t *output;
+-	igt_plane_t *primary;
+-	drmModeConnector *connector;
+-	int fb_id, i;
+-	struct igt_fb fb;
++	int i, count_modes;
+ 
++	i = 0;
+ 	igt_require(chamelium_supports_get_video_params(data->chamelium));
++	do {
++		igt_output_t *output;
++		igt_plane_t *primary;
++		drmModeConnector *connector;
++		int fb_id, i;
++		struct igt_fb fb;
+ 
+-	reset_state(data, port);
++		/*
++		 * let's reset state each mode so we will get the
++		 * HPD pulses realibably
++		 */
++		reset_state(data, port);
+ 
+-	output = prepare_output(data, port, TEST_EDID_BASE);
+-	connector = chamelium_port_get_connector(data->chamelium, port, false);
+-	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+-	igt_assert(primary);
++		/*
++		 * modes may change due to mode pruining and link issues, so we
++		 * need to refresh the connector
++		 */
++		output = prepare_output(data, port, TEST_EDID_BASE);
++		connector = chamelium_port_get_connector(data->chamelium, port, false);
++		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++		igt_assert(primary);
+ 
+-	igt_assert(connector->count_modes > 0);
+-	for (i = 0; i < connector->count_modes; i++) {
++		/* we may skip some modes due to above but that's ok */
++		count_modes = connector->count_modes;
++		if (i >= count_modes)
++			break;
++		
+ 		drmModeModeInfo *mode = &connector->modes[i];
+ 
+ 		fb_id = igt_create_color_pattern_fb(data->drm_fd,
+@@ -1051,9 +1065,8 @@ static void test_mode_timings(data_t *data, struct chamelium_port *port)
+ 		check_mode(data->chamelium, port, mode);
+ 
+ 		igt_remove_fb(data->drm_fd, &fb);
+-	}
+-
+-	drmModeFreeConnector(connector);
++		drmModeFreeConnector(connector);
++	} (++i < count_modes);
+ }
+ 
+ /* Set of Video Identification Codes advertised in the EDID */
+-- 
+2.25.1
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4546/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4546 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@gt_lrc:
-    - fi-skl-guc:         [PASS][1] -> [INCOMPLETE][2] ([i915#1847])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8449/fi-skl-guc/igt@i915_selftest@live@gt_lrc.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4546/fi-skl-guc/igt@i915_selftest@live@gt_lrc.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_lrc:
-    - fi-skl-6700k2:      [INCOMPLETE][3] ([i915#1847]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8449/fi-skl-6700k2/igt@i915_selftest@live@gt_lrc.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4546/fi-skl-6700k2/igt@i915_selftest@live@gt_lrc.html
-
-  
-  [i915#1847]: https://gitlab.freedesktop.org/drm/intel/issues/1847
-
-
-Participating hosts (50 -> 42)
-------------------------------
-
-  Missing    (8): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5640 -> IGTPW_4546
-
-  CI-20190529: 20190529
-  CI_DRM_8449: 4af0ec12ca5e0180d2497d3db24e66bd0f28e24f @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4546: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4546/index.html
-  IGT_5640: 5efb4a1c9cc944eff129cae7794951ae617bca17 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4546/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
