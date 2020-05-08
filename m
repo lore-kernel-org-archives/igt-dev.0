@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 025AA6E096
- for <igt-dev@lists.freedesktop.org>; Fri,  8 May 2020 21:29:44 +0000 (UTC)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3365B6EB86
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 May 2020 21:34:53 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Fri,  8 May 2020 14:29:39 -0700
-Message-Id: <20200508212939.1260-1-ashutosh.dixit@intel.com>
+Date: Fri,  8 May 2020 14:34:47 -0700
+Message-Id: <20200508213447.1432-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t] igt/gem_shrink: touch each page in
  pwrite_/pread_
@@ -25,7 +25,7 @@ List-ID: <igt-dev@lists.freedesktop.org>
 pwrite_() and pread_() purport to read each page but weren't.
 
 Reported-by: CQ Tang <cq.tang@intel.com>
-Fixes 88bfe6ac41 ("igt/gem_shrink: Add pread/pwrite stress)
+Fixes: 88bfe6ac41 ("igt/gem_shrink: Add pread/pwrite stress)
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
  tests/i915/gem_shrink.c | 4 ++--
