@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3188D6EABF
- for <igt-dev@lists.freedesktop.org>; Fri,  8 May 2020 09:24:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC3966EAC1
+ for <igt-dev@lists.freedesktop.org>; Fri,  8 May 2020 09:24:38 +0000 (UTC)
 From: Kunal Joshi <kunal1.joshi@intel.com>
-Date: Fri,  8 May 2020 07:56:53 +0530
-Message-Id: <20200508022655.5059-1-kunal1.joshi@intel.com>
+Date: Fri,  8 May 2020 07:56:55 +0530
+Message-Id: <20200508022655.5059-3-kunal1.joshi@intel.com>
+In-Reply-To: <20200508022655.5059-1-kunal1.joshi@intel.com>
+References: <20200508022655.5059-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 0/2] tests/kms_chamelium Handle DP FSM more
- reliably
+Subject: [igt-dev] [PATCH i-g-t 2/2] HAX: Run in BAT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,27 +24,25 @@ To: arkadiusz.hiler@intel.com, igt-dev@lists.freedesktop.org, imre.deak@intel.co
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Receiver reset is always required after we set a new mode, so let's disable
-the mode (reset_state() does that) before we switch to a new mode.
-With this we will get the HPD pulses reliably for each iteration over
-all the supoprted modes.
+Run in BAT.
 
-For more details
-Refer commit: c8dc1fd926a550308b971ca7d83fe0a927a38152
-
-Cc: Hiler Arkadiusz <arkadiusz.hiler@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Issue: https://gitlab.freedesktop.org/drm/intel/issues/262
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/intel-ci/fast-feedback.testlist | 1 +
+ 1 file changed, 1 insertion(+)
 
-Kunal Joshi (2):
-  tests/kms_chamelium Fix DP FSM in dp-mode-timings
-  HAX: Run in BAT
-
- tests/intel-ci/fast-feedback.testlist |  1 +
- tests/kms_chamelium.c                 | 43 +++++++++++++++++----------
- 2 files changed, 29 insertions(+), 15 deletions(-)
-
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 2ccad438..8a2c0813 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -84,6 +84,7 @@ igt@kms_addfb_basic@unused-modifier
+ igt@kms_addfb_basic@unused-offsets
+ igt@kms_addfb_basic@unused-pitches
+ igt@kms_busy@basic
++igt@kms_chamelium@dp-mode-timings
+ igt@kms_chamelium@dp-hpd-fast
+ igt@kms_chamelium@dp-edid-read
+ igt@kms_chamelium@dp-crc-fast
 -- 
 2.25.1
 
