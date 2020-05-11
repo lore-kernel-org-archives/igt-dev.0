@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4AD7A891FA
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 May 2020 18:26:15 +0000 (UTC)
+From: Imre Deak <imre.deak@intel.com>
+Date: Mon, 11 May 2020 21:25:34 +0300
+Message-Id: <20200511182534.14395-1-imre.deak@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Mon, 11 May 2020 15:33:13 -0000
-Message-ID: <158921119338.13116.9162464388866990018@emeril.freedesktop.org>
-References: <20200511113348.15105-1-swati2.sharma@intel.com>
-In-Reply-To: <20200511113348.15105-1-swati2.sharma@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fcolor=3A_Change_in_commit_style_from_legacy_to_atomic_=28?=
- =?utf-8?q?rev2=29?=
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_flip: Retry test in case of a
+ DP/HDMI link reset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,279 +15,269 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Swati Sharma <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+At least an IIyama and LG monitor have a strange behaviour when waking
+from a power saving state and getting enabled with an otherwise
+successful modeset: after the modeset in ~2 sec they signal a bad link
+state, either due to a lost CR/EQ in case of DP or a lost
+scrambling/TMDS clock setting in case of HDMI link. In response the
+driver resets the link with either a link-retraining or a modeset, which
+in turn makes the test miss vblank/flip events and fail.
 
-Series: tests/kms_color: Change in commit style from legacy to atomic (rev2)
-URL   : https://patchwork.freedesktop.org/series/58711/
-State : success
+Work around the above issue, by retrying the test once if the test
+detects after a failure that a link reset happened during the test and a
+corresponding hotplug uevent was sent by the driver.
 
-== Summary ==
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+---
+ tests/kms_flip.c | 113 ++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 82 insertions(+), 31 deletions(-)
 
-CI Bug Log - changes from CI_DRM_8462_full -> IGTPW_4556_full
-====================================================
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index 5e3e196c0..84cfdd363 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -482,7 +482,7 @@ static void vblank_handler(int fd, unsigned int frame, unsigned int sec,
+ 	fixup_premature_vblank_ts(o, &o->vblank_state);
+ }
+ 
+-static void check_state(const struct test_output *o, const struct event_state *es)
++static bool check_state(const struct test_output *o, const struct event_state *es)
+ {
+ 	struct timeval diff;
+ 
+@@ -496,7 +496,7 @@ static void check_state(const struct test_output *o, const struct event_state *e
+ 	}
+ 
+ 	if (es->count == 0)
+-		return;
++		return true;
+ 
+ 	timersub(&es->current_ts, &es->last_received_ts, &diff);
+ 	igt_assert_f(timercmp(&es->last_received_ts, &es->current_ts, <),
+@@ -507,10 +507,12 @@ static void check_state(const struct test_output *o, const struct event_state *e
+ 	/* check only valid if no modeset happens in between, that increments by
+ 	 * (1 << 23) on each step. This bounding matches the one in
+ 	 * DRM_IOCTL_WAIT_VBLANK. */
+-	if (!(o->flags & (TEST_DPMS | TEST_MODESET | TEST_NO_VBLANK)))
+-		igt_assert_f(es->current_seq - (es->last_seq + o->seq_step) <= 1UL << 23,
+-			     "unexpected %s seq %u, should be >= %u\n",
+-			     es->name, es->current_seq, es->last_seq + o->seq_step);
++	if (!(o->flags & (TEST_DPMS | TEST_MODESET | TEST_NO_VBLANK)) &&
++	    es->current_seq - (es->last_seq + o->seq_step) > 1UL << 23) {
++		igt_debug("unexpected %s seq %u, should be >= %u\n",
++			  es->name, es->current_seq, es->last_seq + o->seq_step);
++		return false;
++	}
+ 
+ 	if (o->flags & TEST_CHECK_TS) {
+ 		double elapsed, expected;
+@@ -525,17 +527,25 @@ static void check_state(const struct test_output *o, const struct event_state *e
+ 			  elapsed, expected, expected * 0.005,
+ 			  fabs((elapsed - expected) / expected) * 100);
+ 
+-		igt_assert_f(fabs((elapsed - expected) / expected) <= 0.005,
+-			     "inconsistent %s ts/seq: last %.06f/%u, current %.06f/%u: elapsed=%.1fus expected=%.1fus\n",
+-			     es->name, timeval_float(&es->last_ts), es->last_seq,
+-			     timeval_float(&es->current_ts), es->current_seq,
+-			     elapsed, expected);
++		if (fabs((elapsed - expected) / expected) > 0.005) {
++			igt_debug("inconsistent %s ts/seq: last %.06f/%u, current %.06f/%u: elapsed=%.1fus expected=%.1fus\n",
++				  es->name, timeval_float(&es->last_ts), es->last_seq,
++				  timeval_float(&es->current_ts), es->current_seq,
++				  elapsed, expected);
+ 
+-		igt_assert_f(es->current_seq == es->last_seq + o->seq_step,
+-			     "unexpected %s seq %u, expected %u\n",
+-			     es->name, es->current_seq,
+-			     es->last_seq + o->seq_step);
++			return false;
++		}
++
++		if (es->current_seq != es->last_seq + o->seq_step) {
++			igt_debug("unexpected %s seq %u, expected %u\n",
++				  es->name, es->current_seq,
++				  es->last_seq + o->seq_step);
++
++			return false;
++		}
+ 	}
++
++	return true;
+ }
+ 
+ static void check_state_correlation(struct test_output *o,
+@@ -562,7 +572,7 @@ static void check_state_correlation(struct test_output *o,
+ 		     es1->name, es2->name, usec_diff / USEC_PER_SEC);
+ }
+ 
+-static void check_all_state(struct test_output *o,
++static bool check_all_state(struct test_output *o,
+ 			    unsigned int completed_events)
+ {
+ 	bool flip, vblank;
+@@ -570,14 +580,17 @@ static void check_all_state(struct test_output *o,
+ 	flip = completed_events & EVENT_FLIP;
+ 	vblank = completed_events & EVENT_VBLANK;
+ 
+-	if (flip)
+-		check_state(o, &o->flip_state);
+-	if (vblank)
+-		check_state(o, &o->vblank_state);
++	if (flip && !check_state(o, &o->flip_state))
++		return false;
++
++	if (vblank && !check_state(o, &o->vblank_state))
++		return false;
+ 
+ 	/* FIXME: Correlation check is broken. */
+ 	if (flip && vblank && 0)
+ 		check_state_correlation(o, &o->flip_state, &o->vblank_state);
++
++	return true;
+ }
+ 
+ static void recreate_fb(struct test_output *o)
+@@ -982,7 +995,7 @@ static bool fb_is_bound(struct test_output *o, int fb)
+ 	return true;
+ }
+ 
+-static void check_final_state(const struct test_output *o,
++static bool check_final_state(const struct test_output *o,
+ 			      const struct event_state *es,
+ 			      unsigned int elapsed)
+ {
+@@ -999,11 +1012,16 @@ static void check_final_state(const struct test_output *o,
+ 		igt_debug("expected %d, counted %d, encoder type %d\n",
+ 			  (int)(elapsed / actual_frame_time(o)), count,
+ 			  o->kencoder[0]->encoder_type);
+-		igt_assert_f(elapsed >= min && elapsed <= max,
+-			     "dropped frames, expected %d, counted %d, encoder type %d\n",
+-			     (int)(elapsed / actual_frame_time(o)), count,
+-			     o->kencoder[0]->encoder_type);
++		if (elapsed < min || elapsed > max) {
++			igt_debug("dropped frames, expected %d, counted %d, encoder type %d\n",
++				  (int)(elapsed / actual_frame_time(o)), count,
++				  o->kencoder[0]->encoder_type);
++
++			return false;
++		}
+ 	}
++
++	return true;
+ }
+ 
+ /*
+@@ -1050,7 +1068,8 @@ static unsigned int wait_for_events(struct test_output *o)
+ }
+ 
+ /* Returned the elapsed time in us */
+-static unsigned event_loop(struct test_output *o, unsigned duration_ms)
++static bool event_loop(struct test_output *o, unsigned duration_ms,
++		       unsigned *elapsed)
+ {
+ 	unsigned long start, end;
+ 	int count = 0;
+@@ -1063,7 +1082,10 @@ static unsigned event_loop(struct test_output *o, unsigned duration_ms)
+ 		completed_events = run_test_step(o);
+ 		if (o->pending_events)
+ 			completed_events |= wait_for_events(o);
+-		check_all_state(o, completed_events);
++
++		if (!check_all_state(o, completed_events))
++			return false;
++
+ 		update_all_state(o, completed_events);
+ 
+ 		if (count && (gettime_us() - start) / 1000 >= duration_ms)
+@@ -1078,7 +1100,9 @@ static unsigned event_loop(struct test_output *o, unsigned duration_ms)
+ 	if (o->pending_events)
+ 		wait_for_events(o);
+ 
+-	return end - start;
++	*elapsed = end - start;
++
++	return true;
+ }
+ 
+ static void free_test_output(struct test_output *o)
+@@ -1188,8 +1212,11 @@ static void calibrate_ts(struct test_output *o, int crtc_idx)
+ static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 				   int crtc_count, int duration_ms)
+ {
++	struct udev_monitor *mon = igt_watch_hotplug();
+ 	unsigned bo_size = 0;
+ 	bool vblank = true;
++	bool retried = false;
++	bool state_ok;
+ 	unsigned elapsed;
+ 	uint64_t tiling;
+ 	int i;
+@@ -1231,8 +1258,11 @@ static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 	for (i = 0; i < o->count; i++)
+ 		kmstest_dump_mode(&o->kmode[i]);
+ 
++retry:
+ 	kmstest_unset_all_crtcs(drm_fd, resources);
+ 
++	igt_flush_hotplugs(mon);
++
+ 	if (set_mode(o, o->fb_ids[0], 0, 0)) {
+ 		/* We may fail to apply the mode if there are hidden
+ 		 * constraints, such as bandwidth on the third pipe.
+@@ -1279,12 +1309,31 @@ static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 	/* We run the vblank and flip actions in parallel by default. */
+ 	o->seq_step = max(o->vblank_state.seq_step, o->flip_state.seq_step);
+ 
+-	elapsed = event_loop(o, duration_ms);
++	state_ok = event_loop(o, duration_ms, &elapsed);
+ 
+ 	if (o->flags & TEST_FLIP && !(o->flags & TEST_NOEVENT))
+-		check_final_state(o, &o->flip_state, elapsed);
++		state_ok &= check_final_state(o, &o->flip_state, elapsed);
+ 	if (o->flags & TEST_VBLANK)
+-		check_final_state(o, &o->vblank_state, elapsed);
++		state_ok &= check_final_state(o, &o->vblank_state, elapsed);
++
++	/*
++	 * Some monitors with odd behavior signal a bad link after waking from
++	 * a power saving state and the subsequent (successful) modeset. This
++	 * will result in a link-retraining (DP) or async modeset (HDMI),
++	 * which in turn makes the test miss vblank/flip events and fail.
++	 * Work around this by retrying the test once in case of such a link
++	 * reset event, which the driver signals with a hotplug event.
++	 */
++	if (!state_ok) {
++		igt_assert(!retried && igt_hotplug_detected(mon, 3));
++		igt_debug("Retrying after a hotplug event\n");
++
++		retried = true;
++		memset(&o->vblank_state, 0, sizeof(o->vblank_state));
++		memset(&o->flip_state, 0, sizeof(o->flip_state));
++
++		goto retry;
++	}
+ 
+ out:
+ 	igt_remove_fb(drm_fd, &o->fb_info[2]);
+@@ -1294,6 +1343,8 @@ out:
+ 	last_connector = NULL;
+ 
+ 	free_test_output(o);
++
++	igt_cleanup_hotplug(mon);
+ }
+ 
+ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+-- 
+2.23.1
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4556_full that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_big_fb@linear-32bpp-rotate-180:
-    - shard-apl:          [PASS][1] -> [FAIL][2] ([i915#1119] / [i915#95])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-apl4/igt@kms_big_fb@linear-32bpp-rotate-180.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-apl8/igt@kms_big_fb@linear-32bpp-rotate-180.html
-    - shard-kbl:          [PASS][3] -> [FAIL][4] ([i915#1119] / [i915#93] / [i915#95])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-kbl1/igt@kms_big_fb@linear-32bpp-rotate-180.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-kbl7/igt@kms_big_fb@linear-32bpp-rotate-180.html
-
-  * igt@kms_cursor_crc@pipe-a-cursor-64x21-onscreen:
-    - shard-kbl:          [PASS][5] -> [FAIL][6] ([i915#54] / [i915#93] / [i915#95])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-kbl6/igt@kms_cursor_crc@pipe-a-cursor-64x21-onscreen.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-kbl7/igt@kms_cursor_crc@pipe-a-cursor-64x21-onscreen.html
-
-  * igt@kms_draw_crc@draw-method-xrgb8888-pwrite-untiled:
-    - shard-kbl:          [PASS][7] -> [FAIL][8] ([i915#177] / [i915#52] / [i915#54] / [i915#93] / [i915#95]) +1 similar issue
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-kbl7/igt@kms_draw_crc@draw-method-xrgb8888-pwrite-untiled.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-kbl7/igt@kms_draw_crc@draw-method-xrgb8888-pwrite-untiled.html
-
-  * igt@kms_draw_crc@draw-method-xrgb8888-render-untiled:
-    - shard-apl:          [PASS][9] -> [FAIL][10] ([i915#52] / [i915#54] / [i915#95])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-apl4/igt@kms_draw_crc@draw-method-xrgb8888-render-untiled.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-apl2/igt@kms_draw_crc@draw-method-xrgb8888-render-untiled.html
-
-  * igt@kms_flip_tiling@flip-changes-tiling-y:
-    - shard-apl:          [PASS][11] -> [FAIL][12] ([i915#95])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-apl2/igt@kms_flip_tiling@flip-changes-tiling-y.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-apl8/igt@kms_flip_tiling@flip-changes-tiling-y.html
-
-  * igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-mmap-gtt:
-    - shard-apl:          [PASS][13] -> [FAIL][14] ([i915#49] / [i915#95])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-apl4/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-mmap-gtt.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-apl3/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-mmap-gtt.html
-    - shard-kbl:          [PASS][15] -> [FAIL][16] ([i915#49])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-kbl7/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-mmap-gtt.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-kbl2/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-cur-indfb-draw-mmap-gtt.html
-
-  * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-pwrite:
-    - shard-glk:          [PASS][17] -> [FAIL][18] ([i915#49])
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-glk7/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-pwrite.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-glk5/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-draw-pwrite.html
-
-  * igt@kms_frontbuffer_tracking@fbc-suspend:
-    - shard-kbl:          [PASS][19] -> [DMESG-WARN][20] ([i915#180] / [i915#93] / [i915#95])
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-kbl6/igt@kms_frontbuffer_tracking@fbc-suspend.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-kbl7/igt@kms_frontbuffer_tracking@fbc-suspend.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - shard-tglb:         [PASS][21] -> [SKIP][22] ([i915#433])
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-tglb7/igt@kms_hdmi_inject@inject-audio.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-tglb8/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_mmap_write_crc@main:
-    - shard-kbl:          [PASS][23] -> [FAIL][24] ([i915#93] / [i915#95])
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-kbl1/igt@kms_mmap_write_crc@main.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-kbl1/igt@kms_mmap_write_crc@main.html
-
-  * igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:
-    - shard-apl:          [PASS][25] -> [FAIL][26] ([i915#53] / [i915#95])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-apl7/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-apl7/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-    - shard-kbl:          [PASS][27] -> [FAIL][28] ([i915#53] / [i915#93] / [i915#95])
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-kbl1/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-kbl4/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-
-  * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-c:
-    - shard-kbl:          [PASS][29] -> [DMESG-WARN][30] ([i915#180])
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-kbl2/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-c.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-kbl7/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-c.html
-
-  * igt@kms_plane@plane-panning-bottom-right-suspend-pipe-b-planes:
-    - shard-apl:          [PASS][31] -> [DMESG-WARN][32] ([i915#180]) +2 similar issues
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-apl2/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-b-planes.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-apl1/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-b-planes.html
-
-  * igt@kms_plane_cursor@pipe-a-overlay-size-256:
-    - shard-kbl:          [PASS][33] -> [FAIL][34] ([i915#1559] / [i915#93] / [i915#95])
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-kbl2/igt@kms_plane_cursor@pipe-a-overlay-size-256.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-kbl2/igt@kms_plane_cursor@pipe-a-overlay-size-256.html
-
-  * igt@kms_plane_cursor@pipe-a-overlay-size-64:
-    - shard-apl:          [PASS][35] -> [FAIL][36] ([i915#1559] / [i915#95]) +1 similar issue
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-apl3/igt@kms_plane_cursor@pipe-a-overlay-size-64.html
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-apl8/igt@kms_plane_cursor@pipe-a-overlay-size-64.html
-
-  
-#### Possible fixes ####
-
-  * {igt@gem_ctx_isolation@preservation-s3@rcs0}:
-    - shard-kbl:          [INCOMPLETE][37] ([i915#155] / [i915#794]) -> [PASS][38]
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-kbl1/igt@gem_ctx_isolation@preservation-s3@rcs0.html
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-kbl4/igt@gem_ctx_isolation@preservation-s3@rcs0.html
-
-  * igt@i915_pm_rpm@system-suspend-execbuf:
-    - shard-kbl:          [INCOMPLETE][39] ([i915#151] / [i915#155]) -> [PASS][40]
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-kbl4/igt@i915_pm_rpm@system-suspend-execbuf.html
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-kbl4/igt@i915_pm_rpm@system-suspend-execbuf.html
-
-  * igt@i915_suspend@forcewake:
-    - shard-kbl:          [DMESG-WARN][41] ([i915#180]) -> [PASS][42] +1 similar issue
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-kbl7/igt@i915_suspend@forcewake.html
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-kbl2/igt@i915_suspend@forcewake.html
-
-  * igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic:
-    - shard-glk:          [FAIL][43] ([i915#72]) -> [PASS][44]
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-glk5/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic.html
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-glk6/igt@kms_cursor_legacy@2x-long-flip-vs-cursor-atomic.html
-
-  * igt@kms_cursor_legacy@all-pipes-torture-move:
-    - shard-hsw:          [DMESG-WARN][45] ([i915#128]) -> [PASS][46]
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-hsw4/igt@kms_cursor_legacy@all-pipes-torture-move.html
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-hsw8/igt@kms_cursor_legacy@all-pipes-torture-move.html
-
-  * igt@kms_draw_crc@draw-method-xrgb8888-mmap-gtt-untiled:
-    - shard-apl:          [FAIL][47] ([i915#52] / [i915#54] / [i915#95]) -> [PASS][48] +1 similar issue
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-apl8/igt@kms_draw_crc@draw-method-xrgb8888-mmap-gtt-untiled.html
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-apl4/igt@kms_draw_crc@draw-method-xrgb8888-mmap-gtt-untiled.html
-    - shard-kbl:          [FAIL][49] ([i915#177] / [i915#52] / [i915#54] / [i915#93] / [i915#95]) -> [PASS][50]
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-kbl2/igt@kms_draw_crc@draw-method-xrgb8888-mmap-gtt-untiled.html
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-kbl1/igt@kms_draw_crc@draw-method-xrgb8888-mmap-gtt-untiled.html
-
-  * {igt@kms_flip@flip-vs-suspend@a-dp1}:
-    - shard-apl:          [DMESG-WARN][51] ([i915#180]) -> [PASS][52] +2 similar issues
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-apl4/igt@kms_flip@flip-vs-suspend@a-dp1.html
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-apl1/igt@kms_flip@flip-vs-suspend@a-dp1.html
-
-  * igt@kms_flip_tiling@flip-changes-tiling-yf:
-    - shard-apl:          [FAIL][53] ([i915#95]) -> [PASS][54] +1 similar issue
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-apl2/igt@kms_flip_tiling@flip-changes-tiling-yf.html
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-apl2/igt@kms_flip_tiling@flip-changes-tiling-yf.html
-
-  * igt@kms_plane_alpha_blend@pipe-a-coverage-vs-premult-vs-constant:
-    - shard-kbl:          [FAIL][55] ([fdo#108145] / [i915#265] / [i915#93] / [i915#95]) -> [PASS][56]
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-kbl6/igt@kms_plane_alpha_blend@pipe-a-coverage-vs-premult-vs-constant.html
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-kbl2/igt@kms_plane_alpha_blend@pipe-a-coverage-vs-premult-vs-constant.html
-    - shard-apl:          [FAIL][57] ([fdo#108145] / [i915#265] / [i915#95]) -> [PASS][58]
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-apl3/igt@kms_plane_alpha_blend@pipe-a-coverage-vs-premult-vs-constant.html
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-apl2/igt@kms_plane_alpha_blend@pipe-a-coverage-vs-premult-vs-constant.html
-
-  * igt@kms_psr@psr2_dpms:
-    - shard-iclb:         [SKIP][59] ([fdo#109441]) -> [PASS][60] +1 similar issue
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-iclb7/igt@kms_psr@psr2_dpms.html
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-iclb2/igt@kms_psr@psr2_dpms.html
-
-  * igt@kms_setmode@basic:
-    - shard-apl:          [FAIL][61] ([i915#31]) -> [PASS][62]
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-apl8/igt@kms_setmode@basic.html
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-apl3/igt@kms_setmode@basic.html
-
-  * {igt@perf@blocking-parameterized}:
-    - shard-hsw:          [FAIL][63] ([i915#1542]) -> [PASS][64]
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-hsw8/igt@perf@blocking-parameterized.html
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-hsw1/igt@perf@blocking-parameterized.html
-
-  
-#### Warnings ####
-
-  * igt@i915_pm_rpm@cursor-dpms:
-    - shard-snb:          [INCOMPLETE][65] ([i915#82]) -> [SKIP][66] ([fdo#109271])
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-snb4/igt@i915_pm_rpm@cursor-dpms.html
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-snb4/igt@i915_pm_rpm@cursor-dpms.html
-
-  * igt@kms_content_protection@atomic:
-    - shard-apl:          [TIMEOUT][67] ([i915#1319]) -> [FAIL][68] ([fdo#110321] / [fdo#110336])
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-apl8/igt@kms_content_protection@atomic.html
-   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-apl2/igt@kms_content_protection@atomic.html
-
-  * igt@kms_fbcon_fbt@fbc-suspend:
-    - shard-apl:          [FAIL][69] ([i915#1121] / [i915#95]) -> [DMESG-FAIL][70] ([i915#180] / [i915#95])
-   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-apl4/igt@kms_fbcon_fbt@fbc-suspend.html
-   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-apl1/igt@kms_fbcon_fbt@fbc-suspend.html
-
-  * igt@kms_plane_alpha_blend@pipe-a-alpha-opaque-fb:
-    - shard-apl:          [FAIL][71] ([fdo#108145] / [i915#265] / [i915#95]) -> [FAIL][72] ([fdo#108145] / [i915#265])
-   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-apl1/igt@kms_plane_alpha_blend@pipe-a-alpha-opaque-fb.html
-   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-apl4/igt@kms_plane_alpha_blend@pipe-a-alpha-opaque-fb.html
-    - shard-kbl:          [FAIL][73] ([fdo#108145] / [i915#265] / [i915#93] / [i915#95]) -> [FAIL][74] ([fdo#108145] / [i915#265])
-   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8462/shard-kbl7/igt@kms_plane_alpha_blend@pipe-a-alpha-opaque-fb.html
-   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/shard-kbl1/igt@kms_plane_alpha_blend@pipe-a-alpha-opaque-fb.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#108145]: https://bugs.freedesktop.org/show_bug.cgi?id=108145
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109441]: https://bugs.freedesktop.org/show_bug.cgi?id=109441
-  [fdo#110321]: https://bugs.freedesktop.org/show_bug.cgi?id=110321
-  [fdo#110336]: https://bugs.freedesktop.org/show_bug.cgi?id=110336
-  [i915#1119]: https://gitlab.freedesktop.org/drm/intel/issues/1119
-  [i915#1121]: https://gitlab.freedesktop.org/drm/intel/issues/1121
-  [i915#118]: https://gitlab.freedesktop.org/drm/intel/issues/118
-  [i915#128]: https://gitlab.freedesktop.org/drm/intel/issues/128
-  [i915#1319]: https://gitlab.freedesktop.org/drm/intel/issues/1319
-  [i915#151]: https://gitlab.freedesktop.org/drm/intel/issues/151
-  [i915#1542]: https://gitlab.freedesktop.org/drm/intel/issues/1542
-  [i915#155]: https://gitlab.freedesktop.org/drm/intel/issues/155
-  [i915#1559]: https://gitlab.freedesktop.org/drm/intel/issues/1559
-  [i915#177]: https://gitlab.freedesktop.org/drm/intel/issues/177
-  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
-  [i915#265]: https://gitlab.freedesktop.org/drm/intel/issues/265
-  [i915#31]: https://gitlab.freedesktop.org/drm/intel/issues/31
-  [i915#433]: https://gitlab.freedesktop.org/drm/intel/issues/433
-  [i915#49]: https://gitlab.freedesktop.org/drm/intel/issues/49
-  [i915#52]: https://gitlab.freedesktop.org/drm/intel/issues/52
-  [i915#53]: https://gitlab.freedesktop.org/drm/intel/issues/53
-  [i915#54]: https://gitlab.freedesktop.org/drm/intel/issues/54
-  [i915#72]: https://gitlab.freedesktop.org/drm/intel/issues/72
-  [i915#794]: https://gitlab.freedesktop.org/drm/intel/issues/794
-  [i915#82]: https://gitlab.freedesktop.org/drm/intel/issues/82
-  [i915#93]: https://gitlab.freedesktop.org/drm/intel/issues/93
-  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
-
-
-Participating hosts (11 -> 8)
-------------------------------
-
-  Missing    (3): pig-skl-6260u pig-glk-j5005 pig-icl-1065g7 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5644 -> IGTPW_4556
-  * Piglit: piglit_4509 -> None
-
-  CI-20190529: 20190529
-  CI_DRM_8462: f15508df0c2c0ab81c181457603f83ccc4ddf866 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4556: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/index.html
-  IGT_5644: 16f067ae42a6a93b8f0c5835210e2575a883001b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4556/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
