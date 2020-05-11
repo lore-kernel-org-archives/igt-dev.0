@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBD876E1BC
- for <igt-dev@lists.freedesktop.org>; Mon, 11 May 2020 06:38:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7BA756E1BE
+ for <igt-dev@lists.freedesktop.org>; Mon, 11 May 2020 06:38:47 +0000 (UTC)
 From: bhanuprakash.modem@intel.com
-Date: Mon, 11 May 2020 11:56:46 +0530
-Message-Id: <20200511062647.9514-2-bhanuprakash.modem@intel.com>
+Date: Mon, 11 May 2020 11:56:47 +0530
+Message-Id: <20200511062647.9514-3-bhanuprakash.modem@intel.com>
 In-Reply-To: <20200511062647.9514-1-bhanuprakash.modem@intel.com>
 References: <20200511062647.9514-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC PATCH 1/2] tests/kms_vrr: Use atomic API for page
- flip
+Subject: [igt-dev] [RFC PATCH 2/2] tests/kms_vrr: Add new subtest to
+ validate Flipline mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,97 +26,237 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-We should avoid using drmModePageFlip as it'll only be used for
-legacy drivers, instead, use igt_display_commit_atomic() API to
-page flip for atomic display code path.
+Check flipline mode by making sure that flips happen at flipline
+decision boundary.
+
+Example: if monitor vrr range is 40 - 60Hz and
+
+* flip at refresh_rate > 60Hz:
+  	Flip should happen at the flipline boundary & returned refresh rate
+	would be 60Hz.
+* flip at refresh_rate == 50Hz:
+	Flip should happen right away so returned refresh rate is 50Hz.
+* flip at refresh_rate < 40Hz:
+	Flip should happen at the vmax so the returned refresh rate
+	would be 40Hz.
 
 Cc: Harry Wentland <harry.wentland@amd.com>
 Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 Cc: Manasi Navare <manasi.d.navare@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vrr.c | 39 ++++++++++-----------------------------
- 1 file changed, 10 insertions(+), 29 deletions(-)
+ tests/kms_vrr.c | 101 ++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 76 insertions(+), 25 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 73115fef..0fe28931 100644
+index 0fe28931..c8a8c065 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -126,11 +126,11 @@ static range_t get_vrr_range(data_t *data, igt_output_t *output)
+@@ -37,6 +37,7 @@ enum {
+ 	TEST_NONE = 0,
+ 	TEST_DPMS = 1 << 0,
+ 	TEST_SUSPEND = 1 << 1,
++	TEST_FLIPLINE = 1 << 2,
+ };
+ 
+ typedef struct range {
+@@ -51,6 +52,12 @@ typedef struct data {
+ 	igt_fb_t fb1;
+ } data_t;
+ 
++typedef struct vtest_ns {
++	uint64_t min;
++	uint64_t mid;
++	uint64_t max;
++} vtest_ns_t;
++
+ typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, uint32_t);
+ 
+ /* Converts a timespec structure to nanoseconds. */
+@@ -100,13 +107,18 @@ static uint64_t rate_from_refresh(uint64_t refresh)
+ 	return NSECS_PER_SEC / refresh;
  }
  
- /* Returns a suitable vrr test frequency. */
--static uint32_t get_test_rate_ns(data_t *data, igt_output_t *output)
-+static uint64_t get_test_rate_ns(data_t *data, igt_output_t *output)
+-/* Returns the min and max vrr range from the connector debugfs. */
++/* Read min and max vrr range from the connector debugfs.
++ * - min range should be less than the current mode vfreq
++ * - if max range is grater than the current mode vfreq, consider
++ *	current mode vfreq as the max range.
++ */
+ static range_t get_vrr_range(data_t *data, igt_output_t *output)
  {
- 	drmModeModeInfo *mode = igt_output_get_mode(output);
+ 	char buf[256];
+ 	char *start_loc;
+ 	int fd, res;
  	range_t range;
--	uint32_t vtest;
-+	uint64_t vtest;
++	drmModeModeInfo *mode = igt_output_get_mode(output);
  
- 	/*
- 	 * The frequency with the fastest convergence speed should be
-@@ -210,32 +210,18 @@ wait_for_vblank(data_t *data, enum pipe pipe)
- 	return get_vblank_event_ns(data);
+ 	fd = igt_debugfs_connector_dir(data->drm_fd, output->name, O_RDONLY);
+ 	igt_assert(fd >= 0);
+@@ -118,32 +130,28 @@ static range_t get_vrr_range(data_t *data, igt_output_t *output)
+ 
+ 	igt_assert(start_loc = strstr(buf, "Min: "));
+ 	igt_assert_eq(sscanf(start_loc, "Min: %u", &range.min), 1);
++	igt_require(mode->vrefresh > range.min);
+ 
+ 	igt_assert(start_loc = strstr(buf, "Max: "));
+ 	igt_assert_eq(sscanf(start_loc, "Max: %u", &range.max), 1);
+ 
++	range.max = (mode->vrefresh < range.max) ? mode->vrefresh : range.max;
++
+ 	return range;
  }
  
--/* Performs an asynchronous non-blocking page-flip on a pipe. */
--static int
-+/* Performs an atomic non-blocking page-flip on a pipe. */
-+static void
- do_flip(data_t *data, enum pipe pipe_id, igt_fb_t *fb)
+-/* Returns a suitable vrr test frequency. */
+-static uint64_t get_test_rate_ns(data_t *data, igt_output_t *output)
++/* Returns vrr test frequency for min, mid & max range. */
++static vtest_ns_t get_test_rate_ns(data_t *data, igt_output_t *output)
  {
--	igt_pipe_t *pipe = &data->display.pipes[pipe_id];
--	int ret;
--
- 	igt_set_timeout(1, "Scheduling page flip\n");
+-	drmModeModeInfo *mode = igt_output_get_mode(output);
+ 	range_t range;
+-	uint64_t vtest;
++	vtest_ns_t vtest_ns;
  
 -	/*
--	 * Only the legacy flip ioctl supports async flips.
--	 * It's also non-blocking, but returns -EBUSY if flipping too fast.
--	 * 2x monitor tests will need async flips in the atomic API.
+-	 * The frequency with the fastest convergence speed should be
+-	 * the midpoint between the current mode vfreq and the min
+-	 * supported vfreq.
 -	 */
--	do {
--		ret = drmModePageFlip(data->drm_fd, pipe->crtc_id,
--				      fb->fb_id,
--				      DRM_MODE_PAGE_FLIP_EVENT |
--				      DRM_MODE_PAGE_FLIP_ASYNC,
--				      data);
--	} while (ret == -EBUSY);
--
--	igt_assert_eq(ret, 0);
--	igt_reset_timeout();
-+	igt_display_commit_atomic(&data->display,
-+				  DRM_MODE_ATOMIC_NONBLOCK |
-+				  DRM_MODE_PAGE_FLIP_EVENT,
-+				  NULL);
+ 	range = get_vrr_range(data, output);
+-	igt_require(mode->vrefresh > range.min);
++	vtest_ns.min = rate_from_refresh(range.min);
++	vtest_ns.mid = rate_from_refresh(((range.max + range.min) / 2));
++	vtest_ns.max = rate_from_refresh(range.max);
  
--	return 0;
-+	igt_reset_timeout();
+-	vtest = (mode->vrefresh - range.min) / 2 + range.min;
+-	igt_require(vtest < mode->vrefresh);
+-
+-	return rate_from_refresh(vtest);
++	return vtest_ns;
  }
  
- /*
-@@ -246,11 +232,6 @@ do_flip(data_t *data, enum pipe pipe_id, igt_fb_t *fb)
-  * can arbitrarily restrict the bounds further than the absolute
-  * min and max range. But VRR is really about extending the flip
-  * to prevent stuttering or to match a source content rate.
-- *
-- * The only way to "present" at a fixed rate like userspace in a vendor
-- * neutral manner is to do it with async flips. This avoids the need
-- * to wait for next vblank and it should eventually converge at the
-- * desired rate.
-  */
- static uint32_t
- flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
-@@ -271,7 +252,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
- 		front = !front;
+ /* Returns true if an output supports VRR. */
+@@ -240,6 +248,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 	uint64_t start_ns, last_vblank_ns;
+ 	uint32_t total_flip = 0, total_pass = 0;
+ 	bool front = false;
++	vtest_ns_t vtest_ns = get_test_rate_ns(data, output);
+ 
+ 	/* Align with the vblank region to speed up convergence. */
+ 	last_vblank_ns = wait_for_vblank(data, pipe);
+@@ -253,10 +262,6 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
  		do_flip(data, pipe, front ? &data->fb1 : &data->fb0);
  
--		vblank_ns = get_vblank_event_ns(data);
-+		vblank_ns = wait_for_vblank(data, pipe);
- 		diff_ns = rate_ns - (vblank_ns - last_vblank_ns);
- 		last_vblank_ns = vblank_ns;
+ 		vblank_ns = wait_for_vblank(data, pipe);
+-		diff_ns = rate_ns - (vblank_ns - last_vblank_ns);
+-		last_vblank_ns = vblank_ns;
+-
+-		total_flip += 1;
  
+ 		/*
+ 		 * Check if the difference between the two flip timestamps
+@@ -266,9 +271,19 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 		 * difference between 144Hz and 143Hz which should give this
+ 		 * enough accuracy for most use cases.
+ 		 */
++		if ((rate_ns <= vtest_ns.min) && (rate_ns >= vtest_ns.max))
++			diff_ns = rate_ns - (vblank_ns - last_vblank_ns);
++		else if (rate_ns > vtest_ns.min)
++			diff_ns = vtest_ns.min - (vblank_ns - last_vblank_ns);
++		else if (rate_ns < vtest_ns.max)
++			diff_ns = vtest_ns.max - (vblank_ns - last_vblank_ns);
++
+ 		if (llabs(diff_ns) < 50000ll)
+ 			total_pass += 1;
+ 
++		last_vblank_ns = vblank_ns;
++		total_flip += 1;
++
+ 		now_ns = get_time_ns();
+ 		if (now_ns - start_ns > duration_ns)
+ 			break;
+@@ -295,10 +310,13 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ static void
+ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ {
+-	uint64_t rate;
+ 	uint32_t result;
++	vtest_ns_t vtest_ns = get_test_rate_ns(data, output);
++	range_t range = get_vrr_range(data, output);
++	uint64_t rate = vtest_ns.mid;
+ 
+-	rate = get_test_rate_ns(data, output);
++	igt_info("VRR Test execution on %s, PIPE_%s\n",
++		 output->name, kmstest_pipe_name(pipe));
+ 
+ 	prepare_test(data, output, pipe);
+ 
+@@ -324,6 +342,35 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 		igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+ 					      SUSPEND_TEST_NONE);
+ 
++	/*
++	 * Check flipline mode by making sure that flips happen at flipline
++	 * decision boundary.
++	 *
++	 * Example: if range is 40 - 60Hz and
++	 * if refresh_rate > 60Hz:
++	 *      Flip should happen at the flipline boundary & returned refresh rate
++	 *	would be 60Hz.
++	 * if refresh_rate is 50Hz:
++	 *      Flip will happen right away so returned refresh rate is 50Hz.
++	 * if refresh_rate < 40Hz:
++	 *      Flip should happen at the vmax so the returned refresh rate
++	 *	would be 40Hz.
++	 */
++	if (flags & TEST_FLIPLINE) {
++		rate = rate_from_refresh(range.min - 5);
++		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++		igt_assert_f(result > 75,
++			     "Refresh rate %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
++			     rate, result);
++
++		rate = rate_from_refresh(range.max + 5);
++		result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
++		igt_assert_f(result > 75,
++			     "Refresh rate %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
++			     rate, result);
++	}
++
++	rate = vtest_ns.mid;
+ 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+ 
+ 	set_vrr_on_pipe(data, pipe, 0);
+@@ -331,14 +378,14 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 	/* This check is delayed until after VRR is disabled so it isn't
+ 	 * left enabled if the test fails. */
+ 	igt_assert_f(result > 75,
+-		     "Target VRR on threshold not reached, result was %u%%\n",
+-		     result);
++		     "Refresh rate %"PRIu64"ns: Target VRR on threshold not reached, result was %u%%\n",
++		     rate, result);
+ 
+ 	result = flip_and_measure(data, output, pipe, rate, TEST_DURATION_NS);
+ 
+ 	igt_assert_f(result < 10,
+-		     "Target VRR off threshold exceeded, result was %u%%\n",
+-		     result);
++		     "Refresh rate %"PRIu64"ns: Target VRR off threshold exceeded, result was %u%%\n",
++		     rate, result);
+ 
+ 	igt_remove_fb(data->drm_fd, &data->fb1);
+ 	igt_remove_fb(data->drm_fd, &data->fb0);
+@@ -392,6 +439,10 @@ igt_main
+ 	igt_subtest("flip-suspend")
+ 		run_vrr_test(&data, test_basic, TEST_SUSPEND);
+ 
++	igt_describe("Make sure that flips happen at flipline decision boundary.");
++	igt_subtest("flipline")
++		run_vrr_test(&data, test_basic, TEST_FLIPLINE);
++
+ 	igt_fixture {
+ 		igt_display_fini(&data.display);
+ 	}
 -- 
 2.24.1.1.gb6d4d82bd5
 
