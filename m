@@ -1,13 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-In-Reply-To: <20200508135631.8099-3-janusz.krzysztofik@linux.intel.com>
-References: <20200508135631.8099-1-janusz.krzysztofik@linux.intel.com>
- <20200508135631.8099-3-janusz.krzysztofik@linux.intel.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158896045063.30605.10719204340280805143@build.alporthouse.com>
-Date: Fri, 08 May 2020 18:54:10 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/gem_exec_nop: Remove
- submission batching
+Date: Mon, 11 May 2020 09:21:41 +0100
+Message-Id: <20200511082141.65494-1-chris@chris-wilson.co.uk>
+MIME-Version: 1.0
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_ringfill: Do a basic pass over all
+ engines simultaneously
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,54 +16,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Janusz Krzysztofik (2020-05-08 14:56:31)
->  static double nop_on_ring(int fd, uint32_t handle,
->                           const struct intel_execution_engine2 *e, int timeout,
-> -                         unsigned long *out)
-> +                         unsigned long *count)
->  {
->         struct drm_i915_gem_execbuffer2 execbuf;
->         struct drm_i915_gem_exec_object2 obj;
->         struct timespec start, now;
-> -       unsigned long count;
-> +       unsigned long total;
-> +
-> +       igt_assert(*count);
->  
->         memset(&obj, 0, sizeof(obj));
->         obj.handle = handle;
-> @@ -93,18 +95,18 @@ static double nop_on_ring(int fd, uint32_t handle,
->         }
->         intel_detect_and_clear_missed_interrupts(fd);
->  
-> -       count = 0;
-> +       total = 0;
->         clock_gettime(CLOCK_MONOTONIC, &start);
->         do {
-> -               for (int loop = 0; loop < 1024; loop++)
-> +               for (int loop = 0; loop < *count; loop++)
+Change the basic pre-mergetest to do a single pass over all engines
+simultaneously. This should take no longer than checking a single
+engine, while providing just the right amount of stress regardless of
+machine size.
 
-This unnerves me. I expect to get this wrong when writing new callers.
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/i915/gem_ringfill.c             | 10 ++++++++++
+ tests/intel-ci/fast-feedback.testlist |  2 +-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-There's no great reason to even have 1024 here, we can survive with
-doing clock_gettime() every iteration, and just accept it as part of the
-systematic cost.
+diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
+index a2157bd6f..a90758e08 100644
+--- a/tests/i915/gem_ringfill.c
++++ b/tests/i915/gem_ringfill.c
+@@ -292,6 +292,16 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_subtest("basic-all") {
++		const struct intel_execution_engine2 *e;
++
++		__for_each_physical_engine(fd, e)
++			igt_fork(child, 1)
++				run_test(fd, e->flags, 0, 1);
++
++		igt_waitchildren();
++	}
++
+ 	igt_fixture
+ 		close(fd);
+ }
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 2ccad4386..e2ed0a1d6 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -35,7 +35,7 @@ igt@gem_mmap@basic
+ igt@gem_mmap_gtt@basic
+ igt@gem_render_linear_blits@basic
+ igt@gem_render_tiled_blits@basic
+-igt@gem_ringfill@basic-default-forked
++igt@gem_ringfill@basic-all
+ igt@gem_sync@basic-all
+ igt@gem_sync@basic-each
+ igt@gem_tiled_blits@basic
+-- 
+2.26.2
 
->                         gem_execbuf(fd, &execbuf);
->  
-> -               count += 1024;
-> +               total += *count;
->                 clock_gettime(CLOCK_MONOTONIC, &now);
->         } while (elapsed(&start, &now) < timeout);
->         igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
->  
-> -       *out = count;
-> +       *count = total;
->         return elapsed(&start, &now);
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
