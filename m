@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 97DD26E905
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2020 09:29:11 +0000 (UTC)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 12 May 2020 08:59:19 -0000
-Message-ID: <158927395923.18143.16381568940861916866@emeril.freedesktop.org>
+In-Reply-To: <20200512082402.26792-2-zbigniew.kempczynski@intel.com>
 References: <20200512082402.26792-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20200512082402.26792-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgTWFrZSBn?=
- =?utf-8?q?pgpu_fill_tests_libdrm_independent?=
+ <20200512082402.26792-2-zbigniew.kempczynski@intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Message-ID: <158927574730.15653.4330108152807175154@build.alporthouse.com>
+Date: Tue, 12 May 2020 10:29:07 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t 1/6] lib/intel_bufops: Add bufops
+ reference and relaxate stride requirement
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,77 +18,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: zbigniew.kempczynski@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
-
-Series: Make gpgpu fill tests libdrm independent
-URL   : https://patchwork.freedesktop.org/series/77175/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_5651 -> IGTPW_4559
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4559/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4559 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-skl-guc:         [INCOMPLETE][1] ([i915#1874]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5651/fi-skl-guc/igt@i915_selftest@live@execlists.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4559/fi-skl-guc/igt@i915_selftest@live@execlists.html
-    - fi-skl-6700k2:      [INCOMPLETE][3] ([i915#1874]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5651/fi-skl-6700k2/igt@i915_selftest@live@execlists.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4559/fi-skl-6700k2/igt@i915_selftest@live@execlists.html
-
-  
-  [i915#1874]: https://gitlab.freedesktop.org/drm/intel/issues/1874
-
-
-Participating hosts (50 -> 43)
-------------------------------
-
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5651 -> IGTPW_4559
-
-  CI-20190529: 20190529
-  CI_DRM_8467: 1a0f0c378117fc90f421a692698ad85963ecdb3a @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4559: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4559/index.html
-  IGT_5651: e54e2642f1967ca3c488db32264607df670d1dfb @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4559/index.html
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMDUtMTIgMDk6MjM6NTcpCj4gQWRk
+IGJ1Zm9wcyByZWZlcmVuY2UgdG8gaW50ZWxfYnVmIHRvIGFsbG93IGFjcXVpcmUgZHJtIGZkIGFn
+YWluc3Qgd2hpY2gKPiBidWZmZXIgd2FzIGNyZWF0ZWQuCj4gCj4gUmVsYXggc3RyaWRlIGxpbWl0
+YXRpb24gZm9yIGludGVsX2J1ZiBmb3Igbm9uLXRpbGVkIGJ1ZmZlcnMuCj4gCj4gU2lnbmVkLW9m
+Zi1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5j
+b20+Cj4gQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+IC0tLQo+
+ICBsaWIvaW50ZWxfYnVmb3BzLmMgfCAyMCArKysrKysrKysrKysrKysrKysrLQo+ICBsaWIvaW50
+ZWxfYnVmb3BzLmggfCAgMyArKysKPiAgMiBmaWxlcyBjaGFuZ2VkLCAyMiBpbnNlcnRpb25zKCsp
+LCAxIGRlbGV0aW9uKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9idWZvcHMuYyBiL2xp
+Yi9pbnRlbF9idWZvcHMuYwo+IGluZGV4IDgwNGIyYTBhLi5jZGY2YjExNCAxMDA2NDQKPiAtLS0g
+YS9saWIvaW50ZWxfYnVmb3BzLmMKPiArKysgYi9saWIvaW50ZWxfYnVmb3BzLmMKPiBAQCAtNjg2
+LDYgKzY4Niw4IEBAIHN0YXRpYyB2b2lkIF9faW50ZWxfYnVmX2luaXQoc3RydWN0IGJ1Zl9vcHMg
+KmJvcHMsCj4gIAo+ICAgICAgICAgbWVtc2V0KGJ1ZiwgMCwgc2l6ZW9mKCpidWYpKTsKPiAgCj4g
+KyAgICAgICBidWYtPmJvcHMgPSBib3BzOwo+ICsKPiAgICAgICAgIGlmIChjb21wcmVzc2lvbikg
+ewo+ICAgICAgICAgICAgICAgICBpbnQgYXV4X3dpZHRoLCBhdXhfaGVpZ2h0Owo+ICAKPiBAQCAt
+NzIxLDcgKzcyMywxMCBAQCBzdGF0aWMgdm9pZCBfX2ludGVsX2J1Zl9pbml0KHN0cnVjdCBidWZf
+b3BzICpib3BzLAo+ICAgICAgICAgICAgICAgICBzaXplID0gYnVmLT5hdXgub2Zmc2V0ICsgYXV4
+X3dpZHRoICogYXV4X2hlaWdodDsKPiAgCj4gICAgICAgICB9IGVsc2Ugewo+IC0gICAgICAgICAg
+ICAgICBidWYtPnN0cmlkZSA9IEFMSUdOKHdpZHRoICogKGJwcCAvIDgpLCAxMjgpOwo+ICsgICAg
+ICAgICAgICAgICBpZiAoYnVmLT50aWxpbmcpCj4gKyAgICAgICAgICAgICAgICAgICAgICAgYnVm
+LT5zdHJpZGUgPSBBTElHTih3aWR0aCAqIChicHAgLyA4KSwgMTI4KTsKPiArICAgICAgICAgICAg
+ICAgZWxzZQo+ICsgICAgICAgICAgICAgICAgICAgICAgIGJ1Zi0+c3RyaWRlID0gd2lkdGggKiAo
+YnBwIC8gOCk7CgpUaGVyZSBtaWdodCBiZSBhIGNoaWNrZW4tYW5kLWVnZyBwcm9ibGVtIGhlcmUg
+Zm9yIGludGVybWl4aW5nIGJ1Zm9wcwp3aXRoIGlndF9mYi4gRm9yIGEgbGluZWFyIHNjYW5vdXQg
+YnVmZmVyLCB3ZSBuZWVkIHN0cmlkZSBhbGlnbmVkIHRvIDY0Qi4KCklmIHRoZXJlIGlzIFtvciB3
+aWxsIGJlXSBhIGJ1Zl9pbml0X2Zvcl9kYXRhKCkgdGhhdCB3aWxsIHRha2UgaW4gdGhlCmhhbmRs
+ZSwgc2l6ZSBhbmQgc3RyaWRlLCBhbmQgc2hvdWxkIGFsbG93IGZvciBpbnRlcm9wLgotQ2hyaXMK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
