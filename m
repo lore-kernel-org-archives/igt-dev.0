@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 406266E0CE
- for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2020 10:44:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A74F96E89F
+ for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2020 10:44:43 +0000 (UTC)
 From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Tue, 12 May 2020 16:04:15 +0530
-Message-Id: <20200512103415.28968-7-anshuman.gupta@intel.com>
+Date: Tue, 12 May 2020 16:04:14 +0530
+Message-Id: <20200512103415.28968-6-anshuman.gupta@intel.com>
 In-Reply-To: <20200512103415.28968-1-anshuman.gupta@intel.com>
 References: <20200512103415.28968-1-anshuman.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v8 6/6] tests/i915_pm_rpm: Fix the
- universal-plane cap setting in plane tests
+Subject: [igt-dev] [PATCH i-g-t v8 5/6] tests/i915_pm_rpm: lpsp/non-lpsp
+ screen mode_set_data
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,59 +25,192 @@ To: igt-dev@lists.freedesktop.org
 Cc: martin.peres@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Imre Deak <imre.deak@intel.com>
+Initialize the mode set params for lpsp/non-lpsp screen
+based upon their output lpsp capability instead
+of edp/non-edp output type.
 
-The current value of the universal-plane capability is 1 if
-igt_display_require() has been called, so make sure we always set the
-value expected by the test and restore the correct original value.
+v2:
+- CI failures fixup.
+v3:
+- changes according to lib function igt_output_is_lpsp_capable,
+  prefix changed to i915_output_is_lpsp_capable.
 
-Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Acked-by: Martin Peres <martin.peres@linux.intel.com>
+Reviewed-by: Animesh Manna <animesh.manna@intel.com>
+Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
 ---
- tests/i915/i915_pm_rpm.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ tests/i915/i915_pm_rpm.c | 53 +++++++++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 23 deletions(-)
 
 diff --git a/tests/i915/i915_pm_rpm.c b/tests/i915/i915_pm_rpm.c
-index 650de7b0..0a641640 100644
+index 47e74856..650de7b0 100644
 --- a/tests/i915/i915_pm_rpm.c
 +++ b/tests/i915/i915_pm_rpm.c
-@@ -1786,18 +1786,15 @@ static void test_one_plane(bool dpms, uint32_t plane_id,
- /* This one also triggered WARNs on our driver at some point in time. */
- static void planes_subtest(bool universal, bool dpms)
+@@ -95,6 +95,7 @@ struct mode_set_data {
+ 	drmModeResPtr res;
+ 	drmModeConnectorPtr connectors[MAX_CONNECTORS];
+ 	drmModePropertyBlobPtr edids[MAX_CONNECTORS];
++	igt_display_t display;
+ 
+ 	uint32_t devid;
+ };
+@@ -255,29 +256,29 @@ static bool init_modeset_params_for_type(struct mode_set_data *data,
  {
--	int i, rc, crtc_idx;
-+	int i, planes_tested = 0, crtc_idx;
- 	drmModePlaneResPtr planes;
+ 	drmModeConnectorPtr connector = NULL;
+ 	drmModeModeInfoPtr mode = NULL;
++	igt_output_t *output = NULL;
++	igt_display_t *display = &data->display;
  
- 	igt_require(default_mode_params);
- 	crtc_idx = kmstest_get_crtc_idx(ms_data.res,
- 					default_mode_params->crtc_id);
+-	if (!data->res)
++	if (!data->res || !display)
+ 		return false;
  
--	if (universal) {
--		rc = drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES,
--				     1);
--		igt_require(rc == 0);
--	}
-+	igt_assert_eq(drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES,
-+				      universal), 0);
+-	for (int i = 0; i < data->res->count_connectors; i++) {
+-		drmModeConnectorPtr c = data->connectors[i];
++	for_each_connected_output(display, output) {
++		drmModeConnectorPtr c = output->config.connector;
  
- 	planes = drmModeGetPlaneResources(drm_fd);
- 	for (i = 0; i < planes->count_planes; i++) {
-@@ -1818,10 +1815,9 @@ static void planes_subtest(bool universal, bool dpms)
+ 		if (type == SCREEN_TYPE_LPSP &&
+-		    c->connector_type != DRM_MODE_CONNECTOR_eDP)
++		     !i915_output_is_lpsp_capable(drm_fd, output))
+ 			continue;
+ 
+ 		if (type == SCREEN_TYPE_NON_LPSP &&
+-		    c->connector_type == DRM_MODE_CONNECTOR_eDP)
++		    i915_output_is_lpsp_capable(drm_fd, output))
+ 			continue;
+ 
+-		if (c->connection == DRM_MODE_CONNECTED && c->count_modes) {
+-			connector = c;
+-			mode = &c->modes[0];
+-			break;
+-		}
++		connector = c;
++		mode = igt_output_get_mode(output);
++		break;
  	}
- 	drmModeFreePlaneResources(planes);
  
--	if (universal) {
--		rc = drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 0);
--		igt_assert_eq(rc, 0);
--	}
-+	igt_assert_eq(drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES,
-+				      1), 0);
-+	igt_assert_lte(universal ? 3 : 1, planes_tested);
+-	if (!connector)
++	if (!connector || !mode)
+ 		return false;
+ 
+ 	igt_create_pattern_fb(drm_fd, mode->hdisplay, mode->vdisplay,
+@@ -398,6 +399,7 @@ static void init_mode_set_data(struct mode_set_data *data)
+ 		kmstest_set_vt_graphics_mode();
+ 	}
+ 
++	igt_display_require(&data->display, drm_fd);
+ 	data->devid = intel_get_drm_devid(drm_fd);
+ 	init_modeset_cached_params(&ms_data);
+ }
+@@ -411,6 +413,8 @@ static void fini_mode_set_data(struct mode_set_data *data)
+ 		}
+ 		drmModeFreeResources(data->res);
+ 	}
++
++	igt_display_fini(&data->display);
  }
  
- static void pm_test_tiling(void)
+ static void get_drm_info(struct compare_data *data)
+@@ -761,7 +765,7 @@ static void dump_file(int dir, const char *filename)
+ 	free(contents);
+ }
+ 
+-static bool setup_environment(void)
++static bool setup_environment(bool display_disabled)
+ {
+ 	if (has_runtime_pm)
+ 		goto out;
+@@ -773,7 +777,8 @@ static bool setup_environment(void)
+ 	debugfs = igt_debugfs_dir(drm_fd);
+ 	igt_require(debugfs != -1);
+ 
+-	init_mode_set_data(&ms_data);
++	if (!display_disabled)
++		init_mode_set_data(&ms_data);
+ 
+ 	igt_pm_enable_sata_link_power_management();
+ 
+@@ -786,13 +791,14 @@ static bool setup_environment(void)
+ 	igt_require(igt_pm_dmc_loaded(debugfs));
+ 
+ out:
+-	disable_all_screens(&ms_data);
++	if (!display_disabled)
++		disable_all_screens(&ms_data);
+ 	dump_file(debugfs, "i915_runtime_pm_status");
+ 
+ 	return wait_for_suspended();
+ }
+ 
+-static void teardown_environment(void)
++static void teardown_environment(bool display_disabled)
+ {
+ 	close(msr_fd);
+ 	if (has_pc8)
+@@ -802,7 +808,8 @@ static void teardown_environment(void)
+ 
+ 	igt_pm_restore_sata_link_power_management();
+ 
+-	fini_mode_set_data(&ms_data);
++	if (!display_disabled)
++		fini_mode_set_data(&ms_data);
+ 
+ 	close(debugfs);
+ 	close(drm_fd);
+@@ -2005,7 +2012,7 @@ static struct option long_options[] = {
+ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ {
+ 	igt_subtest("basic-rte") {
+-		igt_assert(setup_environment());
++		igt_assert(setup_environment(false));
+ 		basic_subtest();
+ 	}
+ 
+@@ -2013,7 +2020,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	 * PC8+. We don't want bug reports from cases where the machine is just
+ 	 * not properly configured. */
+ 	igt_fixture
+-		igt_require(setup_environment());
++		igt_require(setup_environment(false));
+ 
+ 	if (stay)
+ 		igt_subtest("stay")
+@@ -2143,7 +2150,7 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	}
+ 
+ 	igt_fixture
+-		teardown_environment();
++		teardown_environment(false);
+ 
+ 	igt_subtest("module-reload") {
+ 		igt_debug("Reload w/o display\n");
+@@ -2152,9 +2159,9 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		igt_kmsg(KMSG_INFO "Reloading i915 w/o display\n");
+ 		igt_assert_eq(igt_i915_driver_load("disable_display=1 mmio_debug=-1"), 0);
+ 
+-		igt_assert(setup_environment());
++		igt_assert(setup_environment(true));
+ 		igt_assert(igt_wait(device_in_pci_d3(), 2000, 100));
+-		teardown_environment();
++		teardown_environment(true);
+ 
+ 		igt_debug("Reload as normal\n");
+ 		igt_i915_driver_unload();
+@@ -2162,11 +2169,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		igt_kmsg(KMSG_INFO "Reloading i915 as normal\n");
+ 		igt_assert_eq(igt_i915_driver_load("mmio_debug=-1"), 0);
+ 
+-		igt_assert(setup_environment());
++		igt_assert(setup_environment(false));
+ 		igt_assert(igt_wait(device_in_pci_d3(), 2000, 100));
+ 		if (enable_one_screen_with_type(&ms_data, SCREEN_TYPE_ANY))
+ 			drm_resources_equal_subtest();
+-		teardown_environment();
++		teardown_environment(false);
+ 
+ 		/* Remove our mmio_debugging module */
+ 		igt_i915_driver_unload();
 -- 
 2.26.0
 
