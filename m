@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CFE746E87A
- for <igt-dev@lists.freedesktop.org>; Tue, 12 May 2020 08:24:11 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 12 May 2020 10:24:01 +0200
-Message-Id: <20200512082402.26792-6-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20200512082402.26792-1-zbigniew.kempczynski@intel.com>
-References: <20200512082402.26792-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 5/6] lib/gpgpu_fill: libdrm-free gpgpu
- pipeline creation for gen7
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 12 May 2020 08:59:19 -0000
+Message-ID: <158927395923.18143.16381568940861916866@emeril.freedesktop.org>
+References: <20200512082402.26792-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200512082402.26792-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgTWFrZSBn?=
+ =?utf-8?q?pgpu_fill_tests_libdrm_independent?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,66 +14,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UHJvdmlkZSBwaXBlbGluZSBmb3IgZ3BncHUgZmlsbCBmb3IgZ2VuNy4KClNpZ25lZC1vZmYtYnk6
-IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgpD
-YzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Ci0tLQogbGliL2dwZ3B1
-X2ZpbGwuYyB8IDQ4ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKwogbGliL2dwZ3B1X2ZpbGwuaCB8ICA4ICsrKysrKysrCiAyIGZpbGVzIGNoYW5nZWQsIDU2
-IGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9saWIvZ3BncHVfZmlsbC5jIGIvbGliL2dwZ3B1
-X2ZpbGwuYwppbmRleCA1NjYwZDRjMC4uMDlhMzc1NmUgMTAwNjQ0Ci0tLSBhL2xpYi9ncGdwdV9m
-aWxsLmMKKysrIGIvbGliL2dwZ3B1X2ZpbGwuYwpAQCAtMTIwLDYgKzEyMCw3IEBAIHN0YXRpYyBj
-b25zdCB1aW50MzJfdCBnZW4xMl9ncGdwdV9rZXJuZWxbXVs0XSA9IHsKICAqCiAgKi8KIAorI2Rl
-ZmluZSBQQUdFX1NJWkUgNDA5NgogI2RlZmluZSBCQVRDSF9TVEFURV9TUExJVCAyMDQ4CiAvKiBW
-RkUgU1RBVEUgcGFyYW1zICovCiAjZGVmaW5lIFRIUkVBRFMgMQpAQCAtMTc4LDYgKzE3OSw1MyBA
-QCBnZW43X2dwZ3B1X2ZpbGxmdW5jKHN0cnVjdCBpbnRlbF9iYXRjaGJ1ZmZlciAqYmF0Y2gsCiAJ
-aW50ZWxfYmF0Y2hidWZmZXJfcmVzZXQoYmF0Y2gpOwogfQogCit2b2lkCitnZW43X2dwZ3B1X2Zp
-bGxmdW5jX3YyKGludCBpOTE1LAorCQkgICAgICAgc3RydWN0IGludGVsX2J1ZiAqYnVmLAorCQkg
-ICAgICAgdW5zaWduZWQgeCwgdW5zaWduZWQgeSwKKwkJICAgICAgIHVuc2lnbmVkIHdpZHRoLCB1
-bnNpZ25lZCBoZWlnaHQsCisJCSAgICAgICB1aW50OF90IGNvbG9yKQoreworCXN0cnVjdCBpbnRl
-bF9iYiAqaWJiOworCXVpbnQzMl90IGN1cmJlX2J1ZmZlciwgaW50ZXJmYWNlX2Rlc2NyaXB0b3I7
-CisKKwlpYmIgPSBpbnRlbF9iYl9jcmVhdGUoaTkxNSwgUEFHRV9TSVpFKTsKKwlpbnRlbF9iYl9w
-dHJfc2V0KGliYiwgQkFUQ0hfU1RBVEVfU1BMSVQpOworCisJLyogRmlsbCBjdXJiZSBidWZmZXIg
-ZGF0YSAqLworCWN1cmJlX2J1ZmZlciA9IGdlbjdfZmlsbF9jdXJiZV9idWZmZXJfZGF0YV92Mihp
-YmIsIGNvbG9yKTsKKworCS8qCisJICogY29uc3QgYnVmZmVyIG5lZWRzIHRvIGZpbGwgZm9yIGV2
-ZXJ5IHRocmVhZCwgYnV0IGFzIHdlIGhhdmUganVzdCAxCisJICogdGhyZWFkIHBlciBldmVyeSBn
-cm91cCwgc28gbmVlZCBvbmx5IG9uZSBjdXJiZSBkYXRhLgorCSAqIEZvciBlYWNoIHRocmVhZCwg
-anVzdCB1c2UgdGhyZWFkIGdyb3VwIElEIGZvciBidWZmZXIgb2Zmc2V0LgorCSAqLworCWludGVy
-ZmFjZV9kZXNjcmlwdG9yID0KKwkJCWdlbjdfZmlsbF9pbnRlcmZhY2VfZGVzY3JpcHRvcl92Mihp
-YmIsIGJ1ZiwKKwkJCQkJCQkgIGdlbjdfZ3BncHVfa2VybmVsLAorCQkJCQkJCSAgc2l6ZW9mKGdl
-bjdfZ3BncHVfa2VybmVsKSk7CisKKwlpbnRlbF9iYl9wdHJfc2V0KGliYiwgMCk7CisKKwkvKiBH
-UEdQVSBwaXBlbGluZSAqLworCWludGVsX2JiX291dChpYmIsIEdFTjdfUElQRUxJTkVfU0VMRUNU
-IHwgUElQRUxJTkVfU0VMRUNUX0dQR1BVKTsKKworCWdlbjdfZW1pdF9zdGF0ZV9iYXNlX2FkZHJl
-c3NfdjIoaWJiKTsKKwlnZW43X2VtaXRfdmZlX3N0YXRlX3YyKGliYiwgVEhSRUFEUywgR0VON19H
-UEdQVV9VUkJfRU5UUklFUywKKwkJCSAgICAgICBHUEdQVV9VUkJfU0laRSwgR1BHUFVfQ1VSQkVf
-U0laRSwKKwkJCSAgICAgICBHRU43X1ZGRV9TVEFURV9HUEdQVV9NT0RFKTsKKwlnZW43X2VtaXRf
-Y3VyYmVfbG9hZF92MihpYmIsIGN1cmJlX2J1ZmZlcik7CisJZ2VuN19lbWl0X2ludGVyZmFjZV9k
-ZXNjcmlwdG9yX2xvYWRfdjIoaWJiLCBpbnRlcmZhY2VfZGVzY3JpcHRvcik7CisJZ2VuN19lbWl0
-X2dwZ3B1X3dhbGtfdjIoaWJiLCB4LCB5LCB3aWR0aCwgaGVpZ2h0KTsKKworCWludGVsX2JiX291
-dChpYmIsIE1JX0JBVENIX0JVRkZFUl9FTkQpOworCWludGVsX2JiX3B0cl9hbGlnbihpYmIsIDMy
-KTsKKworCWludGVsX2JiX2V4ZWMoaWJiLCBpbnRlbF9iYl9vZmZzZXQoaWJiKSk7CisKKwlpbnRl
-bF9iYl9kZXN0cm95KGliYik7Cit9CisKIHZvaWQKIGdlbjhfZ3BncHVfZmlsbGZ1bmMoc3RydWN0
-IGludGVsX2JhdGNoYnVmZmVyICpiYXRjaCwKIAkJICAgIGNvbnN0IHN0cnVjdCBpZ3RfYnVmICpk
-c3QsCmRpZmYgLS1naXQgYS9saWIvZ3BncHVfZmlsbC5oIGIvbGliL2dwZ3B1X2ZpbGwuaAppbmRl
-eCBkYTdkNjQ2Zi4uMGJhM2QwMzMgMTAwNjQ0Ci0tLSBhL2xpYi9ncGdwdV9maWxsLmgKKysrIGIv
-bGliL2dwZ3B1X2ZpbGwuaApAQCAtMjgsNiArMjgsNyBAQAogI2RlZmluZSBHUEdQVV9GSUxMX0gK
-IAogI2luY2x1ZGUgImludGVsX2JhdGNoYnVmZmVyLmgiCisjaW5jbHVkZSAiaW50ZWxfYnVmb3Bz
-LmgiCiAKIHZvaWQKIGdlbjdfZ3BncHVfZmlsbGZ1bmMoc3RydWN0IGludGVsX2JhdGNoYnVmZmVy
-ICpiYXRjaCwKQEAgLTM2LDYgKzM3LDEzIEBAIGdlbjdfZ3BncHVfZmlsbGZ1bmMoc3RydWN0IGlu
-dGVsX2JhdGNoYnVmZmVyICpiYXRjaCwKIAkJICAgIHVuc2lnbmVkIGludCB3aWR0aCwgdW5zaWdu
-ZWQgaW50IGhlaWdodCwKIAkJICAgIHVpbnQ4X3QgY29sb3IpOwogCit2b2lkCitnZW43X2dwZ3B1
-X2ZpbGxmdW5jX3YyKGludCBpOTE1LAorCQkgICAgICAgc3RydWN0IGludGVsX2J1ZiAqYnVmLAor
-CQkgICAgICAgdW5zaWduZWQgeCwgdW5zaWduZWQgeSwKKwkJICAgICAgIHVuc2lnbmVkIHdpZHRo
-LCB1bnNpZ25lZCBoZWlnaHQsCisJCSAgICAgICB1aW50OF90IGNvbG9yKTsKKwogdm9pZAogZ2Vu
-OF9ncGdwdV9maWxsZnVuYyhzdHJ1Y3QgaW50ZWxfYmF0Y2hidWZmZXIgKmJhdGNoLAogCQkgICAg
-Y29uc3Qgc3RydWN0IGlndF9idWYgKmRzdCwKLS0gCjIuMjYuMAoKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
-dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+== Series Details ==
+
+Series: Make gpgpu fill tests libdrm independent
+URL   : https://patchwork.freedesktop.org/series/77175/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_5651 -> IGTPW_4559
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4559/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4559 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-skl-guc:         [INCOMPLETE][1] ([i915#1874]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5651/fi-skl-guc/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4559/fi-skl-guc/igt@i915_selftest@live@execlists.html
+    - fi-skl-6700k2:      [INCOMPLETE][3] ([i915#1874]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5651/fi-skl-6700k2/igt@i915_selftest@live@execlists.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4559/fi-skl-6700k2/igt@i915_selftest@live@execlists.html
+
+  
+  [i915#1874]: https://gitlab.freedesktop.org/drm/intel/issues/1874
+
+
+Participating hosts (50 -> 43)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5651 -> IGTPW_4559
+
+  CI-20190529: 20190529
+  CI_DRM_8467: 1a0f0c378117fc90f421a692698ad85963ecdb3a @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4559: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4559/index.html
+  IGT_5651: e54e2642f1967ca3c488db32264607df670d1dfb @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4559/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
