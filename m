@@ -1,12 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 12 May 2020 18:19:47 +0100
-Message-Id: <20200512171947.730859-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200512102447.9249-1-janusz.krzysztofik@linux.intel.com>
-References: <20200512102447.9249-1-janusz.krzysztofik@linux.intel.com>
+Date: Wed, 13 May 2020 11:47:15 +0100
+Message-Id: <20200513104715.792111-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_nop: Specify timeout in
- milliseconds
+Subject: [igt-dev] [PATCH i-g-t] i915/sysfs_heartbeat_interval: Watch out
+ for CPU scheduler delays
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,137 +20,36 @@ To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Our 'headless' subtest requires fairly precise measurements to determine
-the impact of the dmc upon request latency. The test cannot be effective
-if we cannot execute requests quickly, so add a very short pre-pass to
-check the test requirements. For this we want to specify the baseline
-measurement timeout in milliseconds, allowing us to speed up our other
-baseline measurements elsewhere as well.
+If our CPU client is very slow to notice that the GPU spinner has
+started, we may consume the full heartbeat interval without noticing.
+This is bad if we are trying to test that a client that yield within the
+heartbeat interval is not selected for termination.
 
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/1879
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/i915/gem_exec_nop.c | 29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
+ tests/i915/sysfs_heartbeat_interval.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_exec_nop.c b/tests/i915/gem_exec_nop.c
-index 4051e0fd7..21a937c83 100644
---- a/tests/i915/gem_exec_nop.c
-+++ b/tests/i915/gem_exec_nop.c
-@@ -64,7 +64,7 @@ static double elapsed(const struct timespec *start, const struct timespec *end)
+diff --git a/tests/i915/sysfs_heartbeat_interval.c b/tests/i915/sysfs_heartbeat_interval.c
+index 6d4413d62..fe0cc046c 100644
+--- a/tests/i915/sysfs_heartbeat_interval.c
++++ b/tests/i915/sysfs_heartbeat_interval.c
+@@ -308,8 +308,13 @@ static void client(int i915, int engine, int *ctl, int duration, int expect)
+ 					      IGT_SPIN_POLL_RUN |
+ 					      IGT_SPIN_FENCE_OUT));
  
- static double nop_on_ring(int fd, uint32_t handle,
- 			  const struct intel_execution_engine2 *e,
--			  int timeout,
-+			  int timeout_ms,
- 			  unsigned long *out)
- {
- 	struct drm_i915_gem_execbuffer2 execbuf;
-@@ -94,7 +94,7 @@ static double nop_on_ring(int fd, uint32_t handle,
- 		count++;
++		/* XXX we need more precise means of limiting the spinner */
+ 		igt_spin_busywait_until_started(spin);
+-		igt_assert_eq(sync_fence_status(spin->out_fence), 0);
++		if (sync_fence_status(spin->out_fence)) {
++			/* CPU too slow! */
++			igt_spin_free(i915, spin);
++			continue;
++		}
  
- 		clock_gettime(CLOCK_MONOTONIC, &now);
--	} while (elapsed(&start, &now) < timeout);
-+	} while (elapsed(&start, &now) < timeout_ms * 1e-3);
- 	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
- 
- 	*out = count;
-@@ -348,14 +348,15 @@ static void single(int fd, uint32_t handle,
- 	double time;
- 	unsigned long count;
- 
--	time = nop_on_ring(fd, handle, e, 20, &count);
-+	time = nop_on_ring(fd, handle, e, 20000, &count);
- 	igt_info("%s: %'lu cycles: %.3fus\n",
- 		  e->name, count, time*1e6 / count);
- }
- 
- static double
- stable_nop_on_ring(int fd, uint32_t handle,
--		   const struct intel_execution_engine2 *e, int timeout,
-+		   const struct intel_execution_engine2 *e,
-+		   int timeout_ms,
- 		   int reps)
- {
- 	igt_stats_t s;
-@@ -370,7 +371,7 @@ stable_nop_on_ring(int fd, uint32_t handle,
- 		unsigned long count;
- 		double time;
- 
--		time = nop_on_ring(fd, handle, e, timeout, &count);
-+		time = nop_on_ring(fd, handle, e, timeout_ms, &count);
- 		igt_stats_push_float(&s, time / count);
- 	}
- 
-@@ -390,9 +391,10 @@ static void headless(int fd, uint32_t handle,
- 		     const struct intel_execution_engine2 *e)
- {
- 	unsigned int nr_connected = 0;
-+	double n_display, n_headless;
- 	drmModeConnector *connector;
-+	unsigned long count;
- 	drmModeRes *res;
--	double n_display, n_headless;
- 
- 	res = drmModeGetResources(fd);
- 	igt_require(res);
-@@ -409,8 +411,11 @@ static void headless(int fd, uint32_t handle,
- 	/* set graphics mode to prevent blanking */
- 	kmstest_set_vt_graphics_mode();
- 
-+	nop_on_ring(fd, handle, e, 10, &count);
-+	igt_require_f(count > 100, "submillisecond precision required\n");
-+
- 	/* benchmark nops */
--	n_display = stable_nop_on_ring(fd, handle, e, 1, 5);
-+	n_display = stable_nop_on_ring(fd, handle, e, 500, 5);
- 	igt_info("With one display connected: %.2fus\n",
- 		 n_display * 1e6);
- 
-@@ -418,7 +423,7 @@ static void headless(int fd, uint32_t handle,
- 	kmstest_unset_all_crtcs(fd, res);
- 
- 	/* benchmark nops again */
--	n_headless = stable_nop_on_ring(fd, handle, e, 1, 5);
-+	n_headless = stable_nop_on_ring(fd, handle, e, 500, 5);
- 	igt_info("Without a display connected (headless): %.2fus\n",
- 		 n_headless * 1e6);
- 
-@@ -444,7 +449,7 @@ static void parallel(int fd, uint32_t handle, int timeout)
- 		engines[nengine] = e->flags;
- 		names[nengine++] = strdup(e->name);
- 
--		time = nop_on_ring(fd, handle, e, 1, &count) / count;
-+		time = nop_on_ring(fd, handle, e, 250, &count) / count;
- 		sum += time;
- 		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
- 	}
-@@ -506,7 +511,7 @@ static void independent(int fd, uint32_t handle, int timeout)
- 		engines[nengine] = e->flags;
- 		names[nengine++] = strdup(e->name);
- 
--		time = nop_on_ring(fd, handle, e, 1, &count) / count;
-+		time = nop_on_ring(fd, handle, e, 250, &count) / count;
- 		sum += time;
- 		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
- 	}
-@@ -626,7 +631,7 @@ static void series(int fd, uint32_t handle, int timeout)
- 
- 	nengine = 0;
- 	__for_each_physical_engine(fd, e) {
--		time = nop_on_ring(fd, handle, e, 1, &count) / count;
-+		time = nop_on_ring(fd, handle, e, 250, &count) / count;
- 		if (time > max) {
- 			name = e->name;
- 			max = time;
-@@ -705,7 +710,7 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
- 	__for_each_physical_engine(fd, e) {
- 		unsigned long count;
- 
--		time = nop_on_ring(fd, handle, e, 1, &count) / count;
-+		time = nop_on_ring(fd, handle, e, 250, &count) / count;
- 		sum += time;
- 		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
- 
+ 		elapsed = measured_usleep(duration * 1000);
+ 		igt_spin_end(spin);
 -- 
 2.26.2
 
