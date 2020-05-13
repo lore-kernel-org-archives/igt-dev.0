@@ -1,16 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B5E2897C3
- for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2020 07:23:06 +0000 (UTC)
-References: <20200512103415.28968-1-anshuman.gupta@intel.com>
- <20200512103415.28968-4-anshuman.gupta@intel.com>
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Message-ID: <29d008ee-f07d-142a-aa35-10f1d7626af6@intel.com>
-Date: Wed, 13 May 2020 12:52:40 +0530
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E32A56E127
+ for <igt-dev@lists.freedesktop.org>; Wed, 13 May 2020 10:23:28 +0000 (UTC)
+From: "Shankar, Uma" <uma.shankar@intel.com>
+Date: Wed, 13 May 2020 10:23:23 +0000
+Message-ID: <E7C9878FBA1C6D42A1CA3F62AEB6945F824AB692@BGSMSX104.gar.corp.intel.com>
+References: <20200511182534.14395-1-imre.deak@intel.com>
+ <20200511190853.15056-1-imre.deak@intel.com>
+ <E7C9878FBA1C6D42A1CA3F62AEB6945F824AA9A7@BGSMSX104.gar.corp.intel.com>
+ <20200512165036.GB17567@ideak-desk.fi.intel.com>
+ <E7C9878FBA1C6D42A1CA3F62AEB6945F824AAAB3@BGSMSX104.gar.corp.intel.com>
+ <20200512171654.GZ6112@intel.com>
+In-Reply-To: <20200512171654.GZ6112@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-In-Reply-To: <20200512103415.28968-4-anshuman.gupta@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v8 3/6] tests/i915_pm_lpsp: lpsp
- platform agnostic support
+Subject: Re: [igt-dev] [PATCH v2] tests/kms_flip: Retry test in case of a
+ DP/HDMI link reset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,899 +23,115 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============0159255008=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anshuman Gupta <anshuman.gupta@intel.com>, igt-dev@lists.freedesktop.org
-Cc: martin.peres@intel.com
+To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is a multi-part message in MIME format.
---===============0159255008==
-Content-Type: multipart/alternative;
- boundary="------------70D3D7313D5E924DB5B8CCCC"
-
-This is a multi-part message in MIME format.
---------------70D3D7313D5E924DB5B8CCCC
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-
-LGTM.
-
-Acked-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
 
-On 5/12/2020 4:04 PM, Anshuman Gupta wrote:
-> Current implementation of lpsp igt test, assumed that every non-edp
-> panel isn't a lpsp panel but it is not true on TGL anymore,
-> any HDMI/DP/DSI panel connected on pipe A and connected to PORT_{A,B,C}
-> can drive LPSP.
-> Even on older Gen9 platform a DP panel can drive lpsp on Port A.
-> This requires complete design change in current lpsp igt for a platform
-> agnostic support.
->
-> The new igt approach is relies on connector specific
-> i915_lpsp_capability and i915_lpsp_status debugfs attributes,
-> these debugfs exposes whether an output is capable of driving lpsp
-> and lpsp is enabled.
->
-> Nuking edp-native and non-edp test, introducing a new dynamic
-> igt subtest kms-lpsp, which validates lpsp on each connected output
-> and skip the subtest if output is not lpsp capable.
->
-> Skip screens-disabled test for platform which support DC states.
-> screens-disabled test is only valid for the platforms like HSW/BDW
-> where PG1 is Always-ON power domain, so these platform test lpsp
-> with all screen disabled i.e validate PG2 when all screen are
-> disabled.
-> DC state i.e DMC f/w supported platforms don't have any ROI to validate
-> screens-disabled subtest as existing dc*-dpms i915_pm_dc
-> subtest already validate it implicitly.
->
-> v2:
-> - CI failures fixup.
-> v3:
-> - removed unloading of snd_modules. [Martin]
-> v4:
-> - Don't test non-lpsp(if lpsp disabled), no ROI to test that.
-> - nuke panel-fitter test.
-> v5:
-> - Added dynamic subtest and igt changes according to kernel
->    debugfs i915_lpsp_status changes.
-> v6:
-> - Avoided pipe big joiner by using 4k or lesser mode,
->    so igt will not fail when pipe big joiner patches will
->    land to kernel.
-> v7:
-> - Combined [v6 4/6] patch to this patch, skip the screens-disabled
->    subtest for DC state supported platforms. [Animesh]
-> v8:
-> - 4k mode correction 3840*2160 and for loop for available modes
->    should iterate from c->modes[0]. [Ankit]
->
-> Reviewed-by: Animesh Manna <animesh.manna@intel.com>
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> ---
->   tests/i915/i915_pm_lpsp.c | 313 ++++++++++++++++++--------------------
->   1 file changed, 147 insertions(+), 166 deletions(-)
->
-> diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
-> index 08f82e7c..0e9452fd 100644
-> --- a/tests/i915/i915_pm_lpsp.c
-> +++ b/tests/i915/i915_pm_lpsp.c
-> @@ -25,210 +25,191 @@
->    */
->   
->   #include "igt.h"
-> +#include "igt_kmod.h"
-> +#include "igt_pm.h"
-> +#include "igt_sysfs.h"
->   #include <sys/types.h>
->   #include <sys/stat.h>
->   #include <fcntl.h>
->   #include <unistd.h>
->   
-> +#define MAX_SINK_LPSP_INFO_BUF_LEN	4096
->   
-> -static bool supports_lpsp(uint32_t devid)
-> -{
-> -	return IS_HASWELL(devid) || IS_BROADWELL(devid);
-> -}
-> +#define PWR_DOMAIN_INFO "i915_power_domain_info"
->   
-> -static bool lpsp_is_enabled(int drm_fd)
-> +typedef struct {
-> +	int drm_fd;
-> +	int debugfs_fd;
-> +	uint32_t devid;
-> +	char *pwr_dmn_info;
-> +	igt_display_t display;
-> +	struct igt_fb fb;
-> +	drmModeModeInfo *mode;
-> +	igt_output_t *output;
-> +} data_t;
-> +
-> +static bool lpsp_is_enabled(data_t *data)
->   {
-> -	uint32_t val;
-> +	char buf[MAX_SINK_LPSP_INFO_BUF_LEN];
-> +	int len;
->   
-> -	val = INREG(HSW_PWR_WELL_CTL2);
-> -	return !(val & HSW_PWR_WELL_STATE_ENABLED);
-> -}
-> +	len = igt_debugfs_simple_read(data->debugfs_fd, "i915_lpsp_status",
-> +				      buf, sizeof(buf));
-> +	if (len < 0)
-> +		igt_assert_eq(len, -ENODEV);
->   
-> -/* The LPSP mode is all about an enabled pipe, but we expect to also be in the
-> - * low power mode when no pipes are enabled, so do this check anyway. */
-> -static void screens_disabled_subtest(int drm_fd, drmModeResPtr drm_res)
-> -{
-> -	kmstest_unset_all_crtcs(drm_fd, drm_res);
-> -	igt_assert(lpsp_is_enabled(drm_fd));
-> +	igt_skip_on(strstr(buf, "LPSP: not supported"));
-> +
-> +	return strstr(buf, "LPSP: enabled");
->   }
->   
-> -static uint32_t create_fb(int drm_fd, int width, int height)
-> +static bool dmc_supported(int debugfs)
->   {
-> -	struct igt_fb fb;
-> +	char buf[15];
-> +	int len;
->   
-> -	return igt_create_pattern_fb(drm_fd, width, height, DRM_FORMAT_XRGB8888,
-> -				     LOCAL_DRM_FORMAT_MOD_NONE, &fb);
-> +	len = igt_sysfs_read(debugfs, "i915_dmc_info", buf, sizeof(buf) - 1);
-> +
-> +	if (len < 0)
-> +		return false;
-> +	else
-> +		return true;
->   }
->   
-> -static void edp_subtest(int drm_fd, drmModeResPtr drm_res,
-> -			drmModeConnectorPtr *drm_connectors, uint32_t devid,
-> -			bool use_panel_fitter)
-> +/*
-> + * The LPSP mode is all about an enabled pipe, but we expect to also be in the
-> + * low power mode when no pipes are enabled, so do this check anyway.
-> + */
-> +static void screens_disabled_subtest(data_t *data)
->   {
-> -	int i, rc;
-> -	uint32_t crtc_id = 0, buffer_id = 0;
-> -	drmModeConnectorPtr connector = NULL;
-> -	drmModeModeInfoPtr mode = NULL;
-> -	drmModeModeInfo std_1024_mode = {
-> -		.clock = 65000,
-> -		.hdisplay = 1024,
-> -		.hsync_start = 1048,
-> -		.hsync_end = 1184,
-> -		.htotal = 1344,
-> -		.hskew = 0,
-> -		.vdisplay = 768,
-> -		.vsync_start = 771,
-> -		.vsync_end = 777,
-> -		.vtotal = 806,
-> -		.vscan = 0,
-> -		.vrefresh = 60,
-> -		.flags = 0xA,
-> -		.type = 0x40,
-> -		.name = "Custom 1024x768",
-> -	};
-> -
-> -	kmstest_unset_all_crtcs(drm_fd, drm_res);
-> -
-> -	for (i = 0; i < drm_res->count_connectors; i++) {
-> -		drmModeConnectorPtr c = drm_connectors[i];
-> -
-> -		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
-> -			continue;
-> -		if (c->connection != DRM_MODE_CONNECTED)
-> -			continue;
-> -
-> -		if (!use_panel_fitter && c->count_modes) {
-> -			connector = c;
-> -			mode = &c->modes[0];
-> -			break;
-> -		}
-> -		if (use_panel_fitter) {
-> -			connector = c;
-> -
-> -			/* This is one of the modes Xorg creates for panels, so
-> -			 * it should work just fine. Notice that Gens that
-> -			 * support LPSP are too new for panels with native
-> -			 * 1024x768 resolution, so this should force the panel
-> -			 * fitter. */
-> -			igt_assert(c->count_modes &&
-> -				   c->modes[0].hdisplay > 1024);
-> -			igt_assert(c->count_modes &&
-> -				   c->modes[0].vdisplay > 768);
-> -			mode = &std_1024_mode;
-> -			break;
-> -		}
-> -	}
-> -	igt_require(connector);
-> -
-> -	crtc_id = kmstest_find_crtc_for_connector(drm_fd, drm_res, connector,
-> -						  0);
-> -	buffer_id = create_fb(drm_fd, mode->hdisplay, mode->vdisplay);
-> -
-> -	igt_assert(buffer_id);
-> -	igt_assert(connector);
-> -	igt_assert(mode);
-> -
-> -	rc = drmModeSetCrtc(drm_fd, crtc_id, buffer_id, 0, 0,
-> -			    &connector->connector_id, 1, mode);
-> -	igt_assert_eq(rc, 0);
-> -
-> -	if (use_panel_fitter) {
-> -		if (IS_HASWELL(devid))
-> -			igt_assert(!lpsp_is_enabled(drm_fd));
-> -		else
-> -			igt_assert(lpsp_is_enabled(drm_fd));
-> -	} else {
-> -		igt_assert(lpsp_is_enabled(drm_fd));
-> +	igt_output_t *output;
-> +	int valid_output = 0;
-> +	enum pipe pipe;
-> +
-> +	for_each_pipe_with_single_output(&data->display, pipe, output) {
-> +		data->output = output;
-> +		igt_output_set_pipe(data->output, PIPE_NONE);
-> +		igt_display_commit(&data->display);
-> +		valid_output++;
->   	}
-> +
-> +	igt_require_f(valid_output, "No connected output found\n");
-> +	igt_assert_f(lpsp_is_enabled(data), "lpsp is not enabled\n%s:\n%s\n",
-> +		     PWR_DOMAIN_INFO, data->pwr_dmn_info =
-> +		     igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
->   }
->   
-> -static void non_edp_subtest(int drm_fd, drmModeResPtr drm_res,
-> -			    drmModeConnectorPtr *drm_connectors)
-> +static void setup_lpsp_output(data_t *data)
->   {
-> -	int i, rc;
-> -	uint32_t crtc_id = 0, buffer_id = 0;
-> -	drmModeConnectorPtr connector = NULL;
-> -	drmModeModeInfoPtr mode = NULL;
-> -
-> -	kmstest_unset_all_crtcs(drm_fd, drm_res);
-> -
-> -	for (i = 0; i < drm_res->count_connectors; i++) {
-> -		drmModeConnectorPtr c = drm_connectors[i];
-> +	igt_plane_t *primary;
-> +
-> +	/* set output pipe = PIPE_A for LPSP */
-> +	igt_output_set_pipe(data->output, PIPE_A);
-> +	primary = igt_output_get_plane_type(data->output,
-> +					    DRM_PLANE_TYPE_PRIMARY);
-> +	igt_plane_set_fb(primary, NULL);
-> +	igt_create_pattern_fb(data->drm_fd,
-> +			      data->mode->hdisplay, data->mode->vdisplay,
-> +			      DRM_FORMAT_XRGB8888,
-> +			      LOCAL_DRM_FORMAT_MOD_NONE,
-> +			      &data->fb);
-> +	igt_plane_set_fb(primary, &data->fb);
-> +	igt_display_commit(&data->display);
-> +}
->   
-> -		if (c->connector_type == DRM_MODE_CONNECTOR_eDP)
-> -			continue;
-> -		if (c->connection != DRM_MODE_CONNECTED)
-> -			continue;
-> +static void test_cleanup(data_t *data)
-> +{
-> +	igt_plane_t *primary;
-> +
-> +	if (!data->output || data->output->pending_pipe == PIPE_NONE)
-> +		return;
-> +
-> +	primary = igt_output_get_plane_type(data->output,
-> +					    DRM_PLANE_TYPE_PRIMARY);
-> +	igt_plane_set_fb(primary, NULL);
-> +	igt_output_set_pipe(data->output, PIPE_NONE);
-> +	igt_display_commit(&data->display);
-> +	igt_remove_fb(data->drm_fd, &data->fb);
-> +	data->output = NULL;
-> +}
->   
-> -		if (c->count_modes) {
-> -			connector = c;
-> -			mode = &c->modes[0];
-> -			break;
-> +static void test_lpsp(data_t *data)
-> +{
-> +	drmModeConnectorPtr c = data->output->config.connector;
-> +	int i;
-> +
-> +	/* LPSP is low power single pipe usages i.e. PIPE_A */
-> +	igt_require(igt_pipe_connector_valid(PIPE_A, data->output));
-> +	igt_require_f(i915_output_is_lpsp_capable(data->drm_fd, data->output),
-> +		      "output is not lpsp capable\n");
-> +
-> +	data->mode = igt_output_get_mode(data->output);
-> +
-> +	/* For LPSP avoid pipe big joiner by atleast 4k mode */
-> +	if (data->mode->hdisplay > 3840 && data->mode->vdisplay > 2160)
-> +		for (i = 0; i < c->count_modes; i++) {
-> +			if (c->modes[i].hdisplay <= 3840 &&
-> +			    c->modes[i].vdisplay <= 2160) {
-> +				data->mode = &c->modes[i];
-> +				igt_output_override_mode(data->output,
-> +							 data->mode);
-> +				break;
-> +			}
->   		}
-> -	}
-> -	igt_require(connector);
-> -
-> -	crtc_id = kmstest_find_crtc_for_connector(drm_fd, drm_res, connector,
-> -						  0);
-> -	buffer_id = create_fb(drm_fd, mode->hdisplay, mode->vdisplay);
-> -
-> -	igt_assert(buffer_id);
-> -	igt_assert(mode);
->   
-> -	rc = drmModeSetCrtc(drm_fd, crtc_id, buffer_id, 0, 0,
-> -			    &connector->connector_id, 1, mode);
-> -	igt_assert_eq(rc, 0);
-> +	igt_require(data->mode->hdisplay <= 3840 &&
-> +		    data->mode->vdisplay <= 2160);
->   
-> -	igt_assert(!lpsp_is_enabled(drm_fd));
-> +	setup_lpsp_output(data);
-> +	igt_assert_f(lpsp_is_enabled(data), "%s: lpsp is not enabled\n%s:\n%s\n",
-> +		     data->output->name, PWR_DOMAIN_INFO, data->pwr_dmn_info =
-> +		     igt_sysfs_get(data->debugfs_fd, PWR_DOMAIN_INFO));
->   }
->   
-> -#define MAX_CONNECTORS 32
-> -
-> -int drm_fd;
-> -uint32_t devid;
-> -drmModeResPtr drm_res;
-> -drmModeConnectorPtr drm_connectors[MAX_CONNECTORS];
-> -struct intel_mmio_data mmio_data;
-> +IGT_TEST_DESCRIPTION("These tests validates display Low Power Single Pipe configurations");
->   igt_main
->   {
-> -	igt_fixture {
-> -		int i;
-> -
-> -		drm_fd = drm_open_driver_master(DRIVER_INTEL);
-> -		igt_require(drm_fd >= 0);
-> -
-> -		devid = intel_get_drm_devid(drm_fd);
-> -
-> -		drm_res = drmModeGetResources(drm_fd);
-> -		igt_require(drm_res);
-> -		igt_assert(drm_res->count_connectors <= MAX_CONNECTORS);
-> +	data_t data = {};
->   
-> -		for (i = 0; i < drm_res->count_connectors; i++)
-> -			drm_connectors[i] = drmModeGetConnectorCurrent(drm_fd,
-> -							drm_res->connectors[i]);
-> +	igt_fixture {
->   
-> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-> +		igt_require(data.drm_fd >= 0);
-> +		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
-> +		igt_require(data.debugfs_fd >= 0);
->   		igt_pm_enable_audio_runtime_pm();
-> +		kmstest_set_vt_graphics_mode();
-> +		data.devid = intel_get_drm_devid(data.drm_fd);
-> +		igt_display_require(&data.display, data.drm_fd);
-> +		igt_require(igt_pm_dmc_loaded(data.debugfs_fd));
-> +	}
->   
-> -		igt_require(supports_lpsp(devid));
-> +	igt_describe("This test validates lpsp while all crtc are disabled");
-> +	igt_subtest("screens-disabled") {
-> +		igt_require_f(!dmc_supported(data.debugfs_fd),
-> +			      "DC states supported platform don't have ROI for this subtest\n");
-> +		screens_disabled_subtest(&data);
-> +	}
->   
-> -		intel_register_access_init(&mmio_data, intel_get_pci_device(), 0, drm_fd);
-> +	igt_describe("This test validates lpsp on all connected outputs on low power PIPE_A");
-> +	igt_subtest_with_dynamic_f("kms-lpsp") {
-> +		igt_display_t *display = &data.display;
-> +		igt_output_t *output;
->   
-> -		kmstest_set_vt_graphics_mode();
-> -	}
-> +		for_each_connected_output(display, output) {
-> +			igt_dynamic_f("kms-lpsp-%s",
-> +				      kmstest_connector_type_str(output->config.connector->connector_type)) {
-> +				data.output = output;
-> +				test_lpsp(&data);
-> +			}
->   
-> -	igt_subtest("screens-disabled")
-> -		screens_disabled_subtest(drm_fd, drm_res);
-> -	igt_subtest("edp-native")
-> -		edp_subtest(drm_fd, drm_res, drm_connectors, devid, false);
-> -	igt_subtest("non-edp")
-> -		non_edp_subtest(drm_fd, drm_res, drm_connectors);
-> +			test_cleanup(&data);
-> +		}
-> +	}
->   
->   	igt_fixture {
-> -		int i;
-> -
-> -		intel_register_access_fini(&mmio_data);
-> -		for (i = 0; i < drm_res->count_connectors; i++)
-> -			drmModeFreeConnector(drm_connectors[i]);
-> -		drmModeFreeResources(drm_res);
-> -		close(drm_fd);
-> +		free(data.pwr_dmn_info);
-> +		close(data.drm_fd);
-> +		igt_display_fini(&data.display);
->   	}
->   }
+> -----Original Message-----
+> From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> Sent: Tuesday, May 12, 2020 10:47 PM
+> To: Shankar, Uma <uma.shankar@intel.com>
+> Cc: Deak, Imre <imre.deak@intel.com>; igt-dev@lists.freedesktop.org
+> Subject: Re: [igt-dev] [PATCH v2] tests/kms_flip: Retry test in case of a=
+ DP/HDMI
+> link reset
+> =
+
+> On Tue, May 12, 2020 at 05:07:09PM +0000, Shankar, Uma wrote:
+> >
+> >
+> > > -----Original Message-----
+> > > From: Imre Deak <imre.deak@intel.com>
+> > > Sent: Tuesday, May 12, 2020 10:21 PM
+> > > To: Shankar, Uma <uma.shankar@intel.com>
+> > > Cc: igt-dev@lists.freedesktop.org
+> > > Subject: Re: [igt-dev] [PATCH v2] tests/kms_flip: Retry test in case
+> > > of a DP/HDMI link reset
+> > >
+> > > On Tue, May 12, 2020 at 06:11:08PM +0300, Shankar, Uma wrote:
+> > > >
+> > > >
+> > > > > -----Original Message-----
+> > > > > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf
+> > > > > Of Imre Deak
+> > > > > Sent: Tuesday, May 12, 2020 12:39 AM
+> > > > > To: igt-dev@lists.freedesktop.org
+> > > > > Subject: [igt-dev] [PATCH v2] tests/kms_flip: Retry test in case
+> > > > > of a DP/HDMI link reset
+> > > > >
+> > > > > At least an IIyama and LG monitor have a strange behaviour when
+> > > > > waking from a power saving state and getting enabled with an
+> > > > > otherwise
+> > > successful modeset:
+> > > > > after the modeset in ~2 sec they signal a bad link state, either
+> > > > > due to a lost CR/EQ in case of DP or a lost scrambling/TMDS
+> > > > > clock setting in case
+> > > of HDMI link.
+> > > > > In response the driver resets the link with either a
+> > > > > link-retraining or a modeset, which in turn makes the test miss v=
+blank/flip
+> events and fail.
+> > > > >
+> > > > > Work around the above issue, by retrying the test once if the
+> > > > > test detects after a failure that a link reset happened during
+> > > > > the test and a corresponding hotplug uevent was sent by the drive=
+r.
+> > > > >
+> > > > > v2: Suspend the signal helper while waiting for a hotplug event, =
+so the
+> > > > >     wait will not get inerrupted/restarted in an endless loop.
+> > > > >
+> > > >
+> > > > Though not sure that this is behavior which should be allowed from
+> > > > a compliant monitor, I feel this is the right way to handle/WA
+> > > > this.  We may have to extend this to some other tests as well
+> > > > which will also get impacted due to these spurious hotplug events.
+> > >
+> > > Yes, one more place would be the connector probing at test startup,
+> > > which should be retried if a hotplug uevent is detected (waiting for
+> > > both uevents that a long pulse can generate).
+> >
+> > Yes, there is also a similar failure in alpha test we have seen:
+> > igt@kms_plane_alpha_blend@pipe-c-alpha-opaque-fb - fail - Failed
+> > assertion: !mismatch || igt_skip_crc_compare
+> >
+> > This also occurred due to the spurious interrupt only. Not sure if ther=
+e is any
+> other test which is affected.
+> =
+
+> In theory this sort of stuff should not cause a crc mismatch.
+> IIRC somebody (Maarten maybe?) made the crc interface supposedly provide
+> consistent crcs across modeset. So if we are seeing crc change across a p=
+ure ->off-
+> >on modeset there is potentially a bug in the driver.
+
+Oh ok, based on the CI logs this happens very sporadically and every time i=
+t has reproduced, its
+happening when this spurious interrupt is received. Will try to investigate=
+ the driver flows related
+to alpha handling. =
 
 
---------------70D3D7313D5E924DB5B8CCCC
-Content-Type: text/html; charset=windows-1252
-Content-Transfer-Encoding: 7bit
+One another thing in common I got was that when this happened, we also get :
+<7> [926.239189] [drm:intel_crtc_set_crc_source [i915]] Trying to capture C=
+RC while pipe is off
+<7> [926.254878] i915 0000:03:00.0: [drm:drm_fb_helper_hotplug_event.part.1=
+5]
 
-<html>
-  <head>
-    <meta content="text/html; charset=windows-1252"
-      http-equiv="Content-Type">
-  </head>
-  <body bgcolor="#FFFFFF" text="#000000">
-    <p>LGTM.<br>
-    </p>
-    <p>Acked-by: Ankit Nautiyal <a class="moz-txt-link-rfc2396E"
-        href="mailto:ankit.k.nautiyal@intel.com">&lt;ankit.k.nautiyal@intel.com&gt;</a></p>
-    <br>
-    <div class="moz-cite-prefix">On 5/12/2020 4:04 PM, Anshuman Gupta
-      wrote:<br>
-    </div>
-    <blockquote
-      cite="mid:20200512103415.28968-4-anshuman.gupta@intel.com"
-      type="cite">
-      <pre wrap="">Current implementation of lpsp igt test, assumed that every non-edp
-panel isn't a lpsp panel but it is not true on TGL anymore,
-any HDMI/DP/DSI panel connected on pipe A and connected to PORT_{A,B,C}
-can drive LPSP.
-Even on older Gen9 platform a DP panel can drive lpsp on Port A.
-This requires complete design change in current lpsp igt for a platform
-agnostic support.
+Regards,
+Uma Shankar
 
-The new igt approach is relies on connector specific
-i915_lpsp_capability and i915_lpsp_status debugfs attributes,
-these debugfs exposes whether an output is capable of driving lpsp
-and lpsp is enabled.
-
-Nuking edp-native and non-edp test, introducing a new dynamic
-igt subtest kms-lpsp, which validates lpsp on each connected output
-and skip the subtest if output is not lpsp capable.
-
-Skip screens-disabled test for platform which support DC states.
-screens-disabled test is only valid for the platforms like HSW/BDW
-where PG1 is Always-ON power domain, so these platform test lpsp
-with all screen disabled i.e validate PG2 when all screen are
-disabled.
-DC state i.e DMC f/w supported platforms don't have any ROI to validate
-screens-disabled subtest as existing dc*-dpms i915_pm_dc
-subtest already validate it implicitly.
-
-v2:
-- CI failures fixup.
-v3:
-- removed unloading of snd_modules. [Martin]
-v4:
-- Don't test non-lpsp(if lpsp disabled), no ROI to test that.
-- nuke panel-fitter test.
-v5:
-- Added dynamic subtest and igt changes according to kernel
-  debugfs i915_lpsp_status changes.
-v6:
-- Avoided pipe big joiner by using 4k or lesser mode,
-  so igt will not fail when pipe big joiner patches will
-  land to kernel.
-v7:
-- Combined [v6 4/6] patch to this patch, skip the screens-disabled
-  subtest for DC state supported platforms. [Animesh]
-v8:
-- 4k mode correction 3840*2160 and for loop for available modes
-  should iterate from c-&gt;modes[0]. [Ankit]
-
-Reviewed-by: Animesh Manna <a class="moz-txt-link-rfc2396E" href="mailto:animesh.manna@intel.com">&lt;animesh.manna@intel.com&gt;</a>
-Signed-off-by: Anshuman Gupta <a class="moz-txt-link-rfc2396E" href="mailto:anshuman.gupta@intel.com">&lt;anshuman.gupta@intel.com&gt;</a>
----
- tests/i915/i915_pm_lpsp.c | 313 ++++++++++++++++++--------------------
- 1 file changed, 147 insertions(+), 166 deletions(-)
-
-diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
-index 08f82e7c..0e9452fd 100644
---- a/tests/i915/i915_pm_lpsp.c
-+++ b/tests/i915/i915_pm_lpsp.c
-@@ -25,210 +25,191 @@
-  */
- 
- #include "igt.h"
-+#include "igt_kmod.h"
-+#include "igt_pm.h"
-+#include "igt_sysfs.h"
- #include &lt;sys/types.h&gt;
- #include &lt;sys/stat.h&gt;
- #include &lt;fcntl.h&gt;
- #include &lt;unistd.h&gt;
- 
-+#define MAX_SINK_LPSP_INFO_BUF_LEN	4096
- 
--static bool supports_lpsp(uint32_t devid)
--{
--	return IS_HASWELL(devid) || IS_BROADWELL(devid);
--}
-+#define PWR_DOMAIN_INFO "i915_power_domain_info"
- 
--static bool lpsp_is_enabled(int drm_fd)
-+typedef struct {
-+	int drm_fd;
-+	int debugfs_fd;
-+	uint32_t devid;
-+	char *pwr_dmn_info;
-+	igt_display_t display;
-+	struct igt_fb fb;
-+	drmModeModeInfo *mode;
-+	igt_output_t *output;
-+} data_t;
-+
-+static bool lpsp_is_enabled(data_t *data)
- {
--	uint32_t val;
-+	char buf[MAX_SINK_LPSP_INFO_BUF_LEN];
-+	int len;
- 
--	val = INREG(HSW_PWR_WELL_CTL2);
--	return !(val &amp; HSW_PWR_WELL_STATE_ENABLED);
--}
-+	len = igt_debugfs_simple_read(data-&gt;debugfs_fd, "i915_lpsp_status",
-+				      buf, sizeof(buf));
-+	if (len &lt; 0)
-+		igt_assert_eq(len, -ENODEV);
- 
--/* The LPSP mode is all about an enabled pipe, but we expect to also be in the
-- * low power mode when no pipes are enabled, so do this check anyway. */
--static void screens_disabled_subtest(int drm_fd, drmModeResPtr drm_res)
--{
--	kmstest_unset_all_crtcs(drm_fd, drm_res);
--	igt_assert(lpsp_is_enabled(drm_fd));
-+	igt_skip_on(strstr(buf, "LPSP: not supported"));
-+
-+	return strstr(buf, "LPSP: enabled");
- }
- 
--static uint32_t create_fb(int drm_fd, int width, int height)
-+static bool dmc_supported(int debugfs)
- {
--	struct igt_fb fb;
-+	char buf[15];
-+	int len;
- 
--	return igt_create_pattern_fb(drm_fd, width, height, DRM_FORMAT_XRGB8888,
--				     LOCAL_DRM_FORMAT_MOD_NONE, &amp;fb);
-+	len = igt_sysfs_read(debugfs, "i915_dmc_info", buf, sizeof(buf) - 1);
-+
-+	if (len &lt; 0)
-+		return false;
-+	else
-+		return true;
- }
- 
--static void edp_subtest(int drm_fd, drmModeResPtr drm_res,
--			drmModeConnectorPtr *drm_connectors, uint32_t devid,
--			bool use_panel_fitter)
-+/*
-+ * The LPSP mode is all about an enabled pipe, but we expect to also be in the
-+ * low power mode when no pipes are enabled, so do this check anyway.
-+ */
-+static void screens_disabled_subtest(data_t *data)
- {
--	int i, rc;
--	uint32_t crtc_id = 0, buffer_id = 0;
--	drmModeConnectorPtr connector = NULL;
--	drmModeModeInfoPtr mode = NULL;
--	drmModeModeInfo std_1024_mode = {
--		.clock = 65000,
--		.hdisplay = 1024,
--		.hsync_start = 1048,
--		.hsync_end = 1184,
--		.htotal = 1344,
--		.hskew = 0,
--		.vdisplay = 768,
--		.vsync_start = 771,
--		.vsync_end = 777,
--		.vtotal = 806,
--		.vscan = 0,
--		.vrefresh = 60,
--		.flags = 0xA,
--		.type = 0x40,
--		.name = "Custom 1024x768",
--	};
--
--	kmstest_unset_all_crtcs(drm_fd, drm_res);
--
--	for (i = 0; i &lt; drm_res-&gt;count_connectors; i++) {
--		drmModeConnectorPtr c = drm_connectors[i];
--
--		if (c-&gt;connector_type != DRM_MODE_CONNECTOR_eDP)
--			continue;
--		if (c-&gt;connection != DRM_MODE_CONNECTED)
--			continue;
--
--		if (!use_panel_fitter &amp;&amp; c-&gt;count_modes) {
--			connector = c;
--			mode = &amp;c-&gt;modes[0];
--			break;
--		}
--		if (use_panel_fitter) {
--			connector = c;
--
--			/* This is one of the modes Xorg creates for panels, so
--			 * it should work just fine. Notice that Gens that
--			 * support LPSP are too new for panels with native
--			 * 1024x768 resolution, so this should force the panel
--			 * fitter. */
--			igt_assert(c-&gt;count_modes &amp;&amp;
--				   c-&gt;modes[0].hdisplay &gt; 1024);
--			igt_assert(c-&gt;count_modes &amp;&amp;
--				   c-&gt;modes[0].vdisplay &gt; 768);
--			mode = &amp;std_1024_mode;
--			break;
--		}
--	}
--	igt_require(connector);
--
--	crtc_id = kmstest_find_crtc_for_connector(drm_fd, drm_res, connector,
--						  0);
--	buffer_id = create_fb(drm_fd, mode-&gt;hdisplay, mode-&gt;vdisplay);
--
--	igt_assert(buffer_id);
--	igt_assert(connector);
--	igt_assert(mode);
--
--	rc = drmModeSetCrtc(drm_fd, crtc_id, buffer_id, 0, 0,
--			    &amp;connector-&gt;connector_id, 1, mode);
--	igt_assert_eq(rc, 0);
--
--	if (use_panel_fitter) {
--		if (IS_HASWELL(devid))
--			igt_assert(!lpsp_is_enabled(drm_fd));
--		else
--			igt_assert(lpsp_is_enabled(drm_fd));
--	} else {
--		igt_assert(lpsp_is_enabled(drm_fd));
-+	igt_output_t *output;
-+	int valid_output = 0;
-+	enum pipe pipe;
-+
-+	for_each_pipe_with_single_output(&amp;data-&gt;display, pipe, output) {
-+		data-&gt;output = output;
-+		igt_output_set_pipe(data-&gt;output, PIPE_NONE);
-+		igt_display_commit(&amp;data-&gt;display);
-+		valid_output++;
- 	}
-+
-+	igt_require_f(valid_output, "No connected output found\n");
-+	igt_assert_f(lpsp_is_enabled(data), "lpsp is not enabled\n%s:\n%s\n",
-+		     PWR_DOMAIN_INFO, data-&gt;pwr_dmn_info =
-+		     igt_sysfs_get(data-&gt;debugfs_fd, PWR_DOMAIN_INFO));
- }
- 
--static void non_edp_subtest(int drm_fd, drmModeResPtr drm_res,
--			    drmModeConnectorPtr *drm_connectors)
-+static void setup_lpsp_output(data_t *data)
- {
--	int i, rc;
--	uint32_t crtc_id = 0, buffer_id = 0;
--	drmModeConnectorPtr connector = NULL;
--	drmModeModeInfoPtr mode = NULL;
--
--	kmstest_unset_all_crtcs(drm_fd, drm_res);
--
--	for (i = 0; i &lt; drm_res-&gt;count_connectors; i++) {
--		drmModeConnectorPtr c = drm_connectors[i];
-+	igt_plane_t *primary;
-+
-+	/* set output pipe = PIPE_A for LPSP */
-+	igt_output_set_pipe(data-&gt;output, PIPE_A);
-+	primary = igt_output_get_plane_type(data-&gt;output,
-+					    DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_create_pattern_fb(data-&gt;drm_fd,
-+			      data-&gt;mode-&gt;hdisplay, data-&gt;mode-&gt;vdisplay,
-+			      DRM_FORMAT_XRGB8888,
-+			      LOCAL_DRM_FORMAT_MOD_NONE,
-+			      &amp;data-&gt;fb);
-+	igt_plane_set_fb(primary, &amp;data-&gt;fb);
-+	igt_display_commit(&amp;data-&gt;display);
-+}
- 
--		if (c-&gt;connector_type == DRM_MODE_CONNECTOR_eDP)
--			continue;
--		if (c-&gt;connection != DRM_MODE_CONNECTED)
--			continue;
-+static void test_cleanup(data_t *data)
-+{
-+	igt_plane_t *primary;
-+
-+	if (!data-&gt;output || data-&gt;output-&gt;pending_pipe == PIPE_NONE)
-+		return;
-+
-+	primary = igt_output_get_plane_type(data-&gt;output,
-+					    DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_output_set_pipe(data-&gt;output, PIPE_NONE);
-+	igt_display_commit(&amp;data-&gt;display);
-+	igt_remove_fb(data-&gt;drm_fd, &amp;data-&gt;fb);
-+	data-&gt;output = NULL;
-+}
- 
--		if (c-&gt;count_modes) {
--			connector = c;
--			mode = &amp;c-&gt;modes[0];
--			break;
-+static void test_lpsp(data_t *data)
-+{
-+	drmModeConnectorPtr c = data-&gt;output-&gt;config.connector;
-+	int i;
-+
-+	/* LPSP is low power single pipe usages i.e. PIPE_A */
-+	igt_require(igt_pipe_connector_valid(PIPE_A, data-&gt;output));
-+	igt_require_f(i915_output_is_lpsp_capable(data-&gt;drm_fd, data-&gt;output),
-+		      "output is not lpsp capable\n");
-+
-+	data-&gt;mode = igt_output_get_mode(data-&gt;output);
-+
-+	/* For LPSP avoid pipe big joiner by atleast 4k mode */
-+	if (data-&gt;mode-&gt;hdisplay &gt; 3840 &amp;&amp; data-&gt;mode-&gt;vdisplay &gt; 2160)
-+		for (i = 0; i &lt; c-&gt;count_modes; i++) {
-+			if (c-&gt;modes[i].hdisplay &lt;= 3840 &amp;&amp;
-+			    c-&gt;modes[i].vdisplay &lt;= 2160) {
-+				data-&gt;mode = &amp;c-&gt;modes[i];
-+				igt_output_override_mode(data-&gt;output,
-+							 data-&gt;mode);
-+				break;
-+			}
- 		}
--	}
--	igt_require(connector);
--
--	crtc_id = kmstest_find_crtc_for_connector(drm_fd, drm_res, connector,
--						  0);
--	buffer_id = create_fb(drm_fd, mode-&gt;hdisplay, mode-&gt;vdisplay);
--
--	igt_assert(buffer_id);
--	igt_assert(mode);
- 
--	rc = drmModeSetCrtc(drm_fd, crtc_id, buffer_id, 0, 0,
--			    &amp;connector-&gt;connector_id, 1, mode);
--	igt_assert_eq(rc, 0);
-+	igt_require(data-&gt;mode-&gt;hdisplay &lt;= 3840 &amp;&amp;
-+		    data-&gt;mode-&gt;vdisplay &lt;= 2160);
- 
--	igt_assert(!lpsp_is_enabled(drm_fd));
-+	setup_lpsp_output(data);
-+	igt_assert_f(lpsp_is_enabled(data), "%s: lpsp is not enabled\n%s:\n%s\n",
-+		     data-&gt;output-&gt;name, PWR_DOMAIN_INFO, data-&gt;pwr_dmn_info =
-+		     igt_sysfs_get(data-&gt;debugfs_fd, PWR_DOMAIN_INFO));
- }
- 
--#define MAX_CONNECTORS 32
--
--int drm_fd;
--uint32_t devid;
--drmModeResPtr drm_res;
--drmModeConnectorPtr drm_connectors[MAX_CONNECTORS];
--struct intel_mmio_data mmio_data;
-+IGT_TEST_DESCRIPTION("These tests validates display Low Power Single Pipe configurations");
- igt_main
- {
--	igt_fixture {
--		int i;
--
--		drm_fd = drm_open_driver_master(DRIVER_INTEL);
--		igt_require(drm_fd &gt;= 0);
--
--		devid = intel_get_drm_devid(drm_fd);
--
--		drm_res = drmModeGetResources(drm_fd);
--		igt_require(drm_res);
--		igt_assert(drm_res-&gt;count_connectors &lt;= MAX_CONNECTORS);
-+	data_t data = {};
- 
--		for (i = 0; i &lt; drm_res-&gt;count_connectors; i++)
--			drm_connectors[i] = drmModeGetConnectorCurrent(drm_fd,
--							drm_res-&gt;connectors[i]);
-+	igt_fixture {
- 
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+		igt_require(data.drm_fd &gt;= 0);
-+		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
-+		igt_require(data.debugfs_fd &gt;= 0);
- 		igt_pm_enable_audio_runtime_pm();
-+		kmstest_set_vt_graphics_mode();
-+		data.devid = intel_get_drm_devid(data.drm_fd);
-+		igt_display_require(&amp;data.display, data.drm_fd);
-+		igt_require(igt_pm_dmc_loaded(data.debugfs_fd));
-+	}
- 
--		igt_require(supports_lpsp(devid));
-+	igt_describe("This test validates lpsp while all crtc are disabled");
-+	igt_subtest("screens-disabled") {
-+		igt_require_f(!dmc_supported(data.debugfs_fd),
-+			      "DC states supported platform don't have ROI for this subtest\n");
-+		screens_disabled_subtest(&amp;data);
-+	}
- 
--		intel_register_access_init(&amp;mmio_data, intel_get_pci_device(), 0, drm_fd);
-+	igt_describe("This test validates lpsp on all connected outputs on low power PIPE_A");
-+	igt_subtest_with_dynamic_f("kms-lpsp") {
-+		igt_display_t *display = &amp;data.display;
-+		igt_output_t *output;
- 
--		kmstest_set_vt_graphics_mode();
--	}
-+		for_each_connected_output(display, output) {
-+			igt_dynamic_f("kms-lpsp-%s",
-+				      kmstest_connector_type_str(output-&gt;config.connector-&gt;connector_type)) {
-+				data.output = output;
-+				test_lpsp(&amp;data);
-+			}
- 
--	igt_subtest("screens-disabled")
--		screens_disabled_subtest(drm_fd, drm_res);
--	igt_subtest("edp-native")
--		edp_subtest(drm_fd, drm_res, drm_connectors, devid, false);
--	igt_subtest("non-edp")
--		non_edp_subtest(drm_fd, drm_res, drm_connectors);
-+			test_cleanup(&amp;data);
-+		}
-+	}
- 
- 	igt_fixture {
--		int i;
--
--		intel_register_access_fini(&amp;mmio_data);
--		for (i = 0; i &lt; drm_res-&gt;count_connectors; i++)
--			drmModeFreeConnector(drm_connectors[i]);
--		drmModeFreeResources(drm_res);
--		close(drm_fd);
-+		free(data.pwr_dmn_info);
-+		close(data.drm_fd);
-+		igt_display_fini(&amp;data.display);
- 	}
- }
-</pre>
-    </blockquote>
-    <br>
-  </body>
-</html>
-
---------------70D3D7313D5E924DB5B8CCCC--
-
---===============0159255008==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+> --
+> Ville Syrj=E4l=E4
+> Intel
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0159255008==--
