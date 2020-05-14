@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 14 May 2020 08:44:12 +0100
-Message-Id: <20200514074412.962179-1-chris@chris-wilson.co.uk>
+Date: Thu, 14 May 2020 12:29:41 +0100
+Message-Id: <20200514112941.1018421-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib/i915: Reset all engine properties to
- defaults prior to the start of a test
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_balancer: Force timeslicing
+ of the virtual request
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,160 +16,138 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We need each test in an isolated context, so that bad results from one
-test do not interfere with the next. In particular, we want to clean up
-the device and reset it to the defaults so that they are known for the
-next test, and the test can focus on behaviour it wants to control.
+Investigate the impact of timeslicing on the virtal request, both with
+independent and dependent workloads.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 ---
- lib/i915/gem.c      | 85 +++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_dummyload.c |  2 --
- lib/igt_gt.c        |  2 --
- 3 files changed, 85 insertions(+), 4 deletions(-)
+ tests/i915/gem_exec_balancer.c | 101 +++++++++++++++++++++++++++++++++
+ 1 file changed, 101 insertions(+)
 
-diff --git a/lib/i915/gem.c b/lib/i915/gem.c
-index cabd23768..3ef31ed33 100644
---- a/lib/i915/gem.c
-+++ b/lib/i915/gem.c
-@@ -22,6 +22,7 @@
-  *
-  */
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index d4944e3f1..607f1dc38 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -1531,6 +1531,104 @@ static void full(int i915, unsigned int flags)
+ 	gem_quiescent_gpu(i915);
+ }
  
-+#include <dirent.h>
- #include <fcntl.h>
- #include <sys/ioctl.h>
- 
-@@ -30,6 +31,89 @@
- #include "igt_debugfs.h"
- #include "igt_sysfs.h"
- 
-+static void __restore_defaults(int engine)
++static void sliced(int i915)
 +{
-+	struct dirent *de;
-+	int defaults;
-+	DIR *dir;
++	/*
++	 * Let's investigate what happens when the virtual request is
++	 * timesliced away.
++	 *
++	 * If the engine is busy with independent work, we want the virtual
++	 * request to hop over to an idle engine (within its balancing set).
++	 * However, if the work is dependent upon the virtual request,
++	 * we most certainly do not want to reschedule that work ahead of
++	 * the virtual request. [If we did, we should still have the saving
++	 * grace of being able to move the virual request to another engine
++	 * and so run both in parallel.] If we do neither, and get stuck
++	 * on the dependent work and never run the virtual request, we hang.
++	 */
 +
-+	defaults = openat(engine, ".defaults", O_RDONLY);
-+	if (defaults < 0)
-+		return;
++	igt_require(gem_scheduler_has_preemption(i915));
++	igt_require(gem_scheduler_has_semaphores(i915));
 +
-+	dir = fdopendir(defaults);
-+	if (!dir) {
-+		close(defaults);
-+		return;
++	for (int class = 0; class < 32; class++) {
++		struct i915_engine_class_instance *ci;
++		int64_t timeout = NSEC_PER_SEC;
++		igt_spin_t *virtual, **load;
++		unsigned int count;
++		uint32_t ctx;
++
++		ci = list_engines(i915, 1u << class, &count);
++		if (!ci)
++			continue;
++
++		if (count < 2) {
++			free(ci);
++			continue;
++		}
++
++		load = calloc(count, sizeof(*load));
++		igt_assert(load);
++
++		ctx = load_balancer_create(i915, ci, count);
++
++		/* Independent load */
++		virtual = igt_spin_new(i915, ctx,
++				       .flags = IGT_SPIN_POLL_RUN);
++		igt_spin_busywait_until_started(virtual);
++		for (int i = 0; i < count; i++) {
++			load[i] = igt_spin_new(i915, ctx,
++					       .engine = i + 1,
++					       .flags = IGT_SPIN_POLL_RUN);
++			igt_spin_busywait_until_started(load[i]);
++		}
++		/*
++		 * As we waited until all requests started, and we
++		 * oversubscribed the engines, we know that we must have
++		 * forced the virtual request to be timesliced away.
++		 *
++		 * We then expect for it to receive a timeslice on congested
++		 * engines, so that the spinned completes quickly.
++		 */
++		igt_spin_end(virtual);
++		igt_assert_eq(gem_wait(i915, virtual->handle, &timeout), 0);
++
++		for (int i = 0; i < count; i++)
++			igt_spin_free(i915, load[i]);
++		igt_spin_free(i915, virtual);
++
++		/* Dependent load */
++		virtual = igt_spin_new(i915, ctx, .engine = 0,
++				       .flags = (IGT_SPIN_FENCE_OUT |
++						 IGT_SPIN_POLL_RUN));
++		for (int i = 0; i < count; i++) {
++			load[i] = igt_spin_new(i915, ctx,
++					       .engine = i + 1,
++					       .fence = virtual->out_fence,
++					       .flags = IGT_SPIN_FENCE_IN);
++			/*
++			 * We could wait until load[i] starts, but we do not
++			 * want to mandate that the scheduler must evict
++			 * the virtual request, as load[i] depends on
++			 * the virtual request.
++			 */
++		}
++
++		/* Wait long enough for the virtual timeslice [ms] to expire */
++		igt_spin_busywait_until_started(virtual);
++		usleep(250 * 1000); /* 250ms */
++
++		igt_spin_end(virtual);
++		igt_assert_eq(sync_fence_wait(virtual->out_fence, 1000), 0);
++		igt_assert_eq(sync_fence_status(virtual->out_fence), 1);
++
++		gem_context_destroy(i915, ctx);
++		free(load);
++		free(ci);
 +	}
 +
-+	while ((de = readdir(dir))) {
-+		char buf[256];
-+		int fd, len;
-+
-+		if (*de->d_name == '.')
-+			continue;
-+
-+		fd = openat(defaults, de->d_name, O_RDONLY);
-+		if (fd < 0)
-+			continue;
-+
-+		len = read(fd, buf, sizeof(buf));
-+		close(fd);
-+		if (len < 0)
-+			continue;
-+
-+		fd = openat(engine, de->d_name, O_WRONLY);
-+		if (fd < 0)
-+			continue;
-+
-+		write(fd, buf, len);
-+		close(fd);
-+	}
-+
-+	closedir(dir);
++	gem_quiescent_gpu(i915);
 +}
 +
-+static void restore_defaults(int i915)
-+{
-+	struct dirent *de;
-+	int engines;
-+	DIR *dir;
-+	int sys;
-+
-+	sys = igt_sysfs_open(i915);
-+	if (sys < 0)
-+		return;
-+
-+	engines = openat(sys, "engine", O_RDONLY);
-+	if (engines < 0)
-+		goto close_sys;
-+
-+	dir = fdopendir(engines);
-+	if (!dir) {
-+		close(engines);
-+		goto close_sys;
-+	}
-+
-+	while ((de = readdir(dir))) {
-+		int engine;
-+
-+		if (*de->d_name == '.')
-+			continue;
-+
-+		engine = openat(engines, de->d_name, O_RDONLY);
-+		if (engine < 0)
-+			continue;
-+
-+		__restore_defaults(engine);
-+		close(engine);
-+	}
-+
-+	closedir(dir);
-+close_sys:
-+	close(sys);
-+}
-+
- static void reset_device(int i915)
+ static void nop(int i915)
  {
- 	int dir;
-@@ -66,6 +150,7 @@ void igt_require_gem(int i915)
- 	 * sequences of batches.
- 	 */
- 	reset_device(i915);
-+	restore_defaults(i915);
+ 	struct drm_i915_gem_exec_object2 batch = {
+@@ -2014,6 +2112,9 @@ igt_main
+ 	igt_subtest("semaphore")
+ 		semaphore(i915);
  
- 	err = 0;
- 	if (ioctl(i915, DRM_IOCTL_I915_GEM_THROTTLE)) {
-diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
-index 0b52eb5b5..a733bd674 100644
---- a/lib/igt_dummyload.c
-+++ b/lib/igt_dummyload.c
-@@ -355,8 +355,6 @@ igt_spin_factory(int fd, const struct igt_spin_factory *opts)
- {
- 	igt_spin_t *spin;
++	igt_subtest("sliced")
++		sliced(i915);
++
+ 	igt_subtest("smoke")
+ 		smoketest(i915, 20);
  
--	igt_require_gem(fd);
--
- 	if (opts->engine != ALL_ENGINES) {
- 		struct intel_execution_engine2 e;
- 		int class;
-diff --git a/lib/igt_gt.c b/lib/igt_gt.c
-index a806b567a..101627973 100644
---- a/lib/igt_gt.c
-+++ b/lib/igt_gt.c
-@@ -172,8 +172,6 @@ igt_hang_t igt_allow_hang(int fd, unsigned ctx, unsigned flags)
- 	 * to recover from reset and for it to remain wedged. It's hard to
- 	 * say even if we do hang/reset making the test suspect.
- 	 */
--	igt_require_gem(fd);
--
- 	if (!igt_check_boolean_env_var("IGT_HANG", true))
- 		igt_skip("hang injection disabled by user [IGT_HANG=0]\n");
- 	gem_context_require_bannable(fd);
 -- 
 2.26.2
 
