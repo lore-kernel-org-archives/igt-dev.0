@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 199096EBCC
- for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2020 06:44:59 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri, 15 May 2020 08:44:34 +0200
-Message-Id: <20200515064435.25926-7-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20200515064435.25926-1-zbigniew.kempczynski@intel.com>
-References: <20200515064435.25926-1-zbigniew.kempczynski@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C80826EBF3
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2020 07:19:35 +0000 (UTC)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Fri, 15 May 2020 08:19:28 +0100
+Message-Id: <20200515071928.1173041-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 6/7] lib/gpgpu_fill: libdrm-free gpgpu
- pipeline creation for gen7
+Subject: [igt-dev] [PATCH i-g-t] kms_flip: Trim test durations for basic
+ subtests [BAT]
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,67 +15,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UHJvdmlkZSBwaXBlbGluZSBmb3IgZ3BncHUgZmlsbCBmb3IgZ2VuNy4KClNpZ25lZC1vZmYtYnk6
-IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgpD
-YzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Ci0tLQogbGliL2dwZ3B1
-X2ZpbGwuYyB8IDQ5ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKwogbGliL2dwZ3B1X2ZpbGwuaCB8ICA4ICsrKysrKysrCiAyIGZpbGVzIGNoYW5nZWQsIDU3
-IGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9saWIvZ3BncHVfZmlsbC5jIGIvbGliL2dwZ3B1
-X2ZpbGwuYwppbmRleCA1NjYwZDRjMC4uY2MzOGNjYWUgMTAwNjQ0Ci0tLSBhL2xpYi9ncGdwdV9m
-aWxsLmMKKysrIGIvbGliL2dwZ3B1X2ZpbGwuYwpAQCAtMTIwLDYgKzEyMCw3IEBAIHN0YXRpYyBj
-b25zdCB1aW50MzJfdCBnZW4xMl9ncGdwdV9rZXJuZWxbXVs0XSA9IHsKICAqCiAgKi8KIAorI2Rl
-ZmluZSBQQUdFX1NJWkUgNDA5NgogI2RlZmluZSBCQVRDSF9TVEFURV9TUExJVCAyMDQ4CiAvKiBW
-RkUgU1RBVEUgcGFyYW1zICovCiAjZGVmaW5lIFRIUkVBRFMgMQpAQCAtMTc4LDYgKzE3OSw1NCBA
-QCBnZW43X2dwZ3B1X2ZpbGxmdW5jKHN0cnVjdCBpbnRlbF9iYXRjaGJ1ZmZlciAqYmF0Y2gsCiAJ
-aW50ZWxfYmF0Y2hidWZmZXJfcmVzZXQoYmF0Y2gpOwogfQogCit2b2lkCitnZW43X2dwZ3B1X2Zp
-bGxmdW5jX3YyKGludCBpOTE1LAorCQkgICAgICAgc3RydWN0IGludGVsX2J1ZiAqYnVmLAorCQkg
-ICAgICAgdW5zaWduZWQgeCwgdW5zaWduZWQgeSwKKwkJICAgICAgIHVuc2lnbmVkIHdpZHRoLCB1
-bnNpZ25lZCBoZWlnaHQsCisJCSAgICAgICB1aW50OF90IGNvbG9yKQoreworCXN0cnVjdCBpbnRl
-bF9iYiAqaWJiOworCXVpbnQzMl90IGN1cmJlX2J1ZmZlciwgaW50ZXJmYWNlX2Rlc2NyaXB0b3I7
-CisKKwlpYmIgPSBpbnRlbF9iYl9jcmVhdGUoaTkxNSwgUEFHRV9TSVpFKTsKKwlpbnRlbF9iYl9w
-dHJfc2V0KGliYiwgQkFUQ0hfU1RBVEVfU1BMSVQpOworCisJLyogRmlsbCBjdXJiZSBidWZmZXIg
-ZGF0YSAqLworCWN1cmJlX2J1ZmZlciA9IGdlbjdfZmlsbF9jdXJiZV9idWZmZXJfZGF0YV92Mihp
-YmIsIGNvbG9yKTsKKworCS8qCisJICogY29uc3QgYnVmZmVyIG5lZWRzIHRvIGZpbGwgZm9yIGV2
-ZXJ5IHRocmVhZCwgYnV0IGFzIHdlIGhhdmUganVzdCAxCisJICogdGhyZWFkIHBlciBldmVyeSBn
-cm91cCwgc28gbmVlZCBvbmx5IG9uZSBjdXJiZSBkYXRhLgorCSAqIEZvciBlYWNoIHRocmVhZCwg
-anVzdCB1c2UgdGhyZWFkIGdyb3VwIElEIGZvciBidWZmZXIgb2Zmc2V0LgorCSAqLworCWludGVy
-ZmFjZV9kZXNjcmlwdG9yID0KKwkJCWdlbjdfZmlsbF9pbnRlcmZhY2VfZGVzY3JpcHRvcl92Mihp
-YmIsIGJ1ZiwKKwkJCQkJCQkgIGdlbjdfZ3BncHVfa2VybmVsLAorCQkJCQkJCSAgc2l6ZW9mKGdl
-bjdfZ3BncHVfa2VybmVsKSk7CisKKwlpbnRlbF9iYl9wdHJfc2V0KGliYiwgMCk7CisKKwkvKiBH
-UEdQVSBwaXBlbGluZSAqLworCWludGVsX2JiX291dChpYmIsIEdFTjdfUElQRUxJTkVfU0VMRUNU
-IHwgUElQRUxJTkVfU0VMRUNUX0dQR1BVKTsKKworCWdlbjdfZW1pdF9zdGF0ZV9iYXNlX2FkZHJl
-c3NfdjIoaWJiKTsKKwlnZW43X2VtaXRfdmZlX3N0YXRlX3YyKGliYiwgVEhSRUFEUywgR0VON19H
-UEdQVV9VUkJfRU5UUklFUywKKwkJCSAgICAgICBHUEdQVV9VUkJfU0laRSwgR1BHUFVfQ1VSQkVf
-U0laRSwKKwkJCSAgICAgICBHRU43X1ZGRV9TVEFURV9HUEdQVV9NT0RFKTsKKwlnZW43X2VtaXRf
-Y3VyYmVfbG9hZF92MihpYmIsIGN1cmJlX2J1ZmZlcik7CisJZ2VuN19lbWl0X2ludGVyZmFjZV9k
-ZXNjcmlwdG9yX2xvYWRfdjIoaWJiLCBpbnRlcmZhY2VfZGVzY3JpcHRvcik7CisJZ2VuN19lbWl0
-X2dwZ3B1X3dhbGtfdjIoaWJiLCB4LCB5LCB3aWR0aCwgaGVpZ2h0KTsKKworCWludGVsX2JiX291
-dChpYmIsIE1JX0JBVENIX0JVRkZFUl9FTkQpOworCWludGVsX2JiX3B0cl9hbGlnbihpYmIsIDMy
-KTsKKworCWludGVsX2JiX2V4ZWMoaWJiLCBpbnRlbF9iYl9vZmZzZXQoaWJiKSwKKwkJICAgICAg
-STkxNV9FWEVDX0RFRkFVTFQgfCBJOTE1X0VYRUNfTk9fUkVMT0MsIHRydWUpOworCisJaW50ZWxf
-YmJfZGVzdHJveShpYmIpOworfQorCiB2b2lkCiBnZW44X2dwZ3B1X2ZpbGxmdW5jKHN0cnVjdCBp
-bnRlbF9iYXRjaGJ1ZmZlciAqYmF0Y2gsCiAJCSAgICBjb25zdCBzdHJ1Y3QgaWd0X2J1ZiAqZHN0
-LApkaWZmIC0tZ2l0IGEvbGliL2dwZ3B1X2ZpbGwuaCBiL2xpYi9ncGdwdV9maWxsLmgKaW5kZXgg
-ZGE3ZDY0NmYuLjBiYTNkMDMzIDEwMDY0NAotLS0gYS9saWIvZ3BncHVfZmlsbC5oCisrKyBiL2xp
-Yi9ncGdwdV9maWxsLmgKQEAgLTI4LDYgKzI4LDcgQEAKICNkZWZpbmUgR1BHUFVfRklMTF9ICiAK
-ICNpbmNsdWRlICJpbnRlbF9iYXRjaGJ1ZmZlci5oIgorI2luY2x1ZGUgImludGVsX2J1Zm9wcy5o
-IgogCiB2b2lkCiBnZW43X2dwZ3B1X2ZpbGxmdW5jKHN0cnVjdCBpbnRlbF9iYXRjaGJ1ZmZlciAq
-YmF0Y2gsCkBAIC0zNiw2ICszNywxMyBAQCBnZW43X2dwZ3B1X2ZpbGxmdW5jKHN0cnVjdCBpbnRl
-bF9iYXRjaGJ1ZmZlciAqYmF0Y2gsCiAJCSAgICB1bnNpZ25lZCBpbnQgd2lkdGgsIHVuc2lnbmVk
-IGludCBoZWlnaHQsCiAJCSAgICB1aW50OF90IGNvbG9yKTsKIAordm9pZAorZ2VuN19ncGdwdV9m
-aWxsZnVuY192MihpbnQgaTkxNSwKKwkJICAgICAgIHN0cnVjdCBpbnRlbF9idWYgKmJ1ZiwKKwkJ
-ICAgICAgIHVuc2lnbmVkIHgsIHVuc2lnbmVkIHksCisJCSAgICAgICB1bnNpZ25lZCB3aWR0aCwg
-dW5zaWduZWQgaGVpZ2h0LAorCQkgICAgICAgdWludDhfdCBjb2xvcik7CisKIHZvaWQKIGdlbjhf
-Z3BncHVfZmlsbGZ1bmMoc3RydWN0IGludGVsX2JhdGNoYnVmZmVyICpiYXRjaCwKIAkJICAgIGNv
-bnN0IHN0cnVjdCBpZ3RfYnVmICpkc3QsCi0tIAoyLjI2LjAKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
-YW4vbGlzdGluZm8vaWd0LWRldgo=
+Reduce the target runtime for the individual subtests as each may be
+repeated multiple times accumulating a substantial fraction of the BAT
+runtime. A 100 flips or so should be as good an indicator of basic
+driver health as a few thousand, with the stress testing coming in the
+non-basic testing.
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/kms_flip.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index 199b6eb41..46bfc5858 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -1581,22 +1581,22 @@ igt_main
+ 					"absolute-wf_vblank" },
+ 		{ 30,  TEST_VBLANK | TEST_VBLANK_BLOCK | TEST_VBLANK_ABSOLUTE,
+ 					"blocking-absolute-wf_vblank" },
+-		{ 10, TEST_FLIP | TEST_BASIC, "plain-flip" },
++		{ 2, TEST_FLIP | TEST_BASIC, "plain-flip" },
+ 		{ 1, TEST_FLIP | TEST_EBUSY, "busy-flip" },
+ 		{ 30, TEST_FLIP | TEST_FENCE_STRESS , "flip-vs-fences" },
+ 		{ 30, TEST_FLIP | TEST_CHECK_TS, "plain-flip-ts-check" },
+ 		{ 30, TEST_FLIP | TEST_CHECK_TS | TEST_FB_RECREATE,
+ 			"plain-flip-fb-recreate" },
+ 		{ 30, TEST_FLIP | TEST_RMFB | TEST_MODESET , "flip-vs-rmfb" },
+-		{ 20, TEST_FLIP | TEST_DPMS | TEST_EINVAL | TEST_BASIC, "flip-vs-dpms" },
++		{ 2, TEST_FLIP | TEST_DPMS | TEST_EINVAL | TEST_BASIC, "flip-vs-dpms" },
+ 		{ 30,  TEST_FLIP | TEST_PAN, "flip-vs-panning" },
+-		{ 20, TEST_FLIP | TEST_MODESET | TEST_EINVAL | TEST_BASIC, "flip-vs-modeset" },
++		{ 2, TEST_FLIP | TEST_MODESET | TEST_EINVAL | TEST_BASIC, "flip-vs-modeset" },
+ 		{ 30,  TEST_FLIP | TEST_VBLANK_EXPIRED_SEQ,
+ 					"flip-vs-expired-vblank" },
+ 
+ 		{ 30, TEST_FLIP | TEST_VBLANK | TEST_VBLANK_ABSOLUTE |
+ 		      TEST_CHECK_TS, "flip-vs-absolute-wf_vblank" },
+-		{ 10, TEST_FLIP | TEST_VBLANK | TEST_CHECK_TS | TEST_BASIC,
++		{ 2, TEST_FLIP | TEST_VBLANK | TEST_CHECK_TS | TEST_BASIC,
+ 					"flip-vs-wf_vblank" },
+ 		{ 30, TEST_FLIP | TEST_VBLANK | TEST_VBLANK_BLOCK |
+ 			TEST_CHECK_TS, "flip-vs-blocking-wf-vblank" },
+-- 
+2.26.2
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
