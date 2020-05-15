@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D14B26EBFA
- for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2020 07:41:51 +0000 (UTC)
-From: Harish Chegondi <harish.chegondi@intel.com>
-Date: Fri, 15 May 2020 00:41:50 -0700
-Message-Id: <20200515074150.475142-1-harish.chegondi@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B497C6EC2C
+ for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2020 09:21:59 +0000 (UTC)
+Date: Fri, 15 May 2020 12:21:57 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200515092157.GR9497@platvala-desk.ger.corp.intel.com>
+References: <20200515074150.475142-1-harish.chegondi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] runner/resultgen: Fix dmesg whitelist
+Content-Disposition: inline
+In-Reply-To: <20200515074150.475142-1-harish.chegondi@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] runner/resultgen: Fix dmesg whitelist
  entry's regular expression
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -15,33 +18,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: lucas.demarchi@intel.com, petri.latvala@intel.com
+To: Harish Chegondi <harish.chegondi@intel.com>
+Cc: igt-dev@lists.freedesktop.org, lucas.demarchi@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UENJIGRldmljZXMnIEIvRC9GIG51bWJlcnMgY2FuIGhhdmUgYWxwaGFiZXRzIGluIGhleC4gRml4
-IHRoZSByZWdleHAKc28gdGhhdCBoZXggQi9EL0YgbnVtYmVycyBhbHNvIG1hdGNoIHRoZSByZWd1
-bGFyIGV4cHJlc3Npb24uCgpDYzogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5j
-b20+CkNjOiBMdWNhcyBEZSBNYXJjaGkgPGx1Y2FzLmRlbWFyY2hpQGludGVsLmNvbT4KQ2M6IFN3
-YXRoaSBEaGFuYXZhbnRocmkgPHN3YXRoaS5kaGFuYXZhbnRocmlAaW50ZWwuY29tPgpDYzogSm9z
-w6kgUm9iZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6
-IEhhcmlzaCBDaGVnb25kaSA8aGFyaXNoLmNoZWdvbmRpQGludGVsLmNvbT4KU2lnbmVkLW9mZi1i
-eTogTHVjYXMgRGUgTWFyY2hpIDxsdWNhcy5kZW1hcmNoaUBpbnRlbC5jb20+Ci0tLQogcnVubmVy
-L3Jlc3VsdGdlbi5jIHwgMiArLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRl
-bGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvcnVubmVyL3Jlc3VsdGdlbi5jIGIvcnVubmVyL3Jlc3Vs
-dGdlbi5jCmluZGV4IGZlNTlhYWZlYi4uMTcxNDdhOGZhIDEwMDY0NAotLS0gYS9ydW5uZXIvcmVz
-dWx0Z2VuLmMKKysrIGIvcnVubmVyL3Jlc3VsdGdlbi5jCkBAIC04MDAsNyArODAwLDcgQEAgc3Rh
-dGljIGNvbnN0IGNoYXIgaWd0X2RtZXNnX3doaXRlbGlzdFtdID0KIAkgKiBtb2R1bGUgbG9hZCBh
-ZnRlciB0aGUgdGVzdGluZyBmaW5pc2hlcywgd2hpY2ggcHJvZHVjZXMgdGhpcwogCSAqIG1lc3Nh
-Z2UuCiAJICovCi0JImk5MTU6IHByb2JlIG9mIFswLTk6Ll0rIGZhaWxlZCB3aXRoIGVycm9yIC0y
-NSIgXworCSJpOTE1OiBwcm9iZSBvZiBbMC05YS1mQS1GOi5dKyBmYWlsZWQgd2l0aCBlcnJvciAt
-MjUiIF8KIAkvKiBzd2lvdGJsIHdhcm5zIGV2ZW4gd2hlbiBhc2tlZCBub3QgdG8gKi8KIAkibW9j
-azogRE1BOiBPdXQgb2YgU1ctSU9NTVUgc3BhY2UgZm9yIFswLTldKyBieXRlcyIgXwogCSJ1c2Ig
-dXNiWzAtOV0rOiByb290IGh1YiBsb3N0IHBvd2VyIG9yIHdhcyByZXNldCIKLS0gCjIuMjUuNAoK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On Fri, May 15, 2020 at 12:41:50AM -0700, Harish Chegondi wrote:
+> PCI devices' B/D/F numbers can have alphabets in hex. Fix the regexp
+> so that hex B/D/F numbers also match the regular expression.
+> =
+
+> Cc: Petri Latvala <petri.latvala@intel.com>
+> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+> Cc: Swathi Dhanavanthri <swathi.dhanavanthri@intel.com>
+> Cc: Jos=E9 Roberto de Souza <jose.souza@intel.com>
+> Signed-off-by: Harish Chegondi <harish.chegondi@intel.com>
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+
+
+> ---
+>  runner/resultgen.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> =
+
+> diff --git a/runner/resultgen.c b/runner/resultgen.c
+> index fe59aafeb..17147a8fa 100644
+> --- a/runner/resultgen.c
+> +++ b/runner/resultgen.c
+> @@ -800,7 +800,7 @@ static const char igt_dmesg_whitelist[] =3D
+>  	 * module load after the testing finishes, which produces this
+>  	 * message.
+>  	 */
+> -	"i915: probe of [0-9:.]+ failed with error -25" _
+> +	"i915: probe of [0-9a-fA-F:.]+ failed with error -25" _
+>  	/* swiotbl warns even when asked not to */
+>  	"mock: DMA: Out of SW-IOMMU space for [0-9]+ bytes" _
+>  	"usb usb[0-9]+: root hub lost power or was reset"
+> -- =
+
+> 2.25.4
+> =
+
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
