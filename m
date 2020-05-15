@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 15 May 2020 11:43:14 -0000
-Message-ID: <158954299468.26212.9830708151878262246@emeril.freedesktop.org>
-References: <20200512140736.22096-1-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20200512140736.22096-1-janusz.krzysztofik@linux.intel.com>
+Date: Fri, 15 May 2020 11:42:58 -0000
+Message-ID: <158954297847.26210.9492223916041344941@emeril.freedesktop.org>
+References: <20200512103415.28968-1-anshuman.gupta@intel.com>
+In-Reply-To: <20200512103415.28968-1-anshuman.gupta@intel.com>
 Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_l?=
- =?utf-8?q?ib/gem=5Ftest=5Fengine=3A_Add_no_device_reopen_variant?=
+ =?utf-8?q?psp_platform_agnostic_support_=28rev11=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,14 +19,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Anshuman Gupta <anshuman.gupta@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: lib/gem_test_engine: Add no device reopen variant
-URL   : https://patchwork.freedesktop.org/series/77193/
+Series: lpsp platform agnostic support (rev11)
+URL   : https://patchwork.freedesktop.org/series/74647/
 State : failure
 
 == Summary ==
@@ -81,11 +81,11 @@ Thanks in advance!
 
 Other than that, pipeline status: SUCCESS.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/145420 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/145325 for the overview.
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/145420
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/145325
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
