@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 15 May 2020 11:43:46 -0000
-Message-ID: <158954302631.26213.3768812991610767093@emeril.freedesktop.org>
-References: <20200513104715.792111-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200513104715.792111-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_i?=
- =?utf-8?q?915/sysfs=5Fheartbeat=5Finterval=3A_Watch_out_for_CPU_scheduler?=
- =?utf-8?q?_delays?=
+Date: Fri, 15 May 2020 11:43:54 -0000
+Message-ID: <158954303448.26212.13546139458692734309@emeril.freedesktop.org>
+References: <20200513131001.10566-1-petri.latvala@intel.com>
+In-Reply-To: <20200513131001.10566-1-petri.latvala@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_l?=
+ =?utf-8?q?ib/igt=5Fgt=3A_Add_newline_to_IGT=5FHANG=3D0_skips_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,14 +19,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: i915/sysfs_heartbeat_interval: Watch out for CPU scheduler delays
-URL   : https://patchwork.freedesktop.org/series/77218/
+Series: lib/igt_gt: Add newline to IGT_HANG=0 skips (rev2)
+URL   : https://patchwork.freedesktop.org/series/77227/
 State : failure
 
 == Summary ==
@@ -82,11 +81,11 @@ Thanks in advance!
 
 Other than that, pipeline status: SUCCESS.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/146004 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/146129 for the overview.
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/146004
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/146129
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
