@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 352F26ECC2
- for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2020 14:39:01 +0000 (UTC)
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-Date: Fri, 15 May 2020 17:38:57 +0300
-Message-Id: <20200515143857.21222-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20181213105734.32617-1-ville.syrjala@linux.intel.com>
-References: <20181213105734.32617-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] lib/debugfs: Sanity check even discarded
- CRCs
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 15 May 2020 15:12:39 -0000
+Message-ID: <158955555981.26212.16940021060045281969@emeril.freedesktop.org>
+References: <20181213105734.32617-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20181213105734.32617-1-ville.syrjala@linux.intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2Rl?=
+ =?utf-8?q?bugfs=3A_Sanity_check_even_discarded_CRCs_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,67 +14,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Dhinakaran Pandiyan <dhinakaran.pandiyan@intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogVmlsbGUgU3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KCldl
-IGN1cnJlbnRseSBvbmx5IHNwb3QgY2hlY2sgc29tZSBvZiB0aGUgQ1JDcy4gV2Ugc2hvdWxkIGNo
-ZWNrIHRoZW0KYWxsLiBUaGlzIHdpbGwgcHJvYmFibHkgY2F1c2UgZmFpbHVyZXMgb24gbWFjaGlu
-ZXMgd2l0aCBQU1IgYXMKaXQgbG9va3MgbGlrZSB0aGUgQ1JDIGNhcHR1cmVkIGFmdGVyIFBTUiBl
-eGl0IGlzIGJvZ3VzLiBPciBhdCBsZWFzdAppdCBpcyBvbiBJQ0wuIFdlIHNob3VsZCBwcm9iYWJs
-eSBqdXN0IGRpc2FibGUgUFNSIHdoZW5ldmVyIENSQwpjYXB0dXJpbmcgaXMgYWN0aXZlLgoKdjI6
-IFJlYmFzZQoKQ2M6IEpvc8OpIFJvYmVydG8gZGUgU291emEgPGpvc2Uuc291emFAaW50ZWwuY29t
-PgpSZXZpZXdlZC1ieTogRGhpbmFrYXJhbiBQYW5kaXlhbiA8ZGhpbmFrYXJhbi5wYW5kaXlhbkBp
-bnRlbC5jb20+ICN2MQpSZWZlcmVuY2VzOiBodHRwczovL2J1Z3MuZnJlZWRlc2t0b3Aub3JnL3No
-b3dfYnVnLmNnaT9pZD0xMDY5NzQKU2lnbmVkLW9mZi1ieTogVmlsbGUgU3lyasOkbMOkIDx2aWxs
-ZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KLS0tCiBsaWIvaWd0X2RlYnVnZnMuYyB8IDQ3ICsr
-KysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hh
-bmdlZCwgMjIgaW5zZXJ0aW9ucygrKSwgMjUgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGli
-L2lndF9kZWJ1Z2ZzLmMgYi9saWIvaWd0X2RlYnVnZnMuYwppbmRleCAwNTA2NzA3ODUyZjAuLjcz
-OTc1ZjkyMmUxOSAxMDA2NDQKLS0tIGEvbGliL2lndF9kZWJ1Z2ZzLmMKKysrIGIvbGliL2lndF9k
-ZWJ1Z2ZzLmMKQEAgLTc1OSw2ICs3NTksMjYgQEAgc3RhdGljIGJvb2wgcGlwZV9jcmNfaW5pdF9m
-cm9tX3N0cmluZyhpZ3RfcGlwZV9jcmNfdCAqcGlwZV9jcmMsIGlndF9jcmNfdCAqY3JjLAogCXJl
-dHVybiB0cnVlOwogfQogCitzdGF0aWMgdm9pZCBjcmNfc2FuaXR5X2NoZWNrcyhpZ3RfcGlwZV9j
-cmNfdCAqcGlwZV9jcmMsIGlndF9jcmNfdCAqY3JjKQoreworCWJvb2wgYWxsX3plcm8gPSB0cnVl
-OworCisJLyogQW55IENSQyB2YWx1ZSBjYW4gYmUgY29uc2lkZXJlZCB2YWxpZCBvbiBhbWRncHUg
-aGFyZHdhcmUuICovCisJaWYgKGlzX2FtZGdwdV9kZXZpY2UocGlwZV9jcmMtPmZkKSkKKwkJcmV0
-dXJuOworCisJZm9yIChpbnQgaSA9IDA7IGkgPCBjcmMtPm5fd29yZHM7IGkrKykgeworCQlpZ3Rf
-d2Fybl9vbl9mKGNyYy0+Y3JjW2ldID09IDB4ZmZmZmZmZmYsCisJCQkgICAgICAiU3VzcGljaW91
-cyBDUkM6IGl0IGxvb2tzIGxpa2UgdGhlIENSQyAiCisJCQkgICAgICAicmVhZCBiYWNrIHdhcyBm
-cm9tIGEgcmVnaXN0ZXIgaW4gYSBwb3dlcmVkICIKKwkJCSAgICAgICJkb3duIHdlbGxcbiIpOwor
-CQlpZiAoY3JjLT5jcmNbaV0pCisJCQlhbGxfemVybyA9IGZhbHNlOworCX0KKworCWlndF93YXJu
-X29uX2YoYWxsX3plcm8sICJTdXNwaWNpb3VzIENSQzogQWxsIHZhbHVlcyBhcmUgMC5cbiIpOwor
-fQorCiBzdGF0aWMgaW50IHJlYWRfY3JjKGlndF9waXBlX2NyY190ICpwaXBlX2NyYywgaWd0X2Ny
-Y190ICpvdXQpCiB7CiAJc3NpemVfdCBieXRlc19yZWFkOwpAQCAtNzc2LDYgKzc5Niw4IEBAIHN0
-YXRpYyBpbnQgcmVhZF9jcmMoaWd0X3BpcGVfY3JjX3QgKnBpcGVfY3JjLCBpZ3RfY3JjX3QgKm91
-dCkKIAlpZiAoYnl0ZXNfcmVhZCA+IDAgJiYgIXBpcGVfY3JjX2luaXRfZnJvbV9zdHJpbmcocGlw
-ZV9jcmMsIG91dCwgYnVmKSkKIAkJcmV0dXJuIC1FSU5WQUw7CiAKKwljcmNfc2FuaXR5X2NoZWNr
-cyhwaXBlX2NyYywgb3V0KTsKKwogCXJldHVybiBieXRlc19yZWFkOwogfQogCkBAIC04ODUsMjcg
-KzkwNyw2IEBAIGlndF9waXBlX2NyY19nZXRfY3JjcyhpZ3RfcGlwZV9jcmNfdCAqcGlwZV9jcmMs
-IGludCBuX2NyY3MsCiAJcmV0dXJuIG47CiB9CiAKLXN0YXRpYyB2b2lkIGNyY19zYW5pdHlfY2hl
-Y2tzKGlndF9waXBlX2NyY190ICpwaXBlX2NyYywgaWd0X2NyY190ICpjcmMpCi17Ci0JaW50IGk7
-Ci0JYm9vbCBhbGxfemVybyA9IHRydWU7Ci0KLQkvKiBBbnkgQ1JDIHZhbHVlIGNhbiBiZSBjb25z
-aWRlcmVkIHZhbGlkIG9uIGFtZGdwdSBoYXJkd2FyZS4gKi8KLQlpZiAoaXNfYW1kZ3B1X2Rldmlj
-ZShwaXBlX2NyYy0+ZmQpKQotCQlyZXR1cm47Ci0KLQlmb3IgKGkgPSAwOyBpIDwgY3JjLT5uX3dv
-cmRzOyBpKyspIHsKLQkJaWd0X3dhcm5fb25fZihjcmMtPmNyY1tpXSA9PSAweGZmZmZmZmZmLAot
-CQkJICAgICAgIlN1c3BpY2lvdXMgQ1JDOiBpdCBsb29rcyBsaWtlIHRoZSBDUkMgIgotCQkJICAg
-ICAgInJlYWQgYmFjayB3YXMgZnJvbSBhIHJlZ2lzdGVyIGluIGEgcG93ZXJlZCAiCi0JCQkgICAg
-ICAiZG93biB3ZWxsXG4iKTsKLQkJaWYgKGNyYy0+Y3JjW2ldKQotCQkJYWxsX3plcm8gPSBmYWxz
-ZTsKLQl9Ci0KLQlpZ3Rfd2Fybl9vbl9mKGFsbF96ZXJvLCAiU3VzcGljaW91cyBDUkM6IEFsbCB2
-YWx1ZXMgYXJlIDAuXG4iKTsKLX0KLQogLyoqCiAgKiBpZ3RfcGlwZV9jcmNfZHJhaW46CiAgKiBA
-cGlwZV9jcmM6IHBpcGUgQ1JDIG9iamVjdApAQCAtOTQ2LDggKzk0Nyw2IEBAIHZvaWQgaWd0X3Bp
-cGVfY3JjX2RyYWluKGlndF9waXBlX2NyY190ICpwaXBlX2NyYykKIHZvaWQgaWd0X3BpcGVfY3Jj
-X2dldF9zaW5nbGUoaWd0X3BpcGVfY3JjX3QgKnBpcGVfY3JjLCBpZ3RfY3JjX3QgKmNyYykKIHsK
-IAlyZWFkX29uZV9jcmMocGlwZV9jcmMsIGNyYyk7Ci0KLQljcmNfc2FuaXR5X2NoZWNrcyhwaXBl
-X2NyYywgY3JjKTsKIH0KIAogLyoqCkBAIC05NzQsOCArOTczLDYgQEAgaWd0X3BpcGVfY3JjX2dl
-dF9mb3JfZnJhbWUoaW50IGRybV9mZCwgaWd0X3BpcGVfY3JjX3QgKnBpcGVfY3JjLAogCQkJcmV0
-dXJuOwogCQl9CiAJfSB3aGlsZSAoaWd0X3ZibGFua19iZWZvcmUoY3JjLT5mcmFtZSwgdmJsYW5r
-KSk7Ci0KLQljcmNfc2FuaXR5X2NoZWNrcyhwaXBlX2NyYywgY3JjKTsKIH0KIAogLyoqCi0tIAoy
-LjI2LjIKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
-dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+== Series Details ==
+
+Series: lib/debugfs: Sanity check even discarded CRCs (rev3)
+URL   : https://patchwork.freedesktop.org/series/53982/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8488 -> IGTPW_4574
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4574/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4574 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-whl-u:           [INCOMPLETE][1] ([i915#656]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8488/fi-whl-u/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4574/fi-whl-u/igt@i915_selftest@live@execlists.html
+
+  
+  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
+
+
+Participating hosts (51 -> 43)
+------------------------------
+
+  Missing    (8): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-hsw-4770 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5655 -> IGTPW_4574
+
+  CI-20190529: 20190529
+  CI_DRM_8488: d40ec60813532e485e9c63623c91babf556cfbe3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4574: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4574/index.html
+  IGT_5655: 2cc4c1edc3065590f9917930b6d049a90c4a38fd @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4574/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
