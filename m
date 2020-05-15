@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 15 May 2020 11:44:04 -0000
-Message-ID: <158954304405.26213.18308929496098537005@emeril.freedesktop.org>
-References: <20200513170224.848726-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200513170224.848726-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_s?=
- =?utf-8?q?eries_starting_with_=5Bi-g-t=2C1/2=5D_lib/i915=3A_Report_schedu?=
- =?utf-8?q?ler_caps_for_timeslicing?=
+Date: Fri, 15 May 2020 11:43:46 -0000
+Message-ID: <158954302631.26213.3768812991610767093@emeril.freedesktop.org>
+References: <20200513104715.792111-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200513104715.792111-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_i?=
+ =?utf-8?q?915/sysfs=5Fheartbeat=5Finterval=3A_Watch_out_for_CPU_scheduler?=
+ =?utf-8?q?_delays?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,27 +26,46 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: series starting with [i-g-t,1/2] lib/i915: Report scheduler caps for timeslicing
-URL   : https://patchwork.freedesktop.org/series/77236/
+Series: i915/sysfs_heartbeat_interval: Watch out for CPU scheduler delays
+URL   : https://patchwork.freedesktop.org/series/77218/
 State : failure
 
 == Summary ==
 
 ERROR! This series introduces new undocumented tests:
 
-gem_exec_fence@syncobj-future
-gem_exec_fence@syncobj-future-cycle
-gem_exec_fence@syncobj-future-deadlock
-gem_exec_fence@syncobj-future-group
-gem_exec_fence@syncobj-future-pair
-gem_exec_fence@syncobj-future-past
-gem_exec_fence@syncobj-future-self
-gem_exec_fence@syncobj-future-self-submit
-gem_exec_fence@syncobj-future-submit
-gem_exec_fence@syncobj-future-submit-cycle
-gem_exec_fence@syncobj-future-submit-deadlock
-gem_exec_fence@syncobj-future-submit-past
-gem_exec_fence@syncobj-incomplete-wait-submit
+gem_exec_fence@concurrent
+gem_exec_fence@submit
+gem_exec_fence@submit3
+gem_exec_fence@submit67
+gem_exec_reloc@basic-many-active
+gem_exec_reloc@basic-wide-active
+gem_exec_schedule@lateslice
+gem_exec_schedule@manyslice
+gem_exec_schedule@thriceslice
+gem_exec_schedule@timeslicing
+gem_mmap_gtt@ptrace
+gem_mmap_offset@ptrace
+gem_ringfill@basic-all
+gem_ringfill@engines-S3
+gem_ringfill@engines-S4
+gem_ringfill@engines-basic
+gem_ringfill@engines-bomb
+gem_ringfill@engines-child
+gem_ringfill@engines-fd
+gem_ringfill@engines-forked
+gem_ringfill@engines-hang
+gem_ringfill@engines-interruptible
+gem_ringfill@legacy-S3
+gem_ringfill@legacy-S4
+gem_ringfill@legacy-basic
+gem_ringfill@legacy-bomb
+gem_ringfill@legacy-child
+gem_ringfill@legacy-fd
+gem_ringfill@legacy-forked
+gem_ringfill@legacy-hang
+gem_ringfill@legacy-interruptible
+perf_pmu@module-unload
 
 Can you document them as per the requirement in the [CONTRIBUTING.md]?
 
@@ -63,11 +82,11 @@ Thanks in advance!
 
 Other than that, pipeline status: SUCCESS.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/146272 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/146004 for the overview.
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/146272
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/146004
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
