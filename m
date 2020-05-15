@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 15 May 2020 11:42:58 -0000
-Message-ID: <158954297847.26210.9492223916041344941@emeril.freedesktop.org>
-References: <20200512103415.28968-1-anshuman.gupta@intel.com>
-In-Reply-To: <20200512103415.28968-1-anshuman.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_l?=
- =?utf-8?q?psp_platform_agnostic_support_=28rev11=29?=
+Date: Fri, 15 May 2020 11:43:38 -0000
+Message-ID: <158954301863.26211.4058037893282714821@emeril.freedesktop.org>
+References: <20200512102447.9249-1-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20200512102447.9249-1-janusz.krzysztofik@linux.intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
+ =?utf-8?q?ests/gem=5Fexec=5Fnop=3A_=22headless=22_requires_submicrosecond?=
+ =?utf-8?q?_precision_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,14 +20,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anshuman Gupta <anshuman.gupta@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: lpsp platform agnostic support (rev11)
-URL   : https://patchwork.freedesktop.org/series/74647/
+Series: tests/gem_exec_nop: "headless" requires submicrosecond precision (rev2)
+URL   : https://patchwork.freedesktop.org/series/77186/
 State : failure
 
 == Summary ==
@@ -81,11 +82,11 @@ Thanks in advance!
 
 Other than that, pipeline status: SUCCESS.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/145325 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/145561 for the overview.
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/145325
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/145561
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
