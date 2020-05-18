@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A5B06E169
- for <igt-dev@lists.freedesktop.org>; Mon, 18 May 2020 06:43:47 +0000 (UTC)
-Date: Mon, 18 May 2020 12:04:46 +0530
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <20200518063445.GM10565@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B07616E07D
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 May 2020 07:32:10 +0000 (UTC)
+From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Date: Mon, 18 May 2020 07:32:07 +0000
+Message-ID: <ca3b62e465a4409d95d237690d04d267@intel.com>
 References: <20200512103415.28968-1-anshuman.gupta@intel.com>
  <158954297847.26210.9492223916041344941@emeril.freedesktop.org>
+ <20200518063445.GM10565@intel.com>
+In-Reply-To: <20200518063445.GM10565@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <158954297847.26210.9492223916041344941@emeril.freedesktop.org>
 Subject: Re: [igt-dev]
  =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_l?=
  =?utf-8?q?psp_platform_agnostic_support_=28rev11=29?=
@@ -20,84 +21,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: lakshminarayana.vudum@intel.com
-Cc: igt-dev@lists.freedesktop.org
+To: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-05-15 at 11:42:58 +0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: lpsp platform agnostic support (rev11)
-> URL   : https://patchwork.freedesktop.org/series/74647/
-> State : failure
-> 
-> == Summary ==
-> 
-> ERROR! This series introduces new undocumented tests:
-> 
-> gem_exec_fence@concurrent
-> gem_exec_fence@submit
-> gem_exec_fence@submit3
-> gem_exec_fence@submit67
-> gem_exec_reloc@basic-many-active
-> gem_exec_reloc@basic-wide-active
-> gem_exec_schedule@lateslice
-> gem_exec_schedule@manyslice
-> gem_exec_schedule@thriceslice
-> gem_exec_schedule@timeslicing
-> gem_mmap_gtt@ptrace
-> gem_mmap_offset@ptrace
-> gem_ringfill@basic-all
-> gem_ringfill@engines-S3
-> gem_ringfill@engines-S4
-> gem_ringfill@engines-basic
-> gem_ringfill@engines-bomb
-> gem_ringfill@engines-child
-> gem_ringfill@engines-fd
-> gem_ringfill@engines-forked
-> gem_ringfill@engines-hang
-> gem_ringfill@engines-interruptible
-> gem_ringfill@legacy-S3
-> gem_ringfill@legacy-S4
-> gem_ringfill@legacy-basic
-> gem_ringfill@legacy-bomb
-> gem_ringfill@legacy-child
-> gem_ringfill@legacy-fd
-> gem_ringfill@legacy-forked
-> gem_ringfill@legacy-hang
-> gem_ringfill@legacy-interruptible
-> perf_pmu@module-unload
-Hi Lakshmi,
-Above test which are not documented are  not part of my series https://patchwork.freedesktop.org/series/74647/
-Could you please rereport it.
-Thanks,
-Anshuman Gupta.
-> 
-> Can you document them as per the requirement in the [CONTRIBUTING.md]?
-> 
-> [Documentation] has more details on how to do this.
-> 
-> Here are few examples:
-> https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-> https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
-> 
-> Thanks in advance!
-> 
-> [CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-> [Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-> 
-> Other than that, pipeline status: SUCCESS.
-> 
-> see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/145325 for the overview.
-> 
-> == Logs ==
-> 
-> For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/145325
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+QW5zaHVtYW4sIA0KDQpMb29rcyBsaWtlIHRoZXJlIGlzIG5vIGFjdGlvbiB0byBiZSB0YWtlbiBh
+cyB3ZSBoYXZlIEJBVC9zaGFyZCByZXN1bHRzIGFscmVhZHkuIFRoaXMgcGF0Y2ggc2VyaWVzIGhh
+cyBub3RoaW5nIHRvIGRvIHdpdGggdW5kb2N1bWVudGVkIHRlc3RzLg0KSXQncyBhIENJIGZsdWtl
+Lg0KDQpUaGFua3MsDQpMYWtzaG1pLg0KLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCkZyb206
+IEd1cHRhLCBBbnNodW1hbiA8YW5zaHVtYW4uZ3VwdGFAaW50ZWwuY29tPiANClNlbnQ6IE1vbmRh
+eSwgTWF5IDE4LCAyMDIwIDk6MzUgQU0NClRvOiBWdWR1bSwgTGFrc2htaW5hcmF5YW5hIDxsYWtz
+aG1pbmFyYXlhbmEudnVkdW1AaW50ZWwuY29tPg0KQ2M6IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnDQpTdWJqZWN0OiBSZTog4pyXIEdpdExhYi5QaXBlbGluZTogZmFpbHVyZSBmb3IgbHBz
+cCBwbGF0Zm9ybSBhZ25vc3RpYyBzdXBwb3J0IChyZXYxMSkNCg0KT24gMjAyMC0wNS0xNSBhdCAx
+MTo0Mjo1OCArMDAwMCwgUGF0Y2h3b3JrIHdyb3RlOg0KPiA9PSBTZXJpZXMgRGV0YWlscyA9PQ0K
+PiANCj4gU2VyaWVzOiBscHNwIHBsYXRmb3JtIGFnbm9zdGljIHN1cHBvcnQgKHJldjExKQ0KPiBV
+UkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvNzQ2NDcvDQo+
+IFN0YXRlIDogZmFpbHVyZQ0KPiANCj4gPT0gU3VtbWFyeSA9PQ0KPiANCj4gRVJST1IhIFRoaXMg
+c2VyaWVzIGludHJvZHVjZXMgbmV3IHVuZG9jdW1lbnRlZCB0ZXN0czoNCj4gDQo+IGdlbV9leGVj
+X2ZlbmNlQGNvbmN1cnJlbnQNCj4gZ2VtX2V4ZWNfZmVuY2VAc3VibWl0DQo+IGdlbV9leGVjX2Zl
+bmNlQHN1Ym1pdDMNCj4gZ2VtX2V4ZWNfZmVuY2VAc3VibWl0NjcNCj4gZ2VtX2V4ZWNfcmVsb2NA
+YmFzaWMtbWFueS1hY3RpdmUNCj4gZ2VtX2V4ZWNfcmVsb2NAYmFzaWMtd2lkZS1hY3RpdmUNCj4g
+Z2VtX2V4ZWNfc2NoZWR1bGVAbGF0ZXNsaWNlDQo+IGdlbV9leGVjX3NjaGVkdWxlQG1hbnlzbGlj
+ZQ0KPiBnZW1fZXhlY19zY2hlZHVsZUB0aHJpY2VzbGljZQ0KPiBnZW1fZXhlY19zY2hlZHVsZUB0
+aW1lc2xpY2luZw0KPiBnZW1fbW1hcF9ndHRAcHRyYWNlDQo+IGdlbV9tbWFwX29mZnNldEBwdHJh
+Y2UNCj4gZ2VtX3JpbmdmaWxsQGJhc2ljLWFsbA0KPiBnZW1fcmluZ2ZpbGxAZW5naW5lcy1TMw0K
+PiBnZW1fcmluZ2ZpbGxAZW5naW5lcy1TNA0KPiBnZW1fcmluZ2ZpbGxAZW5naW5lcy1iYXNpYw0K
+PiBnZW1fcmluZ2ZpbGxAZW5naW5lcy1ib21iDQo+IGdlbV9yaW5nZmlsbEBlbmdpbmVzLWNoaWxk
+DQo+IGdlbV9yaW5nZmlsbEBlbmdpbmVzLWZkDQo+IGdlbV9yaW5nZmlsbEBlbmdpbmVzLWZvcmtl
+ZA0KPiBnZW1fcmluZ2ZpbGxAZW5naW5lcy1oYW5nDQo+IGdlbV9yaW5nZmlsbEBlbmdpbmVzLWlu
+dGVycnVwdGlibGUNCj4gZ2VtX3JpbmdmaWxsQGxlZ2FjeS1TMw0KPiBnZW1fcmluZ2ZpbGxAbGVn
+YWN5LVM0DQo+IGdlbV9yaW5nZmlsbEBsZWdhY3ktYmFzaWMNCj4gZ2VtX3JpbmdmaWxsQGxlZ2Fj
+eS1ib21iDQo+IGdlbV9yaW5nZmlsbEBsZWdhY3ktY2hpbGQNCj4gZ2VtX3JpbmdmaWxsQGxlZ2Fj
+eS1mZA0KPiBnZW1fcmluZ2ZpbGxAbGVnYWN5LWZvcmtlZA0KPiBnZW1fcmluZ2ZpbGxAbGVnYWN5
+LWhhbmcNCj4gZ2VtX3JpbmdmaWxsQGxlZ2FjeS1pbnRlcnJ1cHRpYmxlDQo+IHBlcmZfcG11QG1v
+ZHVsZS11bmxvYWQNCkhpIExha3NobWksDQpBYm92ZSB0ZXN0IHdoaWNoIGFyZSBub3QgZG9jdW1l
+bnRlZCBhcmUgIG5vdCBwYXJ0IG9mIG15IHNlcmllcyBodHRwczovL3BhdGNod29yay5mcmVlZGVz
+a3RvcC5vcmcvc2VyaWVzLzc0NjQ3Lw0KQ291bGQgeW91IHBsZWFzZSByZXJlcG9ydCBpdC4NClRo
+YW5rcywNCkFuc2h1bWFuIEd1cHRhLg0KPiANCj4gQ2FuIHlvdSBkb2N1bWVudCB0aGVtIGFzIHBl
+ciB0aGUgcmVxdWlyZW1lbnQgaW4gdGhlIFtDT05UUklCVVRJTkcubWRdPw0KPiANCj4gW0RvY3Vt
+ZW50YXRpb25dIGhhcyBtb3JlIGRldGFpbHMgb24gaG93IHRvIGRvIHRoaXMuDQo+IA0KPiBIZXJl
+IGFyZSBmZXcgZXhhbXBsZXM6DQo+IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0v
+aWd0LWdwdS10b29scy9jb21taXQvMDMxNjY5NWQwM2FhNDYNCj4gMTA4Mjk2YjI3ZjM5ODJlYzkz
+MjAwYzdhNmUgDQo+IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaWd0LWdwdS10
+b29scy9jb21taXQvNDQzY2M2NThlMWU2YjQNCj4gOTJlZTE3YmY0ZjRkODkxMDI5ZWI3YTIwNWQN
+Cj4gDQo+IFRoYW5rcyBpbiBhZHZhbmNlIQ0KPiANCj4gW0NPTlRSSUJVVElORy5tZF06IA0KPiBo
+dHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2lndC1ncHUtdG9vbHMvYmxvYi9tYXN0
+ZXIvQ09OVFJJQlVUDQo+IElORy5tZCNMMTkNCj4gW0RvY3VtZW50YXRpb25dOiANCj4gaHR0cHM6
+Ly9kcm0ucGFnZXMuZnJlZWRlc2t0b3Aub3JnL2lndC1ncHUtdG9vbHMvaWd0LWdwdS10b29scy1D
+b3JlLmh0bQ0KPiBsI2lndC1kZXNjcmliZQ0KPiANCj4gT3RoZXIgdGhhbiB0aGF0LCBwaXBlbGlu
+ZSBzdGF0dXM6IFNVQ0NFU1MuDQo+IA0KPiBzZWUgaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Au
+b3JnL2dmeC1jaS9pZ3QtY2ktdGFncy9waXBlbGluZXMvMTQ1MzI1IGZvciB0aGUgb3ZlcnZpZXcu
+DQo+IA0KPiA9PSBMb2dzID09DQo+IA0KPiBGb3IgbW9yZSBkZXRhaWxzIHNlZTogDQo+IGh0dHBz
+Oi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvaWd0LWNpLXRhZ3MvcGlwZWxpbmVzLzE0
+NTMyNQ0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tCkludGVsIEZpbmxhbmQgT3kKUmVnaXN0ZXJlZCBBZGRyZXNzOiBQ
+TCAyODEsIDAwMTgxIEhlbHNpbmtpIApCdXNpbmVzcyBJZGVudGl0eSBDb2RlOiAwMzU3NjA2IC0g
+NCAKRG9taWNpbGVkIGluIEhlbHNpbmtpIAoKVGhpcyBlLW1haWwgYW5kIGFueSBhdHRhY2htZW50
+cyBtYXkgY29udGFpbiBjb25maWRlbnRpYWwgbWF0ZXJpYWwgZm9yCnRoZSBzb2xlIHVzZSBvZiB0
+aGUgaW50ZW5kZWQgcmVjaXBpZW50KHMpLiBBbnkgcmV2aWV3IG9yIGRpc3RyaWJ1dGlvbgpieSBv
+dGhlcnMgaXMgc3RyaWN0bHkgcHJvaGliaXRlZC4gSWYgeW91IGFyZSBub3QgdGhlIGludGVuZGVk
+CnJlY2lwaWVudCwgcGxlYXNlIGNvbnRhY3QgdGhlIHNlbmRlciBhbmQgZGVsZXRlIGFsbCBjb3Bp
+ZXMuCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
+ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
