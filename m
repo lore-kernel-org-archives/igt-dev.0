@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7354189F63
- for <igt-dev@lists.freedesktop.org>; Mon, 18 May 2020 10:01:13 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20200518090919.14756-4-zbigniew.kempczynski@intel.com>
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 18 May 2020 10:02:42 -0000
+Message-ID: <158979616287.31685.17268090840353262245@emeril.freedesktop.org>
 References: <20200518090919.14756-1-zbigniew.kempczynski@intel.com>
- <20200518090919.14756-4-zbigniew.kempczynski@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158979606975.17769.6033797161883010544@build.alporthouse.com>
-Date: Mon, 18 May 2020 11:01:09 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t v3 3/7] lib/intel_batchbuffer: Introduce
- intel_bb
+In-Reply-To: <20200518090919.14756-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgTWFrZSBn?=
+ =?utf-8?q?pgpu_fill_tests_libdrm_independent_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,28 +14,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: zbigniew.kempczynski@intel.com, igt-dev@lists.freedesktop.org
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMDUtMTggMTA6MDk6MTUpCj4gKy8q
-Cj4gKyAqIGludGVsX2JiX2FkZF9oYW5kbGU6Cj4gKyAqIEBpYmI6IHBvaW50ZXIgdG8gaW50ZWxf
-YmIKPiArICogQGhhbmRsZTogd2hpY2ggaGFuZGxlIHRvIGFkZCB0byBvYmplY3RzIGFycmF5Cj4g
-KyAqIEBvZmZzZXQ6IHByZXN1bWVkIG9mZnNldCBvZiB0aGUgb2JqZWN0IHdoZW4gSTkxNV9FWEVD
-X05PX1JFTE9DIGZsYWcgaXMKPiArICogdXNlZCBpbiBleGVjYnVmIGNhbGwKPiArICoKPiArICog
-RnVuY3Rpb24gYWxsb2NhdGVzIGFkZGl0aW9uYWwgZXhlY29iaiBzbG90IGluIG9iamVjdCBhcnJh
-eSBmb3IgYSBoYW5kbGUuCj4gKyAqIEZvciBiYXRjaGJ1ZmZlciBvbmx5IHByZXN1bWVkIGFkZHJl
-c3MgaXMgc2F2ZWQuCj4gKyAqLwo+ICtzdGF0aWMgdm9pZCBpbnRlbF9iYl9hZGRfaGFuZGxlKHN0
-cnVjdCBpbnRlbF9iYiAqaWJiLAo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdWlu
-dDMyX3QgaGFuZGxlLAo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgdWludDY0X3Qg
-b2Zmc2V0KQoKSWYgeW91IGdldCBpbnRvIHRoZSBDQ1MgZGlyZWN0b3J5IG1hbmFnZW1lbnQgKHdo
-aWNoIHdlIHdpbGwgZm9yCnJlbmRlcmNvcHkpLCB3ZSB3aWxsIG5lZWQgdG8gdGFrZSBub3RlIG9m
-IEVYRUNfT0JKRUNUX1BJTk5FRC4gQW5kIHlvdQptYXkgYXMgd2VsbCBwYXNzIHRoZSBFWEVDX09C
-SkVDVF9XUklURSBmbGFnIGF0IHRoaXMgdGltZS4gSW4gc2hvcnQsIHlvdQptaWdodCBhcyB3ZWxs
-IHN0YXJ0IG9mZiBieSBwYXNzaW5nIGZsYWdzLgotQ2hyaXMKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9pZ3QtZGV2Cg==
+== Series Details ==
+
+Series: Make gpgpu fill tests libdrm independent (rev3)
+URL   : https://patchwork.freedesktop.org/series/77175/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8493 -> IGTPW_4575
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4575/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4575 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@execlists:
+    - fi-tgl-y:           [INCOMPLETE][1] ([i915#1803]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8493/fi-tgl-y/igt@i915_selftest@live@execlists.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4575/fi-tgl-y/igt@i915_selftest@live@execlists.html
+
+  
+  [i915#1803]: https://gitlab.freedesktop.org/drm/intel/issues/1803
+
+
+Participating hosts (51 -> 43)
+------------------------------
+
+  Additional (1): fi-kbl-7560u 
+  Missing    (9): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-hsw-4770 fi-byt-clapper fi-bsw-nick fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5657 -> IGTPW_4575
+
+  CI-20190529: 20190529
+  CI_DRM_8493: 47e0097b33017be45f6826ef82a1f535b81ab9a3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4575: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4575/index.html
+  IGT_5657: 649eae5c905a7460b44305800f95db83a6dd47cb @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4575/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
