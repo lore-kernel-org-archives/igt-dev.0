@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EEBB86ECEA
- for <igt-dev@lists.freedesktop.org>; Fri, 15 May 2020 18:52:23 +0000 (UTC)
-Date: Fri, 15 May 2020 21:52:20 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20200515185220.GN6112@intel.com>
-References: <20181213105734.32617-1-ville.syrjala@linux.intel.com>
- <158956647040.26211.8314577379076963373@emeril.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A5B06E169
+ for <igt-dev@lists.freedesktop.org>; Mon, 18 May 2020 06:43:47 +0000 (UTC)
+Date: Mon, 18 May 2020 12:04:46 +0530
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+Message-ID: <20200518063445.GM10565@intel.com>
+References: <20200512103415.28968-1-anshuman.gupta@intel.com>
+ <158954297847.26210.9492223916041344941@emeril.freedesktop.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <158956647040.26211.8314577379076963373@emeril.freedesktop.org>
+In-Reply-To: <158954297847.26210.9492223916041344941@emeril.freedesktop.org>
 Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbGliL2Rl?=
- =?utf-8?q?bugfs=3A_Sanity_check_even_discarded_CRCs_=28rev3=29?=
+ =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_l?=
+ =?utf-8?q?psp_platform_agnostic_support_=28rev11=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,100 +20,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: lakshminarayana.vudum@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, May 15, 2020 at 06:14:30PM -0000, Patchwork wrote:
-> =3D=3D Series Details =3D=3D
-> =
-
-> Series: lib/debugfs: Sanity check even discarded CRCs (rev3)
-> URL   : https://patchwork.freedesktop.org/series/53982/
+On 2020-05-15 at 11:42:58 +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: lpsp platform agnostic support (rev11)
+> URL   : https://patchwork.freedesktop.org/series/74647/
 > State : failure
-> =
-
-> =3D=3D Summary =3D=3D
-> =
-
-> CI Bug Log - changes from CI_DRM_8488_full -> IGTPW_4574_full
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-> =
-
-> Summary
-> -------
-> =
-
->   **FAILURE**
-> =
-
->   Serious unknown changes coming with IGTPW_4574_full absolutely need to =
-be
->   verified manually.
->   =
-
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_4574_full, please notify your bug team to allow them
->   to document this new failure mode, which will reduce false positives in=
- CI.
-> =
-
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4574/index=
-.html
-> =
-
-> Possible new issues
-> -------------------
-> =
-
->   Here are the unknown changes that may have been introduced in IGTPW_457=
-4_full:
-> =
-
-> ### IGT changes ###
-> =
-
-> #### Possible regressions ####
-> =
-
->   * igt@gem_ctx_ringsize@idle@rcs0:
->     - shard-iclb:         [PASS][1] -> [INCOMPLETE][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8488/shard-iclb8/=
-igt@gem_ctx_ringsize@idle@rcs0.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4574/shard-iclb5/i=
-gt@gem_ctx_ringsize@idle@rcs0.html
-> =
-
->   * igt@kms_cursor_edge_walk@pipe-a-256x256-bottom-edge:
->     - shard-iclb:         [PASS][3] -> [WARN][4] +33 similar issues
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8488/shard-iclb8/=
-igt@kms_cursor_edge_walk@pipe-a-256x256-bottom-edge.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4574/shard-iclb8/i=
-gt@kms_cursor_edge_walk@pipe-a-256x256-bottom-edge.html
-
-Somewhat surprising result. kms_cursor_edge_walk sees zeroed
-crcs all the time, but no other test ever sees them. Wasn't
-quite expecting that.
-
-Hmm. Now that I think about it IIRC there was some problem
-with CRCs when all planes are turned off. I think the spec
-even says the dmux crc source shouldn't be used with all planes
-turned off, but I seem to recall the problem only manifesting
-for a single frame when transitioning between no-planes vs. some
-planes.
-
-However I don't think kms_cursor_edge_walk should even be turning
-off all the planes. This would seem to need a deeper investigation.
-
--- =
-
-Ville Syrj=E4l=E4
-Intel
+> 
+> == Summary ==
+> 
+> ERROR! This series introduces new undocumented tests:
+> 
+> gem_exec_fence@concurrent
+> gem_exec_fence@submit
+> gem_exec_fence@submit3
+> gem_exec_fence@submit67
+> gem_exec_reloc@basic-many-active
+> gem_exec_reloc@basic-wide-active
+> gem_exec_schedule@lateslice
+> gem_exec_schedule@manyslice
+> gem_exec_schedule@thriceslice
+> gem_exec_schedule@timeslicing
+> gem_mmap_gtt@ptrace
+> gem_mmap_offset@ptrace
+> gem_ringfill@basic-all
+> gem_ringfill@engines-S3
+> gem_ringfill@engines-S4
+> gem_ringfill@engines-basic
+> gem_ringfill@engines-bomb
+> gem_ringfill@engines-child
+> gem_ringfill@engines-fd
+> gem_ringfill@engines-forked
+> gem_ringfill@engines-hang
+> gem_ringfill@engines-interruptible
+> gem_ringfill@legacy-S3
+> gem_ringfill@legacy-S4
+> gem_ringfill@legacy-basic
+> gem_ringfill@legacy-bomb
+> gem_ringfill@legacy-child
+> gem_ringfill@legacy-fd
+> gem_ringfill@legacy-forked
+> gem_ringfill@legacy-hang
+> gem_ringfill@legacy-interruptible
+> perf_pmu@module-unload
+Hi Lakshmi,
+Above test which are not documented are  not part of my series https://patchwork.freedesktop.org/series/74647/
+Could you please rereport it.
+Thanks,
+Anshuman Gupta.
+> 
+> Can you document them as per the requirement in the [CONTRIBUTING.md]?
+> 
+> [Documentation] has more details on how to do this.
+> 
+> Here are few examples:
+> https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
+> https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
+> 
+> Thanks in advance!
+> 
+> [CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
+> [Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
+> 
+> Other than that, pipeline status: SUCCESS.
+> 
+> see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/145325 for the overview.
+> 
+> == Logs ==
+> 
+> For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/145325
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
