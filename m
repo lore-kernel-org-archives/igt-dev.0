@@ -1,9 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 18 May 2020 21:50:10 +0100
-Message-Id: <20200518205010.1539621-1-chris@chris-wilson.co.uk>
+Date: Mon, 18 May 2020 22:39:36 +0100
+Message-Id: <20200518213936.1539871-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib: Cleanup __igt_params_open()
+Subject: [igt-dev] [PATCH i-g-t] lib/i915: Reset all engine properties to
+ defaults prior to the start of a test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,159 +17,172 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Jani Nikula <jani.nikula@intel.com>, intel-gfx@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+Cc: intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The device always exist, so use it to derive the module name required to
-lookup either the debugfs params directory or the sysfs module parameters.
+We need each test in an isolated context, so that bad results from one
+test do not interfere with the next. In particular, we want to clean up
+the device and reset it to the defaults so that they are known for the
+next test, and the test can focus on behaviour it wants to control.
 
-Fixes: 2f5cee33ce55 ("igt/params: use igt_params_set_save for igt_set_module_param*")
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 ---
- lib/igt_params.c | 116 +++++++----------------------------------------
- 1 file changed, 17 insertions(+), 99 deletions(-)
+ lib/i915/gem.c                   | 85 ++++++++++++++++++++++++++++++++
+ lib/igt_dummyload.c              |  2 -
+ lib/igt_gt.c                     |  2 -
+ tests/i915/gem_ctx_persistence.c |  1 -
+ 4 files changed, 85 insertions(+), 5 deletions(-)
 
-diff --git a/lib/igt_params.c b/lib/igt_params.c
-index d8649dfd9..9d9a11c0b 100644
---- a/lib/igt_params.c
-+++ b/lib/igt_params.c
-@@ -131,117 +131,35 @@ static void igt_params_save(int dir, const char *path, const char *name)
+diff --git a/lib/i915/gem.c b/lib/i915/gem.c
+index cabd23768..3ef31ed33 100644
+--- a/lib/i915/gem.c
++++ b/lib/i915/gem.c
+@@ -22,6 +22,7 @@
+  *
   */
- static int __igt_params_open(int device, char **outpath, const char *param)
+ 
++#include <dirent.h>
+ #include <fcntl.h>
+ #include <sys/ioctl.h>
+ 
+@@ -30,6 +31,89 @@
+ #include "igt_debugfs.h"
+ #include "igt_sysfs.h"
+ 
++static void __restore_defaults(int engine)
++{
++	struct dirent *de;
++	int defaults;
++	DIR *dir;
++
++	defaults = openat(engine, ".defaults", O_RDONLY);
++	if (defaults < 0)
++		return;
++
++	dir = fdopendir(defaults);
++	if (!dir) {
++		close(defaults);
++		return;
++	}
++
++	while ((de = readdir(dir))) {
++		char buf[256];
++		int fd, len;
++
++		if (*de->d_name == '.')
++			continue;
++
++		fd = openat(defaults, de->d_name, O_RDONLY);
++		if (fd < 0)
++			continue;
++
++		len = read(fd, buf, sizeof(buf));
++		close(fd);
++		if (len < 0)
++			continue;
++
++		fd = openat(engine, de->d_name, O_WRONLY);
++		if (fd < 0)
++			continue;
++
++		write(fd, buf, len);
++		close(fd);
++	}
++
++	closedir(dir);
++}
++
++static void restore_defaults(int i915)
++{
++	struct dirent *de;
++	int engines;
++	DIR *dir;
++	int sys;
++
++	sys = igt_sysfs_open(i915);
++	if (sys < 0)
++		return;
++
++	engines = openat(sys, "engine", O_RDONLY);
++	if (engines < 0)
++		goto close_sys;
++
++	dir = fdopendir(engines);
++	if (!dir) {
++		close(engines);
++		goto close_sys;
++	}
++
++	while ((de = readdir(dir))) {
++		int engine;
++
++		if (*de->d_name == '.')
++			continue;
++
++		engine = openat(engines, de->d_name, O_RDONLY);
++		if (engine < 0)
++			continue;
++
++		__restore_defaults(engine);
++		close(engine);
++	}
++
++	closedir(dir);
++close_sys:
++	close(sys);
++}
++
+ static void reset_device(int i915)
  {
-+	drm_version_t version;
- 	int dir, params = -1;
--	struct stat buffer;
--	char searchname[64];
--	char searchpath[PATH_MAX];
--	char *foundname, *ctx;
-+	char path[PATH_MAX];
-+	char name[32];
-+
-+	memset(&version, 0, sizeof(version));
-+	version.name_len = sizeof(name);
-+	version.name = name;
-+	if (ioctl(device, DRM_IOCTL_VERSION, &version))
-+		return -1;
+ 	int dir;
+@@ -66,6 +150,7 @@ void igt_require_gem(int i915)
+ 	 * sequences of batches.
+ 	 */
+ 	reset_device(i915);
++	restore_defaults(i915);
  
- 	dir = igt_debugfs_dir(device);
- 	if (dir >= 0) {
--		int devname;
--
--		devname = openat(dir, "name", O_RDONLY);
--		igt_require_f(devname >= 0,
--		              "Driver need to name itself in debugfs!");
--
--		read(devname, searchname, sizeof(searchname));
--		close(devname);
--
--		foundname = strtok_r(searchname, " ", &ctx);
--		igt_require_f(foundname,
--		              "Driver need to name itself in debugfs!");
--
--		snprintf(searchpath, PATH_MAX, "%s_params", foundname);
--		params = openat(dir, searchpath, O_RDONLY);
--
--		if (params >= 0) {
--			char *debugfspath = malloc(PATH_MAX);
--
--			igt_debugfs_path(device, debugfspath, PATH_MAX);
--			if (param != NULL) {
--				char filepath[PATH_MAX];
--
--				snprintf(filepath, PATH_MAX, "%s/%s",
--					 debugfspath, param);
--
--				if (stat(filepath, &buffer) == 0) {
--					if (outpath != NULL)
--						*outpath = debugfspath;
--					else
--						free(debugfspath);
--				} else {
--					free(debugfspath);
--					close(params);
--					params = -1;
--				}
--			} else if (outpath != NULL) {
--				/*
--				 * Caller is responsible to free this.
--				 */
--				*outpath = debugfspath;
--			} else {
--				free(debugfspath);
--			}
--		}
-+		snprintf(path, PATH_MAX, "%s_params", name);
-+		params = openat(dir, path, O_RDONLY);
- 		close(dir);
- 	}
+ 	err = 0;
+ 	if (ioctl(i915, DRM_IOCTL_I915_GEM_THROTTLE)) {
+diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+index 0b52eb5b5..a733bd674 100644
+--- a/lib/igt_dummyload.c
++++ b/lib/igt_dummyload.c
+@@ -355,8 +355,6 @@ igt_spin_factory(int fd, const struct igt_spin_factory *opts)
+ {
+ 	igt_spin_t *spin;
  
- 	if (params < 0) { /* builtin? */
--		drm_version_t version;
--		char name[32] = "";
--		char path[PATH_MAX];
+-	igt_require_gem(fd);
 -
--		if (device == -1) {
--			/*
--			 * find default device
--			 */
--			int file, i;
--			const char *debugfs_root = igt_debugfs_mount();
+ 	if (opts->engine != ALL_ENGINES) {
+ 		struct intel_execution_engine2 e;
+ 		int class;
+diff --git a/lib/igt_gt.c b/lib/igt_gt.c
+index a806b567a..101627973 100644
+--- a/lib/igt_gt.c
++++ b/lib/igt_gt.c
+@@ -172,8 +172,6 @@ igt_hang_t igt_allow_hang(int fd, unsigned ctx, unsigned flags)
+ 	 * to recover from reset and for it to remain wedged. It's hard to
+ 	 * say even if we do hang/reset making the test suspect.
+ 	 */
+-	igt_require_gem(fd);
 -
--			igt_assert(debugfs_root);
--
--			for (i = 0; i < 63; i++) {
--				char testpath[PATH_MAX];
--
--				snprintf(searchpath, PATH_MAX,
--					 "%s/dri/%d/name", debugfs_root, i);
--
--				file = open(searchpath, O_RDONLY);
--
--				if (file < 0)
--					continue;
--
--				read(file, searchname, sizeof(searchname));
--				close(file);
--
--				foundname = strtok_r(searchname, " ", &ctx);
--				if (!foundname)
--					continue;
--
--				snprintf(testpath, PATH_MAX,
--					 "/sys/module/%s/parameters",
--					 foundname);
--
--				if (stat(testpath, &buffer) == 0 &&
--				    S_ISDIR(buffer.st_mode)) {
--					snprintf(name, sizeof(name), "%s",
--						 foundname);
--					break;
--				}
--			}
--		} else {
--			memset(&version, 0, sizeof(version));
--			version.name_len = sizeof(name);
--			version.name = name;
--			ioctl(device, DRM_IOCTL_VERSION, &version);
--		}
- 		snprintf(path, sizeof(path), "/sys/module/%s/parameters", name);
- 		params = open(path, O_RDONLY);
--		if (params >= 0 && outpath)
--			*outpath = strdup(path);
- 	}
- 
-+	/*
-+	 * Caller is responsible to free this.
-+	 */
-+	if (params >= 0 && outpath)
-+		*outpath = strdup(path);
-+
- 	return params;
+ 	if (!igt_check_boolean_env_var("IGT_HANG", true))
+ 		igt_skip("hang injection disabled by user [IGT_HANG=0]\n");
+ 	gem_context_require_bannable(fd);
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index ce9f02350..cca4c3a91 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -56,7 +56,6 @@ static void cleanup(int i915)
+ 			    DROP_RESET_ACTIVE | DROP_RESET_SEQNO |
+ 			    /* cleanup */
+ 			    DROP_ACTIVE | DROP_RETIRE | DROP_IDLE | DROP_FREED);
+-	igt_require_gem(i915);
  }
  
+ static int wait_for_status(int fence, int timeout)
 -- 
 2.26.2
 
