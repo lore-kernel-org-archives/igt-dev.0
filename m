@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 337A56E312
- for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 11:11:01 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D93E6E30F
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 11:10:55 +0000 (UTC)
+Date: Tue, 19 May 2020 14:10:52 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200519111052.GB9497@platvala-desk.ger.corp.intel.com>
+References: <20200519061028.26699-1-anshuman.gupta@intel.com>
+ <20200519084226.GY9497@platvala-desk.ger.corp.intel.com>
+ <20200519102713.GP10565@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200519094821.29150-1-petri.latvala@intel.com>
-References: <20200519094821.29150-1-petri.latvala@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158988665553.7442.2177236190966978512@build.alporthouse.com>
-Date: Tue, 19 May 2020 12:10:55 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_flip: Don't use igt_fixture
- in an exit handler
+Content-Disposition: inline
+In-Reply-To: <20200519102713.GP10565@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_content_protection: CP
+ cleanup exit handler
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,27 +24,72 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: Anshuman Gupta <anshuman.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org, chris@chris-wilson.co.uk
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Petri Latvala (2020-05-19 10:48:21)
-> kms_flip's exit handler was wrapped in an igt_fixture some 7 years ago
-> because "it can fail". That's not a problem anymore, as igt_fail()
-> will explicitly handle failing in an exit handler.
-> 
-> Rather, using igt_fixture in an exit handler is harmful because on a
-> subtest failure, we don't always keep track of the currently running
-> context (whether we're inside a subtest anymore) and we forcefully
-> assert correct nesting of IGT magic control blocks now.
-> 
-> We already know the state is cleanable because we only install the
-> handler on a successful init. Unconditional cleanup in an exit handler
-> is the correct thing to do in general.
-> 
-> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
--Chris
+On Tue, May 19, 2020 at 03:57:13PM +0530, Anshuman Gupta wrote:
+> On 2020-05-19 at 11:42:26 +0300, Petri Latvala wrote:
+> > On Tue, May 19, 2020 at 11:40:28AM +0530, Anshuman Gupta wrote:
+> > > Add HDCP content protection cleanup igt exit handler,
+> > > earlier it was done through igt_fixture which doesn't
+> > > trigger hdcp cleanup on igt abortion due to any signal.
+> > > This should avoid any HDCP content protection leak.
+> > > 
+> > > Cc: Ramalingam C <ramalingam.c@intel.com>
+> > > Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+> > > ---
+> > >  tests/kms_content_protection.c | 14 +++++++++-----
+> > >  1 file changed, 9 insertions(+), 5 deletions(-)
+> > > 
+> > > diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+> > > index 3b9cedcb..f3101b8a 100644
+> > > --- a/tests/kms_content_protection.c
+> > > +++ b/tests/kms_content_protection.c
+> > > @@ -651,12 +651,21 @@ static void test_content_protection_cleanup(void)
+> > >  	}
+> > >  }
+> > >  
+> > > +static void test_content_protection_exit_handler(int sig)
+> > > +{
+> > > +	igt_fixture {
+> > > +		test_content_protection_cleanup();
+> > > +		igt_display_fini(&data.display);
+> > > +	}
+> >
+> Thanks Petri for review. 
+> > Don't put it in an igt_fixture. If a test fails, you're still inside a
+> > subtest and entering an igt_fixture will fail.
+> test_content_protection_cleanup is using for_each_connected_output() which
+> of using assert on igt_can_fail(), because of that i had to used
+> igt_fixture(), could you please suggest to mitigate above.
+
+Ohhh bugger, you're right =(
+
+Well, the lib is in need of a good cleanup regarding exit handlers, as
+this has now revealed. We need to fix the context tracking to properly
+support exit handlers and have igt_can_fail work in those.
+
+I suppose this code should work for now, the comment included:
+
+
+/*
+ * FIXME: igt_can_fail() is sometimes incorrect in exit handlers. Wrap
+ * cleanup in igt_fixture if igt_core thinks we're still in a subtest.
+ */
+if (igt_subtest_name()) {
+  test_content_protection_cleanup();
+  igt_display_fini(&data.display);
+ } else {
+  igt_fixture {
+    test_content_protection_cleanup();
+    igt_display_fini(&data.display);
+  }
+ }
+
+
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
