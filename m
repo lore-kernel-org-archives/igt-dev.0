@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 570EE6E271
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 577BB6E486
  for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 14:13:13 +0000 (UTC)
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 19 May 2020 15:12:52 +0100
-Message-Id: <20200519141252.2032914-2-chris@chris-wilson.co.uk>
-In-Reply-To: <20200519141252.2032914-1-chris@chris-wilson.co.uk>
-References: <20200519141252.2032914-1-chris@chris-wilson.co.uk>
+Date: Tue, 19 May 2020 15:12:51 +0100
+Message-Id: <20200519141252.2032914-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] lib: Remove early
- has_known_intel_chipset() check
+Subject: [igt-dev] [PATCH i-g-t 1/2] i915: Add test to assert that the
+ PCI-ID is known
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,66 +15,77 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When opening a specific driver, open that driver. Once we have the
-device fd, we can then do feature checks that the tests *actually*
-require.
-
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Acked-by: Petri Latvala <petri.latvala@intel.com>
----
- lib/drmtest.c | 20 +-------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
-
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 040ca39c2..70fd64c95 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -118,24 +118,6 @@ bool is_vc4_device(int fd)
- 	return __is_device(fd, "vc4");
- }
- 
--static bool has_known_intel_chipset(int fd)
--{
--	struct drm_i915_getparam gp;
--	int devid = 0;
--
--	memset(&gp, 0, sizeof(gp));
--	gp.param = I915_PARAM_CHIPSET_ID;
--	gp.value = &devid;
--
--	if (ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp)))
--		return false;
--
--	if (!intel_gen(devid))
--		return false;
--
--	return true;
--}
--
- static char _forced_driver[16] = "";
- 
- /**
-@@ -636,7 +618,7 @@ void igt_require_amdgpu(int fd)
- 
- void igt_require_intel(int fd)
- {
--	igt_require(is_i915_device(fd) && has_known_intel_chipset(fd));
-+	igt_require(is_i915_device(fd));
- }
- 
- void igt_require_vc4(int fd)
--- 
-2.26.2
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+V2UgZG8gd2FudCB0byBlbnN1cmUgdGhhdCB0aGUgaWd0IGlkZW50aWZpY2F0aW9uIHRhYmxlIGlz
+IGtlcHQgdXAgdG8KZGF0ZSwgYW5kIHNvIHdvdWxkIGxpa2UgdG8gYmUgd2FybmVkIGlmIGJlaW5n
+IHJ1biBvbiBhbiB1bmtub3duIGNoaXBzZXQuCkluc3RlYWQgb2YgcmVmdXNpbmcgdG8gcnVuIGFu
+eSB0ZXN0LCBoYXZlIGEgc3BlY2lmaWMgdGVzdCBmb3IgdGhlCnVua25vd24gY2hpcHNldC4KClN1
+Z2dlc3RlZC1ieTogTWlrYSBLdW9wcGFsYSA8bWlrYS5rdW9wcGFsYUBsaW51eC5pbnRlbC5jb20+
+ClNpZ25lZC1vZmYtYnk6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgpD
+YzogTWlrYSBLdW9wcGFsYSA8bWlrYS5rdW9wcGFsYUBsaW51eC5pbnRlbC5jb20+Ci0tLQogdGVz
+dHMvTWFrZWZpbGUuc291cmNlcyAgfCAgMyArKwogdGVzdHMvaTkxNS9pOTE1X3BjaWlkLmMgfCA2
+MiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwogdGVzdHMvbWVzb24u
+YnVpbGQgICAgICAgfCAgMSArCiAzIGZpbGVzIGNoYW5nZWQsIDY2IGluc2VydGlvbnMoKykKIGNy
+ZWF0ZSBtb2RlIDEwMDY0NCB0ZXN0cy9pOTE1L2k5MTVfcGNpaWQuYwoKZGlmZiAtLWdpdCBhL3Rl
+c3RzL01ha2VmaWxlLnNvdXJjZXMgYi90ZXN0cy9NYWtlZmlsZS5zb3VyY2VzCmluZGV4IGM0NTBm
+YTBlZC4uZjFkZjEzNDY1IDEwMDY0NAotLS0gYS90ZXN0cy9NYWtlZmlsZS5zb3VyY2VzCisrKyBi
+L3Rlc3RzL01ha2VmaWxlLnNvdXJjZXMKQEAgLTQ3NSw2ICs0NzUsOSBAQCBpOTE1X2hhbmdtYW5f
+U09VUkNFUyA9IGk5MTUvaTkxNV9oYW5nbWFuLmMKIFRFU1RTX3Byb2dzICs9IGk5MTVfbW9kdWxl
+X2xvYWQKIGk5MTVfbW9kdWxlX2xvYWRfU09VUkNFUyA9IGk5MTUvaTkxNV9tb2R1bGVfbG9hZC5j
+CiAKK1RFU1RTX3Byb2dzICs9IGk5MTVfcGNpaWQKK2k5MTVfcGNpaWRfU09VUkNFUyA9IGk5MTUv
+aTkxNV9wY2lpZC5jCisKIFRFU1RTX3Byb2dzICs9IGk5MTVfcG1fYmFja2xpZ2h0CiBpOTE1X3Bt
+X2JhY2tsaWdodF9TT1VSQ0VTID0gaTkxNS9pOTE1X3BtX2JhY2tsaWdodC5jCiAKZGlmZiAtLWdp
+dCBhL3Rlc3RzL2k5MTUvaTkxNV9wY2lpZC5jIGIvdGVzdHMvaTkxNS9pOTE1X3BjaWlkLmMKbmV3
+IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXggMDAwMDAwMDAwLi4wM2QwNDA5YzMKLS0tIC9kZXYvbnVs
+bAorKysgYi90ZXN0cy9pOTE1L2k5MTVfcGNpaWQuYwpAQCAtMCwwICsxLDYyIEBACisvKgorICog
+Q29weXJpZ2h0IMKpIDIwMjAgSW50ZWwgQ29ycG9yYXRpb24KKyAqCisgKiBQZXJtaXNzaW9uIGlz
+IGhlcmVieSBncmFudGVkLCBmcmVlIG9mIGNoYXJnZSwgdG8gYW55IHBlcnNvbiBvYnRhaW5pbmcg
+YQorICogY29weSBvZiB0aGlzIHNvZnR3YXJlIGFuZCBhc3NvY2lhdGVkIGRvY3VtZW50YXRpb24g
+ZmlsZXMgKHRoZSAiU29mdHdhcmUiKSwKKyAqIHRvIGRlYWwgaW4gdGhlIFNvZnR3YXJlIHdpdGhv
+dXQgcmVzdHJpY3Rpb24sIGluY2x1ZGluZyB3aXRob3V0IGxpbWl0YXRpb24KKyAqIHRoZSByaWdo
+dHMgdG8gdXNlLCBjb3B5LCBtb2RpZnksIG1lcmdlLCBwdWJsaXNoLCBkaXN0cmlidXRlLCBzdWJs
+aWNlbnNlLAorICogYW5kL29yIHNlbGwgY29waWVzIG9mIHRoZSBTb2Z0d2FyZSwgYW5kIHRvIHBl
+cm1pdCBwZXJzb25zIHRvIHdob20gdGhlCisgKiBTb2Z0d2FyZSBpcyBmdXJuaXNoZWQgdG8gZG8g
+c28sIHN1YmplY3QgdG8gdGhlIGZvbGxvd2luZyBjb25kaXRpb25zOgorICoKKyAqIFRoZSBhYm92
+ZSBjb3B5cmlnaHQgbm90aWNlIGFuZCB0aGlzIHBlcm1pc3Npb24gbm90aWNlIChpbmNsdWRpbmcg
+dGhlIG5leHQKKyAqIHBhcmFncmFwaCkgc2hhbGwgYmUgaW5jbHVkZWQgaW4gYWxsIGNvcGllcyBv
+ciBzdWJzdGFudGlhbCBwb3J0aW9ucyBvZiB0aGUKKyAqIFNvZnR3YXJlLgorICoKKyAqIFRIRSBT
+T0ZUV0FSRSBJUyBQUk9WSURFRCAiQVMgSVMiLCBXSVRIT1VUIFdBUlJBTlRZIE9GIEFOWSBLSU5E
+LCBFWFBSRVNTIE9SCisgKiBJTVBMSUVELCBJTkNMVURJTkcgQlVUIE5PVCBMSU1JVEVEIFRPIFRI
+RSBXQVJSQU5USUVTIE9GIE1FUkNIQU5UQUJJTElUWSwKKyAqIEZJVE5FU1MgRk9SIEEgUEFSVElD
+VUxBUiBQVVJQT1NFIEFORCBOT05JTkZSSU5HRU1FTlQuICBJTiBOTyBFVkVOVCBTSEFMTAorICog
+VEhFIEFVVEhPUlMgT1IgQ09QWVJJR0hUIEhPTERFUlMgQkUgTElBQkxFIEZPUiBBTlkgQ0xBSU0s
+IERBTUFHRVMgT1IgT1RIRVIKKyAqIExJQUJJTElUWSwgV0hFVEhFUiBJTiBBTiBBQ1RJT04gT0Yg
+Q09OVFJBQ1QsIFRPUlQgT1IgT1RIRVJXSVNFLCBBUklTSU5HCisgKiBGUk9NLCBPVVQgT0YgT1Ig
+SU4gQ09OTkVDVElPTiBXSVRIIFRIRSBTT0ZUV0FSRSBPUiBUSEUgVVNFIE9SIE9USEVSIERFQUxJ
+TkdTCisgKiBJTiBUSEUgU09GVFdBUkUuCisgKgorICovCisKKyNpbmNsdWRlIDxzeXMvaW9jdGwu
+aD4KKworI2luY2x1ZGUgImRybS5oIgorI2luY2x1ZGUgImRybXRlc3QuaCIKKyNpbmNsdWRlICJp
+OTE1X2RybS5oIgorI2luY2x1ZGUgImludGVsX2NoaXBzZXQuaCIKKworSUdUX1RFU1RfREVTQ1JJ
+UFRJT04oIkNoZWNrIHRoYXQgaWd0L2k5MTUga25vdyBhYm91dCB0aGlzIFBDSS1JRCIpOworCitz
+dGF0aWMgYm9vbCBoYXNfa25vd25faW50ZWxfY2hpcHNldChpbnQgZmQpCit7CisJaW50IGRldmlk
+ID0gMDsKKwlzdHJ1Y3QgZHJtX2k5MTVfZ2V0cGFyYW0gZ3AgPSB7CisJCS5wYXJhbSA9IEk5MTVf
+UEFSQU1fQ0hJUFNFVF9JRCwKKwkJLnZhbHVlID0gJmRldmlkLAorCX07CisJY29uc3Qgc3RydWN0
+IGludGVsX2RldmljZV9pbmZvICppbmZvOworCisJaWYgKGlvY3RsKGZkLCBEUk1fSU9DVExfSTkx
+NV9HRVRQQVJBTSwgJmdwLCBzaXplb2YoZ3ApKSkKKwkJcmV0dXJuIGZhbHNlOworCisJaW5mbyA9
+IGludGVsX2dldF9kZXZpY2VfaW5mbyhkZXZpZCk7CisJaWYgKCFpbmZvKSB7CisJCWlndF93YXJu
+KCJVbnJlY29uZ2lzZWQgUENJLUlEOiAlMDR4XG4iLCBkZXZpZCk7CisJCXJldHVybiBmYWxzZTsK
+Kwl9CisKKwlpZ3RfaW5mbygiUENJLUlEOiAlIzA0eCwgZ2VuICVkLCAlc1xuIiwKKwkJIGRldmlk
+LCBmZnMoaW5mby0+Z2VuKSwgaW5mby0+Y29kZW5hbWUpOworCXJldHVybiB0cnVlOworfQorCitp
+Z3Rfc2ltcGxlX21haW4KK3sKKwlpbnQgaW50ZWwgPSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX0lO
+VEVMKTsKKworCWlndF9hc3NlcnQoaGFzX2tub3duX2ludGVsX2NoaXBzZXQoaW50ZWwpKTsKK30K
+ZGlmZiAtLWdpdCBhL3Rlc3RzL21lc29uLmJ1aWxkIGIvdGVzdHMvbWVzb24uYnVpbGQKaW5kZXgg
+ODhlNDg3NWI2Li5kMDIxYWY2ODIgMTAwNjQ0Ci0tLSBhL3Rlc3RzL21lc29uLmJ1aWxkCisrKyBi
+L3Rlc3RzL21lc29uLmJ1aWxkCkBAIC0yMTgsNiArMjE4LDcgQEAgaTkxNV9wcm9ncyA9IFsKIAkn
+aTkxNV9nZXRwYXJhbXNfYmFzaWMnLAogCSdpOTE1X2hhbmdtYW4nLAogCSdpOTE1X21vZHVsZV9s
+b2FkJywKKwknaTkxNV9wY2lpZCcsCiAJJ2k5MTVfcG1fYmFja2xpZ2h0JywKIAknaTkxNV9wbV9s
+cHNwJywKIAknaTkxNV9wbV9ycG0nLAotLSAKMi4yNi4yCgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxp
+c3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFu
+L2xpc3RpbmZvL2lndC1kZXYK
