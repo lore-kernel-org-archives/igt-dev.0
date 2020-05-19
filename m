@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 853AB6E255
- for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 06:19:58 +0000 (UTC)
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-Date: Tue, 19 May 2020 11:40:28 +0530
-Message-Id: <20200519061028.26699-1-anshuman.gupta@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F2AA6E504
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 06:34:19 +0000 (UTC)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 19 May 2020 07:34:09 +0100
+Message-Id: <20200519063411.1541230-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_content_protection: CP cleanup
- exit handler
+Subject: [igt-dev] [PATCH i-g-t 1/3] i915/gem_ctx_persistence: Use "%u" for
+ -1u conversion
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,58 +20,32 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: chris@chris-wilson.co.uk
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add HDCP content protection cleanup igt exit handler,
-earlier it was done through igt_fixture which doesn't
-trigger hdcp cleanup on igt abortion due to any signal.
-This should avoid any HDCP content protection leak.
+The debugfs modparams are more picky and refuse to do the implicit
+unsigned conversion.
 
-Cc: Ramalingam C <ramalingam.c@intel.com>
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/kms_content_protection.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ tests/i915/gem_ctx_persistence.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 3b9cedcb..f3101b8a 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -651,12 +651,21 @@ static void test_content_protection_cleanup(void)
- 	}
- }
+diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+index ce9f02350..4a1ef0f27 100644
+--- a/tests/i915/gem_ctx_persistence.c
++++ b/tests/i915/gem_ctx_persistence.c
+@@ -1127,7 +1127,7 @@ igt_main
+ 		igt_require_gem(i915);
  
-+static void test_content_protection_exit_handler(int sig)
-+{
-+	igt_fixture {
-+		test_content_protection_cleanup();
-+		igt_display_fini(&data.display);
-+	}
-+}
-+
- igt_main
- {
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 		/* Restore the reset modparam if left clobbered */
+-		igt_assert(igt_params_set(i915, "reset", "%d", -1));
++		igt_assert(igt_params_set(i915, "reset", "%u", -1));
  
- 		igt_display_require(&data.display, data.drm_fd);
-+		igt_install_exit_handler(test_content_protection_exit_handler);
- 	}
- 
- 	igt_subtest("legacy") {
-@@ -723,9 +732,4 @@ igt_main
- 		igt_assert_f(ret, "SRM update failed");
- 		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
- 	}
--
--	igt_fixture {
--		test_content_protection_cleanup();
--		igt_display_fini(&data.display);
--	}
- }
+ 		enable_hangcheck(i915);
+ 		igt_install_exit_handler(exit_handler);
 -- 
-2.26.0
+2.26.2
 
 _______________________________________________
 igt-dev mailing list
