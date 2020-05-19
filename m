@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01AF66E37C
- for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 18:50:08 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 90B4689B49
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 19:02:58 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Date: Tue, 19 May 2020 12:02:57 -0700
+Message-Id: <20200519190257.16709-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200519181614.20880-4-zbigniew.kempczynski@intel.com>
-References: <20200519181614.20880-1-zbigniew.kempczynski@intel.com>
- <20200519181614.20880-4-zbigniew.kempczynski@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158991420499.8153.14200646045791402596@build.alporthouse.com>
-Date: Tue, 19 May 2020 19:50:04 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t v5 3/8] lib/intel_batchbuffer: Introduce
- intel_bb
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_tiled_wb: skip on devices without
+ mappable aperture
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,25 +15,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: zbigniew.kempczynski@intel.com, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMDUtMTkgMTk6MTY6MDkpCj4gK3N0
-YXRpYyB2b2lkIF9fcmVhbGxvY2F0ZV9vYmplY3RzKHN0cnVjdCBpbnRlbF9iYiAqaWJiKQo+ICt7
-Cj4gKyAgICAgICB1aW50MzJfdCBudW07Cj4gKwo+ICsgICAgICAgaWYgKGliYi0+bnVtX29iamVj
-dHMgPT0gaWJiLT5hbGxvY2F0ZWRfb2JqZWN0cykgewo+ICsgICAgICAgICAgICAgICBudW0gPSA0
-MDk2IC8gc2l6ZW9mKCppYmItPm9iamVjdHMpOwo+ICsgICAgICAgICAgICAgICBpYmItPm9iamVj
-dHMgPSByZWFsbG9jKGliYi0+b2JqZWN0cywKPiArICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICBzaXplb2YoKmliYi0+b2JqZWN0cykgKiBudW0pOwoKc2l6ZW9mKCppYmItPm9i
-amVjdHMpICogKG51bSArIGliYi0+YWxsb2NhdGVkX29iamVjdHMpCgo+ICsgICAgICAgICAgICAg
-ICBpZ3RfYXNzZXJ0KGliYi0+b2JqZWN0cyk7Cj4gKyAgICAgICAgICAgICAgIGliYi0+YWxsb2Nh
-dGVkX29iamVjdHMgKz0gbnVtOwo+ICsKPiArICAgICAgICAgICAgICAgbWVtc2V0KCZpYmItPm9i
-amVjdHNbaWJiLT5udW1fb2JqZWN0c10sIDAsCj4gKyAgICAgICAgICAgICAgICAgICAgICBudW0g
-KiBzaXplb2YoKmliYi0+b2JqZWN0cykpOwo+ICsgICAgICAgfQo+ICt9Cl9fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
-dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
+
+Skip on devices without mappable aperture.
+
+Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/gem_tiled_wb.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tests/i915/gem_tiled_wb.c b/tests/i915/gem_tiled_wb.c
+index b7f352fc7..b61a1b2e8 100644
+--- a/tests/i915/gem_tiled_wb.c
++++ b/tests/i915/gem_tiled_wb.c
+@@ -139,6 +139,7 @@ igt_simple_main
+ 	uint32_t handle;
+ 
+ 	fd = drm_open_driver(DRIVER_INTEL);
++	gem_require_mappable_ggtt(fd);
+ 
+ 	handle = create_bo(fd);
+ 	get_tiling(fd, handle, &tiling, &swizzle);
+-- 
+2.26.2.593.gb994622632
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
