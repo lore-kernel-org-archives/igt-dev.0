@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6AF3A89F2D
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 21:09:33 +0000 (UTC)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 19 May 2020 22:09:24 +0100
+Message-Id: <20200519210924.2277459-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 19 May 2020 21:05:03 -0000
-Message-ID: <158992230315.31238.17005569704217558392@emeril.freedesktop.org>
-References: <20200519100217.1761103-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200519100217.1761103-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_i?=
- =?utf-8?q?915=3A_Add_gem=5Fexec=5Fendless_=28rev3=29?=
+Subject: [igt-dev] [PATCH i-g-t] lib/i915: Assume unknown hardware just works
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,48 +14,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+If we don't recognise the hardware, then it can't be any of the known
+broken HW where MI_STORE_DWORD_IMM either uses physical addressing or
+simply fails catastrophic. As it's not known to be broken, assume it
+works.
 
-Series: i915: Add gem_exec_endless (rev3)
-URL   : https://patchwork.freedesktop.org/series/72247/
-State : failure
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ lib/igt_gt.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-== Summary ==
+diff --git a/lib/igt_gt.c b/lib/igt_gt.c
+index 101627973..3e5eb47db 100644
+--- a/lib/igt_gt.c
++++ b/lib/igt_gt.c
+@@ -565,6 +565,9 @@ bool gem_class_can_store_dword(int fd, int class)
+ 	const struct intel_device_info *info = intel_get_device_info(devid);
+ 	const int gen = ffs(info->gen);
+ 
++	if (info->gen == 0) /* unknown, assume it just works */
++		return true;
++
+ 	if (gen <= 2) /* requires physical addresses */
+ 		return false;
+ 
+@@ -572,7 +575,7 @@ bool gem_class_can_store_dword(int fd, int class)
+ 		return false; /* only supports physical addresses */
+ 
+ 	if (gen == 6 && class == I915_ENGINE_CLASS_VIDEO)
+-		return false;
++		return false; /* broken, unbelievably broken */
+ 
+ 	if (info->is_broadwater)
+ 		return false; /* Not sure yet... */
+-- 
+2.27.0.rc0
 
-ERROR! This series introduces new undocumented tests:
-
-gem_exec_endless
-gem_exec_endless@dispatch
-
-Can you document them as per the requirement in the [CONTRIBUTING.md]?
-
-[Documentation] has more details on how to do this.
-
-Here are few examples:
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/0316695d03aa46108296b27f3982ec93200c7a6e
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/443cc658e1e6b492ee17bf4f4d891029eb7a205d
-
-Thanks in advance!
-
-[CONTRIBUTING.md]: https://gitlab.freedesktop.org/drm/igt-gpu-tools/blob/master/CONTRIBUTING.md#L19
-[Documentation]: https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-describe
-
-Other than that, pipeline status: SUCCESS.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/148856 for the overview.
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/148856
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
