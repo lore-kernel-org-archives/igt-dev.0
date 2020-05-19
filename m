@@ -1,12 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
+ [IPv6:2a00:1450:4864:20::343])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B73E86E314
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 11:30:29 +0000 (UTC)
+Received: by mail-wm1-x343.google.com with SMTP id f13so2663421wmc.5
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 04:30:29 -0700 (PDT)
+References: <20200519105408.10565-1-juhapekka.heikkila@gmail.com>
+ <20200519110056.GA9497@platvala-desk.ger.corp.intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <63b60423-cf4a-7a27-328d-9e9b8cdf9cca@gmail.com>
+Date: Tue, 19 May 2020 14:30:21 +0300
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 19 May 2020 11:28:11 -0000
-Message-ID: <158988769143.31237.7607827795956091516@emeril.freedesktop.org>
-References: <20200519100217.1761103-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200519100217.1761103-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNTog?=
- =?utf-8?q?Add_gem=5Fexec=5Fendless_=28rev2=29?=
+In-Reply-To: <20200519110056.GA9497@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_params: Fix verifying of
+ debugfs parameters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,91 +22,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
+Reply-To: juhapekka.heikkila@gmail.com
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On 19.5.2020 14.00, Petri Latvala wrote:
+> On Tue, May 19, 2020 at 01:54:08PM +0300, Juha-Pekka Heikkila wrote:
+>> After found correct place in debugfs for parameters there
+>> was used wrong path for verifying existence of parameter
+>> which caused fallback path to be used.
+>>
+>> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+>> ---
+>>   lib/igt_params.c | 8 ++++----
+>>   1 file changed, 4 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/lib/igt_params.c b/lib/igt_params.c
+>> index d8649dfd..410ca650 100644
+>> --- a/lib/igt_params.c
+>> +++ b/lib/igt_params.c
+>> @@ -143,14 +143,14 @@ static int __igt_params_open(int device, char **outpath, const char *param)
+>>   
+>>   		devname = openat(dir, "name", O_RDONLY);
+>>   		igt_require_f(devname >= 0,
+>> -		              "Driver need to name itself in debugfs!");
+>> +			      "Driver need to name itself in debugfs!");
+>>   
+>>   		read(devname, searchname, sizeof(searchname));
+>>   		close(devname);
+>>   
+>>   		foundname = strtok_r(searchname, " ", &ctx);
+>>   		igt_require_f(foundname,
+>> -		              "Driver need to name itself in debugfs!");
+>> +			      "Driver need to name itself in debugfs!");
+> 
+> 
+> While changing whitespace here, also add the missing \n to the string!
+> 
+> But do take a look at Chris's cleanup patches.
 
-Series: i915: Add gem_exec_endless (rev2)
-URL   : https://patchwork.freedesktop.org/series/72247/
-State : success
+Chris seems to be removing default device guesswork. I didn't at initial 
+stage want to go that route because there was quite many tests affected 
+by that. From Chris's CI runs it look like there's probably still few 
+rounds ahead as I recognize those failing tests. I'll add those couple 
+of newlines and make new patch, this will not affect Chris's work if it 
+take time for him to finish.
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_8501 -> IGTPW_4585
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4585/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4585 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-cml-s:           [PASS][1] -> [INCOMPLETE][2] ([i915#656])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8501/fi-cml-s/igt@i915_selftest@live@execlists.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4585/fi-cml-s/igt@i915_selftest@live@execlists.html
-    - fi-cfl-guc:         [PASS][3] -> [INCOMPLETE][4] ([i915#656])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8501/fi-cfl-guc/igt@i915_selftest@live@execlists.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4585/fi-cfl-guc/igt@i915_selftest@live@execlists.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@execlists:
-    - fi-tgl-y:           [INCOMPLETE][5] ([i915#1803]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8501/fi-tgl-y/igt@i915_selftest@live@execlists.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4585/fi-tgl-y/igt@i915_selftest@live@execlists.html
-
-  
-  [i915#1803]: https://gitlab.freedesktop.org/drm/intel/issues/1803
-  [i915#656]: https://gitlab.freedesktop.org/drm/intel/issues/656
-
-
-Participating hosts (50 -> 42)
-------------------------------
-
-  Missing    (8): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-hsw-4770 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5659 -> IGTPW_4585
-
-  CI-20190529: 20190529
-  CI_DRM_8501: c6bfff03c22fb90dcf1ddacb745667467ab5ab73 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4585: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4585/index.html
-  IGT_5659: 66ab5e42811fee3dea8c21ab29e70e323a0650de @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@gem_exec_endless@dispatch
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4585/index.html
+/Juha-Pekka
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
