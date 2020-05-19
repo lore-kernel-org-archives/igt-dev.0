@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B915A6E02C
- for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 12:59:59 +0000 (UTC)
-From: Imre Deak <imre.deak@intel.com>
-Date: Tue, 19 May 2020 15:59:56 +0300
-Message-Id: <20200519125956.13206-1-imre.deak@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 34F616E55C
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 13:44:13 +0000 (UTC)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 19 May 2020 14:44:05 +0100
+Message-Id: <20200519134405.1876899-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_flip: Keep signal helpers enabled
- after a failed interruptible subtest
+Subject: [igt-dev] [PATCH i-g-t] lib: Remove early has_known_intel_chipset()
+ check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,46 +20,58 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For the duration of all the interruptible subtests the signal helper is
-assumed to stay running after each subtest, both in case the subtest
-passes or aborts with a failure. So make sure we don't leave the signal
-helper suspended in case igt_assert() aborts.
+When opening a specific driver, open that driver. Once we have the
+device fd, we can then do feature checks that the tests *actually*
+require.
 
-References: https://gitlab.freedesktop.org/drm/intel/issues/1883
-Fixes: 60e8be7ccc72 ("tests/kms_flip: Retry test in case of a DP/HDMI link reset")
-Cc: Uma Shankar <uma.shankar@intel.com>
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/kms_flip.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ lib/drmtest.c | 20 +-------------------
+ 1 file changed, 1 insertion(+), 19 deletions(-)
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index 46bfc5858..7bf6958af 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -1325,10 +1325,15 @@ retry:
- 	 * reset event, which the driver signals with a hotplug event.
- 	 */
- 	if (!state_ok) {
-+		bool hotplug_detected;
-+
- 		igt_suspend_signal_helper();
--		igt_assert(!retried && igt_hotplug_detected(mon, 3));
-+		if (!retried)
-+			hotplug_detected = igt_hotplug_detected(mon, 3);
- 		igt_resume_signal_helper();
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 040ca39c2..70fd64c95 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -118,24 +118,6 @@ bool is_vc4_device(int fd)
+ 	return __is_device(fd, "vc4");
+ }
  
-+		igt_assert(!retried && hotplug_detected);
-+
- 		igt_debug("Retrying after a hotplug event\n");
- 		retried = true;
- 		memset(&o->vblank_state, 0, sizeof(o->vblank_state));
+-static bool has_known_intel_chipset(int fd)
+-{
+-	struct drm_i915_getparam gp;
+-	int devid = 0;
+-
+-	memset(&gp, 0, sizeof(gp));
+-	gp.param = I915_PARAM_CHIPSET_ID;
+-	gp.value = &devid;
+-
+-	if (ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp)))
+-		return false;
+-
+-	if (!intel_gen(devid))
+-		return false;
+-
+-	return true;
+-}
+-
+ static char _forced_driver[16] = "";
+ 
+ /**
+@@ -636,7 +618,7 @@ void igt_require_amdgpu(int fd)
+ 
+ void igt_require_intel(int fd)
+ {
+-	igt_require(is_i915_device(fd) && has_known_intel_chipset(fd));
++	igt_require(is_i915_device(fd));
+ }
+ 
+ void igt_require_vc4(int fd)
 -- 
-2.23.1
+2.26.2
 
 _______________________________________________
 igt-dev mailing list
