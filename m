@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A6586E312
- for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 11:00:59 +0000 (UTC)
-Date: Tue, 19 May 2020 14:00:56 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200519110056.GA9497@platvala-desk.ger.corp.intel.com>
-References: <20200519105408.10565-1-juhapekka.heikkila@gmail.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 337A56E312
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 11:11:01 +0000 (UTC)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200519105408.10565-1-juhapekka.heikkila@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_params: Fix verifying of
- debugfs parameters
+In-Reply-To: <20200519094821.29150-1-petri.latvala@intel.com>
+References: <20200519094821.29150-1-petri.latvala@intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Message-ID: <158988665553.7442.2177236190966978512@build.alporthouse.com>
+Date: Tue, 19 May 2020 12:10:55 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_flip: Don't use igt_fixture
+ in an exit handler
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,47 +21,27 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, May 19, 2020 at 01:54:08PM +0300, Juha-Pekka Heikkila wrote:
-> After found correct place in debugfs for parameters there
-> was used wrong path for verifying existence of parameter
-> which caused fallback path to be used.
+Quoting Petri Latvala (2020-05-19 10:48:21)
+> kms_flip's exit handler was wrapped in an igt_fixture some 7 years ago
+> because "it can fail". That's not a problem anymore, as igt_fail()
+> will explicitly handle failing in an exit handler.
 > 
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->  lib/igt_params.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> Rather, using igt_fixture in an exit handler is harmful because on a
+> subtest failure, we don't always keep track of the currently running
+> context (whether we're inside a subtest anymore) and we forcefully
+> assert correct nesting of IGT magic control blocks now.
 > 
-> diff --git a/lib/igt_params.c b/lib/igt_params.c
-> index d8649dfd..410ca650 100644
-> --- a/lib/igt_params.c
-> +++ b/lib/igt_params.c
-> @@ -143,14 +143,14 @@ static int __igt_params_open(int device, char **outpath, const char *param)
->  
->  		devname = openat(dir, "name", O_RDONLY);
->  		igt_require_f(devname >= 0,
-> -		              "Driver need to name itself in debugfs!");
-> +			      "Driver need to name itself in debugfs!");
->  
->  		read(devname, searchname, sizeof(searchname));
->  		close(devname);
->  
->  		foundname = strtok_r(searchname, " ", &ctx);
->  		igt_require_f(foundname,
-> -		              "Driver need to name itself in debugfs!");
-> +			      "Driver need to name itself in debugfs!");
-
-
-While changing whitespace here, also add the missing \n to the string!
-
-But do take a look at Chris's cleanup patches.
-
-
--- 
-Petri Latvala
+> We already know the state is cleanable because we only install the
+> handler on a successful init. Unconditional cleanup in an exit handler
+> is the correct thing to do in general.
+> 
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
