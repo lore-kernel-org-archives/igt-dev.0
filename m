@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 90B4689B49
- for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 19:02:58 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0AA7089F6E
+ for <igt-dev@lists.freedesktop.org>; Tue, 19 May 2020 19:13:48 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Tue, 19 May 2020 12:02:57 -0700
-Message-Id: <20200519190257.16709-1-ashutosh.dixit@intel.com>
+Date: Tue, 19 May 2020 12:13:45 -0700
+Message-Id: <20200519191346.17210-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_tiled_wb: skip on devices without
- mappable aperture
+Subject: [igt-dev] [PATCH i-g-t 1/2] tests/i915_fb_tiling: Check if device
+ supports tiling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,26 +24,30 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 
-Skip on devices without mappable aperture.
+Skip this test if the platform does not support setting tiling for frame
+buffer object.
 
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Uma Shankar <uma.shankar@intel.com>
 Signed-off-by: Vanshidhar Konda <vanshidhar.r.konda@intel.com>
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/i915/gem_tiled_wb.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/i915/i915_fb_tiling.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/i915/gem_tiled_wb.c b/tests/i915/gem_tiled_wb.c
-index b7f352fc7..b61a1b2e8 100644
---- a/tests/i915/gem_tiled_wb.c
-+++ b/tests/i915/gem_tiled_wb.c
-@@ -139,6 +139,7 @@ igt_simple_main
- 	uint32_t handle;
+diff --git a/tests/i915/i915_fb_tiling.c b/tests/i915/i915_fb_tiling.c
+index 7d5c3f1fa..02b3f4c4b 100644
+--- a/tests/i915/i915_fb_tiling.c
++++ b/tests/i915/i915_fb_tiling.c
+@@ -32,6 +32,8 @@ igt_simple_main
+ 	struct igt_fb fb;
+ 	int ret;
  
- 	fd = drm_open_driver(DRIVER_INTEL);
-+	gem_require_mappable_ggtt(fd);
++	igt_require(gem_available_fences(drm_fd) > 0);
++
+ 	igt_create_fb(drm_fd, 512, 512, DRM_FORMAT_XRGB8888,
+ 		      LOCAL_I915_FORMAT_MOD_X_TILED, &fb);
  
- 	handle = create_bo(fd);
- 	get_tiling(fd, handle, &tiling, &swizzle);
 -- 
 2.26.2.593.gb994622632
 
