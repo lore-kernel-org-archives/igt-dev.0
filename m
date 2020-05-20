@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6E9A6E3F7
- for <igt-dev@lists.freedesktop.org>; Wed, 20 May 2020 10:02:27 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20200520083153.10756-7-zbigniew.kempczynski@intel.com>
-References: <20200520083153.10756-1-zbigniew.kempczynski@intel.com>
- <20200520083153.10756-7-zbigniew.kempczynski@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158996894368.8153.5911042407184141016@build.alporthouse.com>
-Date: Wed, 20 May 2020 11:02:23 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t v6 6/8] lib/intel_batchbuffer: Introduce
- temporary igt_fillfunc_v2_t
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 20 May 2020 11:09:33 -0000
+Message-ID: <158997297300.30688.2302291470472658596@emeril.freedesktop.org>
+References: <20200520103853.2484519-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200520103853.2484519-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdG9vbHMv?=
+ =?utf-8?q?intel=5Fgpu=5Ftop=3A_Include_total_package_power?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,25 +14,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: zbigniew.kempczynski@intel.com, igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMDUtMjAgMDk6MzE6NTEpCj4gK2ln
-dF9maWxsZnVuY192Ml90IGlndF9nZXRfZ3BncHVfZmlsbGZ1bmNfdjIoaW50IGRldmlkKQo+ICt7
-Cj4gKyAgICAgICBpZ3RfZmlsbGZ1bmNfdjJfdCBmaWxsID0gTlVMTDsKPiArCj4gKyAgICAgICBp
-ZiAoSVNfR0VONyhkZXZpZCkpCj4gKyAgICAgICAgICAgICAgIGZpbGwgPSBnZW43X2dwZ3B1X2Zp
-bGxmdW5jX3YyOwo+ICsgICAgICAgZWxzZSBpZiAoSVNfQlJPQURXRUxMKGRldmlkKSkKPiArICAg
-ICAgICAgICAgICAgZmlsbCA9IGdlbjhfZ3BncHVfZmlsbGZ1bmNfdjI7CgpXZWlyZCB0aGF0IGl0
-IGlzIG5vdCBJU19HRU44LiBXb3J0aCBjaGVja2luZyB3aGlsZSB3ZSBhcmUgaGVyZS4KCj4gKyAg
-ICAgICBlbHNlIGlmIChJU19HRU45KGRldmlkKSB8fCBJU19HRU4xMChkZXZpZCkpCj4gKyAgICAg
-ICAgICAgICAgIGZpbGwgPSBnZW45X2dwZ3B1X2ZpbGxmdW5jX3YyOwo+ICsgICAgICAgZWxzZSBp
-ZiAoSVNfR0VOMTEoZGV2aWQpKQo+ICsgICAgICAgICAgICAgICBmaWxsID0gZ2VuMTFfZ3BncHVf
-ZmlsbGZ1bmNfdjI7Cj4gKyAgICAgICBlbHNlIGlmIChJU19HRU4xMihkZXZpZCkpCj4gKyAgICAg
-ICAgICAgICAgIGZpbGwgPSBnZW4xMl9ncGdwdV9maWxsZnVuY192MjsKPiArCj4gKyAgICAgICBy
-ZXR1cm4gZmlsbDsKPiArfQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
-ZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+== Series Details ==
+
+Series: tools/intel_gpu_top: Include total package power
+URL   : https://patchwork.freedesktop.org/series/77463/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_5664 -> IGTPW_4599
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4599/index.html
+
+
+Changes
+-------
+
+  No changes found
+
+
+Participating hosts (49 -> 42)
+------------------------------
+
+  Missing    (7): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-hsw-4770 fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5664 -> IGTPW_4599
+
+  CI-20190529: 20190529
+  CI_DRM_8509: ea6a2729d3d286137415319de4161042b0337e87 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4599: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4599/index.html
+  IGT_5664: 404e2fa06b9c5986dec3fa210234fe8b034b157e @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4599/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
