@@ -1,24 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com
- [IPv6:2a00:1450:4864:20::641])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 83EA189D8E
- for <igt-dev@lists.freedesktop.org>; Wed, 20 May 2020 09:34:42 +0000 (UTC)
-Received: by mail-ej1-x641.google.com with SMTP id z5so2857330ejb.3
- for <igt-dev@lists.freedesktop.org>; Wed, 20 May 2020 02:34:42 -0700 (PDT)
-Received: from [0.0.0.0] ([134.134.139.83])
- by smtp.googlemail.com with ESMTPSA id d10sm1442252ejd.114.2020.05.20.02.34.38
- for <igt-dev@lists.freedesktop.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 May 2020 02:34:40 -0700 (PDT)
-References: <20200519063411.1541230-1-chris@chris-wilson.co.uk>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <9fa3e767-624a-0e89-1dd2-a9954b9ecf54@gmail.com>
-Date: Wed, 20 May 2020 12:34:35 +0300
 MIME-Version: 1.0
-In-Reply-To: <20200519063411.1541230-1-chris@chris-wilson.co.uk>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] i915/gem_ctx_persistence: Use "%u"
- for -1u conversion
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 20 May 2020 09:38:21 -0000
+Message-ID: <158996750137.30692.8939581287361309704@emeril.freedesktop.org>
+References: <20200520083153.10756-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200520083153.10756-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgTWFrZSBn?=
+ =?utf-8?q?pgpu_fill_tests_libdrm_independent_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,43 +14,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Series
+== Series Details ==
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Series: Make gpgpu fill tests libdrm independent (rev6)
+URL   : https://patchwork.freedesktop.org/series/77175/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8509 -> IGTPW_4598
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4598/index.html
 
 
-On 19.5.2020 9.34, Chris Wilson wrote:
-> The debugfs modparams are more picky and refuse to do the implicit
-> unsigned conversion.
-> 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> ---
->   tests/i915/gem_ctx_persistence.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
-> index ce9f02350..4a1ef0f27 100644
-> --- a/tests/i915/gem_ctx_persistence.c
-> +++ b/tests/i915/gem_ctx_persistence.c
-> @@ -1127,7 +1127,7 @@ igt_main
->   		igt_require_gem(i915);
->   
->   		/* Restore the reset modparam if left clobbered */
-> -		igt_assert(igt_params_set(i915, "reset", "%d", -1));
-> +		igt_assert(igt_params_set(i915, "reset", "%u", -1));
->   
->   		enable_hangcheck(i915);
->   		igt_install_exit_handler(exit_handler);
-> 
+Changes
+-------
 
+  No changes found
+
+
+Participating hosts (48 -> 43)
+------------------------------
+
+  Additional (1): fi-kbl-7560u 
+  Missing    (6): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-hsw-4770 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5662 -> IGTPW_4598
+
+  CI-20190529: 20190529
+  CI_DRM_8509: ea6a2729d3d286137415319de4161042b0337e87 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4598: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4598/index.html
+  IGT_5662: e79462659e0f45cd3f4f766f58cb792303c6bf9b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4598/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
