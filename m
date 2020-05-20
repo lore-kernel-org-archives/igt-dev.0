@@ -1,14 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-In-Reply-To: <158997609575.8153.10522585692912987684@build.alporthouse.com>
-References: <20200520103853.2484519-1-chris@chris-wilson.co.uk>
- <0b2857c3-25aa-775c-b559-3de68b9ec032@linux.intel.com>
- <158997609575.8153.10522585692912987684@build.alporthouse.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <158997647985.8153.12187123507086139445@build.alporthouse.com>
-Date: Wed, 20 May 2020 13:07:59 +0100
-Subject: Re: [igt-dev] [Intel-gfx] [PATCH i-g-t] tools/intel_gpu_top:
- Include total package power
+Date: Wed, 20 May 2020 16:54:10 +0100
+Message-Id: <20200520155410.2544056-1-chris@chris-wilson.co.uk>
+MIME-Version: 1.0
+Subject: [igt-dev] [PATCH i-g-t] i915/i915_pm_rc6_residency: Check we
+ conserve power while waiting
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,32 +16,129 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Chris Wilson (2020-05-20 13:01:35)
-> Quoting Tvrtko Ursulin (2020-05-20 12:54:19)
-> > 
-> > On 20/05/2020 11:38, Chris Wilson wrote:
-> > > @@ -1083,10 +1154,10 @@ print_header(struct engines *engines, double t,
-> > >               printf("\033[H\033[J");
-> > >   
-> > >               if (lines++ < con_h)
-> > > -                     printf("intel-gpu-top - %s/%s MHz;  %s%% RC6; %s %s; %s irqs/s\n",
-> > > +                     printf("intel-gpu-top - %s/%s MHz;  %s%% RC6; %s/%s W; %s irqs/s\n",
-> > 
-> > Detecting the unit was also a good thing to have so why drop it?
-> 
-> Because I'm lazy and reused some packaged code rather than try and
-> repackage the code here. Even too lazy to add libigt_rapl.la.
+Check that if we submit a request that is held up by an external fence,
+that we conserve power during the wait as the GPU is idle.
 
-Also, we would only ever report W or mW as the SI unit, the choose is
-ours and whatever we choose requires adjusting of the reported rapl
-scalefactor. Since we measure in seconds, the rapl scalefactor itself
-would have to convert from horsepower into J for the results to make
-sense, and defined that way.
--Chris
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Venkata Sandeep Dhanalakota <venkata.s.dhanalakota@intel.com>
+---
+ tests/i915/i915_pm_rc6_residency.c | 82 ++++++++++++++++++++++++++++++
+ 1 file changed, 82 insertions(+)
+
+diff --git a/tests/i915/i915_pm_rc6_residency.c b/tests/i915/i915_pm_rc6_residency.c
+index 144bcd028..810415b48 100644
+--- a/tests/i915/i915_pm_rc6_residency.c
++++ b/tests/i915/i915_pm_rc6_residency.c
+@@ -38,6 +38,7 @@
+ #include "igt_perf.h"
+ #include "igt_rapl.h"
+ #include "igt_sysfs.h"
++#include "sw_sync.h"
+ 
+ #define SLEEP_DURATION 3 /* in seconds */
+ 
+@@ -447,6 +448,80 @@ static void rc6_idle(int i915)
+ 	}
+ }
+ 
++static void rc6_fence(int i915)
++{
++	const int64_t duration_ns = SLEEP_DURATION * (int64_t)NSEC_PER_SEC;
++	const int tolerance = 20; /* Some RC6 is better than none! */
++	const int gen = intel_gen(intel_get_drm_devid(i915));
++	const struct intel_execution_engine2 *e;
++	struct power_sample sample[2];
++	unsigned long slept;
++	uint64_t rc6, ts[2];
++	struct rapl rapl;
++	int fd;
++
++	igt_require_sw_sync();
++
++	fd = open_pmu(i915, I915_PMU_RC6_RESIDENCY);
++	igt_drop_caches_set(i915, DROP_IDLE);
++	igt_require(__pmu_wait_for_rc6(fd));
++	gpu_power_open(&rapl);
++
++	/* While idle check full RC6. */
++	rapl_read(&rapl, &sample[0]);
++	rc6 = -__pmu_read_single(fd, &ts[0]);
++	slept = measured_usleep(duration_ns / 1000);
++	rc6 += __pmu_read_single(fd, &ts[1]);
++	igt_debug("slept=%lu perf=%"PRIu64", rc6=%"PRIu64"\n",
++		  slept, ts[1] - ts[0], rc6);
++	if (rapl_read(&rapl, &sample[1]))  {
++		double idle = power_J(&rapl, &sample[0], &sample[1]);
++		igt_log(IGT_LOG_DOMAIN,
++			idle > 1e-3 && gen > 6 ? IGT_LOG_WARN : IGT_LOG_INFO,
++			"Total energy used while idle: %.1fmJ\n", idle * 1e3);
++	}
++	assert_within_epsilon(rc6, ts[1] - ts[0], 5);
++
++	/* Submit but delay execution, we should be idle and conserving power */
++	__for_each_physical_engine(i915, e) {
++		igt_spin_t *spin;
++		int timeline;
++		int fence;
++
++		timeline = sw_sync_timeline_create();
++		fence = sw_sync_timeline_create_fence(timeline, 1);
++		spin = igt_spin_new(i915,
++				    .engine = e->flags,
++				    .fence = fence,
++				    .flags = IGT_SPIN_FENCE_IN);
++		close(fence);
++
++		rapl_read(&rapl, &sample[0]);
++		rc6 = -__pmu_read_single(fd, &ts[0]);
++		slept = measured_usleep(duration_ns / 1000);
++		rc6 += __pmu_read_single(fd, &ts[1]);
++		igt_debug("%s: slept=%lu perf=%"PRIu64", rc6=%"PRIu64"\n",
++			  e->name, slept, ts[1] - ts[0], rc6);
++		if (rapl_read(&rapl, &sample[1]))  {
++			uint64_t power = power_J(&rapl, &sample[0], &sample[1]);
++			igt_info("Total energy used for %s: %.1fmJ (%.1fmW)\n",
++				 e->name,
++				 power * 1e3,
++				 power * 1e12 / slept);
++		}
++
++		igt_assert(gem_bo_busy(i915, spin->handle));
++		igt_spin_free(i915, spin);
++
++		close(timeline);
++
++		assert_within_epsilon(rc6, ts[1] - ts[0], tolerance);
++	}
++
++	rapl_close(&rapl);
++	close(fd);
++}
++
+ igt_main
+ {
+ 	int i915 = -1;
+@@ -463,6 +538,13 @@ igt_main
+ 		rc6_idle(i915);
+ 	}
+ 
++	igt_subtest("rc6-fence") {
++		igt_require_gem(i915);
++		gem_quiescent_gpu(i915);
++
++		rc6_fence(i915);
++	}
++
+ 	igt_subtest_group {
+ 		unsigned int rc6_enabled = 0;
+ 		unsigned int devid = 0;
+-- 
+2.27.0.rc0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
