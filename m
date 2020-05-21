@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 756616E918
- for <igt-dev@lists.freedesktop.org>; Thu, 21 May 2020 08:39:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 894656E918
+ for <igt-dev@lists.freedesktop.org>; Thu, 21 May 2020 08:39:34 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 21 May 2020 10:39:25 +0200
-Message-Id: <20200521083926.20428-5-zbigniew.kempczynski@intel.com>
+Date: Thu, 21 May 2020 10:39:26 +0200
+Message-Id: <20200521083926.20428-6-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20200521083926.20428-1-zbigniew.kempczynski@intel.com>
 References: <20200521083926.20428-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 4/5] i915/gem_media_fill: Remove libdrm
- dependency
+Subject: [igt-dev] [PATCH i-g-t v2 5/5] HAX: run media_fill in BAT only
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,98 +16,189 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-V2Ugc3RpbGwgaGF2ZSBzb21lIGRlcGVuZGVuY2llcyB0byBsaWJkcm0gY29kZSBpbiBvdGhlciB0
-ZXN0cyBzbwoiZGl2aWRlIGFuZCBjb25xdWVyIiBzdHJhdGVneSBpcyByZXF1aXJlZCB0byBtaWdy
-YXRlIGFuZCByZW1vdmUKb2xkIGNvZGUuIEFkZCBuby1saWJkcm0gdmVyc2lvbiB0byBjb250aW51
-ZSBtaWdyYXRpb24gcHJvY2Vzcy4KClNpZ25lZC1vZmYtYnk6IFpiaWduaWV3IEtlbXBjennFhHNr
-aSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgpDYzogQ2hyaXMgV2lsc29uIDxjaHJp
-c0BjaHJpcy13aWxzb24uY28udWs+Ci0tLQogdGVzdHMvaTkxNS9nZW1fbWVkaWFfZmlsbC5jIHwg
-MTI3ICsrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQs
-IDk5IGluc2VydGlvbnMoKyksIDI4IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2k5
-MTUvZ2VtX21lZGlhX2ZpbGwuYyBiL3Rlc3RzL2k5MTUvZ2VtX21lZGlhX2ZpbGwuYwppbmRleCAz
-ZjBmZWM1Ny4uN2M5NzU1NzcgMTAwNjQ0Ci0tLSBhL3Rlc3RzL2k5MTUvZ2VtX21lZGlhX2ZpbGwu
-YworKysgYi90ZXN0cy9pOTE1L2dlbV9tZWRpYV9maWxsLmMKQEAgLTYzLDYgKzYzLDcgQEAgdHlw
-ZWRlZiBzdHJ1Y3QgewogCXVpbnQzMl90IGRldmlkOwogCWRybV9pbnRlbF9idWZtZ3IgKmJ1Zm1n
-cjsKIAl1aW50OF90IGxpbmVhcltXSURUSCAqIEhFSUdIVF07CisJc3RydWN0IGJ1Zl9vcHMgKmJv
-cHM7CiB9IGRhdGFfdDsKIAogc3RhdGljIHZvaWQgc2NyYXRjaF9idWZfaW5pdChkYXRhX3QgKmRh
-dGEsIHN0cnVjdCBpZ3RfYnVmICpidWYsCkBAIC04Niw2ICs4NywzNCBAQCBzdGF0aWMgdm9pZCBz
-Y3JhdGNoX2J1Zl9pbml0KGRhdGFfdCAqZGF0YSwgc3RydWN0IGlndF9idWYgKmJ1ZiwKIAlidWYt
-PmJwcCA9IDMyOwogfQogCitzdGF0aWMgc3RydWN0IGludGVsX2J1ZiAqCitjcmVhdGVfYnVmKGRh
-dGFfdCAqZGF0YSwgaW50IHdpZHRoLCBpbnQgaGVpZ2h0LCB1aW50OF90IGNvbG9yKQoreworCXN0
-cnVjdCBpbnRlbF9idWYgKmJ1ZjsKKwl1aW50OF90ICpwdHI7CisJaW50IGk7CisKKwlidWYgPSBj
-YWxsb2MoMSwgc2l6ZW9mKCpidWYpKTsKKwlpZ3RfYXNzZXJ0KGJ1Zik7CisKKwkvKgorCSAqIExl
-Z2FjeSBjb2RlIHVzZXMgMzIgYnBwIGFmdGVyIGJ1ZmZlciBjcmVhdGlvbi4KKwkgKiBMZXQncyBk
-byB0aGUgc2FtZSBkdWUgdG8ga2VlcCBzaGFkZXIgaW50YWN0LgorCSAqLworCWludGVsX2J1Zl9p
-bml0KGRhdGEtPmJvcHMsIGJ1Ziwgd2lkdGgvNCwgaGVpZ2h0LCAzMiwgMCwKKwkJICAgICAgIEk5
-MTVfVElMSU5HX05PTkUsIDApOworCisJcHRyID0gZ2VtX21tYXBfX2NwdV9jb2hlcmVudChkYXRh
-LT5kcm1fZmQsCisJCQkJICAgICBidWYtPmhhbmRsZSwgMCwgYnVmLT5zaXplLCBQUk9UX1dSSVRF
-KTsKKworCWZvciAoaSA9IDA7IGkgPCBidWYtPnNpemU7IGkrKykKKwkJcHRyW2ldID0gY29sb3I7
-CisKKwltdW5tYXAocHRyLCBidWYtPnNpemUpOworCisJcmV0dXJuIGJ1ZjsKK30KKwogc3RhdGlj
-IHZvaWQKIHNjcmF0Y2hfYnVmX2NoZWNrKGRhdGFfdCAqZGF0YSwgc3RydWN0IGlndF9idWYgKmJ1
-ZiwgaW50IHgsIGludCB5LAogCQl1aW50OF90IGNvbG9yKQpAQCAtMTAwLDQ4ICsxMjksOTAgQEAg
-c2NyYXRjaF9idWZfY2hlY2soZGF0YV90ICpkYXRhLCBzdHJ1Y3QgaWd0X2J1ZiAqYnVmLCBpbnQg
-eCwgaW50IHksCiAJCSAgICAgY29sb3IsIHZhbCwgeCwgeSk7CiB9CiAKLWlndF9zaW1wbGVfbWFp
-bgorc3RhdGljIHZvaWQgYnVmX2NoZWNrKHVpbnQ4X3QgKnB0ciwgaW50IHgsIGludCB5LCB1aW50
-OF90IGNvbG9yKQoreworCXVpbnQ4X3QgdmFsOworCisJdmFsID0gcHRyW3kgKiBXSURUSCArIHhd
-OworCWlndF9hc3NlcnRfZih2YWwgPT0gY29sb3IsCisJCSAgICAgIkV4cGVjdGVkIDB4JTAyeCwg
-Zm91bmQgMHglMDJ4IGF0ICglZCwlZClcbiIsCisJCSAgICAgY29sb3IsIHZhbCwgeCwgeSk7Cit9
-CisKK3N0YXRpYyB2b2lkIG5vX2xpYmRybShkYXRhX3QgKmRhdGEsIGlndF9maWxsZnVuY192Ml90
-IGZpbGwpCit7CisJc3RydWN0IGludGVsX2J1ZiAqYnVmOworCXVpbnQ4X3QgKnB0cjsKKwlpbnQg
-aSwgajsKKworCWJ1ZiA9IGNyZWF0ZV9idWYoZGF0YSwgV0lEVEgsIEhFSUdIVCwgQ09MT1JfQzQp
-OworCXB0ciA9IGdlbV9tbWFwX19kZXZpY2VfY29oZXJlbnQoZGF0YS0+ZHJtX2ZkLCBidWYtPmhh
-bmRsZSwKKwkJCQkJMCwgYnVmLT5zaXplLCBQUk9UX1JFQUQpOworCWZvciAoaSA9IDA7IGkgPCBX
-SURUSDsgaSsrKQorCQlmb3IgKGogPSAwOyBqIDwgSEVJR0hUOyBqKyspCisJCQlidWZfY2hlY2so
-cHRyLCBpLCBqLCBDT0xPUl9DNCk7CisKKwlmaWxsKGRhdGEtPmRybV9mZCwgYnVmLCAwLCAwLCBX
-SURUSCAvIDIsIEhFSUdIVCAvIDIsIENPTE9SXzRDKTsKKworCWZvciAoaSA9IDA7IGkgPCBXSURU
-SDsgaSsrKQorCQlmb3IgKGogPSAwOyBqIDwgSEVJR0hUOyBqKyspCisJCQlpZiAoaSA8IFdJRFRI
-IC8gMiAmJiBqIDwgSEVJR0hUIC8gMikKKwkJCQlidWZfY2hlY2socHRyLCBpLCBqLCBDT0xPUl80
-Qyk7CisJCQllbHNlCisJCQkJYnVmX2NoZWNrKHB0ciwgaSwgaiwgQ09MT1JfQzQpOworCisJbXVu
-bWFwKHB0ciwgYnVmLT5zaXplKTsKK30KKworc3RhdGljIHZvaWQgd2l0aF9saWJkcm0oZGF0YV90
-ICpkYXRhLCBpZ3RfZmlsbGZ1bmNfdCBmaWxsKQogewotCWRhdGFfdCBkYXRhID0gezAsIH07CiAJ
-c3RydWN0IGludGVsX2JhdGNoYnVmZmVyICpiYXRjaCA9IE5VTEw7CiAJc3RydWN0IGlndF9idWYg
-ZHN0OwotCWlndF9maWxsZnVuY190IG1lZGlhX2ZpbGwgPSBOVUxMOwogCWludCBpLCBqOwogCisJ
-YmF0Y2ggPSBpbnRlbF9iYXRjaGJ1ZmZlcl9hbGxvYyhkYXRhLT5idWZtZ3IsIGRhdGEtPmRldmlk
-KTsKKwlpZ3RfYXNzZXJ0KGJhdGNoKTsKKworCXNjcmF0Y2hfYnVmX2luaXQoZGF0YSwgJmRzdCwg
-V0lEVEgsIEhFSUdIVCwgU1RSSURFLCBDT0xPUl9DNCk7CisKKwlmb3IgKGkgPSAwOyBpIDwgV0lE
-VEg7IGkrKykKKwkJZm9yIChqID0gMDsgaiA8IEhFSUdIVDsgaisrKQorCQkJc2NyYXRjaF9idWZf
-Y2hlY2soZGF0YSwgJmRzdCwgaSwgaiwgQ09MT1JfQzQpOworCisJZmlsbChiYXRjaCwgJmRzdCwg
-MCwgMCwgV0lEVEggLyAyLCBIRUlHSFQgLyAyLCBDT0xPUl80Qyk7CisKKwlmb3IgKGkgPSAwOyBp
-IDwgV0lEVEg7IGkrKykKKwkJZm9yIChqID0gMDsgaiA8IEhFSUdIVDsgaisrKQorCQkJaWYgKGkg
-PCBXSURUSCAvIDIgJiYgaiA8IEhFSUdIVCAvIDIpCisJCQkJc2NyYXRjaF9idWZfY2hlY2soZGF0
-YSwgJmRzdCwgaSwgaiwgQ09MT1JfNEMpOworCQkJZWxzZQorCQkJCXNjcmF0Y2hfYnVmX2NoZWNr
-KGRhdGEsICZkc3QsIGksIGosIENPTE9SX0M0KTsKKworfQorCitpZ3Rfc2ltcGxlX21haW4KK3sK
-KwlkYXRhX3QgZGF0YSA9IHswLCB9OworCWlndF9maWxsZnVuY190IG1lZGlhX2ZpbGwgPSBOVUxM
-OworCWlndF9maWxsZnVuY192Ml90IG1lZGlhX2ZpbGxfdjIgPSBOVUxMOworCiAJZGF0YS5kcm1f
-ZmQgPSBkcm1fb3Blbl9kcml2ZXJfcmVuZGVyKERSSVZFUl9JTlRFTCk7CiAJaWd0X3JlcXVpcmVf
-Z2VtKGRhdGEuZHJtX2ZkKTsKIAogCWRhdGEuZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2RldmlkKGRh
-dGEuZHJtX2ZkKTsKKwlkYXRhLmJvcHMgPSBidWZfb3BzX2NyZWF0ZShkYXRhLmRybV9mZCk7CiAK
-IAlkYXRhLmJ1Zm1nciA9IGRybV9pbnRlbF9idWZtZ3JfZ2VtX2luaXQoZGF0YS5kcm1fZmQsIDQw
-OTYpOwogCWlndF9hc3NlcnQoZGF0YS5idWZtZ3IpOwogCiAJbWVkaWFfZmlsbCA9IGlndF9nZXRf
-bWVkaWFfZmlsbGZ1bmMoZGF0YS5kZXZpZCk7CisJbWVkaWFfZmlsbF92MiA9IGlndF9nZXRfbWVk
-aWFfZmlsbGZ1bmNfdjIoZGF0YS5kZXZpZCk7CiAKLQlpZ3RfcmVxdWlyZV9mKG1lZGlhX2ZpbGws
-Ci0JCSJubyBtZWRpYS1maWxsIGZ1bmN0aW9uXG4iKTsKKwlpZ3RfcmVxdWlyZV9mKG1lZGlhX2Zp
-bGwgfHwgbWVkaWFfZmlsbF92MiwKKwkJICAgICAgIm5vIG1lZGlhLWZpbGwgZnVuY3Rpb25cbiIp
-OwogCi0JYmF0Y2ggPSBpbnRlbF9iYXRjaGJ1ZmZlcl9hbGxvYyhkYXRhLmJ1Zm1nciwgZGF0YS5k
-ZXZpZCk7Ci0JaWd0X2Fzc2VydChiYXRjaCk7Ci0KLQlzY3JhdGNoX2J1Zl9pbml0KCZkYXRhLCAm
-ZHN0LCBXSURUSCwgSEVJR0hULCBTVFJJREUsIENPTE9SX0M0KTsKLQotCWZvciAoaSA9IDA7IGkg
-PCBXSURUSDsgaSsrKSB7Ci0JCWZvciAoaiA9IDA7IGogPCBIRUlHSFQ7IGorKykgewotCQkJc2Ny
-YXRjaF9idWZfY2hlY2soJmRhdGEsICZkc3QsIGksIGosIENPTE9SX0M0KTsKLQkJfQotCX0KLQot
-CW1lZGlhX2ZpbGwoYmF0Y2gsCi0JCSZkc3QsIDAsIDAsIFdJRFRIIC8gMiwgSEVJR0hUIC8gMiwK
-LQkJQ09MT1JfNEMpOwotCi0JZm9yIChpID0gMDsgaSA8IFdJRFRIOyBpKyspIHsKLQkJZm9yIChq
-ID0gMDsgaiA8IEhFSUdIVDsgaisrKSB7Ci0JCQlpZiAoaSA8IFdJRFRIIC8gMiAmJiBqIDwgSEVJ
-R0hUIC8gMikKLQkJCQlzY3JhdGNoX2J1Zl9jaGVjaygmZGF0YSwgJmRzdCwgaSwgaiwgQ09MT1Jf
-NEMpOwotCQkJZWxzZQotCQkJCXNjcmF0Y2hfYnVmX2NoZWNrKCZkYXRhLCAmZHN0LCBpLCBqLCBD
-T0xPUl9DNCk7Ci0JCX0KLQl9CisJaWYgKG1lZGlhX2ZpbGxfdjIpCisJCW5vX2xpYmRybSgmZGF0
-YSwgbWVkaWFfZmlsbF92Mik7CisJZWxzZQorCQl3aXRoX2xpYmRybSgmZGF0YSwgbWVkaWFfZmls
-bCk7CiB9Ci0tIAoyLjI2LjAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRl
-dgo=
+---
+ tests/intel-ci/fast-feedback.testlist | 161 +-------------------------
+ 1 file changed, 1 insertion(+), 160 deletions(-)
+
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 04f6affc..56c12258 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,162 +1,3 @@
+ # Keep alphabetically sorted by default
+ 
+-igt@core_auth@basic-auth
+-igt@debugfs_test@read_all_entries
+-igt@fbdev@mmap
+-igt@gem_basic@bad-close
+-igt@gem_basic@create-close
+-igt@gem_basic@create-fd-close
+-igt@gem_busy@busy@all
+-igt@gem_close_race@basic-process
+-igt@gem_close_race@basic-threads
+-igt@gem_ctx_create@basic
+-igt@gem_ctx_create@basic-files
+-igt@gem_ctx_exec@basic
+-igt@gem_exec_basic@basic
+-igt@gem_exec_create@basic
+-igt@gem_exec_fence@basic-busy
+-igt@gem_exec_fence@basic-wait
+-igt@gem_exec_fence@basic-await
+-igt@gem_exec_fence@nb-await
+-igt@gem_exec_gttfill@basic
+-igt@gem_exec_parallel@engines
+-igt@gem_exec_store@basic
+-igt@gem_exec_suspend@basic-s0
+-igt@gem_exec_suspend@basic-s3
+-igt@gem_flink_basic@bad-flink
+-igt@gem_flink_basic@bad-open
+-igt@gem_flink_basic@basic
+-igt@gem_flink_basic@double-flink
+-igt@gem_flink_basic@flink-lifetime
+-igt@gem_linear_blits@basic
+-igt@gem_mmap@basic
+-igt@gem_mmap_gtt@basic
+-igt@gem_render_linear_blits@basic
+-igt@gem_render_tiled_blits@basic
+-igt@gem_ringfill@basic-all
+-igt@gem_sync@basic-all
+-igt@gem_sync@basic-each
+-igt@gem_tiled_blits@basic
+-igt@gem_tiled_fence_blits@basic
+-igt@gem_tiled_pread_basic
+-igt@gem_wait@busy@all
+-igt@gem_wait@wait@all
+-igt@i915_getparams_basic@basic-eu-total
+-igt@i915_getparams_basic@basic-subslice-total
+-igt@i915_hangman@error-state-basic
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled
+-igt@kms_addfb_basic@addfb25-x-tiled-mismatch
+-igt@kms_addfb_basic@addfb25-yf-tiled
+-igt@kms_addfb_basic@addfb25-y-tiled
+-igt@kms_addfb_basic@addfb25-y-tiled-small
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled
+-igt@kms_addfb_basic@basic-y-tiled
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@bo-too-small-due-to-tiling
+-igt@kms_addfb_basic@clobberred-modifier
+-igt@kms_addfb_basic@framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@tile-pitch-mismatch
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_busy@basic
+-igt@kms_chamelium@dp-hpd-fast
+-igt@kms_chamelium@dp-edid-read
+-igt@kms_chamelium@dp-crc-fast
+-igt@kms_chamelium@hdmi-hpd-fast
+-igt@kms_chamelium@hdmi-edid-read
+-igt@kms_chamelium@hdmi-crc-fast
+-igt@kms_chamelium@vga-hpd-fast
+-igt@kms_chamelium@vga-edid-read
+-igt@kms_chamelium@common-hpd-after-suspend
+-igt@kms_prop_blob@basic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
+-igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@force-load-detect
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-a
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc-pipe-a
+-igt@kms_pipe_crc_basic@read-crc-pipe-b
+-igt@kms_pipe_crc_basic@read-crc-pipe-c
+-igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
+-igt@kms_psr@primary_page_flip
+-igt@kms_psr@cursor_plane_move
+-igt@kms_psr@sprite_plane_onoff
+-igt@kms_psr@primary_mmap_gtt
+-igt@kms_setmode@basic-clone-single-crtc
+-igt@i915_pm_backlight@basic-brightness
+-igt@i915_pm_rpm@basic-pci-d3-state
+-igt@i915_pm_rpm@basic-rte
+-igt@i915_pm_rps@basic-api
+-igt@prime_self_import@basic-llseek-bad
+-igt@prime_self_import@basic-llseek-size
+-igt@prime_self_import@basic-with_fd_dup
+-igt@prime_self_import@basic-with_one_bo
+-igt@prime_self_import@basic-with_one_bo_two_files
+-igt@prime_self_import@basic-with_two_bos
+-igt@prime_vgem@basic-fence-flip
+-igt@prime_vgem@basic-fence-mmap
+-igt@prime_vgem@basic-fence-read
+-igt@prime_vgem@basic-gtt
+-igt@prime_vgem@basic-read
+-igt@prime_vgem@basic-write
+-igt@vgem_basic@setversion
+-igt@vgem_basic@create
+-igt@vgem_basic@debugfs
+-igt@vgem_basic@dmabuf-export
+-igt@vgem_basic@dmabuf-fence
+-igt@vgem_basic@dmabuf-fence-before
+-igt@vgem_basic@dmabuf-mmap
+-igt@vgem_basic@mmap
+-igt@vgem_basic@second-client
+-igt@vgem_basic@sysfs
+-
+-# All tests that do module unloading and reloading are executed last.
+-# They will sometimes reveal issues of earlier tests leaving the
+-# driver in a broken state that is not otherwise noticed in that test.
+-
+-igt@vgem_basic@unload
+-igt@i915_module_load@reload
+-igt@i915_pm_rpm@module-reload
+-
+-# Kernel selftests
+-igt@i915_selftest@live
+-igt@dmabuf@all
++igt@gem_media_fill
+-- 
+2.26.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
