@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A4BA6E91F
- for <igt-dev@lists.freedesktop.org>; Thu, 21 May 2020 08:39:32 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Thu, 21 May 2020 10:39:24 +0200
-Message-Id: <20200521083926.20428-4-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20200521083926.20428-1-zbigniew.kempczynski@intel.com>
-References: <20200521083926.20428-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 3/5] lib/intel_batchbuffer: Add new media
- fillfunc v2
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 21 May 2020 09:32:34 -0000
+Message-ID: <159005355447.4442.11404179684316187595@emeril.freedesktop.org>
+References: <20200521083926.20428-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200521083926.20428-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQ2hhbmdl?=
+ =?utf-8?q?_media_fill_to_be_libdrm-free_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,46 +14,64 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-TWVkaWEgZmlsbCBmdW5jdGlvbiBzZWxlY3Rpb24gZm9yICJfdjIiIHZlcnNpb24uCgpTaWduZWQt
-b2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVs
-LmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgotLS0KIGxp
-Yi9pbnRlbF9iYXRjaGJ1ZmZlci5jIHwgMjYgKysrKysrKysrKysrKysrKysrKysrKysrKysKIGxp
-Yi9pbnRlbF9iYXRjaGJ1ZmZlci5oIHwgIDEgKwogMiBmaWxlcyBjaGFuZ2VkLCAyNyBpbnNlcnRp
-b25zKCspCgpkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2JhdGNoYnVmZmVyLmMgYi9saWIvaW50ZWxf
-YmF0Y2hidWZmZXIuYwppbmRleCBiN2U4Njg1NC4uMDJjMjkzYmUgMTAwNjQ0Ci0tLSBhL2xpYi9p
-bnRlbF9iYXRjaGJ1ZmZlci5jCisrKyBiL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jCkBAIC0xMTE4
-LDYgKzExMTgsMzIgQEAgaWd0X2ZpbGxmdW5jX3QgaWd0X2dldF9tZWRpYV9maWxsZnVuYyhpbnQg
-ZGV2aWQpCiAJcmV0dXJuIGZpbGw7CiB9CiAKKworLyoqCisgKiBpZ3RfZ2V0X21lZGlhX2ZpbGxm
-dW5jX3YyOgorICogQGRldmlkOiBwY2kgZGV2aWNlIGlkCisgKgorICogUmV0dXJuczoKKyAqCisg
-KiBUaGUgcGxhdGZvcm0tc3BlY2lmaWMgbWVkaWEgZmlsbCBmdW5jdGlvbiBwb2ludGVyIGZvciB0
-aGUgZGV2aWNlIHNwZWNpZmllZAorICogd2l0aCBAZGV2aWQuIFdpbGwgcmV0dXJuIE5VTEwgd2hl
-biBubyBtZWRpYSBmaWxsIGZ1bmN0aW9uIGlzIGltcGxlbWVudGVkLgorICovCitpZ3RfZmlsbGZ1
-bmNfdjJfdCBpZ3RfZ2V0X21lZGlhX2ZpbGxmdW5jX3YyKGludCBkZXZpZCkKK3sKKwlpZ3RfZmls
-bGZ1bmNfdjJfdCBmaWxsID0gTlVMTDsKKworCWlmIChJU19HRU4xMihkZXZpZCkpCisJCWZpbGwg
-PSBnZW4xMl9tZWRpYV9maWxsZnVuY192MjsKKwllbHNlIGlmIChJU19HRU45KGRldmlkKSB8fCBJ
-U19HRU4xMChkZXZpZCkgfHwgSVNfR0VOMTEoZGV2aWQpKQorCQlmaWxsID0gZ2VuOV9tZWRpYV9m
-aWxsZnVuY192MjsKKwllbHNlIGlmIChJU19HRU44KGRldmlkKSkKKwkJZmlsbCA9IGdlbjhfbWVk
-aWFfZmlsbGZ1bmNfdjI7CisJZWxzZSBpZiAoSVNfR0VONyhkZXZpZCkpCisJCWZpbGwgPSBnZW43
-X21lZGlhX2ZpbGxmdW5jX3YyOworCisJcmV0dXJuIGZpbGw7Cit9CisKIGlndF92bWVfZnVuY190
-IGlndF9nZXRfbWVkaWFfdm1lX2Z1bmMoaW50IGRldmlkKQogewogCWlndF92bWVfZnVuY190IGZp
-bGwgPSBOVUxMOwpkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2JhdGNoYnVmZmVyLmggYi9saWIvaW50
-ZWxfYmF0Y2hidWZmZXIuaAppbmRleCAwZDk1NDI3Yy4uZTdhYzU4ZmEgMTAwNjQ0Ci0tLSBhL2xp
-Yi9pbnRlbF9iYXRjaGJ1ZmZlci5oCisrKyBiL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5oCkBAIC00
-MDEsNiArNDAxLDcgQEAgdHlwZWRlZiB2b2lkICgqaWd0X2ZpbGxmdW5jX3YyX3QpKGludCBpOTE1
-LAogaWd0X2ZpbGxmdW5jX3QgaWd0X2dldF9tZWRpYV9maWxsZnVuYyhpbnQgZGV2aWQpOwogaWd0
-X2ZpbGxmdW5jX3QgaWd0X2dldF9ncGdwdV9maWxsZnVuYyhpbnQgZGV2aWQpOwogaWd0X2ZpbGxm
-dW5jX3YyX3QgaWd0X2dldF9ncGdwdV9maWxsZnVuY192MihpbnQgZGV2aWQpOworaWd0X2ZpbGxm
-dW5jX3YyX3QgaWd0X2dldF9tZWRpYV9maWxsZnVuY192MihpbnQgZGV2aWQpOwogCiB0eXBlZGVm
-IHZvaWQgKCppZ3Rfdm1lX2Z1bmNfdCkoc3RydWN0IGludGVsX2JhdGNoYnVmZmVyICpiYXRjaCwK
-IAkJCSAgICAgICBjb25zdCBzdHJ1Y3QgaWd0X2J1ZiAqc3JjLAotLSAKMi4yNi4wCgpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcg
-bGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNr
-dG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+== Series Details ==
+
+Series: Change media fill to be libdrm-free (rev2)
+URL   : https://patchwork.freedesktop.org/series/77501/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8517 -> IGTPW_4606
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4606/index.html
+
+
+Changes
+-------
+
+  No changes found
+
+
+Participating hosts (46 -> 42)
+------------------------------
+
+  Additional (1): fi-kbl-7560u 
+  Missing    (5): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5666 -> IGTPW_4606
+
+  CI-20190529: 20190529
+  CI_DRM_8517: 7c5c05e694bf83e9d4ef64172ef6c9d55aa334a5 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4606: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4606/index.html
+  IGT_5666: dfa3b1fdc9813a48314a43faaacb7dacc06112d6 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4606/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
