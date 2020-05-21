@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 21 May 2020 01:50:40 -0000
-Message-ID: <159002584005.4443.5744742535142203452@emeril.freedesktop.org>
+Date: Thu, 21 May 2020 02:39:04 -0000
+Message-ID: <159002874494.4440.3168133997039688330@emeril.freedesktop.org>
 References: <20200521012624.400031-1-jose.souza@intel.com>
 In-Reply-To: <20200521012624.400031-1-jose.souza@intel.com>
 Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?fbcon=3A_Don=27t_close_drm_fd?=
+ =?utf-8?q?fbcon=3A_Don=27t_close_drm_fd_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,13 +25,13 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: tests/fbcon: Don't close drm fd
+Series: tests/fbcon: Don't close drm fd (rev2)
 URL   : https://patchwork.freedesktop.org/series/77497/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_8515 -> IGTPW_4603
+CI Bug Log - changes from CI_DRM_8516 -> IGTPW_4604
 ====================================================
 
 Summary
@@ -41,60 +41,46 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4603/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4604/index.html
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_4603 that come from known issues:
+  Here are the changes found in IGTPW_4604 that come from known issues:
 
 ### IGT changes ###
 
-#### Possible fixes ####
+#### Issues hit ####
 
-  * igt@i915_selftest@live@execlists:
-    - {fi-tgl-dsi}:       [INCOMPLETE][1] ([i915#1803]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8515/fi-tgl-dsi/igt@i915_selftest@live@execlists.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4603/fi-tgl-dsi/igt@i915_selftest@live@execlists.html
-
-  
-#### Warnings ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-x1275:       [SKIP][3] ([fdo#109271]) -> [FAIL][4] ([i915#62] / [i915#95])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8515/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4603/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+  * igt@i915_selftest@live@sanitycheck:
+    - fi-bwr-2160:        [PASS][1] -> [INCOMPLETE][2] ([i915#489])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8516/fi-bwr-2160/igt@i915_selftest@live@sanitycheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4604/fi-bwr-2160/igt@i915_selftest@live@sanitycheck.html
 
   
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1803]: https://gitlab.freedesktop.org/drm/intel/issues/1803
-  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
-  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+  [i915#489]: https://gitlab.freedesktop.org/drm/intel/issues/489
 
 
-Participating hosts (49 -> 41)
+Participating hosts (46 -> 41)
 ------------------------------
 
-  Missing    (8): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-cfl-guc fi-hsw-4770 fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
+  Missing    (5): fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
 
 
 Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_5665 -> IGTPW_4603
+  * IGT: IGT_5665 -> IGTPW_4604
 
   CI-20190529: 20190529
-  CI_DRM_8515: 41f9bb782f3bb2f30be09683184bbeecb1fd31bb @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4603: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4603/index.html
+  CI_DRM_8516: 5db9df14788c0a6038aa05e180cde8065d724e43 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4604: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4604/index.html
   IGT_5665: c5e5b0ce26fc321591a6d0235c639a1e8ec3cdfa @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4603/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4604/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
