@@ -1,10 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 21 May 2020 11:22:48 +0100
-Message-Id: <20200521102248.3157266-1-chris@chris-wilson.co.uk>
+Message-ID: <424dc6ab699ae64e7f0d3f9e20532a232c0fdc3f.camel@linux.intel.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Thu, 21 May 2020 17:23:20 +0200
+In-Reply-To: <20200512171947.730859-1-chris@chris-wilson.co.uk>
+References: <20200512102447.9249-1-janusz.krzysztofik@linux.intel.com>
+ <20200512171947.730859-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_balancer: Exercise stalls of
- bonded pairs
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_exec_nop: Specify timeout in
+ milliseconds
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,155 +19,148 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
+To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Broadwell doesn't allow preemption and so a request must complete within
-a hangcheck period or be declared hung. A bonded request may be
-submitted before it's master is ready to run, and if preemption is
-disabled there is a danger that wait may be charged against the bond,
-rather than the culprit that is causing the master to hang.
+On Tue, 2020-05-12 at 18:19 +0100, Chris Wilson wrote:
+> Our 'headless' subtest requires fairly precise measurements to determine
+> the impact of the dmc upon request latency. The test cannot be effective
+> if we cannot execute requests quickly, so add a very short pre-pass to
+> check the test requirements. For this we want to specify the baseline
+> measurement timeout in milliseconds, allowing us to speed up our other
+> baseline measurements elsewhere as well.
+> 
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 
-This test tries to stall the master by blocking it with a high priority
-spinner (or a queue of them) and verifies that we do not accidentally
-reset the bonds.
+Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
----
- tests/i915/gem_exec_balancer.c | 108 +++++++++++++++++++++++++++++++--
- 1 file changed, 104 insertions(+), 4 deletions(-)
+Thanks,
+Janusz
 
-diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index 573d09545..19543088f 100644
---- a/tests/i915/gem_exec_balancer.c
-+++ b/tests/i915/gem_exec_balancer.c
-@@ -1154,6 +1154,95 @@ static void bonded_semaphore(int i915)
- 	gem_context_destroy(i915, ctx);
- }
- 
-+static void __bonded_nohang(int i915, uint32_t ctx,
-+			    const struct i915_engine_class_instance *siblings,
-+			    unsigned int count,
-+			    unsigned int flags)
-+#define NOHANG 0x1
-+{
-+	struct drm_i915_gem_exec_object2 batch = {
-+		.handle = batch_create(i915),
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(&batch),
-+		.buffer_count = 1,
-+		.rsvd1 = ctx,
-+	};
-+	igt_spin_t *time, *spin;
-+	uint32_t load;
-+
-+	load = gem_context_create(i915);
-+	gem_context_set_priority(i915, load, 1023);
-+	set_load_balancer(i915, load, siblings, count, NULL);
-+
-+	spin = igt_spin_new(i915, load, .engine = 1);
-+
-+	/* Master on engine 1, stuck behind a spinner */
-+	execbuf.flags = 1 | I915_EXEC_FENCE_OUT;
-+	gem_execbuf_wr(i915, &execbuf);
-+
-+	/* Bond on engine 2, engine clear bond can be submitted immediately */
-+	execbuf.rsvd2 >>= 32;
-+	execbuf.flags = 2 | I915_EXEC_FENCE_SUBMIT | I915_EXEC_FENCE_OUT;
-+	gem_execbuf_wr(i915, &execbuf);
-+
-+	igt_debugfs_dump(i915, "i915_engine_info");
-+
-+	/* The master will remain blocked until the spinner is reset */
-+	time = igt_spin_new(i915); /* rcs0 */
-+	while (gem_bo_busy(i915, time->handle)) {
-+		igt_spin_t *next;
-+
-+		if (flags & NOHANG) {
-+			/* Keep replacing spin, so that it doesn't hang */
-+			next = igt_spin_new(i915, load, .engine = 1);
-+			igt_spin_free(i915, spin);
-+			spin = next;
-+		}
-+
-+		if (!gem_bo_busy(i915, batch.handle))
-+			break;
-+	}
-+	igt_spin_free(i915, time);
-+	igt_spin_free(i915, spin);
-+
-+	/* Check the bonded pair completed were not declared hung */
-+	igt_assert_eq(sync_fence_status(execbuf.rsvd2 & 0xffffffff), 1);
-+	igt_assert_eq(sync_fence_status(execbuf.rsvd2 >> 32), 1);
-+
-+	close(execbuf.rsvd2);
-+	close(execbuf.rsvd2 >> 32);
-+
-+	gem_context_destroy(i915, load);
-+	gem_close(i915, batch.handle);
-+}
-+
-+static void bonded_nohang(int i915, unsigned int flags)
-+{
-+	uint32_t ctx;
-+
-+	/*
-+	 * We try and trick ourselves into declaring a bonded request as
-+	 * hung by preventing the master from running [after submission].
-+	 */
-+
-+	igt_require(gem_scheduler_has_semaphores(i915));
-+
-+	ctx = gem_context_create(i915);
-+
-+	for (int class = 1; class < 32; class++) {
-+		struct i915_engine_class_instance *siblings;
-+		unsigned int count;
-+
-+		siblings = list_engines(i915, 1u << class, &count);
-+		if (count > 1)
-+			__bonded_nohang(i915, ctx, siblings, count, flags);
-+		free(siblings);
-+	}
-+
-+	gem_context_destroy(i915, ctx);
-+}
-+
- static void indices(int i915)
- {
- 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, I915_EXEC_RING_MASK + 1);
-@@ -2199,11 +2288,22 @@ igt_main
- 		igt_stop_hang_detector();
- 	}
- 
--	igt_subtest("hang") {
--		igt_hang_t hang = igt_allow_hang(i915, 0, 0);
-+	igt_subtest_group {
-+		igt_hang_t  hang;
-+
-+		igt_fixture
-+			hang = igt_allow_hang(i915, 0, 0);
-+
-+		igt_subtest("bonded-false-hang")
-+			bonded_nohang(i915, NOHANG);
-+
-+		igt_subtest("bonded-true-hang")
-+			bonded_nohang(i915, 0);
- 
--		hangme(i915);
-+		igt_fixture
-+			igt_disallow_hang(i915, hang);
- 
--		igt_disallow_hang(i915, hang);
-+		igt_subtest("hang")
-+			hangme(i915);
- 	}
- }
--- 
-2.27.0.rc0
+> ---
+>  tests/i915/gem_exec_nop.c | 29 +++++++++++++++++------------
+>  1 file changed, 17 insertions(+), 12 deletions(-)
+> 
+> diff --git a/tests/i915/gem_exec_nop.c b/tests/i915/gem_exec_nop.c
+> index 4051e0fd7..21a937c83 100644
+> --- a/tests/i915/gem_exec_nop.c
+> +++ b/tests/i915/gem_exec_nop.c
+> @@ -64,7 +64,7 @@ static double elapsed(const struct timespec *start, const struct timespec *end)
+>  
+>  static double nop_on_ring(int fd, uint32_t handle,
+>  			  const struct intel_execution_engine2 *e,
+> -			  int timeout,
+> +			  int timeout_ms,
+>  			  unsigned long *out)
+>  {
+>  	struct drm_i915_gem_execbuffer2 execbuf;
+> @@ -94,7 +94,7 @@ static double nop_on_ring(int fd, uint32_t handle,
+>  		count++;
+>  
+>  		clock_gettime(CLOCK_MONOTONIC, &now);
+> -	} while (elapsed(&start, &now) < timeout);
+> +	} while (elapsed(&start, &now) < timeout_ms * 1e-3);
+>  	igt_assert_eq(intel_detect_and_clear_missed_interrupts(fd), 0);
+>  
+>  	*out = count;
+> @@ -348,14 +348,15 @@ static void single(int fd, uint32_t handle,
+>  	double time;
+>  	unsigned long count;
+>  
+> -	time = nop_on_ring(fd, handle, e, 20, &count);
+> +	time = nop_on_ring(fd, handle, e, 20000, &count);
+>  	igt_info("%s: %'lu cycles: %.3fus\n",
+>  		  e->name, count, time*1e6 / count);
+>  }
+>  
+>  static double
+>  stable_nop_on_ring(int fd, uint32_t handle,
+> -		   const struct intel_execution_engine2 *e, int timeout,
+> +		   const struct intel_execution_engine2 *e,
+> +		   int timeout_ms,
+>  		   int reps)
+>  {
+>  	igt_stats_t s;
+> @@ -370,7 +371,7 @@ stable_nop_on_ring(int fd, uint32_t handle,
+>  		unsigned long count;
+>  		double time;
+>  
+> -		time = nop_on_ring(fd, handle, e, timeout, &count);
+> +		time = nop_on_ring(fd, handle, e, timeout_ms, &count);
+>  		igt_stats_push_float(&s, time / count);
+>  	}
+>  
+> @@ -390,9 +391,10 @@ static void headless(int fd, uint32_t handle,
+>  		     const struct intel_execution_engine2 *e)
+>  {
+>  	unsigned int nr_connected = 0;
+> +	double n_display, n_headless;
+>  	drmModeConnector *connector;
+> +	unsigned long count;
+>  	drmModeRes *res;
+> -	double n_display, n_headless;
+>  
+>  	res = drmModeGetResources(fd);
+>  	igt_require(res);
+> @@ -409,8 +411,11 @@ static void headless(int fd, uint32_t handle,
+>  	/* set graphics mode to prevent blanking */
+>  	kmstest_set_vt_graphics_mode();
+>  
+> +	nop_on_ring(fd, handle, e, 10, &count);
+> +	igt_require_f(count > 100, "submillisecond precision required\n");
+> +
+>  	/* benchmark nops */
+> -	n_display = stable_nop_on_ring(fd, handle, e, 1, 5);
+> +	n_display = stable_nop_on_ring(fd, handle, e, 500, 5);
+>  	igt_info("With one display connected: %.2fus\n",
+>  		 n_display * 1e6);
+>  
+> @@ -418,7 +423,7 @@ static void headless(int fd, uint32_t handle,
+>  	kmstest_unset_all_crtcs(fd, res);
+>  
+>  	/* benchmark nops again */
+> -	n_headless = stable_nop_on_ring(fd, handle, e, 1, 5);
+> +	n_headless = stable_nop_on_ring(fd, handle, e, 500, 5);
+>  	igt_info("Without a display connected (headless): %.2fus\n",
+>  		 n_headless * 1e6);
+>  
+> @@ -444,7 +449,7 @@ static void parallel(int fd, uint32_t handle, int timeout)
+>  		engines[nengine] = e->flags;
+>  		names[nengine++] = strdup(e->name);
+>  
+> -		time = nop_on_ring(fd, handle, e, 1, &count) / count;
+> +		time = nop_on_ring(fd, handle, e, 250, &count) / count;
+>  		sum += time;
+>  		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
+>  	}
+> @@ -506,7 +511,7 @@ static void independent(int fd, uint32_t handle, int timeout)
+>  		engines[nengine] = e->flags;
+>  		names[nengine++] = strdup(e->name);
+>  
+> -		time = nop_on_ring(fd, handle, e, 1, &count) / count;
+> +		time = nop_on_ring(fd, handle, e, 250, &count) / count;
+>  		sum += time;
+>  		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
+>  	}
+> @@ -626,7 +631,7 @@ static void series(int fd, uint32_t handle, int timeout)
+>  
+>  	nengine = 0;
+>  	__for_each_physical_engine(fd, e) {
+> -		time = nop_on_ring(fd, handle, e, 1, &count) / count;
+> +		time = nop_on_ring(fd, handle, e, 250, &count) / count;
+>  		if (time > max) {
+>  			name = e->name;
+>  			max = time;
+> @@ -705,7 +710,7 @@ static void sequential(int fd, uint32_t handle, unsigned flags, int timeout)
+>  	__for_each_physical_engine(fd, e) {
+>  		unsigned long count;
+>  
+> -		time = nop_on_ring(fd, handle, e, 1, &count) / count;
+> +		time = nop_on_ring(fd, handle, e, 250, &count) / count;
+>  		sum += time;
+>  		igt_debug("%s: %.3fus\n", e->name, 1e6*time);
+>  
 
 _______________________________________________
 igt-dev mailing list
