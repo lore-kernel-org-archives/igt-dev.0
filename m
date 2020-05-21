@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 20 May 2020 17:29:46 +0100
-Message-Id: <20200520162946.2602017-1-chris@chris-wilson.co.uk>
+Date: Thu, 21 May 2020 11:22:48 +0100
+Message-Id: <20200521102248.3157266-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_schedule: Verify timeslicing
- between submit-fence
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_balancer: Exercise stalls of
+ bonded pairs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,168 +20,149 @@ To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Use a spinner to create a fence, and then use that as to synchronise
-another batch to cancel the spinner.
+Broadwell doesn't allow preemption and so a request must complete within
+a hangcheck period or be declared hung. A bonded request may be
+submitted before it's master is ready to run, and if preemption is
+disabled there is a danger that wait may be charged against the bond,
+rather than the culprit that is causing the master to hang.
+
+This test tries to stall the master by blocking it with a high priority
+spinner (or a queue of them) and verifies that we do not accidentally
+reset the bonds.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- tests/i915/gem_exec_schedule.c | 121 +++++++++++++++++++++++++++++++--
- 1 file changed, 116 insertions(+), 5 deletions(-)
+ tests/i915/gem_exec_balancer.c | 108 +++++++++++++++++++++++++++++++--
+ 1 file changed, 104 insertions(+), 4 deletions(-)
 
-diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-index 62e387cc1..0a7deb5a1 100644
---- a/tests/i915/gem_exec_schedule.c
-+++ b/tests/i915/gem_exec_schedule.c
-@@ -65,6 +65,11 @@
- 
- IGT_TEST_DESCRIPTION("Check that we can control the order of execution");
- 
-+static unsigned int offset_in_page(void *addr)
-+{
-+	return (uintptr_t)addr & 4095;
-+}
-+
- static inline
- uint32_t __sync_read_u32(int fd, uint32_t handle, uint64_t offset)
- {
-@@ -670,6 +675,110 @@ static void lateslice(int i915, unsigned int engine)
- 	igt_spin_free(i915, spin[1]);
+diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
+index 573d09545..19543088f 100644
+--- a/tests/i915/gem_exec_balancer.c
++++ b/tests/i915/gem_exec_balancer.c
+@@ -1154,6 +1154,95 @@ static void bonded_semaphore(int i915)
+ 	gem_context_destroy(i915, ctx);
  }
  
-+static void cancel_spinner(int i915,
-+			   uint32_t ctx, unsigned int engine,
-+			   igt_spin_t *spin)
++static void __bonded_nohang(int i915, uint32_t ctx,
++			    const struct i915_engine_class_instance *siblings,
++			    unsigned int count,
++			    unsigned int flags)
++#define NOHANG 0x1
 +{
-+	struct drm_i915_gem_exec_object2 obj = {
-+		.handle = gem_create(i915, 4096),
++	struct drm_i915_gem_exec_object2 batch = {
++		.handle = batch_create(i915),
 +	};
 +	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(&obj),
++		.buffers_ptr = to_user_pointer(&batch),
 +		.buffer_count = 1,
-+		.flags = engine | I915_EXEC_FENCE_SUBMIT,
-+		.rsvd1 = ctx, /* same vm */
-+		.rsvd2 = spin->out_fence,
++		.rsvd1 = ctx,
 +	};
-+	uint32_t *map, *cs;
++	igt_spin_t *time, *spin;
++	uint32_t load;
 +
-+	map = gem_mmap__device_coherent(i915, obj.handle, 0, 4096, PROT_WRITE);
-+	cs = map;
++	load = gem_context_create(i915);
++	gem_context_set_priority(i915, load, 1023);
++	set_load_balancer(i915, load, siblings, count, NULL);
 +
-+	*cs++ = MI_STORE_DWORD_IMM;
-+	*cs++ = spin->obj[IGT_SPIN_BATCH].offset +
-+		offset_in_page(spin->condition);
-+	*cs++ = spin->obj[IGT_SPIN_BATCH].offset >> 32;
-+	*cs++ = MI_BATCH_BUFFER_END;
++	spin = igt_spin_new(i915, load, .engine = 1);
 +
-+	*cs++ = MI_BATCH_BUFFER_END;
-+	munmap(map, 4096);
++	/* Master on engine 1, stuck behind a spinner */
++	execbuf.flags = 1 | I915_EXEC_FENCE_OUT;
++	gem_execbuf_wr(i915, &execbuf);
 +
-+	gem_execbuf(i915, &execbuf);
-+	gem_close(i915, obj.handle);
++	/* Bond on engine 2, engine clear bond can be submitted immediately */
++	execbuf.rsvd2 >>= 32;
++	execbuf.flags = 2 | I915_EXEC_FENCE_SUBMIT | I915_EXEC_FENCE_OUT;
++	gem_execbuf_wr(i915, &execbuf);
++
++	igt_debugfs_dump(i915, "i915_engine_info");
++
++	/* The master will remain blocked until the spinner is reset */
++	time = igt_spin_new(i915); /* rcs0 */
++	while (gem_bo_busy(i915, time->handle)) {
++		igt_spin_t *next;
++
++		if (flags & NOHANG) {
++			/* Keep replacing spin, so that it doesn't hang */
++			next = igt_spin_new(i915, load, .engine = 1);
++			igt_spin_free(i915, spin);
++			spin = next;
++		}
++
++		if (!gem_bo_busy(i915, batch.handle))
++			break;
++	}
++	igt_spin_free(i915, time);
++	igt_spin_free(i915, spin);
++
++	/* Check the bonded pair completed were not declared hung */
++	igt_assert_eq(sync_fence_status(execbuf.rsvd2 & 0xffffffff), 1);
++	igt_assert_eq(sync_fence_status(execbuf.rsvd2 >> 32), 1);
++
++	close(execbuf.rsvd2);
++	close(execbuf.rsvd2 >> 32);
++
++	gem_context_destroy(i915, load);
++	gem_close(i915, batch.handle);
 +}
 +
-+static void submit_slice(int i915,
-+			 const struct intel_execution_engine2 *e,
-+			 unsigned int flags)
-+#define EARLY_SUBMIT 0x1
-+#define LATE_SUBMIT 0x2
++static void bonded_nohang(int i915, unsigned int flags)
 +{
-+	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines , 1) = {};
-+	const struct intel_execution_engine2 *cancel;
-+	struct drm_i915_gem_context_param param = {
-+		.ctx_id = gem_context_create(i915),
-+		.param = I915_CONTEXT_PARAM_ENGINES,
-+		.value = to_user_pointer(&engines),
-+		.size = sizeof(engines),
-+	};
++	uint32_t ctx;
 +
 +	/*
-+	 * When using a submit fence, we do not want to block concurrent work,
-+	 * especially when that work is coperating with the spinner.
++	 * We try and trick ourselves into declaring a bonded request as
++	 * hung by preventing the master from running [after submission].
 +	 */
 +
 +	igt_require(gem_scheduler_has_semaphores(i915));
-+	igt_require(gem_scheduler_has_preemption(i915));
-+	igt_require(intel_gen(intel_get_drm_devid(i915)) >= 8);
 +
-+	__for_each_physical_engine(i915, cancel) {
-+		igt_spin_t *bg, *spin;
-+		int timeline = -1;
-+		int fence = -1;
++	ctx = gem_context_create(i915);
 +
-+		if (!gem_class_can_store_dword(i915, cancel->class))
-+			continue;
++	for (int class = 1; class < 32; class++) {
++		struct i915_engine_class_instance *siblings;
++		unsigned int count;
 +
-+		igt_debug("Testing cancellation from %s\n", e->name);
-+
-+		bg = igt_spin_new(i915, .engine = e->flags);
-+
-+		if (flags & LATE_SUBMIT) {
-+			timeline = sw_sync_timeline_create();
-+			fence = sw_sync_timeline_create_fence(timeline, 1);
-+		}
-+
-+		engines.engines[0].engine_class = e->class;
-+		engines.engines[0].engine_instance = e->instance;
-+		gem_context_set_param(i915, &param);
-+		spin = igt_spin_new(i915, .ctx = param.ctx_id,
-+				    .fence = fence,
-+				    .flags =
-+				    IGT_SPIN_POLL_RUN |
-+				    (flags & LATE_SUBMIT ? IGT_SPIN_FENCE_IN : 0) |
-+				    IGT_SPIN_FENCE_OUT);
-+		if (fence != -1)
-+			close(fence);
-+
-+		if (flags & EARLY_SUBMIT)
-+			igt_spin_busywait_until_started(spin);
-+
-+		engines.engines[0].engine_class = cancel->class;
-+		engines.engines[0].engine_instance = cancel->instance;
-+		gem_context_set_param(i915, &param);
-+		cancel_spinner(i915, param.ctx_id, 0, spin);
-+
-+		if (timeline != -1)
-+			close(timeline);
-+
-+		gem_sync(i915, spin->handle);
-+		igt_spin_free(i915, spin);
-+		igt_spin_free(i915, bg);
++		siblings = list_engines(i915, 1u << class, &count);
++		if (count > 1)
++			__bonded_nohang(i915, ctx, siblings, count, flags);
++		free(siblings);
 +	}
 +
-+	gem_context_destroy(i915, param.ctx_id);
++	gem_context_destroy(i915, ctx);
 +}
 +
- static uint32_t __batch_create(int i915, uint32_t offset)
+ static void indices(int i915)
  {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
-@@ -812,11 +921,6 @@ static void semaphore_codependency(int i915)
+ 	I915_DEFINE_CONTEXT_PARAM_ENGINES(engines, I915_EXEC_RING_MASK + 1);
+@@ -2199,11 +2288,22 @@ igt_main
+ 		igt_stop_hang_detector();
+ 	}
+ 
+-	igt_subtest("hang") {
+-		igt_hang_t hang = igt_allow_hang(i915, 0, 0);
++	igt_subtest_group {
++		igt_hang_t  hang;
++
++		igt_fixture
++			hang = igt_allow_hang(i915, 0, 0);
++
++		igt_subtest("bonded-false-hang")
++			bonded_nohang(i915, NOHANG);
++
++		igt_subtest("bonded-true-hang")
++			bonded_nohang(i915, 0);
+ 
+-		hangme(i915);
++		igt_fixture
++			igt_disallow_hang(i915, hang);
+ 
+-		igt_disallow_hang(i915, hang);
++		igt_subtest("hang")
++			hangme(i915);
  	}
  }
- 
--static unsigned int offset_in_page(void *addr)
--{
--	return (uintptr_t)addr & 4095;
--}
--
- static void semaphore_resolve(int i915)
- {
- 	const struct intel_execution_engine2 *e;
-@@ -2454,6 +2558,13 @@ igt_main
- 		test_each_engine("lateslice", fd, e)
- 			lateslice(fd, e->flags);
- 
-+		test_each_engine("submit-early-slice", fd, e)
-+			submit_slice(fd, e, EARLY_SUBMIT);
-+		test_each_engine("submit-golden-slice", fd, e)
-+			submit_slice(fd, e, 0);
-+		test_each_engine("submit-late-slice", fd, e)
-+			submit_slice(fd, e, LATE_SUBMIT);
-+
- 		igt_subtest("semaphore-user")
- 			semaphore_userlock(fd);
- 		igt_subtest("semaphore-codependency")
 -- 
 2.27.0.rc0
 
