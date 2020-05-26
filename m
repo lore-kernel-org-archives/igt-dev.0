@@ -1,19 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
- [IPv6:2a00:1450:4864:20::341])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E12AD6E048
- for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2020 16:27:10 +0000 (UTC)
-Received: by mail-wm1-x341.google.com with SMTP id h4so133385wmb.4
- for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2020 09:27:10 -0700 (PDT)
 MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 26 May 2020 17:38:47 -0000
+Message-ID: <159051472795.28044.7151983545281029631@emeril.freedesktop.org>
 References: <20200526122417.779145-1-arkadiusz.hiler@intel.com>
- <20200526122417.779145-3-arkadiusz.hiler@intel.com>
-In-Reply-To: <20200526122417.779145-3-arkadiusz.hiler@intel.com>
-From: Lucas De Marchi <lucas.de.marchi@gmail.com>
-Date: Tue, 26 May 2020 09:26:57 -0700
-Message-ID: <CAKi4VAJR1JvX8JM0dgZ+8NK6LMFg4WYBxm0C0bQeRc0jUvj3qQ@mail.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] lib/igt_device_scan: Add extra
- helpers for intel_gpu_top
+In-Reply-To: <20200526122417.779145-1-arkadiusz.hiler@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/4=5D_lib/igt=5Fdevice=5Fscan=3A_Add?=
+ =?utf-8?q?_missing_Check_for_return_value_in_scan=5Fdrm=5Fdevices?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,217 +15,354 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Ayaz A Siddiqui <ayaz.siddiqui@intel.com>, Petri Latvala <petri.latvala@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, May 26, 2020 at 5:25 AM Arkadiusz Hiler
-<arkadiusz.hiler@intel.com> wrote:
->
-> From: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
->
-> Will be used in the next patch.
->
-> 1. set_pci_slot_name(): stores PCI_SLOT_NAME from prop to device
-> 2. igt_device_find_first_discrete_card(): try to find first discrete GPU
-> 3. igt_devices_free(): Free device buffers created during scan
->
-> Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> ---
->  lib/igt_device_scan.c | 80 ++++++++++++++++++++++++++++++++++++-------
->  lib/igt_device_scan.h |  7 +++-
->  2 files changed, 74 insertions(+), 13 deletions(-)
->
-> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> index be854b01..4daabbd9 100644
-> --- a/lib/igt_device_scan.c
-> +++ b/lib/igt_device_scan.c
-> @@ -164,6 +164,7 @@ struct igt_device {
->         /* For pci subsystem */
->         char *vendor;
->         char *device;
-> +       char *pci_slot_name;
->
->         struct igt_list_head link;
->  };
-> @@ -337,7 +338,21 @@ static void get_attrs(struct udev_device *dev, struct igt_device *idev)
->  #define is_drm_subsystem(dev)  (strequal(get_prop_subsystem(dev), "drm"))
->  #define is_pci_subsystem(dev)  (strequal(get_prop_subsystem(dev), "pci"))
->
-> -/* Gets PCI_ID property, splits to xxxx:yyyy and stores
-> +/*
-> + * Get PCI_SLOT_NAME property, it should be in format of
-> + * xxxx:yy:zz.z
-> + */
-> +static void set_pci_slot_name(struct igt_device *dev)
-> +{
-> +       const char *pci_slot_name = get_prop(dev, "PCI_SLOT_NAME");
-> +
-> +       if (!pci_slot_name || (strlen(pci_slot_name) != PCI_SLOT_NAME_SIZE))
-> +               return;
-> +       dev->pci_slot_name = strdup(pci_slot_name);
-> +}
-> +
-> +/*
-> + * Gets PCI_ID property, splits to xxxx:yyyy and stores
->   * xxxx to dev->vendor and yyyy to dev->device for
->   * faster access.
->   */
-> @@ -410,6 +425,45 @@ static struct igt_device *igt_device_find(const char *subsystem,
->         return NULL;
->  }
->
-> +static void
-> +__copy_dev_to_card(struct igt_device *dev, struct igt_device_card *card)
-> +{
-> +       if (dev->subsystem != NULL)
-> +               strncpy(card->subsystem, dev->subsystem,
-> +                       sizeof(card->subsystem) - 1);
-> +
-> +       if (dev->drm_card != NULL)
-> +               strncpy(card->card, dev->drm_card, sizeof(card->card) - 1);
-> +
-> +       if (dev->drm_render != NULL)
-> +               strncpy(card->render, dev->drm_render,
-> +                       sizeof(card->render) - 1);
-> +
-> +       if (dev->pci_slot_name != NULL)
-> +               strncpy(card->pci_slot_name, dev->pci_slot_name,
-> +                       PCI_SLOT_NAME_SIZE + 1);
-> +}
-> +
-> +/*
-> + * Iterate over all igt_devices array and find first discrete card.
-> + * card->pci_slot_name will be updated only if a discrete card is present.
-> + */
-> +void igt_device_find_first_discrete_card(struct igt_device_card *card)
-> +{
-> +       struct igt_device *dev;
-> +
-> +       igt_list_for_each_entry(dev, &igt_devs.all, link) {
-> +
-> +               if (!is_pci_subsystem(dev))
-> +                       continue;
-> +
-> +               if ((strncmp(dev->pci_slot_name, INTEGRATED_GPU_PCI_ID, PCI_SLOT_NAME_SIZE)) != 0) {
-> +                       __copy_dev_to_card(dev, card);
+== Series Details ==
 
-why do we need to make it prefer discrete? rather than "use the first
-one if no one was specified"?
+Series: series starting with [i-g-t,1/4] lib/igt_device_scan: Add missing Check for return value in scan_drm_devices
+URL   : https://patchwork.freedesktop.org/series/77660/
+State : failure
 
-Lucas De Marchi
+== Summary ==
 
-> +                       break;
-> +               }
-> +       }
-> +}
-> +
->  static struct igt_device *igt_device_from_syspath(const char *syspath)
->  {
->         struct igt_device *dev;
-> @@ -445,6 +499,7 @@ static void update_or_add_parent(struct udev_device *dev,
->                 parent_idev = igt_device_new_from_udev(parent_dev);
->                 if (is_pci_subsystem(parent_idev)) {
->                         set_vendor_device(parent_idev);
-> +                       set_pci_slot_name(parent_idev);
->                 }
->                 igt_list_add_tail(&parent_idev->link, &igt_devs.all);
->         }
-> @@ -573,10 +628,21 @@ static void igt_device_free(struct igt_device *dev)
->         free(dev->drm_render);
->         free(dev->vendor);
->         free(dev->device);
-> +       free(dev->pci_slot_name);
->         g_hash_table_destroy(dev->attrs_ht);
->         g_hash_table_destroy(dev->props_ht);
->  }
->
-> +void igt_devices_free(void)
-> +{
-> +       struct igt_device *dev, *tmp;
-> +
-> +       igt_list_for_each_entry_safe(dev, tmp, &igt_devs.all, link) {
-> +               igt_device_free(dev);
-> +               free(dev);
-> +       }
-> +}
-> +
->  /**
->   * igt_devices_scan
->   * @force: enforce scanning devices
-> @@ -1196,17 +1262,7 @@ bool igt_device_card_match(const char *filter, struct igt_device_card *card)
->         /* We take first one if more than one card matches filter */
->         dev = igt_list_first_entry(&igt_devs.filtered, dev, link);
->
-> -       if (dev->subsystem != NULL)
-> -               strncpy(card->subsystem, dev->subsystem,
-> -                            sizeof(card->subsystem) - 1);
-> -
-> -       if (dev->drm_card != NULL)
-> -               strncpy(card->card, dev->drm_card,
-> -                            sizeof(card->card) - 1);
-> -
-> -       if (dev->drm_render != NULL)
-> -               strncpy(card->render, dev->drm_render,
-> -                            sizeof(card->render) - 1);
-> +       __copy_dev_to_card(dev, card);
->
->         return true;
->  }
-> diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
-> index ad632145..16d75320 100644
-> --- a/lib/igt_device_scan.h
-> +++ b/lib/igt_device_scan.h
-> @@ -39,10 +39,13 @@ enum igt_devices_print_type {
->         IGT_PRINT_DETAIL,
->  };
->
-> +#define INTEGRATED_GPU_PCI_ID "0000:00:02.0"
-> +#define PCI_SLOT_NAME_SIZE 12
->  struct igt_device_card {
->         char subsystem[NAME_MAX];
->         char card[NAME_MAX];
->         char render[NAME_MAX];
-> +       char pci_slot_name[PCI_SLOT_NAME_SIZE+1];
->  };
->
->  void igt_devices_scan(bool force);
-> @@ -51,6 +54,8 @@ void igt_devices_print(enum igt_devices_print_type printtype);
->  void igt_devices_print_vendors(void);
->  void igt_device_print_filter_types(void);
->
-> +void igt_devices_free(void);
-> +
->  /*
->   * Handle device filter collection array.
->   * IGT can store/retrieve filters passed by user using '--device' args.
-> @@ -63,7 +68,7 @@ const char *igt_device_filter_get(int num);
->
->  /* Use filter to match the device and fill card structure */
->  bool igt_device_card_match(const char *filter, struct igt_device_card *card);
-> -
-> +void igt_device_find_first_discrete_card(struct igt_device_card *card);
->  int igt_open_card(struct igt_device_card *card);
->  int igt_open_render(struct igt_device_card *card);
->
-> --
-> 2.25.4
->
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+CI Bug Log - changes from CI_DRM_8539_full -> IGTPW_4612_full
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_4612_full absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4612_full, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4612_full:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_exec_flush@basic-batch-kernel-default-cmd:
+    - shard-hsw:          [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-hsw2/igt@gem_exec_flush@basic-batch-kernel-default-cmd.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-hsw2/igt@gem_exec_flush@basic-batch-kernel-default-cmd.html
+
+  * igt@gen9_exec_parse@cmd-crossing-page:
+    - shard-glk:          [PASS][3] -> [TIMEOUT][4] +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-glk5/igt@gen9_exec_parse@cmd-crossing-page.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-glk5/igt@gen9_exec_parse@cmd-crossing-page.html
+
+  * igt@runner@aborted:
+    - shard-hsw:          NOTRUN -> ([FAIL][5], [FAIL][6])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-hsw7/igt@runner@aborted.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-hsw2/igt@runner@aborted.html
+
+  
+#### Warnings ####
+
+  * igt@kms_ccs@pipe-d-crc-primary-rotation-180:
+    - shard-glk:          [SKIP][7] ([fdo#109271]) -> [TIMEOUT][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-glk9/igt@kms_ccs@pipe-d-crc-primary-rotation-180.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-glk5/igt@kms_ccs@pipe-d-crc-primary-rotation-180.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * {igt@gem_exec_reloc@basic-concurrent16}:
+    - shard-glk:          NOTRUN -> [TIMEOUT][9]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-glk5/igt@gem_exec_reloc@basic-concurrent16.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4612_full that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gen9_exec_parse@allowed-all:
+    - shard-apl:          [PASS][10] -> [DMESG-WARN][11] ([i915#1436] / [i915#716])
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-apl1/igt@gen9_exec_parse@allowed-all.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-apl3/igt@gen9_exec_parse@allowed-all.html
+    - shard-glk:          [PASS][12] -> [DMESG-WARN][13] ([i915#1436] / [i915#716])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-glk1/igt@gen9_exec_parse@allowed-all.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-glk7/igt@gen9_exec_parse@allowed-all.html
+
+  * igt@gen9_exec_parse@cmd-crossing-page:
+    - shard-apl:          [PASS][14] -> [TIMEOUT][15] ([i915#1635]) +1 similar issue
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-apl8/igt@gen9_exec_parse@cmd-crossing-page.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-apl6/igt@gen9_exec_parse@cmd-crossing-page.html
+
+  * igt@i915_pm_rpm@pm-tiling:
+    - shard-apl:          [PASS][16] -> [SKIP][17] ([fdo#109271])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-apl7/igt@i915_pm_rpm@pm-tiling.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-apl6/igt@i915_pm_rpm@pm-tiling.html
+    - shard-glk:          [PASS][18] -> [SKIP][19] ([fdo#109271])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-glk6/igt@i915_pm_rpm@pm-tiling.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-glk5/igt@i915_pm_rpm@pm-tiling.html
+
+  * igt@i915_suspend@fence-restore-tiled2untiled:
+    - shard-apl:          [PASS][20] -> [DMESG-WARN][21] ([i915#180]) +2 similar issues
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-apl3/igt@i915_suspend@fence-restore-tiled2untiled.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-apl4/igt@i915_suspend@fence-restore-tiled2untiled.html
+
+  * igt@i915_suspend@forcewake:
+    - shard-kbl:          [PASS][22] -> [INCOMPLETE][23] ([i915#155])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-kbl3/igt@i915_suspend@forcewake.html
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-kbl4/igt@i915_suspend@forcewake.html
+
+  * igt@kms_big_fb@linear-64bpp-rotate-0:
+    - shard-glk:          [PASS][24] -> [FAIL][25] ([i915#1119] / [i915#118] / [i915#95])
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-glk7/igt@kms_big_fb@linear-64bpp-rotate-0.html
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-glk8/igt@kms_big_fb@linear-64bpp-rotate-0.html
+
+  * igt@kms_cursor_crc@pipe-a-cursor-256x256-onscreen:
+    - shard-kbl:          [PASS][26] -> [FAIL][27] ([i915#54] / [i915#93] / [i915#95])
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-kbl7/igt@kms_cursor_crc@pipe-a-cursor-256x256-onscreen.html
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-kbl3/igt@kms_cursor_crc@pipe-a-cursor-256x256-onscreen.html
+
+  * igt@kms_cursor_crc@pipe-a-cursor-256x85-onscreen:
+    - shard-kbl:          [PASS][28] -> [FAIL][29] ([i915#54])
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-kbl1/igt@kms_cursor_crc@pipe-a-cursor-256x85-onscreen.html
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-kbl7/igt@kms_cursor_crc@pipe-a-cursor-256x85-onscreen.html
+
+  * igt@kms_cursor_crc@pipe-c-cursor-suspend:
+    - shard-kbl:          [PASS][30] -> [DMESG-WARN][31] ([i915#180]) +3 similar issues
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-kbl2/igt@kms_cursor_crc@pipe-c-cursor-suspend.html
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-kbl4/igt@kms_cursor_crc@pipe-c-cursor-suspend.html
+
+  * igt@kms_cursor_legacy@cursor-vs-flip-varying-size:
+    - shard-hsw:          [PASS][32] -> [FAIL][33] ([i915#57])
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-hsw8/igt@kms_cursor_legacy@cursor-vs-flip-varying-size.html
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-hsw6/igt@kms_cursor_legacy@cursor-vs-flip-varying-size.html
+
+  * igt@kms_flip_tiling@flip-changes-tiling:
+    - shard-apl:          [PASS][34] -> [FAIL][35] ([i915#95])
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-apl6/igt@kms_flip_tiling@flip-changes-tiling.html
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-apl7/igt@kms_flip_tiling@flip-changes-tiling.html
+    - shard-kbl:          [PASS][36] -> [FAIL][37] ([i915#699] / [i915#93] / [i915#95])
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-kbl6/igt@kms_flip_tiling@flip-changes-tiling.html
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-kbl2/igt@kms_flip_tiling@flip-changes-tiling.html
+
+  * igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:
+    - shard-apl:          [PASS][38] -> [FAIL][39] ([i915#53] / [i915#95]) +1 similar issue
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-apl8/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-apl3/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:
+    - shard-kbl:          [PASS][40] -> [FAIL][41] ([i915#53] / [i915#93] / [i915#95]) +1 similar issue
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-kbl6/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-kbl1/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
+
+  * igt@kms_psr@psr2_no_drrs:
+    - shard-iclb:         [PASS][42] -> [SKIP][43] ([fdo#109441]) +3 similar issues
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-iclb2/igt@kms_psr@psr2_no_drrs.html
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-iclb6/igt@kms_psr@psr2_no_drrs.html
+
+  
+#### Possible fixes ####
+
+  * {igt@gem_exec_endless@dispatch@vcs0}:
+    - shard-apl:          [SKIP][44] ([fdo#109271]) -> [PASS][45] +2 similar issues
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-apl4/igt@gem_exec_endless@dispatch@vcs0.html
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-apl2/igt@gem_exec_endless@dispatch@vcs0.html
+
+  * {igt@gem_exec_endless@dispatch@vcs1}:
+    - shard-tglb:         [SKIP][46] ([i915#1929]) -> [PASS][47] +4 similar issues
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-tglb8/igt@gem_exec_endless@dispatch@vcs1.html
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-tglb2/igt@gem_exec_endless@dispatch@vcs1.html
+    - shard-kbl:          [SKIP][48] ([fdo#109271]) -> [PASS][49] +3 similar issues
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-kbl6/igt@gem_exec_endless@dispatch@vcs1.html
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-kbl6/igt@gem_exec_endless@dispatch@vcs1.html
+    - shard-iclb:         [SKIP][50] ([fdo#109276] / [i915#1929]) -> [PASS][51]
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-iclb2/igt@gem_exec_endless@dispatch@vcs1.html
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-iclb4/igt@gem_exec_endless@dispatch@vcs1.html
+
+  * {igt@gem_exec_endless@dispatch@vecs0}:
+    - shard-iclb:         [SKIP][52] ([i915#1929]) -> [PASS][53] +3 similar issues
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-iclb2/igt@gem_exec_endless@dispatch@vecs0.html
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-iclb4/igt@gem_exec_endless@dispatch@vecs0.html
+
+  * igt@i915_pm_dc@dc3co-vpb-simulation:
+    - shard-tglb:         [SKIP][54] ([i915#1904]) -> [PASS][55]
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-tglb8/igt@i915_pm_dc@dc3co-vpb-simulation.html
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-tglb7/igt@i915_pm_dc@dc3co-vpb-simulation.html
+
+  * igt@kms_big_fb@linear-32bpp-rotate-180:
+    - shard-apl:          [FAIL][56] ([i915#1119] / [i915#95]) -> [PASS][57]
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-apl4/igt@kms_big_fb@linear-32bpp-rotate-180.html
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-apl4/igt@kms_big_fb@linear-32bpp-rotate-180.html
+    - shard-kbl:          [FAIL][58] ([i915#1119] / [i915#93] / [i915#95]) -> [PASS][59]
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-kbl4/igt@kms_big_fb@linear-32bpp-rotate-180.html
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-kbl1/igt@kms_big_fb@linear-32bpp-rotate-180.html
+
+  * igt@kms_big_fb@x-tiled-64bpp-rotate-0:
+    - shard-glk:          [FAIL][60] ([i915#1119] / [i915#118] / [i915#95]) -> [PASS][61]
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-glk8/igt@kms_big_fb@x-tiled-64bpp-rotate-0.html
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-glk5/igt@kms_big_fb@x-tiled-64bpp-rotate-0.html
+
+  * igt@kms_cursor_crc@pipe-a-cursor-128x42-offscreen:
+    - shard-kbl:          [FAIL][62] ([i915#54] / [i915#93] / [i915#95]) -> [PASS][63]
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-kbl7/igt@kms_cursor_crc@pipe-a-cursor-128x42-offscreen.html
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-kbl6/igt@kms_cursor_crc@pipe-a-cursor-128x42-offscreen.html
+
+  * igt@kms_cursor_legacy@2x-long-cursor-vs-flip-legacy:
+    - shard-hsw:          [INCOMPLETE][64] ([i915#61]) -> [PASS][65]
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-hsw6/igt@kms_cursor_legacy@2x-long-cursor-vs-flip-legacy.html
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-hsw2/igt@kms_cursor_legacy@2x-long-cursor-vs-flip-legacy.html
+
+  * {igt@kms_flip@flip-vs-suspend-interruptible@a-dp1}:
+    - shard-kbl:          [DMESG-WARN][66] ([i915#180]) -> [PASS][67] +7 similar issues
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-kbl4/igt@kms_flip@flip-vs-suspend-interruptible@a-dp1.html
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-kbl7/igt@kms_flip@flip-vs-suspend-interruptible@a-dp1.html
+
+  * {igt@kms_flip@modeset-vs-vblank-race-interruptible@a-dp1}:
+    - shard-apl:          [FAIL][68] ([i915#407]) -> [PASS][69]
+   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-apl7/igt@kms_flip@modeset-vs-vblank-race-interruptible@a-dp1.html
+   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-apl3/igt@kms_flip@modeset-vs-vblank-race-interruptible@a-dp1.html
+
+  * igt@kms_hdr@bpc-switch-suspend:
+    - shard-kbl:          [DMESG-WARN][70] ([i915#180] / [i915#93] / [i915#95]) -> [PASS][71]
+   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-kbl4/igt@kms_hdr@bpc-switch-suspend.html
+   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-kbl4/igt@kms_hdr@bpc-switch-suspend.html
+
+  * igt@kms_plane@plane-panning-bottom-right-suspend-pipe-b-planes:
+    - shard-apl:          [DMESG-WARN][72] ([i915#180]) -> [PASS][73] +3 similar issues
+   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-apl4/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-b-planes.html
+   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-apl4/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-b-planes.html
+
+  * igt@kms_psr@psr2_sprite_mmap_gtt:
+    - shard-iclb:         [SKIP][74] ([fdo#109441]) -> [PASS][75] +2 similar issues
+   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-iclb3/igt@kms_psr@psr2_sprite_mmap_gtt.html
+   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-iclb2/igt@kms_psr@psr2_sprite_mmap_gtt.html
+
+  * igt@kms_setmode@basic:
+    - shard-kbl:          [FAIL][76] ([i915#31]) -> [PASS][77]
+   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-kbl4/igt@kms_setmode@basic.html
+   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-kbl1/igt@kms_setmode@basic.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_dc@dc3co-vpb-simulation:
+    - shard-iclb:         [SKIP][78] ([i915#588]) -> [SKIP][79] ([i915#658])
+   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-iclb2/igt@i915_pm_dc@dc3co-vpb-simulation.html
+   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-iclb3/igt@i915_pm_dc@dc3co-vpb-simulation.html
+
+  * igt@i915_pm_dc@dc6-dpms:
+    - shard-tglb:         [SKIP][80] ([i915#468]) -> [FAIL][81] ([i915#454])
+   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-tglb2/igt@i915_pm_dc@dc6-dpms.html
+   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-tglb8/igt@i915_pm_dc@dc6-dpms.html
+
+  * igt@i915_pm_dc@dc6-psr:
+    - shard-tglb:         [FAIL][82] ([i915#454]) -> [SKIP][83] ([i915#468])
+   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-tglb1/igt@i915_pm_dc@dc6-psr.html
+   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-tglb2/igt@i915_pm_dc@dc6-psr.html
+
+  * igt@kms_busy@basic-modeset-pipe-d:
+    - shard-apl:          [TIMEOUT][84] ([i915#1635]) -> [SKIP][85] ([fdo#109271])
+   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-apl7/igt@kms_busy@basic-modeset-pipe-d.html
+   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-apl1/igt@kms_busy@basic-modeset-pipe-d.html
+
+  * igt@kms_ccs@pipe-d-crc-primary-rotation-180:
+    - shard-apl:          [SKIP][86] ([fdo#109271]) -> [TIMEOUT][87] ([i915#1635]) +2 similar issues
+   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-apl8/igt@kms_ccs@pipe-d-crc-primary-rotation-180.html
+   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-apl6/igt@kms_ccs@pipe-d-crc-primary-rotation-180.html
+
+  * igt@kms_content_protection@legacy:
+    - shard-apl:          [FAIL][88] ([fdo#110321] / [fdo#110336]) -> [TIMEOUT][89] ([i915#1319] / [i915#1635])
+   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-apl8/igt@kms_content_protection@legacy.html
+   [89]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-apl3/igt@kms_content_protection@legacy.html
+
+  * igt@kms_content_protection@lic:
+    - shard-kbl:          [TIMEOUT][90] ([i915#1319]) -> [FAIL][91] ([fdo#110321] / [i915#93] / [i915#95])
+   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-kbl7/igt@kms_content_protection@lic.html
+   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-kbl2/igt@kms_content_protection@lic.html
+
+  * igt@kms_cursor_legacy@cursorb-vs-flipa-toggle:
+    - shard-glk:          [DMESG-FAIL][92] ([i915#1925]) -> [DMESG-WARN][93] ([i915#1926])
+   [92]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/shard-glk1/igt@kms_cursor_legacy@cursorb-vs-flipa-toggle.html
+   [93]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/shard-glk2/igt@kms_cursor_legacy@cursorb-vs-flipa-toggle.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [fdo#109276]: https://bugs.freedesktop.org/show_bug.cgi?id=109276
+  [fdo#109441]: https://bugs.freedesktop.org/show_bug.cgi?id=109441
+  [fdo#110321]: https://bugs.freedesktop.org/show_bug.cgi?id=110321
+  [fdo#110336]: https://bugs.freedesktop.org/show_bug.cgi?id=110336
+  [i915#1119]: https://gitlab.freedesktop.org/drm/intel/issues/1119
+  [i915#118]: https://gitlab.freedesktop.org/drm/intel/issues/118
+  [i915#1319]: https://gitlab.freedesktop.org/drm/intel/issues/1319
+  [i915#1436]: https://gitlab.freedesktop.org/drm/intel/issues/1436
+  [i915#155]: https://gitlab.freedesktop.org/drm/intel/issues/155
+  [i915#1635]: https://gitlab.freedesktop.org/drm/intel/issues/1635
+  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
+  [i915#1904]: https://gitlab.freedesktop.org/drm/intel/issues/1904
+  [i915#1925]: https://gitlab.freedesktop.org/drm/intel/issues/1925
+  [i915#1926]: https://gitlab.freedesktop.org/drm/intel/issues/1926
+  [i915#1929]: https://gitlab.freedesktop.org/drm/intel/issues/1929
+  [i915#31]: https://gitlab.freedesktop.org/drm/intel/issues/31
+  [i915#407]: https://gitlab.freedesktop.org/drm/intel/issues/407
+  [i915#454]: https://gitlab.freedesktop.org/drm/intel/issues/454
+  [i915#468]: https://gitlab.freedesktop.org/drm/intel/issues/468
+  [i915#53]: https://gitlab.freedesktop.org/drm/intel/issues/53
+  [i915#54]: https://gitlab.freedesktop.org/drm/intel/issues/54
+  [i915#57]: https://gitlab.freedesktop.org/drm/intel/issues/57
+  [i915#588]: https://gitlab.freedesktop.org/drm/intel/issues/588
+  [i915#61]: https://gitlab.freedesktop.org/drm/intel/issues/61
+  [i915#658]: https://gitlab.freedesktop.org/drm/intel/issues/658
+  [i915#699]: https://gitlab.freedesktop.org/drm/intel/issues/699
+  [i915#716]: https://gitlab.freedesktop.org/drm/intel/issues/716
+  [i915#93]: https://gitlab.freedesktop.org/drm/intel/issues/93
+  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
 
 
+Participating hosts (11 -> 8)
+------------------------------
 
--- 
-Lucas De Marchi
+  Missing    (3): pig-skl-6260u pig-glk-j5005 pig-icl-1065g7 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5678 -> IGTPW_4612
+  * Piglit: piglit_4509 -> None
+
+  CI-20190529: 20190529
+  CI_DRM_8539: 6590da76d8c6a2952b3cde70859bad41c59ed444 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4612: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/index.html
+  IGT_5678: c1f30ee09ac2e7eb3e8e90245239731a169a6050 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
