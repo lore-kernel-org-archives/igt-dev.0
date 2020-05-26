@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E0BF8996E
- for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2020 13:05:04 +0000 (UTC)
-From: Jani Nikula <jani.nikula@linux.intel.com>
-In-Reply-To: <20200519063411.1541230-1-chris@chris-wilson.co.uk>
-References: <20200519063411.1541230-1-chris@chris-wilson.co.uk>
-Date: Tue, 26 May 2020 16:04:55 +0300
-Message-ID: <87wo4y26fc.fsf@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 1/3] i915/gem_ctx_persistence: Use "%u"
- for -1u conversion
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 26 May 2020 13:17:36 -0000
+Message-ID: <159049905644.28044.12169483307700553444@emeril.freedesktop.org>
+References: <20200526122417.779145-1-arkadiusz.hiler@intel.com>
+In-Reply-To: <20200526122417.779145-1-arkadiusz.hiler@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/4=5D_lib/igt=5Fdevice=5Fscan=3A_Add?=
+ =?utf-8?q?_missing_Check_for_return_value_in_scan=5Fdrm=5Fdevices?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,49 +15,73 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 19 May 2020, Chris Wilson <chris@chris-wilson.co.uk> wrote:
-> The debugfs modparams are more picky and refuse to do the implicit
-> unsigned conversion.
+== Series Details ==
 
-I was wondering about this until I realized "reset" in i915_params.h has
-type unsigned int, while the module param in i915_params.c has type
-int. It's not that the debugfs is more picky, it's just that they have
-different types!
+Series: series starting with [i-g-t,1/4] lib/igt_device_scan: Add missing Check for return value in scan_drm_devices
+URL   : https://patchwork.freedesktop.org/series/77660/
+State : success
 
-BR,
-Jani.
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8539 -> IGTPW_4612
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4612 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_chamelium@hdmi-hpd-fast:
+    - fi-kbl-7500u:       [PASS][1] -> [FAIL][2] ([i915#227])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/fi-kbl-7500u/igt@kms_chamelium@hdmi-hpd-fast.html
+
+  
+  [i915#227]: https://gitlab.freedesktop.org/drm/intel/issues/227
 
 
->
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> ---
->  tests/i915/gem_ctx_persistence.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
-> index ce9f02350..4a1ef0f27 100644
-> --- a/tests/i915/gem_ctx_persistence.c
-> +++ b/tests/i915/gem_ctx_persistence.c
-> @@ -1127,7 +1127,7 @@ igt_main
->  		igt_require_gem(i915);
->  
->  		/* Restore the reset modparam if left clobbered */
-> -		igt_assert(igt_params_set(i915, "reset", "%d", -1));
-> +		igt_assert(igt_params_set(i915, "reset", "%u", -1));
->  
->  		enable_hangcheck(i915);
->  		igt_install_exit_handler(exit_handler);
+Participating hosts (50 -> 44)
+------------------------------
 
--- 
-Jani Nikula, Intel Open Source Graphics Center
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5678 -> IGTPW_4612
+
+  CI-20190529: 20190529
+  CI_DRM_8539: 6590da76d8c6a2952b3cde70859bad41c59ed444 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4612: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/index.html
+  IGT_5678: c1f30ee09ac2e7eb3e8e90245239731a169a6050 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4612/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
