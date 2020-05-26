@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9298489BAE
- for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2020 12:24:39 +0000 (UTC)
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Date: Tue, 26 May 2020 15:24:15 +0300
-Message-ID: <20200526122417.779145-2-arkadiusz.hiler@intel.com>
-In-Reply-To: <20200526122417.779145-1-arkadiusz.hiler@intel.com>
-References: <20200526122417.779145-1-arkadiusz.hiler@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E0BF8996E
+ for <igt-dev@lists.freedesktop.org>; Tue, 26 May 2020 13:05:04 +0000 (UTC)
+From: Jani Nikula <jani.nikula@linux.intel.com>
+In-Reply-To: <20200519063411.1541230-1-chris@chris-wilson.co.uk>
+References: <20200519063411.1541230-1-chris@chris-wilson.co.uk>
+Date: Tue, 26 May 2020 16:04:55 +0300
+Message-ID: <87wo4y26fc.fsf@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/4] lib/igt_device_scan: Make
- igt_device_scan independent from igt_core
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] i915/gem_ctx_persistence: Use "%u"
+ for -1u conversion
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,109 +17,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>, Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogQXlheiBBIFNpZGRpcXVpIDxheWF6LnNpZGRpcXVpQGludGVsLmNvbT4KCmlndF9kZXZp
-Y2Vfc2NhbiBjYW4gbm93IGJlIHVzZWQgYXMgYSBzZXBhcmF0ZSBsaWJyYXJ5IHdoaWNoIG9ubHkg
-ZGVwZW5kcwpnbGliIGFuZCBsaWJ1ZGV2IC0gc29tZSBJR1QgaW50ZXJuYWxzIGFyZSBiZWluZyBz
-dHViYmVkIGluIHRoaXMgY2FzZS4KClNpZ25lZC1vZmYtYnk6IEF5YXogQSBTaWRkaXF1aSA8YXlh
-ei5zaWRkaXF1aUBpbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IEFya2FkaXVzeiBIaWxlciA8YXJr
-YWRpdXN6LmhpbGVyQGludGVsLmNvbT4KLS0tCiBsaWIvTWFrZWZpbGUuYW0gICAgICAgfCAgOCAr
-KysrKystCiBsaWIvZHJtdGVzdC5jICAgICAgICAgfCAgMSArCiBsaWIvaWd0X2RldmljZV9zY2Fu
-LmMgfCAgNiArKy0tLQogbGliL2lndF9kZXZpY2Vfc2Nhbi5oIHwgIDggKysrKysrLQogbGliL2ln
-dF90b29sc19zdHViLmMgIHwgNTEgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKwogbGliL21lc29uLmJ1aWxkICAgICAgIHwgMTUgKysrKysrKysrKysrKwogNiBmaWxl
-cyBjaGFuZ2VkLCA4MyBpbnNlcnRpb25zKCspLCA2IGRlbGV0aW9ucygtKQogY3JlYXRlIG1vZGUg
-MTAwNjQ0IGxpYi9pZ3RfdG9vbHNfc3R1Yi5jCgpkaWZmIC0tZ2l0IGEvbGliL01ha2VmaWxlLmFt
-IGIvbGliL01ha2VmaWxlLmFtCmluZGV4IGZiYTdmY2FiLi5lOTc1M2QzYyAxMDA2NDQKLS0tIGEv
-bGliL01ha2VmaWxlLmFtCisrKyBiL2xpYi9NYWtlZmlsZS5hbQpAQCAtMTAyLDYgKzEwMiwxMiBA
-QCBpbmNsdWRlIE1ha2VmaWxlLnNvdXJjZXMKIAogbGliaW50ZWxfdG9vbHNfbGFfU09VUkNFUyA9
-ICQobGliX3NvdXJjZV9saXN0KQogCitsaWJpZ3RfZGV2aWNlX3NjYW5fbGFfU09VUkNFUyA9IFwK
-KwlpZ3RfbGlzdC5jCQlcCisJaWd0X3Rvb2xzX3N0dWIuYwlcCisJaWd0X2RldmljZV9zY2FuLmMJ
-XAorCWlndF9kZXZpY2Vfc2Nhbi5oCisKIGxpYmlndF9wZXJmX2xhX1NPVVJDRVMgPSBcCiAJaWd0
-X3BlcmYuYwkgXAogCWlndF9wZXJmLmgKQEAgLTEyMSw3ICsxMjcsNyBAQCBwa2djb25maWdfREFU
-QSA9IGk5MTUtcGVyZi5wYwogCiBsaWJfTFRMSUJSQVJJRVMgPSBsaWJpOTE1X3BlcmYubGEKIAot
-bm9pbnN0X0xUTElCUkFSSUVTID0gbGliaW50ZWxfdG9vbHMubGEgbGliaWd0X3BlcmYubGEKK25v
-aW5zdF9MVExJQlJBUklFUyA9IGxpYmludGVsX3Rvb2xzLmxhIGxpYmlndF9wZXJmLmxhIGxpYmln
-dF9kZXZpY2Vfc2Nhbi5sYQogbm9pbnN0X0hFQURFUlMgPSBjaGVjay1uZGVidWcuaAogCiBpZiAh
-SEFWRV9MSUJEUk1fSU5URUwKZGlmZiAtLWdpdCBhL2xpYi9kcm10ZXN0LmMgYi9saWIvZHJtdGVz
-dC5jCmluZGV4IDcwZmQ2NGM5Li5iY2VkMTQ1MyAxMDA2NDQKLS0tIGEvbGliL2RybXRlc3QuYwor
-KysgYi9saWIvZHJtdGVzdC5jCkBAIC01Myw2ICs1Myw3IEBACiAjaW5jbHVkZSAiaW50ZWxfaW8u
-aCIKICNpbmNsdWRlICJpZ3RfZGVidWdmcy5oIgogI2luY2x1ZGUgImlndF9kZXZpY2UuaCIKKyNp
-bmNsdWRlICJpZ3RfcGFyYW1zLmgiCiAjaW5jbHVkZSAiaWd0X2d0LmgiCiAjaW5jbHVkZSAiaWd0
-X2ttb2QuaCIKICNpbmNsdWRlICJpZ3Rfc3lzZnMuaCIKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZGV2
-aWNlX3NjYW4uYyBiL2xpYi9pZ3RfZGV2aWNlX3NjYW4uYwppbmRleCA3YjBmYzAwZS4uYmU4NTRi
-MDEgMTAwNjQ0Ci0tLSBhL2xpYi9pZ3RfZGV2aWNlX3NjYW4uYworKysgYi9saWIvaWd0X2Rldmlj
-ZV9zY2FuLmMKQEAgLTIyLDExICsyMiw4IEBACiAgKgogICovCiAKLSNpbmNsdWRlICJpZ3QuaCIK
-LSNpbmNsdWRlICJpZ3RfbGlzdC5oIgotI2luY2x1ZGUgImlndF9zeXNmcy5oIgotI2luY2x1ZGUg
-ImlndF9kZXZpY2UuaCIKICNpbmNsdWRlICJpZ3RfZGV2aWNlX3NjYW4uaCIKKyNpbmNsdWRlICJp
-Z3RfbGlzdC5oIgogI2luY2x1ZGUgPGdsaWIuaD4KICNpbmNsdWRlIDxsaWJ1ZGV2Lmg+CiAjaW5j
-bHVkZSA8bGludXgvbGltaXRzLmg+CkBAIC0zNCw2ICszMSw3IEBACiAjaW5jbHVkZSA8c3lzL3R5
-cGVzLmg+CiAjaW5jbHVkZSA8ZGlyZW50Lmg+CiAjaW5jbHVkZSA8ZmNudGwuaD4KKyNpbmNsdWRl
-ICJpZ3RfY29yZS5oIgogCiAvKioKICAqIFNFQ1RJT046aWd0X2RldmljZV9zY2FuCmRpZmYgLS1n
-aXQgYS9saWIvaWd0X2RldmljZV9zY2FuLmggYi9saWIvaWd0X2RldmljZV9zY2FuLmgKaW5kZXgg
-MjRlYWZlNjIuLmFkNjMyMTQ1IDEwMDY0NAotLS0gYS9saWIvaWd0X2RldmljZV9zY2FuLmgKKysr
-IGIvbGliL2lndF9kZXZpY2Vfc2Nhbi5oCkBAIC0yNiw3ICsyNiwxMyBAQAogI2RlZmluZSBfX0lH
-VF9ERVZJQ0VfU0NBTl9IX18KIAogI2luY2x1ZGUgPGxpbWl0cy5oPgotI2luY2x1ZGUgPGlndC5o
-PgorI2luY2x1ZGUgPHN0ZGJvb2wuaD4KKyNpbmNsdWRlIDxzdGRpbnQuaD4KKyNpbmNsdWRlIDxz
-dGRpby5oPgorI2luY2x1ZGUgPGZjbnRsLmg+CisjaW5jbHVkZSA8dW5pc3RkLmg+CisjaW5jbHVk
-ZSA8Z2V0b3B0Lmg+CisjaW5jbHVkZSA8ZXJybm8uaD4KIAogZW51bSBpZ3RfZGV2aWNlc19wcmlu
-dF90eXBlIHsKIAlJR1RfUFJJTlRfU0lNUExFLApkaWZmIC0tZ2l0IGEvbGliL2lndF90b29sc19z
-dHViLmMgYi9saWIvaWd0X3Rvb2xzX3N0dWIuYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAw
-MDAwMDAwMC4uOWEwZWM2MjEKLS0tIC9kZXYvbnVsbAorKysgYi9saWIvaWd0X3Rvb2xzX3N0dWIu
-YwpAQCAtMCwwICsxLDUxIEBACisvKgorICogQ29weXJpZ2h0IMKpIDIwMjAgSW50ZWwgQ29ycG9y
-YXRpb24KKyAqCisgKiBQZXJtaXNzaW9uIGlzIGhlcmVieSBncmFudGVkLCBmcmVlIG9mIGNoYXJn
-ZSwgdG8gYW55IHBlcnNvbiBvYnRhaW5pbmcgYQorICogY29weSBvZiB0aGlzIHNvZnR3YXJlIGFu
-ZCBhc3NvY2lhdGVkIGRvY3VtZW50YXRpb24gZmlsZXMgKHRoZSAiU29mdHdhcmUiKSwKKyAqIHRv
-IGRlYWwgaW4gdGhlIFNvZnR3YXJlIHdpdGhvdXQgcmVzdHJpY3Rpb24sIGluY2x1ZGluZyB3aXRo
-b3V0IGxpbWl0YXRpb24KKyAqIHRoZSByaWdodHMgdG8gdXNlLCBjb3B5LCBtb2RpZnksIG1lcmdl
-LCBwdWJsaXNoLCBkaXN0cmlidXRlLCBzdWJsaWNlbnNlLAorICogYW5kL29yIHNlbGwgY29waWVz
-IG9mIHRoZSBTb2Z0d2FyZSwgYW5kIHRvIHBlcm1pdCBwZXJzb25zIHRvIHdob20gdGhlCisgKiBT
-b2Z0d2FyZSBpcyBmdXJuaXNoZWQgdG8gZG8gc28sIHN1YmplY3QgdG8gdGhlIGZvbGxvd2luZyBj
-b25kaXRpb25zOgorICoKKyAqIFRoZSBhYm92ZSBjb3B5cmlnaHQgbm90aWNlIGFuZCB0aGlzIHBl
-cm1pc3Npb24gbm90aWNlIChpbmNsdWRpbmcgdGhlIG5leHQKKyAqIHBhcmFncmFwaCkgc2hhbGwg
-YmUgaW5jbHVkZWQgaW4gYWxsIGNvcGllcyBvciBzdWJzdGFudGlhbCBwb3J0aW9ucyBvZiB0aGUK
-KyAqIFNvZnR3YXJlLgorICoKKyAqIFRIRSBTT0ZUV0FSRSBJUyBQUk9WSURFRCAiQVMgSVMiLCBX
-SVRIT1VUIFdBUlJBTlRZIE9GIEFOWSBLSU5ELCBFWFBSRVNTIE9SCisgKiBJTVBMSUVELCBJTkNM
-VURJTkcgQlVUIE5PVCBMSU1JVEVEIFRPIFRIRSBXQVJSQU5USUVTIE9GIE1FUkNIQU5UQUJJTElU
-WSwKKyAqIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFIEFORCBOT05JTkZSSU5HRU1F
-TlQuICBJTiBOTyBFVkVOVCBTSEFMTAorICogVEhFIEFVVEhPUlMgT1IgQ09QWVJJR0hUIEhPTERF
-UlMgQkUgTElBQkxFIEZPUiBBTlkgQ0xBSU0sIERBTUFHRVMgT1IgT1RIRVIKKyAqIExJQUJJTElU
-WSwgV0hFVEhFUiBJTiBBTiBBQ1RJT04gT0YgQ09OVFJBQ1QsIFRPUlQgT1IgT1RIRVJXSVNFLCBB
-UklTSU5HCisgKiBGUk9NLCBPVVQgT0YgT1IgSU4gQ09OTkVDVElPTiBXSVRIIFRIRSBTT0ZUV0FS
-RSBPUiBUSEUgVVNFIE9SIE9USEVSIERFQUxJTkdTCisgKiBJTiBUSEUgU09GVFdBUkUuCisgKgor
-ICovCisjaW5jbHVkZSAiaWd0X2NvcmUuaCIKKworLyogU3R1YiBmb3IgaWd0X2xvZywgdGhpcyBz
-dHViIHdpbGwgc2ltcGx5IHByaW50IHRoZSBtc2cgb24gc3RkZXJyIGRldmljZS4KKyAqIERvbWFp
-biBhbmQgbG9nIGxldmVsIGFyZSBpZ25vcmVkLgorICovCisKK3ZvaWQgaWd0X2xvZyhjb25zdCBj
-aGFyICpkb21haW4sIGVudW0gaWd0X2xvZ19sZXZlbCBsZXZlbCwgY29uc3QgY2hhciAqZm9ybWF0
-LCAuLi4pCit7CisJdmFfbGlzdCBhcmdzOworCisJdmFfc3RhcnQoYXJncywgZm9ybWF0KTsKKwl2
-ZnByaW50ZihzdGRlcnIsIGZvcm1hdCwgYXJncyk7CisJdmFfZW5kKGFyZ3MpOworfQorCisKKy8q
-IFN0dWIgZm9yIF9faWd0X2ZhaWxfYXNzZXJ0LCB0aGlzIHN0dWIgd2lsbCBzaW1wbHkgcHJpbnQg
-dGhlIG1zZyBvbiBzdGRlcnIgZGV2aWNlIGFuZAorICogZXhpdCB0aGUgYXBwbGljYXRpb24sIGRv
-bWFpbiBhbmQgbG9nIGxldmVsIGFyZSBpZ25vcmVkLgorICovCisKK3ZvaWQgX19pZ3RfZmFpbF9h
-c3NlcnQoY29uc3QgY2hhciAqZG9tYWluLCBjb25zdCBjaGFyICpmaWxlLAorCQkgICAgICAgY29u
-c3QgaW50IGxpbmUsIGNvbnN0IGNoYXIgKmZ1bmMsIGNvbnN0IGNoYXIgKmFzc2VydGlvbiwKKwkJ
-ICAgICAgIGNvbnN0IGNoYXIgKmZvcm1hdCwgLi4uKQoreworCWZwcmludGYoc3RkZXJyLCAiJXM6
-ICVkICVzIEZhaWxlZCBhc3NlcnRpb246ICVzXG4iLCBmaWxlLCBsaW5lLAorCQlmdW5jLCBhc3Nl
-cnRpb24pOworCWV4aXQoMSk7Cit9CmRpZmYgLS1naXQgYS9saWIvbWVzb24uYnVpbGQgYi9saWIv
-bWVzb24uYnVpbGQKaW5kZXggOTlhZWU2ZWUuLjZjZjc4NjYzIDEwMDY0NAotLS0gYS9saWIvbWVz
-b24uYnVpbGQKKysrIGIvbGliL21lc29uLmJ1aWxkCkBAIC0xNzIsNiArMTcyLDIxIEBAIGxpYl9p
-Z3RfcGVyZl9idWlsZCA9IHN0YXRpY19saWJyYXJ5KCdpZ3RfcGVyZicsCiBsaWJfaWd0X3BlcmYg
-PSBkZWNsYXJlX2RlcGVuZGVuY3kobGlua193aXRoIDogbGliX2lndF9wZXJmX2J1aWxkLAogCQkJ
-CSAgaW5jbHVkZV9kaXJlY3RvcmllcyA6IGluYykKIAorc2Nhbl9kZXAgPSBbCisJZ2xpYiwKKwls
-aWJ1ZGV2LAorXQorCitsaWJfaWd0X2RldmljZV9zY2FuX2J1aWxkID0gc3RhdGljX2xpYnJhcnko
-J2lndF9kZXZpY2Vfc2NhbicsCisJWydpZ3RfZGV2aWNlX3NjYW4uYycsCisJJ2lndF9saXN0LmMn
-LAorCSdpZ3RfdG9vbHNfc3R1Yi5jJywKKwldLAorCWRlcGVuZGVuY2llcyA6IHNjYW5fZGVwLAor
-CWluY2x1ZGVfZGlyZWN0b3JpZXMgOiBpbmMpCisKK2xpYl9pZ3RfZGV2aWNlX3NjYW4gPSBkZWNs
-YXJlX2RlcGVuZGVuY3kobGlua193aXRoIDogbGliX2lndF9kZXZpY2Vfc2Nhbl9idWlsZCwKKwkJ
-CQkgIGluY2x1ZGVfZGlyZWN0b3JpZXMgOiBpbmMpCiAKIGk5MTVfcGVyZl9maWxlcyA9IFsKICAg
-J2lndF9saXN0LmMnLAotLSAKMi4yNS40CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVk
-ZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2lndC1kZXYK
+On Tue, 19 May 2020, Chris Wilson <chris@chris-wilson.co.uk> wrote:
+> The debugfs modparams are more picky and refuse to do the implicit
+> unsigned conversion.
+
+I was wondering about this until I realized "reset" in i915_params.h has
+type unsigned int, while the module param in i915_params.c has type
+int. It's not that the debugfs is more picky, it's just that they have
+different types!
+
+BR,
+Jani.
+
+
+>
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> ---
+>  tests/i915/gem_ctx_persistence.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
+> index ce9f02350..4a1ef0f27 100644
+> --- a/tests/i915/gem_ctx_persistence.c
+> +++ b/tests/i915/gem_ctx_persistence.c
+> @@ -1127,7 +1127,7 @@ igt_main
+>  		igt_require_gem(i915);
+>  
+>  		/* Restore the reset modparam if left clobbered */
+> -		igt_assert(igt_params_set(i915, "reset", "%d", -1));
+> +		igt_assert(igt_params_set(i915, "reset", "%u", -1));
+>  
+>  		enable_hangcheck(i915);
+>  		igt_install_exit_handler(exit_handler);
+
+-- 
+Jani Nikula, Intel Open Source Graphics Center
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
