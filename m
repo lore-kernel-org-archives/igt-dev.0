@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 26 May 2020 14:25:48 +0100
-Message-Id: <20200526132548.76656-1-chris@chris-wilson.co.uk>
+Date: Tue, 26 May 2020 15:17:23 +0100
+Message-Id: <20200526141723.401469-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib/i915: Restore hangcheck modparams
- between tests
+Subject: [igt-dev] [PATCH i-g-t] i915/perf_pmu: Update inter-engine
+ semaphore detection
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,42 +20,28 @@ To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The hangcheck/reset modparam has far reaching effects and disables
-functionality if switch off. This can surprise a few tests causing them
-to skip.
+The kernel no longer uses semaphores between engines, unless it can do
+so by preempting them with timeslices. Update the semaphore-busy to only
+run when we expect semaphore usage, i.e. not on bdw/bsw.
 
-References: https://gitlab.freedesktop.org/drm/intel/-/issues/1929
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/1939
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- lib/i915/gem.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tests/perf_pmu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/i915/gem.c b/lib/i915/gem.c
-index 3ef31ed33..45db8a0fd 100644
---- a/lib/i915/gem.c
-+++ b/lib/i915/gem.c
-@@ -130,6 +130,13 @@ static void reset_device(int i915)
- 	close(dir);
- }
+diff --git a/tests/perf_pmu.c b/tests/perf_pmu.c
+index e54a0d47e..e80f730cf 100644
+--- a/tests/perf_pmu.c
++++ b/tests/perf_pmu.c
+@@ -822,6 +822,7 @@ sema_busy(int gem_fd,
+ 	int fd;
  
-+static void restore_params(int i915)
-+{
-+	/* Re-enable modparams if left clobbered */
-+	igt_params_set(i915, "reset", "%u", -1);
-+	igt_params_set(i915, "enable_hangcheck", "%u", 1);
-+}
-+
- void igt_require_gem(int i915)
- {
- 	int err;
-@@ -150,6 +157,7 @@ void igt_require_gem(int i915)
- 	 * sequences of batches.
- 	 */
- 	reset_device(i915);
-+	restore_params(i915);
- 	restore_defaults(i915);
+ 	igt_require(gem_scheduler_has_semaphores(gem_fd));
++	igt_require(gem_scheduler_has_preemption(gem_fd));
  
- 	err = 0;
+ 	fd = open_group(gem_fd,
+ 			I915_PMU_ENGINE_SEMA(e->class, e->instance), -1);
 -- 
 2.27.0.rc0
 
