@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 26 May 2020 13:39:30 -0000
-Message-ID: <159050037050.28044.9083002173209683917@emeril.freedesktop.org>
-References: <20200526130018.20163-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200526130018.20163-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliOiBS?=
- =?utf-8?q?andomise_spinner_location_to_reduce_relocation_risk?=
+Date: Tue, 26 May 2020 14:01:19 -0000
+Message-ID: <159050167969.28042.10740525721615602927@emeril.freedesktop.org>
+References: <20200526132548.76656-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200526132548.76656-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2k5?=
+ =?utf-8?q?15=3A_Restore_hangcheck_modparams_between_tests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,13 +25,13 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: lib: Randomise spinner location to reduce relocation risk
-URL   : https://patchwork.freedesktop.org/series/77662/
+Series: lib/i915: Restore hangcheck modparams between tests
+URL   : https://patchwork.freedesktop.org/series/77664/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_8539 -> IGTPW_4613
+CI Bug Log - changes from CI_DRM_8539 -> IGTPW_4614
 ====================================================
 
 Summary
@@ -41,25 +41,13 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4613/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4614/index.html
 
-Known issues
-------------
 
-  Here are the changes found in IGTPW_4613 that come from known issues:
+Changes
+-------
 
-### IGT changes ###
-
-#### Warnings ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-x1275:       [SKIP][1] ([fdo#109271]) -> [FAIL][2] ([i915#62])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8539/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4613/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+  No changes found
 
 
 Participating hosts (50 -> 45)
@@ -73,16 +61,16 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_5678 -> IGTPW_4613
+  * IGT: IGT_5678 -> IGTPW_4614
 
   CI-20190529: 20190529
   CI_DRM_8539: 6590da76d8c6a2952b3cde70859bad41c59ed444 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4613: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4613/index.html
+  IGTPW_4614: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4614/index.html
   IGT_5678: c1f30ee09ac2e7eb3e8e90245239731a169a6050 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4613/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4614/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
