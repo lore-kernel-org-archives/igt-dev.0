@@ -1,14 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B13666E2DF
- for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2020 11:10:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 958656E2DC
+ for <igt-dev@lists.freedesktop.org>; Wed, 27 May 2020 11:10:15 +0000 (UTC)
 From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Date: Wed, 27 May 2020 16:35:07 +0530
-Message-Id: <20200527110507.16902-3-ankit.k.nautiyal@intel.com>
-In-Reply-To: <20200527110507.16902-1-ankit.k.nautiyal@intel.com>
-References: <20200527110507.16902-1-ankit.k.nautiyal@intel.com>
-Subject: [igt-dev] [RFC 2/2] tests/kms_content_protection: Remove
- pre-existing SRM table before the test
+Date: Wed, 27 May 2020 16:35:05 +0530
+Message-Id: <20200527110507.16902-1-ankit.k.nautiyal@intel.com>
+Subject: [igt-dev] [RFC 0/2] tests/kms_content_protection: Enhancements
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,32 +22,21 @@ To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com, petri.latvala@intel.com, martin.peres@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is to check the case with missing SRM, which should be treated as
-device with no revoked keys.
+This patch series adds support for testing HDCP1.4 and HDCP2.2 version.
+This is continuation of the earlier patch series:
+https://patchwork.freedesktop.org/patch/358240/
 
-Kernel patch fixing such a bug :
-https://patchwork.freedesktop.org/patch/361346/?series=75939&rev=2
+It also enhances the IGT to test the cases, where SRM table is not
+present.
 
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- tests/kms_content_protection.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Ankit Nautiyal (2):
+  tests/kms_content_protection: Bifurcate tests into HDCP1.4 & 2.2
+  tests/kms_content_protection: Remove pre-existing SRM table before the
+    test
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index a6a64a28..257d3dd8 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -783,6 +783,10 @@ igt_main
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 
- 		igt_display_require(&data.display, data.drm_fd);
-+
-+		/* Remove pre-existing srm table */
-+		igt_assert_f(!remove("/lib/firmware/display_hdcp_srm.bin"),
-+			     "Failed to delete previous srm table\n");
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(hdcp_protocol); i++) {
+ tests/kms_content_protection.c | 234 +++++++++++++++++++++++----------
+ 1 file changed, 162 insertions(+), 72 deletions(-)
+
 -- 
 2.17.1
 
