@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 28 May 2020 14:47:05 -0000
-Message-ID: <159067722573.684.399283009623777264@emeril.freedesktop.org>
-References: <20200528133835.5087-1-rohan.garg@collabora.com>
-In-Reply-To: <20200528133835.5087-1-rohan.garg@collabora.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgcGFuZnJv?=
- =?utf-8?q?st=3A_Test_labeling_functionality?=
+Date: Thu, 28 May 2020 15:08:06 -0000
+Message-ID: <159067848635.685.8296006698737993228@emeril.freedesktop.org>
+References: <20200528142652.31504-1-anshuman.gupta@intel.com>
+In-Reply-To: <20200528142652.31504-1-anshuman.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fcontent=5Fprotection=3A_CP_cleanup_exit_handler_=28rev2?=
+ =?utf-8?q?=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,19 +20,19 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rohan Garg <rohan.garg@collabora.com>
+To: Anshuman Gupta <anshuman.gupta@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: panfrost: Test labeling functionality
-URL   : https://patchwork.freedesktop.org/series/77742/
+Series: tests/kms_content_protection: CP cleanup exit handler (rev2)
+URL   : https://patchwork.freedesktop.org/series/77388/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_8547 -> IGTPW_4619
+CI Bug Log - changes from CI_DRM_8547 -> IGTPW_4620
 ====================================================
 
 Summary
@@ -41,39 +42,50 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4619/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4620/index.html
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_4619 that come from known issues:
+  Here are the changes found in IGTPW_4620 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@i915_selftest@live@client:
-    - fi-bsw-nick:        [PASS][1] -> [INCOMPLETE][2] ([i915#1909])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8547/fi-bsw-nick/igt@i915_selftest@live@client.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4619/fi-bsw-nick/igt@i915_selftest@live@client.html
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-kbl-7500u:       [PASS][1] -> [FAIL][2] ([i915#1372])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8547/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4620/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
 
   
 #### Warnings ####
 
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-kbl-guc:         [SKIP][3] ([fdo#109271]) -> [FAIL][4] ([i915#138])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8547/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4620/fi-kbl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
+
   * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-x1275:       [FAIL][3] ([i915#62]) -> [SKIP][4] ([fdo#109271])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8547/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4619/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+    - fi-kbl-x1275:       [FAIL][5] ([i915#62]) -> [SKIP][6] ([fdo#109271])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8547/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4620/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
 
   
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
   [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [i915#1909]: https://gitlab.freedesktop.org/drm/intel/issues/1909
+  [i915#1372]: https://gitlab.freedesktop.org/drm/intel/issues/1372
+  [i915#138]: https://gitlab.freedesktop.org/drm/intel/issues/138
+  [i915#541]: https://gitlab.freedesktop.org/drm/intel/issues/541
   [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
 
 
-Participating hosts (50 -> 43)
+Participating hosts (50 -> 44)
 ------------------------------
 
+  Additional (1): fi-kbl-7560u 
   Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
 
 
@@ -81,26 +93,16 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_5682 -> IGTPW_4619
+  * IGT: IGT_5682 -> IGTPW_4620
 
   CI-20190529: 20190529
   CI_DRM_8547: 055c59085e117a2433d3862d645e049e30f3a2dc @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4619: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4619/index.html
+  IGTPW_4620: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4620/index.html
   IGT_5682: e5371a99a877be134c6ad5361a5f03843a66f775 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@panfrost_bo_label@clear-label
-+igt@panfrost_bo_label@get-label
-+igt@panfrost_bo_label@label-too-long
-+igt@panfrost_bo_label@set-bad-handle
-+igt@panfrost_bo_label@set-label
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4619/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4620/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
