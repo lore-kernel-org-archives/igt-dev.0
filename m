@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7707B6E84B
- for <igt-dev@lists.freedesktop.org>; Fri, 29 May 2020 00:51:05 +0000 (UTC)
-From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
-Date: Thu, 28 May 2020 17:52:18 -0700
-Message-Id: <20200529005218.76681-1-jose.souza@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_fbcon_fbt: When restoring fbcon
- always set mode to text mode
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 29 May 2020 01:25:50 -0000
+Message-ID: <159071555024.3332.3094670444743077851@emeril.freedesktop.org>
+References: <20200529005218.76681-1-jose.souza@intel.com>
+In-Reply-To: <20200529005218.76681-1-jose.souza@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Ffbcon=5Ffbt=3A_When_restoring_fbcon_always_set_mode_to_te?=
+ =?utf-8?q?xt_mode?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,54 +15,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: =?utf-8?q?Jos=C3=A9_Roberto_de_Souza?= <jose.souza@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SWYgYnkgc29tZSByZWFzb24gb3IgdGVzdHMsIHRoaXMgdGVzdHMgaXMgZXhlY3V0ZWQgYW5kIFZU
-IG1vZGUgaXMKYWxyZWFkeSBpbiBLRF9HUkFQSElDUyB0aGUgY2FsbCB0byBrbXN0ZXN0X3NldF92
-dF9ncmFwaGljc19tb2RlKCkgd2lsbApzZXQgb3JpZ192dF9tb2RlIGFzIEtEX0dSQVBISUNTIGFu
-ZCB3aGVuIGl0IHdhcyBjYWxsaW5nCmttc3Rlc3RfcmVzdG9yZV92dF9tb2RlKCkgaXQgd291bGQg
-c2V0IEtEX0dSQVBISUNTIGFnYWluIG5vdCByZXR1cm5pbmcKdG8gZmJjb24gYW5kIGNhdXNpbmcg
-dGhlIHRlc3QgdG8gZmFpbC4KCkFzIGl0IGNhbiBiZSBzZWVuIGhlcmU6CihrbXNfZmJjb25fZmJ0
-OjExMDA0KSBpZ3Rfa21zLURFQlVHOiBWVDogZ3JhcGhpY3MgbW9kZSBzZXQgKG1vZGUgd2FzIDB4
-MSkiCmh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvZHJtdGlwXzQ5OS9m
-aS1laGwtMS9pZ3RAa21zX2ZiY29uX2ZidEBmYmMuaHRtbAoKU28gaGVyZSBhZGRpbmcgYSBuZXcg
-ZnVuY3Rpb24gdG8gYWxhd2F5cyBzZXQgbW9kZSB0aGUgS0RfVEVYVCB3aGVuIHdlCndhbnQgdG8g
-cmVzdG9yZSB0byBmYmNvbi4KClNpZ25lZC1vZmYtYnk6IEpvc8OpIFJvYmVydG8gZGUgU291emEg
-PGpvc2Uuc291emFAaW50ZWwuY29tPgotLS0KIGxpYi9pZ3Rfa21zLmMgICAgICAgICB8IDExICsr
-KysrKysrKysrCiBsaWIvaWd0X2ttcy5oICAgICAgICAgfCAgMSArCiB0ZXN0cy9rbXNfZmJjb25f
-ZmJ0LmMgfCAgMiArLQogMyBmaWxlcyBjaGFuZ2VkLCAxMyBpbnNlcnRpb25zKCspLCAxIGRlbGV0
-aW9uKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2lndF9rbXMuYyBiL2xpYi9pZ3Rfa21zLmMKaW5kZXgg
-ZDRjYmMxYzUzLi5hZmVmNTkzOTYgMTAwNjQ0Ci0tLSBhL2xpYi9pZ3Rfa21zLmMKKysrIGIvbGli
-L2lndF9rbXMuYwpAQCAtOTY4LDYgKzk2OCwxNyBAQCB2b2lkIGttc3Rlc3Rfc2V0X3Z0X2dyYXBo
-aWNzX21vZGUodm9pZCkKIAlpZ3RfZGVidWcoIlZUOiBncmFwaGljcyBtb2RlIHNldCAobW9kZSB3
-YXMgMHglbHgpXG4iLCByZXQpOwogfQogCisvKioKKyAqIGttc3Rlc3Rfc2V0X3Z0X3RleHRfbW9k
-ZToKKyAqCisgKiBTZXRzIHRoZSBjb250cm9sbGluZyBWVCAoaWYgYXZhaWxhYmxlKSBpbnRvIHRl
-eHQgbW9kZS4KKyAqIFVubGlrZWx5IGttc3Rlc3Rfc2V0X3Z0X2dyYXBoaWNzX21vZGUoKSBpdCBk
-byBub3QgaW5zdGFsbCBhbiBpZ3QgZXhpdAorICogaGFuZGxlciB0byBzZXQgdGhlIFZUIGJhY2sg
-dG8gdGhlIHByZXZpb3VzIG1vZGUuCisgKi8KK3ZvaWQga21zdGVzdF9zZXRfdnRfdGV4dF9tb2Rl
-KHZvaWQpCit7CisJaWd0X2Fzc2VydChzZXRfdnRfbW9kZShLRF9URVhUKSA+PSAwKTsKK30KIAog
-c3RhdGljIHZvaWQgcmVzZXRfY29ubmVjdG9yc19hdF9leGl0KGludCBzaWcpCiB7CmRpZmYgLS1n
-aXQgYS9saWIvaWd0X2ttcy5oIGIvbGliL2lndF9rbXMuaAppbmRleCBhZGNhNTlhYzYuLjMyYTBl
-NGNjNiAxMDA2NDQKLS0tIGEvbGliL2lndF9rbXMuaAorKysgYi9saWIvaWd0X2ttcy5oCkBAIC05
-Myw2ICs5Myw3IEBAIHZvaWQga21zdGVzdF9kdW1wX21vZGUoZHJtTW9kZU1vZGVJbmZvICptb2Rl
-KTsKIGludCBrbXN0ZXN0X2dldF9waXBlX2Zyb21fY3J0Y19pZChpbnQgZmQsIGludCBjcnRjX2lk
-KTsKIHZvaWQga21zdGVzdF9zZXRfdnRfZ3JhcGhpY3NfbW9kZSh2b2lkKTsKIHZvaWQga21zdGVz
-dF9yZXN0b3JlX3Z0X21vZGUodm9pZCk7Cit2b2lkIGttc3Rlc3Rfc2V0X3Z0X3RleHRfbW9kZSh2
-b2lkKTsKIAogZW51bSBpZ3RfYXRvbWljX2NydGNfcHJvcGVydGllcyB7CiAgICAgICAgSUdUX0NS
-VENfQkFDS0dST1VORCA9IDAsCmRpZmYgLS1naXQgYS90ZXN0cy9rbXNfZmJjb25fZmJ0LmMgYi90
-ZXN0cy9rbXNfZmJjb25fZmJ0LmMKaW5kZXggZTZkZDQzNTNiLi5lOTlhMWYyZjIgMTAwNjQ0Ci0t
-LSBhL3Rlc3RzL2ttc19mYmNvbl9mYnQuYworKysgYi90ZXN0cy9rbXNfZmJjb25fZmJ0LmMKQEAg
-LTI4Myw3ICsyODMsNyBAQCBzdGF0aWMgdm9pZCByZXN0b3JlX2ZiY29uKHN0cnVjdCBkcm1faW5m
-byAqZHJtKQogCWttc3Rlc3RfdW5zZXRfYWxsX2NydGNzKGRybS0+ZmQsIGRybS0+cmVzKTsKIAlp
-Z3RfcmVtb3ZlX2ZiKGRybS0+ZmQsICZkcm0tPmZiKTsKIAlpZ3RfZGV2aWNlX2Ryb3BfbWFzdGVy
-KGRybS0+ZmQpOwotCWttc3Rlc3RfcmVzdG9yZV92dF9tb2RlKCk7CisJa21zdGVzdF9zZXRfdnRf
-dGV4dF9tb2RlKCk7CiB9CiAKIHN0YXRpYyB2b2lkIHN1YnRlc3Qoc3RydWN0IGRybV9pbmZvICpk
-cm0sIHN0cnVjdCBmZWF0dXJlICpmZWF0dXJlLCBib29sIHN1c3BlbmQpCi0tIAoyLjI2LjIKCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFp
-bGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+== Series Details ==
+
+Series: tests/kms_fbcon_fbt: When restoring fbcon always set mode to text mode
+URL   : https://patchwork.freedesktop.org/series/77774/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8551 -> IGTPW_4622
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4622/index.html
+
+
+Changes
+-------
+
+  No changes found
+
+
+Participating hosts (50 -> 43)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5683 -> IGTPW_4622
+
+  CI-20190529: 20190529
+  CI_DRM_8551: 2342e5b1743ca04244e790ccd53638019187dd88 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4622: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4622/index.html
+  IGT_5683: 757b6e72d546fd2dbc3801a73796d67b0854021b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4622/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
