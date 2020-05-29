@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EEC186E8D5
- for <igt-dev@lists.freedesktop.org>; Fri, 29 May 2020 16:51:29 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Fri, 29 May 2020 16:51:25 +0000
-Message-ID: <44d0a6fb52d4b2a75143f94b6546d4fee00675bb.camel@intel.com>
-References: <20200529005218.76681-1-jose.souza@intel.com>
- <E7C9878FBA1C6D42A1CA3F62AEB6945F825145DC@BGSMSX104.gar.corp.intel.com>
-In-Reply-To: <E7C9878FBA1C6D42A1CA3F62AEB6945F825145DC@BGSMSX104.gar.corp.intel.com>
-Content-Language: en-US
-Content-ID: <474787E17E49344290337CA7420596A7@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_fbcon_fbt: When restoring
- fbcon always set mode to text mode
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 29 May 2020 21:05:40 -0000
+Message-ID: <159078634039.3334.6998036399181732045@emeril.freedesktop.org>
+References: <20200529195850.8664-1-imre.deak@intel.com>
+In-Reply-To: <20200529195850.8664-1-imre.deak@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2tt?=
+ =?utf-8?q?s=5Fchamelium=3A_Wait_for_the_sink_to_reconnect_after_an_FSM_DP?=
+ =?utf-8?q?MS-off?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,80 +15,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Shankar, Uma" <uma.shankar@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Imre Deak <imre.deak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCAyMDIwLTA1LTI5IGF0IDIxOjE5ICswNTMwLCBTaGFua2FyLCBVbWEgd3JvdGU6DQo+
-ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2
-LWJvdW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YgSm9zw6kgUm9iZXJ0
-bw0KPiA+IGRlIFNvdXphDQo+ID4gU2VudDogRnJpZGF5LCBNYXkgMjksIDIwMjAgNjoyMiBBTQ0K
-PiA+IFRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiA+IFN1YmplY3Q6IFtpZ3Qt
-ZGV2XSBbUEFUQ0ggaS1nLXRdIHRlc3RzL2ttc19mYmNvbl9mYnQ6IFdoZW4gcmVzdG9yaW5nIGZi
-Y29uIGFsd2F5cw0KPiA+IHNldCBtb2RlIHRvIHRleHQgbW9kZQ0KPiA+IA0KPiA+IElmIGJ5IHNv
-bWUgcmVhc29uIG9yIHRlc3RzLCB0aGlzIHRlc3RzIGlzIGV4ZWN1dGVkIGFuZCBWVCBtb2RlIGlz
-IGFscmVhZHkgaW4NCj4gPiBLRF9HUkFQSElDUyB0aGUgY2FsbCB0byBrbXN0ZXN0X3NldF92dF9n
-cmFwaGljc19tb2RlKCkgd2lsbCBzZXQgb3JpZ192dF9tb2RlDQo+ID4gYXMgS0RfR1JBUEhJQ1Mg
-YW5kIHdoZW4gaXQgd2FzIGNhbGxpbmcNCj4gPiBrbXN0ZXN0X3Jlc3RvcmVfdnRfbW9kZSgpIGl0
-IHdvdWxkIHNldCBLRF9HUkFQSElDUyBhZ2FpbiBub3QgcmV0dXJuaW5nIHRvDQo+ID4gZmJjb24g
-YW5kIGNhdXNpbmcgdGhlIHRlc3QgdG8gZmFpbC4NCj4gPiANCj4gPiBBcyBpdCBjYW4gYmUgc2Vl
-biBoZXJlOg0KPiA+IChrbXNfZmJjb25fZmJ0OjExMDA0KSBpZ3Rfa21zLURFQlVHOiBWVDogZ3Jh
-cGhpY3MgbW9kZSBzZXQgKG1vZGUgd2FzIDB4MSkiDQo+ID4gaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9kcm10aXBfNDk5L2ZpLWVobC0NCj4gPiAxL2lndEBrbXNfZmJj
-b25fZmJ0QGZiYy5odG1sDQo+ID4gDQo+ID4gU28gaGVyZSBhZGRpbmcgYSBuZXcgZnVuY3Rpb24g
-dG8gYWxhd2F5cyBzZXQgbW9kZSB0aGUgS0RfVEVYVCB3aGVuIHdlIHdhbnQNCj4gPiB0byByZXN0
-b3JlIHRvIGZiY29uLg0KPiA+IA0KPiA+IFNpZ25lZC1vZmYtYnk6IEpvc8OpIFJvYmVydG8gZGUg
-U291emEgPGpvc2Uuc291emFAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICBsaWIvaWd0X2ttcy5j
-ICAgICAgICAgfCAxMSArKysrKysrKysrKw0KPiA+ICBsaWIvaWd0X2ttcy5oICAgICAgICAgfCAg
-MSArDQo+ID4gIHRlc3RzL2ttc19mYmNvbl9mYnQuYyB8ICAyICstDQo+ID4gIDMgZmlsZXMgY2hh
-bmdlZCwgMTMgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiA+IA0KPiA+IGRpZmYgLS1n
-aXQgYS9saWIvaWd0X2ttcy5jIGIvbGliL2lndF9rbXMuYyBpbmRleCBkNGNiYzFjNTMuLmFmZWY1
-OTM5NiAxMDA2NDQNCj4gPiAtLS0gYS9saWIvaWd0X2ttcy5jDQo+ID4gKysrIGIvbGliL2lndF9r
-bXMuYw0KPiA+IEBAIC05NjgsNiArOTY4LDE3IEBAIHZvaWQga21zdGVzdF9zZXRfdnRfZ3JhcGhp
-Y3NfbW9kZSh2b2lkKQ0KPiA+ICAJaWd0X2RlYnVnKCJWVDogZ3JhcGhpY3MgbW9kZSBzZXQgKG1v
-ZGUgd2FzIDB4JWx4KVxuIiwgcmV0KTsgIH0NCj4gPiANCj4gPiArLyoqDQo+ID4gKyAqIGttc3Rl
-c3Rfc2V0X3Z0X3RleHRfbW9kZToNCj4gPiArICoNCj4gPiArICogU2V0cyB0aGUgY29udHJvbGxp
-bmcgVlQgKGlmIGF2YWlsYWJsZSkgaW50byB0ZXh0IG1vZGUuDQo+ID4gKyAqIFVubGlrZWx5IGtt
-c3Rlc3Rfc2V0X3Z0X2dyYXBoaWNzX21vZGUoKSBpdCBkbyBub3QgaW5zdGFsbCBhbiBpZ3QNCj4g
-PiArZXhpdA0KPiA+ICsgKiBoYW5kbGVyIHRvIHNldCB0aGUgVlQgYmFjayB0byB0aGUgcHJldmlv
-dXMgbW9kZS4NCj4gPiArICovDQo+ID4gK3ZvaWQga21zdGVzdF9zZXRfdnRfdGV4dF9tb2RlKHZv
-aWQpDQo+ID4gK3sNCj4gPiArCWlndF9hc3NlcnQoc2V0X3Z0X21vZGUoS0RfVEVYVCkgPj0gMCk7
-IH0NCj4gPiANCj4gPiAgc3RhdGljIHZvaWQgcmVzZXRfY29ubmVjdG9yc19hdF9leGl0KGludCBz
-aWcpICB7IGRpZmYgLS1naXQgYS9saWIvaWd0X2ttcy5oDQo+ID4gYi9saWIvaWd0X2ttcy5oIGlu
-ZGV4IGFkY2E1OWFjNi4uMzJhMGU0Y2M2IDEwMDY0NA0KPiA+IC0tLSBhL2xpYi9pZ3Rfa21zLmgN
-Cj4gPiArKysgYi9saWIvaWd0X2ttcy5oDQo+ID4gQEAgLTkzLDYgKzkzLDcgQEAgdm9pZCBrbXN0
-ZXN0X2R1bXBfbW9kZShkcm1Nb2RlTW9kZUluZm8gKm1vZGUpOyAgaW50DQo+ID4ga21zdGVzdF9n
-ZXRfcGlwZV9mcm9tX2NydGNfaWQoaW50IGZkLCBpbnQgY3J0Y19pZCk7ICB2b2lkDQo+ID4ga21z
-dGVzdF9zZXRfdnRfZ3JhcGhpY3NfbW9kZSh2b2lkKTsNCj4gPiAgdm9pZCBrbXN0ZXN0X3Jlc3Rv
-cmVfdnRfbW9kZSh2b2lkKTsNCj4gPiArdm9pZCBrbXN0ZXN0X3NldF92dF90ZXh0X21vZGUodm9p
-ZCk7DQo+ID4gDQo+ID4gIGVudW0gaWd0X2F0b21pY19jcnRjX3Byb3BlcnRpZXMgew0KPiA+ICAg
-ICAgICAgSUdUX0NSVENfQkFDS0dST1VORCA9IDAsDQo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2tt
-c19mYmNvbl9mYnQuYyBiL3Rlc3RzL2ttc19mYmNvbl9mYnQuYyBpbmRleA0KPiA+IGU2ZGQ0MzUz
-Yi4uZTk5YTFmMmYyIDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL2ttc19mYmNvbl9mYnQuYw0KPiA+
-ICsrKyBiL3Rlc3RzL2ttc19mYmNvbl9mYnQuYw0KPiA+IEBAIC0yODMsNyArMjgzLDcgQEAgc3Rh
-dGljIHZvaWQgcmVzdG9yZV9mYmNvbihzdHJ1Y3QgZHJtX2luZm8gKmRybSkNCj4gPiAgCWttc3Rl
-c3RfdW5zZXRfYWxsX2NydGNzKGRybS0+ZmQsIGRybS0+cmVzKTsNCj4gPiAgCWlndF9yZW1vdmVf
-ZmIoZHJtLT5mZCwgJmRybS0+ZmIpOw0KPiA+ICAJaWd0X2RldmljZV9kcm9wX21hc3Rlcihkcm0t
-PmZkKTsNCj4gPiAtCWttc3Rlc3RfcmVzdG9yZV92dF9tb2RlKCk7DQo+ID4gKwlrbXN0ZXN0X3Nl
-dF92dF90ZXh0X21vZGUoKTsNCj4gDQo+IENhbiB3ZSBsZXZlbCBzZXQgdGhlIHN0YXRlIHRvIEtE
-X1RFWFQgaW4gYmVnaW5uaW5nIG9ubHkgYmVmb3JlIHdlIGJlZ2luIG91ciB0ZXN0Lg0KPiBUaGlz
-IHdheSB0ZXN0IHdpbGwgc3RhcnQgd2l0aCB0aGUgZXhwZWN0ZWQgc3RhdGUsIGFuZCB3ZSBjYW4g
-dGhlbiBzZXQgS0RfR1JBUEhJQ1MsDQo+IHJlc3RvcmUgd2lsbCBlbnN1cmUgcHJldmlvdXMgc3Rh
-dGUgaXMgc2V0IGFnYWluIGFzIEtEX1RFWFQsIGFuZCB3ZSBjYW4ganVzdCBjb250aW51ZSB3aXRo
-IHRoZQ0KPiBleGlzdGluZyByZXN0b3JlIGxvZ2ljLiBXaWxsIHRoYXQgY2F1c2UgYW55IGlzc3Vl
-ID8NCg0KV2UgY291bGQgYmUgb3ZlcndyaXRpbmcgdGhlIHByZXZpb3VzIHN0YXRlLCBLRF9URVhU
-IGlzIHRoZSBzdGF0ZSB3ZSBleHBlY3QgaW4gb3VyIENJIGJ1dCBpdCBkbyBub3QgbWVhbnMgdGhh
-dCBpcyB0aGUgc3RhdGUgdGhhdCBvdGhlciB1c2VycyBoYXZlIHByaW9yDQpvZiBleGVjdXRpbmcg
-dGhpcyB0ZXN0LCB0aGF0IGlzIHdoeSBrbXN0ZXN0X3Jlc3RvcmVfdnRfbW9kZSgpIGRvbid0IGp1
-c3Qgc2V0IHRvIEtEX1RFWFQuDQoNCj4gDQo+IFJlZ2FyZHMsDQo+IFVtYSBTaGFua2FyDQo+IA0K
-PiA+ICB9DQo+ID4gDQo+ID4gIHN0YXRpYyB2b2lkIHN1YnRlc3Qoc3RydWN0IGRybV9pbmZvICpk
-cm0sIHN0cnVjdCBmZWF0dXJlICpmZWF0dXJlLCBib29sIHN1c3BlbmQpDQo+ID4gLS0NCj4gPiAy
-LjI2LjINCj4gPiANCj4gPiBfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXw0KPiA+IGlndC1kZXYgbWFpbGluZyBsaXN0DQo+ID4gaWd0LWRldkBsaXN0cy5mcmVl
-ZGVza3RvcC5vcmcNCj4gPiBodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2lndC1kZXYNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+== Series Details ==
+
+Series: lib/kms_chamelium: Wait for the sink to reconnect after an FSM DPMS-off
+URL   : https://patchwork.freedesktop.org/series/77800/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8555 -> IGTPW_4625
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4625/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4625 that come from known issues:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-x1275:       [FAIL][1] ([i915#62]) -> [SKIP][2] ([fdo#109271])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8555/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4625/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+
+
+Participating hosts (50 -> 43)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5684 -> IGTPW_4625
+
+  CI-20190529: 20190529
+  CI_DRM_8555: 3ab722a5245e3e8813847e4b82f1acd76722ce1d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4625: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4625/index.html
+  IGT_5684: bd399f5eb8263bb4a84ae6a5bb1a13d329e0515d @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4625/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
