@@ -1,10 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 28 May 2020 21:31:36 +0100
-Message-Id: <20200528203136.1196569-1-chris@chris-wilson.co.uk>
+References: <20200528133835.5087-1-rohan.garg@collabora.com>
+From: Steven Price <steven.price@arm.com>
+Message-ID: <8e3412c3-1c78-9e23-08a8-32514c3320c6@arm.com>
+Date: Fri, 29 May 2020 09:37:39 +0100
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] i915/gem_exec_balancer: Randomise bonded
- submission
+In-Reply-To: <20200528133835.5087-1-rohan.garg@collabora.com>
+Content-Language: en-GB
+Subject: Re: [igt-dev] [PATCH i-g-t] panfrost: Test labeling functionality
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -12,221 +14,137 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
+To: Rohan Garg <rohan.garg@collabora.com>, igt-dev@lists.freedesktop.org
+Cc: alyssa.rosenzweig@collabora.com, dri-devel@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Randomly submit a paired spinner and its cancellation as a bonded
-(submit fence) pair. Apply congestion to the engine with more bonded
-pairs to see if the execution order fails. If we prevent a cancellation
-from running, then the spinner will remain spinning forever.
-
-v2: Test both immediate submission and fenced submission
-
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
----
- tests/i915/gem_exec_balancer.c | 172 +++++++++++++++++++++++++++++++++
- 1 file changed, 172 insertions(+)
-
-diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index 80ae82416..04b14dd3a 100644
---- a/tests/i915/gem_exec_balancer.c
-+++ b/tests/i915/gem_exec_balancer.c
-@@ -1154,6 +1154,175 @@ static void bonded_semaphore(int i915)
- 	gem_context_destroy(i915, ctx);
- }
- 
-+static void __bonded_dual(int i915,
-+			  const struct i915_engine_class_instance *siblings,
-+			  unsigned int count,
-+			  unsigned int flags,
-+			  unsigned long *out)
-+#define BD_FENCE 0x1
-+#define BD_HOSTILE 0x2
-+#define BD_MANY 0x4
-+{
-+	struct drm_i915_gem_exec_object2 batch = {};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(&batch),
-+		.buffer_count = 1,
-+	};
-+	unsigned long cycles = 0;
-+	unsigned int spinner;
-+	igt_spin_t *a, *b;
-+	int timeline;
-+	uint32_t A, B;
-+
-+	srandom(getpid());
-+
-+	spinner = IGT_SPIN_POLL_RUN;
-+	if (flags & BD_HOSTILE)
-+		spinner |= IGT_SPIN_NO_PREEMPTION;
-+
-+	A = gem_context_create(i915);
-+	set_load_balancer(i915, A, siblings, count, NULL);
-+	a = igt_spin_new(i915, A, .flags = spinner);
-+	igt_spin_end(a);
-+	gem_sync(i915, a->handle);
-+
-+	B = gem_context_create(i915);
-+	set_load_balancer(i915, B, siblings, count, NULL);
-+	b = igt_spin_new(i915, B, .flags = spinner);
-+	igt_spin_end(b);
-+	gem_sync(i915, b->handle);
-+
-+	timeline = sw_sync_timeline_create();
-+
-+	igt_until_timeout(2) {
-+		unsigned int master;
-+		int fence;
-+
-+		master = 1;
-+		if (flags & BD_MANY)
-+			master = rand() % count + 1;
-+
-+		fence = -1;
-+		if (flags & BD_FENCE)
-+			fence = sw_sync_timeline_create_fence(timeline,
-+							      cycles + 1);
-+
-+		igt_spin_reset(a);
-+		a->execbuf.flags = master | I915_EXEC_FENCE_OUT;
-+		if (fence != -1) {
-+			a->execbuf.rsvd2 = fence;
-+			a->execbuf.flags |= I915_EXEC_FENCE_IN;
-+		}
-+		gem_execbuf_wr(i915, &a->execbuf);
-+
-+		igt_spin_reset(b);
-+		b->execbuf.flags = master | I915_EXEC_FENCE_OUT;
-+		if (fence != -1) {
-+			b->execbuf.rsvd2 = fence;
-+			b->execbuf.flags |= I915_EXEC_FENCE_IN;
-+		}
-+		gem_execbuf_wr(i915, &b->execbuf);
-+
-+		if (rand() % 1)
-+			igt_swap(a, b);
-+
-+		batch.handle = create_semaphore_to_spinner(i915, a);
-+		execbuf.rsvd1 = a->execbuf.rsvd1;
-+		execbuf.rsvd2 = a->execbuf.rsvd2 >> 32;
-+		do {
-+			execbuf.flags = rand() % count + 1;
-+		} while (execbuf.flags == master);
-+		execbuf.flags |= I915_EXEC_FENCE_SUBMIT;
-+		gem_execbuf(i915, &execbuf);
-+		gem_close(i915, batch.handle);
-+
-+		batch.handle = create_semaphore_to_spinner(i915, b);
-+		execbuf.rsvd1 = b->execbuf.rsvd1;
-+		execbuf.rsvd2 = b->execbuf.rsvd2 >> 32;
-+		do {
-+			execbuf.flags = rand() % count + 1;
-+		} while (execbuf.flags == master);
-+		execbuf.flags |= I915_EXEC_FENCE_SUBMIT;
-+		gem_execbuf(i915, &execbuf);
-+		gem_close(i915, batch.handle);
-+
-+		if (fence != -1) {
-+			sw_sync_timeline_inc(timeline, 1);
-+			close(fence);
-+		}
-+		close(a->execbuf.rsvd2 >> 32);
-+		close(b->execbuf.rsvd2 >> 32);
-+
-+		gem_sync(i915, a->handle);
-+		gem_sync(i915, b->handle);
-+
-+		cycles++;
-+	}
-+
-+	*out = cycles;
-+
-+	close(timeline);
-+
-+	igt_spin_free(i915, a);
-+	igt_spin_free(i915, b);
-+
-+	gem_context_destroy(i915, A);
-+	gem_context_destroy(i915, B);
-+}
-+
-+static void bonded_dual(int i915)
-+{
-+	unsigned long *cycles;
-+
-+	/*
-+	 * The purpose of bonded submission is to execute one or more requests
-+	 * concurrently. However, the very nature of that requires coordinated
-+	 * submission across multiple engines.
-+	 */
-+	igt_require(gem_scheduler_has_preemption(i915));
-+
-+	cycles = mmap(0, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-+
-+	for (int class = 1; class < 32; class++) {
-+		struct i915_engine_class_instance *siblings;
-+		unsigned int count;
-+
-+		siblings = list_engines(i915, 1u << class, &count);
-+		if (count > 1) {
-+			const unsigned int phases[] = {
-+				0,
-+				BD_FENCE,
-+				BD_MANY,
-+				BD_HOSTILE,
-+				BD_HOSTILE | BD_FENCE,
-+			};
-+
-+			for (int i = 0; i < ARRAY_SIZE(phases); i++) {
-+				memset(cycles, 0, 4096);
-+				igt_fork(child, count + 1)
-+					__bonded_dual(i915,
-+						      siblings, count,
-+						      phases[i],
-+						      &cycles[child]);
-+				igt_waitchildren();
-+				gem_quiescent_gpu(i915);
-+
-+				for (int child = 1; child < count + 1; child++)
-+					cycles[0] += cycles[child];
-+
-+				igt_info("%s %s %s submission, %lu cycles\n",
-+					 phases[i] & BD_HOSTILE ? "Non-preemptible" : "Preemptible",
-+					 phases[i] & BD_MANY ? "many-master" : "single-master",
-+					 phases[i] & BD_FENCE ? "fenced" : "immediate",
-+					 cycles[0]);
-+			}
-+		}
-+		free(siblings);
-+	}
-+
-+	munmap(cycles, 4096);
-+}
-+
- static void __bonded_nohang(int i915, uint32_t ctx,
- 			    const struct i915_engine_class_instance *siblings,
- 			    unsigned int count,
-@@ -2284,6 +2453,9 @@ igt_main
- 	igt_subtest("bonded-semaphore")
- 		bonded_semaphore(i915);
- 
-+	igt_subtest("bonded-dual")
-+		bonded_dual(i915);
-+
- 	igt_fixture {
- 		igt_stop_hang_detector();
- 	}
--- 
-2.27.0.rc2
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gMjgvMDUvMjAyMCAxNDozOCwgUm9oYW4gR2FyZyB3cm90ZToKPiBJbnRyb2R1Y2UgdGVzdHMg
+dG8gY292ZXIgdGhlIG5ldyBnZW5lcmljIGxhYmVsaW5nIGlvY3RsJ3MKPiBiZWluZyByZXZpZXdl
+ZCBoZXJlIFsxXS4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBSb2hhbiBHYXJnIDxyb2hhbi5nYXJnQGNv
+bGxhYm9yYS5jb20+Cj4gCj4gWzFdIGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9z
+ZXJpZXMvNzcyNjcvCj4gCj4gU2lnbmVkLW9mZi1ieTogUm9oYW4gR2FyZyA8cm9oYW4uZ2FyZ0Bj
+b2xsYWJvcmEuY29tPgoKQSBmZXcgY29tbWVudHMgYmVsb3cuCgo+IC0tLQo+ICAgaW5jbHVkZS9k
+cm0tdWFwaS9kcm0uaCAgICB8ICAyMyArKysrKystCj4gICB0ZXN0cy9tZXNvbi5idWlsZCAgICAg
+ICAgIHwgICAxICsKPiAgIHRlc3RzL3BhbmZyb3N0X2JvX2xhYmVsLmMgfCAxMjkgKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysKPiAgIDMgZmlsZXMgY2hhbmdlZCwgMTUyIGlu
+c2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKPiAgIGNyZWF0ZSBtb2RlIDEwMDY0NCB0ZXN0cy9w
+YW5mcm9zdF9ib19sYWJlbC5jCj4gCj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvZHJtLXVhcGkvZHJt
+LmggYi9pbmNsdWRlL2RybS11YXBpL2RybS5oCj4gaW5kZXggYzdmZDJhMzUuLjg3MTI0ODgyIDEw
+MDY0NAo+IC0tLSBhL2luY2x1ZGUvZHJtLXVhcGkvZHJtLmgKPiArKysgYi9pbmNsdWRlL2RybS11
+YXBpL2RybS5oCj4gQEAgLTYyMCw2ICs2MjAsMjUgQEAgc3RydWN0IGRybV9nZW1fb3BlbiB7Cj4g
+ICAJX191NjQgc2l6ZTsKPiAgIH07Cj4gICAKPiArLyoqIHN0cnVjdCBkcm1faGFuZGxlX2xhYmVs
+IC0gaW9jdGwgYXJndW1lbnQgZm9yIGxhYmVsbGluZyBCT3MuCj4gKyAqCj4gKyAqIFRoaXMgbGFi
+ZWwncyBhIEJPIHdpdGggYSB1c2Vyc3BhY2UgbGFiZWwKPiArICoKPiArICovCj4gK3N0cnVjdCBk
+cm1faGFuZGxlX2xhYmVsIHsKPiArCS8qKiBIYW5kbGUgZm9yIHRoZSBvYmplY3QgYmVpbmcgbGFi
+ZWxsZWQuICovCj4gKwlfX3UzMiBoYW5kbGU7Cj4gKwo+ICsJLyoqIExhYmVsIGFuZCBsYWJlbCBs
+ZW5ndGggKGxlbiBpbmNsdWRlcyB0aGUgdHJhaWxpbmcgTlVMTCkuCj4gKwkgKiAgTGFiZWwgbGVu
+Z2h0ICpNVVNUKiBiZSBzbWFsbGVyIHRoYW4gUEFHRV9TSVpFLgogICAgICAgICAgICAgICAgICAg
+Xl5eXl5eCnR5cG86IHMvbGVuZ2h0L2xlbmd0aC8KCj4gKwkgKi8KPiArCV9fdTMyIGxlbjsKPiAr
+CV9fdTY0IGxhYmVsOwo+ICsKPiArCS8qKiBGbGFncyAuLiBDdXJyZW50bHkgbm8gZmxhZ3MgYXJl
+IGRlZmluZWQgKi8KPiArCV9fdTMyIGZsYWdzOwo+ICt9Owo+ICsKPiAgICNkZWZpbmUgRFJNX0NB
+UF9EVU1CX0JVRkZFUgkJMHgxCj4gICAjZGVmaW5lIERSTV9DQVBfVkJMQU5LX0hJR0hfQ1JUQwkw
+eDIKPiAgICNkZWZpbmUgRFJNX0NBUF9EVU1CX1BSRUZFUlJFRF9ERVBUSAkweDMKPiBAQCAtOTQx
+LDggKzk2MCwxMCBAQCBleHRlcm4gIkMiIHsKPiAgICNkZWZpbmUgRFJNX0lPQ1RMX1NZTkNPQkpf
+UVVFUlkJCURSTV9JT1dSKDB4Q0IsIHN0cnVjdCBkcm1fc3luY29ial90aW1lbGluZV9hcnJheSkK
+PiAgICNkZWZpbmUgRFJNX0lPQ1RMX1NZTkNPQkpfVFJBTlNGRVIJRFJNX0lPV1IoMHhDQywgc3Ry
+dWN0IGRybV9zeW5jb2JqX3RyYW5zZmVyKQo+ICAgI2RlZmluZSBEUk1fSU9DVExfU1lOQ09CSl9U
+SU1FTElORV9TSUdOQUwJRFJNX0lPV1IoMHhDRCwgc3RydWN0IGRybV9zeW5jb2JqX3RpbWVsaW5l
+X2FycmF5KQo+IC0KPiAgICNkZWZpbmUgRFJNX0lPQ1RMX01PREVfR0VURkIyCQlEUk1fSU9XUigw
+eENFLCBzdHJ1Y3QgZHJtX21vZGVfZmJfY21kMikKPiArI2RlZmluZSBEUk1fSU9DVExfSEFORExF
+X1NFVF9MQUJFTCAgICAgIERSTV9JT1dSKDB4Q0YsIHN0cnVjdCBkcm1faGFuZGxlX2xhYmVsKQo+
+ICsjZGVmaW5lIERSTV9JT0NUTF9IQU5ETEVfR0VUX0xBQkVMICAgICAgRFJNX0lPV1IoMHhEMCwg
+c3RydWN0IGRybV9oYW5kbGVfbGFiZWwpCj4gKwo+ICAgCj4gICAvKioKPiAgICAqIERldmljZSBz
+cGVjaWZpYyBpb2N0bHMgc2hvdWxkIG9ubHkgYmUgaW4gdGhlaXIgcmVzcGVjdGl2ZSBoZWFkZXJz
+Cj4gZGlmZiAtLWdpdCBhL3Rlc3RzL21lc29uLmJ1aWxkIGIvdGVzdHMvbWVzb24uYnVpbGQKPiBp
+bmRleCBlNjliZGI3ZC4uZWU5MWJmNDggMTAwNjQ0Cj4gLS0tIGEvdGVzdHMvbWVzb24uYnVpbGQK
+PiArKysgYi90ZXN0cy9tZXNvbi5idWlsZAo+IEBAIC03Miw2ICs3Miw3IEBAIHRlc3RfcHJvZ3Mg
+PSBbCj4gICAJJ2ttc192YmxhbmsnLAo+ICAgCSdrbXNfdnJyJywKPiAgIAknbWV0YV90ZXN0JywK
+PiArICAgICAgICAncGFuZnJvc3RfYm9fbGFiZWwnLAoKTG9va3MgbGlrZSB5b3UndmUgdXNlZCBz
+cGFjZXMgcmF0aGVyIHRoYW4gdGFicy4gUGxlYXNlIGFsc28gY2hlY2sgdGhlIApyZXN0IG9mIHRo
+ZSBwYXRjaCBmb3IgY29ycmVjdCBzcGFjZXMvdGFicy4KCj4gICAJJ3BhbmZyb3N0X2dldF9wYXJh
+bScsCj4gICAJJ3BhbmZyb3N0X2dlbV9uZXcnLAo+ICAgCSdwYW5mcm9zdF9wcmltZScsCj4gZGlm
+ZiAtLWdpdCBhL3Rlc3RzL3BhbmZyb3N0X2JvX2xhYmVsLmMgYi90ZXN0cy9wYW5mcm9zdF9ib19s
+YWJlbC5jCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwMC4uZDMxNzk0NTgK
+PiAtLS0gL2Rldi9udWxsCj4gKysrIGIvdGVzdHMvcGFuZnJvc3RfYm9fbGFiZWwuYwo+IEBAIC0w
+LDAgKzEsMTI5IEBACj4gKy8qCj4gKyAqIENvcHlyaWdodCDCqSAyMDIwIENvbGxhYm9yYSBMdGQu
+Cj4gKyAqICAgICBBdXRob3I6IFJvaGFuIEdhcmcgPHJvaGFuLmdhcmdAY29sbGFib3JhLmNvbT4K
+PiArICoKPiArICogUGVybWlzc2lvbiBpcyBoZXJlYnkgZ3JhbnRlZCwgZnJlZSBvZiBjaGFyZ2Us
+IHRvIGFueSBwZXJzb24gb2J0YWluaW5nIGEKPiArICogY29weSBvZiB0aGlzIHNvZnR3YXJlIGFu
+ZCBhc3NvY2lhdGVkIGRvY3VtZW50YXRpb24gZmlsZXMgKHRoZSAiU29mdHdhcmUiKSwKPiArICog
+dG8gZGVhbCBpbiB0aGUgU29mdHdhcmUgd2l0aG91dCByZXN0cmljdGlvbiwgaW5jbHVkaW5nIHdp
+dGhvdXQgbGltaXRhdGlvbgo+ICsgKiB0aGUgcmlnaHRzIHRvIHVzZSwgY29weSwgbW9kaWZ5LCBt
+ZXJnZSwgcHVibGlzaCwgZGlzdHJpYnV0ZSwgc3VibGljZW5zZSwKPiArICogYW5kL29yIHNlbGwg
+Y29waWVzIG9mIHRoZSBTb2Z0d2FyZSwgYW5kIHRvIHBlcm1pdCBwZXJzb25zIHRvIHdob20gdGhl
+Cj4gKyAqIFNvZnR3YXJlIGlzIGZ1cm5pc2hlZCB0byBkbyBzbywgc3ViamVjdCB0byB0aGUgZm9s
+bG93aW5nIGNvbmRpdGlvbnM6Cj4gKyAqCj4gKyAqIFRoZSBhYm92ZSBjb3B5cmlnaHQgbm90aWNl
+IGFuZCB0aGlzIHBlcm1pc3Npb24gbm90aWNlIChpbmNsdWRpbmcgdGhlIG5leHQKPiArICogcGFy
+YWdyYXBoKSBzaGFsbCBiZSBpbmNsdWRlZCBpbiBhbGwgY29waWVzIG9yIHN1YnN0YW50aWFsIHBv
+cnRpb25zIG9mIHRoZQo+ICsgKiBTb2Z0d2FyZS4KPiArICoKPiArICogVEhFIFNPRlRXQVJFIElT
+IFBST1ZJREVEICJBUyBJUyIsIFdJVEhPVVQgV0FSUkFOVFkgT0YgQU5ZIEtJTkQsIEVYUFJFU1Mg
+T1IKPiArICogSU1QTElFRCwgSU5DTFVESU5HIEJVVCBOT1QgTElNSVRFRCBUTyBUSEUgV0FSUkFO
+VElFUyBPRiBNRVJDSEFOVEFCSUxJVFksCj4gKyAqIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQ
+VVJQT1NFIEFORCBOT05JTkZSSU5HRU1FTlQuICBJTiBOTyBFVkVOVCBTSEFMTAo+ICsgKiBUSEUg
+QVVUSE9SUyBPUiBDT1BZUklHSFQgSE9MREVSUyBCRSBMSUFCTEUgRk9SIEFOWSBDTEFJTSwgREFN
+QUdFUyBPUiBPVEhFUgo+ICsgKiBMSUFCSUxJVFksIFdIRVRIRVIgSU4gQU4gQUNUSU9OIE9GIENP
+TlRSQUNULCBUT1JUIE9SIE9USEVSV0lTRSwgQVJJU0lORwo+ICsgKiBGUk9NLCBPVVQgT0YgT1Ig
+SU4gQ09OTkVDVElPTiBXSVRIIFRIRSBTT0ZUV0FSRSBPUiBUSEUgVVNFIE9SIE9USEVSIERFQUxJ
+TkdTCj4gKyAqIElOIFRIRSBTT0ZUV0FSRS4KPiArICovCj4gKwo+ICsjaW5jbHVkZSAiaWd0Lmgi
+Cj4gKyNpbmNsdWRlICJpZ3RfcGFuZnJvc3QuaCIKPiArI2luY2x1ZGUgPHVuaXN0ZC5oPgo+ICsj
+aW5jbHVkZSA8c3RkbGliLmg+Cj4gKyNpbmNsdWRlIDxzdGRpby5oPgo+ICsjaW5jbHVkZSA8c3Ry
+aW5nLmg+Cj4gKyNpbmNsdWRlIDxmY250bC5oPgo+ICsjaW5jbHVkZSA8aW50dHlwZXMuaD4KPiAr
+I2luY2x1ZGUgPGVycm5vLmg+Cj4gKyNpbmNsdWRlIDxzeXMvc3RhdC5oPgo+ICsjaW5jbHVkZSA8
+c3lzL2lvY3RsLmg+Cj4gKyNpbmNsdWRlIDxwb2xsLmg+Cj4gKyNpbmNsdWRlICJ2YzRfZHJtLmgi
+Cj4gKwo+ICtzdGF0aWMgaW50Cj4gK3NldF9sYWJlbChpbnQgZmQsIGludCBoYW5kbGUsIGNvbnN0
+IGNoYXIgKmxhYmVsKQo+ICt7Cj4gKwlzdHJ1Y3QgZHJtX2hhbmRsZV9sYWJlbCBhcmdzID0geyAw
+IH07Cj4gKwlpZiAobGFiZWwpIHsKPiArCQlhcmdzLmhhbmRsZSA9IGhhbmRsZTsKPiArCQlhcmdz
+LmxlbiA9IHN0cmxlbihsYWJlbCkgKyAxOwo+ICsJCWFyZ3MubGFiZWw9ICh1aW50cHRyX3QpbGFi
+ZWw7Cj4gKwl9Cj4gKwo+ICsJcmV0dXJuIGRybUlvY3RsKGZkLCBEUk1fSU9DVExfSEFORExFX1NF
+VF9MQUJFTCwgJmFyZ3MpOwo+ICt9Cj4gKwo+ICtzdGF0aWMgY29uc3QgY2hhcioKPiArZ2V0X2xh
+YmVsKGludCBmZCwgaW50IGhhbmRsZSkKPiArewo+ICsJc3RydWN0IGRybV9oYW5kbGVfbGFiZWwg
+YXJncyA9IHsKPiArICAgICAgICAgICAgICAgIC5oYW5kbGUgPSBoYW5kbGUsCj4gKwkJLmxlbiA9
+IDEwLAo+ICsJCS5sYWJlbCA9ICh1aW50cHRyX3QpIG1hbGxvYyhzaXplb2YoY2hhciopICogMTAp
+Cj4gKyAgICAgICAgfTsKPiArCj4gKwlkcm1Jb2N0bChmZCwgRFJNX0lPQ1RMX0hBTkRMRV9HRVRf
+TEFCRUwsICZhcmdzKTsKPiArCj4gKwlpZiAoIWFyZ3MubGFiZWwpCj4gKwkJcmV0dXJuIE5VTEw7
+CgpUaGlzIHNlZW1zIG91dCBvZiBwbGFjZSAtIGFzc3VtaW5nIHRoaXMgaXMgdG8gY2hlY2sgdGhh
+dCBtYWxsb2MoKSAKc3VjY2VlZGVkIHRoZW4gaXQgd291bGQgYmUgbm9ybWFsIHRvIGNoZWNrIGJl
+Zm9yZSB0aGUgaW9jdGwgY2FsbC4KCj4gKwo+ICsJaWd0X2Fzc2VydChhcmdzLmxhYmVsKTsKCkdp
+dmVuIHRoZSBhYm92ZSBjaGVjayB0aGlzIGNhbiBuZXZlciBmYWlsLgoKQWxzbyBub3RoaW5nIGlz
+IGNoZWNraW5nIHRoZSByZXR1cm4gZnJvbSBkcm1Jb2N0bC4KCj4gKwo+ICsgICAgICAgIGFyZ3Mu
+bGFiZWwgPSAodWludHB0cl90KSByZWFsbG9jKGFyZ3MubGFiZWwsIGFyZ3MubGVuKTsKPiArCj4g
+Kwlkcm1Jb2N0bChmZCwgRFJNX0lPQ1RMX0hBTkRMRV9HRVRfTEFCRUwsICZhcmdzKTsKPiArCj4g
+KyAgICAgICAgcmV0dXJuIGFyZ3MubGFiZWw7Cj4gK30KPiArCj4gKwo+ICtpZ3RfbWFpbgo+ICt7
+Cj4gKwlpbnQgZmQ7Cj4gKwo+ICsJaWd0X2ZpeHR1cmUKPiArCQlmZCA9IGRybV9vcGVuX2RyaXZl
+cihEUklWRVJfQU5ZKTsKPiArCj4gKwlpZ3Rfc3VidGVzdCgic2V0LWxhYmVsIikgewo+ICsJCXN0
+cnVjdCBwYW5mcm9zdF9ibyAqYm8gPSBpZ3RfcGFuZnJvc3RfZ2VtX25ldyhmZCwgNDA5Nik7Cj4g
+KwkJaW50IHJldDsKPiArCQlyZXQgPSBzZXRfbGFiZWwoZmQsIGJvLT5oYW5kbGUsICJhIHRlc3Qg
+bGFiZWwiKTsKPiArCQlpZ3RfYXNzZXJ0KHJldCA9PSAwKTsKPiArCj4gKwkJcmV0ID0gc2V0X2xh
+YmVsKGZkLCBiby0+aGFuZGxlLCAiYSBuZXcgdGVzdCBsYWJlbCIpOwo+ICsJCWlndF9hc3NlcnQo
+cmV0ID09IDApOwo+ICsKPiArCQlpZ3RfcGFuZnJvc3RfZnJlZV9ibyhmZCwgYm8pOwo+ICsJfQo+
+ICsKPiArCWlndF9zdWJ0ZXN0KCJnZXQtbGFiZWwiKSB7Cj4gKwkJc3RydWN0IHBhbmZyb3N0X2Jv
+ICpibyA9IGlndF9wYW5mcm9zdF9nZW1fbmV3KGZkLCA0MDk2KTsKPiArCQlzZXRfbGFiZWwoZmQs
+IGJvLT5oYW5kbGUsICJhIHRlc3QgbGFiZWwiKTsKPiArCQljb25zdCBjaGFyKiBsYWJlbCA9IGdl
+dF9sYWJlbChmZCwgYm8tPmhhbmRsZSk7Cj4gKwkJaWd0X2Fzc2VydChzdHJjbXAobGFiZWwsICJh
+IHRlc3QgbGFiZWwiKSA9PSAwKTsKPiArCQlmcmVlKGxhYmVsKTsKPiArCQlpZ3RfcGFuZnJvc3Rf
+ZnJlZV9ibyhmZCwgYm8pOwo+ICsJfQo+ICsKPiArCWlndF9zdWJ0ZXN0KCJjbGVhci1sYWJlbCIp
+IHsKPiArCQlzdHJ1Y3QgcGFuZnJvc3RfYm8gKmJvID0gaWd0X3BhbmZyb3N0X2dlbV9uZXcoZmQs
+IDQwOTYpOwo+ICsJCXNldF9sYWJlbChmZCwgYm8tPmhhbmRsZSwgTlVMTCk7Cj4gKwkJaWd0X2Fz
+c2VydF9lcShOVUxMLCBnZXRfbGFiZWwoZmQsIGJvLT5oYW5kbGUpKTsKPiArCQlpZ3RfcGFuZnJv
+c3RfZnJlZV9ibyhmZCwgYm8pOwo+ICsJfQo+ICsKPiArCWlndF9zdWJ0ZXN0KCJsYWJlbC10b28t
+bG9uZyIpIHsKPiArCQljaGFyIGxhYmVsWzQwOTZdID0ge1swIC4uLiA0MDk1XSA9ICdhJ307CgpC
+ZXdhcmUgUEFHRV9TSVpFIGlzbid0IGFsd2F5cyA0MDk2IGJ5dGVzLCBlLmcuIHNlZSBBUk02NF82
+NEtfUEFHRVMuIFlvdSAKbWlnaHQgd2FudCB0byB0cnkgc3lzY29uZihfU0NfUEFHRVNJWkUpLgoK
+U3RldmUKCj4gKwkJaW50IHJldDsKPiArCQlzdHJ1Y3QgcGFuZnJvc3RfYm8gKmJvID0gaWd0X3Bh
+bmZyb3N0X2dlbV9uZXcoZmQsIDQwOTYpOwo+ICsJCXJldCA9IHNldF9sYWJlbChmZCwgYm8tPmhh
+bmRsZSwgbGFiZWwpOwo+ICsJCWlndF9hc3NlcnRfZXEoLTEsIHJldCk7Cj4gKwkJaWd0X2Fzc2Vy
+dF9lcShFSU5WQUwsIGVycm5vKTsKPiArCQlpZ3RfcGFuZnJvc3RfZnJlZV9ibyhmZCwgYm8pOwo+
+ICsJfQo+ICsKPiArCWlndF9zdWJ0ZXN0KCJzZXQtYmFkLWhhbmRsZSIpIHsKPiArCQlpbnQgcmV0
+ID0gc2V0X2xhYmVsKGZkLCAweGQwZDBkMGQwLCAiYmFkIGhhbmRsZSIpOwo+ICsJCWlndF9hc3Nl
+cnRfZXEoLTEsIHJldCk7Cj4gKwkJaWd0X2Fzc2VydF9lcShFTk9FTlQsIGVycm5vKTsKPiArCX0K
+PiArCj4gKwlpZ3RfZml4dHVyZQo+ICsJCWNsb3NlKGZkKTsKPiArfQo+IAoKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QK
+aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
