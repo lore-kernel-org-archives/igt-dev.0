@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C8E9A6E992
- for <igt-dev@lists.freedesktop.org>; Sat, 30 May 2020 01:15:05 +0000 (UTC)
-From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
-Date: Fri, 29 May 2020 18:16:12 -0700
-Message-Id: <20200530011613.45991-1-jose.souza@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_psr2_su: Read su blocks of
- frame 1 if frame 0 is 0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sat, 30 May 2020 01:59:48 -0000
+Message-ID: <159080398801.9483.16730896445870356615@emeril.freedesktop.org>
+References: <20200530011613.45991-1-jose.souza@intel.com>
+In-Reply-To: <20200530011613.45991-1-jose.souza@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Fpsr2=5Fsu=3A_Read_?=
+ =?utf-8?q?su_blocks_of_frame_1_if_frame_0_is_0?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,40 +15,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: "Souza, Jose" <jose.souza@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Tm90IHN1cmUgd2h5IGJ1dCBpbiByZWNlbnQga2VybmVscyArIElHVCB3aGVuIFBTUiBzdGF0dXMg
-ZGVidWdmcyBpcwpyZWFkIHRoZSBmcmFtZSBhbHJlYWR5IHBhc3NlZCwgc28gdGhlIHN1IGJsb2Nr
-cyBpcyBzZXQgaW4gZnJhbWUgMQphbmQgY2F1c2luZyB0aGUgdGVzdCB0byBmYWlsIGZvciBwYWdl
-IGZsaXBzLgpTbyBoZXJlIHJlYWRpbmcgZnJvbSBmcmFtZSAxIGlmIGZyYW1lIDAgaGFzIDAgYmxv
-Y2tzLCBhcyB0aGlzIHRlc3QKYWx3YXlzIGNoYW5nZXMgc2NyZWVuIHdpdGggdGhlIHNhbWUgbnVt
-YmVyIG9mIHN1IGJsb2NrcyBpdCBpcyBub3QgYQppc3N1ZS4KCkNsb3NlczogaHR0cHM6Ly9naXRs
-YWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC8tL2lzc3Vlcy82MDgKQ2M6IEd3YW4tZ3llb25n
-IE11biA8Z3dhbi1neWVvbmcubXVuQGludGVsLmNvbT4KU2lnbmVkLW9mZi1ieTogSm9zw6kgUm9i
-ZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+Ci0tLQogbGliL2lndF9wc3IuYyB8
-IDEwICsrKysrKysrKy0KIDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyksIDEgZGVsZXRp
-b24oLSkKCmRpZmYgLS1naXQgYS9saWIvaWd0X3Bzci5jIGIvbGliL2lndF9wc3IuYwppbmRleCA0
-MTA5YjUyOTUuLjk1NmY2MjE5YyAxMDA2NDQKLS0tIGEvbGliL2lndF9wc3IuYworKysgYi9saWIv
-aWd0X3Bzci5jCkBAIC0xOTUsMTEgKzE5NSwxMiBAQCBib29sIHBzcl9zaW5rX3N1cHBvcnQoaW50
-IGRldmljZSwgaW50IGRlYnVnZnNfZmQsIGVudW0gcHNyX21vZGUgbW9kZSkKIAogI2RlZmluZSBQ
-U1IyX1NVX0JMT0NLX1NUUl9MT09LVVAgIlBTUjIgU1UgYmxvY2tzOlxuMFx0IgogCisvKiBSZXR1
-cm4gdGhlIHRoZSBsYXN0IG9yIGxhc3QgYnV0IG9uZSBzdSBibG9ja3MgKi8KIHN0YXRpYyBib29s
-CiBwc3IyX3JlYWRfbGFzdF9udW1fc3VfYmxvY2tzX3ZhbChpbnQgZGVidWdmc19mZCwgdWludDE2
-X3QgKm51bV9zdV9ibG9ja3MpCiB7CiAJY2hhciBidWZbUFNSX1NUQVRVU19NQVhfTEVOXTsKLQlj
-aGFyICpzdHI7CisJY2hhciAqc3RyLCAqc3RyMjsKIAlpbnQgcmV0OwogCiAJcmV0ID0gaWd0X2Rl
-YnVnZnNfc2ltcGxlX3JlYWQoZGVidWdmc19mZCwgImk5MTVfZWRwX3Bzcl9zdGF0dXMiLCBidWYs
-CkBAIC0yMTIsNiArMjEzLDEzIEBAIHBzcjJfcmVhZF9sYXN0X251bV9zdV9ibG9ja3NfdmFsKGlu
-dCBkZWJ1Z2ZzX2ZkLCB1aW50MTZfdCAqbnVtX3N1X2Jsb2NrcykKIAkJcmV0dXJuIGZhbHNlOwog
-CiAJc3RyID0gJnN0cltzdHJsZW4oUFNSMl9TVV9CTE9DS19TVFJfTE9PS1VQKV07CisJKm51bV9z
-dV9ibG9ja3MgPSAodWludDE2X3Qpc3RydG9sKHN0ciwgJnN0cjIsIDEwKTsKKwlpZiAoKm51bV9z
-dV9ibG9ja3MgIT0gMCkKKwkJcmV0dXJuIHRydWU7CisKKwlzdHIgPSBzdHIyOworCS8qIEp1bXAg
-J1xuJycxJydcdCcgKi8KKwlzdHIgKz0gMzsKIAkqbnVtX3N1X2Jsb2NrcyA9ICh1aW50MTZfdClz
-dHJ0b2woc3RyLCBOVUxMLCAxMCk7CiAKIAlyZXR1cm4gdHJ1ZTsKLS0gCjIuMjYuMgoKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5n
-IGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVz
-a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+== Series Details ==
+
+Series: series starting with [i-g-t,1/2] tests/kms_psr2_su: Read su blocks of frame 1 if frame 0 is 0
+URL   : https://patchwork.freedesktop.org/series/77807/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8557 -> IGTPW_4626
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4626/index.html
+
+
+Changes
+-------
+
+  No changes found
+
+
+Participating hosts (50 -> 44)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5684 -> IGTPW_4626
+
+  CI-20190529: 20190529
+  CI_DRM_8557: cd02c2938ef1c5e2ca72b8240918151060dfbf92 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4626: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4626/index.html
+  IGT_5684: bd399f5eb8263bb4a84ae6a5bb1a13d329e0515d @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4626/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
