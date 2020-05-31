@@ -1,7 +1,7 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Sun, 31 May 2020 17:32:46 +0100
-Message-Id: <20200531163246.123451-1-chris@chris-wilson.co.uk>
+Date: Sun, 31 May 2020 20:13:07 +0100
+Message-Id: <20200531191307.180023-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_balancer: Disable pre-parser
  for rewritten batches
@@ -32,7 +32,7 @@ Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
  1 file changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index 026f8347e..5bd4e74fc 100644
+index 026f8347e..0e3b52900 100644
 --- a/tests/i915/gem_exec_balancer.c
 +++ b/tests/i915/gem_exec_balancer.c
 @@ -1350,6 +1350,11 @@ static void __bonded_dual(int i915,
@@ -41,7 +41,7 @@ index 026f8347e..5bd4e74fc 100644
  
 +static uint32_t preparser_disable(void)
 +{
-+	return 0x5 << 23 | 1 << 8; /* preparser masked disable */
++	return 0x5 << 23 | 1 << 8 | 1; /* preparser masked disable */
 +}
 +
  static uint32_t sync_from(int i915, uint32_t addr, uint32_t target)
