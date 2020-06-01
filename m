@@ -1,14 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 381126E203
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Jun 2020 08:45:08 +0000 (UTC)
-From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Date: Mon,  1 Jun 2020 14:10:00 +0530
-Message-Id: <20200601084000.31583-3-ankit.k.nautiyal@intel.com>
-In-Reply-To: <20200601084000.31583-1-ankit.k.nautiyal@intel.com>
-References: <20200601084000.31583-1-ankit.k.nautiyal@intel.com>
-Subject: [igt-dev] [RFC i-g-t 2/2] tests/kms_content_protection: Remove
- pre-existing SRM table before the test
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ECDA789D8D
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Jun 2020 09:14:18 +0000 (UTC)
+Date: Mon, 1 Jun 2020 12:14:14 +0300
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20200601091414.i7nc2mlwzcaeaken@ahiler-desk1.fi.intel.com>
+References: <20200307211751.22125-3-mohammed.khajapasha@intel.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200307211751.22125-3-mohammed.khajapasha@intel.com>
+Subject: Re: [igt-dev] [i-g-t,
+ 2/3] test/kms: Loop for enable pipes only in static iteration
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,64 +18,99 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: jani.nikula@intel.com, petri.latvala@intel.com, martin.peres@intel.com
+To: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-This is to check the case with missing SRM, which should be treated as
-device with no revoked keys.
+On Sun, Mar 08, 2020 at 02:47:50AM +0530, Mohammed Khajapasha wrote:
+> In non-contiguous pipes display, the static iteration of pipes
+> in test can cause iteration over disabled pipes and segmentation
+> fault in test.
+> 
+> for example, if PIPE_C,D are disabled and PIPE_A,B are enabled
+> in kernel, test case will iterate over PIPE_C,D in
+> for_each_pipe_static() even pipes C,D disabled and cause
+> segmentation fault while accessing pipes display pipes.
+> 
+> Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+> ---
+>  lib/igt_kms.h                 | 7 +++++--
+>  tests/kms_busy.c              | 2 +-
+>  tests/kms_ccs.c               | 2 +-
+>  tests/kms_color.c             | 2 +-
+>  tests/kms_color_chamelium.c   | 2 +-
+>  tests/kms_concurrent.c        | 2 +-
+>  tests/kms_cursor_crc.c        | 2 +-
+>  tests/kms_cursor_edge_walk.c  | 2 +-
+>  tests/kms_cursor_legacy.c     | 2 +-
+>  tests/kms_pipe_crc_basic.c    | 2 +-
+>  tests/kms_plane.c             | 2 +-
+>  tests/kms_plane_alpha_blend.c | 2 +-
+>  tests/kms_plane_cursor.c      | 2 +-
+>  tests/kms_plane_lowres.c      | 2 +-
+>  tests/kms_plane_multiple.c    | 2 +-
+>  tests/kms_plane_scaling.c     | 2 +-
+>  tests/kms_universal_plane.c   | 2 +-
+>  tests/kms_vblank.c            | 2 +-
+>  18 files changed, 22 insertions(+), 19 deletions(-)
+> 
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index cd3fdbc0..b534ae64 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -494,8 +494,11 @@ static inline bool igt_output_is_connected(igt_output_t *output)
+>   * This should be used to enumerate per-pipe subtests since it has no runtime
+>   * depencies.
+>   */
+> -#define for_each_pipe_static(pipe) \
+> -	for (pipe = 0; pipe < IGT_MAX_PIPES; pipe++)
+> +#define for_each_pipe_static(display, __pipe)	\
+> +	for (int p__ = (__pipe) = 0;	\
+> +			__pipe < IGT_MAX_PIPES && p__ < (display)->n_pipes; __pipe++, p__++)	\
+> +			for_each_if ((((display)->pipes[(p__)].pipe) == __pipe))
 
-Kernel patch fixing such a bug :
-https://patchwork.freedesktop.org/patch/361346/?series=75939&rev=2
+Hey,
 
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- tests/kms_content_protection.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Please pay attention to:
+"This should be used to enumerate per-pipe subtests since it has no runtime dependencies."
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index a6a64a28..832c9077 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -75,6 +75,8 @@ __u8 facsimile_srm[] = {
- 	0x83, 0xAA, 0xC2, 0x5B, 0x24, 0xB3, 0x36, 0x84, 0x94, 0x75, 0x34, 0xDB,
- 	0x10, 0x9E, 0x3B, 0x23, 0x13, 0xD8, 0x7A, 0xC2, 0x30, 0x79, 0x84};
- 
-+const char *srm_fw = "/lib/firmware/display_hdcp_srm.bin";
-+
- static void flip_handler(int fd, unsigned int sequence, unsigned int tv_sec,
- 			 unsigned int tv_usec, void *_data)
- {
-@@ -438,8 +440,7 @@ static bool write_srm_as_fw(const __u8 *srm, int len)
- {
- 	int fd, ret, total = 0;
- 
--	fd = open("/lib/firmware/display_hdcp_srm.bin",
--		  O_WRONLY | O_CREAT, S_IRWXU);
-+	fd = open(srm_fw, O_WRONLY | O_CREAT, S_IRWXU);
- 	do {
- 		ret = write(fd, srm + total, len - total);
- 		if (ret < 0)
-@@ -783,6 +784,11 @@ igt_main
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 
- 		igt_display_require(&data.display, data.drm_fd);
-+
-+		/* Remove pre-existing srm table */
-+		if (access(srm_fw, F_OK) == 0)
-+			igt_assert_f(!remove(srm_fw),
-+				     "Failed to delete previous srm table\n");
- 	}
- 
- 	for (i = 0; i < ARRAY_SIZE(hdcp_protocol); i++) {
+This applies to all the *_static enumerators.
+
+To put this in contexts:
+ 1. IGT test binary can have subtest
+ 2. subtests are listable via --list-subtests
+ 3. this should always list all possible subtests no matter the machine
+    you are running this on
+ 4. you should be able to run such tests (--run-subtest) and it should
+    skip
+
+With this change you are trying to make --list-subtests produce a
+machine-specific output.
+
+On top of this igt_display_t should be initialized in igt_fixture block
+which is not evaluated during --list-subtests, so this breaks subtest
+listing completely.
+
+https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-gpu-tools-Core.description
+https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-fixture
+
+Instead you should make sure that all the tests that go over pipes are
+using the appropriate iterators and skip for pipe letters that are not
+there.
+
+A lot of test are using this for skipping:
+  igt_skip_on(pipe >= display.n_pipes);
+
+which should be turned into something like:
+  igt_require_pipe(display, pipe);
+
 -- 
-2.17.1
-
+Cheers,
+Arek
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
