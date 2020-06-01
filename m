@@ -1,7 +1,7 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon,  1 Jun 2020 20:53:23 +0100
-Message-Id: <20200601195323.1288550-1-chris@chris-wilson.co.uk>
+Date: Mon,  1 Jun 2020 22:17:21 +0100
+Message-Id: <20200601211721.1345043-1-chris@chris-wilson.co.uk>
 In-Reply-To: <20200601190809.1174616-1-chris@chris-wilson.co.uk>
 References: <20200601190809.1174616-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
@@ -36,14 +36,14 @@ Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Cc: Ramalingam C <ramalingam.c@intel.com>
 ---
- tests/i915/gem_exec_schedule.c | 245 +++++++++++++++++++++++++++++++++
- 1 file changed, 245 insertions(+)
+ tests/i915/gem_exec_schedule.c | 253 +++++++++++++++++++++++++++++++++
+ 1 file changed, 253 insertions(+)
 
 diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-index 56c638833..5d91e94a3 100644
+index 56c638833..d58d926b1 100644
 --- a/tests/i915/gem_exec_schedule.c
 +++ b/tests/i915/gem_exec_schedule.c
-@@ -2495,6 +2495,246 @@ static void measure_semaphore_power(int i915)
+@@ -2495,6 +2495,254 @@ static void measure_semaphore_power(int i915)
  	rapl_close(&pkg);
  }
  
@@ -259,7 +259,10 @@ index 56c638833..5d91e94a3 100644
 +	result = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
 +
 +	for (int n = 2; n <= 16; n <<= 1) {
-+		int nchild = n - 1; /* odd for easy medians */
++		const int nchild = n - 1; /* odd for easy medians */
++		const int iqr_lo = nchild / 4;
++		const int iqr_hi = (3 * nchild + 3) / 4 - 1;
++		unsigned long iqr;
 +
 +		memset(result, 0, nchild * sizeof(result[0]));
 +		igt_fork(child, nchild) {
@@ -274,14 +277,19 @@ index 56c638833..5d91e94a3 100644
 +		igt_waitchildren();
 +
 +		qsort(result, nchild, sizeof(*result), ul_cmp);
-+		igt_info("%d clients, range: [%lu, %lu], median: %lu\n",
-+			 nchild, result[0], result[nchild-1], result[nchild/2]);
++		igt_info("%d clients, range: [%lu, %lu], iqr: [%lu, %lu], median: %lu\n",
++			 nchild,
++			 result[0], result[nchild - 1],
++			 result[iqr_lo], result[iqr_hi],
++			 result[nchild / 2]);
 +
-+		igt_assert(4 * result[0] > 3 * result[nchild-1]);
-+		igt_assert(3 * result[0] < 4 * result[nchild-1]);
++		/* Median within 10% of target */
++		igt_assert(10 * result[nchild / 2] > 9 * frame_ns &&
++			   9 * result[nchild / 2] < 10 * frame_ns);
 +
-+		igt_assert(4 * result[nchild/2] > 3 * frame_ns);
-+		igt_assert(3 * result[nchild/2] < 4 * frame_ns);
++		/* Variance [inter-quartile range] is less than 33% of median */
++		iqr = result[iqr_hi] - result[iqr_lo];
++		igt_assert(3 * iqr < result[nchild / 2]);
 +	}
 +
 +	munmap(result, 4096);
@@ -290,7 +298,7 @@ index 56c638833..5d91e94a3 100644
  #define test_each_engine(T, i915, e) \
  	igt_subtest_with_dynamic(T) __for_each_physical_engine(i915, e) \
  		igt_dynamic_f("%s", e->name)
-@@ -2589,6 +2829,11 @@ igt_main
+@@ -2589,6 +2837,11 @@ igt_main
  		test_each_engine_store("promotion", fd, e)
  			promotion(fd, e->flags);
  
