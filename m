@@ -1,7 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon,  1 Jun 2020 20:08:09 +0100
-Message-Id: <20200601190809.1174616-1-chris@chris-wilson.co.uk>
+Date: Mon,  1 Jun 2020 20:53:23 +0100
+Message-Id: <20200601195323.1288550-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200601190809.1174616-1-chris@chris-wilson.co.uk>
+References: <20200601190809.1174616-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_schedule: Try to spot
  unfairness
@@ -34,14 +36,14 @@ Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Cc: Ramalingam C <ramalingam.c@intel.com>
 ---
- tests/i915/gem_exec_schedule.c | 224 +++++++++++++++++++++++++++++++++
- 1 file changed, 224 insertions(+)
+ tests/i915/gem_exec_schedule.c | 245 +++++++++++++++++++++++++++++++++
+ 1 file changed, 245 insertions(+)
 
 diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-index 56c638833..0ec21bf54 100644
+index 56c638833..5d91e94a3 100644
 --- a/tests/i915/gem_exec_schedule.c
 +++ b/tests/i915/gem_exec_schedule.c
-@@ -2495,6 +2495,227 @@ static void measure_semaphore_power(int i915)
+@@ -2495,6 +2495,246 @@ static void measure_semaphore_power(int i915)
  	rapl_close(&pkg);
  }
  
@@ -183,7 +185,9 @@ index 56c638833..0ec21bf54 100644
 +		       const struct intel_execution_engine2 *e,
 +		       uint64_t frame_ns,
 +		       int timeout,
++		       unsigned int flags,
 +		       unsigned long *out)
++#define F_PACING 0x1
 +{
 +	const int batches_per_frame = 3;
 +	struct drm_i915_gem_exec_object2 prev =
@@ -192,6 +196,7 @@ index 56c638833..0ec21bf54 100644
 +		timed_create(i915, ctx, e, frame_ns / batches_per_frame);
 +	struct timespec tv = {};
 +	unsigned long count = 0;
++	int p_fence = -1, n_fence = -1;
 +
 +	igt_nsec_elapsed(&tv);
 +	igt_until_timeout(timeout) {
@@ -202,15 +207,29 @@ index 56c638833..0ec21bf54 100644
 +			.flags = e->flags,
 +		};
 +
-+		for (int n = 0; n < batches_per_frame; n++)
++		execbuf.flags |= I915_EXEC_FENCE_OUT;
++		gem_execbuf_wr(i915, &execbuf);
++		n_fence = execbuf.rsvd2 >> 32;
++		execbuf.flags &= ~I915_EXEC_FENCE_OUT;
++		for (int n = 1; n < batches_per_frame; n++)
 +			gem_execbuf(i915, &execbuf);
 +
-+		gem_sync(i915, prev.handle);
++		if (flags & F_PACING && p_fence != -1) {
++			struct pollfd pfd = {
++				.fd = p_fence,
++				.events = POLLIN,
++			};
++			poll(&pfd, 1, -1);
++		}
++		close(p_fence);
++
 +		igt_swap(prev, next);
++		igt_swap(p_fence, n_fence);
 +		count++;
 +	}
 +	gem_sync(i915, prev.handle);
 +	*out = igt_nsec_elapsed(&tv) / count;
++	close(p_fence);
 +
 +	gem_close(i915, next.handle);
 +	gem_close(i915, prev.handle);
@@ -230,7 +249,7 @@ index 56c638833..0ec21bf54 100644
 +
 +static void fairness(int i915,
 +		     const struct intel_execution_engine2 *e,
-+		     int timeout)
++		     int timeout, unsigned int flags)
 +{
 +	const int frame_ns = 16666 * 1000;
 +	unsigned long *result;
@@ -248,7 +267,7 @@ index 56c638833..0ec21bf54 100644
 +
 +
 +			fair_child(i915, ctx, e, frame_ns / nchild,
-+				   timeout, &result[child]);
++				   timeout, flags, &result[child]);
 +
 +			gem_context_destroy(i915, ctx);
 +		}
@@ -264,17 +283,21 @@ index 56c638833..0ec21bf54 100644
 +		igt_assert(4 * result[nchild/2] > 3 * frame_ns);
 +		igt_assert(3 * result[nchild/2] < 4 * frame_ns);
 +	}
++
++	munmap(result, 4096);
 +}
 +
  #define test_each_engine(T, i915, e) \
  	igt_subtest_with_dynamic(T) __for_each_physical_engine(i915, e) \
  		igt_dynamic_f("%s", e->name)
-@@ -2589,6 +2810,9 @@ igt_main
+@@ -2589,6 +2829,11 @@ igt_main
  		test_each_engine_store("promotion", fd, e)
  			promotion(fd, e->flags);
  
 +		test_each_engine_store("fairness", fd, e)
-+			fairness(fd, e, 3);
++			fairness(fd, e, 3, F_PACING);
++		test_each_engine_store("unfairness", fd, e)
++			fairness(fd, e, 3, 0);
 +
  		igt_subtest_group {
  			igt_fixture {
