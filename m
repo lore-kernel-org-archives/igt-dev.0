@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECDA789D8D
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Jun 2020 09:14:18 +0000 (UTC)
-Date: Mon, 1 Jun 2020 12:14:14 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200601091414.i7nc2mlwzcaeaken@ahiler-desk1.fi.intel.com>
-References: <20200307211751.22125-3-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200307211751.22125-3-mohammed.khajapasha@intel.com>
-Subject: Re: [igt-dev] [i-g-t,
- 2/3] test/kms: Loop for enable pipes only in static iteration
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 01 Jun 2020 09:16:44 -0000
+Message-ID: <159100300427.14891.17807159756747006118@emeril.freedesktop.org>
+References: <20200601084000.31583-1-ankit.k.nautiyal@intel.com>
+In-Reply-To: <20200601084000.31583-1-ankit.k.nautiyal@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fcontent=5Fprotection=3A_Enhancements_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,99 +14,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+To: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Sun, Mar 08, 2020 at 02:47:50AM +0530, Mohammed Khajapasha wrote:
-> In non-contiguous pipes display, the static iteration of pipes
-> in test can cause iteration over disabled pipes and segmentation
-> fault in test.
-> 
-> for example, if PIPE_C,D are disabled and PIPE_A,B are enabled
-> in kernel, test case will iterate over PIPE_C,D in
-> for_each_pipe_static() even pipes C,D disabled and cause
-> segmentation fault while accessing pipes display pipes.
-> 
-> Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-> ---
->  lib/igt_kms.h                 | 7 +++++--
->  tests/kms_busy.c              | 2 +-
->  tests/kms_ccs.c               | 2 +-
->  tests/kms_color.c             | 2 +-
->  tests/kms_color_chamelium.c   | 2 +-
->  tests/kms_concurrent.c        | 2 +-
->  tests/kms_cursor_crc.c        | 2 +-
->  tests/kms_cursor_edge_walk.c  | 2 +-
->  tests/kms_cursor_legacy.c     | 2 +-
->  tests/kms_pipe_crc_basic.c    | 2 +-
->  tests/kms_plane.c             | 2 +-
->  tests/kms_plane_alpha_blend.c | 2 +-
->  tests/kms_plane_cursor.c      | 2 +-
->  tests/kms_plane_lowres.c      | 2 +-
->  tests/kms_plane_multiple.c    | 2 +-
->  tests/kms_plane_scaling.c     | 2 +-
->  tests/kms_universal_plane.c   | 2 +-
->  tests/kms_vblank.c            | 2 +-
->  18 files changed, 22 insertions(+), 19 deletions(-)
-> 
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index cd3fdbc0..b534ae64 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -494,8 +494,11 @@ static inline bool igt_output_is_connected(igt_output_t *output)
->   * This should be used to enumerate per-pipe subtests since it has no runtime
->   * depencies.
->   */
-> -#define for_each_pipe_static(pipe) \
-> -	for (pipe = 0; pipe < IGT_MAX_PIPES; pipe++)
-> +#define for_each_pipe_static(display, __pipe)	\
-> +	for (int p__ = (__pipe) = 0;	\
-> +			__pipe < IGT_MAX_PIPES && p__ < (display)->n_pipes; __pipe++, p__++)	\
-> +			for_each_if ((((display)->pipes[(p__)].pipe) == __pipe))
+== Series Details ==
 
-Hey,
+Series: tests/kms_content_protection: Enhancements (rev2)
+URL   : https://patchwork.freedesktop.org/series/77694/
+State : success
 
-Please pay attention to:
-"This should be used to enumerate per-pipe subtests since it has no runtime dependencies."
+== Summary ==
 
-This applies to all the *_static enumerators.
+CI Bug Log - changes from CI_DRM_8560 -> IGTPW_4629
+====================================================
 
-To put this in contexts:
- 1. IGT test binary can have subtest
- 2. subtests are listable via --list-subtests
- 3. this should always list all possible subtests no matter the machine
-    you are running this on
- 4. you should be able to run such tests (--run-subtest) and it should
-    skip
+Summary
+-------
 
-With this change you are trying to make --list-subtests produce a
-machine-specific output.
+  **SUCCESS**
 
-On top of this igt_display_t should be initialized in igt_fixture block
-which is not evaluated during --list-subtests, so this breaks subtest
-listing completely.
+  No regressions found.
 
-https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-gpu-tools-Core.description
-https://drm.pages.freedesktop.org/igt-gpu-tools/igt-gpu-tools-Core.html#igt-fixture
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4629/index.html
 
-Instead you should make sure that all the tests that go over pipes are
-using the appropriate iterators and skip for pipe letters that are not
-there.
+Possible new issues
+-------------------
 
-A lot of test are using this for skipping:
-  igt_skip_on(pipe >= display.n_pipes);
+  Here are the unknown changes that may have been introduced in IGTPW_4629:
 
-which should be turned into something like:
-  igt_require_pipe(display, pipe);
+### IGT changes ###
 
--- 
-Cheers,
-Arek
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@kms_pipe_crc_basic@hang-read-crc-pipe-a:
+    - {fi-tgl-u}:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8560/fi-tgl-u/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4629/fi-tgl-u/igt@kms_pipe_crc_basic@hang-read-crc-pipe-a.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+
+
+Participating hosts (50 -> 44)
+------------------------------
+
+  Additional (1): fi-ehl-1 
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5687 -> IGTPW_4629
+
+  CI-20190529: 20190529
+  CI_DRM_8560: 02fe287fdb4a3d6bceb1bb61b3c8538b4b941b3c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4629: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4629/index.html
+  IGT_5687: 668a5be752186b6e08f361bac34da37309d08393 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@kms_content_protection@hdcp-1_4
++igt@kms_content_protection@hdcp-2_2
+-igt@kms_content_protection@atomic
+-igt@kms_content_protection@atomic-dpms
+-igt@kms_content_protection@content_type_change
+-igt@kms_content_protection@legacy
+-igt@kms_content_protection@lic
+-igt@kms_content_protection@mei_interface
+-igt@kms_content_protection@srm
+-igt@kms_content_protection@type1
+-igt@kms_content_protection@uevent
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4629/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
