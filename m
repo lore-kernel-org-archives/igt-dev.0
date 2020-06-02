@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 837038997C
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2020 10:19:25 +0000 (UTC)
+From: Petri Latvala <petri.latvala@intel.com>
+Date: Tue,  2 Jun 2020 13:19:16 +0300
+Message-Id: <20200602101916.30459-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 02 Jun 2020 09:41:10 -0000
-Message-ID: <159109087085.21428.6976673430642721659@emeril.freedesktop.org>
-References: <20200602085454.22812-1-dominik.grzegorzek@intel.com>
-In-Reply-To: <20200602085454.22812-1-dominik.grzegorzek@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fspin=5Fbatch=3A_Remove_unncessary_non-preemptible_workload?=
+Subject: [igt-dev] [PATCH i-g-t] runner: Adapt to device-based DRM logging
+ changes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,62 +15,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Jani Nikula <jani.nikula@intel.com>, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+DRM logging in the kernel has switched to device based logging,
+changing the pattern of logging from
 
-Series: i915/gem_spin_batch: Remove unncessary non-preemptible workload
-URL   : https://patchwork.freedesktop.org/series/77903/
-State : success
+[drm:function_name] Message
 
-== Summary ==
+to
 
-CI Bug Log - changes from CI_DRM_8568 -> IGTPW_4637
-====================================================
+i915 0000:00:02.0: [drm] Message
 
-Summary
--------
+Change the pattern we use with --piglit-style-dmesg to match the new
+style logging, catching all warnings that contain [drm]. We're no
+longer result-wise exactly piglit compatible but then again that ship
+sailed long time ago with the change of introducing dmesg-level
+parameter. Piglit compatibility result-wise is not a goal regardless.
 
-  **SUCCESS**
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+---
 
-  No regressions found.
+For the record: This won't be merged without making sure cibuglog
+filtering is up to date.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4637/index.html
+ runner/resultgen.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/runner/resultgen.c b/runner/resultgen.c
+index 17147a8f..add4aad5 100644
+--- a/runner/resultgen.c
++++ b/runner/resultgen.c
+@@ -808,7 +808,7 @@ static const char igt_dmesg_whitelist[] =
+ #undef _
+ 
+ static const char igt_piglit_style_dmesg_blacklist[] =
+-	"(\\[drm:|drm_|intel_|i915_)";
++	"(\\[drm:|drm_|intel_|i915_|\\[drm\\])";
+ 
+ static bool init_regex_whitelist(struct settings* settings, GRegex **re)
+ {
+-- 
+2.20.1
 
-Changes
--------
-
-  No changes found
-
-
-Participating hosts (51 -> 44)
-------------------------------
-
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-kbl-7560u fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5690 -> IGTPW_4637
-
-  CI-20190529: 20190529
-  CI_DRM_8568: 124bafc80c3ce62fc61b8eabb2657c87424b999b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4637: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4637/index.html
-  IGT_5690: bea881189520a9cccbb1c1cb454ac5b6fdaea40e @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4637/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
