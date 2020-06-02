@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B89D989842
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2020 11:14:28 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7863C89B18
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2020 11:14:04 +0000 (UTC)
 From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Date: Tue, 2 Jun 2020 14:13:29 +0300
-Message-ID: <20200602111330.910039-3-arkadiusz.hiler@intel.com>
+Date: Tue, 2 Jun 2020 14:13:28 +0300
+Message-ID: <20200602111330.910039-2-arkadiusz.hiler@intel.com>
 In-Reply-To: <20200602111330.910039-1-arkadiusz.hiler@intel.com>
 References: <20200602111330.910039-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/4] lib/igt_device_scan: Add extra helpers
- for intel_gpu_top
+Subject: [igt-dev] [PATCH i-g-t 2/4] lib/igt_device_scan: Make
+ igt_device_scan independent from igt_core
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,200 +17,112 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-
-Will be used in the next patch.
-
-1. set_pci_slot_name(): stores PCI_SLOT_NAME from prop to device
-2. igt_device_find_first_discrete_card(): try to find first discrete GPU
-3. igt_devices_free(): Free device buffers created during scan
-
-Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
----
- lib/igt_device_scan.c | 80 ++++++++++++++++++++++++++++++++++++-------
- lib/igt_device_scan.h |  7 +++-
- 2 files changed, 74 insertions(+), 13 deletions(-)
-
-diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-index d4c5cfdf..12fbd241 100644
---- a/lib/igt_device_scan.c
-+++ b/lib/igt_device_scan.c
-@@ -165,6 +165,7 @@ struct igt_device {
- 	/* For pci subsystem */
- 	char *vendor;
- 	char *device;
-+	char *pci_slot_name;
- 
- 	struct igt_list_head link;
- };
-@@ -338,7 +339,21 @@ static void get_attrs(struct udev_device *dev, struct igt_device *idev)
- #define is_drm_subsystem(dev)  (strequal(get_prop_subsystem(dev), "drm"))
- #define is_pci_subsystem(dev)  (strequal(get_prop_subsystem(dev), "pci"))
- 
--/* Gets PCI_ID property, splits to xxxx:yyyy and stores
-+/*
-+ * Get PCI_SLOT_NAME property, it should be in format of
-+ * xxxx:yy:zz.z
-+ */
-+static void set_pci_slot_name(struct igt_device *dev)
-+{
-+	const char *pci_slot_name = get_prop(dev, "PCI_SLOT_NAME");
-+
-+	if (!pci_slot_name || (strlen(pci_slot_name) != PCI_SLOT_NAME_SIZE))
-+		return;
-+	dev->pci_slot_name = strdup(pci_slot_name);
-+}
-+
-+/*
-+ * Gets PCI_ID property, splits to xxxx:yyyy and stores
-  * xxxx to dev->vendor and yyyy to dev->device for
-  * faster access.
-  */
-@@ -411,6 +426,45 @@ static struct igt_device *igt_device_find(const char *subsystem,
- 	return NULL;
- }
- 
-+static void
-+__copy_dev_to_card(struct igt_device *dev, struct igt_device_card *card)
-+{
-+	if (dev->subsystem != NULL)
-+		strncpy(card->subsystem, dev->subsystem,
-+			sizeof(card->subsystem) - 1);
-+
-+	if (dev->drm_card != NULL)
-+		strncpy(card->card, dev->drm_card, sizeof(card->card) - 1);
-+
-+	if (dev->drm_render != NULL)
-+		strncpy(card->render, dev->drm_render,
-+			sizeof(card->render) - 1);
-+
-+	if (dev->pci_slot_name != NULL)
-+		strncpy(card->pci_slot_name, dev->pci_slot_name,
-+			PCI_SLOT_NAME_SIZE + 1);
-+}
-+
-+/*
-+ * Iterate over all igt_devices array and find first discrete card.
-+ * card->pci_slot_name will be updated only if a discrete card is present.
-+ */
-+void igt_device_find_first_discrete_card(struct igt_device_card *card)
-+{
-+	struct igt_device *dev;
-+
-+	igt_list_for_each_entry(dev, &igt_devs.all, link) {
-+
-+		if (!is_pci_subsystem(dev))
-+			continue;
-+
-+		if ((strncmp(dev->pci_slot_name, INTEGRATED_GPU_PCI_ID, PCI_SLOT_NAME_SIZE)) != 0) {
-+			__copy_dev_to_card(dev, card);
-+			break;
-+		}
-+	}
-+}
-+
- static struct igt_device *igt_device_from_syspath(const char *syspath)
- {
- 	struct igt_device *dev;
-@@ -446,6 +500,7 @@ static void update_or_add_parent(struct udev_device *dev,
- 		parent_idev = igt_device_new_from_udev(parent_dev);
- 		if (is_pci_subsystem(parent_idev)) {
- 			set_vendor_device(parent_idev);
-+			set_pci_slot_name(parent_idev);
- 		}
- 		igt_list_add_tail(&parent_idev->link, &igt_devs.all);
- 	}
-@@ -574,10 +629,21 @@ static void igt_device_free(struct igt_device *dev)
- 	free(dev->drm_render);
- 	free(dev->vendor);
- 	free(dev->device);
-+	free(dev->pci_slot_name);
- 	g_hash_table_destroy(dev->attrs_ht);
- 	g_hash_table_destroy(dev->props_ht);
- }
- 
-+void igt_devices_free(void)
-+{
-+	struct igt_device *dev, *tmp;
-+
-+	igt_list_for_each_entry_safe(dev, tmp, &igt_devs.all, link) {
-+		igt_device_free(dev);
-+		free(dev);
-+	}
-+}
-+
- /**
-  * igt_devices_scan
-  * @force: enforce scanning devices
-@@ -1197,17 +1263,7 @@ bool igt_device_card_match(const char *filter, struct igt_device_card *card)
- 	/* We take first one if more than one card matches filter */
- 	dev = igt_list_first_entry(&igt_devs.filtered, dev, link);
- 
--	if (dev->subsystem != NULL)
--		strncpy(card->subsystem, dev->subsystem,
--			     sizeof(card->subsystem) - 1);
--
--	if (dev->drm_card != NULL)
--		strncpy(card->card, dev->drm_card,
--			     sizeof(card->card) - 1);
--
--	if (dev->drm_render != NULL)
--		strncpy(card->render, dev->drm_render,
--			     sizeof(card->render) - 1);
-+	__copy_dev_to_card(dev, card);
- 
- 	return true;
- }
-diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
-index 3526f1da..2e73ecb7 100644
---- a/lib/igt_device_scan.h
-+++ b/lib/igt_device_scan.h
-@@ -39,10 +39,13 @@ enum igt_devices_print_type {
- 	IGT_PRINT_DETAIL,
- };
- 
-+#define INTEGRATED_GPU_PCI_ID "0000:00:02.0"
-+#define PCI_SLOT_NAME_SIZE 12
- struct igt_device_card {
- 	char subsystem[NAME_MAX];
- 	char card[NAME_MAX];
- 	char render[NAME_MAX];
-+	char pci_slot_name[PCI_SLOT_NAME_SIZE+1];
- };
- 
- void igt_devices_scan(bool force);
-@@ -51,6 +54,8 @@ void igt_devices_print(enum igt_devices_print_type printtype);
- void igt_devices_print_vendors(void);
- void igt_device_print_filter_types(void);
- 
-+void igt_devices_free(void);
-+
- /*
-  * Handle device filter collection array.
-  * IGT can store/retrieve filters passed by user using '--device' args.
-@@ -63,7 +68,7 @@ const char *igt_device_filter_get(int num);
- 
- /* Use filter to match the device and fill card structure */
- bool igt_device_card_match(const char *filter, struct igt_device_card *card);
--
-+void igt_device_find_first_discrete_card(struct igt_device_card *card);
- int igt_open_card(struct igt_device_card *card);
- int igt_open_render(struct igt_device_card *card);
- 
--- 
-2.25.4
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RnJvbTogQXlheiBBIFNpZGRpcXVpIDxheWF6LnNpZGRpcXVpQGludGVsLmNvbT4KCmlndF9kZXZp
+Y2Vfc2NhbiBjYW4gbm93IGJlIHVzZWQgYXMgYSBzZXBhcmF0ZSBsaWJyYXJ5IHdoaWNoIG9ubHkg
+ZGVwZW5kcwpnbGliIGFuZCBsaWJ1ZGV2IC0gc29tZSBJR1QgaW50ZXJuYWxzIGFyZSBiZWluZyBz
+dHViYmVkIGluIHRoaXMgY2FzZS4KCnYyOiAobW9zdGx5KSBzb3J0IGluY2x1ZGVzIChMdWNhcykK
+CkNjOiBMdWNhcyBEZSBNYXJjaGkgPGx1Y2FzLmRlLm1hcmNoaUBnbWFpbC5jb20+ClNpZ25lZC1v
+ZmYtYnk6IEF5YXogQSBTaWRkaXF1aSA8YXlhei5zaWRkaXF1aUBpbnRlbC5jb20+ClNpZ25lZC1v
+ZmYtYnk6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6LmhpbGVyQGludGVsLmNvbT4KLS0tCiBs
+aWIvTWFrZWZpbGUuYW0gICAgICAgfCAgOCArKysrKystCiBsaWIvZHJtdGVzdC5jICAgICAgICAg
+fCAgMSArCiBsaWIvaWd0X2RldmljZV9zY2FuLmMgfCAxMSArKysrKy0tLS0tCiBsaWIvaWd0X2Rl
+dmljZV9zY2FuLmggfCAgOCArKysrKystCiBsaWIvaWd0X3Rvb2xzX3N0dWIuYyAgfCA1MSArKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrCiBsaWIvbWVzb24uYnVpbGQg
+ICAgICAgfCAxNSArKysrKysrKysrKysrCiA2IGZpbGVzIGNoYW5nZWQsIDg2IGluc2VydGlvbnMo
+KyksIDggZGVsZXRpb25zKC0pCiBjcmVhdGUgbW9kZSAxMDA2NDQgbGliL2lndF90b29sc19zdHVi
+LmMKCmRpZmYgLS1naXQgYS9saWIvTWFrZWZpbGUuYW0gYi9saWIvTWFrZWZpbGUuYW0KaW5kZXgg
+ZmJhN2ZjYWIuLmU5NzUzZDNjIDEwMDY0NAotLS0gYS9saWIvTWFrZWZpbGUuYW0KKysrIGIvbGli
+L01ha2VmaWxlLmFtCkBAIC0xMDIsNiArMTAyLDEyIEBAIGluY2x1ZGUgTWFrZWZpbGUuc291cmNl
+cwogCiBsaWJpbnRlbF90b29sc19sYV9TT1VSQ0VTID0gJChsaWJfc291cmNlX2xpc3QpCiAKK2xp
+YmlndF9kZXZpY2Vfc2Nhbl9sYV9TT1VSQ0VTID0gXAorCWlndF9saXN0LmMJCVwKKwlpZ3RfdG9v
+bHNfc3R1Yi5jCVwKKwlpZ3RfZGV2aWNlX3NjYW4uYwlcCisJaWd0X2RldmljZV9zY2FuLmgKKwog
+bGliaWd0X3BlcmZfbGFfU09VUkNFUyA9IFwKIAlpZ3RfcGVyZi5jCSBcCiAJaWd0X3BlcmYuaApA
+QCAtMTIxLDcgKzEyNyw3IEBAIHBrZ2NvbmZpZ19EQVRBID0gaTkxNS1wZXJmLnBjCiAKIGxpYl9M
+VExJQlJBUklFUyA9IGxpYmk5MTVfcGVyZi5sYQogCi1ub2luc3RfTFRMSUJSQVJJRVMgPSBsaWJp
+bnRlbF90b29scy5sYSBsaWJpZ3RfcGVyZi5sYQorbm9pbnN0X0xUTElCUkFSSUVTID0gbGliaW50
+ZWxfdG9vbHMubGEgbGliaWd0X3BlcmYubGEgbGliaWd0X2RldmljZV9zY2FuLmxhCiBub2luc3Rf
+SEVBREVSUyA9IGNoZWNrLW5kZWJ1Zy5oCiAKIGlmICFIQVZFX0xJQkRSTV9JTlRFTApkaWZmIC0t
+Z2l0IGEvbGliL2RybXRlc3QuYyBiL2xpYi9kcm10ZXN0LmMKaW5kZXggNzBmZDY0YzkuLmU0ZTcx
+MGQ0IDEwMDY0NAotLS0gYS9saWIvZHJtdGVzdC5jCisrKyBiL2xpYi9kcm10ZXN0LmMKQEAgLTU1
+LDYgKzU1LDcgQEAKICNpbmNsdWRlICJpZ3RfZGV2aWNlLmgiCiAjaW5jbHVkZSAiaWd0X2d0Lmgi
+CiAjaW5jbHVkZSAiaWd0X2ttb2QuaCIKKyNpbmNsdWRlICJpZ3RfcGFyYW1zLmgiCiAjaW5jbHVk
+ZSAiaWd0X3N5c2ZzLmgiCiAjaW5jbHVkZSAiaWd0X2RldmljZV9zY2FuLmgiCiAjaW5jbHVkZSAi
+dmVyc2lvbi5oIgpkaWZmIC0tZ2l0IGEvbGliL2lndF9kZXZpY2Vfc2Nhbi5jIGIvbGliL2lndF9k
+ZXZpY2Vfc2Nhbi5jCmluZGV4IDdiMGZjMDBlLi5kNGM1Y2ZkZiAxMDA2NDQKLS0tIGEvbGliL2ln
+dF9kZXZpY2Vfc2Nhbi5jCisrKyBiL2xpYi9pZ3RfZGV2aWNlX3NjYW4uYwpAQCAtMjIsMTggKzIy
+LDE3IEBACiAgKgogICovCiAKLSNpbmNsdWRlICJpZ3QuaCIKLSNpbmNsdWRlICJpZ3RfbGlzdC5o
+IgotI2luY2x1ZGUgImlndF9zeXNmcy5oIgotI2luY2x1ZGUgImlndF9kZXZpY2UuaCIKKyNpbmNs
+dWRlICJpZ3RfY29yZS5oIgogI2luY2x1ZGUgImlndF9kZXZpY2Vfc2Nhbi5oIgorI2luY2x1ZGUg
+ImlndF9saXN0LmgiCisKKyNpbmNsdWRlIDxkaXJlbnQuaD4KKyNpbmNsdWRlIDxmY250bC5oPgog
+I2luY2x1ZGUgPGdsaWIuaD4KICNpbmNsdWRlIDxsaWJ1ZGV2Lmg+CiAjaW5jbHVkZSA8bGludXgv
+bGltaXRzLmg+CiAjaW5jbHVkZSA8c3lzL3N0YXQuaD4KICNpbmNsdWRlIDxzeXMvdHlwZXMuaD4K
+LSNpbmNsdWRlIDxkaXJlbnQuaD4KLSNpbmNsdWRlIDxmY250bC5oPgogCiAvKioKICAqIFNFQ1RJ
+T046aWd0X2RldmljZV9zY2FuCmRpZmYgLS1naXQgYS9saWIvaWd0X2RldmljZV9zY2FuLmggYi9s
+aWIvaWd0X2RldmljZV9zY2FuLmgKaW5kZXggMjRlYWZlNjIuLjM1MjZmMWRhIDEwMDY0NAotLS0g
+YS9saWIvaWd0X2RldmljZV9zY2FuLmgKKysrIGIvbGliL2lndF9kZXZpY2Vfc2Nhbi5oCkBAIC0y
+NSw4ICsyNSwxNCBAQAogI2lmbmRlZiBfX0lHVF9ERVZJQ0VfU0NBTl9IX18KICNkZWZpbmUgX19J
+R1RfREVWSUNFX1NDQU5fSF9fCiAKKyNpbmNsdWRlIDxlcnJuby5oPgorI2luY2x1ZGUgPGZjbnRs
+Lmg+CisjaW5jbHVkZSA8Z2V0b3B0Lmg+CiAjaW5jbHVkZSA8bGltaXRzLmg+Ci0jaW5jbHVkZSA8
+aWd0Lmg+CisjaW5jbHVkZSA8c3RkYm9vbC5oPgorI2luY2x1ZGUgPHN0ZGludC5oPgorI2luY2x1
+ZGUgPHN0ZGlvLmg+CisjaW5jbHVkZSA8dW5pc3RkLmg+CiAKIGVudW0gaWd0X2RldmljZXNfcHJp
+bnRfdHlwZSB7CiAJSUdUX1BSSU5UX1NJTVBMRSwKZGlmZiAtLWdpdCBhL2xpYi9pZ3RfdG9vbHNf
+c3R1Yi5jIGIvbGliL2lndF90b29sc19zdHViLmMKbmV3IGZpbGUgbW9kZSAxMDA2NDQKaW5kZXgg
+MDAwMDAwMDAuLjlhMGVjNjIxCi0tLSAvZGV2L251bGwKKysrIGIvbGliL2lndF90b29sc19zdHVi
+LmMKQEAgLTAsMCArMSw1MSBAQAorLyoKKyAqIENvcHlyaWdodCDCqSAyMDIwIEludGVsIENvcnBv
+cmF0aW9uCisgKgorICogUGVybWlzc2lvbiBpcyBoZXJlYnkgZ3JhbnRlZCwgZnJlZSBvZiBjaGFy
+Z2UsIHRvIGFueSBwZXJzb24gb2J0YWluaW5nIGEKKyAqIGNvcHkgb2YgdGhpcyBzb2Z0d2FyZSBh
+bmQgYXNzb2NpYXRlZCBkb2N1bWVudGF0aW9uIGZpbGVzICh0aGUgIlNvZnR3YXJlIiksCisgKiB0
+byBkZWFsIGluIHRoZSBTb2Z0d2FyZSB3aXRob3V0IHJlc3RyaWN0aW9uLCBpbmNsdWRpbmcgd2l0
+aG91dCBsaW1pdGF0aW9uCisgKiB0aGUgcmlnaHRzIHRvIHVzZSwgY29weSwgbW9kaWZ5LCBtZXJn
+ZSwgcHVibGlzaCwgZGlzdHJpYnV0ZSwgc3VibGljZW5zZSwKKyAqIGFuZC9vciBzZWxsIGNvcGll
+cyBvZiB0aGUgU29mdHdhcmUsIGFuZCB0byBwZXJtaXQgcGVyc29ucyB0byB3aG9tIHRoZQorICog
+U29mdHdhcmUgaXMgZnVybmlzaGVkIHRvIGRvIHNvLCBzdWJqZWN0IHRvIHRoZSBmb2xsb3dpbmcg
+Y29uZGl0aW9uczoKKyAqCisgKiBUaGUgYWJvdmUgY29weXJpZ2h0IG5vdGljZSBhbmQgdGhpcyBw
+ZXJtaXNzaW9uIG5vdGljZSAoaW5jbHVkaW5nIHRoZSBuZXh0CisgKiBwYXJhZ3JhcGgpIHNoYWxs
+IGJlIGluY2x1ZGVkIGluIGFsbCBjb3BpZXMgb3Igc3Vic3RhbnRpYWwgcG9ydGlvbnMgb2YgdGhl
+CisgKiBTb2Z0d2FyZS4KKyAqCisgKiBUSEUgU09GVFdBUkUgSVMgUFJPVklERUQgIkFTIElTIiwg
+V0lUSE9VVCBXQVJSQU5UWSBPRiBBTlkgS0lORCwgRVhQUkVTUyBPUgorICogSU1QTElFRCwgSU5D
+TFVESU5HIEJVVCBOT1QgTElNSVRFRCBUTyBUSEUgV0FSUkFOVElFUyBPRiBNRVJDSEFOVEFCSUxJ
+VFksCisgKiBGSVRORVNTIEZPUiBBIFBBUlRJQ1VMQVIgUFVSUE9TRSBBTkQgTk9OSU5GUklOR0VN
+RU5ULiAgSU4gTk8gRVZFTlQgU0hBTEwKKyAqIFRIRSBBVVRIT1JTIE9SIENPUFlSSUdIVCBIT0xE
+RVJTIEJFIExJQUJMRSBGT1IgQU5ZIENMQUlNLCBEQU1BR0VTIE9SIE9USEVSCisgKiBMSUFCSUxJ
+VFksIFdIRVRIRVIgSU4gQU4gQUNUSU9OIE9GIENPTlRSQUNULCBUT1JUIE9SIE9USEVSV0lTRSwg
+QVJJU0lORworICogRlJPTSwgT1VUIE9GIE9SIElOIENPTk5FQ1RJT04gV0lUSCBUSEUgU09GVFdB
+UkUgT1IgVEhFIFVTRSBPUiBPVEhFUiBERUFMSU5HUworICogSU4gVEhFIFNPRlRXQVJFLgorICoK
+KyAqLworI2luY2x1ZGUgImlndF9jb3JlLmgiCisKKy8qIFN0dWIgZm9yIGlndF9sb2csIHRoaXMg
+c3R1YiB3aWxsIHNpbXBseSBwcmludCB0aGUgbXNnIG9uIHN0ZGVyciBkZXZpY2UuCisgKiBEb21h
+aW4gYW5kIGxvZyBsZXZlbCBhcmUgaWdub3JlZC4KKyAqLworCit2b2lkIGlndF9sb2coY29uc3Qg
+Y2hhciAqZG9tYWluLCBlbnVtIGlndF9sb2dfbGV2ZWwgbGV2ZWwsIGNvbnN0IGNoYXIgKmZvcm1h
+dCwgLi4uKQoreworCXZhX2xpc3QgYXJnczsKKworCXZhX3N0YXJ0KGFyZ3MsIGZvcm1hdCk7CisJ
+dmZwcmludGYoc3RkZXJyLCBmb3JtYXQsIGFyZ3MpOworCXZhX2VuZChhcmdzKTsKK30KKworCisv
+KiBTdHViIGZvciBfX2lndF9mYWlsX2Fzc2VydCwgdGhpcyBzdHViIHdpbGwgc2ltcGx5IHByaW50
+IHRoZSBtc2cgb24gc3RkZXJyIGRldmljZSBhbmQKKyAqIGV4aXQgdGhlIGFwcGxpY2F0aW9uLCBk
+b21haW4gYW5kIGxvZyBsZXZlbCBhcmUgaWdub3JlZC4KKyAqLworCit2b2lkIF9faWd0X2ZhaWxf
+YXNzZXJ0KGNvbnN0IGNoYXIgKmRvbWFpbiwgY29uc3QgY2hhciAqZmlsZSwKKwkJICAgICAgIGNv
+bnN0IGludCBsaW5lLCBjb25zdCBjaGFyICpmdW5jLCBjb25zdCBjaGFyICphc3NlcnRpb24sCisJ
+CSAgICAgICBjb25zdCBjaGFyICpmb3JtYXQsIC4uLikKK3sKKwlmcHJpbnRmKHN0ZGVyciwgIiVz
+OiAlZCAlcyBGYWlsZWQgYXNzZXJ0aW9uOiAlc1xuIiwgZmlsZSwgbGluZSwKKwkJZnVuYywgYXNz
+ZXJ0aW9uKTsKKwlleGl0KDEpOworfQpkaWZmIC0tZ2l0IGEvbGliL21lc29uLmJ1aWxkIGIvbGli
+L21lc29uLmJ1aWxkCmluZGV4IDk5YWVlNmVlLi42Y2Y3ODY2MyAxMDA2NDQKLS0tIGEvbGliL21l
+c29uLmJ1aWxkCisrKyBiL2xpYi9tZXNvbi5idWlsZApAQCAtMTcyLDYgKzE3MiwyMSBAQCBsaWJf
+aWd0X3BlcmZfYnVpbGQgPSBzdGF0aWNfbGlicmFyeSgnaWd0X3BlcmYnLAogbGliX2lndF9wZXJm
+ID0gZGVjbGFyZV9kZXBlbmRlbmN5KGxpbmtfd2l0aCA6IGxpYl9pZ3RfcGVyZl9idWlsZCwKIAkJ
+CQkgIGluY2x1ZGVfZGlyZWN0b3JpZXMgOiBpbmMpCiAKK3NjYW5fZGVwID0gWworCWdsaWIsCisJ
+bGlidWRldiwKK10KKworbGliX2lndF9kZXZpY2Vfc2Nhbl9idWlsZCA9IHN0YXRpY19saWJyYXJ5
+KCdpZ3RfZGV2aWNlX3NjYW4nLAorCVsnaWd0X2RldmljZV9zY2FuLmMnLAorCSdpZ3RfbGlzdC5j
+JywKKwknaWd0X3Rvb2xzX3N0dWIuYycsCisJXSwKKwlkZXBlbmRlbmNpZXMgOiBzY2FuX2RlcCwK
+KwlpbmNsdWRlX2RpcmVjdG9yaWVzIDogaW5jKQorCitsaWJfaWd0X2RldmljZV9zY2FuID0gZGVj
+bGFyZV9kZXBlbmRlbmN5KGxpbmtfd2l0aCA6IGxpYl9pZ3RfZGV2aWNlX3NjYW5fYnVpbGQsCisJ
+CQkJICBpbmNsdWRlX2RpcmVjdG9yaWVzIDogaW5jKQogCiBpOTE1X3BlcmZfZmlsZXMgPSBbCiAg
+ICdpZ3RfbGlzdC5jJywKLS0gCjIuMjUuNAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVl
+ZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5m
+by9pZ3QtZGV2Cg==
