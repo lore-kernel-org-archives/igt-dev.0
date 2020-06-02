@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3E026E12F
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2020 10:52:17 +0000 (UTC)
-From: Jani Nikula <jani.nikula@intel.com>
-In-Reply-To: <20200602101916.30459-1-petri.latvala@intel.com>
-References: <20200602101916.30459-1-petri.latvala@intel.com>
-Date: Tue, 02 Jun 2020 13:52:12 +0300
-Message-ID: <877dwp210j.fsf@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B89D989842
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2020 11:14:28 +0000 (UTC)
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Date: Tue, 2 Jun 2020 14:13:29 +0300
+Message-ID: <20200602111330.910039-3-arkadiusz.hiler@intel.com>
+In-Reply-To: <20200602111330.910039-1-arkadiusz.hiler@intel.com>
+References: <20200602111330.910039-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] runner: Adapt to device-based DRM
- logging changes
+Subject: [igt-dev] [PATCH i-g-t 3/4] lib/igt_device_scan: Add extra helpers
+ for intel_gpu_top
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,57 +21,195 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>, Petri Latvala <petri.latvala@intel.com>, Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 02 Jun 2020, Petri Latvala <petri.latvala@intel.com> wrote:
-> DRM logging in the kernel has switched to device based logging,
-> changing the pattern of logging from
->
-> [drm:function_name] Message
->
-> to
->
-> i915 0000:00:02.0: [drm] Message
->
-> Change the pattern we use with --piglit-style-dmesg to match the new
-> style logging, catching all warnings that contain [drm]. We're no
-> longer result-wise exactly piglit compatible but then again that ship
-> sailed long time ago with the change of introducing dmesg-level
-> parameter. Piglit compatibility result-wise is not a goal regardless.
->
-> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> Cc: Jani Nikula <jani.nikula@intel.com>
+From: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
 
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Will be used in the next patch.
 
+1. set_pci_slot_name(): stores PCI_SLOT_NAME from prop to device
+2. igt_device_find_first_discrete_card(): try to find first discrete GPU
+3. igt_devices_free(): Free device buffers created during scan
 
-> ---
->
-> For the record: This won't be merged without making sure cibuglog
-> filtering is up to date.
->
->  runner/resultgen.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/runner/resultgen.c b/runner/resultgen.c
-> index 17147a8f..add4aad5 100644
-> --- a/runner/resultgen.c
-> +++ b/runner/resultgen.c
-> @@ -808,7 +808,7 @@ static const char igt_dmesg_whitelist[] =
->  #undef _
->  
->  static const char igt_piglit_style_dmesg_blacklist[] =
-> -	"(\\[drm:|drm_|intel_|i915_)";
-> +	"(\\[drm:|drm_|intel_|i915_|\\[drm\\])";
->  
->  static bool init_regex_whitelist(struct settings* settings, GRegex **re)
->  {
+Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+---
+ lib/igt_device_scan.c | 80 ++++++++++++++++++++++++++++++++++++-------
+ lib/igt_device_scan.h |  7 +++-
+ 2 files changed, 74 insertions(+), 13 deletions(-)
 
+diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+index d4c5cfdf..12fbd241 100644
+--- a/lib/igt_device_scan.c
++++ b/lib/igt_device_scan.c
+@@ -165,6 +165,7 @@ struct igt_device {
+ 	/* For pci subsystem */
+ 	char *vendor;
+ 	char *device;
++	char *pci_slot_name;
+ 
+ 	struct igt_list_head link;
+ };
+@@ -338,7 +339,21 @@ static void get_attrs(struct udev_device *dev, struct igt_device *idev)
+ #define is_drm_subsystem(dev)  (strequal(get_prop_subsystem(dev), "drm"))
+ #define is_pci_subsystem(dev)  (strequal(get_prop_subsystem(dev), "pci"))
+ 
+-/* Gets PCI_ID property, splits to xxxx:yyyy and stores
++/*
++ * Get PCI_SLOT_NAME property, it should be in format of
++ * xxxx:yy:zz.z
++ */
++static void set_pci_slot_name(struct igt_device *dev)
++{
++	const char *pci_slot_name = get_prop(dev, "PCI_SLOT_NAME");
++
++	if (!pci_slot_name || (strlen(pci_slot_name) != PCI_SLOT_NAME_SIZE))
++		return;
++	dev->pci_slot_name = strdup(pci_slot_name);
++}
++
++/*
++ * Gets PCI_ID property, splits to xxxx:yyyy and stores
+  * xxxx to dev->vendor and yyyy to dev->device for
+  * faster access.
+  */
+@@ -411,6 +426,45 @@ static struct igt_device *igt_device_find(const char *subsystem,
+ 	return NULL;
+ }
+ 
++static void
++__copy_dev_to_card(struct igt_device *dev, struct igt_device_card *card)
++{
++	if (dev->subsystem != NULL)
++		strncpy(card->subsystem, dev->subsystem,
++			sizeof(card->subsystem) - 1);
++
++	if (dev->drm_card != NULL)
++		strncpy(card->card, dev->drm_card, sizeof(card->card) - 1);
++
++	if (dev->drm_render != NULL)
++		strncpy(card->render, dev->drm_render,
++			sizeof(card->render) - 1);
++
++	if (dev->pci_slot_name != NULL)
++		strncpy(card->pci_slot_name, dev->pci_slot_name,
++			PCI_SLOT_NAME_SIZE + 1);
++}
++
++/*
++ * Iterate over all igt_devices array and find first discrete card.
++ * card->pci_slot_name will be updated only if a discrete card is present.
++ */
++void igt_device_find_first_discrete_card(struct igt_device_card *card)
++{
++	struct igt_device *dev;
++
++	igt_list_for_each_entry(dev, &igt_devs.all, link) {
++
++		if (!is_pci_subsystem(dev))
++			continue;
++
++		if ((strncmp(dev->pci_slot_name, INTEGRATED_GPU_PCI_ID, PCI_SLOT_NAME_SIZE)) != 0) {
++			__copy_dev_to_card(dev, card);
++			break;
++		}
++	}
++}
++
+ static struct igt_device *igt_device_from_syspath(const char *syspath)
+ {
+ 	struct igt_device *dev;
+@@ -446,6 +500,7 @@ static void update_or_add_parent(struct udev_device *dev,
+ 		parent_idev = igt_device_new_from_udev(parent_dev);
+ 		if (is_pci_subsystem(parent_idev)) {
+ 			set_vendor_device(parent_idev);
++			set_pci_slot_name(parent_idev);
+ 		}
+ 		igt_list_add_tail(&parent_idev->link, &igt_devs.all);
+ 	}
+@@ -574,10 +629,21 @@ static void igt_device_free(struct igt_device *dev)
+ 	free(dev->drm_render);
+ 	free(dev->vendor);
+ 	free(dev->device);
++	free(dev->pci_slot_name);
+ 	g_hash_table_destroy(dev->attrs_ht);
+ 	g_hash_table_destroy(dev->props_ht);
+ }
+ 
++void igt_devices_free(void)
++{
++	struct igt_device *dev, *tmp;
++
++	igt_list_for_each_entry_safe(dev, tmp, &igt_devs.all, link) {
++		igt_device_free(dev);
++		free(dev);
++	}
++}
++
+ /**
+  * igt_devices_scan
+  * @force: enforce scanning devices
+@@ -1197,17 +1263,7 @@ bool igt_device_card_match(const char *filter, struct igt_device_card *card)
+ 	/* We take first one if more than one card matches filter */
+ 	dev = igt_list_first_entry(&igt_devs.filtered, dev, link);
+ 
+-	if (dev->subsystem != NULL)
+-		strncpy(card->subsystem, dev->subsystem,
+-			     sizeof(card->subsystem) - 1);
+-
+-	if (dev->drm_card != NULL)
+-		strncpy(card->card, dev->drm_card,
+-			     sizeof(card->card) - 1);
+-
+-	if (dev->drm_render != NULL)
+-		strncpy(card->render, dev->drm_render,
+-			     sizeof(card->render) - 1);
++	__copy_dev_to_card(dev, card);
+ 
+ 	return true;
+ }
+diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
+index 3526f1da..2e73ecb7 100644
+--- a/lib/igt_device_scan.h
++++ b/lib/igt_device_scan.h
+@@ -39,10 +39,13 @@ enum igt_devices_print_type {
+ 	IGT_PRINT_DETAIL,
+ };
+ 
++#define INTEGRATED_GPU_PCI_ID "0000:00:02.0"
++#define PCI_SLOT_NAME_SIZE 12
+ struct igt_device_card {
+ 	char subsystem[NAME_MAX];
+ 	char card[NAME_MAX];
+ 	char render[NAME_MAX];
++	char pci_slot_name[PCI_SLOT_NAME_SIZE+1];
+ };
+ 
+ void igt_devices_scan(bool force);
+@@ -51,6 +54,8 @@ void igt_devices_print(enum igt_devices_print_type printtype);
+ void igt_devices_print_vendors(void);
+ void igt_device_print_filter_types(void);
+ 
++void igt_devices_free(void);
++
+ /*
+  * Handle device filter collection array.
+  * IGT can store/retrieve filters passed by user using '--device' args.
+@@ -63,7 +68,7 @@ const char *igt_device_filter_get(int num);
+ 
+ /* Use filter to match the device and fill card structure */
+ bool igt_device_card_match(const char *filter, struct igt_device_card *card);
+-
++void igt_device_find_first_discrete_card(struct igt_device_card *card);
+ int igt_open_card(struct igt_device_card *card);
+ int igt_open_render(struct igt_device_card *card);
+ 
 -- 
-Jani Nikula, Intel Open Source Graphics Center
+2.25.4
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
