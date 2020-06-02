@@ -1,15 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E360089B9E
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2020 13:48:40 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EAE43888AE
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2020 16:41:29 +0000 (UTC)
+From: "Mun, Gwan-gyeong" <gwan-gyeong.mun@intel.com>
+Date: Tue, 2 Jun 2020 16:40:55 +0000
+Message-ID: <918c9e4a6d4b7424c1aebdd5233d802eb3d4e80d.camel@intel.com>
+References: <20200530011613.45991-1-jose.souza@intel.com>
+In-Reply-To: <20200530011613.45991-1-jose.souza@intel.com>
+Content-Language: en-US
+Content-ID: <C8B21230D9C48D44A8B26F0F31F91960@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200602085454.22812-1-dominik.grzegorzek@intel.com>
-References: <20200602085454.22812-1-dominik.grzegorzek@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Message-ID: <159110571507.29407.5123461518504610045@build.alporthouse.com>
-Date: Tue, 02 Jun 2020 14:48:35 +0100
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_spin_batch: Remove unncessary
- non-preemptible workload
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_psr2_su: Read su blocks
+ of frame 1 if frame 0 is 0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,23 +19,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>, igt-dev@lists.freedesktop.org
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Souza,
+ Jose" <jose.souza@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Dominik Grzegorzek (2020-06-02 09:54:54)
-> Following the rule "as few non-preemptible spinners as possible", this patch
-> removes IGT_SPIN_NO_PREEMPTION flag from spin-all subtest, where it was used
-> as a precaution.
-
-Not as a precaution, by design. In part it's testing that the NOPREMPT
-does work. Since this is a test case for the library, there does need to
-be a NOPREEMPT variant.
--Chris
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SSBoYXZlIHRlc3RlZCB0aGlzIHBhdGNoIG9uIElDTCB3aXRoIFBTUjIgcGFuZWwuIEl0IHNvbHZl
+cyB0aGUgaXNzdWUNCiJObyBtYXRjaGluZyBzZWxlY3RpdmUgdXBkYXRlIGJsb2NrcyByZWFkIGZy
+b20gZGVidWdmcyIuDQoNClJldmlld2VkLWJ5OiBHd2FuLWd5ZW9uZyBNdW4gPGd3YW4tZ3llb25n
+Lm11bkBpbnRlbC5jb20+DQoNCk9uIEZyaSwgMjAyMC0wNS0yOSBhdCAxODoxNiAtMDcwMCwgSm9z
+w6kgUm9iZXJ0byBkZSBTb3V6YSB3cm90ZToNCj4gTm90IHN1cmUgd2h5IGJ1dCBpbiByZWNlbnQg
+a2VybmVscyArIElHVCB3aGVuIFBTUiBzdGF0dXMgZGVidWdmcyBpcw0KPiByZWFkIHRoZSBmcmFt
+ZSBhbHJlYWR5IHBhc3NlZCwgc28gdGhlIHN1IGJsb2NrcyBpcyBzZXQgaW4gZnJhbWUgMQ0KPiBh
+bmQgY2F1c2luZyB0aGUgdGVzdCB0byBmYWlsIGZvciBwYWdlIGZsaXBzLg0KPiBTbyBoZXJlIHJl
+YWRpbmcgZnJvbSBmcmFtZSAxIGlmIGZyYW1lIDAgaGFzIDAgYmxvY2tzLCBhcyB0aGlzIHRlc3QN
+Cj4gYWx3YXlzIGNoYW5nZXMgc2NyZWVuIHdpdGggdGhlIHNhbWUgbnVtYmVyIG9mIHN1IGJsb2Nr
+cyBpdCBpcyBub3QgYQ0KPiBpc3N1ZS4NCj4gDQo+IENsb3NlczogaHR0cHM6Ly9naXRsYWIuZnJl
+ZWRlc2t0b3Aub3JnL2RybS9pbnRlbC8tL2lzc3Vlcy82MDgNCj4gQ2M6IEd3YW4tZ3llb25nIE11
+biA8Z3dhbi1neWVvbmcubXVuQGludGVsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogSm9zw6kgUm9i
+ZXJ0byBkZSBTb3V6YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+DQo+IC0tLQ0KPiAgbGliL2lndF9w
+c3IuYyB8IDEwICsrKysrKysrKy0NCj4gIDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyks
+IDEgZGVsZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9saWIvaWd0X3Bzci5jIGIvbGliL2ln
+dF9wc3IuYw0KPiBpbmRleCA0MTA5YjUyOTUuLjk1NmY2MjE5YyAxMDA2NDQNCj4gLS0tIGEvbGli
+L2lndF9wc3IuYw0KPiArKysgYi9saWIvaWd0X3Bzci5jDQo+IEBAIC0xOTUsMTEgKzE5NSwxMiBA
+QCBib29sIHBzcl9zaW5rX3N1cHBvcnQoaW50IGRldmljZSwgaW50DQo+IGRlYnVnZnNfZmQsIGVu
+dW0gcHNyX21vZGUgbW9kZSkNCj4gIA0KPiAgI2RlZmluZSBQU1IyX1NVX0JMT0NLX1NUUl9MT09L
+VVAgIlBTUjIgU1UgYmxvY2tzOlxuMFx0Ig0KPiAgDQo+ICsvKiBSZXR1cm4gdGhlIHRoZSBsYXN0
+IG9yIGxhc3QgYnV0IG9uZSBzdSBibG9ja3MgKi8NCj4gIHN0YXRpYyBib29sDQo+ICBwc3IyX3Jl
+YWRfbGFzdF9udW1fc3VfYmxvY2tzX3ZhbChpbnQgZGVidWdmc19mZCwgdWludDE2X3QNCj4gKm51
+bV9zdV9ibG9ja3MpDQo+ICB7DQo+ICAJY2hhciBidWZbUFNSX1NUQVRVU19NQVhfTEVOXTsNCj4g
+LQljaGFyICpzdHI7DQo+ICsJY2hhciAqc3RyLCAqc3RyMjsNCj4gIAlpbnQgcmV0Ow0KPiAgDQo+
+ICAJcmV0ID0gaWd0X2RlYnVnZnNfc2ltcGxlX3JlYWQoZGVidWdmc19mZCwNCj4gImk5MTVfZWRw
+X3Bzcl9zdGF0dXMiLCBidWYsDQo+IEBAIC0yMTIsNiArMjEzLDEzIEBAIHBzcjJfcmVhZF9sYXN0
+X251bV9zdV9ibG9ja3NfdmFsKGludCBkZWJ1Z2ZzX2ZkLA0KPiB1aW50MTZfdCAqbnVtX3N1X2Js
+b2NrcykNCj4gIAkJcmV0dXJuIGZhbHNlOw0KPiAgDQo+ICAJc3RyID0gJnN0cltzdHJsZW4oUFNS
+Ml9TVV9CTE9DS19TVFJfTE9PS1VQKV07DQo+ICsJKm51bV9zdV9ibG9ja3MgPSAodWludDE2X3Qp
+c3RydG9sKHN0ciwgJnN0cjIsIDEwKTsNCj4gKwlpZiAoKm51bV9zdV9ibG9ja3MgIT0gMCkNCj4g
+KwkJcmV0dXJuIHRydWU7DQo+ICsNCj4gKwlzdHIgPSBzdHIyOw0KPiArCS8qIEp1bXAgJ1xuJycx
+JydcdCcgKi8NCj4gKwlzdHIgKz0gMzsNCj4gIAkqbnVtX3N1X2Jsb2NrcyA9ICh1aW50MTZfdClz
+dHJ0b2woc3RyLCBOVUxMLCAxMCk7DQo+ICANCj4gIAlyZXR1cm4gdHJ1ZTsNCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0
+CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
