@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 301D489B83
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2020 08:55:44 +0000 (UTC)
-From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Date: Tue,  2 Jun 2020 10:54:54 +0200
-Message-Id: <20200602085454.22812-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_spin_batch: Remove unncessary
- non-preemptible workload
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 02 Jun 2020 08:58:37 -0000
+Message-ID: <159108831730.21427.8824018584080259075@emeril.freedesktop.org>
+References: <20200602082245.1356782-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200602082245.1356782-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
+ =?utf-8?q?em=5Fexec=5Fschedule=3A_Try_to_spot_unfairness_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,43 +14,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Following the rule "as few non-preemptible spinners as possible", this patch
-removes IGT_SPIN_NO_PREEMPTION flag from spin-all subtest, where it was used
-as a precaution.
+== Series Details ==
 
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
----
- tests/i915/gem_spin_batch.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Series: i915/gem_exec_schedule: Try to spot unfairness (rev6)
+URL   : https://patchwork.freedesktop.org/series/77887/
+State : success
 
-diff --git a/tests/i915/gem_spin_batch.c b/tests/i915/gem_spin_batch.c
-index e7dd58ec..af0b67ca 100644
---- a/tests/i915/gem_spin_batch.c
-+++ b/tests/i915/gem_spin_batch.c
-@@ -147,12 +147,10 @@ static void spin_all(int i915, unsigned int flags)
- 		if (flags & PARALLEL_SPIN_NEW_CTX)
- 			ctx = gem_context_create(i915);
- 
--		/* Prevent preemption so only one is allowed on each engine */
- 		spin = igt_spin_new(i915,
- 				    .ctx = ctx,
- 				    .engine = eb_ring(e),
--				    .flags = (IGT_SPIN_POLL_RUN |
--					      IGT_SPIN_NO_PREEMPTION));
-+				    .flags = IGT_SPIN_POLL_RUN);
- 		if (ctx)
- 			gem_context_destroy(i915, ctx);
- 
--- 
-2.20.1
+== Summary ==
 
+CI Bug Log - changes from CI_DRM_8568 -> IGTPW_4635
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4635/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4635 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-cml-u2:          [PASS][1] -> [INCOMPLETE][2] ([i915#1242])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8568/fi-cml-u2/igt@gem_exec_suspend@basic-s0.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4635/fi-cml-u2/igt@gem_exec_suspend@basic-s0.html
+
+  
+  [i915#1242]: https://gitlab.freedesktop.org/drm/intel/issues/1242
+
+
+Participating hosts (51 -> 45)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5690 -> IGTPW_4635
+
+  CI-20190529: 20190529
+  CI_DRM_8568: 124bafc80c3ce62fc61b8eabb2657c87424b999b @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4635: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4635/index.html
+  IGT_5690: bea881189520a9cccbb1c1cb454ac5b6fdaea40e @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@gem_exec_schedule@fair-flow
++igt@gem_exec_schedule@fair-half
++igt@gem_exec_schedule@fair-none
++igt@gem_exec_schedule@fair-pace
++igt@gem_exec_schedule@fair-solo
++igt@gem_exec_schedule@fair-spare
++igt@gem_exec_schedule@fair-sync
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4635/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
