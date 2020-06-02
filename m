@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 50DAD6E1F4
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jun 2020 19:10:19 +0000 (UTC)
-Date: Tue, 2 Jun 2020 12:11:03 -0700
-From: Manasi Navare <manasi.d.navare@intel.com>
-Message-ID: <20200602191102.GA6277@intel.com>
-References: <20200511062647.9514-1-bhanuprakash.modem@intel.com>
- <20200511062647.9514-2-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200511062647.9514-2-bhanuprakash.modem@intel.com>
-Subject: Re: [igt-dev] [RFC PATCH 1/2] tests/kms_vrr: Use atomic API for
- page flip
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 02 Jun 2020 23:30:00 -0000
+Message-ID: <159114060059.21430.2176314494459158583@emeril.freedesktop.org>
+References: <20200602100551.1413463-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200602100551.1413463-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_i915/gem=5Fexec=5Fschedule=3A_?=
+ =?utf-8?q?Try_to_spot_unfairness_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,120 +15,180 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: bhanuprakash.modem@intel.com
-Cc: igt-dev@lists.freedesktop.org, pichika.uday.kiran@intel.com
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, May 11, 2020 at 11:56:46AM +0530, bhanuprakash.modem@intel.com wrote:
-> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> 
-> We should avoid using drmModePageFlip as it'll only be used for
-> legacy drivers, instead, use igt_display_commit_atomic() API to
-> page flip for atomic display code path.
-> 
-> Cc: Harry Wentland <harry.wentland@amd.com>
-> Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-> Cc: Manasi Navare <manasi.d.navare@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+== Series Details ==
 
-I have tested this on i915 and the page flips are captured correctly with 
-non blocking page flip requests using atomic_commit call.
+Series: series starting with [i-g-t,1/2] i915/gem_exec_schedule: Try to spot unfairness (rev2)
+URL   : https://patchwork.freedesktop.org/series/77911/
+State : success
 
-@Harry, @Nicholas could you test this on AMD driver to make
-sure its not breaking anything?
+== Summary ==
 
-Manasi
+CI Bug Log - changes from CI_DRM_8574 -> IGTPW_4641
+====================================================
 
-> ---
->  tests/kms_vrr.c | 39 ++++++++++-----------------------------
->  1 file changed, 10 insertions(+), 29 deletions(-)
-> 
-> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-> index 73115fef..0fe28931 100644
-> --- a/tests/kms_vrr.c
-> +++ b/tests/kms_vrr.c
-> @@ -126,11 +126,11 @@ static range_t get_vrr_range(data_t *data, igt_output_t *output)
->  }
->  
->  /* Returns a suitable vrr test frequency. */
-> -static uint32_t get_test_rate_ns(data_t *data, igt_output_t *output)
-> +static uint64_t get_test_rate_ns(data_t *data, igt_output_t *output)
->  {
->  	drmModeModeInfo *mode = igt_output_get_mode(output);
->  	range_t range;
-> -	uint32_t vtest;
-> +	uint64_t vtest;
->  
->  	/*
->  	 * The frequency with the fastest convergence speed should be
-> @@ -210,32 +210,18 @@ wait_for_vblank(data_t *data, enum pipe pipe)
->  	return get_vblank_event_ns(data);
->  }
->  
-> -/* Performs an asynchronous non-blocking page-flip on a pipe. */
-> -static int
-> +/* Performs an atomic non-blocking page-flip on a pipe. */
-> +static void
->  do_flip(data_t *data, enum pipe pipe_id, igt_fb_t *fb)
->  {
-> -	igt_pipe_t *pipe = &data->display.pipes[pipe_id];
-> -	int ret;
-> -
->  	igt_set_timeout(1, "Scheduling page flip\n");
->  
-> -	/*
-> -	 * Only the legacy flip ioctl supports async flips.
-> -	 * It's also non-blocking, but returns -EBUSY if flipping too fast.
-> -	 * 2x monitor tests will need async flips in the atomic API.
-> -	 */
-> -	do {
-> -		ret = drmModePageFlip(data->drm_fd, pipe->crtc_id,
-> -				      fb->fb_id,
-> -				      DRM_MODE_PAGE_FLIP_EVENT |
-> -				      DRM_MODE_PAGE_FLIP_ASYNC,
-> -				      data);
-> -	} while (ret == -EBUSY);
-> -
-> -	igt_assert_eq(ret, 0);
-> -	igt_reset_timeout();
-> +	igt_display_commit_atomic(&data->display,
-> +				  DRM_MODE_ATOMIC_NONBLOCK |
-> +				  DRM_MODE_PAGE_FLIP_EVENT,
-> +				  NULL);
->  
-> -	return 0;
-> +	igt_reset_timeout();
->  }
->  
->  /*
-> @@ -246,11 +232,6 @@ do_flip(data_t *data, enum pipe pipe_id, igt_fb_t *fb)
->   * can arbitrarily restrict the bounds further than the absolute
->   * min and max range. But VRR is really about extending the flip
->   * to prevent stuttering or to match a source content rate.
-> - *
-> - * The only way to "present" at a fixed rate like userspace in a vendor
-> - * neutral manner is to do it with async flips. This avoids the need
-> - * to wait for next vblank and it should eventually converge at the
-> - * desired rate.
->   */
->  static uint32_t
->  flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
-> @@ -271,7 +252,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
->  		front = !front;
->  		do_flip(data, pipe, front ? &data->fb1 : &data->fb0);
->  
-> -		vblank_ns = get_vblank_event_ns(data);
-> +		vblank_ns = wait_for_vblank(data, pipe);
->  		diff_ns = rate_ns - (vblank_ns - last_vblank_ns);
->  		last_vblank_ns = vblank_ns;
->  
-> -- 
-> 2.24.1.1.gb6d4d82bd5
-> 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4641/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4641:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@gem_exec_schedule@fair-flow@vcs0} (NEW):
+    - {fi-tgl-u}:         NOTRUN -> [INCOMPLETE][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4641/fi-tgl-u/igt@gem_exec_schedule@fair-flow@vcs0.html
+
+  * {igt@gem_exec_schedule@fair-none@bcs0} (NEW):
+    - fi-cml-u2:          NOTRUN -> [SKIP][2] +2 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4641/fi-cml-u2/igt@gem_exec_schedule@fair-none@bcs0.html
+
+  * {igt@gem_exec_schedule@fair-pace@bcs0} (NEW):
+    - fi-tgl-y:           NOTRUN -> [INCOMPLETE][3]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4641/fi-tgl-y/igt@gem_exec_schedule@fair-pace@bcs0.html
+    - {fi-tgl-dsi}:       NOTRUN -> [INCOMPLETE][4]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4641/fi-tgl-dsi/igt@gem_exec_schedule@fair-pace@bcs0.html
+    - fi-cml-s:           NOTRUN -> [SKIP][5] +2 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4641/fi-cml-s/igt@gem_exec_schedule@fair-pace@bcs0.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_8574 and IGTPW_4641:
+
+### New IGT tests (18) ###
+
+  * igt@gem_exec_schedule@fair-flow:
+    - Statuses : 12 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_exec_schedule@fair-flow@bcs0:
+    - Statuses : 9 pass(s) 19 skip(s)
+    - Exec time: [0.0, 9.54] s
+
+  * igt@gem_exec_schedule@fair-flow@rcs0:
+    - Statuses : 28 pass(s)
+    - Exec time: [8.46, 10.45] s
+
+  * igt@gem_exec_schedule@fair-flow@vcs0:
+    - Statuses : 1 incomplete(s) 27 pass(s)
+    - Exec time: [0.0, 12.86] s
+
+  * igt@gem_exec_schedule@fair-flow@vcs1:
+    - Statuses : 6 pass(s)
+    - Exec time: [8.43, 8.95] s
+
+  * igt@gem_exec_schedule@fair-flow@vecs0:
+    - Statuses : 27 pass(s)
+    - Exec time: [8.43, 10.60] s
+
+  * igt@gem_exec_schedule@fair-none:
+    - Statuses : 12 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_exec_schedule@fair-none@bcs0:
+    - Statuses : 11 pass(s) 19 skip(s)
+    - Exec time: [0.0, 12.58] s
+
+  * igt@gem_exec_schedule@fair-none@rcs0:
+    - Statuses : 30 pass(s)
+    - Exec time: [9.21, 12.30] s
+
+  * igt@gem_exec_schedule@fair-none@vcs0:
+    - Statuses : 30 pass(s)
+    - Exec time: [8.57, 14.95] s
+
+  * igt@gem_exec_schedule@fair-none@vcs1:
+    - Statuses : 9 pass(s)
+    - Exec time: [8.47, 11.73] s
+
+  * igt@gem_exec_schedule@fair-none@vecs0:
+    - Statuses : 30 pass(s)
+    - Exec time: [9.72, 15.14] s
+
+  * igt@gem_exec_schedule@fair-pace:
+    - Statuses : 12 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_exec_schedule@fair-pace@bcs0:
+    - Statuses : 2 incomplete(s) 9 pass(s) 19 skip(s)
+    - Exec time: [0.0, 9.42] s
+
+  * igt@gem_exec_schedule@fair-pace@rcs0:
+    - Statuses : 30 pass(s)
+    - Exec time: [8.39, 10.32] s
+
+  * igt@gem_exec_schedule@fair-pace@vcs0:
+    - Statuses : 28 pass(s)
+    - Exec time: [8.38, 10.54] s
+
+  * igt@gem_exec_schedule@fair-pace@vcs1:
+    - Statuses : 7 pass(s)
+    - Exec time: [8.42, 8.60] s
+
+  * igt@gem_exec_schedule@fair-pace@vecs0:
+    - Statuses : 28 pass(s)
+    - Exec time: [8.39, 10.35] s
+
+  
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+
+
+Participating hosts (50 -> 45)
+------------------------------
+
+  Additional (1): fi-kbl-7560u 
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5691 -> IGTPW_4641
+
+  CI-20190529: 20190529
+  CI_DRM_8574: bdf0c111ec1ac9a62dc082b887ea010605fdf1ea @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4641: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4641/index.html
+  IGT_5691: 5648db25034883e1437d28d6a8b89acbb5cb74b2 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@gem_exec_schedule@fair-flow
++igt@gem_exec_schedule@fair-half
++igt@gem_exec_schedule@fair-none
++igt@gem_exec_schedule@fair-pace
++igt@gem_exec_schedule@fair-solo
++igt@gem_exec_schedule@fair-spare
++igt@gem_exec_schedule@fair-sync
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4641/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
