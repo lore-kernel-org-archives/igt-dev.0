@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE3AC89B45
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Jun 2020 11:29:10 +0000 (UTC)
-Date: Wed, 3 Jun 2020 14:29:06 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200603112906.o6rd3364dqp7u5fg@ahiler-desk1.fi.intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9BEA89998
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Jun 2020 12:05:26 +0000 (UTC)
+From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Date: Wed, 3 Jun 2020 12:05:18 +0000
+Message-ID: <11806ec556434442a7102d3dcfe1333e@intel.com>
 References: <20200603081532.969938-1-arkadiusz.hiler@intel.com>
  <159118347009.12266.12631398149057518983@emeril.freedesktop.org>
+ <20200603112906.o6rd3364dqp7u5fg@ahiler-desk1.fi.intel.com>
+In-Reply-To: <20200603112906.o6rd3364dqp7u5fg@ahiler-desk1.fi.intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <159118347009.12266.12631398149057518983@emeril.freedesktop.org>
 Subject: Re: [igt-dev]
  =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgcHl0aG9u?=
  =?utf-8?q?=3A_Stop_using_cElementTree?=
@@ -20,70 +21,62 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Lakshmi <lakshminarayana.vudum@intel.com>
+To: "Hiler, Arkadiusz" <arkadiusz.hiler@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jun 03, 2020 at 11:24:30AM +0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: python: Stop using cElementTree
-> URL   : https://patchwork.freedesktop.org/series/77944/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from IGT_5692_full -> IGTPW_4642_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_4642_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_4642_full, please notify your bug team to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4642/index.html
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_4642_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@gem_workarounds@suspend-resume-context:
->     - shard-snb:          [PASS][1] -> [TIMEOUT][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5692/shard-snb5/igt@gem_workarounds@suspend-resume-context.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4642/shard-snb2/igt@gem_workarounds@suspend-resume-context.html
-> 
->   * igt@kms_cursor_edge_walk@pipe-b-128x128-top-edge:
->     - shard-tglb:         [PASS][3] -> [DMESG-WARN][4]
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5692/shard-tglb1/igt@kms_cursor_edge_walk@pipe-b-128x128-top-edge.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4642/shard-tglb7/igt@kms_cursor_edge_walk@pipe-b-128x128-top-edge.html
-
-Heya Lakshmi,
-
-Just a heads up that those are false positives. The patch was changeing
-only some python bits that are completetly unrelated to those tests.
-
-No need for rereporting :-)
-
--- 
-Cheers,
-Arek
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SSBoYXZlIGZpbGVkIGJ1Z3MgZm9yIHRob3NlIGZhaWx1cmVzLiBUaGFua3MuDQoNCkxha3NobWku
+DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBIaWxlciwgQXJrYWRpdXN6IDxh
+cmthZGl1c3ouaGlsZXJAaW50ZWwuY29tPiANClNlbnQ6IFdlZG5lc2RheSwgSnVuZSAzLCAyMDIw
+IDI6MjkgUE0NClRvOiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KQ2M6IFZ1ZHVtLCBM
+YWtzaG1pbmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1bUBpbnRlbC5jb20+DQpTdWJqZWN0
+OiBSZTog4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgcHl0aG9uOiBTdG9wIHVzaW5nIGNFbGVt
+ZW50VHJlZQ0KDQpPbiBXZWQsIEp1biAwMywgMjAyMCBhdCAxMToyNDozMEFNICswMDAwLCBQYXRj
+aHdvcmsgd3JvdGU6DQo+ID09IFNlcmllcyBEZXRhaWxzID09DQo+IA0KPiBTZXJpZXM6IHB5dGhv
+bjogU3RvcCB1c2luZyBjRWxlbWVudFRyZWUNCj4gVVJMICAgOiBodHRwczovL3BhdGNod29yay5m
+cmVlZGVza3RvcC5vcmcvc2VyaWVzLzc3OTQ0Lw0KPiBTdGF0ZSA6IGZhaWx1cmUNCj4gDQo+ID09
+IFN1bW1hcnkgPT0NCj4gDQo+IENJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20gSUdUXzU2OTJfZnVs
+bCAtPiBJR1RQV180NjQyX2Z1bGwgDQo+ID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT0NCj4gDQo+IFN1bW1hcnkNCj4gLS0tLS0tLQ0KPiANCj4gICAq
+KkZBSUxVUkUqKg0KPiANCj4gICBTZXJpb3VzIHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0aCBJ
+R1RQV180NjQyX2Z1bGwgYWJzb2x1dGVseSBuZWVkIHRvIGJlDQo+ICAgdmVyaWZpZWQgbWFudWFs
+bHkuDQo+ICAgDQo+ICAgSWYgeW91IHRoaW5rIHRoZSByZXBvcnRlZCBjaGFuZ2VzIGhhdmUgbm90
+aGluZyB0byBkbyB3aXRoIHRoZSBjaGFuZ2VzDQo+ICAgaW50cm9kdWNlZCBpbiBJR1RQV180NjQy
+X2Z1bGwsIHBsZWFzZSBub3RpZnkgeW91ciBidWcgdGVhbSB0byBhbGxvdyB0aGVtDQo+ICAgdG8g
+ZG9jdW1lbnQgdGhpcyBuZXcgZmFpbHVyZSBtb2RlLCB3aGljaCB3aWxsIHJlZHVjZSBmYWxzZSBw
+b3NpdGl2ZXMgaW4gQ0kuDQo+IA0KPiAgIEV4dGVybmFsIFVSTDogDQo+IGh0dHBzOi8vaW50ZWwt
+Z2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfNDY0Mi9pbmRleC5odG1sDQo+IA0KPiBQ
+b3NzaWJsZSBuZXcgaXNzdWVzDQo+IC0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gDQo+ICAgSGVyZSBh
+cmUgdGhlIHVua25vd24gY2hhbmdlcyB0aGF0IG1heSBoYXZlIGJlZW4gaW50cm9kdWNlZCBpbiBJ
+R1RQV180NjQyX2Z1bGw6DQo+IA0KPiAjIyMgSUdUIGNoYW5nZXMgIyMjDQo+IA0KPiAjIyMjIFBv
+c3NpYmxlIHJlZ3Jlc3Npb25zICMjIyMNCj4gDQo+ICAgKiBpZ3RAZ2VtX3dvcmthcm91bmRzQHN1
+c3BlbmQtcmVzdW1lLWNvbnRleHQ6DQo+ICAgICAtIHNoYXJkLXNuYjogICAgICAgICAgW1BBU1Nd
+WzFdIC0+IFtUSU1FT1VUXVsyXQ0KPiAgICBbMV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
+Zy90cmVlL2RybS10aXAvSUdUXzU2OTIvc2hhcmQtc25iNS9pZ3RAZ2VtX3dvcmthcm91bmRzQHN1
+c3BlbmQtcmVzdW1lLWNvbnRleHQuaHRtbA0KPiAgICBbMl06IA0KPiBodHRwczovL2ludGVsLWdm
+eC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzQ2NDIvc2hhcmQtc25iMi9pZ3RAZ2VtDQo+
+IF93b3JrYXJvdW5kc0BzdXNwZW5kLXJlc3VtZS1jb250ZXh0Lmh0bWwNCj4gDQo+ICAgKiBpZ3RA
+a21zX2N1cnNvcl9lZGdlX3dhbGtAcGlwZS1iLTEyOHgxMjgtdG9wLWVkZ2U6DQo+ICAgICAtIHNo
+YXJkLXRnbGI6ICAgICAgICAgW1BBU1NdWzNdIC0+IFtETUVTRy1XQVJOXVs0XQ0KPiAgICBbM106
+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUXzU2OTIvc2hhcmQt
+dGdsYjEvaWd0QGttc19jdXJzb3JfZWRnZV93YWxrQHBpcGUtYi0xMjh4MTI4LXRvcC1lZGdlLmh0
+bWwNCj4gICAgWzRdOiANCj4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRp
+cC9JR1RQV180NjQyL3NoYXJkLXRnbGI3L2lndEBrbQ0KPiBzX2N1cnNvcl9lZGdlX3dhbGtAcGlw
+ZS1iLTEyOHgxMjgtdG9wLWVkZ2UuaHRtbA0KDQpIZXlhIExha3NobWksDQoNCkp1c3QgYSBoZWFk
+cyB1cCB0aGF0IHRob3NlIGFyZSBmYWxzZSBwb3NpdGl2ZXMuIFRoZSBwYXRjaCB3YXMgY2hhbmdl
+aW5nIG9ubHkgc29tZSBweXRob24gYml0cyB0aGF0IGFyZSBjb21wbGV0ZXRseSB1bnJlbGF0ZWQg
+dG8gdGhvc2UgdGVzdHMuDQoNCk5vIG5lZWQgZm9yIHJlcmVwb3J0aW5nIDotKQ0KDQotLQ0KQ2hl
+ZXJzLA0KQXJlaw0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkludGVsIEZpbmxhbmQgT3kKUmVnaXN0ZXJlZCBBZGRy
+ZXNzOiBQTCAyODEsIDAwMTgxIEhlbHNpbmtpIApCdXNpbmVzcyBJZGVudGl0eSBDb2RlOiAwMzU3
+NjA2IC0gNCAKRG9taWNpbGVkIGluIEhlbHNpbmtpIAoKVGhpcyBlLW1haWwgYW5kIGFueSBhdHRh
+Y2htZW50cyBtYXkgY29udGFpbiBjb25maWRlbnRpYWwgbWF0ZXJpYWwgZm9yCnRoZSBzb2xlIHVz
+ZSBvZiB0aGUgaW50ZW5kZWQgcmVjaXBpZW50KHMpLiBBbnkgcmV2aWV3IG9yIGRpc3RyaWJ1dGlv
+bgpieSBvdGhlcnMgaXMgc3RyaWN0bHkgcHJvaGliaXRlZC4gSWYgeW91IGFyZSBub3QgdGhlIGlu
+dGVuZGVkCnJlY2lwaWVudCwgcGxlYXNlIGNvbnRhY3QgdGhlIHNlbmRlciBhbmQgZGVsZXRlIGFs
+bCBjb3BpZXMuCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBz
+Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
