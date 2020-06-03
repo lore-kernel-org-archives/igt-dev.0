@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B9B389BBD
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Jun 2020 12:54:36 +0000 (UTC)
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Date: Wed, 3 Jun 2020 15:54:14 +0300
+Message-ID: <20200603125414.1027845-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 03 Jun 2020 12:27:21 -0000
-Message-ID: <159118724188.12266.13089504463456060284@emeril.freedesktop.org>
-References: <20200603120900.17672-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20200603120900.17672-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgUmVtb3Zl?=
- =?utf-8?q?_libdrm_from_media=5Fspin?=
+Subject: [igt-dev] [PATCH i-g-t] lib/igt_core: Don't kill the world after a
+ failed fork
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,125 +15,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Michael Hebenstreit <michael.hebenstreit@intel.com>, Petri Latvala <petri.latvala@intel.com>, Fei Yang <fei.yang@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+If we fail to fork (e.g. due to restrictive limits) -1 gets written as
+PID of our child and we assert out.
 
-Series: Remove libdrm from media_spin
-URL   : https://patchwork.freedesktop.org/series/77951/
-State : failure
+The cleanup that happens afterwards tries to kill all our children,
+which ends up in kill(-1, SIGKILL) which is not good.
 
-== Summary ==
+This patch makes sure of two things:
+ * -1 doesn't get written down as our child
+ * when we are killing children we make sure that pid > 0
 
-CI Bug Log - changes from IGT_5694 -> IGTPW_4644
-====================================================
+Reported-by: Fei Yang <fei.yang@intel.com>
+Cc: Michael Hebenstreit <michael.hebenstreit@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+---
+ lib/igt_core.c       | 19 +++++++++++--------
+ lib/tests/igt_fork.c |  6 ++++--
+ 2 files changed, 15 insertions(+), 10 deletions(-)
 
-Summary
--------
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index f8ccc8d2..cbcc3f4d 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -1399,8 +1399,10 @@ static void exit_subtest(const char *result)
+ 
+ 	/* If the subtest aborted, it may have left children behind */
+ 	for (int c = 0; c < num_test_children; c++) {
+-		kill(test_children[c], SIGKILL);
+-		waitpid(test_children[c], NULL, 0); /* don't leave zombies! */
++		if (test_children[c] > 0) {
++			kill(test_children[c], SIGKILL);
++			waitpid(test_children[c], NULL, 0); /* don't leave zombies! */
++		}
+ 	}
+ 	num_test_children = 0;
+ 
+@@ -1986,8 +1988,10 @@ void __igt_fail_assert(const char *domain, const char *file, const int line,
+ 
+ static void kill_children(void)
+ {
+-	for (int c = 0; c < num_test_children; c++)
+-		kill(test_children[c], SIGKILL);
++	for (int c = 0; c < num_test_children; c++) {
++		if (test_children[c] > 0)
++			kill(test_children[c], SIGKILL);
++	}
+ }
+ 
+ void __igt_abort(const char *domain, const char *file, const int line,
+@@ -2276,6 +2280,7 @@ bool __igt_fork(void)
+ 
+ 	switch (test_children[num_test_children++] = fork()) {
+ 	case -1:
++		num_test_children--; /* so we won't kill(-1) during cleanup */
+ 		igt_assert(0);
+ 	case 0:
+ 		test_child = true;
+@@ -2335,8 +2340,7 @@ int __igt_waitchildren(void)
+ 				err = 256;
+ 			}
+ 
+-			for (c = 0; c < num_test_children; c++)
+-				kill(test_children[c], SIGKILL);
++			kill_children();
+ 		}
+ 
+ 		count++;
+@@ -2370,8 +2374,7 @@ static void igt_alarm_killchildren(int signal)
+ {
+ 	igt_info("Timed out waiting for children\n");
+ 
+-	for (int c = 0; c < num_test_children; c++)
+-		kill(test_children[c], SIGKILL);
++	kill_children();
+ }
+ 
+ /**
+diff --git a/lib/tests/igt_fork.c b/lib/tests/igt_fork.c
+index 4fd0e0c8..84492b2d 100644
+--- a/lib/tests/igt_fork.c
++++ b/lib/tests/igt_fork.c
+@@ -123,8 +123,10 @@ static void subtest_leak(void)
+ 	}
+ 
+ 	/* We expect the exit_subtest to cleanup after the igt_fork */
+-	for (int i = 0; i < num_children; i++)
+-		assert(kill(children[i], 0) == -1 && errno == ESRCH);
++	for (int i = 0; i < num_children; i++) {
++		if (children[i] > 0)
++			assert(kill(children[i], 0) == -1 && errno == ESRCH);
++	}
+ 
+ 	munmap(children, 4096);
+ 
+-- 
+2.25.4
 
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_4644 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_4644, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_4644:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_pm_sseu@full-enable:
-    - fi-kbl-soraka:      NOTRUN -> [FAIL][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-kbl-soraka/igt@i915_pm_sseu@full-enable.html
-    - fi-skl-6600u:       NOTRUN -> [FAIL][2]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-skl-6600u/igt@i915_pm_sseu@full-enable.html
-    - fi-whl-u:           NOTRUN -> [FAIL][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-whl-u/igt@i915_pm_sseu@full-enable.html
-    - fi-cfl-guc:         NOTRUN -> [FAIL][4]
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-cfl-guc/igt@i915_pm_sseu@full-enable.html
-    - fi-cml-s:           NOTRUN -> [FAIL][5]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-cml-s/igt@i915_pm_sseu@full-enable.html
-    - fi-apl-guc:         NOTRUN -> [FAIL][6]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-apl-guc/igt@i915_pm_sseu@full-enable.html
-    - fi-bxt-dsi:         NOTRUN -> [FAIL][7]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-bxt-dsi/igt@i915_pm_sseu@full-enable.html
-    - fi-cfl-8700k:       NOTRUN -> [FAIL][8]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-cfl-8700k/igt@i915_pm_sseu@full-enable.html
-    - fi-cml-u2:          NOTRUN -> [FAIL][9]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-cml-u2/igt@i915_pm_sseu@full-enable.html
-    - fi-kbl-r:           NOTRUN -> [FAIL][10]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-kbl-r/igt@i915_pm_sseu@full-enable.html
-    - fi-kbl-8809g:       NOTRUN -> [FAIL][11]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-kbl-8809g/igt@i915_pm_sseu@full-enable.html
-    - fi-kbl-guc:         NOTRUN -> [FAIL][12]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-kbl-guc/igt@i915_pm_sseu@full-enable.html
-    - fi-kbl-7500u:       NOTRUN -> [FAIL][13]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-kbl-7500u/igt@i915_pm_sseu@full-enable.html
-    - fi-cfl-8109u:       NOTRUN -> [FAIL][14]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-cfl-8109u/igt@i915_pm_sseu@full-enable.html
-    - fi-skl-guc:         NOTRUN -> [FAIL][15]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-skl-guc/igt@i915_pm_sseu@full-enable.html
-    - fi-kbl-x1275:       NOTRUN -> [FAIL][16]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-kbl-x1275/igt@i915_pm_sseu@full-enable.html
-    - fi-glk-dsi:         NOTRUN -> [FAIL][17]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-glk-dsi/igt@i915_pm_sseu@full-enable.html
-    - fi-skl-6700k2:      NOTRUN -> [FAIL][18]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-skl-6700k2/igt@i915_pm_sseu@full-enable.html
-    - fi-skl-lmem:        NOTRUN -> [FAIL][19]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/fi-skl-lmem/igt@i915_pm_sseu@full-enable.html
-
-  
-New tests
----------
-
-  New tests have been introduced between IGT_5694 and IGTPW_4644:
-
-### New IGT tests (1) ###
-
-  * igt@i915_pm_sseu:
-    - Statuses :
-    - Exec time: [None] s
-
-  
-
-
-
-Participating hosts (50 -> 44)
-------------------------------
-
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5694 -> IGTPW_4644
-
-  CI-20190529: 20190529
-  CI_DRM_8575: b261605291bae8f267174f92df7513a3a7184573 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4644: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/index.html
-  IGT_5694: a9b6c4c74bfddf7d3d2da3be08804fe315945cea @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4644/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
