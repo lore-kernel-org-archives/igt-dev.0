@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 007CE89CBC
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Jun 2020 16:24:44 +0000 (UTC)
-Date: Wed, 3 Jun 2020 19:24:40 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200603162440.t6um7wezdx25zn4n@ahiler-desk1.fi.intel.com>
-References: <20200603125414.1027845-1-arkadiusz.hiler@intel.com>
- <BL0PR11MB3028FFDDE4A2DE97349AD804EF880@BL0PR11MB3028.namprd11.prod.outlook.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 151B989B0C
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Jun 2020 18:34:19 +0000 (UTC)
+From: Imre Deak <imre.deak@intel.com>
+Date: Wed,  3 Jun 2020 21:34:17 +0300
+Message-Id: <20200603183417.14626-1-imre.deak@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <BL0PR11MB3028FFDDE4A2DE97349AD804EF880@BL0PR11MB3028.namprd11.prod.outlook.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_core: Don't kill the world
- after a failed fork
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_chamelium: Force reprobe after
+ replugging the connector
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,38 +19,41 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Hebenstreit, Michael" <michael.hebenstreit@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Latvala,
- Petri" <petri.latvala@intel.com>, "Yang, Fei" <fei.yang@intel.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+After replugging a connector and the kernel reports the connector as
+connected the cached modes returned by drmModeGetConnectorCurrent() (the
+kernel's cached list of modes) may be stale. The modes will be only
+updated by a full reprobe. Ensure this by setting output->force_reprobe
+which will result in calling drmModeGetConnector().
 
-On Wed, Jun 03, 2020 at 06:43:45PM +0300, Hebenstreit, Michael wrote:
-> Confirmed the patch work - but leaves a question
-> 
-> Shouldn't this test case then report a fail as I do not allow all forks?
-> 
-> 10/293 lib: igt_fork                           OK       3.37 s
+This fixes sporadic test failures due to seeing no modes unexpectedly.
+So far things happened to work, because some in-kernel user of the
+output - like fbdev - does a full reprobe sometime after the hotplug
+event.
 
-Thank's for the verification! I'll add 'Tested-by: you' when merging :-)
+Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+---
+ tests/kms_chamelium.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-The test that was failing is subtest_leak.
-
-It forks 4096/sizeof(pid_t) times and makes sure that we have killed all
-the forked children successfully when exiting igt_subtest block, so we
-don't leak any of them.
-
-We don't manage to fork that exact number but that's fine, we fork as
-many as the limits allows. I think this is much better behavior than
-having this test fail on a more limited systems.
-
-Please keep in mind that this is a "metatest" of the framework. There's
-an assert inside igt_fork() which would cause any proper IGT test to
-fail if we cannot fork() anymore.
-
+diff --git a/tests/kms_chamelium.c b/tests/kms_chamelium.c
+index dc1b8d1e3..7d3e06433 100644
+--- a/tests/kms_chamelium.c
++++ b/tests/kms_chamelium.c
+@@ -126,6 +126,7 @@ reprobe_connector(data_t *data, struct chamelium_port *port)
+ 
+ 	/* let's make sure that igt_display is up to date too */
+ 	output = igt_output_from_connector(&data->display, connector);
++	output->force_reprobe = true;
+ 	igt_output_refresh(output);
+ 
+ 	drmModeFreeConnector(connector);
 -- 
-Cheers,
-Arek
+2.23.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
