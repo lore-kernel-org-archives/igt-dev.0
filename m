@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A6E36E13A
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Jun 2020 09:31:34 +0000 (UTC)
-Date: Thu, 4 Jun 2020 12:31:30 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200604093130.76ijafuv3q7jgnxf@ahiler-desk1.fi.intel.com>
-References: <20200603183417.14626-1-imre.deak@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E22D86E2E8
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Jun 2020 10:04:04 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Thu,  4 Jun 2020 12:03:50 +0200
+Message-Id: <20200604100353.24552-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200604100353.24552-1-zbigniew.kempczynski@intel.com>
+References: <20200604100353.24552-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200603183417.14626-1-imre.deak@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_chamelium: Force reprobe
- after replugging the connector
+Subject: [igt-dev] [PATCH i-g-t v2 1/4] lib/intel_bufops: add fields for
+ keeping offset and context
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,31 +17,45 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Imre Deak <imre.deak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jun 03, 2020 at 09:34:17PM +0300, Imre Deak wrote:
-> After replugging a connector and the kernel reports the connector as
-> connected the cached modes returned by drmModeGetConnectorCurrent() (the
-> kernel's cached list of modes) may be stale. The modes will be only
-> updated by a full reprobe. Ensure this by setting output->force_reprobe
-> which will result in calling drmModeGetConnector().
-> 
-> This fixes sporadic test failures due to seeing no modes unexpectedly.
-> So far things happened to work, because some in-kernel user of the
-> output - like fbdev - does a full reprobe sometime after the hotplug
-> event.
-> 
-> Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> Signed-off-by: Imre Deak <imre.deak@intel.com>
-
-Reviewed-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+VG8gYXZvaWQgcmVsb2NhdGlvbnMgd2hlbiBpbnRlbF9idWYgaXMgdXNlZCB3ZSBuZWVkIHRvIGtl
+ZXAgcHJldmlvdXMKb2Zmc2V0IGFuZCBjb250ZXh0LiBBZGQgYWRkciBzdHJ1Y3R1cmUgd2l0aCBv
+ZmZzZXQgYW5kIGN0eCBmaWVsZHMuCgpTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRz
+a2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8Y2hy
+aXNAY2hyaXMtd2lsc29uLmNvLnVrPgotLS0KIGxpYi9ncHVfY21kcy5jICAgICB8IDYgKysrLS0t
+CiBsaWIvaW50ZWxfYnVmb3BzLmggfCA0ICsrKysKIDIgZmlsZXMgY2hhbmdlZCwgNyBpbnNlcnRp
+b25zKCspLCAzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYi9ncHVfY21kcy5jIGIvbGli
+L2dwdV9jbWRzLmMKaW5kZXggOGMyODRlYjEuLjQxNzI1M2E3IDEwMDY0NAotLS0gYS9saWIvZ3B1
+X2NtZHMuYworKysgYi9saWIvZ3B1X2NtZHMuYwpAQCAtMTA5LDcgKzEwOSw3IEBAIGdlbjdfZmls
+bF9zdXJmYWNlX3N0YXRlKHN0cnVjdCBpbnRlbF9iYiAqaWJiLAogCiAJYWRkcmVzcyA9IGludGVs
+X2JiX29mZnNldF9yZWxvYyhpYmIsIGJ1Zi0+aGFuZGxlLAogCQkJCQlyZWFkX2RvbWFpbiwgd3Jp
+dGVfZG9tYWluLAotCQkJCQlvZmZzZXQgKyA0LCAweDApOworCQkJCQlvZmZzZXQgKyA0LCBidWYt
+PmFkZHIub2Zmc2V0KTsKIAlpZ3RfYXNzZXJ0KGFkZHJlc3MgPj4gMzIgPT0gMCk7CiAKIAlzcy0+
+c3MxLmJhc2VfYWRkciA9IGFkZHJlc3M7CkBAIC0xNjEsNyArMTYxLDcgQEAgZ2VuOF9maWxsX3N1
+cmZhY2Vfc3RhdGUoc3RydWN0IGludGVsX2JiICppYmIsCiAKIAlhZGRyZXNzID0gaW50ZWxfYmJf
+b2Zmc2V0X3JlbG9jKGliYiwgYnVmLT5oYW5kbGUsCiAJCQkJCXJlYWRfZG9tYWluLCB3cml0ZV9k
+b21haW4sCi0JCQkJCW9mZnNldCArIDQgKiA4LCAweDApOworCQkJCQlvZmZzZXQgKyA0ICogOCwg
+YnVmLT5hZGRyLm9mZnNldCk7CiAKIAlzcy0+c3M4LmJhc2VfYWRkciA9ICh1aW50MzJfdCkgYWRk
+cmVzczsKIAlzcy0+c3M5LmJhc2VfYWRkcl9oaSA9IGFkZHJlc3MgPj4gMzI7CkBAIC0yMTgsNyAr
+MjE4LDcgQEAgZ2VuMTFfZmlsbF9zdXJmYWNlX3N0YXRlKHN0cnVjdCBpbnRlbF9iYiAqaWJiLAog
+CiAJYWRkcmVzcyA9IGludGVsX2JiX29mZnNldF9yZWxvYyhpYmIsIGJ1Zi0+aGFuZGxlLAogCQkJ
+CQlyZWFkX2RvbWFpbiwgd3JpdGVfZG9tYWluLAotCQkJCQlvZmZzZXQgKyA0ICogOCwgMHgwKTsK
+KwkJCQkJb2Zmc2V0ICsgNCAqIDgsIGJ1Zi0+YWRkci5vZmZzZXQpOwogCiAJc3MtPnNzOC5iYXNl
+X2FkZHIgPSAodWludDMyX3QpIGFkZHJlc3M7CiAJc3MtPnNzOS5iYXNlX2FkZHJfaGkgPSBhZGRy
+ZXNzID4+IDMyOwpkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2J1Zm9wcy5oIGIvbGliL2ludGVsX2J1
+Zm9wcy5oCmluZGV4IDNhNGZhZTRlLi45NTIxN2NmZSAxMDA2NDQKLS0tIGEvbGliL2ludGVsX2J1
+Zm9wcy5oCisrKyBiL2xpYi9pbnRlbF9idWZvcHMuaApAQCAtMTgsNiArMTgsMTAgQEAgc3RydWN0
+IGludGVsX2J1ZiB7CiAJCXVpbnQzMl90IG9mZnNldDsKIAkJdWludDMyX3Qgc3RyaWRlOwogCX0g
+YXV4OworCXN0cnVjdCB7CisJCXVpbnQ2NF90IG9mZnNldDsKKwkJdWludDMyX3QgY3R4OworCX0g
+YWRkcjsKIH07CiAKIHN0YXRpYyBpbmxpbmUgdW5zaWduZWQgaW50IGludGVsX2J1Zl93aWR0aChj
+b25zdCBzdHJ1Y3QgaW50ZWxfYnVmICpidWYpCi0tIAoyLjI2LjAKCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21h
+aWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
