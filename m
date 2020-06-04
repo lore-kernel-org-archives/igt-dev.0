@@ -1,12 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B17B56E3F3
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Jun 2020 14:50:44 +0000 (UTC)
+Date: Thu, 4 Jun 2020 17:50:31 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <20200604145031.GR6112@intel.com>
+References: <20200603210506.17185-1-mohammed.khajapasha@intel.com>
+ <20200603210506.17185-2-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 04 Jun 2020 11:04:19 -0000
-Message-ID: <159126865936.14553.12505731157300361878@emeril.freedesktop.org>
-References: <20200604100353.24552-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20200604100353.24552-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgUmVtb3Zl?=
- =?utf-8?q?_libdrm_from_media=5Fspin?=
+Content-Disposition: inline
+In-Reply-To: <20200603210506.17185-2-mohammed.khajapasha@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib/igt_kms: Set pipe enum name to
+ a pipe from drm pipe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,75 +19,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com, kishore.kunche@intel.com, suresh.kumar.kurmi@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Thu, Jun 04, 2020 at 02:35:05AM +0530, Mohammed Khajapasha wrote:
+> set the pipe enum name to igt pipe from drm pipe,
+> in case of non-contiguous pipes in display, the igt pipes cann't
+> be same as enabled pipes in kernel.
+> =
 
-Series: Remove libdrm from media_spin
-URL   : https://patchwork.freedesktop.org/series/77993/
-State : success
+> Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+> ---
+>  lib/igt_kms.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> =
 
-== Summary ==
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index afef5939..a42a44c5 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -1958,10 +1958,16 @@ void igt_display_require(igt_display_t *display, =
+int drm_fd)
+>  		int p =3D 1;
+>  		int j, type;
+>  		uint8_t last_plane =3D 0, n_planes =3D 0;
+> +		struct drm_i915_get_pipe_from_crtc_id get_pipe;
+>  =
 
-CI Bug Log - changes from IGT_5695 -> IGTPW_4650
-====================================================
+>  		pipe->crtc_id =3D resources->crtcs[i];
+>  		pipe->display =3D display;
+> -		pipe->pipe =3D i;
+> +		/* Get right pipe enum from kernel for a pipe */
+> +		get_pipe.pipe =3D 0;
+> +		get_pipe.crtc_id =3D  pipe->crtc_id;
+> +		do_ioctl(display->drm_fd,
+> +				DRM_IOCTL_I915_GET_PIPE_FROM_CRTC_ID, &get_pipe);
+> +		pipe->pipe =3D get_pipe.pipe;
 
-Summary
--------
+This looks like it would break everything that currently
+assumes pipe->pipe will match the index.
 
-  **SUCCESS**
+I have a feeling that if we aren't going to do the rename from
+pipe to crtc (or whatever) then we should just add a .hw_pipe
+which reflects the actual hardware pipe used. Then any test
+which relies on hw specific things can examine that instead.
+Also reviewing all the tests for such usages of pipe is going
+to be some amount of work I imagine.
 
-  No regressions found.
+And this still wouldn't fix the problem of the logs saying
+eg. pipe B when in fact it's hw pipe C. But I don't know if
+there's any trivial solution for that.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4650/index.html
+As for the implementation, this needs an i915 check so we don't
+blow up on other drivers when using that i915 specific ioctl.
 
-New tests
----------
+>  		pipe->plane_cursor =3D -1;
+>  		pipe->plane_primary =3D -1;
+>  		pipe->planes =3D NULL;
+> -- =
 
-  New tests have been introduced between IGT_5695 and IGTPW_4650:
+> 2.24.1
+> =
 
-### New IGT tests (1) ###
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
-  * igt@i915_pm_sseu:
-    - Statuses :
-    - Exec time: [None] s
+-- =
 
-  
-
-
-Changes
--------
-
-  No changes found
-
-
-Participating hosts (50 -> 44)
-------------------------------
-
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5695 -> IGTPW_4650
-
-  CI-20190529: 20190529
-  CI_DRM_8581: a3ae560b4c2a6dfb0d550cc40471a7b0c7043500 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4650: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4650/index.html
-  IGT_5695: 53e8c878a6fb5708e63c99403691e8960b86ea9c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4650/index.html
+Ville Syrj=E4l=E4
+Intel
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
