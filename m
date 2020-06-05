@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 998CD6E849
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Jun 2020 12:11:31 +0000 (UTC)
-Date: Fri, 5 Jun 2020 15:11:28 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200605121128.GB9497@platvala-desk.ger.corp.intel.com>
-References: <20200602111330.910039-1-arkadiusz.hiler@intel.com>
- <20200602111330.910039-3-arkadiusz.hiler@intel.com>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE6F36E90B
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Jun 2020 14:18:03 +0000 (UTC)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200602111330.910039-3-arkadiusz.hiler@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 3/4] lib/igt_device_scan: Add extra
- helpers for intel_gpu_top
+In-Reply-To: <20200605054050.GA3845@zkempczy-mobl2>
+References: <20200604100353.24552-1-zbigniew.kempczynski@intel.com>
+ <20200604100353.24552-3-zbigniew.kempczynski@intel.com>
+ <159128326923.22562.7110812910455946075@build.alporthouse.com>
+ <20200605054050.GA3845@zkempczy-mobl2>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Message-ID: <159136665363.22562.6682056632364141356@build.alporthouse.com>
+Date: Fri, 05 Jun 2020 15:17:33 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/4] lib/intel_batchbuffer: add bb
+ reset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,118 +20,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Ayaz A Siddiqui <ayaz.siddiqui@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: zbigniew.kempczynski@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jun 02, 2020 at 02:13:29PM +0300, Arkadiusz Hiler wrote:
-> From: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-> 
-> Will be used in the next patch.
-> 
-> 1. set_pci_slot_name(): stores PCI_SLOT_NAME from prop to device
-> 2. igt_device_find_first_discrete_card(): try to find first discrete GPU
-> 3. igt_devices_free(): Free device buffers created during scan
-> 
-> Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> ---
->  lib/igt_device_scan.c | 80 ++++++++++++++++++++++++++++++++++++-------
->  lib/igt_device_scan.h |  7 +++-
->  2 files changed, 74 insertions(+), 13 deletions(-)
-> 
-> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> index d4c5cfdf..12fbd241 100644
-> --- a/lib/igt_device_scan.c
-> +++ b/lib/igt_device_scan.c
-> @@ -165,6 +165,7 @@ struct igt_device {
->  	/* For pci subsystem */
->  	char *vendor;
->  	char *device;
-> +	char *pci_slot_name;
->  
->  	struct igt_list_head link;
->  };
-> @@ -338,7 +339,21 @@ static void get_attrs(struct udev_device *dev, struct igt_device *idev)
->  #define is_drm_subsystem(dev)  (strequal(get_prop_subsystem(dev), "drm"))
->  #define is_pci_subsystem(dev)  (strequal(get_prop_subsystem(dev), "pci"))
->  
-> -/* Gets PCI_ID property, splits to xxxx:yyyy and stores
-> +/*
-> + * Get PCI_SLOT_NAME property, it should be in format of
-> + * xxxx:yy:zz.z
-> + */
-> +static void set_pci_slot_name(struct igt_device *dev)
-> +{
-> +	const char *pci_slot_name = get_prop(dev, "PCI_SLOT_NAME");
-> +
-> +	if (!pci_slot_name || (strlen(pci_slot_name) != PCI_SLOT_NAME_SIZE))
-> +		return;
-> +	dev->pci_slot_name = strdup(pci_slot_name);
-> +}
-> +
-> +/*
-> + * Gets PCI_ID property, splits to xxxx:yyyy and stores
->   * xxxx to dev->vendor and yyyy to dev->device for
->   * faster access.
->   */
-> @@ -411,6 +426,45 @@ static struct igt_device *igt_device_find(const char *subsystem,
->  	return NULL;
->  }
->  
-> +static void
-> +__copy_dev_to_card(struct igt_device *dev, struct igt_device_card *card)
-> +{
-> +	if (dev->subsystem != NULL)
-> +		strncpy(card->subsystem, dev->subsystem,
-> +			sizeof(card->subsystem) - 1);
-> +
-> +	if (dev->drm_card != NULL)
-> +		strncpy(card->card, dev->drm_card, sizeof(card->card) - 1);
-> +
-> +	if (dev->drm_render != NULL)
-> +		strncpy(card->render, dev->drm_render,
-> +			sizeof(card->render) - 1);
-> +
-> +	if (dev->pci_slot_name != NULL)
-> +		strncpy(card->pci_slot_name, dev->pci_slot_name,
-> +			PCI_SLOT_NAME_SIZE + 1);
-> +}
-> +
-> +/*
-> + * Iterate over all igt_devices array and find first discrete card.
-> + * card->pci_slot_name will be updated only if a discrete card is present.
-> + */
-> +void igt_device_find_first_discrete_card(struct igt_device_card *card)
-> +{
-> +	struct igt_device *dev;
-> +
-> +	igt_list_for_each_entry(dev, &igt_devs.all, link) {
-> +
-> +		if (!is_pci_subsystem(dev))
-> +			continue;
-> +
-> +		if ((strncmp(dev->pci_slot_name, INTEGRATED_GPU_PCI_ID, PCI_SLOT_NAME_SIZE)) != 0) {
-> +			__copy_dev_to_card(dev, card);
-> +			break;
-> +		}
-> +	}
-> +}
-
-Having read the intel_gpu_top patch already, I know this function is
-so it can prefer discrete over integrated i915 device if one exists
-but this is more global code. Having intel or i915 somewhere in the
-name of this function and the pci id macro would make it more clear
-what is assumed and where the assumption holds.
-
-Otherwise LGTM, so with that
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMDYtMDUgMDY6NDA6NTApCj4gT24g
+VGh1LCBKdW4gMDQsIDIwMjAgYXQgMDQ6MDc6NDlQTSArMDEwMCwgQ2hyaXMgV2lsc29uIHdyb3Rl
+Ogo+ID4gUXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMDYtMDQgMTE6MDM6NTEp
+Cj4gPiA+ICsvKioKPiA+ID4gKyAqIGludGVsX2JiX29iamVjdF9vZmZzZXRfdG9fYnVmOgo+ID4g
+PiArICogQGliYjogcG9pbnRlciB0byBpbnRlbF9iYgo+ID4gPiArICogQGJ1ZjogYnVmZmVyIHdl
+IHdhbnQgdG8gc3RvcmUgbGFzdCBleGVjIG9mZnNldCBhbmQgY29udGV4dCBpZAo+ID4gPiArICoK
+PiA+ID4gKyAqIENvcHkgb2JqZWN0IG9mZnNldCB1c2VkIGluIHRoZSBiYXRjaCB0byBpbnRlbF9i
+dWYgdG8gYWxsb3cgY2FsbGVyIHByZXBhcmUKPiA+ID4gKyAqIG90aGVyIGJhdGNoIGxpa2VseSB3
+aXRob3V0IHJlbG9jYXRpb25zLgo+ID4gPiArICovCj4gPiA+ICtib29sIGludGVsX2JiX29iamVj
+dF9vZmZzZXRfdG9fYnVmKHN0cnVjdCBpbnRlbF9iYiAqaWJiLCBzdHJ1Y3QgaW50ZWxfYnVmICpi
+dWYpCj4gPiA+ICt7Cj4gPiA+ICsgICAgICAgc3RydWN0IGRybV9pOTE1X2dlbV9leGVjX29iamVj
+dDIgb2JqZWN0ID0geyAuaGFuZGxlID0gYnVmLT5oYW5kbGUgfTsKPiA+ID4gKyAgICAgICBzdHJ1
+Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2JqZWN0MiAqKmZvdW5kOwo+ID4gPiArCj4gPiA+ICsgICAg
+ICAgaWd0X2Fzc2VydChpYmIpOwo+ID4gPiArICAgICAgIGlndF9hc3NlcnQoYnVmKTsKPiA+ID4g
+Kwo+ID4gPiArICAgICAgIGZvdW5kID0gdGZpbmQoKHZvaWQgKikgJm9iamVjdCwgJmliYi0+cm9v
+dCwgX19jb21wYXJlX29iamVjdHMpOwo+ID4gPiArICAgICAgIGlmICghZm91bmQpIHsKPiA+ID4g
+KyAgICAgICAgICAgICAgIGJ1Zi0+YWRkci5vZmZzZXQgPSAwOwo+ID4gPiArICAgICAgICAgICAg
+ICAgYnVmLT5hZGRyLmN0eCA9IDA7Cj4gPiA+ICsKPiA+ID4gKyAgICAgICAgICAgICAgIHJldHVy
+biBmYWxzZTsKPiA+ID4gKyAgICAgICB9Cj4gPiA+ICsKPiA+ID4gKyAgICAgICBidWYtPmFkZHIu
+b2Zmc2V0ID0gKCpmb3VuZCktPm9mZnNldDsKPiA+ID4gKyAgICAgICBidWYtPmFkZHIuY3R4ID0g
+aWJiLT5jdHg7Cj4gPiAKPiA+IE9rLCBzbyBpdCdzIHRyYWNraW5nIGN0eCBzbyB0aGF0IHdlIGNh
+biByZXR1cm4gdGhlIHJpZ2h0IG9mZnNldCB3aGVuIHRoZQo+ID4gYnVmZmVyIGlzIHVzZWQgYnkg
+bXVsdGlwbGUgY29udGV4dHMuIEJ1dCBjdHggaXMgbmV2ZXIgY29tcGFyZWQgaW4gdGhlCj4gPiBs
+b29rdXA/Cj4gCj4gRG8geW91IHRoaW5rIHNob3VsZCBJIGFkZCBzdWNoIG11bHRpY3R4IHRyYWNr
+aW5nIHRvIHRoZSBpbnRlbF9iYj8gSXQgd2lsbAo+IHJlcXVpcmUgYWRkaXRpb25hbCBjb2xsZWN0
+aW5nIHRyZWUgKGN1cnJlbnQgb25lIGlzIGFuIGluZGV4IHRyZWUgb3ZlciAKPiBvYmplY3RzIGFs
+bG9jYXRlZCwgc28gZm9yIGNhY2hpbmcgY3R4L2FkZHJlc3MgbmV3IG9uZSBpcyBuZWNlc3Nhcnkp
+Lgo+IEkgYXNzdW1lZCBpbnRlbF9iYl9vYmplY3RzX29mZnNldF90b19idWYoKSBpcyBlbm91Z2gg
+dG8gcHJvdmlkZSB0aGUgdXNlcgo+IGFiaWxpdHkgdG8gY29sbGVjdCB0aGUgYWRkcmVzc2VzIG9u
+IGl0cyBvd24gKGlmIGl0IHJlYWxseSByZXF1aXJlcyB0aGF0KS4KCk9rLCBzbyB0aGlzIGlzIGFu
+IGV4cG9ydC4gSSB3YXMgdGhpbmtpbmcgaXQgd2FzIGFuIGludGVybmFsIGxvb2t1cC4KCk15IG1h
+aW4gY29uY2VybiB3YXMgdGhhdCBzb21ldGhpbmcgd2FzIHVzaW5nIHRoZSBjdHgsIGFuZCB0aGF0
+IGFwcGVhcnMKdG8gYmUgc2F0aXNmaWVkLiBJIG1heSBzdWdnZXN0IHRoYXQgaXQgaXMgYmFja3dh
+cmRzIGFuZCB0aGUgY2FsbGVyCnNob3VsZCBiZSB0ZWxsaW5nIHRoZSBiYXRjaCB3aGljaCBjb250
+ZXh0IGl0IHdhcyBjb25zdHJ1Y3RlZCBmb3IsIGJ1dAp0aW1lIHdpbGwgdGVsbCA6KQotQ2hyaXMK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
