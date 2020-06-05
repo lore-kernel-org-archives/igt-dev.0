@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 04B626E05F
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Jun 2020 05:40:51 +0000 (UTC)
-Date: Fri, 5 Jun 2020 07:40:50 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20200605054050.GA3845@zkempczy-mobl2>
-References: <20200604100353.24552-1-zbigniew.kempczynski@intel.com>
- <20200604100353.24552-3-zbigniew.kempczynski@intel.com>
- <159128326923.22562.7110812910455946075@build.alporthouse.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D9786E113
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Jun 2020 11:48:16 +0000 (UTC)
+Date: Fri, 5 Jun 2020 14:48:13 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200605114813.GA9497@platvala-desk.ger.corp.intel.com>
+References: <20200602111330.910039-1-arkadiusz.hiler@intel.com>
+ <20200602111330.910039-2-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <159128326923.22562.7110812910455946075@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/4] lib/intel_batchbuffer: add bb
- reset
+In-Reply-To: <20200602111330.910039-2-arkadiusz.hiler@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/4] lib/igt_device_scan: Make
+ igt_device_scan independent from igt_core
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,44 +19,239 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBKdW4gMDQsIDIwMjAgYXQgMDQ6MDc6NDlQTSArMDEwMCwgQ2hyaXMgV2lsc29uIHdy
-b3RlOgo+IFF1b3RpbmcgWmJpZ25pZXcgS2VtcGN6ecWEc2tpICgyMDIwLTA2LTA0IDExOjAzOjUx
-KQo+ID4gKy8qKgo+ID4gKyAqIGludGVsX2JiX29iamVjdF9vZmZzZXRfdG9fYnVmOgo+ID4gKyAq
-IEBpYmI6IHBvaW50ZXIgdG8gaW50ZWxfYmIKPiA+ICsgKiBAYnVmOiBidWZmZXIgd2Ugd2FudCB0
-byBzdG9yZSBsYXN0IGV4ZWMgb2Zmc2V0IGFuZCBjb250ZXh0IGlkCj4gPiArICoKPiA+ICsgKiBD
-b3B5IG9iamVjdCBvZmZzZXQgdXNlZCBpbiB0aGUgYmF0Y2ggdG8gaW50ZWxfYnVmIHRvIGFsbG93
-IGNhbGxlciBwcmVwYXJlCj4gPiArICogb3RoZXIgYmF0Y2ggbGlrZWx5IHdpdGhvdXQgcmVsb2Nh
-dGlvbnMuCj4gPiArICovCj4gPiArYm9vbCBpbnRlbF9iYl9vYmplY3Rfb2Zmc2V0X3RvX2J1Zihz
-dHJ1Y3QgaW50ZWxfYmIgKmliYiwgc3RydWN0IGludGVsX2J1ZiAqYnVmKQo+ID4gK3sKPiA+ICsg
-ICAgICAgc3RydWN0IGRybV9pOTE1X2dlbV9leGVjX29iamVjdDIgb2JqZWN0ID0geyAuaGFuZGxl
-ID0gYnVmLT5oYW5kbGUgfTsKPiA+ICsgICAgICAgc3RydWN0IGRybV9pOTE1X2dlbV9leGVjX29i
-amVjdDIgKipmb3VuZDsKPiA+ICsKPiA+ICsgICAgICAgaWd0X2Fzc2VydChpYmIpOwo+ID4gKyAg
-ICAgICBpZ3RfYXNzZXJ0KGJ1Zik7Cj4gPiArCj4gPiArICAgICAgIGZvdW5kID0gdGZpbmQoKHZv
-aWQgKikgJm9iamVjdCwgJmliYi0+cm9vdCwgX19jb21wYXJlX29iamVjdHMpOwo+ID4gKyAgICAg
-ICBpZiAoIWZvdW5kKSB7Cj4gPiArICAgICAgICAgICAgICAgYnVmLT5hZGRyLm9mZnNldCA9IDA7
-Cj4gPiArICAgICAgICAgICAgICAgYnVmLT5hZGRyLmN0eCA9IDA7Cj4gPiArCj4gPiArICAgICAg
-ICAgICAgICAgcmV0dXJuIGZhbHNlOwo+ID4gKyAgICAgICB9Cj4gPiArCj4gPiArICAgICAgIGJ1
-Zi0+YWRkci5vZmZzZXQgPSAoKmZvdW5kKS0+b2Zmc2V0Owo+ID4gKyAgICAgICBidWYtPmFkZHIu
-Y3R4ID0gaWJiLT5jdHg7Cj4gCj4gT2ssIHNvIGl0J3MgdHJhY2tpbmcgY3R4IHNvIHRoYXQgd2Ug
-Y2FuIHJldHVybiB0aGUgcmlnaHQgb2Zmc2V0IHdoZW4gdGhlCj4gYnVmZmVyIGlzIHVzZWQgYnkg
-bXVsdGlwbGUgY29udGV4dHMuIEJ1dCBjdHggaXMgbmV2ZXIgY29tcGFyZWQgaW4gdGhlCj4gbG9v
-a3VwPwoKRG8geW91IHRoaW5rIHNob3VsZCBJIGFkZCBzdWNoIG11bHRpY3R4IHRyYWNraW5nIHRv
-IHRoZSBpbnRlbF9iYj8gSXQgd2lsbApyZXF1aXJlIGFkZGl0aW9uYWwgY29sbGVjdGluZyB0cmVl
-IChjdXJyZW50IG9uZSBpcyBhbiBpbmRleCB0cmVlIG92ZXIgCm9iamVjdHMgYWxsb2NhdGVkLCBz
-byBmb3IgY2FjaGluZyBjdHgvYWRkcmVzcyBuZXcgb25lIGlzIG5lY2Vzc2FyeSkuCkkgYXNzdW1l
-ZCBpbnRlbF9iYl9vYmplY3RzX29mZnNldF90b19idWYoKSBpcyBlbm91Z2ggdG8gcHJvdmlkZSB0
-aGUgdXNlcgphYmlsaXR5IHRvIGNvbGxlY3QgdGhlIGFkZHJlc3NlcyBvbiBpdHMgb3duIChpZiBp
-dCByZWFsbHkgcmVxdWlyZXMgdGhhdCkuCgotLQpaYmlnbmlldwogCj4gCj4gW1RoZXJlJ3MgYWxz
-byB0aGUgcHJvYmxlbSBvZiB1aW50MzJfdCBjdHggcmV1c2UsIGV4Y2VwdCB0aGVyZSBpdCBjYW4K
-PiBwcm9iYWJseSBoYXBwaWx5IGluaGVyaXQgdGhlIG9sZCBhZGRyLl0KPiAtQ2hyaXMKCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGlu
-ZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+On Tue, Jun 02, 2020 at 02:13:28PM +0300, Arkadiusz Hiler wrote:
+> From: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+> =
+
+> igt_device_scan can now be used as a separate library which only depends
+> glib and libudev - some IGT internals are being stubbed in this case.
+> =
+
+> v2: (mostly) sort includes (Lucas)
+> =
+
+> Cc: Lucas De Marchi <lucas.de.marchi@gmail.com>
+> Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+> Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+> ---
+>  lib/Makefile.am       |  8 ++++++-
+>  lib/drmtest.c         |  1 +
+>  lib/igt_device_scan.c | 11 +++++-----
+>  lib/igt_device_scan.h |  8 ++++++-
+>  lib/igt_tools_stub.c  | 51 +++++++++++++++++++++++++++++++++++++++++++
+>  lib/meson.build       | 15 +++++++++++++
+>  6 files changed, 86 insertions(+), 8 deletions(-)
+>  create mode 100644 lib/igt_tools_stub.c
+> =
+
+> diff --git a/lib/Makefile.am b/lib/Makefile.am
+> index fba7fcab..e9753d3c 100644
+> --- a/lib/Makefile.am
+> +++ b/lib/Makefile.am
+> @@ -102,6 +102,12 @@ include Makefile.sources
+>  =
+
+>  libintel_tools_la_SOURCES =3D $(lib_source_list)
+>  =
+
+> +libigt_device_scan_la_SOURCES =3D \
+> +	igt_list.c		\
+> +	igt_tools_stub.c	\
+> +	igt_device_scan.c	\
+> +	igt_device_scan.h
+> +
+>  libigt_perf_la_SOURCES =3D \
+>  	igt_perf.c	 \
+>  	igt_perf.h
+> @@ -121,7 +127,7 @@ pkgconfig_DATA =3D i915-perf.pc
+>  =
+
+>  lib_LTLIBRARIES =3D libi915_perf.la
+>  =
+
+> -noinst_LTLIBRARIES =3D libintel_tools.la libigt_perf.la
+> +noinst_LTLIBRARIES =3D libintel_tools.la libigt_perf.la libigt_device_sc=
+an.la
+>  noinst_HEADERS =3D check-ndebug.h
+>  =
+
+>  if !HAVE_LIBDRM_INTEL
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index 70fd64c9..e4e710d4 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -55,6 +55,7 @@
+>  #include "igt_device.h"
+>  #include "igt_gt.h"
+>  #include "igt_kmod.h"
+> +#include "igt_params.h"
+>  #include "igt_sysfs.h"
+>  #include "igt_device_scan.h"
+>  #include "version.h"
+> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+> index 7b0fc00e..d4c5cfdf 100644
+> --- a/lib/igt_device_scan.c
+> +++ b/lib/igt_device_scan.c
+> @@ -22,18 +22,17 @@
+>   *
+>   */
+>  =
+
+> -#include "igt.h"
+> -#include "igt_list.h"
+> -#include "igt_sysfs.h"
+> -#include "igt_device.h"
+> +#include "igt_core.h"
+>  #include "igt_device_scan.h"
+> +#include "igt_list.h"
+> +
+> +#include <dirent.h>
+> +#include <fcntl.h>
+>  #include <glib.h>
+>  #include <libudev.h>
+>  #include <linux/limits.h>
+>  #include <sys/stat.h>
+>  #include <sys/types.h>
+> -#include <dirent.h>
+> -#include <fcntl.h>
+>  =
+
+>  /**
+>   * SECTION:igt_device_scan
+> diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
+> index 24eafe62..3526f1da 100644
+> --- a/lib/igt_device_scan.h
+> +++ b/lib/igt_device_scan.h
+> @@ -25,8 +25,14 @@
+>  #ifndef __IGT_DEVICE_SCAN_H__
+>  #define __IGT_DEVICE_SCAN_H__
+>  =
+
+> +#include <errno.h>
+> +#include <fcntl.h>
+> +#include <getopt.h>
+>  #include <limits.h>
+> -#include <igt.h>
+> +#include <stdbool.h>
+> +#include <stdint.h>
+> +#include <stdio.h>
+> +#include <unistd.h>
+>  =
+
+>  enum igt_devices_print_type {
+>  	IGT_PRINT_SIMPLE,
+> diff --git a/lib/igt_tools_stub.c b/lib/igt_tools_stub.c
+> new file mode 100644
+> index 00000000..9a0ec621
+> --- /dev/null
+> +++ b/lib/igt_tools_stub.c
+> @@ -0,0 +1,51 @@
+> +/*
+> + * Copyright =A9 2020 Intel Corporation
+> + *
+> + * Permission is hereby granted, free of charge, to any person obtaining=
+ a
+> + * copy of this software and associated documentation files (the "Softwa=
+re"),
+> + * to deal in the Software without restriction, including without limita=
+tion
+> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
+se,
+> + * and/or sell copies of the Software, and to permit persons to whom the
+> + * Software is furnished to do so, subject to the following conditions:
+> + *
+> + * The above copyright notice and this permission notice (including the =
+next
+> + * paragraph) shall be included in all copies or substantial portions of=
+ the
+> + * Software.
+> + *
+> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
+SS OR
+> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
+TY,
+> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
+ALL
+> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
+OTHER
+> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
+NG
+> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
+EALINGS
+> + * IN THE SOFTWARE.
+> + *
+> + */
+> +#include "igt_core.h"
+> +
+> +/* Stub for igt_log, this stub will simply print the msg on stderr devic=
+e.
+> + * Domain and log level are ignored.
+> + */
+> +
+> +void igt_log(const char *domain, enum igt_log_level level, const char *f=
+ormat, ...)
+> +{
+> +	va_list args;
+> +
+> +	va_start(args, format);
+> +	vfprintf(stderr, format, args);
+> +	va_end(args);
+> +}
+> +
+> +
+> +/* Stub for __igt_fail_assert, this stub will simply print the msg on st=
+derr device and
+> + * exit the application, domain and log level are ignored.
+> + */
+> +
+> +void __igt_fail_assert(const char *domain, const char *file,
+> +		       const int line, const char *func, const char *assertion,
+> +		       const char *format, ...)
+> +{
+> +	fprintf(stderr, "%s: %d %s Failed assertion: %s\n", file, line,
+> +		func, assertion);
+> +	exit(1);
+> +}
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 99aee6ee..6cf78663 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -172,6 +172,21 @@ lib_igt_perf_build =3D static_library('igt_perf',
+>  lib_igt_perf =3D declare_dependency(link_with : lib_igt_perf_build,
+>  				  include_directories : inc)
+>  =
+
+> +scan_dep =3D [
+> +	glib,
+> +	libudev,
+> +]
+> +
+> +lib_igt_device_scan_build =3D static_library('igt_device_scan',
+> +	['igt_device_scan.c',
+> +	'igt_list.c',
+> +	'igt_tools_stub.c',
+> +	],
+> +	dependencies : scan_dep,
+> +	include_directories : inc)
+> +
+> +lib_igt_device_scan =3D declare_dependency(link_with : lib_igt_device_sc=
+an_build,
+> +				  include_directories : inc)
+>  =
+
+
+
+
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
