@@ -1,12 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF6366E4A6
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Jun 2020 08:37:08 +0000 (UTC)
+References: <20200601084000.31583-1-ankit.k.nautiyal@intel.com>
+ <20200601084000.31583-2-ankit.k.nautiyal@intel.com>
+ <20200601104143.GA20219@intel.com>
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+Message-ID: <d126ebb3-2f22-35dc-46f9-3ef467b1fae8@intel.com>
+Date: Mon, 8 Jun 2020 14:07:04 +0530
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Sat, 06 Jun 2020 11:44:50 -0000
-Message-ID: <159144389083.20628.17679830949205815342@emeril.freedesktop.org>
-References: <20200606090858.2137564-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200606090858.2137564-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fhuc=5Fcopy=3A_Enable_a_HuC_copy_test?=
+In-Reply-To: <20200601104143.GA20219@intel.com>
+Subject: Re: [igt-dev] [RFC i-g-t 1/2] tests/kms_content_protection:
+ Bifurcate tests into HDCP1.4 & 2.2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,385 +19,375 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: Ramalingam C <ramalingam.c@intel.com>
+Cc: igt-dev@lists.freedesktop.org, jani.nikula@intel.com, petri.latvala@intel.com, martin.peres@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Hi Ram,
+
+Thanks for the review comments and suggestions.
+
+I agree to the suggested changes and will be sending version-2, with 
+these addressed.
+
+Please find the responses inline.
+
+
+On 6/1/2020 4:11 PM, Ramalingam C wrote:
+> On 2020-06-01 at 14:09:59 +0530, Ankit Nautiyal wrote:
+>> Currently, the test kms_content_protection does not distinguish
+>> between HDCP1.4 and HDCP2.2 tests. Since the driver by default
+>> always chooses HDCP2.2 protocol if the panel supports HDCP1.4 &
+>> HDCP2.2, HDCP1.4 does not get tested.
+>>
+>> This patch makes two versions of the existing subtests for testing
+>> HDCP1.4 and HDCP2.2. For making sure that the required HDCP version
+>> is chosen by the kernel, the test utilizes the debugfs
+>> 'i915_hdcp_version_request' for each HDCP supporting connector.
+>> The desired HDCP version is written via the debugfs and is considered
+>> by the kernel, if the platform and the panel support that
+>> HDCP version.
+>>
+>> This patch also makes the existing subtests as dynamic sub-subtests
+>> based on all outputs supporting the protocol under test.
+>>
+>> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+>> ---
+>>   tests/kms_content_protection.c | 230 ++++++++++++++++++++++-----------
+>>   1 file changed, 158 insertions(+), 72 deletions(-)
+>>
+>> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+>> index 3b9cedcb..a6a64a28 100644
+>> --- a/tests/kms_content_protection.c
+>> +++ b/tests/kms_content_protection.c
+>> @@ -59,6 +59,9 @@ struct data {
+>>   #define HDCP_CONTENT_TYPE_0				0
+>>   #define HDCP_CONTENT_TYPE_1				1
+>>   
+>> +#define HDCP_14						1
+>> +#define HDCP_22						2
+>> +
+>>   #define LIC_PERIOD_MSEC				(4 * 1000)
+>>   /* Kernel retry count=3, Max time per authentication allowed = 6Sec */
+>>   #define KERNEL_AUTH_TIME_ALLOWED_MSEC		(3 *  6 * 1000)
+>> @@ -593,44 +596,6 @@ static bool sink_hdcp2_capable(igt_output_t *output)
+>>   	return strstr(buf, "HDCP2.2");
+>>   }
+>>   
+>> -static void
+>> -test_content_protection(enum igt_commit_style s, int content_type)
+>> -{
+>> -	igt_display_t *display = &data.display;
+>> -	igt_output_t *output;
+>> -	int valid_tests = 0;
+>> -
+>> -	if (data.cp_tests & CP_MEI_RELOAD)
+>> -		igt_require_f(igt_kmod_is_loaded("mei_hdcp"),
+>> -			      "mei_hdcp module is not loaded\n");
+>> -
+>> -	for_each_connected_output(display, output) {
+>> -		if (!output->props[IGT_CONNECTOR_CONTENT_PROTECTION])
+>> -			continue;
+>> -
+>> -		if (!output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE] &&
+>> -		    content_type)
+>> -			continue;
+>> -
+>> -		igt_info("CP Test execution on %s\n", output->name);
+>> -
+>> -		if (content_type && !sink_hdcp2_capable(output)) {
+>> -			igt_info("\tSkip %s (Sink has no HDCP2.2 support)\n",
+>> -				 output->name);
+>> -			continue;
+>> -		} else if (!sink_hdcp_capable(output)) {
+>> -			igt_info("\tSkip %s (Sink has no HDCP support)\n",
+>> -				 output->name);
+>> -			continue;
+>> -		}
+>> -
+>> -		test_content_protection_on_output(output, s, content_type);
+>> -		valid_tests++;
+>> -	}
+>> -
+>> -	igt_require_f(valid_tests, "No connector found with HDCP capability\n");
+>> -}
+>> -
+>>   static void test_content_protection_cleanup(void)
+>>   {
+>>   	igt_display_t *display = &data.display;
+>> @@ -651,58 +616,63 @@ static void test_content_protection_cleanup(void)
+>>   	}
+>>   }
+>>   
+>> -igt_main
+>> -{
+>> -	igt_fixture {
+>> -		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>> +static bool
+>> +is_valid_output(igt_output_t *output, int content_type) {
+>> +	if (!output->props[IGT_CONNECTOR_CONTENT_PROTECTION])
+>> +		return false;
+>>   
+>> -		igt_display_require(&data.display, data.drm_fd);
+>> +	if (!output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE] && content_type)
+>> +		return false;
+>> +
+>> +	if (content_type && !sink_hdcp2_capable(output)) {
+>> +		igt_info("\tSkip %s (Sink has no HDCP2.2 support)\n",
+>> +			 output->name);
+>> +		return false;
+>> +
+>> +	} else if (!sink_hdcp_capable(output)) {
+>> +		igt_info("\tSkip %s (Sink has no HDCP support)\n",
+>> +			 output->name);
+>> +		return false;
+>>   	}
+>> +	return true;
+>> +}
+>> +
+>> +static void
+>> +test_content_protection_dynamic(igt_output_t *output, int content_type)
+>> +{
+>>   
+>> -	igt_subtest("legacy") {
+>> +	igt_dynamic_f("legacy-%s", output->name) {
+>>   		data.cp_tests = 0;
+>> -		test_content_protection(COMMIT_LEGACY, HDCP_CONTENT_TYPE_0);
+>> +		test_content_protection_on_output(output, COMMIT_LEGACY,
+>> +						  content_type);
+>>   	}
+>>   
+>> -	igt_subtest("atomic") {
+>> +	igt_dynamic_f("atomic-%s", output->name) {
+>>   		igt_require(data.display.is_atomic);
+>>   		data.cp_tests = 0;
+>> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
+>> +		test_content_protection_on_output(output, COMMIT_ATOMIC,
+>> +						  content_type);
+>>   	}
+>>   
+>> -	igt_subtest("atomic-dpms") {
+>> +	igt_dynamic_f("atomic-dpms-%s", output->name) {
+>>   		igt_require(data.display.is_atomic);
+>>   		data.cp_tests = CP_DPMS;
+>> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
+>> +		test_content_protection_on_output(output, COMMIT_ATOMIC,
+>> +						  content_type);
+>>   	}
+>>   
+>> -	igt_subtest("LIC") {
+>> +	igt_dynamic_f("LIC-%s", output->name) {
+>>   		igt_require(data.display.is_atomic);
+>>   		data.cp_tests = CP_LIC;
+>> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
+>> -	}
+>> -
+>> -	igt_subtest("type1") {
+>> -		igt_require(data.display.is_atomic);
+>> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
+>> -	}
+>> -
+>> -	igt_subtest("mei_interface") {
+>> -		igt_require(data.display.is_atomic);
+>> -		data.cp_tests = CP_MEI_RELOAD;
+>> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
+>> +		test_content_protection_on_output(output, COMMIT_ATOMIC,
+>> +						  content_type);
+>>   	}
+>>   
+>> -	igt_subtest("content_type_change") {
+>> -		igt_require(data.display.is_atomic);
+>> -		data.cp_tests = CP_TYPE_CHANGE;
+>> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_1);
+>> -	}
+>> -
+>> -	igt_subtest("uevent") {
+>> +	igt_dynamic_f("uevent-%s", output->name) {
+>>   		igt_require(data.display.is_atomic);
+>>   		data.cp_tests = CP_UEVENT;
+>> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
+>> +		test_content_protection_on_output(output, COMMIT_ATOMIC,
+>> +						  content_type);
+>>   	}
+>>   
+>>   	/*
+>> @@ -713,7 +683,7 @@ igt_main
+>>   	 *  either of these options, we test SRM writing from userspace and
+>>   	 *  validation of the same at kernel. Something is better than nothing.
+>>   	 */
+>> -	igt_subtest("srm") {
+>> +	igt_dynamic_f("srm-%s", output->name) {
+>>   		bool ret;
+>>   
+>>   		igt_require(data.display.is_atomic);
+>> @@ -721,7 +691,123 @@ igt_main
+>>   		ret = write_srm_as_fw((const __u8 *)facsimile_srm,
+>>   				      sizeof(facsimile_srm));
+>>   		igt_assert_f(ret, "SRM update failed");
+>> -		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
+>> +		test_content_protection_on_output(output, COMMIT_ATOMIC,
+>> +						  content_type);
+>> +	}
+>> +
+>> +	/*
+>> +	 * The tests mei_interface and content_type_change are meant only
+>> +	 * for HDCP2.2 protocol, hence ignore for HDCP1.4.
+>> +	 */
+>> +	if (content_type != HDCP_CONTENT_TYPE_1)
+>> +		return;
+> Hope this will be sufficient for not to create the dynamic subtest as
+> hdcp1.4 + mei_interface....
+
+Yes, with this we see, the test is not enumerated for mei_interface and 
+'content_type_change'
+
+
+>> +
+>> +	igt_dynamic_f("mei_interface-%s", output->name) {
+>> +		igt_require(data.display.is_atomic);
+>> +		data.cp_tests = CP_MEI_RELOAD;
+>> +		test_content_protection_on_output(output, COMMIT_ATOMIC,
+>> +						  content_type);
+>> +	}
+>> +
+>> +	igt_dynamic_f("content_type_change-%s", output->name) {
+>> +		igt_require(data.display.is_atomic);
+>> +		data.cp_tests = CP_TYPE_CHANGE;
+>> +		test_content_protection_on_output(output, COMMIT_ATOMIC,
+>> +						  content_type);
+>> +	}
+>> +}
+>> +
+>> +static int request_hdcp_ver(igt_output_t *output, int hdcp_ver)
+>> +{
+>> +	char wrbuf[32] = {'0'};
+>> +	char rdbuf[32] = {'0'};
+>> +	char filename[128] = {'0'};
+>> +	char *read_ver_str;
+>> +	int fd, ret;
+>> +	unsigned int wr_ver, rd_ver;
+>> +
+>> +	fd = igt_debugfs_dir(data.drm_fd);
+>> +
+>> +	if (fd < 0) {
+>> +		igt_info("Failed to open debugfs dir ret = %d\n", errno);
+>> +		return errno;
+>> +	}
+>> +	wr_ver = hdcp_ver;
+> wr_ver is redundant. We can use the hdcp_ver itself.
+
+Agreed.
+
+>> +	snprintf(wrbuf, sizeof(wrbuf), "%d", wr_ver);
+>> +	strcpy(filename, output->name);
+>> +	strcat(filename, "/i915_hdcp_version_request");
+>> +	ret = igt_sysfs_write(fd, filename, wrbuf, 1);
+>> +	if (ret <= 0) {
+>> +		igt_info("Failed to write into debugfs ret = %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	close(fd);
+> Can't we do the write and read on same fd? why do we clsoe and reopen?
+
+You are right, thanks for pointing this out. Will be fixing in next version.
+
+>> +
+>> +	fd = igt_debugfs_connector_dir(data.drm_fd, output->name, O_RDONLY);
+>> +	if (fd < 0) {
+>> +		igt_info("Failed to open debugfs for read ret = %d", errno);
+>> +		return errno;
+>> +	}
+>> +
+>> +	debugfs_read(fd, "i915_hdcp_version_request", rdbuf);
+>> +	igt_debug("%s\n", rdbuf);
+>> +
+>> +	close(fd);
+>> +
+>> +	read_ver_str = strstr(rdbuf, "HDCP_VER_FLAGS: ");
+>> +	if (!read_ver_str)
+>> +		return -1;
+>> +
+>> +	igt_debug("HDCP ver = %s\n", read_ver_str + strlen("HDCP_VER_FLAGS: "));
+>> +
+>> +	rd_ver = atoi(read_ver_str + strlen("HDCP_VER_FLAGS: "));
+>> +	if (rd_ver != wr_ver)
+> can use the hdcp_ver itself.
+
+Agreed.
+
+Also, I have realized, reading from debugfs after write is unnecessary, 
+so I will be
+
+first reading the debugfs for the version, and return if its already 
+set, as what is required.
+
+Otherwise simply write the requested hdcp version and check if write was 
+successful.
+
+
+Regards,
+Ankit
+
+> Approach looks good to me..
+>
+> -Ram
+>> +		return -1;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +igt_main
+>> +{
+>> +	int i;
+>> +	struct cp_protocol {
+>> +		const char *name;
+>> +		int content_type;
+>> +		int version;
+>> +	} hdcp_protocol[] = {
+>> +		{ "hdcp-1_4", HDCP_CONTENT_TYPE_0, HDCP_14},
+>> +		{ "hdcp-2_2", HDCP_CONTENT_TYPE_1, HDCP_22} };
+>> +
+>> +	igt_fixture {
+>> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>> +
+>> +		igt_display_require(&data.display, data.drm_fd);
+>> +	}
+>> +
+>> +	for (i = 0; i < ARRAY_SIZE(hdcp_protocol); i++) {
+>> +		igt_subtest_with_dynamic_f("%s", hdcp_protocol[i].name) {
+>> +			igt_output_t *output;
+>> +			int content_type = hdcp_protocol[i].content_type;
+>> +
+>> +			for_each_connected_output(&data.display, output) {
+>> +				int ret;
+>> +
+>> +				if (!is_valid_output(output, content_type))
+>> +					continue;
+>> +				ret = request_hdcp_ver(output,
+>> +						       hdcp_protocol[i].version);
+>> +				if (ret) {
+>> +					igt_info("Cannot set the required version for %s\n",
+>> +						 output->name);
+>> +					continue;
+>> +				}
+>> +				test_content_protection_dynamic(output,
+>> +								content_type);
+>> +
+>> +				/* TODO: Revert to older HDCP ver that was set, previously */
+>> +			}
+>> +		}
+>>   	}
+>>   
+>>   	igt_fixture {
+>> -- 
+>> 2.17.1
+>>
 
-Series: i915/gem_huc_copy: Enable a HuC copy test
-URL   : https://patchwork.freedesktop.org/series/78063/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_8596_full -> IGTPW_4654_full
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/index.html
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_4654_full:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * {igt@gem_huc_copy@huc-copy} (NEW):
-    - shard-tglb:         NOTRUN -> [FAIL][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-tglb7/igt@gem_huc_copy@huc-copy.html
-
-  * {igt@gem_huc_copy@huc-load} (NEW):
-    - shard-iclb:         NOTRUN -> [SKIP][2] +1 similar issue
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-iclb2/igt@gem_huc_copy@huc-load.html
-    - shard-tglb:         NOTRUN -> [SKIP][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-tglb6/igt@gem_huc_copy@huc-load.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_8596_full and IGTPW_4654_full:
-
-### New IGT tests (2) ###
-
-  * igt@gem_huc_copy@huc-copy:
-    - Statuses : 1 fail(s) 6 skip(s)
-    - Exec time: [0.0, 0.02] s
-
-  * igt@gem_huc_copy@huc-load:
-    - Statuses : 7 skip(s)
-    - Exec time: [0.0] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4654_full that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_busy@close-race:
-    - shard-tglb:         [PASS][4] -> [DMESG-WARN][5] ([i915#402]) +1 similar issue
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-tglb2/igt@gem_busy@close-race.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-tglb1/igt@gem_busy@close-race.html
-
-  * igt@gem_exec_reloc@basic-cpu-gtt:
-    - shard-snb:          [PASS][6] -> [TIMEOUT][7] ([i915#1958]) +4 similar issues
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-snb1/igt@gem_exec_reloc@basic-cpu-gtt.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-snb2/igt@gem_exec_reloc@basic-cpu-gtt.html
-
-  * igt@kms_big_fb@x-tiled-8bpp-rotate-180:
-    - shard-apl:          [PASS][8] -> [DMESG-WARN][9] ([i915#1982])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-apl8/igt@kms_big_fb@x-tiled-8bpp-rotate-180.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-apl3/igt@kms_big_fb@x-tiled-8bpp-rotate-180.html
-
-  * igt@kms_cursor_crc@pipe-a-cursor-128x128-random:
-    - shard-hsw:          [PASS][10] -> [TIMEOUT][11] ([i915#1958]) +3 similar issues
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-hsw7/igt@kms_cursor_crc@pipe-a-cursor-128x128-random.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-hsw5/igt@kms_cursor_crc@pipe-a-cursor-128x128-random.html
-
-  * igt@kms_cursor_crc@pipe-a-cursor-64x64-offscreen:
-    - shard-kbl:          [PASS][12] -> [DMESG-FAIL][13] ([i915#54] / [i915#95]) +1 similar issue
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-kbl3/igt@kms_cursor_crc@pipe-a-cursor-64x64-offscreen.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-kbl4/igt@kms_cursor_crc@pipe-a-cursor-64x64-offscreen.html
-
-  * igt@kms_cursor_crc@pipe-a-cursor-suspend:
-    - shard-tglb:         [PASS][14] -> [INCOMPLETE][15] ([i915#1602] / [i915#456])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-tglb7/igt@kms_cursor_crc@pipe-a-cursor-suspend.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-tglb1/igt@kms_cursor_crc@pipe-a-cursor-suspend.html
-
-  * igt@kms_cursor_legacy@cursor-vs-flip-atomic-transitions:
-    - shard-apl:          [PASS][16] -> [DMESG-WARN][17] ([i915#95]) +32 similar issues
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-apl1/igt@kms_cursor_legacy@cursor-vs-flip-atomic-transitions.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-apl7/igt@kms_cursor_legacy@cursor-vs-flip-atomic-transitions.html
-
-  * igt@kms_flip_tiling@flip-changes-tiling:
-    - shard-apl:          [PASS][18] -> [DMESG-FAIL][19] ([i915#95]) +2 similar issues
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-apl1/igt@kms_flip_tiling@flip-changes-tiling.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-apl6/igt@kms_flip_tiling@flip-changes-tiling.html
-
-  * igt@kms_flip_tiling@flip-changes-tiling-yf:
-    - shard-kbl:          [PASS][20] -> [DMESG-FAIL][21] ([i915#95]) +1 similar issue
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-kbl3/igt@kms_flip_tiling@flip-changes-tiling-yf.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-kbl1/igt@kms_flip_tiling@flip-changes-tiling-yf.html
-
-  * igt@kms_plane@plane-panning-bottom-right-suspend-pipe-c-planes:
-    - shard-kbl:          [PASS][22] -> [DMESG-WARN][23] ([i915#180]) +3 similar issues
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-kbl3/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-c-planes.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-kbl2/igt@kms_plane@plane-panning-bottom-right-suspend-pipe-c-planes.html
-
-  * igt@kms_plane_alpha_blend@pipe-a-constant-alpha-mid:
-    - shard-kbl:          [PASS][24] -> [DMESG-FAIL][25] ([fdo#108145] / [i915#95])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-kbl2/igt@kms_plane_alpha_blend@pipe-a-constant-alpha-mid.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-kbl2/igt@kms_plane_alpha_blend@pipe-a-constant-alpha-mid.html
-    - shard-apl:          [PASS][26] -> [DMESG-FAIL][27] ([fdo#108145] / [i915#95])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-apl4/igt@kms_plane_alpha_blend@pipe-a-constant-alpha-mid.html
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-apl8/igt@kms_plane_alpha_blend@pipe-a-constant-alpha-mid.html
-
-  * igt@kms_psr@psr2_sprite_blt:
-    - shard-iclb:         [PASS][28] -> [SKIP][29] ([fdo#109441])
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-iclb2/igt@kms_psr@psr2_sprite_blt.html
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-iclb6/igt@kms_psr@psr2_sprite_blt.html
-
-  * igt@syncobj_basic@bad-flags-fd-to-handle:
-    - shard-kbl:          [PASS][30] -> [DMESG-WARN][31] ([i915#93] / [i915#95]) +36 similar issues
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-kbl2/igt@syncobj_basic@bad-flags-fd-to-handle.html
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-kbl2/igt@syncobj_basic@bad-flags-fd-to-handle.html
-
-  
-#### Possible fixes ####
-
-  * {igt@gem_exec_schedule@implicit-write-read@rcs0}:
-    - shard-snb:          [INCOMPLETE][32] ([i915#82]) -> [PASS][33] +1 similar issue
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-snb4/igt@gem_exec_schedule@implicit-write-read@rcs0.html
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-snb2/igt@gem_exec_schedule@implicit-write-read@rcs0.html
-
-  * igt@gem_exec_whisper@basic-normal:
-    - shard-glk:          [DMESG-WARN][34] ([i915#118] / [i915#95]) -> [PASS][35] +1 similar issue
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-glk7/igt@gem_exec_whisper@basic-normal.html
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-glk8/igt@gem_exec_whisper@basic-normal.html
-
-  * igt@gem_workarounds@suspend-resume-fd:
-    - shard-tglb:         [INCOMPLETE][36] ([i915#1602] / [i915#456]) -> [PASS][37]
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-tglb3/igt@gem_workarounds@suspend-resume-fd.html
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-tglb2/igt@gem_workarounds@suspend-resume-fd.html
-
-  * igt@i915_pm_dc@dc3co-vpb-simulation:
-    - shard-tglb:         [SKIP][38] ([i915#1904]) -> [PASS][39]
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-tglb2/igt@i915_pm_dc@dc3co-vpb-simulation.html
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-tglb6/igt@i915_pm_dc@dc3co-vpb-simulation.html
-
-  * igt@i915_pm_dc@dc5-psr:
-    - shard-iclb:         [FAIL][40] ([i915#1899]) -> [PASS][41]
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-iclb8/igt@i915_pm_dc@dc5-psr.html
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-iclb1/igt@i915_pm_dc@dc5-psr.html
-
-  * igt@i915_suspend@forcewake:
-    - shard-glk:          [INCOMPLETE][42] ([i915#58] / [k.org#198133]) -> [PASS][43]
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-glk9/igt@i915_suspend@forcewake.html
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-glk2/igt@i915_suspend@forcewake.html
-
-  * igt@kms_big_fb@x-tiled-16bpp-rotate-0:
-    - shard-glk:          [DMESG-WARN][44] ([i915#1982]) -> [PASS][45]
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-glk5/igt@kms_big_fb@x-tiled-16bpp-rotate-0.html
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-glk4/igt@kms_big_fb@x-tiled-16bpp-rotate-0.html
-
-  * igt@kms_color@pipe-d-ctm-0-5:
-    - shard-tglb:         [DMESG-WARN][46] ([i915#1149] / [i915#402]) -> [PASS][47]
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-tglb1/igt@kms_color@pipe-d-ctm-0-5.html
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-tglb2/igt@kms_color@pipe-d-ctm-0-5.html
-
-  * igt@kms_cursor_crc@pipe-a-cursor-64x21-offscreen:
-    - shard-kbl:          [DMESG-FAIL][48] ([i915#54] / [i915#95]) -> [PASS][49] +2 similar issues
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-kbl4/igt@kms_cursor_crc@pipe-a-cursor-64x21-offscreen.html
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-kbl7/igt@kms_cursor_crc@pipe-a-cursor-64x21-offscreen.html
-
-  * igt@kms_cursor_legacy@pipe-c-torture-move:
-    - shard-hsw:          [DMESG-WARN][50] ([i915#128]) -> [PASS][51]
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-hsw1/igt@kms_cursor_legacy@pipe-c-torture-move.html
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-hsw1/igt@kms_cursor_legacy@pipe-c-torture-move.html
-
-  * igt@kms_cursor_legacy@short-flip-after-cursor-atomic-transitions-varying-size:
-    - shard-apl:          [DMESG-WARN][52] ([i915#1982]) -> [PASS][53] +1 similar issue
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-apl6/igt@kms_cursor_legacy@short-flip-after-cursor-atomic-transitions-varying-size.html
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-apl7/igt@kms_cursor_legacy@short-flip-after-cursor-atomic-transitions-varying-size.html
-
-  * igt@kms_draw_crc@draw-method-rgb565-mmap-gtt-xtiled:
-    - shard-snb:          [TIMEOUT][54] ([i915#1958]) -> [PASS][55]
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-snb5/igt@kms_draw_crc@draw-method-rgb565-mmap-gtt-xtiled.html
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-snb5/igt@kms_draw_crc@draw-method-rgb565-mmap-gtt-xtiled.html
-
-  * igt@kms_draw_crc@draw-method-xrgb8888-mmap-gtt-untiled:
-    - shard-apl:          [DMESG-FAIL][56] ([i915#54] / [i915#95]) -> [PASS][57] +1 similar issue
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-apl2/igt@kms_draw_crc@draw-method-xrgb8888-mmap-gtt-untiled.html
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-apl4/igt@kms_draw_crc@draw-method-xrgb8888-mmap-gtt-untiled.html
-
-  * {igt@kms_flip@flip-vs-suspend-interruptible@a-dp1}:
-    - shard-kbl:          [DMESG-WARN][58] ([i915#180]) -> [PASS][59] +5 similar issues
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-kbl1/igt@kms_flip@flip-vs-suspend-interruptible@a-dp1.html
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-kbl7/igt@kms_flip@flip-vs-suspend-interruptible@a-dp1.html
-    - shard-apl:          [DMESG-WARN][60] ([i915#180]) -> [PASS][61] +1 similar issue
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-apl4/igt@kms_flip@flip-vs-suspend-interruptible@a-dp1.html
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-apl2/igt@kms_flip@flip-vs-suspend-interruptible@a-dp1.html
-
-  * igt@kms_flip_tiling@flip-x-tiled:
-    - shard-apl:          [DMESG-WARN][62] ([i915#95]) -> [PASS][63] +37 similar issues
-   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-apl7/igt@kms_flip_tiling@flip-x-tiled.html
-   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-apl1/igt@kms_flip_tiling@flip-x-tiled.html
-
-  * igt@kms_psr2_su@page_flip:
-    - shard-iclb:         [SKIP][64] ([fdo#109642] / [fdo#111068]) -> [PASS][65]
-   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-iclb7/igt@kms_psr2_su@page_flip.html
-   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-iclb2/igt@kms_psr2_su@page_flip.html
-
-  * igt@kms_vblank@pipe-a-query-forked:
-    - shard-kbl:          [DMESG-WARN][66] ([i915#93] / [i915#95]) -> [PASS][67] +41 similar issues
-   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-kbl4/igt@kms_vblank@pipe-a-query-forked.html
-   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-kbl4/igt@kms_vblank@pipe-a-query-forked.html
-
-  * igt@kms_vblank@pipe-a-wait-forked-hang:
-    - shard-hsw:          [INCOMPLETE][68] ([i915#61]) -> [PASS][69]
-   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-hsw4/igt@kms_vblank@pipe-a-wait-forked-hang.html
-   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-hsw8/igt@kms_vblank@pipe-a-wait-forked-hang.html
-
-  * igt@kms_vblank@pipe-b-wait-busy:
-    - shard-kbl:          [DMESG-WARN][70] ([i915#1982]) -> [PASS][71]
-   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-kbl7/igt@kms_vblank@pipe-b-wait-busy.html
-   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-kbl6/igt@kms_vblank@pipe-b-wait-busy.html
-
-  
-#### Warnings ####
-
-  * igt@i915_pm_dc@dc3co-vpb-simulation:
-    - shard-iclb:         [SKIP][72] ([i915#658]) -> [SKIP][73] ([i915#588])
-   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-iclb7/igt@i915_pm_dc@dc3co-vpb-simulation.html
-   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-iclb2/igt@i915_pm_dc@dc3co-vpb-simulation.html
-
-  * igt@i915_pm_dc@dc6-psr:
-    - shard-tglb:         [FAIL][74] ([i915#454]) -> [SKIP][75] ([i915#468])
-   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-tglb3/igt@i915_pm_dc@dc6-psr.html
-   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-tglb2/igt@i915_pm_dc@dc6-psr.html
-
-  * igt@i915_pm_rc6_residency@rc6-idle:
-    - shard-iclb:         [WARN][76] ([i915#1515]) -> [FAIL][77] ([i915#1515])
-   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-iclb5/igt@i915_pm_rc6_residency@rc6-idle.html
-   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-iclb7/igt@i915_pm_rc6_residency@rc6-idle.html
-
-  * igt@kms_color_chamelium@pipe-c-ctm-limited-range:
-    - shard-snb:          [INCOMPLETE][78] ([CI#80] / [i915#82]) -> [SKIP][79] ([fdo#109271] / [fdo#111827])
-   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-snb5/igt@kms_color_chamelium@pipe-c-ctm-limited-range.html
-   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-snb6/igt@kms_color_chamelium@pipe-c-ctm-limited-range.html
-
-  * igt@kms_content_protection@atomic:
-    - shard-kbl:          [TIMEOUT][80] ([i915#1319] / [i915#1958]) -> [TIMEOUT][81] ([i915#1319]) +1 similar issue
-   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-kbl4/igt@kms_content_protection@atomic.html
-   [81]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-kbl1/igt@kms_content_protection@atomic.html
-    - shard-apl:          [TIMEOUT][82] ([i915#1319]) -> [TIMEOUT][83] ([i915#1319] / [i915#1635])
-   [82]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-apl2/igt@kms_content_protection@atomic.html
-   [83]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-apl7/igt@kms_content_protection@atomic.html
-
-  * igt@kms_content_protection@atomic-dpms:
-    - shard-apl:          [TIMEOUT][84] ([i915#1319] / [i915#1635]) -> [FAIL][85] ([fdo#110321] / [fdo#110336])
-   [84]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-apl1/igt@kms_content_protection@atomic-dpms.html
-   [85]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-apl6/igt@kms_content_protection@atomic-dpms.html
-    - shard-kbl:          [TIMEOUT][86] ([i915#1319]) -> [TIMEOUT][87] ([i915#1319] / [i915#1958])
-   [86]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-kbl2/igt@kms_content_protection@atomic-dpms.html
-   [87]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-kbl4/igt@kms_content_protection@atomic-dpms.html
-
-  * igt@kms_content_protection@lic:
-    - shard-apl:          [TIMEOUT][88] ([i915#1319] / [i915#1635]) -> [FAIL][89] ([fdo#110321])
-   [88]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-apl4/igt@kms_content_protection@lic.html
-   [89]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-apl6/igt@kms_content_protection@lic.html
-    - shard-kbl:          [DMESG-FAIL][90] ([fdo#110321] / [i915#95]) -> [TIMEOUT][91] ([i915#1319])
-   [90]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-kbl2/igt@kms_content_protection@lic.html
-   [91]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-kbl3/igt@kms_content_protection@lic.html
-
-  * igt@kms_content_protection@srm:
-    - shard-apl:          [DMESG-FAIL][92] ([fdo#110321] / [i915#95]) -> [TIMEOUT][93] ([i915#1319] / [i915#1635])
-   [92]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-apl6/igt@kms_content_protection@srm.html
-   [93]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-apl3/igt@kms_content_protection@srm.html
-
-  * igt@kms_cursor_legacy@pipe-d-forked-move:
-    - shard-snb:          [SKIP][94] ([fdo#109271]) -> [TIMEOUT][95] ([i915#1958])
-   [94]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-snb4/igt@kms_cursor_legacy@pipe-d-forked-move.html
-   [95]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-snb2/igt@kms_cursor_legacy@pipe-d-forked-move.html
-
-  * igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-mmap-cpu:
-    - shard-hsw:          [SKIP][96] ([fdo#109271]) -> [TIMEOUT][97] ([i915#1958]) +1 similar issue
-   [96]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-hsw8/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-mmap-cpu.html
-   [97]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-hsw5/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-draw-mmap-cpu.html
-
-  * igt@kms_frontbuffer_tracking@fbc-suspend:
-    - shard-kbl:          [DMESG-WARN][98] ([i915#180] / [i915#93] / [i915#95]) -> [DMESG-WARN][99] ([i915#93] / [i915#95])
-   [98]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-kbl2/igt@kms_frontbuffer_tracking@fbc-suspend.html
-   [99]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-kbl4/igt@kms_frontbuffer_tracking@fbc-suspend.html
-
-  * igt@kms_plane_scaling@pipe-b-scaler-with-clipping-clamping:
-    - shard-snb:          [TIMEOUT][100] ([i915#1958]) -> [SKIP][101] ([fdo#109271]) +2 similar issues
-   [100]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8596/shard-snb5/igt@kms_plane_scaling@pipe-b-scaler-with-clipping-clamping.html
-   [101]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/shard-snb1/igt@kms_plane_scaling@pipe-b-scaler-with-clipping-clamping.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [CI#80]: https://gitlab.freedesktop.org/gfx-ci/i915-infra/issues/80
-  [fdo#108145]: https://bugs.freedesktop.org/show_bug.cgi?id=108145
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109441]: https://bugs.freedesktop.org/show_bug.cgi?id=109441
-  [fdo#109642]: https://bugs.freedesktop.org/show_bug.cgi?id=109642
-  [fdo#110321]: https://bugs.freedesktop.org/show_bug.cgi?id=110321
-  [fdo#110336]: https://bugs.freedesktop.org/show_bug.cgi?id=110336
-  [fdo#111068]: https://bugs.freedesktop.org/show_bug.cgi?id=111068
-  [fdo#111827]: https://bugs.freedesktop.org/show_bug.cgi?id=111827
-  [i915#1149]: https://gitlab.freedesktop.org/drm/intel/issues/1149
-  [i915#118]: https://gitlab.freedesktop.org/drm/intel/issues/118
-  [i915#128]: https://gitlab.freedesktop.org/drm/intel/issues/128
-  [i915#1319]: https://gitlab.freedesktop.org/drm/intel/issues/1319
-  [i915#1515]: https://gitlab.freedesktop.org/drm/intel/issues/1515
-  [i915#1542]: https://gitlab.freedesktop.org/drm/intel/issues/1542
-  [i915#1602]: https://gitlab.freedesktop.org/drm/intel/issues/1602
-  [i915#1635]: https://gitlab.freedesktop.org/drm/intel/issues/1635
-  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
-  [i915#1899]: https://gitlab.freedesktop.org/drm/intel/issues/1899
-  [i915#1904]: https://gitlab.freedesktop.org/drm/intel/issues/1904
-  [i915#1958]: https://gitlab.freedesktop.org/drm/intel/issues/1958
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#454]: https://gitlab.freedesktop.org/drm/intel/issues/454
-  [i915#456]: https://gitlab.freedesktop.org/drm/intel/issues/456
-  [i915#468]: https://gitlab.freedesktop.org/drm/intel/issues/468
-  [i915#54]: https://gitlab.freedesktop.org/drm/intel/issues/54
-  [i915#58]: https://gitlab.freedesktop.org/drm/intel/issues/58
-  [i915#588]: https://gitlab.freedesktop.org/drm/intel/issues/588
-  [i915#61]: https://gitlab.freedesktop.org/drm/intel/issues/61
-  [i915#658]: https://gitlab.freedesktop.org/drm/intel/issues/658
-  [i915#82]: https://gitlab.freedesktop.org/drm/intel/issues/82
-  [i915#93]: https://gitlab.freedesktop.org/drm/intel/issues/93
-  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
-  [k.org#198133]: https://bugzilla.kernel.org/show_bug.cgi?id=198133
-
-
-Participating hosts (11 -> 8)
-------------------------------
-
-  Missing    (3): pig-skl-6260u pig-glk-j5005 pig-icl-1065g7 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5695 -> IGTPW_4654
-  * Piglit: piglit_4509 -> None
-
-  CI-20190529: 20190529
-  CI_DRM_8596: ac91b8351ce380da73dbe8b87d1e4f95aa0c4409 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4654: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/index.html
-  IGT_5695: 53e8c878a6fb5708e63c99403691e8960b86ea9c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4654/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
