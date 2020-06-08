@@ -1,33 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from netline-mail3.netline.ch (mail.netline.ch [148.251.143.178])
- by gabe.freedesktop.org (Postfix) with ESMTP id 7B73F89FD4
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Jun 2020 16:30:12 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
- by netline-mail3.netline.ch (Postfix) with ESMTP id 593E02A6042
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Jun 2020 18:30:11 +0200 (CEST)
-Received: from netline-mail3.netline.ch ([127.0.0.1])
- by localhost (netline-mail3.netline.ch [127.0.0.1]) (amavisd-new, port 10024)
- with LMTP id do75s6rPMoSk for <igt-dev@lists.freedesktop.org>;
- Mon,  8 Jun 2020 18:30:11 +0200 (CEST)
-Received: from thor (212.174.63.188.dynamic.wline.res.cust.swisscom.ch
- [188.63.174.212])
- by netline-mail3.netline.ch (Postfix) with ESMTPSA id 0E0DA2A6016
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Jun 2020 18:30:11 +0200 (CEST)
-Received: from localhost ([::1]) by thor with esmtp (Exim 4.94)
- (envelope-from <michel@daenzer.net>) id 1jiKeX-000gA9-KK
- for igt-dev@lists.freedesktop.org; Mon, 08 Jun 2020 18:29:37 +0200
-References: <20200605143720.710220-1-michel@daenzer.net>
- <159137452678.18506.1035039871677989119@emeril.freedesktop.org>
-From: =?UTF-8?Q?Michel_D=c3=a4nzer?= <michel@daenzer.net>
-Message-ID: <bf28cdb6-e5db-b3e5-3208-85fb56620efa@daenzer.net>
-Date: Mon, 8 Jun 2020 18:29:37 +0200
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED23A89DB7
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Jun 2020 19:35:58 +0000 (UTC)
+From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+Date: Tue,  9 Jun 2020 01:01:19 +0530
+Message-Id: <20200608193119.8885-2-krishnaiah.bommu@intel.com>
+In-Reply-To: <20200608193119.8885-1-krishnaiah.bommu@intel.com>
+References: <20200608193119.8885-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <159137452678.18506.1035039871677989119@emeril.freedesktop.org>
-Content-Language: en-CA
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3Iga21zX2N1?=
- =?utf-8?q?rsor=5Flegacy=3A_Keep_primary_plane_enabled_for_XRGB_overlay_fa?=
- =?utf-8?q?llback?=
+Subject: [igt-dev] [PATCH 1/1] drm/i915/selftests: update mock_vma size
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -35,62 +16,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMjAyMC0wNi0wNSA2OjI4IHAubS4sIFBhdGNod29yayB3cm90ZToKPiA9PSBTZXJpZXMgRGV0
-YWlscyA9PQo+IAo+IFNlcmllczoga21zX2N1cnNvcl9sZWdhY3k6IEtlZXAgcHJpbWFyeSBwbGFu
-ZSBlbmFibGVkIGZvciBYUkdCIG92ZXJsYXkgZmFsbGJhY2sKPiBVUkwgICA6IGh0dHBzOi8vcGF0
-Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvNzgwNDcvCj4gU3RhdGUgOiBmYWlsdXJlCj4g
-Cj4gPT0gU3VtbWFyeSA9PQo+IAo+IENJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20gQ0lfRFJNXzg1
-OTBfZnVsbCAtPiBJR1RQV180NjUyX2Z1bGwKPiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09Cj4gCj4gU3VtbWFyeQo+IC0tLS0tLS0KPiAKPiAgICoq
-RkFJTFVSRSoqCj4gCj4gICBTZXJpb3VzIHVua25vd24gY2hhbmdlcyBjb21pbmcgd2l0aCBJR1RQ
-V180NjUyX2Z1bGwgYWJzb2x1dGVseSBuZWVkIHRvIGJlCj4gICB2ZXJpZmllZCBtYW51YWxseS4K
-PiAgIAo+ICAgSWYgeW91IHRoaW5rIHRoZSByZXBvcnRlZCBjaGFuZ2VzIGhhdmUgbm90aGluZyB0
-byBkbyB3aXRoIHRoZSBjaGFuZ2VzCj4gICBpbnRyb2R1Y2VkIGluIElHVFBXXzQ2NTJfZnVsbCwg
-cGxlYXNlIG5vdGlmeSB5b3VyIGJ1ZyB0ZWFtIHRvIGFsbG93IHRoZW0KPiAgIHRvIGRvY3VtZW50
-IHRoaXMgbmV3IGZhaWx1cmUgbW9kZSwgd2hpY2ggd2lsbCByZWR1Y2UgZmFsc2UgcG9zaXRpdmVz
-IGluIENJLgo+IAo+ICAgRXh0ZXJuYWwgVVJMOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcv
-dHJlZS9kcm0tdGlwL0lHVFBXXzQ2NTIvaW5kZXguaHRtbAo+IAo+IFBvc3NpYmxlIG5ldyBpc3N1
-ZXMKPiAtLS0tLS0tLS0tLS0tLS0tLS0tCj4gCj4gICBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFu
-Z2VzIHRoYXQgbWF5IGhhdmUgYmVlbiBpbnRyb2R1Y2VkIGluIElHVFBXXzQ2NTJfZnVsbDoKPiAK
-PiAjIyMgSUdUIGNoYW5nZXMgIyMjCj4gCj4gIyMjIyBQb3NzaWJsZSByZWdyZXNzaW9ucyAjIyMj
-Cj4gCj4gICAqIGlndEBnZW1fZXhlY19mbHVzaEBiYXNpYy13Yi1yby1iZWZvcmUtZGVmYXVsdDoK
-PiAgICAgLSBzaGFyZC1oc3c6ICAgICAgICAgIFtQQVNTXVsxXSAtPiBbVElNRU9VVF1bMl0gKzIg
-c2ltaWxhciBpc3N1ZXMKPiAgICBbMV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVl
-L2RybS10aXAvQ0lfRFJNXzg1OTAvc2hhcmQtaHN3Ny9pZ3RAZ2VtX2V4ZWNfZmx1c2hAYmFzaWMt
-d2Itcm8tYmVmb3JlLWRlZmF1bHQuaHRtbAo+ICAgIFsyXTogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV180NjUyL3NoYXJkLWhzdzUvaWd0QGdlbV9leGVjX2Zs
-dXNoQGJhc2ljLXdiLXJvLWJlZm9yZS1kZWZhdWx0Lmh0bWwKPiAKPiAgICogaWd0QGdlbV9leGVj
-X3JlbG9jQGJhc2ljLWNwdS1yZWFkLW5vcmVsb2M6Cj4gICAgIC0gc2hhcmQtc25iOiAgICAgICAg
-ICBbUEFTU11bM10gLT4gW1RJTUVPVVRdWzRdICsyIHNpbWlsYXIgaXNzdWVzCj4gICAgWzNdOiBo
-dHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV84NTkwL3NoYXJk
-LXNuYjQvaWd0QGdlbV9leGVjX3JlbG9jQGJhc2ljLWNwdS1yZWFkLW5vcmVsb2MuaHRtbAo+ICAg
-IFs0XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV180NjUy
-L3NoYXJkLXNuYjUvaWd0QGdlbV9leGVjX3JlbG9jQGJhc2ljLWNwdS1yZWFkLW5vcmVsb2MuaHRt
-bAo+IAo+ICAgCj4gIyMjIyBXYXJuaW5ncyAjIyMjCj4gCj4gICAqIGlndEBrbXNfY2NzQHBpcGUt
-ZC1taXNzaW5nLWNjcy1idWZmZXI6Cj4gICAgIC0gc2hhcmQtc25iOiAgICAgICAgICBbU0tJUF1b
-NV0gKFtmZG8jMTA5MjcxXSkgLT4gW1RJTUVPVVRdWzZdICsxIHNpbWlsYXIgaXNzdWUKPiAgICBb
-NV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvQ0lfRFJNXzg1OTAv
-c2hhcmQtc25iNC9pZ3RAa21zX2Njc0BwaXBlLWQtbWlzc2luZy1jY3MtYnVmZmVyLmh0bWwKPiAg
-ICBbNl06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfNDY1
-Mi9zaGFyZC1zbmI1L2lndEBrbXNfY2NzQHBpcGUtZC1taXNzaW5nLWNjcy1idWZmZXIuaHRtbAo+
-ICAgICAtIHNoYXJkLWhzdzogICAgICAgICAgW1NLSVBdWzddIChbZmRvIzEwOTI3MV0pIC0+IFtU
-SU1FT1VUXVs4XSArMSBzaW1pbGFyIGlzc3VlCj4gICAgWzddOiBodHRwczovL2ludGVsLWdmeC1j
-aS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV84NTkwL3NoYXJkLWhzdzQvaWd0QGttc19jY3NA
-cGlwZS1kLW1pc3NpbmctY2NzLWJ1ZmZlci5odG1sCj4gICAgWzhdOiBodHRwczovL2ludGVsLWdm
-eC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzQ2NTIvc2hhcmQtaHN3NS9pZ3RAa21zX2Nj
-c0BwaXBlLWQtbWlzc2luZy1jY3MtYnVmZmVyLmh0bWwKCk5vbmUgb2YgdGhlc2UgY2FuIGJlIHJl
-bGF0ZWQgdG8gbXkgcGF0Y2gsIGFzIGl0IG9ubHkgYWZmZWN0cyB0aGUKKmF0b21pYy10cmFuc2l0
-aW9ucyogc3ViLXRlc3RzIG9mIHRoZSBrbXNfY3Vyc29yX2xlZ2FjeSB0ZXN0LgoKCi0tIApFYXJ0
-aGxpbmcgTWljaGVsIETDpG56ZXIgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgaHR0cHM6
-Ly9yZWRoYXQuY29tCkxpYnJlIHNvZnR3YXJlIGVudGh1c2lhc3QgICAgICAgICAgICAgfCAgICAg
-ICAgICAgICBNZXNhIGFuZCBYIGRldmVsb3BlcgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZy
-ZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2lndC1kZXYK
+Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ drivers/gpu/drm/i915/selftests/i915_gem_gtt.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c b/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
+index 0016ffc7d914..d6e09675778f 100644
+--- a/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
++++ b/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
+@@ -288,6 +288,7 @@ static int lowlevel_hole(struct i915_address_space *vm,
+ 			    vm->allocate_va_range(vm, addr, BIT_ULL(size)))
+ 				break;
+ 
++			mock_vma->size = BIT_ULL(size);
+ 			mock_vma->pages = obj->mm.pages;
+ 			mock_vma->node.size = BIT_ULL(size);
+ 			mock_vma->node.start = addr;
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
