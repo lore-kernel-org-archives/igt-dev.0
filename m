@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 563F96E02C
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Jun 2020 14:50:05 +0000 (UTC)
-Date: Tue, 9 Jun 2020 17:50:00 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20200609145000.GN6112@intel.com>
+Received: from netline-mail3.netline.ch (mail.netline.ch [148.251.143.178])
+ by gabe.freedesktop.org (Postfix) with ESMTP id C96F389D52
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jun 2020 16:41:33 +0000 (UTC)
 References: <20200605143720.710220-1-michel@daenzer.net>
+ <20200609145000.GN6112@intel.com>
+From: =?UTF-8?Q?Michel_D=c3=a4nzer?= <michel@daenzer.net>
+Message-ID: <4d5f6d18-0f17-3dcb-aabe-1f0dc585c894@daenzer.net>
+Date: Tue, 9 Jun 2020 18:40:57 +0200
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200605143720.710220-1-michel@daenzer.net>
+In-Reply-To: <20200609145000.GN6112@intel.com>
+Content-Language: en-CA
 Subject: Re: [igt-dev] [PATCH] kms_cursor_legacy: Keep primary plane enabled
  for XRGB overlay fallback
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -18,75 +19,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Michel =?iso-8859-1?Q?D=E4nzer?= <michel@daenzer.net>
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jun 05, 2020 at 04:37:20PM +0200, Michel D=E4nzer wrote:
-> From: Michel D=E4nzer <mdaenzer@redhat.com>
-> =
-
-> This allows the test to work on setups where the primary plane cannot
-> be disabled while the CRTC is enabled.
-> =
-
-> It should make no difference for the output.
-> =
-
-> Signed-off-by: Michel D=E4nzer <mdaenzer@redhat.com>
-> ---
->  tests/kms_cursor_legacy.c | 1 +
->  1 file changed, 1 insertion(+)
-> =
-
-> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> index 9306e54b..344442e8 100644
-> --- a/tests/kms_cursor_legacy.c
-> +++ b/tests/kms_cursor_legacy.c
-> @@ -326,6 +326,7 @@ static void transition_nonblocking(igt_display_t *dis=
-play, enum pipe pipe_id,
->  =
-
->  		igt_assert(ret =3D=3D -EINVAL);
->  =
-
-> +		igt_plane_set_fb(primary, prim_fb);
->  		igt_plane_set_fb(sprite, prim_fb);
->  	}
->  	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_NONBLOCK | DRM_MODE_=
-PAGE_FLIP_EVENT, display);
-
-Mixes up the argb vs. xrgb with the primary vs. no primary thing a bit.
-No idea why the test even wants an argb fb for the sprite tbh. Also not
-sure there's an actual reason for toggling the primary on/off.
-
-But meh. Patch seems OK to me.
-Reviewed-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-
-PS.
-I am wondering a bit how a driver that can't turn off the primary
-will fare with some of the ther tests. IIRC quite a few might assume
-you don't need an fb for the primary when using the atomic uapi...
-
-> -- =
-
-> 2.27.0
-> =
-
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
--- =
-
-Ville Syrj=E4l=E4
-Intel
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gMjAyMC0wNi0wOSA0OjUwIHAubS4sIFZpbGxlIFN5cmrDpGzDpCB3cm90ZToKPiBPbiBGcmks
+IEp1biAwNSwgMjAyMCBhdCAwNDozNzoyMFBNICswMjAwLCBNaWNoZWwgRMOkbnplciB3cm90ZToK
+Pj4gRnJvbTogTWljaGVsIETDpG56ZXIgPG1kYWVuemVyQHJlZGhhdC5jb20+Cj4+Cj4+IFRoaXMg
+YWxsb3dzIHRoZSB0ZXN0IHRvIHdvcmsgb24gc2V0dXBzIHdoZXJlIHRoZSBwcmltYXJ5IHBsYW5l
+IGNhbm5vdAo+PiBiZSBkaXNhYmxlZCB3aGlsZSB0aGUgQ1JUQyBpcyBlbmFibGVkLgo+Pgo+PiBJ
+dCBzaG91bGQgbWFrZSBubyBkaWZmZXJlbmNlIGZvciB0aGUgb3V0cHV0Lgo+Pgo+PiBTaWduZWQt
+b2ZmLWJ5OiBNaWNoZWwgRMOkbnplciA8bWRhZW56ZXJAcmVkaGF0LmNvbT4KPj4gLS0tCj4+ICB0
+ZXN0cy9rbXNfY3Vyc29yX2xlZ2FjeS5jIHwgMSArCj4+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNl
+cnRpb24oKykKPj4KPj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19jdXJzb3JfbGVnYWN5LmMgYi90
+ZXN0cy9rbXNfY3Vyc29yX2xlZ2FjeS5jCj4+IGluZGV4IDkzMDZlNTRiLi4zNDQ0NDJlOCAxMDA2
+NDQKPj4gLS0tIGEvdGVzdHMva21zX2N1cnNvcl9sZWdhY3kuYwo+PiArKysgYi90ZXN0cy9rbXNf
+Y3Vyc29yX2xlZ2FjeS5jCj4+IEBAIC0zMjYsNiArMzI2LDcgQEAgc3RhdGljIHZvaWQgdHJhbnNp
+dGlvbl9ub25ibG9ja2luZyhpZ3RfZGlzcGxheV90ICpkaXNwbGF5LCBlbnVtIHBpcGUgcGlwZV9p
+ZCwKPj4gIAo+PiAgCQlpZ3RfYXNzZXJ0KHJldCA9PSAtRUlOVkFMKTsKPj4gIAo+PiArCQlpZ3Rf
+cGxhbmVfc2V0X2ZiKHByaW1hcnksIHByaW1fZmIpOwo+PiAgCQlpZ3RfcGxhbmVfc2V0X2ZiKHNw
+cml0ZSwgcHJpbV9mYik7Cj4+ICAJfQo+PiAgCWlndF9kaXNwbGF5X2NvbW1pdF9hdG9taWMoZGlz
+cGxheSwgRFJNX01PREVfQVRPTUlDX05PTkJMT0NLIHwgRFJNX01PREVfUEFHRV9GTElQX0VWRU5U
+LCBkaXNwbGF5KTsKPiAKPiBNaXhlcyB1cCB0aGUgYXJnYiB2cy4geHJnYiB3aXRoIHRoZSBwcmlt
+YXJ5IHZzLiBubyBwcmltYXJ5IHRoaW5nIGEgYml0Lgo+IE5vIGlkZWEgd2h5IHRoZSB0ZXN0IGV2
+ZW4gd2FudHMgYW4gYXJnYiBmYiBmb3IgdGhlIHNwcml0ZSB0YmguIEFsc28gbm90Cj4gc3VyZSB0
+aGVyZSdzIGFuIGFjdHVhbCByZWFzb24gZm9yIHRvZ2dsaW5nIHRoZSBwcmltYXJ5IG9uL29mZi4K
+PiAKPiBCdXQgbWVoLiBQYXRjaCBzZWVtcyBPSyB0byBtZS4KPiBSZXZpZXdlZC1ieTogVmlsbGUg
+U3lyasOkbMOkIDx2aWxsZS5zeXJqYWxhQGxpbnV4LmludGVsLmNvbT4KClRoYW5rcyEKCkFyZSB5
+b3UgZ29pbmcgdG8gYXBwbHkgdGhlIHBhdGNoPwoKCj4gUFMuCj4gSSBhbSB3b25kZXJpbmcgYSBi
+aXQgaG93IGEgZHJpdmVyIHRoYXQgY2FuJ3QgdHVybiBvZmYgdGhlIHByaW1hcnkKPiB3aWxsIGZh
+cmUgd2l0aCBzb21lIG9mIHRoZSB0aGVyIHRlc3RzLiBJSVJDIHF1aXRlIGEgZmV3IG1pZ2h0IGFz
+c3VtZQo+IHlvdSBkb24ndCBuZWVkIGFuIGZiIGZvciB0aGUgcHJpbWFyeSB3aGVuIHVzaW5nIHRo
+ZSBhdG9taWMgdWFwaS4uLgoKTWF5YmUgSSdtIG5vdCB5ZXQgcnVubmluZyBzb21lIHRlc3RzIEkg
+c2hvdWxkIGJlLCBidXQgdGhlIG9ubHkga21zXyoKdGVzdHMgdGhhdCBzZWVtIHRvIGZhaWwgc3Bl
+Y2lmaWNhbGx5IGJlY2F1c2Ugb2YgdGhpcyAod2l0aCBhbWRncHUgREMpCmFyZSB0aGUgcGxhbmUt
+dXNlLWFmdGVyLW5vbmJsb2NraW5nLXVuYmluZCgtZmVuY2luZykgc3ViLXRlc3RzIG9mCmttc19h
+dG9taWNfdHJhbnNpdGlvbi4KCgotLSAKRWFydGhsaW5nIE1pY2hlbCBEw6RuemVyICAgICAgICAg
+ICAgICAgfCAgICAgICAgICAgICAgIGh0dHBzOi8vcmVkaGF0LmNvbQpMaWJyZSBzb2Z0d2FyZSBl
+bnRodXNpYXN0ICAgICAgICAgICAgIHwgICAgICAgICAgICAgTWVzYSBhbmQgWCBkZXZlbG9wZXIK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
+YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
+cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
