@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F8006E529
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Jun 2020 11:33:54 +0000 (UTC)
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 10 Jun 2020 11:26:28 -0000
-Message-ID: <159178838831.20177.15064083923778430600@emeril.freedesktop.org>
-References: <20200610103356.11551-1-petri.latvala@intel.com>
 In-Reply-To: <20200610103356.11551-1-petri.latvala@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2Ry?=
- =?utf-8?q?mtest=3A_Don=27t_write_ffffffff_to_a_numeric_param?=
+References: <20200610103356.11551-1-petri.latvala@intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Message-ID: <159178882880.19008.4557352360782624189@build.alporthouse.com>
+Date: Wed, 10 Jun 2020 12:33:48 +0100
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/drmtest: Don't write ffffffff to a
+ numeric param
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,115 +17,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Quoting Petri Latvala (2020-06-10 11:33:56)
+> __cancel_work_at_exit writes -1 to param "reset", with the intention
+> that it's "any available method". Hex values to numeric params should
+> be prefixed with 0x to be parsed as a number. Use the convention of %u
+> with -1 as is used elsewhere with the "reset" param.
+> 
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> ---
+>  lib/drmtest.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index e4e710d4..c732d1dd 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -478,7 +478,7 @@ static void __cancel_work_at_exit(int fd)
+>  {
+>         igt_terminate_spins(); /* for older kernels */
+>  
+> -       igt_params_set(fd, "reset", "%x", -1u /* any method */);
+> +       igt_params_set(fd, "reset", "%u", -1u /* any method */);
+>         igt_drop_caches_set(fd,
+>                             /* cancel everything */
+>                             DROP_RESET_ACTIVE | DROP_RESET_SEQNO |
 
-Series: lib/drmtest: Don't write ffffffff to a numeric param
-URL   : https://patchwork.freedesktop.org/series/78181/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_8607 -> IGTPW_4660
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4660/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4660 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - fi-byt-j1900:       [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8607/fi-byt-j1900/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4660/fi-byt-j1900/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-bsw-kefka:       [PASS][3] -> [DMESG-WARN][4] ([i915#1982])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8607/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4660/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_module_load@reload:
-    - fi-tgl-u2:          [DMESG-WARN][5] ([i915#402]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8607/fi-tgl-u2/igt@i915_module_load@reload.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4660/fi-tgl-u2/igt@i915_module_load@reload.html
-    - fi-byt-n2820:       [DMESG-WARN][7] ([i915#1982]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8607/fi-byt-n2820/igt@i915_module_load@reload.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4660/fi-byt-n2820/igt@i915_module_load@reload.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-glk-dsi:         [DMESG-WARN][9] ([i915#1982]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8607/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4660/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html
-
-  
-#### Warnings ####
-
-  * igt@debugfs_test@read_all_entries:
-    - fi-kbl-x1275:       [DMESG-WARN][11] ([i915#62] / [i915#92]) -> [DMESG-WARN][12] ([i915#62] / [i915#92] / [i915#95]) +7 similar issues
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8607/fi-kbl-x1275/igt@debugfs_test@read_all_entries.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4660/fi-kbl-x1275/igt@debugfs_test@read_all_entries.html
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-atomic:
-    - fi-kbl-x1275:       [DMESG-WARN][13] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][14] ([i915#62] / [i915#92])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8607/fi-kbl-x1275/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4660/fi-kbl-x1275/igt@kms_cursor_legacy@basic-flip-before-cursor-atomic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
-  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
-  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
-
-
-Participating hosts (49 -> 43)
-------------------------------
-
-  Additional (1): fi-kbl-7560u 
-  Missing    (7): fi-ilk-m540 fi-tgl-u fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5700 -> IGTPW_4660
-
-  CI-20190529: 20190529
-  CI_DRM_8607: 206a2c3d69185509faac1f2d79a8707c7e0d81eb @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4660: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4660/index.html
-  IGT_5700: 88e379cef970db3dab020966d5dd117de7cc03ab @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4660/index.html
+Might explain why it seems like we ended up with reset=0 so frequently.
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
