@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 11 Jun 2020 08:26:34 -0000
-Message-ID: <159186399481.22714.14262247582603117696@emeril.freedesktop.org>
-References: <20200608101334.19684-1-ankit.k.nautiyal@intel.com>
-In-Reply-To: <20200608101334.19684-1-ankit.k.nautiyal@intel.com>
+Date: Thu, 11 Jun 2020 08:26:24 -0000
+Message-ID: <159186398463.22714.7879811227771969811@emeril.freedesktop.org>
+References: <20200608085621.28382-1-ankit.k.nautiyal@intel.com>
+In-Reply-To: <20200608085621.28382-1-ankit.k.nautiyal@intel.com>
 Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
- =?utf-8?q?ests/kms=5Fcontent=5Fprotection=3A_Enhancements_=28rev3=29?=
+ =?utf-8?q?ests/kms=5Fcontent=5Fprotection=3A?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,8 +25,8 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: tests/kms_content_protection: Enhancements (rev3)
-URL   : https://patchwork.freedesktop.org/series/77694/
+Series: tests/kms_content_protection:
+URL   : https://patchwork.freedesktop.org/series/78113/
 State : failure
 
 == Summary ==
@@ -51,11 +51,11 @@ Thanks in advance!
 
 Other than that, pipeline status: SUCCESS.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/157521 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/157456 for the overview.
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/157521
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/157456
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
