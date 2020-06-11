@@ -1,33 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from netline-mail3.netline.ch (mail.netline.ch [148.251.143.178])
- by gabe.freedesktop.org (Postfix) with ESMTP id EB78A6E051
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2020 08:39:39 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
- by netline-mail3.netline.ch (Postfix) with ESMTP id 367982A6042
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2020 10:39:39 +0200 (CEST)
-Received: from netline-mail3.netline.ch ([127.0.0.1])
- by localhost (netline-mail3.netline.ch [127.0.0.1]) (amavisd-new, port 10024)
- with LMTP id 3972rvxg_3bZ for <igt-dev@lists.freedesktop.org>;
- Thu, 11 Jun 2020 10:39:38 +0200 (CEST)
-Received: from thor (212.174.63.188.dynamic.wline.res.cust.swisscom.ch
- [188.63.174.212])
- by netline-mail3.netline.ch (Postfix) with ESMTPSA id E90B32A6016
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2020 10:39:38 +0200 (CEST)
-Received: from [::1] by thor with esmtp (Exim 4.94)
- (envelope-from <michel@daenzer.net>) id 1jjIjp-0012UF-GD
- for igt-dev@lists.freedesktop.org; Thu, 11 Jun 2020 10:39:05 +0200
-References: <20200605143720.710220-1-michel@daenzer.net>
- <159186394541.22715.6538837324368005756@emeril.freedesktop.org>
-From: =?UTF-8?Q?Michel_D=c3=a4nzer?= <michel@daenzer.net>
-Message-ID: <d43b5e3b-c174-0864-a43a-afbca4c02f3b@daenzer.net>
-Date: Thu, 11 Jun 2020 10:39:05 +0200
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 06F3A6E8B6
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2020 08:55:42 +0000 (UTC)
+Date: Thu, 11 Jun 2020 11:55:40 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200611085540.GL9497@platvala-desk.ger.corp.intel.com>
+References: <20200610160417.3402896-1-lyude@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <159186394541.22715.6538837324368005756@emeril.freedesktop.org>
-Content-Language: en-CA
-Subject: Re: [igt-dev]
- =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_k?=
- =?utf-8?q?ms=5Fcursor=5Flegacy=3A_Keep_primary_plane_enabled_for_XRGB_ove?=
- =?utf-8?q?rlay_fallback?=
+Content-Disposition: inline
+In-Reply-To: <20200610160417.3402896-1-lyude@redhat.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] runner: Fix handling of metadata values
+ containing spaces
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -35,24 +18,88 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Lyude <lyude@redhat.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMjAyMC0wNi0xMSAxMDoyNSBhLm0uLCBQYXRjaHdvcmsgd3JvdGU6Cj4gPT0gU2VyaWVzIERl
-dGFpbHMgPT0KPiAKPiBTZXJpZXM6IGttc19jdXJzb3JfbGVnYWN5OiBLZWVwIHByaW1hcnkgcGxh
-bmUgZW5hYmxlZCBmb3IgWFJHQiBvdmVybGF5IGZhbGxiYWNrCj4gVVJMICAgOiBodHRwczovL3Bh
-dGNod29yay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzc4MDQ3Lwo+IFN0YXRlIDogZmFpbHVyZQo+
-IAo+ID09IFN1bW1hcnkgPT0KPiAKPiBFUlJPUiEgVGhpcyBzZXJpZXMgaW50cm9kdWNlcyBuZXcg
-dW5kb2N1bWVudGVkIHRlc3RzOgo+IAo+IGdlbV9leGVjX2JhbGFuY2VyQGJvbmRlZC1kdWFsCj4g
-Z2VtX2V4ZWNfYmFsYW5jZXJAYm9uZGVkLXBhaXIKPiBnZW1fZXhlY19iYWxhbmNlckBib25kZWQt
-c3luYwoKTm8sIGl0IGRvZXMgbm90LiBQbGVhc2UgZml4IHRoZSBzY3JpcHQgd2hpY2ggZ2VuZXJh
-dGVkIHRoaXMgZmFsc2UKcG9zaXRpdmUgZS1tYWlsLgoKCi0tIApFYXJ0aGxpbmcgTWljaGVsIETD
-pG56ZXIgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgaHR0cHM6Ly9yZWRoYXQuY29tCkxp
-YnJlIHNvZnR3YXJlIGVudGh1c2lhc3QgICAgICAgICAgICAgfCAgICAgICAgICAgICBNZXNhIGFu
-ZCBYIGRldmVsb3BlcgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
-dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+On Wed, Jun 10, 2020 at 12:04:17PM -0400, Lyude wrote:
+> From: Lyude Paul <lyude@redhat.com>
+> 
+> Noticed while running some tests that adding any kind of spaces into the
+> name of a test run would stop igt_resume from working for said test run.
+> Turns out that when we parse test metadata, we accidentally use the
+> '%ms' specifier with fscanf() which finishes parsing strings when any
+> kind of whitespace is encountered.
+> 
+> So, fix this by using the proper %m[^\n] specifier, which dynamically
+> allocates it's result and doesn't stop reading the string until a
+> newline is encountered. Additionally, add a test for this.
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+
+Yeah, and running igt_resume breaks in the same way. And it's not
+limited to just the name, the file paths are also broken if they have
+spaces. Testing just the name field should be enough to cover those
+though.
+
+Thanks for the fix,
+
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+
+
+> ---
+>  runner/runner_tests.c | 12 ++++++++++++
+>  runner/settings.c     |  2 +-
+>  2 files changed, 13 insertions(+), 1 deletion(-)
+> 
+> diff --git a/runner/runner_tests.c b/runner/runner_tests.c
+> index 60e00960..48b02107 100644
+> --- a/runner/runner_tests.c
+> +++ b/runner/runner_tests.c
+> @@ -1351,6 +1351,18 @@ igt_main
+>  
+>  			fclose(f);
+>  		}
+> +
+> +		igt_subtest("metadata-read-spaces") {
+> +			char metadata[] = "name : foo bar\n";
+> +			FILE *f = fmemopen(metadata, strlen(metadata), "r");
+> +			igt_assert(f);
+> +
+> +			igt_assert(read_settings_from_file(settings, f));
+> +
+> +			igt_assert_eqstr(settings->name, "foo bar");
+> +
+> +			fclose(f);
+> +		}
+>  	}
+>  
+>  	igt_subtest_group {
+> diff --git a/runner/settings.c b/runner/settings.c
+> index d18e55d1..25f248ef 100644
+> --- a/runner/settings.c
+> +++ b/runner/settings.c
+> @@ -679,7 +679,7 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
+>  
+>  	settings->dmesg_warn_level = -1;
+>  
+> -	while (fscanf(f, "%ms : %ms", &name, &val) == 2) {
+> +	while (fscanf(f, "%ms : %m[^\n]", &name, &val) == 2) {
+>  		int numval = atoi(val);
+>  		PARSE_LINE(settings, name, val, abort_mask, numval);
+>  		PARSE_LINE(settings, name, val, test_list, val ? strdup(val) : NULL);
+> -- 
+> 2.26.2
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
