@@ -1,9 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 11 Jun 2020 11:42:08 +0100
-Message-Id: <20200611104208.91381-1-chris@chris-wilson.co.uk>
+Date: Thu, 11 Jun 2020 21:40:48 +0100
+Message-Id: <20200611204048.318778-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_reloc: Verify engine isolation
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_ctx_isolation: Verify BB_OFFSET
+ protection
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,157 +20,184 @@ To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Check that when relocating a batch along an engine, we are not forced to
-wait upon a resource elsewhere that userspace may be holding, or else we
-are faced with a deadlock that may be injected by another user. That
-deadlock may be resolved by resetting the hostile context, but in doing
-so we should not break the relocation processing.
+BB_OFFSET is used for relative batch buffer jumps, so prime the register
+and do a jump, but only after a context switch or two.
 
-Ideally, we would avoid the deadlock.
-
-References: https://gitlab.freedesktop.org/drm/intel/-/issues/2021
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 ---
- tests/i915/gem_exec_reloc.c | 105 ++++++++++++++++++++++++++++++------
- 1 file changed, 89 insertions(+), 16 deletions(-)
+ tests/i915/gem_ctx_isolation.c | 139 +++++++++++++++++++++++++++++++++
+ 1 file changed, 139 insertions(+)
 
-diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
-index 6490d3a6f..2d4164076 100644
---- a/tests/i915/gem_exec_reloc.c
-+++ b/tests/i915/gem_exec_reloc.c
-@@ -43,6 +43,22 @@ static uint32_t find_last_set(uint64_t x)
- 	return i;
+diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
+index 9fdf78bb8..b689d37dd 100644
+--- a/tests/i915/gem_ctx_isolation.c
++++ b/tests/i915/gem_ctx_isolation.c
+@@ -24,6 +24,7 @@
+ #include "i915/gem.h"
+ #include "igt.h"
+ #include "igt_dummyload.h"
++#include "sw_sync.h"
+ 
+ #define MAX_REG 0x200000
+ #define NUM_REGS (MAX_REG / sizeof(uint32_t))
+@@ -874,6 +875,124 @@ static void preservation(int fd,
+ 	gem_context_destroy(fd, ctx[num_values]);
  }
  
-+static uint32_t __batch_create(int i915, uint32_t offset)
++static int sync_fence_wait_status(int fence, int timeout)
 +{
-+	const uint32_t bbe = MI_BATCH_BUFFER_END;
-+	uint32_t handle;
++	int err;
 +
-+	handle = gem_create(i915, ALIGN(offset + 4, 4096));
-+	gem_write(i915, handle, offset, &bbe, sizeof(bbe));
++	err = sync_fence_wait(fence, timeout);
++	if (err)
++		return err;
 +
-+	return handle;
++	return sync_fence_status(fence);
 +}
 +
-+static uint32_t batch_create(int i915)
++static int write_register(int i915, uint32_t ctx, unsigned int engine,
++			  uint32_t reg, uint32_t value)
 +{
-+	return __batch_create(i915, 0);
-+}
-+
- static void write_dword(int fd,
- 			uint32_t target_handle,
- 			uint64_t target_offset,
-@@ -523,6 +539,72 @@ static void active_spin(int fd, unsigned engine)
- 	igt_spin_free(fd, spin);
- }
- 
-+static void others_spin(int i915, unsigned engine)
-+{
-+	struct drm_i915_gem_relocation_entry reloc = {};
 +	struct drm_i915_gem_exec_object2 obj = {
-+		.relocs_ptr = to_user_pointer(&reloc),
-+		.relocation_count = 1,
++		.handle = gem_create(i915, 4096),
 +	};
 +	struct drm_i915_gem_execbuffer2 execbuf = {
 +		.buffers_ptr = to_user_pointer(&obj),
 +		.buffer_count = 1,
-+		.flags = engine,
++		.rsvd1 = ctx,
++		.flags = engine | I915_EXEC_FENCE_OUT,
 +	};
-+	const struct intel_execution_engine2 *e;
-+	igt_spin_t *spin = NULL;
-+	uint64_t addr;
-+	int fence;
++	uint32_t *cs, *map;
 +
-+	__for_each_physical_engine(i915, e) {
-+		if (e->flags == engine)
-+			continue;
++	map = gem_mmap__device_coherent(i915, obj.handle, 0, 4096, PROT_WRITE);
 +
-+		if (!spin) {
-+			spin = igt_spin_new(i915,
-+					    .engine = e->flags,
-+					    .flags = IGT_SPIN_FENCE_OUT);
-+			fence = dup(spin->out_fence);
-+		} else {
-+			int old_fence;
++	cs = map;
++	*cs++ = MI_LOAD_REGISTER_IMM;
++	*cs++ = reg;
++	*cs++ = value;
++	*cs++ = MI_BATCH_BUFFER_END;
++	munmap(map, 4096);
 +
-+			spin->execbuf.flags &= ~I915_EXEC_RING_MASK;
-+			spin->execbuf.flags |= e->flags;
-+			gem_execbuf_wr(i915, &spin->execbuf);
-+
-+			old_fence = fence;
-+			fence = sync_fence_merge(old_fence,
-+						 spin->execbuf.rsvd2 >> 32);
-+			close(spin->execbuf.rsvd2 >> 32);
-+			close(old_fence);
-+		}
-+	}
-+	igt_require(spin);
-+
-+	/* All other engines are busy, let's relocate! */
-+	obj.handle = batch_create(i915);
-+	reloc.target_handle = obj.handle;
-+	reloc.presumed_offset = -1;
-+	reloc.offset = 64;
-+	gem_execbuf(i915, &execbuf);
-+
-+	/* Verify the relocation took place */
-+	gem_read(i915, obj.handle, 64, &addr, sizeof(addr));
-+	igt_assert_eq_u64(addr, obj.offset);
++	gem_execbuf_wr(i915, &execbuf);
 +	gem_close(i915, obj.handle);
 +
-+	/* Even if the spinner was harmed in the process */
-+	igt_spin_end(spin);
-+	igt_assert_eq(sync_fence_wait(fence, 200), 0);
-+	igt_assert_neq(sync_fence_status(fence), 0);
-+	if (sync_fence_status(fence) < 0)
-+		igt_warn("Spinner was cancelled, %s\n",
-+			 strerror(-sync_fence_status(fence)));
-+	close(fence);
-+
-+	igt_spin_free(i915, spin);
++	return execbuf.rsvd2 >> 32;
 +}
 +
- static bool has_64b_reloc(int fd)
- {
- 	return intel_gen(intel_get_drm_devid(fd)) >= 8;
-@@ -881,22 +963,6 @@ parallel_relocs(int count, unsigned long *out)
- 	return reloc;
- }
- 
--static uint32_t __batch_create(int i915, uint32_t offset)
--{
--	const uint32_t bbe = MI_BATCH_BUFFER_END;
--	uint32_t handle;
--
--	handle = gem_create(i915, ALIGN(offset + 4, 4096));
--	gem_write(i915, handle, offset, &bbe, sizeof(bbe));
--
--	return handle;
--}
--
--static uint32_t batch_create(int i915)
--{
--	return __batch_create(i915, 0);
--}
--
- static int __execbuf(int i915, struct drm_i915_gem_execbuffer2 *execbuf)
- {
- 	int err;
-@@ -1336,6 +1402,13 @@ igt_main
- 		}
- 	}
- 
-+	igt_subtest_with_dynamic("basic-spin-others") {
-+		__for_each_physical_engine(fd, e) {
-+			igt_dynamic_f("%s", e->name)
-+				others_spin(fd, e->flags);
-+		}
++static void bb_offset(int i915,
++		      const struct intel_execution_engine2 *e,
++		      unsigned int flags)
++{
++	struct drm_i915_gem_exec_object2 obj = {
++		.handle = gem_create(i915, 4096 * 3),
++		.flags = EXEC_OBJECT_PINNED
++	};
++	struct drm_i915_gem_execbuffer2 execbuf = {
++		.buffers_ptr = to_user_pointer(&obj),
++		.buffer_count = 1,
++		.rsvd1 = gem_context_create_for_engine(i915, e->class, e->instance),
++	};
++	const uint32_t mmio_base = gem_engine_mmio_base(i915, e->name);
++	uint32_t *cs, *map;
++	igt_spin_t *spin;
++
++	igt_require(gem_class_has_mutable_submission(i915, e->class)); /* XXX */
++	igt_require(mmio_base);
++
++	gem_quiescent_gpu(i915);
++
++	map = gem_mmap__device_coherent(i915, obj.handle, 0, 4096 * 3, PROT_WRITE);
++	memset(map, 0xff, 4096 * 3);
++
++	cs = map + 2 * 1024 + 256;
++	*cs++ = MI_LOAD_REGISTER_IMM;
++	*cs++ = mmio_base + 0x158; /* BB_OFFSET */
++	*cs++ = 4096;
++	*cs++ = MI_BATCH_BUFFER_END;
++
++	cs = map + 2 * 1024 + 128;
++	*cs++ = MI_BATCH_BUFFER_START | 1 << 16 | 1 << 8 | 1; /* reljmp */
++	*cs++ = 0; /* + BB_OFFSET */
++	*cs++ = 0;
++
++	cs = map + 1024;
++	*cs++ = MI_BATCH_BUFFER_END;
++	munmap(map, 3 * 4096);
++
++	execbuf.batch_start_offset = 2 * 4096 + 1024;
++	gem_execbuf(i915, &execbuf); /* prime BB_OFFSET */
++
++	spin = igt_spin_new(i915,
++			    .ctx = execbuf.rsvd1,
++			    .flags = IGT_SPIN_POLL_RUN);
++	igt_spin_busywait_until_started(spin);
++
++	if (flags & DIRTY1) {
++		uint32_t ctx;
++		int fence;
++
++		ctx = gem_context_create_for_engine(i915, e->class, e->instance);
++		gem_context_set_priority(i915, ctx, 1023);
++
++		fence = write_register(i915, ctx, 0,
++				       mmio_base + 0x158, 0xdeadbeef);
++
++		gem_context_destroy(i915, ctx);
++
++		igt_assert_eq(sync_fence_wait_status(fence, 500), 1);
++		close(fence);
 +	}
 +
- 	igt_subtest_with_dynamic("basic-many-active") {
- 		__for_each_physical_engine(fd, e) {
- 			igt_dynamic_f("%s", e->name)
++	if (flags & RESET)
++		inject_reset_context(i915, e);
++
++	execbuf.batch_start_offset = 2 * 4096 + 512;
++	execbuf.flags |= I915_EXEC_FENCE_OUT;
++	gem_execbuf_wr(i915, &execbuf); /* relative jump */
++
++	igt_spin_free(i915, spin);
++	igt_assert_eq(sync_fence_wait_status(execbuf.rsvd2 >> 32, 500), 1);
++	close(execbuf.rsvd2);
++
++	gem_context_destroy(i915, execbuf.rsvd1);
++}
++
+ static unsigned int __has_context_isolation(int fd)
+ {
+ 	struct drm_i915_getparam gp;
+@@ -963,6 +1082,16 @@ igt_main
+ 			preservation(i915, e, S4);
+ 	}
+ 
++	igt_subtest_with_dynamic("bb-offset-clean") {
++		test_each_engine(e, i915, has_context_isolation)
++			bb_offset(i915, e, 0);
++	}
++	igt_subtest_with_dynamic("bb-offset-switch") {
++		igt_require(gem_scheduler_has_preemption(i915));
++		test_each_engine(e, i915, has_context_isolation)
++			bb_offset(i915, e, DIRTY1);
++	}
++
+ 	igt_fixture {
+ 		igt_stop_hang_detector();
+ 	}
+@@ -975,4 +1104,14 @@ igt_main
+ 
+ 		igt_disallow_hang(i915, hang);
+ 	}
++
++	igt_subtest_with_dynamic("bb-offset-reset") {
++		igt_hang_t hang = igt_allow_hang(i915, 0, 0);
++
++		igt_require(gem_scheduler_has_preemption(i915));
++		test_each_engine(e, i915, has_context_isolation)
++			bb_offset(i915, e, RESET);
++
++		igt_disallow_hang(i915, hang);
++	}
+ }
 -- 
 2.27.0
 
