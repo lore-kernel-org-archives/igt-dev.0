@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14140892BF
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2020 12:17:41 +0000 (UTC)
-References: <20200611120511.1036732-1-arkadiusz.hiler@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <dc51edec-ae6c-b51e-7393-f1fe38a39a1b@linux.intel.com>
-Date: Thu, 11 Jun 2020 13:17:36 +0100
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ADA366E157
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2020 12:31:10 +0000 (UTC)
+From: Mika Kahola <mika.kahola@intel.com>
+Date: Thu, 11 Jun 2020 15:30:59 +0300
+Message-Id: <20200611123101.7468-1-mika.kahola@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200611120511.1036732-1-arkadiusz.hiler@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tools/intel_gpu_top: Fix _open_pmu()
+Subject: [igt-dev] [RFC PATCH i-g-t v2 0/2] tests/kms_ccs: CCS Clear Color
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,100 +15,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+This is a RFC patch that proposes to test CCS clear color
+capability. This is actually a third edition of the clear color
+tests. The first two required tweaking and all received comments
+have been helpful. Therefore, any comments/proposals to improve
+the test are warmly welcomed
 
-On 11/06/2020 13:05, Arkadiusz Hiler wrote:
-> From: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-> 
-> _open_pmu() was calling perf_igfx_open_group() which in turn was
-> calling igt_perf_type_id("i915") each time.
-> 
-> By making _open_pmu() take type as a parameter and call
-> igt_perf_open_group() we achieve two things:
-> 
->   * we use the correct type for engines->device instead of the
->     hardcoded "i915"
-> 
->   * optimization - we call igt_perf_type_id() once - it's reading
->     sysfs
-> 
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-> Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-> Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> ---
->   tools/intel_gpu_top.c | 15 ++++++++-------
->   1 file changed, 8 insertions(+), 7 deletions(-)
-> 
-> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-> index 476e0a6f..cae01c25 100644
-> --- a/tools/intel_gpu_top.c
-> +++ b/tools/intel_gpu_top.c
-> @@ -438,11 +438,11 @@ static const char *imc_data_writes_unit(void)
->   		return NULL;
->   }
->   
-> -#define _open_pmu(cnt, pmu, fd) \
-> +#define _open_pmu(type, cnt, pmu, fd) \
->   ({ \
->   	int fd__; \
->   \
-> -	fd__ = perf_igfx_open_group((pmu)->config, (fd)); \
-> +	fd__ = igt_perf_open_group((type), (pmu)->config, (fd)); \
->   	if (fd__ >= 0) { \
->   		if ((fd) == -1) \
->   			(fd) = fd__; \
-> @@ -472,23 +472,24 @@ static int pmu_init(struct engines *engines)
->   {
->   	unsigned int i;
->   	int fd;
-> +	uint64_t type = igt_perf_type_id(engines->device);
->   
->   	engines->fd = -1;
->   	engines->num_counters = 0;
->   
->   	engines->irq.config = I915_PMU_INTERRUPTS;
-> -	fd = _open_pmu(engines->num_counters, &engines->irq, engines->fd);
-> +	fd = _open_pmu(type, engines->num_counters, &engines->irq, engines->fd);
->   	if (fd < 0)
->   		return -1;
->   
->   	engines->freq_req.config = I915_PMU_REQUESTED_FREQUENCY;
-> -	_open_pmu(engines->num_counters, &engines->freq_req, engines->fd);
-> +	_open_pmu(type, engines->num_counters, &engines->freq_req, engines->fd);
->   
->   	engines->freq_act.config = I915_PMU_ACTUAL_FREQUENCY;
-> -	_open_pmu(engines->num_counters, &engines->freq_act, engines->fd);
-> +	_open_pmu(type, engines->num_counters, &engines->freq_act, engines->fd);
->   
->   	engines->rc6.config = I915_PMU_RC6_RESIDENCY;
-> -	_open_pmu(engines->num_counters, &engines->rc6, engines->fd);
-> +	_open_pmu(type, engines->num_counters, &engines->rc6, engines->fd);
->   
->   	for (i = 0; i < engines->num_engines; i++) {
->   		struct engine *engine = engine_ptr(engines, i);
-> @@ -508,7 +509,7 @@ static int pmu_init(struct engines *engines)
->   					get_pmu_config(dirfd(engines->root),
->   						       engine->name,
->   						       cnt->counter);
-> -			fd = _open_pmu(engines->num_counters, cnt->pmu,
-> +			fd = _open_pmu(type, engines->num_counters, cnt->pmu,
->   				       engines->fd);
->   			if (fd >= 0)
->   				engine->num_counters++;
-> 
+The test paints a solid color on primary fb and a small sprite fb.
+These are cleared with fast clear feature. A crc is captured and
+compared against the reference.
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Logically it may be an odd plae to define color clear function in
+intel_batchbuffer.c but I decided to do so as we have rendercopy and
+veboxcopy functions defined there as well.
 
-Regards,
+v2: Modify _gen9_render_copyfunc to support fast clear (Matt)
+    Enable fast clear bit on 3D sequence (Matt)
+    Add helper function to figure out clear color modifier (Matt)
 
-Tvrtko
+Mika Kahola (2):
+  tests/kms_ccs: Add debug information on format modifier
+  tests/kms_ccs: CCS Clear Color test
+
+ lib/gen8_render.h       |  1 +
+ lib/intel_batchbuffer.c | 10 +++++
+ lib/intel_batchbuffer.h |  6 +++
+ lib/rendercopy.h        |  5 +++
+ lib/rendercopy_gen9.c   | 56 ++++++++++++++++++++-----
+ tests/kms_ccs.c         | 91 ++++++++++++++++++++++++++++++++++-------
+ 6 files changed, 145 insertions(+), 24 deletions(-)
+
+-- 
+2.20.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
