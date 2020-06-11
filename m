@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9F2F96E8FB
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2020 12:05:33 +0000 (UTC)
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Date: Thu, 11 Jun 2020 15:05:11 +0300
+Message-ID: <20200611120511.1036732-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 11 Jun 2020 11:57:37 -0000
-Message-ID: <159187665770.22713.17032895764034777733@emeril.freedesktop.org>
-References: <20200611104208.91381-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200611104208.91381-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fexec=5Freloc=3A_Verify_engine_isolation?=
+Subject: [igt-dev] [PATCH i-g-t] tools/intel_gpu_top: Fix _open_pmu()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,109 +14,94 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+From: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
 
-Series: i915/gem_exec_reloc: Verify engine isolation
-URL   : https://patchwork.freedesktop.org/series/78219/
-State : success
+_open_pmu() was calling perf_igfx_open_group() which in turn was
+calling igt_perf_type_id("i915") each time.
 
-== Summary ==
+By making _open_pmu() take type as a parameter and call
+igt_perf_open_group() we achieve two things:
 
-CI Bug Log - changes from CI_DRM_8616 -> IGTPW_4666
-====================================================
+ * we use the correct type for engines->device instead of the
+   hardcoded "i915"
 
-Summary
--------
+ * optimization - we call igt_perf_type_id() once - it's reading
+   sysfs
 
-  **SUCCESS**
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+---
+ tools/intel_gpu_top.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-  No regressions found.
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 476e0a6f..cae01c25 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -438,11 +438,11 @@ static const char *imc_data_writes_unit(void)
+ 		return NULL;
+ }
+ 
+-#define _open_pmu(cnt, pmu, fd) \
++#define _open_pmu(type, cnt, pmu, fd) \
+ ({ \
+ 	int fd__; \
+ \
+-	fd__ = perf_igfx_open_group((pmu)->config, (fd)); \
++	fd__ = igt_perf_open_group((type), (pmu)->config, (fd)); \
+ 	if (fd__ >= 0) { \
+ 		if ((fd) == -1) \
+ 			(fd) = fd__; \
+@@ -472,23 +472,24 @@ static int pmu_init(struct engines *engines)
+ {
+ 	unsigned int i;
+ 	int fd;
++	uint64_t type = igt_perf_type_id(engines->device);
+ 
+ 	engines->fd = -1;
+ 	engines->num_counters = 0;
+ 
+ 	engines->irq.config = I915_PMU_INTERRUPTS;
+-	fd = _open_pmu(engines->num_counters, &engines->irq, engines->fd);
++	fd = _open_pmu(type, engines->num_counters, &engines->irq, engines->fd);
+ 	if (fd < 0)
+ 		return -1;
+ 
+ 	engines->freq_req.config = I915_PMU_REQUESTED_FREQUENCY;
+-	_open_pmu(engines->num_counters, &engines->freq_req, engines->fd);
++	_open_pmu(type, engines->num_counters, &engines->freq_req, engines->fd);
+ 
+ 	engines->freq_act.config = I915_PMU_ACTUAL_FREQUENCY;
+-	_open_pmu(engines->num_counters, &engines->freq_act, engines->fd);
++	_open_pmu(type, engines->num_counters, &engines->freq_act, engines->fd);
+ 
+ 	engines->rc6.config = I915_PMU_RC6_RESIDENCY;
+-	_open_pmu(engines->num_counters, &engines->rc6, engines->fd);
++	_open_pmu(type, engines->num_counters, &engines->rc6, engines->fd);
+ 
+ 	for (i = 0; i < engines->num_engines; i++) {
+ 		struct engine *engine = engine_ptr(engines, i);
+@@ -508,7 +509,7 @@ static int pmu_init(struct engines *engines)
+ 					get_pmu_config(dirfd(engines->root),
+ 						       engine->name,
+ 						       cnt->counter);
+-			fd = _open_pmu(engines->num_counters, cnt->pmu,
++			fd = _open_pmu(type, engines->num_counters, cnt->pmu,
+ 				       engines->fd);
+ 			if (fd >= 0)
+ 				engine->num_counters++;
+-- 
+2.25.4
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4666 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-glk-dsi:         [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8616/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_suspend@basic-s3:
-    - fi-tgl-u2:          [FAIL][3] ([i915#1888]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8616/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html
-
-  * igt@gem_sync@basic-all:
-    - fi-icl-guc:         [DMESG-WARN][5] ([i915#1982]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8616/fi-icl-guc/igt@gem_sync@basic-all.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/fi-icl-guc/igt@gem_sync@basic-all.html
-
-  
-#### Warnings ####
-
-  * igt@debugfs_test@read_all_entries:
-    - fi-kbl-x1275:       [DMESG-WARN][7] ([i915#62] / [i915#92]) -> [DMESG-WARN][8] ([i915#62] / [i915#92] / [i915#95]) +3 similar issues
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8616/fi-kbl-x1275/igt@debugfs_test@read_all_entries.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/fi-kbl-x1275/igt@debugfs_test@read_all_entries.html
-
-  * igt@kms_force_connector_basic@force-edid:
-    - fi-kbl-x1275:       [DMESG-WARN][9] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][10] ([i915#62] / [i915#92]) +4 similar issues
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8616/fi-kbl-x1275/igt@kms_force_connector_basic@force-edid.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/fi-kbl-x1275/igt@kms_force_connector_basic@force-edid.html
-
-  
-  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
-  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
-  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
-
-
-Participating hosts (50 -> 43)
-------------------------------
-
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5702 -> IGTPW_4666
-
-  CI-20190529: 20190529
-  CI_DRM_8616: 461ce57da4f8793e59534c8c1f57f8a87f40dfbe @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4666: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/index.html
-  IGT_5702: d16ad07e7f2a028e14d61f570931c87fa5ce404c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-
-
-== Testlist changes ==
-
-+igt@gem_exec_reloc@basic-spin-others
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
