@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 11 Jun 2020 11:54:09 -0000
-Message-ID: <159187644926.22715.1864081895009599622@emeril.freedesktop.org>
+Date: Thu, 11 Jun 2020 11:57:37 -0000
+Message-ID: <159187665770.22713.17032895764034777733@emeril.freedesktop.org>
 References: <20200611104208.91381-1-chris@chris-wilson.co.uk>
 In-Reply-To: <20200611104208.91381-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_i?=
- =?utf-8?q?915/gem=5Fexec=5Freloc=3A_Verify_engine_isolation?=
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
+ =?utf-8?q?em=5Fexec=5Freloc=3A_Verify_engine_isolation?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,40 +27,96 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Series: i915/gem_exec_reloc: Verify engine isolation
 URL   : https://patchwork.freedesktop.org/series/78219/
-State : warning
+State : success
 
 == Summary ==
 
-Did not get list of undocumented tests for this run, something is wrong!
+CI Bug Log - changes from CI_DRM_8616 -> IGTPW_4666
+====================================================
 
-Other than that, pipeline status: FAILED.
+Summary
+-------
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/159406 for the overview.
+  **SUCCESS**
 
-test:ninja-test has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/3057698):
-  (runner_test:2361) igt_core-INFO: Stack trace:
-  (runner_test:2361) igt_core-INFO:   #0 ../lib/igt_core.c:1714 __igt_fail_assert()
-  (runner_test:2361) igt_core-INFO:   #1 ../runner/runner_tests.c:1581 __real_main238()
-  (runner_test:2361) igt_core-INFO:   #2 ../runner/runner_tests.c:238 main()
-  (runner_test:2361) igt_core-INFO:   #3 [__libc_start_main+0xf3]
-  (runner_test:2361) igt_core-INFO:   #4 [_start+0x2e]
-  ****  END  ****
-  -------
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4666 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-glk-dsi:         [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8616/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html
+
   
-  Full log written to /builds/gfx-ci/igt-ci-tags/build/meson-logs/testlog.txt
-  FAILED: meson-test 
-  /usr/bin/meson test --no-rebuild --print-errorlogs
-  ninja: build stopped: subcommand failed.
-  section_end:1591876065:build_script
-  section_start:1591876065:after_script
-  section_end:1591876066:after_script
-  section_start:1591876066:upload_artifacts_on_failure
-  section_end:1591876069:upload_artifacts_on_failure
-  ERROR: Job failed: exit code 1
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-tgl-u2:          [FAIL][3] ([i915#1888]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8616/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@gem_sync@basic-all:
+    - fi-icl-guc:         [DMESG-WARN][5] ([i915#1982]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8616/fi-icl-guc/igt@gem_sync@basic-all.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/fi-icl-guc/igt@gem_sync@basic-all.html
+
+  
+#### Warnings ####
+
+  * igt@debugfs_test@read_all_entries:
+    - fi-kbl-x1275:       [DMESG-WARN][7] ([i915#62] / [i915#92]) -> [DMESG-WARN][8] ([i915#62] / [i915#92] / [i915#95]) +3 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8616/fi-kbl-x1275/igt@debugfs_test@read_all_entries.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/fi-kbl-x1275/igt@debugfs_test@read_all_entries.html
+
+  * igt@kms_force_connector_basic@force-edid:
+    - fi-kbl-x1275:       [DMESG-WARN][9] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][10] ([i915#62] / [i915#92]) +4 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8616/fi-kbl-x1275/igt@kms_force_connector_basic@force-edid.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/fi-kbl-x1275/igt@kms_force_connector_basic@force-edid.html
+
+  
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
+  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+
+
+Participating hosts (50 -> 43)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5702 -> IGTPW_4666
+
+  CI-20190529: 20190529
+  CI_DRM_8616: 461ce57da4f8793e59534c8c1f57f8a87f40dfbe @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4666: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/index.html
+  IGT_5702: d16ad07e7f2a028e14d61f570931c87fa5ce404c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@gem_exec_reloc@basic-spin-others
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/159406
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4666/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
