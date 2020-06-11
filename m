@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7ECDE6E892
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64C106E88E
  for <igt-dev@lists.freedesktop.org>; Thu, 11 Jun 2020 03:46:37 +0000 (UTC)
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Date: Wed, 10 Jun 2020 20:44:35 -0700
-Message-Id: <20200611034435.220350-2-rodrigo.vivi@intel.com>
-In-Reply-To: <20200611034435.220350-1-rodrigo.vivi@intel.com>
-References: <20200611034435.220350-1-rodrigo.vivi@intel.com>
+Date: Wed, 10 Jun 2020 20:44:34 -0700
+Message-Id: <20200611034435.220350-1-rodrigo.vivi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] scripts/generate_clear_kernel: Clean up
- header license/copyright.
+Subject: [igt-dev] [PATCH i-g-t 1/2] scripts/generate_clear_kernel: Improve
+ usage instructions.
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,80 +15,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>, Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-U1BEWCBoZWFkZXIgYWxyZWFkeSBzdGF0ZXMgaXQgaXMgTUlULCBubyBuZWVkIGZvciBkdXBsaWNh
-dGlvbiBvbiB0aGUKY29weXJpZ2h0IG5vdGljZS4KClJlZmVyZW5jZTogaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvYXJjaGl2ZXMvaW50ZWwtZ2Z4LzIwMjAtSnVuZS8yNDE1NDguaHRtbApD
-YzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+ClNpZ25lZC1vZmYtYnk6
-IFJvZHJpZ28gVml2aSA8cm9kcmlnby52aXZpQGludGVsLmNvbT4KLS0tCiBsaWIvaTkxNS9zaGFk
-ZXJzL2NsZWFyX2tlcm5lbC9oc3cuYXNtIHwgMjYgKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
-IGxpYi9pOTE1L3NoYWRlcnMvY2xlYXJfa2VybmVsL2l2Yi5hc20gfCAyNiArKy0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLQogMiBmaWxlcyBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDQ4IGRlbGV0
-aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYi9pOTE1L3NoYWRlcnMvY2xlYXJfa2VybmVsL2hzdy5h
-c20gYi9saWIvaTkxNS9zaGFkZXJzL2NsZWFyX2tlcm5lbC9oc3cuYXNtCmluZGV4IGJjMjliYWYy
-Li41ZmRmMzg0YiAxMDA2NDQKLS0tIGEvbGliL2k5MTUvc2hhZGVycy9jbGVhcl9rZXJuZWwvaHN3
-LmFzbQorKysgYi9saWIvaTkxNS9zaGFkZXJzL2NsZWFyX2tlcm5lbC9oc3cuYXNtCkBAIC0xLDMx
-ICsxLDkgQEAKLS8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQgKi8KKy8vIFNQRFgtTGlj
-ZW5zZS1JZGVudGlmaWVyOiBNSVQKIC8qCiAgKiBDb3B5cmlnaHQgwqkgMjAyMCBJbnRlbCBDb3Jw
-b3JhdGlvbgotICoKLSAqIFBlcm1pc3Npb24gaXMgaGVyZWJ5IGdyYW50ZWQsIGZyZWUgb2YgY2hh
-cmdlLCB0byBhbnkgcGVyc29uIG9idGFpbmluZyBhCi0gKiBjb3B5IG9mIHRoaXMgc29mdHdhcmUg
-YW5kIGFzc29jaWF0ZWQgZG9jdW1lbnRhdGlvbiBmaWxlcyAodGhlICJTb2Z0d2FyZSIpLAotICog
-dG8gZGVhbCBpbiB0aGUgU29mdHdhcmUgd2l0aG91dCByZXN0cmljdGlvbiwgaW5jbHVkaW5nIHdp
-dGhvdXQgbGltaXRhdGlvbgotICogdGhlIHJpZ2h0cyB0byB1c2UsIGNvcHksIG1vZGlmeSwgbWVy
-Z2UsIHB1Ymxpc2gsIGRpc3RyaWJ1dGUsIHN1YmxpY2Vuc2UsCi0gKiBhbmQvb3Igc2VsbCBjb3Bp
-ZXMgb2YgdGhlIFNvZnR3YXJlLCBhbmQgdG8gcGVybWl0IHBlcnNvbnMgdG8gd2hvbSB0aGUKLSAq
-IFNvZnR3YXJlIGlzIGZ1cm5pc2hlZCB0byBkbyBzbywgc3ViamVjdCB0byB0aGUgZm9sbG93aW5n
-IGNvbmRpdGlvbnM6Ci0gKgotICogVGhlIGFib3ZlIGNvcHlyaWdodCBub3RpY2UgYW5kIHRoaXMg
-cGVybWlzc2lvbiBub3RpY2UgKGluY2x1ZGluZyB0aGUgbmV4dAotICogcGFyYWdyYXBoKSBzaGFs
-bCBiZSBpbmNsdWRlZCBpbiBhbGwgY29waWVzIG9yIHN1YnN0YW50aWFsIHBvcnRpb25zIG9mIHRo
-ZQotICogU29mdHdhcmUuCi0gKgotICogVEhFIFNPRlRXQVJFIElTIFBST1ZJREVEICJBUyBJUyIs
-IFdJVEhPVVQgV0FSUkFOVFkgT0YgQU5ZIEtJTkQsIEVYUFJFU1MgT1IKLSAqIElNUExJRUQsIElO
-Q0xVRElORyBCVVQgTk9UIExJTUlURUQgVE8gVEhFIFdBUlJBTlRJRVMgT0YgTUVSQ0hBTlRBQklM
-SVRZLAotICogRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UgQU5EIE5PTklORlJJTkdF
-TUVOVC4gIElOIE5PIEVWRU5UIFNIQUxMCi0gKiBUSEUgQVVUSE9SUyBPUiBDT1BZUklHSFQgSE9M
-REVSUyBCRSBMSUFCTEUgRk9SIEFOWSBDTEFJTSwgREFNQUdFUyBPUiBPVEhFUgotICogTElBQklM
-SVRZLCBXSEVUSEVSIElOIEFOIEFDVElPTiBPRiBDT05UUkFDVCwgVE9SVCBPUiBPVEhFUldJU0Us
-IEFSSVNJTkcKLSAqIEZST00sIE9VVCBPRiBPUiBJTiBDT05ORUNUSU9OIFdJVEggVEhFIFNPRlRX
-QVJFIE9SIFRIRSBVU0UgT1IgT1RIRVIKLSAqIERFQUxJTkdTIElOIFRIRSBTT0ZUV0FSRS4KLSAq
-CiAgKi8KIAotLyoqCi0gKiBLZXJuZWwgbmFtZTogaHN3X2NsZWFyX2J1Zi5hc20KLSAqCisvKgog
-ICogS2VybmVsIGZvciBQQVZQIGJ1ZmZlciBjbGVhci4KICAqCiAgKgkxLiBDbGVhciBhbGwgNjQg
-R1JGIHJlZ2lzdGVycyBhc3NpZ25lZCB0byB0aGUga2VybmVsIHdpdGggZGVzaWduYXRlZCB2YWx1
-ZTsKZGlmZiAtLWdpdCBhL2xpYi9pOTE1L3NoYWRlcnMvY2xlYXJfa2VybmVsL2l2Yi5hc20gYi9s
-aWIvaTkxNS9zaGFkZXJzL2NsZWFyX2tlcm5lbC9pdmIuYXNtCmluZGV4IGIyMWJjOTQ4Li45N2M3
-YWM5ZSAxMDA2NDQKLS0tIGEvbGliL2k5MTUvc2hhZGVycy9jbGVhcl9rZXJuZWwvaXZiLmFzbQor
-KysgYi9saWIvaTkxNS9zaGFkZXJzL2NsZWFyX2tlcm5lbC9pdmIuYXNtCkBAIC0xLDMxICsxLDkg
-QEAKLS8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQgKi8KKy8vIFNQRFgtTGljZW5zZS1J
-ZGVudGlmaWVyOiBNSVQKIC8qCiAgKiBDb3B5cmlnaHQgwqkgMjAyMCBJbnRlbCBDb3Jwb3JhdGlv
-bgotICoKLSAqIFBlcm1pc3Npb24gaXMgaGVyZWJ5IGdyYW50ZWQsIGZyZWUgb2YgY2hhcmdlLCB0
-byBhbnkgcGVyc29uIG9idGFpbmluZyBhCi0gKiBjb3B5IG9mIHRoaXMgc29mdHdhcmUgYW5kIGFz
-c29jaWF0ZWQgZG9jdW1lbnRhdGlvbiBmaWxlcyAodGhlICJTb2Z0d2FyZSIpLAotICogdG8gZGVh
-bCBpbiB0aGUgU29mdHdhcmUgd2l0aG91dCByZXN0cmljdGlvbiwgaW5jbHVkaW5nIHdpdGhvdXQg
-bGltaXRhdGlvbgotICogdGhlIHJpZ2h0cyB0byB1c2UsIGNvcHksIG1vZGlmeSwgbWVyZ2UsIHB1
-Ymxpc2gsIGRpc3RyaWJ1dGUsIHN1YmxpY2Vuc2UsCi0gKiBhbmQvb3Igc2VsbCBjb3BpZXMgb2Yg
-dGhlIFNvZnR3YXJlLCBhbmQgdG8gcGVybWl0IHBlcnNvbnMgdG8gd2hvbSB0aGUKLSAqIFNvZnR3
-YXJlIGlzIGZ1cm5pc2hlZCB0byBkbyBzbywgc3ViamVjdCB0byB0aGUgZm9sbG93aW5nIGNvbmRp
-dGlvbnM6Ci0gKgotICogVGhlIGFib3ZlIGNvcHlyaWdodCBub3RpY2UgYW5kIHRoaXMgcGVybWlz
-c2lvbiBub3RpY2UgKGluY2x1ZGluZyB0aGUgbmV4dAotICogcGFyYWdyYXBoKSBzaGFsbCBiZSBp
-bmNsdWRlZCBpbiBhbGwgY29waWVzIG9yIHN1YnN0YW50aWFsIHBvcnRpb25zIG9mIHRoZQotICog
-U29mdHdhcmUuCi0gKgotICogVEhFIFNPRlRXQVJFIElTIFBST1ZJREVEICJBUyBJUyIsIFdJVEhP
-VVQgV0FSUkFOVFkgT0YgQU5ZIEtJTkQsIEVYUFJFU1MgT1IKLSAqIElNUExJRUQsIElOQ0xVRElO
-RyBCVVQgTk9UIExJTUlURUQgVE8gVEhFIFdBUlJBTlRJRVMgT0YgTUVSQ0hBTlRBQklMSVRZLAot
-ICogRklUTkVTUyBGT1IgQSBQQVJUSUNVTEFSIFBVUlBPU0UgQU5EIE5PTklORlJJTkdFTUVOVC4g
-IElOIE5PIEVWRU5UIFNIQUxMCi0gKiBUSEUgQVVUSE9SUyBPUiBDT1BZUklHSFQgSE9MREVSUyBC
-RSBMSUFCTEUgRk9SIEFOWSBDTEFJTSwgREFNQUdFUyBPUiBPVEhFUgotICogTElBQklMSVRZLCBX
-SEVUSEVSIElOIEFOIEFDVElPTiBPRiBDT05UUkFDVCwgVE9SVCBPUiBPVEhFUldJU0UsIEFSSVNJ
-TkcKLSAqIEZST00sIE9VVCBPRiBPUiBJTiBDT05ORUNUSU9OIFdJVEggVEhFIFNPRlRXQVJFIE9S
-IFRIRSBVU0UgT1IgT1RIRVIKLSAqIERFQUxJTkdTIElOIFRIRSBTT0ZUV0FSRS4KLSAqCiAgKi8K
-IAotLyoqCi0gKiBLZXJuZWwgbmFtZTogaXZiX2NsZWFyX2J1Zi5hc20KLSAqCisvKgogICogS2Vy
-bmVsIGZvciBQQVZQIGJ1ZmZlciBjbGVhci4KICAqCiAgKgkxLiBDbGVhciBhbGwgNjQgR1JGIHJl
-Z2lzdGVycyBhc3NpZ25lZCB0byB0aGUga2VybmVsIHdpdGggZGVzaWduYXRlZCB2YWx1ZTsKLS0g
-CjIuMjQuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-aWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
-Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Fix the script name and make the path to mesa i915_asm a bit
+more clear
+
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+---
+ scripts/generate_clear_kernel.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/generate_clear_kernel.sh b/scripts/generate_clear_kernel.sh
+index af628a86..90bbdf5d 100755
+--- a/scripts/generate_clear_kernel.sh
++++ b/scripts/generate_clear_kernel.sh
+@@ -26,7 +26,7 @@
+ export ASSEMBLY_SOURCE=./lib/i915/shaders/clear_kernel
+ 
+ function get_help {
+-        echo "Usage:    asm_eu_kernel.sh [options]"
++        echo "Usage: ${0} [options]"
+         echo "Note: hsw_clear_kernel.c/ivb_clear_kernel.c automatically generated by this script should never be modified - it would be imported to i915, to use as it is..."
+         echo " "
+         echo "Please make sure your Mesa tool is compiled with "-Dtools=intel" and "-Ddri-drivers=i965", and run this script from IGT source root directory"
+@@ -37,7 +37,7 @@ function get_help {
+         echo " -o=name_of_file          output file to store Mesa assembled c-literal for the device - If none specified, default file will be used - ivb/hsw-cb_assembled"
+         echo " -m=mesa                  Path to Mesa i965_asm binary"
+         echo " "
+-        echo " Usage example: \"scripts/generate_clear_kernel.sh -g hsw -o hsw_clear_buffer.h -m /path/to/Mesa/i965_asm/binary\""
++        echo " Usage example: \"./scripts/generate_clear_kernel.sh -g hsw -o hsw_clear_buffer.h -m ~/mesa/build/src/intel/tools/i965_asm\""
+ }
+ 
+ function include_array # $1=array_name - update Mesa output with desired format
+-- 
+2.24.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
