@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 11 Jun 2020 08:25:45 -0000
-Message-ID: <159186394541.22715.6538837324368005756@emeril.freedesktop.org>
-References: <20200605143720.710220-1-michel@daenzer.net>
-In-Reply-To: <20200605143720.710220-1-michel@daenzer.net>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_k?=
- =?utf-8?q?ms=5Fcursor=5Flegacy=3A_Keep_primary_plane_enabled_for_XRGB_ove?=
- =?utf-8?q?rlay_fallback?=
+Date: Thu, 11 Jun 2020 08:25:54 -0000
+Message-ID: <159186395437.22713.4346863343274079876@emeril.freedesktop.org>
+References: <20200605194540.2135972-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200605194540.2135972-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_failure_for_t?=
+ =?utf-8?q?ests/i915/gem=5Fhuc=5Fcopy=3A_Enable_a_HuC_copy_test_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,14 +19,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?q?Michel_D=C3=A4nzer?= <michel@daenzer.net>
+To: "Robert M. Fosha" <robert.m.fosha@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: kms_cursor_legacy: Keep primary plane enabled for XRGB overlay fallback
-URL   : https://patchwork.freedesktop.org/series/78047/
+Series: tests/i915/gem_huc_copy: Enable a HuC copy test (rev6)
+URL   : https://patchwork.freedesktop.org/series/71194/
 State : failure
 
 == Summary ==
@@ -53,11 +52,11 @@ Thanks in advance!
 
 Other than that, pipeline status: SUCCESS.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/156787 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/156887 for the overview.
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/156787
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/156887
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
