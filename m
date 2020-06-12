@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A3396E83E
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2020 07:49:35 +0000 (UTC)
-Date: Fri, 12 Jun 2020 10:49:32 +0300
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 03D076E876
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2020 08:51:53 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200612074932.GR9497@platvala-desk.ger.corp.intel.com>
-References: <20200611135238.176102-1-gwan-gyeong.mun@intel.com>
- <3c8428cf42753f6b15ed8f0d6de3632c71b5956c.camel@intel.com>
+Date: Fri, 12 Jun 2020 11:51:34 +0300
+Message-Id: <20200612085135.18375-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <3c8428cf42753f6b15ed8f0d6de3632c71b5956c.camel@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_su: Print errno while it
- fails to read debugfs
+Subject: [igt-dev] [PATCH i-g-t 1/2] scripts/verify-blacklist: Script for
+ checking blacklist files
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,33 +15,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Souza, Jose" <jose.souza@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jun 11, 2020 at 03:31:18PM +0000, Souza, Jose wrote:
-> On Thu, 2020-06-11 at 16:52 +0300, Gwan-gyeong Mun wrote:
-> > This tests is being sporadically skipped in CI as it is not due
-> > "PSR sink not reliable: yes". This commit adds printing of debugfs
-> > ("tests/kms_psr2_su: Print debugfs when skipping test"), but it is not
-> > enough to track error cases.
-> > It adds printing of errorno while it fails to read debugfs.
-> > =
+tests/intel-ci/blacklist*.txt files can collect bitrot unless there's
+an easy way to check for lines that are no longer needed due to the
+tests being renamed or removed. Therefore, a script just for that.
 
-> =
+v2: Use long options for readability, exit with 1 if something found
 
-> Reviewed-by: Jos=E9 Roberto de Souza <jose.souza@intel.com>
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Reviewed-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com> #v1
+---
+ scripts/verify-blacklist.sh | 52 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
+ create mode 100755 scripts/verify-blacklist.sh
 
-Merged, thanks for the patch and review!
+diff --git a/scripts/verify-blacklist.sh b/scripts/verify-blacklist.sh
+new file mode 100755
+index 00000000..599711ff
+--- /dev/null
++++ b/scripts/verify-blacklist.sh
+@@ -0,0 +1,52 @@
++#!/bin/sh
++
++# Verify that all entries in a blacklist file are still valid
++
++usage() {
++    echo "Usage: $0 <path-to-igt-runner> <test-binary-directory> <blacklist-file>"
++    echo
++    echo " path-to-igt-runner: For example build/runner/igt_runner"
++    echo " test-binary-directory: For example build/tests"
++    echo " blacklist-file: For example tests/intel-ci/blacklist.txt"
++    exit 2
++}
++
++if [ $# -ne 3 ]; then
++    usage
++fi
++
++RUNNER="$1"
++BINDIR="$2"
++BLFILE="$3"
++
++if [ ! -x "$RUNNER" ]; then
++    echo "$RUNNER not found"
++    echo
++    usage
++fi
++
++if [ ! -f "$BINDIR/test-list.txt" ]; then
++    echo "$BINDIR doesn't look like a test-binary directory"
++    echo
++    usage
++fi
++
++if [ ! -f "$BLFILE" ]; then
++    echo "$BLFILE not found"
++    echo
++    usage
++fi
++
++STATUS=0
++
++cat "$BLFILE" | while read line; do
++    test=$(echo "$line" | sed 's/#.*//' | tr -d '[:space:]')
++    if [ "$test" = "" ]; then continue; fi
++
++    if ! "$RUNNER" --list-all --include-tests "$test" "$BINDIR" >/dev/null 2>/dev/null; then
++        echo Useless blacklist entry: "$test"
++	STATUS=1
++    fi
++done
++
++exit $STATUS
+-- 
+2.20.1
 
-
--- =
-
-Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
