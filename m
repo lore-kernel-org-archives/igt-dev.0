@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 737286E0F4
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jun 2020 12:52:51 +0000 (UTC)
-Date: Fri, 12 Jun 2020 15:52:47 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200612125247.opjuffqvjs2tpwmu@ahiler-desk1.fi.intel.com>
-References: <20200612085135.18375-1-petri.latvala@intel.com>
- <20200612085135.18375-2-petri.latvala@intel.com>
- <20200612085714.GT9497@platvala-desk.ger.corp.intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67BB389F69
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2020 05:25:17 +0000 (UTC)
+From: Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>
+Date: Mon, 15 Jun 2020 10:48:48 +0530
+Message-Id: <20200615051848.24654-1-pankaj.laxminarayan.bharadiya@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200612085714.GT9497@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] gitlab-ci: Verify blacklist files
- with verify-blacklist.sh
+Subject: [igt-dev] [i-g-t] lib/rendercopy: Specify the correct vertex buffer
+ offset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,56 +19,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jun 12, 2020 at 11:57:14AM +0300, Petri Latvala wrote:
-> On Fri, Jun 12, 2020 at 11:51:35AM +0300, Petri Latvala wrote:
-> > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> > Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> 
-> FYI: https://gitlab.freedesktop.org/adrinael/igt-gpu-tools/-/jobs/3073434
-> 
-> Verifying took 5 minutes on gitlab, but that's parallelized with the
-> other test-stage executions.
+We must specify the correct vertex buffer offset as
+"End Offset Enable" bit is not enabled in 3DPRIMITIVE instruction.
 
-But it's also the slowest step of that stage by far. Even the qemu
-cross-testing is ~5x faster.
+This fixes below fatal error:
 
-Doing:
-> if ! "$RUNNER" --list-all --include-tests "$test" "$BINDIR" >/dev/null 2>/dev/null; then
-for each blacklist entry is a bit expensive. It execs all the test
-binaries each time.
+ [FATAL]:
+ ***** **** *** ** * FATAL * ** *** **** *****
+ StateArbiter>Surface State Pointers in the binding table must be 64 byte aligned.
+ Be sure that the binding table is set up correctly. Address found: 6b6b6b6b
+ ***** **** *** ** END FATAL ** *** **** *****
 
-Something like this should be faster:
+Bspec: 56206
 
-TESTLIST="$("$RUNNER" --list-all "$BINDIR")"
+Signed-off-by: Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>
+---
+ lib/rendercopy_gen9.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-cat "$BLFILE" | while read line; do
-    blentry=$(echo "$line" | sed 's/#.*//' | tr -d '[:space:]')
-    if [ "$blentry" = "" ]; then continue; fi
-
-    if ! (echo "$TESTLIST" | grep -q "$blentry") >/dev/null 2>/dev/null; then
-        echo Useless blacklist entry: "$blentry"
-       STATUS=1
-    fi
-done
-
-This may be not exactly the same as runner is using glib's regex, but if
-you switch it to PCRE then 'grep -P' should be close enough.
-
-
-
-Another observation - we don't assert beginning/end off line with ^$,
-but yet we have patterns like:
-> igt@i915_pm_rpm@universal-planes(-dpms)?
-
-Which will kill any universal-planes-definitely-not-dpms subtest too.
-
+diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+index 85ae4cabc..695806500 100644
+--- a/lib/rendercopy_gen9.c
++++ b/lib/rendercopy_gen9.c
+@@ -951,7 +951,7 @@ static void gen8_emit_primitive(struct intel_batchbuffer *batch, uint32_t offset
+ 	OUT_BATCH(GEN4_3DPRIMITIVE | (7-2));
+ 	OUT_BATCH(0);	/* gen8+ ignore the topology type field */
+ 	OUT_BATCH(3);	/* vertex count */
+-	OUT_BATCH(0);	/*  We're specifying this instead with offset in GEN6_3DSTATE_VERTEX_BUFFERS */
++	OUT_BATCH(offset);
+ 	OUT_BATCH(1);	/* single instance */
+ 	OUT_BATCH(0);	/* start instance location */
+ 	OUT_BATCH(0);	/* index buffer offset, ignored */
 -- 
-Cheers,
-Arek
+2.23.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
