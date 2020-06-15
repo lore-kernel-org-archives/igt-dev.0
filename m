@@ -1,19 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7D4789B62
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2020 09:44:28 +0000 (UTC)
-Date: Mon, 15 Jun 2020 12:44:26 +0300
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9520B89CDE
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Jun 2020 10:25:25 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200615094426.GA20883@platvala-desk.ger.corp.intel.com>
-References: <20200612085135.18375-1-petri.latvala@intel.com>
- <20200612085135.18375-2-petri.latvala@intel.com>
- <20200612085714.GT9497@platvala-desk.ger.corp.intel.com>
- <20200612125247.opjuffqvjs2tpwmu@ahiler-desk1.fi.intel.com>
+Date: Mon, 15 Jun 2020 13:25:15 +0300
+Message-Id: <20200615102516.7376-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200612125247.opjuffqvjs2tpwmu@ahiler-desk1.fi.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] gitlab-ci: Verify blacklist files
- with verify-blacklist.sh
+Subject: [igt-dev] [PATCH i-g-t v3 1/2] scripts/verify-blacklist: Script for
+ checking blacklist files
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,58 +19,90 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jun 12, 2020 at 03:52:47PM +0300, Arkadiusz Hiler wrote:
-> On Fri, Jun 12, 2020 at 11:57:14AM +0300, Petri Latvala wrote:
-> > On Fri, Jun 12, 2020 at 11:51:35AM +0300, Petri Latvala wrote:
-> > > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> > > Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> > 
-> > FYI: https://gitlab.freedesktop.org/adrinael/igt-gpu-tools/-/jobs/3073434
-> > 
-> > Verifying took 5 minutes on gitlab, but that's parallelized with the
-> > other test-stage executions.
-> 
-> But it's also the slowest step of that stage by far. Even the qemu
-> cross-testing is ~5x faster.
-> 
-> Doing:
-> > if ! "$RUNNER" --list-all --include-tests "$test" "$BINDIR" >/dev/null 2>/dev/null; then
-> for each blacklist entry is a bit expensive. It execs all the test
-> binaries each time.
-> 
-> Something like this should be faster:
-> 
-> TESTLIST="$("$RUNNER" --list-all "$BINDIR")"
-> 
-> cat "$BLFILE" | while read line; do
->     blentry=$(echo "$line" | sed 's/#.*//' | tr -d '[:space:]')
->     if [ "$blentry" = "" ]; then continue; fi
-> 
->     if ! (echo "$TESTLIST" | grep -q "$blentry") >/dev/null 2>/dev/null; then
->         echo Useless blacklist entry: "$blentry"
->        STATUS=1
->     fi
-> done
-> 
-> This may be not exactly the same as runner is using glib's regex, but if
-> you switch it to PCRE then 'grep -P' should be close enough.
+tests/intel-ci/blacklist*.txt files can collect bitrot unless there's
+an easy way to check for lines that are no longer needed due to the
+tests being renamed or removed. Therefore, a script just for that.
 
+v2: Use long options for readability, exit with 1 if something found
 
-Meh, fair enough. I was doing it this way to make sure we process the
-blacklist exactly the same way in the check as in "production", and I
-can't remember now what my real fear was. Extending the blacklist
-syntax? We're going to catch that on first use on some level of
-confidence and even if we don't it's not a big deal.
+v3: Verify manually against the list of all tests instead of trying
+    with igt_runner's --include-tests
 
-New revision with new numbers on its way!
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Reviewed-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com> #v1
+---
+ scripts/verify-blacklist.sh | 54 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
+ create mode 100755 scripts/verify-blacklist.sh
 
-
+diff --git a/scripts/verify-blacklist.sh b/scripts/verify-blacklist.sh
+new file mode 100755
+index 00000000..93dca495
+--- /dev/null
++++ b/scripts/verify-blacklist.sh
+@@ -0,0 +1,54 @@
++#!/bin/sh
++
++# Verify that all entries in a blacklist file are still valid
++
++usage() {
++    echo "Usage: $0 <path-to-igt-runner> <test-binary-directory> <blacklist-file>"
++    echo
++    echo " path-to-igt-runner: For example build/runner/igt_runner"
++    echo " test-binary-directory: For example build/tests"
++    echo " blacklist-file: For example tests/intel-ci/blacklist.txt"
++    exit 2
++}
++
++if [ $# -ne 3 ]; then
++    usage
++fi
++
++RUNNER="$1"
++BINDIR="$2"
++BLFILE="$3"
++
++if [ ! -x "$RUNNER" ]; then
++    echo "$RUNNER not found"
++    echo
++    usage
++fi
++
++if [ ! -f "$BINDIR/test-list.txt" ]; then
++    echo "$BINDIR doesn't look like a test-binary directory"
++    echo
++    usage
++fi
++
++if [ ! -f "$BLFILE" ]; then
++    echo "$BLFILE not found"
++    echo
++    usage
++fi
++
++STATUS=0
++
++TESTLIST="$("$RUNNER" --list-all "$BINDIR")"
++
++cat "$BLFILE" | while read line; do
++    blentry=$(echo "$line" | sed 's/#.*//' | tr -d '[:space:]')
++    if [ "$blentry" = "" ]; then continue; fi
++
++    if ! (echo "$TESTLIST" | grep -Pq "$blentry") >/dev/null 2>/dev/null; then
++	echo Useless blacklist entry: "$blentry"
++	STATUS=1
++    fi
++done
++
++exit $STATUS
 -- 
-Petri Latvala
+2.20.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
