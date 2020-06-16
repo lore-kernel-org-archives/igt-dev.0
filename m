@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C193E6E8C4
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2020 14:12:02 +0000 (UTC)
-Date: Tue, 16 Jun 2020 19:42:10 +0530
-From: Ramalingam C <ramalingam.c@intel.com>
-Message-ID: <20200616141210.GB26166@intel.com>
-References: <20200616105812.21558-1-ankit.k.nautiyal@intel.com>
- <20200616105812.21558-2-ankit.k.nautiyal@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE2716E8C4
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2020 14:15:39 +0000 (UTC)
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Date: Tue, 16 Jun 2020 17:14:50 +0300
+Message-ID: <20200616141450.1181127-3-arkadiusz.hiler@intel.com>
+In-Reply-To: <20200616141450.1181127-1-arkadiusz.hiler@intel.com>
+References: <20200616141450.1181127-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200616105812.21558-2-ankit.k.nautiyal@intel.com>
-Subject: Re: [igt-dev] [Patch][i-g-t 1/2] lib/igt_kms: Add support for
- detecting connector events
+Subject: [igt-dev] [PATCH i-g-t 3/3] igt/core: Disallow igt_require/skip in
+ non-main threads
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,105 +17,105 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMjAyMC0wNi0xNiBhdCAxNjoyODoxMSArMDUzMCwgQW5raXQgTmF1dGl5YWwgd3JvdGU6Cj4g
-Q3VycmVudGx5LCB0aGUgZXZlbnRfZGV0ZWN0IGZ1bmN0aW9uIGNoZWNrcyB0aGUgcHJvcGVydHkg
-dmFsIGZvcgo+ICJIT1RQTFVHIiBhbmQgIkxFQVNFIiBib3RoIG9mIHdoaWNoIGFyZSBzZXQgdG8g
-JzEnIHdoZW4gdGhlc2UgZXZlbnRzCj4gYXJlIHNlbnQuCj4gCj4gVGhpcyBjYW5ub3QgYmUgdXNl
-ZCBmb3IgZGV0ZWN0aW5nIGNvbm5lY3RvciBldmVudHMgc3VjaCBhcyBIRENQIGV2ZW50Cj4gYXMg
-Y29ubmVjdG9yIGV2ZW50cyBhcmUgc2VudCBhbG9uZyB3aXRoIHByb3BlcnR5IHRvIHNpZ25pZnkg
-d2hpY2gKPiBwcm9wZXJ0eSBvZiB3aGljaCBjb25uZWN0b3IgaGFzIGNoYW5nZWQuIENvbm5lY3Rv
-ciBJRCBhbmQgcHJvcGVydHkgaWQKPiBhcmUgcHJvdmlkZWQgYWxvbmcgd2l0aCAiQ09OTkVDVE9S
-IiBhbmQgIlBST1BFUlRZIiBhcyB1ZGV2Cj4gcHJvcGVydHktdmFsdWUgcGFpcnMuIEVnLiBmb3Ig
-SERDUCwgdGhlIGNvbm5lY3RvciBpZCBvZiB0aGUgY29ubmVjdG9yCj4gd2hvc2UgaGRjcCBzdGF0
-dXMgY2hhbmdlZCwgYW5kIHRoZSBwcm9wZXJ0eSBpZCBvZiB0aGUKPiDigJhDT05URU5UX1BST1RF
-Q1RJT07igJkgcHJvcGVydHkgYXJlIHNlbnQgd2l0aCB1ZXZlbnQuCj4gCj4gVGhpcyBwYXRjaCBt
-b2RpZmllcyB0aGUgZXZlbnRfZGV0ZWN0IGZ1bmN0aW9uIHRvIGNoZWNrIG11bHRpcGxlCj4gcHJv
-cGVydGllcyB3aXRoIGRpZmZlcmVudCBleHBlY3RlZCB2YWx1ZXMuIEl0IGFsc28gYWRkcyBzdXBw
-b3J0IHRvCj4gZGV0ZWN0IGNvbm5lY3RvciBldmVudCBmb3IgYSBnaXZlbiBwYWlyIG9mIGNvbm5l
-Y3RvciBhbmQgcHJvcGVydHkgaWRzLgo+IAo+IFNpZ25lZC1vZmYtYnk6IEFua2l0IE5hdXRpeWFs
-IDxhbmtpdC5rLm5hdXRpeWFsQGludGVsLmNvbT4KPiAtLS0KPiAgbGliL2lndF9rbXMuYyB8IDYx
-ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLQo+ICBs
-aWIvaWd0X2ttcy5oIHwgIDIgKysKPiAgMiBmaWxlcyBjaGFuZ2VkLCA0OCBpbnNlcnRpb25zKCsp
-LCAxNSBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvbGliL2lndF9rbXMuYyBiL2xpYi9p
-Z3Rfa21zLmMKPiBpbmRleCA1NGRlNDVlNS4uNzE3NzIzMWUgMTAwNjQ0Cj4gLS0tIGEvbGliL2ln
-dF9rbXMuYwo+ICsrKyBiL2xpYi9pZ3Rfa21zLmMKPiBAQCAtNDE2NCwzMiArNDE2NCw1NyBAQCBz
-dHJ1Y3QgdWRldl9tb25pdG9yICppZ3Rfd2F0Y2hfaG90cGx1Zyh2b2lkKQo+ICB9Cj4gIAo+ICBz
-dGF0aWMgYm9vbCBldmVudF9kZXRlY3RlZChzdHJ1Y3QgdWRldl9tb25pdG9yICptb24sIGludCB0
-aW1lb3V0X3NlY3MsCj4gLQkJCSAgIGNvbnN0IGNoYXIgKnByb3BlcnR5KQo+ICsJCQkgICBjb25z
-dCBjaGFyICoqcHJvcGVydHksIGludCAqZXhwZWN0ZWRfdmFsLCBpbnQgbnVtX3Byb3BzKQo+ICB7
-Cj4gIAlzdHJ1Y3QgdWRldl9kZXZpY2UgKmRldjsKPiAtCWNvbnN0IGNoYXIgKmhvdHBsdWdfdmFs
-Owo+ICsJY29uc3QgY2hhciAqcHJvcF92YWxfc3RyOwo+ICAJc3RydWN0IHBvbGxmZCBmZCA9IHsK
-PiAgCQkuZmQgPSB1ZGV2X21vbml0b3JfZ2V0X2ZkKG1vbiksCj4gIAkJLmV2ZW50cyA9IFBPTExJ
-Tgo+ICAJfTsKPiAtCWJvb2wgaG90cGx1Z19yZWNlaXZlZCA9IGZhbHNlOwo+ICsJYm9vbCBldmVu
-dF9yZWNlaXZlZCA9IGZhbHNlOwo+ICsJaW50IGk7Cj4gIAo+IC0JLyogR28gdGhyb3VnaCBhbGwg
-b2YgdGhlIGV2ZW50cyBwZW5kaW5nIG9uIHRoZSB1ZGV2IG1vbml0b3IuIE9uY2Ugd2UKPiAtCSAq
-IHJlY2VpdmUgYSBob3RwbHVnLCB3ZSBjb250aW51ZSBnb2luZyB0aHJvdWdoIHRoZSByZXN0IG9m
-IHRoZSBldmVudHMKPiAtCSAqIHNvIHRoYXQgcmVkdW5kYW50IGhvdHBsdWcgZXZlbnRzIGRvbid0
-IGNoYW5nZSB0aGUgcmVzdWx0cyBvZiBmdXR1cmUKPiAtCSAqIGNoZWNrcwo+ICsJLyogR28gdGhy
-b3VnaCBhbGwgb2YgdGhlIGV2ZW50cyBwZW5kaW5nIG9uIHRoZSB1ZGV2IG1vbml0b3IuCj4gKwkg
-KiBNYXRjaCB0aGUgZ2l2ZW4gc2V0IG9mIHByb3BlcnRpZXMgYW5kIHRoZWlyIHZhbHVlcyB0bwo+
-ICsJICogdGhlIGV4cGVjdGVkIHZhbHVlcy4KPiAgCSAqLwo+IC0Jd2hpbGUgKCFob3RwbHVnX3Jl
-Y2VpdmVkICYmIHBvbGwoJmZkLCAxLCB0aW1lb3V0X3NlY3MgKiAxMDAwKSkgewo+ICsJd2hpbGUg
-KCFldmVudF9yZWNlaXZlZCAmJiBwb2xsKCZmZCwgMSwgdGltZW91dF9zZWNzICogMTAwMCkpIHsK
-PiAgCQlkZXYgPSB1ZGV2X21vbml0b3JfcmVjZWl2ZV9kZXZpY2UobW9uKTsKPiAtCj4gLQkJaG90
-cGx1Z192YWwgPSB1ZGV2X2RldmljZV9nZXRfcHJvcGVydHlfdmFsdWUoZGV2LCBwcm9wZXJ0eSk7
-Cj4gLQkJaWYgKGhvdHBsdWdfdmFsICYmIGF0b2koaG90cGx1Z192YWwpID09IDEpCj4gLQkJCWhv
-dHBsdWdfcmVjZWl2ZWQgPSB0cnVlOwo+ICsJCWZvciAoaSA9IDA7IGkgPCBudW1fcHJvcHM7IGkr
-Kykgewo+ICsJCQlldmVudF9yZWNlaXZlZCA9IHRydWU7Ck5vdCBuZWVkZWQuCj4gKwkJCXByb3Bf
-dmFsX3N0ciA9IHVkZXZfZGV2aWNlX2dldF9wcm9wZXJ0eV92YWx1ZShkZXYsIHByb3BlcnR5W2ld
-KTsKPiArCQkJaWYgKCFwcm9wX3ZhbF9zdHIgfHwgYXRvaShwcm9wX3ZhbF9zdHIpICE9IGV4cGVj
-dGVkX3ZhbFtpXSkgewo+ICsJCQkJZXZlbnRfcmVjZWl2ZWQgPSBmYWxzZTsKTm90IG5lZWRlZC4K
-PiArCQkJCWJyZWFrOwo+ICsJCQl9Cj4gKwkJfQoJCWlmIChpID09IG51bV9wcm9wcykKCQkJZXZl
-bnRfcmVjZWl2ZWQgPSB0cnVlOwo+ICAKPiAgCQl1ZGV2X2RldmljZV91bnJlZihkZXYpOwo+ICAJ
-fQo+ICAKPiAtCXJldHVybiBob3RwbHVnX3JlY2VpdmVkOwo+ICsJcmV0dXJuIGV2ZW50X3JlY2Vp
-dmVkOwo+ICt9Cj4gKwo+ICsvKioKPiArICogaWd0X2Nvbm5fZXZlbnRfZGV0ZWN0ZWQ6Cj4gKyAq
-IEBtb246IEEgdWRldiBtb25pdG9yIGluaXRpYWxpemVkIHdpdGggI2lndF93YXRjaF9ob3RwbHVn
-Cj4gKyAqIEBjb25uX2lkOiBDb25uZWN0b3IgaWQgb2YgdGhlIENvbm5lY3RvciBmb3Igd2hpY2gg
-dGhlIHByb3BlcnR5IGNoYW5nZSBpcwo+ICsgKiBleHBlY3RlZC4KPiArICogQHByb3BfaWQ6IFBy
-b3BlcnR5IGlkIGZvciB3aGljaCB0aGUgY2hhbmdlIGlzIGV4cGVjdGVkLgo+ICsgKiBAdGltZW91
-dF9zZWNzOiBIb3cgbG9uZyB0byB3YWl0IGZvciBhIGNvbm5lY3RvciBldmVudCB0byBvY2N1ci4K
-PiArICoKPiArICogQXNzZXJ0IHRoYXQgYSBjb25uZWN0b3IgZXZlbnQgaXMgcmVjZWl2ZWQgZm9y
-IGEgZ2l2ZW4gY29ubmVjdG9yIGFuZCBwcm9wZXJ0eS4KPiArICoKPiArICogUmV0dXJuczogdHJ1
-ZSBpZiB0aGUgY29ubmVjdG9yIGV2ZW50IHdhcyByZWNlaXZlZCwgZmFsc2UgaWYgd2UgdGltZWQg
-b3V0Cj4gKyAqLwo+ICtib29sIGlndF9jb25uX2V2ZW50X2RldGVjdGVkKHN0cnVjdCB1ZGV2X21v
-bml0b3IgKm1vbiwgdWludDMyX3QgY29ubl9pZCwKPiArCQkJICAgICB1aW50MzJfdCBwcm9wX2lk
-LCBpbnQgdGltZW91dF9zZWNzKQo+ICt7Cj4gKwljb25zdCBjaGFyICpwcm9wc1syXSA9IHsiQ09O
-TkVDVE9SIiwgIlBST1BFUlRZIn07Cj4gKwlpbnQgZXhwZWN0ZWRfdmFsWzJdID0ge2Nvbm5faWQs
-IHByb3BfaWR9Owo+ICsKPiArCXJldHVybiBldmVudF9kZXRlY3RlZChtb24sIHRpbWVvdXRfc2Vj
-cywgcHJvcHMsIGV4cGVjdGVkX3ZhbCwgMik7Cj4gIH0KPiAgCj4gIC8qKgo+IEBAIC00MjAzLDcg
-KzQyMjgsMTAgQEAgc3RhdGljIGJvb2wgZXZlbnRfZGV0ZWN0ZWQoc3RydWN0IHVkZXZfbW9uaXRv
-ciAqbW9uLCBpbnQgdGltZW91dF9zZWNzLAo+ICAgKi8KPiAgYm9vbCBpZ3RfaG90cGx1Z19kZXRl
-Y3RlZChzdHJ1Y3QgdWRldl9tb25pdG9yICptb24sIGludCB0aW1lb3V0X3NlY3MpCj4gIHsKPiAt
-CXJldHVybiBldmVudF9kZXRlY3RlZChtb24sIHRpbWVvdXRfc2VjcywgIkhPVFBMVUciKTsKPiAr
-CWNvbnN0IGNoYXIgKnByb3BzWzFdID0geyJIT1RQTFVHIn07Cj4gKwlpbnQgZXhwZWN0ZWRfdmFs
-ID0gMTsKPiArCj4gKwlyZXR1cm4gZXZlbnRfZGV0ZWN0ZWQobW9uLCB0aW1lb3V0X3NlY3MsIHBy
-b3BzLCAmZXhwZWN0ZWRfdmFsLCAxKTsKPiAgfQo+ICAKPiAgLyoqCj4gQEAgLTQyMTcsNyArNDI0
-NSwxMCBAQCBib29sIGlndF9ob3RwbHVnX2RldGVjdGVkKHN0cnVjdCB1ZGV2X21vbml0b3IgKm1v
-biwgaW50IHRpbWVvdXRfc2VjcykKPiAgICovCj4gIGJvb2wgaWd0X2xlYXNlX2NoYW5nZV9kZXRl
-Y3RlZChzdHJ1Y3QgdWRldl9tb25pdG9yICptb24sIGludCB0aW1lb3V0X3NlY3MpCj4gIHsKPiAt
-CXJldHVybiBldmVudF9kZXRlY3RlZChtb24sIHRpbWVvdXRfc2VjcywgIkxFQVNFIik7Cj4gKwlj
-b25zdCBjaGFyICpwcm9wc1sxXSA9IHsiTEVBU0UifTsKPiArCWludCBleHBlY3RlZF92YWwgPSAx
-Owo+ICsKPiArCXJldHVybiBldmVudF9kZXRlY3RlZChtb24sIHRpbWVvdXRfc2VjcywgcHJvcHMs
-ICZleHBlY3RlZF92YWwsIDEpOwo+ICB9Cj4gIAo+ICAvKioKPiBkaWZmIC0tZ2l0IGEvbGliL2ln
-dF9rbXMuaCBiL2xpYi9pZ3Rfa21zLmgKPiBpbmRleCBjZDNmZGJjMC4uMjdmMWY3MjkgMTAwNjQ0
-Cj4gLS0tIGEvbGliL2lndF9rbXMuaAo+ICsrKyBiL2xpYi9pZ3Rfa21zLmgKPiBAQCAtNzc3LDYg
-Kzc3Nyw4IEBAIGJvb2wgaWd0X2hvdHBsdWdfZGV0ZWN0ZWQoc3RydWN0IHVkZXZfbW9uaXRvciAq
-bW9uLAo+ICAJCQkgIGludCB0aW1lb3V0X3NlY3MpOwo+ICBib29sIGlndF9sZWFzZV9jaGFuZ2Vf
-ZGV0ZWN0ZWQoc3RydWN0IHVkZXZfbW9uaXRvciAqbW9uLAo+ICAJCQkgICAgICAgaW50IHRpbWVv
-dXRfc2Vjcyk7Cj4gK2Jvb2wgaWd0X2Nvbm5fZXZlbnRfZGV0ZWN0ZWQoc3RydWN0IHVkZXZfbW9u
-aXRvciAqbW9uLCB1aW50MzJfdCBjb25uX2lkLAo+ICsJCQkgICAgIHVpbnQzMl90IHByb3BfaWQs
-IGludCB0aW1lb3V0X21zZWNzKTsKPiAgdm9pZCBpZ3RfZmx1c2hfaG90cGx1Z3Moc3RydWN0IHVk
-ZXZfbW9uaXRvciAqbW9uKTsKV2UgbmVlZCB0byBoYXZlIGdlbmVyaWNoIGZsdXNoIHRvbyBsaWtl
-IGlndF8od2F0Y2gvZmx1c2gvY2xlYW51cClfdWRldl9ldmVudCgpCgotUmFtCj4gIHZvaWQgaWd0
-X2NsZWFudXBfaG90cGx1ZyhzdHJ1Y3QgdWRldl9tb25pdG9yICptb24pOwo+ICAKPiAtLSAKPiAy
-LjE3LjEKPiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-aWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
-Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Handling magic control blocks and longjmp() out of them  in threads is
+hard.
+
+The test should state the requirements before it starts spinning
+threads.
+
+Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+---
+ lib/igt_core.c         |  3 +++
+ lib/tests/igt_thread.c | 34 +++++++++++++++++++++++++++++++++-
+ 2 files changed, 36 insertions(+), 1 deletion(-)
+
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index ccf06cf4..cedd8168 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -1475,6 +1475,9 @@ void __igt_skip_check(const char *file, const int line,
+ 	int err = errno;
+ 	char *err_str = NULL;
+ 
++	if (!igt_thread_is_main())
++		assert(!"igt_require/skip allowed only in the main thread!");
++
+ 	if (err)
+ 		igt_assert_neq(asprintf(&err_str, "Last errno: %i, %s\n", err, strerror(err)),
+ 			       -1);
+diff --git a/lib/tests/igt_thread.c b/lib/tests/igt_thread.c
+index 1a734e6d..3fb90416 100644
+--- a/lib/tests/igt_thread.c
++++ b/lib/tests/igt_thread.c
+@@ -43,6 +43,12 @@ static void *failure_thread(void *data)
+ 	return NULL;
+ }
+ 
++static void *require_thread(void *data)
++{
++	igt_require(false);
++	return NULL;
++}
++
+ static void one_subtest_fail(void) {
+ 	igt_subtest_init(fake_argc, fake_argv);
+ 
+@@ -103,10 +109,21 @@ static void simple_failure(void) {
+ 	igt_exit();
+ }
+ 
++static void require_non_main_thread(void) {
++	pthread_t thread;
++
++	igt_simple_init(fake_argc, fake_argv);
++
++	pthread_create(&thread, 0, require_thread, NULL);
++	pthread_join(thread, NULL);
++
++	igt_exit();
++}
++
+ int main(int argc, char **argv)
+ {
+ 	int status;
+-	int outfd;
++	int outfd, errfd;
+ 	pid_t pid;
+ 
+ 	/* failing should be limited just to a single subtest */ {
+@@ -190,5 +207,20 @@ int main(int argc, char **argv)
+ 		close(outfd);
+ 	}
+ 
++	/* require in a thread should SIGABRT */ {
++		static char err[4096];
++
++		pid = do_fork_bg_with_pipes(require_non_main_thread, NULL, &errfd);
++
++		read_whole_pipe(errfd, err, sizeof(err));
++
++		internal_assert(safe_wait(pid, &status) != -1);
++		internal_assert_wsignaled(status, SIGABRT);
++
++		internal_assert(strstr(err, "allowed only in the main thread"));
++
++		close(errfd);
++	}
++
+ 	return 0;
+ }
+-- 
+2.25.4
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
