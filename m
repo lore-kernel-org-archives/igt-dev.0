@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1131B6E159
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2020 13:43:35 +0000 (UTC)
-Date: Tue, 16 Jun 2020 16:43:32 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200616134332.GB20883@platvala-desk.ger.corp.intel.com>
-References: <20200610193724.16436-1-mohammed.khajapasha@intel.com>
- <20200610193724.16436-2-mohammed.khajapasha@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F05E36E8C4
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2020 14:02:56 +0000 (UTC)
+Date: Tue, 16 Jun 2020 19:33:04 +0530
+From: Ramalingam C <ramalingam.c@intel.com>
+Message-ID: <20200616140304.GA26166@intel.com>
+References: <20200616105812.21558-1-ankit.k.nautiyal@intel.com>
+ <20200616105812.21558-3-ankit.k.nautiyal@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200610193724.16436-2-mohammed.khajapasha@intel.com>
-Subject: Re: [igt-dev] [[RFC] i-g-t 1/1] lib/igt_kms: Add support for
- display with non-contiguous pipes
+In-Reply-To: <20200616105812.21558-3-ankit.k.nautiyal@intel.com>
+Subject: Re: [igt-dev] [Patch][i-g-t 2/2] tests/kms_content_protection: Use
+ library functions for handling uevents
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,97 +23,211 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+To: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jun 11, 2020 at 01:07:24AM +0530, Mohammed Khajapasha wrote:
-> Add support for non-contiguous pipe display by allocating
-> upper bound pipes array for display. Set the pipe enum name
-> to igt pipe for enabled pipes in drm.
+On 2020-06-16 at 16:28:12 +0530, Ankit Nautiyal wrote:
+> Currently, the test has its own version of uevent handling used
+> for detecting hdcp events. This patch modifies the test to use
+> the igt_kms lib support for handling the uevent monitor and detect
+> hdcp events.
 > 
-> Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 > ---
->  lib/igt_kms.c | 30 +++++++++++++++++++++++++-----
->  lib/igt_kms.h | 13 ++++++++-----
->  2 files changed, 33 insertions(+), 10 deletions(-)
+>  tests/kms_content_protection.c | 145 ++-------------------------------
+>  1 file changed, 6 insertions(+), 139 deletions(-)
 > 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index afef5939..2b1cf878 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -1921,10 +1921,26 @@ void igt_display_require(igt_display_t *display, int drm_fd)
->  	 * We cache the number of pipes, that number is a physical limit of the
->  	 * hardware and cannot change of time (for now, at least).
->  	 */
-> -	display->n_pipes = resources->count_crtcs;
-> -	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
-> +	display->n_pipes = IGT_MAX_PIPES;
-> +	display->pipes = calloc(sizeof(igt_pipe_t), IGT_MAX_PIPES);
->  	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
+> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+> index 3b9cedcb..475a5089 100644
+> --- a/tests/kms_content_protection.c
+> +++ b/tests/kms_content_protection.c
+> @@ -39,6 +39,7 @@ struct data {
+>  	igt_display_t display;
+>  	struct igt_fb red, green;
+>  	unsigned int cp_tests;
+> +	struct udev_monitor *uevent_monitor;
+>  } data;
 >  
-> +	for(i = 0; i < resources->count_crtcs; i++) {
-> +		igt_pipe_t *pipe;
-> +		struct drm_i915_get_pipe_from_crtc_id get_pipe;
-> +
-> +		/* Get right pipe enum from kernel for a pipe */
-> +		get_pipe.pipe = 0;
-> +		get_pipe.crtc_id =  resources->crtcs[i];
-> +		do_ioctl(display->drm_fd,
-> +				DRM_IOCTL_I915_GET_PIPE_FROM_CRTC_ID, &get_pipe);
-> +
-> +		pipe = &display->pipes[get_pipe.pipe];
-> +		pipe->pipe = get_pipe.pipe;
-> +		pipe->enabled = true;
-> +		pipe->crtc_id = resources->crtcs[i];
-> +	}
-> +
-
-You need to eventually make sure to only do this dancing for i915
-devices. Might as well get that done early. For non-i915 devices you
-need to make pipe->pipe equal to i directly, and so on.
-
-You also need to store i in the pipe objects. possible_crtcs from a
-drm plane refers to the value of i, not the pipe enum. That also needs
-to be handled correctly futher down.
-
-
->  	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
->  	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
->  		display->is_atomic = 1;
-> @@ -1959,9 +1975,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
->  		int j, type;
->  		uint8_t last_plane = 0, n_planes = 0;
+>  /* Test flags */
+> @@ -112,143 +113,6 @@ static int wait_flip_event(void)
+>  	return rc;
+>  }
 >  
-> -		pipe->crtc_id = resources->crtcs[i];
->  		pipe->display = display;
-> -		pipe->pipe = i;
->  		pipe->plane_cursor = -1;
->  		pipe->plane_primary = -1;
->  		pipe->planes = NULL;
-> @@ -2409,12 +2423,18 @@ static bool output_is_internal_panel(igt_output_t *output)
+> -static bool hdcp_event(struct udev_monitor *uevent_monitor,
+> -		       struct udev *udev, uint32_t conn_id, uint32_t prop_id)
+> -{
+> -	struct udev_device *dev;
+> -	dev_t udev_devnum;
+> -	struct stat s;
+> -	const char *hotplug, *connector, *property;
+> -	bool ret = false;
+> -
+> -	dev = udev_monitor_receive_device(uevent_monitor);
+> -	if (!dev)
+> -		goto out;
+> -
+> -	udev_devnum = udev_device_get_devnum(dev);
+> -	fstat(data.display.drm_fd, &s);
+> -
+> -	hotplug = udev_device_get_property_value(dev, "HOTPLUG");
+> -	if (!(memcmp(&s.st_rdev, &udev_devnum, sizeof(dev_t)) == 0 &&
+> -	    hotplug && atoi(hotplug) == 1)) {
+> -		igt_debug("Not a Hotplug event\n");
+> -		goto out_dev;
+> -	}
+> -
+> -	connector = udev_device_get_property_value(dev, "CONNECTOR");
+> -	if (!(memcmp(&s.st_rdev, &udev_devnum, sizeof(dev_t)) == 0 &&
+> -	    connector && atoi(connector) == conn_id)) {
+> -		igt_debug("Not for connector id: %u\n", conn_id);
+> -		goto out_dev;
+> -	}
+> -
+> -	property = udev_device_get_property_value(dev, "PROPERTY");
+> -	if (!(memcmp(&s.st_rdev, &udev_devnum, sizeof(dev_t)) == 0 &&
+> -	    property && atoi(property) == prop_id)) {
+> -		igt_debug("Not for property id: %u\n", prop_id);
+> -		goto out_dev;
+> -	}
+> -	ret = true;
+> -
+> -out_dev:
+> -	udev_device_unref(dev);
+> -out:
+> -	return ret;
+> -}
+> -
+> -static void hdcp_udev_fini(struct udev_monitor *uevent_monitor,
+> -			   struct udev *udev)
+> -{
+> -	if (uevent_monitor)
+> -		udev_monitor_unref(uevent_monitor);
+> -	if (udev)
+> -		udev_unref(udev);
+> -}
+> -
+> -static int hdcp_udev_init(struct udev_monitor **uevent_monitor,
+> -			  struct udev **udev, int *udev_fd)
+> -{
+> -	int ret = -EINVAL;
+> -
+> -	*udev = udev_new();
+> -	if (!*udev) {
+> -		igt_info("failed to create udev object\n");
+> -		goto out;
+> -	}
+> -
+> -	*uevent_monitor = udev_monitor_new_from_netlink(*udev, "udev");
+> -	if (!*uevent_monitor) {
+> -		igt_info("failed to create udev event monitor\n");
+> -		goto out;
+> -	}
+> -
+> -	ret = udev_monitor_filter_add_match_subsystem_devtype(*uevent_monitor,
+> -							      "drm",
+> -							      "drm_minor");
+> -	if (ret < 0) {
+> -		igt_info("failed to filter for drm events\n");
+> -		goto out;
+> -	}
+> -
+> -	ret = udev_monitor_enable_receiving(*uevent_monitor);
+> -	if (ret < 0) {
+> -		igt_info("failed to enable udev event reception\n");
+> -		goto out;
+> -	}
+> -
+> -	*udev_fd = udev_monitor_get_fd(*uevent_monitor);
+> -	if (*udev_fd < 0) {
+> -		igt_info("failed to get udev_fd on uevent monitor\n");
+> -		ret = *udev_fd;
+> -		goto out;
+> -	}
+> -
+> -	return ret;
+> -
+> -out:
+> -	hdcp_udev_fini(*uevent_monitor, *udev);
+> -	return ret;
+> -}
+> -
+> -#define MAX_EVENTS	10
+> -static bool wait_for_hdcp_event(uint32_t conn_id, uint32_t prop_id,
+> -				uint32_t timeout_mSec)
+> -{
+> -
+> -	struct udev_monitor *uevent_monitor = NULL;
+> -	struct udev *udev = NULL;
+> -	int udev_fd, epoll_fd;
+> -	struct epoll_event event, events[MAX_EVENTS];
+> -	bool ret = false;
+> -
+> -	if (hdcp_udev_init(&uevent_monitor, &udev, &udev_fd) < 0)
+> -		return false;
+> -
+> -	epoll_fd = epoll_create1(0);
+> -	if (epoll_fd == -1) {
+> -		igt_info("Failed to create epoll fd. %d\n", epoll_fd);
+> -		goto out_ep_create;
+> -	}
+> -
+> -	event.events = EPOLLIN | EPOLLERR;
+> -	event.data.fd = 0;
+> -
+> -	if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, udev_fd, &event)) {
+> -		igt_info("failed to fd into epoll\n");
+> -		goto out_ep_ctl;
+> -	}
+> -
+> -	if (epoll_wait(epoll_fd, events, MAX_EVENTS, timeout_mSec))
+> -		ret = hdcp_event(uevent_monitor, udev, conn_id, prop_id);
+> -
+> -out_ep_ctl:
+> -	if (close(epoll_fd))
+> -		igt_info("failed to close the epoll fd\n");
+> -out_ep_create:
+> -	hdcp_udev_fini(uevent_monitor, udev);
+> -	return ret;
+> -}
+> -
+>  static bool
+>  wait_for_prop_value(igt_output_t *output, uint64_t expected,
+>  		    uint32_t timeout_mSec)
+> @@ -257,9 +121,9 @@ wait_for_prop_value(igt_output_t *output, uint64_t expected,
+>  	int i;
 >  
->  igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display, igt_output_t **chosen_outputs)
->  {
-> -	unsigned full_pipe_mask = (1 << (display->n_pipes)) - 1, assigned_pipes = 0;
-> +	unsigned full_pipe_mask, assigned_pipes = 0;
->  	igt_output_t *output;
->  	int i, j;
+>  	if (data.cp_tests & CP_UEVENT && expected != CP_UNDESIRED) {
+> -		igt_assert_f(wait_for_hdcp_event(output->id,
+> +		igt_assert_f(igt_conn_event_detected(data.uevent_monitor, output->id,
+>  			     output->props[IGT_CONNECTOR_CONTENT_PROTECTION],
+> -			     timeout_mSec), "uevent is not received");
+> +			     timeout_mSec / 1000), "uevent is not received");
 >  
->  	memset(chosen_outputs, 0, sizeof(*chosen_outputs) * display->n_pipes);
+>  		val = igt_output_get_prop(output,
+>  					  IGT_CONNECTOR_CONTENT_PROTECTION);
+> @@ -702,7 +566,10 @@ igt_main
+>  	igt_subtest("uevent") {
+>  		igt_require(data.display.is_atomic);
+>  		data.cp_tests = CP_UEVENT;
+> +		data.uevent_monitor = igt_watch_hotplug();
+Ankit, this is really good.
+
+Any benefit with sporadic hdcp event missing issue?
+
+I would prefer to create generic implementations like igt_watch_udev.
+Similarly for igt_flush_hotplugs and igt_cleanup_hotplug.
+
+-Ram.
+> +		igt_flush_hotplugs(data.uevent_monitor);
+>  		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
+> +		igt_cleanup_hotplug(data.uevent_monitor);
+>  	}
 >  
-> +	for( i = 0; i < display->n_pipes; i++) {
-> +		igt_pipe_t *pipe = &display->pipes[i];
-> +		if (pipe->enabled)
-> +			full_pipe_mask |= (1 << pipe->pipe);
-
-full_pipe_mask operates on config->valid_crtc_idx_mask later in this
-function, so it's one of those that needs to operate on the index (i),
-not the pipe->pipe value.
-
-
--- 
-Petri Latvala
+>  	/*
+> -- 
+> 2.17.1
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
