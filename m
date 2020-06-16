@@ -1,207 +1,51 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 11 Jun 2020 21:40:48 +0100
-Message-Id: <20200611204048.318778-1-chris@chris-wilson.co.uk>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: ramadevi.gandi@intel.com
+Date: Tue, 16 Jun 2020 18:07:58 +0530
+Message-Id: <20200616123758.3331-1-ramadevi.gandi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_ctx_isolation: Verify BB_OFFSET
- protection
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: [Intel-gfx] [PATCH libdrm] intel: sync i915_pciids.h with kernel
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: ashutosh.dixit@intel.com, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, ramadevi.gandi@intel.com, igt-dev@lists.freedesktop.org
+Cc: kalyan.kondapally@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-BB_OFFSET is used for relative batch buffer jumps, so prime the register
-and do a jump, but only after a context switch or two.
+From: Gandi Ramadevi <ramadevi.gandi@intel.com>
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Add DG1 PCI ID
+
+Signed-off-by: Gandi Ramadevi <ramadevi.gandi@intel.com>
 ---
- tests/i915/gem_ctx_isolation.c | 139 +++++++++++++++++++++++++++++++++
- 1 file changed, 139 insertions(+)
+ intel/i915_pciids.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tests/i915/gem_ctx_isolation.c b/tests/i915/gem_ctx_isolation.c
-index 9fdf78bb8..b689d37dd 100644
---- a/tests/i915/gem_ctx_isolation.c
-+++ b/tests/i915/gem_ctx_isolation.c
-@@ -24,6 +24,7 @@
- #include "i915/gem.h"
- #include "igt.h"
- #include "igt_dummyload.h"
-+#include "sw_sync.h"
+diff --git a/intel/i915_pciids.h b/intel/i915_pciids.h
+index 662d8351..724e68a0 100644
+--- a/intel/i915_pciids.h
++++ b/intel/i915_pciids.h
+@@ -605,4 +605,9 @@
+ 	INTEL_VGA_DEVICE(0x9AD9, info), \
+ 	INTEL_VGA_DEVICE(0x9AF8, info)
  
- #define MAX_REG 0x200000
- #define NUM_REGS (MAX_REG / sizeof(uint32_t))
-@@ -874,6 +875,124 @@ static void preservation(int fd,
- 	gem_context_destroy(fd, ctx[num_values]);
- }
- 
-+static int sync_fence_wait_status(int fence, int timeout)
-+{
-+	int err;
++/* DG1 */
++#define INTEL_DG1_IDS(info) \
++        INTEL_VGA_DEVICE(0x4905, info), \
++        INTEL_VGA_DEVICE(0x4906, info)
 +
-+	err = sync_fence_wait(fence, timeout);
-+	if (err)
-+		return err;
-+
-+	return sync_fence_status(fence);
-+}
-+
-+static int write_register(int i915, uint32_t ctx, unsigned int engine,
-+			  uint32_t reg, uint32_t value)
-+{
-+	struct drm_i915_gem_exec_object2 obj = {
-+		.handle = gem_create(i915, 4096),
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(&obj),
-+		.buffer_count = 1,
-+		.rsvd1 = ctx,
-+		.flags = engine | I915_EXEC_FENCE_OUT,
-+	};
-+	uint32_t *cs, *map;
-+
-+	map = gem_mmap__device_coherent(i915, obj.handle, 0, 4096, PROT_WRITE);
-+
-+	cs = map;
-+	*cs++ = MI_LOAD_REGISTER_IMM;
-+	*cs++ = reg;
-+	*cs++ = value;
-+	*cs++ = MI_BATCH_BUFFER_END;
-+	munmap(map, 4096);
-+
-+	gem_execbuf_wr(i915, &execbuf);
-+	gem_close(i915, obj.handle);
-+
-+	return execbuf.rsvd2 >> 32;
-+}
-+
-+static void bb_offset(int i915,
-+		      const struct intel_execution_engine2 *e,
-+		      unsigned int flags)
-+{
-+	struct drm_i915_gem_exec_object2 obj = {
-+		.handle = gem_create(i915, 4096 * 3),
-+		.flags = EXEC_OBJECT_PINNED
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(&obj),
-+		.buffer_count = 1,
-+		.rsvd1 = gem_context_create_for_engine(i915, e->class, e->instance),
-+	};
-+	const uint32_t mmio_base = gem_engine_mmio_base(i915, e->name);
-+	uint32_t *cs, *map;
-+	igt_spin_t *spin;
-+
-+	igt_require(gem_class_has_mutable_submission(i915, e->class)); /* XXX */
-+	igt_require(mmio_base);
-+
-+	gem_quiescent_gpu(i915);
-+
-+	map = gem_mmap__device_coherent(i915, obj.handle, 0, 4096 * 3, PROT_WRITE);
-+	memset(map, 0xff, 4096 * 3);
-+
-+	cs = map + 2 * 1024 + 256;
-+	*cs++ = MI_LOAD_REGISTER_IMM;
-+	*cs++ = mmio_base + 0x158; /* BB_OFFSET */
-+	*cs++ = 4096;
-+	*cs++ = MI_BATCH_BUFFER_END;
-+
-+	cs = map + 2 * 1024 + 128;
-+	*cs++ = MI_BATCH_BUFFER_START | 1 << 16 | 1 << 8 | 1; /* reljmp */
-+	*cs++ = 0; /* + BB_OFFSET */
-+	*cs++ = 0;
-+
-+	cs = map + 1024;
-+	*cs++ = MI_BATCH_BUFFER_END;
-+	munmap(map, 3 * 4096);
-+
-+	execbuf.batch_start_offset = 2 * 4096 + 1024;
-+	gem_execbuf(i915, &execbuf); /* prime BB_OFFSET */
-+
-+	spin = igt_spin_new(i915,
-+			    .ctx = execbuf.rsvd1,
-+			    .flags = IGT_SPIN_POLL_RUN);
-+	igt_spin_busywait_until_started(spin);
-+
-+	if (flags & DIRTY1) {
-+		uint32_t ctx;
-+		int fence;
-+
-+		ctx = gem_context_create_for_engine(i915, e->class, e->instance);
-+		gem_context_set_priority(i915, ctx, 1023);
-+
-+		fence = write_register(i915, ctx, 0,
-+				       mmio_base + 0x158, 0xdeadbeef);
-+
-+		gem_context_destroy(i915, ctx);
-+
-+		igt_assert_eq(sync_fence_wait_status(fence, 500), 1);
-+		close(fence);
-+	}
-+
-+	if (flags & RESET)
-+		inject_reset_context(i915, e);
-+
-+	execbuf.batch_start_offset = 2 * 4096 + 512;
-+	execbuf.flags |= I915_EXEC_FENCE_OUT;
-+	gem_execbuf_wr(i915, &execbuf); /* relative jump */
-+
-+	igt_spin_free(i915, spin);
-+	igt_assert_eq(sync_fence_wait_status(execbuf.rsvd2 >> 32, 500), 1);
-+	close(execbuf.rsvd2);
-+
-+	gem_context_destroy(i915, execbuf.rsvd1);
-+}
-+
- static unsigned int __has_context_isolation(int fd)
- {
- 	struct drm_i915_getparam gp;
-@@ -963,6 +1082,16 @@ igt_main
- 			preservation(i915, e, S4);
- 	}
- 
-+	igt_subtest_with_dynamic("bb-offset-clean") {
-+		test_each_engine(e, i915, has_context_isolation)
-+			bb_offset(i915, e, 0);
-+	}
-+	igt_subtest_with_dynamic("bb-offset-switch") {
-+		igt_require(gem_scheduler_has_preemption(i915));
-+		test_each_engine(e, i915, has_context_isolation)
-+			bb_offset(i915, e, DIRTY1);
-+	}
-+
- 	igt_fixture {
- 		igt_stop_hang_detector();
- 	}
-@@ -975,4 +1104,14 @@ igt_main
- 
- 		igt_disallow_hang(i915, hang);
- 	}
-+
-+	igt_subtest_with_dynamic("bb-offset-reset") {
-+		igt_hang_t hang = igt_allow_hang(i915, 0, 0);
-+
-+		igt_require(gem_scheduler_has_preemption(i915));
-+		test_each_engine(e, i915, has_context_isolation)
-+			bb_offset(i915, e, RESET);
-+
-+		igt_disallow_hang(i915, hang);
-+	}
- }
+ #endif /* _I915_PCIIDS_H */
 -- 
-2.27.0
+2.25.1
 
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
