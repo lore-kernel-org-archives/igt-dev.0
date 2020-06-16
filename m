@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52FEE6E090
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2020 11:03:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 81CA36E08E
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jun 2020 11:03:03 +0000 (UTC)
 From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Date: Tue, 16 Jun 2020 16:28:12 +0530
-Message-Id: <20200616105812.21558-3-ankit.k.nautiyal@intel.com>
+Date: Tue, 16 Jun 2020 16:28:11 +0530
+Message-Id: <20200616105812.21558-2-ankit.k.nautiyal@intel.com>
 In-Reply-To: <20200616105812.21558-1-ankit.k.nautiyal@intel.com>
 References: <20200616105812.21558-1-ankit.k.nautiyal@intel.com>
-Subject: [igt-dev] [Patch][i-g-t 2/2] tests/kms_content_protection: Use
- library functions for handling uevents
+MIME-Version: 1.0
+Subject: [igt-dev] [Patch][i-g-t 1/2] lib/igt_kms: Add support for detecting
+ connector events
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,207 +17,96 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Currently, the test has its own version of uevent handling used
-for detecting hdcp events. This patch modifies the test to use
-the igt_kms lib support for handling the uevent monitor and detect
-hdcp events.
-
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
----
- tests/kms_content_protection.c | 145 ++-------------------------------
- 1 file changed, 6 insertions(+), 139 deletions(-)
-
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 3b9cedcb..475a5089 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -39,6 +39,7 @@ struct data {
- 	igt_display_t display;
- 	struct igt_fb red, green;
- 	unsigned int cp_tests;
-+	struct udev_monitor *uevent_monitor;
- } data;
- 
- /* Test flags */
-@@ -112,143 +113,6 @@ static int wait_flip_event(void)
- 	return rc;
- }
- 
--static bool hdcp_event(struct udev_monitor *uevent_monitor,
--		       struct udev *udev, uint32_t conn_id, uint32_t prop_id)
--{
--	struct udev_device *dev;
--	dev_t udev_devnum;
--	struct stat s;
--	const char *hotplug, *connector, *property;
--	bool ret = false;
--
--	dev = udev_monitor_receive_device(uevent_monitor);
--	if (!dev)
--		goto out;
--
--	udev_devnum = udev_device_get_devnum(dev);
--	fstat(data.display.drm_fd, &s);
--
--	hotplug = udev_device_get_property_value(dev, "HOTPLUG");
--	if (!(memcmp(&s.st_rdev, &udev_devnum, sizeof(dev_t)) == 0 &&
--	    hotplug && atoi(hotplug) == 1)) {
--		igt_debug("Not a Hotplug event\n");
--		goto out_dev;
--	}
--
--	connector = udev_device_get_property_value(dev, "CONNECTOR");
--	if (!(memcmp(&s.st_rdev, &udev_devnum, sizeof(dev_t)) == 0 &&
--	    connector && atoi(connector) == conn_id)) {
--		igt_debug("Not for connector id: %u\n", conn_id);
--		goto out_dev;
--	}
--
--	property = udev_device_get_property_value(dev, "PROPERTY");
--	if (!(memcmp(&s.st_rdev, &udev_devnum, sizeof(dev_t)) == 0 &&
--	    property && atoi(property) == prop_id)) {
--		igt_debug("Not for property id: %u\n", prop_id);
--		goto out_dev;
--	}
--	ret = true;
--
--out_dev:
--	udev_device_unref(dev);
--out:
--	return ret;
--}
--
--static void hdcp_udev_fini(struct udev_monitor *uevent_monitor,
--			   struct udev *udev)
--{
--	if (uevent_monitor)
--		udev_monitor_unref(uevent_monitor);
--	if (udev)
--		udev_unref(udev);
--}
--
--static int hdcp_udev_init(struct udev_monitor **uevent_monitor,
--			  struct udev **udev, int *udev_fd)
--{
--	int ret = -EINVAL;
--
--	*udev = udev_new();
--	if (!*udev) {
--		igt_info("failed to create udev object\n");
--		goto out;
--	}
--
--	*uevent_monitor = udev_monitor_new_from_netlink(*udev, "udev");
--	if (!*uevent_monitor) {
--		igt_info("failed to create udev event monitor\n");
--		goto out;
--	}
--
--	ret = udev_monitor_filter_add_match_subsystem_devtype(*uevent_monitor,
--							      "drm",
--							      "drm_minor");
--	if (ret < 0) {
--		igt_info("failed to filter for drm events\n");
--		goto out;
--	}
--
--	ret = udev_monitor_enable_receiving(*uevent_monitor);
--	if (ret < 0) {
--		igt_info("failed to enable udev event reception\n");
--		goto out;
--	}
--
--	*udev_fd = udev_monitor_get_fd(*uevent_monitor);
--	if (*udev_fd < 0) {
--		igt_info("failed to get udev_fd on uevent monitor\n");
--		ret = *udev_fd;
--		goto out;
--	}
--
--	return ret;
--
--out:
--	hdcp_udev_fini(*uevent_monitor, *udev);
--	return ret;
--}
--
--#define MAX_EVENTS	10
--static bool wait_for_hdcp_event(uint32_t conn_id, uint32_t prop_id,
--				uint32_t timeout_mSec)
--{
--
--	struct udev_monitor *uevent_monitor = NULL;
--	struct udev *udev = NULL;
--	int udev_fd, epoll_fd;
--	struct epoll_event event, events[MAX_EVENTS];
--	bool ret = false;
--
--	if (hdcp_udev_init(&uevent_monitor, &udev, &udev_fd) < 0)
--		return false;
--
--	epoll_fd = epoll_create1(0);
--	if (epoll_fd == -1) {
--		igt_info("Failed to create epoll fd. %d\n", epoll_fd);
--		goto out_ep_create;
--	}
--
--	event.events = EPOLLIN | EPOLLERR;
--	event.data.fd = 0;
--
--	if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, udev_fd, &event)) {
--		igt_info("failed to fd into epoll\n");
--		goto out_ep_ctl;
--	}
--
--	if (epoll_wait(epoll_fd, events, MAX_EVENTS, timeout_mSec))
--		ret = hdcp_event(uevent_monitor, udev, conn_id, prop_id);
--
--out_ep_ctl:
--	if (close(epoll_fd))
--		igt_info("failed to close the epoll fd\n");
--out_ep_create:
--	hdcp_udev_fini(uevent_monitor, udev);
--	return ret;
--}
--
- static bool
- wait_for_prop_value(igt_output_t *output, uint64_t expected,
- 		    uint32_t timeout_mSec)
-@@ -257,9 +121,9 @@ wait_for_prop_value(igt_output_t *output, uint64_t expected,
- 	int i;
- 
- 	if (data.cp_tests & CP_UEVENT && expected != CP_UNDESIRED) {
--		igt_assert_f(wait_for_hdcp_event(output->id,
-+		igt_assert_f(igt_conn_event_detected(data.uevent_monitor, output->id,
- 			     output->props[IGT_CONNECTOR_CONTENT_PROTECTION],
--			     timeout_mSec), "uevent is not received");
-+			     timeout_mSec / 1000), "uevent is not received");
- 
- 		val = igt_output_get_prop(output,
- 					  IGT_CONNECTOR_CONTENT_PROTECTION);
-@@ -702,7 +566,10 @@ igt_main
- 	igt_subtest("uevent") {
- 		igt_require(data.display.is_atomic);
- 		data.cp_tests = CP_UEVENT;
-+		data.uevent_monitor = igt_watch_hotplug();
-+		igt_flush_hotplugs(data.uevent_monitor);
- 		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
-+		igt_cleanup_hotplug(data.uevent_monitor);
- 	}
- 
- 	/*
--- 
-2.17.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Q3VycmVudGx5LCB0aGUgZXZlbnRfZGV0ZWN0IGZ1bmN0aW9uIGNoZWNrcyB0aGUgcHJvcGVydHkg
+dmFsIGZvcgoiSE9UUExVRyIgYW5kICJMRUFTRSIgYm90aCBvZiB3aGljaCBhcmUgc2V0IHRvICcx
+JyB3aGVuIHRoZXNlIGV2ZW50cwphcmUgc2VudC4KClRoaXMgY2Fubm90IGJlIHVzZWQgZm9yIGRl
+dGVjdGluZyBjb25uZWN0b3IgZXZlbnRzIHN1Y2ggYXMgSERDUCBldmVudAphcyBjb25uZWN0b3Ig
+ZXZlbnRzIGFyZSBzZW50IGFsb25nIHdpdGggcHJvcGVydHkgdG8gc2lnbmlmeSB3aGljaApwcm9w
+ZXJ0eSBvZiB3aGljaCBjb25uZWN0b3IgaGFzIGNoYW5nZWQuIENvbm5lY3RvciBJRCBhbmQgcHJv
+cGVydHkgaWQKYXJlIHByb3ZpZGVkIGFsb25nIHdpdGggIkNPTk5FQ1RPUiIgYW5kICJQUk9QRVJU
+WSIgYXMgdWRldgpwcm9wZXJ0eS12YWx1ZSBwYWlycy4gRWcuIGZvciBIRENQLCB0aGUgY29ubmVj
+dG9yIGlkIG9mIHRoZSBjb25uZWN0b3IKd2hvc2UgaGRjcCBzdGF0dXMgY2hhbmdlZCwgYW5kIHRo
+ZSBwcm9wZXJ0eSBpZCBvZiB0aGUK4oCYQ09OVEVOVF9QUk9URUNUSU9O4oCZIHByb3BlcnR5IGFy
+ZSBzZW50IHdpdGggdWV2ZW50LgoKVGhpcyBwYXRjaCBtb2RpZmllcyB0aGUgZXZlbnRfZGV0ZWN0
+IGZ1bmN0aW9uIHRvIGNoZWNrIG11bHRpcGxlCnByb3BlcnRpZXMgd2l0aCBkaWZmZXJlbnQgZXhw
+ZWN0ZWQgdmFsdWVzLiBJdCBhbHNvIGFkZHMgc3VwcG9ydCB0bwpkZXRlY3QgY29ubmVjdG9yIGV2
+ZW50IGZvciBhIGdpdmVuIHBhaXIgb2YgY29ubmVjdG9yIGFuZCBwcm9wZXJ0eSBpZHMuCgpTaWdu
+ZWQtb2ZmLWJ5OiBBbmtpdCBOYXV0aXlhbCA8YW5raXQuay5uYXV0aXlhbEBpbnRlbC5jb20+Ci0t
+LQogbGliL2lndF9rbXMuYyB8IDYxICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrLS0tLS0tLS0tLS0tLQogbGliL2lndF9rbXMuaCB8ICAyICsrCiAyIGZpbGVzIGNoYW5nZWQs
+IDQ4IGluc2VydGlvbnMoKyksIDE1IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYi9pZ3Rf
+a21zLmMgYi9saWIvaWd0X2ttcy5jCmluZGV4IDU0ZGU0NWU1Li43MTc3MjMxZSAxMDA2NDQKLS0t
+IGEvbGliL2lndF9rbXMuYworKysgYi9saWIvaWd0X2ttcy5jCkBAIC00MTY0LDMyICs0MTY0LDU3
+IEBAIHN0cnVjdCB1ZGV2X21vbml0b3IgKmlndF93YXRjaF9ob3RwbHVnKHZvaWQpCiB9CiAKIHN0
+YXRpYyBib29sIGV2ZW50X2RldGVjdGVkKHN0cnVjdCB1ZGV2X21vbml0b3IgKm1vbiwgaW50IHRp
+bWVvdXRfc2VjcywKLQkJCSAgIGNvbnN0IGNoYXIgKnByb3BlcnR5KQorCQkJICAgY29uc3QgY2hh
+ciAqKnByb3BlcnR5LCBpbnQgKmV4cGVjdGVkX3ZhbCwgaW50IG51bV9wcm9wcykKIHsKIAlzdHJ1
+Y3QgdWRldl9kZXZpY2UgKmRldjsKLQljb25zdCBjaGFyICpob3RwbHVnX3ZhbDsKKwljb25zdCBj
+aGFyICpwcm9wX3ZhbF9zdHI7CiAJc3RydWN0IHBvbGxmZCBmZCA9IHsKIAkJLmZkID0gdWRldl9t
+b25pdG9yX2dldF9mZChtb24pLAogCQkuZXZlbnRzID0gUE9MTElOCiAJfTsKLQlib29sIGhvdHBs
+dWdfcmVjZWl2ZWQgPSBmYWxzZTsKKwlib29sIGV2ZW50X3JlY2VpdmVkID0gZmFsc2U7CisJaW50
+IGk7CiAKLQkvKiBHbyB0aHJvdWdoIGFsbCBvZiB0aGUgZXZlbnRzIHBlbmRpbmcgb24gdGhlIHVk
+ZXYgbW9uaXRvci4gT25jZSB3ZQotCSAqIHJlY2VpdmUgYSBob3RwbHVnLCB3ZSBjb250aW51ZSBn
+b2luZyB0aHJvdWdoIHRoZSByZXN0IG9mIHRoZSBldmVudHMKLQkgKiBzbyB0aGF0IHJlZHVuZGFu
+dCBob3RwbHVnIGV2ZW50cyBkb24ndCBjaGFuZ2UgdGhlIHJlc3VsdHMgb2YgZnV0dXJlCi0JICog
+Y2hlY2tzCisJLyogR28gdGhyb3VnaCBhbGwgb2YgdGhlIGV2ZW50cyBwZW5kaW5nIG9uIHRoZSB1
+ZGV2IG1vbml0b3IuCisJICogTWF0Y2ggdGhlIGdpdmVuIHNldCBvZiBwcm9wZXJ0aWVzIGFuZCB0
+aGVpciB2YWx1ZXMgdG8KKwkgKiB0aGUgZXhwZWN0ZWQgdmFsdWVzLgogCSAqLwotCXdoaWxlICgh
+aG90cGx1Z19yZWNlaXZlZCAmJiBwb2xsKCZmZCwgMSwgdGltZW91dF9zZWNzICogMTAwMCkpIHsK
+Kwl3aGlsZSAoIWV2ZW50X3JlY2VpdmVkICYmIHBvbGwoJmZkLCAxLCB0aW1lb3V0X3NlY3MgKiAx
+MDAwKSkgewogCQlkZXYgPSB1ZGV2X21vbml0b3JfcmVjZWl2ZV9kZXZpY2UobW9uKTsKLQotCQlo
+b3RwbHVnX3ZhbCA9IHVkZXZfZGV2aWNlX2dldF9wcm9wZXJ0eV92YWx1ZShkZXYsIHByb3BlcnR5
+KTsKLQkJaWYgKGhvdHBsdWdfdmFsICYmIGF0b2koaG90cGx1Z192YWwpID09IDEpCi0JCQlob3Rw
+bHVnX3JlY2VpdmVkID0gdHJ1ZTsKKwkJZm9yIChpID0gMDsgaSA8IG51bV9wcm9wczsgaSsrKSB7
+CisJCQlldmVudF9yZWNlaXZlZCA9IHRydWU7CisJCQlwcm9wX3ZhbF9zdHIgPSB1ZGV2X2Rldmlj
+ZV9nZXRfcHJvcGVydHlfdmFsdWUoZGV2LCBwcm9wZXJ0eVtpXSk7CisJCQlpZiAoIXByb3BfdmFs
+X3N0ciB8fCBhdG9pKHByb3BfdmFsX3N0cikgIT0gZXhwZWN0ZWRfdmFsW2ldKSB7CisJCQkJZXZl
+bnRfcmVjZWl2ZWQgPSBmYWxzZTsKKwkJCQlicmVhazsKKwkJCX0KKwkJfQogCiAJCXVkZXZfZGV2
+aWNlX3VucmVmKGRldik7CiAJfQogCi0JcmV0dXJuIGhvdHBsdWdfcmVjZWl2ZWQ7CisJcmV0dXJu
+IGV2ZW50X3JlY2VpdmVkOworfQorCisvKioKKyAqIGlndF9jb25uX2V2ZW50X2RldGVjdGVkOgor
+ICogQG1vbjogQSB1ZGV2IG1vbml0b3IgaW5pdGlhbGl6ZWQgd2l0aCAjaWd0X3dhdGNoX2hvdHBs
+dWcKKyAqIEBjb25uX2lkOiBDb25uZWN0b3IgaWQgb2YgdGhlIENvbm5lY3RvciBmb3Igd2hpY2gg
+dGhlIHByb3BlcnR5IGNoYW5nZSBpcworICogZXhwZWN0ZWQuCisgKiBAcHJvcF9pZDogUHJvcGVy
+dHkgaWQgZm9yIHdoaWNoIHRoZSBjaGFuZ2UgaXMgZXhwZWN0ZWQuCisgKiBAdGltZW91dF9zZWNz
+OiBIb3cgbG9uZyB0byB3YWl0IGZvciBhIGNvbm5lY3RvciBldmVudCB0byBvY2N1ci4KKyAqCisg
+KiBBc3NlcnQgdGhhdCBhIGNvbm5lY3RvciBldmVudCBpcyByZWNlaXZlZCBmb3IgYSBnaXZlbiBj
+b25uZWN0b3IgYW5kIHByb3BlcnR5LgorICoKKyAqIFJldHVybnM6IHRydWUgaWYgdGhlIGNvbm5l
+Y3RvciBldmVudCB3YXMgcmVjZWl2ZWQsIGZhbHNlIGlmIHdlIHRpbWVkIG91dAorICovCitib29s
+IGlndF9jb25uX2V2ZW50X2RldGVjdGVkKHN0cnVjdCB1ZGV2X21vbml0b3IgKm1vbiwgdWludDMy
+X3QgY29ubl9pZCwKKwkJCSAgICAgdWludDMyX3QgcHJvcF9pZCwgaW50IHRpbWVvdXRfc2VjcykK
+K3sKKwljb25zdCBjaGFyICpwcm9wc1syXSA9IHsiQ09OTkVDVE9SIiwgIlBST1BFUlRZIn07CisJ
+aW50IGV4cGVjdGVkX3ZhbFsyXSA9IHtjb25uX2lkLCBwcm9wX2lkfTsKKworCXJldHVybiBldmVu
+dF9kZXRlY3RlZChtb24sIHRpbWVvdXRfc2VjcywgcHJvcHMsIGV4cGVjdGVkX3ZhbCwgMik7CiB9
+CiAKIC8qKgpAQCAtNDIwMyw3ICs0MjI4LDEwIEBAIHN0YXRpYyBib29sIGV2ZW50X2RldGVjdGVk
+KHN0cnVjdCB1ZGV2X21vbml0b3IgKm1vbiwgaW50IHRpbWVvdXRfc2VjcywKICAqLwogYm9vbCBp
+Z3RfaG90cGx1Z19kZXRlY3RlZChzdHJ1Y3QgdWRldl9tb25pdG9yICptb24sIGludCB0aW1lb3V0
+X3NlY3MpCiB7Ci0JcmV0dXJuIGV2ZW50X2RldGVjdGVkKG1vbiwgdGltZW91dF9zZWNzLCAiSE9U
+UExVRyIpOworCWNvbnN0IGNoYXIgKnByb3BzWzFdID0geyJIT1RQTFVHIn07CisJaW50IGV4cGVj
+dGVkX3ZhbCA9IDE7CisKKwlyZXR1cm4gZXZlbnRfZGV0ZWN0ZWQobW9uLCB0aW1lb3V0X3NlY3Ms
+IHByb3BzLCAmZXhwZWN0ZWRfdmFsLCAxKTsKIH0KIAogLyoqCkBAIC00MjE3LDcgKzQyNDUsMTAg
+QEAgYm9vbCBpZ3RfaG90cGx1Z19kZXRlY3RlZChzdHJ1Y3QgdWRldl9tb25pdG9yICptb24sIGlu
+dCB0aW1lb3V0X3NlY3MpCiAgKi8KIGJvb2wgaWd0X2xlYXNlX2NoYW5nZV9kZXRlY3RlZChzdHJ1
+Y3QgdWRldl9tb25pdG9yICptb24sIGludCB0aW1lb3V0X3NlY3MpCiB7Ci0JcmV0dXJuIGV2ZW50
+X2RldGVjdGVkKG1vbiwgdGltZW91dF9zZWNzLCAiTEVBU0UiKTsKKwljb25zdCBjaGFyICpwcm9w
+c1sxXSA9IHsiTEVBU0UifTsKKwlpbnQgZXhwZWN0ZWRfdmFsID0gMTsKKworCXJldHVybiBldmVu
+dF9kZXRlY3RlZChtb24sIHRpbWVvdXRfc2VjcywgcHJvcHMsICZleHBlY3RlZF92YWwsIDEpOwog
+fQogCiAvKioKZGlmZiAtLWdpdCBhL2xpYi9pZ3Rfa21zLmggYi9saWIvaWd0X2ttcy5oCmluZGV4
+IGNkM2ZkYmMwLi4yN2YxZjcyOSAxMDA2NDQKLS0tIGEvbGliL2lndF9rbXMuaAorKysgYi9saWIv
+aWd0X2ttcy5oCkBAIC03NzcsNiArNzc3LDggQEAgYm9vbCBpZ3RfaG90cGx1Z19kZXRlY3RlZChz
+dHJ1Y3QgdWRldl9tb25pdG9yICptb24sCiAJCQkgIGludCB0aW1lb3V0X3NlY3MpOwogYm9vbCBp
+Z3RfbGVhc2VfY2hhbmdlX2RldGVjdGVkKHN0cnVjdCB1ZGV2X21vbml0b3IgKm1vbiwKIAkJCSAg
+ICAgICBpbnQgdGltZW91dF9zZWNzKTsKK2Jvb2wgaWd0X2Nvbm5fZXZlbnRfZGV0ZWN0ZWQoc3Ry
+dWN0IHVkZXZfbW9uaXRvciAqbW9uLCB1aW50MzJfdCBjb25uX2lkLAorCQkJICAgICB1aW50MzJf
+dCBwcm9wX2lkLCBpbnQgdGltZW91dF9tc2Vjcyk7CiB2b2lkIGlndF9mbHVzaF9ob3RwbHVncyhz
+dHJ1Y3QgdWRldl9tb25pdG9yICptb24pOwogdm9pZCBpZ3RfY2xlYW51cF9ob3RwbHVnKHN0cnVj
+dCB1ZGV2X21vbml0b3IgKm1vbik7CiAKLS0gCjIuMTcuMQoKX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
+aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
+bi9saXN0aW5mby9pZ3QtZGV2Cg==
