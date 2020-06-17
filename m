@@ -1,20 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D503C6E88A
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jun 2020 12:12:08 +0000 (UTC)
-From: "Khajapasha, Mohammed" <mohammed.khajapasha@intel.com>
-Date: Wed, 17 Jun 2020 12:11:58 +0000
-Message-ID: <DM6PR11MB293884436D45B6433CBD9CEBE99A0@DM6PR11MB2938.namprd11.prod.outlook.com>
-References: <20200610193724.16436-1-mohammed.khajapasha@intel.com>
- <20200610193724.16436-2-mohammed.khajapasha@intel.com>
- <20200616134332.GB20883@platvala-desk.ger.corp.intel.com>
- <DM6PR11MB2938202F989CBA143D3B9B5DE99A0@DM6PR11MB2938.namprd11.prod.outlook.com>
- <20200617112758.GD20883@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <20200617112758.GD20883@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B15FF6E0D8
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Jun 2020 13:53:33 +0000 (UTC)
+Date: Wed, 17 Jun 2020 16:52:12 +0300
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20200617135212.i44aelqxbtt3yxx6@ahiler-desk1.fi.intel.com>
+References: <20200616141450.1181127-1-arkadiusz.hiler@intel.com>
+ <159233194445.4598.9246744281768038907@emeril.freedesktop.org>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [[RFC] i-g-t 1/1] lib/igt_kms: Add support for
- display with non-contiguous pipes
+Content-Disposition: inline
+In-Reply-To: <159233194445.4598.9246744281768038907@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/3=5D_lib/core=3A_Print_thred=3Atid_?=
+ =?utf-8?q?with_igt=5Flog_for_non-main_threads?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,165 +25,179 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Kunche,
- Kishore" <kishore.kunche@intel.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Tue, Jun 16, 2020 at 06:25:44PM +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: series starting with [i-g-t,1/3] lib/core: Print thred:tid with igt_log for non-main threads
+> URL   : https://patchwork.freedesktop.org/series/78422/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_8634_full -> IGTPW_4677_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_4677_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_4677_full, please notify your bug team to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/index.html
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_4677_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_eio@kms:
+>     - shard-hsw:          [PASS][1] -> [FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-hsw2/igt@gem_eio@kms.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-hsw6/igt@gem_eio@kms.html
+> 
+>   * igt@gem_exec_balancer@bonded-early:
+>     - shard-tglb:         [PASS][3] -> [FAIL][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-tglb7/igt@gem_exec_balancer@bonded-early.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-tglb1/igt@gem_exec_balancer@bonded-early.html
+> 
+>   * igt@gem_mmap_offset@clear:
+>     - shard-iclb:         [PASS][5] -> [DMESG-WARN][6]
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-iclb6/igt@gem_mmap_offset@clear.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-iclb1/igt@gem_mmap_offset@clear.html
+> 
+>   * igt@i915_pm_rpm@system-suspend-devices:
+>     - shard-iclb:         [PASS][7] -> [FAIL][8]
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-iclb3/igt@i915_pm_rpm@system-suspend-devices.html
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-iclb6/igt@i915_pm_rpm@system-suspend-devices.html
+> 
+>   * igt@perf@i915-ref-count:
+>     - shard-hsw:          [PASS][9] -> [INCOMPLETE][10] +1 similar issue
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-hsw5/igt@perf@i915-ref-count.html
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-hsw1/igt@perf@i915-ref-count.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_4677_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@gem_ctx_isolation@preservation-s3@rcs0:
+>     - shard-kbl:          [PASS][11] -> [INCOMPLETE][12] ([i915#794])
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-kbl2/igt@gem_ctx_isolation@preservation-s3@rcs0.html
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-kbl4/igt@gem_ctx_isolation@preservation-s3@rcs0.html
+>     - shard-iclb:         [PASS][13] -> [FAIL][14] ([fdo#103375]) +3 similar issues
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-iclb5/igt@gem_ctx_isolation@preservation-s3@rcs0.html
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-iclb6/igt@gem_ctx_isolation@preservation-s3@rcs0.html
+> 
+>   * igt@gem_exec_reloc@basic-concurrent0:
+>     - shard-glk:          [PASS][15] -> [FAIL][16] ([i915#1930])
+>    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-glk2/igt@gem_exec_reloc@basic-concurrent0.html
+>    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-glk5/igt@gem_exec_reloc@basic-concurrent0.html
+> 
+>   * igt@i915_module_load@reload:
+>     - shard-tglb:         [PASS][17] -> [DMESG-WARN][18] ([i915#402]) +6 similar issues
+>    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-tglb6/igt@i915_module_load@reload.html
+>    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-tglb2/igt@i915_module_load@reload.html
+> 
+>   * igt@i915_pm_dc@dc3co-vpb-simulation:
+>     - shard-tglb:         [PASS][19] -> [SKIP][20] ([i915#1904])
+>    [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-tglb2/igt@i915_pm_dc@dc3co-vpb-simulation.html
+>    [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-tglb8/igt@i915_pm_dc@dc3co-vpb-simulation.html
+> 
+>   * igt@i915_pm_dc@dc5-psr:
+>     - shard-iclb:         [PASS][21] -> [FAIL][22] ([i915#1899])
+>    [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-iclb6/igt@i915_pm_dc@dc5-psr.html
+>    [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-iclb7/igt@i915_pm_dc@dc5-psr.html
+>     - shard-tglb:         [PASS][23] -> [FAIL][24] ([i915#1899])
+>    [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-tglb3/igt@i915_pm_dc@dc5-psr.html
+>    [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-tglb6/igt@i915_pm_dc@dc5-psr.html
+> 
+>   * igt@i915_pm_rc6_residency@rc6-idle:
+>     - shard-tglb:         [PASS][25] -> [FAIL][26] ([i915#1568])
+>    [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-tglb3/igt@i915_pm_rc6_residency@rc6-idle.html
+>    [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-tglb5/igt@i915_pm_rc6_residency@rc6-idle.html
+> 
+>   * igt@kms_big_fb@linear-64bpp-rotate-180:
+>     - shard-glk:          [PASS][27] -> [DMESG-FAIL][28] ([i915#118] / [i915#95])
+>    [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-glk9/igt@kms_big_fb@linear-64bpp-rotate-180.html
+>    [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-glk8/igt@kms_big_fb@linear-64bpp-rotate-180.html
+> 
+>   * igt@kms_big_fb@linear-8bpp-rotate-180:
+>     - shard-apl:          [PASS][29] -> [DMESG-WARN][30] ([i915#1982])
+>    [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-apl6/igt@kms_big_fb@linear-8bpp-rotate-180.html
+>    [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-apl4/igt@kms_big_fb@linear-8bpp-rotate-180.html
+> 
+>   * igt@kms_color@pipe-b-ctm-max:
+>     - shard-apl:          [PASS][31] -> [DMESG-WARN][32] ([i915#95]) +42 similar issues
+>    [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-apl4/igt@kms_color@pipe-b-ctm-max.html
+>    [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-apl1/igt@kms_color@pipe-b-ctm-max.html
+> 
+>   * igt@kms_cursor_crc@pipe-d-cursor-suspend:
+>     - shard-tglb:         [PASS][33] -> [INCOMPLETE][34] ([i915#1602])
+>    [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-tglb8/igt@kms_cursor_crc@pipe-d-cursor-suspend.html
+>    [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-tglb2/igt@kms_cursor_crc@pipe-d-cursor-suspend.html
+> 
+>   * igt@kms_flip@flip-vs-suspend@c-dp1:
+>     - shard-kbl:          [PASS][35] -> [DMESG-WARN][36] ([i915#180]) +5 similar issues
+>    [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-kbl1/igt@kms_flip@flip-vs-suspend@c-dp1.html
+>    [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-kbl1/igt@kms_flip@flip-vs-suspend@c-dp1.html
+> 
+>   * igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-shrfb-draw-mmap-cpu:
+>     - shard-iclb:         [PASS][37] -> [DMESG-WARN][38] ([i915#1982])
+>    [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-iclb2/igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-shrfb-draw-mmap-cpu.html
+>    [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-iclb3/igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-shrfb-draw-mmap-cpu.html
+> 
+>   * igt@kms_plane_cursor@pipe-a-viewport-size-64:
+>     - shard-kbl:          [PASS][39] -> [DMESG-FAIL][40] ([i915#95]) +1 similar issue
+>    [39]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-kbl6/igt@kms_plane_cursor@pipe-a-viewport-size-64.html
+>    [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-kbl6/igt@kms_plane_cursor@pipe-a-viewport-size-64.html
+>     - shard-apl:          [PASS][41] -> [DMESG-FAIL][42] ([i915#95])
+>    [41]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-apl3/igt@kms_plane_cursor@pipe-a-viewport-size-64.html
+>    [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-apl8/igt@kms_plane_cursor@pipe-a-viewport-size-64.html
+> 
+>   * igt@kms_psr2_su@frontbuffer:
+>     - shard-iclb:         [PASS][43] -> [SKIP][44] ([fdo#109642] / [fdo#111068]) +1 similar issue
+>    [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-iclb2/igt@kms_psr2_su@frontbuffer.html
+>    [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-iclb6/igt@kms_psr2_su@frontbuffer.html
+> 
+>   * igt@kms_setmode@basic:
+>     - shard-kbl:          [PASS][45] -> [FAIL][46] ([i915#31])
+>    [45]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-kbl3/igt@kms_setmode@basic.html
+>    [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-kbl1/igt@kms_setmode@basic.html
+> 
+>   * igt@perf@blocking-parameterized:
+>     - shard-iclb:         [PASS][47] -> [FAIL][48] ([i915#1542])
+>    [47]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-iclb2/igt@perf@blocking-parameterized.html
+>    [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-iclb1/igt@perf@blocking-parameterized.html
+> 
+>   * igt@syncobj_basic@bad-flags-fd-to-handle:
+>     - shard-kbl:          [PASS][49] -> [DMESG-WARN][50] ([i915#93] / [i915#95]) +50 similar issues
+>    [49]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8634/shard-kbl2/igt@syncobj_basic@bad-flags-fd-to-handle.html
+>    [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4677/shard-kbl7/igt@syncobj_basic@bad-flags-fd-to-handle.html
 
+None of those look like they have been caused by the changes in thread
+behavior, even after looking at the code. I'll spin a re-run just to be sure.
 
-> -----Original Message-----
-> From: Latvala, Petri <petri.latvala@intel.com>
-> Sent: Wednesday, June 17, 2020 4:58 PM
-> To: Khajapasha, Mohammed <mohammed.khajapasha@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; Kunche, Kishore
-> <kishore.kunche@intel.com>
-> Subject: Re: [igt-dev] [[RFC] i-g-t 1/1] lib/igt_kms: Add support for display
-> with non-contiguous pipes
-> 
-> On Wed, Jun 17, 2020 at 02:20:26PM +0300, Khajapasha, Mohammed wrote:
-> >
-> >
-> > > -----Original Message-----
-> > > From: Latvala, Petri <petri.latvala@intel.com>
-> > > Sent: Tuesday, June 16, 2020 7:14 PM
-> > > To: Khajapasha, Mohammed <mohammed.khajapasha@intel.com>
-> > > Cc: igt-dev@lists.freedesktop.org
-> > > Subject: Re: [igt-dev] [[RFC] i-g-t 1/1] lib/igt_kms: Add support
-> > > for display with non-contiguous pipes
-> > >
-> > > On Thu, Jun 11, 2020 at 01:07:24AM +0530, Mohammed Khajapasha
-> wrote:
-> > > > Add support for non-contiguous pipe display by allocating upper
-> > > > bound pipes array for display. Set the pipe enum name to igt pipe
-> > > > for enabled pipes in drm.
-> > > >
-> > > > Signed-off-by: Mohammed Khajapasha
-> > > <mohammed.khajapasha@intel.com>
-> > > > ---
-> > > >  lib/igt_kms.c | 30 +++++++++++++++++++++++++-----  lib/igt_kms.h
-> > > > | 13
-> > > > ++++++++-----
-> > > >  2 files changed, 33 insertions(+), 10 deletions(-)
-> > > >
-> > > > diff --git a/lib/igt_kms.c b/lib/igt_kms.c index
-> > > > afef5939..2b1cf878
-> > > > 100644
-> > > > --- a/lib/igt_kms.c
-> > > > +++ b/lib/igt_kms.c
-> > > > @@ -1921,10 +1921,26 @@ void igt_display_require(igt_display_t
-> > > *display, int drm_fd)
-> > > >   * We cache the number of pipes, that number is a physical limit
-> > > > of
-> > > the
-> > > >   * hardware and cannot change of time (for now, at least).
-> > > >   */
-> > > > -display->n_pipes = resources->count_crtcs; pipes =
-> > > > -display->calloc(sizeof(igt_pipe_t), display->n_pipes);
-> > > > +display->n_pipes = IGT_MAX_PIPES; pipes =
-> > > > +display->calloc(sizeof(igt_pipe_t), IGT_MAX_PIPES);
-> > > >  igt_assert_f(display->pipes, "Failed to allocate memory for %d
-> > > > pipes\n", display->n_pipes);
-> > > >
-> > > > +for(i = 0; i < resources->count_crtcs; i++) { igt_pipe_t *pipe;
-> > > > +struct drm_i915_get_pipe_from_crtc_id get_pipe;
-> > > > +
-> > > > +/* Get right pipe enum from kernel for a pipe */ get_pipe.pipe =
-> > > > +0; get_pipe.crtc_id =  resources->crtcs[i];
-> > > > +do_ioctl(display->drm_fd,
-> DRM_IOCTL_I915_GET_PIPE_FROM_CRTC_ID,
-> > > &get_pipe);
-> > > > +
-> > > > +pipe = &display->pipes[get_pipe.pipe];
-> > > > +pipe->pipe = get_pipe.pipe;
-> > > > +pipe->enabled = true;
-> > > > +pipe->crtc_id = resources->crtcs[i];
-> > > > +}
-> > > > +
-> > >
-> > > You need to eventually make sure to only do this dancing for i915
-> devices.
-> > > Might as well get that done early. For non-i915 devices you need to
-> > > make
-> > > pipe->pipe equal to i directly, and so on.
-> > >
-> > > You also need to store i in the pipe objects. possible_crtcs from a
-> > > drm plane refers to the value of i, not the pipe enum. That also
-> > > needs to be handled correctly futher down.
-> > >
-> > >
-> > > >  drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES,
-> > > 1);
-> > > >  if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
-> > > > display->is_atomic = 1; @@ -1959,9 +1975,7 @@ void
-> > > > igt_display_require(igt_display_t *display,
-> > > int drm_fd)
-> > > >  int j, type;
-> > > >  uint8_t last_plane = 0, n_planes = 0;
-> > > >
-> > > > -pipe->crtc_id = resources->crtcs[i];
-> > > >  pipe->display = display;
-> > > > -pipe->pipe = i;
-> > > >  pipe->plane_cursor = -1;
-> > > >  pipe->plane_primary = -1;
-> > > >  pipe->planes = NULL;
-> > > > @@ -2409,12 +2423,18 @@ static bool
-> > > > output_is_internal_panel(igt_output_t *output)
-> > > >
-> > > >  igt_output_t **__igt_pipe_populate_outputs(igt_display_t
-> > > > *display, igt_output_t **chosen_outputs)  { -unsigned
-> > > > full_pipe_mask = (1 << (display->n_pipes)) - 1,
-> > > assigned_pipes = 0;
-> > > > +unsigned full_pipe_mask, assigned_pipes = 0;
-> > > >  igt_output_t *output;
-> > > >  int i, j;
-> > > >
-> > > >  memset(chosen_outputs, 0, sizeof(*chosen_outputs) *
-> > > > display->n_pipes);
-> > > >
-> > > > +for( i = 0; i < display->n_pipes; i++) { igt_pipe_t *pipe =
-> > > > +&display->pipes[i]; if (pipe->enabled) full_pipe_mask |= (1 <<
-> > > > +pipe->pipe);
-> > >
-> > > full_pipe_mask operates on config->valid_crtc_idx_mask later in this
-> > > function, so it's one of those that needs to operate on the index
-> > > (i), not the
-> > > pipe->pipe value.
-> >
-> > With PIPE_A & PIPE_C configuration, if we use index(i) rather than
-> > pipe->pipe the full_pipe_mask will be 0x11 But from kernel the
-> > encoder->possible_crtcs can be set from individual encoder's pipe_mask
-> > Snippet
-> > /*
-> > for_each_intel_crtc(dev, crtc)
-> > {
-> > if (encoder->pipe_mask &
-> > BIT(crtc->pipe)) possible_crtcs |= drm_crtc_mask(&crtc->base); }
-> >
-> > and pipe_mask for invidual encoder can be set by
-> >
-> > intel_encoder->pipe_mask = BIT(PIPE_A) | BIT(PIPE_C) --> which is
-> > 0x0101
-> >
-> > */
-> >
-> > So with PIPE_A & PIPE_C, the output connected to PIPE_C can be miss
-> while populating outputs for pipes.
-> 
-> Yeah but possible_crtcs is set with drm_crtc_mask, not with pipe_mask.
-> 
-> static inline uint32_t drm_crtc_mask(const struct drm_crtc *crtc) {
->         return 1 << drm_crtc_index(crtc); }
-> 
-> 
-
-Yes, the possible_crtcs for drm_plane is set by drm_crtc_index, but encoder's possible_crtcs is set by pipe's bit map
-
---
-Khajapasha
-> 
-> --
-> Petri Latvala
+-- 
+Cheers,
+Arek
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
