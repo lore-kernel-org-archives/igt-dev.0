@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Wed, 17 Jun 2020 09:29:15 -0000
-Message-ID: <159238615537.29979.8100889850260435275@emeril.freedesktop.org>
+Date: Wed, 17 Jun 2020 09:46:18 -0000
+Message-ID: <159238717811.29977.16232813699008219059@emeril.freedesktop.org>
 References: <20200616123758.3331-1-ramadevi.gandi@intel.com>
 In-Reply-To: <20200616123758.3331-1-ramadevi.gandi@intel.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_i?=
- =?utf-8?q?ntel=3A_sync_i915=5Fpciids=2Eh_with_kernel?=
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaW50ZWw6?=
+ =?utf-8?q?_sync_i915=5Fpciids=2Eh_with_kernel?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,62 +27,126 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 Series: intel: sync i915_pciids.h with kernel
 URL   : https://patchwork.freedesktop.org/series/78460/
-State : warning
+State : success
 
 == Summary ==
 
-Did not get list of undocumented tests for this run, something is wrong!
+CI Bug Log - changes from CI_DRM_8638 -> IGTPW_4678
+====================================================
 
-Other than that, pipeline status: FAILED.
+Summary
+-------
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/162102 for the overview.
+  **SUCCESS**
 
-build:tests-debian-autotools has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/3144273):
-  Using docker image sha256:e4a87da4fe6196122355f939b4abe813b13894a992a96ee7ae734c1f6bb4e129 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian:commit-d07444b4189bc9e8322249fef7af2c4741edf40c ...
-  section_end:1592385843:prepare_executor
-  section_start:1592385843:prepare_script
-  Preparing environment
-  Running on runner-z2CifdYy-project-3185-concurrent-2 via gst-htz-3...
-  section_end:1592385844:prepare_script
-  section_start:1592385844:get_sources
-  Getting source from Git repository
-  Fetching changes...
-  Initialized empty Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Created fresh repository.
-  warning: redirecting to https://gitlab-ci-hetzner.freedesktop.org/gfx-ci/igt-ci-tags.git/
-  error: RPC failed; curl 92 HTTP/2 stream 0 was not closed cleanly: PROTOCOL_ERROR (err 1)
-  fatal: the remote end hung up unexpectedly
-  section_end:1592385907:get_sources
-  section_start:1592385907:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  section_end:1592385908:upload_artifacts_on_failure
-  ERROR: Job failed: exit code 1
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4678/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4678 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-tgl-u2:          [PASS][1] -> [FAIL][2] ([i915#1888])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8638/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4678/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-glk-dsi:         [PASS][3] -> [DMESG-WARN][4] ([i915#1982])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8638/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4678/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_busy@basic@flip:
+    - fi-kbl-x1275:       [PASS][5] -> [DMESG-WARN][6] ([i915#62] / [i915#92] / [i915#95])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8638/fi-kbl-x1275/igt@kms_busy@basic@flip.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4678/fi-kbl-x1275/igt@kms_busy@basic@flip.html
+
+  * igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:
+    - fi-tgl-u2:          [PASS][7] -> [DMESG-WARN][8] ([i915#402])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8638/fi-tgl-u2/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4678/fi-tgl-u2/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
+
   
+#### Possible fixes ####
 
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/3144269):
-  Using docker image sha256:08904a47f4efcc161569a9b7f88c458fc6e3e85a2225132246af9cf5cc6c4e5b for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal:commit-d07444b4189bc9e8322249fef7af2c4741edf40c ...
-  section_end:1592385842:prepare_executor
-  section_start:1592385842:prepare_script
-  Preparing environment
-  Running on runner-thys1kA2-project-3185-concurrent-1 via gst-htz-2...
-  section_end:1592385843:prepare_script
-  section_start:1592385843:get_sources
-  Getting source from Git repository
-  Fetching changes...
-  Initialized empty Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Created fresh repository.
-  warning: redirecting to https://gitlab-ci-hetzner.freedesktop.org/gfx-ci/igt-ci-tags.git/
-  error: RPC failed; curl 92 HTTP/2 stream 0 was not closed cleanly: PROTOCOL_ERROR (err 1)
-  fatal: the remote end hung up unexpectedly
-  section_end:1592385906:get_sources
-  section_start:1592385906:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  section_end:1592385907:upload_artifacts_on_failure
-  ERROR: Job failed: exit code 1
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-tgl-u2:          [FAIL][9] ([i915#1888]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8638/fi-tgl-u2/igt@gem_exec_suspend@basic-s0.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4678/fi-tgl-u2/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-bsw-kefka:       [DMESG-WARN][11] ([i915#1982]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8638/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4678/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@i915_selftest@live@active:
+    - fi-icl-y:           [DMESG-FAIL][13] ([i915#765]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8638/fi-icl-y/igt@i915_selftest@live@active.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4678/fi-icl-y/igt@i915_selftest@live@active.html
+
+  
+#### Warnings ####
+
+  * igt@kms_flip@basic-flip-vs-modeset@a-dp1:
+    - fi-kbl-x1275:       [DMESG-WARN][15] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][16] ([i915#62] / [i915#92]) +4 similar issues
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8638/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-modeset@a-dp1.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4678/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-modeset@a-dp1.html
+
+  * igt@kms_force_connector_basic@force-edid:
+    - fi-kbl-x1275:       [DMESG-WARN][17] ([i915#62] / [i915#92]) -> [DMESG-WARN][18] ([i915#62] / [i915#92] / [i915#95]) +5 similar issues
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8638/fi-kbl-x1275/igt@kms_force_connector_basic@force-edid.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4678/fi-kbl-x1275/igt@kms_force_connector_basic@force-edid.html
+
+  * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:
+    - fi-kbl-x1275:       [DMESG-WARN][19] ([i915#62] / [i915#92]) -> [DMESG-WARN][20] ([i915#1982] / [i915#62] / [i915#92])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8638/fi-kbl-x1275/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4678/fi-kbl-x1275/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1569]: https://gitlab.freedesktop.org/drm/intel/issues/1569
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#192]: https://gitlab.freedesktop.org/drm/intel/issues/192
+  [i915#193]: https://gitlab.freedesktop.org/drm/intel/issues/193
+  [i915#194]: https://gitlab.freedesktop.org/drm/intel/issues/194
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2029]: https://gitlab.freedesktop.org/drm/intel/issues/2029
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+  [i915#765]: https://gitlab.freedesktop.org/drm/intel/issues/765
+  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
+  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+
+
+Participating hosts (47 -> 42)
+------------------------------
+
+  Additional (1): fi-snb-2520m 
+  Missing    (6): fi-ilk-m540 fi-skl-guc fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5711 -> IGTPW_4678
+
+  CI-20190529: 20190529
+  CI_DRM_8638: 83818e4910cac8b84d8f915c773ab3f55fa30365 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4678: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4678/index.html
+  IGT_5711: 90611a0c90afa4a46496c78a4faf9638a1538ac3 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/162102
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4678/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
