@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D24BF6EB63
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Jun 2020 15:27:09 +0000 (UTC)
-From: Matt Atwood <matthew.s.atwood@intel.com>
-Date: Thu, 18 Jun 2020 08:27:07 -0700
-Message-Id: <20200618152707.6855-1-matthew.s.atwood@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane_scaling: set minimum height
- and width to 20
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 18 Jun 2020 15:32:15 -0000
+Message-ID: <159249433583.22460.2310305867647522414@emeril.freedesktop.org>
+References: <20200617180354.17770-1-mohammed.khajapasha@intel.com>
+In-Reply-To: <20200617180354.17770-1-mohammed.khajapasha@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_l?=
+ =?utf-8?q?ib/igt=5Fkms=3A_Add_support_for_display_with?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,61 +14,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, matthew.d.roper@intel.com, james.ausmus@intel.com, petri.latvala@intel.com
-Cc: Matt Atwood <matthew.s.atwood@intel.com>
+To: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Depending on pixel format for gen11+ platforms minimum width can be as
-high as 20. Set width and height to 20. Remove is_planar_yuv_format, no
-longer used.
+== Series Details ==
 
-Signed-off-by: Matt Atwood <matthew.s.atwood@intel.com>
----
- tests/kms_plane_scaling.c | 17 +----------------
- 1 file changed, 1 insertion(+), 16 deletions(-)
+Series: lib/igt_kms: Add support for display with
+URL   : https://patchwork.freedesktop.org/series/78482/
+State : warning
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 19087286a..ecd2c2e30 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -62,19 +62,6 @@ static int get_num_scalers(data_t* d, enum pipe pipe)
- 		return 1;
- }
- 
--static bool is_planar_yuv_format(uint32_t pixelformat)
--{
--	switch (pixelformat) {
--	case DRM_FORMAT_NV12:
--	case DRM_FORMAT_P010:
--	case DRM_FORMAT_P012:
--	case DRM_FORMAT_P016:
--		return true;
--	default:
--		return false;
--	}
--}
--
- static void cleanup_fbs(data_t *data)
- {
- 	int i;
-@@ -147,9 +134,7 @@ static void check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
- 	mode = igt_output_get_mode(output);
- 
- 	/* create buffer in the range of  min and max source side limit.*/
--	width = height = 8;
--	if (is_i915_device(d->drm_fd) && is_planar_yuv_format(pixel_format))
--		width = height = 16;
-+	width = height = 20;
- 	igt_create_color_fb(display->drm_fd, width, height,
- 		       pixel_format, tiling, 0.0, 1.0, 0.0, &d->fb[0]);
- 	igt_plane_set_fb(plane, &d->fb[0]);
--- 
-2.21.3
+== Summary ==
 
+Did not get list of undocumented tests for this run, something is wrong!
+
+Other than that, pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/162424 for the overview.
+
+build-containers:build-debian-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/3153929):
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  section_end:1592417615:prepare_executor
+  section_start:1592417615:prepare_script
+  Preparing environment
+  Running on runner-j4Lrg1oF-project-3185-concurrent-0 via gst-htz-1...
+  section_end:1592417617:prepare_script
+  section_start:1592417617:get_sources
+  Getting source from Git repository
+  Fetching changes...
+  Initialized empty Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Created fresh repository.
+  warning: redirecting to https://gitlab-ci-hetzner.freedesktop.org/gfx-ci/igt-ci-tags.git/
+  error: RPC failed; curl 92 HTTP/2 stream 0 was not closed cleanly: PROTOCOL_ERROR (err 1)
+  fatal: the remote end hung up unexpectedly
+  section_end:1592417679:get_sources
+  section_start:1592417679:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  section_end:1592417681:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+  
+
+build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/3153928):
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  section_end:1592417615:prepare_executor
+  section_start:1592417615:prepare_script
+  Preparing environment
+  Running on runner-z2CifdYy-project-3185-concurrent-0 via gst-htz-3...
+  section_end:1592417616:prepare_script
+  section_start:1592417616:get_sources
+  Getting source from Git repository
+  Fetching changes...
+  Initialized empty Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Created fresh repository.
+  warning: redirecting to https://gitlab-ci-hetzner.freedesktop.org/gfx-ci/igt-ci-tags.git/
+  error: RPC failed; curl 92 HTTP/2 stream 0 was not closed cleanly: PROTOCOL_ERROR (err 1)
+  fatal: the remote end hung up unexpectedly
+  section_end:1592417679:get_sources
+  section_start:1592417679:upload_artifacts_on_failure
+  Uploading artifacts for failed job
+  section_end:1592417680:upload_artifacts_on_failure
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/162424
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
