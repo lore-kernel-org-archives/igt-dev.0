@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4A5F86E3D2
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Jun 2020 12:06:30 +0000 (UTC)
+From: Petri Latvala <petri.latvala@intel.com>
+Date: Thu, 18 Jun 2020 15:06:22 +0300
+Message-Id: <20200618120623.6853-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 18 Jun 2020 10:56:06 -0000
-Message-ID: <159247776690.22460.4802909577478028857@emeril.freedesktop.org>
-References: <20200618104747.24005-1-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20200618104747.24005-1-tvrtko.ursulin@linux.intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBzZXJp?=
- =?utf-8?q?es_starting_with_=5Bi-g-t=2C01/11=5D_gem=5Fwsim=3A_Rip_out_user?=
- =?utf-8?q?space_balancing?=
+Subject: [igt-dev] [PATCH i-g-t 1/2] runner: Inject a message when killing
+ test to taints
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,35 +15,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Normally runner injecting a message to the test's stdout/stderr logs
+has a race condition; The test outputs have special lines (subtest
+starting/ending) and accidentally injecting stuff in between would
+cause funky results.
 
-Series: series starting with [i-g-t,01/11] gem_wsim: Rip out userspace balancing
-URL   : https://patchwork.freedesktop.org/series/78525/
-State : failure
+When we're killing a test because the kernel got tainted, we know
+already that we're not getting a subtest ending line and we can
+inject, if we make sure we have newlines printed before and after the
+injection.
 
-== Summary ==
+Having a message in the stdout of the test will aid automatic bug
+filtering.
 
-Applying: gem_wsim: Rip out userspace balancing
-Applying: gem_wsim: Buffer objects working sets and complex dependencies
-Applying: gem_wsim: Show workload timing stats
-Applying: gem_wsim: Move BO allocation to a helper
-Applying: gem_wsim: Support random buffer sizes
-Applying: gem_wsim: Support scaling workload batch durations
-Applying: gem_wsim: Log max and active working set sizes in verbose mode
-Applying: gem_wsim: Snippet of a workload extracted from carchase
-Patch failed at 0008 gem_wsim: Snippet of a workload extracted from carchase
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+---
+ runner/executor.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
+
+diff --git a/runner/executor.c b/runner/executor.c
+index 06390262..7bb2b14c 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -1049,9 +1049,27 @@ static int monitor_output(pid_t child,
+ 				 * the result an incomplete we avoid
+ 				 * journaling a timeout here.
+ 				 */
+-				if (is_tainted(taints))
++				if (is_tainted(taints)) {
+ 					exitline = EXECUTOR_EXIT;
+ 
++					/*
++					 * Also inject a message to
++					 * the test's stdout. As we're
++					 * shooting for an incomplete
++					 * anyway, we don't need to
++					 * care if we're not between
++					 * full lines from stdout. We
++					 * do need to make sure we
++					 * have newlines on both ends
++					 * of this injection though.
++					 */
++					dprintf(outputs[_F_OUT],
++						"\nrunner: This test was killed due to a kernel taint (0x%lx).\n",
++						taints);
++					if (settings->sync)
++						fdatasync(outputs[_F_OUT]);
++				}
++
+ 				dprintf(outputs[_F_JOURNAL], "%s%d (%.3fs)\n",
+ 					exitline,
+ 					status, time);
+-- 
+2.20.1
 
 _______________________________________________
 igt-dev mailing list
