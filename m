@@ -1,70 +1,84 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Date: Thu, 18 Jun 2020 11:47:47 +0100
-Message-Id: <20200618104747.24005-11-tvrtko.ursulin@linux.intel.com>
+Date: Thu, 18 Jun 2020 11:47:46 +0100
+Message-Id: <20200618104747.24005-10-tvrtko.ursulin@linux.intel.com>
 In-Reply-To: <20200618104747.24005-1-tvrtko.ursulin@linux.intel.com>
 References: <20200618104747.24005-1-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 11/11] gem_wsim: Do not keep batch mapped
- unless needed
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: [Intel-gfx] [PATCH i-g-t 10/11] gem_wsim: Fix calibration handling
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-At this point we only need to keep the mapping for infinite batch buffers.
+Intended use case was that run without arguments prints out the
+calibrations which can be simply copied and pasted to the -n argument and
+things should just work.
+
+Two problems we need to solve: If the print out loops shows zero
+calibrations (engine not present) they are later rejected and also if some
+calibration is not given it is only an error if it needs to be used
+(engine present).
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 ---
- benchmarks/gem_wsim.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ benchmarks/gem_wsim.c | 20 ++------------------
+ 1 file changed, 2 insertions(+), 18 deletions(-)
 
 diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 811a4b1b7161..496e5042d89c 100644
+index 59ddc798a3ea..811a4b1b7161 100644
 --- a/benchmarks/gem_wsim.c
 +++ b/benchmarks/gem_wsim.c
-@@ -1449,6 +1449,7 @@ static unsigned int terminate_bb(struct w_step *w)
- 	const uint32_t bbe = 0xa << 23;
- 	unsigned long mmap_start, mmap_len;
- 	unsigned long batch_start = w->bb_sz;
-+	bool keep_mmap = false;
- 	unsigned int r = 0;
- 	uint32_t *ptr, *cs;
+@@ -296,8 +296,8 @@ print_engine_calibrations(void)
  
-@@ -1472,6 +1473,7 @@ static unsigned int terminate_bb(struct w_step *w)
+ 	printf("Nop calibration for %uus delay is: ", nop_calibration_us);
+ 	for (int i = 0; i < NUM_ENGINES; i++) {
+-		/* skip DEFAULT and VCS engines */
+-		if (i != DEFAULT && i != VCS) {
++		/* skip engines not present and DEFAULT and VCS */
++		if (i != DEFAULT && i != VCS && engine_calib_map[i]) {
+ 			if (first_entry) {
+ 				printf("%s=%lu", ring_str_map[i], engine_calib_map[i]);
+ 				first_entry = false;
+@@ -2862,22 +2862,6 @@ int main(int argc, char **argv)
+ 		if (verbose)
+ 			print_engine_calibrations();
+ 		goto out;
+-	} else {
+-		bool missing = false;
+-
+-		for (i = 0; i < NUM_ENGINES; i++) {
+-			if (i == VCS)
+-				continue;
+-
+-			if (!engine_calib_map[i]) {
+-				wsim_err("Missing calibration for '%s'!\n",
+-					 ring_str_map[i]);
+-				missing = true;
+-			}
+-		}
+-
+-		if (missing)
+-			goto err;
+ 	}
  
- 		*cs++ = w->preempt_us ? 0x5 << 23 /* MI_ARB_CHK; */ : MI_NOOP;
- 		w->recursive_bb_start = cs;
-+		keep_mmap = true;
- 		*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | 1;
- 		*cs++ = 0;
- 		*cs++ = 0;
-@@ -1479,6 +1481,9 @@ static unsigned int terminate_bb(struct w_step *w)
- 
- 	*cs = bbe;
- 
-+	if (!keep_mmap)
-+		munmap(ptr, mmap_len);
-+
- 	return r;
- }
- 
+ 	if (!nr_w_args) {
 -- 
 2.20.1
 
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
