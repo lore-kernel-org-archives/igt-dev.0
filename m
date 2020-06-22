@@ -1,21 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD07D89FC9
- for <igt-dev@lists.freedesktop.org>; Sun, 21 Jun 2020 17:38:12 +0000 (UTC)
-From: "Saarinen, Jani" <jani.saarinen@intel.com>
-Date: Sun, 21 Jun 2020 17:38:08 +0000
-Message-ID: <45b9790550f7465b9a4620dd091beb38@intel.com>
-References: <20200618152707.6855-1-matthew.s.atwood@intel.com>,
- <159249559348.22462.5056641444434052088@emeril.freedesktop.org>
- <7F32D420E25B1742B58F9202C4AE89B05FB8B9CC@ORSMSX112.amr.corp.intel.com>
- <448de356811141e9904ebbb1379ba8da@intel.com>
- <d2350b0d906447bcacee71c53c7f58fc@intel.com>
-In-Reply-To: <d2350b0d906447bcacee71c53c7f58fc@intel.com>
-Content-Language: en-US
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 007DE6E054
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2020 13:59:09 +0000 (UTC)
+Received: by mail-pg1-x543.google.com with SMTP id q22so5326157pgk.2
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Jun 2020 06:59:09 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Mon, 22 Jun 2020 16:59:00 +0300
+Message-Id: <20200622135900.3227-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fplane=5Fscaling=3A_set_minimum_height_and_width_to_20?=
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_flip_tiling: remove cut'n'paste
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,173 +17,230 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>, "Atwood,
- Matthew S" <matthew.s.atwood@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhhbmtzLiANCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBWdWR1bSwg
-TGFrc2htaW5hcmF5YW5hIDxsYWtzaG1pbmFyYXlhbmEudnVkdW1AaW50ZWwuY29tPg0KPiBTZW50
-OiBzdW5udW50YWkgMjEuIGtlc8Oka3V1dGEgMjAyMCAxNS4yMg0KPiBUbzogQXR3b29kLCBNYXR0
-aGV3IFMgPG1hdHRoZXcucy5hdHdvb2RAaW50ZWwuY29tPjsgaWd0LQ0KPiBkZXZAbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnDQo+IENjOiBTYWFyaW5lbiwgSmFuaSA8amFuaS5zYWFyaW5lbkBpbnRlbC5j
-b20+DQo+IFN1YmplY3Q6IFJFOiDinJcgRmkuQ0kuQkFUOiBmYWlsdXJlIGZvciB0ZXN0cy9rbXNf
-cGxhbmVfc2NhbGluZzogc2V0IG1pbmltdW0gaGVpZ2h0DQo+IGFuZCB3aWR0aCB0byAyMA0KPiAN
-Cj4gSSB3YXMgYWJsZSB0byByZS1yZXBvcnQgc3VjY2Vzc2Z1bGx5LiBBbGwgZ29vZCBub3cuDQo+
-IA0KPiBMYWtzaG1pLg0KPiANCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTog
-VnVkdW0sIExha3NobWluYXJheWFuYQ0KPiBTZW50OiBTYXR1cmRheSwgSnVuZSAyMCwgMjAyMCAx
-MDo0MCBQTQ0KPiBUbzogQXR3b29kLCBNYXR0aGV3IFMgPG1hdHRoZXcucy5hdHdvb2RAaW50ZWwu
-Y29tPjsgaWd0LQ0KPiBkZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IFN1YmplY3Q6IFJFOiDi
-nJcgRmkuQ0kuQkFUOiBmYWlsdXJlIGZvciB0ZXN0cy9rbXNfcGxhbmVfc2NhbGluZzogc2V0IG1p
-bmltdW0gaGVpZ2h0DQo+IGFuZCB3aWR0aCB0byAyMA0KPiANCj4gQEF0d29vZCwgTWF0dGhldyBT
-IEkgaGF2ZSBjcmVhdGVkIHRoZSBidWcgZm9yIHRoZSBiZWxvdyBmYWlsdXJlIGJ1dCB1bmFibGUg
-dG8NCj4gY3JlYXRlIGEgZmlsdGVyIGluIENJIGJ1ZyBsb2cuIFRoZXJlIHNlZW1zIHRvIGJlIHNv
-bWUgcHJvYmxlbSB3aXRoIENJIGJ1ZyBsb2cgSSB3aWxsDQo+IGNoZWNrIHdpdGggTWFydGluIGFu
-ZCBnZXQgYmFjayB0byB5b3Ugb24gTW9uZGF5Lg0KPiANCj4gTGFrc2htaS4NCj4gLS0tLS1Pcmln
-aW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQXR3b29kLCBNYXR0aGV3IFMgPG1hdHRoZXcucy5h
-dHdvb2RAaW50ZWwuY29tPg0KPiBTZW50OiBGcmlkYXksIEp1bmUgMTksIDIwMjAgMTowOCBBTQ0K
-PiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gQ2M6IFZ1ZHVtLCBMYWtzaG1p
-bmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1bUBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFJF
-OiDinJcgRmkuQ0kuQkFUOiBmYWlsdXJlIGZvciB0ZXN0cy9rbXNfcGxhbmVfc2NhbGluZzogc2V0
-IG1pbmltdW0gaGVpZ2h0DQo+IGFuZCB3aWR0aCB0byAyMA0KPiANCj4gTGFrc2htaSBJIGRvbid0
-IHRoaW5rIHRoaXMgaXMgcmVsYXRlZCwgY2FuIHlvdSBhc3Npc3QgaGVyZT8NCj4gX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXw0KPiBGcm9tOiBQYXRjaHdvcmsgW3BhdGNo
-d29ya0BlbWVyaWwuZnJlZWRlc2t0b3Aub3JnXQ0KPiBTZW50OiBUaHVyc2RheSwgSnVuZSAxOCwg
-MjAyMCA4OjUzIEFNDQo+IFRvOiBBdHdvb2QsIE1hdHRoZXcgUw0KPiBDYzogaWd0LWRldkBsaXN0
-cy5mcmVlZGVza3RvcC5vcmcNCj4gU3ViamVjdDog4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Ig
-dGVzdHMva21zX3BsYW5lX3NjYWxpbmc6IHNldCBtaW5pbXVtIGhlaWdodCBhbmQNCj4gd2lkdGgg
-dG8gMjANCj4gDQo+ID09IFNlcmllcyBEZXRhaWxzID09DQo+IA0KPiBTZXJpZXM6IHRlc3RzL2tt
-c19wbGFuZV9zY2FsaW5nOiBzZXQgbWluaW11bSBoZWlnaHQgYW5kIHdpZHRoIHRvIDIwDQo+IFVS
-TCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy83ODUzNi8NCj4g
-U3RhdGUgOiBmYWlsdXJlDQo+IA0KPiA9PSBTdW1tYXJ5ID09DQo+IA0KPiBDSSBCdWcgTG9nIC0g
-Y2hhbmdlcyBmcm9tIENJX0RSTV84NjQxIC0+IElHVFBXXzQ2ODQNCj4gPT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQ0KPiANCj4gU3VtbWFyeQ0KPiAt
-LS0tLS0tDQo+IA0KPiAgICoqRkFJTFVSRSoqDQo+IA0KPiAgIFNlcmlvdXMgdW5rbm93biBjaGFu
-Z2VzIGNvbWluZyB3aXRoIElHVFBXXzQ2ODQgYWJzb2x1dGVseSBuZWVkIHRvIGJlDQo+ICAgdmVy
-aWZpZWQgbWFudWFsbHkuDQo+IA0KPiAgIElmIHlvdSB0aGluayB0aGUgcmVwb3J0ZWQgY2hhbmdl
-cyBoYXZlIG5vdGhpbmcgdG8gZG8gd2l0aCB0aGUgY2hhbmdlcw0KPiAgIGludHJvZHVjZWQgaW4g
-SUdUUFdfNDY4NCwgcGxlYXNlIG5vdGlmeSB5b3VyIGJ1ZyB0ZWFtIHRvIGFsbG93IHRoZW0NCj4g
-ICB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZh
-bHNlIHBvc2l0aXZlcyBpbiBDSS4NCj4gDQo+ICAgRXh0ZXJuYWwgVVJMOiBodHRwczovL2ludGVs
-LWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzQ2ODQvaW5kZXguaHRtbA0KPiANCj4g
-UG9zc2libGUgbmV3IGlzc3Vlcw0KPiAtLS0tLS0tLS0tLS0tLS0tLS0tDQo+IA0KPiAgIEhlcmUg
-YXJlIHRoZSB1bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVuIGludHJvZHVjZWQgaW4g
-SUdUUFdfNDY4NDoNCj4gDQo+ICMjIyBJR1QgY2hhbmdlcyAjIyMNCj4gDQo+ICMjIyMgUG9zc2li
-bGUgcmVncmVzc2lvbnMgIyMjIw0KPiANCj4gICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAd29y
-a2Fyb3VuZHM6DQo+ICAgICAtIGZpLWJ3ci0yMTYwOiAgICAgICAgW1BBU1NdWzFdIC0+IFtJTkNP
-TVBMRVRFXVsyXQ0KPiAgICBbMV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2Ry
-bS10aXAvQ0lfRFJNXzg2NDEvZmktYndyLQ0KPiAyMTYwL2lndEBpOTE1X3NlbGZ0ZXN0QGxpdmVA
-d29ya2Fyb3VuZHMuaHRtbA0KPiAgICBbMl06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90
-cmVlL2RybS10aXAvSUdUUFdfNDY4NC9maS1id3ItDQo+IDIxNjAvaWd0QGk5MTVfc2VsZnRlc3RA
-bGl2ZUB3b3JrYXJvdW5kcy5odG1sDQo+IA0KPiANCj4gS25vd24gaXNzdWVzDQo+IC0tLS0tLS0t
-LS0tLQ0KPiANCj4gICBIZXJlIGFyZSB0aGUgY2hhbmdlcyBmb3VuZCBpbiBJR1RQV180Njg0IHRo
-YXQgY29tZSBmcm9tIGtub3duIGlzc3VlczoNCj4gDQo+ICMjIyBJR1QgY2hhbmdlcyAjIyMNCj4g
-DQo+ICMjIyMgSXNzdWVzIGhpdCAjIyMjDQo+IA0KPiAgICogaWd0QGdlbV9leGVjX3N1c3BlbmRA
-YmFzaWMtczA6DQo+ICAgICAtIGZpLWFwbC1ndWM6ICAgICAgICAgW1BBU1NdWzNdIC0+IFtJTkNP
-TVBMRVRFXVs0XSAoW2k5MTUjMTI0Ml0pDQo+ICAgIFszXTogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fODY0MS9maS1hcGwtDQo+IGd1Yy9pZ3RAZ2VtX2V4
-ZWNfc3VzcGVuZEBiYXNpYy1zMC5odG1sDQo+ICAgIFs0XTogaHR0cHM6Ly9pbnRlbC1nZngtY2ku
-MDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV180Njg0L2ZpLWFwbC0NCj4gZ3VjL2lndEBnZW1fZXhl
-Y19zdXNwZW5kQGJhc2ljLXMwLmh0bWwNCj4gDQo+ICAgKiBpZ3RAaTkxNV9tb2R1bGVfbG9hZEBy
-ZWxvYWQ6DQo+ICAgICAtIGZpLWJ5dC1qMTkwMDogICAgICAgW1BBU1NdWzVdIC0+IFtETUVTRy1X
-QVJOXVs2XSAoW2k5MTUjMTk4Ml0pDQo+ICAgIFs1XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
-b3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fODY0MS9maS1ieXQtDQo+IGoxOTAwL2lndEBpOTE1X21v
-ZHVsZV9sb2FkQHJlbG9hZC5odG1sDQo+ICAgIFs2XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
-b3JnL3RyZWUvZHJtLXRpcC9JR1RQV180Njg0L2ZpLWJ5dC0NCj4gajE5MDAvaWd0QGk5MTVfbW9k
-dWxlX2xvYWRAcmVsb2FkLmh0bWwNCj4gDQo+ICAgKiBpZ3RAa21zX2N1cnNvcl9sZWdhY3lAYmFz
-aWMtYnVzeS1mbGlwLWJlZm9yZS1jdXJzb3ItbGVnYWN5Og0KPiAgICAgLSBmaS1pY2wtZ3VjOiAg
-ICAgICAgIFtQQVNTXVs3XSAtPiBbRE1FU0ctV0FSTl1bOF0gKFtpOTE1IzE5ODJdKQ0KPiAgICBb
-N106IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvQ0lfRFJNXzg2NDEv
-ZmktaWNsLQ0KPiBndWMvaWd0QGttc19jdXJzb3JfbGVnYWN5QGJhc2ljLWJ1c3ktZmxpcC1iZWZv
-cmUtY3Vyc29yLWxlZ2FjeS5odG1sDQo+ICAgIFs4XTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
-b3JnL3RyZWUvZHJtLXRpcC9JR1RQV180Njg0L2ZpLWljbC0NCj4gZ3VjL2lndEBrbXNfY3Vyc29y
-X2xlZ2FjeUBiYXNpYy1idXN5LWZsaXAtYmVmb3JlLWN1cnNvci1sZWdhY3kuaHRtbA0KPiANCj4g
-DQo+ICMjIyMgUG9zc2libGUgZml4ZXMgIyMjIw0KPiANCj4gICAqIGlndEBnZW1fZXhlY19zdXNw
-ZW5kQGJhc2ljLXMwOg0KPiAgICAgLSBmaS10Z2wtdTI6ICAgICAgICAgIFtGQUlMXVs5XSAoW2k5
-MTUjMTg4OF0pIC0+IFtQQVNTXVsxMF0NCj4gICAgWzldOiBodHRwczovL2ludGVsLWdmeC1jaS4w
-MS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV84NjQxL2ZpLXRnbC0NCj4gdTIvaWd0QGdlbV9leGVj
-X3N1c3BlbmRAYmFzaWMtczAuaHRtbA0KPiAgICBbMTBdOiBodHRwczovL2ludGVsLWdmeC1jaS4w
-MS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzQ2ODQvZmktdGdsLQ0KPiB1Mi9pZ3RAZ2VtX2V4ZWNf
-c3VzcGVuZEBiYXNpYy1zMC5odG1sDQo+IA0KPiAgICogaWd0QGk5MTVfbW9kdWxlX2xvYWRAcmVs
-b2FkOg0KPiAgICAgLSBmaS10Z2wtdTI6ICAgICAgICAgIFtETUVTRy1XQVJOXVsxMV0gKFtpOTE1
-IzQwMl0pIC0+IFtQQVNTXVsxMl0NCj4gICAgWzExXTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
-b3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fODY0MS9maS10Z2wtDQo+IHUyL2lndEBpOTE1X21vZHVs
-ZV9sb2FkQHJlbG9hZC5odG1sDQo+ICAgIFsxMl06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
-Zy90cmVlL2RybS10aXAvSUdUUFdfNDY4NC9maS10Z2wtDQo+IHUyL2lndEBpOTE1X21vZHVsZV9s
-b2FkQHJlbG9hZC5odG1sDQo+IA0KPiAgICogaWd0QGk5MTVfcG1fYmFja2xpZ2h0QGJhc2ljLWJy
-aWdodG5lc3M6DQo+ICAgICAtIGZpLXdobC11OiAgICAgICAgICAgW0RNRVNHLVdBUk5dWzEzXSAo
-W2k5MTUjOTVdKSAtPiBbUEFTU11bMTRdDQo+ICAgIFsxM106IGh0dHBzOi8vaW50ZWwtZ2Z4LWNp
-LjAxLm9yZy90cmVlL2RybS10aXAvQ0lfRFJNXzg2NDEvZmktd2hsLQ0KPiB1L2lndEBpOTE1X3Bt
-X2JhY2tsaWdodEBiYXNpYy1icmlnaHRuZXNzLmh0bWwNCj4gICAgWzE0XTogaHR0cHM6Ly9pbnRl
-bC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV180Njg0L2ZpLXdobC0NCj4gdS9pZ3RA
-aTkxNV9wbV9iYWNrbGlnaHRAYmFzaWMtYnJpZ2h0bmVzcy5odG1sDQo+IA0KPiAgICogaWd0QGk5
-MTVfcG1fcnBtQGJhc2ljLXBjaS1kMy1zdGF0ZToNCj4gICAgIC0gZmktYnl0LWoxOTAwOiAgICAg
-ICBbRE1FU0ctV0FSTl1bMTVdIChbaTkxNSMxOTgyXSkgLT4gW1BBU1NdWzE2XQ0KPiAgICBbMTVd
-OiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV84NjQxL2Zp
-LWJ5dC0NCj4gajE5MDAvaWd0QGk5MTVfcG1fcnBtQGJhc2ljLXBjaS1kMy1zdGF0ZS5odG1sDQo+
-ICAgIFsxNl06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdf
-NDY4NC9maS1ieXQtDQo+IGoxOTAwL2lndEBpOTE1X3BtX3JwbUBiYXNpYy1wY2ktZDMtc3RhdGUu
-aHRtbA0KPiANCj4gICAqIGlndEBrbXNfY3Vyc29yX2xlZ2FjeUBiYXNpYy1idXN5LWZsaXAtYmVm
-b3JlLWN1cnNvci1hdG9taWM6DQo+ICAgICAtIHtmaS1rYmwtNzU2MHV9OiAgICAgW0RNRVNHLVdB
-Uk5dWzE3XSAoW2k5MTUjMTk4Ml0pIC0+IFtQQVNTXVsxOF0NCj4gICAgWzE3XTogaHR0cHM6Ly9p
-bnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fODY0MS9maS1rYmwtDQo+IDc1
-NjB1L2lndEBrbXNfY3Vyc29yX2xlZ2FjeUBiYXNpYy1idXN5LWZsaXAtYmVmb3JlLWN1cnNvci1h
-dG9taWMuaHRtbA0KPiAgICBbMThdOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9k
-cm0tdGlwL0lHVFBXXzQ2ODQvZmkta2JsLQ0KPiA3NTYwdS9pZ3RAa21zX2N1cnNvcl9sZWdhY3lA
-YmFzaWMtYnVzeS1mbGlwLWJlZm9yZS1jdXJzb3ItYXRvbWljLmh0bWwNCj4gDQo+ICAgKiBpZ3RA
-a21zX2ZsaXBAYmFzaWMtZmxpcC12cy1tb2Rlc2V0QGQtZHNpMToNCj4gICAgIC0ge2ZpLXRnbC1k
-c2l9OiAgICAgICBbRE1FU0ctV0FSTl1bMTldIChbaTkxNSMxOTgyXSkgLT4gW1BBU1NdWzIwXQ0K
-PiAgICBbMTldOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RS
-TV84NjQxL2ZpLXRnbC0NCj4gZHNpL2lndEBrbXNfZmxpcEBiYXNpYy1mbGlwLXZzLW1vZGVzZXRA
-ZC1kc2kxLmh0bWwNCj4gICAgWzIwXTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUv
-ZHJtLXRpcC9JR1RQV180Njg0L2ZpLXRnbC0NCj4gZHNpL2lndEBrbXNfZmxpcEBiYXNpYy1mbGlw
-LXZzLW1vZGVzZXRAZC1kc2kxLmh0bWwNCj4gDQo+IA0KPiAjIyMjIFdhcm5pbmdzICMjIyMNCj4g
-DQo+ICAgKiBpZ3RAa21zX2ZsaXBAYmFzaWMtZmxpcC12cy13Zl92YmxhbmtAYS1kcDE6DQo+ICAg
-ICAtIGZpLWtibC14MTI3NTogICAgICAgW0RNRVNHLVdBUk5dWzIxXSAoW2k5MTUjNjJdIC8gW2k5
-MTUjOTJdKSAtPiBbRE1FU0ctDQo+IFdBUk5dWzIyXSAoW2k5MTUjNjJdIC8gW2k5MTUjOTJdIC8g
-W2k5MTUjOTVdKSArNiBzaW1pbGFyIGlzc3Vlcw0KPiAgICBbMjFdOiBodHRwczovL2ludGVsLWdm
-eC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV84NjQxL2ZpLWtibC0NCj4geDEyNzUvaWd0
-QGttc19mbGlwQGJhc2ljLWZsaXAtdnMtd2ZfdmJsYW5rQGEtZHAxLmh0bWwNCj4gICAgWzIyXTog
-aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV180Njg0L2ZpLWti
-bC0NCj4geDEyNzUvaWd0QGttc19mbGlwQGJhc2ljLWZsaXAtdnMtd2ZfdmJsYW5rQGEtZHAxLmh0
-bWwNCj4gDQo+ICAgKiBpZ3RAa21zX2ZvcmNlX2Nvbm5lY3Rvcl9iYXNpY0Bmb3JjZS1jb25uZWN0
-b3Itc3RhdGU6DQo+ICAgICAtIGZpLWtibC14MTI3NTogICAgICAgW0RNRVNHLVdBUk5dWzIzXSAo
-W2k5MTUjNjJdIC8gW2k5MTUjOTJdIC8gW2k5MTUjOTVdKSAtPg0KPiBbRE1FU0ctV0FSTl1bMjRd
-IChbaTkxNSM2Ml0gLyBbaTkxNSM5Ml0pICsxIHNpbWlsYXIgaXNzdWUNCj4gICAgWzIzXTogaHR0
-cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fODY0MS9maS1rYmwt
-DQo+IHgxMjc1L2lndEBrbXNfZm9yY2VfY29ubmVjdG9yX2Jhc2ljQGZvcmNlLWNvbm5lY3Rvci1z
-dGF0ZS5odG1sDQo+ICAgIFsyNF06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2Ry
-bS10aXAvSUdUUFdfNDY4NC9maS1rYmwtDQo+IHgxMjc1L2lndEBrbXNfZm9yY2VfY29ubmVjdG9y
-X2Jhc2ljQGZvcmNlLWNvbm5lY3Rvci1zdGF0ZS5odG1sDQo+IA0KPiANCj4gICB7bmFtZX06IFRo
-aXMgZWxlbWVudCBpcyBzdXBwcmVzc2VkLiBUaGlzIG1lYW5zIGl0IGlzIGlnbm9yZWQgd2hlbiBj
-b21wdXRpbmcNCj4gICAgICAgICAgIHRoZSBzdGF0dXMgb2YgdGhlIGRpZmZlcmVuY2UgKFNVQ0NF
-U1MsIFdBUk5JTkcsIG9yIEZBSUxVUkUpLg0KPiANCj4gICBbaTkxNSMxMjQyXTogaHR0cHM6Ly9n
-aXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9pc3N1ZXMvMTI0Mg0KPiAgIFtpOTE1IzE4
-ODhdOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2ludGVsL2lzc3Vlcy8xODg4
-DQo+ICAgW2k5MTUjMTk4Ml06IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50
-ZWwvaXNzdWVzLzE5ODINCj4gICBbaTkxNSM0MDJdOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3Rv
-cC5vcmcvZHJtL2ludGVsL2lzc3Vlcy80MDINCj4gICBbaTkxNSM2Ml06IGh0dHBzOi8vZ2l0bGFi
-LmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvaXNzdWVzLzYyDQo+ICAgW2k5MTUjOTJdOiBodHRw
-czovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2ludGVsL2lzc3Vlcy85Mg0KPiAgIFtpOTE1
-Izk1XTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pbnRlbC9pc3N1ZXMvOTUN
-Cj4gDQo+IA0KPiBQYXJ0aWNpcGF0aW5nIGhvc3RzICg0OSAtPiAzNykNCj4gLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tDQo+IA0KPiAgIE1pc3NpbmcgICAgKDEyKTogZmktaWxrLW01NDAg
-ZmktYmR3LTU1NTd1IGZpLWhzdy00MjAwdSBmaS1ieXQtc3F1YXdrcyBmaS1ic3ctY3lhbiBmaS0N
-Cj4ga2JsLTc1MDB1IGZpLWN0Zy1wODYwMCBmaS1za2wtbG1lbSBmaS1iZHctc2FtdXMgZmktYnl0
-LWNsYXBwZXIgZmktc2tsLTY3MDBrMiBmaS1rYmwtcg0KPiANCj4gDQo+IEJ1aWxkIGNoYW5nZXMN
-Cj4gLS0tLS0tLS0tLS0tLQ0KPiANCj4gICAqIENJOiBDSS0yMDE5MDUyOSAtPiBOb25lDQo+ICAg
-KiBJR1Q6IElHVF81NzEyIC0+IElHVFBXXzQ2ODQNCj4gDQo+ICAgQ0ktMjAxOTA1Mjk6IDIwMTkw
-NTI5DQo+ICAgQ0lfRFJNXzg2NDE6IGFhYzkxZjkxYzdiZTc4ZjUzYjM1MjIzN2Q5NjhkZmExOTk2
-YjJkNGIgQA0KPiBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvbGludXgNCj4g
-ICBJR1RQV180Njg0OiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lH
-VFBXXzQ2ODQvaW5kZXguaHRtbA0KPiAgIElHVF81NzEyOiBlYmExMTM1ZGRkMzVmOWQzMDk3ZWQ5
-MTAzMmFlZmU4ZjlhOWY5ZDAyIEANCj4gZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcveG9y
-Zy9hcHAvaW50ZWwtZ3B1LXRvb2xzDQo+IA0KPiA9PSBMb2dzID09DQo+IA0KPiBGb3IgbW9yZSBk
-ZXRhaWxzIHNlZTogaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLQ0KPiB0aXAv
-SUdUUFdfNDY4NC9pbmRleC5odG1sDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNr
-dG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ln
-dC1kZXYK
+convert all tests to be created in nested for-loops which will create tests
+for all flip changes.
+
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ tests/kms_flip_tiling.c | 186 +++++++---------------------------------
+ 1 file changed, 33 insertions(+), 153 deletions(-)
+
+diff --git a/tests/kms_flip_tiling.c b/tests/kms_flip_tiling.c
+index fb79de15..329e0bda 100644
+--- a/tests/kms_flip_tiling.c
++++ b/tests/kms_flip_tiling.c
+@@ -153,6 +153,16 @@ igt_output_t *output;
+ 
+ igt_main
+ {
++	const struct {
++		uint64_t tiling_format;
++		const char*    name;
++	} tiling_formats[] = {
++		{ LOCAL_DRM_FORMAT_MOD_NONE, "linear"},
++		{ LOCAL_I915_FORMAT_MOD_X_TILED, "x-tiled"},
++		{ LOCAL_I915_FORMAT_MOD_Y_TILED, "y-tiled"},
++		{ LOCAL_I915_FORMAT_MOD_Yf_TILED, "yf-tiled"},
++	};
++
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+ 		data.gen = intel_gen(intel_get_drm_devid(data.drm_fd));
+@@ -165,160 +175,30 @@ igt_main
+ 		igt_display_require(&data.display, data.drm_fd);
+ 	}
+ 
+-	/*
+-	 * Test that a page flip from a tiled buffer to a linear one works
+-	 * correctly. First, it sets the crtc with the linear buffer and
+-	 * generates a reference crc for the pipe. Then, the crtc is set with
+-	 * the tiled one and page flip to the linear one issued. A new crc is
+-	 * generated and compared to the reference one.
+-	 */
+-
+-	igt_subtest_f("flip-changes-tiling") {
+-		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_X_TILED,
+-				       LOCAL_DRM_FORMAT_MOD_NONE };
+-		enum pipe pipe;
+-
+-		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
+-
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
+-	}
+-
+-	igt_subtest_f("flip-changes-tiling-Y") {
+-		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Y_TILED,
+-				       LOCAL_DRM_FORMAT_MOD_NONE };
+-		enum pipe pipe;
+-
+-		igt_require_fb_modifiers(data.drm_fd);
+-
+-		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
+-
+-		igt_require(data.gen >= 9);
+-
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
+-	}
+-
+-	igt_subtest_f("flip-changes-tiling-Yf") {
+-		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Yf_TILED,
+-				       LOCAL_DRM_FORMAT_MOD_NONE };
+-		enum pipe pipe;
+-
+-		igt_require_fb_modifiers(data.drm_fd);
+-
+-		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
+-
+-		igt_require(data.gen >= 9);
+-
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
+-	}
+-
+-	/*
+-	 * Test that a page flip from a tiled buffer to another tiled one works
+-	 * correctly. First, it sets the crtc with the tiled buffer and
+-	 * generates a reference crc for the pipe. Then a page flip to second
+-	 * tiled buffer is issued. A new crc is generated and compared to the
+-	 * reference one.
+-	 */
+-
+-	igt_subtest_f("flip-X-tiled") {
+-		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_X_TILED,
+-				       LOCAL_I915_FORMAT_MOD_X_TILED };
+-		enum pipe pipe;
+-
+-		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
+-
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
+-	}
+-
+-	igt_subtest_f("flip-Y-tiled") {
+-		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Y_TILED,
+-				       LOCAL_I915_FORMAT_MOD_Y_TILED };
+-		enum pipe pipe;
+-
+-		igt_require_fb_modifiers(data.drm_fd);
+-
+-		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
+-
+-		igt_require(data.gen >= 9);
+-
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
+-	}
+-
+-	igt_subtest_f("flip-Yf-tiled") {
+-		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Yf_TILED,
+-				       LOCAL_I915_FORMAT_MOD_Yf_TILED };
+-		enum pipe pipe;
+-
+-		igt_require_fb_modifiers(data.drm_fd);
+-
+-		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
+-
+-		igt_require(data.gen >= 9);
+-
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
+-	}
+-
+-	/*
+-	 * Test that a page flip from a linear buffer to a tiled one works
+-	 * correctly. First, it sets the crtc with the linear buffer and
+-	 * generates a reference crc for the pipe. Then a page flip to a tiled
+-	 * buffer is issued. A new crc is generated and compared to the
+-	 * reference one.
+-	 */
+-
+-	igt_subtest_f("flip-to-X-tiled") {
+-		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
+-				       LOCAL_I915_FORMAT_MOD_X_TILED };
+-		enum pipe pipe;
+-
+-		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
+-
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
+-	}
+-
+-	igt_subtest_f("flip-to-Y-tiled") {
+-		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
+-				       LOCAL_I915_FORMAT_MOD_Y_TILED };
+-		enum pipe pipe;
+-
+-		igt_require_fb_modifiers(data.drm_fd);
+-
+-		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
+-
+-		igt_require(data.gen >= 9);
+-
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
+-	}
+-
+-	igt_subtest_f("flip-to-Yf-tiled") {
+-		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
+-				       LOCAL_I915_FORMAT_MOD_Yf_TILED };
+-		enum pipe pipe;
+-
+-		igt_require_fb_modifiers(data.drm_fd);
+-
+-		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
+-			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
+-
+-		igt_require(data.gen >= 9);
++	for (int i = 0; i < ARRAY_SIZE(tiling_formats); i++) {
++		for (int j = 0; j < ARRAY_SIZE(tiling_formats); j++) {
++
++			igt_describe_f("Check using crcs flipping from %s fb to %s fb works correctly.\n",
++				     tiling_formats[i].name, tiling_formats[j].name);
++			igt_subtest_f("flip-%s-to-%s", tiling_formats[i].name, tiling_formats[j].name) {
++				uint64_t tiling[2] = { tiling_formats[i].tiling_format,
++						       tiling_formats[j].tiling_format };
++				enum pipe pipe;
++
++				for (int c = 0; c < ARRAY_SIZE(tiling); c++) {
++					if (tiling[c] != LOCAL_DRM_FORMAT_MOD_NONE &&
++					    tiling[c] != LOCAL_I915_FORMAT_MOD_X_TILED) {
++						igt_require(data.gen >= 9);
++						igt_require_fb_modifiers(data.drm_fd);
++					}
++					igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[c]));
++				}
++
++				for_each_pipe_with_valid_output(&data.display, pipe, output)
++					test_flip_tiling(&data, pipe, output, tiling);
++			}
++		}
+ 
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
+ 	}
+ 
+ 	igt_fixture {
+-- 
+2.26.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
