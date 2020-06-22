@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Mon, 22 Jun 2020 18:44:09 +0200
-Message-Id: <20200622164415.30352-3-janusz.krzysztofik@linux.intel.com>
+Date: Mon, 22 Jun 2020 18:44:11 +0200
+Message-Id: <20200622164415.30352-5-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20200622164415.30352-1-janusz.krzysztofik@linux.intel.com>
 References: <20200622164415.30352-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC PATCH i-g-t v2 2/8] tests/core_hotunplug: Use PCI
- device sysfs entry, not DRM
+Subject: [igt-dev] [RFC PATCH i-g-t v2 4/8] tests/core_hotunplug: Add
+ 'lateclose before recover' variants
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,143 +22,111 @@ To: igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Future subtests may want to access PCI attributes of the device after
-driver unbind.  Refactor prepare() helper.
+If a GPU gets wedged during driver rebind or device re-plug for some
+reason, current hotunbind/hotunplug test variants may time out before
+lateclose phase, resulting in incomplete CI reports.  Let's rename
+those variants to more adequate hotrebind/hotreplug-lateclose and add
+new variants focused on exercising the lateclose phase regardless of
+potential rebind/re-plug issues under old names.
 
 v2: rebase on upstream
 
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- tests/core_hotunplug.c | 68 +++++++++++++++++++++++++-----------------
- 1 file changed, 40 insertions(+), 28 deletions(-)
+ tests/core_hotunplug.c | 57 +++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 54 insertions(+), 3 deletions(-)
 
 diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 826645b1f..35eba9b8a 100644
+index a4809720b..0892e1927 100644
 --- a/tests/core_hotunplug.c
 +++ b/tests/core_hotunplug.c
-@@ -55,42 +55,54 @@ struct hotunplug {
- 	igt_kmsg(KMSG_DEBUG "%s: %s: %s\n", igt_test_name(), __func__, msg); \
- })
- 
--static void prepare_for_unbind(struct hotunplug *priv, char *buf, int buflen)
-+static inline int prepare_common(struct hotunplug *priv)
- {
--	int len;
-+	int fd_sysfs_drm;
-+
-+	local_debug("opening device");
-+	priv->fd.drm = __drm_open_driver(DRIVER_ANY);
-+	igt_assert(priv->fd.drm >= 0);
-+
-+	fd_sysfs_drm = igt_sysfs_open(priv->fd.drm);
-+	igt_assert(fd_sysfs_drm >= 0);
-+
-+	return fd_sysfs_drm;
-+}
-+
-+static inline void prepare_for_rebind(struct hotunplug *priv,
-+				      char *buf, int buflen)
-+{
-+	int fd_sysfs_drm, len;
- 
- 	igt_assert(buflen);
- 
--	priv->fd.sysfs_drv = openat(priv->fd.sysfs_dev, "device/driver",
--				    O_DIRECTORY);
--	igt_assert(priv->fd.sysfs_drv >= 0);
-+	fd_sysfs_drm = prepare_common(priv);
-+
-+	priv->fd.sysfs_drv = openat(fd_sysfs_drm, "device/driver", O_DIRECTORY);
- 
--	len = readlinkat(priv->fd.sysfs_dev, "device", buf, buflen - 1);
-+	len = readlinkat(fd_sysfs_drm, "device", buf, buflen - 1);
- 	buf[len] = '\0';
- 	priv->dev_bus_addr = strrchr(buf, '/');
--	igt_assert(priv->dev_bus_addr++);
- 
--	/* sysfs_dev no longer needed */
--	close(priv->fd.sysfs_dev);
-+	close(fd_sysfs_drm);
-+
-+	igt_assert(priv->fd.sysfs_drv >= 0);
-+	igt_assert(priv->dev_bus_addr++);
- }
- 
--static inline void prepare(struct hotunplug *priv, char *buf, int buflen)
-+static inline void prepare_for_rescan(struct hotunplug *priv)
- {
--	local_debug("opening device");
--	priv->fd.drm = __drm_open_driver(DRIVER_ANY);
--	igt_assert(priv->fd.drm >= 0);
-+	int fd_sysfs_drm = prepare_common(priv);
- 
--	priv->fd.sysfs_dev = igt_sysfs_open(priv->fd.drm);
--	igt_assert(priv->fd.sysfs_dev >= 0);
-+	priv->fd.sysfs_dev = openat(fd_sysfs_drm, "device", O_DIRECTORY);
- 
--	if (buf) {
--		prepare_for_unbind(priv, buf, buflen);
--	} else {
--		/* prepare for bus rescan */
--		priv->fd.sysfs_bus = openat(priv->fd.sysfs_dev,
--					    "device/subsystem", O_DIRECTORY);
--		igt_assert(priv->fd.sysfs_bus >= 0);
--	}
-+	priv->fd.sysfs_bus = openat(fd_sysfs_drm, "device/subsystem",
-+				    O_DIRECTORY);
-+
-+	close(fd_sysfs_drm);
-+
-+	igt_assert(priv->fd.sysfs_dev >= 0);
-+	igt_assert(priv->fd.sysfs_bus >= 0);
- }
- 
- static const char *failure;
-@@ -124,7 +136,7 @@ static void device_unplug(int fd_sysfs_dev)
- {
- 	failure = "Device unplug timeout!";
- 	igt_set_timeout(60, failure);
--	igt_sysfs_set(fd_sysfs_dev, "device/remove", "1");
-+	igt_sysfs_set(fd_sysfs_dev, "remove", "1");
- 	igt_reset_timeout();
- 	failure = NULL;
- 
-@@ -185,7 +197,7 @@ static void unbind_rebind(void)
- 	struct hotunplug priv;
- 	char buf[PATH_MAX];
- 
--	prepare(&priv, buf, sizeof(buf));
-+	prepare_for_rebind(&priv, buf, sizeof(buf));
- 
- 	local_debug("closing the device");
- 	close(priv.fd.drm);
-@@ -203,7 +215,7 @@ static void unplug_rescan(void)
- {
- 	struct hotunplug priv;
- 
--	prepare(&priv, NULL, 0);
-+	prepare_for_rescan(&priv);
- 
- 	local_debug("closing the device");
- 	close(priv.fd.drm);
-@@ -222,7 +234,7 @@ static void hotunbind_lateclose(void)
- 	struct hotunplug priv;
- 	char buf[PATH_MAX];
- 
--	prepare(&priv, buf, sizeof(buf));
-+	prepare_for_rebind(&priv, buf, sizeof(buf));
- 
+@@ -268,6 +268,43 @@ static void hotunbind_lateclose(void)
  	local_debug("hot unbinding the driver from the device");
  	driver_unbind(priv.fd.sysfs_drv, priv.dev_bus_addr);
-@@ -240,7 +252,7 @@ static void hotunplug_lateclose(void)
+ 
++	local_debug("late closing the unbound device instance");
++	close(priv.fd.drm);
++
++	local_debug("rebinding the driver to the device");
++	driver_bind(priv.fd.sysfs_drv, priv.dev_bus_addr);
++
++	healthcheck();
++}
++
++static void hotunplug_lateclose(void)
++{
++	struct hotunplug priv;
++
++	prepare_for_rescan(&priv);
++
++	local_debug("hot unplugging the device");
++	device_unplug(priv.fd.sysfs_dev);
++
++	local_debug("late closing the removed device instance");
++	close(priv.fd.drm);
++
++	local_debug("recovering the device");
++	bus_rescan(priv.fd.sysfs_bus);
++
++	healthcheck();
++}
++
++static void hotrebind_lateclose(void)
++{
++	struct hotunplug priv;
++	char buf[PATH_MAX];
++
++	prepare_for_rebind(&priv, buf, sizeof(buf));
++
++	local_debug("hot unbinding the driver from the device");
++	driver_unbind(priv.fd.sysfs_drv, priv.dev_bus_addr);
++
+ 	local_debug("rebinding the driver to the device");
+ 	driver_bind(priv.fd.sysfs_drv, priv.dev_bus_addr);
+ 
+@@ -277,7 +314,7 @@ static void hotunbind_lateclose(void)
+ 	healthcheck();
+ }
+ 
+-static void hotunplug_lateclose(void)
++static void hotreplug_lateclose(void)
  {
  	struct hotunplug priv;
  
--	prepare(&priv, NULL, 0);
-+	prepare_for_rescan(&priv);
+@@ -340,17 +377,31 @@ igt_main
+ 	igt_fixture
+ 		igt_abort_on_f(failure, "%s\n", failure);
  
- 	local_debug("hot unplugging the device");
- 	device_unplug(priv.fd.sysfs_dev);
+-	igt_describe("Check if the driver can be cleanly unbound from a still open device, then released");
++	igt_describe("Check if the driver can be cleanly unbound from a still open device, then released and rebound");
+ 	igt_subtest("hotunbind-lateclose")
+ 		hotunbind_lateclose();
+ 
+ 	igt_fixture
+ 		igt_abort_on_f(failure, "%s\n", failure);
+ 
+-	igt_describe("Check if a still open device can be cleanly unplugged, then released");
++	igt_describe("Check if a still open device can be cleanly unplugged, then released and recovered");
+ 	igt_subtest("hotunplug-lateclose")
+ 		hotunplug_lateclose();
+ 
+ 	igt_fixture
+ 		igt_abort_on_f(failure, "%s\n", failure);
++
++	igt_describe("Check if the driver can be cleanly unbound from an open device and rebound back, then released");
++	igt_subtest("hotrebind-lateclose")
++		hotrebind_lateclose();
++
++	igt_fixture
++		igt_abort_on_f(failure, "%s\n", failure);
++
++	igt_describe("Check if a still open device can be cleanly unplugged and recovered, then released");
++	igt_subtest("hotreplug-lateclose")
++		hotreplug_lateclose();
++
++	igt_fixture
++		igt_abort_on_f(failure, "%s\n", failure);
+ }
 -- 
 2.21.1
 
