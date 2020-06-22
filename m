@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Mon, 22 Jun 2020 17:18:45 +0200
-Message-Id: <20200622151845.4520-9-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20200622151845.4520-1-janusz.krzysztofik@linux.intel.com>
-References: <20200622151845.4520-1-janusz.krzysztofik@linux.intel.com>
+From: Jani Nikula <jani.nikula@linux.intel.com>
+In-Reply-To: <20200616123758.3331-1-ramadevi.gandi@intel.com>
+References: <20200616123758.3331-1-ramadevi.gandi@intel.com>
+Date: Mon, 22 Jun 2020 18:31:24 +0300
+Message-ID: <87wo3znmlv.fsf@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC PATCH i-g-t 8/8] tests/core_hotunplug: Add 'GEM
- batch' variant
+Subject: Re: [igt-dev] [Intel-gfx] [PATCH libdrm] intel: sync i915_pciids.h
+ with kernel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,78 +18,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+To: ramadevi.gandi@intel.com, ashutosh.dixit@intel.com, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, ramadevi.gandi@intel.com, igt-dev@lists.freedesktop.org
+Cc: kalyan.kondapally@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Verify if a device with a GEM batch job still running on a GPU can be
-hot-unplugged cleanly and released, then recovered.
+On Tue, 16 Jun 2020, ramadevi.gandi@intel.com wrote:
+> From: Gandi Ramadevi <ramadevi.gandi@intel.com>
+>
+> Add DG1 PCI ID
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- tests/core_hotunplug.c | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+There are no DG1 PCI IDs in kernel. So please don't add them here
+either.
 
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 35a4fb13c..c8d7ec7e1 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -31,6 +31,7 @@
- 
- #include "igt.h"
- #include "igt_device_scan.h"
-+#include "igt_dummyload.h"
- #include "igt_kmod.h"
- #include "igt_sysfs.h"
- 
-@@ -407,6 +408,32 @@ static void prime_hotunplug_lateclose(void)
- 	healthcheck();
- }
- 
-+static void batch_hotunplug_lateclose(void)
-+{
-+	struct hotunplug priv;
-+	igt_spin_t *spin;
-+
-+	prepare_for_rescan(&priv);
-+
-+	igt_require_gem(priv.fd.drm);
-+
-+	local_debug("running dummy load");
-+	spin = __igt_spin_new(priv.fd.drm, .flags = IGT_SPIN_POLL_RUN |
-+						    IGT_SPIN_NO_PREEMPTION);
-+	igt_spin_busywait_until_started(spin);
-+
-+	local_debug("hot unplugging the device");
-+	device_unplug(priv.fd.sysfs_dev);
-+
-+	local_debug("late closing the removed device instance");
-+	close(priv.fd.drm);
-+
-+	local_debug("recovering the device");
-+	bus_rescan(priv.fd.sysfs_bus);
-+
-+	healthcheck();
-+}
-+
- /* Main */
- 
- igt_main
-@@ -500,4 +527,11 @@ igt_main
- 
- 	igt_fixture
- 		igt_abort_on_f(failure, "%s\n", failure);
-+
-+	igt_describe("Check if a device with a still running batch can be cleanly unplugged, then released and recovered");
-+	igt_subtest("batch-hotunplug-lateclose")
-+		batch_hotunplug_lateclose();
-+
-+	igt_fixture
-+		igt_abort_on_f(failure, "%s\n", failure);
- }
+BR,
+Jani.
+
+
+>
+> Signed-off-by: Gandi Ramadevi <ramadevi.gandi@intel.com>
+> ---
+>  intel/i915_pciids.h | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/intel/i915_pciids.h b/intel/i915_pciids.h
+> index 662d8351..724e68a0 100644
+> --- a/intel/i915_pciids.h
+> +++ b/intel/i915_pciids.h
+> @@ -605,4 +605,9 @@
+>  	INTEL_VGA_DEVICE(0x9AD9, info), \
+>  	INTEL_VGA_DEVICE(0x9AF8, info)
+>  
+> +/* DG1 */
+> +#define INTEL_DG1_IDS(info) \
+> +        INTEL_VGA_DEVICE(0x4905, info), \
+> +        INTEL_VGA_DEVICE(0x4906, info)
+> +
+>  #endif /* _I915_PCIIDS_H */
+
 -- 
-2.21.1
-
+Jani Nikula, Intel Open Source Graphics Center
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
