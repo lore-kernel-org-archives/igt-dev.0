@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Mon, 22 Jun 2020 17:18:40 +0200
-Message-Id: <20200622151845.4520-4-janusz.krzysztofik@linux.intel.com>
+Date: Mon, 22 Jun 2020 17:18:42 +0200
+Message-Id: <20200622151845.4520-6-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20200622151845.4520-1-janusz.krzysztofik@linux.intel.com>
 References: <20200622151845.4520-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC PATCH i-g-t 3/8] tests/core_hotunplug: Add
- unbind-unplug-rescan variant
+Subject: [igt-dev] [RFC PATCH i-g-t 5/8] tests/core_hotunplug: Add 'GEM
+ address space' variant
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,46 +22,47 @@ To: igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Check if this 3-step procedure exhibits any issues with device recover
-after unplug.  Such issues may indicate insufficient device hardware
-re-initialization performed by the device driver, or other kernel bugs
-outside the driver code.
+Verify if an additional address space associated with an open device
+file descriptor is cleaned up correctly on device hotunplug.
 
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- tests/core_hotunplug.c | 40 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 38 insertions(+), 2 deletions(-)
+ tests/core_hotunplug.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
 diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index c7213d728..0b7c6006b 100644
+index f736a991f..6d9f530b1 100644
 --- a/tests/core_hotunplug.c
 +++ b/tests/core_hotunplug.c
-@@ -209,6 +209,35 @@ static void unbind_rebind(void)
+@@ -34,6 +34,8 @@
+ #include "igt_kmod.h"
+ #include "igt_sysfs.h"
+ 
++#include "i915/gem_vm.h"
++
+ IGT_TEST_DESCRIPTION("Examine behavior of a driver on device hot unplug");
+ 
+ struct hotunplug {
+@@ -330,6 +332,29 @@ static void hotreplug_lateclose(void)
  	healthcheck();
  }
  
-+static void unbind_unplug_rescan(void)
++static void vm_hotunplug_lateclose(void)
 +{
 +	struct hotunplug priv;
-+	char buf[PATH_MAX];
 +
-+	/* prepare for unbind */
-+	prepare_for_rebind(&priv, buf, sizeof(buf));
-+
-+	/* also prepare for unplug */
-+	local_debug("closing the device");
-+	close(priv.fd.drm);
 +	prepare_for_rescan(&priv);
 +
-+	local_debug("closing the device");
-+	close(priv.fd.drm);
++	gem_require_vm(priv.fd.drm);
 +
-+	local_debug("unbinding the driver from the device");
-+	driver_unbind(priv.fd.sysfs_drv, priv.dev_bus_addr);
-+	close(priv.fd.sysfs_drv);
++	local_debug("creating additional GEM user address space");
++	igt_ignore_warn(gem_vm_create(priv.fd.drm));
 +
-+	local_debug("unplugging the device");
++	local_debug("hot unplugging the device");
 +	device_unplug(priv.fd.sysfs_dev);
++
++	local_debug("late closing the removed device instance");
++	close(priv.fd.drm);
 +
 +	local_debug("recovering the device");
 +	bus_rescan(priv.fd.sysfs_bus);
@@ -69,33 +70,21 @@ index c7213d728..0b7c6006b 100644
 +	healthcheck();
 +}
 +
- static void unplug_rescan(void)
- {
- 	struct hotunplug priv;
-@@ -288,14 +317,21 @@ igt_main
- 		close(fd_drm);
- 	}
+ /* Main */
  
--	igt_describe("Check if the driver can be cleanly unbound from a device believed to be closed");
-+	igt_describe("Check if the driver can be cleanly unbound from a device believed to be closed, then rebound");
- 	igt_subtest("unbind-rebind")
- 		unbind_rebind();
+ igt_main
+@@ -402,4 +427,11 @@ igt_main
  
  	igt_fixture
  		igt_abort_on_f(failure, "%s\n", failure);
- 
--	igt_describe("Check if a device believed to be closed can be cleanly unplugged");
-+	igt_describe("Check if a device with the driver unbound from it can be cleanly recovered after being unplugged\n");
-+	igt_subtest("unbind-unplug-rescan")
-+		unbind_unplug_rescan();
++
++	igt_describe("Check if a still open device with extra GEM address space can be cleanly unplugged, then released and recovered");
++	igt_subtest("vm-hotunplug-lateclose")
++		vm_hotunplug_lateclose();
 +
 +	igt_fixture
 +		igt_abort_on_f(failure, "%s\n", failure);
-+
-+	igt_describe("Check if a device believed to be closed can be cleanly unplugged and recovered");
- 	igt_subtest("unplug-rescan")
- 		unplug_rescan();
- 
+ }
 -- 
 2.21.1
 
