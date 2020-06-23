@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 23 Jun 2020 13:44:25 -0000
-Message-ID: <159291986566.4207.7321563894874487465@emeril.freedesktop.org>
-References: <20200623133416.4275-1-ankit.k.nautiyal@intel.com>
-In-Reply-To: <20200623133416.4275-1-ankit.k.nautiyal@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBBZGQg?=
- =?utf-8?q?support_to_detect_HDCP_events_=28rev3=29?=
+Date: Tue, 23 Jun 2020 13:46:10 -0000
+Message-ID: <159291997049.4208.15889544429660680887@emeril.freedesktop.org>
+References: <20200623130056.20071-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200623130056.20071-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIGFw?=
+ =?utf-8?q?i=5Fintel=5Fbb_test_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,76 +15,148 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogQWRkIHN1cHBvcnQgdG8gZGV0ZWN0IEhEQ1Ag
-ZXZlbnRzIChyZXYzKQpVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9z
-ZXJpZXMvNzg0MTMvClN0YXRlIDogZmFpbHVyZQoKPT0gU3VtbWFyeSA9PQoKSUdUIHBhdGNoc2V0
-IGJ1aWxkIGZhaWxlZCBvbiBsYXRlc3Qgc3VjY2Vzc2Z1bCBidWlsZAo3MjViZjJkYWU1MWYwMDg3
-ZWFhNjRmMTkzMWEyZWY5ZDIyZjA3MGRkIGk5MTUvZ2VtX2V4ZWNfc2NoZWR1bGU6IEZpeHVwIGxp
-bmthZ2UgYmV0d2VlbiBoaS9sbyBwcmlvcml0eSB0aHJlYWRzCgpuaW5qYTogRW50ZXJpbmcgZGly
-ZWN0b3J5IGBidWlsZCcKWzEvNjEyXSBHZW5lcmF0aW5nIHZlcnNpb24uaCB3aXRoIGEgY3VzdG9t
-IGNvbW1hbmQuClsyLzYwOV0gTGlua2luZyBzdGF0aWMgdGFyZ2V0IGxpYi9saWJpZ3QtaWd0X2tt
-c19jLmEuClszLzYwOV0gTGlua2luZyBzdGF0aWMgdGFyZ2V0IGxpYi9saWJpZ3QtaWd0X2ZiX2Mu
-YS4KWzQvNjA5XSBMaW5raW5nIHN0YXRpYyB0YXJnZXQgbGliL2xpYmlndC1pZ3RfY29yZV9jLmEu
-Cls1LzYwOV0gQ29tcGlsaW5nIEMgb2JqZWN0ICdsaWIvbGliQEBpZ3QtaWd0X2NoYW1lbGl1bV9j
-QHN0YS9pZ3RfY2hhbWVsaXVtLmMubycuCkZBSUxFRDogbGliL2xpYkBAaWd0LWlndF9jaGFtZWxp
-dW1fY0BzdGEvaWd0X2NoYW1lbGl1bS5jLm8gCmNjYWNoZSBjYyAtSWxpYi9saWJAQGlndC1pZ3Rf
-Y2hhbWVsaXVtX2NAc3RhIC1JbGliIC1JLi4vbGliIC1JLi4vaW5jbHVkZS9kcm0tdWFwaSAtSS4u
-L2xpYi9zdHVicy9zeXNjYWxscyAtSS4gLUkuLi8gLUkvdXNyL2luY2x1ZGUvY2Fpcm8gLUkvdXNy
-L2luY2x1ZGUvZ2xpYi0yLjAgLUkvdXNyL2xpYi94ODZfNjQtbGludXgtZ251L2dsaWItMi4wL2lu
-Y2x1ZGUgLUkvdXNyL2luY2x1ZGUvcGl4bWFuLTEgLUkvdXNyL2luY2x1ZGUvbGlicG5nMTYgLUkv
-dXNyL2luY2x1ZGUvZnJlZXR5cGUyIC1JL3Vzci9pbmNsdWRlL2xpYnBuZzEyIC1JL3Vzci9pbmNs
-dWRlL2xpYmRybSAtSS91c3IvaW5jbHVkZS94ODZfNjQtbGludXgtZ251IC1JL3Vzci9pbmNsdWRl
-L2Fsc2EgLUkvdXNyL2luY2x1ZGUgLUkvaG9tZS9jaWRybS9rZXJuZWxfaGVhZGVycy9pbmNsdWRl
-IC1mZGlhZ25vc3RpY3MtY29sb3I9YWx3YXlzIC1waXBlIC1EX0ZJTEVfT0ZGU0VUX0JJVFM9NjQg
-LVdhbGwgLVdpbnZhbGlkLXBjaCAtV2V4dHJhIC1zdGQ9Z251MTEgLU8yIC1nIC1EX0dOVV9TT1VS
-Q0UgLWluY2x1ZGUgY29uZmlnLmggLURfRk9SVElGWV9TT1VSQ0U9MiAtV2JhZC1mdW5jdGlvbi1j
-YXN0IC1XZGVjbGFyYXRpb24tYWZ0ZXItc3RhdGVtZW50IC1XZm9ybWF0PTIgLVdpbXBsaWNpdC1m
-YWxsdGhyb3VnaD0wIC1XbG9naWNhbC1vcCAtV21pc3NpbmctZGVjbGFyYXRpb25zIC1XbWlzc2lu
-Zy1mb3JtYXQtYXR0cmlidXRlIC1XbWlzc2luZy1ub3JldHVybiAtV21pc3NpbmctcHJvdG90eXBl
-cyAtV25lc3RlZC1leHRlcm5zIC1Xb2xkLXN0eWxlLWRlZmluaXRpb24gLVdwb2ludGVyLWFyaXRo
-IC1XcmVkdW5kYW50LWRlY2xzIC1Xc2hhZG93IC1Xc3RyaWN0LXByb3RvdHlwZXMgLVd1bmluaXRp
-YWxpemVkIC1XdW51c2VkIC1Xbm8tY2xvYmJlcmVkIC1Xbm8tbWF5YmUtdW5pbml0aWFsaXplZCAt
-V25vLW1pc3NpbmctZmllbGQtaW5pdGlhbGl6ZXJzIC1Xbm8tcG9pbnRlci1hcml0aCAtV25vLXNp
-Z24tY29tcGFyZSAtV25vLXR5cGUtbGltaXRzIC1Xbm8tdW51c2VkLXBhcmFtZXRlciAtV25vLXVu
-dXNlZC1yZXN1bHQgLVdlcnJvcj1hZGRyZXNzIC1XZXJyb3I9YXJyYXktYm91bmRzIC1XZXJyb3I9
-aW1wbGljaXQgLVdlcnJvcj1pbml0LXNlbGYgLVdlcnJvcj1pbnQtdG8tcG9pbnRlci1jYXN0IC1X
-ZXJyb3I9bWFpbiAtV2Vycm9yPW1pc3NpbmctYnJhY2VzIC1XZXJyb3I9bm9ubnVsbCAtV2Vycm9y
-PXBvaW50ZXItdG8taW50LWNhc3QgLVdlcnJvcj1yZXR1cm4tdHlwZSAtV2Vycm9yPXNlcXVlbmNl
-LXBvaW50IC1XZXJyb3I9dHJpZ3JhcGhzIC1XZXJyb3I9d3JpdGUtc3RyaW5ncyAtZm5vLWJ1aWx0
-aW4tbWFsbG9jIC1mbm8tYnVpbHRpbi1jYWxsb2MgLWZjb21tb24gLWZQSUMgLXB0aHJlYWQgJy1E
-SUdUX0RBVEFESVI9Ii9vcHQvaWd0L3NoYXJlL2lndC1ncHUtdG9vbHMiJyAnLURJR1RfU1JDRElS
-PSIvaG9tZS9jaWRybS9pZ3QtZ3B1LXRvb2xzL3Rlc3RzIicgJy1ESUdUX0xPR19ET01BSU49Imln
-dF9jaGFtZWxpdW0iJyAgLU1EIC1NUSAnbGliL2xpYkBAaWd0LWlndF9jaGFtZWxpdW1fY0BzdGEv
-aWd0X2NoYW1lbGl1bS5jLm8nIC1NRiAnbGliL2xpYkBAaWd0LWlndF9jaGFtZWxpdW1fY0BzdGEv
-aWd0X2NoYW1lbGl1bS5jLm8uZCcgLW8gJ2xpYi9saWJAQGlndC1pZ3RfY2hhbWVsaXVtX2NAc3Rh
-L2lndF9jaGFtZWxpdW0uYy5vJyAtYyAuLi9saWIvaWd0X2NoYW1lbGl1bS5jCi4uL2xpYi9pZ3Rf
-Y2hhbWVsaXVtLmM6IEluIGZ1bmN0aW9uIOKAmF9fY2hhbWVsaXVtX3JwY192YeKAmToKLi4vbGli
-L2lndF9jaGFtZWxpdW0uYzozMzM6MjI6IGVycm9yOiBpbXBsaWNpdCBkZWNsYXJhdGlvbiBvZiBm
-dW5jdGlvbiDigJhpZ3Rfd2F0Y2hfaG90cGx1Z+KAmTsgZGlkIHlvdSBtZWFuIOKAmGlndF93YXRj
-aF91ZXZlbnRz4oCZPyBbLVdlcnJvcj1pbXBsaWNpdC1mdW5jdGlvbi1kZWNsYXJhdGlvbl0KICAg
-bW9uaXRvcl9hcmdzLm1vbiA9IGlndF93YXRjaF9ob3RwbHVnKCk7CiAgICAgICAgICAgICAgICAg
-ICAgICBefn5+fn5+fn5+fn5+fn5+fgogICAgICAgICAgICAgICAgICAgICAgaWd0X3dhdGNoX3Vl
-dmVudHMKLi4vbGliL2lndF9jaGFtZWxpdW0uYzozMzM6MjI6IHdhcm5pbmc6IG5lc3RlZCBleHRl
-cm4gZGVjbGFyYXRpb24gb2Yg4oCYaWd0X3dhdGNoX2hvdHBsdWfigJkgWy1XbmVzdGVkLWV4dGVy
-bnNdCi4uL2xpYi9pZ3RfY2hhbWVsaXVtLmM6MzMzOjIwOiB3YXJuaW5nOiBhc3NpZ25tZW50IG1h
-a2VzIHBvaW50ZXIgZnJvbSBpbnRlZ2VyIHdpdGhvdXQgYSBjYXN0IFstV2ludC1jb252ZXJzaW9u
-XQogICBtb25pdG9yX2FyZ3MubW9uID0gaWd0X3dhdGNoX2hvdHBsdWcoKTsKICAgICAgICAgICAg
-ICAgICAgICBeCi4uL2xpYi9pZ3RfY2hhbWVsaXVtLmM6MzYxOjM6IGVycm9yOiBpbXBsaWNpdCBk
-ZWNsYXJhdGlvbiBvZiBmdW5jdGlvbiDigJhpZ3RfY2xlYW51cF9ob3RwbHVn4oCZOyBkaWQgeW91
-IG1lYW4g4oCYaWd0X2NsZWFudXBfdWV2ZW50c+KAmT8gWy1XZXJyb3I9aW1wbGljaXQtZnVuY3Rp
-b24tZGVjbGFyYXRpb25dCiAgIGlndF9jbGVhbnVwX2hvdHBsdWcobW9uaXRvcl9hcmdzLm1vbik7
-CiAgIF5+fn5+fn5+fn5+fn5+fn5+fn4KICAgaWd0X2NsZWFudXBfdWV2ZW50cwouLi9saWIvaWd0
-X2NoYW1lbGl1bS5jOjM2MTozOiB3YXJuaW5nOiBuZXN0ZWQgZXh0ZXJuIGRlY2xhcmF0aW9uIG9m
-IOKAmGlndF9jbGVhbnVwX2hvdHBsdWfigJkgWy1XbmVzdGVkLWV4dGVybnNdCmNjMTogc29tZSB3
-YXJuaW5ncyBiZWluZyB0cmVhdGVkIGFzIGVycm9ycwpuaW5qYTogYnVpbGQgc3RvcHBlZDogc3Vi
-Y29tbWFuZCBmYWlsZWQuCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
-ZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+== Series Details ==
+
+Series: Add api_intel_bb test (rev2)
+URL   : https://patchwork.freedesktop.org/series/78719/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_5717 -> IGTPW_4693
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4693/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4693:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@api_intel_bb@blit-noreloc-keep-cache} (NEW):
+    - fi-pnv-d510:        NOTRUN -> [FAIL][1] +4 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4693/fi-pnv-d510/igt@api_intel_bb@blit-noreloc-keep-cache.html
+
+  * {igt@api_intel_bb@blit-reloc-keep-cache} (NEW):
+    - fi-gdg-551:         NOTRUN -> [FAIL][2] +4 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4693/fi-gdg-551/igt@api_intel_bb@blit-reloc-keep-cache.html
+    - fi-ilk-650:         NOTRUN -> [FAIL][3] +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4693/fi-ilk-650/igt@api_intel_bb@blit-reloc-keep-cache.html
+
+  * {igt@api_intel_bb@blit-reloc-purge-cache} (NEW):
+    - fi-elk-e7500:       NOTRUN -> [FAIL][4] +3 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4693/fi-elk-e7500/igt@api_intel_bb@blit-reloc-purge-cache.html
+    - fi-bwr-2160:        NOTRUN -> [FAIL][5] +3 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4693/fi-bwr-2160/igt@api_intel_bb@blit-reloc-purge-cache.html
+
+  * {igt@api_intel_bb@intel-bb-blit} (NEW):
+    - fi-blb-e6850:       NOTRUN -> [FAIL][6] +4 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4693/fi-blb-e6850/igt@api_intel_bb@intel-bb-blit.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between IGT_5717 and IGTPW_4693:
+
+### New IGT tests (9) ###
+
+  * igt@api_intel_bb:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@api_intel_bb@blit-noreloc-keep-cache:
+    - Statuses : 6 fail(s) 30 pass(s)
+    - Exec time: [0.00, 0.23] s
+
+  * igt@api_intel_bb@blit-noreloc-purge-cache:
+    - Statuses : 6 fail(s) 30 pass(s)
+    - Exec time: [0.00, 0.05] s
+
+  * igt@api_intel_bb@blit-reloc-keep-cache:
+    - Statuses : 6 fail(s) 30 pass(s)
+    - Exec time: [0.00, 0.05] s
+
+  * igt@api_intel_bb@blit-reloc-purge-cache:
+    - Statuses : 6 fail(s) 30 pass(s)
+    - Exec time: [0.00, 0.06] s
+
+  * igt@api_intel_bb@intel-bb-blit:
+    - Statuses : 3 fail(s) 33 pass(s)
+    - Exec time: [0.06, 0.61] s
+
+  * igt@api_intel_bb@offset-control:
+    - Statuses : 36 pass(s)
+    - Exec time: [0.00, 0.04] s
+
+  * igt@api_intel_bb@simple-bb:
+    - Statuses : 33 pass(s) 3 skip(s)
+    - Exec time: [0.0, 0.04] s
+
+  * igt@i915_pm_sseu:
+    - Statuses :
+    - Exec time: [None] s
+
+  
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+
+
+Participating hosts (43 -> 38)
+------------------------------
+
+  Additional (1): fi-tgl-u2 
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5717 -> IGTPW_4693
+
+  CI-20190529: 20190529
+  CI_DRM_8656: 44e3c43b37ee6ceb67ff23aae6cf7551367f5dce @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4693: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4693/index.html
+  IGT_5717: 725bf2dae51f0087eaa64f1931a2ef9d22f070dd @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@api_intel_bb@blit-noreloc-keep-cache
++igt@api_intel_bb@blit-noreloc-purge-cache
++igt@api_intel_bb@blit-reloc-keep-cache
++igt@api_intel_bb@blit-reloc-purge-cache
++igt@api_intel_bb@intel-bb-blit
++igt@api_intel_bb@offset-control
++igt@api_intel_bb@simple-bb
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4693/index.html
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
