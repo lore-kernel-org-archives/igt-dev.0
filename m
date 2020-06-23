@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 23 Jun 2020 07:03:05 -0000
-Message-ID: <159289578551.27517.13726959171141381299@emeril.freedesktop.org>
-References: <20200622135900.3227-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20200622135900.3227-1-juhapekka.heikkila@gmail.com>
-Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/kms=5Fflip=5Ftiling=3A_remove_cut=27n=27paste?=
+Date: Tue, 23 Jun 2020 08:06:29 -0000
+Message-ID: <159289958977.27517.15685943485757432076@emeril.freedesktop.org>
+References: <20200623062000.17889-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200623062000.17889-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIGFw?=
+ =?utf-8?q?i=5Fintel=5Fbb_test?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,48 +19,160 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: tests/kms_flip_tiling: remove cut'n'paste
-URL   : https://patchwork.freedesktop.org/series/78692/
-State : warning
+Series: Add api_intel_bb test
+URL   : https://patchwork.freedesktop.org/series/78719/
+State : success
 
 == Summary ==
 
-Did not get list of undocumented tests for this run, something is wrong!
+CI Bug Log - changes from CI_DRM_8655 -> IGTPW_4690
+====================================================
 
-Other than that, pipeline status: FAILED.
+Summary
+-------
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/165403 for the overview.
+  **SUCCESS**
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/3228066):
-  Preparing the "docker" executor
-  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-f9fdf22d0ef3109113686cea35fabe25b0fbc773 ...
-  Authenticating with credentials from job payload (GitLab Registry)
-  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-f9fdf22d0ef3109113686cea35fabe25b0fbc773 ...
-  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-f9fdf22d0ef3109113686cea35fabe25b0fbc773 ...
-  section_end:1592839168:prepare_executor
-  section_start:1592839168:prepare_script
-  Preparing environment
-  Running on runner-thys1ka2-project-3185-concurrent-0 via gst-htz-2...
-  section_end:1592839169:prepare_script
-  section_start:1592839169:get_sources
-  Getting source from Git repository
-  Fetching changes...
-  Initialized empty Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Created fresh repository.
-  error: RPC failed; curl 92 HTTP/2 stream 0 was not closed cleanly: PROTOCOL_ERROR (err 1)
-  fatal: the remote end hung up unexpectedly
-  section_end:1592839231:get_sources
-  ERROR: Job failed: exit code 1
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4690:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@api_intel_bb@blit-noreloc-purge-cache} (NEW):
+    - fi-bxt-dsi:         NOTRUN -> [FAIL][1] +2 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/fi-bxt-dsi/igt@api_intel_bb@blit-noreloc-purge-cache.html
+    - fi-bsw-n3050:       NOTRUN -> [FAIL][2] +3 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/fi-bsw-n3050/igt@api_intel_bb@blit-noreloc-purge-cache.html
+
+  * {igt@api_intel_bb@blit-reloc-keep-cache} (NEW):
+    - fi-apl-guc:         NOTRUN -> [FAIL][3] +2 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/fi-apl-guc/igt@api_intel_bb@blit-reloc-keep-cache.html
+    - fi-bsw-nick:        NOTRUN -> [FAIL][4] +3 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/fi-bsw-nick/igt@api_intel_bb@blit-reloc-keep-cache.html
+    - fi-glk-dsi:         NOTRUN -> [FAIL][5] +3 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/fi-glk-dsi/igt@api_intel_bb@blit-reloc-keep-cache.html
+    - fi-gdg-551:         NOTRUN -> [FAIL][6] +5 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/fi-gdg-551/igt@api_intel_bb@blit-reloc-keep-cache.html
+    - fi-bsw-kefka:       NOTRUN -> [FAIL][7] +3 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/fi-bsw-kefka/igt@api_intel_bb@blit-reloc-keep-cache.html
+    - fi-ilk-650:         NOTRUN -> [FAIL][8] +3 similar issues
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/fi-ilk-650/igt@api_intel_bb@blit-reloc-keep-cache.html
+
+  * {igt@api_intel_bb@blit-reloc-purge-cache} (NEW):
+    - fi-byt-j1900:       NOTRUN -> [FAIL][9] +3 similar issues
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/fi-byt-j1900/igt@api_intel_bb@blit-reloc-purge-cache.html
+    - fi-elk-e7500:       NOTRUN -> [FAIL][10] +3 similar issues
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/fi-elk-e7500/igt@api_intel_bb@blit-reloc-purge-cache.html
+    - fi-bwr-2160:        NOTRUN -> [FAIL][11] +3 similar issues
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/fi-bwr-2160/igt@api_intel_bb@blit-reloc-purge-cache.html
+    - fi-byt-n2820:       NOTRUN -> [FAIL][12]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/fi-byt-n2820/igt@api_intel_bb@blit-reloc-purge-cache.html
+
+  * {igt@api_intel_bb@intel-bb-blit} (NEW):
+    - fi-blb-e6850:       NOTRUN -> [FAIL][13] +5 similar issues
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/fi-blb-e6850/igt@api_intel_bb@intel-bb-blit.html
+
+  * {igt@api_intel_bb@simple-bb} (NEW):
+    - fi-pnv-d510:        NOTRUN -> [FAIL][14] +5 similar issues
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/fi-pnv-d510/igt@api_intel_bb@simple-bb.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_8655 and IGTPW_4690:
+
+### New IGT tests (9) ###
+
+  * igt@api_intel_bb:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@api_intel_bb@blit-noreloc-keep-cache:
+    - Statuses : 13 fail(s) 23 pass(s)
+    - Exec time: [0.00, 0.24] s
+
+  * igt@api_intel_bb@blit-noreloc-purge-cache:
+    - Statuses : 13 fail(s) 23 pass(s)
+    - Exec time: [0.00, 0.08] s
+
+  * igt@api_intel_bb@blit-reloc-keep-cache:
+    - Statuses : 13 fail(s) 23 pass(s)
+    - Exec time: [0.00, 0.04] s
+
+  * igt@api_intel_bb@blit-reloc-purge-cache:
+    - Statuses : 12 fail(s) 24 pass(s)
+    - Exec time: [0.00, 0.19] s
+
+  * igt@api_intel_bb@intel-bb-blit:
+    - Statuses : 3 fail(s) 33 pass(s)
+    - Exec time: [0.06, 0.62] s
+
+  * igt@api_intel_bb@offset-control:
+    - Statuses : 36 pass(s)
+    - Exec time: [0.00, 0.05] s
+
+  * igt@api_intel_bb@simple-bb:
+    - Statuses : 3 fail(s) 33 pass(s)
+    - Exec time: [0.00, 0.06] s
+
+  * igt@i915_pm_sseu:
+    - Statuses :
+    - Exec time: [None] s
+
+  
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+
+
+Participating hosts (44 -> 38)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5716 -> IGTPW_4690
+
+  CI-20190529: 20190529
+  CI_DRM_8655: 25d43cec6c2200a9ebe8a8b0923b27b164a6f424 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4690: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/index.html
+  IGT_5716: 71a22c37ae6541f9d991d81f15cbade1da402b75 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@api_intel_bb@blit-noreloc-keep-cache
++igt@api_intel_bb@blit-noreloc-purge-cache
++igt@api_intel_bb@blit-reloc-keep-cache
++igt@api_intel_bb@blit-reloc-purge-cache
++igt@api_intel_bb@intel-bb-blit
++igt@api_intel_bb@offset-control
++igt@api_intel_bb@simple-bb
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/165403
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4690/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
