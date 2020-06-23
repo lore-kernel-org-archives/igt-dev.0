@@ -1,19 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com
- [IPv6:2a00:1450:4864:20::341])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68B976E445
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Jun 2020 15:07:21 +0000 (UTC)
-Received: by mail-wm1-x341.google.com with SMTP id j18so3300585wmi.3
- for <igt-dev@lists.freedesktop.org>; Tue, 23 Jun 2020 08:07:21 -0700 (PDT)
-References: <20200623135342.7046-1-stanislav.lisovskiy@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <79815182-5f59-cdb3-75da-741042273457@gmail.com>
-Date: Tue, 23 Jun 2020 18:07:10 +0300
 MIME-Version: 1.0
-In-Reply-To: <20200623135342.7046-1-stanislav.lisovskiy@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] igt/tests: Clear pipes properly in
- kms_atomic_transition
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 23 Jun 2020 15:41:33 -0000
+Message-ID: <159292689316.4208.12999472562565266247@emeril.freedesktop.org>
+References: <20200623142142.26229-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200623142142.26229-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIGFw?=
+ =?utf-8?q?i=5Fintel=5Fbb_test_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,59 +14,140 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>, igt-dev@lists.freedesktop.org
-Cc: juha-pekka.heikkila@intel.com
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 23.6.2020 16.53, Stanislav Lisovskiy wrote:
-> There is an issue happening from time to time in kms_atomic_transition
-> (bug #1918). We periodically get assertion that some two outputs
-> attempt to use same pipe like this:
-> 
-> "Failed assertion: output->pending_pipe != b->pending_pipe"
-> 
-> After some investigation came to conclusion that this is happening
-> because we are calling igt_output_set_pipe(output, PIPE_NONE) only
-> for connected outputs, which is wrong.
-> Periodically igt_display_refresh/igt_output_refresh call calls can
-> update the output state to disconnected. However that doesn't clear
-> the pipe being assigned(i.e output->pending_pipe).
-> So this causes assertion to be triggered on next igt_display_refresh
-> called during commit.
-> 
-> Bugzilla: https://gitlab.freedesktop.org/drm/intel/-/issues/1918
-> 
-> Signed-off-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-> ---
->   tests/kms_atomic_transition.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-> index 754a4969..a55388cd 100644
-> --- a/tests/kms_atomic_transition.c
-> +++ b/tests/kms_atomic_transition.c
-> @@ -665,8 +665,9 @@ static unsigned set_combinations(igt_display_t *display, unsigned mask, struct i
->   	enum pipe pipe;
->   	unsigned event_mask = 0;
->   
-> -	for_each_connected_output(display, output)
-> -		igt_output_set_pipe(output, PIPE_NONE);
-> +	for_each_pipe(display, pipe)
-> +		for_each_valid_output_on_pipe(display, pipe, output)
-> +			igt_output_set_pipe(output, PIPE_NONE);
->   
->   	for_each_pipe(display, pipe) {
->   		igt_plane_t *plane = igt_pipe_get_plane_type(&display->pipes[pipe],
-> 
+== Series Details ==
 
-Look ok to me.
+Series: Add api_intel_bb test (rev3)
+URL   : https://patchwork.freedesktop.org/series/78719/
+State : success
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8658 -> IGTPW_4696
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4696/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4696:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@api_intel_bb@intel-bb-blit} (NEW):
+    - fi-blb-e6850:       NOTRUN -> [FAIL][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4696/fi-blb-e6850/igt@api_intel_bb@intel-bb-blit.html
+    - fi-pnv-d510:        NOTRUN -> [FAIL][2]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4696/fi-pnv-d510/igt@api_intel_bb@intel-bb-blit.html
+    - fi-gdg-551:         NOTRUN -> [FAIL][3]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4696/fi-gdg-551/igt@api_intel_bb@intel-bb-blit.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_8658 and IGTPW_4696:
+
+### New IGT tests (10) ###
+
+  * igt@api_intel_bb:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@api_intel_bb@blit-noreloc-keep-cache:
+    - Statuses : 36 pass(s)
+    - Exec time: [0.00, 0.03] s
+
+  * igt@api_intel_bb@blit-noreloc-purge-cache:
+    - Statuses : 36 pass(s)
+    - Exec time: [0.00, 0.03] s
+
+  * igt@api_intel_bb@blit-reloc-keep-cache:
+    - Statuses : 36 pass(s)
+    - Exec time: [0.00, 0.02] s
+
+  * igt@api_intel_bb@blit-reloc-purge-cache:
+    - Statuses : 36 pass(s)
+    - Exec time: [0.00, 0.02] s
+
+  * igt@api_intel_bb@intel-bb-blit:
+    - Statuses : 3 fail(s) 33 pass(s)
+    - Exec time: [0.07, 0.75] s
+
+  * igt@api_intel_bb@offset-control:
+    - Statuses : 36 pass(s)
+    - Exec time: [0.00, 0.04] s
+
+  * igt@api_intel_bb@simple-bb:
+    - Statuses : 36 pass(s)
+    - Exec time: [0.00, 0.02] s
+
+  * igt@api_intel_bb@simple-bb-ctx:
+    - Statuses : 33 pass(s) 3 skip(s)
+    - Exec time: [0.0, 0.03] s
+
+  * igt@i915_pm_sseu:
+    - Statuses :
+    - Exec time: [None] s
+
+  
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+
+
+Participating hosts (44 -> 38)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5717 -> IGTPW_4696
+
+  CI-20190529: 20190529
+  CI_DRM_8658: c86979e2fe3c106d95b5fcf2075709afa40f0f95 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4696: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4696/index.html
+  IGT_5717: 725bf2dae51f0087eaa64f1931a2ef9d22f070dd @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@api_intel_bb@blit-noreloc-keep-cache
++igt@api_intel_bb@blit-noreloc-purge-cache
++igt@api_intel_bb@blit-reloc-keep-cache
++igt@api_intel_bb@blit-reloc-purge-cache
++igt@api_intel_bb@intel-bb-blit
++igt@api_intel_bb@offset-control
++igt@api_intel_bb@simple-bb
++igt@api_intel_bb@simple-bb-ctx
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4696/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
