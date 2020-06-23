@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 23 Jun 2020 07:03:14 -0000
-Message-ID: <159289579426.27520.8511947077275967797@emeril.freedesktop.org>
-References: <20200622164415.30352-1-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20200622164415.30352-1-janusz.krzysztofik@linux.intel.com>
+Date: Tue, 23 Jun 2020 07:03:05 -0000
+Message-ID: <159289578551.27517.13726959171141381299@emeril.freedesktop.org>
+References: <20200622135900.3227-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20200622135900.3227-1-juhapekka.heikkila@gmail.com>
 Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_t?=
- =?utf-8?q?ests/core=5Fhotunplug=3A_New_subtests_and_enhancements_=28rev2?=
- =?utf-8?q?=29?=
+ =?utf-8?q?ests/kms=5Fflip=5Ftiling=3A_remove_cut=27n=27paste?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,14 +19,14 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: tests/core_hotunplug: New subtests and enhancements (rev2)
-URL   : https://patchwork.freedesktop.org/series/78698/
+Series: tests/kms_flip_tiling: remove cut'n'paste
+URL   : https://patchwork.freedesktop.org/series/78692/
 State : warning
 
 == Summary ==
@@ -36,32 +35,32 @@ Did not get list of undocumented tests for this run, something is wrong!
 
 Other than that, pipeline status: FAILED.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/165472 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/165403 for the overview.
 
-build-containers:build-debian-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/3230552):
-  section_start:1592844401:restore_cache
-  Restoring cache
-  section_end:1592844404:restore_cache
-  section_start:1592844404:download_artifacts
-  Downloading artifacts
-  section_end:1592844409:download_artifacts
-  section_start:1592844409:build_script
-  Running before_script and script
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/3228066):
+  Preparing the "docker" executor
+  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-f9fdf22d0ef3109113686cea35fabe25b0fbc773 ...
   Authenticating with credentials from job payload (GitLab Registry)
-  $ podman login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-  Inconsistency detected by ld.so: ../sysdeps/x86_64/dl-machine.h: 538: elf_machine_rela_relative: Assertion `ELFW(R_TYPE) (reloc->r_info) == R_X86_64_RELATIVE' failed!
-  section_end:1592844420:build_script
-  section_start:1592844420:after_script
-  Running after_script
-  section_end:1592844421:after_script
-  section_start:1592844421:upload_artifacts_on_failure
-  Uploading artifacts for failed job
-  section_end:1592844424:upload_artifacts_on_failure
+  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-f9fdf22d0ef3109113686cea35fabe25b0fbc773 ...
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-f9fdf22d0ef3109113686cea35fabe25b0fbc773 ...
+  section_end:1592839168:prepare_executor
+  section_start:1592839168:prepare_script
+  Preparing environment
+  Running on runner-thys1ka2-project-3185-concurrent-0 via gst-htz-2...
+  section_end:1592839169:prepare_script
+  section_start:1592839169:get_sources
+  Getting source from Git repository
+  Fetching changes...
+  Initialized empty Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Created fresh repository.
+  error: RPC failed; curl 92 HTTP/2 stream 0 was not closed cleanly: PROTOCOL_ERROR (err 1)
+  fatal: the remote end hung up unexpectedly
+  section_end:1592839231:get_sources
   ERROR: Job failed: exit code 1
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/165472
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/pipelines/165403
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
