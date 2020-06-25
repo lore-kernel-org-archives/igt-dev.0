@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 561FC6E2D6
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jun 2020 06:37:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C674A6E25B
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Jun 2020 06:37:08 +0000 (UTC)
 From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Thu, 25 Jun 2020 12:05:48 +0530
-Message-Id: <20200625063551.26622-5-mohammed.khajapasha@intel.com>
-In-Reply-To: <20200625063551.26622-1-mohammed.khajapasha@intel.com>
+Date: Thu, 25 Jun 2020 12:05:44 +0530
+Message-Id: <20200625063551.26622-1-mohammed.khajapasha@intel.com>
+In-Reply-To: <20200617180354.17770-1-mohammed.khajapasha@intel.com>
 References: <20200617180354.17770-1-mohammed.khajapasha@intel.com>
- <20200625063551.26622-1-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3 4/7] tests/kms_lease: Read crtc id for a
- valid pipe
+Subject: [igt-dev] [PATCH i-g-t v3 0/7] lib/igt_kms: Add support for display
+ with
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,31 +24,35 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: arkadiusz.hiler@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Read crtc id for enabled pipes only.
+Add support for display with non-contiguous pipes.
 
-Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
----
- tests/kms_lease.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+v3:
+	Handled kms atomic transition test failure case.
 
-diff --git a/tests/kms_lease.c b/tests/kms_lease.c
-index 007ae47f..3c92ca78 100644
---- a/tests/kms_lease.c
-+++ b/tests/kms_lease.c
-@@ -136,9 +136,11 @@ static enum pipe crtc_id_to_pipe(igt_display_t *display, uint32_t crtc_id)
- {
- 	enum pipe pipe;
- 
--	for (pipe = 0; pipe < display->n_pipes; pipe++)
--		if (display->pipes[pipe].crtc_id == crtc_id)
-+	for (pipe = 0; pipe < display->n_pipes; pipe++) {
-+		if (display->pipes[pipe].enabled &&
-+				display->pipes[pipe].crtc_id == crtc_id)
- 			return pipe;
-+	}
- 	return -1;
- }
- 
+Mohammed Khajapasha (7):
+  lib/igt_kms: Add support for display with non-contiguous pipes
+  tests/kms_cursor_legacy: Read crtc id for enable pipes
+  tests/kms_lease: Get pipe from crtc for enable pipes
+  tests/kms_lease: Read crtc id for a valid pipe
+  lib/kms: Skip igt test cases for disabled display pipes
+  tests/kms: Skip kms test cases for disabled pipes
+  tests/kms_atomic_transition: Set modeset for enable pipes only
+
+ lib/igt_kms.c                 | 66 +++++++++++++++++++++++++++++------
+ lib/igt_kms.h                 | 13 ++++---
+ tests/kms_atomic_transition.c |  9 +++--
+ tests/kms_color.c             |  3 +-
+ tests/kms_color_chamelium.c   |  3 +-
+ tests/kms_concurrent.c        |  3 +-
+ tests/kms_cursor_legacy.c     | 14 +++++---
+ tests/kms_lease.c             |  8 +++--
+ tests/kms_pipe_crc_basic.c    |  6 ++--
+ tests/kms_plane.c             |  3 +-
+ tests/kms_plane_lowres.c      |  3 +-
+ tests/kms_plane_multiple.c    |  3 +-
+ tests/kms_universal_plane.c   | 18 ++++++----
+ 13 files changed, 113 insertions(+), 39 deletions(-)
+
 -- 
 2.24.1
 
