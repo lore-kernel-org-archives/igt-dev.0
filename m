@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82AED6E25D
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jun 2020 06:37:17 +0000 (UTC)
-From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Thu, 25 Jun 2020 12:05:50 +0530
-Message-Id: <20200625063551.26622-7-mohammed.khajapasha@intel.com>
-In-Reply-To: <20200625063551.26622-1-mohammed.khajapasha@intel.com>
-References: <20200617180354.17770-1-mohammed.khajapasha@intel.com>
- <20200625063551.26622-1-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3 6/7] tests/kms: Skip kms test cases for
- disabled pipes
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 25 Jun 2020 08:11:29 -0000
+Message-ID: <159307268945.3273.12197550672475649062@emeril.freedesktop.org>
+References: <20200625050738.8166-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200625050738.8166-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIGFw?=
+ =?utf-8?q?i=5Fintel=5Fbb_test_=28rev6=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,203 +14,152 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: arkadiusz.hiler@intel.com, igt-dev@lists.freedesktop.org
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Skip the kms test cases for disabled pipes with
-non-contiguous pipe display.
+== Series Details ==
 
-Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
----
- tests/kms_color.c           |  3 ++-
- tests/kms_color_chamelium.c |  3 ++-
- tests/kms_concurrent.c      |  3 ++-
- tests/kms_pipe_crc_basic.c  |  6 ++++--
- tests/kms_plane.c           |  3 ++-
- tests/kms_plane_lowres.c    |  3 ++-
- tests/kms_plane_multiple.c  |  3 ++-
- tests/kms_universal_plane.c | 18 ++++++++++++------
- 8 files changed, 28 insertions(+), 14 deletions(-)
+Series: Add api_intel_bb test (rev6)
+URL   : https://patchwork.freedesktop.org/series/78719/
+State : success
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 7f2fbd4a..19f0f9b5 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -628,7 +628,8 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 	igt_fixture {
- 		igt_require_pipe_crc(data->drm_fd);
- 
--		igt_require(p < data->display.n_pipes);
-+		igt_require((p < data->display.n_pipes) &&
-+				(data->display.pipes[p].enabled));
- 
- 		pipe = &data->display.pipes[p];
- 		igt_require(pipe->n_planes >= 0);
-diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
-index 7f5a911c..2d690ca3 100644
---- a/tests/kms_color_chamelium.c
-+++ b/tests/kms_color_chamelium.c
-@@ -519,7 +519,8 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 
- 	igt_fixture {
- 
--		igt_require(p < data->display.n_pipes);
-+		igt_require((p < data->display.n_pipes) &&
-+				(data->display.pipes[p].enabled));
- 
- 		pipe = &data->display.pipes[p];
- 		igt_require(pipe->n_planes >= 0);
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index 89016563..1730bb2b 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -320,7 +320,8 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 	igt_fixture {
- 		int valid_tests = 0;
- 
--		igt_skip_on(pipe >= data->display.n_pipes);
-+		igt_skip_on((pipe >= data->display.n_pipes) ||
-+				!(data->display.pipes[pipe].enabled));
- 		igt_require(data->display.pipes[pipe].n_planes > 0);
- 
- 		for_each_valid_output_on_pipe(&data->display, pipe, output)
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index d169b7bd..ec31e2ca 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -71,7 +71,8 @@ static void test_read_crc(data_t *data, enum pipe pipe, unsigned flags)
- 	igt_crc_t *crcs = NULL;
- 	int c, j;
- 
--	igt_skip_on(pipe >= data->display.n_pipes);
-+	igt_skip_on((pipe >= display->n_pipes) ||
-+			!(display->pipes[pipe].enabled));
- 	igt_require_f(output, "No connector found for pipe %s\n",
- 		      kmstest_pipe_name(pipe));
- 
-@@ -187,7 +188,8 @@ igt_main
- 			test_read_crc(&data, pipe, TEST_SEQUENCE | TEST_NONBLOCK);
- 
- 		igt_subtest_f("suspend-read-crc-pipe-%s", kmstest_pipe_name(pipe)) {
--			igt_skip_on(pipe >= data.display.n_pipes);
-+			igt_skip_on((pipe >= data.display.n_pipes) ||
-+					!(data.display.pipes[pipe].enabled));
- 
- 			test_read_crc(&data, pipe, 0);
- 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index c6ead813..85ed4f94 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -940,7 +940,8 @@ static void
- run_tests_for_pipe_plane(data_t *data, enum pipe pipe)
- {
- 	igt_fixture {
--		igt_skip_on(pipe >= data->display.n_pipes);
-+		igt_skip_on((pipe >= data->display.n_pipes) ||
-+				!(data->display.pipes[pipe].enabled));
- 		igt_require(data->display.pipes[pipe].n_planes > 0);
- 	}
- 
-diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-index 012b25e3..16afe570 100644
---- a/tests/kms_plane_lowres.c
-+++ b/tests/kms_plane_lowres.c
-@@ -259,7 +259,8 @@ test_planes_on_pipe(data_t *data, uint64_t modifier)
- 	igt_plane_t *plane;
- 	unsigned tested = 0;
- 
--	igt_skip_on(data->pipe >= data->display.n_pipes);
-+	igt_skip_on((data->pipe >= data->display.n_pipes) ||
-+			!(data->display.pipes[data->pipe].enabled));
- 	igt_display_require_output_on_pipe(&data->display, data->pipe);
- 	igt_skip_on(!igt_display_has_format_mod(&data->display,
- 						DRM_FORMAT_XRGB8888, modifier));
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 6cf060b3..e7b5951c 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -378,7 +378,8 @@ static void
- run_tests_for_pipe(data_t *data, enum pipe pipe)
- {
- 	igt_fixture {
--		igt_skip_on(pipe >= data->display.n_pipes);
-+		igt_skip_on((pipe >= data->display.n_pipes) ||
-+				!(data->display.pipes[pipe].enabled));
- 		igt_require(data->display.pipes[pipe].n_planes > 0);
- 	}
- 
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 676be633..ce28b37d 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -135,7 +135,8 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int num_primary = 0, num_cursor = 0;
- 	int i;
- 
--	igt_skip_on(pipe >= display->n_pipes);
-+	igt_skip_on((pipe >= display->n_pipes) ||
-+			!(display->pipes[pipe].enabled));
- 
- 	igt_info("Testing connector %s using pipe %s\n", igt_output_name(output),
- 		 kmstest_pipe_name(pipe));
-@@ -364,7 +365,8 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int i;
- 	int expect;
- 
--	igt_skip_on(pipe >= data->display.n_pipes);
-+	igt_skip_on((pipe >= data->display.n_pipes) ||
-+			!(data->display.pipes[pipe].enabled));
- 
- 	igt_output_set_pipe(output, pipe);
- 	mode = igt_output_get_mode(output);
-@@ -476,7 +478,8 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	fd_set fds;
- 	int ret = 0;
- 
--	igt_skip_on(pipe >= data->display.n_pipes);
-+	igt_skip_on((pipe >= data->display.n_pipes) ||
-+			!(data->display.pipes[pipe].enabled));
- 
- 	igt_output_set_pipe(output, pipe);
- 
-@@ -577,7 +580,8 @@ cursor_leak_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int r, g, b;
- 	int count1, count2;
- 
--	igt_skip_on(pipe >= display->n_pipes);
-+	igt_skip_on((pipe >= display->n_pipes) ||
-+			!(display->pipes[pipe].enabled));
- 	igt_require(display->has_cursor_plane);
- 
- 	igt_output_set_pipe(output, pipe);
-@@ -705,7 +709,8 @@ gen9_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int ret = 0;
- 
- 	igt_skip_on(data->gen < 9);
--	igt_skip_on(pipe >= data->display.n_pipes);
-+	igt_skip_on((pipe >= data->display.n_pipes) ||
-+			!(data->display.pipes[pipe].enabled));
- 
- 	igt_output_set_pipe(output, pipe);
- 
-@@ -750,7 +755,8 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 	igt_fixture {
- 		int valid_tests = 0;
- 
--		igt_skip_on(pipe >= data->display.n_pipes);
-+		igt_skip_on((pipe >= data->display.n_pipes) ||
-+			!(data->display.pipes[pipe].enabled));
- 
- 		for_each_valid_output_on_pipe(&data->display, pipe, output)
- 			valid_tests++;
--- 
-2.24.1
+== Summary ==
 
+CI Bug Log - changes from CI_DRM_8663 -> IGTPW_4702
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4702/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4702:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@api_intel_bb@blit-noreloc-keep-cache} (NEW):
+    - fi-pnv-d510:        NOTRUN -> [FAIL][1] +4 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4702/fi-pnv-d510/igt@api_intel_bb@blit-noreloc-keep-cache.html
+
+  * {igt@api_intel_bb@blit-reloc-keep-cache} (NEW):
+    - fi-gdg-551:         NOTRUN -> [FAIL][2] +4 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4702/fi-gdg-551/igt@api_intel_bb@blit-reloc-keep-cache.html
+    - fi-ilk-650:         NOTRUN -> [FAIL][3] +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4702/fi-ilk-650/igt@api_intel_bb@blit-reloc-keep-cache.html
+
+  * {igt@api_intel_bb@blit-reloc-purge-cache} (NEW):
+    - fi-elk-e7500:       NOTRUN -> [FAIL][4] +4 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4702/fi-elk-e7500/igt@api_intel_bb@blit-reloc-purge-cache.html
+
+  * {igt@api_intel_bb@intel-bb-blit} (NEW):
+    - fi-blb-e6850:       NOTRUN -> [FAIL][5] +4 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4702/fi-blb-e6850/igt@api_intel_bb@intel-bb-blit.html
+    - fi-bwr-2160:        NOTRUN -> [FAIL][6] +4 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4702/fi-bwr-2160/igt@api_intel_bb@intel-bb-blit.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_8663 and IGTPW_4702:
+
+### New IGT tests (10) ###
+
+  * igt@api_intel_bb:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@api_intel_bb@blit-noreloc-keep-cache:
+    - Statuses : 5 fail(s) 31 pass(s)
+    - Exec time: [0.00, 11.63] s
+
+  * igt@api_intel_bb@blit-noreloc-purge-cache:
+    - Statuses : 6 fail(s) 30 pass(s)
+    - Exec time: [0.00, 0.06] s
+
+  * igt@api_intel_bb@blit-reloc-keep-cache:
+    - Statuses : 6 fail(s) 30 pass(s)
+    - Exec time: [0.00, 0.06] s
+
+  * igt@api_intel_bb@blit-reloc-purge-cache:
+    - Statuses : 6 fail(s) 30 pass(s)
+    - Exec time: [0.00, 6.26] s
+
+  * igt@api_intel_bb@intel-bb-blit:
+    - Statuses : 5 fail(s) 30 pass(s) 1 skip(s)
+    - Exec time: [0.0, 0.55] s
+
+  * igt@api_intel_bb@offset-control:
+    - Statuses : 1 fail(s) 35 pass(s)
+    - Exec time: [0.00, 0.05] s
+
+  * igt@api_intel_bb@simple-bb:
+    - Statuses : 36 pass(s)
+    - Exec time: [0.00, 0.03] s
+
+  * igt@api_intel_bb@simple-bb-ctx:
+    - Statuses : 33 pass(s) 3 skip(s)
+    - Exec time: [0.0, 0.03] s
+
+  * igt@i915_pm_sseu:
+    - Statuses :
+    - Exec time: [None] s
+
+  
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+
+
+Participating hosts (43 -> 38)
+------------------------------
+
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5717 -> IGTPW_4702
+
+  CI-20190529: 20190529
+  CI_DRM_8663: f07f381b14117703b40bd09855026128715d5b10 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4702: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4702/index.html
+  IGT_5717: 725bf2dae51f0087eaa64f1931a2ef9d22f070dd @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@api_intel_bb@blit-noreloc-keep-cache
++igt@api_intel_bb@blit-noreloc-purge-cache
++igt@api_intel_bb@blit-reloc-keep-cache
++igt@api_intel_bb@blit-reloc-purge-cache
++igt@api_intel_bb@intel-bb-blit
++igt@api_intel_bb@offset-control
++igt@api_intel_bb@simple-bb
++igt@api_intel_bb@simple-bb-ctx
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4702/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
