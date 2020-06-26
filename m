@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0451A6EC36
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Jun 2020 08:47:13 +0000 (UTC)
-Date: Fri, 26 Jun 2020 10:47:10 +0200
-From: Katarzyna Dec <katarzyna.dec@intel.com>
-Message-ID: <20200626084710.GB5425@kdec5-desk.ger.corp.intel.com>
-References: <20200626063045.5207-1-marcin.bernatowicz@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C55C56E047
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Jun 2020 09:12:50 +0000 (UTC)
+Date: Fri, 26 Jun 2020 14:43:03 +0530
+From: Ramalingam C <ramalingam.c@intel.com>
+Message-ID: <20200626091303.GA18570@intel.com>
+References: <20200624054130.11695-1-ankit.k.nautiyal@intel.com>
+ <20200624054130.11695-3-ankit.k.nautiyal@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200626063045.5207-1-marcin.bernatowicz@intel.com>
-Subject: Re: [igt-dev] [RFC,
- i-g-t] tests/device_reset: Test device sysfs reset
+In-Reply-To: <20200624054130.11695-3-ankit.k.nautiyal@intel.com>
+Subject: Re: [igt-dev] [Patch][i-g-t v4 2/3] tests/kms_content_protection:
+ Use library functions for handling uevents
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,351 +23,212 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Marcin Bernatowicz <marcin.bernatowicz@intel.com>, igt-dev@lists.freedesktop.org
-Cc: michal.winiarski@intel.com, rodrigo.vivi@intel.com
+To: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jun 26, 2020 at 08:30:45AM +0200, Marcin Bernatowicz wrote:
-> Device reset is initiated by writing "1" to reset sysfs file,
-> which should initiatie device FLR if supported by device.
-> 
-> Test scenarios:
-> 1. unbind driver from device then rebind
-> 2. unbind driver from device, initiate sysfs reset, rebind driver to
-> device
-> 3. device reset with bound driver
-> 
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
-> ---
->  tests/device_reset.c | 298 +++++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build    |   1 +
->  2 files changed, 299 insertions(+)
->  create mode 100644 tests/device_reset.c
-> 
-> diff --git a/tests/device_reset.c b/tests/device_reset.c
-> new file mode 100644
-> index 000000000..bafe9fd41
-> --- /dev/null
-> +++ b/tests/device_reset.c
-> @@ -0,0 +1,298 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright(c) 2020 Intel Corporation. All rights reserved.
-> + */
-> +
-> +#include <fcntl.h>
-> +#include <sys/stat.h>
-> +#include "igt.h"
-> +#include "igt_device_scan.h"
-> +#include "igt_sysfs.h"
-> +
-> +IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
-> +
-> +
-> +#define DEV_PATH_LEN 80
-> +#define DEV_BUS_ADDR_LEN 13 /* addr has form 0000:00:00.0 */
-> +
-> +/**
-> + * Helper structure containing sysfs file descriptors
-> + * and path related to tested device
-> + */
-> +struct sysfs_fds {
-> +	struct {
-> +		int dev;
-> +		int dev_dir;
-> +		int drv_dir;
-> +	} fds;
-> +	char dev_bus_addr[DEV_BUS_ADDR_LEN];
-> +};
-> +
-> +static int __open_sysfs_dir(int fd, const char* path)
-> +{
-> +	int sysfs;
-> +
-> +	sysfs = igt_sysfs_open(fd);
-> +	if (sysfs < 0) {
-> +		return -1;
-> +	}
-> +
-> +	return openat(sysfs, path, O_DIRECTORY);
-> +}
-> +
-> +static int open_device_sysfs_dir(int fd)
-> +{
-> +	return __open_sysfs_dir(fd, "device");
-> +}
-> +
-> +static int open_driver_sysfs_dir(int fd)
-> +{
-> +	return __open_sysfs_dir(fd, "device/driver");
-> +}
-> +
-> +/**
-> + * device_sysfs_path:
-> + * @fd: opened device file descriptor
-> + * @path: buffer to store sysfs path to device directory
-> + *
-> + * Returns:
-> + * On successfull path resolution sysfs path to device directory,
-> + * NULL otherwise
-> + */
-> +static char *device_sysfs_path(int fd, char *path)
-> +{
-> +	char sysfs[DEV_PATH_LEN];
-> +
-> +	if (!igt_sysfs_path(fd, sysfs, sizeof(sysfs)))
-> +		return NULL;
-> +
-> +	if (DEV_PATH_LEN <= (strlen(sysfs) + strlen("/device")))
-> +		return NULL;
-> +
-> +	strcat(sysfs, "/device");
-> +
-> +	return realpath(sysfs, path);
-> +}
-> +
-> +static void init_sysfs_fds(struct sysfs_fds *sysfs)
-> +{
-> +	char dev_path[PATH_MAX];
-> +	char *addr_pos;
-> +
-> +	igt_debug("open device\n");
-> +	/**
-> +	 * As subtests must be able to close examined devices
-> +	 * completely, don't use drm_open_driver() as it keeps
-> +	 * a device file descriptor open for exit handler use.
-> +	 */
-> +	sysfs->fds.dev = __drm_open_driver(DRIVER_ANY);
-> +	igt_assert_fd(sysfs->fds.dev);
-> +
-> +	igt_assert(device_sysfs_path(sysfs->fds.dev, dev_path));
-> +	addr_pos = strrchr(dev_path, '/');
-> +	snprintf(sysfs->dev_bus_addr, sizeof(sysfs->dev_bus_addr),
-> +		 "%s", (addr_pos ? addr_pos + 1 : ""));
-> +	igt_assert(sysfs->dev_bus_addr[0]);
-> +
-> +	sysfs->fds.dev_dir = open_device_sysfs_dir(sysfs->fds.dev);
-> +	igt_assert_fd(sysfs->fds.dev_dir);
-> +
-> +	sysfs->fds.drv_dir = open_driver_sysfs_dir(sysfs->fds.dev);
-> +	igt_assert_fd(sysfs->fds.drv_dir);
-> +}
-> +
-> +static int close_if_opened(int *fd)
-> +{
-> +	int rc = 0;
-> +	if (fd && *fd != -1) {
-> +		rc = close(*fd);
-> +		*fd = -1;
-> +	}
-> +	return rc;
-> +}
-> +
-> +static void open_if_closed(struct sysfs_fds *sysfs)
-> +{
-> +	if (sysfs->fds.dev == -1) {
-> +		/* refresh device list */
-> +		igt_devices_scan(true);
-> +		igt_debug("reopen the device\n");
-> +		sysfs->fds.dev = __drm_open_driver(DRIVER_ANY);
-> +	}
-> +	igt_assert_fd(sysfs->fds.dev);
-> +}
-> +
-> +static void cleanup_sysfs_fds(struct sysfs_fds *sysfs)
-> +{
-> +	close_if_opened(&sysfs->fds.dev);
-> +	close_if_opened(&sysfs->fds.dev_dir);
-> +	close_if_opened(&sysfs->fds.drv_dir);
-> +	sysfs->dev_bus_addr[0] = '\0';
-> +}
-> +
-> +
-> +/**
-> + * is_sysfs_reset_supported:
-> + * @fd: opened device file descriptor
-> + *
-> + * Check if device supports reset based on sysfs file presence.
-> + *
-> + * Returns:
-> + * True if device supports reset, false otherwise.
-> + */
-> +static bool is_sysfs_reset_supported(int fd)
-> +{
-> +	struct stat st;
-> +	int rc;
-> +	int sysfs;
-> +	int reset_fd = -1;
-> +
-> +	sysfs = igt_sysfs_open(fd);
-> +
-> +	if (sysfs >= 0) {
-> +		reset_fd = openat(sysfs, "device/reset", O_WRONLY);
-> +		close(sysfs);
-> +	}
-> +
-> +	if (reset_fd < 0)
-> +		return false;
-> +
-> +	rc = fstat(reset_fd, &st);
-> +	close(reset_fd);
-> +
-> +	if (rc || !S_ISREG(st.st_mode))
-> +		return false;
-> +
-> +	return true;
-> +}
-> +
-> +/* Unbind the driver from the device */
-> +static void driver_unbind(struct sysfs_fds *sysfs)
-> +{
-> +	igt_debug("unbind the driver from the device\n");
-> +	igt_assert(igt_sysfs_set(sysfs->fds.drv_dir, "unbind",
-> +		   sysfs->dev_bus_addr));
-> +}
-> +
-> +/* Re-bind the driver to the device */
-> +static void driver_bind(struct sysfs_fds *sysfs)
-> +{
-> +	igt_debug("rebind the driver to the device\n");
-> +	igt_abort_on_f(!igt_sysfs_set(sysfs->fds.drv_dir, "bind",
-> +		       sysfs->dev_bus_addr), "driver rebind failed");
-> +}
-> +
-> +/* Initiate device reset */
-> +static void initiate_device_reset(struct sysfs_fds *sysfs)
-> +{
-> +	igt_debug("reset device\n");
-> +	igt_assert(igt_sysfs_set(sysfs->fds.dev_dir, "reset", "1"));
-> +}
-> +
-> +/**
-> + * healthcheck:
-> + * @sysfs: structure with device descriptor, if descriptor equals -1
-> + * 	   the device is reopened
-> + */
-> +static void healthcheck(struct sysfs_fds *sysfs)
-> +{
-> +	open_if_closed(sysfs);
-> +	gem_test_engine(sysfs->fds.dev, ALL_ENGINES);
-This test is located in tests/ and looks like could be applicable to any
-device. If that is true - gem_test_engine is from i915 familiy. Is there a way
-to test engines for any driver? Naming is one thing, but what if amd card will
-try to execute engines with i915 functions?
+Thanks for the patches. Whole series is merged.
 
-Kasia
-> +}
-> +
-> +/**
-> + * set_device_filter:
-> + *
-> + * Sets device filter to ensure subtests always reopen the same device
-> + *
-> + * @dev_path: path to device under tests
-> + */
-> +static void set_device_filter(const char* dev_path)
-> +{
-> +	char filter[strlen("sys:") + strlen(dev_path) + 1];
-> +
-> +	snprintf(filter, sizeof(filter), "sys:%s", dev_path);
-> +	igt_device_filter_free_all();
-> +	igt_assert_eq(igt_device_filter_add(filter), 1);
-> +}
-> +
-> +static void unbind_rebind(struct sysfs_fds *sysfs)
-> +{
-> +	igt_debug("close the device\n");
-> +	close_if_opened(&sysfs->fds.dev);
-> +
-> +	driver_unbind(sysfs);
-> +
-> +	driver_bind(sysfs);
-> +}
-> +
-> +static void unbind_reset_rebind(struct sysfs_fds *sysfs)
-> +{
-> +	igt_debug("close the device\n");
-> +	close_if_opened(&sysfs->fds.dev);
-> +
-> +	driver_unbind(sysfs);
-> +
-> +	initiate_device_reset(sysfs);
-> +
-> +	driver_bind(sysfs);
-> +}
-> +
-> +igt_main
-> +{
-> +	struct sysfs_fds sysfs;
-> +
-> +	igt_fixture {
-> +		char dev_path[PATH_MAX];
-> +
-> +		igt_debug("opening device\n");
-> +		init_sysfs_fds(&sysfs);
-> +
-> +		/* Make sure subtests always reopen the same device */
-> +		igt_assert(device_sysfs_path(sysfs.fds.dev, dev_path));
-> +		set_device_filter(dev_path);
-> +
-> +		igt_skip_on(!is_sysfs_reset_supported(sysfs.fds.dev));
-> +
-> +		igt_set_timeout(60, "device reset tests timed out after 60s");
-> +	}
-> +
-> +	igt_describe("Tests driver unbind from/rebind to device sequence");
-> +	igt_subtest("unbind-rebind")
-> +		unbind_rebind(&sysfs);
-> +
-> +	igt_describe("Unbinds driver from device, initiates reset"
-> +		     " then rebinds driver to device");
-> +	igt_subtest("unbind-reset-rebind")
-> +		unbind_reset_rebind(&sysfs);
-> +
-> +	igt_describe("Resets device with bound driver");
-> +	igt_subtest("reset-bound")
-> +		initiate_device_reset(&sysfs);
-> +
-> +	igt_describe("Subtests with additional healthchecks");
-> +	igt_subtest_group {
-> +		igt_fixture {
-> +			open_if_closed(&sysfs);
-> +			igt_require_intel(sysfs.fds.dev);
-> +		}
-> +
-> +		igt_subtest("healthcheck")
-> +			healthcheck(&sysfs);
-> +
-> +		igt_subtest("unbind-reset-rebind-healthcheck") {
-> +			unbind_reset_rebind(&sysfs);
-> +			healthcheck(&sysfs);
-> +		}
-> +
-> +		igt_subtest("reset-bound-healthcheck") {
-> +			initiate_device_reset(&sysfs);
-> +			healthcheck(&sysfs);
-> +		}
-> +	}
-> +
-> +	igt_fixture {
-> +		igt_reset_timeout();
-> +		cleanup_sysfs_fds(&sysfs);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 28091794f..b0acdf7c0 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -8,6 +8,7 @@ test_progs = [
->  	'core_setmaster_vs_auth',
->  	'debugfs_test',
->  	'dmabuf',
-> +	'device_reset',
->  	'drm_import_export',
->  	'drm_mm',
->  	'drm_read',
+-Ram
+
+On 2020-06-24 at 11:11:29 +0530, Ankit Nautiyal wrote:
+> Currently, the test has its own version of uevent handling used
+> for detecting hdcp events. This patch modifies the test to use
+> the igt_kms lib support for handling the uevent monitor and detect
+> hdcp events.
+> 
+> v2: Rebased
+> v3: Rebased
+> 
+> Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+> Reviewed-by: Ramalingam C <ramalingam.c@intel.com>
+> Acked-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+> ---
+>  tests/kms_content_protection.c | 146 ++-------------------------------
+>  1 file changed, 7 insertions(+), 139 deletions(-)
+> 
+> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+> index 3b9cedcb..a80aa5bb 100644
+> --- a/tests/kms_content_protection.c
+> +++ b/tests/kms_content_protection.c
+> @@ -39,6 +39,7 @@ struct data {
+>  	igt_display_t display;
+>  	struct igt_fb red, green;
+>  	unsigned int cp_tests;
+> +	struct udev_monitor *uevent_monitor;
+>  } data;
+>  
+>  /* Test flags */
+> @@ -112,143 +113,6 @@ static int wait_flip_event(void)
+>  	return rc;
+>  }
+>  
+> -static bool hdcp_event(struct udev_monitor *uevent_monitor,
+> -		       struct udev *udev, uint32_t conn_id, uint32_t prop_id)
+> -{
+> -	struct udev_device *dev;
+> -	dev_t udev_devnum;
+> -	struct stat s;
+> -	const char *hotplug, *connector, *property;
+> -	bool ret = false;
+> -
+> -	dev = udev_monitor_receive_device(uevent_monitor);
+> -	if (!dev)
+> -		goto out;
+> -
+> -	udev_devnum = udev_device_get_devnum(dev);
+> -	fstat(data.display.drm_fd, &s);
+> -
+> -	hotplug = udev_device_get_property_value(dev, "HOTPLUG");
+> -	if (!(memcmp(&s.st_rdev, &udev_devnum, sizeof(dev_t)) == 0 &&
+> -	    hotplug && atoi(hotplug) == 1)) {
+> -		igt_debug("Not a Hotplug event\n");
+> -		goto out_dev;
+> -	}
+> -
+> -	connector = udev_device_get_property_value(dev, "CONNECTOR");
+> -	if (!(memcmp(&s.st_rdev, &udev_devnum, sizeof(dev_t)) == 0 &&
+> -	    connector && atoi(connector) == conn_id)) {
+> -		igt_debug("Not for connector id: %u\n", conn_id);
+> -		goto out_dev;
+> -	}
+> -
+> -	property = udev_device_get_property_value(dev, "PROPERTY");
+> -	if (!(memcmp(&s.st_rdev, &udev_devnum, sizeof(dev_t)) == 0 &&
+> -	    property && atoi(property) == prop_id)) {
+> -		igt_debug("Not for property id: %u\n", prop_id);
+> -		goto out_dev;
+> -	}
+> -	ret = true;
+> -
+> -out_dev:
+> -	udev_device_unref(dev);
+> -out:
+> -	return ret;
+> -}
+> -
+> -static void hdcp_udev_fini(struct udev_monitor *uevent_monitor,
+> -			   struct udev *udev)
+> -{
+> -	if (uevent_monitor)
+> -		udev_monitor_unref(uevent_monitor);
+> -	if (udev)
+> -		udev_unref(udev);
+> -}
+> -
+> -static int hdcp_udev_init(struct udev_monitor **uevent_monitor,
+> -			  struct udev **udev, int *udev_fd)
+> -{
+> -	int ret = -EINVAL;
+> -
+> -	*udev = udev_new();
+> -	if (!*udev) {
+> -		igt_info("failed to create udev object\n");
+> -		goto out;
+> -	}
+> -
+> -	*uevent_monitor = udev_monitor_new_from_netlink(*udev, "udev");
+> -	if (!*uevent_monitor) {
+> -		igt_info("failed to create udev event monitor\n");
+> -		goto out;
+> -	}
+> -
+> -	ret = udev_monitor_filter_add_match_subsystem_devtype(*uevent_monitor,
+> -							      "drm",
+> -							      "drm_minor");
+> -	if (ret < 0) {
+> -		igt_info("failed to filter for drm events\n");
+> -		goto out;
+> -	}
+> -
+> -	ret = udev_monitor_enable_receiving(*uevent_monitor);
+> -	if (ret < 0) {
+> -		igt_info("failed to enable udev event reception\n");
+> -		goto out;
+> -	}
+> -
+> -	*udev_fd = udev_monitor_get_fd(*uevent_monitor);
+> -	if (*udev_fd < 0) {
+> -		igt_info("failed to get udev_fd on uevent monitor\n");
+> -		ret = *udev_fd;
+> -		goto out;
+> -	}
+> -
+> -	return ret;
+> -
+> -out:
+> -	hdcp_udev_fini(*uevent_monitor, *udev);
+> -	return ret;
+> -}
+> -
+> -#define MAX_EVENTS	10
+> -static bool wait_for_hdcp_event(uint32_t conn_id, uint32_t prop_id,
+> -				uint32_t timeout_mSec)
+> -{
+> -
+> -	struct udev_monitor *uevent_monitor = NULL;
+> -	struct udev *udev = NULL;
+> -	int udev_fd, epoll_fd;
+> -	struct epoll_event event, events[MAX_EVENTS];
+> -	bool ret = false;
+> -
+> -	if (hdcp_udev_init(&uevent_monitor, &udev, &udev_fd) < 0)
+> -		return false;
+> -
+> -	epoll_fd = epoll_create1(0);
+> -	if (epoll_fd == -1) {
+> -		igt_info("Failed to create epoll fd. %d\n", epoll_fd);
+> -		goto out_ep_create;
+> -	}
+> -
+> -	event.events = EPOLLIN | EPOLLERR;
+> -	event.data.fd = 0;
+> -
+> -	if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, udev_fd, &event)) {
+> -		igt_info("failed to fd into epoll\n");
+> -		goto out_ep_ctl;
+> -	}
+> -
+> -	if (epoll_wait(epoll_fd, events, MAX_EVENTS, timeout_mSec))
+> -		ret = hdcp_event(uevent_monitor, udev, conn_id, prop_id);
+> -
+> -out_ep_ctl:
+> -	if (close(epoll_fd))
+> -		igt_info("failed to close the epoll fd\n");
+> -out_ep_create:
+> -	hdcp_udev_fini(uevent_monitor, udev);
+> -	return ret;
+> -}
+> -
+>  static bool
+>  wait_for_prop_value(igt_output_t *output, uint64_t expected,
+>  		    uint32_t timeout_mSec)
+> @@ -257,9 +121,10 @@ wait_for_prop_value(igt_output_t *output, uint64_t expected,
+>  	int i;
+>  
+>  	if (data.cp_tests & CP_UEVENT && expected != CP_UNDESIRED) {
+> -		igt_assert_f(wait_for_hdcp_event(output->id,
+> +		igt_assert_f(igt_connector_event_detected(data.uevent_monitor,
+> +							  output->id,
+>  			     output->props[IGT_CONNECTOR_CONTENT_PROTECTION],
+> -			     timeout_mSec), "uevent is not received");
+> +			     timeout_mSec / 1000), "uevent is not received");
+>  
+>  		val = igt_output_get_prop(output,
+>  					  IGT_CONNECTOR_CONTENT_PROTECTION);
+> @@ -702,7 +567,10 @@ igt_main
+>  	igt_subtest("uevent") {
+>  		igt_require(data.display.is_atomic);
+>  		data.cp_tests = CP_UEVENT;
+> +		data.uevent_monitor = igt_watch_hotplug();
+> +		igt_flush_hotplugs(data.uevent_monitor);
+>  		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
+> +		igt_cleanup_hotplug(data.uevent_monitor);
+>  	}
+>  
+>  	/*
 > -- 
-> 2.25.1
+> 2.17.1
 > 
 _______________________________________________
 igt-dev mailing list
