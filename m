@@ -1,22 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9CC406E434
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2020 08:54:18 +0000 (UTC)
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@intel.com>
-Date: Mon, 29 Jun 2020 08:53:59 +0000
-Message-ID: <1c8d7dc7734add19a33e2b07dc54af8e3d1afc51.camel@intel.com>
-References: <20200626063045.5207-1-marcin.bernatowicz@intel.com>
- <20200626084710.GB5425@kdec5-desk.ger.corp.intel.com>
- <6cf13722d1e4029aa1d6788752573cc497ebcfae.camel@intel.com>
- <20200626091925.GC5425@kdec5-desk.ger.corp.intel.com>
- <72bb8c3570d491155d7e3a0ff08120b4ca724999.camel@intel.com>
- <1e61c039b8bc208a4851a1c72c47754764810562.camel@linux.intel.com>
-In-Reply-To: <1e61c039b8bc208a4851a1c72c47754764810562.camel@linux.intel.com>
-Content-Language: en-US
-Content-ID: <033CBC5324AC2549BC507FF42466EB93@namprd11.prod.outlook.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 61D9A6E04B
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2020 09:21:48 +0000 (UTC)
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Date: Mon, 29 Jun 2020 11:21:03 +0200
+Message-Id: <20200629092107.10664-2-dominik.grzegorzek@intel.com>
+In-Reply-To: <20200629092107.10664-1-dominik.grzegorzek@intel.com>
+References: <20200629092107.10664-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [RFC,
- i-g-t] tests/device_reset: Test device sysfs reset
+Subject: [igt-dev] [PATCH i-g-t 1/5] lib/intel_bufops: Add intel_buf
+ create/destroy functions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,442 +17,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dec, Katarzyna" <katarzyna.dec@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "janusz.krzysztofik@linux.intel.com" <janusz.krzysztofik@linux.intel.com>
-Cc: "Winiarski, Michal" <michal.winiarski@intel.com>, "Vivi,
- Rodrigo" <rodrigo.vivi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, 2020-06-26 at 13:35 +0200, Janusz Krzysztofik wrote:
-> On Fri, 2020-06-26 at 10:23 +0000, Bernatowicz, Marcin wrote:
-> > On Fri, 2020-06-26 at 11:19 +0200, Katarzyna Dec wrote:
-> > > On Fri, Jun 26, 2020 at 09:55:09AM +0100, Bernatowicz, Marcin
-> > > wrote:
-> > > > On Fri, 2020-06-26 at 10:47 +0200, Katarzyna Dec wrote:
-> > > > > On Fri, Jun 26, 2020 at 08:30:45AM +0200, Marcin Bernatowicz
-> > > > > wrote:
-> > > > > > Device reset is initiated by writing "1" to reset sysfs
-> > > > > > file,
-> > > > > > which should initiatie device FLR if supported by device.
-> > > > > > 
-> > > > > > Test scenarios:
-> > > > > > 1. unbind driver from device then rebind
-> > > > > > 2. unbind driver from device, initiate sysfs reset, rebind
-> > > > > > driver
-> > > > > > to
-> > > > > > device
-> > > > > > 3. device reset with bound driver
-> > > > > > 
-> > > > > > Signed-off-by: Marcin Bernatowicz <
-> > > > > > marcin.bernatowicz@intel.com
-> > > > > > ---
-> > > > > >  tests/device_reset.c | 298
-> > > > > > +++++++++++++++++++++++++++++++++++++++++++
-> > > > > >  tests/meson.build    |   1 +
-> > > > > >  2 files changed, 299 insertions(+)
-> > > > > >  create mode 100644 tests/device_reset.c
-> > > > > > 
-> > > > > > diff --git a/tests/device_reset.c b/tests/device_reset.c
-> > > > > > new file mode 100644
-> > > > > > index 000000000..bafe9fd41
-> > > > > > --- /dev/null
-> > > > > > +++ b/tests/device_reset.c
-> > > > > > @@ -0,0 +1,298 @@
-> > > > > > +// SPDX-License-Identifier: MIT
-> > > > > > +/*
-> > > > > > + * Copyright(c) 2020 Intel Corporation. All rights
-> > > > > > reserved.
-> > > > > > + */
-> > > > > > +
-> > > > > > +#include <fcntl.h>
-> > > > > > +#include <sys/stat.h>
-> > > > > > +#include "igt.h"
-> > > > > > +#include "igt_device_scan.h"
-> > > > > > +#include "igt_sysfs.h"
-> > > > > > +
-> > > > > > +IGT_TEST_DESCRIPTION("Examine behavior of a driver on
-> > > > > > device
-> > > > > > sysfs
-> > > > > > reset");
-> > > > > > +
-> > > > > > +
-> > > > > > +#define DEV_PATH_LEN 80
-> > > > > > +#define DEV_BUS_ADDR_LEN 13 /* addr has form 0000:00:00.0
-> > > > > > */
-> > > > > > +
-> > > > > > +/**
-> > > > > > + * Helper structure containing sysfs file descriptors
-> > > > > > + * and path related to tested device
-> > > > > > + */
-> > > > > > +struct sysfs_fds {
-> > > > > > +struct {
-> > > > > > +int dev;
-> > > > > > +int dev_dir;
-> > > > > > +int drv_dir;
-> > > > > > +} fds;
-> > > > > > +char dev_bus_addr[DEV_BUS_ADDR_LEN];
-> > > > > > +};
-> > > > > > +
-> > > > > > +static int __open_sysfs_dir(int fd, const char* path)
-> > > > > > +{
-> > > > > > +int sysfs;
-> > > > > > +
-> > > > > > +sysfs = igt_sysfs_open(fd);
-> > > > > > +if (sysfs < 0) {
-> > > > > > +return -1;
-> > > > > > +}
-> > > > > > +
-> > > > > > +return openat(sysfs, path, O_DIRECTORY);
-> > > > > > +}
-> > > > > > +
-> > > > > > +static int open_device_sysfs_dir(int fd)
-> > > > > > +{
-> > > > > > +return __open_sysfs_dir(fd, "device");
-> > > > > > +}
-> > > > > > +
-> > > > > > +static int open_driver_sysfs_dir(int fd)
-> > > > > > +{
-> > > > > > +return __open_sysfs_dir(fd, "device/driver");
-> > > > > > +}
-> > > > > > +
-> > > > > > +/**
-> > > > > > + * device_sysfs_path:
-> > > > > > + * @fd: opened device file descriptor
-> > > > > > + * @path: buffer to store sysfs path to device directory
-> > > > > > + *
-> > > > > > + * Returns:
-> > > > > > + * On successfull path resolution sysfs path to device
-> > > > > > directory,
-> > > > > > + * NULL otherwise
-> > > > > > + */
-> > > > > > +static char *device_sysfs_path(int fd, char *path)
-> > > > > > +{
-> > > > > > +char sysfs[DEV_PATH_LEN];
-> > > > > > +
-> > > > > > +if (!igt_sysfs_path(fd, sysfs, sizeof(sysfs)))
-> > > > > > +return NULL;
-> > > > > > +
-> > > > > > +if (DEV_PATH_LEN <= (strlen(sysfs) + strlen("/device")))
-> > > > > > +return NULL;
-> > > > > > +
-> > > > > > +strcat(sysfs, "/device");
-> > > > > > +
-> > > > > > +return realpath(sysfs, path);
-> > > > > > +}
-> > > > > > +
-> > > > > > +static void init_sysfs_fds(struct sysfs_fds *sysfs)
-> > > > > > +{
-> > > > > > +char dev_path[PATH_MAX];
-> > > > > > +char *addr_pos;
-> > > > > > +
-> > > > > > +igt_debug("open device\n");
-> > > > > > +/**
-> > > > > > + * As subtests must be able to close examined devices
-> > > > > > + * completely, don't use drm_open_driver() as it keeps
-> > > > > > + * a device file descriptor open for exit handler use.
-> > > > > > + */
-> > > > > > +sysfs->fds.dev = __drm_open_driver(DRIVER_ANY);
-> > > > > > +igt_assert_fd(sysfs->fds.dev);
-> > > > > > +
-> > > > > > +igt_assert(device_sysfs_path(sysfs->fds.dev, dev_path));
-> > > > > > +addr_pos = strrchr(dev_path, '/');
-> > > > > > +snprintf(sysfs->dev_bus_addr, sizeof(sysfs->dev_bus_addr),
-> > > > > > + "%s", (addr_pos ? addr_pos + 1 : ""));
-> > > > > > +igt_assert(sysfs->dev_bus_addr[0]);
-> > > > > > +
-> > > > > > +sysfs->fds.dev_dir = open_device_sysfs_dir(sysfs-
-> > > > > > >fds.dev);
-> > > > > > +igt_assert_fd(sysfs->fds.dev_dir);
-> > > > > > +
-> > > > > > +sysfs->fds.drv_dir = open_driver_sysfs_dir(sysfs-
-> > > > > > >fds.dev);
-> > > > > > +igt_assert_fd(sysfs->fds.drv_dir);
-> > > > > > +}
-> > > > > > +
-> > > > > > +static int close_if_opened(int *fd)
-> > > > > > +{
-> > > > > > +int rc = 0;
-> > > > > > +if (fd && *fd != -1) {
-> > > > > > +rc = close(*fd);
-> > > > > > +*fd = -1;
-> > > > > > +}
-> > > > > > +return rc;
-> > > > > > +}
-> > > > > > +
-> > > > > > +static void open_if_closed(struct sysfs_fds *sysfs)
-> > > > > > +{
-> > > > > > +if (sysfs->fds.dev == -1) {
-> > > > > > +/* refresh device list */
-> > > > > > +igt_devices_scan(true);
-> > > > > > +igt_debug("reopen the device\n");
-> > > > > > +sysfs->fds.dev = __drm_open_driver(DRIVER_ANY);
-> > > > > > +}
-> > > > > > +igt_assert_fd(sysfs->fds.dev);
-> > > > > > +}
-> > > > > > +
-> > > > > > +static void cleanup_sysfs_fds(struct sysfs_fds *sysfs)
-> > > > > > +{
-> > > > > > +close_if_opened(&sysfs->fds.dev);
-> > > > > > +close_if_opened(&sysfs->fds.dev_dir);
-> > > > > > +close_if_opened(&sysfs->fds.drv_dir);
-> > > > > > +sysfs->dev_bus_addr[0] = '\0';
-> > > > > > +}
-> > > > > > +
-> > > > > > +
-> > > > > > +/**
-> > > > > > + * is_sysfs_reset_supported:
-> > > > > > + * @fd: opened device file descriptor
-> > > > > > + *
-> > > > > > + * Check if device supports reset based on sysfs file
-> > > > > > presence.
-> > > > > > + *
-> > > > > > + * Returns:
-> > > > > > + * True if device supports reset, false otherwise.
-> > > > > > + */
-> > > > > > +static bool is_sysfs_reset_supported(int fd)
-> > > > > > +{
-> > > > > > +struct stat st;
-> > > > > > +int rc;
-> > > > > > +int sysfs;
-> > > > > > +int reset_fd = -1;
-> > > > > > +
-> > > > > > +sysfs = igt_sysfs_open(fd);
-> > > > > > +
-> > > > > > +if (sysfs >= 0) {
-> > > > > > +reset_fd = openat(sysfs, "device/reset", O_WRONLY);
-> > > > > > +close(sysfs);
-> > > > > > +}
-> > > > > > +
-> > > > > > +if (reset_fd < 0)
-> > > > > > +return false;
-> > > > > > +
-> > > > > > +rc = fstat(reset_fd, &st);
-> > > > > > +close(reset_fd);
-> > > > > > +
-> > > > > > +if (rc || !S_ISREG(st.st_mode))
-> > > > > > +return false;
-> > > > > > +
-> > > > > > +return true;
-> > > > > > +}
-> > > > > > +
-> > > > > > +/* Unbind the driver from the device */
-> > > > > > +static void driver_unbind(struct sysfs_fds *sysfs)
-> > > > > > +{
-> > > > > > +igt_debug("unbind the driver from the device\n");
-> > > > > > +igt_assert(igt_sysfs_set(sysfs->fds.drv_dir, "unbind",
-> > > > > > +   sysfs->dev_bus_addr));
-> > > > > > +}
-> > > > > > +
-> > > > > > +/* Re-bind the driver to the device */
-> > > > > > +static void driver_bind(struct sysfs_fds *sysfs)
-> > > > > > +{
-> > > > > > +igt_debug("rebind the driver to the device\n");
-> > > > > > +igt_abort_on_f(!igt_sysfs_set(sysfs->fds.drv_dir, "bind",
-> > > > > > +       sysfs->dev_bus_addr), "driver rebind failed");
-> > > > > > +}
-> > > > > > +
-> > > > > > +/* Initiate device reset */
-> > > > > > +static void initiate_device_reset(struct sysfs_fds *sysfs)
-> > > > > > +{
-> > > > > > +igt_debug("reset device\n");
-> > > > > > +igt_assert(igt_sysfs_set(sysfs->fds.dev_dir, "reset",
-> > > > > > "1"));
-> > > > > > +}
-> > > > > > +
-> > > > > > +/**
-> > > > > > + * healthcheck:
-> > > > > > + * @sysfs: structure with device descriptor, if descriptor
-> > > > > > equals
-> > > > > > -1
-> > > > > > + *    the device is reopened
-> > > > > > + */
-> > > > > > +static void healthcheck(struct sysfs_fds *sysfs)
-> > > > > > +{
-> > > > > > +open_if_closed(sysfs);
-> > > > > > +gem_test_engine(sysfs->fds.dev, ALL_ENGINES);
-> > > > > 
-> > > > > This test is located in tests/ and looks like could be
-> > > > > applicable
-> > > > > to
-> > > > > any
-> > > > > device. If that is true - gem_test_engine is from i915
-> > > > > familiy.
-> > > > > Is
-> > > > > there a way
-> > > > > to test engines for any driver? Naming is one thing, but what
-> > > > > if
-> > > > > amd
-> > > > > card will
-> > > > > try to execute engines with i915 functions?
-> > > > > 
-> > > > > Kasia
-> > > > 
-> > > > healthcheck is used in subtest_group where igt_require_intel is
-> > > > prerequisite, so the tests will be skipped on non intel
-> > > > platforms
-> > > 
-> > > In that case test should be moved to tests/i915 dir than?
-> > > Kasia
-> > 
-> > Following tests may be executed on ANY_DEVICE:
-> > unbind-rebind
-> > unbind-reset-rebind
-> > reset-bound
-> > 
-> > the versions with *-healthcheck will skip on non intel platfroms.
-> 
-> AFAICT, CI expects each test to leave the exercised device in a
-> usable
-> state (driver bound, GPU not wedged).  If not, the test should exit
-> via
-> igt_abort(), unless TAINT_WARN flag in /proc/sys/kernel/tainted is
-> raised by the driver on unsuccessful GPU reset.  Then, I think you
-> should perform a final healthcheck from each subtest. 
-> gem_test_engine() should be called conditionally if intel graphics is
-> detected, other platforms can add their specific checks as needed.
-> 
-> Thanks,
-> Janusz
-
-Ok, I reduced and simplified the tests to conditionally call
-gem_test_engine when run on intel graphics.
-
-Thanks,
-marcin
-
-> 
-> > 
-> > Should I move them to separate binary under tests/i915 dir ?
-> > 
-> > > > > > +}
-> > > > > > +
-> > > > > > +/**
-> > > > > > + * set_device_filter:
-> > > > > > + *
-> > > > > > + * Sets device filter to ensure subtests always reopen the
-> > > > > > same
-> > > > > > device
-> > > > > > + *
-> > > > > > + * @dev_path: path to device under tests
-> > > > > > + */
-> > > > > > +static void set_device_filter(const char* dev_path)
-> > > > > > +{
-> > > > > > +char filter[strlen("sys:") + strlen(dev_path) + 1];
-> > > > > > +
-> > > > > > +snprintf(filter, sizeof(filter), "sys:%s", dev_path);
-> > > > > > +igt_device_filter_free_all();
-> > > > > > +igt_assert_eq(igt_device_filter_add(filter), 1);
-> > > > > > +}
-> > > > > > +
-> > > > > > +static void unbind_rebind(struct sysfs_fds *sysfs)
-> > > > > > +{
-> > > > > > +igt_debug("close the device\n");
-> > > > > > +close_if_opened(&sysfs->fds.dev);
-> > > > > > +
-> > > > > > +driver_unbind(sysfs);
-> > > > > > +
-> > > > > > +driver_bind(sysfs);
-> > > > > > +}
-> > > > > > +
-> > > > > > +static void unbind_reset_rebind(struct sysfs_fds *sysfs)
-> > > > > > +{
-> > > > > > +igt_debug("close the device\n");
-> > > > > > +close_if_opened(&sysfs->fds.dev);
-> > > > > > +
-> > > > > > +driver_unbind(sysfs);
-> > > > > > +
-> > > > > > +initiate_device_reset(sysfs);
-> > > > > > +
-> > > > > > +driver_bind(sysfs);
-> > > > > > +}
-> > > > > > +
-> > > > > > +igt_main
-> > > > > > +{
-> > > > > > +struct sysfs_fds sysfs;
-> > > > > > +
-> > > > > > +igt_fixture {
-> > > > > > +char dev_path[PATH_MAX];
-> > > > > > +
-> > > > > > +igt_debug("opening device\n");
-> > > > > > +init_sysfs_fds(&sysfs);
-> > > > > > +
-> > > > > > +/* Make sure subtests always reopen the same device */
-> > > > > > +igt_assert(device_sysfs_path(sysfs.fds.dev, dev_path));
-> > > > > > +set_device_filter(dev_path);
-> > > > > > +
-> > > > > > +igt_skip_on(!is_sysfs_reset_supported(sysfs.fds.dev));
-> > > > > > +
-> > > > > > +igt_set_timeout(60, "device reset tests timed out after
-> > > > > > 60s");
-> > > > > > +}
-> > > > > > +
-> > > > > > +igt_describe("Tests driver unbind from/rebind to device
-> > > > > > sequence");
-> > > > > > +igt_subtest("unbind-rebind")
-> > > > > > +unbind_rebind(&sysfs);
-> > > > > > +
-> > > > > > +igt_describe("Unbinds driver from device, initiates reset"
-> > > > > > +     " then rebinds driver to device");
-> > > > > > +igt_subtest("unbind-reset-rebind")
-> > > > > > +unbind_reset_rebind(&sysfs);
-> > > > > > +
-> > > > > > +igt_describe("Resets device with bound driver");
-> > > > > > +igt_subtest("reset-bound")
-> > > > > > +initiate_device_reset(&sysfs);
-> > > > > > +
-> > > > > > +igt_describe("Subtests with additional healthchecks");
-> > > > > > +igt_subtest_group {
-> > > > > > +igt_fixture {
-> > > > > > +open_if_closed(&sysfs);
-> > > > > > +igt_require_intel(sysfs.fds.dev);
-> > > > > > +}
-> > > > > > +
-> > > > > > +igt_subtest("healthcheck")
-> > > > > > +healthcheck(&sysfs);
-> > > > > > +
-> > > > > > +igt_subtest("unbind-reset-rebind-healthcheck") {
-> > > > > > +unbind_reset_rebind(&sysfs);
-> > > > > > +healthcheck(&sysfs);
-> > > > > > +}
-> > > > > > +
-> > > > > > +igt_subtest("reset-bound-healthcheck") {
-> > > > > > +initiate_device_reset(&sysfs);
-> > > > > > +healthcheck(&sysfs);
-> > > > > > +}
-> > > > > > +}
-> > > > > > +
-> > > > > > +igt_fixture {
-> > > > > > +igt_reset_timeout();
-> > > > > > +cleanup_sysfs_fds(&sysfs);
-> > > > > > +}
-> > > > > > +}
-> > > > > > diff --git a/tests/meson.build b/tests/meson.build
-> > > > > > index 28091794f..b0acdf7c0 100644
-> > > > > > --- a/tests/meson.build
-> > > > > > +++ b/tests/meson.build
-> > > > > > @@ -8,6 +8,7 @@ test_progs = [
-> > > > > >  'core_setmaster_vs_auth',
-> > > > > >  'debugfs_test',
-> > > > > >  'dmabuf',
-> > > > > > +'device_reset',
-> > > > > >  'drm_import_export',
-> > > > > >  'drm_mm',
-> > > > > >  'drm_read',
-> > > > > > --
-> > > > > > 2.25.1
-> > > > > > 
-> 
-> 
----------------------------------------------------------------------
-Intel Technology Poland sp. z o.o.
-ul. Sowackiego 173 | 80-298 Gdask | Sd Rejonowy Gdask Pnoc | VII Wydzia Gospodarczy Krajowego Rejestru Sdowego - KRS 101882 | NIP 957-07-52-316 | Kapita zakadowy 200.000 PLN.
-Ta wiadomo wraz z zacznikami jest przeznaczona dla okrelonego adresata i moe zawiera informacje poufne. W razie przypadkowego otrzymania tej wiadomoci, prosimy o powiadomienie nadawcy oraz trwae jej usunicie; jakiekolwiek przegldanie lub rozpowszechnianie jest zabronione.
-This e-mail and any attachments may contain confidential material for the sole use of the intended recipient(s). If you are not the intended recipient, please contact the sender and delete all copies; any review or distribution by others is strictly prohibited.
- 
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RnJvbTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5j
+b20+CgpBZGQgY3JlYXRlL2Rlc3Ryb3kgb2YgaW50ZWxfYnVmIG9iamVjdHMgdG8gZmlsbCB0aGUg
+QVBJIGdhcC4KCkNoYW5nZSBmdW5jdGlvbiBuYW1lIHRvIGJlIG1vcmUgY29uc2lzdGVudCB3aXRo
+IG90aGVyIGZ1bmN0aW9ucyBuYW1lczoKYnVmX29wc19nZXRmZCgpIC0+IGJ1Zl9vcHNfZ2V0X2Zk
+KCkKClNpZ25lZC1vZmYtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6
+eW5za2lAaW50ZWwuY29tPgpDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28u
+dWs+Ci0tLQogbGliL2ludGVsX2J1Zm9wcy5jIHwgMzIgKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKy0tLS0KIGxpYi9pbnRlbF9idWZvcHMuaCB8ICA4ICsrKysrKystCiAyIGZpbGVzIGNoYW5n
+ZWQsIDM1IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2lu
+dGVsX2J1Zm9wcy5jIGIvbGliL2ludGVsX2J1Zm9wcy5jCmluZGV4IDAzMzdiNjM4Li44YmJiOGIx
+MiAxMDA2NDQKLS0tIGEvbGliL2ludGVsX2J1Zm9wcy5jCisrKyBiL2xpYi9pbnRlbF9idWZvcHMu
+YwpAQCAtNjk3LDcgKzY5Nyw2IEBAIHN0YXRpYyB2b2lkIF9faW50ZWxfYnVmX2luaXQoc3RydWN0
+IGJ1Zl9vcHMgKmJvcHMsCiAJCWlndF9yZXF1aXJlKGJvcHMtPmludGVsX2dlbiA+PSA5KTsKIAkJ
+aWd0X2Fzc2VydChyZXFfdGlsaW5nID09IEk5MTVfVElMSU5HX1kgfHwKIAkJCSAgIHJlcV90aWxp
+bmcgPT0gSTkxNV9USUxJTkdfWWYpOwotCiAJCS8qCiAJCSAqIE9uIEdFTjEyKyB3ZSBhbGlnbiB0
+aGUgbWFpbiBzdXJmYWNlIHRvIDQgKiA0IG1haW4gc3VyZmFjZQogCQkgKiB0aWxlcywgd2hpY2gg
+aXMgNjRrQi4gVGhlc2UgMTYgdGlsZXMgYXJlIG1hcHBlZCBieSA0IEFVWApAQCAtNzI0LDcgKzcy
+Myw2IEBAIHN0YXRpYyB2b2lkIF9faW50ZWxfYnVmX2luaXQoc3RydWN0IGJ1Zl9vcHMgKmJvcHMs
+CiAJCWJ1Zi0+YXV4LnN0cmlkZSA9IGF1eF93aWR0aDsKIAogCQlzaXplID0gYnVmLT5hdXgub2Zm
+c2V0ICsgYXV4X3dpZHRoICogYXV4X2hlaWdodDsKLQogCX0gZWxzZSB7CiAJCWlmIChidWYtPnRp
+bGluZykgewogCQkJZGV2aWQgPSAgaW50ZWxfZ2V0X2RybV9kZXZpZChib3BzLT5mZCk7CkBAIC04
+MjYsNiArODI0LDMyIEBAIHZvaWQgaW50ZWxfYnVmX2luaXRfdXNpbmdfaGFuZGxlKHN0cnVjdCBi
+dWZfb3BzICpib3BzLAogCQkJIHJlcV90aWxpbmcsIGNvbXByZXNzaW9uKTsKIH0KIAorc3RydWN0
+IGludGVsX2J1ZiAqaW50ZWxfYnVmX2NyZWF0ZShzdHJ1Y3QgYnVmX29wcyAqYm9wcywKKwkJCQkg
+ICBpbnQgd2lkdGgsIGludCBoZWlnaHQsCisJCQkJICAgaW50IGJwcCwgaW50IGFsaWdubWVudCwK
+KwkJCQkgICB1aW50MzJfdCByZXFfdGlsaW5nLCB1aW50MzJfdCBjb21wcmVzc2lvbikKK3sKKwlz
+dHJ1Y3QgaW50ZWxfYnVmICpidWY7CisKKwlpZ3RfYXNzZXJ0KGJvcHMpOworCisJYnVmID0gY2Fs
+bG9jKDEsIHNpemVvZigqYnVmKSk7CisJaWd0X2Fzc2VydChidWYpOworCisJaW50ZWxfYnVmX2lu
+aXQoYm9wcywgYnVmLCB3aWR0aCwgaGVpZ2h0LCBicHAsIGFsaWdubWVudCwKKwkJICAgICAgIHJl
+cV90aWxpbmcsIGNvbXByZXNzaW9uKTsKKworCXJldHVybiBidWY7Cit9CisKK3ZvaWQgaW50ZWxf
+YnVmX2Rlc3Ryb3koc3RydWN0IGludGVsX2J1ZiAqYnVmKQoreworCWlndF9hc3NlcnQoYnVmKTsK
+KworCWludGVsX2J1Zl9jbG9zZShidWYtPmJvcHMsIGJ1Zik7CisJZnJlZShidWYpOworfQorCiAj
+ZGVmaW5lIERFRkFVTFRfQlVGT1BTKF9fZ2VuX3N0YXJ0LCBfX2dlbl9lbmQpIFwKIAkuZ2VuX3N0
+YXJ0ICAgICAgICAgID0gX19nZW5fc3RhcnQsIFwKIAkuZ2VuX2VuZCAgICAgICAgICAgID0gX19n
+ZW5fZW5kLCBcCkBAIC0xMDYxLDEyICsxMDg1LDEyIEBAIHZvaWQgYnVmX29wc19kZXN0cm95KHN0
+cnVjdCBidWZfb3BzICpib3BzKQogfQogCiAvKioKLSAqIGJ1Zl9vcHNfZ2V0ZmQKKyAqIGJ1Zl9v
+cHNfZ2V0X2ZkCiAgKiBAYm9wczogcG9pbnRlciB0byBidWZfb3BzCiAgKgogICogUmV0dXJuczog
+ZHJtIGZkCiAgKi8KLWludCBidWZfb3BzX2dldGZkKHN0cnVjdCBidWZfb3BzICpib3BzKQoraW50
+IGJ1Zl9vcHNfZ2V0X2ZkKHN0cnVjdCBidWZfb3BzICpib3BzKQogewogCWlndF9hc3NlcnQoYm9w
+cyk7CiAKZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9idWZvcHMuaCBiL2xpYi9pbnRlbF9idWZvcHMu
+aAppbmRleCA5NTIxN2NmZS4uMzI3YWM5MmUgMTAwNjQ0Ci0tLSBhL2xpYi9pbnRlbF9idWZvcHMu
+aAorKysgYi9saWIvaW50ZWxfYnVmb3BzLmgKQEAgLTY0LDcgKzY0LDcgQEAgaW50ZWxfYnVmX2F1
+eF9oZWlnaHQoaW50IGdlbiwgY29uc3Qgc3RydWN0IGludGVsX2J1ZiAqYnVmKQogCiBzdHJ1Y3Qg
+YnVmX29wcyAqYnVmX29wc19jcmVhdGUoaW50IGZkKTsKIHZvaWQgYnVmX29wc19kZXN0cm95KHN0
+cnVjdCBidWZfb3BzICpib3BzKTsKLWludCBidWZfb3BzX2dldGZkKHN0cnVjdCBidWZfb3BzICpi
+b3BzKTsKK2ludCBidWZfb3BzX2dldF9mZChzdHJ1Y3QgYnVmX29wcyAqYm9wcyk7CiAKIGJvb2wg
+YnVmX29wc19zZXRfc29mdHdhcmVfdGlsaW5nKHN0cnVjdCBidWZfb3BzICpib3BzLAogCQkJCSB1
+aW50MzJfdCB0aWxpbmcsCkBAIC05MCw0ICs5MCwxMCBAQCB2b2lkIGludGVsX2J1Zl9pbml0X3Vz
+aW5nX2hhbmRsZShzdHJ1Y3QgYnVmX29wcyAqYm9wcywKIAkJCQkgaW50IHdpZHRoLCBpbnQgaGVp
+Z2h0LCBpbnQgYnBwLCBpbnQgYWxpZ25tZW50LAogCQkJCSB1aW50MzJfdCByZXFfdGlsaW5nLCB1
+aW50MzJfdCBjb21wcmVzc2lvbik7CiAKK3N0cnVjdCBpbnRlbF9idWYgKmludGVsX2J1Zl9jcmVh
+dGUoc3RydWN0IGJ1Zl9vcHMgKmJvcHMsCisJCQkJICAgaW50IHdpZHRoLCBpbnQgaGVpZ2h0LAor
+CQkJCSAgIGludCBicHAsIGludCBhbGlnbm1lbnQsCisJCQkJICAgdWludDMyX3QgcmVxX3RpbGlu
+ZywgdWludDMyX3QgY29tcHJlc3Npb24pOwordm9pZCBpbnRlbF9idWZfZGVzdHJveShzdHJ1Y3Qg
+aW50ZWxfYnVmICpidWYpOworCiAjZW5kaWYKLS0gCjIuMjAuMQoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
