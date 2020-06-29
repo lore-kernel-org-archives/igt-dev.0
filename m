@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 64B8089CA2
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2020 09:24:03 +0000 (UTC)
-From: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
-Date: Mon, 29 Jun 2020 11:23:32 +0200
-Message-Id: <20200629092332.29583-1-marcin.bernatowicz@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC, i-g-t,
- v2] tests/device_reset: Test device sysfs reset
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 29 Jun 2020 09:43:17 -0000
+Message-ID: <159342379713.746.7926840013409501680@emeril.freedesktop.org>
+References: <20200629092107.10664-1-dominik.grzegorzek@intel.com>
+In-Reply-To: <20200629092107.10664-1-dominik.grzegorzek@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgUmVtb3Zl?=
+ =?utf-8?q?_libdrm_dependency_from_gem=5F=5Bcaching/hang=5D?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,323 +14,124 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: michal.winiarski@intel.com, rodrigo.vivi@intel.com, marcin.bernatowicz@intel.com
+To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Device reset is initiated by writing "1" to reset sysfs file,
-which should initiate device FLR if supported by device.
+== Series Details ==
 
-Test scenarios:
-1. unbind driver from device, initiate sysfs reset, rebind driver to
-device
-2. device reset with bound driver
+Series: Remove libdrm dependency from gem_[caching/hang]
+URL   : https://patchwork.freedesktop.org/series/78886/
+State : failure
 
-v2: removed unbind-rebind (duplicates core_hotunplug@unbind-rebind)
-    added healthcheck to each test (Janusz)
+== Summary ==
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
----
- tests/device_reset.c | 263 +++++++++++++++++++++++++++++++++++++++++++
- tests/meson.build    |   1 +
- 2 files changed, 264 insertions(+)
- create mode 100644 tests/device_reset.c
+CI Bug Log - changes from CI_DRM_8671 -> IGTPW_4708
+====================================================
 
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-new file mode 100644
-index 000000000..0e1e9e3aa
---- /dev/null
-+++ b/tests/device_reset.c
-@@ -0,0 +1,263 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright(c) 2020 Intel Corporation. All rights reserved.
-+ */
-+
-+#include <fcntl.h>
-+#include <sys/stat.h>
-+#include "igt.h"
-+#include "igt_device_scan.h"
-+#include "igt_sysfs.h"
-+
-+IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
-+
-+
-+#define DEV_PATH_LEN 80
-+#define DEV_BUS_ADDR_LEN 13 /* addr has form 0000:00:00.0 */
-+
-+/**
-+ * Helper structure containing sysfs file descriptors
-+ * and path related to tested device
-+ */
-+struct sysfs_fds {
-+	struct {
-+		int dev;
-+		int dev_dir;
-+		int drv_dir;
-+	} fds;
-+	char dev_bus_addr[DEV_BUS_ADDR_LEN];
-+};
-+
-+static int __open_sysfs_dir(int fd, const char* path)
-+{
-+	int sysfs;
-+
-+	sysfs = igt_sysfs_open(fd);
-+	if (sysfs < 0) {
-+		return -1;
-+	}
-+
-+	return openat(sysfs, path, O_DIRECTORY);
-+}
-+
-+static int open_device_sysfs_dir(int fd)
-+{
-+	return __open_sysfs_dir(fd, "device");
-+}
-+
-+static int open_driver_sysfs_dir(int fd)
-+{
-+	return __open_sysfs_dir(fd, "device/driver");
-+}
-+
-+/**
-+ * device_sysfs_path:
-+ * @fd: opened device file descriptor
-+ * @path: buffer to store sysfs path to device directory
-+ *
-+ * Returns:
-+ * On successfull path resolution sysfs path to device directory,
-+ * NULL otherwise
-+ */
-+static char *device_sysfs_path(int fd, char *path)
-+{
-+	char sysfs[DEV_PATH_LEN];
-+
-+	if (!igt_sysfs_path(fd, sysfs, sizeof(sysfs)))
-+		return NULL;
-+
-+	if (DEV_PATH_LEN <= (strlen(sysfs) + strlen("/device")))
-+		return NULL;
-+
-+	strcat(sysfs, "/device");
-+
-+	return realpath(sysfs, path);
-+}
-+
-+static void init_sysfs_fds(struct sysfs_fds *sysfs)
-+{
-+	char dev_path[PATH_MAX];
-+	char *addr_pos;
-+
-+	igt_debug("open device\n");
-+	/**
-+	 * As subtests must be able to close examined devices
-+	 * completely, don't use drm_open_driver() as it keeps
-+	 * a device file descriptor open for exit handler use.
-+	 */
-+	sysfs->fds.dev = __drm_open_driver(DRIVER_ANY);
-+	igt_assert_fd(sysfs->fds.dev);
-+
-+	igt_assert(device_sysfs_path(sysfs->fds.dev, dev_path));
-+	addr_pos = strrchr(dev_path, '/');
-+	snprintf(sysfs->dev_bus_addr, sizeof(sysfs->dev_bus_addr),
-+		 "%s", (addr_pos ? addr_pos + 1 : ""));
-+	igt_assert(sysfs->dev_bus_addr[0]);
-+
-+	sysfs->fds.dev_dir = open_device_sysfs_dir(sysfs->fds.dev);
-+	igt_assert_fd(sysfs->fds.dev_dir);
-+
-+	sysfs->fds.drv_dir = open_driver_sysfs_dir(sysfs->fds.dev);
-+	igt_assert_fd(sysfs->fds.drv_dir);
-+}
-+
-+static int close_if_opened(int *fd)
-+{
-+	int rc = 0;
-+	if (fd && *fd != -1) {
-+		rc = close(*fd);
-+		*fd = -1;
-+	}
-+	return rc;
-+}
-+
-+static void cleanup_sysfs_fds(struct sysfs_fds *sysfs)
-+{
-+	close_if_opened(&sysfs->fds.dev);
-+	close_if_opened(&sysfs->fds.dev_dir);
-+	close_if_opened(&sysfs->fds.drv_dir);
-+	sysfs->dev_bus_addr[0] = '\0';
-+}
-+
-+/**
-+ * is_sysfs_reset_supported:
-+ * @fd: opened device file descriptor
-+ *
-+ * Check if device supports reset based on sysfs file presence.
-+ *
-+ * Returns:
-+ * True if device supports reset, false otherwise.
-+ */
-+static bool is_sysfs_reset_supported(int fd)
-+{
-+	struct stat st;
-+	int rc;
-+	int sysfs;
-+	int reset_fd = -1;
-+
-+	sysfs = igt_sysfs_open(fd);
-+
-+	if (sysfs >= 0) {
-+		reset_fd = openat(sysfs, "device/reset", O_WRONLY);
-+		close(sysfs);
-+	}
-+
-+	if (reset_fd < 0)
-+		return false;
-+
-+	rc = fstat(reset_fd, &st);
-+	close(reset_fd);
-+
-+	if (rc || !S_ISREG(st.st_mode))
-+		return false;
-+
-+	return true;
-+}
-+
-+/* Unbind the driver from the device */
-+static void driver_unbind(struct sysfs_fds *sysfs)
-+{
-+	igt_debug("unbind the driver from the device\n");
-+	igt_assert(igt_sysfs_set(sysfs->fds.drv_dir, "unbind",
-+		   sysfs->dev_bus_addr));
-+}
-+
-+/* Re-bind the driver to the device */
-+static void driver_bind(struct sysfs_fds *sysfs)
-+{
-+	igt_debug("rebind the driver to the device\n");
-+	igt_abort_on_f(!igt_sysfs_set(sysfs->fds.drv_dir, "bind",
-+		       sysfs->dev_bus_addr), "driver rebind failed");
-+}
-+
-+/* Initiate device reset */
-+static void initiate_device_reset(struct sysfs_fds *sysfs)
-+{
-+	igt_debug("reset device\n");
-+	igt_assert(igt_sysfs_set(sysfs->fds.dev_dir, "reset", "1"));
-+}
-+
-+/**
-+ * healthcheck:
-+ * @sysfs: structure with device descriptor, if descriptor equals -1
-+ * 	   the device is reopened
-+ */
-+static void healthcheck(struct sysfs_fds *sysfs)
-+{
-+	if (sysfs->fds.dev == -1) {
-+		/* refresh device list */
-+		igt_devices_scan(true);
-+		igt_debug("reopen the device\n");
-+		sysfs->fds.dev = __drm_open_driver(DRIVER_ANY);
-+	}
-+	igt_assert_fd(sysfs->fds.dev);
-+
-+	if (is_i915_device(sysfs->fds.dev))
-+		gem_test_engine(sysfs->fds.dev, ALL_ENGINES);
-+}
-+
-+/**
-+ * set_device_filter:
-+ *
-+ * Sets device filter to ensure subtests always reopen the same device
-+ *
-+ * @dev_path: path to device under tests
-+ */
-+static void set_device_filter(const char* dev_path)
-+{
-+	char filter[strlen("sys:") + strlen(dev_path) + 1];
-+
-+	snprintf(filter, sizeof(filter), "sys:%s", dev_path);
-+	igt_device_filter_free_all();
-+	igt_assert_eq(igt_device_filter_add(filter), 1);
-+}
-+
-+static void unbind_reset_rebind(struct sysfs_fds *sysfs)
-+{
-+	igt_debug("close the device\n");
-+	close_if_opened(&sysfs->fds.dev);
-+
-+	driver_unbind(sysfs);
-+
-+	initiate_device_reset(sysfs);
-+
-+	driver_bind(sysfs);
-+}
-+
-+igt_main
-+{
-+	struct sysfs_fds sysfs;
-+
-+	igt_fixture {
-+		char dev_path[PATH_MAX];
-+
-+		igt_debug("opening device\n");
-+		init_sysfs_fds(&sysfs);
-+
-+		/* Make sure subtests always reopen the same device */
-+		igt_assert(device_sysfs_path(sysfs.fds.dev, dev_path));
-+		set_device_filter(dev_path);
-+
-+		igt_skip_on(!is_sysfs_reset_supported(sysfs.fds.dev));
-+
-+		igt_set_timeout(60, "device reset tests timed out after 60s");
-+	}
-+
-+	igt_describe("Unbinds driver from device, initiates reset"
-+		     " then rebinds driver to device");
-+	igt_subtest("unbind-reset-rebind") {
-+		unbind_reset_rebind(&sysfs);
-+		healthcheck(&sysfs);
-+	}
-+
-+	igt_describe("Resets device with bound driver");
-+	igt_subtest("reset-bound") {
-+		initiate_device_reset(&sysfs);
-+		healthcheck(&sysfs);
-+	}
-+
-+	igt_fixture {
-+		igt_reset_timeout();
-+		cleanup_sysfs_fds(&sysfs);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 28091794f..b0acdf7c0 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -8,6 +8,7 @@ test_progs = [
- 	'core_setmaster_vs_auth',
- 	'debugfs_test',
- 	'dmabuf',
-+	'device_reset',
- 	'drm_import_export',
- 	'drm_mm',
- 	'drm_read',
--- 
-2.25.1
+Summary
+-------
 
----------------------------------------------------------------------
-Intel Technology Poland sp. z o.o.
-ul. Sowackiego 173 | 80-298 Gdask | Sd Rejonowy Gdask Pnoc | VII Wydzia Gospodarczy Krajowego Rejestru Sdowego - KRS 101882 | NIP 957-07-52-316 | Kapita zakadowy 200.000 PLN.
-Ta wiadomo wraz z zacznikami jest przeznaczona dla okrelonego adresata i moe zawiera informacje poufne. W razie przypadkowego otrzymania tej wiadomoci, prosimy o powiadomienie nadawcy oraz trwae jej usunicie; jakiekolwiek przegldanie lub rozpowszechnianie jest zabronione.
-This e-mail and any attachments may contain confidential material for the sole use of the intended recipient(s). If you are not the intended recipient, please contact the sender and delete all copies; any review or distribution by others is strictly prohibited.
- 
+  **FAILURE**
 
+  Serious unknown changes coming with IGTPW_4708 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4708, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4708:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_caching@read-writes:
+    - fi-pnv-d510:        NOTRUN -> [FAIL][1] +2 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/fi-pnv-d510/igt@gem_caching@read-writes.html
+    - fi-ilk-650:         NOTRUN -> [FAIL][2] +2 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/fi-ilk-650/igt@gem_caching@read-writes.html
+    - fi-elk-e7500:       NOTRUN -> [FAIL][3] +2 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/fi-elk-e7500/igt@gem_caching@read-writes.html
+
+  * igt@gem_caching@reads:
+    - fi-blb-e6850:       NOTRUN -> [FAIL][4] +2 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/fi-blb-e6850/igt@gem_caching@reads.html
+    - fi-gdg-551:         NOTRUN -> [FAIL][5] +2 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/fi-gdg-551/igt@gem_caching@reads.html
+
+  * {igt@gem_hang} (NEW):
+    - fi-cml-u2:          NOTRUN -> [SKIP][6]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/fi-cml-u2/igt@gem_hang.html
+    - {fi-ehl-1}:         NOTRUN -> [SKIP][7]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/fi-ehl-1/igt@gem_hang.html
+    - fi-icl-u2:          NOTRUN -> [SKIP][8]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/fi-icl-u2/igt@gem_hang.html
+    - {fi-tgl-dsi}:       NOTRUN -> [SKIP][9]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/fi-tgl-dsi/igt@gem_hang.html
+    - fi-cml-s:           NOTRUN -> [SKIP][10]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/fi-cml-s/igt@gem_hang.html
+    - fi-tgl-y:           NOTRUN -> [SKIP][11]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/fi-tgl-y/igt@gem_hang.html
+    - fi-icl-y:           NOTRUN -> [SKIP][12]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/fi-icl-y/igt@gem_hang.html
+    - fi-tgl-u2:          NOTRUN -> [SKIP][13]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/fi-tgl-u2/igt@gem_hang.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_8671 and IGTPW_4708:
+
+### New IGT tests (2) ###
+
+  * igt@gem_caching:
+    - Statuses :
+    - Exec time: [None] s
+
+  * igt@gem_hang:
+    - Statuses : 37 skip(s)
+    - Exec time: [0.01, 0.08] s
+
+  
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+
+
+Participating hosts (46 -> 39)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5718 -> IGTPW_4708
+
+  CI-20190529: 20190529
+  CI_DRM_8671: d5765fff817aa868cbbb86ff3d3ef58d7e27251d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4708: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/index.html
+  IGT_5718: af1ef32bfae90bcdbaf1b5d84c61ff4e04368505 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4708/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
