@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61D9A6E04B
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2020 09:21:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 656FF6E0E4
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jun 2020 09:21:59 +0000 (UTC)
 From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Date: Mon, 29 Jun 2020 11:21:03 +0200
-Message-Id: <20200629092107.10664-2-dominik.grzegorzek@intel.com>
+Date: Mon, 29 Jun 2020 11:21:06 +0200
+Message-Id: <20200629092107.10664-5-dominik.grzegorzek@intel.com>
 In-Reply-To: <20200629092107.10664-1-dominik.grzegorzek@intel.com>
 References: <20200629092107.10664-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/5] lib/intel_bufops: Add intel_buf
- create/destroy functions
+Subject: [igt-dev] [PATCH i-g-t 4/5] i915/gem_hang: Remove libdrm dependency
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,69 +16,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5j
-b20+CgpBZGQgY3JlYXRlL2Rlc3Ryb3kgb2YgaW50ZWxfYnVmIG9iamVjdHMgdG8gZmlsbCB0aGUg
-QVBJIGdhcC4KCkNoYW5nZSBmdW5jdGlvbiBuYW1lIHRvIGJlIG1vcmUgY29uc2lzdGVudCB3aXRo
-IG90aGVyIGZ1bmN0aW9ucyBuYW1lczoKYnVmX29wc19nZXRmZCgpIC0+IGJ1Zl9vcHNfZ2V0X2Zk
-KCkKClNpZ25lZC1vZmYtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6
-eW5za2lAaW50ZWwuY29tPgpDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28u
-dWs+Ci0tLQogbGliL2ludGVsX2J1Zm9wcy5jIHwgMzIgKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKy0tLS0KIGxpYi9pbnRlbF9idWZvcHMuaCB8ICA4ICsrKysrKystCiAyIGZpbGVzIGNoYW5n
-ZWQsIDM1IGluc2VydGlvbnMoKyksIDUgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2lu
-dGVsX2J1Zm9wcy5jIGIvbGliL2ludGVsX2J1Zm9wcy5jCmluZGV4IDAzMzdiNjM4Li44YmJiOGIx
-MiAxMDA2NDQKLS0tIGEvbGliL2ludGVsX2J1Zm9wcy5jCisrKyBiL2xpYi9pbnRlbF9idWZvcHMu
-YwpAQCAtNjk3LDcgKzY5Nyw2IEBAIHN0YXRpYyB2b2lkIF9faW50ZWxfYnVmX2luaXQoc3RydWN0
-IGJ1Zl9vcHMgKmJvcHMsCiAJCWlndF9yZXF1aXJlKGJvcHMtPmludGVsX2dlbiA+PSA5KTsKIAkJ
-aWd0X2Fzc2VydChyZXFfdGlsaW5nID09IEk5MTVfVElMSU5HX1kgfHwKIAkJCSAgIHJlcV90aWxp
-bmcgPT0gSTkxNV9USUxJTkdfWWYpOwotCiAJCS8qCiAJCSAqIE9uIEdFTjEyKyB3ZSBhbGlnbiB0
-aGUgbWFpbiBzdXJmYWNlIHRvIDQgKiA0IG1haW4gc3VyZmFjZQogCQkgKiB0aWxlcywgd2hpY2gg
-aXMgNjRrQi4gVGhlc2UgMTYgdGlsZXMgYXJlIG1hcHBlZCBieSA0IEFVWApAQCAtNzI0LDcgKzcy
-Myw2IEBAIHN0YXRpYyB2b2lkIF9faW50ZWxfYnVmX2luaXQoc3RydWN0IGJ1Zl9vcHMgKmJvcHMs
-CiAJCWJ1Zi0+YXV4LnN0cmlkZSA9IGF1eF93aWR0aDsKIAogCQlzaXplID0gYnVmLT5hdXgub2Zm
-c2V0ICsgYXV4X3dpZHRoICogYXV4X2hlaWdodDsKLQogCX0gZWxzZSB7CiAJCWlmIChidWYtPnRp
-bGluZykgewogCQkJZGV2aWQgPSAgaW50ZWxfZ2V0X2RybV9kZXZpZChib3BzLT5mZCk7CkBAIC04
-MjYsNiArODI0LDMyIEBAIHZvaWQgaW50ZWxfYnVmX2luaXRfdXNpbmdfaGFuZGxlKHN0cnVjdCBi
-dWZfb3BzICpib3BzLAogCQkJIHJlcV90aWxpbmcsIGNvbXByZXNzaW9uKTsKIH0KIAorc3RydWN0
-IGludGVsX2J1ZiAqaW50ZWxfYnVmX2NyZWF0ZShzdHJ1Y3QgYnVmX29wcyAqYm9wcywKKwkJCQkg
-ICBpbnQgd2lkdGgsIGludCBoZWlnaHQsCisJCQkJICAgaW50IGJwcCwgaW50IGFsaWdubWVudCwK
-KwkJCQkgICB1aW50MzJfdCByZXFfdGlsaW5nLCB1aW50MzJfdCBjb21wcmVzc2lvbikKK3sKKwlz
-dHJ1Y3QgaW50ZWxfYnVmICpidWY7CisKKwlpZ3RfYXNzZXJ0KGJvcHMpOworCisJYnVmID0gY2Fs
-bG9jKDEsIHNpemVvZigqYnVmKSk7CisJaWd0X2Fzc2VydChidWYpOworCisJaW50ZWxfYnVmX2lu
-aXQoYm9wcywgYnVmLCB3aWR0aCwgaGVpZ2h0LCBicHAsIGFsaWdubWVudCwKKwkJICAgICAgIHJl
-cV90aWxpbmcsIGNvbXByZXNzaW9uKTsKKworCXJldHVybiBidWY7Cit9CisKK3ZvaWQgaW50ZWxf
-YnVmX2Rlc3Ryb3koc3RydWN0IGludGVsX2J1ZiAqYnVmKQoreworCWlndF9hc3NlcnQoYnVmKTsK
-KworCWludGVsX2J1Zl9jbG9zZShidWYtPmJvcHMsIGJ1Zik7CisJZnJlZShidWYpOworfQorCiAj
-ZGVmaW5lIERFRkFVTFRfQlVGT1BTKF9fZ2VuX3N0YXJ0LCBfX2dlbl9lbmQpIFwKIAkuZ2VuX3N0
-YXJ0ICAgICAgICAgID0gX19nZW5fc3RhcnQsIFwKIAkuZ2VuX2VuZCAgICAgICAgICAgID0gX19n
-ZW5fZW5kLCBcCkBAIC0xMDYxLDEyICsxMDg1LDEyIEBAIHZvaWQgYnVmX29wc19kZXN0cm95KHN0
-cnVjdCBidWZfb3BzICpib3BzKQogfQogCiAvKioKLSAqIGJ1Zl9vcHNfZ2V0ZmQKKyAqIGJ1Zl9v
-cHNfZ2V0X2ZkCiAgKiBAYm9wczogcG9pbnRlciB0byBidWZfb3BzCiAgKgogICogUmV0dXJuczog
-ZHJtIGZkCiAgKi8KLWludCBidWZfb3BzX2dldGZkKHN0cnVjdCBidWZfb3BzICpib3BzKQoraW50
-IGJ1Zl9vcHNfZ2V0X2ZkKHN0cnVjdCBidWZfb3BzICpib3BzKQogewogCWlndF9hc3NlcnQoYm9w
-cyk7CiAKZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9idWZvcHMuaCBiL2xpYi9pbnRlbF9idWZvcHMu
-aAppbmRleCA5NTIxN2NmZS4uMzI3YWM5MmUgMTAwNjQ0Ci0tLSBhL2xpYi9pbnRlbF9idWZvcHMu
-aAorKysgYi9saWIvaW50ZWxfYnVmb3BzLmgKQEAgLTY0LDcgKzY0LDcgQEAgaW50ZWxfYnVmX2F1
-eF9oZWlnaHQoaW50IGdlbiwgY29uc3Qgc3RydWN0IGludGVsX2J1ZiAqYnVmKQogCiBzdHJ1Y3Qg
-YnVmX29wcyAqYnVmX29wc19jcmVhdGUoaW50IGZkKTsKIHZvaWQgYnVmX29wc19kZXN0cm95KHN0
-cnVjdCBidWZfb3BzICpib3BzKTsKLWludCBidWZfb3BzX2dldGZkKHN0cnVjdCBidWZfb3BzICpi
-b3BzKTsKK2ludCBidWZfb3BzX2dldF9mZChzdHJ1Y3QgYnVmX29wcyAqYm9wcyk7CiAKIGJvb2wg
-YnVmX29wc19zZXRfc29mdHdhcmVfdGlsaW5nKHN0cnVjdCBidWZfb3BzICpib3BzLAogCQkJCSB1
-aW50MzJfdCB0aWxpbmcsCkBAIC05MCw0ICs5MCwxMCBAQCB2b2lkIGludGVsX2J1Zl9pbml0X3Vz
-aW5nX2hhbmRsZShzdHJ1Y3QgYnVmX29wcyAqYm9wcywKIAkJCQkgaW50IHdpZHRoLCBpbnQgaGVp
-Z2h0LCBpbnQgYnBwLCBpbnQgYWxpZ25tZW50LAogCQkJCSB1aW50MzJfdCByZXFfdGlsaW5nLCB1
-aW50MzJfdCBjb21wcmVzc2lvbik7CiAKK3N0cnVjdCBpbnRlbF9idWYgKmludGVsX2J1Zl9jcmVh
-dGUoc3RydWN0IGJ1Zl9vcHMgKmJvcHMsCisJCQkJICAgaW50IHdpZHRoLCBpbnQgaGVpZ2h0LAor
-CQkJCSAgIGludCBicHAsIGludCBhbGlnbm1lbnQsCisJCQkJICAgdWludDMyX3QgcmVxX3RpbGlu
-ZywgdWludDMyX3QgY29tcHJlc3Npb24pOwordm9pZCBpbnRlbF9idWZfZGVzdHJveShzdHJ1Y3Qg
-aW50ZWxfYnVmICpidWYpOworCiAjZW5kaWYKLS0gCjIuMjAuMQoKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
-dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Libdrm removal from gem_hang using intel_bb.
+
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/i915/gem_hang.c | 35 ++++++++++++++---------------------
+ 1 file changed, 14 insertions(+), 21 deletions(-)
+
+diff --git a/tests/i915/gem_hang.c b/tests/i915/gem_hang.c
+index 2c61cac0..7f461cb8 100644
+--- a/tests/i915/gem_hang.c
++++ b/tests/i915/gem_hang.c
+@@ -36,32 +36,29 @@
+ #include <sys/stat.h>
+ #include <sys/time.h>
+ #include "drm.h"
+-#include "intel_bufmgr.h"
+ 
+-static drm_intel_bufmgr *bufmgr;
+-struct intel_batchbuffer *batch;
+ static int bad_pipe;
+ 
+ static void
+-gpu_hang(void)
++gpu_hang(struct intel_bb *ibb)
+ {
+ 	int cmd;
+ 
+ 	cmd = bad_pipe ? MI_WAIT_FOR_PIPEB_SCAN_LINE_WINDOW :
+ 		MI_WAIT_FOR_PIPEA_SCAN_LINE_WINDOW;
+ 
+-	BEGIN_BATCH(6, 0);
+ 	/* The documentation says that the LOAD_SCAN_LINES command
+ 	 * always comes in pairs. Don't ask me why. */
+-	OUT_BATCH(MI_LOAD_SCAN_LINES_INCL | (bad_pipe << 20));
+-	OUT_BATCH((0 << 16) | 2048);
+-	OUT_BATCH(MI_LOAD_SCAN_LINES_INCL | (bad_pipe << 20));
+-	OUT_BATCH((0 << 16) | 2048);
+-	OUT_BATCH(MI_WAIT_FOR_EVENT | cmd);
+-	OUT_BATCH(MI_NOOP);
+-	ADVANCE_BATCH();
++	intel_bb_out(ibb, MI_LOAD_SCAN_LINES_INCL | (bad_pipe << 20));
++	intel_bb_out(ibb, (0 << 16) | 2048);
++	intel_bb_out(ibb, MI_LOAD_SCAN_LINES_INCL | (bad_pipe << 20));
++	intel_bb_out(ibb, (0 << 16) | 2048);
++	intel_bb_out(ibb, MI_WAIT_FOR_EVENT | cmd);
++	intel_bb_out(ibb, MI_NOOP);
+ 
+-	intel_batchbuffer_flush(batch);
++	intel_bb_out_flush(ibb);
++	intel_bb_exec(ibb, intel_bb_offset(ibb),
++		      ibb->gen >= 6 ? I915_EXEC_BLT : 0, true);
+ }
+ 
+ static int opt_handler(int opt, int opt_index, void *data)
+@@ -82,17 +79,13 @@ const char *help_str = "  -p\tDisabled pipe number\n";
+ igt_simple_main_args("p:", NULL, help_str, opt_handler, NULL)
+ {
+ 	int fd;
++	struct intel_bb *ibb;
+ 
+ 	fd = drm_open_driver(DRIVER_INTEL);
++	ibb = intel_bb_create(fd, 4096);
+ 
+-	bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
+-	drm_intel_bufmgr_gem_enable_reuse(bufmgr);
+-	batch = intel_batchbuffer_alloc(bufmgr, intel_get_drm_devid(fd));
+-
+-	gpu_hang();
+-
+-	intel_batchbuffer_free(batch);
+-	drm_intel_bufmgr_destroy(bufmgr);
++	gpu_hang(ibb);
+ 
++	intel_bb_destroy(ibb);
+ 	close(fd);
+ }
+-- 
+2.20.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
