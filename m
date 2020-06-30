@@ -1,14 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <03623ba15cb02bc6edba5d333a95b51baf59f4cd.camel@linux.intel.com>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Fri, 26 Jun 2020 12:56:48 +0200
-In-Reply-To: <159311502818.202818.9312691111674456282@macragge.hardline.pl>
-References: <20200622164415.30352-1-janusz.krzysztofik@linux.intel.com>
- <20200622164415.30352-8-janusz.krzysztofik@linux.intel.com>
- <159311502818.202818.9312691111674456282@macragge.hardline.pl>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 30 Jun 2020 22:25:15 +0100
+Message-Id: <20200630212515.1132791-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [RFC PATCH i-g-t v2 7/8] tests/core_hotunplug: Add
- 'PRIME handle' variant
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_close_race: Mix in a contexts and
+ a small delay to closure
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,75 +12,177 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?Q?Micha=C5=82?= Winiarski <michal@hardline.pl>, igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkgTWljaGHFgiwKCk9uIFRodSwgMjAyMC0wNi0yNSBhdCAyMTo1NyArMDIwMCwgTWljaGHFgiBX
-aW5pYXJza2kgd3JvdGU6Cj4gUXVvdGluZyBKYW51c3ogS3J6eXN6dG9maWsgKDIwMjAtMDYtMjIg
-MTg6NDQ6MTQpCj4gPiBFdmVuIGlmIGFsbCBkZXZpY2UgZmlsZSBkZXNjcmlwdG9ycyBhcmUgY2xv
-c2VkIG9uIGRldmljZSBob3R1bnBsdWcsCj4gPiBQUklNRSBleHBvcnRlZCBvYmplY3RzIG1heSBz
-dGlsbCBleGlzdHMsIHJlZmVyZW5jZWQgYnkgc3RpbGwgb3Blbgo+ID4gZG1hLWJ1ZiBmaWxlIGhh
-bmRsZXMuICBBZGQgYSBzdWJ0ZXN0IHRoYXQga2VlcHMgc3VjaCBoYW5kbGUgb3BlbiBvbgo+ID4g
-ZGV2aWNlIGhvdHVucGx1Zy4KPiA+IAo+ID4gdjI6IHJlYmFzZSBvbiB1cHN0cmVhbQo+IAo+IFdv
-dWxkIGJlIGludGVyZXN0aW5nIHRvIHNlZSB3aGF0IGhhcHBlbnMgd2hlbiBzb21lb25lIGFjdHVh
-bGx5IGltcG9ydHMgYW4KPiBvYmplY3QgZnJvbSB1bnBsdWdnZWQgZGV2aWNlIChvciB0aGUgZGV2
-aWNlIGlzIHVucGx1Z2dlZCBhZnRlciBpdCB3YXMgaW1wb3J0ZWQpLgo+IEJ1dCBwZXJoYXBzIHRo
-YXQncyBzb21ldGhpbmcgZm9yIHRoZSBmdXR1cmUuCgpZZXMsIGxldCdzIGtlZXAgaXQgcmVsYXRp
-dmVseSBzaW1wbGUgZm9yIG5vdy4gIFRoZXJlIHNlZW1zIHRvIGJlIHF1aXRlCmEgZmV3IHBvc3Np
-YmxlIHNjZW5hcmlvcyB0byBjb3Zlci4gICBIb3dldmVyLCBJJ20gZ29pbmcgdG8gYWRkIGEgdmVy
-eQpiYXNpYyB1c2UtYWZ0ZXItaG90dW5wbHVnIGNoZWNrLCBzaW1pbGFyIHRvIHdoYXQgd2UgaGF2
-ZSAoaG9wZWZ1bGx5KQphZ3JlZWQgZm9yIGNvbnRleHQgYW5kIGFkZHJlc3Mgc3BhY2UgdmFyaWFu
-dHMuCgo+IAo+IEFsc28gLSB0aGUgbmFtaW5nIHNob3VsZCBwcm9iYWJseSBiZSBrZXB0IGRpc3Rp
-bmN0IGZyb20gdGhlIG90aGVyICJsYXRlY2xvc2UiCj4gdGVzdHMsIHNpbmNlIGhlcmUgd2UncmUg
-Y2xvc2luZyB0aGUgZGV2aWNlIEZEIGJlZm9yZSB0aGUgdW5wbHVnLgo+IE1heWJlIGp1c3QgInBy
-aW1lLWhvdHVucGx1ZyI/IAoKU2luY2Ugd2UgYXJlIHN0aWxsIGludGVyZXN0ZWQgaW4gZXhlcmNp
-c2luZyB0aGUgZHJpdmVyIGJlaGF2aW91ciBvbgpsYXRlIGNsb3NpbmcgdGhlIHByaW1lIGhhbmRs
-ZSAobm93IHRoaXMgY2FzZSBhbHNvIGV4cGxvZGVzIGluc2lkZQppbnRlbC1pb21tdSksIGxldCdz
-IGtlZXAgdGhhdCBuYW1pZyBldmVuIGlmIHdlIGNsb3NlIHRoZSBkZXZpY2UgYW5kCm9ubHkga2Vl
-cCB0aGUgcHJpbWUgZmlsZSBvcGVuLgoKVGhhbmtzLApKYW51c3oKCgo+IEJ1dCB0aGF0J3MgdXAg
-dG8geW91IC0gZWl0aGVyIHdheToKPiAKPiBSZXZpZXdlZC1ieTogTWljaGHFgiBXaW5pYXJza2kg
-PG1pY2hhbC53aW5pYXJza2lAaW50ZWwuY29tPgo+IAo+IC1NaWNoYcWCCj4gCj4gPiBTaWduZWQt
-b2ZmLWJ5OiBKYW51c3ogS3J6eXN6dG9maWsgPGphbnVzei5rcnp5c3p0b2Zpa0BsaW51eC5pbnRl
-bC5jb20+Cj4gPiAtLS0KPiA+ICB0ZXN0cy9jb3JlX2hvdHVucGx1Zy5jIHwgMzYgKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDM2IGluc2Vy
-dGlvbnMoKykKPiA+IAo+ID4gZGlmZiAtLWdpdCBhL3Rlc3RzL2NvcmVfaG90dW5wbHVnLmMgYi90
-ZXN0cy9jb3JlX2hvdHVucGx1Zy5jCj4gPiBpbmRleCBjMzBkOThhNjkuLjdjYjY5OWNjMiAxMDA2
-NDQKPiA+IC0tLSBhL3Rlc3RzL2NvcmVfaG90dW5wbHVnLmMKPiA+ICsrKyBiL3Rlc3RzL2NvcmVf
-aG90dW5wbHVnLmMKPiA+IEBAIC0zNzksNiArMzc5LDM1IEBAIHN0YXRpYyB2b2lkIGdlbV9ob3R1
-bnBsdWdfbGF0ZWNsb3NlKHZvaWQpCj4gPiAgICAgICAgIGhlYWx0aGNoZWNrKCk7Cj4gPiAgfQo+
-ID4gIAo+ID4gK3N0YXRpYyB2b2lkIHByaW1lX2hvdHVucGx1Z19sYXRlY2xvc2Uodm9pZCkKPiA+
-ICt7Cj4gPiArICAgICAgIHN0cnVjdCBob3R1bnBsdWcgcHJpdjsKPiA+ICsgICAgICAgdWludDMy
-X3QgaGFuZGxlOwo+ID4gKyAgICAgICBpbnQgZG1hYnVmOwo+ID4gKwo+ID4gKyAgICAgICBwcmVw
-YXJlX2Zvcl9yZXNjYW4oJnByaXYpOwo+ID4gKwo+ID4gKyAgICAgICBpZ3RfcmVxdWlyZV9nZW0o
-cHJpdi5mZC5kcm0pOwo+ID4gKwo+ID4gKyAgICAgICBsb2NhbF9kZWJ1ZygiY3JlYXRpbmcgYW5k
-IFBSSU1FLWV4cG9ydGluZyBhIEdFTSBvYmplY3QiKTsKPiA+ICsgICAgICAgaGFuZGxlID0gZ2Vt
-X2NyZWF0ZShwcml2LmZkLmRybSwgNDA5Nik7Cj4gPiArICAgICAgIGRtYWJ1ZiA9IHByaW1lX2hh
-bmRsZV90b19mZChwcml2LmZkLmRybSwgaGFuZGxlKTsKPiA+ICsKPiA+ICsgICAgICAgbG9jYWxf
-ZGVidWcoImNsb3NpbmcgdGhlIGRldmljZSIpOwo+ID4gKyAgICAgICBjbG9zZShwcml2LmZkLmRy
-bSk7Cj4gPiArCj4gPiArICAgICAgIGxvY2FsX2RlYnVnKCJob3QgdW5wbHVnZ2luZyB0aGUgZGV2
-aWNlIik7Cj4gPiArICAgICAgIGRldmljZV91bnBsdWcocHJpdi5mZC5zeXNmc19kZXYpOwo+ID4g
-Kwo+ID4gKyAgICAgICBsb2NhbF9kZWJ1ZygibGF0ZSBjbG9zaW5nIHRoZSBQUklNRSBmaWxlIGhh
-bmRsZSIpOwo+ID4gKyAgICAgICBjbG9zZShkbWFidWYpOwo+ID4gKwo+ID4gKyAgICAgICBsb2Nh
-bF9kZWJ1ZygicmVjb3ZlcmluZyB0aGUgZGV2aWNlIik7Cj4gPiArICAgICAgIGJ1c19yZXNjYW4o
-cHJpdi5mZC5zeXNmc19idXMpOwo+ID4gKwo+ID4gKyAgICAgICBoZWFsdGhjaGVjaygpOwo+ID4g
-K30KPiA+ICsKPiA+ICAvKiBNYWluICovCj4gPiAgCj4gPiAgaWd0X21haW4KPiA+IEBAIC00NjUs
-NCArNDk0LDExIEBAIGlndF9tYWluCj4gPiAgCj4gPiAgICAgICAgIGlndF9maXh0dXJlCj4gPiAg
-ICAgICAgICAgICAgICAgaWd0X2Fib3J0X29uX2YoZmFpbHVyZSwgIiVzXG4iLCBmYWlsdXJlKTsK
-PiA+ICsKPiA+ICsgICAgICAgaWd0X2Rlc2NyaWJlKCJDaGVjayBpZiBhIGRldmljZSB3aXRoIGEg
-c3RpbGwgb3BlbiBQUklNRS1leHBvcnRlZCBvYmplY3QgY2FuIGJlIGNsZWFubHkgdW5wbHVnZ2Vk
-LCB0aGVuIHJlbGVhc2VkIGFuZCByZWNvdmVyZWQiKTsKPiA+ICsgICAgICAgaWd0X3N1YnRlc3Qo
-InByaW1lLWhvdHVucGx1Zy1sYXRlY2xvc2UiKQo+ID4gKyAgICAgICAgICAgICAgIHByaW1lX2hv
-dHVucGx1Z19sYXRlY2xvc2UoKTsKPiA+ICsKPiA+ICsgICAgICAgaWd0X2ZpeHR1cmUKPiA+ICsg
-ICAgICAgICAgICAgICBpZ3RfYWJvcnRfb25fZihmYWlsdXJlLCAiJXNcbiIsIGZhaWx1cmUpOwo+
-ID4gIH0KPiA+IC0tIAo+ID4gMi4yMS4xCj4gPiAKPiA+IF9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCj4gPiBpZ3QtZGV2IG1haWxpbmcgbGlzdAo+ID4gaWd0
-LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKPiA+IGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
-b3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
-cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9pZ3QtZGV2Cg==
+Keep the old handles in a small ring so that we build up a small amount
+of pressure for i915_gem_close_object() and throw in a few concurrent
+contexts so we have to process an obj->lut_list containing more than one
+element. And to make sure the list is truly long enough to schedule,
+start leaking the contexts.
+
+Note that the only correctness check is that the selfcopy doesn't
+explode; the challenge would be to prove that the old handles are no
+longer accessible via the execbuf lut. However, this is sufficient to
+make sure we at least hit the interruptible spinlock used by
+close-objects.
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Michael J. Ruhl <michael.j.ruhl@intel.com>
+---
+ tests/i915/gem_close_race.c | 68 +++++++++++++++++++++++++++++--------
+ 1 file changed, 53 insertions(+), 15 deletions(-)
+
+diff --git a/tests/i915/gem_close_race.c b/tests/i915/gem_close_race.c
+index db570e8fd..4b72d353c 100644
+--- a/tests/i915/gem_close_race.c
++++ b/tests/i915/gem_close_race.c
+@@ -55,7 +55,7 @@ static bool has_64bit_relocations;
+ 
+ #define sigev_notify_thread_id _sigev_un._tid
+ 
+-static void selfcopy(int fd, uint32_t handle, int loops)
++static void selfcopy(int fd, uint32_t ctx, uint32_t handle, int loops)
+ {
+ 	struct drm_i915_gem_relocation_entry reloc[2];
+ 	struct drm_i915_gem_exec_object2 gem_exec[2];
+@@ -113,6 +113,7 @@ static void selfcopy(int fd, uint32_t handle, int loops)
+ 	execbuf.batch_len = (b - buf) * sizeof(*b);
+ 	if (HAS_BLT_RING(devid))
+ 		execbuf.flags |= I915_EXEC_BLT;
++	execbuf.rsvd1 = ctx;
+ 
+ 	memset(&gem_pwrite, 0, sizeof(gem_pwrite));
+ 	gem_pwrite.handle = create.handle;
+@@ -135,7 +136,7 @@ static uint32_t load(int fd)
+ 	if (handle == 0)
+ 		return 0;
+ 
+-	selfcopy(fd, handle, 100);
++	selfcopy(fd, 0, handle, 100);
+ 	return handle;
+ }
+ 
+@@ -165,14 +166,19 @@ static void crashme_now(int sig)
+ #define usec(x) (1000*(x))
+ #define msec(x) usec(1000*(x))
+ 
+-static void threads(int timeout)
++static void thread(int fd, struct drm_gem_open name,
++		   int timeout, unsigned int flags)
++#define CONTEXTS 0x1
+ {
+ 	struct sigevent sev;
+ 	struct sigaction act;
+-	struct drm_gem_open name;
+ 	struct itimerspec its;
++	uint32_t *history;
++#define N_HISTORY (256)
+ 	timer_t timer;
+-	int fd;
++
++	history = malloc(sizeof(*history) * N_HISTORY);
++	igt_assert(history);
+ 
+ 	memset(&act, 0, sizeof(act));
+ 	act.sa_handler = crashme_now;
+@@ -184,28 +190,57 @@ static void threads(int timeout)
+ 	sev.sigev_signo = SIGRTMIN;
+ 	igt_assert(timer_create(CLOCK_MONOTONIC, &sev, &timer) == 0);
+ 
+-	fd = drm_open_driver(DRIVER_INTEL);
+-	name.name = gem_flink(fd, gem_create(fd, OBJECT_SIZE));
+-
+ 	igt_until_timeout(timeout) {
+-		crashme.fd = drm_open_driver(DRIVER_INTEL);
++		unsigned int n = 0;
++
++		memset(history, 0, sizeof(*history) * N_HISTORY);
++
++		crashme.fd = gem_reopen_driver(fd);
+ 
+ 		memset(&its, 0, sizeof(its));
+-		its.it_value.tv_nsec = msec(1) + (rand() % msec(10));
++		its.it_value.tv_nsec = msec(1) + (rand() % msec(150));
+ 		igt_assert(timer_settime(timer, 0, &its, NULL) == 0);
+ 
+ 		do {
+-			if (drmIoctl(crashme.fd, DRM_IOCTL_GEM_OPEN, &name))
++			uint32_t ctx = 0;
++
++			if (drmIoctl(crashme.fd,
++				     DRM_IOCTL_GEM_OPEN,
++				     &name))
+ 				break;
+ 
+-			selfcopy(crashme.fd, name.handle, 100);
+-			drmIoctl(crashme.fd, DRM_IOCTL_GEM_CLOSE, &name.handle);
++			if (flags & CONTEXTS)
++				__gem_context_create(crashme.fd, &ctx);
++
++			selfcopy(crashme.fd, ctx, name.handle, 1);
++
++			ctx = history[n % N_HISTORY];
++			if (ctx)
++				drmIoctl(crashme.fd,
++					 DRM_IOCTL_GEM_CLOSE,
++					 &ctx);
++			history[n % N_HISTORY] = name.handle;
++			n++;
+ 		} while (1);
+ 
+ 		close(crashme.fd);
+ 	}
+ 
+ 	timer_delete(timer);
++	free(history);
++}
++
++static void threads(int timeout, unsigned int flags)
++{
++	struct drm_gem_open name;
++	int fd;
++
++	fd = drm_open_driver(DRIVER_INTEL);
++	name.name = gem_flink(fd, gem_create(fd, OBJECT_SIZE));
++
++	igt_fork(child, sysconf(_SC_NPROCESSORS_ONLN))
++		thread(fd, name, timeout, flags);
++	igt_waitchildren();
+ 
+ 	gem_quiescent_gpu(fd);
+ 	close(fd);
+@@ -233,7 +268,7 @@ igt_main
+ 	}
+ 
+ 	igt_subtest("basic-threads")
+-		threads(1);
++		threads(1, 0);
+ 
+ 	igt_subtest("process-exit") {
+ 		igt_fork(child, 768)
+@@ -241,8 +276,11 @@ igt_main
+ 		igt_waitchildren();
+ 	}
+ 
++	igt_subtest("contexts")
++		threads(30, CONTEXTS);
++
+ 	igt_subtest("gem-close-race")
+-		threads(150);
++		threads(150, 0);
+ 
+ 	igt_fixture
+ 	    igt_stop_hang_detector();
+-- 
+2.27.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
