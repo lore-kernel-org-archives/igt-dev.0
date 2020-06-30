@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2524899F2
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jun 2020 09:28:27 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C76E89AA7
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jun 2020 09:33:46 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Tue, 30 Jun 2020 11:33:39 +0200
+Message-Id: <20200630093343.21923-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200630064110.4585-1-sai.gowtham.ch@intel.com>
-References: <20200630064110.4585-1-sai.gowtham.ch@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 30 Jun 2020 10:28:19 +0100
-Message-ID: <159350929938.9830.14913276233427889600@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_exec_create: Added test
- description for test case
+Subject: [igt-dev] [PATCH i-g-t v9 0/4] Add api_intel_bb test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,72 +14,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting sai.gowtham.ch@intel.com (2020-06-30 07:41:10)
-> From: sai gowtham <sai.gowtham.ch@intel.com>
-> 
-> Added test description for test and to all 3 subtests.
-> 
-> Signed-off-by: sai gowtham <sai.gowtham.ch@intel.com>
-> ---
->  tests/i915/gem_exec_create.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/i915/gem_exec_create.c b/tests/i915/gem_exec_create.c
-> index ee7d4e5d..5236d477 100644
-> --- a/tests/i915/gem_exec_create.c
-> +++ b/tests/i915/gem_exec_create.c
-> @@ -42,6 +42,10 @@
->  #include "i915/gem.h"
->  #include "igt.h"
->  
-> +IGT_TEST_DESCRIPTION("\n This test runs an uninterrupted loop within the specified timeouts"
-> +               " with different flags & ncpus combinations and checks if there are any"
-> +               " missed interrupts reported from the driver.");
-
-No. The intent of the test is to flood the driver with transient active
-objects and check we don't kill the system under the mempressure. Some
-of the symptoms we look for include mysterious hangs.
-
-> +
->  #define ENGINE_FLAGS  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
->  
->  static double elapsed(const struct timespec *start, const struct timespec *end)
-> @@ -133,12 +137,16 @@ igt_main
->  
->                 igt_fork_hang_detector(device);
->         }
-> -
-
-Lost visual whitespacing.
-
-> +       igt_describe("Runs single uninterrupted loop for 2s.");
->         igt_subtest("basic")
->                 all(device, 0, 2, 1);
-> +
-> +       igt_describe("Runs single uninterrupted loop for 20s.");
->         igt_subtest("forked")
->                 all(device, 0, 20, ncpus);
->  
-> +       igt_describe("Runs single uninterrupted loop with"
-> +                       " different flag combination for 20s.");
-
-That is abysmal. We already know the above and more from the test setup
-itself. The difference in the test intentions should be discernible from
-the different path coverage in the driver...
-
-Quick sanitycheck; concurrent execution; forced reclaim, behaving like a
-bad application leaking its bo cache.
-
->         igt_subtest("madvise")
->                 all(device, LEAK, 20, 1);
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+U2xvd2x5IGFzIExvbmRvbiBidXMgbW92ZSB0b3dhcmQgc2F5IGdvb2RieWUgdG8gbGliZHJtIGlu
+IHRoZQpyZW5kZXJjb3B5IHRlc3RzLgoKU2VyaW91c2x5IC0gYWRkIHNvbWUgbmV3IGZ1bmN0aW9u
+cyBpbiBpbnRlbF9idWYvaW50ZWxfYmIgYW5kCnZlcmlmeSBtb3N0IG9mIHRoZW0gd29yayBwcm9w
+ZXJseSBhbmQgZG9lc24ndCBhZmZlY3QgZ2VtX2dwZ3B1X2ZpbGwsCmdlbV9tZWRpYV9maWxsIGFu
+ZCBpOTE1X3BtX3NzZXUgd2hpY2ggd2VyZSBwcmV2aW91c2x5IG1pZ3JhdGVkLgoKdjI6IGZpeCBt
+YXBwaW5nCnYzOiBza2lwIHRlc3Qgd2hlcmUgbm8gY29udGV4dCBhcmUgYXZhaWxhYmxlCnY0OiBj
+b3ZlciBnZW5zIDw9NCwgNSwgYW5kIDYrIHNlcGFyYXRlbHkKdjU6IGRpZmZlcmVudGlhdGUgZmx1
+c2ggKE1JX0ZMVVNIIDw9IGdlbjQgYW5kIE1JX0ZMVVNIX0RXID49IGdlbjUpCiAgICBhZGQgaW50
+ZW50aW9uYWxseSBmYWlsaW5nIHRlc3QgdG8gc2tpcCBmdWxsIHJ1bgp2NjogYWRkIGlndF9pbmZv
+IHRvIHByaW50IG91dCByaW5nLCByZW1vdmUgZmFpbGluZyB0ZXN0CnY3OiBmaXggYnVmZmVyIGxl
+YWssIHJlc2V0IHJlbG9jYXRpb24gY291bnQKdjg6IGVuc3VyZSBiYiBhbGlnbm1lbnQgaXMgbW9k
+dWxvIDgsIGZpeCBvZmZzZXRzIHZhbGlkYXRpb24gCiAgICBpbiBhcGlfaW50ZWxfYmIgdGVzdAp2
+OTogcmVtb3ZlIGZsdXNoIGNvZGUsIGNoYW5nZSBiYiBjb25zdHJhaW50cyB0byBmaWxsIGZ1bGx5
+IGJiLAogICAgYWRkaW5nIHJlZmVyZW5jZSBjb3VudGluZyAoZm9yIGZ1dHVyZSB0ZXN0cyB1cGRh
+dGVzKSwKICAgIGFkZGluZyBmdWxsLWJhdGNoIHRlc3Qgd2hpY2ggdmVyaWZpZXMgZmlsbGluZyBm
+dWxseSBiYgoKWmJpZ25pZXcgS2VtcGN6ecWEc2tpICg0KToKICBsaWIvaW50ZWxfYmF0Y2hidWZm
+ZXI6IEV4dGVuZCBpbnRlbF9iYgogIGxpYi9pbnRlbF9idWZvcHM6IEFkZCBuZXcgZnVuY3Rpb25z
+IGFuZCBpbnRlbF9idWYgZmllbGRzCiAgdGVzdHMvYXBpX2ludGVsX2JiOiBBZGQgaW50ZWxfYmIg
+QVBJIHRlc3QKICBIQVg6IHJ1biBhcGlfaW50ZWxfYmIgdGVzdHMgYW5kIGNoZWNrIChncGdwdXxt
+ZWRpYSlfZmlsbCBhcmUgb2sKCiBsaWIvaW50ZWxfYmF0Y2hidWZmZXIuYyAgICAgICAgICAgICAg
+IHwgMzcwICsrKysrKysrKysrKysrKy0KIGxpYi9pbnRlbF9iYXRjaGJ1ZmZlci5oICAgICAgICAg
+ICAgICAgfCAgNzkgKysrLQogbGliL2ludGVsX2J1Zm9wcy5jICAgICAgICAgICAgICAgICAgICB8
+IDEzNSArKysrKy0KIGxpYi9pbnRlbF9idWZvcHMuaCAgICAgICAgICAgICAgICAgICAgfCAgMjQg
+Ky0KIHRlc3RzL2k5MTUvYXBpX2ludGVsX2JiLmMgICAgICAgICAgICAgfCA2MDkgKysrKysrKysr
+KysrKysrKysrKysrKysrKysKIHRlc3RzL2ludGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3Qg
+fCAxNjQgKy0tLS0tLQogdGVzdHMvbWVzb24uYnVpbGQgICAgICAgICAgICAgICAgICAgICB8ICAg
+MSArCiA3IGZpbGVzIGNoYW5nZWQsIDExODcgaW5zZXJ0aW9ucygrKSwgMTk1IGRlbGV0aW9ucygt
+KQogY3JlYXRlIG1vZGUgMTAwNjQ0IHRlc3RzL2k5MTUvYXBpX2ludGVsX2JiLmMKCi0tIAoyLjI2
+LjAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
+ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
