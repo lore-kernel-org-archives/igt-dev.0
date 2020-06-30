@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E6E189FF6
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jun 2020 12:27:48 +0000 (UTC)
-Date: Tue, 30 Jun 2020 15:27:43 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200630122743.dovsvexdpeosvave@ahiler-desk1.fi.intel.com>
-References: <20200617180354.17770-1-mohammed.khajapasha@intel.com>
- <20200625062318.26368-1-mohammed.khajapasha@intel.com>
- <20200625062318.26368-3-mohammed.khajapasha@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 497D76E217
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jun 2020 12:49:03 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Tue, 30 Jun 2020 14:48:55 +0200
+Message-Id: <20200630124859.29004-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200625062318.26368-3-mohammed.khajapasha@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 2/7] tests/kms_cursor_legacy: Read
- crtc id for enable pipes
+Subject: [igt-dev] [PATCH i-g-t v10 0/4] Add api_intel_bb test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,80 +14,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jun 25, 2020 at 11:53:13AM +0530, Mohammed Khajapasha wrote:
-> Read the crtc ids for enable pipes only in display.
-> 
-> Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-> ---
->  tests/kms_cursor_legacy.c | 14 +++++++++-----
->  1 file changed, 9 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-> index 344442e8..151bd31d 100644
-> --- a/tests/kms_cursor_legacy.c
-> +++ b/tests/kms_cursor_legacy.c
-> @@ -58,7 +58,7 @@ static void stress(igt_display_t *display,
->  	uint64_t *results;
->  	bool torture;
->  	int n;
-> -	unsigned crtc_id[IGT_MAX_PIPES], num_crtcs;
-> +	unsigned crtc_id[IGT_MAX_PIPES] = {0}, num_crtcs;
->  
->  	torture = false;
->  	if (num_children < 0) {
-> @@ -84,8 +84,10 @@ static void stress(igt_display_t *display,
->  		}
->  	} else {
->  		num_crtcs = 1;
-> -		arg.crtc_id = crtc_id[0] = display->pipes[pipe].crtc_id;
-> -		do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg);
-> +		if(display->pipes[pipe].enabled) {
-> +			arg.crtc_id = crtc_id[0] = display->pipes[pipe].crtc_id;
-> +			do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg);
-> +		}
->  	}
->  
->  	arg.flags = mode;
-> @@ -103,7 +105,8 @@ static void stress(igt_display_t *display,
->  		hars_petruska_f54_1_random_perturb(child);
->  		igt_until_timeout(timeout) {
->  			arg.crtc_id = crtc_id[hars_petruska_f54_1_random_unsafe() % num_crtcs];
-> -			do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg);
-> +			if (arg.crtc_id)
-
-This seems to introduce assumption that a valid crtc_id != 0, is it
-true?
-
--- 
-Cheers,
-Arek
-
-> +				do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg);
->  			count++;
->  		}
->  
-> @@ -1390,7 +1393,8 @@ igt_main
->  			errno = 0;
->  
->  			igt_fixture {
-> -				igt_skip_on(n >= display.n_pipes);
-> +				igt_require_f(display.pipes[n].enabled,
-> +						"Pipe-%s not enabled\n", kmstest_pipe_name(n));
->  			}
->  
->  			igt_subtest_f("pipe-%s-single-bo", kmstest_pipe_name(n))
-> -- 
-> 2.24.1
-> 
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+U2xvd2x5IGFzIExvbmRvbiBidXMgbW92ZSB0b3dhcmQgc2F5IGdvb2RieWUgdG8gbGliZHJtIGlu
+IHRoZQpyZW5kZXJjb3B5IHRlc3RzLgoKU2VyaW91c2x5IC0gYWRkIHNvbWUgbmV3IGZ1bmN0aW9u
+cyBpbiBpbnRlbF9idWYvaW50ZWxfYmIgYW5kCnZlcmlmeSBtb3N0IG9mIHRoZW0gd29yayBwcm9w
+ZXJseSBhbmQgZG9lc24ndCBhZmZlY3QgZ2VtX2dwZ3B1X2ZpbGwsCmdlbV9tZWRpYV9maWxsIGFu
+ZCBpOTE1X3BtX3NzZXUgd2hpY2ggd2VyZSBwcmV2aW91c2x5IG1pZ3JhdGVkLgoKdjI6IGZpeCBt
+YXBwaW5nCnYzOiBza2lwIHRlc3Qgd2hlcmUgbm8gY29udGV4dCBhcmUgYXZhaWxhYmxlCnY0OiBj
+b3ZlciBnZW5zIDw9NCwgNSwgYW5kIDYrIHNlcGFyYXRlbHkKdjU6IGRpZmZlcmVudGlhdGUgZmx1
+c2ggKE1JX0ZMVVNIIDw9IGdlbjQgYW5kIE1JX0ZMVVNIX0RXID49IGdlbjUpCiAgICBhZGQgaW50
+ZW50aW9uYWxseSBmYWlsaW5nIHRlc3QgdG8gc2tpcCBmdWxsIHJ1bgp2NjogYWRkIGlndF9pbmZv
+IHRvIHByaW50IG91dCByaW5nLCByZW1vdmUgZmFpbGluZyB0ZXN0CnY3OiBmaXggYnVmZmVyIGxl
+YWssIHJlc2V0IHJlbG9jYXRpb24gY291bnQKdjg6IGVuc3VyZSBiYiBhbGlnbm1lbnQgaXMgbW9k
+dWxvIDgsIGZpeCBvZmZzZXRzIHZhbGlkYXRpb24gCiAgICBpbiBhcGlfaW50ZWxfYmIgdGVzdAp2
+OTogcmVtb3ZlIGZsdXNoIGNvZGUsIGNoYW5nZSBiYiBjb25zdHJhaW50cyB0byBmaWxsIGZ1bGx5
+IGJiLAogICAgYWRkaW5nIHJlZmVyZW5jZSBjb3VudGluZyAoZm9yIGZ1dHVyZSB0ZXN0cyB1cGRh
+dGVzKSwKICAgIGFkZGluZyBmdWxsLWJhdGNoIHRlc3Qgd2hpY2ggdmVyaWZpZXMgZmlsbGluZyBm
+dWxseSBiYgp2MTA6IHN5bmNocm9uaXppbmcgb24gYmIgKGV4ZWN1dGVkIGFzIGFzeW5jKQoKWmJp
+Z25pZXcgS2VtcGN6ecWEc2tpICg0KToKICBsaWIvaW50ZWxfYmF0Y2hidWZmZXI6IEV4dGVuZCBp
+bnRlbF9iYgogIGxpYi9pbnRlbF9idWZvcHM6IEFkZCBuZXcgZnVuY3Rpb25zIGFuZCBpbnRlbF9i
+dWYgZmllbGRzCiAgdGVzdHMvYXBpX2ludGVsX2JiOiBBZGQgaW50ZWxfYmIgQVBJIHRlc3QKICBI
+QVg6IHJ1biBhcGlfaW50ZWxfYmIgdGVzdHMgYW5kIGNoZWNrIChncGdwdXxtZWRpYSlfZmlsbCBh
+cmUgb2sKCiBsaWIvaW50ZWxfYmF0Y2hidWZmZXIuYyAgICAgICAgICAgICAgIHwgMzcwICsrKysr
+KysrKysrKysrKy0KIGxpYi9pbnRlbF9iYXRjaGJ1ZmZlci5oICAgICAgICAgICAgICAgfCAgNzkg
+KysrLQogbGliL2ludGVsX2J1Zm9wcy5jICAgICAgICAgICAgICAgICAgICB8IDEzNSArKysrKy0K
+IGxpYi9pbnRlbF9idWZvcHMuaCAgICAgICAgICAgICAgICAgICAgfCAgMjQgKy0KIHRlc3RzL2k5
+MTUvYXBpX2ludGVsX2JiLmMgICAgICAgICAgICAgfCA2MTAgKysrKysrKysrKysrKysrKysrKysr
+KysrKysKIHRlc3RzL2ludGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QgfCAxNjQgKy0tLS0t
+LQogdGVzdHMvbWVzb24uYnVpbGQgICAgICAgICAgICAgICAgICAgICB8ICAgMSArCiA3IGZpbGVz
+IGNoYW5nZWQsIDExODggaW5zZXJ0aW9ucygrKSwgMTk1IGRlbGV0aW9ucygtKQogY3JlYXRlIG1v
+ZGUgMTAwNjQ0IHRlc3RzL2k5MTUvYXBpX2ludGVsX2JiLmMKCi0tIAoyLjI2LjAKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
+aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
