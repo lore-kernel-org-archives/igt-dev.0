@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C1CB389C07
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jun 2020 06:25:45 +0000 (UTC)
-Date: Tue, 30 Jun 2020 11:53:28 +0530
-From: "Melkaveri, Arjun" <arjun.melkaveri@intel.com>
-Message-ID: <20200630062325.GA2976@arjun-NUC8i7BEH>
-References: <20200629125948.8734-1-priyanka.dandamudi@intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2E0A089C55
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jun 2020 06:42:09 +0000 (UTC)
+From: sai.gowtham.ch@intel.com
+Date: Tue, 30 Jun 2020 12:11:10 +0530
+Message-Id: <20200630064110.4585-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200629125948.8734-1-priyanka.dandamudi@intel.com>
-Subject: Re: [igt-dev] [PATCH] [PATCH i-g-t] i915/gem_reg_read: Added
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_create: Added test
  description for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -22,56 +19,54 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: priyanka.dandamudi@intel.com
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com, sai.gowtham.ch@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Jun 29, 2020 at 06:29:48PM +0530, priyanka.dandamudi@intel.com wrote:
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> 
-> Added test description for test and to all 3 subtests.
-> 
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> ---
->  tests/i915/gem_reg_read.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/tests/i915/gem_reg_read.c b/tests/i915/gem_reg_read.c
-> index 79facc1f..dfc2560e 100644
-> --- a/tests/i915/gem_reg_read.c
-> +++ b/tests/i915/gem_reg_read.c
-> @@ -32,6 +32,7 @@
->  #include <sys/utsname.h>
->  #include <time.h>
->  
-> +IGT_TEST_DESCRIPTION("Test the basic register read ioctl.");
-Can you add more information about type of registers this test would check in description.
->  
->  static bool is_x86_64;
->  static bool has_proper_timestamp;
-> @@ -156,14 +157,19 @@ igt_main
->  		has_proper_timestamp = check_timestamp(fd);
->  	}
->  
-> +	igt_describe("Verifies reading bad register result in error or not.");
->  	igt_subtest("bad-register")
->  		igt_assert_eq(read_register(fd, 0x12345678, &val), -EINVAL);
->  
-> +	igt_describe("Checks whether the timestamp register is getting"
-> +		     " updated when any operation(noop) is being performed.");
->  	igt_subtest("timestamp-moving") {
->  		igt_skip_on(timer_query(fd, &val) != 0);
->  		test_timestamp_moving(fd);
->  	}
->  
-> +	igt_describe("Checks whether timestamp is monotonic while performing"
-> +		     " an operation(noop) in a loop.");
->  	igt_subtest("timestamp-monotonic") {
->  		igt_skip_on(timer_query(fd, &val) != 0);
->  		test_timestamp_monotonic(fd);
-> -- 
-> 2.26.2
-> 
+From: sai gowtham <sai.gowtham.ch@intel.com>
+
+Added test description for test and to all 3 subtests.
+
+Signed-off-by: sai gowtham <sai.gowtham.ch@intel.com>
+---
+ tests/i915/gem_exec_create.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/tests/i915/gem_exec_create.c b/tests/i915/gem_exec_create.c
+index ee7d4e5d..5236d477 100644
+--- a/tests/i915/gem_exec_create.c
++++ b/tests/i915/gem_exec_create.c
+@@ -42,6 +42,10 @@
+ #include "i915/gem.h"
+ #include "igt.h"
+ 
++IGT_TEST_DESCRIPTION("\n This test runs an uninterrupted loop within the specified timeouts"
++		" with different flags & ncpus combinations and checks if there are any"
++		" missed interrupts reported from the driver.");
++
+ #define ENGINE_FLAGS  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
+ 
+ static double elapsed(const struct timespec *start, const struct timespec *end)
+@@ -133,12 +137,16 @@ igt_main
+ 
+ 		igt_fork_hang_detector(device);
+ 	}
+-
++	igt_describe("Runs single uninterrupted loop for 2s.");
+ 	igt_subtest("basic")
+ 		all(device, 0, 2, 1);
++
++	igt_describe("Runs single uninterrupted loop for 20s.");
+ 	igt_subtest("forked")
+ 		all(device, 0, 20, ncpus);
+ 
++	igt_describe("Runs single uninterrupted loop with"
++			" different flag combination for 20s.");
+ 	igt_subtest("madvise")
+ 		all(device, LEAK, 20, 1);
+ 
+-- 
+2.25.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
