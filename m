@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D0A6A6E130
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jun 2020 12:02:09 +0000 (UTC)
+Date: Tue, 30 Jun 2020 15:02:05 +0300
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20200630120205.tly2cdeq3kjf7kj6@ahiler-desk1.fi.intel.com>
+References: <20200617180354.17770-1-mohammed.khajapasha@intel.com>
+ <20200625062318.26368-1-mohammed.khajapasha@intel.com>
+ <20200625062318.26368-2-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 30 Jun 2020 10:43:39 -0000
-Message-ID: <159351381997.22704.4472362895599640820@emeril.freedesktop.org>
-References: <20200630093343.21923-1-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20200630093343.21923-1-zbigniew.kempczynski@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIGFw?=
- =?utf-8?q?i=5Fintel=5Fbb_test_=28rev8=29?=
+Content-Disposition: inline
+In-Reply-To: <20200625062318.26368-2-mohammed.khajapasha@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/7] lib/igt_kms: Add support for
+ display with non-contiguous pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,145 +20,251 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On Thu, Jun 25, 2020 at 11:53:12AM +0530, Mohammed Khajapasha wrote:
+> Add support for non-contiguous pipe display by allocating
+> upper bound pipes array for display. Set the pipe enum name
+> to igt pipe for enabled pipes in drm.
+> 
+> v3:
+>     Avoiding calling get pipe from crtc id ioctl for non i915 device
+>     (petri)
+> 
+> Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+> ---
+>  lib/igt_kms.c | 58 ++++++++++++++++++++++++++++++++++++++++++++-------
+>  lib/igt_kms.h | 13 +++++++-----
+>  2 files changed, 58 insertions(+), 13 deletions(-)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index afef5939..1b20c7e8 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -1888,13 +1888,14 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>  {
+>  	drmModeRes *resources;
+>  	drmModePlaneRes *plane_resources;
+> -	int i;
+> +	int i, i915_dev;
 
-Series: Add api_intel_bb test (rev8)
-URL   : https://patchwork.freedesktop.org/series/78719/
-State : success
+Would be beter to name this is_i915_dev and make it bool.
 
-== Summary ==
+>  	memset(display, 0, sizeof(igt_display_t));
+>  
+>  	LOG_INDENT(display, "init");
+>  
+>  	display->drm_fd = drm_fd;
+> +	i915_dev = is_i915_device(drm_fd);
+>  
+>  	resources = drmModeGetResources(display->drm_fd);
+>  	if (!resources)
+> @@ -1921,10 +1922,37 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>  	 * We cache the number of pipes, that number is a physical limit of the
+>  	 * hardware and cannot change of time (for now, at least).
+>  	 */
+> -	display->n_pipes = resources->count_crtcs;
+> +	if (i915_dev)
+> +		display->n_pipes = IGT_MAX_PIPES;
+> +	else
+> +		display->n_pipes = resources->count_crtcs;
 
-CI Bug Log - changes from CI_DRM_8676 -> IGTPW_4716
-====================================================
+I don't think this if is necessary - we can always roll with n_pipes ==
+IGT_MAX_PIPES, and the ones that are not there will be pipe->enabled == 0.
 
-Summary
--------
+>  	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
+>  	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
+>  
+> +	for(i = 0; i < resources->count_crtcs; i++) {
+           ^ missing space
 
-  **SUCCESS**
+> +		igt_pipe_t *pipe;
+> +
+> +		if (i915_dev) { 
+                               ^ tailing whitespace
 
-  No regressions found.
+> +			/* Get right pipe enum from kernel for a pipe */
+> +			struct drm_i915_get_pipe_from_crtc_id get_pipe;
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4716/index.html
+I see that we don't have anything similar for other drivers.
 
-Possible new issues
--------------------
+I would extend the comment here a bit to explain the background of why
+we have this i915 check and special case for it. Mention non-continous
+pipes and explain a bit on pipe to crtc mapping.
 
-  Here are the unknown changes that may have been introduced in IGTPW_4716:
+> +
+> +			get_pipe.pipe = 0;
+> +			get_pipe.crtc_id =  resources->crtcs[i];
+> +			do_ioctl(display->drm_fd,
+> +					DRM_IOCTL_I915_GET_PIPE_FROM_CRTC_ID, &get_pipe);
+> +			pipe = &display->pipes[get_pipe.pipe];
+> +			pipe->pipe = get_pipe.pipe;
+> +		}
+> +		else {
+> +			pipe = &display->pipes[i];
+> +			pipe->pipe = i;
+> +		}
+> +
+> +		pipe->enabled = true;
+> +		pipe->crtc_id = resources->crtcs[i];
+> +	}
+> +
+>  	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+>  	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
+>  		display->is_atomic = 1;
+> @@ -1955,25 +1983,33 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>  	for_each_pipe(display, i) {
+>  		igt_pipe_t *pipe = &display->pipes[i];
+>  		igt_plane_t *plane;
+> -		int p = 1;
+> +		int p = 1, k = 0;
+>  		int j, type;
+>  		uint8_t last_plane = 0, n_planes = 0;
+>  
+> -		pipe->crtc_id = resources->crtcs[i];
+>  		pipe->display = display;
+> -		pipe->pipe = i;
+>  		pipe->plane_cursor = -1;
+>  		pipe->plane_primary = -1;
+>  		pipe->planes = NULL;
+>  
+>  		igt_fill_pipe_props(display, pipe, IGT_NUM_CRTC_PROPS, igt_crtc_prop_names);
+>  
+> +		/* Get valid crtc index from crtcs */
+> +		if (i915_dev) {
+> +			for(k = 0; k < resources->count_crtcs; k++) {
+> +				if(pipe->crtc_id == resources->crtcs[k])
+> +					break;
+> +			}
+> +		} else {
+> +			k = i;
+> +		}
 
-### IGT changes ###
+I would drop the special case here as well. The i915 section although
+not optimal should for for the generic case too.
 
-#### Possible regressions ####
+You could even extract this to a helper:
 
-  * {igt@api_intel_bb@intel-bb-blit} (NEW):
-    - fi-blb-e6850:       NOTRUN -> [FAIL][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4716/fi-blb-e6850/igt@api_intel_bb@intel-bb-blit.html
-    - fi-pnv-d510:        NOTRUN -> [FAIL][2]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4716/fi-pnv-d510/igt@api_intel_bb@intel-bb-blit.html
-    - fi-gdg-551:         NOTRUN -> [FAIL][3]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4716/fi-gdg-551/igt@api_intel_bb@intel-bb-blit.html
+static int __get_crtc_mask_for_pipe(*resources, *pipe) {
+	for (int offset = 0; offset < resources->count_crtcs; offset++) {
+		if(pipe->crtc_id == resources->crtcs[offset])
+			break;
+	}
 
-  
-New tests
----------
+	return (1 << offset);
+}
 
-  New tests have been introduced between CI_DRM_8676 and IGTPW_4716:
+So you can then
 
-### New IGT tests (11) ###
+crtc_mask = __get_crtc_mask_for_pipe(resources, pipe);
+if (drm_plane->possible_crtcs & crtc_mask) ...
 
-  * igt@api_intel_bb:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@api_intel_bb@blit-noreloc-keep-cache:
-    - Statuses : 37 pass(s)
-    - Exec time: [0.00, 0.04] s
-
-  * igt@api_intel_bb@blit-noreloc-purge-cache:
-    - Statuses : 37 pass(s)
-    - Exec time: [0.00, 0.03] s
-
-  * igt@api_intel_bb@blit-reloc-keep-cache:
-    - Statuses : 37 pass(s)
-    - Exec time: [0.00, 0.03] s
-
-  * igt@api_intel_bb@blit-reloc-purge-cache:
-    - Statuses : 37 pass(s)
-    - Exec time: [0.00, 0.04] s
-
-  * igt@api_intel_bb@full-batch:
-    - Statuses : 37 pass(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@api_intel_bb@intel-bb-blit:
-    - Statuses : 3 fail(s) 34 pass(s)
-    - Exec time: [0.06, 0.78] s
-
-  * igt@api_intel_bb@offset-control:
-    - Statuses : 37 pass(s)
-    - Exec time: [0.00, 0.06] s
-
-  * igt@api_intel_bb@simple-bb:
-    - Statuses : 37 pass(s)
-    - Exec time: [0.00, 0.03] s
-
-  * igt@api_intel_bb@simple-bb-ctx:
-    - Statuses : 34 pass(s) 3 skip(s)
-    - Exec time: [0.0, 0.03] s
-
-  * igt@i915_pm_sseu:
-    - Statuses :
-    - Exec time: [None] s
-
-  
-
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-
-
-Participating hosts (46 -> 39)
-------------------------------
-
-  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5718 -> IGTPW_4716
-
-  CI-20190529: 20190529
-  CI_DRM_8676: 90573bcfde94b770410e07294c914b2c630d3999 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4716: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4716/index.html
-  IGT_5718: af1ef32bfae90bcdbaf1b5d84c61ff4e04368505 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+This would improve readability quite a bit.
 
 
+>  		/* count number of valid planes */
+>  		for (j = 0; j < display->n_planes; j++) {
+>  			drmModePlane *drm_plane = display->planes[j].drm_plane;
+>  			igt_assert(drm_plane);
+>  
+> -			if (drm_plane->possible_crtcs & (1 << i))
+> +			if (drm_plane->possible_crtcs & (1 << k))
+>  				n_planes++;
+>  		}
+>  
+> @@ -1987,7 +2023,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>  			igt_plane_t *global_plane = &display->planes[j];
+>  			drmModePlane *drm_plane = global_plane->drm_plane;
+>  
+> -			if (!(drm_plane->possible_crtcs & (1 << i)))
+> +			if (!(drm_plane->possible_crtcs & (1 << k)))
+>  				continue;
+>  
+>  			type = global_plane->type;
+> @@ -2409,12 +2445,18 @@ static bool output_is_internal_panel(igt_output_t *output)
+>  
+>  igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display, igt_output_t **chosen_outputs)
+>  {
+> -	unsigned full_pipe_mask = (1 << (display->n_pipes)) - 1, assigned_pipes = 0;
+> +	unsigned full_pipe_mask, assigned_pipes = 0;
+>  	igt_output_t *output;
+>  	int i, j;
+>  
+>  	memset(chosen_outputs, 0, sizeof(*chosen_outputs) * display->n_pipes);
+>  
+> +	for( i = 0; i < display->n_pipes; i++) {
+> +		igt_pipe_t *pipe = &display->pipes[i];
+> +		if (pipe->enabled)
+> +			full_pipe_mask |= (1 << i);
+> +	}
+> +
+>  	/*
+>  	 * Try to assign all outputs to the first available CRTC for
+>  	 * it, start with the outputs restricted to 1 pipe, then increase
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 32a0e4cc..e91a2094 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -341,6 +341,7 @@ typedef struct igt_plane {
+>  struct igt_pipe {
+>  	igt_display_t *display;
+>  	enum pipe pipe;
+> +	bool enabled;
+>  
+>  	int n_planes;
+>  	int plane_cursor;
+> @@ -510,8 +511,9 @@ static inline bool igt_output_is_connected(igt_output_t *output)
+>   * depends upon runtime probing of the actual kms driver that is being tested.
+>   * Use #for_each_pipe_static instead.
+>   */
+> -#define for_each_pipe(display, pipe)					\
+> -	for (pipe = 0; assert(igt_can_fail()), pipe < igt_display_get_n_pipes(display); pipe++)
+> +#define for_each_pipe(display, pipe) \
+> +	for_each_pipe_static(pipe) \
+> +		for_each_if((display)->pipes[(pipe)].enabled)
 
-== Testlist changes ==
+This may break with the n_pipes = count_crtcs if count_crtcs < IGT_MAX_PIPES
+you will end addressing not allocated memory here.
 
-+igt@api_intel_bb@blit-noreloc-keep-cache
-+igt@api_intel_bb@blit-noreloc-purge-cache
-+igt@api_intel_bb@blit-reloc-keep-cache
-+igt@api_intel_bb@blit-reloc-purge-cache
-+igt@api_intel_bb@full-batch
-+igt@api_intel_bb@intel-bb-blit
-+igt@api_intel_bb@offset-control
-+igt@api_intel_bb@simple-bb
-+igt@api_intel_bb@simple-bb-ctx
+If follow the recommendation on making n_pipes == IGT_MAX_PIPES, then
+this potential issue is not a problem.
 
-== Logs ==
+-- 
+Cheers,
+Arek
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4716/index.html
+>  /**
+>   * for_each_pipe_with_valid_output:
+> @@ -530,8 +532,9 @@ static inline bool igt_output_is_connected(igt_output_t *output)
+>  	for (int con__ = (pipe) = 0; \
+>  	     assert(igt_can_fail()), (pipe) < igt_display_get_n_pipes((display)) && con__ < (display)->n_outputs; \
+>  	     con__ = (con__ + 1 < (display)->n_outputs) ? con__ + 1 : (pipe = pipe + 1, 0)) \
+> -		for_each_if ((((output) = &(display)->outputs[con__]), \
+> -			     igt_pipe_connector_valid((pipe), (output))))
+> +		 for_each_if((display)->pipes[pipe].enabled) \
+> +			for_each_if ((((output) = &(display)->outputs[con__]), \
+> +						igt_pipe_connector_valid((pipe), (output))))
+>  
+>  igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
+>  					   igt_output_t **chosen_outputs);
+> @@ -549,7 +552,7 @@ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
+>  #define for_each_pipe_with_single_output(display, pipe, output) \
+>  	for (igt_output_t *__outputs[(display)->n_pipes], \
+>  	     **__output = __igt_pipe_populate_outputs((display), __outputs); \
+> -	     __output < &__outputs[(display)->n_pipes]; __output++) \
+> +		 __output < &__outputs[(display)->n_pipes]; __output++) \
+>  		for_each_if (*__output && \
+>  			     ((pipe) = (__output - __outputs), (output) = *__output, 1))
+>  
+> -- 
+> 2.24.1
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
