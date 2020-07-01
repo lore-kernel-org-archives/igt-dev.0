@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8EFBE6E183
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Jul 2020 19:08:38 +0000 (UTC)
-From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Thu,  2 Jul 2020 00:38:43 +0530
-Message-Id: <20200701190843.8800-10-mohammed.khajapasha@intel.com>
-In-Reply-To: <20200701190843.8800-1-mohammed.khajapasha@intel.com>
-References: <20200701190843.8800-1-mohammed.khajapasha@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D0566E108
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Jul 2020 19:20:51 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Wed,  1 Jul 2020 21:20:41 +0200
+Message-Id: <20200701192045.13196-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 9/9] i915/gem_eio: Set modeset for enable
- pipes
+Subject: [igt-dev] [PATCH i-g-t v13 0/4] Add api_intel_bb test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,37 +14,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: arkadiusz.hiler@intel.com, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Set modeset for enable pipes only in kms test
-
-Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
----
- tests/i915/gem_eio.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
-index cfc3f668..c5ef61bd 100644
---- a/tests/i915/gem_eio.c
-+++ b/tests/i915/gem_eio.c
-@@ -851,6 +851,8 @@ static void display_helper(igt_display_t *dpy, int *done)
- 		int pipe;
- 
- 		pipe = rand() % dpy->n_pipes;
-+		if (!dpy->pipes[pipe].enabled)
-+			continue;
- 		output = igt_get_single_output_for_pipe(dpy, pipe);
- 		if (!output)
- 			continue;
--- 
-2.24.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+U2xvd2x5IGFzIExvbmRvbiBidXMgbW92ZSB0b3dhcmQgc2F5IGdvb2RieWUgdG8gbGliZHJtIGlu
+IHRoZQpyZW5kZXJjb3B5IHRlc3RzLgoKU2VyaW91c2x5IC0gYWRkIHNvbWUgbmV3IGZ1bmN0aW9u
+cyBpbiBpbnRlbF9idWYvaW50ZWxfYmIgYW5kCnZlcmlmeSBtb3N0IG9mIHRoZW0gd29yayBwcm9w
+ZXJseSBhbmQgZG9lc24ndCBhZmZlY3QgZ2VtX2dwZ3B1X2ZpbGwsCmdlbV9tZWRpYV9maWxsIGFu
+ZCBpOTE1X3BtX3NzZXUgd2hpY2ggd2VyZSBwcmV2aW91c2x5IG1pZ3JhdGVkLgoKdjI6IGZpeCBt
+YXBwaW5nCnYzOiBza2lwIHRlc3Qgd2hlcmUgbm8gY29udGV4dCBhcmUgYXZhaWxhYmxlCnY0OiBj
+b3ZlciBnZW5zIDw9NCwgNSwgYW5kIDYrIHNlcGFyYXRlbHkKdjU6IGRpZmZlcmVudGlhdGUgZmx1
+c2ggKE1JX0ZMVVNIIDw9IGdlbjQgYW5kIE1JX0ZMVVNIX0RXID49IGdlbjUpCiAgICBhZGQgaW50
+ZW50aW9uYWxseSBmYWlsaW5nIHRlc3QgdG8gc2tpcCBmdWxsIHJ1bgp2NjogYWRkIGlndF9pbmZv
+IHRvIHByaW50IG91dCByaW5nLCByZW1vdmUgZmFpbGluZyB0ZXN0CnY3OiBmaXggYnVmZmVyIGxl
+YWssIHJlc2V0IHJlbG9jYXRpb24gY291bnQKdjg6IGVuc3VyZSBiYiBhbGlnbm1lbnQgaXMgbW9k
+dWxvIDgsIGZpeCBvZmZzZXRzIHZhbGlkYXRpb24gCiAgICBpbiBhcGlfaW50ZWxfYmIgdGVzdAp2
+OTogcmVtb3ZlIGZsdXNoIGNvZGUsIGNoYW5nZSBiYiBjb25zdHJhaW50cyB0byBmaWxsIGZ1bGx5
+IGJiLAogICAgYWRkaW5nIHJlZmVyZW5jZSBjb3VudGluZyAoZm9yIGZ1dHVyZSB0ZXN0cyB1cGRh
+dGVzKSwKICAgIGFkZGluZyBmdWxsLWJhdGNoIHRlc3Qgd2hpY2ggdmVyaWZpZXMgZmlsbGluZyBm
+dWxseSBiYgp2MTA6IHN5bmNocm9uaXppbmcgb24gYmIgKGV4ZWN1dGVkIGFzIGFzeW5jKQp2MTE6
+IHNraXAgaW50ZWwtYmItYmxpdCBvbiBnZW4yLzMsIGFkZCBhcGlfaW50ZWxfYmIgdG8gCiAgICAg
+ZmFzdC1mZWVkYmFjawp2MTI6IGFkZCBkZXRhaWxlZCBjb21wYXJlICsgbG9vcCBpbnRlbC1iYi1i
+bGl0IHRvIHNlZSBlcnJvcgogICAgIGRpc3RyaWJ1dGlvbgp2MTM6IGFkZCBmZW5jZXMgYXMgcHJp
+bWFyeSBzeW5jaHJvbmlzYXRpb24sIGFkZCBub25lL3gveQogICAgIGJsaXR0aW5nIHRlc3RzIHRv
+IGVuc3VyZSBub25lLT4/LT5ub25lIGJsaXQgZ2l2ZSBzYW1lCiAgICAgcmVzdWx0CgpaYmlnbmll
+dyBLZW1wY3p5xYRza2kgKDQpOgogIGxpYi9pbnRlbF9iYXRjaGJ1ZmZlcjogRXh0ZW5kIGludGVs
+X2JiCiAgbGliL2ludGVsX2J1Zm9wczogQWRkIG5ldyBmdW5jdGlvbnMgYW5kIGludGVsX2J1ZiBm
+aWVsZHMKICB0ZXN0cy9hcGlfaW50ZWxfYmI6IEFkZCBpbnRlbF9iYiBBUEkgdGVzdAogIGludGVs
+LWNpL2Zhc3QtZmVlZGJhY2s6IGFkZCBhcGlfaW50ZWxfYmIgdGVzdHMKCiBsaWIvaW50ZWxfYmF0
+Y2hidWZmZXIuYyAgICAgICAgICAgICAgIHwgNDA4ICsrKysrKysrKysrKysrKy0KIGxpYi9pbnRl
+bF9iYXRjaGJ1ZmZlci5oICAgICAgICAgICAgICAgfCAgODAgKystCiBsaWIvaW50ZWxfYnVmb3Bz
+LmMgICAgICAgICAgICAgICAgICAgIHwgMTM1ICsrKysrLQogbGliL2ludGVsX2J1Zm9wcy5oICAg
+ICAgICAgICAgICAgICAgICB8ICAyNCArLQogdGVzdHMvaTkxNS9hcGlfaW50ZWxfYmIuYyAgICAg
+ICAgICAgICB8IDY2OSArKysrKysrKysrKysrKysrKysrKysrKysrKwogdGVzdHMvaW50ZWwtY2kv
+ZmFzdC1mZWVkYmFjay50ZXN0bGlzdCB8ICAxMSArCiB0ZXN0cy9tZXNvbi5idWlsZCAgICAgICAg
+ICAgICAgICAgICAgIHwgICAxICsKIDcgZmlsZXMgY2hhbmdlZCwgMTI4OSBpbnNlcnRpb25zKCsp
+LCAzOSBkZWxldGlvbnMoLSkKIGNyZWF0ZSBtb2RlIDEwMDY0NCB0ZXN0cy9pOTE1L2FwaV9pbnRl
+bF9iYi5jCgotLSAKMi4yNi4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
+Lm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
+ZXYK
