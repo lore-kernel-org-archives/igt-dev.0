@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 148046E9CA
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Jul 2020 19:08:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0EFAF6E9C9
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Jul 2020 19:08:25 +0000 (UTC)
 From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Thu,  2 Jul 2020 00:38:37 +0530
-Message-Id: <20200701190843.8800-4-mohammed.khajapasha@intel.com>
+Date: Thu,  2 Jul 2020 00:38:36 +0530
+Message-Id: <20200701190843.8800-3-mohammed.khajapasha@intel.com>
 In-Reply-To: <20200701190843.8800-1-mohammed.khajapasha@intel.com>
 References: <20200701190843.8800-1-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/9] tests/kms_cursor_legacy: Read crtc id
- for enable pipes
+Subject: [igt-dev] [PATCH i-g-t 2/9] lib/igt_kms: Add igt_require_pipe()
+ function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,58 +24,64 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: arkadiusz.hiler@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Read the crtc ids for enable pipes only in display.
+Add igt_require_pipe() fn to check whether a pipe is enabled or not
 
 Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 ---
- tests/kms_cursor_legacy.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ lib/igt_kms.c | 17 +++++++++++++++++
+ lib/igt_kms.h | 13 +++++++++++++
+ 2 files changed, 30 insertions(+)
 
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 344442e8..e631f087 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -58,7 +58,7 @@ static void stress(igt_display_t *display,
- 	uint64_t *results;
- 	bool torture;
- 	int n;
--	unsigned crtc_id[IGT_MAX_PIPES], num_crtcs;
-+	unsigned crtc_id[IGT_MAX_PIPES] = {0}, num_crtcs;
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index b9bfe4e3..acf0559e 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -1873,6 +1873,23 @@ void igt_display_reset(igt_display_t *display)
+ static void igt_fill_plane_format_mod(igt_display_t *display, igt_plane_t *plane);
+ static void igt_fill_display_format_mod(igt_display_t *display);
  
- 	torture = false;
- 	if (num_children < 0) {
-@@ -84,8 +84,10 @@ static void stress(igt_display_t *display,
- 		}
- 	} else {
- 		num_crtcs = 1;
--		arg.crtc_id = crtc_id[0] = display->pipes[pipe].crtc_id;
--		do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg);
-+		if(display->pipes[pipe].enabled) {
-+			arg.crtc_id = crtc_id[0] = display->pipes[pipe].crtc_id;
-+			do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg);
-+		}
- 	}
++/*
++ * igt_require_pipe:
++ * @display: pointer to igt_display_t
++ * @pipe: pipe which need to check
++ *
++ * Skip a (sub-)test if the pipe not enabled.
++ *
++ * Should be used everywhere where a test checks pipe and skip
++ * test when pipe is not enabled.
++ */
++void igt_require_pipe(igt_display_t *display, enum pipe pipe)
++{
++	igt_skip_on_f(!display->pipes[pipe].enabled,
++			"Pipe %s does not exist or not enabled\n",
++			kmstest_pipe_name(pipe));
++}
++
+ /* Get crtc mask for a pipe using crtc id */
+ static int
+ __get_crtc_mask_for_pipe(drmModeRes *resources, igt_pipe_t *pipe)
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 0b5e707a..36b15147 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -857,4 +857,17 @@ int igt_connector_sysfs_open(int drm_fd,
+ 			     drmModeConnector *connector);
+ uint32_t igt_reduce_format(uint32_t format);
  
- 	arg.flags = mode;
-@@ -103,7 +105,8 @@ static void stress(igt_display_t *display,
- 		hars_petruska_f54_1_random_perturb(child);
- 		igt_until_timeout(timeout) {
- 			arg.crtc_id = crtc_id[hars_petruska_f54_1_random_unsafe() % num_crtcs];
--			do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg);
-+			if (arg.crtc_id)
-+				do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg);
- 			count++;
- 		}
- 
-@@ -1390,7 +1393,7 @@ igt_main
- 			errno = 0;
- 
- 			igt_fixture {
--				igt_skip_on(n >= display.n_pipes);
-+				igt_require_pipe(&display, n);
- 			}
- 
- 			igt_subtest_f("pipe-%s-single-bo", kmstest_pipe_name(n))
++/*
++ * igt_require_pipe:
++ * @display: pointer to igt_display_t
++ * @pipe: pipe which need to check
++ *
++ * Skip a (sub-)test if the pipe not enabled.
++ *
++ * Should be used everywhere where a test checks pipe and skip
++ * test when pipe is not enabled.
++ */
++void igt_require_pipe(igt_display_t *display,
++		enum pipe pipe);
++
+ #endif /* __IGT_KMS_H__ */
 -- 
 2.24.1
 
