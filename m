@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 08BFF6E5D2
- for <igt-dev@lists.freedesktop.org>; Wed,  1 Jul 2020 07:04:34 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E72EB6E400
+ for <igt-dev@lists.freedesktop.org>; Wed,  1 Jul 2020 07:27:33 +0000 (UTC)
 From: "Khajapasha, Mohammed" <mohammed.khajapasha@intel.com>
-Date: Wed, 1 Jul 2020 07:04:30 +0000
-Message-ID: <DM6PR11MB2938B173A6E99270FB67E43AE96C0@DM6PR11MB2938.namprd11.prod.outlook.com>
+Date: Wed, 1 Jul 2020 07:27:10 +0000
+Message-ID: <DM6PR11MB293843ECAA1492BFF1DFCBCDE96C0@DM6PR11MB2938.namprd11.prod.outlook.com>
 References: <20200617180354.17770-1-mohammed.khajapasha@intel.com>
  <20200625062318.26368-1-mohammed.khajapasha@intel.com>
  <20200625062318.26368-2-mohammed.khajapasha@intel.com>
@@ -115,10 +115,6 @@ List-ID: <igt-dev@lists.freedesktop.org>
 > we have this i915 check and special case for it. Mention non-continous
 > pipes and explain a bit on pipe to crtc mapping.
 > 
-
-The i915 check has been introduced as per previous review comments in
-https://patchwork.freedesktop.org/patch/369594/?series=78198&rev=1 
-
 > > +
 > > +			get_pipe.pipe = 0;
 > > +			get_pipe.crtc_id =  resources->crtcs[i];
@@ -272,6 +268,13 @@ https://patchwork.freedesktop.org/patch/369594/?series=78198&rev=1
 > If follow the recommendation on making n_pipes == IGT_MAX_PIPES, then
 > this potential issue is not a problem.
 > 
+We always allocation the pipes[] array with n_pipes = IGT_MAX_PIPES for i915 device,
+And we are skipping, max bound allocation for non-i915 devices as per review comments
+in https://patchwork.freedesktop.org/patch/369594/?series=78198&rev=1 so addressing not allocated
+memory might not occur.
+
+--
+Khajapasha
 > --
 > Cheers,
 > Arek
