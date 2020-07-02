@@ -1,80 +1,66 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-MIME-Version: 1.0
-In-Reply-To: <14063C7AD467DE4B82DEDB5C278E8663011E8636D8@fmsmsx107.amr.corp.intel.com>
-References: <20200630212515.1132791-1-chris@chris-wilson.co.uk>
- <14063C7AD467DE4B82DEDB5C278E8663011E8636D8@fmsmsx107.amr.corp.intel.com>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 01 Jul 2020 14:09:31 +0100
-Message-ID: <159360897195.17178.15908745323615959086@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_close_race: Mix in a contexts
- and a small delay to closure
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Date: Thu,  2 Jul 2020 13:39:08 +0100
+Message-Id: <20200702123908.227124-1-chris@chris-wilson.co.uk>
+MIME-Version: 1.0
+Subject: [Intel-gfx] [PATCH i-g-t] i915/perf: Instantiate a local drm_fd for
+ the unprivileged helper
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Ruhl, Michael J" <michael.j.ruhl@intel.com>, intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Ruhl, Michael J (2020-07-01 13:39:22)
-> >               do {
-> >-                      if (drmIoctl(crashme.fd, DRM_IOCTL_GEM_OPEN,
-> >&name))
-> >+                      uint32_t ctx = 0;
-> >+
-> >+                      if (drmIoctl(crashme.fd,
-> >+                                   DRM_IOCTL_GEM_OPEN,
-> >+                                   &name))
-> >                               break;
-> >
-> >-                      selfcopy(crashme.fd, name.handle, 100);
-> >-                      drmIoctl(crashme.fd, DRM_IOCTL_GEM_CLOSE,
-> >&name.handle);
-> >+                      if (flags & CONTEXTS)
-> >+                              __gem_context_create(crashme.fd, &ctx);
-> >+
-> >+                      selfcopy(crashme.fd, ctx, name.handle, 1);
-> >+
-> >+                      ctx = history[n % N_HISTORY];
-> 
-> Ahh this 'ctx' isn't really a context, it an unclosed handle.
+While the test is blocked, we keep trying the gen12_single_ctx_helper().
+As this is using the parent's drm_fd, all of our context allocations are
+persistent. Reopen the device in the child so that when we exit, our
+allocations are freed along with the process -- avoiding a total memory
+leak if the test is stuck.
 
-Welcome to my world of laziness.
+This does not explain why the test was stuck, it just prevents us from
+exacerbating the error condition. Hopefully leaving the system in a more
+debuggable state.
+
+References: https://gitlab.freedesktop.org/drm/intel/-/issues/2126
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ tests/i915/perf.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index d4ebae30d..dbf7e3497 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -3845,6 +3845,7 @@ static void gen12_single_ctx_helper(void)
+ 		.format = test_set->perf_oa_format
+ 	};
  
-> So the difference is that you keep around N_HISTORY open handles and
-> the associated contexts (if requested) until the test is done.
-> 
-> And 256 is enough history?  Any concerns with faster CPU/GPUs?
++	drm_fd = gem_reopen_driver(drm_fd);
+ 	bufmgr = drm_intel_bufmgr_gem_init(drm_fd, 4096);
+ 	drm_intel_bufmgr_gem_enable_reuse(bufmgr);
+ 
+@@ -4107,6 +4108,7 @@ static void gen12_single_ctx_helper(void)
+ 	drm_intel_gem_context_destroy(context1);
+ 	drm_intel_bufmgr_destroy(bufmgr);
+ 	__perf_close(stream_fd);
++	close(drm_fd);
+ }
+ 
+ static void
+-- 
+2.27.0
 
-It's a balancing between trying to keep the original test where we are
-closing handles as go along and keeping some around. On the slow atom
-with debug enabled, it would complete a few hundred cycles in the 100ms
-loop. So I picked 256 so that it would start evicting some old handles
-on some passes.
-
-For the purpose of hitting the bookmark, we just need to hit one case
-with more than one element. And I manually verified that the test case
-was seeing contention at that point, i.e. we released the spinlock so
-that another close_object was seeing the other bookmarks in its
-obj->lut_list walk. So I'm confident this will hit the path in question
-in CI, I'm not happy that it can't prove it did :|
-
-[At the extreme, we could look at the fairness of close_object!]
-
-> Looks like a good way to stress things.
-> 
-> Reviewed-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
-
-Ta,
--Chris
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
