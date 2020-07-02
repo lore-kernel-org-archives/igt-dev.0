@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [205.139.110.61])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A91DC6E199
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Jul 2020 18:16:30 +0000 (UTC)
-Received: by mail-qt1-f197.google.com with SMTP id y5so19861344qto.10
- for <igt-dev@lists.freedesktop.org>; Thu, 02 Jul 2020 11:16:13 -0700 (PDT)
-Message-ID: <5fcb1490dd12b0e2da3fbb34e5431ab3ce162839.camel@redhat.com>
-From: Lyude Paul <lyude@redhat.com>
-Date: Thu, 02 Jul 2020 14:16:11 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D4F66E182
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Jul 2020 20:17:06 +0000 (UTC)
+From: "Shankar, Uma" <uma.shankar@intel.com>
+Date: Thu, 2 Jul 2020 20:17:01 +0000
+Message-ID: <E7C9878FBA1C6D42A1CA3F62AEB6945F825A9910@BGSMSX104.gar.corp.intel.com>
+References: <20200630160344.15886-1-imre.deak@intel.com>
+In-Reply-To: <20200630160344.15886-1-imre.deak@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] Getting reviews for nouveau contributions in igt?
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_flip: Check for link
+ reset during TS calibration as well
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,49 +18,196 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: lyude@redhat.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: IGT development <igt-dev@lists.freedesktop.org>
-Cc: nouveau <nouveau@lists.freedesktop.org>
+To: "Deak, Imre" <imre.deak@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi! I haven't had much luck asking around in IRC, so I figured this would be the
-next place to start. As many of you know I've been working on getting nouveau
-into good shape with igt-gpu-tools, now that we've finally finished implementing
-CRC support thannks to nvidia's help. I should note that the patches for this
-have been accepted into nouveau, Ben's just working on rebasing them on top of
-some of the display refactoring + other stuff he's been working on. So they
-should appear in drm-tip in the near future, but they're still available on
-patchwork for anyone who wants to try them:
 
-   https://patchwork.freedesktop.org/series/78803/
-(also needs https://patchwork.freedesktop.org/series/78915/ )
 
-ANYWAY-the first question I had was whether anyone on here would be willing to
-help me with getting acks and/or reviews for some of the nouveau-related igt
-patches I've sent upstream? One of the patch series adds some nouveau-specific
-CRC tests:
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Imre Deak
+> Sent: Tuesday, June 30, 2020 9:34 PM
+> To: igt-dev@lists.freedesktop.org
+> Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_flip: Check for link reset during TS
+> calibration as well
+> 
+> The timestamp calibration can fail when using certain monitors with a behavior
+> described in
+> 
+> commit 60e8be7ccc72086a88d2eff3bcd02495fad5fa46
+> Author: Imre Deak <imre.deak@intel.com>
+> Date:   Mon May 11 22:08:53 2020 +0300
+> 
+>     tests/kms_flip: Retry test in case of a DP/HDMI link reset
+> 
+> As in the above commit, retry the calibration once if a hotplug was detected
+> during the calibration.
 
-   https://patchwork.freedesktop.org/series/74811/
+Change looks good to me.
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
 
-The others add some missing bits to some basic kms tests that I noticed while
-doing CRC bringup:
-
-   https://patchwork.freedesktop.org/series/74806/ - fixes false-positives in
-   kms_plane plane-position-hole tests
-
-   https://patchwork.freedesktop.org/series/74808/ - adds a test to
-   kms_pipe_crc_basic to exercise disabling CRC capture on a pipe immediately
-   after said pipe being disabled.
-
-The second question that I had is in the future, for adding nouveau-specific
-tests is it acceptable for me to just get reviews from other nouveau developers
-or should I be trying to pull people in from this mailing list from outside the
-project?
-
+> Signed-off-by: Imre Deak <imre.deak@intel.com>
+> ---
+>  tests/kms_flip.c | 75 +++++++++++++++++++++++++++++++++---------------
+>  1 file changed, 52 insertions(+), 23 deletions(-)
+> 
+> diff --git a/tests/kms_flip.c b/tests/kms_flip.c index 3a7314ad..86c5e871 100755
+> --- a/tests/kms_flip.c
+> +++ b/tests/kms_flip.c
+> @@ -1115,7 +1115,7 @@ static void free_test_output(struct test_output *o)
+>  	}
+>  }
+> 
+> -static void calibrate_ts(struct test_output *o, int crtc_idx)
+> +static bool calibrate_ts(struct test_output *o, int crtc_idx)
+>  {
+>  #define CALIBRATE_TS_STEPS 16
+>  	drmVBlank wait;
+> @@ -1125,6 +1125,7 @@ static void calibrate_ts(struct test_output *o, int
+> crtc_idx)
+>  	double expected;
+>  	double mean;
+>  	double stddev;
+> +	bool failed = false;
+>  	int n;
+> 
+>  	memset(&wait, 0, sizeof(wait));
+> @@ -1176,7 +1177,18 @@ static void calibrate_ts(struct test_output *o, int
+> crtc_idx)
+>  			igt_assert_eq(errno, EINTR);
+>  		}
+>  		igt_assert(read(drm_fd, &ev, sizeof(ev)) == sizeof(ev));
+> -		igt_assert_eq(ev.sequence, last_seq + 1);
+> +
+> +		if (failed)
+> +			continue;
+> +
+> +		if (ev.sequence != last_seq + 1) {
+> +			igt_debug("Unexpected frame sequence %d vs. expected
+> %d\n",
+> +				  ev.sequence, last_seq + 1);
+> +			failed = true;
+> +
+> +			/* Continue to flush all the events queued up */
+> +			continue;
+> +		}
+> 
+>  		now = ev.tv_sec;
+>  		now *= 1000000;
+> @@ -1188,6 +1200,9 @@ static void calibrate_ts(struct test_output *o, int
+> crtc_idx)
+>  		last_seq = ev.sequence;
+>  	}
+> 
+> +	if (failed)
+> +		return false;
+> +
+>  	expected = mode_frame_time(o);
+> 
+>  	mean = igt_stats_get_mean(&stats);
+> @@ -1207,6 +1222,30 @@ static void calibrate_ts(struct test_output *o, int
+> crtc_idx)
+>  	}
+> 
+>  	o->vblank_interval = mean;
+> +
+> +	return true;
+> +}
+> +
+> +/*
+> + * Some monitors with odd behavior signal a bad link after waking from
+> +a power
+> + * saving state and the subsequent (successful) modeset. This will
+> +result in a
+> + * link-retraining (DP) or async modeset (HDMI), which in turn makes
+> +the test
+> + * miss vblank/flip events and fail.  Work around this by retrying the
+> +test
+> + * once in case of such a link reset event, which the driver signals
+> +with a
+> + * hotplug event.
+> + */
+> +static bool needs_retry_after_link_reset(struct udev_monitor *mon) {
+> +	bool hotplug_detected;
+> +
+> +	igt_suspend_signal_helper();
+> +	hotplug_detected = igt_hotplug_detected(mon, 3);
+> +	igt_resume_signal_helper();
+> +
+> +	if (hotplug_detected)
+> +		igt_debug("Retrying after a hotplug event\n");
+> +
+> +	return hotplug_detected;
+>  }
+> 
+>  static void __run_test_on_crtc_set(struct test_output *o, int *crtc_idxs, @@ -
+> 1259,6 +1298,9 @@ static void __run_test_on_crtc_set(struct test_output *o, int
+> *crtc_idxs,
+>  		kmstest_dump_mode(&o->kmode[i]);
+> 
+>  retry:
+> +	memset(&o->vblank_state, 0, sizeof(o->vblank_state));
+> +	memset(&o->flip_state, 0, sizeof(o->flip_state));
+> +
+>  	kmstest_unset_all_crtcs(drm_fd, resources);
+> 
+>  	igt_flush_uevents(mon);
+> @@ -1282,8 +1324,13 @@ retry:
+>  	}
+> 
+>  	/* quiescent the hw a bit so ensure we don't miss a single frame */
+> -	if (o->flags & TEST_CHECK_TS)
+> -		calibrate_ts(o, crtc_idxs[0]);
+> +	if (o->flags & TEST_CHECK_TS && !calibrate_ts(o, crtc_idxs[0])) {
+> +		igt_assert(!retried && needs_retry_after_link_reset(mon));
+> +
+> +		retried = true;
+> +
+> +		goto retry;
+> +	}
+> 
+>  	if (o->flags & TEST_BO_TOOBIG) {
+>  		int err = do_page_flip(o, o->fb_ids[1], true); @@ -1316,28
+> +1363,10 @@ retry:
+>  	if (o->flags & TEST_VBLANK)
+>  		state_ok &= check_final_state(o, &o->vblank_state, elapsed);
+> 
+> -	/*
+> -	 * Some monitors with odd behavior signal a bad link after waking from
+> -	 * a power saving state and the subsequent (successful) modeset. This
+> -	 * will result in a link-retraining (DP) or async modeset (HDMI),
+> -	 * which in turn makes the test miss vblank/flip events and fail.
+> -	 * Work around this by retrying the test once in case of such a link
+> -	 * reset event, which the driver signals with a hotplug event.
+> -	 */
+>  	if (!state_ok) {
+> -		bool hotplug_detected;
+> +		igt_assert(!retried && needs_retry_after_link_reset(mon));
+> 
+> -		igt_suspend_signal_helper();
+> -		if (!retried)
+> -			hotplug_detected = igt_hotplug_detected(mon, 3);
+> -		igt_resume_signal_helper();
+> -
+> -		igt_assert(!retried && hotplug_detected);
+> -
+> -		igt_debug("Retrying after a hotplug event\n");
+>  		retried = true;
+> -		memset(&o->vblank_state, 0, sizeof(o->vblank_state));
+> -		memset(&o->flip_state, 0, sizeof(o->flip_state));
+> 
+>  		goto retry;
+>  	}
+> --
+> 2.20.1
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
