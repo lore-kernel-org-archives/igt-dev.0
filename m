@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C133A6E20F
- for <igt-dev@lists.freedesktop.org>; Thu,  2 Jul 2020 04:52:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5A61C6E1F6
+ for <igt-dev@lists.freedesktop.org>; Thu,  2 Jul 2020 04:53:00 +0000 (UTC)
 From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Thu,  2 Jul 2020 10:23:06 +0530
-Message-Id: <20200702045307.19202-9-mohammed.khajapasha@intel.com>
+Date: Thu,  2 Jul 2020 10:23:07 +0530
+Message-Id: <20200702045307.19202-10-mohammed.khajapasha@intel.com>
 In-Reply-To: <20200702045307.19202-1-mohammed.khajapasha@intel.com>
 References: <20200702045307.19202-1-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 8/9] tests/kms_atomic_transition: Set
- modeset for enable pipes only
+Subject: [igt-dev] [PATCH i-g-t 9/9] i915/gem_eio: Set modeset for enable
+ pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,48 +24,26 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: arkadiusz.hiler@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Set the modeset for enable pipes only by using max iteration
-from enable pipe count.
+Set modeset for enable pipes only in kms test
 
 Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 ---
- tests/kms_atomic_transition.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tests/i915/gem_eio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index 754a4969..8c1c1d93 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -737,8 +737,8 @@ static void collect_crcs_mask(igt_pipe_crc_t **pipe_crcs, unsigned mask, igt_crc
- static void run_modeset_tests(igt_display_t *display, int howmany, bool nonblocking, bool fencing)
- {
- 	struct igt_fb fbs[2];
--	int i, j;
--	unsigned iter_max = 1 << display->n_pipes;
-+	int i, j = 0;
-+	unsigned iter_max;
- 	igt_pipe_crc_t *pipe_crcs[IGT_MAX_PIPES] = { 0 };
- 	igt_output_t *output;
- 	unsigned width = 0, height = 0;
-@@ -762,6 +762,9 @@ static void run_modeset_tests(igt_display_t *display, int howmany, bool nonblock
- 		igt_plane_t *plane = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
- 		drmModeModeInfo *mode = NULL;
+diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
+index cfc3f668..c5ef61bd 100644
+--- a/tests/i915/gem_eio.c
++++ b/tests/i915/gem_eio.c
+@@ -851,6 +851,8 @@ static void display_helper(igt_display_t *dpy, int *done)
+ 		int pipe;
  
-+		/* count enable pipes to set max iteration */
-+		j += 1;
-+
- 		if (is_i915_device(display->drm_fd))
- 			pipe_crcs[i] = igt_pipe_crc_new(display->drm_fd, i, INTEL_PIPE_CRC_SOURCE_AUTO);
- 
-@@ -785,6 +788,8 @@ static void run_modeset_tests(igt_display_t *display, int howmany, bool nonblock
- 			igt_plane_set_fb(plane, NULL);
- 	}
- 
-+	iter_max = 1 << j;
-+
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 
- 	for (i = 0; i < iter_max; i++) {
+ 		pipe = rand() % dpy->n_pipes;
++		if (!dpy->pipes[pipe].enabled)
++			continue;
+ 		output = igt_get_single_output_for_pipe(dpy, pipe);
+ 		if (!output)
+ 			continue;
 -- 
 2.24.1
 
