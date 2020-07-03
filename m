@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 398FB6EB60
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Jul 2020 11:59:23 +0000 (UTC)
-From: Kunal Joshi <kunal1.joshi@intel.com>
-Date: Fri,  3 Jul 2020 10:33:02 +0530
-Message-Id: <20200703050302.25937-1-kunal1.joshi@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E2E786EB61
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Jul 2020 12:07:54 +0000 (UTC)
+Date: Fri, 3 Jul 2020 17:35:35 +0530
+From: "Melkaveri, Arjun" <arjun.melkaveri@intel.com>
+Message-ID: <20200703120535.GA25159@arjun-NUC8i7BEH>
+References: <20200703103352.24738-1-arjun.melkaveri@intel.com>
+ <159377428922.22925.6510919255626776240@build.alporthouse.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib/igt_chamelium: Wait for connectors
- after replugging them at exit
+Content-Disposition: inline
+In-Reply-To: <159377428922.22925.6510919255626776240@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH] [PATCH i-g-t]lib/sw_sync:Fixing modprobe for
+ sw_sync to return if not supported
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,41 +23,64 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Imre Deak <imre.deak@intel.com>
+On Fri, Jul 03, 2020 at 12:04:49PM +0100, Chris Wilson wrote:
+> Quoting Arjun Melkaveri (2020-07-03 11:33:52)
+> > Few tests that use "igt_require_sw_sync" , would not skip or assert the
+> > test if it fails to load sw_sync module.
+> > 
+> > Mentioned error is seen and test continues executing .
+> > "igt_kmod-DEBUG: Unknown symbol in module sw_sync or unknown parameter"
+> > 
+> > igt_require for modprobe in this file would skip the test if it fails
+> > to load the module.
+> 
+> Which then fails when it is builtin.
+> 
+> > Cc: Chris Wilson <chris@chris-wilson.co.uk>
+> > Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+> > Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
+> > ---
+> >  lib/sw_sync.c | 7 ++++---
+> >  1 file changed, 4 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/lib/sw_sync.c b/lib/sw_sync.c
+> > index e860a2c1..ed8375ca 100644
+> > --- a/lib/sw_sync.c
+> > +++ b/lib/sw_sync.c
+> > @@ -228,16 +228,17 @@ int sync_fence_status(int fence)
+> >         return info.status;
+> >  }
+> >  
+> > -static void modprobe(const char *driver)
+> > +static int modprobe(const char *driver)
+> >  {
+> > -       igt_kmod_load(driver, NULL);
+> > +       return igt_kmod_load(driver, NULL);
+> >  }
+> >  
+> >  static bool kernel_has_sw_sync(void)
+> >  {
+> >         char buf[128];
+> >  
+> > -       modprobe("sw_sync");
+> > +       /* Make sure our Kernel supports sw_sync and the module is loaded. */
+> > +       igt_require(modprobe("sw_sync") == 0);
+> >  
+> >         return kernel_sw_sync_path(buf, sizeof(buf));
+> 
+> It's the return from this function that needs to be checked, and indeed
+> is: igt_require_sw_sync().
+> -Chris
+Test is able to find the path, but throws "Unknown symbol in module
+sw_sync or unknown parameter" error from modprobe-> igt_kmod_load .
+execision continues as Return value from igt_kmod_load is not been checked .
+I put that check only to make sure that modprob is success . 
 
-Making sure all the plugged chamelium ports are connected at exit
-So the FB console restore modeset doesn't happen on a disconnected output,
-resulting in link training failures.
-
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Tested-by: Kunal Joshi <kunal1.joshi@intel.com>
----
- lib/igt_chamelium.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-index 58e01ab7..e8ead97a 100644
---- a/lib/igt_chamelium.c
-+++ b/lib/igt_chamelium.c
-@@ -2538,6 +2538,11 @@ void chamelium_deinit(struct chamelium *chamelium)
- 	for (i = 0; i < chamelium->port_count; i++)
- 		chamelium_plug(chamelium, &chamelium->ports[i]);
- 
-+	igt_assert(chamelium->drm_fd != -1);
-+	for (i = 0; i < chamelium->port_count; i++)
-+		wait_for_connected_state(chamelium->drm_fd,
-+					 &chamelium->ports[i].connector_id, 1);
-+
- 	/* Destroy any EDIDs we created to make sure we don't leak them */
- 	igt_list_for_each_entry_safe(pos, tmp, &chamelium->edids, link) {
- 		for (i = 0; i < CHAMELIUM_MAX_PORTS; i++) {
--- 
-2.25.1
-
+-Arjun 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
