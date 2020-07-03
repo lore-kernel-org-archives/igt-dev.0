@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73C3E6EB56
- for <igt-dev@lists.freedesktop.org>; Fri,  3 Jul 2020 11:04:53 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFB946E311
+ for <igt-dev@lists.freedesktop.org>; Fri,  3 Jul 2020 11:24:59 +0000 (UTC)
+From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Date: Fri,  3 Jul 2020 14:23:33 +0300
+Message-Id: <20200703112333.4237-1-mika.kuoppala@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200703103352.24738-1-arjun.melkaveri@intel.com>
-References: <20200703103352.24738-1-arjun.melkaveri@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri, 03 Jul 2020 12:04:49 +0100
-Message-ID: <159377428922.22925.6510919255626776240@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH] [PATCH i-g-t]lib/sw_sync:Fixing modprobe for
- sw_sync to return if not supported
+Subject: [igt-dev] [PATCH i-g-t] lib: Fix interface descriptor fills
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,61 +14,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Arjun Melkaveri (2020-07-03 11:33:52)
-> Few tests that use "igt_require_sw_sync" , would not skip or assert the
-> test if it fails to load sw_sync module.
-> 
-> Mentioned error is seen and test continues executing .
-> "igt_kmod-DEBUG: Unknown symbol in module sw_sync or unknown parameter"
-> 
-> igt_require for modprobe in this file would skip the test if it fails
-> to load the module.
-
-Which then fails when it is builtin.
-
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-> Signed-off-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
-> ---
->  lib/sw_sync.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/lib/sw_sync.c b/lib/sw_sync.c
-> index e860a2c1..ed8375ca 100644
-> --- a/lib/sw_sync.c
-> +++ b/lib/sw_sync.c
-> @@ -228,16 +228,17 @@ int sync_fence_status(int fence)
->         return info.status;
->  }
->  
-> -static void modprobe(const char *driver)
-> +static int modprobe(const char *driver)
->  {
-> -       igt_kmod_load(driver, NULL);
-> +       return igt_kmod_load(driver, NULL);
->  }
->  
->  static bool kernel_has_sw_sync(void)
->  {
->         char buf[128];
->  
-> -       modprobe("sw_sync");
-> +       /* Make sure our Kernel supports sw_sync and the module is loaded. */
-> +       igt_require(modprobe("sw_sync") == 0);
->  
->         return kernel_sw_sync_path(buf, sizeof(buf));
-
-It's the return from this function that needs to be checked, and indeed
-is: igt_require_sw_sync().
--Chris
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Rm9yIGdlbjgrIHdlIG5lZWQgdG8gaW5jcmVtZW50IHRoZSBwb2ludGVyIGZvciBpbnRlcmZhY2UK
+ZGVzY3JpcHRvciBzaXplIGFtb3VudC4gT3RoZXJ3aXNlIHRoZSBuZXh0IGluZGlyZWN0IGl0ZW0K
+aW50cm9kdWNlZCB3aWxsIG92ZXJ3cml0ZSBvdXIgZGVzY3JpcHRvci4KCkFwcGFyZW50bHkgdGhp
+cyBoYXMgbm90IGNhdXNlZCBtdWNoIGhhdm9jIGFzIGludGVyZmFjZQpkZXNjcyBoYXMgYmVlbiB0
+aGUgbGFzdCBpdGVtLgoKQ2M6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6
+eW5za2lAaW50ZWwuY29tPgpDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28u
+dWs+ClNpZ25lZC1vZmYtYnk6IE1pa2EgS3VvcHBhbGEgPG1pa2Eua3VvcHBhbGFAbGludXguaW50
+ZWwuY29tPgotLS0KIGxpYi9ncHVfY21kcy5jIHwgNCArKysrCiAxIGZpbGUgY2hhbmdlZCwgNCBp
+bnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvbGliL2dwdV9jbWRzLmMgYi9saWIvZ3B1X2NtZHMu
+YwppbmRleCA0MTcyNTNhNy4uODExNTZkMjUgMTAwNjQ0Ci0tLSBhL2xpYi9ncHVfY21kcy5jCisr
+KyBiL2xpYi9ncHVfY21kcy5jCkBAIC0zNjMsNiArMzYzLDggQEAgZ2VuOF9maWxsX2ludGVyZmFj
+ZV9kZXNjcmlwdG9yKHN0cnVjdCBpbnRlbF9iYiAqaWJiLAogCiAJaWRkLT5kZXNjNi5udW1fdGhy
+ZWFkc19pbl90ZyA9IDE7CiAKKwlpbnRlbF9iYl9wdHJfYWRkKGliYiwgc2l6ZW9mKCppZGQpKTsK
+KwogCXJldHVybiBvZmZzZXQ7CiB9CiAKQEAgLTM5OSw2ICs0MDEsOCBAQCBnZW4xMV9maWxsX2lu
+dGVyZmFjZV9kZXNjcmlwdG9yKHN0cnVjdCBpbnRlbF9iYiAqaWJiLAogCiAJaWRkLT5kZXNjNi5u
+dW1fdGhyZWFkc19pbl90ZyA9IDE7CiAKKwlpbnRlbF9iYl9wdHJfYWRkKGliYiwgc2l6ZW9mKCpp
+ZGQpKTsKKwogCXJldHVybiBvZmZzZXQ7CiB9CiAKLS0gCjIuMTcuMQoKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0
+LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
+bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
