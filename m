@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com
- [IPv6:2a00:1450:4864:20::542])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F69B6EC3A
- for <igt-dev@lists.freedesktop.org>; Sun,  5 Jul 2020 19:45:07 +0000 (UTC)
-Received: by mail-ed1-x542.google.com with SMTP id by13so22999924edb.11
- for <igt-dev@lists.freedesktop.org>; Sun, 05 Jul 2020 12:45:07 -0700 (PDT)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 79B0A89B05
+ for <igt-dev@lists.freedesktop.org>; Sun,  5 Jul 2020 20:45:01 +0000 (UTC)
+From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Date: Sun, 5 Jul 2020 20:44:58 +0000
+Message-ID: <2361cffb125345e9856d301c0b6218d6@intel.com>
 References: <20200622135900.3227-1-juhapekka.heikkila@gmail.com>
  <6C6F3077F20030489816322B9AE9C6150CE48D5D@pgsmsx114.gar.corp.intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <51f63b91-dac6-4af0-82ef-73d0dd8f3242@gmail.com>
-Date: Sun, 5 Jul 2020 22:44:53 +0300
-MIME-Version: 1.0
-In-Reply-To: <6C6F3077F20030489816322B9AE9C6150CE48D5D@pgsmsx114.gar.corp.intel.com>
+ <51f63b91-dac6-4af0-82ef-73d0dd8f3242@gmail.com>
+In-Reply-To: <51f63b91-dac6-4af0-82ef-73d0dd8f3242@gmail.com>
 Content-Language: en-US
+MIME-Version: 1.0
 Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_flip_tiling: remove
  cut'n'paste
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -22,20 +20,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, Tomi Sarvela <tomi.p.sarvela@intel.com>, "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>, "Hiler, Arkadiusz" <arkadiusz.hiler@intel.com>
+To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Sarvela,
+ Tomi P" <tomi.p.sarvela@intel.com>, "Hiler, Arkadiusz" <arkadiusz.hiler@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
+
+If I see any failures (pre/post merge) on the new tests, I will find a similar bug (if existing) and associate the failures.
+
+Thanks,
+Lakshmi.  
+
+-----Original Message-----
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com> 
+Sent: Sunday, July 5, 2020 9:45 PM
+To: igt-dev@lists.freedesktop.org; Sarvela, Tomi P <tomi.p.sarvela@intel.com>; Vudum, Lakshminarayana <lakshminarayana.vudum@intel.com>; Hiler, Arkadiusz <arkadiusz.hiler@intel.com>
+Cc: B, Jeevan <jeevan.b@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_flip_tiling: remove cut'n'paste
 
 Hi guys,
 
-this patch will change names of subtests on kms_flip_tiling. I'm sending 
-you guys list of tests which will get new name as we did agree with ivyl 
-and tsa earlier on irc so you can adapt ci history. I'll push this patch 
-to igt once some of you guys have acked this change in ci regard.
+this patch will change names of subtests on kms_flip_tiling. I'm sending you guys list of tests which will get new name as we did agree with ivyl and tsa earlier on irc so you can adapt ci history. I'll push this patch to igt once some of you guys have acked this change in ci regard.
 
 "flip-changes-tiling"    -> "flip-x-tiled-to-linear"
 "flip-changes-tiling-Y"  -> "flip-y-tiled-to-linear"
@@ -55,21 +62,23 @@ On 24.6.2020 17.46, B, Jeevan wrote:
 > Patch looks good to me.
 > 
 >> -----Original Message-----
->> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Juha-
->> Pekka Heikkila
+>> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of 
+>> Juha- Pekka Heikkila
 >> Sent: Monday, June 22, 2020 7:29 PM
 >> To: igt-dev@lists.freedesktop.org
->> Subject: [igt-dev] [PATCH i-g-t] tests/kms_flip_tiling: remove cut'n'paste
+>> Subject: [igt-dev] [PATCH i-g-t] tests/kms_flip_tiling: remove 
+>> cut'n'paste
 >>
->> convert all tests to be created in nested for-loops which will create tests for all
->> flip changes.
+>> convert all tests to be created in nested for-loops which will create 
+>> tests for all flip changes.
 >>
 >> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 >> ---
->> tests/kms_flip_tiling.c | 186 +++++++---------------------------------
+>> tests/kms_flip_tiling.c | 186 
+>> +++++++---------------------------------
 >> 1 file changed, 33 insertions(+), 153 deletions(-)
 >>
->> diff --git a/tests/kms_flip_tiling.c b/tests/kms_flip_tiling.c index
+>> diff --git a/tests/kms_flip_tiling.c b/tests/kms_flip_tiling.c index 
 >> fb79de15..329e0bda 100644
 >> --- a/tests/kms_flip_tiling.c
 >> +++ b/tests/kms_flip_tiling.c
