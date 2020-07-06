@@ -1,133 +1,55 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon,  6 Jul 2020 10:59:00 +0100
-Message-Id: <20200706095900.802304-1-chris@chris-wilson.co.uk>
+Date: Mon,  6 Jul 2020 13:15:18 +0100
+Message-Id: <20200706121520.967972-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_close: Adapt to allow duplicate
- handles
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: [Intel-gfx] [PATCH i-g-t 1/3] lib/i915: Report unknown device as
+ the future
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-With an upcoming change, we can relax the rule about handles not being
-duplicated in the execocbj[]. Duplicate handles must not otherwise
-conflict in their placements (e.g. two EXEC_OBJECT_PINNED at different
-offsets), but otherwise if they are able to be resolved to the same GPU
-address, then the operation is harmless and decreed legal.
-
-Since this is a relaxation in the negative ABI, update the test case to
-allow the permissible duplicate handles.
+Since we likely know all the old devices, an unknown device is most
+likely a future device, so use -1u instead of 0 for its generation.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/i915/gem_close.c | 51 ++++++++++++++++++++++++++++++++++++------
- 1 file changed, 44 insertions(+), 7 deletions(-)
+ lib/intel_device_info.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/i915/gem_close.c b/tests/i915/gem_close.c
-index 4fdc1ad79..7765d0d90 100644
---- a/tests/i915/gem_close.c
-+++ b/tests/i915/gem_close.c
-@@ -24,21 +24,57 @@
- #include "i915/gem.h"
- #include "igt.h"
- 
--static bool has_duplicate(int err)
-+static int batch_create(int fd)
-+{
-+	const uint32_t bbe = MI_BATCH_BUFFER_END;
-+	uint32_t handle;
-+
-+	handle = gem_create(fd, 4096);
-+	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
-+
-+	return handle;
-+}
-+
-+static int allows_duplicate(int fd)
-+{
-+	struct drm_i915_gem_exec_object2 obj[2] = {
-+		{ .handle = batch_create(fd), },
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(obj),
-+		.buffer_count = 1,
-+	};
-+	int err;
-+
-+	gem_execbuf(fd, &execbuf);
-+
-+	obj[1] = obj[0];
-+	execbuf.buffer_count = 2;
-+
-+	err = __gem_execbuf(fd, &execbuf);
-+	gem_close(fd, obj[0].handle);
-+
-+	return err;
-+}
-+
-+static bool is_duplicate(int err)
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 21f7a9570..dfa43f490 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -447,11 +447,11 @@ out:
+  * Computes the Intel GFX generation for the given device id.
+  *
+  * Returns:
+- * The GFX generation on successful lookup, 0 on failure.
++ * The GFX generation on successful lookup, -1u on failure.
+  */
+ unsigned intel_gen(uint16_t devid)
  {
- 	return err == -EINVAL || err == -EALREADY;
+-	return ffs(intel_get_device_info(devid)->gen);
++	return ffs(intel_get_device_info(devid)->gen) ?: -1u;
  }
  
- static void test_many_handles(int fd)
- {
--	uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct drm_i915_gem_execbuffer2 execbuf;
- 	struct drm_i915_gem_exec_object2 obj[2];
- 	uint32_t clones[128]; /* XXX try with 1024 */
- 	uint32_t original;
-+	int expected;
-+
-+	expected = allows_duplicate(fd);
-+	if (expected)
-+		igt_assert(is_duplicate(expected));
- 
--	original = gem_create(fd, 4096);
--	gem_write(fd, original, 0, &bbe, sizeof(bbe));
-+	original = batch_create(fd);
- 
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	execbuf.buffers_ptr = to_user_pointer(obj);
-@@ -54,7 +90,8 @@ static void test_many_handles(int fd)
- 		gem_execbuf(fd, &execbuf);
- 	}
- 
--	/* We do not allow the sam object to be referenced multiple times
-+	/*
-+	 * We do not allow the sam object to be referenced multiple times
- 	 * within an execbuf; hence why this practice of cloning a handle
- 	 * is only found within test cases.
- 	 */
-@@ -62,11 +99,11 @@ static void test_many_handles(int fd)
- 	obj[0].handle = original;
- 	for (int i = 0; i < ARRAY_SIZE(clones); i++) {
- 		obj[1].handle = clones[i];
--		igt_assert(has_duplicate(__gem_execbuf(fd, &execbuf)));
-+		igt_assert_eq(__gem_execbuf(fd, &execbuf), expected);
- 	}
- 	/* Any other clone pair should also be detected */
- 	obj[1].handle = clones[0];  /* (last, first) */
--	igt_assert(has_duplicate(__gem_execbuf(fd, &execbuf)));
-+	igt_assert_eq(__gem_execbuf(fd, &execbuf), expected);
- 	execbuf.buffer_count = 1;
- 
- 	/* Now close the original having used every clone */
+ /**
 -- 
 2.27.0
 
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
