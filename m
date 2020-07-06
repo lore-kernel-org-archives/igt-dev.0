@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [207.211.31.81])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CFFBC897F3
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Jul 2020 17:26:50 +0000 (UTC)
-Received: by mail-qv1-f70.google.com with SMTP id s2so9861991qvn.19
- for <igt-dev@lists.freedesktop.org>; Mon, 06 Jul 2020 10:26:43 -0700 (PDT)
-Message-ID: <61bcc08133762bf5f6e358873493cd116eb49fdf.camel@redhat.com>
-From: Lyude Paul <lyude@redhat.com>
-Date: Mon, 06 Jul 2020 13:26:41 -0400
-In-Reply-To: <20200703050302.25937-1-kunal1.joshi@intel.com>
-References: <20200703050302.25937-1-kunal1.joshi@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B389689A75
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Jul 2020 17:28:17 +0000 (UTC)
+Date: Mon, 6 Jul 2020 19:28:12 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20200706172812.GA4948@zkempczy-mobl2>
+References: <20200706133917.1577451-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_chamelium: Wait for connectors
- after replugging them at exit
+Content-Disposition: inline
+In-Reply-To: <20200706133917.1577451-1-arkadiusz.hiler@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] Build api_intel_bb with Autotools too
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,47 +17,30 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: lyude@redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Kunal Joshi <kunal1.joshi@intel.com>, igt-dev@lists.freedesktop.org
+To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-
-On Fri, 2020-07-03 at 10:33 +0530, Kunal Joshi wrote:
-> From: Imre Deak <imre.deak@intel.com>
-> 
-> Making sure all the plugged chamelium ports are connected at exit
-> So the FB console restore modeset doesn't happen on a disconnected output,
-> resulting in link training failures.
-> 
-> Signed-off-by: Imre Deak <imre.deak@intel.com>
-> Tested-by: Kunal Joshi <kunal1.joshi@intel.com>
-> ---
->  lib/igt_chamelium.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-> index 58e01ab7..e8ead97a 100644
-> --- a/lib/igt_chamelium.c
-> +++ b/lib/igt_chamelium.c
-> @@ -2538,6 +2538,11 @@ void chamelium_deinit(struct chamelium *chamelium)
->  	for (i = 0; i < chamelium->port_count; i++)
->  		chamelium_plug(chamelium, &chamelium->ports[i]);
->  
-> +	igt_assert(chamelium->drm_fd != -1);
-> +	for (i = 0; i < chamelium->port_count; i++)
-> +		wait_for_connected_state(chamelium->drm_fd,
-> +					 &chamelium->ports[i].connector_id, 1);
-> +
->  	/* Destroy any EDIDs we created to make sure we don't leak them */
->  	igt_list_for_each_entry_safe(pos, tmp, &chamelium->edids, link) {
->  		for (i = 0; i < CHAMELIUM_MAX_PORTS; i++) {
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gTW9uLCBKdWwgMDYsIDIwMjAgYXQgMDQ6Mzk6MTdQTSArMDMwMCwgQXJrYWRpdXN6IEhpbGVy
+IHdyb3RlOgo+IFRlc3QgaW50cm9kdWNlZCBpbiA3NWJjYWY3YTYwOWQgKCJ0ZXN0cy9hcGlfaW50
+ZWxfYmI6IEFkZCBpbnRlbF9iYiBBUEkgdGVzdCIpCj4gCj4gQ2M6IFpiaWduaWV3IEtlbXBjennF
+hHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgo+IFNpZ25lZC1vZmYtYnk6IEFy
+a2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6LmhpbGVyQGludGVsLmNvbT4KPiAtLS0KPiAgdGVzdHMv
+TWFrZWZpbGUuc291cmNlcyB8IDMgKysrCj4gIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMo
+KykKPiAKPiBkaWZmIC0tZ2l0IGEvdGVzdHMvTWFrZWZpbGUuc291cmNlcyBiL3Rlc3RzL01ha2Vm
+aWxlLnNvdXJjZXMKPiBpbmRleCBhZjkwMGJjZi4uNTdmOGUwZWQgMTAwNjQ0Cj4gLS0tIGEvdGVz
+dHMvTWFrZWZpbGUuc291cmNlcwo+ICsrKyBiL3Rlc3RzL01ha2VmaWxlLnNvdXJjZXMKPiBAQCAt
+MTA0LDYgKzEwNCw5IEBAIFRFU1RTX3Byb2dzID0gXAo+ICAJdmdlbV9zbG93IFwKPiAgCSQoTlVM
+TCkKPiAgCj4gK1RFU1RTX3Byb2dzICs9IGFwaV9pbnRlbF9iYgo+ICthcGlfaW50ZWxfYmJfU09V
+UkNFUyA9IGk5MTUvYXBpX2ludGVsX2JiLmMKPiArCj4gIFRFU1RTX3Byb2dzICs9IHN5c2ZzX2hl
+YXJ0YmVhdF9pbnRlcnZhbAo+ICBzeXNmc19oZWFydGJlYXRfaW50ZXJ2YWxfU09VUkNFUyA9IGk5
+MTUvc3lzZnNfaGVhcnRiZWF0X2ludGVydmFsLmMKPiAgCgpZZXMsIEkgZm9yZ290IGFib3V0IGF1
+dG90b29scy4gCgpSZXZpZXdlZC1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5r
+ZW1wY3p5bnNraUBpbnRlbC5jb20+Cgo+IC0tIAo+IDIuMjUuNAo+IApfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
+ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
