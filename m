@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (mail.fireflyinternet.com [109.228.58.192])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BCACD89BAF
- for <igt-dev@lists.freedesktop.org>; Mon,  6 Jul 2020 08:53:18 +0000 (UTC)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1FC9D89F4A
+ for <igt-dev@lists.freedesktop.org>; Mon,  6 Jul 2020 09:10:43 +0000 (UTC)
+Message-ID: <00257ae0b8e36c9f9782bb5a38402e008c5a0058.camel@linux.intel.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Mon, 06 Jul 2020 11:10:38 +0200
+In-Reply-To: <20200703085542.9226-1-marcin.bernatowicz@intel.com>
+References: <20200703085542.9226-1-marcin.bernatowicz@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200630232337.20135-1-ranjeet1.kumar@intel.com>
-References: <20200630232337.20135-1-ranjeet1.kumar@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 06 Jul 2020 09:53:08 +0100
-Message-ID: <159402558827.7245.8917311048243066923@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH] [PATCH i-g-t]
- i915/gem_pipe_control_store_loop: added description for test case
+Subject: Re: [igt-dev] [RFC, i-g-t,
+ v3] tests/device_reset: Test device sysfs reset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,38 +21,351 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, ranjeet1.kumar@intel.com
+To: Marcin Bernatowicz <marcin.bernatowicz@intel.com>, igt-dev@lists.freedesktop.org
+Cc: michal.winiarski@intel.com, rodrigo.vivi@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting ranjeet1.kumar@intel.com (2020-07-01 00:23:37)
-> From: Ranjeet kumar <ranjeet1.kumar@intel.com>
+On Fri, 2020-07-03 at 10:55 +0200, Marcin Bernatowicz wrote:
+> Device reset is initiated by writing "1" to reset sysfs file,
+> which should initiate device FLR if supported by device.
 > 
-> Added test description for subtest.
+> Test scenarios:
+> 1. unbind driver from device, initiate sysfs reset, rebind driver to
+> device
+> 2. device reset with bound driver
 > 
-> Cc: Melkaveri, Arjun <Arjun.Melkaveri@intel.com>
-> Signed-off-by: Ranjeet kumar <ranjeet1.kumar@intel.com>
+> v2: removed unbind-rebind (duplicates core_hotunplug@unbind-rebind)
+>     added healthcheck to each test (Janusz)
+> v3: after review corrections (renamed sysfs_fds to device_fds,
+>     corrected not closed file descriptor, removed variable length array)
+> 
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
 > ---
->  tests/i915/gem_pipe_control_store_loop.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  tests/device_reset.c | 280 +++++++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build    |   1 +
+>  2 files changed, 281 insertions(+)
+>  create mode 100644 tests/device_reset.c
 > 
-> diff --git a/tests/i915/gem_pipe_control_store_loop.c b/tests/i915/gem_pipe_control_store_loop.c
-> index e44e9fb53..a9ff66895 100644
-> --- a/tests/i915/gem_pipe_control_store_loop.c
-> +++ b/tests/i915/gem_pipe_control_store_loop.c
-> @@ -181,9 +181,12 @@ igt_main
->                 igt_assert(batch);
->         }
->  
-> +       igt_describe("Creates new buffer each time, emit commands and send it to ring"
-> +                    " for execution.")
+> diff --git a/tests/device_reset.c b/tests/device_reset.c
+> new file mode 100644
+> index 000000000..453b72fae
+> --- /dev/null
+> +++ b/tests/device_reset.c
+> @@ -0,0 +1,280 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright(c) 2020 Intel Corporation. All rights reserved.
+> + */
+> +#include <fcntl.h>
+> +#include <sys/ioctl.h>
+> +#include <sys/stat.h>
+> +
+> +#include "i915/gem.h"
+> +#include "igt.h"
+> +#include "igt_device_scan.h"
+> +#include "igt_sysfs.h"
+> +
+> +IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
+> +
+> +
+> +#define DEV_PATH_LEN 80
+> +#define DEV_BUS_ADDR_LEN 13 /* addr has form 0000:00:00.0 */
+> +
+> +/**
+> + * Helper structure containing file descriptors
+> + * and bus address related to tested device
+> + */
+> +struct device_fds {
+> +	struct {
+> +		int dev;
+> +		int dev_dir;
+> +		int drv_dir;
+> +	} fds;
+> +	char dev_bus_addr[DEV_BUS_ADDR_LEN];
+> +};
+> +
+> +static int __open_sysfs_dir(int fd, const char* path)
+> +{
+> +	int sysfs;
+> +
+> +	sysfs = igt_sysfs_open(fd);
+> +	if (sysfs < 0) {
+> +		return -1;
+> +	}
+> +
+> +	fd = openat(sysfs, path, O_DIRECTORY);
+> +	close(sysfs);
+> +	return fd;
+> +}
+> +
+> +static int open_device_sysfs_dir(int fd)
+> +{
+> +	return __open_sysfs_dir(fd, "device");
+> +}
+> +
+> +static int open_driver_sysfs_dir(int fd)
+> +{
+> +	return __open_sysfs_dir(fd, "device/driver");
+> +}
+> +
+> +/**
+> + * device_sysfs_path:
+> + * @fd: opened device file descriptor
+> + * @path: buffer to store sysfs path to device directory
+> + *
+> + * Returns:
+> + * On successfull path resolution sysfs path to device directory,
+> + * NULL otherwise
+> + */
+> +static char *device_sysfs_path(int fd, char *path)
+> +{
+> +	char sysfs[DEV_PATH_LEN];
+> +
+> +	if (!igt_sysfs_path(fd, sysfs, sizeof(sysfs)))
+> +		return NULL;
+> +
+> +	if (DEV_PATH_LEN <= (strlen(sysfs) + strlen("/device")))
+> +		return NULL;
+> +
+> +	strcat(sysfs, "/device");
+> +
+> +	return realpath(sysfs, path);
+> +}
+> +
+> +static void init_device_fds(struct device_fds *dev)
+> +{
+> +	char dev_path[PATH_MAX];
+> +	char *addr_pos;
+> +
+> +	igt_debug("open device\n");
+> +	/**
+> +	 * As subtests must be able to close examined devices
+> +	 * completely, don't use drm_open_driver() as it keeps
+> +	 * a device file descriptor open for exit handler use.
+> +	 */
+> +	dev->fds.dev = __drm_open_driver(DRIVER_ANY);
+> +	igt_assert_fd(dev->fds.dev);
+> +	if (is_i915_device(dev->fds.dev))
+> +		igt_require_gem(dev->fds.dev);
+> +
+> +	igt_assert(device_sysfs_path(dev->fds.dev, dev_path));
+> +	addr_pos = strrchr(dev_path, '/');
+> +	igt_assert(addr_pos);
+> +	igt_assert_lt(0, snprintf(dev->dev_bus_addr,
+> +				  sizeof(dev->dev_bus_addr),
+> +				  "%s", addr_pos + 1));
 
-i++; /* post increments i by one, returns the old value */
+NIT: Taking into account your comment above on expected form of device
+bus address, how about:
 
->         igt_subtest("fresh-buffer")
->                 store_pipe_control_loop(false, 2);
+iget_assert_eq(snprintf(...), sizeof(dev->dev_bus_addr) - 1);
 
-That is less valuable than a link to the code.
--Chris
+?
+
+> +
+> +	dev->fds.dev_dir = open_device_sysfs_dir(dev->fds.dev);
+> +	igt_assert_fd(dev->fds.dev_dir);
+> +
+> +	dev->fds.drv_dir = open_driver_sysfs_dir(dev->fds.dev);
+> +	igt_assert_fd(dev->fds.drv_dir);
+> +}
+> +
+> +static int close_if_opened(int *fd)
+> +{
+> +	int rc = 0;
+> +
+> +	if (fd && *fd != -1) {
+> +		rc = close(*fd);
+> +		*fd = -1;
+> +	}
+> +	return rc;
+> +}
+> +
+> +static void cleanup_device_fds(struct device_fds *dev)
+> +{
+> +	igt_ignore_warn(close_if_opened(&dev->fds.dev));
+> +	igt_ignore_warn(close_if_opened(&dev->fds.dev_dir));
+> +	igt_ignore_warn(close_if_opened(&dev->fds.drv_dir));
+> +}
+> +
+> +/**
+> + * is_sysfs_reset_supported:
+> + * @fd: opened device file descriptor
+> + *
+> + * Check if device supports reset based on sysfs file presence.
+> + *
+> + * Returns:
+> + * True if device supports reset, false otherwise.
+> + */
+> +static bool is_sysfs_reset_supported(int fd)
+> +{
+> +	struct stat st;
+> +	int rc;
+> +	int sysfs;
+> +	int reset_fd = -1;
+> +
+> +	sysfs = igt_sysfs_open(fd);
+> +
+> +	if (sysfs >= 0) {
+> +		reset_fd = openat(sysfs, "device/reset", O_WRONLY);
+> +		close(sysfs);
+> +	}
+> +
+> +	if (reset_fd < 0)
+> +		return false;
+> +
+> +	rc = fstat(reset_fd, &st);
+> +	close(reset_fd);
+> +
+> +	if (rc || !S_ISREG(st.st_mode))
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+> +/* Unbind the driver from the device */
+> +static void driver_unbind(struct device_fds *dev)
+> +{
+> +	igt_debug("unbind the driver from the device\n");
+> +	igt_assert(igt_sysfs_set(dev->fds.drv_dir, "unbind",
+> +		   dev->dev_bus_addr));
+> +}
+> +
+> +/* Re-bind the driver to the device */
+> +static void driver_bind(struct device_fds *dev)
+> +{
+> +	igt_debug("rebind the driver to the device\n");
+> +	igt_abort_on_f(!igt_sysfs_set(dev->fds.drv_dir, "bind",
+> +		       dev->dev_bus_addr), "driver rebind failed");
+> +}
+> +
+> +/* Initiate device reset */
+> +static void initiate_device_reset(struct device_fds *dev)
+> +{
+> +	igt_debug("reset device\n");
+> +	igt_assert(igt_sysfs_set(dev->fds.dev_dir, "reset", "1"));
+> +}
+> +
+> +static bool is_i915_wedged(int i915)
+> +{
+> +	int err = 0;
+> +	if (ioctl(i915, DRM_IOCTL_I915_GEM_THROTTLE))
+> +		err = -errno;
+> +	return err == -EIO;
+> +}
+> +
+> +/**
+> + * healthcheck:
+> + * @dev: structure with device descriptor, if descriptor equals -1
+> + * 	 the device is reopened
+> + */
+> +static void healthcheck(struct device_fds *dev)
+> +{
+> +	if (dev->fds.dev == -1) {
+> +		/* refresh device list */
+> +		igt_devices_scan(true);
+> +		igt_debug("reopen the device\n");
+> +		dev->fds.dev = __drm_open_driver(DRIVER_ANY);
+> +	}
+> +	igt_assert_fd(dev->fds.dev);
+> +
+> +	if (is_i915_device(dev->fds.dev))
+> +		igt_assert(!is_i915_wedged(dev->fds.dev));
+> +}
+> +
+> +/**
+> + * set_device_filter:
+> + *
+> + * Sets device filter to ensure subtests always reopen the same device
+> + *
+> + * @dev_path: path to device under tests
+> + */
+> +static void set_device_filter(const char* dev_path)
+> +{
+> +#define FILTER_PREFIX_LEN 4
+> +	char filter[PATH_MAX + FILTER_PREFIX_LEN];
+
+That's OK, but just to clarify the intention behind the comment I gave
+before, I was OK with strlen("sys:") which I assumed should be resolved
+at compile time,  I was only not happy with strlen(dev_path) which
+could be replaced with PATH_MAX or sizeof(dev_path).
+
+Anyways,
+
+Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+
+Thanks,
+Janusz
+
+> +
+> +	igt_assert_lt(FILTER_PREFIX_LEN, snprintf(filter, sizeof(filter),
+> +						  "sys:%s", dev_path));
+> +	igt_device_filter_free_all();
+> +	igt_assert_eq(igt_device_filter_add(filter), 1);
+> +}
+> +
+> +static void unbind_reset_rebind(struct device_fds *dev)
+> +{
+> +	igt_debug("close the device\n");
+> +	close_if_opened(&dev->fds.dev);
+> +
+> +	driver_unbind(dev);
+> +
+> +	initiate_device_reset(dev);
+> +
+> +	driver_bind(dev);
+> +}
+> +
+> +igt_main
+> +{
+> +	struct device_fds dev = { .fds = {-1, -1, -1}, .dev_bus_addr = {0}};
+> +
+> +	igt_fixture {
+> +		char dev_path[PATH_MAX];
+> +
+> +		igt_debug("opening device\n");
+> +		init_device_fds(&dev);
+> +
+> +		/* Make sure subtests always reopen the same device */
+> +		igt_assert(device_sysfs_path(dev.fds.dev, dev_path));
+> +		set_device_filter(dev_path);
+> +
+> +		igt_skip_on(!is_sysfs_reset_supported(dev.fds.dev));
+> +
+> +		igt_set_timeout(60, "device reset tests timed out after 60s");
+> +	}
+> +
+> +	igt_describe("Unbinds driver from device, initiates reset"
+> +		     " then rebinds driver to device");
+> +	igt_subtest("unbind-reset-rebind") {
+> +		unbind_reset_rebind(&dev);
+> +		healthcheck(&dev);
+> +	}
+> +
+> +	igt_describe("Resets device with bound driver");
+> +	igt_subtest("reset-bound") {
+> +		initiate_device_reset(&dev);
+> +		healthcheck(&dev);
+> +	}
+> +
+> +	igt_fixture {
+> +		igt_reset_timeout();
+> +		cleanup_device_fds(&dev);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 28091794f..b0acdf7c0 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -8,6 +8,7 @@ test_progs = [
+>  	'core_setmaster_vs_auth',
+>  	'debugfs_test',
+>  	'dmabuf',
+> +	'device_reset',
+>  	'drm_import_export',
+>  	'drm_mm',
+>  	'drm_read',
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
