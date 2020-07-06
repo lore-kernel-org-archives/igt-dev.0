@@ -1,12 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu,  2 Jul 2020 18:46:20 +0100
-Message-Id: <20200702174620.230048-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200702123908.227124-1-chris@chris-wilson.co.uk>
-References: <20200702123908.227124-1-chris@chris-wilson.co.uk>
+Date: Mon,  6 Jul 2020 10:59:00 +0100
+Message-Id: <20200706095900.802304-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/perf: Instantiate a local drm_fd for
- the unprivileged helper
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_close: Adapt to allow duplicate
+ handles
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,42 +20,110 @@ To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-While the test is blocked, we keep trying the gen12_single_ctx_helper().
-As this is using the parent's drm_fd, all of our context allocations are
-persistent. Reopen the device in the child so that when we exit, our
-allocations are freed along with the process -- avoiding a total memory
-leak if the test is stuck.
+With an upcoming change, we can relax the rule about handles not being
+duplicated in the execocbj[]. Duplicate handles must not otherwise
+conflict in their placements (e.g. two EXEC_OBJECT_PINNED at different
+offsets), but otherwise if they are able to be resolved to the same GPU
+address, then the operation is harmless and decreed legal.
 
-This does not explain why the test was stuck, it just prevents us from
-exacerbating the error condition. Hopefully leaving the system in a more
-debuggable state.
+Since this is a relaxation in the negative ABI, update the test case to
+allow the permissible duplicate handles.
 
-References: https://gitlab.freedesktop.org/drm/intel/-/issues/2126
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 ---
- tests/i915/perf.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/i915/gem_close.c | 51 ++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 44 insertions(+), 7 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index d4ebae30d..92edc9f1f 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -4120,8 +4120,13 @@ gen12_test_single_ctx_render_target_writes_a_counter(void)
+diff --git a/tests/i915/gem_close.c b/tests/i915/gem_close.c
+index 4fdc1ad79..7765d0d90 100644
+--- a/tests/i915/gem_close.c
++++ b/tests/i915/gem_close.c
+@@ -24,21 +24,57 @@
+ #include "i915/gem.h"
+ #include "igt.h"
  
- 	do {
- 		igt_fork_helper(&child) {
-+			/* A local device for local resources. */
-+			drm_fd = gem_reopen_driver(drm_fd);
+-static bool has_duplicate(int err)
++static int batch_create(int fd)
++{
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	uint32_t handle;
 +
- 			igt_drop_root();
- 			gen12_single_ctx_helper();
++	handle = gem_create(fd, 4096);
++	gem_write(fd, handle, 0, &bbe, sizeof(bbe));
 +
-+			close(drm_fd);
- 		}
- 		child_ret = igt_wait_helper(&child);
- 		igt_assert(WEXITSTATUS(child_ret) == EAGAIN ||
++	return handle;
++}
++
++static int allows_duplicate(int fd)
++{
++	struct drm_i915_gem_exec_object2 obj[2] = {
++		{ .handle = batch_create(fd), },
++	};
++	struct drm_i915_gem_execbuffer2 execbuf = {
++		.buffers_ptr = to_user_pointer(obj),
++		.buffer_count = 1,
++	};
++	int err;
++
++	gem_execbuf(fd, &execbuf);
++
++	obj[1] = obj[0];
++	execbuf.buffer_count = 2;
++
++	err = __gem_execbuf(fd, &execbuf);
++	gem_close(fd, obj[0].handle);
++
++	return err;
++}
++
++static bool is_duplicate(int err)
+ {
+ 	return err == -EINVAL || err == -EALREADY;
+ }
+ 
+ static void test_many_handles(int fd)
+ {
+-	uint32_t bbe = MI_BATCH_BUFFER_END;
+ 	struct drm_i915_gem_execbuffer2 execbuf;
+ 	struct drm_i915_gem_exec_object2 obj[2];
+ 	uint32_t clones[128]; /* XXX try with 1024 */
+ 	uint32_t original;
++	int expected;
++
++	expected = allows_duplicate(fd);
++	if (expected)
++		igt_assert(is_duplicate(expected));
+ 
+-	original = gem_create(fd, 4096);
+-	gem_write(fd, original, 0, &bbe, sizeof(bbe));
++	original = batch_create(fd);
+ 
+ 	memset(&execbuf, 0, sizeof(execbuf));
+ 	execbuf.buffers_ptr = to_user_pointer(obj);
+@@ -54,7 +90,8 @@ static void test_many_handles(int fd)
+ 		gem_execbuf(fd, &execbuf);
+ 	}
+ 
+-	/* We do not allow the sam object to be referenced multiple times
++	/*
++	 * We do not allow the sam object to be referenced multiple times
+ 	 * within an execbuf; hence why this practice of cloning a handle
+ 	 * is only found within test cases.
+ 	 */
+@@ -62,11 +99,11 @@ static void test_many_handles(int fd)
+ 	obj[0].handle = original;
+ 	for (int i = 0; i < ARRAY_SIZE(clones); i++) {
+ 		obj[1].handle = clones[i];
+-		igt_assert(has_duplicate(__gem_execbuf(fd, &execbuf)));
++		igt_assert_eq(__gem_execbuf(fd, &execbuf), expected);
+ 	}
+ 	/* Any other clone pair should also be detected */
+ 	obj[1].handle = clones[0];  /* (last, first) */
+-	igt_assert(has_duplicate(__gem_execbuf(fd, &execbuf)));
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), expected);
+ 	execbuf.buffer_count = 1;
+ 
+ 	/* Now close the original having used every clone */
 -- 
 2.27.0
 
