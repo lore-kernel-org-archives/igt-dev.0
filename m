@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 95DBF89C3F
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Jul 2020 14:58:37 +0000 (UTC)
+From: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
+Date: Tue,  7 Jul 2020 16:58:17 +0200
+Message-Id: <20200707145817.17415-1-marcin.bernatowicz@intel.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 07 Jul 2020 13:41:46 -0000
-Message-ID: <159412930654.7661.13405204772458835437@emeril.freedesktop.org>
-References: <20200707131814.17540-1-imre.deak@intel.com>
-In-Reply-To: <20200707131814.17540-1-imre.deak@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
- =?utf-8?q?_starting_with_=5Bi-g-t=2C1/3=5D_lib/igt=5Fchamelium=3A_Sanitiz?=
- =?utf-8?q?e_the_init_error_and_deinit_path?=
+Subject: [igt-dev] [PATCH i-g-t] tests/device_reset: Test device sysfs reset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,127 +14,359 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Imre Deak <imre.deak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: michal.winiarski@intel.com, rodrigo.vivi@intel.com, marcin.bernatowicz@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+Device reset is initiated by writing "1" to reset sysfs file,
+which should initiate PCI device Function Level Reset
+if supported by device.
 
-Series: series starting with [i-g-t,1/3] lib/igt_chamelium: Sanitize the init error and deinit path
-URL   : https://patchwork.freedesktop.org/series/79192/
-State : success
+Test scenarios:
+1. unbind driver from device, initiate sysfs reset, rebind driver to
+device
+2. device reset with bound driver
 
-== Summary ==
+v2: removed unbind-rebind (duplicates core_hotunplug@unbind-rebind)
+    added healthcheck to each test (Janusz)
+v3: after review corrections (renamed sysfs_fds to device_fds,
+    corrected not closed file descriptor, removed variable length array)
+v4: updated description (Martin), snprintf corrections (Janusz),
+    reset-bound added to blacklist as it hangs several gens of hosts (Tomi)
 
-CI Bug Log - changes from CI_DRM_8709 -> IGTPW_4744
-====================================================
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
+---
+ tests/device_reset.c         | 281 +++++++++++++++++++++++++++++++++++
+ tests/intel-ci/blacklist.txt |   3 +
+ tests/meson.build            |   1 +
+ 3 files changed, 285 insertions(+)
+ create mode 100644 tests/device_reset.c
 
-Summary
--------
+diff --git a/tests/device_reset.c b/tests/device_reset.c
+new file mode 100644
+index 000000000..b1181b3be
+--- /dev/null
++++ b/tests/device_reset.c
+@@ -0,0 +1,281 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright(c) 2020 Intel Corporation. All rights reserved.
++ */
++#include <fcntl.h>
++#include <sys/ioctl.h>
++#include <sys/stat.h>
++
++#include "i915/gem.h"
++#include "igt.h"
++#include "igt_device_scan.h"
++#include "igt_sysfs.h"
++
++IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
++
++
++#define DEV_PATH_LEN 80
++#define DEV_BUS_ADDR_LEN 13 /* addr has form 0000:00:00.0 */
++
++/**
++ * Helper structure containing file descriptors
++ * and bus address related to tested device
++ */
++struct device_fds {
++	struct {
++		int dev;
++		int dev_dir;
++		int drv_dir;
++	} fds;
++	char dev_bus_addr[DEV_BUS_ADDR_LEN];
++};
++
++static int __open_sysfs_dir(int fd, const char* path)
++{
++	int sysfs;
++
++	sysfs = igt_sysfs_open(fd);
++	if (sysfs < 0) {
++		return -1;
++	}
++
++	fd = openat(sysfs, path, O_DIRECTORY);
++	close(sysfs);
++	return fd;
++}
++
++static int open_device_sysfs_dir(int fd)
++{
++	return __open_sysfs_dir(fd, "device");
++}
++
++static int open_driver_sysfs_dir(int fd)
++{
++	return __open_sysfs_dir(fd, "device/driver");
++}
++
++/**
++ * device_sysfs_path:
++ * @fd: opened device file descriptor
++ * @path: buffer to store sysfs path to device directory
++ *
++ * Returns:
++ * On successfull path resolution sysfs path to device directory,
++ * NULL otherwise
++ */
++static char *device_sysfs_path(int fd, char *path)
++{
++	char sysfs[DEV_PATH_LEN];
++
++	if (!igt_sysfs_path(fd, sysfs, sizeof(sysfs)))
++		return NULL;
++
++	if (DEV_PATH_LEN <= (strlen(sysfs) + strlen("/device")))
++		return NULL;
++
++	strcat(sysfs, "/device");
++
++	return realpath(sysfs, path);
++}
++
++static void init_device_fds(struct device_fds *dev)
++{
++	char dev_path[PATH_MAX];
++	char *addr_pos;
++
++	igt_debug("open device\n");
++	/**
++	 * As subtests must be able to close examined devices
++	 * completely, don't use drm_open_driver() as it keeps
++	 * a device file descriptor open for exit handler use.
++	 */
++	dev->fds.dev = __drm_open_driver(DRIVER_ANY);
++	igt_assert_fd(dev->fds.dev);
++	if (is_i915_device(dev->fds.dev))
++		igt_require_gem(dev->fds.dev);
++
++	igt_assert(device_sysfs_path(dev->fds.dev, dev_path));
++	addr_pos = strrchr(dev_path, '/');
++	igt_assert(addr_pos);
++	igt_assert_eq(sizeof(dev->dev_bus_addr) - 1,
++		      snprintf(dev->dev_bus_addr, sizeof(dev->dev_bus_addr),
++			       "%s", addr_pos + 1));
++
++	dev->fds.dev_dir = open_device_sysfs_dir(dev->fds.dev);
++	igt_assert_fd(dev->fds.dev_dir);
++
++	dev->fds.drv_dir = open_driver_sysfs_dir(dev->fds.dev);
++	igt_assert_fd(dev->fds.drv_dir);
++}
++
++static int close_if_opened(int *fd)
++{
++	int rc = 0;
++
++	if (fd && *fd != -1) {
++		rc = close(*fd);
++		*fd = -1;
++	}
++	return rc;
++}
++
++static void cleanup_device_fds(struct device_fds *dev)
++{
++	igt_ignore_warn(close_if_opened(&dev->fds.dev));
++	igt_ignore_warn(close_if_opened(&dev->fds.dev_dir));
++	igt_ignore_warn(close_if_opened(&dev->fds.drv_dir));
++}
++
++/**
++ * is_sysfs_reset_supported:
++ * @fd: opened device file descriptor
++ *
++ * Check if device supports reset based on sysfs file presence.
++ *
++ * Returns:
++ * True if device supports reset, false otherwise.
++ */
++static bool is_sysfs_reset_supported(int fd)
++{
++	struct stat st;
++	int rc;
++	int sysfs;
++	int reset_fd = -1;
++
++	sysfs = igt_sysfs_open(fd);
++
++	if (sysfs >= 0) {
++		reset_fd = openat(sysfs, "device/reset", O_WRONLY);
++		close(sysfs);
++	}
++
++	if (reset_fd < 0)
++		return false;
++
++	rc = fstat(reset_fd, &st);
++	close(reset_fd);
++
++	if (rc || !S_ISREG(st.st_mode))
++		return false;
++
++	return true;
++}
++
++/* Unbind the driver from the device */
++static void driver_unbind(struct device_fds *dev)
++{
++	igt_debug("unbind the driver from the device\n");
++	igt_assert(igt_sysfs_set(dev->fds.drv_dir, "unbind",
++		   dev->dev_bus_addr));
++}
++
++/* Re-bind the driver to the device */
++static void driver_bind(struct device_fds *dev)
++{
++	igt_debug("rebind the driver to the device\n");
++	igt_abort_on_f(!igt_sysfs_set(dev->fds.drv_dir, "bind",
++		       dev->dev_bus_addr), "driver rebind failed");
++}
++
++/* Initiate device reset */
++static void initiate_device_reset(struct device_fds *dev)
++{
++	igt_debug("reset device\n");
++	igt_assert(igt_sysfs_set(dev->fds.dev_dir, "reset", "1"));
++}
++
++static bool is_i915_wedged(int i915)
++{
++	int err = 0;
++
++	if (ioctl(i915, DRM_IOCTL_I915_GEM_THROTTLE))
++		err = -errno;
++	return err == -EIO;
++}
++
++/**
++ * healthcheck:
++ * @dev: structure with device descriptor, if descriptor equals -1
++ * 	 the device is reopened
++ */
++static void healthcheck(struct device_fds *dev)
++{
++	if (dev->fds.dev == -1) {
++		/* refresh device list */
++		igt_devices_scan(true);
++		igt_debug("reopen the device\n");
++		dev->fds.dev = __drm_open_driver(DRIVER_ANY);
++	}
++	igt_assert_fd(dev->fds.dev);
++
++	if (is_i915_device(dev->fds.dev))
++		igt_assert(!is_i915_wedged(dev->fds.dev));
++}
++
++/**
++ * set_device_filter:
++ *
++ * Sets device filter to ensure subtests always reopen the same device
++ *
++ * @dev_path: path to device under tests
++ */
++static void set_device_filter(const char* dev_path)
++{
++#define FILTER_PREFIX_LEN 4
++	char filter[PATH_MAX + FILTER_PREFIX_LEN];
++
++	igt_assert_lt(FILTER_PREFIX_LEN, snprintf(filter, sizeof(filter),
++						  "sys:%s", dev_path));
++	igt_device_filter_free_all();
++	igt_assert_eq(igt_device_filter_add(filter), 1);
++}
++
++static void unbind_reset_rebind(struct device_fds *dev)
++{
++	igt_debug("close the device\n");
++	close_if_opened(&dev->fds.dev);
++
++	driver_unbind(dev);
++
++	initiate_device_reset(dev);
++
++	driver_bind(dev);
++}
++
++igt_main
++{
++	struct device_fds dev = { .fds = {-1, -1, -1}, .dev_bus_addr = {0}};
++
++	igt_fixture {
++		char dev_path[PATH_MAX];
++
++		igt_debug("opening device\n");
++		init_device_fds(&dev);
++
++		/* Make sure subtests always reopen the same device */
++		igt_assert(device_sysfs_path(dev.fds.dev, dev_path));
++		set_device_filter(dev_path);
++
++		igt_skip_on(!is_sysfs_reset_supported(dev.fds.dev));
++
++		igt_set_timeout(60, "device reset tests timed out after 60s");
++	}
++
++	igt_describe("Unbinds driver from device, initiates reset"
++		     " then rebinds driver to device");
++	igt_subtest("unbind-reset-rebind") {
++		unbind_reset_rebind(&dev);
++		healthcheck(&dev);
++	}
++
++	igt_describe("Resets device with bound driver");
++	igt_subtest("reset-bound") {
++		initiate_device_reset(&dev);
++		healthcheck(&dev);
++	}
++
++	igt_fixture {
++		igt_reset_timeout();
++		cleanup_device_fds(&dev);
++	}
++}
+diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+index ecbec5080..f9a57cb54 100644
+--- a/tests/intel-ci/blacklist.txt
++++ b/tests/intel-ci/blacklist.txt
+@@ -121,3 +121,6 @@ igt@perf_pmu@cpu-hotplug
+ # Currently fails and leaves the machine in a very bad state, and
+ # causes coverage loss for other tests.
+ igt@core_hotunplug@.*
++
++# hangs several gens of hosts, and has no immediate fix
++igt@device_reset@reset-bound
+\ No newline at end of file
+diff --git a/tests/meson.build b/tests/meson.build
+index 172d18e59..d9253f5f9 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -8,6 +8,7 @@ test_progs = [
+ 	'core_setmaster_vs_auth',
+ 	'debugfs_test',
+ 	'dmabuf',
++	'device_reset',
+ 	'drm_import_export',
+ 	'drm_mm',
+ 	'drm_read',
+-- 
+2.25.1
 
-  **SUCCESS**
+---------------------------------------------------------------------
+Intel Technology Poland sp. z o.o.
+ul. Sowackiego 173 | 80-298 Gdask | Sd Rejonowy Gdask Pnoc | VII Wydzia Gospodarczy Krajowego Rejestru Sdowego - KRS 101882 | NIP 957-07-52-316 | Kapita zakadowy 200.000 PLN.
+Ta wiadomo wraz z zacznikami jest przeznaczona dla okrelonego adresata i moe zawiera informacje poufne. W razie przypadkowego otrzymania tej wiadomoci, prosimy o powiadomienie nadawcy oraz trwae jej usunicie; jakiekolwiek przegldanie lub rozpowszechnianie jest zabronione.
+This e-mail and any attachments may contain confidential material for the sole use of the intended recipient(s). If you are not the intended recipient, please contact the sender and delete all copies; any review or distribution by others is strictly prohibited.
+ 
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4744/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4744 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_render_linear_blits@basic:
-    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8709/fi-tgl-y/igt@gem_render_linear_blits@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4744/fi-tgl-y/igt@gem_render_linear_blits@basic.html
-
-  * igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:
-    - fi-tgl-u2:          [PASS][3] -> [DMESG-WARN][4] ([i915#402])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8709/fi-tgl-u2/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4744/fi-tgl-u2/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_flink_basic@double-flink:
-    - fi-tgl-y:           [DMESG-WARN][5] ([i915#402]) -> [PASS][6] +1 similar issue
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8709/fi-tgl-y/igt@gem_flink_basic@double-flink.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4744/fi-tgl-y/igt@gem_flink_basic@double-flink.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-glk-dsi:         [DMESG-WARN][7] ([i915#1982]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8709/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4744/fi-glk-dsi/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@gt_lrc:
-    - fi-tgl-u2:          [DMESG-FAIL][9] ([i915#1233]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8709/fi-tgl-u2/igt@i915_selftest@live@gt_lrc.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4744/fi-tgl-u2/igt@i915_selftest@live@gt_lrc.html
-
-  * igt@kms_busy@basic@flip:
-    - fi-kbl-x1275:       [DMESG-WARN][11] ([i915#62] / [i915#92] / [i915#95]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8709/fi-kbl-x1275/igt@kms_busy@basic@flip.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4744/fi-kbl-x1275/igt@kms_busy@basic@flip.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - {fi-kbl-7560u}:     [DMESG-WARN][13] ([i915#1982]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8709/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4744/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  
-#### Warnings ####
-
-  * igt@kms_flip@basic-plain-flip@a-dp1:
-    - fi-kbl-x1275:       [DMESG-WARN][15] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][16] ([i915#62] / [i915#92]) +1 similar issue
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8709/fi-kbl-x1275/igt@kms_flip@basic-plain-flip@a-dp1.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4744/fi-kbl-x1275/igt@kms_flip@basic-plain-flip@a-dp1.html
-
-  * igt@kms_force_connector_basic@force-edid:
-    - fi-kbl-x1275:       [DMESG-WARN][17] ([i915#62] / [i915#92]) -> [DMESG-WARN][18] ([i915#62] / [i915#92] / [i915#95]) +4 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8709/fi-kbl-x1275/igt@kms_force_connector_basic@force-edid.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4744/fi-kbl-x1275/igt@kms_force_connector_basic@force-edid.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1233]: https://gitlab.freedesktop.org/drm/intel/issues/1233
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
-  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
-  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
-
-
-Participating hosts (42 -> 36)
-------------------------------
-
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5726 -> IGTPW_4744
-
-  CI-20190529: 20190529
-  CI_DRM_8709: b04f40402fb90e1be9f683434a9821a656be0952 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4744: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4744/index.html
-  IGT_5726: 5da80efbc7a2d5bd7b30c0f9eb4b5d001c99b558 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4744/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
