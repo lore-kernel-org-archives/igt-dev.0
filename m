@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33F1A6E0BA
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Jul 2020 13:18:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A40666E14D
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Jul 2020 13:18:20 +0000 (UTC)
 From: Imre Deak <imre.deak@intel.com>
-Date: Tue,  7 Jul 2020 16:18:13 +0300
-Message-Id: <20200707131814.17540-2-imre.deak@intel.com>
+Date: Tue,  7 Jul 2020 16:18:14 +0300
+Message-Id: <20200707131814.17540-3-imre.deak@intel.com>
 In-Reply-To: <20200707131814.17540-1-imre.deak@intel.com>
 References: <20200707131814.17540-1-imre.deak@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/3] lib/igt_chamelium: Duplicate the
- caller's drm_fd
+Subject: [igt-dev] [PATCH i-g-t 3/3] lib/igt_chamelium: Wait for connectors
+ after replugging them at exit
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,49 +25,35 @@ To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Take a copy of the caller's FD so that the Chamelium lib functions can
-access the DRM file regardless of when the caller closes its own FD.
+Making sure all the plugged chamelium ports are connected at exit
+So the FB console restore modeset doesn't happen on a disconnected output,
+resulting in link training failures.
 
-This is needed at least by the next patch.
-
-Cc: Lyude Paul <lyude@redhat.com>
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
+Cc: Lyude Paul <lyude@redhat.com>
 Signed-off-by: Imre Deak <imre.deak@intel.com>
+Tested-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
 ---
- lib/igt_chamelium.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ lib/igt_chamelium.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-index 5924e5615..90a2d04bb 100644
+index 90a2d04bb..d9fab902d 100644
 --- a/lib/igt_chamelium.c
 +++ b/lib/igt_chamelium.c
-@@ -2485,7 +2485,7 @@ struct chamelium *chamelium_init(int drm_fd)
- 	if (cleanup_instance)
- 		chamelium_deinit(cleanup_instance);
- 
--	chamelium->drm_fd = drm_fd;
-+	chamelium->drm_fd = dup(drm_fd);
- 	IGT_INIT_LIST_HEAD(&chamelium->edids);
- 
- 	if (!chamelium_read_port_mappings(chamelium, drm_fd))
-@@ -2511,6 +2511,8 @@ struct chamelium *chamelium_init(int drm_fd)
- 
- 	return chamelium;
- error:
-+	close(chamelium->drm_fd);
-+
- 	chamelium_deinit_rpc_only(chamelium);
- 
- 	return NULL;
-@@ -2550,6 +2552,8 @@ void chamelium_deinit(struct chamelium *chamelium)
- 		free(pos);
- 	}
- 
-+	close(chamelium->drm_fd);
-+
- 	xmlrpc_client_destroy(chamelium->client);
- 
+@@ -2541,6 +2541,11 @@ void chamelium_deinit(struct chamelium *chamelium)
  	for (i = 0; i < chamelium->port_count; i++)
+ 		chamelium_plug(chamelium, &chamelium->ports[i]);
+ 
++	igt_assert(chamelium->drm_fd != -1);
++	for (i = 0; i < chamelium->port_count; i++)
++		wait_for_connected_state(chamelium->drm_fd,
++					 &chamelium->ports[i].connector_id, 1);
++
+ 	/* Destroy any EDIDs we created to make sure we don't leak them */
+ 	igt_list_for_each_entry_safe(pos, tmp, &chamelium->edids, link) {
+ 		for (i = 0; i < CHAMELIUM_MAX_PORTS; i++) {
 -- 
 2.23.1
 
