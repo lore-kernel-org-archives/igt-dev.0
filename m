@@ -1,12 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 95DBF89C3F
- for <igt-dev@lists.freedesktop.org>; Tue,  7 Jul 2020 14:58:37 +0000 (UTC)
-From: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
-Date: Tue,  7 Jul 2020 16:58:17 +0200
-Message-Id: <20200707145817.17415-1-marcin.bernatowicz@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 945FB89F3B
+ for <igt-dev@lists.freedesktop.org>; Tue,  7 Jul 2020 15:07:55 +0000 (UTC)
+Date: Tue, 7 Jul 2020 18:07:50 +0300
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20200707150750.62zmal6s45njyxet@ahiler-desk1.fi.intel.com>
+References: <20200706155059.ulofxodc2gee2fz7@smtp.gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/device_reset: Test device sysfs reset
+Content-Disposition: inline
+In-Reply-To: <20200706155059.ulofxodc2gee2fz7@smtp.gmail.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_fb: remove extra parameters
+ from igt_put_cairo_ctx
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,355 +22,32 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: michal.winiarski@intel.com, rodrigo.vivi@intel.com, marcin.bernatowicz@intel.com
+To: Melissa Wen <melissa.srw@gmail.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, kernel-usp@googlegroups.com, igt-dev@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>, twoerner@gmail.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Device reset is initiated by writing "1" to reset sysfs file,
-which should initiate PCI device Function Level Reset
-if supported by device.
+On Mon, Jul 06, 2020 at 12:50:59PM -0300, Melissa Wen wrote:
+> The function igt_put_cairo_ctx currently requires three parameters, but only
+> one of them is used in it. This patch removes the useless parameters, making
+> the code more readable and cohesive. It also applies the change to all
+> occurrences of the function in the code.
+> 
+> Signed-off-by: Melissa Wen <melissa.srw@gmail.com>
+Reviewed-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 
-Test scenarios:
-1. unbind driver from device, initiate sysfs reset, rebind driver to
-device
-2. device reset with bound driver
+Thanks for the patch, it's merged now :-)
 
-v2: removed unbind-rebind (duplicates core_hotunplug@unbind-rebind)
-    added healthcheck to each test (Janusz)
-v3: after review corrections (renamed sysfs_fds to device_fds,
-    corrected not closed file descriptor, removed variable length array)
-v4: updated description (Martin), snprintf corrections (Janusz),
-    reset-bound added to blacklist as it hangs several gens of hosts (Tomi)
+For similar refactors you may find coccinelle[0] handy.
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
----
- tests/device_reset.c         | 281 +++++++++++++++++++++++++++++++++++
- tests/intel-ci/blacklist.txt |   3 +
- tests/meson.build            |   1 +
- 3 files changed, 285 insertions(+)
- create mode 100644 tests/device_reset.c
+There's some examples in lib/igt.cocci + a few people use that tool to
+do the changes and posted the cocci patch as a part of the commit message.
+e.g.: 7ff35cc1d0b3 ("lib/igt_buf: Extend igt_buf to include two color surfaces")
 
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-new file mode 100644
-index 000000000..b1181b3be
---- /dev/null
-+++ b/tests/device_reset.c
-@@ -0,0 +1,281 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright(c) 2020 Intel Corporation. All rights reserved.
-+ */
-+#include <fcntl.h>
-+#include <sys/ioctl.h>
-+#include <sys/stat.h>
-+
-+#include "i915/gem.h"
-+#include "igt.h"
-+#include "igt_device_scan.h"
-+#include "igt_sysfs.h"
-+
-+IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
-+
-+
-+#define DEV_PATH_LEN 80
-+#define DEV_BUS_ADDR_LEN 13 /* addr has form 0000:00:00.0 */
-+
-+/**
-+ * Helper structure containing file descriptors
-+ * and bus address related to tested device
-+ */
-+struct device_fds {
-+	struct {
-+		int dev;
-+		int dev_dir;
-+		int drv_dir;
-+	} fds;
-+	char dev_bus_addr[DEV_BUS_ADDR_LEN];
-+};
-+
-+static int __open_sysfs_dir(int fd, const char* path)
-+{
-+	int sysfs;
-+
-+	sysfs = igt_sysfs_open(fd);
-+	if (sysfs < 0) {
-+		return -1;
-+	}
-+
-+	fd = openat(sysfs, path, O_DIRECTORY);
-+	close(sysfs);
-+	return fd;
-+}
-+
-+static int open_device_sysfs_dir(int fd)
-+{
-+	return __open_sysfs_dir(fd, "device");
-+}
-+
-+static int open_driver_sysfs_dir(int fd)
-+{
-+	return __open_sysfs_dir(fd, "device/driver");
-+}
-+
-+/**
-+ * device_sysfs_path:
-+ * @fd: opened device file descriptor
-+ * @path: buffer to store sysfs path to device directory
-+ *
-+ * Returns:
-+ * On successfull path resolution sysfs path to device directory,
-+ * NULL otherwise
-+ */
-+static char *device_sysfs_path(int fd, char *path)
-+{
-+	char sysfs[DEV_PATH_LEN];
-+
-+	if (!igt_sysfs_path(fd, sysfs, sizeof(sysfs)))
-+		return NULL;
-+
-+	if (DEV_PATH_LEN <= (strlen(sysfs) + strlen("/device")))
-+		return NULL;
-+
-+	strcat(sysfs, "/device");
-+
-+	return realpath(sysfs, path);
-+}
-+
-+static void init_device_fds(struct device_fds *dev)
-+{
-+	char dev_path[PATH_MAX];
-+	char *addr_pos;
-+
-+	igt_debug("open device\n");
-+	/**
-+	 * As subtests must be able to close examined devices
-+	 * completely, don't use drm_open_driver() as it keeps
-+	 * a device file descriptor open for exit handler use.
-+	 */
-+	dev->fds.dev = __drm_open_driver(DRIVER_ANY);
-+	igt_assert_fd(dev->fds.dev);
-+	if (is_i915_device(dev->fds.dev))
-+		igt_require_gem(dev->fds.dev);
-+
-+	igt_assert(device_sysfs_path(dev->fds.dev, dev_path));
-+	addr_pos = strrchr(dev_path, '/');
-+	igt_assert(addr_pos);
-+	igt_assert_eq(sizeof(dev->dev_bus_addr) - 1,
-+		      snprintf(dev->dev_bus_addr, sizeof(dev->dev_bus_addr),
-+			       "%s", addr_pos + 1));
-+
-+	dev->fds.dev_dir = open_device_sysfs_dir(dev->fds.dev);
-+	igt_assert_fd(dev->fds.dev_dir);
-+
-+	dev->fds.drv_dir = open_driver_sysfs_dir(dev->fds.dev);
-+	igt_assert_fd(dev->fds.drv_dir);
-+}
-+
-+static int close_if_opened(int *fd)
-+{
-+	int rc = 0;
-+
-+	if (fd && *fd != -1) {
-+		rc = close(*fd);
-+		*fd = -1;
-+	}
-+	return rc;
-+}
-+
-+static void cleanup_device_fds(struct device_fds *dev)
-+{
-+	igt_ignore_warn(close_if_opened(&dev->fds.dev));
-+	igt_ignore_warn(close_if_opened(&dev->fds.dev_dir));
-+	igt_ignore_warn(close_if_opened(&dev->fds.drv_dir));
-+}
-+
-+/**
-+ * is_sysfs_reset_supported:
-+ * @fd: opened device file descriptor
-+ *
-+ * Check if device supports reset based on sysfs file presence.
-+ *
-+ * Returns:
-+ * True if device supports reset, false otherwise.
-+ */
-+static bool is_sysfs_reset_supported(int fd)
-+{
-+	struct stat st;
-+	int rc;
-+	int sysfs;
-+	int reset_fd = -1;
-+
-+	sysfs = igt_sysfs_open(fd);
-+
-+	if (sysfs >= 0) {
-+		reset_fd = openat(sysfs, "device/reset", O_WRONLY);
-+		close(sysfs);
-+	}
-+
-+	if (reset_fd < 0)
-+		return false;
-+
-+	rc = fstat(reset_fd, &st);
-+	close(reset_fd);
-+
-+	if (rc || !S_ISREG(st.st_mode))
-+		return false;
-+
-+	return true;
-+}
-+
-+/* Unbind the driver from the device */
-+static void driver_unbind(struct device_fds *dev)
-+{
-+	igt_debug("unbind the driver from the device\n");
-+	igt_assert(igt_sysfs_set(dev->fds.drv_dir, "unbind",
-+		   dev->dev_bus_addr));
-+}
-+
-+/* Re-bind the driver to the device */
-+static void driver_bind(struct device_fds *dev)
-+{
-+	igt_debug("rebind the driver to the device\n");
-+	igt_abort_on_f(!igt_sysfs_set(dev->fds.drv_dir, "bind",
-+		       dev->dev_bus_addr), "driver rebind failed");
-+}
-+
-+/* Initiate device reset */
-+static void initiate_device_reset(struct device_fds *dev)
-+{
-+	igt_debug("reset device\n");
-+	igt_assert(igt_sysfs_set(dev->fds.dev_dir, "reset", "1"));
-+}
-+
-+static bool is_i915_wedged(int i915)
-+{
-+	int err = 0;
-+
-+	if (ioctl(i915, DRM_IOCTL_I915_GEM_THROTTLE))
-+		err = -errno;
-+	return err == -EIO;
-+}
-+
-+/**
-+ * healthcheck:
-+ * @dev: structure with device descriptor, if descriptor equals -1
-+ * 	 the device is reopened
-+ */
-+static void healthcheck(struct device_fds *dev)
-+{
-+	if (dev->fds.dev == -1) {
-+		/* refresh device list */
-+		igt_devices_scan(true);
-+		igt_debug("reopen the device\n");
-+		dev->fds.dev = __drm_open_driver(DRIVER_ANY);
-+	}
-+	igt_assert_fd(dev->fds.dev);
-+
-+	if (is_i915_device(dev->fds.dev))
-+		igt_assert(!is_i915_wedged(dev->fds.dev));
-+}
-+
-+/**
-+ * set_device_filter:
-+ *
-+ * Sets device filter to ensure subtests always reopen the same device
-+ *
-+ * @dev_path: path to device under tests
-+ */
-+static void set_device_filter(const char* dev_path)
-+{
-+#define FILTER_PREFIX_LEN 4
-+	char filter[PATH_MAX + FILTER_PREFIX_LEN];
-+
-+	igt_assert_lt(FILTER_PREFIX_LEN, snprintf(filter, sizeof(filter),
-+						  "sys:%s", dev_path));
-+	igt_device_filter_free_all();
-+	igt_assert_eq(igt_device_filter_add(filter), 1);
-+}
-+
-+static void unbind_reset_rebind(struct device_fds *dev)
-+{
-+	igt_debug("close the device\n");
-+	close_if_opened(&dev->fds.dev);
-+
-+	driver_unbind(dev);
-+
-+	initiate_device_reset(dev);
-+
-+	driver_bind(dev);
-+}
-+
-+igt_main
-+{
-+	struct device_fds dev = { .fds = {-1, -1, -1}, .dev_bus_addr = {0}};
-+
-+	igt_fixture {
-+		char dev_path[PATH_MAX];
-+
-+		igt_debug("opening device\n");
-+		init_device_fds(&dev);
-+
-+		/* Make sure subtests always reopen the same device */
-+		igt_assert(device_sysfs_path(dev.fds.dev, dev_path));
-+		set_device_filter(dev_path);
-+
-+		igt_skip_on(!is_sysfs_reset_supported(dev.fds.dev));
-+
-+		igt_set_timeout(60, "device reset tests timed out after 60s");
-+	}
-+
-+	igt_describe("Unbinds driver from device, initiates reset"
-+		     " then rebinds driver to device");
-+	igt_subtest("unbind-reset-rebind") {
-+		unbind_reset_rebind(&dev);
-+		healthcheck(&dev);
-+	}
-+
-+	igt_describe("Resets device with bound driver");
-+	igt_subtest("reset-bound") {
-+		initiate_device_reset(&dev);
-+		healthcheck(&dev);
-+	}
-+
-+	igt_fixture {
-+		igt_reset_timeout();
-+		cleanup_device_fds(&dev);
-+	}
-+}
-diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-index ecbec5080..f9a57cb54 100644
---- a/tests/intel-ci/blacklist.txt
-+++ b/tests/intel-ci/blacklist.txt
-@@ -121,3 +121,6 @@ igt@perf_pmu@cpu-hotplug
- # Currently fails and leaves the machine in a very bad state, and
- # causes coverage loss for other tests.
- igt@core_hotunplug@.*
-+
-+# hangs several gens of hosts, and has no immediate fix
-+igt@device_reset@reset-bound
-\ No newline at end of file
-diff --git a/tests/meson.build b/tests/meson.build
-index 172d18e59..d9253f5f9 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -8,6 +8,7 @@ test_progs = [
- 	'core_setmaster_vs_auth',
- 	'debugfs_test',
- 	'dmabuf',
-+	'device_reset',
- 	'drm_import_export',
- 	'drm_mm',
- 	'drm_read',
+[0]: http://coccinelle.lip6.fr/
+
 -- 
-2.25.1
-
----------------------------------------------------------------------
-Intel Technology Poland sp. z o.o.
-ul. Sowackiego 173 | 80-298 Gdask | Sd Rejonowy Gdask Pnoc | VII Wydzia Gospodarczy Krajowego Rejestru Sdowego - KRS 101882 | NIP 957-07-52-316 | Kapita zakadowy 200.000 PLN.
-Ta wiadomo wraz z zacznikami jest przeznaczona dla okrelonego adresata i moe zawiera informacje poufne. W razie przypadkowego otrzymania tej wiadomoci, prosimy o powiadomienie nadawcy oraz trwae jej usunicie; jakiekolwiek przegldanie lub rozpowszechnianie jest zabronione.
-This e-mail and any attachments may contain confidential material for the sole use of the intended recipient(s). If you are not the intended recipient, please contact the sender and delete all copies; any review or distribution by others is strictly prohibited.
- 
-
+Cheers,
+Arek
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
