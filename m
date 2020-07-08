@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B290C89A4B
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Jul 2020 13:20:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EF2D89B00
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Jul 2020 13:20:32 +0000 (UTC)
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Date: Wed,  8 Jul 2020 16:20:13 +0300
-Message-Id: <20200708132015.334750-4-lionel.g.landwerlin@intel.com>
+Date: Wed,  8 Jul 2020 16:20:14 +0300
+Message-Id: <20200708132015.334750-5-lionel.g.landwerlin@intel.com>
 In-Reply-To: <20200708132015.334750-1-lionel.g.landwerlin@intel.com>
 References: <20200708132015.334750-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 3/5] tests/syncobj_timeline: add more
- timeline tests
+Subject: [igt-dev] [PATCH i-g-t 4/5] tests/i915/exec_fence: add timeline
+ fence tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,291 +17,734 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SW5jbHVkaW5nIG9yZGVyaW5nIHRlc3RzIGFuZCAzMmJpdCBsaW1pdC4KCnYyOiBhZGQgcG9pbnQg
-MCBzaWduYWxpbmcgdGVzdCAoTGlvbmVsKQoKdjM6IFVzZSBSRUFEX09OQ0UoKSBpbiB0aHJlYWQg
-Y2hlY2tlciAoQ2hyaXMpCgpTaWduZWQtb2ZmLWJ5OiBMaW9uZWwgTGFuZHdlcmxpbiA8bGlvbmVs
-LmcubGFuZHdlcmxpbkBpbnRlbC5jb20+Ci0tLQogbGliL2lndF9zeW5jb2JqLmMgICAgICAgIHwg
-IDczICsrKystLS0tCiBsaWIvaWd0X3N5bmNvYmouaCAgICAgICAgfCAgIDMgKwogdGVzdHMvc3lu
-Y29ial90aW1lbGluZS5jIHwgMzg3ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKwogMyBmaWxlcyBjaGFuZ2VkLCA0MjYgaW5zZXJ0aW9ucygrKSwgMzcgZGVsZXRpb25zKC0p
-CgpkaWZmIC0tZ2l0IGEvbGliL2lndF9zeW5jb2JqLmMgYi9saWIvaWd0X3N5bmNvYmouYwppbmRl
-eCBiMjExZGZlZi4uYTI0ZWQxMGIgMTAwNjQ0Ci0tLSBhL2xpYi9pZ3Rfc3luY29iai5jCisrKyBi
-L2xpYi9pZ3Rfc3luY29iai5jCkBAIC00NTksMTcgKzQ1OSwxOSBAQCBzeW5jb2JqX3RpbWVsaW5l
-X3F1ZXJ5KGludCBmZCwgdWludDMyX3QgKmhhbmRsZXMsIHVpbnQ2NF90ICpwb2ludHMsCiB9CiAK
-IHN0YXRpYyBpbnQKLV9fc3luY29ial9iaW5hcnlfdG9fdGltZWxpbmUoaW50IGZkLCB1aW50MzJf
-dCB0aW1lbGluZV9oYW5kbGUsCi0JCQkgICAgIHVpbnQ2NF90IHBvaW50LCB1aW50MzJfdCBiaW5h
-cnlfaGFuZGxlKQorX19zeW5jb2JqX3RyYW5zZmVyKGludCBmZCwKKwkJICAgdWludDMyX3QgaGFu
-ZGxlX2RzdCwgdWludDY0X3QgcG9pbnRfZHN0LAorCQkgICB1aW50MzJfdCBoYW5kbGVfc3JjLCB1
-aW50NjRfdCBwb2ludF9zcmMsCisJCSAgIHVpbnQzMl90IGZsYWdzKQogewogCXN0cnVjdCBkcm1f
-c3luY29ial90cmFuc2ZlciBhcmdzOwogCWludCByZXQ7CiAKLQlhcmdzLnNyY19oYW5kbGUgPSBi
-aW5hcnlfaGFuZGxlOwotCWFyZ3MuZHN0X2hhbmRsZSA9IHRpbWVsaW5lX2hhbmRsZTsKLQlhcmdz
-LnNyY19wb2ludCA9IDA7Ci0JYXJncy5kc3RfcG9pbnQgPSBwb2ludDsKLQlhcmdzLmZsYWdzID0g
-MDsKKwlhcmdzLnNyY19oYW5kbGUgPSBoYW5kbGVfc3JjOworCWFyZ3MuZHN0X2hhbmRsZSA9IGhh
-bmRsZV9kc3Q7CisJYXJncy5zcmNfcG9pbnQgPSBwb2ludF9zcmM7CisJYXJncy5kc3RfcG9pbnQg
-PSBwb2ludF9kc3Q7CisJYXJncy5mbGFncyA9IGZsYWdzOwogCWFyZ3MucGFkID0gMDsKIAlyZXQg
-PSBpZ3RfaW9jdGwoZmQsIERSTV9JT0NUTF9TWU5DT0JKX1RSQU5TRkVSLCAmYXJncyk7CiAJaWYg
-KHJldCkgewpAQCAtNDk1LDMzICs0OTcsOSBAQCB2b2lkCiBzeW5jb2JqX2JpbmFyeV90b190aW1l
-bGluZShpbnQgZmQsIHVpbnQzMl90IHRpbWVsaW5lX2hhbmRsZSwKIAkJCSAgIHVpbnQ2NF90IHBv
-aW50LCB1aW50MzJfdCBiaW5hcnlfaGFuZGxlKQogewotCWlndF9hc3NlcnRfZXEoX19zeW5jb2Jq
-X2JpbmFyeV90b190aW1lbGluZShmZCwgdGltZWxpbmVfaGFuZGxlLCBwb2ludCwKLQkJCQkJCSAg
-IGJpbmFyeV9oYW5kbGUpLCAwKTsKLX0KLQotc3RhdGljIGludAotX19zeW5jb2JqX3RpbWVsaW5l
-X3RvX2JpbmFyeShpbnQgZmQsIHVpbnQzMl90IGJpbmFyeV9oYW5kbGUsCi0JCQkgICAgIHVpbnQz
-Ml90IHRpbWVsaW5lX2hhbmRsZSwKLQkJCSAgICAgdWludDY0X3QgcG9pbnQsCi0JCQkgICAgIHVp
-bnQzMl90IGZsYWdzKQotewotCXN0cnVjdCBkcm1fc3luY29ial90cmFuc2ZlciBhcmdzOwotCWlu
-dCByZXQ7Ci0KLQlhcmdzLmRzdF9oYW5kbGUgPSBiaW5hcnlfaGFuZGxlOwotCWFyZ3Muc3JjX2hh
-bmRsZSA9IHRpbWVsaW5lX2hhbmRsZTsKLQlhcmdzLmRzdF9wb2ludCA9IDA7Ci0JYXJncy5zcmNf
-cG9pbnQgPSBwb2ludDsKLQlhcmdzLmZsYWdzID0gZmxhZ3M7Ci0JYXJncy5wYWQgPSAwOwotCXJl
-dCA9IGRybUlvY3RsKGZkLCBEUk1fSU9DVExfU1lOQ09CSl9UUkFOU0ZFUiwgJmFyZ3MpOwotCWlm
-IChyZXQpIHsKLQkJcmV0ID0gLWVycm5vOwotCQlpZ3RfYXNzZXJ0KHJldCk7Ci0JfQotCi0JZXJy
-bm8gPSAwOwotCXJldHVybiByZXQ7CisJaWd0X2Fzc2VydF9lcShfX3N5bmNvYmpfdHJhbnNmZXIo
-ZmQsCisJCQkJCSB0aW1lbGluZV9oYW5kbGUsIHBvaW50LAorCQkJCQkgYmluYXJ5X2hhbmRsZSwg
-MCwgMCksIDApOwogfQogCiAvKioKQEAgLTU0MCw3ICs1MTgsMjggQEAgc3luY29ial90aW1lbGlu
-ZV90b19iaW5hcnkoaW50IGZkLCB1aW50MzJfdCBiaW5hcnlfaGFuZGxlLAogCQkJICAgdWludDY0
-X3QgcG9pbnQsCiAJCQkgICB1aW50MzJfdCBmbGFncykKIHsKLQlpZ3RfYXNzZXJ0X2VxKF9fc3lu
-Y29ial90aW1lbGluZV90b19iaW5hcnkoZmQsIGJpbmFyeV9oYW5kbGUsCi0JCQkJCQkgICB0aW1l
-bGluZV9oYW5kbGUsIHBvaW50LAotCQkJCQkJICAgZmxhZ3MpLCAwKTsKKwlpZ3RfYXNzZXJ0X2Vx
-KF9fc3luY29ial90cmFuc2ZlcihmZCwKKwkJCQkJIGJpbmFyeV9oYW5kbGUsIDAsCisJCQkJCSB0
-aW1lbGluZV9oYW5kbGUsIHBvaW50LAorCQkJCQkgZmxhZ3MpLCAwKTsKK30KKworLyoqCisgKiBz
-eW5jb2JqX3RpbWVsaW5lX3RvX3RpbWVsaW5lOgorICogQGZkOiBUaGUgRFJNIGZpbGUgZGVzY3Jp
-cHRvci4KKyAqIEB0aW1lbGluZV9zcmM6IEEgdGltZWxpbmUgc3luY29iaiBoYW5kbGUKKyAqIEB0
-aW1lbGluZV9kc3Q6IEEgdGltZWxpbmUgc3luY29iaiBoYW5kbGUKKyAqIEBwb2ludF9zcmM6IEEg
-cG9pbnQgb24gdGhlIHNvdXJjZSB0aW1lbGluZSBzeW5jb2JqCisgKiBAcG9pbnRfZHN0OiBBIHBv
-aW50IG9uIHRoZSBkZXN0aW5hdGlvbiB0aW1lbGluZSBzeW5jb2JqCisgKgorICogcXVlcnkgYSBz
-ZXQgb2Ygc3luY29ianMuCisgKi8KK3ZvaWQKK3N5bmNvYmpfdGltZWxpbmVfdG9fdGltZWxpbmUo
-aW50IGZkLAorCQkJICAgICB1aW50NjRfdCB0aW1lbGluZV9kc3QsIHVpbnQzMl90IHBvaW50X2Rz
-dCwKKwkJCSAgICAgdWludDY0X3QgdGltZWxpbmVfc3JjLCB1aW50MzJfdCBwb2ludF9zcmMpCit7
-CisJaWd0X2Fzc2VydF9lcShfX3N5bmNvYmpfdHJhbnNmZXIoZmQsCisJCQkJCSB0aW1lbGluZV9k
-c3QsIHBvaW50X2RzdCwKKwkJCQkJIHRpbWVsaW5lX3NyYywgcG9pbnRfc3JjLCAwKSwgMCk7CiB9
-CmRpZmYgLS1naXQgYS9saWIvaWd0X3N5bmNvYmouaCBiL2xpYi9pZ3Rfc3luY29iai5oCmluZGV4
-IDIwZjFmMThmLi5lNjcyNTY3MSAxMDA2NDQKLS0tIGEvbGliL2lndF9zeW5jb2JqLmgKKysrIGIv
-bGliL2lndF9zeW5jb2JqLmgKQEAgLTYwLDYgKzYwLDkgQEAgdm9pZCBzeW5jb2JqX3RpbWVsaW5l
-X3RvX2JpbmFyeShpbnQgZmQsIHVpbnQzMl90IGJpbmFyeV9oYW5kbGUsCiAJCQkJdWludDMyX3Qg
-dGltZWxpbmVfaGFuZGxlLAogCQkJCXVpbnQ2NF90IHBvaW50LAogCQkJCXVpbnQzMl90IGZsYWdz
-KTsKK3ZvaWQgc3luY29ial90aW1lbGluZV90b190aW1lbGluZShpbnQgZmQsCisJCQkJICB1aW50
-NjRfdCB0aW1lbGluZV9kc3QsIHVpbnQzMl90IHBvaW50X2RzdCwKKwkJCQkgIHVpbnQ2NF90IHRp
-bWVsaW5lX3NyYywgdWludDMyX3QgcG9pbnRfc3JjKTsKIHZvaWQgc3luY29ial90aW1lbGluZV9z
-aWduYWwoaW50IGZkLCB1aW50MzJfdCAqaGFuZGxlcywgdWludDY0X3QgKnBvaW50cywKIAkJCSAg
-ICAgdWludDMyX3QgY291bnQpOwogCmRpZmYgLS1naXQgYS90ZXN0cy9zeW5jb2JqX3RpbWVsaW5l
-LmMgYi90ZXN0cy9zeW5jb2JqX3RpbWVsaW5lLmMKaW5kZXggODJmYzA4YWEuLjMxOWRjMWJkIDEw
-MDY0NAotLS0gYS90ZXN0cy9zeW5jb2JqX3RpbWVsaW5lLmMKKysrIGIvdGVzdHMvc3luY29ial90
-aW1lbGluZS5jCkBAIC00MDYsNiArNDA2LDI5IEBAIHRlc3RfdHJhbnNmZXJfYmFkX3BhZChpbnQg
-ZmQpCiAJaWd0X2Fzc2VydChyZXQgPT0gLTEgJiYgZXJybm8gPT0gRUlOVkFMKTsKIH0KIAorc3Rh
-dGljIGNvbnN0IGNoYXIgKnRlc3RfdHJhbnNmZXJfbm9uZXhpc3RlbnRfcG9pbnRfZGVzYyA9CisJ
-IlZlcmlmaWVzIHRoYXQgdHJhbnNmZXJpbmcgYSBwb2ludCBmcm9tIGEgc3luY29iaiB0aW1lbGlu
-ZSBpcyB0byIKKwkiIGFub3RoZXIgcG9pbnQgaW4gdGhlIHNhbWUgdGltZWxpbmUgd29ya3MiOwor
-c3RhdGljIHZvaWQKK3Rlc3RfdHJhbnNmZXJfbm9uZXhpc3RlbnRfcG9pbnQoaW50IGZkKQorewor
-CXN0cnVjdCBkcm1fc3luY29ial90cmFuc2ZlciBhcmcgPSB7fTsKKwl1aW50MzJfdCBoYW5kbGUg
-PSBzeW5jb2JqX2NyZWF0ZShmZCwgMCk7CisJdWludDY0X3QgdmFsdWUgPSA2MzsKKwlpbnQgcmV0
-OworCisJc3luY29ial90aW1lbGluZV9zaWduYWwoZmQsICZoYW5kbGUsICZ2YWx1ZSwgMSk7CisK
-Kwlhcmcuc3JjX2hhbmRsZSA9IGhhbmRsZTsKKwlhcmcuZHN0X2hhbmRsZSA9IGhhbmRsZTsKKwlh
-cmcuc3JjX3BvaW50ID0gdmFsdWU7IC8qIFBvaW50IGRvZXNuJ3QgZXhpc3QgKi8KKwlhcmcuZHN0
-X3BvaW50ID0gdmFsdWUgKyAxMTsKKwlyZXQgPSBpZ3RfaW9jdGwoZmQsIERSTV9JT0NUTF9TWU5D
-T0JKX1RSQU5TRkVSLCAmYXJnKTsKKwlpZ3RfYXNzZXJ0KHJldCA9PSAwKTsKKworCXN5bmNvYmpf
-ZGVzdHJveShmZCwgaGFuZGxlKTsKK30KKwogI2RlZmluZSBXQUlUX0ZPUl9TVUJNSVQJCSgxIDw8
-IDApCiAjZGVmaW5lIFdBSVRfQUxMCQkoMSA8PCAxKQogI2RlZmluZSBXQUlUX0FWQUlMQUJMRQkJ
-KDEgPDwgMikKQEAgLTQxNCw2ICs0MzcsNTMgQEAgdGVzdF90cmFuc2Zlcl9iYWRfcGFkKGludCBm
-ZCkKICNkZWZpbmUgV0FJVF9TSUdOQUxFRAkJKDEgPDwgNSkKICNkZWZpbmUgV0FJVF9GTEFHU19N
-QVgJCSgxIDw8IDYpIC0gMQogCitzdGF0aWMgY29uc3QgY2hhciAqdGVzdF90cmFuc2Zlcl9wb2lu
-dF9kZXNjID0KKwkiVmVyaWZpZXMgdGhhdCB0cmFuc2ZlcmluZyBhIHBvaW50IGZyb20gYSBzeW5j
-b2JqIHRpbWVsaW5lIGlzIHRvIgorCSIgYW5vdGhlciBwb2ludCBpbiB0aGUgc2FtZSB0aW1lbGlu
-ZSB3b3JrcyBmb3Igc2lnbmFsL3dhaXQgb3BlcmF0aW9ucyI7CitzdGF0aWMgdm9pZAordGVzdF90
-cmFuc2Zlcl9wb2ludChpbnQgZmQpCit7CisJaW50IHRpbWVsaW5lID0gc3dfc3luY190aW1lbGlu
-ZV9jcmVhdGUoKTsKKwl1aW50MzJfdCBoYW5kbGUgPSBzeW5jb2JqX2NyZWF0ZShmZCwgMCk7CisJ
-dWludDY0X3QgdmFsdWU7CisKKwl7CisJCWludCBzd19mZW5jZSA9IHN3X3N5bmNfdGltZWxpbmVf
-Y3JlYXRlX2ZlbmNlKHRpbWVsaW5lLCAxKTsKKwkJdWludDMyX3QgdG1wX3N5bmNvYmogPSBzeW5j
-b2JqX2NyZWF0ZShmZCwgMCk7CisKKwkJc3luY29ial9pbXBvcnRfc3luY19maWxlKGZkLCB0bXBf
-c3luY29iaiwgc3dfZmVuY2UpOworCQlzeW5jb2JqX2JpbmFyeV90b190aW1lbGluZShmZCwgaGFu
-ZGxlLCAxLCB0bXBfc3luY29iaik7CisJCWNsb3NlKHN3X2ZlbmNlKTsKKwkJc3luY29ial9kZXN0
-cm95KGZkLCB0bXBfc3luY29iaik7CisJfQorCisJc3luY29ial90aW1lbGluZV9xdWVyeShmZCwg
-JmhhbmRsZSwgJnZhbHVlLCAxKTsKKwlpZ3RfYXNzZXJ0X2VxKHZhbHVlLCAwKTsKKworCXZhbHVl
-ID0gMTsKKwlpZ3RfYXNzZXJ0X2VxKHN5bmNvYmpfdGltZWxpbmVfd2FpdF9lcnIoZmQsICZoYW5k
-bGUsICZ2YWx1ZSwKKwkJCQkJCTEsIDAsIFdBSVRfQUxMKSwgLUVUSU1FKTsKKworCXN3X3N5bmNf
-dGltZWxpbmVfaW5jKHRpbWVsaW5lLCAxKTsKKworCXN5bmNvYmpfdGltZWxpbmVfcXVlcnkoZmQs
-ICZoYW5kbGUsICZ2YWx1ZSwgMSk7CisJaWd0X2Fzc2VydF9lcSh2YWx1ZSwgMSk7CisKKwlpZ3Rf
-YXNzZXJ0KHN5bmNvYmpfdGltZWxpbmVfd2FpdChmZCwgJmhhbmRsZSwgJnZhbHVlLAorCQkJCQkg
-MSwgMCwgV0FJVF9BTEwsIE5VTEwpKTsKKworCXZhbHVlID0gMjsKKwlzeW5jb2JqX3RpbWVsaW5l
-X3NpZ25hbChmZCwgJmhhbmRsZSwgJnZhbHVlLCAxKTsKKworCXN5bmNvYmpfdGltZWxpbmVfdG9f
-dGltZWxpbmUoZmQsIGhhbmRsZSwgMywgaGFuZGxlLCAyKTsKKworCXN5bmNvYmpfdGltZWxpbmVf
-cXVlcnkoZmQsICZoYW5kbGUsICZ2YWx1ZSwgMSk7CisJaWd0X2Fzc2VydF9lcSh2YWx1ZSwgMyk7
-CisKKwlzeW5jb2JqX2Rlc3Ryb3koZmQsIGhhbmRsZSk7CisJY2xvc2UodGltZWxpbmUpOworfQor
-CiBzdGF0aWMgdWludDMyX3QKIGZsYWdzX2Zvcl90ZXN0X2ZsYWdzKHVpbnQzMl90IHRlc3RfZmxh
-Z3MpCiB7CkBAIC02MTksNiArNjg5LDI0IEBAIHRlc3Rfc2lnbmFsKGludCBmZCkKIAlzeW5jb2Jq
-X2Rlc3Ryb3koZmQsIHN5bmNvYmopOwogfQogCitzdGF0aWMgY29uc3QgY2hhciAqdGVzdF9zaWdu
-YWxfcG9pbnRfMF9kZXNjID0KKwkiVmVyaWZpZXMgdGhhdCBzaWduYWxpbmcgcG9pbnQgMCBvZiBh
-IHRpbWxpbmUgc3luY29iaiB3b3JrcyB3aXRoIGJvdGgiCisJIiB0aW1lbGluZSAmIGxlZ2FjeSB3
-YWl0IG9wZXJhdGlvbnMiOworc3RhdGljIHZvaWQKK3Rlc3Rfc2lnbmFsX3BvaW50XzAoaW50IGZk
-KQoreworCXVpbnQzMl90IHN5bmNvYmogPSBzeW5jb2JqX2NyZWF0ZShmZCwgMCk7CisJdWludDMy
-X3QgZmxhZ3MgPSBEUk1fU1lOQ09CSl9XQUlUX0ZMQUdTX1dBSVRfRk9SX1NVQk1JVDsKKwl1aW50
-NjRfdCBwb2ludCA9IDA7CisKKwlzeW5jb2JqX3RpbWVsaW5lX3NpZ25hbChmZCwgJnN5bmNvYmos
-ICZwb2ludCwgMSk7CisKKwlpZ3RfYXNzZXJ0KHN5bmNvYmpfdGltZWxpbmVfd2FpdChmZCwgJnN5
-bmNvYmosICZwb2ludCwgMSwgMCwgMCwgTlVMTCkpOworCWlndF9hc3NlcnQoc3luY29ial93YWl0
-KGZkLCAmc3luY29iaiwgMSwgMCwgZmxhZ3MsIE5VTEwpKTsKKworCXN5bmNvYmpfZGVzdHJveShm
-ZCwgc3luY29iaik7Cit9CisKIHN0YXRpYyBjb25zdCBjaGFyICp0ZXN0X211bHRpX3dhaXRfZGVz
-YyA9CiAJIlZlcmlmaWVzIHdhaXRpbmcgb24gYSBsaXN0IG9mIHRpbWVsaW5lIHN5bmNvYmpzIjsK
-IHN0YXRpYyB2b2lkCkBAIC05MjEsNiArMTAwOSwyNzMgQEAgdGVzdF93YWl0X2ludGVycnVwdGVk
-KGludCBmZCwgdWludDMyX3QgdGVzdF9mbGFncykKIAljbG9zZSh0aW1lbGluZSk7CiB9CiAKK2Nv
-bnN0IGNoYXIgKnRlc3RfaG9zdF9zaWduYWxfcG9pbnRzX2Rlc2MgPQorCSJWZXJpZmllcyB0aGF0
-IGFzIHdlIHNpZ25hbCBwb2ludHMgZnJvbSB0aGUgaG9zdCwgdGhlIHN5bmNvYmogdGltZWxpbmUi
-CisJIiB2YWx1ZSBpbmNyZW1lbnRzIGFuZCB0aGF0IHdhaXRzIGZvciBzdWJtaXRzL3NpZ25hbHMg
-d29ya3MgcHJvcGVybHkuIjsKK3N0YXRpYyB2b2lkCit0ZXN0X2hvc3Rfc2lnbmFsX3BvaW50cyhp
-bnQgZmQpCit7CisJdWludDMyX3Qgc3luY29iaiA9IHN5bmNvYmpfY3JlYXRlKGZkLCAwKTsKKwl1
-aW50NjRfdCB2YWx1ZSA9IDA7CisJaW50IGk7CisKKwlmb3IgKGkgPSAwOyBpIDwgMTAwOyBpKysp
-IHsKKwkJdWludDY0X3QgcXVlcnlfdmFsdWUgPSAwOworCisJCXZhbHVlICs9IHJhbmQoKTsKKwor
-CQlzeW5jb2JqX3RpbWVsaW5lX3NpZ25hbChmZCwgJnN5bmNvYmosICZ2YWx1ZSwgMSk7CisKKwkJ
-c3luY29ial90aW1lbGluZV9xdWVyeShmZCwgJnN5bmNvYmosICZxdWVyeV92YWx1ZSwgMSk7CisJ
-CWlndF9hc3NlcnRfZXEocXVlcnlfdmFsdWUsIHZhbHVlKTsKKworCQlpZ3RfYXNzZXJ0KHN5bmNv
-YmpfdGltZWxpbmVfd2FpdChmZCwgJnN5bmNvYmosICZxdWVyeV92YWx1ZSwKKwkJCQkJCSAxLCAw
-LCBXQUlUX0ZPUl9TVUJNSVQsIE5VTEwpKTsKKworCQlxdWVyeV92YWx1ZSAtPSAxOworCQlpZ3Rf
-YXNzZXJ0KHN5bmNvYmpfdGltZWxpbmVfd2FpdChmZCwgJnN5bmNvYmosICZxdWVyeV92YWx1ZSwK
-KwkJCQkJCSAxLCAwLCBXQUlUX0FMTCwgTlVMTCkpOworCX0KKworCXN5bmNvYmpfZGVzdHJveShm
-ZCwgc3luY29iaik7Cit9CisKK2NvbnN0IGNoYXIgKnRlc3RfZGV2aWNlX3NpZ25hbF91bm9yZGVy
-ZWRfZGVzYyA9CisJIlZlcmlmaWVzIHRoYXQgYSBkZXZpY2Ugc2lnbmFsaW5nIGZlbmNlcyBvdXQg
-b2Ygb3JkZXIgb24gdGhlIHRpbWVsaW5lIgorCSIgc3RpbGwgaW5jcmVtZW50cyB0aGUgdGltZWxp
-bmUgbW9ub3RvbmljYWxseSBhbmQgdGhhdCB3YWl0cyB3b3JrIgorCSIgcHJvcGVybHkuIjsKK3N0
-YXRpYyB2b2lkCit0ZXN0X2RldmljZV9zaWduYWxfdW5vcmRlcmVkKGludCBmZCkKK3sKKwl1aW50
-MzJfdCBzeW5jb2JqID0gc3luY29ial9jcmVhdGUoZmQsIDApOworCWludCBwb2ludF9pbmRpY2Vz
-W10gPSB7IDAsIDIsIDEsIDQsIDMgfTsKKwlib29sIHNpZ25hbGVkW0FSUkFZX1NJWkUocG9pbnRf
-aW5kaWNlcyldID0ge307CisJaW50IGZlbmNlc1tBUlJBWV9TSVpFKHBvaW50X2luZGljZXMpXTsK
-KwlpbnQgdGltZWxpbmUgPSBzd19zeW5jX3RpbWVsaW5lX2NyZWF0ZSgpOworCXVpbnQ2NF90IHZh
-bHVlID0gMDsKKwlpbnQgaSwgajsKKworCWZvciAoaSA9IDA7IGkgPCBBUlJBWV9TSVpFKGZlbmNl
-cyk7IGkrKykgeworCQlmZW5jZXNbcG9pbnRfaW5kaWNlc1tpXV0gPSBzd19zeW5jX3RpbWVsaW5l
-X2NyZWF0ZV9mZW5jZSh0aW1lbGluZSwgaSArIDEpOworCX0KKworCWZvciAoaSA9IDA7IGkgPCBB
-UlJBWV9TSVpFKGZlbmNlcyk7IGkrKykgeworCQl1aW50MzJfdCB0bXBfc3luY29iaiA9IHN5bmNv
-YmpfY3JlYXRlKGZkLCAwKTsKKworCQlzeW5jb2JqX2ltcG9ydF9zeW5jX2ZpbGUoZmQsIHRtcF9z
-eW5jb2JqLCBmZW5jZXNbaV0pOworCQlzeW5jb2JqX2JpbmFyeV90b190aW1lbGluZShmZCwgc3lu
-Y29iaiwgaSArIDEsIHRtcF9zeW5jb2JqKTsKKwkJc3luY29ial9kZXN0cm95KGZkLCB0bXBfc3lu
-Y29iaik7CisJfQorCisJZm9yIChpID0gMDsgaSA8IEFSUkFZX1NJWkUoZmVuY2VzKTsgaSsrKSB7
-CisJCXVpbnQ2NF90IHF1ZXJ5X3ZhbHVlID0gMDsKKwkJdWludDY0X3QgbWluX3ZhbHVlID0gMDsK
-KworCQlzd19zeW5jX3RpbWVsaW5lX2luYyh0aW1lbGluZSwgMSk7CisKKwkJc2lnbmFsZWRbcG9p
-bnRfaW5kaWNlc1tpXV0gPSB0cnVlOworCisJCS8qCisJCSAqIENvbXB1dGUgYSBtaW5pbXVtIHZh
-bHVlIG9mIHRoZSB0aW1lbGluZSBiYXNlZCBvZgorCQkgKiB0aGUgc21hbGxlc3Qgc2lnbmFsZWQg
-cG9pbnQuCisJCSAqLworCQlmb3IgKGogPSAwOyBqIDwgQVJSQVlfU0laRShzaWduYWxlZCk7IGor
-KykgeworCQkJaWYgKCFzaWduYWxlZFtqXSkKKwkJCQlicmVhazsKKwkJCW1pbl92YWx1ZSA9IGo7
-CisJCX0KKworCQlzeW5jb2JqX3RpbWVsaW5lX3F1ZXJ5KGZkLCAmc3luY29iaiwgJnF1ZXJ5X3Zh
-bHVlLCAxKTsKKwkJaWd0X2Fzc2VydChxdWVyeV92YWx1ZSA+PSBtaW5fdmFsdWUpOworCQlpZ3Rf
-YXNzZXJ0KHF1ZXJ5X3ZhbHVlID49IHZhbHVlKTsKKworCQlpZ3RfZGVidWcoInNpZ25hbGluZyBw
-b2ludCAlaSwgdGltZWxpbmUgdmFsdWUgPSAlIiBQUkl1NjQgIlxuIiwKKwkJCSAgcG9pbnRfaW5k
-aWNlc1tpXSArIDEsIHF1ZXJ5X3ZhbHVlKTsKKworCQl2YWx1ZSA9IG1heChxdWVyeV92YWx1ZSwg
-dmFsdWUpOworCisJCWlndF9hc3NlcnQoc3luY29ial90aW1lbGluZV93YWl0KGZkLCAmc3luY29i
-aiwgJnF1ZXJ5X3ZhbHVlLAorCQkJCQkJIDEsIDAsIFdBSVRfRk9SX1NVQk1JVCwgTlVMTCkpOwor
-CisJCWlndF9hc3NlcnQoc3luY29ial90aW1lbGluZV93YWl0KGZkLCAmc3luY29iaiwgJnF1ZXJ5
-X3ZhbHVlLAorCQkJCQkJIDEsIDAsIFdBSVRfQUxMLCBOVUxMKSk7CisJfQorCisJZm9yIChpID0g
-MDsgaSA8IEFSUkFZX1NJWkUoZmVuY2VzKTsgaSsrKQorCQljbG9zZShmZW5jZXNbaV0pOworCisJ
-c3luY29ial9kZXN0cm95KGZkLCBzeW5jb2JqKTsKKwljbG9zZSh0aW1lbGluZSk7Cit9CisKK2Nv
-bnN0IGNoYXIgKnRlc3RfZGV2aWNlX3N1Ym1pdF91bm9yZGVyZWRfZGVzYyA9CisJIlZlcmlmaWVz
-IHRoYXQgc3VibWl0dGluZyBvdXQgb2Ygb3JkZXIgZG9lc24ndCBicmVhayB0aGUgdGltZWxpbmUu
-IjsKK3N0YXRpYyB2b2lkCit0ZXN0X2RldmljZV9zdWJtaXRfdW5vcmRlcmVkKGludCBmZCkKK3sK
-Kwl1aW50MzJfdCBzeW5jb2JqID0gc3luY29ial9jcmVhdGUoZmQsIDApOworCXVpbnQ2NF90IHBv
-aW50c1tdID0geyAxLCA1LCAzLCA2LCA3IH07CisJaW50IHRpbWVsaW5lID0gc3dfc3luY190aW1l
-bGluZV9jcmVhdGUoKTsKKwl1aW50NjRfdCBxdWVyeV92YWx1ZTsKKwlpbnQgaTsKKworCWZvciAo
-aSA9IDA7IGkgPCBBUlJBWV9TSVpFKHBvaW50cyk7IGkrKykgeworCQlpbnQgZmVuY2UgPSBzd19z
-eW5jX3RpbWVsaW5lX2NyZWF0ZV9mZW5jZSh0aW1lbGluZSwgaSArIDEpOworCQl1aW50MzJfdCB0
-bXBfc3luY29iaiA9IHN5bmNvYmpfY3JlYXRlKGZkLCAwKTsKKworCQlzeW5jb2JqX2ltcG9ydF9z
-eW5jX2ZpbGUoZmQsIHRtcF9zeW5jb2JqLCBmZW5jZSk7CisJCXN5bmNvYmpfYmluYXJ5X3RvX3Rp
-bWVsaW5lKGZkLCBzeW5jb2JqLCBwb2ludHNbaV0sIHRtcF9zeW5jb2JqKTsKKwkJY2xvc2UoZmVu
-Y2UpOworCQlzeW5jb2JqX2Rlc3Ryb3koZmQsIHRtcF9zeW5jb2JqKTsKKwl9CisKKwkvKgorCSAq
-IFNpZ25hbCBwb2ludHMgMSwgNSAmIDMuIFRoZXJlIGFyZSBubyBvdGhlciBwb2ludHMgPD0gNSBz
-bworCSAqIHdhaXRpbmcgb24gNSBzaG91bGQgcmV0dXJuIGltbWVkaWF0ZWx5IGZvciBzdWJtaXNz
-aW9uICYKKwkgKiBzaWduYWxpbmcuCisJICovCisJc3dfc3luY190aW1lbGluZV9pbmModGltZWxp
-bmUsIDMpOworCisJc3luY29ial90aW1lbGluZV9xdWVyeShmZCwgJnN5bmNvYmosICZxdWVyeV92
-YWx1ZSwgMSk7CisJaWd0X2Fzc2VydF9lcShxdWVyeV92YWx1ZSwgNSk7CisKKwlpZ3RfYXNzZXJ0
-KHN5bmNvYmpfdGltZWxpbmVfd2FpdChmZCwgJnN5bmNvYmosICZxdWVyeV92YWx1ZSwKKwkJCQkJ
-IDEsIDAsIFdBSVRfRk9SX1NVQk1JVCwgTlVMTCkpOworCisJaWd0X2Fzc2VydChzeW5jb2JqX3Rp
-bWVsaW5lX3dhaXQoZmQsICZzeW5jb2JqLCAmcXVlcnlfdmFsdWUsCisJCQkJCSAxLCAwLCBXQUlU
-X0FMTCwgTlVMTCkpOworCisJc3luY29ial9kZXN0cm95KGZkLCBzeW5jb2JqKTsKKwljbG9zZSh0
-aW1lbGluZSk7Cit9CisKK2NvbnN0IGNoYXIgKnRlc3RfaG9zdF9zaWduYWxfb3JkZXJlZF9kZXNj
-ID0KKwkiVmVyaWZpZXMgdGhhdCB0aGUgaG9zdCBzaWduYWxpbmcgZmVuY2VzIG91dCBvZiBvcmRl
-ciBvbiB0aGUgdGltZWxpbmUiCisJIiBzdGlsbCBpbmNyZW1lbnRzIHRoZSB0aW1lbGluZSBtb25v
-dG9uaWNhbGx5IGFuZCB0aGF0IHdhaXRzIHdvcmsiCisJIiBwcm9wZXJseS4iOworc3RhdGljIHZv
-aWQKK3Rlc3RfaG9zdF9zaWduYWxfb3JkZXJlZChpbnQgZmQpCit7CisJdWludDMyX3Qgc3luY29i
-aiA9IHN5bmNvYmpfY3JlYXRlKGZkLCAwKTsKKwlpbnQgdGltZWxpbmUgPSBzd19zeW5jX3RpbWVs
-aW5lX2NyZWF0ZSgpOworCXVpbnQ2NF90IGhvc3Rfc2lnbmFsX3ZhbHVlID0gOCwgcXVlcnlfdmFs
-dWU7CisJaW50IGk7CisKKwlmb3IgKGkgPSAwOyBpIDwgNTsgaSsrKSB7CisJCWludCBmZW5jZSA9
-IHN3X3N5bmNfdGltZWxpbmVfY3JlYXRlX2ZlbmNlKHRpbWVsaW5lLCBpICsgMSk7CisJCXVpbnQz
-Ml90IHRtcF9zeW5jb2JqID0gc3luY29ial9jcmVhdGUoZmQsIDApOworCisJCXN5bmNvYmpfaW1w
-b3J0X3N5bmNfZmlsZShmZCwgdG1wX3N5bmNvYmosIGZlbmNlKTsKKwkJc3luY29ial9iaW5hcnlf
-dG9fdGltZWxpbmUoZmQsIHN5bmNvYmosIGkgKyAxLCB0bXBfc3luY29iaik7CisJCXN5bmNvYmpf
-ZGVzdHJveShmZCwgdG1wX3N5bmNvYmopOworCQljbG9zZShmZW5jZSk7CisJfQorCisJc3dfc3lu
-Y190aW1lbGluZV9pbmModGltZWxpbmUsIDMpOworCisJc3luY29ial90aW1lbGluZV9xdWVyeShm
-ZCwgJnN5bmNvYmosICZxdWVyeV92YWx1ZSwgMSk7CisJaWd0X2Fzc2VydF9lcShxdWVyeV92YWx1
-ZSwgMyk7CisKKwlzeW5jb2JqX3RpbWVsaW5lX3NpZ25hbChmZCwgJnN5bmNvYmosICZob3N0X3Np
-Z25hbF92YWx1ZSwgMSk7CisKKwlzeW5jb2JqX3RpbWVsaW5lX3F1ZXJ5KGZkLCAmc3luY29iaiwg
-JnF1ZXJ5X3ZhbHVlLCAxKTsKKwlpZ3RfYXNzZXJ0X2VxKHF1ZXJ5X3ZhbHVlLCAzKTsKKworCXN3
-X3N5bmNfdGltZWxpbmVfaW5jKHRpbWVsaW5lLCA1KTsKKworCXN5bmNvYmpfdGltZWxpbmVfcXVl
-cnkoZmQsICZzeW5jb2JqLCAmcXVlcnlfdmFsdWUsIDEpOworCWlndF9hc3NlcnRfZXEocXVlcnlf
-dmFsdWUsIDgpOworCisJc3luY29ial9kZXN0cm95KGZkLCBzeW5jb2JqKTsKKwljbG9zZSh0aW1l
-bGluZSk7Cit9CisKK3N0cnVjdCBjaGVja2VyX3RocmVhZF9kYXRhIHsKKwlpbnQgZmQ7CisJdWlu
-dDMyX3Qgc3luY29iajsKKwlib29sIHJ1bm5pbmc7CisJYm9vbCBzdGFydGVkOworfTsKKworc3Rh
-dGljIHZvaWQgKgorY2hlY2tlcl90aHJlYWRfZnVuYyh2b2lkICpfZGF0YSkKK3sKKwlzdHJ1Y3Qg
-Y2hlY2tlcl90aHJlYWRfZGF0YSAqZGF0YSA9IF9kYXRhOworCXVpbnQ2NF90IHZhbHVlLCBsYXN0
-X3ZhbHVlID0gMDsKKworCXdoaWxlIChSRUFEX09OQ0UoZGF0YS0+cnVubmluZykpIHsKKwkJc3lu
-Y29ial90aW1lbGluZV9xdWVyeShkYXRhLT5mZCwgJmRhdGEtPnN5bmNvYmosICZ2YWx1ZSwgMSk7
-CisKKwkJZGF0YS0+c3RhcnRlZCA9IHRydWU7CisKKwkJaWd0X2Fzc2VydChsYXN0X3ZhbHVlIDw9
-IHZhbHVlKTsKKwkJbGFzdF92YWx1ZSA9IHZhbHVlOworCX0KKworCXJldHVybiBOVUxMOworfQor
-Citjb25zdCBjaGFyICp0ZXN0XzMyYml0c19saW1pdF9kZXNjID0KKwkiVmVyaWZpZXMgdGhhdCBz
-aWduYWxpbmcgYXJvdW5kIHRoZSBpbnQzMl90IGxpbWl0LiBGb3IgY29tcGF0aWJpbGl0eSIKKwki
-IHJlYXNvbiwgdGhlIGhhbmRsaW5nIG9mIHNlcW5vcyBpbiB0aGUgZG1hLWZlbmNlcyBjYW4gY29u
-c2lkZXIgYSBzZXFub0EiCisJIiBpcyBwcmlvciBzZXFub0IgZXZlbiB0aG91Z2ggc2Vxbm9BID4g
-c2Vxbm9CLiI7CisvKgorICogRml4ZWQgaW4ga2VybmVsIGNvbW1pdCA6CisgKgorICogY29tbWl0
-IGIzMTJkOGNhM2E3Y2ViZTE5OTQxZDk2OWE1MWYyYjdmODk5YjgxZTIKKyAqIEF1dGhvcjogQ2hy
-aXN0aWFuIEvDtm5pZyA8Y2hyaXN0aWFuLmtvZW5pZ0BhbWQuY29tPgorICogRGF0ZTogICBXZWQg
-Tm92IDE0IDE2OjExOjA2IDIwMTggKzAxMDAKKyAqCisgKiAgICBkbWEtYnVmOiBtYWtlIGZlbmNl
-IHNlcXVlbmNlIG51bWJlcnMgNjQgYml0IHYyCisgKgorICovCitzdGF0aWMgdm9pZAordGVzdF8z
-MmJpdHNfbGltaXQoaW50IGZkKQoreworCXN0cnVjdCBjaGVja2VyX3RocmVhZF9kYXRhIHRocmVh
-ZF9kYXRhID0geworCQkuZmQgPSBmZCwKKwkJLnN5bmNvYmogPSBzeW5jb2JqX2NyZWF0ZShmZCwg
-MCksCisJCS5ydW5uaW5nID0gdHJ1ZSwKKwkJLnN0YXJ0ZWQgPSBmYWxzZSwKKwl9OworCWludCB0
-aW1lbGluZSA9IHN3X3N5bmNfdGltZWxpbmVfY3JlYXRlKCk7CisJdWludDY0X3QgbGltaXRfZGlm
-ZiA9ICgxdWxsIDw8IDMxKSAtIDE7CisJdWludDY0X3QgcG9pbnRzW10gPSB7IDEsIDUsIGxpbWl0
-X2RpZmYgKyA1LCBsaW1pdF9kaWZmICsgNiwgbGltaXRfZGlmZiAqIDIsIH07CisJcHRocmVhZF90
-IHRocmVhZDsKKwl1aW50NjRfdCB2YWx1ZSwgbGFzdF92YWx1ZTsKKwlpbnQgaTsKKworCWlndF9h
-c3NlcnRfZXEocHRocmVhZF9jcmVhdGUoJnRocmVhZCwgTlVMTCwgY2hlY2tlcl90aHJlYWRfZnVu
-YywgJnRocmVhZF9kYXRhKSwgMCk7CisKKwl3aGlsZSAoIXRocmVhZF9kYXRhLnN0YXJ0ZWQpOwor
-CisJZm9yIChpID0gMDsgaSA8IEFSUkFZX1NJWkUocG9pbnRzKTsgaSsrKSB7CisJCWludCBmZW5j
-ZSA9IHN3X3N5bmNfdGltZWxpbmVfY3JlYXRlX2ZlbmNlKHRpbWVsaW5lLCBpICsgMSk7CisJCXVp
-bnQzMl90IHRtcF9zeW5jb2JqID0gc3luY29ial9jcmVhdGUoZmQsIDApOworCisJCXN5bmNvYmpf
-aW1wb3J0X3N5bmNfZmlsZShmZCwgdG1wX3N5bmNvYmosIGZlbmNlKTsKKwkJc3luY29ial9iaW5h
-cnlfdG9fdGltZWxpbmUoZmQsIHRocmVhZF9kYXRhLnN5bmNvYmosIHBvaW50c1tpXSwgdG1wX3N5
-bmNvYmopOworCQljbG9zZShmZW5jZSk7CisJCXN5bmNvYmpfZGVzdHJveShmZCwgdG1wX3N5bmNv
-YmopOworCX0KKworCWxhc3RfdmFsdWUgPSAwOworCWZvciAoaSA9IDA7IGkgPCBBUlJBWV9TSVpF
-KHBvaW50cyk7IGkrKykgeworCQlzd19zeW5jX3RpbWVsaW5lX2luYyh0aW1lbGluZSwgMSk7CisK
-KwkJc3luY29ial90aW1lbGluZV9xdWVyeShmZCwgJnRocmVhZF9kYXRhLnN5bmNvYmosICZ2YWx1
-ZSwgMSk7CisJCWlndF9hc3NlcnQobGFzdF92YWx1ZSA8PSB2YWx1ZSk7CisKKwkJbGFzdF92YWx1
-ZSA9IHZhbHVlOworCX0KKworCXRocmVhZF9kYXRhLnJ1bm5pbmcgPSBmYWxzZTsKKwlwdGhyZWFk
-X2pvaW4odGhyZWFkLCBOVUxMKTsKKworCXN5bmNvYmpfZGVzdHJveShmZCwgdGhyZWFkX2RhdGEu
-c3luY29iaik7CisJY2xvc2UodGltZWxpbmUpOworfQorCiBzdGF0aWMgYm9vbAogaGFzX3N5bmNv
-YmpfdGltZWxpbmVfd2FpdChpbnQgZmQpCiB7CkBAIC0xMDEwLDYgKzEzNjUsMTQgQEAgaWd0X21h
-aW4KIAlpZ3Rfc3VidGVzdCgiaW52YWxpZC10cmFuc2Zlci1iYWQtcGFkIikKIAkJdGVzdF90cmFu
-c2Zlcl9iYWRfcGFkKGZkKTsKIAorCWlndF9kZXNjcmliZSh0ZXN0X3RyYW5zZmVyX25vbmV4aXN0
-ZW50X3BvaW50X2Rlc2MpOworCWlndF9zdWJ0ZXN0KCJpbnZhbGlkLXRyYW5zZmVyLW5vbi1leGlz
-dGVudC1wb2ludCIpCisJCXRlc3RfdHJhbnNmZXJfbm9uZXhpc3RlbnRfcG9pbnQoZmQpOworCisJ
-aWd0X2Rlc2NyaWJlKHRlc3RfdHJhbnNmZXJfcG9pbnRfZGVzYyk7CisJaWd0X3N1YnRlc3QoInRy
-YW5zZmVyLXRpbWVsaW5lLXBvaW50IikKKwkJdGVzdF90cmFuc2Zlcl9wb2ludChmZCk7CisKIAlm
-b3IgKHVuc2lnbmVkIGZsYWdzID0gMDsgZmxhZ3MgPCBXQUlUX0ZMQUdTX01BWDsgZmxhZ3MrKykg
-ewogCQlpbnQgZXJyOwogCkBAIC0xMDc0LDYgKzE0MzcsMTAgQEAgaWd0X21haW4KIAlpZ3Rfc3Vi
-dGVzdCgic2lnbmFsIikKIAkJdGVzdF9zaWduYWwoZmQpOwogCisJaWd0X2Rlc2NyaWJlKHRlc3Rf
-c2lnbmFsX3BvaW50XzBfZGVzYyk7CisJaWd0X3N1YnRlc3QoInNpZ25hbC1wb2ludC0wIikKKwkJ
-dGVzdF9zaWduYWxfcG9pbnRfMChmZCk7CisKIAlmb3IgKHVuc2lnbmVkIGZsYWdzID0gMDsgZmxh
-Z3MgPCBXQUlUX0ZMQUdTX01BWDsgZmxhZ3MrKykgewogCQlpbnQgZXJyOwogCkBAIC0xMTQ3LDQg
-KzE1MTQsMjQgQEAgaWd0X21haW4KIAlpZ3RfZGVzY3JpYmUodGVzdF93YWl0X2ludGVycnVwdGVk
-X2Rlc2MpOwogCWlndF9zdWJ0ZXN0KCJ3YWl0LWFsbC1pbnRlcnJ1cHRlZCIpCiAJCXRlc3Rfd2Fp
-dF9pbnRlcnJ1cHRlZChmZCwgV0FJVF9BTEwpOworCisJaWd0X2Rlc2NyaWJlKHRlc3RfaG9zdF9z
-aWduYWxfcG9pbnRzX2Rlc2MpOworCWlndF9zdWJ0ZXN0KCJob3N0LXNpZ25hbC1wb2ludHMiKQor
-CQl0ZXN0X2hvc3Rfc2lnbmFsX3BvaW50cyhmZCk7CisKKwlpZ3RfZGVzY3JpYmUodGVzdF9kZXZp
-Y2Vfc2lnbmFsX3Vub3JkZXJlZF9kZXNjKTsKKwlpZ3Rfc3VidGVzdCgiZGV2aWNlLXNpZ25hbC11
-bm9yZGVyZWQiKQorCQl0ZXN0X2RldmljZV9zaWduYWxfdW5vcmRlcmVkKGZkKTsKKworCWlndF9k
-ZXNjcmliZSh0ZXN0X2RldmljZV9zdWJtaXRfdW5vcmRlcmVkX2Rlc2MpOworCWlndF9zdWJ0ZXN0
-KCJkZXZpY2Utc3VibWl0LXVub3JkZXJlZCIpCisJCXRlc3RfZGV2aWNlX3N1Ym1pdF91bm9yZGVy
-ZWQoZmQpOworCisJaWd0X2Rlc2NyaWJlKHRlc3RfaG9zdF9zaWduYWxfb3JkZXJlZF9kZXNjKTsK
-KwlpZ3Rfc3VidGVzdCgiaG9zdC1zaWduYWwtb3JkZXJlZCIpCisJCXRlc3RfaG9zdF9zaWduYWxf
-b3JkZXJlZChmZCk7CisKKwlpZ3RfZGVzY3JpYmUodGVzdF8zMmJpdHNfbGltaXRfZGVzYyk7CisJ
-aWd0X3N1YnRlc3QoIjMyYml0cy1saW1pdCIpCisJCXRlc3RfMzJiaXRzX2xpbWl0KGZkKTsKIH0K
-LS0gCjIuMjcuMAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
-cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+We can now give a tuple (handle, point_value) for timeline semaphores.
+
+v2: Fix up syncobj-timeline-repeat test (Lionel)
+    Update following kernel rename
+
+v3: Add more ordering tests for syncobj/buffer handle state (Chris)
+
+v4: Rebase
+    Drop gem_context_set_all_engines()
+
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ tests/i915/gem_exec_fence.c | 684 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 684 insertions(+)
+
+diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+index 863386c5..97439b4b 100644
+--- a/tests/i915/gem_exec_fence.c
++++ b/tests/i915/gem_exec_fence.c
+@@ -1580,6 +1580,646 @@ static void test_syncobj_channel(int fd)
+ 		syncobj_destroy(fd, syncobj[i]);
+ }
+ 
++static bool has_syncobj_timeline(int fd)
++{
++	struct drm_get_cap cap = { .capability = DRM_CAP_SYNCOBJ_TIMELINE };
++	ioctl(fd, DRM_IOCTL_GET_CAP, &cap);
++	return cap.value;
++}
++
++static bool exec_has_timeline_fences(int fd)
++{
++	struct drm_i915_getparam gp;
++	int value = 0;
++
++	memset(&gp, 0, sizeof(gp));
++	gp.param = I915_PARAM_HAS_EXEC_TIMELINE_FENCES;
++	gp.value = &value;
++
++	ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp, sizeof(gp));
++	errno = 0;
++
++	return value;
++}
++
++static const char *test_invalid_timeline_fence_array_desc =
++	"Verifies invalid execbuf parameters in"
++	" drm_i915_gem_execbuffer_ext_timeline_fences are rejected";
++static void test_invalid_timeline_fence_array(int fd)
++{
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	struct drm_i915_gem_execbuffer2 execbuf;
++	struct drm_i915_gem_exec_object2 obj;
++	struct drm_i915_gem_execbuffer_ext_timeline_fences timeline_fences;
++	struct drm_i915_gem_exec_fence fence;
++	uint64_t value;
++	void *ptr;
++
++	/* create an otherwise valid execbuf */
++	memset(&obj, 0, sizeof(obj));
++	obj.handle = gem_create(fd, 4096);
++	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
++	memset(&execbuf, 0, sizeof(execbuf));
++	execbuf.buffers_ptr = to_user_pointer(&obj);
++	execbuf.buffer_count = 1;
++	gem_execbuf(fd, &execbuf);
++
++	/* Invalid num_cliprects value */
++	execbuf.cliprects_ptr = to_user_pointer(&timeline_fences);
++	execbuf.num_cliprects = 1;
++	execbuf.flags = I915_EXEC_USE_EXTENSIONS;
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EINVAL);
++
++	fence.handle = syncobj_create(fd, 0);
++	fence.flags = I915_EXEC_FENCE_SIGNAL;
++	value = 1;
++
++	memset(&timeline_fences, 0, sizeof(timeline_fences));
++	timeline_fences.base.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES;
++	timeline_fences.fence_count = 1;
++	timeline_fences.handles_ptr = to_user_pointer(&fence);
++	timeline_fences.values_ptr = to_user_pointer(&value);
++
++	/* Invalid fence array & i915 ext */
++	execbuf.cliprects_ptr = to_user_pointer(&timeline_fences);
++	execbuf.num_cliprects = 0;
++	execbuf.flags = I915_EXEC_FENCE_ARRAY | I915_EXEC_USE_EXTENSIONS;
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EINVAL);
++
++	syncobj_create(fd, fence.handle);
++
++	execbuf.flags = I915_EXEC_USE_EXTENSIONS;
++
++	/* Invalid handles_ptr */
++	value = 1;
++	memset(&timeline_fences, 0, sizeof(timeline_fences));
++	timeline_fences.base.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES;
++	timeline_fences.fence_count = 1;
++	timeline_fences.handles_ptr = -1;
++	timeline_fences.values_ptr = to_user_pointer(&value);
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EFAULT);
++
++	/* Invalid values_ptr */
++	value = 1;
++	memset(&timeline_fences, 0, sizeof(timeline_fences));
++	timeline_fences.base.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES;
++	timeline_fences.fence_count = 1;
++	timeline_fences.handles_ptr = to_user_pointer(&fence);
++	timeline_fences.values_ptr = -1;
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EFAULT);
++
++	/* Invalid syncobj handle */
++	memset(&fence, 0, sizeof(fence));
++	fence.handle = 0;
++	fence.flags = I915_EXEC_FENCE_WAIT;
++	value = 1;
++	memset(&timeline_fences, 0, sizeof(timeline_fences));
++	timeline_fences.base.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES;
++	timeline_fences.fence_count = 1;
++	timeline_fences.handles_ptr = to_user_pointer(&fence);
++	timeline_fences.values_ptr = to_user_pointer(&value);
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -ENOENT);
++
++	/* Invalid syncobj timeline point */
++	memset(&fence, 0, sizeof(fence));
++	fence.handle = syncobj_create(fd, 0);
++	fence.flags = I915_EXEC_FENCE_WAIT;
++	value = 1;
++	memset(&timeline_fences, 0, sizeof(timeline_fences));
++	timeline_fences.base.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES;
++	timeline_fences.fence_count = 1;
++	timeline_fences.handles_ptr = to_user_pointer(&fence);
++	timeline_fences.values_ptr = to_user_pointer(&value);
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EINVAL);
++	syncobj_destroy(fd, fence.handle);
++
++	/* Invalid handles_ptr */
++	ptr = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
++	igt_assert(ptr != MAP_FAILED);
++	memset(&timeline_fences, 0, sizeof(timeline_fences));
++	timeline_fences.base.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES;
++	timeline_fences.fence_count = 1;
++	timeline_fences.handles_ptr = to_user_pointer(ptr);
++	timeline_fences.values_ptr = to_user_pointer(&value);
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -ENOENT);
++
++	do_or_die(mprotect(ptr, 4096, PROT_READ));
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -ENOENT);
++
++	do_or_die(mprotect(ptr, 4096, PROT_NONE));
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EFAULT);
++
++	munmap(ptr, 4096);
++
++	/* Invalid values_ptr */
++	ptr = mmap(NULL, 4096, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
++	igt_assert(ptr != MAP_FAILED);
++	memset(&timeline_fences, 0, sizeof(timeline_fences));
++	timeline_fences.base.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES;
++	timeline_fences.fence_count = 1;
++	timeline_fences.handles_ptr = to_user_pointer(&fence);
++	timeline_fences.values_ptr = to_user_pointer(ptr);
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -ENOENT);
++
++	do_or_die(mprotect(ptr, 4096, PROT_READ));
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -ENOENT);
++
++	do_or_die(mprotect(ptr, 4096, PROT_NONE));
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EFAULT);
++
++	munmap(ptr, 4096);
++}
++
++static const char *test_syncobj_timeline_unused_fence_desc =
++	"Verifies that a timeline syncobj passed into"
++	" drm_i915_gem_execbuffer_ext_timeline_fences but with no signal/wait"
++	" flag is left untouched";
++static void test_syncobj_timeline_unused_fence(int fd)
++{
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	struct drm_i915_gem_exec_object2 obj;
++	struct drm_i915_gem_execbuffer2 execbuf;
++	struct drm_i915_gem_execbuffer_ext_timeline_fences timeline_fences;
++	struct drm_i915_gem_exec_fence fence = {
++		.handle = syncobj_create(fd, 0),
++	};
++	igt_spin_t *spin = igt_spin_new(fd);
++	uint64_t value = 1;
++
++	/* sanity check our syncobj_to_sync_file interface */
++	igt_assert_eq(__syncobj_to_sync_file(fd, 0), -ENOENT);
++
++	memset(&timeline_fences, 0, sizeof(timeline_fences));
++	timeline_fences.base.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES;
++	timeline_fences.fence_count = 1;
++	timeline_fences.handles_ptr = to_user_pointer(&fence);
++	timeline_fences.values_ptr = to_user_pointer(&value);
++
++	memset(&execbuf, 0, sizeof(execbuf));
++	execbuf.buffers_ptr = to_user_pointer(&obj);
++	execbuf.buffer_count = 1;
++	execbuf.flags = I915_EXEC_USE_EXTENSIONS;
++	execbuf.cliprects_ptr = to_user_pointer(&timeline_fences);
++	execbuf.num_cliprects = 0;
++
++	memset(&obj, 0, sizeof(obj));
++	obj.handle = gem_create(fd, 4096);
++	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
++
++	gem_execbuf(fd, &execbuf);
++
++	/* no flags, the fence isn't created */
++	igt_assert_eq(__syncobj_to_sync_file(fd, fence.handle), -EINVAL);
++	igt_assert(gem_bo_busy(fd, obj.handle));
++
++	gem_close(fd, obj.handle);
++	syncobj_destroy(fd, fence.handle);
++
++	igt_spin_free(fd, spin);
++}
++
++static const char *test_syncobj_timeline_invalid_wait_desc =
++	"Verifies that submitting an execbuf with a wait on a timeline syncobj"
++	" point that does not exists is rejected";
++static void test_syncobj_timeline_invalid_wait(int fd)
++{
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	struct drm_i915_gem_exec_object2 obj;
++	struct drm_i915_gem_execbuffer2 execbuf;
++	struct drm_i915_gem_execbuffer_ext_timeline_fences timeline_fences;
++	struct drm_i915_gem_exec_fence fence = {
++		.handle = syncobj_create(fd, 0),
++	};
++	uint64_t value = 1;
++
++	memset(&timeline_fences, 0, sizeof(timeline_fences));
++	timeline_fences.base.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES;
++	timeline_fences.fence_count = 1;
++	timeline_fences.handles_ptr = to_user_pointer(&fence);
++	timeline_fences.values_ptr = to_user_pointer(&value);
++
++	memset(&execbuf, 0, sizeof(execbuf));
++	execbuf.buffers_ptr = to_user_pointer(&obj);
++	execbuf.buffer_count = 1;
++	execbuf.flags = I915_EXEC_USE_EXTENSIONS;
++	execbuf.cliprects_ptr = to_user_pointer(&timeline_fences);
++	execbuf.num_cliprects = 0;
++
++	memset(&obj, 0, sizeof(obj));
++	obj.handle = gem_create(fd, 4096);
++	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
++
++	/* waiting before the fence point 1 is set is invalid */
++	fence.flags = I915_EXEC_FENCE_WAIT;
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EINVAL);
++
++	/* Now set point 1. */
++	fence.flags = I915_EXEC_FENCE_SIGNAL;
++	gem_execbuf(fd, &execbuf);
++
++	/* waiting before the fence point 2 is set is invalid */
++	value = 2;
++	fence.flags = I915_EXEC_FENCE_WAIT;
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EINVAL);
++
++	gem_close(fd, obj.handle);
++	syncobj_destroy(fd, fence.handle);
++}
++
++static const char *test_syncobj_timeline_invalid_flags_desc =
++	"Verifies that invalid fence flags in"
++	" drm_i915_gem_execbuffer_ext_timeline_fences are rejected";
++static void test_syncobj_timeline_invalid_flags(int fd)
++{
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	struct drm_i915_gem_exec_object2 obj;
++	struct drm_i915_gem_execbuffer2 execbuf;
++	struct drm_i915_gem_execbuffer_ext_timeline_fences timeline_fences;
++	struct drm_i915_gem_exec_fence fence = {
++		.handle = syncobj_create(fd, 0),
++	};
++	uint64_t value = 1;
++
++	memset(&timeline_fences, 0, sizeof(timeline_fences));
++	timeline_fences.base.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES;
++	timeline_fences.fence_count = 1;
++	timeline_fences.handles_ptr = to_user_pointer(&fence);
++	timeline_fences.values_ptr = to_user_pointer(&value);
++
++	memset(&execbuf, 0, sizeof(execbuf));
++	execbuf.buffers_ptr = to_user_pointer(&obj);
++	execbuf.buffer_count = 1;
++	execbuf.flags = I915_EXEC_USE_EXTENSIONS;
++	execbuf.cliprects_ptr = to_user_pointer(&timeline_fences);
++	execbuf.num_cliprects = 0;
++
++	memset(&obj, 0, sizeof(obj));
++	obj.handle = gem_create(fd, 4096);
++	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
++
++	/* set all flags to hit an invalid one */
++	fence.flags = ~0;
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EINVAL);
++
++	gem_close(fd, obj.handle);
++	syncobj_destroy(fd, fence.handle);
++}
++
++static uint64_t
++gettime_ns(void)
++{
++	struct timespec current;
++	clock_gettime(CLOCK_MONOTONIC, &current);
++	return (uint64_t)current.tv_sec * NSEC_PER_SEC + current.tv_nsec;
++}
++
++static const char *test_syncobj_timeline_signal_desc =
++	"Verifies proper signaling of a timeline syncobj through execbuf";
++static void test_syncobj_timeline_signal(int fd)
++{
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	struct drm_i915_gem_exec_object2 obj;
++	struct drm_i915_gem_execbuffer2 execbuf;
++	struct drm_i915_gem_execbuffer_ext_timeline_fences timeline_fences;
++	struct drm_i915_gem_exec_fence fence = {
++		.handle = syncobj_create(fd, 0),
++	};
++	uint64_t value = 42, query_value;
++	igt_spin_t *spin;
++
++	/* Check that the syncobj is signaled only when our request/fence is */
++
++	memset(&timeline_fences, 0, sizeof(timeline_fences));
++	timeline_fences.base.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES;
++	timeline_fences.fence_count = 1;
++	timeline_fences.handles_ptr = to_user_pointer(&fence);
++	timeline_fences.values_ptr = to_user_pointer(&value);
++
++	memset(&execbuf, 0, sizeof(execbuf));
++	execbuf.buffers_ptr = to_user_pointer(&obj);
++	execbuf.buffer_count = 1;
++	execbuf.flags = I915_EXEC_USE_EXTENSIONS;
++	execbuf.cliprects_ptr = to_user_pointer(&timeline_fences);
++	execbuf.num_cliprects = 0;
++
++	memset(&obj, 0, sizeof(obj));
++	obj.handle = gem_create(fd, 4096);
++	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
++
++	fence.flags = I915_EXEC_FENCE_SIGNAL;
++
++	/* Check syncobj after waiting on the buffer handle. */
++	spin = igt_spin_new(fd);
++	gem_execbuf(fd, &execbuf);
++
++	igt_assert(gem_bo_busy(fd, obj.handle));
++	igt_assert(syncobj_busy(fd, fence.handle));
++	igt_assert(syncobj_timeline_wait(fd, &fence.handle, &value, 1, 0,
++					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE, NULL));
++	igt_assert_eq(syncobj_timeline_wait_err(fd, &fence.handle, &value,
++						1, 0, 0), -ETIME);
++
++	igt_spin_free(fd, spin);
++
++	gem_sync(fd, obj.handle);
++	igt_assert(!syncobj_busy(fd, fence.handle));
++	igt_assert(!gem_bo_busy(fd, obj.handle));
++
++	syncobj_timeline_query(fd, &fence.handle, &query_value, 1);
++	igt_assert_eq(query_value, value);
++
++	spin = igt_spin_new(fd);
++
++	/*
++	 * Wait on the syncobj and verify the state of the buffer
++	 * handle.
++	 */
++	value = 84;
++	gem_execbuf(fd, &execbuf);
++
++	igt_assert(gem_bo_busy(fd, obj.handle));
++	igt_assert(gem_bo_busy(fd, obj.handle));
++	igt_assert(syncobj_busy(fd, fence.handle));
++	igt_assert(syncobj_timeline_wait(fd, &fence.handle, &value, 1, 0,
++					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE, NULL));
++	igt_assert_eq(syncobj_timeline_wait_err(fd, &fence.handle, &value,
++						1, 0, 0), -ETIME);
++
++	igt_spin_free(fd, spin);
++
++	igt_assert(syncobj_timeline_wait(fd, &fence.handle, &value, 1,
++					 gettime_ns() + NSEC_PER_SEC,
++					 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT, NULL));
++
++	igt_assert(!gem_bo_busy(fd, obj.handle));
++	igt_assert(!syncobj_busy(fd, fence.handle));
++
++	syncobj_timeline_query(fd, &fence.handle, &query_value, 1);
++	igt_assert_eq(query_value, value);
++
++	gem_close(fd, obj.handle);
++	syncobj_destroy(fd, fence.handle);
++}
++
++static const char *test_syncobj_timeline_wait_desc =
++	"Verifies that waiting on a timeline syncobj point between engines"
++	" works";
++static void test_syncobj_timeline_wait(int fd)
++{
++	const uint32_t bbe[2] = {
++		MI_BATCH_BUFFER_END,
++		MI_NOOP,
++	};
++	uint32_t gem_context = gem_context_clone_with_engines(fd, 0);
++	struct drm_i915_gem_exec_object2 obj;
++	struct drm_i915_gem_execbuffer2 execbuf;
++	struct drm_i915_gem_execbuffer_ext_timeline_fences timeline_fences;
++	struct drm_i915_gem_exec_fence fence = {
++		.handle = syncobj_create(fd, 0),
++	};
++	uint64_t value = 1;
++	igt_spin_t *spin;
++	unsigned handle[16];
++	int n;
++
++	/* Check that we can use the syncobj to asynchronous wait prior to
++	 * execution.
++	 */
++
++	gem_quiescent_gpu(fd);
++
++	spin = igt_spin_new(fd);
++
++	memset(&timeline_fences, 0, sizeof(timeline_fences));
++	timeline_fences.base.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES;
++	timeline_fences.fence_count = 1;
++	timeline_fences.handles_ptr = to_user_pointer(&fence);
++	timeline_fences.values_ptr = to_user_pointer(&value);
++
++	memset(&execbuf, 0, sizeof(execbuf));
++	execbuf.buffers_ptr = to_user_pointer(&obj);
++	execbuf.buffer_count = 1;
++	execbuf.batch_len = sizeof(bbe);
++	execbuf.rsvd1 = gem_context;
++
++	memset(&obj, 0, sizeof(obj));
++	obj.handle = gem_create(fd, 4096);
++	gem_write(fd, obj.handle, 0, bbe, sizeof(bbe));
++
++	/* Queue a signaler from the blocked engine */
++	execbuf.flags = I915_EXEC_USE_EXTENSIONS;
++	execbuf.cliprects_ptr = to_user_pointer(&timeline_fences);
++	execbuf.num_cliprects = 0;
++	fence.flags = I915_EXEC_FENCE_SIGNAL;
++	gem_execbuf(fd, &execbuf);
++	igt_assert(gem_bo_busy(fd, spin->handle));
++
++	gem_close(fd, obj.handle);
++	obj.handle = gem_create(fd, 4096);
++	gem_write(fd, obj.handle, 0, bbe, sizeof(bbe));
++
++	n = 0;
++	for_each_engine(engine, fd) {
++		obj.handle = gem_create(fd, 4096);
++		gem_write(fd, obj.handle, 0, bbe, sizeof(bbe));
++
++		/* No inter-engine synchronisation, will complete */
++		if (engine->flags == I915_EXEC_BLT) {
++			execbuf.flags = engine->flags;
++			execbuf.cliprects_ptr = 0;
++			execbuf.num_cliprects = 0;
++			gem_execbuf(fd, &execbuf);
++			gem_sync(fd, obj.handle);
++			igt_assert(gem_bo_busy(fd, spin->handle));
++		}
++		igt_assert(gem_bo_busy(fd, spin->handle));
++
++		/* Now wait upon the blocked engine */
++		execbuf.flags = I915_EXEC_USE_EXTENSIONS | engine->flags;
++		execbuf.cliprects_ptr = to_user_pointer(&timeline_fences);
++		execbuf.num_cliprects = 0;
++		fence.flags = I915_EXEC_FENCE_WAIT;
++		gem_execbuf(fd, &execbuf);
++
++		igt_assert(gem_bo_busy(fd, obj.handle));
++		handle[n++] = obj.handle;
++	}
++	syncobj_destroy(fd, fence.handle);
++
++	for (int i = 0; i < n; i++)
++		igt_assert(gem_bo_busy(fd, handle[i]));
++
++	igt_spin_free(fd, spin);
++
++	for (int i = 0; i < n; i++) {
++		gem_sync(fd, handle[i]);
++		gem_close(fd, handle[i]);
++	}
++
++	gem_context_destroy(fd, gem_context);
++}
++
++static const char *test_syncobj_timeline_export_desc =
++	"Verify exporting of timeline syncobj signaled by i915";
++static void test_syncobj_timeline_export(int fd)
++{
++	const uint32_t bbe[2] = {
++		MI_BATCH_BUFFER_END,
++		MI_NOOP,
++	};
++	struct drm_i915_gem_exec_object2 obj;
++	struct drm_i915_gem_execbuffer2 execbuf;
++	struct drm_i915_gem_execbuffer_ext_timeline_fences timeline_fences;
++	struct drm_i915_gem_exec_fence fence = {
++		.handle = syncobj_create(fd, 0),
++	};
++	uint64_t value = 1;
++	int export[2];
++	igt_spin_t *spin = igt_spin_new(fd);
++
++	/* Check that if we export the syncobj prior to use it picks up
++	 * the later fence. This allows a syncobj to establish a channel
++	 * between clients that may be updated to a later fence by either
++	 * end.
++	 */
++	for (int n = 0; n < ARRAY_SIZE(export); n++)
++		export[n] = syncobj_export(fd, fence.handle);
++
++	memset(&timeline_fences, 0, sizeof(timeline_fences));
++	timeline_fences.base.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES;
++	timeline_fences.fence_count = 1;
++	timeline_fences.handles_ptr = to_user_pointer(&fence);
++	timeline_fences.values_ptr = to_user_pointer(&value);
++
++	memset(&execbuf, 0, sizeof(execbuf));
++	execbuf.buffers_ptr = to_user_pointer(&obj);
++	execbuf.buffer_count = 1;
++	execbuf.flags = I915_EXEC_USE_EXTENSIONS;
++	execbuf.cliprects_ptr = to_user_pointer(&timeline_fences);
++	execbuf.num_cliprects = 0;
++
++	memset(&obj, 0, sizeof(obj));
++	obj.handle = gem_create(fd, 4096);
++	gem_write(fd, obj.handle, 0, bbe, sizeof(bbe));
++
++	fence.flags = I915_EXEC_FENCE_SIGNAL;
++	gem_execbuf(fd, &execbuf);
++
++	igt_assert(syncobj_busy(fd, fence.handle));
++	igt_assert(gem_bo_busy(fd, obj.handle));
++
++	for (int n = 0; n < ARRAY_SIZE(export); n++) {
++		uint32_t import = syncobj_import(fd, export[n]);
++		igt_assert(syncobj_busy(fd, import));
++		syncobj_destroy(fd, import);
++	}
++
++	igt_spin_free(fd, spin);
++
++	gem_sync(fd, obj.handle);
++	igt_assert(!gem_bo_busy(fd, obj.handle));
++	igt_assert(!syncobj_busy(fd, fence.handle));
++
++	gem_close(fd, obj.handle);
++	syncobj_destroy(fd, fence.handle);
++
++	for (int n = 0; n < ARRAY_SIZE(export); n++) {
++		uint32_t import = syncobj_import(fd, export[n]);
++		igt_assert(!syncobj_busy(fd, import));
++		syncobj_destroy(fd, import);
++		close(export[n]);
++	}
++}
++
++static const char *test_syncobj_timeline_repeat_desc =
++	"Verifies that waiting & signaling a same timeline syncobj point within"
++	" the same execbuf fworks";
++static void test_syncobj_timeline_repeat(int fd)
++{
++	const uint32_t bbe[2] = {
++		MI_BATCH_BUFFER_END,
++		MI_NOOP,
++	};
++	const unsigned nfences = 4096;
++	struct drm_i915_gem_exec_object2 obj;
++	struct drm_i915_gem_execbuffer2 execbuf;
++	struct drm_i915_gem_execbuffer_ext_timeline_fences timeline_fences;
++	struct drm_i915_gem_exec_fence *fence;
++	uint64_t *values;
++	int export;
++	igt_spin_t *spin = igt_spin_new(fd);
++
++	/* Check that we can wait on the same fence multiple times */
++	fence = calloc(nfences, sizeof(*fence));
++	values = calloc(nfences, sizeof(*values));
++	fence->handle = syncobj_create(fd, 0);
++	values[0] = 1;
++	export = syncobj_export(fd, fence->handle);
++	for (int i = 1; i < nfences; i++) {
++		fence[i].handle = syncobj_import(fd, export);
++		values[i] = i + 1;
++	}
++	close(export);
++
++	memset(&timeline_fences, 0, sizeof(timeline_fences));
++	timeline_fences.base.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES;
++	timeline_fences.fence_count = 1;
++	timeline_fences.handles_ptr = to_user_pointer(fence);
++	timeline_fences.values_ptr = to_user_pointer(values);
++
++	memset(&execbuf, 0, sizeof(execbuf));
++	execbuf.buffers_ptr = to_user_pointer(&obj);
++	execbuf.buffer_count = 1;
++	execbuf.flags = I915_EXEC_USE_EXTENSIONS;
++	execbuf.cliprects_ptr = to_user_pointer(&timeline_fences);
++	execbuf.num_cliprects = 0;
++
++	memset(&obj, 0, sizeof(obj));
++	obj.handle = gem_create(fd, 4096);
++	gem_write(fd, obj.handle, 0, bbe, sizeof(bbe));
++
++	for (int i = 0; i < nfences; i++)
++		fence[i].flags = I915_EXEC_FENCE_SIGNAL;
++
++	gem_execbuf(fd, &execbuf);
++
++	for (int i = 0; i < nfences; i++) {
++		igt_assert(syncobj_busy(fd, fence[i].handle));
++		/*
++		 * Timeline syncobj cannot resignal the same point
++		 * again.
++		 */
++		fence[i].flags |= I915_EXEC_FENCE_WAIT;
++	}
++	igt_assert(gem_bo_busy(fd, obj.handle));
++
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EINVAL);
++
++	for (int i = 0; i < nfences; i++) {
++		igt_assert(syncobj_busy(fd, fence[i].handle));
++		fence[i].flags = I915_EXEC_FENCE_WAIT;
++	}
++	igt_assert(gem_bo_busy(fd, obj.handle));
++
++	gem_execbuf(fd, &execbuf);
++
++	for (int i = 0; i < nfences; i++)
++		igt_assert(syncobj_busy(fd, fence[i].handle));
++	igt_assert(gem_bo_busy(fd, obj.handle));
++
++	igt_spin_free(fd, spin);
++
++	gem_sync(fd, obj.handle);
++	gem_close(fd, obj.handle);
++
++	for (int i = 0; i < nfences; i++) {
++		igt_assert(!syncobj_busy(fd, fence[i].handle));
++		syncobj_destroy(fd, fence[i].handle);
++	}
++	free(fence);
++	free(values);
++}
++
+ igt_main
+ {
+ 	const struct intel_execution_engine2 *e;
+@@ -1818,6 +2458,50 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_subtest_group { /* syncobj timeline */
++		igt_fixture {
++			igt_require(exec_has_timeline_fences(i915));
++			igt_assert(has_syncobj_timeline(i915));
++			igt_fork_hang_detector(i915);
++		}
++
++		igt_describe(test_invalid_timeline_fence_array_desc);
++		igt_subtest("invalid-timeline-fence-array")
++			test_invalid_timeline_fence_array(i915);
++
++		igt_describe(test_syncobj_timeline_unused_fence_desc);
++		igt_subtest("syncobj-timeline-unused-fence")
++			test_syncobj_timeline_unused_fence(i915);
++
++		igt_describe(test_syncobj_timeline_invalid_wait_desc);
++		igt_subtest("syncobj-timeline-invalid-wait")
++			test_syncobj_timeline_invalid_wait(i915);
++
++		igt_describe(test_syncobj_timeline_invalid_flags_desc);
++		igt_subtest("syncobj-timeline-invalid-flags")
++			test_syncobj_timeline_invalid_flags(i915);
++
++		igt_describe(test_syncobj_timeline_signal_desc);
++		igt_subtest("syncobj-timeline-signal")
++			test_syncobj_timeline_signal(i915);
++
++		igt_describe(test_syncobj_timeline_wait_desc);
++		igt_subtest("syncobj-timeline-wait")
++			test_syncobj_timeline_wait(i915);
++
++		igt_describe(test_syncobj_timeline_export_desc);
++		igt_subtest("syncobj-timeline-export")
++			test_syncobj_timeline_export(i915);
++
++		igt_describe(test_syncobj_timeline_repeat_desc);
++		igt_subtest("syncobj-timeline-repeat")
++			test_syncobj_timeline_repeat(i915);
++
++		igt_fixture {
++			igt_stop_hang_detector();
++		}
++	}
++
+ 	igt_fixture {
+ 		close(i915);
+ 	}
+-- 
+2.27.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
