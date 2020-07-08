@@ -1,127 +1,73 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon,  6 Jul 2020 13:15:19 +0100
-Message-Id: <20200706121520.967972-2-chris@chris-wilson.co.uk>
-In-Reply-To: <20200706121520.967972-1-chris@chris-wilson.co.uk>
-References: <20200706121520.967972-1-chris@chris-wilson.co.uk>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Date: Wed, 8 Jul 2020 15:49:52 +0300
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20200708124952.l42a3xzssejs3zas@ahiler-desk1.fi.intel.com>
+References: <20200622164415.30352-1-janusz.krzysztofik@linux.intel.com>
+ <20200622164415.30352-2-janusz.krzysztofik@linux.intel.com>
+ <159309887614.186992.12805428537676828006@macragge.hardline.pl>
+ <632af55bd2d4395d3b51898bf51436d05a1bc06c.camel@linux.intel.com>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t 2/3] tools: Use the gt number stored in
- the device info
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+Content-Disposition: inline
+In-Reply-To: <632af55bd2d4395d3b51898bf51436d05a1bc06c.camel@linux.intel.com>
+Subject: Re: [igt-dev] [Intel-gfx] [RFC PATCH i-g-t v2 1/8]
+ tests/core_hotunplug: Duplicate debug messages in dmesg
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Don't use the encoded information within the PCI-ID for the GT value, as
-the rules keep changing. Use the device info instead.
-
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
----
- lib/intel_chipset.h       |  1 -
- lib/intel_device_info.c   | 23 -----------------------
- tools/intel_l3_parity.c   |  5 +++--
- tools/intel_reg_checker.c |  5 +++++
- 4 files changed, 8 insertions(+), 26 deletions(-)
-
-diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
-index 929fac530..84b259692 100644
---- a/lib/intel_chipset.h
-+++ b/lib/intel_chipset.h
-@@ -79,7 +79,6 @@ struct intel_device_info {
- const struct intel_device_info *intel_get_device_info(uint16_t devid) __attribute__((pure));
- 
- unsigned intel_gen(uint16_t devid) __attribute__((pure));
--unsigned intel_gt(uint16_t devid) __attribute__((pure));
- 
- extern enum pch_type intel_pch;
- 
-diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-index dfa43f490..5f3e8c191 100644
---- a/lib/intel_device_info.c
-+++ b/lib/intel_device_info.c
-@@ -453,26 +453,3 @@ unsigned intel_gen(uint16_t devid)
- {
- 	return ffs(intel_get_device_info(devid)->gen) ?: -1u;
- }
--
--/**
-- * intel_gt:
-- * @devid: pci device id
-- *
-- * Computes the Intel GFX GT size for the given device id.
-- *
-- * Returns:
-- * The GT size.
-- */
--unsigned intel_gt(uint16_t devid)
--{
--	unsigned mask = intel_gen(devid);
--
--	if (mask >= 8)
--		mask = 0xf;
--	else if (mask >= 6)
--		mask = 0x3;
--	else
--		mask = 0;
--
--	return (devid >> 4) & mask;
--}
-diff --git a/tools/intel_l3_parity.c b/tools/intel_l3_parity.c
-index 340f94b1a..484dd0281 100644
---- a/tools/intel_l3_parity.c
-+++ b/tools/intel_l3_parity.c
-@@ -44,10 +44,11 @@
- #include "intel_l3_parity.h"
- 
- static unsigned int devid;
-+
- /* L3 size is always a function of banks. The number of banks cannot be
-  * determined by number of slices however */
- static inline int num_banks(void) {
--	switch (intel_gt(devid)) {
-+	switch (intel_get_device_info(devid)->gt) {
- 	case 2: return 8;
- 	case 1: return 4;
- 	default: return 2;
-@@ -61,7 +62,7 @@ static inline int num_banks(void) {
- #define MAX_ROW (1<<12)
- #define MAX_BANKS_PER_SLICE 4
- #define NUM_REGS (MAX_BANKS_PER_SLICE * NUM_SUBBANKS)
--#define MAX_SLICES (intel_gt(devid) > 1 ? 2 : 1)
-+#define MAX_SLICES (intel_get_device_info(devid)->gt > 1 ? 2 : 1)
- #define REAL_MAX_SLICES 2
- /* TODO support SLM config */
- #define L3_SIZE ((MAX_ROW * 4) * NUM_SUBBANKS *  num_banks())
-diff --git a/tools/intel_reg_checker.c b/tools/intel_reg_checker.c
-index 3f90de824..2aefabc67 100644
---- a/tools/intel_reg_checker.c
-+++ b/tools/intel_reg_checker.c
-@@ -143,6 +143,11 @@ check_gfx_mode(void)
- 	check_perf_bit(gfx_mode, 13, "Flush TLB Invalidation Mode", true);
- }
- 
-+static unsigned intel_gt(uint16_t __devid)
-+{
-+	return intel_get_device_info(__devid)->gt;
-+}
-+
- static void
- check_gt_mode(void)
- {
--- 
-2.27.0
-
-_______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+T24gRnJpLCBKdW4gMjYsIDIwMjAgYXQgMTI6MTg6MDBQTSArMDIwMCwgSmFudXN6IEtyenlzenRv
+ZmlrIHdyb3RlOgo+IEhpIE1pY2hhxYIsCj4gCj4gVGhhbmtzIGZvciByZXZpZXcuCj4gCj4gT24g
+VGh1LCAyMDIwLTA2LTI1IGF0IDE3OjI3ICswMjAwLCBNaWNoYcWCIFdpbmlhcnNraSB3cm90ZToK
+PiA+IFF1b3RpbmcgSmFudXN6IEtyenlzenRvZmlrICgyMDIwLTA2LTIyIDE4OjQ0OjA4KQo+ID4g
+PiBUaGUgcHVycG9zZSBvZiBkZWJ1ZyBtZXNzYWdlcyBkaXNwbGF5ZWQgYnkgdGhlIHRlc3QgaXMg
+dG8gbWFrZQo+ID4gPiBpZGVudGlmaWNhdGlvbiBvZiBhIHN1YnRlc3QgcGhhc2UgdGhhdCBmYWls
+cyBtb3JlIGVhc3kuICBTaW5jZSBpc3N1ZXMKPiA+ID4gZXhoaWJpdGVkIGJ5IHRoZSB0ZXN0IGFy
+ZSBtb3N0bHkgcmVwb3J0ZWQgdG8gZG1lc2csIHByaW50IHRob3NlIGRlYnVnCj4gPiA+IG1lc3Nh
+Z2VzIHRvIC9kZXYva21zZyBhcyB3ZWxsLgo+ID4gCj4gPiBJJ20gbm90IGEgZmFuIG9mIHNwYW1t
+aW5nIGRtZXNnIGZyb20gSUdUIGFuZCBJJ2QgcHJlZmVyIGlmIHlvdSBhZGQgdGhpcyBsb2dnaW5n
+Cj4gPiB0byB0aGUga2VybmVsLCAKPiBUaGUgaWRlYSB3YXMgdG8gc2ltcGx5IGxvZyBJR1QgYWN0
+aW9ucywgbm90IHRvIGxvZyBrZXJuZWwgcmVhY3Rpb25zIG9uCj4gdGhlbSB3aGljaCBhbHJlYWR5
+IGhhcHBlbnMuICBEb2luZyB0aGF0IGZyb20gdGhlIGtlcm5lbCB3b3VsZCBwcm9iYWJseQo+IHJl
+cXVpcmUgbW9kaWZpY2F0aW9ucyB0byBQQ0kgc3lzZnMgaGFuZGxpbmcgb3IgdG8gc3lzZnMgaW4g
+Z2VuZXJhbC4KPiAKPiBJZiB5b3Ugc2VlIG5vIGJlbmVmaXRzIGZyb20gdGhhdCwgbGV0J3MgZHJv
+cCB0aGlzIHBhdGNoLgoKV2UgKG1lICYgUGV0cmkpIHdlcmUgdGhpbmtpbmcgYWJvdXQgZG9pbmcg
+c29tZXRoaW5nIHNpbWlsYXIsIGJ1dCBvbmx5CmZvciB0aGUgcGxhY2VzIHdoZXJlIGtlcm5lbCBs
+b2dzIGFyZSBoYXJkIHRvIGNvcnJlbGF0ZSB3aXRoIHRoZSB0ZXN0CmFjdGlvbnMsIHRvIGhhdmUg
+dGhvc2UgInN5bmNocm9uaXphdGlvbiBwb2ludHMiIGJldHdlZW4gbG9ncyBmb3Iga2V5Cm9wZXJh
+dGlvbnMuCgpUaGUgbWFpbiByZWFzb24gd2FzIENoYW1lbGl1bSAtIGV4dGVybmFsIGJvYXJkIHRo
+YXQgc2ltdWxhdGVzIGRpc3BsYXkKYW5kIGNhbiBjYXVzZSBob3RwbHVnIGV2ZW50cyB0byBoYXBw
+ZW4uIExvZ2dpbmcgQ2hhbWVsaXVtIG9wZXJhdGlvbnMgaW4KZG1lc2cgd291bGQgbWFrZSBhbnkg
+a2luZCBvZiBidWcgYXNzZXNzbWVudCBvciB0cm91Ymxlc2hvb3RpbmcgbXVjaAplYXNpZXIgLSB3
+YXMgdGhhdCBhIHBoYW50b20gaG90cGx1Zz8gb3Igc29tZXRoaW5nIHRoYXQgd2FzIHRyaWdnZXJl
+ZCBieQp1cz8gSGF2ZSB3ZSBzdGFydGVkIGRvaW5nIGFueXRoaW5nIGVsc2UgYmVmb3JlIHRoZSBs
+aW5rIGhhcyBzZXR0bGVkPwpXaGF0IGhhcHBlbmVkIGR1cmluZyBEUCBGU00gaGFuZGxpbmc/CgpU
+aGlzIGlzIGEgdmVyeSBzcGVjaWFsIGNhc2UgYXMgd2UgZGVhbCB3aXRoIGFuIGV4dGVybmFsIGJv
+YXJkIHRoYXQKZHJpdmVzIG91ciBIVyB0aHJvdWdoIHdpcmVzIGFuZCBsYXllcnMgb2YgZmlybXdh
+cmUgYW5kIGZvciBzdXJlIHRoZXJlIGJlCmRyYWdvbnMuCgoKQW55d2F5LCBJIHdvdWxkIGxpa2Ug
+dG8gc2VlIHVzIGhhdmluZyBhIHdheSBvZiBsb2dnaW5nIHRob3NlICJzeW5jCnBvaW50cyIgaW50
+byBrbWVzZyBpbiBpZ3RfY29yZSwgZS5nLiBieSBjcmVhdGluZyBfa21lc2cgc3VmZml4ZWQgdmVy
+c2lvbgpvZiBsb2cgZnVuY3Rpb25zLgoKQnV0IEkgYWxzbyBzZWUgTWljaGHFgidzIHBvaW50IC0g
+dG9vIGZyaXZvbG91cyBsb2dnaW5nIGp1c3QgY3JlYXRlcwpub2lzZSwgYW5kIHdlIHNob3VsZG4n
+dCBkb3VibGUgbG9nIC0gaWYgc29tZXRoaW5nIGlzIGFscmVhZHkgZWFzeSB0bwpmaW5kIGluIHRo
+ZSBrZXJuZWwgbG9ncyBhbmQgdGhlIGNvcnJlbGF0aW5nIHRlc3QgYWN0aW9uIHRvIGxvZ3MgaXMg
+bm90CnRvbyBoYXJkIHdoeSBzaG91bGQgd2UgYWRkIG1vcmUgbm9pc2U/CgpBcyBvZiB0aGUgZXhh
+bXBsZXMgaW4gdGhpcyB0aHJlYWQgLSBJIGFtIG5vdCB2ZXJ5IGZhbWlsaWFyIHdpdGggdGhlIGFy
+ZWEKYW5kIEkgbGVhdmUgaXQgdXAgdG8geW91IHR3byB0byBkZWNpZGUgd2hhdCB3b3VsZCBiZSBo
+ZWxwZnVsLCB3aGF0IHdvdWxkCmJlIHVubmVjZXNzYXJ5IHJlcGV0aXRpb24gYW5kIHdoYXQgd291
+bGQgYmUgYmV0dGVyIG9mZiBsb2dnZWQgaW4gdGhlCmtlcm5lbC4KClRMO0RSOiBZZXMgZm9yIGxv
+Z2dpbmcgdGhpbmdzIGludG8ga21lc2csIGJ1dCB3ZSBzaG91bGQgYmUgY2FyZWZ1bCBhYm91dAog
+ICAgICAgd2hhdCB3ZSBsb2cgdG8gbm90IG1ha2UgdGhlIHNpdHVhdGlvbiBhbnkgd29yc2UuCgot
+LSAKQ2hlZXJzLApBcmVrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
