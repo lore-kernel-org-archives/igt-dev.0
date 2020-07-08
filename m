@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A5D26E8AB
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Jul 2020 09:00:32 +0000 (UTC)
-From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Date: Wed,  8 Jul 2020 10:59:00 +0200
-Message-Id: <20200708085900.4706-6-dominik.grzegorzek@intel.com>
-In-Reply-To: <20200708085900.4706-1-dominik.grzegorzek@intel.com>
-References: <20200708085900.4706-1-dominik.grzegorzek@intel.com>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 886FC89D77
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Jul 2020 09:13:07 +0000 (UTC)
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 5/5] tests/i915/gem_non_secure_batch:
+In-Reply-To: <20200708085900.4706-6-dominik.grzegorzek@intel.com>
+References: <20200708085900.4706-1-dominik.grzegorzek@intel.com>
+ <20200708085900.4706-6-dominik.grzegorzek@intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Wed, 08 Jul 2020 10:13:03 +0100
+Message-ID: <159419958360.17526.3603371657208174111@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 5/5] tests/i915/gem_non_secure_batch:
  Removal libdrm dependency
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -17,56 +18,19 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UmVwbGFjZSBhbiBpbnRlbF9iYXRjaGJ1ZmZlciB3aXRoIGFuIGludGVsX2JiIGluIGdlbV9ub25f
-c2VjdXJlX2JhdGNoLgoKU2lnbmVkLW9mZi1ieTogRG9taW5payBHcnplZ29yemVrIDxkb21pbmlr
-LmdyemVnb3J6ZWtAaW50ZWwuY29tPgpDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxz
-b24uY28udWs+CkNjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tp
-QGludGVsLmNvbT4KLS0tCiB0ZXN0cy9pOTE1L2dlbV9ub25fc2VjdXJlX2JhdGNoLmMgfCA0MSAr
-KysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMTcgaW5zZXJ0
-aW9ucygrKSwgMjQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fbm9u
-X3NlY3VyZV9iYXRjaC5jIGIvdGVzdHMvaTkxNS9nZW1fbm9uX3NlY3VyZV9iYXRjaC5jCmluZGV4
-IDBiYzJjM2I1Li5lY2RjMWZjNCAxMDA2NDQKLS0tIGEvdGVzdHMvaTkxNS9nZW1fbm9uX3NlY3Vy
-ZV9iYXRjaC5jCisrKyBiL3Rlc3RzL2k5MTUvZ2VtX25vbl9zZWN1cmVfYmF0Y2guYwpAQCAtMzgs
-MTMgKzM4LDkgQEAKICNpbmNsdWRlICJpODMwX3JlZy5oIgogI2luY2x1ZGUgImk5MTUvZ2VtLmgi
-CiAjaW5jbHVkZSAiaWd0LmgiCi0jaW5jbHVkZSAiaW50ZWxfYnVmbWdyLmgiCiAKIElHVF9URVNU
-X0RFU0NSSVBUSU9OKCJCYXNpYyBjaGVjayBvZiBub24tc2VjdXJlIGJhdGNoZXMuIik7CiAKLXN0
-YXRpYyBkcm1faW50ZWxfYnVmbWdyICpidWZtZ3I7Ci1zdHJ1Y3QgaW50ZWxfYmF0Y2hidWZmZXIg
-KmJhdGNoOwotCiAvKgogICogVGVzdGNhc2U6IEJhc2ljIGNoZWNrIG9mIG5vbi1zZWN1cmUgYmF0
-Y2hlcwogICoKQEAgLTU1LDI0ICs1MSwzMiBAQCBzdHJ1Y3QgaW50ZWxfYmF0Y2hidWZmZXIgKmJh
-dGNoOwogc3RhdGljIGludCBudW1fcmluZ3MgPSAxOwogCiBzdGF0aWMgdm9pZAotbWlfbHJpX2xv
-b3Aodm9pZCkKK21pX2xyaV9sb29wKGludCBmZCkKIHsKIAlpbnQgaTsKKwlzdHJ1Y3QgaW50ZWxf
-YmIgKmliYiA9IGludGVsX2JiX2NyZWF0ZShmZCwgNDA5Nik7CiAKIAlzcmFuZG9tKDB4ZGVhZGJl
-ZWYpOwogCiAJZm9yIChpID0gMDsgaSA8IDB4MTAwOyBpKyspIHsKIAkJaW50IHJpbmcgPSByYW5k
-b20oKSAlIG51bV9yaW5ncyArIDE7CiAKLQkJQkVHSU5fQkFUQ0goNCwgMCk7Ci0JCU9VVF9CQVRD
-SChNSV9MT0FEX1JFR0lTVEVSX0lNTSk7Ci0JCU9VVF9CQVRDSCgweDIwM2MpOyAvKiBSRU5ERVIg
-UklORyBDVEwgKi8KLQkJT1VUX0JBVENIKDApOyAvKiB0cnkgdG8gc3RvcCB0aGUgcmluZyAqLwot
-CQlPVVRfQkFUQ0goTUlfTk9PUCk7Ci0JCUFEVkFOQ0VfQkFUQ0goKTsKKwkJaW50ZWxfYmJfb3V0
-KGliYiwgTUlfTE9BRF9SRUdJU1RFUl9JTU0pOworCQlpbnRlbF9iYl9vdXQoaWJiLCAweDIwM2Mp
-OyAvKiBSRU5ERVIgUklORyBDVEwgKi8KKwkJaW50ZWxfYmJfb3V0KGliYiwgMCk7IC8qIHRyeSB0
-byBzdG9wIHRoZSByaW5nICovCisJCWludGVsX2JiX291dChpYmIsIE1JX05PT1ApOworCisJCS8q
-IE1hcmsgdGhlIGVuZCBvZiB0aGUgYnVmZmVyLiAqLworCQlpbnRlbF9iYl9vdXQoaWJiLCBNSV9C
-QVRDSF9CVUZGRVJfRU5EKTsKKwkJaW50ZWxfYmJfcHRyX2FsaWduKGliYiwgOCk7CiAKLQkJaW50
-ZWxfYmF0Y2hidWZmZXJfZmx1c2hfb25fcmluZyhiYXRjaCwgcmluZyk7CisJCWludGVsX2JiX2V4
-ZWNfd2l0aF9jb250ZXh0KGliYiwgaW50ZWxfYmJfb2Zmc2V0KGliYiksIGliYi0+Y3R4LAorCQkJ
-CQkgICByaW5nIHwgSTkxNV9FWEVDX05PX1JFTE9DLCBmYWxzZSk7CisJCWludGVsX2JiX3Jlc2V0
-KGliYiwgZmFsc2UpOwogCX0KKworCWludGVsX2JiX3N5bmMoaWJiKTsKKwlpbnRlbF9iYl9kZXN0
-cm95KGliYik7CiB9CiAKIGlndF9zaW1wbGVfbWFpbgpAQCAtODksMjEgKzkzLDEwIEBAIGlndF9z
-aW1wbGVfbWFpbgogCWlmIChIQVNfQkxUX1JJTkcoZGV2aWQpKQogCQludW1fcmluZ3MrKzsKIAot
-CiAJaWd0X2luZm8oIm51bSByaW5ncyBkZXRlY3RlZDogJWlcbiIsIG51bV9yaW5ncyk7CiAKLQli
-dWZtZ3IgPSBkcm1faW50ZWxfYnVmbWdyX2dlbV9pbml0KGZkLCA0MDk2KTsKLQlpZ3RfYXNzZXJ0
-KGJ1Zm1ncik7Ci0JZHJtX2ludGVsX2J1Zm1ncl9nZW1fZW5hYmxlX3JldXNlKGJ1Zm1ncik7Ci0K
-LQliYXRjaCA9IGludGVsX2JhdGNoYnVmZmVyX2FsbG9jKGJ1Zm1nciwgZGV2aWQpOwotCWlndF9h
-c3NlcnQoYmF0Y2gpOwotCi0JbWlfbHJpX2xvb3AoKTsKKwltaV9scmlfbG9vcChmZCk7CiAJZ2Vt
-X3F1aWVzY2VudF9ncHUoZmQpOwogCi0JaW50ZWxfYmF0Y2hidWZmZXJfZnJlZShiYXRjaCk7Ci0J
-ZHJtX2ludGVsX2J1Zm1ncl9kZXN0cm95KGJ1Zm1ncik7Ci0KIAljbG9zZShmZCk7CiB9Ci0tIAoy
-LjIwLjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
-dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+Quoting Dominik Grzegorzek (2020-07-08 09:59:00)
+> Replace an intel_batchbuffer with an intel_bb in gem_non_secure_batch.
+
+git rm.
+-Chris
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
