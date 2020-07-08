@@ -1,13 +1,21 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 72C266E087
- for <igt-dev@lists.freedesktop.org>; Wed,  8 Jul 2020 12:03:44 +0000 (UTC)
-From: "Miszczak, Adam" <adam.miszczak@intel.com>
-Date: Wed,  8 Jul 2020 13:59:33 +0200
-Message-Id: <20200708115933.5662-1-adam.miszczak@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 356E26E8BC
+ for <igt-dev@lists.freedesktop.org>; Wed,  8 Jul 2020 12:21:37 +0000 (UTC)
+From: "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
+Date: Wed, 8 Jul 2020 12:21:35 +0000
+Message-ID: <70177FEF-F23E-4023-88B9-880BD722446A@intel.com>
+References: <20200707145817.17415-1-marcin.bernatowicz@intel.com>
+ <e66af98df1e2b14d859c1f12cc8263cc5ff5d5b6.camel@linux.intel.com>
+ <20200707211407.GB2209461@intel.com>
+ <0a25feb516e53edfbb3bbf6457b185d554e92b39.camel@intel.com>
+ <d2c4b764a4d83b876ddfdd7b99318d0fd5e26d07.camel@linux.intel.com>
+In-Reply-To: <d2c4b764a4d83b876ddfdd7b99318d0fd5e26d07.camel@linux.intel.com>
+Content-Language: en-US
+Content-ID: <42422B509BA4AF4A8E1FF97C76634E35@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_partial_pwrite_pread: Remove
- libdrm dependency
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/device_reset: Test device sysfs
+ reset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,190 +23,420 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: "Winiarski, Michal" <michal.winiarski@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Bernatowicz,
+ Marcin" <marcin.bernatowicz@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-RnJvbTogQWRhbSBNaXN6Y3phayA8YWRhbS5taXN6Y3pha0BpbnRlbC5jb20+CgpFbGltaW5hdGUg
-bGliZHJtIHJlZmVyZW5jZXMgLSB1c2UgbmV3IGludGVsX2JiIGltcGxtZW1lbnRhdGlvbiBpbnN0
-ZWFkLgoKU2lnbmVkLW9mZi1ieTogQWRhbSBNaXN6Y3phayA8YWRhbS5taXN6Y3pha0BpbnRlbC5j
-b20+CkNjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVs
-LmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgotLS0KIHRl
-c3RzL2k5MTUvZ2VtX3BhcnRpYWxfcHdyaXRlX3ByZWFkLmMgfCAxNjggKysrKysrKysrKysrKysr
-Ky0tLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAxMDEgaW5zZXJ0aW9ucygrKSwgNjcgZGVsZXRp
-b25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fcGFydGlhbF9wd3JpdGVfcHJlYWQu
-YyBiL3Rlc3RzL2k5MTUvZ2VtX3BhcnRpYWxfcHdyaXRlX3ByZWFkLmMKaW5kZXggMjc3YTczOTAu
-LmI0YmFlOWI2IDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1L2dlbV9wYXJ0aWFsX3B3cml0ZV9wcmVh
-ZC5jCisrKyBiL3Rlc3RzL2k5MTUvZ2VtX3BhcnRpYWxfcHdyaXRlX3ByZWFkLmMKQEAgLTUwLDQ4
-ICs1MCw3OSBAQCBJR1RfVEVTVF9ERVNDUklQVElPTigiVGVzdCBwd3JpdGUvcHJlYWQgY29uc2lz
-dGVuY3kgd2hlbiB0b3VjaGluZyBwYXJ0aWFsIgogICoKICAqLwogCi1zdGF0aWMgZHJtX2ludGVs
-X2J1Zm1nciAqYnVmbWdyOwotc3RydWN0IGludGVsX2JhdGNoYnVmZmVyICpiYXRjaDsKLQotZHJt
-X2ludGVsX2JvICpzY3JhdGNoX2JvOwotZHJtX2ludGVsX2JvICpzdGFnaW5nX2JvOworI2RlZmlu
-ZSBQQUdFX1NJWkUgNDA5NgogI2RlZmluZSBCT19TSVpFICg0KjQwOTYpCi11aW50MzJfdCBkZXZp
-ZDsKLWludCBmZDsKIAotc3RhdGljIHZvaWQKLWNvcHlfYm8oZHJtX2ludGVsX2JvICpzcmMsIGRy
-bV9pbnRlbF9ibyAqZHN0KQorc3RydWN0IGludGVsX2JiICppYmI7CitzdHJ1Y3QgaW50ZWxfYnVm
-ICpzY3JhdGNoX2J1ZjsKK3N0cnVjdCBpbnRlbF9idWYgKnN0YWdpbmdfYnVmOworCit0eXBlZGVm
-IHN0cnVjdCB7CisJaW50IGRybV9mZDsKKwl1aW50MzJfdCBkZXZpZDsKKwlzdHJ1Y3QgYnVmX29w
-cyAqYm9wczsKK30gZGF0YV90OworCitzdGF0aWMgdm9pZCAqX190cnlfZ3R0X21hcF9maXJzdChk
-YXRhX3QgKmRhdGEsIHN0cnVjdCBpbnRlbF9idWYgKmJ1ZiwKKwkJCQlpbnQgd3JpdGVfZW5hYmxl
-KQoreworCXVpbnQ4X3QgKnB0cjsKKwl1bnNpZ25lZCBwcm90ID0gUFJPVF9SRUFEIHwgKHdyaXRl
-X2VuYWJsZSA/IFBST1RfV1JJVEUgOiAwKTsKKworCXB0ciA9IF9fZ2VtX21tYXBfX2d0dChkYXRh
-LT5kcm1fZmQsIGJ1Zi0+aGFuZGxlLCBidWYtPnN1cmZhY2VbMF0uc2l6ZSwgcHJvdCk7CisJaWYg
-KCFwdHIpIHsKKwkJcHRyID0gZ2VtX21tYXBfX2RldmljZV9jb2hlcmVudChkYXRhLT5kcm1fZmQs
-IGJ1Zi0+aGFuZGxlLAorCQkJCQkgIDAsIGJ1Zi0+c3VyZmFjZVswXS5zaXplLCAgcHJvdCk7CisJ
-fQorCXJldHVybiBwdHI7Cit9CisKK3N0YXRpYyB2b2lkIGNvcHlfYm8oc3RydWN0IGludGVsX2J1
-ZiAqc3JjLCBzdHJ1Y3QgaW50ZWxfYnVmICpkc3QpCiB7Ci0JQkxJVF9DT1BZX0JBVENIX1NUQVJU
-KDApOwotCU9VVF9CQVRDSCgoMyA8PCAyNCkgfCAvKiAzMiBiaXRzICovCi0JCSAgKDB4Y2MgPDwg
-MTYpIHwgLyogY29weSBST1AgKi8KLQkJICA0MDk2KTsKLQlPVVRfQkFUQ0goMCA8PCAxNiB8IDAp
-OwotCU9VVF9CQVRDSCgoQk9fU0laRS80MDk2KSA8PCAxNiB8IDEwMjQpOwotCU9VVF9SRUxPQ19G
-RU5DRUQoZHN0LCBJOTE1X0dFTV9ET01BSU5fUkVOREVSLCBJOTE1X0dFTV9ET01BSU5fUkVOREVS
-LCAwKTsKLQlPVVRfQkFUQ0goMCA8PCAxNiB8IDApOwotCU9VVF9CQVRDSCg0MDk2KTsKLQlPVVRf
-UkVMT0NfRkVOQ0VEKHNyYywgSTkxNV9HRU1fRE9NQUlOX1JFTkRFUiwgMCwgMCk7Ci0JQURWQU5D
-RV9CQVRDSCgpOwotCi0JaW50ZWxfYmF0Y2hidWZmZXJfZmx1c2goYmF0Y2gpOworCWJvb2wgaGFz
-XzY0Yl9yZWxvYzsKKworCWhhc182NGJfcmVsb2MgPSBpYmItPmdlbiA+PSA4OworCisJaW50ZWxf
-YmJfb3V0KGliYiwKKwkJICAgICBYWV9TUkNfQ09QWV9CTFRfQ01EIHwKKwkJICAgICBYWV9TUkNf
-Q09QWV9CTFRfV1JJVEVfQUxQSEEgfAorCQkgICAgIFhZX1NSQ19DT1BZX0JMVF9XUklURV9SR0Ig
-fAorCQkgICAgICg2ICsgMiAqIGhhc182NGJfcmVsb2MpKTsKKwlpbnRlbF9iYl9vdXQoaWJiLCAz
-IDw8IDI0IHwgMHhjYyA8PCAxNiB8IDQwOTYpOworCWludGVsX2JiX291dChpYmIsIDAgPDwgMTYg
-fCAwKTsKKwlpbnRlbF9iYl9vdXQoaWJiLCAoQk9fU0laRS80MDk2KSA8PCAxNiB8IDEwMjQpOwor
-CWludGVsX2JiX2VtaXRfcmVsb2NfZmVuY2VkKGliYiwgZHN0LT5oYW5kbGUsCisJCQkJICAgSTkx
-NV9HRU1fRE9NQUlOX1JFTkRFUiwKKwkJCQkgICBJOTE1X0dFTV9ET01BSU5fUkVOREVSLAorCQkJ
-CSAgIDAsIDB4MCk7CisJaW50ZWxfYmJfb3V0KGliYiwgMCA8PCAxNiB8IDApOworCWludGVsX2Ji
-X291dChpYmIsIDQwOTYpOworCWludGVsX2JiX2VtaXRfcmVsb2NfZmVuY2VkKGliYiwgc3JjLT5o
-YW5kbGUsCisJCQkJICAgSTkxNV9HRU1fRE9NQUlOX1JFTkRFUiwKKwkJCQkgICAwLCAwLCAweDAp
-OworCisJaW50ZWxfYmJfb3V0KGliYiwgTUlfQkFUQ0hfQlVGRkVSX0VORCk7CisJaW50ZWxfYmJf
-cHRyX2FsaWduKGliYiwgOCk7CisKKwlpbnRlbF9iYl9mbHVzaF9ibGl0KGliYik7CisJaW50ZWxf
-YmJfc3luYyhpYmIpOwogfQogCiBzdGF0aWMgdm9pZAotYmx0X2JvX2ZpbGwoZHJtX2ludGVsX2Jv
-ICp0bXBfYm8sIGRybV9pbnRlbF9ibyAqYm8sIHVpbnQ4X3QgdmFsKQorYmx0X2JvX2ZpbGwoZGF0
-YV90ICpkYXRhLCBzdHJ1Y3QgaW50ZWxfYnVmICp0bXBfYm8sCisJCXN0cnVjdCBpbnRlbF9idWYg
-KmJvLCB1aW50OF90IHZhbCkKIHsKIAl1aW50OF90ICpndHRfcHRyOwogCWludCBpOwogCi0JZG9f
-b3JfZGllKGRybV9pbnRlbF9nZW1fYm9fbWFwX2d0dCh0bXBfYm8pKTsKLQlndHRfcHRyID0gdG1w
-X2JvLT52aXJ0dWFsOworCWd0dF9wdHIgPSBfX3RyeV9ndHRfbWFwX2ZpcnN0KGRhdGEsIHRtcF9i
-bywgMSk7CiAKIAlmb3IgKGkgPSAwOyBpIDwgQk9fU0laRTsgaSsrKQogCQlndHRfcHRyW2ldID0g
-dmFsOwogCi0JZHJtX2ludGVsX2dlbV9ib191bm1hcF9ndHQodG1wX2JvKTsKKwltdW5tYXAoZ3R0
-X3B0ciwgdG1wX2JvLT5zdXJmYWNlWzBdLnNpemUpOwogCi0JaWd0X2Ryb3BfY2FjaGVzX3NldChm
-ZCwgRFJPUF9CT1VORCk7CisJaWd0X2Ryb3BfY2FjaGVzX3NldChkYXRhLT5kcm1fZmQsIERST1Bf
-Qk9VTkQpOwogCiAJY29weV9ibyh0bXBfYm8sIGJvKTsKIH0KQEAgLTEwNiw3ICsxMzcsNyBAQCBz
-dGF0aWMgdm9pZCBnZXRfcmFuZ2UoaW50ICpzdGFydCwgaW50ICpsZW4pCiAJKmxlbiA9IHJhbmRv
-bSgpICUgKEJPX1NJWkUgLSAqc3RhcnQgLSAxKSArIDE7CiB9CiAKLXN0YXRpYyB2b2lkIHRlc3Rf
-cGFydGlhbF9yZWFkcyh2b2lkKQorc3RhdGljIHZvaWQgdGVzdF9wYXJ0aWFsX3JlYWRzKGRhdGFf
-dCAqZGF0YSkKIHsKIAlpbnQgaSwgajsKIApAQCAtMTE1LDEwICsxNDYsMTEgQEAgc3RhdGljIHZv
-aWQgdGVzdF9wYXJ0aWFsX3JlYWRzKHZvaWQpCiAJCXVpbnQ4X3QgdmFsID0gaTsKIAkJaW50IHN0
-YXJ0LCBsZW47CiAKLQkJYmx0X2JvX2ZpbGwoc3RhZ2luZ19ibywgc2NyYXRjaF9ibywgdmFsKTsK
-KwkJYmx0X2JvX2ZpbGwoZGF0YSwgc3RhZ2luZ19idWYsIHNjcmF0Y2hfYnVmLCB2YWwpOwogCiAJ
-CWdldF9yYW5nZSgmc3RhcnQsICZsZW4pOwotCQlkb19vcl9kaWUoZHJtX2ludGVsX2JvX2dldF9z
-dWJkYXRhKHNjcmF0Y2hfYm8sIHN0YXJ0LCBsZW4sIHRtcCkpOworCQlnZW1fcmVhZChkYXRhLT5k
-cm1fZmQsIHNjcmF0Y2hfYnVmLT5oYW5kbGUsIHN0YXJ0LCB0bXAsIGxlbik7CisKIAkJZm9yIChq
-ID0gMDsgaiA8IGxlbjsgaisrKSB7CiAJCQlpZ3RfYXNzZXJ0X2YodG1wW2pdID09IHZhbCwKIAkJ
-CQkgICAgICJtaXNtYXRjaCBhdCAlaSBbJWkgKyAlaV0sIGdvdDogJWksIGV4cGVjdGVkOiAlaVxu
-IiwKQEAgLTEyOSw3ICsxNjEsNyBAQCBzdGF0aWMgdm9pZCB0ZXN0X3BhcnRpYWxfcmVhZHModm9p
-ZCkKIAl9CiB9CiAKLXN0YXRpYyB2b2lkIHRlc3RfcGFydGlhbF93cml0ZXModm9pZCkKK3N0YXRp
-YyB2b2lkIHRlc3RfcGFydGlhbF93cml0ZXMoZGF0YV90ICpkYXRhKQogewogCWludCBpLCBqOwog
-CXVpbnQ4X3QgKmd0dF9wdHI7CkBAIC0xMzksMTYgKzE3MSwxNSBAQCBzdGF0aWMgdm9pZCB0ZXN0
-X3BhcnRpYWxfd3JpdGVzKHZvaWQpCiAJCXVpbnQ4X3QgdmFsID0gaTsKIAkJaW50IHN0YXJ0LCBs
-ZW47CiAKLQkJYmx0X2JvX2ZpbGwoc3RhZ2luZ19ibywgc2NyYXRjaF9ibywgdmFsKTsKKwkJYmx0
-X2JvX2ZpbGwoZGF0YSwgc3RhZ2luZ19idWYsIHNjcmF0Y2hfYnVmLCB2YWwpOwogCiAJCW1lbXNl
-dCh0bXAsIGkgKyA2MywgQk9fU0laRSk7CiAKIAkJZ2V0X3JhbmdlKCZzdGFydCwgJmxlbik7Ci0J
-CWRybV9pbnRlbF9ib19zdWJkYXRhKHNjcmF0Y2hfYm8sIHN0YXJ0LCBsZW4sIHRtcCk7CisJCWdl
-bV93cml0ZShkYXRhLT5kcm1fZmQsIHNjcmF0Y2hfYnVmLT5oYW5kbGUsIHN0YXJ0LCB0bXAsIGxl
-bik7CiAKLQkJY29weV9ibyhzY3JhdGNoX2JvLCBzdGFnaW5nX2JvKTsKLQkJZHJtX2ludGVsX2dl
-bV9ib19tYXBfZ3R0KHN0YWdpbmdfYm8pOwotCQlndHRfcHRyID0gc3RhZ2luZ19iby0+dmlydHVh
-bDsKKwkJY29weV9ibyhzY3JhdGNoX2J1Ziwgc3RhZ2luZ19idWYpOworCQlndHRfcHRyID0gX190
-cnlfZ3R0X21hcF9maXJzdChkYXRhLCBzdGFnaW5nX2J1ZiwgMCk7CiAKIAkJZm9yIChqID0gMDsg
-aiA8IHN0YXJ0OyBqKyspIHsKIAkJCWlndF9hc3NlcnRfZihndHRfcHRyW2pdID09IHZhbCwKQEAg
-LTE2NSwxMyArMTk2LDEzIEBAIHN0YXRpYyB2b2lkIHRlc3RfcGFydGlhbF93cml0ZXModm9pZCkK
-IAkJCQkgICAgICJtaXNtYXRjaCBhdCAlaSAoZW5kPSVpKSwgZ290OiAlaSwgZXhwZWN0ZWQ6ICVp
-XG4iLAogCQkJCSAgICAgaiwgc3RhcnQrbGVuLCB0bXBbal0sIHZhbCk7CiAJCX0KLQkJZHJtX2lu
-dGVsX2dlbV9ib191bm1hcF9ndHQoc3RhZ2luZ19ibyk7CisJCW11bm1hcChndHRfcHRyLCBzdGFn
-aW5nX2J1Zi0+c3VyZmFjZVswXS5zaXplKTsKIAogCQlpZ3RfcHJvZ3Jlc3MoInBhcnRpYWwgd3Jp
-dGVzIHRlc3Q6ICIsIGksIFJPVU5EUyk7CiAJfQogfQogCi1zdGF0aWMgdm9pZCB0ZXN0X3BhcnRp
-YWxfcmVhZF93cml0ZXModm9pZCkKK3N0YXRpYyB2b2lkIHRlc3RfcGFydGlhbF9yZWFkX3dyaXRl
-cyhkYXRhX3QgKmRhdGEpCiB7CiAJaW50IGksIGo7CiAJdWludDhfdCAqZ3R0X3B0cjsKQEAgLTE4
-MSwxMSArMjEyLDExIEBAIHN0YXRpYyB2b2lkIHRlc3RfcGFydGlhbF9yZWFkX3dyaXRlcyh2b2lk
-KQogCQl1aW50OF90IHZhbCA9IGk7CiAJCWludCBzdGFydCwgbGVuOwogCi0JCWJsdF9ib19maWxs
-KHN0YWdpbmdfYm8sIHNjcmF0Y2hfYm8sIHZhbCk7CisJCWJsdF9ib19maWxsKGRhdGEsIHN0YWdp
-bmdfYnVmLCBzY3JhdGNoX2J1ZiwgdmFsKTsKIAogCQkvKiBwYXJ0aWFsIHJlYWQgKi8KIAkJZ2V0
-X3JhbmdlKCZzdGFydCwgJmxlbik7Ci0JCWRybV9pbnRlbF9ib19nZXRfc3ViZGF0YShzY3JhdGNo
-X2JvLCBzdGFydCwgbGVuLCB0bXApOworCQlnZW1fcmVhZChkYXRhLT5kcm1fZmQsIHNjcmF0Y2hf
-YnVmLT5oYW5kbGUsIHN0YXJ0LCB0bXAsIGxlbik7CiAJCWZvciAoaiA9IDA7IGogPCBsZW47IGor
-KykgewogCQkJaWd0X2Fzc2VydF9mKHRtcFtqXSA9PSB2YWwsCiAJCQkJICAgICAibWlzbWF0Y2gg
-aW4gcmVhZCBhdCAlaSBbJWkgKyAlaV0sIGdvdDogJWksIGV4cGVjdGVkOiAlaVxuIiwKQEAgLTE5
-NSwxNyArMjI2LDE2IEBAIHN0YXRpYyB2b2lkIHRlc3RfcGFydGlhbF9yZWFkX3dyaXRlcyh2b2lk
-KQogCQkvKiBDaGFuZ2UgY29udGVudHMgdGhyb3VnaCBndHQgdG8gbWFrZSB0aGUgcHJlYWQgY2Fj
-aGVsaW5lcwogCQkgKiBzdGFsZS4gKi8KIAkJdmFsICs9IDE3OwotCQlibHRfYm9fZmlsbChzdGFn
-aW5nX2JvLCBzY3JhdGNoX2JvLCB2YWwpOworCQlibHRfYm9fZmlsbChkYXRhLCBzdGFnaW5nX2J1
-Ziwgc2NyYXRjaF9idWYsIHZhbCk7CiAKIAkJLyogcGFydGlhbCB3cml0ZSAqLwogCQltZW1zZXQo
-dG1wLCBpICsgNjMsIEJPX1NJWkUpOwogCiAJCWdldF9yYW5nZSgmc3RhcnQsICZsZW4pOwotCQlk
-cm1faW50ZWxfYm9fc3ViZGF0YShzY3JhdGNoX2JvLCBzdGFydCwgbGVuLCB0bXApOworCQlnZW1f
-d3JpdGUoZGF0YS0+ZHJtX2ZkLCBzY3JhdGNoX2J1Zi0+aGFuZGxlLCBzdGFydCwgdG1wLCBsZW4p
-OwogCi0JCWNvcHlfYm8oc2NyYXRjaF9ibywgc3RhZ2luZ19ibyk7Ci0JCWRvX29yX2RpZShkcm1f
-aW50ZWxfZ2VtX2JvX21hcF9ndHQoc3RhZ2luZ19ibykpOwotCQlndHRfcHRyID0gc3RhZ2luZ19i
-by0+dmlydHVhbDsKKwkJY29weV9ibyhzY3JhdGNoX2J1Ziwgc3RhZ2luZ19idWYpOworCQlndHRf
-cHRyID0gX190cnlfZ3R0X21hcF9maXJzdChkYXRhLCBzdGFnaW5nX2J1ZiwgMCk7CiAKIAkJZm9y
-IChqID0gMDsgaiA8IHN0YXJ0OyBqKyspIHsKIAkJCWlndF9hc3NlcnRfZihndHRfcHRyW2pdID09
-IHZhbCwKQEAgLTIyMiw1NyArMjUyLDYxIEBAIHN0YXRpYyB2b2lkIHRlc3RfcGFydGlhbF9yZWFk
-X3dyaXRlcyh2b2lkKQogCQkJCSAgICAgIm1pc21hdGNoIGF0ICVpIChlbmQ9JWkpLCBnb3Q6ICVp
-LCBleHBlY3RlZDogJWlcbiIsCiAJCQkJICAgICBqLCBzdGFydCArIGxlbiwgdG1wW2pdLCB2YWwp
-OwogCQl9Ci0JCWRybV9pbnRlbF9nZW1fYm9fdW5tYXBfZ3R0KHN0YWdpbmdfYm8pOworCQltdW5t
-YXAoZ3R0X3B0ciwgc3RhZ2luZ19idWYtPnN1cmZhY2VbMF0uc2l6ZSk7CiAKIAkJaWd0X3Byb2dy
-ZXNzKCJwYXJ0aWFsIHJlYWQvd3JpdGVzIHRlc3Q6ICIsIGksIFJPVU5EUyk7CiAJfQogfQogCi1z
-dGF0aWMgdm9pZCBkb190ZXN0cyhpbnQgY2FjaGVfbGV2ZWwsIGNvbnN0IGNoYXIgKnN1ZmZpeCkK
-K3N0YXRpYyB2b2lkIGRvX3Rlc3RzKGRhdGFfdCAqZGF0YSwgaW50IGNhY2hlX2xldmVsLCBjb25z
-dCBjaGFyICpzdWZmaXgpCiB7CiAJaWd0X2ZpeHR1cmUgewogCQlpZiAoY2FjaGVfbGV2ZWwgIT0g
-LTEpCi0JCQlnZW1fc2V0X2NhY2hpbmcoZmQsIHNjcmF0Y2hfYm8tPmhhbmRsZSwgY2FjaGVfbGV2
-ZWwpOworCQkJZ2VtX3NldF9jYWNoaW5nKGRhdGEtPmRybV9mZCwgc2NyYXRjaF9idWYtPmhhbmRs
-ZSwgY2FjaGVfbGV2ZWwpOwogCX0KIAogCWlndF9zdWJ0ZXN0X2YoInJlYWRzJXMiLCBzdWZmaXgp
-Ci0JCXRlc3RfcGFydGlhbF9yZWFkcygpOworCQl0ZXN0X3BhcnRpYWxfcmVhZHMoZGF0YSk7CiAK
-IAlpZ3Rfc3VidGVzdF9mKCJ3cml0ZSVzIiwgc3VmZml4KQotCQl0ZXN0X3BhcnRpYWxfd3JpdGVz
-KCk7CisJCXRlc3RfcGFydGlhbF93cml0ZXMoZGF0YSk7CiAKIAlpZ3Rfc3VidGVzdF9mKCJ3cml0
-ZXMtYWZ0ZXItcmVhZHMlcyIsIHN1ZmZpeCkKLQkJdGVzdF9wYXJ0aWFsX3JlYWRfd3JpdGVzKCk7
-CisJCXRlc3RfcGFydGlhbF9yZWFkX3dyaXRlcyhkYXRhKTsKIH0KIAogaWd0X21haW4KIHsKKwlk
-YXRhX3QgZGF0YSA9IHswLCB9OwogCXNyYW5kb20oMHhkZWFkYmVlZik7CiAKIAlpZ3RfZml4dHVy
-ZSB7Ci0JCWZkID0gZHJtX29wZW5fZHJpdmVyKERSSVZFUl9JTlRFTCk7Ci0JCWlndF9yZXF1aXJl
-X2dlbShmZCk7Ci0JCWdlbV9yZXF1aXJlX2JsaXR0ZXIoZmQpOworCQlkYXRhLmRybV9mZCA9IGRy
-bV9vcGVuX2RyaXZlcihEUklWRVJfSU5URUwpOworCQlpZ3RfcmVxdWlyZV9nZW0oZGF0YS5kcm1f
-ZmQpOworCQlnZW1fcmVxdWlyZV9ibGl0dGVyKGRhdGEuZHJtX2ZkKTsKKworCQlkYXRhLmRldmlk
-ID0gaW50ZWxfZ2V0X2RybV9kZXZpZChkYXRhLmRybV9mZCk7CisJCWRhdGEuYm9wcyA9IGJ1Zl9v
-cHNfY3JlYXRlKGRhdGEuZHJtX2ZkKTsKIAotCQlidWZtZ3IgPSBkcm1faW50ZWxfYnVmbWdyX2dl
-bV9pbml0KGZkLCA0MDk2KTsKLQkJZGV2aWQgPSBpbnRlbF9nZXRfZHJtX2RldmlkKGZkKTsKLQkJ
-YmF0Y2ggPSBpbnRlbF9iYXRjaGJ1ZmZlcl9hbGxvYyhidWZtZ3IsIGRldmlkKTsKKwkJaWJiID0g
-aW50ZWxfYmJfY3JlYXRlKGRhdGEuZHJtX2ZkLCBQQUdFX1NJWkUpOwogCi0JCS8qIG92ZXJhbGxv
-Y2F0ZSB0aGUgYnVmZmVycyB3ZSdyZSBhY3R1YWxseSB1c2luZyBiZWNhdXNlICovCi0JCXNjcmF0
-Y2hfYm8gPSBkcm1faW50ZWxfYm9fYWxsb2MoYnVmbWdyLCAic2NyYXRjaCBibyIsIEJPX1NJWkUs
-IDQwOTYpOwotCQlzdGFnaW5nX2JvID0gZHJtX2ludGVsX2JvX2FsbG9jKGJ1Zm1nciwgInN0YWdp
-bmcgYm8iLCBCT19TSVpFLCA0MDk2KTsKKwkJLyogb3ZlcmFsbG9jYXRlIHRoZSBidWZmZXJzIHdl
-J3JlIGFjdHVhbGx5IHVzaW5nIGJlY2F1c2UgKi8JCisJCXNjcmF0Y2hfYnVmID0gaW50ZWxfYnVm
-X2NyZWF0ZShkYXRhLmJvcHMsIEJPX1NJWkUvNCwgMSwgMzIsIDAsIEk5MTVfVElMSU5HX05PTkUs
-IDApOworCQlzdGFnaW5nX2J1ZiA9IGludGVsX2J1Zl9jcmVhdGUoZGF0YS5ib3BzLCBCT19TSVpF
-LzQsIDEsIDMyLCAwLCBJOTE1X1RJTElOR19OT05FLCAwKTsKIAl9CiAKLQlkb190ZXN0cygtMSwg
-IiIpOworCWRvX3Rlc3RzKCZkYXRhLCAtMSwgIiIpOwogCiAJLyogUmVwZWF0IHRoZSB0ZXN0cyB1
-c2luZyBkaWZmZXJlbnQgbGV2ZWxzIG9mIHNub29waW5nICovCi0JZG9fdGVzdHMoMCwgIi11bmNh
-Y2hlZCIpOwotCWRvX3Rlc3RzKDEsICItc25vb3AiKTsKLQlkb190ZXN0cygyLCAiLWRpc3BsYXki
-KTsKKwlkb190ZXN0cygmZGF0YSwgMCwgIi11bmNhY2hlZCIpOworCWRvX3Rlc3RzKCZkYXRhLCAx
-LCAiLXNub29wIik7CisJZG9fdGVzdHMoJmRhdGEsIDIsICItZGlzcGxheSIpOwogCiAJaWd0X2Zp
-eHR1cmUgewotCQlkcm1faW50ZWxfYnVmbWdyX2Rlc3Ryb3koYnVmbWdyKTsKLQotCQljbG9zZShm
-ZCk7CisJCWludGVsX2JiX2Rlc3Ryb3koaWJiKTsKKwkJaW50ZWxfYnVmX2Rlc3Ryb3koc2NyYXRj
-aF9idWYpOworCQlpbnRlbF9idWZfZGVzdHJveShzdGFnaW5nX2J1Zik7CisJCWJ1Zl9vcHNfZGVz
-dHJveShkYXRhLmJvcHMpOworCQljbG9zZShkYXRhLmRybV9mZCk7CiAJfQogfQotLSAKMi4yNy4w
-CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0KSW50ZWwgVGVjaG5vbG9neSBQb2xhbmQgc3AuIHogby5vLgp1bC4gU293
-YWNraWVnbyAxNzMgfCA4MC0yOTggR2Rhc2sgfCBTZCBSZWpvbm93eSBHZGFzayBQbm9jIHwgVklJ
-IFd5ZHppYSBHb3Nwb2RhcmN6eSBLcmFqb3dlZ28gUmVqZXN0cnUgU2Rvd2VnbyAtIEtSUyAxMDE4
-ODIgfCBOSVAgOTU3LTA3LTUyLTMxNiB8IEthcGl0YSB6YWthZG93eSAyMDAuMDAwIFBMTi4KVGEg
-d2lhZG9tbyB3cmF6IHogemFjem5pa2FtaSBqZXN0IHByemV6bmFjem9uYSBkbGEgb2tyZWxvbmVn
-byBhZHJlc2F0YSBpIG1vZSB6YXdpZXJhIGluZm9ybWFjamUgcG91Zm5lLiBXIHJhemllIHByenlw
-YWRrb3dlZ28gb3RyenltYW5pYSB0ZWogd2lhZG9tb2NpLCBwcm9zaW15IG8gcG93aWFkb21pZW5p
-ZSBuYWRhd2N5IG9yYXogdHJ3YWUgamVqIHVzdW5pY2llOyBqYWtpZWtvbHdpZWsgcHJ6ZWdsZGFu
-aWUgbHViIHJvenBvd3N6ZWNobmlhbmllIGplc3QgemFicm9uaW9uZS4KVGhpcyBlLW1haWwgYW5k
-IGFueSBhdHRhY2htZW50cyBtYXkgY29udGFpbiBjb25maWRlbnRpYWwgbWF0ZXJpYWwgZm9yIHRo
-ZSBzb2xlIHVzZSBvZiB0aGUgaW50ZW5kZWQgcmVjaXBpZW50KHMpLiBJZiB5b3UgYXJlIG5vdCB0
-aGUgaW50ZW5kZWQgcmVjaXBpZW50LCBwbGVhc2UgY29udGFjdCB0aGUgc2VuZGVyIGFuZCBkZWxl
-dGUgYWxsIGNvcGllczsgYW55IHJldmlldyBvciBkaXN0cmlidXRpb24gYnkgb3RoZXJzIGlzIHN0
-cmljdGx5IHByb2hpYml0ZWQuCiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3Rv
-cC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3Qt
-ZGV2Cg==
+
+
+> On Jul 8, 2020, at 2:30 AM, Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com> wrote:
+> 
+> On Wed, 2020-07-08 at 08:57 +0000, Bernatowicz, Marcin wrote:
+>> On Tue, 2020-07-07 at 14:14 -0700, Rodrigo Vivi wrote:
+>>> On Tue, Jul 07, 2020 at 05:08:07PM +0200, Janusz Krzysztofik wrote:
+>>>> On Tue, 2020-07-07 at 16:58 +0200, Marcin Bernatowicz wrote:
+>>>>> Device reset is initiated by writing "1" to reset sysfs file,
+>>>>> which should initiate PCI device Function Level Reset
+>>>>> if supported by device.
+>>>>> 
+>>>>> Test scenarios:
+>>>>> 1. unbind driver from device, initiate sysfs reset, rebind driver
+>>>>> to
+>>>>> device
+>>>>> 2. device reset with bound driver
+>>>>> 
+>>>>> v2: removed unbind-rebind (duplicates 
+>>>>> core_hotunplug@unbind-rebind)
+>>>>>    added healthcheck to each test (Janusz)
+>>>>> v3: after review corrections (renamed sysfs_fds to device_fds,
+>>>>>    corrected not closed file descriptor, removed variable length
+>>>>> array)
+>>>>> v4: updated description (Martin), snprintf corrections (Janusz),
+>>>>>    reset-bound added to blacklist as it hangs several gens of
+>>>>> hosts (Tomi)
+>>>>> 
+>>>>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
+>>>>> ---
+>>>>> tests/device_reset.c         | 281
+>>>>> +++++++++++++++++++++++++++++++++++
+>>>>> tests/intel-ci/blacklist.txt |   3 +
+>>>>> tests/meson.build            |   1 +
+>>>>> 3 files changed, 285 insertions(+)
+>>>>> create mode 100644 tests/device_reset.c
+>>>>> 
+>>>>> diff --git a/tests/device_reset.c b/tests/device_reset.c
+>>>>> new file mode 100644
+>>>>> index 000000000..b1181b3be
+>>>>> --- /dev/null
+>>>>> +++ b/tests/device_reset.c
+>>>>> @@ -0,0 +1,281 @@
+>>>>> +// SPDX-License-Identifier: MIT
+>>>>> +/*
+>>>>> + * Copyright(c) 2020 Intel Corporation. All rights reserved.
+>>>>> + */
+>>>>> +#include <fcntl.h>
+>>>>> +#include <sys/ioctl.h>
+>>>>> +#include <sys/stat.h>
+>>>>> +
+>>>>> +#include "i915/gem.h"
+>>>>> +#include "igt.h"
+>>>>> +#include "igt_device_scan.h"
+>>>>> +#include "igt_sysfs.h"
+>>>>> +
+>>>>> +IGT_TEST_DESCRIPTION("Examine behavior of a driver on device
+>>>>> sysfs reset");
+>>>>> +
+>>>>> +
+>>>>> +#define DEV_PATH_LEN 80
+>>>>> +#define DEV_BUS_ADDR_LEN 13 /* addr has form 0000:00:00.0 */
+>>>>> +
+>>>>> +/**
+>>>>> + * Helper structure containing file descriptors
+>>>>> + * and bus address related to tested device
+>>>>> + */
+>>>>> +struct device_fds {
+>>>>> +	struct {
+>>>>> +		int dev;
+>>>>> +		int dev_dir;
+>>>>> +		int drv_dir;
+>>>>> +	} fds;
+>>>>> +	char dev_bus_addr[DEV_BUS_ADDR_LEN];
+>>>>> +};
+>>>>> +
+>>>>> +static int __open_sysfs_dir(int fd, const char* path)
+>>>>> +{
+>>>>> +	int sysfs;
+>>>>> +
+>>>>> +	sysfs = igt_sysfs_open(fd);
+>>>>> +	if (sysfs < 0) {
+>>>>> +		return -1;
+>>>>> +	}
+>>>>> +
+>>>>> +	fd = openat(sysfs, path, O_DIRECTORY);
+>>>>> +	close(sysfs);
+>>>>> +	return fd;
+>>>>> +}
+>>>>> +
+>>>>> +static int open_device_sysfs_dir(int fd)
+>>>>> +{
+>>>>> +	return __open_sysfs_dir(fd, "device");
+>>>>> +}
+>>>>> +
+>>>>> +static int open_driver_sysfs_dir(int fd)
+>>>>> +{
+>>>>> +	return __open_sysfs_dir(fd, "device/driver");
+>>>>> +}
+>>>>> +
+>>>>> +/**
+>>>>> + * device_sysfs_path:
+>>>>> + * @fd: opened device file descriptor
+>>>>> + * @path: buffer to store sysfs path to device directory
+>>>>> + *
+>>>>> + * Returns:
+>>>>> + * On successfull path resolution sysfs path to device
+>>>>> directory,
+>>>>> + * NULL otherwise
+>>>>> + */
+>>>>> +static char *device_sysfs_path(int fd, char *path)
+>>>>> +{
+>>>>> +	char sysfs[DEV_PATH_LEN];
+>>>>> +
+>>>>> +	if (!igt_sysfs_path(fd, sysfs, sizeof(sysfs)))
+>>>>> +		return NULL;
+>>>>> +
+>>>>> +	if (DEV_PATH_LEN <= (strlen(sysfs) + strlen("/device")))
+>>>>> +		return NULL;
+>>>>> +
+>>>>> +	strcat(sysfs, "/device");
+>>>>> +
+>>>>> +	return realpath(sysfs, path);
+>>>>> +}
+>>>>> +
+>>>>> +static void init_device_fds(struct device_fds *dev)
+>>>>> +{
+>>>>> +	char dev_path[PATH_MAX];
+>>>>> +	char *addr_pos;
+>>>>> +
+>>>>> +	igt_debug("open device\n");
+>>>>> +	/**
+>>>>> +	 * As subtests must be able to close examined devices
+>>>>> +	 * completely, don't use drm_open_driver() as it keeps
+>>>>> +	 * a device file descriptor open for exit handler use.
+>>>>> +	 */
+>>>>> +	dev->fds.dev = __drm_open_driver(DRIVER_ANY);
+>>>>> +	igt_assert_fd(dev->fds.dev);
+>>>>> +	if (is_i915_device(dev->fds.dev))
+>>>>> +		igt_require_gem(dev->fds.dev);
+>>>>> +
+>>>>> +	igt_assert(device_sysfs_path(dev->fds.dev, dev_path));
+>>>>> +	addr_pos = strrchr(dev_path, '/');
+>>>>> +	igt_assert(addr_pos);
+>>>>> +	igt_assert_eq(sizeof(dev->dev_bus_addr) - 1,
+>>>>> +		      snprintf(dev->dev_bus_addr, sizeof(dev-
+>>>>>> dev_bus_addr),
+>>>>> +			       "%s", addr_pos + 1));
+>>>>> +
+>>>>> +	dev->fds.dev_dir = open_device_sysfs_dir(dev->fds.dev);
+>>>>> +	igt_assert_fd(dev->fds.dev_dir);
+>>>>> +
+>>>>> +	dev->fds.drv_dir = open_driver_sysfs_dir(dev->fds.dev);
+>>>>> +	igt_assert_fd(dev->fds.drv_dir);
+>>>>> +}
+>>>>> +
+>>>>> +static int close_if_opened(int *fd)
+>>>>> +{
+>>>>> +	int rc = 0;
+>>>>> +
+>>>>> +	if (fd && *fd != -1) {
+>>>>> +		rc = close(*fd);
+>>>>> +		*fd = -1;
+>>>>> +	}
+>>>>> +	return rc;
+>>>>> +}
+>>>>> +
+>>>>> +static void cleanup_device_fds(struct device_fds *dev)
+>>>>> +{
+>>>>> +	igt_ignore_warn(close_if_opened(&dev->fds.dev));
+>>>>> +	igt_ignore_warn(close_if_opened(&dev->fds.dev_dir));
+>>>>> +	igt_ignore_warn(close_if_opened(&dev->fds.drv_dir));
+>>>>> +}
+>>>>> +
+>>>>> +/**
+>>>>> + * is_sysfs_reset_supported:
+>>>>> + * @fd: opened device file descriptor
+>>>>> + *
+>>>>> + * Check if device supports reset based on sysfs file presence.
+>>>>> + *
+>>>>> + * Returns:
+>>>>> + * True if device supports reset, false otherwise.
+>>>>> + */
+>>>>> +static bool is_sysfs_reset_supported(int fd)
+>>>>> +{
+>>>>> +	struct stat st;
+>>>>> +	int rc;
+>>>>> +	int sysfs;
+>>>>> +	int reset_fd = -1;
+>>>>> +
+>>>>> +	sysfs = igt_sysfs_open(fd);
+>>>>> +
+>>>>> +	if (sysfs >= 0) {
+>>>>> +		reset_fd = openat(sysfs, "device/reset", O_WRONLY);
+>>>>> +		close(sysfs);
+>>>>> +	}
+>>>>> +
+>>>>> +	if (reset_fd < 0)
+>>>>> +		return false;
+>>>>> +
+>>>>> +	rc = fstat(reset_fd, &st);
+>>>>> +	close(reset_fd);
+>>>>> +
+>>>>> +	if (rc || !S_ISREG(st.st_mode))
+>>>>> +		return false;
+>>>>> +
+>>>>> +	return true;
+>>>>> +}
+>>>>> +
+>>>>> +/* Unbind the driver from the device */
+>>>>> +static void driver_unbind(struct device_fds *dev)
+>>>>> +{
+>>>>> +	igt_debug("unbind the driver from the device\n");
+>>>>> +	igt_assert(igt_sysfs_set(dev->fds.drv_dir, "unbind",
+>>>>> +		   dev->dev_bus_addr));
+>>>>> +}
+>>>>> +
+>>>>> +/* Re-bind the driver to the device */
+>>>>> +static void driver_bind(struct device_fds *dev)
+>>>>> +{
+>>>>> +	igt_debug("rebind the driver to the device\n");
+>>>>> +	igt_abort_on_f(!igt_sysfs_set(dev->fds.drv_dir, "bind",
+>>>>> +		       dev->dev_bus_addr), "driver rebind failed");
+>>>>> +}
+>>>>> +
+>>>>> +/* Initiate device reset */
+>>>>> +static void initiate_device_reset(struct device_fds *dev)
+>>>>> +{
+>>>>> +	igt_debug("reset device\n");
+>>>>> +	igt_assert(igt_sysfs_set(dev->fds.dev_dir, "reset", "1"));
+>>>>> +}
+>>>>> +
+>>>>> +static bool is_i915_wedged(int i915)
+>>>>> +{
+>>>>> +	int err = 0;
+>>>>> +
+>>>>> +	if (ioctl(i915, DRM_IOCTL_I915_GEM_THROTTLE))
+>>>>> +		err = -errno;
+>>>>> +	return err == -EIO;
+>>>>> +}
+>>>>> +
+>>>>> +/**
+>>>>> + * healthcheck:
+>>>>> + * @dev: structure with device descriptor, if descriptor equals
+>>>>> -1
+>>>>> + * 	 the device is reopened
+>>>>> + */
+>>>>> +static void healthcheck(struct device_fds *dev)
+>>>>> +{
+>>>>> +	if (dev->fds.dev == -1) {
+>>>>> +		/* refresh device list */
+>>>>> +		igt_devices_scan(true);
+>>>>> +		igt_debug("reopen the device\n");
+>>>>> +		dev->fds.dev = __drm_open_driver(DRIVER_ANY);
+>>>>> +	}
+>>>>> +	igt_assert_fd(dev->fds.dev);
+>>>>> +
+>>>>> +	if (is_i915_device(dev->fds.dev))
+>>>>> +		igt_assert(!is_i915_wedged(dev->fds.dev));
+>>>>> +}
+>>>>> +
+>>>>> +/**
+>>>>> + * set_device_filter:
+>>>>> + *
+>>>>> + * Sets device filter to ensure subtests always reopen the same
+>>>>> device
+>>>>> + *
+>>>>> + * @dev_path: path to device under tests
+>>>>> + */
+>>>>> +static void set_device_filter(const char* dev_path)
+>>>>> +{
+>>>>> +#define FILTER_PREFIX_LEN 4
+>>>>> +	char filter[PATH_MAX + FILTER_PREFIX_LEN];
+>>>>> +
+>>>>> +	igt_assert_lt(FILTER_PREFIX_LEN, snprintf(filter,
+>>>>> sizeof(filter),
+>>>>> +						  "sys:%s", dev_path));
+>>>>> +	igt_device_filter_free_all();
+>>>>> +	igt_assert_eq(igt_device_filter_add(filter), 1);
+>>>>> +}
+>>>>> +
+>>>>> +static void unbind_reset_rebind(struct device_fds *dev)
+>>>>> +{
+>>>>> +	igt_debug("close the device\n");
+>>>>> +	close_if_opened(&dev->fds.dev);
+>>>>> +
+>>>>> +	driver_unbind(dev);
+>>>>> +
+>>>>> +	initiate_device_reset(dev);
+>>>>> +
+>>>>> +	driver_bind(dev);
+>>>>> +}
+>>>>> +
+>>>>> +igt_main
+>>>>> +{
+>>>>> +	struct device_fds dev = { .fds = {-1, -1, -1}, .dev_bus_addr =
+>>>>> {0}};
+>>>>> +
+>>>>> +	igt_fixture {
+>>>>> +		char dev_path[PATH_MAX];
+>>>>> +
+>>>>> +		igt_debug("opening device\n");
+>>>>> +		init_device_fds(&dev);
+>>>>> +
+>>>>> +		/* Make sure subtests always reopen the same device */
+>>>>> +		igt_assert(device_sysfs_path(dev.fds.dev, dev_path));
+>>>>> +		set_device_filter(dev_path);
+>>>>> +
+>>>>> +		igt_skip_on(!is_sysfs_reset_supported(dev.fds.dev));
+>>>>> +
+>>>>> +		igt_set_timeout(60, "device reset tests timed out after
+>>>>> 60s");
+>>>>> +	}
+>>>>> +
+>>>>> +	igt_describe("Unbinds driver from device, initiates reset"
+>>>>> +		     " then rebinds driver to device");
+>>>>> +	igt_subtest("unbind-reset-rebind") {
+>>>>> +		unbind_reset_rebind(&dev);
+>>>>> +		healthcheck(&dev);
+>>>>> +	}
+>>>>> +
+>>>>> +	igt_describe("Resets device with bound driver");
+>>>>> +	igt_subtest("reset-bound") {
+>>>>> +		initiate_device_reset(&dev);
+>>>>> +		healthcheck(&dev);
+>>>>> +	}
+>>>>> +
+>>>>> +	igt_fixture {
+>>>>> +		igt_reset_timeout();
+>>>>> +		cleanup_device_fds(&dev);
+>>>>> +	}
+>>>>> +}
+>>>>> diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-
+>>>>> ci/blacklist.txt
+>>>>> index ecbec5080..f9a57cb54 100644
+>>>>> --- a/tests/intel-ci/blacklist.txt
+>>>>> +++ b/tests/intel-ci/blacklist.txt
+>>>>> @@ -121,3 +121,6 @@ igt@perf_pmu@cpu-hotplug
+>>>>> # Currently fails and leaves the machine in a very bad state,
+>>>>> and
+>>>>> # causes coverage loss for other tests.
+>>>>> igt@core_hotunplug@.*
+>>>>> +
+>>>>> +# hangs several gens of hosts, and has no immediate fix
+>>>>> +igt@device_reset@reset-bound
+>>> 
+>>> I wonder if we should filter by platform?
+>>> if gen >= 12? or if dgfx?
+>>> 
+>>> or is it really random?
+>> 
+>> I can restrict the tests on intel platforms with
+>> 
+>> if (is_i915_device(fd))
+>>    igt_skip_on(intel_gen(intel_get_drm_devid(fd)) < 12);
+> 
+> That seems pointless to me unless igt@device_reset@reset-bound works on
+> gen12+ while it doesn't work on platforms we don't care.
+
+I see your point....
+
+But I was thinking that maybe with this check we don't need to add this
+to the blacklist and we would have some CI coverage at least on the platforms
+that we know that it is currently working.
+
+If this is on blacklist we will never have CI.
+
+> 
+> Thanks,
+> Janusz
+> 
+> 
+>> 
+>>>>> \ No newline at end of file
+>>>> 
+>>>> I'm only not sure if that missing newline will not break CI
+>>>> scripts,
+>>>> other than that, my R-b still applies.
+>>>> 
+>>>> Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com
+>>> 
+>>> anyway it looks good to me
+>>> 
+>>> Acked-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+>>> 
+>>> 
+>>> 
+>>>> Thanks,
+>>>> Janusz
+>>>> 
+>>>> 
+>>>>> diff --git a/tests/meson.build b/tests/meson.build
+>>>>> index 172d18e59..d9253f5f9 100644
+>>>>> --- a/tests/meson.build
+>>>>> +++ b/tests/meson.build
+>>>>> @@ -8,6 +8,7 @@ test_progs = [
+>>>>> 	'core_setmaster_vs_auth',
+>>>>> 	'debugfs_test',
+>>>>> 	'dmabuf',
+>>>>> +	'device_reset',
+>>>>> 	'drm_import_export',
+>>>>> 	'drm_mm',
+>>>>> 	'drm_read',
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
