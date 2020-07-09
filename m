@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 732716E9A5
- for <igt-dev@lists.freedesktop.org>; Thu,  9 Jul 2020 04:33:00 +0000 (UTC)
-From: ranjeet1.kumar@intel.com
-Date: Thu,  9 Jul 2020 10:01:55 +0530
-Message-Id: <20200709043155.23839-1-ranjeet1.kumar@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t]i915/gem_exec_suspend: Added test
- description for test case
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 09 Jul 2020 05:19:28 -0000
+Message-ID: <159427196883.31091.18381524148776412490@emeril.freedesktop.org>
+References: <20200709043155.23839-1-ranjeet1.kumar@intel.com>
+In-Reply-To: <20200709043155.23839-1-ranjeet1.kumar@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
+ =?utf-8?q?em=5Fexec=5Fsuspend=3A_Added_test_description_for_test_case?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,94 +14,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, ranjeet1.kumar@intel.com
+To: ranjeet1.kumar@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: ranjeet kumar <ranjeet1.kumar@intel.com>
+== Series Details ==
 
-Added test description for subtest.
+Series: i915/gem_exec_suspend: Added test description for test case
+URL   : https://patchwork.freedesktop.org/series/79276/
+State : success
 
-Cc: Melkaveri, Arjun <Arjun.Melkaveri@intel.com>
-Signed-off-by: ranjeet kumar <ranjeet1.kumar@intel.com>
----
- tests/i915/gem_exec_suspend.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+== Summary ==
 
-diff --git a/tests/i915/gem_exec_suspend.c b/tests/i915/gem_exec_suspend.c
-index d768db91..8c9258f5 100644
---- a/tests/i915/gem_exec_suspend.c
-+++ b/tests/i915/gem_exec_suspend.c
-@@ -50,6 +50,9 @@
- #define CACHED (1<<8)
- #define HANG (2<<8)
- 
-+IGT_TEST_DESCRIPTION("executing batch buffer objects on suspend and then checks"
-+		     " for the result");
-+
- static void run_test(int fd, unsigned ring, unsigned flags);
- 
- static void check_bo(int fd, uint32_t handle)
-@@ -312,23 +315,33 @@ igt_main
- 		igt_fork_hang_detector(fd);
- 	}
- 
-+	igt_describe("checks normal condition before sending into suspend");
- 	igt_subtest("basic")
- 		run_test(fd, ALL_ENGINES, NOSLEEP);
-+	igt_describe("system in idle state no operation");
- 	igt_subtest("basic-S0")
- 		run_test(fd, ALL_ENGINES, IDLE);
-+	igt_describe("suspend-to-mem target state and resume with with some operation");
- 	igt_subtest("basic-S3-devices")
- 		run_test(fd, ALL_ENGINES, SUSPEND_DEVICES);
-+	igt_describe("suspend-to-mem and resume with no operation");
- 	igt_subtest("basic-S3")
- 		run_test(fd, ALL_ENGINES, SUSPEND);
-+	igt_describe("suspend-to-disk target state and resume with with some operation");
- 	igt_subtest("basic-S4-devices")
- 		run_test(fd, ALL_ENGINES, HIBERNATE_DEVICES);
-+	igt_describe("suspend-to-disk and resume with no operation");
- 	igt_subtest("basic-S4")
- 		run_test(fd, ALL_ENGINES, HIBERNATE);
- 
- 	for (e = intel_execution_engines; e->name; e++) {
- 		for (m = modes; m->suffix; m++) {
-+			igt_describe("Test normal operation write and some reloc"
-+				     " operation performed");
- 			igt_subtest_f("%s-uncached%s", e->name, m->suffix)
- 				run_test(fd, eb_ring(e), m->mode | UNCACHED);
-+			igt_describe("Wraps the SET_CACHING ioctl and then performed"
-+				     " write and reloc operation");
- 			igt_subtest_f("%s-cached%s", e->name, m->suffix)
- 				run_test(fd, eb_ring(e), m->mode | CACHED);
- 		}
-@@ -339,13 +352,19 @@ igt_main
- 		hang = igt_allow_hang(fd, 0, 0);
- 	}
- 
-+	igt_describe("Start a recursive call of batch on a ring and return structure"
-+		     " with suspended state");
- 	igt_subtest("hang-S3")
- 		run_test(fd, 0, SUSPEND | HANG);
-+	igt_describe("Start a recursive call of batch on a ring and return structure"
-+		     " with hibernate state");
- 	igt_subtest("hang-S4")
- 		run_test(fd, 0, HIBERNATE | HANG);
- 
-+	igt_describe("Test is to report energy level");
- 	igt_subtest("power-S0")
- 		power_test(fd, 0, IDLE);
-+	igt_describe("Test to report power consumed and discharge rate while suspended");
- 	igt_subtest("power-S3")
- 		power_test(fd, 0, SUSPEND);
- 
--- 
-2.26.2
+CI Bug Log - changes from IGT_5729 -> IGTPW_4752
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4752 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-tgl-u2:          [PASS][1] -> [FAIL][2] ([i915#1888])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5729/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/fi-tgl-u2/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@gem_flink_basic@flink-lifetime:
+    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([i915#402]) +2 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5729/fi-tgl-y/igt@gem_flink_basic@flink-lifetime.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/fi-tgl-y/igt@gem_flink_basic@flink-lifetime.html
+
+  * igt@i915_pm_backlight@basic-brightness:
+    - fi-whl-u:           [PASS][5] -> [DMESG-WARN][6] ([i915#95])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5729/fi-whl-u/igt@i915_pm_backlight@basic-brightness.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/fi-whl-u/igt@i915_pm_backlight@basic-brightness.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-bsw-kefka:       [PASS][7] -> [DMESG-WARN][8] ([i915#1982])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5729/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:
+    - fi-icl-u2:          [PASS][9] -> [DMESG-WARN][10] ([i915#1982])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5729/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-tgl-u2:          [FAIL][11] ([i915#1888]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5729/fi-tgl-u2/igt@gem_exec_suspend@basic-s0.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/fi-tgl-u2/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@gem_flink_basic@double-flink:
+    - fi-tgl-y:           [DMESG-WARN][13] ([i915#402]) -> [PASS][14] +1 similar issue
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5729/fi-tgl-y/igt@gem_flink_basic@double-flink.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/fi-tgl-y/igt@gem_flink_basic@double-flink.html
+
+  * igt@i915_module_load@reload:
+    - fi-byt-j1900:       [DMESG-WARN][15] ([i915#1982]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5729/fi-byt-j1900/igt@i915_module_load@reload.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/fi-byt-j1900/igt@i915_module_load@reload.html
+    - fi-apl-guc:         [DMESG-WARN][17] ([i915#1982]) -> [PASS][18]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5729/fi-apl-guc/igt@i915_module_load@reload.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/fi-apl-guc/igt@i915_module_load@reload.html
+    - fi-tgl-y:           [DMESG-WARN][19] ([i915#1982]) -> [PASS][20]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5729/fi-tgl-y/igt@i915_module_load@reload.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/fi-tgl-y/igt@i915_module_load@reload.html
+
+  * igt@i915_selftest@live@active:
+    - fi-icl-y:           [DMESG-FAIL][21] ([i915#765]) -> [PASS][22]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5729/fi-icl-y/igt@i915_selftest@live@active.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/fi-icl-y/igt@i915_selftest@live@active.html
+
+  * igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:
+    - fi-tgl-u2:          [DMESG-WARN][23] ([i915#402]) -> [PASS][24] +1 similar issue
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5729/fi-tgl-u2/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/fi-tgl-u2/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
+
+  
+#### Warnings ####
+
+  * igt@debugfs_test@read_all_entries:
+    - fi-kbl-x1275:       [DMESG-WARN][25] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][26] ([i915#62] / [i915#92]) +1 similar issue
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5729/fi-kbl-x1275/igt@debugfs_test@read_all_entries.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/fi-kbl-x1275/igt@debugfs_test@read_all_entries.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - fi-kbl-x1275:       [DMESG-WARN][27] ([i915#62] / [i915#92]) -> [DMESG-WARN][28] ([i915#62] / [i915#92] / [i915#95]) +3 similar issues
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5729/fi-kbl-x1275/igt@prime_vgem@basic-fence-flip.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/fi-kbl-x1275/igt@prime_vgem@basic-fence-flip.html
+
+  
+  [i915#1888]: https://gitlab.freedesktop.org/drm/intel/issues/1888
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+  [i915#765]: https://gitlab.freedesktop.org/drm/intel/issues/765
+  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
+  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+
+
+Participating hosts (44 -> 37)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5729 -> IGTPW_4752
+
+  CI-20190529: 20190529
+  CI_DRM_8717: 6e5ac4c72af4e86138f04cc2dd089b069bad873f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4752: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/index.html
+  IGT_5729: a048d54f58dd70b07dbeb4541b273ec230ddb586 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4752/index.html
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
