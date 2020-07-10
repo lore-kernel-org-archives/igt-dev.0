@@ -1,16 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Wed, 8 Jul 2020 15:49:52 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200708124952.l42a3xzssejs3zas@ahiler-desk1.fi.intel.com>
-References: <20200622164415.30352-1-janusz.krzysztofik@linux.intel.com>
- <20200622164415.30352-2-janusz.krzysztofik@linux.intel.com>
- <159309887614.186992.12805428537676828006@macragge.hardline.pl>
- <632af55bd2d4395d3b51898bf51436d05a1bc06c.camel@linux.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Fri, 10 Jul 2020 10:32:29 +0100
+Message-Id: <20200710093234.1438712-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <632af55bd2d4395d3b51898bf51436d05a1bc06c.camel@linux.intel.com>
-Subject: Re: [igt-dev] [Intel-gfx] [RFC PATCH i-g-t v2 1/8]
- tests/core_hotunplug: Duplicate debug messages in dmesg
+Subject: [igt-dev] [PATCH i-g-t 1/6] lib/i915: Report unknown device as the
+ future
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,56 +12,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBKdW4gMjYsIDIwMjAgYXQgMTI6MTg6MDBQTSArMDIwMCwgSmFudXN6IEtyenlzenRv
-ZmlrIHdyb3RlOgo+IEhpIE1pY2hhxYIsCj4gCj4gVGhhbmtzIGZvciByZXZpZXcuCj4gCj4gT24g
-VGh1LCAyMDIwLTA2LTI1IGF0IDE3OjI3ICswMjAwLCBNaWNoYcWCIFdpbmlhcnNraSB3cm90ZToK
-PiA+IFF1b3RpbmcgSmFudXN6IEtyenlzenRvZmlrICgyMDIwLTA2LTIyIDE4OjQ0OjA4KQo+ID4g
-PiBUaGUgcHVycG9zZSBvZiBkZWJ1ZyBtZXNzYWdlcyBkaXNwbGF5ZWQgYnkgdGhlIHRlc3QgaXMg
-dG8gbWFrZQo+ID4gPiBpZGVudGlmaWNhdGlvbiBvZiBhIHN1YnRlc3QgcGhhc2UgdGhhdCBmYWls
-cyBtb3JlIGVhc3kuICBTaW5jZSBpc3N1ZXMKPiA+ID4gZXhoaWJpdGVkIGJ5IHRoZSB0ZXN0IGFy
-ZSBtb3N0bHkgcmVwb3J0ZWQgdG8gZG1lc2csIHByaW50IHRob3NlIGRlYnVnCj4gPiA+IG1lc3Nh
-Z2VzIHRvIC9kZXYva21zZyBhcyB3ZWxsLgo+ID4gCj4gPiBJJ20gbm90IGEgZmFuIG9mIHNwYW1t
-aW5nIGRtZXNnIGZyb20gSUdUIGFuZCBJJ2QgcHJlZmVyIGlmIHlvdSBhZGQgdGhpcyBsb2dnaW5n
-Cj4gPiB0byB0aGUga2VybmVsLCAKPiBUaGUgaWRlYSB3YXMgdG8gc2ltcGx5IGxvZyBJR1QgYWN0
-aW9ucywgbm90IHRvIGxvZyBrZXJuZWwgcmVhY3Rpb25zIG9uCj4gdGhlbSB3aGljaCBhbHJlYWR5
-IGhhcHBlbnMuICBEb2luZyB0aGF0IGZyb20gdGhlIGtlcm5lbCB3b3VsZCBwcm9iYWJseQo+IHJl
-cXVpcmUgbW9kaWZpY2F0aW9ucyB0byBQQ0kgc3lzZnMgaGFuZGxpbmcgb3IgdG8gc3lzZnMgaW4g
-Z2VuZXJhbC4KPiAKPiBJZiB5b3Ugc2VlIG5vIGJlbmVmaXRzIGZyb20gdGhhdCwgbGV0J3MgZHJv
-cCB0aGlzIHBhdGNoLgoKV2UgKG1lICYgUGV0cmkpIHdlcmUgdGhpbmtpbmcgYWJvdXQgZG9pbmcg
-c29tZXRoaW5nIHNpbWlsYXIsIGJ1dCBvbmx5CmZvciB0aGUgcGxhY2VzIHdoZXJlIGtlcm5lbCBs
-b2dzIGFyZSBoYXJkIHRvIGNvcnJlbGF0ZSB3aXRoIHRoZSB0ZXN0CmFjdGlvbnMsIHRvIGhhdmUg
-dGhvc2UgInN5bmNocm9uaXphdGlvbiBwb2ludHMiIGJldHdlZW4gbG9ncyBmb3Iga2V5Cm9wZXJh
-dGlvbnMuCgpUaGUgbWFpbiByZWFzb24gd2FzIENoYW1lbGl1bSAtIGV4dGVybmFsIGJvYXJkIHRo
-YXQgc2ltdWxhdGVzIGRpc3BsYXkKYW5kIGNhbiBjYXVzZSBob3RwbHVnIGV2ZW50cyB0byBoYXBw
-ZW4uIExvZ2dpbmcgQ2hhbWVsaXVtIG9wZXJhdGlvbnMgaW4KZG1lc2cgd291bGQgbWFrZSBhbnkg
-a2luZCBvZiBidWcgYXNzZXNzbWVudCBvciB0cm91Ymxlc2hvb3RpbmcgbXVjaAplYXNpZXIgLSB3
-YXMgdGhhdCBhIHBoYW50b20gaG90cGx1Zz8gb3Igc29tZXRoaW5nIHRoYXQgd2FzIHRyaWdnZXJl
-ZCBieQp1cz8gSGF2ZSB3ZSBzdGFydGVkIGRvaW5nIGFueXRoaW5nIGVsc2UgYmVmb3JlIHRoZSBs
-aW5rIGhhcyBzZXR0bGVkPwpXaGF0IGhhcHBlbmVkIGR1cmluZyBEUCBGU00gaGFuZGxpbmc/CgpU
-aGlzIGlzIGEgdmVyeSBzcGVjaWFsIGNhc2UgYXMgd2UgZGVhbCB3aXRoIGFuIGV4dGVybmFsIGJv
-YXJkIHRoYXQKZHJpdmVzIG91ciBIVyB0aHJvdWdoIHdpcmVzIGFuZCBsYXllcnMgb2YgZmlybXdh
-cmUgYW5kIGZvciBzdXJlIHRoZXJlIGJlCmRyYWdvbnMuCgoKQW55d2F5LCBJIHdvdWxkIGxpa2Ug
-dG8gc2VlIHVzIGhhdmluZyBhIHdheSBvZiBsb2dnaW5nIHRob3NlICJzeW5jCnBvaW50cyIgaW50
-byBrbWVzZyBpbiBpZ3RfY29yZSwgZS5nLiBieSBjcmVhdGluZyBfa21lc2cgc3VmZml4ZWQgdmVy
-c2lvbgpvZiBsb2cgZnVuY3Rpb25zLgoKQnV0IEkgYWxzbyBzZWUgTWljaGHFgidzIHBvaW50IC0g
-dG9vIGZyaXZvbG91cyBsb2dnaW5nIGp1c3QgY3JlYXRlcwpub2lzZSwgYW5kIHdlIHNob3VsZG4n
-dCBkb3VibGUgbG9nIC0gaWYgc29tZXRoaW5nIGlzIGFscmVhZHkgZWFzeSB0bwpmaW5kIGluIHRo
-ZSBrZXJuZWwgbG9ncyBhbmQgdGhlIGNvcnJlbGF0aW5nIHRlc3QgYWN0aW9uIHRvIGxvZ3MgaXMg
-bm90CnRvbyBoYXJkIHdoeSBzaG91bGQgd2UgYWRkIG1vcmUgbm9pc2U/CgpBcyBvZiB0aGUgZXhh
-bXBsZXMgaW4gdGhpcyB0aHJlYWQgLSBJIGFtIG5vdCB2ZXJ5IGZhbWlsaWFyIHdpdGggdGhlIGFy
-ZWEKYW5kIEkgbGVhdmUgaXQgdXAgdG8geW91IHR3byB0byBkZWNpZGUgd2hhdCB3b3VsZCBiZSBo
-ZWxwZnVsLCB3aGF0IHdvdWxkCmJlIHVubmVjZXNzYXJ5IHJlcGV0aXRpb24gYW5kIHdoYXQgd291
-bGQgYmUgYmV0dGVyIG9mZiBsb2dnZWQgaW4gdGhlCmtlcm5lbC4KClRMO0RSOiBZZXMgZm9yIGxv
-Z2dpbmcgdGhpbmdzIGludG8ga21lc2csIGJ1dCB3ZSBzaG91bGQgYmUgY2FyZWZ1bCBhYm91dAog
-ICAgICAgd2hhdCB3ZSBsb2cgdG8gbm90IG1ha2UgdGhlIHNpdHVhdGlvbiBhbnkgd29yc2UuCgot
-LSAKQ2hlZXJzLApBcmVrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
-Cmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+Since we likely know all the old devices, an unknown device is most
+likely a future device, so use -1u instead of 0 for its generation.
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ lib/intel_device_info.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 21f7a9570..dfa43f490 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -447,11 +447,11 @@ out:
+  * Computes the Intel GFX generation for the given device id.
+  *
+  * Returns:
+- * The GFX generation on successful lookup, 0 on failure.
++ * The GFX generation on successful lookup, -1u on failure.
+  */
+ unsigned intel_gen(uint16_t devid)
+ {
+-	return ffs(intel_get_device_info(devid)->gen);
++	return ffs(intel_get_device_info(devid)->gen) ?: -1u;
+ }
+ 
+ /**
+-- 
+2.27.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
