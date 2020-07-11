@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D3E886E1B3
- for <igt-dev@lists.freedesktop.org>; Sat, 11 Jul 2020 18:05:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CBD9C6E1B3
+ for <igt-dev@lists.freedesktop.org>; Sat, 11 Jul 2020 18:05:10 +0000 (UTC)
 From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Sat, 11 Jul 2020 23:34:47 +0530
-Message-Id: <20200711180457.1824-2-mohammed.khajapasha@intel.com>
+Date: Sat, 11 Jul 2020 23:34:50 +0530
+Message-Id: <20200711180457.1824-5-mohammed.khajapasha@intel.com>
 In-Reply-To: <20200711180457.1824-1-mohammed.khajapasha@intel.com>
 References: <20200711180457.1824-1-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 01/11] lib/igt_kms: Add support for display
- with non-contiguous pipes
+Subject: [igt-dev] [PATCH i-g-t 04/11] tests/kms_lease: Get pipe from crtc
+ for enable pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,207 +24,26 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add support for non-contiguous pipe display by allocating
-upper bound pipes array for display. Set the pipe enum name
-to igt pipe for enabled pipes in drm.
-
-v5:
-    Updated documentation in igt_require_display() fn
-    Made minor changes in __igt_pipe_populate_outputs() fn
+Get pipe from drm crtc for enabled pipes only.
 
 Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 ---
- lib/igt_kms.c | 66 +++++++++++++++++++++++++++++++++++++++++++++------
- lib/igt_kms.h | 14 +++++++----
- 2 files changed, 68 insertions(+), 12 deletions(-)
+ tests/kms_lease.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 27f85859..8b92f1fe 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1873,6 +1873,21 @@ void igt_display_reset(igt_display_t *display)
- static void igt_fill_plane_format_mod(igt_display_t *display, igt_plane_t *plane);
- static void igt_fill_display_format_mod(igt_display_t *display);
- 
-+/* Get crtc mask for a pipe using crtc id */
-+static int
-+__get_crtc_mask_for_pipe(drmModeRes *resources, igt_pipe_t *pipe)
-+{
-+	int offset;
-+
-+	for (offset = 0; offset < resources->count_crtcs; offset++)
-+	{
-+		if(pipe->crtc_id == resources->crtcs[offset])
-+			break;
-+	}
-+
-+	return (1 << offset);
-+}
-+
- /**
-  * igt_display_require:
-  * @display: a pointer to an #igt_display_t structure
-@@ -1889,12 +1904,14 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	drmModeRes *resources;
- 	drmModePlaneRes *plane_resources;
- 	int i;
-+	bool is_i915_dev;
- 
- 	memset(display, 0, sizeof(igt_display_t));
- 
- 	LOG_INDENT(display, "init");
- 
- 	display->drm_fd = drm_fd;
-+	is_i915_dev = is_i915_device(drm_fd);
- 
- 	resources = drmModeGetResources(display->drm_fd);
- 	if (!resources)
-@@ -1921,10 +1938,38 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	 * We cache the number of pipes, that number is a physical limit of the
- 	 * hardware and cannot change of time (for now, at least).
- 	 */
--	display->n_pipes = resources->count_crtcs;
-+	display->n_pipes = IGT_MAX_PIPES;
- 	display->pipes = calloc(sizeof(igt_pipe_t), display->n_pipes);
- 	igt_assert_f(display->pipes, "Failed to allocate memory for %d pipes\n", display->n_pipes);
- 
-+	for (i = 0; i < resources->count_crtcs; i++) {
-+		igt_pipe_t *pipe;
-+
-+		/*
-+		 * In i915, pipe is a i915's specific crtc object,
-+		 * with non-contiguous pipes display, crtc mapping is not always same
-+		 * with pipe mapping, hence get right pipe enum for a crtc using
-+		 * GET_PIPE_FROM_CRTC_ID ioctl for a pipe.
-+		 */
-+		if (is_i915_dev) {
-+			struct drm_i915_get_pipe_from_crtc_id get_pipe;
-+
-+			get_pipe.pipe = 0;
-+			get_pipe.crtc_id =  resources->crtcs[i];
-+			do_ioctl(display->drm_fd,
-+					DRM_IOCTL_I915_GET_PIPE_FROM_CRTC_ID, &get_pipe);
-+			pipe = &display->pipes[get_pipe.pipe];
-+			pipe->pipe = get_pipe.pipe;
-+		}
-+		else {
-+			pipe = &display->pipes[i];
-+			pipe->pipe = i;
-+		}
-+
-+		pipe->enabled = true;
-+		pipe->crtc_id = resources->crtcs[i];
-+	}
-+
- 	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
- 	if (drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) == 0)
- 		display->is_atomic = 1;
-@@ -1955,25 +2000,26 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	for_each_pipe(display, i) {
- 		igt_pipe_t *pipe = &display->pipes[i];
- 		igt_plane_t *plane;
--		int p = 1;
-+		int p = 1, crtc_mask = 0;
- 		int j, type;
- 		uint8_t last_plane = 0, n_planes = 0;
- 
--		pipe->crtc_id = resources->crtcs[i];
- 		pipe->display = display;
--		pipe->pipe = i;
- 		pipe->plane_cursor = -1;
- 		pipe->plane_primary = -1;
- 		pipe->planes = NULL;
- 
- 		igt_fill_pipe_props(display, pipe, IGT_NUM_CRTC_PROPS, igt_crtc_prop_names);
- 
-+		/* Get valid crtc index from crtcs for a pipe */
-+		crtc_mask = __get_crtc_mask_for_pipe(resources, pipe);
-+
- 		/* count number of valid planes */
- 		for (j = 0; j < display->n_planes; j++) {
- 			drmModePlane *drm_plane = display->planes[j].drm_plane;
- 			igt_assert(drm_plane);
- 
--			if (drm_plane->possible_crtcs & (1 << i))
-+			if (drm_plane->possible_crtcs & crtc_mask)
- 				n_planes++;
- 		}
- 
-@@ -1987,7 +2033,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 			igt_plane_t *global_plane = &display->planes[j];
- 			drmModePlane *drm_plane = global_plane->drm_plane;
- 
--			if (!(drm_plane->possible_crtcs & (1 << i)))
-+			if (!(drm_plane->possible_crtcs & crtc_mask))
- 				continue;
- 
- 			type = global_plane->type;
-@@ -2409,12 +2455,18 @@ static bool output_is_internal_panel(igt_output_t *output)
- 
- igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display, igt_output_t **chosen_outputs)
- {
--	unsigned full_pipe_mask = (1 << (display->n_pipes)) - 1, assigned_pipes = 0;
-+	unsigned full_pipe_mask, assigned_pipes = 0;
- 	igt_output_t *output;
- 	int i, j;
- 
- 	memset(chosen_outputs, 0, sizeof(*chosen_outputs) * display->n_pipes);
- 
-+	for (i = 0; i < display->n_pipes; i++) {
-+		igt_pipe_t *pipe = &display->pipes[i];
-+		if (pipe->enabled)
-+			full_pipe_mask |= (1 << i);
-+	}
-+
- 	/*
- 	 * Try to assign all outputs to the first available CRTC for
- 	 * it, start with the outputs restricted to 1 pipe, then increase
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 416e737c..f9bbddc5 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -341,6 +341,8 @@ typedef struct igt_plane {
- struct igt_pipe {
- 	igt_display_t *display;
- 	enum pipe pipe;
-+	/* pipe is enabled or not */
-+	bool enabled;
- 
- 	int n_planes;
- 	int plane_cursor;
-@@ -510,8 +512,9 @@ static inline bool igt_output_is_connected(igt_output_t *output)
-  * depends upon runtime probing of the actual kms driver that is being tested.
-  * Use #for_each_pipe_static instead.
-  */
--#define for_each_pipe(display, pipe)					\
--	for (pipe = 0; assert(igt_can_fail()), pipe < igt_display_get_n_pipes(display); pipe++)
-+#define for_each_pipe(display, pipe) \
-+	for_each_pipe_static(pipe) \
-+		for_each_if((display)->pipes[(pipe)].enabled)
- 
- /**
-  * for_each_pipe_with_valid_output:
-@@ -530,8 +533,9 @@ static inline bool igt_output_is_connected(igt_output_t *output)
- 	for (int con__ = (pipe) = 0; \
- 	     assert(igt_can_fail()), (pipe) < igt_display_get_n_pipes((display)) && con__ < (display)->n_outputs; \
- 	     con__ = (con__ + 1 < (display)->n_outputs) ? con__ + 1 : (pipe = pipe + 1, 0)) \
--		for_each_if ((((output) = &(display)->outputs[con__]), \
--			     igt_pipe_connector_valid((pipe), (output))))
-+		 for_each_if((display)->pipes[pipe].enabled) \
-+			for_each_if ((((output) = &(display)->outputs[con__]), \
-+						igt_pipe_connector_valid((pipe), (output))))
- 
- igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
- 					   igt_output_t **chosen_outputs);
-@@ -549,7 +553,7 @@ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
- #define for_each_pipe_with_single_output(display, pipe, output) \
- 	for (igt_output_t *__outputs[(display)->n_pipes], \
- 	     **__output = __igt_pipe_populate_outputs((display), __outputs); \
--	     __output < &__outputs[(display)->n_pipes]; __output++) \
-+		 __output < &__outputs[(display)->n_pipes]; __output++) \
- 		for_each_if (*__output && \
- 			     ((pipe) = (__output - __outputs), (output) = *__output, 1))
- 
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index 2e6cf9b0..75a1149c 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -684,6 +684,8 @@ static void lease_unleased_crtc(data_t *data)
+ 	/* Find another CRTC that we don't control */
+ 	bad_crtc_id = 0;
+ 	for (p = 0; bad_crtc_id == 0 && p < data->master.display.n_pipes; p++) {
++		if(!(data->master.display.pipes[p].enabled))
++			continue;
+ 		if (pipe_to_crtc_id(&data->master.display, p) != data->crtc_id)
+ 			bad_crtc_id = pipe_to_crtc_id(&data->master.display, p);
+ 	}
 -- 
 2.24.1
 
