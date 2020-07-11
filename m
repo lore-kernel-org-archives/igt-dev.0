@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA4736ED00
- for <igt-dev@lists.freedesktop.org>; Fri, 10 Jul 2020 19:54:33 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 204196E1B3
+ for <igt-dev@lists.freedesktop.org>; Sat, 11 Jul 2020 18:05:08 +0000 (UTC)
+From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+Date: Sat, 11 Jul 2020 23:34:48 +0530
+Message-Id: <20200711180457.1824-3-mohammed.khajapasha@intel.com>
+In-Reply-To: <20200711180457.1824-1-mohammed.khajapasha@intel.com>
+References: <20200711180457.1824-1-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200710121921.10928-6-dominik.grzegorzek@intel.com>
-References: <20200710121921.10928-1-dominik.grzegorzek@intel.com>
- <20200710121921.10928-6-dominik.grzegorzek@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri, 10 Jul 2020 20:54:29 +0100
-Message-ID: <159441086983.23667.9957387788733455981@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 5/5] i915/gem_non_secure_batch.c:
- Remove
+Subject: [igt-dev] [PATCH i-g-t 02/11] lib/igt_kms: Add igt_require_pipe()
+ function
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,18 +21,70 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Dominik Grzegorzek (2020-07-10 13:19:21)
-> Removal of gem_non_secure_batch as a last of disabled
-> HANG(in Makefile.sources) tests.
+Add igt_require_pipe() fn to check whether a pipe is enabled or not
 
-And all of the out-of-date bad tests, gone.
+Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+---
+ lib/igt_kms.c | 17 +++++++++++++++++
+ lib/igt_kms.h | 13 +++++++++++++
+ 2 files changed, 30 insertions(+)
 
-It would be great to replace them with a test generator, as they are
-basically negative tests best explored with fuzzing.
--Chris
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 8b92f1fe..242e75d9 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -1873,6 +1873,23 @@ void igt_display_reset(igt_display_t *display)
+ static void igt_fill_plane_format_mod(igt_display_t *display, igt_plane_t *plane);
+ static void igt_fill_display_format_mod(igt_display_t *display);
+ 
++/*
++ * igt_require_pipe:
++ * @display: pointer to igt_display_t
++ * @pipe: pipe which need to check
++ *
++ * Skip a (sub-)test if the pipe not enabled.
++ *
++ * Should be used everywhere where a test checks pipe and skip
++ * test when pipe is not enabled.
++ */
++void igt_require_pipe(igt_display_t *display, enum pipe pipe)
++{
++	igt_skip_on_f(!display->pipes[pipe].enabled,
++			"Pipe %s does not exist or not enabled\n",
++			kmstest_pipe_name(pipe));
++}
++
+ /* Get crtc mask for a pipe using crtc id */
+ static int
+ __get_crtc_mask_for_pipe(drmModeRes *resources, igt_pipe_t *pipe)
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index f9bbddc5..7109c9a5 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -858,4 +858,17 @@ int igt_connector_sysfs_open(int drm_fd,
+ 			     drmModeConnector *connector);
+ uint32_t igt_reduce_format(uint32_t format);
+ 
++/*
++ * igt_require_pipe:
++ * @display: pointer to igt_display_t
++ * @pipe: pipe which need to check
++ *
++ * Skip a (sub-)test if the pipe not enabled.
++ *
++ * Should be used everywhere where a test checks pipe and skip
++ * test when pipe is not enabled.
++ */
++void igt_require_pipe(igt_display_t *display,
++		enum pipe pipe);
++
+ #endif /* __IGT_KMS_H__ */
+-- 
+2.24.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
