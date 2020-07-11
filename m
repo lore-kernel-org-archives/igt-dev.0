@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D6CA16E23D
- for <igt-dev@lists.freedesktop.org>; Sat, 11 Jul 2020 18:05:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E253D6E26C
+ for <igt-dev@lists.freedesktop.org>; Sat, 11 Jul 2020 18:05:18 +0000 (UTC)
 From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Sat, 11 Jul 2020 23:34:53 +0530
-Message-Id: <20200711180457.1824-8-mohammed.khajapasha@intel.com>
+Date: Sat, 11 Jul 2020 23:34:56 +0530
+Message-Id: <20200711180457.1824-11-mohammed.khajapasha@intel.com>
 In-Reply-To: <20200711180457.1824-1-mohammed.khajapasha@intel.com>
 References: <20200711180457.1824-1-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 07/11] tests/kms: Skip kms test cases for
- disabled pipes
+Subject: [igt-dev] [PATCH i-g-t 10/11] lib/kms: Convert pipe id flags for a
+ vblank using crtc offset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,179 +24,163 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Skip the kms test cases for disabled pipes with
-non-contiguous pipe display.
+In i915 with non-contiguous pipes display, pipes always not same
+as crtc index in display pipes array. Hence reading pipe id flags
+for a vblank event using crtc offset.
 
 Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 ---
- tests/kms_color.c           |  2 +-
- tests/kms_color_chamelium.c |  2 +-
- tests/kms_concurrent.c      |  2 +-
- tests/kms_pipe_crc_basic.c  |  4 ++--
- tests/kms_plane.c           |  2 +-
- tests/kms_plane_lowres.c    |  2 +-
- tests/kms_plane_multiple.c  |  2 +-
- tests/kms_universal_plane.c | 12 ++++++------
- 8 files changed, 14 insertions(+), 14 deletions(-)
+ lib/igt_kms.c | 48 ++++++++++++++++++++++++++++++++----------------
+ lib/igt_kms.h | 14 +++++++++++---
+ 2 files changed, 43 insertions(+), 19 deletions(-)
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 7f2fbd4a..8c50ee66 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -628,7 +628,7 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 	igt_fixture {
- 		igt_require_pipe_crc(data->drm_fd);
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 467df3ae..3b32a2d4 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -1985,6 +1985,8 @@ void igt_display_require(igt_display_t *display, int drm_fd)
  
--		igt_require(p < data->display.n_pipes);
-+		igt_require_pipe(&data->display, p);
- 
- 		pipe = &data->display.pipes[p];
- 		igt_require(pipe->n_planes >= 0);
-diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
-index 7f5a911c..310c021a 100644
---- a/tests/kms_color_chamelium.c
-+++ b/tests/kms_color_chamelium.c
-@@ -519,7 +519,7 @@ run_tests_for_pipe(data_t *data, enum pipe p)
- 
- 	igt_fixture {
- 
--		igt_require(p < data->display.n_pipes);
-+		igt_require_pipe(&data->display, p);
- 
- 		pipe = &data->display.pipes[p];
- 		igt_require(pipe->n_planes >= 0);
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index 9a4dab24..573631e0 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -320,7 +320,7 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 	igt_fixture {
- 		int valid_tests = 0;
- 
--		igt_skip_on(pipe >= data->display.n_pipes);
-+		igt_require_pipe(&data->display, pipe);
- 		igt_require(data->display.pipes[pipe].n_planes > 0);
- 
- 		for_each_valid_output_on_pipe(&data->display, pipe, output)
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index d169b7bd..82856efa 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -71,7 +71,7 @@ static void test_read_crc(data_t *data, enum pipe pipe, unsigned flags)
- 	igt_crc_t *crcs = NULL;
- 	int c, j;
- 
--	igt_skip_on(pipe >= data->display.n_pipes);
-+	igt_require_pipe(display, pipe);
- 	igt_require_f(output, "No connector found for pipe %s\n",
- 		      kmstest_pipe_name(pipe));
- 
-@@ -187,7 +187,7 @@ igt_main
- 			test_read_crc(&data, pipe, TEST_SEQUENCE | TEST_NONBLOCK);
- 
- 		igt_subtest_f("suspend-read-crc-pipe-%s", kmstest_pipe_name(pipe)) {
--			igt_skip_on(pipe >= data.display.n_pipes);
-+			igt_require_pipe(&data.display, pipe);
- 
- 			test_read_crc(&data, pipe, 0);
- 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index e75c045b..42088488 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -940,7 +940,7 @@ static void
- run_tests_for_pipe_plane(data_t *data, enum pipe pipe)
- {
- 	igt_fixture {
--		igt_skip_on(pipe >= data->display.n_pipes);
-+		igt_require_pipe(&data->display, pipe);
- 		igt_require(data->display.pipes[pipe].n_planes > 0);
+ 		pipe->enabled = true;
+ 		pipe->crtc_id = resources->crtcs[i];
++		/* offset of a pipe in crtcs list */
++		pipe->crtc_offset = i;
  	}
  
-diff --git a/tests/kms_plane_lowres.c b/tests/kms_plane_lowres.c
-index 94b18df6..a5af1f8a 100644
---- a/tests/kms_plane_lowres.c
-+++ b/tests/kms_plane_lowres.c
-@@ -259,7 +259,7 @@ test_planes_on_pipe(data_t *data, uint64_t modifier)
- 	igt_plane_t *plane;
- 	unsigned tested = 0;
- 
--	igt_skip_on(data->pipe >= data->display.n_pipes);
-+	igt_require_pipe(&data->display, data->pipe);
- 	igt_display_require_output_on_pipe(&data->display, data->pipe);
- 	igt_skip_on(!igt_display_has_format_mod(&data->display,
- 						DRM_FORMAT_XRGB8888, modifier));
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 29b6397b..8310981c 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -378,7 +378,7 @@ static void
- run_tests_for_pipe(data_t *data, enum pipe pipe)
+ 	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+@@ -4133,18 +4135,22 @@ void igt_pipe_request_out_fence(igt_pipe_t *pipe)
+ /**
+  * igt_wait_for_vblank_count:
+  * @drm_fd: A drm file descriptor
+- * @pipe: Pipe to wait_for_vblank on
++ * @crtc_offset: offset of a Pipe to wait_for_vblank on
+  * @count: Number of vblanks to wait on
+  *
++ * In i915, with non-contiguous pipe display, pipe mapping always
++ * not same with crtc mapping, passing crtc offset of a pipe to
++ * read vblank count for a pipe, in i915 pipe is i915's crtc object id.
++ *
+  * Waits for a given number of vertical blank intervals
+  */
+-void igt_wait_for_vblank_count(int drm_fd, enum pipe pipe, int count)
++void igt_wait_for_vblank_count(int drm_fd, int crtc_offset, int count)
  {
- 	igt_fixture {
--		igt_skip_on(pipe >= data->display.n_pipes);
-+		igt_require_pipe(&data->display, pipe);
- 		igt_require(data->display.pipes[pipe].n_planes > 0);
+ 	drmVBlank wait_vbl;
+ 	uint32_t pipe_id_flag;
+ 
+ 	memset(&wait_vbl, 0, sizeof(wait_vbl));
+-	pipe_id_flag = kmstest_get_vbl_flag(pipe);
++	pipe_id_flag = kmstest_get_vbl_flag(crtc_offset);
+ 
+ 	wait_vbl.request.type = DRM_VBLANK_RELATIVE;
+ 	wait_vbl.request.type |= pipe_id_flag;
+@@ -4156,13 +4162,17 @@ void igt_wait_for_vblank_count(int drm_fd, enum pipe pipe, int count)
+ /**
+  * igt_wait_for_vblank:
+  * @drm_fd: A drm file descriptor
+- * @pipe: Pipe to wait_for_vblank on
++ * @crtc_offset: offset of a Pipe to wait_for_vblank on
++ *
++ * In i915, with non-contiguous pipe display, pipe mapping always
++ * not same with crtc mapping, passing crtc offset of a pipe to
++ * read vblank count for a pipe.
+  *
+  * Waits for 1 vertical blank intervals
+  */
+-void igt_wait_for_vblank(int drm_fd, enum pipe pipe)
++void igt_wait_for_vblank(int drm_fd, int crtc_offset)
+ {
+-	igt_wait_for_vblank_count(drm_fd, pipe, 1);
++	igt_wait_for_vblank_count(drm_fd, crtc_offset, 1);
+ }
+ 
+ /**
+@@ -4385,22 +4395,28 @@ void igt_cleanup_uevents(struct udev_monitor *mon)
+ 
+ /**
+  * kmstest_get_vbl_flag:
+- * @pipe_id: Pipe to convert to flag representation.
++ * @crtc_offset: CRTC offset to convert into pipe flag representation.
+  *
+- * Convert a pipe id into the flag representation
+- * expected in DRM while processing DRM_IOCTL_WAIT_VBLANK.
++ * In i915, with non-contiguous pipe display, pipe mapping always
++ * not same with crtc mapping, pipe is enum id of i915's crtc object
++ * passing crtc offset of a pipe to convert into the pipe flag
++ * representation expected in DRM while processing DRM_IOCTL_WAIT_VBLANK.
+  */
+-uint32_t kmstest_get_vbl_flag(uint32_t pipe_id)
++uint32_t kmstest_get_vbl_flag(int crtc_offset)
+ {
+-	if (pipe_id == 0)
+-		return 0;
+-	else if (pipe_id == 1)
+-		return _DRM_VBLANK_SECONDARY;
++	uint32_t pipe_id;
++
++	if (crtc_offset == 0)
++		pipe_id = 0;
++	else if (crtc_offset == 1)
++		pipe_id = _DRM_VBLANK_SECONDARY;
+ 	else {
+-		uint32_t pipe_flag = pipe_id << 1;
++		uint32_t pipe_flag = crtc_offset << 1;
+ 		igt_assert(!(pipe_flag & ~DRM_VBLANK_HIGH_CRTC_MASK));
+-		return pipe_flag;
++		pipe_id = pipe_flag;
  	}
++
++	return pipe_id;
+ }
  
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index 676be633..46d6d180 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -135,7 +135,7 @@ functional_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int num_primary = 0, num_cursor = 0;
- 	int i;
+ static inline const uint32_t *
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 7109c9a5..162c4850 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -338,8 +338,14 @@ typedef struct igt_plane {
+ 	int format_mod_count;
+ } igt_plane_t;
  
--	igt_skip_on(pipe >= display->n_pipes);
-+	igt_require_pipe(display, pipe);
++/*
++ * In i915, with non-contiguous pipe display, a pipe is not always
++ * same as a crtc mapping in display, pipe is enum id of a i915's crtc object
++ * using crtc offset to get the offset of a pipe from mode config list
++ */
+ struct igt_pipe {
+ 	igt_display_t *display;
++	/* Id of a pipe object */
+ 	enum pipe pipe;
+ 	/* pipe is enabled or not */
+ 	bool enabled;
+@@ -354,6 +360,8 @@ struct igt_pipe {
+ 	uint64_t values[IGT_NUM_CRTC_PROPS];
  
- 	igt_info("Testing connector %s using pipe %s\n", igt_output_name(output),
- 		 kmstest_pipe_name(pipe));
-@@ -364,7 +364,7 @@ sanity_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int i;
- 	int expect;
+ 	uint32_t crtc_id;
++	/* crtc offset of a pipe in mode config list */
++	uint32_t crtc_offset;
  
--	igt_skip_on(pipe >= data->display.n_pipes);
-+	igt_require_pipe(&data->display, pipe);
+ 	int32_t out_fence_fd;
+ };
+@@ -448,8 +456,8 @@ void igt_fb_set_position(struct igt_fb *fb, igt_plane_t *plane,
+ void igt_fb_set_size(struct igt_fb *fb, igt_plane_t *plane,
+ 	uint32_t w, uint32_t h);
  
- 	igt_output_set_pipe(output, pipe);
- 	mode = igt_output_get_mode(output);
-@@ -476,7 +476,7 @@ pageflip_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	fd_set fds;
- 	int ret = 0;
+-void igt_wait_for_vblank(int drm_fd, enum pipe pipe);
+-void igt_wait_for_vblank_count(int drm_fd, enum pipe pipe, int count);
++void igt_wait_for_vblank(int drm_fd, int crtc_offset);
++void igt_wait_for_vblank_count(int drm_fd, int crtc_offset, int count);
  
--	igt_skip_on(pipe >= data->display.n_pipes);
-+	igt_require_pipe(&data->display, pipe);
+ static inline bool igt_output_is_connected(igt_output_t *output)
+ {
+@@ -769,7 +777,7 @@ void igt_pipe_refresh(igt_display_t *display, enum pipe pipe, bool force);
+ void igt_enable_connectors(int drm_fd);
+ void igt_reset_connectors(void);
  
- 	igt_output_set_pipe(output, pipe);
+-uint32_t kmstest_get_vbl_flag(uint32_t pipe_id);
++uint32_t kmstest_get_vbl_flag(int crtc_offset);
  
-@@ -577,7 +577,7 @@ cursor_leak_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int r, g, b;
- 	int count1, count2;
- 
--	igt_skip_on(pipe >= display->n_pipes);
-+	igt_require_pipe(display, pipe);
- 	igt_require(display->has_cursor_plane);
- 
- 	igt_output_set_pipe(output, pipe);
-@@ -705,7 +705,7 @@ gen9_test_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int ret = 0;
- 
- 	igt_skip_on(data->gen < 9);
--	igt_skip_on(pipe >= data->display.n_pipes);
-+	igt_require_pipe(&data->display, pipe);
- 
- 	igt_output_set_pipe(output, pipe);
- 
-@@ -750,7 +750,7 @@ run_tests_for_pipe(data_t *data, enum pipe pipe)
- 	igt_fixture {
- 		int valid_tests = 0;
- 
--		igt_skip_on(pipe >= data->display.n_pipes);
-+		igt_require_pipe(&data->display, pipe);
- 
- 		for_each_valid_output_on_pipe(&data->display, pipe, output)
- 			valid_tests++;
+ const struct edid *igt_kms_get_base_edid(void);
+ const struct edid *igt_kms_get_alt_edid(void);
 -- 
 2.24.1
 
