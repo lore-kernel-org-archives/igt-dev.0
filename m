@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 47CCA6E312
- for <igt-dev@lists.freedesktop.org>; Sat, 11 Jul 2020 20:06:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 789CE6E314
+ for <igt-dev@lists.freedesktop.org>; Sat, 11 Jul 2020 20:06:18 +0000 (UTC)
 From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Sun, 12 Jul 2020 01:35:53 +0530
-Message-Id: <20200711200602.3217-3-mohammed.khajapasha@intel.com>
+Date: Sun, 12 Jul 2020 01:35:55 +0530
+Message-Id: <20200711200602.3217-5-mohammed.khajapasha@intel.com>
 In-Reply-To: <20200711200602.3217-1-mohammed.khajapasha@intel.com>
 References: <20200711200602.3217-1-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 02/11] lib/igt_kms: Add igt_require_pipe()
- function
+Subject: [igt-dev] [PATCH i-g-t 04/11] tests/kms_lease: Get pipe from crtc
+ for enable pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,64 +24,26 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org, arkadiusz.hiler@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add igt_require_pipe() fn to check whether a pipe is enabled or not
+Get pipe from drm crtc for enabled pipes only.
 
 Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 ---
- lib/igt_kms.c | 17 +++++++++++++++++
- lib/igt_kms.h | 13 +++++++++++++
- 2 files changed, 30 insertions(+)
+ tests/kms_lease.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 5a80d17f..5b68ffda 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1873,6 +1873,23 @@ void igt_display_reset(igt_display_t *display)
- static void igt_fill_plane_format_mod(igt_display_t *display, igt_plane_t *plane);
- static void igt_fill_display_format_mod(igt_display_t *display);
- 
-+/*
-+ * igt_require_pipe:
-+ * @display: pointer to igt_display_t
-+ * @pipe: pipe which need to check
-+ *
-+ * Skip a (sub-)test if the pipe not enabled.
-+ *
-+ * Should be used everywhere where a test checks pipe and skip
-+ * test when pipe is not enabled.
-+ */
-+void igt_require_pipe(igt_display_t *display, enum pipe pipe)
-+{
-+	igt_skip_on_f(!display->pipes[pipe].enabled,
-+			"Pipe %s does not exist or not enabled\n",
-+			kmstest_pipe_name(pipe));
-+}
-+
- /* Get crtc mask for a pipe using crtc id */
- static int
- __get_crtc_mask_for_pipe(drmModeRes *resources, igt_pipe_t *pipe)
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index f9bbddc5..7109c9a5 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -858,4 +858,17 @@ int igt_connector_sysfs_open(int drm_fd,
- 			     drmModeConnector *connector);
- uint32_t igt_reduce_format(uint32_t format);
- 
-+/*
-+ * igt_require_pipe:
-+ * @display: pointer to igt_display_t
-+ * @pipe: pipe which need to check
-+ *
-+ * Skip a (sub-)test if the pipe not enabled.
-+ *
-+ * Should be used everywhere where a test checks pipe and skip
-+ * test when pipe is not enabled.
-+ */
-+void igt_require_pipe(igt_display_t *display,
-+		enum pipe pipe);
-+
- #endif /* __IGT_KMS_H__ */
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index 2e6cf9b0..75a1149c 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -684,6 +684,8 @@ static void lease_unleased_crtc(data_t *data)
+ 	/* Find another CRTC that we don't control */
+ 	bad_crtc_id = 0;
+ 	for (p = 0; bad_crtc_id == 0 && p < data->master.display.n_pipes; p++) {
++		if(!(data->master.display.pipes[p].enabled))
++			continue;
+ 		if (pipe_to_crtc_id(&data->master.display, p) != data->crtc_id)
+ 			bad_crtc_id = pipe_to_crtc_id(&data->master.display, p);
+ 	}
 -- 
 2.24.1
 
