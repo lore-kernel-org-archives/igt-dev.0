@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 717356E1B3
- for <igt-dev@lists.freedesktop.org>; Sat, 11 Jul 2020 18:05:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 898AD6E23D
+ for <igt-dev@lists.freedesktop.org>; Sat, 11 Jul 2020 18:05:13 +0000 (UTC)
 From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Sat, 11 Jul 2020 23:34:49 +0530
-Message-Id: <20200711180457.1824-4-mohammed.khajapasha@intel.com>
+Date: Sat, 11 Jul 2020 23:34:52 +0530
+Message-Id: <20200711180457.1824-7-mohammed.khajapasha@intel.com>
 In-Reply-To: <20200711180457.1824-1-mohammed.khajapasha@intel.com>
 References: <20200711180457.1824-1-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 03/11] tests/kms_cursor_legacy: Read crtc id
- for enable pipes
+Subject: [igt-dev] [PATCH i-g-t 06/11] lib/kms: Skip igt test cases for
+ disabled display pipes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,58 +24,36 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Read the crtc ids for enable pipes only in display.
+Skip igt test cases for disabled pipes.
 
 Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 ---
- tests/kms_cursor_legacy.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ lib/igt_kms.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 344442e8..e631f087 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -58,7 +58,7 @@ static void stress(igt_display_t *display,
- 	uint64_t *results;
- 	bool torture;
- 	int n;
--	unsigned crtc_id[IGT_MAX_PIPES], num_crtcs;
-+	unsigned crtc_id[IGT_MAX_PIPES] = {0}, num_crtcs;
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 242e75d9..467df3ae 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -2193,8 +2193,7 @@ void igt_display_require_output_on_pipe(igt_display_t *display, enum pipe pipe)
+ {
+ 	igt_output_t *output;
  
- 	torture = false;
- 	if (num_children < 0) {
-@@ -84,8 +84,10 @@ static void stress(igt_display_t *display,
- 		}
- 	} else {
- 		num_crtcs = 1;
--		arg.crtc_id = crtc_id[0] = display->pipes[pipe].crtc_id;
--		do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg);
-+		if(display->pipes[pipe].enabled) {
-+			arg.crtc_id = crtc_id[0] = display->pipes[pipe].crtc_id;
-+			do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg);
-+		}
- 	}
+-	igt_skip_on_f(pipe >= igt_display_get_n_pipes(display),
+-		      "Pipe %s does not exist.\n", kmstest_pipe_name(pipe));
++	igt_require_pipe(display, pipe);
  
- 	arg.flags = mode;
-@@ -103,7 +105,8 @@ static void stress(igt_display_t *display,
- 		hars_petruska_f54_1_random_perturb(child);
- 		igt_until_timeout(timeout) {
- 			arg.crtc_id = crtc_id[hars_petruska_f54_1_random_unsafe() % num_crtcs];
--			do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg);
-+			if (arg.crtc_id)
-+				do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg);
- 			count++;
- 		}
+ 	for_each_valid_output_on_pipe(display, pipe, output)
+ 		return;
+@@ -2549,7 +2548,7 @@ igt_output_t *igt_get_single_output_for_pipe(igt_display_t *display, enum pipe p
+ 	igt_output_t *chosen_outputs[display->n_pipes];
  
-@@ -1390,7 +1393,7 @@ igt_main
- 			errno = 0;
+ 	igt_assert(pipe != PIPE_NONE);
+-	igt_require(pipe < display->n_pipes);
++	igt_require_pipe(display, pipe);
  
- 			igt_fixture {
--				igt_skip_on(n >= display.n_pipes);
-+				igt_require_pipe(&display, n);
- 			}
+ 	__igt_pipe_populate_outputs(display, chosen_outputs);
  
- 			igt_subtest_f("pipe-%s-single-bo", kmstest_pipe_name(n))
 -- 
 2.24.1
 
