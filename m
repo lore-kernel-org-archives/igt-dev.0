@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com
- [IPv6:2a00:1450:4864:20::330])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E456C6EBDF
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jul 2020 16:49:42 +0000 (UTC)
-Received: by mail-wm1-x330.google.com with SMTP id w3so6474393wmi.4
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jul 2020 09:49:42 -0700 (PDT)
-Date: Wed, 15 Jul 2020 13:49:33 -0300
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com
+ [IPv6:2a00:1450:4864:20::42e])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0FFD76EBDB
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jul 2020 16:49:11 +0000 (UTC)
+Received: by mail-wr1-x42e.google.com with SMTP id k6so3446273wrn.3
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jul 2020 09:49:10 -0700 (PDT)
+Date: Wed, 15 Jul 2020 13:49:01 -0300
 From: Melissa Wen <melissa.srw@gmail.com>
-Message-ID: <5e8164caa6841e57979f27eec629a670d80479c5.1594831260.git.melissa.srw@gmail.com>
-References: <cover.1594831260.git.melissa.srw@gmail.com>
+Message-ID: <cover.1594831260.git.melissa.srw@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <cover.1594831260.git.melissa.srw@gmail.com>
-Subject: [igt-dev] [PATCH i-g-t v2 1/2] lib/igt_fb: change comments with fd
- description
+Subject: [igt-dev] [PATCH i-g-t v2 0/2] minor improvements to the
+ kms_cursor_crc doc and some comments cleanup
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,35 +27,19 @@ To: igt-dev@lists.freedesktop.org
 Cc: kernel-usp@googlegroups.com, aurabindo.pillai@amd.com, twoerner@gmail.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Generalize description of fd so as not restrict it to i915 driver
+Just some comments cleanup and adding descriptions for subtests.
 
-Signed-off-by: Melissa Wen <melissa.srw@gmail.com>
----
- lib/igt_fb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+v2:
+- Rebase on master
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index fd33907b..3864b7a1 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -3548,7 +3548,7 @@ cairo_surface_t *igt_get_cairo_surface(int fd, struct igt_fb *fb)
- 
- /**
-  * igt_get_cairo_ctx:
-- * @fd: open i915 drm file descriptor
-+ * @fd: open drm file descriptor
-  * @fb: pointer to an #igt_fb structure
-  *
-  * This initializes a cairo surface for @fb and then allocates a drawing context
-@@ -3594,7 +3594,7 @@ void igt_put_cairo_ctx(cairo_t *cr)
- 
- /**
-  * igt_remove_fb:
-- * @fd: open i915 drm file descriptor
-+ * @fd: open drm file descriptor
-  * @fb: pointer to an #igt_fb structure
-  *
-  * This function releases all resources allocated in igt_create_fb() for @fb.
+Melissa Wen (2):
+  lib/igt_fb: change comments with fd description
+  test/kms_cursor_crc: update subtests descriptions and some comments
+
+ lib/igt_fb.c           |  4 ++--
+ tests/kms_cursor_crc.c | 37 ++++++++++++++++++++++++++++---------
+ 2 files changed, 30 insertions(+), 11 deletions(-)
+
 -- 
 2.27.0
 
