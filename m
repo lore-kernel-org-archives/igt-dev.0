@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
- [IPv6:2a00:1450:4864:20::342])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2398E6E184
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2020 11:25:29 +0000 (UTC)
-Received: by mail-wm1-x342.google.com with SMTP id o2so11276139wmh.2
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2020 04:25:29 -0700 (PDT)
-Date: Thu, 16 Jul 2020 08:25:21 -0300
-From: Melissa Wen <melissa.srw@gmail.com>
-Message-ID: <e2e335dbf2189ea9ece3373364520eca8eb3349b.1594897760.git.melissa.srw@gmail.com>
-References: <cover.1594897760.git.melissa.srw@gmail.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D45C06EC45
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2020 11:36:36 +0000 (UTC)
+Date: Thu, 16 Jul 2020 14:36:32 +0300
+From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Message-ID: <20200716113632.52a3c52t2xeixwa5@ahiler-desk1.fi.intel.com>
+References: <cover.1594831260.git.melissa.srw@gmail.com>
+ <159485064607.3438.12309038160617224383@emeril.freedesktop.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <cover.1594897760.git.melissa.srw@gmail.com>
-Subject: [igt-dev] [PATCH i-g-t v2 1/1] test/kms_cursor_crc: release old
- pipe_crc before create a new one
+In-Reply-To: <159485064607.3438.12309038160617224383@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgbWlub3Ig?=
+ =?utf-8?q?improvements_to_the_kms=5Fcursor=5Fcrc_doc_and_some_comments_cl?=
+ =?utf-8?q?eanup_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,35 +26,71 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: kernel-usp@googlegroups.com, twoerner@gmail.com
+Cc: Lakshmi <lakshminarayana.vudum@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-When a subtest fails, it skips the cleanup, and its pipe_crc remains allocated.
-As a consequence, the following subtest also fails (timeout) when trying to
-create a new one. This patch releases any remaining pipe_crc to enable the
-creation of a new one for the next subtest.
+On Wed, Jul 15, 2020 at 10:04:06PM +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: minor improvements to the kms_cursor_crc doc and some comments cleanup (rev2)
+> URL   : https://patchwork.freedesktop.org/series/78814/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_8751_full -> IGTPW_4766_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_4766_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_4766_full, please notify your bug team to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4766/index.html
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_4766_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw:
+>     - shard-tglb:         [PASS][1] -> [INCOMPLETE][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8751/shard-tglb6/igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4766/shard-tglb8/igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw.html
 
-Signed-off-by: Melissa Wen <melissa.srw@gmail.com>
----
- tests/kms_cursor_crc.c | 2 ++
- 1 file changed, 2 insertions(+)
+Hey Lakshmi,
 
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 7e6b24cc..bc5d4232 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -422,6 +422,8 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
- 	igt_display_commit(display);
- 
- 	/* create the pipe_crc object for this pipe */
-+	if (data->pipe_crc)
-+		igt_pipe_crc_free(data->pipe_crc);
- 	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
- 					  INTEL_PIPE_CRC_SOURCE_AUTO);
- 
+this is a false positive. No need to re-report though.
+
+
+@Melissa, your patches are
+Reviewed-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+and merged.
+
+I've also done some formatting changes:
+ 1. indented multiline descriptions so the opening quotes align
+ 2. got rid of "\", as they are not needed for multilne strings and we
+    don't use it elsewhere
+
+This is to mimic the style used in other tests, e.g.:
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/kms_hdmi_inject.c#L209
+
+Thanks for your contributions!
+
 -- 
-2.27.0
-
+Cheers,
+Arek
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
