@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 336716EC91
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2020 17:23:34 +0000 (UTC)
+From: "Khajapasha, Mohammed" <mohammed.khajapasha@intel.com>
+Date: Thu, 16 Jul 2020 17:23:28 +0000
+Message-ID: <DM6PR11MB29383E4EF720C70C2BC45F74E97F0@DM6PR11MB2938.namprd11.prod.outlook.com>
+References: <20200711200602.3217-1-mohammed.khajapasha@intel.com>
+ <20200711200602.3217-11-mohammed.khajapasha@intel.com>
+ <20200715145026.zvanrvlbamlalkbs@ahiler-desk1.fi.intel.com>
+In-Reply-To: <20200715145026.zvanrvlbamlalkbs@ahiler-desk1.fi.intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 16 Jul 2020 15:14:56 -0000
-Message-ID: <159491249631.25374.15303961151621577724@emeril.freedesktop.org>
-References: <20200716141557.15909-1-anshuman.gupta@intel.com>
-In-Reply-To: <20200716141557.15909-1-anshuman.gupta@intel.com>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
- =?utf-8?q?i915=5Fpm=5Flpsp=3A_Add_igt=5Fwait_to_test_lpsp?=
+Subject: Re: [igt-dev] [PATCH i-g-t 10/11] lib/kms: Convert pipe id flags
+ for a vblank using crtc offset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,260 +20,131 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0768381986=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Anshuman Gupta <anshuman.gupta@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Hiler, Arkadiusz" <arkadiusz.hiler@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0768381986==
-Content-Type: multipart/alternative;
- boundary="===============5968971346506262461=="
-
---===============5968971346506262461==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/i915_pm_lpsp: Add igt_wait to test lpsp
-URL   : https://patchwork.freedesktop.org/series/79557/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_8754 -> IGTPW_4771
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_4771 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_flink_basic@bad-open:
-    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-tgl-y/igt@gem_flink_basic@bad-open.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-tgl-y/igt@gem_flink_basic@bad-open.html
-
-  * igt@kms_flip@basic-flip-vs-dpms@d-edp1:
-    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([i915#1982]) +1 similar issue
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-tgl-y/igt@kms_flip@basic-flip-vs-dpms@d-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-tgl-y/igt@kms_flip@basic-flip-vs-dpms@d-edp1.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:
-    - fi-icl-u2:          [PASS][5] -> [DMESG-WARN][6] ([i915#1982]) +1 similar issue
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
-
-  * igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:
-    - fi-tgl-u2:          [PASS][7] -> [DMESG-WARN][8] ([i915#402])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-tgl-u2/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-tgl-u2/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_flink_basic@basic:
-    - fi-tgl-y:           [DMESG-WARN][9] ([i915#402]) -> [PASS][10] +1 similar issue
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-tgl-y/igt@gem_flink_basic@basic.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-tgl-y/igt@gem_flink_basic@basic.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - {fi-kbl-7560u}:     [DMESG-WARN][11] ([i915#1982]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-    - fi-bsw-kefka:       [DMESG-WARN][13] ([i915#1982]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  
-#### Warnings ####
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-dp1:
-    - fi-kbl-x1275:       [DMESG-WARN][15] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][16] ([i915#62] / [i915#92]) +1 similar issue
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-dpms@a-dp1.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-dpms@a-dp1.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - fi-kbl-x1275:       [DMESG-WARN][17] ([i915#62] / [i915#92]) -> [DMESG-WARN][18] ([i915#62] / [i915#92] / [i915#95]) +6 similar issues
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-kbl-x1275/igt@prime_vgem@basic-fence-flip.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-kbl-x1275/igt@prime_vgem@basic-fence-flip.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
-  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
-  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
 
 
-Participating hosts (45 -> 40)
-------------------------------
+> -----Original Message-----
+> From: Hiler, Arkadiusz <arkadiusz.hiler@intel.com>
+> Sent: Wednesday, July 15, 2020 8:20 PM
+> To: Khajapasha, Mohammed <mohammed.khajapasha@intel.com>
+> Cc: igt-dev@lists.freedesktop.org; Jani Nikula <jani.nikula@linux.intel.com>
+> Subject: Re: [PATCH i-g-t 10/11] lib/kms: Convert pipe id flags for a vblank
+> using crtc offset
+> 
+> On Sun, Jul 12, 2020 at 01:36:01AM +0530, Mohammed Khajapasha wrote:
+> > In i915 with non-contiguous pipes display, pipes always not same as
+> > crtc index in display pipes array. Hence reading pipe id flags for a
+> > vblank event using crtc offset.
+> >
+> > Signed-off-by: Mohammed Khajapasha
+> <mohammed.khajapasha@intel.com>
+> > ---
+> >  lib/igt_kms.c | 51
+> > +++++++++++++++++++++++++++++++++++----------------
+> >  lib/igt_kms.h | 14 +++++++++++---
+> >  2 files changed, 46 insertions(+), 19 deletions(-)
+> >
+> > diff --git a/lib/igt_kms.c b/lib/igt_kms.c index d56f2e56..5b9f2175
+> > 100644
+> > --- a/lib/igt_kms.c
+> > +++ b/lib/igt_kms.c
+> > @@ -1983,6 +1983,8 @@ void igt_display_require(igt_display_t *display,
+> int drm_fd)
+> >  		/* pipe is enabled/disabled */
+> >  		pipe->enabled = true;
+> >  		pipe->crtc_id = resources->crtcs[i];
+> > +		/* offset of a pipe in crtcs list */
+> > +		pipe->crtc_offset = i;
+> >  	}
+> >
+> >  	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES,
+> 1); @@
+> > -4131,18 +4133,23 @@ void igt_pipe_request_out_fence(igt_pipe_t
+> *pipe)
+> >  /**
+> >   * igt_wait_for_vblank_count:
+> >   * @drm_fd: A drm file descriptor
+> > - * @pipe: Pipe to wait_for_vblank on
+> > + * @crtc_offset: offset of a Pipe to wait_for_vblank on
+> >   * @count: Number of vblanks to wait on
+> >   *
+> > + * With non-contiguous pipe display, pipe mapping always
+> > + * not same with crtc mapping, for i915 pipe is enum id of i915's
+> > + crtc object
+> > + * and pipe id not equal to crtc offset in mode config list hence
+> > + passing
+> > + * crtc offset to read vblank count for a pipe.
+> > + *
+> 
+> Hey,
+> 
+> In KMS & i915 there are two thing that are called pipe:
+> 
+> 1. offset of the crtc in the mode resources array, it's used by
+> drm_wait_vblank_ioctl
+> 
+> https://elixir.bootlin.com/linux/v5.7.8/source/drivers/gpu/drm/drm_vblank
+> .c#L1658
 
-  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper 
+I was grepping the reason for using "pipe" & "pipe_index" terminology for these variable,
+And even in code certain bit & left shift operations done using DRM_VBLANK_HIGH_CRTC_SHIFT macro
+If it is a pipe then they should have using a macro which contains PIPE, but in this it is CRTC_SHIFT.
 
+> 
+> 2. intel concept of a pipe with its separate numbering:
+> 
+> https://elixir.bootlin.com/linux/v5.7.8/source/drivers/gpu/drm/i915/display
+> /intel_display.c#L16722
+> 
+> Those two concepts are incompatible. We can see this in the kms_lease
+> tests - if we lease PIPE_C only it becomes PIPE_A for (1) and stays PIPE_C in
+> the sense of (2).
+> 
+> Why is it so important that in IGT we use the (2) meaning? How are you
+> planning on using it? Why the kernel can't hide the missing pipe from our
+> sight just as it does when leasing?
 
-Build changes
--------------
+Not sure why pipe terminology has been used from initial stage of IGT.
+As per my understanding pipe is a H/W specific terminology used to represent a h/w crtc
+Still if driver allows it can assign id for h/w crtc using mode config list index.
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5738 -> IGTPW_4771
-
-  CI-20190529: 20190529
-  CI_DRM_8754: 5e2a3a9c4ca7fe59db74a1fffe29e6a2012e2225 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4771: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/index.html
-  IGT_5738: bc8b56fe177af34fbde7b96f1f66614a0014c6ef @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/index.html
-
---===============5968971346506262461==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915_pm_lpsp: Add igt_wait to test lpsp</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/79557/">https://patchwork.freedesktop.org/series/79557/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_8754 -&gt; IGTPW_4771</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_4771 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_flink_basic@bad-open:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-tgl-y/igt@gem_flink_basic@bad-open.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-tgl-y/igt@gem_flink_basic@bad-open.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@d-edp1:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-tgl-y/igt@kms_flip@basic-flip-vs-dpms@d-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-tgl-y/igt@kms_flip@basic-flip-vs-dpms@d-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:</p>
-<ul>
-<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence:</p>
-<ul>
-<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-tgl-u2/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-tgl-u2/igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_flink_basic@basic:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-tgl-y/igt@gem_flink_basic@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-tgl-y/igt@gem_flink_basic@basic.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>
-<p>{fi-kbl-7560u}:     <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a></p>
-</li>
-<li>
-<p>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a></p>
-</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@a-dp1:</p>
-<ul>
-<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-dpms@a-dp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-dpms@a-dp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8754/fi-kbl-x1275/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/fi-kbl-x1275/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>) +6 similar issues</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (45 -&gt; 40)</h2>
-<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5738 -&gt; IGTPW_4771</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_8754: 5e2a3a9c4ca7fe59db74a1fffe29e6a2012e2225 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_4771: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4771/index.html<br />
-  IGT_5738: bc8b56fe177af34fbde7b96f1f66614a0014c6ef @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============5968971346506262461==--
-
---===============0768381986==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+> 
+> I see few options with non-continuous pipes:
+> 
+> a. keep pipe as it is now (so it actually is "crtc offset") as this is
+>    what most of the IOCTLs expect. If you ever need to use the (2)
+>    meaning of pipe you can use intel_get_pipe_from_crtc_id_ioctl there
+> 
+> b. same as above but rename PIPE_ prefix to CRTC_, so we end up with
+>    CRTC_A, CRTC_B, CRTC_C, etc.
+> 
+> c. this patch series - we use the second meaning of pipe (2) and
+>    introduce some complications for the sake of places where we need the
+>    first meaning (1)
+> 
+> I think this series lacks justification why this option has been chosen
+> - it may be me not understating something that you find obvious.
+> 
+> Is there any practical reason besides people wanting to have test results for
+> pipe-c corresponding to Intel's hardware understanding of what pipe-c is?
+> 
+> You may need to ELI5 that to me. I have very rudimentary understanding of
+> this area and only learned about the multiple meanings of "pipe"
+> while doing the review here :-)
+> 
+> The code looks good otherwise.
+> 
+> --
+> Cheers,
+> Arek
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0768381986==--
