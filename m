@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 55ABF6EC46
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2020 10:40:13 +0000 (UTC)
-Date: Thu, 16 Jul 2020 13:40:09 +0300
-From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200716104009.yaexvqjejdh7g4oq@ahiler-desk1.fi.intel.com>
-References: <20200711200602.3217-1-mohammed.khajapasha@intel.com>
- <20200711200602.3217-11-mohammed.khajapasha@intel.com>
- <20200715145026.zvanrvlbamlalkbs@ahiler-desk1.fi.intel.com>
- <87tuy7zs2x.fsf@intel.com>
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
+ [IPv6:2a00:1450:4864:20::442])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13D7D6E184
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2020 11:24:59 +0000 (UTC)
+Received: by mail-wr1-x442.google.com with SMTP id f2so6657911wrp.7
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2020 04:24:58 -0700 (PDT)
+Date: Thu, 16 Jul 2020 08:24:49 -0300
+From: Melissa Wen <melissa.srw@gmail.com>
+Message-ID: <cover.1594897760.git.melissa.srw@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <87tuy7zs2x.fsf@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 10/11] lib/kms: Convert pipe id flags
- for a vblank using crtc offset
+Subject: [igt-dev] [PATCH i-g-t v2 0/1] test/kms_cursor_crc: tie some loose
+ ends in prepare_crtc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,75 +23,50 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Mohammed Khajapasha <mohammed.khajapasha@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: kernel-usp@googlegroups.com, twoerner@gmail.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jul 16, 2020 at 01:12:38PM +0300, Jani Nikula wrote:
-> On Wed, 15 Jul 2020, Arkadiusz Hiler <arkadiusz.hiler@intel.com> wrote:
-> > In KMS & i915 there are two thing that are called pipe:
-> 
-> ...
-> 
-> > Is there any practical reason besides people wanting to have test
-> > results for pipe-c corresponding to Intel's hardware understanding of
-> > what pipe-c is?
-> >
-> > You may need to ELI5 that to me. I have very rudimentary understanding
-> > of this area and only learned about the multiple meanings of "pipe"
-> > while doing the review here :-)
-> 
-> Something I've been saying all along: If you call something a "pipe", it
-> *must* mean Intel hardware pipe. If you call something "crtc index", it
-> *must* mean the ABI crtc index. Don't mix the two. Don't implicitly
-> convert between the two (i.e. you need explicit conversion using the
-> IOCTL). Assume it's purely a coincidence that they've previously matched
-> 1:1.
+Hi,
 
-I am all for clarifying things up, but I am not very familiar with the
-history of how we ended up here - that's why I am asking all those
-questions.
+Using vkms, when running a sequence of subtests from kms_cursor_crc,
+several strange timeout failures occurred. For example, running the
+alpha-opaque cursor twice, the first run is successful and the second
+fails. In addition, if we run the entire test in a call (i.e.: sudo
+IGT_FORCE_DRIVER=vkms build/tests/kms_cursor_crc), the first subtest
+passes and the rest of the subtests fail - even those that succeed when
+run in isolation.
 
-What bothers me is that pipe already has multiple meanings, not only in IGT.
+igt_debugfs-DEBUG: Opening debugfs directory '/sys/kernel/debug/dri/0'
+igt_core-INFO: Timed out: Opening crc fd, and poll for first CRC.
 
-From https://www.keithp.com/blogs/DRM-lease-4/ :
-"It has been kludged into supporting multiple CRTCs by taking bits from
-the 'type' parameter to hold a 'pipe' number, which is the index in the
-kernel into the array of CRTCs."
+During my debugging process, I found two issues that were blocking
+execution:
 
-https://elixir.bootlin.com/linux/v5.7.8/source/drivers/gpu/drm/drm_vblank.c#L1658
+1 - When a subtest fails, it exits and skips the cleaning step, leaving
+the pipe_crc allocated and blocked for the next subtest; the following
+patch addresses it by releasing any old pipe_crc before creating a new
+one.
 
-So pipe = crtc index (or offset) in the array of CRTCs, not the hardware
-concept of a pipe. It's not the IGT inventing this terminology, and
-there is already a precedent where the mapping doesn't have to be 1:1
-(DRM Lease).
+2 - When the CRC capture process starts, it enters an endless wait; in
+the previous version, I thought it was a matter of timing in test using
+vkms, but after further investigation, other problems arise in the same
+subject and I am dropping the 2nd patch to better solve the problem on
+the vkms side.
 
-> In this case, naming is everything, and proper naming leads to clarity
-> of the concepts and implementation.
+Changes in v2:
+- Rebase 1st patch on master
+- Drop the 2nd patch
 
-crtc_index is also not awfully clear as it's too easy to confuse it with
-crtc_id.
+Melissa Wen (1):
+  test/kms_cursor_crc: release old pipe_crc before create a new one
 
-https://gitlab.freedesktop.org/mesa/drm/-/blob/master/xf86drmMode.h#L272
-
-
-I am fine with IGT:
- 1. using crtc_id for crtc_id
- 2. using crtc_offset for the offset of that CRTC in the drmModeRes.crtcs
- 3. using pipe to describe the hardware context
-
-And I think that this patch series gets us there.
-
-
-But I am afraid that we will diverge too much form kernel's vocabulary
-which won't help with the core of the confusion.
-
-Do you happen to know how the CRTC/pipe situation looks like with other
-vendors?
+ tests/kms_cursor_crc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 -- 
-Cheers,
-Arek
+2.27.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
