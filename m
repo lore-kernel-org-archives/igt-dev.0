@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F3B46EDED
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2020 15:41:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 072686EDEB
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2020 15:41:09 +0000 (UTC)
 From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Fri, 17 Jul 2020 15:40:56 +0000
-Message-Id: <20200717154101.8849-7-mohammed.khajapasha@intel.com>
+Date: Fri, 17 Jul 2020 15:40:55 +0000
+Message-Id: <20200717154101.8849-6-mohammed.khajapasha@intel.com>
 In-Reply-To: <20200717154101.8849-1-mohammed.khajapasha@intel.com>
 References: <20200717154101.8849-1-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 06/11] lib/kms: Skip igt test cases for
- disabled display pipes
+Subject: [igt-dev] [PATCH i-g-t 05/11] tests/kms_lease: Read crtc id for a
+ valid pipe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,35 +24,32 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: arkadiusz.hiler@intel.com, igt-dev@lists.freedesktop.org, petri.latvala@intel.com, kishore.kunche@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Skip igt test cases for disabled pipes.
+Read crtc id for enabled pipes only.
+
+v2:
+    Using for_each_pipe() macro for enabled pipes <Hiler, Arkadiusz>
 
 Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 ---
- lib/igt_kms.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tests/kms_lease.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 5b68ffda..d56f2e56 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -2191,8 +2191,7 @@ void igt_display_require_output_on_pipe(igt_display_t *display, enum pipe pipe)
+diff --git a/tests/kms_lease.c b/tests/kms_lease.c
+index 0481bba7..02f4ba9f 100644
+--- a/tests/kms_lease.c
++++ b/tests/kms_lease.c
+@@ -136,9 +136,10 @@ static enum pipe crtc_id_to_pipe(igt_display_t *display, uint32_t crtc_id)
  {
- 	igt_output_t *output;
+ 	enum pipe pipe;
  
--	igt_skip_on_f(pipe >= igt_display_get_n_pipes(display),
--		      "Pipe %s does not exist.\n", kmstest_pipe_name(pipe));
-+	igt_require_pipe(display, pipe);
- 
- 	for_each_valid_output_on_pipe(display, pipe, output)
- 		return;
-@@ -2547,7 +2546,7 @@ igt_output_t *igt_get_single_output_for_pipe(igt_display_t *display, enum pipe p
- 	igt_output_t *chosen_outputs[display->n_pipes];
- 
- 	igt_assert(pipe != PIPE_NONE);
--	igt_require(pipe < display->n_pipes);
-+	igt_require_pipe(display, pipe);
- 
- 	__igt_pipe_populate_outputs(display, chosen_outputs);
+-	for (pipe = 0; pipe < display->n_pipes; pipe++)
+-		if (display->pipes[pipe].crtc_id == crtc_id)
++	for_each_pipe(display, pipe) {
++		if(display->pipes[pipe].crtc_id == crtc_id)
+ 			return pipe;
++	}
+ 	return -1;
+ }
  
 -- 
 2.25.1
