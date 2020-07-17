@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B99706EDED
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2020 15:41:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 32F696EDEC
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2020 15:41:17 +0000 (UTC)
 From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Fri, 17 Jul 2020 15:40:59 +0000
-Message-Id: <20200717154101.8849-10-mohammed.khajapasha@intel.com>
+Date: Fri, 17 Jul 2020 15:41:00 +0000
+Message-Id: <20200717154101.8849-11-mohammed.khajapasha@intel.com>
 In-Reply-To: <20200717154101.8849-1-mohammed.khajapasha@intel.com>
 References: <20200717154101.8849-1-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 09/11] i915/gem_eio: Set modeset for enable
- pipes
+Subject: [igt-dev] [PATCH i-g-t 10/11] lib/kms: Convert pipe id flags for a
+ vblank using crtc offset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,26 +24,175 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: arkadiusz.hiler@intel.com, igt-dev@lists.freedesktop.org, petri.latvala@intel.com, kishore.kunche@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Set modeset for enable pipes only in kms test
+In i915 with non-contiguous pipes display, pipes always not same
+as crtc index in display pipes array. Hence reading pipe id flags
+for a vblank event using crtc offset.
+
+Example:
+With PIPE_A & PIPE_D enabled and PIPE_B & PIPE_C disabled
+configuration, pipe enum ids for pipe A & D are '0' and '3',
+and crtc offsets in mode config list for pipe A & D are '0' and '1'
+hence using crtc offset to read a vblank event for a pipe, as
+DRM vblank ioctl expect crtc offset for a pipe.
+
+v2:
+    Addressed review comments for commit & documentation <Hiler, Arkadiusz>
 
 Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 ---
- tests/i915/gem_eio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ lib/igt_kms.c | 48 ++++++++++++++++++++++++++++++++----------------
+ lib/igt_kms.h | 15 ++++++++++++---
+ 2 files changed, 44 insertions(+), 19 deletions(-)
 
-diff --git a/tests/i915/gem_eio.c b/tests/i915/gem_eio.c
-index cfc3f668..c5ef61bd 100644
---- a/tests/i915/gem_eio.c
-+++ b/tests/i915/gem_eio.c
-@@ -851,6 +851,8 @@ static void display_helper(igt_display_t *dpy, int *done)
- 		int pipe;
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index d56f2e56..823e86c0 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -1983,6 +1983,8 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+ 		/* pipe is enabled/disabled */
+ 		pipe->enabled = true;
+ 		pipe->crtc_id = resources->crtcs[i];
++		/* offset of a pipe in crtcs list */
++		pipe->crtc_offset = i;
+ 	}
  
- 		pipe = rand() % dpy->n_pipes;
-+		if (!dpy->pipes[pipe].enabled)
-+			continue;
- 		output = igt_get_single_output_for_pipe(dpy, pipe);
- 		if (!output)
- 			continue;
+ 	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+@@ -4131,18 +4133,25 @@ void igt_pipe_request_out_fence(igt_pipe_t *pipe)
+ /**
+  * igt_wait_for_vblank_count:
+  * @drm_fd: A drm file descriptor
+- * @pipe: Pipe to wait_for_vblank on
++ * @crtc_offset: offset of the crtc in drmModeRes.crtcs
+  * @count: Number of vblanks to wait on
+  *
++ * With non-contiguous pipes configuration, pipe mapping always
++ * not same with crtc index in mode config list,
++ * In DRM, 'pipe' for DRM_IOCTL_WAIT_VBLANK is actually a crtc offset
++ * of a given crtc in drmModeRes.crtcs but not HW concept of a pipe
++ * (e.g. with DRM lease or non-contiguous pipes), hence using crtc_offest
++ * to read a vblank event for a pipe.
++ *
+  * Waits for a given number of vertical blank intervals
+  */
+-void igt_wait_for_vblank_count(int drm_fd, enum pipe pipe, int count)
++void igt_wait_for_vblank_count(int drm_fd, int crtc_offset, int count)
+ {
+ 	drmVBlank wait_vbl;
+ 	uint32_t pipe_id_flag;
+ 
+ 	memset(&wait_vbl, 0, sizeof(wait_vbl));
+-	pipe_id_flag = kmstest_get_vbl_flag(pipe);
++	pipe_id_flag = kmstest_get_vbl_flag(crtc_offset);
+ 
+ 	wait_vbl.request.type = DRM_VBLANK_RELATIVE;
+ 	wait_vbl.request.type |= pipe_id_flag;
+@@ -4154,13 +4163,15 @@ void igt_wait_for_vblank_count(int drm_fd, enum pipe pipe, int count)
+ /**
+  * igt_wait_for_vblank:
+  * @drm_fd: A drm file descriptor
+- * @pipe: Pipe to wait_for_vblank on
++ * @crtc_offset: offset of a crtc in drmModeRes.crtcs
++ *
++ * See #igt_wait_for_vblank_count for more details
+  *
+  * Waits for 1 vertical blank intervals
+  */
+-void igt_wait_for_vblank(int drm_fd, enum pipe pipe)
++void igt_wait_for_vblank(int drm_fd, int crtc_offset)
+ {
+-	igt_wait_for_vblank_count(drm_fd, pipe, 1);
++	igt_wait_for_vblank_count(drm_fd, crtc_offset, 1);
+ }
+ 
+ /**
+@@ -4383,22 +4394,27 @@ void igt_cleanup_uevents(struct udev_monitor *mon)
+ 
+ /**
+  * kmstest_get_vbl_flag:
+- * @pipe_id: Pipe to convert to flag representation.
++ * @crtc_offset: CRTC offset to convert into pipe flag representation.
+  *
+- * Convert a pipe id into the flag representation
+- * expected in DRM while processing DRM_IOCTL_WAIT_VBLANK.
++ * Convert an offset of an crtc in drmModeRes.crtcs into flag representation
++ * expected by DRM_IOCTL_WAIT_VBLANK.
++ * See #igt_wait_for_vblank_count for details
+  */
+-uint32_t kmstest_get_vbl_flag(uint32_t pipe_id)
++uint32_t kmstest_get_vbl_flag(int crtc_offset)
+ {
+-	if (pipe_id == 0)
+-		return 0;
+-	else if (pipe_id == 1)
+-		return _DRM_VBLANK_SECONDARY;
++	uint32_t pipe_id;
++
++	if (crtc_offset == 0)
++		pipe_id = 0;
++	else if (crtc_offset == 1)
++		pipe_id = _DRM_VBLANK_SECONDARY;
+ 	else {
+-		uint32_t pipe_flag = pipe_id << 1;
++		uint32_t pipe_flag = crtc_offset << 1;
+ 		igt_assert(!(pipe_flag & ~DRM_VBLANK_HIGH_CRTC_MASK));
+-		return pipe_flag;
++		pipe_id = pipe_flag;
+ 	}
++
++	return pipe_id;
+ }
+ 
+ static inline const uint32_t *
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 7109c9a5..1ea3a72a 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -338,8 +338,14 @@ typedef struct igt_plane {
+ 	int format_mod_count;
+ } igt_plane_t;
+ 
++/*
++ * In i915, with non-contiguous pipe display, a pipe is not always
++ * same as a crtc mapping in display, pipe is enum id of a i915's crtc object
++ * using crtc offset to get the offset of a pipe from mode config list
++ */
+ struct igt_pipe {
+ 	igt_display_t *display;
++	/* ID of a hardware pipe */
+ 	enum pipe pipe;
+ 	/* pipe is enabled or not */
+ 	bool enabled;
+@@ -353,7 +359,10 @@ struct igt_pipe {
+ 	uint32_t props[IGT_NUM_CRTC_PROPS];
+ 	uint64_t values[IGT_NUM_CRTC_PROPS];
+ 
++	/* ID of KMS CRTC object */
+ 	uint32_t crtc_id;
++	/* crtc offset of a pipe in mode config list */
++	uint32_t crtc_offset;
+ 
+ 	int32_t out_fence_fd;
+ };
+@@ -448,8 +457,8 @@ void igt_fb_set_position(struct igt_fb *fb, igt_plane_t *plane,
+ void igt_fb_set_size(struct igt_fb *fb, igt_plane_t *plane,
+ 	uint32_t w, uint32_t h);
+ 
+-void igt_wait_for_vblank(int drm_fd, enum pipe pipe);
+-void igt_wait_for_vblank_count(int drm_fd, enum pipe pipe, int count);
++void igt_wait_for_vblank(int drm_fd, int crtc_offset);
++void igt_wait_for_vblank_count(int drm_fd, int crtc_offset, int count);
+ 
+ static inline bool igt_output_is_connected(igt_output_t *output)
+ {
+@@ -769,7 +778,7 @@ void igt_pipe_refresh(igt_display_t *display, enum pipe pipe, bool force);
+ void igt_enable_connectors(int drm_fd);
+ void igt_reset_connectors(void);
+ 
+-uint32_t kmstest_get_vbl_flag(uint32_t pipe_id);
++uint32_t kmstest_get_vbl_flag(int crtc_offset);
+ 
+ const struct edid *igt_kms_get_base_edid(void);
+ const struct edid *igt_kms_get_alt_edid(void);
 -- 
 2.25.1
 
