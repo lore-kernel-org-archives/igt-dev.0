@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A2056E45F
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2020 15:41:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 879816E45F
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2020 15:41:04 +0000 (UTC)
 From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Fri, 17 Jul 2020 15:40:52 +0000
-Message-Id: <20200717154101.8849-3-mohammed.khajapasha@intel.com>
-In-Reply-To: <20200717154101.8849-1-mohammed.khajapasha@intel.com>
-References: <20200717154101.8849-1-mohammed.khajapasha@intel.com>
+Date: Fri, 17 Jul 2020 15:40:50 +0000
+Message-Id: <20200717154101.8849-1-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 02/11] lib/igt_kms: Add igt_require_pipe()
- function
+Subject: [igt-dev] [PATCH i-g-t 00/11] lib/igt_kms: Add support for display
+ with
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,64 +22,58 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: arkadiusz.hiler@intel.com, igt-dev@lists.freedesktop.org, petri.latvala@intel.com, kishore.kunche@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add igt_require_pipe() fn to check whether a pipe is enabled or not
+With non-contiguous pipes display, pipe mapping is always not same as
+crtc mapping, For i915 pipe is enum id of i915's crtc object and
+it is not equal to crtc offset of a pipe in mode config list.
+Hence allocating upper bound array for igt_pipe and reading
+pipe id using GET_PIPE_FROM_CRTC_ID ioctl.
+Using crtc offset for a pipe to do ordering pipe with crtc list.
 
-Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
----
- lib/igt_kms.c | 17 +++++++++++++++++
- lib/igt_kms.h | 13 +++++++++++++
- 2 files changed, 30 insertions(+)
+Example:
+	With a non-contiguous pipe display, with PIPE_A & PIPE_D
+	are enabled, PIPE_C & PIPE_B disabled configuration,
+	the pipe for PIPE_A & D will be '0' and '3' and crtc offsets
+	are '0' & '1' in mode config list using crtc offset to ordering
+	enabled pipes with crtc list in mode config.
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 5a80d17f..5b68ffda 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1873,6 +1873,23 @@ void igt_display_reset(igt_display_t *display)
- static void igt_fill_plane_format_mod(igt_display_t *display, igt_plane_t *plane);
- static void igt_fill_display_format_mod(igt_display_t *display);
- 
-+/*
-+ * igt_require_pipe:
-+ * @display: pointer to igt_display_t
-+ * @pipe: pipe which need to check
-+ *
-+ * Skip a (sub-)test if the pipe not enabled.
-+ *
-+ * Should be used everywhere where a test checks pipe and skip
-+ * test when pipe is not enabled.
-+ */
-+void igt_require_pipe(igt_display_t *display, enum pipe pipe)
-+{
-+	igt_skip_on_f(!display->pipes[pipe].enabled,
-+			"Pipe %s does not exist or not enabled\n",
-+			kmstest_pipe_name(pipe));
-+}
-+
- /* Get crtc mask for a pipe using crtc id */
- static int
- __get_crtc_mask_for_pipe(drmModeRes *resources, igt_pipe_t *pipe)
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index f9bbddc5..7109c9a5 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -858,4 +858,17 @@ int igt_connector_sysfs_open(int drm_fd,
- 			     drmModeConnector *connector);
- uint32_t igt_reduce_format(uint32_t format);
- 
-+/*
-+ * igt_require_pipe:
-+ * @display: pointer to igt_display_t
-+ * @pipe: pipe which need to check
-+ *
-+ * Skip a (sub-)test if the pipe not enabled.
-+ *
-+ * Should be used everywhere where a test checks pipe and skip
-+ * test when pipe is not enabled.
-+ */
-+void igt_require_pipe(igt_display_t *display,
-+		enum pipe pipe);
-+
- #endif /* __IGT_KMS_H__ */
+v8:
+	Modified documentation as per review comments by <Hiler, Arkadiusz>
+
+Mohammed Khajapasha (11):
+  lib/igt_kms: Add support for display with non-contiguous pipes
+  lib/igt_kms: Add igt_require_pipe() function
+  tests/kms_cursor_legacy: Read crtc id for enable pipes
+  tests/kms_lease: Get pipe from crtc for enable pipes
+  tests/kms_lease: Read crtc id for a valid pipe
+  lib/kms: Skip igt test cases for disabled display pipes
+  tests/kms: Skip kms test cases for disabled pipes
+  tests/kms_atomic_transition: Set modeset for enable pipes only
+  i915/gem_eio: Set modeset for enable pipes
+  lib/kms: Convert pipe id flags for a vblank using crtc offset
+  tests/kms: Use crtc offset to read vblank event for a pipe
+
+ lib/igt_kms.c                   | 138 +++++++++++++++++++++++++-------
+ lib/igt_kms.h                   |  42 ++++++++--
+ tests/i915/gem_eio.c            |   2 +
+ tests/i915/perf_pmu.c           |   3 +-
+ tests/kms_atomic_transition.c   |  15 +++-
+ tests/kms_available_modes_crc.c |   4 +-
+ tests/kms_color.c               |  37 ++++++---
+ tests/kms_color_chamelium.c     |   2 +-
+ tests/kms_concurrent.c          |   2 +-
+ tests/kms_cursor_crc.c          |  18 +++--
+ tests/kms_cursor_edge_walk.c    |   4 +-
+ tests/kms_cursor_legacy.c       |  13 +--
+ tests/kms_lease.c               |  28 +++++--
+ tests/kms_pipe_crc_basic.c      |   9 ++-
+ tests/kms_plane.c               |  10 ++-
+ tests/kms_plane_lowres.c        |   2 +-
+ tests/kms_plane_multiple.c      |   2 +-
+ tests/kms_sequence.c            |   3 +-
+ tests/kms_universal_plane.c     |  12 +--
+ tests/kms_vblank.c              |   3 +-
+ 20 files changed, 257 insertions(+), 92 deletions(-)
+
 -- 
 2.25.1
 
