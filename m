@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Mon, 20 Jul 2020 14:19:05 +0200
-Message-Id: <20200720121908.28124-13-janusz.krzysztofik@linux.intel.com>
+Date: Mon, 20 Jul 2020 14:19:07 +0200
+Message-Id: <20200720121908.28124-15-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20200720121908.28124-1-janusz.krzysztofik@linux.intel.com>
 References: <20200720121908.28124-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC PATH i-g-t 12/15] tests/core_hotunplug: Fail
- subtests on device close errors
+Subject: [igt-dev] [RFC PATH i-g-t 14/15] tests/core_hotunplug: Assert
+ expected device presence/absence
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,48 +22,60 @@ To: igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org, =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Since health checks are now run from follow-up fixture sections, it is
-safe to fail subtests without the need to abort the test execution.  Do
-that on device close errors instead of emitting warnings.
+Don't rely on successful write to sysfs control files, assert existence
+/ non-existence of a respective device sysfs node as well.
 
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- tests/core_hotunplug.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tests/core_hotunplug.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 082bcc306..ec2d891e6 100644
+index 16b3a244f..9bca967c1 100644
 --- a/tests/core_hotunplug.c
 +++ b/tests/core_hotunplug.c
-@@ -126,8 +126,8 @@ static void device_unplug(struct hotunplug *priv, const char *prefix)
+@@ -99,6 +99,9 @@ static void driver_unbind(struct hotunplug *priv, const char *prefix)
+ 				   priv->dev_bus_addr),
+ 		     "Driver unbind failure!");
  	igt_reset_timeout();
++
++	igt_assert_f(faccessat(priv->fd.sysfs_drv, priv->dev_bus_addr, F_OK, 0),
++		     "Unbound device still present\n");
+ }
  
+ /* Re-bind the driver to the device */
+@@ -111,6 +114,10 @@ static void driver_bind(struct hotunplug *priv)
+ 				   priv->dev_bus_addr),
+ 		     "Driver re-bind failure!");
+ 	igt_reset_timeout();
++
++	igt_fail_on_f(faccessat(priv->fd.sysfs_drv, priv->dev_bus_addr,
++				F_OK, 0),
++		      "Rebound device not present!\n");
+ }
+ 
+ /* Remove (virtually unplug) the device from its bus */
+@@ -133,6 +140,9 @@ static void device_unplug(struct hotunplug *priv, const char *prefix)
  	priv->fd.sysfs_dev = local_close(priv->fd.sysfs_dev);
--	igt_warn_on_f(priv->fd.sysfs_dev != -1,
--		      "Device sysfs node close failed\n");
-+	igt_assert_f(priv->fd.sysfs_dev == -1,
-+		     "Device sysfs node close failed\n");
+ 	igt_assert_f(priv->fd.sysfs_dev == -1,
+ 		     "Device sysfs node close failed\n");
++
++	igt_assert_f(faccessat(priv->fd.sysfs_bus, priv->dev_bus_addr, F_OK, 0),
++		     "Unplugged device still present\n");
  }
  
  /* Re-discover the device by rescanning its bus */
-@@ -248,7 +248,7 @@ static void hotunbind_lateclose(struct hotunplug *priv)
- 
- 	igt_debug("late closing the unbound device instance\n");
- 	priv->fd.drm = local_close(priv->fd.drm);
--	igt_warn_on_f(priv->fd.drm != -1, "Device close failed\n");
-+	igt_assert_f(priv->fd.drm == -1, "Device close failed\n");
+@@ -144,6 +154,10 @@ static void bus_rescan(struct hotunplug *priv)
+ 	igt_assert_f(igt_sysfs_set(priv->fd.sysfs_bus, "../rescan", "1"),
+ 		       "Bus rescan failure!");
+ 	igt_reset_timeout();
++
++	igt_fail_on_f(faccessat(priv->fd.sysfs_bus, priv->dev_bus_addr,
++				F_OK, 0),
++		      "Fakely unplugged device not rediscovered!\n");
  }
  
- static void hotunplug_lateclose(struct hotunplug *priv)
-@@ -265,7 +265,7 @@ static void hotunplug_lateclose(struct hotunplug *priv)
- 
- 	igt_debug("late closing the removed device instance\n");
- 	priv->fd.drm = local_close(priv->fd.drm);
--	igt_warn_on_f(priv->fd.drm != -1, "Device close failed\n");
-+	igt_assert_f(priv->fd.drm == -1, "Device close failed\n");
- }
- 
- /* Main */
+ static void cleanup(struct hotunplug *priv)
 -- 
 2.21.1
 
