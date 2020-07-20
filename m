@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D1FC6E2CD
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Jul 2020 09:39:52 +0000 (UTC)
-Date: Mon, 20 Jul 2020 12:39:48 +0300
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D86D589F63
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Jul 2020 09:44:07 +0000 (UTC)
+Date: Mon, 20 Jul 2020 12:44:03 +0300
 From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Message-ID: <20200720093948.mewdgf2eryvude4h@ahiler-desk1.fi.intel.com>
-References: <20200717154101.8849-1-mohammed.khajapasha@intel.com>
+Message-ID: <20200720094403.iwpexq2kwzy5h6pg@ahiler-desk1.fi.intel.com>
+References: <20200711200602.3217-1-mohammed.khajapasha@intel.com>
+ <20200711200602.3217-11-mohammed.khajapasha@intel.com>
+ <20200717130233.ootl4edkexetvu2e@ahiler-desk1.fi.intel.com>
+ <DM6PR11MB29387D64D9D122DB5799B0D7E97C0@DM6PR11MB2938.namprd11.prod.outlook.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200717154101.8849-1-mohammed.khajapasha@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 00/11] lib/igt_kms: Add support for
- display with
+In-Reply-To: <DM6PR11MB29387D64D9D122DB5799B0D7E97C0@DM6PR11MB2938.namprd11.prod.outlook.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 10/11] lib/kms: Convert pipe id flags
+ for a vblank using crtc offset
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,37 +25,39 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com, kishore.kunche@intel.com
+To: "Khajapasha, Mohammed" <mohammed.khajapasha@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jul 17, 2020 at 03:40:50PM +0000, Mohammed Khajapasha wrote:
-> With non-contiguous pipes display, pipe mapping is always not same as
-> crtc mapping, For i915 pipe is enum id of i915's crtc object and
-> it is not equal to crtc offset of a pipe in mode config list.
-> Hence allocating upper bound array for igt_pipe and reading
-> pipe id using GET_PIPE_FROM_CRTC_ID ioctl.
-> Using crtc offset for a pipe to do ordering pipe with crtc list.
+On Fri, Jul 17, 2020 at 06:43:59PM +0300, Khajapasha, Mohammed wrote:
 > 
-> Example:
-> 	With a non-contiguous pipe display, with PIPE_A & PIPE_D
-> 	are enabled, PIPE_C & PIPE_B disabled configuration,
-> 	the pipe for PIPE_A & D will be '0' and '3' and crtc offsets
-> 	are '0' & '1' in mode config list using crtc offset to ordering
-> 	enabled pipes with crtc list in mode config.
 > 
-> v8:
-> 	Modified documentation as per review comments by <Hiler, Arkadiusz>
+> > -----Original Message-----
+> > From: Hiler, Arkadiusz <arkadiusz.hiler@intel.com>
+> > Sent: Friday, July 17, 2020 6:33 PM
+> > To: Khajapasha, Mohammed <mohammed.khajapasha@intel.com>
+> > Cc: igt-dev@lists.freedesktop.org
+> > Subject: Re: [PATCH i-g-t 10/11] lib/kms: Convert pipe id flags for a vblank
+> > using crtc offset
+> >
+> > On Sun, Jul 12, 2020 at 01:36:01AM +0530, Mohammed Khajapasha wrote:
+> > > In i915 with non-contiguous pipes display, pipes always not same as
+> > > crtc index in display pipes array. Hence reading pipe id flags for a
+> > > vblank event using crtc offset.
+> >
+> > Mention in the commit message that crtc_offset was chosen because
+> > crtc_index is too close to crtc_id which can cause confusion.
+> 
+> As per my understanding crtc_index and crtc_id are different, crtc_id is DRM mode object id
+> assigned by DRM for each drm object. And crtc_index & crtc_offset both are same for list
+> crtc in mode config list.
 
-I have posted a few comments on claryifing the documentation a bit further.
+Yes, you are correct. IMO crtc_offset is a better name than crtc_index.
 
-There are parts that would be hard to understand by someone not familiar
-with the area - making it more friendly will help our fellow
-contibutors down the line :-)
+Imagine having crtc_id and crtc_index sprinkled all throughout the code.
+It's very easy to mistake one for the other.
 
-with the above fixed:
-
-Reviewed-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+It's harder to make a similar mistake with crtc_id and crtc_offset.
 
 -- 
 Cheers,
