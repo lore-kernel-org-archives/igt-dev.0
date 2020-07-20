@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Mon, 20 Jul 2020 14:18:54 +0200
-Message-Id: <20200720121908.28124-2-janusz.krzysztofik@linux.intel.com>
+Date: Mon, 20 Jul 2020 14:18:55 +0200
+Message-Id: <20200720121908.28124-3-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20200720121908.28124-1-janusz.krzysztofik@linux.intel.com>
 References: <20200720121908.28124-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC PATH i-g-t 01/15] tests/core_hotunplug: Use
- igt_assert_fd()
+Subject: [igt-dev] [RFC PATH i-g-t 02/15] tests/core_hotunplug: Constify
+ dev_bus_addr string
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,58 +22,28 @@ To: igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org, =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-There is a new library helper that asserts validity of open file
-descriptors.  Use it instead of open coding.
+Device bus address structure field is always initialized with a pointer
+to a substring of the device sysfs path and never used for its
+modification.  Declare it as a constant string.
 
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- tests/core_hotunplug.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tests/core_hotunplug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index e03f3b945..7431346b1 100644
+index 7431346b1..a4071f51e 100644
 --- a/tests/core_hotunplug.c
 +++ b/tests/core_hotunplug.c
-@@ -57,7 +57,7 @@ static void prepare_for_unbind(struct hotunplug *priv, char *buf, int buflen)
+@@ -44,7 +44,7 @@ struct hotunplug {
+ 		int sysfs_bus;
+ 		int sysfs_drv;
+ 	} fd;
+-	char *dev_bus_addr;
++	const char *dev_bus_addr;
+ };
  
- 	priv->fd.sysfs_drv = openat(priv->fd.sysfs_dev, "device/driver",
- 				    O_DIRECTORY);
--	igt_assert(priv->fd.sysfs_drv >= 0);
-+	igt_assert_fd(priv->fd.sysfs_drv);
- 
- 	len = readlinkat(priv->fd.sysfs_dev, "device", buf, buflen - 1);
- 	buf[len] = '\0';
-@@ -72,10 +72,10 @@ static void prepare(struct hotunplug *priv, char *buf, int buflen)
- {
- 	igt_debug("opening device\n");
- 	priv->fd.drm = __drm_open_driver(DRIVER_ANY);
--	igt_assert(priv->fd.drm >= 0);
-+	igt_assert_fd(priv->fd.drm);
- 
- 	priv->fd.sysfs_dev = igt_sysfs_open(priv->fd.drm);
--	igt_assert(priv->fd.sysfs_dev >= 0);
-+	igt_assert_fd(priv->fd.sysfs_dev);
- 
- 	if (buf) {
- 		prepare_for_unbind(priv, buf, buflen);
-@@ -83,7 +83,7 @@ static void prepare(struct hotunplug *priv, char *buf, int buflen)
- 		/* prepare for bus rescan */
- 		priv->fd.sysfs_bus = openat(priv->fd.sysfs_dev,
- 					    "device/subsystem", O_DIRECTORY);
--		igt_assert(priv->fd.sysfs_bus >= 0);
-+		igt_assert_fd(priv->fd.sysfs_bus);
- 	}
- }
- 
-@@ -261,7 +261,7 @@ igt_main
- 		 * a device file descriptor open for exit handler use.
- 		 */
- 		fd_drm = __drm_open_driver(DRIVER_ANY);
--		igt_assert(fd_drm >= 0);
-+		igt_assert_fd(fd_drm);
- 
- 		if (is_i915_device(fd_drm))
- 			igt_require_gem(fd_drm);
+ /* Helpers */
 -- 
 2.21.1
 
