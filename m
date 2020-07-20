@@ -1,10 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Mon, 20 Jul 2020 14:18:53 +0200
-Message-Id: <20200720121908.28124-1-janusz.krzysztofik@linux.intel.com>
+Date: Mon, 20 Jul 2020 14:18:54 +0200
+Message-Id: <20200720121908.28124-2-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20200720121908.28124-1-janusz.krzysztofik@linux.intel.com>
+References: <20200720121908.28124-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC PATH i-g-t 00/15] tests/core_hotunplug: Fixes and
- enhancements
+Subject: [igt-dev] [RFC PATH i-g-t 01/15] tests/core_hotunplug: Use
+ igt_assert_fd()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,36 +22,58 @@ To: igt-dev@lists.freedesktop.org
 Cc: intel-gfx@lists.freedesktop.org, =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Since the test is still blocklisted due to driver issues and won't be
-executed on CI, I'm providing a link where results obtained from a 
-rybot run with the test removed from the blocklist can be found:
-https://patchwork.freedesktop.org/series/79662/
-Failures reported there come from driver and not test issues, I
-believe.
+There is a new library helper that asserts validity of open file
+descriptors.  Use it instead of open coding.
 
-Thanks,
-Janusz
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ tests/core_hotunplug.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Janusz Krzysztofik (15):
-  tests/core_hotunplug: Use igt_assert_fd()
-  tests/core_hotunplug: Constify dev_bus_addr string
-  tests/core_hotunplug: Consolidate duplicated debug messages
-  tests/core_hotunplug: Assert successful device filter application
-  tests/core_hotunplug: Fix missing newline
-  tests/core_hotunplug: Maintain a single data structure instance
-  tests/core_hotunplug: Pass errors via a data structure field
-  tests/core_hotunplug: Handle device close errors
-  tests/core_hotunplug: Prepare invariant data once per test run
-  tests/core_hotunplug: Skip selectively on sysfs close errors
-  tests/core_hotunplug: Follow failed subtests with health checks
-  tests/core_hotunplug: Fail subtests on device close errors
-  tests/core_hotunplug: Process return values of sysfs operations
-  tests/core_hotunplug: Assert expected device presence/absence
-  tests/core_hotunplug: Explicitly ignore unused return values
-
- tests/core_hotunplug.c | 333 +++++++++++++++++++++++++----------------
- 1 file changed, 202 insertions(+), 131 deletions(-)
-
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index e03f3b945..7431346b1 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -57,7 +57,7 @@ static void prepare_for_unbind(struct hotunplug *priv, char *buf, int buflen)
+ 
+ 	priv->fd.sysfs_drv = openat(priv->fd.sysfs_dev, "device/driver",
+ 				    O_DIRECTORY);
+-	igt_assert(priv->fd.sysfs_drv >= 0);
++	igt_assert_fd(priv->fd.sysfs_drv);
+ 
+ 	len = readlinkat(priv->fd.sysfs_dev, "device", buf, buflen - 1);
+ 	buf[len] = '\0';
+@@ -72,10 +72,10 @@ static void prepare(struct hotunplug *priv, char *buf, int buflen)
+ {
+ 	igt_debug("opening device\n");
+ 	priv->fd.drm = __drm_open_driver(DRIVER_ANY);
+-	igt_assert(priv->fd.drm >= 0);
++	igt_assert_fd(priv->fd.drm);
+ 
+ 	priv->fd.sysfs_dev = igt_sysfs_open(priv->fd.drm);
+-	igt_assert(priv->fd.sysfs_dev >= 0);
++	igt_assert_fd(priv->fd.sysfs_dev);
+ 
+ 	if (buf) {
+ 		prepare_for_unbind(priv, buf, buflen);
+@@ -83,7 +83,7 @@ static void prepare(struct hotunplug *priv, char *buf, int buflen)
+ 		/* prepare for bus rescan */
+ 		priv->fd.sysfs_bus = openat(priv->fd.sysfs_dev,
+ 					    "device/subsystem", O_DIRECTORY);
+-		igt_assert(priv->fd.sysfs_bus >= 0);
++		igt_assert_fd(priv->fd.sysfs_bus);
+ 	}
+ }
+ 
+@@ -261,7 +261,7 @@ igt_main
+ 		 * a device file descriptor open for exit handler use.
+ 		 */
+ 		fd_drm = __drm_open_driver(DRIVER_ANY);
+-		igt_assert(fd_drm >= 0);
++		igt_assert_fd(fd_drm);
+ 
+ 		if (is_i915_device(fd_drm))
+ 			igt_require_gem(fd_drm);
 -- 
 2.21.1
 
