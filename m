@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 647586E1B2
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Jul 2020 09:13:08 +0000 (UTC)
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D86E6E1B2
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Jul 2020 09:13:07 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
-Date: Tue, 21 Jul 2020 12:12:53 +0300
-Message-Id: <20200721091254.30072-1-petri.latvala@intel.com>
+Date: Tue, 21 Jul 2020 12:12:54 +0300
+Message-Id: <20200721091254.30072-2-petri.latvala@intel.com>
+In-Reply-To: <20200721091254.30072-1-petri.latvala@intel.com>
+References: <20200721091254.30072-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] runner: Use exitcode 127 when resume is
- impossible
+Subject: [igt-dev] [PATCH i-g-t 2/2] runner: Print a message when aborting
+ due to IGT_EXIT_ABORT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,42 +25,32 @@ To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-igt_resume is typically used in a scripted loop, with automatic
-reboots and retries. It already uses separate exit codes for being
-done (0), requiring a reboot and a retry (1) and requiring a retry due
-to exceeding its overall time quota (2). Introduce another exit code,
-127, for circumstances where execution in the given directory is
-impossible and retrying would never terminate. One example case is
-a kernel bug causing the filesystem to go enough bonkers to make the
-runner settings files disappear.
-
-As a drive-by improvement, also print something when that happens.
+Previously, when a test exited with IGT_EXIT_ABORT, we did abort but
+did it silently. Print a message so runner logs tell a clear message
+why we didn't execute the rest of the tests.
 
 Signed-off-by: Petri Latvala <petri.latvala@intel.com>
 Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 ---
- runner/resume.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ runner/executor.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/runner/resume.c b/runner/resume.c
-index d5a20e80..f5d69e21 100644
---- a/runner/resume.c
-+++ b/runner/resume.c
-@@ -28,11 +28,12 @@ int main(int argc, char **argv)
+diff --git a/runner/executor.c b/runner/executor.c
+index 25e37bff..77818987 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -1113,8 +1113,10 @@ static int monitor_output(pid_t child,
+ 					fdatasync(outputs[_F_JOURNAL]);
+ 				}
  
- 	if ((dirfd = open(argv[1], O_RDONLY | O_DIRECTORY)) < 0) {
- 		fprintf(stderr, "Failure opening %s: %s\n", argv[1], strerror(errno));
--		return 1;
-+		return 127;
- 	}
+-				if (status == IGT_EXIT_ABORT)
++				if (status == IGT_EXIT_ABORT) {
++					errf("Test exited with IGT_EXIT_ABORT, aborting.\n");
+ 					aborting = true;
++				}
  
- 	if (!initialize_execute_state_from_resume(dirfd, &state, &settings, &job_list)) {
--		return 1;
-+		fprintf(stderr, "Failure reading metadata in %s\n", argv[1]);
-+		return 127;
- 	}
- 
- 	if (!execute(&state, &settings, &job_list)) {
+ 				if (time_spent)
+ 					*time_spent = time;
 -- 
 2.20.1
 
