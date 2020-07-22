@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Mon, 20 Jul 2020 14:19:08 +0200
-Message-Id: <20200720121908.28124-16-janusz.krzysztofik@linux.intel.com>
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
+ [IPv6:2a00:1450:4864:20::243])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D6916E07D
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jul 2020 16:47:56 +0000 (UTC)
+Received: by mail-lj1-x243.google.com with SMTP id z24so3203559ljn.8
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jul 2020 09:47:56 -0700 (PDT)
+MIME-Version: 1.0
 In-Reply-To: <20200720121908.28124-1-janusz.krzysztofik@linux.intel.com>
 References: <20200720121908.28124-1-janusz.krzysztofik@linux.intel.com>
-MIME-Version: 1.0
-Subject: [igt-dev] [RFC PATH i-g-t 15/15] tests/core_hotunplug: Explicitly
- ignore unused return values
+From: =?utf-8?q?Micha=C5=82?= Winiarski <michal@hardline.pl>
+Date: Wed, 22 Jul 2020 18:47:52 +0200
+Message-ID: <159543647233.28670.678928339802345112@macragge.hardline.pl>
+Subject: Re: [igt-dev] [Intel-gfx] [RFC PATH i-g-t 00/15]
+ tests/core_hotunplug: Fixes and enhancements
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,50 +20,48 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, =?utf-8?q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Some return values are not useful and can be ignored.  Wrap those cases
-inside igt_ignore_warn(), not only to make sure compilers are happy but
-also to clearly document our decisions.
-
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- tests/core_hotunplug.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 9bca967c1..9d4543185 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -227,7 +227,7 @@ static void set_filter_from_device(int fd)
- 	char path[PATH_MAX + 1];
- 
- 	igt_assert(igt_sysfs_path(fd, path, PATH_MAX));
--	strncat(path, "/device", PATH_MAX - strlen(path));
-+	igt_ignore_warn(strncat(path, "/device", PATH_MAX - strlen(path)));
- 	igt_assert(realpath(path, dst));
- 
- 	igt_device_filter_free_all();
-@@ -367,7 +367,7 @@ igt_main
- 	igt_fixture {
- 		post_healthckeck(&priv);
- 
--		close(priv.fd.sysfs_bus);
--		close(priv.fd.sysfs_drv);
-+		igt_ignore_warn(close(priv.fd.sysfs_bus));
-+		igt_ignore_warn(close(priv.fd.sysfs_drv));
- 	}
- }
--- 
-2.21.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+UXVvdGluZyBKYW51c3ogS3J6eXN6dG9maWsgKDIwMjAtMDctMjAgMTQ6MTg6NTMpCj4gU2luY2Ug
+dGhlIHRlc3QgaXMgc3RpbGwgYmxvY2tsaXN0ZWQgZHVlIHRvIGRyaXZlciBpc3N1ZXMgYW5kIHdv
+bid0IGJlCj4gZXhlY3V0ZWQgb24gQ0ksIEknbSBwcm92aWRpbmcgYSBsaW5rIHdoZXJlIHJlc3Vs
+dHMgb2J0YWluZWQgZnJvbSBhIAo+IHJ5Ym90IHJ1biB3aXRoIHRoZSB0ZXN0IHJlbW92ZWQgZnJv
+bSB0aGUgYmxvY2tsaXN0IGNhbiBiZSBmb3VuZDoKPiBodHRwczovL3BhdGNod29yay5mcmVlZGVz
+a3RvcC5vcmcvc2VyaWVzLzc5NjYyLwo+IEZhaWx1cmVzIHJlcG9ydGVkIHRoZXJlIGNvbWUgZnJv
+bSBkcml2ZXIgYW5kIG5vdCB0ZXN0IGlzc3VlcywgSQo+IGJlbGlldmUuCj4gCj4gVGhhbmtzLAo+
+IEphbnVzegoKSSdkIHByb2JhYmx5IHNxdWFzaCBzb21lIG9mIHRoZSBwYXRjaGVzIChlLmcuIDA2
+LzE1IHdpdGggMDcvMTUsIG1heWJlIG1vcmUpLApidXQgdGhhdCdzIGp1c3QgYSBtYXR0ZXIgb2Yg
+b3BpbmlvbiAoYW5kIEkgZ3Vlc3Mgc3VjaCBmaW5lLWdyYWluZWQgc3BsaXQgbWFrZXMKaXQgZWFz
+aWVyIHRvIHJldmlldykuCgpMR1RNLgoKUmV2aWV3ZWQtYnk6IE1pY2hhxYIgV2luaWFyc2tpIDxt
+aWNoYWwud2luaWFyc2tpQGludGVsLmNvbT4KCi1NaWNoYcWCCgo+IAo+IEphbnVzeiBLcnp5c3p0
+b2ZpayAoMTUpOgo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IFVzZSBpZ3RfYXNzZXJ0X2ZkKCkK
+PiAgIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBDb25zdGlmeSBkZXZfYnVzX2FkZHIgc3RyaW5nCj4g
+ICB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogQ29uc29saWRhdGUgZHVwbGljYXRlZCBkZWJ1ZyBtZXNz
+YWdlcwo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IEFzc2VydCBzdWNjZXNzZnVsIGRldmljZSBm
+aWx0ZXIgYXBwbGljYXRpb24KPiAgIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBGaXggbWlzc2luZyBu
+ZXdsaW5lCj4gICB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogTWFpbnRhaW4gYSBzaW5nbGUgZGF0YSBz
+dHJ1Y3R1cmUgaW5zdGFuY2UKPiAgIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBQYXNzIGVycm9ycyB2
+aWEgYSBkYXRhIHN0cnVjdHVyZSBmaWVsZAo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IEhhbmRs
+ZSBkZXZpY2UgY2xvc2UgZXJyb3JzCj4gICB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogUHJlcGFyZSBp
+bnZhcmlhbnQgZGF0YSBvbmNlIHBlciB0ZXN0IHJ1bgo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6
+IFNraXAgc2VsZWN0aXZlbHkgb24gc3lzZnMgY2xvc2UgZXJyb3JzCj4gICB0ZXN0cy9jb3JlX2hv
+dHVucGx1ZzogRm9sbG93IGZhaWxlZCBzdWJ0ZXN0cyB3aXRoIGhlYWx0aCBjaGVja3MKPiAgIHRl
+c3RzL2NvcmVfaG90dW5wbHVnOiBGYWlsIHN1YnRlc3RzIG9uIGRldmljZSBjbG9zZSBlcnJvcnMK
+PiAgIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBQcm9jZXNzIHJldHVybiB2YWx1ZXMgb2Ygc3lzZnMg
+b3BlcmF0aW9ucwo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IEFzc2VydCBleHBlY3RlZCBkZXZp
+Y2UgcHJlc2VuY2UvYWJzZW5jZQo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IEV4cGxpY2l0bHkg
+aWdub3JlIHVudXNlZCByZXR1cm4gdmFsdWVzCj4gCj4gIHRlc3RzL2NvcmVfaG90dW5wbHVnLmMg
+fCAzMzMgKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0KPiAgMSBmaWxl
+IGNoYW5nZWQsIDIwMiBpbnNlcnRpb25zKCspLCAxMzEgZGVsZXRpb25zKC0pCj4gCj4gLS0gCj4g
+Mi4yMS4xCj4gCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KPiBJbnRlbC1nZnggbWFpbGluZyBsaXN0Cj4gSW50ZWwtZ2Z4QGxpc3RzLmZyZWVkZXNrdG9w
+Lm9yZwo+IGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaW50
+ZWwtZ2Z4Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
+dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
