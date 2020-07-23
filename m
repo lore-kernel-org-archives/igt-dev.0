@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D81AB6E192
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jul 2020 11:32:21 +0000 (UTC)
-Date: Thu, 23 Jul 2020 16:50:14 +0530
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <20200723112013.GB30020@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 253AF6E1A3
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jul 2020 11:32:49 +0000 (UTC)
+Date: Thu, 23 Jul 2020 14:32:46 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200723113246.GW20883@platvala-desk.ger.corp.intel.com>
 References: <20200723111615.1933636-1-arkadiusz.hiler@intel.com>
- <20200723111615.1933636-2-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200723111615.1933636-2-arkadiusz.hiler@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/i915_pm_lpsp: Fix compilation
- warning
+In-Reply-To: <20200723111615.1933636-1-arkadiusz.hiler@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/2] tests/kms_atomic_transition: Add
+ explicit curly brackets
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,47 +23,57 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-07-23 at 14:16:15 +0300, Arkadiusz Hiler wrote:
-> ... and make the test do what it claims to be doing.
+On Thu, Jul 23, 2020 at 02:16:14PM +0300, Arkadiusz Hiler wrote:
+> To clean up a bit and get rid of compilation warnings.
 > 
-> The test needs all outputs to be disabled, but it was iterating with
-> for_each_pipe_with_single_output, which iterates over pipes and tries
-> to match them with some output. This may lead to us not iterating over
-> all the outputs in some circumstances.
-> 
-> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
+> Cc: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 > Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Thanks Arek for fixing this,
-Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
+
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+
+
+
 > ---
->  tests/i915/i915_pm_lpsp.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+>  tests/kms_atomic_transition.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
-> diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
-> index e9a59307..4a187810 100644
-> --- a/tests/i915/i915_pm_lpsp.c
-> +++ b/tests/i915/i915_pm_lpsp.c
-> @@ -82,12 +82,10 @@ static bool dmc_supported(int debugfs)
->   */
->  static void screens_disabled_subtest(data_t *data)
->  {
-> -	igt_output_t *output;
->  	int valid_output = 0;
-> -	enum pipe pipe;
+> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+> index f54591e6..a71bbe10 100644
+> --- a/tests/kms_atomic_transition.c
+> +++ b/tests/kms_atomic_transition.c
+> @@ -788,8 +788,9 @@ static void run_modeset_tests(igt_display_t *display, int howmany, bool nonblock
 >  
-> -	for_each_pipe_with_single_output(&data->display, pipe, output) {
-> -		data->output = output;
-> +	for (int i = 0; i < data->display.n_outputs; i++) {
-> +		data->output = &data->display.outputs[i];
->  		igt_output_set_pipe(data->output, PIPE_NONE);
->  		igt_display_commit(&data->display);
->  		valid_output++;
+>  			if (fencing)
+>  				igt_pipe_request_out_fence(&display->pipes[i]);
+> -		} else
+> +		} else {
+>  			igt_plane_set_fb(plane, NULL);
+> +		}
+>  	}
+>  
+>  	iter_max = 1 << j;
+> @@ -859,9 +860,10 @@ static void run_modeset_tests(igt_display_t *display, int howmany, bool nonblock
+>  	set_combinations(display, 0, NULL);
+>  	igt_display_commit2(display, COMMIT_ATOMIC);
+>  
+> -	if (is_i915_device(display->drm_fd))
+> +	if (is_i915_device(display->drm_fd)) {
+>  		for_each_pipe(display, i)
+>  			igt_pipe_crc_free(pipe_crcs[i]);
+> +	}
+>  
+>  	igt_remove_fb(display->drm_fd, &fbs[1]);
+>  	igt_remove_fb(display->drm_fd, &fbs[0]);
 > -- 
 > 2.25.4
 > 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
