@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E0676E1B8
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jul 2020 15:30:16 +0000 (UTC)
-Message-ID: <e74bfdd7e756acd24973db4d79d4adafb4ba79e6.camel@intel.com>
-From: Carlos Santa <carlos.santa@intel.com>
-Date: Thu, 23 Jul 2020 08:29:30 -0700
-In-Reply-To: <20200722075603.GR20883@platvala-desk.ger.corp.intel.com>
-References: <20200721181522.20042-1-carlos.santa@intel.com>
- <20200722075603.GR20883@platvala-desk.ger.corp.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] tests: add missing braces around initializer
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 23 Jul 2020 15:28:59 -0000
+Message-ID: <159551813917.23573.4934816571238868615@emeril.freedesktop.org>
+References: <20200720165011.23918-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20200720165011.23918-1-bhanuprakash.modem@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_A?=
+ =?utf-8?q?dd_new_IGT_test_to_validate_crtc_Dithering_=28rev3=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,55 +14,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, 2020-07-22 at 10:56 +0300, Petri Latvala wrote:
-> On Tue, Jul 21, 2020 at 11:15:21AM -0700, Carlos Santa wrote:
-> > In some sandboxes the toolchain complains about missing braces
-> > around initializer, however, adding an extra pair of braces
-> > fixes it, see below:
-> > 
-> > ../tests/kms_plane_cursor.c: In function '__real_main_302':
-> > ../tests/kms_plane_cursor.c:305:2 error: missing braces around
-> > initializer [-Werror=missing-braces]
-> > 	data_t data = { 0 };
-> > 
-> 
-> Argh, gcc.
-> 
-> C++ supports initializing with empty braces ( data_t data = {}; ) and
-> C doesn't, leaving only the commonly used { 0 } idiom to mean "I just
-> want to zero-initialize this object, don't care about the
-> structure". Even better, due to the brace elision clause in the spec,
-> that construct is fully defined and means exactly fully
-> zero-initializing the aggregate object regardless of its structure.
-> 
-> I could agree with this change if the initialization used non-zero
-> values but just adding braces to make the compiler believe you really
-> meant this...
-> 
-> I wonder if playing around with -Wmissing-initializer
-> -Wno-missing-braces lets us leave the code as { 0 } for elegance,
-> while still get a warning for actual incorrect use...
-> 
-> Which version of gcc was this on?
+== Series Details ==
 
-It was with gcc 4.9, googling around this issue seems to be a bug
-within the toolchain itself: 
-https://gcc.gnu.org/bugzilla/show_bug.cgi?id=53119 but it looks like
-the fix was never backported.
+Series: Add new IGT test to validate crtc Dithering (rev3)
+URL   : https://patchwork.freedesktop.org/series/79661/
+State : warning
 
-Carlos
+== Summary ==
 
-> 
-> 
+Did not get list of undocumented tests for this run, something is wrong!
 
+Other than that, pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/181216 for the overview.
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/3770125):
+  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-7c27fc9636dd5a6db464749cc9f32627b36d6a35 ...
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-7c27fc9636dd5a6db464749cc9f32627b36d6a35 ...
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-7c27fc9636dd5a6db464749cc9f32627b36d6a35 ...
+  section_end:1595517314:prepare_executor
+  section_start:1595517314:prepare_script
+  Preparing environment
+  Running on runner-z2cifdyy-project-3185-concurrent-0 via gst-htz-3...
+  section_end:1595517314:prepare_script
+  section_start:1595517314:get_sources
+  Getting source from Git repository
+  $ eval "$CI_PRE_CLONE_SCRIPT"
+  Fetching changes...
+  Initialized empty Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Created fresh repository.
+  error: RPC failed; curl 92 HTTP/2 stream 0 was not closed cleanly: Unknown error code (err 1)
+  fatal: the remote end hung up unexpectedly
+  section_end:1595517379:get_sources
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/3770127):
+  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-7c27fc9636dd5a6db464749cc9f32627b36d6a35 ...
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-7c27fc9636dd5a6db464749cc9f32627b36d6a35 ...
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-7c27fc9636dd5a6db464749cc9f32627b36d6a35 ...
+  section_end:1595517338:prepare_executor
+  section_start:1595517338:prepare_script
+  Preparing environment
+  Running on runner-z2cifdyy-project-3185-concurrent-1 via gst-htz-3...
+  section_end:1595517340:prepare_script
+  section_start:1595517340:get_sources
+  Getting source from Git repository
+  $ eval "$CI_PRE_CLONE_SCRIPT"
+  Fetching changes...
+  Initialized empty Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Created fresh repository.
+  error: RPC failed; curl 92 HTTP/2 stream 0 was not closed cleanly: Unknown error code (err 1)
+  fatal: the remote end hung up unexpectedly
+  section_end:1595517402:get_sources
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/181216
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
