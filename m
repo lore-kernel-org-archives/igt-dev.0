@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3FFC6E16D
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jul 2020 11:16:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7614A6E192
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jul 2020 11:16:32 +0000 (UTC)
 From: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-Date: Thu, 23 Jul 2020 14:16:14 +0300
-Message-ID: <20200723111615.1933636-1-arkadiusz.hiler@intel.com>
+Date: Thu, 23 Jul 2020 14:16:15 +0300
+Message-ID: <20200723111615.1933636-2-arkadiusz.hiler@intel.com>
+In-Reply-To: <20200723111615.1933636-1-arkadiusz.hiler@intel.com>
+References: <20200723111615.1933636-1-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_atomic_transition: Add
- explicit curly brackets
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/i915_pm_lpsp: Fix compilation
+ warning
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,44 +22,40 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-To clean up a bit and get rid of compilation warnings.
+... and make the test do what it claims to be doing.
 
-Cc: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+The test needs all outputs to be disabled, but it was iterating with
+for_each_pipe_with_single_output, which iterates over pipes and tries
+to match them with some output. This may lead to us not iterating over
+all the outputs in some circumstances.
+
+Cc: Anshuman Gupta <anshuman.gupta@intel.com>
 Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 ---
- tests/kms_atomic_transition.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tests/i915/i915_pm_lpsp.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index f54591e6..a71bbe10 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -788,8 +788,9 @@ static void run_modeset_tests(igt_display_t *display, int howmany, bool nonblock
+diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
+index e9a59307..4a187810 100644
+--- a/tests/i915/i915_pm_lpsp.c
++++ b/tests/i915/i915_pm_lpsp.c
+@@ -82,12 +82,10 @@ static bool dmc_supported(int debugfs)
+  */
+ static void screens_disabled_subtest(data_t *data)
+ {
+-	igt_output_t *output;
+ 	int valid_output = 0;
+-	enum pipe pipe;
  
- 			if (fencing)
- 				igt_pipe_request_out_fence(&display->pipes[i]);
--		} else
-+		} else {
- 			igt_plane_set_fb(plane, NULL);
-+		}
- 	}
- 
- 	iter_max = 1 << j;
-@@ -859,9 +860,10 @@ static void run_modeset_tests(igt_display_t *display, int howmany, bool nonblock
- 	set_combinations(display, 0, NULL);
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 
--	if (is_i915_device(display->drm_fd))
-+	if (is_i915_device(display->drm_fd)) {
- 		for_each_pipe(display, i)
- 			igt_pipe_crc_free(pipe_crcs[i]);
-+	}
- 
- 	igt_remove_fb(display->drm_fd, &fbs[1]);
- 	igt_remove_fb(display->drm_fd, &fbs[0]);
+-	for_each_pipe_with_single_output(&data->display, pipe, output) {
+-		data->output = output;
++	for (int i = 0; i < data->display.n_outputs; i++) {
++		data->output = &data->display.outputs[i];
+ 		igt_output_set_pipe(data->output, PIPE_NONE);
+ 		igt_display_commit(&data->display);
+ 		valid_output++;
 -- 
 2.25.4
 
