@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E87B56E190
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jul 2020 11:32:11 +0000 (UTC)
-Date: Thu, 23 Jul 2020 14:32:09 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200723113209.GV20883@platvala-desk.ger.corp.intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D81AB6E192
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jul 2020 11:32:21 +0000 (UTC)
+Date: Thu, 23 Jul 2020 16:50:14 +0530
+From: Anshuman Gupta <anshuman.gupta@intel.com>
+Message-ID: <20200723112013.GB30020@intel.com>
 References: <20200723111615.1933636-1-arkadiusz.hiler@intel.com>
  <20200723111615.1933636-2-arkadiusz.hiler@intel.com>
 MIME-Version: 1.0
@@ -27,7 +27,7 @@ To: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Jul 23, 2020 at 02:16:15PM +0300, Arkadiusz Hiler wrote:
+On 2020-07-23 at 14:16:15 +0300, Arkadiusz Hiler wrote:
 > ... and make the test do what it claims to be doing.
 > 
 > The test needs all outputs to be disabled, but it was iterating with
@@ -37,12 +37,8 @@ On Thu, Jul 23, 2020 at 02:16:15PM +0300, Arkadiusz Hiler wrote:
 > 
 > Cc: Anshuman Gupta <anshuman.gupta@intel.com>
 > Signed-off-by: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-
-Is it time to implement for_each_output?
-
-
+Thanks Arek for fixing this,
+Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
 > ---
 >  tests/i915/i915_pm_lpsp.c | 6 ++----
 >  1 file changed, 2 insertions(+), 4 deletions(-)
@@ -69,10 +65,6 @@ Is it time to implement for_each_output?
 > -- 
 > 2.25.4
 > 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
