@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
- [IPv6:2a00:1450:4864:20::241])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6DAD56E07D
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jul 2020 17:00:45 +0000 (UTC)
-Received: by mail-lj1-x241.google.com with SMTP id f5so3242123ljj.10
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jul 2020 10:00:45 -0700 (PDT)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2613F6E2AF
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jul 2020 03:02:57 +0000 (UTC)
+From: ranjeet1.kumar@intel.com
+Date: Thu, 23 Jul 2020 08:31:55 +0530
+Message-Id: <20200723030155.1609-1-ranjeet1.kumar@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20200721050707.14803-1-sai.gowtham.ch@intel.com>
-References: <20200721050707.14803-1-sai.gowtham.ch@intel.com>
-From: =?utf-8?q?Micha=C5=82?= Winiarski <michal@hardline.pl>
-Date: Wed, 22 Jul 2020 19:00:41 +0200
-Message-ID: <159543724197.28670.10645816760097040568@macragge.hardline.pl>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_softpin: Added test
- description for test case.
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_ppgtt: Added description for test
+ case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,82 +15,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org, sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org, ranjeet1.kumar@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBzYWkuZ293dGhhbS5jaEBpbnRlbC5jb20gKDIwMjAtMDctMjEgMDc6MDc6MDcpCj4g
-RnJvbTogc2FpIGdvd3RoYW0gPHNhaS5nb3d0aGFtLmNoQGludGVsLmNvbT4KPiAKPiBBZGRlZCB0
-ZXN0IGRlc2NyaXB0aW9uIGZvciB0ZXN0IGFuZCB0byBhbGwgdGhlIHN1YnRlc3RzIHRoYXQgYXJl
-Cj4gYXZhaWxhYmxlLgo+IAo+IFNpZ25lZC1vZmYtYnk6IHNhaSBnb3d0aGFtIDxzYWkuZ293dGhh
-bS5jaEBpbnRlbC5jb20+Cj4gLS0tCj4gIHRlc3RzL2k5MTUvZ2VtX3NvZnRwaW4uYyB8IDMxICsr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysKPiAgMSBmaWxlIGNoYW5nZWQsIDMxIGluc2Vy
-dGlvbnMoKykKPiAKPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9nZW1fc29mdHBpbi5jIGIvdGVz
-dHMvaTkxNS9nZW1fc29mdHBpbi5jCj4gaW5kZXggMjAyYWJkZDguLjJlMmJmMDQ4IDEwMDY0NAo+
-IC0tLSBhL3Rlc3RzL2k5MTUvZ2VtX3NvZnRwaW4uYwo+ICsrKyBiL3Rlc3RzL2k5MTUvZ2VtX3Nv
-ZnRwaW4uYwo+IEBAIC0yOSw2ICsyOSwxMiBAQAo+ICAjaW5jbHVkZSAiaTkxNS9nZW0uaCIKPiAg
-I2luY2x1ZGUgImlndC5oIgo+ICAKPiArSUdUX1RFU1RfREVTQ1JJUFRJT04oIlRoZXNlIHRlc3Rz
-IGV4ZXJjaXNlIHRoZSB1c2VycHRyIGlvY3RsIHRvIGNyZWF0ZSBzaGFyZWQgYnVmZmVycyIKPiAr
-ICAgICAgICAgICAgICAgIiBiZXR3ZWVuIENQVSBhbmQgR1BVLiBUaGV5IGNvbnRhaW4gZXJyb3Ig
-YW5kIG5vcm1hbCB1c2FnZSBzY2VuYXJpb3MuIgo+ICsgICAgICAgICAgICAgICAiIFRoZXkgYWxz
-byBjb250YWluIGEgY291cGxlIG9mIHN0cmVzcyB0ZXN0cyB3aGljaCBjb3B5IGJ1ZmZlcnMgYmV0
-d2VlbiIKPiArICAgICAgICAgICAgICAgIiBDUFUgYW5kIEdQVS4gVGhlc2UgdGVzdHMgcmVseSBv
-biB0aGUgc29mdHBpbiBpbiBvcmRlciB0byBwaW4gYnVmZmVycyIKPiArICAgICAgICAgICAgICAg
-IiB0byBhIGNlcnRhaW4gVkEiKTsKPiArCgpEbyBhbnkgb2YgdGhlIHRlc3RjYXNlcyBoZXJlIHVz
-ZSB1c2VycHRyPwoKLU1pY2hhxYIKCj4gICNkZWZpbmUgRVhFQ19PQkpFQ1RfUElOTkVEICAgICAo
-MTw8NCkKPiAgI2RlZmluZSBFWEVDX09CSkVDVF9TVVBQT1JUU180OEJfQUREUkVTUyAoMTw8MykK
-PiAgCj4gQEAgLTU1NywzMCArNTYzLDU1IEBAIGlndF9tYWluCj4gICAgICAgICAgICAgICAgIGln
-dF9yZXF1aXJlKGdlbV9jYW5fc3RvcmVfZHdvcmQoZmQsIDApKTsKPiAgICAgICAgIH0KPiAgCj4g
-KyAgICAgICBpZ3RfZGVzY3JpYmUoIlRoaXMgdGVzdCBkb2VzIG5lZ2F0aXZlIHRlc3RpbmcgbGlr
-ZSBwYXNzaW5nIGludmFsaWQgb2Zmc2V0IHZhbHVlcywiCj4gKyAgICAgICAgICAgICAgICAgICAg
-ICAgIiBpbnZhbGlkIGFsaWdubWVudCB2YWx1ZXMsIHBhc3NpbmcgYmV5b25kIGJvbmQgb2YgYXBl
-cnR1cmUgdmFsdWUsIgo+ICsgICAgICAgICAgICAgICAgICAgICAgICIgYW5kIGdlbjggY2Fub25p
-Y2FsIGFkZHJlc3NpbmcsIHRoZSBpbnRlbnNpb24gb2YgdGhpcyB0ZXN0IHRvIgo+ICsgICAgICAg
-ICAgICAgICAgICAgICAgICIgY2hlY2sgdGhlIGJlaGF2aW91ciB3aXRoIGludmFsaWQgaW5wdXRz
-Iik7Cj4gICAgICAgICBpZ3Rfc3VidGVzdCgiaW52YWxpZCIpCj4gICAgICAgICAgICAgICAgIHRl
-c3RfaW52YWxpZChmZCk7Cj4gKwo+ICsgICAgICAgaWd0X2Rlc2NyaWJlKCJUaGlzIHRlc3QgaXMg
-dG8gdmVyaWZ5IGlmIHRoZSBjb25jZXB0IG9mIHNvZnRwaW4gd29ya3MsIHdoZXJlIHdlIgo+ICsg
-ICAgICAgICAgICAgICAgICAgICAgICIgYXJlIHRyeWluZyBwYXNzIGRpZmZlcmVudCBvZmZzZXQg
-dmFsdWVzIHRvIHRoZSBleGVjYnVmIGFuZCIKPiArICAgICAgICAgICAgICAgICAgICAgICAiIGNo
-ZWNrIHRoZSBiZWhhdmlvdXIiKTsKPiAgICAgICAgIGlndF9zdWJ0ZXN0KCJzb2Z0cGluIikKPiAg
-ICAgICAgICAgICAgICAgdGVzdF9zb2Z0cGluKGZkKTsKPiArCj4gKyAgICAgICBpZ3RfZGVzY3Jp
-YmUoIlRoaXMgdGVzdCBjaGVja3MgdGhlIGJlaGF2aW91ciBieSBydW5pbmcgb24gYWxsIHBvc3Np
-YmxlIgo+ICsgICAgICAgICAgICAgICAgICAgICAgICIgcGFnZSBhbGxpZ25lZCBvdmVybGFwcyIp
-Owo+ICAgICAgICAgaWd0X3N1YnRlc3QoIm92ZXJsYXAiKQo+ICAgICAgICAgICAgICAgICB0ZXN0
-X292ZXJsYXAoZmQpOwo+ICsKPiArICAgICAgIGlndF9kZXNjcmliZSgiVGhpcyB0ZXN0IHN3YXBz
-IHRoZSBvZmZzZXQgdmFsdWVzIG9mIHR3byBvYmplY3RzIGFuZCBjaGVja3MiCj4gKyAgICAgICAg
-ICAgICAgICAgICAgICAgIiB0aGUgYmVoYXZpb3VyIik7Cj4gICAgICAgICBpZ3Rfc3VidGVzdCgi
-cmV2ZXJzZSIpCj4gICAgICAgICAgICAgICAgIHRlc3RfcmV2ZXJzZShmZCk7Cj4gIAo+ICsgICAg
-ICAgaWd0X2Rlc2NyaWJlKCJUaGlzIHRlc3QgZXhwbGljaXRseSB0ZXN0cyB0aGUgbm8gcmVsb2Nh
-dGlvbiBzdXBwb3J0Iik7Cj4gICAgICAgICBpZ3Rfc3VidGVzdCgibm9yZWxvYyIpCj4gICAgICAg
-ICAgICAgICAgIHRlc3Rfbm9yZWxvYyhmZCwgTk9TTEVFUCwgMCk7Cj4gKwo+ICsgICAgICAgaWd0
-X2Rlc2NyaWJlKCJUZXN0cyB0aGUgbm8gcmVsb2NhdGlvbiBzdXBwb3J0IHdpdGggaW50ZXJydXB0
-aWJsZSIpOwo+ICAgICAgICAgaWd0X3N1YnRlc3QoIm5vcmVsb2MtaW50ZXJydXB0aWJsZSIpCj4g
-ICAgICAgICAgICAgICAgIHRlc3Rfbm9yZWxvYyhmZCwgTk9TTEVFUCwgSU5URVJSVVBUSUJMRSk7
-Cj4gKwo+ICsgICAgICAgaWd0X2Rlc2NyaWJlKCJDaGVjayBub3JlbG9jYXRpb25zIGhvbGQgdmVy
-c3VzIHN1c3BlbmQvcmVzdW1lIik7Cj4gICAgICAgICBpZ3Rfc3VidGVzdCgibm9yZWxvYy1TMyIp
-Cj4gICAgICAgICAgICAgICAgIHRlc3Rfbm9yZWxvYyhmZCwgU1VTUEVORCwgMCk7Cj4gKwo+ICsg
-ICAgICAgaWd0X2Rlc2NyaWJlKCJDaGVjayBub3JlbG9jYXRpb25zIGhvbGQgdmVyc3VzIHN1c3Bl
-bmQvcmVzdW1lIik7Cj4gICAgICAgICBpZ3Rfc3VidGVzdCgibm9yZWxvYy1TNCIpCj4gICAgICAg
-ICAgICAgICAgIHRlc3Rfbm9yZWxvYyhmZCwgSElCRVJOQVRFLCAwKTsKPiAgCj4gICAgICAgICBm
-b3IgKGludCBzaWduYWwgPSAwOyBzaWduYWwgPD0gMTsgc2lnbmFsKyspIHsKPiArICAgICAgICAg
-ICAgICAgaWd0X2Rlc2NyaWJlKCJUaGlzIHRlc3QgY2hlY2tzIHRoZSBiZWhhdmlvdXIgb2Ygc29m
-dHBpbiB3aXRoIGJ1c3kgYmF0Y2giKTsKPiAgICAgICAgICAgICAgICAgaWd0X3N1YnRlc3RfZigi
-ZXZpY3QtYWN0aXZlJXMiLCBzaWduYWwgPyAiLWludGVycnVwdGlibGUiIDogIiIpCj4gICAgICAg
-ICAgICAgICAgICAgICAgICAgdGVzdF9ldmljdF9hY3RpdmUoZmQsIHNpZ25hbCk7Cj4gKwo+ICsg
-ICAgICAgICAgICAgICBpZ3RfZGVzY3JpYmUoIlNub29wIHRlc3QgYnkgZm9yY2libHkgaW5qZWN0
-aW5nIHNpZ25hbHMiKTsKPiAgICAgICAgICAgICAgICAgaWd0X3N1YnRlc3RfZigiZXZpY3Qtc25v
-b3AlcyIsIHNpZ25hbCA/ICItaW50ZXJydXB0aWJsZSIgOiAiIikKPiAgICAgICAgICAgICAgICAg
-ICAgICAgICB0ZXN0X2V2aWN0X3Nub29wKGZkLCBzaWduYWwpOwo+ICAgICAgICAgfQo+ICsgICAg
-ICAgaWd0X2Rlc2NyaWJlKCJDaGVja3MgYmVoYXZpb3VyIG9mIHNvZnRwaW4gd2l0aCBodW5nIGJh
-dGNoIik7Cj4gICAgICAgICBpZ3Rfc3VidGVzdCgiZXZpY3QtaGFuZyIpCj4gICAgICAgICAgICAg
-ICAgIHRlc3RfZXZpY3RfaGFuZyhmZCk7Cj4gIAo+IC0tIAo+IDIuMjUuMAo+IAo+IF9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCj4gaWd0LWRldiBtYWlsaW5n
-IGxpc3QKPiBpZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwo+IGh0dHBzOi8vbGlzdHMuZnJl
-ZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2lndC1kZXYK
+From: ranjeet kumar <ranjeet1.kumar@intel.com>
+
+Added test description for subtest.
+
+Cc: Melkaveri, Arjun <Arjun.Melkaveri@intel.com>
+Signed-off-by: ranjeet kumar <ranjeet1.kumar@intel.com>
+---
+ tests/i915/gem_ppgtt.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/tests/i915/gem_ppgtt.c b/tests/i915/gem_ppgtt.c
+index 8c02e4af..b98c2144 100644
+--- a/tests/i915/gem_ppgtt.c
++++ b/tests/i915/gem_ppgtt.c
+@@ -45,6 +45,10 @@
+ #define HEIGHT 512
+ #define SIZE (HEIGHT*STRIDE)
+ 
++IGT_TEST_DESCRIPTION("Exercise full ppgtt in multiple fd, create context and"
++		     " surfaces for each child process and do copy operation"
++		     " on render and blitter engine.");
++
+ static drm_intel_bo *create_bo(drm_intel_bufmgr *bufmgr,
+ 			       uint32_t pixel)
+ {
+@@ -300,6 +304,9 @@ igt_main
+ 		close(fd);
+ 	}
+ 
++	igt_describe("Checks for enough memory for child process to co-exist,"
++		     " each child keeps its own surfaces and perform copy"
++		     " operation on blitter and render" );
+ 	igt_subtest("blt-vs-render-ctx0") {
+ 		drm_intel_bo *bcs[1], *rcs[N_CHILD];
+ 
+@@ -312,6 +319,10 @@ igt_main
+ 		surfaces_check(rcs, N_CHILD, 0x8000 / N_CHILD);
+ 	}
+ 
++	igt_describe("Create context for the each child process, enough memory"
++		     " required for the child to co-exist and all writes are"
++		     " flushed into the context for the execution first start"
++		     " with rcs then bcs ");
+ 	igt_subtest("blt-vs-render-ctxN") {
+ 		drm_intel_bo *bcs[1], *rcs[N_CHILD];
+ 
+@@ -324,6 +335,10 @@ igt_main
+ 		surfaces_check(rcs, N_CHILD, 0x8000 / N_CHILD);
+ 	}
+ 
++	igt_describe("Wraps gem_open ioctl which is use to export a gem buffer"
++		     " objects into device global flink namespace, clear flinked"
++		     " bo so new bo gets same size and offset and flush should be"
++		     " done before VMA leaks");
+ 	igt_subtest("flink-and-close-vma-leak")
+ 		flink_and_close();
+ }
+-- 
+2.26.2
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
