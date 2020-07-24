@@ -1,18 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
- [IPv6:2a00:1450:4864:20::243])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D6916E07D
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jul 2020 16:47:56 +0000 (UTC)
-Received: by mail-lj1-x243.google.com with SMTP id z24so3203559ljn.8
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jul 2020 09:47:56 -0700 (PDT)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Fri, 24 Jul 2020 18:06:46 +0100
+Message-Id: <20200724170649.463842-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-In-Reply-To: <20200720121908.28124-1-janusz.krzysztofik@linux.intel.com>
-References: <20200720121908.28124-1-janusz.krzysztofik@linux.intel.com>
-From: =?utf-8?q?Micha=C5=82?= Winiarski <michal@hardline.pl>
-Date: Wed, 22 Jul 2020 18:47:52 +0200
-Message-ID: <159543647233.28670.678928339802345112@macragge.hardline.pl>
-Subject: Re: [igt-dev] [Intel-gfx] [RFC PATH i-g-t 00/15]
- tests/core_hotunplug: Fixes and enhancements
+Subject: [igt-dev] [PATCH i-g-t 1/4] lib/i915: Identify Rocketlake
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,48 +11,73 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, =?utf-8?q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBKYW51c3ogS3J6eXN6dG9maWsgKDIwMjAtMDctMjAgMTQ6MTg6NTMpCj4gU2luY2Ug
-dGhlIHRlc3QgaXMgc3RpbGwgYmxvY2tsaXN0ZWQgZHVlIHRvIGRyaXZlciBpc3N1ZXMgYW5kIHdv
-bid0IGJlCj4gZXhlY3V0ZWQgb24gQ0ksIEknbSBwcm92aWRpbmcgYSBsaW5rIHdoZXJlIHJlc3Vs
-dHMgb2J0YWluZWQgZnJvbSBhIAo+IHJ5Ym90IHJ1biB3aXRoIHRoZSB0ZXN0IHJlbW92ZWQgZnJv
-bSB0aGUgYmxvY2tsaXN0IGNhbiBiZSBmb3VuZDoKPiBodHRwczovL3BhdGNod29yay5mcmVlZGVz
-a3RvcC5vcmcvc2VyaWVzLzc5NjYyLwo+IEZhaWx1cmVzIHJlcG9ydGVkIHRoZXJlIGNvbWUgZnJv
-bSBkcml2ZXIgYW5kIG5vdCB0ZXN0IGlzc3VlcywgSQo+IGJlbGlldmUuCj4gCj4gVGhhbmtzLAo+
-IEphbnVzegoKSSdkIHByb2JhYmx5IHNxdWFzaCBzb21lIG9mIHRoZSBwYXRjaGVzIChlLmcuIDA2
-LzE1IHdpdGggMDcvMTUsIG1heWJlIG1vcmUpLApidXQgdGhhdCdzIGp1c3QgYSBtYXR0ZXIgb2Yg
-b3BpbmlvbiAoYW5kIEkgZ3Vlc3Mgc3VjaCBmaW5lLWdyYWluZWQgc3BsaXQgbWFrZXMKaXQgZWFz
-aWVyIHRvIHJldmlldykuCgpMR1RNLgoKUmV2aWV3ZWQtYnk6IE1pY2hhxYIgV2luaWFyc2tpIDxt
-aWNoYWwud2luaWFyc2tpQGludGVsLmNvbT4KCi1NaWNoYcWCCgo+IAo+IEphbnVzeiBLcnp5c3p0
-b2ZpayAoMTUpOgo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IFVzZSBpZ3RfYXNzZXJ0X2ZkKCkK
-PiAgIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBDb25zdGlmeSBkZXZfYnVzX2FkZHIgc3RyaW5nCj4g
-ICB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogQ29uc29saWRhdGUgZHVwbGljYXRlZCBkZWJ1ZyBtZXNz
-YWdlcwo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IEFzc2VydCBzdWNjZXNzZnVsIGRldmljZSBm
-aWx0ZXIgYXBwbGljYXRpb24KPiAgIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBGaXggbWlzc2luZyBu
-ZXdsaW5lCj4gICB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogTWFpbnRhaW4gYSBzaW5nbGUgZGF0YSBz
-dHJ1Y3R1cmUgaW5zdGFuY2UKPiAgIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBQYXNzIGVycm9ycyB2
-aWEgYSBkYXRhIHN0cnVjdHVyZSBmaWVsZAo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IEhhbmRs
-ZSBkZXZpY2UgY2xvc2UgZXJyb3JzCj4gICB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogUHJlcGFyZSBp
-bnZhcmlhbnQgZGF0YSBvbmNlIHBlciB0ZXN0IHJ1bgo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6
-IFNraXAgc2VsZWN0aXZlbHkgb24gc3lzZnMgY2xvc2UgZXJyb3JzCj4gICB0ZXN0cy9jb3JlX2hv
-dHVucGx1ZzogRm9sbG93IGZhaWxlZCBzdWJ0ZXN0cyB3aXRoIGhlYWx0aCBjaGVja3MKPiAgIHRl
-c3RzL2NvcmVfaG90dW5wbHVnOiBGYWlsIHN1YnRlc3RzIG9uIGRldmljZSBjbG9zZSBlcnJvcnMK
-PiAgIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBQcm9jZXNzIHJldHVybiB2YWx1ZXMgb2Ygc3lzZnMg
-b3BlcmF0aW9ucwo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IEFzc2VydCBleHBlY3RlZCBkZXZp
-Y2UgcHJlc2VuY2UvYWJzZW5jZQo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IEV4cGxpY2l0bHkg
-aWdub3JlIHVudXNlZCByZXR1cm4gdmFsdWVzCj4gCj4gIHRlc3RzL2NvcmVfaG90dW5wbHVnLmMg
-fCAzMzMgKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0KPiAgMSBmaWxl
-IGNoYW5nZWQsIDIwMiBpbnNlcnRpb25zKCspLCAxMzEgZGVsZXRpb25zKC0pCj4gCj4gLS0gCj4g
-Mi4yMS4xCj4gCj4gX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KPiBJbnRlbC1nZnggbWFpbGluZyBsaXN0Cj4gSW50ZWwtZ2Z4QGxpc3RzLmZyZWVkZXNrdG9w
-Lm9yZwo+IGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaW50
-ZWwtZ2Z4Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
-dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+commit a048d54f58dd ("lib: Sync i915 PCI ids") added the ids for
+Rocketlake, but no identification tables.
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/2217
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ lib/intel_chipset.h     | 2 ++
+ lib/intel_device_info.c | 7 +++++++
+ 2 files changed, 9 insertions(+)
+
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index 929fac530..aab823a17 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -73,6 +73,7 @@ struct intel_device_info {
+ 	bool is_icelake : 1;
+ 	bool is_elkhartlake : 1;
+ 	bool is_tigerlake : 1;
++	bool is_rocketlake : 1;
+ 	const char *codename;
+ };
+ 
+@@ -172,6 +173,7 @@ void intel_check_pch(void);
+ #define IS_CANNONLAKE(devid)	(intel_get_device_info(devid)->is_cannonlake)
+ #define IS_ICELAKE(devid)	(intel_get_device_info(devid)->is_icelake)
+ #define IS_TIGERLAKE(devid)	(intel_get_device_info(devid)->is_tigerlake)
++#define IS_ROCKETLAKE(devid)	(intel_get_device_info(devid)->is_rocketlake)
+ 
+ #define IS_GEN(devid, x)	(intel_get_device_info(devid)->gen & (1u << ((x)-1)))
+ #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->gen & -(1u << ((x)-1)))
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 21f7a9570..6c9ac388c 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -321,6 +321,12 @@ static const struct intel_device_info intel_tigerlake_info = {
+ 	.codename = "tigerlake"
+ };
+ 
++static const struct intel_device_info intel_rocketlake_info = {
++	.gen = BIT(11),
++	.is_rocketlake = true,
++	.codename = "rocketlake"
++};
++
+ static const struct pci_id_match intel_device_match[] = {
+ 	INTEL_I810_IDS(&intel_i810_info),
+ 	INTEL_I815_IDS(&intel_i815_info),
+@@ -405,6 +411,7 @@ static const struct pci_id_match intel_device_match[] = {
+ 	INTEL_EHL_IDS(&intel_elkhartlake_info),
+ 
+ 	INTEL_TGL_12_IDS(&intel_tigerlake_info),
++	INTEL_RKL_IDS(&intel_rocketlake_info),
+ 
+ 	INTEL_VGA_DEVICE(PCI_MATCH_ANY, &intel_generic_info),
+ };
+-- 
+2.28.0.rc1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
