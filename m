@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AABF86E8A8
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DF7196E8A9
  for <igt-dev@lists.freedesktop.org>; Fri, 24 Jul 2020 00:15:22 +0000 (UTC)
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Date: Thu, 23 Jul 2020 17:15:20 -0700
-Message-Id: <20200724001521.35201-1-umesh.nerlige.ramappa@intel.com>
+Date: Thu, 23 Jul 2020 17:15:21 -0700
+Message-Id: <20200724001521.35201-2-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20200724001521.35201-1-umesh.nerlige.ramappa@intel.com>
+References: <20200724001521.35201-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 1/2] i915/perf: add tests for triggered OA reports
+Subject: [igt-dev] [PATCH 2/2] i915/perf: Add tests for mapped OA buffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,314 +23,394 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lionel G Landwerlin <lionel.g.landwerlin@intel.com>
+For applications that need a faster way to access reports in the OA
+buffer, i915 now provides a way to map the OA buffer to privileged user
+space. Validate the mapped OA buffer.
 
-By whitelisting a couple of registers we can allow an application
-batch to trigger OA reports in the OA buffer by switching back & forth
-an inverter on the condition logic.
-
-v2: Wait before sampling the timestamp used to end the OA buffer search
-
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/i915/perf.c | 260 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 258 insertions(+), 2 deletions(-)
+ include/drm-uapi/i915_drm.h |  32 ++++
+ tests/i915/perf.c           | 289 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 321 insertions(+)
 
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index 2b55af13..f7523d55 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -2048,6 +2048,38 @@ struct drm_i915_perf_open_param {
+  */
+ #define I915_PERF_IOCTL_CONFIG	_IO('i', 0x2)
+ 
++/**
++ * Returns OA buffer properties to be used with mmap.
++ *
++ * This ioctl is available in perf revision 6.
++ */
++#define I915_PERF_IOCTL_GET_OA_BUFFER_INFO _IO('i', 0x3)
++
++/**
++ * OA buffer size and offset.
++ */
++struct drm_i915_perf_oa_buffer_info {
++	__u32 size;
++	__u32 offset;
++	__u64 reserved[4];
++};
++
++/**
++ * Returns current position of OA buffer head and tail.
++ *
++ * This ioctl is available in perf revision 6.
++ */
++#define I915_PERF_IOCTL_GET_OA_BUFFER_HEAD_TAIL _IO('i', 0x4)
++
++/**
++ * OA buffer head and tail.
++ */
++struct drm_i915_perf_oa_buffer_head_tail {
++	__u32 head;
++	__u32 tail;
++	__u64 reserved[4];
++};
++
+ /**
+  * Common to all i915 perf records
+  */
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 92edc9f1..7d09e009 100644
+index 7d09e009..cc4bc98a 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
-@@ -53,6 +53,8 @@ IGT_TEST_DESCRIPTION("Test the i915 perf metrics streaming interface");
- #define OAREPORT_REASON_SHIFT          19
- #define OAREPORT_REASON_TIMER          (1<<0)
- #define OAREPORT_REASON_INTERNAL       (3<<1)
-+#define OAREPORT_REASON_TRIGGER1       (1<<1)
-+#define OAREPORT_REASON_TRIGGER2       (1<<2)
- #define OAREPORT_REASON_CTX_SWITCH     (1<<3)
- #define OAREPORT_REASON_GO             (1<<4)
- #define OAREPORT_REASON_CLK_RATIO      (1<<5)
-@@ -383,11 +385,17 @@ gen8_read_report_clock_ratios(uint32_t *report,
- 	*unslice_freq_mhz = (unslice_freq * 16666) / 1000;
+@@ -37,6 +37,7 @@
+ #include <time.h>
+ #include <poll.h>
+ #include <math.h>
++#include <semaphore.h>
+ 
+ #include "i915/gem.h"
+ #include "i915/perf.h"
+@@ -206,6 +207,7 @@ static struct intel_perf *intel_perf = NULL;
+ static struct intel_perf_metric_set *test_set = NULL;
+ static bool *undefined_a_counters;
+ static uint64_t oa_exp_1_millisec;
++struct intel_mmio_data mmio_data;
+ 
+ static igt_render_copyfunc_t render_copy = NULL;
+ static uint32_t (*read_report_ticks)(uint32_t *report,
+@@ -5017,6 +5019,263 @@ test_whitelisted_registers_userspace_config(void)
+ 	i915_perf_remove_config(drm_fd, config_id);
  }
  
-+static uint32_t
-+gen8_report_reason(const uint32_t *report)
++#define OA_BUFFER_DATA(tail, head, oa_buffer_size) \
++	(((tail) - (head)) & ((oa_buffer_size) - 1))
++
++#ifndef MAP_FAILED
++#define MAP_FAILED ((void *)-1)
++#endif
++
++static uint32_t oa_status_reg(void)
 +{
-+	return ((report[0] >> OAREPORT_REASON_SHIFT) &
-+		OAREPORT_REASON_MASK);
++	if (IS_HASWELL(devid))
++		return intel_register_read(&mmio_data, 0x2346) & 0x7;
++	else if (IS_GEN12(devid))
++		return intel_register_read(&mmio_data, 0xdafc) & 0x7;
++	else
++		return intel_register_read(&mmio_data, 0x2b08) & 0xf;
 +}
 +
- static const char *
- gen8_read_report_reason(const uint32_t *report)
- {
--	uint32_t reason = ((report[0] >> OAREPORT_REASON_SHIFT) &
--			   OAREPORT_REASON_MASK);
-+	uint32_t reason = gen8_report_reason(report);
- 
- 	if (reason & (1<<0))
- 		return "timer";
-@@ -3118,6 +3126,247 @@ emit_stall_timestamp_and_rpc(struct intel_batchbuffer *batch,
- 	emit_report_perf_count(batch, dst, report_dst_offset, report_id);
- }
- 
-+/* The following register all have the same layout. */
-+#define OAREPORTTRIG2 (0x2744)
-+#define   OAREPORTTRIG2_INVERT_A_0  (1 << 0)
-+#define   OAREPORTTRIG2_INVERT_A_1  (1 << 1)
-+#define   OAREPORTTRIG2_INVERT_A_2  (1 << 2)
-+#define   OAREPORTTRIG2_INVERT_A_3  (1 << 3)
-+#define   OAREPORTTRIG2_INVERT_A_4  (1 << 4)
-+#define   OAREPORTTRIG2_INVERT_A_5  (1 << 5)
-+#define   OAREPORTTRIG2_INVERT_A_6  (1 << 6)
-+#define   OAREPORTTRIG2_INVERT_A_7  (1 << 7)
-+#define   OAREPORTTRIG2_INVERT_A_8  (1 << 8)
-+#define   OAREPORTTRIG2_INVERT_A_9  (1 << 9)
-+#define   OAREPORTTRIG2_INVERT_A_10 (1 << 10)
-+#define   OAREPORTTRIG2_INVERT_A_11 (1 << 11)
-+#define   OAREPORTTRIG2_INVERT_A_12 (1 << 12)
-+#define   OAREPORTTRIG2_INVERT_A_13 (1 << 13)
-+#define   OAREPORTTRIG2_INVERT_A_14 (1 << 14)
-+#define   OAREPORTTRIG2_INVERT_A_15 (1 << 15)
-+#define   OAREPORTTRIG2_INVERT_B_0  (1 << 16)
-+#define   OAREPORTTRIG2_INVERT_B_1  (1 << 17)
-+#define   OAREPORTTRIG2_INVERT_B_2  (1 << 18)
-+#define   OAREPORTTRIG2_INVERT_B_3  (1 << 19)
-+#define   OAREPORTTRIG2_INVERT_C_0  (1 << 20)
-+#define   OAREPORTTRIG2_INVERT_C_1  (1 << 21)
-+#define   OAREPORTTRIG2_INVERT_D_0  (1 << 22)
-+#define   OAREPORTTRIG2_THRESHOLD_ENABLE      (1 << 23)
-+#define   OAREPORTTRIG2_REPORT_TRIGGER_ENABLE (1 << 31)
-+#define OAREPORTTRIG6 (0x2754)
-+#define GEN12_OAREPORTTRIG2 (0xd924)
-+#define GEN12_OAREPORTTRIG6 (0xd934)
-+
-+static void
-+emit_triggered_oa_report(struct intel_batchbuffer *batch,
-+			 uint32_t trigger)
++static jmp_buf jmp;
++static void __attribute__((noreturn)) sigtrap(int sig)
 +{
-+	/*
-+	 * We have 2 trigger registers that each generate a different
-+	 * report reason.
-+	 */
-+	static const uint32_t gen8_triggers[] = {
-+		OAREPORTTRIG2,
-+		OAREPORTTRIG6,
-+	};
-+	static const uint32_t gen12_triggers[] = {
-+		GEN12_OAREPORTTRIG2,
-+		GEN12_OAREPORTTRIG6,
-+	};
-+	const uint32_t *triggers = intel_gen(devid) >= 12 ? gen12_triggers : gen8_triggers;
-+
-+	assert(trigger <= 1);
-+
-+	BEGIN_BATCH(6, 0);
-+	OUT_BATCH(MI_LOAD_REGISTER_IMM);
-+	OUT_BATCH(triggers[trigger]);
-+	OUT_BATCH(OAREPORTTRIG2_INVERT_C_1 |
-+		  OAREPORTTRIG2_REPORT_TRIGGER_ENABLE);
-+	OUT_BATCH(MI_LOAD_REGISTER_IMM);
-+	OUT_BATCH(triggers[trigger]);
-+	OUT_BATCH(OAREPORTTRIG2_INVERT_C_1 |
-+		  OAREPORTTRIG2_INVERT_D_0 |
-+		  OAREPORTTRIG2_REPORT_TRIGGER_ENABLE);
-+	ADVANCE_BATCH();
++	siglongjmp(jmp, sig);
 +}
 +
-+static uint64_t
-+rcs_timestmap_reg_read(int fd)
++static void try_invalid_access(void *vaddr)
 +{
-+	struct drm_i915_reg_read rr = {
-+		.offset = 0x2358 | I915_REG_READ_8B_WA, /* render ring timestamp */
-+	};
++	sighandler_t old_sigsegv;
++	uint32_t dummy;
 +
-+	do_ioctl(fd, DRM_IOCTL_I915_REG_READ, &rr);
-+
-+	return rr.val;
++	old_sigsegv = signal(SIGSEGV, sigtrap);
++	switch (sigsetjmp(jmp, SIGSEGV)) {
++	case SIGSEGV:
++		break;
++	case 0:
++		dummy = READ_ONCE(*((uint32_t *)vaddr + 1));
++		(void) dummy;
++	default:
++		igt_assert(!"reached");
++		break;
++	}
++	signal(SIGSEGV, old_sigsegv);
 +}
 +
-+/*
-+ * Verify that we can trigger OA reports into the OA buffer using
-+ * MI_LRI.
-+ */
-+static void
-+test_triggered_oa_reports(void)
++static void invalid_param_map_oa_buffer(void)
 +{
-+	int oa_exponent = max_oa_exponent_for_period_lte(1000000);
++	struct drm_i915_perf_oa_buffer_info oa_buffer;
++	void *oa_vaddr = NULL;
++
++	do_ioctl(stream_fd, I915_PERF_IOCTL_GET_OA_BUFFER_INFO, &oa_buffer);
++
++	igt_debug("size        = %d\n", oa_buffer.size);
++	igt_debug("offset      = %x\n", oa_buffer.offset);
++
++	igt_assert_eq(oa_buffer.size & (oa_buffer.size - 1), 0);
++
++	/* try a couple invalid mmaps */
++	/* bad prots */
++	oa_vaddr = mmap(0, oa_buffer.size, PROT_WRITE, MAP_PRIVATE, stream_fd, oa_buffer.offset);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	oa_vaddr = mmap(0, oa_buffer.size, PROT_EXEC, MAP_PRIVATE, stream_fd, oa_buffer.offset);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	/* bad MAPs */
++	oa_vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_SHARED, stream_fd, oa_buffer.offset);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	/* bad offsets */
++	oa_vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_PRIVATE, stream_fd, 0);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	oa_vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_PRIVATE, stream_fd, 8192);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	oa_vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_PRIVATE, stream_fd, 11);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	/* bad size */
++	oa_vaddr = mmap(0, oa_buffer.size + 1, PROT_READ, MAP_PRIVATE, stream_fd, oa_buffer.offset);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	/* do the right thing */
++	oa_vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_PRIVATE, stream_fd, oa_buffer.offset);
++	igt_assert(oa_vaddr != MAP_FAILED && oa_vaddr != NULL);
++
++	munmap(oa_vaddr, oa_buffer.size);
++}
++
++static void *map_oa_buffer(uint32_t *size)
++{
++	struct drm_i915_perf_oa_buffer_info oa_buffer;
++	void *vaddr;
++
++	do_ioctl(stream_fd, I915_PERF_IOCTL_GET_OA_BUFFER_INFO, &oa_buffer);
++
++	igt_debug("size        = %d\n", oa_buffer.size);
++	igt_debug("offset      = %x\n", oa_buffer.offset);
++
++	igt_assert_eq(oa_buffer.size & (oa_buffer.size - 1), 0);
++	igt_assert_eq(oa_status_reg(), 0);
++
++	vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_PRIVATE, stream_fd, oa_buffer.offset);
++	igt_assert(vaddr != NULL);
++
++	*size = oa_buffer.size;
++
++	return vaddr;
++}
++
++static void unmap_oa_buffer(void *addr, uint32_t size)
++{
++	munmap(addr, size);
++}
++
++static void check_reports(void *oa_vaddr, uint32_t oa_size)
++{
++	struct drm_i915_perf_oa_buffer_head_tail oa_ht;
++	struct oa_format format = get_oa_format(test_set->perf_oa_format);
++	size_t report_size = format.size;
++	uint8_t *reports;
++	uint32_t *report0, *report1;
++	uint32_t num_reports, timer_reports = 0;
++	int i;
++
++	do_ioctl(stream_fd, I915_PERF_IOCTL_GET_OA_BUFFER_HEAD_TAIL, &oa_ht);
++	igt_debug("head = %x\n", oa_ht.head);
++	igt_debug("tail = %x\n", oa_ht.tail);
++
++	reports = (uint8_t *) (oa_vaddr + oa_ht.head);
++
++	num_reports = OA_BUFFER_DATA(oa_ht.tail,
++				     oa_ht.head,
++				     oa_size) / report_size;
++
++	for (i = 0; i < num_reports; i++) {
++		report1 = (uint32_t *)(reports + (i * report_size));
++		if (!oa_report_is_periodic(oa_exp_1_millisec, report1))
++			continue;
++
++		timer_reports++;
++		if (timer_reports >= 2)
++			sanity_check_reports(report0, report1,
++					     test_set->perf_oa_format);
++
++		report0 = report1;
++	}
++}
++
++static void check_reports_from_mapped_buffer(void)
++{
++	void *vaddr;
++	uint32_t size;
++	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
++
++	vaddr = map_oa_buffer(&size);
++
++	/* wait for approx 100 reports */
++	usleep(100 * period_us);
++	check_reports(vaddr, size);
++
++	unmap_oa_buffer(vaddr, size);
++}
++
++static void unprivileged_try_to_map_oa_buffer(void)
++{
++	struct drm_i915_perf_oa_buffer_info oa_buffer;
++	struct drm_i915_perf_oa_buffer_head_tail oa_ht;
++	void *oa_vaddr;
++
++	do_ioctl_err(stream_fd, I915_PERF_IOCTL_GET_OA_BUFFER_INFO,
++		     &oa_buffer, EACCES);
++
++	do_ioctl_err(stream_fd, I915_PERF_IOCTL_GET_OA_BUFFER_HEAD_TAIL,
++		     &oa_ht, EACCES);
++
++	oa_vaddr = mmap(0, 4096, PROT_READ, MAP_PRIVATE, stream_fd, 4096);
++	igt_assert(oa_vaddr == MAP_FAILED);
++	igt_assert_eq(errno, EACCES);
++}
++
++static void unprivileged_map_oa_buffer(void)
++{
++	igt_fork(child, 1) {
++		igt_drop_root();
++		unprivileged_try_to_map_oa_buffer();
++	}
++	igt_waitchildren();
++}
++
++static void map_oa_buffer_unprivilege_access(void)
++{
++	void *vaddr;
++	uint32_t size;
++
++	vaddr = map_oa_buffer(&size);
++
++	igt_fork(child, 1) {
++		igt_drop_root();
++		try_invalid_access(vaddr);
++	}
++	igt_waitchildren();
++
++	unmap_oa_buffer(vaddr, size);
++}
++
++static void test_mapped_oa_buffer(void (*test_with_fd_open)(void))
++{
 +	uint64_t properties[] = {
-+		DRM_I915_PERF_PROP_CTX_HANDLE, UINT64_MAX, /* updated below */
-+
-+		/* Note: we have to specify at least one sample property even
-+		 * though we aren't interested in samples in this case
-+		 */
 +		DRM_I915_PERF_PROP_SAMPLE_OA, true,
-+
-+		/* OA unit configuration */
 +		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
 +		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-+		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
++		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
 +
-+		/* Note: no OA exponent specified in this case */
 +	};
 +	struct drm_i915_perf_open_param param = {
 +		.flags = I915_PERF_FLAG_FD_CLOEXEC,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
++		.num_properties = sizeof(properties) / 16,
 +		.properties_ptr = to_user_pointer(properties),
 +	};
-+	struct drm_i915_perf_record_header *header;
-+	drm_intel_bufmgr *bufmgr;
-+	drm_intel_context *context;
-+	struct igt_helper_process child = {};
-+	struct intel_batchbuffer *batch;
-+	struct igt_buf src[2], dst[2];
-+	uint64_t timestamp32_mask = (1ull << 32) - 1;
-+	uint64_t timestamps[2];
-+	uint32_t buf_size = 16 * 1024 * 1024;
-+	uint8_t *buf = malloc(buf_size);
-+	uint32_t ctx_id;
-+	int width = 800;
-+	int height = 600;
-+	uint32_t trigger_counts[2] = { 0, };
-+	int ret;
 +
-+	do {
-+		igt_fork_helper(&child) {
-+			bufmgr = drm_intel_bufmgr_gem_init(drm_fd, 4096);
-+			drm_intel_bufmgr_gem_enable_reuse(bufmgr);
++	stream_fd = __perf_open(drm_fd, &param, false);
 +
-+			scratch_buf_init(bufmgr, &src[0], width, height, 0xff0000ff);
-+			scratch_buf_init(bufmgr, &dst[0], width, height, 0x00ff00ff);
-+			scratch_buf_init(bufmgr, &src[1], 2 * width, height, 0xff0000ff);
-+			scratch_buf_init(bufmgr, &dst[1], 2 * width, height, 0x00ff00ff);
++	igt_assert(test_with_fd_open);
++	test_with_fd_open();
 +
-+			batch = intel_batchbuffer_alloc(bufmgr, devid);
-+
-+			context = drm_intel_gem_context_create(bufmgr);
-+			igt_assert(context);
-+
-+			ret = drm_intel_gem_context_get_id(context, &ctx_id);
-+			properties[1] = ctx_id;
-+
-+
-+			timestamps[0] = rcs_timestmap_reg_read(drm_fd);
-+
-+			stream_fd = __perf_open(drm_fd, &param, false);
-+
-+			emit_triggered_oa_report(batch, 0);
-+
-+			render_copy(batch,
-+				    context,
-+				    &src[0], 0, 0, width, height,
-+				    &dst[0], 0, 0);
-+
-+			emit_triggered_oa_report(batch, 0);
-+
-+			emit_triggered_oa_report(batch, 1);
-+
-+			render_copy(batch,
-+				    context,
-+				    &src[1], 0, 0, 2 * width, height,
-+				    &dst[1], 0, 0);
-+
-+			emit_triggered_oa_report(batch, 1);
-+
-+			intel_batchbuffer_flush_with_context(batch, context);
-+
-+			/* On some failures, this timestamp is too early as in
-+			 * we bail out before seeing the triggered report. Wait
-+			 * a little more and then check.
-+			 */
-+			usleep(50000);
-+
-+			timestamps[1] = rcs_timestmap_reg_read(drm_fd);
-+
-+			if (timestamps[1] < timestamps[0] ||
-+			    (timestamps[1] & timestamp32_mask) < (timestamps[1] & timestamp32_mask)) {
-+				igt_debug("Timestamp rollover, trying again\n");
-+				exit(EAGAIN);
-+			}
-+
-+			ret = i915_read_reports_until_timestamp(test_set->perf_oa_format,
-+								buf, buf_size,
-+								timestamps[0] & timestamp32_mask,
-+								timestamps[1] & timestamp32_mask);
-+
-+			for (size_t offset = 0; offset < ret; offset += header->size) {
-+				uint32_t *report;
-+
-+				header = (void *)(buf + offset);
-+
-+				igt_assert_eq(header->pad, 0); /* Reserved */
-+
-+				igt_assert_neq(header->type, DRM_I915_PERF_RECORD_OA_BUFFER_LOST);
-+
-+				if (header->type == DRM_I915_PERF_RECORD_OA_REPORT_LOST)
-+					continue;
-+
-+				/* Currently the only other record type expected is a
-+				 * _SAMPLE. Notably this test will need updating if
-+				 * i915-perf is extended in the future with additional
-+				 * record types.
-+				 */
-+				igt_assert_eq(header->type, DRM_I915_PERF_RECORD_SAMPLE);
-+
-+				report = (void *)(header + 1);
-+
-+				igt_debug("report ts=0x%08x hw_id=0x%08x reason=%s\n",
-+					  report[1], report[2],
-+					  gen8_read_report_reason(report));
-+
-+				if (gen8_report_reason(report) & OAREPORT_REASON_TRIGGER1) {
-+					igt_assert_eq(trigger_counts[1], 0);
-+					trigger_counts[0]++;
-+				}
-+				if (gen8_report_reason(report) & OAREPORT_REASON_TRIGGER2) {
-+					igt_assert_eq(trigger_counts[0], 2);
-+					trigger_counts[1]++;
-+				}
-+			}
-+
-+			igt_assert_eq(trigger_counts[0], 2);
-+			igt_assert_eq(trigger_counts[1], 2);
-+
-+			for (int i = 0; i < ARRAY_SIZE(src); i++) {
-+				drm_intel_bo_unreference(src[i].bo);
-+				drm_intel_bo_unreference(dst[i].bo);
-+			}
-+
-+			intel_batchbuffer_free(batch);
-+			drm_intel_gem_context_destroy(context);
-+			drm_intel_bufmgr_destroy(bufmgr);
-+			__perf_close(stream_fd);
-+		}
-+
-+		ret = igt_wait_helper(&child);
-+
-+		igt_assert(WEXITSTATUS(ret) == EAGAIN ||
-+			   WEXITSTATUS(ret) == 0);
-+
-+	} while (WEXITSTATUS(ret) == EAGAIN);
-+
-+	free(buf);
++	__perf_close(stream_fd);
 +}
 +
- /* Tests the INTEL_performance_query use case where an unprivileged process
-  * should be able to configure the OA unit for per-context metrics (for a
-  * context associated with that process' drm file descriptor) and the counters
-@@ -5096,6 +5345,13 @@ igt_main
- 	igt_subtest("whitelisted-registers-userspace-config")
- 		test_whitelisted_registers_userspace_config();
++static void closed_fd_and_unmapped_access(void)
++{
++	uint64_t properties[] = {
++		DRM_I915_PERF_PROP_SAMPLE_OA, true,
++		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
++		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
++		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
++
++	};
++	struct drm_i915_perf_open_param param = {
++		.flags = I915_PERF_FLAG_FD_CLOEXEC,
++		.num_properties = sizeof(properties) / 16,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	void *vaddr;
++	uint32_t size;
++	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
++
++	stream_fd = __perf_open(drm_fd, &param, false);
++	vaddr = map_oa_buffer(&size);
++
++	usleep(100 * period_us);
++	check_reports(vaddr, size);
++
++	unmap_oa_buffer(vaddr, size);
++	__perf_close(stream_fd);
++
++	try_invalid_access(vaddr);
++}
++
+ static unsigned
+ read_i915_module_ref(void)
+ {
+@@ -5185,6 +5444,9 @@ igt_main
  
-+	igt_describe("Verify that triggered reports work");
-+	igt_subtest("triggered-oa-reports") {
-+		igt_require(intel_gen(devid) >= 8);
-+		igt_require(i915_perf_revision(drm_fd) >= 6);
-+		test_triggered_oa_reports();
+ 		render_copy = igt_get_render_copyfunc(devid);
+ 		igt_require_f(render_copy, "no render-copy function\n");
++
++		intel_register_access_init(&mmio_data, intel_get_pci_device(),
++					   0, drm_fd);
+ 	}
+ 
+ 	igt_subtest("non-system-wide-paranoid")
+@@ -5352,6 +5614,32 @@ igt_main
+ 		test_triggered_oa_reports();
+ 	}
+ 
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(i915_perf_revision(drm_fd) >= 8);
++		}
++
++		igt_describe("Verify mapping of oa buffer");
++		igt_subtest("map-oa-buffer")
++			test_mapped_oa_buffer(check_reports_from_mapped_buffer);
++
++		igt_describe("Verify invalid mappings of oa buffer");
++		igt_subtest("invalid-map-oa-buffer")
++			test_mapped_oa_buffer(invalid_param_map_oa_buffer);
++
++		igt_describe("Verify if non-privileged user can map oa buffer");
++		igt_subtest("non-privileged-map-oa-buffer")
++			test_mapped_oa_buffer(unprivileged_map_oa_buffer);
++
++		igt_describe("Verify if non-privileged user can map oa buffer");
++		igt_subtest("non-privileged-access-vaddr")
++			test_mapped_oa_buffer(map_oa_buffer_unprivilege_access);
++
++		igt_describe("Unmap buffer, close fd and try to access");
++		igt_subtest("closed-fd-and-unmapped-access")
++			closed_fd_and_unmapped_access();
 +	}
 +
  	igt_fixture {
  		/* leave sysctl options in their default state... */
  		write_u64_file("/proc/sys/dev/i915/oa_max_sample_rate", 100000);
+@@ -5360,6 +5648,7 @@ igt_main
+ 		if (intel_perf)
+ 			intel_perf_free(intel_perf);
+ 
++		intel_register_access_fini(&mmio_data);
+ 		close(drm_fd);
+ 	}
+ }
 -- 
 2.20.1
 
