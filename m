@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 861936E428
- for <igt-dev@lists.freedesktop.org>; Fri, 24 Jul 2020 06:41:23 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Fri, 24 Jul 2020 08:40:43 +0200
-Message-Id: <20200724064043.10172-13-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20200724064043.10172-1-zbigniew.kempczynski@intel.com>
-References: <20200724064043.10172-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 12/12] HAX: run rendercopy tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 24 Jul 2020 06:48:07 -0000
+Message-ID: <159557328716.15335.15618405215306122612@emeril.freedesktop.org>
+References: <20200724064043.10172-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200724064043.10172-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_R?=
+ =?utf-8?q?emove_libdrm_in_rendercopy_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,152 +14,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
----
- tests/intel-ci/fast-feedback.testlist | 42 +++++++++++++++++----------
- 1 file changed, 26 insertions(+), 16 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index b796b264..d45fd523 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -1,5 +1,6 @@
- # Keep alphabetically sorted by default
- 
-+igt@api_intel_bb
- igt@core_auth@basic-auth
- igt@debugfs_test@read_all_entries
- igt@fbdev@mmap
-@@ -7,6 +8,7 @@ igt@gem_basic@bad-close
- igt@gem_basic@create-close
- igt@gem_basic@create-fd-close
- igt@gem_busy@busy@all
-+igt@gem_caching
- igt@gem_close_race@basic-process
- igt@gem_close_race@basic-threads
- igt@gem_ctx_create@basic
-@@ -14,9 +16,9 @@ igt@gem_ctx_create@basic-files
- igt@gem_ctx_exec@basic
- igt@gem_exec_basic@basic
- igt@gem_exec_create@basic
-+igt@gem_exec_fence@basic-await
- igt@gem_exec_fence@basic-busy
- igt@gem_exec_fence@basic-wait
--igt@gem_exec_fence@basic-await
- igt@gem_exec_fence@nb-await
- igt@gem_exec_gttfill@basic
- igt@gem_exec_parallel@engines
-@@ -32,6 +34,9 @@ igt@gem_huc_copy@huc-copy
- igt@gem_linear_blits@basic
- igt@gem_mmap@basic
- igt@gem_mmap_gtt@basic
-+igt@gem_ppgtt
-+igt@gem_read_read_speed
-+igt@gem_render_copy
- igt@gem_render_linear_blits@basic
- igt@gem_render_tiled_blits@basic
- igt@gem_ringfill@basic-all
-@@ -45,6 +50,10 @@ igt@gem_wait@wait@all
- igt@i915_getparams_basic@basic-eu-total
- igt@i915_getparams_basic@basic-subslice-total
- igt@i915_hangman@error-state-basic
-+igt@i915_pm_backlight@basic-brightness
-+igt@i915_pm_rpm@basic-pci-d3-state
-+igt@i915_pm_rpm@basic-rte
-+igt@i915_pm_rps@basic-api
- igt@kms_addfb_basic@addfb25-bad-modifier
- igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
- igt@kms_addfb_basic@addfb25-modifier-no-flag
-@@ -82,17 +91,18 @@ igt@kms_addfb_basic@unused-handle
- igt@kms_addfb_basic@unused-modifier
- igt@kms_addfb_basic@unused-offsets
- igt@kms_addfb_basic@unused-pitches
-+igt@kms_big_fb
- igt@kms_busy@basic
--igt@kms_chamelium@dp-hpd-fast
--igt@kms_chamelium@dp-edid-read
-+igt@kms_chamelium@common-hpd-after-suspend
- igt@kms_chamelium@dp-crc-fast
--igt@kms_chamelium@hdmi-hpd-fast
--igt@kms_chamelium@hdmi-edid-read
-+igt@kms_chamelium@dp-edid-read
-+igt@kms_chamelium@dp-hpd-fast
- igt@kms_chamelium@hdmi-crc-fast
--igt@kms_chamelium@vga-hpd-fast
-+igt@kms_chamelium@hdmi-edid-read
-+igt@kms_chamelium@hdmi-hpd-fast
- igt@kms_chamelium@vga-edid-read
--igt@kms_chamelium@common-hpd-after-suspend
--igt@kms_prop_blob@basic
-+igt@kms_chamelium@vga-hpd-fast
-+igt@kms_cursor_crc
- igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
- igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
- igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
-@@ -101,6 +111,7 @@ igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
- igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
- igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
- igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
-+igt@kms_draw_crc
- igt@kms_flip@basic-flip-vs-dpms
- igt@kms_flip@basic-flip-vs-modeset
- igt@kms_flip@basic-flip-vs-wf_vblank
-@@ -109,24 +120,23 @@ igt@kms_force_connector_basic@force-connector-state
- igt@kms_force_connector_basic@force-edid
- igt@kms_force_connector_basic@force-load-detect
- igt@kms_force_connector_basic@prune-stale-modes
-+igt@kms_frontbuffer_tracking
- igt@kms_frontbuffer_tracking@basic
- igt@kms_pipe_crc_basic@hang-read-crc-pipe-a
- igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a
- igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a-frame-sequence
- igt@kms_pipe_crc_basic@read-crc-pipe-a
-+igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
- igt@kms_pipe_crc_basic@read-crc-pipe-b
- igt@kms_pipe_crc_basic@read-crc-pipe-c
--igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
- igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
--igt@kms_psr@primary_page_flip
-+igt@kms_prop_blob@basic
-+igt@kms_psr
- igt@kms_psr@cursor_plane_move
--igt@kms_psr@sprite_plane_onoff
- igt@kms_psr@primary_mmap_gtt
-+igt@kms_psr@primary_page_flip
-+igt@kms_psr@sprite_plane_onoff
- igt@kms_setmode@basic-clone-single-crtc
--igt@i915_pm_backlight@basic-brightness
--igt@i915_pm_rpm@basic-pci-d3-state
--igt@i915_pm_rpm@basic-rte
--igt@i915_pm_rps@basic-api
- igt@prime_self_import@basic-llseek-bad
- igt@prime_self_import@basic-llseek-size
- igt@prime_self_import@basic-with_fd_dup
-@@ -139,7 +149,6 @@ igt@prime_vgem@basic-fence-read
- igt@prime_vgem@basic-gtt
- igt@prime_vgem@basic-read
- igt@prime_vgem@basic-write
--igt@vgem_basic@setversion
- igt@vgem_basic@create
- igt@vgem_basic@debugfs
- igt@vgem_basic@dmabuf-export
-@@ -148,6 +157,7 @@ igt@vgem_basic@dmabuf-fence-before
- igt@vgem_basic@dmabuf-mmap
- igt@vgem_basic@mmap
- igt@vgem_basic@second-client
-+igt@vgem_basic@setversion
- igt@vgem_basic@sysfs
- 
- # All tests that do module unloading and reloading are executed last.
--- 
-2.26.0
+Series: Remove libdrm in rendercopy (rev2)
+URL   : https://patchwork.freedesktop.org/series/79823/
+State : warning
 
+== Summary ==
+
+Did not get list of undocumented tests for this run, something is wrong!
+
+Other than that, pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/181568 for the overview.
+
+build-containers:build-debian-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/3782654):
+  Using Docker executor with image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 ...
+  section_end:1595573041:prepare_executor
+  section_start:1595573041:prepare_script
+  Preparing environment
+  Running on runner-j4lrg1of-project-3185-concurrent-1 via gst-htz-1...
+  section_end:1595573042:prepare_script
+  section_start:1595573042:get_sources
+  Getting source from Git repository
+  $ eval "$CI_PRE_CLONE_SCRIPT"
+  Fetching changes...
+  Initialized empty Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Created fresh repository.
+  error: RPC failed; curl 92 HTTP/2 stream 0 was not closed cleanly: Unknown error code (err 1)
+  fatal: the remote end hung up unexpectedly
+  section_end:1595573104:get_sources
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/181568
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
