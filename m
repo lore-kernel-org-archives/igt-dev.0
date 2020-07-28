@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CA396E190
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jul 2020 12:13:58 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 282866E293
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jul 2020 12:14:04 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 28 Jul 2020 14:13:16 +0200
-Message-Id: <20200728121320.6358-14-zbigniew.kempczynski@intel.com>
+Date: Tue, 28 Jul 2020 14:13:19 +0200
+Message-Id: <20200728121320.6358-17-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20200728121320.6358-1-zbigniew.kempczynski@intel.com>
 References: <20200728121320.6358-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v11 13/17] lib/intel_batchbuffer: dump bb to
- base64
+Subject: [igt-dev] [PATCH i-g-t v11 16/17] api_intel_bb: temporary tests to
+ check stride on gen3
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,61 +17,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-U2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNr
-aUBpbnRlbC5jb20+Ci0tLQogbGliL2ludGVsX2JhdGNoYnVmZmVyLmMgfCA0MSArKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwogbGliL2ludGVsX2JhdGNoYnVmZmVyLmgg
-fCAgMiArKwogMiBmaWxlcyBjaGFuZ2VkLCA0MyBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEv
-bGliL2ludGVsX2JhdGNoYnVmZmVyLmMgYi9saWIvaW50ZWxfYmF0Y2hidWZmZXIuYwppbmRleCAz
-M2U1ZjEyMy4uM2FlMzY5YjcgMTAwNjQ0Ci0tLSBhL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jCisr
-KyBiL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jCkBAIC01Miw2ICs1Miw3IEBACiAjaW5jbHVkZSAi
-aWd0X3JhbmQuaCIKICNpbmNsdWRlICJpODMwX3JlZy5oIgogI2luY2x1ZGUgImh1Y19jb3B5Lmgi
-CisjaW5jbHVkZSA8Z2xpYi5oPgogCiAjaW5jbHVkZSA8aTkxNV9kcm0uaD4KIApAQCAtMTQ5NSw2
-ICsxNDk2LDE4IEBAIHZvaWQgaW50ZWxfYmJfc2V0X2RlYnVnKHN0cnVjdCBpbnRlbF9iYiAqaWJi
-LCBib29sIGRlYnVnKQogCWliYi0+ZGVidWcgPSBkZWJ1ZzsKIH0KIAorLyoqCisgKiBpbnRlbF9i
-Yl9zZXRfZHVtcF9iYXNlNjQ6CisgKiBAaWJiOiBwb2ludGVyIHRvIGludGVsX2JiCisgKiBAZHVt
-cDogdHJ1ZSAvIGZhbHNlCisgKgorICogRG8gYmIgZHVtcCBhcyBiYXNlNjQgc3RyaW5nIGJlZm9y
-ZSBleGVjYnVmIGNhbGwuCisgKi8KK3ZvaWQgaW50ZWxfYmJfc2V0X2R1bXBfYmFzZTY0KHN0cnVj
-dCBpbnRlbF9iYiAqaWJiLCBib29sIGR1bXApCit7CisJaWJiLT5kdW1wX2Jhc2U2NCA9IGR1bXA7
-Cit9CisKIHN0YXRpYyBpbnQgX19jb21wYXJlX29iamVjdHMoY29uc3Qgdm9pZCAqcDEsIGNvbnN0
-IHZvaWQgKnAyKQogewogCWNvbnN0IHN0cnVjdCBkcm1faTkxNV9nZW1fZXhlY19vYmplY3QyICpv
-MSA9IHAxLCAqbzIgPSBwMjsKQEAgLTE4NjksNiArMTg4MiwzMSBAQCBzdGF0aWMgdm9pZCBpbnRl
-bF9iYl9kdW1wX2V4ZWNidWYoc3RydWN0IGludGVsX2JiICppYmIsCiAJfQogfQogCisjZGVmaW5l
-IExJTkVMRU4gNzYKK3N0YXRpYyB2b2lkIGludGVsX2JiX2R1bXBfYmFzZTY0KHN0cnVjdCBpbnRl
-bF9iYiAqaWJiKQoreworCWludCBvdXRzaXplOworCWdjaGFyICpzdHIsICpwb3M7CisKKwlpZ3Rf
-aW5mbygiLS0tIGJiIC0tLVxuIik7CisJcG9zID0gc3RyID0gZ19iYXNlNjRfZW5jb2RlKChjb25z
-dCBndWNoYXIgKikgaWJiLT5iYXRjaCwgaWJiLT5zaXplKTsKKwlvdXRzaXplID0gc3RybGVuKHN0
-cik7CisKKwl3aGlsZSAocG9zKSB7CisJCWNoYXIgbGluZVtMSU5FTEVOICsgMV07CisJCWludCB0
-b19jb3B5ID0gbWluKExJTkVMRU4sIG91dHNpemUpOworCisJCW1lbWNweShsaW5lLCBwb3MsIHRv
-X2NvcHkpOworCQlsaW5lW3RvX2NvcHldID0gMDsKKwkJaWd0X2luZm8oIiVzXG4iLCBsaW5lKTsK
-KwkJcG9zICs9IExJTkVMRU47CisJCW91dHNpemUgLT0gdG9fY29weTsKKwkJaWYgKG91dHNpemUg
-PT0gMCkKKwkJCWJyZWFrOworCX0KKwlmcmVlKHN0cik7Cit9CisKIHN0YXRpYyB2b2lkIHByaW50
-X25vZGUoY29uc3Qgdm9pZCAqbm9kZSwgVklTSVQgd2hpY2gsIGludCBkZXB0aCkKIHsKIAljb25z
-dCBzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2JqZWN0MiAqb2JqZWN0ID0KQEAgLTE5MjQsNiAr
-MTk2Miw5IEBAIGludCBfX2ludGVsX2JiX2V4ZWMoc3RydWN0IGludGVsX2JiICppYmIsIHVpbnQz
-Ml90IGVuZF9vZmZzZXQsCiAJCWV4ZWNidWYuZmxhZ3MgJj0gfkk5MTVfRVhFQ19OT19SRUxPQzsK
-IAlleGVjYnVmLnJzdmQyID0gMDsKIAorCWlmIChpYmItPmR1bXBfYmFzZTY0KQorCQlpbnRlbF9i
-Yl9kdW1wX2Jhc2U2NChpYmIpOworCiAJcmV0ID0gX19nZW1fZXhlY2J1Zl93cihpYmItPmk5MTUs
-ICZleGVjYnVmKTsKIAlpZiAocmV0KSB7CiAJCWludGVsX2JiX2R1bXBfZXhlY2J1ZihpYmIsICZl
-eGVjYnVmKTsKZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5oIGIvbGliL2ludGVs
-X2JhdGNoYnVmZmVyLmgKaW5kZXggNDc3ZWE0MjMuLmI4Mzg2ODY1IDEwMDY0NAotLS0gYS9saWIv
-aW50ZWxfYmF0Y2hidWZmZXIuaAorKysgYi9saWIvaW50ZWxfYmF0Y2hidWZmZXIuaApAQCAtNDM3
-LDYgKzQzNyw3IEBAIHN0cnVjdCBpbnRlbF9iYiB7CiAJaW50IGk5MTU7CiAJaW50IGdlbjsKIAli
-b29sIGRlYnVnOworCWJvb2wgZHVtcF9iYXNlNjQ7CiAJYm9vbCBlbmZvcmNlX3JlbG9jczsKIAl1
-aW50MzJfdCBkZXZpZDsKIAl1aW50MzJfdCBoYW5kbGU7CkBAIC00OTAsNiArNDkxLDcgQEAgaW50
-IGludGVsX2JiX3N5bmMoc3RydWN0IGludGVsX2JiICppYmIpOwogdm9pZCBpbnRlbF9iYl9wcmlu
-dChzdHJ1Y3QgaW50ZWxfYmIgKmliYik7CiB2b2lkIGludGVsX2JiX2R1bXAoc3RydWN0IGludGVs
-X2JiICppYmIsIGNvbnN0IGNoYXIgKmZpbGVuYW1lKTsKIHZvaWQgaW50ZWxfYmJfc2V0X2RlYnVn
-KHN0cnVjdCBpbnRlbF9iYiAqaWJiLCBib29sIGRlYnVnKTsKK3ZvaWQgaW50ZWxfYmJfc2V0X2R1
-bXBfYmFzZTY0KHN0cnVjdCBpbnRlbF9iYiAqaWJiLCBib29sIGR1bXApOwogCiBzdGF0aWMgaW5s
-aW5lIHVpbnQ2NF90CiBpbnRlbF9iYl9zZXRfZGVmYXVsdF9vYmplY3RfYWxpZ25tZW50KHN0cnVj
-dCBpbnRlbF9iYiAqaWJiLCB1aW50NjRfdCBhbGlnbm1lbnQpCi0tIAoyLjI2LjAKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
-aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+---
+ tests/i915/api_intel_bb.c | 44 +++++++++++++++++++++++++++++++--------
+ 1 file changed, 35 insertions(+), 9 deletions(-)
+
+diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
+index 5d7d2326..f9cef922 100644
+--- a/tests/i915/api_intel_bb.c
++++ b/tests/i915/api_intel_bb.c
+@@ -723,11 +723,10 @@ static void full_batch(struct buf_ops *bops)
+ 	intel_bb_destroy(ibb);
+ }
+ 
+-static int render(struct buf_ops *bops, uint32_t tiling, bool do_reloc)
++static int render(struct buf_ops *bops, uint32_t tiling, bool do_reloc,
++		  uint32_t width, uint32_t height)
+ {
+ 	struct intel_bb *ibb;
+-	const int width = 1024;
+-	const int height = 1024;
+ 	struct intel_buf src, dst, final;
+ 	int i915 = buf_ops_get_fd(bops);
+ 	uint32_t fails = 0;
+@@ -735,6 +734,8 @@ static int render(struct buf_ops *bops, uint32_t tiling, bool do_reloc)
+ 	uint32_t devid = intel_get_drm_devid(i915);
+ 	igt_render_copyfunc_t render_copy = NULL;
+ 
++	igt_info("%s() gen: %d\n", __func__, intel_gen(devid));
++
+ 	/* Don't use relocations on gen12+ */
+ 	igt_require((do_reloc && intel_gen(devid) < 12) ||
+ 		    !do_reloc);
+@@ -922,6 +923,7 @@ igt_main_args("dpi", NULL, help_str, opt_handler, NULL)
+ {
+ 	int i915;
+ 	struct buf_ops *bops;
++	uint32_t width;
+ 
+ 	igt_fixture {
+ 		i915 = drm_open_driver(DRIVER_INTEL);
+@@ -966,23 +968,47 @@ igt_main_args("dpi", NULL, help_str, opt_handler, NULL)
+ 	igt_subtest("full-batch")
+ 		full_batch(bops);
+ 
++	/* Temporary off */
++#if 0
+ 	igt_subtest("render-none")
+-		render(bops, I915_TILING_NONE, false);
++		render(bops, I915_TILING_NONE, false, 1024, 1024);
+ 
+ 	igt_subtest("render-x")
+-		render(bops, I915_TILING_X, false);
++		render(bops, I915_TILING_X, false, 1024, 1024);
+ 
+ 	igt_subtest("render-y")
+-		render(bops, I915_TILING_Y, false);
++		render(bops, I915_TILING_Y, false, 1024, 1024);
+ 
+ 	igt_subtest("render-none-reloc")
+-		render(bops, I915_TILING_NONE, true);
++		render(bops, I915_TILING_NONE, true, 1024, 1024);
+ 
+ 	igt_subtest("render-x-reloc")
+-		render(bops, I915_TILING_X, true);
++		render(bops, I915_TILING_X, true, 1024, 1024);
+ 
+ 	igt_subtest("render-y-reloc")
+-		render(bops, I915_TILING_Y, true);
++		render(bops, I915_TILING_Y, true, 1024, 1024);
++#endif
++
++	for (width = 512; width <= 1024; width += 512) {
++		igt_subtest_f("render-none-%u", width) {
++			render(bops, I915_TILING_NONE, false, width, width);
++		}
++		igt_subtest_f("render-x-%u", width) {
++			render(bops, I915_TILING_X, false, width, width);
++		}
++		igt_subtest_f("render-y-%u", width) {
++			render(bops, I915_TILING_Y, false, width, width);
++		}
++		igt_subtest_f("render-none-reloc-%u", width) {
++			render(bops, I915_TILING_NONE, true, width, width);
++		}
++		igt_subtest_f("render-x-reloc-%u", width) {
++			render(bops, I915_TILING_X, true, width, width);
++		}
++		igt_subtest_f("render-y-reloc-%u", width) {
++			render(bops, I915_TILING_Y, true, width, width);
++		}
++	}
+ 
+ 	igt_subtest("render-ccs")
+ 		render_ccs(bops);
+-- 
+2.26.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
