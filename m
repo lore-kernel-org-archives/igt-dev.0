@@ -1,14 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D98DB6E28E
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jul 2020 12:14:04 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 28 Jul 2020 14:13:20 +0200
-Message-Id: <20200728121320.6358-18-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20200728121320.6358-1-zbigniew.kempczynski@intel.com>
-References: <20200728121320.6358-1-zbigniew.kempczynski@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DEA346E1D8
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jul 2020 12:18:50 +0000 (UTC)
+From: "Laxminarayan Bharadiya, Pankaj"
+ <pankaj.laxminarayan.bharadiya@intel.com>
+Date: Tue, 28 Jul 2020 12:18:46 +0000
+Message-ID: <0718a083ce3c493c810de1fa070345a3@intel.com>
+References: <20200722134758.26412-1-pankaj.laxminarayan.bharadiya@intel.com>
+ <20200723121414.GD6112@intel.com>
+In-Reply-To: <20200723121414.GD6112@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v11 17/17] HAX: run rendercopy tests
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_big_fb: Use igt_assert on
+ bufmgr
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,152 +20,92 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: =?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Latvala,
+ Petri" <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
----
- tests/intel-ci/fast-feedback.testlist | 42 +++++++++++++++++----------
- 1 file changed, 26 insertions(+), 16 deletions(-)
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index b796b264..d45fd523 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -1,5 +1,6 @@
- # Keep alphabetically sorted by default
- 
-+igt@api_intel_bb
- igt@core_auth@basic-auth
- igt@debugfs_test@read_all_entries
- igt@fbdev@mmap
-@@ -7,6 +8,7 @@ igt@gem_basic@bad-close
- igt@gem_basic@create-close
- igt@gem_basic@create-fd-close
- igt@gem_busy@busy@all
-+igt@gem_caching
- igt@gem_close_race@basic-process
- igt@gem_close_race@basic-threads
- igt@gem_ctx_create@basic
-@@ -14,9 +16,9 @@ igt@gem_ctx_create@basic-files
- igt@gem_ctx_exec@basic
- igt@gem_exec_basic@basic
- igt@gem_exec_create@basic
-+igt@gem_exec_fence@basic-await
- igt@gem_exec_fence@basic-busy
- igt@gem_exec_fence@basic-wait
--igt@gem_exec_fence@basic-await
- igt@gem_exec_fence@nb-await
- igt@gem_exec_gttfill@basic
- igt@gem_exec_parallel@engines
-@@ -32,6 +34,9 @@ igt@gem_huc_copy@huc-copy
- igt@gem_linear_blits@basic
- igt@gem_mmap@basic
- igt@gem_mmap_gtt@basic
-+igt@gem_ppgtt
-+igt@gem_read_read_speed
-+igt@gem_render_copy
- igt@gem_render_linear_blits@basic
- igt@gem_render_tiled_blits@basic
- igt@gem_ringfill@basic-all
-@@ -45,6 +50,10 @@ igt@gem_wait@wait@all
- igt@i915_getparams_basic@basic-eu-total
- igt@i915_getparams_basic@basic-subslice-total
- igt@i915_hangman@error-state-basic
-+igt@i915_pm_backlight@basic-brightness
-+igt@i915_pm_rpm@basic-pci-d3-state
-+igt@i915_pm_rpm@basic-rte
-+igt@i915_pm_rps@basic-api
- igt@kms_addfb_basic@addfb25-bad-modifier
- igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
- igt@kms_addfb_basic@addfb25-modifier-no-flag
-@@ -82,17 +91,18 @@ igt@kms_addfb_basic@unused-handle
- igt@kms_addfb_basic@unused-modifier
- igt@kms_addfb_basic@unused-offsets
- igt@kms_addfb_basic@unused-pitches
-+igt@kms_big_fb
- igt@kms_busy@basic
--igt@kms_chamelium@dp-hpd-fast
--igt@kms_chamelium@dp-edid-read
-+igt@kms_chamelium@common-hpd-after-suspend
- igt@kms_chamelium@dp-crc-fast
--igt@kms_chamelium@hdmi-hpd-fast
--igt@kms_chamelium@hdmi-edid-read
-+igt@kms_chamelium@dp-edid-read
-+igt@kms_chamelium@dp-hpd-fast
- igt@kms_chamelium@hdmi-crc-fast
--igt@kms_chamelium@vga-hpd-fast
-+igt@kms_chamelium@hdmi-edid-read
-+igt@kms_chamelium@hdmi-hpd-fast
- igt@kms_chamelium@vga-edid-read
--igt@kms_chamelium@common-hpd-after-suspend
--igt@kms_prop_blob@basic
-+igt@kms_chamelium@vga-hpd-fast
-+igt@kms_cursor_crc
- igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
- igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
- igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
-@@ -101,6 +111,7 @@ igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
- igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
- igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
- igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
-+igt@kms_draw_crc
- igt@kms_flip@basic-flip-vs-dpms
- igt@kms_flip@basic-flip-vs-modeset
- igt@kms_flip@basic-flip-vs-wf_vblank
-@@ -109,24 +120,23 @@ igt@kms_force_connector_basic@force-connector-state
- igt@kms_force_connector_basic@force-edid
- igt@kms_force_connector_basic@force-load-detect
- igt@kms_force_connector_basic@prune-stale-modes
-+igt@kms_frontbuffer_tracking
- igt@kms_frontbuffer_tracking@basic
- igt@kms_pipe_crc_basic@hang-read-crc-pipe-a
- igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a
- igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a-frame-sequence
- igt@kms_pipe_crc_basic@read-crc-pipe-a
-+igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
- igt@kms_pipe_crc_basic@read-crc-pipe-b
- igt@kms_pipe_crc_basic@read-crc-pipe-c
--igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
- igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
--igt@kms_psr@primary_page_flip
-+igt@kms_prop_blob@basic
-+igt@kms_psr
- igt@kms_psr@cursor_plane_move
--igt@kms_psr@sprite_plane_onoff
- igt@kms_psr@primary_mmap_gtt
-+igt@kms_psr@primary_page_flip
-+igt@kms_psr@sprite_plane_onoff
- igt@kms_setmode@basic-clone-single-crtc
--igt@i915_pm_backlight@basic-brightness
--igt@i915_pm_rpm@basic-pci-d3-state
--igt@i915_pm_rpm@basic-rte
--igt@i915_pm_rps@basic-api
- igt@prime_self_import@basic-llseek-bad
- igt@prime_self_import@basic-llseek-size
- igt@prime_self_import@basic-with_fd_dup
-@@ -139,7 +149,6 @@ igt@prime_vgem@basic-fence-read
- igt@prime_vgem@basic-gtt
- igt@prime_vgem@basic-read
- igt@prime_vgem@basic-write
--igt@vgem_basic@setversion
- igt@vgem_basic@create
- igt@vgem_basic@debugfs
- igt@vgem_basic@dmabuf-export
-@@ -148,6 +157,7 @@ igt@vgem_basic@dmabuf-fence-before
- igt@vgem_basic@dmabuf-mmap
- igt@vgem_basic@mmap
- igt@vgem_basic@second-client
-+igt@vgem_basic@setversion
- igt@vgem_basic@sysfs
- 
- # All tests that do module unloading and reloading are executed last.
--- 
-2.26.0
 
+> -----Original Message-----
+> From: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> Sent: 23 July 2020 17:44
+> To: Laxminarayan Bharadiya, Pankaj
+> <pankaj.laxminarayan.bharadiya@intel.com>
+> Cc: igt-dev@lists.freedesktop.org; Latvala, Petri <petri.latvala@intel.co=
+m>
+> Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_big_fb: Use igt_assert =
+on
+> bufmgr
+> =
+
+> On Wed, Jul 22, 2020 at 07:17:58PM +0530, Pankaj Bharadiya wrote:
+> > NULL bufmgr pointer leads to SIGSEGV. Assert on NULL bufmgr so that
+> > correct failure reason will get dumped in the stack trace.
+> >
+> > Signed-off-by: Pankaj Bharadiya
+> > <pankaj.laxminarayan.bharadiya@intel.com>
+> > ---
+> > * changes since v1:
+> >  - Make the error message more helpful [Petri]
+> >
+> >  tests/kms_big_fb.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >
+> > diff --git a/tests/kms_big_fb.c b/tests/kms_big_fb.c index
+> > a754b2997..48caa5cd1 100644
+> > --- a/tests/kms_big_fb.c
+> > +++ b/tests/kms_big_fb.c
+> > @@ -607,6 +607,7 @@ igt_main
+> >  {
+> >  	igt_fixture {
+> >  		drmModeResPtr res;
+> > +		const struct intel_device_info *info;
+> >
+> >  		data.drm_fd =3D drm_open_driver_master(DRIVER_INTEL);
+> >
+> > @@ -649,6 +650,10 @@ igt_main
+> >  			data.render_copy =3D
+> igt_get_render_copyfunc(data.devid);
+> >
+> >  		data.bufmgr =3D drm_intel_bufmgr_gem_init(data.drm_fd, 4096);
+> > +		info =3D intel_get_device_info(data.devid);
+> > +		igt_assert_f(data.bufmgr, "Update libdrm for %s support\n",
+> > +			     info->gen ? info->codename : "<unknown chipset>");
+> > +
+> =
+
+> How many individual tests are you going to have to patch like this?
+> Would probably make more sense to plop this into some wrapper.
+
+Creating a wrapper only for drm_intel_bufmgr_gem_init() and leaving behind =
+
+other drm_intel_bufmgr_* calls  unwrapped will lead to confusion. Any sugge=
+stions here?
+
+Thanks,
+Pankaj
+> =
+
+> >  		data.batch =3D intel_batchbuffer_alloc(data.bufmgr, data.devid);
+> >  	}
+> >
+> > --
+> > 2.23.0
+> >
+> > _______________________________________________
+> > igt-dev mailing list
+> > igt-dev@lists.freedesktop.org
+> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
+> =
+
+> --
+> Ville Syrj=E4l=E4
+> Intel
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
