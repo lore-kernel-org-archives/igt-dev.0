@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 573DD6E183
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jul 2020 06:00:38 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue, 28 Jul 2020 07:59:52 +0200
-Message-Id: <20200728055953.18536-17-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20200728055953.18536-1-zbigniew.kempczynski@intel.com>
-References: <20200728055953.18536-1-zbigniew.kempczynski@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19B356E1C0
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jul 2020 07:34:09 +0000 (UTC)
+From: Petri Latvala <petri.latvala@intel.com>
+Date: Tue, 28 Jul 2020 10:33:59 +0300
+Message-Id: <20200728073359.15807-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v9 16/17] api_intel_bb: temporary tests to
- check stride on gen3
+Subject: [igt-dev] [PATCH i-g-t] autotools: Remove $(HANG) handling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,103 +19,48 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
----
- tests/i915/api_intel_bb.c | 44 +++++++++++++++++++++++++++++++--------
- 1 file changed, 35 insertions(+), 9 deletions(-)
+Last use of $(HANG) was removed in 8a50ca9985d2
+("i915/gem_non_secure_batch.c: Remove"), remove the last dangling
+references to the variable.
 
-diff --git a/tests/i915/api_intel_bb.c b/tests/i915/api_intel_bb.c
-index 5d7d2326..86e8f657 100644
---- a/tests/i915/api_intel_bb.c
-+++ b/tests/i915/api_intel_bb.c
-@@ -723,11 +723,10 @@ static void full_batch(struct buf_ops *bops)
- 	intel_bb_destroy(ibb);
- }
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
+Cc: Lukasz Fiedorowicz <lukasz.fiedorowicz@intel.com>
+---
+ tests/Makefile.am | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/tests/Makefile.am b/tests/Makefile.am
+index 8219e79b..c81b6333 100644
+--- a/tests/Makefile.am
++++ b/tests/Makefile.am
+@@ -34,7 +34,6 @@ test-list-full.txt: Makefile
  
--static int render(struct buf_ops *bops, uint32_t tiling, bool do_reloc)
-+static int render(struct buf_ops *bops, uint32_t tiling, bool do_reloc,
-+		  uint32_t width, uint32_t height)
- {
- 	struct intel_bb *ibb;
--	const int width = 1024;
--	const int height = 1024;
- 	struct intel_buf src, dst, final;
- 	int i915 = buf_ops_get_fd(bops);
- 	uint32_t fails = 0;
-@@ -735,6 +734,8 @@ static int render(struct buf_ops *bops, uint32_t tiling, bool do_reloc)
- 	uint32_t devid = intel_get_drm_devid(i915);
- 	igt_render_copyfunc_t render_copy = NULL;
  
-+	igt_info("%s() gen: %d\n", __func__, intel_gen(devid));
-+
- 	/* Don't use relocations on gen12+ */
- 	igt_require((do_reloc && intel_gen(devid) < 12) ||
- 		    !do_reloc);
-@@ -922,6 +923,7 @@ igt_main_args("dpi", NULL, help_str, opt_handler, NULL)
- {
- 	int i915;
- 	struct buf_ops *bops;
-+	uint32_t width;
+ noinst_PROGRAMS = \
+-	$(HANG) \
+ 	$(TESTS_testsuite) \
+ 	$(NULL)
  
- 	igt_fixture {
- 		i915 = drm_open_driver(DRIVER_INTEL);
-@@ -966,23 +968,47 @@ igt_main_args("dpi", NULL, help_str, opt_handler, NULL)
- 	igt_subtest("full-batch")
- 		full_batch(bops);
+@@ -67,11 +66,9 @@ dist_pkgdata_DATA = \
  
-+	/* Temporary off */
-+#if 0
- 	igt_subtest("render-none")
--		render(bops, I915_TILING_NONE, false);
-+		render(bops, I915_TILING_NONE, false, 1024, 1024);
+ all-local: .gitignore
+ .gitignore: Makefile.sources
+-	@echo "$(pkglibexec_PROGRAMS) $(HANG) test-list.txt test-list-full.txt /.gitignore" | sed 's/\s\+/\n/g' | sort > $@
++	@echo "$(pkglibexec_PROGRAMS) test-list.txt test-list-full.txt /.gitignore" | sed 's/\s\+/\n/g' | sort > $@
  
- 	igt_subtest("render-x")
--		render(bops, I915_TILING_X, false);
-+		render(bops, I915_TILING_X, false, 1024, 1024);
+-EXTRA_PROGRAMS = $(HANG)
+-
+-CLEANFILES = $(EXTRA_PROGRAMS) test-list.txt test-list-full.txt .gitignore
++CLEANFILES = test-list.txt test-list-full.txt .gitignore
  
- 	igt_subtest("render-y")
--		render(bops, I915_TILING_Y, false);
-+		render(bops, I915_TILING_Y, false, 1024, 1024);
- 
- 	igt_subtest("render-none-reloc")
--		render(bops, I915_TILING_NONE, true);
-+		render(bops, I915_TILING_NONE, true, 1024, 1024);
- 
- 	igt_subtest("render-x-reloc")
--		render(bops, I915_TILING_X, true);
-+		render(bops, I915_TILING_X, true, 1024, 1024);
- 
- 	igt_subtest("render-y-reloc")
--		render(bops, I915_TILING_Y, true);
-+		render(bops, I915_TILING_Y, true, 1024, 1024);
-+#endif
-+
-+	for (width = 512; width <= 1024; width += 256) {
-+		igt_subtest_f("render-none-%u", width) {
-+			render(bops, I915_TILING_NONE, false, width, width);
-+		}
-+		igt_subtest_f("render-x-%u", width) {
-+			render(bops, I915_TILING_X, false, width, width);
-+		}
-+		igt_subtest_f("render-y-%u", width) {
-+			render(bops, I915_TILING_Y, false, width, width);
-+		}
-+		igt_subtest_f("render-none-reloc-%u", width) {
-+			render(bops, I915_TILING_NONE, true, width, width);
-+		}
-+		igt_subtest_f("render-x-reloc-%u", width) {
-+			render(bops, I915_TILING_X, true, width, width);
-+		}
-+		igt_subtest_f("render-y-reloc-%u", width) {
-+			render(bops, I915_TILING_Y, true, width, width);
-+		}
-+	}
- 
- 	igt_subtest("render-ccs")
- 		render_ccs(bops);
+ AM_CFLAGS = $(CWARNFLAGS) -Wno-unused-result $(DEBUG_CFLAGS)\
+ 	-I$(top_srcdir)/include/drm-uapi \
 -- 
-2.26.0
+2.20.1
 
 _______________________________________________
 igt-dev mailing list
