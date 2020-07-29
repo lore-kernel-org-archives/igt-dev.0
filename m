@@ -1,15 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7CC856E4E6
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jul 2020 12:30:42 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Wed, 29 Jul 2020 14:29:51 +0200
-Message-Id: <20200729122952.6163-13-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20200729122952.6163-1-zbigniew.kempczynski@intel.com>
-References: <20200729122952.6163-1-zbigniew.kempczynski@intel.com>
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
+ [IPv6:2a00:1450:4864:20::442])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1AAAB6E0FD
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jul 2020 12:41:47 +0000 (UTC)
+Received: by mail-wr1-x442.google.com with SMTP id b6so21492388wrs.11
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jul 2020 05:41:47 -0700 (PDT)
+Date: Wed, 29 Jul 2020 14:41:43 +0200
+From: daniel@ffwll.ch
+Message-ID: <20200729124143.GM6419@phenom.ffwll.local>
+References: <20200708132015.334750-1-lionel.g.landwerlin@intel.com>
+ <20200708132015.334750-2-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v13 12/13] tools/intel_residency: adopt
- intel_residency to use bufops
+Content-Disposition: inline
+In-Reply-To: <20200708132015.334750-2-lionel.g.landwerlin@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/5] drm-uapi: bump i915_drm.h for
+ timeline semaphores
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,41 +22,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+To: 
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SUdUIGRyYXcgZnVuY3Rpb25zIHJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeSBzbyBtaWdyYXRlIHRv
-IG5ldyBBUEkuCgpTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3
-LmtlbXBjenluc2tpQGludGVsLmNvbT4KQ2M6IERvbWluaWsgR3J6ZWdvcnplayA8ZG9taW5pay5n
-cnplZ29yemVrQGludGVsLmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29u
-LmNvLnVrPgotLS0KIHRvb2xzL2ludGVsX3Jlc2lkZW5jeS5jIHwgMTAgKysrKy0tLS0tLQogMSBm
-aWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQg
-YS90b29scy9pbnRlbF9yZXNpZGVuY3kuYyBiL3Rvb2xzL2ludGVsX3Jlc2lkZW5jeS5jCmluZGV4
-IGJmYWI0MGRhLi43MzZmY2EwZCAxMDA2NDQKLS0tIGEvdG9vbHMvaW50ZWxfcmVzaWRlbmN5LmMK
-KysrIGIvdG9vbHMvaW50ZWxfcmVzaWRlbmN5LmMKQEAgLTgyLDcgKzgyLDcgQEAgc3RydWN0IHsK
-IAlpbnQgZmQ7CiAJZHJtTW9kZVJlc1B0ciByZXM7CiAJZHJtTW9kZUNvbm5lY3RvclB0ciBjb25u
-ZWN0b3JzW01BWF9DT05ORUNUT1JTXTsKLQlkcm1faW50ZWxfYnVmbWdyICpidWZtZ3I7CisJc3Ry
-dWN0IGJ1Zl9vcHMgKmJvcHM7CiB9IGRybTsKIAogc3RydWN0IHsKQEAgLTE5MSwxNiArMTkxLDE0
-IEBAIHN0YXRpYyB2b2lkIHNldHVwX2RybSh2b2lkKQogCQlkcm0uY29ubmVjdG9yc1tpXSA9IGRy
-bU1vZGVHZXRDb25uZWN0b3IoZHJtLmZkLAogCQkJCQkJZHJtLnJlcy0+Y29ubmVjdG9yc1tpXSk7
-CiAKLQlkcm0uYnVmbWdyID0gZHJtX2ludGVsX2J1Zm1ncl9nZW1faW5pdChkcm0uZmQsIDQwOTYp
-OwotCWlndF9hc3NlcnQoZHJtLmJ1Zm1ncik7Ci0JZHJtX2ludGVsX2J1Zm1ncl9nZW1fZW5hYmxl
-X3JldXNlKGRybS5idWZtZ3IpOworCWRybS5ib3BzID0gYnVmX29wc19jcmVhdGUoZHJtLmZkKTsK
-IH0KIAogc3RhdGljIHZvaWQgdGVhcmRvd25fZHJtKHZvaWQpCiB7CiAJaW50IGk7CiAKLQlkcm1f
-aW50ZWxfYnVmbWdyX2Rlc3Ryb3koZHJtLmJ1Zm1ncik7CisJYnVmX29wc19kZXN0cm95KGRybS5i
-b3BzKTsKIAogCWZvciAoaSA9IDA7IGkgPCBkcm0ucmVzLT5jb3VudF9jb25uZWN0b3JzOyBpKysp
-CiAJCWRybU1vZGVGcmVlQ29ubmVjdG9yKGRybS5jb25uZWN0b3JzW2ldKTsKQEAgLTIzOCw3ICsy
-MzYsNyBAQCBzdGF0aWMgdm9pZCBkcmF3X3JlY3Qoc3RydWN0IGlndF9mYiAqZmIsIGVudW0gaWd0
-X2RyYXdfbWV0aG9kIG1ldGhvZCwKIAkJaWd0X2Fzc2VydChmYWxzZSk7CiAJfQogCi0JaWd0X2Ry
-YXdfcmVjdF9mYihkcm0uZmQsIGRybS5idWZtZ3IsIE5VTEwsIGZiLCBtZXRob2QsIGNsaXAueDEs
-IGNsaXAueTEsCisJaWd0X2RyYXdfcmVjdF9mYihkcm0uZmQsIGRybS5ib3BzLCAwLCBmYiwgbWV0
-aG9kLCBjbGlwLngxLCBjbGlwLnkxLAogCQkJIGNsaXAueDIgLSBjbGlwLngxLCBjbGlwLnkyIC0g
-Y2xpcC55MSwgY29sb3IpOwogCiAJaWYgKG1ldGhvZCA9PSBJR1RfRFJBV19NTUFQX1dDKSB7Ci0t
-IAoyLjI2LjAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBz
-Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+On Wed, Jul 08, 2020 at 04:20:11PM +0300, Lionel Landwerlin wrote:
+> To be updated with proper drm-next snapshot.
+
+I'm assuming you'll respin this with the right sha1 once the kernel side
+has made it into drm-next? With that
+
+Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+> ---
+>  include/drm-uapi/i915_drm.h | 65 +++++++++++++++++++++++++++++++++++--
+>  1 file changed, 62 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+> index 2b55af13..6de897f0 100644
+> --- a/include/drm-uapi/i915_drm.h
+> +++ b/include/drm-uapi/i915_drm.h
+> @@ -619,6 +619,13 @@ typedef struct drm_i915_irq_wait {
+>   */
+>  #define I915_PARAM_PERF_REVISION	54
+>  
+> +/* Query whether DRM_I915_GEM_EXECBUFFER2 supports supplying an array of
+> + * timeline syncobj through drm_i915_gem_execbuf_ext_timeline_fences. See
+> + * I915_EXEC_USE_EXTENSIONS.
+> + */
+> +#define I915_PARAM_HAS_EXEC_TIMELINE_FENCES 55
+> +
+> +
+>  /* Must be kept compact -- no holes and well documented */
+>  
+>  typedef struct drm_i915_getparam {
+> @@ -1046,6 +1053,42 @@ struct drm_i915_gem_exec_fence {
+>  	__u32 flags;
+>  };
+>  
+> +enum drm_i915_gem_execbuffer_ext {
+> +	/**
+> +	 * See drm_i915_gem_execbuf_ext_timeline_fences.
+> +	 */
+> +	DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES = 1,
+> +
+> +	DRM_I915_GEM_EXECBUFFER_EXT_MAX /* non-ABI */
+> +};
+> +
+> +/**
+> + * This structure describes an array of drm_syncobj and associated points for
+> + * timeline variants of drm_syncobj. It is invalid to append this structure to
+> + * the execbuf if I915_EXEC_FENCE_ARRAY is set.
+> + */
+> +struct drm_i915_gem_execbuffer_ext_timeline_fences {
+> +	struct i915_user_extension base;
+> +
+> +	/**
+> +	 * Number of element in the handles_ptr & value_ptr arrays.
+> +	 */
+> +	__u64 fence_count;
+> +
+> +	/**
+> +	 * Pointer to an array of struct drm_i915_gem_exec_fence of length
+> +	 * fence_count.
+> +	 */
+> +	__u64 handles_ptr;
+> +
+> +	/**
+> +	 * Pointer to an array of u64 values of length fence_count. Values
+> +	 * must be 0 for a binary drm_syncobj. A Value of 0 for a timeline
+> +	 * drm_syncobj is invalid as it turns a drm_syncobj into a binary one.
+> +	 */
+> +	__u64 values_ptr;
+> +};
+> +
+>  struct drm_i915_gem_execbuffer2 {
+>  	/**
+>  	 * List of gem_exec_object2 structs
+> @@ -1062,8 +1105,15 @@ struct drm_i915_gem_execbuffer2 {
+>  	__u32 num_cliprects;
+>  	/**
+>  	 * This is a struct drm_clip_rect *cliprects if I915_EXEC_FENCE_ARRAY
+> -	 * is not set.  If I915_EXEC_FENCE_ARRAY is set, then this is a
+> -	 * struct drm_i915_gem_exec_fence *fences.
+> +	 * & I915_EXEC_USE_EXTENSIONS are not set.
+> +	 *
+> +	 * If I915_EXEC_FENCE_ARRAY is set, then this is a pointer to an array
+> +	 * of struct drm_i915_gem_exec_fence and num_cliprects is the length
+> +	 * of the array.
+> +	 *
+> +	 * If I915_EXEC_USE_EXTENSIONS is set, then this is a pointer to a
+> +	 * single struct drm_i915_gem_base_execbuffer_ext and num_cliprects is
+> +	 * 0.
+>  	 */
+>  	__u64 cliprects_ptr;
+>  #define I915_EXEC_RING_MASK              (0x3f)
+> @@ -1181,7 +1231,16 @@ struct drm_i915_gem_execbuffer2 {
+>   */
+>  #define I915_EXEC_FENCE_SUBMIT		(1 << 20)
+>  
+> -#define __I915_EXEC_UNKNOWN_FLAGS (-(I915_EXEC_FENCE_SUBMIT << 1))
+> +/*
+> + * Setting I915_EXEC_USE_EXTENSIONS implies that
+> + * drm_i915_gem_execbuffer2.cliprects_ptr is treated as a pointer to an linked
+> + * list of i915_user_extension. Each i915_user_extension node is the base of a
+> + * larger structure. The list of supported structures are listed in the
+> + * drm_i915_gem_execbuffer_ext enum.
+> + */
+> +#define I915_EXEC_USE_EXTENSIONS	(1 << 21)
+> +
+> +#define __I915_EXEC_UNKNOWN_FLAGS (-(I915_EXEC_USE_EXTENSIONS<<1))
+>  
+>  #define I915_EXEC_CONTEXT_ID_MASK	(0xffffffff)
+>  #define i915_execbuffer2_set_context_id(eb2, context) \
+> -- 
+> 2.27.0
+> 
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
