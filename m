@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F21A889688
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jul 2020 12:13:35 +0000 (UTC)
-Date: Wed, 29 Jul 2020 15:13:33 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200729121333.GI20883@platvala-desk.ger.corp.intel.com>
-References: <20200729113425.29486-1-petri.latvala@intel.com>
- <20200729113425.29486-2-petri.latvala@intel.com>
- <159602431080.8877.7329399095158343474@build.alporthouse.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <159602431080.8877.7329399095158343474@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] runner: Also generate
- igt@runner@aborted when aborting internally
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Wed, 29 Jul 2020 12:15:41 -0000
+Message-ID: <159602494155.20643.9225337378942950783@emeril.freedesktop.org>
+References: <20200729113425.29486-1-petri.latvala@intel.com>
+In-Reply-To: <20200729113425.29486-1-petri.latvala@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_runner/resultgen=3A_Remember_t?=
+ =?utf-8?q?o_close_fd_to_aborted=2Etxt?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,138 +15,351 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0978328704=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jul 29, 2020 at 01:05:10PM +0100, Chris Wilson wrote:
-> Quoting Petri Latvala (2020-07-29 12:34:25)
-> > If we can't kill the (main) test process, or when the test process
-> > exits with IGT_EXIT_ABORT, we abort the execution. Pass that
-> > information along to the other machinery that tracks whether we
-> > aborted, thus also getting that information to the end user in the
-> > form of the pseudo-result igt@runner@aborted.
-> > 
-> > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> > Cc: Arkadiusz Hiler <arkadiusz.hiler@intel.com>
-> > Cc: Lukasz Fiedorowicz <lukasz.fiedorowicz@intel.com>
-> > Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> > ---
-> >  runner/executor.c | 47 ++++++++++++++++++++++++++---------------------
-> >  1 file changed, 26 insertions(+), 21 deletions(-)
-> > 
-> > diff --git a/runner/executor.c b/runner/executor.c
-> > index 77818987..0377195d 100644
-> > --- a/runner/executor.c
-> > +++ b/runner/executor.c
-> > @@ -795,10 +795,11 @@ static int next_kill_signal(int killed)
-> >   *  >0 - Timeout happened, need to recreate from journal
-> >   */
-> >  static int monitor_output(pid_t child,
-> > -                          int outfd, int errfd, int kmsgfd, int sigfd,
-> > -                          int *outputs,
-> > -                          double *time_spent,
-> > -                          struct settings *settings)
-> > +                         int outfd, int errfd, int kmsgfd, int sigfd,
-> > +                         int *outputs,
-> > +                         double *time_spent,
-> > +                         struct settings *settings,
-> > +                         char **abortreason)
-> >  {
-> >         fd_set set;
-> >         char buf[2048];
-> > @@ -1116,6 +1117,7 @@ static int monitor_output(pid_t child,
-> >                                 if (status == IGT_EXIT_ABORT) {
-> >                                         errf("Test exited with IGT_EXIT_ABORT, aborting.\n");
-> >                                         aborting = true;
-> > +                                       *abortreason = strdup("Test exited with IGT_EXIT_ABORT");
-> >                                 }
-> >  
-> >                                 if (time_spent)
-> > @@ -1142,6 +1144,7 @@ static int monitor_output(pid_t child,
-> >                                         if (kill(child, 0) && errno == ESRCH)
-> >                                                 errf("The test process no longer exists, "
-> >                                                      "but we didn't get informed of its demise...\n");
-> > +                                       asprintf(abortreason, "Child refuses to die, tainted 0x%lx.", taints);
-> >                                 }
-> >  
-> >                                 dump_dmesg(kmsgfd, outputs[_F_DMESG]);
-> > @@ -1309,7 +1312,8 @@ static int execute_next_entry(struct execute_state *state,
-> >                               struct settings *settings,
-> >                               struct job_list_entry *entry,
-> >                               int testdirfd, int resdirfd,
-> > -                             int sigfd, sigset_t *sigmask)
-> > +                             int sigfd, sigset_t *sigmask,
-> > +                             char **abortreason)
-> >  {
-> >         int dirfd;
-> >         int outputs[_F_LAST];
-> > @@ -1406,7 +1410,7 @@ static int execute_next_entry(struct execute_state *state,
-> >         outpipe[1] = errpipe[1] = -1;
-> >  
-> >         result = monitor_output(child, outfd, errfd, kmsgfd, sigfd,
-> > -                               outputs, time_spent, settings);
-> > +                               outputs, time_spent, settings, abortreason);
-> >  
-> >  out_kmsgfd:
-> >         close(kmsgfd);
-> > @@ -1783,7 +1787,7 @@ bool execute(struct execute_state *state,
-> >  
-> >         for (; state->next < job_list->size;
-> >              state->next++) {
-> > -               char *reason;
-> > +               char *reason = NULL;
-> >                 int result;
-> >  
-> >                 if (should_die_because_signal(sigfd)) {
-> > @@ -1797,7 +1801,21 @@ bool execute(struct execute_state *state,
-> >                                             settings,
-> >                                             &job_list->entries[state->next],
-> >                                             testdirfd, resdirfd,
-> > -                                           sigfd, &sigmask);
-> > +                                           sigfd, &sigmask,
-> > +                                           &reason);
-> > +
-> > +               if (reason != NULL || (reason = need_to_abort(settings)) != NULL) {
-> > +                       char *prev = entry_display_name(&job_list->entries[state->next]);
-> > +                       char *next = (state->next + 1 < job_list->size ?
-> > +                                     entry_display_name(&job_list->entries[state->next + 1]) :
-> > +                                     strdup("nothing"));
-> > +                       write_abort_file(resdirfd, reason, prev, next);
-> > +                       free(prev);
-> > +                       free(next);
-> > +                       free(reason);
-> > +                       status = false;
-> > +                       break;
-> > +               }
-> 
-> Ok, so this now checks for the termination before checking for the
-> overall timeout. That seems fine.
-> 
-> The question is whether that should be flagged as an igt@runner@aborted
-> as well since that is also an abnormal condition preventing the
-> execution of later tests.
+--===============0978328704==
+Content-Type: multipart/alternative;
+ boundary="===============5628585647110704557=="
 
-overall-timeout is a "soft" stop in the sense that the expected use
-case is run-until-overall-timeout, then invoke igt_resume. Rinse and
-repeat until done. Abnormal condition only until you resume.
+--===============5628585647110704557==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-A result is coming for this, but it won't be igt@runner@aborted, it
-will be under another name. The main difference being that resuming an
-execution that overall-timeouted must remove that data, because it
-will be used for "hey you, you generated result pages for an execution
-that wasn't fully done yet," while @aborted is used for "hey at least
-one test in this set did the nasties" and that data must stay no
-matter what.
+== Series Details ==
+
+Series: series starting with [i-g-t,1/2] runner/resultgen: Remember to close fd to aborted.txt
+URL   : https://patchwork.freedesktop.org/series/80034/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8813 -> IGTPW_4816
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_4816 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4816, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4816:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@runner@aborted:
+    - fi-ilk-650:         NOTRUN -> [FAIL][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-ilk-650/igt@runner@aborted.html
+    - fi-pnv-d510:        NOTRUN -> [FAIL][2]
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-pnv-d510/igt@runner@aborted.html
+    - fi-kbl-x1275:       NOTRUN -> [FAIL][3]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-kbl-x1275/igt@runner@aborted.html
+    - fi-bsw-kefka:       NOTRUN -> [FAIL][4]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-bsw-kefka/igt@runner@aborted.html
+    - fi-bdw-gvtdvm:      NOTRUN -> [FAIL][5]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-bdw-gvtdvm/igt@runner@aborted.html
+    - fi-cfl-8700k:       NOTRUN -> [FAIL][6]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-cfl-8700k/igt@runner@aborted.html
+    - fi-skl-6600u:       NOTRUN -> [FAIL][7]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-skl-6600u/igt@runner@aborted.html
+    - fi-cfl-8109u:       NOTRUN -> [FAIL][8]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-cfl-8109u/igt@runner@aborted.html
+    - fi-icl-u2:          NOTRUN -> [FAIL][9]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-icl-u2/igt@runner@aborted.html
+    - fi-gdg-551:         NOTRUN -> [FAIL][10]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-gdg-551/igt@runner@aborted.html
+    - fi-bsw-nick:        NOTRUN -> [FAIL][11]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-bsw-nick/igt@runner@aborted.html
+    - fi-snb-2520m:       NOTRUN -> [FAIL][12]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-snb-2520m/igt@runner@aborted.html
+    - fi-skl-lmem:        NOTRUN -> [FAIL][13]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-skl-lmem/igt@runner@aborted.html
+    - fi-kbl-r:           NOTRUN -> [FAIL][14]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-kbl-r/igt@runner@aborted.html
+    - fi-bdw-5557u:       NOTRUN -> [FAIL][15]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-bdw-5557u/igt@runner@aborted.html
+    - fi-bwr-2160:        NOTRUN -> [FAIL][16]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-bwr-2160/igt@runner@aborted.html
+    - fi-hsw-4770:        NOTRUN -> [FAIL][17]
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-hsw-4770/igt@runner@aborted.html
+    - fi-kbl-7500u:       NOTRUN -> [FAIL][18]
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-kbl-7500u/igt@runner@aborted.html
+    - fi-kbl-guc:         NOTRUN -> [FAIL][19]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-kbl-guc/igt@runner@aborted.html
+    - fi-snb-2600:        NOTRUN -> [FAIL][20]
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-snb-2600/igt@runner@aborted.html
+    - fi-cml-u2:          NOTRUN -> [FAIL][21]
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-cml-u2/igt@runner@aborted.html
+    - fi-ivb-3770:        NOTRUN -> [FAIL][22]
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-ivb-3770/igt@runner@aborted.html
+    - fi-byt-j1900:       NOTRUN -> [FAIL][23]
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-byt-j1900/igt@runner@aborted.html
+    - fi-elk-e7500:       NOTRUN -> [FAIL][24]
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-elk-e7500/igt@runner@aborted.html
+    - fi-cml-s:           NOTRUN -> [FAIL][25]
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-cml-s/igt@runner@aborted.html
+    - fi-icl-y:           NOTRUN -> [FAIL][26]
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-icl-y/igt@runner@aborted.html
+    - fi-skl-guc:         NOTRUN -> [FAIL][27]
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-skl-guc/igt@runner@aborted.html
+    - fi-skl-6700k2:      NOTRUN -> [FAIL][28]
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-skl-6700k2/igt@runner@aborted.html
+    - fi-bsw-n3050:       NOTRUN -> [FAIL][29]
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-bsw-n3050/igt@runner@aborted.html
+    - fi-tgl-u2:          NOTRUN -> [FAIL][30]
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-tgl-u2/igt@runner@aborted.html
+    - fi-blb-e6850:       NOTRUN -> [FAIL][31]
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-blb-e6850/igt@runner@aborted.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@runner@aborted:
+    - {fi-tgl-dsi}:       NOTRUN -> [FAIL][32]
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-tgl-dsi/igt@runner@aborted.html
+    - {fi-ehl-1}:         NOTRUN -> [FAIL][33]
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-ehl-1/igt@runner@aborted.html
+    - {fi-kbl-7560u}:     NOTRUN -> [FAIL][34]
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-kbl-7560u/igt@runner@aborted.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
 
 
--- 
-Petri Latvala
+
+Participating hosts (42 -> 36)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5750 -> IGTPW_4816
+
+  CI-20190529: 20190529
+  CI_DRM_8813: fd31b1aef933dbd497f1ebf07d5cef1052edf8ea @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4816: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/index.html
+  IGT_5750: 95d906bf458634850626f7e5d6a707191022279f @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/index.html
+
+--===============5628585647110704557==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] runner/resultgen: Remember to close fd to aborted.txt</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/80034/">https://patchwork.freedesktop.org/series/80034/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_8813 -&gt; IGTPW_4816</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_4816 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_4816, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_4816:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-ilk-650/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-pnv-d510/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-kbl-x1275/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bsw-kefka:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-bsw-kefka/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bdw-gvtdvm:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-bdw-gvtdvm/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-cfl-8700k/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-skl-6600u/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-cfl-8109u/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-icl-u2/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-gdg-551:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-gdg-551/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-bsw-nick/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-snb-2520m:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-snb-2520m/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-skl-lmem:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-skl-lmem/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-r:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-kbl-r/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bdw-5557u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-bdw-5557u/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bwr-2160:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-bwr-2160/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-hsw-4770/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-7500u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-kbl-7500u/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-kbl-guc/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-snb-2600:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-snb-2600/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-cml-u2/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-ivb-3770/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-byt-j1900:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-byt-j1900/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-elk-e7500/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-cml-s:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-cml-s/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-icl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-icl-y/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-skl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-skl-guc/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-skl-6700k2:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-skl-6700k2/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-bsw-n3050/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-tgl-u2/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-blb-e6850/igt@runner@aborted.html">FAIL</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>
+<p>{fi-tgl-dsi}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-tgl-dsi/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-ehl-1}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-ehl-1/igt@runner@aborted.html">FAIL</a></p>
+</li>
+<li>
+<p>{fi-kbl-7560u}:     NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/fi-kbl-7560u/igt@runner@aborted.html">FAIL</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (42 -&gt; 36)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5750 -&gt; IGTPW_4816</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_8813: fd31b1aef933dbd497f1ebf07d5cef1052edf8ea @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_4816: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4816/index.html<br />
+  IGT_5750: 95d906bf458634850626f7e5d6a707191022279f @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============5628585647110704557==--
+
+--===============0978328704==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0978328704==--
