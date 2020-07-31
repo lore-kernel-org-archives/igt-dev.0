@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6800B6EA5E
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2020 10:28:29 +0000 (UTC)
-From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Date: Fri, 31 Jul 2020 10:28:24 +0000
-Message-ID: <831DB337B4FC724CAB57663657DD9025DE4FEFA3@BGSMSX103.gar.corp.intel.com>
+MIME-Version: 1.0
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 31 Jul 2020 10:47:47 -0000
+Message-ID: <159619246700.10471.1007518632307271795@emeril.freedesktop.org>
 References: <20200728131732.27299-1-karthik.b.s@intel.com>
 In-Reply-To: <20200728131732.27299-1-karthik.b.s@intel.com>
-Content-Language: en-US
-MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_multipipe_modeset: Changes
- based on lib updates and minor fixes
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciB0ZXN0?=
+ =?utf-8?q?s/kms=5Fmultipipe=5Fmodeset=3A_Changes_based_on_lib_updates_and?=
+ =?utf-8?q?_minor_fixes_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,75 +15,29 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "B S, Karthik" <karthik.b.s@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Latvala, Petri" <petri.latvala@intel.com>
+To: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Thanks for the patch.
-LGTM.
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+== Series Details ==
 
------Original Message-----
-From: B S, Karthik <karthik.b.s@intel.com> 
-Sent: Tuesday, July 28, 2020 6:48 PM
-To: igt-dev@lists.freedesktop.org
-Cc: Nautiyal, Ankit K <ankit.k.nautiyal@intel.com>; Sharma, Swati2 <swati2.sharma@intel.com>; Latvala, Petri <petri.latvala@intel.com>; B S, Karthik <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t] tests/kms_multipipe_modeset: Changes based on lib updates and minor fixes
+Series: tests/kms_multipipe_modeset: Changes based on lib updates and minor fixes (rev2)
+URL   : https://patchwork.freedesktop.org/series/79979/
+State : failure
 
--Due to changes in igt lib, the igt_display_get_n_pipes() function now  returns IGT_MAX_PIPES as opposed to the maximum pipes supported by a  given platform which it was returning before. Made changes in the test  to accommodate this.
+== Summary ==
 
--Removed the redundant kms_unset_all_crtcs, which also speeds up the test.
+Applying: tests/kms_multipipe_modeset: Changes based on lib updates and minor fixes
+Patch failed at 0001 tests/kms_multipipe_modeset: Changes based on lib updates and minor fixes
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
--Added freeing of resources which was missing.
-
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/kms_multipipe_modeset.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
-
-diff --git a/tests/kms_multipipe_modeset.c b/tests/kms_multipipe_modeset.c index fb0b9662..b06c4e82 100644
---- a/tests/kms_multipipe_modeset.c
-+++ b/tests/kms_multipipe_modeset.c
-@@ -112,12 +112,11 @@ static void run_test(data_t *data, int valid_outputs)
- 	igt_remove_fb(data->drm_fd, &data->fb);  }
- 
--static void test_multipipe(data_t *data)
-+static void test_multipipe(data_t *data, int num_pipes)
- {
- 	igt_output_t *output;
--	int valid_outputs = 0, num_pipes;
-+	int valid_outputs = 0;
- 
--	num_pipes = igt_display_get_n_pipes(&data->display);
- 	for_each_connected_output(&data->display, output)
- 		valid_outputs++;
- 
-@@ -142,15 +141,15 @@ igt_main
- 
- 		res = drmModeGetResources(data.drm_fd);
- 		igt_assert(res);
--
--		kmstest_unset_all_crtcs(data.drm_fd, res);
- 	}
- 
- 	igt_describe("Verify if simultaneous modesets on all the supported "
- 		     "pipes is successful. Validate using CRC verification");
- 	igt_subtest("basic-max-pipe-crc-check")
--		test_multipipe(&data);
-+		test_multipipe(&data, res->count_crtcs);
- 
--	igt_fixture
-+	igt_fixture {
-+		drmModeFreeResources(res);
- 		igt_display_fini(&data.display);
-+	}
- }
---
-2.22.0
 
 _______________________________________________
 igt-dev mailing list
