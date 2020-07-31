@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 MIME-Version: 1.0
 From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Fri, 31 Jul 2020 14:34:56 -0000
-Message-ID: <159620609643.10474.4086305682289641787@emeril.freedesktop.org>
-References: <20200731091548.815898-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20200731091548.815898-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgaTkxNS9n?=
- =?utf-8?q?em=5Fctx=5Fringsize=3A_Manually_control_timeout?=
+Date: Fri, 31 Jul 2020 19:15:23 -0000
+Message-ID: <159622292387.10471.6018761326974799862@emeril.freedesktop.org>
+References: <20200731134120.156288-1-lionel.g.landwerlin@intel.com>
+In-Reply-To: <20200731134120.156288-1-lionel.g.landwerlin@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLklHVDogc3VjY2VzcyBmb3IgdGVzdHM6?=
+ =?utf-8?q?_Add_timeline_semaphore_tests_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,262 +15,806 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============2046797029=="
+Content-Type: multipart/mixed; boundary="===============0775894747=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============2046797029==
+--===============0775894747==
 Content-Type: multipart/alternative;
- boundary="===============7980163950089487934=="
+ boundary="===============0053913486327842908=="
 
---===============7980163950089487934==
+--===============0053913486327842908==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: i915/gem_ctx_ringsize: Manually control timeout
-URL   : https://patchwork.freedesktop.org/series/80137/
-State : failure
+Series: tests: Add timeline semaphore tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/79248/
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_8821_full -> IGTPW_4835_full
+CI Bug Log - changes from CI_DRM_8822_full -> IGTPW_4837_full
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_4835_full absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_4835_full, please notify your bug team to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/index.html
 
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_4835_full:
+  Here are the unknown changes that may have been introduced in IGTPW_4837_full:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
-  * igt@i915_selftest@mock@timelines:
-    - shard-hsw:          NOTRUN -> [INCOMPLETE][1]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-hsw7/igt@i915_selftest@mock@timelines.html
+  * {igt@syncobj_timeline@invalid-multi-wait-all-unsubmitted-submitted-signaled} (NEW):
+    - shard-iclb:         NOTRUN -> [SKIP][1] +130 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb6/igt@syncobj_timeline@invalid-multi-wait-all-unsubmitted-submitted-signaled.html
+
+  * {igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted-submitted-signaled} (NEW):
+    - shard-tglb:         NOTRUN -> [SKIP][2] +130 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-tglb8/igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted-submitted-signaled.html
 
   
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_8822_full and IGTPW_4837_full:
+
+### New IGT tests (132) ###
+
+  * igt@gem_exec_fence@invalid-timeline-fence-array:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_exec_fence@syncobj-backward-timeline-chain-engines:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_exec_fence@syncobj-stationary-timeline-chain-engines:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_exec_fence@syncobj-timeline-chain-engines:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_exec_fence@syncobj-timeline-export:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_exec_fence@syncobj-timeline-invalid-flags:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_exec_fence@syncobj-timeline-invalid-wait:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_exec_fence@syncobj-timeline-repeat:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_exec_fence@syncobj-timeline-signal:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_exec_fence@syncobj-timeline-unused-fence:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@gem_exec_fence@syncobj-timeline-wait:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@32bits-limit:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@device-signal-unordered:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@device-submit-unordered:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-all-for-submit-available-unsubmitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-all-for-submit-available-unsubmitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-all-for-submit-available-unsubmitted-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-all-for-submit-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-all-for-submit-submitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-all-for-submit-unsubmitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-all-for-submit-unsubmitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-all-for-submit-unsubmitted-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-all-for-submit-unsubmitted-submitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-all-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-all-submitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-for-submit-available-unsubmitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-for-submit-submitted:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-for-submit-unsubmitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-for-submit-unsubmitted-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-multi-wait-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-single-wait-all-for-submit-available-unsubmitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-single-wait-all-for-submit-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-single-wait-all-for-submit-unsubmitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-single-wait-all-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-single-wait-for-submit-available-unsubmitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-single-wait-for-submit-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-single-wait-for-submit-unsubmitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@etime-single-wait-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@host-signal-ordered:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@host-signal-points:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-all-available-unsubmitted:
+    - Statuses : 1 timeout(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-all-available-unsubmitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-all-available-unsubmitted-submitted:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-all-available-unsubmitted-submitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-all-unsubmitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-all-unsubmitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-all-unsubmitted-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-all-unsubmitted-submitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted-submitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-unsubmitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-unsubmitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-unsubmitted-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-multi-wait-unsubmitted-submitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-query-bad-pad:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-query-illegal-handle:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-query-one-illegal-handle:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-query-zero-handles:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-signal-bad-pad:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-signal-illegal-handle:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-signal-illegal-point:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-signal-one-illegal-handle:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-signal-zero-handles:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-single-wait-all-available-unsubmitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-single-wait-all-unsubmitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-single-wait-available-unsubmitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-single-wait-unsubmitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-transfer-bad-pad:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-transfer-illegal-handle:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-transfer-non-existent-point:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-wait-bad-flags:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-wait-illegal-handle:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@invalid-wait-zero-handles:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-all-available-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-all-available-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-all-available-submitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-all-for-submit-available-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-all-for-submit-available-submitted:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-all-for-submit-available-submitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-all-for-submit-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-all-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-available-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-available-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-available-submitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-for-submit-available-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-for-submit-available-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-for-submit-available-submitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-for-submit-available-unsubmitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-for-submit-available-unsubmitted-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-for-submit-available-unsubmitted-submitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-for-submit-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-for-submit-submitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-for-submit-unsubmitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-for-submit-unsubmitted-submitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@multi-wait-submitted-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@reset-during-wait-for-submit:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@reset-multiple-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@reset-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@reset-unsignaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@signal:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@signal-array:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@signal-point-0:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@single-wait-all-available-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@single-wait-all-available-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@single-wait-all-for-submit-available-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@single-wait-all-for-submit-available-submitted:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@single-wait-all-for-submit-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@single-wait-all-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@single-wait-available-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@single-wait-available-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@single-wait-for-submit-available-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@single-wait-for-submit-available-submitted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@single-wait-for-submit-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@single-wait-signaled:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@transfer-timeline-point:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@wait-all-complex:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@wait-all-delayed-signal:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@wait-all-for-submit-complex:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@wait-all-for-submit-delayed-submit:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@wait-all-for-submit-snapshot:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@wait-all-interrupted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@wait-all-snapshot:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@wait-any-complex:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@wait-any-interrupted:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@wait-any-snapshot:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@wait-delayed-signal:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@wait-for-submit-complex:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@wait-for-submit-delayed-submit:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@syncobj_timeline@wait-for-submit-snapshot:
+    - Statuses : 7 skip(s)
+    - Exec time: [0.0] s
+
+  
+
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_4835_full that come from known issues:
+  Here are the changes found in IGTPW_4837_full that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@gem_exec_endless@dispatch@vcs0:
-    - shard-iclb:         [PASS][2] -> [INCOMPLETE][3] ([i915#1958] / [i915#2119])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-iclb6/igt@gem_exec_endless@dispatch@vcs0.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-iclb2/igt@gem_exec_endless@dispatch@vcs0.html
+  * igt@dumb_buffer@map-invalid-size:
+    - shard-snb:          [PASS][3] -> [TIMEOUT][4] ([i915#1958] / [i915#2119])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-snb5/igt@dumb_buffer@map-invalid-size.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-snb5/igt@dumb_buffer@map-invalid-size.html
+    - shard-hsw:          [PASS][5] -> [TIMEOUT][6] ([i915#1958] / [i915#2119])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-hsw4/igt@dumb_buffer@map-invalid-size.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-hsw7/igt@dumb_buffer@map-invalid-size.html
 
-  * igt@i915_suspend@forcewake:
-    - shard-kbl:          [PASS][4] -> [DMESG-WARN][5] ([i915#180]) +5 similar issues
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl2/igt@i915_suspend@forcewake.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl4/igt@i915_suspend@forcewake.html
+  * igt@gem_exec_create@forked:
+    - shard-glk:          [PASS][7] -> [DMESG-WARN][8] ([i915#118] / [i915#95]) +2 similar issues
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-glk2/igt@gem_exec_create@forked.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-glk2/igt@gem_exec_create@forked.html
 
-  * igt@kms_atomic_interruptible@universal-setplane-primary:
-    - shard-snb:          [PASS][6] -> [SKIP][7] ([fdo#109271])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-snb5/igt@kms_atomic_interruptible@universal-setplane-primary.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-snb2/igt@kms_atomic_interruptible@universal-setplane-primary.html
+  * igt@gem_exec_endless@dispatch@rcs0:
+    - shard-apl:          [PASS][9] -> [INCOMPLETE][10] ([i915#1635] / [i915#2119])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-apl3/igt@gem_exec_endless@dispatch@rcs0.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-apl4/igt@gem_exec_endless@dispatch@rcs0.html
 
-  * igt@kms_cursor_crc@pipe-a-cursor-64x21-sliding:
-    - shard-kbl:          [PASS][8] -> [DMESG-WARN][9] ([i915#1982])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl2/igt@kms_cursor_crc@pipe-a-cursor-64x21-sliding.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl6/igt@kms_cursor_crc@pipe-a-cursor-64x21-sliding.html
+  * igt@gem_exec_reloc@basic-concurrent0:
+    - shard-glk:          [PASS][11] -> [FAIL][12] ([i915#1930])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-glk1/igt@gem_exec_reloc@basic-concurrent0.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-glk5/igt@gem_exec_reloc@basic-concurrent0.html
 
-  * igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-atomic:
-    - shard-glk:          [PASS][10] -> [DMESG-WARN][11] ([i915#1982]) +2 similar issues
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-glk2/igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-atomic.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-glk1/igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-atomic.html
+  * igt@i915_module_load@reload:
+    - shard-iclb:         [PASS][13] -> [DMESG-WARN][14] ([i915#1982])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb4/igt@i915_module_load@reload.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb6/igt@i915_module_load@reload.html
 
-  * igt@kms_flip@flip-vs-expired-vblank-interruptible@b-hdmi-a2:
-    - shard-glk:          [PASS][12] -> [FAIL][13] ([i915#79])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-glk8/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-hdmi-a2.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-glk7/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-hdmi-a2.html
+  * igt@i915_pm_dc@dc3co-vpb-simulation:
+    - shard-tglb:         [PASS][15] -> [SKIP][16] ([i915#1904])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-tglb1/igt@i915_pm_dc@dc3co-vpb-simulation.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-tglb5/igt@i915_pm_dc@dc3co-vpb-simulation.html
 
-  * igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff:
-    - shard-glk:          [PASS][14] -> [FAIL][15] ([i915#49])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-glk7/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-glk1/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff.html
-    - shard-apl:          [PASS][16] -> [FAIL][17] ([i915#1635] / [i915#49])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-apl2/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-apl8/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff.html
-    - shard-kbl:          [PASS][18] -> [FAIL][19] ([i915#49])
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl4/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl4/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff.html
+  * igt@i915_pm_rps@reset:
+    - shard-apl:          [PASS][17] -> [FAIL][18] ([i915#1635]) +1 similar issue
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-apl3/igt@i915_pm_rps@reset.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-apl4/igt@i915_pm_rps@reset.html
 
-  * igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-fullscreen:
-    - shard-tglb:         [PASS][20] -> [DMESG-WARN][21] ([i915#1982]) +3 similar issues
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-tglb8/igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-fullscreen.html
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-tglb8/igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-fullscreen.html
+  * igt@kms_big_fb@y-tiled-64bpp-rotate-180:
+    - shard-glk:          [PASS][19] -> [DMESG-FAIL][20] ([i915#118] / [i915#95])
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-glk2/igt@kms_big_fb@y-tiled-64bpp-rotate-180.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-glk8/igt@kms_big_fb@y-tiled-64bpp-rotate-180.html
 
-  * igt@kms_hdmi_inject@inject-audio:
-    - shard-tglb:         [PASS][22] -> [SKIP][23] ([i915#433])
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-tglb2/igt@kms_hdmi_inject@inject-audio.html
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-tglb2/igt@kms_hdmi_inject@inject-audio.html
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - shard-tglb:         [PASS][21] -> [DMESG-WARN][22] ([i915#1982]) +1 similar issue
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-tglb6/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-tglb6/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
 
-  * igt@kms_psr@psr2_primary_mmap_cpu:
-    - shard-iclb:         [PASS][24] -> [SKIP][25] ([fdo#109441]) +2 similar issues
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-iclb2/igt@kms_psr@psr2_primary_mmap_cpu.html
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-iclb6/igt@kms_psr@psr2_primary_mmap_cpu.html
+  * igt@kms_flip@2x-flip-vs-dpms@ab-hdmi-a1-hdmi-a2:
+    - shard-glk:          [PASS][23] -> [DMESG-WARN][24] ([i915#1982])
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-glk6/igt@kms_flip@2x-flip-vs-dpms@ab-hdmi-a1-hdmi-a2.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-glk3/igt@kms_flip@2x-flip-vs-dpms@ab-hdmi-a1-hdmi-a2.html
+
+  * igt@kms_flip@flip-vs-expired-vblank@c-hdmi-a2:
+    - shard-glk:          [PASS][25] -> [FAIL][26] ([i915#79])
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-glk5/igt@kms_flip@flip-vs-expired-vblank@c-hdmi-a2.html
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-glk1/igt@kms_flip@flip-vs-expired-vblank@c-hdmi-a2.html
+
+  * igt@kms_frontbuffer_tracking@fbc-1p-primscrn-shrfb-plflip-blt:
+    - shard-kbl:          [PASS][27] -> [DMESG-WARN][28] ([i915#1982])
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl4/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-shrfb-plflip-blt.html
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl7/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-shrfb-plflip-blt.html
+
+  * igt@kms_hdr@bpc-switch-suspend:
+    - shard-kbl:          [PASS][29] -> [DMESG-WARN][30] ([i915#180]) +7 similar issues
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl4/igt@kms_hdr@bpc-switch-suspend.html
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl4/igt@kms_hdr@bpc-switch-suspend.html
+
+  * igt@kms_panel_fitting@atomic-fastset:
+    - shard-tglb:         [PASS][31] -> [FAIL][32] ([i915#83])
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-tglb2/igt@kms_panel_fitting@atomic-fastset.html
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-tglb5/igt@kms_panel_fitting@atomic-fastset.html
+    - shard-iclb:         [PASS][33] -> [FAIL][34] ([i915#83])
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb2/igt@kms_panel_fitting@atomic-fastset.html
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb2/igt@kms_panel_fitting@atomic-fastset.html
+
+  * igt@kms_psr@no_drrs:
+    - shard-iclb:         [PASS][35] -> [FAIL][36] ([i915#173])
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb3/igt@kms_psr@no_drrs.html
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb1/igt@kms_psr@no_drrs.html
+
+  * igt@kms_psr@psr2_basic:
+    - shard-iclb:         [PASS][37] -> [SKIP][38] ([fdo#109441]) +1 similar issue
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb2/igt@kms_psr@psr2_basic.html
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb4/igt@kms_psr@psr2_basic.html
 
   * igt@kms_setmode@basic:
-    - shard-kbl:          [PASS][26] -> [FAIL][27] ([i915#31])
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl6/igt@kms_setmode@basic.html
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl1/igt@kms_setmode@basic.html
+    - shard-kbl:          [PASS][39] -> [FAIL][40] ([i915#31])
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl4/igt@kms_setmode@basic.html
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl3/igt@kms_setmode@basic.html
 
-  * igt@kms_vblank@pipe-b-ts-continuation-suspend:
-    - shard-kbl:          [PASS][28] -> [DMESG-WARN][29] ([i915#165])
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl4/igt@kms_vblank@pipe-b-ts-continuation-suspend.html
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl6/igt@kms_vblank@pipe-b-ts-continuation-suspend.html
+  * igt@perf_pmu@semaphore-busy@rcs0:
+    - shard-kbl:          [PASS][41] -> [FAIL][42] ([i915#1820])
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl4/igt@perf_pmu@semaphore-busy@rcs0.html
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl1/igt@perf_pmu@semaphore-busy@rcs0.html
 
   
 #### Possible fixes ####
 
-  * igt@drm_read@empty-nonblock:
-    - shard-snb:          [TIMEOUT][30] ([i915#1958] / [i915#2119]) -> [PASS][31] +1 similar issue
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-snb6/igt@drm_read@empty-nonblock.html
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-snb5/igt@drm_read@empty-nonblock.html
+  * igt@gem_exec_whisper@basic-queues-priority:
+    - shard-glk:          [DMESG-WARN][43] ([i915#118] / [i915#95]) -> [PASS][44]
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-glk2/igt@gem_exec_whisper@basic-queues-priority.html
+   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-glk5/igt@gem_exec_whisper@basic-queues-priority.html
 
-  * igt@gem_exec_parallel@basic@vcs1:
-    - shard-tglb:         [INCOMPLETE][32] -> [PASS][33] +1 similar issue
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-tglb7/igt@gem_exec_parallel@basic@vcs1.html
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-tglb2/igt@gem_exec_parallel@basic@vcs1.html
+  * igt@gem_exec_whisper@basic-sync:
+    - shard-hsw:          [DMESG-WARN][45] ([i915#1982]) -> [PASS][46]
+   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-hsw6/igt@gem_exec_whisper@basic-sync.html
+   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-hsw4/igt@gem_exec_whisper@basic-sync.html
 
-  * igt@gem_exec_reloc@basic-concurrent0:
-    - shard-glk:          [FAIL][34] ([i915#1930]) -> [PASS][35]
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-glk5/igt@gem_exec_reloc@basic-concurrent0.html
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-glk2/igt@gem_exec_reloc@basic-concurrent0.html
-
-  * igt@gem_exec_whisper@basic-contexts-forked:
-    - shard-glk:          [DMESG-WARN][36] ([i915#118] / [i915#95]) -> [PASS][37]
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-glk8/igt@gem_exec_whisper@basic-contexts-forked.html
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-glk1/igt@gem_exec_whisper@basic-contexts-forked.html
-
-  * igt@kms_cursor_crc@pipe-c-cursor-suspend:
-    - shard-kbl:          [DMESG-WARN][38] ([i915#180]) -> [PASS][39] +7 similar issues
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl1/igt@kms_cursor_crc@pipe-c-cursor-suspend.html
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl6/igt@kms_cursor_crc@pipe-c-cursor-suspend.html
-
-  * igt@kms_draw_crc@draw-method-xrgb2101010-blt-xtiled:
-    - shard-hsw:          [TIMEOUT][40] ([i915#1958] / [i915#2119]) -> [PASS][41] +1 similar issue
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-hsw2/igt@kms_draw_crc@draw-method-xrgb2101010-blt-xtiled.html
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-hsw7/igt@kms_draw_crc@draw-method-xrgb2101010-blt-xtiled.html
+  * igt@gem_mmap_gtt@cpuset-big-copy:
+    - shard-iclb:         [DMESG-WARN][47] ([i915#1982]) -> [PASS][48]
+   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb2/igt@gem_mmap_gtt@cpuset-big-copy.html
+   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb4/igt@gem_mmap_gtt@cpuset-big-copy.html
 
   * igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@bc-hdmi-a1-hdmi-a2:
-    - shard-glk:          [FAIL][42] ([i915#79]) -> [PASS][43]
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-glk9/igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@bc-hdmi-a1-hdmi-a2.html
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-glk3/igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@bc-hdmi-a1-hdmi-a2.html
+    - shard-glk:          [FAIL][49] ([i915#79]) -> [PASS][50]
+   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-glk3/igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@bc-hdmi-a1-hdmi-a2.html
+   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-glk6/igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@bc-hdmi-a1-hdmi-a2.html
 
-  * igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-gtt:
-    - shard-kbl:          [DMESG-WARN][44] ([i915#1982]) -> [PASS][45] +1 similar issue
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl2/igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-gtt.html
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl7/igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-gtt.html
+  * igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-cpu:
+    - shard-tglb:         [DMESG-WARN][51] ([i915#1982]) -> [PASS][52] +2 similar issues
+   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-tglb1/igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-cpu.html
+   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-tglb6/igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-cpu.html
 
-  * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-indfb-plflip-blt:
-    - shard-tglb:         [DMESG-WARN][46] ([i915#1982]) -> [PASS][47] +4 similar issues
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-tglb1/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-indfb-plflip-blt.html
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-tglb5/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-indfb-plflip-blt.html
+  * igt@kms_hdmi_inject@inject-audio:
+    - shard-hsw:          [INCOMPLETE][53] -> [PASS][54]
+   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-hsw7/igt@kms_hdmi_inject@inject-audio.html
+   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-hsw2/igt@kms_hdmi_inject@inject-audio.html
 
-  * igt@kms_psr@psr2_sprite_plane_move:
-    - shard-iclb:         [SKIP][48] ([fdo#109441]) -> [PASS][49] +2 similar issues
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-iclb7/igt@kms_psr@psr2_sprite_plane_move.html
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-iclb2/igt@kms_psr@psr2_sprite_plane_move.html
+  * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:
+    - shard-kbl:          [DMESG-WARN][55] ([i915#180]) -> [PASS][56] +7 similar issues
+   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl7/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
+   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl6/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html
 
-  * igt@perf_pmu@busy-start@bcs0:
-    - shard-hsw:          [INCOMPLETE][50] -> [PASS][51]
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-hsw4/igt@perf_pmu@busy-start@bcs0.html
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-hsw1/igt@perf_pmu@busy-start@bcs0.html
+  * igt@kms_psr2_su@page_flip:
+    - shard-iclb:         [SKIP][57] ([fdo#109642] / [fdo#111068]) -> [PASS][58]
+   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb8/igt@kms_psr2_su@page_flip.html
+   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb2/igt@kms_psr2_su@page_flip.html
+
+  * igt@kms_psr@psr2_cursor_plane_move:
+    - shard-iclb:         [SKIP][59] ([fdo#109441]) -> [PASS][60] +1 similar issue
+   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb1/igt@kms_psr@psr2_cursor_plane_move.html
+   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb2/igt@kms_psr@psr2_cursor_plane_move.html
+
+  * igt@kms_vblank@pipe-a-query-forked:
+    - shard-hsw:          [TIMEOUT][61] ([i915#1958] / [i915#2119]) -> [PASS][62] +1 similar issue
+   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-hsw7/igt@kms_vblank@pipe-a-query-forked.html
+   [62]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-hsw1/igt@kms_vblank@pipe-a-query-forked.html
+
+  * igt@kms_vblank@pipe-b-ts-continuation-dpms-suspend:
+    - shard-kbl:          [DMESG-WARN][63] ([i915#165]) -> [PASS][64]
+   [63]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl7/igt@kms_vblank@pipe-b-ts-continuation-dpms-suspend.html
+   [64]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl2/igt@kms_vblank@pipe-b-ts-continuation-dpms-suspend.html
+
+  * igt@perf@blocking-parameterized:
+    - shard-iclb:         [FAIL][65] ([i915#1542]) -> [PASS][66]
+   [65]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb4/igt@perf@blocking-parameterized.html
+   [66]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb2/igt@perf@blocking-parameterized.html
+
+  * igt@perf@polling-parameterized:
+    - shard-iclb:         [SKIP][67] -> [PASS][68]
+   [67]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb1/igt@perf@polling-parameterized.html
+   [68]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb1/igt@perf@polling-parameterized.html
+    - shard-kbl:          [SKIP][69] ([fdo#109271]) -> [PASS][70]
+   [69]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl1/igt@perf@polling-parameterized.html
+   [70]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl6/igt@perf@polling-parameterized.html
+    - shard-tglb:         [SKIP][71] -> [PASS][72]
+   [71]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-tglb3/igt@perf@polling-parameterized.html
+   [72]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-tglb7/igt@perf@polling-parameterized.html
+
+  * igt@prime_busy@before-wait@vecs0:
+    - shard-hsw:          [FAIL][73] -> [PASS][74]
+   [73]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-hsw7/igt@prime_busy@before-wait@vecs0.html
+   [74]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-hsw2/igt@prime_busy@before-wait@vecs0.html
+
+  * igt@prime_mmap@test_correct:
+    - shard-snb:          [TIMEOUT][75] ([i915#1958] / [i915#2119]) -> [PASS][76] +3 similar issues
+   [75]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-snb6/igt@prime_mmap@test_correct.html
+   [76]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-snb1/igt@prime_mmap@test_correct.html
 
   
 #### Warnings ####
 
-  * igt@i915_pm_dc@dc3co-vpb-simulation:
-    - shard-iclb:         [SKIP][52] ([i915#588]) -> [SKIP][53] ([i915#658])
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-iclb2/igt@i915_pm_dc@dc3co-vpb-simulation.html
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-iclb7/igt@i915_pm_dc@dc3co-vpb-simulation.html
+  * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-b:
+    - shard-kbl:          [DMESG-WARN][77] ([i915#180]) -> [INCOMPLETE][78] ([CI#80] / [i915#155])
+   [77]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl3/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-b.html
+   [78]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl6/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-b.html
 
-  * igt@kms_flip@flip-vs-suspend-interruptible@a-dp1:
-    - shard-kbl:          [INCOMPLETE][54] ([i915#155]) -> [DMESG-WARN][55] ([i915#180])
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl4/igt@kms_flip@flip-vs-suspend-interruptible@a-dp1.html
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl4/igt@kms_flip@flip-vs-suspend-interruptible@a-dp1.html
-
-  * igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-mmap-gtt:
-    - shard-hsw:          [TIMEOUT][56] ([i915#1958] / [i915#2119]) -> [SKIP][57] ([fdo#109271]) +2 similar issues
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-hsw2/igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-mmap-gtt.html
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-hsw1/igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-mmap-gtt.html
-
-  * igt@kms_frontbuffer_tracking@fbcpsr-badstride:
-    - shard-snb:          [TIMEOUT][58] ([i915#1958] / [i915#2119]) -> [SKIP][59] ([fdo#109271]) +2 similar issues
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-snb6/igt@kms_frontbuffer_tracking@fbcpsr-badstride.html
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-snb6/igt@kms_frontbuffer_tracking@fbcpsr-badstride.html
-
-  
-  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
-  [fdo#109441]: https://bugs.freedesktop.org/show_bug.cgi?id=109441
-  [i915#118]: https://gitlab.freedesktop.org/drm/intel/issues/118
-  [i915#155]: https://gitlab.freedesktop.org/drm/intel/issues/155
-  [i915#1635]: https://gitlab.freedesktop.org/drm/intel/issues/1635
-  [i915#165]: https://gitlab.freedesktop.org/drm/intel/issues/165
-  [i915#180]: https://gitlab.freedesktop.org/drm/intel/issues/180
-  [i915#1930]: https://gitlab.freedesktop.org/drm/intel/issues/1930
-  [i915#1958]: https://gitlab.freedesktop.org/drm/intel/issues/1958
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#2119]: https://gitlab.freedesktop.org/drm/intel/issues/2119
-  [i915#31]: https://gitlab.freedesktop.org/drm/intel/issues/31
-  [i915#433]: https://gitlab.freedesktop.org/drm/intel/issues/433
-  [i915#49]: https://gitlab.freedesktop.org/drm/intel/issues/49
-  [i915#588]: https://gitlab.freedesktop.org/drm/intel/issues/588
-  [i915#658]: https://gitlab.freedesktop.org/drm/intel/issues/658
-  [i915#79]: https://gitlab.freedesktop.org/drm/intel/issues/79
-  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
-
-
-Participating hosts (11 -> 8)
-------------------------------
-
-  Missing    (3): pig-skl-6260u pig-glk-j5005 pig-icl-1065g7 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5753 -> IGTPW_4835
-  * Piglit: piglit_4509 -> None
-
-  CI-20190529: 20190529
-  CI_DRM_8821: cf15caaa19051dc0f83f0192b63520bff861dec2 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_4835: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/index.html
-  IGT_5753: d80bd02632e8a91389c58c601b3ebce8e6c924d3 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+  * igt@kms_psr@psr2_primary_page_flip:
+    - shard-snb:          [TIMEOUT][79] ([i915#1958] / [i915#2119]) -> [SKIP][80] ([fdo#109271])
+   [79]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-snb6/igt@kms_psr@psr2_primary_page_flip.html
+   [80]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-snb1/igt@kms_psr@psr2_primary_page_flip.html
+    - shard-hsw:          [TIMEOUT][81] ([i915#1958] / [i915#2119]) -> [SKIP][82] ([fdo#109271])
+   [81]: https://intel-gfx
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/index.html
 
---===============7980163950089487934==
+--===============0053913486327842908==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -290,236 +834,1219 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>i915/gem_ctx_ringsize: Manually control timeout</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/80137/">https://patchwork.freedesktop.org/series/80137/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>tests: Add timeline semaphore tests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/79248/">https://patchwork.freedesktop.org/series/79248/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_8821_full -&gt; IGTPW_4835_full</h1>
+    <h1>CI Bug Log - changes from CI_DRM_8822_full -&gt; IGTPW_4837_full</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_4835_full absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_4835_full, please notify your bug team to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/index.html</p>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/index.html</p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_4835_full:</p>
+<p>Here are the unknown changes that may have been introduced in IGTPW_4837_full:</p>
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
-<li>igt@i915_selftest@mock@timelines:<ul>
-<li>shard-hsw:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-hsw7/igt@i915_selftest@mock@timelines.html">INCOMPLETE</a></li>
+<li>
+<p>{igt@syncobj_timeline@invalid-multi-wait-all-unsubmitted-submitted-signaled} (NEW):</p>
+<ul>
+<li>shard-iclb:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb6/igt@syncobj_timeline@invalid-multi-wait-all-unsubmitted-submitted-signaled.html">SKIP</a> +130 similar issues</li>
+</ul>
+</li>
+<li>
+<p>{igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted-submitted-signaled} (NEW):</p>
+<ul>
+<li>shard-tglb:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-tglb8/igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted-submitted-signaled.html">SKIP</a> +130 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between CI_DRM_8822_full and IGTPW_4837_full:</p>
+<h3>New IGT tests (132)</h3>
+<ul>
+<li>
+<p>igt@gem_exec_fence@invalid-timeline-fence-array:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@syncobj-backward-timeline-chain-engines:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@syncobj-stationary-timeline-chain-engines:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@syncobj-timeline-chain-engines:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@syncobj-timeline-export:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@syncobj-timeline-invalid-flags:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@syncobj-timeline-invalid-wait:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@syncobj-timeline-repeat:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@syncobj-timeline-signal:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@syncobj-timeline-unused-fence:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_exec_fence@syncobj-timeline-wait:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@32bits-limit:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@device-signal-unordered:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@device-submit-unordered:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-all-for-submit-available-unsubmitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-all-for-submit-available-unsubmitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-all-for-submit-available-unsubmitted-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-all-for-submit-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-all-for-submit-submitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-all-for-submit-unsubmitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-all-for-submit-unsubmitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-all-for-submit-unsubmitted-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-all-for-submit-unsubmitted-submitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-all-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-all-submitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-for-submit-available-unsubmitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-for-submit-submitted:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-for-submit-unsubmitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-for-submit-unsubmitted-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-multi-wait-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-single-wait-all-for-submit-available-unsubmitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-single-wait-all-for-submit-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-single-wait-all-for-submit-unsubmitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-single-wait-all-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-single-wait-for-submit-available-unsubmitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-single-wait-for-submit-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-single-wait-for-submit-unsubmitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@etime-single-wait-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@host-signal-ordered:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@host-signal-points:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-all-available-unsubmitted:</p>
+<ul>
+<li>Statuses : 1 timeout(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-all-available-unsubmitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-all-available-unsubmitted-submitted:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-all-available-unsubmitted-submitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-all-unsubmitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-all-unsubmitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-all-unsubmitted-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-all-unsubmitted-submitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-available-unsubmitted-submitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-unsubmitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-unsubmitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-unsubmitted-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-multi-wait-unsubmitted-submitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-query-bad-pad:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-query-illegal-handle:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-query-one-illegal-handle:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-query-zero-handles:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-signal-bad-pad:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-signal-illegal-handle:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-signal-illegal-point:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-signal-one-illegal-handle:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-signal-zero-handles:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-single-wait-all-available-unsubmitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-single-wait-all-unsubmitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-single-wait-available-unsubmitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-single-wait-unsubmitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-transfer-bad-pad:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-transfer-illegal-handle:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-transfer-non-existent-point:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-wait-bad-flags:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-wait-illegal-handle:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@invalid-wait-zero-handles:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-all-available-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-all-available-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-all-available-submitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-all-for-submit-available-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-all-for-submit-available-submitted:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-all-for-submit-available-submitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-all-for-submit-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-all-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-available-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-available-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-available-submitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-for-submit-available-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-for-submit-available-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-for-submit-available-submitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-for-submit-available-unsubmitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-for-submit-available-unsubmitted-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-for-submit-available-unsubmitted-submitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-for-submit-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-for-submit-submitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-for-submit-unsubmitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-for-submit-unsubmitted-submitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@multi-wait-submitted-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@reset-during-wait-for-submit:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@reset-multiple-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@reset-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@reset-unsignaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@signal:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@signal-array:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@signal-point-0:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@single-wait-all-available-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@single-wait-all-available-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@single-wait-all-for-submit-available-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@single-wait-all-for-submit-available-submitted:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@single-wait-all-for-submit-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@single-wait-all-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@single-wait-available-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@single-wait-available-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@single-wait-for-submit-available-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@single-wait-for-submit-available-submitted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@single-wait-for-submit-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@single-wait-signaled:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@transfer-timeline-point:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@wait-all-complex:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@wait-all-delayed-signal:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@wait-all-for-submit-complex:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@wait-all-for-submit-delayed-submit:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@wait-all-for-submit-snapshot:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@wait-all-interrupted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@wait-all-snapshot:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@wait-any-complex:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@wait-any-interrupted:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@wait-any-snapshot:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@wait-delayed-signal:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@wait-for-submit-complex:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@wait-for-submit-delayed-submit:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@syncobj_timeline@wait-for-submit-snapshot:</p>
+<ul>
+<li>Statuses : 7 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 </ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_4835_full that come from known issues:</p>
+<p>Here are the changes found in IGTPW_4837_full that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@gem_exec_endless@dispatch@vcs0:</p>
-<ul>
-<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-iclb6/igt@gem_exec_endless@dispatch@vcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-iclb2/igt@gem_exec_endless@dispatch@vcs0.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1958">i915#1958</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2119">i915#2119</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_suspend@forcewake:</p>
-<ul>
-<li>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl2/igt@i915_suspend@forcewake.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl4/igt@i915_suspend@forcewake.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a>) +5 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_atomic_interruptible@universal-setplane-primary:</p>
-<ul>
-<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-snb5/igt@kms_atomic_interruptible@universal-setplane-primary.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-snb2/igt@kms_atomic_interruptible@universal-setplane-primary.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_crc@pipe-a-cursor-64x21-sliding:</p>
-<ul>
-<li>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl2/igt@kms_cursor_crc@pipe-a-cursor-64x21-sliding.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl6/igt@kms_cursor_crc@pipe-a-cursor-64x21-sliding.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-atomic:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-glk2/igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-glk1/igt@kms_cursor_legacy@flip-vs-cursor-busy-crc-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) +2 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@flip-vs-expired-vblank-interruptible@b-hdmi-a2:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-glk8/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-hdmi-a2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-glk7/igt@kms_flip@flip-vs-expired-vblank-interruptible@b-hdmi-a2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/79">i915#79</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff:</p>
+<p>igt@dumb_buffer@map-invalid-size:</p>
 <ul>
 <li>
-<p>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-glk7/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-glk1/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/49">i915#49</a>)</p>
+<p>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-snb5/igt@dumb_buffer@map-invalid-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-snb5/igt@dumb_buffer@map-invalid-size.html">TIMEOUT</a> ([i915#1958] / [i915#2119])</p>
 </li>
 <li>
-<p>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-apl2/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-apl8/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1635">i915#1635</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/49">i915#49</a>)</p>
-</li>
-<li>
-<p>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl4/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl4/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-spr-indfb-onoff.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/49">i915#49</a>)</p>
+<p>shard-hsw:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-hsw4/igt@dumb_buffer@map-invalid-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-hsw7/igt@dumb_buffer@map-invalid-size.html">TIMEOUT</a> ([i915#1958] / [i915#2119])</p>
 </li>
 </ul>
 </li>
 <li>
-<p>igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-fullscreen:</p>
+<p>igt@gem_exec_create@forked:</p>
 <ul>
-<li>shard-tglb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-tglb8/igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-fullscreen.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-tglb8/igt@kms_frontbuffer_tracking@psr-1p-primscrn-spr-indfb-fullscreen.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) +3 similar issues</li>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-glk2/igt@gem_exec_create@forked.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-glk2/igt@gem_exec_create@forked.html">DMESG-WARN</a> ([i915#118] / [i915#95]) +2 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
+<p>igt@gem_exec_endless@dispatch@rcs0:</p>
 <ul>
-<li>shard-tglb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-tglb2/igt@kms_hdmi_inject@inject-audio.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-tglb2/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/433">i915#433</a>)</li>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-apl3/igt@gem_exec_endless@dispatch@rcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-apl4/igt@gem_exec_endless@dispatch@rcs0.html">INCOMPLETE</a> ([i915#1635] / [i915#2119])</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr@psr2_primary_mmap_cpu:</p>
+<p>igt@gem_exec_reloc@basic-concurrent0:</p>
 <ul>
-<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-iclb2/igt@kms_psr@psr2_primary_mmap_cpu.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-iclb6/igt@kms_psr@psr2_primary_mmap_cpu.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109441">fdo#109441</a>) +2 similar issues</li>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-glk1/igt@gem_exec_reloc@basic-concurrent0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-glk5/igt@gem_exec_reloc@basic-concurrent0.html">FAIL</a> ([i915#1930])</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb4/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb6/igt@i915_module_load@reload.html">DMESG-WARN</a> ([i915#1982])</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_dc@dc3co-vpb-simulation:</p>
+<ul>
+<li>shard-tglb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-tglb1/igt@i915_pm_dc@dc3co-vpb-simulation.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-tglb5/igt@i915_pm_dc@dc3co-vpb-simulation.html">SKIP</a> ([i915#1904])</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@reset:</p>
+<ul>
+<li>shard-apl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-apl3/igt@i915_pm_rps@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-apl4/igt@i915_pm_rps@reset.html">FAIL</a> ([i915#1635]) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@y-tiled-64bpp-rotate-180:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-glk2/igt@kms_big_fb@y-tiled-64bpp-rotate-180.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-glk8/igt@kms_big_fb@y-tiled-64bpp-rotate-180.html">DMESG-FAIL</a> ([i915#118] / [i915#95])</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
+<ul>
+<li>shard-tglb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-tglb6/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-tglb6/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">DMESG-WARN</a> ([i915#1982]) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-flip-vs-dpms@ab-hdmi-a1-hdmi-a2:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-glk6/igt@kms_flip@2x-flip-vs-dpms@ab-hdmi-a1-hdmi-a2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-glk3/igt@kms_flip@2x-flip-vs-dpms@ab-hdmi-a1-hdmi-a2.html">DMESG-WARN</a> ([i915#1982])</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-expired-vblank@c-hdmi-a2:</p>
+<ul>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-glk5/igt@kms_flip@flip-vs-expired-vblank@c-hdmi-a2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-glk1/igt@kms_flip@flip-vs-expired-vblank@c-hdmi-a2.html">FAIL</a> ([i915#79])</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-1p-primscrn-shrfb-plflip-blt:</p>
+<ul>
+<li>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl4/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-shrfb-plflip-blt.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl7/igt@kms_frontbuffer_tracking@fbc-1p-primscrn-shrfb-plflip-blt.html">DMESG-WARN</a> ([i915#1982])</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@bpc-switch-suspend:</p>
+<ul>
+<li>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl4/igt@kms_hdr@bpc-switch-suspend.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl4/igt@kms_hdr@bpc-switch-suspend.html">DMESG-WARN</a> ([i915#180]) +7 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_panel_fitting@atomic-fastset:</p>
+<ul>
+<li>
+<p>shard-tglb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-tglb2/igt@kms_panel_fitting@atomic-fastset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-tglb5/igt@kms_panel_fitting@atomic-fastset.html">FAIL</a> ([i915#83])</p>
+</li>
+<li>
+<p>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb2/igt@kms_panel_fitting@atomic-fastset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb2/igt@kms_panel_fitting@atomic-fastset.html">FAIL</a> ([i915#83])</p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@no_drrs:</p>
+<ul>
+<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb3/igt@kms_psr@no_drrs.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb1/igt@kms_psr@no_drrs.html">FAIL</a> ([i915#173])</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr2_basic:</p>
+<ul>
+<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb2/igt@kms_psr@psr2_basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb4/igt@kms_psr@psr2_basic.html">SKIP</a> ([fdo#109441]) +1 similar issue</li>
 </ul>
 </li>
 <li>
 <p>igt@kms_setmode@basic:</p>
 <ul>
-<li>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl6/igt@kms_setmode@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl1/igt@kms_setmode@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/31">i915#31</a>)</li>
+<li>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl4/igt@kms_setmode@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl3/igt@kms_setmode@basic.html">FAIL</a> ([i915#31])</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_vblank@pipe-b-ts-continuation-suspend:</p>
+<p>igt@perf_pmu@semaphore-busy@rcs0:</p>
 <ul>
-<li>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl4/igt@kms_vblank@pipe-b-ts-continuation-suspend.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl6/igt@kms_vblank@pipe-b-ts-continuation-suspend.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/165">i915#165</a>)</li>
+<li>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl4/igt@perf_pmu@semaphore-busy@rcs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl1/igt@perf_pmu@semaphore-busy@rcs0.html">FAIL</a> ([i915#1820])</li>
 </ul>
 </li>
 </ul>
 <h4>Possible fixes</h4>
 <ul>
 <li>
-<p>igt@drm_read@empty-nonblock:</p>
+<p>igt@gem_exec_whisper@basic-queues-priority:</p>
 <ul>
-<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-snb6/igt@drm_read@empty-nonblock.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1958">i915#1958</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2119">i915#2119</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-snb5/igt@drm_read@empty-nonblock.html">PASS</a> +1 similar issue</li>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-glk2/igt@gem_exec_whisper@basic-queues-priority.html">DMESG-WARN</a> ([i915#118] / [i915#95]) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-glk5/igt@gem_exec_whisper@basic-queues-priority.html">PASS</a></li>
 </ul>
 </li>
 <li>
-<p>igt@gem_exec_parallel@basic@vcs1:</p>
+<p>igt@gem_exec_whisper@basic-sync:</p>
 <ul>
-<li>shard-tglb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-tglb7/igt@gem_exec_parallel@basic@vcs1.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-tglb2/igt@gem_exec_parallel@basic@vcs1.html">PASS</a> +1 similar issue</li>
+<li>shard-hsw:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-hsw6/igt@gem_exec_whisper@basic-sync.html">DMESG-WARN</a> ([i915#1982]) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-hsw4/igt@gem_exec_whisper@basic-sync.html">PASS</a></li>
 </ul>
 </li>
 <li>
-<p>igt@gem_exec_reloc@basic-concurrent0:</p>
+<p>igt@gem_mmap_gtt@cpuset-big-copy:</p>
 <ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-glk5/igt@gem_exec_reloc@basic-concurrent0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1930">i915#1930</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-glk2/igt@gem_exec_reloc@basic-concurrent0.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@gem_exec_whisper@basic-contexts-forked:</p>
-<ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-glk8/igt@gem_exec_whisper@basic-contexts-forked.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/118">i915#118</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-glk1/igt@gem_exec_whisper@basic-contexts-forked.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_crc@pipe-c-cursor-suspend:</p>
-<ul>
-<li>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl1/igt@kms_cursor_crc@pipe-c-cursor-suspend.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl6/igt@kms_cursor_crc@pipe-c-cursor-suspend.html">PASS</a> +7 similar issues</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_draw_crc@draw-method-xrgb2101010-blt-xtiled:</p>
-<ul>
-<li>shard-hsw:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-hsw2/igt@kms_draw_crc@draw-method-xrgb2101010-blt-xtiled.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1958">i915#1958</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2119">i915#2119</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-hsw7/igt@kms_draw_crc@draw-method-xrgb2101010-blt-xtiled.html">PASS</a> +1 similar issue</li>
+<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb2/igt@gem_mmap_gtt@cpuset-big-copy.html">DMESG-WARN</a> ([i915#1982]) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb4/igt@gem_mmap_gtt@cpuset-big-copy.html">PASS</a></li>
 </ul>
 </li>
 <li>
 <p>igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@bc-hdmi-a1-hdmi-a2:</p>
 <ul>
-<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-glk9/igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@bc-hdmi-a1-hdmi-a2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/79">i915#79</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-glk3/igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@bc-hdmi-a1-hdmi-a2.html">PASS</a></li>
+<li>shard-glk:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-glk3/igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@bc-hdmi-a1-hdmi-a2.html">FAIL</a> ([i915#79]) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-glk6/igt@kms_flip@2x-flip-vs-expired-vblank-interruptible@bc-hdmi-a1-hdmi-a2.html">PASS</a></li>
 </ul>
 </li>
 <li>
-<p>igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-gtt:</p>
+<p>igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-cpu:</p>
 <ul>
-<li>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl2/igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-gtt.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl7/igt@kms_frontbuffer_tracking@fbc-rgb565-draw-mmap-gtt.html">PASS</a> +1 similar issue</li>
+<li>shard-tglb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-tglb1/igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-cpu.html">DMESG-WARN</a> ([i915#1982]) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-tglb6/igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-cpu.html">PASS</a> +2 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-indfb-plflip-blt:</p>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
 <ul>
-<li>shard-tglb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-tglb1/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-indfb-plflip-blt.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-tglb5/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-indfb-plflip-blt.html">PASS</a> +4 similar issues</li>
+<li>shard-hsw:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-hsw7/igt@kms_hdmi_inject@inject-audio.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-hsw2/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr@psr2_sprite_plane_move:</p>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a:</p>
 <ul>
-<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-iclb7/igt@kms_psr@psr2_sprite_plane_move.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109441">fdo#109441</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-iclb2/igt@kms_psr@psr2_sprite_plane_move.html">PASS</a> +2 similar issues</li>
+<li>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl7/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html">DMESG-WARN</a> ([i915#180]) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl6/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a.html">PASS</a> +7 similar issues</li>
 </ul>
 </li>
 <li>
-<p>igt@perf_pmu@busy-start@bcs0:</p>
+<p>igt@kms_psr2_su@page_flip:</p>
 <ul>
-<li>shard-hsw:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-hsw4/igt@perf_pmu@busy-start@bcs0.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-hsw1/igt@perf_pmu@busy-start@bcs0.html">PASS</a></li>
+<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb8/igt@kms_psr2_su@page_flip.html">SKIP</a> ([fdo#109642] / [fdo#111068]) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb2/igt@kms_psr2_su@page_flip.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr2_cursor_plane_move:</p>
+<ul>
+<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb1/igt@kms_psr@psr2_cursor_plane_move.html">SKIP</a> ([fdo#109441]) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb2/igt@kms_psr@psr2_cursor_plane_move.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vblank@pipe-a-query-forked:</p>
+<ul>
+<li>shard-hsw:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-hsw7/igt@kms_vblank@pipe-a-query-forked.html">TIMEOUT</a> ([i915#1958] / [i915#2119]) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-hsw1/igt@kms_vblank@pipe-a-query-forked.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vblank@pipe-b-ts-continuation-dpms-suspend:</p>
+<ul>
+<li>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl7/igt@kms_vblank@pipe-b-ts-continuation-dpms-suspend.html">DMESG-WARN</a> ([i915#165]) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl2/igt@kms_vblank@pipe-b-ts-continuation-dpms-suspend.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@perf@blocking-parameterized:</p>
+<ul>
+<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb4/igt@perf@blocking-parameterized.html">FAIL</a> ([i915#1542]) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb2/igt@perf@blocking-parameterized.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@perf@polling-parameterized:</p>
+<ul>
+<li>
+<p>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-iclb1/igt@perf@polling-parameterized.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-iclb1/igt@perf@polling-parameterized.html">PASS</a></p>
+</li>
+<li>
+<p>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl1/igt@perf@polling-parameterized.html">SKIP</a> ([fdo#109271]) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl6/igt@perf@polling-parameterized.html">PASS</a></p>
+</li>
+<li>
+<p>shard-tglb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-tglb3/igt@perf@polling-parameterized.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-tglb7/igt@perf@polling-parameterized.html">PASS</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_busy@before-wait@vecs0:</p>
+<ul>
+<li>shard-hsw:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-hsw7/igt@prime_busy@before-wait@vecs0.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-hsw2/igt@prime_busy@before-wait@vecs0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@prime_mmap@test_correct:</p>
+<ul>
+<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-snb6/igt@prime_mmap@test_correct.html">TIMEOUT</a> ([i915#1958] / [i915#2119]) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-snb1/igt@prime_mmap@test_correct.html">PASS</a> +3 similar issues</li>
 </ul>
 </li>
 </ul>
 <h4>Warnings</h4>
 <ul>
 <li>
-<p>igt@i915_pm_dc@dc3co-vpb-simulation:</p>
+<p>igt@kms_pipe_crc_basic@suspend-read-crc-pipe-b:</p>
 <ul>
-<li>shard-iclb:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-iclb2/igt@i915_pm_dc@dc3co-vpb-simulation.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/588">i915#588</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-iclb7/igt@i915_pm_dc@dc3co-vpb-simulation.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/658">i915#658</a>)</li>
+<li>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-kbl3/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-b.html">DMESG-WARN</a> ([i915#180]) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-kbl6/igt@kms_pipe_crc_basic@suspend-read-crc-pipe-b.html">INCOMPLETE</a> ([CI#80] / [i915#155])</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_flip@flip-vs-suspend-interruptible@a-dp1:</p>
+<p>igt@kms_psr@psr2_primary_page_flip:</p>
 <ul>
-<li>shard-kbl:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-kbl4/igt@kms_flip@flip-vs-suspend-interruptible@a-dp1.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/155">i915#155</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-kbl4/igt@kms_flip@flip-vs-suspend-interruptible@a-dp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/180">i915#180</a>)</li>
-</ul>
+<li>
+<p>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8822/shard-snb6/igt@kms_psr@psr2_primary_page_flip.html">TIMEOUT</a> ([i915#1958] / [i915#2119]) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4837/shard-snb1/igt@kms_psr@psr2_primary_page_flip.html">SKIP</a> ([fdo#109271])</p>
 </li>
 <li>
-<p>igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-mmap-gtt:</p>
-<ul>
-<li>shard-hsw:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-hsw2/igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-mmap-gtt.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1958">i915#1958</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2119">i915#2119</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-hsw1/igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-pri-indfb-draw-mmap-gtt.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</li>
-</ul>
+<p>shard-hsw:          <a href="https://intel-gfx">TIMEOUT</a> ([i915#1958] / [i915#2119]) -&gt; [SKIP][82] ([fdo#109271])</p>
 </li>
-<li>
-<p>igt@kms_frontbuffer_tracking@fbcpsr-badstride:</p>
-<ul>
-<li>shard-snb:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8821/shard-snb6/igt@kms_frontbuffer_tracking@fbcpsr-badstride.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1958">i915#1958</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/2119">i915#2119</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/shard-snb6/igt@kms_frontbuffer_tracking@fbcpsr-badstride.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) +2 similar issues</li>
 </ul>
 </li>
 </ul>
-<h2>Participating hosts (11 -&gt; 8)</h2>
-<p>Missing    (3): pig-skl-6260u pig-glk-j5005 pig-icl-1065g7 </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5753 -&gt; IGTPW_4835</li>
-<li>Piglit: piglit_4509 -&gt; None</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_8821: cf15caaa19051dc0f83f0192b63520bff861dec2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_4835: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4835/index.html<br />
-  IGT_5753: d80bd02632e8a91389c58c601b3ebce8e6c924d3 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools<br />
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit</p>
 
 </body>
 </html>
 
---===============7980163950089487934==--
+--===============0053913486327842908==--
 
---===============2046797029==
+--===============0775894747==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -530,4 +2057,4 @@ igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
---===============2046797029==--
+--===============0775894747==--
