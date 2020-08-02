@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Date: Sun, 30 Aug 2020 13:44:10 -0400
-Message-Id: <20200830174410.256533-5-rodrigosiqueiramelo@gmail.com>
-In-Reply-To: <20200830174410.256533-1-rodrigosiqueiramelo@gmail.com>
-References: <20200830174410.256533-1-rodrigosiqueiramelo@gmail.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D4FB76E063
+ for <igt-dev@lists.freedesktop.org>; Sun,  2 Aug 2020 06:36:08 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Sun,  2 Aug 2020 08:35:46 +0200
+Message-Id: <20200802063601.8259-3-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200802063601.8259-1-zbigniew.kempczynski@intel.com>
+References: <20200802063601.8259-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v9 4/4] kms_writeback: Add
- writeback-check-output
+Subject: [igt-dev] [PATCH i-g-t v21 02/17] lib/intel_bufops: change in hw/sw
+ tiling detection
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,204 +17,100 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, nd <nd@arm.com>
-Cc: Petri Latvala <petri.latvala@intel.com>, Simon Ser <contact@emersion.fr>, Liviu Dudau <liviu.dudau@arm.com>, Maxime Ripard <maxime@cerno.tech>, Daniel Vetter <daniel@ffwll.ch>, Brian Starkey <brian.starkey@arm.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Brian Starkey <rodrigosiqueiramelo@gmail.com>
-
-Add a test which makes commits using the writeback connector, and
-checks the output buffer hash to make sure it is/isn't written as
-appropriate.
-
-Changes since V8 (Arkadiusz Hiler):
-* Add short description
-
-Changes since V7 (Maxime Ripard):
-* Make fb_fill cross-platform
-
-Changes since v6 (Simon Ser):
-* Add a descriptive error message if sync_fence_wait fail
-* Drop color_idx variable
-* Compute expected CRC based on input framebuffer in writeback_sequence
-* Remove unnecessary parentheses
-* Replace int variable for unsigned int
-
-Signed-off-by: Brian Starkey <brian.starkey@arm.com>
-[rebased and updated]
-Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
----
- tests/kms_writeback.c | 134 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 134 insertions(+)
-
-diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index f8025538..60dbda2a 100644
---- a/tests/kms_writeback.c
-+++ b/tests/kms_writeback.c
-@@ -30,6 +30,14 @@
- #include "igt.h"
- #include "igt_core.h"
- #include "igt_fb.h"
-+#include "sw_sync.h"
-+
-+IGT_TEST_DESCRIPTION(
-+   "This test validates the expected behavior of the writeback connectors "
-+   "feature by checking if the target device support writeback; it validates "
-+   "bad and good combination, check color format, and check the output result "
-+   "by using CRC."
-+);
- 
- static drmModePropertyBlobRes *get_writeback_formats_blob(igt_output_t *output)
- {
-@@ -217,6 +225,118 @@ static void writeback_fb_id(igt_output_t *output, igt_fb_t *valid_fb, igt_fb_t *
- 	igt_assert(ret == 0);
- }
- 
-+static void fill_fb(igt_fb_t *fb, uint32_t pixel)
-+{
-+	void *ptr;
-+
-+	igt_assert(fb->drm_format == DRM_FORMAT_XRGB8888);
-+
-+	ptr = igt_fb_map_buffer(fb->fd, fb);
-+	igt_assert(ptr);
-+
-+	memset(ptr, pixel, fb->strides[0] * fb->height);
-+
-+	igt_fb_unmap_buffer(fb, ptr);
-+}
-+
-+static void get_and_wait_out_fence(igt_output_t *output)
-+{
-+	int ret;
-+
-+	igt_assert(output->writeback_out_fence_fd >= 0);
-+
-+	ret = sync_fence_wait(output->writeback_out_fence_fd, 1000);
-+	igt_assert_f(ret == 0, "sync_fence_wait failed: %s\n", strerror(-ret));
-+	close(output->writeback_out_fence_fd);
-+	output->writeback_out_fence_fd = -1;
-+}
-+
-+static void writeback_sequence(igt_output_t *output, igt_plane_t *plane,
-+				igt_fb_t *in_fb, igt_fb_t *out_fbs[], int n_commits)
-+{
-+	int i = 0;
-+	uint32_t in_fb_colors[2] = { 0xffff0000, 0xff00ff00 };
-+	uint32_t clear_color = 0xffffffff;
-+
-+	igt_crc_t cleared_crc, out_expected;
-+
-+	for (i = 0; i < n_commits; i++) {
-+		/* Change the input color each time */
-+		fill_fb(in_fb, in_fb_colors[i % 2]);
-+
-+		if (out_fbs[i]) {
-+			igt_crc_t out_before;
-+
-+			/* Get the expected CRC */
-+			igt_fb_get_fnv1a_crc(in_fb, &out_expected);
-+			fill_fb(out_fbs[i], clear_color);
-+
-+			if (i == 0)
-+				igt_fb_get_fnv1a_crc(out_fbs[i], &cleared_crc);
-+			igt_fb_get_fnv1a_crc(out_fbs[i], &out_before);
-+			igt_assert_crc_equal(&cleared_crc, &out_before);
-+		}
-+
-+		/* Commit */
-+		igt_plane_set_fb(plane, in_fb);
-+		igt_output_set_writeback_fb(output, out_fbs[i]);
-+
-+		igt_display_commit_atomic(output->display,
-+					  DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					  NULL);
-+		if (out_fbs[i])
-+			get_and_wait_out_fence(output);
-+
-+		/* Make sure the old output buffer is untouched */
-+		if (i > 0 && out_fbs[i - 1] && out_fbs[i] != out_fbs[i - 1]) {
-+			igt_crc_t out_prev;
-+			igt_fb_get_fnv1a_crc(out_fbs[i - 1], &out_prev);
-+			igt_assert_crc_equal(&cleared_crc, &out_prev);
-+		}
-+
-+		/* Make sure this output buffer is written */
-+		if (out_fbs[i]) {
-+			igt_crc_t out_after;
-+			igt_fb_get_fnv1a_crc(out_fbs[i], &out_after);
-+			igt_assert_crc_equal(&out_expected, &out_after);
-+
-+			/* And clear it, for the next time */
-+			fill_fb(out_fbs[i], clear_color);
-+		}
-+	}
-+}
-+
-+static void writeback_check_output(igt_output_t *output, igt_plane_t *plane,
-+				   igt_fb_t *input_fb, igt_fb_t *output_fb)
-+{
-+	igt_fb_t *out_fbs[2] = { 0 };
-+	igt_fb_t second_out_fb;
-+	unsigned int fb_id;
-+
-+	/* One commit, with a writeback. */
-+	writeback_sequence(output, plane, input_fb, &output_fb, 1);
-+
-+	/* Two commits, the second with no writeback */
-+	out_fbs[0] = output_fb;
-+	writeback_sequence(output, plane, input_fb, out_fbs, 2);
-+
-+	/* Two commits, both with writeback */
-+	out_fbs[1] = output_fb;
-+	writeback_sequence(output, plane, input_fb, out_fbs, 2);
-+
-+	fb_id = igt_create_fb(output_fb->fd, output_fb->width, output_fb->height,
-+			      DRM_FORMAT_XRGB8888,
-+			      igt_fb_mod_to_tiling(0),
-+			      &second_out_fb);
-+	igt_require(fb_id > 0);
-+
-+	/* Two commits, with different writeback buffers */
-+	out_fbs[1] = &second_out_fb;
-+	writeback_sequence(output, plane, input_fb, out_fbs, 2);
-+
-+	igt_remove_fb(output_fb->fd, &second_out_fb);
-+}
-+
- igt_main
- {
- 	igt_display_t display;
-@@ -309,6 +429,20 @@ igt_main
- 		igt_remove_fb(display.drm_fd, &output_fb);
- 	}
- 
-+	igt_describe("Check writeback output with CRC validation");
-+	igt_subtest("writeback-check-output") {
-+		igt_fb_t output_fb;
-+		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
-+				      DRM_FORMAT_XRGB8888,
-+				      igt_fb_mod_to_tiling(0),
-+				      &output_fb);
-+		igt_require(fb_id > 0);
-+
-+		writeback_check_output(output, plane, &input_fb, &output_fb);
-+
-+		igt_remove_fb(display.drm_fd, &output_fb);
-+	}
-+
- 	igt_fixture {
- 		igt_remove_fb(display.drm_fd, &input_fb);
- 		igt_display_fini(&display);
--- 
-2.28.0
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Tm90IGFsbCBzd2l6emxpbmcgY2FuIGJlIGhhbmRsZWQgYnkgdGhlIHNvZnR3YXJlIChiaXQxNykg
+c28gZGV0ZWN0Cml0IHByb3Blcmx5IGR1cmluZyBidWZvcHMgY3JlYXRpb24gdGltZSBhbmQgZGlz
+YWJsZSBpZiBuZWNlc3NhcnkuCgpTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kg
+PHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KQ2M6IERvbWluaWsgR3J6ZWdvcnplayA8
+ZG9taW5pay5ncnplZ29yemVrQGludGVsLmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hy
+aXMtd2lsc29uLmNvLnVrPgotLS0KIGxpYi9pbnRlbF9idWZvcHMuYyB8IDQ1ICsrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDM2IGlu
+c2VydGlvbnMoKyksIDkgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2J1Zm9w
+cy5jIGIvbGliL2ludGVsX2J1Zm9wcy5jCmluZGV4IDA5NDMzYmVkLi4yYmE0ZGJmNiAxMDA2NDQK
+LS0tIGEvbGliL2ludGVsX2J1Zm9wcy5jCisrKyBiL2xpYi9pbnRlbF9idWZvcHMuYwpAQCAtMTU3
+LDcgKzE1Nyw3IEBAIHN0YXRpYyBpbnQgX19nZW1fZ2V0X3RpbGluZyhpbnQgZmQsIHN0cnVjdCBk
+cm1faTkxNV9nZW1fZ2V0X3RpbGluZyAqYXJnKQogfQogCiBzdGF0aWMgYm9vbCBfX2dldF90aWxp
+bmcoaW50IGZkLCB1aW50MzJfdCBoYW5kbGUsIHVpbnQzMl90ICp0aWxpbmcsCi0JCQkgdWludDMy
+X3QgKnN3aXp6bGUpCisJCQkgdWludDMyX3QgKnN3aXp6bGUsIHVpbnQzMl90ICpwaHlzX3N3aXp6
+bGUpCiB7CiAJc3RydWN0IGRybV9pOTE1X2dlbV9nZXRfdGlsaW5nIGdldF90aWxpbmcgPSB7IC5o
+YW5kbGUgPSBoYW5kbGUgfTsKIApAQCAtMTY2LDEyICsxNjYsMTMgQEAgc3RhdGljIGJvb2wgX19n
+ZXRfdGlsaW5nKGludCBmZCwgdWludDMyX3QgaGFuZGxlLCB1aW50MzJfdCAqdGlsaW5nLAogCiAJ
+KnRpbGluZyA9IGdldF90aWxpbmcudGlsaW5nX21vZGU7CiAJKnN3aXp6bGUgPSBnZXRfdGlsaW5n
+LnN3aXp6bGVfbW9kZTsKKwkqcGh5c19zd2l6emxlID0gZ2V0X3RpbGluZy5waHlzX3N3aXp6bGVf
+bW9kZTsKIAlpZ3RfZGVidWcoImJ1ZiB0aWxpbmc6ICVzLCBzd2l6emxlOiAleCwgcGh5c19zd2l6
+emxlOiAleFxuIiwKIAkJICB0aWxpbmdfc3RyKGdldF90aWxpbmcudGlsaW5nX21vZGUpLAogCQkg
+IGdldF90aWxpbmcuc3dpenpsZV9tb2RlLAogCQkgIGdldF90aWxpbmcucGh5c19zd2l6emxlX21v
+ZGUpOwogCi0JcmV0dXJuIGdldF90aWxpbmcucGh5c19zd2l6emxlX21vZGUgPT0gZ2V0X3RpbGlu
+Zy5zd2l6emxlX21vZGU7CisJcmV0dXJuIHRydWU7CiB9CiAKIHN0YXRpYyBpbnQgX19zZXRfdGls
+aW5nKGludCBmZCwgdWludDMyX3QgaGFuZGxlLCB1aW50MzJfdCB0aWxpbmcsCkBAIC0yMTIsOCAr
+MjEzLDEwIEBAIHN0YXRpYyB2b2lkIHNldF9od190aWxlZChzdHJ1Y3QgYnVmX29wcyAqYm9wcywg
+c3RydWN0IGludGVsX2J1ZiAqYnVmKQogCWlmIChidWYtPnRpbGluZyAhPSBJOTE1X1RJTElOR19Y
+ICYmIGJ1Zi0+dGlsaW5nICE9IEk5MTVfVElMSU5HX1kpCiAJCXJldHVybjsKIAotCWlmICghYnVm
+X29wc19oYXNfaHdfZmVuY2UoYm9wcywgYnVmLT50aWxpbmcpKQorCWlmICghYnVmX29wc19oYXNf
+aHdfZmVuY2UoYm9wcywgYnVmLT50aWxpbmcpKSB7CisJCWlndF93YXJuKCJObyBIVyBmZW5jZSBm
+b3IgdGlsaW5nOiAlZFxuIiwgYnVmLT50aWxpbmcpOwogCQlyZXR1cm47CisJfQogCiAJaWd0X2Fz
+c2VydF9lcShfX3NldF90aWxpbmcoYm9wcy0+ZmQsCiAJCQkJICAgYnVmLT5oYW5kbGUsIGJ1Zi0+
+dGlsaW5nLApAQCAtMTAyOSwxMCArMTAzMiwxMSBAQCBzdHJ1Y3QgYnVmX29wcyBidWZfb3BzX2Fy
+cltdID0gewogCX0sCiB9OwogCi1zdGF0aWMgYm9vbCBwcm9iZV9od190aWxpbmcoc3RydWN0IGJ1
+Zl9vcHMgKmJvcHMsIHVpbnQzMl90IHRpbGluZykKK3N0YXRpYyBib29sIHByb2JlX2h3X3RpbGlu
+ZyhzdHJ1Y3QgYnVmX29wcyAqYm9wcywgdWludDMyX3QgdGlsaW5nLAorCQkJICAgIGJvb2wgKnN3
+aXp6bGluZ19zdXBwb3J0ZWQpCiB7CiAJdWludDY0X3Qgc2l6ZSA9IDI1NiAqIDI1NjsKLQl1aW50
+MzJfdCBoYW5kbGUsIGJ1Zl90aWxpbmcsIGJ1Zl9zd2l6emxlOworCXVpbnQzMl90IGhhbmRsZSwg
+YnVmX3RpbGluZywgYnVmX3N3aXp6bGUsIHBoeXNfc3dpenpsZTsKIAl1aW50MzJfdCBzdHJpZGU7
+CiAJaW50IHJldDsKIAlib29sIGlzX3NldCA9IGZhbHNlOwpAQCAtMTA1MSwxMiArMTA1NSwxNSBA
+QCBzdGF0aWMgYm9vbCBwcm9iZV9od190aWxpbmcoc3RydWN0IGJ1Zl9vcHMgKmJvcHMsIHVpbnQz
+Ml90IHRpbGluZykKIAlpZiAocmV0KQogCQlnb3RvIGVuZDsKIAotCWlzX3NldCA9IF9fZ2V0X3Rp
+bGluZyhib3BzLT5mZCwgaGFuZGxlLCAmYnVmX3RpbGluZywgJmJ1Zl9zd2l6emxlKTsKKwlpc19z
+ZXQgPSBfX2dldF90aWxpbmcoYm9wcy0+ZmQsIGhhbmRsZSwgJmJ1Zl90aWxpbmcsICZidWZfc3dp
+enpsZSwKKwkJCSAgICAgICZwaHlzX3N3aXp6bGUpOwogCWlmIChpc19zZXQpIHsKIAkJaWYgKHRp
+bGluZyA9PSBJOTE1X1RJTElOR19YKQogCQkJYm9wcy0+c3dpenpsZV94ID0gYnVmX3N3aXp6bGU7
+CiAJCWVsc2UgaWYgKHRpbGluZyA9PSBJOTE1X1RJTElOR19ZKQogCQkJYm9wcy0+c3dpenpsZV95
+ID0gYnVmX3N3aXp6bGU7CisKKwkJKnN3aXp6bGluZ19zdXBwb3J0ZWQgPSBidWZfc3dpenpsZSA9
+PSBwaHlzX3N3aXp6bGU7CiAJfQogZW5kOgogCWdlbV9jbG9zZShib3BzLT5mZCwgaGFuZGxlKTsK
+QEAgLTExNzIsMTQgKzExNzksMjEgQEAgc3RhdGljIHN0cnVjdCBidWZfb3BzICpfX2J1Zl9vcHNf
+Y3JlYXRlKGludCBmZCwgYm9vbCBjaGVja19pZGVtcG90ZW5jeSkKIAkgKgogCSAqIE9rLCB5b3Ug
+aGF2ZSBiZWVuIHdhcm5lZC4KIAkgKi8KLQlpZiAoYm9wcy0+aW50ZWxfZ2VuID09IDIpIHsKKwlp
+ZiAoYm9wcy0+aW50ZWxfZ2VuID09IDIgKSB7CiAJCWlndF93YXJuKCJHZW4yIGRldGVjdGVkLiBI
+VyAoZGUpdGlsaW5nIHN1cHBvcnQgb25seS4iKTsKIAkJcmV0dXJuIGJvcHM7CiAJfQogCiAJLyog
+TGV0J3MgcHJvYmUgWCBhbmQgWSBodyB0aWxpbmcgc3VwcG9ydCAqLwogCWlmIChpc19od190aWxp
+bmdfc3VwcG9ydGVkKGJvcHMsIEk5MTVfVElMSU5HX1gpKSB7Ci0JCWJvb2wgc3VwcG9ydGVkID0g
+cHJvYmVfaHdfdGlsaW5nKGJvcHMsIEk5MTVfVElMSU5HX1gpOworCQlib29sIHN3aXp6bGluZ19z
+dXBwb3J0ZWQ7CisJCWJvb2wgc3VwcG9ydGVkID0gcHJvYmVfaHdfdGlsaW5nKGJvcHMsIEk5MTVf
+VElMSU5HX1gsCisJCQkJCQkgJnN3aXp6bGluZ19zdXBwb3J0ZWQpOworCisJCWlmICghc3dpenps
+aW5nX3N1cHBvcnRlZCkgeworCQkJaWd0X2RlYnVnKCJTd2l6emxpbmcgZm9yIFggaXMgbm90IHN1
+cHBvcnRlZFxuIik7CisJCQlib3BzLT5zdXBwb3J0ZWRfdGlsZXMgJj0gflRJTEVfWDsKKwkJfQog
+CiAJCWlndF9kZWJ1ZygiWCBmZW5jZSBzdXBwb3J0OiAlc1xuIiwgYm9vbF9zdHIoc3VwcG9ydGVk
+KSk7CiAJCWlmICghc3VwcG9ydGVkKSB7CkBAIC0xMTkwLDcgKzEyMDQsMTQgQEAgc3RhdGljIHN0
+cnVjdCBidWZfb3BzICpfX2J1Zl9vcHNfY3JlYXRlKGludCBmZCwgYm9vbCBjaGVja19pZGVtcG90
+ZW5jeSkKIAl9CiAKIAlpZiAoaXNfaHdfdGlsaW5nX3N1cHBvcnRlZChib3BzLCBJOTE1X1RJTElO
+R19ZKSkgewotCQlib29sIHN1cHBvcnRlZCA9IHByb2JlX2h3X3RpbGluZyhib3BzLCBJOTE1X1RJ
+TElOR19ZKTsKKwkJYm9vbCBzd2l6emxpbmdfc3VwcG9ydGVkOworCQlib29sIHN1cHBvcnRlZCA9
+IHByb2JlX2h3X3RpbGluZyhib3BzLCBJOTE1X1RJTElOR19ZLAorCQkJCQkJICZzd2l6emxpbmdf
+c3VwcG9ydGVkKTsKKworCQlpZiAoIXN3aXp6bGluZ19zdXBwb3J0ZWQpIHsKKwkJCWlndF9kZWJ1
+ZygiU3dpenpsaW5nIGZvciBZIGlzIG5vdCBzdXBwb3J0ZWRcbiIpOworCQkJYm9wcy0+c3VwcG9y
+dGVkX3RpbGVzICY9IH5USUxFX1k7CisJCX0KIAogCQlpZ3RfZGVidWcoIlkgZmVuY2Ugc3VwcG9y
+dDogJXNcbiIsIGJvb2xfc3RyKHN1cHBvcnRlZCkpOwogCQlpZiAoIXN1cHBvcnRlZCkgewpAQCAt
+MTMwNyw2ICsxMzI4LDkgQEAgYm9vbCBidWZfb3BzX3NldF9zb2Z0d2FyZV90aWxpbmcoc3RydWN0
+IGJ1Zl9vcHMgKmJvcHMsCiAJc3dpdGNoICh0aWxpbmcpIHsKIAljYXNlIEk5MTVfVElMSU5HX1g6
+CiAJCWlmICh1c2Vfc29mdHdhcmVfdGlsaW5nKSB7CisJCQlib29sIHN1cHBvcnRlZCA9IGJ1Zl9v
+cHNfaGFzX3RpbGluZ19zdXBwb3J0KGJvcHMsIHRpbGluZyk7CisJCQlpZ3RfYXNzZXJ0X2Yoc3Vw
+cG9ydGVkLCAiQ2Fubm90IHN3aXRjaCB0byBYIHNvZnR3YXJlIHRpbGluZ1xuIik7CisKIAkJCWln
+dF9kZWJ1ZygiLT4gY2hhbmdlIFggdG8gU1dcbiIpOwogCQkJYm9wcy0+bGluZWFyX3RvX3ggPSBj
+b3B5X2xpbmVhcl90b194OwogCQkJYm9wcy0+eF90b19saW5lYXIgPSBjb3B5X3hfdG9fbGluZWFy
+OwpAQCAtMTMyNCw2ICsxMzQ4LDkgQEAgYm9vbCBidWZfb3BzX3NldF9zb2Z0d2FyZV90aWxpbmco
+c3RydWN0IGJ1Zl9vcHMgKmJvcHMsCiAKIAljYXNlIEk5MTVfVElMSU5HX1k6CiAJCWlmICh1c2Vf
+c29mdHdhcmVfdGlsaW5nKSB7CisJCQlib29sIHN1cHBvcnRlZCA9IGJ1Zl9vcHNfaGFzX3RpbGlu
+Z19zdXBwb3J0KGJvcHMsIHRpbGluZyk7CisJCQlpZ3RfYXNzZXJ0X2Yoc3VwcG9ydGVkLCAiQ2Fu
+bm90IHN3aXRjaCB0byBZIHNvZnR3YXJlIHRpbGluZ1xuIik7CisKIAkJCWlndF9kZWJ1ZygiLT4g
+Y2hhbmdlIFkgdG8gU1dcbiIpOwogCQkJYm9wcy0+bGluZWFyX3RvX3kgPSBjb3B5X2xpbmVhcl90
+b195OwogCQkJYm9wcy0+eV90b19saW5lYXIgPSBjb3B5X3lfdG9fbGluZWFyOwotLSAKMi4yNi4w
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
+IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
+LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
