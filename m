@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0FD7B6E290
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Aug 2020 13:59:05 +0000 (UTC)
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Date: Mon,  3 Aug 2020 16:58:51 +0300
-Message-Id: <20200803135851.316355-6-lionel.g.landwerlin@intel.com>
-In-Reply-To: <20200803135851.316355-1-lionel.g.landwerlin@intel.com>
-References: <20200803135851.316355-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 5/5] tests/i915/gem_exec_fence: add engine
- chaining tests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 03 Aug 2020 14:41:51 -0000
+Message-ID: <159646571181.19294.3216621378458943287@emeril.freedesktop.org>
+References: <20200803135753.58654-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200803135753.58654-1-chris@chris-wilson.co.uk>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
+ =?utf-8?q?em=5Fexec=5Fschedule=3A_Try_to_spot_unfairness_=28rev9=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,699 +14,340 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1476267623=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Those tests are meant to verify the ordering while messing around with
-the timeline points.
+--===============1476267623==
+Content-Type: multipart/alternative;
+ boundary="===============0074416429380213820=="
 
-v2: Add munmap() (Chris)
+--===============0074416429380213820==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v3: Rebase
-    Drop gem_context_set_all_engines()
-    Fix subtest require on number of engines
+== Series Details ==
 
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
----
- lib/intel_reg.h             |   2 +
- tests/i915/gem_exec_fence.c | 635 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 637 insertions(+)
+Series: i915/gem_exec_schedule: Try to spot unfairness (rev9)
+URL   : https://patchwork.freedesktop.org/series/77887/
+State : success
 
-diff --git a/lib/intel_reg.h b/lib/intel_reg.h
-index 0a9ee34c..ac1fc6cb 100644
---- a/lib/intel_reg.h
-+++ b/lib/intel_reg.h
-@@ -2596,6 +2596,8 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- /* Batch */
- #define MI_BATCH_BUFFER		((0x30 << 23) | 1)
- #define MI_BATCH_BUFFER_START	(0x31 << 23)
-+#define MI_BATCH_BUFFER_START_GEN8 ((0x31 << 13) | 1)
-+#define   MI_BATCH_PREDICATE       (1 << 15) /* HSW+ on RCS only*/
- #define MI_BATCH_BUFFER_END	(0xA << 23)
- #define MI_COND_BATCH_BUFFER_END	(0x36 << 23)
- #define MI_DO_COMPARE                   (1 << 21)
-diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
-index 9ca18b27..8106cdf6 100644
---- a/tests/i915/gem_exec_fence.c
-+++ b/tests/i915/gem_exec_fence.c
-@@ -2220,6 +2220,617 @@ static void test_syncobj_timeline_repeat(int fd)
- 	free(values);
- }
- 
-+#define MI_INSTR(opcode, flags) (((opcode) << 23) | (flags))
-+
-+/* #define MI_LOAD_REGISTER_MEM	   (MI_INSTR(0x29, 1) */
-+/* #define MI_LOAD_REGISTER_MEM_GEN8  MI_INSTR(0x29, 2) */
-+
-+#define MI_LOAD_REGISTER_REG       MI_INSTR(0x2A, 1)
-+
-+#define MI_STORE_REGISTER_MEM      MI_INSTR(0x24, 1)
-+#define MI_STORE_REGISTER_MEM_GEN8 MI_INSTR(0x24, 2)
-+
-+#define MI_MATH(x)                 MI_INSTR(0x1a, (x) - 1)
-+#define MI_MATH_INSTR(opcode, op1, op2) ((opcode) << 20 | (op1) << 10 | (op2))
-+/* Opcodes for MI_MATH_INSTR */
-+#define   MI_MATH_NOOP			MI_MATH_INSTR(0x00,  0x0, 0x0)
-+#define   MI_MATH_LOAD(op1, op2)	MI_MATH_INSTR(0x80,  op1, op2)
-+#define   MI_MATH_LOADINV(op1, op2)	MI_MATH_INSTR(0x480, op1, op2)
-+#define   MI_MATH_ADD			MI_MATH_INSTR(0x100, 0x0, 0x0)
-+#define   MI_MATH_SUB			MI_MATH_INSTR(0x101, 0x0, 0x0)
-+#define   MI_MATH_AND			MI_MATH_INSTR(0x102, 0x0, 0x0)
-+#define   MI_MATH_OR			MI_MATH_INSTR(0x103, 0x0, 0x0)
-+#define   MI_MATH_XOR			MI_MATH_INSTR(0x104, 0x0, 0x0)
-+#define   MI_MATH_STORE(op1, op2)	MI_MATH_INSTR(0x180, op1, op2)
-+#define   MI_MATH_STOREINV(op1, op2)	MI_MATH_INSTR(0x580, op1, op2)
-+/* Registers used as operands in MI_MATH_INSTR */
-+#define   MI_MATH_REG(x)		(x)
-+#define   MI_MATH_REG_SRCA		0x20
-+#define   MI_MATH_REG_SRCB		0x21
-+#define   MI_MATH_REG_ACCU		0x31
-+#define   MI_MATH_REG_ZF		0x32
-+#define   MI_MATH_REG_CF		0x33
-+
-+#define HSW_CS_GPR(n)                   (0x600 + 8*(n))
-+#define RING_TIMESTAMP                  (0x358)
-+#define MI_PREDICATE_RESULT_1           (0x41c)
-+
-+struct inter_engine_context {
-+	int fd;
-+
-+	struct {
-+		uint32_t context;
-+	} iterations[9];
-+
-+	struct intel_engine_data *engines;
-+
-+	struct inter_engine_batches {
-+		void *increment_bb;
-+		uint32_t increment_bb_len;
-+		uint32_t increment_bb_handle;
-+
-+		uint32_t timeline;
-+
-+		void *read0_ptrs[2];
-+		void *read1_ptrs[2];
-+		void *write_ptrs[2];
-+	} *batches;
-+
-+	void *wait_bb;
-+	uint32_t wait_bb_len;
-+	uint32_t wait_bb_handle;
-+
-+	void *jump_ptr;
-+	void *timestamp2_ptr;
-+
-+	uint32_t wait_context;
-+	uint32_t wait_timeline;
-+
-+	struct drm_i915_gem_exec_object2 engine_counter_object;
-+};
-+
-+static void submit_timeline_execbuf(struct inter_engine_context *context,
-+				    struct drm_i915_gem_execbuffer2 *execbuf,
-+				    uint32_t run_engine_idx,
-+				    uint32_t wait_syncobj,
-+				    uint64_t wait_value,
-+				    uint32_t signal_syncobj,
-+				    uint64_t signal_value)
-+{
-+	uint64_t values[2] = { 0, };
-+	struct drm_i915_gem_exec_fence fences[2] = { 0, };
-+	struct drm_i915_gem_execbuffer_ext_timeline_fences fence_list = {
-+		.base = {
-+			.name = DRM_I915_GEM_EXECBUFFER_EXT_TIMELINE_FENCES,
-+		},
-+		.handles_ptr = to_user_pointer(fences),
-+		.values_ptr = to_user_pointer(values),
-+	};
-+
-+	if (wait_syncobj) {
-+		fences[fence_list.fence_count] = (struct drm_i915_gem_exec_fence) {
-+			.handle = wait_syncobj,
-+			.flags = I915_EXEC_FENCE_WAIT,
-+		};
-+		values[fence_list.fence_count] = wait_value;
-+		fence_list.fence_count++;
-+	}
-+
-+	if (signal_syncobj) {
-+		fences[fence_list.fence_count] = (struct drm_i915_gem_exec_fence) {
-+			.handle = signal_syncobj,
-+			.flags = I915_EXEC_FENCE_SIGNAL,
-+		};
-+		values[fence_list.fence_count] = signal_value;
-+		fence_list.fence_count++;
-+	}
-+
-+	if (wait_syncobj || signal_syncobj) {
-+		execbuf->flags |= I915_EXEC_USE_EXTENSIONS;
-+		execbuf->cliprects_ptr = to_user_pointer(&fence_list);
-+	}
-+
-+	execbuf->flags |= context->engines->engines[run_engine_idx].flags;
-+
-+	gem_execbuf(context->fd, execbuf);
-+}
-+
-+static void build_wait_bb(struct inter_engine_context *context,
-+			  uint64_t delay,
-+			  uint64_t timestamp_frequency)
-+{
-+	uint32_t *bb = context->wait_bb = calloc(1, 4096);
-+	uint64_t wait_value =
-+		0xffffffffffffffff - (delay * timestamp_frequency) / NSEC_PER_SEC;
-+
-+	igt_debug("wait_value=0x%lx\n", wait_value);
-+
-+	*bb++ = MI_LOAD_REGISTER_IMM;
-+	*bb++ = 0x2000 + HSW_CS_GPR(0);
-+	*bb++ = wait_value & 0xffffffff;
-+	*bb++ = MI_LOAD_REGISTER_IMM;
-+	*bb++ = 0x2000 + HSW_CS_GPR(0) + 4;
-+	*bb++ = wait_value >> 32;
-+
-+	*bb++ = MI_LOAD_REGISTER_REG;
-+	*bb++ = 0x2000 + RING_TIMESTAMP;
-+	*bb++ = 0x2000 + HSW_CS_GPR(1);
-+	*bb++ = MI_LOAD_REGISTER_IMM;
-+	*bb++ = 0x2000 + HSW_CS_GPR(1) + 4;
-+	*bb++ = 0;
-+
-+	context->timestamp2_ptr = bb;
-+	*bb++ = MI_LOAD_REGISTER_REG;
-+	*bb++ = 0x2000 + RING_TIMESTAMP;
-+	*bb++ = 0x2000 + HSW_CS_GPR(2);
-+	*bb++ = MI_LOAD_REGISTER_IMM;
-+	*bb++ = 0x2000 + HSW_CS_GPR(2) + 4;
-+	*bb++ = 0;
-+
-+	*bb++ = MI_MATH(4);
-+	*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(2));
-+	*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(1));
-+	*bb++ = MI_MATH_SUB;
-+	*bb++ = MI_MATH_STORE(MI_MATH_REG(3), MI_MATH_REG_ACCU);
-+
-+	*bb++ = MI_MATH(4);
-+	*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(0));
-+	*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(3));
-+	*bb++ = MI_MATH_ADD;
-+	*bb++ = MI_MATH_STOREINV(MI_MATH_REG(4), MI_MATH_REG_CF);
-+
-+	*bb++ = MI_LOAD_REGISTER_REG;
-+	*bb++ = 0x2000 + HSW_CS_GPR(4);
-+	*bb++ = 0x2000 + MI_PREDICATE_RESULT_1;
-+
-+	*bb++ = MI_BATCH_BUFFER_START | MI_BATCH_PREDICATE | 1;
-+	context->jump_ptr = bb;
-+	*bb++ = 0;
-+	*bb++ = 0;
-+
-+	*bb++ = MI_BATCH_BUFFER_END;
-+
-+	context->wait_bb_len = ALIGN((void *) bb - context->wait_bb, 8);
-+}
-+
-+static void wait_engine(struct inter_engine_context *context,
-+			uint32_t run_engine_idx,
-+			uint32_t signal_syncobj,
-+			uint64_t signal_value)
-+{
-+	struct drm_i915_gem_relocation_entry relocs[1];
-+	struct drm_i915_gem_exec_object2 objects[2] = {
-+		context->engine_counter_object,
-+		{
-+			.handle = context->wait_bb_handle,
-+			.relocs_ptr = to_user_pointer(&relocs),
-+			.relocation_count = ARRAY_SIZE(relocs),
-+		},
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(&objects[0]),
-+		.buffer_count = 2,
-+		.flags = I915_EXEC_HANDLE_LUT,
-+		.rsvd1 = context->wait_context,
-+		.batch_len = context->wait_bb_len,
-+	};
-+
-+	memset(&relocs, 0, sizeof(relocs));
-+
-+	/* MI_BATCH_BUFFER_START */
-+	relocs[0].target_handle = 1;
-+	relocs[0].delta = context->timestamp2_ptr - context->wait_bb;
-+	relocs[0].offset = context->jump_ptr - context->wait_bb;
-+	relocs[0].presumed_offset = -1;
-+
-+	submit_timeline_execbuf(context, &execbuf, run_engine_idx,
-+				0, 0,
-+				signal_syncobj, signal_value);
-+}
-+
-+static void build_increment_engine_bb(struct inter_engine_batches *batch,
-+				      uint32_t mmio_base)
-+{
-+	uint32_t *bb = batch->increment_bb = calloc(1, 4096);
-+
-+	*bb++ = MI_LOAD_REGISTER_MEM_GEN8;
-+	*bb++ = mmio_base + HSW_CS_GPR(0);
-+	batch->read0_ptrs[0] = bb;
-+	*bb++ = 0;
-+	*bb++ = 0;
-+	*bb++ = MI_LOAD_REGISTER_MEM_GEN8;
-+	*bb++ = mmio_base + HSW_CS_GPR(0) + 4;
-+	batch->read0_ptrs[1] = bb;
-+	*bb++ = 0;
-+	*bb++ = 0;
-+
-+	*bb++ = MI_LOAD_REGISTER_MEM_GEN8;
-+	*bb++ = mmio_base + HSW_CS_GPR(1);
-+	batch->read1_ptrs[0] = bb;
-+	*bb++ = 0;
-+	*bb++ = 0;
-+	*bb++ = MI_LOAD_REGISTER_MEM_GEN8;
-+	*bb++ = mmio_base + HSW_CS_GPR(1) + 4;
-+	batch->read1_ptrs[1] = bb;
-+	*bb++ = 0;
-+	*bb++ = 0;
-+
-+	*bb++ = MI_MATH(4);
-+	*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(0));
-+	*bb++ = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(1));
-+	*bb++ = MI_MATH_ADD;
-+	*bb++ = MI_MATH_STORE(MI_MATH_REG(0), MI_MATH_REG_ACCU);
-+
-+	*bb++ = MI_STORE_REGISTER_MEM_GEN8;
-+	*bb++ = mmio_base + HSW_CS_GPR(0);
-+	batch->write_ptrs[0] = bb;
-+	*bb++ = 0;
-+	*bb++ = 0;
-+	*bb++ = MI_STORE_REGISTER_MEM_GEN8;
-+	*bb++ = mmio_base + HSW_CS_GPR(0) + 4;
-+	batch->write_ptrs[1] = bb;
-+	*bb++ = 0;
-+	*bb++ = 0;
-+
-+	*bb++ = MI_BATCH_BUFFER_END;
-+
-+	batch->increment_bb_len = ALIGN((void *) bb - batch->increment_bb, 8);
-+}
-+
-+static void increment_engine(struct inter_engine_context *context,
-+			     uint32_t gem_context,
-+			     uint32_t read0_engine_idx,
-+			     uint32_t read1_engine_idx,
-+			     uint32_t write_engine_idx,
-+			     uint32_t wait_syncobj,
-+			     uint64_t wait_value,
-+			     uint32_t signal_syncobj,
-+			     uint64_t signal_value)
-+{
-+	struct inter_engine_batches *batch = &context->batches[write_engine_idx];
-+	struct drm_i915_gem_relocation_entry relocs[3 * 2];
-+	struct drm_i915_gem_exec_object2 objects[2] = {
-+		context->engine_counter_object,
-+		{
-+			.handle = batch->increment_bb_handle,
-+			.relocs_ptr = to_user_pointer(relocs),
-+			.relocation_count = ARRAY_SIZE(relocs),
-+		},
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(&objects[0]),
-+		.buffer_count = ARRAY_SIZE(objects),
-+		.flags = I915_EXEC_HANDLE_LUT,
-+		.rsvd1 = gem_context,
-+		.batch_len = batch->increment_bb_len,
-+	};
-+
-+	memset(relocs, 0, sizeof(relocs));
-+
-+	/* MI_LOAD_REGISTER_MEM */
-+	relocs[0].target_handle = 0;
-+	relocs[0].delta = read0_engine_idx * 8;
-+	relocs[0].offset = batch->read0_ptrs[0] - batch->increment_bb;
-+	relocs[0].presumed_offset = -1;
-+	relocs[1].target_handle = 0;
-+	relocs[1].delta = read0_engine_idx * 8 + 4;
-+	relocs[1].offset = batch->read0_ptrs[1] - batch->increment_bb;
-+	relocs[1].presumed_offset = -1;
-+
-+	/* MI_LOAD_REGISTER_MEM */
-+	relocs[2].target_handle = 0;
-+	relocs[2].delta = read1_engine_idx * 8;
-+	relocs[2].offset = batch->read1_ptrs[0] - batch->increment_bb;
-+	relocs[2].presumed_offset = -1;
-+	relocs[3].target_handle = 0;
-+	relocs[3].delta = read1_engine_idx * 8 + 4;
-+	relocs[3].offset = batch->read1_ptrs[1] - batch->increment_bb;
-+	relocs[3].presumed_offset = -1;
-+
-+	/* MI_STORE_REGISTER_MEM */
-+	relocs[4].target_handle = 0;
-+	relocs[4].delta = write_engine_idx * 8;
-+	relocs[4].offset = batch->write_ptrs[0] - batch->increment_bb;
-+	relocs[4].presumed_offset = -1;
-+	relocs[5].target_handle = 0;
-+	relocs[5].delta = write_engine_idx * 8 + 4;
-+	relocs[5].offset = batch->write_ptrs[1] - batch->increment_bb;
-+	relocs[5].presumed_offset = -1;
-+
-+	submit_timeline_execbuf(context, &execbuf, write_engine_idx,
-+				wait_syncobj, wait_value,
-+				signal_syncobj, signal_value);
-+
-+	context->engine_counter_object = objects[0];
-+}
-+
-+static uint64_t fib(uint32_t iters)
-+{
-+	uint64_t last_value = 0;
-+	uint64_t value = 1;
-+	uint32_t i = 0;
-+
-+	while (i < iters) {
-+		uint64_t new_value = value + last_value;
-+
-+		last_value = value;
-+		value = new_value;
-+		i++;
-+	}
-+
-+	return last_value;
-+}
-+
-+static uint64_t
-+get_cs_timestamp_frequency(int fd)
-+{
-+	int cs_ts_freq = 0;
-+	drm_i915_getparam_t gp;
-+
-+	gp.param = I915_PARAM_CS_TIMESTAMP_FREQUENCY;
-+	gp.value = &cs_ts_freq;
-+	if (igt_ioctl(fd, DRM_IOCTL_I915_GETPARAM, &gp) == 0)
-+		return cs_ts_freq;
-+
-+	igt_skip("Kernel with PARAM_CS_TIMESTAMP_FREQUENCY support required\n");
-+}
-+
-+static void setup_timeline_chain_engines(struct inter_engine_context *context, int fd, struct intel_engine_data *engines)
-+{
-+	memset(context, 0, sizeof(*context));
-+
-+	context->fd = fd;
-+	context->engines = engines;
-+
-+	context->wait_context = gem_context_create(fd);
-+	context->wait_timeline = syncobj_create(fd, 0);
-+
-+	context->engine_counter_object.handle = gem_create(fd, 4096);
-+
-+	for (uint32_t i = 0; i < ARRAY_SIZE(context->iterations); i++) {
-+		context->iterations[i].context = gem_context_clone_with_engines(fd, 0);
-+
-+		/* Give a different priority to all contexts. */
-+		gem_context_set_priority(fd, context->iterations[i].context,
-+					 I915_CONTEXT_MAX_USER_PRIORITY - ARRAY_SIZE(context->iterations) + i);
-+	}
-+
-+	build_wait_bb(context, 20 * 1000 * 1000ull /* 20ms */, get_cs_timestamp_frequency(fd));
-+	context->wait_bb_handle = gem_create(fd, 4096);
-+	gem_write(fd, context->wait_bb_handle, 0,
-+		  context->wait_bb, context->wait_bb_len);
-+
-+	context->batches = calloc(engines->nengines, sizeof(*context->batches));
-+	for (uint32_t e = 0; e < engines->nengines; e++) {
-+		struct inter_engine_batches *batches = &context->batches[e];
-+
-+		batches->timeline = syncobj_create(fd, 0);
-+
-+		build_increment_engine_bb(
-+			batches,
-+			gem_engine_mmio_base(fd, engines->engines[e].name));
-+		batches->increment_bb_handle = gem_create(fd, 4096);
-+		gem_write(fd, batches->increment_bb_handle, 0,
-+			  batches->increment_bb, batches->increment_bb_len);
-+	}
-+
-+	for (uint32_t i = 0; i < 10; i++)
-+		igt_debug("%u = %lu\n", i, fib(i));
-+
-+	/* Bootstrap the fibonacci sequence */
-+	{
-+		uint64_t dword = 1;
-+		gem_write(fd, context->engine_counter_object.handle,
-+			  sizeof(dword) * (context->engines->nengines - 1),
-+			  &dword, sizeof(dword));
-+	}
-+}
-+
-+static void teardown_timeline_chain_engines(struct inter_engine_context *context)
-+{
-+	gem_close(context->fd, context->engine_counter_object.handle);
-+
-+	for (uint32_t i = 0; i < ARRAY_SIZE(context->iterations); i++) {
-+		gem_context_destroy(context->fd, context->iterations[i].context);
-+	}
-+
-+	gem_context_destroy(context->fd, context->wait_context);
-+	syncobj_destroy(context->fd, context->wait_timeline);
-+	gem_close(context->fd, context->wait_bb_handle);
-+	free(context->wait_bb);
-+
-+	for (uint32_t e = 0; e < context->engines->nengines; e++) {
-+		struct inter_engine_batches *batches = &context->batches[e];
-+
-+		syncobj_destroy(context->fd, batches->timeline);
-+		gem_close(context->fd, batches->increment_bb_handle);
-+		free(batches->increment_bb);
-+	}
-+	free(context->batches);
-+}
-+
-+static void test_syncobj_timeline_chain_engines(int fd, struct intel_engine_data *engines)
-+{
-+	struct inter_engine_context ctx;
-+	uint64_t *counter_output;
-+
-+	setup_timeline_chain_engines(&ctx, fd, engines);
-+
-+	/*
-+	 * Delay all the other operations by making them depend on an
-+	 * active wait on the RCS.
-+	 */
-+	wait_engine(&ctx, 0, ctx.wait_timeline, 1);
-+
-+	for (uint32_t iter = 0; iter < ARRAY_SIZE(ctx.iterations); iter++) {
-+		for (uint32_t engine = 0; engine < engines->nengines; engine++) {
-+			uint32_t prev_prev_engine =
-+				(engines->nengines + engine - 2) % engines->nengines;
-+			uint32_t prev_engine =
-+				(engines->nengines + engine - 1) % engines->nengines;
-+			/*
-+			 * Pick up the wait engine semaphore for the
-+			 * first increment, then pick up the previous
-+			 * engine's timeline.
-+			 */
-+			uint32_t wait_syncobj =
-+				iter == 0 && engine == 0 ?
-+				ctx.wait_timeline : ctx.batches[prev_engine].timeline;
-+			uint32_t wait_value =
-+				iter == 0 && engine == 0 ?
-+				1 : (engine == 0 ? iter : (iter + 1));
-+
-+			increment_engine(&ctx, ctx.iterations[iter].context,
-+					 prev_prev_engine /* read0 engine */,
-+					 prev_engine /* read1 engine */,
-+					 engine /* write engine */,
-+					 wait_syncobj, wait_value,
-+					 ctx.batches[engine].timeline, iter + 1);
-+		}
-+	}
-+
-+	gem_sync(fd, ctx.engine_counter_object.handle);
-+
-+	counter_output = gem_mmap__wc(fd, ctx.engine_counter_object.handle, 0, 4096, PROT_READ);
-+
-+	for (uint32_t i = 0; i < ctx.engines->nengines; i++)
-+		igt_debug("engine %i (%s)\t= %016lx\n", i,
-+			  ctx.engines->engines[i].name, counter_output[i]);
-+
-+	/*
-+	 * Verify that we get the fibonacci number expected (we start
-+	 * at the sequence on the second number : 1).
-+	 */
-+	igt_assert_eq(counter_output[engines->nengines - 1],
-+		      fib(ARRAY_SIZE(ctx.iterations) * engines->nengines + 1));
-+
-+	munmap(counter_output, 4096);
-+
-+	teardown_timeline_chain_engines(&ctx);
-+}
-+
-+static void test_syncobj_stationary_timeline_chain_engines(int fd, struct intel_engine_data *engines)
-+{
-+	struct inter_engine_context ctx;
-+	uint64_t *counter_output;
-+
-+	setup_timeline_chain_engines(&ctx, fd, engines);
-+
-+	/*
-+	 * Delay all the other operations by making them depend on an
-+	 * active wait on the RCS.
-+	 */
-+	wait_engine(&ctx, 0, ctx.wait_timeline, 1);
-+
-+	for (uint32_t iter = 0; iter < ARRAY_SIZE(ctx.iterations); iter++) {
-+		for (uint32_t engine = 0; engine < engines->nengines; engine++) {
-+			uint32_t prev_prev_engine =
-+				(engines->nengines + engine - 2) % engines->nengines;
-+			uint32_t prev_engine =
-+				(engines->nengines + engine - 1) % engines->nengines;
-+			/*
-+			 * Pick up the wait engine semaphore for the
-+			 * first increment, then pick up the previous
-+			 * engine's timeline.
-+			 */
-+			uint32_t wait_syncobj =
-+				iter == 0 && engine == 0 ?
-+				ctx.wait_timeline : ctx.batches[prev_engine].timeline;
-+			/*
-+			 * Always signal the value 10. Because the
-+			 * signal operations are submitted in order,
-+			 * we should always pickup the right
-+			 * dma-fence.
-+			 */
-+			uint32_t wait_value =
-+				iter == 0 && engine == 0 ?
-+				1 : 10;
-+
-+			increment_engine(&ctx, ctx.iterations[iter].context,
-+					 prev_prev_engine /* read0 engine */,
-+					 prev_engine /* read1 engine */,
-+					 engine /* write engine */,
-+					 wait_syncobj, wait_value,
-+					 ctx.batches[engine].timeline, 10);
-+		}
-+	}
-+
-+	gem_sync(fd, ctx.engine_counter_object.handle);
-+
-+	counter_output = gem_mmap__wc(fd, ctx.engine_counter_object.handle, 0, 4096, PROT_READ);
-+
-+	for (uint32_t i = 0; i < ctx.engines->nengines; i++)
-+		igt_debug("engine %i (%s)\t= %016lx\n", i,
-+			  ctx.engines->engines[i].name, counter_output[i]);
-+	igt_assert_eq(counter_output[engines->nengines - 1],
-+		      fib(ARRAY_SIZE(ctx.iterations) * engines->nengines + 1));
-+
-+	munmap(counter_output, 4096);
-+
-+	teardown_timeline_chain_engines(&ctx);
-+}
-+
-+static void test_syncobj_backward_timeline_chain_engines(int fd, struct intel_engine_data *engines)
-+{
-+	struct inter_engine_context ctx;
-+	uint64_t *counter_output;
-+
-+	setup_timeline_chain_engines(&ctx, fd, engines);
-+
-+	/*
-+	 * Delay all the other operations by making them depend on an
-+	 * active wait on the RCS.
-+	 */
-+	wait_engine(&ctx, 0, ctx.wait_timeline, 1);
-+
-+	for (uint32_t iter = 0; iter < ARRAY_SIZE(ctx.iterations); iter++) {
-+		for (uint32_t engine = 0; engine < engines->nengines; engine++) {
-+			uint32_t prev_prev_engine =
-+				(engines->nengines + engine - 2) % engines->nengines;
-+			uint32_t prev_engine =
-+				(engines->nengines + engine - 1) % engines->nengines;
-+			/*
-+			 * Pick up the wait engine semaphore for the
-+			 * first increment, then pick up the previous
-+			 * engine's timeline.
-+			 */
-+			uint32_t wait_syncobj =
-+				iter == 0 && engine == 0 ?
-+				ctx.wait_timeline : ctx.batches[prev_engine].timeline;
-+			/*
-+			 * Always signal the value 10. Because the
-+			 * signal operations are submitted in order,
-+			 * we should always pickup the right
-+			 * dma-fence.
-+			 */
-+			uint32_t wait_value =
-+				iter == 0 && engine == 0 ?
-+				1 : 1;
-+
-+			increment_engine(&ctx, ctx.iterations[iter].context,
-+					 prev_prev_engine /* read0 engine */,
-+					 prev_engine /* read1 engine */,
-+					 engine /* write engine */,
-+					 wait_syncobj, wait_value,
-+					 ctx.batches[engine].timeline, ARRAY_SIZE(ctx.iterations) - iter);
-+		}
-+	}
-+
-+	gem_sync(fd, ctx.engine_counter_object.handle);
-+
-+	counter_output = gem_mmap__wc(fd, ctx.engine_counter_object.handle, 0, 4096, PROT_READ);
-+
-+	for (uint32_t i = 0; i < ctx.engines->nengines; i++)
-+		igt_debug("engine %i (%s)\t= %016lx\n", i,
-+			  ctx.engines->engines[i].name, counter_output[i]);
-+	igt_assert_eq(counter_output[engines->nengines - 1],
-+		      fib(ARRAY_SIZE(ctx.iterations) * engines->nengines + 1));
-+
-+	munmap(counter_output, 4096);
-+
-+	teardown_timeline_chain_engines(&ctx);
-+}
-+
- igt_main
- {
- 	const struct intel_execution_engine2 *e;
-@@ -2497,6 +3108,30 @@ igt_main
- 		igt_subtest("syncobj-timeline-repeat")
- 			test_syncobj_timeline_repeat(i915);
- 
-+		igt_subtest_group { /* syncobj timeline engine chaining */
-+			struct intel_engine_data engines;
-+
-+			igt_fixture {
-+				/*
-+				 * We need support for MI_ALU on all
-+				 * engines which seems to be there
-+				 * only on Gen8+
-+				 */
-+				igt_require(intel_gen(intel_get_drm_devid(i915)) >= 8);
-+				engines = intel_init_engine_list(i915, 0);
-+				igt_require(engines.nengines > 1);
-+			}
-+
-+			igt_subtest("syncobj-timeline-chain-engines")
-+				test_syncobj_timeline_chain_engines(i915, &engines);
-+
-+			igt_subtest("syncobj-stationary-timeline-chain-engines")
-+				test_syncobj_stationary_timeline_chain_engines(i915, &engines);
-+
-+			igt_subtest("syncobj-backward-timeline-chain-engines")
-+				test_syncobj_backward_timeline_chain_engines(i915, &engines);
-+		}
-+
- 		igt_fixture {
- 			igt_stop_hang_detector();
- 		}
--- 
-2.28.0
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8834 -> IGTPW_4846
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4846 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-byt-j1900:       [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-byt-j1900/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-byt-j1900/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@i915_selftest@live@gem_contexts:
+    - fi-tgl-u2:          [PASS][3] -> [INCOMPLETE][4] ([i915#2045])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-tgl-u2/igt@i915_selftest@live@gem_contexts.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-tgl-u2/igt@i915_selftest@live@gem_contexts.html
+
+  * igt@kms_busy@basic@flip:
+    - fi-kbl-x1275:       [PASS][5] -> [DMESG-WARN][6] ([i915#62] / [i915#92] / [i915#95])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-kbl-x1275/igt@kms_busy@basic@flip.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-kbl-x1275/igt@kms_busy@basic@flip.html
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
+    - fi-icl-u2:          [PASS][7] -> [DMESG-WARN][8] ([i915#1982])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a2:
+    - fi-skl-guc:         [PASS][9] -> [DMESG-WARN][10] ([i915#2203])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-skl-guc/igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a2.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-skl-guc/igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a2.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_module_load@reload:
+    - fi-byt-j1900:       [DMESG-WARN][11] ([i915#1982]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-byt-j1900/igt@i915_module_load@reload.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-byt-j1900/igt@i915_module_load@reload.html
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-bsw-kefka:       [DMESG-WARN][13] ([i915#1982]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - fi-tgl-u2:          [DMESG-FAIL][15] ([i915#1233]) -> [PASS][16]
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-tgl-u2/igt@i915_selftest@live@gt_lrc.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-tgl-u2/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - fi-icl-u2:          [DMESG-WARN][17] ([i915#1982]) -> [PASS][18] +2 similar issues
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  
+#### Warnings ####
+
+  * igt@kms_flip@basic-flip-vs-modeset@a-dp1:
+    - fi-kbl-x1275:       [DMESG-WARN][19] ([i915#62] / [i915#92]) -> [DMESG-WARN][20] ([i915#62] / [i915#92] / [i915#95]) +8 similar issues
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-modeset@a-dp1.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-modeset@a-dp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1233]: https://gitlab.freedesktop.org/drm/intel/issues/1233
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2045]: https://gitlab.freedesktop.org/drm/intel/issues/2045
+  [i915#2100]: https://gitlab.freedesktop.org/drm/intel/issues/2100
+  [i915#2203]: https://gitlab.freedesktop.org/drm/intel/issues/2203
+  [i915#2249]: https://gitlab.freedesktop.org/drm/intel/issues/2249
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
+  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+
+
+Participating hosts (42 -> 37)
+------------------------------
+
+  Additional (2): fi-ilk-650 fi-kbl-8809g 
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5757 -> IGTPW_4846
+
+  CI-20190529: 20190529
+  CI_DRM_8834: ac25ad7789fe4cc689a854d823a226ce24bb0a62 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4846: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/index.html
+  IGT_5757: d78c7fd293cb228fe03ccff730202b033e25ff18 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@gem_exec_schedule@fairslice
++igt@gem_exec_schedule@fairslice-all
++igt@gem_exec_schedule@fair-flow
++igt@gem_exec_schedule@fair-flow-ping
++igt@gem_exec_schedule@fair-flow-share
++igt@gem_exec_schedule@fair-half
++igt@gem_exec_schedule@fair-next
++igt@gem_exec_schedule@fair-next-ping
++igt@gem_exec_schedule@fair-next-share
++igt@gem_exec_schedule@fair-none
++igt@gem_exec_schedule@fair-none-ping
++igt@gem_exec_schedule@fair-none-rrul
++igt@gem_exec_schedule@fair-none-share
++igt@gem_exec_schedule@fair-none-solo
++igt@gem_exec_schedule@fair-none-vip
++igt@gem_exec_schedule@fair-pace
++igt@gem_exec_schedule@fair-pace-ping
++igt@gem_exec_schedule@fair-pace-share
++igt@gem_exec_schedule@fair-pace-solo
++igt@gem_exec_schedule@fair-spare
++igt@gem_exec_schedule@fair-sync
++igt@gem_exec_schedule@fair-sync-solo
++igt@gem_exec_schedule@fair-sync-vip
++igt@gem_exec_schedule@fair-throttle
++igt@gem_exec_schedule@fair-throttle-rrul
++igt@gem_exec_schedule@fair-throttle-share
++igt@gem_exec_schedule@fair-throttle-solo
++igt@gem_exec_schedule@fair-throttle-vip
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/index.html
+
+--===============0074416429380213820==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>i915/gem_exec_schedule: Try to spot unfairness (rev9)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/77887/">https://patchwork.freedesktop.org/series/77887/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_8834 -&gt; IGTPW_4846</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_4846 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-byt-j1900/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-byt-j1900/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gem_contexts:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-tgl-u2/igt@i915_selftest@live@gem_contexts.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-tgl-u2/igt@i915_selftest@live@gem_contexts.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2045">i915#2045</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-kbl-x1275/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-kbl-x1275/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a2:</p>
+<ul>
+<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-skl-guc/igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-skl-guc/igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a2.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-byt-j1900/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-byt-j1900/igt@i915_module_load@reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-tgl-u2/igt@i915_selftest@live@gt_lrc.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1233">i915#1233</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-tgl-u2/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">PASS</a> +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-modeset@a-dp1:<ul>
+<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8834/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-modeset@a-dp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/fi-kbl-x1275/igt@kms_flip@basic-flip-vs-modeset@a-dp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>) +8 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (42 -&gt; 37)</h2>
+<p>Additional (2): fi-ilk-650 fi-kbl-8809g <br />
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5757 -&gt; IGTPW_4846</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_8834: ac25ad7789fe4cc689a854d823a226ce24bb0a62 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_4846: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4846/index.html<br />
+  IGT_5757: d78c7fd293cb228fe03ccff730202b033e25ff18 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@gem_exec_schedule@fairslice<br />
++igt@gem_exec_schedule@fairslice-all<br />
++igt@gem_exec_schedule@fair-flow<br />
++igt@gem_exec_schedule@fair-flow-ping<br />
++igt@gem_exec_schedule@fair-flow-share<br />
++igt@gem_exec_schedule@fair-half<br />
++igt@gem_exec_schedule@fair-next<br />
++igt@gem_exec_schedule@fair-next-ping<br />
++igt@gem_exec_schedule@fair-next-share<br />
++igt@gem_exec_schedule@fair-none<br />
++igt@gem_exec_schedule@fair-none-ping<br />
++igt@gem_exec_schedule@fair-none-rrul<br />
++igt@gem_exec_schedule@fair-none-share<br />
++igt@gem_exec_schedule@fair-none-solo<br />
++igt@gem_exec_schedule@fair-none-vip<br />
++igt@gem_exec_schedule@fair-pace<br />
++igt@gem_exec_schedule@fair-pace-ping<br />
++igt@gem_exec_schedule@fair-pace-share<br />
++igt@gem_exec_schedule@fair-pace-solo<br />
++igt@gem_exec_schedule@fair-spare<br />
++igt@gem_exec_schedule@fair-sync<br />
++igt@gem_exec_schedule@fair-sync-solo<br />
++igt@gem_exec_schedule@fair-sync-vip<br />
++igt@gem_exec_schedule@fair-throttle<br />
++igt@gem_exec_schedule@fair-throttle-rrul<br />
++igt@gem_exec_schedule@fair-throttle-share<br />
++igt@gem_exec_schedule@fair-throttle-solo<br />
++igt@gem_exec_schedule@fair-throttle-vip</p>
+
+</body>
+</html>
+
+--===============0074416429380213820==--
+
+--===============1476267623==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1476267623==--
