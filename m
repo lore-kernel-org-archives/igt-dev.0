@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC5696E26C
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Aug 2020 12:44:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 368896E26C
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Aug 2020 12:44:15 +0000 (UTC)
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Mon,  3 Aug 2020 14:43:12 +0200
-Message-Id: <20200803124313.31162-22-zbigniew.kempczynski@intel.com>
+Date: Mon,  3 Aug 2020 14:43:13 +0200
+Message-Id: <20200803124313.31162-23-zbigniew.kempczynski@intel.com>
 In-Reply-To: <20200803124313.31162-1-zbigniew.kempczynski@intel.com>
 References: <20200803124313.31162-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v25 21/22] tests/perf: use coherent mapping
- on non-llc platforms
+Subject: [igt-dev] [PATCH i-g-t v25 22/22] HAX: run in BAT and fail to avoid
+ full run
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,93 +25,180 @@ To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
 ---
- tests/i915/perf.c | 37 ++++++++-----------------------------
- 1 file changed, 8 insertions(+), 29 deletions(-)
+ tests/intel-ci/fast-feedback.testlist | 164 +-------------------------
+ 1 file changed, 3 insertions(+), 161 deletions(-)
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 10386e30..d59b359a 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -524,6 +524,8 @@ emit_report_perf_count(struct intel_bb *ibb,
- 		       int dst_offset,
- 		       uint32_t report_id)
- {
-+	intel_bb_add_intel_buf(ibb, dst, true);
-+
- 	if (IS_HASWELL(devid))
- 		intel_bb_out(ibb, GEN6_MI_REPORT_PERF_COUNT);
- 	else
-@@ -3018,6 +3020,8 @@ emit_stall_timestamp_and_rpc(struct intel_bb *ibb,
- 				   PIPE_CONTROL_RENDER_TARGET_FLUSH |
- 				   PIPE_CONTROL_WRITE_TIMESTAMP);
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index b796b264..a555e6f7 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,163 +1,5 @@
+ # Keep alphabetically sorted by default
  
-+	intel_bb_add_intel_buf(ibb, dst, true);
-+
- 	if (intel_gen(devid) >= 8)
- 		intel_bb_out(ibb, GFX_OP_PIPE_CONTROL | (6 - 2));
- 	else
-@@ -3390,18 +3394,13 @@ gen8_test_single_ctx_render_target_writes_a_counter(void)
- 						   I915_TILING_NONE,
- 						   I915_COMPRESSION_NONE);
- 
--			intel_buf_cpu_map(dst_buf, true /* write enable */);
-+			if (gem_has_llc(ibb0->i915))
-+				intel_buf_cpu_map(dst_buf, true);
-+			else
-+				intel_buf_device_map(dst_buf, true);
- 			memset(dst_buf->ptr, 0x80, 4096);
- 			intel_buf_unmap(dst_buf);
- 
--			/* Check 0 */
--			intel_buf_cpu_map(dst_buf, false /* write enable */);
--			report0_32 = dst_buf->ptr;
--			igt_info("report 0: %x\n", report0_32[0]);
--			igt_info("time 0: %x\n", report0_32[1]);
--			intel_buf_unmap(dst_buf);
+-igt@core_auth@basic-auth
+-igt@debugfs_test@read_all_entries
+-igt@fbdev@mmap
+-igt@gem_basic@bad-close
+-igt@gem_basic@create-close
+-igt@gem_basic@create-fd-close
+-igt@gem_busy@busy@all
+-igt@gem_close_race@basic-process
+-igt@gem_close_race@basic-threads
+-igt@gem_ctx_create@basic
+-igt@gem_ctx_create@basic-files
+-igt@gem_ctx_exec@basic
+-igt@gem_exec_basic@basic
+-igt@gem_exec_create@basic
+-igt@gem_exec_fence@basic-busy
+-igt@gem_exec_fence@basic-wait
+-igt@gem_exec_fence@basic-await
+-igt@gem_exec_fence@nb-await
+-igt@gem_exec_gttfill@basic
+-igt@gem_exec_parallel@engines
+-igt@gem_exec_store@basic
+-igt@gem_exec_suspend@basic-s0
+-igt@gem_exec_suspend@basic-s3
+-igt@gem_flink_basic@bad-flink
+-igt@gem_flink_basic@bad-open
+-igt@gem_flink_basic@basic
+-igt@gem_flink_basic@double-flink
+-igt@gem_flink_basic@flink-lifetime
+-igt@gem_huc_copy@huc-copy
+-igt@gem_linear_blits@basic
+-igt@gem_mmap@basic
+-igt@gem_mmap_gtt@basic
+-igt@gem_render_linear_blits@basic
+-igt@gem_render_tiled_blits@basic
+-igt@gem_ringfill@basic-all
+-igt@gem_sync@basic-all
+-igt@gem_sync@basic-each
+-igt@gem_tiled_blits@basic
+-igt@gem_tiled_fence_blits@basic
+-igt@gem_tiled_pread_basic
+-igt@gem_wait@busy@all
+-igt@gem_wait@wait@all
+-igt@i915_getparams_basic@basic-eu-total
+-igt@i915_getparams_basic@basic-subslice-total
+-igt@i915_hangman@error-state-basic
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled
+-igt@kms_addfb_basic@addfb25-x-tiled-mismatch
+-igt@kms_addfb_basic@addfb25-yf-tiled
+-igt@kms_addfb_basic@addfb25-y-tiled
+-igt@kms_addfb_basic@addfb25-y-tiled-small
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled
+-igt@kms_addfb_basic@basic-y-tiled
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@bo-too-small-due-to-tiling
+-igt@kms_addfb_basic@clobberred-modifier
+-igt@kms_addfb_basic@framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@tile-pitch-mismatch
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_busy@basic
+-igt@kms_chamelium@dp-hpd-fast
+-igt@kms_chamelium@dp-edid-read
+-igt@kms_chamelium@dp-crc-fast
+-igt@kms_chamelium@hdmi-hpd-fast
+-igt@kms_chamelium@hdmi-edid-read
+-igt@kms_chamelium@hdmi-crc-fast
+-igt@kms_chamelium@vga-hpd-fast
+-igt@kms_chamelium@vga-edid-read
+-igt@kms_chamelium@common-hpd-after-suspend
+-igt@kms_prop_blob@basic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
+-igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@force-load-detect
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_pipe_crc_basic@hang-read-crc-pipe-a
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a
+-igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc-pipe-a
+-igt@kms_pipe_crc_basic@read-crc-pipe-b
+-igt@kms_pipe_crc_basic@read-crc-pipe-c
+-igt@kms_pipe_crc_basic@read-crc-pipe-a-frame-sequence
+-igt@kms_pipe_crc_basic@suspend-read-crc-pipe-a
+-igt@kms_psr@primary_page_flip
+-igt@kms_psr@cursor_plane_move
+-igt@kms_psr@sprite_plane_onoff
+-igt@kms_psr@primary_mmap_gtt
+-igt@kms_setmode@basic-clone-single-crtc
+-igt@i915_pm_backlight@basic-brightness
+-igt@i915_pm_rpm@basic-pci-d3-state
+-igt@i915_pm_rpm@basic-rte
+-igt@i915_pm_rps@basic-api
+-igt@prime_self_import@basic-llseek-bad
+-igt@prime_self_import@basic-llseek-size
+-igt@prime_self_import@basic-with_fd_dup
+-igt@prime_self_import@basic-with_one_bo
+-igt@prime_self_import@basic-with_one_bo_two_files
+-igt@prime_self_import@basic-with_two_bos
+-igt@prime_vgem@basic-fence-flip
+-igt@prime_vgem@basic-fence-mmap
+-igt@prime_vgem@basic-fence-read
+-igt@prime_vgem@basic-gtt
+-igt@prime_vgem@basic-read
+-igt@prime_vgem@basic-write
+-igt@vgem_basic@setversion
+-igt@vgem_basic@create
+-igt@vgem_basic@debugfs
+-igt@vgem_basic@dmabuf-export
+-igt@vgem_basic@dmabuf-fence
+-igt@vgem_basic@dmabuf-fence-before
+-igt@vgem_basic@dmabuf-mmap
+-igt@vgem_basic@mmap
+-igt@vgem_basic@second-client
+-igt@vgem_basic@sysfs
 -
+-# All tests that do module unloading and reloading are executed last.
+-# They will sometimes reveal issues of earlier tests leaving the
+-# driver in a broken state that is not otherwise noticed in that test.
 -
- 			emit_stall_timestamp_and_rpc(ibb0,
- 						     dst_buf,
- 						     512 /* timestamp offset */,
-@@ -3423,13 +3422,6 @@ gen8_test_single_ctx_render_target_writes_a_counter(void)
- 			/* Another redundant flush to clarify batch bo is free to reuse */
- 			intel_bb_flush_render_with_context(ibb0, context0_id);
- 
--			/* Check 1 */
--			intel_buf_cpu_map(dst_buf, false /* write enable */);
--			report0_32 = dst_buf->ptr;
--			igt_info("report 1: %x\n", report0_32[0]);
--			igt_info("time 1: %x\n", report0_32[1]);
--			intel_buf_unmap(dst_buf);
+-igt@vgem_basic@unload
+-igt@i915_module_load@reload
+-igt@i915_pm_rpm@module-reload
 -
- 			/* submit two copies on the other context to avoid a false
- 			 * positive in case the driver somehow ended up filtering for
- 			 * context1
-@@ -3455,24 +3447,11 @@ gen8_test_single_ctx_render_target_writes_a_counter(void)
- 
- 			intel_bb_flush_render_with_context(ibb1, context1_id);
- 			intel_bb_sync(ibb1);
--
--			/* Check 2 */
--			intel_buf_cpu_map(dst_buf, false /* write enable */);
--			report0_32 = dst_buf->ptr;
--			report1_32 = report0_32 + 64; /* 64 uint32_t = 256bytes offset */
--			igt_info("report 2 a: %x\n", report0_32[0]);
--			igt_info("time 2 a: %x\n", report0_32[1]);
--			igt_info("report 2 b: %x\n", report1_32[0]);
--			igt_info("time 2 b: %x\n", report1_32[1]);
--			intel_buf_unmap(dst_buf);
--
- 			intel_bb_sync(ibb0);
- 
- 			intel_buf_cpu_map(dst_buf, false /* write enable */);
- 
- 			report0_32 = dst_buf->ptr;
--			igt_info("report: %x\n", report0_32[0]);
--			igt_info("time: %x\n", report0_32[1]);
- 			igt_assert_eq(report0_32[0], 0xdeadbeef); /* report ID */
- 			igt_assert_neq(report0_32[1], 0); /* timestamp */
- 			prev = report0_32;
+-# Kernel selftests
+-igt@i915_selftest@live
+-igt@dmabuf@all
++igt@api_intel_bb@fail
++igt@api_intel_bb@render
++igt@perf@gen8-unprivileged-single-ctx-counters
 -- 
 2.26.0
 
