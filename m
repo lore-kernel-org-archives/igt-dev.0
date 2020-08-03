@@ -1,7 +1,9 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon,  3 Aug 2020 10:30:51 +0100
-Message-Id: <20200803093051.2112-1-chris@chris-wilson.co.uk>
+Date: Mon,  3 Aug 2020 11:14:58 +0100
+Message-Id: <20200803101458.2369-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200803093051.2112-1-chris@chris-wilson.co.uk>
+References: <20200803093051.2112-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
 Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_parallel: Add basic userptr
  thrashing
@@ -16,8 +18,8 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 Mix in a modicum of generic userptr thrashing for a quick (1s) BAT pass,
@@ -25,9 +27,8 @@ as we have currently no coverage of userptr at all in BAT.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/i915/gem_exec_parallel.c        | 31 +++++++++++++++++++++++++--
- tests/intel-ci/fast-feedback.testlist |  5 ++++-
- 2 files changed, 33 insertions(+), 3 deletions(-)
+ tests/i915/gem_exec_parallel.c | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
 
 diff --git a/tests/i915/gem_exec_parallel.c b/tests/i915/gem_exec_parallel.c
 index bf94b93d4..96feb8250 100644
@@ -106,22 +107,6 @@ index bf94b93d4..96feb8250 100644
  		{ NULL }
  	};
  	int fd;
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index b796b2642..ff460e1a6 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -19,7 +19,10 @@ igt@gem_exec_fence@basic-wait
- igt@gem_exec_fence@basic-await
- igt@gem_exec_fence@nb-await
- igt@gem_exec_gttfill@basic
--igt@gem_exec_parallel@engines
-+igt@gem_exec_parallel@basic
-+igt@gem_exec_parallel@userptr
-+igt@gem_exec_parallel@fds
-+igt@gem_exec_parallel@contexts
- igt@gem_exec_store@basic
- igt@gem_exec_suspend@basic-s0
- igt@gem_exec_suspend@basic-s3
 -- 
 2.28.0
 
