@@ -1,21 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2065.outbound.protection.outlook.com [40.107.223.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D8B2189DBF
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Aug 2020 16:10:47 +0000 (UTC)
-References: <20200511062647.9514-1-bhanuprakash.modem@intel.com>
- <20200511062647.9514-2-bhanuprakash.modem@intel.com>
- <20200602191102.GA6277@intel.com>
- <SN6PR11MB33273EEF7679435C4617EA768D6D0@SN6PR11MB3327.namprd11.prod.outlook.com>
- <20200803221730.GA1352@labuser-Z97X-UD5H>
-From: "Kazlauskas, Nicholas" <nicholas.kazlauskas@amd.com>
-Message-ID: <f146ce69-cb15-e881-4551-7e41fcf3de33@amd.com>
-Date: Tue, 4 Aug 2020 12:10:40 -0400
-In-Reply-To: <20200803221730.GA1352@labuser-Z97X-UD5H>
-Content-Language: en-US
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D5DC6E4B0
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Aug 2020 18:00:31 +0000 (UTC)
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Date: Tue,  4 Aug 2020 11:00:30 -0700
+Message-Id: <20200804180030.70087-2-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20200804180030.70087-1-umesh.nerlige.ramappa@intel.com>
+References: <20200804180030.70087-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [RFC PATCH 1/2] tests/kms_vrr: Use atomic API for
- page flip
+Subject: [igt-dev] [PATCH 2/2] HAX i915/perf: Add tests for mapped OA buffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,167 +16,363 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Navare, Manasi" <manasi.d.navare@intel.com>, "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Kiran,
- Pichika Uday" <pichika.uday.kiran@intel.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Sorry for the delay on checking this.
+For applications that need a faster way to access reports in the OA
+buffer, i915 now provides a way to map the OA buffer to privileged user
+space. Validate the mapped OA buffer.
 
-I've given it a spin and on Raven/Navi I see that before applying the 
-patches I get SUCCESS for all 3 subtests but after applying them every 
-test fails.
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ include/drm-uapi/i915_drm.h           |  18 ++
+ tests/i915/perf.c                     | 276 ++++++++++++++++++++++++++
+ tests/intel-ci/fast-feedback.testlist |   6 +
+ 3 files changed, 300 insertions(+)
 
-Patch 1 is what breaks it, but it's hard to say whether this is a test 
-bug or AMDGPU driver bug from initial investigation.
-
-I'm seeing that the vblank_ns = last_vblank_ns so I think we're still on 
-the same frame when we get the event back.
-
-I would think this would affect userspace behavior but adaptive sync 
-works fine on this kernel for games and benchmarks.
-
-Not sure if what I was doing with wait_for_vblank works is actually 
-waiting for the page flip event from the driver or just the vblank 
-event. We want to be comparing the delta between the page-flip events.
-
-Regards,
-Nicholas Kazlauskas
-
-On 2020-08-03 6:17 p.m., Navare, Manasi wrote:
-> 
-> @Harry and @Nicholas, could you run kms_vrr IGT with this patch on AMD
-> to see that with teh atomic API, it doesnt break VRR on AMD?
-> 
-> Regards
-> Manasi
-> 
-> On Wed, Jul 01, 2020 at 09:16:59PM -0700, Modem, Bhanuprakash wrote:
->>> -----Original Message-----
->>> From: Navare, Manasi D <manasi.d.navare@intel.com>
->>> Sent: Wednesday, June 3, 2020 12:41 AM
->>> To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
->>> Cc: igt-dev@lists.freedesktop.org; harry.wentland@amd.com;
->>> nicholas.kazlauskas@amd.com; Kiran, Pichika Uday
->>> <pichika.uday.kiran@intel.com>
->>> Subject: Re: [RFC PATCH 1/2] tests/kms_vrr: Use atomic API for page flip
->>>
->>> On Mon, May 11, 2020 at 11:56:46AM +0530, bhanuprakash.modem@intel.com
->>> wrote:
->>>> From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->>>>
->>>> We should avoid using drmModePageFlip as it'll only be used for
->>>> legacy drivers, instead, use igt_display_commit_atomic() API to
->>>> page flip for atomic display code path.
->>>>
->>>> Cc: Harry Wentland <harry.wentland@amd.com>
->>>> Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
->>>> Cc: Manasi Navare <manasi.d.navare@intel.com>
->>>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
->>>
->>> I have tested this on i915 and the page flips are captured correctly with
->>> non blocking page flip requests using atomic_commit call.
->>>
->>> @Harry, @Nicholas could you test this on AMD driver to make
->>> sure its not breaking anything?
->> [Bhanu]
->> @Harry, @Nicholas did you get a chance to check this patch?
->>>
->>> Manasi
->>>
->>>> ---
->>>>   tests/kms_vrr.c | 39 ++++++++++-----------------------------
->>>>   1 file changed, 10 insertions(+), 29 deletions(-)
->>>>
->>>> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
->>>> index 73115fef..0fe28931 100644
->>>> --- a/tests/kms_vrr.c
->>>> +++ b/tests/kms_vrr.c
->>>> @@ -126,11 +126,11 @@ static range_t get_vrr_range(data_t *data,
->>> igt_output_t *output)
->>>>   }
->>>>
->>>>   /* Returns a suitable vrr test frequency. */
->>>> -static uint32_t get_test_rate_ns(data_t *data, igt_output_t *output)
->>>> +static uint64_t get_test_rate_ns(data_t *data, igt_output_t *output)
->>>>   {
->>>>   drmModeModeInfo *mode = igt_output_get_mode(output);
->>>>   range_t range;
->>>> -uint32_t vtest;
->>>> +uint64_t vtest;
->>>>
->>>>   /*
->>>>    * The frequency with the fastest convergence speed should be
->>>> @@ -210,32 +210,18 @@ wait_for_vblank(data_t *data, enum pipe pipe)
->>>>   return get_vblank_event_ns(data);
->>>>   }
->>>>
->>>> -/* Performs an asynchronous non-blocking page-flip on a pipe. */
->>>> -static int
->>>> +/* Performs an atomic non-blocking page-flip on a pipe. */
->>>> +static void
->>>>   do_flip(data_t *data, enum pipe pipe_id, igt_fb_t *fb)
->>>>   {
->>>> -igt_pipe_t *pipe = &data->display.pipes[pipe_id];
->>>> -int ret;
->>>> -
->>>>   igt_set_timeout(1, "Scheduling page flip\n");
->>>>
->>>> -/*
->>>> - * Only the legacy flip ioctl supports async flips.
->>>> - * It's also non-blocking, but returns -EBUSY if flipping too fast.
->>>> - * 2x monitor tests will need async flips in the atomic API.
->>>> - */
->>>> -do {
->>>> -ret = drmModePageFlip(data->drm_fd, pipe->crtc_id,
->>>> -      fb->fb_id,
->>>> -      DRM_MODE_PAGE_FLIP_EVENT |
->>>> -      DRM_MODE_PAGE_FLIP_ASYNC,
->>>> -      data);
->>>> -} while (ret == -EBUSY);
->>>> -
->>>> -igt_assert_eq(ret, 0);
->>>> -igt_reset_timeout();
->>>> +igt_display_commit_atomic(&data->display,
->>>> +  DRM_MODE_ATOMIC_NONBLOCK |
->>>> +  DRM_MODE_PAGE_FLIP_EVENT,
->>>> +  NULL);
->>>>
->>>> -return 0;
->>>> +igt_reset_timeout();
->>>>   }
->>>>
->>>>   /*
->>>> @@ -246,11 +232,6 @@ do_flip(data_t *data, enum pipe pipe_id, igt_fb_t
->>> *fb)
->>>>    * can arbitrarily restrict the bounds further than the absolute
->>>>    * min and max range. But VRR is really about extending the flip
->>>>    * to prevent stuttering or to match a source content rate.
->>>> - *
->>>> - * The only way to "present" at a fixed rate like userspace in a vendor
->>>> - * neutral manner is to do it with async flips. This avoids the need
->>>> - * to wait for next vblank and it should eventually converge at the
->>>> - * desired rate.
->>>>    */
->>>>   static uint32_t
->>>>   flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
->>>> @@ -271,7 +252,7 @@ flip_and_measure(data_t *data, igt_output_t *output,
->>> enum pipe pipe,
->>>>   front = !front;
->>>>   do_flip(data, pipe, front ? &data->fb1 : &data->fb0);
->>>>
->>>> -vblank_ns = get_vblank_event_ns(data);
->>>> +vblank_ns = wait_for_vblank(data, pipe);
->>>>   diff_ns = rate_ns - (vblank_ns - last_vblank_ns);
->>>>   last_vblank_ns = vblank_ns;
->>>>
->>>> --
->>>> 2.24.1.1.gb6d4d82bd5
->>>>
+diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+index 2b55af13..e948a81c 100644
+--- a/include/drm-uapi/i915_drm.h
++++ b/include/drm-uapi/i915_drm.h
+@@ -2048,6 +2048,24 @@ struct drm_i915_perf_open_param {
+  */
+ #define I915_PERF_IOCTL_CONFIG	_IO('i', 0x2)
+ 
++/**
++ * Returns OA buffer properties to be used with mmap.
++ *
++ * This ioctl is available in perf revision 8.
++ */
++#define I915_PERF_IOCTL_GET_OA_BUFFER_INFO _IOWR('i', 0x3, struct drm_i915_perf_oa_buffer_info)
++
++/**
++ * OA buffer size and offset.
++ */
++struct drm_i915_perf_oa_buffer_info {
++	__u32 type;   /* in */
++	__u32 flags;  /* in */
++	__u64 size;   /* out */
++	__u64 offset; /* out */
++	__u64 rsvd;   /* mbz */
++};
++
+ /**
+  * Common to all i915 perf records
+  */
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index b030cfad..fe94e163 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -5172,6 +5172,256 @@ static void test_oa_regs_whitelist(int paranoid)
+ 	intel_register_access_fini(&mmio_data);
+ }
+ 
++#define OA_BUFFER_DATA(tail, head, oa_buffer_size) \
++	(((tail) - (head)) & ((oa_buffer_size) - 1))
++
++#ifndef MAP_FAILED
++#define MAP_FAILED ((void *)-1)
++#endif
++
++static uint32_t oa_status_reg(void)
++{
++	uint32_t status;
++
++	intel_register_access_init(&mmio_data, intel_get_pci_device(),
++				   0, drm_fd);
++	if (IS_HASWELL(devid))
++		status = intel_register_read(&mmio_data, 0x2346) & 0x7;
++	else if (IS_GEN12(devid))
++		status = intel_register_read(&mmio_data, 0xdafc) & 0x7;
++	else
++		status = intel_register_read(&mmio_data, 0x2b08) & 0xf;
++
++	intel_register_access_fini(&mmio_data);
++
++	return status;
++}
++
++static jmp_buf jmp;
++static void __attribute__((noreturn)) sigtrap(int sig)
++{
++	siglongjmp(jmp, sig);
++}
++
++static void try_invalid_access(void *vaddr)
++{
++	sighandler_t old_sigsegv;
++	uint32_t dummy;
++
++	old_sigsegv = signal(SIGSEGV, sigtrap);
++	switch (sigsetjmp(jmp, SIGSEGV)) {
++	case SIGSEGV:
++		break;
++	case 0:
++		dummy = READ_ONCE(*((uint32_t *)vaddr + 1));
++		(void) dummy;
++	default:
++		igt_assert(!"reached");
++		break;
++	}
++	signal(SIGSEGV, old_sigsegv);
++}
++
++static void invalid_param_map_oa_buffer(void)
++{
++	struct drm_i915_perf_oa_buffer_info oa_buffer = { 0 };
++	void *oa_vaddr = NULL;
++
++	do_ioctl(stream_fd, I915_PERF_IOCTL_GET_OA_BUFFER_INFO, &oa_buffer);
++
++	igt_debug("size        = %llu\n", oa_buffer.size);
++	igt_debug("offset      = %llx\n", oa_buffer.offset);
++
++	igt_assert_eq(oa_buffer.size & (oa_buffer.size - 1), 0);
++
++	/* try a couple invalid mmaps */
++	/* bad prots */
++	oa_vaddr = mmap(0, oa_buffer.size, PROT_WRITE, MAP_PRIVATE, stream_fd, oa_buffer.offset);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	oa_vaddr = mmap(0, oa_buffer.size, PROT_EXEC, MAP_PRIVATE, stream_fd, oa_buffer.offset);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	/* bad MAPs */
++	oa_vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_SHARED, stream_fd, oa_buffer.offset);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	/* bad offsets */
++	oa_vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_PRIVATE, stream_fd, 0);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	oa_vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_PRIVATE, stream_fd, 8192);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	oa_vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_PRIVATE, stream_fd, 11);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	/* bad size */
++	oa_vaddr = mmap(0, oa_buffer.size + 1, PROT_READ, MAP_PRIVATE, stream_fd, oa_buffer.offset);
++	igt_assert(oa_vaddr == MAP_FAILED);
++
++	/* do the right thing */
++	oa_vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_PRIVATE, stream_fd, oa_buffer.offset);
++	igt_assert(oa_vaddr != MAP_FAILED && oa_vaddr != NULL);
++
++	munmap(oa_vaddr, oa_buffer.size);
++}
++
++static void *map_oa_buffer(uint32_t *size)
++{
++	struct drm_i915_perf_oa_buffer_info oa_buffer = { 0 };
++	void *vaddr;
++
++	do_ioctl(stream_fd, I915_PERF_IOCTL_GET_OA_BUFFER_INFO, &oa_buffer);
++
++	igt_debug("size        = %llu\n", oa_buffer.size);
++	igt_debug("offset      = %llx\n", oa_buffer.offset);
++
++	igt_assert_eq(oa_buffer.size & (oa_buffer.size - 1), 0);
++	igt_assert_eq(oa_status_reg(), 0);
++
++	vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_PRIVATE, stream_fd, oa_buffer.offset);
++	igt_assert(vaddr != NULL);
++
++	*size = oa_buffer.size;
++
++	return vaddr;
++}
++
++static void unmap_oa_buffer(void *addr, uint32_t size)
++{
++	munmap(addr, size);
++}
++
++static void check_reports(void *oa_vaddr, uint32_t oa_size)
++{
++	struct oa_format format = get_oa_format(test_set->perf_oa_format);
++	size_t report_words = format.size >> 2;
++	uint32_t *reports;
++	uint32_t timer_reports = 0;
++
++	for (reports = (uint32_t *)oa_vaddr;
++	     timer_reports < 20 && reports[0] && reports[1];
++	     reports += report_words) {
++		if (!oa_report_is_periodic(oa_exp_1_millisec, reports))
++			continue;
++
++		timer_reports++;
++		if (timer_reports >= 3)
++			sanity_check_reports(reports - 2 * report_words,
++					     reports - report_words,
++					     test_set->perf_oa_format);
++	}
++
++	igt_assert(timer_reports >= 3);
++}
++
++static void check_reports_from_mapped_buffer(void)
++{
++	void *vaddr;
++	uint32_t size;
++	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
++
++	vaddr = map_oa_buffer(&size);
++
++	/* wait for approx 100 reports */
++	usleep(100 * period_us);
++	check_reports(vaddr, size);
++
++	unmap_oa_buffer(vaddr, size);
++}
++
++static void unprivileged_try_to_map_oa_buffer(void)
++{
++	struct drm_i915_perf_oa_buffer_info oa_buffer = { 0 };
++	void *oa_vaddr;
++
++	do_ioctl_err(stream_fd, I915_PERF_IOCTL_GET_OA_BUFFER_INFO,
++		     &oa_buffer, EACCES);
++
++	oa_vaddr = mmap(0, 4096, PROT_READ, MAP_PRIVATE, stream_fd, 4096);
++	igt_assert(oa_vaddr == MAP_FAILED);
++	igt_assert_eq(errno, EACCES);
++}
++
++static void unprivileged_map_oa_buffer(void)
++{
++	igt_fork(child, 1) {
++		igt_drop_root();
++		unprivileged_try_to_map_oa_buffer();
++	}
++	igt_waitchildren();
++}
++
++static void map_oa_buffer_unprivilege_access(void)
++{
++	void *vaddr;
++	uint32_t size;
++
++	vaddr = map_oa_buffer(&size);
++
++	igt_fork(child, 1) {
++		igt_drop_root();
++		try_invalid_access(vaddr);
++	}
++	igt_waitchildren();
++
++	unmap_oa_buffer(vaddr, size);
++}
++
++static void test_mapped_oa_buffer(void (*test_with_fd_open)(void))
++{
++	uint64_t properties[] = {
++		DRM_I915_PERF_PROP_SAMPLE_OA, true,
++		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
++		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
++		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
++
++	};
++	struct drm_i915_perf_open_param param = {
++		.flags = I915_PERF_FLAG_FD_CLOEXEC,
++		.num_properties = sizeof(properties) / 16,
++		.properties_ptr = to_user_pointer(properties),
++	};
++
++	stream_fd = __perf_open(drm_fd, &param, false);
++
++	igt_assert(test_with_fd_open);
++	test_with_fd_open();
++
++	__perf_close(stream_fd);
++}
++
++static void closed_fd_and_unmapped_access(void)
++{
++	uint64_t properties[] = {
++		DRM_I915_PERF_PROP_SAMPLE_OA, true,
++		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
++		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
++		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
++
++	};
++	struct drm_i915_perf_open_param param = {
++		.flags = I915_PERF_FLAG_FD_CLOEXEC,
++		.num_properties = sizeof(properties) / 16,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	void *vaddr;
++	uint32_t size;
++	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
++
++	stream_fd = __perf_open(drm_fd, &param, false);
++	vaddr = map_oa_buffer(&size);
++
++	usleep(100 * period_us);
++	check_reports(vaddr, size);
++
++	unmap_oa_buffer(vaddr, size);
++	__perf_close(stream_fd);
++
++	try_invalid_access(vaddr);
++}
++
+ static unsigned
+ read_i915_module_ref(void)
+ {
+@@ -5507,6 +5757,32 @@ igt_main
+ 			test_triggered_oa_reports(1);
+ 	}
+ 
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(i915_perf_revision(drm_fd) >= 8);
++		}
++
++		igt_describe("Verify mapping of oa buffer");
++		igt_subtest("map-oa-buffer")
++			test_mapped_oa_buffer(check_reports_from_mapped_buffer);
++
++		igt_describe("Verify invalid mappings of oa buffer");
++		igt_subtest("invalid-map-oa-buffer")
++			test_mapped_oa_buffer(invalid_param_map_oa_buffer);
++
++		igt_describe("Verify if non-privileged user can map oa buffer");
++		igt_subtest("non-privileged-map-oa-buffer")
++			test_mapped_oa_buffer(unprivileged_map_oa_buffer);
++
++		igt_describe("Verify if non-privileged user can map oa buffer");
++		igt_subtest("non-privileged-access-vaddr")
++			test_mapped_oa_buffer(map_oa_buffer_unprivilege_access);
++
++		igt_describe("Unmap buffer, close fd and try to access");
++		igt_subtest("closed-fd-and-unmapped-access")
++			closed_fd_and_unmapped_access();
++	}
++
+ 	igt_fixture {
+ 		/* leave sysctl options in their default state... */
+ 		write_u64_file("/proc/sys/dev/i915/oa_max_sample_rate", 100000);
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 262f8d1c..adb8050a 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -4,3 +4,9 @@ igt@perf@oa-regs-whitelisted
+ igt@perf@oa-regs-not-whitelisted
+ igt@perf@triggered-oa-reports-paranoid-0
+ igt@perf@triggered-oa-reports-paranoid-1
++
++igt@perf@map-oa-buffer
++igt@perf@invalid-map-oa-buffer
++igt@perf@non-privileged-map-oa-buffer
++igt@perf@non-privileged-access-vaddr
++igt@perf@closed-fd-and-unmapped-access
+-- 
+2.20.1
 
 _______________________________________________
 igt-dev mailing list
