@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 129D56E0E7
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Aug 2020 10:59:04 +0000 (UTC)
-From: Petri Latvala <petri.latvala@intel.com>
-Date: Wed,  5 Aug 2020 13:59:00 +0300
-Message-Id: <20200805105900.29444-1-petri.latvala@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC99F6E52D
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Aug 2020 11:43:54 +0000 (UTC)
+References: <20200729222938.6038-1-bhanuprakash.modem@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+Message-ID: <681e622e-cf37-0be7-c480-0f48e9d92f8e@intel.com>
+Date: Wed, 5 Aug 2020 17:13:49 +0530
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] runner: Only claim the test was killed if
- it was killed
+In-Reply-To: <20200729222938.6038-1-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH] tests/kms_pipe_crc_basic: Sanity check for
+ CRC mismatches
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,55 +18,88 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-If we don't have --abort=taint active and there is a kernel taint,
-test exiting normally caused the runner to inject a "this test was
-killed" message to the test's output. Make sure we only inject that if
-we really did kill the test, and journal the test exit correctly as
-well.
-
-Same goes for the message for exceeding disk usage limits.
-
-Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-Cc: Arkadiusz Hiler <arek@hiler.eu>
-Cc: Lukasz Fiedorowicz <lukasz.fiedorowicz@intel.com>
----
- runner/executor.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/runner/executor.c b/runner/executor.c
-index 0377195d..1688ae41 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -1071,7 +1071,7 @@ static int monitor_output(pid_t child,
- 				 * the result an incomplete we avoid
- 				 * journaling a timeout here.
- 				 */
--				if (is_tainted(taints)) {
-+				if (killed && is_tainted(taints)) {
- 					exitline = EXECUTOR_EXIT;
- 
- 					/*
-@@ -1096,7 +1096,7 @@ static int monitor_output(pid_t child,
- 				 * Same goes for stopping because we
- 				 * exceeded the disk usage limit.
- 				 */
--				if (disk_usage_limit_exceeded(settings, disk_usage)) {
-+				if (killed && disk_usage_limit_exceeded(settings, disk_usage)) {
- 					exitline = EXECUTOR_EXIT;
- 					dprintf(outputs[_F_OUT],
- 						"\nrunner: This test was killed due to exceeding disk usage limit. "
--- 
-2.20.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+CgpPbiA3LzMwLzIwMjAgMzo1OSBBTSwgQmhhbnVwcmFrYXNoIE1vZGVtIHdyb3RlOgo+IFdl4oCZ
+dmUgc2VlbiBtdWx0aXBsZSBDUkMgcmVsYXRlZCBpc3N1ZXMgb24gb2xkZXIgcGxhdGZvcm1zIGFu
+ZAo+IHByZS1zaWxpY29uIGVudmlyb25tZW50LCBtb3N0IG9mIHRoZSB0aW1lIHdlIGVuZCB1cCB3
+aXRoIGRlYnVnZ2luZy4KPiAKPiBUaGlzIHBhdGNoIHdvcmtzIGFzIGEgY3JjLXNhbml0eSB0ZXN0
+LCB3aGljaCBjYW4gdmVyaWZ5IHRoYXQgdGhlCj4gQ1JDIG1lY2hhbmlzbSBpcyBjbGVhbiBmcm9t
+IHRoZSBwbGF0Zm9ybSBzaWRlIGJlZm9yZSBkZWJ1Z2dpbmcgdGhlCj4gYWN0dWFsIENSQyBtaXNt
+YXRjaGVzIG9yIG90aGVyIENSQyByZWxhdGVkIGlzc3Vlcy4KPiAKClBsZWFzZSBhZGQgdGhlIHRl
+c3QgZGV0YWlscyBhcyB3ZWxsIGluIHRoZSBjb21taXQgbWVzc2FnZS4KPiBDYzogU3dhdGkgU2hh
+cm1hIDxzd2F0aTIuc2hhcm1hQGludGVsLmNvbT4KPiBDYzogS2FydGhpayBCIFMgPGthcnRoaWsu
+Yi5zQGludGVsLmNvbT4KPiBDYzogSmVldmFuIEIgPGplZXZhbi5iQGludGVsLmNvbT4KPiBDYzog
+UGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+Cj4gQ2M6IEFya2FkaXVzeiBI
+aWxlciA8YXJrYWRpdXN6LmhpbGVyQGludGVsLmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBCaGFudXBy
+YWthc2ggTW9kZW0gPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+Cj4gLS0tCj4gICB0ZXN0
+cy9rbXNfcGlwZV9jcmNfYmFzaWMuYyB8IDc3ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrCj4gICAxIGZpbGUgY2hhbmdlZCwgNzcgaW5zZXJ0aW9ucygrKQo+IAo+IGRpZmYg
+LS1naXQgYS90ZXN0cy9rbXNfcGlwZV9jcmNfYmFzaWMuYyBiL3Rlc3RzL2ttc19waXBlX2NyY19i
+YXNpYy5jCj4gaW5kZXggY2I5M2MxYWQuLmE1OWM2YmYxIDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2tt
+c19waXBlX2NyY19iYXNpYy5jCj4gKysrIGIvdGVzdHMva21zX3BpcGVfY3JjX2Jhc2ljLmMKPiBA
+QCAtMTU0LDYgKzE1NCw4MCBAQCBzdGF0aWMgdm9pZCB0ZXN0X3JlYWRfY3JjKGRhdGFfdCAqZGF0
+YSwgZW51bSBwaXBlIHBpcGUsIHVuc2lnbmVkIGZsYWdzKQo+ICAgCX0KPiAgIH0KPiAgIAo+ICsv
+Kgo+ICsgKiBDUkMtc2FuaXR5IHRlc3QsIHRvIG1ha2Ugc3VyZSB0aGVyZSB3b3VsZCBiZSBubyBD
+UkMgbWlzbWF0Y2hlcwo+ICsgKgo+ICsgKiAtIENyZWF0ZSB0d28gZnJhbWVidWZmZXJzIChGQjAg
+JiBGQjEpIHdpdGggc2FtZSBjb2xvciBpbmZvCj4gKyAqIC0gRmxpcCBGQjAgd2l0aCB0aGUgUHJp
+bWFyeSBwbGFuZSAmIGNvbGxlY3QgdGhlIENSQyBhcyByZWYgQ1JDLgo+ICsgKiAtIEZsaXAgRkIx
+LCBjb2xsZWN0IENSQyAmIGNvbXBhcmUgd2l0aCB0aGUgcmVmIENSQwpOaXRwaWNrLCBidXQgaXRz
+IGJldHRlciBpZiBib3RoIHNlbnRlbmNlcyBhcmUgY29uc2lzdGVudC4KSW4gdGhlIGZpcnN0LCBw
+cmltYXJ5IHBsYW5lIGlzIG1lbnRpb25lZCwgYnV0IGluIHRoZSBzZWNvbmQKbm90aGluZyBpcyBt
+ZW50aW9uZWQuIExpdHRsZSBhbWJpZ3VvdXMgZm9yIG1lLgo+ICsgKgo+ICsgKiAgTm8gQ1JDIG1p
+c21hdGNoIHNob3VsZCBoYXBwZW4KPiArICovCj4gK3N0YXRpYyB2b2lkIHRlc3RfY2hlY2tfY3Jj
+KGRhdGFfdCAqZGF0YSkKPiArewo+ICsJaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSA9ICZkYXRhLT5k
+aXNwbGF5Owo+ICsJaWd0X291dHB1dF90ICpvdXRwdXQ7Cj4gKwllbnVtIHBpcGUgcGlwZTsKPiAr
+CWRybU1vZGVNb2RlSW5mbyAqbW9kZTsKPiArCXN0cnVjdCBpZ3RfZmIgZmIwLCBmYjE7Cj4gKwlp
+Z3RfY3JjX3QgcmVmX2NyYywgY3JjOwo+ICsJaWd0X3BpcGVfY3JjX3QgKnBpcGVfY3JjOwo+ICsJ
+aWd0X3BsYW5lX3QgKnByaW1hcnk7Cj4gKwo+ICsJZm9yX2VhY2hfcGlwZV93aXRoX3ZhbGlkX291
+dHB1dChkaXNwbGF5LCBwaXBlLCBvdXRwdXQpIHsKCkNhbiB3ZSB1c2UgJ2lndF9nZXRfc2luZ2xl
+X291dHB1dF9mb3JfcGlwZScgZm9yIHRoZSBpbnRlbmRlZCBwaXBlIAppbnN0ZWFkIG9mIHVzaW5n
+IGxvb3Agd2hlbiB3ZSdyZSBvbmx5IHVzaW5nIGl0IGZvciBvbmUgaXRlcmF0aW9uIGFsd2F5cy4K
+PiArCQlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dCwgcGlwZSk7Cj4gKwkJbW9kZSA9IGlndF9v
+dXRwdXRfZ2V0X21vZGUob3V0cHV0KTsKPiArCj4gKwkJLyogQ3JlYXRlIHR3byBmcmFtZWJ1ZmZl
+cnMgd2l0aCB0aGUgc2FtZSBjb2xvciBpbmZvLiAqLwo+ICsJCWlndF9jcmVhdGVfY29sb3JfZmIo
+ZGF0YS0+ZHJtX2ZkLAo+ICsJCQkJbW9kZS0+aGRpc3BsYXksIG1vZGUtPnZkaXNwbGF5LAo+ICsJ
+CQkJRFJNX0ZPUk1BVF9YUkdCODg4OCwKPiArCQkJCUxPQ0FMX0RSTV9GT1JNQVRfTU9EX05PTkUs
+Cj4gKwkJCQkxLjAsIDEuMCwgMS4wLAo+ICsJCQkJJmZiMCk7Cj4gKwkJaWd0X2NyZWF0ZV9jb2xv
+cl9mYihkYXRhLT5kcm1fZmQsCj4gKwkJCQltb2RlLT5oZGlzcGxheSwgbW9kZS0+dmRpc3BsYXks
+Cj4gKwkJCQlEUk1fRk9STUFUX1hSR0I4ODg4LAo+ICsJCQkJTE9DQUxfRFJNX0ZPUk1BVF9NT0Rf
+Tk9ORSwKPiArCQkJCTEuMCwgMS4wLCAxLjAsCj4gKwkJCQkmZmIxKTsKPiArCj4gKwkJLyogRmxp
+cCBGQjAgd2l0aCB0aGUgUHJpbWFyeSBwbGFuZSAmIGNvbGxlY3QgdGhlIENSQyBhcyByZWYgQ1JD
+LiAqLwo+ICsJCXByaW1hcnkgPSBpZ3Rfb3V0cHV0X2dldF9wbGFuZV90eXBlKG91dHB1dCwgRFJN
+X1BMQU5FX1RZUEVfUFJJTUFSWSk7Cj4gKwkJaWd0X3BsYW5lX3NldF9mYihwcmltYXJ5LCAmZmIw
+KTsKPiArCQlpZ3RfZGlzcGxheV9jb21taXQoZGlzcGxheSk7Cj4gKwo+ICsJCWlmIChwaXBlX2Ny
+YykKPiArCQkJaWd0X3BpcGVfY3JjX2ZyZWUocGlwZV9jcmMpOwoKSXMgdGhpcyBjaGVjayByZXF1
+aXJlZD8KPiArCj4gKwkJcGlwZV9jcmMgPSBpZ3RfcGlwZV9jcmNfbmV3KGRhdGEtPmRybV9mZCwg
+cGlwZSwKPiArCQkJCQkgICAgSU5URUxfUElQRV9DUkNfU09VUkNFX0FVVE8pOwo+ICsJCWlndF9w
+aXBlX2NyY19jb2xsZWN0X2NyYyhwaXBlX2NyYywgJnJlZl9jcmMpOwo+ICsKPiArCQkvKiBGbGlw
+IEZCMSB3aXRoIHRoZSBQcmltYXJ5IHBsYW5lICYgY29tcGFyZSB0aGUgQ1JDIHdpdGggcmVmIENS
+Qy4gKi8KPiArCQlpZ3RfcGxhbmVfc2V0X2ZiKHByaW1hcnksICZmYjEpOwo+ICsJCWlndF9kaXNw
+bGF5X2NvbW1pdChkaXNwbGF5KTsKPiArCj4gKwkJaWd0X3BpcGVfY3JjX2NvbGxlY3RfY3JjKHBp
+cGVfY3JjLCAmY3JjKTsKPiArCQlpZ3RfYXNzZXJ0X2NyY19lcXVhbCgmY3JjLCAmcmVmX2NyYyk7
+Cj4gKwo+ICsJCS8qIENsZWFuLXVwICovCj4gKwkJaWd0X3BpcGVfY3JjX2ZyZWUocGlwZV9jcmMp
+Owo+ICsJCXBpcGVfY3JjID0gTlVMTDsKPiArCQlpZ3RfcGxhbmVfc2V0X2ZiKHByaW1hcnksIE5V
+TEwpOwo+ICsJCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBQSVBFX05PTkUpOwo+ICsJCWln
+dF9kaXNwbGF5X2NvbW1pdChkaXNwbGF5KTsKPiArCj4gKwkJaWd0X3JlbW92ZV9mYihkYXRhLT5k
+cm1fZmQsICZmYjApOwo+ICsJCWlndF9yZW1vdmVfZmIoZGF0YS0+ZHJtX2ZkLCAmZmIxKTsKPiAr
+Cj4gKwkJLyogb25jZSBpcyBlbm91Z2ggKi8KPiArCQlyZXR1cm47Cj4gKwl9Cj4gKwo+ICsJaWd0
+X3NraXAoIm5vIHZhbGlkIGNydGMvY29ubmVjdG9yIGNvbWJpbmF0aW9ucyBmb3VuZFxuIik7CgpC
+YXNlZCBvbiB0aGUgY29tbWVudHMgYWJvdmUsIHdlIGNhbiByZW1vdmUgdGhlIHJldHVybiBhbmQg
+aWd0X3NraXAoKTsKPiArfQo+ICsnCj4gICBkYXRhX3QgZGF0YSA9IHswLCB9Owo+ICAgCj4gICBp
+Z3RfbWFpbgo+IEBAIC0yMTEsNiArMjg1LDkgQEAgaWd0X21haW4KPiAgIAkJfQo+ICAgCX0KPiAg
+IAo+ICsJaWd0X3N1YnRlc3QoImNvbXBhcmUtY3JjLWJhc2ljIikKPiArICAgICAgICAgICAgICAg
+IHRlc3RfY2hlY2tfY3JjKCZkYXRhKTsKClNob3VsZCB3ZSBoYXZlIHRoaXMgYXQgYSBwZXIgcGlw
+ZSBsZXZlbCBsaWtlIHRoZSBvdGhlciBzdWJ0ZXN0cz8KTWF5IGJlIGR5bmFtaWMtc3VidGVzdHMs
+IGJ1dCBub3Qgc3VyZSBiZWNhdXNlIG90aGVyIHRlc3RzIGluIHRoaXMgSUdUIAphcmUgbm90IGR5
+bmFtaWMuCgpUaGFua3MsCkthcnRoaWsuQi5TCj4gKwo+ICAgCWlndF9maXh0dXJlIHsKPiAgIAkJ
+aWd0X2Rpc3BsYXlfZmluaSgmZGF0YS5kaXNwbGF5KTsKPiAgIAl9Cj4gCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
+dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
