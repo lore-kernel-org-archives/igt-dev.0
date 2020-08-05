@@ -1,18 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C8A389C82
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Aug 2020 10:01:55 +0000 (UTC)
-Date: Wed, 5 Aug 2020 12:01:50 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20200805100150.GA5259@zkempczy-mobl2>
-References: <20200804094128.31242-1-zbigniew.kempczynski@intel.com>
- <159654737064.12581.17099688044338498692@emeril.freedesktop.org>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E4C46E0D5
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Aug 2020 10:40:12 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Thu,  6 Aug 2020 00:05:05 +0530
+Message-Id: <20200805183506.22591-2-bhanuprakash.modem@intel.com>
+In-Reply-To: <20200511062647.9514-2-bhanuprakash.modem@intel.com>
+References: <20200511062647.9514-2-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <159654737064.12581.17099688044338498692@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgUmVtb3Zl?=
- =?utf-8?q?_libdrm_in_rendercopy_=28rev25=29?=
+Subject: [igt-dev] [PATCH v2 1/2] tests/kms_vrr: Use atomic API for page flip
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,278 +20,145 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: bhanuprakash.modem@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Aug 04, 2020 at 01:22:50PM +0000, Patchwork wrote:
->    Patch Details
-> 
->    Series:  Remove libdrm in rendercopy (rev25)                            
->    URL:     https://patchwork.freedesktop.org/series/79823/                
->    State:   failure                                                        
->    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4849/index.html 
-> 
->          CI Bug Log - changes from CI_DRM_8838_full -> IGTPW_4849_full
-> 
-> Summary
-> 
->    FAILURE
-> 
->    Serious unknown changes coming with IGTPW_4849_full absolutely need to be
->    verified manually.
-> 
->    If you think the reported changes have nothing to do with the changes
->    introduced in IGTPW_4849_full, please notify your bug team to allow them
->    to document this new failure mode, which will reduce false positives in
->    CI.
-> 
->    External URL:
->    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4849/index.html
-> 
-> Possible new issues
-> 
->    Here are the unknown changes that may have been introduced in
->    IGTPW_4849_full:
-> 
->   IGT changes
-> 
->     Possible regressions
-> 
->      * igt@perf@oa-exponents:
-> 
->           * shard-hsw: PASS -> INCOMPLETE
->      * igt@runner@aborted:
-> 
->           * shard-snb: NOTRUN -> FAIL
+We should avoid using drmModePageFlip as it'll only be used for
+legacy drivers, instead, use igt_display_commit_atomic() API to
+page flip for atomic display code path.
 
-Above regressions are not introduced by the series sent.
+v2:
+* Look for the page flip event not for the vblank event (Nicholas)
+* Fix to flip with different FBs (Bhanu)
 
---
-Zbigniew
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Cc: Manasi Navare <manasi.d.navare@intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_vrr.c | 45 +++++++++++++++++----------------------------
+ 1 file changed, 17 insertions(+), 28 deletions(-)
 
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 559ef203..b433a12e 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -47,6 +47,7 @@ typedef struct range {
+ typedef struct data {
+ 	igt_display_t display;
+ 	int drm_fd;
++	igt_plane_t *primary;
+ 	igt_fb_t fb0;
+ 	igt_fb_t fb1;
+ } data_t;
+@@ -126,11 +127,11 @@ static range_t get_vrr_range(data_t *data, igt_output_t *output)
+ }
+ 
+ /* Returns a suitable vrr test frequency. */
+-static uint32_t get_test_rate_ns(data_t *data, igt_output_t *output)
++static uint64_t get_test_rate_ns(data_t *data, igt_output_t *output)
+ {
+ 	drmModeModeInfo *mode = igt_output_get_mode(output);
+ 	range_t range;
+-	uint32_t vtest;
++	uint64_t vtest;
+ 
+ 	/*
+ 	 * The frequency with the fastest convergence speed should be
+@@ -165,7 +166,6 @@ static void set_vrr_on_pipe(data_t *data, enum pipe pipe, bool enabled)
+ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ {
+ 	drmModeModeInfo mode = *igt_output_get_mode(output);
+-	igt_plane_t *primary;
+ 	cairo_t *cr;
+ 
+ 	/* Reset output */
+@@ -189,8 +189,8 @@ static void prepare_test(data_t *data, igt_output_t *output, enum pipe pipe)
+ 	igt_put_cairo_ctx(cr);
+ 
+ 	/* Take care of any required modesetting before the test begins. */
+-	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+-	igt_plane_set_fb(primary, &data->fb0);
++	data->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++	igt_plane_set_fb(data->primary, &data->fb0);
+ 
+ 	igt_display_commit_atomic(&data->display,
+ 				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+@@ -210,32 +210,25 @@ wait_for_vblank(data_t *data, enum pipe pipe)
+ 	return get_vblank_event_ns(data);
+ }
+ 
+-/* Performs an asynchronous non-blocking page-flip on a pipe. */
+-static int
+-do_flip(data_t *data, enum pipe pipe_id, igt_fb_t *fb)
++/* Performs an atomic non-blocking page-flip on a pipe. */
++static void
++do_flip(data_t *data, igt_fb_t *fb)
+ {
+-	igt_pipe_t *pipe = &data->display.pipes[pipe_id];
+-	int ret;
++	int ret = 0;
+ 
+ 	igt_set_timeout(1, "Scheduling page flip\n");
+ 
+-	/*
+-	 * Only the legacy flip ioctl supports async flips.
+-	 * It's also non-blocking, but returns -EBUSY if flipping too fast.
+-	 * 2x monitor tests will need async flips in the atomic API.
+-	 */
++	igt_plane_set_fb(data->primary, fb);
++
+ 	do {
+-		ret = drmModePageFlip(data->drm_fd, pipe->crtc_id,
+-				      fb->fb_id,
+-				      DRM_MODE_PAGE_FLIP_EVENT |
+-				      DRM_MODE_PAGE_FLIP_ASYNC,
+-				      data);
++		igt_display_commit_atomic(&data->display,
++				  DRM_MODE_ATOMIC_NONBLOCK |
++				  DRM_MODE_PAGE_FLIP_EVENT,
++				  data);
+ 	} while (ret == -EBUSY);
+ 
+ 	igt_assert_eq(ret, 0);
+ 	igt_reset_timeout();
+-
+-	return 0;
+ }
+ 
+ /*
+@@ -246,11 +239,6 @@ do_flip(data_t *data, enum pipe pipe_id, igt_fb_t *fb)
+  * can arbitrarily restrict the bounds further than the absolute
+  * min and max range. But VRR is really about extending the flip
+  * to prevent stuttering or to match a source content rate.
+- *
+- * The only way to "present" at a fixed rate like userspace in a vendor
+- * neutral manner is to do it with async flips. This avoids the need
+- * to wait for next vblank and it should eventually converge at the
+- * desired rate.
+  */
+ static uint32_t
+ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+@@ -269,7 +257,7 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 		int64_t diff_ns;
+ 
+ 		front = !front;
+-		do_flip(data, pipe, front ? &data->fb1 : &data->fb0);
++		do_flip(data, front ? &data->fb1 : &data->fb0);
+ 
+ 		vblank_ns = get_vblank_event_ns(data);
+ 		diff_ns = rate_ns - (vblank_ns - last_vblank_ns);
+@@ -359,6 +347,7 @@ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+ 		     "Target VRR off threshold exceeded, result was %u%%\n",
+ 		     result);
+ 
++	igt_plane_set_fb(data->primary, NULL);
+ 	igt_remove_fb(data->drm_fd, &data->fb1);
+ 	igt_remove_fb(data->drm_fd, &data->fb0);
+ }
+-- 
+2.20.1
 
-
-> 
-> New tests
-> 
->    New tests have been introduced between CI_DRM_8838_full and
->    IGTPW_4849_full:
-> 
->   New IGT tests (16)
-> 
->      * igt@api_intel_bb@check-canonical:
-> 
->           * Statuses : 5 pass(s) 2 skip(s)
->           * Exec time: [0.0, 0.01] s
->      * igt@api_intel_bb@render:
-> 
->           * Statuses :
->           * Exec time: [None] s
->      * igt@api_intel_bb@render-ccs:
-> 
->           * Statuses : 5 pass(s) 2 skip(s)
->           * Exec time: [0.0, 0.46] s
->      * igt@api_intel_bb@render@render-none-1024:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.28, 0.49] s
->      * igt@api_intel_bb@render@render-none-512:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.07, 0.12] s
->      * igt@api_intel_bb@render@render-none-reloc-1024:
-> 
->           * Statuses : 6 pass(s)
->           * Exec time: [0.28, 0.42] s
->      * igt@api_intel_bb@render@render-none-reloc-512:
-> 
->           * Statuses : 6 pass(s)
->           * Exec time: [0.07, 0.12] s
->      * igt@api_intel_bb@render@render-x-1024:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.26, 0.45] s
->      * igt@api_intel_bb@render@render-x-512:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.07, 0.11] s
->      * igt@api_intel_bb@render@render-x-reloc-1024:
-> 
->           * Statuses : 6 pass(s)
->           * Exec time: [0.26, 0.37] s
->      * igt@api_intel_bb@render@render-x-reloc-512:
-> 
->           * Statuses : 6 pass(s)
->           * Exec time: [0.06, 0.10] s
->      * igt@api_intel_bb@render@render-y-1024:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.26, 0.45] s
->      * igt@api_intel_bb@render@render-y-512:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.07, 0.11] s
->      * igt@api_intel_bb@render@render-y-reloc-1024:
-> 
->           * Statuses : 6 pass(s)
->           * Exec time: [0.26, 0.37] s
->      * igt@api_intel_bb@render@render-y-reloc-512:
-> 
->           * Statuses : 6 pass(s)
->           * Exec time: [0.06, 0.10] s
->      * igt@api_intel_bb@reset-flags:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.00, 0.01] s
-> 
-> Known issues
-> 
->    Here are the changes found in IGTPW_4849_full that come from known issues:
-> 
->   IGT changes
-> 
->     Issues hit
-> 
->      * igt@gem_ctx_param@non-root-set:
-> 
->           * shard-snb: PASS -> TIMEOUT (i915#1958)
->      * igt@i915_module_load@reload-no-display:
-> 
->           * shard-snb: PASS -> INCOMPLETE (i915#82) +1 similar issue
->      * igt@i915_selftest@mock@contexts:
-> 
->           * shard-apl: PASS -> INCOMPLETE (i915#1635)
->      * igt@kms_cursor_crc@pipe-a-cursor-suspend:
-> 
->           * shard-kbl: PASS -> DMESG-WARN (i915#180) +4 similar issues
->      * igt@kms_draw_crc@draw-method-xrgb2101010-mmap-wc-ytiled:
-> 
->           * shard-apl: PASS -> DMESG-WARN (i915#1635 / i915#1982)
->      * igt@kms_flip@busy-flip@c-hdmi-a2:
-> 
->           * shard-glk: PASS -> FAIL (i915#275)
->      * igt@kms_frontbuffer_tracking@fbc-1p-offscren-pri-indfb-draw-mmap-cpu:
-> 
->           * shard-iclb: PASS -> DMESG-WARN (i915#1982)
->      * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-spr-indfb-move:
-> 
->           * shard-glk: PASS -> FAIL (i915#49) +1 similar issue
->      * igt@kms_frontbuffer_tracking@fbc-stridechange:
-> 
->           * shard-tglb: PASS -> DMESG-WARN (i915#1982) +1 similar issue
-> 
->           * shard-kbl: PASS -> DMESG-WARN (i915#1982)
-> 
->      * igt@kms_psr@psr2_cursor_mmap_cpu:
-> 
->           * shard-iclb: PASS -> SKIP (fdo#109441) +2 similar issues
->      * igt@kms_setmode@basic:
-> 
->           * shard-hsw: PASS -> FAIL (i915#31)
->      * igt@kms_vblank@pipe-c-wait-forked:
-> 
->           * shard-kbl: PASS -> DMESG-WARN (i915#62 / i915#92) +28 similar
->             issues
->      * igt@prime_busy@hang-wait@bcs0:
-> 
->           * shard-hsw: PASS -> FAIL (i915#2258) +4 similar issues
-> 
->     Possible fixes
-> 
->      * igt@gen9_exec_parse@allowed-all:
-> 
->           * shard-apl: DMESG-WARN (i915#1436 / i915#1635 / i915#716) -> PASS
-> 
->           * shard-kbl: DMESG-WARN (i915#1436 / i915#716) -> PASS
-> 
->      * igt@kms_addfb_basic@small-bo:
-> 
->           * shard-apl: TIMEOUT (i915#1635 / i915#1958) -> PASS +1 similar
->             issue
-> 
->           * shard-snb: TIMEOUT (i915#1958) -> PASS
-> 
->      * igt@kms_big_fb@y-tiled-64bpp-rotate-0:
-> 
->           * shard-iclb: DMESG-WARN (i915#1982) -> PASS
-> 
->           * shard-glk: DMESG-FAIL (i915#118 / i915#95) -> PASS
-> 
->      * igt@kms_cursor_crc@pipe-a-cursor-64x21-random:
-> 
->           * shard-hsw: TIMEOUT (i915#1958) -> PASS +1 similar issue
->      * igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset-interruptible@ab-vga1-hdmi-a1:
-> 
->           * shard-hsw: DMESG-WARN (i915#1982) -> PASS
->      * igt@kms_flip@flip-vs-suspend-interruptible@a-dp1:
-> 
->           * shard-kbl: DMESG-WARN (i915#180) -> PASS +5 similar issues
->      * igt@kms_flip@flip-vs-suspend@c-hdmi-a1:
-> 
->           * shard-hsw: INCOMPLETE (i915#2055) -> PASS
->      * igt@kms_flip@plain-flip-fb-recreate-interruptible@a-dp1:
-> 
->           * shard-kbl: DMESG-WARN (i915#1982) -> PASS
->      * igt@kms_frontbuffer_tracking@fbcpsr-1p-pri-indfb-multidraw:
-> 
->           * shard-iclb: FAIL (i915#49) -> PASS
->      * igt@kms_frontbuffer_tracking@fbcpsr-modesetfrombusy:
-> 
->           * shard-tglb: DMESG-WARN (i915#1982) -> PASS +3 similar issues
->      * igt@kms_psr@psr2_sprite_blt:
-> 
->           * shard-iclb: SKIP (fdo#109441) -> PASS +2 similar issues
->      * igt@kms_vblank@pipe-a-query-forked-busy-hang:
-> 
->           * shard-apl: DMESG-WARN (i915#1635 / i915#1982) -> PASS
-> 
->     Warnings
-> 
->      * igt@gem_exec_reloc@basic-concurrent16:
-> 
->           * shard-apl: TIMEOUT (i915#1635 / i915#1958) -> INCOMPLETE
->             (i915#1635 / i915#1958)
->      * igt@kms_big_fb@yf-tiled-16bpp-rotate-180:
-> 
->           * shard-snb: SKIP (fdo#109271) -> TIMEOUT (i915#1958)
->      * igt@kms_chamelium@hdmi-edid-change-during-suspend:
-> 
->           * shard-snb: SKIP (fdo#109271 / fdo#111827) -> TIMEOUT (i915#1958)
->      * igt@kms_cursor_crc@pipe-a-cursor-64x21-random:
-> 
->           * shard-snb: TIMEOUT (i915#1958) -> SKIP (fdo#109271)
->      * igt@kms_pipe_crc_basic@suspend-read-crc-pipe-b:
-> 
->           * shard-kbl: DMESG-WARN (i915#180) -> INCOMPLETE (CI#80 / i915#155)
->      * igt@kms_plane_alpha_blend@pipe-a-alpha-transparent-fb:
-> 
->           * shard-kbl: FAIL (i915#265) -> DMESG-FAIL (i915#62)
->      * igt@runner@aborted:
-> 
->           * shard-kbl: FAIL (fdo#109271 / i915#1436 / i915#716) -> FAIL
->             (i915#1611 / i915#1784)
-> 
->           * shard-apl: FAIL (fdo#109271 / i915#1635 / i915#716) -> FAIL
->             (i915#1635 / i915#2110)
-> 
-> Participating hosts (11 -> 8)
-> 
->    Missing (3): pig-skl-6260u pig-glk-j5005 pig-icl-1065g7
-> 
-> Build changes
-> 
->      * CI: CI-20190529 -> None
->      * IGT: IGT_5757 -> IGTPW_4849
->      * Piglit: piglit_4509 -> None
-> 
->    CI-20190529: 20190529
->    CI_DRM_8838: 46952d45f8045d8810e3e2c3d3675f61f1e0c827 @
->    git://anongit.freedesktop.org/gfx-ci/linux
->    IGTPW_4849: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4849/index.html
->    IGT_5757: d78c7fd293cb228fe03ccff730202b033e25ff18 @
->    git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
->    piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @
->    git://anongit.freedesktop.org/piglit
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
