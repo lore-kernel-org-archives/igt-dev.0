@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C509B6E899
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2020 08:43:52 +0000 (UTC)
-Date: Thu, 6 Aug 2020 11:43:50 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200806084350.GX20883@platvala-desk.ger.corp.intel.com>
-References: <20200723235458.43684-1-carlos.santa@intel.com>
- <20200724070822.GY20883@platvala-desk.ger.corp.intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5EAB089D6C
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2020 10:09:35 +0000 (UTC)
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Date: Thu,  6 Aug 2020 23:34:26 +0530
+Message-Id: <20200806180426.31343-3-bhanuprakash.modem@intel.com>
+In-Reply-To: <20200806124450.29360-1-bhanuprakash.modem@intel.com>
+References: <20200806124450.29360-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200724070822.GY20883@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH v2] tests: use an empty brace initializer
+Subject: [igt-dev] [PATCH v1 2/2] intel-ci: Add compare CRC sanity test to
+ BAT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,36 +21,44 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Carlos Santa <carlos.santa@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: bhanuprakash.modem@intel.com, igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Jul 24, 2020 at 10:08:22AM +0300, Petri Latvala wrote:
-> On Thu, Jul 23, 2020 at 04:54:58PM -0700, Carlos Santa wrote:
-> > In some sandboxes the toolchain complains about missing
-> > braces around initializer, however, using an empty
-> > initializer is enough to shut out the compiler.
-> > 
-> > ../tests/kms_plane_cursor.c: In function '__real_main_302':
-> > ../tests/kms_plane_cursor.c:305:2 error: missing braces around
-> > initializer [-Werror=missing-braces]
-> > 	data_t data = { 0 };
-> > 
-> > v2:
-> >    Use an empty initializer { } instead of { 0 } <Petri, Latvala>
-> 
-> Remove the comma, I'm "Petri Latvala" :)
-> 
-> 
-> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+We need to sanity-check for the CRC mismatches, otherwise
+the display validation tests are flawed.
 
+This patch will add CRC compare mismatch subtests to the
+fast-feedback list to make sure the CRC mechanism is clean
+from the platform.
 
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Jeevan B <jeevan.b@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Arkadiusz Hiler <arek@hiler.eu>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/intel-ci/fast-feedback.testlist | 3 +++
+ 1 file changed, 3 insertions(+)
 
-And after a momentary brain failure, this is now also merged.
-
-
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index b796b264..b9d769d8 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -110,6 +110,9 @@ igt@kms_force_connector_basic@force-edid
+ igt@kms_force_connector_basic@force-load-detect
+ igt@kms_force_connector_basic@prune-stale-modes
+ igt@kms_frontbuffer_tracking@basic
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b
++igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c
+ igt@kms_pipe_crc_basic@hang-read-crc-pipe-a
+ igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a
+ igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a-frame-sequence
 -- 
-Petri Latvala
+2.20.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
