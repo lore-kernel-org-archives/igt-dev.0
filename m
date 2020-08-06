@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu,  6 Aug 2020 15:45:29 +0100
-Message-Id: <20200806144529.140512-1-chris@chris-wilson.co.uk>
+Date: Thu,  6 Aug 2020 16:19:38 +0100
+Message-Id: <20200806151938.198105-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib: Use unsigned gen for forward
- compatible tests
+Subject: [igt-dev] [PATCH i-g-t] syncobj_timeline: Tell the compiler to read
+ from the thread
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -12,74 +12,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VW5rbm93biwgc28gZnV0dXJlLCBnZW4gYXJlIG1hcmtlZCBhcyAtMSB3aGljaCB3ZSB3YW50IHRv
-IHRyZWF0IGFzIC0xdQpzbyB0aGF0IGFsd2F5cyBwYXNzID49IGdlbiBjaGVja3MuCgpDbG9zZXM6
-IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvLS9pc3N1ZXMvMjI5OApT
-aWduZWQtb2ZmLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KQ2M6
-IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgot
-LS0KIGxpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jIHwgMTAgKysrKystLS0tLQogbGliL2ludGVsX2Jh
-dGNoYnVmZmVyLmggfCAxMCArKysrKystLS0tCiAyIGZpbGVzIGNoYW5nZWQsIDExIGluc2VydGlv
-bnMoKyksIDkgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2JhdGNoYnVmZmVy
-LmMgYi9saWIvaW50ZWxfYmF0Y2hidWZmZXIuYwppbmRleCA5OWMyZTE0ODkuLjM3NWYxMTk2MiAx
-MDA2NDQKLS0tIGEvbGliL2ludGVsX2JhdGNoYnVmZmVyLmMKKysrIGIvbGliL2ludGVsX2JhdGNo
-YnVmZmVyLmMKQEAgLTQxMiw3ICs0MTIsNyBAQCBpbnRlbF9ibHRfY29weShzdHJ1Y3QgaW50ZWxf
-YmF0Y2hidWZmZXIgKmJhdGNoLAogCSAgICAgICBkcm1faW50ZWxfYm8gKmRzdF9ibywgaW50IGRz
-dF94MSwgaW50IGRzdF95MSwgaW50IGRzdF9waXRjaCwKIAkgICAgICAgaW50IHdpZHRoLCBpbnQg
-aGVpZ2h0LCBpbnQgYnBwKQogewotCWNvbnN0IGludCBnZW4gPSBiYXRjaC0+Z2VuOworCWNvbnN0
-IHVuc2lnbmVkIGludCBnZW4gPSBiYXRjaC0+Z2VuOwogCXVpbnQzMl90IHNyY190aWxpbmcsIGRz
-dF90aWxpbmcsIHN3aXp6bGU7CiAJdWludDMyX3QgY21kX2JpdHMgPSAwOwogCXVpbnQzMl90IGJy
-MTNfYml0czsKQEAgLTU1MSw3ICs1NTEsNyBAQCB1bnNpZ25lZCBpZ3RfYnVmX2hlaWdodChjb25z
-dCBzdHJ1Y3QgaWd0X2J1ZiAqYnVmKQogICogUmV0dXJuczoKICAqIFRoZSB3aWR0aCBvZiB0aGUg
-Y2NzIGJ1ZmZlciBkYXRhLgogICovCi11bnNpZ25lZCBpbnQgaWd0X2J1Zl9pbnRlbF9jY3Nfd2lk
-dGgoaW50IGdlbiwgY29uc3Qgc3RydWN0IGlndF9idWYgKmJ1ZikKK3Vuc2lnbmVkIGludCBpZ3Rf
-YnVmX2ludGVsX2Njc193aWR0aCh1bnNpZ25lZCBpbnQgZ2VuLCBjb25zdCBzdHJ1Y3QgaWd0X2J1
-ZiAqYnVmKQogewogCS8qCiAJICogR0VOMTIrOiBUaGUgQ0NTIHVuaXQgc2l6ZSBpcyA2NCBieXRl
-cyBtYXBwaW5nIDQgbWFpbiBzdXJmYWNlCkBAIC01NzQsNyArNTc0LDcgQEAgdW5zaWduZWQgaW50
-IGlndF9idWZfaW50ZWxfY2NzX3dpZHRoKGludCBnZW4sIGNvbnN0IHN0cnVjdCBpZ3RfYnVmICpi
-dWYpCiAgKiBSZXR1cm5zOgogICogVGhlIGhlaWdodCBvZiB0aGUgY2NzIGJ1ZmZlciBkYXRhLgog
-ICovCi11bnNpZ25lZCBpbnQgaWd0X2J1Zl9pbnRlbF9jY3NfaGVpZ2h0KGludCBnZW4sIGNvbnN0
-IHN0cnVjdCBpZ3RfYnVmICpidWYpCit1bnNpZ25lZCBpbnQgaWd0X2J1Zl9pbnRlbF9jY3NfaGVp
-Z2h0KHVuc2lnbmVkIGludCBnZW4sIGNvbnN0IHN0cnVjdCBpZ3RfYnVmICpidWYpCiB7CiAJLyoK
-IAkgKiBHRU4xMis6IFRoZSBDQ1MgdW5pdCBzaXplIGlzIDY0IGJ5dGVzIG1hcHBpbmcgNCBtYWlu
-IHN1cmZhY2UKQEAgLTcwMSw3ICs3MDEsNyBAQCBmaWxsX29iamVjdChzdHJ1Y3QgZHJtX2k5MTVf
-Z2VtX2V4ZWNfb2JqZWN0MiAqb2JqLCB1aW50MzJfdCBnZW1faGFuZGxlLAogCiBzdGF0aWMgdm9p
-ZCBleGVjX2JsaXQoaW50IGZkLAogCQkgICAgICBzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2Jq
-ZWN0MiAqb2JqcywgdWludDMyX3QgY291bnQsCi0JCSAgICAgIGludCBnZW4pCisJCSAgICAgIHVu
-c2lnbmVkIGludCBnZW4pCiB7CiAJc3RydWN0IGRybV9pOTE1X2dlbV9leGVjYnVmZmVyMiBleGVj
-ID0gewogCQkuYnVmZmVyc19wdHIgPSB0b191c2VyX3BvaW50ZXIob2JqcyksCkBAIC0yMDI0LDcg
-KzIwMjQsNyBAQCB2b2lkIGludGVsX2JiX2VtaXRfYmx0X2NvcHkoc3RydWN0IGludGVsX2JiICpp
-YmIsCiAJCQkgICAgaW50IGRzdF94MSwgaW50IGRzdF95MSwgaW50IGRzdF9waXRjaCwKIAkJCSAg
-ICBpbnQgd2lkdGgsIGludCBoZWlnaHQsIGludCBicHApCiB7Ci0JY29uc3QgaW50IGdlbiA9IGli
-Yi0+Z2VuOworCWNvbnN0IHVuc2lnbmVkIGludCBnZW4gPSBpYmItPmdlbjsKIAl1aW50MzJfdCBj
-bWRfYml0cyA9IDA7CiAJdWludDMyX3QgYnIxM19iaXRzOwogCXVpbnQzMl90IG1hc2s7CmRpZmYg
-LS1naXQgYS9saWIvaW50ZWxfYmF0Y2hidWZmZXIuaCBiL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5o
-CmluZGV4IGE2OWZmZmQ4ZC4uY2ZlNzQzZWRjIDEwMDY0NAotLS0gYS9saWIvaW50ZWxfYmF0Y2hi
-dWZmZXIuaAorKysgYi9saWIvaW50ZWxfYmF0Y2hidWZmZXIuaApAQCAtMTUsNyArMTUsNyBAQAog
-c3RydWN0IGludGVsX2JhdGNoYnVmZmVyIHsKIAlkcm1faW50ZWxfYnVmbWdyICpidWZtZ3I7CiAJ
-dWludDMyX3QgZGV2aWQ7Ci0JaW50IGdlbjsKKwl1bnNpZ25lZCBpbnQgZ2VuOwogCiAJZHJtX2lu
-dGVsX2NvbnRleHQgKmN0eDsKIAlkcm1faW50ZWxfYm8gKmJvOwpAQCAtMjYzLDggKzI2MywxMCBA
-QCBzdGF0aWMgaW5saW5lIGJvb2wgaWd0X2J1Zl9jb21wcmVzc2VkKGNvbnN0IHN0cnVjdCBpZ3Rf
-YnVmICpidWYpCiAKIHVuc2lnbmVkIGlndF9idWZfd2lkdGgoY29uc3Qgc3RydWN0IGlndF9idWYg
-KmJ1Zik7CiB1bnNpZ25lZCBpZ3RfYnVmX2hlaWdodChjb25zdCBzdHJ1Y3QgaWd0X2J1ZiAqYnVm
-KTsKLXVuc2lnbmVkIGludCBpZ3RfYnVmX2ludGVsX2Njc193aWR0aChpbnQgZ2VuLCBjb25zdCBz
-dHJ1Y3QgaWd0X2J1ZiAqYnVmKTsKLXVuc2lnbmVkIGludCBpZ3RfYnVmX2ludGVsX2Njc19oZWln
-aHQoaW50IGdlbiwgY29uc3Qgc3RydWN0IGlndF9idWYgKmJ1Zik7Cit1bnNpZ25lZCBpbnQgaWd0
-X2J1Zl9pbnRlbF9jY3Nfd2lkdGgodW5zaWduZWQgaW50IGdlbiwKKwkJCQkgICAgIGNvbnN0IHN0
-cnVjdCBpZ3RfYnVmICpidWYpOwordW5zaWduZWQgaW50IGlndF9idWZfaW50ZWxfY2NzX2hlaWdo
-dCh1bnNpZ25lZCBpbnQgZ2VuLAorCQkJCSAgICAgIGNvbnN0IHN0cnVjdCBpZ3RfYnVmICpidWYp
-OwogCiB2b2lkIGlndF9ibGl0dGVyX3NyY19jb3B5KGludCBmZCwKIAkJCSAgLyogc3JjICovCkBA
-IC00MzEsNyArNDMzLDcgQEAgaWd0X21lZGlhX3NwaW5mdW5jX3QgaWd0X2dldF9tZWRpYV9zcGlu
-ZnVuYyhpbnQgZGV2aWQpOwogICovCiBzdHJ1Y3QgaW50ZWxfYmIgewogCWludCBpOTE1OwotCWlu
-dCBnZW47CisJdW5zaWduZWQgaW50IGdlbjsKIAlib29sIGRlYnVnOwogCWJvb2wgZW5mb3JjZV9y
-ZWxvY3M7CiAJdWludDMyX3QgZGV2aWQ7Ci0tIAoyLjI4LjAKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
-YW4vbGlzdGluZm8vaWd0LWRldgo=
+32bits-limit waits for the thread to indicate it has started by busy
+spinning on a common variable. The compiler is clever and knows that the
+variable cannot change within the thread, and turns it into an infinite
+loop!
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ tests/syncobj_timeline.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
+index be7dd2d1c..20375cdd3 100644
+--- a/tests/syncobj_timeline.c
++++ b/tests/syncobj_timeline.c
+@@ -1245,9 +1245,11 @@ test_32bits_limit(int fd)
+ 	uint64_t value, last_value;
+ 	int i;
+ 
+-	igt_assert_eq(pthread_create(&thread, NULL, checker_thread_func, &thread_data), 0);
++	igt_assert_eq(pthread_create(&thread, NULL,
++				     checker_thread_func, &thread_data), 0);
+ 
+-	while (!thread_data.started);
++	while (!READ_ONCE(thread_data.started))
++		;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(points); i++) {
+ 		int fence = sw_sync_timeline_create_fence(timeline, i + 1);
+-- 
+2.28.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
