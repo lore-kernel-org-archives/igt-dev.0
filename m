@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 20C7B6E8B1
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2020 10:12:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E74E6E8B0
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2020 10:12:56 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Thu,  6 Aug 2020 23:37:49 +0530
-Message-Id: <20200806180749.31464-3-bhanuprakash.modem@intel.com>
+Date: Thu,  6 Aug 2020 23:37:48 +0530
+Message-Id: <20200806180749.31464-2-bhanuprakash.modem@intel.com>
 In-Reply-To: <20200806180749.31464-1-bhanuprakash.modem@intel.com>
 References: <20200806180749.31464-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v1 2/2] intel-ci: Add compare CRC sanity test to
- BAT
+Subject: [igt-dev] [PATCH v3 1/2] tests/kms_pipe_crc_basic: Sanity check for
+ CRC mismatches
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,49 +17,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: bhanuprakash.modem@intel.com, igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We need to sanity-check for the CRC mismatches, otherwise
-the display validation tests are flawed.
-
-This patch will add CRC compare mismatch subtests to the
-fast-feedback list to make sure the CRC mechanism is clean
-from the platform.
-
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Jeevan B <jeevan.b@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Cc: Arkadiusz Hiler <arek@hiler.eu>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index b796b264..b9d769d8 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -110,6 +110,9 @@ igt@kms_force_connector_basic@force-edid
- igt@kms_force_connector_basic@force-load-detect
- igt@kms_force_connector_basic@prune-stale-modes
- igt@kms_frontbuffer_tracking@basic
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c
- igt@kms_pipe_crc_basic@hang-read-crc-pipe-a
- igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a
- igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a-frame-sequence
--- 
-2.20.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+V2XigJl2ZSBzZWVuIG11bHRpcGxlIENSQyByZWxhdGVkIGlzc3VlcyBvbiBvbGRlciBwbGF0Zm9y
+bXMgYW5kCnByZS1zaWxpY29uIGVudmlyb25tZW50LCBtb3N0IG9mIHRoZSB0aW1lIHdlIGVuZCB1
+cCB3aXRoIGRlYnVnZ2luZy4KClRoaXMgcGF0Y2ggd29ya3MgYXMgYSBjcmMtc2FuaXR5IHRlc3Qs
+IHdoaWNoIGNhbiB2ZXJpZnkgdGhhdCB0aGUKQ1JDIG1lY2hhbmlzbSBpcyBjbGVhbiBmcm9tIHRo
+ZSBwbGF0Zm9ybSBzaWRlIGJlZm9yZSBkZWJ1Z2dpbmcgdGhlCmFjdHVhbCBDUkMgbWlzbWF0Y2hl
+cyBvciBvdGhlciBDUkMgcmVsYXRlZCBpc3N1ZXMuCgpUaGlzIHBhdGNoIHdpbGwgY3JlYXRlIHR3
+byBmcmFtZWJ1ZmZlcnMgKGZiMCAmIGZiMSkgd2l0aCB0aGUgc2FtZQpjb2xvciBpbmZvLCBmbGlw
+IGZiMCB3aXRoIHByaW1hcnkgcGxhbmUgJiBjb2xsZWN0IENSQyBhcyByZWZlcmVuY2UuClRoZW4g
+ZmxpcCBmYjEgd2l0aCBwcmltYXJ5IHBsYW5lLCBjb2xsZWN0IHRoZSBDUkMgYW5kIGNvbXBhcmUg
+d2l0aAp0aGUgcmVmZXJlbmNlIENSQy4gVGhlcmUgc2hvdWxkIGJlIG5vIENSQyBtaXNtYXRjaC4K
+CnYyOgoqIFJ1biBzdWJ0ZXN0IHRvIGFsbCBwaXBlcyAoS2FydGhpayAmIFN3YXRpKQoqIEZpeCBj
+b21taXQgbWVzc2FnZSAmIGZldyBjb21tZW50cyAoS2FydGhpaykKKiBVc2UgbWVhbmluZ2Z1bCBu
+YW1lIGZvciBmdW5jdGlvbnMgKFN3YXRpKQoqIFJlbW92ZSB1bndhbnRlZCBjaGVja3MgKEthcnRo
+aWspCnYzOgoqIFJlbmFtZSBzdWJ0ZXN0IHRvIGNvbXBhcmUtY3JjLXNhbml0eWNoZWNrLXBpcGUt
+IChQZXRyaSkKCkNjOiBTd2F0aSBTaGFybWEgPHN3YXRpMi5zaGFybWFAaW50ZWwuY29tPgpDYzog
+S2FydGhpayBCIFMgPGthcnRoaWsuYi5zQGludGVsLmNvbT4KQ2M6IEplZXZhbiBCIDxqZWV2YW4u
+YkBpbnRlbC5jb20+CkNjOiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4K
+Q2M6IEFya2FkaXVzeiBIaWxlciA8YXJla0BoaWxlci5ldT4KU2lnbmVkLW9mZi1ieTogQmhhbnVw
+cmFrYXNoIE1vZGVtIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPgotLS0KIHRlc3RzL2tt
+c19waXBlX2NyY19iYXNpYy5jIHwgNzMgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysKIDEgZmlsZSBjaGFuZ2VkLCA3MyBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvdGVz
+dHMva21zX3BpcGVfY3JjX2Jhc2ljLmMgYi90ZXN0cy9rbXNfcGlwZV9jcmNfYmFzaWMuYwppbmRl
+eCBjYjkzYzFhZC4uYzNjNGNkZDggMTAwNjQ0Ci0tLSBhL3Rlc3RzL2ttc19waXBlX2NyY19iYXNp
+Yy5jCisrKyBiL3Rlc3RzL2ttc19waXBlX2NyY19iYXNpYy5jCkBAIC0xNTQsNiArMTU0LDc1IEBA
+IHN0YXRpYyB2b2lkIHRlc3RfcmVhZF9jcmMoZGF0YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSwg
+dW5zaWduZWQgZmxhZ3MpCiAJfQogfQogCisvKgorICogQ1JDLXNhbml0eSB0ZXN0LCB0byBtYWtl
+IHN1cmUgdGhlcmUgd291bGQgYmUgbm8gQ1JDIG1pc21hdGNoZXMKKyAqCisgKiAtIENyZWF0ZSB0
+d28gZnJhbWVidWZmZXJzIChGQjAgJiBGQjEpIHdpdGggc2FtZSBjb2xvciBpbmZvCisgKiAtIEZs
+aXAgRkIwIHdpdGggdGhlIFByaW1hcnkgcGxhbmUgJiBjb2xsZWN0IHRoZSBDUkMgYXMgcmVmIENS
+Qy4KKyAqIC0gRmxpcCBGQjEgd2l0aCB0aGUgUHJpbWFyeSBwbGFuZSwgY29sbGVjdCB0aGUgQ1JD
+ICYgY29tcGFyZSB3aXRoCisgKiAgIHRoZSByZWYgQ1JDLgorICoKKyAqICAgTm8gQ1JDIG1pc21h
+dGNoIHNob3VsZCBoYXBwZW4KKyAqLworc3RhdGljIHZvaWQgdGVzdF9jb21wYXJlX2NyYyhkYXRh
+X3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlKQoreworCWlndF9kaXNwbGF5X3QgKmRpc3BsYXkgPSAm
+ZGF0YS0+ZGlzcGxheTsKKwlpZ3RfcGxhbmVfdCAqcHJpbWFyeTsKKwlkcm1Nb2RlTW9kZUluZm8g
+Km1vZGU7CisJaWd0X2NyY190IHJlZl9jcmMsIGNyYzsKKwlpZ3RfcGlwZV9jcmNfdCAqcGlwZV9j
+cmMgPSBOVUxMOworCXN0cnVjdCBpZ3RfZmIgZmIwLCBmYjE7CisJaWd0X291dHB1dF90ICpvdXRw
+dXQgPSBpZ3RfZ2V0X3NpbmdsZV9vdXRwdXRfZm9yX3BpcGUoZGlzcGxheSwgcGlwZSk7CisKKwlp
+Z3RfcmVxdWlyZV9mKG91dHB1dCwgIk5vIGNvbm5lY3RvciBmb3VuZCBmb3IgcGlwZSAlc1xuIiwK
+KwkJCWttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpKTsKKworCWlndF9yZXF1aXJlX3BpcGUoZGlzcGxh
+eSwgcGlwZSk7CisJaWd0X2Rpc3BsYXlfcmVzZXQoZGlzcGxheSk7CisJaWd0X291dHB1dF9zZXRf
+cGlwZShvdXRwdXQsIHBpcGUpOworCisJbW9kZSA9IGlndF9vdXRwdXRfZ2V0X21vZGUob3V0cHV0
+KTsKKworCS8qIENyZWF0ZSB0d28gZnJhbWVidWZmZXJzIHdpdGggdGhlIHNhbWUgY29sb3IgaW5m
+by4gKi8KKwlpZ3RfY3JlYXRlX2NvbG9yX2ZiKGRhdGEtPmRybV9mZCwKKwkJCW1vZGUtPmhkaXNw
+bGF5LCBtb2RlLT52ZGlzcGxheSwKKwkJCURSTV9GT1JNQVRfWFJHQjg4ODgsCisJCQlMT0NBTF9E
+Uk1fRk9STUFUX01PRF9OT05FLAorCQkJMS4wLCAxLjAsIDEuMCwKKwkJCSZmYjApOworCWlndF9j
+cmVhdGVfY29sb3JfZmIoZGF0YS0+ZHJtX2ZkLAorCQkJbW9kZS0+aGRpc3BsYXksIG1vZGUtPnZk
+aXNwbGF5LAorCQkJRFJNX0ZPUk1BVF9YUkdCODg4OCwKKwkJCUxPQ0FMX0RSTV9GT1JNQVRfTU9E
+X05PTkUsCisJCQkxLjAsIDEuMCwgMS4wLAorCQkJJmZiMSk7CisKKwkvKiBGbGlwIEZCMCB3aXRo
+IHRoZSBQcmltYXJ5IHBsYW5lICYgY29sbGVjdCB0aGUgQ1JDIGFzIHJlZiBDUkMuICovCisJcHJp
+bWFyeSA9IGlndF9vdXRwdXRfZ2V0X3BsYW5lX3R5cGUob3V0cHV0LCBEUk1fUExBTkVfVFlQRV9Q
+UklNQVJZKTsKKwlpZ3RfcGxhbmVfc2V0X2ZiKHByaW1hcnksICZmYjApOworCWlndF9kaXNwbGF5
+X2NvbW1pdChkaXNwbGF5KTsKKworCXBpcGVfY3JjID0gaWd0X3BpcGVfY3JjX25ldyhkYXRhLT5k
+cm1fZmQsIHBpcGUsCisJCQkJICAgIElOVEVMX1BJUEVfQ1JDX1NPVVJDRV9BVVRPKTsKKwlpZ3Rf
+cGlwZV9jcmNfY29sbGVjdF9jcmMocGlwZV9jcmMsICZyZWZfY3JjKTsKKworCS8qIEZsaXAgRkIx
+IHdpdGggdGhlIFByaW1hcnkgcGxhbmUgJiBjb21wYXJlIHRoZSBDUkMgd2l0aCByZWYgQ1JDLiAq
+LworCWlndF9wbGFuZV9zZXRfZmIocHJpbWFyeSwgJmZiMSk7CisJaWd0X2Rpc3BsYXlfY29tbWl0
+KGRpc3BsYXkpOworCisJaWd0X3BpcGVfY3JjX2NvbGxlY3RfY3JjKHBpcGVfY3JjLCAmY3JjKTsK
+KwlpZ3RfYXNzZXJ0X2NyY19lcXVhbCgmY3JjLCAmcmVmX2NyYyk7CisKKwkvKiBDbGVhbi11cCAq
+LworCWlndF9waXBlX2NyY19mcmVlKHBpcGVfY3JjKTsKKwlpZ3RfcGxhbmVfc2V0X2ZiKHByaW1h
+cnksIE5VTEwpOworCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBQSVBFX05PTkUpOworCWln
+dF9kaXNwbGF5X2NvbW1pdChkaXNwbGF5KTsKKworCWlndF9yZW1vdmVfZmIoZGF0YS0+ZHJtX2Zk
+LCAmZmIwKTsKKwlpZ3RfcmVtb3ZlX2ZiKGRhdGEtPmRybV9mZCwgJmZiMSk7Cit9CisKIGRhdGFf
+dCBkYXRhID0gezAsIH07CiAKIGlndF9tYWluCkBAIC0yMDksNiArMjc4LDEwIEBAIGlndF9tYWlu
+CiAKIAkJCWlndF9kaXNhbGxvd19oYW5nKGRhdGEuZHJtX2ZkLCBoYW5nKTsKIAkJfQorCisJCWln
+dF9kZXNjcmliZSgiQmFzaWMgc2FuaXR5IGNoZWNrIGZvciBDUkMgbWlzbWF0Y2hlcyIpOworCQlp
+Z3Rfc3VidGVzdF9mKCJjb21wYXJlLWNyYy1zYW5pdHljaGVjay1waXBlLSVzIiwga21zdGVzdF9w
+aXBlX25hbWUocGlwZSkpCisJCQl0ZXN0X2NvbXBhcmVfY3JjKCZkYXRhLCBwaXBlKTsKIAl9CiAK
+IAlpZ3RfZml4dHVyZSB7Ci0tIAoyLjIwLjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
+Zm8vaWd0LWRldgo=
