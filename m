@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 799076E8BA
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2020 13:29:01 +0000 (UTC)
-Date: Thu, 6 Aug 2020 16:28:58 +0300
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8AC4689B69
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2020 13:33:42 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200806132858.GB7444@platvala-desk.ger.corp.intel.com>
-References: <20200806183400.31856-1-bhanuprakash.modem@intel.com>
- <20200806183400.31856-2-bhanuprakash.modem@intel.com>
- <75dc0eec-7432-0001-d26d-f7916ed8e4df@intel.com>
+Date: Thu,  6 Aug 2020 16:33:37 +0300
+Message-Id: <20200806133337.8482-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <75dc0eec-7432-0001-d26d-f7916ed8e4df@intel.com>
-Subject: Re: [igt-dev] [PATCH v3 1/2] tests/kms_pipe_crc_basic: Sanity check
- for CRC mismatches
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_pipe_crc_basic: Remove redundant
+ igt_require_pipe
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,64 +15,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVGh1LCBBdWcgMDYsIDIwMjAgYXQgMDQ6MzM6MDFQTSArMDUzMCwgS2FydGhpayBCIFMgd3Jv
-dGU6Cj4gCj4gCj4gT24gOC83LzIwMjAgMTI6MDMgQU0sIEJoYW51cHJha2FzaCBNb2RlbSB3cm90
-ZToKPiA+IFdl4oCZdmUgc2VlbiBtdWx0aXBsZSBDUkMgcmVsYXRlZCBpc3N1ZXMgb24gb2xkZXIg
-cGxhdGZvcm1zIGFuZAo+ID4gcHJlLXNpbGljb24gZW52aXJvbm1lbnQsIG1vc3Qgb2YgdGhlIHRp
-bWUgd2UgZW5kIHVwIHdpdGggZGVidWdnaW5nLgo+ID4gCj4gPiBUaGlzIHBhdGNoIHdvcmtzIGFz
-IGEgY3JjLXNhbml0eSB0ZXN0LCB3aGljaCBjYW4gdmVyaWZ5IHRoYXQgdGhlCj4gPiBDUkMgbWVj
-aGFuaXNtIGlzIGNsZWFuIGZyb20gdGhlIHBsYXRmb3JtIHNpZGUgYmVmb3JlIGRlYnVnZ2luZyB0
-aGUKPiA+IGFjdHVhbCBDUkMgbWlzbWF0Y2hlcyBvciBvdGhlciBDUkMgcmVsYXRlZCBpc3N1ZXMu
-Cj4gPiAKPiA+IFRoaXMgcGF0Y2ggd2lsbCBjcmVhdGUgdHdvIGZyYW1lYnVmZmVycyAoZmIwICYg
-ZmIxKSB3aXRoIHRoZSBzYW1lCj4gPiBjb2xvciBpbmZvLCBmbGlwIGZiMCB3aXRoIHByaW1hcnkg
-cGxhbmUgJiBjb2xsZWN0IENSQyBhcyByZWZlcmVuY2UuCj4gPiBUaGVuIGZsaXAgZmIxIHdpdGgg
-cHJpbWFyeSBwbGFuZSwgY29sbGVjdCB0aGUgQ1JDIGFuZCBjb21wYXJlIHdpdGgKPiA+IHRoZSBy
-ZWZlcmVuY2UgQ1JDLiBUaGVyZSBzaG91bGQgYmUgbm8gQ1JDIG1pc21hdGNoLgo+ID4gCj4gPiB2
-MjoKPiA+ICogUnVuIHN1YnRlc3QgdG8gYWxsIHBpcGVzIChLYXJ0aGlrICYgU3dhdGkpCj4gPiAq
-IEZpeCBjb21taXQgbWVzc2FnZSAmIGZldyBjb21tZW50cyAoS2FydGhpaykKPiA+ICogVXNlIG1l
-YW5pbmdmdWwgbmFtZSBmb3IgZnVuY3Rpb25zIChTd2F0aSkKPiA+ICogUmVtb3ZlIHVud2FudGVk
-IGNoZWNrcyAoS2FydGhpaykKPiA+IHYzOgo+ID4gKiBSZW5hbWUgc3VidGVzdCB0byBjb21wYXJl
-LWNyYy1zYW5pdHljaGVjay1waXBlLSAoUGV0cmkpCj4gPiAKPiA+IENjOiBTd2F0aSBTaGFybWEg
-PHN3YXRpMi5zaGFybWFAaW50ZWwuY29tPgo+ID4gQ2M6IEthcnRoaWsgQiBTIDxrYXJ0aGlrLmIu
-c0BpbnRlbC5jb20+Cj4gPiBDYzogSmVldmFuIEIgPGplZXZhbi5iQGludGVsLmNvbT4KPiA+IENj
-OiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KPiA+IENjOiBBcmthZGl1
-c3ogSGlsZXIgPGFyZWtAaGlsZXIuZXU+Cj4gPiBTaWduZWQtb2ZmLWJ5OiBCaGFudXByYWthc2gg
-TW9kZW0gPGJoYW51cHJha2FzaC5tb2RlbUBpbnRlbC5jb20+Cj4gPiAtLS0KPiA+ICAgdGVzdHMv
-a21zX3BpcGVfY3JjX2Jhc2ljLmMgfCA3MyArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKwo+ID4gICAxIGZpbGUgY2hhbmdlZCwgNzMgaW5zZXJ0aW9ucygrKQo+ID4gCj4gPiBk
-aWZmIC0tZ2l0IGEvdGVzdHMva21zX3BpcGVfY3JjX2Jhc2ljLmMgYi90ZXN0cy9rbXNfcGlwZV9j
-cmNfYmFzaWMuYwo+ID4gaW5kZXggY2I5M2MxYWQuLmMzYzRjZGQ4IDEwMDY0NAo+ID4gLS0tIGEv
-dGVzdHMva21zX3BpcGVfY3JjX2Jhc2ljLmMKPiA+ICsrKyBiL3Rlc3RzL2ttc19waXBlX2NyY19i
-YXNpYy5jCj4gPiBAQCAtMTU0LDYgKzE1NCw3NSBAQCBzdGF0aWMgdm9pZCB0ZXN0X3JlYWRfY3Jj
-KGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUsIHVuc2lnbmVkIGZsYWdzKQo+ID4gICAJfQo+
-ID4gICB9Cj4gPiArLyoKPiA+ICsgKiBDUkMtc2FuaXR5IHRlc3QsIHRvIG1ha2Ugc3VyZSB0aGVy
-ZSB3b3VsZCBiZSBubyBDUkMgbWlzbWF0Y2hlcwo+ID4gKyAqCj4gPiArICogLSBDcmVhdGUgdHdv
-IGZyYW1lYnVmZmVycyAoRkIwICYgRkIxKSB3aXRoIHNhbWUgY29sb3IgaW5mbwo+ID4gKyAqIC0g
-RmxpcCBGQjAgd2l0aCB0aGUgUHJpbWFyeSBwbGFuZSAmIGNvbGxlY3QgdGhlIENSQyBhcyByZWYg
-Q1JDLgo+ID4gKyAqIC0gRmxpcCBGQjEgd2l0aCB0aGUgUHJpbWFyeSBwbGFuZSwgY29sbGVjdCB0
-aGUgQ1JDICYgY29tcGFyZSB3aXRoCj4gPiArICogICB0aGUgcmVmIENSQy4KPiA+ICsgKgo+ID4g
-KyAqICAgTm8gQ1JDIG1pc21hdGNoIHNob3VsZCBoYXBwZW4KPiA+ICsgKi8KPiA+ICtzdGF0aWMg
-dm9pZCB0ZXN0X2NvbXBhcmVfY3JjKGRhdGFfdCAqZGF0YSwgZW51bSBwaXBlIHBpcGUpCj4gPiAr
-ewo+ID4gKwlpZ3RfZGlzcGxheV90ICpkaXNwbGF5ID0gJmRhdGEtPmRpc3BsYXk7Cj4gPiArCWln
-dF9wbGFuZV90ICpwcmltYXJ5Owo+ID4gKwlkcm1Nb2RlTW9kZUluZm8gKm1vZGU7Cj4gPiArCWln
-dF9jcmNfdCByZWZfY3JjLCBjcmM7Cj4gPiArCWlndF9waXBlX2NyY190ICpwaXBlX2NyYyA9IE5V
-TEw7Cj4gPiArCXN0cnVjdCBpZ3RfZmIgZmIwLCBmYjE7Cj4gPiArCWlndF9vdXRwdXRfdCAqb3V0
-cHV0ID0gaWd0X2dldF9zaW5nbGVfb3V0cHV0X2Zvcl9waXBlKGRpc3BsYXksIHBpcGUpOwo+ID4g
-Kwo+ID4gKwlpZ3RfcmVxdWlyZV9mKG91dHB1dCwgIk5vIGNvbm5lY3RvciBmb3VuZCBmb3IgcGlw
-ZSAlc1xuIiwKPiA+ICsJCQlrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSk7Cj4gPiArCj4gPiArCWln
-dF9yZXF1aXJlX3BpcGUoZGlzcGxheSwgcGlwZSk7Cj4gCj4gVGhpcyBjaGVjayBpcyByZWR1bmRh
-bnQgYXMgeW91IGFyZSBhbHJlYWR5IGNhbGxpbmcKPiAnaWd0X2dldF9zaW5nbGVfb3V0cHV0X2Zv
-cl9waXBlJyBiZWZvcmUgdGhpcy4KPiAKPiBXaXRoIHRoaXMgcmVtb3ZlZCwgTEdUTS4KPiBSZXZp
-ZXdlZC1ieTogS2FydGhpayBCIFMgPGthcnRoaWsuYi5zQGludGVsLmNvbT4KCkkgd2FzIHBsYW5u
-aW5nIHRvIHJlbW92ZSB0aGlzIHdoaWxlIG1lcmdpbmcgYnV0IGZvcmdvdCAgPSgKCi0tIApQZXRy
-aSBMYXR2YWxhCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBz
-Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+The plan was to remove the call while merging a6b258448837
+("tests/kms_pipe_crc_basic: Sanity check for CRC mismatches")
+according to the review feedback, but that was forgotten. Remove it
+now.
+
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_pipe_crc_basic.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index c3c4cdd8..bb66bc6c 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -177,7 +177,6 @@ static void test_compare_crc(data_t *data, enum pipe pipe)
+ 	igt_require_f(output, "No connector found for pipe %s\n",
+ 			kmstest_pipe_name(pipe));
+ 
+-	igt_require_pipe(display, pipe);
+ 	igt_display_reset(display);
+ 	igt_output_set_pipe(output, pipe);
+ 
+-- 
+2.20.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
