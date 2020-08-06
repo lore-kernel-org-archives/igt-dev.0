@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00DDD6E144
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2020 07:02:31 +0000 (UTC)
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Thu, 6 Aug 2020 07:02:04 +0000
-Message-ID: <SN6PR11MB3327F0CE566AF8A840F45FE78D480@SN6PR11MB3327.namprd11.prod.outlook.com>
-References: <20200511062647.9514-2-bhanuprakash.modem@intel.com>
- <20200805183506.22591-2-bhanuprakash.modem@intel.com>
- <20200805191110.GA15630@labuser-Z97X-UD5H>
-In-Reply-To: <20200805191110.GA15630@labuser-Z97X-UD5H>
-Content-Language: en-US
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFBFD6E894
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2020 08:16:54 +0000 (UTC)
+Date: Thu, 6 Aug 2020 11:16:51 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200806081651.GV20883@platvala-desk.ger.corp.intel.com>
+References: <20200729222938.6038-1-bhanuprakash.modem@intel.com>
+ <20200806124450.29360-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2 1/2] tests/kms_vrr: Use atomic API for page
- flip
+Content-Disposition: inline
+In-Reply-To: <20200806124450.29360-1-bhanuprakash.modem@intel.com>
+Subject: Re: [igt-dev] [PATCH v2] tests/kms_pipe_crc_basic: Sanity check for
+ CRC mismatches
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,189 +19,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Navare, Manasi D" <manasi.d.navare@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> -----Original Message-----
-> From: Navare, Manasi <manasi.d.navare@intel.com>
-> Sent: Thursday, August 6, 2020 12:41 AM
-> To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> Cc: igt-dev@lists.freedesktop.org; Harry Wentland
-> <harry.wentland@amd.com>; Nicholas Kazlauskas
-> <nicholas.kazlauskas@amd.com>
-> Subject: Re: [PATCH v2 1/2] tests/kms_vrr: Use atomic API for page flip
-> 
-> On Thu, Aug 06, 2020 at 12:05:05AM +0530, Bhanuprakash Modem wrote:
-> > We should avoid using drmModePageFlip as it'll only be used for
-> > legacy drivers, instead, use igt_display_commit_atomic() API to
-> > page flip for atomic display code path.
-> >
-> > v2:
-> > * Look for the page flip event not for the vblank event (Nicholas)
-> 
-> Where have you done this change to wait for page flip event instead of
-> vblank event?
-> I thought we would need to change the function get_vblank_event_ns() for
-> this, I dont see
-> that change below, may be I am missing something?
-[Bhanu] I think no need to change the logic in get_vblank_event_ns(). May be we can have extra check (like "ev.base.type == event") to make sure we are reading the correct event.
-
-Call flow:
-1) drmWaitVBlank --> get_vblank_event_ns(): will get the DRM_EVENT_VBLANK event timestamp
-2) igt_display_commit_atomic(DRM_MODE_PAGE_FLIP_EVENT) --> get_vblank_event_ns(): will get the DRM_EVENT_FLIP_COMPLETE event timestamp
-
-Yeah, we can rename the get_vblank_event_ns() in a generic way like get_event_ns()
-> 
-> @Nicholas, have you tested the AMD stack with the page flip event
-> timestamp deltas
-> instead of the vblank event timetsmap deltas and does that work?
-> 
-> Manasi
-> 
-> > * Fix to flip with different FBs (Bhanu)
-> >
-> > Cc: Harry Wentland <harry.wentland@amd.com>
-> > Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-> > Cc: Manasi Navare <manasi.d.navare@intel.com>
-> > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> > ---
-> >  tests/kms_vrr.c | 45 +++++++++++++++++----------------------------
-> >  1 file changed, 17 insertions(+), 28 deletions(-)
-> >
-> > diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-> > index 559ef203..b433a12e 100644
-> > --- a/tests/kms_vrr.c
-> > +++ b/tests/kms_vrr.c
-> > @@ -47,6 +47,7 @@ typedef struct range {
-> >  typedef struct data {
-> >  	igt_display_t display;
-> >  	int drm_fd;
-> > +	igt_plane_t *primary;
-> >  	igt_fb_t fb0;
-> >  	igt_fb_t fb1;
-> >  } data_t;
-> > @@ -126,11 +127,11 @@ static range_t get_vrr_range(data_t *data,
-> igt_output_t *output)
-> >  }
-> >
-> >  /* Returns a suitable vrr test frequency. */
-> > -static uint32_t get_test_rate_ns(data_t *data, igt_output_t *output)
-> > +static uint64_t get_test_rate_ns(data_t *data, igt_output_t *output)
-> >  {
-> >  	drmModeModeInfo *mode = igt_output_get_mode(output);
-> >  	range_t range;
-> > -	uint32_t vtest;
-> > +	uint64_t vtest;
-> >
-> >  	/*
-> >  	 * The frequency with the fastest convergence speed should be
-> > @@ -165,7 +166,6 @@ static void set_vrr_on_pipe(data_t *data, enum pipe
-> pipe, bool enabled)
-> >  static void prepare_test(data_t *data, igt_output_t *output, enum pipe
-> pipe)
-> >  {
-> >  	drmModeModeInfo mode = *igt_output_get_mode(output);
-> > -	igt_plane_t *primary;
-> >  	cairo_t *cr;
-> >
-> >  	/* Reset output */
-> > @@ -189,8 +189,8 @@ static void prepare_test(data_t *data, igt_output_t
-> *output, enum pipe pipe)
-> >  	igt_put_cairo_ctx(cr);
-> >
-> >  	/* Take care of any required modesetting before the test begins. */
-> > -	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> > -	igt_plane_set_fb(primary, &data->fb0);
-> > +	data->primary = igt_output_get_plane_type(output,
-> DRM_PLANE_TYPE_PRIMARY);
-> > +	igt_plane_set_fb(data->primary, &data->fb0);
-> >
-> >  	igt_display_commit_atomic(&data->display,
-> >  				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> > @@ -210,32 +210,25 @@ wait_for_vblank(data_t *data, enum pipe pipe)
-> >  	return get_vblank_event_ns(data);
-> >  }
-> >
-> > -/* Performs an asynchronous non-blocking page-flip on a pipe. */
-> > -static int
-> > -do_flip(data_t *data, enum pipe pipe_id, igt_fb_t *fb)
-> > +/* Performs an atomic non-blocking page-flip on a pipe. */
-> > +static void
-> > +do_flip(data_t *data, igt_fb_t *fb)
-> >  {
-> > -	igt_pipe_t *pipe = &data->display.pipes[pipe_id];
-> > -	int ret;
-> > +	int ret = 0;
-> >
-> >  	igt_set_timeout(1, "Scheduling page flip\n");
-> >
-> > -	/*
-> > -	 * Only the legacy flip ioctl supports async flips.
-> > -	 * It's also non-blocking, but returns -EBUSY if flipping too fast.
-> > -	 * 2x monitor tests will need async flips in the atomic API.
-> > -	 */
-> > +	igt_plane_set_fb(data->primary, fb);
-> > +
-> >  	do {
-> > -		ret = drmModePageFlip(data->drm_fd, pipe->crtc_id,
-> > -				      fb->fb_id,
-> > -				      DRM_MODE_PAGE_FLIP_EVENT |
-> > -				      DRM_MODE_PAGE_FLIP_ASYNC,
-> > -				      data);
-> > +		igt_display_commit_atomic(&data->display,
-> > +				  DRM_MODE_ATOMIC_NONBLOCK |
-> > +				  DRM_MODE_PAGE_FLIP_EVENT,
-> > +				  data);
-> >  	} while (ret == -EBUSY);
-> >
-> >  	igt_assert_eq(ret, 0);
-> >  	igt_reset_timeout();
-> > -
-> > -	return 0;
-> >  }
-> >
-> >  /*
-> > @@ -246,11 +239,6 @@ do_flip(data_t *data, enum pipe pipe_id, igt_fb_t
-> *fb)
-> >   * can arbitrarily restrict the bounds further than the absolute
-> >   * min and max range. But VRR is really about extending the flip
-> >   * to prevent stuttering or to match a source content rate.
-> > - *
-> > - * The only way to "present" at a fixed rate like userspace in a vendor
-> > - * neutral manner is to do it with async flips. This avoids the need
-> > - * to wait for next vblank and it should eventually converge at the
-> > - * desired rate.
-> >   */
-> >  static uint32_t
-> >  flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
-> > @@ -269,7 +257,7 @@ flip_and_measure(data_t *data, igt_output_t *output,
-> enum pipe pipe,
-> >  		int64_t diff_ns;
-> >
-> >  		front = !front;
-> > -		do_flip(data, pipe, front ? &data->fb1 : &data->fb0);
-> > +		do_flip(data, front ? &data->fb1 : &data->fb0);
-> >
-> >  		vblank_ns = get_vblank_event_ns(data);
-> >  		diff_ns = rate_ns - (vblank_ns - last_vblank_ns);
-> > @@ -359,6 +347,7 @@ test_basic(data_t *data, enum pipe pipe,
-> igt_output_t *output, uint32_t flags)
-> >  		     "Target VRR off threshold exceeded, result was %u%%\n",
-> >  		     result);
-> >
-> > +	igt_plane_set_fb(data->primary, NULL);
-> >  	igt_remove_fb(data->drm_fd, &data->fb1);
-> >  	igt_remove_fb(data->drm_fd, &data->fb0);
-> >  }
-> > --
-> > 2.20.1
-> >
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVGh1LCBBdWcgMDYsIDIwMjAgYXQgMDY6MTQ6NTBQTSArMDUzMCwgQmhhbnVwcmFrYXNoIE1v
+ZGVtIHdyb3RlOgo+IFdl4oCZdmUgc2VlbiBtdWx0aXBsZSBDUkMgcmVsYXRlZCBpc3N1ZXMgb24g
+b2xkZXIgcGxhdGZvcm1zIGFuZAo+IHByZS1zaWxpY29uIGVudmlyb25tZW50LCBtb3N0IG9mIHRo
+ZSB0aW1lIHdlIGVuZCB1cCB3aXRoIGRlYnVnZ2luZy4KPiAKPiBUaGlzIHBhdGNoIHdvcmtzIGFz
+IGEgY3JjLXNhbml0eSB0ZXN0LCB3aGljaCBjYW4gdmVyaWZ5IHRoYXQgdGhlCj4gQ1JDIG1lY2hh
+bmlzbSBpcyBjbGVhbiBmcm9tIHRoZSBwbGF0Zm9ybSBzaWRlIGJlZm9yZSBkZWJ1Z2dpbmcgdGhl
+Cj4gYWN0dWFsIENSQyBtaXNtYXRjaGVzIG9yIG90aGVyIENSQyByZWxhdGVkIGlzc3Vlcy4KPiAK
+PiBUaGlzIHBhdGNoIHdpbGwgY3JlYXRlIHR3byBmcmFtZWJ1ZmZlcnMgKGZiMCAmIGZiMSkgd2l0
+aCB0aGUgc2FtZQo+IGNvbG9yIGluZm8sIGZsaXAgZmIwIHdpdGggcHJpbWFyeSBwbGFuZSAmIGNv
+bGxlY3QgQ1JDIGFzIHJlZmVyZW5jZS4KPiBUaGVuIGZsaXAgZmIxIHdpdGggcHJpbWFyeSBwbGFu
+ZSwgY29sbGVjdCB0aGUgQ1JDIGFuZCBjb21wYXJlIHdpdGgKPiB0aGUgcmVmZXJlbmNlIENSQy4g
+VGhlcmUgc2hvdWxkIGJlIG5vIENSQyBtaXNtYXRjaC4KPiAKPiB2MjoKPiAqIFJ1biBzdWJ0ZXN0
+IHRvIGFsbCBwaXBlcyAoS2FydGhpayAmIFN3YXRpKQo+ICogRml4IGNvbW1pdCBtZXNzYWdlICYg
+ZmV3IGNvbW1lbnRzIChLYXJ0aGlrKQo+ICogVXNlIG1lYW5pbmdmdWwgbmFtZSBmb3IgZnVuY3Rp
+b25zIChTd2F0aSkKPiAqIFJlbW92ZSB1bndhbnRlZCBjaGVja3MgKEthcnRoaWspCj4gCj4gQ2M6
+IFN3YXRpIFNoYXJtYSA8c3dhdGkyLnNoYXJtYUBpbnRlbC5jb20+Cj4gQ2M6IEthcnRoaWsgQiBT
+IDxrYXJ0aGlrLmIuc0BpbnRlbC5jb20+Cj4gQ2M6IEplZXZhbiBCIDxqZWV2YW4uYkBpbnRlbC5j
+b20+Cj4gQ2M6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgo+IENjOiBB
+cmthZGl1c3ogSGlsZXIgPGFya2FkaXVzei5oaWxlckBpbnRlbC5jb20+Cj4gU2lnbmVkLW9mZi1i
+eTogQmhhbnVwcmFrYXNoIE1vZGVtIDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPgo+IC0t
+LQo+ICB0ZXN0cy9rbXNfcGlwZV9jcmNfYmFzaWMuYyB8IDczICsrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrCj4gIDEgZmlsZSBjaGFuZ2VkLCA3MyBpbnNlcnRpb25zKCspCj4g
+Cj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19waXBlX2NyY19iYXNpYy5jIGIvdGVzdHMva21zX3Bp
+cGVfY3JjX2Jhc2ljLmMKPiBpbmRleCBjYjkzYzFhZC4uNTk5MDQ3Y2IgMTAwNjQ0Cj4gLS0tIGEv
+dGVzdHMva21zX3BpcGVfY3JjX2Jhc2ljLmMKPiArKysgYi90ZXN0cy9rbXNfcGlwZV9jcmNfYmFz
+aWMuYwo+IEBAIC0xNTQsNiArMTU0LDc1IEBAIHN0YXRpYyB2b2lkIHRlc3RfcmVhZF9jcmMoZGF0
+YV90ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSwgdW5zaWduZWQgZmxhZ3MpCj4gIAl9Cj4gIH0KPiAg
+Cj4gKy8qCj4gKyAqIENSQy1zYW5pdHkgdGVzdCwgdG8gbWFrZSBzdXJlIHRoZXJlIHdvdWxkIGJl
+IG5vIENSQyBtaXNtYXRjaGVzCj4gKyAqCj4gKyAqIC0gQ3JlYXRlIHR3byBmcmFtZWJ1ZmZlcnMg
+KEZCMCAmIEZCMSkgd2l0aCBzYW1lIGNvbG9yIGluZm8KPiArICogLSBGbGlwIEZCMCB3aXRoIHRo
+ZSBQcmltYXJ5IHBsYW5lICYgY29sbGVjdCB0aGUgQ1JDIGFzIHJlZiBDUkMuCj4gKyAqIC0gRmxp
+cCBGQjEgd2l0aCB0aGUgUHJpbWFyeSBwbGFuZSwgY29sbGVjdCB0aGUgQ1JDICYgY29tcGFyZSB3
+aXRoCj4gKyAqICAgdGhlIHJlZiBDUkMuCj4gKyAqCj4gKyAqICAgTm8gQ1JDIG1pc21hdGNoIHNo
+b3VsZCBoYXBwZW4KPiArICovCj4gK3N0YXRpYyB2b2lkIHRlc3RfY29tcGFyZV9jcmMoZGF0YV90
+ICpkYXRhLCBlbnVtIHBpcGUgcGlwZSkKPiArewo+ICsJaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSA9
+ICZkYXRhLT5kaXNwbGF5Owo+ICsJaWd0X3BsYW5lX3QgKnByaW1hcnk7Cj4gKwlkcm1Nb2RlTW9k
+ZUluZm8gKm1vZGU7Cj4gKwlpZ3RfY3JjX3QgcmVmX2NyYywgY3JjOwo+ICsJaWd0X3BpcGVfY3Jj
+X3QgKnBpcGVfY3JjID0gTlVMTDsKPiArCXN0cnVjdCBpZ3RfZmIgZmIwLCBmYjE7Cj4gKwlpZ3Rf
+b3V0cHV0X3QgKm91dHB1dCA9IGlndF9nZXRfc2luZ2xlX291dHB1dF9mb3JfcGlwZShkaXNwbGF5
+LCBwaXBlKTsKPiArCj4gKwlpZ3RfcmVxdWlyZV9mKG91dHB1dCwgIk5vIGNvbm5lY3RvciBmb3Vu
+ZCBmb3IgcGlwZSAlc1xuIiwKPiArCQkJa21zdGVzdF9waXBlX25hbWUocGlwZSkpOwo+ICsKPiAr
+CWlndF9yZXF1aXJlX3BpcGUoZGlzcGxheSwgcGlwZSk7Cj4gKwlpZ3RfZGlzcGxheV9yZXNldChk
+aXNwbGF5KTsKPiArCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBwaXBlKTsKPiArCj4gKwlt
+b2RlID0gaWd0X291dHB1dF9nZXRfbW9kZShvdXRwdXQpOwo+ICsKPiArCS8qIENyZWF0ZSB0d28g
+ZnJhbWVidWZmZXJzIHdpdGggdGhlIHNhbWUgY29sb3IgaW5mby4gKi8KPiArCWlndF9jcmVhdGVf
+Y29sb3JfZmIoZGF0YS0+ZHJtX2ZkLAo+ICsJCQltb2RlLT5oZGlzcGxheSwgbW9kZS0+dmRpc3Bs
+YXksCj4gKwkJCURSTV9GT1JNQVRfWFJHQjg4ODgsCj4gKwkJCUxPQ0FMX0RSTV9GT1JNQVRfTU9E
+X05PTkUsCj4gKwkJCTEuMCwgMS4wLCAxLjAsCj4gKwkJCSZmYjApOwo+ICsJaWd0X2NyZWF0ZV9j
+b2xvcl9mYihkYXRhLT5kcm1fZmQsCj4gKwkJCW1vZGUtPmhkaXNwbGF5LCBtb2RlLT52ZGlzcGxh
+eSwKPiArCQkJRFJNX0ZPUk1BVF9YUkdCODg4OCwKPiArCQkJTE9DQUxfRFJNX0ZPUk1BVF9NT0Rf
+Tk9ORSwKPiArCQkJMS4wLCAxLjAsIDEuMCwKPiArCQkJJmZiMSk7Cj4gKwo+ICsJLyogRmxpcCBG
+QjAgd2l0aCB0aGUgUHJpbWFyeSBwbGFuZSAmIGNvbGxlY3QgdGhlIENSQyBhcyByZWYgQ1JDLiAq
+Lwo+ICsJcHJpbWFyeSA9IGlndF9vdXRwdXRfZ2V0X3BsYW5lX3R5cGUob3V0cHV0LCBEUk1fUExB
+TkVfVFlQRV9QUklNQVJZKTsKPiArCWlndF9wbGFuZV9zZXRfZmIocHJpbWFyeSwgJmZiMCk7Cj4g
+KwlpZ3RfZGlzcGxheV9jb21taXQoZGlzcGxheSk7Cj4gKwo+ICsJcGlwZV9jcmMgPSBpZ3RfcGlw
+ZV9jcmNfbmV3KGRhdGEtPmRybV9mZCwgcGlwZSwKPiArCQkJCSAgICBJTlRFTF9QSVBFX0NSQ19T
+T1VSQ0VfQVVUTyk7Cj4gKwlpZ3RfcGlwZV9jcmNfY29sbGVjdF9jcmMocGlwZV9jcmMsICZyZWZf
+Y3JjKTsKPiArCj4gKwkvKiBGbGlwIEZCMSB3aXRoIHRoZSBQcmltYXJ5IHBsYW5lICYgY29tcGFy
+ZSB0aGUgQ1JDIHdpdGggcmVmIENSQy4gKi8KPiArCWlndF9wbGFuZV9zZXRfZmIocHJpbWFyeSwg
+JmZiMSk7Cj4gKwlpZ3RfZGlzcGxheV9jb21taXQoZGlzcGxheSk7Cj4gKwo+ICsJaWd0X3BpcGVf
+Y3JjX2NvbGxlY3RfY3JjKHBpcGVfY3JjLCAmY3JjKTsKPiArCWlndF9hc3NlcnRfY3JjX2VxdWFs
+KCZjcmMsICZyZWZfY3JjKTsKPiArCj4gKwkvKiBDbGVhbi11cCAqLwo+ICsJaWd0X3BpcGVfY3Jj
+X2ZyZWUocGlwZV9jcmMpOwo+ICsJaWd0X3BsYW5lX3NldF9mYihwcmltYXJ5LCBOVUxMKTsKPiAr
+CWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBQSVBFX05PTkUpOwo+ICsJaWd0X2Rpc3BsYXlf
+Y29tbWl0KGRpc3BsYXkpOwo+ICsKPiArCWlndF9yZW1vdmVfZmIoZGF0YS0+ZHJtX2ZkLCAmZmIw
+KTsKPiArCWlndF9yZW1vdmVfZmIoZGF0YS0+ZHJtX2ZkLCAmZmIxKTsKPiArfQo+ICsKPiAgZGF0
+YV90IGRhdGEgPSB7MCwgfTsKPiAgCj4gIGlndF9tYWluCj4gQEAgLTIwOSw2ICsyNzgsMTAgQEAg
+aWd0X21haW4KPiAgCj4gIAkJCWlndF9kaXNhbGxvd19oYW5nKGRhdGEuZHJtX2ZkLCBoYW5nKTsK
+PiAgCQl9Cj4gKwo+ICsJCWlndF9kZXNjcmliZSgiQmFzaWMgc2FuaXR5IGNoZWNrIGZvciBDUkMg
+bWlzbWF0Y2hlcyIpOwo+ICsJCWlndF9zdWJ0ZXN0X2YoImNvbXBhcmUtY3JjLWJhc2ljLSVzIiwg
+a21zdGVzdF9waXBlX25hbWUocGlwZSkpCgpQbGVhc2UgY2hhbmdlIHRoZSBuYW1lIHRvICJjb21w
+YXJlLWNyYy1zYW5pdHljaGVjay1waXBlLSVzIi4gRm9yIG9uZSwKY2FsbGluZyBpdCAiYmFzaWMi
+IGlzIHJlZHVuZGFudCwgdGhpcyB0ZXN0IGJpbmFyeSBhbHJlYWR5IHNheXMKImJhc2ljIi4gQW5v
+dGhlciBjaGFuZ2UgaXMgdGhlIHBlci1waXBlIG5hbWluZyBjb252ZW50aW9uIHVzZWQKZWxzZXdo
+ZXJlLCAicGlwZS0lcyIuCgpUaGlzIHRlc3Qgc2hvdWxkIGdvIHRvIEJBVC4gRG8geW91IHdhbnQg
+dG8gYWRkIGEKZmFzdC1mZWVkYmFjay50ZXN0bGlzdCBjaGFuZ2Ugc2VwYXJhdGVseSBvciBjYW4g
+aXQgZ28gdG8gdGhpcyBwYXRjaD8KCgotLSAKUGV0cmkgTGF0dmFsYQpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
+ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
