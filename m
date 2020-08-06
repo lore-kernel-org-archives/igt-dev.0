@@ -1,18 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E38576E897
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2020 08:30:46 +0000 (UTC)
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Thu, 6 Aug 2020 08:30:40 +0000
-Message-ID: <SN6PR11MB332764232ADE16EEC5E0E5928D480@SN6PR11MB3327.namprd11.prod.outlook.com>
-References: <20200729222938.6038-1-bhanuprakash.modem@intel.com>
- <20200806124450.29360-1-bhanuprakash.modem@intel.com>
- <20200806081651.GV20883@platvala-desk.ger.corp.intel.com>
-In-Reply-To: <20200806081651.GV20883@platvala-desk.ger.corp.intel.com>
-Content-Language: en-US
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 788D289C80
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2020 08:38:04 +0000 (UTC)
+Date: Thu, 6 Aug 2020 11:38:01 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200806083801.GW20883@platvala-desk.ger.corp.intel.com>
+References: <20200805105900.29444-1-petri.latvala@intel.com>
+ <159664479035.4771.152771425849559563@emeril.freedesktop.org>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v2] tests/kms_pipe_crc_basic: Sanity check for
- CRC mismatches
+Content-Disposition: inline
+In-Reply-To: <159664479035.4771.152771425849559563@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgcnVubmVy?=
+ =?utf-8?q?=3A_Only_claim_the_test_was_killed_if_it_was_killed?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,108 +20,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Latvala, Petri" <petri.latvala@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org, Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBMYXR2YWxhLCBQZXRyaSA8cGV0
-cmkubGF0dmFsYUBpbnRlbC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBBdWd1c3QgNiwgMjAyMCAx
-OjQ3IFBNDQo+IFRvOiBNb2RlbSwgQmhhbnVwcmFrYXNoIDxiaGFudXByYWthc2gubW9kZW1AaW50
-ZWwuY29tPg0KPiBDYzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmc7IFNoYXJtYSwgU3dh
-dGkyDQo+IDxzd2F0aTIuc2hhcm1hQGludGVsLmNvbT47IEIgUywgS2FydGhpayA8a2FydGhpay5i
-LnNAaW50ZWwuY29tPjsgQiwgSmVldmFuDQo+IDxqZWV2YW4uYkBpbnRlbC5jb20+OyBBcmthZGl1
-c3ogSGlsZXIgPGFyZWtAaGlsZXIuZXU+DQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjJdIHRlc3Rz
-L2ttc19waXBlX2NyY19iYXNpYzogU2FuaXR5IGNoZWNrIGZvciBDUkMNCj4gbWlzbWF0Y2hlcw0K
-PiANCj4gT24gVGh1LCBBdWcgMDYsIDIwMjAgYXQgMDY6MTQ6NTBQTSArMDUzMCwgQmhhbnVwcmFr
-YXNoIE1vZGVtIHdyb3RlOg0KPiA+IFdl4oCZdmUgc2VlbiBtdWx0aXBsZSBDUkMgcmVsYXRlZCBp
-c3N1ZXMgb24gb2xkZXIgcGxhdGZvcm1zIGFuZA0KPiA+IHByZS1zaWxpY29uIGVudmlyb25tZW50
-LCBtb3N0IG9mIHRoZSB0aW1lIHdlIGVuZCB1cCB3aXRoIGRlYnVnZ2luZy4NCj4gPg0KPiA+IFRo
-aXMgcGF0Y2ggd29ya3MgYXMgYSBjcmMtc2FuaXR5IHRlc3QsIHdoaWNoIGNhbiB2ZXJpZnkgdGhh
-dCB0aGUNCj4gPiBDUkMgbWVjaGFuaXNtIGlzIGNsZWFuIGZyb20gdGhlIHBsYXRmb3JtIHNpZGUg
-YmVmb3JlIGRlYnVnZ2luZyB0aGUNCj4gPiBhY3R1YWwgQ1JDIG1pc21hdGNoZXMgb3Igb3RoZXIg
-Q1JDIHJlbGF0ZWQgaXNzdWVzLg0KPiA+DQo+ID4gVGhpcyBwYXRjaCB3aWxsIGNyZWF0ZSB0d28g
-ZnJhbWVidWZmZXJzIChmYjAgJiBmYjEpIHdpdGggdGhlIHNhbWUNCj4gPiBjb2xvciBpbmZvLCBm
-bGlwIGZiMCB3aXRoIHByaW1hcnkgcGxhbmUgJiBjb2xsZWN0IENSQyBhcyByZWZlcmVuY2UuDQo+
-ID4gVGhlbiBmbGlwIGZiMSB3aXRoIHByaW1hcnkgcGxhbmUsIGNvbGxlY3QgdGhlIENSQyBhbmQg
-Y29tcGFyZSB3aXRoDQo+ID4gdGhlIHJlZmVyZW5jZSBDUkMuIFRoZXJlIHNob3VsZCBiZSBubyBD
-UkMgbWlzbWF0Y2guDQo+ID4NCj4gPiB2MjoNCj4gPiAqIFJ1biBzdWJ0ZXN0IHRvIGFsbCBwaXBl
-cyAoS2FydGhpayAmIFN3YXRpKQ0KPiA+ICogRml4IGNvbW1pdCBtZXNzYWdlICYgZmV3IGNvbW1l
-bnRzIChLYXJ0aGlrKQ0KPiA+ICogVXNlIG1lYW5pbmdmdWwgbmFtZSBmb3IgZnVuY3Rpb25zIChT
-d2F0aSkNCj4gPiAqIFJlbW92ZSB1bndhbnRlZCBjaGVja3MgKEthcnRoaWspDQo+ID4NCj4gPiBD
-YzogU3dhdGkgU2hhcm1hIDxzd2F0aTIuc2hhcm1hQGludGVsLmNvbT4NCj4gPiBDYzogS2FydGhp
-ayBCIFMgPGthcnRoaWsuYi5zQGludGVsLmNvbT4NCj4gPiBDYzogSmVldmFuIEIgPGplZXZhbi5i
-QGludGVsLmNvbT4NCj4gPiBDYzogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5j
-b20+DQo+ID4gQ2M6IEFya2FkaXVzeiBIaWxlciA8YXJrYWRpdXN6LmhpbGVyQGludGVsLmNvbT4N
-Cj4gPiBTaWduZWQtb2ZmLWJ5OiBCaGFudXByYWthc2ggTW9kZW0gPGJoYW51cHJha2FzaC5tb2Rl
-bUBpbnRlbC5jb20+DQo+ID4gLS0tDQo+ID4gIHRlc3RzL2ttc19waXBlX2NyY19iYXNpYy5jIHwg
-NzMgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gPiAgMSBmaWxlIGNo
-YW5nZWQsIDczIGluc2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNf
-cGlwZV9jcmNfYmFzaWMuYyBiL3Rlc3RzL2ttc19waXBlX2NyY19iYXNpYy5jDQo+ID4gaW5kZXgg
-Y2I5M2MxYWQuLjU5OTA0N2NiIDEwMDY0NA0KPiA+IC0tLSBhL3Rlc3RzL2ttc19waXBlX2NyY19i
-YXNpYy5jDQo+ID4gKysrIGIvdGVzdHMva21zX3BpcGVfY3JjX2Jhc2ljLmMNCj4gPiBAQCAtMTU0
-LDYgKzE1NCw3NSBAQCBzdGF0aWMgdm9pZCB0ZXN0X3JlYWRfY3JjKGRhdGFfdCAqZGF0YSwgZW51
-bSBwaXBlDQo+IHBpcGUsIHVuc2lnbmVkIGZsYWdzKQ0KPiA+ICAJfQ0KPiA+ICB9DQo+ID4NCj4g
-PiArLyoNCj4gPiArICogQ1JDLXNhbml0eSB0ZXN0LCB0byBtYWtlIHN1cmUgdGhlcmUgd291bGQg
-YmUgbm8gQ1JDIG1pc21hdGNoZXMNCj4gPiArICoNCj4gPiArICogLSBDcmVhdGUgdHdvIGZyYW1l
-YnVmZmVycyAoRkIwICYgRkIxKSB3aXRoIHNhbWUgY29sb3IgaW5mbw0KPiA+ICsgKiAtIEZsaXAg
-RkIwIHdpdGggdGhlIFByaW1hcnkgcGxhbmUgJiBjb2xsZWN0IHRoZSBDUkMgYXMgcmVmIENSQy4N
-Cj4gPiArICogLSBGbGlwIEZCMSB3aXRoIHRoZSBQcmltYXJ5IHBsYW5lLCBjb2xsZWN0IHRoZSBD
-UkMgJiBjb21wYXJlIHdpdGgNCj4gPiArICogICB0aGUgcmVmIENSQy4NCj4gPiArICoNCj4gPiAr
-ICogICBObyBDUkMgbWlzbWF0Y2ggc2hvdWxkIGhhcHBlbg0KPiA+ICsgKi8NCj4gPiArc3RhdGlj
-IHZvaWQgdGVzdF9jb21wYXJlX2NyYyhkYXRhX3QgKmRhdGEsIGVudW0gcGlwZSBwaXBlKQ0KPiA+
-ICt7DQo+ID4gKwlpZ3RfZGlzcGxheV90ICpkaXNwbGF5ID0gJmRhdGEtPmRpc3BsYXk7DQo+ID4g
-KwlpZ3RfcGxhbmVfdCAqcHJpbWFyeTsNCj4gPiArCWRybU1vZGVNb2RlSW5mbyAqbW9kZTsNCj4g
-PiArCWlndF9jcmNfdCByZWZfY3JjLCBjcmM7DQo+ID4gKwlpZ3RfcGlwZV9jcmNfdCAqcGlwZV9j
-cmMgPSBOVUxMOw0KPiA+ICsJc3RydWN0IGlndF9mYiBmYjAsIGZiMTsNCj4gPiArCWlndF9vdXRw
-dXRfdCAqb3V0cHV0ID0gaWd0X2dldF9zaW5nbGVfb3V0cHV0X2Zvcl9waXBlKGRpc3BsYXksDQo+
-IHBpcGUpOw0KPiA+ICsNCj4gPiArCWlndF9yZXF1aXJlX2Yob3V0cHV0LCAiTm8gY29ubmVjdG9y
-IGZvdW5kIGZvciBwaXBlICVzXG4iLA0KPiA+ICsJCQlrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSk7
-DQo+ID4gKw0KPiA+ICsJaWd0X3JlcXVpcmVfcGlwZShkaXNwbGF5LCBwaXBlKTsNCj4gPiArCWln
-dF9kaXNwbGF5X3Jlc2V0KGRpc3BsYXkpOw0KPiA+ICsJaWd0X291dHB1dF9zZXRfcGlwZShvdXRw
-dXQsIHBpcGUpOw0KPiA+ICsNCj4gPiArCW1vZGUgPSBpZ3Rfb3V0cHV0X2dldF9tb2RlKG91dHB1
-dCk7DQo+ID4gKw0KPiA+ICsJLyogQ3JlYXRlIHR3byBmcmFtZWJ1ZmZlcnMgd2l0aCB0aGUgc2Ft
-ZSBjb2xvciBpbmZvLiAqLw0KPiA+ICsJaWd0X2NyZWF0ZV9jb2xvcl9mYihkYXRhLT5kcm1fZmQs
-DQo+ID4gKwkJCW1vZGUtPmhkaXNwbGF5LCBtb2RlLT52ZGlzcGxheSwNCj4gPiArCQkJRFJNX0ZP
-Uk1BVF9YUkdCODg4OCwNCj4gPiArCQkJTE9DQUxfRFJNX0ZPUk1BVF9NT0RfTk9ORSwNCj4gPiAr
-CQkJMS4wLCAxLjAsIDEuMCwNCj4gPiArCQkJJmZiMCk7DQo+ID4gKwlpZ3RfY3JlYXRlX2NvbG9y
-X2ZiKGRhdGEtPmRybV9mZCwNCj4gPiArCQkJbW9kZS0+aGRpc3BsYXksIG1vZGUtPnZkaXNwbGF5
-LA0KPiA+ICsJCQlEUk1fRk9STUFUX1hSR0I4ODg4LA0KPiA+ICsJCQlMT0NBTF9EUk1fRk9STUFU
-X01PRF9OT05FLA0KPiA+ICsJCQkxLjAsIDEuMCwgMS4wLA0KPiA+ICsJCQkmZmIxKTsNCj4gPiAr
-DQo+ID4gKwkvKiBGbGlwIEZCMCB3aXRoIHRoZSBQcmltYXJ5IHBsYW5lICYgY29sbGVjdCB0aGUg
-Q1JDIGFzIHJlZiBDUkMuICovDQo+ID4gKwlwcmltYXJ5ID0gaWd0X291dHB1dF9nZXRfcGxhbmVf
-dHlwZShvdXRwdXQsIERSTV9QTEFORV9UWVBFX1BSSU1BUlkpOw0KPiA+ICsJaWd0X3BsYW5lX3Nl
-dF9mYihwcmltYXJ5LCAmZmIwKTsNCj4gPiArCWlndF9kaXNwbGF5X2NvbW1pdChkaXNwbGF5KTsN
-Cj4gPiArDQo+ID4gKwlwaXBlX2NyYyA9IGlndF9waXBlX2NyY19uZXcoZGF0YS0+ZHJtX2ZkLCBw
-aXBlLA0KPiA+ICsJCQkJICAgIElOVEVMX1BJUEVfQ1JDX1NPVVJDRV9BVVRPKTsNCj4gPiArCWln
-dF9waXBlX2NyY19jb2xsZWN0X2NyYyhwaXBlX2NyYywgJnJlZl9jcmMpOw0KPiA+ICsNCj4gPiAr
-CS8qIEZsaXAgRkIxIHdpdGggdGhlIFByaW1hcnkgcGxhbmUgJiBjb21wYXJlIHRoZSBDUkMgd2l0
-aCByZWYgQ1JDLg0KPiAqLw0KPiA+ICsJaWd0X3BsYW5lX3NldF9mYihwcmltYXJ5LCAmZmIxKTsN
-Cj4gPiArCWlndF9kaXNwbGF5X2NvbW1pdChkaXNwbGF5KTsNCj4gPiArDQo+ID4gKwlpZ3RfcGlw
-ZV9jcmNfY29sbGVjdF9jcmMocGlwZV9jcmMsICZjcmMpOw0KPiA+ICsJaWd0X2Fzc2VydF9jcmNf
-ZXF1YWwoJmNyYywgJnJlZl9jcmMpOw0KPiA+ICsNCj4gPiArCS8qIENsZWFuLXVwICovDQo+ID4g
-KwlpZ3RfcGlwZV9jcmNfZnJlZShwaXBlX2NyYyk7DQo+ID4gKwlpZ3RfcGxhbmVfc2V0X2ZiKHBy
-aW1hcnksIE5VTEwpOw0KPiA+ICsJaWd0X291dHB1dF9zZXRfcGlwZShvdXRwdXQsIFBJUEVfTk9O
-RSk7DQo+ID4gKwlpZ3RfZGlzcGxheV9jb21taXQoZGlzcGxheSk7DQo+ID4gKw0KPiA+ICsJaWd0
-X3JlbW92ZV9mYihkYXRhLT5kcm1fZmQsICZmYjApOw0KPiA+ICsJaWd0X3JlbW92ZV9mYihkYXRh
-LT5kcm1fZmQsICZmYjEpOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICBkYXRhX3QgZGF0YSA9IHswLCB9
-Ow0KPiA+DQo+ID4gIGlndF9tYWluDQo+ID4gQEAgLTIwOSw2ICsyNzgsMTAgQEAgaWd0X21haW4N
-Cj4gPg0KPiA+ICAJCQlpZ3RfZGlzYWxsb3dfaGFuZyhkYXRhLmRybV9mZCwgaGFuZyk7DQo+ID4g
-IAkJfQ0KPiA+ICsNCj4gPiArCQlpZ3RfZGVzY3JpYmUoIkJhc2ljIHNhbml0eSBjaGVjayBmb3Ig
-Q1JDIG1pc21hdGNoZXMiKTsNCj4gPiArCQlpZ3Rfc3VidGVzdF9mKCJjb21wYXJlLWNyYy1iYXNp
-Yy0lcyIsIGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpKQ0KPiANCj4gUGxlYXNlIGNoYW5nZSB0aGUg
-bmFtZSB0byAiY29tcGFyZS1jcmMtc2FuaXR5Y2hlY2stcGlwZS0lcyIuIEZvciBvbmUsDQo+IGNh
-bGxpbmcgaXQgImJhc2ljIiBpcyByZWR1bmRhbnQsIHRoaXMgdGVzdCBiaW5hcnkgYWxyZWFkeSBz
-YXlzDQo+ICJiYXNpYyIuIEFub3RoZXIgY2hhbmdlIGlzIHRoZSBwZXItcGlwZSBuYW1pbmcgY29u
-dmVudGlvbiB1c2VkDQo+IGVsc2V3aGVyZSwgInBpcGUtJXMiLg0KW0JoYW51XSBUaGFua3MgZm9y
-IHRoZSByZXZpZXcsIEknbGwgbWFrZSB0aGVzZSBjaGFuZ2VzIGluIG5leHQgcmV2aXNpb24uDQo+
-IA0KPiBUaGlzIHRlc3Qgc2hvdWxkIGdvIHRvIEJBVC4gRG8geW91IHdhbnQgdG8gYWRkIGENCj4g
-ZmFzdC1mZWVkYmFjay50ZXN0bGlzdCBjaGFuZ2Ugc2VwYXJhdGVseSBvciBjYW4gaXQgZ28gdG8g
-dGhpcyBwYXRjaD8NCltCaGFudV0gSGF2aW5nIGEgc2VwYXJhdGUgY29tbWl0IHNlZW1zIGEgZ29v
-ZCBvcHRpb24gZm9yIG1lLg0KPiANCj4gDQo+IC0tDQo+IFBldHJpIExhdHZhbGENCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
-aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+On Wed, Aug 05, 2020 at 04:26:30PM +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: runner: Only claim the test was killed if it was killed
+> URL   : https://patchwork.freedesktop.org/series/80284/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from IGT_5759_full -> IGTPW_4853_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_4853_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_4853_full, please notify your bug team to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4853/index.html
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_4853_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@mock:
+>     - shard-glk:          NOTRUN -> [FAIL][1]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4853/shard-glk9/igt@i915_selftest@mock.html
+>     - shard-iclb:         NOTRUN -> [FAIL][2]
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4853/shard-iclb5/igt@i915_selftest@mock.html
+>     - shard-hsw:          NOTRUN -> [FAIL][3]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4853/shard-hsw2/igt@i915_selftest@mock.html
+>     - shard-kbl:          NOTRUN -> [FAIL][4]
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4853/shard-kbl4/igt@i915_selftest@mock.html
+>     - shard-snb:          NOTRUN -> [FAIL][5]
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4853/shard-snb6/igt@i915_selftest@mock.html
+>     - shard-tglb:         NOTRUN -> [FAIL][6]
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4853/shard-tglb7/igt@i915_selftest@mock.html
+
+
+Well that was a scary result, but turns out all of these are false failures. Lakshmi, ^
+
+
+-- 
+Petri Latvala
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
