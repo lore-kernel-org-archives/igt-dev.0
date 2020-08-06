@@ -1,12 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 736716E35D
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2020 11:01:09 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-Date: Thu,  6 Aug 2020 16:38:03 +0530
-Message-Id: <20200806110803.19062-1-swati2.sharma@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A21676E35D
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2020 11:03:05 +0000 (UTC)
+References: <20200806183400.31856-1-bhanuprakash.modem@intel.com>
+ <20200806183400.31856-2-bhanuprakash.modem@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+Message-ID: <75dc0eec-7432-0001-d26d-f7916ed8e4df@intel.com>
+Date: Thu, 6 Aug 2020 16:33:01 +0530
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] intel-ci: Add testdisplay test to BAT
+In-Reply-To: <20200806183400.31856-2-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH v3 1/2] tests/kms_pipe_crc_basic: Sanity check
+ for CRC mismatches
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,41 +19,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>, igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-testdisplay should be added to BAT. testdisplay is considered
-to be the most basic test to test display functionality.
-With this test we will be able to test modesetting.
-
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index b796b264..b245b7a7 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -149,6 +149,7 @@ igt@vgem_basic@dmabuf-mmap
- igt@vgem_basic@mmap
- igt@vgem_basic@second-client
- igt@vgem_basic@sysfs
-+igt@testdisplay
- 
- # All tests that do module unloading and reloading are executed last.
- # They will sometimes reveal issues of earlier tests leaving the
--- 
-2.25.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+CgpPbiA4LzcvMjAyMCAxMjowMyBBTSwgQmhhbnVwcmFrYXNoIE1vZGVtIHdyb3RlOgo+IFdl4oCZ
+dmUgc2VlbiBtdWx0aXBsZSBDUkMgcmVsYXRlZCBpc3N1ZXMgb24gb2xkZXIgcGxhdGZvcm1zIGFu
+ZAo+IHByZS1zaWxpY29uIGVudmlyb25tZW50LCBtb3N0IG9mIHRoZSB0aW1lIHdlIGVuZCB1cCB3
+aXRoIGRlYnVnZ2luZy4KPiAKPiBUaGlzIHBhdGNoIHdvcmtzIGFzIGEgY3JjLXNhbml0eSB0ZXN0
+LCB3aGljaCBjYW4gdmVyaWZ5IHRoYXQgdGhlCj4gQ1JDIG1lY2hhbmlzbSBpcyBjbGVhbiBmcm9t
+IHRoZSBwbGF0Zm9ybSBzaWRlIGJlZm9yZSBkZWJ1Z2dpbmcgdGhlCj4gYWN0dWFsIENSQyBtaXNt
+YXRjaGVzIG9yIG90aGVyIENSQyByZWxhdGVkIGlzc3Vlcy4KPiAKPiBUaGlzIHBhdGNoIHdpbGwg
+Y3JlYXRlIHR3byBmcmFtZWJ1ZmZlcnMgKGZiMCAmIGZiMSkgd2l0aCB0aGUgc2FtZQo+IGNvbG9y
+IGluZm8sIGZsaXAgZmIwIHdpdGggcHJpbWFyeSBwbGFuZSAmIGNvbGxlY3QgQ1JDIGFzIHJlZmVy
+ZW5jZS4KPiBUaGVuIGZsaXAgZmIxIHdpdGggcHJpbWFyeSBwbGFuZSwgY29sbGVjdCB0aGUgQ1JD
+IGFuZCBjb21wYXJlIHdpdGgKPiB0aGUgcmVmZXJlbmNlIENSQy4gVGhlcmUgc2hvdWxkIGJlIG5v
+IENSQyBtaXNtYXRjaC4KPiAKPiB2MjoKPiAqIFJ1biBzdWJ0ZXN0IHRvIGFsbCBwaXBlcyAoS2Fy
+dGhpayAmIFN3YXRpKQo+ICogRml4IGNvbW1pdCBtZXNzYWdlICYgZmV3IGNvbW1lbnRzIChLYXJ0
+aGlrKQo+ICogVXNlIG1lYW5pbmdmdWwgbmFtZSBmb3IgZnVuY3Rpb25zIChTd2F0aSkKPiAqIFJl
+bW92ZSB1bndhbnRlZCBjaGVja3MgKEthcnRoaWspCj4gdjM6Cj4gKiBSZW5hbWUgc3VidGVzdCB0
+byBjb21wYXJlLWNyYy1zYW5pdHljaGVjay1waXBlLSAoUGV0cmkpCj4gCj4gQ2M6IFN3YXRpIFNo
+YXJtYSA8c3dhdGkyLnNoYXJtYUBpbnRlbC5jb20+Cj4gQ2M6IEthcnRoaWsgQiBTIDxrYXJ0aGlr
+LmIuc0BpbnRlbC5jb20+Cj4gQ2M6IEplZXZhbiBCIDxqZWV2YW4uYkBpbnRlbC5jb20+Cj4gQ2M6
+IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgo+IENjOiBBcmthZGl1c3og
+SGlsZXIgPGFyZWtAaGlsZXIuZXU+Cj4gU2lnbmVkLW9mZi1ieTogQmhhbnVwcmFrYXNoIE1vZGVt
+IDxiaGFudXByYWthc2gubW9kZW1AaW50ZWwuY29tPgo+IC0tLQo+ICAgdGVzdHMva21zX3BpcGVf
+Y3JjX2Jhc2ljLmMgfCA3MyArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+
+ICAgMSBmaWxlIGNoYW5nZWQsIDczIGluc2VydGlvbnMoKykKPiAKPiBkaWZmIC0tZ2l0IGEvdGVz
+dHMva21zX3BpcGVfY3JjX2Jhc2ljLmMgYi90ZXN0cy9rbXNfcGlwZV9jcmNfYmFzaWMuYwo+IGlu
+ZGV4IGNiOTNjMWFkLi5jM2M0Y2RkOCAxMDA2NDQKPiAtLS0gYS90ZXN0cy9rbXNfcGlwZV9jcmNf
+YmFzaWMuYwo+ICsrKyBiL3Rlc3RzL2ttc19waXBlX2NyY19iYXNpYy5jCj4gQEAgLTE1NCw2ICsx
+NTQsNzUgQEAgc3RhdGljIHZvaWQgdGVzdF9yZWFkX2NyYyhkYXRhX3QgKmRhdGEsIGVudW0gcGlw
+ZSBwaXBlLCB1bnNpZ25lZCBmbGFncykKPiAgIAl9Cj4gICB9Cj4gICAKPiArLyoKPiArICogQ1JD
+LXNhbml0eSB0ZXN0LCB0byBtYWtlIHN1cmUgdGhlcmUgd291bGQgYmUgbm8gQ1JDIG1pc21hdGNo
+ZXMKPiArICoKPiArICogLSBDcmVhdGUgdHdvIGZyYW1lYnVmZmVycyAoRkIwICYgRkIxKSB3aXRo
+IHNhbWUgY29sb3IgaW5mbwo+ICsgKiAtIEZsaXAgRkIwIHdpdGggdGhlIFByaW1hcnkgcGxhbmUg
+JiBjb2xsZWN0IHRoZSBDUkMgYXMgcmVmIENSQy4KPiArICogLSBGbGlwIEZCMSB3aXRoIHRoZSBQ
+cmltYXJ5IHBsYW5lLCBjb2xsZWN0IHRoZSBDUkMgJiBjb21wYXJlIHdpdGgKPiArICogICB0aGUg
+cmVmIENSQy4KPiArICoKPiArICogICBObyBDUkMgbWlzbWF0Y2ggc2hvdWxkIGhhcHBlbgo+ICsg
+Ki8KPiArc3RhdGljIHZvaWQgdGVzdF9jb21wYXJlX2NyYyhkYXRhX3QgKmRhdGEsIGVudW0gcGlw
+ZSBwaXBlKQo+ICt7Cj4gKwlpZ3RfZGlzcGxheV90ICpkaXNwbGF5ID0gJmRhdGEtPmRpc3BsYXk7
+Cj4gKwlpZ3RfcGxhbmVfdCAqcHJpbWFyeTsKPiArCWRybU1vZGVNb2RlSW5mbyAqbW9kZTsKPiAr
+CWlndF9jcmNfdCByZWZfY3JjLCBjcmM7Cj4gKwlpZ3RfcGlwZV9jcmNfdCAqcGlwZV9jcmMgPSBO
+VUxMOwo+ICsJc3RydWN0IGlndF9mYiBmYjAsIGZiMTsKPiArCWlndF9vdXRwdXRfdCAqb3V0cHV0
+ID0gaWd0X2dldF9zaW5nbGVfb3V0cHV0X2Zvcl9waXBlKGRpc3BsYXksIHBpcGUpOwo+ICsKPiAr
+CWlndF9yZXF1aXJlX2Yob3V0cHV0LCAiTm8gY29ubmVjdG9yIGZvdW5kIGZvciBwaXBlICVzXG4i
+LAo+ICsJCQlrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSk7Cj4gKwo+ICsJaWd0X3JlcXVpcmVfcGlw
+ZShkaXNwbGF5LCBwaXBlKTsKClRoaXMgY2hlY2sgaXMgcmVkdW5kYW50IGFzIHlvdSBhcmUgYWxy
+ZWFkeSBjYWxsaW5nIAonaWd0X2dldF9zaW5nbGVfb3V0cHV0X2Zvcl9waXBlJyBiZWZvcmUgdGhp
+cy4KCldpdGggdGhpcyByZW1vdmVkLCBMR1RNLgpSZXZpZXdlZC1ieTogS2FydGhpayBCIFMgPGth
+cnRoaWsuYi5zQGludGVsLmNvbT4KPiArCWlndF9kaXNwbGF5X3Jlc2V0KGRpc3BsYXkpOwo+ICsJ
+aWd0X291dHB1dF9zZXRfcGlwZShvdXRwdXQsIHBpcGUpOwo+ICsKPiArCW1vZGUgPSBpZ3Rfb3V0
+cHV0X2dldF9tb2RlKG91dHB1dCk7Cj4gKwo+ICsJLyogQ3JlYXRlIHR3byBmcmFtZWJ1ZmZlcnMg
+d2l0aCB0aGUgc2FtZSBjb2xvciBpbmZvLiAqLwo+ICsJaWd0X2NyZWF0ZV9jb2xvcl9mYihkYXRh
+LT5kcm1fZmQsCj4gKwkJCW1vZGUtPmhkaXNwbGF5LCBtb2RlLT52ZGlzcGxheSwKPiArCQkJRFJN
+X0ZPUk1BVF9YUkdCODg4OCwKPiArCQkJTE9DQUxfRFJNX0ZPUk1BVF9NT0RfTk9ORSwKPiArCQkJ
+MS4wLCAxLjAsIDEuMCwKPiArCQkJJmZiMCk7Cj4gKwlpZ3RfY3JlYXRlX2NvbG9yX2ZiKGRhdGEt
+PmRybV9mZCwKPiArCQkJbW9kZS0+aGRpc3BsYXksIG1vZGUtPnZkaXNwbGF5LAo+ICsJCQlEUk1f
+Rk9STUFUX1hSR0I4ODg4LAo+ICsJCQlMT0NBTF9EUk1fRk9STUFUX01PRF9OT05FLAo+ICsJCQkx
+LjAsIDEuMCwgMS4wLAo+ICsJCQkmZmIxKTsKPiArCj4gKwkvKiBGbGlwIEZCMCB3aXRoIHRoZSBQ
+cmltYXJ5IHBsYW5lICYgY29sbGVjdCB0aGUgQ1JDIGFzIHJlZiBDUkMuICovCj4gKwlwcmltYXJ5
+ID0gaWd0X291dHB1dF9nZXRfcGxhbmVfdHlwZShvdXRwdXQsIERSTV9QTEFORV9UWVBFX1BSSU1B
+UlkpOwo+ICsJaWd0X3BsYW5lX3NldF9mYihwcmltYXJ5LCAmZmIwKTsKPiArCWlndF9kaXNwbGF5
+X2NvbW1pdChkaXNwbGF5KTsKPiArCj4gKwlwaXBlX2NyYyA9IGlndF9waXBlX2NyY19uZXcoZGF0
+YS0+ZHJtX2ZkLCBwaXBlLAo+ICsJCQkJICAgIElOVEVMX1BJUEVfQ1JDX1NPVVJDRV9BVVRPKTsK
+PiArCWlndF9waXBlX2NyY19jb2xsZWN0X2NyYyhwaXBlX2NyYywgJnJlZl9jcmMpOwo+ICsKPiAr
+CS8qIEZsaXAgRkIxIHdpdGggdGhlIFByaW1hcnkgcGxhbmUgJiBjb21wYXJlIHRoZSBDUkMgd2l0
+aCByZWYgQ1JDLiAqLwo+ICsJaWd0X3BsYW5lX3NldF9mYihwcmltYXJ5LCAmZmIxKTsKPiArCWln
+dF9kaXNwbGF5X2NvbW1pdChkaXNwbGF5KTsKPiArCj4gKwlpZ3RfcGlwZV9jcmNfY29sbGVjdF9j
+cmMocGlwZV9jcmMsICZjcmMpOwo+ICsJaWd0X2Fzc2VydF9jcmNfZXF1YWwoJmNyYywgJnJlZl9j
+cmMpOwo+ICsKPiArCS8qIENsZWFuLXVwICovCj4gKwlpZ3RfcGlwZV9jcmNfZnJlZShwaXBlX2Ny
+Yyk7Cj4gKwlpZ3RfcGxhbmVfc2V0X2ZiKHByaW1hcnksIE5VTEwpOwo+ICsJaWd0X291dHB1dF9z
+ZXRfcGlwZShvdXRwdXQsIFBJUEVfTk9ORSk7Cj4gKwlpZ3RfZGlzcGxheV9jb21taXQoZGlzcGxh
+eSk7Cj4gKwo+ICsJaWd0X3JlbW92ZV9mYihkYXRhLT5kcm1fZmQsICZmYjApOwo+ICsJaWd0X3Jl
+bW92ZV9mYihkYXRhLT5kcm1fZmQsICZmYjEpOwo+ICt9Cj4gKwo+ICAgZGF0YV90IGRhdGEgPSB7
+MCwgfTsKPiAgIAo+ICAgaWd0X21haW4KPiBAQCAtMjA5LDYgKzI3OCwxMCBAQCBpZ3RfbWFpbgo+
+ICAgCj4gICAJCQlpZ3RfZGlzYWxsb3dfaGFuZyhkYXRhLmRybV9mZCwgaGFuZyk7Cj4gICAJCX0K
+PiArCj4gKwkJaWd0X2Rlc2NyaWJlKCJCYXNpYyBzYW5pdHkgY2hlY2sgZm9yIENSQyBtaXNtYXRj
+aGVzIik7Cj4gKwkJaWd0X3N1YnRlc3RfZigiY29tcGFyZS1jcmMtc2FuaXR5Y2hlY2stcGlwZS0l
+cyIsIGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpKQo+ICsJCQl0ZXN0X2NvbXBhcmVfY3JjKCZkYXRh
+LCBwaXBlKTsKPiAgIAl9Cj4gICAKPiAgIAlpZ3RfZml4dHVyZSB7Cj4gCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0Cmln
+dC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3Jn
+L21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
