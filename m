@@ -1,14 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B9596E8B0
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2020 10:29:19 +0000 (UTC)
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4AC076E8B3
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2020 10:39:05 +0000 (UTC)
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Date: Thu,  6 Aug 2020 23:54:14 +0530
-Message-Id: <20200806182414.31672-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20200806180749.31464-3-bhanuprakash.modem@intel.com>
-References: <20200806180749.31464-3-bhanuprakash.modem@intel.com>
+Date: Fri,  7 Aug 2020 00:03:58 +0530
+Message-Id: <20200806183400.31856-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v2] intel-ci: Add compare CRC sanity test to BAT
+Subject: [igt-dev] [PATCH v3 0/2] tests/kms_pipe_crc_basic: Sanity check for
+ CRC mismatches
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,45 +20,19 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: bhanuprakash.modem@intel.com, igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We need to sanity-check for the CRC mismatches, otherwise
-the display validation tests are flawed.
+This series will add a crc-sanity test to verify the CRC mechanism is
+clean from the platform and add the subtest to fast-feedback list.
 
-This patch will add CRC compare mismatch subtests to the
-fast-feedback list to make sure the CRC mechanism is clean
-from the platform.
+Bhanuprakash Modem (2):
+  tests/kms_pipe_crc_basic: Sanity check for CRC mismatches
+  intel-ci: Add compare CRC sanity test to BAT
 
-V2:
-* Add pipe-d as well (Petri)
+ tests/intel-ci/fast-feedback.testlist |  4 ++
+ tests/kms_pipe_crc_basic.c            | 73 +++++++++++++++++++++++++++
+ 2 files changed, 77 insertions(+)
 
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Jeevan B <jeevan.b@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Cc: Arkadiusz Hiler <arek@hiler.eu>
-Acked-by: Petri Latvala <petri.latvala@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index b796b264..b98cdb24 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -110,6 +110,10 @@ igt@kms_force_connector_basic@force-edid
- igt@kms_force_connector_basic@force-load-detect
- igt@kms_force_connector_basic@prune-stale-modes
- igt@kms_frontbuffer_tracking@basic
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-a
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-b
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-c
-+igt@kms_pipe_crc_basic@compare-crc-sanitycheck-pipe-d
- igt@kms_pipe_crc_basic@hang-read-crc-pipe-a
- igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a
- igt@kms_pipe_crc_basic@nonblocking-crc-pipe-a-frame-sequence
 -- 
 2.20.1
 
