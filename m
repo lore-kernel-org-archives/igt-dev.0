@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E3B9A6E146
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Aug 2020 08:55:46 +0000 (UTC)
-Date: Fri, 7 Aug 2020 11:55:44 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200807085544.GD7444@platvala-desk.ger.corp.intel.com>
-References: <20200806133337.8482-1-petri.latvala@intel.com>
- <159673659389.5530.2681002345148188331@emeril.freedesktop.org>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB5E76E991
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Aug 2020 09:31:37 +0000 (UTC)
+References: <20200806132935.23293-1-karthik.b.s@intel.com>
+ <594bbda7-65ca-91d9-5a63-96f95bf9ac83@daenzer.net>
+From: Karthik B S <karthik.b.s@intel.com>
+Message-ID: <690eb9de-c1db-ecd4-e4f3-c2484e84c5b9@intel.com>
+Date: Fri, 7 Aug 2020 15:01:34 +0530
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <159673659389.5530.2681002345148188331@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
- =?utf-8?q?kms=5Fpipe=5Fcrc=5Fbasic=3A_Remove_redundant_igt=5Frequire=5Fpi?=
- =?utf-8?q?pe?=
+In-Reply-To: <594bbda7-65ca-91d9-5a63-96f95bf9ac83@daenzer.net>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/kms_async_flips: Add test to
+ validate asynchronous flips
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,62 +19,27 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
+To: =?UTF-8?Q?Michel_D=c3=a4nzer?= <michel@daenzer.net>
+Cc: igt-dev@lists.freedesktop.org, daniel.vetter@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Aug 06, 2020 at 05:56:33PM +0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: tests/kms_pipe_crc_basic: Remove redundant igt_require_pipe
-> URL   : https://patchwork.freedesktop.org/series/80344/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from IGT_5762_full -> IGTPW_4860_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_4860_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_4860_full, please notify your bug team to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4860/index.html
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_4860_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@runner@aborted:
->     - shard-iclb:         NOTRUN -> [FAIL][1]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4860/shard-iclb1/igt@runner@aborted.html
->     - shard-snb:          NOTRUN -> [FAIL][2]
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4860/shard-snb5/igt@runner@aborted.html
-
-
-perf_pmu's module unload to be blamed. Aka false failures. Lakshmi,
-more for you. No need to re-report.
-
-
--- 
-Petri Latvala
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+CgpPbiA4LzYvMjAyMCA4OjE5IFBNLCBNaWNoZWwgRMOkbnplciB3cm90ZToKPiBPbiAyMDIwLTA4
+LTA2IDM6MjkgcC5tLiwgS2FydGhpayBCIFMgd3JvdGU6Cj4+IEFzeW5jaHJvbm91cyBmbGlwcyBh
+cmUgaXNzdWVkIHVzaW5nIHRoZSBwYWdlIGZsaXAgSU9DVEwuCj4+IFRoZSB0ZXN0IGNvbnNpc3Rz
+IG9mIHR3byBzdWJ0ZXN0cy4gVGhlIGZpcnN0IHN1YnRlc3Qgd2FpdHMgZm9yCj4+IHRoZSBwYWdl
+IGZsaXAgZXZlbnQgdG8gYmUgcmVjZWl2ZWQgYmVmb3JlIGdpdmluZyB0aGUgbmV4dCBmbGlwLAo+
+PiBhbmQgdGhlIHNlY29uZCBzdWJ0ZXN0IGRvZXNuJ3Qgd2FpdCBmb3IgcGFnZSBmbGlwIGV2ZW50
+cy4KPiAKPiBUaGUgbGF0dGVyIHNvdW5kcyBza2V0Y2h5LiBJdCBtaWdodCBnZXQgbHVja3kgbW9z
+dCBvZiB0aGUgdGltZSwgYnV0IGlmCj4gdGhlIHByZXZpb3VzIGZsaXAgaXMgc3RpbGwgcGVuZGlu
+ZywgdGhlIGlvY3RsIHdpbGwgZmFpbCB3aXRoIEVCVVNZLgo+IAoKVGhhbmtzIGZvciB0aGUgcmV2
+aWV3LgpJIHdpbGwgdXBkYXRlIHRoZSB0ZXN0IHRvIHJldHJ5IG9uIGdldHRpbmcgRUJVU1kgdW50
+aWwgMSB2YmxhbmsgdGltZSBhbmQgCnRoZW4gZmFpbCBpZiB3ZSdyZSBzdGlsbCBnZXR0aW5nIEVC
+VVNZLgo+IAo+IEFsc28sIHRoZSB0ZXN0IGFzIGlzIGNhbiBvbmx5IHJ1biBvbiBJbnRlbCBHUFVz
+Lgo+IAoKSSB3aWxsIHVwZGF0ZSB0aGlzIGluIHRoZSBuZXh0IHJldmlzaW9uLgoKVGhhbmtzLApL
+YXJ0aGlrLkIuUwo+IApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
+dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
