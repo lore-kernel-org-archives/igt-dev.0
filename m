@@ -1,48 +1,54 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Fri,  7 Aug 2020 11:20:01 +0200
-Message-Id: <20200807092002.32350-16-janusz.krzysztofik@linux.intel.com>
+Date: Fri,  7 Aug 2020 11:20:02 +0200
+Message-Id: <20200807092002.32350-17-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20200807092002.32350-1-janusz.krzysztofik@linux.intel.com>
 References: <20200807092002.32350-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 15/16] tests/core_hotunplug: Explicitly
- ignore unused return values
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Subject: [Intel-gfx] [PATCH i-g-t 16/16] tests/core_hotunplug: Un-blocklist
+ *unbind* subtests
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>, Petri Latvala <petri.latvala@intel.com>
+Cc: intel-gfx@lists.freedesktop.org, =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-U29tZSByZXR1cm4gdmFsdWVzIGFyZSBub3QgdXNlZnVsIGFuZCBjYW4gYmUgaWdub3JlZC4gIFdy
-YXAgdGhvc2UgY2FzZXMKaW5zaWRlIGlndF9pZ25vcmVfd2FybigpLCBub3Qgb25seSB0byBtYWtl
-IHN1cmUgY29tcGlsZXJzIGFyZSBoYXBweSBidXQKYWxzbyB0byBjbGVhcmx5IGRvY3VtZW50IG91
-ciBkZWNpc2lvbnMuCgp2MjogUmViYXNlIG9uIGN1cnJlbnQgdXBzdHJlYW0gbWFzdGVyLgoKU2ln
-bmVkLW9mZi1ieTogSmFudXN6IEtyenlzenRvZmlrIDxqYW51c3oua3J6eXN6dG9maWtAbGludXgu
-aW50ZWwuY29tPgpSZXZpZXdlZC1ieTogTWljaGHFgiBXaW5pYXJza2kgPG1pY2hhbC53aW5pYXJz
-a2lAaW50ZWwuY29tPgotLS0KIHRlc3RzL2NvcmVfaG90dW5wbHVnLmMgfCA2ICsrKy0tLQogMSBm
-aWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQg
-YS90ZXN0cy9jb3JlX2hvdHVucGx1Zy5jIGIvdGVzdHMvY29yZV9ob3R1bnBsdWcuYwppbmRleCBl
-OGQwNGY4YTcuLjc1OWNiODA3OSAxMDA2NDQKLS0tIGEvdGVzdHMvY29yZV9ob3R1bnBsdWcuYwor
-KysgYi90ZXN0cy9jb3JlX2hvdHVucGx1Zy5jCkBAIC0yMjgsNyArMjI4LDcgQEAgc3RhdGljIHZv
-aWQgc2V0X2ZpbHRlcl9mcm9tX2RldmljZShpbnQgZmQpCiAJY2hhciBwYXRoW1BBVEhfTUFYICsg
-MV07CiAKIAlpZ3RfYXNzZXJ0KGlndF9zeXNmc19wYXRoKGZkLCBwYXRoLCBQQVRIX01BWCkpOwot
-CXN0cm5jYXQocGF0aCwgIi9kZXZpY2UiLCBQQVRIX01BWCAtIHN0cmxlbihwYXRoKSk7CisJaWd0
-X2lnbm9yZV93YXJuKHN0cm5jYXQocGF0aCwgIi9kZXZpY2UiLCBQQVRIX01BWCAtIHN0cmxlbihw
-YXRoKSkpOwogCWlndF9hc3NlcnQocmVhbHBhdGgocGF0aCwgZHN0KSk7CiAKIAlpZ3RfZGV2aWNl
-X2ZpbHRlcl9mcmVlX2FsbCgpOwpAQCAtMzY4LDcgKzM2OCw3IEBAIGlndF9tYWluCiAJaWd0X2Zp
-eHR1cmUgewogCQlwb3N0X2hlYWx0aGNoZWNrKCZwcml2KTsKIAotCQljbG9zZShwcml2LmZkLnN5
-c2ZzX2J1cyk7Ci0JCWNsb3NlKHByaXYuZmQuc3lzZnNfZHJ2KTsKKwkJaWd0X2lnbm9yZV93YXJu
-KGNsb3NlKHByaXYuZmQuc3lzZnNfYnVzKSk7CisJCWlndF9pZ25vcmVfd2FybihjbG9zZShwcml2
-LmZkLnN5c2ZzX2RydikpOwogCX0KIH0KLS0gCjIuMjEuMQoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9pZ3QtZGV2Cg==
+Subtests which don't remove the device, only unbind the driver from it,
+seem relatively safe and harmless for CI.  Remove them from the CI
+blocklist.
+
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ tests/intel-ci/blacklist.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+index f9a57cb54..25b567038 100644
+--- a/tests/intel-ci/blacklist.txt
++++ b/tests/intel-ci/blacklist.txt
+@@ -120,7 +120,7 @@ igt@perf_pmu@cpu-hotplug
+ 
+ # Currently fails and leaves the machine in a very bad state, and
+ # causes coverage loss for other tests.
+-igt@core_hotunplug@.*
++igt@core_hotunplug@.*plug.*
+ 
+ # hangs several gens of hosts, and has no immediate fix
+ igt@device_reset@reset-bound
+\ No newline at end of file
+-- 
+2.21.1
+
+_______________________________________________
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
