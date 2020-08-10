@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Mon, 10 Aug 2020 11:22:42 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200810082242.GH7444@platvala-desk.ger.corp.intel.com>
+MIME-Version: 1.0
+In-Reply-To: <20200810082242.GH7444@platvala-desk.ger.corp.intel.com>
 References: <20200806144529.140512-1-chris@chris-wilson.co.uk>
  <20200810080807.GA3956@zkempczy-mobl2>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200810080807.GA3956@zkempczy-mobl2>
+ <20200810082242.GH7444@platvala-desk.ger.corp.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Mon, 10 Aug 2020 09:56:34 +0100
+Message-ID: <159704979478.6812.5770687018171262759@build.alporthouse.com>
 Subject: Re: [igt-dev] [PATCH i-g-t] lib: Use unsigned gen for forward
  compatible tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -20,23 +20,28 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+To: Petri Latvala <petri.latvala@intel.com>, zbigniew.kempczynski@intel.com
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCBBdWcgMTAsIDIwMjAgYXQgMTA6MDk6NDZBTSArMDIwMCwgWmJpZ25pZXcgS2VtcGN6
-ecWEc2tpIHdyb3RlOgo+IE9uIFRodSwgQXVnIDA2LCAyMDIwIGF0IDAzOjQ1OjI5UE0gKzAxMDAs
-IENocmlzIFdpbHNvbiB3cm90ZToKPiA+IFVua25vd24sIHNvIGZ1dHVyZSwgZ2VuIGFyZSBtYXJr
-ZWQgYXMgLTEgd2hpY2ggd2Ugd2FudCB0byB0cmVhdCBhcyAtMXUKPiA+IHNvIHRoYXQgYWx3YXlz
-IHBhc3MgPj0gZ2VuIGNoZWNrcy4KPiAKPiBEbyB3ZSByZWFsbHkgd2FudCB0byBlbmFibGUgdGhl
-IHRlc3RzIHdoZW4gcGxhdGZvcm0gaXMgbm90IGZ1bGx5Cj4gZW5hYmxlZCBpbiBJR1Q/CgpXaGF0
-IGRvZXMgImZ1bGx5IGVuYWJsZWQiIG1lYW4/CgpJZiB0aGUgdGVzdCBpcyBjaGVja2luZyBmb3Ig
-anVzdCAiZ2VuID4geCIsIHRoZSB0ZXN0IHNob3VsZCB3b3JrCmFscmVhZHkuIElmIHRoZSB0ZXN0
-IGlzIGFsc28gY2hlY2tpbmcgZm9yICJnZW4gPCB5IiB0aGVuIHdlIGdldCBhCnNwdXJpb3VzIGZh
-aWx1cmUsIGJ1dCBlaXRoZXIgd2F5IENJIGlzIGdvaW5nIHRvIHRlbGwgeW91IHRoYXQKc29tZXRo
-aW5nIGlzIG5vdCBwYXNzaW5nLiBXaXRob3V0IHRoaXMgaXQgd2lsbCBiZSBhIHNraXAsIGFsb25n
-IHdpdGgKc2tpcHBpbmcgaW4gdGhlIGNhc2UgdGhhdCBzaG91bGQganVzdCB3b3JrIGFscmVhZHkg
-d2l0aG91dCBhY3R1YWwgdGVzdApjaGFuZ2VzLgoKCi0tIApQZXRyaSBMYXR2YWxhCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
-aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+UXVvdGluZyBQZXRyaSBMYXR2YWxhICgyMDIwLTA4LTEwIDA5OjIyOjQyKQo+IE9uIE1vbiwgQXVn
+IDEwLCAyMDIwIGF0IDEwOjA5OjQ2QU0gKzAyMDAsIFpiaWduaWV3IEtlbXBjennFhHNraSB3cm90
+ZToKPiA+IE9uIFRodSwgQXVnIDA2LCAyMDIwIGF0IDAzOjQ1OjI5UE0gKzAxMDAsIENocmlzIFdp
+bHNvbiB3cm90ZToKPiA+ID4gVW5rbm93biwgc28gZnV0dXJlLCBnZW4gYXJlIG1hcmtlZCBhcyAt
+MSB3aGljaCB3ZSB3YW50IHRvIHRyZWF0IGFzIC0xdQo+ID4gPiBzbyB0aGF0IGFsd2F5cyBwYXNz
+ID49IGdlbiBjaGVja3MuCj4gPiAKPiA+IERvIHdlIHJlYWxseSB3YW50IHRvIGVuYWJsZSB0aGUg
+dGVzdHMgd2hlbiBwbGF0Zm9ybSBpcyBub3QgZnVsbHkKPiA+IGVuYWJsZWQgaW4gSUdUPwo+IAo+
+IFdoYXQgZG9lcyAiZnVsbHkgZW5hYmxlZCIgbWVhbj8KPiAKPiBJZiB0aGUgdGVzdCBpcyBjaGVj
+a2luZyBmb3IganVzdCAiZ2VuID4geCIsIHRoZSB0ZXN0IHNob3VsZCB3b3JrCj4gYWxyZWFkeS4g
+SWYgdGhlIHRlc3QgaXMgYWxzbyBjaGVja2luZyBmb3IgImdlbiA8IHkiIHRoZW4gd2UgZ2V0IGEK
+PiBzcHVyaW91cyBmYWlsdXJlLCBidXQgZWl0aGVyIHdheSBDSSBpcyBnb2luZyB0byB0ZWxsIHlv
+dSB0aGF0Cj4gc29tZXRoaW5nIGlzIG5vdCBwYXNzaW5nLiBXaXRob3V0IHRoaXMgaXQgd2lsbCBi
+ZSBhIHNraXAsIGFsb25nIHdpdGgKPiBza2lwcGluZyBpbiB0aGUgY2FzZSB0aGF0IHNob3VsZCBq
+dXN0IHdvcmsgYWxyZWFkeSB3aXRob3V0IGFjdHVhbCB0ZXN0Cj4gY2hhbmdlcy4KCkFuZCBmb3Ig
+YSB2ZXJ5IGxhcmdlIGZyYWN0aW9uIG9mIHRlc3RzLCB0aGUgYmVoYXZpb3VyIG9mIG5leHQgZ2Vu
+CmZvbGxvd3MgY3VycmVudCBnZW4uIFRob3NlIHRoYXQgZG8gbm90IGFyZSB2ZXJ5IGludGVyZXN0
+aW5nLCBhbmQgd2lsbCBiZQphIG11Y2ggc21hbGxlciBudW1iZXIgdGhhbiB0aGUgdm9sdW1lIG9m
+IHNraXBzIHdlIGhhdmUgdG8gcHJvY2Vzcy4KLUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4v
+bGlzdGluZm8vaWd0LWRldgo=
