@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mblankhorst.nl (mblankhorst.nl [141.105.120.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68E016E3BB
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Aug 2020 09:07:30 +0000 (UTC)
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Date: Mon, 10 Aug 2020 11:00:34 +0200
-Message-Id: <20200810090034.158383-1-maarten.lankhorst@linux.intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4159789E35
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Aug 2020 09:47:17 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Mon, 10 Aug 2020 11:46:42 +0200
+Message-Id: <20200810094710.28930-3-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200810094710.28930-1-zbigniew.kempczynski@intel.com>
+References: <20200810094710.28930-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/i915: Remove subtests that rely on
- async relocation behavior
+Subject: [igt-dev] [PATCH i-g-t v27 02/30] lib/intel_bufops: change in hw/sw
+ tiling detection
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,273 +17,97 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Dave Airlie <airlied@redhat.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-These tests are no longer valid, as they require behavior that
-was never accepted upstream; it assumes that relocations don't
-block synchronously, and the reservation_object lock is only
-held at the end of command submission to install the fences.
-
-Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Dave Airlie <airlied@redhat.com>
----
- tests/i915/gem_exec_reloc.c | 219 ------------------------------------
- 1 file changed, 219 deletions(-)
-
-diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
-index d50a8b69487f..85df3da7e011 100644
---- a/tests/i915/gem_exec_reloc.c
-+++ b/tests/i915/gem_exec_reloc.c
-@@ -424,76 +424,6 @@ static void many_active(int i915, unsigned engine)
- 	}
- }
- 
--static void __wide_active(int i915, unsigned engine, unsigned long count)
--{
--	struct drm_i915_gem_relocation_entry *reloc =
--		calloc(count, sizeof(*reloc));
--	struct drm_i915_gem_exec_object2 *obj =
--		calloc(count + 1, sizeof(*obj));
--	struct drm_i915_gem_execbuffer2 execbuf = {
--		.buffers_ptr = to_user_pointer(obj),
--		.buffer_count = count + 1,
--		.flags = engine | I915_EXEC_HANDLE_LUT,
--	};
--	igt_spin_t *spin;
--
--	for (unsigned long i = 0; i < count; i++) {
--		obj[i].handle = gem_create(i915, 4096);
--		obj[i].flags = EXEC_OBJECT_WRITE;
--		obj[i].flags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
--	}
--
--	spin = __igt_spin_new(i915,
--			      .engine = engine,
--			      .flags = (IGT_SPIN_FENCE_OUT |
--					IGT_SPIN_NO_PREEMPTION));
--	obj[count] = spin->obj[1];
--	gem_execbuf(i915, &execbuf); /* mark all the objects as active */
--
--	for (unsigned long i = 0; i < count; i++) {
--		reloc[i].target_handle = i;
--		reloc[i].presumed_offset = ~0ull;
--		obj[i].relocs_ptr = to_user_pointer(&reloc[i]);
--		obj[i].relocation_count = 1;
--	}
--	gem_execbuf(i915, &execbuf); /* relocation onto active objects */
--
--	igt_assert_eq(sync_fence_status(spin->out_fence), 0);
--	igt_spin_free(i915, spin);
--
--	for (unsigned long i = 0; i < count; i++) {
--		uint64_t addr;
--
--		gem_read(i915, obj[i].handle, 0, &addr, sizeof(addr));
--		igt_assert_eq_u64(addr, obj[i].offset);
--
--		gem_close(i915, obj[i].handle);
--	}
--	free(obj);
--	free(reloc);
--}
--
--static void wide_active(int i915, unsigned engine)
--{
--	const uint64_t max = gem_aperture_size(i915) / 4096 / 2;
--	unsigned long count = 256;
--
--	igt_until_timeout(2) {
--		uint64_t required, total;
--
--		if (!__intel_check_memory(count, 4096, CHECK_RAM,
--					  &required, &total))
--			break;
--
--		igt_debug("Testing count:%lu\n", count);
--		__wide_active(i915, engine, count);
--
--		count <<= 1;
--		if (count >= max)
--			break;
--	}
--}
--
- static unsigned int offset_in_page(void *addr)
- {
- 	return (uintptr_t)addr & 4095;
-@@ -937,145 +867,6 @@ static void basic_softpin(int fd)
- 	gem_close(fd, obj[1].handle);
- }
- 
--static struct drm_i915_gem_relocation_entry *
--parallel_relocs(int count, unsigned long *out)
--{
--	struct drm_i915_gem_relocation_entry *reloc;
--	unsigned long sz;
--	int i;
--
--	sz = count * sizeof(*reloc);
--	sz = ALIGN(sz, 4096);
--
--	reloc = mmap(0, sz, PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
--	igt_assert(reloc != MAP_FAILED);
--	for (i = 0; i < count; i++) {
--		reloc[i].target_handle = 0;
--		reloc[i].presumed_offset = ~0ull;
--		reloc[i].offset = 8 * i;
--		reloc[i].delta = i;
--		reloc[i].read_domains = I915_GEM_DOMAIN_INSTRUCTION;
--		reloc[i].write_domain = 0;
--	}
--	mprotect(reloc, sz, PROT_READ);
--
--	*out = sz;
--	return reloc;
--}
--
--static int __execbuf(int i915, struct drm_i915_gem_execbuffer2 *execbuf)
--{
--	int err;
--
--	err = 0;
--	if (ioctl(i915, DRM_IOCTL_I915_GEM_EXECBUFFER2, execbuf)) {
--		err = -errno;
--		igt_assume(err);
--	}
--
--	errno = 0;
--	return err;
--}
--
--static int stop;
--static void sighandler(int sig)
--{
--	stop = 1;
--}
--
--static void parallel_child(int i915,
--			   const struct intel_execution_engine2 *engine,
--			   struct drm_i915_gem_relocation_entry *reloc,
--			   uint32_t common)
--{
--	igt_spin_t *spin = __igt_spin_new(i915, .engine = engine->flags);
--	struct drm_i915_gem_exec_object2 reloc_target = {
--		.handle = gem_create(i915, 32 * 1024 * 8),
--		.relocation_count = 32 * 1024,
--		.relocs_ptr = to_user_pointer(reloc),
--	};
--	struct drm_i915_gem_exec_object2 obj[3] = {
--		reloc_target,
--		{ .handle = common },
--		spin->obj[1],
--	};
--	struct drm_i915_gem_execbuffer2 execbuf = {
--		.buffers_ptr = to_user_pointer(obj),
--		.buffer_count = ARRAY_SIZE(obj),
--		.flags = engine->flags | I915_EXEC_HANDLE_LUT,
--	};
--	struct sigaction act = {
--		.sa_handler = sighandler,
--	};
--	unsigned long count = 0;
--
--	sigaction(SIGINT, &act, NULL);
--	while (!READ_ONCE(stop)) {
--		int err = __execbuf(i915, &execbuf);
--		if (err == -EINTR)
--			break;
--
--		igt_assert_eq(err, 0);
--		count++;
--	}
--
--	igt_info("%s: count %lu\n", engine->name, count);
--	igt_spin_free(i915, spin);
--}
--
--static void kill_children(int sig)
--{
--	signal(sig, SIG_IGN);
--	kill(-getpgrp(), SIGINT);
--	signal(sig, SIG_DFL);
--}
--
--static void parallel(int i915)
--{
--	const struct intel_execution_engine2 *e;
--	struct drm_i915_gem_relocation_entry *reloc;
--	uint32_t common = gem_create(i915, 4096);
--	uint32_t batch = batch_create(i915);
--	unsigned long reloc_sz;
--
--	reloc = parallel_relocs(32 * 1024, &reloc_sz);
--
--	stop = 0;
--	__for_each_physical_engine(i915, e) {
--		igt_fork(child, 1)
--			parallel_child(i915, e, reloc, common);
--	}
--	sleep(2);
--
--	if (gem_scheduler_has_preemption(i915)) {
--		uint32_t ctx = gem_context_clone_with_engines(i915, 0);
--
--		__for_each_physical_engine(i915, e) {
--			struct drm_i915_gem_exec_object2 obj[2] = {
--				{ .handle = common },
--				{ .handle = batch },
--			};
--			struct drm_i915_gem_execbuffer2 execbuf = {
--				.buffers_ptr = to_user_pointer(obj),
--				.buffer_count = ARRAY_SIZE(obj),
--				.flags = e->flags,
--				.rsvd1 = ctx,
--			};
--			gem_execbuf(i915, &execbuf);
--		}
--
--		gem_context_destroy(i915, ctx);
--	}
--	gem_sync(i915, batch);
--	gem_close(i915, batch);
--
--	kill_children(SIGINT);
--	igt_waitchildren();
--
--	gem_close(i915, common);
--	munmap(reloc, reloc_sz);
--}
--
- #define CONCURRENT 1024
- 
- static uint64_t concurrent_relocs(int i915, int idx, int count)
-@@ -1487,16 +1278,6 @@ igt_main
- 		}
- 	}
- 
--	igt_subtest_with_dynamic("basic-wide-active") {
--		__for_each_physical_engine(fd, e) {
--			igt_dynamic_f("%s", e->name)
--				wide_active(fd, e->flags);
--		}
--	}
--
--	igt_subtest("basic-parallel")
--		parallel(fd);
--
- 	igt_subtest("basic-concurrent0")
- 		concurrent(fd, 0);
- 	igt_subtest("basic-concurrent16")
--- 
-2.28.0
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Tm90IGFsbCBzd2l6emxpbmcgY2FuIGJlIGhhbmRsZWQgYnkgdGhlIHNvZnR3YXJlIChiaXQxNykg
+c28gZGV0ZWN0Cml0IHByb3Blcmx5IGR1cmluZyBidWZvcHMgY3JlYXRpb24gdGltZSBhbmQgZGlz
+YWJsZSBpZiBuZWNlc3NhcnkuCgpTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kg
+PHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KQ2M6IERvbWluaWsgR3J6ZWdvcnplayA8
+ZG9taW5pay5ncnplZ29yemVrQGludGVsLmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hy
+aXMtd2lsc29uLmNvLnVrPgotLS0KIGxpYi9pbnRlbF9idWZvcHMuYyB8IDQzICsrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAzNSBpbnNl
+cnRpb25zKCspLCA4IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9idWZvcHMu
+YyBiL2xpYi9pbnRlbF9idWZvcHMuYwppbmRleCAwOTQzM2JlZC4uMmE5YjA3YTUgMTAwNjQ0Ci0t
+LSBhL2xpYi9pbnRlbF9idWZvcHMuYworKysgYi9saWIvaW50ZWxfYnVmb3BzLmMKQEAgLTE1Nyw3
+ICsxNTcsNyBAQCBzdGF0aWMgaW50IF9fZ2VtX2dldF90aWxpbmcoaW50IGZkLCBzdHJ1Y3QgZHJt
+X2k5MTVfZ2VtX2dldF90aWxpbmcgKmFyZykKIH0KIAogc3RhdGljIGJvb2wgX19nZXRfdGlsaW5n
+KGludCBmZCwgdWludDMyX3QgaGFuZGxlLCB1aW50MzJfdCAqdGlsaW5nLAotCQkJIHVpbnQzMl90
+ICpzd2l6emxlKQorCQkJIHVpbnQzMl90ICpzd2l6emxlLCB1aW50MzJfdCAqcGh5c19zd2l6emxl
+KQogewogCXN0cnVjdCBkcm1faTkxNV9nZW1fZ2V0X3RpbGluZyBnZXRfdGlsaW5nID0geyAuaGFu
+ZGxlID0gaGFuZGxlIH07CiAKQEAgLTE2NiwxMiArMTY2LDEzIEBAIHN0YXRpYyBib29sIF9fZ2V0
+X3RpbGluZyhpbnQgZmQsIHVpbnQzMl90IGhhbmRsZSwgdWludDMyX3QgKnRpbGluZywKIAogCSp0
+aWxpbmcgPSBnZXRfdGlsaW5nLnRpbGluZ19tb2RlOwogCSpzd2l6emxlID0gZ2V0X3RpbGluZy5z
+d2l6emxlX21vZGU7CisJKnBoeXNfc3dpenpsZSA9IGdldF90aWxpbmcucGh5c19zd2l6emxlX21v
+ZGU7CiAJaWd0X2RlYnVnKCJidWYgdGlsaW5nOiAlcywgc3dpenpsZTogJXgsIHBoeXNfc3dpenps
+ZTogJXhcbiIsCiAJCSAgdGlsaW5nX3N0cihnZXRfdGlsaW5nLnRpbGluZ19tb2RlKSwKIAkJICBn
+ZXRfdGlsaW5nLnN3aXp6bGVfbW9kZSwKIAkJICBnZXRfdGlsaW5nLnBoeXNfc3dpenpsZV9tb2Rl
+KTsKIAotCXJldHVybiBnZXRfdGlsaW5nLnBoeXNfc3dpenpsZV9tb2RlID09IGdldF90aWxpbmcu
+c3dpenpsZV9tb2RlOworCXJldHVybiB0cnVlOwogfQogCiBzdGF0aWMgaW50IF9fc2V0X3RpbGlu
+ZyhpbnQgZmQsIHVpbnQzMl90IGhhbmRsZSwgdWludDMyX3QgdGlsaW5nLApAQCAtMjEyLDggKzIx
+MywxMCBAQCBzdGF0aWMgdm9pZCBzZXRfaHdfdGlsZWQoc3RydWN0IGJ1Zl9vcHMgKmJvcHMsIHN0
+cnVjdCBpbnRlbF9idWYgKmJ1ZikKIAlpZiAoYnVmLT50aWxpbmcgIT0gSTkxNV9USUxJTkdfWCAm
+JiBidWYtPnRpbGluZyAhPSBJOTE1X1RJTElOR19ZKQogCQlyZXR1cm47CiAKLQlpZiAoIWJ1Zl9v
+cHNfaGFzX2h3X2ZlbmNlKGJvcHMsIGJ1Zi0+dGlsaW5nKSkKKwlpZiAoIWJ1Zl9vcHNfaGFzX2h3
+X2ZlbmNlKGJvcHMsIGJ1Zi0+dGlsaW5nKSkgeworCQlpZ3RfZGVidWcoIk5vIEhXIGZlbmNlIGZv
+ciB0aWxpbmc6ICVkXG4iLCBidWYtPnRpbGluZyk7CiAJCXJldHVybjsKKwl9CiAKIAlpZ3RfYXNz
+ZXJ0X2VxKF9fc2V0X3RpbGluZyhib3BzLT5mZCwKIAkJCQkgICBidWYtPmhhbmRsZSwgYnVmLT50
+aWxpbmcsCkBAIC0xMDI5LDEwICsxMDMyLDExIEBAIHN0cnVjdCBidWZfb3BzIGJ1Zl9vcHNfYXJy
+W10gPSB7CiAJfSwKIH07CiAKLXN0YXRpYyBib29sIHByb2JlX2h3X3RpbGluZyhzdHJ1Y3QgYnVm
+X29wcyAqYm9wcywgdWludDMyX3QgdGlsaW5nKQorc3RhdGljIGJvb2wgcHJvYmVfaHdfdGlsaW5n
+KHN0cnVjdCBidWZfb3BzICpib3BzLCB1aW50MzJfdCB0aWxpbmcsCisJCQkgICAgYm9vbCAqc3dp
+enpsaW5nX3N1cHBvcnRlZCkKIHsKIAl1aW50NjRfdCBzaXplID0gMjU2ICogMjU2OwotCXVpbnQz
+Ml90IGhhbmRsZSwgYnVmX3RpbGluZywgYnVmX3N3aXp6bGU7CisJdWludDMyX3QgaGFuZGxlLCBi
+dWZfdGlsaW5nLCBidWZfc3dpenpsZSwgcGh5c19zd2l6emxlOwogCXVpbnQzMl90IHN0cmlkZTsK
+IAlpbnQgcmV0OwogCWJvb2wgaXNfc2V0ID0gZmFsc2U7CkBAIC0xMDUxLDEyICsxMDU1LDE1IEBA
+IHN0YXRpYyBib29sIHByb2JlX2h3X3RpbGluZyhzdHJ1Y3QgYnVmX29wcyAqYm9wcywgdWludDMy
+X3QgdGlsaW5nKQogCWlmIChyZXQpCiAJCWdvdG8gZW5kOwogCi0JaXNfc2V0ID0gX19nZXRfdGls
+aW5nKGJvcHMtPmZkLCBoYW5kbGUsICZidWZfdGlsaW5nLCAmYnVmX3N3aXp6bGUpOworCWlzX3Nl
+dCA9IF9fZ2V0X3RpbGluZyhib3BzLT5mZCwgaGFuZGxlLCAmYnVmX3RpbGluZywgJmJ1Zl9zd2l6
+emxlLAorCQkJICAgICAgJnBoeXNfc3dpenpsZSk7CiAJaWYgKGlzX3NldCkgewogCQlpZiAodGls
+aW5nID09IEk5MTVfVElMSU5HX1gpCiAJCQlib3BzLT5zd2l6emxlX3ggPSBidWZfc3dpenpsZTsK
+IAkJZWxzZSBpZiAodGlsaW5nID09IEk5MTVfVElMSU5HX1kpCiAJCQlib3BzLT5zd2l6emxlX3kg
+PSBidWZfc3dpenpsZTsKKworCQkqc3dpenpsaW5nX3N1cHBvcnRlZCA9IGJ1Zl9zd2l6emxlID09
+IHBoeXNfc3dpenpsZTsKIAl9CiBlbmQ6CiAJZ2VtX2Nsb3NlKGJvcHMtPmZkLCBoYW5kbGUpOwpA
+QCAtMTE3OSw3ICsxMTg2LDE0IEBAIHN0YXRpYyBzdHJ1Y3QgYnVmX29wcyAqX19idWZfb3BzX2Ny
+ZWF0ZShpbnQgZmQsIGJvb2wgY2hlY2tfaWRlbXBvdGVuY3kpCiAKIAkvKiBMZXQncyBwcm9iZSBY
+IGFuZCBZIGh3IHRpbGluZyBzdXBwb3J0ICovCiAJaWYgKGlzX2h3X3RpbGluZ19zdXBwb3J0ZWQo
+Ym9wcywgSTkxNV9USUxJTkdfWCkpIHsKLQkJYm9vbCBzdXBwb3J0ZWQgPSBwcm9iZV9od190aWxp
+bmcoYm9wcywgSTkxNV9USUxJTkdfWCk7CisJCWJvb2wgc3dpenpsaW5nX3N1cHBvcnRlZDsKKwkJ
+Ym9vbCBzdXBwb3J0ZWQgPSBwcm9iZV9od190aWxpbmcoYm9wcywgSTkxNV9USUxJTkdfWCwKKwkJ
+CQkJCSAmc3dpenpsaW5nX3N1cHBvcnRlZCk7CisKKwkJaWYgKCFzd2l6emxpbmdfc3VwcG9ydGVk
+KSB7CisJCQlpZ3RfZGVidWcoIlN3aXp6bGluZyBmb3IgWCBpcyBub3Qgc3VwcG9ydGVkXG4iKTsK
+KwkJCWJvcHMtPnN1cHBvcnRlZF90aWxlcyAmPSB+VElMRV9YOworCQl9CiAKIAkJaWd0X2RlYnVn
+KCJYIGZlbmNlIHN1cHBvcnQ6ICVzXG4iLCBib29sX3N0cihzdXBwb3J0ZWQpKTsKIAkJaWYgKCFz
+dXBwb3J0ZWQpIHsKQEAgLTExOTAsNyArMTIwNCwxNCBAQCBzdGF0aWMgc3RydWN0IGJ1Zl9vcHMg
+Kl9fYnVmX29wc19jcmVhdGUoaW50IGZkLCBib29sIGNoZWNrX2lkZW1wb3RlbmN5KQogCX0KIAog
+CWlmIChpc19od190aWxpbmdfc3VwcG9ydGVkKGJvcHMsIEk5MTVfVElMSU5HX1kpKSB7Ci0JCWJv
+b2wgc3VwcG9ydGVkID0gcHJvYmVfaHdfdGlsaW5nKGJvcHMsIEk5MTVfVElMSU5HX1kpOworCQli
+b29sIHN3aXp6bGluZ19zdXBwb3J0ZWQ7CisJCWJvb2wgc3VwcG9ydGVkID0gcHJvYmVfaHdfdGls
+aW5nKGJvcHMsIEk5MTVfVElMSU5HX1ksCisJCQkJCQkgJnN3aXp6bGluZ19zdXBwb3J0ZWQpOwor
+CisJCWlmICghc3dpenpsaW5nX3N1cHBvcnRlZCkgeworCQkJaWd0X2RlYnVnKCJTd2l6emxpbmcg
+Zm9yIFkgaXMgbm90IHN1cHBvcnRlZFxuIik7CisJCQlib3BzLT5zdXBwb3J0ZWRfdGlsZXMgJj0g
+flRJTEVfWTsKKwkJfQogCiAJCWlndF9kZWJ1ZygiWSBmZW5jZSBzdXBwb3J0OiAlc1xuIiwgYm9v
+bF9zdHIoc3VwcG9ydGVkKSk7CiAJCWlmICghc3VwcG9ydGVkKSB7CkBAIC0xMzA3LDYgKzEzMjgs
+OSBAQCBib29sIGJ1Zl9vcHNfc2V0X3NvZnR3YXJlX3RpbGluZyhzdHJ1Y3QgYnVmX29wcyAqYm9w
+cywKIAlzd2l0Y2ggKHRpbGluZykgewogCWNhc2UgSTkxNV9USUxJTkdfWDoKIAkJaWYgKHVzZV9z
+b2Z0d2FyZV90aWxpbmcpIHsKKwkJCWJvb2wgc3VwcG9ydGVkID0gYnVmX29wc19oYXNfdGlsaW5n
+X3N1cHBvcnQoYm9wcywgdGlsaW5nKTsKKworCQkJaWd0X2Fzc2VydF9mKHN1cHBvcnRlZCwgIkNh
+bm5vdCBzd2l0Y2ggdG8gWCBzb2Z0d2FyZSB0aWxpbmdcbiIpOwogCQkJaWd0X2RlYnVnKCItPiBj
+aGFuZ2UgWCB0byBTV1xuIik7CiAJCQlib3BzLT5saW5lYXJfdG9feCA9IGNvcHlfbGluZWFyX3Rv
+X3g7CiAJCQlib3BzLT54X3RvX2xpbmVhciA9IGNvcHlfeF90b19saW5lYXI7CkBAIC0xMzI0LDYg
+KzEzNDgsOSBAQCBib29sIGJ1Zl9vcHNfc2V0X3NvZnR3YXJlX3RpbGluZyhzdHJ1Y3QgYnVmX29w
+cyAqYm9wcywKIAogCWNhc2UgSTkxNV9USUxJTkdfWToKIAkJaWYgKHVzZV9zb2Z0d2FyZV90aWxp
+bmcpIHsKKwkJCWJvb2wgc3VwcG9ydGVkID0gYnVmX29wc19oYXNfdGlsaW5nX3N1cHBvcnQoYm9w
+cywgdGlsaW5nKTsKKworCQkJaWd0X2Fzc2VydF9mKHN1cHBvcnRlZCwgIkNhbm5vdCBzd2l0Y2gg
+dG8gWSBzb2Z0d2FyZSB0aWxpbmdcbiIpOwogCQkJaWd0X2RlYnVnKCItPiBjaGFuZ2UgWSB0byBT
+V1xuIik7CiAJCQlib3BzLT5saW5lYXJfdG9feSA9IGNvcHlfbGluZWFyX3RvX3k7CiAJCQlib3Bz
+LT55X3RvX2xpbmVhciA9IGNvcHlfeV90b19saW5lYXI7Ci0tIAoyLjI2LjAKCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0
+CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
