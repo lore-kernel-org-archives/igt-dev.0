@@ -1,21 +1,23 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 12 Aug 2020 22:33:00 +0100
-Message-Id: <20200812213300.905759-1-chris@chris-wilson.co.uk>
+Date: Wed, 12 Aug 2020 22:33:49 +0100
+Message-Id: <20200812213349.905842-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20200812213300.905759-1-chris@chris-wilson.co.uk>
+References: <20200812213300.905759-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_ctx_persistence: Exercise cleanup
- after disabling heartbeats
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: [Intel-gfx] [PATCH i-g-t] i915/gem_ctx_persistence: Exercise
+ cleanup after disabling heartbeats
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
@@ -30,11 +32,13 @@ lest they continue to run unchecked.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
+git add
+---
  tests/i915/gem_ctx_persistence.c | 92 ++++++++++++++++++++++++++++++++
  1 file changed, 92 insertions(+)
 
 diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
-index e73a3e6a0..ca676d845 100644
+index e73a3e6a0..d9c972130 100644
 --- a/tests/i915/gem_ctx_persistence.c
 +++ b/tests/i915/gem_ctx_persistence.c
 @@ -426,6 +426,87 @@ static void test_nohangcheck_hang(int i915)
@@ -76,7 +80,7 @@ index e73a3e6a0..ca676d845 100644
 +
 +		if (set_heartbeat(i915, e->full_name, 0)) {
 +			for (int n = 0; n < ARRAY_SIZE(spin); n++) {
-+				igt_assert_eq(wait_for_status(i915, spin[n]->out_fence, reset_timeout_ms),
++				igt_assert_eq(wait_for_status(spin[n]->out_fence, reset_timeout_ms),
 +					      -EIO);
 +			}
 +		}
@@ -114,7 +118,7 @@ index e73a3e6a0..ca676d845 100644
 +
 +		set_heartbeat(i915, e->full_name, 2500);
 +
-+		igt_assert_eq(wait_for_status(i915, spin->out_fence, reset_timeout_ms),
++		igt_assert_eq(wait_for_status(spin->out_fence, reset_timeout_ms),
 +			      -EIO);
 +
 +		igt_spin_free(i915, spin);
@@ -147,6 +151,6 @@ index e73a3e6a0..ca676d845 100644
 2.28.0
 
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
