@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA724889A5
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Aug 2020 09:40:41 +0000 (UTC)
-Date: Wed, 12 Aug 2020 12:40:39 +0300
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75143891D2
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Aug 2020 09:42:44 +0000 (UTC)
+Date: Wed, 12 Aug 2020 12:42:41 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200812094039.GP7444@platvala-desk.ger.corp.intel.com>
+Message-ID: <20200812094241.GQ7444@platvala-desk.ger.corp.intel.com>
 References: <20200812090548.4973-1-adam.miszczak@linux.intel.com>
- <20200812090548.4973-2-adam.miszczak@linux.intel.com>
+ <20200812090548.4973-3-adam.miszczak@linux.intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200812090548.4973-2-adam.miszczak@linux.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/2] lib: sync i915_pciids.h with kernel
+In-Reply-To: <20200812090548.4973-3-adam.miszczak@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/i915: Add DG1 platform
+ definition
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,53 +24,68 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Aug 12, 2020 at 11:05:47AM +0200, Adam Miszczak wrote:
-> Add DG1 and clean-up VLV PCI IDs.
-> 
-> Align with kernel commits:
-> fb8920f04f5d ("drm/i915: Remove dubious Valleyview PCI IDs")
-> fd38cdb81105 ("drm/i915/dg1: Add DG1 PCI IDs")
-> 
+On Wed, Aug 12, 2020 at 11:05:48AM +0200, Adam Miszczak wrote:
 > Signed-off-by: Adam Miszczak <adam.miszczak@linux.intel.com>
+> Cc: Chris Wilson <chris@chris-wilson.co.uk>
 > Cc: Petri Latvala <petri.latvala@intel.com>
 
-
-Matches the kernel.
-
-Acked-by: Petri Latvala <petri.latvala@intel.com>
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
 
 > ---
->  lib/i915_pciids.h | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+>  lib/intel_chipset.h     | 2 ++
+>  lib/intel_device_info.c | 8 ++++++++
+>  2 files changed, 10 insertions(+)
 > 
-> diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
-> index d6cb2899..8e7ae30e 100644
-> --- a/lib/i915_pciids.h
-> +++ b/lib/i915_pciids.h
-> @@ -258,9 +258,7 @@
->  	INTEL_VGA_DEVICE(0x0f30, info), \
->  	INTEL_VGA_DEVICE(0x0f31, info), \
->  	INTEL_VGA_DEVICE(0x0f32, info), \
-> -	INTEL_VGA_DEVICE(0x0f33, info), \
-> -	INTEL_VGA_DEVICE(0x0157, info), \
-> -	INTEL_VGA_DEVICE(0x0155, info)
-> +	INTEL_VGA_DEVICE(0x0f33, info)
+> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+> index 18f860ca..51093091 100644
+> --- a/lib/intel_chipset.h
+> +++ b/lib/intel_chipset.h
+> @@ -74,6 +74,7 @@ struct intel_device_info {
+>  	bool is_elkhartlake : 1;
+>  	bool is_tigerlake : 1;
+>  	bool is_rocketlake : 1;
+> +	bool is_dg1 : 1;
+>  	const char *codename;
+>  };
 >  
->  #define INTEL_BDW_ULT_GT1_IDS(info) \
->  	INTEL_VGA_DEVICE(0x1606, info), /* GT1 ULT */ \
-> @@ -618,4 +616,8 @@
->  	INTEL_VGA_DEVICE(0x4C90, info), \
->  	INTEL_VGA_DEVICE(0x4C9A, info)
+> @@ -173,6 +174,7 @@ void intel_check_pch(void);
+>  #define IS_ICELAKE(devid)	(intel_get_device_info(devid)->is_icelake)
+>  #define IS_TIGERLAKE(devid)	(intel_get_device_info(devid)->is_tigerlake)
+>  #define IS_ROCKETLAKE(devid)	(intel_get_device_info(devid)->is_rocketlake)
+> +#define IS_DG1(devid)		(intel_get_device_info(devid)->is_dg1)
 >  
-> +/* DG1 */
-> +#define INTEL_DG1_IDS(info) \
-> +	INTEL_VGA_DEVICE(0x4905, info)
+>  #define IS_GEN(devid, x)	(intel_get_device_info(devid)->gen & (1u << ((x)-1)))
+>  #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->gen & -(1u << ((x)-1)))
+> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> index e5720443..d5f70156 100644
+> --- a/lib/intel_device_info.c
+> +++ b/lib/intel_device_info.c
+> @@ -327,6 +327,12 @@ static const struct intel_device_info intel_rocketlake_info = {
+>  	.codename = "rocketlake"
+>  };
+>  
+> +static const struct intel_device_info intel_dg1_info = {
+> +	.gen = BIT(11),
+> +	.is_dg1 = true,
+> +	.codename = "dg1"
+> +};
 > +
->  #endif /* _I915_PCIIDS_H */
+>  static const struct pci_id_match intel_device_match[] = {
+>  	INTEL_I810_IDS(&intel_i810_info),
+>  	INTEL_I815_IDS(&intel_i815_info),
+> @@ -413,6 +419,8 @@ static const struct pci_id_match intel_device_match[] = {
+>  	INTEL_TGL_12_IDS(&intel_tigerlake_info),
+>  	INTEL_RKL_IDS(&intel_rocketlake_info),
+>  
+> +	INTEL_DG1_IDS(&intel_dg1_info),
+> +
+>  	INTEL_VGA_DEVICE(PCI_MATCH_ANY, &intel_generic_info),
+>  };
+>  
 > -- 
 > 2.27.0
 > 
