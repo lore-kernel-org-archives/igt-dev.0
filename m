@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0BD1C6EA9F
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2020 22:57:42 +0000 (UTC)
-Date: Thu, 13 Aug 2020 15:58:48 -0700
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B2CD6E2BD
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2020 23:20:02 +0000 (UTC)
+Date: Thu, 13 Aug 2020 16:21:07 -0700
 From: "Navare, Manasi" <manasi.d.navare@intel.com>
-Message-ID: <20200813225847.GA29525@labuser-Z97X-UD5H>
-References: <20200624094238.1719-1-karthik.b.s@intel.com>
+Message-ID: <20200813232107.GA29792@labuser-Z97X-UD5H>
+References: <20200511062647.9514-2-bhanuprakash.modem@intel.com>
+ <20200805183506.22591-2-bhanuprakash.modem@intel.com>
+ <20200805191110.GA15630@labuser-Z97X-UD5H>
+ <SN6PR11MB3327F0CE566AF8A840F45FE78D480@SN6PR11MB3327.namprd11.prod.outlook.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200624094238.1719-1-karthik.b.s@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_big_joiner: Add test to
- validate big joiner
+In-Reply-To: <SN6PR11MB3327F0CE566AF8A840F45FE78D480@SN6PR11MB3327.namprd11.prod.outlook.com>
+Subject: Re: [igt-dev] [PATCH v2 1/2] tests/kms_vrr: Use atomic API for page
+ flip
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,280 +21,199 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Jun 24, 2020 at 03:12:38PM +0530, Karthik B S wrote:
-> Added negative test to verify the different scenarios for big joiner.
-> In the test, modeset is done on Pipe A for a big joiner mode and
-> a second modeset is attempted on Pipe B which is expected to fail.
-> Same functionality is validated for other pipes as well.
-> =
+On Thu, Aug 06, 2020 at 12:02:04AM -0700, Modem, Bhanuprakash wrote:
+> > -----Original Message-----
+> > From: Navare, Manasi <manasi.d.navare@intel.com>
+> > Sent: Thursday, August 6, 2020 12:41 AM
+> > To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> > Cc: igt-dev@lists.freedesktop.org; Harry Wentland
+> > <harry.wentland@amd.com>; Nicholas Kazlauskas
+> > <nicholas.kazlauskas@amd.com>
+> > Subject: Re: [PATCH v2 1/2] tests/kms_vrr: Use atomic API for page flip
+> >
+> > On Thu, Aug 06, 2020 at 12:05:05AM +0530, Bhanuprakash Modem wrote:
+> > > We should avoid using drmModePageFlip as it'll only be used for
+> > > legacy drivers, instead, use igt_display_commit_atomic() API to
+> > > page flip for atomic display code path.
+> > >
+> > > v2:
+> > > * Look for the page flip event not for the vblank event (Nicholas)
+> >
+> > Where have you done this change to wait for page flip event instead of
+> > vblank event?
+> > I thought we would need to change the function get_vblank_event_ns() for
+> > this, I dont see
+> > that change below, may be I am missing something?
+> [Bhanu] I think no need to change the logic in get_vblank_event_ns(). May be we can have extra check (like "ev.base.type == event") to make sure we are reading the correct event.
+> 
+> Call flow:
+> 1) drmWaitVBlank --> get_vblank_event_ns(): will get the DRM_EVENT_VBLANK event timestamp
+> 2) igt_display_commit_atomic(DRM_MODE_PAGE_FLIP_EVENT) --> get_vblank_event_ns(): will get the DRM_EVENT_FLIP_COMPLETE event timestamp
 
-> Secondly, the reverse is tested where a modeset is done on Pipe B
-> and then a second big joiner modeset is attempted on Pipe A which is
-> expected to fail. Same functionality is validated for other pipes as well.
-> =
-
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->  tests/Makefile.sources |   1 +
->  tests/kms_big_joiner.c | 171 +++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build      |   1 +
->  3 files changed, 173 insertions(+)
->  create mode 100644 tests/kms_big_joiner.c
-> =
-
-> diff --git a/tests/Makefile.sources b/tests/Makefile.sources
-> index af900bcf..c761eb92 100644
-> --- a/tests/Makefile.sources
-> +++ b/tests/Makefile.sources
-> @@ -35,6 +35,7 @@ TESTS_progs =3D \
->  	kms_atomic_transition \
->  	kms_available_modes_crc \
->  	kms_big_fb \
-> +	kms_big_joiner \
->  	kms_busy \
->  	kms_ccs \
->  	kms_concurrent \
-> diff --git a/tests/kms_big_joiner.c b/tests/kms_big_joiner.c
-> new file mode 100644
-> index 00000000..125ea0b1
-> --- /dev/null
-> +++ b/tests/kms_big_joiner.c
-> @@ -0,0 +1,171 @@
-> +/*
-> + * Copyright =A9 2020 Intel Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a
-> + * copy of this software and associated documentation files (the "Softwa=
-re"),
-> + * to deal in the Software without restriction, including without limita=
-tion
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
-se,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the =
-next
-> + * paragraph) shall be included in all copies or substantial portions of=
- the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
-SS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
-TY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
-ALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
-OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
-NG
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
-EALINGS
-> + * IN THE SOFTWARE.
-> + *
-> + * Author:
-> + *  Karthik B S <karthik.b.s@intel.com>
-> + */
-> +
-> +#include "igt.h"
-> +
-> +#define HDISPLAY_5K 5120
-
-So here HDISPLAY_5K indicates the max per pipe plane hwidth limitation righ=
-t?
-May be rename this to something like MAX_HDISPLAY_PER_PIPE so that we dont =
-confuse this with some 5K test?
-
-> +
-> +IGT_TEST_DESCRIPTION("Test big joiner");
-> +
-> +typedef struct {
-> +	int drm_fd;
-> +	igt_display_t display;
-> +	struct igt_fb fb;
-> +} data_t;
-> +
-> +static void test_invalid_modeset(data_t *data)
-> +{
-> +	drmModeModeInfo *mode;
-> +	igt_display_t *display =3D &data->display;
-> +	igt_output_t *output, *big_joiner_output =3D NULL, *second_output =3D N=
-ULL;
-> +	int width =3D 0, height =3D 0, i, ret;
-> +	igt_pipe_t *pipe;
-> +	igt_plane_t *plane;
-> +
-> +	for_each_connected_output(display, output) {
-> +		mode =3D &output->config.connector->modes[0];
-
-So here the assumption is that mode[0] is always the highest mode or in 8K =
-display
-case the assumption that mode[0] will be the 8K mode.
-While in most cases that is true, some displays might actual advertise stab=
-le modes as
-preferred mode and 8K mode somewhere lower in the list.
-May be before even calling this test, in main(), loop through all modes to =
-find mode > 5K and pass
-its mode number?
-
-Everything else does look good.
+Okay yes this makes sense now, would be better to explain this call flow in the get_vblank_event_ns()
+function header somewhere and yes good idea to make its name generic, get_kernel_event_ns()
+and explain that it could be either vblank event or flip event with the above call flow.
+And also explain why we should care here for flip event rather than vblank.
+Because vblank is triggered after each frame but depending on vblank evasion time
+flip might or might not happen in that same frame, so capture flip event.
 
 Manasi
 
-> +
-> +		width =3D max(width, mode->hdisplay);
-> +		height =3D max(height, mode->vdisplay);
-> +
-> +		if (mode->hdisplay >=3D HDISPLAY_5K && big_joiner_output =3D=3D NULL)
-> +			big_joiner_output =3D output;
-> +		else if (second_output =3D=3D NULL)
-> +			second_output =3D output;
-> +
-> +		igt_output_set_pipe(output, PIPE_NONE);
-> +	}
-> +
-> +	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
-> +			      LOCAL_DRM_FORMAT_MOD_NONE, &data->fb);
-> +
-> +	for_each_pipe(display, i) {
-> +		if (i < (data->display.n_pipes - 1)) {
-> +			igt_output_set_pipe(big_joiner_output, i);
-> +
-> +			mode =3D &big_joiner_output->config.connector->modes[0];
-> +
-> +			pipe =3D &display->pipes[i];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +			igt_output_set_pipe(second_output, i + 1);
-> +
-> +			mode =3D igt_output_get_mode(second_output);
-> +
-> +			pipe =3D &display->pipes[i + 1];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			/* This commit is expectd to fail as this pipe is being used for big =
-joiner */
-> +			ret =3D igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC=
-_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +			igt_assert_lt(ret, 0);
-> +
-> +			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
-> +			igt_output_set_pipe(second_output, PIPE_NONE);
-> +		}
-> +	}
-> +
-> +	for_each_pipe(display, i) {
-> +		if (i < (data->display.n_pipes - 1)) {
-> +			igt_output_set_pipe(second_output, i + 1);
-> +
-> +			mode =3D igt_output_get_mode(second_output);
-> +
-> +			pipe =3D &display->pipes[i + 1];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +			igt_output_set_pipe(big_joiner_output, i);
-> +
-> +			mode =3D &big_joiner_output->config.connector->modes[0];
-> +
-> +			pipe =3D &display->pipes[i];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			/* This commit is expected to fail as the adjacent pipe is already in=
- use*/
-> +			ret =3D igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC=
-_TEST_ONLY | DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +			igt_assert_lt(ret, 0);
-> +
-> +			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
-> +			igt_output_set_pipe(second_output, PIPE_NONE);
-> +		}
-> +	}
-> +
-> +	igt_plane_set_fb(plane, NULL);
-> +	igt_remove_fb(data->drm_fd, &data->fb);
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data;
-> +	bool big_joiner_mode_found =3D false;
-> +	igt_output_t *output;
-> +	drmModeModeInfo *mode;
-> +	int valid_output =3D 0;
-> +
-> +	igt_fixture {
-> +		data.drm_fd =3D drm_open_driver_master(DRIVER_INTEL);
-> +		kmstest_set_vt_graphics_mode();
-> +
-> +		igt_display_require(&data.display, data.drm_fd);
-> +
-> +		for_each_connected_output(&data.display, output) {
-> +			mode =3D &output->config.connector->modes[0];
-> +			if (mode->hdisplay >=3D HDISPLAY_5K)
-> +				big_joiner_mode_found =3D true;
-> +
-> +			valid_output++;
-> +		}
-> +
-> +		igt_require_f(big_joiner_mode_found, "No output with 5k+ mode found\n"=
-);
-> +		igt_require_f(valid_output > 1, "No valid Second output found\n");
-> +	}
-> +
-> +	igt_describe("Verify if the modeset on the adjoining pipe is rejected"
-> +		     "when the pipe is active with a big joiner modeset");
-> +	igt_subtest("invalid-modeset")
-> +		test_invalid_modeset(&data);
-> +
-> +	igt_fixture
-> +		igt_display_fini(&data.display);
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 28091794..430b43de 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -19,6 +19,7 @@ test_progs =3D [
->  	'kms_atomic_transition',
->  	'kms_available_modes_crc',
->  	'kms_big_fb',
-> +	'kms_big_joiner' ,
->  	'kms_busy',
->  	'kms_ccs',
->  	'kms_concurrent',
-> -- =
-
-> 2.22.0
-> =
-
+> 
+> Yeah, we can rename the get_vblank_event_ns() in a generic way like get_event_ns()
+> >
+> > @Nicholas, have you tested the AMD stack with the page flip event
+> > timestamp deltas
+> > instead of the vblank event timetsmap deltas and does that work?
+> >
+> > Manasi
+> >
+> > > * Fix to flip with different FBs (Bhanu)
+> > >
+> > > Cc: Harry Wentland <harry.wentland@amd.com>
+> > > Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+> > > Cc: Manasi Navare <manasi.d.navare@intel.com>
+> > > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> > > ---
+> > >  tests/kms_vrr.c | 45 +++++++++++++++++----------------------------
+> > >  1 file changed, 17 insertions(+), 28 deletions(-)
+> > >
+> > > diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+> > > index 559ef203..b433a12e 100644
+> > > --- a/tests/kms_vrr.c
+> > > +++ b/tests/kms_vrr.c
+> > > @@ -47,6 +47,7 @@ typedef struct range {
+> > >  typedef struct data {
+> > >  igt_display_t display;
+> > >  int drm_fd;
+> > > +igt_plane_t *primary;
+> > >  igt_fb_t fb0;
+> > >  igt_fb_t fb1;
+> > >  } data_t;
+> > > @@ -126,11 +127,11 @@ static range_t get_vrr_range(data_t *data,
+> > igt_output_t *output)
+> > >  }
+> > >
+> > >  /* Returns a suitable vrr test frequency. */
+> > > -static uint32_t get_test_rate_ns(data_t *data, igt_output_t *output)
+> > > +static uint64_t get_test_rate_ns(data_t *data, igt_output_t *output)
+> > >  {
+> > >  drmModeModeInfo *mode = igt_output_get_mode(output);
+> > >  range_t range;
+> > > -uint32_t vtest;
+> > > +uint64_t vtest;
+> > >
+> > >  /*
+> > >   * The frequency with the fastest convergence speed should be
+> > > @@ -165,7 +166,6 @@ static void set_vrr_on_pipe(data_t *data, enum pipe
+> > pipe, bool enabled)
+> > >  static void prepare_test(data_t *data, igt_output_t *output, enum pipe
+> > pipe)
+> > >  {
+> > >  drmModeModeInfo mode = *igt_output_get_mode(output);
+> > > -igt_plane_t *primary;
+> > >  cairo_t *cr;
+> > >
+> > >  /* Reset output */
+> > > @@ -189,8 +189,8 @@ static void prepare_test(data_t *data, igt_output_t
+> > *output, enum pipe pipe)
+> > >  igt_put_cairo_ctx(cr);
+> > >
+> > >  /* Take care of any required modesetting before the test begins. */
+> > > -primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> > > -igt_plane_set_fb(primary, &data->fb0);
+> > > +data->primary = igt_output_get_plane_type(output,
+> > DRM_PLANE_TYPE_PRIMARY);
+> > > +igt_plane_set_fb(data->primary, &data->fb0);
+> > >
+> > >  igt_display_commit_atomic(&data->display,
+> > >    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> > > @@ -210,32 +210,25 @@ wait_for_vblank(data_t *data, enum pipe pipe)
+> > >  return get_vblank_event_ns(data);
+> > >  }
+> > >
+> > > -/* Performs an asynchronous non-blocking page-flip on a pipe. */
+> > > -static int
+> > > -do_flip(data_t *data, enum pipe pipe_id, igt_fb_t *fb)
+> > > +/* Performs an atomic non-blocking page-flip on a pipe. */
+> > > +static void
+> > > +do_flip(data_t *data, igt_fb_t *fb)
+> > >  {
+> > > -igt_pipe_t *pipe = &data->display.pipes[pipe_id];
+> > > -int ret;
+> > > +int ret = 0;
+> > >
+> > >  igt_set_timeout(1, "Scheduling page flip\n");
+> > >
+> > > -/*
+> > > - * Only the legacy flip ioctl supports async flips.
+> > > - * It's also non-blocking, but returns -EBUSY if flipping too fast.
+> > > - * 2x monitor tests will need async flips in the atomic API.
+> > > - */
+> > > +igt_plane_set_fb(data->primary, fb);
+> > > +
+> > >  do {
+> > > -ret = drmModePageFlip(data->drm_fd, pipe->crtc_id,
+> > > -      fb->fb_id,
+> > > -      DRM_MODE_PAGE_FLIP_EVENT |
+> > > -      DRM_MODE_PAGE_FLIP_ASYNC,
+> > > -      data);
+> > > +igt_display_commit_atomic(&data->display,
+> > > +  DRM_MODE_ATOMIC_NONBLOCK |
+> > > +  DRM_MODE_PAGE_FLIP_EVENT,
+> > > +  data);
+> > >  } while (ret == -EBUSY);
+> > >
+> > >  igt_assert_eq(ret, 0);
+> > >  igt_reset_timeout();
+> > > -
+> > > -return 0;
+> > >  }
+> > >
+> > >  /*
+> > > @@ -246,11 +239,6 @@ do_flip(data_t *data, enum pipe pipe_id, igt_fb_t
+> > *fb)
+> > >   * can arbitrarily restrict the bounds further than the absolute
+> > >   * min and max range. But VRR is really about extending the flip
+> > >   * to prevent stuttering or to match a source content rate.
+> > > - *
+> > > - * The only way to "present" at a fixed rate like userspace in a vendor
+> > > - * neutral manner is to do it with async flips. This avoids the need
+> > > - * to wait for next vblank and it should eventually converge at the
+> > > - * desired rate.
+> > >   */
+> > >  static uint32_t
+> > >  flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+> > > @@ -269,7 +257,7 @@ flip_and_measure(data_t *data, igt_output_t *output,
+> > enum pipe pipe,
+> > >  int64_t diff_ns;
+> > >
+> > >  front = !front;
+> > > -do_flip(data, pipe, front ? &data->fb1 : &data->fb0);
+> > > +do_flip(data, front ? &data->fb1 : &data->fb0);
+> > >
+> > >  vblank_ns = get_vblank_event_ns(data);
+> > >  diff_ns = rate_ns - (vblank_ns - last_vblank_ns);
+> > > @@ -359,6 +347,7 @@ test_basic(data_t *data, enum pipe pipe,
+> > igt_output_t *output, uint32_t flags)
+> > >       "Target VRR off threshold exceeded, result was %u%%\n",
+> > >       result);
+> > >
+> > > +igt_plane_set_fb(data->primary, NULL);
+> > >  igt_remove_fb(data->drm_fd, &data->fb1);
+> > >  igt_remove_fb(data->drm_fd, &data->fb0);
+> > >  }
+> > > --
+> > > 2.20.1
+> > >
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
