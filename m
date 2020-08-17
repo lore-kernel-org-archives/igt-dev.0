@@ -1,12 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDDF76E326
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 904ED89196
  for <igt-dev@lists.freedesktop.org>; Mon, 17 Aug 2020 12:03:50 +0000 (UTC)
 From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
-Date: Mon, 17 Aug 2020 15:01:46 +0300
-Message-Id: <20200817120149.17083-1-mika.kuoppala@linux.intel.com>
-Subject: [igt-dev] [PATCH i-g-t 1/4] tests/gen7_exec_parse: Test masked
- registers
+Date: Mon, 17 Aug 2020 15:01:49 +0300
+Message-Id: <20200817120149.17083-4-mika.kuoppala@linux.intel.com>
+In-Reply-To: <20200817120149.17083-1-mika.kuoppala@linux.intel.com>
+References: <20200817120149.17083-1-mika.kuoppala@linux.intel.com>
+Subject: [igt-dev] [PATCH i-g-t 4/4] tests/gen9_exec_parse: Add lrr test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,68 +21,124 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Jon Bloomfield <jon.bloomfield@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-There were no test to test the masked registers.
-LRR is prohibited with masked registers. Add testcase
-to confirm it.
+From: Mika Kuoppala <mika.kuoppala@intel.com>
 
-Cc: Jon Bloomfield <jon.bloomfield@intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Make sure LOAD_REGISTER_REG is handled correctly
+by parser.
+
+Signed-off-by: Mika Kuoppala <mika.kuoppala@intel.com>
 ---
- tests/i915/gen7_exec_parse.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ tests/i915/gen9_exec_parse.c | 53 ++++++++++++++++++++++++++----------
+ 1 file changed, 39 insertions(+), 14 deletions(-)
 
-diff --git a/tests/i915/gen7_exec_parse.c b/tests/i915/gen7_exec_parse.c
-index 2ba438c9..22ccbc68 100644
---- a/tests/i915/gen7_exec_parse.c
-+++ b/tests/i915/gen7_exec_parse.c
-@@ -398,6 +398,8 @@ static void hsw_load_register_reg(void)
- 		OACONTROL, /* filtered */
- 		DERRMR, /* master only */
- 		0x2038, /* RING_START: invalid */
-+		0xb038, /* HSW_SCRATCH1 masked */
-+		0xe49c  /* HSW_ROW_CHICKEN3 masked */
- 	};
- 	int fd;
- 	uint32_t handle;
-@@ -439,6 +441,7 @@ static void hsw_load_register_reg(void)
- 				   store_gpr0, sizeof(store_gpr0),
- 				   2 * sizeof(uint32_t), /* reloc */
- 				   0xabcdabc0);
-+		igt_debug("Testing disallowed reg src 0x%08x\n", disallowed_regs[i]);
- 		do_lrr[1] = disallowed_regs[i];
- 		exec_batch(fd, handle, do_lrr, sizeof(do_lrr),
- 			   I915_EXEC_RENDER,
-@@ -449,6 +452,26 @@ static void hsw_load_register_reg(void)
- 				   0xabcdabc0);
- 	}
+diff --git a/tests/i915/gen9_exec_parse.c b/tests/i915/gen9_exec_parse.c
+index 8cd82f56..0e8ce11f 100644
+--- a/tests/i915/gen9_exec_parse.c
++++ b/tests/i915/gen9_exec_parse.c
+@@ -37,16 +37,18 @@
+ #define INSTR_CLIENT_SHIFT	29
+ #define   INSTR_INVALID_CLIENT  0x7
  
-+	for (int i = 0 ; i < ARRAY_SIZE(disallowed_regs); i++) {
-+		exec_batch(fd, handle, init_gpr0, sizeof(init_gpr0),
-+			   I915_EXEC_RENDER,
-+			   0);
-+		exec_batch_patched(fd, handle,
-+				   store_gpr0, sizeof(store_gpr0),
-+				   2 * sizeof(uint32_t), /* reloc */
-+				   0xabcdabc0);
-+		igt_debug("Testing disallowed reg dst 0x%08x\n", disallowed_regs[i]);
-+		do_lrr[1] = HSW_CS_GPR0;
-+		do_lrr[2] = disallowed_regs[i];
-+		exec_batch(fd, handle, do_lrr, sizeof(do_lrr),
-+			   I915_EXEC_RENDER,
-+			   bad_lrr_errno);
-+		exec_batch_patched(fd, handle,
-+				   store_gpr0, sizeof(store_gpr0),
-+				   2 * sizeof(uint32_t), /* reloc */
-+				   0xabcdabc0);
-+	}
+-#define MI_LOAD_REGISTER_REG (0x2a << 23)
+-#define MI_STORE_REGISTER_MEM (0x24 << 23)
+-#define MI_ARB_ON_OFF (0x8 << 23)
+-#define MI_USER_INTERRUPT (0x02 << 23)
+-#define MI_FLUSH_DW (0x26 << 23)
+-#define MI_ARB_CHECK (0x05 << 23)
+-#define MI_REPORT_HEAD (0x07 << 23)
+-#define MI_SUSPEND_FLUSH (0x0b << 23)
+-#define MI_LOAD_SCAN_LINES_EXCL (0x13 << 23)
+-#define MI_UPDATE_GTT (0x23 << 23)
++#define MI_INSTR(opcode, flags) (((opcode) << 23) | (flags))
 +
- 	close(fd);
++#define MI_LOAD_REGISTER_REG       MI_INSTR(0x2A, 1)
++#define MI_STORE_REGISTER_MEM_GEN8 MI_INSTR(0x24, 2)
++
++#define MI_ARB_ON_OFF		MI_INSTR(0x8, 0)
++#define MI_USER_INTERRUPT	MI_INSTR(0x2, 0)
++#define MI_FLUSH_DW		MI_INSTR(0x26, 0)
++#define MI_ARB_CHECK		MI_INSTR(0x5, 0)
++#define MI_REPORT_HEAD		MI_INSTR(0x7, 0)
++#define MI_SUSPEND_FLUSH	MI_INSTR(0xb, 0)
++#define MI_LOAD_SCAN_LINES_EXCL MI_INSTR(0x13, 0)
+ 
+ #define BCS_SWCTRL     0x22200
+ #define BCS_GPR_BASE   0x22600
+@@ -601,7 +603,7 @@ static void test_cmd_crossing_page(const int i915, const uint32_t handle)
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 	const uint32_t store_reg[] = {
+-		MI_STORE_REGISTER_MEM | (4 - 2),
++		MI_STORE_REGISTER_MEM_GEN8,
+ 		BCS_GPR(0),
+ 		0, /* reloc */
+ 		0, /* reloc */
+@@ -640,7 +642,7 @@ static void test_invalid_length(const int i915, const uint32_t handle)
+ 	};
+ 
+ 	const uint32_t store_reg[] = {
+-		MI_STORE_REGISTER_MEM | (4 - 2),
++		MI_STORE_REGISTER_MEM_GEN8,
+ 		BCS_GPR(0),
+ 		0, /* reloc */
+ 		0, /* reloc */
+@@ -753,7 +755,7 @@ static void test_register(const int i915, const uint32_t handle,
+ 	};
+ 
+ 	const uint32_t store_reg[] = {
+-		MI_STORE_REGISTER_MEM | (4 - 2),
++		MI_STORE_REGISTER_MEM_GEN8,
+ 		r->addr,
+ 		0, /* reloc */
+ 		0, /* reloc */
+@@ -761,6 +763,20 @@ static void test_register(const int i915, const uint32_t handle,
+ 		MI_BATCH_BUFFER_END,
+ 	};
+ 
++	const uint32_t lrr_src[] = {
++		MI_LOAD_REGISTER_REG,
++		r->addr,
++		BCS_GPR(0),
++		MI_BATCH_BUFFER_END,
++	};
++
++	const uint32_t lrr_dst[] = {
++		MI_LOAD_REGISTER_REG,
++		BCS_GPR(0),
++		r->addr,
++		MI_BATCH_BUFFER_END,
++	};
++
+ 	exec_batch(i915, I915_EXEC_BLT, handle,
+ 		   lri_mask, sizeof(lri_mask),
+ 		   r->privileged ? -EACCES : 0);
+@@ -778,6 +794,15 @@ static void test_register(const int i915, const uint32_t handle,
+ 			   store_reg, sizeof(store_reg),
+ 			   2 * sizeof(uint32_t), /* reloc */
+ 			   r->privileged ? -EACCES : 0);
++
++	exec_batch(i915, I915_EXEC_BLT, handle,
++		   lrr_src, sizeof(lrr_src),
++		   r->privileged ? -EACCES : 0);
++
++	exec_batch(i915, I915_EXEC_BLT, handle,
++		   lrr_dst, sizeof(lrr_dst),
++		   r->privileged ? -EACCES : 0);
++
  }
  
+ static void test_valid_registers(const int i915, const uint32_t handle)
+@@ -792,7 +817,7 @@ static long int read_reg(const int i915, const uint32_t handle,
+ 			 const uint32_t addr)
+ {
+ 	const uint32_t store_reg[] = {
+-		MI_STORE_REGISTER_MEM | (4 - 2),
++		MI_STORE_REGISTER_MEM_GEN8,
+ 		addr,
+ 		0, /* reloc */
+ 		0, /* reloc */
 -- 
 2.17.1
 
