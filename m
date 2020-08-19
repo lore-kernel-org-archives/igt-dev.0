@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 024F76E091
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Aug 2020 12:37:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 559916E091
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Aug 2020 12:43:30 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20200819123306.22856-4-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200819123306.22856-12-zbigniew.kempczynski@intel.com>
 References: <20200819123306.22856-1-zbigniew.kempczynski@intel.com>
- <20200819123306.22856-4-zbigniew.kempczynski@intel.com>
+ <20200819123306.22856-12-zbigniew.kempczynski@intel.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 19 Aug 2020 13:37:14 +0100
-Message-ID: <159784063483.667.668452428051158755@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v30 03/33] lib/intel_bufops: change
- stride requirements for Grantsdale
+Date: Wed, 19 Aug 2020 13:43:26 +0100
+Message-ID: <159784100648.667.9430482372769731385@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v30 11/33] lib/rendercopy: remove libdrm
+ dependency
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,24 +25,15 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: zbigniew.kempczynski@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMDgtMTkgMTM6MzI6MzYpCj4gR3Jh
-bnRzZGFsZSByZXF1aXJlcyA1MTIgc3RyaWRlIG9uIFkgdGlsaW5nLgoKPiAKPiBTaWduZWQtb2Zm
-LWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNv
-bT4KPiBDYzogRG9taW5payBHcnplZ29yemVrIDxkb21pbmlrLmdyemVnb3J6ZWtAaW50ZWwuY29t
-Pgo+IENjOiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KPiAtLS0KPiAg
-bGliL2ludGVsX2J1Zm9wcy5jIHwgOSArKysrKy0tLS0KPiAgMSBmaWxlIGNoYW5nZWQsIDUgaW5z
-ZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2J1
-Zm9wcy5jIGIvbGliL2ludGVsX2J1Zm9wcy5jCj4gaW5kZXggMmE5YjA3YTUuLmM2NDFkYmE0IDEw
-MDY0NAo+IC0tLSBhL2xpYi9pbnRlbF9idWZvcHMuYwo+ICsrKyBiL2xpYi9pbnRlbF9idWZvcHMu
-Ywo+IEBAIC03NTIsOCArNzUyLDcgQEAgc3RhdGljIHZvaWQgX19pbnRlbF9idWZfaW5pdChzdHJ1
-Y3QgYnVmX29wcyAqYm9wcywKPiAgCj4gICAgICAgICAgICAgICAgICAgICAgICAgaWYgKGJvcHMt
-PmludGVsX2dlbiA8IDMpCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0aWxlX3dp
-ZHRoID0gMTI4Owo+IC0gICAgICAgICAgICAgICAgICAgICAgIGVsc2UgaWYgKElTXzkxNUdNKGRl
-dmlkKSB8fCBJU185MTVHKGRldmlkKSB8fAo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIGJ1Zi0+dGlsaW5nID09IEk5MTVfVElMSU5HX1gpCj4gKyAgICAgICAgICAgICAgICAgICAg
-ICAgZWxzZSBpZiAoSVNfOTE1RyhkZXZpZCkgfHwgYnVmLT50aWxpbmcgPT0gSTkxNV9USUxJTkdf
-WCkKPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRpbGVfd2lkdGggPSA1MTI7CgpT
-byBkb2VzIGk5MTVnbS4KLUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0
-LWRldgo=
+UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMDgtMTkgMTM6MzI6NDQpCj4gLXN0
+YXRpYyBpbmxpbmUgdm9pZCBlbWl0X3ZlcnRleF8ycyhzdHJ1Y3QgaW50ZWxfYmF0Y2hidWZmZXIg
+KmJhdGNoLAo+ICtzdGF0aWMgaW5saW5lIHZvaWQgZW1pdF92ZXJ0ZXhfMnMoc3RydWN0IGludGVs
+X2JiICppYmIsCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGludDE2X3QgeCwg
+aW50MTZfdCB5KQo+ICB7Cj4gLSAgICAgICBPVVRfQkFUQ0goKHVpbnQxNl90KXkgPDwgMTYgfCAo
+dWludDE2X3QpeCk7Cj4gKyAgICAgICBpbnRlbF9iYl9vdXQoaWJiLCAoKHVpbnQxNl90KXkgPDwg
+MTYgfCAodWludDE2X3QpeCkpOwoKV2hvb3BzLCB0aGlzIGlzIHRlY2huaWNhbGx5IHVuZGVmaW5l
+ZCBiZWhhdmlvdXIuIFdlIG5lZWQgdG8gY2FzdCB0bwoodWludDMyX3QpeSA8PCAxNiB0byBhdm9p
+ZCAnaW50JyBwcm9tb3Rpb24uCi1DaHJpcwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVk
+ZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2lndC1kZXYK
