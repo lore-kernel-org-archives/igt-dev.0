@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Thu, 20 Aug 2020 16:52:15 +0200
-Message-Id: <20200820145215.13238-20-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20200820145215.13238-1-janusz.krzysztofik@linux.intel.com>
-References: <20200820145215.13238-1-janusz.krzysztofik@linux.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Thu, 20 Aug 2020 19:26:38 +0100
+Message-Id: <20200820182640.65842-2-chris@chris-wilson.co.uk>
+In-Reply-To: <20200820182640.65842-1-chris@chris-wilson.co.uk>
+References: <20200820182640.65842-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3 19/19] tests/core_hotunplug: Un-blocklist
- *bind* subtests
+Subject: [igt-dev] [PATCH i-g-t 2/4] i915/gem_exec_fence: Cleanup 32bit
+ printfs
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,34 +19,67 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>, Petri Latvala <petri.latvala@intel.com>, intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: intel-gfx@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Subtests which don't remove the device, only unbind the driver from it,
-seem relatively safe and harmless for CI.  Remove them from the CI
-blocklist.
+Use PRI[ux]64 for printing 64bit values in a 32bit build.
 
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/intel-ci/blacklist.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/i915/gem_exec_fence.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-index f9a57cb54..25b567038 100644
---- a/tests/intel-ci/blacklist.txt
-+++ b/tests/intel-ci/blacklist.txt
-@@ -120,7 +120,7 @@ igt@perf_pmu@cpu-hotplug
+diff --git a/tests/i915/gem_exec_fence.c b/tests/i915/gem_exec_fence.c
+index b240c30bf..0b8ab1400 100644
+--- a/tests/i915/gem_exec_fence.c
++++ b/tests/i915/gem_exec_fence.c
+@@ -2408,7 +2408,7 @@ static void build_wait_bb(struct inter_engine_context *context,
+ 	uint64_t wait_value =
+ 		0xffffffffffffffff - (delay * timestamp_frequency) / NSEC_PER_SEC;
  
- # Currently fails and leaves the machine in a very bad state, and
- # causes coverage loss for other tests.
--igt@core_hotunplug@.*
-+igt@core_hotunplug@.*plug.*
+-	igt_debug("wait_value=0x%lx\n", wait_value);
++	igt_debug("wait_value=0x%"PRIx64"\n", wait_value);
  
- # hangs several gens of hosts, and has no immediate fix
- igt@device_reset@reset-bound
-\ No newline at end of file
+ 	*bb++ = MI_LOAD_REGISTER_IMM;
+ 	*bb++ = 0x2000 + HSW_CS_GPR(0);
+@@ -2680,7 +2680,7 @@ static void setup_timeline_chain_engines(struct inter_engine_context *context, i
+ 	}
+ 
+ 	for (uint32_t i = 0; i < 10; i++)
+-		igt_debug("%u = %lu\n", i, fib(i));
++		igt_debug("%u = %"PRIu64"\n", i, fib(i));
+ 
+ 	/* Bootstrap the fibonacci sequence */
+ 	{
+@@ -2759,7 +2759,7 @@ static void test_syncobj_timeline_chain_engines(int fd, struct intel_engine_data
+ 	counter_output = gem_mmap__wc(fd, ctx.engine_counter_object.handle, 0, 4096, PROT_READ);
+ 
+ 	for (uint32_t i = 0; i < ctx.engines->nengines; i++)
+-		igt_debug("engine %i (%s)\t= %016lx\n", i,
++		igt_debug("engine %i (%s)\t= %016"PRIx64"\n", i,
+ 			  ctx.engines->engines[i].name, counter_output[i]);
+ 
+ 	/*
+@@ -2825,7 +2825,7 @@ static void test_syncobj_stationary_timeline_chain_engines(int fd, struct intel_
+ 	counter_output = gem_mmap__wc(fd, ctx.engine_counter_object.handle, 0, 4096, PROT_READ);
+ 
+ 	for (uint32_t i = 0; i < ctx.engines->nengines; i++)
+-		igt_debug("engine %i (%s)\t= %016lx\n", i,
++		igt_debug("engine %i (%s)\t= %016"PRIx64"\n", i,
+ 			  ctx.engines->engines[i].name, counter_output[i]);
+ 	igt_assert_eq(counter_output[engines->nengines - 1],
+ 		      fib(ARRAY_SIZE(ctx.iterations) * engines->nengines + 1));
+@@ -2886,7 +2886,7 @@ static void test_syncobj_backward_timeline_chain_engines(int fd, struct intel_en
+ 	counter_output = gem_mmap__wc(fd, ctx.engine_counter_object.handle, 0, 4096, PROT_READ);
+ 
+ 	for (uint32_t i = 0; i < ctx.engines->nengines; i++)
+-		igt_debug("engine %i (%s)\t= %016lx\n", i,
++		igt_debug("engine %i (%s)\t= %016"PRIx64"\n", i,
+ 			  ctx.engines->engines[i].name, counter_output[i]);
+ 	igt_assert_eq(counter_output[engines->nengines - 1],
+ 		      fib(ARRAY_SIZE(ctx.iterations) * engines->nengines + 1));
 -- 
-2.21.1
+2.28.0
 
 _______________________________________________
 igt-dev mailing list
