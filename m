@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 20 Aug 2020 14:36:00 +0100
-Message-Id: <20200820133600.8259-1-chris@chris-wilson.co.uk>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Thu, 20 Aug 2020 16:51:56 +0200
+Message-Id: <20200820145215.13238-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_capture: Check the capture
- runs in isolation
+Subject: [igt-dev] [PATCH i-g-t v3 00/19] tests/core_hotunplug: Fixes and
+ enhancements
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -12,128 +12,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>, Petri Latvala <petri.latvala@intel.com>, intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Capturing the error state for one context should not impede progress of
-other contexts across the system. That is we reset the engine, remove
-the context from the execution queue, then capture it. Once the hanging
-request has been removed, we can execute any other context instead.
-
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Mika Kuoppala <mika.kuoppala@linux.intel.com>
----
- tests/i915/gem_exec_capture.c | 66 +++++++++++++++++++++++++++++++++--
- 1 file changed, 64 insertions(+), 2 deletions(-)
-
-diff --git a/tests/i915/gem_exec_capture.c b/tests/i915/gem_exec_capture.c
-index 1a53d2fb7..186bed7e2 100644
---- a/tests/i915/gem_exec_capture.c
-+++ b/tests/i915/gem_exec_capture.c
-@@ -195,6 +195,7 @@ static struct offset {
- 	      unsigned int size, int count,
- 	      unsigned int flags)
- #define INCREMENTAL 0x1
-+#define ASYNC 0x2
- {
- 	const int gen = intel_gen(intel_get_drm_devid(fd));
- 	struct drm_i915_gem_exec_object2 *obj;
-@@ -303,9 +304,11 @@ static struct offset {
- 		igt_assert(gem_bo_busy(fd, obj[0].handle));
- 	munmap(seqno, 4096);
- 
--	igt_force_gpu_reset(fd);
-+	if (!(flags & ASYNC)) {
-+		igt_force_gpu_reset(fd);
-+		gem_sync(fd, obj[count + 1].handle);
-+	}
- 
--	gem_sync(fd, obj[count + 1].handle);
- 	gem_close(fd, obj[count + 1].handle);
- 	for (i = 0; i < count; i++) {
- 		offsets[i].addr = obj[i + 1].offset;
-@@ -491,6 +494,62 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
- 	free(offsets);
- }
- 
-+static void prioinv(int fd, int dir, unsigned ring)
-+{
-+	const uint32_t bbe = MI_BATCH_BUFFER_END;
-+	struct drm_i915_gem_exec_object2 obj = {
-+		.handle = gem_create(fd, 4096),
-+	};
-+	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(&obj),
-+		.buffer_count = 1,
-+		.flags = ring,
-+	};
-+	int64_t timeout = NSEC_PER_SEC; /* 1s, feeling generous, blame debug */
-+	uint64_t ram, gtt, size = 4 << 20;
-+	unsigned long count;
-+	int link[2], dummy;
-+
-+	igt_require(gem_scheduler_enabled(fd));
-+	igt_require(igt_params_set(fd, "reset", "%u", -1)); /* engine resets! */
-+	igt_require(gem_gpu_reset_type(fd) > 1);
-+
-+	gtt = gem_aperture_size(fd) / size;
-+	ram = (intel_get_avail_ram_mb() << 20) / size;
-+	igt_debug("Available objects in GTT:%"PRIu64", RAM:%"PRIu64"\n",
-+		  gtt, ram);
-+
-+	count = min(gtt, ram) / 4;
-+	igt_require(count > 1);
-+
-+	intel_require_memory(count, size, CHECK_RAM);
-+
-+	gem_write(fd, obj.handle, 0, &bbe, sizeof(bbe));
-+	gem_execbuf(fd, &execbuf);
-+	gem_sync(fd, obj.handle);
-+
-+	igt_assert(pipe(link) == 0);
-+	igt_fork(child, 1) {
-+		fd = gem_reopen_driver(fd);
-+		igt_debug("Submitting large hang + capture\n");
-+		free(__captureN(fd, dir, ring, size, count, ASYNC));
-+		write(link[1], &fd, sizeof(fd)); /* wake the parent up */
-+		igt_force_gpu_reset(fd);
-+	}
-+	read(link[0], &dummy, sizeof(dummy));
-+
-+	igt_debug("Submitting nop\n");
-+	gem_execbuf(fd, &execbuf);
-+	igt_assert_eq(gem_wait(fd, obj.handle, &timeout), 0);
-+	gem_close(fd, obj.handle);
-+
-+	igt_waitchildren();
-+	close(link[0]);
-+	close(link[1]);
-+
-+	gem_quiescent_gpu(fd);
-+}
-+
- static void userptr(int fd, int dir)
- {
- 	uint32_t handle;
-@@ -588,6 +647,9 @@ igt_main
- 		userptr(fd, dir);
- 	}
- 
-+	test_each_engine("pi", fd, e)
-+		prioinv(fd, dir, e->flags);
-+
- 	igt_fixture {
- 		close(dir);
- 		igt_disallow_hang(fd, hang);
--- 
-2.28.0
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Q2xlYW4gdXAgdGhlIHRlc3QgY29kZSwgYWRkIHNvbWUgbmV3IGJhc2ljIHN1YnRlc3RzLCB0aGVu
+IHVuYmxvY2sKdW5iaW5kIHRlc3QgdmFyaWFudHMuCgpPbmUgcGF0Y2ggaGFzIGJlZW4gcmVuYW1l
+ZCwgdGhyZWUgbmV3IHBhdGNoZXMgYWRkZWQgdG8gdGhlIHNlcmllcywgYW5kCm9uZSBtb3JlIHBh
+dGNoIGZvcm0gYSBmb3JtZXJseSBzdWJtaXR0ZWQgc2VyaWVzIHdpdGggbmV3IHN1YnRlc3RzCmlu
+Y2x1ZGVkLgoKQE1pY2hhxYI6IFNpbmNlIG1vc3QgdjIvdjMgdXBkYXRlcyBhcmUgdHJpdmlhbCwg
+SSd2ZSBwcmVzZXJ2ZWQgeW91cgp2MS92MiBSZXZpZXdkLWJ5OiBleGNlcHQgZm9yIGEgZmV3IHBh
+dGNoZXMgd2l0aCBub24tdHJpdmlhbCBjaGFuZ2VzLAp3aGVyZSBJIG1hcmtlZCB5b3VyIFItYiBh
+cyB2MS92MiBhcHBsaWNhYmxlLiAgUGxlYXNlIGhhdmUgYSBsb29rIGFuZApjb25maXJtIGlmIHlv
+dSBhcmUgc3RpbGwgT0sgd2l0aCB0aGVtLgoKQFR2cnRrbzogUGxlYXNlIHN1cHBvcnQgbXkgYXR0
+ZW1wdCB0byByZW1vdmUgdGhlIHVuYmluZCB0ZXN0IHZhcmlhbnRzCmZyb20gdGhlIGJsb2NrbGlz
+dC4KCkBQZXRyaSwgQE1hcnRpbjogUGxlYXNlIGdpdmUgbWUgeW91ciBncmVlbiBsaXRlIGZvciBt
+ZXJnaW5nIHRoaXMKc2VyaWVzIGlmIHlvdSBoYXZlIG5vIG9iamVjdGlvbnMuCgpUaGFua3MsCkph
+bnVzegoKSmFudXN6IEtyenlzenRvZmlrICgxOSk6CiAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IFVz
+ZSBpZ3RfYXNzZXJ0X2ZkKCkKICB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogQ29uc3RpZnkgZGV2X2J1
+c19hZGRyIHN0cmluZwogIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBDbGVhbiB1cCBkZXZpY2Ugb3Bl
+biBlcnJvciBoYW5kbGluZwogIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBDb25zb2xpZGF0ZSBkdXBs
+aWNhdGVkIGRlYnVnIG1lc3NhZ2VzICMgbmV3CiAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IEFzc2Vy
+dCBzdWNjZXNzZnVsIGRldmljZSBmaWx0ZXIgYXBwbGljYXRpb24KICB0ZXN0cy9jb3JlX2hvdHVu
+cGx1ZzogTWFpbnRhaW4gYSBzaW5nbGUgZGF0YSBzdHJ1Y3R1cmUgaW5zdGFuY2UKICB0ZXN0cy9j
+b3JlX2hvdHVucGx1ZzogUGFzcyBlcnJvcnMgdmlhIGEgZGF0YSBzdHJ1Y3R1cmUgZmllbGQKICB0
+ZXN0cy9jb3JlX2hvdHVucGx1ZzogSGFuZGxlIGRldmljZSBjbG9zZSBlcnJvcnMKICB0ZXN0cy9j
+b3JlX2hvdHVucGx1ZzogUHJlcGFyZSBpbnZhcmlhbnQgZGF0YSBvbmNlIHBlciB0ZXN0IHJ1bgog
+IHRlc3RzL2NvcmVfaG90dW5wbHVnOiBTa2lwIHNlbGVjdGl2ZWx5IG9uIHN5c2ZzIGNsb3NlIGVy
+cm9ycwogIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBSZWNvdmVyIGZyb20gc3VidGVzdCBmYWlsdXJl
+cyAjIHJlbmFtZWQKICB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogRmFpbCBzdWJ0ZXN0cyBvbiBkZXZp
+Y2UgY2xvc2UgZXJyb3JzCiAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IExldCB0aGUgZHJpdmVyIHRp
+bWUgb3V0IGVzc2VudGlhbCBzeXNmcyBvcGVyYXRpb25zICMgbmV3CiAgdGVzdHMvY29yZV9ob3R1
+bnBsdWc6IFByb2Nlc3MgcmV0dXJuIHZhbHVlcyBvZiBzeXNmcyBvcGVyYXRpb25zCiAgdGVzdHMv
+Y29yZV9ob3R1bnBsdWc6IEFzc2VydCBleHBlY3RlZCBkZXZpY2UgcHJlc2VuY2UvYWJzZW5jZQog
+IHRlc3RzL2NvcmVfaG90dW5wbHVnOiBFeHBsaWNpdGx5IGlnbm9yZSB1bnVzZWQgcmV0dXJuIHZh
+bHVlcwogIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBNb3JlIHRob3JvdWdoIGk5MTUgaGVhbHRoY2hl
+Y2sgYW5kIHJlY292ZXJ5ICMgbmV3CiAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IEFkZCAnbGF0ZWNs
+b3NlIGJlZm9yZSByZXN0b3JlJyB2YXJpYW50cyAjIGluY2x1ZGVkCiAgdGVzdHMvY29yZV9ob3R1
+bnBsdWc6IFVuLWJsb2NrbGlzdCAqYmluZCogc3VidGVzdHMKCiB0ZXN0cy9jb3JlX2hvdHVucGx1
+Zy5jICAgICAgIHwgNTI1ICsrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tCiB0ZXN0
+cy9pbnRlbC1jaS9ibGFja2xpc3QudHh0IHwgICAyICstCiAyIGZpbGVzIGNoYW5nZWQsIDM5NiBp
+bnNlcnRpb25zKCspLCAxMzEgZGVsZXRpb25zKC0pCgotLSAKMi4yMS4xCgpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdApp
+Z3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
