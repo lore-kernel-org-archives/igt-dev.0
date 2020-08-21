@@ -1,15 +1,29 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1144A6E1E2
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2020 16:28:58 +0000 (UTC)
-From: Lukasz Fiedorowicz <lukasz.fiedorowicz@intel.com>
-In-Reply-To: <20200820125833.5558-1-priyanka.dandamudi@intel.com>
-References: <20200820125833.5558-1-priyanka.dandamudi@intel.com>
-Date: Fri, 21 Aug 2020 18:28:35 +0200
-Message-ID: <877dtsx8ss.fsf@lfiedoro-desk1.igk.intel.com>
+Received: from netline-mail3.netline.ch (mail.netline.ch [148.251.143.178])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 3F87C6E2ED
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2020 16:39:30 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+ by netline-mail3.netline.ch (Postfix) with ESMTP id 92A862A6016
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2020 18:39:29 +0200 (CEST)
+Received: from netline-mail3.netline.ch ([127.0.0.1])
+ by localhost (netline-mail3.netline.ch [127.0.0.1]) (amavisd-new, port 10024)
+ with LMTP id FzYMLxp71HnM for <igt-dev@lists.freedesktop.org>;
+ Fri, 21 Aug 2020 18:39:29 +0200 (CEST)
+Received: from kaveri (212.174.63.188.dynamic.wline.res.cust.swisscom.ch
+ [188.63.174.212])
+ by netline-mail3.netline.ch (Postfix) with ESMTPSA id 1B8AF2A6046
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2020 18:39:29 +0200 (CEST)
+Received: from daenzer by kaveri with local (Exim 4.94)
+ (envelope-from <michel@daenzer.net>) id 1k9A4e-004UzI-E1
+ for igt-dev@lists.freedesktop.org; Fri, 21 Aug 2020 18:39:28 +0200
+From: =?UTF-8?q?Michel=20D=C3=A4nzer?= <michel@daenzer.net>
+Date: Fri, 21 Aug 2020 18:39:28 +0200
+Message-Id: <20200821163928.1072379-3-michel@daenzer.net>
+In-Reply-To: <20200821163928.1072379-1-michel@daenzer.net>
+References: <20200821163928.1072379-1-michel@daenzer.net>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] i915/gem_vm_create: Added test
- description for test case
+Subject: [igt-dev] [PATCH 2/2] tests/kms_atomic_transition: Turn off pipe as
+ well if all planes are off
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,95 +31,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: priyanka.dandamudi@intel.com, Arjun.Melkaveri@intel.com, igt-dev@lists.freedesktop.org, priyanka.dandamudi@intel.com
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-<priyanka.dandamudi@intel.com> writes:
-
-> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
->
-> Added test description for test and to all the available subtests.
->
-> v2:Modified 5th subtest description.
->
-> Cc: Melkaveri, Arjun <Arjun.Melkaveri@intel.com>
-> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-
-LGTM.
-Reviewed-by: Lukasz Fiedorowicz <lukasz.fiedorowicz@intel.com>
-
-> ---
->  tests/i915/gem_vm_create.c | 22 +++++++++++++++++-----
->  1 file changed, 17 insertions(+), 5 deletions(-)
->
-> diff --git a/tests/i915/gem_vm_create.c b/tests/i915/gem_vm_create.c
-> index e8af68f1..e9172291 100644
-> --- a/tests/i915/gem_vm_create.c
-> +++ b/tests/i915/gem_vm_create.c
-> @@ -26,6 +26,11 @@
->  #include "igt.h"
->  #include "igt_dummyload.h"
->  
-> +IGT_TEST_DESCRIPTION("Test the basic vm creation ioctl,"
-> +		 "where it checks if invalid combinations are rejected and "
-> +		 "checks isolation that the same vm_id on different fd are indeed "
-> +		 "different vm.");
-> +
->  static int vm_create_ioctl(int i915, struct drm_i915_gem_vm_control *ctl)
->  {
->  	int err = 0;
-> @@ -395,10 +400,10 @@ igt_main
->  		igt_require_gem(i915);
->  		igt_require(has_vm(i915));
->  	}
-> -
-> +	igt_describe("Checks if vm creation ioctl returns error for invalid flags and extensions.");
->  	igt_subtest("invalid-create")
->  		invalid_create(i915);
-> -
-> +	igt_describe("Checks if vm destroy ioctl returns error for invalid vmid's, flags and extensions.");
->  	igt_subtest("invalid-destroy")
->  		invalid_destroy(i915);
->  
-> @@ -406,16 +411,23 @@ igt_main
->  		igt_fixture {
->  			gem_context_require_param(i915, I915_CONTEXT_PARAM_VM);
->  		}
-> -
-> +		igt_describe("Checks if offset for same context can be different for different vm's.");
->  		igt_subtest("execbuf")
->  			execbuf(i915);
->  
-> +		igt_describe("Checks if same vmid in different fd are different vm, also " 
-> +			     "proves that it cannot be written to vm from another fd.");
->  		igt_subtest("isolation")
->  			isolation(i915);
-> -
-> +		
-> +		igt_describe("Test creates a vm and is allowed to share between two contexts on the same fd "
-> +			     "and checks if offset set by one context of an already active vma can be modified"
-> +			     " by another context or not."); 
->  		igt_subtest("create-ext")
->  			create_ext(i915);
-> -
-> +		
-> +		igt_describe("Test tries to access same vm and context for "
-> +			     "two different spin batches when vm has been destroyed asynchronously.");
->  		igt_subtest("async-destroy")
->  			async_destroy(i915);
->  	}
-> -- 
-> 2.26.2
->
-
--- 
-Thanks,
-Lukasz
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RnJvbTogTWljaGVsIETDpG56ZXIgPG1kYWVuemVyQHJlZGhhdC5jb20+CgpBbmQgc2V0IHRoZSBE
+Uk1fTU9ERV9BVE9NSUNfQUxMT1dfTU9ERVNFVCBmb3IgVFJBTlNJVElPTl9BRlRFUl9GUkVFIGFz
+CndlbGwuCgpUaGlzIG1ha2VzIHRoZSB0ZXN0IGNvbXBhdGlibGUgd2l0aCBzZXR1cHMgd2hpY2gg
+ZG9uJ3Qgc3VwcG9ydCBhbgplbmFibGVkIHBpcGUgd2l0aG91dCBhbnkgZW5hYmxlZCBwbGFuZXMu
+CgpTaWduZWQtb2ZmLWJ5OiBNaWNoZWwgRMOkbnplciA8bWRhZW56ZXJAcmVkaGF0LmNvbT4KLS0t
+CiB0ZXN0cy9rbXNfYXRvbWljX3RyYW5zaXRpb24uYyB8IDE5ICsrKysrKystLS0tLS0tLS0tLS0K
+IDEgZmlsZSBjaGFuZ2VkLCA3IGluc2VydGlvbnMoKyksIDEyIGRlbGV0aW9ucygtKQoKZGlmZiAt
+LWdpdCBhL3Rlc3RzL2ttc19hdG9taWNfdHJhbnNpdGlvbi5jIGIvdGVzdHMva21zX2F0b21pY190
+cmFuc2l0aW9uLmMKaW5kZXggYTcxYmJlMTAuLjQ4MzRiNTgwIDEwMDY0NAotLS0gYS90ZXN0cy9r
+bXNfYXRvbWljX3RyYW5zaXRpb24uYworKysgYi90ZXN0cy9rbXNfYXRvbWljX3RyYW5zaXRpb24u
+YwpAQCAtNDU3LDcgKzQ1Nyw3IEBAIHJ1bl90cmFuc2l0aW9uX3Rlc3QoaWd0X2Rpc3BsYXlfdCAq
+ZGlzcGxheSwgZW51bSBwaXBlIHBpcGUsIGlndF9vdXRwdXRfdCAqb3V0cHV0CiAJaWYgKG5vbmJs
+b2NraW5nKQogCQlmbGFncyB8PSBEUk1fTU9ERV9BVE9NSUNfTk9OQkxPQ0s7CiAKLQlpZiAodHlw
+ZSA+PSBUUkFOU0lUSU9OX01PREVTRVQpCisJaWYgKHR5cGUgPj0gVFJBTlNJVElPTl9BRlRFUl9G
+UkVFKQogCQlmbGFncyB8PSBEUk1fTU9ERV9BVE9NSUNfQUxMT1dfTU9ERVNFVDsKIAogCW1vZGUg
+PSBpZ3Rfb3V0cHV0X2dldF9tb2RlKG91dHB1dCk7CkBAIC00NjgsMjAgKzQ2OCwxMSBAQCBydW5f
+dHJhbnNpdGlvbl90ZXN0KGlndF9kaXNwbGF5X3QgKmRpc3BsYXksIGVudW0gcGlwZSBwaXBlLCBp
+Z3Rfb3V0cHV0X3QgKm91dHB1dAogCWlndF9jcmVhdGVfZmIoZGlzcGxheS0+ZHJtX2ZkLCBtb2Rl
+LT5oZGlzcGxheSwgbW9kZS0+dmRpc3BsYXksCiAJCSAgICAgIERSTV9GT1JNQVRfWFJHQjg4ODgs
+IExPQ0FMX0RSTV9GT1JNQVRfTU9EX05PTkUsICZmYik7CiAKLQlpZ3Rfb3V0cHV0X3NldF9waXBl
+KG91dHB1dCwgcGlwZSk7Ci0KKwlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dCwgUElQRV9OT05F
+KTsKIAl3bV9zZXR1cF9wbGFuZShkaXNwbGF5LCBwaXBlLCAwLCBOVUxMLCBmYWxzZSk7Ci0KLQlp
+ZiAoZmxhZ3MgJiBEUk1fTU9ERV9BVE9NSUNfQUxMT1dfTU9ERVNFVCkgewotCQlpZ3Rfb3V0cHV0
+X3NldF9waXBlKG91dHB1dCwgUElQRV9OT05FKTsKLQotCQlpZ3RfZGlzcGxheV9jb21taXQyKGRp
+c3BsYXksIENPTU1JVF9BVE9NSUMpOwotCi0JCWlndF9vdXRwdXRfc2V0X3BpcGUob3V0cHV0LCBw
+aXBlKTsKLQl9Ci0KIAlpZ3RfZGlzcGxheV9jb21taXQyKGRpc3BsYXksIENPTU1JVF9BVE9NSUMp
+OwogCisJaWd0X291dHB1dF9zZXRfcGlwZShvdXRwdXQsIHBpcGUpOwogCXNldHVwX3Bhcm1zKGRp
+c3BsYXksIHBpcGUsIG1vZGUsICZmYiwgJmFyZ2JfZmIsICZzcHJpdGVfZmIsIHBhcm1zLCAmaXRl
+cl9tYXgpOwogCiAJLyoKQEAgLTQ5MCw2ICs0ODEsNyBAQCBydW5fdHJhbnNpdGlvbl90ZXN0KGln
+dF9kaXNwbGF5X3QgKmRpc3BsYXksIGVudW0gcGlwZSBwaXBlLCBpZ3Rfb3V0cHV0X3QgKm91dHB1
+dAogCSAqIHBsYW5lcyB0byBmaXggdGhpcwogCSAqLwogCXdoaWxlICgxKSB7CisJCWlndF9vdXRw
+dXRfc2V0X3BpcGUob3V0cHV0LCBwaXBlKTsKIAkJd21fc2V0dXBfcGxhbmUoZGlzcGxheSwgcGlw
+ZSwgaXRlcl9tYXggLSAxLCBwYXJtcywgZmFsc2UpOwogCiAJCWlmIChmZW5jaW5nKQpAQCAtNTI0
+LDYgKzUxNiw3IEBAIHJ1bl90cmFuc2l0aW9uX3Rlc3QoaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSwg
+ZW51bSBwaXBlIHBpcGUsIGlndF9vdXRwdXRfdCAqb3V0cHV0CiAJaWYgKHR5cGUgPT0gVFJBTlNJ
+VElPTl9BRlRFUl9GUkVFKSB7CiAJCWludCBmZW5jZV9mZCA9IC0xOwogCisJCWlndF9vdXRwdXRf
+c2V0X3BpcGUob3V0cHV0LCBQSVBFX05PTkUpOwogCQl3bV9zZXR1cF9wbGFuZShkaXNwbGF5LCBw
+aXBlLCAwLCBwYXJtcywgZmVuY2luZyk7CiAKIAkJYXRvbWljX2NvbW1pdChkaXNwbGF5LCBwaXBl
+LCBmbGFncywgKHZvaWQgKikodW5zaWduZWQgbG9uZykwLCBmZW5jaW5nKTsKQEAgLTU3Nyw2ICs1
+NzAsOCBAQCBydW5fdHJhbnNpdGlvbl90ZXN0KGlndF9kaXNwbGF5X3QgKmRpc3BsYXksIGVudW0g
+cGlwZSBwaXBlLCBpZ3Rfb3V0cHV0X3QgKm91dHB1dAogCQl9IGVsc2UgewogCQkJdWludDMyX3Qg
+ajsKIAorCQkJaWd0X291dHB1dF9zZXRfcGlwZShvdXRwdXQsIHBpcGUpOworCiAJCQkvKiBpIC0+
+IGkrMSB3aWxsIGJlIGRvbmUgd2hlbiBpIGluY3JlYXNlcywgY2FuIGJlIHNraXBwZWQgaGVyZSAq
+LwogCQkJZm9yIChqID0gaXRlcl9tYXggLSAxOyBqID4gaSArIDE7IGotLSkgewogCQkJCW5fZW5h
+YmxlX3BsYW5lcyA9IGlndF9od2VpZ2h0KGopOwotLSAKMi4yOC4wCgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
+ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
