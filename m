@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 21 Aug 2020 14:57:40 +0530
-From: Ramalingam C <ramalingam.c@intel.com>
-Message-ID: <20200821092740.GA16946@intel.com>
-References: <20200810124415.601096-1-chris@chris-wilson.co.uk>
+Message-ID: <94bbee2d0e673ed4848c2839638acade90b73761.camel@linux.intel.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Fri, 21 Aug 2020 12:11:50 +0200
+In-Reply-To: <20200820145215.13238-1-janusz.krzysztofik@linux.intel.com>
+References: <20200820145215.13238-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200810124415.601096-1-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/perf_pmu: Emit a semaphore to
- measure
+Subject: Re: [igt-dev] [PATCH i-g-t v3 00/19] tests/core_hotunplug: Fixes
+ and enhancements
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,198 +14,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, =?UTF-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>, Petri Latvala <petri.latvala@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-08-10 at 13:44:15 +0100, Chris Wilson wrote:
-> Don't assume the kernel will emit a semaphore to synchronise between two
-> engine, and emit the semaphore ourselves for the basis of our
-> measurements. The purpose of the test is to try and ascertain the
-> accuracy of the two sampling methods, semaphore busyness uses register
-> polling, whereas the engine busyness may use ktime_t of the CS events.
-
-Looks good to me.
-
-Reviewed-by: Ramalingam C <ramalingam.c@intel.com>
-
-Tested on the platform too.
-> 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Ramalingam C <ramalingam.c@intel.com>
-> ---
->  tests/i915/perf_pmu.c | 94 +++++++++++++++++++++++++++++--------------
->  1 file changed, 64 insertions(+), 30 deletions(-)
-> 
-> diff --git a/tests/i915/perf_pmu.c b/tests/i915/perf_pmu.c
-> index 13e1bd93e..ecd4afbd6 100644
-> --- a/tests/i915/perf_pmu.c
-> +++ b/tests/i915/perf_pmu.c
-> @@ -650,6 +650,7 @@ no_sema(int gem_fd, const struct intel_execution_engine2 *e, unsigned int flags)
->  #define MI_SEMAPHORE_WAIT	MI_INSTR(0x1c, 2) /* GEN8+ */
->  #define   MI_SEMAPHORE_POLL		(1<<15)
->  #define   MI_SEMAPHORE_SAD_GTE_SDD	(1<<12)
-> +#define   MI_SEMAPHORE_SAD_NEQ_SDD      (5 << 12)
->  
->  static void
->  sema_wait(int gem_fd, const struct intel_execution_engine2 *e,
-> @@ -751,10 +752,39 @@ sema_wait(int gem_fd, const struct intel_execution_engine2 *e,
->  	assert_within_epsilon(val[1] - val[0], slept, tolerance);
->  }
->  
-> +static uint32_t
-> +create_sema(int gem_fd, struct drm_i915_gem_relocation_entry *reloc)
-> +{
-> +	uint32_t cs[] = {
-> +		/* Reset our semaphore wait */
-> +		MI_STORE_DWORD_IMM,
-> +		0,
-> +		0,
-> +		1,
-> +
-> +		/* Wait until the semaphore value is set to 0 [by caller] */
-> +		MI_SEMAPHORE_WAIT | MI_SEMAPHORE_POLL | MI_SEMAPHORE_SAD_NEQ_SDD,
-> +		1,
-> +		0,
-> +		0,
-> +
-> +		MI_BATCH_BUFFER_END
-> +	};
-> +	uint32_t handle = gem_create(gem_fd, 4096);
-> +
-> +	memset(reloc, 0, 2 * sizeof(*reloc));
-> +	reloc[0].target_handle = handle;
-> +	reloc[0].offset = 64 + 1 * sizeof(uint32_t);
-> +	reloc[1].target_handle = handle;
-> +	reloc[1].offset = 64 + 6 * sizeof(uint32_t);
-> +
-> +	gem_write(gem_fd, handle, 64, cs, sizeof(cs));
-> +	return handle;
-> +}
-> +
->  static void
->  __sema_busy(int gem_fd, int pmu,
->  	    const struct intel_execution_engine2 *e,
-> -	    const struct intel_execution_engine2 *signal,
->  	    int sema_pct,
->  	    int busy_pct)
->  {
-> @@ -764,39 +794,54 @@ __sema_busy(int gem_fd, int pmu,
->  	};
->  	uint64_t total, sema, busy;
->  	uint64_t start[2], val[2];
-> -	igt_spin_t *spin[2];
-> +	struct drm_i915_gem_relocation_entry reloc[2];
-> +	struct drm_i915_gem_exec_object2 obj = {
-> +		.handle = create_sema(gem_fd, reloc),
-> +		.relocation_count = 2,
-> +		.relocs_ptr = to_user_pointer(reloc),
-> +	};
-> +	struct drm_i915_gem_execbuffer2 eb = {
-> +		.batch_start_offset = 64,
-> +		.buffer_count = 1,
-> +		.buffers_ptr = to_user_pointer(&obj),
-> +		.flags = e->flags,
-> +	};
-> +	igt_spin_t *spin;
-> +	uint32_t *map;
->  
->  	/* Time spent being busy includes time waiting on semaphores */
->  	igt_assert(busy_pct >= sema_pct);
->  
->  	gem_quiescent_gpu(gem_fd);
->  
-> -	spin[0] = igt_spin_new(gem_fd,
-> -			       .engine = signal->flags,
-> -			       .flags = IGT_SPIN_FENCE_OUT | IGT_SPIN_POLL_RUN);
-> -	spin[1] = igt_spin_new(gem_fd,
-> -			       .engine = e->flags,
-> -			       .fence = spin[0]->out_fence,
-> -			       .flags = IGT_SPIN_FENCE_IN);
-> +	map = gem_mmap__wc(gem_fd, obj.handle, 0, 4096, PROT_WRITE);
-> +	gem_execbuf(gem_fd, &eb);
-> +	spin = igt_spin_new(gem_fd, .engine = e->flags);
->  
-> -	igt_spin_busywait_until_started(spin[0]);
-> +	/* Wait until the batch is executed and the semaphore is busy-waiting */
-> +	while (!READ_ONCE(*map) && gem_bo_busy(gem_fd, obj.handle))
-> +		;
-> +	igt_assert(gem_bo_busy(gem_fd, obj.handle));
-> +	gem_close(gem_fd, obj.handle);
->  
->  	total = pmu_read_multi(pmu, 2, start);
->  
->  	sema = measured_usleep(batch_duration_ns * sema_pct / 100 / 1000);
-> -	igt_spin_end(spin[0]);
-> +	*map = 0; __sync_synchronize();
->  	busy = measured_usleep(batch_duration_ns * (busy_pct - sema_pct) / 100 / 1000);
-> -	igt_spin_end(spin[1]);
-> +	igt_spin_end(spin);
->  	measured_usleep(batch_duration_ns * (100 - busy_pct) / 100 / 1000);
->  
->  	total = pmu_read_multi(pmu, 2, val) - total;
-> +	igt_spin_free(gem_fd, spin);
-> +	munmap(map, 4096);
->  
->  	busy += sema;
->  	val[SEMA] -= start[SEMA];
->  	val[BUSY] -= start[BUSY];
->  
-> -	igt_info("%s<-%s, target: {%.1f%% [%d], %.1f%% [%d]}, measured: {%.1f%%, %.1f%%}\n",
-> -		 e->name, signal->name,
-> +	igt_info("%s, target: {%.1f%% [%d], %.1f%% [%d]}, measured: {%.1f%%, %.1f%%}\n",
-> +		 e->name,
->  		 sema * 100. / total, sema_pct,
->  		 busy * 100. / total, busy_pct,
->  		 val[SEMA] * 100. / total,
-> @@ -809,8 +854,6 @@ __sema_busy(int gem_fd, int pmu,
->  		     val[SEMA] * 1e-3, val[SEMA] * 100. / total,
->  		     val[BUSY] * 1e-3, val[BUSY] * 100. / total);
->  
-> -	igt_spin_free(gem_fd, spin[1]);
-> -	igt_spin_free(gem_fd, spin[0]);
->  }
->  
->  static void
-> @@ -818,25 +861,16 @@ sema_busy(int gem_fd,
->  	  const struct intel_execution_engine2 *e,
->  	  unsigned int flags)
->  {
-> -	const struct intel_execution_engine2 *signal;
->  	int fd;
->  
-> -	igt_require(gem_scheduler_has_semaphores(gem_fd));
-> -	igt_require(gem_scheduler_has_preemption(gem_fd));
-> +	igt_require(intel_gen(intel_get_drm_devid(gem_fd)) >= 8);
->  
-> -	fd = open_group(gem_fd,
-> -			I915_PMU_ENGINE_SEMA(e->class, e->instance), -1);
-> +	fd = open_group(gem_fd, I915_PMU_ENGINE_SEMA(e->class, e->instance), -1);
->  	open_group(gem_fd, I915_PMU_ENGINE_BUSY(e->class, e->instance), fd);
->  
-> -	__for_each_physical_engine(gem_fd, signal) {
-> -		if (e->class == signal->class &&
-> -		    e->instance == signal->instance)
-> -			continue;
-> -
-> -		__sema_busy(gem_fd, fd, e, signal, 50, 100);
-> -		__sema_busy(gem_fd, fd, e, signal, 25, 50);
-> -		__sema_busy(gem_fd, fd, e, signal, 75, 75);
-> -	}
-> +	__sema_busy(gem_fd, fd, e, 50, 100);
-> +	__sema_busy(gem_fd, fd, e, 25, 50);
-> +	__sema_busy(gem_fd, fd, e, 75, 75);
->  
->  	close(fd);
->  }
-> -- 
-> 2.28.0
-> 
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVGh1LCAyMDIwLTA4LTIwIGF0IDE2OjUxICswMjAwLCBKYW51c3ogS3J6eXN6dG9maWsgd3Jv
+dGU6Cj4gQ2xlYW4gdXAgdGhlIHRlc3QgY29kZSwgYWRkIHNvbWUgbmV3IGJhc2ljIHN1YnRlc3Rz
+LCB0aGVuIHVuYmxvY2sKPiB1bmJpbmQgdGVzdCB2YXJpYW50cy4KCkhpLAoKQ0kgcmVzdWx0cyBz
+aG93IHRoYXQgaTkxNSByZWNvdmVyeSBhZnRlciBhIGZhaWxlZCBoZWFsdGhjaGVjayBzdGlsbApu
+ZWVkcyBzb21lIHdvcmssIHNvIHBsZWFzZSBob2xkIG9uIHdpdGggeW91ciByZXZpZXdzLiAgSSdt
+IGdvaW5nIHRvCnN1Ym1pdCB2NCBzb29uLgoKVGhhbmtzLApKYW51c3oKCj4gCj4gT25lIHBhdGNo
+IGhhcyBiZWVuIHJlbmFtZWQsIHRocmVlIG5ldyBwYXRjaGVzIGFkZGVkIHRvIHRoZSBzZXJpZXMs
+IGFuZAo+IG9uZSBtb3JlIHBhdGNoIGZvcm0gYSBmb3JtZXJseSBzdWJtaXR0ZWQgc2VyaWVzIHdp
+dGggbmV3IHN1YnRlc3RzCj4gaW5jbHVkZWQuCj4gCj4gQE1pY2hhxYI6IFNpbmNlIG1vc3QgdjIv
+djMgdXBkYXRlcyBhcmUgdHJpdmlhbCwgSSd2ZSBwcmVzZXJ2ZWQgeW91cgo+IHYxL3YyIFJldmll
+d2QtYnk6IGV4Y2VwdCBmb3IgYSBmZXcgcGF0Y2hlcyB3aXRoIG5vbi10cml2aWFsIGNoYW5nZXMs
+Cj4gd2hlcmUgSSBtYXJrZWQgeW91ciBSLWIgYXMgdjEvdjIgYXBwbGljYWJsZS4gIFBsZWFzZSBo
+YXZlIGEgbG9vayBhbmQKPiBjb25maXJtIGlmIHlvdSBhcmUgc3RpbGwgT0sgd2l0aCB0aGVtLgo+
+IAo+IEBUdnJ0a286IFBsZWFzZSBzdXBwb3J0IG15IGF0dGVtcHQgdG8gcmVtb3ZlIHRoZSB1bmJp
+bmQgdGVzdCB2YXJpYW50cwo+IGZyb20gdGhlIGJsb2NrbGlzdC4KPiAKPiBAUGV0cmksIEBNYXJ0
+aW46IFBsZWFzZSBnaXZlIG1lIHlvdXIgZ3JlZW4gbGl0ZSBmb3IgbWVyZ2luZyB0aGlzCj4gc2Vy
+aWVzIGlmIHlvdSBoYXZlIG5vIG9iamVjdGlvbnMuCj4gCj4gVGhhbmtzLAo+IEphbnVzego+IAo+
+IEphbnVzeiBLcnp5c3p0b2ZpayAoMTkpOgo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IFVzZSBp
+Z3RfYXNzZXJ0X2ZkKCkKPiAgIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBDb25zdGlmeSBkZXZfYnVz
+X2FkZHIgc3RyaW5nCj4gICB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogQ2xlYW4gdXAgZGV2aWNlIG9w
+ZW4gZXJyb3IgaGFuZGxpbmcKPiAgIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBDb25zb2xpZGF0ZSBk
+dXBsaWNhdGVkIGRlYnVnIG1lc3NhZ2VzICMgbmV3Cj4gICB0ZXN0cy9jb3JlX2hvdHVucGx1Zzog
+QXNzZXJ0IHN1Y2Nlc3NmdWwgZGV2aWNlIGZpbHRlciBhcHBsaWNhdGlvbgo+ICAgdGVzdHMvY29y
+ZV9ob3R1bnBsdWc6IE1haW50YWluIGEgc2luZ2xlIGRhdGEgc3RydWN0dXJlIGluc3RhbmNlCj4g
+ICB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogUGFzcyBlcnJvcnMgdmlhIGEgZGF0YSBzdHJ1Y3R1cmUg
+ZmllbGQKPiAgIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBIYW5kbGUgZGV2aWNlIGNsb3NlIGVycm9y
+cwo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IFByZXBhcmUgaW52YXJpYW50IGRhdGEgb25jZSBw
+ZXIgdGVzdCBydW4KPiAgIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBTa2lwIHNlbGVjdGl2ZWx5IG9u
+IHN5c2ZzIGNsb3NlIGVycm9ycwo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IFJlY292ZXIgZnJv
+bSBzdWJ0ZXN0IGZhaWx1cmVzICMgcmVuYW1lZAo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IEZh
+aWwgc3VidGVzdHMgb24gZGV2aWNlIGNsb3NlIGVycm9ycwo+ICAgdGVzdHMvY29yZV9ob3R1bnBs
+dWc6IExldCB0aGUgZHJpdmVyIHRpbWUgb3V0IGVzc2VudGlhbCBzeXNmcyBvcGVyYXRpb25zICMg
+bmV3Cj4gICB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogUHJvY2VzcyByZXR1cm4gdmFsdWVzIG9mIHN5
+c2ZzIG9wZXJhdGlvbnMKPiAgIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBBc3NlcnQgZXhwZWN0ZWQg
+ZGV2aWNlIHByZXNlbmNlL2Fic2VuY2UKPiAgIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBFeHBsaWNp
+dGx5IGlnbm9yZSB1bnVzZWQgcmV0dXJuIHZhbHVlcwo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6
+IE1vcmUgdGhvcm91Z2ggaTkxNSBoZWFsdGhjaGVjayBhbmQgcmVjb3ZlcnkgIyBuZXcKPiAgIHRl
+c3RzL2NvcmVfaG90dW5wbHVnOiBBZGQgJ2xhdGVjbG9zZSBiZWZvcmUgcmVzdG9yZScgdmFyaWFu
+dHMgIyBpbmNsdWRlZAo+ICAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IFVuLWJsb2NrbGlzdCAqYmlu
+ZCogc3VidGVzdHMKPiAKPiAgdGVzdHMvY29yZV9ob3R1bnBsdWcuYyAgICAgICB8IDUyNSArKysr
+KysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLQo+ICB0ZXN0cy9pbnRlbC1jaS9ibGFja2xp
+c3QudHh0IHwgICAyICstCj4gIDIgZmlsZXMgY2hhbmdlZCwgMzk2IGluc2VydGlvbnMoKyksIDEz
+MSBkZWxldGlvbnMoLSkKPiAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRl
+dgo=
