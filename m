@@ -1,178 +1,54 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Fri, 21 Aug 2020 17:38:06 +0200
-Message-Id: <20200821153807.18613-20-janusz.krzysztofik@linux.intel.com>
+Date: Fri, 21 Aug 2020 17:38:07 +0200
+Message-Id: <20200821153807.18613-21-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20200821153807.18613-1-janusz.krzysztofik@linux.intel.com>
 References: <20200821153807.18613-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v4 19/20] tests/core_hotunplug: Duplicate
- debug messages in dmesg
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: [Intel-gfx] [PATCH i-g-t v4 20/20] tests/core_hotunplug:
+ Un-blocklist *bind* subtests
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>, Petri Latvala <petri.latvala@intel.com>, intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>, intel-gfx@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The purpose of debug messages displayed by the test is to make
-identification of a subtest phase that fails more easy.  Since issues
-exhibited by the test are mostly reported to dmesg, print those debug
-messages to /dev/kmsg as well.
-
-v2: Rebase on upstream.
-v3: Refresh.
+Subtests which don't remove the device, only unbind the driver from it,
+seem relatively safe and harmless for CI.  Remove them from the CI
+blocklist.
 
 Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- tests/core_hotunplug.c | 32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ tests/intel-ci/blacklist.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index f919fa6de..ae7fe18ad 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -52,6 +52,12 @@ struct hotunplug {
+diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+index f9a57cb54..25b567038 100644
+--- a/tests/intel-ci/blacklist.txt
++++ b/tests/intel-ci/blacklist.txt
+@@ -120,7 +120,7 @@ igt@perf_pmu@cpu-hotplug
  
- /* Helpers */
+ # Currently fails and leaves the machine in a very bad state, and
+ # causes coverage loss for other tests.
+-igt@core_hotunplug@.*
++igt@core_hotunplug@.*plug.*
  
-+#define local_debug(fmt, msg...)			       \
-+({							       \
-+	igt_debug(fmt, msg);				       \
-+	igt_kmsg(KMSG_DEBUG "%s: " fmt, igt_test_name(), msg); \
-+})
-+
- /**
-  * Subtests must be able to close examined devices completely.  Don't
-  * use drm_open_driver() since in case of an i915 device it opens it
-@@ -61,7 +67,7 @@ static int local_drm_open_driver(const char *prefix, const char *suffix)
- {
- 	int fd_drm;
- 
--	igt_debug("%sopening device%s\n", prefix, suffix);
-+	local_debug("%sopening device%s\n", prefix, suffix);
- 
- 	fd_drm = __drm_open_driver(DRIVER_ANY);
- 	igt_assert_fd(fd_drm);
-@@ -120,7 +126,7 @@ static void prepare(struct hotunplug *priv)
- static void driver_unbind(struct hotunplug *priv, const char *prefix,
- 			  int timeout)
- {
--	igt_debug("%sunbinding the driver from the device\n", prefix);
-+	local_debug("%sunbinding the driver from the device\n", prefix);
- 	priv->failure = "Driver unbind failure!";
- 
- 	igt_set_timeout(timeout, "Driver unbind timeout!");
-@@ -136,7 +142,7 @@ static void driver_unbind(struct hotunplug *priv, const char *prefix,
- /* Re-bind the driver to the device */
- static void driver_bind(struct hotunplug *priv, int timeout)
- {
--	igt_debug("rebinding the driver to the device\n");
-+	local_debug("%s\n", "rebinding the driver to the device");
- 	priv->failure = "Driver re-bind failure!";
- 
- 	igt_set_timeout(timeout, "Driver re-bind timeout!");
-@@ -160,7 +166,7 @@ static void device_unplug(struct hotunplug *priv, const char *prefix,
- 				    O_DIRECTORY);
- 	igt_assert_fd(priv->fd.sysfs_dev);
- 
--	igt_debug("%sunplugging the device\n", prefix);
-+	local_debug("%sunplugging the device\n", prefix);
- 	priv->failure = "Device unplug failure!";
- 
- 	igt_set_timeout(timeout, "Device unplug timeout!");
-@@ -178,7 +184,7 @@ static void device_unplug(struct hotunplug *priv, const char *prefix,
- /* Re-discover the device by rescanning its bus */
- static void bus_rescan(struct hotunplug *priv, int timeout)
- {
--	igt_debug("rediscovering the device\n");
-+	local_debug("%s\n", "rediscovering the device");
- 	priv->failure = "Bus rescan failure!";
- 
- 	igt_set_timeout(timeout, "Bus rescan timeout!");
-@@ -231,7 +237,7 @@ static int local_i915_healthcheck(int i915)
- 	if (hang_detected)
- 		return -EIO;
- 
--	igt_debug("running i915 GPU healthcheck\n");
-+	local_debug("%s\n", "running i915 GPU healthcheck");
- 
- 	if (local_i915_is_wedged(i915))
- 		return -EIO;
-@@ -262,7 +268,7 @@ static int local_i915_healthcheck(int i915)
- 
- static int local_i915_recover(int i915)
- {
--	igt_debug("forcing i915 GPU reset\n");
-+	local_debug("%s\n", "forcing i915 GPU reset");
- 
- 	igt_force_gpu_reset(i915);
- 	hang_detected = false;
-@@ -369,7 +375,7 @@ static void hotunbind_lateclose(struct hotunplug *priv)
- 
- 	driver_unbind(priv, "hot ", 0);
- 
--	igt_debug("late closing the unbound device instance\n");
-+	local_debug("%s\n", "late closing the unbound device instance");
- 	priv->fd.drm = close_device(priv->fd.drm);
- 	igt_assert_eq(priv->fd.drm, -1);
- }
-@@ -380,7 +386,7 @@ static void hotunplug_lateclose(struct hotunplug *priv)
- 
- 	device_unplug(priv, "hot ", 0);
- 
--	igt_debug("late closing the removed device instance\n");
-+	local_debug("%s\n", "late closing the removed device instance");
- 	priv->fd.drm = close_device(priv->fd.drm);
- 	igt_assert_eq(priv->fd.drm, -1);
- }
-@@ -391,7 +397,7 @@ static void hotunbind_rebind(struct hotunplug *priv)
- 
- 	driver_unbind(priv, "hot ", 60);
- 
--	igt_debug("late closing the unbound device instance\n");
-+	local_debug("%s\n", "late closing the unbound device instance");
- 	priv->fd.drm = close_device(priv->fd.drm);
- 	igt_assert_eq(priv->fd.drm, -1);
- 
-@@ -406,7 +412,7 @@ static void hotunplug_rescan(struct hotunplug *priv)
- 
- 	device_unplug(priv, "hot ", 60);
- 
--	igt_debug("late closing the removed device instance\n");
-+	local_debug("%s\n", "late closing the removed device instance");
- 	priv->fd.drm = close_device(priv->fd.drm);
- 	igt_assert_eq(priv->fd.drm, -1);
- 
-@@ -423,7 +429,7 @@ static void hotrebind_lateclose(struct hotunplug *priv)
- 
- 	driver_bind(priv, 0);
- 
--	igt_debug("late closing the unbound device instance\n");
-+	local_debug("%s\n", "late closing the unbound device instance");
- 	priv->fd.drm = close_device(priv->fd.drm);
- 	igt_assert_eq(priv->fd.drm, -1);
- 
-@@ -438,7 +444,7 @@ static void hotreplug_lateclose(struct hotunplug *priv)
- 
- 	bus_rescan(priv, 0);
- 
--	igt_debug("late closing the removed device instance\n");
-+	local_debug("%s\n", "late closing the removed device instance");
- 	priv->fd.drm = close_device(priv->fd.drm);
- 	igt_assert_eq(priv->fd.drm, -1);
- 
+ # hangs several gens of hosts, and has no immediate fix
+ igt@device_reset@reset-bound
+\ No newline at end of file
 -- 
 2.21.1
 
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
