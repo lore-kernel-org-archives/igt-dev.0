@@ -1,20 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [205.139.110.61])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82B816E2F3
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Aug 2020 19:45:12 +0000 (UTC)
-Received: by mail-qv1-f71.google.com with SMTP id n5so13397qvx.2
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Aug 2020 12:45:09 -0700 (PDT)
-Date: Tue, 25 Aug 2020 15:45:06 -0400
-From: Jeremy Cline <jcline@redhat.com>
-Message-ID: <20200825194506.GA377883@dev.jcline.org>
-References: <20200818193528.986926-1-lyude@redhat.com>
- <20200818193528.986926-2-lyude@redhat.com>
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
+ [IPv6:2a00:1450:4864:20::244])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B3D846E0F7
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Aug 2020 20:05:56 +0000 (UTC)
+Received: by mail-lj1-x244.google.com with SMTP id v12so15262102ljc.10
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Aug 2020 13:05:56 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Date: Tue, 25 Aug 2020 23:05:10 +0300
+Message-Id: <20200825200510.4021-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200818193528.986926-2-lyude@redhat.com>
-Content-Disposition: inline
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] tests/kms_pipe_crc_basic: Add
- disable-crc-after-crtc-pipe-* tests
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_flip: add flip to downscaled
+ subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -26,98 +22,191 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lyude <lyude@redhat.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Aug 18, 2020 at 03:35:28PM -0400, Lyude wrote:
-> From: Lyude Paul <lyude@redhat.com>
-> 
-> I ended up hitting some bugs when writing nouveau's CRC implementation
-> due to incorrectly handling the situation where we disable CRCs on a
-> pipe that already been disabled, which ended up causing some other vague
-> igt issues when running certain tests in multi-mode.
-> 
-> So, let's add a trivial test for this scenario while we're at it.
-> 
-> v2:
-> * Rebased
-> * Write test description for new tests
-> 
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
->  tests/kms_pipe_crc_basic.c | 40 ++++++++++++++++++++++++++++++++++++++
->  1 file changed, 40 insertions(+)
-> 
-> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-> index 53d76df1..e584dca9 100644
-> --- a/tests/kms_pipe_crc_basic.c
-> +++ b/tests/kms_pipe_crc_basic.c
-> @@ -221,6 +221,41 @@ static void test_compare_crc(data_t *data, enum pipe pipe)
->  	igt_remove_fb(data->drm_fd, &fb1);
->  }
->  
-> +static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe)
-> +{
-> +	igt_display_t *display = &data->display;
-> +	igt_output_t *output = igt_get_single_output_for_pipe(&data->display, pipe);
-> +	igt_pipe_crc_t *pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, "auto");
-> +	drmModeModeInfo *mode = igt_output_get_mode(output);
-> +	igt_crc_t crc[2];
-> +
-> +	igt_display_reset(display);
-> +	igt_output_set_pipe(output, pipe);
-> +
-> +	igt_create_color_fb(data->drm_fd,
-> +			    mode->hdisplay, mode->vdisplay,
-> +			    DRM_FORMAT_XRGB8888,
-> +			    LOCAL_DRM_FORMAT_MOD_NONE,
-> +			    0.0, 1.0, 0.0, &data->fb);
+attempt to cause cdclk changes and stress scalers with flipping
+to different size fb with different modifiers. Verify results
+with crc.
 
-The API docs indicate this could return a negative error code. I'm not
-sure what errors there could be so I don't know if it's worth adding a
-check here, but just something to consider. It looks like much (all?)
-the existing code doesn't check so I guess it's not that problematic.
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ tests/kms_flip.c | 155 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 155 insertions(+)
 
-> +	igt_plane_set_fb(igt_output_get_plane(output, 0), &data->fb);
-> +	igt_display_commit(display);
-> +
-> +	igt_pipe_crc_start(pipe_crc);
-> +	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc[0]);
-> +
-> +	kmstest_set_connector_dpms(data->drm_fd, output->config.connector,
-> +				   DRM_MODE_DPMS_OFF);
-> +	igt_pipe_crc_stop(pipe_crc);
-> +
-> +	kmstest_set_connector_dpms(data->drm_fd, output->config.connector,
-> +				   DRM_MODE_DPMS_ON);
-> +	igt_pipe_crc_collect_crc(pipe_crc, &crc[1]);
-> +	igt_assert_crc_equal(&crc[0], &crc[1]);
-> +
-> +	igt_pipe_crc_free(pipe_crc);
-> +	igt_remove_fb(data->drm_fd, &data->fb);
-> +}
-> +
->  data_t data = {0, };
->  
->  igt_main
-> @@ -265,6 +300,11 @@ igt_main
->  			test_read_crc(&data, pipe, 0);
->  		}
->  
-> +		igt_describe("Check that disabling CRCs on a CRTC after having disabled the CRTC "
-> +			     "does not cause issues.");
-> +		igt_subtest_f("disable-crc-after-crtc-pipe-%s", kmstest_pipe_name(pipe))
-> +			test_disable_crc_after_crtc(&data, pipe);
-> +
->  		igt_subtest_f("hang-read-crc-pipe-%s", kmstest_pipe_name(pipe)) {
->  			igt_hang_t hang = igt_allow_hang(data.drm_fd, 0, 0);
->  
-> -- 
-> 2.26.2
-> 
-
-Reviewed-by: Jeremy Cline <jcline@redhat.com>
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index b33cfe9ca..5f906f5f0 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -1605,6 +1605,155 @@ static void test_nonblocking_read(int in)
+ 	close(fd);
+ }
+ 
++const struct {
++	const char *name;
++	const char *describe;
++	uint64_t firstmodifier;
++	uint32_t firstformat;
++	uint64_t secondmodifier;
++	uint32_t secondformat;
++} special_flip_scenario_test[] = {
++	{
++		"flip-32bpp-ytile-to-64bpp-ytile",
++		"Try to flip from 32bpp non scaled fb to 64bpp downscaled fb in attempt to stress cdclk reprogramming.",
++		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
++		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F
++	},
++	{
++		"flip-32bpp-ytile-to-32bpp-ytilegen12rcccs",
++		"Try to flip from 32bpp non scaled fb to 32bpp downscaled gen12 rc ccs fb in attempt to stress cdclk reprogramming.",
++		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
++		LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, DRM_FORMAT_XRGB8888
++	},
++	{
++		"flip-32bpp-ytile-to-32bpp-ytileccs",
++		"Try to flip from 32bpp non scaled ytiled fb to 32bpp downscaled ytiled ccs fb.",
++		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
++		LOCAL_I915_FORMAT_MOD_Y_TILED_CCS, DRM_FORMAT_XRGB8888
++	},
++	{
++		"flip-64bpp-ytile-to-32bpp-ytileccs",
++		"Try to flip from 64bpp non scaled ytiled fb to 32bpp downscaled gen12 rc ccs fb.",
++		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
++		LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, DRM_FORMAT_XRGB8888
++	},
++};
++
++static void test_flip_to_scaled(uint32_t index)
++{
++	uint32_t screenwidth, screenheight;
++	uint32_t bigfbwidth, bigfbheight;
++	uint32_t pipe = 0;	//lets just run on first output, first pipe
++	uint64_t smallmodifier = special_flip_scenario_test[index].firstmodifier;
++	uint64_t bigmodifier = special_flip_scenario_test[index].secondmodifier;
++	uint32_t smallformat = special_flip_scenario_test[index].firstformat;
++	uint32_t bigformat = special_flip_scenario_test[index].secondformat;
++	uint32_t gen;
++
++	igt_display_t display;
++	igt_output_t *output;
++	igt_plane_t *primary;
++	igt_pipe_crc_t *pipe_crc;
++	igt_crc_t small_crc, big_crc;
++	struct igt_fb small_fb, big_fb;
++
++	struct drm_mode_fb_cmd2 f = {0};
++	drmModeModeInfo *mode;
++	struct drm_event_vblank ev;
++
++	cairo_t *cr;
++
++	// this is Intel only test so bail out early.
++	igt_require_intel(drm_fd);
++	gen = intel_gen(intel_get_drm_devid(drm_fd));
++
++	// will be using scalers hence gen need to be >= 9
++	igt_require(gen >= 9);
++	igt_require_pipe_crc(drm_fd);
++	igt_display_require(&display, drm_fd);
++	igt_require(display.is_atomic);
++	igt_require(igt_display_has_format_mod(&display, smallformat, smallmodifier));
++	igt_require(igt_display_has_format_mod(&display, bigformat, bigmodifier));
++
++	for_each_connected_output(&display, output) {
++		mode = igt_output_get_mode(output);
++		screenwidth = min(mode->hdisplay, 1920);
++		screenheight = min(mode->vdisplay, 1080);
++
++		// big fb will be 4k unless running on older than ICL
++		if (gen < 11) {
++			bigfbwidth = 2560;
++			bigfbheight = 1440;
++		} else {
++			bigfbwidth = 3840;
++			bigfbheight = 2160;
++		}
++
++		igt_require(igt_create_color_fb(drm_fd, screenwidth, screenheight,
++				smallformat, smallmodifier,
++				0, 1, 0, &small_fb));
++
++		igt_create_bo_for_fb(drm_fd, bigfbwidth, bigfbheight, bigformat,
++							 bigmodifier, &big_fb);
++		igt_assert(big_fb.gem_handle > 0);
++
++		f.width = big_fb.width;
++		f.height = big_fb.height;
++		f.pixel_format = big_fb.drm_format;
++		f.flags = LOCAL_DRM_MODE_FB_MODIFIERS;
++
++		for (int n = 0; n < big_fb.num_planes; n++) {
++			f.handles[n] = big_fb.gem_handle;
++			f.modifier[n] = big_fb.modifier;
++			f.pitches[n] = big_fb.strides[n];
++			f.offsets[n] = big_fb.offsets[n];
++		}
++
++		cr = igt_get_cairo_ctx(drm_fd, &big_fb);
++		igt_paint_color(cr, 0, 0, bigfbwidth, bigfbheight, 0, 1, 0);
++		igt_put_cairo_ctx(cr);
++
++		igt_assert(drmIoctl(drm_fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == 0);
++		big_fb.fb_id = f.fb_id;
++
++		igt_output_set_pipe(output, pipe);
++
++		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++		igt_plane_set_fb(primary, NULL);
++
++		igt_display_commit_atomic(&display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++		pipe_crc = igt_pipe_crc_new(drm_fd, pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
++		igt_pipe_crc_start(pipe_crc);
++
++		igt_plane_set_position(primary, 0, 0);
++		igt_plane_set_fb(primary, &small_fb);
++		igt_plane_set_size(primary, screenwidth, screenheight);
++
++		igt_display_commit_atomic(&display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++		igt_pipe_crc_collect_crc(pipe_crc, &small_crc);
++
++		igt_plane_set_fb(primary, &big_fb);
++		igt_plane_set_size(primary, screenwidth, screenheight);
++		igt_display_commit_atomic(&display, DRM_MODE_ATOMIC_ALLOW_MODESET  |
++							DRM_MODE_PAGE_FLIP_EVENT, NULL);
++
++		igt_assert(read(drm_fd, &ev, sizeof(ev)) == sizeof(ev));
++
++		igt_pipe_crc_collect_crc(pipe_crc, &big_crc);
++
++		igt_pipe_crc_stop(pipe_crc);
++		igt_pipe_crc_free(pipe_crc);
++		igt_remove_fb(drm_fd, &small_fb);
++		igt_remove_fb(drm_fd, &big_fb);
++		igt_output_set_pipe(output, PIPE_ANY);
++
++		igt_assert(igt_check_crc_equal(&small_crc, &big_crc));
++
++		// run just on first found connected output.
++		break;
++	}
++}
++
+ igt_main
+ {
+ 	struct {
+@@ -1720,4 +1869,10 @@ igt_main
+ 			run_pair(tests[i].duration, tests[i].flags);
+ 	}
+ 	igt_stop_signal_helper();
++
++	for (int index = 0; index < ARRAY_SIZE(special_flip_scenario_test); index++) {
++		igt_describe(special_flip_scenario_test[index].describe);
++		igt_subtest(special_flip_scenario_test[index].name)
++			test_flip_to_scaled(index);
++	}
+ }
+-- 
+2.28.0
 
 _______________________________________________
 igt-dev mailing list
