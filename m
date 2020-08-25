@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com
- [IPv6:2a00:1450:4864:20::244])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3D846E0F7
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Aug 2020 20:05:56 +0000 (UTC)
-Received: by mail-lj1-x244.google.com with SMTP id v12so15262102ljc.10
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Aug 2020 13:05:56 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Tue, 25 Aug 2020 23:05:10 +0300
-Message-Id: <20200825200510.4021-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_flip: add flip to downscaled
- subtests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Tue, 25 Aug 2020 20:38:02 -0000
+Message-ID: <159838788212.23677.1787385055118859008@emeril.freedesktop.org>
+References: <20200825200510.4021-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20200825200510.4021-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fflip=3A_add_flip_to_downscaled_subtests?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,197 +14,323 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0822634400=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-attempt to cause cdclk changes and stress scalers with flipping
-to different size fb with different modifiers. Verify results
-with crc.
+--===============0822634400==
+Content-Type: multipart/alternative;
+ boundary="===============3793755024609150953=="
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/kms_flip.c | 155 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 155 insertions(+)
+--===============3793755024609150953==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-index b33cfe9ca..5f906f5f0 100755
---- a/tests/kms_flip.c
-+++ b/tests/kms_flip.c
-@@ -1605,6 +1605,155 @@ static void test_nonblocking_read(int in)
- 	close(fd);
- }
- 
-+const struct {
-+	const char *name;
-+	const char *describe;
-+	uint64_t firstmodifier;
-+	uint32_t firstformat;
-+	uint64_t secondmodifier;
-+	uint32_t secondformat;
-+} special_flip_scenario_test[] = {
-+	{
-+		"flip-32bpp-ytile-to-64bpp-ytile",
-+		"Try to flip from 32bpp non scaled fb to 64bpp downscaled fb in attempt to stress cdclk reprogramming.",
-+		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
-+		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB16161616F
-+	},
-+	{
-+		"flip-32bpp-ytile-to-32bpp-ytilegen12rcccs",
-+		"Try to flip from 32bpp non scaled fb to 32bpp downscaled gen12 rc ccs fb in attempt to stress cdclk reprogramming.",
-+		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
-+		LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, DRM_FORMAT_XRGB8888
-+	},
-+	{
-+		"flip-32bpp-ytile-to-32bpp-ytileccs",
-+		"Try to flip from 32bpp non scaled ytiled fb to 32bpp downscaled ytiled ccs fb.",
-+		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
-+		LOCAL_I915_FORMAT_MOD_Y_TILED_CCS, DRM_FORMAT_XRGB8888
-+	},
-+	{
-+		"flip-64bpp-ytile-to-32bpp-ytileccs",
-+		"Try to flip from 64bpp non scaled ytiled fb to 32bpp downscaled gen12 rc ccs fb.",
-+		LOCAL_I915_FORMAT_MOD_Y_TILED, DRM_FORMAT_XRGB8888,
-+		LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, DRM_FORMAT_XRGB8888
-+	},
-+};
-+
-+static void test_flip_to_scaled(uint32_t index)
-+{
-+	uint32_t screenwidth, screenheight;
-+	uint32_t bigfbwidth, bigfbheight;
-+	uint32_t pipe = 0;	//lets just run on first output, first pipe
-+	uint64_t smallmodifier = special_flip_scenario_test[index].firstmodifier;
-+	uint64_t bigmodifier = special_flip_scenario_test[index].secondmodifier;
-+	uint32_t smallformat = special_flip_scenario_test[index].firstformat;
-+	uint32_t bigformat = special_flip_scenario_test[index].secondformat;
-+	uint32_t gen;
-+
-+	igt_display_t display;
-+	igt_output_t *output;
-+	igt_plane_t *primary;
-+	igt_pipe_crc_t *pipe_crc;
-+	igt_crc_t small_crc, big_crc;
-+	struct igt_fb small_fb, big_fb;
-+
-+	struct drm_mode_fb_cmd2 f = {0};
-+	drmModeModeInfo *mode;
-+	struct drm_event_vblank ev;
-+
-+	cairo_t *cr;
-+
-+	// this is Intel only test so bail out early.
-+	igt_require_intel(drm_fd);
-+	gen = intel_gen(intel_get_drm_devid(drm_fd));
-+
-+	// will be using scalers hence gen need to be >= 9
-+	igt_require(gen >= 9);
-+	igt_require_pipe_crc(drm_fd);
-+	igt_display_require(&display, drm_fd);
-+	igt_require(display.is_atomic);
-+	igt_require(igt_display_has_format_mod(&display, smallformat, smallmodifier));
-+	igt_require(igt_display_has_format_mod(&display, bigformat, bigmodifier));
-+
-+	for_each_connected_output(&display, output) {
-+		mode = igt_output_get_mode(output);
-+		screenwidth = min(mode->hdisplay, 1920);
-+		screenheight = min(mode->vdisplay, 1080);
-+
-+		// big fb will be 4k unless running on older than ICL
-+		if (gen < 11) {
-+			bigfbwidth = 2560;
-+			bigfbheight = 1440;
-+		} else {
-+			bigfbwidth = 3840;
-+			bigfbheight = 2160;
-+		}
-+
-+		igt_require(igt_create_color_fb(drm_fd, screenwidth, screenheight,
-+				smallformat, smallmodifier,
-+				0, 1, 0, &small_fb));
-+
-+		igt_create_bo_for_fb(drm_fd, bigfbwidth, bigfbheight, bigformat,
-+							 bigmodifier, &big_fb);
-+		igt_assert(big_fb.gem_handle > 0);
-+
-+		f.width = big_fb.width;
-+		f.height = big_fb.height;
-+		f.pixel_format = big_fb.drm_format;
-+		f.flags = LOCAL_DRM_MODE_FB_MODIFIERS;
-+
-+		for (int n = 0; n < big_fb.num_planes; n++) {
-+			f.handles[n] = big_fb.gem_handle;
-+			f.modifier[n] = big_fb.modifier;
-+			f.pitches[n] = big_fb.strides[n];
-+			f.offsets[n] = big_fb.offsets[n];
-+		}
-+
-+		cr = igt_get_cairo_ctx(drm_fd, &big_fb);
-+		igt_paint_color(cr, 0, 0, bigfbwidth, bigfbheight, 0, 1, 0);
-+		igt_put_cairo_ctx(cr);
-+
-+		igt_assert(drmIoctl(drm_fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == 0);
-+		big_fb.fb_id = f.fb_id;
-+
-+		igt_output_set_pipe(output, pipe);
-+
-+		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+		igt_plane_set_fb(primary, NULL);
-+
-+		igt_display_commit_atomic(&display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+		pipe_crc = igt_pipe_crc_new(drm_fd, pipe, INTEL_PIPE_CRC_SOURCE_AUTO);
-+		igt_pipe_crc_start(pipe_crc);
-+
-+		igt_plane_set_position(primary, 0, 0);
-+		igt_plane_set_fb(primary, &small_fb);
-+		igt_plane_set_size(primary, screenwidth, screenheight);
-+
-+		igt_display_commit_atomic(&display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+		igt_pipe_crc_collect_crc(pipe_crc, &small_crc);
-+
-+		igt_plane_set_fb(primary, &big_fb);
-+		igt_plane_set_size(primary, screenwidth, screenheight);
-+		igt_display_commit_atomic(&display, DRM_MODE_ATOMIC_ALLOW_MODESET  |
-+							DRM_MODE_PAGE_FLIP_EVENT, NULL);
-+
-+		igt_assert(read(drm_fd, &ev, sizeof(ev)) == sizeof(ev));
-+
-+		igt_pipe_crc_collect_crc(pipe_crc, &big_crc);
-+
-+		igt_pipe_crc_stop(pipe_crc);
-+		igt_pipe_crc_free(pipe_crc);
-+		igt_remove_fb(drm_fd, &small_fb);
-+		igt_remove_fb(drm_fd, &big_fb);
-+		igt_output_set_pipe(output, PIPE_ANY);
-+
-+		igt_assert(igt_check_crc_equal(&small_crc, &big_crc));
-+
-+		// run just on first found connected output.
-+		break;
-+	}
-+}
-+
- igt_main
- {
- 	struct {
-@@ -1720,4 +1869,10 @@ igt_main
- 			run_pair(tests[i].duration, tests[i].flags);
- 	}
- 	igt_stop_signal_helper();
-+
-+	for (int index = 0; index < ARRAY_SIZE(special_flip_scenario_test); index++) {
-+		igt_describe(special_flip_scenario_test[index].describe);
-+		igt_subtest(special_flip_scenario_test[index].name)
-+			test_flip_to_scaled(index);
-+	}
- }
--- 
-2.28.0
+== Series Details ==
+
+Series: tests/kms_flip: add flip to downscaled subtests
+URL   : https://patchwork.freedesktop.org/series/80996/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from IGT_5771 -> IGTPW_4905
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_4905 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_4905, please notify your bug team to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_4905:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@gem_exec_parallel@engines@fds:
+    - fi-cml-s:           [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-cml-s/igt@gem_exec_parallel@engines@fds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-cml-s/igt@gem_exec_parallel@engines@fds.html
+
+  * igt@runner@aborted:
+    - fi-kbl-7500u:       NOTRUN -> [FAIL][3]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-kbl-7500u/igt@runner@aborted.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4905 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-bsw-kefka:       [PASS][4] -> [DMESG-WARN][5] ([i915#1982])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - fi-icl-u2:          [PASS][6] -> [DMESG-WARN][7] ([i915#1982]) +1 similar issue
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_store@basic:
+    - fi-tgl-u2:          [TIMEOUT][8] -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-tgl-u2/igt@gem_exec_store@basic.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-tgl-u2/igt@gem_exec_store@basic.html
+
+  * igt@i915_module_load@reload:
+    - fi-byt-j1900:       [DMESG-WARN][10] ([i915#1982]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-byt-j1900/igt@i915_module_load@reload.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-byt-j1900/igt@i915_module_load@reload.html
+    - fi-bxt-dsi:         [TIMEOUT][12] ([i915#1418] / [i915#1635]) -> [PASS][13]
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-bxt-dsi/igt@i915_module_load@reload.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-bxt-dsi/igt@i915_module_load@reload.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-bxt-dsi:         [SKIP][14] ([fdo#109271] / [i915#1635]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-bxt-dsi/igt@i915_pm_rpm@module-reload.html
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-bxt-dsi/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-bsw-kefka:       [DMESG-WARN][16] ([i915#1982]) -> [PASS][17]
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  
+#### Warnings ####
+
+  * igt@gem_exec_suspend@basic-s3:
+    - fi-kbl-x1275:       [DMESG-WARN][18] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][19] ([i915#62] / [i915#92])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-kbl-x1275/igt@gem_exec_suspend@basic-s3.html
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-kbl-x1275/igt@gem_exec_suspend@basic-s3.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - fi-kbl-x1275:       [DMESG-WARN][20] ([i915#62] / [i915#92]) -> [DMESG-WARN][21] ([i915#62] / [i915#92] / [i915#95]) +5 similar issues
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-kbl-x1275/igt@kms_force_connector_basic@force-connector-state.html
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-kbl-x1275/igt@kms_force_connector_basic@force-connector-state.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1418]: https://gitlab.freedesktop.org/drm/intel/issues/1418
+  [i915#1635]: https://gitlab.freedesktop.org/drm/intel/issues/1635
+  [i915#1814]: https://gitlab.freedesktop.org/drm/intel/issues/1814
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
+  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+
+
+Participating hosts (37 -> 34)
+------------------------------
+
+  Missing    (3): fi-byt-clapper fi-byt-squawks fi-bsw-cyan 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5771 -> IGTPW_4905
+
+  CI-20190529: 20190529
+  CI_DRM_8924: a8c0611e412aab46eab5475b0117d074892b96e2 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4905: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/index.html
+  IGT_5771: f1d0c240ea2e631dfb9f493f37f8fb61cb2b1cf2 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@kms_flip@flip-32bpp-ytile-to-32bpp-ytileccs
++igt@kms_flip@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs
++igt@kms_flip@flip-32bpp-ytile-to-64bpp-ytile
++igt@kms_flip@flip-64bpp-ytile-to-32bpp-ytileccs
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/index.html
+
+--===============3793755024609150953==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_flip: add flip to downscaled subtests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/80996/">https://patchwork.freedesktop.org/series/80996/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_5771 -&gt; IGTPW_4905</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_4905 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_4905, please notify your bug team to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_4905:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@gem_exec_parallel@engines@fds:</p>
+<ul>
+<li>fi-cml-s:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-cml-s/igt@gem_exec_parallel@engines@fds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-cml-s/igt@gem_exec_parallel@engines@fds.html">INCOMPLETE</a></li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>fi-kbl-7500u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-kbl-7500u/igt@runner@aborted.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_4905 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_store@basic:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-tgl-u2/igt@gem_exec_store@basic.html">TIMEOUT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-tgl-u2/igt@gem_exec_store@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>
+<p>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-byt-j1900/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-byt-j1900/igt@i915_module_load@reload.html">PASS</a></p>
+</li>
+<li>
+<p>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-bxt-dsi/igt@i915_module_load@reload.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1418">i915#1418</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1635">i915#1635</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-bxt-dsi/igt@i915_module_load@reload.html">PASS</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-bxt-dsi/igt@i915_pm_rpm@module-reload.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1635">i915#1635</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-bxt-dsi/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s3:</p>
+<ul>
+<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-kbl-x1275/igt@gem_exec_suspend@basic-s3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-kbl-x1275/igt@gem_exec_suspend@basic-s3.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5771/fi-kbl-x1275/igt@kms_force_connector_basic@force-connector-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/fi-kbl-x1275/igt@kms_force_connector_basic@force-connector-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>) +5 similar issues</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (37 -&gt; 34)</h2>
+<p>Missing    (3): fi-byt-clapper fi-byt-squawks fi-bsw-cyan </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5771 -&gt; IGTPW_4905</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_8924: a8c0611e412aab46eab5475b0117d074892b96e2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_4905: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4905/index.html<br />
+  IGT_5771: f1d0c240ea2e631dfb9f493f37f8fb61cb2b1cf2 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_flip@flip-32bpp-ytile-to-32bpp-ytileccs<br />
++igt@kms_flip@flip-32bpp-ytile-to-32bpp-ytilegen12rcccs<br />
++igt@kms_flip@flip-32bpp-ytile-to-64bpp-ytile<br />
++igt@kms_flip@flip-64bpp-ytile-to-32bpp-ytileccs</p>
+
+</body>
+</html>
+
+--===============3793755024609150953==--
+
+--===============0822634400==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0822634400==--
