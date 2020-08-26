@@ -1,19 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6E2A6E0F9
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Aug 2020 07:33:13 +0000 (UTC)
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Date: Wed, 26 Aug 2020 07:33:05 +0000
-Message-ID: <SN6PR11MB33271EE2EEC494B9A951ADDC8D540@SN6PR11MB3327.namprd11.prod.outlook.com>
-References: <20200820164248.1153-1-bhanuprakash.modem@intel.com>
- <20200820164248.1153-2-bhanuprakash.modem@intel.com>
- <20200820182347.GA28996@labuser-Z97X-UD5H>
- <20200825211041.GA22686@labuser-Z97X-UD5H>
-In-Reply-To: <20200825211041.GA22686@labuser-Z97X-UD5H>
-Content-Language: en-US
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
+ [IPv6:2a00:1450:4864:20::442])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E76736E10A
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Aug 2020 11:17:42 +0000 (UTC)
+Received: by mail-wr1-x442.google.com with SMTP id x7so1418736wro.3
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Aug 2020 04:17:42 -0700 (PDT)
+Date: Wed, 26 Aug 2020 08:17:33 -0300
+From: Melissa Wen <melissa.srw@gmail.com>
+Message-ID: <20200826111733.v5dvx7oraip5va6d@smtp.gmail.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH v3 1/2] tests/kms_vrr: Use atomic API for page
- flip
+Content-Disposition: inline
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc: refactoring
+ cursor-alpha subtests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,269 +23,154 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Navare, Manasi D" <manasi.d.navare@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>, kernel-usp@googlegroups.com, twoerner@gmail.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> -----Original Message-----
-> From: Navare, Manasi <manasi.d.navare@intel.com>
-> Sent: Wednesday, August 26, 2020 2:41 AM
-> To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> Cc: igt-dev@lists.freedesktop.org
-> Subject: Re: [igt-dev] [PATCH v3 1/2] tests/kms_vrr: Use atomic API for
-> page flip
-> 
-> On Thu, Aug 20, 2020 at 11:23:47AM -0700, Navare, Manasi wrote:
-> > On Thu, Aug 20, 2020 at 10:12:47PM +0530, Bhanuprakash Modem wrote:
-> > > We should avoid using drmModePageFlip as it'll only be used for
-> > > legacy drivers, instead, use igt_display_commit_atomic() API to
-> > > page flip for atomic display code path.
-> > >
-> > > v2:
-> > > * Look for the page flip event not for the vblank event (Nicholas)
-> > > * Fix to flip with different FBs (Bhanu)
-> > > v3:
-> > > * s/get_vblank_event_ns/get_kernel_event_ns/ (Manasi)
-> > > * Add a comment to capture the flip event (Manasi)
-> > > * Make sure we are reading valid event (Bhanu)
-> > > * Test clean-up (Bhanu)
-> > >
-> > > Cc: Harry Wentland <harry.wentland@amd.com>
-> > > Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-> > > Cc: Manasi Navare <manasi.d.navare@intel.com>
-> > > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> > > ---
-> > >  tests/kms_vrr.c | 66 +++++++++++++++++++++++++-----------------------
-> -
-> > >  1 file changed, 34 insertions(+), 32 deletions(-)
-> > >
-> > > diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-> > > index a0db90006d..15db7695e8 100644
-> > > --- a/tests/kms_vrr.c
-> > > +++ b/tests/kms_vrr.c
-> > > @@ -47,6 +47,7 @@ typedef struct range {
-> > >  typedef struct data {
-> > >  	igt_display_t display;
-> > >  	int drm_fd;
-> > > +	igt_plane_t *primary;
-> > >  	igt_fb_t fb0;
-> > >  	igt_fb_t fb1;
-> > >  } data_t;
-> > > @@ -60,15 +61,18 @@ static uint64_t timespec_to_ns(struct timespec
-> *ts)
-> > >  }
-> > >
-> > >  /*
-> > > - * Gets a vblank event from DRM and returns its timestamp in
-> nanoseconds.
-> > > + * Gets an event from DRM and returns its timestamp in nanoseconds.
-> > > + * Asserts if the event from DRM is not matched with requested one.
-> > > + *
-> > >   * This blocks until the event is received.
-> > >   */
-> > > -static uint64_t get_vblank_event_ns(data_t *data)
-> > > +static uint64_t get_kernel_event_ns(data_t *data, uint32_t event)
-> > >  {
-> > >  	struct drm_event_vblank ev;
-> > >
-> > > -	igt_set_timeout(1, "Waiting for vblank event\n");
-> > > +	igt_set_timeout(1, "Waiting for an event\n");
-> > >  	igt_assert_eq(read(data->drm_fd, &ev, sizeof(ev)), sizeof(ev));
-> > > +	igt_assert_eq(ev.base.type, event);
-> > >  	igt_reset_timeout();
-> > >
-> > >  	return ev.tv_sec * NSECS_PER_SEC + ev.tv_usec * 1000ull;
-> > > @@ -126,11 +130,11 @@ static range_t get_vrr_range(data_t *data,
-> igt_output_t *output)
-> > >  }
-> > >
-> > >  /* Returns a suitable vrr test frequency. */
-> > > -static uint32_t get_test_rate_ns(data_t *data, igt_output_t *output)
-> > > +static uint64_t get_test_rate_ns(data_t *data, igt_output_t *output)
-> > >  {
-> > >  	drmModeModeInfo *mode = igt_output_get_mode(output);
-> > >  	range_t range;
-> > > -	uint32_t vtest;
-> > > +	uint64_t vtest;
-> > >
-> > >  	/*
-> > >  	 * The frequency with the fastest convergence speed should be
-> > > @@ -165,7 +169,6 @@ static void set_vrr_on_pipe(data_t *data, enum
-> pipe pipe, bool enabled)
-> > >  static void prepare_test(data_t *data, igt_output_t *output, enum
-> pipe pipe)
-> > >  {
-> > >  	drmModeModeInfo mode = *igt_output_get_mode(output);
-> > > -	igt_plane_t *primary;
-> > >  	cairo_t *cr;
-> > >
-> > >  	/* Reset output */
-> > > @@ -189,8 +192,8 @@ static void prepare_test(data_t *data,
-> igt_output_t *output, enum pipe pipe)
-> > >  	igt_put_cairo_ctx(cr);
-> > >
-> > >  	/* Take care of any required modesetting before the test begins. */
-> > > -	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> > > -	igt_plane_set_fb(primary, &data->fb0);
-> > > +	data->primary = igt_output_get_plane_type(output,
-> DRM_PLANE_TYPE_PRIMARY);
-> > > +	igt_plane_set_fb(data->primary, &data->fb0);
-> > >
-> > >  	igt_display_commit_atomic(&data->display,
-> > >  				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> > > @@ -207,35 +210,28 @@ wait_for_vblank(data_t *data, enum pipe pipe)
-> > >  	vbl.request.sequence = 1;
-> > >  	drmWaitVBlank(data->drm_fd, &vbl);
-> > >
-> > > -	return get_vblank_event_ns(data);
-> > > +	return get_kernel_event_ns(data, DRM_EVENT_VBLANK);
-> > >  }
-> > >
-> > > -/* Performs an asynchronous non-blocking page-flip on a pipe. */
-> > > -static int
-> > > -do_flip(data_t *data, enum pipe pipe_id, igt_fb_t *fb)
-> > > +/* Performs an atomic non-blocking page-flip on a pipe. */
-> > > +static void
-> > > +do_flip(data_t *data, igt_fb_t *fb)
-> > >  {
-> > > -	igt_pipe_t *pipe = &data->display.pipes[pipe_id];
-> > >  	int ret;
-> > >
-> > >  	igt_set_timeout(1, "Scheduling page flip\n");
-> > >
-> > > -	/*
-> > > -	 * Only the legacy flip ioctl supports async flips.
-> > > -	 * It's also non-blocking, but returns -EBUSY if flipping too fast.
-> > > -	 * 2x monitor tests will need async flips in the atomic API.
-> > > -	 */
-> > > +	igt_plane_set_fb(data->primary, fb);
-> > > +
-> > >  	do {
-> > > -		ret = drmModePageFlip(data->drm_fd, pipe->crtc_id,
-> > > -				      fb->fb_id,
-> > > -				      DRM_MODE_PAGE_FLIP_EVENT |
-> > > -				      DRM_MODE_PAGE_FLIP_ASYNC,
-> > > -				      data);
-> > > +		ret = igt_display_try_commit_atomic(&data->display,
-> > > +				  DRM_MODE_ATOMIC_NONBLOCK |
-> > > +				  DRM_MODE_PAGE_FLIP_EVENT,
-> > > +				  data);
-> 
-> Why do we need to use igt_display_try_commit_atomic() and not just
-> igt_display_commit_atomic()?
-[Bhanu] As we are using DRM_MODE_ATOMIC_NONBLOCK flag, driver returns -EBUSY if flipping is too fast.
-> 
-> Also in set_vrr_on_pipe() function, I would prefer using
-> igt_display_commit2() call.
-[Bhanu] As we are using igt_require(display.is_atomic) in igt_fixture, I think it should be ok to use igt_display_commit_atomic().
+Considering just a fully opaque or fully transparent cursor is not enough
+to check the composition of an ARGB cursor plane. For example, the cairo
+ARGB32 format uses pre-multiplied alpha, and this representation may only
+be evident when testing a translucent cursor.
 
-> And IMO, the set_vrr_on_pipe() should be called before prepare_test()
-> since the prop needs to be set before the modeset request.
-> 
-[Bhanu] Please consider below are the high level flow:
+Therefore, this patch refactors the cursor-alpha-opaque and
+cursor-alpha-transparent subtests into just one subtest (cursor-alpha)
+that checks the alpha blending of a white cursor, with different alpha
+values, in the primary plane. This refactoring also generates some setup
+stuffs savings.
 
-Prepare_test --> do modeset
-    |
-    |---->set_vrr_on_pipe --> 1
-    |          |
-    |          |---->Flip & measure --> expected result is > 75%  
-    |
-    |---->set_vrr_on_pipe --> 0
-    |          |
-    |          |---->Flip & measure --> expected result is < 10%
-    V
-Test cleanup --> do modeset
+Signed-off-by: Melissa Wen <melissa.srw@gmail.com>
+---
+ tests/kms_cursor_crc.c | 82 ++++++++++++++++++++----------------------
+ 1 file changed, 39 insertions(+), 43 deletions(-)
 
-From above illustration, every time we change the vrr_enabled prop, do we need the full mode set?
-If yes, then we need to do the modeset for i915 only, since AMD don't need modeset (Need to confirm)
+diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
+index e9491847..e200b0b5 100644
+--- a/tests/kms_cursor_crc.c
++++ b/tests/kms_cursor_crc.c
+@@ -478,65 +478,66 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
+ 	igt_pipe_crc_start(data->pipe_crc);
+ }
+ 
+-static void test_cursor_alpha(data_t *data, double a)
++static void test_cursor_alpha(data_t *data)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_pipe_crc_t *pipe_crc = data->pipe_crc;
+-	igt_crc_t crc, ref_crc;
++	igt_crc_t crc[5], ref_crc;
+ 	cairo_t *cr;
+ 	uint32_t fb_id;
+ 	int curw = data->curw;
+ 	int curh = data->curh;
++	int i;
++	double alpha;
+ 
+-	/* Alpha cursor fb with white color */
++	/* Alpha cursor fb */
+ 	fb_id = igt_create_fb(data->drm_fd, curw, curh,
+ 				    DRM_FORMAT_ARGB8888,
+ 				    LOCAL_DRM_FORMAT_MOD_NONE,
+ 				    &data->fb);
+ 	igt_assert(fb_id);
++
++	/* 
++	 * Hardware Test
++	 * With the cursor enabled, get the PF CRCs from the composition with a
++	 * white cursor with different alpha values.
++	 */
+ 	cr = igt_get_cairo_ctx(data->drm_fd, &data->fb);
+-	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
+-	igt_put_cairo_ctx(cr);
++	cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
+ 
+-	/* Hardware Test - enable cursor and get PF CRC */
+ 	cursor_enable(data);
+-	igt_display_commit(display);
+-	igt_wait_for_vblank(data->drm_fd,
+-			display->pipes[data->pipe].crtc_offset);
+-	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
++	for (i = 0, alpha = 1.0; alpha >= 0.0; alpha -= 0.25, i++) {
++		igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, alpha);
++
++		igt_display_commit(display);
++		igt_wait_for_vblank(data->drm_fd,
++				    display->pipes[data->pipe].crtc_offset);
++		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc[i]);
++	}
++	igt_put_cairo_ctx(cr);
+ 
+ 	cursor_disable(data);
+ 	igt_remove_fb(data->drm_fd, &data->fb);
+ 
+-	/* Software Test - render cursor in software, drawn it directly on PF */
++	/* Software Test - render cursor in software, drawn it directly on PF*/
+ 	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
+-	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
+-	igt_put_cairo_ctx(cr);
+ 
+-	igt_display_commit(display);
+-	igt_wait_for_vblank(data->drm_fd,
+-			display->pipes[data->pipe].crtc_offset);
+-	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
++	for (i = 0, alpha = 1.0; alpha >= 0.0; alpha -= 0.25, i++) {
++		igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, alpha);
+ 
+-	/* Compare CRC from Hardware/Software tests */
+-	igt_assert_crc_equal(&crc, &ref_crc);
+-
+-	/*Clear Screen*/
+-	cr = igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
+-	igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
+-			0.0, 0.0, 0.0);
+-	igt_put_cairo_ctx(cr);
+-}
+-
+-static void test_cursor_transparent(data_t *data)
+-{
+-	test_cursor_alpha(data, 0.0);
++		igt_display_commit(display);
++		igt_wait_for_vblank(data->drm_fd,
++				display->pipes[data->pipe].crtc_offset);
++		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
+ 
+-}
++		/* Compare CRC from Hardware/Software tests */
++		igt_assert_crc_equal(&crc[i], &ref_crc);
+ 
+-static void test_cursor_opaque(data_t *data)
+-{
+-	test_cursor_alpha(data, 1.0);
++		/*Clear Screen*/
++		igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
++				0.0, 0.0, 0.0);
++	}
++	igt_put_cairo_ctx(cr);
+ }
+ 
+ static void run_test(data_t *data, void (*testfunc)(data_t *), int cursor_w, int cursor_h)
+@@ -705,15 +706,10 @@ static void run_tests_on_pipe(data_t *data, enum pipe pipe)
+ 		run_test(data, test_cursor_size,
+ 			 data->cursor_max_w, data->cursor_max_h);
+ 
+-	igt_describe("Validates the composition of a fully opaque cursor "
+-		     "plane, i.e., alpha channel equal to 1.0.");
+-	igt_subtest_f("pipe-%s-cursor-alpha-opaque", kmstest_pipe_name(pipe))
+-		run_test(data, test_cursor_opaque, data->cursor_max_w, data->cursor_max_h);
+-
+-	igt_describe("Validates the composition of a fully transparent cursor "
+-		     "plane, i.e., alpha channel equal to 0.0.");
+-	igt_subtest_f("pipe-%s-cursor-alpha-transparent", kmstest_pipe_name(pipe))
+-		run_test(data, test_cursor_transparent, data->cursor_max_w, data->cursor_max_h);
++	igt_describe("Validates the composition of alpha cursor plane "
++		     "from fully opaque to fully transparent alpha range");
++	igt_subtest_f("pipe-%s-cursor-alpha", kmstest_pipe_name(pipe))
++		run_test(data, test_cursor_alpha, data->cursor_max_w, data->cursor_max_h);
+ 
+ 	igt_fixture
+ 		create_cursor_fb(data, data->cursor_max_w, data->cursor_max_h);
+-- 
+2.28.0
 
-> The other think that I had to change was reset vrr prop, then set it and
-> then prepare_test
-> so:
-> 
-> set_vrr_on_pipe(data, pipe, 0)
-> set_vrr_on_pipe(data, pipe, 1)
-> prepare_test()
-> 
-> This is needed since the driver doesnt do a full modeset if
-> old_crtc_state.vrr_enabled == new_crtc_state.vrr_enabled
-> 
-> Manasi
-> 
-> > >  	} while (ret == -EBUSY);
-> > >
-> > >  	igt_assert_eq(ret, 0);
-> > >  	igt_reset_timeout();
-> > > -
-> > > -	return 0;
-> > >  }
-> > >
-> > >  /*
-> > > @@ -246,11 +242,6 @@ do_flip(data_t *data, enum pipe pipe_id, igt_fb_t
-> *fb)
-> > >   * can arbitrarily restrict the bounds further than the absolute
-> > >   * min and max range. But VRR is really about extending the flip
-> > >   * to prevent stuttering or to match a source content rate.
-> > > - *
-> > > - * The only way to "present" at a fixed rate like userspace in a
-> vendor
-> > > - * neutral manner is to do it with async flips. This avoids the need
-> > > - * to wait for next vblank and it should eventually converge at the
-> > > - * desired rate.
-> > >   */
-> > >  static uint32_t
-> > >  flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
-> > > @@ -269,9 +260,14 @@ flip_and_measure(data_t *data, igt_output_t
-> *output, enum pipe pipe,
-> > >  		int64_t diff_ns;
-> > >
-> > >  		front = !front;
-> > > -		do_flip(data, pipe, front ? &data->fb1 : &data->fb0);
-> > > +		do_flip(data, front ? &data->fb1 : &data->fb0);
-> > >
-> > > -		vblank_ns = get_vblank_event_ns(data);
-> > > +		/* We need to cpture flip event instead of vblank event,
-> > 		            ^^capture
-> >
-> > > +		 * because vblank is triggered after each frame, but depending
-> > > +		 * on the vblank evasion time flip might or might not happen in
-> > > +		 * that same frame.
-> > > +		 */
-> > > +		vblank_ns = get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
-> > Does it make sense to name this as event_ns, calling it vbalnk_ns makes
-> it little
-> > confusing since in the explanation, we said we are capture flip event
-> here?
-> >
-> > Not a hard change requested, but just a suggestion.
-> >
-> > Regards
-> > Manasi
-> >
-> > >  		diff_ns = rate_ns - (vblank_ns - last_vblank_ns);
-> > >  		last_vblank_ns = vblank_ns;
-> > >
-> > > @@ -359,6 +355,12 @@ test_basic(data_t *data, enum pipe pipe,
-> igt_output_t *output, uint32_t flags)
-> > >  		     "Target VRR off threshold exceeded, result was %u%%\n",
-> > >  		     result);
-> > >
-> > > +	/* Clean-up */
-> > > +	igt_plane_set_fb(data->primary, NULL);
-> > > +	igt_output_set_pipe(output, PIPE_NONE);
-> > > +	igt_display_commit_atomic(&data->display,
-> > > +				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> > > +
-> > >  	igt_remove_fb(data->drm_fd, &data->fb1);
-> > >  	igt_remove_fb(data->drm_fd, &data->fb0);
-> > >  }
-> > > --
-> > > 2.20.1
-> > >
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
