@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B57436E184
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Aug 2020 16:29:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF1C96E187
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Aug 2020 16:44:50 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20200820063030.10741-26-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200820063030.10741-31-zbigniew.kempczynski@intel.com>
 References: <20200820063030.10741-1-zbigniew.kempczynski@intel.com>
- <20200820063030.10741-26-zbigniew.kempczynski@intel.com>
+ <20200820063030.10741-31-zbigniew.kempczynski@intel.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 26 Aug 2020 17:29:06 +0100
-Message-ID: <159845934663.19114.13733267547184900908@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v31 25/32] tests/gem_render_tiled_blits:
- remove libdrm dependency
+Date: Wed, 26 Aug 2020 17:44:46 +0100
+Message-ID: <159846028644.19114.3222802749398813317@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v31 30/32] lib/intel_batchbuffer: fix
+ intel_bb cache
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,19 +25,17 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: zbigniew.kempczynski@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMDgtMjAgMDc6MzA6MjMpCj4gIHN0
-YXRpYyB2b2lkCj4gLWNoZWNrX2JvKHN0cnVjdCBpbnRlbF9iYXRjaGJ1ZmZlciAqYmF0Y2gsIHN0
-cnVjdCBpZ3RfYnVmICpidWYsIHVpbnQzMl90IHZhbCkKPiArY2hlY2tfYnVmKHN0cnVjdCBpbnRl
-bF9iYiAqaWJiLCBzdHJ1Y3QgaW50ZWxfYnVmICpidWYsIHVpbnQzMl90IHZhbCkKPiAgewo+IC0g
-ICAgICAgc3RydWN0IGlndF9idWYgdG1wID0ge307Cj4gKyAgICAgICBpbnQgaTkxNSA9IGJ1Zl9v
-cHNfZ2V0X2ZkKGxpbmVhci5ib3BzKTsKPiAgICAgICAgIHVpbnQzMl90ICpwdHI7Cj4gICAgICAg
-ICBpbnQgaTsKPiAgCj4gLSAgICAgICB0bXAuYm8gPSBsaW5lYXI7Cj4gLSAgICAgICB0bXAuc3Vy
-ZmFjZVswXS5zdHJpZGUgPSBTVFJJREU7Cj4gLSAgICAgICB0bXAudGlsaW5nID0gSTkxNV9USUxJ
-TkdfTk9ORTsKPiAtICAgICAgIHRtcC5zdXJmYWNlWzBdLnNpemUgPSBTSVpFOwo+IC0gICAgICAg
-dG1wLmJwcCA9IDMyOwo+ICsgICAgICAgcmVuZGVyX2NvcHkoaWJiLCAwLCBidWYsIDAsIDAsIFdJ
-RFRILCBIRUlHSFQsICZsaW5lYXIsIDAsIDApOwo+ICsgICAgICAgaW50ZWxfYmJfc3luYyhpYmIp
-OwoKQVJHSC4gV2UgYXJlIGhlcmUgdG8gdGVzdCB0aGUga2VybmVsIEFQSSwgbGV0IHVzIHRlc3Qg
-dGhlIEFQSSB3ZSBjYW1lCmhlcmUgdG8gdGVzdCEKLUNocmlzCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
-YW4vbGlzdGluZm8vaWd0LWRldgo=
+UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMDgtMjAgMDc6MzA6MjgpCj4gIC8q
+Kgo+ICAgKiBpbnRlbF9iYl9hZGRfb2JqZWN0Ogo+ICAgKiBAaWJiOiBwb2ludGVyIHRvIGludGVs
+X2JiCj4gQEAgLTE1NDMsMjcgKzE1OTQsMTQgQEAgaW50ZWxfYmJfYWRkX29iamVjdChzdHJ1Y3Qg
+aW50ZWxfYmIgKmliYiwgdWludDMyX3QgaGFuZGxlLAo+ICAgICAgICAgICAgICAgICAgICAgdWlu
+dDY0X3Qgb2Zmc2V0LCBib29sIHdyaXRlKQo+ICB7Cj4gICAgICAgICBzdHJ1Y3QgZHJtX2k5MTVf
+Z2VtX2V4ZWNfb2JqZWN0MiAqb2JqZWN0Owo+IC0gICAgICAgc3RydWN0IGRybV9pOTE1X2dlbV9l
+eGVjX29iamVjdDIgKipmb3VuZDsKPiAtICAgICAgIHVpbnQzMl90IGk7Cj4gIAo+IC0gICAgICAg
+X19yZWFsbG9jYXRlX29iamVjdHMoaWJiKTsKPiAtCj4gLSAgICAgICBpID0gaWJiLT5udW1fb2Jq
+ZWN0czsKPiAtICAgICAgIG9iamVjdCA9ICZpYmItPm9iamVjdHNbaV07CgpUaGlzLiBUaGlzIGlz
+IHRoZSBpbnZhbGlkIHBvaW50ZXIgYWNyb3NzIGEgcmVsb2Mgb2Ygb2JqZWN0cy4KCk9rLCBnb3Rj
+aGEuCgpSZXZpZXdlZC1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+
+Ci1DaHJpcwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpp
+Z3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczov
+L2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
