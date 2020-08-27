@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BBE16E44F
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Aug 2020 14:59:45 +0000 (UTC)
-From: Uma Shankar <uma.shankar@intel.com>
-Date: Thu, 27 Aug 2020 21:02:28 +0530
-Message-Id: <20200827153228.13476-1-uma.shankar@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD15F6E0CD
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Aug 2020 15:22:43 +0000 (UTC)
+References: <20200827150920.12940-1-sowmyax.kaparthi@intel.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <7a020f08-db91-81a8-29ab-940046fe46ba@intel.com>
+Date: Thu, 27 Aug 2020 18:22:40 +0300
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/device_reset: Unload snd driver
- before i915 unbind
+In-Reply-To: <20200827150920.12940-1-sowmyax.kaparthi@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [i-g-t] Fixing the latency of hrtimer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,72 +17,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: marcin.bernatowicz@intel.com
+To: Sowmya Kaparthi <sowmyax.kaparthi@intel.com>, igt-dev@lists.freedesktop.org, umesh.nerlige.ramappa@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Unload the snd module before unbinding i915. Audio holds
-a wakeref which triggers a warning otherwise, resulting in
-test failure.
+On 27/08/2020 18:09, Sowmya Kaparthi wrote:
+> This test undergoes sanity check that we are not spending more than
+> 1/100th of the time awake in the kernel. The right thing would be to
+> adjust that value by the number of expected wakeups. We expect the
+> kernel time not to exceed 1/100th of the total test duration at the
+> default hrtimer of 200Hz/every5ms. Scale that by the provided hrtimer if
+> applicable.
+>
+> Cc: Landwerlin, Lionel G <lionel.g.landwerlin@intel.com>
+> Signed-off-by: Sowmya Kaparthi <sowmyax.kaparthi@intel.com>
+> ---
+>   tests/i915/perf.c | 16 ++++++++++++++--
+>   1 file changed, 14 insertions(+), 2 deletions(-)
+>
+> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+> index a894fd38..0caa9fe0 100644
+> --- a/tests/i915/perf.c
+> +++ b/tests/i915/perf.c
+> @@ -1993,6 +1993,7 @@ test_blocking(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ke
+>   
+>   	int64_t start, end;
+>   	int n = 0;
+> +	uint64_t max_expected_kernel_ns;
+>   
+>   	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+>   
+> @@ -2098,7 +2099,12 @@ test_blocking(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ke
+>   	 */
+>   	igt_assert(n > (min_iterations + n_extra_iterations));
+>   
+> -	igt_assert(kernel_ns <= (test_duration_ns / 100ull));
+> +	if (set_kernel_hrtimer)
+> +		max_expected_kernel_ns = kernel_hrtimer * (test_duration_ns / 100)
+> +					 /(5 * 1000 * 1000);
+> +	else
+> +		max_expected_kernel_ns = test_duration_ns / 100;
+> +	igt_assert(kernel_ns <= max_expected_kernel_ns);
 
-Signed-off-by: Uma Shankar <uma.shankar@intel.com>
----
- tests/device_reset.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
 
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index b1181b3b..c979d46e 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -5,11 +5,13 @@
- #include <fcntl.h>
- #include <sys/ioctl.h>
- #include <sys/stat.h>
-+#include <signal.h>
- 
- #include "i915/gem.h"
- #include "igt.h"
- #include "igt_device_scan.h"
- #include "igt_sysfs.h"
-+#include "igt_kmod.h"
- 
- IGT_TEST_DESCRIPTION("Examine behavior of a driver on device sysfs reset");
- 
-@@ -164,6 +166,20 @@ static bool is_sysfs_reset_supported(int fd)
- /* Unbind the driver from the device */
- static void driver_unbind(struct device_fds *dev)
- {
-+	if (igt_kmod_is_loaded("snd_hda_intel")) {
-+		igt_terminate_process(SIGTERM, "alsactl");
-+
-+		/* unbind snd_hda_intel */
-+		kick_snd_hda_intel();
-+
-+		if (igt_kmod_unload("snd_hda_intel", 0)) {
-+			igt_warn("Could not unload snd_hda_intel\n");
-+			igt_kmod_list_loaded();
-+			igt_lsof("/dev/snd");
-+			return IGT_EXIT_FAILURE;
-+		}
-+	}
-+
- 	igt_debug("unbind the driver from the device\n");
- 	igt_assert(igt_sysfs_set(dev->fds.drv_dir, "unbind",
- 		   dev->dev_bus_addr));
-@@ -175,6 +191,7 @@ static void driver_bind(struct device_fds *dev)
- 	igt_debug("rebind the driver to the device\n");
- 	igt_abort_on_f(!igt_sysfs_set(dev->fds.drv_dir, "bind",
- 		       dev->dev_bus_addr), "driver rebind failed");
-+	igt_kmod_load("snd_hda_intel", NULL);
- }
- 
- /* Initiate device reset */
--- 
-2.19.1
+Thanks, looks good. Just a small coding style issue.
+
+Multiline blocks in if/for/while() needs to be surrounded by {}.
+
+
+With that fixed:
+
+
+Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+
+
+Cheers,
+
+
+-Lionel
+
+
+>   
+>   	__perf_close(stream_fd);
+>   }
+> @@ -2152,6 +2158,7 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
+>   	int min_iterations = (test_duration_ns / (oa_period + (kernel_hrtimer + kernel_hrtimer / 5)));
+>   	int64_t start, end;
+>   	int n = 0;
+> +	uint64_t max_expected_kernel_ns;
+>   
+>   	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+>   
+> @@ -2286,7 +2293,12 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
+>   	 */
+>   	igt_assert(n > (min_iterations + n_extra_iterations));
+>   
+> -	igt_assert(kernel_ns <= (test_duration_ns / 100ull));
+> +	if (set_kernel_hrtimer)
+> +		max_expected_kernel_ns = kernel_hrtimer * (test_duration_ns / 100)
+> +					 / (5 * 1000 * 1000);
+> +	else
+> +		max_expected_kernel_ns = test_duration_ns / 100;
+> +	igt_assert(kernel_ns <= max_expected_kernel_ns);
+>   
+>   	__perf_close(stream_fd);
+>   }
+
 
 _______________________________________________
 igt-dev mailing list
