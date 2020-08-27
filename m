@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D41516E43F
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Aug 2020 12:02:29 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E38706EB4F
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Aug 2020 16:52:40 +0000 (UTC)
 From: Sowmya Kaparthi <sowmyax.kaparthi@intel.com>
-Date: Thu, 27 Aug 2020 12:02:26 +0000
-Message-Id: <20200827120226.6855-1-sowmyax.kaparthi@intel.com>
+Date: Thu, 27 Aug 2020 16:52:27 +0000
+Message-Id: <20200827165227.17914-1-sowmyax.kaparthi@intel.com>
 MIME-Version: 1.0
 Subject: [igt-dev] [i-g-t] Fixing the latency of hrtimer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -31,11 +31,11 @@ applicable.
 Cc: Landwerlin, Lionel G <lionel.g.landwerlin@intel.com>
 Signed-off-by: Sowmya Kaparthi <sowmyax.kaparthi@intel.com>
 ---
- tests/i915/perf.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ tests/i915/perf.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index a894fd38..952da84c 100644
+index a894fd38..20d0cc82 100644
 --- a/tests/i915/perf.c
 +++ b/tests/i915/perf.c
 @@ -1993,6 +1993,7 @@ test_blocking(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ke
@@ -46,21 +46,22 @@ index a894fd38..952da84c 100644
  
  	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
  
-@@ -2098,7 +2099,12 @@ test_blocking(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ke
+@@ -2098,7 +2099,13 @@ test_blocking(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ke
  	 */
  	igt_assert(n > (min_iterations + n_extra_iterations));
  
 -	igt_assert(kernel_ns <= (test_duration_ns / 100ull));
-+	if (set_kernel_hrtimer)
-+		max_expected_kernel_ns = kernel_hrtimer * (test_duration_ns / 100);
-+	else
++	if (set_kernel_hrtimer) {
++		max_expected_kernel_ns = kernel_hrtimer * (test_duration_ns / 100)
++					 /(5 * 1000 * 1000);
++	} else {
 +		max_expected_kernel_ns = test_duration_ns / 100;
-+
++	}
 +	igt_assert(kernel_ns <= max_expected_kernel_ns);
  
  	__perf_close(stream_fd);
  }
-@@ -2152,6 +2158,7 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
+@@ -2152,6 +2159,7 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
  	int min_iterations = (test_duration_ns / (oa_period + (kernel_hrtimer + kernel_hrtimer / 5)));
  	int64_t start, end;
  	int n = 0;
@@ -68,16 +69,17 @@ index a894fd38..952da84c 100644
  
  	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
  
-@@ -2286,7 +2293,12 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
+@@ -2286,7 +2294,13 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
  	 */
  	igt_assert(n > (min_iterations + n_extra_iterations));
  
 -	igt_assert(kernel_ns <= (test_duration_ns / 100ull));
-+	if (set_kernel_hrtimer)
-+		max_expected_kernel_ns = kernel_hrtimer * (test_duration_ns / 100);
-+	else
++	if (set_kernel_hrtimer) {
++		max_expected_kernel_ns = kernel_hrtimer * (test_duration_ns / 100)
++					 /(5 * 1000 * 1000);
++	} else {
 +		max_expected_kernel_ns = test_duration_ns / 100;
-+
++	}
 +	igt_assert(kernel_ns <= max_expected_kernel_ns);
  
  	__perf_close(stream_fd);
