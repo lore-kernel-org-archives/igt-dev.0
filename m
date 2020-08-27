@@ -1,20 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com
- [IPv6:2a00:1450:4864:20::642])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0AB3C6E061
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Aug 2020 10:47:36 +0000 (UTC)
-Received: by mail-ej1-x642.google.com with SMTP id oz20so7025840ejb.5
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Aug 2020 03:47:35 -0700 (PDT)
-References: <20200825200510.4021-1-juhapekka.heikkila@gmail.com>
- <85b0b124-84f4-5246-0571-905521dd3404@linux.intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <71db3c08-8305-1ed5-3722-7de47d24316c@gmail.com>
-Date: Thu, 27 Aug 2020 13:47:25 +0300
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 048716E43F
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Aug 2020 12:12:10 +0000 (UTC)
+References: <20200827120226.6855-1-sowmyax.kaparthi@intel.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <152ce90e-5606-557c-f141-8e3226b95c3e@intel.com>
+Date: Thu, 27 Aug 2020 15:12:07 +0300
 MIME-Version: 1.0
-In-Reply-To: <85b0b124-84f4-5246-0571-905521dd3404@linux.intel.com>
+In-Reply-To: <20200827120226.6855-1-sowmyax.kaparthi@intel.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_flip: add flip to downscaled
- subtests
+Subject: Re: [igt-dev] [i-g-t] Fixing the latency of hrtimer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,149 +17,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, igt-dev@lists.freedesktop.org
+To: Sowmya Kaparthi <sowmyax.kaparthi@intel.com>, igt-dev@lists.freedesktop.org, umesh.nerlige.ramappa@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMjYuOC4yMDIwIDE1LjA5LCBNYWFydGVuIExhbmtob3JzdCB3cm90ZToKPiBIZXksCj4gCj4g
-Q2FuIHlvdSBtYWtlIGEgc2VwYXJhdGUgdGVzdGNhc2UgZm9yIHRob3NlIHNjYWxpbmdzPyBrbXNf
-ZmxpcCBpcyBhIGxlZ2FjeSB0ZXN0LCBhbmQgeW91IGNhbiBzZWUgdGhhdCBpbiB5b3VyIHN1YnRl
-c3RzLgo+IAoKWWVhLCBJJ2xsIG1ha2UgdGhlbSBpbnRvIHNlcGFyYXRlIHRlc3QuIEkgd2FzIHRo
-aW5raW5nIHRoZXNlIHRlc3RzIGFyZSAKaW4gdGhlIHdyb25nIHBsYWNlIGJ1dCB0aGV5IHdlcmUg
-c3RpbGwganVzdCBmbGlwIHRlc3RzLgoKPiAgwqBPcCAyNS0wOC0yMDIwIG9tIDIyOjA1IHNjaHJl
-ZWYgSnVoYS1QZWtrYSBIZWlra2lsYToKPj4gYXR0ZW1wdCB0byBjYXVzZSBjZGNsayBjaGFuZ2Vz
-IGFuZCBzdHJlc3Mgc2NhbGVycyB3aXRoIGZsaXBwaW5nCj4+IHRvIGRpZmZlcmVudCBzaXplIGZi
-IHdpdGggZGlmZmVyZW50IG1vZGlmaWVycy4gVmVyaWZ5IHJlc3VsdHMKPj4gd2l0aCBjcmMuCj4+
-Cj4+IFNpZ25lZC1vZmYtYnk6IEp1aGEtUGVra2EgSGVpa2tpbGEgPGp1aGFwZWtrYS5oZWlra2ls
-YUBnbWFpbC5jb20+Cj4+IC0tLQo+PiAgIHRlc3RzL2ttc19mbGlwLmMgfCAxNTUgKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKPj4gICAxIGZpbGUgY2hhbmdl
-ZCwgMTU1IGluc2VydGlvbnMoKykKPj4KPj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc19mbGlwLmMg
-Yi90ZXN0cy9rbXNfZmxpcC5jCj4+IGluZGV4IGIzM2NmZTljYS4uNWY5MDZmNWYwIDEwMDc1NQo+
-PiAtLS0gYS90ZXN0cy9rbXNfZmxpcC5jCj4+ICsrKyBiL3Rlc3RzL2ttc19mbGlwLmMKPj4gQEAg
-LTE2MDUsNiArMTYwNSwxNTUgQEAgc3RhdGljIHZvaWQgdGVzdF9ub25ibG9ja2luZ19yZWFkKGlu
-dCBpbikKPj4gICAJY2xvc2UoZmQpOwo+PiAgIH0KPj4gICAKPj4gK2NvbnN0IHN0cnVjdCB7Cj4+
-ICsJY29uc3QgY2hhciAqbmFtZTsKPj4gKwljb25zdCBjaGFyICpkZXNjcmliZTsKPj4gKwl1aW50
-NjRfdCBmaXJzdG1vZGlmaWVyOwo+PiArCXVpbnQzMl90IGZpcnN0Zm9ybWF0Owo+PiArCXVpbnQ2
-NF90IHNlY29uZG1vZGlmaWVyOwo+PiArCXVpbnQzMl90IHNlY29uZGZvcm1hdDsKPj4gK30gc3Bl
-Y2lhbF9mbGlwX3NjZW5hcmlvX3Rlc3RbXSA9IHsKPj4gKwl7Cj4+ICsJCSJmbGlwLTMyYnBwLXl0
-aWxlLXRvLTY0YnBwLXl0aWxlIiwKPj4gKwkJIlRyeSB0byBmbGlwIGZyb20gMzJicHAgbm9uIHNj
-YWxlZCBmYiB0byA2NGJwcCBkb3duc2NhbGVkIGZiIGluIGF0dGVtcHQgdG8gc3RyZXNzIGNkY2xr
-IHJlcHJvZ3JhbW1pbmcuIiwKPj4gKwkJTE9DQUxfSTkxNV9GT1JNQVRfTU9EX1lfVElMRUQsIERS
-TV9GT1JNQVRfWFJHQjg4ODgsCj4+ICsJCUxPQ0FMX0k5MTVfRk9STUFUX01PRF9ZX1RJTEVELCBE
-Uk1fRk9STUFUX1hSR0IxNjE2MTYxNkYKPj4gKwl9LAo+PiArCXsKPj4gKwkJImZsaXAtMzJicHAt
-eXRpbGUtdG8tMzJicHAteXRpbGVnZW4xMnJjY2NzIiwKPj4gKwkJIlRyeSB0byBmbGlwIGZyb20g
-MzJicHAgbm9uIHNjYWxlZCBmYiB0byAzMmJwcCBkb3duc2NhbGVkIGdlbjEyIHJjIGNjcyBmYiBp
-biBhdHRlbXB0IHRvIHN0cmVzcyBjZGNsayByZXByb2dyYW1taW5nLiIsCj4+ICsJCUxPQ0FMX0k5
-MTVfRk9STUFUX01PRF9ZX1RJTEVELCBEUk1fRk9STUFUX1hSR0I4ODg4LAo+PiArCQlMT0NBTF9J
-OTE1X0ZPUk1BVF9NT0RfWV9USUxFRF9HRU4xMl9SQ19DQ1MsIERSTV9GT1JNQVRfWFJHQjg4ODgK
-Pj4gKwl9LAo+PiArCXsKPj4gKwkJImZsaXAtMzJicHAteXRpbGUtdG8tMzJicHAteXRpbGVjY3Mi
-LAo+PiArCQkiVHJ5IHRvIGZsaXAgZnJvbSAzMmJwcCBub24gc2NhbGVkIHl0aWxlZCBmYiB0byAz
-MmJwcCBkb3duc2NhbGVkIHl0aWxlZCBjY3MgZmIuIiwKPj4gKwkJTE9DQUxfSTkxNV9GT1JNQVRf
-TU9EX1lfVElMRUQsIERSTV9GT1JNQVRfWFJHQjg4ODgsCj4+ICsJCUxPQ0FMX0k5MTVfRk9STUFU
-X01PRF9ZX1RJTEVEX0NDUywgRFJNX0ZPUk1BVF9YUkdCODg4OAo+PiArCX0sCj4+ICsJewo+PiAr
-CQkiZmxpcC02NGJwcC15dGlsZS10by0zMmJwcC15dGlsZWNjcyIsCj4+ICsJCSJUcnkgdG8gZmxp
-cCBmcm9tIDY0YnBwIG5vbiBzY2FsZWQgeXRpbGVkIGZiIHRvIDMyYnBwIGRvd25zY2FsZWQgZ2Vu
-MTIgcmMgY2NzIGZiLiIsCj4+ICsJCUxPQ0FMX0k5MTVfRk9STUFUX01PRF9ZX1RJTEVELCBEUk1f
-Rk9STUFUX1hSR0I4ODg4LAo+PiArCQlMT0NBTF9JOTE1X0ZPUk1BVF9NT0RfWV9USUxFRF9HRU4x
-Ml9SQ19DQ1MsIERSTV9GT1JNQVRfWFJHQjg4ODgKPj4gKwl9LAo+PiArfTsKPj4gKwo+PiArc3Rh
-dGljIHZvaWQgdGVzdF9mbGlwX3RvX3NjYWxlZCh1aW50MzJfdCBpbmRleCkKPj4gK3sKPj4gKwl1
-aW50MzJfdCBzY3JlZW53aWR0aCwgc2NyZWVuaGVpZ2h0Owo+PiArCXVpbnQzMl90IGJpZ2Zid2lk
-dGgsIGJpZ2ZiaGVpZ2h0Owo+PiArCXVpbnQzMl90IHBpcGUgPSAwOwkvL2xldHMganVzdCBydW4g
-b24gZmlyc3Qgb3V0cHV0LCBmaXJzdCBwaXBlCj4+ICsJdWludDY0X3Qgc21hbGxtb2RpZmllciA9
-IHNwZWNpYWxfZmxpcF9zY2VuYXJpb190ZXN0W2luZGV4XS5maXJzdG1vZGlmaWVyOwo+PiArCXVp
-bnQ2NF90IGJpZ21vZGlmaWVyID0gc3BlY2lhbF9mbGlwX3NjZW5hcmlvX3Rlc3RbaW5kZXhdLnNl
-Y29uZG1vZGlmaWVyOwo+PiArCXVpbnQzMl90IHNtYWxsZm9ybWF0ID0gc3BlY2lhbF9mbGlwX3Nj
-ZW5hcmlvX3Rlc3RbaW5kZXhdLmZpcnN0Zm9ybWF0Owo+PiArCXVpbnQzMl90IGJpZ2Zvcm1hdCA9
-IHNwZWNpYWxfZmxpcF9zY2VuYXJpb190ZXN0W2luZGV4XS5zZWNvbmRmb3JtYXQ7Cj4+ICsJdWlu
-dDMyX3QgZ2VuOwo+PiArCj4+ICsJaWd0X2Rpc3BsYXlfdCBkaXNwbGF5Owo+PiArCWlndF9vdXRw
-dXRfdCAqb3V0cHV0Owo+PiArCWlndF9wbGFuZV90ICpwcmltYXJ5Owo+PiArCWlndF9waXBlX2Ny
-Y190ICpwaXBlX2NyYzsKPj4gKwlpZ3RfY3JjX3Qgc21hbGxfY3JjLCBiaWdfY3JjOwo+PiArCXN0
-cnVjdCBpZ3RfZmIgc21hbGxfZmIsIGJpZ19mYjsKPj4gKwo+PiArCXN0cnVjdCBkcm1fbW9kZV9m
-Yl9jbWQyIGYgPSB7MH07Cj4+ICsJZHJtTW9kZU1vZGVJbmZvICptb2RlOwo+PiArCXN0cnVjdCBk
-cm1fZXZlbnRfdmJsYW5rIGV2Owo+PiArCj4+ICsJY2Fpcm9fdCAqY3I7Cj4+ICsKPj4gKwkvLyB0
-aGlzIGlzIEludGVsIG9ubHkgdGVzdCBzbyBiYWlsIG91dCBlYXJseS4KPj4gKwlpZ3RfcmVxdWly
-ZV9pbnRlbChkcm1fZmQpOwo+PiArCWdlbiA9IGludGVsX2dlbihpbnRlbF9nZXRfZHJtX2Rldmlk
-KGRybV9mZCkpOwo+PiArCj4+ICsJLy8gd2lsbCBiZSB1c2luZyBzY2FsZXJzIGhlbmNlIGdlbiBu
-ZWVkIHRvIGJlID49IDkKPj4gKwlpZ3RfcmVxdWlyZShnZW4gPj0gOSk7Cj4+ICsJaWd0X3JlcXVp
-cmVfcGlwZV9jcmMoZHJtX2ZkKTsKPj4gKwlpZ3RfZGlzcGxheV9yZXF1aXJlKCZkaXNwbGF5LCBk
-cm1fZmQpOwo+PiArCWlndF9yZXF1aXJlKGRpc3BsYXkuaXNfYXRvbWljKTsKPj4gKwlpZ3RfcmVx
-dWlyZShpZ3RfZGlzcGxheV9oYXNfZm9ybWF0X21vZCgmZGlzcGxheSwgc21hbGxmb3JtYXQsIHNt
-YWxsbW9kaWZpZXIpKTsKPj4gKwlpZ3RfcmVxdWlyZShpZ3RfZGlzcGxheV9oYXNfZm9ybWF0X21v
-ZCgmZGlzcGxheSwgYmlnZm9ybWF0LCBiaWdtb2RpZmllcikpOwo+IAo+IFRoaXMgc2hvdWxkIGJl
-IGEgaW4gcHJlYW1ibGUsIHdoaWNoIGlzIHNpbXBsZSBpZiB5b3UgbWFrZSBhIHNlcGFyYXRlIHRl
-c3QuCj4gCj4gCj4+ICsJZm9yX2VhY2hfY29ubmVjdGVkX291dHB1dCgmZGlzcGxheSwgb3V0cHV0
-KSB7Cj4+ICsJCW1vZGUgPSBpZ3Rfb3V0cHV0X2dldF9tb2RlKG91dHB1dCk7Cj4+ICsJCXNjcmVl
-bndpZHRoID0gbWluKG1vZGUtPmhkaXNwbGF5LCAxOTIwKTsKPj4gKwkJc2NyZWVuaGVpZ2h0ID0g
-bWluKG1vZGUtPnZkaXNwbGF5LCAxMDgwKTsKPj4gKwo+PiArCQkvLyBiaWcgZmIgd2lsbCBiZSA0
-ayB1bmxlc3MgcnVubmluZyBvbiBvbGRlciB0aGFuIElDTAo+PiArCQlpZiAoZ2VuIDwgMTEpIHsK
-Pj4gKwkJCWJpZ2Zid2lkdGggPSAyNTYwOwo+PiArCQkJYmlnZmJoZWlnaHQgPSAxNDQwOwo+PiAr
-CQl9IGVsc2Ugewo+PiArCQkJYmlnZmJ3aWR0aCA9IDM4NDA7Cj4+ICsJCQliaWdmYmhlaWdodCA9
-IDIxNjA7Cj4+ICsJCX0KPj4gKwo+PiArCQlpZ3RfcmVxdWlyZShpZ3RfY3JlYXRlX2NvbG9yX2Zi
-KGRybV9mZCwgc2NyZWVud2lkdGgsIHNjcmVlbmhlaWdodCwKPj4gKwkJCQlzbWFsbGZvcm1hdCwg
-c21hbGxtb2RpZmllciwKPj4gKwkJCQkwLCAxLCAwLCAmc21hbGxfZmIpKTsKPj4gKwo+PiArCQlp
-Z3RfY3JlYXRlX2JvX2Zvcl9mYihkcm1fZmQsIGJpZ2Zid2lkdGgsIGJpZ2ZiaGVpZ2h0LCBiaWdm
-b3JtYXQsCj4+ICsJCQkJCQkJIGJpZ21vZGlmaWVyLCAmYmlnX2ZiKTsKPj4gKwkJaWd0X2Fzc2Vy
-dChiaWdfZmIuZ2VtX2hhbmRsZSA+IDApOwo+PiArCj4+ICsJCWYud2lkdGggPSBiaWdfZmIud2lk
-dGg7Cj4+ICsJCWYuaGVpZ2h0ID0gYmlnX2ZiLmhlaWdodDsKPj4gKwkJZi5waXhlbF9mb3JtYXQg
-PSBiaWdfZmIuZHJtX2Zvcm1hdDsKPj4gKwkJZi5mbGFncyA9IExPQ0FMX0RSTV9NT0RFX0ZCX01P
-RElGSUVSUzsKPj4gKwo+PiArCQlmb3IgKGludCBuID0gMDsgbiA8IGJpZ19mYi5udW1fcGxhbmVz
-OyBuKyspIHsKPj4gKwkJCWYuaGFuZGxlc1tuXSA9IGJpZ19mYi5nZW1faGFuZGxlOwo+PiArCQkJ
-Zi5tb2RpZmllcltuXSA9IGJpZ19mYi5tb2RpZmllcjsKPj4gKwkJCWYucGl0Y2hlc1tuXSA9IGJp
-Z19mYi5zdHJpZGVzW25dOwo+PiArCQkJZi5vZmZzZXRzW25dID0gYmlnX2ZiLm9mZnNldHNbbl07
-Cj4+ICsJCX0KPj4gKwo+PiArCQljciA9IGlndF9nZXRfY2Fpcm9fY3R4KGRybV9mZCwgJmJpZ19m
-Yik7Cj4+ICsJCWlndF9wYWludF9jb2xvcihjciwgMCwgMCwgYmlnZmJ3aWR0aCwgYmlnZmJoZWln
-aHQsIDAsIDEsIDApOwo+PiArCQlpZ3RfcHV0X2NhaXJvX2N0eChjcik7Cj4+ICsKPj4gKwkJaWd0
-X2Fzc2VydChkcm1Jb2N0bChkcm1fZmQsIExPQ0FMX0RSTV9JT0NUTF9NT0RFX0FEREZCMiwgJmYp
-ID09IDApOwo+PiArCQliaWdfZmIuZmJfaWQgPSBmLmZiX2lkOwo+PiArCj4+ICsJCWlndF9vdXRw
-dXRfc2V0X3BpcGUob3V0cHV0LCBwaXBlKTsKPj4gKwo+PiArCQlwcmltYXJ5ID0gaWd0X291dHB1
-dF9nZXRfcGxhbmVfdHlwZShvdXRwdXQsIERSTV9QTEFORV9UWVBFX1BSSU1BUlkpOwo+PiArCQlp
-Z3RfcGxhbmVfc2V0X2ZiKHByaW1hcnksIE5VTEwpOwo+PiArCj4+ICsJCWlndF9kaXNwbGF5X2Nv
-bW1pdF9hdG9taWMoJmRpc3BsYXksIERSTV9NT0RFX0FUT01JQ19BTExPV19NT0RFU0VULCBOVUxM
-KTsKPj4gKwkJcGlwZV9jcmMgPSBpZ3RfcGlwZV9jcmNfbmV3KGRybV9mZCwgcGlwZSwgSU5URUxf
-UElQRV9DUkNfU09VUkNFX0FVVE8pOwo+PiArCQlpZ3RfcGlwZV9jcmNfc3RhcnQocGlwZV9jcmMp
-Owo+PiArCj4+ICsJCWlndF9wbGFuZV9zZXRfcG9zaXRpb24ocHJpbWFyeSwgMCwgMCk7Cj4+ICsJ
-CWlndF9wbGFuZV9zZXRfZmIocHJpbWFyeSwgJnNtYWxsX2ZiKTsKPj4gKwkJaWd0X3BsYW5lX3Nl
-dF9zaXplKHByaW1hcnksIHNjcmVlbndpZHRoLCBzY3JlZW5oZWlnaHQpOwo+PiArCj4+ICsJCWln
-dF9kaXNwbGF5X2NvbW1pdF9hdG9taWMoJmRpc3BsYXksIERSTV9NT0RFX0FUT01JQ19BTExPV19N
-T0RFU0VULCBOVUxMKTsKPj4gKwkJaWd0X3BpcGVfY3JjX2NvbGxlY3RfY3JjKHBpcGVfY3JjLCAm
-c21hbGxfY3JjKTsKPj4gKwo+PiArCQlpZ3RfcGxhbmVfc2V0X2ZiKHByaW1hcnksICZiaWdfZmIp
-Owo+PiArCQlpZ3RfcGxhbmVfc2V0X3NpemUocHJpbWFyeSwgc2NyZWVud2lkdGgsIHNjcmVlbmhl
-aWdodCk7Cj4+ICsJCWlndF9kaXNwbGF5X2NvbW1pdF9hdG9taWMoJmRpc3BsYXksIERSTV9NT0RF
-X0FUT01JQ19BTExPV19NT0RFU0VUICB8Cj4+ICsJCQkJCQkJRFJNX01PREVfUEFHRV9GTElQX0VW
-RU5ULCBOVUxMKTsKPj4gKwo+PiArCQlpZ3RfYXNzZXJ0KHJlYWQoZHJtX2ZkLCAmZXYsIHNpemVv
-ZihldikpID09IHNpemVvZihldikpOwo+PiArCj4+ICsJCWlndF9waXBlX2NyY19jb2xsZWN0X2Ny
-YyhwaXBlX2NyYywgJmJpZ19jcmMpOwo+PiArCj4+ICsJCWlndF9waXBlX2NyY19zdG9wKHBpcGVf
-Y3JjKTsKPj4gKwkJaWd0X3BpcGVfY3JjX2ZyZWUocGlwZV9jcmMpOwo+PiArCQlpZ3RfcmVtb3Zl
-X2ZiKGRybV9mZCwgJnNtYWxsX2ZiKTsKPj4gKwkJaWd0X3JlbW92ZV9mYihkcm1fZmQsICZiaWdf
-ZmIpOwo+PiArCQlpZ3Rfb3V0cHV0X3NldF9waXBlKG91dHB1dCwgUElQRV9BTlkpOwo+PiArCj4+
-ICsJCWlndF9hc3NlcnQoaWd0X2NoZWNrX2NyY19lcXVhbCgmc21hbGxfY3JjLCAmYmlnX2NyYykp
-Owo+PiArCj4+ICsJCS8vIHJ1biBqdXN0IG9uIGZpcnN0IGZvdW5kIGNvbm5lY3RlZCBvdXRwdXQu
-Cj4+ICsJCWJyZWFrOwo+PiArCX0KPiAKPiBSdW4gdGhvc2Ugd2l0aCBhIHNlcGFyYXRlIHN1YnRl
-c3QgcGVyIHBpcGUsIGFuZCBkbyBvdXRwdXQgPSBpZ3RfZ2V0X3NpbmdsZV9vdXRwdXRfZm9yX3Bp
-cGUgPwoKSSBjYW4gYWRkIHRob3NlIHNlcGFyYXRlIHBpcGUgdGVzdHMuIEkgd2Fzbid0IGNlcnRh
-aW4gaWYgdGhlcmUncyBuZWVkIApmb3IgdGhlc2UgdGVzdHMgdG8gcnVuIG9uIGVhY2ggcGlwZSBz
-byBJIHdhcyBhdCBmaXJzdCBqdXN0IGdvaW5nIHdpdGggCmZpcnN0IHBpcGUuIFRoaXMgcGFydCBv
-ZiB0ZXN0IGFueXdheSBuZWVkIHNvbWUgc2NydWJiaW5nLCBub3cgaWYgdGhlcmUgCndhcyBubyBv
-dXRwdXQgZm91bmQgdGhpcyB0ZXN0IHdvdWxkIHNheSAnc3VjY2VzcycgOikgVGhlcmUncyBhbHNv
-IHRob3NlIApzY2FsZXJzIEkgbmVlZCB0byBmaWd1cmUgY29ycmVjdCB2YWx1ZXMgZm9yIHByZSBJ
-Q0wgaHcsIG5vdyBvbiB0ZXN0IApyZXN1bHRzIHRoZXJlJ3MgIjM0LCBOdW1lcmljYWwgcmVzdWx0
-IG91dCBvZiByYW5nZSIgaW4gY291cGxlIG9mIHRlc3RzLgoKPiAKPiAKPj4gK30KPj4gKwo+PiAg
-IGlndF9tYWluCj4+ICAgewo+PiAgIAlzdHJ1Y3Qgewo+PiBAQCAtMTcyMCw0ICsxODY5LDEwIEBA
-IGlndF9tYWluCj4+ICAgCQkJcnVuX3BhaXIodGVzdHNbaV0uZHVyYXRpb24sIHRlc3RzW2ldLmZs
-YWdzKTsKPj4gICAJfQo+PiAgIAlpZ3Rfc3RvcF9zaWduYWxfaGVscGVyKCk7Cj4+ICsKPj4gKwlm
-b3IgKGludCBpbmRleCA9IDA7IGluZGV4IDwgQVJSQVlfU0laRShzcGVjaWFsX2ZsaXBfc2NlbmFy
-aW9fdGVzdCk7IGluZGV4KyspIHsKPj4gKwkJaWd0X2Rlc2NyaWJlKHNwZWNpYWxfZmxpcF9zY2Vu
-YXJpb190ZXN0W2luZGV4XS5kZXNjcmliZSk7Cj4+ICsJCWlndF9zdWJ0ZXN0KHNwZWNpYWxfZmxp
-cF9zY2VuYXJpb190ZXN0W2luZGV4XS5uYW1lKQo+PiArCQkJdGVzdF9mbGlwX3RvX3NjYWxlZChp
-bmRleCk7Cj4gCj4gQ2FuIHlvdSB1bnJvbGwgdGhpcyBzdHJ1Y3QsIGFuZCBwZXJoYXBzIHBhc3Mg
-cGlwZSBhcyBhcmd1bWVudD8KCldoeSB1bnJvbGw/IEkgdGhvdWdoIHRoaW5ncyBsb29rIG1vcmUg
-Y2xlYW4gdGhpcyB3YXkgYW5kIGlmIHRoZXJlIHdhcyAKbmVlZCB0byBhZGQgbmV3IGZsaXAgdGVz
-dCBmb3IgdGhlc2Ugc2V0cyBvbmUgd291bGQganVzdCBuZWVkIHRvIHB1dCBpdCAKaW50byB0aGUg
-J3NwZWNpYWxfZmxpcF9zY2VuYXJpb190ZXN0JyBhcnJheS4KCj4gCj4gCj4+ICsJfQo+PiAgIH0K
-PiAKPiAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
-dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+On 27/08/2020 15:02, Sowmya Kaparthi wrote:
+> This test undergoes sanity check that we are not spending more than
+> 1/100th of the time awake in the kernel. The right thing would be to
+> adjust that value by the number of expected wakeups. We expect the
+> kernel time not to exceed 1/100th of the total test duration at the
+> default hrtimer of 200Hz/every5ms. Scale that by the provided hrtimer if
+> applicable.
+>
+> Cc: Landwerlin, Lionel G <lionel.g.landwerlin@intel.com>
+> Signed-off-by: Sowmya Kaparthi <sowmyax.kaparthi@intel.com>
+> ---
+>   tests/i915/perf.c | 16 ++++++++++++++--
+>   1 file changed, 14 insertions(+), 2 deletions(-)
+>
+> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+> index a894fd38..952da84c 100644
+> --- a/tests/i915/perf.c
+> +++ b/tests/i915/perf.c
+> @@ -1993,6 +1993,7 @@ test_blocking(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ke
+>   
+>   	int64_t start, end;
+>   	int n = 0;
+> +	uint64_t max_expected_kernel_ns;
+>   
+>   	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+>   
+> @@ -2098,7 +2099,12 @@ test_blocking(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ke
+>   	 */
+>   	igt_assert(n > (min_iterations + n_extra_iterations));
+>   
+> -	igt_assert(kernel_ns <= (test_duration_ns / 100ull));
+> +	if (set_kernel_hrtimer)
+> +		max_expected_kernel_ns = kernel_hrtimer * (test_duration_ns / 100);
+
+That's not quite right.
+
+
+test_duration_ns / 100 is the expectation for a 5ms kernel_hrtimer.
+
+You can't just multiply that by kernel_hrtimer, it has a be proportional.
+
+
+Thanks,
+
+
+-Lionel
+
+
+> +	else
+> +		max_expected_kernel_ns = test_duration_ns / 100;
+> +
+> +	igt_assert(kernel_ns <= max_expected_kernel_ns);
+>   
+>   	__perf_close(stream_fd);
+>   }
+> @@ -2152,6 +2158,7 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
+>   	int min_iterations = (test_duration_ns / (oa_period + (kernel_hrtimer + kernel_hrtimer / 5)));
+>   	int64_t start, end;
+>   	int n = 0;
+> +	uint64_t max_expected_kernel_ns;
+>   
+>   	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
+>   
+> @@ -2286,7 +2293,12 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
+>   	 */
+>   	igt_assert(n > (min_iterations + n_extra_iterations));
+>   
+> -	igt_assert(kernel_ns <= (test_duration_ns / 100ull));
+> +	if (set_kernel_hrtimer)
+> +		max_expected_kernel_ns = kernel_hrtimer * (test_duration_ns / 100);
+> +	else
+> +		max_expected_kernel_ns = test_duration_ns / 100;
+> +
+> +	igt_assert(kernel_ns <= max_expected_kernel_ns);
+>   
+>   	__perf_close(stream_fd);
+>   }
+
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
