@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CC9F6E51B
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Aug 2020 19:34:32 +0000 (UTC)
-Date: Fri, 28 Aug 2020 12:34:31 -0700
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Message-ID: <20200828193431.GA65737@orsosgc001.ra.intel.com>
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 58BA46E109
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Aug 2020 19:44:29 +0000 (UTC)
 References: <20200827150920.12940-1-sowmyax.kaparthi@intel.com>
  <7a020f08-db91-81a8-29ab-940046fe46ba@intel.com>
+ <20200828193431.GA65737@orsosgc001.ra.intel.com>
+From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Message-ID: <66f2a79c-a04c-0b5b-a71f-2361d853e69b@intel.com>
+Date: Fri, 28 Aug 2020 22:44:27 +0300
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <7a020f08-db91-81a8-29ab-940046fe46ba@intel.com>
+In-Reply-To: <20200828193431.GA65737@orsosgc001.ra.intel.com>
+Content-Language: en-US
 Subject: Re: [igt-dev] [i-g-t] Fixing the latency of hrtimer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -18,114 +19,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: igt-dev@lists.freedesktop.org, Sowmya Kaparthi <sowmyax.kaparthi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Aug 27, 2020 at 06:22:40PM +0300, Lionel Landwerlin wrote:
->On 27/08/2020 18:09, Sowmya Kaparthi wrote:
->>This test undergoes sanity check that we are not spending more than
->>1/100th of the time awake in the kernel. The right thing would be to
->>adjust that value by the number of expected wakeups. We expect the
->>kernel time not to exceed 1/100th of the total test duration at the
->>default hrtimer of 200Hz/every5ms. Scale that by the provided hrtimer if
->>applicable.
->>
->>Cc: Landwerlin, Lionel G <lionel.g.landwerlin@intel.com>
->>Signed-off-by: Sowmya Kaparthi <sowmyax.kaparthi@intel.com>
->>---
->>  tests/i915/perf.c | 16 ++++++++++++++--
->>  1 file changed, 14 insertions(+), 2 deletions(-)
->>
->>diff --git a/tests/i915/perf.c b/tests/i915/perf.c
->>index a894fd38..0caa9fe0 100644
->>--- a/tests/i915/perf.c
->>+++ b/tests/i915/perf.c
->>@@ -1993,6 +1993,7 @@ test_blocking(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ke
->>  	int64_t start, end;
->>  	int n = 0;
->>+	uint64_t max_expected_kernel_ns;
->>  	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
->>@@ -2098,7 +2099,12 @@ test_blocking(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ke
->>  	 */
->>  	igt_assert(n > (min_iterations + n_extra_iterations));
->>-	igt_assert(kernel_ns <= (test_duration_ns / 100ull));
->>+	if (set_kernel_hrtimer)
->>+		max_expected_kernel_ns = kernel_hrtimer * (test_duration_ns / 100)
->>+					 /(5 * 1000 * 1000);
->>+	else
->>+		max_expected_kernel_ns = test_duration_ns / 100;
->>+	igt_assert(kernel_ns <= max_expected_kernel_ns);
->
-
-Sorry, a little late to comment on this, but here it is anyways:
-
-I agree that we should ideally scale the check so that different values 
-of hrtimer can be accounted for. One of the values that should factor 
-into this calculation is the average time taken by a read on a 
-particular platform. For example, we saw an average 30 us on TGL and 
-this was counting up to around 150 ms in kernel_ns, so test failed. That 
-said, this is time taken by the cpu and I am not sure we can guarantee 
-this time. If the cpu frequency is scaled, we have different values.  
-Also different platforms would have different results. Unless we can 
-enforce a cpu frequency from IGT and calibrate the kernel_ns for each 
-platform, this check is going to be buggy.
-
-For the *-parameterized tests alone, I would recommend not checking 
-kernel_ns at all because the intent of the test is to make sure we are 
-woken up a predetermined number of times for different values of 
-hrtimer.
-
-Thoughts?
-
-Thanks,
-Umesh
-
->
->Thanks, looks good. Just a small coding style issue.
->
->Multiline blocks in if/for/while() needs to be surrounded by {}.
->
->
->With that fixed:
->
->
->Reviewed-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
->
->
->Cheers,
->
->
->-Lionel
->
->
->>  	__perf_close(stream_fd);
->>  }
->>@@ -2152,6 +2158,7 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
->>  	int min_iterations = (test_duration_ns / (oa_period + (kernel_hrtimer + kernel_hrtimer / 5)));
->>  	int64_t start, end;
->>  	int n = 0;
->>+	uint64_t max_expected_kernel_ns;
->>  	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
->>@@ -2286,7 +2293,12 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
->>  	 */
->>  	igt_assert(n > (min_iterations + n_extra_iterations));
->>-	igt_assert(kernel_ns <= (test_duration_ns / 100ull));
->>+	if (set_kernel_hrtimer)
->>+		max_expected_kernel_ns = kernel_hrtimer * (test_duration_ns / 100)
->>+					 / (5 * 1000 * 1000);
->>+	else
->>+		max_expected_kernel_ns = test_duration_ns / 100;
->>+	igt_assert(kernel_ns <= max_expected_kernel_ns);
->>  	__perf_close(stream_fd);
->>  }
->
->
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gMjgvMDgvMjAyMCAyMjozNCwgVW1lc2ggTmVybGlnZSBSYW1hcHBhIHdyb3RlOgo+IE9uIFRo
+dSwgQXVnIDI3LCAyMDIwIGF0IDA2OjIyOjQwUE0gKzAzMDAsIExpb25lbCBMYW5kd2VybGluIHdy
+b3RlOgo+PiBPbiAyNy8wOC8yMDIwIDE4OjA5LCBTb3dteWEgS2FwYXJ0aGkgd3JvdGU6Cj4+PiBU
+aGlzIHRlc3QgdW5kZXJnb2VzIHNhbml0eSBjaGVjayB0aGF0IHdlIGFyZSBub3Qgc3BlbmRpbmcg
+bW9yZSB0aGFuCj4+PiAxLzEwMHRoIG9mIHRoZSB0aW1lIGF3YWtlIGluIHRoZSBrZXJuZWwuIFRo
+ZSByaWdodCB0aGluZyB3b3VsZCBiZSB0bwo+Pj4gYWRqdXN0IHRoYXQgdmFsdWUgYnkgdGhlIG51
+bWJlciBvZiBleHBlY3RlZCB3YWtldXBzLiBXZSBleHBlY3QgdGhlCj4+PiBrZXJuZWwgdGltZSBu
+b3QgdG8gZXhjZWVkIDEvMTAwdGggb2YgdGhlIHRvdGFsIHRlc3QgZHVyYXRpb24gYXQgdGhlCj4+
+PiBkZWZhdWx0IGhydGltZXIgb2YgMjAwSHovZXZlcnk1bXMuIFNjYWxlIHRoYXQgYnkgdGhlIHBy
+b3ZpZGVkIAo+Pj4gaHJ0aW1lciBpZgo+Pj4gYXBwbGljYWJsZS4KPj4+Cj4+PiBDYzogTGFuZHdl
+cmxpbiwgTGlvbmVsIEcgPGxpb25lbC5nLmxhbmR3ZXJsaW5AaW50ZWwuY29tPgo+Pj4gU2lnbmVk
+LW9mZi1ieTogU293bXlhIEthcGFydGhpIDxzb3dteWF4LmthcGFydGhpQGludGVsLmNvbT4KPj4+
+IC0tLQo+Pj4gwqB0ZXN0cy9pOTE1L3BlcmYuYyB8IDE2ICsrKysrKysrKysrKysrLS0KPj4+IMKg
+MSBmaWxlIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pCj4+Pgo+Pj4g
+ZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvcGVyZi5jIGIvdGVzdHMvaTkxNS9wZXJmLmMKPj4+IGlu
+ZGV4IGE4OTRmZDM4Li4wY2FhOWZlMCAxMDA2NDQKPj4+IC0tLSBhL3Rlc3RzL2k5MTUvcGVyZi5j
+Cj4+PiArKysgYi90ZXN0cy9pOTE1L3BlcmYuYwo+Pj4gQEAgLTE5OTMsNiArMTk5Myw3IEBAIHRl
+c3RfYmxvY2tpbmcodWludDY0X3QgcmVxdWVzdGVkX29hX3BlcmlvZCwgCj4+PiBib29sIHNldF9r
+ZXJuZWxfaHJ0aW1lciwgdWludDY0X3Qga2UKPj4+IMKgwqDCoMKgIGludDY0X3Qgc3RhcnQsIGVu
+ZDsKPj4+IMKgwqDCoMKgIGludCBuID0gMDsKPj4+ICvCoMKgwqAgdWludDY0X3QgbWF4X2V4cGVj
+dGVkX2tlcm5lbF9uczsKPj4+IMKgwqDCoMKgIHN0cmVhbV9mZCA9IF9fcGVyZl9vcGVuKGRybV9m
+ZCwgJnBhcmFtLCB0cnVlIC8qIHByZXZlbnRfcG0gKi8pOwo+Pj4gQEAgLTIwOTgsNyArMjA5OSwx
+MiBAQCB0ZXN0X2Jsb2NraW5nKHVpbnQ2NF90IHJlcXVlc3RlZF9vYV9wZXJpb2QsIAo+Pj4gYm9v
+bCBzZXRfa2VybmVsX2hydGltZXIsIHVpbnQ2NF90IGtlCj4+PiDCoMKgwqDCoMKgICovCj4+PiDC
+oMKgwqDCoCBpZ3RfYXNzZXJ0KG4gPiAobWluX2l0ZXJhdGlvbnMgKyBuX2V4dHJhX2l0ZXJhdGlv
+bnMpKTsKPj4+IC3CoMKgwqAgaWd0X2Fzc2VydChrZXJuZWxfbnMgPD0gKHRlc3RfZHVyYXRpb25f
+bnMgLyAxMDB1bGwpKTsKPj4+ICvCoMKgwqAgaWYgKHNldF9rZXJuZWxfaHJ0aW1lcikKPj4+ICvC
+oMKgwqDCoMKgwqDCoCBtYXhfZXhwZWN0ZWRfa2VybmVsX25zID0ga2VybmVsX2hydGltZXIgKiAo
+dGVzdF9kdXJhdGlvbl9ucyAKPj4+IC8gMTAwKQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgLyg1ICogMTAwMCAqIDEwMDApOwo+Pj4gK8KgwqDCoCBlbHNlCj4+
+PiArwqDCoMKgwqDCoMKgwqAgbWF4X2V4cGVjdGVkX2tlcm5lbF9ucyA9IHRlc3RfZHVyYXRpb25f
+bnMgLyAxMDA7Cj4+PiArwqDCoMKgIGlndF9hc3NlcnQoa2VybmVsX25zIDw9IG1heF9leHBlY3Rl
+ZF9rZXJuZWxfbnMpOwo+Pgo+Cj4gU29ycnksIGEgbGl0dGxlIGxhdGUgdG8gY29tbWVudCBvbiB0
+aGlzLCBidXQgaGVyZSBpdCBpcyBhbnl3YXlzOgo+Cj4gSSBhZ3JlZSB0aGF0IHdlIHNob3VsZCBp
+ZGVhbGx5IHNjYWxlIHRoZSBjaGVjayBzbyB0aGF0IGRpZmZlcmVudCAKPiB2YWx1ZXMgb2YgaHJ0
+aW1lciBjYW4gYmUgYWNjb3VudGVkIGZvci4gT25lIG9mIHRoZSB2YWx1ZXMgdGhhdCBzaG91bGQg
+Cj4gZmFjdG9yIGludG8gdGhpcyBjYWxjdWxhdGlvbiBpcyB0aGUgYXZlcmFnZSB0aW1lIHRha2Vu
+IGJ5IGEgcmVhZCBvbiBhIAo+IHBhcnRpY3VsYXIgcGxhdGZvcm0uIEZvciBleGFtcGxlLCB3ZSBz
+YXcgYW4gYXZlcmFnZSAzMCB1cyBvbiBUR0wgYW5kIAo+IHRoaXMgd2FzIGNvdW50aW5nIHVwIHRv
+IGFyb3VuZCAxNTAgbXMgaW4ga2VybmVsX25zLCBzbyB0ZXN0IGZhaWxlZC4gCj4gVGhhdCBzYWlk
+LCB0aGlzIGlzIHRpbWUgdGFrZW4gYnkgdGhlIGNwdSBhbmQgSSBhbSBub3Qgc3VyZSB3ZSBjYW4g
+Cj4gZ3VhcmFudGVlIHRoaXMgdGltZS4gSWYgdGhlIGNwdSBmcmVxdWVuY3kgaXMgc2NhbGVkLCB3
+ZSBoYXZlIGRpZmZlcmVudCAKPiB2YWx1ZXMuwqAgQWxzbyBkaWZmZXJlbnQgcGxhdGZvcm1zIHdv
+dWxkIGhhdmUgZGlmZmVyZW50IHJlc3VsdHMuIFVubGVzcyAKPiB3ZSBjYW4gZW5mb3JjZSBhIGNw
+dSBmcmVxdWVuY3kgZnJvbSBJR1QgYW5kIGNhbGlicmF0ZSB0aGUga2VybmVsX25zIAo+IGZvciBl
+YWNoIHBsYXRmb3JtLCB0aGlzIGNoZWNrIGlzIGdvaW5nIHRvIGJlIGJ1Z2d5Lgo+Cj4gRm9yIHRo
+ZSAqLXBhcmFtZXRlcml6ZWQgdGVzdHMgYWxvbmUsIEkgd291bGQgcmVjb21tZW5kIG5vdCBjaGVj
+a2luZyAKPiBrZXJuZWxfbnMgYXQgYWxsIGJlY2F1c2UgdGhlIGludGVudCBvZiB0aGUgdGVzdCBp
+cyB0byBtYWtlIHN1cmUgd2UgYXJlIAo+IHdva2VuIHVwIGEgcHJlZGV0ZXJtaW5lZCBudW1iZXIg
+b2YgdGltZXMgZm9yIGRpZmZlcmVudCB2YWx1ZXMgb2YgaHJ0aW1lci4KPgo+IFRob3VnaHRzPwo+
+Cj4gVGhhbmtzLAo+IFVtZXNoCgoKQWdyZWVkLCB0aG9zZSBjaGVja3MgYXJlIHByZXR0eSBvbGQg
+YW5kIEknbSBzdHJ1Z2dsaW5nIHRvIGZpbmQgYSBnb29kIAp3YXkgdG8gZmluZCB3aGV0aGVyIHRo
+ZSBrZXJuZWwgaXMgZG9pbmcgdGhlIHJpZ2h0IHRoaW5nLgoKVHJhY2Vwb2ludHMgbWF5YmU/CgoK
+SWYgeW91IHdhbnQgdG8gZHJvcCB0aGUgY2hlY2tzIHRoYXQgd291bGQgYmUgZmluZS4KCgpUaGFu
+a3MsCgoKLUxpb25lbAoKCj4KPj4KPj4gVGhhbmtzLCBsb29rcyBnb29kLiBKdXN0IGEgc21hbGwg
+Y29kaW5nIHN0eWxlIGlzc3VlLgo+Pgo+PiBNdWx0aWxpbmUgYmxvY2tzIGluIGlmL2Zvci93aGls
+ZSgpIG5lZWRzIHRvIGJlIHN1cnJvdW5kZWQgYnkge30uCj4+Cj4+Cj4+IFdpdGggdGhhdCBmaXhl
+ZDoKPj4KPj4KPj4gUmV2aWV3ZWQtYnk6IExpb25lbCBMYW5kd2VybGluIDxsaW9uZWwuZy5sYW5k
+d2VybGluQGludGVsLmNvbT4KPj4KPj4KPj4gQ2hlZXJzLAo+Pgo+Pgo+PiAtTGlvbmVsCj4+Cj4+
+Cj4+PiDCoMKgwqDCoCBfX3BlcmZfY2xvc2Uoc3RyZWFtX2ZkKTsKPj4+IMKgfQo+Pj4gQEAgLTIx
+NTIsNiArMjE1OCw3IEBAIHRlc3RfcG9sbGluZyh1aW50NjRfdCByZXF1ZXN0ZWRfb2FfcGVyaW9k
+LCAKPj4+IGJvb2wgc2V0X2tlcm5lbF9ocnRpbWVyLCB1aW50NjRfdCBrZXIKPj4+IMKgwqDCoMKg
+IGludCBtaW5faXRlcmF0aW9ucyA9ICh0ZXN0X2R1cmF0aW9uX25zIC8gKG9hX3BlcmlvZCArIAo+
+Pj4gKGtlcm5lbF9ocnRpbWVyICsga2VybmVsX2hydGltZXIgLyA1KSkpOwo+Pj4gwqDCoMKgwqAg
+aW50NjRfdCBzdGFydCwgZW5kOwo+Pj4gwqDCoMKgwqAgaW50IG4gPSAwOwo+Pj4gK8KgwqDCoCB1
+aW50NjRfdCBtYXhfZXhwZWN0ZWRfa2VybmVsX25zOwo+Pj4gwqDCoMKgwqAgc3RyZWFtX2ZkID0g
+X19wZXJmX29wZW4oZHJtX2ZkLCAmcGFyYW0sIHRydWUgLyogcHJldmVudF9wbSAqLyk7Cj4+PiBA
+QCAtMjI4Niw3ICsyMjkzLDEyIEBAIHRlc3RfcG9sbGluZyh1aW50NjRfdCByZXF1ZXN0ZWRfb2Ff
+cGVyaW9kLCAKPj4+IGJvb2wgc2V0X2tlcm5lbF9ocnRpbWVyLCB1aW50NjRfdCBrZXIKPj4+IMKg
+wqDCoMKgwqAgKi8KPj4+IMKgwqDCoMKgIGlndF9hc3NlcnQobiA+IChtaW5faXRlcmF0aW9ucyAr
+IG5fZXh0cmFfaXRlcmF0aW9ucykpOwo+Pj4gLcKgwqDCoCBpZ3RfYXNzZXJ0KGtlcm5lbF9ucyA8
+PSAodGVzdF9kdXJhdGlvbl9ucyAvIDEwMHVsbCkpOwo+Pj4gK8KgwqDCoCBpZiAoc2V0X2tlcm5l
+bF9ocnRpbWVyKQo+Pj4gK8KgwqDCoMKgwqDCoMKgIG1heF9leHBlY3RlZF9rZXJuZWxfbnMgPSBr
+ZXJuZWxfaHJ0aW1lciAqICh0ZXN0X2R1cmF0aW9uX25zIAo+Pj4gLyAxMDApCj4+PiArwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAvICg1ICogMTAwMCAqIDEwMDApOwo+
+Pj4gK8KgwqDCoCBlbHNlCj4+PiArwqDCoMKgwqDCoMKgwqAgbWF4X2V4cGVjdGVkX2tlcm5lbF9u
+cyA9IHRlc3RfZHVyYXRpb25fbnMgLyAxMDA7Cj4+PiArwqDCoMKgIGlndF9hc3NlcnQoa2VybmVs
+X25zIDw9IG1heF9leHBlY3RlZF9rZXJuZWxfbnMpOwo+Pj4gwqDCoMKgwqAgX19wZXJmX2Nsb3Nl
+KHN0cmVhbV9mZCk7Cj4+PiDCoH0KPj4KPj4KCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJl
+ZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
+Zm8vaWd0LWRldgo=
