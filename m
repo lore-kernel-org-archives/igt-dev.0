@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D0126E4B3
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D7FC56E4B3
  for <igt-dev@lists.freedesktop.org>; Fri, 28 Aug 2020 12:55:30 +0000 (UTC)
-Date: Fri, 28 Aug 2020 15:29:15 +0300
+Date: Fri, 28 Aug 2020 15:31:04 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200828122915.GN7444@platvala-desk.ger.corp.intel.com>
+Message-ID: <20200828123104.GO7444@platvala-desk.ger.corp.intel.com>
 References: <20200828111634.147354-1-lionel.g.landwerlin@intel.com>
- <20200828111634.147354-2-lionel.g.landwerlin@intel.com>
+ <20200828111634.147354-5-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200828111634.147354-2-lionel.g.landwerlin@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 1/8] lib/i915_perf: drop dependency on
- libigt
+In-Reply-To: <20200828111634.147354-5-lionel.g.landwerlin@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 4/8] pciids/i915: break TGL into GT1/2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,35 +26,93 @@ To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Aug 28, 2020 at 02:16:27PM +0300, Lionel Landwerlin wrote:
-> There is no need for it, we just depend on libigt_chipset.
+On Fri, Aug 28, 2020 at 02:16:30PM +0300, Lionel Landwerlin wrote:
+> We'll need to identify them in the perf lib.
 > 
 > Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-
-Oh, I thought this already went in.
-
-
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-
-
-
 > ---
->  lib/meson.build | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  lib/i915_pciids.h       | 14 ++++++++++----
+>  lib/intel_device_info.c | 15 ++++++++++++---
+>  2 files changed, 22 insertions(+), 7 deletions(-)
 > 
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 341696e5..bccebba2 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -257,7 +257,7 @@ endforeach
->  lib_igt_i915_perf_build = shared_library(
->    'i915_perf',
->    i915_perf_files,
-> -  dependencies: [lib_igt, lib_igt_chipset],
-> +  dependencies: lib_igt_chipset,
->    include_directories : inc,
->    install: true,
->    soversion: '0')
+> diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
+
+Please update i915_pciids.h as a copy from kernel, with kernel commit
+id in commit message.
+
+
+-- 
+Petri Latvala
+
+
+> index 8e7ae30e..7eeecb07 100644
+> --- a/lib/i915_pciids.h
+> +++ b/lib/i915_pciids.h
+> @@ -594,19 +594,25 @@
+>  	INTEL_VGA_DEVICE(0x4E51, info)
+>  
+>  /* TGL */
+> -#define INTEL_TGL_12_IDS(info) \
+> +#define INTEL_TGL_12_GT1_IDS(info) \
+> +	INTEL_VGA_DEVICE(0x9A60, info), \
+> +	INTEL_VGA_DEVICE(0x9A68, info), \
+> +	INTEL_VGA_DEVICE(0x9A70, info)
+> +
+> +#define INTEL_TGL_12_GT2_IDS(info) \
+>  	INTEL_VGA_DEVICE(0x9A40, info), \
+>  	INTEL_VGA_DEVICE(0x9A49, info), \
+>  	INTEL_VGA_DEVICE(0x9A59, info), \
+> -	INTEL_VGA_DEVICE(0x9A60, info), \
+> -	INTEL_VGA_DEVICE(0x9A68, info), \
+> -	INTEL_VGA_DEVICE(0x9A70, info), \
+>  	INTEL_VGA_DEVICE(0x9A78, info), \
+>  	INTEL_VGA_DEVICE(0x9AC0, info), \
+>  	INTEL_VGA_DEVICE(0x9AC9, info), \
+>  	INTEL_VGA_DEVICE(0x9AD9, info), \
+>  	INTEL_VGA_DEVICE(0x9AF8, info)
+>  
+> +#define INTEL_TGL_12_IDS(info) \
+> +	INTEL_TGL_12_GT1_IDS(info), \
+> +	INTEL_TGL_12_GT2_IDS(info)
+> +
+>  /* RKL */
+>  #define INTEL_RKL_IDS(info) \
+>  	INTEL_VGA_DEVICE(0x4C80, info), \
+> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> index d5f70156..e1132d9c 100644
+> --- a/lib/intel_device_info.c
+> +++ b/lib/intel_device_info.c
+> @@ -315,10 +315,18 @@ static const struct intel_device_info intel_elkhartlake_info = {
+>  	.codename = "elkhartlake"
+>  };
+>  
+> -static const struct intel_device_info intel_tigerlake_info = {
+> +static const struct intel_device_info intel_tigerlake_gt1_info = {
+>  	.gen = BIT(11),
+>  	.is_tigerlake = true,
+> -	.codename = "tigerlake"
+> +	.codename = "tigerlake",
+> +	.gt = 1,
+> +};
+> +
+> +static const struct intel_device_info intel_tigerlake_gt2_info = {
+> +	.gen = BIT(11),
+> +	.is_tigerlake = true,
+> +	.codename = "tigerlake",
+> +	.gt = 2,
+>  };
+>  
+>  static const struct intel_device_info intel_rocketlake_info = {
+> @@ -416,7 +424,8 @@ static const struct pci_id_match intel_device_match[] = {
+>  
+>  	INTEL_EHL_IDS(&intel_elkhartlake_info),
+>  
+> -	INTEL_TGL_12_IDS(&intel_tigerlake_info),
+> +	INTEL_TGL_12_GT1_IDS(&intel_tigerlake_gt1_info),
+> +	INTEL_TGL_12_GT2_IDS(&intel_tigerlake_gt2_info),
+>  	INTEL_RKL_IDS(&intel_rocketlake_info),
+>  
+>  	INTEL_DG1_IDS(&intel_dg1_info),
 > -- 
 > 2.28.0
 > 
