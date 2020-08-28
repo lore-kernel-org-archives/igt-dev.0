@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D9EBA6E497
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Aug 2020 11:17:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C10C06E499
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Aug 2020 11:17:05 +0000 (UTC)
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Date: Fri, 28 Aug 2020 14:16:26 +0300
-Message-Id: <20200828111634.147354-1-lionel.g.landwerlin@intel.com>
+Date: Fri, 28 Aug 2020 14:16:29 +0300
+Message-Id: <20200828111634.147354-4-lionel.g.landwerlin@intel.com>
+In-Reply-To: <20200828111634.147354-1-lionel.g.landwerlin@intel.com>
+References: <20200828111634.147354-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 0/8] lib/i915/perf: Add new platform metrics
+Subject: [igt-dev] [PATCH i-g-t 3/8] lib/i915/perf: small ICL equation
+ refactor
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,57 +24,105 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi all,
+No functional changes.
 
-We have a couple of new platforms and those need new perf metrics.
-This series also adds a few updates to the existing ones.
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ lib/i915/perf-configs/oa-icl.xml | 38 ++++++++++++++++----------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-This isn't great to look at over email so head over here [1] to look at it.
-
-Cheers,
-
-[1] : https://gitlab.freedesktop.org/llandwerlin/igt-gpu-tools/-/commits/review/i915-perf-gen12-update
-
-Lionel Landwerlin (8):
-  lib/i915_perf: drop dependency on libigt
-  lib/i915/perf: fixup converter script
-  lib/i915/perf: small ICL equation refactor
-  pciids/i915: break TGL into GT1/2
-  lib/i915/perf: break TGL metrics in 2
-  lib/i915/perf: add AsyncCompute metrics
-  lib/i915/perf: Add Rocketlake metrics
-  lib/i915/perf: Add DG1 metrics
-
- lib/Makefile.am                               |    22 +-
- lib/i915/perf-configs/guids.xml               |   133 +-
- lib/i915/perf-configs/mdapi-xml-convert.py    |     9 +-
- lib/i915/perf-configs/oa-bxt.xml              |   312 +-
- lib/i915/perf-configs/oa-cflgt2.xml           |   312 +-
- lib/i915/perf-configs/oa-cflgt3.xml           |   312 +-
- lib/i915/perf-configs/oa-dg1.xml              | 10755 ++++++++++++++++
- lib/i915/perf-configs/oa-icl.xml              |   348 +-
- lib/i915/perf-configs/oa-kblgt2.xml           |   312 +-
- lib/i915/perf-configs/oa-kblgt3.xml           |   312 +-
- lib/i915/perf-configs/oa-rkl.xml              |  8520 ++++++++++++
- lib/i915/perf-configs/oa-sklgt2.xml           |   312 +-
- lib/i915/perf-configs/oa-sklgt3.xml           |   312 +-
- lib/i915/perf-configs/oa-sklgt4.xml           |   312 +-
- lib/i915/perf-configs/oa-tglgt1.xml           |  8560 ++++++++++++
- .../{oa-tgl.xml => oa-tglgt2.xml}             |   252 +-
- lib/i915/perf-configs/oa_guid_registry.py     |    10 +
- lib/i915/perf-configs/update-guids.py         |     2 +-
- lib/i915/perf.c                               |    20 +-
- lib/i915_pciids.h                             |    14 +-
- lib/intel_device_info.c                       |    15 +-
- lib/meson.build                               |     4 +-
- 22 files changed, 30986 insertions(+), 174 deletions(-)
- create mode 100644 lib/i915/perf-configs/oa-dg1.xml
- create mode 100644 lib/i915/perf-configs/oa-rkl.xml
- create mode 100644 lib/i915/perf-configs/oa-tglgt1.xml
- rename lib/i915/perf-configs/{oa-tgl.xml => oa-tglgt2.xml} (98%)
-
---
+diff --git a/lib/i915/perf-configs/oa-icl.xml b/lib/i915/perf-configs/oa-icl.xml
+index 4a6e7132..eac32092 100644
+--- a/lib/i915/perf-configs/oa-icl.xml
++++ b/lib/i915/perf-configs/oa-icl.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0"?>
+-<metrics version="1582124705" merge_md5="">
++<metrics version="1598349212" merge_md5="">
+   <set name="Render Metrics Basic Gen11"
+        chipset="ICL"
+        symbol_name="RenderBasic"
+@@ -815,20 +815,6 @@
+              mdapi_supported_apis=""
+              mdapi_hw_unit_type="gpu"
+              />
+-    <counter name="EU AVG IPC Rate"
+-             symbol_name="EuAvgIpcRate"
+-             underscore_name="eu_avg_ipc_rate"
+-             description="The average rate of IPC calculated for 2 FPU pipelines."
+-             data_type="float"
+-             max_equation="2"
+-             units="number"
+-             semantic_type="ratio"
+-             equation="A 9 READ A 10 READ A 11 READ FADD A 9 READ FSUB FDIV 1 FADD"
+-             mdapi_group="EU Array"
+-             mdapi_usage_flags="Tier4 Overview System Frame Batch Draw"
+-             mdapi_supported_apis=""
+-             mdapi_hw_unit_type="gpu"
+-             />
+     <counter name="EU Both FPU Pipes Active"
+              symbol_name="EuFpuBothActive"
+              underscore_name="eu_fpu_both_active"
+@@ -871,6 +857,20 @@
+              mdapi_supported_apis=""
+              mdapi_hw_unit_type="gpu"
+              />
++    <counter name="EU AVG IPC Rate"
++             symbol_name="EuAvgIpcRate"
++             underscore_name="eu_avg_ipc_rate"
++             description="The average rate of IPC calculated for 2 FPU pipelines."
++             data_type="float"
++             max_equation="2"
++             units="number"
++             semantic_type="ratio"
++             equation="A 9 READ  A 10 READ  A 11 READ FADD  A 9 READ FSUB FDIV 1 FADD"
++             mdapi_group="EU Array"
++             mdapi_usage_flags="Tier4 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
+     <counter name="EU Send Pipe Active"
+              symbol_name="EuSendActive"
+              underscore_name="eu_send_active"
+@@ -9071,7 +9071,7 @@
+              data_type="uint64"
+              units="cycles"
+              semantic_type="event"
+-             equation="A 13 READ A 1 READ UDIV"
++             equation="A 13 READ $VsThreads UDIV"
+              mdapi_group="EU Array/Vertex Shader"
+              mdapi_usage_flags="Tier4 Frame Batch Draw"
+              mdapi_supported_apis=""
+@@ -9098,7 +9098,7 @@
+              data_type="uint64"
+              units="cycles"
+              semantic_type="event"
+-             equation="A 14 READ A 1 READ UDIV"
++             equation="A 14 READ $VsThreads UDIV"
+              mdapi_group="EU Array/Vertex Shader"
+              mdapi_usage_flags="Tier4 Frame Batch Draw"
+              mdapi_supported_apis=""
+@@ -9181,7 +9181,7 @@
+              data_type="uint64"
+              units="cycles"
+              semantic_type="event"
+-             equation="A 19 READ A 6 READ UDIV"
++             equation="A 19 READ $PsThreads UDIV"
+              mdapi_group="EU Array/Fragment Shader"
+              mdapi_usage_flags="Tier4 Frame Batch Draw"
+              mdapi_supported_apis=""
+@@ -9208,7 +9208,7 @@
+              data_type="uint64"
+              units="cycles"
+              semantic_type="event"
+-             equation="A 20 READ A 6 READ UDIV"
++             equation="A 20 READ $PsThreads UDIV"
+              mdapi_group="EU Array/Fragment Shader"
+              mdapi_usage_flags="Tier4 Frame Batch Draw"
+              mdapi_supported_apis=""
+-- 
 2.28.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
