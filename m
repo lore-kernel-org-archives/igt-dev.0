@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7FC56E4B3
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Aug 2020 12:55:30 +0000 (UTC)
-Date: Fri, 28 Aug 2020 15:31:04 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200828123104.GO7444@platvala-desk.ger.corp.intel.com>
-References: <20200828111634.147354-1-lionel.g.landwerlin@intel.com>
- <20200828111634.147354-5-lionel.g.landwerlin@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 95DB06E138
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Aug 2020 13:14:00 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Fri, 28 Aug 2020 15:13:15 +0200
+Message-Id: <20200828131354.26519-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200828111634.147354-5-lionel.g.landwerlin@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 4/8] pciids/i915: break TGL into GT1/2
+Subject: [igt-dev] [PATCH i-g-t v32 00/39] Remove libdrm in rendercopy
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,109 +14,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Aug 28, 2020 at 02:16:30PM +0300, Lionel Landwerlin wrote:
-> We'll need to identify them in the perf lib.
-> 
-> Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-> ---
->  lib/i915_pciids.h       | 14 ++++++++++----
->  lib/intel_device_info.c | 15 ++++++++++++---
->  2 files changed, 22 insertions(+), 7 deletions(-)
-> 
-> diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
-
-Please update i915_pciids.h as a copy from kernel, with kernel commit
-id in commit message.
-
-
--- 
-Petri Latvala
-
-
-> index 8e7ae30e..7eeecb07 100644
-> --- a/lib/i915_pciids.h
-> +++ b/lib/i915_pciids.h
-> @@ -594,19 +594,25 @@
->  	INTEL_VGA_DEVICE(0x4E51, info)
->  
->  /* TGL */
-> -#define INTEL_TGL_12_IDS(info) \
-> +#define INTEL_TGL_12_GT1_IDS(info) \
-> +	INTEL_VGA_DEVICE(0x9A60, info), \
-> +	INTEL_VGA_DEVICE(0x9A68, info), \
-> +	INTEL_VGA_DEVICE(0x9A70, info)
-> +
-> +#define INTEL_TGL_12_GT2_IDS(info) \
->  	INTEL_VGA_DEVICE(0x9A40, info), \
->  	INTEL_VGA_DEVICE(0x9A49, info), \
->  	INTEL_VGA_DEVICE(0x9A59, info), \
-> -	INTEL_VGA_DEVICE(0x9A60, info), \
-> -	INTEL_VGA_DEVICE(0x9A68, info), \
-> -	INTEL_VGA_DEVICE(0x9A70, info), \
->  	INTEL_VGA_DEVICE(0x9A78, info), \
->  	INTEL_VGA_DEVICE(0x9AC0, info), \
->  	INTEL_VGA_DEVICE(0x9AC9, info), \
->  	INTEL_VGA_DEVICE(0x9AD9, info), \
->  	INTEL_VGA_DEVICE(0x9AF8, info)
->  
-> +#define INTEL_TGL_12_IDS(info) \
-> +	INTEL_TGL_12_GT1_IDS(info), \
-> +	INTEL_TGL_12_GT2_IDS(info)
-> +
->  /* RKL */
->  #define INTEL_RKL_IDS(info) \
->  	INTEL_VGA_DEVICE(0x4C80, info), \
-> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-> index d5f70156..e1132d9c 100644
-> --- a/lib/intel_device_info.c
-> +++ b/lib/intel_device_info.c
-> @@ -315,10 +315,18 @@ static const struct intel_device_info intel_elkhartlake_info = {
->  	.codename = "elkhartlake"
->  };
->  
-> -static const struct intel_device_info intel_tigerlake_info = {
-> +static const struct intel_device_info intel_tigerlake_gt1_info = {
->  	.gen = BIT(11),
->  	.is_tigerlake = true,
-> -	.codename = "tigerlake"
-> +	.codename = "tigerlake",
-> +	.gt = 1,
-> +};
-> +
-> +static const struct intel_device_info intel_tigerlake_gt2_info = {
-> +	.gen = BIT(11),
-> +	.is_tigerlake = true,
-> +	.codename = "tigerlake",
-> +	.gt = 2,
->  };
->  
->  static const struct intel_device_info intel_rocketlake_info = {
-> @@ -416,7 +424,8 @@ static const struct pci_id_match intel_device_match[] = {
->  
->  	INTEL_EHL_IDS(&intel_elkhartlake_info),
->  
-> -	INTEL_TGL_12_IDS(&intel_tigerlake_info),
-> +	INTEL_TGL_12_GT1_IDS(&intel_tigerlake_gt1_info),
-> +	INTEL_TGL_12_GT2_IDS(&intel_tigerlake_gt2_info),
->  	INTEL_RKL_IDS(&intel_rocketlake_info),
->  
->  	INTEL_DG1_IDS(&intel_dg1_info),
-> -- 
-> 2.28.0
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Q2xlYW5pbmcgdGhlIGNvZGUgLyBhZGRyZXNzaW5nIHJldmlld3MuCgp2MzI6IHB1dCBvbiB0b3Ag
+Zml4ZXMgdG8gYmUgc3F1YXNoZWQgYWZ0ZXIgci1iCgpTdGlsbCBzaW5nbGUgY29tbWVudCByZXZp
+ZXcgaXMgdG8gYmUgYWRkcmVzc2luZyAtIGlndF9mYi4gCgpEb21pbmlrIEdyemVnb3J6ZWsgKDYp
+OgogIGxpYi9pZ3RfZmI6IFJlbW92YWwgb2YgbGliZHJtIGRlcGVuZGVuY3kKICB0ZXN0cy9rbXNf
+cHNyOiByZW1vdmUgbGliZHJtIGRlcGVuZGVuY3kKICB0ZXN0cy9rbXNfZnJvbmJ1ZmZlcl90cmFj
+a2luZzogcmVtb3ZlIGxpYmRybSBkZXBlbmRlbmN5CiAgdGVzdHMva21zX2RyYXdfY3JjOiByZW1v
+dmUgbGliZHJtIGRlcGVuZGVuY3kKICB0ZXN0cy9nZW1fcHBndHQ6IHJlbW92ZSBsaWJkcm0gZGVw
+ZW5kZW5jeQogIHRlc3RzL2dlbV9jb25jdXJyZW50X2FsbDogcmVtb3ZlIGxpYmRybSBkZXBlbmRl
+bmN5CgpaYmlnbmlldyBLZW1wY3p5xYRza2kgKDMzKToKICBsaWIvaW50ZWxfYnVmb3BzOiBhZGQg
+bWFwcGluZyBvbiBjcHUgLyBkZXZpY2UKICBsaWIvaW50ZWxfYnVmb3BzOiBjaGFuZ2UgaW4gaHcv
+c3cgdGlsaW5nIGRldGVjdGlvbgogIGxpYi9pbnRlbF9idWZvcHM6IGNoYW5nZSBzdHJpZGUgcmVx
+dWlyZW1lbnRzIGZvciBHcmFudHNkYWxlCiAgbGliL2ludGVsX2J1Zm9wczogYWRkIHN1cHBvcnQg
+Zm9yIDY0Yml0IGJwcAogIGxpYi9pbnRlbF9iYXRjaGJ1ZmZlcjogYWRkIG5ldyBmdW5jdGlvbnMg
+dG8gc3VwcG9ydCByZW5kZXJjb3B5CiAgbGliL2ludGVsX2JhdGNoYnVmZmVyOiBkdW1wIGJiIHRv
+IGJhc2U2NAogIGxpYi9pbnRlbF9iYXRjaGJ1ZmZlcjogdXNlIGNhbm9uaWNhbCBhZGRyZXNzZXMg
+Zm9yIDQ4Yml0IHBwZ3R0CiAgdGVzdHMvYXBpX2ludGVsX2JiOiB0ZXN0IGZsYWdzIGFyZSBjbGVh
+cmVkIG9uIGJiIHJlc2V0CiAgdGVzdHMvZ2VtX2NhY2hpbmd8cGFydGlhbDogYWRvcHQgdG8gYmF0
+Y2ggZmx1c2ggZnVuY3Rpb24gY2xlYW51cAogIGxpYi9yZW5kZXJjb3B5OiByZW1vdmUgbGliZHJt
+IGRlcGVuZGVuY3kKICB0ZXN0cy9hcGlfaW50ZWxfYmI6IGFkZCByZW5kZXIgdGVzdHMKICBsaWIv
+aWd0X2RyYXc6IHJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeQogIHRlc3RzL2ttc19jdXJzb3JfY3Jj
+OiByZW1vdmUgbGliZHJtIGRlcGVuZGVuY3kKICB0ZXN0cy9rbXNfYmlnX2ZiOiByZW1vdmUgbGli
+ZHJtIGRlcGVuZGVuY3kKICB0ZXN0cy9nZW1fc3RyZXNzOiByZW1vdmUgbGliZHJtIGRlcGVuZGVu
+Y3kKICB0ZXN0cy9nZW1fcmVuZGVyX2NvcHk6IHJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeQogIHRl
+c3RzL2dlbV9yZW5kZXJfY29weV9yZWR1eDogcmVtb3ZlIGxpYmRybSBkZXBlbmRlbmN5CiAgdGVz
+dHMvZ2VtX3JlbmRlcl9saW5lYXJfYmxpdHM6IHJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeQogIHRl
+c3RzL2dlbV9yZW5kZXJfdGlsZWRfYmxpdHM6IHJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeQogIHRl
+c3RzL2dlbV9yZWFkX3JlYWRfc3BlZWQ6IHJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeQogIGxpYi9y
+ZW5kZXJjb3B5X2J1Zm1ncjogcmVtb3ZlIHJlbmRlcmNvcHlfYnVmbWdyCiAgdG9vbHMvaW50ZWxf
+cmVzaWRlbmN5OiBhZG9wdCBpbnRlbF9yZXNpZGVuY3kgdG8gdXNlIGJ1Zm9wcwogIHRlc3RzL3Bl
+cmY6IHJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeSBmb3IgcmVuZGVyY29weQogIGxpYi9pbnRlbF9i
+YXRjaGJ1ZmZlcjogZml4IGludGVsX2JiIGNhY2hlCiAgbGliL2ludGVsX2F1eF9wZ3RhYmxlOiB1
+c2UgYXV4IHRhYmxlIG9mZnNldAogIHRlc3RzL2FwaV9pbnRlbF9iYjogdmVyaWZ5IGNhY2hlIHJl
+YWxsb2MgYW5kIGZpeCBtZW1vcnkgbGVha3MKICBsaWIvaW50ZWxfYnVmb3BzOiBhZGRyZXNzIHJl
+dmlldyBjb21tZW50cyAoYWxpZ25tZW50LCB1bm1hcC9mbHVzaCkKICBsaWIvaW50ZWxfYmF0Y2hi
+dWZmZXI6IGFkZHJlc3MgcmV2aWV3IGNvbW1lbnRzIChiYXNlNjQgZHVtcCkKICBsaWIvaW50ZWxf
+YmF0Y2hidWZmZXI6IGFkZHJlc3MgcmV2aWV3IGNvbW1lbnRzIChjYW5vbmljYWwgdHlwZXMKICAg
+IGNsZWFudXApCiAgdGVzdHMvYXBpX2ludGVsX2JiOiBhZGRyZXNzIHJldmlldyBjb21tZW50cyAo
+a2VlcCA0OGJpdCBmbGFnIGFmdGVyCiAgICByZXNldCkKICB0ZXN0cy9nZW1fcHBndHQ6IGFkZHJl
+c3MgcmV2aWV3IGNvbW1lbnRzICh1c2UgZGV2aWNlIG1hcHBpbmcpCiAgdGVzdHMvZ2VtX2NvbmN1
+cnJlbnRfYWxsOiBhZGRyZXNzIHJldmlldyBjb21tZW50IChyZW1vdmUgc3luYykKICB0ZXN0cy9n
+ZW1fcmVuZGVyX3RpbGVkX2JsaXRzOiBhZGRyZXNzIHJldmlldyBjb21tZW50IChyZW1vdmUgc3lu
+YykKCiBsaWIvTWFrZWZpbGUuc291cmNlcyAgICAgICAgICAgICAgICAgIHwgICAgMiAtCiBsaWIv
+aWd0X2RyYXcuYyAgICAgICAgICAgICAgICAgICAgICAgIHwgIDE1NSArKy0tCiBsaWIvaWd0X2Ry
+YXcuaCAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgOCArLQogbGliL2lndF9mYi5jICAgICAg
+ICAgICAgICAgICAgICAgICAgICB8ICAgOTYgKystCiBsaWIvaW50ZWxfYXV4X3BndGFibGUuYyAg
+ICAgICAgICAgICAgIHwgIDMyNiArKysrLS0tCiBsaWIvaW50ZWxfYXV4X3BndGFibGUuaCAgICAg
+ICAgICAgICAgIHwgICAyOSArLQogbGliL2ludGVsX2JhdGNoYnVmZmVyLmMgICAgICAgICAgICAg
+ICB8ICA1NTcgKysrKysrKysrKy0tCiBsaWIvaW50ZWxfYmF0Y2hidWZmZXIuaCAgICAgICAgICAg
+ICAgIHwgICA5NSArLQogbGliL2ludGVsX2J1Zm9wcy5jICAgICAgICAgICAgICAgICAgICB8ICAy
+MDQgKysrKy0KIGxpYi9pbnRlbF9idWZvcHMuaCAgICAgICAgICAgICAgICAgICAgfCAgIDE2ICst
+CiBsaWIvbWVzb24uYnVpbGQgICAgICAgICAgICAgICAgICAgICAgIHwgICAgMSAtCiBsaWIvcmVu
+ZGVyY29weS5oICAgICAgICAgICAgICAgICAgICAgIHwgIDEwMiArLS0KIGxpYi9yZW5kZXJjb3B5
+X2J1Zm1nci5jICAgICAgICAgICAgICAgfCAgMTcxIC0tLS0KIGxpYi9yZW5kZXJjb3B5X2J1Zm1n
+ci5oICAgICAgICAgICAgICAgfCAgIDI4IC0KIGxpYi9yZW5kZXJjb3B5X2dlbjQuYyAgICAgICAg
+ICAgICAgICAgfCAgNTcxICsrKysrKy0tLS0tLQogbGliL3JlbmRlcmNvcHlfZ2VuNi5jICAgICAg
+ICAgICAgICAgICB8ICA1OTMgKysrKysrKy0tLS0tLQogbGliL3JlbmRlcmNvcHlfZ2VuNy5jICAg
+ICAgICAgICAgICAgICB8ICA2MTIgKysrKysrLS0tLS0tLQogbGliL3JlbmRlcmNvcHlfZ2VuOC5j
+ICAgICAgICAgICAgICAgICB8IDEwMzAgKysrKysrKysrKy0tLS0tLS0tLS0tLQogbGliL3JlbmRl
+cmNvcHlfZ2VuOS5jICAgICAgICAgICAgICAgICB8IDExNDUgKysrKysrKysrKystLS0tLS0tLS0t
+LS0tLQogbGliL3JlbmRlcmNvcHlfaTgzMC5jICAgICAgICAgICAgICAgICB8ICAyNzggKysrLS0t
+CiBsaWIvcmVuZGVyY29weV9pOTE1LmMgICAgICAgICAgICAgICAgIHwgIDI4MSArKystLS0KIGxp
+Yi92ZWJveGNvcHkuaCAgICAgICAgICAgICAgICAgICAgICAgfCAgICA4ICstCiBsaWIvdmVib3hj
+b3B5X2dlbjEyLmMgICAgICAgICAgICAgICAgIHwgIDExNyArKy0KIHRlc3RzL2k5MTUvYXBpX2lu
+dGVsX2JiLmMgICAgICAgICAgICAgfCAgNDY1ICsrKysrKysrKy0KIHRlc3RzL2k5MTUvZ2VtX2Nh
+Y2hpbmcuYyAgICAgICAgICAgICAgfCAgICA1IC0KIHRlc3RzL2k5MTUvZ2VtX2NvbmN1cnJlbnRf
+YWxsLmMgICAgICAgfCAgNDMzICsrKysrLS0tLS0KIHRlc3RzL2k5MTUvZ2VtX3BhcnRpYWxfcHdy
+aXRlX3ByZWFkLmMgfCAgICAzIC0KIHRlc3RzL2k5MTUvZ2VtX3BwZ3R0LmMgICAgICAgICAgICAg
+ICAgfCAgMTg0ICsrLS0KIHRlc3RzL2k5MTUvZ2VtX3JlYWRfcmVhZF9zcGVlZC5jICAgICAgfCAg
+MTYxICsrLS0KIHRlc3RzL2k5MTUvZ2VtX3JlbmRlcl9jb3B5LmMgICAgICAgICAgfCAgMzEzICsr
+Ky0tLS0KIHRlc3RzL2k5MTUvZ2VtX3JlbmRlcl9jb3B5X3JlZHV4LmMgICAgfCAgIDY3ICstCiB0
+ZXN0cy9pOTE1L2dlbV9yZW5kZXJfbGluZWFyX2JsaXRzLmMgIHwgICA5MCArLQogdGVzdHMvaTkx
+NS9nZW1fcmVuZGVyX3RpbGVkX2JsaXRzLmMgICB8ICAgOTIgKy0KIHRlc3RzL2k5MTUvZ2VtX3N0
+cmVzcy5jICAgICAgICAgICAgICAgfCAgMjQ0ICsrKy0tLQogdGVzdHMvaTkxNS9wZXJmLmMgICAg
+ICAgICAgICAgICAgICAgICB8ICA2NzUgKysrKysrKy0tLS0tLS0tCiB0ZXN0cy9rbXNfYmlnX2Zi
+LmMgICAgICAgICAgICAgICAgICAgIHwgICA1NCArLQogdGVzdHMva21zX2N1cnNvcl9jcmMuYyAg
+ICAgICAgICAgICAgICB8ICAgNjMgKy0KIHRlc3RzL2ttc19kcmF3X2NyYy5jICAgICAgICAgICAg
+ICAgICAgfCAgIDIwICstCiB0ZXN0cy9rbXNfZnJvbnRidWZmZXJfdHJhY2tpbmcuYyAgICAgIHwg
+ICAyMCArLQogdGVzdHMva21zX3Bzci5jICAgICAgICAgICAgICAgICAgICAgICB8ICAxMzcgKy0t
+CiB0b29scy9pbnRlbF9yZXNpZGVuY3kuYyAgICAgICAgICAgICAgIHwgICAxMCArLQogNDEgZmls
+ZXMgY2hhbmdlZCwgNDkyMCBpbnNlcnRpb25zKCspLCA0NTQxIGRlbGV0aW9ucygtKQogZGVsZXRl
+IG1vZGUgMTAwNjQ0IGxpYi9yZW5kZXJjb3B5X2J1Zm1nci5jCiBkZWxldGUgbW9kZSAxMDA2NDQg
+bGliL3JlbmRlcmNvcHlfYnVmbWdyLmgKCi0tIAoyLjI2LjAKCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
+YW4vbGlzdGluZm8vaWd0LWRldgo=
