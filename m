@@ -1,65 +1,71 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Fri, 28 Aug 2020 09:59:20 +0200
-Message-Id: <20200828075927.17061-15-janusz.krzysztofik@linux.intel.com>
+Date: Fri, 28 Aug 2020 09:59:26 +0200
+Message-Id: <20200828075927.17061-21-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20200828075927.17061-1-janusz.krzysztofik@linux.intel.com>
 References: <20200828075927.17061-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t v5 14/21] tests/core_hotunplug: Process
- return values of sysfs operations
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Subject: [igt-dev] [PATCH i-g-t v5 20/21] tests/core_hotunplug: HSW audio
+ issue workaround
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>, intel-gfx@lists.freedesktop.org
+Cc: =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>, Petri Latvala <petri.latvala@intel.com>, intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UmV0dXJuIHZhbHVlcyBvZiBkcml2ZXIgYmluZC91bmJpbmQgLyBkZXZpY2UgcmVtb3ZlL3JlY292
-ZXIgc3lzZnMKb3BlcmF0aW9ucyBhcmUgbm93IGlnbm9yZWQuICBBc3NlcnQgdGhlaXIgY29ycmVj
-dG5lc3MuCgp2MjogQWRkIHRyYWlsaW5nIG5ld2xpbmVzIG1pc3NpbmcgZnJvbSBpZ3RfYXNzZXJ0
-IG1lc3NhZ2VzLgoKU2lnbmVkLW9mZi1ieTogSmFudXN6IEtyenlzenRvZmlrIDxqYW51c3oua3J6
-eXN6dG9maWtAbGludXguaW50ZWwuY29tPgpSZXZpZXdlZC1ieTogTWljaGHFgiBXaW5pYXJza2kg
-PG1pY2hhbC53aW5pYXJza2lAaW50ZWwuY29tPgotLS0KIHRlc3RzL2NvcmVfaG90dW5wbHVnLmMg
-fCAxNCArKysrKysrKysrLS0tLQogMSBmaWxlIGNoYW5nZWQsIDEwIGluc2VydGlvbnMoKyksIDQg
-ZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvY29yZV9ob3R1bnBsdWcuYyBiL3Rlc3Rz
-L2NvcmVfaG90dW5wbHVnLmMKaW5kZXggMWZkYmQ5YjRjLi5iYmM5ZDMwYjUgMTAwNjQ0Ci0tLSBh
-L3Rlc3RzL2NvcmVfaG90dW5wbHVnLmMKKysrIGIvdGVzdHMvY29yZV9ob3R1bnBsdWcuYwpAQCAt
-MTIzLDcgKzEyMyw5IEBAIHN0YXRpYyB2b2lkIGRyaXZlcl91bmJpbmQoc3RydWN0IGhvdHVucGx1
-ZyAqcHJpdiwgY29uc3QgY2hhciAqcHJlZml4LAogCXByaXYtPmZhaWx1cmUgPSAiRHJpdmVyIHVu
-YmluZCBmYWlsdXJlISI7CiAKIAlpZ3Rfc2V0X3RpbWVvdXQodGltZW91dCwgIkRyaXZlciB1bmJp
-bmQgdGltZW91dCEiKTsKLQlpZ3Rfc3lzZnNfc2V0KHByaXYtPmZkLnN5c2ZzX2RydiwgInVuYmlu
-ZCIsIHByaXYtPmRldl9idXNfYWRkcik7CisJaWd0X2Fzc2VydF9mKGlndF9zeXNmc19zZXQocHJp
-di0+ZmQuc3lzZnNfZHJ2LCAidW5iaW5kIiwKKwkJCQkgICBwcml2LT5kZXZfYnVzX2FkZHIpLAor
-CQkgICAgICJEcml2ZXIgdW5iaW5kIGZhaWx1cmUhXG4iKTsKIAlpZ3RfcmVzZXRfdGltZW91dCgp
-OwogfQogCkBAIC0xMzQsNyArMTM2LDkgQEAgc3RhdGljIHZvaWQgZHJpdmVyX2JpbmQoc3RydWN0
-IGhvdHVucGx1ZyAqcHJpdiwgaW50IHRpbWVvdXQpCiAJcHJpdi0+ZmFpbHVyZSA9ICJEcml2ZXIg
-cmUtYmluZCBmYWlsdXJlISI7CiAKIAlpZ3Rfc2V0X3RpbWVvdXQodGltZW91dCwgIkRyaXZlciBy
-ZS1iaW5kIHRpbWVvdXQhIik7Ci0JaWd0X3N5c2ZzX3NldChwcml2LT5mZC5zeXNmc19kcnYsICJi
-aW5kIiwgcHJpdi0+ZGV2X2J1c19hZGRyKTsKKwlpZ3RfYXNzZXJ0X2YoaWd0X3N5c2ZzX3NldChw
-cml2LT5mZC5zeXNmc19kcnYsICJiaW5kIiwKKwkJCQkgICBwcml2LT5kZXZfYnVzX2FkZHIpLAor
-CQkgICAgICJEcml2ZXIgcmUtYmluZCBmYWlsdXJlXG4hIik7CiAJaWd0X3Jlc2V0X3RpbWVvdXQo
-KTsKIH0KIApAQCAtMTUyLDcgKzE1Niw4IEBAIHN0YXRpYyB2b2lkIGRldmljZV91bnBsdWcoc3Ry
-dWN0IGhvdHVucGx1ZyAqcHJpdiwgY29uc3QgY2hhciAqcHJlZml4LAogCXByaXYtPmZhaWx1cmUg
-PSAiRGV2aWNlIHVucGx1ZyBmYWlsdXJlISI7CiAKIAlpZ3Rfc2V0X3RpbWVvdXQodGltZW91dCwg
-IkRldmljZSB1bnBsdWcgdGltZW91dCEiKTsKLQlpZ3Rfc3lzZnNfc2V0KHByaXYtPmZkLnN5c2Zz
-X2RldiwgInJlbW92ZSIsICIxIik7CisJaWd0X2Fzc2VydF9mKGlndF9zeXNmc19zZXQocHJpdi0+
-ZmQuc3lzZnNfZGV2LCAicmVtb3ZlIiwgIjEiKSwKKwkJICAgICAiRGV2aWNlIHVucGx1ZyBmYWls
-dXJlXG4hIik7CiAJaWd0X3Jlc2V0X3RpbWVvdXQoKTsKIAogCXByaXYtPmZkLnN5c2ZzX2RldiA9
-IGNsb3NlX3N5c2ZzKHByaXYtPmZkLnN5c2ZzX2Rldik7CkBAIC0xNjYsNyArMTcxLDggQEAgc3Rh
-dGljIHZvaWQgYnVzX3Jlc2NhbihzdHJ1Y3QgaG90dW5wbHVnICpwcml2LCBpbnQgdGltZW91dCkK
-IAlwcml2LT5mYWlsdXJlID0gIkJ1cyByZXNjYW4gZmFpbHVyZSEiOwogCiAJaWd0X3NldF90aW1l
-b3V0KHRpbWVvdXQsICJCdXMgcmVzY2FuIHRpbWVvdXQhIik7Ci0JaWd0X3N5c2ZzX3NldChwcml2
-LT5mZC5zeXNmc19idXMsICIuLi9yZXNjYW4iLCAiMSIpOworCWlndF9hc3NlcnRfZihpZ3Rfc3lz
-ZnNfc2V0KHByaXYtPmZkLnN5c2ZzX2J1cywgIi4uL3Jlc2NhbiIsICIxIiksCisJCSAgICAgICAi
-QnVzIHJlc2NhbiBmYWlsdXJlIVxuIik7CiAJaWd0X3Jlc2V0X3RpbWVvdXQoKTsKIH0KIAotLSAK
-Mi4yMS4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpJ
-bnRlbC1nZnggbWFpbGluZyBsaXN0CkludGVsLWdmeEBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0
-cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pbnRlbC1nZngK
+Unbinding the i915 driver on some Haswell platforms with Azalia audio
+results in a kernel WARNING on "i915 raw-wakerefs=1 wakelocks=1 on
+cleanup".  The issue can be worked around by manually enabling runtime
+power management for the conflicting audio adapter.  Use that method
+but also display a warning to preserve visibility of the issue.  Also
+tag the workaround with a FIXME comment.
+
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ tests/core_hotunplug.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index 361d601af..a3d2a04ed 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -473,9 +473,23 @@ igt_main
+ 		igt_skip_on_f(fd_drm < 0, "No known DRM device found\n");
+ 
+ 		if (is_i915_device(fd_drm)) {
++			uint32_t devid = intel_get_drm_devid(fd_drm);
++
+ 			gem_quiescent_gpu(fd_drm);
+ 			igt_skip_on_f(local_i915_healthcheck(fd_drm, "pre-"),
+ 				      "i915 device not healthy on test start\n");
++
++			/**
++			 * FIXME: Unbinding the i915 driver on some Haswell
++			 * platforms with Azalia audio results in a kernel WARN
++			 * on "i915 raw-wakerefs=1 wakelocks=1 on cleanup".  The
++			 * below CI friendly user level workaround prevents the
++			 * warning from appearing.  Drop this hack as soon as
++			 * this is fixed in the kernel.
++			 */
++			if (igt_warn_on_f((bool) IS_HASWELL(devid),
++			    "Manually enabling audio PM to work around a kernel WARN\n"))
++				igt_pm_enable_audio_runtime_pm();
+ 		}
+ 
+ 		/* Make sure subtests always reopen the same device */
+-- 
+2.21.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
