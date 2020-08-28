@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 24 Aug 2020 15:49:51 +0100
-Message-Id: <20200824144951.146547-1-chris@chris-wilson.co.uk>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Fri, 28 Aug 2020 09:59:06 +0200
+Message-Id: <20200828075927.17061-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_exec_schedule: Set
- preempt_timeout_ms for fast hang tests
+Subject: [igt-dev] [PATCH i-g-t v5 00/21] tests/core_hotunplug: Fixes and
+ enhancements
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -12,140 +12,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>, Petri Latvala <petri.latvala@intel.com>, intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Reduce the preemption timeout to 150ms (from infinity for tgl! tsk,
-tsk) so that the preemption hang tests run quicker.
-
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
----
- tests/i915/gem_exec_schedule.c | 37 ++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 11 deletions(-)
-
-diff --git a/tests/i915/gem_exec_schedule.c b/tests/i915/gem_exec_schedule.c
-index 488d93511..e316cf4d7 100644
---- a/tests/i915/gem_exec_schedule.c
-+++ b/tests/i915/gem_exec_schedule.c
-@@ -1235,9 +1235,18 @@ static void promotion(int fd, unsigned ring)
- 	igt_assert_eq_u32(result_read, ctx[NOISE]);
- }
- 
-+static bool set_preempt_timeout(int i915,
-+				const struct intel_execution_engine2 *e,
-+				int timeout_ms)
-+{
-+	return gem_engine_property_printf(i915, e->name,
-+					  "preempt_timeout_ms",
-+					  "%d", timeout_ms) > 0;
-+}
-+
- #define NEW_CTX (0x1 << 0)
- #define HANG_LP (0x1 << 1)
--static void preempt(int fd, unsigned ring, unsigned flags)
-+static void preempt(int fd, const struct intel_execution_engine2 *e, unsigned flags)
- {
- 	uint32_t result = gem_create(fd, 4096);
- 	uint32_t result_read;
-@@ -1245,6 +1254,9 @@ static void preempt(int fd, unsigned ring, unsigned flags)
- 	uint32_t ctx[2];
- 	igt_hang_t hang;
- 
-+	/* Set a fast timeout to speed the test up (if available) */
-+	set_preempt_timeout(fd, e, 150);
-+
- 	ctx[LO] = gem_context_clone_with_engines(fd, 0);
- 	gem_context_set_priority(fd, ctx[LO], MIN_PRIO);
- 
-@@ -1252,7 +1264,7 @@ static void preempt(int fd, unsigned ring, unsigned flags)
- 	gem_context_set_priority(fd, ctx[HI], MAX_PRIO);
- 
- 	if (flags & HANG_LP)
--		hang = igt_hang_ctx(fd, ctx[LO], ring, 0);
-+		hang = igt_hang_ctx(fd, ctx[LO], e->flags, 0);
- 
- 	for (int n = 0; n < ARRAY_SIZE(spin); n++) {
- 		if (flags & NEW_CTX) {
-@@ -1262,10 +1274,10 @@ static void preempt(int fd, unsigned ring, unsigned flags)
- 		}
- 		spin[n] = __igt_spin_new(fd,
- 					 .ctx = ctx[LO],
--					 .engine = ring);
-+					 .engine = e->flags);
- 		igt_debug("spin[%d].handle=%d\n", n, spin[n]->handle);
- 
--		store_dword(fd, ctx[HI], ring, result, 0, n + 1, I915_GEM_DOMAIN_RENDER);
-+		store_dword(fd, ctx[HI], e->flags, result, 0, n + 1, I915_GEM_DOMAIN_RENDER);
- 
- 		result_read = __sync_read_u32(fd, result, 0);
- 		igt_assert_eq_u32(result_read, n + 1);
-@@ -1601,12 +1613,15 @@ static void preempt_self(int fd, unsigned ring)
- 	gem_close(fd, result);
- }
- 
--static void preemptive_hang(int fd, unsigned ring)
-+static void preemptive_hang(int fd, const struct intel_execution_engine2 *e)
- {
- 	igt_spin_t *spin[MAX_ELSP_QLEN];
- 	igt_hang_t hang;
- 	uint32_t ctx[2];
- 
-+	/* Set a fast timeout to speed the test up (if available) */
-+	set_preempt_timeout(fd, e, 150);
-+
- 	ctx[HI] = gem_context_clone_with_engines(fd, 0);
- 	gem_context_set_priority(fd, ctx[HI], MAX_PRIO);
- 
-@@ -1616,12 +1631,12 @@ static void preemptive_hang(int fd, unsigned ring)
- 
- 		spin[n] = __igt_spin_new(fd,
- 					 .ctx = ctx[LO],
--					 .engine = ring);
-+					 .engine = e->flags);
- 
- 		gem_context_destroy(fd, ctx[LO]);
- 	}
- 
--	hang = igt_hang_ctx(fd, ctx[HI], ring, 0);
-+	hang = igt_hang_ctx(fd, ctx[HI], e->flags, 0);
- 	igt_post_hang_ring(fd, hang);
- 
- 	for (int n = 0; n < ARRAY_SIZE(spin); n++) {
-@@ -2603,10 +2618,10 @@ igt_main
- 			}
- 
- 			test_each_engine_store("preempt", fd, e)
--				preempt(fd, e->flags, 0);
-+				preempt(fd, e, 0);
- 
- 			test_each_engine_store("preempt-contexts", fd, e)
--				preempt(fd, e->flags, NEW_CTX);
-+				preempt(fd, e, NEW_CTX);
- 
- 			test_each_engine_store("preempt-self", fd, e)
- 				preempt_self(fd, e->flags);
-@@ -2640,10 +2655,10 @@ igt_main
- 				}
- 
- 				test_each_engine_store("preempt-hang", fd, e)
--					preempt(fd, e->flags, NEW_CTX | HANG_LP);
-+					preempt(fd, e, NEW_CTX | HANG_LP);
- 
- 				test_each_engine_store("preemptive-hang", fd, e)
--					preemptive_hang(fd, e->flags);
-+					preemptive_hang(fd, e);
- 
- 				igt_fixture {
- 					igt_disallow_hang(fd, hang);
--- 
-2.28.0
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Q2xlYW4gdXAgdGhlIHRlc3QgY29kZSwgYWRkIHNvbWUgbmV3IGJhc2ljIHN1YnRlc3RzLCB0aGVu
+IHVuYmxvY2sKdW5iaW5kIHRlc3QgdmFyaWFudHMuCgpObyBpbmNvbXBsZXRlcyAvIGFib3J0cyBo
+YXZlIGJlZW4gcmVwb3J0ZWQgYnkgVHJ5Ym90IHRoaXMgdGltZS4KClNlcmllcyBjaGFuZ2Vsb2c6
+CnYyOiBOZXcgcGF0Y2ggIlVuLWJsb2NrbGlzdCAqYmluZCogc3VidGVzdHMgYWRkZWQuCnYzOiBQ
+YXRjaCAiRm9sbG93IGZhaWxlZCBzdWJ0ZXN0cyB3aXRoIGhlYWx0aGNoZWNrIiByZW5hbWVkIHRv
+ICJSZWNvdmVyCiAgICBmcm9tIHN1YnRlc3QgZmFpbHVyZXMiLgogIC0gYSBuZXcgcGF0Y2hlICJD
+bGVhbiB1cCBkZXZpY2Ugb3BlbiBlcnJvciBoYW5kbGluZyIgYWRkZWQsIGFuIG9sZAogICAgcGF0
+Y2ggIkZpeCBtaXNzaW5nIG5ld2xpbmUiIG9ic29sZXRlZCBieSB0aGUgbmV3IG9uZSBkcm9wcGVk
+LAogIC0gb3RoZXIgbmV3IHBhdGNoZXMgYWRkZWQ6CiAgICAtICJMZXQgdGhlIGRyaXZlciB0aW1l
+IG91dCBlc3NlbnRpYWwgc3lzZnMgb3BlcmF0aW9ucyIsCiAgICAtICJNb3JlIHRob3JvdWdoIGk5
+MTUgaGVhbHRoY2hlY2sgYW5kIHJlY292ZXJ5IiwKICAtIGEgcGF0Y2ggIkFkZCAnbGF0ZWNsb3Nl
+IGJlZm9yZSByZXN0b3JlJyB2YXJpYW50cyIgZnJvbSBhbm90aGVyCiAgICBzZXJpZXMgaW5jbHVk
+ZWQuCnY0OiBPcHRpb25hbCBwYXRjaCAiRHVwbGljYXRlIGRlYnVnIG1lc3NhZ2VzIGluIGRtZXNn
+IiBmcm9tIGFub3RoZXIKICAgIHNlcmllcyBpbmNsdWRlZC4KdjU6IE5ldyBwYXRjaCBhZGRlZCB3
+aXRoIEhhc3dlbGwgYXVkaW8gcmVsYXRlZCBrZXJuZWwgd2FybmluZyB3b3JrZWQKICAgIGFyb3Vu
+ZCBhbmQgcmVwbGFjZWQgd2l0aCBhbiBJR1Qgd2FybmluZyB0byBwcmVzZXJ2ZSB2aXNpYmlsaXR5
+IG9mCiAgICB0aGUgaXNzdWUuCgpATWljaGHFgjogU2luY2Ugc29tZSBwYXRjaCB1cGRhdGVzIGFy
+ZSB0cml2aWFsLCBJJ3ZlIHByZXNlcnZlZCB5b3VyCnYxL3YyIFJldmlld2QtYnk6IGV4Y2VwdCBm
+b3IgcGF0Y2hlcyB3aXRoIG5vbi10cml2aWFsIGNoYW5nZXMsIHdoZXJlIEkKbWFya2VkIHlvdXIg
+Ui1iIGFzIHYxL3YyIGFwcGxpY2FibGUuICBQbGVhc2UgaGF2ZSBhIGxvb2sgYW5kIGNvbmZpcm0g
+aWYKeW91IGFyZSBzdGlsbCBPSyB3aXRoIHRoZW0uCgpAVHZydGtvOiBBcyBJIGFscmVhZHkgYXNr
+ZWQgYmVmb3JlLCBwbGVhc2Ugc3VwcG9ydCBteSBhdHRlbXB0IHRvIHJlbW92ZQp0aGUgdW5iaW5k
+IHRlc3QgdmFyaWFudHMgZnJvbSB0aGUgYmxvY2tsaXN0LgoKQFBldHJpLCBATWFydGluOiBBc3N1
+bWluZyBDSSByZXN1bHRzIHdpbGwgYmUgYXMgZ29vZCBhcyB0aG9zZSBvYnRhaW5lZApvbiBUcnli
+b3QsIHBsZWFzZSBnaXZlIG1lIHlvdXIgZ3JlZW4gbGlnaHQgZm9yIG1lcmdpbmcgdGhpcyBzZXJp
+ZXMgaWYKeW91IGhhdmUgbm8gb2JqZWN0aW9ucy4KClRoYW5rcywKSmFudXN6CgoKSmFudXN6IEty
+enlzenRvZmlrICgyMSk6CiAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IFVzZSBpZ3RfYXNzZXJ0X2Zk
+KCkKICB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogQ29uc3RpZnkgZGV2X2J1c19hZGRyIHN0cmluZwog
+IHRlc3RzL2NvcmVfaG90dW5wbHVnOiBDbGVhbiB1cCBkZXZpY2Ugb3BlbiBlcnJvciBoYW5kbGlu
+ZwogIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBDb25zb2xpZGF0ZSBkdXBsaWNhdGVkIGRlYnVnIG1l
+c3NhZ2VzCiAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IEFzc2VydCBzdWNjZXNzZnVsIGRldmljZSBm
+aWx0ZXIgYXBwbGljYXRpb24KICB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogTWFpbnRhaW4gYSBzaW5n
+bGUgZGF0YSBzdHJ1Y3R1cmUgaW5zdGFuY2UKICB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogUGFzcyBl
+cnJvcnMgdmlhIGEgZGF0YSBzdHJ1Y3R1cmUgZmllbGQKICB0ZXN0cy9jb3JlX2hvdHVucGx1Zzog
+SGFuZGxlIGRldmljZSBjbG9zZSBlcnJvcnMKICB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogUHJlcGFy
+ZSBpbnZhcmlhbnQgZGF0YSBvbmNlIHBlciB0ZXN0IHJ1bgogIHRlc3RzL2NvcmVfaG90dW5wbHVn
+OiBTa2lwIHNlbGVjdGl2ZWx5IG9uIHN5c2ZzIGNsb3NlIGVycm9ycwogIHRlc3RzL2NvcmVfaG90
+dW5wbHVnOiBSZWNvdmVyIGZyb20gc3VidGVzdCBmYWlsdXJlcwogIHRlc3RzL2NvcmVfaG90dW5w
+bHVnOiBGYWlsIHN1YnRlc3RzIG9uIGRldmljZSBjbG9zZSBlcnJvcnMKICB0ZXN0cy9jb3JlX2hv
+dHVucGx1ZzogTGV0IHRoZSBkcml2ZXIgdGltZSBvdXQgZXNzZW50aWFsIHN5c2ZzCiAgICBvcGVy
+YXRpb25zCiAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IFByb2Nlc3MgcmV0dXJuIHZhbHVlcyBvZiBz
+eXNmcyBvcGVyYXRpb25zCiAgdGVzdHMvY29yZV9ob3R1bnBsdWc6IEFzc2VydCBleHBlY3RlZCBk
+ZXZpY2UgcHJlc2VuY2UvYWJzZW5jZQogIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBFeHBsaWNpdGx5
+IGlnbm9yZSB1bnVzZWQgcmV0dXJuIHZhbHVlcwogIHRlc3RzL2NvcmVfaG90dW5wbHVnOiBNb3Jl
+IHRob3JvdWdoIGk5MTUgaGVhbHRoY2hlY2sgYW5kIHJlY292ZXJ5CiAgdGVzdHMvY29yZV9ob3R1
+bnBsdWc6IEFkZCAnbGF0ZWNsb3NlIGJlZm9yZSByZXN0b3JlJyB2YXJpYW50cwogIHRlc3RzL2Nv
+cmVfaG90dW5wbHVnOiBEdXBsaWNhdGUgZGVidWcgbWVzc2FnZXMgaW4gZG1lc2cKICB0ZXN0cy9j
+b3JlX2hvdHVucGx1ZzogSFNXIGF1ZGlvIGlzc3VlIHdvcmthcm91bmQKICB0ZXN0cy9jb3JlX2hv
+dHVucGx1ZzogVW4tYmxvY2tsaXN0ICpiaW5kKiBzdWJ0ZXN0cwoKIHRlc3RzL2NvcmVfaG90dW5w
+bHVnLmMgICAgICAgfCA1NDIgKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0KIHRl
+c3RzL2ludGVsLWNpL2JsYWNrbGlzdC50eHQgfCAgIDIgKy0KIDIgZmlsZXMgY2hhbmdlZCwgNDEw
+IGluc2VydGlvbnMoKyksIDEzNCBkZWxldGlvbnMoLSkKCi0tIAoyLjIxLjEKCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0
+CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
