@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 287F06E0CF
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Aug 2020 19:56:29 +0000 (UTC)
-Date: Fri, 28 Aug 2020 12:56:28 -0700
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Message-ID: <20200828195628.GB65737@orsosgc001.ra.intel.com>
-References: <20200827150920.12940-1-sowmyax.kaparthi@intel.com>
- <7a020f08-db91-81a8-29ab-940046fe46ba@intel.com>
- <20200828193431.GA65737@orsosgc001.ra.intel.com>
- <66f2a79c-a04c-0b5b-a71f-2361d853e69b@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB9556E17F
+ for <igt-dev@lists.freedesktop.org>; Sat, 29 Aug 2020 01:53:32 +0000 (UTC)
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Date: Fri, 28 Aug 2020 18:53:32 -0700
+Message-Id: <20200829015332.18676-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <66f2a79c-a04c-0b5b-a71f-2361d853e69b@intel.com>
-Subject: Re: [igt-dev] [i-g-t] Fixing the latency of hrtimer
+Subject: [igt-dev] [CI i-g-t] lib/ioctl_wrappers: Handle PREAD/PWRITE ioctls
+ not supported in gem_read/write
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,101 +15,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Sowmya Kaparthi <sowmyax.kaparthi@intel.com>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBBdWcgMjgsIDIwMjAgYXQgMTA6NDQ6MjdQTSArMDMwMCwgTGlvbmVsIExhbmR3ZXJs
-aW4gd3JvdGU6Cj5PbiAyOC8wOC8yMDIwIDIyOjM0LCBVbWVzaCBOZXJsaWdlIFJhbWFwcGEgd3Jv
-dGU6Cj4+T24gVGh1LCBBdWcgMjcsIDIwMjAgYXQgMDY6MjI6NDBQTSArMDMwMCwgTGlvbmVsIExh
-bmR3ZXJsaW4gd3JvdGU6Cj4+Pk9uIDI3LzA4LzIwMjAgMTg6MDksIFNvd215YSBLYXBhcnRoaSB3
-cm90ZToKPj4+PlRoaXMgdGVzdCB1bmRlcmdvZXMgc2FuaXR5IGNoZWNrIHRoYXQgd2UgYXJlIG5v
-dCBzcGVuZGluZyBtb3JlIHRoYW4KPj4+PjEvMTAwdGggb2YgdGhlIHRpbWUgYXdha2UgaW4gdGhl
-IGtlcm5lbC4gVGhlIHJpZ2h0IHRoaW5nIHdvdWxkIGJlIHRvCj4+Pj5hZGp1c3QgdGhhdCB2YWx1
-ZSBieSB0aGUgbnVtYmVyIG9mIGV4cGVjdGVkIHdha2V1cHMuIFdlIGV4cGVjdCB0aGUKPj4+Pmtl
-cm5lbCB0aW1lIG5vdCB0byBleGNlZWQgMS8xMDB0aCBvZiB0aGUgdG90YWwgdGVzdCBkdXJhdGlv
-biBhdCB0aGUKPj4+PmRlZmF1bHQgaHJ0aW1lciBvZiAyMDBIei9ldmVyeTVtcy4gU2NhbGUgdGhh
-dCBieSB0aGUgcHJvdmlkZWQgCj4+Pj5ocnRpbWVyIGlmCj4+Pj5hcHBsaWNhYmxlLgo+Pj4+Cj4+
-Pj5DYzogTGFuZHdlcmxpbiwgTGlvbmVsIEcgPGxpb25lbC5nLmxhbmR3ZXJsaW5AaW50ZWwuY29t
-Pgo+Pj4+U2lnbmVkLW9mZi1ieTogU293bXlhIEthcGFydGhpIDxzb3dteWF4LmthcGFydGhpQGlu
-dGVsLmNvbT4KPj4+Pi0tLQo+Pj4+wqB0ZXN0cy9pOTE1L3BlcmYuYyB8IDE2ICsrKysrKysrKysr
-KysrLS0KPj4+PsKgMSBmaWxlIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25z
-KC0pCj4+Pj4KPj4+PmRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L3BlcmYuYyBiL3Rlc3RzL2k5MTUv
-cGVyZi5jCj4+Pj5pbmRleCBhODk0ZmQzOC4uMGNhYTlmZTAgMTAwNjQ0Cj4+Pj4tLS0gYS90ZXN0
-cy9pOTE1L3BlcmYuYwo+Pj4+KysrIGIvdGVzdHMvaTkxNS9wZXJmLmMKPj4+PkBAIC0xOTkzLDYg
-KzE5OTMsNyBAQCB0ZXN0X2Jsb2NraW5nKHVpbnQ2NF90IAo+Pj4+cmVxdWVzdGVkX29hX3Blcmlv
-ZCwgYm9vbCBzZXRfa2VybmVsX2hydGltZXIsIHVpbnQ2NF90IGtlCj4+Pj7CoMKgwqDCoCBpbnQ2
-NF90IHN0YXJ0LCBlbmQ7Cj4+Pj7CoMKgwqDCoCBpbnQgbiA9IDA7Cj4+Pj4rwqDCoMKgIHVpbnQ2
-NF90IG1heF9leHBlY3RlZF9rZXJuZWxfbnM7Cj4+Pj7CoMKgwqDCoCBzdHJlYW1fZmQgPSBfX3Bl
-cmZfb3Blbihkcm1fZmQsICZwYXJhbSwgdHJ1ZSAvKiBwcmV2ZW50X3BtICovKTsKPj4+PkBAIC0y
-MDk4LDcgKzIwOTksMTIgQEAgdGVzdF9ibG9ja2luZyh1aW50NjRfdCAKPj4+PnJlcXVlc3RlZF9v
-YV9wZXJpb2QsIGJvb2wgc2V0X2tlcm5lbF9ocnRpbWVyLCB1aW50NjRfdCBrZQo+Pj4+wqDCoMKg
-wqDCoCAqLwo+Pj4+wqDCoMKgwqAgaWd0X2Fzc2VydChuID4gKG1pbl9pdGVyYXRpb25zICsgbl9l
-eHRyYV9pdGVyYXRpb25zKSk7Cj4+Pj4twqDCoMKgIGlndF9hc3NlcnQoa2VybmVsX25zIDw9ICh0
-ZXN0X2R1cmF0aW9uX25zIC8gMTAwdWxsKSk7Cj4+Pj4rwqDCoMKgIGlmIChzZXRfa2VybmVsX2hy
-dGltZXIpCj4+Pj4rwqDCoMKgwqDCoMKgwqAgbWF4X2V4cGVjdGVkX2tlcm5lbF9ucyA9IGtlcm5l
-bF9ocnRpbWVyICogCj4+Pj4odGVzdF9kdXJhdGlvbl9ucyAvIDEwMCkKPj4+PivCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIC8oNSAqIDEwMDAgKiAxMDAwKTsKPj4+PivC
-oMKgwqAgZWxzZQo+Pj4+K8KgwqDCoMKgwqDCoMKgIG1heF9leHBlY3RlZF9rZXJuZWxfbnMgPSB0
-ZXN0X2R1cmF0aW9uX25zIC8gMTAwOwo+Pj4+K8KgwqDCoCBpZ3RfYXNzZXJ0KGtlcm5lbF9ucyA8
-PSBtYXhfZXhwZWN0ZWRfa2VybmVsX25zKTsKPj4+Cj4+Cj4+U29ycnksIGEgbGl0dGxlIGxhdGUg
-dG8gY29tbWVudCBvbiB0aGlzLCBidXQgaGVyZSBpdCBpcyBhbnl3YXlzOgo+Pgo+PkkgYWdyZWUg
-dGhhdCB3ZSBzaG91bGQgaWRlYWxseSBzY2FsZSB0aGUgY2hlY2sgc28gdGhhdCBkaWZmZXJlbnQg
-Cj4+dmFsdWVzIG9mIGhydGltZXIgY2FuIGJlIGFjY291bnRlZCBmb3IuIE9uZSBvZiB0aGUgdmFs
-dWVzIHRoYXQgCj4+c2hvdWxkIGZhY3RvciBpbnRvIHRoaXMgY2FsY3VsYXRpb24gaXMgdGhlIGF2
-ZXJhZ2UgdGltZSB0YWtlbiBieSBhIAo+PnJlYWQgb24gYSBwYXJ0aWN1bGFyIHBsYXRmb3JtLiBG
-b3IgZXhhbXBsZSwgd2Ugc2F3IGFuIGF2ZXJhZ2UgMzAgdXMgCj4+b24gVEdMIGFuZCB0aGlzIHdh
-cyBjb3VudGluZyB1cCB0byBhcm91bmQgMTUwIG1zIGluIGtlcm5lbF9ucywgc28gCj4+dGVzdCBm
-YWlsZWQuIFRoYXQgc2FpZCwgdGhpcyBpcyB0aW1lIHRha2VuIGJ5IHRoZSBjcHUgYW5kIEkgYW0g
-bm90IAo+PnN1cmUgd2UgY2FuIGd1YXJhbnRlZSB0aGlzIHRpbWUuIElmIHRoZSBjcHUgZnJlcXVl
-bmN5IGlzIHNjYWxlZCwgd2UgCj4+aGF2ZSBkaWZmZXJlbnQgdmFsdWVzLsKgIEFsc28gZGlmZmVy
-ZW50IHBsYXRmb3JtcyB3b3VsZCBoYXZlIAo+PmRpZmZlcmVudCByZXN1bHRzLiBVbmxlc3Mgd2Ug
-Y2FuIGVuZm9yY2UgYSBjcHUgZnJlcXVlbmN5IGZyb20gSUdUIAo+PmFuZCBjYWxpYnJhdGUgdGhl
-IGtlcm5lbF9ucyBmb3IgZWFjaCBwbGF0Zm9ybSwgdGhpcyBjaGVjayBpcyBnb2luZyAKPj50byBi
-ZSBidWdneS4KPj4KPj5Gb3IgdGhlICotcGFyYW1ldGVyaXplZCB0ZXN0cyBhbG9uZSwgSSB3b3Vs
-ZCByZWNvbW1lbmQgbm90IGNoZWNraW5nIAo+Pmtlcm5lbF9ucyBhdCBhbGwgYmVjYXVzZSB0aGUg
-aW50ZW50IG9mIHRoZSB0ZXN0IGlzIHRvIG1ha2Ugc3VyZSB3ZSAKPj5hcmUgd29rZW4gdXAgYSBw
-cmVkZXRlcm1pbmVkIG51bWJlciBvZiB0aW1lcyBmb3IgZGlmZmVyZW50IHZhbHVlcyBvZiAKPj5o
-cnRpbWVyLgo+Pgo+PlRob3VnaHRzPwo+Pgo+PlRoYW5rcywKPj5VbWVzaAo+Cj4KPkFncmVlZCwg
-dGhvc2UgY2hlY2tzIGFyZSBwcmV0dHkgb2xkIGFuZCBJJ20gc3RydWdnbGluZyB0byBmaW5kIGEg
-Z29vZCAKPndheSB0byBmaW5kIHdoZXRoZXIgdGhlIGtlcm5lbCBpcyBkb2luZyB0aGUgcmlnaHQg
-dGhpbmcuCj4KPlRyYWNlcG9pbnRzIG1heWJlPwoKVEdMIHZhbHVlcyB3ZXJlIG1lYXN1cmVkIHdp
-dGgga2VybmVsIGZ1bmN0aW9uIGxldmVsIGZ0cmFjZS4gVGhlIHRpbWUgCnRha2VuIGJ5IHRoZSBy
-ZWFkIHJlbWFpbmVkIHZlcnkgY2xvc2UgYmV0d2VlbiB0aGUgMiBjYXNlcyB0aGF0IHRoZSAKcG9s
-bGluZy1wYXJhbWV0ZXJpemVkIHRlc3QgcmFuLCBzbyBmYWlsdXJlIGl0c2VsZiBoYWQgbm90aGlu
-ZyB0byBkbyB3aXRoIAp0aGUgdmFsdWUgb2YgaHJ0aW1lciwgYnV0IHdhcyByYXRoZXIgZHVlIHRv
-IHRoZSBudW1iZXIgb2Ygd2FrZXVwcy4KCj4KPgo+SWYgeW91IHdhbnQgdG8gZHJvcCB0aGUgY2hl
-Y2tzIHRoYXQgd291bGQgYmUgZmluZS4KCkdyZWF0LCBMZXQncyBkcm9wIHRoZSBjaGVja3Mgb25s
-eSBmb3IgdGhlIHBhcmFtZXRlcml6ZWQgdGVzdHMuCgpUaGFua3MsClVtZXNoCgo+Cj4KPlRoYW5r
-cywKPgo+Cj4tTGlvbmVsCj4KPgo+Pgo+Pj4KPj4+VGhhbmtzLCBsb29rcyBnb29kLiBKdXN0IGEg
-c21hbGwgY29kaW5nIHN0eWxlIGlzc3VlLgo+Pj4KPj4+TXVsdGlsaW5lIGJsb2NrcyBpbiBpZi9m
-b3Ivd2hpbGUoKSBuZWVkcyB0byBiZSBzdXJyb3VuZGVkIGJ5IHt9Lgo+Pj4KPj4+Cj4+PldpdGgg
-dGhhdCBmaXhlZDoKPj4+Cj4+Pgo+Pj5SZXZpZXdlZC1ieTogTGlvbmVsIExhbmR3ZXJsaW4gPGxp
-b25lbC5nLmxhbmR3ZXJsaW5AaW50ZWwuY29tPgo+Pj4KPj4+Cj4+PkNoZWVycywKPj4+Cj4+Pgo+
-Pj4tTGlvbmVsCj4+Pgo+Pj4KPj4+PsKgwqDCoMKgIF9fcGVyZl9jbG9zZShzdHJlYW1fZmQpOwo+
-Pj4+wqB9Cj4+Pj5AQCAtMjE1Miw2ICsyMTU4LDcgQEAgdGVzdF9wb2xsaW5nKHVpbnQ2NF90IHJl
-cXVlc3RlZF9vYV9wZXJpb2QsIAo+Pj4+Ym9vbCBzZXRfa2VybmVsX2hydGltZXIsIHVpbnQ2NF90
-IGtlcgo+Pj4+wqDCoMKgwqAgaW50IG1pbl9pdGVyYXRpb25zID0gKHRlc3RfZHVyYXRpb25fbnMg
-LyAob2FfcGVyaW9kICsgCj4+Pj4oa2VybmVsX2hydGltZXIgKyBrZXJuZWxfaHJ0aW1lciAvIDUp
-KSk7Cj4+Pj7CoMKgwqDCoCBpbnQ2NF90IHN0YXJ0LCBlbmQ7Cj4+Pj7CoMKgwqDCoCBpbnQgbiA9
-IDA7Cj4+Pj4rwqDCoMKgIHVpbnQ2NF90IG1heF9leHBlY3RlZF9rZXJuZWxfbnM7Cj4+Pj7CoMKg
-wqDCoCBzdHJlYW1fZmQgPSBfX3BlcmZfb3Blbihkcm1fZmQsICZwYXJhbSwgdHJ1ZSAvKiBwcmV2
-ZW50X3BtICovKTsKPj4+PkBAIC0yMjg2LDcgKzIyOTMsMTIgQEAgdGVzdF9wb2xsaW5nKHVpbnQ2
-NF90IAo+Pj4+cmVxdWVzdGVkX29hX3BlcmlvZCwgYm9vbCBzZXRfa2VybmVsX2hydGltZXIsIHVp
-bnQ2NF90IGtlcgo+Pj4+wqDCoMKgwqDCoCAqLwo+Pj4+wqDCoMKgwqAgaWd0X2Fzc2VydChuID4g
-KG1pbl9pdGVyYXRpb25zICsgbl9leHRyYV9pdGVyYXRpb25zKSk7Cj4+Pj4twqDCoMKgIGlndF9h
-c3NlcnQoa2VybmVsX25zIDw9ICh0ZXN0X2R1cmF0aW9uX25zIC8gMTAwdWxsKSk7Cj4+Pj4rwqDC
-oMKgIGlmIChzZXRfa2VybmVsX2hydGltZXIpCj4+Pj4rwqDCoMKgwqDCoMKgwqAgbWF4X2V4cGVj
-dGVkX2tlcm5lbF9ucyA9IGtlcm5lbF9ocnRpbWVyICogCj4+Pj4odGVzdF9kdXJhdGlvbl9ucyAv
-IDEwMCkKPj4+PivCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIC8gKDUg
-KiAxMDAwICogMTAwMCk7Cj4+Pj4rwqDCoMKgIGVsc2UKPj4+PivCoMKgwqDCoMKgwqDCoCBtYXhf
-ZXhwZWN0ZWRfa2VybmVsX25zID0gdGVzdF9kdXJhdGlvbl9ucyAvIDEwMDsKPj4+PivCoMKgwqAg
-aWd0X2Fzc2VydChrZXJuZWxfbnMgPD0gbWF4X2V4cGVjdGVkX2tlcm5lbF9ucyk7Cj4+Pj7CoMKg
-wqDCoCBfX3BlcmZfY2xvc2Uoc3RyZWFtX2ZkKTsKPj4+PsKgfQo+Pj4KPj4+Cj4KX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxp
-c3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
-cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Trial patch to replace PREAD/PWRITE ioctls with mmap + memcpy in
+gem_read/write. For CI only. Please don't review.
+
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ lib/ioctl_wrappers.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
+index 3781286d8..6955a0a09 100644
+--- a/lib/ioctl_wrappers.c
++++ b/lib/ioctl_wrappers.c
+@@ -55,6 +55,7 @@
+ #include "igt_debugfs.h"
+ #include "igt_sysfs.h"
+ #include "config.h"
++#include "i915/gem_mman.h"
+ 
+ #ifdef HAVE_VALGRIND
+ #include <valgrind/valgrind.h>
+@@ -353,7 +354,10 @@ int __gem_write(int fd, uint32_t handle, uint64_t offset, const void *buf, uint6
+  */
+ void gem_write(int fd, uint32_t handle, uint64_t offset, const void *buf, uint64_t length)
+ {
+-	igt_assert_eq(__gem_write(fd, handle, offset, buf, length), 0);
++	void *ptr = gem_mmap__device_coherent(fd, handle, offset, length, PROT_WRITE);
++
++	memcpy(ptr, buf + offset, length);
++	munmap(ptr, length);
+ }
+ 
+ int __gem_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length)
+@@ -385,7 +389,10 @@ int __gem_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t len
+  */
+ void gem_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length)
+ {
+-	igt_assert_eq(__gem_read(fd, handle, offset, buf, length), 0);
++	void *ptr = gem_mmap__device_coherent(fd, handle, offset, length, PROT_READ);
++
++	memcpy(buf + offset, ptr, length);
++	munmap(ptr, length);
+ }
+ 
+ int __gem_set_domain(int fd, uint32_t handle, uint32_t read, uint32_t write)
+-- 
+2.26.2.108.g048abe1751
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
