@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1429F89C9D
- for <igt-dev@lists.freedesktop.org>; Sun, 30 Aug 2020 11:59:02 +0000 (UTC)
-Received: by mail-pg1-x543.google.com with SMTP id m34so2723402pgl.11
- for <igt-dev@lists.freedesktop.org>; Sun, 30 Aug 2020 04:59:02 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Sun, 30 Aug 2020 14:58:50 +0300
-Message-Id: <20200830115850.4318-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_vblank: add hotplug detection
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sun, 30 Aug 2020 12:34:07 -0000
+Message-ID: <159879084755.18693.1204197137967538885@emeril.freedesktop.org>
+References: <20200830115850.4318-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20200830115850.4318-1-juhapekka.heikkila@gmail.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdGVzdHMv?=
+ =?utf-8?q?kms=5Fvblank=3A_add_hotplug_detection?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,188 +14,201 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1414789853=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In case there's hpd during test execution try to restart
-the test once before giving up. Here fixed vblank_query and vblank_wait
-as they are ones affected by hpd's
+--===============1414789853==
+Content-Type: multipart/alternative;
+ boundary="===============0386265961312675417=="
 
-needs_retry_after_link_reset() along with comments is direct cut'n'paste
-from Imre's code in kms_flip for same issue.
+--===============0386265961312675417==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/kms_vblank.c | 86 +++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 73 insertions(+), 13 deletions(-)
+== Series Details ==
 
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index be001312..f81cb8ff 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -59,8 +59,33 @@ typedef struct {
- #define DPMS	0x20
- #define SUSPEND 0x40
- #define RPM	0x80
-+	struct udev_monitor *mon;
-+	bool retried;
-+	bool escape;
- } data_t;
- 
-+/*
-+ * Some monitors with odd behavior signal a bad link after waking from a power
-+ * saving state and the subsequent (successful) modeset. This will result in a
-+ * link-retraining (DP) or async modeset (HDMI), which in turn makes the test
-+ * miss vblank/flip events and fail.  Work around this by retrying the test
-+ * once in case of such a link reset event, which the driver signals with a
-+ * hotplug event.
-+ */
-+static bool needs_retry_after_link_reset(struct udev_monitor *mon)
-+{
-+	bool hotplug_detected;
-+
-+	igt_suspend_signal_helper();
-+	hotplug_detected = igt_hotplug_detected(mon, 3);
-+	igt_resume_signal_helper();
-+
-+	if (hotplug_detected)
-+		igt_debug("Retrying after a hotplug event\n");
-+
-+	return hotplug_detected;
-+}
-+
- static double elapsed(const struct timespec *start,
- 		      const struct timespec *end,
- 		      int loop)
-@@ -119,7 +144,12 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
- 	int fd = display->drm_fd;
- 	igt_hang_t hang;
- 
-+	data->retried = false;
-+	data->mon = igt_watch_uevents();
-+retry:
- 	prepare_crtc(data, fd, output);
-+	igt_flush_uevents(data->mon);
-+	data->escape = false;
- 
- 	if (data->flags & RPM)
- 		igt_require(igt_setup_runtime_pm(fd));
-@@ -153,7 +183,7 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
- 	} else
- 		testfunc(data, fd, 1);
- 
--	if (data->flags & BUSY) {
-+	if (data->flags & BUSY && !data->escape) {
- 		struct drm_event_vblank buf;
- 		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
- 	}
-@@ -163,11 +193,22 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
- 	if (!(data->flags & NOHANG))
- 		igt_post_hang_ring(fd, hang);
- 
--	igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
--		 igt_subtest_name(), kmstest_pipe_name(data->pipe), igt_output_name(output));
--
- 	/* cleanup what prepare_crtc() has done */
-+
- 	cleanup_crtc(data, fd, output);
-+
-+	if (data->escape)
-+	{
-+		igt_assert(!data->retried &&
-+			   needs_retry_after_link_reset(data->mon));
-+		data->retried = true;
-+		goto retry;
-+	}
-+	igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
-+		igt_subtest_name(), kmstest_pipe_name(data->pipe), igt_output_name(output));
-+
-+	data->retried = false;
-+	igt_cleanup_uevents(data->mon);
- }
- 
- static void crtc_id_subtest(data_t *data, int fd)
-@@ -279,10 +320,15 @@ static void vblank_query(data_t *data, int fd, int nchildren)
- 
- 	clock_gettime(CLOCK_MONOTONIC, &start);
- 	do {
-+		int rval;
- 		vbl.request.type = DRM_VBLANK_RELATIVE;
- 		vbl.request.type |= pipe_id_flag;
- 		vbl.request.sequence = 0;
--		igt_assert_eq(wait_vblank(fd, &vbl), 0);
-+		rval = wait_vblank(fd, &vbl);
-+		if (rval) {
-+			data->escape = true;
-+			return;
-+		}
- 		count++;
- 	} while ((vbl.reply.sequence - sq) <= 120);
- 	clock_gettime(CLOCK_MONOTONIC, &end);
-@@ -308,10 +354,15 @@ static void vblank_wait(data_t *data, int fd, int nchildren)
- 
- 	clock_gettime(CLOCK_MONOTONIC, &start);
- 	do {
-+		int rval;
- 		vbl.request.type = DRM_VBLANK_RELATIVE;
- 		vbl.request.type |= pipe_id_flag;
- 		vbl.request.sequence = 1;
--		igt_assert_eq(wait_vblank(fd, &vbl), 0);
-+		rval = wait_vblank(fd, &vbl);
-+		if (rval) {
-+			data->escape = true;
-+			return;
-+		}
- 		count++;
- 	} while ((vbl.reply.sequence - sq) <= 120);
- 	clock_gettime(CLOCK_MONOTONIC, &end);
-@@ -514,22 +565,31 @@ static void invalid_subtest(data_t *data, int fd)
- igt_main
- {
- 	int fd;
--	data_t data;
-+	data_t *data;
- 
- 	igt_fixture {
-+		// mmap data so forked tests can talk back.
-+		data = mmap(NULL, sizeof(data_t), PROT_READ | PROT_WRITE,
-+			    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-+		memset(data, 0, sizeof(data_t));
-+
- 		fd = drm_open_driver_master(DRIVER_ANY);
- 		kmstest_set_vt_graphics_mode();
--		igt_display_require(&data.display, fd);
--		igt_display_require_output(&data.display);
-+		igt_display_require(&data->display, fd);
-+		igt_display_require_output(&data->display);
- 	}
- 
- 	igt_subtest("invalid")
--		invalid_subtest(&data, fd);
-+		invalid_subtest(data, fd);
- 
- 	igt_subtest("crtc-id")
--		crtc_id_subtest(&data, fd);
-+		crtc_id_subtest(data, fd);
- 
--	for_each_pipe_static(data.pipe)
-+	for_each_pipe_static(data->pipe)
- 		igt_subtest_group
--			run_subtests_for_pipe(&data);
-+			run_subtests_for_pipe(data);
-+
-+	igt_fixture {
-+		munmap(data, sizeof(data_t));
-+	}
- }
--- 
-2.26.0
+Series: tests/kms_vblank: add hotplug detection
+URL   : https://patchwork.freedesktop.org/series/81174/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8941 -> IGTPW_4922
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4922 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-bsw-n3050:       [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8941/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_module_load@reload:
+    - fi-skl-6600u:       [TIMEOUT][3] ([i915#1418]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8941/fi-skl-6600u/igt@i915_module_load@reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/fi-skl-6600u/igt@i915_module_load@reload.html
+    - fi-icl-y:           [DMESG-WARN][5] ([i915#1982]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8941/fi-icl-y/igt@i915_module_load@reload.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/fi-icl-y/igt@i915_module_load@reload.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-skl-6600u:       [SKIP][7] ([fdo#109271]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8941/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-byt-j1900:       [DMESG-WARN][9] ([i915#1982]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8941/fi-byt-j1900/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/fi-byt-j1900/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1418]: https://gitlab.freedesktop.org/drm/intel/issues/1418
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+
+
+Participating hosts (38 -> 33)
+------------------------------
+
+  Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5774 -> IGTPW_4922
+
+  CI-20190529: 20190529
+  CI_DRM_8941: d23277ce277dfdc8ab6d43ae78808c9679910ac8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4922: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/index.html
+  IGT_5774: 2a5db9f60241383272aeec176e1b97b3f487209f @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/index.html
+
+--===============0386265961312675417==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_vblank: add hotplug detection</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/81174/">https://patchwork.freedesktop.org/series/81174/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_8941 -&gt; IGTPW_4922</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_4922 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8941/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>
+<p>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8941/fi-skl-6600u/igt@i915_module_load@reload.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1418">i915#1418</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/fi-skl-6600u/igt@i915_module_load@reload.html">PASS</a></p>
+</li>
+<li>
+<p>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8941/fi-icl-y/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/fi-icl-y/igt@i915_module_load@reload.html">PASS</a></p>
+</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8941/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8941/fi-byt-j1900/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/fi-byt-j1900/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (38 -&gt; 33)</h2>
+<p>Missing    (5): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5774 -&gt; IGTPW_4922</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_8941: d23277ce277dfdc8ab6d43ae78808c9679910ac8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_4922: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4922/index.html<br />
+  IGT_5774: 2a5db9f60241383272aeec176e1b97b3f487209f @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============0386265961312675417==--
+
+--===============1414789853==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1414789853==--
