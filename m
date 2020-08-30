@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Date: Sun, 30 Aug 2020 13:44:09 -0400
-Message-Id: <20200830174410.256533-4-rodrigosiqueiramelo@gmail.com>
+Date: Sun, 30 Aug 2020 13:44:10 -0400
+Message-Id: <20200830174410.256533-5-rodrigosiqueiramelo@gmail.com>
 In-Reply-To: <20200830174410.256533-1-rodrigosiqueiramelo@gmail.com>
 References: <20200830174410.256533-1-rodrigosiqueiramelo@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v9 3/4] lib: Add function to hash a
- framebuffer
+Subject: [igt-dev] [PATCH i-g-t v9 4/4] kms_writeback: Add
+ writeback-check-output
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,131 +19,195 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, nd <nd@arm.com>
-Cc: Simon Ser <simon.ser@intel.com>, Petri Latvala <petri.latvala@intel.com>, Simon Ser <contact@emersion.fr>, Liviu Dudau <liviu.dudau@arm.com>, Maxime Ripard <maxime@cerno.tech>, Daniel Vetter <daniel@ffwll.ch>, Brian Starkey <brian.starkey@arm.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, Simon Ser <contact@emersion.fr>, Liviu Dudau <liviu.dudau@arm.com>, Maxime Ripard <maxime@cerno.tech>, Daniel Vetter <daniel@ffwll.ch>, Brian Starkey <brian.starkey@arm.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Brian Starkey <rodrigosiqueiramelo@gmail.com>
 
-To use writeback buffers as a CRC source, we need to be able to hash
-them. Implement a simple FVA-1a hashing routine for this purpose.
+Add a test which makes commits using the writeback connector, and
+checks the output buffer hash to make sure it is/isn't written as
+appropriate.
 
-Doing a bytewise hash on the framebuffer directly can be very slow if
-the memory is noncached. By making a copy of each line in the FB first
-(which can take advantage of word-access speedup), we can do the hash
-on a cached copy, which is much faster (10x speedup on my platform).
+Changes since V8 (Arkadiusz Hiler):
+* Add short description
 
 Changes since V7 (Maxime Ripard):
-* Maxime Ripard:
-  - Replace `gem_mmap__gtt` by `igt_fb_map_buffer` on `igt_fb_get_crc()`
-* Rodrigo Siqueira:
-  - Rename igt_fb_get_crc to igt_fb_get_fnv1a_crc
+* Make fb_fill cross-platform
 
-Changes since V6 (Simon Ser):
-* Use plain uint32_t for FNV1a_OFFSET_BIAS and FNV1a_PRIME
-* Return -EINVAL in case fb->num_planes != 1
-* Just copy fb->width * cpp instead of copy the whole stride
-
-v5: use igt_memcpy_from_wc() instead of plain memcpy, as suggested by
-    Chris Wilson
+Changes since v6 (Simon Ser):
+* Add a descriptive error message if sync_fence_wait fail
+* Drop color_idx variable
+* Compute expected CRC based on input framebuffer in writeback_sequence
+* Remove unnecessary parentheses
+* Replace int variable for unsigned int
 
 Signed-off-by: Brian Starkey <brian.starkey@arm.com>
-[rebased and updated to the most recent API]
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
 [rebased and updated]
 Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Reviewed-by: Simon Ser <simon.ser@intel.com>
 Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
 ---
- lib/igt_fb.c | 63 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_fb.h |  2 ++
- 2 files changed, 65 insertions(+)
+ tests/kms_writeback.c | 134 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 134 insertions(+)
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 3864b7a1..5e3706e9 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -3783,6 +3783,69 @@ bool igt_fb_supported_format(uint32_t drm_format)
- 	return true;
+diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+index f8025538..60dbda2a 100644
+--- a/tests/kms_writeback.c
++++ b/tests/kms_writeback.c
+@@ -30,6 +30,14 @@
+ #include "igt.h"
+ #include "igt_core.h"
+ #include "igt_fb.h"
++#include "sw_sync.h"
++
++IGT_TEST_DESCRIPTION(
++   "This test validates the expected behavior of the writeback connectors "
++   "feature by checking if the target device support writeback; it validates "
++   "bad and good combination, check color format, and check the output result "
++   "by using CRC."
++);
+ 
+ static drmModePropertyBlobRes *get_writeback_formats_blob(igt_output_t *output)
+ {
+@@ -217,6 +225,118 @@ static void writeback_fb_id(igt_output_t *output, igt_fb_t *valid_fb, igt_fb_t *
+ 	igt_assert(ret == 0);
  }
  
-+/*
-+ * This implements the FNV-1a hashing algorithm instead of CRC, for
-+ * simplicity
-+ * http://www.isthe.com/chongo/tech/comp/fnv/index.html
-+ *
-+ * hash = offset_basis
-+ * for each octet_of_data to be hashed
-+ *         hash = hash xor octet_of_data
-+ *         hash = hash * FNV_prime
-+ * return hash
-+ *
-+ * 32 bit offset_basis = 2166136261
-+ * 32 bit FNV_prime = 224 + 28 + 0x93 = 16777619
-+ */
-+int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
++static void fill_fb(igt_fb_t *fb, uint32_t pixel)
 +{
-+	const uint32_t FNV1a_OFFSET_BIAS = 2166136261;
-+	const uint32_t FNV1a_PRIME = 16777619;
-+	uint32_t hash;
-+	void *map;
-+	char *ptr, *line = NULL;
-+	int x, y, cpp = igt_drm_format_to_bpp(fb->drm_format) / 8;
-+	uint32_t stride = calc_plane_stride(fb, 0);
++	void *ptr;
 +
-+	if (fb->num_planes != 1)
-+		return -EINVAL;
++	igt_assert(fb->drm_format == DRM_FORMAT_XRGB8888);
 +
 +	ptr = igt_fb_map_buffer(fb->fd, fb);
 +	igt_assert(ptr);
-+	map = ptr;
 +
-+	/*
-+	 * Framebuffers are often uncached, which can make byte-wise accesses
-+	 * very slow. We copy each line of the FB into a local buffer to speed
-+	 * up the hashing.
-+	 */
-+	line = malloc(stride);
-+	if (!line) {
-+		munmap(map, fb->size);
-+		return -ENOMEM;
-+	}
++	memset(ptr, pixel, fb->strides[0] * fb->height);
 +
-+	hash = FNV1a_OFFSET_BIAS;
-+
-+	for (y = 0; y < fb->height; y++, ptr += stride) {
-+
-+		igt_memcpy_from_wc(line, ptr, fb->width * cpp);
-+
-+		for (x = 0; x < fb->width * cpp; x++) {
-+			hash ^= line[x];
-+			hash *= FNV1a_PRIME;
-+		}
-+	}
-+
-+	crc->n_words = 1;
-+	crc->crc[0] = hash;
-+
-+	free(line);
-+	igt_fb_unmap_buffer(fb, map);
-+
-+	return 0;
++	igt_fb_unmap_buffer(fb, ptr);
 +}
 +
- /**
-  * igt_format_is_yuv:
-  * @drm_format: drm fourcc
-diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-index 5ec906b7..debfb5ad 100644
---- a/lib/igt_fb.h
-+++ b/lib/igt_fb.h
-@@ -207,5 +207,7 @@ int igt_format_plane_bpp(uint32_t drm_format, int plane);
- void igt_format_array_fill(uint32_t **formats_array, unsigned int *count,
- 			   bool allow_yuv);
- 
-+int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc);
++static void get_and_wait_out_fence(igt_output_t *output)
++{
++	int ret;
 +
- #endif /* __IGT_FB_H__ */
++	igt_assert(output->writeback_out_fence_fd >= 0);
++
++	ret = sync_fence_wait(output->writeback_out_fence_fd, 1000);
++	igt_assert_f(ret == 0, "sync_fence_wait failed: %s\n", strerror(-ret));
++	close(output->writeback_out_fence_fd);
++	output->writeback_out_fence_fd = -1;
++}
++
++static void writeback_sequence(igt_output_t *output, igt_plane_t *plane,
++				igt_fb_t *in_fb, igt_fb_t *out_fbs[], int n_commits)
++{
++	int i = 0;
++	uint32_t in_fb_colors[2] = { 0xffff0000, 0xff00ff00 };
++	uint32_t clear_color = 0xffffffff;
++
++	igt_crc_t cleared_crc, out_expected;
++
++	for (i = 0; i < n_commits; i++) {
++		/* Change the input color each time */
++		fill_fb(in_fb, in_fb_colors[i % 2]);
++
++		if (out_fbs[i]) {
++			igt_crc_t out_before;
++
++			/* Get the expected CRC */
++			igt_fb_get_fnv1a_crc(in_fb, &out_expected);
++			fill_fb(out_fbs[i], clear_color);
++
++			if (i == 0)
++				igt_fb_get_fnv1a_crc(out_fbs[i], &cleared_crc);
++			igt_fb_get_fnv1a_crc(out_fbs[i], &out_before);
++			igt_assert_crc_equal(&cleared_crc, &out_before);
++		}
++
++		/* Commit */
++		igt_plane_set_fb(plane, in_fb);
++		igt_output_set_writeback_fb(output, out_fbs[i]);
++
++		igt_display_commit_atomic(output->display,
++					  DRM_MODE_ATOMIC_ALLOW_MODESET,
++					  NULL);
++		if (out_fbs[i])
++			get_and_wait_out_fence(output);
++
++		/* Make sure the old output buffer is untouched */
++		if (i > 0 && out_fbs[i - 1] && out_fbs[i] != out_fbs[i - 1]) {
++			igt_crc_t out_prev;
++			igt_fb_get_fnv1a_crc(out_fbs[i - 1], &out_prev);
++			igt_assert_crc_equal(&cleared_crc, &out_prev);
++		}
++
++		/* Make sure this output buffer is written */
++		if (out_fbs[i]) {
++			igt_crc_t out_after;
++			igt_fb_get_fnv1a_crc(out_fbs[i], &out_after);
++			igt_assert_crc_equal(&out_expected, &out_after);
++
++			/* And clear it, for the next time */
++			fill_fb(out_fbs[i], clear_color);
++		}
++	}
++}
++
++static void writeback_check_output(igt_output_t *output, igt_plane_t *plane,
++				   igt_fb_t *input_fb, igt_fb_t *output_fb)
++{
++	igt_fb_t *out_fbs[2] = { 0 };
++	igt_fb_t second_out_fb;
++	unsigned int fb_id;
++
++	/* One commit, with a writeback. */
++	writeback_sequence(output, plane, input_fb, &output_fb, 1);
++
++	/* Two commits, the second with no writeback */
++	out_fbs[0] = output_fb;
++	writeback_sequence(output, plane, input_fb, out_fbs, 2);
++
++	/* Two commits, both with writeback */
++	out_fbs[1] = output_fb;
++	writeback_sequence(output, plane, input_fb, out_fbs, 2);
++
++	fb_id = igt_create_fb(output_fb->fd, output_fb->width, output_fb->height,
++			      DRM_FORMAT_XRGB8888,
++			      igt_fb_mod_to_tiling(0),
++			      &second_out_fb);
++	igt_require(fb_id > 0);
++
++	/* Two commits, with different writeback buffers */
++	out_fbs[1] = &second_out_fb;
++	writeback_sequence(output, plane, input_fb, out_fbs, 2);
++
++	igt_remove_fb(output_fb->fd, &second_out_fb);
++}
++
+ igt_main
+ {
+ 	igt_display_t display;
+@@ -309,6 +429,20 @@ igt_main
+ 		igt_remove_fb(display.drm_fd, &output_fb);
+ 	}
  
++	igt_describe("Check writeback output with CRC validation");
++	igt_subtest("writeback-check-output") {
++		igt_fb_t output_fb;
++		fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
++				      DRM_FORMAT_XRGB8888,
++				      igt_fb_mod_to_tiling(0),
++				      &output_fb);
++		igt_require(fb_id > 0);
++
++		writeback_check_output(output, plane, &input_fb, &output_fb);
++
++		igt_remove_fb(display.drm_fd, &output_fb);
++	}
++
+ 	igt_fixture {
+ 		igt_remove_fb(display.drm_fd, &input_fb);
+ 		igt_display_fini(&display);
 -- 
 2.28.0
 
