@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DAC456E10C
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2020 12:19:04 +0000 (UTC)
-Date: Mon, 31 Aug 2020 17:37:46 +0530
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <20200831120745.GM25390@intel.com>
-References: <20200831115515.16531-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
- <20200831115514.GL25390@intel.com>
- <SN6PR11MB3421A7F734380A3B8266ADE8DF510@SN6PR11MB3421.namprd11.prod.outlook.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 232FB89D4F
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2020 13:31:04 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Mon, 31 Aug 2020 15:30:11 +0200
+Message-Id: <20200831133049.37017-3-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20200831133049.37017-1-zbigniew.kempczynski@intel.com>
+References: <20200831133049.37017-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <SN6PR11MB3421A7F734380A3B8266ADE8DF510@SN6PR11MB3421.namprd11.prod.outlook.com>
-Subject: Re: [igt-dev] [PATCH] [i-g-t] tests/i915_pm_lpsp: remove
- screens-disabled subtest
+Subject: [igt-dev] [PATCH i-g-t v33 02/40] lib/intel_bufops: change in hw/sw
+ tiling detection
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,67 +17,97 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Surendrakumar Upadhyay,
- TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-08-31 at 17:40:18 +0530, Surendrakumar Upadhyay, TejaskumarX wrote:
-> Inline
-> 
-> -----Original Message-----
-> From: Anshuman Gupta <anshuman.gupta@intel.com>
-> Sent: 31 August 2020 17:25
-> To: Surendrakumar Upadhyay, TejaskumarX <tejaskumarx.surendrakumar.upadhyay@intel.com>
-> Cc: igt-dev@lists.freedesktop.org
-> Subject: Re: [PATCH] [i-g-t] tests/i915_pm_lpsp: remove screens-disabled subtest
-> 
-> On 2020-08-31 at 17:25:15 +0530, Tejas Upadhyay wrote:
-> > screens-disabled subtest is not required to run when DMC firmware is
-> > loaded. Thus this test code becomes redundant and increases needless
-> > SKIP counts.
-> >
-> > Cc: Anshuman Gupta <Anshuman.Gupta@intel.com>
-> > Signed-off-by: Tejas Upadhyay
-> > <tejaskumarx.surendrakumar.upadhyay@intel.com>
-> > ---
-> >  tests/i915/i915_pm_lpsp.c | 7 -------
-> >  1 file changed, 7 deletions(-)
-> >
-> > diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c
-> > index 4a187810..d1efd9e0 100644
-> > --- a/tests/i915/i915_pm_lpsp.c
-> > +++ b/tests/i915/i915_pm_lpsp.c
-> > @@ -185,13 +185,6 @@ igt_main
-> >  igt_require(igt_pm_dmc_loaded(data.debugfs_fd));
-> >  }
-> >
-> > -igt_describe("This test validates lpsp while all crtc are disabled");
-> > -igt_subtest("screens-disabled") {
-> > -igt_require_f(!dmc_supported(data.debugfs_fd),
-> > -      "DC states supported platform don't have ROI for this subtest\n");
-> > -screens_disabled_subtest(&data);
-> > -}
-> > -
-> Platfrom like HASWELL still need this test, you can't simply remove the test, this is a valid skip for platform above skl+.
-> Thanks,
-> Anshuman Gupta.
-> 
-> Tejas : But those platforms will have DMC loaded? If DMC not loaded test will not enter in. And if DMC loaded this subtest will not run. How it will get executed?
-DMC is not supported on platfrom prior to SKL.
-Check igt_pm_dmc_loaded() carefully, it will return true in case DMC is not supported.
-> 
-> >  igt_describe("This test validates lpsp on all connected outputs on low power PIPE_A");
-> >  igt_subtest_with_dynamic_f("kms-lpsp") {
-> >  igt_display_t *display = &data.display;
-> > --
-> > 2.25.1
-> >
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Tm90IGFsbCBzd2l6emxpbmcgY2FuIGJlIGhhbmRsZWQgYnkgdGhlIHNvZnR3YXJlIChiaXQxNykg
+c28gZGV0ZWN0Cml0IHByb3Blcmx5IGR1cmluZyBidWZvcHMgY3JlYXRpb24gdGltZSBhbmQgZGlz
+YWJsZSBpZiBuZWNlc3NhcnkuCgpTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kg
+PHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KQ2M6IERvbWluaWsgR3J6ZWdvcnplayA8
+ZG9taW5pay5ncnplZ29yemVrQGludGVsLmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hy
+aXMtd2lsc29uLmNvLnVrPgotLS0KIGxpYi9pbnRlbF9idWZvcHMuYyB8IDQzICsrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0KIDEgZmlsZSBjaGFuZ2VkLCAzNSBpbnNl
+cnRpb25zKCspLCA4IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYi9pbnRlbF9idWZvcHMu
+YyBiL2xpYi9pbnRlbF9idWZvcHMuYwppbmRleCAwOTQzM2JlZC4uMmE5YjA3YTUgMTAwNjQ0Ci0t
+LSBhL2xpYi9pbnRlbF9idWZvcHMuYworKysgYi9saWIvaW50ZWxfYnVmb3BzLmMKQEAgLTE1Nyw3
+ICsxNTcsNyBAQCBzdGF0aWMgaW50IF9fZ2VtX2dldF90aWxpbmcoaW50IGZkLCBzdHJ1Y3QgZHJt
+X2k5MTVfZ2VtX2dldF90aWxpbmcgKmFyZykKIH0KIAogc3RhdGljIGJvb2wgX19nZXRfdGlsaW5n
+KGludCBmZCwgdWludDMyX3QgaGFuZGxlLCB1aW50MzJfdCAqdGlsaW5nLAotCQkJIHVpbnQzMl90
+ICpzd2l6emxlKQorCQkJIHVpbnQzMl90ICpzd2l6emxlLCB1aW50MzJfdCAqcGh5c19zd2l6emxl
+KQogewogCXN0cnVjdCBkcm1faTkxNV9nZW1fZ2V0X3RpbGluZyBnZXRfdGlsaW5nID0geyAuaGFu
+ZGxlID0gaGFuZGxlIH07CiAKQEAgLTE2NiwxMiArMTY2LDEzIEBAIHN0YXRpYyBib29sIF9fZ2V0
+X3RpbGluZyhpbnQgZmQsIHVpbnQzMl90IGhhbmRsZSwgdWludDMyX3QgKnRpbGluZywKIAogCSp0
+aWxpbmcgPSBnZXRfdGlsaW5nLnRpbGluZ19tb2RlOwogCSpzd2l6emxlID0gZ2V0X3RpbGluZy5z
+d2l6emxlX21vZGU7CisJKnBoeXNfc3dpenpsZSA9IGdldF90aWxpbmcucGh5c19zd2l6emxlX21v
+ZGU7CiAJaWd0X2RlYnVnKCJidWYgdGlsaW5nOiAlcywgc3dpenpsZTogJXgsIHBoeXNfc3dpenps
+ZTogJXhcbiIsCiAJCSAgdGlsaW5nX3N0cihnZXRfdGlsaW5nLnRpbGluZ19tb2RlKSwKIAkJICBn
+ZXRfdGlsaW5nLnN3aXp6bGVfbW9kZSwKIAkJICBnZXRfdGlsaW5nLnBoeXNfc3dpenpsZV9tb2Rl
+KTsKIAotCXJldHVybiBnZXRfdGlsaW5nLnBoeXNfc3dpenpsZV9tb2RlID09IGdldF90aWxpbmcu
+c3dpenpsZV9tb2RlOworCXJldHVybiB0cnVlOwogfQogCiBzdGF0aWMgaW50IF9fc2V0X3RpbGlu
+ZyhpbnQgZmQsIHVpbnQzMl90IGhhbmRsZSwgdWludDMyX3QgdGlsaW5nLApAQCAtMjEyLDggKzIx
+MywxMCBAQCBzdGF0aWMgdm9pZCBzZXRfaHdfdGlsZWQoc3RydWN0IGJ1Zl9vcHMgKmJvcHMsIHN0
+cnVjdCBpbnRlbF9idWYgKmJ1ZikKIAlpZiAoYnVmLT50aWxpbmcgIT0gSTkxNV9USUxJTkdfWCAm
+JiBidWYtPnRpbGluZyAhPSBJOTE1X1RJTElOR19ZKQogCQlyZXR1cm47CiAKLQlpZiAoIWJ1Zl9v
+cHNfaGFzX2h3X2ZlbmNlKGJvcHMsIGJ1Zi0+dGlsaW5nKSkKKwlpZiAoIWJ1Zl9vcHNfaGFzX2h3
+X2ZlbmNlKGJvcHMsIGJ1Zi0+dGlsaW5nKSkgeworCQlpZ3RfZGVidWcoIk5vIEhXIGZlbmNlIGZv
+ciB0aWxpbmc6ICVkXG4iLCBidWYtPnRpbGluZyk7CiAJCXJldHVybjsKKwl9CiAKIAlpZ3RfYXNz
+ZXJ0X2VxKF9fc2V0X3RpbGluZyhib3BzLT5mZCwKIAkJCQkgICBidWYtPmhhbmRsZSwgYnVmLT50
+aWxpbmcsCkBAIC0xMDI5LDEwICsxMDMyLDExIEBAIHN0cnVjdCBidWZfb3BzIGJ1Zl9vcHNfYXJy
+W10gPSB7CiAJfSwKIH07CiAKLXN0YXRpYyBib29sIHByb2JlX2h3X3RpbGluZyhzdHJ1Y3QgYnVm
+X29wcyAqYm9wcywgdWludDMyX3QgdGlsaW5nKQorc3RhdGljIGJvb2wgcHJvYmVfaHdfdGlsaW5n
+KHN0cnVjdCBidWZfb3BzICpib3BzLCB1aW50MzJfdCB0aWxpbmcsCisJCQkgICAgYm9vbCAqc3dp
+enpsaW5nX3N1cHBvcnRlZCkKIHsKIAl1aW50NjRfdCBzaXplID0gMjU2ICogMjU2OwotCXVpbnQz
+Ml90IGhhbmRsZSwgYnVmX3RpbGluZywgYnVmX3N3aXp6bGU7CisJdWludDMyX3QgaGFuZGxlLCBi
+dWZfdGlsaW5nLCBidWZfc3dpenpsZSwgcGh5c19zd2l6emxlOwogCXVpbnQzMl90IHN0cmlkZTsK
+IAlpbnQgcmV0OwogCWJvb2wgaXNfc2V0ID0gZmFsc2U7CkBAIC0xMDUxLDEyICsxMDU1LDE1IEBA
+IHN0YXRpYyBib29sIHByb2JlX2h3X3RpbGluZyhzdHJ1Y3QgYnVmX29wcyAqYm9wcywgdWludDMy
+X3QgdGlsaW5nKQogCWlmIChyZXQpCiAJCWdvdG8gZW5kOwogCi0JaXNfc2V0ID0gX19nZXRfdGls
+aW5nKGJvcHMtPmZkLCBoYW5kbGUsICZidWZfdGlsaW5nLCAmYnVmX3N3aXp6bGUpOworCWlzX3Nl
+dCA9IF9fZ2V0X3RpbGluZyhib3BzLT5mZCwgaGFuZGxlLCAmYnVmX3RpbGluZywgJmJ1Zl9zd2l6
+emxlLAorCQkJICAgICAgJnBoeXNfc3dpenpsZSk7CiAJaWYgKGlzX3NldCkgewogCQlpZiAodGls
+aW5nID09IEk5MTVfVElMSU5HX1gpCiAJCQlib3BzLT5zd2l6emxlX3ggPSBidWZfc3dpenpsZTsK
+IAkJZWxzZSBpZiAodGlsaW5nID09IEk5MTVfVElMSU5HX1kpCiAJCQlib3BzLT5zd2l6emxlX3kg
+PSBidWZfc3dpenpsZTsKKworCQkqc3dpenpsaW5nX3N1cHBvcnRlZCA9IGJ1Zl9zd2l6emxlID09
+IHBoeXNfc3dpenpsZTsKIAl9CiBlbmQ6CiAJZ2VtX2Nsb3NlKGJvcHMtPmZkLCBoYW5kbGUpOwpA
+QCAtMTE3OSw3ICsxMTg2LDE0IEBAIHN0YXRpYyBzdHJ1Y3QgYnVmX29wcyAqX19idWZfb3BzX2Ny
+ZWF0ZShpbnQgZmQsIGJvb2wgY2hlY2tfaWRlbXBvdGVuY3kpCiAKIAkvKiBMZXQncyBwcm9iZSBY
+IGFuZCBZIGh3IHRpbGluZyBzdXBwb3J0ICovCiAJaWYgKGlzX2h3X3RpbGluZ19zdXBwb3J0ZWQo
+Ym9wcywgSTkxNV9USUxJTkdfWCkpIHsKLQkJYm9vbCBzdXBwb3J0ZWQgPSBwcm9iZV9od190aWxp
+bmcoYm9wcywgSTkxNV9USUxJTkdfWCk7CisJCWJvb2wgc3dpenpsaW5nX3N1cHBvcnRlZDsKKwkJ
+Ym9vbCBzdXBwb3J0ZWQgPSBwcm9iZV9od190aWxpbmcoYm9wcywgSTkxNV9USUxJTkdfWCwKKwkJ
+CQkJCSAmc3dpenpsaW5nX3N1cHBvcnRlZCk7CisKKwkJaWYgKCFzd2l6emxpbmdfc3VwcG9ydGVk
+KSB7CisJCQlpZ3RfZGVidWcoIlN3aXp6bGluZyBmb3IgWCBpcyBub3Qgc3VwcG9ydGVkXG4iKTsK
+KwkJCWJvcHMtPnN1cHBvcnRlZF90aWxlcyAmPSB+VElMRV9YOworCQl9CiAKIAkJaWd0X2RlYnVn
+KCJYIGZlbmNlIHN1cHBvcnQ6ICVzXG4iLCBib29sX3N0cihzdXBwb3J0ZWQpKTsKIAkJaWYgKCFz
+dXBwb3J0ZWQpIHsKQEAgLTExOTAsNyArMTIwNCwxNCBAQCBzdGF0aWMgc3RydWN0IGJ1Zl9vcHMg
+Kl9fYnVmX29wc19jcmVhdGUoaW50IGZkLCBib29sIGNoZWNrX2lkZW1wb3RlbmN5KQogCX0KIAog
+CWlmIChpc19od190aWxpbmdfc3VwcG9ydGVkKGJvcHMsIEk5MTVfVElMSU5HX1kpKSB7Ci0JCWJv
+b2wgc3VwcG9ydGVkID0gcHJvYmVfaHdfdGlsaW5nKGJvcHMsIEk5MTVfVElMSU5HX1kpOworCQli
+b29sIHN3aXp6bGluZ19zdXBwb3J0ZWQ7CisJCWJvb2wgc3VwcG9ydGVkID0gcHJvYmVfaHdfdGls
+aW5nKGJvcHMsIEk5MTVfVElMSU5HX1ksCisJCQkJCQkgJnN3aXp6bGluZ19zdXBwb3J0ZWQpOwor
+CisJCWlmICghc3dpenpsaW5nX3N1cHBvcnRlZCkgeworCQkJaWd0X2RlYnVnKCJTd2l6emxpbmcg
+Zm9yIFkgaXMgbm90IHN1cHBvcnRlZFxuIik7CisJCQlib3BzLT5zdXBwb3J0ZWRfdGlsZXMgJj0g
+flRJTEVfWTsKKwkJfQogCiAJCWlndF9kZWJ1ZygiWSBmZW5jZSBzdXBwb3J0OiAlc1xuIiwgYm9v
+bF9zdHIoc3VwcG9ydGVkKSk7CiAJCWlmICghc3VwcG9ydGVkKSB7CkBAIC0xMzA3LDYgKzEzMjgs
+OSBAQCBib29sIGJ1Zl9vcHNfc2V0X3NvZnR3YXJlX3RpbGluZyhzdHJ1Y3QgYnVmX29wcyAqYm9w
+cywKIAlzd2l0Y2ggKHRpbGluZykgewogCWNhc2UgSTkxNV9USUxJTkdfWDoKIAkJaWYgKHVzZV9z
+b2Z0d2FyZV90aWxpbmcpIHsKKwkJCWJvb2wgc3VwcG9ydGVkID0gYnVmX29wc19oYXNfdGlsaW5n
+X3N1cHBvcnQoYm9wcywgdGlsaW5nKTsKKworCQkJaWd0X2Fzc2VydF9mKHN1cHBvcnRlZCwgIkNh
+bm5vdCBzd2l0Y2ggdG8gWCBzb2Z0d2FyZSB0aWxpbmdcbiIpOwogCQkJaWd0X2RlYnVnKCItPiBj
+aGFuZ2UgWCB0byBTV1xuIik7CiAJCQlib3BzLT5saW5lYXJfdG9feCA9IGNvcHlfbGluZWFyX3Rv
+X3g7CiAJCQlib3BzLT54X3RvX2xpbmVhciA9IGNvcHlfeF90b19saW5lYXI7CkBAIC0xMzI0LDYg
+KzEzNDgsOSBAQCBib29sIGJ1Zl9vcHNfc2V0X3NvZnR3YXJlX3RpbGluZyhzdHJ1Y3QgYnVmX29w
+cyAqYm9wcywKIAogCWNhc2UgSTkxNV9USUxJTkdfWToKIAkJaWYgKHVzZV9zb2Z0d2FyZV90aWxp
+bmcpIHsKKwkJCWJvb2wgc3VwcG9ydGVkID0gYnVmX29wc19oYXNfdGlsaW5nX3N1cHBvcnQoYm9w
+cywgdGlsaW5nKTsKKworCQkJaWd0X2Fzc2VydF9mKHN1cHBvcnRlZCwgIkNhbm5vdCBzd2l0Y2gg
+dG8gWSBzb2Z0d2FyZSB0aWxpbmdcbiIpOwogCQkJaWd0X2RlYnVnKCItPiBjaGFuZ2UgWSB0byBT
+V1xuIik7CiAJCQlib3BzLT5saW5lYXJfdG9feSA9IGNvcHlfbGluZWFyX3RvX3k7CiAJCQlib3Bz
+LT55X3RvX2xpbmVhciA9IGNvcHlfeV90b19saW5lYXI7Ci0tIAoyLjI2LjAKCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0
+CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Au
+b3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
