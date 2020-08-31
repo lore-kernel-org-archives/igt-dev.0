@@ -1,13 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 468EE6E2CD
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2020 15:09:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0084C6E33D
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2020 15:10:00 +0000 (UTC)
 From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Date: Mon, 31 Aug 2020 18:09:43 +0300
-Message-Id: <20200831150951.357727-1-lionel.g.landwerlin@intel.com>
+Date: Mon, 31 Aug 2020 18:09:47 +0300
+Message-Id: <20200831150951.357727-5-lionel.g.landwerlin@intel.com>
+In-Reply-To: <20200831150951.357727-1-lionel.g.landwerlin@intel.com>
+References: <20200831150951.357727-1-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 0/8] lib/i915/perf: Add new platform
- metrics
+Subject: [igt-dev] [PATCH i-g-t v2 4/8] pciids/i915: break TGL into GT1/2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,52 +23,87 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Hi all,
+Align with kernel commit:
+d452bd091e168f ("drm/i915: break TGL pci-ids in GT 1 & 2")
 
-Now with a commit from the kernel breaking the PCI-ids for TGL.
+Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+---
+ lib/i915_pciids.h       | 14 ++++++++++----
+ lib/intel_device_info.c | 15 ++++++++++++---
+ 2 files changed, 22 insertions(+), 7 deletions(-)
 
-Cheers,
-
-Lionel Landwerlin (8):
-  lib/i915_perf: drop dependency on libigt
-  lib/i915/perf: fixup converter script
-  lib/i915/perf: small ICL equation refactor
-  pciids/i915: break TGL into GT1/2
-  lib/i915/perf: break TGL metrics in 2
-  lib/i915/perf: add AsyncCompute metrics
-  lib/i915/perf: Add Rocketlake metrics
-  lib/i915/perf: Add DG1 metrics
-
- lib/Makefile.am                               |    22 +-
- lib/i915/perf-configs/guids.xml               |   133 +-
- lib/i915/perf-configs/mdapi-xml-convert.py    |     9 +-
- lib/i915/perf-configs/oa-bxt.xml              |   312 +-
- lib/i915/perf-configs/oa-cflgt2.xml           |   312 +-
- lib/i915/perf-configs/oa-cflgt3.xml           |   312 +-
- lib/i915/perf-configs/oa-dg1.xml              | 10755 ++++++++++++++++
- lib/i915/perf-configs/oa-icl.xml              |   348 +-
- lib/i915/perf-configs/oa-kblgt2.xml           |   312 +-
- lib/i915/perf-configs/oa-kblgt3.xml           |   312 +-
- lib/i915/perf-configs/oa-rkl.xml              |  8520 ++++++++++++
- lib/i915/perf-configs/oa-sklgt2.xml           |   312 +-
- lib/i915/perf-configs/oa-sklgt3.xml           |   312 +-
- lib/i915/perf-configs/oa-sklgt4.xml           |   312 +-
- lib/i915/perf-configs/oa-tglgt1.xml           |  8560 ++++++++++++
- .../{oa-tgl.xml => oa-tglgt2.xml}             |   252 +-
- lib/i915/perf-configs/oa_guid_registry.py     |    10 +
- lib/i915/perf-configs/update-guids.py         |     2 +-
- lib/i915/perf.c                               |    20 +-
- lib/i915_pciids.h                             |    14 +-
- lib/intel_device_info.c                       |    15 +-
- lib/meson.build                               |     4 +-
- 22 files changed, 30986 insertions(+), 174 deletions(-)
- create mode 100644 lib/i915/perf-configs/oa-dg1.xml
- create mode 100644 lib/i915/perf-configs/oa-rkl.xml
- create mode 100644 lib/i915/perf-configs/oa-tglgt1.xml
- rename lib/i915/perf-configs/{oa-tgl.xml => oa-tglgt2.xml} (98%)
-
---
+diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
+index 8e7ae30e..7eeecb07 100644
+--- a/lib/i915_pciids.h
++++ b/lib/i915_pciids.h
+@@ -594,19 +594,25 @@
+ 	INTEL_VGA_DEVICE(0x4E51, info)
+ 
+ /* TGL */
+-#define INTEL_TGL_12_IDS(info) \
++#define INTEL_TGL_12_GT1_IDS(info) \
++	INTEL_VGA_DEVICE(0x9A60, info), \
++	INTEL_VGA_DEVICE(0x9A68, info), \
++	INTEL_VGA_DEVICE(0x9A70, info)
++
++#define INTEL_TGL_12_GT2_IDS(info) \
+ 	INTEL_VGA_DEVICE(0x9A40, info), \
+ 	INTEL_VGA_DEVICE(0x9A49, info), \
+ 	INTEL_VGA_DEVICE(0x9A59, info), \
+-	INTEL_VGA_DEVICE(0x9A60, info), \
+-	INTEL_VGA_DEVICE(0x9A68, info), \
+-	INTEL_VGA_DEVICE(0x9A70, info), \
+ 	INTEL_VGA_DEVICE(0x9A78, info), \
+ 	INTEL_VGA_DEVICE(0x9AC0, info), \
+ 	INTEL_VGA_DEVICE(0x9AC9, info), \
+ 	INTEL_VGA_DEVICE(0x9AD9, info), \
+ 	INTEL_VGA_DEVICE(0x9AF8, info)
+ 
++#define INTEL_TGL_12_IDS(info) \
++	INTEL_TGL_12_GT1_IDS(info), \
++	INTEL_TGL_12_GT2_IDS(info)
++
+ /* RKL */
+ #define INTEL_RKL_IDS(info) \
+ 	INTEL_VGA_DEVICE(0x4C80, info), \
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index d5f70156..e1132d9c 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -315,10 +315,18 @@ static const struct intel_device_info intel_elkhartlake_info = {
+ 	.codename = "elkhartlake"
+ };
+ 
+-static const struct intel_device_info intel_tigerlake_info = {
++static const struct intel_device_info intel_tigerlake_gt1_info = {
+ 	.gen = BIT(11),
+ 	.is_tigerlake = true,
+-	.codename = "tigerlake"
++	.codename = "tigerlake",
++	.gt = 1,
++};
++
++static const struct intel_device_info intel_tigerlake_gt2_info = {
++	.gen = BIT(11),
++	.is_tigerlake = true,
++	.codename = "tigerlake",
++	.gt = 2,
+ };
+ 
+ static const struct intel_device_info intel_rocketlake_info = {
+@@ -416,7 +424,8 @@ static const struct pci_id_match intel_device_match[] = {
+ 
+ 	INTEL_EHL_IDS(&intel_elkhartlake_info),
+ 
+-	INTEL_TGL_12_IDS(&intel_tigerlake_info),
++	INTEL_TGL_12_GT1_IDS(&intel_tigerlake_gt1_info),
++	INTEL_TGL_12_GT2_IDS(&intel_tigerlake_gt2_info),
+ 	INTEL_RKL_IDS(&intel_rocketlake_info),
+ 
+ 	INTEL_DG1_IDS(&intel_dg1_info),
+-- 
 2.28.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
