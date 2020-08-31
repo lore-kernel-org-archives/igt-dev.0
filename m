@@ -1,12 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 18AD3895B2
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2020 14:37:54 +0000 (UTC)
-From: Sowmya Kaparthi <sowmyax.kaparthi@intel.com>
-Date: Mon, 31 Aug 2020 14:37:49 +0000
-Message-Id: <20200831143749.6226-1-sowmyax.kaparthi@intel.com>
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BEB2C6E10C
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2020 12:18:00 +0000 (UTC)
+From: "Surendrakumar Upadhyay, TejaskumarX"
+ <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Mon, 31 Aug 2020 12:10:18 +0000
+Message-ID: <SN6PR11MB3421A7F734380A3B8266ADE8DF510@SN6PR11MB3421.namprd11.prod.outlook.com>
+References: <20200831115515.16531-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+ <20200831115514.GL25390@intel.com>
+In-Reply-To: <20200831115514.GL25390@intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Subject: [igt-dev] [i-g-t] Dropping kernel_ns check for parameterized tests
+Subject: Re: [igt-dev] [PATCH] [i-g-t] tests/i915_pm_lpsp: remove
+ screens-disabled subtest
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,74 +24,58 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, umesh.nerlige.ramappa@intel.com, lionel.g.landwerlin@intel.com, sowmyax.kaparthi@intel.com
+To: "Gupta, Anshuman" <anshuman.gupta@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-In this patch kernel_ns is not checked at all because the intent
-of the test is to make sure we are woken up a predetermined number
-of times for different values of hrtimer.
+Inline
 
-Cc: Landwerlin, Lionel G <lionel.g.landwerlin@intel.com>
-Signed-off-by: Sowmya Kaparthi <sowmyax.kaparthi@intel.com>
----
- tests/i915/perf.c | 20 ++++----------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
+-----Original Message-----
+From: Anshuman Gupta <anshuman.gupta@intel.com> 
+Sent: 31 August 2020 17:25
+To: Surendrakumar Upadhyay, TejaskumarX <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH] [i-g-t] tests/i915_pm_lpsp: remove screens-disabled subtest
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index 20d0cc82..ba477f1c 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -1993,7 +1993,6 @@ test_blocking(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ke
- 
- 	int64_t start, end;
- 	int n = 0;
--	uint64_t max_expected_kernel_ns;
- 
- 	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
- 
-@@ -2099,13 +2098,8 @@ test_blocking(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ke
- 	 */
- 	igt_assert(n > (min_iterations + n_extra_iterations));
- 
--	if (set_kernel_hrtimer) {
--		max_expected_kernel_ns = kernel_hrtimer * (test_duration_ns / 100)
--					 /(5 * 1000 * 1000);
--	} else {
--		max_expected_kernel_ns = test_duration_ns / 100;
--	}
--	igt_assert(kernel_ns <= max_expected_kernel_ns);
-+	if (!set_kernel_hrtimer)
-+		igt_assert(kernel_ns <= (test_duration_ns / 100ull));
- 
- 	__perf_close(stream_fd);
- }
-@@ -2159,7 +2153,6 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
- 	int min_iterations = (test_duration_ns / (oa_period + (kernel_hrtimer + kernel_hrtimer / 5)));
- 	int64_t start, end;
- 	int n = 0;
--	uint64_t max_expected_kernel_ns;
- 
- 	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
- 
-@@ -2294,13 +2287,8 @@ test_polling(uint64_t requested_oa_period, bool set_kernel_hrtimer, uint64_t ker
- 	 */
- 	igt_assert(n > (min_iterations + n_extra_iterations));
- 
--	if (set_kernel_hrtimer) {
--		max_expected_kernel_ns = kernel_hrtimer * (test_duration_ns / 100)
--					 /(5 * 1000 * 1000);
--	} else {
--		max_expected_kernel_ns = test_duration_ns / 100;
--	}
--	igt_assert(kernel_ns <= max_expected_kernel_ns);
-+	if (!set_kernel_hrtimer)
-+		igt_assert(kernel_ns <= (test_duration_ns / 100ull));
- 
- 	__perf_close(stream_fd);
- }
--- 
-2.25.1
+On 2020-08-31 at 17:25:15 +0530, Tejas Upadhyay wrote:
+> screens-disabled subtest is not required to run when DMC firmware is 
+> loaded. Thus this test code becomes redundant and increases needless 
+> SKIP counts.
+> 
+> Cc: Anshuman Gupta <Anshuman.Gupta@intel.com>
+> Signed-off-by: Tejas Upadhyay 
+> <tejaskumarx.surendrakumar.upadhyay@intel.com>
+> ---
+>  tests/i915/i915_pm_lpsp.c | 7 -------
+>  1 file changed, 7 deletions(-)
+> 
+> diff --git a/tests/i915/i915_pm_lpsp.c b/tests/i915/i915_pm_lpsp.c 
+> index 4a187810..d1efd9e0 100644
+> --- a/tests/i915/i915_pm_lpsp.c
+> +++ b/tests/i915/i915_pm_lpsp.c
+> @@ -185,13 +185,6 @@ igt_main
+>  		igt_require(igt_pm_dmc_loaded(data.debugfs_fd));
+>  	}
+>  
+> -	igt_describe("This test validates lpsp while all crtc are disabled");
+> -	igt_subtest("screens-disabled") {
+> -		igt_require_f(!dmc_supported(data.debugfs_fd),
+> -			      "DC states supported platform don't have ROI for this subtest\n");
+> -		screens_disabled_subtest(&data);
+> -	}
+> -
+Platfrom like HASWELL still need this test, you can't simply remove the test, this is a valid skip for platform above skl+.
+Thanks,
+Anshuman Gupta.  
 
+Tejas : But those platforms will have DMC loaded? If DMC not loaded test will not enter in. And if DMC loaded this subtest will not run. How it will get executed?
+
+>  	igt_describe("This test validates lpsp on all connected outputs on low power PIPE_A");
+>  	igt_subtest_with_dynamic_f("kms-lpsp") {
+>  		igt_display_t *display = &data.display;
+> --
+> 2.25.1
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
