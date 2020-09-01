@@ -1,13 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
-In-Reply-To: <20200929091459.509146-1-chris@chris-wilson.co.uk>
-References: <20200928220027.417167-1-chris@chris-wilson.co.uk>
- <20200929091459.509146-1-chris@chris-wilson.co.uk>
-Date: Tue, 29 Sep 2020 16:19:30 +0300
-Message-ID: <87tuvgyb31.fsf@gaia.fi.intel.com>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C6EA89CD3
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2020 07:16:27 +0000 (UTC)
+Date: Tue, 1 Sep 2020 09:43:39 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200901064339.GP7444@platvala-desk.ger.corp.intel.com>
+References: <20200831133049.37017-1-zbigniew.kempczynski@intel.com>
+ <159889183684.7425.3670644245393193920@emeril.freedesktop.org>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v2] i915/gen9_exec_parse: Check parsing
- of large objects
+Content-Disposition: inline
+In-Reply-To: <159889183684.7425.3670644245393193920@emeril.freedesktop.org>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgUmVtb3Zl?=
+ =?utf-8?q?_libdrm_in_rendercopy_=28rev32=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,94 +24,85 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Chris Wilson <chris@chris-wilson.co.uk> writes:
+On Mon, Aug 31, 2020 at 04:37:16PM +0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: Remove libdrm in rendercopy (rev32)
+> URL   : https://patchwork.freedesktop.org/series/79823/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_8945_full -> IGTPW_4925_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_4925_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_4925_full, please notify your bug team to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4925/index.html
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_4925_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_sync@basic-store-all:
+>     - shard-tglb:         [PASS][1] -> [FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8945/shard-tglb7/igt@gem_sync@basic-store-all.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4925/shard-tglb2/igt@gem_sync@basic-store-all.html
+>     - shard-iclb:         [PASS][3] -> [FAIL][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8945/shard-iclb5/igt@gem_sync@basic-store-all.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4925/shard-iclb1/igt@gem_sync@basic-store-all.html
+> 
+>   
+> New tests
+> ---------
+> 
+>   New tests have been introduced between CI_DRM_8945_full and IGTPW_4925_full:
+> 
+> ### New IGT tests (17) ###
+> 
+>   * igt@api_intel_bb@check-canonical:
+>     - Statuses : 5 pass(s) 2 skip(s)
+>     - Exec time: [0.0, 0.01] s
+> 
+>   * igt@api_intel_bb@lot-of-buffers:
+>     - Statuses : 7 pass(s)
+>     - Exec time: [0.69, 4.54] s
+> 
+>   * igt@api_intel_bb@render:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@api_intel_bb@render-ccs:
+>     - Statuses : 1 incomplete(s) 4 pass(s) 1 skip(s)
+>     - Exec time: [0.0, 0.47] s
 
-> Simply check that we support parsing of batches as large as the uAPI
-> allows.
->
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4925/shard-apl8/igt@api_intel_bb@render-ccs.html
 
-Reviewed-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+SIGSEGV on that test. And you also revealed an igt_runner bug, that
+should have been reported as CRASH, not INCOMPLETE.
 
-> ---
-> Try a few intermediate object sizes since CI machines do not have enough
-> memory to reach the upper bounds of the uAPI.
-> ---
->  tests/i915/gen9_exec_parse.c | 47 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 47 insertions(+)
->
-> diff --git a/tests/i915/gen9_exec_parse.c b/tests/i915/gen9_exec_parse.c
-> index 8cd82f568..f735e7e1c 100644
-> --- a/tests/i915/gen9_exec_parse.c
-> +++ b/tests/i915/gen9_exec_parse.c
-> @@ -566,6 +566,50 @@ static void test_bb_start(const int i915, const uint32_t handle, int test)
->  	gem_close(i915, target_bo);
->  }
->  
-> +static void test_bb_large(int i915)
-> +{
-> +	const uint32_t bbe = MI_BATCH_BUFFER_END;
-> +	static const uint32_t sizes[] = {
-> +		(1ull << 30) - 4096,
-> +		(1ull << 30) + 4096,
-> +		(2ull << 30) - 4096,
-> +		(2ull << 30) + 4096,
-> +		(3ull << 30) - 4096,
-> +		(3ull << 30) + 4096,
-> +		(4ull << 30) - 4096,
-> +	};
-> +	struct drm_i915_gem_exec_object2 obj = {};
-> +	struct drm_i915_gem_execbuffer2 execbuf = {
-> +		.buffers_ptr = to_user_pointer(&obj),
-> +		.buffer_count = 1,
-> +		.flags = I915_EXEC_BLT,
-> +	};
-> +	uint64_t required, total;
-> +	int i;
-> +
-> +	for (i = 0; i < ARRAY_SIZE(sizes); i++) {
-> +		if (!__intel_check_memory(2, sizes[i], CHECK_RAM,
-> +					  &required, &total))
-> +			break;
-> +
-> +		igt_debug("Using object size %#x\n", sizes[i]);
-> +		obj.handle = gem_create(i915, sizes[i]),
-> +		gem_write(i915, obj.handle, sizes[i] - 64, &bbe, sizeof(bbe));
-> +
-> +		execbuf.batch_start_offset = 0;
-> +		igt_assert_eq(__checked_execbuf(i915, &execbuf), 0);
-> +
-> +		execbuf.batch_start_offset = sizes[i] - 64;
-> +		igt_assert_eq(__checked_execbuf(i915, &execbuf), 0);
-> +
-> +		gem_close(i915, obj.handle);
-> +	}
-> +
-> +	igt_require_f(i > 0 && sizes[i - 1] > 1ull << 31,
-> +		      "Insufficient free memory, require at least %'"PRIu64"MiB but only have %'"PRIu64"MiB available",
-> +		      required >> 20, total >> 20);
-> +}
-> +
->  static void test_bb_chained(const int i915, const uint32_t handle)
->  {
->  	const uint32_t batch[] = {
-> @@ -1053,6 +1097,9 @@ igt_main
->  	igt_subtest("bb-start-far")
->  		test_bb_start(i915, handle, BB_START_FAR);
->  
-> +	igt_subtest("bb-large")
-> +		test_bb_large(i915);
-> +
->  	igt_fixture {
->  		igt_stop_hang_detector();
->  		gem_close(i915, handle);
-> -- 
-> 2.28.0
+
+
+-- 
+Petri Latvala
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
