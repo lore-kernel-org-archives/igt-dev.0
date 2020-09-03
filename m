@@ -1,17 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 544356E029
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Sep 2020 11:57:12 +0000 (UTC)
-Date: Thu, 3 Sep 2020 13:57:07 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20200903115707.GB3720@zkempczy-mobl2>
-References: <20200903110110.2403699-1-ayaz.siddiqui@intel.com>
- <20200903110110.2403699-3-ayaz.siddiqui@intel.com>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C91996E9EB
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Sep 2020 12:55:14 +0000 (UTC)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200903110110.2403699-3-ayaz.siddiqui@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] lib/igt_device_scan: Select intel
- as default vendor for intel_gpu_top
+In-Reply-To: <20200902152423.630343-1-apoorva1.singh@intel.com>
+References: <20200902152423.630343-1-apoorva1.singh@intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Thu, 03 Sep 2020 13:55:06 +0100
+Message-ID: <159913770615.16735.12982493459559546080@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_mmap: Modified offset in
+ subtest "bad-size"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,92 +21,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: apoorva1.singh@intel.com, arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org, priyanka.dandamudi@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Sep 03, 2020 at 04:31:10PM +0530, Ayaz A Siddiqui wrote:
-> intel_gpu_top is selecting first discrete device as default drm subsystem.
-> In case of multi drm device if the first device is not intel gpu
-> then it will lead to an error while running intel_gpu_top.
+Quoting apoorva1.singh@intel.com (2020-09-02 16:24:23)
+> From: Apoorva Singh <apoorva1.singh@intel.com>
 > 
-> Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+> Subtest "bad-size" should keep valid/good offset
+> corresponding to buffer object being mapped.
+> Currently, subtest will pass for any value of size
+> provided as the offset value itself will not allow
+> to map any size of memory which defies the purpose
+> of this subtest.
+> 
+> The subtest should not pass due to bad offset value
+> while it should pass only due to bad size provided.
+> 
+> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+> Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+> Cc: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > ---
->  lib/igt_device_scan.c | 40 ++++++++++++++++++++--------------------
->  1 file changed, 20 insertions(+), 20 deletions(-)
+>  tests/i915/gem_mmap.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> index 3583c69c7..3e183423c 100644
-> --- a/lib/igt_device_scan.c
-> +++ b/lib/igt_device_scan.c
-> @@ -426,6 +426,25 @@ static struct igt_device *igt_device_find(const char *subsystem,
->  	return NULL;
->  }
->  
-> +static bool is_vendor_matched(struct igt_device *dev, const char *vendor)
-> +{
-> +	const char *vendor_id;
-> +
-> +	if (!dev->vendor || !vendor)
-> +		return false;
-> +
-> +	/* First we compare vendor id, like 8086 */
-> +	if (!strcasecmp(dev->vendor, vendor))
-> +		return true;
-> +
-> +	/* Likely we have vendor string instead of id */
-> +	vendor_id = get_pci_vendor_id_by_name(vendor);
-> +	if (!vendor_id)
-> +		return false;
-> +
-> +	return !strcasecmp(dev->vendor, vendor_id);
-> +}
-> +
->  static void
->  __copy_dev_to_card(struct igt_device *dev, struct igt_device_card *card)
->  {
-> @@ -455,7 +474,7 @@ void igt_device_find_first_i915_discrete_card(struct igt_device_card *card)
->  
->  	igt_list_for_each_entry(dev, &igt_devs.all, link) {
->  
-> -		if (!is_pci_subsystem(dev))
-> +		if (!is_pci_subsystem(dev) || !is_vendor_matched(dev, "intel"))
->  			continue;
->  
->  		if ((strncmp(dev->pci_slot_name, INTEGRATED_I915_GPU_PCI_ID, PCI_SLOT_NAME_SIZE)) != 0) {
-> @@ -889,25 +908,6 @@ static bool parse_filter(const char *fstr, struct filter *filter)
->  	return false;
->  }
->  
-> -static bool is_vendor_matched(struct igt_device *dev, const char *vendor)
-> -{
-> -	const char *vendor_id;
-> -
-> -	if (!dev->vendor || !vendor)
-> -		return false;
-> -
-> -	/* First we compare vendor id, like 8086 */
-> -	if (!strcasecmp(dev->vendor, vendor))
-> -		return true;
-> -
-> -	/* Likely we have vendor string instead of id */
-> -	vendor_id = get_pci_vendor_id_by_name(vendor);
-> -	if (!vendor_id)
-> -		return false;
-> -
-> -	return !strcasecmp(dev->vendor, vendor_id);
-> -}
-> -
->  /* Filter which matches subsystem:/sys/... path.
->   * Used as first filter in chain.
->   */
-> -- 
+> diff --git a/tests/i915/gem_mmap.c b/tests/i915/gem_mmap.c
+> index f8cf052e..73ffac91 100644
+> --- a/tests/i915/gem_mmap.c
+> +++ b/tests/i915/gem_mmap.c
+> @@ -218,7 +218,7 @@ igt_main
+>                 for (int i = 0; i < ARRAY_SIZE(bad_size); i++) {
+>                         struct drm_i915_gem_mmap arg = {
+>                                 .handle = gem_create(fd, 4096),
+> -                               .offset = 4096,
+> +                               .offset = 0,
 
-You could just add function prototype but I won't complain. 
-igt_device_find_first_i915_discrete_card() is used in intel_gpu_top so it has
-only meaning for card selection preference. IMO looks ok.
+Ah, I see what we had in mind; we wanted to check for overflow handling.
 
-Reviewed-by: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
+When in doubt do both.
+-Chris
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
