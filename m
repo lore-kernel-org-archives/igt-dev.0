@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C32E46E9F1
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Sep 2020 13:57:51 +0000 (UTC)
-Date: Thu, 3 Sep 2020 16:57:47 +0300
-From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20200903135747.GA9664@ideak-desk.fi.intel.com>
-References: <20200830115850.4318-1-juhapekka.heikkila@gmail.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8CF926E091
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Sep 2020 15:50:49 +0000 (UTC)
+Date: Thu, 3 Sep 2020 08:50:48 -0700
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Message-ID: <20200903155048.GA27656@orsosgc001.ra.intel.com>
+References: <20200831150951.357727-1-lionel.g.landwerlin@intel.com>
+ <20200831150951.357727-5-lionel.g.landwerlin@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200830115850.4318-1-juhapekka.heikkila@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_vblank: add hotplug detection
+In-Reply-To: <20200831150951.357727-5-lionel.g.landwerlin@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 4/8] pciids/i915: break TGL into GT1/2
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,206 +18,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: imre.deak@intel.com
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+To: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Sun, Aug 30, 2020 at 02:58:50PM +0300, Juha-Pekka Heikkila wrote:
-> In case there's hpd during test execution try to restart
-> the test once before giving up. Here fixed vblank_query and vblank_wait
-> as they are ones affected by hpd's
-> 
-> needs_retry_after_link_reset() along with comments is direct cut'n'paste
-> from Imre's code in kms_flip for same issue.
-> 
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->  tests/kms_vblank.c | 86 +++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 73 insertions(+), 13 deletions(-)
-> 
-> diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-> index be001312..f81cb8ff 100644
-> --- a/tests/kms_vblank.c
-> +++ b/tests/kms_vblank.c
-> @@ -59,8 +59,33 @@ typedef struct {
->  #define DPMS	0x20
->  #define SUSPEND 0x40
->  #define RPM	0x80
-> +	struct udev_monitor *mon;
-> +	bool retried;
-> +	bool escape;
+Minor comment below.
 
-s/escape/wf_vblank_failed/?
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
->  } data_t;
->  
-> +/*
-> + * Some monitors with odd behavior signal a bad link after waking from a power
-> + * saving state and the subsequent (successful) modeset. This will result in a
-> + * link-retraining (DP) or async modeset (HDMI), which in turn makes the test
-> + * miss vblank/flip events and fail.  Work around this by retrying the test
-> + * once in case of such a link reset event, which the driver signals with a
-> + * hotplug event.
-> + */
-> +static bool needs_retry_after_link_reset(struct udev_monitor *mon)
-> +{
-> +	bool hotplug_detected;
-> +
-> +	igt_suspend_signal_helper();
-> +	hotplug_detected = igt_hotplug_detected(mon, 3);
-> +	igt_resume_signal_helper();
-> +
-> +	if (hotplug_detected)
-> +		igt_debug("Retrying after a hotplug event\n");
-> +
-> +	return hotplug_detected;
-> +}
-> +
->  static double elapsed(const struct timespec *start,
->  		      const struct timespec *end,
->  		      int loop)
-> @@ -119,7 +144,12 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
->  	int fd = display->drm_fd;
->  	igt_hang_t hang;
->  
-> +	data->retried = false;
-> +	data->mon = igt_watch_uevents();
-> +retry:
->  	prepare_crtc(data, fd, output);
-> +	igt_flush_uevents(data->mon);
-> +	data->escape = false;
->  
->  	if (data->flags & RPM)
->  		igt_require(igt_setup_runtime_pm(fd));
-> @@ -153,7 +183,7 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
->  	} else
->  		testfunc(data, fd, 1);
->  
-> -	if (data->flags & BUSY) {
-> +	if (data->flags & BUSY && !data->escape) {
->  		struct drm_event_vblank buf;
->  		igt_assert_eq(read(fd, &buf, sizeof(buf)), sizeof(buf));
->  	}
-> @@ -163,11 +193,22 @@ static void run_test(data_t *data, void (*testfunc)(data_t *, int, int))
->  	if (!(data->flags & NOHANG))
->  		igt_post_hang_ring(fd, hang);
->  
-> -	igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
-> -		 igt_subtest_name(), kmstest_pipe_name(data->pipe), igt_output_name(output));
-> -
->  	/* cleanup what prepare_crtc() has done */
-> +
->  	cleanup_crtc(data, fd, output);
-> +
-> +	if (data->escape)
-> +	{
-> +		igt_assert(!data->retried &&
-> +			   needs_retry_after_link_reset(data->mon));
-> +		data->retried = true;
-> +		goto retry;
-> +	}
-> +	igt_info("\n%s on pipe %s, connector %s: PASSED\n\n",
-> +		igt_subtest_name(), kmstest_pipe_name(data->pipe), igt_output_name(output));
-> +
-> +	data->retried = false;
-> +	igt_cleanup_uevents(data->mon);
->  }
->  
->  static void crtc_id_subtest(data_t *data, int fd)
-> @@ -279,10 +320,15 @@ static void vblank_query(data_t *data, int fd, int nchildren)
->  
->  	clock_gettime(CLOCK_MONOTONIC, &start);
->  	do {
-> +		int rval;
->  		vbl.request.type = DRM_VBLANK_RELATIVE;
->  		vbl.request.type |= pipe_id_flag;
->  		vbl.request.sequence = 0;
-> -		igt_assert_eq(wait_vblank(fd, &vbl), 0);
-> +		rval = wait_vblank(fd, &vbl);
-> +		if (rval) {
-> +			data->escape = true;
-> +			return;
-> +		}
+Thanks,
+Umesh
 
-We would still want to see that things failed here.
+On Mon, Aug 31, 2020 at 06:09:47PM +0300, Lionel Landwerlin wrote:
+>Align with kernel commit:
+>d452bd091e168f ("drm/i915: break TGL pci-ids in GT 1 & 2")
+>
+>Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+>---
+> lib/i915_pciids.h       | 14 ++++++++++----
+> lib/intel_device_info.c | 15 ++++++++++++---
+> 2 files changed, 22 insertions(+), 7 deletions(-)
+>
+>diff --git a/lib/i915_pciids.h b/lib/i915_pciids.h
+>index 8e7ae30e..7eeecb07 100644
+>--- a/lib/i915_pciids.h
+>+++ b/lib/i915_pciids.h
+>@@ -594,19 +594,25 @@
+> 	INTEL_VGA_DEVICE(0x4E51, info)
+>
+> /* TGL */
+>-#define INTEL_TGL_12_IDS(info) \
+>+#define INTEL_TGL_12_GT1_IDS(info) \
+>+	INTEL_VGA_DEVICE(0x9A60, info), \
+>+	INTEL_VGA_DEVICE(0x9A68, info), \
+>+	INTEL_VGA_DEVICE(0x9A70, info)
+>+
+>+#define INTEL_TGL_12_GT2_IDS(info) \
+> 	INTEL_VGA_DEVICE(0x9A40, info), \
+> 	INTEL_VGA_DEVICE(0x9A49, info), \
+> 	INTEL_VGA_DEVICE(0x9A59, info), \
+>-	INTEL_VGA_DEVICE(0x9A60, info), \
+>-	INTEL_VGA_DEVICE(0x9A68, info), \
+>-	INTEL_VGA_DEVICE(0x9A70, info), \
+> 	INTEL_VGA_DEVICE(0x9A78, info), \
+> 	INTEL_VGA_DEVICE(0x9AC0, info), \
+> 	INTEL_VGA_DEVICE(0x9AC9, info), \
+> 	INTEL_VGA_DEVICE(0x9AD9, info), \
+> 	INTEL_VGA_DEVICE(0x9AF8, info)
+>
+>+#define INTEL_TGL_12_IDS(info) \
+>+	INTEL_TGL_12_GT1_IDS(info), \
+>+	INTEL_TGL_12_GT2_IDS(info)
 
->  		count++;
->  	} while ((vbl.reply.sequence - sq) <= 120);
->  	clock_gettime(CLOCK_MONOTONIC, &end);
-> @@ -308,10 +354,15 @@ static void vblank_wait(data_t *data, int fd, int nchildren)
->  
->  	clock_gettime(CLOCK_MONOTONIC, &start);
->  	do {
-> +		int rval;
->  		vbl.request.type = DRM_VBLANK_RELATIVE;
->  		vbl.request.type |= pipe_id_flag;
->  		vbl.request.sequence = 1;
-> -		igt_assert_eq(wait_vblank(fd, &vbl), 0);
-> +		rval = wait_vblank(fd, &vbl);
-> +		if (rval) {
-> +			data->escape = true;
-> +			return;
-> +		}
+I think now INTEL_TGL_12_IDS is unused.
 
-Here too.
-
-With the debug logs added:
-Reviewed-by: Imre Deak <imre.deak@intel.com>
-
->  		count++;
->  	} while ((vbl.reply.sequence - sq) <= 120);
->  	clock_gettime(CLOCK_MONOTONIC, &end);
-> @@ -514,22 +565,31 @@ static void invalid_subtest(data_t *data, int fd)
->  igt_main
->  {
->  	int fd;
-> -	data_t data;
-> +	data_t *data;
->  
->  	igt_fixture {
-> +		// mmap data so forked tests can talk back.
-> +		data = mmap(NULL, sizeof(data_t), PROT_READ | PROT_WRITE,
-> +			    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-> +		memset(data, 0, sizeof(data_t));
-> +
->  		fd = drm_open_driver_master(DRIVER_ANY);
->  		kmstest_set_vt_graphics_mode();
-> -		igt_display_require(&data.display, fd);
-> -		igt_display_require_output(&data.display);
-> +		igt_display_require(&data->display, fd);
-> +		igt_display_require_output(&data->display);
->  	}
->  
->  	igt_subtest("invalid")
-> -		invalid_subtest(&data, fd);
-> +		invalid_subtest(data, fd);
->  
->  	igt_subtest("crtc-id")
-> -		crtc_id_subtest(&data, fd);
-> +		crtc_id_subtest(data, fd);
->  
-> -	for_each_pipe_static(data.pipe)
-> +	for_each_pipe_static(data->pipe)
->  		igt_subtest_group
-> -			run_subtests_for_pipe(&data);
-> +			run_subtests_for_pipe(data);
-> +
-> +	igt_fixture {
-> +		munmap(data, sizeof(data_t));
-> +	}
->  }
-> -- 
-> 2.26.0
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+>+
+> /* RKL */
+> #define INTEL_RKL_IDS(info) \
+> 	INTEL_VGA_DEVICE(0x4C80, info), \
+>diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+>index d5f70156..e1132d9c 100644
+>--- a/lib/intel_device_info.c
+>+++ b/lib/intel_device_info.c
+>@@ -315,10 +315,18 @@ static const struct intel_device_info intel_elkhartlake_info = {
+> 	.codename = "elkhartlake"
+> };
+>
+>-static const struct intel_device_info intel_tigerlake_info = {
+>+static const struct intel_device_info intel_tigerlake_gt1_info = {
+> 	.gen = BIT(11),
+> 	.is_tigerlake = true,
+>-	.codename = "tigerlake"
+>+	.codename = "tigerlake",
+>+	.gt = 1,
+>+};
+>+
+>+static const struct intel_device_info intel_tigerlake_gt2_info = {
+>+	.gen = BIT(11),
+>+	.is_tigerlake = true,
+>+	.codename = "tigerlake",
+>+	.gt = 2,
+> };
+>
+> static const struct intel_device_info intel_rocketlake_info = {
+>@@ -416,7 +424,8 @@ static const struct pci_id_match intel_device_match[] = {
+>
+> 	INTEL_EHL_IDS(&intel_elkhartlake_info),
+>
+>-	INTEL_TGL_12_IDS(&intel_tigerlake_info),
+>+	INTEL_TGL_12_GT1_IDS(&intel_tigerlake_gt1_info),
+>+	INTEL_TGL_12_GT2_IDS(&intel_tigerlake_gt2_info),
+> 	INTEL_RKL_IDS(&intel_rocketlake_info),
+>
+> 	INTEL_DG1_IDS(&intel_dg1_info),
+>-- 
+>2.28.0
+>
+>_______________________________________________
+>igt-dev mailing list
+>igt-dev@lists.freedesktop.org
+>https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
