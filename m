@@ -1,19 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1AA946EB21
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Sep 2020 08:12:48 +0000 (UTC)
-Date: Fri, 4 Sep 2020 10:53:06 +0300
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 03E5F6EB21
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Sep 2020 08:15:00 +0000 (UTC)
+Date: Fri, 4 Sep 2020 10:55:20 +0300
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200904075305.GU7444@platvala-desk.ger.corp.intel.com>
-References: <20200806132935.23293-1-karthik.b.s@intel.com>
- <594bbda7-65ca-91d9-5a63-96f95bf9ac83@daenzer.net>
- <20200807085414.GC7444@platvala-desk.ger.corp.intel.com>
- <a12cbfd5-1e13-2907-816d-f9f93976adc7@intel.com>
+Message-ID: <20200904075520.GV7444@platvala-desk.ger.corp.intel.com>
+References: <20200903110110.2403699-1-ayaz.siddiqui@intel.com>
+ <159916267745.15506.14448595949483107355@emeril.freedesktop.org>
+ <518d734bc7bc442bb49704645d3543ea@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <a12cbfd5-1e13-2907-816d-f9f93976adc7@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/kms_async_flips: Add test to
- validate asynchronous flips
+In-Reply-To: <518d734bc7bc442bb49704645d3543ea@intel.com>
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgRml4IGZv?=
+ =?utf-8?q?r_device_detection_issues_with_intel_gpu_top?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,27 +21,43 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org, daniel.vetter@intel.com, Michel =?iso-8859-1?Q?D=E4nzer?= <michel@daenzer.net>
+To: "Siddiqui, Ayaz A" <ayaz.siddiqui@intel.com>, Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> On 8/7/2020 2:24 PM, Petri Latvala wrote:
-> > DRIVER_INTEL and the use of i915's X_TILED are the intel-specifics
-> > that I spot, anything else in there?
-
-What I didn't spot is that kms_plane_multiple for example already uses
-I915 X-tiled mod unconditionally and it seems to be fine for at least
-AMDGPU... So it's DRIVER_INTEL only that needs changing for a generic
-test.
-
-
--- 
-Petri Latvala
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gRnJpLCBTZXAgMDQsIDIwMjAgYXQgMDY6MDM6MDZBTSArMDAwMCwgU2lkZGlxdWksIEF5YXog
+QSB3cm90ZToKPiAKPiAKPiBGcm9tOiBQYXRjaHdvcmsgPHBhdGNod29ya0BlbWVyaWwuZnJlZWRl
+c2t0b3Aub3JnPgo+IFNlbnQ6IEZyaWRheSwgU2VwdGVtYmVyIDQsIDIwMjAgMToyMSBBTQo+IFRv
+OiBTaWRkaXF1aSwgQXlheiBBIDxheWF6LnNpZGRpcXVpQGludGVsLmNvbT4KPiBDYzogaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKPiBTdWJqZWN0OiDinJcgRmkuQ0kuSUdUOiBmYWlsdXJl
+IGZvciBGaXggZm9yIGRldmljZSBkZXRlY3Rpb24gaXNzdWVzIHdpdGggaW50ZWwgZ3B1IHRvcAo+
+IAo+IFBhdGNoIERldGFpbHMKPiBTZXJpZXM6Cj4gCj4gRml4IGZvciBkZXZpY2UgZGV0ZWN0aW9u
+IGlzc3VlcyB3aXRoIGludGVsIGdwdSB0b3AKPiAKPiBVUkw6Cj4gCj4gaHR0cHM6Ly9wYXRjaHdv
+cmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy84MTI4Ni8KPiAKPiBTdGF0ZToKPiAKPiBmYWlsdXJl
+Cj4gCj4gRGV0YWlsczoKPiAKPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0t
+dGlwL0lHVFBXXzQ5NDkvaW5kZXguaHRtbAo+IAo+IENJIEJ1ZyBMb2cgLSBjaGFuZ2VzIGZyb20g
+Q0lfRFJNXzg5NTdfZnVsbCAtPiBJR1RQV180OTQ5X2Z1bGwKPiBTdW1tYXJ5Cj4gCj4gRkFJTFVS
+RQo+IAo+IFNlcmlvdXMgdW5rbm93biBjaGFuZ2VzIGNvbWluZyB3aXRoIElHVFBXXzQ5NDlfZnVs
+bCBhYnNvbHV0ZWx5IG5lZWQgdG8gYmUKPiB2ZXJpZmllZCBtYW51YWxseS4KPiAKPiBJZiB5b3Ug
+dGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNo
+YW5nZXMKPiBpbnRyb2R1Y2VkIGluIElHVFBXXzQ5NDlfZnVsbCwgcGxlYXNlIG5vdGlmeSB5b3Vy
+IGJ1ZyB0ZWFtIHRvIGFsbG93IHRoZW0KPiB0byBkb2N1bWVudCB0aGlzIG5ldyBmYWlsdXJlIG1v
+ZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBvc2l0aXZlcyBpbiBDSS4KPiAKPiBFeHRlcm5h
+bCBVUkw6IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfNDk0
+OS9pbmRleC5odG1sCj4gCj4gUG9zc2libGUgbmV3IGlzc3Vlcwo+IAo+IEhlcmUgYXJlIHRoZSB1
+bmtub3duIGNoYW5nZXMgdGhhdCBtYXkgaGF2ZSBiZWVuIGludHJvZHVjZWQgaW4gSUdUUFdfNDk0
+OV9mdWxsOgo+IAo+IElHVCBjaGFuZ2VzCj4gUG9zc2libGUgcmVncmVzc2lvbnMKPiAKPiAgICog
+ICBpZ3RAcGVyZkBwb2xsaW5nOgo+IAo+ICAgICAgKiAgIHNoYXJkLWtibDogUEFTUzxodHRwczov
+L2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV84OTU3L3NoYXJkLWtibDQv
+aWd0QHBlcmZAcG9sbGluZy5odG1sPiAtPiBJTkNPTVBMRVRFPGh0dHBzOi8vaW50ZWwtZ2Z4LWNp
+LjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfNDk0OS9zaGFyZC1rYmwxL2lndEBwZXJmQHBvbGxp
+bmcuaHRtbD4KPiBUaGlzIHJlZ3Jlc3Npb24gc2VlbXMgdG8gbWUgZmFsc2UgcG9zaXRpdmUgYXMg
+dGhlIGNoYW5nZSBpcyByZWxhdGVkIHRvIGludGVsX2dwdV90b29sCj4gLUF5YXoKCgpZZXAuIExh
+a3NobWksIHNlZSBhYm92ZS4KCgotLSAKUGV0cmkgTGF0dmFsYQpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
+QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
+bWFuL2xpc3RpbmZvL2lndC1kZXYK
