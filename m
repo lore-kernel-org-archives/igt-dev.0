@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AFF2F6ECB4
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 73F0A89993
  for <igt-dev@lists.freedesktop.org>; Fri,  4 Sep 2020 19:20:48 +0000 (UTC)
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Fri,  4 Sep 2020 12:20:25 -0400
-Message-Id: <20200904162026.10956-1-ashutosh.dixit@intel.com>
+Date: Fri,  4 Sep 2020 12:20:26 -0400
+Message-Id: <20200904162026.10956-2-ashutosh.dixit@intel.com>
+In-Reply-To: <20200904162026.10956-1-ashutosh.dixit@intel.com>
+References: <20200904162026.10956-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/ioctl_wrappers: Keep IGT working
- without pread/pwrite ioctls
+Subject: [igt-dev] [PATCH i-g-t 2/2] tests/i915: Convert remaining sites to
+ gem_pread/gem_pwrite
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,407 +24,303 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The general direction at this time is to phase out pread/write ioctls
-and not support them in future products. This means IGT must be
-modified to handle the absence of pread/write ioctls. This patch does
-this as follows:
+Convert remaining sites to where pread/pwrite ioctl's must absolutely
+be used to gem_pread() and gem_pwrite() calls.
 
-* __gem_read, gem_read, __gem_write and gem_write calls which are
-  wrappers around the pread/pwrite ioctls have been renamed to
-  __gem_pread, gem_pread, __gem_pwrite and gem_pwrite. These will now
-  only be used where the pread/pwrite ioctls must absolutely be used,
-  such as tests which test these ioctls or must otherwise only use the
-  pread/pwrite ioctl's.
-
-* The new gem_read and gem_write function calls are now treated as
-  general purpose calls to read/write to a gem object. They now try
-  doing the read/write using the pread/pwrite ioctls first but when
-  these ioctls are unavailable they fall back to doing the read/write
-  using a combination of mmap and memcpy.
+v2: Added some more files missed out in v1
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/ioctl_wrappers.c           | 165 +++++++++++++++++++++++++++++++--
- lib/ioctl_wrappers.h           |   9 +-
- tests/i915/gem_madvise.c       |   3 +-
- tests/i915/gem_userptr_blits.c |   4 +-
- tests/i915/gen9_exec_parse.c   |   6 +-
- tests/prime_vgem.c             |  14 +--
- 6 files changed, 181 insertions(+), 20 deletions(-)
+ tests/i915/gem_partial_pwrite_pread.c       |  9 ++++----
+ tests/i915/gem_pread.c                      |  9 ++++----
+ tests/i915/gem_pread_after_blit.c           |  1 +
+ tests/i915/gem_pwrite.c                     | 23 +++++++++++----------
+ tests/i915/gem_pwrite_snooped.c             |  3 ++-
+ tests/i915/gem_set_tiling_vs_pwrite.c       |  5 +++--
+ tests/i915/gem_tiled_partial_pwrite_pread.c |  1 +
+ tests/i915/gem_tiled_pread_basic.c          |  3 ++-
+ tests/i915/gem_tiled_pread_pwrite.c         |  5 +++--
+ 9 files changed, 34 insertions(+), 25 deletions(-)
 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index 3781286d8..3076b1187 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -55,6 +55,7 @@
- #include "igt_debugfs.h"
- #include "igt_sysfs.h"
- #include "config.h"
-+#include "i915/gem_mman.h"
+diff --git a/tests/i915/gem_partial_pwrite_pread.c b/tests/i915/gem_partial_pwrite_pread.c
+index b4bae9b6d..906f67e2b 100644
+--- a/tests/i915/gem_partial_pwrite_pread.c
++++ b/tests/i915/gem_partial_pwrite_pread.c
+@@ -149,7 +149,7 @@ static void test_partial_reads(data_t *data)
+ 		blt_bo_fill(data, staging_buf, scratch_buf, val);
  
- #ifdef HAVE_VALGRIND
- #include <valgrind/valgrind.h>
-@@ -323,7 +324,7 @@ void gem_close(int fd, uint32_t handle)
- 	do_ioctl(fd, DRM_IOCTL_GEM_CLOSE, &close_bo);
- }
+ 		get_range(&start, &len);
+-		gem_read(data->drm_fd, scratch_buf->handle, start, tmp, len);
++		gem_pread(data->drm_fd, scratch_buf->handle, start, tmp, len);
  
--int __gem_write(int fd, uint32_t handle, uint64_t offset, const void *buf, uint64_t length)
-+int __gem_pwrite(int fd, uint32_t handle, uint64_t offset, const void *buf, uint64_t length)
- {
- 	struct drm_i915_gem_pwrite gem_pwrite;
- 	int err;
-@@ -341,7 +342,7 @@ int __gem_write(int fd, uint32_t handle, uint64_t offset, const void *buf, uint6
- }
+ 		for (j = 0; j < len; j++) {
+ 			igt_assert_f(tmp[j] == val,
+@@ -176,7 +176,7 @@ static void test_partial_writes(data_t *data)
+ 		memset(tmp, i + 63, BO_SIZE);
  
- /**
-- * gem_write:
-+ * gem_pwrite:
-  * @fd: open i915 drm file descriptor
-  * @handle: gem buffer object handle
-  * @offset: offset within the buffer of the subrange
-@@ -351,12 +352,29 @@ int __gem_write(int fd, uint32_t handle, uint64_t offset, const void *buf, uint6
-  * This wraps the PWRITE ioctl, which is to upload a linear data to a subrange
-  * of a gem buffer object.
-  */
--void gem_write(int fd, uint32_t handle, uint64_t offset, const void *buf, uint64_t length)
-+void gem_pwrite(int fd, uint32_t handle, uint64_t offset, const void *buf, uint64_t length)
- {
--	igt_assert_eq(__gem_write(fd, handle, offset, buf, length), 0);
-+	igt_assert_eq(__gem_pwrite(fd, handle, offset, buf, length), 0);
- }
+ 		get_range(&start, &len);
+-		gem_write(data->drm_fd, scratch_buf->handle, start, tmp, len);
++		gem_pwrite(data->drm_fd, scratch_buf->handle, start, tmp, len);
  
--int __gem_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length)
-+/**
-+ * gem_has_pwrite
-+ * @fd: open i915 drm file descriptor
-+ *
-+ * Feature test macro to query whether pwrite ioctl is supported
-+ */
-+bool gem_has_pwrite(int fd)
-+{
-+	uint32_t handle = gem_create(fd, 4096);
-+	int buf, ret;
-+
-+	ret = __gem_pwrite(fd, handle, 0, &buf, sizeof(buf));
-+	gem_close(fd, handle);
-+
-+	return ret != EOPNOTSUPP;
-+}
-+
-+int __gem_pread(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length)
- {
- 	struct drm_i915_gem_pread gem_pread;
- 	int err;
-@@ -373,7 +391,7 @@ int __gem_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t len
- 	return err;
- }
- /**
-- * gem_read:
-+ * gem_pread:
-  * @fd: open i915 drm file descriptor
-  * @handle: gem buffer object handle
-  * @offset: offset within the buffer of the subrange
-@@ -383,9 +401,142 @@ int __gem_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t len
-  * This wraps the PREAD ioctl, which is to download a linear data to a subrange
-  * of a gem buffer object.
-  */
-+void gem_pread(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length)
-+{
-+	igt_assert_eq(__gem_pread(fd, handle, offset, buf, length), 0);
-+}
-+
-+/**
-+ * gem_has_pread
-+ * @fd: open i915 drm file descriptor
-+ *
-+ * Feature test macro to query whether pread ioctl is supported
-+ */
-+bool gem_has_pread(int fd)
-+{
-+	uint32_t handle = gem_create(fd, 4096);
-+	int buf, ret;
-+
-+	ret = __gem_pread(fd, handle, 0, &buf, sizeof(buf));
-+	gem_close(fd, handle);
-+
-+	return ret != EOPNOTSUPP;
-+}
-+
-+/**
-+ * gem_require_pread_pwrite
-+ * @fd: open i915 drm file descriptor
-+ *
-+ * Feature test macro to query whether pread/pwrite ioctls are supported
-+ * and skip if they are not
-+ */
-+void gem_require_pread_pwrite(int fd)
-+{
-+	igt_require(gem_has_pread(fd) && gem_has_pwrite(fd));
-+}
-+
-+static bool is_cache_coherent(int fd, uint32_t handle)
-+{
-+	return gem_get_caching(fd, handle) != I915_CACHING_NONE;
-+}
-+
-+static void mmap_write(int fd, uint32_t handle, uint64_t offset,
-+		       const void *buf, uint64_t length)
-+{
-+	void *map = NULL;
-+
-+	if (is_cache_coherent(fd, handle)) {
-+		/* offset arg for mmap functions must be 0 */
-+		map = __gem_mmap__cpu_coherent(fd, handle, 0, offset + length,
-+					       PROT_READ | PROT_WRITE);
-+		if (map)
-+			gem_set_domain(fd, handle,
-+				       I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
-+	}
-+
-+	if (!map) {
-+		map = __gem_mmap_offset__wc(fd, handle, 0, offset + length,
-+					    PROT_READ | PROT_WRITE);
-+		if (!map)
-+			map = gem_mmap__wc(fd, handle, 0, offset + length,
-+					   PROT_READ | PROT_WRITE);
-+		if (map)
-+			gem_set_domain(fd, handle,
-+				       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
-+	}
-+
-+	igt_assert(map);
-+	memcpy(map + offset, buf, length);
-+	munmap(map, offset + length);
-+}
-+
-+/**
-+ * gem_write:
-+ * @fd: open i915 drm file descriptor
-+ * @handle: gem buffer object handle
-+ * @offset: offset within the buffer of the subrange
-+ * @buf: pointer to the data to write into the buffer
-+ * @length: size of the subrange
-+ *
-+ * General purpose method to write to a gem object. Uses the pwrite ioctl
-+ * when it is available, else it uses mmap + memcpy for the write.
-+ */
-+void gem_write(int fd, uint32_t handle, uint64_t offset, const void *buf, uint64_t length)
-+{
-+	int ret = __gem_pwrite(fd, handle, offset, buf, length);
-+
-+	igt_assert(ret == 0 || ret == EOPNOTSUPP);
-+
-+	if (ret == EOPNOTSUPP)
-+		mmap_write(fd, handle, offset, buf, length);
-+}
-+
-+static void mmap_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length)
-+{
-+	void *map = NULL;
-+
-+	if (gem_has_llc(fd) || is_cache_coherent(fd, handle)) {
-+		/* offset arg for mmap functions must be 0 */
-+		map = __gem_mmap__cpu_coherent(fd, handle, 0,
-+					       offset + length, PROT_READ);
-+		if (map)
-+			gem_set_domain(fd, handle, I915_GEM_DOMAIN_CPU, 0);
-+	}
-+
-+	if (!map) {
-+		map = __gem_mmap_offset__wc(fd, handle, 0, offset + length,
-+					    PROT_READ);
-+		if (!map)
-+			map = gem_mmap__wc(fd, handle, 0, offset + length,
-+					   PROT_READ);
-+		if (map)
-+			gem_set_domain(fd, handle, I915_GEM_DOMAIN_WC, 0);
-+	}
-+
-+	igt_assert(map);
-+	memcpy(buf, map + offset, length);
-+	munmap(map, offset + length);
-+}
-+
-+/**
-+ * gem_read:
-+ * @fd: open i915 drm file descriptor
-+ * @handle: gem buffer object handle
-+ * @offset: offset within the buffer of the subrange
-+ * @buf: pointer to the data to read into
-+ * @length: size of the subrange
-+ *
-+ * General purpose method to read from a gem object. Uses the pread ioctl
-+ * when it is available, else it uses mmap + memcpy for the read.
-+ */
- void gem_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length)
- {
--	igt_assert_eq(__gem_read(fd, handle, offset, buf, length), 0);
-+	int ret = __gem_pread(fd, handle, offset, buf, length);
-+
-+	igt_assert(ret == 0 || ret == EOPNOTSUPP);
-+
-+	if (ret == EOPNOTSUPP)
-+		mmap_read(fd, handle, offset, buf, length);
- }
+ 		copy_bo(scratch_buf, staging_buf);
+ 		gtt_ptr = __try_gtt_map_first(data, staging_buf, 0);
+@@ -216,7 +216,7 @@ static void test_partial_read_writes(data_t *data)
  
- int __gem_set_domain(int fd, uint32_t handle, uint32_t read, uint32_t write)
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index 870ac8b7b..d6f8027b7 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -67,9 +67,14 @@ uint32_t gem_get_caching(int fd, uint32_t handle);
- uint32_t gem_flink(int fd, uint32_t handle);
- uint32_t gem_open(int fd, uint32_t name);
- void gem_close(int fd, uint32_t handle);
--int __gem_write(int fd, uint32_t handle, uint64_t offset, const void *buf, uint64_t length);
-+int __gem_pwrite(int fd, uint32_t handle, uint64_t offset, const void *buf, uint64_t length);
-+bool gem_has_pwrite(int fd);
-+void gem_pwrite(int fd, uint32_t handle, uint64_t offset,  const void *buf, uint64_t length);
-+int __gem_pread(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length);
-+void gem_pread(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length);
-+bool gem_has_pread(int fd);
-+void gem_require_pread_pwrite(int fd);
- void gem_write(int fd, uint32_t handle, uint64_t offset,  const void *buf, uint64_t length);
--int __gem_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length);
- void gem_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length);
- int __gem_set_domain(int fd, uint32_t handle, uint32_t read, uint32_t write);
- void gem_set_domain(int fd, uint32_t handle, uint32_t read, uint32_t write);
-diff --git a/tests/i915/gem_madvise.c b/tests/i915/gem_madvise.c
-index 54c9befff..c6a4de6a2 100644
---- a/tests/i915/gem_madvise.c
-+++ b/tests/i915/gem_madvise.c
-@@ -154,10 +154,11 @@ dontneed_before_pwrite(void)
- 	uint32_t bbe = MI_BATCH_BUFFER_END;
- 	uint32_t handle;
+ 		/* partial read */
+ 		get_range(&start, &len);
+-		gem_read(data->drm_fd, scratch_buf->handle, start, tmp, len);
++		gem_pread(data->drm_fd, scratch_buf->handle, start, tmp, len);
+ 		for (j = 0; j < len; j++) {
+ 			igt_assert_f(tmp[j] == val,
+ 				     "mismatch in read at %i [%i + %i], got: %i, expected: %i\n",
+@@ -232,7 +232,7 @@ static void test_partial_read_writes(data_t *data)
+ 		memset(tmp, i + 63, BO_SIZE);
  
-+	gem_require_pread_pwrite(fd);
- 	handle = gem_create(fd, OBJECT_SIZE);
- 	gem_madvise(fd, handle, I915_MADV_DONTNEED);
+ 		get_range(&start, &len);
+-		gem_write(data->drm_fd, scratch_buf->handle, start, tmp, len);
++		gem_pwrite(data->drm_fd, scratch_buf->handle, start, tmp, len);
  
--	igt_assert_eq(__gem_write(fd, handle, 0, &bbe, sizeof(bbe)), -EFAULT);
-+	igt_assert_eq(__gem_pwrite(fd, handle, 0, &bbe, sizeof(bbe)), -EFAULT);
+ 		copy_bo(scratch_buf, staging_buf);
+ 		gtt_ptr = __try_gtt_map_first(data, staging_buf, 0);
+@@ -284,6 +284,7 @@ igt_main
+ 		data.drm_fd = drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(data.drm_fd);
+ 		gem_require_blitter(data.drm_fd);
++		gem_require_pread_pwrite(data.drm_fd);
  
- 	close(fd);
- }
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index 268423dcd..72b594229 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -890,6 +890,7 @@ static int test_forbidden_ops(int fd)
- 	uint32_t handle;
- 	void *ptr;
+ 		data.devid = intel_get_drm_devid(data.drm_fd);
+ 		data.bops = buf_ops_create(data.drm_fd);
+diff --git a/tests/i915/gem_pread.c b/tests/i915/gem_pread.c
+index 6d12b8e9f..cb9d1c301 100644
+--- a/tests/i915/gem_pread.c
++++ b/tests/i915/gem_pread.c
+@@ -63,9 +63,9 @@ static void pread_self(int i915)
+ 		uint32_t handle = gem_create(i915, MiB(4));
+ 		void *ptr = (*fn)(i915, handle, 0, MiB(4), PROT_WRITE);
  
-+	gem_require_pread_pwrite(fd);
- 	igt_assert(posix_memalign(&ptr, PAGE_SIZE, PAGE_SIZE) == 0);
- 	gem_userptr(fd, ptr, PAGE_SIZE, 0, userptr_flags, &handle);
+-		gem_read(i915, handle, 0, ptr + MiB(3), MiB(1));
+-		gem_read(i915, handle, MiB(3), ptr, MiB(1));
+-		gem_read(i915, handle, MiB(1), ptr + MiB(1), MiB(2));
++		gem_pread(i915, handle, 0, ptr + MiB(3), MiB(1));
++		gem_pread(i915, handle, MiB(3), ptr, MiB(1));
++		gem_pread(i915, handle, MiB(1), ptr + MiB(1), MiB(2));
  
-@@ -1416,6 +1417,7 @@ static void test_readonly_pwrite(int i915)
- 	 */
- 
- 	igt_require(igt_setup_clflush());
-+	gem_require_pread_pwrite(i915);
- 
- 	sz = 16 << 12;
- 	pages = mmap(NULL, sz, PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
-@@ -1429,7 +1431,7 @@ static void test_readonly_pwrite(int i915)
- 		char data[4096];
- 
- 		memset(data, page, sizeof(data));
--		igt_assert_eq(__gem_write(i915, handle, page << 12, data, sizeof(data)), -EINVAL);
-+		igt_assert_eq(__gem_pwrite(i915, handle, page << 12, data, sizeof(data)), -EINVAL);
- 	}
- 
- 	gem_close(i915, handle);
-diff --git a/tests/i915/gen9_exec_parse.c b/tests/i915/gen9_exec_parse.c
-index 8cd82f568..ecadb78b5 100644
---- a/tests/i915/gen9_exec_parse.c
-+++ b/tests/i915/gen9_exec_parse.c
-@@ -670,7 +670,7 @@ static void test_invalid_length(const int i915, const uint32_t handle)
- 		   lri_ok, 4096,
- 		   0);
- 
--	igt_assert_eq(__gem_write(i915, handle, 0, noops, 4097), -EINVAL);
-+	igt_assert_eq(__gem_pwrite(i915, handle, 0, noops, 4097), -EINVAL);
- }
- 
- struct reg {
-@@ -1029,8 +1029,10 @@ igt_main
- 			   -EINVAL);
- 	}
- 
--	igt_subtest("batch-invalid-length")
-+	igt_subtest("batch-invalid-length") {
-+		gem_require_pread_pwrite(i915);
- 		test_invalid_length(i915, handle);
-+	}
- 
- 	igt_subtest("basic-rejected")
- 		test_rejected(i915, handle, false);
-diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-index 38e2026aa..b56eb8091 100644
---- a/tests/prime_vgem.c
-+++ b/tests/prime_vgem.c
-@@ -48,7 +48,7 @@ static void test_read(int vgem, int i915)
- 	handle = prime_fd_to_handle(i915, dmabuf);
- 	close(dmabuf);
- 
--	igt_skip_on_f(__gem_read(i915, handle, 0, &i, sizeof(i)),
-+	igt_skip_on_f(__gem_pread(i915, handle, 0, &i, sizeof(i)),
- 		      "PREAD from dma-buf not supported on this hardware\n");
- 
- 	ptr = vgem_mmap(vgem, &scratch, PROT_WRITE);
-@@ -59,7 +59,7 @@ static void test_read(int vgem, int i915)
- 
- 	for (i = 0; i < 1024; i++) {
- 		uint32_t tmp;
--		gem_read(i915, handle, 4096*i, &tmp, sizeof(tmp));
-+		gem_pread(i915, handle, 4096*i, &tmp, sizeof(tmp));
- 		igt_assert_eq(tmp, i);
- 	}
- 	gem_close(i915, handle);
-@@ -86,7 +86,7 @@ static void test_fence_read(int i915, int vgem)
- 	handle = prime_fd_to_handle(i915, dmabuf);
- 	close(dmabuf);
- 
--	igt_skip_on_f(__gem_read(i915, handle, 0, &i, sizeof(i)),
-+	igt_skip_on_f(__gem_pread(i915, handle, 0, &i, sizeof(i)),
- 		      "PREAD from dma-buf not supported on this hardware\n");
- 
- 	igt_fork(child, 1) {
-@@ -94,14 +94,14 @@ static void test_fence_read(int i915, int vgem)
- 		close(slave[1]);
- 		for (i = 0; i < 1024; i++) {
- 			uint32_t tmp;
--			gem_read(i915, handle, 4096*i, &tmp, sizeof(tmp));
-+			gem_pread(i915, handle, 4096*i, &tmp, sizeof(tmp));
- 			igt_assert_eq(tmp, 0);
- 		}
- 		write(master[1], &child, sizeof(child));
- 		read(slave[0], &child, sizeof(child));
- 		for (i = 0; i < 1024; i++) {
- 			uint32_t tmp;
--			gem_read(i915, handle, 4096*i, &tmp, sizeof(tmp));
-+			gem_pread(i915, handle, 4096*i, &tmp, sizeof(tmp));
- 			igt_assert_eq(tmp, i);
- 		}
+ 		munmap(ptr, MiB(4));
  		gem_close(i915, handle);
-@@ -272,14 +272,14 @@ static void test_write(int vgem, int i915)
- 	handle = prime_fd_to_handle(i915, dmabuf);
- 	close(dmabuf);
+@@ -80,7 +80,7 @@ static void pread_self(int i915)
+ static void do_gem_read(int fd, uint32_t handle, void *buf, int len, int loops)
+ {
+ 	while (loops--)
+-		gem_read(fd, handle, 0, buf, len);
++		gem_pread(fd, handle, 0, buf, len);
+ }
  
--	igt_skip_on_f(__gem_write(i915, handle, 0, &i, sizeof(i)),
-+	igt_skip_on_f(__gem_pwrite(i915, handle, 0, &i, sizeof(i)),
- 		      "PWRITE to dma-buf not supported on this hardware\n");
+ static double elapsed(const struct timeval *start,
+@@ -149,6 +149,7 @@ igt_main_args("s:", NULL, help_str, opt_handler, NULL)
  
- 	ptr = vgem_mmap(vgem, &scratch, PROT_READ);
- 	gem_close(vgem, scratch.handle);
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_INTEL);
++		gem_require_pread_pwrite(fd);
  
- 	for (i = 0; i < 1024; i++)
--		gem_write(i915, handle, 4096*i, &i, sizeof(i));
-+		gem_pwrite(i915, handle, 4096*i, &i, sizeof(i));
- 	gem_close(i915, handle);
+ 		dst = gem_create(fd, object_size);
+ 		src = malloc(object_size);
+diff --git a/tests/i915/gem_pread_after_blit.c b/tests/i915/gem_pread_after_blit.c
+index 81454c930..5c99d0887 100644
+--- a/tests/i915/gem_pread_after_blit.c
++++ b/tests/i915/gem_pread_after_blit.c
+@@ -212,6 +212,7 @@ igt_main
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_INTEL);
+ 		igt_require_gem(fd);
++		gem_require_pread_pwrite(fd);
  
- 	for (i = 0; i < 1024; i++)
+ 		bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
+ 		drm_intel_bufmgr_gem_enable_reuse(bufmgr);
+diff --git a/tests/i915/gem_pwrite.c b/tests/i915/gem_pwrite.c
+index e491263fd..3bb1c2d83 100644
+--- a/tests/i915/gem_pwrite.c
++++ b/tests/i915/gem_pwrite.c
+@@ -66,9 +66,9 @@ static void pwrite_self(int i915)
+ 		uint32_t handle = gem_create(i915, MiB(4));
+ 		void *ptr = (*fn)(i915, handle, 0, MiB(4), PROT_READ);
+ 
+-		gem_write(i915, handle, 0, ptr + MiB(3), MiB(1));
+-		gem_write(i915, handle, MiB(3), ptr, MiB(1));
+-		gem_write(i915, handle, MiB(1), ptr + MiB(1), MiB(2));
++		gem_pwrite(i915, handle, 0, ptr + MiB(3), MiB(1));
++		gem_pwrite(i915, handle, MiB(3), ptr, MiB(1));
++		gem_pwrite(i915, handle, MiB(1), ptr + MiB(1), MiB(2));
+ 
+ 		munmap(ptr, MiB(4));
+ 		gem_close(i915, handle);
+@@ -86,7 +86,7 @@ static void pwrite_self(int i915)
+ static void do_gem_write(int fd, uint32_t handle, void *buf, int len, int loops)
+ {
+ 	while (loops--)
+-		gem_write(fd, handle, 0, buf, len);
++		gem_pwrite(fd, handle, 0, buf, len);
+ }
+ 
+ static double elapsed(const struct timeval *start,
+@@ -145,8 +145,8 @@ static void test_big_cpu(int fd, int scale, unsigned flags)
+ 			int suboffset = (offset >> 12) % (4096 - sizeof(offset));
+ 			uint64_t tmp;
+ 
+-			gem_write(fd, handle, offset + suboffset, &offset, sizeof(offset));
+-			gem_read(fd, handle, offset + suboffset, &tmp, sizeof(tmp));
++			gem_pwrite(fd, handle, offset + suboffset, &offset, sizeof(offset));
++			gem_pread(fd, handle, offset + suboffset, &tmp, sizeof(tmp));
+ 			igt_assert_eq_u64(offset, tmp);
+ 		}
+ 	}
+@@ -157,8 +157,8 @@ static void test_big_cpu(int fd, int scale, unsigned flags)
+ 			int suboffset = 4096 - (offset % (4096 - sizeof(offset)));
+ 			uint64_t tmp;
+ 
+-			gem_write(fd, handle, (offset<<12) + suboffset, &offset, sizeof(offset));
+-			gem_read(fd, handle, (offset<<12) + suboffset, &tmp, sizeof(tmp));
++			gem_pwrite(fd, handle, (offset<<12) + suboffset, &offset, sizeof(offset));
++			gem_pread(fd, handle, (offset<<12) + suboffset, &tmp, sizeof(tmp));
+ 			igt_assert_eq_u64(offset, tmp);
+ 		}
+ 	}
+@@ -169,8 +169,8 @@ static void test_big_cpu(int fd, int scale, unsigned flags)
+ 			uint64_t tmp = rand() % (size >> 12);
+ 			int suboffset = tmp % (4096 - sizeof(offset));
+ 
+-			gem_write(fd, handle, (tmp << 12) + suboffset, &offset, sizeof(offset));
+-			gem_read(fd, handle, (tmp << 12) + suboffset, &tmp, sizeof(tmp));
++			gem_pwrite(fd, handle, (tmp << 12) + suboffset, &offset, sizeof(offset));
++			gem_pread(fd, handle, (tmp << 12) + suboffset, &tmp, sizeof(tmp));
+ 			igt_assert_eq_u64(offset, tmp);
+ 		}
+ 	}
+@@ -263,7 +263,7 @@ static void test_random(int fd)
+ 		uint64_t a = hars_petruska_f54_1_random64(&prng) % (size / sizeof(uint64_t));
+ 		uint64_t x = hars_petruska_f54_1_random64(&prng);
+ 
+-		gem_write(fd, handle, a * sizeof(x), &x, sizeof(x));
++		gem_pwrite(fd, handle, a * sizeof(x), &x, sizeof(x));
+ 
+ 		gem_set_domain(fd, handle, I915_GEM_DOMAIN_WC, 0);
+ 		igt_assert_eq_u64(map[a], x);
+@@ -317,6 +317,7 @@ igt_main_args("s:", NULL, help_str, opt_handler, NULL)
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_INTEL);
++		gem_require_pread_pwrite(fd);
+ 
+ 		dst = gem_create(fd, object_size);
+ 		src = malloc(object_size);
+diff --git a/tests/i915/gem_pwrite_snooped.c b/tests/i915/gem_pwrite_snooped.c
+index 4a3395241..25a9f8830 100644
+--- a/tests/i915/gem_pwrite_snooped.c
++++ b/tests/i915/gem_pwrite_snooped.c
+@@ -115,7 +115,7 @@ static void test(int w, int h)
+ 
+ 	gem_set_caching(fd, src->handle, I915_CACHING_CACHED);
+ 
+-	gem_write(fd, src->handle, 0, buf, object_size);
++	gem_pwrite(fd, src->handle, 0, buf, object_size);
+ 
+ 	gem_set_caching(fd, src->handle, I915_CACHING_NONE);
+ 
+@@ -132,6 +132,7 @@ igt_simple_main
+ 	fd = drm_open_driver(DRIVER_INTEL);
+ 	igt_require_gem(fd);
+ 	gem_require_blitter(fd);
++	gem_require_pread_pwrite(fd);
+ 
+ 	devid = intel_get_drm_devid(fd);
+ 	bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
+diff --git a/tests/i915/gem_set_tiling_vs_pwrite.c b/tests/i915/gem_set_tiling_vs_pwrite.c
+index 302ea24b6..dd2c7aeb9 100644
+--- a/tests/i915/gem_set_tiling_vs_pwrite.c
++++ b/tests/i915/gem_set_tiling_vs_pwrite.c
+@@ -55,6 +55,7 @@ igt_simple_main
+ 
+ 	fd = drm_open_driver(DRIVER_INTEL);
+ 	igt_require(gem_available_fences(fd) > 0);
++	gem_require_pread_pwrite(fd);
+ 
+ 	for (int i = 0; i < OBJECT_SIZE/4; i++)
+ 		data[i] = i;
+@@ -72,7 +73,7 @@ igt_simple_main
+ 	}
+ 
+ 	igt_info("testing pwrite on tiled buffer\n");
+-	gem_write(fd, handle, 0, data, OBJECT_SIZE);
++	gem_pwrite(fd, handle, 0, data, OBJECT_SIZE);
+ 	memset(data, 0, OBJECT_SIZE);
+ 	gem_read(fd, handle, 0, data, OBJECT_SIZE);
+ 	for (int i = 0; i < OBJECT_SIZE/4; i++)
+@@ -88,7 +89,7 @@ igt_simple_main
+ 	gem_set_tiling(fd, handle, I915_TILING_NONE, 0);
+ 
+ 	igt_info("testing pwrite on untiled, but still fenced buffer\n");
+-	gem_write(fd, handle, 0, data, OBJECT_SIZE);
++	gem_pwrite(fd, handle, 0, data, OBJECT_SIZE);
+ 	memset(data, 0, OBJECT_SIZE);
+ 	gem_read(fd, handle, 0, data, OBJECT_SIZE);
+ 	for (int i = 0; i < OBJECT_SIZE/4; i++)
+diff --git a/tests/i915/gem_tiled_partial_pwrite_pread.c b/tests/i915/gem_tiled_partial_pwrite_pread.c
+index 7de5358b2..0c4545990 100644
+--- a/tests/i915/gem_tiled_partial_pwrite_pread.c
++++ b/tests/i915/gem_tiled_partial_pwrite_pread.c
+@@ -270,6 +270,7 @@ igt_main
+ 		igt_require_gem(fd);
+ 		gem_require_mappable_ggtt(fd);
+ 		gem_require_blitter(fd);
++		gem_require_pread_pwrite(fd);
+ 
+ 		bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
+ 		//drm_intel_bufmgr_gem_enable_reuse(bufmgr);
+diff --git a/tests/i915/gem_tiled_pread_basic.c b/tests/i915/gem_tiled_pread_basic.c
+index 7cb644104..8474945f7 100644
+--- a/tests/i915/gem_tiled_pread_basic.c
++++ b/tests/i915/gem_tiled_pread_basic.c
+@@ -127,6 +127,7 @@ igt_simple_main
+ 	igt_require(gem_available_fences(fd) > 0);
+ 	handle = create_bo(fd);
+ 	igt_require(gem_get_tiling(fd, handle, &tiling, &swizzle));
++	gem_require_pread_pwrite(fd);
+ 
+ 	devid = intel_get_drm_devid(fd);
+ 
+@@ -160,7 +161,7 @@ igt_simple_main
+ 			len = size;
+ 		}
+ 
+-		gem_read(fd, handle, offset, linear, len);
++		gem_pread(fd, handle, offset, linear, len);
+ 
+ 		/* Translate from offsets in the read buffer to the swizzled
+ 		 * address that it corresponds to.  This is the opposite of
+diff --git a/tests/i915/gem_tiled_pread_pwrite.c b/tests/i915/gem_tiled_pread_pwrite.c
+index f58048faa..45e172ab2 100644
+--- a/tests/i915/gem_tiled_pread_pwrite.c
++++ b/tests/i915/gem_tiled_pread_pwrite.c
+@@ -114,6 +114,7 @@ igt_simple_main
+ 	
+ 	fd = drm_open_driver(DRIVER_INTEL);
+ 	igt_require(gem_available_fences(fd) > 0);
++	gem_require_pread_pwrite(fd);
+ 
+ 	count = gem_available_fences(fd) + 1;
+ 	intel_require_memory(2 * count, sizeof(linear), CHECK_RAM);
+@@ -128,10 +129,10 @@ igt_simple_main
+ 		handle = create_bo_and_fill(fd);
+ 		igt_require(gem_get_tiling(fd, handle, &tiling, &swizzle));
+ 
+-		gem_read(fd, handle, 0, linear, sizeof(linear));
++		gem_pread(fd, handle, 0, linear, sizeof(linear));
+ 
+ 		handle_target = create_bo(fd);
+-		gem_write(fd, handle_target, 0, linear, sizeof(linear));
++		gem_pwrite(fd, handle_target, 0, linear, sizeof(linear));
+ 
+ 		/* Check the target bo's contents. */
+ 		data = gem_mmap__gtt(fd, handle_target, sizeof(linear), PROT_READ);
 -- 
 2.27.0.112.g101b3204f3
 
