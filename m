@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from m43-7.mailgun.net (m43-7.mailgun.net [69.72.43.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 513E38981D
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Sep 2020 01:00:53 +0000 (UTC)
-From: Abhinav Kumar <abhinavk@codeaurora.org>
-Date: Thu,  3 Sep 2020 17:54:38 -0700
-Message-Id: <20200904005439.17146-5-abhinavk@codeaurora.org>
-In-Reply-To: <20200904005439.17146-1-abhinavk@codeaurora.org>
-References: <20200904005439.17146-1-abhinavk@codeaurora.org>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 4/5] tools: move terminal utility functions
- to a separate file
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 04 Sep 2020 01:20:24 -0000
+Message-ID: <159918242468.8519.1117888713138877495@emeril.freedesktop.org>
+References: <20200904005439.17146-1-abhinavk@codeaurora.org>
+In-Reply-To: <20200904005439.17146-1-abhinavk@codeaurora.org>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIHN1?=
+ =?utf-8?q?pport_for_video_pattern_DP_CTS_for_MSM_chipsets?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,236 +14,200 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0184967095=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: swboyd@chromium.org, khsieh@codeaurora.org, nganji@codeaurora.org, seanpaul@chromium.org, tanmay@codeaurora.org, aravindh@codeaurora.org
+To: Abhinav Kumar <abhinavk@codeaurora.org>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Move the terminal utility functions to a separate file so
-that other modules can use it as well.
+--===============0184967095==
+Content-Type: multipart/alternative;
+ boundary="===============5396384370935026788=="
 
-Signed-off-by: Abhinav Kumar <abhinavk@codeaurora.org>
----
- tools/Makefile.sources       |  1 +
- tools/igt_compliance_utils.c | 82 ++++++++++++++++++++++++++++++++++++
- tools/igt_dp_compliance.h    |  8 ++++
- tools/intel_dp_compliance.c  | 47 ---------------------
- tools/meson.build            |  3 +-
- 5 files changed, 93 insertions(+), 48 deletions(-)
- create mode 100644 tools/igt_compliance_utils.c
+--===============5396384370935026788==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tools/Makefile.sources b/tools/Makefile.sources
-index c28bef2f..47171490 100644
---- a/tools/Makefile.sources
-+++ b/tools/Makefile.sources
-@@ -65,6 +65,7 @@ intel_dp_compliance_SOURCES = \
-         intel_dp_compliance.c \
-         igt_dp_compliance.h \
-         igt_dp_compliance_hotplug.c \
-+        igt_compliance_utils.c \
-         $(NULL)
- 
- amd_hdmi_compliance_SOURCES = \
-diff --git a/tools/igt_compliance_utils.c b/tools/igt_compliance_utils.c
-new file mode 100644
-index 00000000..d6a2e4e5
---- /dev/null
-+++ b/tools/igt_compliance_utils.c
-@@ -0,0 +1,82 @@
-+/*
-+ * Copyright (c) 2020, The Linux Foundation. All rights reserved.
-+ * Copyright 2017 Intel Corporation
-+ *   Jesse Barnes <jesse.barnes@intel.com>
-+ *   Manasi Navare <manasi.d.navare@intel.com>
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-+ * IN THE SOFTWARE.
-+ */
-+
-+#include "igt.h"
-+#include <stdio.h>
-+#include <string.h>
-+#include <stdlib.h>
-+#include <signal.h>
-+#include <termios.h>
-+
-+#include <sys/stat.h>
-+
-+#include "igt_dp_compliance.h"
-+
-+static int tio_fd;
-+struct termios saved_tio;
-+
-+void enter_exec_path(char **argv)
-+{
-+	char *exec_path = NULL;
-+	char *pos = NULL;
-+	short len_path = 0;
-+	int ret;
-+
-+	len_path = strlen(argv[0]);
-+	exec_path = (char *) malloc(len_path);
-+
-+	memcpy(exec_path, argv[0], len_path);
-+	pos = strrchr(exec_path, '/');
-+	if (pos != NULL)
-+		*(pos+1) = '\0';
-+
-+	ret = chdir(exec_path);
-+	igt_assert_eq(ret, 0);
-+	free(exec_path);
-+}
-+
-+static void restore_termio_mode(int sig)
-+{
-+	tcsetattr(tio_fd, TCSANOW, &saved_tio);
-+	close(tio_fd);
-+}
-+
-+void set_termio_mode(void)
-+{
-+	struct termios tio;
-+
-+	/* don't attempt to set terminal attributes if not in the foreground
-+	 * process group
-+	 */
-+	if (getpgrp() != tcgetpgrp(STDOUT_FILENO))
-+		return;
-+
-+	tio_fd = dup(STDIN_FILENO);
-+	tcgetattr(tio_fd, &saved_tio);
-+	igt_install_exit_handler(restore_termio_mode);
-+	tio = saved_tio;
-+	tio.c_lflag &= ~(ICANON | ECHO);
-+	tcsetattr(tio_fd, TCSANOW, &tio);
-+}
-diff --git a/tools/igt_dp_compliance.h b/tools/igt_dp_compliance.h
-index bf2b0701..5b168803 100644
---- a/tools/igt_dp_compliance.h
-+++ b/tools/igt_dp_compliance.h
-@@ -22,6 +22,9 @@
-  * IN THE SOFTWARE.
-  */
- 
-+#ifndef __IGT_DP_COMPLIANCE_H__
-+#define __IGT_DP_COMPLIANCE_H__
-+
- #include <stdio.h>
- #include <string.h>
- #include <stdlib.h>
-@@ -32,5 +35,10 @@ extern int drm_fd;
- gboolean igt_dp_compliance_setup_hotplug(void);
- void igt_dp_compliance_cleanup_hotplug(void);
- 
-+void enter_exec_path(char **argv);
-+void set_termio_mode(void);
-+
- /* called by the hotplug code */
- int update_display(int mode, bool is_compliance_test);
-+
-+#endif /* __IGT_DP_COMPLIANCE_H__ */
-diff --git a/tools/intel_dp_compliance.c b/tools/intel_dp_compliance.c
-index c8c5c841..217a1247 100644
---- a/tools/intel_dp_compliance.c
-+++ b/tools/intel_dp_compliance.c
-@@ -172,9 +172,6 @@ uint16_t hdisplay;
- uint16_t vdisplay;
- uint8_t bitdepth;
- 
--static int tio_fd;
--struct termios saved_tio;
--
- drmModeRes *resources;
- int drm_fd, modes, gen;
- uint64_t tiling = LOCAL_DRM_FORMAT_MOD_NONE;
-@@ -825,50 +822,6 @@ static gboolean input_event(GIOChannel *source, GIOCondition condition,
- 	return TRUE;
- }
- 
--static void enter_exec_path(char **argv)
--{
--	char *exec_path = NULL;
--	char *pos = NULL;
--	short len_path = 0;
--	int ret;
--
--	len_path = strlen(argv[0]);
--	exec_path = (char *) malloc(len_path);
--
--	memcpy(exec_path, argv[0], len_path);
--	pos = strrchr(exec_path, '/');
--	if (pos != NULL)
--		*(pos+1) = '\0';
--
--	ret = chdir(exec_path);
--	igt_assert_eq(ret, 0);
--	free(exec_path);
--}
--
--static void restore_termio_mode(int sig)
--{
--	tcsetattr(tio_fd, TCSANOW, &saved_tio);
--	close(tio_fd);
--}
--
--static void set_termio_mode(void)
--{
--	struct termios tio;
--
--	/* don't attempt to set terminal attributes if not in the foreground
--	 * process group
--	 */
--	if (getpgrp() != tcgetpgrp(STDOUT_FILENO))
--		return;
--
--	tio_fd = dup(STDIN_FILENO);
--	tcgetattr(tio_fd, &saved_tio);
--	igt_install_exit_handler(restore_termio_mode);
--	tio = saved_tio;
--	tio.c_lflag &= ~(ICANON | ECHO);
--	tcsetattr(tio_fd, TCSANOW, &tio);
--}
--
- int main(int argc, char **argv)
- {
- 	int c;
-diff --git a/tools/meson.build b/tools/meson.build
-index 05f2a172..56877fb3 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -60,7 +60,8 @@ endforeach
- if libudev.found()
- 	intel_dp_compliance_src = [
- 		'intel_dp_compliance.c',
--		'igt_dp_compliance_hotplug.c'
-+		'igt_dp_compliance_hotplug.c',
-+		'igt_compliance_utils.c'
- 	]
- 	executable('intel_dp_compliance', sources : intel_dp_compliance_src,
- 		   dependencies : [tool_deps, libudev],
--- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-a Linux Foundation Collaborative Project
+== Series Details ==
+
+Series: Add support for video pattern DP CTS for MSM chipsets
+URL   : https://patchwork.freedesktop.org/series/81311/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8961 -> IGTPW_4950
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4950/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4950 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-bsw-kefka:       [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8961/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4950/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@i915_selftest@live@execlists:
+    - fi-icl-y:           [PASS][3] -> [INCOMPLETE][4] ([i915#2276])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8961/fi-icl-y/igt@i915_selftest@live@execlists.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4950/fi-icl-y/igt@i915_selftest@live@execlists.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - fi-icl-u2:          [PASS][5] -> [DMESG-WARN][6] ([i915#1982]) +2 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8961/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4950/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-kbl-guc:         [DMESG-FAIL][7] ([i915#2203]) -> [SKIP][8] ([fdo#109271])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8961/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4950/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2203]: https://gitlab.freedesktop.org/drm/intel/issues/2203
+  [i915#2276]: https://gitlab.freedesktop.org/drm/intel/issues/2276
+  [i915#2417]: https://gitlab.freedesktop.org/drm/intel/issues/2417
+
+
+Participating hosts (36 -> 33)
+------------------------------
+
+  Missing    (3): fi-byt-clapper fi-byt-squawks fi-bsw-cyan 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5777 -> IGTPW_4950
+
+  CI-20190529: 20190529
+  CI_DRM_8961: a9f0150a8c09b7ea3802c923c599f3a1e4d27144 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4950: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4950/index.html
+  IGT_5777: c240b5c00d58860e376b012cc3c883c17ae63f37 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4950/index.html
+
+--===============5396384370935026788==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add support for video pattern DP CTS for MSM chipsets</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/81311/">https://patchwork.freedesktop.org/series/81311/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4950/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4950/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_8961 -&gt; IGTPW_4950</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4950/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_4950 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8961/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4950/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8961/fi-icl-y/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4950/fi-icl-y/igt@i915_selftest@live@execlists.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2276">i915#2276</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8961/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4950/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) +2 similar issues</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_pm_rpm@basic-rte:<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8961/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4950/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (36 -&gt; 33)</h2>
+<p>Missing    (3): fi-byt-clapper fi-byt-squawks fi-bsw-cyan </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5777 -&gt; IGTPW_4950</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_8961: a9f0150a8c09b7ea3802c923c599f3a1e4d27144 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_4950: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4950/index.html<br />
+  IGT_5777: c240b5c00d58860e376b012cc3c883c17ae63f37 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============5396384370935026788==--
+
+--===============0184967095==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0184967095==--
