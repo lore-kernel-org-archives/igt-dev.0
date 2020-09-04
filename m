@@ -1,11 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Fri, 4 Sep 2020 12:09:18 +0100
-From: Liviu Dudau <Liviu.Dudau@arm.com>
-Message-ID: <20200904110918.GM159988@e110455-lin.cambridge.arm.com>
+Date: Fri, 4 Sep 2020 14:56:05 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200904115605.GW7444@platvala-desk.ger.corp.intel.com>
 References: <20200830174410.256533-1-rodrigosiqueiramelo@gmail.com>
+ <20200904110918.GM159988@e110455-lin.cambridge.arm.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200830174410.256533-1-rodrigosiqueiramelo@gmail.com>
+In-Reply-To: <20200904110918.GM159988@e110455-lin.cambridge.arm.com>
 Subject: Re: [igt-dev] [PATCH i-g-t v9 0/4] Add support for testing
  writeback connectors
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -15,63 +16,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Cc: Petri Latvala <petri.latvala@intel.com>, Simon Ser <contact@emersion.fr>, intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org, Maxime Ripard <maxime@cerno.tech>, Daniel Vetter <daniel@ffwll.ch>, nd <nd@arm.com>, Brian Starkey <Brian.Starkey@arm.com>
+To: Liviu Dudau <Liviu.Dudau@arm.com>
+Cc: Simon Ser <contact@emersion.fr>, intel-gfx@lists.freedesktop.org, igt-dev@lists.freedesktop.org, Maxime Ripard <maxime@cerno.tech>, Daniel Vetter <daniel@ffwll.ch>, nd <nd@arm.com>, Brian Starkey <Brian.Starkey@arm.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gU3VuLCBBdWcgMzAsIDIwMjAgYXQgMDE6NDQ6MDZQTSAtMDQwMCwgUm9kcmlnbyBTaXF1ZWly
-YSB3cm90ZToKPiBIaSwKCkhpLAoKQ2FuIHRoaXMgc2VyaWVzIGJlIG1lcmdlZD8gTmVpdGhlciBt
-ZSBub3IgQnJpYW4gbWFuYWdlZCB0byBnZXQgYWNjZXB0ZWQKaW4gdGhlIGktZy10IGNvbW1pdHRl
-cnMgbGlzdCwgc28gSSBjYW5ub3QgcHVzaCBpdC4KCkJlc3QgcmVnYXJkcywKTGl2aXUKCj4gCj4g
-QSBjb3VwbGUgb2YgbW9udGhzIGFnbyBJIHVwZGF0ZWQgYW5kIHJlLXN1Ym1pdHRlZCBhIHBhdGNo
-c2V0IG1hZGUgYnkKPiBCcmlhbiBTdGFya2V5IGFuZCBMaXZpdSBEdWRhdSBmb3IgYWRkaW5nIGEg
-d3JpdGViYWNrIGNvbm5lY3RvcnMgdGVzdCB0bwo+IElHVC4gSXQgaXMgaW1wb3J0YW50IHRvIGhp
-Z2hsaWdodCB0aGF0IERSTSBhbHJlYWR5IGhhdmUgd3JpdGViYWNrCj4gY29ubmVjdG9ycyBzdXBw
-b3J0LCB3aGljaCBpcyBhIHdheSB0byBleHBvc2UgaW4gRFJNIHRoZSBoYXJkd2FyZQo+IGZ1bmN0
-aW9uYWxpdHkgZnJvbSBkaXNwbGF5IGVuZ2luZXMgdGhhdCBhbGxvd3Mgd3JpdGluZyBiYWNrIGlu
-dG8gbWVtb3J5Cj4gdGhlIHJlc3VsdCBvZiBERSdzIGNvbXBvc2l0aW9uIG9mIHN1cHBvcnRlZCBw
-bGFuZXMuCj4gCj4gQWZ0ZXIgSSByZXN1Ym1pdHRlZCB0aGUgcGF0Y2hzZXQsIFNpbW9uIFNlciBw
-cm92aWRlcyBhIGxvbmcgYW5kIGRldGFpbGVkCj4gcmV2aWV3IGZvciBhbGwgb2YgdGhlIHBhdGNo
-ZXMgKHRoYW5rcyBTaW1vbikuIEFkZGl0aW9uYWxseSwgTWF4aW1lCj4gUmlwYXJkIHRlc3RlZCB0
-aGUgcHJldmlvdXMgc2VyaWVzIGluIGFuIEFSTTMyIGFyY2hpdGVjdHVyZSBhbmQgcHJvdmlkZWQK
-PiBoaXMgZmVlZGJhY2sgZm9yIG1ha2luZyB0aGlzIHBhdGNoc2V0IHBvcnRhYmxlICh0aGFua3Mg
-TWF4aW1lKS4gSQo+IGZpbmFsbHkgaGFkIHRpbWUgdG8gZ28gdGhyb3VnaCBhbGwgdGhlIGRldGFp
-bHMgYW5kIHByZXBhcmUgdGhpcyBuZXcKPiB2ZXJzaW9uLiBGb2xsb3dzIHNvbWUgbm90ZXM6Cj4g
-Cj4gMS4gUGF0Y2hzZXQgYXV0aG9yCj4gCj4gQnJpYW4gU3RhcmtleSBpcyB0aGUgb3JpZ2luYWwg
-YXV0aG9yIG9mIHRoaXMgcGF0Y2hzZXQsIGFuZCBJJ20ganVzdAo+IHRyeWluZyB0byB1cHN0cmVh
-bSBoaXMgY2hhbmdlcy4gTm90ZSB0aGF0IGR1cmluZyB0aGlzIHBhdGNoIHN1Ym1pc3Npb24sCj4g
-dGhlIG1haWwgc2VydmVyIGZyb20gZ29vZ2xlIGdvaW5nIHRvIG92ZXJ3cml0ZSBCcmlhbidzIG1h
-aWwgYnkgbWluZTsKPiB0aGlzIGhhcHBlbnMgb24gdGhlIG1haWwgc2VydmVyIHNpZGUgZm9yIGF2
-b2lkaW5nIG1hbGljaW91cyB1c2VycyB0bwo+IHNlbmQgZW1haWxzIGFzIHNvbWVvbmUgZWxzZS4g
-Tm90ZSB0aGF0IEkgY291bGQgc3BlbmQgdGltZSBmaWd1cmluZyBvdXQKPiBob3cgdG8gZml4IGl0
-LCBidXQgSSB0aGluayB0aGlzIGlzIG5vdCB3b3J0aCBpdCBzaW5jZSBJIGNhbiBmaXggaXQgZHVy
-aW5nCj4gdGhlIG1lcmdlIHByb2Nlc3MgKGlmIGl0IGdvdCBhY2NlcHRlZCkuCj4gCj4gMi4gRHJv
-cCB0aGUgY2xvbmUgY29tbWl0cyBmcm9tIHRoZSBzZXJpZXMKPiAKPiBBZnRlciBTaW1vbidzIHJl
-dmlldywgd2UgZGVjaWRlZCB0byBkcm9wIHRoZSBsYXN0IHR3byBwYXRjaGVzIG9mIHRoZQo+IG9y
-aWdpbmFsIHNlcmllcyBzaW5jZSBpdCB3YXMgcmVsYXRlZCB0byBjbG9uaW5nIG91dHB1dCBhbmQg
-VktNUyBkb2VzCj4gbm90IHN1cHBvcnQgaXQgeWV0LiBIb3dldmVyLCBhZnRlciB3ZSBmaW5pc2gg
-dGhpcyBzZXJpZXMsIEkgY2FuIHRyeQo+IHRvIHRha2UgYSBsb29rIGF0IHRoaXMgZmVhdHVyZSBv
-ciBtYXliZSBwcm9wb3NlIGl0IGFzIGEgR1NvQy9PdXRyZWFjaHkKPiBwcm9qZWN0Lgo+IAo+IE1v
-c3Qgb2YgdGhlIGNoYW5nZXMgaGFwcGVuZWQgaW4gdGhlIHNlY29uZCBwYXRjaC4KPiAKPiAzLiBD
-cm9zcy1wbGF0Zm9ybSBpbXByb3ZlbWVudHMKPiAKPiA0LiBBZGQgdGVzdCBkZXNjcmlwdGlvbiBh
-bmQgcmVtb3ZlIHNvbWUgdW5uZWNlc3NhcnkgY29kZQo+IAo+IFRoYW5rcwo+IAo+IEJyaWFuIFN0
-YXJrZXkgKDQpOgo+ICAgbGliL2lndF9rbXM6IEFkZCB3cml0ZWJhY2sgc3VwcG9ydAo+ICAga21z
-X3dyaXRlYmFjazogQWRkIGluaXRpYWwgd3JpdGViYWNrIHRlc3RzCj4gICBsaWI6IEFkZCBmdW5j
-dGlvbiB0byBoYXNoIGEgZnJhbWVidWZmZXIKPiAgIGttc193cml0ZWJhY2s6IEFkZCB3cml0ZWJh
-Y2stY2hlY2stb3V0cHV0Cj4gCj4gIGxpYi9pZ3RfZmIuYyAgICAgICAgICAgfCAgNjMgKysrKysr
-Cj4gIGxpYi9pZ3RfZmIuaCAgICAgICAgICAgfCAgIDIgKwo+ICBsaWIvaWd0X2ttcy5jICAgICAg
-ICAgIHwgIDUyICsrKysrCj4gIGxpYi9pZ3Rfa21zLmggICAgICAgICAgfCAgIDYgKwo+ICB0ZXN0
-cy9NYWtlZmlsZS5zb3VyY2VzIHwgICAxICsKPiAgdGVzdHMva21zX3dyaXRlYmFjay5jICB8IDQ1
-MCArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+ICB0ZXN0cy9tZXNv
-bi5idWlsZCAgICAgIHwgICAxICsKPiAgNyBmaWxlcyBjaGFuZ2VkLCA1NzUgaW5zZXJ0aW9ucygr
-KQo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgdGVzdHMva21zX3dyaXRlYmFjay5jCj4gCj4gLS0gCj4g
-Mi4yOC4wCj4gCgotLSAKPT09PT09PT09PT09PT09PT09PT0KfCBJIHdvdWxkIGxpa2UgdG8gfAp8
-IGZpeCB0aGUgd29ybGQsICB8CnwgYnV0IHRoZXkncmUgbm90IHwKfCBnaXZpbmcgbWUgdGhlICAg
-fAogXCBzb3VyY2UgY29kZSEgIC8KICAtLS0tLS0tLS0tLS0tLS0KICAgIMKvXF8o44OEKV8vwq8K
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBt
-YWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5m
-cmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On Fri, Sep 04, 2020 at 12:09:18PM +0100, Liviu Dudau wrote:
+> On Sun, Aug 30, 2020 at 01:44:06PM -0400, Rodrigo Siqueira wrote:
+> > Hi,
+> 
+> Hi,
+> 
+> Can this series be merged?
+
+Thanks for the poke. It's merged now.
+
+> Neither me nor Brian managed to get accepted
+> in the i-g-t committers list, so I cannot push it.
+
+Let's fix that. Please apply in gitlab.
+
+
+-- 
+Petri Latvala
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
