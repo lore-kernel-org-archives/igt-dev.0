@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from m43-7.mailgun.net (m43-7.mailgun.net [69.72.43.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9AB116EA53
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Sep 2020 01:00:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 513E38981D
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Sep 2020 01:00:53 +0000 (UTC)
 From: Abhinav Kumar <abhinavk@codeaurora.org>
-Date: Thu,  3 Sep 2020 17:54:36 -0700
-Message-Id: <20200904005439.17146-3-abhinavk@codeaurora.org>
+Date: Thu,  3 Sep 2020 17:54:38 -0700
+Message-Id: <20200904005439.17146-5-abhinavk@codeaurora.org>
 In-Reply-To: <20200904005439.17146-1-abhinavk@codeaurora.org>
 References: <20200904005439.17146-1-abhinavk@codeaurora.org>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/5] lib/igt_kms: move some of the useful
- dump functions to igt_kms
+Subject: [igt-dev] [PATCH i-g-t 4/5] tools: move terminal utility functions
+ to a separate file
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,130 +17,236 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 Cc: swboyd@chromium.org, khsieh@codeaurora.org, nganji@codeaurora.org, seanpaul@chromium.org, tanmay@codeaurora.org, aravindh@codeaurora.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-U29tZSBvZiB0aGUgZnVuY3Rpb25zIGluc2lkZSB0aGUgaW50ZWxfZHBfY29tcGxpYW5jZSBhcmUK
-Z2VuZXJpYyBhbmQgY2FuIGJlIHVzZWQgYnkgb3RoZXIgbW9kdWxlcyBhcyB3ZWxsLiBNb3ZlIHRo
-ZXNlCnRvIHRoZSBpZ3Rfa21zIGxpYi4KClNpZ25lZC1vZmYtYnk6IEFiaGluYXYgS3VtYXIgPGFi
-aGluYXZrQGNvZGVhdXJvcmEub3JnPgotLS0KIGxpYi9pZ3Rfa21zLmMgICAgICAgICAgICAgICB8
-IDkyICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKIGxpYi9pZ3Rfa21zLmgg
-ICAgICAgICAgICAgICB8ICA1ICsrCiB0b29scy9pbnRlbF9kcF9jb21wbGlhbmNlLmMgfCA5MiAr
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAzIGZpbGVzIGNoYW5nZWQsIDk5
-IGluc2VydGlvbnMoKyksIDkwIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2xpYi9pZ3Rfa21z
-LmMgYi9saWIvaWd0X2ttcy5jCmluZGV4IGY1Nzk3MmYxLi4xMzk5ZDBiZiAxMDA2NDQKLS0tIGEv
-bGliL2lndF9rbXMuYworKysgYi9saWIvaWd0X2ttcy5jCkBAIC0xLDQgKzEsNSBAQAogLyoKKyAq
-IENvcHlyaWdodCAoYykgMjAyMCwgVGhlIExpbnV4IEZvdW5kYXRpb24uIEFsbCByaWdodHMgcmVz
-ZXJ2ZWQuCiAgKiBDb3B5cmlnaHQgwqkgMjAxMyBJbnRlbCBDb3Jwb3JhdGlvbgogICoKICAqIFBl
-cm1pc3Npb24gaXMgaGVyZWJ5IGdyYW50ZWQsIGZyZWUgb2YgY2hhcmdlLCB0byBhbnkgcGVyc29u
-IG9idGFpbmluZyBhCkBAIC00NzI2LDMgKzQ3MjcsOTQgQEAgdWludDMyX3QgaWd0X3JlZHVjZV9m
-b3JtYXQodWludDMyX3QgZm9ybWF0KQogCQlyZXR1cm4gZm9ybWF0OwogCX0KIH0KKwordm9pZCBp
-Z3RfZHVtcF9jb25uZWN0b3JzX2ZkKGludCBkcm1mZCkKK3sKKwlpbnQgaSwgajsKKworCWRybU1v
-ZGVSZXMgKm1vZGVfcmVzb3VyY2VzID0gZHJtTW9kZUdldFJlc291cmNlcyhkcm1mZCk7CisKKwlp
-ZiAoIW1vZGVfcmVzb3VyY2VzKSB7CisJCWlndF93YXJuKCJkcm1Nb2RlR2V0UmVzb3VyY2VzIGZh
-aWxlZDogJXNcbiIsIHN0cmVycm9yKGVycm5vKSk7CisJCXJldHVybjsKKwl9CisKKwlpZ3RfaW5m
-bygiQ29ubmVjdG9yczpcbiIpOworCWlndF9pbmZvKCJpZFx0ZW5jb2Rlclx0c3RhdHVzXHRcdHR5
-cGVcdHNpemUgKG1tKVx0bW9kZXNcbiIpOworCWZvciAoaSA9IDA7IGkgPCBtb2RlX3Jlc291cmNl
-cy0+Y291bnRfY29ubmVjdG9yczsgaSsrKSB7CisJCWRybU1vZGVDb25uZWN0b3IgKmNvbm5lY3Rv
-cjsKKworCQljb25uZWN0b3IgPSBkcm1Nb2RlR2V0Q29ubmVjdG9yQ3VycmVudChkcm1mZCwKKwkJ
-CQltb2RlX3Jlc291cmNlcy0+Y29ubmVjdG9yc1tpXSk7CisJCWlmICghY29ubmVjdG9yKSB7CisJ
-CQlpZ3Rfd2FybigiQ291bGQgbm90IGdldCBjb25uZWN0b3IgJWk6ICVzXG4iLAorCQkJCSBtb2Rl
-X3Jlc291cmNlcy0+Y29ubmVjdG9yc1tpXSwKKwkJCQkgc3RyZXJyb3IoZXJybm8pKTsKKwkJCWNv
-bnRpbnVlOworCQl9CisKKwkJaWd0X2luZm8oIiVkXHQlZFx0JXNcdCVzXHQlZHglZFx0XHQlZFxu
-IiwKKwkJCSBjb25uZWN0b3ItPmNvbm5lY3Rvcl9pZCwKKwkJCSBjb25uZWN0b3ItPmVuY29kZXJf
-aWQsCisJCQkga21zdGVzdF9jb25uZWN0b3Jfc3RhdHVzX3N0cihjb25uZWN0b3ItPmNvbm5lY3Rp
-b24pLAorCQkJIGttc3Rlc3RfY29ubmVjdG9yX3R5cGVfc3RyKGNvbm5lY3Rvci0+Y29ubmVjdG9y
-X3R5cGUpLAorCQkJIGNvbm5lY3Rvci0+bW1XaWR0aCwKKwkJCSBjb25uZWN0b3ItPm1tSGVpZ2h0
-LAorCQkJIGNvbm5lY3Rvci0+Y291bnRfbW9kZXMpOworCisJCWlmICghY29ubmVjdG9yLT5jb3Vu
-dF9tb2RlcykKKwkJCWNvbnRpbnVlOworCisJCWlndF9pbmZvKCIgIE1vZGVzOlxuIik7CisJCWln
-dF9pbmZvKCIgIG5hbWUgcmVmcmVzaCAoSHopIGhkaXNwIGhzcyBoc2UgaHRvdCB2ZGlzcCAiInZz
-cyB2c2UgdnRvdCBmbGFncyB0eXBlIGNsb2NrXG4iKTsKKwkJZm9yIChqID0gMDsgaiA8IGNvbm5l
-Y3Rvci0+Y291bnRfbW9kZXM7IGorKykgeworCQkJaWd0X2luZm8oIlslZF0iLCBqKTsKKwkJCWtt
-c3Rlc3RfZHVtcF9tb2RlKCZjb25uZWN0b3ItPm1vZGVzW2pdKTsKKwkJfQorCisJCWRybU1vZGVG
-cmVlQ29ubmVjdG9yKGNvbm5lY3Rvcik7CisJfQorCWlndF9pbmZvKCJcbiIpOworCisJZHJtTW9k
-ZUZyZWVSZXNvdXJjZXMobW9kZV9yZXNvdXJjZXMpOworfQorCit2b2lkIGlndF9kdW1wX2NydGNz
-X2ZkKGludCBkcm1mZCkKK3sKKwlpbnQgaTsKKwlkcm1Nb2RlUmVzICptb2RlX3Jlc291cmNlczsK
-KworCW1vZGVfcmVzb3VyY2VzID0gZHJtTW9kZUdldFJlc291cmNlcyhkcm1mZCk7CisJaWYgKCFt
-b2RlX3Jlc291cmNlcykgeworCQlpZ3Rfd2FybigiZHJtTW9kZUdldFJlc291cmNlcyBmYWlsZWQ6
-ICVzXG4iLCBzdHJlcnJvcihlcnJubykpOworCQlyZXR1cm47CisJfQorCisJaWd0X2luZm8oIkNS
-VENzOlxuIik7CisJaWd0X2luZm8oImlkXHRmYlx0cG9zXHRzaXplXG4iKTsKKwlmb3IgKGkgPSAw
-OyBpIDwgbW9kZV9yZXNvdXJjZXMtPmNvdW50X2NydGNzOyBpKyspIHsKKwkJZHJtTW9kZUNydGMg
-KmNydGM7CisKKwkJY3J0YyA9IGRybU1vZGVHZXRDcnRjKGRybWZkLCBtb2RlX3Jlc291cmNlcy0+
-Y3J0Y3NbaV0pOworCQlpZiAoIWNydGMpIHsKKwkJCWlndF93YXJuKCJDb3VsZCBub3QgZ2V0IGNy
-dGMgJWk6ICVzXG4iLAorCQkJCQltb2RlX3Jlc291cmNlcy0+Y3J0Y3NbaV0sCisJCQkJCXN0cmVy
-cm9yKGVycm5vKSk7CisJCQljb250aW51ZTsKKwkJfQorCQlpZ3RfaW5mbygiJWRcdCVkXHQoJWQs
-JWQpXHQoJWR4JWQpXG4iLAorCQkJIGNydGMtPmNydGNfaWQsCisJCQkgY3J0Yy0+YnVmZmVyX2lk
-LAorCQkJIGNydGMtPngsCisJCQkgY3J0Yy0+eSwKKwkJCSBjcnRjLT53aWR0aCwKKwkJCSBjcnRj
-LT5oZWlnaHQpOworCisJCWttc3Rlc3RfZHVtcF9tb2RlKCZjcnRjLT5tb2RlKTsKKworCQlkcm1N
-b2RlRnJlZUNydGMoY3J0Yyk7CisJfQorCWlndF9pbmZvKCJcbiIpOworCisJZHJtTW9kZUZyZWVS
-ZXNvdXJjZXMobW9kZV9yZXNvdXJjZXMpOworfQpkaWZmIC0tZ2l0IGEvbGliL2lndF9rbXMuaCBi
-L2xpYi9pZ3Rfa21zLmgKaW5kZXggMjZkYzlmNWYuLjA0NjgzMTRmIDEwMDY0NAotLS0gYS9saWIv
-aWd0X2ttcy5oCisrKyBiL2xpYi9pZ3Rfa21zLmgKQEAgLTEsNCArMSw1IEBACiAvKgorICogQ29w
-eXJpZ2h0IChjKSAyMDIwLCBUaGUgTGludXggRm91bmRhdGlvbi4gQWxsIHJpZ2h0cyByZXNlcnZl
-ZC4KICAqIENvcHlyaWdodCDCqSAyMDEzIEludGVsIENvcnBvcmF0aW9uCiAgKgogICogUGVybWlz
-c2lvbiBpcyBoZXJlYnkgZ3JhbnRlZCwgZnJlZSBvZiBjaGFyZ2UsIHRvIGFueSBwZXJzb24gb2J0
-YWluaW5nIGEKQEAgLTg2OCw2ICs4NjksNyBAQCBpbnQgaWd0X2Nvbm5lY3Rvcl9zeXNmc19vcGVu
-KGludCBkcm1fZmQsCiAJCQkgICAgIGRybU1vZGVDb25uZWN0b3IgKmNvbm5lY3Rvcik7CiB1aW50
-MzJfdCBpZ3RfcmVkdWNlX2Zvcm1hdCh1aW50MzJfdCBmb3JtYXQpOwogCisKIC8qCiAgKiBpZ3Rf
-cmVxdWlyZV9waXBlOgogICogQGRpc3BsYXk6IHBvaW50ZXIgdG8gaWd0X2Rpc3BsYXlfdApAQCAt
-ODgxLDQgKzg4Myw3IEBAIHVpbnQzMl90IGlndF9yZWR1Y2VfZm9ybWF0KHVpbnQzMl90IGZvcm1h
-dCk7CiB2b2lkIGlndF9yZXF1aXJlX3BpcGUoaWd0X2Rpc3BsYXlfdCAqZGlzcGxheSwKIAkJZW51
-bSBwaXBlIHBpcGUpOwogCit2b2lkIGlndF9kdW1wX2Nvbm5lY3RvcnNfZmQoaW50IGRybWZkKTsK
-K3ZvaWQgaWd0X2R1bXBfY3J0Y3NfZmQoaW50IGRybWZkKTsKKwogI2VuZGlmIC8qIF9fSUdUX0tN
-U19IX18gKi8KZGlmZiAtLWdpdCBhL3Rvb2xzL2ludGVsX2RwX2NvbXBsaWFuY2UuYyBiL3Rvb2xz
-L2ludGVsX2RwX2NvbXBsaWFuY2UuYwppbmRleCA1YzQyMzg5Ny4uZmM1MTI3MTEgMTAwNjQ0Ci0t
-LSBhL3Rvb2xzL2ludGVsX2RwX2NvbXBsaWFuY2UuYworKysgYi90b29scy9pbnRlbF9kcF9jb21w
-bGlhbmNlLmMKQEAgLTM0Nyw5OCArMzQ3LDEwIEBAIHN0YXRpYyBpbnQgcHJvY2Vzc190ZXN0X3Jl
-cXVlc3QoaW50IHRlc3RfdHlwZSkKIAlyZXR1cm4gLTE7CiB9CiAKLXN0YXRpYyB2b2lkIGR1bXBf
-Y29ubmVjdG9yc19mZChpbnQgZHJtZmQpCi17Ci0JaW50IGksIGo7Ci0KLQlkcm1Nb2RlUmVzICpt
-b2RlX3Jlc291cmNlcyA9IGRybU1vZGVHZXRSZXNvdXJjZXMoZHJtZmQpOwotCi0JaWYgKCFtb2Rl
-X3Jlc291cmNlcykgewotCQlpZ3Rfd2FybigiZHJtTW9kZUdldFJlc291cmNlcyBmYWlsZWQ6ICVz
-XG4iLCBzdHJlcnJvcihlcnJubykpOwotCQlyZXR1cm47Ci0JfQotCi0JaWd0X2luZm8oIkNvbm5l
-Y3RvcnM6XG4iKTsKLQlpZ3RfaW5mbygiaWRcdGVuY29kZXJcdHN0YXR1c1x0XHR0eXBlXHRzaXpl
-IChtbSlcdG1vZGVzXG4iKTsKLQlmb3IgKGkgPSAwOyBpIDwgbW9kZV9yZXNvdXJjZXMtPmNvdW50
-X2Nvbm5lY3RvcnM7IGkrKykgewotCQlkcm1Nb2RlQ29ubmVjdG9yICpjb25uZWN0b3I7Ci0KLQkJ
-Y29ubmVjdG9yID0gZHJtTW9kZUdldENvbm5lY3RvckN1cnJlbnQoZHJtZmQsCi0JCQkJCQkgICAg
-ICAgbW9kZV9yZXNvdXJjZXMtPmNvbm5lY3RvcnNbaV0pOwotCQlpZiAoIWNvbm5lY3Rvcikgewot
-CQkJaWd0X3dhcm4oIkNvdWxkIG5vdCBnZXQgY29ubmVjdG9yICVpOiAlc1xuIiwKLQkJCQkgbW9k
-ZV9yZXNvdXJjZXMtPmNvbm5lY3RvcnNbaV0sIHN0cmVycm9yKGVycm5vKSk7Ci0JCQljb250aW51
-ZTsKLQkJfQotCi0JCWlndF9pbmZvKCIlZFx0JWRcdCVzXHQlc1x0JWR4JWRcdFx0JWRcbiIsCi0J
-CQkgY29ubmVjdG9yLT5jb25uZWN0b3JfaWQsCi0JCQkgY29ubmVjdG9yLT5lbmNvZGVyX2lkLAot
-CQkJIGttc3Rlc3RfY29ubmVjdG9yX3N0YXR1c19zdHIoY29ubmVjdG9yLT5jb25uZWN0aW9uKSwK
-LQkJCSBrbXN0ZXN0X2Nvbm5lY3Rvcl90eXBlX3N0cihjb25uZWN0b3ItPmNvbm5lY3Rvcl90eXBl
-KSwKLQkJCSBjb25uZWN0b3ItPm1tV2lkdGgsCi0JCQkgY29ubmVjdG9yLT5tbUhlaWdodCwKLQkJ
-CSBjb25uZWN0b3ItPmNvdW50X21vZGVzKTsKLQotCQlpZiAoIWNvbm5lY3Rvci0+Y291bnRfbW9k
-ZXMpCi0JCQljb250aW51ZTsKLQotCQlpZ3RfaW5mbygiICBNb2RlczpcbiIpOwotCQlpZ3RfaW5m
-bygiICBuYW1lIHJlZnJlc2ggKEh6KSBoZGlzcCBoc3MgaHNlIGh0b3QgdmRpc3AgIiJ2c3MgdnNl
-IHZ0b3QgZmxhZ3MgdHlwZSBjbG9ja1xuIik7Ci0JCWZvciAoaiA9IDA7IGogPCBjb25uZWN0b3It
-PmNvdW50X21vZGVzOyBqKyspIHsKLQkJCWlndF9pbmZvKCJbJWRdIiwgaik7Ci0JCQlrbXN0ZXN0
-X2R1bXBfbW9kZSgmY29ubmVjdG9yLT5tb2Rlc1tqXSk7Ci0JCX0KLQotCQlkcm1Nb2RlRnJlZUNv
-bm5lY3Rvcihjb25uZWN0b3IpOwotCX0KLQlpZ3RfaW5mbygiXG4iKTsKLQotCWRybU1vZGVGcmVl
-UmVzb3VyY2VzKG1vZGVfcmVzb3VyY2VzKTsKLX0KLQotc3RhdGljIHZvaWQgZHVtcF9jcnRjc19m
-ZChpbnQgZHJtZmQpCi17Ci0JaW50IGk7Ci0JZHJtTW9kZVJlcyAqbW9kZV9yZXNvdXJjZXM7Ci0K
-LQltb2RlX3Jlc291cmNlcyA9IGRybU1vZGVHZXRSZXNvdXJjZXMoZHJtZmQpOwotCWlmICghbW9k
-ZV9yZXNvdXJjZXMpIHsKLQkJaWd0X3dhcm4oImRybU1vZGVHZXRSZXNvdXJjZXMgZmFpbGVkOiAl
-c1xuIiwgc3RyZXJyb3IoZXJybm8pKTsKLQkJcmV0dXJuOwotCX0KLQotCWlndF9pbmZvKCJDUlRD
-czpcbiIpOwotCWlndF9pbmZvKCJpZFx0ZmJcdHBvc1x0c2l6ZVxuIik7Ci0JZm9yIChpID0gMDsg
-aSA8IG1vZGVfcmVzb3VyY2VzLT5jb3VudF9jcnRjczsgaSsrKSB7Ci0JCWRybU1vZGVDcnRjICpj
-cnRjOwotCi0JCWNydGMgPSBkcm1Nb2RlR2V0Q3J0Yyhkcm1mZCwgbW9kZV9yZXNvdXJjZXMtPmNy
-dGNzW2ldKTsKLQkJaWYgKCFjcnRjKSB7Ci0JCQlpZ3Rfd2FybigiQ291bGQgbm90IGdldCBjcnRj
-ICVpOiAlc1xuIiwgbW9kZV9yZXNvdXJjZXMtPmNydGNzW2ldLCBzdHJlcnJvcihlcnJubykpOwot
-CQkJY29udGludWU7Ci0JCX0KLQkJaWd0X2luZm8oIiVkXHQlZFx0KCVkLCVkKVx0KCVkeCVkKVxu
-IiwKLQkJCSBjcnRjLT5jcnRjX2lkLAotCQkJIGNydGMtPmJ1ZmZlcl9pZCwKLQkJCSBjcnRjLT54
-LAotCQkJIGNydGMtPnksCi0JCQkgY3J0Yy0+d2lkdGgsCi0JCQkgY3J0Yy0+aGVpZ2h0KTsKLQot
-CQlrbXN0ZXN0X2R1bXBfbW9kZSgmY3J0Yy0+bW9kZSk7Ci0KLQkJZHJtTW9kZUZyZWVDcnRjKGNy
-dGMpOwotCX0KLQlpZ3RfaW5mbygiXG4iKTsKLQotCWRybU1vZGVGcmVlUmVzb3VyY2VzKG1vZGVf
-cmVzb3VyY2VzKTsKLX0KLQogc3RhdGljIHZvaWQgZHVtcF9pbmZvKHZvaWQpCiB7Ci0JZHVtcF9j
-b25uZWN0b3JzX2ZkKGRybV9mZCk7Ci0JZHVtcF9jcnRjc19mZChkcm1fZmQpOworCWlndF9kdW1w
-X2Nvbm5lY3RvcnNfZmQoZHJtX2ZkKTsKKwlpZ3RfZHVtcF9jcnRjc19mZChkcm1fZmQpOwogfQog
-CiBzdGF0aWMgaW50IHNldHVwX2ZyYW1lYnVmZmVycyhzdHJ1Y3QgY29ubmVjdG9yICpkcF9jb25u
-KQotLSAKVGhlIFF1YWxjb21tIElubm92YXRpb24gQ2VudGVyLCBJbmMuIGlzIGEgbWVtYmVyIG9m
-IHRoZSBDb2RlIEF1cm9yYSBGb3J1bSwKYSBMaW51eCBGb3VuZGF0aW9uIENvbGxhYm9yYXRpdmUg
-UHJvamVjdAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-aWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
-Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Move the terminal utility functions to a separate file so
+that other modules can use it as well.
+
+Signed-off-by: Abhinav Kumar <abhinavk@codeaurora.org>
+---
+ tools/Makefile.sources       |  1 +
+ tools/igt_compliance_utils.c | 82 ++++++++++++++++++++++++++++++++++++
+ tools/igt_dp_compliance.h    |  8 ++++
+ tools/intel_dp_compliance.c  | 47 ---------------------
+ tools/meson.build            |  3 +-
+ 5 files changed, 93 insertions(+), 48 deletions(-)
+ create mode 100644 tools/igt_compliance_utils.c
+
+diff --git a/tools/Makefile.sources b/tools/Makefile.sources
+index c28bef2f..47171490 100644
+--- a/tools/Makefile.sources
++++ b/tools/Makefile.sources
+@@ -65,6 +65,7 @@ intel_dp_compliance_SOURCES = \
+         intel_dp_compliance.c \
+         igt_dp_compliance.h \
+         igt_dp_compliance_hotplug.c \
++        igt_compliance_utils.c \
+         $(NULL)
+ 
+ amd_hdmi_compliance_SOURCES = \
+diff --git a/tools/igt_compliance_utils.c b/tools/igt_compliance_utils.c
+new file mode 100644
+index 00000000..d6a2e4e5
+--- /dev/null
++++ b/tools/igt_compliance_utils.c
+@@ -0,0 +1,82 @@
++/*
++ * Copyright (c) 2020, The Linux Foundation. All rights reserved.
++ * Copyright 2017 Intel Corporation
++ *   Jesse Barnes <jesse.barnes@intel.com>
++ *   Manasi Navare <manasi.d.navare@intel.com>
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
++ */
++
++#include "igt.h"
++#include <stdio.h>
++#include <string.h>
++#include <stdlib.h>
++#include <signal.h>
++#include <termios.h>
++
++#include <sys/stat.h>
++
++#include "igt_dp_compliance.h"
++
++static int tio_fd;
++struct termios saved_tio;
++
++void enter_exec_path(char **argv)
++{
++	char *exec_path = NULL;
++	char *pos = NULL;
++	short len_path = 0;
++	int ret;
++
++	len_path = strlen(argv[0]);
++	exec_path = (char *) malloc(len_path);
++
++	memcpy(exec_path, argv[0], len_path);
++	pos = strrchr(exec_path, '/');
++	if (pos != NULL)
++		*(pos+1) = '\0';
++
++	ret = chdir(exec_path);
++	igt_assert_eq(ret, 0);
++	free(exec_path);
++}
++
++static void restore_termio_mode(int sig)
++{
++	tcsetattr(tio_fd, TCSANOW, &saved_tio);
++	close(tio_fd);
++}
++
++void set_termio_mode(void)
++{
++	struct termios tio;
++
++	/* don't attempt to set terminal attributes if not in the foreground
++	 * process group
++	 */
++	if (getpgrp() != tcgetpgrp(STDOUT_FILENO))
++		return;
++
++	tio_fd = dup(STDIN_FILENO);
++	tcgetattr(tio_fd, &saved_tio);
++	igt_install_exit_handler(restore_termio_mode);
++	tio = saved_tio;
++	tio.c_lflag &= ~(ICANON | ECHO);
++	tcsetattr(tio_fd, TCSANOW, &tio);
++}
+diff --git a/tools/igt_dp_compliance.h b/tools/igt_dp_compliance.h
+index bf2b0701..5b168803 100644
+--- a/tools/igt_dp_compliance.h
++++ b/tools/igt_dp_compliance.h
+@@ -22,6 +22,9 @@
+  * IN THE SOFTWARE.
+  */
+ 
++#ifndef __IGT_DP_COMPLIANCE_H__
++#define __IGT_DP_COMPLIANCE_H__
++
+ #include <stdio.h>
+ #include <string.h>
+ #include <stdlib.h>
+@@ -32,5 +35,10 @@ extern int drm_fd;
+ gboolean igt_dp_compliance_setup_hotplug(void);
+ void igt_dp_compliance_cleanup_hotplug(void);
+ 
++void enter_exec_path(char **argv);
++void set_termio_mode(void);
++
+ /* called by the hotplug code */
+ int update_display(int mode, bool is_compliance_test);
++
++#endif /* __IGT_DP_COMPLIANCE_H__ */
+diff --git a/tools/intel_dp_compliance.c b/tools/intel_dp_compliance.c
+index c8c5c841..217a1247 100644
+--- a/tools/intel_dp_compliance.c
++++ b/tools/intel_dp_compliance.c
+@@ -172,9 +172,6 @@ uint16_t hdisplay;
+ uint16_t vdisplay;
+ uint8_t bitdepth;
+ 
+-static int tio_fd;
+-struct termios saved_tio;
+-
+ drmModeRes *resources;
+ int drm_fd, modes, gen;
+ uint64_t tiling = LOCAL_DRM_FORMAT_MOD_NONE;
+@@ -825,50 +822,6 @@ static gboolean input_event(GIOChannel *source, GIOCondition condition,
+ 	return TRUE;
+ }
+ 
+-static void enter_exec_path(char **argv)
+-{
+-	char *exec_path = NULL;
+-	char *pos = NULL;
+-	short len_path = 0;
+-	int ret;
+-
+-	len_path = strlen(argv[0]);
+-	exec_path = (char *) malloc(len_path);
+-
+-	memcpy(exec_path, argv[0], len_path);
+-	pos = strrchr(exec_path, '/');
+-	if (pos != NULL)
+-		*(pos+1) = '\0';
+-
+-	ret = chdir(exec_path);
+-	igt_assert_eq(ret, 0);
+-	free(exec_path);
+-}
+-
+-static void restore_termio_mode(int sig)
+-{
+-	tcsetattr(tio_fd, TCSANOW, &saved_tio);
+-	close(tio_fd);
+-}
+-
+-static void set_termio_mode(void)
+-{
+-	struct termios tio;
+-
+-	/* don't attempt to set terminal attributes if not in the foreground
+-	 * process group
+-	 */
+-	if (getpgrp() != tcgetpgrp(STDOUT_FILENO))
+-		return;
+-
+-	tio_fd = dup(STDIN_FILENO);
+-	tcgetattr(tio_fd, &saved_tio);
+-	igt_install_exit_handler(restore_termio_mode);
+-	tio = saved_tio;
+-	tio.c_lflag &= ~(ICANON | ECHO);
+-	tcsetattr(tio_fd, TCSANOW, &tio);
+-}
+-
+ int main(int argc, char **argv)
+ {
+ 	int c;
+diff --git a/tools/meson.build b/tools/meson.build
+index 05f2a172..56877fb3 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -60,7 +60,8 @@ endforeach
+ if libudev.found()
+ 	intel_dp_compliance_src = [
+ 		'intel_dp_compliance.c',
+-		'igt_dp_compliance_hotplug.c'
++		'igt_dp_compliance_hotplug.c',
++		'igt_compliance_utils.c'
+ 	]
+ 	executable('intel_dp_compliance', sources : intel_dp_compliance_src,
+ 		   dependencies : [tool_deps, libudev],
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
