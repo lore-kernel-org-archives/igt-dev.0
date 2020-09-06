@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C1FA6E16B
- for <igt-dev@lists.freedesktop.org>; Sun,  6 Sep 2020 20:50:21 +0000 (UTC)
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Date: Sun,  6 Sep 2020 13:49:59 -0400
-Message-Id: <20200906174959.27723-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib/ioctl_wrappers: Keep IGT working
- without pread/pwrite ioctls
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sun, 06 Sep 2020 21:03:05 -0000
+Message-ID: <159942618585.13719.10373758972512830983@emeril.freedesktop.org>
+References: <20200906173805.24916-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20200906173805.24916-1-ashutosh.dixit@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgbGliL2lv?=
+ =?utf-8?q?ctl=5Fwrappers=3A_Handle_PREAD/PWRITE_ioctls_not_supported_in_g?=
+ =?utf-8?q?em=5Fread/write_=28rev12=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,420 +15,215 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============2131661971=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The general direction at this time is to phase out pread/write ioctls
-and not support them in future products. This means IGT must handle
-the absence of these ioctls. This patch does this by modifying
-gem_read() and gem_write() to do the read/write using the pread/pwrite
-ioctls first but when these ioctls are unavailable fall back to doing
-the read/write using a combination of mmap and memcpy.
+--===============2131661971==
+Content-Type: multipart/alternative;
+ boundary="===============4544664971468200706=="
 
-Callers who must absolutely use the pread/pwrite ioctls (such as tests
-which test these ioctls or must otherwise only use the pread/pwrite
-ioctls) must use gem_require_pread_pwrite() to skip when these ioctls
-are not available.
+--===============4544664971468200706==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Removed __gem_pread, gem_pread, __gem_pwrite and gem_pwrite
-    introduced in v1 since they don't appear necessary
-v3: Fix CI failures in gem_advise and gen9_exec_parse by introducing
-    gem_require_pread_pwrite
+== Series Details ==
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- lib/ioctl_wrappers.c                        | 133 +++++++++++++++++++-
- lib/ioctl_wrappers.h                        |   3 +
- tests/i915/gem_madvise.c                    |   2 +
- tests/i915/gem_partial_pwrite_pread.c       |   1 +
- tests/i915/gem_pread.c                      |   1 +
- tests/i915/gem_pread_after_blit.c           |   1 +
- tests/i915/gem_pwrite.c                     |   1 +
- tests/i915/gem_pwrite_snooped.c             |   1 +
- tests/i915/gem_readwrite.c                  |   1 +
- tests/i915/gem_set_tiling_vs_pwrite.c       |   1 +
- tests/i915/gem_tiled_partial_pwrite_pread.c |   1 +
- tests/i915/gem_tiled_pread_basic.c          |   1 +
- tests/i915/gem_tiled_pread_pwrite.c         |   1 +
- tests/i915/gem_userptr_blits.c              |   2 +
- tests/i915/gen9_exec_parse.c                |   5 +-
- 15 files changed, 148 insertions(+), 7 deletions(-)
+Series: lib/ioctl_wrappers: Handle PREAD/PWRITE ioctls not supported in gem_read/write (rev12)
+URL   : https://patchwork.freedesktop.org/series/81152/
+State : success
 
-diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-index 3781286d8..ff483fbbc 100644
---- a/lib/ioctl_wrappers.c
-+++ b/lib/ioctl_wrappers.c
-@@ -55,6 +55,7 @@
- #include "igt_debugfs.h"
- #include "igt_sysfs.h"
- #include "config.h"
-+#include "i915/gem_mman.h"
- 
- #ifdef HAVE_VALGRIND
- #include <valgrind/valgrind.h>
-@@ -323,6 +324,68 @@ void gem_close(int fd, uint32_t handle)
- 	do_ioctl(fd, DRM_IOCTL_GEM_CLOSE, &close_bo);
- }
- 
-+static bool is_cache_coherent(int fd, uint32_t handle)
-+{
-+	return gem_get_caching(fd, handle) != I915_CACHING_NONE;
-+}
-+
-+static void mmap_write(int fd, uint32_t handle, uint64_t offset,
-+		       const void *buf, uint64_t length)
-+{
-+	void *map = NULL;
-+
-+	if (is_cache_coherent(fd, handle)) {
-+		/* offset arg for mmap functions must be 0 */
-+		map = __gem_mmap__cpu_coherent(fd, handle, 0, offset + length,
-+					       PROT_READ | PROT_WRITE);
-+		if (map)
-+			gem_set_domain(fd, handle,
-+				       I915_GEM_DOMAIN_CPU, I915_GEM_DOMAIN_CPU);
-+	}
-+
-+	if (!map) {
-+		map = __gem_mmap_offset__wc(fd, handle, 0, offset + length,
-+					    PROT_READ | PROT_WRITE);
-+		if (!map)
-+			map = gem_mmap__wc(fd, handle, 0, offset + length,
-+					   PROT_READ | PROT_WRITE);
-+		if (map)
-+			gem_set_domain(fd, handle,
-+				       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
-+	}
-+
-+	igt_assert(map);
-+	memcpy(map + offset, buf, length);
-+	munmap(map, offset + length);
-+}
-+
-+static void mmap_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length)
-+{
-+	void *map = NULL;
-+
-+	if (gem_has_llc(fd) || is_cache_coherent(fd, handle)) {
-+		/* offset arg for mmap functions must be 0 */
-+		map = __gem_mmap__cpu_coherent(fd, handle, 0,
-+					       offset + length, PROT_READ);
-+		if (map)
-+			gem_set_domain(fd, handle, I915_GEM_DOMAIN_CPU, 0);
-+	}
-+
-+	if (!map) {
-+		map = __gem_mmap_offset__wc(fd, handle, 0, offset + length,
-+					    PROT_READ);
-+		if (!map)
-+			map = gem_mmap__wc(fd, handle, 0, offset + length,
-+					   PROT_READ);
-+		if (map)
-+			gem_set_domain(fd, handle, I915_GEM_DOMAIN_WC, 0);
-+	}
-+
-+	igt_assert(map);
-+	memcpy(buf, map + offset, length);
-+	munmap(map, offset + length);
-+}
-+
- int __gem_write(int fd, uint32_t handle, uint64_t offset, const void *buf, uint64_t length)
- {
- 	struct drm_i915_gem_pwrite gem_pwrite;
-@@ -348,12 +411,18 @@ int __gem_write(int fd, uint32_t handle, uint64_t offset, const void *buf, uint6
-  * @buf: pointer to the data to write into the buffer
-  * @length: size of the subrange
-  *
-- * This wraps the PWRITE ioctl, which is to upload a linear data to a subrange
-- * of a gem buffer object.
-+ * Method to write to a gem object. Uses the PWRITE ioctl when it is
-+ * available, else it uses mmap + memcpy to upload linear data to a
-+ * subrange of a gem buffer object.
-  */
- void gem_write(int fd, uint32_t handle, uint64_t offset, const void *buf, uint64_t length)
- {
--	igt_assert_eq(__gem_write(fd, handle, offset, buf, length), 0);
-+	int ret = __gem_write(fd, handle, offset, buf, length);
-+
-+	igt_assert(ret == 0 || ret == EOPNOTSUPP);
-+
-+	if (ret == EOPNOTSUPP)
-+		mmap_write(fd, handle, offset, buf, length);
- }
- 
- int __gem_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length)
-@@ -380,12 +449,64 @@ int __gem_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t len
-  * @buf: pointer to the data to read into
-  * @length: size of the subrange
-  *
-- * This wraps the PREAD ioctl, which is to download a linear data to a subrange
-- * of a gem buffer object.
-+ * Method to read from a gem object. Uses the PREAD ioctl when it is
-+ * available, else it uses mmap + memcpy to download linear data from a
-+ * subrange of a gem buffer object.
-  */
- void gem_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length)
- {
--	igt_assert_eq(__gem_read(fd, handle, offset, buf, length), 0);
-+	int ret = __gem_read(fd, handle, offset, buf, length);
-+
-+	igt_assert(ret == 0 || ret == EOPNOTSUPP);
-+
-+	if (ret == EOPNOTSUPP)
-+		mmap_read(fd, handle, offset, buf, length);
-+}
-+
-+/**
-+ * gem_has_pwrite
-+ * @fd: open i915 drm file descriptor
-+ *
-+ * Feature test macro to query whether pwrite ioctl is supported
-+ */
-+bool gem_has_pwrite(int fd)
-+{
-+	uint32_t handle = gem_create(fd, 4096);
-+	int buf, ret;
-+
-+	ret = __gem_write(fd, handle, 0, &buf, sizeof(buf));
-+	gem_close(fd, handle);
-+
-+	return ret != EOPNOTSUPP;
-+}
-+
-+/**
-+ * gem_has_pread
-+ * @fd: open i915 drm file descriptor
-+ *
-+ * Feature test macro to query whether pread ioctl is supported
-+ */
-+bool gem_has_pread(int fd)
-+{
-+	uint32_t handle = gem_create(fd, 4096);
-+	int buf, ret;
-+
-+	ret = __gem_read(fd, handle, 0, &buf, sizeof(buf));
-+	gem_close(fd, handle);
-+
-+	return ret != EOPNOTSUPP;
-+}
-+
-+/**
-+ * gem_require_pread_pwrite
-+ * @fd: open i915 drm file descriptor
-+ *
-+ * Feature test macro to query whether pread/pwrite ioctls are supported
-+ * and skip if they are not
-+ */
-+void gem_require_pread_pwrite(int fd)
-+{
-+	igt_require(gem_has_pread(fd) && gem_has_pwrite(fd));
- }
- 
- int __gem_set_domain(int fd, uint32_t handle, uint32_t read, uint32_t write)
-diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-index 870ac8b7b..6ba551a71 100644
---- a/lib/ioctl_wrappers.h
-+++ b/lib/ioctl_wrappers.h
-@@ -71,6 +71,9 @@ int __gem_write(int fd, uint32_t handle, uint64_t offset, const void *buf, uint6
- void gem_write(int fd, uint32_t handle, uint64_t offset,  const void *buf, uint64_t length);
- int __gem_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length);
- void gem_read(int fd, uint32_t handle, uint64_t offset, void *buf, uint64_t length);
-+bool gem_has_pwrite(int fd);
-+bool gem_has_pread(int fd);
-+void gem_require_pread_pwrite(int fd);
- int __gem_set_domain(int fd, uint32_t handle, uint32_t read, uint32_t write);
- void gem_set_domain(int fd, uint32_t handle, uint32_t read, uint32_t write);
- int gem_wait(int fd, uint32_t handle, int64_t *timeout_ns);
-diff --git a/tests/i915/gem_madvise.c b/tests/i915/gem_madvise.c
-index 54c9befff..92e1c5192 100644
---- a/tests/i915/gem_madvise.c
-+++ b/tests/i915/gem_madvise.c
-@@ -154,6 +154,7 @@ dontneed_before_pwrite(void)
- 	uint32_t bbe = MI_BATCH_BUFFER_END;
- 	uint32_t handle;
- 
-+	gem_require_pread_pwrite(fd);
- 	handle = gem_create(fd, OBJECT_SIZE);
- 	gem_madvise(fd, handle, I915_MADV_DONTNEED);
- 
-@@ -170,6 +171,7 @@ dontneed_before_exec(void)
- 	struct drm_i915_gem_exec_object2 exec;
- 	uint32_t buf[] = { MI_BATCH_BUFFER_END, 0 };
- 
-+	gem_require_pread_pwrite(fd);
- 	memset(&execbuf, 0, sizeof(execbuf));
- 	memset(&exec, 0, sizeof(exec));
- 
-diff --git a/tests/i915/gem_partial_pwrite_pread.c b/tests/i915/gem_partial_pwrite_pread.c
-index b4bae9b6d..136a53558 100644
---- a/tests/i915/gem_partial_pwrite_pread.c
-+++ b/tests/i915/gem_partial_pwrite_pread.c
-@@ -284,6 +284,7 @@ igt_main
- 		data.drm_fd = drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(data.drm_fd);
- 		gem_require_blitter(data.drm_fd);
-+		gem_require_pread_pwrite(data.drm_fd);
- 
- 		data.devid = intel_get_drm_devid(data.drm_fd);
- 		data.bops = buf_ops_create(data.drm_fd);
-diff --git a/tests/i915/gem_pread.c b/tests/i915/gem_pread.c
-index 6d12b8e9f..db1eacedc 100644
---- a/tests/i915/gem_pread.c
-+++ b/tests/i915/gem_pread.c
-@@ -149,6 +149,7 @@ igt_main_args("s:", NULL, help_str, opt_handler, NULL)
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_INTEL);
-+		gem_require_pread_pwrite(fd);
- 
- 		dst = gem_create(fd, object_size);
- 		src = malloc(object_size);
-diff --git a/tests/i915/gem_pread_after_blit.c b/tests/i915/gem_pread_after_blit.c
-index 81454c930..5c99d0887 100644
---- a/tests/i915/gem_pread_after_blit.c
-+++ b/tests/i915/gem_pread_after_blit.c
-@@ -212,6 +212,7 @@ igt_main
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_INTEL);
- 		igt_require_gem(fd);
-+		gem_require_pread_pwrite(fd);
- 
- 		bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
- 		drm_intel_bufmgr_gem_enable_reuse(bufmgr);
-diff --git a/tests/i915/gem_pwrite.c b/tests/i915/gem_pwrite.c
-index e491263fd..eea51f978 100644
---- a/tests/i915/gem_pwrite.c
-+++ b/tests/i915/gem_pwrite.c
-@@ -317,6 +317,7 @@ igt_main_args("s:", NULL, help_str, opt_handler, NULL)
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_INTEL);
-+		gem_require_pread_pwrite(fd);
- 
- 		dst = gem_create(fd, object_size);
- 		src = malloc(object_size);
-diff --git a/tests/i915/gem_pwrite_snooped.c b/tests/i915/gem_pwrite_snooped.c
-index 4a3395241..a2eca6afc 100644
---- a/tests/i915/gem_pwrite_snooped.c
-+++ b/tests/i915/gem_pwrite_snooped.c
-@@ -132,6 +132,7 @@ igt_simple_main
- 	fd = drm_open_driver(DRIVER_INTEL);
- 	igt_require_gem(fd);
- 	gem_require_blitter(fd);
-+	gem_require_pread_pwrite(fd);
- 
- 	devid = intel_get_drm_devid(fd);
- 	bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
-diff --git a/tests/i915/gem_readwrite.c b/tests/i915/gem_readwrite.c
-index 6b2977c1c..ca31741c6 100644
---- a/tests/i915/gem_readwrite.c
-+++ b/tests/i915/gem_readwrite.c
-@@ -83,6 +83,7 @@ igt_main
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_INTEL);
-+		gem_require_pread_pwrite(fd);
- 
- 		handle = gem_create(fd, OBJECT_SIZE);
- 	}
-diff --git a/tests/i915/gem_set_tiling_vs_pwrite.c b/tests/i915/gem_set_tiling_vs_pwrite.c
-index 302ea24b6..8f38c9b9b 100644
---- a/tests/i915/gem_set_tiling_vs_pwrite.c
-+++ b/tests/i915/gem_set_tiling_vs_pwrite.c
-@@ -55,6 +55,7 @@ igt_simple_main
- 
- 	fd = drm_open_driver(DRIVER_INTEL);
- 	igt_require(gem_available_fences(fd) > 0);
-+	gem_require_pread_pwrite(fd);
- 
- 	for (int i = 0; i < OBJECT_SIZE/4; i++)
- 		data[i] = i;
-diff --git a/tests/i915/gem_tiled_partial_pwrite_pread.c b/tests/i915/gem_tiled_partial_pwrite_pread.c
-index 7de5358b2..0c4545990 100644
---- a/tests/i915/gem_tiled_partial_pwrite_pread.c
-+++ b/tests/i915/gem_tiled_partial_pwrite_pread.c
-@@ -270,6 +270,7 @@ igt_main
- 		igt_require_gem(fd);
- 		gem_require_mappable_ggtt(fd);
- 		gem_require_blitter(fd);
-+		gem_require_pread_pwrite(fd);
- 
- 		bufmgr = drm_intel_bufmgr_gem_init(fd, 4096);
- 		//drm_intel_bufmgr_gem_enable_reuse(bufmgr);
-diff --git a/tests/i915/gem_tiled_pread_basic.c b/tests/i915/gem_tiled_pread_basic.c
-index 7cb644104..f8f73c03a 100644
---- a/tests/i915/gem_tiled_pread_basic.c
-+++ b/tests/i915/gem_tiled_pread_basic.c
-@@ -127,6 +127,7 @@ igt_simple_main
- 	igt_require(gem_available_fences(fd) > 0);
- 	handle = create_bo(fd);
- 	igt_require(gem_get_tiling(fd, handle, &tiling, &swizzle));
-+	gem_require_pread_pwrite(fd);
- 
- 	devid = intel_get_drm_devid(fd);
- 
-diff --git a/tests/i915/gem_tiled_pread_pwrite.c b/tests/i915/gem_tiled_pread_pwrite.c
-index f58048faa..28490840f 100644
---- a/tests/i915/gem_tiled_pread_pwrite.c
-+++ b/tests/i915/gem_tiled_pread_pwrite.c
-@@ -114,6 +114,7 @@ igt_simple_main
- 	
- 	fd = drm_open_driver(DRIVER_INTEL);
- 	igt_require(gem_available_fences(fd) > 0);
-+	gem_require_pread_pwrite(fd);
- 
- 	count = gem_available_fences(fd) + 1;
- 	intel_require_memory(2 * count, sizeof(linear), CHECK_RAM);
-diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-index 268423dcd..0ccfdbd9c 100644
---- a/tests/i915/gem_userptr_blits.c
-+++ b/tests/i915/gem_userptr_blits.c
-@@ -890,6 +890,7 @@ static int test_forbidden_ops(int fd)
- 	uint32_t handle;
- 	void *ptr;
- 
-+	gem_require_pread_pwrite(fd);
- 	igt_assert(posix_memalign(&ptr, PAGE_SIZE, PAGE_SIZE) == 0);
- 	gem_userptr(fd, ptr, PAGE_SIZE, 0, userptr_flags, &handle);
- 
-@@ -1416,6 +1417,7 @@ static void test_readonly_pwrite(int i915)
- 	 */
- 
- 	igt_require(igt_setup_clflush());
-+	gem_require_pread_pwrite(i915);
- 
- 	sz = 16 << 12;
- 	pages = mmap(NULL, sz, PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
-diff --git a/tests/i915/gen9_exec_parse.c b/tests/i915/gen9_exec_parse.c
-index 8cd82f568..eb7cd9f74 100644
---- a/tests/i915/gen9_exec_parse.c
-+++ b/tests/i915/gen9_exec_parse.c
-@@ -1024,13 +1024,16 @@ igt_main
- 	igt_subtest("batch-zero-length") {
- 		const uint32_t noop[] = { 0, MI_BATCH_BUFFER_END };
- 
-+		gem_require_pread_pwrite(i915);
- 		exec_batch(i915, I915_EXEC_BLT, handle,
- 			   noop, 0,
- 			   -EINVAL);
- 	}
- 
--	igt_subtest("batch-invalid-length")
-+	igt_subtest("batch-invalid-length") {
-+		gem_require_pread_pwrite(i915);
- 		test_invalid_length(i915, handle);
-+	}
- 
- 	igt_subtest("basic-rejected")
- 		test_rejected(i915, handle, false);
--- 
-2.27.0.112.g101b3204f3
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_8968 -> IGTPW_4960
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_4960 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_module_load@reload:
+    - fi-bxt-dsi:         [PASS][1] -> [DMESG-WARN][2] ([i915#1635] / [i915#1982])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8968/fi-bxt-dsi/igt@i915_module_load@reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/fi-bxt-dsi/igt@i915_module_load@reload.html
+
+  * igt@i915_selftest@live@gem_contexts:
+    - fi-tgl-u2:          [PASS][3] -> [INCOMPLETE][4] ([i915#2045])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8968/fi-tgl-u2/igt@i915_selftest@live@gem_contexts.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/fi-tgl-u2/igt@i915_selftest@live@gem_contexts.html
+
+  * igt@kms_chamelium@common-hpd-after-suspend:
+    - fi-kbl-7500u:       [PASS][5] -> [DMESG-WARN][6] ([i915#2203])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8968/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:
+    - fi-icl-u2:          [PASS][7] -> [DMESG-WARN][8] ([i915#1982])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8968/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-byt-j1900:       [DMESG-WARN][9] ([i915#1982]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8968/fi-byt-j1900/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/fi-byt-j1900/igt@i915_pm_rpm@basic-pci-d3-state.html
+    - fi-bsw-kefka:       [DMESG-WARN][11] ([i915#1982]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8968/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  
+  [i915#1635]: https://gitlab.freedesktop.org/drm/intel/issues/1635
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2045]: https://gitlab.freedesktop.org/drm/intel/issues/2045
+  [i915#2203]: https://gitlab.freedesktop.org/drm/intel/issues/2203
+
+
+Participating hosts (35 -> 32)
+------------------------------
+
+  Missing    (3): fi-byt-clapper fi-byt-squawks fi-bsw-cyan 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5779 -> IGTPW_4960
+
+  CI-20190529: 20190529
+  CI_DRM_8968: 4d831cabbba82294ba008ec7999c71f443b1864f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_4960: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/index.html
+  IGT_5779: f52bf19b5f02d52fc3e201c6467ec3f511227fba @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/index.html
+
+--===============4544664971468200706==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/ioctl_wrappers: Handle PREAD/PWRITE ioctls not supported in gem_read/write (rev12)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/81152/">https://patchwork.freedesktop.org/series/81152/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_8968 -&gt; IGTPW_4960</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_4960 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8968/fi-bxt-dsi/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/fi-bxt-dsi/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1635">i915#1635</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gem_contexts:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8968/fi-tgl-u2/igt@i915_selftest@live@gem_contexts.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/fi-tgl-u2/igt@i915_selftest@live@gem_contexts.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2045">i915#2045</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@common-hpd-after-suspend:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8968/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/fi-kbl-7500u/igt@kms_chamelium@common-hpd-after-suspend.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8968/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@b-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>
+<p>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8968/fi-byt-j1900/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/fi-byt-j1900/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></p>
+</li>
+<li>
+<p>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_8968/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (35 -&gt; 32)</h2>
+<p>Missing    (3): fi-byt-clapper fi-byt-squawks fi-bsw-cyan </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5779 -&gt; IGTPW_4960</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_8968: 4d831cabbba82294ba008ec7999c71f443b1864f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_4960: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_4960/index.html<br />
+  IGT_5779: f52bf19b5f02d52fc3e201c6467ec3f511227fba @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============4544664971468200706==--
+
+--===============2131661971==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============2131661971==--
