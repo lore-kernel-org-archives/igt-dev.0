@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 962576EABD
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Sep 2020 08:28:13 +0000 (UTC)
-From: apoorva1.singh@intel.com
-Date: Wed,  9 Sep 2020 14:01:25 +0530
-Message-Id: <20200909083125.2057105-1-apoorva1.singh@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 784FB6E1B2
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Sep 2020 09:04:39 +0000 (UTC)
+From: Sowmya Kaparthi <sowmyax.kaparthi@intel.com>
+Date: Tue,  8 Sep 2020 09:04:36 +0000
+Message-Id: <20200908090436.1344-1-sowmyax.kaparthi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_mmap_wc: Align subtests with
- correct function calls
+Subject: [igt-dev] [i-g-t] tests/kms_plane_scaling: set minimum height and
+ width to 20
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,55 +19,56 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, chris@chris-wilson.co.uk, arjun.melkaveri@intel.com
+To: igt-dev@lists.freedesktop.org, james.ausmus@intel.com, mika.kahola@intel.com, sowmyax.kaparthi@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Apoorva Singh <apoorva1.singh@intel.com>
+Depending on pixel format minimum width and height can be as
+high as 20. Set width and height to 20. Remove is_planar_yuv_format,
+no longer used.
 
-- Fix the name of subtest "write-gtt-read-gtt"
-- Fix subtests "write-wc-read-gtt" and "write-gtt-read-gtt"
-to call correct fucntions
-
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
-Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+Cc: Ausmus, James <james.ausmus@intel.com>
+Signed-off-by: Sowmya Kaparthi <sowmyax.kaparthi@intel.com>
 ---
- tests/i915/gem_mmap_wc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tests/kms_plane_scaling.c | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
 
-diff --git a/tests/i915/gem_mmap_wc.c b/tests/i915/gem_mmap_wc.c
-index f44b406d..c940376a 100644
---- a/tests/i915/gem_mmap_wc.c
-+++ b/tests/i915/gem_mmap_wc.c
-@@ -329,7 +329,7 @@ test_write_cpu_read_wc(int fd, int force_domain)
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 19087286..ecd2c2e3 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -62,19 +62,6 @@ static int get_num_scalers(data_t* d, enum pipe pipe)
+ 		return 1;
  }
  
- static void
--test_write_gtt_read_wc(int fd)
-+test_write_wc_read_gtt(int fd)
+-static bool is_planar_yuv_format(uint32_t pixelformat)
+-{
+-	switch (pixelformat) {
+-	case DRM_FORMAT_NV12:
+-	case DRM_FORMAT_P010:
+-	case DRM_FORMAT_P012:
+-	case DRM_FORMAT_P016:
+-		return true;
+-	default:
+-		return false;
+-	}
+-}
+-
+ static void cleanup_fbs(data_t *data)
  {
- 	uint32_t handle;
- 	uint32_t *src, *dst;
-@@ -350,7 +350,7 @@ test_write_gtt_read_wc(int fd)
- }
+ 	int i;
+@@ -147,9 +134,7 @@ static void check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
+ 	mode = igt_output_get_mode(output);
  
- static void
--test_write_wc_read_gtt(int fd)
-+test_write_gtt_read_wc(int fd)
- {
- 	uint32_t handle;
- 	uint32_t *src, *dst;
-@@ -610,7 +610,7 @@ igt_main
- 		igt_fixture gem_require_mappable_ggtt(fd);
- 		igt_subtest("write-wc-read-gtt")
- 			test_write_wc_read_gtt(fd);
--		igt_subtest("write-gtt-read-gtt")
-+		igt_subtest("write-gtt-read-wc")
- 			test_write_gtt_read_wc(fd);
- 	}
- 
+ 	/* create buffer in the range of  min and max source side limit.*/
+-	width = height = 8;
+-	if (is_i915_device(d->drm_fd) && is_planar_yuv_format(pixel_format))
+-		width = height = 16;
++	width = height = 20;
+ 	igt_create_color_fb(display->drm_fd, width, height,
+ 		       pixel_format, tiling, 0.0, 1.0, 0.0, &d->fb[0]);
+ 	igt_plane_set_fb(plane, &d->fb[0]);
 -- 
-2.28.0
+2.25.1
 
 _______________________________________________
 igt-dev mailing list
