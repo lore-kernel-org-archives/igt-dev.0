@@ -1,19 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com
- [IPv6:2a00:1450:4864:20::441])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 92A546E93C
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Sep 2020 14:34:11 +0000 (UTC)
-Received: by mail-wr1-x441.google.com with SMTP id j2so6961710wrx.7
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Sep 2020 07:34:11 -0700 (PDT)
-References: <20200903081157.1670-1-srinivasx.k@intel.com>
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Message-ID: <9c054c6d-c1fa-67bf-0fe1-64d50cf2a17b@gmail.com>
-Date: Thu, 10 Sep 2020 17:34:02 +0300
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 055586E923
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Sep 2020 13:25:11 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20200903081157.1670-1-srinivasx.k@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_cursor_crc Stripping
- rendercopy implementation to use cairo
+In-Reply-To: <20200831133049.37017-19-zbigniew.kempczynski@intel.com>
+References: <20200831133049.37017-1-zbigniew.kempczynski@intel.com>
+ <20200831133049.37017-19-zbigniew.kempczynski@intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Thu, 10 Sep 2020 14:25:08 +0100
+Message-ID: <159974430803.17261.737842645309080749@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v33 18/40] tests/gem_concurrent_all:
+ remove libdrm dependency
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,177 +18,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Kamati Srinivas <srinivasx.k@intel.com>, igt-dev@lists.freedesktop.org
-Cc: juha-pekka.heikkila@intel.com
+To: zbigniew.kempczynski@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 3.9.2020 11.11, Kamati Srinivas wrote:
-> Rendercopy implementation is stripped to use cairo for restoring image.
-> With cario, no more crc errors are observed and dead code is removed.
-        ^^
-cairo
-
-There's colon (:) missing from subject.
-
-otherwise changes look ok, this test doesn't need to use rendercopy.
-
-I'll add missing colon to subject and fix that one typo and push to igt 
-bit later.
-
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
-> 
-> Cc: Heikkila, Juha-pekka <juha-pekka.heikkila@intel.com>
-> Signed-off-by: Kamati Srinivas <srinivasx.k@intel.com>
-> ---
->   tests/kms_cursor_crc.c | 91 ++++++------------------------------------
->   1 file changed, 13 insertions(+), 78 deletions(-)
-> 
-> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-> index e9491847..0be8f7f8 100644
-> --- a/tests/kms_cursor_crc.c
-> +++ b/tests/kms_cursor_crc.c
-> @@ -64,11 +64,6 @@ typedef struct {
->   	igt_plane_t *cursor;
->   	cairo_surface_t *surface;
->   	uint32_t devid;
-> -	drm_intel_bufmgr *bufmgr;
-> -	igt_render_copyfunc_t rendercopy;
-> -	drm_intel_bo * drmibo[2];
-> -	struct intel_batchbuffer *batch;
-> -	struct igt_buf igtbo[2];
->   
->   } data_t;
->   
-> @@ -153,23 +148,14 @@ static void restore_image(data_t *data)
->   {
->   	cairo_t *cr;
->   
-> -	if (data->rendercopy != NULL) {
-> -		/* use rendercopy if available */
-> -		data->rendercopy(data->batch, NULL,
-> -				 &data->igtbo[RESTOREBUFFER], 0, 0,
-> -				 data->primary_fb[RESTOREBUFFER].width,
-> -				 data->primary_fb[RESTOREBUFFER].height,
-> -				 &data->igtbo[FRONTBUFFER], 0, 0);
-> -	} else {
-> -		/* if rendercopy not implemented in igt use cairo */
-> -		cr = igt_get_cairo_ctx(data->drm_fd,
-> -				       &data->primary_fb[FRONTBUFFER]);
-> -		cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-> -		cairo_set_source_surface(cr, data->surface, 0, 0);
-> -		cairo_rectangle(cr, 0, 0, data->screenw, data->screenh);
-> -		cairo_fill(cr);
-> -		igt_put_cairo_ctx(cr);
-> -	}
-> +	/* rendercopy stripped in igt using cairo */
-> +	cr = igt_get_cairo_ctx(data->drm_fd,
-> +			       &data->primary_fb[FRONTBUFFER]);
-> +	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-> +	cairo_set_source_surface(cr, data->surface, 0, 0);
-> +	cairo_rectangle(cr, 0, 0, data->screenw, data->screenh);
-> +	cairo_fill(cr);
-> +	igt_put_cairo_ctx(cr);
->   	igt_dirty_fb(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
->   }
->   
-> @@ -384,15 +370,6 @@ static void cleanup_crtc(data_t *data)
->   	igt_display_reset(display);
->   }
->   
-> -static void scratch_buf_init(data_t *data, int buffer)
-> -{
-> -	data->igtbo[buffer].bo = data->drmibo[buffer];
-> -	data->igtbo[buffer].surface[0].stride = data->primary_fb[buffer].strides[0];
-> -	data->igtbo[buffer].tiling = data->primary_fb[buffer].modifier;
-> -	data->igtbo[buffer].surface[0].size = data->primary_fb[buffer].size;
-> -	data->igtbo[buffer].bpp = data->primary_fb[buffer].plane_bpp[0];
-> -}
-> -
->   static void prepare_crtc(data_t *data, igt_output_t *output,
->   			 int cursor_w, int cursor_h)
->   {
-> @@ -443,38 +420,11 @@ static void prepare_crtc(data_t *data, igt_output_t *output,
->   
->   	data->surface = cairo_image_surface_create(CAIRO_FORMAT_RGB24, data->screenw, data->screenh);
->   
-> -	if (data->rendercopy == NULL) {
-> -		/* store test image as cairo surface */
-> -		cr = cairo_create(data->surface);
-> -		cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-> -		igt_paint_test_pattern(cr, data->screenw, data->screenh);
-> -		cairo_destroy(cr);
-> -	} else {
-> -		/* store test image as fb if rendercopy is available */
-> -		cr = igt_get_cairo_ctx(data->drm_fd,
-> -		                       &data->primary_fb[RESTOREBUFFER]);
-> -		cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-> -		igt_paint_test_pattern(cr, data->screenw, data->screenh);
-> -		igt_put_cairo_ctx(cr);
-> -
-> -		data->drmibo[FRONTBUFFER] = gem_handle_to_libdrm_bo(data->bufmgr,
-> -								    data->drm_fd,
-> -								    "", data->primary_fb[FRONTBUFFER].gem_handle);
-> -		igt_assert(data->drmibo[FRONTBUFFER]);
-> -
-> -		data->drmibo[RESTOREBUFFER] = gem_handle_to_libdrm_bo(data->bufmgr,
-> -								      data->drm_fd,
-> -								      "", data->primary_fb[RESTOREBUFFER].gem_handle);
-> -		igt_assert(data->drmibo[RESTOREBUFFER]);
-> -
-> -		scratch_buf_init(data, RESTOREBUFFER);
-> -		scratch_buf_init(data, FRONTBUFFER);
-> -
-> -		data->batch = intel_batchbuffer_alloc(data->bufmgr,
-> -						      data->devid);
-> -		igt_assert(data->batch);
-> -	}
-> -
-> +	/* store test image as cairo surface */
-> +	cr = cairo_create(data->surface);
-> +	cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
-> +	igt_paint_test_pattern(cr, data->screenw, data->screenh);
-> +	cairo_destroy(cr);
->   	igt_pipe_crc_start(data->pipe_crc);
->   }
->   
-> @@ -830,16 +780,6 @@ igt_main
->   		igt_require_pipe_crc(data.drm_fd);
->   
->   		igt_display_require(&data.display, data.drm_fd);
-> -
-> -		if (is_i915_device(data.drm_fd)) {
-> -			data.bufmgr = drm_intel_bufmgr_gem_init(data.drm_fd, 4096);
-> -			igt_assert(data.bufmgr);
-> -			drm_intel_bufmgr_gem_enable_reuse(data.bufmgr);
-> -
-> -			data.devid = intel_get_drm_devid(data.drm_fd);
-> -			data.rendercopy = igt_get_render_copyfunc(data.devid);
-> -		}
-> -		igt_debug("Using %s for restoring test image\n", (data.rendercopy == NULL)?"Cairo":"rendercopy");
->   	}
->   
->   	data.cursor_max_w = cursor_width;
-> @@ -855,11 +795,6 @@ igt_main
->   			igt_pipe_crc_free(data.pipe_crc);
->   		}
->   
-> -		if (data.bufmgr != NULL) {
-> -			intel_batchbuffer_free(data.batch);
-> -			drm_intel_bufmgr_destroy(data.bufmgr);
-> -		}
-> -
->   		igt_display_fini(&data.display);
->   	}
->   }
-> 
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMDgtMzEgMTQ6MzA6MjcpCj4gQEAg
+LTc0NSw3ICs3NjksNyBAQCBzdGF0aWMgdm9pZCBidWZmZXJzX2luaXQoc3RydWN0IGJ1ZmZlcnMg
+KmIsCj4gICAgICAgICAgICAgICAgICAgICAgICAgIGNvbnN0IHN0cnVjdCBhY2Nlc3NfbW9kZSAq
+bW9kZSwKPiAgICAgICAgICAgICAgICAgICAgICAgICAgY29uc3Qgc3RydWN0IHNpemUgKnNpemUs
+Cj4gICAgICAgICAgICAgICAgICAgICAgICAgIGludCBudW1fYnVmZmVycywKPiAtICAgICAgICAg
+ICAgICAgICAgICAgICAgaW50IF9mZCwgaW50IGVuYWJsZV9yZXVzZSkKPiArICAgICAgICAgICAg
+ICAgICAgICAgICAgaW50IF9mZCkKPiAgewo+ICAgICAgICAgbWVtc2V0KGIsIDAsIHNpemVvZigq
+YikpOwo+ICAgICAgICAgYi0+bmFtZSA9IG5hbWU7Cj4gQEAgLTc2MywxNyArNzg3LDEzIEBAIHN0
+YXRpYyB2b2lkIGJ1ZmZlcnNfaW5pdChzdHJ1Y3QgYnVmZmVycyAqYiwKPiAgICAgICAgIGItPnRt
+cCA9IG1hbGxvYyhiLT5wYWdlX3NpemUpOwo+ICAgICAgICAgaWd0X2Fzc2VydChiLT50bXApOwo+
+ICAKPiAtICAgICAgIGItPmJ1Zm1nciA9IGRybV9pbnRlbF9idWZtZ3JfZ2VtX2luaXQoX2ZkLCA0
+MDk2KTsKPiAtICAgICAgIGlndF9hc3NlcnQoYi0+YnVmbWdyKTsKPiArICAgICAgIGItPmJvcHMg
+PSBidWZfb3BzX2NyZWF0ZShfZmQpOwo+ICAKPiAtICAgICAgIGItPnNyYyA9IG1hbGxvYygyKnNp
+emVvZihkcm1faW50ZWxfYm8gKikqbnVtX2J1ZmZlcnMpOwo+ICsgICAgICAgYi0+c3JjID0gbWFs
+bG9jKDIqc2l6ZW9mKHN0cnVjdCBpbnRlbF9idWYgKikqbnVtX2J1ZmZlcnMpOwo+ICAgICAgICAg
+aWd0X2Fzc2VydChiLT5zcmMpOwo+ICAgICAgICAgYi0+ZHN0ID0gYi0+c3JjICsgbnVtX2J1ZmZl
+cnM7Cj4gIAo+IC0gICAgICAgaWYgKGVuYWJsZV9yZXVzZSkKPiAtICAgICAgICAgICAgICAgZHJt
+X2ludGVsX2J1Zm1ncl9nZW1fZW5hYmxlX3JldXNlKGItPmJ1Zm1ncik7Cj4gLSAgICAgICBiLT5i
+YXRjaCA9IGludGVsX2JhdGNoYnVmZmVyX2FsbG9jKGItPmJ1Zm1nciwgZGV2aWQpOwo+IC0gICAg
+ICAgaWd0X2Fzc2VydChiLT5iYXRjaCk7Cj4gKyAgICAgICBiLT5pYmIgPSBpbnRlbF9iYl9jcmVh
+dGUoX2ZkLCA0MDk2KTsKPiAgfQo+ICAKPiAgc3RhdGljIHZvaWQgYnVmZmVyc19kZXN0cm95KHN0
+cnVjdCBidWZmZXJzICpiKQoKV2UgaGF2ZSBhIHByb2JsZW0gd2l0aCBob3cgd2UgdGhyb3cgYWxs
+IHRoZSBpbmhlcml0ZWQgc3RhdGUgZnJvbSB0aGUKcGFyZW50IGFuZCByZXBsYWNlIGl0IHdpdGgg
+b3VyIG93bjoKCihnZW1fY29uY3VycmVudF9ibGl0Ojg5MjgpIGludGVsX2J1Zm9wcy1DUklUSUNB
+TDogVGVzdCBhc3NlcnRpb24gZmFpbHVyZSBmdW5jdGlvbiBpbnRlbF9idWZfZGVzdHJveSwgZmls
+ZSAuLi9saWIvaW50ZWxfYnVmb3BzLmM6OTMzOgooZ2VtX2NvbmN1cnJlbnRfYmxpdDo4OTI4KSBp
+bnRlbF9idWZvcHMtQ1JJVElDQUw6IEZhaWxlZCBhc3NlcnRpb246IGJ1Zi0+cHRyID09IE5VTEwK
+U3RhY2sgdHJhY2U6CiAgIzAgLi4vbGliL2lndF9jb3JlLmM6MTcyNyBfX2lndF9mYWlsX2Fzc2Vy
+dCgpCiAgIzEgW2ludGVsX2J1Zl9kZXN0cm95KzB4N2FdCiAgIzIgLi4vdGVzdHMvaTkxNS9nZW1f
+Y29uY3VycmVudF9hbGwuYzo4MTEgYnVmZmVyc19kZXN0cm95KCkKICAjMyAuLi90ZXN0cy9pOTE1
+L2dlbV9jb25jdXJyZW50X2FsbC5jOjEzNjUgX19ydW5fZm9ya2VkKCkKICAjNCAuLi90ZXN0cy9p
+OTE1L2dlbV9jb25jdXJyZW50X2FsbC5jOjE0MDMgcnVuX2ZvcmtlZCgpCgpXZSBuZWVkIHRvIGRv
+IHNvbWUgbXVubWFwIGNsZWFudXAgb2YgdGhlIGJ1ZmZlcnMuCi1DaHJpcwpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdApp
+Z3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
