@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Fri, 11 Sep 2020 12:30:28 +0200
-Message-Id: <20200911103039.4574-14-janusz.krzysztofik@linux.intel.com>
+Date: Fri, 11 Sep 2020 12:30:25 +0200
+Message-Id: <20200911103039.4574-11-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20200911103039.4574-1-janusz.krzysztofik@linux.intel.com>
 References: <20200911103039.4574-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v6 13/24] tests/core_hotunplug: Let the
- driver time out essential sysfs operations
+Subject: [igt-dev] [PATCH i-g-t v6 10/24] tests/core_hotunplug: Skip
+ selectively on sysfs close errors
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,162 +14,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>, Petri Latvala <petri.latvala@intel.com>, intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The test now arms a timer before performing each driver unbind / rebind
-or device unplug / bus rescan sysfs operation.  Then in case of issues
-we may prevent the driver from showing us if and how it can handle
-them.
-
-Don't arm the timer before sysfs operations which are essential for a
-subtest.
-
-v2: Refresh,
-  - don't time out on hot driver rebind / hot device restore in
-    *-lateclose variants, those operations haven't been covered by
-    other subtests.
-
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- tests/core_hotunplug.c | 38 ++++++++++++++++++++------------------
- 1 file changed, 20 insertions(+), 18 deletions(-)
-
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index d31faf215..6112704f4 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -120,29 +120,31 @@ static void prepare(struct hotunplug *priv)
- }
- 
- /* Unbind the driver from the device */
--static void driver_unbind(struct hotunplug *priv, const char *prefix)
-+static void driver_unbind(struct hotunplug *priv, const char *prefix,
-+			  int timeout)
- {
- 	igt_debug("%sunbinding the driver from the device\n", prefix);
- 	priv->failure = "Driver unbind failure!";
- 
--	igt_set_timeout(60, "Driver unbind timeout!");
-+	igt_set_timeout(timeout, "Driver unbind timeout!");
- 	igt_sysfs_set(priv->fd.sysfs_drv, "unbind", priv->dev_bus_addr);
- 	igt_reset_timeout();
- }
- 
- /* Re-bind the driver to the device */
--static void driver_bind(struct hotunplug *priv)
-+static void driver_bind(struct hotunplug *priv, int timeout)
- {
- 	igt_debug("rebinding the driver to the device\n");
- 	priv->failure = "Driver re-bind failure!";
- 
--	igt_set_timeout(60, "Driver re-bind timeout!");
-+	igt_set_timeout(timeout, "Driver re-bind timeout!");
- 	igt_sysfs_set(priv->fd.sysfs_drv, "bind", priv->dev_bus_addr);
- 	igt_reset_timeout();
- }
- 
- /* Remove (virtually unplug) the device from its bus */
--static void device_unplug(struct hotunplug *priv, const char *prefix)
-+static void device_unplug(struct hotunplug *priv, const char *prefix,
-+			  int timeout)
- {
- 	igt_require(priv->fd.sysfs_dev == -1);
- 
-@@ -153,7 +155,7 @@ static void device_unplug(struct hotunplug *priv, const char *prefix)
- 	igt_debug("%sunplugging the device\n", prefix);
- 	priv->failure = "Device unplug failure!";
- 
--	igt_set_timeout(60, "Device unplug timeout!");
-+	igt_set_timeout(timeout, "Device unplug timeout!");
- 	igt_sysfs_set(priv->fd.sysfs_dev, "remove", "1");
- 	igt_reset_timeout();
- 
-@@ -162,12 +164,12 @@ static void device_unplug(struct hotunplug *priv, const char *prefix)
- }
- 
- /* Re-discover the device by rescanning its bus */
--static void bus_rescan(struct hotunplug *priv)
-+static void bus_rescan(struct hotunplug *priv, int timeout)
- {
- 	igt_debug("rediscovering the device\n");
- 	priv->failure = "Bus rescan failure!";
- 
--	igt_set_timeout(60, "Bus rescan timeout!");
-+	igt_set_timeout(timeout, "Bus rescan timeout!");
- 	igt_sysfs_set(priv->fd.sysfs_bus, "../rescan", "1");
- 	igt_reset_timeout();
- }
-@@ -214,10 +216,10 @@ static void recover(struct hotunplug *priv)
- 	cleanup(priv);
- 
- 	if (faccessat(priv->fd.sysfs_bus, priv->dev_bus_addr, F_OK, 0))
--		bus_rescan(priv);
-+		bus_rescan(priv, 60);
- 
- 	else if (faccessat(priv->fd.sysfs_drv, priv->dev_bus_addr, F_OK, 0))
--		driver_bind(priv);
-+		driver_bind(priv, 60);
- 
- 	if (priv->failure)
- 		healthcheck(priv);
-@@ -252,9 +254,9 @@ static void unbind_rebind(struct hotunplug *priv)
- {
- 	igt_assert_eq(priv->fd.drm, -1);
- 
--	driver_unbind(priv, "");
-+	driver_unbind(priv, "", 0);
- 
--	driver_bind(priv);
-+	driver_bind(priv, 0);
- 
- 	healthcheck(priv);
- }
-@@ -263,9 +265,9 @@ static void unplug_rescan(struct hotunplug *priv)
- {
- 	igt_assert_eq(priv->fd.drm, -1);
- 
--	device_unplug(priv, "");
-+	device_unplug(priv, "", 0);
- 
--	bus_rescan(priv);
-+	bus_rescan(priv, 0);
- 
- 	healthcheck(priv);
- }
-@@ -275,9 +277,9 @@ static void hotunbind_lateclose(struct hotunplug *priv)
- 	igt_assert_eq(priv->fd.drm, -1);
- 	priv->fd.drm = local_drm_open_driver("", " for hot unbind");
- 
--	driver_unbind(priv, "hot ");
-+	driver_unbind(priv, "hot ", 0);
- 
--	driver_bind(priv);
-+	driver_bind(priv, 0);
- 
- 	priv->fd.drm = close_device(priv->fd.drm, "late ", "unbound ");
- 	igt_assert_eq(priv->fd.drm, -1);
-@@ -290,9 +292,9 @@ static void hotunplug_lateclose(struct hotunplug *priv)
- 	igt_assert_eq(priv->fd.drm, -1);
- 	priv->fd.drm = local_drm_open_driver("", " for hot unplug");
- 
--	device_unplug(priv, "hot ");
-+	device_unplug(priv, "hot ", 0);
- 
--	bus_rescan(priv);
-+	bus_rescan(priv, 0);
- 
- 	priv->fd.drm = close_device(priv->fd.drm, "late ", "removed ");
- 	igt_assert_eq(priv->fd.drm, -1);
--- 
-2.21.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+U2luY2Ugd2Ugbm8gbG9uZ2VyIG9wZW4gYSBkZXZpY2UgRFJNIHN5c2ZzIG5vZGUsIG9ubHkgYSBQ
+Q0kgb25lLCBkcml2ZXIKdW5iaW5kIG9wZXJhdGlvbnMgYXJlIG5vIGxvbmdlciBhZmZlY3RlZCBi
+eSBtaXNzZWQgb3IgdW5zdWNjZXNzZnVsCnN5c2ZzIGZpbGUgY2xvc2UgYXR0ZW1wdHMuICBTa2lw
+IG9ubHkgYWZmZWN0ZWQgc3VidGVzdHMgaWYgdGhhdApoYXBwZW5zLgoKdjI6IFJlYmFzZSBvbmx5
+Lgp2MzogUmVmcmVzaC4KdjQ6IFJlZnJlc2guCgpTaWduZWQtb2ZmLWJ5OiBKYW51c3ogS3J6eXN6
+dG9maWsgPGphbnVzei5rcnp5c3p0b2Zpa0BsaW51eC5pbnRlbC5jb20+ClJldmlld2VkLWJ5OiBN
+aWNoYcWCIFdpbmlhcnNraSA8bWljaGFsLndpbmlhcnNraUBpbnRlbC5jb20+Ci0tLQogdGVzdHMv
+Y29yZV9ob3R1bnBsdWcuYyB8IDUgKystLS0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMo
+KyksIDMgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvdGVzdHMvY29yZV9ob3R1bnBsdWcuYyBi
+L3Rlc3RzL2NvcmVfaG90dW5wbHVnLmMKaW5kZXggN2Y1ZTgwMGM2Li5kNTE1MjYwMjkgMTAwNjQ0
+Ci0tLSBhL3Rlc3RzL2NvcmVfaG90dW5wbHVnLmMKKysrIGIvdGVzdHMvY29yZV9ob3R1bnBsdWcu
+YwpAQCAtMTExLDcgKzExMSw2IEBAIHN0YXRpYyB2b2lkIHByZXBhcmUoc3RydWN0IGhvdHVucGx1
+ZyAqcHJpdikKIAlpZ3RfYXNzZXJ0X2ZkKHByaXYtPmZkLnN5c2ZzX2J1cyk7CiAKIAlwcml2LT5m
+ZC5zeXNmc19kZXYgPSBjbG9zZV9zeXNmcyhwcml2LT5mZC5zeXNmc19kZXYpOwotCWlndF9hc3Nl
+cnRfZXEocHJpdi0+ZmQuc3lzZnNfZGV2LCAtMSk7CiB9CiAKIC8qIFVuYmluZCB0aGUgZHJpdmVy
+IGZyb20gdGhlIGRldmljZSAqLwpAQCAtMTQxLDcgKzE0MCw4IEBAIHN0YXRpYyB2b2lkIGRyaXZl
+cl9iaW5kKHN0cnVjdCBob3R1bnBsdWcgKnByaXYpCiAvKiBSZW1vdmUgKHZpcnR1YWxseSB1bnBs
+dWcpIHRoZSBkZXZpY2UgZnJvbSBpdHMgYnVzICovCiBzdGF0aWMgdm9pZCBkZXZpY2VfdW5wbHVn
+KHN0cnVjdCBob3R1bnBsdWcgKnByaXYsIGNvbnN0IGNoYXIgKnByZWZpeCkKIHsKLQlpZ3RfYXNz
+ZXJ0X2VxKHByaXYtPmZkLnN5c2ZzX2RldiwgLTEpOworCWlndF9yZXF1aXJlKHByaXYtPmZkLnN5
+c2ZzX2RldiA9PSAtMSk7CisKIAlwcml2LT5mZC5zeXNmc19kZXYgPSBvcGVuYXQocHJpdi0+ZmQu
+c3lzZnNfYnVzLCBwcml2LT5kZXZfYnVzX2FkZHIsCiAJCQkJICAgIE9fRElSRUNUT1JZKTsKIAlp
+Z3RfYXNzZXJ0X2ZkKHByaXYtPmZkLnN5c2ZzX2Rldik7CkBAIC0yMDAsNyArMjAwLDYgQEAgc3Rh
+dGljIHZvaWQgcG9zdF9oZWFsdGhjaGVjayhzdHJ1Y3QgaG90dW5wbHVnICpwcml2KQogCWlndF9h
+Ym9ydF9vbl9mKHByaXYtPmZhaWx1cmUsICIlc1xuIiwgcHJpdi0+ZmFpbHVyZSk7CiAKIAlpZ3Rf
+cmVxdWlyZShwcml2LT5mZC5kcm0gPT0gLTEpOwotCWlndF9yZXF1aXJlKHByaXYtPmZkLnN5c2Zz
+X2RldiA9PSAtMSk7CiB9CiAKIHN0YXRpYyB2b2lkIHNldF9maWx0ZXJfZnJvbV9kZXZpY2UoaW50
+IGZkKQotLSAKMi4yMS4xCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
+ZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
