@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9C9766EA1B
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Sep 2020 13:33:11 +0000 (UTC)
-Date: Fri, 11 Sep 2020 16:33:07 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20200911133307.GH6112@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 375F06EA78
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Sep 2020 14:19:06 +0000 (UTC)
 References: <20200908061001.20302-1-karthik.b.s@intel.com>
- <20200909152239.GN6112@intel.com>
+ <20200909152239.GN6112@intel.com> <20200911133307.GH6112@intel.com>
+From: Karthik B S <karthik.b.s@intel.com>
+Message-ID: <a37cc281-cd22-da6f-3067-bfc76c2ab123@intel.com>
+Date: Fri, 11 Sep 2020 19:48:59 +0530
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200909152239.GN6112@intel.com>
+In-Reply-To: <20200911133307.GH6112@intel.com>
+Content-Language: en-US
 Subject: Re: [igt-dev] [PATCH i-g-t v6] tests/kms_async_flips: Add test to
  validate asynchronous flips
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
@@ -19,125 +19,102 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org, daniel.vetter@intel.com, michel@daenzer.net, petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Sep 09, 2020 at 06:22:39PM +0300, Ville Syrj=E4l=E4 wrote:
-> On Tue, Sep 08, 2020 at 11:40:01AM +0530, Karthik B S wrote:
-> > Asynchronous flips are issued using the page flip IOCTL.
-> > The test consists of two subtests. The first subtest waits for
-> > the page flip event to be received before giving the next flip,
-> > and the second subtest doesn't wait for page flip events.
-> > =
-
-> > The test passes if the IOCTL is successful.
-> > =
-
-> > v2: -Add authors in the test file. (Paulo)
-> >     -Reduce the run time and timeouts to suit IGT needs. (Paulo)
-> >     -Replace igt_debug's with igt_assert's to catch slow flips. (Paulo)
-> >     -Follow IGT coding style regarding spaces. (Paulo)
-> >     -Make set up code part of igt_fixture. (Paulo)
-> >     -Skip the test if async flips are not supported. (Paulo)
-> >     -Replace suggested-by. (Paulo)
-> >     -Added description for test and subtests.
-> > =
-
-> > v3: -Rename the test to kms_async_flips. (Paulo)
-> >     -Modify the TODO comment. (Paulo)
-> >     -Remove igt_debug in flip_handler. (Paulo)
-> >     -Use drmIoctl() in has_async function. (Paulo)
-> >     -Add more details in igt_assert in flip_handler. (Paulo)
-> >     -Remove flag variable in flip_handler. (Paulo)
-> >     -Call igt_assert in flip_handler after the warm up time.
-> > =
-
-> > v4: -Calculate the time stamp in flip_handler from userspace, as the
-> >      kernel will return vbl timestamps and this cannot be used
-> >      for async flips.
-> >     -Add a new subtest to verify that the async flip time stamp
-> >      lies in between the previous and next vblank time stamp. (Daniel)
-> > =
-
-> > v5: -Add test that alternates between sync and async flips. (Ville)
-> >     -Add test to verify invalid async flips. (Ville)
-> >     -Remove the subtest async-flip-without-page-flip-events. (Michel)
-> >     -Remove the intel gpu restriction and make the test generic. (Miche=
-l)
-> > =
-
-> > v6: -Change the THRESHOLD from 10 to 8 as failures are seen on CI
-> >      on platforms <=3D gen10.
-> >     -In older platforms(<=3D gen10), async address update bit in plane =
-ctl
-> >      is double buffered. Made changes in subtests to accomodate this.
-> =
-
-> It actually used to work correctly until skl (I suspect) broke it.
-> =
-
-> I cobbled together some async flip support for intel_display_poller:
-> git://github.com/vsyrjala/intel-gpu-tools.git async_flip_2
-> which can be used to observe the hardware behaviour.
-> =
-
-> So far I tried this on g4x, chv and snb. All appear to work correctly.
-> My cfl however is broken. Still need to check bdw to make sure it reall
-> is skl where it broke.
-> =
-
-> This is actually a real problem for skl. We can probably accept that
-> the first async flip actually ends up being a sync flip. Just a minor
-> inconvenience really. The other direction is much more critical since
-> the first sync flip after an async flip now also turns into an async
-> flip. That means we're now going to try to update all kinds of
-> plane/crtc state using an async flip, which is illegal.
-> =
-
-> So far the only idea I have for a workaround is:
-> 1. do an extra flip internally to toggle the async bit back to 0
-> 2. wait for the async flip from the previous step to finish
-
-I poked at my cfl a bit more, and it seems I was a bit wrong here.
-Actually it looks like we need a full vblank wait here. We do still
-need to arm the update with the surface register write as well though.
-
-So it seems that while the hw is in async mode the surface register
-write arms two different things:
-1. PLANE_SURF update, which gets latched ASAP
-2. PLANE_CTL async bit toggle, which gets latched at the next vblank
-   start.
-
-Actually it might be that the hardware actually arms a full
-PLANE_CTL update for vblank start as well (maybe even all the other
-plane registers), still need to confirm that somehow. Although at
-least we don't get a double "flip done" so in some sense at least
-the surface address update does not seem to get armed as both
-async and sync at the same time.
-
-> 3. proceed with the normal commit for the sync flip, which will now
->    be a real sync flip sinc we alreaydy flipped the bit
-> =
-
-> -- =
-
-> Ville Syrj=E4l=E4
-> Intel
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
--- =
-
-Ville Syrj=E4l=E4
-Intel
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+CgpPbiA5LzExLzIwMjAgNzowMyBQTSwgVmlsbGUgU3lyasOkbMOkIHdyb3RlOgo+IE9uIFdlZCwg
+U2VwIDA5LCAyMDIwIGF0IDA2OjIyOjM5UE0gKzAzMDAsIFZpbGxlIFN5cmrDpGzDpCB3cm90ZToK
+Pj4gT24gVHVlLCBTZXAgMDgsIDIwMjAgYXQgMTE6NDA6MDFBTSArMDUzMCwgS2FydGhpayBCIFMg
+d3JvdGU6Cj4+PiBBc3luY2hyb25vdXMgZmxpcHMgYXJlIGlzc3VlZCB1c2luZyB0aGUgcGFnZSBm
+bGlwIElPQ1RMLgo+Pj4gVGhlIHRlc3QgY29uc2lzdHMgb2YgdHdvIHN1YnRlc3RzLiBUaGUgZmly
+c3Qgc3VidGVzdCB3YWl0cyBmb3IKPj4+IHRoZSBwYWdlIGZsaXAgZXZlbnQgdG8gYmUgcmVjZWl2
+ZWQgYmVmb3JlIGdpdmluZyB0aGUgbmV4dCBmbGlwLAo+Pj4gYW5kIHRoZSBzZWNvbmQgc3VidGVz
+dCBkb2Vzbid0IHdhaXQgZm9yIHBhZ2UgZmxpcCBldmVudHMuCj4+Pgo+Pj4gVGhlIHRlc3QgcGFz
+c2VzIGlmIHRoZSBJT0NUTCBpcyBzdWNjZXNzZnVsLgo+Pj4KPj4+IHYyOiAtQWRkIGF1dGhvcnMg
+aW4gdGhlIHRlc3QgZmlsZS4gKFBhdWxvKQo+Pj4gICAgICAtUmVkdWNlIHRoZSBydW4gdGltZSBh
+bmQgdGltZW91dHMgdG8gc3VpdCBJR1QgbmVlZHMuIChQYXVsbykKPj4+ICAgICAgLVJlcGxhY2Ug
+aWd0X2RlYnVnJ3Mgd2l0aCBpZ3RfYXNzZXJ0J3MgdG8gY2F0Y2ggc2xvdyBmbGlwcy4gKFBhdWxv
+KQo+Pj4gICAgICAtRm9sbG93IElHVCBjb2Rpbmcgc3R5bGUgcmVnYXJkaW5nIHNwYWNlcy4gKFBh
+dWxvKQo+Pj4gICAgICAtTWFrZSBzZXQgdXAgY29kZSBwYXJ0IG9mIGlndF9maXh0dXJlLiAoUGF1
+bG8pCj4+PiAgICAgIC1Ta2lwIHRoZSB0ZXN0IGlmIGFzeW5jIGZsaXBzIGFyZSBub3Qgc3VwcG9y
+dGVkLiAoUGF1bG8pCj4+PiAgICAgIC1SZXBsYWNlIHN1Z2dlc3RlZC1ieS4gKFBhdWxvKQo+Pj4g
+ICAgICAtQWRkZWQgZGVzY3JpcHRpb24gZm9yIHRlc3QgYW5kIHN1YnRlc3RzLgo+Pj4KPj4+IHYz
+OiAtUmVuYW1lIHRoZSB0ZXN0IHRvIGttc19hc3luY19mbGlwcy4gKFBhdWxvKQo+Pj4gICAgICAt
+TW9kaWZ5IHRoZSBUT0RPIGNvbW1lbnQuIChQYXVsbykKPj4+ICAgICAgLVJlbW92ZSBpZ3RfZGVi
+dWcgaW4gZmxpcF9oYW5kbGVyLiAoUGF1bG8pCj4+PiAgICAgIC1Vc2UgZHJtSW9jdGwoKSBpbiBo
+YXNfYXN5bmMgZnVuY3Rpb24uIChQYXVsbykKPj4+ICAgICAgLUFkZCBtb3JlIGRldGFpbHMgaW4g
+aWd0X2Fzc2VydCBpbiBmbGlwX2hhbmRsZXIuIChQYXVsbykKPj4+ICAgICAgLVJlbW92ZSBmbGFn
+IHZhcmlhYmxlIGluIGZsaXBfaGFuZGxlci4gKFBhdWxvKQo+Pj4gICAgICAtQ2FsbCBpZ3RfYXNz
+ZXJ0IGluIGZsaXBfaGFuZGxlciBhZnRlciB0aGUgd2FybSB1cCB0aW1lLgo+Pj4KPj4+IHY0OiAt
+Q2FsY3VsYXRlIHRoZSB0aW1lIHN0YW1wIGluIGZsaXBfaGFuZGxlciBmcm9tIHVzZXJzcGFjZSwg
+YXMgdGhlCj4+PiAgICAgICBrZXJuZWwgd2lsbCByZXR1cm4gdmJsIHRpbWVzdGFtcHMgYW5kIHRo
+aXMgY2Fubm90IGJlIHVzZWQKPj4+ICAgICAgIGZvciBhc3luYyBmbGlwcy4KPj4+ICAgICAgLUFk
+ZCBhIG5ldyBzdWJ0ZXN0IHRvIHZlcmlmeSB0aGF0IHRoZSBhc3luYyBmbGlwIHRpbWUgc3RhbXAK
+Pj4+ICAgICAgIGxpZXMgaW4gYmV0d2VlbiB0aGUgcHJldmlvdXMgYW5kIG5leHQgdmJsYW5rIHRp
+bWUgc3RhbXAuIChEYW5pZWwpCj4+Pgo+Pj4gdjU6IC1BZGQgdGVzdCB0aGF0IGFsdGVybmF0ZXMg
+YmV0d2VlbiBzeW5jIGFuZCBhc3luYyBmbGlwcy4gKFZpbGxlKQo+Pj4gICAgICAtQWRkIHRlc3Qg
+dG8gdmVyaWZ5IGludmFsaWQgYXN5bmMgZmxpcHMuIChWaWxsZSkKPj4+ICAgICAgLVJlbW92ZSB0
+aGUgc3VidGVzdCBhc3luYy1mbGlwLXdpdGhvdXQtcGFnZS1mbGlwLWV2ZW50cy4gKE1pY2hlbCkK
+Pj4+ICAgICAgLVJlbW92ZSB0aGUgaW50ZWwgZ3B1IHJlc3RyaWN0aW9uIGFuZCBtYWtlIHRoZSB0
+ZXN0IGdlbmVyaWMuIChNaWNoZWwpCj4+Pgo+Pj4gdjY6IC1DaGFuZ2UgdGhlIFRIUkVTSE9MRCBm
+cm9tIDEwIHRvIDggYXMgZmFpbHVyZXMgYXJlIHNlZW4gb24gQ0kKPj4+ICAgICAgIG9uIHBsYXRm
+b3JtcyA8PSBnZW4xMC4KPj4+ICAgICAgLUluIG9sZGVyIHBsYXRmb3Jtcyg8PSBnZW4xMCksIGFz
+eW5jIGFkZHJlc3MgdXBkYXRlIGJpdCBpbiBwbGFuZSBjdGwKPj4+ICAgICAgIGlzIGRvdWJsZSBi
+dWZmZXJlZC4gTWFkZSBjaGFuZ2VzIGluIHN1YnRlc3RzIHRvIGFjY29tb2RhdGUgdGhpcy4KPj4K
+Pj4gSXQgYWN0dWFsbHkgdXNlZCB0byB3b3JrIGNvcnJlY3RseSB1bnRpbCBza2wgKEkgc3VzcGVj
+dCkgYnJva2UgaXQuCj4+Cj4+IEkgY29iYmxlZCB0b2dldGhlciBzb21lIGFzeW5jIGZsaXAgc3Vw
+cG9ydCBmb3IgaW50ZWxfZGlzcGxheV9wb2xsZXI6Cj4+IGdpdDovL2dpdGh1Yi5jb20vdnN5cmph
+bGEvaW50ZWwtZ3B1LXRvb2xzLmdpdCBhc3luY19mbGlwXzIKPj4gd2hpY2ggY2FuIGJlIHVzZWQg
+dG8gb2JzZXJ2ZSB0aGUgaGFyZHdhcmUgYmVoYXZpb3VyLgo+Pgo+PiBTbyBmYXIgSSB0cmllZCB0
+aGlzIG9uIGc0eCwgY2h2IGFuZCBzbmIuIEFsbCBhcHBlYXIgdG8gd29yayBjb3JyZWN0bHkuCj4+
+IE15IGNmbCBob3dldmVyIGlzIGJyb2tlbi4gU3RpbGwgbmVlZCB0byBjaGVjayBiZHcgdG8gbWFr
+ZSBzdXJlIGl0IHJlYWxsCj4+IGlzIHNrbCB3aGVyZSBpdCBicm9rZS4KPj4KPj4gVGhpcyBpcyBh
+Y3R1YWxseSBhIHJlYWwgcHJvYmxlbSBmb3Igc2tsLiBXZSBjYW4gcHJvYmFibHkgYWNjZXB0IHRo
+YXQKPj4gdGhlIGZpcnN0IGFzeW5jIGZsaXAgYWN0dWFsbHkgZW5kcyB1cCBiZWluZyBhIHN5bmMg
+ZmxpcC4gSnVzdCBhIG1pbm9yCj4+IGluY29udmVuaWVuY2UgcmVhbGx5LiBUaGUgb3RoZXIgZGly
+ZWN0aW9uIGlzIG11Y2ggbW9yZSBjcml0aWNhbCBzaW5jZQo+PiB0aGUgZmlyc3Qgc3luYyBmbGlw
+IGFmdGVyIGFuIGFzeW5jIGZsaXAgbm93IGFsc28gdHVybnMgaW50byBhbiBhc3luYwo+PiBmbGlw
+LiBUaGF0IG1lYW5zIHdlJ3JlIG5vdyBnb2luZyB0byB0cnkgdG8gdXBkYXRlIGFsbCBraW5kcyBv
+Zgo+PiBwbGFuZS9jcnRjIHN0YXRlIHVzaW5nIGFuIGFzeW5jIGZsaXAsIHdoaWNoIGlzIGlsbGVn
+YWwuCj4+Cj4+IFNvIGZhciB0aGUgb25seSBpZGVhIEkgaGF2ZSBmb3IgYSB3b3JrYXJvdW5kIGlz
+Ogo+PiAxLiBkbyBhbiBleHRyYSBmbGlwIGludGVybmFsbHkgdG8gdG9nZ2xlIHRoZSBhc3luYyBi
+aXQgYmFjayB0byAwCj4+IDIuIHdhaXQgZm9yIHRoZSBhc3luYyBmbGlwIGZyb20gdGhlIHByZXZp
+b3VzIHN0ZXAgdG8gZmluaXNoCj4gCj4gSSBwb2tlZCBhdCBteSBjZmwgYSBiaXQgbW9yZSwgYW5k
+IGl0IHNlZW1zIEkgd2FzIGEgYml0IHdyb25nIGhlcmUuCj4gQWN0dWFsbHkgaXQgbG9va3MgbGlr
+ZSB3ZSBuZWVkIGEgZnVsbCB2Ymxhbmsgd2FpdCBoZXJlLiBXZSBkbyBzdGlsbAo+IG5lZWQgdG8g
+YXJtIHRoZSB1cGRhdGUgd2l0aCB0aGUgc3VyZmFjZSByZWdpc3RlciB3cml0ZSBhcyB3ZWxsIHRo
+b3VnaC4KPiAKPiBTbyBpdCBzZWVtcyB0aGF0IHdoaWxlIHRoZSBodyBpcyBpbiBhc3luYyBtb2Rl
+IHRoZSBzdXJmYWNlIHJlZ2lzdGVyCj4gd3JpdGUgYXJtcyB0d28gZGlmZmVyZW50IHRoaW5nczoK
+PiAxLiBQTEFORV9TVVJGIHVwZGF0ZSwgd2hpY2ggZ2V0cyBsYXRjaGVkIEFTQVAKPiAyLiBQTEFO
+RV9DVEwgYXN5bmMgYml0IHRvZ2dsZSwgd2hpY2ggZ2V0cyBsYXRjaGVkIGF0IHRoZSBuZXh0IHZi
+bGFuawo+ICAgICBzdGFydC4KPiAKPiBBY3R1YWxseSBpdCBtaWdodCBiZSB0aGF0IHRoZSBoYXJk
+d2FyZSBhY3R1YWxseSBhcm1zIGEgZnVsbAo+IFBMQU5FX0NUTCB1cGRhdGUgZm9yIHZibGFuayBz
+dGFydCBhcyB3ZWxsIChtYXliZSBldmVuIGFsbCB0aGUgb3RoZXIKPiBwbGFuZSByZWdpc3RlcnMp
+LCBzdGlsbCBuZWVkIHRvIGNvbmZpcm0gdGhhdCBzb21laG93LiBBbHRob3VnaCBhdAo+IGxlYXN0
+IHdlIGRvbid0IGdldCBhIGRvdWJsZSAiZmxpcCBkb25lIiBzbyBpbiBzb21lIHNlbnNlIGF0IGxl
+YXN0Cj4gdGhlIHN1cmZhY2UgYWRkcmVzcyB1cGRhdGUgZG9lcyBub3Qgc2VlbSB0byBnZXQgYXJt
+ZWQgYXMgYm90aAo+IGFzeW5jIGFuZCBzeW5jIGF0IHRoZSBzYW1lIHRpbWUuCj4gCgpUaGFua3Mg
+Zm9yIHRoZSByZXZpZXcuCkkgYWxzbyB0cmllZCBzb21lIGV4cGVyaW1lbnRzIHdpdGggYSBTS0wg
+YW5kIHRoZSBvYnNlcnZhdGlvbnMgd2VyZSBzYW1lLgpJIHRyaWVkIGJ5IHdhaXRpbmcgZm9yIGZs
+aXAgZG9uZSBhbmQgdGhlbiBpc3N1aW5nIHRoZSBuZXh0IGZsaXAgYnV0IGl0IApzdGlsbCB3YXMg
+aW4gYXN5bmMgbW9kZSBmb3IgdGhlIHNlY29uZCBmbGlwIGFzIHdlbGwuIEFuZCBvbmx5IGFmdGVy
+IGEgCnZibGFuayBwYXNzZWQsIEkgd2FzIGFibGUgdG8gc2VlIHRoZSBzd2l0Y2ggdG8gc3luYyBt
+b2RlLgoJClNvIGluIHRoZSBrZXJuZWwgV0EsIEkgd2lsbCB3YWl0IGZvciB2YmxhbmsgYW5kIGFs
+c28gYXJtIHRoZSB1cGRhdGUgd2l0aCAKdGhlIHN1cmZhY2UgcmVnaXN0ZXIgd3JpdGUsIGZvciBn
+ZW4gOSBhbmQgZ2VuIDEwIHBsYXRmb3Jtcy4gRnJvbSB0aGUgCmJzcGVjLCBpdCBsb29rcyBsaWtl
+IHRoZXNlIHBsYXRmb3JtcyBoYXZlIHRoZSBhc3luYyBhZGRyZXNzIHVwZGF0ZSAKZW5hYmxlIGJp
+dCBkb3VibGUgYnVmZmVyZWQuCgkKVGhhbmtzLApLYXJ0aGlrLkIuUwo+PiAzLiBwcm9jZWVkIHdp
+dGggdGhlIG5vcm1hbCBjb21taXQgZm9yIHRoZSBzeW5jIGZsaXAsIHdoaWNoIHdpbGwgbm93Cj4+
+ICAgICBiZSBhIHJlYWwgc3luYyBmbGlwIHNpbmMgd2UgYWxyZWF5ZHkgZmxpcHBlZCB0aGUgYml0
+Cj4+Cj4+IC0tIAo+PiBWaWxsZSBTeXJqw6Rsw6QKPj4gSW50ZWwKPj4gX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KPj4gaWd0LWRldiBtYWlsaW5nIGxpc3QK
+Pj4gaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKPj4gaHR0cHM6Ly9saXN0cy5mcmVlZGVz
+a3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cj4gCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
+YW4vbGlzdGluZm8vaWd0LWRldgo=
