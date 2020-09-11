@@ -1,59 +1,121 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Fri, 11 Sep 2020 12:30:16 +0200
-Message-Id: <20200911103039.4574-2-janusz.krzysztofik@linux.intel.com>
+Date: Fri, 11 Sep 2020 12:30:18 +0200
+Message-Id: <20200911103039.4574-4-janusz.krzysztofik@linux.intel.com>
 In-Reply-To: <20200911103039.4574-1-janusz.krzysztofik@linux.intel.com>
 References: <20200911103039.4574-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t v6 01/24] tests/core_hotunplug: Use
- igt_assert_fd()
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Subject: [igt-dev] [PATCH i-g-t v6 03/24] tests/core_hotunplug: Clean up
+ device open error handling
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>, intel-gfx@lists.freedesktop.org
+Cc: =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>, Petri Latvala <petri.latvala@intel.com>, intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhlcmUgaXMgYSBuZXcgbGlicmFyeSBoZWxwZXIgdGhhdCBhc3NlcnRzIHZhbGlkaXR5IG9mIG9w
-ZW4gZmlsZQpkZXNjcmlwdG9ycy4gIFVzZSBpdCBpbnN0ZWFkIG9mIG9wZW4gY29kaW5nLgoKU2ln
-bmVkLW9mZi1ieTogSmFudXN6IEtyenlzenRvZmlrIDxqYW51c3oua3J6eXN6dG9maWtAbGludXgu
-aW50ZWwuY29tPgpSZXZpZXdlZC1ieTogTWljaGHFgiBXaW5pYXJza2kgPG1pY2hhbC53aW5pYXJz
-a2lAaW50ZWwuY29tPgotLS0KIHRlc3RzL2NvcmVfaG90dW5wbHVnLmMgfCAxMCArKysrKy0tLS0t
-CiAxIGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQoKZGlmZiAt
-LWdpdCBhL3Rlc3RzL2NvcmVfaG90dW5wbHVnLmMgYi90ZXN0cy9jb3JlX2hvdHVucGx1Zy5jCmlu
-ZGV4IGUwM2YzYjk0NS4uNzQzMTM0NmIxIDEwMDY0NAotLS0gYS90ZXN0cy9jb3JlX2hvdHVucGx1
-Zy5jCisrKyBiL3Rlc3RzL2NvcmVfaG90dW5wbHVnLmMKQEAgLTU3LDcgKzU3LDcgQEAgc3RhdGlj
-IHZvaWQgcHJlcGFyZV9mb3JfdW5iaW5kKHN0cnVjdCBob3R1bnBsdWcgKnByaXYsIGNoYXIgKmJ1
-ZiwgaW50IGJ1ZmxlbikKIAogCXByaXYtPmZkLnN5c2ZzX2RydiA9IG9wZW5hdChwcml2LT5mZC5z
-eXNmc19kZXYsICJkZXZpY2UvZHJpdmVyIiwKIAkJCQkgICAgT19ESVJFQ1RPUlkpOwotCWlndF9h
-c3NlcnQocHJpdi0+ZmQuc3lzZnNfZHJ2ID49IDApOworCWlndF9hc3NlcnRfZmQocHJpdi0+ZmQu
-c3lzZnNfZHJ2KTsKIAogCWxlbiA9IHJlYWRsaW5rYXQocHJpdi0+ZmQuc3lzZnNfZGV2LCAiZGV2
-aWNlIiwgYnVmLCBidWZsZW4gLSAxKTsKIAlidWZbbGVuXSA9ICdcMCc7CkBAIC03MiwxMCArNzIs
-MTAgQEAgc3RhdGljIHZvaWQgcHJlcGFyZShzdHJ1Y3QgaG90dW5wbHVnICpwcml2LCBjaGFyICpi
-dWYsIGludCBidWZsZW4pCiB7CiAJaWd0X2RlYnVnKCJvcGVuaW5nIGRldmljZVxuIik7CiAJcHJp
-di0+ZmQuZHJtID0gX19kcm1fb3Blbl9kcml2ZXIoRFJJVkVSX0FOWSk7Ci0JaWd0X2Fzc2VydChw
-cml2LT5mZC5kcm0gPj0gMCk7CisJaWd0X2Fzc2VydF9mZChwcml2LT5mZC5kcm0pOwogCiAJcHJp
-di0+ZmQuc3lzZnNfZGV2ID0gaWd0X3N5c2ZzX29wZW4ocHJpdi0+ZmQuZHJtKTsKLQlpZ3RfYXNz
-ZXJ0KHByaXYtPmZkLnN5c2ZzX2RldiA+PSAwKTsKKwlpZ3RfYXNzZXJ0X2ZkKHByaXYtPmZkLnN5
-c2ZzX2Rldik7CiAKIAlpZiAoYnVmKSB7CiAJCXByZXBhcmVfZm9yX3VuYmluZChwcml2LCBidWYs
-IGJ1Zmxlbik7CkBAIC04Myw3ICs4Myw3IEBAIHN0YXRpYyB2b2lkIHByZXBhcmUoc3RydWN0IGhv
-dHVucGx1ZyAqcHJpdiwgY2hhciAqYnVmLCBpbnQgYnVmbGVuKQogCQkvKiBwcmVwYXJlIGZvciBi
-dXMgcmVzY2FuICovCiAJCXByaXYtPmZkLnN5c2ZzX2J1cyA9IG9wZW5hdChwcml2LT5mZC5zeXNm
-c19kZXYsCiAJCQkJCSAgICAiZGV2aWNlL3N1YnN5c3RlbSIsIE9fRElSRUNUT1JZKTsKLQkJaWd0
-X2Fzc2VydChwcml2LT5mZC5zeXNmc19idXMgPj0gMCk7CisJCWlndF9hc3NlcnRfZmQocHJpdi0+
-ZmQuc3lzZnNfYnVzKTsKIAl9CiB9CiAKQEAgLTI2MSw3ICsyNjEsNyBAQCBpZ3RfbWFpbgogCQkg
-KiBhIGRldmljZSBmaWxlIGRlc2NyaXB0b3Igb3BlbiBmb3IgZXhpdCBoYW5kbGVyIHVzZS4KIAkJ
-ICovCiAJCWZkX2RybSA9IF9fZHJtX29wZW5fZHJpdmVyKERSSVZFUl9BTlkpOwotCQlpZ3RfYXNz
-ZXJ0KGZkX2RybSA+PSAwKTsKKwkJaWd0X2Fzc2VydF9mZChmZF9kcm0pOwogCiAJCWlmIChpc19p
-OTE1X2RldmljZShmZF9kcm0pKQogCQkJaWd0X3JlcXVpcmVfZ2VtKGZkX2RybSk7Ci0tIAoyLjIx
-LjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkludGVs
-LWdmeCBtYWlsaW5nIGxpc3QKSW50ZWwtZ2Z4QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczov
-L2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ludGVsLWdmeAo=
+We don't use drm_driver_open() since in case of an i915 device it keeps
+an extra file descriptor of the exercised device open for exit handler
+use, while we would like to be able to close the device completely
+before running certain test operations.  Instead, we call
+__drm_driver_open() and handle its result ourselves.  Unlike
+drm_driver_open() which skips on device open errors, we always fail or
+abort the test in such case.  Moreover, we don't ensure that the i915
+driver is idle before starting subtests like drm_open_driver() does.
+
+Skip instead of failing on initial device open error.  Also, call
+gem_quiescent_gpu() if an i915 device is detected.  For subsequent
+device opens, define a local helper that fails on error and use it.  If
+we think we need to abort the test execution on device open error, set
+our failure marker first to trigger the abort from a follow up
+igt_fixture section.
+
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ tests/core_hotunplug.c | 34 +++++++++++++++++++++++-----------
+ 1 file changed, 23 insertions(+), 11 deletions(-)
+
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index a4071f51e..e576a6c6c 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -49,6 +49,21 @@ struct hotunplug {
+ 
+ /* Helpers */
+ 
++/**
++ * Subtests must be able to close examined devices completely.  Don't
++ * use drm_open_driver() since in case of an i915 device it opens it
++ * twice and keeps a second file descriptor open for exit handler use.
++ */
++static int local_drm_open_driver(void)
++{
++	int fd_drm;
++
++	fd_drm = __drm_open_driver(DRIVER_ANY);
++	igt_assert_fd(fd_drm);
++
++	return fd_drm;
++}
++
+ static void prepare_for_unbind(struct hotunplug *priv, char *buf, int buflen)
+ {
+ 	int len;
+@@ -71,8 +86,7 @@ static void prepare_for_unbind(struct hotunplug *priv, char *buf, int buflen)
+ static void prepare(struct hotunplug *priv, char *buf, int buflen)
+ {
+ 	igt_debug("opening device\n");
+-	priv->fd.drm = __drm_open_driver(DRIVER_ANY);
+-	igt_assert_fd(priv->fd.drm);
++	priv->fd.drm = local_drm_open_driver();
+ 
+ 	priv->fd.sysfs_dev = igt_sysfs_open(priv->fd.drm);
+ 	igt_assert_fd(priv->fd.sysfs_dev);
+@@ -145,8 +159,9 @@ static void healthcheck(void)
+ 	igt_devices_scan(true);
+ 
+ 	igt_debug("reopening the device\n");
+-	fd_drm = __drm_open_driver(DRIVER_ANY);
+-	igt_abort_on_f(fd_drm < 0, "Device reopen failure");
++	failure = "Device reopen failure!";
++	fd_drm = local_drm_open_driver();
++	failure = NULL;
+ 
+ 	if (is_i915_device(fd_drm)) {
+ 		failure = "GEM failure";
+@@ -255,16 +270,13 @@ igt_main
+ 	igt_fixture {
+ 		int fd_drm;
+ 
+-		/**
+-		 * As subtests must be able to close examined devices
+-		 * completely, don't use drm_open_driver() as it keeps
+-		 * a device file descriptor open for exit handler use.
+-		 */
+ 		fd_drm = __drm_open_driver(DRIVER_ANY);
+-		igt_assert_fd(fd_drm);
++		igt_skip_on_f(fd_drm < 0, "No known DRM device found\n");
+ 
+-		if (is_i915_device(fd_drm))
++		if (is_i915_device(fd_drm)) {
++			gem_quiescent_gpu(fd_drm);
+ 			igt_require_gem(fd_drm);
++		}
+ 
+ 		/* Make sure subtests always reopen the same device */
+ 		set_filter_from_device(fd_drm);
+-- 
+2.21.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
