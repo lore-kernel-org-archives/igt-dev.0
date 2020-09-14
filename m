@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 31E066E550
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Sep 2020 19:19:38 +0000 (UTC)
-Message-ID: <b486d9d8aab62930853beb5e1485166f27072c9e.camel@linux.intel.com>
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Date: Mon, 14 Sep 2020 21:19:29 +0200
-In-Reply-To: <20200914133652.13021-1-uma.shankar@intel.com>
-References: <20200914133652.13021-1-uma.shankar@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC65A6E57E
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Sep 2020 19:21:50 +0000 (UTC)
+From: apoorva1.singh@intel.com
+Date: Tue, 15 Sep 2020 00:54:55 +0530
+Message-Id: <20200914192455.2107119-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/device_reset: Work around for
- driver unbind issue with audio
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_mmap_wc: Added test description
+ for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,59 +19,144 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Uma Shankar <uma.shankar@intel.com>, igt-dev@lists.freedesktop.org
-Cc: marcin.bernatowicz@intel.com, Lakshminarayana Vudum <lakshminarayana.vudum@intel.com>
+To: igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, 2020-09-14 at 19:06 +0530, Uma Shankar wrote:
-> Unbinding the i915 driver on some Haswell and Broadwell platforms with
-> Azalia audio results in a kernel WARNING on "i915 raw-wakerefs=1
-> wakelocks=1 on cleanup".  The issue can be worked around by manually
-> enabling runtime power management for the conflicting audio adapter.
-> Use that method but also display a warning to preserve visibility of
-> the issue. Also tag the workaround with a FIXME comment.
-> 
-> Suggested-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Signed-off-by: Uma Shankar <uma.shankar@intel.com>
-> Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Apoorva Singh <apoorva1.singh@intel.com>
 
-Pushed.
+Added test description to all the available subtests.
 
-@Lakshmi, since kernel WARN has been replaced with an IGT warning but
-the issue remains the same, please update the filter of the bug.
+Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+---
+ tests/i915/gem_mmap_wc.c | 45 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-Thanks,
-Janusz
-
-> ---
->  tests/device_reset.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/tests/device_reset.c b/tests/device_reset.c
-> index b1181b3b..9cb59ee4 100644
-> --- a/tests/device_reset.c
-> +++ b/tests/device_reset.c
-> @@ -232,9 +232,20 @@ static void set_device_filter(const char* dev_path)
->  
->  static void unbind_reset_rebind(struct device_fds *dev)
->  {
-> +	uint32_t devid = intel_get_drm_devid(dev->fds.dev);
->  	igt_debug("close the device\n");
->  	close_if_opened(&dev->fds.dev);
->  
-> +	/**
-> +	 * FIXME: Unbinding the i915 driver on some platforms with Azalia audio
-> +	 * results in a kernel WARN on "i915 raw-wakerefs=1 wakelocks=1 on cleanup".
-> +	 * The below CI friendly user level workaround prevents the warning from
-> +	 * appearing. Drop this hack as soon as this is fixed in the kernel.
-> +	 */
-> +	if (igt_warn_on_f((bool) IS_HASWELL(devid) || IS_BROADWELL(devid),
-> +	    "Manually enabling audio PM to work around a kernel WARN\n"))
-> +		igt_pm_enable_audio_runtime_pm();
-> +
->  	driver_unbind(dev);
->  
->  	initiate_device_reset(dev);
+diff --git a/tests/i915/gem_mmap_wc.c b/tests/i915/gem_mmap_wc.c
+index f44b406d..aa98d408 100644
+--- a/tests/i915/gem_mmap_wc.c
++++ b/tests/i915/gem_mmap_wc.c
+@@ -38,6 +38,8 @@
+ #include <sys/ioctl.h>
+ #include "drm.h"
+ 
++IGT_TEST_DESCRIPTION("Tests the extended version of MMAP IOCTL (Write Combine)");
++
+ struct local_i915_gem_mmap_v2 {
+ 	uint32_t handle;
+ 	uint32_t pad;
+@@ -505,6 +507,7 @@ igt_main
+ 		gem_require_mmap_wc(fd);
+ 	}
+ 
++	igt_describe("Verify mapping to invalid gem object won't be created");
+ 	igt_subtest("bad-object") {
+ 		uint32_t real_handle = gem_create(fd, 4096);
+ 		uint32_t handles[20];
+@@ -528,6 +531,7 @@ igt_main
+ 		gem_close(fd, real_handle);
+ 	}
+ 
++	igt_describe("Verify mapping to gem object with invalid offset won't be created");
+ 	igt_subtest("bad-offset") {
+ 		struct bad_offset {
+ 			uint64_t size;
+@@ -555,6 +559,7 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_describe("Verify mapping to gem object with invalid size won't be created");
+ 	igt_subtest("bad-size") {
+ 		uint64_t bad_size[] = {
+ 			0,
+@@ -577,45 +582,85 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_describe("Verify mapping to gem object with invalid flag won't be created");
+ 	igt_subtest("invalid-flags")
+ 		test_invalid_flags(fd);
++
++	igt_describe("Verify memory mapping to gem object persists after gem_close");
+ 	igt_subtest("close")
+ 		test_close(fd);
++
++	igt_describe("Verify copying between two memory mapped gem objects works fine");
+ 	igt_subtest("copy")
+ 		test_copy(fd);
++
++	igt_describe("Verify reading from newly created gem obejct works fine");
+ 	igt_subtest("read")
+ 		test_read(fd);
++
++	igt_describe("Verify writing into newly created gem object works fine");
+ 	igt_subtest("write")
+ 		test_write(fd);
++
++	igt_describe("Tests that mmap and mmap(wc) mappings to a gem object are "
++	       "coherent after cache flush");
+ 	igt_subtest("coherency")
+ 		test_coherency(fd);
++
++	igt_describe("Verify writing into prefaulted gem object works fine");
+ 	igt_subtest("write-prefaulted")
+ 		test_write_prefaulted(fd);
++
++	igt_describe("Tests read and subsequent write on buffer object");
+ 	igt_subtest("read-write")
+ 		test_read_write(fd, READ_BEFORE_WRITE);
++
++	igt_describe("Tests write and subsequent read on buffer object");
+ 	igt_subtest("write-read")
+ 		test_read_write(fd, READ_AFTER_WRITE);
++
++	igt_describe("Tests read before write using distinct mmap(wc) mappings to "
++	       "same buffer object");
+ 	igt_subtest("read-write-distinct")
+ 		test_read_write2(fd, READ_BEFORE_WRITE);
++
++	igt_describe("Tests write before read using distinct mmap(wc) mappings to "
++	       "same buffer object");
+ 	igt_subtest("write-read-distinct")
+ 		test_read_write2(fd, READ_AFTER_WRITE);
++
++	igt_describe("Verify concurrent access of a gem object by multiple threads work fine");
+ 	igt_subtest("fault-concurrent")
+ 		test_fault_concurrent(fd);
++
++	igt_describe("Checks the coherency of data written into gem object using cpu mmap and "
++	       "read from it using write combine mmap, having WC domain set");
+ 	igt_subtest("write-cpu-read-wc")
+ 		test_write_cpu_read_wc(fd, 1);
++
++        igt_describe("Checks the coherency of data written into gem object using cpu mmap and "
++               "read from it using write combine mmap, not having WC domain set");
+ 	igt_subtest("write-cpu-read-wc-unflushed")
+ 		test_write_cpu_read_wc(fd, 0);
+ 
+ 	igt_subtest_group {
+ 		igt_fixture gem_require_mappable_ggtt(fd);
++
++	        igt_describe("Checks the coherency of data written into gem object using write "
++		       "combine mmap and read from it using gtt mmap");
+ 		igt_subtest("write-wc-read-gtt")
+ 			test_write_wc_read_gtt(fd);
++
++		igt_describe("Checks the coherency of data written into gem object using gtt "
++		       "mmap and read from it using write combine mmap");
+ 		igt_subtest("write-gtt-read-gtt")
+ 			test_write_gtt_read_wc(fd);
+ 	}
+ 
++	igt_describe("Verify initial page faulting completes within a specified time");
+ 	igt_subtest("pf-nonblock")
+ 		test_pf_nonblock(fd);
++
+ 	igt_subtest("set-cache-level")
+ 		test_set_cache_level(fd);
+ 
+-- 
+2.28.0
 
 _______________________________________________
 igt-dev mailing list
