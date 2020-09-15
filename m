@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from m43-7.mailgun.net (m43-7.mailgun.net [69.72.43.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 872C36E187
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Sep 2020 19:56:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D3A66E167
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Sep 2020 19:56:26 +0000 (UTC)
 From: Abhinav Kumar <abhinavk@codeaurora.org>
-Date: Tue, 15 Sep 2020 12:56:12 -0700
-Message-Id: <20200915195614.7618-4-abhinavk@codeaurora.org>
-In-Reply-To: <20200915195614.7618-1-abhinavk@codeaurora.org>
-References: <20200915195614.7618-1-abhinavk@codeaurora.org>
+Date: Tue, 15 Sep 2020 12:56:09 -0700
+Message-Id: <20200915195614.7618-1-abhinavk@codeaurora.org>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2 3/5] lib/igt_fb: move the CTS fill
- framebuffer to igt_fb lib
+Subject: [igt-dev] [PATCH i-g-t v2 0/5] Add support for video pattern DP CTS
+ for MSM chipsets
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,133 +15,57 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 Cc: petri.latvala@intel.com, swboyd@chromium.org, khsieh@codeaurora.org, nganji@codeaurora.org, seanpaul@chromium.org, tanmay@codeaurora.org, aravindh@codeaurora.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhlIGZ1bmN0aW9uIHRvIGZpbGwgdGhlIGZyYW1lYnVmZmVyIHdpdGggdGhlIENUUyBwYXR0ZXJu
-CmlzIGdlbmVyaWMuIE1vdmUgaXQgdG8gdGhlIGlndF9mYiBsYXllciBzbyB0aGF0IGl0IGNhbiBi
-ZSB1c2VkIGJ5Cm90aGVyIG1vZHVsZXMuCgpjaGFuZ2VzIGluIHYyOiBub25lCgpTaWduZWQtb2Zm
-LWJ5OiBBYmhpbmF2IEt1bWFyIDxhYmhpbmF2a0Bjb2RlYXVyb3JhLm9yZz4KUmV2aWV3ZWQtYnk6
-IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgotLS0KIGxpYi9pZ3RfZmIu
-YyAgICAgICAgICAgICAgICB8IDY1ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysK
-IGxpYi9pZ3RfZmIuaCAgICAgICAgICAgICAgICB8ICAzICsrCiB0b29scy9pbnRlbF9kcF9jb21w
-bGlhbmNlLmMgfCA3MCArKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAzIGZp
-bGVzIGNoYW5nZWQsIDc4IGluc2VydGlvbnMoKyksIDYwIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdp
-dCBhL2xpYi9pZ3RfZmIuYyBiL2xpYi9pZ3RfZmIuYwppbmRleCA1ZTM3MDZlOS4uZDE5YjljOGIg
-MTAwNjQ0Ci0tLSBhL2xpYi9pZ3RfZmIuYworKysgYi9saWIvaWd0X2ZiLmMKQEAgLTEsNCArMSw1
-IEBACiAvKgorICogQ29weXJpZ2h0IChjKSAyMDIwLCBUaGUgTGludXggRm91bmRhdGlvbi4gQWxs
-IHJpZ2h0cyByZXNlcnZlZC4KICAqIENvcHlyaWdodCDCqSAyMDEzLDIwMTQgSW50ZWwgQ29ycG9y
-YXRpb24KICAqCiAgKiBQZXJtaXNzaW9uIGlzIGhlcmVieSBncmFudGVkLCBmcmVlIG9mIGNoYXJn
-ZSwgdG8gYW55IHBlcnNvbiBvYnRhaW5pbmcgYQpAQCAtMTI4MCw2ICsxMjgxLDcwIEBAIHZvaWQg
-aWd0X3BhaW50X2NvbG9yKGNhaXJvX3QgKmNyLCBpbnQgeCwgaW50IHksIGludCB3LCBpbnQgaCwK
-IAljYWlyb19maWxsKGNyKTsKIH0KIAorLyoqCisgKiBpZ3RfZmlsbF9jdHNfZnJhbWVidWZmZXI6
-CisgKiBAcGl4bWFwOiBoYW5kbGUgdG8gdGhlIG1hcHBlZCBidWZmZXIKKyAqIEB2aWRlb193aWR0
-aDogcmVxdWlyZWQgd2lkdGggZm9yIHRoZSBDVFMgcGF0dGVybgorICogQHZpZGVvX2hlaWdodDog
-cmVxdWlyZWQgaGVpZ2h0IGZvciB0aGUgQ1RTIHBhdHRlcm4KKyAqIEBiaXRkZXB0aDogcmVxdWly
-ZWQgYml0ZGVwdGggZm9yIHRoZSBDVFMgcGF0dGVybgorICogQGFscGhhOiByZXF1aXJlZCBhbHBo
-YSBmb3IgdGhlIENUUyBwYXR0ZXJuCisgKiBUaGlzIGZ1bmN0aW9ucyBkcmF3cyB0aGUgQ1RTIHRl
-c3QgcGF0dGVybiBmb3IgYSBnaXZlbiB3aWR0aCwgaGVpZ2h0LgorICovCitpbnQgaWd0X2ZpbGxf
-Y3RzX2ZyYW1lYnVmZmVyKHVpbnQzMl90ICpwaXhtYXAsIHVpbnQzMl90IHZpZGVvX3dpZHRoLAor
-CQl1aW50MzJfdCB2aWRlb19oZWlnaHQsIHVpbnQzMl90IGJpdGRlcHRoLCBpbnQgYWxwaGEpCit7
-CisJdWludDMyX3QgdGlsZV9oZWlnaHQsIHRpbGVfd2lkdGg7CisJdWludDMyX3QgKnJlZF9wdHIs
-ICpncmVlbl9wdHIsICpibHVlX3B0cjsKKwl1aW50MzJfdCAqd2hpdGVfcHRyLCAqc3JjX3B0ciwg
-KmRzdF9wdHI7CisJaW50IHgsIHk7CisJaW50MzJfdCBwaXhlbF92YWw7CisKKwl0aWxlX2hlaWdo
-dCA9IDY0OworCXRpbGVfd2lkdGggPSAxIDw8IGJpdGRlcHRoOworCisJcmVkX3B0ciA9IHBpeG1h
-cDsKKwlncmVlbl9wdHIgPSByZWRfcHRyICsgKHZpZGVvX3dpZHRoICogdGlsZV9oZWlnaHQpOwor
-CWJsdWVfcHRyID0gZ3JlZW5fcHRyICsgKHZpZGVvX3dpZHRoICogdGlsZV9oZWlnaHQpOworCXdo
-aXRlX3B0ciA9IGJsdWVfcHRyICsgKHZpZGVvX3dpZHRoICogdGlsZV9oZWlnaHQpOworCXggPSAw
-OworCisJLyogRmlsbCB0aGUgZnJhbWUgYnVmZmVyIHdpdGggdmlkZW8gcGF0dGVybiBmcm9tIENU
-UyAzLjEuNSAqLworCXdoaWxlICh4IDwgdmlkZW9fd2lkdGgpIHsKKwkJZm9yIChwaXhlbF92YWwg
-PSAwOyBwaXhlbF92YWwgPCAyNTY7CisJCSAgICAgcGl4ZWxfdmFsID0gcGl4ZWxfdmFsICsgKDI1
-NiAvIHRpbGVfd2lkdGgpKSB7CisJCQlyZWRfcHRyW3hdID0gYWxwaGEgPDwgMjQgfCBwaXhlbF92
-YWwgPDwgMTY7CisJCQlncmVlbl9wdHJbeF0gPSBhbHBoYSA8PCAyNCB8IHBpeGVsX3ZhbCA8PCA4
-OworCQkJYmx1ZV9wdHJbeF0gPSBhbHBoYSA8PCAyNCB8IHBpeGVsX3ZhbCA8PCAwOworCQkJd2hp
-dGVfcHRyW3hdID0gYWxwaGEgPDwgMjQgfCByZWRfcHRyW3hdIHwgZ3JlZW5fcHRyW3hdIHwKKwkJ
-CQkgICAgICAgYmx1ZV9wdHJbeF07CisJCQlpZiAoKyt4ID49IHZpZGVvX3dpZHRoKQorCQkJCWJy
-ZWFrOworCQl9CisJfQorCWZvciAoeSA9IDA7IHkgPCB2aWRlb19oZWlnaHQ7IHkrKykgeworCQlp
-ZiAoeSA9PSAwIHx8IHkgPT0gNjQgfHwgeSA9PSAxMjggfHwgeSA9PSAxOTIpCisJCQljb250aW51
-ZTsKKwkJc3dpdGNoICgoeSAvIHRpbGVfaGVpZ2h0KSAlIDQpIHsKKwkJY2FzZSAwOgorCQkJc3Jj
-X3B0ciA9IHJlZF9wdHI7CisJCQlicmVhazsKKwkJY2FzZSAxOgorCQkJc3JjX3B0ciA9IGdyZWVu
-X3B0cjsKKwkJCWJyZWFrOworCQljYXNlIDI6CisJCQlzcmNfcHRyID0gYmx1ZV9wdHI7CisJCQli
-cmVhazsKKwkJY2FzZSAzOgorCQkJc3JjX3B0ciA9IHdoaXRlX3B0cjsKKwkJCWJyZWFrOworCQl9
-CisJCWRzdF9wdHIgPSBwaXhtYXAgKyAoeSAqIHZpZGVvX3dpZHRoKTsKKwkJbWVtY3B5KGRzdF9w
-dHIsIHNyY19wdHIsICh2aWRlb193aWR0aCAqIDQpKTsKKwl9CisKKwlyZXR1cm4gMDsKK30KKwog
-LyoqCiAgKiBpZ3RfcGFpbnRfY29sb3JfYWxwaGE6CiAgKiBAY3I6IGNhaXJvIGRyYXdpbmcgY29u
-dGV4dApkaWZmIC0tZ2l0IGEvbGliL2lndF9mYi5oIGIvbGliL2lndF9mYi5oCmluZGV4IGRlYmZi
-NWFkLi5iMzZkYjk2NSAxMDA2NDQKLS0tIGEvbGliL2lndF9mYi5oCisrKyBiL2xpYi9pZ3RfZmIu
-aApAQCAtMSw0ICsxLDUgQEAKIC8qCisgKiBDb3B5cmlnaHQgKGMpIDIwMjAsIFRoZSBMaW51eCBG
-b3VuZGF0aW9uLiBBbGwgcmlnaHRzIHJlc2VydmVkLgogICogQ29weXJpZ2h0IMKpIDIwMTMsMjAx
-NCBJbnRlbCBDb3Jwb3JhdGlvbgogICoKICAqIFBlcm1pc3Npb24gaXMgaGVyZWJ5IGdyYW50ZWQs
-IGZyZWUgb2YgY2hhcmdlLCB0byBhbnkgcGVyc29uIG9idGFpbmluZyBhCkBAIC0yMDYsNiArMjA3
-LDggQEAgYm9vbCBpZ3RfZm9ybWF0X2lzX2ZwMTYodWludDMyX3QgZHJtX2Zvcm1hdCk7CiBpbnQg
-aWd0X2Zvcm1hdF9wbGFuZV9icHAodWludDMyX3QgZHJtX2Zvcm1hdCwgaW50IHBsYW5lKTsKIHZv
-aWQgaWd0X2Zvcm1hdF9hcnJheV9maWxsKHVpbnQzMl90ICoqZm9ybWF0c19hcnJheSwgdW5zaWdu
-ZWQgaW50ICpjb3VudCwKIAkJCSAgIGJvb2wgYWxsb3dfeXV2KTsKK2ludCBpZ3RfZmlsbF9jdHNf
-ZnJhbWVidWZmZXIodWludDMyX3QgKnBpeG1hcCwgdWludDMyX3QgdmlkZW9fd2lkdGgsCisJCXVp
-bnQzMl90IHZpZGVvX2hlaWdodCwgdWludDMyX3QgYml0ZGVwdGgsIGludCBhbHBoYSk7CiAKIGlu
-dCBpZ3RfZmJfZ2V0X2ZudjFhX2NyYyhzdHJ1Y3QgaWd0X2ZiICpmYiwgaWd0X2NyY190ICpjcmMp
-OwogCmRpZmYgLS1naXQgYS90b29scy9pbnRlbF9kcF9jb21wbGlhbmNlLmMgYi90b29scy9pbnRl
-bF9kcF9jb21wbGlhbmNlLmMKaW5kZXggZmM1MTI3MTEuLmM4YzVjODQxIDEwMDY0NAotLS0gYS90
-b29scy9pbnRlbF9kcF9jb21wbGlhbmNlLmMKKysrIGIvdG9vbHMvaW50ZWxfZHBfY29tcGxpYW5j
-ZS5jCkBAIC00NDgsNzAgKzQ0OCwxMiBAQCBzdGF0aWMgaW50IHNldHVwX3ZpZGVvX3BhdHRlcm5f
-ZnJhbWVidWZmZXIoc3RydWN0IGNvbm5lY3RvciAqZHBfY29ubikKIAogfQogCi1zdGF0aWMgaW50
-IGZpbGxfZnJhbWVidWZmZXIoc3RydWN0IGNvbm5lY3RvciAqZHBfY29ubikKLXsKLQl1aW50MzJf
-dCB0aWxlX2hlaWdodCwgdGlsZV93aWR0aCwgdmlkZW9fd2lkdGgsIHZpZGVvX2hlaWdodDsKLQl1
-aW50MzJfdCAqcmVkX3B0ciwgKmdyZWVuX3B0ciwgKmJsdWVfcHRyLCAqd2hpdGVfcHRyLCAqc3Jj
-X3B0ciwgKmRzdF9wdHI7Ci0JaW50IHgsIHk7Ci0JaW50MzJfdCBwaXhlbF92YWw7Ci0JdWludDhf
-dCBhbHBoYTsKLQotCXZpZGVvX3dpZHRoID0gZHBfY29ubi0+dGVzdF9wYXR0ZXJuLmhkaXNwbGF5
-OwotCXZpZGVvX2hlaWdodCA9IGRwX2Nvbm4tPnRlc3RfcGF0dGVybi52ZGlzcGxheTsKLQotCXRp
-bGVfaGVpZ2h0ID0gNjQ7Ci0JdGlsZV93aWR0aCA9IDEgPDwgIChkcF9jb25uLT50ZXN0X3BhdHRl
-cm4uYml0ZGVwdGgpOwotCi0JcmVkX3B0ciA9IGRwX2Nvbm4tPnRlc3RfcGF0dGVybi5waXhtYXA7
-Ci0JZ3JlZW5fcHRyID0gcmVkX3B0ciArICh2aWRlb193aWR0aCAqIHRpbGVfaGVpZ2h0KTsKLQli
-bHVlX3B0ciA9IGdyZWVuX3B0ciArICh2aWRlb193aWR0aCAqIHRpbGVfaGVpZ2h0KTsKLQl3aGl0
-ZV9wdHIgPSBibHVlX3B0ciArICh2aWRlb193aWR0aCAqIHRpbGVfaGVpZ2h0KTsKLQl4ID0gMDsK
-LQotCS8qIEZpbGwgdGhlIGZyYW1lIGJ1ZmZlciB3aXRoIHZpZGVvIHBhdHRlcm4gZnJvbSBDVFMg
-My4xLjUgKi8KLQl3aGlsZSAoeCA8IHZpZGVvX3dpZHRoKSB7Ci0JCWZvciAocGl4ZWxfdmFsID0g
-MDsgcGl4ZWxfdmFsIDwgMjU2OwotCQkgICAgIHBpeGVsX3ZhbCA9IHBpeGVsX3ZhbCArICgyNTYg
-LyB0aWxlX3dpZHRoKSkgewotCQkJYWxwaGEgPSBnZW4gPT0gMTAgPyAweGZmIDogMDsKLQkJCXJl
-ZF9wdHJbeF0gPSBhbHBoYSA8PCAyNCB8IHBpeGVsX3ZhbCA8PCAxNjsKLQkJCWdyZWVuX3B0clt4
-XSA9IGFscGhhIDw8IDI0IHwgcGl4ZWxfdmFsIDw8IDg7Ci0JCQlibHVlX3B0clt4XSA9IGFscGhh
-IDw8IDI0IHwgcGl4ZWxfdmFsIDw8IDA7Ci0JCQl3aGl0ZV9wdHJbeF0gPSBhbHBoYSA8PCAyNCB8
-IHJlZF9wdHJbeF0gfCBncmVlbl9wdHJbeF0gfAotCQkJCSAgICAgICBibHVlX3B0clt4XTsKLQkJ
-CWlmICgrK3ggPj0gdmlkZW9fd2lkdGgpCi0JCQkJYnJlYWs7Ci0JCX0KLQl9Ci0JZm9yICh5ID0g
-MDsgeSA8IHZpZGVvX2hlaWdodDsgeSsrKSB7Ci0JCWlmICh5ID09IDAgfHwgeSA9PSA2NCB8fCB5
-ID09IDEyOCB8fCB5ID09IDE5MikKLQkJCWNvbnRpbnVlOwotCQlzd2l0Y2ggKCh5IC8gdGlsZV9o
-ZWlnaHQpICUgNCkgewotCQljYXNlIDA6Ci0JCQlzcmNfcHRyID0gcmVkX3B0cjsKLQkJCWJyZWFr
-OwotCQljYXNlIDE6Ci0JCQlzcmNfcHRyID0gZ3JlZW5fcHRyOwotCQkJYnJlYWs7Ci0JCWNhc2Ug
-MjoKLQkJCXNyY19wdHIgPSBibHVlX3B0cjsKLQkJCWJyZWFrOwotCQljYXNlIDM6Ci0JCQlzcmNf
-cHRyID0gd2hpdGVfcHRyOwotCQkJYnJlYWs7Ci0JCX0KLQkJZHN0X3B0ciA9IGRwX2Nvbm4tPnRl
-c3RfcGF0dGVybi5waXhtYXAgKyAoeSAqIHZpZGVvX3dpZHRoKTsKLQkJbWVtY3B5KGRzdF9wdHIs
-IHNyY19wdHIsICh2aWRlb193aWR0aCAqIDQpKTsKLQl9Ci0JbXVubWFwKGRwX2Nvbm4tPnRlc3Rf
-cGF0dGVybi5waXhtYXAsCi0JICAgICAgIGRwX2Nvbm4tPnRlc3RfcGF0dGVybi5zaXplKTsKLQly
-ZXR1cm4gMDsKLX0KLQogc3RhdGljIGludCBzZXRfdGVzdF9tb2RlKHN0cnVjdCBjb25uZWN0b3Ig
-KmRwX2Nvbm4pCiB7CiAJaW50IHJldCA9IDA7CiAJaW50IGk7CiAJYm9vbCBmb3VuZF9zdGQgPSBm
-YWxzZSwgZm91bmRfZnMgPSBmYWxzZTsKKwl1aW50MzJfdCBhbHBoYTsKIAlkcm1Nb2RlQ29ubmVj
-dG9yICpjID0gZHBfY29ubi0+Y29ubmVjdG9yOwogCiAJLyogSWdub3JlIGFueSBkaXNjb25uZWN0
-ZWQgZGV2aWNlcyAqLwpAQCAtNTg0LDYgKzUyNiw3IEBAIHN0YXRpYyBpbnQgc2V0X3Rlc3RfbW9k
-ZShzdHJ1Y3QgY29ubmVjdG9yICpkcF9jb25uKQogCQlkcF9jb25uLT50ZXN0X3BhdHRlcm4uaGRp
-c3BsYXkgPSBoZGlzcGxheTsKIAkJZHBfY29ubi0+dGVzdF9wYXR0ZXJuLnZkaXNwbGF5ID0gdmRp
-c3BsYXk7CiAJCWRwX2Nvbm4tPnRlc3RfcGF0dGVybi5iaXRkZXB0aCA9IGJpdGRlcHRoOworCQlh
-bHBoYSA9IGdlbiA9PSAxMCA/IDB4ZmYgOiAwOwogCiAJCXJldCA9IHNldHVwX3ZpZGVvX3BhdHRl
-cm5fZnJhbWVidWZmZXIoZHBfY29ubik7CiAJCWlmIChyZXQpIHsKQEAgLTU5MiwxMiArNTM1LDE5
-IEBAIHN0YXRpYyBpbnQgc2V0X3Rlc3RfbW9kZShzdHJ1Y3QgY29ubmVjdG9yICpkcF9jb25uKQog
-CQkJcmV0dXJuIHJldDsKIAkJfQogCi0JCXJldCA9IGZpbGxfZnJhbWVidWZmZXIoZHBfY29ubik7
-CisJCXJldCA9IGlndF9maWxsX2N0c19mcmFtZWJ1ZmZlcihkcF9jb25uLT50ZXN0X3BhdHRlcm4u
-cGl4bWFwLAorCQkJCWRwX2Nvbm4tPnRlc3RfcGF0dGVybi5oZGlzcGxheSwKKwkJCQlkcF9jb25u
-LT50ZXN0X3BhdHRlcm4udmRpc3BsYXksCisJCQkJZHBfY29ubi0+dGVzdF9wYXR0ZXJuLmJpdGRl
-cHRoLAorCQkJCWFscGhhKTsKIAkJaWYgKHJldCkgewogCQkJaWd0X3dhcm4oIkZpbGxpbmcgZnJh
-bWVidWZmZXIgZm9yIGNvbm5lY3RvciAldSBmYWlsZWQgKCVkKVxuIiwKIAkJCQkgYy0+Y29ubmVj
-dG9yX2lkLCByZXQpOwogCQkJcmV0dXJuIHJldDsKIAkJfQorCQkvKiB1bm1hcHBpbmcgdGhlIGJ1
-ZmZlciBwcmV2aW91c2x5IG1hcHBlZCBkdXJpbmcgc2V0dXAgKi8KKwkJbXVubWFwKGRwX2Nvbm4t
-PnRlc3RfcGF0dGVybi5waXhtYXAsCisJCQkJZHBfY29ubi0+dGVzdF9wYXR0ZXJuLnNpemUpOwog
-CX0KIAogCXJldHVybiByZXQ7Ci0tIApUaGUgUXVhbGNvbW0gSW5ub3ZhdGlvbiBDZW50ZXIsIElu
-Yy4gaXMgYSBtZW1iZXIgb2YgdGhlIENvZGUgQXVyb3JhIEZvcnVtLAphIExpbnV4IEZvdW5kYXRp
-b24gQ29sbGFib3JhdGl2ZSBQcm9qZWN0CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVk
-ZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZv
-L2lndC1kZXYK
+This series adds support for video pattern DP compliance tests for
+MSM chipsets. The driver side changes for this have been pushed here [1].
+The changes mostly involve cleanup to move useful APIs to common libs so
+that other compliance modules can use them and also leveraging the design
+of intel_dp_compliance to add support for video pattern tests for MSM
+chipsets.
+
+[1] https://patchwork.kernel.org/project/dri-devel/list/?series=347839
+
+Changes in v2:
+	- add some documentation for the new lib APIs
+	- fix indentation in the meson file
+
+Abhinav Kumar (5):
+  tools: rename intel_dp_compliance_hotplug to igt_dp_compliance_hotplug
+  lib/igt_kms: move some of the useful dump functions to igt_kms
+  lib/igt_fb: move the CTS fill framebuffer to igt_fb lib
+  tools: move terminal utility functions to a separate file
+  tools: add support for msm_dp_compliance to IGT
+
+ lib/igt_fb.c                                  |  65 ++
+ lib/igt_fb.h                                  |   3 +
+ lib/igt_kms.c                                 |  92 ++
+ lib/igt_kms.h                                 |  22 +
+ tools/Makefile.am                             |   4 +
+ tools/Makefile.sources                        |  11 +-
+ tools/igt_compliance_utils.c                  |  82 ++
+ ...el_dp_compliance.h => igt_dp_compliance.h} |  13 +-
+ ..._hotplug.c => igt_dp_compliance_hotplug.c} |   9 +-
+ tools/intel_dp_compliance.c                   | 216 +----
+ tools/meson.build                             |  15 +-
+ tools/msm_dp_compliance.c                     | 812 ++++++++++++++++++
+ 12 files changed, 1135 insertions(+), 209 deletions(-)
+ create mode 100644 tools/igt_compliance_utils.c
+ rename tools/{intel_dp_compliance.h => igt_dp_compliance.h} (80%)
+ rename tools/{intel_dp_compliance_hotplug.c => igt_dp_compliance_hotplug.c} (93%)
+ create mode 100644 tools/msm_dp_compliance.c
+
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+a Linux Foundation Collaborative Project
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
