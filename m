@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DEAE66ED9E
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Sep 2020 23:30:22 +0000 (UTC)
-Date: Fri, 18 Sep 2020 16:30:56 -0700
-From: "Navare, Manasi" <manasi.d.navare@intel.com>
-Message-ID: <20200918233051.GA32666@labuser-Z97X-UD5H>
-References: <20200917110347.5814-1-karthik.b.s@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7889A6E0E4
+ for <igt-dev@lists.freedesktop.org>; Sun, 20 Sep 2020 18:28:18 +0000 (UTC)
+From: Kunal Joshi <kunal1.joshi@intel.com>
+Date: Sun, 20 Sep 2020 23:58:28 +0530
+Message-Id: <20200920182829.132808-4-kunal1.joshi@intel.com>
+In-Reply-To: <20200920182829.132808-1-kunal1.joshi@intel.com>
+References: <20200920182829.132808-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200917110347.5814-1-karthik.b.s@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_big_joiner: Add test to
- validate big joiner
+Subject: [igt-dev] [PATCH i-g-t v4 3/4] Added a subtest where chamelium acts
+ as a tiled panel
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,355 +17,213 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Kunal Joshi <kunal1.joshi@intel.com>, petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Sep 17, 2020 at 04:33:47PM +0530, Karthik B S wrote:
-> Added negative test to verify the different scenarios for big joiner.
-> In the test, modeset is done on Pipe A for a big joiner mode and
-> a second modeset is attempted on Pipe B which is expected to fail.
-> Same functionality is validated for other pipes as well.
-> =
+Split kms_dp_tiled_display into to two subtest.First to execute the
+basic test with physical tiled panel and second with chamelium.
 
-> Secondly, the reverse is tested where a modeset is done on Pipe B
-> and then a second big joiner modeset is attempted on Pipe A which is
-> expected to fail. Same functionality is validated for other pipes as well.
-> =
+v2: Revised to just have basic test if chamelium dependencies are not present.
+    Reset ports after the test executes.Changed subtest name from with-chamelium
+    to basic-test-pattern-with-chamelium
 
-> v2: -Rename HDISPLAY_5K to MAX_HDISPLAY_PER_PIPE. (Manasi)
->     -Do not assume mode[0] will be the highest mode.
->      Loop through the mode list to find the 8k mode. (Manasi)
->     -Add a subtest for verifying basic 8k modeset on all pipes. (Manasi)
-> =
+v3: Changes required to adapt to changes done in first patch.
 
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->  tests/Makefile.sources |   1 +
->  tests/kms_big_joiner.c | 251 +++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build      |   1 +
->  3 files changed, 253 insertions(+)
->  create mode 100644 tests/kms_big_joiner.c
-> =
+v4: Changes required to adapt to changes done in first patch.
 
-> diff --git a/tests/Makefile.sources b/tests/Makefile.sources
-> index 6ae95155..ceec6274 100644
-> --- a/tests/Makefile.sources
-> +++ b/tests/Makefile.sources
-> @@ -37,6 +37,7 @@ TESTS_progs =3D \
->  	kms_atomic_transition \
->  	kms_available_modes_crc \
->  	kms_big_fb \
-> +	kms_big_joiner \
->  	kms_busy \
->  	kms_ccs \
->  	kms_concurrent \
-> diff --git a/tests/kms_big_joiner.c b/tests/kms_big_joiner.c
-> new file mode 100644
-> index 00000000..d14ba96b
-> --- /dev/null
-> +++ b/tests/kms_big_joiner.c
-> @@ -0,0 +1,251 @@
-> +/*
-> + * Copyright =A9 2020 Intel Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a
-> + * copy of this software and associated documentation files (the "Softwa=
-re"),
-> + * to deal in the Software without restriction, including without limita=
-tion
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
-se,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the =
-next
-> + * paragraph) shall be included in all copies or substantial portions of=
- the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
-SS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
-TY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
-ALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
-OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
-NG
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
-EALINGS
-> + * IN THE SOFTWARE.
-> + *
-> + * Author:
-> + *  Karthik B S <karthik.b.s@intel.com>
-> + */
-> +
-> +#include "igt.h"
-> +
-> +#define MAX_HDISPLAY_PER_PIPE 5120
-> +
-> +IGT_TEST_DESCRIPTION("Test big joiner");
-> +
-> +typedef struct {
-> +	int drm_fd;
-> +	igt_display_t display;
-> +	struct igt_fb fb;
-> +	int mode_number;
-> +	int n_pipes;
-> +	uint32_t big_joiner_output_id;
-> +} data_t;
-> +
-> +static void test_invalid_modeset(data_t *data)
-> +{
-> +	drmModeModeInfo *mode;
-> +	igt_display_t *display =3D &data->display;
-> +	igt_output_t *output, *big_joiner_output =3D NULL, *second_output =3D N=
-ULL;
-> +	int width =3D 0, height =3D 0, i, ret;
-> +	igt_pipe_t *pipe;
-> +	igt_plane_t *plane;
-> +
-> +	for_each_connected_output(display, output) {
-> +		mode =3D &output->config.connector->modes[0];
-> +
-> +		if (data->big_joiner_output_id =3D=3D output->id) {
-> +			mode =3D &output->config.connector->modes[data->mode_number];
-> +			big_joiner_output =3D output;
-> +		} else if (second_output =3D=3D NULL) {
-> +			second_output =3D output;
-> +		}
-> +
-> +		width =3D max(width, mode->hdisplay);
-> +		height =3D max(height, mode->vdisplay);
-> +
-> +		igt_output_set_pipe(output, PIPE_NONE);
-> +	}
-> +
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
-> +			      LOCAL_DRM_FORMAT_MOD_NONE, &data->fb);
-> +
-> +	for_each_pipe(display, i) {
-> +		if (i < (data->n_pipes - 1)) {
-> +			igt_output_set_pipe(big_joiner_output, i);
-> +
-> +			mode =3D &big_joiner_output->config.connector->modes[data->mode_numbe=
-r];
-> +			igt_output_override_mode(big_joiner_output, mode);
-> +
-> +			pipe =3D &display->pipes[i];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +			igt_output_set_pipe(second_output, i + 1);
-> +
-> +			mode =3D igt_output_get_mode(second_output);
-> +
-> +			pipe =3D &display->pipes[i + 1];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			/* This commit is expectd to fail as this pipe is being used for big =
-joiner */
-> +			ret =3D igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC=
-_TEST_ONLY |
-> +							    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +			igt_assert_lt(ret, 0);
-> +
-> +			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
-> +			igt_output_set_pipe(second_output, PIPE_NONE);
-> +			igt_plane_set_fb(plane, NULL);
-> +			igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +		}
-> +	}
-> +
-> +	for_each_pipe(display, i) {
-> +		if (i < (data->n_pipes - 1)) {
-> +			igt_output_set_pipe(second_output, i + 1);
-> +
-> +			mode =3D igt_output_get_mode(second_output);
-> +
-> +			pipe =3D &display->pipes[i + 1];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +			igt_output_set_pipe(big_joiner_output, i);
-> +
-> +			mode =3D &big_joiner_output->config.connector->modes[0];
-> +
-> +			pipe =3D &display->pipes[i];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			/* This commit is expected to fail as the adjacent pipe is already in=
- use*/
-> +			ret =3D igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC=
-_TEST_ONLY |
-> +							    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +			igt_assert_lt(ret, 0);
-> +
-> +			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
-> +			igt_output_set_pipe(second_output, PIPE_NONE);
-> +			igt_plane_set_fb(plane, NULL);
-> +			igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +		}
-> +	}
-> +
-> +	igt_remove_fb(data->drm_fd, &data->fb);
-> +}
-> +
-> +static void test_basic_modeset(data_t *data)
-> +{
-> +	drmModeModeInfo *mode;
-> +	igt_output_t *output, *big_joiner_output =3D NULL;
-> +	igt_display_t *display =3D &data->display;
-> +	int width =3D 0, height =3D 0, i;
-> +	igt_pipe_t *pipe;
-> +	igt_plane_t *plane;
-> +
-> +	for_each_connected_output(display, output) {
-> +		if (data->big_joiner_output_id =3D=3D output->id) {
-> +			mode =3D &output->config.connector->modes[data->mode_number];
-> +			big_joiner_output =3D output;
-> +			width =3D mode->hdisplay;
-> +			height =3D mode->vdisplay;
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+Reviewed-by: Navare Manasi D <manasi.d.navare@intel.com>
+---
+ tests/kms_dp_tiled_display.c | 119 ++++++++++++++++++++++++++++-------
+ 1 file changed, 95 insertions(+), 24 deletions(-)
 
-break here after we find the output ?
-
-I think everything else looks good to me, lets wait for the innvalid test v=
-alidation ersults.
-
-Manasi
-
-> +		}
-> +
-> +		igt_output_set_pipe(output, PIPE_NONE);
-> +	}
-> +
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
-> +			      LOCAL_DRM_FORMAT_MOD_NONE, &data->fb);
-> +
-> +	for_each_pipe(display, i) {
-> +		if (i < (data->n_pipes - 1)) {
-> +			igt_output_set_pipe(big_joiner_output, i);
-> +
-> +			mode =3D &big_joiner_output->config.connector->modes[data->mode_numbe=
-r];
-> +			igt_output_override_mode(big_joiner_output, mode);
-> +
-> +			pipe =3D &display->pipes[i];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
-> +			igt_plane_set_fb(plane, NULL);
-> +			igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +		}
-> +	}
-> +
-> +	igt_remove_fb(data->drm_fd, &data->fb);
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data;
-> +	bool big_joiner_mode_found =3D false;
-> +	igt_output_t *output;
-> +	drmModeModeInfo *mode;
-> +	int valid_output =3D 0, i;
-> +
-> +	igt_fixture {
-> +		data.drm_fd =3D drm_open_driver_master(DRIVER_INTEL);
-> +		kmstest_set_vt_graphics_mode();
-> +
-> +		igt_display_require(&data.display, data.drm_fd);
-> +
-> +		for_each_connected_output(&data.display, output) {
-> +			if (!big_joiner_mode_found) {
-> +				for (i =3D 0; i < output->config.connector->count_modes; i++) {
-> +					mode =3D &output->config.connector->modes[i];
-> +					if (mode->hdisplay > MAX_HDISPLAY_PER_PIPE) {
-> +						big_joiner_mode_found =3D true;
-> +						data.mode_number =3D i;
-> +						data.big_joiner_output_id =3D output->id;
-> +						break;
-> +					}
-> +				}
-> +			}
-> +			valid_output++;
-> +		}
-> +
-> +		data.n_pipes =3D 0;
-> +		for_each_pipe(&data.display, i)
-> +			data.n_pipes++;
-> +
-> +		igt_require_f(big_joiner_mode_found, "No output with 5k+ mode found\n"=
-);
-> +	}
-> +
-> +	igt_describe("Verify the basic modeset on big joiner mode on all pipes"=
-);
-> +	igt_subtest("basic")
-> +		test_basic_modeset(&data);
-> +
-> +	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
-> +		     "when the pipe is active with a big joiner modeset");
-> +	igt_subtest("invalid-modeset") {
-> +		igt_require_f(valid_output > 1, "No valid Second output found\n");
-> +		test_invalid_modeset(&data);
-> +	}
-> +
-> +	igt_fixture
-> +		igt_display_fini(&data.display);
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 5eb2d2fc..42433424 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -21,6 +21,7 @@ test_progs =3D [
->  	'kms_atomic_transition',
->  	'kms_available_modes_crc',
->  	'kms_big_fb',
-> +	'kms_big_joiner' ,
->  	'kms_busy',
->  	'kms_ccs',
->  	'kms_concurrent',
-> -- =
-
-> 2.22.0
-> =
+diff --git a/tests/kms_dp_tiled_display.c b/tests/kms_dp_tiled_display.c
+index b1160fee..98f6a07e 100644
+--- a/tests/kms_dp_tiled_display.c
++++ b/tests/kms_dp_tiled_display.c
+@@ -40,6 +40,7 @@
+ #include "poll.h"
+ #include "drm_mode.h"
+ #include "drm_fourcc.h"
++#include "igt_edid.h"
+ 
+ IGT_TEST_DESCRIPTION("Test for Transcoder Port Sync for Display Port Tiled Displays");
+ 
+@@ -59,8 +60,22 @@ typedef struct {
+ 	data_connector_t *conns;
+ 	enum igt_commit_style commit;
+ 	struct timeval first_ts;
++
++	#ifdef HAVE_CHAMELIUM
++	struct chamelium *chamelium;
++	struct chamelium_port **ports;
++	int port_count;
++	struct chamelium_edid *edids[TEST_EDID_COUNT];
++	#endif
++
+ } data_t;
+ 
++void basic_test(data_t *data, drmEventContext *drm_event, struct pollfd *pfd);
++
++#ifdef HAVE_CHAMELIUM
++static void test_with_chamelium(data_t *data);
++#endif
++
+ static int drm_property_is_tile(drmModePropertyPtr prop)
+ {
+ 	return (strcmp(prop->name, "TILE") ? 0 : 1) &&
+@@ -206,7 +221,6 @@ static void test_cleanup(data_t *data)
+ 	igt_display_commit2(data->display, data->commit);
+ 	memset(conns, 0, sizeof(data_connector_t) * data->num_h_tiles);
+ }
+-
+ static void setup_mode(data_t *data)
+ {
+ 	int count = 0, prev = 0, i = 0;
+@@ -380,21 +394,83 @@ static bool got_all_page_flips(data_t *data)
+ 	return true;
+ }
+ 
++#ifdef HAVE_CHAMELIUM
++static void test_with_chamelium(data_t *data)
++{
++	int i, count = 0;
++	uint8_t htile = 2, vtile = 1;
++	struct edid **edid;
++
++	data->chamelium = chamelium_init(data->drm_fd);
++	igt_assert(data->chamelium);
++	data->ports = chamelium_get_ports
++		(data->chamelium, &data->port_count);
++	chamelium_require_connector_present(data->ports,
++					    DRM_MODE_CONNECTOR_DisplayPort,
++					    data->port_count, 2);
++	edid = igt_kms_get_tiled_edid(htile-1, vtile-1);
++
++	for (i = 0; i < 2; i++)
++		data->edids[i] =
++			chamelium_new_edid(data->chamelium, edid[i]);
++
++	for (i = 0; i < data->port_count; i++) {
++		if (chamelium_port_get_type(data->ports[i]) ==
++				DRM_MODE_CONNECTOR_DisplayPort) {
++
++			chamelium_port_set_tiled_edid(data->chamelium,
++				data->ports[i], data->edids[i]);
++			chamelium_plug(data->chamelium,
++				       data->ports[i]);
++			chamelium_wait_for_conn_status_change(data->display,
++							      data->chamelium,
++							      data->ports[i],
++							      DRM_MODE_CONNECTED);
++			count++;
++		}
++		if (count == 2)
++			break;
++	}
++}
++#endif
++
++void basic_test(data_t *data, drmEventContext *drm_event, struct pollfd *pfd)
++{
++		int ret;
++
++		get_number_of_h_tiles(data);
++		igt_debug("Number of Horizontal Tiles: %d\n",
++			  data->num_h_tiles);
++		igt_require(data->num_h_tiles > 0);
++		data->conns = calloc(data->num_h_tiles,
++				     sizeof(data_connector_t));
++		igt_assert(data->conns);
++
++		get_connectors(data);
++		setup_mode(data);
++		setup_framebuffer(data);
++		timerclear(&data->first_ts);
++		igt_display_commit_atomic(data->display,
++			DRM_MODE_ATOMIC_NONBLOCK |
++			DRM_MODE_PAGE_FLIP_EVENT, data);
++		while (!got_all_page_flips(data)) {
++			ret = poll(pfd, 1, 1000);
++			igt_assert(ret == 1);
++			drmHandleEvent(data->drm_fd, drm_event);
++		}
++}
++
+ igt_main
+ {
+ 	igt_display_t display;
+ 	data_t data = {0};
+ 	struct pollfd pfd = {0};
+ 	drmEventContext drm_event = {0};
+-	int ret;
+-
+ 	igt_fixture {
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+-
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_display_require(&display, data.drm_fd);
+ 		igt_display_reset(&display);
+-
+ 		data.display = &display;
+ 		pfd.fd = data.drm_fd;
+ 		pfd.events = POLLIN;
+@@ -402,33 +478,28 @@ igt_main
+ 		drm_event.page_flip_handler2 = page_flip_handler;
+ 		data.commit = data.display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY;
+ 		igt_require(data.commit == COMMIT_ATOMIC);
+-
+-		get_number_of_h_tiles(&data);
+-		igt_debug("Number of Horizontal Tiles: %d\n", data.num_h_tiles);
+-		igt_require(data.num_h_tiles > 0);
+-		data.conns = calloc(data.num_h_tiles, sizeof(data_connector_t));
+ 	}
+ 
+ 	igt_describe("Make sure the Tiled CRTCs are synchronized and we get "
+ 		     "page flips for all tiled CRTCs in one vblank.");
+ 	igt_subtest("basic-test-pattern") {
+-		igt_assert(data.conns);
+-
+-		get_connectors(&data);
+-		setup_mode(&data);
+-		setup_framebuffer(&data);
+-		timerclear(&data.first_ts);
+-		igt_display_commit_atomic(data.display, DRM_MODE_ATOMIC_NONBLOCK |
+-					  DRM_MODE_PAGE_FLIP_EVENT, &data);
+-		while (!got_all_page_flips(&data)) {
+-			ret = poll(&pfd, 1, 1000);
+-			igt_assert(ret == 1);
+-			drmHandleEvent(data.drm_fd, &drm_event);
+-		}
+-
++		basic_test(&data, &drm_event, &pfd);
+ 		test_cleanup(&data);
+ 	}
+ 
++	#ifdef HAVE_CHAMELIUM
++	igt_subtest_f("basic-test-pattern-with-chamelium") {
++		int i;
++
++		test_with_chamelium(&data);
++		basic_test(&data, &drm_event, &pfd);
++		test_cleanup(&data);
++		for (i = 0; i < data.port_count; i++)
++			chamelium_reset_state(data.display, data.chamelium,
++					      data.ports[i], data.ports,
++					      data.port_count);
++	}
++	#endif
+ 	igt_fixture {
+ 		free(data.conns);
+ 		close(data.drm_fd);
+-- 
+2.25.1
 
 _______________________________________________
 igt-dev mailing list
