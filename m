@@ -1,17 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 219EF89E86
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2020 05:31:06 +0000 (UTC)
-Date: Tue, 22 Sep 2020 07:31:00 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20200922053100.GE4431@zkempczy-mobl2>
-References: <20200918105856.24399-1-dominik.grzegorzek@intel.com>
- <20200918105856.24399-3-dominik.grzegorzek@intel.com>
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
+ [IPv6:2a00:1450:4864:20::343])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4DAD76E03C
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2020 07:43:31 +0000 (UTC)
+Received: by mail-wm1-x343.google.com with SMTP id b79so2245049wmb.4
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2020 00:43:31 -0700 (PDT)
+References: <20200914141645.17024-1-juhapekka.heikkila@gmail.com>
+ <a49e4bdd292a4bcfa9f25f295f7dca71@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <eea4cee8-01ba-4557-9ddb-ec1649af3276@gmail.com>
+Date: Tue, 22 Sep 2020 10:43:18 +0300
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200918105856.24399-3-dominik.grzegorzek@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 02/22] Remove unused intel_bufmgr.h
- headers
+In-Reply-To: <a49e4bdd292a4bcfa9f25f295f7dca71@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_available_modes_crc: don't
+ mix hdr and sdr planes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,92 +22,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: juhapekka.heikkila@gmail.com
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+To: "Kahola, Mika" <mika.kahola@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBTZXAgMTgsIDIwMjAgYXQgMTI6NTg6MzZQTSArMDIwMCwgRG9taW5payBHcnplZ29y
-emVrIHdyb3RlOgo+IERlbGV0ZSBpbnRlbF9idWZtZ3IgaW5jbHVkZSB3aGVyZSBpdCBpcyBub3Qg
-bmVjZXNzYXJ5Lgo+IAo+IFNpZ25lZC1vZmYtYnk6IERvbWluaWsgR3J6ZWdvcnplayA8ZG9taW5p
-ay5ncnplZ29yemVrQGludGVsLmNvbT4KPiBDYzogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymln
-bmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Cj4gQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hy
-aXMtd2lsc29uLmNvLnVrPgoKUmV2aWV3ZWQtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJp
-Z25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgoKPiAtLS0KPiAgYmVuY2htYXJrcy9nZW1fdXNl
-cnB0cl9iZW5jaG1hcmsuYyB8IDEgLQo+ICBsaWIvbWVkaWFfZmlsbC5jICAgICAgICAgICAgICAg
-ICAgIHwgMSAtCj4gIHRlc3RzL2k5MTUvZ2VtX2NyZWF0ZS5jICAgICAgICAgICAgfCAxIC0KPiAg
-dGVzdHMvaTkxNS9nZW1fZmxpbmtfcmFjZS5jICAgICAgICB8IDIgLS0KPiAgdGVzdHMvaTkxNS9n
-ZW1fcmVxdWVzdF9yZXRpcmUuYyAgICB8IDEgLQo+ICB0ZXN0cy9pOTE1L2dlbV91c2VycHRyX2Js
-aXRzLmMgICAgIHwgMSAtCj4gIHRlc3RzL2k5MTUvaTkxNV9nZXRwYXJhbXNfYmFzaWMuYyAgfCAx
-IC0KPiAgdGVzdHMva21zX3NlcXVlbmNlLmMgICAgICAgICAgICAgICB8IDIgLS0KPiAgdGVzdHMv
-a21zX3NldG1vZGUuYyAgICAgICAgICAgICAgICB8IDEgLQo+ICB0ZXN0cy9rbXNfdmJsYW5rLmMg
-ICAgICAgICAgICAgICAgIHwgMiAtLQo+ICAxMCBmaWxlcyBjaGFuZ2VkLCAxMyBkZWxldGlvbnMo
-LSkKPiAKPiBkaWZmIC0tZ2l0IGEvYmVuY2htYXJrcy9nZW1fdXNlcnB0cl9iZW5jaG1hcmsuYyBi
-L2JlbmNobWFya3MvZ2VtX3VzZXJwdHJfYmVuY2htYXJrLmMKPiBpbmRleCBlY2NjNjViZS4uZDdh
-NDk1MjAgMTAwNjQ0Cj4gLS0tIGEvYmVuY2htYXJrcy9nZW1fdXNlcnB0cl9iZW5jaG1hcmsuYwo+
-ICsrKyBiL2JlbmNobWFya3MvZ2VtX3VzZXJwdHJfYmVuY2htYXJrLmMKPiBAQCAtNDgsNyArNDgs
-NiBAQAo+ICAjaW5jbHVkZSAiaTkxNV9kcm0uaCIKPiAgCj4gICNpbmNsdWRlICJkcm10ZXN0Lmgi
-Cj4gLSNpbmNsdWRlICJpbnRlbF9idWZtZ3IuaCIKPiAgI2luY2x1ZGUgImludGVsX2JhdGNoYnVm
-ZmVyLmgiCj4gICNpbmNsdWRlICJpbnRlbF9jaGlwc2V0LmgiCj4gICNpbmNsdWRlICJpb2N0bF93
-cmFwcGVycy5oIgo+IGRpZmYgLS1naXQgYS9saWIvbWVkaWFfZmlsbC5jIGIvbGliL21lZGlhX2Zp
-bGwuYwo+IGluZGV4IGMyMWRlNTRiLi5jNDg4Mzg3NCAxMDA2NDQKPiAtLS0gYS9saWIvbWVkaWFf
-ZmlsbC5jCj4gKysrIGIvbGliL21lZGlhX2ZpbGwuYwo+IEBAIC0yMiw3ICsyMiw2IEBACj4gICAq
-Cj4gICAqLwo+ICAKPiAtI2luY2x1ZGUgPGludGVsX2J1Zm1nci5oPgo+ICAjaW5jbHVkZSA8aTkx
-NV9kcm0uaD4KPiAgCj4gICNpbmNsdWRlICJtZWRpYV9maWxsLmgiCj4gZGlmZiAtLWdpdCBhL3Rl
-c3RzL2k5MTUvZ2VtX2NyZWF0ZS5jIGIvdGVzdHMvaTkxNS9nZW1fY3JlYXRlLmMKPiBpbmRleCBj
-NzQ0NGQ1NS4uZGM5NDVhYjYgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMvaTkxNS9nZW1fY3JlYXRlLmMK
-PiArKysgYi90ZXN0cy9pOTE1L2dlbV9jcmVhdGUuYwo+IEBAIC00Nyw3ICs0Nyw2IEBACj4gICNp
-bmNsdWRlICJkcm0uaCIKPiAgI2luY2x1ZGUgImRybXRlc3QuaCIKPiAgI2luY2x1ZGUgImlvY3Rs
-X3dyYXBwZXJzLmgiCj4gLSNpbmNsdWRlICJpbnRlbF9idWZtZ3IuaCIKPiAgI2luY2x1ZGUgImlu
-dGVsX2JhdGNoYnVmZmVyLmgiCj4gICNpbmNsdWRlICJpbnRlbF9pby5oIgo+ICAjaW5jbHVkZSAi
-aW50ZWxfY2hpcHNldC5oIgo+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9mbGlua19yYWNl
-LmMgYi90ZXN0cy9pOTE1L2dlbV9mbGlua19yYWNlLmMKPiBpbmRleCBjMWY1ZDVkNS4uZGU2NDQ0
-M2QgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMvaTkxNS9nZW1fZmxpbmtfcmFjZS5jCj4gKysrIGIvdGVz
-dHMvaTkxNS9nZW1fZmxpbmtfcmFjZS5jCj4gQEAgLTMzLDggKzMzLDYgQEAKPiAgI2luY2x1ZGUg
-PHB0aHJlYWQuaD4KPiAgI2luY2x1ZGUgPGVycm5vLmg+Cj4gIAo+IC0jaW5jbHVkZSAiaW50ZWxf
-YnVmbWdyLmgiCj4gLQo+ICBJR1RfVEVTVF9ERVNDUklQVElPTigiQ2hlY2sgZm9yIGZsaW5rL29w
-ZW4gdnMuIGdlbSBjbG9zZSByYWNlcy4iKTsKPiAgCj4gIC8qIFRlc3RjYXNlOiBjaGVjayBmb3Ig
-Zmxpbmsvb3BlbiB2cy4gZ2VtIGNsb3NlIHJhY2VzCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUv
-Z2VtX3JlcXVlc3RfcmV0aXJlLmMgYi90ZXN0cy9pOTE1L2dlbV9yZXF1ZXN0X3JldGlyZS5jCj4g
-aW5kZXggNGExZWMxMTUuLjMxZmI0MTk4IDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2k5MTUvZ2VtX3Jl
-cXVlc3RfcmV0aXJlLmMKPiArKysgYi90ZXN0cy9pOTE1L2dlbV9yZXF1ZXN0X3JldGlyZS5jCj4g
-QEAgLTQ4LDcgKzQ4LDYgQEAKPiAgCj4gICNpbmNsdWRlICJpOTE1L2dlbS5oIgo+ICAjaW5jbHVk
-ZSAiaWd0LmgiCj4gLSNpbmNsdWRlICJpbnRlbF9idWZtZ3IuaCIKPiAgCj4gIElHVF9URVNUX0RF
-U0NSSVBUSU9OKCJDb2xsZWN0aW9uIG9mIHRlc3RzIHRhcmdldGluZyByZXF1ZXN0IHJldGlyZW1l
-bnQgY29kZSIKPiAgCQkgICAgICIgcGF0aHMuIik7Cj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUv
-Z2VtX3VzZXJwdHJfYmxpdHMuYyBiL3Rlc3RzL2k5MTUvZ2VtX3VzZXJwdHJfYmxpdHMuYwo+IGlu
-ZGV4IDI2ODQyM2RjLi42NTI3MmMxYiAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2dlbV91c2Vy
-cHRyX2JsaXRzLmMKPiArKysgYi90ZXN0cy9pOTE1L2dlbV91c2VycHRyX2JsaXRzLmMKPiBAQCAt
-NjIsNyArNjIsNiBAQAo+ICAKPiAgI2luY2x1ZGUgImk5MTUvZ2VtLmgiCj4gICNpbmNsdWRlICJp
-Z3QuaCIKPiAtI2luY2x1ZGUgImludGVsX2J1Zm1nci5oIgo+ICAjaW5jbHVkZSAic3dfc3luYy5o
-Igo+ICAKPiAgI2luY2x1ZGUgImV2aWN0aW9uX2NvbW1vbi5jIgo+IGRpZmYgLS1naXQgYS90ZXN0
-cy9pOTE1L2k5MTVfZ2V0cGFyYW1zX2Jhc2ljLmMgYi90ZXN0cy9pOTE1L2k5MTVfZ2V0cGFyYW1z
-X2Jhc2ljLmMKPiBpbmRleCA3Y2IyMTBkZi4uZTFiNDYzNGYgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMv
-aTkxNS9pOTE1X2dldHBhcmFtc19iYXNpYy5jCj4gKysrIGIvdGVzdHMvaTkxNS9pOTE1X2dldHBh
-cmFtc19iYXNpYy5jCj4gQEAgLTMwLDcgKzMwLDYgQEAKPiAgI2luY2x1ZGUgPGVycm5vLmg+Cj4g
-ICNpbmNsdWRlIDx4Zjg2ZHJtLmg+Cj4gICNpbmNsdWRlIDxpOTE1X2RybS5oPgo+IC0jaW5jbHVk
-ZSAiaW50ZWxfYnVmbWdyLmgiCj4gIAo+ICBJR1RfVEVTVF9ERVNDUklQVElPTigiVGVzdHMgdGhl
-IGV4cG9ydCBvZiBwYXJhbWV0ZXJzIHZpYSBEUk1fSU9DVExfSTkxNV9HRVRQQVJBTVxuIik7Cj4g
-IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfc2VxdWVuY2UuYyBiL3Rlc3RzL2ttc19zZXF1ZW5j
-ZS5jCj4gaW5kZXggYTIxYWI1NWMuLjA4MWJkOWQ3IDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2ttc19z
-ZXF1ZW5jZS5jCj4gKysrIGIvdGVzdHMva21zX3NlcXVlbmNlLmMKPiBAQCAtNDIsOCArNDIsNiBA
-QAo+ICAKPiAgI2luY2x1ZGUgPGRybS5oPgo+ICAKPiAtI2luY2x1ZGUgImludGVsX2J1Zm1nci5o
-Igo+IC0KPiAgSUdUX1RFU1RfREVTQ1JJUFRJT04oIlRlc3QgQ3J0Y0dldFNlcXVlbmNlIGFuZCBD
-cnRjUXVldWVTZXF1ZW5jZS4iKTsKPiAgCj4gIHR5cGVkZWYgc3RydWN0IHsKPiBkaWZmIC0tZ2l0
-IGEvdGVzdHMva21zX3NldG1vZGUuYyBiL3Rlc3RzL2ttc19zZXRtb2RlLmMKPiBpbmRleCA5MmYz
-ZWFkMi4uMDBkZmVkZDUgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMva21zX3NldG1vZGUuYwo+ICsrKyBi
-L3Rlc3RzL2ttc19zZXRtb2RlLmMKPiBAQCAtMzAsNyArMzAsNiBAQAo+ICAjaW5jbHVkZSA8c3Ry
-aW5nLmg+Cj4gICNpbmNsdWRlIDxzeXMvdGltZS5oPgo+ICAjaW5jbHVkZSA8bWF0aC5oPgo+IC0j
-aW5jbHVkZSAiaW50ZWxfYnVmbWdyLmgiCj4gIAo+ICAjZGVmaW5lIE1BWF9DT05ORUNUT1JTICAx
-MAo+ICAjZGVmaW5lIE1BWF9DUlRDUyAgICAgICA2Cj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ttc192
-YmxhbmsuYyBiL3Rlc3RzL2ttc192YmxhbmsuYwo+IGluZGV4IGJlMDAxMzEyLi5iMDBlYmVjNSAx
-MDA2NDQKPiAtLS0gYS90ZXN0cy9rbXNfdmJsYW5rLmMKPiArKysgYi90ZXN0cy9rbXNfdmJsYW5r
-LmMKPiBAQCAtNDEsOCArNDEsNiBAQAo+ICAKPiAgI2luY2x1ZGUgPGRybS5oPgo+ICAKPiAtI2lu
-Y2x1ZGUgImludGVsX2J1Zm1nci5oIgo+IC0KPiAgSUdUX1RFU1RfREVTQ1JJUFRJT04oIlRlc3Qg
-c3BlZWQgb2YgV2FpdFZibGFuay4iKTsKPiAgCj4gIHR5cGVkZWYgc3RydWN0IHsKPiAtLSAKPiAy
-LjIwLjEKPiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-aWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
-Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On 15.9.2020 12.38, Kahola, Mika wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Juha-
+>> Pekka Heikkila
+>> Sent: Monday, September 14, 2020 5:17 PM
+>> To: igt-dev@lists.freedesktop.org
+>> Subject: [igt-dev] [PATCH i-g-t] tests/kms_available_modes_crc: don't mix hdr
+>> and sdr planes
+>>
+>> Run test only on hdr planes as that's where crc to compare against is gotten
+>> from. Also reset display in beginning of test.
+>>
+>> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+>> ---
+>>   tests/kms_available_modes_crc.c | 6 ++++--
+>>   1 file changed, 4 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/tests/kms_available_modes_crc.c
+>> b/tests/kms_available_modes_crc.c index 09785ed8..be9689e1 100644
+>> --- a/tests/kms_available_modes_crc.c
+>> +++ b/tests/kms_available_modes_crc.c
+>> @@ -43,7 +43,6 @@ typedef struct {
+>>   	bool separateprimaryplane;
+>>
+>>   	uint32_t gem_handle;
+>> -	uint32_t gem_handle_yuv;
+>>   	unsigned int size;
+>>   	unsigned char* buf;
+>>
+>> @@ -355,6 +354,8 @@ test_available_modes(data_t* data)
+>>   		uint16_t reserved;
+>>   	} *lut = NULL;
+>>
+>> +	igt_display_reset(&data->display);
+>> +
+>>   	for_each_pipe_with_valid_output(&data->display, pipe, output) {
+>>   		igt_output_set_pipe(output, pipe);
+>>   		igt_display_commit2(&data->display, data->commit); @@ -
+>> 397,7 +398,8 @@ test_available_modes(data_t* data)
+>>   			modePlane = drmModeGetPlane(data->gfx_fd,
+>>   						    plane->drm_plane-
+>>> plane_id);
+>>
+>> -			if (plane->type == DRM_PLANE_TYPE_CURSOR)
+>> +			if (plane->type == DRM_PLANE_TYPE_CURSOR
+>> +			    || plane->index > 2)
+> 
+> Actually, this is a third IGT test that uses separation between HDR and SDR planes. We have a function is_sdr_plane() used in both kms_ccs.c and kms_plane_lowres.c tests. Maybe it is a time to make this is_hdr_plane() routine a library function? This way, if the SDR base index changes, we would need to change only one place. What do you think?
+
+I think that change could be made later as separate cleanup, this patch 
+is for fixing a bug.
+
+> 
+> Cheers,
+> Mika
+>>   				continue;
+>>
+>>   			for (modeindex = 0;
+>> --
+>> 2.26.0
+>>
+>> _______________________________________________
+>> igt-dev mailing list
+>> igt-dev@lists.freedesktop.org
+>> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
