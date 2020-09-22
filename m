@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B1B476E845
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2020 11:52:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2530A6E84E
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2020 11:52:46 +0000 (UTC)
 From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Date: Tue, 22 Sep 2020 13:52:04 +0200
-Message-Id: <20200922115229.28371-1-dominik.grzegorzek@intel.com>
+Date: Tue, 22 Sep 2020 13:52:05 +0200
+Message-Id: <20200922115229.28371-2-dominik.grzegorzek@intel.com>
+In-Reply-To: <20200922115229.28371-1-dominik.grzegorzek@intel.com>
+References: <20200922115229.28371-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v4 00/25] tests/benchmarks: Libdrm removal
+Subject: [igt-dev] [PATCH i-g-t v4 01/25] i915/gem_mmap: Modified offset in
+ subtest "bad-size"
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,91 +17,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Melkaveri@freedesktop.org, Arjun <arjun.melkaveri@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VGhpcyByZW1vdmVzIGxpYmRybSB1c2luZyBpbnRlbF9iYiBmcm9tIGJ1bmNoIG9mIHRlc3RzLgpE
-dWUgdG8gbGFja2FnZSBvZiBoYXJkd2FyZSBwcmltZV8qIHdhcyBub3QgdGVzdGVkLiAKCnYyOiBn
-ZW1fdGlsZWRfYmxpdHMuYzogZGV2aWNlIGluc3RlYWQgb2YgY3B1IG1hcCBpbiBvYmplY3QgY3Jl
-YXRpb24KdjM6IGFkZGVkIGNvbnRyb2wgb3ZlciBmZW5jaW5nIHRvIGVuYWJsZSBwYXJyYWxsZWwg
-ZXhlY3V0aW9uIHVzaW5nIG9uZSBpYmIsCiAgICBhZGRlZCBIQVggY29tbWl0IHdpdGggaXMgTk9U
-IEZPUiBSRVZJRVchCiAgICBnZW1fdGlsZWRfYmxpdHMuYzogYmFjayB0byBjcHUgbWFwcGluZwog
-ICAgZ2VtX3NldF90aWxpbmdfdnNfYmxpdC5jOiBkaXNhYmxlIGZlbmNpbmcgaW4gZmlyc3Qgd29y
-a2xvYWQKdjQ6IGFkZGVkIGJsaXRfY29weSB3cmFwcGVyIGZvciB0aGUgd2hvbGUgaW50ZWxfYnVm
-CiAgICBnZW1fc2V0X3RpbGluZ192c19ibGl0LmM6IHN3YXAgeCBhbmQgeSBpbiBzcmMgYm8gaW4g
-YnVzeV9idWYgYmxpdAogICAgCQkJICAgICAgZW5mb3JjZSByZWxvY3MKICAgIGdlbV9waXBlX2Nv
-bnRyb2xfc3RvcmVfbG9vcDogaW50ZWxfYmJfc3luYygpIGFkZGVkCiAgICAKU2lnbmVkLW9mZi1i
-eTogRG9taW5payBHcnplZ29yemVrIDxkb21pbmlrLmdyemVnb3J6ZWtAaW50ZWwuY29tPgpDYzog
-WmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+CkNj
-OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KCkRvbWluaWsgR3J6ZWdv
-cnplayAoMjMpOgogIGxpYi9pbnRlbF9iYXRjaGJ1ZmZlcjogYWRkIGludGVsX2JiX2JsaXRfY29w
-eSB3cmFwcGVyCiAgUmVtb3ZlIHVudXNlZCBpbnRlbF9idWZtZ3IuaCBoZWFkZXJzCiAgaTkxNS9n
-ZW1fcHdyaXRlX3Nub29wZWQ6IFJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeQogIGk5MTUvZ2VtX3Bp
-cGVfY29udHJvbF9zdG9yZV9sb29wLmM6IFJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeQogIGk5MTUv
-Z2VtX3ByZWFkX2FmdGVyX2JsaXQuYzogUmVtb3ZlIGxpYmRybSBkZXBlbmRlbmN5CiAgaTkxNS9n
-ZW1fdGhyZWFkZWRfYWNjZXNzX3RpbGVkLmM6IFJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeQogIGk5
-MTUvZ2VtX3RpbGVkX2JsaXRzOiBSZW1vdmUgbGliZHJtIGRlcGVuZGVuY3kKICBpOTE1L2dlbV91
-bmZlbmNlX2FjdGl2ZV9idWZmZXJzLmM6IFJlbW92ZSBsaWJyZG0gZGVwZW5kZW5jeQogIGk5MTUv
-Z2VtX3VucmVmX2FjdGl2ZV9idWZmZXJzLmM6IFJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeQogIGk5
-MTUvZ2VtX3RpbGVkX3BhcnRpYWxfcHdyaXRlX3ByZWFkOiBSZW1vdmUgbGliZHJtIGRlcGVuZGVu
-Y3kKICBpOTE1L2dlbV9zZXRfdGlsaW5nX3ZzX2JsaXQuYzogUmVtb3ZlIGxpYmRybSBkZXBlbmRl
-bmN5CiAgdGVzdHMva21zX2ZlbmNlX3Bpbl9sZWFrLmM6IFJlbW92ZSBsaWJkcm0gZGVwZW5kZW5j
-eQogIHRlc3RzL2ttc19mbGlwLmM6IFJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeQogIHRlc3RzL2tt
-c19wc3IyX3N1LmM6IEdldCByaWQgb2YgdW51c2VkIGJ1Zm1ncgogIGJlbmNobWFya3M6IFJlbW92
-ZSBsaWJkcm0gZGVwZW5kZW5jeQogIHRlc3RzL3ByaW1lX21tYXBfY29oZXJlbmN5LmM6IFJlbW92
-ZSBsaWJkcm0gZGVwZW5kZW5jeQogIHRvb2xzL2ludGVsX3BlcmZfY291bnRlcnM6IFJlbW92ZSBs
-aWJkcm0gZGVwZW5kZW5jeQogIHRlc3RzL3ByaW1lX3VkbDogUmVtb3ZlIGxpYmRybSBkZXBlbmRl
-bmN5CiAgdGVzdHMvcHJpbWVfbnZfcGNvcHkuYzogUmVtb3ZlIGxpYmRybSBkZXBlbmRlbmN5CiAg
-dGVzdHMvcHJpbWVfbnZfYXBpLmM6IFJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeQogIHRlc3RzL3By
-aW1lX252X3Rlc3QuYzogUmVtb3ZlIGxpYmRybSBkZXBlbmRlbmN5CiAgdGVzdHMvaTkxNS9nZW1f
-cHBndHQ6IG1ha2UgY29weWluZyBtb3JlIHJlYWRhYmxlCiAgSEFYOiBydW4gY2hhbmdlZCB0ZXN0
-cyBpbiBCQVQgb25seS4KClpiaWduaWV3IEtlbXBjennFhHNraSAoMSk6CiAgbGliL2ludGVsX2Jh
-dGNoYnVmZmVyOiBBZGQgY29udHJvbCBvdmVyIGZlbmNpbmcgaW4gaW50ZWxfYmIKCiBiZW5jaG1h
-cmtzL2dlbV91c2VycHRyX2JlbmNobWFyay5jICAgICAgICAgIHwgICAxIC0KIGJlbmNobWFya3Mv
-aW50ZWxfdXBsb2FkX2JsaXRfbGFyZ2UuYyAgICAgICAgfCAgNjkgKysrLS0tCiBiZW5jaG1hcmtz
-L2ludGVsX3VwbG9hZF9ibGl0X2xhcmdlX2d0dC5jICAgIHwgIDcyICsrKystLS0KIGJlbmNobWFy
-a3MvaW50ZWxfdXBsb2FkX2JsaXRfbGFyZ2VfbWFwLmMgICAgfCAgNzQgKysrLS0tLQogYmVuY2ht
-YXJrcy9pbnRlbF91cGxvYWRfYmxpdF9zbWFsbC5jICAgICAgICB8ICA2OCArKystLS0KIGxpYi9p
-bnRlbF9iYXRjaGJ1ZmZlci5jICAgICAgICAgICAgICAgICAgICAgfCAgNzAgKysrKysrLQogbGli
-L2ludGVsX2JhdGNoYnVmZmVyLmggICAgICAgICAgICAgICAgICAgICB8ICAgNSArCiBsaWIvbWVk
-aWFfZmlsbC5jICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxIC0KIHRlc3RzL2k5MTUv
-Z2VtX2NyZWF0ZS5jICAgICAgICAgICAgICAgICAgICAgfCAgIDEgLQogdGVzdHMvaTkxNS9nZW1f
-ZmxpbmtfcmFjZS5jICAgICAgICAgICAgICAgICB8ICAgMiAtCiB0ZXN0cy9pOTE1L2dlbV9tbWFw
-LmMgICAgICAgICAgICAgICAgICAgICAgIHwgIDI1ICsrLQogdGVzdHMvaTkxNS9nZW1fbW1hcF93
-Yy5jICAgICAgICAgICAgICAgICAgICB8ICAyNiArKy0KIHRlc3RzL2k5MTUvZ2VtX3BpcGVfY29u
-dHJvbF9zdG9yZV9sb29wLmMgICAgfCAxNDMgKysrKysrLS0tLS0tLQogdGVzdHMvaTkxNS9nZW1f
-cHBndHQuYyAgICAgICAgICAgICAgICAgICAgICB8ICAxNiArLQogdGVzdHMvaTkxNS9nZW1fcHJl
-YWRfYWZ0ZXJfYmxpdC5jICAgICAgICAgICB8IDEzNSArKysrKystLS0tLS0KIHRlc3RzL2k5MTUv
-Z2VtX3B3cml0ZV9zbm9vcGVkLmMgICAgICAgICAgICAgfCAgNjYgKysrLS0tCiB0ZXN0cy9pOTE1
-L2dlbV9yZXF1ZXN0X3JldGlyZS5jICAgICAgICAgICAgIHwgICAxIC0KIHRlc3RzL2k5MTUvZ2Vt
-X3NldF90aWxpbmdfdnNfYmx0LmMgICAgICAgICAgfCAyMTkgKysrKysrKysrKy0tLS0tLS0tLS0K
-IHRlc3RzL2k5MTUvZ2VtX3RocmVhZGVkX2FjY2Vzc190aWxlZC5jICAgICAgfCAgMzggKystLQog
-dGVzdHMvaTkxNS9nZW1fdGlsZWRfYmxpdHMuYyAgICAgICAgICAgICAgICB8ICA3NSArKystLS0t
-CiB0ZXN0cy9pOTE1L2dlbV90aWxlZF9wYXJ0aWFsX3B3cml0ZV9wcmVhZC5jIHwgMTIzICsrKysr
-Ky0tLS0tCiB0ZXN0cy9pOTE1L2dlbV91bmZlbmNlX2FjdGl2ZV9idWZmZXJzLmMgICAgIHwgMTM0
-ICsrKysrKy0tLS0tLQogdGVzdHMvaTkxNS9nZW1fdW5yZWZfYWN0aXZlX2J1ZmZlcnMuYyAgICAg
-ICB8ICA1NiArKystLQogdGVzdHMvaTkxNS9nZW1fdXNlcnB0cl9ibGl0cy5jICAgICAgICAgICAg
-ICB8ICAgMSAtCiB0ZXN0cy9pOTE1L2k5MTVfZ2V0cGFyYW1zX2Jhc2ljLmMgICAgICAgICAgIHwg
-ICAxIC0KIHRlc3RzL2ludGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QgICAgICAgfCAgMTAg
-KwogdGVzdHMva21zX2ZlbmNlX3Bpbl9sZWFrLmMgICAgICAgICAgICAgICAgICB8ICA4MyArKysr
-LS0tLQogdGVzdHMva21zX2ZsaXAuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAyMiAr
-LQogdGVzdHMva21zX3BzcjJfc3UuYyAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNyAtCiB0
-ZXN0cy9rbXNfc2VxdWVuY2UuYyAgICAgICAgICAgICAgICAgICAgICAgIHwgICAyIC0KIHRlc3Rz
-L2ttc19zZXRtb2RlLmMgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDEgLQogdGVzdHMva21z
-X3ZibGFuay5jICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiAtCiB0ZXN0cy9wcmltZV9t
-bWFwX2NvaGVyZW5jeS5jICAgICAgICAgICAgICAgIHwgMTA1ICsrKysrLS0tLS0KIHRlc3RzL3By
-aW1lX252X2FwaS5jICAgICAgICAgICAgICAgICAgICAgICAgfCAyMDMgKysrKysrKysrKy0tLS0t
-LS0tCiB0ZXN0cy9wcmltZV9udl9wY29weS5jICAgICAgICAgICAgICAgICAgICAgIHwgMTAzICsr
-KysrLS0tLQogdGVzdHMvcHJpbWVfbnZfdGVzdC5jICAgICAgICAgICAgICAgICAgICAgICB8IDE4
-OSArKysrKysrKystLS0tLS0tLQogdGVzdHMvcHJpbWVfdWRsLmMgICAgICAgICAgICAgICAgICAg
-ICAgICAgICB8ICA0NCArKy0tCiB0b29scy9pbnRlbF9wZXJmX2NvdW50ZXJzLmMgICAgICAgICAg
-ICAgICAgIHwgMTA5ICsrKysrLS0tLS0KIDM4IGZpbGVzIGNoYW5nZWQsIDEyMDEgaW5zZXJ0aW9u
-cygrKSwgMTEwMSBkZWxldGlvbnMoLSkKCi0tIAoyLjIwLjEKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZA
-bGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxt
-YW4vbGlzdGluZm8vaWd0LWRldgo=
+From: Apoorva Singh <apoorva1.singh@intel.com>
+
+Subtest "bad-size" should keep valid/good offset
+corresponding to buffer object being mapped.
+Currently, subtest will pass for any value of size
+provided as the offset value itself will not allow
+to map any size of memory which defies the purpose
+of this subtest.
+
+The subtest should not pass due to bad offset value
+while it should pass only due to bad size provided.
+
+v2: Added new offset. Updated the same changes in
+"bad-size" subtest of gem_mmap_wc too.
+
+Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/i915/gem_mmap.c    | 25 ++++++++++++++++---------
+ tests/i915/gem_mmap_wc.c | 26 ++++++++++++++++----------
+ 2 files changed, 32 insertions(+), 19 deletions(-)
+
+diff --git a/tests/i915/gem_mmap.c b/tests/i915/gem_mmap.c
+index f8cf052e..8bad9b14 100644
+--- a/tests/i915/gem_mmap.c
++++ b/tests/i915/gem_mmap.c
+@@ -214,18 +214,25 @@ igt_main
+ 			2 * 4096,
+ 			~0,
+ 		};
++		uint64_t offset[] = {
++			4096,
++			0
++		};
+ 
+-		for (int i = 0; i < ARRAY_SIZE(bad_size); i++) {
+-			struct drm_i915_gem_mmap arg = {
+-				.handle = gem_create(fd, 4096),
+-				.offset = 4096,
+-				.size = bad_size[i],
+-			};
++		for(int i = 0; i < ARRAY_SIZE(offset); i++) {
++			for (int j = 0; j < ARRAY_SIZE(bad_size); j++) {
++				struct drm_i915_gem_mmap arg = {
++					.handle = gem_create(fd, 4096),
++					.offset = offset[i],
++					.size = bad_size[j],
++				};
+ 
+-			igt_debug("Trying to mmap bad size; size: %'"PRIu64"\n", bad_size[i]);
+-			igt_assert_eq(mmap_ioctl(fd, &arg), -EINVAL);
++				igt_debug("Trying to mmap bad size; size: %'"PRIu64", offset: %'"PRIu64"\n",
++						bad_size[j], offset[i]);
++				igt_assert_eq(mmap_ioctl(fd, &arg), -EINVAL);
+ 
+-			gem_close(fd, arg.handle);
++				gem_close(fd, arg.handle);
++			}
+ 		}
+ 	}
+ 
+diff --git a/tests/i915/gem_mmap_wc.c b/tests/i915/gem_mmap_wc.c
+index f44b406d..fe1283e5 100644
+--- a/tests/i915/gem_mmap_wc.c
++++ b/tests/i915/gem_mmap_wc.c
+@@ -563,17 +563,23 @@ igt_main
+ 			2 * 4096,
+ 			~0,
+ 		};
++		uint64_t offset[] = {
++			4096,
++			0
++		};
+ 
+-		for (int i = 0; i < ARRAY_SIZE(bad_size); i++) {
+-			struct drm_i915_gem_mmap arg = {
+-				.handle = gem_create(fd, 4096),
+-				.offset = 4096,
+-				.size = bad_size[i],
+-				.flags = I915_MMAP_WC,
+-			};
+-
+-			igt_assert_eq(mmap_ioctl(fd, &arg), -EINVAL);
+-			gem_close(fd, arg.handle);
++		for(int i = 0; i < ARRAY_SIZE(offset); i++) {
++			for (int j = 0; j < ARRAY_SIZE(bad_size); j++) {
++				struct drm_i915_gem_mmap arg = {
++					.handle = gem_create(fd, 4096),
++					.offset = offset[i],
++					.size = bad_size[j],
++					.flags = I915_MMAP_WC,
++				};
++
++				igt_assert_eq(mmap_ioctl(fd, &arg), -EINVAL);
++				gem_close(fd, arg.handle);
++			}
+ 		}
+ 	}
+ 
+-- 
+2.20.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
