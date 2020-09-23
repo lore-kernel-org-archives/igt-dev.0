@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE63E6E8E4
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2020 09:55:11 +0000 (UTC)
-Date: Wed, 23 Sep 2020 12:55:06 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20200923095506.GZ6112@intel.com>
-References: <20200918064318.2143-1-karthik.b.s@intel.com>
- <20200918113248.GG6112@intel.com>
- <c9dbb1b8-af17-2dd4-b9b9-0c6b06f030b2@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 728296E92F
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2020 10:35:52 +0000 (UTC)
+Date: Wed, 23 Sep 2020 12:35:46 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20200923103546.GD3132@zkempczy-mobl2>
+References: <20200922115229.28371-1-dominik.grzegorzek@intel.com>
+ <20200922115229.28371-12-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <c9dbb1b8-af17-2dd4-b9b9-0c6b06f030b2@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v8] tests/kms_async_flips: Add test to
- validate asynchronous flips
+In-Reply-To: <20200922115229.28371-12-dominik.grzegorzek@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 11/25]
+ i915/gem_unref_active_buffers.c: Remove libdrm dependency
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,284 +19,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: michel@daenzer.net, igt-dev@lists.freedesktop.org, daniel.vetter@intel.com, petri.latvala@intel.com
+To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Sep 23, 2020 at 08:23:44AM +0530, Karthik B S wrote:
-> =
-
-> =
-
-> On 9/18/2020 5:02 PM, Ville Syrj=E4l=E4 wrote:
-> > On Fri, Sep 18, 2020 at 12:13:18PM +0530, Karthik B S wrote:
-> >> Asynchronous flips are issued using the page flip IOCTL.
-> >> The test consists of two subtests. The first subtest waits for
-> >> the page flip event to be received before giving the next flip,
-> >> and the second subtest doesn't wait for page flip events.
-> >>
-> >> The test passes if the IOCTL is successful.
-> >>
-> >> v2: -Add authors in the test file. (Paulo)
-> >>      -Reduce the run time and timeouts to suit IGT needs. (Paulo)
-> >>      -Replace igt_debug's with igt_assert's to catch slow flips. (Paul=
-o)
-> >>      -Follow IGT coding style regarding spaces. (Paulo)
-> >>      -Make set up code part of igt_fixture. (Paulo)
-> >>      -Skip the test if async flips are not supported. (Paulo)
-> >>      -Replace suggested-by. (Paulo)
-> >>      -Added description for test and subtests.
-> >>
-> >> v3: -Rename the test to kms_async_flips. (Paulo)
-> >>      -Modify the TODO comment. (Paulo)
-> >>      -Remove igt_debug in flip_handler. (Paulo)
-> >>      -Use drmIoctl() in has_async function. (Paulo)
-> >>      -Add more details in igt_assert in flip_handler. (Paulo)
-> >>      -Remove flag variable in flip_handler. (Paulo)
-> >>      -Call igt_assert in flip_handler after the warm up time.
-> >>
-> >> v4: -Calculate the time stamp in flip_handler from userspace, as the
-> >>       kernel will return vbl timestamps and this cannot be used
-> >>       for async flips.
-> >>      -Add a new subtest to verify that the async flip time stamp
-> >>       lies in between the previous and next vblank time stamp. (Daniel)
-> >>
-> >> v5: -Add test that alternates between sync and async flips. (Ville)
-> >>      -Add test to verify invalid async flips. (Ville)
-> >>      -Remove the subtest async-flip-without-page-flip-events. (Michel)
-> >>      -Remove the intel gpu restriction and make the test generic. (Mic=
-hel)
-> >>
-> >> v6: -Change the THRESHOLD from 10 to 8 as failures are seen on CI
-> >>       on platforms <=3D gen10.
-> >>      -In older platforms(<=3D gen10), async address update bit in plan=
-e ctl
-> >>       is double buffered. Made changes in subtests to accomodate this.
-> >>      -Moved the igt_assert from flip_handler to individual subtest as =
-we
-> >>       now have four subtests and adding conditions for the assert in
-> >>       flip handler is messy.
-> >>
-> >> v7: -Change flip_interval from int to float for more precision.
-> >>      -Remove the fb height change case in 'invalid' subtest as per the
-> >>       feedback received on the kernel patches.
-> >>      -Add subtest to verify legacy cursor IOCTL. (Ville)
-> >>
-> >> v8: -Add a cursor flip before async flip in cursor test. (Ville)
-> >>      -Make flip_interval double for more precision as failures are seen
-> >>       on older platforms on CI.
-> >>
-> >> Signed-off-by: Paulo Zanoni <paulo.r.zanoni@intel.com>
-> >> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> >> ---
-> >>   tests/Makefile.sources  |   1 +
-> >>   tests/kms_async_flips.c | 428 ++++++++++++++++++++++++++++++++++++++=
-++
-> >>   tests/meson.build       |   1 +
-> >>   3 files changed, 430 insertions(+)
-> >>   create mode 100644 tests/kms_async_flips.c
-> >>
-> >> diff --git a/tests/Makefile.sources b/tests/Makefile.sources
-> >> index 6ae95155..f32ea9cf 100644
-> >> --- a/tests/Makefile.sources
-> >> +++ b/tests/Makefile.sources
-> >> @@ -32,6 +32,7 @@ TESTS_progs =3D \
-> >>   	feature_discovery \
-> >>   	kms_3d \
-> >>   	kms_addfb_basic \
-> >> +	kms_async_flips \
-> >>   	kms_atomic \
-> >>   	kms_atomic_interruptible \
-> >>   	kms_atomic_transition \
-> >> diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-> >> new file mode 100644
-> >> index 00000000..ef63ec45
-> >> --- /dev/null
-> >> +++ b/tests/kms_async_flips.c
-> >> @@ -0,0 +1,428 @@
-> >> +/*
-> >> + * Copyright =A9 2020 Intel Corporation
-> >> + *
-> >> + * Permission is hereby granted, free of charge, to any person obtain=
-ing a
-> >> + * copy of this software and associated documentation files (the "Sof=
-tware"),
-> >> + * to deal in the Software without restriction, including without lim=
-itation
-> >> + * the rights to use, copy, modify, merge, publish, distribute, subli=
-cense,
-> >> + * and/or sell copies of the Software, and to permit persons to whom =
-the
-> >> + * Software is furnished to do so, subject to the following condition=
-s:
-> >> + *
-> >> + * The above copyright notice and this permission notice (including t=
-he next
-> >> + * paragraph) shall be included in all copies or substantial portions=
- of the
-> >> + * Software.
-> >> + *
-> >> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EX=
-PRESS OR
-> >> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTAB=
-ILITY,
-> >> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT=
- SHALL
-> >> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES =
-OR OTHER
-> >> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, AR=
-ISING
-> >> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHE=
-R DEALINGS
-> >> + * IN THE SOFTWARE.
-> >> + *
-> >> + * Authors:
-> >> + *  Paulo Zanoni <paulo.r.zanoni@intel.com>
-> >> + *  Karthik B S <karthik.b.s@intel.com>
-> >> + */
-> >> +
-> >> +#include "igt.h"
-> >> +#include "igt_aux.h"
-> >> +#include <sys/ioctl.h>
-> >> +#include <sys/time.h>
-> >> +#include <poll.h>
-> >> +
-> >> +#define BUFS 4
-> > =
-
-> > I'd just truct igt_fb bufs[4], and replace all the other
-> > "BUFS" usages with ARRAY_SIZE(bufs).
-> =
-
-> Thanks for the review.
-> Sure, I'll change this.
-> > =
-
-> >> +#define SYNC_FLIP 0
-> >> +#define ASYNC_FLIP 1
-> > =
-
-> > enum
-> > =
-
-> =
-
-> Will update this.
-> =
-
-> >> +#define CURSOR_RES 64
-> > =
-
-> > Should query that from the kernel so that test is driver agnostic.
-> > =
-
-> =
-
-> Sure. Will change this.
-> >> +#define CURSOR_POS 128
-> >> +
-> >> +/*
-> >> + * These constants can be tuned in case we start getting unexpected
-> >> + * results in CI.
-> >> + */
-> >> +
-> >> +#define WARM_UP_TIME 1
-> >> +#define RUN_TIME 2
-> >> +#define THRESHOLD 8
-> > =
-
-> > A rather non-descriptive name. I guess this is "min flips per frame" or
-> > something along those lines?
-> > =
-
-> =
-
-> Sure. I will change this to MIN_FLIPS_PER_FRAME.
-> >> +
-> >> +IGT_TEST_DESCRIPTION("Test asynchrous page flips.");
-> > =
-
-> > Check the spelling
-> > =
-
-> =
-
-> Will fix this.
-> >> +
-> >> +typedef struct {
-> >> +	int drm_fd;
-> >> +	uint32_t crtc_id;
-> >> +	struct igt_fb bufs[BUFS];
-> >> +	igt_display_t display;
-> >> +} data_t;
-> >> +
-> >> +uint32_t refresh_rate;
-> >> +unsigned long flip_timestamp_us;
-> >> +double flip_interval;
-> > =
-
-> > Hmm. I wonder why these are outside the data_t?
-> > =
-
-> =
-
-> Will move the refresh_rate variable inside data_t.
-> The other two are getting updated in flip_handler. Hence kept them =
-
-> global. Would you suggest making data_t global. Or any other way I can =
-
-> handle this better?
-
-It should be possible to pass arbitrary data to the event handler.
-
-<snip>
-> Sure. Will add a TODO here and add these changes as a follow up.
-> >> +		      LOCAL_I915_FORMAT_MOD_Y_TILED, &fb2);
-> >> +
-> >> +	ret =3D drmModePageFlip(data->drm_fd, data->crtc_id,
-> >> +			      fb1.fb_id, flags, NULL);
-> >> +
-> >> +	igt_assert(ret =3D=3D 0);
-> > =
-
-> > Not quite sure why we have this first page flip here?
-> > =
-
-> =
-
-> First to have an async flip with xtiled buffer and then follow it up =
-
-> with an async flip with a y-tiled buffer, so the second one is expected =
-
-> to fail. Could this be done in one flip? Am I missing something here?
-
-What does the fist async flip achieve for us? Nothing AFAICS. We must
-already be scanning out a similar fb or else the first async flip would
-also fail.
-
-If it's possible that we are not already scanning out a similar fb to
-the first one then we should do a full modeset/atomic commit to make
-it so. Otherwise the second async flip is going to be testing random
-things.
-
-> >> +
-> >> +	wait_flip_event(data);
-> >> +
-> >> +	/* Flip with a different fb modifier which is expected to be rejecte=
-d */
-> >> +	ret =3D drmModePageFlip(data->drm_fd, data->crtc_id,
-> >> +			      fb2.fb_id, flags, NULL);
-> >> +
-
--- =
-
-Ville Syrj=E4l=E4
-Intel
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVHVlLCBTZXAgMjIsIDIwMjAgYXQgMDE6NTI6MTVQTSArMDIwMCwgRG9taW5payBHcnplZ29y
+emVrIHdyb3RlOgo+IFVzZSBpbnRlbF9iYiAvIGludGVsX2J1ZiB0byByZW1vdmUgbGliZHJtIGRl
+cGVuZGVuY3kuCj4gCj4gU2lnbmVkLW9mZi1ieTogRG9taW5payBHcnplZ29yemVrIDxkb21pbmlr
+LmdyemVnb3J6ZWtAaW50ZWwuY29tPgo+IENjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWdu
+aWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KPiBDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJp
+cy13aWxzb24uY28udWs+Cj4gLS0tCj4gIHRlc3RzL2k5MTUvZ2VtX3VucmVmX2FjdGl2ZV9idWZm
+ZXJzLmMgfCA1NiArKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0KPiAgMSBmaWxlIGNoYW5nZWQs
+IDI3IGluc2VydGlvbnMoKyksIDI5IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0
+cy9pOTE1L2dlbV91bnJlZl9hY3RpdmVfYnVmZmVycy5jIGIvdGVzdHMvaTkxNS9nZW1fdW5yZWZf
+YWN0aXZlX2J1ZmZlcnMuYwo+IGluZGV4IDc1Mzk0Nzk0Li42YThjZWZkNSAxMDA2NDQKPiAtLS0g
+YS90ZXN0cy9pOTE1L2dlbV91bnJlZl9hY3RpdmVfYnVmZmVycy5jCj4gKysrIGIvdGVzdHMvaTkx
+NS9nZW1fdW5yZWZfYWN0aXZlX2J1ZmZlcnMuYwo+IEBAIC0yOSw4ICsyOSw3IEBACj4gICAqIFRl
+c3RjYXNlOiBVbnJlZmVyZW5jaW5nIG9mIGFjdGl2ZSBidWZmZXJzCj4gICAqCj4gICAqIEV4ZWNz
+IGJ1ZmZlcnMgYW5kIGltbWVkaWF0ZWx5IHVucmVmZXJlbmNlcyB0aGVtLCBoZW5jZSB0aGUga2Vy
+bmVsIGFjdGl2ZSBsaXN0Cj4gLSAqIHdpbGwgYmUgdGhlIGxhc3Qgb25lIHRvIGhvbGQgYSByZWZl
+cmVuY2Ugb24gdGhlbS4gVXN1YWxseSBsaWJkcm0gYm8gY2FjaGluZwo+IC0gKiBwcmV2ZW50cyB0
+aGF0IGJ5IGtlZXBpbmcgYW5vdGhlciByZWZlcmVuY2UuCj4gKyAqIHdpbGwgYmUgdGhlIGxhc3Qg
+b25lIHRvIGhvbGQgYSByZWZlcmVuY2Ugb24gdGhlbS4KPiAgICovCj4gICNpbmNsdWRlIDxzdGRs
+aWIuaD4KPiAgI2luY2x1ZGUgPHN0ZGlvLmg+Cj4gQEAgLTQ0LDU1ICs0Myw1NCBAQAo+ICAjaW5j
+bHVkZSAiZHJtLmgiCj4gICNpbmNsdWRlICJpOTE1L2dlbS5oIgo+ICAjaW5jbHVkZSAiaWd0Lmgi
+Cj4gLSNpbmNsdWRlICJpbnRlbF9idWZtZ3IuaCIKPiAgCj4gIElHVF9URVNUX0RFU0NSSVBUSU9O
+KCJUZXN0IHVucmVmZXJlbmNpbmcgb2YgYWN0aXZlIGJ1ZmZlcnMuIik7Cj4gIAo+IC1zdGF0aWMg
+ZHJtX2ludGVsX2J1Zm1nciAqYnVmbWdyOwo+IC1zdHJ1Y3QgaW50ZWxfYmF0Y2hidWZmZXIgKmJh
+dGNoOwo+IC1zdGF0aWMgZHJtX2ludGVsX2JvICpsb2FkX2JvOwo+IC0KPiAgaWd0X3NpbXBsZV9t
+YWluCj4gIHsKPiArCXN0cnVjdCBpbnRlbF9idWYgKmxvYWRfYm87Cj4gKwlzdHJ1Y3QgaW50ZWxf
+YmIgKmliYjsKPiArCXN0cnVjdCBidWZfb3BzICpib3BzOwo+ICAJaW50IGZkLCBpOwo+ICAKPiAg
+CWZkID0gZHJtX29wZW5fZHJpdmVyKERSSVZFUl9JTlRFTCk7Cj4gIAlpZ3RfcmVxdWlyZV9nZW0o
+ZmQpOwo+ICAJZ2VtX3JlcXVpcmVfYmxpdHRlcihmZCk7Cj4gIAo+IC0JYnVmbWdyID0gZHJtX2lu
+dGVsX2J1Zm1ncl9nZW1faW5pdChmZCwgNDA5Nik7Cj4gLQlpZ3RfYXNzZXJ0KGJ1Zm1ncik7Cj4g
+LQkvKiBkb24ndCBlbmFibGUgYnVmZmVyIHJldXNlISEgKi8KPiAtCS8vZHJtX2ludGVsX2J1Zm1n
+cl9nZW1fZW5hYmxlX3JldXNlKGJ1Zm1ncik7Cj4gLQo+IC0JYmF0Y2ggPSBpbnRlbF9iYXRjaGJ1
+ZmZlcl9hbGxvYyhidWZtZ3IsIGludGVsX2dldF9kcm1fZGV2aWQoZmQpKTsKPiAtCWlndF9hc3Nl
+cnQoYmF0Y2gpOwo+ICsJYm9wcyA9IGJ1Zl9vcHNfY3JlYXRlKGZkKTsKPiArCWliYiA9IGludGVs
+X2JiX2NyZWF0ZShmZCwgNDA5Nik7CgpXZSB3YW50IHRvIHVzZSB3aXRoIHJlbG9jcyBhbmQgZmVu
+Y2luZyA9PSBmYWxzZS4KCi0tClpiaWduaWV3Cj4gIAo+ICAJLyogcHV0IHNvbWUgbG9hZCBvbnRv
+IHRoZSBncHUgdG8ga2VlcCB0aGUgbGlnaHQgYnVmZmVycyBhY3RpdmUgZm9yIGxvbmcKPiAgCSAq
+IGVub3VnaCAqLwo+ICAJZm9yIChpID0gMDsgaSA8IDEwMDA7IGkrKykgewo+IC0JCWxvYWRfYm8g
+PSBkcm1faW50ZWxfYm9fYWxsb2MoYnVmbWdyLCAidGFyZ2V0IGJvIiwgMTAyNCo0MDk2LCA0MDk2
+KTsKPiAtCQlpZ3RfYXNzZXJ0KGxvYWRfYm8pOwo+ICsJCWxvYWRfYm8gPSBpbnRlbF9idWZfY3Jl
+YXRlKGJvcHMsIDEwMjQsIDEwMjQsIDMyLCA0MDk2LAo+ICsJCQkJCSAgIEk5MTVfVElMSU5HX05P
+TkUsCj4gKwkJCQkJICAgSTkxNV9DT01QUkVTU0lPTl9OT05FKTsKPiAtCQlCTElUX0NPUFlfQkFU
+Q0hfU1RBUlQoMCk7Cj4gLQkJT1VUX0JBVENIKCgzIDw8IDI0KSB8IC8qIDMyIGJpdHMgKi8KPiAr
+CQlpbnRlbF9iYl9hZGRfaW50ZWxfYnVmKGliYiwgbG9hZF9ibywgdHJ1ZSk7Cj4gKwkJaW50ZWxf
+YmJfYmxpdF9zdGFydChpYmIsIDApOwo+ICsJCWludGVsX2JiX291dChpYmIsICgzIDw8IDI0KSB8
+IC8qIDMyIGJpdHMgKi8KPiAgCQkJICAoMHhjYyA8PCAxNikgfCAvKiBjb3B5IFJPUCAqLwo+ICAJ
+CQkgIDQwOTYpOwo+IC0JCU9VVF9CQVRDSCgwKTsgLyogZHN0IHgxLHkxICovCj4gLQkJT1VUX0JB
+VENIKCgxMDI0IDw8IDE2KSB8IDUxMik7Cj4gLQkJT1VUX1JFTE9DX0ZFTkNFRChsb2FkX2JvLCBJ
+OTE1X0dFTV9ET01BSU5fUkVOREVSLCBJOTE1X0dFTV9ET01BSU5fUkVOREVSLCAwKTsKPiAtCQlP
+VVRfQkFUQ0goKDAgPDwgMTYpIHwgNTEyKTsgLyogc3JjIHgxLCB5MSAqLwo+IC0JCU9VVF9CQVRD
+SCg0MDk2KTsKPiAtCQlPVVRfUkVMT0NfRkVOQ0VEKGxvYWRfYm8sIEk5MTVfR0VNX0RPTUFJTl9S
+RU5ERVIsIDAsIDApOwo+IC0JCUFEVkFOQ0VfQkFUQ0goKTsKPiArCQlpbnRlbF9iYl9vdXQoaWJi
+LCAwKTsgLyogZHN0IHgxLHkxICovCj4gKwkJaW50ZWxfYmJfb3V0KGliYiwgKDEwMjQgPDwgMTYp
+IHwgNTEyKTsKPiArCQlpbnRlbF9iYl9lbWl0X3JlbG9jX2ZlbmNlZChpYmIsIGxvYWRfYm8tPmhh
+bmRsZSwKPiArCQkJCQkgICBJOTE1X0dFTV9ET01BSU5fUkVOREVSLAo+ICsJCQkJCSAgIEk5MTVf
+R0VNX0RPTUFJTl9SRU5ERVIsIDAsIDB4MCk7Cj4gKwkJaW50ZWxfYmJfb3V0KGliYiwgKDAgPDwg
+MTYpIHwgNTEyKTsgLyogc3JjIHgxLCB5MSAqLwo+ICsJCWludGVsX2JiX291dChpYmIsIDQwOTYp
+Owo+ICsJCWludGVsX2JiX2VtaXRfcmVsb2NfZmVuY2VkKGliYiwgbG9hZF9iby0+aGFuZGxlLAo+
+ICsJCQkJCSAgIEk5MTVfR0VNX0RPTUFJTl9SRU5ERVIsCj4gKwkJCQkJICAgMCwgMCwgMHgwKTsK
+PiAgCj4gLQkJaW50ZWxfYmF0Y2hidWZmZXJfZmx1c2goYmF0Y2gpOwo+ICsJCWludGVsX2JiX2Zs
+dXNoX2JsaXQoaWJiKTsKPiAgCj4gLQkJZHJtX2ludGVsX2JvX2Rpc2FibGVfcmV1c2UobG9hZF9i
+byk7Cj4gLQkJZHJtX2ludGVsX2JvX3VucmVmZXJlbmNlKGxvYWRfYm8pOwo+ICsJCWludGVsX2J1
+Zl9kZXN0cm95KGxvYWRfYm8pOwo+ICsJCWludGVsX2JiX3Jlc2V0KGliYiwgdHJ1ZSk7Cj4gIAl9
+Cj4gIAo+IC0JZHJtX2ludGVsX2J1Zm1ncl9kZXN0cm95KGJ1Zm1ncik7Cj4gKwlpbnRlbF9iYl9k
+ZXN0cm95KGliYik7Cj4gKwlidWZfb3BzX2Rlc3Ryb3koYm9wcyk7Cj4gIAo+ICAJY2xvc2UoZmQp
+Owo+ICB9Cj4gLS0gCj4gMi4yMC4xCj4gCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRl
+c2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8v
+aWd0LWRldgo=
