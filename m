@@ -1,13 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AFD4D6E155
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2020 12:46:38 +0000 (UTC)
-From: Mika Kahola <mika.kahola@intel.com>
-Date: Wed, 23 Sep 2020 15:46:33 +0300
-Message-Id: <20200923124633.2382061-1-mika.kahola@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 483F16E3F0
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2020 12:59:22 +0000 (UTC)
+Date: Wed, 23 Sep 2020 14:59:16 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20200923125916.GF3132@zkempczy-mobl2>
+References: <20200922115229.28371-1-dominik.grzegorzek@intel.com>
+ <20200922115229.28371-15-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC PATCH i-g-t] tests/kms_*: Limit number of concurrent
- planes to three
+Content-Disposition: inline
+In-Reply-To: <20200922115229.28371-15-dominik.grzegorzek@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v4 14/25] tests/kms_fence_pin_leak.c:
+ Remove libdrm dependency
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,200 +19,118 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-To increase test executino speed and to leave stress testing
-for kms_stress IGT test, this patch introduces a limit to test
-only three planes concurrently.
-
-The patch is sent as an RFC as a basis of discussion wheter or not
-limiting the plane count in tests is a good idea or not. This change
-has its drawbacks. We may not test for example bandwidth limitation
-anymore as available bandwidth is sufficient for testing with 3 planes.
-
-Signed-off-by: Mika Kahola <mika.kahola@intel.com>
----
- lib/igt_kms.h                 |  6 ++++++
- tests/kms_atomic_transition.c | 28 ++++++++++++++++------------
- tests/kms_concurrent.c        |  2 ++
- tests/kms_plane_multiple.c    |  2 ++
- 4 files changed, 26 insertions(+), 12 deletions(-)
-
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index f41eadaf..0141ecfd 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -418,6 +418,8 @@ typedef struct {
- 	uint16_t tile_h_size, tile_v_size;
- } igt_tile_info_t;
- 
-+#define MAX_PLANES_TO_TEST	3
-+
- void igt_display_require(igt_display_t *display, int drm_fd);
- void igt_display_fini(igt_display_t *display);
- void igt_display_reset(igt_display_t *display);
-@@ -592,6 +594,10 @@ igt_output_t **__igt_pipe_populate_outputs(igt_display_t *display,
- 	for (int j__ = 0; assert(igt_can_fail()), (plane) = &(display)->pipes[(pipe)].planes[j__], \
- 		     j__ < (display)->pipes[(pipe)].n_planes; j__++)
- 
-+#define for_max_planes_on_pipe(display, pipe, plane, max_planes)			\
-+	for (int j__ = 0; assert(igt_can_fail()), (plane) = &(display)->pipes[(pipe)].planes[j__], \
-+		     j__ < max_planes; j__++)
-+
- #define IGT_FIXED(i,f)	((i) << 16 | (f))
- 
- /**
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index a71bbe10..8b17bd0c 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -132,7 +132,7 @@ wm_setup_plane(igt_display_t *display, enum pipe pipe,
- 	* because most of the modeset operations must be fast
- 	* later on.
- 	*/
--	for_each_plane_on_pipe(display, pipe, plane) {
-+	for_max_planes_on_pipe(display, pipe, plane, MAX_PLANES_TO_TEST) {
- 		int i = plane->index;
- 
- 		if (!mask || !(parms[i].mask & mask)) {
-@@ -179,7 +179,7 @@ static void set_sprite_wh(igt_display_t *display, enum pipe pipe,
- {
- 	igt_plane_t *plane;
- 
--	for_each_plane_on_pipe(display, pipe, plane) {
-+	for_max_planes_on_pipe(display, pipe, plane, MAX_PLANES_TO_TEST) {
- 		int i = plane->index;
- 
- 		if (plane->type == DRM_PLANE_TYPE_PRIMARY ||
-@@ -216,7 +216,8 @@ static void setup_parms(igt_display_t *display, enum pipe pipe,
- 	uint64_t cursor_width, cursor_height;
- 	unsigned sprite_width, sprite_height, prev_w, prev_h;
- 	bool max_sprite_width, max_sprite_height, alpha = true;
--	uint32_t n_planes = display->pipes[pipe].n_planes;
-+	uint32_t n_planes = display->pipes[pipe].n_planes > MAX_PLANES_TO_TEST
-+				? MAX_PLANES_TO_TEST : display->pipes[pipe].n_planes;
- 	uint32_t n_overlays = 0, overlays[n_planes];
- 	igt_plane_t *plane;
- 	uint32_t iter_mask = 3;
-@@ -229,7 +230,7 @@ static void setup_parms(igt_display_t *display, enum pipe pipe,
- 	if (cursor_height >= mode->vdisplay)
- 		cursor_height = mode->vdisplay;
- 
--	for_each_plane_on_pipe(display, pipe, plane) {
-+	for_max_planes_on_pipe(display, pipe, plane, MAX_PLANES_TO_TEST) {
- 		int i = plane->index;
- 
- 		if (plane->type == DRM_PLANE_TYPE_PRIMARY) {
-@@ -368,7 +369,8 @@ static void prepare_fencing(igt_display_t *display, enum pipe pipe)
- 
- 	igt_require_sw_sync();
- 
--	n_planes = display->pipes[pipe].n_planes;
-+	n_planes = display->pipes[pipe].n_planes > MAX_PLANES_TO_TEST
-+			? MAX_PLANES_TO_TEST : display->pipes[pipe].n_planes;
- 	timeline = calloc(sizeof(*timeline), n_planes);
- 	igt_assert_f(timeline != NULL, "Failed to allocate memory for timelines\n");
- 	thread = calloc(sizeof(*thread), n_planes);
-@@ -376,7 +378,7 @@ static void prepare_fencing(igt_display_t *display, enum pipe pipe)
- 	seqno = calloc(sizeof(*seqno), n_planes);
- 	igt_assert_f(seqno != NULL, "Failed to allocate memory for seqno\n");
- 
--	for_each_plane_on_pipe(display, pipe, plane)
-+	for_max_planes_on_pipe(display, pipe, plane, MAX_PLANES_TO_TEST)
- 		timeline[plane->index] = sw_sync_timeline_create();
- }
- 
-@@ -384,7 +386,7 @@ static void unprepare_fencing(igt_display_t *display, enum pipe pipe)
- {
- 	igt_plane_t *plane;
- 
--	for_each_plane_on_pipe(display, pipe, plane)
-+	for_max_planes_on_pipe(display, pipe, plane, MAX_PLANES_TO_TEST)
- 		close(timeline[plane->index]);
- 
- 	free(timeline);
-@@ -445,7 +447,9 @@ run_transition_test(igt_display_t *display, enum pipe pipe, igt_output_t *output
- 	igt_plane_t *plane;
- 	igt_pipe_t *pipe_obj = &display->pipes[pipe];
- 	uint32_t iter_max, i;
--	struct plane_parms parms[pipe_obj->n_planes];
-+	int n_planes = pipe_obj->n_planes > MAX_PLANES_TO_TEST ?
-+		       MAX_PLANES_TO_TEST : pipe_obj->n_planes;
-+	struct plane_parms parms[n_planes];
- 	unsigned flags = 0;
- 	int ret;
- 
-@@ -533,7 +537,7 @@ run_transition_test(igt_display_t *display, enum pipe pipe, igt_output_t *output
- 		}
- 
- 		/* force planes to be part of commit */
--		for_each_plane_on_pipe(display, pipe, plane) {
-+		for_max_planes_on_pipe(display, pipe, plane, MAX_PLANES_TO_TEST) {
- 			if (parms[plane->index].mask)
- 				igt_plane_set_position(plane, 0, 0);
- 		}
-@@ -555,7 +559,7 @@ run_transition_test(igt_display_t *display, enum pipe pipe, igt_output_t *output
- 
- 		if (type == TRANSITION_MODESET_FAST &&
- 		    n_enable_planes > 1 &&
--		    n_enable_planes < pipe_obj->n_planes)
-+		    n_enable_planes < n_planes)
- 			continue;
- 
- 		igt_output_set_pipe(output, pipe);
-@@ -583,7 +587,7 @@ run_transition_test(igt_display_t *display, enum pipe pipe, igt_output_t *output
- 
- 				if (type == TRANSITION_MODESET_FAST &&
- 				    n_enable_planes > 1 &&
--				    n_enable_planes < pipe_obj->n_planes)
-+				    n_enable_planes < n_planes)
- 					continue;
- 
- 				if (!wm_setup_plane(display, pipe, j, parms, fencing))
-@@ -716,7 +720,7 @@ static void refresh_primaries(igt_display_t *display, int mask)
- 		if (!((1 << pipe) & mask))
- 			continue;
- 
--		for_each_plane_on_pipe(display, pipe, plane)
-+		for_max_planes_on_pipe(display, pipe, plane, MAX_PLANES_TO_TEST)
- 			if (plane->type == DRM_PLANE_TYPE_PRIMARY)
- 				igt_plane_set_position(plane, 0, 0);
- 	}
-diff --git a/tests/kms_concurrent.c b/tests/kms_concurrent.c
-index 573631e0..e1b975b7 100644
---- a/tests/kms_concurrent.c
-+++ b/tests/kms_concurrent.c
-@@ -286,6 +286,8 @@ run_test(data_t *data, enum pipe pipe, igt_output_t *output)
- 	int connected_outs;
- 	int n_planes = data->display.pipes[pipe].n_planes;
- 
-+	n_planes = n_planes > MAX_PLANES_TO_TEST ? MAX_PLANES_TO_TEST : n_planes;
-+
- 	if (!opt.user_seed)
- 		opt.seed = time(NULL);
- 
-diff --git a/tests/kms_plane_multiple.c b/tests/kms_plane_multiple.c
-index 8310981c..db996288 100644
---- a/tests/kms_plane_multiple.c
-+++ b/tests/kms_plane_multiple.c
-@@ -362,6 +362,8 @@ test_plane_position(data_t *data, enum pipe pipe, uint64_t tiling)
- 	igt_output_t *output;
- 	int n_planes = data->display.pipes[pipe].n_planes;
- 
-+	n_planes = n_planes > MAX_PLANES_TO_TEST ? MAX_PLANES_TO_TEST : n_planes;
-+
- 	output = igt_get_single_output_for_pipe(&data->display, pipe);
- 	igt_require(output);
- 
--- 
-2.25.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVHVlLCBTZXAgMjIsIDIwMjAgYXQgMDE6NTI6MThQTSArMDIwMCwgRG9taW5payBHcnplZ29y
+emVrIHdyb3RlOgo+IFVzZSBpbnRlbF9iYiAvIGludGVsX2J1ZiB0byByZW1vdmUgbGliZHJtIGRl
+cGVuZGVuY3kuCj4gCj4gU2lnbmVkLW9mZi1ieTogRG9taW5payBHcnplZ29yemVrIDxkb21pbmlr
+LmdyemVnb3J6ZWtAaW50ZWwuY29tPgo+IENjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWdu
+aWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KPiBDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJp
+cy13aWxzb24uY28udWs+Cj4gLS0tCj4gIHRlc3RzL2ttc19mZW5jZV9waW5fbGVhay5jIHwgODMg
+KysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0KPiAgMSBmaWxlIGNoYW5nZWQs
+IDQ1IGluc2VydGlvbnMoKyksIDM4IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0
+cy9rbXNfZmVuY2VfcGluX2xlYWsuYyBiL3Rlc3RzL2ttc19mZW5jZV9waW5fbGVhay5jCj4gaW5k
+ZXggYjU5ZWZjMGEuLmE4NmYyY2RiIDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2ttc19mZW5jZV9waW5f
+bGVhay5jCj4gKysrIGIvdGVzdHMva21zX2ZlbmNlX3Bpbl9sZWFrLmMKPiBAQCAtMzcsMzQgKzM3
+LDQ1IEBAIElHVF9URVNUX0RFU0NSSVBUSU9OKCJFeGVyY2lzZXMgZnVsbCBwcGd0dCBmZW5jZSBw
+aW5fY291bnQgbGVhayBpbiB0aGUgIgo+ICB0eXBlZGVmIHN0cnVjdCB7Cj4gIAlpbnQgZHJtX2Zk
+Owo+ICAJdWludDMyX3QgZGV2aWQ7Cj4gLQlkcm1faW50ZWxfYnVmbWdyICpidWZtZ3I7Cj4gKwlz
+dHJ1Y3QgYnVmX29wcyAqYm9wczsKPiAgCWlndF9kaXNwbGF5X3QgZGlzcGxheTsKPiAtCWRybV9p
+bnRlbF9ibyAqYm9zWzY0XTsgLyogPj0gbnVtIGZlbmNlIHJlZ2lzdGVycyAqLwo+ICsJc3RydWN0
+IGludGVsX2J1ZiAqYm9zWzY0XTsgLyogPj0gbnVtIGZlbmNlIHJlZ2lzdGVycyAqLwo+ICB9IGRh
+dGFfdDsKPiAgCj4gLXN0YXRpYyB2b2lkIGV4ZWNfbm9wKGRhdGFfdCAqZGF0YSwgdWludDMyX3Qg
+aGFuZGxlLCBkcm1faW50ZWxfY29udGV4dCAqY29udGV4dCkKPiArc3RhdGljIHZvaWQgZXhlY19u
+b3AoZGF0YV90ICpkYXRhLCBzdHJ1Y3QgaWd0X2ZiICpmYiwgdWludDMyX3QgY29udGV4dCkKPiAg
+ewo+IC0JZHJtX2ludGVsX2JvICpkc3Q7Cj4gLQlzdHJ1Y3QgaW50ZWxfYmF0Y2hidWZmZXIgKmJh
+dGNoOwo+ICsJc3RydWN0IGludGVsX2J1ZiAqZHN0Owo+ICsJc3RydWN0IGludGVsX2JiICppYmI7
+Cj4gKwl1aW50MzJfdCBuYW1lLCBoYW5kbGUsIHRpbGluZywgc3RyaWRlLCB3aWR0aCwgaGVpZ2h0
+LCBicHAsIHNpemU7Cj4gIAo+IC0JZHN0ID0gZ2VtX2hhbmRsZV90b19saWJkcm1fYm8oZGF0YS0+
+YnVmbWdyLCBkYXRhLT5kcm1fZmQsICIiLCBoYW5kbGUpOwo+IC0JaWd0X2Fzc2VydChkc3QpOwo+
+ICsJdGlsaW5nID0gaWd0X2ZiX21vZF90b190aWxpbmcoZmItPm1vZGlmaWVyKTsKPiArCXN0cmlk
+ZSA9IGZiLT5zdHJpZGVzWzBdOwo+ICsJYnBwID0gZmItPnBsYW5lX2JwcFswXTsKPiArCXNpemUg
+PSBmYi0+c2l6ZTsKPiArCXdpZHRoID0gc3RyaWRlIC8gKGJwcCAvIDgpOwo+ICsJaGVpZ2h0ID0g
+c2l6ZSAvIHN0cmlkZTsKPiAgCj4gLQliYXRjaCA9IGludGVsX2JhdGNoYnVmZmVyX2FsbG9jKGRh
+dGEtPmJ1Zm1nciwgZGF0YS0+ZGV2aWQpOwo+IC0JaWd0X2Fzc2VydChiYXRjaCk7Cj4gKwluYW1l
+ID0gZ2VtX2ZsaW5rKGRhdGEtPmRybV9mZCwgZmItPmdlbV9oYW5kbGUpOwo+ICsJaGFuZGxlID0g
+Z2VtX29wZW4oZGF0YS0+ZHJtX2ZkLCBuYW1lKTsKPiArCWRzdCA9IGludGVsX2J1Zl9jcmVhdGVf
+dXNpbmdfaGFuZGxlKGRhdGEtPmJvcHMsIGhhbmRsZSwKPiArCQkJCSAgICB3aWR0aCwgaGVpZ2h0
+LCBicHAsIDAsIHRpbGluZywgMCk7CgpJbmRlbnRhdGlvbi4KCj4gKwlpbnRlbF9idWZfc2V0X293
+bmVyc2hpcChkc3QsIHRydWUpOwo+ICsKPiArCWliYiA9IGludGVsX2JiX2NyZWF0ZShidWZfb3Bz
+X2dldF9mZChkYXRhLT5ib3BzKSwgNDA5Nik7Cj4gIAo+ICAJLyogYWRkIHRoZSByZWxvYyB0byBt
+YWtlIHN1cmUgdGhlIGtlcm5lbCB3aWxsIHRoaW5rIHdlIHdyaXRlIHRvIGRzdCAqLwo+IC0JQkVH
+SU5fQkFUQ0goNCwgMSk7Cj4gLQlPVVRfQkFUQ0goTUlfQkFUQ0hfQlVGRkVSX0VORCk7Cj4gLQlP
+VVRfQkFUQ0goTUlfTk9PUCk7Cj4gLQlPVVRfUkVMT0MoZHN0LCBJOTE1X0dFTV9ET01BSU5fUkVO
+REVSLCBJOTE1X0dFTV9ET01BSU5fUkVOREVSLCAwKTsKPiAtCU9VVF9CQVRDSChNSV9OT09QKTsK
+PiAtCUFEVkFOQ0VfQkFUQ0goKTsKPiArCWludGVsX2JiX2FkZF9pbnRlbF9idWYoaWJiLCBkc3Qs
+IHRydWUpOwo+ICsJaW50ZWxfYmJfb3V0KGliYiwgTUlfQkFUQ0hfQlVGRkVSX0VORCk7Cj4gKwlp
+bnRlbF9iYl9vdXQoaWJiLCBNSV9OT09QKTsKPiArCWludGVsX2JiX2VtaXRfcmVsb2MoaWJiLCBk
+c3QtPmhhbmRsZSwgSTkxNV9HRU1fRE9NQUlOX1JFTkRFUiwKPiArCQkJICAgIEk5MTVfR0VNX0RP
+TUFJTl9SRU5ERVIsIDAsIDB4MCk7Cj4gKwlpbnRlbF9iYl9vdXQoaWJiLCBNSV9OT09QKTsKPiAr
+Cj4gKwlpbnRlbF9iYl9mbHVzaF9yZW5kZXJfd2l0aF9jb250ZXh0KGliYiwgY29udGV4dCk7Cj4g
+IAo+IC0JaW50ZWxfYmF0Y2hidWZmZXJfZmx1c2hfd2l0aF9jb250ZXh0KGJhdGNoLCBjb250ZXh0
+KTsKPiAtCWludGVsX2JhdGNoYnVmZmVyX2ZyZWUoYmF0Y2gpOwo+ICsJaW50ZWxfYmJfZGVzdHJv
+eShpYmIpOwo+ICAKPiAtCWRybV9pbnRlbF9ib191bnJlZmVyZW5jZShkc3QpOwo+ICsJaW50ZWxf
+YnVmX2Rlc3Ryb3koZHN0KTsKPiAgfQo+ICAKPiAgc3RhdGljIHZvaWQgYWxsb2NfZmVuY2Vfb2Jq
+cyhkYXRhX3QgKmRhdGEpCj4gQEAgLTcyLDEzICs4MywxMyBAQCBzdGF0aWMgdm9pZCBhbGxvY19m
+ZW5jZV9vYmpzKGRhdGFfdCAqZGF0YSkKPiAgCWludCBpOwo+ICAKPiAgCWZvciAoaSA9IDA7IGkg
+PCBBUlJBWV9TSVpFKGRhdGEtPmJvcyk7IGkrKykgewo+IC0JCWRybV9pbnRlbF9ibyAqYm87Cj4g
+KwkJc3RydWN0IGludGVsX2J1ZiAqYnVmOwo+ICAKPiAtCQlibyA9IGRybV9pbnRlbF9ib19hbGxv
+YyhkYXRhLT5idWZtZ3IsICJmZW5jZSBibyIsIDQwOTYsIDQwOTYpOwo+IC0JCWlndF9hc3NlcnQo
+Ym8pOwo+IC0JCWdlbV9zZXRfdGlsaW5nKGRhdGEtPmRybV9mZCwgYm8tPmhhbmRsZSwgSTkxNV9U
+SUxJTkdfWCwgNTEyKTsKPiArCQlidWYgPSBpbnRlbF9idWZfY3JlYXRlKGRhdGEtPmJvcHMsIDMy
+LCAzMiwgMzIsIDQwOTYsCj4gKwkJCQkgICAgICAgSTkxNV9USUxJTkdfTk9ORSwgSTkxNV9DT01Q
+UkVTU0lPTl9OT05FKTsKPiArCQlnZW1fc2V0X3RpbGluZyhkYXRhLT5kcm1fZmQsIGJ1Zi0+aGFu
+ZGxlLCBJOTE1X1RJTElOR19YLCA1MTIpOwoKQmV0dGVyIHVzZToKCglmb3IgKGkgPSAwOyBpIDwg
+QVJSQVlfU0laRShkYXRhLT5ib3MpOyBpKyspIHsKCQlzdHJ1Y3QgaW50ZWxfYnVmICpidWY7CgoJ
+CWJ1ZiA9IGludGVsX2J1Zl9jcmVhdGUoZGF0YS0+Ym9wcywgMTI4LCA4LCAzMiwgMCwKCQkJCSAg
+ICAgICBJOTE1X1RJTElOR19YLCBJOTE1X0NPTVBSRVNTSU9OX05PTkUpOwoJCWlndF9hc3NlcnQo
+YnVmLT5zdXJmYWNlWzBdLnN0cmlkZSA9PSA1MTIpOwoJCWRhdGEtPmJvc1tpXSA9IGJ1ZjsKCX0K
+Ci0tClpiaWduaWV3Cj4gIAo+IC0JCWRhdGEtPmJvc1tpXSA9IGJvOwo+ICsJCWRhdGEtPmJvc1tp
+XSA9IGJ1ZjsKPiAgCX0KPiAgfQo+ICAKPiBAQCAtMTAyLDcgKzExMyw3IEBAIHN0YXRpYyB2b2lk
+IGZyZWVfZmVuY2Vfb2JqcyhkYXRhX3QgKmRhdGEpCj4gIAlpbnQgaTsKPiAgCj4gIAlmb3IgKGkg
+PSAwOyBpIDwgQVJSQVlfU0laRShkYXRhLT5ib3MpOyBpKyspCj4gLQkJZHJtX2ludGVsX2JvX3Vu
+cmVmZXJlbmNlKGRhdGEtPmJvc1tpXSk7Cj4gKwkJaW50ZWxfYnVmX2Rlc3Ryb3koZGF0YS0+Ym9z
+W2ldKTsKPiAgfQo+ICAKPiAgc3RhdGljIHZvaWQgcnVuX3NpbmdsZV90ZXN0KGRhdGFfdCAqZGF0
+YSwgZW51bSBwaXBlIHBpcGUsIGlndF9vdXRwdXRfdCAqb3V0cHV0KQo+IEBAIC0xMzMsMTkgKzE0
+NCwxOCBAQCBzdGF0aWMgdm9pZCBydW5fc2luZ2xlX3Rlc3QoZGF0YV90ICpkYXRhLCBlbnVtIHBp
+cGUgcGlwZSwgaWd0X291dHB1dF90ICpvdXRwdXQpCj4gIAlpZ3RfZGlzcGxheV9jb21taXQoZGlz
+cGxheSk7Cj4gIAo+ICAJZm9yIChpID0gMDsgaSA8IDY0OyBpKyspIHsKPiAtCQlkcm1faW50ZWxf
+Y29udGV4dCAqY3R4Owo+ICsJCXVpbnQzMl90IGN0eDsKPiAgCj4gIAkJLyoKPiAgCQkgKiBMaW5r
+IGZiLmdlbV9oYW5kbGUgdG8gdGhlIHBwZ3R0IHZtIG9mIGN0eCBzbyB0aGF0IHRoZSBjb250ZXh0
+Cj4gIAkJICogZGVzdHJ1Y3Rpb24gd2lsbCB1bmJpbmQgdGhlIG9iaiBmcm9tIHRoZSBwcGd0dCB2
+bSBpbiBxdWVzdGlvbi4KPiAgCQkgKi8KPiAtCQljdHggPSBkcm1faW50ZWxfZ2VtX2NvbnRleHRf
+Y3JlYXRlKGRhdGEtPmJ1Zm1ncik7Cj4gLQkJaWd0X2Fzc2VydChjdHgpOwo+IC0JCWV4ZWNfbm9w
+KGRhdGEsIGZiW2kmMV0uZ2VtX2hhbmRsZSwgY3R4KTsKPiAtCQlkcm1faW50ZWxfZ2VtX2NvbnRl
+eHRfZGVzdHJveShjdHgpOwo+ICsJCWN0eCA9IGdlbV9jb250ZXh0X2NyZWF0ZShkYXRhLT5kcm1f
+ZmQpOwo+ICsJCWV4ZWNfbm9wKGRhdGEsICZmYltpJjFdLCBjdHgpOwo+ICsJCWdlbV9jb250ZXh0
+X2Rlc3Ryb3koZGF0YS0+ZHJtX2ZkLCBjdHgpOwo+ICAKPiAgCQkvKiBGb3JjZSBhIGNvbnRleHQg
+c3dpdGNoIHRvIG1ha2Ugc3VyZSBjdHggZ2V0cyBkZXN0cm95ZWQgZm9yIHJlYWwuICovCj4gLQkJ
+ZXhlY19ub3AoZGF0YSwgZmJbaSYxXS5nZW1faGFuZGxlLCBOVUxMKTsKPiArCQlleGVjX25vcChk
+YXRhLCAmZmJbaSYxXSwgMCk7Cj4gIAo+ICAJCWdlbV9zeW5jKGRhdGEtPmRybV9mZCwgZmJbaSYx
+XS5nZW1faGFuZGxlKTsKPiAgCj4gQEAgLTE5Niw3ICsyMDYsNyBAQCBzdGF0aWMgdm9pZCBydW5f
+dGVzdChkYXRhX3QgKmRhdGEpCj4gIAo+ICBpZ3Rfc2ltcGxlX21haW4KPiAgewo+IC0JZHJtX2lu
+dGVsX2NvbnRleHQgKmN0eDsKPiArCXVpbnQzMl90IGN0eDsKPiAgCWRhdGFfdCBkYXRhID0ge307
+Cj4gIAo+ICAJZGF0YS5kcm1fZmQgPSBkcm1fb3Blbl9kcml2ZXJfbWFzdGVyKERSSVZFUl9JTlRF
+TCk7Cj4gQEAgLTIwNywxNSArMjE3LDEyIEBAIGlndF9zaW1wbGVfbWFpbgo+ICAKPiAgCWttc3Rl
+c3Rfc2V0X3Z0X2dyYXBoaWNzX21vZGUoKTsKPiAgCj4gLQlkYXRhLmJ1Zm1nciA9IGRybV9pbnRl
+bF9idWZtZ3JfZ2VtX2luaXQoZGF0YS5kcm1fZmQsIDQwOTYpOwo+IC0JaWd0X2Fzc2VydChkYXRh
+LmJ1Zm1ncik7Cj4gLQlkcm1faW50ZWxfYnVmbWdyX2dlbV9lbmFibGVfcmV1c2UoZGF0YS5idWZt
+Z3IpOwo+ICsJZGF0YS5ib3BzID0gYnVmX29wc19jcmVhdGUoZGF0YS5kcm1fZmQpOwo+ICAKPiAg
+CWlndF9kaXNwbGF5X3JlcXVpcmUoJmRhdGEuZGlzcGxheSwgZGF0YS5kcm1fZmQpOwo+ICAKPiAt
+CWN0eCA9IGRybV9pbnRlbF9nZW1fY29udGV4dF9jcmVhdGUoZGF0YS5idWZtZ3IpOwo+IC0JaWd0
+X3JlcXVpcmUoY3R4KTsKPiAtCWRybV9pbnRlbF9nZW1fY29udGV4dF9kZXN0cm95KGN0eCk7Cj4g
+KwljdHggPSBnZW1fY29udGV4dF9jcmVhdGUoZGF0YS5kcm1fZmQpOwo+ICsJZ2VtX2NvbnRleHRf
+ZGVzdHJveShkYXRhLmRybV9mZCwgY3R4KTsKPiAgCj4gIAlhbGxvY19mZW5jZV9vYmpzKCZkYXRh
+KTsKPiAgCj4gQEAgLTIyMyw2ICsyMzAsNiBAQCBpZ3Rfc2ltcGxlX21haW4KPiAgCj4gIAlmcmVl
+X2ZlbmNlX29ianMoJmRhdGEpOwo+ICAKPiAtCWRybV9pbnRlbF9idWZtZ3JfZGVzdHJveShkYXRh
+LmJ1Zm1ncik7Cj4gKwlidWZfb3BzX2Rlc3Ryb3koZGF0YS5ib3BzKTsKPiAgCWlndF9kaXNwbGF5
+X2ZpbmkoJmRhdGEuZGlzcGxheSk7Cj4gIH0KPiAtLSAKPiAyLjIwLjEKPiAKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QK
+aWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5v
+cmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
