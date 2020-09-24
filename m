@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0DE3B6EA6A
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Sep 2020 04:43:28 +0000 (UTC)
-Date: Thu, 24 Sep 2020 10:10:06 +0530
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B6BE8987A
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Sep 2020 04:54:06 +0000 (UTC)
+Date: Thu, 24 Sep 2020 10:20:21 +0530
 From: "Melkaveri, Arjun" <arjun.melkaveri@intel.com>
-Message-ID: <20200924044006.GA2419@arjun-NUC8i7BEH>
-References: <20200714044234.26328-1-sai.gowtham.ch@intel.com>
+Message-ID: <20200924045019.GB2419@arjun-NUC8i7BEH>
+References: <20200730051931.9927-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200714044234.26328-1-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t][V2] i915/gem_exec_create: Added test
- description for test case.
+In-Reply-To: <20200730051931.9927-1-priyanka.dandamudi@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_close: Added test description
+ for test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,56 +22,53 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: sai.gowtham.ch@intel.com
+To: priyanka.dandamudi@intel.com
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Jul 14, 2020 at 10:12:34AM +0530, sai.gowtham.ch@intel.com wrote:
-> From: sai gowtham <sai.gowtham.ch@intel.com>
+On Thu, Jul 30, 2020 at 10:49:31AM +0530, priyanka.dandamudi@intel.com wrote:
+> From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > 
-> Added test description for test and to all 3 subtests.
+> Added test description for test and to all the available subtests.
 > 
-> Signed-off-by: sai gowtham <sai.gowtham.ch@intel.com>
+> Cc: Melkaveri, Arjun <Arjun.Melkaveri@intel.com>
+> Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > ---
->  tests/i915/gem_exec_create.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+>  tests/i915/gem_close.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> diff --git a/tests/i915/gem_exec_create.c b/tests/i915/gem_exec_create.c
-> index ee7d4e5d..15288380 100644
-> --- a/tests/i915/gem_exec_create.c
-> +++ b/tests/i915/gem_exec_create.c
-> @@ -42,6 +42,11 @@
+> diff --git a/tests/i915/gem_close.c b/tests/i915/gem_close.c
+> index 58f2d4b3..f2d39eef 100644
+> --- a/tests/i915/gem_close.c
+> +++ b/tests/i915/gem_close.c
+> @@ -24,6 +24,9 @@
 >  #include "i915/gem.h"
 >  #include "igt.h"
 >  
-> +IGT_TEST_DESCRIPTION("\n This test overloads the driver with transient active "
-> +		" objects and checks if we don't kill the system under the "
-> +		" mempressure. Some of the symptoms this test look for include"
-> +		" mysterious hangs.");
+> +IGT_TEST_DESCRIPTION("Tests basic gem_close ioctl by closing the gem buffer handle "
+> +		     "and also tests if duplicate handles are operational when original is closed.");
 > +
->  #define ENGINE_FLAGS  (I915_EXEC_RING_MASK | I915_EXEC_BSD_MASK)
->  
->  static double elapsed(const struct timespec *start, const struct timespec *end)
-> @@ -134,11 +139,16 @@ igt_main
->  		igt_fork_hang_detector(device);
+>  static int batch_create(int fd)
+>  {
+>  	const uint32_t bbe = MI_BATCH_BUFFER_END;
+> @@ -132,9 +135,13 @@ igt_main
+>  		igt_require_gem(fd);
 >  	}
 >  
-> +	igt_describe("This subtest is a quick sanitycheck of the above test setup");
+> +	igt_describe(" It releases a file-private gem buffer handle.");
 >  	igt_subtest("basic")
->  		all(device, 0, 2, 1);
-> +
-> +	igt_describe("This test does a concurrent execution");
->  	igt_subtest("forked")
->  		all(device, 0, 20, ncpus);
+>  		gem_close(fd, gem_create(fd, 4096));
+Can you modify it to something like " basic test for...."
+-Arjun
 >  
-> +	igt_describe("This test does a forced reclaim, behaving like a bad application"
-> +			" leaking its bo cache");
->  	igt_subtest("madvise")
->  		all(device, LEAK, 20, 1);
-Acked-by: Arjun Melkaveri <arjun.melkaveri@intel.com>
->  
+> +	igt_describe(" The test creates duplicate handles of up to 128 for the same object "
+> +		     "and checks if only permissible duplicate handles are allowed. "
+> +		     "It also checks if duplicate handles are operational when original is closed.");
+>  	igt_subtest("many-handles-one-vma")
+>  		test_many_handles(fd);
+>  }
 > -- 
-> 2.25.0
+> 2.26.2
 > 
 _______________________________________________
 igt-dev mailing list
