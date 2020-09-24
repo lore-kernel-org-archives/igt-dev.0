@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com
- [IPv6:2a00:1450:4864:20::342])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 34D156EB04
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Sep 2020 13:38:47 +0000 (UTC)
-Received: by mail-wm1-x342.google.com with SMTP id x23so3559524wmi.3
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Sep 2020 06:38:47 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
+ [IPv6:2a00:1450:4864:20::442])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 611836EB04
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Sep 2020 13:40:16 +0000 (UTC)
+Received: by mail-wr1-x442.google.com with SMTP id g4so3863044wrs.5
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Sep 2020 06:40:16 -0700 (PDT)
 References: <20200924123625.31755-1-petri.latvala@intel.com>
  <81475469-c5de-7c55-cee5-f33a96ba00ef@gmail.com>
-Message-ID: <c6549ef3-3f8f-10ba-6615-1e36b79410c2@gmail.com>
-Date: Thu, 24 Sep 2020 16:38:36 +0300
+ <20200924133629.GP7444@platvala-desk.ger.corp.intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <49b38b16-4a32-bccd-8452-90e8731408ae@gmail.com>
+Date: Thu, 24 Sep 2020 16:40:05 +0300
 MIME-Version: 1.0
-In-Reply-To: <81475469-c5de-7c55-cee5-f33a96ba00ef@gmail.com>
+In-Reply-To: <20200924133629.GP7444@platvala-desk.ger.corp.intel.com>
 Content-Language: en-US
 Subject: Re: [igt-dev] [PATCH i-g-t RFC] lib/igt_chamelium: Use curl timeout
  for xmlrpc calls
@@ -23,57 +24,28 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: juhapekka.heikkila@gmail.com
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
+To: Petri Latvala <petri.latvala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Kunal Joshi <kunal1.joshi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMjQuOS4yMDIwIDE2LjI1LCBKdWhhLVBla2thIEhlaWtraWxhIHdyb3RlOgo+IEkgZ3Vlc3Mg
-Q0kgaXNuJ3QgZ29pbmcgdG8gcnVuIHRoaXMgY29kZSBhbnl3aGVyZSBmb3Igbm93PyBUaGUgY2hh
-bmdlIAo+IGxvb2sgb2sgdG8gbWUuIEFzc3VtaW5nIHRoZSByZXN1bHRzIHdpbGwgYmUgYWxsIGdy
-ZWVuLAo+IAo+IFJldmlld2VkLWJ5OiBKdWhhLVBla2thIEhlaWtraWxhIDxqdWhhcGVra2EuaGVp
-a2tpbGFAZ21haWwuY29tPgo+IAo+IAo+IE9uIDI0LjkuMjAyMCAxNS4zNiwgUGV0cmkgTGF0dmFs
-YSB3cm90ZToKPj4gVXNlIG9mIHRpbWVvdXRzIGV2ZXJ5d2hlcmUgaXMgbWVhbmluZ2xlc3MgaWYg
-eG1scnBjIGNhbGxzIGFyZSBhbGxvd2VkCj4+IHRvIGJlIGJsb2NraW5nIGZvcmV2ZXIuCj4+Cj4+
-IFNpZ25lZC1vZmYtYnk6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgo+
-PiBDYzogS3VuYWwgSm9zaGkgPGt1bmFsMS5qb3NoaUBpbnRlbC5jb20+Cj4+IENjOiBBcmthZGl1
-c3ogSGlsZXIgPGFyZWtAaGlsZXIuZXU+Cj4+IENjOiBKdWhhLVBla2thIEhlaWtraWxhIDxqdWhh
-cGVra2EuaGVpa2tpbGFAZ21haWwuY29tPgo+PiAtLS0KPj4gwqAgbGliL2lndF9jaGFtZWxpdW0u
-YyB8IDEyICsrKysrKysrKysrLQo+PiDCoCAxIGZpbGUgY2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygr
-KSwgMSBkZWxldGlvbigtKQo+Pgo+PiBkaWZmIC0tZ2l0IGEvbGliL2lndF9jaGFtZWxpdW0uYyBi
-L2xpYi9pZ3RfY2hhbWVsaXVtLmMKPj4gaW5kZXggZDlmYWI5MDIuLmVhYzg5M2E2IDEwMDY0NAo+
-PiAtLS0gYS9saWIvaWd0X2NoYW1lbGl1bS5jCj4+ICsrKyBiL2xpYi9pZ3RfY2hhbWVsaXVtLmMK
-Pj4gQEAgLTI0MjcsMTEgKzI0MjcsMjEgQEAgdm9pZCBjaGFtZWxpdW1fZGVpbml0X3JwY19vbmx5
-KHN0cnVjdCAKPj4gY2hhbWVsaXVtICpjaGFtZWxpdW0pCj4+IMKgIHN0cnVjdCBjaGFtZWxpdW0g
-KmNoYW1lbGl1bV9pbml0X3JwY19vbmx5KHZvaWQpCj4+IMKgIHsKPj4gwqDCoMKgwqDCoCBzdHJ1
-Y3QgY2hhbWVsaXVtICpjaGFtZWxpdW0gPSBtYWxsb2Moc2l6ZW9mKHN0cnVjdCBjaGFtZWxpdW0p
-KTsKPj4gK8KgwqDCoCBzdHJ1Y3QgeG1scnBjX2NsaWVudHBhcm1zIGNsaWVudHBhcm1zOwo+PiAr
-wqDCoMKgIHN0cnVjdCB4bWxycGNfY3VybF94cG9ydHBhcm1zIGN1cmxwYXJtczsKPj4gwqDCoMKg
-wqDCoCBpZiAoIWNoYW1lbGl1bSkKPj4gwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiBOVUxMOwo+
-PiDCoMKgwqDCoMKgIG1lbXNldChjaGFtZWxpdW0sIDAsIHNpemVvZigqY2hhbWVsaXVtKSk7Cj4+
-ICvCoMKgwqAgbWVtc2V0KCZjbGllbnRwYXJtcywgMCwgc2l6ZW9mKGNsaWVudHBhcm1zKSk7Cj4+
-ICvCoMKgwqAgbWVtc2V0KCZjdXJscGFybXMsIDAsIHNpemVvZihjdXJscGFybXMpKTsKPj4gKwo+
-PiArwqDCoMKgIGN1cmxwYXJtcy50aW1lb3V0ID0gX1JFQ0VJVkVSX1JFU1BPTlNJVkVfQUZURVJf
-UkVTRVRfU0VDT05EUzsKCkkganVzdCByZWFsaXplZCBoZXJlJ3MgY3VybHBhcm1zLnRpbWVvdXQg
-aXMgbWlsbGlzZWNvbmRzLCBub3Qgc2Vjb25kcy4KCj4+ICsKPj4gK8KgwqDCoCBjbGllbnRwYXJt
-cy50cmFuc3BvcnQgPSAiY3VybCI7Cj4+ICvCoMKgwqAgY2xpZW50cGFybXMudHJhbnNwb3J0cGFy
-bXNQID0gJmN1cmxwYXJtczsKPj4gK8KgwqDCoCBjbGllbnRwYXJtcy50cmFuc3BvcnRwYXJtX3Np
-emUgPSBYTUxSUENfQ1hQU0laRSh0aW1lb3V0KTsKPj4gwqDCoMKgwqDCoCBjaGFtZWxpdW0tPmRy
-bV9mZCA9IC0xOwo+PiBAQCAtMjQzOSw3ICsyNDQ5LDcgQEAgc3RydWN0IGNoYW1lbGl1bSAqY2hh
-bWVsaXVtX2luaXRfcnBjX29ubHkodm9pZCkKPj4gwqDCoMKgwqDCoCB4bWxycGNfZW52X2luaXQo
-JmNoYW1lbGl1bS0+ZW52KTsKPj4gwqDCoMKgwqDCoCB4bWxycGNfY2xpZW50X3NldHVwX2dsb2Jh
-bF9jb25zdCgmY2hhbWVsaXVtLT5lbnYpOwo+PiDCoMKgwqDCoMKgIHhtbHJwY19jbGllbnRfY3Jl
-YXRlKCZjaGFtZWxpdW0tPmVudiwgWE1MUlBDX0NMSUVOVF9OT19GTEFHUywgCj4+IFBBQ0tBR0Us
-Cj4+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBQQUNLQUdFX1ZFUlNJT04sIE5V
-TEwsIDAsICZjaGFtZWxpdW0tPmNsaWVudCk7Cj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoCBQQUNLQUdFX1ZFUlNJT04sICZjbGllbnRwYXJtcywgMCwgJmNoYW1lbGl1bS0+Y2xp
-ZW50KTsKPj4gwqDCoMKgwqDCoCBpZiAoY2hhbWVsaXVtLT5lbnYuZmF1bHRfb2NjdXJyZWQpIHsK
-Pj4gwqDCoMKgwqDCoMKgwqDCoMKgIGlndF9kZWJ1ZygiRmFpbGVkIHRvIGluaXQgeG1scnBjOiAl
-c1xuIiwKPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNoYW1lbGl1bS0+ZW52LmZh
-dWx0X3N0cmluZyk7Cj4+Cj4gCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
-Lm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
-ZXYK
+On 24.9.2020 16.36, Petri Latvala wrote:
+> On Thu, Sep 24, 2020 at 04:25:17PM +0300, Juha-Pekka Heikkila wrote:
+>> I guess CI isn't going to run this code anywhere for now? The change look ok
+>> to me. Assuming the results will be all green,
+> 
+> It will run this code everywhere where chamelium is deployed. What do
+> you mean?
+
+I didn't know there is any chamelium on those CI machines which will 
+provide test results for this patch.
+
+/Juha-Pekka
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
