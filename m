@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EA1886EAA8
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Sep 2020 06:25:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A56E6EAAA
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Sep 2020 06:25:44 +0000 (UTC)
 From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Thu, 24 Sep 2020 11:55:23 +0530
-Message-Id: <20200924062525.13878-1-mohammed.khajapasha@intel.com>
-In-Reply-To: <20200907032622.6837-1-mohammed.khajapasha@intel.com>
+Date: Thu, 24 Sep 2020 11:55:25 +0530
+Message-Id: <20200924062525.13878-3-mohammed.khajapasha@intel.com>
+In-Reply-To: <20200924062525.13878-1-mohammed.khajapasha@intel.com>
 References: <20200907032622.6837-1-mohammed.khajapasha@intel.com>
+ <20200924062525.13878-1-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH 0/2] tests/kms_chamelium: Test HPD for a connector
- with all valid pipes
+Subject: [igt-dev] [PATCH 2/2] HAX: Run in BAT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,20 +24,29 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Test hpd test for a connector with all it's valid pipes
-in valid crtc mask.
+To run testcase in BAT for HDMI and DP
 
-v1: Add hpd test case for a connector with all valid pipes
-v2: Add hpd test for VGA <Joshi, Kunal1>
+Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+---
+ tests/intel-ci/fast-feedback.testlist | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Mohammed Khajapasha (2):
-  tests/kms_chamelium: Test HPD for connector with all valid pipes
-  HAX: Run in BAT
-
- tests/intel-ci/fast-feedback.testlist |  2 +
- tests/kms_chamelium.c                 | 54 +++++++++++++++++++++++++++
- 2 files changed, 56 insertions(+)
-
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index aa2eb329..fab196d4 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -86,9 +86,11 @@ igt@kms_busy@basic
+ igt@kms_chamelium@dp-hpd-fast
+ igt@kms_chamelium@dp-edid-read
+ igt@kms_chamelium@dp-crc-fast
++igt@kms_chamelium@dp-hpd-for-each-pipe
+ igt@kms_chamelium@hdmi-hpd-fast
+ igt@kms_chamelium@hdmi-edid-read
+ igt@kms_chamelium@hdmi-crc-fast
++igt@kms_chamelium@hdmi-hpd-for-each-pipe
+ igt@kms_chamelium@vga-hpd-fast
+ igt@kms_chamelium@vga-edid-read
+ igt@kms_chamelium@common-hpd-after-suspend
 -- 
 2.24.1
 
