@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D0016E428
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Sep 2020 13:58:58 +0000 (UTC)
-Date: Thu, 24 Sep 2020 16:58:54 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20200924135854.GQ7444@platvala-desk.ger.corp.intel.com>
-References: <20200924123625.31755-1-petri.latvala@intel.com>
- <81475469-c5de-7c55-cee5-f33a96ba00ef@gmail.com>
- <c6549ef3-3f8f-10ba-6615-1e36b79410c2@gmail.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A7AAC6E11F
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Sep 2020 16:26:30 +0000 (UTC)
+Date: Thu, 24 Sep 2020 09:26:09 -0700
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Message-ID: <20200924162609.GB8620@orsosgc001.ra.intel.com>
+References: <20200818203547.24461-1-umesh.nerlige.ramappa@intel.com>
+ <20200818203547.24461-2-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <c6549ef3-3f8f-10ba-6615-1e36b79410c2@gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t RFC] lib/igt_chamelium: Use curl timeout
- for xmlrpc calls
+In-Reply-To: <20200818203547.24461-2-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [igt-dev] [PATCH 2/2] i915/perf: Add tests for mapped OA buffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,64 +18,381 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org, Kunal Joshi <kunal1.joshi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris.p.wilson@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Sep 24, 2020 at 04:38:36PM +0300, Juha-Pekka Heikkila wrote:
-> On 24.9.2020 16.25, Juha-Pekka Heikkila wrote:
-> > I guess CI isn't going to run this code anywhere for now? The change
-> > look ok to me. Assuming the results will be all green,
-> > =
+Following up, any reviewers?
 
-> > Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> > =
+Thanks,
+Umesh
 
-> > =
-
-> > On 24.9.2020 15.36, Petri Latvala wrote:
-> > > Use of timeouts everywhere is meaningless if xmlrpc calls are allowed
-> > > to be blocking forever.
-> > > =
-
-> > > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> > > Cc: Kunal Joshi <kunal1.joshi@intel.com>
-> > > Cc: Arkadiusz Hiler <arek@hiler.eu>
-> > > Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> > > ---
-> > > =A0 lib/igt_chamelium.c | 12 +++++++++++-
-> > > =A0 1 file changed, 11 insertions(+), 1 deletion(-)
-> > > =
-
-> > > diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
-> > > index d9fab902..eac893a6 100644
-> > > --- a/lib/igt_chamelium.c
-> > > +++ b/lib/igt_chamelium.c
-> > > @@ -2427,11 +2427,21 @@ void chamelium_deinit_rpc_only(struct
-> > > chamelium *chamelium)
-> > > =A0 struct chamelium *chamelium_init_rpc_only(void)
-> > > =A0 {
-> > > =A0=A0=A0=A0=A0 struct chamelium *chamelium =3D malloc(sizeof(struct =
-chamelium));
-> > > +=A0=A0=A0 struct xmlrpc_clientparms clientparms;
-> > > +=A0=A0=A0 struct xmlrpc_curl_xportparms curlparms;
-> > > =A0=A0=A0=A0=A0 if (!chamelium)
-> > > =A0=A0=A0=A0=A0=A0=A0=A0=A0 return NULL;
-> > > =A0=A0=A0=A0=A0 memset(chamelium, 0, sizeof(*chamelium));
-> > > +=A0=A0=A0 memset(&clientparms, 0, sizeof(clientparms));
-> > > +=A0=A0=A0 memset(&curlparms, 0, sizeof(curlparms));
-> > > +
-> > > +=A0=A0=A0 curlparms.timeout =3D _RECEIVER_RESPONSIVE_AFTER_RESET_SEC=
-ONDS;
-> =
-
-> I just realized here's curlparms.timeout is milliseconds, not seconds.
-
-Gah!
+On Tue, Aug 18, 2020 at 01:35:47PM -0700, Umesh Nerlige Ramappa wrote:
+>For applications that need a faster way to access reports in the OA
+>buffer, i915 now provides a way to map the OA buffer to privileged user
+>space. Validate the mapped OA buffer.
+>
+>v2: Fail on forked-privileged access to mapped oa buffer (Chris)
+>
+>Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+>---
+> include/drm-uapi/i915_drm.h |  18 +++
+> tests/i915/perf.c           | 295 ++++++++++++++++++++++++++++++++++++
+> 2 files changed, 313 insertions(+)
+>
+>diff --git a/include/drm-uapi/i915_drm.h b/include/drm-uapi/i915_drm.h
+>index ef696d1a..26c41c74 100644
+>--- a/include/drm-uapi/i915_drm.h
+>+++ b/include/drm-uapi/i915_drm.h
+>@@ -2101,6 +2101,24 @@ struct drm_i915_perf_open_param {
+>  */
+> #define I915_PERF_IOCTL_CONFIG	_IO('i', 0x2)
+>
+>+/**
+>+ * Returns OA buffer properties to be used with mmap.
+>+ *
+>+ * This ioctl is available in perf revision 8.
+>+ */
+>+#define I915_PERF_IOCTL_GET_OA_BUFFER_INFO _IOWR('i', 0x3, struct drm_i915_perf_oa_buffer_info)
+>+
+>+/**
+>+ * OA buffer size and offset.
+>+ */
+>+struct drm_i915_perf_oa_buffer_info {
+>+	__u32 type;   /* in */
+>+	__u32 flags;  /* in */
+>+	__u64 size;   /* out */
+>+	__u64 offset; /* out */
+>+	__u64 rsvd;   /* mbz */
+>+};
+>+
+> /**
+>  * Common to all i915 perf records
+>  */
+>diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+>index b030cfad..6af80484 100644
+>--- a/tests/i915/perf.c
+>+++ b/tests/i915/perf.c
+>@@ -5172,6 +5172,271 @@ static void test_oa_regs_whitelist(int paranoid)
+> 	intel_register_access_fini(&mmio_data);
+> }
+>
+>+#define OA_BUFFER_DATA(tail, head, oa_buffer_size) \
+>+	(((tail) - (head)) & ((oa_buffer_size) - 1))
+>+
+>+#ifndef MAP_FAILED
+>+#define MAP_FAILED ((void *)-1)
+>+#endif
+>+
+>+static uint32_t oa_status_reg(void)
+>+{
+>+	uint32_t status;
+>+
+>+	intel_register_access_init(&mmio_data, intel_get_pci_device(),
+>+				   0, drm_fd);
+>+	if (IS_HASWELL(devid))
+>+		status = intel_register_read(&mmio_data, 0x2346) & 0x7;
+>+	else if (IS_GEN12(devid))
+>+		status = intel_register_read(&mmio_data, 0xdafc) & 0x7;
+>+	else
+>+		status = intel_register_read(&mmio_data, 0x2b08) & 0xf;
+>+
+>+	intel_register_access_fini(&mmio_data);
+>+
+>+	return status;
+>+}
+>+
+>+static jmp_buf jmp;
+>+static void __attribute__((noreturn)) sigtrap(int sig)
+>+{
+>+	siglongjmp(jmp, sig);
+>+}
+>+
+>+static void try_invalid_access(void *vaddr)
+>+{
+>+	sighandler_t old_sigsegv;
+>+	uint32_t dummy;
+>+
+>+	old_sigsegv = signal(SIGSEGV, sigtrap);
+>+	switch (sigsetjmp(jmp, SIGSEGV)) {
+>+	case SIGSEGV:
+>+		break;
+>+	case 0:
+>+		dummy = READ_ONCE(*((uint32_t *)vaddr + 1));
+>+		(void) dummy;
+>+	default:
+>+		igt_assert(!"reached");
+>+		break;
+>+	}
+>+	signal(SIGSEGV, old_sigsegv);
+>+}
+>+
+>+static void invalid_param_map_oa_buffer(void)
+>+{
+>+	struct drm_i915_perf_oa_buffer_info oa_buffer = { 0 };
+>+	void *oa_vaddr = NULL;
+>+
+>+	do_ioctl(stream_fd, I915_PERF_IOCTL_GET_OA_BUFFER_INFO, &oa_buffer);
+>+
+>+	igt_debug("size        = %llu\n", oa_buffer.size);
+>+	igt_debug("offset      = %llx\n", oa_buffer.offset);
+>+
+>+	igt_assert_eq(oa_buffer.size & (oa_buffer.size - 1), 0);
+>+
+>+	/* try a couple invalid mmaps */
+>+	/* bad prots */
+>+	oa_vaddr = mmap(0, oa_buffer.size, PROT_WRITE, MAP_PRIVATE, stream_fd, oa_buffer.offset);
+>+	igt_assert(oa_vaddr == MAP_FAILED);
+>+
+>+	oa_vaddr = mmap(0, oa_buffer.size, PROT_EXEC, MAP_PRIVATE, stream_fd, oa_buffer.offset);
+>+	igt_assert(oa_vaddr == MAP_FAILED);
+>+
+>+	/* bad MAPs */
+>+	oa_vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_SHARED, stream_fd, oa_buffer.offset);
+>+	igt_assert(oa_vaddr == MAP_FAILED);
+>+
+>+	/* bad offsets */
+>+	oa_vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_PRIVATE, stream_fd, 0);
+>+	igt_assert(oa_vaddr == MAP_FAILED);
+>+
+>+	oa_vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_PRIVATE, stream_fd, 8192);
+>+	igt_assert(oa_vaddr == MAP_FAILED);
+>+
+>+	oa_vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_PRIVATE, stream_fd, 11);
+>+	igt_assert(oa_vaddr == MAP_FAILED);
+>+
+>+	/* bad size */
+>+	oa_vaddr = mmap(0, oa_buffer.size + 1, PROT_READ, MAP_PRIVATE, stream_fd, oa_buffer.offset);
+>+	igt_assert(oa_vaddr == MAP_FAILED);
+>+
+>+	/* do the right thing */
+>+	oa_vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_PRIVATE, stream_fd, oa_buffer.offset);
+>+	igt_assert(oa_vaddr != MAP_FAILED && oa_vaddr != NULL);
+>+
+>+	munmap(oa_vaddr, oa_buffer.size);
+>+}
+>+
+>+static void *map_oa_buffer(uint32_t *size)
+>+{
+>+	struct drm_i915_perf_oa_buffer_info oa_buffer = { 0 };
+>+	void *vaddr;
+>+
+>+	do_ioctl(stream_fd, I915_PERF_IOCTL_GET_OA_BUFFER_INFO, &oa_buffer);
+>+
+>+	igt_debug("size        = %llu\n", oa_buffer.size);
+>+	igt_debug("offset      = %llx\n", oa_buffer.offset);
+>+
+>+	igt_assert_eq(oa_buffer.size & (oa_buffer.size - 1), 0);
+>+	igt_assert_eq(oa_status_reg(), 0);
+>+
+>+	vaddr = mmap(0, oa_buffer.size, PROT_READ, MAP_PRIVATE, stream_fd, oa_buffer.offset);
+>+	igt_assert(vaddr != NULL);
+>+
+>+	*size = oa_buffer.size;
+>+
+>+	return vaddr;
+>+}
+>+
+>+static void unmap_oa_buffer(void *addr, uint32_t size)
+>+{
+>+	munmap(addr, size);
+>+}
+>+
+>+static void check_reports(void *oa_vaddr, uint32_t oa_size)
+>+{
+>+	struct oa_format format = get_oa_format(test_set->perf_oa_format);
+>+	size_t report_words = format.size >> 2;
+>+	uint32_t *reports;
+>+	uint32_t timer_reports = 0;
+>+
+>+	for (reports = (uint32_t *)oa_vaddr;
+>+	     timer_reports < 20 && reports[0] && reports[1];
+>+	     reports += report_words) {
+>+		if (!oa_report_is_periodic(oa_exp_1_millisec, reports))
+>+			continue;
+>+
+>+		timer_reports++;
+>+		if (timer_reports >= 3)
+>+			sanity_check_reports(reports - 2 * report_words,
+>+					     reports - report_words,
+>+					     test_set->perf_oa_format);
+>+	}
+>+
+>+	igt_assert(timer_reports >= 3);
+>+}
+>+
+>+static void check_reports_from_mapped_buffer(void)
+>+{
+>+	void *vaddr;
+>+	uint32_t size;
+>+	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
+>+
+>+	vaddr = map_oa_buffer(&size);
+>+
+>+	/* wait for approx 100 reports */
+>+	usleep(100 * period_us);
+>+	check_reports(vaddr, size);
+>+
+>+	unmap_oa_buffer(vaddr, size);
+>+}
+>+
+>+static void unprivileged_try_to_map_oa_buffer(void)
+>+{
+>+	struct drm_i915_perf_oa_buffer_info oa_buffer = { 0 };
+>+	void *oa_vaddr;
+>+
+>+	do_ioctl_err(stream_fd, I915_PERF_IOCTL_GET_OA_BUFFER_INFO,
+>+		     &oa_buffer, EACCES);
+>+
+>+	oa_vaddr = mmap(0, 4096, PROT_READ, MAP_PRIVATE, stream_fd, 4096);
+>+	igt_assert(oa_vaddr == MAP_FAILED);
+>+	igt_assert_eq(errno, EACCES);
+>+}
+>+
+>+static void unprivileged_map_oa_buffer(void)
+>+{
+>+	igt_fork(child, 1) {
+>+		igt_drop_root();
+>+		unprivileged_try_to_map_oa_buffer();
+>+	}
+>+	igt_waitchildren();
+>+}
+>+
+>+static void map_oa_buffer_unprivilege_access(void)
+>+{
+>+	void *vaddr;
+>+	uint32_t size;
+>+
+>+	vaddr = map_oa_buffer(&size);
+>+
+>+	igt_fork(child, 1) {
+>+		igt_drop_root();
+>+		try_invalid_access(vaddr);
+>+	}
+>+	igt_waitchildren();
+>+
+>+	unmap_oa_buffer(vaddr, size);
+>+}
+>+
+>+static void map_oa_buffer_forked_access(void)
+>+{
+>+	void *vaddr;
+>+	uint32_t size;
+>+
+>+	vaddr = map_oa_buffer(&size);
+>+
+>+	igt_fork(child, 1) {
+>+		try_invalid_access(vaddr);
+>+	}
+>+	igt_waitchildren();
+>+
+>+	unmap_oa_buffer(vaddr, size);
+>+}
+>+
+>+static void test_mapped_oa_buffer(void (*test_with_fd_open)(void))
+>+{
+>+	uint64_t properties[] = {
+>+		DRM_I915_PERF_PROP_SAMPLE_OA, true,
+>+		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+>+		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
+>+		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
+>+
+>+	};
+>+	struct drm_i915_perf_open_param param = {
+>+		.flags = I915_PERF_FLAG_FD_CLOEXEC,
+>+		.num_properties = sizeof(properties) / 16,
+>+		.properties_ptr = to_user_pointer(properties),
+>+	};
+>+
+>+	stream_fd = __perf_open(drm_fd, &param, false);
+>+
+>+	igt_assert(test_with_fd_open);
+>+	test_with_fd_open();
+>+
+>+	__perf_close(stream_fd);
+>+}
+>+
+>+static void closed_fd_and_unmapped_access(void)
+>+{
+>+	uint64_t properties[] = {
+>+		DRM_I915_PERF_PROP_SAMPLE_OA, true,
+>+		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
+>+		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
+>+		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
+>+
+>+	};
+>+	struct drm_i915_perf_open_param param = {
+>+		.flags = I915_PERF_FLAG_FD_CLOEXEC,
+>+		.num_properties = sizeof(properties) / 16,
+>+		.properties_ptr = to_user_pointer(properties),
+>+	};
+>+	void *vaddr;
+>+	uint32_t size;
+>+	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
+>+
+>+	stream_fd = __perf_open(drm_fd, &param, false);
+>+	vaddr = map_oa_buffer(&size);
+>+
+>+	usleep(100 * period_us);
+>+	check_reports(vaddr, size);
+>+
+>+	unmap_oa_buffer(vaddr, size);
+>+	__perf_close(stream_fd);
+>+
+>+	try_invalid_access(vaddr);
+>+}
+>+
+> static unsigned
+> read_i915_module_ref(void)
+> {
+>@@ -5507,6 +5772,36 @@ igt_main
+> 			test_triggered_oa_reports(1);
+> 	}
+>
+>+	igt_subtest_group {
+>+		igt_fixture {
+>+			igt_require(i915_perf_revision(drm_fd) >= 8);
+>+		}
+>+
+>+		igt_describe("Verify mapping of oa buffer");
+>+		igt_subtest("map-oa-buffer")
+>+			test_mapped_oa_buffer(check_reports_from_mapped_buffer);
+>+
+>+		igt_describe("Verify invalid mappings of oa buffer");
+>+		igt_subtest("invalid-map-oa-buffer")
+>+			test_mapped_oa_buffer(invalid_param_map_oa_buffer);
+>+
+>+		igt_describe("Verify if non-privileged user can map oa buffer");
+>+		igt_subtest("non-privileged-map-oa-buffer")
+>+			test_mapped_oa_buffer(unprivileged_map_oa_buffer);
+>+
+>+		igt_describe("Verify if non-privileged user can map oa buffer");
+>+		igt_subtest("non-privileged-access-vaddr")
+>+			test_mapped_oa_buffer(map_oa_buffer_unprivilege_access);
+>+
+>+		igt_describe("Verify that forked access to mapped buffer fails");
+>+		igt_subtest("privileged-forked-access-vaddr")
+>+			test_mapped_oa_buffer(map_oa_buffer_forked_access);
+>+
+>+		igt_describe("Unmap buffer, close fd and try to access");
+>+		igt_subtest("closed-fd-and-unmapped-access")
+>+			closed_fd_and_unmapped_access();
+>+	}
+>+
+> 	igt_fixture {
+> 		/* leave sysctl options in their default state... */
+> 		write_u64_file("/proc/sys/dev/i915/oa_max_sample_rate", 100000);
+>-- 
+>2.20.1
+>
+>_______________________________________________
+>igt-dev mailing list
+>igt-dev@lists.freedesktop.org
+>https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
