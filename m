@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D0B5A89182
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Sep 2020 15:08:10 +0000 (UTC)
-Date: Fri, 25 Sep 2020 18:08:06 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20200925150806.GQ6112@intel.com>
-References: <20200925042613.18301-1-karthik.b.s@intel.com>
- <20200925042613.18301-2-karthik.b.s@intel.com>
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 746AE89A5C
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Sep 2020 04:05:29 +0000 (UTC)
+Date: Mon, 28 Sep 2020 06:05:23 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20200928040523.GA2736@zkempczy-mobl2>
+References: <20200918105856.24399-1-dominik.grzegorzek@intel.com>
+ <20200918105856.24399-19-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200925042613.18301-2-karthik.b.s@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v11 1/2] lib/igt_ioctl_wrappers: Add
- igt_has_drm_cap ioctl wrapper
+In-Reply-To: <20200918105856.24399-19-dominik.grzegorzek@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 18/22] tests/prime_udl: Remove libdrm
+ dependency
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,90 +19,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: michel@daenzer.net, igt-dev@lists.freedesktop.org, daniel.vetter@intel.com, petri.latvala@intel.com
+To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Sep 25, 2020 at 09:56:12AM +0530, Karthik B S wrote:
-> Add a generic helper for DRM_IOCTL_GET_CAP ioctl.
-> =
-
-> v10: -No changes.
-> =
-
-> v11: -Pass cap ID instead of the whole structure. (Ville)
->      -Fix the patch ordering. (Ville)
-> =
-
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->  lib/ioctl_wrappers.c | 17 +++++++++++++++++
->  lib/ioctl_wrappers.h |  1 +
->  2 files changed, 18 insertions(+)
-> =
-
-> diff --git a/lib/ioctl_wrappers.c b/lib/ioctl_wrappers.c
-> index 3781286d..3f35609a 100644
-> --- a/lib/ioctl_wrappers.c
-> +++ b/lib/ioctl_wrappers.c
-> @@ -1318,3 +1318,20 @@ int __kms_addfb(int fd, uint32_t handle,
->  =
-
->  	return ret < 0 ? -errno : ret;
->  }
-> +
-> +/**
-> + * igt_has_drm_cap:
-> + * @fd: Open DRM file descriptor.
-> + * @cap: drm_get_cap structure.
-> + *
-> + * This helper verifies if the passed cap is supported by the kernel
-> + *
-> + * Returns: Whether the cap is supported or not.
-> + */
-> +bool igt_has_drm_cap(int fd, uint64_t flag)
-
-The docs and code here don't match. I fixed that up and
-s/flag/capability/ for clarity.
-
-There was also an int vs. pointer compiler warning in the
-othr patch  which I fixed.
-
-Series pushed to master. Thanks.
-
-> +{
-> +	struct drm_get_cap cap =3D { .capability =3D flag };
-> +
-> +	igt_assert(drmIoctl(fd, DRM_IOCTL_GET_CAP, &cap) =3D=3D 0);
-> +	return cap.value;
-> +}
-> diff --git a/lib/ioctl_wrappers.h b/lib/ioctl_wrappers.h
-> index 870ac8b7..e0ec203d 100644
-> --- a/lib/ioctl_wrappers.h
-> +++ b/lib/ioctl_wrappers.h
-> @@ -196,6 +196,7 @@ struct local_drm_mode_fb_cmd2 {
->  =
-
->  bool igt_has_fb_modifiers(int fd);
->  void igt_require_fb_modifiers(int fd);
-> +bool igt_has_drm_cap(int fd, uint64_t flag);
->  =
-
->  /**
->   * __kms_addfb:
-> -- =
-
-> 2.22.0
-
--- =
-
-Ville Syrj=E4l=E4
-Intel
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gRnJpLCBTZXAgMTgsIDIwMjAgYXQgMTI6NTg6NTJQTSArMDIwMCwgRG9taW5payBHcnplZ29y
+emVrIHdyb3RlOgo+IFVzZSBpbnRlbF9iYiAvIGludGVsX2J1ZiB0byByZW1vdmUgbGliZHJtIGRl
+cGVuZGVuY3kuCj4gCj4gU2lnbmVkLW9mZi1ieTogRG9taW5payBHcnplZ29yemVrIDxkb21pbmlr
+LmdyemVnb3J6ZWtAaW50ZWwuY29tPgo+IENjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWdu
+aWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KPiBDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJp
+cy13aWxzb24uY28udWs+Cj4gLS0tCj4gIHRlc3RzL3ByaW1lX3VkbC5jIHwgNDQgKysrKysrKysr
+KysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiAgMSBmaWxlIGNoYW5nZWQsIDIw
+IGluc2VydGlvbnMoKyksIDI0IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9w
+cmltZV91ZGwuYyBiL3Rlc3RzL3ByaW1lX3VkbC5jCj4gaW5kZXggOWI2MDA2NTkuLmIyZTk0MTYw
+IDEwMDY0NAo+IC0tLSBhL3Rlc3RzL3ByaW1lX3VkbC5jCj4gKysrIGIvdGVzdHMvcHJpbWVfdWRs
+LmMKPiBAQCAtMjcsMTQgKzI3LDEzIEBACj4gICNpbmNsdWRlICJ4Zjg2ZHJtLmgiCj4gICNpbmNs
+dWRlIDx4Zjg2ZHJtTW9kZS5oPgo+ICAKPiAtI2luY2x1ZGUgImludGVsX2J1Zm1nci5oIgo+IC0K
+PiAgaW50IGludGVsX2ZkID0gLTEsIHVkbF9mZCA9IC0xOwo+IC1kcm1faW50ZWxfYnVmbWdyICpi
+dWZtZ3I7Cj4gLXVpbnQzMl90IGRldmlkOwo+IC1zdHJ1Y3QgaW50ZWxfYmF0Y2hidWZmZXIgKmlu
+dGVsX2JhdGNoOwo+ICtzdHJ1Y3QgYnVmX29wcyAqYm9wczsKPiArCj4gKyNkZWZpbmUgV0lEVEgg
+NjQwCj4gKyNkZWZpbmUgSEVJR0hUIDQ4MAo+ICsjZGVmaW5lIEJPX1NJWkUgKFdJRFRIKkhFSUdI
+VCoyKQo+ICAKPiAtI2RlZmluZSBCT19TSVpFICg2NDAqNDgwKjIpCj4gIAo+ICBzdGF0aWMgaW50
+IGZpbmRfYW5kX29wZW5fZGV2aWNlcyh2b2lkKQo+ICB7Cj4gQEAgLTk0LDM0ICs5MywzOCBAQCBz
+dGF0aWMgaW50IGR1bWJfYm9fZGVzdHJveShpbnQgZmQsIHVpbnQzMl90IGhhbmRsZSkKPiAgICov
+Cj4gIHN0YXRpYyBpbnQgdGVzdDEodm9pZCkKPiAgewo+IC0JZHJtX2ludGVsX2JvICp0ZXN0X2lu
+dGVsX2JvOwo+ICsJc3RydWN0IGludGVsX2J1ZiAqdGVzdF9pbnRlbF9idWY7Cj4gIAlpbnQgcHJp
+bWVfZmQ7Cj4gIAlpbnQgcmV0Owo+ICAJdWludDMyX3QgdWRsX2hhbmRsZTsKPiAgCj4gLQl0ZXN0
+X2ludGVsX2JvID0gZHJtX2ludGVsX2JvX2FsbG9jKGJ1Zm1nciwgInRlc3QgYm8iLCBCT19TSVpF
+LCA0MDk2KTsKPiArCXRlc3RfaW50ZWxfYnVmID0gaW50ZWxfYnVmX2NyZWF0ZShib3BzLCBXSURU
+SCwgSEVJR0hULCAxNiwgNDA5NiwKPiArCQkJCQkgIEk5MTVfVElMSU5HX05PTkUsCj4gKwkJCQkJ
+ICBJOTE1X0NPTVBSRVNTSU9OX05PTkUpOwo+CgpVc2UgMCBpbnN0ZWFkIDQwOTYgdG8gYXZvaWQg
+b3ZlcmFsbG9jYXRlLiAKCiAgCj4gLQlkcm1faW50ZWxfYm9fZ2VtX2V4cG9ydF90b19wcmltZSh0
+ZXN0X2ludGVsX2JvLCAmcHJpbWVfZmQpOwo+ICsJcHJpbWVfZmQgPSBwcmltZV9oYW5kbGVfdG9f
+ZmQoaW50ZWxfZmQsIHRlc3RfaW50ZWxfYnVmLT5oYW5kbGUpOwoKQ2hlY2sgcHJpbWVfaGFuZGxl
+X3RvX2ZkX2Zvcl9tbWFwKCkuCgo+ICAKPiAgCXJldCA9IGRybVByaW1lRkRUb0hhbmRsZSh1ZGxf
+ZmQsIHByaW1lX2ZkLCAmdWRsX2hhbmRsZSk7CgpZb3UncmUgbWl4aW5nIG5vLWRybSBhbmQgZHJt
+IGNhbGxzLiBJbiB0aGUgZnV0dXJlIEkgZ3Vlc3Mgd2UgbmVlZCAKdG8gZXhwb3J0IGxtZW0gdG9v
+IHNvIGxpa2VseSBuby1kcm0gd2F5IGlzIGFwcHJvcHJpYXRlIG9uZS4KCj4gIAo+ICAJZHVtYl9i
+b19kZXN0cm95KHVkbF9mZCwgdWRsX2hhbmRsZSk7Cj4gLQlkcm1faW50ZWxfYm9fdW5yZWZlcmVu
+Y2UodGVzdF9pbnRlbF9ibyk7Cj4gKwlpbnRlbF9idWZfZGVzdHJveSh0ZXN0X2ludGVsX2J1Zik7
+Cj4gIAlyZXR1cm4gcmV0Owo+ICB9Cj4gIAo+ICBzdGF0aWMgaW50IHRlc3QyKHZvaWQpCj4gIHsK
+PiAtCWRybV9pbnRlbF9ibyAqdGVzdF9pbnRlbF9ibzsKPiArCXN0cnVjdCBpbnRlbF9idWYgKnRl
+c3RfaW50ZWxfYnVmOwo+ICAJdWludDMyX3QgZmJfaWQ7Cj4gIAlkcm1Nb2RlQ2xpcCBjbGlwOwo+
+ICAJaW50IHByaW1lX2ZkOwo+ICAJdWludDMyX3QgdWRsX2hhbmRsZTsKPiAgCWludCByZXQ7Cj4g
+IAo+IC0JdGVzdF9pbnRlbF9ibyA9IGRybV9pbnRlbF9ib19hbGxvYyhidWZtZ3IsICJ0ZXN0IGJv
+IiwgQk9fU0laRSwgNDA5Nik7Cj4gKwl0ZXN0X2ludGVsX2J1ZiA9IGludGVsX2J1Zl9jcmVhdGUo
+Ym9wcywgV0lEVEgsIEhFSUdIVCwgMTYsIDQwOTYsCj4gKwkJCQkJICBJOTE1X1RJTElOR19OT05F
+LAo+ICsJCQkJCSAgSTkxNV9DT01QUkVTU0lPTl9OT05FKTsKPiAgCj4gLQlkcm1faW50ZWxfYm9f
+Z2VtX2V4cG9ydF90b19wcmltZSh0ZXN0X2ludGVsX2JvLCAmcHJpbWVfZmQpOwo+ICsJcHJpbWVf
+ZmQgPSBwcmltZV9oYW5kbGVfdG9fZmQoaW50ZWxfZmQsIHRlc3RfaW50ZWxfYnVmLT5oYW5kbGUp
+OwoKU2FtZSBhcyBhYm92ZS4KCi0tClpiaWduaWV3Cgo+ICAKPiAgCXJldCA9IGRybVByaW1lRkRU
+b0hhbmRsZSh1ZGxfZmQsIHByaW1lX2ZkLCAmdWRsX2hhbmRsZSk7Cj4gIAlpZiAocmV0KQo+IEBA
+IC0xNDEsNyArMTQ0LDcgQEAgc3RhdGljIGludCB0ZXN0Mih2b2lkKQo+ICAJfQo+ICBvdXQ6Cj4g
+IAlkdW1iX2JvX2Rlc3Ryb3kodWRsX2ZkLCB1ZGxfaGFuZGxlKTsKPiAtCWRybV9pbnRlbF9ib191
+bnJlZmVyZW5jZSh0ZXN0X2ludGVsX2JvKTsKPiArCWludGVsX2J1Zl9kZXN0cm95KHRlc3RfaW50
+ZWxfYnVmKTsKPiAgCXJldHVybiByZXQ7Cj4gIH0KPiAgCj4gQEAgLTE1MiwyMiArMTU1LDE1IEBA
+IGlndF9zaW1wbGVfbWFpbgo+ICAJaWd0X3NraXBfb24odWRsX2ZkID09IC0xKTsKPiAgCWlndF9z
+a2lwX29uKGludGVsX2ZkID09IC0xKTsKPiAgCj4gLQkvKiBzZXQgdXAgaW50ZWwgYnVmbWdyICov
+Cj4gLQlidWZtZ3IgPSBkcm1faW50ZWxfYnVmbWdyX2dlbV9pbml0KGludGVsX2ZkLCA0MDk2KTsK
+PiAtCWRybV9pbnRlbF9idWZtZ3JfZ2VtX2VuYWJsZV9yZXVzZShidWZtZ3IpOwo+IC0KPiAtCS8q
+IHNldCB1cCBhbiBpbnRlbCBiYXRjaCBidWZmZXIgKi8KPiAtCWRldmlkID0gaW50ZWxfZ2V0X2Ry
+bV9kZXZpZChpbnRlbF9mZCk7Cj4gLQlpbnRlbF9iYXRjaCA9IGludGVsX2JhdGNoYnVmZmVyX2Fs
+bG9jKGJ1Zm1nciwgZGV2aWQpOwo+ICsJLyogc2V0IHVwIGludGVsIGJ1ZiBvcHMgKi8KPiArCWJv
+cHMgPSBidWZfb3BzX2NyZWF0ZShpbnRlbF9mZCk7Cj4gIAo+ICAJLyogY3JlYXRlIGFuIG9iamVj
+dCBvbiB0aGUgaTkxNSAqLwo+ICAJaWd0X2Fzc2VydCh0ZXN0MSgpID09IDApOwo+ICAKPiAgCWln
+dF9hc3NlcnQodGVzdDIoKSA9PSAwKTsKPiAgCj4gLQlpbnRlbF9iYXRjaGJ1ZmZlcl9mcmVlKGlu
+dGVsX2JhdGNoKTsKPiAtCj4gLQlkcm1faW50ZWxfYnVmbWdyX2Rlc3Ryb3koYnVmbWdyKTsKPiAr
+CWJ1Zl9vcHNfZGVzdHJveShib3BzKTsKPiAgCj4gIAljbG9zZShpbnRlbF9mZCk7Cj4gIAljbG9z
+ZSh1ZGxfZmQpOwo+IC0tIAo+IDIuMjAuMQo+IApfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZy
+ZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2lndC1kZXYK
