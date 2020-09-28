@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C72C89CAD
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Sep 2020 19:07:49 +0000 (UTC)
-Date: Mon, 28 Sep 2020 12:07:44 -0700
-From: Matt Roper <matthew.d.roper@intel.com>
-Message-ID: <20200928190744.GB2157395@mdroper-desk1.amr.corp.intel.com>
-References: <20200928150614.23097-1-swati2.sharma@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98F0E89D66
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Sep 2020 19:11:26 +0000 (UTC)
+From: apoorva1.singh@intel.com
+Date: Tue, 29 Sep 2020 00:44:10 +0530
+Message-Id: <20200928191410.2285284-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200928150614.23097-1-swati2.sharma@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_addfb_basic: Renaming tests
- as legacy tiling
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_mmap_offset: Added subtests
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,102 +19,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Swati Sharma <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com
+To: igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Sep 28, 2020 at 08:36:14PM +0530, Swati Sharma wrote:
-> Tests require legacy get_tiling/set_tiling API's. Renaming the subtest
-> names to make it obvious that these are legacy-only tests.
-> 
-> Suggested-by: Matt Roper <matthew.d.roper@intel.com>
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->  tests/kms_addfb_basic.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-> index 666e7165..3230d603 100644
-> --- a/tests/kms_addfb_basic.c
-> +++ b/tests/kms_addfb_basic.c
-> @@ -320,7 +320,7 @@ static void tiling_tests(int fd)
->  		}
->  
->  		f.pitches[0] = 1024*4;
-> -		igt_subtest("basic-X-tiled") {
-> +		igt_subtest("basic-x-tiled-legacy") {
->  			f.handles[0] = tiled_x_bo;
->  
->  			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
-> @@ -348,7 +348,7 @@ static void tiling_tests(int fd)
->  		}
->  
->  		f.pitches[0] = 1024*4;
-> -		igt_subtest("basic-Y-tiled") {
-> +		igt_subtest("basic-y-tiled-legacy") {
->  			f.handles[0] = tiled_y_bo;
->  
->  			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
-> @@ -506,12 +506,12 @@ static void addfb25_tests(int fd)
->  			igt_require_fb_modifiers(fd);
->  		}
->  
-> -		igt_subtest("addfb25-X-tiled-mismatch") {
-> +		igt_subtest("addfb25-x-tiled-legacy-mismatch") {
+From: Apoorva Singh <apoorva1.singh@intel.com>
 
-You might want to put the "-legacy" at the end of the name here for
-consistency with the rest of the subtests since it's the test itself
-(which wants to exercise get_tiling/set_tiling) rather than the tiling
-type itself that's legacy.  But either way,
+Added description for remaining subtests
 
-Acked-by: Matt Roper <matthew.d.roper@intel.com>
+Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+---
+ tests/i915/gem_mmap_offset.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
->  			f.modifier[0] = LOCAL_DRM_FORMAT_MOD_NONE;
->  			igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
->  		}
->  
-> -		igt_subtest("addfb25-X-tiled") {
-> +		igt_subtest("addfb25-x-tiled-legacy") {
->  			f.modifier[0] = LOCAL_I915_FORMAT_MOD_X_TILED;
->  			igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == 0);
->  			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-> @@ -570,7 +570,7 @@ static void addfb25_ytile(int fd)
->  		f.handles[0] = gem_bo;
->  	}
->  
-> -	igt_subtest("addfb25-Y-tiled") {
-> +	igt_subtest("addfb25-y-tiled-legacy") {
->  		igt_require_fb_modifiers(fd);
->  
->  		f.modifier[0] = LOCAL_I915_FORMAT_MOD_Y_TILED;
-> @@ -581,7 +581,7 @@ static void addfb25_ytile(int fd)
->  		f.fb_id = 0;
->  	}
->  
-> -	igt_subtest("addfb25-Yf-tiled") {
-> +	igt_subtest("addfb25-yf-tiled-legacy") {
->  		igt_require_fb_modifiers(fd);
->  
->  		f.modifier[0] = LOCAL_I915_FORMAT_MOD_Yf_TILED;
-> @@ -592,7 +592,7 @@ static void addfb25_ytile(int fd)
->  		f.fb_id = 0;
->  	}
->  
-> -	igt_subtest("addfb25-Y-tiled-small") {
-> +	igt_subtest("addfb25-y-tiled-small-legacy") {
->  		igt_require_fb_modifiers(fd);
->  
->  		gen = intel_gen(intel_get_drm_devid(fd));
-> -- 
-> 2.25.1
-> 
-
+diff --git a/tests/i915/gem_mmap_offset.c b/tests/i915/gem_mmap_offset.c
+index 82203bce..3c4bfd60 100644
+--- a/tests/i915/gem_mmap_offset.c
++++ b/tests/i915/gem_mmap_offset.c
+@@ -675,8 +675,12 @@ igt_main
+ 	igt_describe("Verify mapping to invalid gem objects won't be created");
+ 	igt_subtest_f("bad-object")
+ 		bad_object(i915);
++
++	igt_describe("Verify mapping to buffer object with invalid flag won't be created");
+ 	igt_subtest_f("bad-flags")
+ 		bad_flags(i915);
++
++	igt_describe("Verify mapping to buffer object with invalid extensions won't be created");
+ 	igt_subtest_f("bad-extensions")
+ 		bad_extensions(i915);
+ 
+@@ -684,11 +688,17 @@ igt_main
+ 	igt_subtest_f("basic-uaf")
+ 		basic_uaf(i915);
+ 
++	igt_describe("Verify mapping to a buffer object which is associated with different fds "
++	       "works in isolation");
+ 	igt_subtest_f("isolation")
+ 		isolation(i915);
++
++	igt_describe("Verify initial page faulting completes within a specified time");
+ 	igt_subtest_f("pf-nonblock")
+ 		pf_nonblock(i915);
+ 
++	igt_describe("Tests read/write at the address space mapped using mmap-offset in the "
++	       "tracee's memory");
+ 	igt_subtest_with_dynamic("ptrace")
+ 		test_ptrace(i915);
+ 
+@@ -696,12 +706,17 @@ igt_main
+ 	igt_subtest_f("close-race")
+ 		close_race(i915, 20);
+ 
++	igt_describe("Tests the performance of mmap-offset ioctl in a flooded environment "
++	       "created using multiple cocncurrent threads");
+ 	igt_subtest_f("open-flood")
+ 		open_flood(i915, 20);
+ 
++	igt_describe("Verify that the memory mapped using mmap-offset is always "
++	       "initialized with 0s");
+ 	igt_subtest_f("clear")
+ 		always_clear(i915, 20);
+ 
++	igt_describe("Verfiy data coherency of blt with mmap-offset");
+ 	igt_subtest_f("blt-coherency")
+ 		blt_coherency(i915);
+ 
 -- 
-Matt Roper
-Graphics Software Engineer
-VTT-OSGC Platform Enablement
-Intel Corporation
-(916) 356-2795
+2.28.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
