@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 03E0589D56
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Sep 2020 14:59:23 +0000 (UTC)
-From: Swati Sharma <swati2.sharma@intel.com>
-Date: Mon, 28 Sep 2020 20:36:14 +0530
-Message-Id: <20200928150614.23097-1-swati2.sharma@intel.com>
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDBC289EAE
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Sep 2020 15:29:25 +0000 (UTC)
+Date: Mon, 28 Sep 2020 18:29:20 +0300
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20200928152920.GV7444@platvala-desk.ger.corp.intel.com>
+References: <20200928131502.41354-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] tests/kms_addfb_basic: Renaming tests as
- legacy tiling
+Content-Disposition: inline
+In-Reply-To: <20200928131502.41354-1-zbigniew.kempczynski@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_core: Reinitialize print mutex
+ in child process
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,91 +18,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: petri.latvala@intel.com
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, Arkadiusz Hiler <arek@hiler.eu>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Tests require legacy get_tiling/set_tiling API's. Renaming the subtest
-names to make it obvious that these are legacy-only tests.
-
-Suggested-by: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/kms_addfb_basic.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index 666e7165..3230d603 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -320,7 +320,7 @@ static void tiling_tests(int fd)
- 		}
- 
- 		f.pitches[0] = 1024*4;
--		igt_subtest("basic-X-tiled") {
-+		igt_subtest("basic-x-tiled-legacy") {
- 			f.handles[0] = tiled_x_bo;
- 
- 			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
-@@ -348,7 +348,7 @@ static void tiling_tests(int fd)
- 		}
- 
- 		f.pitches[0] = 1024*4;
--		igt_subtest("basic-Y-tiled") {
-+		igt_subtest("basic-y-tiled-legacy") {
- 			f.handles[0] = tiled_y_bo;
- 
- 			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
-@@ -506,12 +506,12 @@ static void addfb25_tests(int fd)
- 			igt_require_fb_modifiers(fd);
- 		}
- 
--		igt_subtest("addfb25-X-tiled-mismatch") {
-+		igt_subtest("addfb25-x-tiled-legacy-mismatch") {
- 			f.modifier[0] = LOCAL_DRM_FORMAT_MOD_NONE;
- 			igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
- 		}
- 
--		igt_subtest("addfb25-X-tiled") {
-+		igt_subtest("addfb25-x-tiled-legacy") {
- 			f.modifier[0] = LOCAL_I915_FORMAT_MOD_X_TILED;
- 			igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == 0);
- 			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
-@@ -570,7 +570,7 @@ static void addfb25_ytile(int fd)
- 		f.handles[0] = gem_bo;
- 	}
- 
--	igt_subtest("addfb25-Y-tiled") {
-+	igt_subtest("addfb25-y-tiled-legacy") {
- 		igt_require_fb_modifiers(fd);
- 
- 		f.modifier[0] = LOCAL_I915_FORMAT_MOD_Y_TILED;
-@@ -581,7 +581,7 @@ static void addfb25_ytile(int fd)
- 		f.fb_id = 0;
- 	}
- 
--	igt_subtest("addfb25-Yf-tiled") {
-+	igt_subtest("addfb25-yf-tiled-legacy") {
- 		igt_require_fb_modifiers(fd);
- 
- 		f.modifier[0] = LOCAL_I915_FORMAT_MOD_Yf_TILED;
-@@ -592,7 +592,7 @@ static void addfb25_ytile(int fd)
- 		f.fb_id = 0;
- 	}
- 
--	igt_subtest("addfb25-Y-tiled-small") {
-+	igt_subtest("addfb25-y-tiled-small-legacy") {
- 		igt_require_fb_modifiers(fd);
- 
- 		gen = intel_gen(intel_get_drm_devid(fd));
--- 
-2.25.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gTW9uLCBTZXAgMjgsIDIwMjAgYXQgMDM6MTU6MDJQTSArMDIwMCwgWmJpZ25pZXcgS2VtcGN6
+ecWEc2tpIHdyb3RlOgo+IElHVCBhcmUgcHJvbmUgdG8gZGVhZGxvY2sgaW4gaWd0X2xvZygpIGlu
+IGZvbGxvd2luZyBzY2VuYXJpbzoKPiAKPiAxLiBQYXJlbnQgcHJvY2VzcyBjcmVhdGVzIGFkZGl0
+aW9uYWwgdGhyZWFkIHdoaWNoIGZvciBleGFtcGxlCj4gICAgaXMgZG9pbmcgZW5kbGVzcyBsb29w
+Cj4gMi4gVGhyZWFkIHNvbWV0aW1lcyBpcyBsb2dnaW5nIHRvIGNvbnNvbGUgdXNpbmcgaWd0X2lu
+Zm8oKS4KPiAgICBUaGlzIGxvY2tzIGFuZCB1bmxvY2tzIHByaW50X211dGV4Lgo+IDMuIElmIGlu
+IHRoZSBtZWFudGltZSBwYXJlbnQgcHJvY2VzcyB3aWxsIHNwYXduIGl0IGNhbiBiZQo+ICAgIHNw
+YXduZWQgd2l0aCBwcmludF9tdXRleCBsb2NrZWQuIElmIGluIHRoZSBjaGlsZCBwcm9jZXNzCj4g
+ICAgaXQgd2lsbCBkbyBpZ3RfaW5mbygpIGl0IHdpbGwgZGVhZGxvY2suCj4gCj4gV2Ugc2hvdWxk
+IHJlaW5pdGlhbGl6ZSBwcmludF9tdXRleCBpbiBjaGlsZCBwcm9jZXNzIHRvIGF2b2lkCj4gdXNl
+IGluaGVyaXRlZCB2YWx1ZS4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRz
+a2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KPiBDYzogUGV0cmkgTGF0dmFsYSA8
+cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+Cj4gLS0tCgpBcmUgeW91IGFibGUgdG8gdHlwZSB1cCBh
+IHVuaXQgdGVzdCBpbiBsaWIvdGVzdHMvIHRoYXQgcmVwcm9kdWNlcyB0aGlzCmRlYWRsb2NrPwoK
+Q29kZSBMR1RNLCBBcmVrLCBkbyB5b3Ugc3BvdCBhbnl0aGluZyBhbWlzcyB3aXRoIHRoaXM/CgoK
+LS0gClBldHJpIExhdHZhbGEKCgoKPiAgbGliL2lndF9jb3JlLmMgfCA4ICsrKysrLS0tCj4gIDEg
+ZmlsZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAt
+LWdpdCBhL2xpYi9pZ3RfY29yZS5jIGIvbGliL2lndF9jb3JlLmMKPiBpbmRleCBjZWRkODE2OC4u
+NzIyMjAyYWUgMTAwNjQ0Cj4gLS0tIGEvbGliL2lndF9jb3JlLmMKPiArKysgYi9saWIvaWd0X2Nv
+cmUuYwo+IEBAIC0yMjcxLDYgKzIyNzEsOCBAQCBzdGF0aWMgdm9pZCBjaGlsZHJlbl9leGl0X2hh
+bmRsZXIoaW50IHNpZykKPiAgCQk7Cj4gIH0KPiAgCj4gK3N0YXRpYyBwdGhyZWFkX211dGV4X3Qg
+cHJpbnRfbXV0ZXggPSBQVEhSRUFEX01VVEVYX0lOSVRJQUxJWkVSOwo+ICsKPiAgYm9vbCBfX2ln
+dF9mb3JrKHZvaWQpCj4gIHsKPiAgCWludGVybmFsX2Fzc2VydCghdGVzdF93aXRoX3N1YnRlc3Rz
+IHx8IGluX3N1YnRlc3QsCj4gQEAgLTIzMDAsNiArMjMwMiw3IEBAIGJvb2wgX19pZ3RfZm9yayh2
+b2lkKQo+ICAJCWlndF9hc3NlcnQoMCk7Cj4gIAljYXNlIDA6Cj4gIAkJdGVzdF9jaGlsZCA9IHRy
+dWU7Cj4gKwkJcHRocmVhZF9tdXRleF9pbml0KCZwcmludF9tdXRleCwgTlVMTCk7Cj4gIAkJZXhp
+dF9oYW5kbGVyX2NvdW50ID0gMDsKPiAgCQlyZXNldF9oZWxwZXJfcHJvY2Vzc19saXN0KCk7Cj4g
+IAkJb29tX2FkanVzdF9mb3JfZG9vbSgpOwo+IEBAIC0yNzM3LDggKzI3NDAsNiBAQCB2b2lkIGln
+dF92bG9nKGNvbnN0IGNoYXIgKmRvbWFpbiwgZW51bSBpZ3RfbG9nX2xldmVsIGxldmVsLCBjb25z
+dCBjaGFyICpmb3JtYXQsCj4gIAkJIk5PTkUiCj4gIAl9Owo+ICAKPiAtCXN0YXRpYyBwdGhyZWFk
+X211dGV4X3QgcHJpbnRfbXV0ZXggPSBQVEhSRUFEX01VVEVYX0lOSVRJQUxJWkVSOwo+IC0KPiAg
+CWFzc2VydChmb3JtYXQpOwo+ICAKPiAgI2lmZGVmIF9fR0xJQkNfXwo+IEBAIC0yNzQ3LDcgKzI3
+NDgsNiBAQCB2b2lkIGlndF92bG9nKGNvbnN0IGNoYXIgKmRvbWFpbiwgZW51bSBpZ3RfbG9nX2xl
+dmVsIGxldmVsLCBjb25zdCBjaGFyICpmb3JtYXQsCj4gIAlwcm9ncmFtX25hbWUgPSBjb21tYW5k
+X3N0cjsKPiAgI2VuZGlmCj4gIAo+IC0KPiAgCWlmIChpZ3RfdGhyZWFkX2lzX21haW4oKSkgewo+
+ICAJCXRocmVhZF9pZCA9IHN0cmR1cCgiIik7Cj4gIAl9IGVsc2Ugewo+IEBAIC0yODIzLDYgKzI4
+MjMsOCBAQCBvdXQ6Cj4gIAlmcmVlKGxpbmUpOwo+ICB9Cj4gIAo+ICsKPiArCj4gIHN0YXRpYyBj
+b25zdCBjaGFyICp0aW1lb3V0X29wOwo+ICBzdGF0aWMgdm9pZCBfX2F0dHJpYnV0ZV9fKChub3Jl
+dHVybikpIGlndF9hbGFybV9oYW5kbGVyKGludCBzaWduYWwpCj4gIHsKPiAtLSAKPiAyLjI2LjAK
+PiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRl
+diBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0
+cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
