@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from aibo.runbox.com (aibo.runbox.com [91.220.196.211])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B77A16E0D0
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Sep 2020 17:37:24 +0000 (UTC)
-Date: Mon, 28 Sep 2020 20:37:12 +0300
-From: Arkadiusz Hiler <arek@hiler.eu>
-Message-ID: <20200928173712.znki3ef7kcvhutg7@hatecraft.localdomain>
-References: <20200928131502.41354-1-zbigniew.kempczynski@intel.com>
- <20200928152920.GV7444@platvala-desk.ger.corp.intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C72C89CAD
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Sep 2020 19:07:49 +0000 (UTC)
+Date: Mon, 28 Sep 2020 12:07:44 -0700
+From: Matt Roper <matthew.d.roper@intel.com>
+Message-ID: <20200928190744.GB2157395@mdroper-desk1.amr.corp.intel.com>
+References: <20200928150614.23097-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200928152920.GV7444@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_core: Reinitialize print mutex
- in child process
+In-Reply-To: <20200928150614.23097-1-swati2.sharma@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_addfb_basic: Renaming tests
+ as legacy tiling
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,35 +18,107 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Swati Sharma <swati2.sharma@intel.com>
+Cc: igt-dev@lists.freedesktop.org, petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCBTZXAgMjgsIDIwMjAgYXQgMDY6Mjk6MjBQTSArMDMwMCwgUGV0cmkgTGF0dmFsYSB3
-cm90ZToKPiBPbiBNb24sIFNlcCAyOCwgMjAyMCBhdCAwMzoxNTowMlBNICswMjAwLCBaYmlnbmll
-dyBLZW1wY3p5xYRza2kgd3JvdGU6Cj4gPiBJR1QgYXJlIHByb25lIHRvIGRlYWRsb2NrIGluIGln
-dF9sb2coKSBpbiBmb2xsb3dpbmcgc2NlbmFyaW86Cj4gPiAKPiA+IDEuIFBhcmVudCBwcm9jZXNz
-IGNyZWF0ZXMgYWRkaXRpb25hbCB0aHJlYWQgd2hpY2ggZm9yIGV4YW1wbGUKPiA+ICAgIGlzIGRv
-aW5nIGVuZGxlc3MgbG9vcAo+ID4gMi4gVGhyZWFkIHNvbWV0aW1lcyBpcyBsb2dnaW5nIHRvIGNv
-bnNvbGUgdXNpbmcgaWd0X2luZm8oKS4KPiA+ICAgIFRoaXMgbG9ja3MgYW5kIHVubG9ja3MgcHJp
-bnRfbXV0ZXguCj4gPiAzLiBJZiBpbiB0aGUgbWVhbnRpbWUgcGFyZW50IHByb2Nlc3Mgd2lsbCBz
-cGF3biBpdCBjYW4gYmUKPiA+ICAgIHNwYXduZWQgd2l0aCBwcmludF9tdXRleCBsb2NrZWQuIElm
-IGluIHRoZSBjaGlsZCBwcm9jZXNzCj4gPiAgICBpdCB3aWxsIGRvIGlndF9pbmZvKCkgaXQgd2ls
-bCBkZWFkbG9jay4KPiA+IAo+ID4gV2Ugc2hvdWxkIHJlaW5pdGlhbGl6ZSBwcmludF9tdXRleCBp
-biBjaGlsZCBwcm9jZXNzIHRvIGF2b2lkCj4gPiB1c2UgaW5oZXJpdGVkIHZhbHVlLgo+ID4gCj4g
-PiBTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenlu
-c2tpQGludGVsLmNvbT4KPiA+IENjOiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVs
-LmNvbT4KPiA+IC0tLQo+IAo+IEFyZSB5b3UgYWJsZSB0byB0eXBlIHVwIGEgdW5pdCB0ZXN0IGlu
-IGxpYi90ZXN0cy8gdGhhdCByZXByb2R1Y2VzIHRoaXMKPiBkZWFkbG9jaz8KPiAKPiBDb2RlIExH
-VE0sIEFyZWssIGRvIHlvdSBzcG90IGFueXRoaW5nIGFtaXNzIHdpdGggdGhpcz8KCk90aGVyIHRo
-YW4gdGhlIHJhbmRvbSB3aGl0ZXNwYWNlIGNoYW5nZXMgdGhlIHBhdGNoIGxvb2tzIGdvb2QuIFRo
-YW5rcyEKCk1peGluZyB0aHJlYWRpbmcgYW5kIGZvcmtpbmcgaXMgYWx3YXlzICdmdW4nIGFuZCBw
-ZW9wbGUgcmFyZWx5IHRoaW5rCmFib3V0IGl0IHVwZnJvbnQuIEkgd29uJ3QgYmUgc3VycHJpc2Vk
-IGlmIHdlIHdpbGwgZmluZCBtb3JlIHRoaW5ncyBsaWtlCnRoaXMgOi0pCgotLSAKQ2hlZXJzLApB
-cmVrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
-ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+On Mon, Sep 28, 2020 at 08:36:14PM +0530, Swati Sharma wrote:
+> Tests require legacy get_tiling/set_tiling API's. Renaming the subtest
+> names to make it obvious that these are legacy-only tests.
+> 
+> Suggested-by: Matt Roper <matthew.d.roper@intel.com>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> ---
+>  tests/kms_addfb_basic.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+> index 666e7165..3230d603 100644
+> --- a/tests/kms_addfb_basic.c
+> +++ b/tests/kms_addfb_basic.c
+> @@ -320,7 +320,7 @@ static void tiling_tests(int fd)
+>  		}
+>  
+>  		f.pitches[0] = 1024*4;
+> -		igt_subtest("basic-X-tiled") {
+> +		igt_subtest("basic-x-tiled-legacy") {
+>  			f.handles[0] = tiled_x_bo;
+>  
+>  			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+> @@ -348,7 +348,7 @@ static void tiling_tests(int fd)
+>  		}
+>  
+>  		f.pitches[0] = 1024*4;
+> -		igt_subtest("basic-Y-tiled") {
+> +		igt_subtest("basic-y-tiled-legacy") {
+>  			f.handles[0] = tiled_y_bo;
+>  
+>  			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+> @@ -506,12 +506,12 @@ static void addfb25_tests(int fd)
+>  			igt_require_fb_modifiers(fd);
+>  		}
+>  
+> -		igt_subtest("addfb25-X-tiled-mismatch") {
+> +		igt_subtest("addfb25-x-tiled-legacy-mismatch") {
+
+You might want to put the "-legacy" at the end of the name here for
+consistency with the rest of the subtests since it's the test itself
+(which wants to exercise get_tiling/set_tiling) rather than the tiling
+type itself that's legacy.  But either way,
+
+Acked-by: Matt Roper <matthew.d.roper@intel.com>
+
+>  			f.modifier[0] = LOCAL_DRM_FORMAT_MOD_NONE;
+>  			igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) < 0 && errno == EINVAL);
+>  		}
+>  
+> -		igt_subtest("addfb25-X-tiled") {
+> +		igt_subtest("addfb25-x-tiled-legacy") {
+>  			f.modifier[0] = LOCAL_I915_FORMAT_MOD_X_TILED;
+>  			igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) == 0);
+>  			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_RMFB, &f.fb_id) == 0);
+> @@ -570,7 +570,7 @@ static void addfb25_ytile(int fd)
+>  		f.handles[0] = gem_bo;
+>  	}
+>  
+> -	igt_subtest("addfb25-Y-tiled") {
+> +	igt_subtest("addfb25-y-tiled-legacy") {
+>  		igt_require_fb_modifiers(fd);
+>  
+>  		f.modifier[0] = LOCAL_I915_FORMAT_MOD_Y_TILED;
+> @@ -581,7 +581,7 @@ static void addfb25_ytile(int fd)
+>  		f.fb_id = 0;
+>  	}
+>  
+> -	igt_subtest("addfb25-Yf-tiled") {
+> +	igt_subtest("addfb25-yf-tiled-legacy") {
+>  		igt_require_fb_modifiers(fd);
+>  
+>  		f.modifier[0] = LOCAL_I915_FORMAT_MOD_Yf_TILED;
+> @@ -592,7 +592,7 @@ static void addfb25_ytile(int fd)
+>  		f.fb_id = 0;
+>  	}
+>  
+> -	igt_subtest("addfb25-Y-tiled-small") {
+> +	igt_subtest("addfb25-y-tiled-small-legacy") {
+>  		igt_require_fb_modifiers(fd);
+>  
+>  		gen = intel_gen(intel_get_drm_devid(fd));
+> -- 
+> 2.25.1
+> 
+
+-- 
+Matt Roper
+Graphics Software Engineer
+VTT-OSGC Platform Enablement
+Intel Corporation
+(916) 356-2795
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
