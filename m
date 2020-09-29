@@ -1,15 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BE0496E1B2
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2020 11:30:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C72096E1B5
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2020 11:30:31 +0000 (UTC)
 From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Date: Tue, 29 Sep 2020 13:29:09 +0200
-Message-Id: <20200929112910.20361-18-dominik.grzegorzek@intel.com>
+Date: Tue, 29 Sep 2020 13:29:10 +0200
+Message-Id: <20200929112910.20361-19-dominik.grzegorzek@intel.com>
 In-Reply-To: <20200929112910.20361-1-dominik.grzegorzek@intel.com>
 References: <20200929112910.20361-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 17/18] tests/i915/gem_ppgtt: make copying
- more readable
+Subject: [igt-dev] [PATCH i-g-t 18/18] HAX: don't run failing test in BAT
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,42 +16,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VXNlIGludGVsX2JiX2NvcHlfaW50ZWxfYnVmIGluc3RlYWQgb2YgaW50ZWxfYmJfYmxpdF9jb3B5
-CnRvIG1ha2UgdGhlIGNvZGUgc2ltcGxpZXIuCgpTaWduZWQtb2ZmLWJ5OiBEb21pbmlrIEdyemVn
-b3J6ZWsgPGRvbWluaWsuZ3J6ZWdvcnpla0BpbnRlbC5jb20+CkNjOiBaYmlnbmlldyBLZW1wY3p5
-xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8
-Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgotLS0KIHRlc3RzL2k5MTUvZ2VtX3BwZ3R0LmMgfCAx
-NiArKysrLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAxMiBk
-ZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2dlbV9wcGd0dC5jIGIvdGVzdHMv
-aTkxNS9nZW1fcHBndHQuYwppbmRleCA5NDk2MDFhYy4uNWQ3MjM5ZmUgMTAwNjQ0Ci0tLSBhL3Rl
-c3RzL2k5MTUvZ2VtX3BwZ3R0LmMKKysrIGIvdGVzdHMvaTkxNS9nZW1fcHBndHQuYwpAQCAtMTY1
-LDEyICsxNjUsOCBAQCBzdGF0aWMgdm9pZCBmb3JrX2Jjc19jb3B5KGludCB0aW1lb3V0LCB1aW50
-MzJfdCBmaW5hbCwKIAkJCXNyY1sxXSA9IGNyZWF0ZV9ibyhkc3RbY2hpbGRdLT5ib3BzLAogCQkJ
-CQkgICBpKysgfCBjaGlsZCA8PCAxNik7CiAKLQkJCWludGVsX2JiX2JsdF9jb3B5KGliYiwgc3Jj
-WzFdLCAwLCAwLCA0MDk2LAotCQkJCQkgIHNyY1swXSwgMCwgMCwgNDA5NiwKLQkJCQkJICA0MDk2
-LzQsIFNJWkUvNDA5NiwgMzIpOwotCQkJaW50ZWxfYmJfYmx0X2NvcHkoaWJiLCBzcmNbMF0sIDAs
-IDAsIDQwOTYsCi0JCQkJCSAgZHN0W2NoaWxkXSwgMCwgMCwgNDA5NiwKLQkJCQkJICA0MDk2LzQs
-IFNJWkUvNDA5NiwgMzIpOworCQkJaW50ZWxfYmJfY29weV9pbnRlbF9idWYoaWJiLCBzcmNbMV0s
-IHNyY1swXSwgU0laRSk7CisJCQlpbnRlbF9iYl9jb3B5X2ludGVsX2J1ZihpYmIsIGRzdFswXSwg
-c3JjW2NoaWxkXSwgU0laRSk7CiAKIAkJCWludGVsX2J1Zl9kZXN0cm95KHNyY1sxXSk7CiAJCQlp
-bnRlbF9idWZfZGVzdHJveShzcmNbMF0pOwpAQCAtMTgwLDEyICsxNzYsOCBAQCBzdGF0aWMgdm9p
-ZCBmb3JrX2Jjc19jb3B5KGludCB0aW1lb3V0LCB1aW50MzJfdCBmaW5hbCwKIAkJc3JjWzFdID0g
-Y3JlYXRlX2JvKGRzdFtjaGlsZF0tPmJvcHMsCiAJCQkJICAgZmluYWwgfCBjaGlsZCA8PCAxNik7
-CiAKLQkJaW50ZWxfYmJfYmx0X2NvcHkoaWJiLCBzcmNbMV0sIDAsIDAsIDQwOTYsCi0JCQkJICBz
-cmNbMF0sIDAsIDAsIDQwOTYsCi0JCQkJICA0MDk2LzQsIFNJWkUvNDA5NiwgMzIpOwotCQlpbnRl
-bF9iYl9ibHRfY29weShpYmIsIHNyY1swXSwgMCwgMCwgNDA5NiwKLQkJCQkgIGRzdFtjaGlsZF0s
-IDAsIDAsIDQwOTYsCi0JCQkJICA0MDk2LzQsIFNJWkUvNDA5NiwgMzIpOworCQlpbnRlbF9iYl9j
-b3B5X2ludGVsX2J1ZihpYmIsIHNyY1sxXSwgc3JjWzBdLCBTSVpFKTsKKwkJaW50ZWxfYmJfY29w
-eV9pbnRlbF9idWYoaWJiLCBkc3RbMF0sIHNyY1tjaGlsZF0sIFNJWkUpOwogCiAJCWludGVsX2J1
-Zl9kZXN0cm95KHNyY1sxXSk7CiAJCWludGVsX2J1Zl9kZXN0cm95KHNyY1swXSk7Ci0tIAoyLjIw
-LjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
-ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+gem_tiled_blits will fail on !llc platforms
+https://gitlab.freedesktop.org/drm/intel/-/issues/2328
+
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+---
+ tests/intel-ci/fast-feedback.testlist | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index aa2eb329..4180b5a1 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -37,7 +37,6 @@ igt@gem_render_tiled_blits@basic
+ igt@gem_ringfill@basic-all
+ igt@gem_sync@basic-all
+ igt@gem_sync@basic-each
+-igt@gem_tiled_blits@basic
+ igt@gem_tiled_fence_blits@basic
+ igt@gem_tiled_pread_basic
+ igt@gem_wait@busy@all
+-- 
+2.20.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
