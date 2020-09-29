@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 959CC6E19C
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2020 11:27:34 +0000 (UTC)
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 29 Sep 2020 12:27:25 +0100
-Message-Id: <20200929112725.733155-1-chris@chris-wilson.co.uk>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C7E4B6E19C
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2020 11:29:41 +0000 (UTC)
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Date: Tue, 29 Sep 2020 13:28:53 +0200
+Message-Id: <20200929112910.20361-2-dominik.grzegorzek@intel.com>
+In-Reply-To: <20200929112910.20361-1-dominik.grzegorzek@intel.com>
+References: <20200929112910.20361-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] core_hotplug: Teach the healthcheck how to
- check execution status
+Subject: [igt-dev] [PATCH i-g-t 01/18] lib/intel_bufops: Avoid overallocate
+ x-tiling and linear surfaces
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,133 +17,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/2476
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
----
- tests/core_hotunplug.c | 51 +++++++++++++++++++++---------------------
- 1 file changed, 25 insertions(+), 26 deletions(-)
-
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 67e67627f..70669c590 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -23,7 +23,6 @@
- 
- #include <fcntl.h>
- #include <limits.h>
--#include <signal.h>
- #include <stdlib.h>
- #include <string.h>
- #include <sys/ioctl.h>
-@@ -36,6 +35,7 @@
- #include "igt_device_scan.h"
- #include "igt_kmod.h"
- #include "igt_sysfs.h"
-+#include "sw_sync.h"
- 
- IGT_TEST_DESCRIPTION("Examine behavior of a driver on device hot unplug");
- 
-@@ -222,12 +222,22 @@ static bool local_i915_is_wedged(int i915)
- 	return err == -EIO;
- }
- 
--static bool hang_detected = false;
--
--static void local_sig_abort(int sig)
-+static int merge_fences(int old, int new)
- {
--	errno = 0; /* inside a signal, last errno reporting is confusing */
--	hang_detected = true;
-+	int merge;
-+
-+	if (new == -1)
-+		return old;
-+
-+	if (old == -1)
-+		return new;
-+
-+	merge = sync_fence_merge(old, new);
-+	igt_assert(merge != -1);
-+	close(old);
-+	close(new);
-+
-+	return merge;
- }
- 
- static int local_i915_healthcheck(int i915, const char *prefix)
-@@ -239,36 +249,27 @@ static int local_i915_healthcheck(int i915, const char *prefix)
- 		.buffer_count = 1,
- 	};
- 	const struct intel_execution_engine2 *engine;
--
--	/* stop our hang detector possibly still running if we failed before */
--	igt_stop_hang_detector();
--
--	/* don't run again before GPU reset if hang has been already detected */
--	if (hang_detected)
--		return -EIO;
-+	int fence = -1;
- 
- 	local_debug("%s%s\n", prefix, "running i915 GPU healthcheck");
--
- 	if (local_i915_is_wedged(i915))
- 		return -EIO;
- 
- 	obj.handle = gem_create(i915, 4096);
- 	gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
- 
--	igt_fork_hang_detector(i915);
--	signal(SIGIO, local_sig_abort);
--
- 	__for_each_physical_engine(i915, engine) {
--		execbuf.flags = engine->flags;
--		gem_execbuf(i915, &execbuf);
--	}
-+		execbuf.flags = engine->flags | I915_EXEC_FENCE_OUT;
-+		gem_execbuf_wr(i915, &execbuf);
- 
--	gem_sync(i915, obj.handle);
-+		fence = merge_fences(fence, execbuf.rsvd2 >> 32);
-+	}
-+	igt_assert(fence != -1);
- 	gem_close(i915, obj.handle);
- 
--	igt_stop_hang_detector();
--	if (hang_detected)
--		return -EIO;
-+	igt_assert_eq(sync_fence_wait(fence, -1), 0);
-+	igt_assert_eq(sync_fence_status(fence), 1);
-+	close(fence);
- 
- 	if (local_i915_is_wedged(i915))
- 		return -EIO;
-@@ -278,14 +279,12 @@ static int local_i915_healthcheck(int i915, const char *prefix)
- 
- static int local_i915_recover(int i915)
- {
--	hang_detected = false;
- 	if (!local_i915_healthcheck(i915, "re-"))
- 		return 0;
- 
- 	local_debug("%s\n", "forcing i915 GPU reset");
- 	igt_force_gpu_reset(i915);
- 
--	hang_detected = false;
- 	return local_i915_healthcheck(i915, "post-");
- }
- 
--- 
-2.28.0
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+RnJvbTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5j
+b20+CgpIZWlnaHQgYWxpZ25tZW50IHdhcyBub3QgcHJvcGVybHkgc2V0IHRvIDMyIHdoaWNoIHdh
+cyB0byBiaWcgZm9yCngtdGlsaW5nIGFuZCBsaW5lYXIgc3VyZmFjZXMgYW5kIGxlYWRzIHRvIG92
+ZXJhbGxvY2F0aW9uLgpMaW5lYXIgc3VyZmFjZXMgY3VycmVudGx5IGRvbid0IHJlcXVpcmUgYW55
+IGhlaWdodCBhbGlnbm1lbnQgKGp1c3QgMSksCmZvciB4LXRpbGluZyB3ZSB1c2UgOC4KClNpZ25l
+ZC1vZmYtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50
+ZWwuY29tPgpDYzogRG9taW5payBHcnplZ29yemVrIDxkb21pbmlrLmdyemVnb3J6ZWtAaW50ZWwu
+Y29tPgpDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Ci0tLQogbGli
+L2ludGVsX2J1Zm9wcy5jIHwgNCArKystCiAxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCsp
+LCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2J1Zm9wcy5jIGIvbGliL2lu
+dGVsX2J1Zm9wcy5jCmluZGV4IDU3YWEyYTQwLi5hMWU5YmE1NSAxMDA2NDQKLS0tIGEvbGliL2lu
+dGVsX2J1Zm9wcy5jCisrKyBiL2xpYi9pbnRlbF9idWZvcHMuYwpAQCAtNzEyLDYgKzcxMiw3IEBA
+IHN0YXRpYyB2b2lkIF9faW50ZWxfYnVmX2luaXQoc3RydWN0IGJ1Zl9vcHMgKmJvcHMsCiAJdWlu
+dDMyX3Qgc2l6ZTsKIAl1aW50MzJfdCBkZXZpZDsKIAlpbnQgdGlsZV93aWR0aDsKKwlpbnQgYWxp
+Z25faCA9IDE7CiAKIAlpZ3RfYXNzZXJ0KGJvcHMpOwogCWlndF9hc3NlcnQoYnVmKTsKQEAgLTc2
+MSw2ICs3NjIsNyBAQCBzdGF0aWMgdm9pZCBfX2ludGVsX2J1Zl9pbml0KHN0cnVjdCBidWZfb3Bz
+ICpib3BzLAogCQkJZGV2aWQgPSAgaW50ZWxfZ2V0X2RybV9kZXZpZChib3BzLT5mZCk7CiAJCQl0
+aWxlX3dpZHRoID0gZ2V0X3N0cmlkZShkZXZpZCwgdGlsaW5nKTsKIAkJCWJ1Zi0+c3VyZmFjZVsw
+XS5zdHJpZGUgPSBBTElHTih3aWR0aCAqIChicHAgLyA4KSwgdGlsZV93aWR0aCk7CisJCQlhbGln
+bl9oID0gdGlsaW5nID09IEk5MTVfVElMSU5HX1ggPyA4IDogMzI7CiAJCX0gZWxzZSB7CiAJCQli
+dWYtPnN1cmZhY2VbMF0uc3RyaWRlID0gQUxJR04od2lkdGggKiAoYnBwIC8gOCksIGFsaWdubWVu
+dCA/OiAxKTsKIAkJfQpAQCAtNzY5LDcgKzc3MSw3IEBAIHN0YXRpYyB2b2lkIF9faW50ZWxfYnVm
+X2luaXQoc3RydWN0IGJ1Zl9vcHMgKmJvcHMsCiAJCWJ1Zi0+dGlsaW5nID0gdGlsaW5nOwogCQli
+dWYtPmJwcCA9IGJwcDsKIAotCQlzaXplID0gYnVmLT5zdXJmYWNlWzBdLnN0cmlkZSAqIEFMSUdO
+KGhlaWdodCwgMzIpOworCQlzaXplID0gYnVmLT5zdXJmYWNlWzBdLnN0cmlkZSAqIEFMSUdOKGhl
+aWdodCwgYWxpZ25faCk7CiAJfQogCiAJaWYgKGhhbmRsZSkKLS0gCjIuMjAuMQoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxp
+c3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
+cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
