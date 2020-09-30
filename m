@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [63.128.21.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C667D6E7D2
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Sep 2020 17:32:02 +0000 (UTC)
+ (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27B936E7F5
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Sep 2020 17:32:05 +0000 (UTC)
 From: Lyude <lyude@redhat.com>
-Date: Wed, 30 Sep 2020 13:31:46 -0400
-Message-Id: <20200930173150.431995-2-lyude@redhat.com>
+Date: Wed, 30 Sep 2020 13:31:47 -0400
+Message-Id: <20200930173150.431995-3-lyude@redhat.com>
 In-Reply-To: <20200930173150.431995-1-lyude@redhat.com>
 References: <20200930173150.431995-1-lyude@redhat.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v5 1/5] lib/igt_core: Fix igt_assert_fd()
- documentation
+Subject: [igt-dev] [PATCH i-g-t v5 2/5] lib/igt_core: Add igt_require_fd()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,29 +27,39 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lyude Paul <lyude@redhat.com>
 
-As Petri Latvala pointed out, some of the documentation in this macro is
-mistakenly copied from the other igt_assert*() macros. Let's fix that.
+Like igt_assert_fd(), but using igt_require() instead
+
+Changes since v1:
+* Fix documentation error in igt_require_fd() - Petri Latvala
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- lib/igt_core.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/igt_core.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/lib/igt_core.h b/lib/igt_core.h
-index c5871520..e74ede8b 100644
+index e74ede8b..5d835260 100644
 --- a/lib/igt_core.h
 +++ b/lib/igt_core.h
-@@ -966,8 +966,8 @@ void igt_describe_f(const char *fmt, ...);
-  *
-  * Fails (sub-) test if the given file descriptor is invalid.
-  *
-- * Like igt_assert(), but displays the values being compared on failure instead
-- * of simply printing the stringified expression.
-+ * Like igt_assert(), but displays the stringified identifier that was supposed
+@@ -1021,6 +1021,18 @@ void igt_describe_f(const char *fmt, ...);
+ 	else igt_debug("Test requirement passed: %s\n", #expr); \
+ } while (0)
+ 
++/**
++ * igt_require_fd:
++ * @fd: file descriptor
++ *
++ * Skips (sub-) test if the given file descriptor is invalid.
++ *
++ * Like igt_require(), but displays the stringified identifier that was supposed
 + * to contain a valid fd on failure.
-  */
- #define igt_assert_fd(fd) \
- 	igt_assert_f(fd >= 0, "file descriptor " #fd " failed\n");
++ */
++#define igt_require_fd(fd) \
++	igt_require_f(fd >= 0, "file descriptor " #fd " failed\n");
++
+ /**
+  * igt_skip_on_f:
+  * @expr: condition to test
 -- 
 2.26.2
 
