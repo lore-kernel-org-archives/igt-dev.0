@@ -1,16 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from us-smtp-delivery-124.mimecast.com
  (us-smtp-delivery-124.mimecast.com [216.205.24.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 70DE66E7FE
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Sep 2020 17:32:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E19576E817
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Sep 2020 17:32:05 +0000 (UTC)
 From: Lyude <lyude@redhat.com>
-Date: Wed, 30 Sep 2020 13:31:49 -0400
-Message-Id: <20200930173150.431995-5-lyude@redhat.com>
+Date: Wed, 30 Sep 2020 13:31:48 -0400
+Message-Id: <20200930173150.431995-4-lyude@redhat.com>
 In-Reply-To: <20200930173150.431995-1-lyude@redhat.com>
 References: <20200930173150.431995-1-lyude@redhat.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v5 4/5] lib/igt_kms: Hook up connector
- dithering prop
+Subject: [igt-dev] [PATCH i-g-t v5 3/5] lib/igt_debugfs: Add
+ igt_debugfs_pipe_dir()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -28,65 +28,62 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lyude Paul <lyude@redhat.com>
 
-Nvidia display hardware provides a set of flexible dithering options for
-CRTCs. This dithering is actually noticeable in the CRC output for all
-available tap points, and can be seen as CRC values for identical frames
-cycling between either 2 or 4 values repeatedly (each one of these
-values is a different dithering phase applied to the source output). Of
-course, this is very likely to break tests using CRC readback since we
-don't expect the CRC to change if the source content hasn't changed.
+Like igt_debugfs_connector_dir(), but for pipes instead.
 
-So, hook up support for configuring the dithering property and reset it
-to off from igt_display_reset() when applicable.
+Changes since v4:
+* Make igt_debugfs_pipe_dir() much smaller - jcline
+* Fixup docs - jcline
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- lib/igt_kms.c | 5 +++++
- lib/igt_kms.h | 1 +
- 2 files changed, 6 insertions(+)
+ lib/igt_debugfs.c | 21 +++++++++++++++++++++
+ lib/igt_debugfs.h |  1 +
+ 2 files changed, 22 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 4023811a..7946555d 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -425,6 +425,7 @@ const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
- 	[IGT_CONNECTOR_WRITEBACK_PIXEL_FORMATS] = "WRITEBACK_PIXEL_FORMATS",
- 	[IGT_CONNECTOR_WRITEBACK_FB_ID] = "WRITEBACK_FB_ID",
- 	[IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR] = "WRITEBACK_OUT_FENCE_PTR",
-+	[IGT_CONNECTOR_DITHERING_MODE] = "dithering mode",
- };
- 
- /*
-@@ -1825,6 +1826,9 @@ static void igt_output_reset(igt_output_t *output)
- 		igt_output_clear_prop_changed(output, IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR);
- 		output->writeback_out_fence_fd = -1;
- 	}
-+	if (igt_output_has_prop(output, IGT_CONNECTOR_DITHERING_MODE))
-+		igt_output_set_prop_enum(output, IGT_CONNECTOR_DITHERING_MODE,
-+					 "off");
- 
+diff --git a/lib/igt_debugfs.c b/lib/igt_debugfs.c
+index 05067078..c4dab392 100644
+--- a/lib/igt_debugfs.c
++++ b/lib/igt_debugfs.c
+@@ -260,6 +260,27 @@ int igt_debugfs_connector_dir(int device, char *conn_name, int mode)
+ 	return ret;
  }
  
-@@ -1840,6 +1844,7 @@ static void igt_output_reset(igt_output_t *output)
-  * - %IGT_CONNECTOR_BROADCAST_RGB (if applicable)
-  *   %IGT_CONNECTOR_CONTENT_PROTECTION (if applicable)
-  *   %IGT_CONNECTOR_HDR_OUTPUT_METADATA (if applicable)
-+ * - %IGT_CONNECTOR_DITHERING_MODE (if applicable)
-  * - igt_output_override_mode() to default.
-  *
-  * For pipes:
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index f41eadaf..6ad1a7ef 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -132,6 +132,7 @@ enum igt_atomic_connector_properties {
-        IGT_CONNECTOR_WRITEBACK_PIXEL_FORMATS,
-        IGT_CONNECTOR_WRITEBACK_FB_ID,
-        IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR,
-+       IGT_CONNECTOR_DITHERING_MODE,
-        IGT_NUM_CONNECTOR_PROPS
- };
++/**
++ * igt_debugfs_pipe_dir:
++ * @device: fd of the device
++ * @pipe: index of pipe
++ * @mode: mode bits as used by open()
++ *
++ * This opens the debugfs directory corresponding to the pipe index on the
++ * device for use with igt_sysfs_get() and related functions. This is just
++ * syntax sugar for igt_debugfs_open().
++ *
++ * Returns:
++ * The directory fd, or -1 on failure.
++ */
++int igt_debugfs_pipe_dir(int device, int pipe, int mode)
++{
++	char buf[128];
++
++	snprintf(buf, sizeof(buf), "crtc-%d", pipe);
++	return igt_debugfs_open(device, buf, mode);
++}
++
+ /**
+  * igt_debugfs_open:
+  * @filename: name of the debugfs node to open
+diff --git a/lib/igt_debugfs.h b/lib/igt_debugfs.h
+index 722c5cc3..d43ba6c6 100644
+--- a/lib/igt_debugfs.h
++++ b/lib/igt_debugfs.h
+@@ -36,6 +36,7 @@ char *igt_debugfs_path(int device, char *path, int pathlen);
  
+ int igt_debugfs_dir(int device);
+ int igt_debugfs_connector_dir(int device, char *conn_name, int mode);
++int igt_debugfs_pipe_dir(int device, int pipe, int mode);
+ 
+ int igt_debugfs_open(int fd, const char *filename, int mode);
+ void __igt_debugfs_read(int fd, const char *filename, char *buf, int size);
 -- 
 2.26.2
 
