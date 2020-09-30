@@ -1,13 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from us-smtp-delivery-124.mimecast.com
  (us-smtp-delivery-124.mimecast.com [63.128.21.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 75DF36E7D2
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Sep 2020 17:32:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C667D6E7D2
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Sep 2020 17:32:02 +0000 (UTC)
 From: Lyude <lyude@redhat.com>
-Date: Wed, 30 Sep 2020 13:31:45 -0400
-Message-Id: <20200930173150.431995-1-lyude@redhat.com>
+Date: Wed, 30 Sep 2020 13:31:46 -0400
+Message-Id: <20200930173150.431995-2-lyude@redhat.com>
+In-Reply-To: <20200930173150.431995-1-lyude@redhat.com>
+References: <20200930173150.431995-1-lyude@redhat.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v5 0/5] Add nouveau-crc tests
+Subject: [igt-dev] [PATCH i-g-t v5 1/5] lib/igt_core: Fix igt_assert_fd()
+ documentation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,33 +28,29 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: Lyude Paul <lyude@redhat.com>
 
-Nouveau has finally gotten CRC support, and at this point that support
-has made its way upstream. Hooray!
+As Petri Latvala pointed out, some of the documentation in this macro is
+mistakenly copied from the other igt_assert*() macros. Let's fix that.
 
-So, let's start adding some relevant tests for it since nvidia's CRC
-implementation has some rather interesting design choices that needed to
-be worked around.
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+---
+ lib/igt_core.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Lyude Paul (5):
-  lib/igt_core: Fix igt_assert_fd() documentation
-  lib/igt_core: Add igt_require_fd()
-  lib/igt_debugfs: Add igt_debugfs_pipe_dir()
-  lib/igt_kms: Hook up connector dithering prop
-  tests: Add nouveau-crc tests
-
- .gitlab-ci.yml      |   2 +-
- lib/drmtest.c       |  10 ++
- lib/drmtest.h       |   2 +
- lib/igt_core.h      |  16 +-
- lib/igt_debugfs.c   |  21 +++
- lib/igt_debugfs.h   |   1 +
- lib/igt_kms.c       |   5 +
- lib/igt_kms.h       |   1 +
- tests/meson.build   |   1 +
- tests/nouveau_crc.c | 414 ++++++++++++++++++++++++++++++++++++++++++++
- 10 files changed, 470 insertions(+), 3 deletions(-)
- create mode 100644 tests/nouveau_crc.c
-
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index c5871520..e74ede8b 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -966,8 +966,8 @@ void igt_describe_f(const char *fmt, ...);
+  *
+  * Fails (sub-) test if the given file descriptor is invalid.
+  *
+- * Like igt_assert(), but displays the values being compared on failure instead
+- * of simply printing the stringified expression.
++ * Like igt_assert(), but displays the stringified identifier that was supposed
++ * to contain a valid fd on failure.
+  */
+ #define igt_assert_fd(fd) \
+ 	igt_assert_f(fd >= 0, "file descriptor " #fd " failed\n");
 -- 
 2.26.2
 
