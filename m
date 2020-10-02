@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 791E26E226
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Oct 2020 21:18:35 +0000 (UTC)
-Date: Thu, 1 Oct 2020 14:19:40 -0700
-From: "Navare, Manasi" <manasi.d.navare@intel.com>
-Message-ID: <20201001211939.GA22709@labuser-Z97X-UD5H>
-References: <20201001073840.20785-1-karthik.b.s@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F2456E910
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Oct 2020 06:55:13 +0000 (UTC)
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Date: Fri,  2 Oct 2020 08:54:27 +0200
+Message-Id: <20201002065442.30037-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201001073840.20785-1-karthik.b.s@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/kms_big_joiner: Add test to
- validate big joiner
+Subject: [igt-dev] [PATCH i-g-t v3 00/15] tests: Remove libdrm dependency
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,376 +14,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Oct 01, 2020 at 01:08:40PM +0530, Karthik B S wrote:
-> Added negative test to verify the different scenarios for big joiner.
-> In the test, modeset is done on Pipe A for a big joiner mode and
-> a second modeset is attempted on Pipe B which is expected to fail.
-> Same functionality is validated for other pipes as well.
-> =
-
-> Secondly, the reverse is tested where a modeset is done on Pipe B
-> and then a second big joiner modeset is attempted on Pipe A which is
-> expected to fail. Same functionality is validated for other pipes as well.
-> =
-
-> v2: -Rename HDISPLAY_5K to MAX_HDISPLAY_PER_PIPE. (Manasi)
->     -Do not assume mode[0] will be the highest mode.
->      Loop through the mode list to find the 8k mode. (Manasi)
->     -Add a subtest for verifying basic 8k modeset on all pipes. (Manasi)
-> =
-
-> v3: -Add break after big joiner output is found in basic subtest. (Manasi)
->     -Fix the clean up part in the invalid-modeset subtest.
-> =
-
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->  tests/Makefile.sources |   1 +
->  tests/kms_big_joiner.c | 257 +++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build      |   1 +
->  3 files changed, 259 insertions(+)
->  create mode 100644 tests/kms_big_joiner.c
-> =
-
-> diff --git a/tests/Makefile.sources b/tests/Makefile.sources
-> index f32ea9cf..f59ac150 100644
-> --- a/tests/Makefile.sources
-> +++ b/tests/Makefile.sources
-> @@ -38,6 +38,7 @@ TESTS_progs =3D \
->  	kms_atomic_transition \
->  	kms_available_modes_crc \
->  	kms_big_fb \
-> +	kms_big_joiner \
->  	kms_busy \
->  	kms_ccs \
->  	kms_concurrent \
-> diff --git a/tests/kms_big_joiner.c b/tests/kms_big_joiner.c
-> new file mode 100644
-> index 00000000..58171ce8
-> --- /dev/null
-> +++ b/tests/kms_big_joiner.c
-> @@ -0,0 +1,257 @@
-> +/*
-> + * Copyright =A9 2020 Intel Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a
-> + * copy of this software and associated documentation files (the "Softwa=
-re"),
-> + * to deal in the Software without restriction, including without limita=
-tion
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
-se,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the =
-next
-> + * paragraph) shall be included in all copies or substantial portions of=
- the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
-SS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
-TY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
-ALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
-OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
-NG
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
-EALINGS
-> + * IN THE SOFTWARE.
-> + *
-> + * Author:
-> + *  Karthik B S <karthik.b.s@intel.com>
-> + */
-> +
-> +#include "igt.h"
-> +
-> +#define MAX_HDISPLAY_PER_PIPE 5120
-> +
-> +IGT_TEST_DESCRIPTION("Test big joiner");
-> +
-> +typedef struct {
-> +	int drm_fd;
-> +	igt_display_t display;
-> +	struct igt_fb fb;
-> +	int mode_number;
-> +	int n_pipes;
-> +	uint32_t big_joiner_output_id;
-> +} data_t;
-> +
-> +static void test_invalid_modeset(data_t *data)
-> +{
-> +	drmModeModeInfo *mode;
-> +	igt_display_t *display =3D &data->display;
-> +	igt_output_t *output, *big_joiner_output =3D NULL, *second_output =3D N=
-ULL;
-> +	int width =3D 0, height =3D 0, i, ret;
-> +	igt_pipe_t *pipe;
-> +	igt_plane_t *plane;
-> +
-> +	for_each_connected_output(display, output) {
-> +		mode =3D &output->config.connector->modes[0];
-> +
-> +		if (data->big_joiner_output_id =3D=3D output->id) {
-> +			mode =3D &output->config.connector->modes[data->mode_number];
-> +			big_joiner_output =3D output;
-> +		} else if (second_output =3D=3D NULL) {
-> +			second_output =3D output;
-> +		}
-> +
-> +		width =3D max(width, mode->hdisplay);
-> +		height =3D max(height, mode->vdisplay);
-> +	}
-> +
-> +	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
-> +			      LOCAL_DRM_FORMAT_MOD_NONE, &data->fb);
-> +
-> +	for_each_pipe(display, i) {
-> +		if (i < (data->n_pipes - 1)) {
-> +			igt_output_set_pipe(big_joiner_output, i);
-> +
-> +			mode =3D &big_joiner_output->config.connector->modes[data->mode_numbe=
-r];
-> +			igt_output_override_mode(big_joiner_output, mode);
-> +
-> +			pipe =3D &display->pipes[i];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +			igt_output_set_pipe(second_output, i + 1);
-> +
-> +			mode =3D igt_output_get_mode(second_output);
-> +
-> +			pipe =3D &display->pipes[i + 1];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			/* This commit is expectd to fail as this pipe is being used for big =
-joiner */
-> +			ret =3D igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_O=
-NLY |
-> +							    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +			igt_assert_lt(ret, 0);
-> +
-> +			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
-> +			igt_output_set_pipe(second_output, PIPE_NONE);
-> +
-> +			pipe =3D &display->pipes[i];
-
-So here you fixed this to get the plane only for big joiner master pipe
-and set fb for that to NULL
-Is that what fixed the NULL pointer dereferencing?
-
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, NULL);
-> +			igt_display_commit2(display, COMMIT_ATOMIC);
-> +			igt_output_override_mode(big_joiner_output, NULL);
-> +		}
-> +	}
-> +
-> +	for_each_pipe(display, i) {
-> +		if (i < (data->n_pipes - 1)) {
-> +			igt_output_set_pipe(second_output, i + 1);
-> +
-> +			mode =3D igt_output_get_mode(second_output);
-> +
-> +			pipe =3D &display->pipes[i + 1];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +			igt_output_set_pipe(big_joiner_output, i);
-> +
-> +			mode =3D &big_joiner_output->config.connector->modes[data->mode_numbe=
-r];
-> +			igt_output_override_mode(big_joiner_output, mode);
-> +
-> +			pipe =3D &display->pipes[i];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			/* This commit is expected to fail as the adjacent pipe is already in=
- use*/
-> +			ret =3D igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_O=
-NLY |
-> +							    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +			igt_assert_lt(ret, 0);
-> +
-> +			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
-> +			igt_output_set_pipe(second_output, PIPE_NONE);
-> +			igt_plane_set_fb(plane, NULL);
-> +
-> +			pipe =3D &display->pipes[i + 1];
-
-But here we basically obtain the plane for pipes[i+1] which is for eDP in o=
-ur test and
-set the fb for that to NULL, how does that fix the issue?
-
-May be for clarificatio on cleanup, add comments on why only particular fb =
-needs to be set to NULL
-so that its clear.
-
-Manasi
-
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +			igt_plane_set_fb(plane, NULL);
-> +
-> +			igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +			igt_output_override_mode(big_joiner_output, NULL);
-> +		}
-> +	}
-> +
-> +	igt_remove_fb(data->drm_fd, &data->fb);
-> +}
-> +
-> +static void test_basic_modeset(data_t *data)
-> +{
-> +	drmModeModeInfo *mode;
-> +	igt_output_t *output, *big_joiner_output =3D NULL;
-> +	igt_display_t *display =3D &data->display;
-> +	int width =3D 0, height =3D 0, i;
-> +	igt_pipe_t *pipe;
-> +	igt_plane_t *plane;
-> +
-> +	for_each_connected_output(display, output) {
-> +		if (data->big_joiner_output_id =3D=3D output->id) {
-> +			mode =3D &output->config.connector->modes[data->mode_number];
-> +			big_joiner_output =3D output;
-> +			width =3D mode->hdisplay;
-> +			height =3D mode->vdisplay;
-> +			break;
-> +		}
-> +	}
-> +
-> +	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
-> +			      LOCAL_DRM_FORMAT_MOD_NONE, &data->fb);
-> +
-> +	for_each_pipe(display, i) {
-> +		if (i < (data->n_pipes - 1)) {
-> +			igt_output_set_pipe(big_joiner_output, i);
-> +
-> +			mode =3D &big_joiner_output->config.connector->modes[data->mode_numbe=
-r];
-> +			igt_output_override_mode(big_joiner_output, mode);
-> +
-> +			pipe =3D &display->pipes[i];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
-> +			igt_plane_set_fb(plane, NULL);
-> +			igt_display_commit2(display, COMMIT_ATOMIC);
-> +		}
-> +	}
-> +
-> +	igt_remove_fb(data->drm_fd, &data->fb);
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data;
-> +	bool big_joiner_mode_found =3D false;
-> +	igt_output_t *output;
-> +	drmModeModeInfo *mode;
-> +	int valid_output =3D 0, i;
-> +
-> +	igt_fixture {
-> +		data.drm_fd =3D drm_open_driver_master(DRIVER_INTEL);
-> +		kmstest_set_vt_graphics_mode();
-> +
-> +		igt_display_require(&data.display, data.drm_fd);
-> +
-> +		for_each_connected_output(&data.display, output) {
-> +			if (!big_joiner_mode_found) {
-> +				for (i =3D 0; i < output->config.connector->count_modes; i++) {
-> +					mode =3D &output->config.connector->modes[i];
-> +					if (mode->hdisplay > MAX_HDISPLAY_PER_PIPE) {
-> +						big_joiner_mode_found =3D true;
-> +						data.mode_number =3D i;
-> +						data.big_joiner_output_id =3D output->id;
-> +						break;
-> +					}
-> +				}
-> +			}
-> +			valid_output++;
-> +		}
-> +
-> +		data.n_pipes =3D 0;
-> +		for_each_pipe(&data.display, i)
-> +			data.n_pipes++;
-> +
-> +		igt_require_f(big_joiner_mode_found, "No output with 5k+ mode found\n"=
-);
-> +	}
-> +
-> +	igt_describe("Verify the basic modeset on big joiner mode on all pipes"=
-);
-> +	igt_subtest("basic")
-> +		test_basic_modeset(&data);
-> +
-> +	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
-> +		     "when the pipe is active with a big joiner modeset");
-> +	igt_subtest("invalid-modeset") {
-> +		igt_require_f(valid_output > 1, "No valid Second output found\n");
-> +		test_invalid_modeset(&data);
-> +	}
-> +
-> +	igt_fixture
-> +		igt_display_fini(&data.display);
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 32f011e9..aea7d7f8 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -22,6 +22,7 @@ test_progs =3D [
->  	'kms_atomic_transition',
->  	'kms_available_modes_crc',
->  	'kms_big_fb',
-> +	'kms_big_joiner' ,
->  	'kms_busy',
->  	'kms_ccs',
->  	'kms_concurrent',
-> -- =
-
-> 2.22.0
-> =
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SSBkZWNpZGVkIHRvIHNwbGl0IHByZXZpb3VzIHNlcmllcyBpbnRvIHNtYWxsZXIgY2h1bmtzLgoo
+aHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy84MTc4Mi8pClRoZXJlIGFy
+ZSBzb21lIGNvbW1vbiBwYXRjaGVzIGlubGN1ZGVkIGluIG1vcmUgdGhhbiBvbmUgc21hbGxlciBz
+ZXJpZXMuClRoaXMgb25lIHJlbW92ZXMgbGliZHJtIHVzYWdlIGZyb20gdGVzdHMgZXhjZXB0IHBy
+aW1lXyogZ3JvdXAuCgp2MjogZml4IG1pc3Rha2UgaW50cm9kdWNlZCBpbiBnZW1fcHBndHQKICAg
+IGluIGdlbV9waXBlX2NvbnRyb2xfc3RvcmVfbG9vcCBzdWJtaXQgU2FuZHkgQnJpZGdlCiAgICB3
+b3JrYXJvdW5kIGZsdXNoIGluIHNlcGFyYXRlIGJhdGNoLiBSdW4gY2hhbmdlZCB0ZXN0cyBpbiBC
+QVQuCgp2MzogcmViYXNlIG9udG8gbWFzdGVyCiAgICBkcm9wIGdlbV9waXBlX2NvbnRyb2xfc3Rv
+cmVfbG9vcAogICAgcmVwbGFjZSBidXN5X2J1ZiB3b3JrbG9hZCBieSBzcGlubmVyIGluIFwKCXVu
+ZmVuY2VfYWN0aXZlX2J1ZmZlcnMgYW5kIHNldF90aWxpbmdfdnNfYmx0CgpTaWduZWQtb2ZmLWJ5
+OiBEb21pbmlrIEdyemVnb3J6ZWsgPGRvbWluaWsuZ3J6ZWdvcnpla0BpbnRlbC5jb20+CkNjOiBa
+YmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KQ2M6
+IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgoKRG9taW5payBHcnplZ29y
+emVrICgxNSk6CiAgbGliL2ludGVsX2JhdGNoYnVmZmVyOiBhZGQgaW50ZWxfYmJfYmxpdF9jb3B5
+IHdyYXBwZXIKICBSZW1vdmUgdW51c2VkIGludGVsX2J1Zm1nci5oIGhlYWRlcnMKICBpOTE1L2dl
+bV9wd3JpdGVfc25vb3BlZDogUmVtb3ZlIGxpYmRybSBkZXBlbmRlbmN5CiAgaTkxNS9nZW1fcHJl
+YWRfYWZ0ZXJfYmxpdC5jOiBSZW1vdmUgbGliZHJtIGRlcGVuZGVuY3kKICBpOTE1L2dlbV90aHJl
+YWRlZF9hY2Nlc3NfdGlsZWQuYzogUmVtb3ZlIGxpYmRybSBkZXBlbmRlbmN5CiAgaTkxNS9nZW1f
+dGlsZWRfYmxpdHM6IFJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeQogIGk5MTUvZ2VtX3VuZmVuY2Vf
+YWN0aXZlX2J1ZmZlcnMuYzogUmVtb3ZlIGxpYnJkbSBkZXBlbmRlbmN5CiAgaTkxNS9nZW1fdW5y
+ZWZfYWN0aXZlX2J1ZmZlcnMuYzogUmVtb3ZlIGxpYmRybSBkZXBlbmRlbmN5CiAgaTkxNS9nZW1f
+dGlsZWRfcGFydGlhbF9wd3JpdGVfcHJlYWQ6IFJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeQogIGk5
+MTUvZ2VtX3NldF90aWxpbmdfdnNfYmxpdC5jOiBSZW1vdmUgbGliZHJtIGRlcGVuZGVuY3kKICB0
+ZXN0cy9rbXNfZmVuY2VfcGluX2xlYWsuYzogUmVtb3ZlIGxpYmRybSBkZXBlbmRlbmN5CiAgdGVz
+dHMva21zX2ZsaXAuYzogUmVtb3ZlIGxpYmRybSBkZXBlbmRlbmN5CiAgdGVzdHMva21zX3BzcjJf
+c3UuYzogR2V0IHJpZCBvZiB1bnVzZWQgYnVmbWdyCiAgdGVzdHMvaTkxNS9nZW1fcHBndHQ6IG1h
+a2UgY29weWluZyBtb3JlIHJlYWRhYmxlCiAgSEFYOiBkb24ndCBydW4gZmFpbGluZyB0ZXN0IGlu
+IEJBVAoKIGJlbmNobWFya3MvZ2VtX3VzZXJwdHJfYmVuY2htYXJrLmMgICAgICAgICAgfCAgIDEg
+LQogbGliL2ludGVsX2JhdGNoYnVmZmVyLmMgICAgICAgICAgICAgICAgICAgICB8ICAyMyArKysK
+IGxpYi9pbnRlbF9iYXRjaGJ1ZmZlci5oICAgICAgICAgICAgICAgICAgICAgfCAgIDMgKwogbGli
+L21lZGlhX2ZpbGwuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSAtCiB0ZXN0cy9p
+OTE1L2dlbV9jcmVhdGUuYyAgICAgICAgICAgICAgICAgICAgIHwgICAxIC0KIHRlc3RzL2k5MTUv
+Z2VtX2ZsaW5rX3JhY2UuYyAgICAgICAgICAgICAgICAgfCAgIDIgLQogdGVzdHMvaTkxNS9nZW1f
+cHBndHQuYyAgICAgICAgICAgICAgICAgICAgICB8ICAxNiArLQogdGVzdHMvaTkxNS9nZW1fcHJl
+YWRfYWZ0ZXJfYmxpdC5jICAgICAgICAgICB8IDEzNSArKysrKystLS0tLS0KIHRlc3RzL2k5MTUv
+Z2VtX3B3cml0ZV9zbm9vcGVkLmMgICAgICAgICAgICAgfCAgNjYgKysrLS0tCiB0ZXN0cy9pOTE1
+L2dlbV9yZXF1ZXN0X3JldGlyZS5jICAgICAgICAgICAgIHwgICAxIC0KIHRlc3RzL2k5MTUvZ2Vt
+X3NldF90aWxpbmdfdnNfYmx0LmMgICAgICAgICAgfCAyMTcgKysrKysrKysrKy0tLS0tLS0tLS0K
+IHRlc3RzL2k5MTUvZ2VtX3RocmVhZGVkX2FjY2Vzc190aWxlZC5jICAgICAgfCAgMzggKystLQog
+dGVzdHMvaTkxNS9nZW1fdGlsZWRfYmxpdHMuYyAgICAgICAgICAgICAgICB8ICA3NSArKystLS0t
+CiB0ZXN0cy9pOTE1L2dlbV90aWxlZF9wYXJ0aWFsX3B3cml0ZV9wcmVhZC5jIHwgMTI0ICsrKysr
+Ky0tLS0tCiB0ZXN0cy9pOTE1L2dlbV91bmZlbmNlX2FjdGl2ZV9idWZmZXJzLmMgICAgIHwgMTI1
+ICsrKysrLS0tLS0tCiB0ZXN0cy9pOTE1L2dlbV91bnJlZl9hY3RpdmVfYnVmZmVycy5jICAgICAg
+IHwgIDYwICsrKy0tLQogdGVzdHMvaTkxNS9nZW1fdXNlcnB0cl9ibGl0cy5jICAgICAgICAgICAg
+ICB8ICAgMSAtCiB0ZXN0cy9pOTE1L2k5MTVfZ2V0cGFyYW1zX2Jhc2ljLmMgICAgICAgICAgIHwg
+ICAxIC0KIHRlc3RzL2ludGVsLWNpL2Zhc3QtZmVlZGJhY2sudGVzdGxpc3QgICAgICAgfCAgIDEg
+LQogdGVzdHMva21zX2ZlbmNlX3Bpbl9sZWFrLmMgICAgICAgICAgICAgICAgICB8ICA4OSArKysr
+LS0tLQogdGVzdHMva21zX2ZsaXAuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAyMiAr
+LQogdGVzdHMva21zX3BzcjJfc3UuYyAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNyAtCiB0
+ZXN0cy9rbXNfc2VxdWVuY2UuYyAgICAgICAgICAgICAgICAgICAgICAgIHwgICAyIC0KIHRlc3Rz
+L2ttc19zZXRtb2RlLmMgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDEgLQogdGVzdHMva21z
+X3ZibGFuay5jICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiAtCiAyNSBmaWxlcyBjaGFu
+Z2VkLCA0ODUgaW5zZXJ0aW9ucygrKSwgNTI5IGRlbGV0aW9ucygtKQoKLS0gCjIuMjAuMQoKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWls
+aW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVl
+ZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
