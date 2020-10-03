@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 831536E9E8
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Oct 2020 23:26:39 +0000 (UTC)
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Date: Fri,  2 Oct 2020 16:26:33 -0700
-Message-Id: <20201002232634.51807-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] i915/perf: add tests for triggered OA
- reports
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Sat, 03 Oct 2020 00:09:27 -0000
+Message-ID: <160168376719.24064.6361074169706840393@emeril.freedesktop.org>
+References: <20201002232634.51807-1-umesh.nerlige.ramappa@intel.com>
+In-Reply-To: <20201002232634.51807-1-umesh.nerlige.ramappa@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3Igc2VyaWVz?=
+ =?utf-8?q?_starting_with_=5Bi-g-t=2C1/2=5D_i915/perf=3A_add_tests_for_tri?=
+ =?utf-8?q?ggered_OA_reports?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,537 +15,325 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1381123117=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Chris Wilson <chris.p.wilson@intel.com>, Lionel G Landwerlin <lionel.g.landwerlin@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Lionel G Landwerlin <lionel.g.landwerlin@intel.com>
+--===============1381123117==
+Content-Type: multipart/alternative;
+ boundary="===============3339484125336229330=="
 
-By whitelisting a couple of registers we can allow an application
-batch to trigger OA reports in the OA buffer by switching back & forth
-an inverter on the condition logic.
+--===============3339484125336229330==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Wait before sampling the timestamp used to end the OA buffer search
-v3:
-- Ensure OA regs are whitelisted and reports are triggered only when
-  perf_stream_paranoid is set to 0.
-- Drop root to trigger reports.
-v4:
-- wait for children after igt_assert
-- use new api for intel batch buffer
-- clean up test code
+== Series Details ==
 
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
----
- tests/i915/perf.c | 436 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 417 insertions(+), 19 deletions(-)
+Series: series starting with [i-g-t,1/2] i915/perf: add tests for triggered OA reports
+URL   : https://patchwork.freedesktop.org/series/82352/
+State : success
 
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index a5c4adc3..59ee116c 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -53,6 +53,8 @@ IGT_TEST_DESCRIPTION("Test the i915 perf metrics streaming interface");
- #define OAREPORT_REASON_SHIFT          19
- #define OAREPORT_REASON_TIMER          (1<<0)
- #define OAREPORT_REASON_INTERNAL       (3<<1)
-+#define OAREPORT_REASON_TRIGGER1       (1<<1)
-+#define OAREPORT_REASON_TRIGGER2       (1<<2)
- #define OAREPORT_REASON_CTX_SWITCH     (1<<3)
- #define OAREPORT_REASON_GO             (1<<4)
- #define OAREPORT_REASON_CLK_RATIO      (1<<5)
-@@ -204,6 +206,7 @@ static struct intel_perf *intel_perf = NULL;
- static struct intel_perf_metric_set *test_set = NULL;
- static bool *undefined_a_counters;
- static uint64_t oa_exp_1_millisec;
-+struct intel_mmio_data mmio_data;
- 
- static igt_render_copyfunc_t render_copy = NULL;
- static uint32_t (*read_report_ticks)(uint32_t *report,
-@@ -293,6 +296,23 @@ __perf_open(int fd, struct drm_i915_perf_open_param *param, bool prevent_pm)
- 	return ret;
- }
- 
-+static int i915_perf_revision(int fd)
-+{
-+	drm_i915_getparam_t gp;
-+	int value = 1, ret;
-+
-+	gp.param = I915_PARAM_PERF_REVISION;
-+	gp.value = &value;
-+	ret = igt_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
-+	if (ret == -1) {
-+		/* If the param is missing, consider version 1. */
-+		igt_assert_eq(errno, EINVAL);
-+		return 1;
-+	}
-+
-+	return value;
-+}
-+
- static int
- lookup_format(int i915_perf_fmt_id)
- {
-@@ -383,11 +403,17 @@ gen8_read_report_clock_ratios(uint32_t *report,
- 	*unslice_freq_mhz = (unslice_freq * 16666) / 1000;
- }
- 
-+static uint32_t
-+gen8_report_reason(const uint32_t *report)
-+{
-+	return ((report[0] >> OAREPORT_REASON_SHIFT) &
-+		OAREPORT_REASON_MASK);
-+}
-+
- static const char *
- gen8_read_report_reason(const uint32_t *report)
- {
--	uint32_t reason = ((report[0] >> OAREPORT_REASON_SHIFT) &
--			   OAREPORT_REASON_MASK);
-+	uint32_t reason = gen8_report_reason(report);
- 
- 	if (reason & (1<<0))
- 		return "timer";
-@@ -3054,6 +3080,288 @@ emit_stall_timestamp_and_rpc(struct intel_bb *ibb,
- 	emit_report_perf_count(ibb, dst, report_dst_offset, report_id);
- }
- 
-+/* The following register all have the same layout. */
-+#define OAREPORTTRIG2 (0x2744)
-+#define   OAREPORTTRIG2_INVERT_A_0  (1 << 0)
-+#define   OAREPORTTRIG2_INVERT_A_1  (1 << 1)
-+#define   OAREPORTTRIG2_INVERT_A_2  (1 << 2)
-+#define   OAREPORTTRIG2_INVERT_A_3  (1 << 3)
-+#define   OAREPORTTRIG2_INVERT_A_4  (1 << 4)
-+#define   OAREPORTTRIG2_INVERT_A_5  (1 << 5)
-+#define   OAREPORTTRIG2_INVERT_A_6  (1 << 6)
-+#define   OAREPORTTRIG2_INVERT_A_7  (1 << 7)
-+#define   OAREPORTTRIG2_INVERT_A_8  (1 << 8)
-+#define   OAREPORTTRIG2_INVERT_A_9  (1 << 9)
-+#define   OAREPORTTRIG2_INVERT_A_10 (1 << 10)
-+#define   OAREPORTTRIG2_INVERT_A_11 (1 << 11)
-+#define   OAREPORTTRIG2_INVERT_A_12 (1 << 12)
-+#define   OAREPORTTRIG2_INVERT_A_13 (1 << 13)
-+#define   OAREPORTTRIG2_INVERT_A_14 (1 << 14)
-+#define   OAREPORTTRIG2_INVERT_A_15 (1 << 15)
-+#define   OAREPORTTRIG2_INVERT_B_0  (1 << 16)
-+#define   OAREPORTTRIG2_INVERT_B_1  (1 << 17)
-+#define   OAREPORTTRIG2_INVERT_B_2  (1 << 18)
-+#define   OAREPORTTRIG2_INVERT_B_3  (1 << 19)
-+#define   OAREPORTTRIG2_INVERT_C_0  (1 << 20)
-+#define   OAREPORTTRIG2_INVERT_C_1  (1 << 21)
-+#define   OAREPORTTRIG2_INVERT_D_0  (1 << 22)
-+#define   OAREPORTTRIG2_THRESHOLD_ENABLE      (1 << 23)
-+#define   OAREPORTTRIG2_REPORT_TRIGGER_ENABLE (1 << 31)
-+#define OAREPORTTRIG6 (0x2754)
-+#define OA_PERF_COUNTER_A(idx) (0x2800 + 8 * (idx))
-+#define GEN8_OASTATUS (0x2b08)
-+
-+#define GEN12_OAREPORTTRIG2 (0xd924)
-+#define GEN12_OAREPORTTRIG6 (0xd934)
-+#define GEN12_OAG_PERF_COUNTER_A(idx) (0xD980 + 8 * (idx))
-+#define GEN12_OAG_OASTATUS (0xdafc)
-+
-+#define RING_FORCE_TO_NONPRIV_ADDRESS_MASK 0x03fffffc
-+
-+/*
-+ * We have 2 trigger registers that each generate a different
-+ * report reason.
-+ */
-+static const uint32_t gen9_oa_wl[] = {
-+	OAREPORTTRIG2,
-+	OAREPORTTRIG6,
-+	OA_PERF_COUNTER_A(18),
-+	GEN8_OASTATUS,
-+};
-+static const uint32_t gen12_oa_wl[] = {
-+	GEN12_OAREPORTTRIG2,
-+	GEN12_OAREPORTTRIG6,
-+	GEN12_OAG_PERF_COUNTER_A(18),
-+	GEN12_OAG_OASTATUS,
-+};
-+
-+static const uint32_t nonpriv_slots[] = {
-+	0x24d0, 0x24d4, 0x24d8, 0x24dc, 0x24e0, 0x24e4, 0x24e8, 0x24ec,
-+	0x24f0, 0x24f4, 0x24f8, 0x24fc, 0x2010, 0x2014, 0x2018, 0x201c,
-+	0x21e0, 0x21e4, 0x21e8, 0x21ec,
-+};
-+
-+struct test_perf {
-+	const uint32_t *slots;
-+	uint32_t num_slots;
-+	const uint32_t *wl;
-+	uint32_t num_wl;
-+} perf;
-+
-+static void perf_init_whitelist(void)
-+{
-+	perf.slots = nonpriv_slots;
-+
-+	if (intel_gen(devid) >= 12) {
-+		perf.num_slots = 20;
-+		perf.wl = gen12_oa_wl;
-+		perf.num_wl = i915_perf_revision(drm_fd) < 7 ? 2 :
-+			       ARRAY_SIZE(gen12_oa_wl);
-+	} else {
-+		perf.num_slots = 12;
-+		perf.wl = gen9_oa_wl;
-+		perf.num_wl = i915_perf_revision(drm_fd) < 7 ? 2 :
-+			       ARRAY_SIZE(gen9_oa_wl);
-+	}
-+}
-+
-+static void
-+emit_triggered_oa_report(struct intel_bb *ibb, uint32_t trigger)
-+{
-+	const uint32_t *triggers = perf.wl;
-+
-+	assert(trigger <= 1);
-+
-+	intel_bb_out(ibb, MI_LOAD_REGISTER_IMM);
-+	intel_bb_out(ibb, triggers[trigger]);
-+	intel_bb_out(ibb, OAREPORTTRIG2_INVERT_C_1 |
-+			  OAREPORTTRIG2_REPORT_TRIGGER_ENABLE);
-+	intel_bb_out(ibb, MI_LOAD_REGISTER_IMM);
-+	intel_bb_out(ibb, triggers[trigger]);
-+	intel_bb_out(ibb, OAREPORTTRIG2_INVERT_C_1 |
-+			  OAREPORTTRIG2_INVERT_D_0 |
-+			  OAREPORTTRIG2_REPORT_TRIGGER_ENABLE);
-+}
-+
-+static uint64_t
-+rcs_timestmap_reg_read(int fd)
-+{
-+	struct drm_i915_reg_read rr = {
-+		.offset = 0x2358 | I915_REG_READ_8B_WA, /* render ring timestamp */
-+	};
-+
-+	do_ioctl(fd, DRM_IOCTL_I915_REG_READ, &rr);
-+
-+	return rr.val;
-+}
-+
-+/*
-+ * Verify that we can trigger OA reports into the OA buffer using
-+ * MI_LRI.
-+ */
-+static void
-+test_triggered_oa_reports(int paranoid)
-+{
-+	int oa_exponent = max_oa_exponent_for_period_lte(1000000);
-+	uint64_t properties[] = {
-+		DRM_I915_PERF_PROP_CTX_HANDLE, UINT64_MAX, /* updated below */
-+
-+		/* Note: we have to specify at least one sample property even
-+		 * though we aren't interested in samples in this case
-+		 */
-+		DRM_I915_PERF_PROP_SAMPLE_OA, true,
-+
-+		/* OA unit configuration */
-+		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
-+		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-+		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exponent,
-+
-+		/* Note: no OA exponent specified in this case */
-+	};
-+	struct drm_i915_perf_open_param param = {
-+		.flags = I915_PERF_FLAG_FD_CLOEXEC,
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	struct drm_i915_perf_record_header *header;
-+	struct buf_ops *bops;
-+	uint32_t context;
-+	struct igt_helper_process child = {};
-+	struct intel_bb *ibb;
-+	struct intel_buf src[2], dst[2];
-+	uint64_t timestamp32_mask = (1ull << 32) - 1;
-+	uint64_t timestamps[2];
-+	uint32_t buf_size = 16 * 1024 * 1024;
-+	uint8_t *buf = malloc(buf_size);
-+	int width = 800;
-+	int height = 600;
-+	uint32_t trigger_counts[2] = { 0, };
-+	int ret;
-+
-+	write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", paranoid);
-+
-+	do {
-+		igt_fork_helper(&child) {
-+			if (!paranoid)
-+				igt_drop_root();
-+
-+			bops = buf_ops_create(drm_fd);
-+
-+			scratch_buf_init(bops, &src[0], width, height, 0xff0000ff);
-+			scratch_buf_init(bops, &dst[0], width, height, 0x00ff00ff);
-+			scratch_buf_init(bops, &src[1], 2 * width, height, 0xff0000ff);
-+			scratch_buf_init(bops, &dst[1], 2 * width, height, 0x00ff00ff);
-+
-+			context = gem_context_create(drm_fd);
-+			igt_assert(context);
-+			ibb = intel_bb_create_with_context(drm_fd, context, BATCH_SZ);
-+			properties[1] = context;
-+
-+			timestamps[0] = rcs_timestmap_reg_read(drm_fd);
-+
-+			stream_fd = __perf_open(drm_fd, &param, false);
-+
-+			emit_triggered_oa_report(ibb, 0);
-+
-+			render_copy(ibb,
-+				    &src[0], 0, 0, width, height,
-+				    &dst[0], 0, 0);
-+
-+			emit_triggered_oa_report(ibb, 0);
-+
-+			emit_triggered_oa_report(ibb, 1);
-+
-+			render_copy(ibb,
-+				    &src[1], 0, 0, 2 * width, height,
-+				    &dst[1], 0, 0);
-+
-+			emit_triggered_oa_report(ibb, 1);
-+
-+			intel_bb_flush_render(ibb);
-+			intel_bb_sync(ibb);
-+
-+			/* On some failures, this timestamp is too early as in
-+			 * we bail out before seeing the triggered report. Wait
-+			 * a little more and then check.
-+			 */
-+			usleep(50000);
-+
-+			timestamps[1] = rcs_timestmap_reg_read(drm_fd);
-+
-+			if (timestamps[1] < timestamps[0] ||
-+			    (timestamps[1] & timestamp32_mask) < (timestamps[1] & timestamp32_mask)) {
-+				igt_debug("Timestamp rollover, trying again\n");
-+				exit(EAGAIN);
-+			}
-+
-+			ret = i915_read_reports_until_timestamp(test_set->perf_oa_format,
-+								buf, buf_size,
-+								timestamps[0] & timestamp32_mask,
-+								timestamps[1] & timestamp32_mask);
-+
-+			for (size_t offset = 0; offset < ret; offset += header->size) {
-+				uint32_t *report;
-+
-+				header = (void *)(buf + offset);
-+
-+				igt_assert_eq(header->pad, 0); /* Reserved */
-+
-+				igt_assert_neq(header->type, DRM_I915_PERF_RECORD_OA_BUFFER_LOST);
-+
-+				if (header->type == DRM_I915_PERF_RECORD_OA_REPORT_LOST)
-+					continue;
-+
-+				/* Currently the only other record type expected is a
-+				 * _SAMPLE. Notably this test will need updating if
-+				 * i915-perf is extended in the future with additional
-+				 * record types.
-+				 */
-+				igt_assert_eq(header->type, DRM_I915_PERF_RECORD_SAMPLE);
-+
-+				report = (void *)(header + 1);
-+
-+				igt_debug("report ts=0x%08x hw_id=0x%08x reason=%s\n",
-+					  report[1], report[2],
-+					  gen8_read_report_reason(report));
-+
-+				if (gen8_report_reason(report) & OAREPORT_REASON_TRIGGER1) {
-+					igt_assert_eq(trigger_counts[1], 0);
-+					trigger_counts[0]++;
-+				}
-+				if (gen8_report_reason(report) & OAREPORT_REASON_TRIGGER2) {
-+					igt_assert_eq(trigger_counts[0], 2);
-+					trigger_counts[1]++;
-+				}
-+			}
-+
-+			if (paranoid) {
-+				igt_assert_eq(trigger_counts[0], 0);
-+				igt_assert_eq(trigger_counts[1], 0);
-+			} else {
-+				igt_assert_eq(trigger_counts[0], 2);
-+				igt_assert_eq(trigger_counts[1], 2);
-+			}
-+
-+			for (int i = 0; i < ARRAY_SIZE(src); i++) {
-+				intel_buf_close(bops, &src[i]);
-+				intel_buf_close(bops, &dst[i]);
-+			}
-+
-+			intel_bb_destroy(ibb);
-+			gem_context_destroy(drm_fd, context);
-+			buf_ops_destroy(bops);
-+			__perf_close(stream_fd);
-+		}
-+
-+		igt_assert(WEXITSTATUS(ret) == EAGAIN ||
-+			   WEXITSTATUS(ret) == 0);
-+
-+		ret = igt_wait_helper(&child);
-+	} while (WEXITSTATUS(ret) == EAGAIN);
-+
-+	free(buf);
-+}
-+
- /* Tests the INTEL_performance_query use case where an unprivileged process
-  * should be able to configure the OA unit for per-context metrics (for a
-  * context associated with that process' drm file descriptor) and the counters
-@@ -4672,6 +4980,88 @@ test_whitelisted_registers_userspace_config(void)
- 	i915_perf_remove_config(drm_fd, config_id);
- }
- 
-+static void dump_whitelist(const char *msg)
-+{
-+	int i;
-+
-+	igt_debug("%s\n", msg);
-+
-+	for (i = 0; i < perf.num_slots; i++)
-+		igt_debug("FORCE_TO_NON_PRIV_%02d = %08x\n",
-+			  i, intel_register_read(&mmio_data, perf.slots[i]));
-+}
-+
-+static bool in_whitelist(uint32_t reg)
-+{
-+	int i;
-+
-+	for (i = 0; i < perf.num_slots; i++) {
-+		uint32_t fpriv = intel_register_read(&mmio_data, perf.slots[i]);
-+
-+		if ((fpriv & RING_FORCE_TO_NONPRIV_ADDRESS_MASK) == reg)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+static void oa_regs_in_whitelist(bool are_present)
-+{
-+	int i;
-+
-+	if (are_present) {
-+		for (i = 0; i < perf.num_wl; i++)
-+			igt_assert(in_whitelist(perf.wl[i]));
-+	} else {
-+		for (i = 0; i < perf.num_wl; i++)
-+			igt_assert(!in_whitelist(perf.wl[i]));
-+	}
-+}
-+
-+static void test_oa_regs_whitelist(int paranoid)
-+{
-+	uint64_t properties[] = {
-+		DRM_I915_PERF_PROP_SAMPLE_OA, true,
-+		DRM_I915_PERF_PROP_OA_METRICS_SET, test_set->perf_oa_metrics_set,
-+		DRM_I915_PERF_PROP_OA_FORMAT, test_set->perf_oa_format,
-+		DRM_I915_PERF_PROP_OA_EXPONENT, oa_exp_1_millisec,
-+
-+	};
-+	struct drm_i915_perf_open_param param = {
-+		.flags = I915_PERF_FLAG_FD_CLOEXEC,
-+		.num_properties = sizeof(properties) / 16,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	write_u64_file("/proc/sys/dev/i915/perf_stream_paranoid", paranoid);
-+	intel_register_access_init(&mmio_data, intel_get_pci_device(),
-+				   0, drm_fd);
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+
-+	dump_whitelist("oa whitelisted");
-+
-+	/*
-+	 * oa registers are whitelisted only if paranoid = 0. if so, make sure
-+	 * that the registers are in the nonpriv slots. if not, make sure the
-+	 * registers are NOT present in the nonpriv slots.
-+	 */
-+	if (paranoid)
-+		oa_regs_in_whitelist(false);
-+	else
-+		oa_regs_in_whitelist(true);
-+
-+	__perf_close(stream_fd);
-+
-+	dump_whitelist("oa remove whitelist");
-+
-+	/*
-+	 * after perf close, check that registers are removed from the nonpriv
-+	 * slots
-+	 */
-+	oa_regs_in_whitelist(false);
-+
-+	intel_register_access_fini(&mmio_data);
-+}
-+
- static unsigned
- read_i915_module_ref(void)
- {
-@@ -4784,23 +5174,6 @@ test_sysctl_defaults(void)
- 	igt_assert_eq(max_freq, 100000);
- }
- 
--static int i915_perf_revision(int fd)
--{
--	drm_i915_getparam_t gp;
--	int value = 1, ret;
--
--	gp.param = I915_PARAM_PERF_REVISION;
--	gp.value = &value;
--	ret = igt_ioctl(drm_fd, DRM_IOCTL_I915_GETPARAM, &gp);
--	if (ret == -1) {
--		/* If the param is missing, consider version 1. */
--		igt_assert_eq(errno, EINVAL);
--		return 1;
--	}
--
--	return value;
--}
--
- igt_main
- {
- 	igt_fixture {
-@@ -5000,6 +5373,31 @@ igt_main
- 	igt_subtest("whitelisted-registers-userspace-config")
- 		test_whitelisted_registers_userspace_config();
- 
-+
-+	igt_subtest_group {
-+		igt_fixture {
-+			igt_require(intel_gen(devid) > 8);
-+			igt_require(i915_perf_revision(drm_fd) >= 6);
-+			perf_init_whitelist();
-+		}
-+
-+		igt_describe("Verify that OA registers are whitelisted for paranoid 0");
-+		igt_subtest("oa-regs-whitelisted")
-+			test_oa_regs_whitelist(0);
-+
-+		igt_describe("Verify that OA registers are not whitelisted for paranoid 1");
-+		igt_subtest("oa-regs-not-whitelisted")
-+			test_oa_regs_whitelist(1);
-+
-+		igt_describe("Verify reports triggered when perf_stream_paranoid is 0");
-+		igt_subtest("triggered-oa-reports-paranoid-0")
-+			test_triggered_oa_reports(0);
-+
-+		igt_describe("Verify reports not triggered when perf_stream_paranoid is 1");
-+		igt_subtest("triggered-oa-reports-paranoid-1")
-+			test_triggered_oa_reports(1);
-+	}
-+
- 	igt_fixture {
- 		/* leave sysctl options in their default state... */
- 		write_u64_file("/proc/sys/dev/i915/oa_max_sample_rate", 100000);
--- 
-2.20.1
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9093 -> IGTPW_5038
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5038 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-bsw-kefka:       [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@i915_selftest@live@coherency:
+    - fi-gdg-551:         [PASS][3] -> [DMESG-FAIL][4] ([i915#1748])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-gdg-551/igt@i915_selftest@live@coherency.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-gdg-551/igt@i915_selftest@live@coherency.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - fi-icl-u2:          [PASS][5] -> [DMESG-WARN][6] ([i915#1982]) +1 similar issue
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_module_load@reload:
+    - {fi-tgl-dsi}:       [DMESG-WARN][7] ([i915#1982] / [k.org#205379]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-tgl-dsi/igt@i915_module_load@reload.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-tgl-dsi/igt@i915_module_load@reload.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - {fi-kbl-7560u}:     [DMESG-WARN][9] ([i915#1982]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@vgem_basic@unload:
+    - fi-skl-guc:         [DMESG-WARN][11] ([i915#2203]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-skl-guc/igt@vgem_basic@unload.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-skl-guc/igt@vgem_basic@unload.html
+
+  
+#### Warnings ####
+
+  * igt@gem_exec_suspend@basic-s0:
+    - fi-kbl-x1275:       [DMESG-WARN][13] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][14] ([i915#1982] / [i915#62] / [i915#92] / [i915#95])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-kbl-x1275/igt@gem_exec_suspend@basic-s0.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-kbl-x1275/igt@gem_exec_suspend@basic-s0.html
+
+  * igt@i915_pm_rpm@basic-rte:
+    - fi-kbl-guc:         [DMESG-FAIL][15] ([i915#2203]) -> [SKIP][16] ([fdo#109271])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-x1275:       [DMESG-FAIL][17] ([i915#62] / [i915#95]) -> [DMESG-FAIL][18] ([i915#62])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - fi-kbl-x1275:       [DMESG-WARN][19] ([i915#62] / [i915#92]) -> [DMESG-WARN][20] ([i915#62] / [i915#92] / [i915#95]) +4 similar issues
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-kbl-x1275/igt@kms_force_connector_basic@prune-stale-modes.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-kbl-x1275/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - fi-kbl-x1275:       [DMESG-WARN][21] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][22] ([i915#62] / [i915#92])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-kbl-x1275/igt@prime_vgem@basic-fence-flip.html
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-kbl-x1275/igt@prime_vgem@basic-fence-flip.html
+
+  * igt@vgem_basic@unload:
+    - fi-kbl-x1275:       [DMESG-WARN][23] ([i915#62] / [i915#92] / [i915#95]) -> [DMESG-WARN][24] ([i915#95])
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-kbl-x1275/igt@vgem_basic@unload.html
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-kbl-x1275/igt@vgem_basic@unload.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [fdo#109271]: https://bugs.freedesktop.org/show_bug.cgi?id=109271
+  [i915#1748]: https://gitlab.freedesktop.org/drm/intel/issues/1748
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2203]: https://gitlab.freedesktop.org/drm/intel/issues/2203
+  [i915#62]: https://gitlab.freedesktop.org/drm/intel/issues/62
+  [i915#92]: https://gitlab.freedesktop.org/drm/intel/issues/92
+  [i915#95]: https://gitlab.freedesktop.org/drm/intel/issues/95
+  [k.org#205379]: https://bugzilla.kernel.org/show_bug.cgi?id=205379
+
+
+Participating hosts (45 -> 39)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5798 -> IGTPW_5038
+
+  CI-20190529: 20190529
+  CI_DRM_9093: 827ebff930c6340ed1c1c274909717525951c496 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5038: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/index.html
+  IGT_5798: 430bad5a53c08125fbd48978ed6a66f61a33a40b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@perf@closed-fd-and-unmapped-access
++igt@perf@invalid-map-oa-buffer
++igt@perf@map-oa-buffer
++igt@perf@non-privileged-access-vaddr
++igt@perf@non-privileged-map-oa-buffer
++igt@perf@oa-regs-not-whitelisted
++igt@perf@oa-regs-whitelisted
++igt@perf@privileged-forked-access-vaddr
++igt@perf@triggered-oa-reports-paranoid-0
++igt@perf@triggered-oa-reports-paranoid-1
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/index.html
+
+--===============3339484125336229330==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] i915/perf: add tests for triggered OA reports</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/82352/">https://patchwork.freedesktop.org/series/82352/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9093 -&gt; IGTPW_5038</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5038 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@coherency:</p>
+<ul>
+<li>fi-gdg-551:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-gdg-551/igt@i915_selftest@live@coherency.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-gdg-551/igt@i915_selftest@live@coherency.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1748">i915#1748</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-tgl-dsi/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://bugzilla.kernel.org/show_bug.cgi?id=205379">k.org#205379</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-tgl-dsi/igt@i915_module_load@reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>{fi-kbl-7560u}:     <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@vgem_basic@unload:</p>
+<ul>
+<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-skl-guc/igt@vgem_basic@unload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-skl-guc/igt@vgem_basic@unload.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@gem_exec_suspend@basic-s0:</p>
+<ul>
+<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-kbl-x1275/igt@gem_exec_suspend@basic-s0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-kbl-x1275/igt@gem_exec_suspend@basic-s0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-rte:</p>
+<ul>
+<li>fi-kbl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-kbl-guc/igt@i915_pm_rpm@basic-rte.html">SKIP</a> (<a href="https://bugs.freedesktop.org/show_bug.cgi?id=109271">fdo#109271</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-kbl-x1275/igt@i915_pm_rpm@module-reload.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-kbl-x1275/igt@kms_force_connector_basic@prune-stale-modes.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-kbl-x1275/igt@kms_force_connector_basic@prune-stale-modes.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>) +4 similar issues</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-flip:</p>
+<ul>
+<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-kbl-x1275/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-kbl-x1275/igt@prime_vgem@basic-fence-flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@vgem_basic@unload:</p>
+<ul>
+<li>fi-kbl-x1275:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9093/fi-kbl-x1275/igt@vgem_basic@unload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/62">i915#62</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/92">i915#92</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/fi-kbl-x1275/igt@vgem_basic@unload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/95">i915#95</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (45 -&gt; 39)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5798 -&gt; IGTPW_5038</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9093: 827ebff930c6340ed1c1c274909717525951c496 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5038: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5038/index.html<br />
+  IGT_5798: 430bad5a53c08125fbd48978ed6a66f61a33a40b @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@perf@closed-fd-and-unmapped-access<br />
++igt@perf@invalid-map-oa-buffer<br />
++igt@perf@map-oa-buffer<br />
++igt@perf@non-privileged-access-vaddr<br />
++igt@perf@non-privileged-map-oa-buffer<br />
++igt@perf@oa-regs-not-whitelisted<br />
++igt@perf@oa-regs-whitelisted<br />
++igt@perf@privileged-forked-access-vaddr<br />
++igt@perf@triggered-oa-reports-paranoid-0<br />
++igt@perf@triggered-oa-reports-paranoid-1</p>
+
+</body>
+</html>
+
+--===============3339484125336229330==--
+
+--===============1381123117==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1381123117==--
