@@ -1,15 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D38C489686
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Oct 2020 13:42:04 +0000 (UTC)
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
+ [IPv6:2a00:1450:4864:20::344])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CD1189C68
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Oct 2020 19:53:31 +0000 (UTC)
+Received: by mail-wm1-x344.google.com with SMTP id d3so734472wma.4
+ for <igt-dev@lists.freedesktop.org>; Mon, 05 Oct 2020 12:53:31 -0700 (PDT)
+References: <20200930115307.1447-1-petri.latvala@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <46b26750-b0fa-0878-0583-83ea647b1be3@gmail.com>
+Date: Mon, 5 Oct 2020 22:53:21 +0300
 MIME-Version: 1.0
-In-Reply-To: <20200909083125.2057105-1-apoorva1.singh@intel.com>
-References: <20200909083125.2057105-1-apoorva1.singh@intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 05 Oct 2020 14:42:00 +0100
-Message-ID: <160190532058.1293.12044143043111796844@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_mmap_wc: Align subtests with
- correct function calls
+In-Reply-To: <20200930115307.1447-1-petri.latvala@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t v2] lib/igt_chamelium: Use curl timeout
+ for xmlrpc calls
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,49 +21,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
+Reply-To: juhapekka.heikkila@gmail.com
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: apoorva1.singh@intel.com, arjun.melkaveri@intel.com, igt-dev@lists.freedesktop.org
+To: Petri Latvala <petri.latvala@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Kunal Joshi <kunal1.joshi@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting apoorva1.singh@intel.com (2020-09-09 09:31:25)
-> From: Apoorva Singh <apoorva1.singh@intel.com>
-> 
-> - Fix the name of subtest "write-gtt-read-gtt"
-> - Fix subtests "write-wc-read-gtt" and "write-gtt-read-gtt"
-> to call correct fucntions
-> 
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
-> Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
-> ---
->  tests/i915/gem_mmap_wc.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/i915/gem_mmap_wc.c b/tests/i915/gem_mmap_wc.c
-> index f44b406d..c940376a 100644
-> --- a/tests/i915/gem_mmap_wc.c
-> +++ b/tests/i915/gem_mmap_wc.c
-> @@ -329,7 +329,7 @@ test_write_cpu_read_wc(int fd, int force_domain)
->  }
->  
->  static void
-> -test_write_gtt_read_wc(int fd)
-> +test_write_wc_read_gtt(int fd)
->  {
->         uint32_t handle;
->         uint32_t *src, *dst;
-> @@ -350,7 +350,7 @@ test_write_gtt_read_wc(int fd)
->  }
->  
->  static void
-> -test_write_wc_read_gtt(int fd)
-> +test_write_gtt_read_wc(int fd)
+Patch look ok to me. I suspect there may be revealed chamelium related 
+issues by this but they probably can be 'fixed' by increasing timeouts 
+if there show some complex timing problems.
 
-Bleugh; probably better to also not call them src/dst.
--Chris
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+
+On 30.9.2020 14.53, Petri Latvala wrote:
+> Use of timeouts everywhere is meaningless if xmlrpc calls are allowed
+> to be blocking forever.
+> 
+> v2: Use milliseconds correctly (Juha-Pekka)
+> 
+> Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> Cc: Kunal Joshi <kunal1.joshi@intel.com>
+> Cc: Arkadiusz Hiler <arek@hiler.eu>
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com> #v1
+> ---
+>   lib/igt_chamelium.c | 13 ++++++++++++-
+>   1 file changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+> index d9fab902..585fdfa8 100644
+> --- a/lib/igt_chamelium.c
+> +++ b/lib/igt_chamelium.c
+> @@ -2427,11 +2427,22 @@ void chamelium_deinit_rpc_only(struct chamelium *chamelium)
+>   struct chamelium *chamelium_init_rpc_only(void)
+>   {
+>   	struct chamelium *chamelium = malloc(sizeof(struct chamelium));
+> +	struct xmlrpc_clientparms clientparms;
+> +	struct xmlrpc_curl_xportparms curlparms;
+>   
+>   	if (!chamelium)
+>   		return NULL;
+>   
+>   	memset(chamelium, 0, sizeof(*chamelium));
+> +	memset(&clientparms, 0, sizeof(clientparms));
+> +	memset(&curlparms, 0, sizeof(curlparms));
+> +
+> +	/* curl's timeout is in milliseconds */
+> +	curlparms.timeout = _RECEIVER_RESPONSIVE_AFTER_RESET_SECONDS * 1000;
+> +
+> +	clientparms.transport = "curl";
+> +	clientparms.transportparmsP = &curlparms;
+> +	clientparms.transportparm_size = XMLRPC_CXPSIZE(timeout);
+>   
+>   	chamelium->drm_fd = -1;
+>   
+> @@ -2439,7 +2450,7 @@ struct chamelium *chamelium_init_rpc_only(void)
+>   	xmlrpc_env_init(&chamelium->env);
+>   	xmlrpc_client_setup_global_const(&chamelium->env);
+>   	xmlrpc_client_create(&chamelium->env, XMLRPC_CLIENT_NO_FLAGS, PACKAGE,
+> -			     PACKAGE_VERSION, NULL, 0, &chamelium->client);
+> +			     PACKAGE_VERSION, &clientparms, 0, &chamelium->client);
+>   	if (chamelium->env.fault_occurred) {
+>   		igt_debug("Failed to init xmlrpc: %s\n",
+>   			  chamelium->env.fault_string);
+> 
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
