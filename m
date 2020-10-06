@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ABA986E071
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Oct 2020 04:01:42 +0000 (UTC)
-From: ranjeet1.kumar@intel.com
-Date: Tue,  6 Oct 2020 09:35:14 +0530
-Message-Id: <20201006040514.21500-1-ranjeet1.kumar@intel.com>
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28A976E071
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Oct 2020 04:15:33 +0000 (UTC)
+From: priyanka.dandamudi@intel.com
+Date: Tue,  6 Oct 2020 09:33:41 +0530
+Message-Id: <20201006040341.23170-1-priyanka.dandamudi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH] [PATCH i-g-t] i915/gem_set_tiling_vs_pwrite:
- Added description for test case
+Subject: [igt-dev] [PATCH i-g-t] tests/vgem_slow: Added test description for
+ test case
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,44 +19,35 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, ranjeet1.kumar@intel.com
+To: igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com, priyanka.dandamudi@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: ranjeet kumar <ranjeet1.kumar@intel.com>
+From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 
-Added test description for subtest.
+Added test description to the available subtest.
 
-Cc: Melkaveri, Arjun <Arjun.Melkaveri@intel.com>
-Signed-off-by: ranjeet kumar <ranjeet1.kumar@intel.com>
+Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 ---
- tests/i915/gem_set_tiling_vs_pwrite.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tests/vgem_slow.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_set_tiling_vs_pwrite.c b/tests/i915/gem_set_tiling_vs_pwrite.c
-index 302ea24b..09310f2b 100644
---- a/tests/i915/gem_set_tiling_vs_pwrite.c
-+++ b/tests/i915/gem_set_tiling_vs_pwrite.c
-@@ -71,7 +71,7 @@ igt_simple_main
- 		*ptr = 0xdeadbeef;
+diff --git a/tests/vgem_slow.c b/tests/vgem_slow.c
+index 58b09e42..7f5e0af2 100644
+--- a/tests/vgem_slow.c
++++ b/tests/vgem_slow.c
+@@ -80,7 +80,8 @@ igt_main
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_VGEM);
  	}
+-
++	igt_describe("Test tries to check if fence is signalled automatically after"
++		     " certain time in order to avoid driver hangs.");
+ 	igt_subtest_f("nohang")
+ 		test_nohang(fd);
  
--	igt_info("testing pwrite on tiled buffer\n");
-+	igt_describe("set tiling stride and domain, check pwrite coherency on tiled buffer.\n");
- 	gem_write(fd, handle, 0, data, OBJECT_SIZE);
- 	memset(data, 0, OBJECT_SIZE);
- 	gem_read(fd, handle, 0, data, OBJECT_SIZE);
-@@ -87,7 +87,8 @@ igt_simple_main
- 
- 	gem_set_tiling(fd, handle, I915_TILING_NONE, 0);
- 
--	igt_info("testing pwrite on untiled, but still fenced buffer\n");
-+	igt_describe("set tiling stride as none and domain, test pwrite coherency on"
-+		     " still fenced buffer.\n");
- 	gem_write(fd, handle, 0, data, OBJECT_SIZE);
- 	memset(data, 0, OBJECT_SIZE);
- 	gem_read(fd, handle, 0, data, OBJECT_SIZE);
 -- 
-2.25.0
+2.28.0
 
 _______________________________________________
 igt-dev mailing list
