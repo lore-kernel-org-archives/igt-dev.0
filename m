@@ -1,23 +1,23 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu,  8 Oct 2020 23:22:33 +0100
-Message-Id: <20201008222233.1519240-1-chris@chris-wilson.co.uk>
+Date: Fri,  9 Oct 2020 00:03:03 +0100
+Message-Id: <20201008230303.1560301-1-chris@chris-wilson.co.uk>
 In-Reply-To: <20201008221334.1478509-1-chris@chris-wilson.co.uk>
 References: <20201008221334.1478509-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t v2] prime_vgem: Check that we wrap the
- vgem mmap with userptr
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Subject: [igt-dev] [PATCH i-g-t v3] prime_vgem: Check that we wrap the vgem
+ mmap with userptr
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: intel-gfx@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org, "Lahtinen,
  Joonas" <joonas.lahtinen@intel.com>, "Kondapally,
@@ -35,12 +35,9 @@ Cc: "Graunke, Kenneth W" <kenneth.w.graunke@intel.com>,
 Cc: "Lahtinen, Joonas" <joonas.lahtinen@intel.com>
 Cc: "Kondapally, Kalyan" <kalyan.kondapally@intel.com>
 ---
-v2: Reuse the imported vgem as the batch, to truly test whether we
-acquire the right pages.
----
  tests/intel-ci/fast-feedback.testlist |  1 +
- tests/prime_vgem.c                    | 29 +++++++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
+ tests/prime_vgem.c                    | 31 +++++++++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
 diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
 index aa2eb3295..982d25834 100644
@@ -55,10 +52,10 @@ index aa2eb3295..982d25834 100644
  igt@vgem_basic@create
  igt@vgem_basic@debugfs
 diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-index 38e2026aa..3a39657e4 100644
+index 38e2026aa..bc74d6844 100644
 --- a/tests/prime_vgem.c
 +++ b/tests/prime_vgem.c
-@@ -287,6 +287,32 @@ static void test_write(int vgem, int i915)
+@@ -287,6 +287,34 @@ static void test_write(int vgem, int i915)
  	munmap(ptr, scratch.size);
  }
  
@@ -82,6 +79,8 @@ index 38e2026aa..3a39657e4 100644
 +	*ptr = MI_BATCH_BUFFER_END;
 +
 +	gem_userptr(i915, ptr, scratch.size, 0, 0, &obj.handle);
++	gem_set_caching(i915, obj.handle, I915_CACHING_NONE); /* for exec */
++
 +	gem_execbuf(i915, &execbuf);
 +	gem_close(i915, obj.handle);
 +
@@ -91,7 +90,7 @@ index 38e2026aa..3a39657e4 100644
  static void test_gtt(int vgem, int i915)
  {
  	struct vgem_bo scratch;
-@@ -1038,6 +1064,9 @@ igt_main
+@@ -1038,6 +1066,9 @@ igt_main
  	igt_subtest("basic-write")
  		test_write(vgem, i915);
  
@@ -105,6 +104,6 @@ index 38e2026aa..3a39657e4 100644
 2.28.0
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
