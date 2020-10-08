@@ -1,10 +1,12 @@
 Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu,  8 Oct 2020 23:13:34 +0100
-Message-Id: <20201008221334.1478509-1-chris@chris-wilson.co.uk>
+Date: Thu,  8 Oct 2020 23:22:33 +0100
+Message-Id: <20201008222233.1519240-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20201008221334.1478509-1-chris@chris-wilson.co.uk>
+References: <20201008221334.1478509-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t] prime_vgem: Check that we wrap the vgem
- mmap with userptr
+Subject: [Intel-gfx] [PATCH i-g-t v2] prime_vgem: Check that we wrap the
+ vgem mmap with userptr
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
@@ -33,9 +35,12 @@ Cc: "Graunke, Kenneth W" <kenneth.w.graunke@intel.com>,
 Cc: "Lahtinen, Joonas" <joonas.lahtinen@intel.com>
 Cc: "Kondapally, Kalyan" <kalyan.kondapally@intel.com>
 ---
+v2: Reuse the imported vgem as the batch, to truly test whether we
+acquire the right pages.
+---
  tests/intel-ci/fast-feedback.testlist |  1 +
- tests/prime_vgem.c                    | 42 +++++++++++++++++++++++++++
- 2 files changed, 43 insertions(+)
+ tests/prime_vgem.c                    | 29 +++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
 diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
 index aa2eb3295..982d25834 100644
@@ -50,31 +55,20 @@ index aa2eb3295..982d25834 100644
  igt@vgem_basic@create
  igt@vgem_basic@debugfs
 diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-index 38e2026aa..425bba8fb 100644
+index 38e2026aa..3a39657e4 100644
 --- a/tests/prime_vgem.c
 +++ b/tests/prime_vgem.c
-@@ -287,6 +287,45 @@ static void test_write(int vgem, int i915)
+@@ -287,6 +287,32 @@ static void test_write(int vgem, int i915)
  	munmap(ptr, scratch.size);
  }
  
-+static uint32_t batch_create(int i915)
-+{
-+	const uint32_t bbe = MI_BATCH_BUFFER_END;
-+	uint32_t handle;
-+
-+	handle = gem_create(i915, 4096);
-+	gem_write(i915, handle, 0, &bbe, sizeof(bbe));
-+
-+	return handle;
-+}
-+
 +static void test_userptr(int vgem, int i915)
 +{
 +	struct vgem_bo scratch;
-+	struct drm_i915_gem_exec_object2 obj[2] = {};
++	struct drm_i915_gem_exec_object2 obj = {};
 +	struct drm_i915_gem_execbuffer2 execbuf = {
-+		.buffers_ptr = to_user_pointer(obj),
-+		.buffer_count = ARRAY_SIZE(obj),
++		.buffers_ptr = to_user_pointer(&obj),
++		.buffer_count = 1,
 +	};
 +	uint32_t *ptr;
 +
@@ -85,13 +79,11 @@ index 38e2026aa..425bba8fb 100644
 +
 +	ptr = vgem_mmap(vgem, &scratch, PROT_WRITE);
 +	gem_close(vgem, scratch.handle);
++	*ptr = MI_BATCH_BUFFER_END;
 +
-+	gem_userptr(i915, (uint32_t *)ptr, scratch.size, 0, 0, &obj[0].handle);
-+	obj[1].handle = batch_create(i915);
-+
++	gem_userptr(i915, ptr, scratch.size, 0, 0, &obj.handle);
 +	gem_execbuf(i915, &execbuf);
-+	gem_close(i915, obj[1].handle);
-+	gem_close(i915, obj[0].handle);
++	gem_close(i915, obj.handle);
 +
 +	munmap(ptr, scratch.size);
 +}
@@ -99,7 +91,7 @@ index 38e2026aa..425bba8fb 100644
  static void test_gtt(int vgem, int i915)
  {
  	struct vgem_bo scratch;
-@@ -1038,6 +1077,9 @@ igt_main
+@@ -1038,6 +1064,9 @@ igt_main
  	igt_subtest("basic-write")
  		test_write(vgem, i915);
  
