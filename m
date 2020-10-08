@@ -1,67 +1,118 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Thu, 1 Oct 2020 09:49:26 +0300
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201001064926.GA7444@platvala-desk.ger.corp.intel.com>
-References: <20200930173150.431995-1-lyude@redhat.com>
- <20200930173150.431995-2-lyude@redhat.com>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Thu,  8 Oct 2020 23:13:34 +0100
+Message-Id: <20201008221334.1478509-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200930173150.431995-2-lyude@redhat.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v5 1/5] lib/igt_core: Fix
- igt_assert_fd() documentation
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: [Intel-gfx] [PATCH i-g-t] prime_vgem: Check that we wrap the vgem
+ mmap with userptr
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lyude <lyude@redhat.com>
-Cc: igt-dev@lists.freedesktop.org, nouveau@lists.freedesktop.org
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, "Lahtinen,
+ Joonas" <joonas.lahtinen@intel.com>, "Kondapally,
+ Kalyan" <kalyan.kondapally@intel.com>, "Graunke,
+ Kenneth W" <kenneth.w.graunke@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Sep 30, 2020 at 01:31:46PM -0400, Lyude wrote:
-> From: Lyude Paul <lyude@redhat.com>
-> 
-> As Petri Latvala pointed out, some of the documentation in this macro is
-> mistakenly copied from the other igt_assert*() macros. Let's fix that.
-> 
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
+This came up in a discussion about importing virtio dma-buf, which are
+themselves plain shmemfs objects and so not only backed by struct pages,
+but wrappable by userptr. vgem share the same properties and so should
+serve as a useful proxy for testing.
 
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: "Graunke, Kenneth W" <kenneth.w.graunke@intel.com>,
+Cc: "Lahtinen, Joonas" <joonas.lahtinen@intel.com>
+Cc: "Kondapally, Kalyan" <kalyan.kondapally@intel.com>
+---
+ tests/intel-ci/fast-feedback.testlist |  1 +
+ tests/prime_vgem.c                    | 42 +++++++++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
 
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index aa2eb3295..982d25834 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -143,6 +143,7 @@ igt@prime_vgem@basic-fence-read
+ igt@prime_vgem@basic-gtt
+ igt@prime_vgem@basic-read
+ igt@prime_vgem@basic-write
++igt@prime_vgem@basic-userptr
+ igt@vgem_basic@setversion
+ igt@vgem_basic@create
+ igt@vgem_basic@debugfs
+diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+index 38e2026aa..425bba8fb 100644
+--- a/tests/prime_vgem.c
++++ b/tests/prime_vgem.c
+@@ -287,6 +287,45 @@ static void test_write(int vgem, int i915)
+ 	munmap(ptr, scratch.size);
+ }
+ 
++static uint32_t batch_create(int i915)
++{
++	const uint32_t bbe = MI_BATCH_BUFFER_END;
++	uint32_t handle;
++
++	handle = gem_create(i915, 4096);
++	gem_write(i915, handle, 0, &bbe, sizeof(bbe));
++
++	return handle;
++}
++
++static void test_userptr(int vgem, int i915)
++{
++	struct vgem_bo scratch;
++	struct drm_i915_gem_exec_object2 obj[2] = {};
++	struct drm_i915_gem_execbuffer2 execbuf = {
++		.buffers_ptr = to_user_pointer(obj),
++		.buffer_count = ARRAY_SIZE(obj),
++	};
++	uint32_t *ptr;
++
++	scratch.width = 1024;
++	scratch.height = 1024;
++	scratch.bpp = 32;
++	vgem_create(vgem, &scratch);
++
++	ptr = vgem_mmap(vgem, &scratch, PROT_WRITE);
++	gem_close(vgem, scratch.handle);
++
++	gem_userptr(i915, (uint32_t *)ptr, scratch.size, 0, 0, &obj[0].handle);
++	obj[1].handle = batch_create(i915);
++
++	gem_execbuf(i915, &execbuf);
++	gem_close(i915, obj[1].handle);
++	gem_close(i915, obj[0].handle);
++
++	munmap(ptr, scratch.size);
++}
++
+ static void test_gtt(int vgem, int i915)
+ {
+ 	struct vgem_bo scratch;
+@@ -1038,6 +1077,9 @@ igt_main
+ 	igt_subtest("basic-write")
+ 		test_write(vgem, i915);
+ 
++	igt_subtest("basic-userptr")
++		test_userptr(vgem, i915);
++
+ 	igt_subtest("basic-gtt") {
+ 		gem_require_mappable_ggtt(i915);
+ 		test_gtt(vgem, i915);
+-- 
+2.28.0
 
-> ---
->  lib/igt_core.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/igt_core.h b/lib/igt_core.h
-> index c5871520..e74ede8b 100644
-> --- a/lib/igt_core.h
-> +++ b/lib/igt_core.h
-> @@ -966,8 +966,8 @@ void igt_describe_f(const char *fmt, ...);
->   *
->   * Fails (sub-) test if the given file descriptor is invalid.
->   *
-> - * Like igt_assert(), but displays the values being compared on failure instead
-> - * of simply printing the stringified expression.
-> + * Like igt_assert(), but displays the stringified identifier that was supposed
-> + * to contain a valid fd on failure.
->   */
->  #define igt_assert_fd(fd) \
->  	igt_assert_f(fd >= 0, "file descriptor " #fd " failed\n");
-> -- 
-> 2.26.2
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
