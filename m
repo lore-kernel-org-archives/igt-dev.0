@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DE2F6EA28
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Oct 2020 06:32:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE1966EA28
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Oct 2020 06:32:07 +0000 (UTC)
 From: Mika Kahola <mika.kahola@intel.com>
-Date: Thu,  8 Oct 2020 09:32:01 +0300
-Message-Id: <20201008063202.3439128-2-mika.kahola@intel.com>
-In-Reply-To: <20201008063202.3439128-1-mika.kahola@intel.com>
-References: <20201008063202.3439128-1-mika.kahola@intel.com>
+Date: Thu,  8 Oct 2020 09:32:00 +0300
+Message-Id: <20201008063202.3439128-1-mika.kahola@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v6 1/2] tests/kms_ccs: Add debug information
- on format modifier
+Subject: [igt-dev] [PATCH i-g-t v6 0/2] tests/kms_ccs: CCS Clear Color test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,52 +21,36 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We could benefit on information on what format modifier is in use
-when running the test. This in mind, let's add informative string along
-with the list of ccs modifiers.
+The patch proposes a method to test CCS with clear color
+capability.
+
+The test paints a solid color on primary fb and a small sprite fb.
+These are cleared with fast clear feature. A crc is captured and
+compared against the reference.
+
+v2: Modify _gen9_render_copyfunc to support fast clear (Matt)
+    Enable fast clear bit on 3D sequence (Matt)
+    Add helper function to figure out clear color modifier (Matt)
+v3: Remove unrelated line additions/removes
+v4: Fast clear with color (Imre)
+v5: Write raw 32-bit color values to register (Imre)
+    Require 32-bit color format
+v6: Rebase to use batchbuffer without libdrm dependency
 
 Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
----
- tests/kms_ccs.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/tests/kms_ccs.c b/tests/kms_ccs.c
-index b60e4908..53abecce 100644
---- a/tests/kms_ccs.c
-+++ b/tests/kms_ccs.c
-@@ -81,12 +81,15 @@ static const uint32_t formats[] = {
- 	DRM_FORMAT_P016,
- };
- 
--static const uint64_t ccs_modifiers[] = {
--	LOCAL_I915_FORMAT_MOD_Y_TILED_CCS,
--	LOCAL_I915_FORMAT_MOD_Yf_TILED_CCS,
--	LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS,
--	LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC,
--	LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS,
-+static const struct {
-+	uint64_t modifier;
-+	const char *str;
-+} ccs_modifiers[5] = {
-+	{LOCAL_I915_FORMAT_MOD_Y_TILED_CCS, "LOCAL_I915_FORMAT_MOD_Y_TILED_CCS"},
-+	{LOCAL_I915_FORMAT_MOD_Yf_TILED_CCS, "LOCAL_I915_FORMAT_MOD_Yf_TILED_CCS"},
-+	{LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS, "LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS"},
-+	{LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC, "LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC"},
-+	{LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS, "LOCAL_I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS"},
- };
- 
- static bool check_ccs_planes;
-@@ -422,7 +425,8 @@ static int __test_output(data_t *data)
- 	for (i = 0; i < ARRAY_SIZE(ccs_modifiers); i++) {
- 		int j;
- 
--		data->ccs_modifier = ccs_modifiers[i];
-+		data->ccs_modifier = ccs_modifiers[i].modifier;
-+		igt_debug("Modifier in use: %s\n", ccs_modifiers[i].str);
- 		for (j = 0; j < ARRAY_SIZE(formats); j++) {
- 			data->format = formats[j];
- 			valid_tests += test_ccs(data);
+Mika Kahola (2):
+  tests/kms_ccs: Add debug information on format modifier
+  tests/kms_ccs: CCS Clear Color test
+
+ lib/gen8_render.h       |   1 +
+ lib/intel_batchbuffer.c |  10 ++++
+ lib/intel_batchbuffer.h |   6 +++
+ lib/rendercopy.h        |   4 ++
+ lib/rendercopy_gen9.c   |  72 ++++++++++++++++++++++----
+ tests/kms_ccs.c         | 112 +++++++++++++++++++++++++++++++++++-----
+ 6 files changed, 182 insertions(+), 23 deletions(-)
+
 -- 
 2.25.1
 
