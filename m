@@ -1,13 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
-In-Reply-To: <20201009162206.1661402-3-chris@chris-wilson.co.uk>
-References: <20201009162206.1661402-1-chris@chris-wilson.co.uk>
- <20201009162206.1661402-3-chris@chris-wilson.co.uk>
-Date: Fri, 09 Oct 2020 19:39:13 +0300
-Message-ID: <871ri7fj66.fsf@gaia.fi.intel.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Fri,  9 Oct 2020 19:02:25 +0200
+Message-Id: <20201009170225.10542-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t 3/3] i915/gem_exec_balancer: Check
- interactions between bonds and userptr
+Subject: [igt-dev] [PATCH i-g-t] tests/core_hotunplug: Restore i915 debugfs
+ health check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,173 +16,146 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Chris Wilson <chris@chris-wilson.co.uk> writes:
+Removal of igt_fork_hang_detector() from local_i915_healthcheck() by
+commit 1fbd127bd4e1 ("core_hotplug: Teach the healthcheck how to check
+execution status") resulted in unintentional removal of an important
+though implicit test feature of detecting, reporting as failures and
+recovering from potential misses of debugfs subdirs of hot rebound i915
+devices.  As a consequence, unexpected failures or skips of other
+unrelated but subsequently run tests have been observed on CI.
 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+On the other hand, removal of the debugfs issue detection and subtest
+failures right after hot rebinding the driver enabled the better
+version of the i915 GPU health check fixed by the same commit to detect
+and report other issues potentially triggered by device late close.
 
-Reviewed-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Restore the missing test feature by introducing an explicit i915 sysfs
+health check that verifies existence of device sysfs and debugfs areas.
+Also, split hotrebind/hotreplug scenarios into a pair of each, one that
+performs the health check right after hot rebind/replug and delegates
+the device late close step to a follow up recovery phase while the
+other one checks device health only after late closing it.
 
-> ---
->  tests/i915/gem_exec_balancer.c | 46 +++++++++++++++++++++++-----------
->  1 file changed, 31 insertions(+), 15 deletions(-)
->
-> diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-> index 35a032ccb..0ccb94ba1 100644
-> --- a/tests/i915/gem_exec_balancer.c
-> +++ b/tests/i915/gem_exec_balancer.c
-> @@ -34,6 +34,10 @@
->  
->  IGT_TEST_DESCRIPTION("Exercise in-kernel load-balancing");
->  
-> +#define CORK		(1ul << 0)
-> +#define VIRTUAL_ENGINE	(1ul << 1)
-> +#define USERPTR		(1ul << 2)
-> +
->  #define MI_SEMAPHORE_WAIT		(0x1c << 23)
->  #define   MI_SEMAPHORE_POLL             (1 << 15)
->  #define   MI_SEMAPHORE_SAD_GT_SDD       (0 << 12)
-> @@ -578,7 +582,6 @@ static void individual(int i915)
->  }
->  
->  static void bonded(int i915, unsigned int flags)
-> -#define CORK 0x1
->  {
->  	I915_DEFINE_CONTEXT_ENGINES_BOND(bonds[16], 1);
->  	struct i915_engine_class_instance *master_engines;
-> @@ -660,13 +663,15 @@ static void bonded(int i915, unsigned int flags)
->  				plug = __igt_spin_new(i915,
->  						      .ctx = master,
->  						      .engine = bond,
-> -						      .dependency = igt_cork_plug(&cork, i915));
-> +						      .dependency = igt_cork_plug(&cork, i915),
-> +						      .flags = (flags & USERPTR ? IGT_SPIN_USERPTR : 0));
->  			}
->  
->  			spin = __igt_spin_new(i915,
->  					      .ctx = master,
->  					      .engine = bond,
-> -					      .flags = IGT_SPIN_FENCE_OUT);
-> +					      .flags = IGT_SPIN_FENCE_OUT |
-> +					      (flags & USERPTR ? IGT_SPIN_USERPTR : 0));
->  
->  			eb = spin->execbuf;
->  			eb.rsvd1 = ctx;
-> @@ -717,8 +722,6 @@ static void bonded(int i915, unsigned int flags)
->  	gem_context_destroy(i915, master);
->  }
->  
-> -#define VIRTUAL_ENGINE (1u << 0)
-> -
->  static unsigned int offset_in_page(void *addr)
->  {
->  	return (uintptr_t)addr & 4095;
-> @@ -1057,7 +1060,8 @@ static void bonded_chain(int i915)
->  
->  static void __bonded_sema(int i915, uint32_t ctx,
->  			  const struct i915_engine_class_instance *siblings,
-> -			  unsigned int count)
-> +			  unsigned int count,
-> +			  unsigned long flags)
->  {
->  	const int priorities[] = { -1023, 0, 1023 };
->  	struct drm_i915_gem_exec_object2 batch = {
-> @@ -1074,7 +1078,8 @@ static void __bonded_sema(int i915, uint32_t ctx,
->  		/* A: spin forever on seperate render engine */
->  		spin = igt_spin_new(i915,
->  				    .flags = (IGT_SPIN_POLL_RUN |
-> -					      IGT_SPIN_FENCE_OUT));
-> +					      IGT_SPIN_FENCE_OUT |
-> +					      (flags & USERPTR ? IGT_SPIN_USERPTR : 0)));
->  		igt_spin_busywait_until_started(spin);
->  
->  		/*
-> @@ -1128,7 +1133,7 @@ static void __bonded_sema(int i915, uint32_t ctx,
->  	gem_close(i915, batch.handle);
->  }
->  
-> -static void bonded_semaphore(int i915)
-> +static void bonded_semaphore(int i915, unsigned long flags)
->  {
->  	uint32_t ctx;
->  
-> @@ -1149,7 +1154,7 @@ static void bonded_semaphore(int i915)
->  
->  		siblings = list_engines(i915, 1u << class, &count);
->  		if (count > 1)
-> -			__bonded_sema(i915, ctx, siblings, count);
-> +			__bonded_sema(i915, ctx, siblings, count, flags);
->  		free(siblings);
->  	}
->  
-> @@ -1839,7 +1844,7 @@ static void __bonded_early(int i915, uint32_t ctx,
->  	spin = igt_spin_new(i915,
->  			    .ctx = ctx,
->  			    .engine = (flags & VIRTUAL_ENGINE) ? 0 : 1,
-> -			    .flags = IGT_SPIN_NO_PREEMPTION);
-> +			    .flags = IGT_SPIN_NO_PREEMPTION | (flags & USERPTR ? IGT_SPIN_USERPTR : 0));
->  
->  	/* B: runs after A on engine 1 */
->  	execbuf.flags = I915_EXEC_FENCE_OUT;
-> @@ -1882,7 +1887,7 @@ static void __bonded_early(int i915, uint32_t ctx,
->  	igt_spin_free(i915, spin);
->  }
->  
-> -static void bonded_early(int i915)
-> +static void bonded_early(int i915, unsigned long flags)
->  {
->  	uint32_t ctx;
->  
-> @@ -1909,8 +1914,8 @@ static void bonded_early(int i915)
->  
->  		siblings = list_engines(i915, 1u << class, &count);
->  		if (count > 1) {
-> -			__bonded_early(i915, ctx, siblings, count, 0);
-> -			__bonded_early(i915, ctx, siblings, count, VIRTUAL_ENGINE);
-> +			__bonded_early(i915, ctx, siblings, count, flags);
-> +			__bonded_early(i915, ctx, siblings, count, flags | VIRTUAL_ENGINE);
->  		}
->  		free(siblings);
->  	}
-> @@ -2876,7 +2881,16 @@ igt_main
->  			bonded(i915, CORK);
->  
->  		igt_subtest("bonded-early")
-> -			bonded_early(i915);
-> +			bonded_early(i915, 0);
-> +
-> +		igt_subtest("u-bonded-imm")
-> +			bonded(i915, USERPTR);
-> +
-> +		igt_subtest("u-bonded-cork")
-> +			bonded(i915, CORK | USERPTR);
-> +
-> +		igt_subtest("u-bonded-early")
-> +			bonded_early(i915, USERPTR);
->  	}
->  
->  	igt_subtest("bonded-slice")
-> @@ -2886,7 +2900,9 @@ igt_main
->  		bonded_chain(i915);
->  
->  	igt_subtest("bonded-semaphore")
-> -		bonded_semaphore(i915);
-> +		bonded_semaphore(i915, 0);
-> +	igt_subtest("u-bonded-semaphore")
-> +		bonded_semaphore(i915, USERPTR);
->  
->  	igt_subtest("bonded-pair")
->  		bonded_runner(i915, __bonded_pair);
-> -- 
-> 2.28.0
->
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/core_hotunplug.c | 61 ++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 56 insertions(+), 5 deletions(-)
+
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index 70669c590..92c3440e7 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -250,6 +250,11 @@ static int local_i915_healthcheck(int i915, const char *prefix)
+ 	};
+ 	const struct intel_execution_engine2 *engine;
+ 	int fence = -1;
++	char path[200];
++
++	local_debug("%s%s\n", prefix, "running i915 sysfs healthcheck");
++	igt_assert(igt_sysfs_path(i915, path, sizeof(path)));
++	igt_assert(igt_debugfs_path(i915, path, sizeof(path)));
+ 
+ 	local_debug("%s%s\n", prefix, "running i915 GPU healthcheck");
+ 	if (local_i915_is_wedged(i915))
+@@ -437,7 +442,7 @@ static void hotunplug_rescan(struct hotunplug *priv)
+ 	healthcheck(priv, false);
+ }
+ 
+-static void hotrebind_lateclose(struct hotunplug *priv)
++static void hotrebind(struct hotunplug *priv)
+ {
+ 	igt_assert_eq(priv->fd.drm, -1);
+ 	igt_assert_eq(priv->fd.drm_hc, -1);
+@@ -448,6 +453,30 @@ static void hotrebind_lateclose(struct hotunplug *priv)
+ 	driver_bind(priv, 0);
+ 
+ 	healthcheck(priv, false);
++}
++
++static void hotreplug(struct hotunplug *priv)
++{
++	igt_assert_eq(priv->fd.drm, -1);
++	igt_assert_eq(priv->fd.drm_hc, -1);
++	priv->fd.drm = local_drm_open_driver(false, "", " for hot replug");
++
++	device_unplug(priv, "hot ", 60);
++
++	bus_rescan(priv, 0);
++
++	healthcheck(priv, false);
++}
++
++static void hotrebind_lateclose(struct hotunplug *priv)
++{
++	igt_assert_eq(priv->fd.drm, -1);
++	igt_assert_eq(priv->fd.drm_hc, -1);
++	priv->fd.drm = local_drm_open_driver(false, "", " for hot rebind");
++
++	driver_unbind(priv, "hot ", 60);
++
++	driver_bind(priv, 0);
+ 
+ 	priv->fd.drm = close_device(priv->fd.drm, "late ", "unbound ");
+ 	igt_assert_eq(priv->fd.drm, -1);
+@@ -465,8 +494,6 @@ static void hotreplug_lateclose(struct hotunplug *priv)
+ 
+ 	bus_rescan(priv, 0);
+ 
+-	healthcheck(priv, false);
+-
+ 	priv->fd.drm = close_device(priv->fd.drm, "late ", "removed ");
+ 	igt_assert_eq(priv->fd.drm, -1);
+ 
+@@ -570,7 +597,31 @@ igt_main
+ 		post_healthcheck(&priv);
+ 
+ 	igt_subtest_group {
+-		igt_describe("Check if the driver hot unbound from a still open device can be cleanly rebound, then the old instance released");
++		igt_describe("Check if the driver can be cleanly rebound to a device with a still open hot unbound driver instance");
++		igt_subtest("hotrebind")
++			hotrebind(&priv);
++
++		igt_fixture
++			recover(&priv);
++	}
++
++	igt_fixture
++		post_healthcheck(&priv);
++
++	igt_subtest_group {
++		igt_describe("Check if a hot unplugged and still open device can be cleanly restored");
++		igt_subtest("hotreplug")
++			hotreplug(&priv);
++
++		igt_fixture
++			recover(&priv);
++	}
++
++	igt_fixture
++		post_healthcheck(&priv);
++
++	igt_subtest_group {
++		igt_describe("Check if a hot unbound driver instance still open after hot rebind can be cleanly released");
+ 		igt_subtest("hotrebind-lateclose")
+ 			hotrebind_lateclose(&priv);
+ 
+@@ -582,7 +633,7 @@ igt_main
+ 		post_healthcheck(&priv);
+ 
+ 	igt_subtest_group {
+-		igt_describe("Check if a still open while hot unplugged device can be cleanly restored, then the old instance released");
++		igt_describe("Check if an instance of a still open while hot replugged device can be cleanly released");
+ 		igt_subtest("hotreplug-lateclose")
+ 			hotreplug_lateclose(&priv);
+ 
+-- 
+2.21.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
