@@ -1,12 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri,  9 Oct 2020 20:16:40 +0100
-Message-Id: <20201009191640.2006274-2-chris@chris-wilson.co.uk>
-In-Reply-To: <20201009191640.2006274-1-chris@chris-wilson.co.uk>
-References: <20201009191640.2006274-1-chris@chris-wilson.co.uk>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Mon, 12 Oct 2020 09:05:37 +0200
+Message-Id: <20201012070537.11773-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] i915/gem_ctx_persistence: Verify
- userptr vs context cleanup
+Subject: [igt-dev] [PATCH i-g-t v2] tests/core_hotunplug: Restore i915
+ debugfs health check
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,86 +16,155 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Jon Bloomfield <jon.bloomfield@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Verify that the wait for userptr cleanup is after we have cancelled the
-non-persistent hanging context.
+Removal of igt_fork_hang_detector() from local_i915_healthcheck() by
+commit 1fbd127bd4e1 ("core_hotplug: Teach the healthcheck how to check
+execution status") resulted in unintentional removal of an important
+though implicit test feature of detecting, reporting as failures and
+recovering from potential misses of debugfs subdirs of hot rebound i915
+devices.  As a consequence, unexpected failures or skips of other
+unrelated but subsequently run tests have been observed on CI.
 
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Jon Bloomfield <jon.bloomfield@intel.com>
+On the other hand, removal of the debugfs issue detection and subtest
+failures right after hot rebinding the driver enabled the better
+version of the i915 GPU health check fixed by the same commit to detect
+and report other issues potentially triggered by device late close.
+
+Restore the missing test feature by introducing an explicit i915 sysfs
+health check that verifies existence of device sysfs and debugfs areas.
+Also, split hotrebind/hotreplug scenarios into a pair of each, one that
+performs the health check right after hot rebind/replug and delegates
+the device late close step to a follow up recovery phase while the
+other one checks device health only after late closing it.
+
+v2: Give GPU health check a better chance to detect issues - run it
+    before sysfs health checks.
+
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/i915/gem_ctx_persistence.c | 47 ++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+ tests/core_hotunplug.c | 61 ++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 56 insertions(+), 5 deletions(-)
 
-diff --git a/tests/i915/gem_ctx_persistence.c b/tests/i915/gem_ctx_persistence.c
-index 09814f24f..174af8361 100644
---- a/tests/i915/gem_ctx_persistence.c
-+++ b/tests/i915/gem_ctx_persistence.c
-@@ -735,6 +735,50 @@ static void test_process(int i915)
- 	gem_quiescent_gpu(i915);
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index 70669c590..543161874 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -250,6 +250,7 @@ static int local_i915_healthcheck(int i915, const char *prefix)
+ 	};
+ 	const struct intel_execution_engine2 *engine;
+ 	int fence = -1;
++	char path[200];
+ 
+ 	local_debug("%s%s\n", prefix, "running i915 GPU healthcheck");
+ 	if (local_i915_is_wedged(i915))
+@@ -274,6 +275,10 @@ static int local_i915_healthcheck(int i915, const char *prefix)
+ 	if (local_i915_is_wedged(i915))
+ 		return -EIO;
+ 
++	local_debug("%s%s\n", prefix, "running i915 sysfs healthcheck");
++	igt_assert(igt_sysfs_path(i915, path, sizeof(path)));
++	igt_assert(igt_debugfs_path(i915, path, sizeof(path)));
++
+ 	return 0;
  }
  
-+static void test_userptr(int i915)
-+{
-+	int fence, sv[2];
-+
-+	cleanup(i915);
-+
-+	/*
-+	 * When a process dies early, do the userptr or the contexts get cleaned
-+	 * up first? Since we only cancel the outstanding work along with the
-+	 * context, but wait on userptr cleanup for oustanding work, if
-+	 * the userptr is before the context, we end up in a scenario where
-+	 * we wait forever for the non-peristent context.
-+	 */
-+
-+	igt_require(socketpair(AF_UNIX, SOCK_DGRAM, 0, sv) == 0);
-+
-+	igt_fork(child, 1) {
-+		igt_spin_t *spin;
-+
-+		i915 = gem_reopen_driver(i915);
-+		gem_quiescent_gpu(i915);
-+
-+		gem_context_set_persistence(i915, 0, false);
-+		spin = igt_spin_new(i915, .flags = IGT_SPIN_FENCE_OUT | IGT_SPIN_USERPTR);
-+		sendfd(sv[0], spin->out_fence);
-+
-+		igt_list_del(&spin->link); /* prevent autocleanup */
-+	}
-+	close(sv[0]);
-+	igt_waitchildren();
-+	flush_delayed_fput(i915);
-+
-+	fence = recvfd(sv[1]);
-+	close(sv[1]);
-+
-+	igt_assert_eq(wait_for_status(fence, reset_timeout_ms), -EIO);
-+	close(fence);
-+
-+	/* We have to manually clean up the orphaned spinner */
-+	igt_drop_caches_set(i915, DROP_RESET_ACTIVE);
-+
-+	gem_quiescent_gpu(i915);
+@@ -437,7 +442,7 @@ static void hotunplug_rescan(struct hotunplug *priv)
+ 	healthcheck(priv, false);
+ }
+ 
+-static void hotrebind_lateclose(struct hotunplug *priv)
++static void hotrebind(struct hotunplug *priv)
+ {
+ 	igt_assert_eq(priv->fd.drm, -1);
+ 	igt_assert_eq(priv->fd.drm_hc, -1);
+@@ -448,6 +453,30 @@ static void hotrebind_lateclose(struct hotunplug *priv)
+ 	driver_bind(priv, 0);
+ 
+ 	healthcheck(priv, false);
 +}
 +
- static void test_process_mixed(int pfd, unsigned int engine)
- {
- 	int fence[2], sv[2];
-@@ -1287,6 +1331,9 @@ igt_main
- 	igt_subtest("processes")
- 		test_processes(i915);
- 
-+	igt_subtest("userptr")
-+		test_userptr(i915);
++static void hotreplug(struct hotunplug *priv)
++{
++	igt_assert_eq(priv->fd.drm, -1);
++	igt_assert_eq(priv->fd.drm_hc, -1);
++	priv->fd.drm = local_drm_open_driver(false, "", " for hot replug");
 +
- 	igt_subtest("hostile")
- 		test_nohangcheck_hostile(i915);
- 	igt_subtest("hang")
++	device_unplug(priv, "hot ", 60);
++
++	bus_rescan(priv, 0);
++
++	healthcheck(priv, false);
++}
++
++static void hotrebind_lateclose(struct hotunplug *priv)
++{
++	igt_assert_eq(priv->fd.drm, -1);
++	igt_assert_eq(priv->fd.drm_hc, -1);
++	priv->fd.drm = local_drm_open_driver(false, "", " for hot rebind");
++
++	driver_unbind(priv, "hot ", 60);
++
++	driver_bind(priv, 0);
+ 
+ 	priv->fd.drm = close_device(priv->fd.drm, "late ", "unbound ");
+ 	igt_assert_eq(priv->fd.drm, -1);
+@@ -465,8 +494,6 @@ static void hotreplug_lateclose(struct hotunplug *priv)
+ 
+ 	bus_rescan(priv, 0);
+ 
+-	healthcheck(priv, false);
+-
+ 	priv->fd.drm = close_device(priv->fd.drm, "late ", "removed ");
+ 	igt_assert_eq(priv->fd.drm, -1);
+ 
+@@ -570,7 +597,31 @@ igt_main
+ 		post_healthcheck(&priv);
+ 
+ 	igt_subtest_group {
+-		igt_describe("Check if the driver hot unbound from a still open device can be cleanly rebound, then the old instance released");
++		igt_describe("Check if the driver can be cleanly rebound to a device with a still open hot unbound driver instance");
++		igt_subtest("hotrebind")
++			hotrebind(&priv);
++
++		igt_fixture
++			recover(&priv);
++	}
++
++	igt_fixture
++		post_healthcheck(&priv);
++
++	igt_subtest_group {
++		igt_describe("Check if a hot unplugged and still open device can be cleanly restored");
++		igt_subtest("hotreplug")
++			hotreplug(&priv);
++
++		igt_fixture
++			recover(&priv);
++	}
++
++	igt_fixture
++		post_healthcheck(&priv);
++
++	igt_subtest_group {
++		igt_describe("Check if a hot unbound driver instance still open after hot rebind can be cleanly released");
+ 		igt_subtest("hotrebind-lateclose")
+ 			hotrebind_lateclose(&priv);
+ 
+@@ -582,7 +633,7 @@ igt_main
+ 		post_healthcheck(&priv);
+ 
+ 	igt_subtest_group {
+-		igt_describe("Check if a still open while hot unplugged device can be cleanly restored, then the old instance released");
++		igt_describe("Check if an instance of a still open while hot replugged device can be cleanly released");
+ 		igt_subtest("hotreplug-lateclose")
+ 			hotreplug_lateclose(&priv);
+ 
 -- 
-2.28.0
+2.21.1
 
 _______________________________________________
 igt-dev mailing list
