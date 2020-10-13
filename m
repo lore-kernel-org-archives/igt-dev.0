@@ -1,12 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC5F66E95D
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2020 21:42:57 +0000 (UTC)
+Date: Tue, 13 Oct 2020 14:44:23 -0700
+From: "Navare, Manasi" <manasi.d.navare@intel.com>
+Message-ID: <20201013214418.GA11898@labuser-Z97X-UD5H>
+References: <20200924144802.30147-1-bhanuprakash.modem@intel.com>
+ <20200924144802.30147-3-bhanuprakash.modem@intel.com>
+ <20200929221239.GA10799@labuser-Z97X-UD5H>
+ <SN6PR11MB33275F9AA6B3B3EB9BD102DD8D330@SN6PR11MB3327.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Tue, 13 Oct 2020 15:21:30 -0000
-Message-ID: <160260249017.28550.12810953770851710560@emeril.freedesktop.org>
-References: <20201013142202.2416663-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20201013142202.2416663-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgaTkxNS9n?=
- =?utf-8?q?en9=5Fexec=5Fparse=3A_Check_oversized_batch_with_length=3D=3D0?=
+Content-Disposition: inline
+In-Reply-To: <SN6PR11MB33275F9AA6B3B3EB9BD102DD8D330@SN6PR11MB3327.namprd11.prod.outlook.com>
+Subject: Re: [igt-dev] [v4 2/2] tests/kms_vrr: Add new subtest to validate
+ Flipline mode
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,255 +21,387 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: multipart/mixed; boundary="===============0995442811=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
---===============0995442811==
-Content-Type: multipart/alternative;
- boundary="===============3167905283717530714=="
+On Wed, Sep 30, 2020 at 08:34:10AM -0700, Modem, Bhanuprakash wrote:
+> > -----Original Message-----
+> > From: Navare, Manasi <manasi.d.navare@intel.com>
+> > Sent: Wednesday, September 30, 2020 3:43 AM
+> > To: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> > Cc: igt-dev@lists.freedesktop.org; Harry Wentland
+> > <harry.wentland@amd.com>; Nicholas Kazlauskas
+> > <nicholas.kazlauskas@amd.com>
+> > Subject: Re: [v4 2/2] tests/kms_vrr: Add new subtest to validate Flipline
+> > mode
+> >
+> > On Thu, Sep 24, 2020 at 08:18:02PM +0530, bhanuprakash.modem@intel.com
+> > wrote:
+> > > From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> > >
+> > > Check flipline mode by making sure that flips happen at flipline
+> > > decision boundary.
+> > >
+> > > Example: if monitor vrr range is 40 - 60Hz and
+> > >
+> > > * flip at refresh_rate > 60Hz:
+> > >         Flip should happen at the flipline boundary & returned refresh
+> > rate
+> > >         would be 60Hz.
+> > > * flip at refresh_rate == 50Hz:
+> > >         Flip should happen right away so returned refresh rate is 50Hz.
+> > > * flip at refresh_rate < 40Hz:
+> > >         Flip should happen at the vmax so the returned refresh rate
+> > >         would be 40Hz.
+> > >
+> > > v2:
+> > > * s/*vblank_ns/*event_ns/ (Manasi)
+> > > * Reset vrr_enabled state before enabling it (Manasi)
+> >
+> > >
+> > > Cc: Harry Wentland <harry.wentland@amd.com>
+> > > Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+> > > Cc: Manasi Navare <manasi.d.navare@intel.com>
+> > > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> > > Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+> > > ---
+> > >  tests/kms_vrr.c | 113 +++++++++++++++++++++++++++++++++++-------------
+> > >  1 file changed, 82 insertions(+), 31 deletions(-)
+> > >
+> > > diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+> > > index 471d765dec..ac42165bef 100644
+> > > --- a/tests/kms_vrr.c
+> > > +++ b/tests/kms_vrr.c
+> > > @@ -37,6 +37,7 @@ enum {
+> > >  TEST_NONE = 0,
+> > >  TEST_DPMS = 1 << 0,
+> > >  TEST_SUSPEND = 1 << 1,
+> > > +TEST_FLIPLINE = 1 << 2,
+> > >  };
+> > >
+> > >  typedef struct range {
+> > > @@ -52,6 +53,12 @@ typedef struct data {
+> > >  igt_fb_t fb1;
+> > >  } data_t;
+> > >
+> > > +typedef struct vtest_ns {
+> > > +uint64_t min;
+> > > +uint64_t mid;
+> > > +uint64_t max;
+> > > +} vtest_ns_t;
+> > > +
+> > >  typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, uint32_t);
+> > >
+> > >  /* Converts a timespec structure to nanoseconds. */
+> > > @@ -104,13 +111,18 @@ static uint64_t rate_from_refresh(uint64_t
+> > refresh)
+> > >  return NSECS_PER_SEC / refresh;
+> > >  }
+> > >
+> > > -/* Returns the min and max vrr range from the connector debugfs. */
+> > > +/* Read min and max vrr range from the connector debugfs.
+> > > + *  - min range should be less than the current mode vfreq
+> > > + *  - if max range is grater than the current mode vfreq, consider
+> > > + *       current mode vfreq as the max range.
+> > > + */
+> > >  static range_t get_vrr_range(data_t *data, igt_output_t *output)
+> > >  {
+> > >  char buf[256];
+> > >  char *start_loc;
+> > >  int fd, res;
+> > >  range_t range;
+> > > +drmModeModeInfo *mode = igt_output_get_mode(output);
+> > >
+> > >  fd = igt_debugfs_connector_dir(data->drm_fd, output->name,
+> > O_RDONLY);
+> > >  igt_assert(fd >= 0);
+> > > @@ -122,32 +134,28 @@ static range_t get_vrr_range(data_t *data,
+> > igt_output_t *output)
+> > >
+> > >  igt_assert(start_loc = strstr(buf, "Min: "));
+> > >  igt_assert_eq(sscanf(start_loc, "Min: %u", &range.min), 1);
+> > > +igt_require(mode->vrefresh > range.min);
+> > >
+> > >  igt_assert(start_loc = strstr(buf, "Max: "));
+> > >  igt_assert_eq(sscanf(start_loc, "Max: %u", &range.max), 1);
+> > >
+> > > +range.max = (mode->vrefresh < range.max) ? mode->vrefresh :
+> > range.max;
+> > > +
+> > >  return range;
+> > >  }
+> > >
+> > > -/* Returns a suitable vrr test frequency. */
+> > > -static uint64_t get_test_rate_ns(data_t *data, igt_output_t *output)
+> > > +/* Returns vrr test frequency for min, mid & max range. */
+> > > +static vtest_ns_t get_test_rate_ns(data_t *data, igt_output_t *output)
+> > >  {
+> > > -drmModeModeInfo *mode = igt_output_get_mode(output);
+> > >  range_t range;
+> > > -uint64_t vtest;
+> > > +vtest_ns_t vtest_ns;
+> > >
+> > > -/*
+> > > - * The frequency with the fastest convergence speed should be
+> > > - * the midpoint between the current mode vfreq and the min
+> > > - * supported vfreq.
+> > > - */
+> > >  range = get_vrr_range(data, output);
+> > > -igt_require(mode->vrefresh > range.min);
+> > > -
+> > > -vtest = (mode->vrefresh - range.min) / 2 + range.min;
+> > > -igt_require(vtest < mode->vrefresh);
+> > > +vtest_ns.min = rate_from_refresh(range.min);
+> > > +vtest_ns.mid = rate_from_refresh(((range.max + range.min) / 2));
+> > > +vtest_ns.max = rate_from_refresh(range.max);
+> > >
+> > > -return rate_from_refresh(vtest);
+> > > +return vtest_ns;
+> > >  }
+> > >
+> > >  /* Returns true if an output supports VRR. */
+> > > @@ -195,6 +203,11 @@ static void prepare_test(data_t *data, igt_output_t
+> > *output, enum pipe pipe)
+> > >  data->primary = igt_output_get_plane_type(output,
+> > DRM_PLANE_TYPE_PRIMARY);
+> > >  igt_plane_set_fb(data->primary, &data->fb0);
+> > >
+> > > +/* Clear vrr_enabled state before enabling it, because
+> > > + * it might be left enabled if the previous test fails.
+> > > + */
+> > > +igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_VRR_ENABLED,
+> > 0);
+> >
+> > Like I said in my comment below this shouldhappen before calling
+> > prepare_test()
+> > Also the set_vrr_pipe(1) call should happen at the beginning of
+> > prepare_test() so that
+> > VRR prop is set before doing a modeset with the desired fb.
+> >
+> > What I have in my code for testing is:
+> >
+> > test_basic()
+> > {
+> > set_vrr_on_pipe(0)
+> > prepare_test()
+> > .
+> > .
+> > .
+> > }
+> >
+> > And in prepare_test()
+> > {
+> > set_vrr_on_pipe(1);
+> > create_fb
+> > .
+> > .
+> > .
+> > atomic_commit();
+> > }
+> >
+> >
+> [Bhanu] Why do we need to enable VRR before modeset? I think Driver will take care of it.
+> 
+> As you mentioned in your Engg changes, in atomic_check:
+> if (!needs_modeset(new_crtc_state) && old_crtc_state->uapi.vrr_enabled == new_crtc_state->uapi.vrr_enabled)
+> continue;
+> 
+> For first IGT execution:
+> vrr_enabled status is 0
+> create FB & do modeset
+> set vrr_enabled to 1 & flip
+> above check will fail & kernel will perform required tasks
+> set vrr_enabled to 0 & flip
+> above check will fail & kernel will perform required tasks
+> 
+> For some reason test got failed & vrr_enabled status kept 1.
+> In next IGT execution:
+> vrr_enabled status is 1
+> update to 0 (this patch will update vrr_enabled to 0 before modeset)
+> remaining execution is same as above.
+> 
+> Is my interpretation correct? Also can you please help to test your code with this patch?
 
---===============3167905283717530714==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Intially I thought that prepare test() since we are preparing for vrr test would
+actually be the modeset where vrr goes from 0 to 1 but 
+basically here we are using prepare test function to set everything clean
+without VRR with vrr prop set to 0 and then set it to 1 before flip.
+Yes I think this should work.
 
-== Series Details ==
+Also I do have the kernel patches now with the full enable/disable sequence
+implemented and I will test this patch as well as send you my patches
+to do the testing on your end.
 
-Series: i915/gen9_exec_parse: Check oversized batch with length==0
-URL   : https://patchwork.freedesktop.org/series/82632/
-State : success
+But so far functionality wise this does look good.
 
-== Summary ==
+Reviewed-by: Manasi Navare <manasi.d.navare@intel.com>
 
-CI Bug Log - changes from CI_DRM_9136 -> IGTPW_5064
-====================================================
+Manasi
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/index.html
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_5064 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_flink_basic@double-flink:
-    - fi-tgl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#402]) +1 similar issue
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-tgl-y/igt@gem_flink_basic@double-flink.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-tgl-y/igt@gem_flink_basic@double-flink.html
-
-  * igt@i915_module_load@reload:
-    - fi-tgl-y:           [PASS][3] -> [DMESG-WARN][4] ([i915#1982] / [k.org#205379])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-tgl-y/igt@i915_module_load@reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-tgl-y/igt@i915_module_load@reload.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-bsw-n3050:       [PASS][5] -> [DMESG-WARN][6] ([i915#1982])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_flink_basic@flink-lifetime:
-    - fi-tgl-y:           [DMESG-WARN][7] ([i915#402]) -> [PASS][8] +1 similar issue
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-tgl-y/igt@gem_flink_basic@flink-lifetime.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-tgl-y/igt@gem_flink_basic@flink-lifetime.html
-
-  * igt@i915_module_load@reload:
-    - {fi-tgl-dsi}:       [DMESG-WARN][9] ([i915#1982] / [k.org#205379]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-tgl-dsi/igt@i915_module_load@reload.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-tgl-dsi/igt@i915_module_load@reload.html
-
-  * igt@i915_pm_rpm@basic-pci-d3-state:
-    - fi-bsw-n3050:       [DMESG-WARN][11] ([i915#1982]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-bsw-n3050/igt@i915_pm_rpm@basic-pci-d3-state.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-bsw-n3050/igt@i915_pm_rpm@basic-pci-d3-state.html
-
-  * igt@kms_busy@basic@flip:
-    - {fi-kbl-7560u}:     [DMESG-WARN][13] ([i915#1982]) -> [PASS][14] +1 similar issue
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-kbl-7560u/igt@kms_busy@basic@flip.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-kbl-7560u/igt@kms_busy@basic@flip.html
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
-    - fi-icl-u2:          [DMESG-WARN][15] ([i915#1982]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
-
-  * igt@kms_pipe_crc_basic@read-crc-pipe-b:
-    - fi-tgl-y:           [DMESG-WARN][17] ([i915#1982]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-tgl-y/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-tgl-y/igt@kms_pipe_crc_basic@read-crc-pipe-b.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
-  [i915#402]: https://gitlab.freedesktop.org/drm/intel/issues/402
-  [k.org#205379]: https://bugzilla.kernel.org/show_bug.cgi?id=205379
-
-
-Participating hosts (47 -> 41)
-------------------------------
-
-  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus 
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_5813 -> IGTPW_5064
-
-  CI-20190529: 20190529
-  CI_DRM_9136: 29eb1a8ba2cc0d14d3cae7213f9cdaaa13f3dd99 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_5064: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/index.html
-  IGT_5813: d4e6dd955a1dad02271aa41c9389f5097ee17765 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/index.html
-
---===============3167905283717530714==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>i915/gen9_exec_parse: Check oversized batch with length==0</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/82632/">https://patchwork.freedesktop.org/series/82632/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_9136 -&gt; IGTPW_5064</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/index.html</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_5064 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_flink_basic@double-flink:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-tgl-y/igt@gem_flink_basic@double-flink.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-tgl-y/igt@gem_flink_basic@double-flink.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-tgl-y/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-tgl-y/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://bugzilla.kernel.org/show_bug.cgi?id=205379">k.org#205379</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-bsw-n3050/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_flink_basic@flink-lifetime:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-tgl-y/igt@gem_flink_basic@flink-lifetime.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/402">i915#402</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-tgl-y/igt@gem_flink_basic@flink-lifetime.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>{fi-tgl-dsi}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-tgl-dsi/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://bugzilla.kernel.org/show_bug.cgi?id=205379">k.org#205379</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-tgl-dsi/igt@i915_module_load@reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-bsw-n3050/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-bsw-n3050/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>{fi-kbl-7560u}:     <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-kbl-7560u/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-kbl-7560u/igt@kms_busy@basic@flip.html">PASS</a> +1 similar issue</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:</p>
-<ul>
-<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-pipe-b:</p>
-<ul>
-<li>fi-tgl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9136/fi-tgl-y/igt@kms_pipe_crc_basic@read-crc-pipe-b.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/fi-tgl-y/igt@kms_pipe_crc_basic@read-crc-pipe-b.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Participating hosts (47 -&gt; 41)</h2>
-<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-byt-clapper fi-bdw-samus </p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_5813 -&gt; IGTPW_5064</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_9136: 29eb1a8ba2cc0d14d3cae7213f9cdaaa13f3dd99 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_5064: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5064/index.html<br />
-  IGT_5813: d4e6dd955a1dad02271aa41c9389f5097ee17765 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
-
-</body>
-</html>
-
---===============3167905283717530714==--
-
---===============0995442811==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+> > > +
+> > >  igt_display_commit_atomic(&data->display,
+> > >    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> > >  }
+> > > @@ -250,6 +263,7 @@ flip_and_measure(data_t *data, igt_output_t *output,
+> > enum pipe pipe,
+> > >  uint64_t start_ns, last_event_ns;
+> > >  uint32_t total_flip = 0, total_pass = 0;
+> > >  bool front = false;
+> > > +vtest_ns_t vtest_ns = get_test_rate_ns(data, output);
+> > >
+> > >  /* Align with the vblank region to speed up convergence. */
+> > >  last_event_ns = wait_for_vblank(data, pipe);
+> > > @@ -268,10 +282,6 @@ flip_and_measure(data_t *data, igt_output_t
+> > *output, enum pipe pipe,
+> > >   * that same frame.
+> > >   */
+> > >  event_ns = get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
+> > > -diff_ns = rate_ns - (event_ns - last_event_ns);
+> > > -last_event_ns = event_ns;
+> > > -
+> > > -total_flip += 1;
+> > >
+> > >  /*
+> > >   * Check if the difference between the two flip timestamps
+> > > @@ -281,9 +291,19 @@ flip_and_measure(data_t *data, igt_output_t
+> > *output, enum pipe pipe,
+> > >   * difference between 144Hz and 143Hz which should give this
+> > >   * enough accuracy for most use cases.
+> > >   */
+> > > +if ((rate_ns <= vtest_ns.min) && (rate_ns >= vtest_ns.max))
+> > > +diff_ns = rate_ns - (event_ns - last_event_ns);
+> > > +else if (rate_ns > vtest_ns.min)
+> > > +diff_ns = vtest_ns.min - (event_ns - last_event_ns);
+> > > +else if (rate_ns < vtest_ns.max)
+> > > +diff_ns = vtest_ns.max - (event_ns - last_event_ns);
+> > > +
+> > >  if (llabs(diff_ns) < 50000ll)
+> > >  total_pass += 1;
+> > >
+> > > +last_event_ns = event_ns;
+> > > +total_flip += 1;
+> > > +
+> > >  now_ns = get_time_ns();
+> > >  if (now_ns - start_ns > duration_ns)
+> > >  break;
+> > > @@ -310,10 +330,13 @@ flip_and_measure(data_t *data, igt_output_t
+> > *output, enum pipe pipe,
+> > >  static void
+> > >  test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t
+> > flags)
+> > >  {
+> > > -uint64_t rate;
+> > >  uint32_t result;
+> > > +vtest_ns_t vtest_ns = get_test_rate_ns(data, output);
+> > > +range_t range = get_vrr_range(data, output);
+> > > +uint64_t rate = vtest_ns.mid;
+> > >
+> > > -rate = get_test_rate_ns(data, output);
+> > > +igt_info("VRR Test execution on %s, PIPE_%s\n",
+> > > + output->name, kmstest_pipe_name(pipe));
+> > >
+> > The reseting of vrr_enabled prop should be done before prepare test
+> > so before we set the
+> > desrired fb. I would recommend a call set_vrr_on_pipe(0) before calling
+> > prepare_test()
+> > This is what I had to do for testing the kernel code. It should be a
+> > complete set_vrr_on_pipe() call
+> > which will set the prop to 0 and commit
+> >
+> > Manasi
+> >
+> >
+> > >  prepare_test(data, output, pipe);
+> > >
+> > > @@ -339,21 +362,45 @@ test_basic(data_t *data, enum pipe pipe,
+> > igt_output_t *output, uint32_t flags)
+> > >  igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+> > >        SUSPEND_TEST_NONE);
+> > >
+> > > -result = flip_and_measure(data, output, pipe, rate,
+> > TEST_DURATION_NS);
+> > > -
+> > > -set_vrr_on_pipe(data, pipe, 0);
+> > > +/*
+> > > + * Check flipline mode by making sure that flips happen at flipline
+> > > + * decision boundary.
+> > > + *
+> > > + * Example: if range is 40 - 60Hz and
+> > > + * if refresh_rate > 60Hz:
+> > > + *      Flip should happen at the flipline boundary & returned
+> > refresh rate
+> > > + *      would be 60Hz.
+> > > + * if refresh_rate is 50Hz:
+> > > + *      Flip will happen right away so returned refresh rate is
+> > 50Hz.
+> > > + * if refresh_rate < 40Hz:
+> > > + *      Flip should happen at the vmax so the returned refresh rate
+> > > + *      would be 40Hz.
+> > > + */
+> > > +if (flags & TEST_FLIPLINE) {
+> > > +rate = rate_from_refresh(range.min - 5);
+> > > +result = flip_and_measure(data, output, pipe, rate,
+> > TEST_DURATION_NS);
+> > > +igt_assert_f(result > 75,
+> > > +     "Refresh rate %"PRIu64"ns: Target VRR on threshold
+> > not reached, result was %u%%\n",
+> > > +     rate, result);
+> > > +
+> > > +rate = rate_from_refresh(range.max + 5);
+> > > +result = flip_and_measure(data, output, pipe, rate,
+> > TEST_DURATION_NS);
+> > > +igt_assert_f(result > 75,
+> > > +     "Refresh rate %"PRIu64"ns: Target VRR on threshold
+> > not reached, result was %u%%\n",
+> > > +     rate, result);
+> > > +}
+> > >
+> > > -/* This check is delayed until after VRR is disabled so it isn't
+> > > - * left enabled if the test fails. */
+> > > +rate = vtest_ns.mid;
+> > > +result = flip_and_measure(data, output, pipe, rate,
+> > TEST_DURATION_NS);
+> > >  igt_assert_f(result > 75,
+> > > -     "Target VRR on threshold not reached, result was %u%%\n",
+> > > -     result);
+> > > +     "Refresh rate %"PRIu64"ns: Target VRR on threshold not
+> > reached, result was %u%%\n",
+> > > +     rate, result);
+> > >
+> > > +set_vrr_on_pipe(data, pipe, 0);
+> > >  result = flip_and_measure(data, output, pipe, rate,
+> > TEST_DURATION_NS);
+> > > -
+> > >  igt_assert_f(result < 10,
+> > > -     "Target VRR off threshold exceeded, result was %u%%\n",
+> > > -     result);
+> > > +     "Refresh rate %"PRIu64"ns: Target VRR off threshold
+> > exceeded, result was %u%%\n",
+> > > +     rate, result);
+> > >
+> > >  /* Clean-up */
+> > >  igt_plane_set_fb(data->primary, NULL);
+> > > @@ -413,6 +460,10 @@ igt_main
+> > >  igt_subtest("flip-suspend")
+> > >  run_vrr_test(&data, test_basic, TEST_SUSPEND);
+> > >
+> > > +igt_describe("Make sure that flips happen at flipline decision
+> > boundary.");
+> > > +igt_subtest("flipline")
+> > > +run_vrr_test(&data, test_basic, TEST_FLIPLINE);
+> > > +
+> > >  igt_fixture {
+> > >  igt_display_fini(&data.display);
+> > >  }
+> > > --
+> > > 2.20.1
+> > >
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
---===============0995442811==--
