@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 14 Oct 2020 11:40:36 +0100
-Message-Id: <20201014104038.2554985-8-chris@chris-wilson.co.uk>
+Date: Wed, 14 Oct 2020 11:40:31 +0100
+Message-Id: <20201014104038.2554985-3-chris@chris-wilson.co.uk>
 In-Reply-To: <20201014104038.2554985-1-chris@chris-wilson.co.uk>
 References: <20201014104038.2554985-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 08/10] lib: Use unsigned gen for forward
- compatible tests
+Subject: [igt-dev] [PATCH i-g-t 03/10] i915/gen9_exec_parse: Check oversized
+ batch with length==0
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,74 +14,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+Cc: intel-gfx@lists.freedesktop.org, Matthew Auld <matthew.auld@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-VW5rbm93biwgc28gZnV0dXJlLCBnZW4gYXJlIG1hcmtlZCBhcyAtMSB3aGljaCB3ZSB3YW50IHRv
-IHRyZWF0IGFzIC0xdQpzbyB0aGF0IGFsd2F5cyBwYXNzID49IGdlbiBjaGVja3MuCgpDbG9zZXM6
-IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaW50ZWwvLS9pc3N1ZXMvMjI5OApT
-aWduZWQtb2ZmLWJ5OiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KQ2M6
-IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgot
-LS0KIGxpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jIHwgMTAgKysrKystLS0tLQogbGliL2ludGVsX2Jh
-dGNoYnVmZmVyLmggfCAxMCArKysrKystLS0tCiAyIGZpbGVzIGNoYW5nZWQsIDExIGluc2VydGlv
-bnMoKyksIDkgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvbGliL2ludGVsX2JhdGNoYnVmZmVy
-LmMgYi9saWIvaW50ZWxfYmF0Y2hidWZmZXIuYwppbmRleCA2MGRiZmUyNjEuLmZjNzM0OTVjMCAx
-MDA2NDQKLS0tIGEvbGliL2ludGVsX2JhdGNoYnVmZmVyLmMKKysrIGIvbGliL2ludGVsX2JhdGNo
-YnVmZmVyLmMKQEAgLTQxNCw3ICs0MTQsNyBAQCBpbnRlbF9ibHRfY29weShzdHJ1Y3QgaW50ZWxf
-YmF0Y2hidWZmZXIgKmJhdGNoLAogCSAgICAgICBkcm1faW50ZWxfYm8gKmRzdF9ibywgaW50IGRz
-dF94MSwgaW50IGRzdF95MSwgaW50IGRzdF9waXRjaCwKIAkgICAgICAgaW50IHdpZHRoLCBpbnQg
-aGVpZ2h0LCBpbnQgYnBwKQogewotCWNvbnN0IGludCBnZW4gPSBiYXRjaC0+Z2VuOworCWNvbnN0
-IHVuc2lnbmVkIGludCBnZW4gPSBiYXRjaC0+Z2VuOwogCXVpbnQzMl90IHNyY190aWxpbmcsIGRz
-dF90aWxpbmcsIHN3aXp6bGU7CiAJdWludDMyX3QgY21kX2JpdHMgPSAwOwogCXVpbnQzMl90IGJy
-MTNfYml0czsKQEAgLTU1Myw3ICs1NTMsNyBAQCB1bnNpZ25lZCBpZ3RfYnVmX2hlaWdodChjb25z
-dCBzdHJ1Y3QgaWd0X2J1ZiAqYnVmKQogICogUmV0dXJuczoKICAqIFRoZSB3aWR0aCBvZiB0aGUg
-Y2NzIGJ1ZmZlciBkYXRhLgogICovCi11bnNpZ25lZCBpbnQgaWd0X2J1Zl9pbnRlbF9jY3Nfd2lk
-dGgoaW50IGdlbiwgY29uc3Qgc3RydWN0IGlndF9idWYgKmJ1ZikKK3Vuc2lnbmVkIGludCBpZ3Rf
-YnVmX2ludGVsX2Njc193aWR0aCh1bnNpZ25lZCBpbnQgZ2VuLCBjb25zdCBzdHJ1Y3QgaWd0X2J1
-ZiAqYnVmKQogewogCS8qCiAJICogR0VOMTIrOiBUaGUgQ0NTIHVuaXQgc2l6ZSBpcyA2NCBieXRl
-cyBtYXBwaW5nIDQgbWFpbiBzdXJmYWNlCkBAIC01NzYsNyArNTc2LDcgQEAgdW5zaWduZWQgaW50
-IGlndF9idWZfaW50ZWxfY2NzX3dpZHRoKGludCBnZW4sIGNvbnN0IHN0cnVjdCBpZ3RfYnVmICpi
-dWYpCiAgKiBSZXR1cm5zOgogICogVGhlIGhlaWdodCBvZiB0aGUgY2NzIGJ1ZmZlciBkYXRhLgog
-ICovCi11bnNpZ25lZCBpbnQgaWd0X2J1Zl9pbnRlbF9jY3NfaGVpZ2h0KGludCBnZW4sIGNvbnN0
-IHN0cnVjdCBpZ3RfYnVmICpidWYpCit1bnNpZ25lZCBpbnQgaWd0X2J1Zl9pbnRlbF9jY3NfaGVp
-Z2h0KHVuc2lnbmVkIGludCBnZW4sIGNvbnN0IHN0cnVjdCBpZ3RfYnVmICpidWYpCiB7CiAJLyoK
-IAkgKiBHRU4xMis6IFRoZSBDQ1MgdW5pdCBzaXplIGlzIDY0IGJ5dGVzIG1hcHBpbmcgNCBtYWlu
-IHN1cmZhY2UKQEAgLTcwMyw3ICs3MDMsNyBAQCBmaWxsX29iamVjdChzdHJ1Y3QgZHJtX2k5MTVf
-Z2VtX2V4ZWNfb2JqZWN0MiAqb2JqLCB1aW50MzJfdCBnZW1faGFuZGxlLAogCiBzdGF0aWMgdm9p
-ZCBleGVjX2JsaXQoaW50IGZkLAogCQkgICAgICBzdHJ1Y3QgZHJtX2k5MTVfZ2VtX2V4ZWNfb2Jq
-ZWN0MiAqb2JqcywgdWludDMyX3QgY291bnQsCi0JCSAgICAgIGludCBnZW4pCisJCSAgICAgIHVu
-c2lnbmVkIGludCBnZW4pCiB7CiAJc3RydWN0IGRybV9pOTE1X2dlbV9leGVjYnVmZmVyMiBleGVj
-ID0gewogCQkuYnVmZmVyc19wdHIgPSB0b191c2VyX3BvaW50ZXIob2JqcyksCkBAIC0yNDE2LDcg
-KzI0MTYsNyBAQCB2b2lkIGludGVsX2JiX2VtaXRfYmx0X2NvcHkoc3RydWN0IGludGVsX2JiICpp
-YmIsCiAJCQkgICAgaW50IGRzdF94MSwgaW50IGRzdF95MSwgaW50IGRzdF9waXRjaCwKIAkJCSAg
-ICBpbnQgd2lkdGgsIGludCBoZWlnaHQsIGludCBicHApCiB7Ci0JY29uc3QgaW50IGdlbiA9IGli
-Yi0+Z2VuOworCWNvbnN0IHVuc2lnbmVkIGludCBnZW4gPSBpYmItPmdlbjsKIAl1aW50MzJfdCBj
-bWRfYml0cyA9IDA7CiAJdWludDMyX3QgYnIxM19iaXRzOwogCXVpbnQzMl90IG1hc2s7CmRpZmYg
-LS1naXQgYS9saWIvaW50ZWxfYmF0Y2hidWZmZXIuaCBiL2xpYi9pbnRlbF9iYXRjaGJ1ZmZlci5o
-CmluZGV4IGQyMGI0ZTY2YS4uYWIxYjBjMjg2IDEwMDY0NAotLS0gYS9saWIvaW50ZWxfYmF0Y2hi
-dWZmZXIuaAorKysgYi9saWIvaW50ZWxfYmF0Y2hidWZmZXIuaApAQCAtMTUsNyArMTUsNyBAQAog
-c3RydWN0IGludGVsX2JhdGNoYnVmZmVyIHsKIAlkcm1faW50ZWxfYnVmbWdyICpidWZtZ3I7CiAJ
-dWludDMyX3QgZGV2aWQ7Ci0JaW50IGdlbjsKKwl1bnNpZ25lZCBpbnQgZ2VuOwogCiAJZHJtX2lu
-dGVsX2NvbnRleHQgKmN0eDsKIAlkcm1faW50ZWxfYm8gKmJvOwpAQCAtMjYzLDggKzI2MywxMCBA
-QCBzdGF0aWMgaW5saW5lIGJvb2wgaWd0X2J1Zl9jb21wcmVzc2VkKGNvbnN0IHN0cnVjdCBpZ3Rf
-YnVmICpidWYpCiAKIHVuc2lnbmVkIGlndF9idWZfd2lkdGgoY29uc3Qgc3RydWN0IGlndF9idWYg
-KmJ1Zik7CiB1bnNpZ25lZCBpZ3RfYnVmX2hlaWdodChjb25zdCBzdHJ1Y3QgaWd0X2J1ZiAqYnVm
-KTsKLXVuc2lnbmVkIGludCBpZ3RfYnVmX2ludGVsX2Njc193aWR0aChpbnQgZ2VuLCBjb25zdCBz
-dHJ1Y3QgaWd0X2J1ZiAqYnVmKTsKLXVuc2lnbmVkIGludCBpZ3RfYnVmX2ludGVsX2Njc19oZWln
-aHQoaW50IGdlbiwgY29uc3Qgc3RydWN0IGlndF9idWYgKmJ1Zik7Cit1bnNpZ25lZCBpbnQgaWd0
-X2J1Zl9pbnRlbF9jY3Nfd2lkdGgodW5zaWduZWQgaW50IGdlbiwKKwkJCQkgICAgIGNvbnN0IHN0
-cnVjdCBpZ3RfYnVmICpidWYpOwordW5zaWduZWQgaW50IGlndF9idWZfaW50ZWxfY2NzX2hlaWdo
-dCh1bnNpZ25lZCBpbnQgZ2VuLAorCQkJCSAgICAgIGNvbnN0IHN0cnVjdCBpZ3RfYnVmICpidWYp
-OwogCiB2b2lkIGlndF9ibGl0dGVyX3NyY19jb3B5KGludCBmZCwKIAkJCSAgLyogc3JjICovCkBA
-IC00MzQsNyArNDM2LDcgQEAgaWd0X21lZGlhX3NwaW5mdW5jX3QgaWd0X2dldF9tZWRpYV9zcGlu
-ZnVuYyhpbnQgZGV2aWQpOwogICovCiBzdHJ1Y3QgaW50ZWxfYmIgewogCWludCBpOTE1OwotCWlu
-dCBnZW47CisJdW5zaWduZWQgaW50IGdlbjsKIAlib29sIGRlYnVnOwogCWJvb2wgZHVtcF9iYXNl
-NjQ7CiAJYm9vbCBlbmZvcmNlX3JlbG9jczsKLS0gCjIuMjguMAoKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
-dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Include the implicit eb.batch_len=0 into the mix of various offsets and
+lengths.
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Matthew Auld <matthew.auld@intel.com>
+---
+ tests/i915/gen9_exec_parse.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/tests/i915/gen9_exec_parse.c b/tests/i915/gen9_exec_parse.c
+index 7ddb5bf2b..087d6f35f 100644
+--- a/tests/i915/gen9_exec_parse.c
++++ b/tests/i915/gen9_exec_parse.c
+@@ -628,6 +628,8 @@ static void test_bb_oversize(int i915)
+ 	gem_write(i915, obj.handle, (4ull << 30) - sizeof(bbe),
+ 		  &bbe, sizeof(bbe));
+ 
++	igt_assert_eq(__checked_execbuf(i915, &execbuf), 0);
++
+ 	for (int i = 13; i <= 32; i++) {
+ 		igt_debug("Checking length %#llx\n", 1ull << i);
+ 
+@@ -638,6 +640,9 @@ static void test_bb_oversize(int i915)
+ 		igt_assert_eq(__checked_execbuf(i915, &execbuf), 0);
+ 	}
+ 
++	execbuf.batch_len = 0;
++	igt_assert_eq(__checked_execbuf(i915, &execbuf), 0);
++
+ 	gem_close(i915, obj.handle);
+ }
+ 
+-- 
+2.28.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
