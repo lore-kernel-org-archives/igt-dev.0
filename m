@@ -1,50 +1,131 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Wed, 14 Oct 2020 18:55:35 +0200
+Message-Id: <20201014165535.25668-1-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20201014104853.606351-1-tvrtko.ursulin@linux.intel.com>
-References: <20201014104853.606351-1-tvrtko.ursulin@linux.intel.com>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 14 Oct 2020 12:05:26 +0100
-Message-ID: <160267352653.7159.12912041121177674515@build.alporthouse.com>
-Subject: Re: [Intel-gfx] [RFC i-g-t] intel_gpu_top: User friendly device
- listing
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org
+Subject: [igt-dev] [PATCH i-g-t] tests/core_hotunplug: Take care of closing
+ fences before failing
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBUdnJ0a28gVXJzdWxpbiAoMjAyMC0xMC0xNCAxMTo0ODo1MykKPiBGcm9tOiBUdnJ0
-a28gVXJzdWxpbiA8dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPgo+IAo+IEFkZGluZyBhIG5ldyBk
-ZXZpY2Ugc2VsZWN0aW9uIHByaW50IHR5cGUgc3VpdGFibGUgZm9yIHVzZXItZmFjaW5nCj4gdXNl
-IGNhc2VzIGxpa2UgaW50ZWxfZ3B1X3RvcCAtTCBhbmQgcG90ZW50aWFsbHkgbHNncHUuCj4gCj4g
-SW5zdGVhZCBvZjoKPiAKPiBzeXM6L3N5cy9kZXZpY2VzL3BjaTAwMDA6MDAvMDAwMDowMDowMi4w
-L2RybS9jYXJkMAo+ICAgICBzdWJzeXN0ZW0gICAgICAgOiBkcm0KPiAgICAgZHJtIGNhcmQgICAg
-ICAgIDogL2Rldi9kcmkvY2FyZDAKPiAgICAgcGFyZW50ICAgICAgICAgIDogc3lzOi9zeXMvZGV2
-aWNlcy9wY2kwMDAwOjAwLzAwMDA6MDA6MDIuMAo+IAo+IHN5czovc3lzL2RldmljZXMvcGNpMDAw
-MDowMC8wMDAwOjAwOjAyLjAvZHJtL3JlbmRlckQxMjgKPiAgICAgc3Vic3lzdGVtICAgICAgIDog
-ZHJtCj4gICAgIGRybSByZW5kZXIgICAgICA6IC9kZXYvZHJpL3JlbmRlckQxMjgKPiAgICAgcGFy
-ZW50ICAgICAgICAgIDogc3lzOi9zeXMvZGV2aWNlcy9wY2kwMDAwOjAwLzAwMDA6MDA6MDIuMAo+
-IAo+IHN5czovc3lzL2RldmljZXMvcGNpMDAwMDowMC8wMDAwOjAwOjAyLjAKPiAgICAgc3Vic3lz
-dGVtICAgICAgIDogcGNpCj4gICAgIGRybSBjYXJkICAgICAgICA6IC9kZXYvZHJpL2NhcmQwCj4g
-ICAgIGRybSByZW5kZXIgICAgICA6IC9kZXYvZHJpL3JlbmRlckQxMjgKPiAgICAgdmVuZG9yICAg
-ICAgICAgIDogODA4Ngo+ICAgICBkZXZpY2UgICAgICAgICAgOiAxOTNCCj4gCj4gTmV3IGZvcm1h
-dCBsb29rcyBsaWtlOgo+IAo+IGNhcmQwICAgICAgICAgICAgICAgICAgIDgwODY6MTkzQiAgICBk
-cm06L2Rldi9kcmkvY2FyZDAKPiDilJTilIByZW5kZXJEMTI4ICAgICAgICAgICAgICAgICAgICAg
-ICAgIGRybTovZGV2L2RyaS9yZW5kZXJEMTI4Cj4gCj4gQWR2YW50YWdlcyBhcmUgbW9yZSBjb21w
-YWN0LCBtb3JlIHJlYWRhYmxlLCBvbmUgZW50cnkgcGVyIEdQVSwgc2hvcnRlcgo+IHN0cmluZyB0
-byBjb3B5IGFuZCBwYXN0ZSB0byBpbnRlbF9ncHVfdG9wIC1kLCBvciByZXNwZWN0aXZlIHVzYWdl
-LgoKQ291bGQgeW91IHByZXNlbnQgdGhpcyBhcyB0aGUgdHlwaWNhbCBjb21tYW5kcyBhbmQgb3V0
-cHV0PyBJIHRoaW5rIHlvdQptZWFuIHRoZSBmaXJzdCBhcyB0aGUgb3V0cHV0IG9mIGludGVsX2dw
-dV90b3AgLUwuIFdoYXQgZXhhY3RseSBkbyB3ZSBub3cKZmVlZCB0byAtZD8KLUNocmlzCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkludGVsLWdmeCBtYWls
-aW5nIGxpc3QKSW50ZWwtZ2Z4QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZy
-ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2ludGVsLWdmeAo=
+The test was designed to keep track of open device file descriptors
+for safe driver unbind on recovery from a failed subtest.  In that
+context, fences introduced by commit 1fbd127bd4e1 ("core_hotplug:
+Teach the healthcheck how to check execution status") can affect device
+recovery as much as an open device file if not closed before unbind.
+
+Moreover, forced GPU reset which used to be applied on recovery from a
+failed i915 GPU health check is no longer reachable since a GPU hang
+hopefully detected by the new health check algorithm can now break the
+whole recovery procedure prematurely.
+
+Refactor local_i915_healthcheck() so it takes care of closing fences
+and returns a result to its caller instead of long jumping on failures
+believed to be recoverable.  While avoiding use of igt_assert() and
+friends, report actual source and error code of failures via
+igt_warn_on_f().
+
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/core_hotunplug.c | 46 ++++++++++++++++++++++++++++++++----------
+ 1 file changed, 35 insertions(+), 11 deletions(-)
+
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index 70669c590..d6db02bad 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -233,9 +233,9 @@ static int merge_fences(int old, int new)
+ 		return new;
+ 
+ 	merge = sync_fence_merge(old, new);
+-	igt_assert(merge != -1);
+-	close(old);
+-	close(new);
++	/* Assume fence close errors don't affect device close status */
++	igt_ignore_warn(local_close(old, "old fence close failed"));
++	igt_ignore_warn(local_close(new, "new fence close failed"));
+ 
+ 	return merge;
+ }
+@@ -249,29 +249,53 @@ static int local_i915_healthcheck(int i915, const char *prefix)
+ 		.buffer_count = 1,
+ 	};
+ 	const struct intel_execution_engine2 *engine;
+-	int fence = -1;
++	int fence = -1, err = 0, status = 1;
+ 
+ 	local_debug("%s%s\n", prefix, "running i915 GPU healthcheck");
+-	if (local_i915_is_wedged(i915))
++	if (igt_warn_on_f(local_i915_is_wedged(i915), "GPU found wedged\n"))
+ 		return -EIO;
+ 
++	/* Assume gem_create()/gem_write() failures are unrecoverable */
+ 	obj.handle = gem_create(i915, 4096);
+ 	gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
+ 
++	/* As soon as a fence is open, don't fail before closing it */
+ 	__for_each_physical_engine(i915, engine) {
+ 		execbuf.flags = engine->flags | I915_EXEC_FENCE_OUT;
+-		gem_execbuf_wr(i915, &execbuf);
++		err = __gem_execbuf_wr(i915, &execbuf);
++		if (igt_warn_on_f(err < 0, "__gem_execbuf_wr() returned %d\n",
++				  err))
++			break;
+ 
+ 		fence = merge_fences(fence, execbuf.rsvd2 >> 32);
++		if (igt_warn_on_f(fence < 0, "merge_fences() returned %d\n",
++				  fence)) {
++			err = fence;
++			break;
++		}
++	}
++	if (fence >= 0) {
++		status = sync_fence_wait(fence, -1);
++		if (igt_warn_on_f(status < 0, "sync_fence_wait() returned %d\n",
++				  status))
++			err = status;
++		if (!err)
++			status = sync_fence_status(fence);
++
++		/* Assume fence close errors don't affect device close status */
++		igt_ignore_warn(local_close(fence, "fence close failed"));
+ 	}
+-	igt_assert(fence != -1);
++
++	/* Assume gem_close() failure is unrecoverable */
+ 	gem_close(i915, obj.handle);
+ 
+-	igt_assert_eq(sync_fence_wait(fence, -1), 0);
+-	igt_assert_eq(sync_fence_status(fence), 1);
+-	close(fence);
++	if (err < 0)
++		return err;
++	if (igt_warn_on_f(status != 1, "sync_fence_status() returned %d\n",
++			  status))
++		return -1;
+ 
+-	if (local_i915_is_wedged(i915))
++	if (igt_warn_on_f(local_i915_is_wedged(i915), "GPU turned wedged\n"))
+ 		return -EIO;
+ 
+ 	return 0;
+-- 
+2.21.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
