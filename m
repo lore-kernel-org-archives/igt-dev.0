@@ -1,81 +1,78 @@
-Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
+Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 13 Oct 2020 18:07:22 +0100
-Message-Id: <20201013170722.2474068-1-chris@chris-wilson.co.uk>
+Date: Wed, 14 Oct 2020 11:40:29 +0100
+Message-Id: <20201014104038.2554985-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [Intel-gfx] [PATCH i-g-t] i915/gem_exec_balancer: Check balancer
- submission latency
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Subject: [igt-dev] [PATCH i-g-t 01/10] i915/gem_userptr_blits: Tighten
+ has_userptr()
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
+List-Post: <mailto:igt-dev@lists.freedesktop.org>
+List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
+ <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-To: intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+Errors-To: igt-dev-bounces@lists.freedesktop.org
+Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-While CI is unreliable in terms of detecting performance deltas, it
-should still be able to detect when we are orders of magnitude off
-expectations. In this case, latency/throughput when submitting to a load
-balancer should be on par with a native engine.
+We use has_userptr() to determine if the different flags are supported,
+so it helps not to override the flags inside the test.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/i915/gem_exec_balancer.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tests/i915/gem_userptr_blits.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tests/i915/gem_exec_balancer.c b/tests/i915/gem_exec_balancer.c
-index 35a032ccb..0c334b91b 100644
---- a/tests/i915/gem_exec_balancer.c
-+++ b/tests/i915/gem_exec_balancer.c
-@@ -2380,6 +2380,7 @@ static void nop(int i915)
- 	for (int class = 0; class < 32; class++) {
- 		struct i915_engine_class_instance *ci;
- 		unsigned int count;
-+		double max = 0;
- 		uint32_t ctx;
+diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
+index 268423dcd..01498edad 100644
+--- a/tests/i915/gem_userptr_blits.c
++++ b/tests/i915/gem_userptr_blits.c
+@@ -71,8 +71,7 @@
+ #define PAGE_SIZE 4096
+ #endif
  
- 		ci = list_engines(i915, 1u << class, &count);
-@@ -2410,6 +2411,8 @@ static void nop(int i915)
- 
- 			t = igt_nsec_elapsed(&tv) * 1e-3 / nops;
- 			igt_info("%s:%d %.3fus\n", class_to_str(class), n, t);
-+			if (t > max)
-+				max = t;
- 		}
- 
- 		{
-@@ -2433,9 +2436,10 @@ static void nop(int i915)
- 
- 			t = igt_nsec_elapsed(&tv) * 1e-3 / nops;
- 			igt_info("%s:* %.3fus\n", class_to_str(class), t);
-+			if (t > 10 * max)
-+				igt_warn("Balancer submission %.1fx worse than normal!\n", t / max);
- 		}
- 
+-static uint32_t userptr_flags = I915_USERPTR_UNSYNCHRONIZED;
 -
- 		igt_fork(child, count) {
- 			struct drm_i915_gem_execbuffer2 execbuf = {
- 				.buffers_ptr = to_user_pointer(&batch),
-@@ -2476,6 +2480,8 @@ static void nop(int i915)
- 			t = igt_nsec_elapsed(&tv) * 1e-3 / nops;
- 			igt_info("[%d] %s:* %.3fus\n",
- 				 child, class_to_str(class), t);
-+			if (t > 20 * max)
-+				igt_warn("[%d] Balancer submission %.1fx worse than normal!\n", child, t / max);
++static uint32_t userptr_flags;
+ static bool *can_mmap;
  
- 			gem_context_destroy(i915, execbuf.rsvd1);
+ #define WIDTH 512
+@@ -504,14 +503,11 @@ static int has_userptr(int fd)
+ {
+ 	uint32_t handle = 0;
+ 	void *ptr;
+-	uint32_t oldflags;
+ 	int ret;
+ 
+ 	igt_assert(posix_memalign(&ptr, PAGE_SIZE, PAGE_SIZE) == 0);
+-	oldflags = userptr_flags;
+-	gem_userptr_test_unsynchronized();
+ 	ret = __gem_userptr(fd, ptr, PAGE_SIZE, 0, userptr_flags, &handle);
+-	userptr_flags = oldflags;
++	errno = 0;
+ 	if (ret != 0) {
+ 		free(ptr);
+ 		return 0;
+@@ -2112,6 +2108,10 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
+ 
+ 	igt_subtest_group {
+ 		igt_fixture {
++			/* Either mode will do for parameter checking */
++			gem_userptr_test_synchronized();
++			if (!has_userptr(fd))
++				gem_userptr_test_unsynchronized();
+ 			igt_require(has_userptr(fd));
  		}
+ 
 -- 
 2.28.0
 
 _______________________________________________
-Intel-gfx mailing list
-Intel-gfx@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
