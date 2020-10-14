@@ -1,74 +1,78 @@
-Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Return-Path: <intel-gfx-bounces@lists.freedesktop.org>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 14 Oct 2020 11:40:34 +0100
-Message-Id: <20201014104038.2554985-6-chris@chris-wilson.co.uk>
-In-Reply-To: <20201014104038.2554985-1-chris@chris-wilson.co.uk>
-References: <20201014104038.2554985-1-chris@chris-wilson.co.uk>
+Date: Wed, 14 Oct 2020 09:34:44 +0100
+Message-Id: <20201014083444.2554501-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 06/10] i915/gem_exec_reloc: Continuing the
- trend of checking userptr
-List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
-List-Post: <mailto:igt-dev@lists.freedesktop.org>
-List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
- <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Subject: [Intel-gfx] [PATCH i-g-t] i915/gem_uesrptr_blits: Tighten
+ has_userptr()
+List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <https://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Errors-To: igt-dev-bounces@lists.freedesktop.org
-Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
+
+We use has_userptr() to determine if the different flags are supported,
+so it helps not to override the flags inside the test.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- tests/i915/gem_exec_reloc.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ tests/i915/gem_userptr_blits.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tests/i915/gem_exec_reloc.c b/tests/i915/gem_exec_reloc.c
-index cb1a04b11..fc2bd0a56 100644
---- a/tests/i915/gem_exec_reloc.c
-+++ b/tests/i915/gem_exec_reloc.c
-@@ -429,7 +429,7 @@ static unsigned int offset_in_page(void *addr)
- 	return (uintptr_t)addr & 4095;
- }
+diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
+index 268423dcd..01498edad 100644
+--- a/tests/i915/gem_userptr_blits.c
++++ b/tests/i915/gem_userptr_blits.c
+@@ -71,8 +71,7 @@
+ #define PAGE_SIZE 4096
+ #endif
  
--static void active_spin(int fd, unsigned engine)
-+static void active_spin(int fd, unsigned engine, unsigned long flags)
+-static uint32_t userptr_flags = I915_USERPTR_UNSYNCHRONIZED;
+-
++static uint32_t userptr_flags;
+ static bool *can_mmap;
+ 
+ #define WIDTH 512
+@@ -504,14 +503,11 @@ static int has_userptr(int fd)
  {
- 	const uint32_t bbe = MI_BATCH_BUFFER_END;
- 	struct drm_i915_gem_relocation_entry reloc;
-@@ -439,7 +439,7 @@ static void active_spin(int fd, unsigned engine)
+ 	uint32_t handle = 0;
+ 	void *ptr;
+-	uint32_t oldflags;
+ 	int ret;
  
- 	spin = igt_spin_new(fd,
- 			    .engine = engine,
--			    .flags = IGT_SPIN_NO_PREEMPTION);
-+			    .flags = IGT_SPIN_NO_PREEMPTION | flags);
+ 	igt_assert(posix_memalign(&ptr, PAGE_SIZE, PAGE_SIZE) == 0);
+-	oldflags = userptr_flags;
+-	gem_userptr_test_unsynchronized();
+ 	ret = __gem_userptr(fd, ptr, PAGE_SIZE, 0, userptr_flags, &handle);
+-	userptr_flags = oldflags;
++	errno = 0;
+ 	if (ret != 0) {
+ 		free(ptr);
+ 		return 0;
+@@ -2112,6 +2108,10 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
  
- 	memset(obj, 0, sizeof(obj));
- 	obj[0] = spin->obj[IGT_SPIN_BATCH];
-@@ -1266,7 +1266,14 @@ igt_main
- 	igt_subtest_with_dynamic("basic-spin") {
- 		__for_each_physical_engine(fd, e) {
- 			igt_dynamic_f("%s", e->name)
--				active_spin(fd, e->flags);
-+				active_spin(fd, e->flags, 0);
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("basic-spin-user") {
-+		__for_each_physical_engine(fd, e) {
-+			igt_dynamic_f("%s", e->name)
-+				active_spin(fd, e->flags, IGT_SPIN_USERPTR);
+ 	igt_subtest_group {
+ 		igt_fixture {
++			/* Either mode will do for parameter checking */
++			gem_userptr_test_synchronized();
++			if (!has_userptr(fd))
++				gem_userptr_test_unsynchronized();
+ 			igt_require(has_userptr(fd));
  		}
- 	}
  
 -- 
 2.28.0
 
 _______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Intel-gfx mailing list
+Intel-gfx@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/intel-gfx
