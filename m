@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20201014104038.2554985-1-chris@chris-wilson.co.uk>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <f8998e32-7ea1-52b6-bf5a-144debebb1a6@linux.intel.com>
-Date: Thu, 15 Oct 2020 13:53:45 +0100
+Message-ID: <7e13ba8833d8fbb887c01e420591a10944965147.camel@linux.intel.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Date: Thu, 15 Oct 2020 19:18:53 +0200
+In-Reply-To: <80c901a14b3e4976fa670b410b96926cd97b370d.camel@linux.intel.com>
+References: <20201014165535.25668-1-janusz.krzysztofik@linux.intel.com>
+ <80c901a14b3e4976fa670b410b96926cd97b370d.camel@linux.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20201014104038.2554985-1-chris@chris-wilson.co.uk>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t 01/10] i915/gem_userptr_blits: Tighten
- has_userptr()
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/core_hotunplug: Take care of
+ closing fences before failing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,72 +15,147 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>, igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
+On Thu, 2020-10-15 at 09:40 +0200, Marcin Bernatowicz wrote:
+> On Wed, 2020-10-14 at 18:55 +0200, Janusz Krzysztofik wrote:
+> > The test was designed to keep track of open device file descriptors
+> > for safe driver unbind on recovery from a failed subtest.  In that
+> > context, fences introduced by commit 1fbd127bd4e1 ("core_hotplug:
+> > Teach the healthcheck how to check execution status") can affect
+> > device
+> > recovery as much as an open device file if not closed before unbind.
+> > 
+> > Moreover, forced GPU reset which used to be applied on recovery from
+> > a
+> > failed i915 GPU health check is no longer reachable since a GPU hang
+> > hopefully detected by the new health check algorithm can now break
+> > the
+> > whole recovery procedure prematurely.
+> > 
+> > Refactor local_i915_healthcheck() so it takes care of closing fences
+> > and returns a result to its caller instead of long jumping on
+> > failures
+> > believed to be recoverable.  While avoiding use of igt_assert() and
+> > friends, report actual source and error code of failures via
+> > igt_warn_on_f().
+> > 
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com
+> > Cc: Chris Wilson <chris@chris-wilson.co.uk>
+> > ---
+> >  tests/core_hotunplug.c | 46 ++++++++++++++++++++++++++++++++------
+> > ----
+> >  1 file changed, 35 insertions(+), 11 deletions(-)
+> > 
+> > diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+> > index 70669c590..d6db02bad 100644
+> > --- a/tests/core_hotunplug.c
+> > +++ b/tests/core_hotunplug.c
+> > @@ -233,9 +233,9 @@ static int merge_fences(int old, int new)
+> >  		return new;
+> >  
+> >  	merge = sync_fence_merge(old, new);
+> > -	igt_assert(merge != -1);
+> > -	close(old);
+> > -	close(new);
+> > +	/* Assume fence close errors don't affect device close status
+> > */
+> > +	igt_ignore_warn(local_close(old, "old fence close failed"));
+> > +	igt_ignore_warn(local_close(new, "new fence close failed"));
+> >  
+> >  	return merge;
+> >  }
+> > @@ -249,29 +249,53 @@ static int local_i915_healthcheck(int i915,
+> > const char *prefix)
+> >  		.buffer_count = 1,
+> >  	};
+> >  	const struct intel_execution_engine2 *engine;
+> > -	int fence = -1;
+> > +	int fence = -1, err = 0, status = 1;
+> >  
+> >  	local_debug("%s%s\n", prefix, "running i915 GPU healthcheck");
+> > -	if (local_i915_is_wedged(i915))
+> > +	if (igt_warn_on_f(local_i915_is_wedged(i915), "GPU found
+> > wedged\n"))
+> >  		return -EIO;
+> >  
+> > +	/* Assume gem_create()/gem_write() failures are unrecoverable
+> > */
+> >  	obj.handle = gem_create(i915, 4096);
+> >  	gem_write(i915, obj.handle, 0, &bbe, sizeof(bbe));
+> >  
+> > +	/* As soon as a fence is open, don't fail before closing it */
+> >  	__for_each_physical_engine(i915, engine) {
+> >  		execbuf.flags = engine->flags | I915_EXEC_FENCE_OUT;
+> > -		gem_execbuf_wr(i915, &execbuf);
+> > +		err = __gem_execbuf_wr(i915, &execbuf);
+> > +		if (igt_warn_on_f(err < 0, "__gem_execbuf_wr() returned
+> > %d\n",
+> > +				  err))
+> > +			break;
+> >  
+> >  		fence = merge_fences(fence, execbuf.rsvd2 >> 32);
+> > +		if (igt_warn_on_f(fence < 0, "merge_fences() returned
+> > %d\n",
+> > +				  fence)) {
+> > +			err = fence;
+> > +			break;
+> > +		}
+> > +	}
+> > +	if (fence >= 0) {
+> > +		status = sync_fence_wait(fence, -1);
+> > +		if (igt_warn_on_f(status < 0, "sync_fence_wait()
+> > returned %d\n",
+> > +				  status))
+> > +			err = status;
+> > +		if (!err)
+> > +			status = sync_fence_status(fence);
+> > +
+> > +		/* Assume fence close errors don't affect device close
+> > status */
+> > +		igt_ignore_warn(local_close(fence, "fence close
+> > failed"));
+> >  	}
+> > -	igt_assert(fence != -1);
+> > +
+> > +	/* Assume gem_close() failure is unrecoverable */
+> >  	gem_close(i915, obj.handle);
+> >  
+> > -	igt_assert_eq(sync_fence_wait(fence, -1), 0);
+> > -	igt_assert_eq(sync_fence_status(fence), 1);
+> > -	close(fence);
+> > +	if (err < 0)
+> > +		return err;
+> > +	if (igt_warn_on_f(status != 1, "sync_fence_status() returned
+> > %d\n",
+> > +			  status))
+> > +		return -1;
+> >  
+> > -	if (local_i915_is_wedged(i915))
+> > +	if (igt_warn_on_f(local_i915_is_wedged(i915), "GPU turned
+> > wedged\n"))
+> >  		return -EIO;
+> LGTM,
+> Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 
-On 14/10/2020 11:40, Chris Wilson wrote:
-> We use has_userptr() to determine if the different flags are supported,
-> so it helps not to override the flags inside the test.
+Thanks Marcin, pushed.
+
+Unfortunately I forgot to include the R-b and pushed without it so it
+will exist only in the list archives, sorry.
+
+Thanks,
+Janusz
+
 > 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> ---
->   tests/i915/gem_userptr_blits.c | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/i915/gem_userptr_blits.c b/tests/i915/gem_userptr_blits.c
-> index 268423dcd..01498edad 100644
-> --- a/tests/i915/gem_userptr_blits.c
-> +++ b/tests/i915/gem_userptr_blits.c
-> @@ -71,8 +71,7 @@
->   #define PAGE_SIZE 4096
->   #endif
->   
-> -static uint32_t userptr_flags = I915_USERPTR_UNSYNCHRONIZED;
-> -
-> +static uint32_t userptr_flags;
->   static bool *can_mmap;
->   
->   #define WIDTH 512
-> @@ -504,14 +503,11 @@ static int has_userptr(int fd)
->   {
->   	uint32_t handle = 0;
->   	void *ptr;
-> -	uint32_t oldflags;
->   	int ret;
->   
->   	igt_assert(posix_memalign(&ptr, PAGE_SIZE, PAGE_SIZE) == 0);
-> -	oldflags = userptr_flags;
-> -	gem_userptr_test_unsynchronized();
->   	ret = __gem_userptr(fd, ptr, PAGE_SIZE, 0, userptr_flags, &handle);
-> -	userptr_flags = oldflags;
-> +	errno = 0;
->   	if (ret != 0) {
->   		free(ptr);
->   		return 0;
-> @@ -2112,6 +2108,10 @@ igt_main_args("c:", NULL, help_str, opt_handler, NULL)
->   
->   	igt_subtest_group {
->   		igt_fixture {
-> +			/* Either mode will do for parameter checking */
-> +			gem_userptr_test_synchronized();
-> +			if (!has_userptr(fd))
-> +				gem_userptr_test_unsynchronized();
->   			igt_require(has_userptr(fd));
->   		}
->   
-> 
+> >  
+> >  	return 0;
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-
-Regards,
-
-Tvrtko
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
