@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA1046E15E
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Oct 2020 19:08:55 +0000 (UTC)
-Date: Thu, 15 Oct 2020 22:08:52 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20201015190852.GN6112@intel.com>
-References: <20201012175654.2422295-1-imre.deak@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 69F9F6E804
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Oct 2020 23:30:52 +0000 (UTC)
+From: "Vudum, Lakshminarayana" <lakshminarayana.vudum@intel.com>
+Date: Thu, 15 Oct 2020 23:30:47 +0000
+Message-ID: <150a28793f394f918b4d082e4531c6b5@intel.com>
+References: <20201014165535.25668-1-janusz.krzysztofik@linux.intel.com>
+ <160270370898.21206.2344858637500034519@emeril.freedesktop.org>
+ <43b99d5261e63a4ae6dc4e73723c8c598ebfc323.camel@linux.intel.com>
+In-Reply-To: <43b99d5261e63a4ae6dc4e73723c8c598ebfc323.camel@linux.intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201012175654.2422295-1-imre.deak@intel.com>
-Subject: Re: [igt-dev] [PATCH] tests/kms_dp_aux_dev: Handle AUX failures on
- disconnected MST connectors
+Subject: Re: [igt-dev]
+ =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgdGVzdHMv?=
+ =?utf-8?q?core=5Fhotunplug=3A_Take_care_of_closing_fences_before_failing?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,89 +21,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Imre Deak <imre.deak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Oct 12, 2020 at 08:56:54PM +0300, Imre Deak wrote:
-> The DPCD of an MST connector is read out with a REMOTE_DPCD_READ MST
-> request. If the given connector is disconnected this read will result in
-> an MST NAK reply and this will be reported as an EIO error to the
-> initiator of the AUX read.
-> =
-
-> Handle this in the test that attempts to read the DPCD of any exposed
-> connector, whether they are connected or not.
-> =
-
-> Signed-off-by: Imre Deak <imre.deak@intel.com>
-
-Reviewed-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-
-> ---
->  tests/kms_dp_aux_dev.c | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
-> =
-
-> diff --git a/tests/kms_dp_aux_dev.c b/tests/kms_dp_aux_dev.c
-> index 4f52434a..39fc2b92 100644
-> --- a/tests/kms_dp_aux_dev.c
-> +++ b/tests/kms_dp_aux_dev.c
-> @@ -34,6 +34,14 @@
->  =
-
->  IGT_TEST_DESCRIPTION("Test that /dev/drm_dp_aux reads work");
->  =
-
-> +static bool is_mst_connector(int drm_fd, uint32_t connector_id)
-> +{
-> +	return kmstest_get_property(drm_fd, connector_id,
-> +				    DRM_MODE_OBJECT_CONNECTOR,
-> +				    "PATH", NULL,
-> +				    NULL, NULL);
-> +}
-> +
->  static bool test(int drm_fd, uint32_t connector_id)
->  {
->  	drmModeConnector *connector;
-> @@ -67,10 +75,12 @@ static bool test(int drm_fd, uint32_t connector_id)
->  		igt_assert(fd >=3D 0);
->  =
-
->  		ret =3D read(fd, buf, sizeof(buf));
-> -		igt_assert(ret =3D=3D sizeof(buf) || errno =3D=3D ETIMEDOUT);
-> -
->  		igt_info("%s: %s\n", path,
-> -			 ret > 0 ? "success" : "timed out");
-> +			 ret > 0 ? "success" : strerror(errno));
-> +
-> +		igt_assert(ret =3D=3D sizeof(buf) ||
-> +			   errno =3D=3D ETIMEDOUT ||
-> +			   (errno =3D=3D EIO && is_mst_connector(drm_fd, connector_id)));
->  =
-
->  		close(fd);
->  =
-
-> -- =
-
-> 2.20.1
-> =
-
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
--- =
-
-Ville Syrj=E4l=E4
-Intel
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SmFudXN6LCBJIGhhdmUgYWRkcmVzc2VkIHRoZSBmYWlsdXJlIGFuZCByZS1yZXBvcnRlZCB0aGUg
+cmVzdWx0cy4NCg0KTGFrc2htaS4NCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBK
+YW51c3ogS3J6eXN6dG9maWsgPGphbnVzei5rcnp5c3p0b2Zpa0BsaW51eC5pbnRlbC5jb20+IA0K
+U2VudDogVGh1cnNkYXksIE9jdG9iZXIgMTUsIDIwMjAgMjoxMyBBTQ0KVG86IFZ1ZHVtLCBMYWtz
+aG1pbmFyYXlhbmEgPGxha3NobWluYXJheWFuYS52dWR1bUBpbnRlbC5jb20+DQpDYzogaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNClN1YmplY3Q6IFJlOiDinJcgRmkuQ0kuSUdUOiBmYWls
+dXJlIGZvciB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogVGFrZSBjYXJlIG9mIGNsb3NpbmcgZmVuY2Vz
+IGJlZm9yZSBmYWlsaW5nDQoNCkhpIExha3NobWksDQoNCk9uIFdlZCwgMjAyMC0xMC0xNCBhdCAx
+OToyOCArMDAwMCwgUGF0Y2h3b3JrIHdyb3RlOg0KPiBQYXRjaCBEZXRhaWxzDQo+IFNlcmllczoJ
+dGVzdHMvY29yZV9ob3R1bnBsdWc6IFRha2UgY2FyZSBvZiBjbG9zaW5nIGZlbmNlcyBiZWZvcmUg
+ZmFpbGluZw0KPiBVUkw6CWh0dHBzOi8vcGF0Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMv
+ODI2ODQvDQo+IFN0YXRlOglmYWlsdXJlDQo+IERldGFpbHM6CWh0dHBzOi8vaW50ZWwtZ2Z4LWNp
+LjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfNTA2OS9pbmRleC5odG1sDQo+IENJIEJ1ZyBMb2cg
+LSBjaGFuZ2VzIGZyb20gSUdUXzU4MTVfZnVsbCAtPiBJR1RQV181MDY5X2Z1bGwgU3VtbWFyeSAN
+Cj4gRkFJTFVSRQ0KPiANCj4gU2VyaW91cyB1bmtub3duIGNoYW5nZXMgY29taW5nIHdpdGggSUdU
+UFdfNTA2OV9mdWxsIGFic29sdXRlbHkgbmVlZCB0byANCj4gYmUgdmVyaWZpZWQgbWFudWFsbHku
+DQo+IA0KPiBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNoYW5nZXMgaGF2ZSBub3RoaW5nIHRv
+IGRvIHdpdGggdGhlIGNoYW5nZXMgDQo+IGludHJvZHVjZWQgaW4gSUdUUFdfNTA2OV9mdWxsLCBw
+bGVhc2Ugbm90aWZ5IHlvdXIgYnVnIHRlYW0gdG8gYWxsb3cgDQo+IHRoZW0gdG8gZG9jdW1lbnQg
+dGhpcyBuZXcgZmFpbHVyZSBtb2RlLCB3aGljaCB3aWxsIHJlZHVjZSBmYWxzZSBwb3NpdGl2ZXMg
+aW4gQ0kuDQo+IA0KPiBFeHRlcm5hbCBVUkw6IA0KPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5v
+cmcvdHJlZS9kcm0tdGlwL0lHVFBXXzUwNjkvaW5kZXguaHRtbA0KPiANCj4gUG9zc2libGUgbmV3
+IGlzc3Vlcw0KPiBIZXJlIGFyZSB0aGUgdW5rbm93biBjaGFuZ2VzIHRoYXQgbWF5IGhhdmUgYmVl
+biBpbnRyb2R1Y2VkIGluIElHVFBXXzUwNjlfZnVsbDoNCj4gDQo+IElHVCBjaGFuZ2VzDQo+IFBv
+c3NpYmxlIHJlZ3Jlc3Npb25zDQo+IGlndEBrbXNfcGxhbmVAcGxhbmUtcG9zaXRpb24taG9sZS1w
+aXBlLWItcGxhbmVzOg0KPiBzaGFyZC1pY2xiOiBQQVNTIC0+IEZBSUwNCg0KQW5vdGhlciBmYWxz
+ZSBwb3NpdGl2ZSwgbm90IHJlbGF0ZWQgdG8gdGhlIGNoYW5nZSwgbm90IHByZWNlZGVkIGluIGl0
+cyBDSSBydW4gYnkgdGhlIHRlc3QgbW9kaWZpZWQgYnkgdGhlIHBhdGNoLg0KDQpUaGFua3MsDQpK
+YW51c3oNCiANCj4gS25vd24gaXNzdWVzDQo+IEhlcmUgYXJlIHRoZSBjaGFuZ2VzIGZvdW5kIGlu
+IElHVFBXXzUwNjlfZnVsbCB0aGF0IGNvbWUgZnJvbSBrbm93biBpc3N1ZXM6DQo+IA0KPiBJR1Qg
+Y2hhbmdlcw0KPiBJc3N1ZXMgaGl0DQo+IGlndEBnZW1fZXhlY19yZWxvY0BiYXNpYy1tYW55LWFj
+dGl2ZUBiY3MwOg0KPiANCj4gc2hhcmQtZ2xrOiBQQVNTIC0+IEZBSUwgKGk5MTUjMjM4OSkNCj4g
+aWd0QGdlbV9leGVjX3doaXNwZXJAYmFzaWMtY29udGV4dHMtcHJpb3JpdHktYWxsOg0KPiANCj4g
+c2hhcmQtZ2xrOiBQQVNTIC0+IERNRVNHLVdBUk4gKGk5MTUjMTE4IC8gaTkxNSM5NSkNCj4gaWd0
+QGttc19iaWdfZmJAbGluZWFyLTE2YnBwLXJvdGF0ZS0wOg0KPiANCj4gc2hhcmQtc25iOiBQQVNT
+IC0+IFNLSVAgKGZkbyMxMDkyNzEpICsxIHNpbWlsYXIgaXNzdWUNCj4gaWd0QGttc19iaWdfZmJA
+eWYtdGlsZWQtMzJicHAtcm90YXRlLTA6DQo+IA0KPiBzaGFyZC1hcGw6IFBBU1MgLT4gRE1FU0ct
+V0FSTiAoaTkxNSMxNjM1IC8gaTkxNSMxOTgyKQ0KPiBpZ3RAa21zX2N1cnNvcl9jcmNAcGlwZS1j
+LWN1cnNvci0xMjh4MTI4LXNsaWRpbmc6DQo+IA0KPiBzaGFyZC1rYmw6IFBBU1MgLT4gRkFJTCAo
+aTkxNSM1NCkNCj4gDQo+IHNoYXJkLWdsazogUEFTUyAtPiBGQUlMIChpOTE1IzU0KQ0KPiANCj4g
+c2hhcmQtYXBsOiBQQVNTIC0+IEZBSUwgKGk5MTUjMTYzNSAvIGk5MTUjNTQpDQo+IA0KPiBpZ3RA
+a21zX2N1cnNvcl9lZGdlX3dhbGtAcGlwZS1jLTI1NngyNTYtdG9wLWVkZ2U6DQo+IA0KPiBzaGFy
+ZC1nbGs6IFBBU1MgLT4gRE1FU0ctV0FSTiAoaTkxNSMxOTgyKQ0KPiBpZ3RAa21zX2Zyb250YnVm
+ZmVyX3RyYWNraW5nQGZiYy0xcC1wcmltc2Nybi1zaHJmYi1tc2ZsaXAtYmx0Og0KPiANCj4gc2hh
+cmQtdGdsYjogUEFTUyAtPiBGQUlMIChpOTE1IzI0MTYpDQo+IGlndEBrbXNfZnJvbnRidWZmZXJf
+dHJhY2tpbmdAZmJjLTJwLXNjbmRzY3JuLXByaS1pbmRmYi1kcmF3LW1tYXAtY3B1Og0KPiANCj4g
+c2hhcmQtZ2xrOiBQQVNTIC0+IEZBSUwgKGk5MTUjNDkpDQo+IGlndEBrbXNfZnJvbnRidWZmZXJf
+dHJhY2tpbmdAcHNyLXJnYjEwMTAxMC1kcmF3LW1tYXAtd2M6DQo+IA0KPiBzaGFyZC10Z2xiOiBQ
+QVNTIC0+IERNRVNHLVdBUk4gKGk5MTUjMTk4MikNCj4gaWd0QGttc19wc3JAcHNyMl9kcG1zOg0K
+PiANCj4gc2hhcmQtaWNsYjogUEFTUyAtPiBTS0lQIChmZG8jMTA5NDQxKSArMSBzaW1pbGFyIGlz
+c3VlDQo+IGlndEBrbXNfdmJsYW5rQHBpcGUtYi10cy1jb250aW51YXRpb24tZHBtcy1zdXNwZW5k
+Og0KPiANCj4gc2hhcmQta2JsOiBQQVNTIC0+IElOQ09NUExFVEUgKGk5MTUjMTU1KQ0KPiBpZ3RA
+cGVyZl9wbXVAbW9zdC1idXN5LWlkbGUtY2hlY2stYWxsQHZlY3MwOg0KPiANCj4gc2hhcmQtaWNs
+YjogUEFTUyAtPiBETUVTRy1XQVJOIChpOTE1IzE5ODIpIFBvc3NpYmxlIGZpeGVzDQo+IGlndEBm
+ZWF0dXJlX2Rpc2NvdmVyeUBwc3IyOg0KPiANCj4gc2hhcmQtaWNsYjogU0tJUCAoaTkxNSM2NTgp
+IC0+IFBBU1MNCj4gaWd0QGdlbV9leGVjX3doaXNwZXJAYmFzaWMtZmRzLWZvcmtlZC1hbGw6DQo+
+IA0KPiBzaGFyZC1nbGs6IERNRVNHLVdBUk4gKGk5MTUjMTE4IC8gaTkxNSM5NSkgLT4gUEFTUyAr
+MSBzaW1pbGFyIGlzc3VlDQo+IGlndEBnZW1fbW1hcF9vZmZzZXRAYmx0LWNvaGVyZW5jeToNCj4g
+DQo+IHNoYXJkLWFwbDogRkFJTCAoaTkxNSMxNjM1KSAtPiBQQVNTDQo+IGlndEBrbXNfYmlnX2Zi
+QGxpbmVhci04YnBwLXJvdGF0ZS0wOg0KPiANCj4gc2hhcmQta2JsOiBETUVTRy1XQVJOIChpOTE1
+IzE5ODIpIC0+IFBBU1MNCj4gaWd0QGttc19kcmF3X2NyY0BkcmF3LW1ldGhvZC14cmdiODg4OC1y
+ZW5kZXItdW50aWxlZDoNCj4gDQo+IHNoYXJkLWdsazogRkFJTCAoaTkxNSMxNzcgLyBpOTE1IzUy
+IC8gaTkxNSM1NCkgLT4gUEFTUw0KPiBpZ3RAa21zX2ZsaXBAZmxpcC12cy1leHBpcmVkLXZibGFu
+a0BiLWhkbWktYTE6DQo+IA0KPiBzaGFyZC1nbGs6IEZBSUwgKGk5MTUjNzkpIC0+IFBBU1MNCj4g
+aWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0BmYmMtMXAtcHJpbXNjcm4taW5kZmItcGxmbGlw
+LWJsdDoNCj4gDQo+IHNoYXJkLXRnbGI6IERNRVNHLVdBUk4gKGk5MTUjMTk4MikgLT4gUEFTUw0K
+PiBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5nQGZiYy0xcC1wcmltc2Nybi1zcHItaW5kZmIt
+ZHJhdy1wd3JpdGU6DQo+IA0KPiBzaGFyZC1hcGw6IEZBSUwgKGk5MTUjMTYzNSAvIGk5MTUjNDkp
+IC0+IFBBU1MNCj4gDQo+IHNoYXJkLWtibDogRkFJTCAoaTkxNSM0OSkgLT4gUEFTUw0KPiANCj4g
+aWd0QGttc19mcm9udGJ1ZmZlcl90cmFja2luZ0BmYmNwc3ItMXAtcHJpbXNjcm4taW5kZmItcGxm
+bGlwLWJsdDoNCj4gDQo+IHNoYXJkLXRnbGI6IEZBSUwgKGk5MTUjMjQxNikgLT4gUEFTUyArMSBz
+aW1pbGFyIGlzc3VlDQo+IGlndEBrbXNfcHNyQHBzcjJfc3ByaXRlX3BsYW5lX21vdmU6DQo+IA0K
+PiBzaGFyZC1pY2xiOiBTS0lQIChmZG8jMTA5NDQxKSAtPiBQQVNTICsxIHNpbWlsYXIgaXNzdWUN
+Cj4gaWd0QHBlcmZAbm9uLXN5c3RlbS13aWRlLXBhcmFub2lkOg0KPiANCj4gc2hhcmQtYXBsOiBT
+S0lQIChmZG8jMTA5MjcxIC8gaTkxNSMxMzU0IC8gaTkxNSMxNjM1KSAtPiBQQVNTDQo+IA0KPiBz
+aGFyZC1nbGs6IFNLSVAgKGZkbyMxMDkyNzEgLyBpOTE1IzEzNTQpIC0+IFBBU1MNCj4gDQo+IHNo
+YXJkLWljbGI6IFNLSVAgKGk5MTUjMTM1NCkgLT4gUEFTUw0KPiANCj4gc2hhcmQta2JsOiBTS0lQ
+IChmZG8jMTA5MjcxIC8gaTkxNSMxMzU0KSAtPiBQQVNTDQo+IA0KPiBzaGFyZC10Z2xiOiBTS0lQ
+IChpOTE1IzEzNTQpIC0+IFBBU1MNCj4gDQo+IFdhcm5pbmdzDQo+IGlndEBrbXNfZHBfZHNjQGJh
+c2ljLWRzYy1lbmFibGUtZWRwOg0KPiANCj4gc2hhcmQtaWNsYjogU0tJUCAoZmRvIzEwOTM0OSkg
+LT4gRE1FU0ctV0FSTiAoaTkxNSMxMjI2KQ0KPiBpZ3RAa21zX2Zyb250YnVmZmVyX3RyYWNraW5n
+QGZiY3Bzci0xcC1wcmktaW5kZmItbXVsdGlkcmF3Og0KPiANCj4gc2hhcmQtdGdsYjogRkFJTCAo
+aTkxNSMyNDE2KSAtPiBETUVTRy1GQUlMIChpOTE1IzE5ODIpDQo+IGlndEBrbXNfZnJvbnRidWZm
+ZXJfdHJhY2tpbmdAcHNyLXJnYjEwMTAxMC1kcmF3LWJsdDoNCj4gDQo+IHNoYXJkLXRnbGI6IERN
+RVNHLUZBSUwgKGk5MTUjMTk4MikgLT4gRkFJTCAoaTkxNSMyNDE2KQ0KPiB7bmFtZX06IFRoaXMg
+ZWxlbWVudCBpcyBzdXBwcmVzc2VkLiBUaGlzIG1lYW5zIGl0IGlzIGlnbm9yZWQgd2hlbiANCj4g
+Y29tcHV0aW5nIHRoZSBzdGF0dXMgb2YgdGhlIGRpZmZlcmVuY2UgKFNVQ0NFU1MsIFdBUk5JTkcs
+IG9yIEZBSUxVUkUpLg0KPiANCj4gUGFydGljaXBhdGluZyBob3N0cyAoOCAtPiA4KQ0KPiBObyBj
+aGFuZ2VzIGluIHBhcnRpY2lwYXRpbmcgaG9zdHMNCj4gDQo+IEJ1aWxkIGNoYW5nZXMNCj4gQ0k6
+IENJLTIwMTkwNTI5IC0+IE5vbmUNCj4gSUdUOiBJR1RfNTgxNSAtPiBJR1RQV181MDY5DQo+IENJ
+LTIwMTkwNTI5OiAyMDE5MDUyOQ0KPiBDSV9EUk1fOTEzODogNWU0MjM0Zjk3ZWZiYWEzMGYwYmVi
+MjQzZGNmOThmZTBhMGJiMDk0NSBAIA0KPiBnaXQ6Ly9hbm9uZ2l0LmZyZWVkZXNrdG9wLm9yZy9n
+ZngtY2kvbGludXgNCj4gSUdUUFdfNTA2OTogDQo+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
+Zy90cmVlL2RybS10aXAvSUdUUFdfNTA2OS9pbmRleC5odG1sDQo+IElHVF81ODE1OiAwYzNiMjk0
+OThhNjI0YWQ0MjAzM2EyMTlkMDMxY2I5ZGQ0NzU0MDViIEAgDQo+IGdpdDovL2Fub25naXQuZnJl
+ZWRlc2t0b3Aub3JnL3hvcmcvYXBwL2ludGVsLWdwdS10b29scw0KDQpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3Qt
+ZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9t
+YWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
