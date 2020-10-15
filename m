@@ -1,12 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Message-ID: <19482560cb22b16f296d193284a8c700436b8362.camel@linux.intel.com>
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Date: Thu, 15 Oct 2020 09:15:00 +0200
-In-Reply-To: <20201013110234.17680-1-janusz.krzysztofik@linux.intel.com>
-References: <20201013110234.17680-1-janusz.krzysztofik@linux.intel.com>
-Mime-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v3] tests/core_hotunplug: Restore i915
- debugfs health check
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Thu, 15 Oct 2020 09:36:32 +0100
+Message-Id: <20201015083632.2618018-1-chris@chris-wilson.co.uk>
+MIME-Version: 1.0
+Subject: [igt-dev] [PATCH i-g-t] i915/sysfs: Verify .defaults are read-only
+ and match their namesakes
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,207 +12,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-Cc: Adam Miszczak <adam.miszczak@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, 2020-10-13 at 13:02 +0200, Janusz Krzysztofik wrote:
-> Removal of igt_fork_hang_detector() from local_i915_healthcheck() by
-> commit 1fbd127bd4e1 ("core_hotplug: Teach the healthcheck how to
-> check
-> execution status") resulted in unintentional removal of an important
-> though implicit test feature of detecting, reporting as failures and
-> recovering from potential misses of debugfs subdirs of hot rebound
-> i915
-> devices.  As a consequence, unexpected failures or skips of other
-> unrelated but subsequently run tests have been observed on CI.
-> 
-> On the other hand, removal of the debugfs issue detection and subtest
-> failures from right after hot rebinding the driver enabled the better
-> version of the i915 GPU health check fixed by the same commit to
-> detect
-> and report other issues potentially triggered by device late close.
-> 
-> Restore the missing test feature by introducing an explicit sysfs
-> health check, not limited to i915,  that verifies existence of device
-> sysfs and debugfs areas.  Also, split hotrebind/hotreplug scenarios
-> into a pair of each, one that performs the health check right after
-> hot
-> rebind/replug and delegates the device late close step to a follow up
-> recovery phase, while the other one checks device health only after
-> late closing it.
-> 
-> v2: Give GPU health check a better chance to detect issues - run it
->     before sysfs health checks.
-> v3: Run sysfs health check on any hardware, not only i915.
-> 
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com
-> >
-> Cc: Chris Wilson <chris@chris-wilson.co.uk>
-> ---
-> Even if the root cause has occurred to be sitting on the IGT lib side
-> and has been already fixed by commit 937526629344 ("lib: Don't fail
-> debugfs lookup on an expected absent drm device"), I think we should
-> restore the debugfs health check just in case new issues with similar
-> symptoms appear in the future and start affecting subsequent tests
-> silently.
-> 
-> Thanks,
-> Janusz
-> 
->  tests/core_hotunplug.c | 68 ++++++++++++++++++++++++++++++++++++++
-> ----
->  1 file changed, 62 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-> index 70669c590..cdc07c85d 100644
-> --- a/tests/core_hotunplug.c
-> +++ b/tests/core_hotunplug.c
-> @@ -308,7 +308,7 @@ static void node_healthcheck(struct hotunplug
-> *priv, unsigned flags)
->  		priv->failure = "Unrecoverable test failure";
->  		if (local_i915_healthcheck(fd_drm, "") &&
->  		    (!(flags & FLAG_RECOVER) ||
-> local_i915_recover(fd_drm)))
-> -			priv->failure = "Healthcheck failure!";
-> +			priv->failure = "GPU healthcheck failure!";
->  		else
->  			priv->failure = NULL;
->  
-> @@ -317,6 +317,16 @@ static void node_healthcheck(struct hotunplug
-> *priv, unsigned flags)
->  		priv->failure = NULL;
->  	}
->  
-> +	if (!priv->failure) {
-> +		char path[200];
-> +
-> +		priv->failure = "Device sysfs healthckeck failure!";
-> +		local_debug("%s\n", "running device sysfs
-> healthcheck");
-> +		igt_assert(igt_sysfs_path(fd_drm, path, sizeof(path)));
-> +		igt_assert(igt_debugfs_path(fd_drm, path,
-> sizeof(path)));
-> +		priv->failure = NULL;
-> +	}
-> +
-
-LGTM,
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-
->  	fd_drm = close_device(fd_drm, "", "health checked ");
->  	if (closed || fd_drm < -1)	/* update status for
-> post_healthcheck */
->  		priv->fd.drm_hc = fd_drm;
-> @@ -437,7 +447,7 @@ static void hotunplug_rescan(struct hotunplug
-> *priv)
->  	healthcheck(priv, false);
->  }
->  
-> -static void hotrebind_lateclose(struct hotunplug *priv)
-> +static void hotrebind(struct hotunplug *priv)
->  {
->  	igt_assert_eq(priv->fd.drm, -1);
->  	igt_assert_eq(priv->fd.drm_hc, -1);
-> @@ -448,6 +458,30 @@ static void hotrebind_lateclose(struct hotunplug
-> *priv)
->  	driver_bind(priv, 0);
->  
->  	healthcheck(priv, false);
-> +}
-> +
-> +static void hotreplug(struct hotunplug *priv)
-> +{
-> +	igt_assert_eq(priv->fd.drm, -1);
-> +	igt_assert_eq(priv->fd.drm_hc, -1);
-> +	priv->fd.drm = local_drm_open_driver(false, "", " for hot
-> replug");
-> +
-> +	device_unplug(priv, "hot ", 60);
-> +
-> +	bus_rescan(priv, 0);
-> +
-> +	healthcheck(priv, false);
-> +}
-> +
-> +static void hotrebind_lateclose(struct hotunplug *priv)
-> +{
-> +	igt_assert_eq(priv->fd.drm, -1);
-> +	igt_assert_eq(priv->fd.drm_hc, -1);
-> +	priv->fd.drm = local_drm_open_driver(false, "", " for hot
-> rebind");
-> +
-> +	driver_unbind(priv, "hot ", 60);
-> +
-> +	driver_bind(priv, 0);
->  
->  	priv->fd.drm = close_device(priv->fd.drm, "late ", "unbound ");
->  	igt_assert_eq(priv->fd.drm, -1);
-> @@ -465,8 +499,6 @@ static void hotreplug_lateclose(struct hotunplug
-> *priv)
->  
->  	bus_rescan(priv, 0);
->  
-> -	healthcheck(priv, false);
-> -
->  	priv->fd.drm = close_device(priv->fd.drm, "late ", "removed ");
->  	igt_assert_eq(priv->fd.drm, -1);
->  
-> @@ -570,7 +602,31 @@ igt_main
->  		post_healthcheck(&priv);
->  
->  	igt_subtest_group {
-> -		igt_describe("Check if the driver hot unbound from a
-> still open device can be cleanly rebound, then the old instance
-> released");
-> +		igt_describe("Check if the driver can be cleanly
-> rebound to a device with a still open hot unbound driver instance");
-> +		igt_subtest("hotrebind")
-> +			hotrebind(&priv);
-> +
-> +		igt_fixture
-> +			recover(&priv);
-> +	}
-> +
-> +	igt_fixture
-> +		post_healthcheck(&priv);
-> +
-> +	igt_subtest_group {
-> +		igt_describe("Check if a hot unplugged and still open
-> device can be cleanly restored");
-> +		igt_subtest("hotreplug")
-> +			hotreplug(&priv);
-> +
-> +		igt_fixture
-> +			recover(&priv);
-> +	}
-> +
-> +	igt_fixture
-> +		post_healthcheck(&priv);
-> +
-> +	igt_subtest_group {
-> +		igt_describe("Check if a hot unbound driver instance
-> still open after hot rebind can be cleanly released");
->  		igt_subtest("hotrebind-lateclose")
->  			hotrebind_lateclose(&priv);
->  
-> @@ -582,7 +638,7 @@ igt_main
->  		post_healthcheck(&priv);
->  
->  	igt_subtest_group {
-> -		igt_describe("Check if a still open while hot unplugged
-> device can be cleanly restored, then the old instance released");
-> +		igt_describe("Check if an instance of a still open
-> while hot replugged device can be cleanly released");
->  		igt_subtest("hotreplug-lateclose")
->  			hotreplug_lateclose(&priv);
->  
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+U2lnbmVkLW9mZi1ieTogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Ci0t
+LQogdGVzdHMvTWFrZWZpbGUuc291cmNlcyAgICAgIHwgICAzICsKIHRlc3RzL2k5MTUvc3lzZnNf
+ZGVmYXVsdHMuYyB8IDExMCArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKIHRl
+c3RzL21lc29uLmJ1aWxkICAgICAgICAgICB8ICAgMSArCiAzIGZpbGVzIGNoYW5nZWQsIDExNCBp
+bnNlcnRpb25zKCspCiBjcmVhdGUgbW9kZSAxMDA2NDQgdGVzdHMvaTkxNS9zeXNmc19kZWZhdWx0
+cy5jCgpkaWZmIC0tZ2l0IGEvdGVzdHMvTWFrZWZpbGUuc291cmNlcyBiL3Rlc3RzL01ha2VmaWxl
+LnNvdXJjZXMKaW5kZXggZWM1MzViYTg1Li4yNTgxYzA0MjkgMTAwNjQ0Ci0tLSBhL3Rlc3RzL01h
+a2VmaWxlLnNvdXJjZXMKKysrIGIvdGVzdHMvTWFrZWZpbGUuc291cmNlcwpAQCAtMTExLDYgKzEx
+MSw5IEBAIFRFU1RTX3Byb2dzID0gXAogVEVTVFNfcHJvZ3MgKz0gYXBpX2ludGVsX2JiCiBhcGlf
+aW50ZWxfYmJfU09VUkNFUyA9IGk5MTUvYXBpX2ludGVsX2JiLmMKIAorVEVTVFNfcHJvZ3MgKz0g
+c3lzZnNfZGVmYXVsdHMKK3N5c2ZzX2RlZmF1bHRzX1NPVVJDRVMgPSBpOTE1L3N5c2ZzX2RlZmF1
+bHRzLmMKKwogVEVTVFNfcHJvZ3MgKz0gc3lzZnNfaGVhcnRiZWF0X2ludGVydmFsCiBzeXNmc19o
+ZWFydGJlYXRfaW50ZXJ2YWxfU09VUkNFUyA9IGk5MTUvc3lzZnNfaGVhcnRiZWF0X2ludGVydmFs
+LmMKIApkaWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9zeXNmc19kZWZhdWx0cy5jIGIvdGVzdHMvaTkx
+NS9zeXNmc19kZWZhdWx0cy5jCm5ldyBmaWxlIG1vZGUgMTAwNjQ0CmluZGV4IDAwMDAwMDAwMC4u
+NjRjNWViMzczCi0tLSAvZGV2L251bGwKKysrIGIvdGVzdHMvaTkxNS9zeXNmc19kZWZhdWx0cy5j
+CkBAIC0wLDAgKzEsMTEwIEBACisvKgorICogQ29weXJpZ2h0IMKpIDIwMTkgSW50ZWwgQ29ycG9y
+YXRpb24KKyAqCisgKiBQZXJtaXNzaW9uIGlzIGhlcmVieSBncmFudGVkLCBmcmVlIG9mIGNoYXJn
+ZSwgdG8gYW55IHBlcnNvbiBvYnRhaW5pbmcgYQorICogY29weSBvZiB0aGlzIHNvZnR3YXJlIGFu
+ZCBhc3NvY2lhdGVkIGRvY3VtZW50YXRpb24gZmlsZXMgKHRoZSAiU29mdHdhcmUiKSwKKyAqIHRv
+IGRlYWwgaW4gdGhlIFNvZnR3YXJlIHdpdGhvdXQgcmVzdHJpY3Rpb24sIGluY2x1ZGluZyB3aXRo
+b3V0IGxpbWl0YXRpb24KKyAqIHRoZSByaWdodHMgdG8gdXNlLCBjb3B5LCBtb2RpZnksIG1lcmdl
+LCBwdWJsaXNoLCBkaXN0cmlidXRlLCBzdWJsaWNlbnNlLAorICogYW5kL29yIHNlbGwgY29waWVz
+IG9mIHRoZSBTb2Z0d2FyZSwgYW5kIHRvIHBlcm1pdCBwZXJzb25zIHRvIHdob20gdGhlCisgKiBT
+b2Z0d2FyZSBpcyBmdXJuaXNoZWQgdG8gZG8gc28sIHN1YmplY3QgdG8gdGhlIGZvbGxvd2luZyBj
+b25kaXRpb25zOgorICoKKyAqIFRoZSBhYm92ZSBjb3B5cmlnaHQgbm90aWNlIGFuZCB0aGlzIHBl
+cm1pc3Npb24gbm90aWNlIChpbmNsdWRpbmcgdGhlIG5leHQKKyAqIHBhcmFncmFwaCkgc2hhbGwg
+YmUgaW5jbHVkZWQgaW4gYWxsIGNvcGllcyBvciBzdWJzdGFudGlhbCBwb3J0aW9ucyBvZiB0aGUK
+KyAqIFNvZnR3YXJlLgorICoKKyAqIFRIRSBTT0ZUV0FSRSBJUyBQUk9WSURFRCAiQVMgSVMiLCBX
+SVRIT1VUIFdBUlJBTlRZIE9GIEFOWSBLSU5ELCBFWFBSRVNTIE9SCisgKiBJTVBMSUVELCBJTkNM
+VURJTkcgQlVUIE5PVCBMSU1JVEVEIFRPIFRIRSBXQVJSQU5USUVTIE9GIE1FUkNIQU5UQUJJTElU
+WSwKKyAqIEZJVE5FU1MgRk9SIEEgUEFSVElDVUxBUiBQVVJQT1NFIEFORCBOT05JTkZSSU5HRU1F
+TlQuICBJTiBOTyBFVkVOVCBTSEFMTAorICogVEhFIEFVVEhPUlMgT1IgQ09QWVJJR0hUIEhPTERF
+UlMgQkUgTElBQkxFIEZPUiBBTlkgQ0xBSU0sIERBTUFHRVMgT1IgT1RIRVIKKyAqIExJQUJJTElU
+WSwgV0hFVEhFUiBJTiBBTiBBQ1RJT04gT0YgQ09OVFJBQ1QsIFRPUlQgT1IgT1RIRVJXSVNFLCBB
+UklTSU5HCisgKiBGUk9NLCBPVVQgT0YgT1IgSU4gQ09OTkVDVElPTiBXSVRIIFRIRSBTT0ZUV0FS
+RSBPUiBUSEUgVVNFIE9SIE9USEVSIERFQUxJTkdTCisgKiBJTiBUSEUgU09GVFdBUkUuCisgKi8K
+KworI2luY2x1ZGUgPGRpcmVudC5oPgorI2luY2x1ZGUgPGVycm5vLmg+CisjaW5jbHVkZSA8ZmNu
+dGwuaD4KKyNpbmNsdWRlIDxpbnR0eXBlcy5oPgorI2luY2x1ZGUgPHN5cy9zdGF0Lmg+CisjaW5j
+bHVkZSA8c3lzL3R5cGVzLmg+CisjaW5jbHVkZSA8dW5pc3RkLmg+CisKKyNpbmNsdWRlICJkcm10
+ZXN0LmgiCisjaW5jbHVkZSAiaTkxNS9nZW0uaCIKKyNpbmNsdWRlICJpOTE1L2dlbV9lbmdpbmVf
+dG9wb2xvZ3kuaCIKKyNpbmNsdWRlICJpZ3Rfc3lzZnMuaCIKKworc3RhdGljIGJvb2wgbWF5X3dy
+aXRlKGludCBkaXIsIGNvbnN0IGNoYXIgKmZpbGUpCit7CisJc3RydWN0IHN0YXQgc3Q7CisKKwlp
+Z3RfYXNzZXJ0KGZzdGF0YXQoZGlyLCBmaWxlLCAmc3QsIDApID09IDApOworCXJldHVybiBzdC5z
+dF9tb2RlICYgMDIyMjsKK30KKworc3RhdGljIHZvaWQgdGVzdF93cml0YWJsZShpbnQgaTkxNSwg
+aW50IGVuZ2luZSkKK3sKKwlzdHJ1Y3QgZGlyZW50ICpkZTsKKwlpbnQgZGVmYXVsdHM7CisJRElS
+ICpkaXI7CisKKwlkZWZhdWx0cyA9IG9wZW5hdChlbmdpbmUsICIuZGVmYXVsdHMiLCBPX0RJUkVD
+VE9SWSk7CisJaWd0X3JlcXVpcmUoZGVmYXVsdHMgIT0gLTEpOworCisJZGlyID0gZmRvcGVuZGly
+KGVuZ2luZSk7CisJd2hpbGUgKChkZSA9IHJlYWRkaXIoZGlyKSkpIHsKKwkJaWYgKCEoZGUtPmRf
+dHlwZSAmIERUX1JFRykpCisJCQljb250aW51ZTsKKworCQlpZiAoIW1heV93cml0ZShlbmdpbmUs
+IGRlLT5kX25hbWUpKSB7CisJCQlpZ3RfZGVidWcoIlNraXBwaW5nIGNvbnN0YW50IGF0dHIgJyVz
+J1xuIiwgZGUtPmRfbmFtZSk7CisJCQljb250aW51ZTsKKwkJfQorCisJCWlndF9kZWJ1ZygiQ2hl
+Y2tpbmcgYXR0ciAnJXMnXG4iLCBkZS0+ZF9uYW1lKTsKKworCQkvKiBFdmVyeSBhdHRyaWJ1dGUg
+c2hvdWxkIGhhdmUgYSBkZWZhdWx0IHZhbHVlICovCisJCWlndF9hc3NlcnRfZihmYWNjZXNzYXQo
+ZGVmYXVsdHMsIGRlLT5kX25hbWUsIEZfT0ssIDApID09IDAsCisJCQkgICAgICJkZWZhdWx0IHZh
+bHVlIGZvciAlcyBub3QgYWNjZXNzaWJsZVxuIiwKKwkJCSAgICAgZGUtPmRfbmFtZSk7CisKKwkJ
+LyogQnV0IG5vIG9uZSBpcyBhbGxvd2VkIHRvIGNoYW5nZSBpdCAqLworCQlpZ3RfYXNzZXJ0X2Yo
+IW1heV93cml0ZShkZWZhdWx0cywgZGUtPmRfbmFtZSksCisJCQkgICAgICJkZWZhdWx0IHZhbHVl
+IGZvciAlcyB3cml0YWJsZSFcbiIsCisJCQkgICAgIGRlLT5kX25hbWUpOworCisJCWlndF9hc3Nl
+cnRfZighaWd0X3N5c2ZzX3NldChkZWZhdWx0cywgZGUtPmRfbmFtZSwgImdhcmJhZ2UiKSwKKwkJ
+CSAgICAgIndyaXRlIGludG8gZGVmYXVsdCB2YWx1ZSBvZiAlcyBzdWNjZWVkZWQhXG4iLAorCQkJ
+ICAgICBkZS0+ZF9uYW1lKTsKKwl9CisJY2xvc2VkaXIoZGlyKTsKK30KKworaWd0X21haW4KK3sK
+KwlpbnQgaTkxNSA9IC0xLCBlbmdpbmVzID0gLTE7CisKKwlpZ3RfZml4dHVyZSB7CisJCWludCBz
+eXM7CisKKwkJaTkxNSA9IGRybV9vcGVuX2RyaXZlcihEUklWRVJfSU5URUwpOworCQlpZ3RfcmVx
+dWlyZV9nZW0oaTkxNSk7CisJCWlndF9hbGxvd19oYW5nKGk5MTUsIDAsIDApOworCisJCXN5cyA9
+IGlndF9zeXNmc19vcGVuKGk5MTUpOworCQlpZ3RfcmVxdWlyZShzeXMgIT0gLTEpOworCisJCWVu
+Z2luZXMgPSBvcGVuYXQoc3lzLCAiZW5naW5lIiwgT19SRE9OTFkpOworCQlpZ3RfcmVxdWlyZShl
+bmdpbmVzICE9IC0xKTsKKworCQljbG9zZShzeXMpOworCX0KKworCWlndF9zdWJ0ZXN0X3dpdGhf
+ZHluYW1pYygid3JpdGFibGUiKQorCQlkeW5fc3lzZnNfZW5naW5lcyhpOTE1LCBlbmdpbmVzLCBO
+VUxMLCB0ZXN0X3dyaXRhYmxlKTsKKworCWlndF9maXh0dXJlIHsKKwkJY2xvc2UoZW5naW5lcyk7
+CisJCWNsb3NlKGk5MTUpOworCX0KK30KZGlmZiAtLWdpdCBhL3Rlc3RzL21lc29uLmJ1aWxkIGIv
+dGVzdHMvbWVzb24uYnVpbGQKaW5kZXggMDgyMDBmMjZjLi40Zjc2NWRhMzAgMTAwNjQ0Ci0tLSBh
+L3Rlc3RzL21lc29uLmJ1aWxkCisrKyBiL3Rlc3RzL21lc29uLmJ1aWxkCkBAIC0yMzUsNiArMjM1
+LDcgQEAgaTkxNV9wcm9ncyA9IFsKIAknaTkxNV9xdWVyeScsCiAJJ2k5MTVfc2VsZnRlc3QnLAog
+CSdpOTE1X3N1c3BlbmQnLAorCSdzeXNmc19kZWZhdWx0cycsCiAJJ3N5c2ZzX2hlYXJ0YmVhdF9p
+bnRlcnZhbCcsCiAJJ3N5c2ZzX3ByZWVtcHRfdGltZW91dCcsCiAJJ3N5c2ZzX3RpbWVzbGljZV9k
+dXJhdGlvbicsCi0tIAoyLjI4LjAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0
+LWRldgo=
