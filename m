@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A3466E9AB
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Oct 2020 05:37:31 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-Date: Fri, 16 Oct 2020 11:15:21 +0530
-Message-Id: <20201016054521.29658-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC, i-g-t] Added dynamic subtests for accurate reporting
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 16 Oct 2020 06:05:12 -0000
+Message-ID: <160282831261.8602.16126224221946755108@emeril.freedesktop.org>
+References: <20201016054521.29658-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20201016054521.29658-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBBZGRl?=
+ =?utf-8?q?d_dynamic_subtests_for_accurate_reporting?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,325 +14,60 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_atomic_interruptible.c | 28 +++++++++++++-----
- tests/kms_flip_tiling.c          | 50 ++++++++++++++++++++++----------
- tests/kms_plane_scaling.c        | 28 +++++++++++++-----
- tests/kms_rotation_crc.c         |  3 +-
- 4 files changed, 77 insertions(+), 32 deletions(-)
-
-diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
-index e5ccdf5b..7bffc501 100644
---- a/tests/kms_atomic_interruptible.c
-+++ b/tests/kms_atomic_interruptible.c
-@@ -284,47 +284,61 @@ igt_main
- 		igt_require_sw_sync();
- 	}
- 
--	igt_subtest("legacy-setmode")
-+	igt_subtest_with_dynamic("legacy-setmode") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			run_plane_test(&display, pipe, output, test_legacy_modeset, DRM_PLANE_TYPE_PRIMARY);
- 			break;
- 		}
-+	}
- 
--	igt_subtest("atomic-setmode")
-+	igt_subtest_with_dynamic("atomic-setmode") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			run_plane_test(&display, pipe, output, test_atomic_modeset, DRM_PLANE_TYPE_PRIMARY);
- 			break;
- 		}
-+	}
- 
--	igt_subtest("legacy-dpms")
-+	igt_subtest_with_dynamic("legacy-dpms") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			run_plane_test(&display, pipe, output, test_legacy_dpms, DRM_PLANE_TYPE_PRIMARY);
- 			break;
- 		}
-+	}
- 
--	igt_subtest("legacy-pageflip")
-+	igt_subtest_with_dynamic("legacy-pageflip") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			run_plane_test(&display, pipe, output, test_pageflip, DRM_PLANE_TYPE_PRIMARY);
- 			break;
- 		}
-+	}
- 
--	igt_subtest("legacy-cursor")
-+	igt_subtest_with_dynamic("legacy-cursor") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			run_plane_test(&display, pipe, output, test_setcursor, DRM_PLANE_TYPE_CURSOR);
- 			break;
- 		}
-+	}
- 
--	igt_subtest("universal-setplane-primary")
-+	igt_subtest_with_dynamic("universal-setplane-primary") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_PRIMARY);
- 			break;
- 		}
-+	}
- 
--	igt_subtest("universal-setplane-cursor")
-+	igt_subtest_with_dynamic("universal-setplane-cursor") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_CURSOR);
- 			break;
- 		}
-+	}
- 
- 	/* TODO: legacy gamma_set/get, object set/getprop, getcrtc, getconnector */
- 	igt_fixture {
-diff --git a/tests/kms_flip_tiling.c b/tests/kms_flip_tiling.c
-index fb79de15..44dd3adb 100644
---- a/tests/kms_flip_tiling.c
-+++ b/tests/kms_flip_tiling.c
-@@ -173,7 +173,7 @@ igt_main
- 	 * generated and compared to the reference one.
- 	 */
- 
--	igt_subtest_f("flip-changes-tiling") {
-+	igt_subtest_with_dynamic("flip-changes-tiling") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_X_TILED,
- 				       LOCAL_DRM_FORMAT_MOD_NONE };
- 		enum pipe pipe;
-@@ -181,11 +181,13 @@ igt_main
- 		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
- 			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
--	igt_subtest_f("flip-changes-tiling-Y") {
-+	igt_subtest_with_dynamic("flip-changes-tiling-Y") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Y_TILED,
- 				       LOCAL_DRM_FORMAT_MOD_NONE };
- 		enum pipe pipe;
-@@ -197,11 +199,13 @@ igt_main
- 
- 		igt_require(data.gen >= 9);
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
--	igt_subtest_f("flip-changes-tiling-Yf") {
-+	igt_subtest_with_dynamic("flip-changes-tiling-Yf") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Yf_TILED,
- 				       LOCAL_DRM_FORMAT_MOD_NONE };
- 		enum pipe pipe;
-@@ -213,8 +217,10 @@ igt_main
- 
- 		igt_require(data.gen >= 9);
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
- 	/*
-@@ -225,7 +231,7 @@ igt_main
- 	 * reference one.
- 	 */
- 
--	igt_subtest_f("flip-X-tiled") {
-+	igt_subtest_with_dynamic("flip-X-tiled") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_X_TILED,
- 				       LOCAL_I915_FORMAT_MOD_X_TILED };
- 		enum pipe pipe;
-@@ -233,11 +239,13 @@ igt_main
- 		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
- 			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
--	igt_subtest_f("flip-Y-tiled") {
-+	igt_subtest_with_dynamic("flip-Y-tiled") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Y_TILED,
- 				       LOCAL_I915_FORMAT_MOD_Y_TILED };
- 		enum pipe pipe;
-@@ -250,10 +258,12 @@ igt_main
- 		igt_require(data.gen >= 9);
- 
- 		for_each_pipe_with_valid_output(&data.display, pipe, output)
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
--	igt_subtest_f("flip-Yf-tiled") {
-+	igt_subtest_with_dynamic("flip-Yf-tiled") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Yf_TILED,
- 				       LOCAL_I915_FORMAT_MOD_Yf_TILED };
- 		enum pipe pipe;
-@@ -266,7 +276,9 @@ igt_main
- 		igt_require(data.gen >= 9);
- 
- 		for_each_pipe_with_valid_output(&data.display, pipe, output)
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
- 	/*
-@@ -277,7 +289,7 @@ igt_main
- 	 * reference one.
- 	 */
- 
--	igt_subtest_f("flip-to-X-tiled") {
-+	igt_subtest_with_dynamic("flip-to-X-tiled") {
- 		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
- 				       LOCAL_I915_FORMAT_MOD_X_TILED };
- 		enum pipe pipe;
-@@ -285,11 +297,13 @@ igt_main
- 		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
- 			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
--	igt_subtest_f("flip-to-Y-tiled") {
-+	igt_subtest_with_dynamic("flip-to-Y-tiled") {
- 		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
- 				       LOCAL_I915_FORMAT_MOD_Y_TILED };
- 		enum pipe pipe;
-@@ -301,11 +315,13 @@ igt_main
- 
- 		igt_require(data.gen >= 9);
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
--	igt_subtest_f("flip-to-Yf-tiled") {
-+	igt_subtest_with_dynamic("flip-to-Yf-tiled") {
- 		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
- 				       LOCAL_I915_FORMAT_MOD_Yf_TILED };
- 		enum pipe pipe;
-@@ -317,8 +333,10 @@ igt_main
- 
- 		igt_require(data.gen >= 9);
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
- 	igt_fixture {
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index ecd2c2e3..6ef50d4d 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -694,21 +694,33 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 			igt_require(get_num_scalers(&data, pipe) > 0);
- 		}
- 
--		igt_subtest_f("pipe-%s-plane-scaling", kmstest_pipe_name(pipe))
--			for_each_valid_output_on_pipe(&data.display, pipe, output)
-+		igt_subtest_with_dynamic("pipe-%s-plane-scaling", kmstest_pipe_name(pipe)) {
-+			for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				test_plane_scaling_on_pipe(&data, pipe, output);
-+			}
-+		}
- 
--		igt_subtest_f("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe))
--			for_each_valid_output_on_pipe(&data.display, pipe, output)
-+		igt_subtest_with_dynamic("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe)) {
-+			for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				test_scaler_with_pixel_format_pipe(&data, pipe, output);
-+			}
-+		}
- 
--		igt_subtest_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
--			for_each_valid_output_on_pipe(&data.display, pipe, output)
-+		igt_subtest_with_dynamic("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe)) {
-+			for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				test_scaler_with_rotation_pipe(&data, pipe, output);
-+			}
-+		}
- 
--		igt_subtest_f("pipe-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe))
--			for_each_valid_output_on_pipe(&data.display, pipe, output)
-+		igt_subtest_with_dynamic("pipe-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe)) {
-+			for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				test_scaler_with_clipping_clamping_scenario(&data, pipe, output);
-+			}
-+		}
- 	}
- 
- 	igt_subtest_f("2x-scaler-multi-pipe")
-diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index ffcc2cc2..3ab80346 100644
---- a/tests/kms_rotation_crc.c
-+++ b/tests/kms_rotation_crc.c
-@@ -939,7 +939,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	 * exhaust-fences should be last test, if it fails we may OOM in
- 	 * the following subtests otherwise.
- 	 */
--	igt_subtest_f("exhaust-fences") {
-+	igt_subtest_with_dynamic("exhaust-fences") {
- 		enum pipe pipe;
- 		igt_output_t *output;
- 
-@@ -947,6 +947,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 		igt_display_require_output(&data.display);
- 
- 		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 			igt_plane_t *primary = &data.display.pipes[pipe].planes[0];
- 
- 			test_plane_rotation_exhaust_fences(&data, pipe, output, primary);
--- 
-2.26.2
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+PT0gU2VyaWVzIERldGFpbHMgPT0KClNlcmllczogQWRkZWQgZHluYW1pYyBzdWJ0ZXN0cyBmb3Ig
+YWNjdXJhdGUgcmVwb3J0aW5nClVSTCAgIDogaHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Au
+b3JnL3Nlcmllcy84Mjc0My8KU3RhdGUgOiBmYWlsdXJlCgo9PSBTdW1tYXJ5ID09CgpJR1QgcGF0
+Y2hzZXQgYnVpbGQgZmFpbGVkIG9uIGxhdGVzdCBzdWNjZXNzZnVsIGJ1aWxkCjUyMGY4OGQ3ODE3
+ZWJiNzQ2NDkwNzI1MmEzMmU4ZTc0NzQyOTEwMmIgaTkxNS9nZW1fdXNlcnB0cl9ibGl0czogVGln
+aHRlbiBoYXNfdXNlcnB0cigpCgouLi90ZXN0cy9rbXNfZmxpcF90aWxpbmcuYzozMjQ6Mjogbm90
+ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmGlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pY+KAmQog
+IGlndF9zdWJ0ZXN0X3dpdGhfZHluYW1pYygiZmxpcC10by1ZZi10aWxlZCIpIHsKICBefn5+fn5+
+fn5+fn5+fn5+fn5+fn5+fn4KLi4vbGliL2lndF9jb3JlLmg6MTQ3OjIxOiBlcnJvcjogZXhwZWN0
+ZWQgZGVjbGFyYXRpb24gc3BlY2lmaWVycyBiZWZvcmUg4oCYZm9y4oCZCiAjZGVmaW5lIGlndF9m
+aXh0dXJlIGZvciAodm9sYXRpbGUgaW50IGlndF90b2tlbmNhdChfX3RtcGludCxfX0xJTkVfXykg
+PSAwOyBcCiAgICAgICAgICAgICAgICAgICAgIF5+fgouLi90ZXN0cy9rbXNfZmxpcF90aWxpbmcu
+YzozNDI6Mjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmGlndF9maXh0dXJl4oCZCiAg
+aWd0X2ZpeHR1cmUgewogIF5+fn5+fn5+fn5+Ci4uL2xpYi9pZ3RfY29yZS5oOjE0ODoxODogZXJy
+b3I6IGV4cGVjdGVkIGRlY2xhcmF0aW9uIHNwZWNpZmllcnMgYmVmb3JlIOKAmF9fdG1waW50MzQy
+4oCZCiAgICAgaWd0X3Rva2VuY2F0KF9fdG1waW50LF9fTElORV9fKSA8IDEgJiYgXAogICAgICAg
+ICAgICAgICAgICBefn5+fn5+fgouLi9saWIvaWd0X2NvcmUuaDoxOTE6MzE6IG5vdGU6IGluIGRl
+ZmluaXRpb24gb2YgbWFjcm8g4oCYX19pZ3RfdG9rZW5jYXQy4oCZCiAjZGVmaW5lIF9faWd0X3Rv
+a2VuY2F0Mih4LCB5KSB4ICMjIHkKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF4KLi4v
+bGliL2lndF9jb3JlLmg6MTQ4OjU6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyDigJhpZ3Rf
+dG9rZW5jYXTigJkKICAgICBpZ3RfdG9rZW5jYXQoX190bXBpbnQsX19MSU5FX18pIDwgMSAmJiBc
+CiAgICAgXn5+fn5+fn5+fn5+Ci4uL3Rlc3RzL2ttc19mbGlwX3RpbGluZy5jOjM0MjoyOiBub3Rl
+OiBpbiBleHBhbnNpb24gb2YgbWFjcm8g4oCYaWd0X2ZpeHR1cmXigJkKICBpZ3RfZml4dHVyZSB7
+CiAgXn5+fn5+fn5+fn4KLi4vbGliL2lndF9jb3JlLmg6MTUyOjE4OiBlcnJvcjogZXhwZWN0ZWQg
+ZGVjbGFyYXRpb24gc3BlY2lmaWVycyBiZWZvcmUg4oCYX190bXBpbnQzNDLigJkKICAgICBpZ3Rf
+dG9rZW5jYXQoX190bXBpbnQsX19MSU5FX18pICsrLCBcCiAgICAgICAgICAgICAgICAgIF5+fn5+
+fn5+Ci4uL2xpYi9pZ3RfY29yZS5oOjE5MTozMTogbm90ZTogaW4gZGVmaW5pdGlvbiBvZiBtYWNy
+byDigJhfX2lndF90b2tlbmNhdDLigJkKICNkZWZpbmUgX19pZ3RfdG9rZW5jYXQyKHgsIHkpIHgg
+IyMgeQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXgouLi9saWIvaWd0X2NvcmUuaDox
+NTI6NTogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmGlndF90b2tlbmNhdOKAmQogICAg
+IGlndF90b2tlbmNhdChfX3RtcGludCxfX0xJTkVfXykgKyssIFwKICAgICBefn5+fn5+fn5+fn4K
+Li4vdGVzdHMva21zX2ZsaXBfdGlsaW5nLmM6MzQyOjI6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBt
+YWNybyDigJhpZ3RfZml4dHVyZeKAmQogIGlndF9maXh0dXJlIHsKICBefn5+fn5+fn5+fgouLi90
+ZXN0cy9rbXNfZmxpcF90aWxpbmcuYzozNDU6MTogZXJyb3I6IGV4cGVjdGVkIGRlY2xhcmF0aW9u
+IHNwZWNpZmllcnMgYmVmb3JlIOKAmH3igJkgdG9rZW4KIH0KIF4KSW4gZmlsZSBpbmNsdWRlZCBm
+cm9tIC4uL2xpYi9kcm10ZXN0Lmg6MzksCiAgICAgICAgICAgICAgICAgZnJvbSAuLi9saWIvaWd0
+Lmg6MjcsCiAgICAgICAgICAgICAgICAgZnJvbSAuLi90ZXN0cy9rbXNfZmxpcF90aWxpbmcuYzoz
+MzoKLi4vbGliL2lndF9jb3JlLmg6MjU0Ojg6IHdhcm5pbmc6IG9sZC1zdHlsZSBmdW5jdGlvbiBk
+ZWZpbml0aW9uIFstV29sZC1zdHlsZS1kZWZpbml0aW9uXQogICAgICAgIGlndF9zdWNjZXNzKCkp
+CiAgICAgICAgXn5+fn5+fn5+fn4KLi4vdGVzdHMva21zX2ZsaXBfdGlsaW5nLmM6MjY2OjI6IG5v
+dGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyDigJhpZ3Rfc3VidGVzdF93aXRoX2R5bmFtaWPigJkK
+ICBpZ3Rfc3VidGVzdF93aXRoX2R5bmFtaWMoImZsaXAtWWYtdGlsZWQiKSB7CiAgXn5+fn5+fn5+
+fn5+fn5+fn5+fn5+fn5+Ci4uL3Rlc3RzL2ttc19mbGlwX3RpbGluZy5jOjM0NTogZXJyb3I6IGV4
+cGVjdGVkIOKAmHvigJkgYXQgZW5kIG9mIGlucHV0CiB9CiAKY2MxOiBzb21lIHdhcm5pbmdzIGJl
+aW5nIHRyZWF0ZWQgYXMgZXJyb3JzCm5pbmphOiBidWlsZCBzdG9wcGVkOiBzdWJjb21tYW5kIGZh
+aWxlZC4KCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpp
+Z3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczov
+L2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
