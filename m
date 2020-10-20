@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 235136EC3D
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Oct 2020 10:06:51 +0000 (UTC)
-Received: by mail-pj1-x1042.google.com with SMTP id g16so665425pjv.3
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Oct 2020 03:06:51 -0700 (PDT)
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com
+ [IPv6:2607:f8b0:4864:20::1033])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 972F66EC3F
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Oct 2020 10:06:53 +0000 (UTC)
+Received: by mail-pj1-x1033.google.com with SMTP id kk5so190960pjb.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Oct 2020 03:06:53 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Date: Tue, 20 Oct 2020 13:06:32 +0300
-Message-Id: <20201020100633.15570-1-juhapekka.heikkila@gmail.com>
+Date: Tue, 20 Oct 2020 13:06:33 +0300
+Message-Id: <20201020100633.15570-2-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20201020100633.15570-1-juhapekka.heikkila@gmail.com>
+References: <20201020100633.15570-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] tests/kms_plane: try to detect mid test
- modeset
+Subject: [igt-dev] [PATCH i-g-t 2/2] HAX remove pixel-format tests from
+ blacklist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,106 +27,23 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-mid test happening modeset will mess up vblank counting in test.
-Flag happened modeset and use this information to ignore vblank
-frame value in case of modeset.
-
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- tests/kms_plane.c | 34 ++++++++++++++++++++++------------
- 1 file changed, 22 insertions(+), 12 deletions(-)
+ tests/intel-ci/blacklist-pre-merge.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index e42c71cd9..12c232385 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -539,11 +539,11 @@ static int num_unique_crcs(const igt_crc_t crc[], int num_crc)
- 	return num_unique_crc;
- }
+diff --git a/tests/intel-ci/blacklist-pre-merge.txt b/tests/intel-ci/blacklist-pre-merge.txt
+index cddb77c1f..f61cefb03 100644
+--- a/tests/intel-ci/blacklist-pre-merge.txt
++++ b/tests/intel-ci/blacklist-pre-merge.txt
+@@ -170,7 +170,7 @@ igt@gem_tiled_wc
+ #
+ # Data acquired on 2020-02-20 by Martin Peres
+ ###############################################################################
+-igt@kms_plane@pixel-format-pipe-[a-d]-planes(-source-clamping)?
++#igt@kms_plane@pixel-format-pipe-[a-d]-planes(-source-clamping)?
  
--static void capture_crc(data_t *data, unsigned int vblank, igt_crc_t *crc)
-+static void capture_crc(data_t *data, unsigned int vblank, igt_crc_t *crc, bool modeset)
- {
- 	igt_pipe_crc_get_for_frame(data->drm_fd, data->pipe_crc, vblank, crc);
  
--	igt_fail_on_f(crc->has_valid_frame && crc->frame != vblank,
-+	igt_fail_on_f(crc->has_valid_frame && (crc->frame != vblank && !modeset),
- 		      "Got CRC for the wrong frame (got %u, expected %u). CRC buffer overflow?\n",
- 		      crc->frame, vblank);
- }
-@@ -557,8 +557,9 @@ static void capture_format_crcs(data_t *data, enum pipe pipe,
- 				igt_crc_t crc[], struct igt_fb *fb)
- {
- 	unsigned int vblank[ARRAY_SIZE(colors_extended)];
-+	bool modeset[ARRAY_SIZE(colors_extended)];
- 	struct drm_event_vblank ev;
--	int i;
-+	int i, ret;
- 
- 	for (i = 0; i < data->num_colors; i++) {
- 		const color_t *c = &data->colors[i];
-@@ -585,18 +586,25 @@ static void capture_format_crcs(data_t *data, enum pipe pipe,
- 		 * is for frame N-2.
- 		 */
- 		if (i >= 2)
--			capture_crc(data, vblank[i - 2], &crc[i - 2]);
-+			capture_crc(data, vblank[i - 2], &crc[i - 2], modeset[i - 2]);
- 
- 		if (data->display.is_atomic) {
-+			modeset[i] = false;
- 			/*
- 			 * Use non-blocking commits to allow the next fb
- 			 * to be prepared in parallel while the current fb
- 			 * awaits to be latched.
- 			 */
--			igt_display_commit_atomic(&data->display,
--						  DRM_MODE_ATOMIC_ALLOW_MODESET |
--						  DRM_MODE_ATOMIC_NONBLOCK |
--						  DRM_MODE_PAGE_FLIP_EVENT, NULL);
-+			ret = igt_display_try_commit_atomic(&data->display,
-+							    DRM_MODE_ATOMIC_NONBLOCK |
-+							    DRM_MODE_PAGE_FLIP_EVENT, NULL);
-+			if (ret) {
-+				modeset[i] = true;
-+				igt_display_commit_atomic(&data->display,
-+							  DRM_MODE_ATOMIC_ALLOW_MODESET |
-+							  DRM_MODE_ATOMIC_NONBLOCK |
-+							  DRM_MODE_PAGE_FLIP_EVENT, NULL);
-+			}
- 		} else {
- 			/*
- 			 * Last moment to grab the previous crc
-@@ -652,8 +660,8 @@ static void capture_format_crcs(data_t *data, enum pipe pipe,
- 	 * between different pixel formats as well? Could get messy.
- 	 */
- 	if (i >= 2)
--		capture_crc(data, vblank[i - 2], &crc[i - 2]);
--	capture_crc(data, vblank[i - 1], &crc[i - 1]);
-+		capture_crc(data, vblank[i - 2], &crc[i - 2], modeset[i - 2]);
-+	capture_crc(data, vblank[i - 1], &crc[i - 1], modeset[i - 1]);
- }
- 
- static bool test_format_plane_colors(data_t *data, enum pipe pipe,
-@@ -815,7 +823,9 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
- 
- 		igt_plane_set_fb(plane, &test_fb);
- 
--		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_TEST_ONLY, NULL);
-+		ret = igt_display_try_commit_atomic(&data->display,
-+						    DRM_MODE_ATOMIC_ALLOW_MODESET |
-+						    DRM_MODE_ATOMIC_TEST_ONLY, NULL);
- 
- 		if (!ret) {
- 			width = test_fb.width;
-@@ -1029,7 +1039,7 @@ static const struct option long_opts[] = {
- static const char help_str[] =
- 	"  --extended\t\tRun the extended tests\n";
- 
--static data_t data;
-+static data_t data = {};
- 
- igt_main_args("", long_opts, help_str, opt_handler, &data)
- {
+ ###############################################################################
 -- 
 2.28.0
 
