@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 35D256F5CA
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Oct 2020 10:37:06 +0000 (UTC)
-Date: Thu, 22 Oct 2020 13:37:02 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Message-ID: <20201022103702.GJ6112@intel.com>
-References: <20201021085956.5bgbdcmoh357v3tx@smtp.gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201021085956.5bgbdcmoh357v3tx@smtp.gmail.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/kms_cursor_crc: refactoring
- cursor-alpha subtests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Thu, 22 Oct 2020 10:51:09 -0000
+Message-ID: <160336386916.7804.10701520871280729294@emeril.freedesktop.org>
+References: <20201022095907.34225-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20201022095907.34225-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW50cm9k?=
+ =?utf-8?q?uce_IGT_allocator?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,222 +14,270 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1389996953=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Melissa Wen <melissa.srw@gmail.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, kernel-usp@googlegroups.com
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Oct 21, 2020 at 05:59:56AM -0300, Melissa Wen wrote:
-> Considering just a fully opaque or fully transparent cursor is not enough
-> to check the composition of an ARGB cursor plane. For example, the cairo
-> ARGB32 format uses pre-multiplied alpha, and this representation may only
-> be evident when testing a translucent cursor.
-> =
+--===============1389996953==
+Content-Type: multipart/alternative;
+ boundary="===============2667236804314819270=="
 
-> Therefore, this patch refactors the cursor-alpha-opaque and
-> cursor-alpha-transparent subtests into just one subtest (cursor-alpha)
-> that checks the alpha blending of a white cursor, with different alpha
-> values, in the primary plane. This refactoring also generates some setup
-> stuffs savings.
+--===============2667236804314819270==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Black background means you can't actually tell the
-difference between premultiplied blending and no
-blending.
+== Series Details ==
 
-Oh, I guess restore_image() does end up painting
-the test pattern into the primary plane's fb? Are
-we guaranteed to position the cursor over some non-black
-parts?
+Series: Introduce IGT allocator
+URL   : https://patchwork.freedesktop.org/series/82954/
+State : success
 
-The other obvious concern is whether hardware and software
-blending will produce the exact same results or not. I do see
-you use 1/4 steps for the alpha, which I guess can make that
-more likely.
+== Summary ==
 
-Side note: data->primary_fb[RESTOREBUFFER] looks to be dead weight
+CI Bug Log - changes from CI_DRM_9182 -> IGTPW_5083
+====================================================
 
-> =
+Summary
+-------
 
-> v2:
-> - debug log states the alpha whenever CRC mismatch (Arek)
-> - checking all alpha values before asserting the result (Arek)
-> =
+  **SUCCESS**
 
-> Signed-off-by: Melissa Wen <melissa.srw@gmail.com>
-> ---
->  tests/kms_cursor_crc.c | 87 ++++++++++++++++++++++--------------------
->  1 file changed, 45 insertions(+), 42 deletions(-)
-> =
+  No regressions found.
 
-> diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-> index 0be8f7f8..83c74a69 100644
-> --- a/tests/kms_cursor_crc.c
-> +++ b/tests/kms_cursor_crc.c
-> @@ -428,65 +428,73 @@ static void prepare_crtc(data_t *data, igt_output_t=
- *output,
->  	igt_pipe_crc_start(data->pipe_crc);
->  }
->  =
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/index.html
 
-> -static void test_cursor_alpha(data_t *data, double a)
-> +static void test_cursor_alpha(data_t *data)
->  {
->  	igt_display_t *display =3D &data->display;
->  	igt_pipe_crc_t *pipe_crc =3D data->pipe_crc;
-> -	igt_crc_t crc, ref_crc;
-> +	igt_crc_t crc[5], ref_crc;
->  	cairo_t *cr;
->  	uint32_t fb_id;
->  	int curw =3D data->curw;
->  	int curh =3D data->curh;
-> +	int i, index;
-> +	double alpha;
-> +	bool mismatch =3D false;
->  =
+Known issues
+------------
 
-> -	/* Alpha cursor fb with white color */
-> +	/* Alpha cursor fb */
->  	fb_id =3D igt_create_fb(data->drm_fd, curw, curh,
->  				    DRM_FORMAT_ARGB8888,
->  				    LOCAL_DRM_FORMAT_MOD_NONE,
->  				    &data->fb);
->  	igt_assert(fb_id);
-> +
-> +	/*
-> +	 * Hardware Test
-> +	 * With the cursor enabled, get the PF CRCs from the composition with a
-> +	 * white cursor with different alpha values.
-> +	 */
->  	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->fb);
-> -	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
-> -	igt_put_cairo_ctx(cr);
-> +	cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
->  =
+  Here are the changes found in IGTPW_5083 that come from known issues:
 
-> -	/* Hardware Test - enable cursor and get PF CRC */
->  	cursor_enable(data);
-> -	igt_display_commit(display);
-> -	igt_wait_for_vblank(data->drm_fd,
-> -			display->pipes[data->pipe].crtc_offset);
-> -	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc);
-> +	for (i =3D 0, alpha =3D 1.0; alpha >=3D 0.0; alpha -=3D 0.25, i++) {
-> +		igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, alpha);
-> +
-> +		igt_display_commit(display);
-> +		igt_wait_for_vblank(data->drm_fd,
-> +				    display->pipes[data->pipe].crtc_offset);
-> +		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &crc[i]);
-> +	}
-> +	igt_put_cairo_ctx(cr);
->  =
+### IGT changes ###
 
->  	cursor_disable(data);
->  	igt_remove_fb(data->drm_fd, &data->fb);
->  =
+#### Issues hit ####
 
-> -	/* Software Test - render cursor in software, drawn it directly on PF */
-> +	/* Software Test - render cursor in software, drawn it directly on PF*/
->  	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-> -	igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, a);
-> -	igt_put_cairo_ctx(cr);
-> -
-> -	igt_display_commit(display);
-> -	igt_wait_for_vblank(data->drm_fd,
-> -			display->pipes[data->pipe].crtc_offset);
-> -	igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
->  =
+  * igt@i915_pm_rpm@module-reload:
+    - fi-byt-j1900:       [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9182/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html
 
-> -	/* Compare CRC from Hardware/Software tests */
-> -	igt_assert_crc_equal(&crc, &ref_crc);
-> +	for (i =3D 0, alpha =3D 1.0; alpha >=3D 0.0; alpha -=3D 0.25, i++) {
-> +		igt_paint_color_alpha(cr, 0, 0, curw, curh, 1.0, 1.0, 1.0, alpha);
->  =
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-bsw-kefka:       [PASS][3] -> [DMESG-WARN][4] ([i915#1982]) +1 similar issue
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9182/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
 
-> -	/*Clear Screen*/
-> -	cr =3D igt_get_cairo_ctx(data->drm_fd, &data->primary_fb[FRONTBUFFER]);
-> -	igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
-> -			0.0, 0.0, 0.0);
-> -	igt_put_cairo_ctx(cr);
-> -}
-> +		igt_display_commit(display);
-> +		igt_wait_for_vblank(data->drm_fd,
-> +				display->pipes[data->pipe].crtc_offset);
-> +		igt_pipe_crc_get_current(data->drm_fd, pipe_crc, &ref_crc);
->  =
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:
+    - fi-icl-u2:          [PASS][5] -> [DMESG-WARN][6] ([i915#1982])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9182/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html
 
-> -static void test_cursor_transparent(data_t *data)
-> -{
-> -	test_cursor_alpha(data, 0.0);
-> +		/* Compare CRC from Hardware/Software tests */
-> +		if (igt_find_crc_mismatch(&crc[i], &ref_crc, &index)) {
-> +			mismatch =3D true;
-> +			igt_debug("CRC mismatch for alpha %.2f: 0x%x !=3D 0x%x\n",
-> +				  alpha, crc[i].crc[index], ref_crc.crc[index]);
-> +		}
->  =
+  
+#### Possible fixes ####
 
-> -}
-> +		/*Clear Screen*/
-> +		igt_paint_color(cr, 0, 0, data->screenw, data->screenh,
-> +				0.0, 0.0, 0.0);
-> +	}
-> +	igt_put_cairo_ctx(cr);
->  =
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - {fi-kbl-7560u}:     [DMESG-WARN][7] ([i915#1982]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9182/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
 
-> -static void test_cursor_opaque(data_t *data)
-> -{
-> -	test_cursor_alpha(data, 1.0);
-> +	igt_assert_f(!mismatch, "At least one CRC mismatch detected\n");
->  }
->  =
+  
+#### Warnings ####
 
->  static void run_test(data_t *data, void (*testfunc)(data_t *), int curso=
-r_w, int cursor_h)
-> @@ -655,15 +663,10 @@ static void run_tests_on_pipe(data_t *data, enum pi=
-pe pipe)
->  		run_test(data, test_cursor_size,
->  			 data->cursor_max_w, data->cursor_max_h);
->  =
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-icl-u2:          [DMESG-WARN][9] ([i915#1982] / [i915#289]) -> [DMESG-WARN][10] ([i915#289])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9182/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html
 
-> -	igt_describe("Validates the composition of a fully opaque cursor "
-> -		     "plane, i.e., alpha channel equal to 1.0.");
-> -	igt_subtest_f("pipe-%s-cursor-alpha-opaque", kmstest_pipe_name(pipe))
-> -		run_test(data, test_cursor_opaque, data->cursor_max_w, data->cursor_ma=
-x_h);
-> -
-> -	igt_describe("Validates the composition of a fully transparent cursor "
-> -		     "plane, i.e., alpha channel equal to 0.0.");
-> -	igt_subtest_f("pipe-%s-cursor-alpha-transparent", kmstest_pipe_name(pip=
-e))
-> -		run_test(data, test_cursor_transparent, data->cursor_max_w, data->curs=
-or_max_h);
-> +	igt_describe("Validates the composition of alpha cursor plane "
-> +		     "from fully opaque to fully transparent alpha range");
-> +	igt_subtest_f("pipe-%s-cursor-alpha", kmstest_pipe_name(pipe))
-> +		run_test(data, test_cursor_alpha, data->cursor_max_w, data->cursor_max=
-_h);
->  =
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
 
->  	igt_fixture
->  		create_cursor_fb(data, data->cursor_max_w, data->cursor_max_h);
-> -- =
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#289]: https://gitlab.freedesktop.org/drm/intel/issues/289
 
-> 2.28.0
-> =
 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Participating hosts (45 -> 38)
+------------------------------
 
--- =
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
 
-Ville Syrj=E4l=E4
-Intel
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5822 -> IGTPW_5083
+
+  CI-20190529: 20190529
+  CI_DRM_9182: 5d76506480cdfef424b52f63a0d21093b2c78dc4 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5083: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/index.html
+  IGT_5822: b4bcf05cb9839037128905deda7146434155cc41 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@api_intel_allocator@alloc-simple
++igt@api_intel_allocator@fork-simple-once
++igt@api_intel_allocator@fork-simple-stress
++igt@api_intel_allocator@fork-simple-stress-signal
++igt@api_intel_allocator@print
++igt@api_intel_allocator@purge-bb
++igt@api_intel_allocator@random-allocator
++igt@api_intel_allocator@reopen
++igt@api_intel_allocator@reopen-fork
++igt@api_intel_allocator@reserve
++igt@api_intel_allocator@reserve-simple
++igt@api_intel_allocator@reuse
++igt@api_intel_allocator@simple-allocator
++igt@api_intel_allocator@two-level-inception
++igt@api_intel_allocator@two-level-inception-interruptible
++igt@api_intel_bb@add-remove-objects
++igt@api_intel_bb@blit-noreloc-keep-cache-random
++igt@api_intel_bb@blit-noreloc-purge-cache-random
++igt@api_intel_bb@destroy-bb
++igt@api_intel_bb@object-noreloc-keep-cache-random
++igt@api_intel_bb@object-noreloc-keep-cache-simple
++igt@api_intel_bb@object-noreloc-purge-cache-random
++igt@api_intel_bb@object-noreloc-purge-cache-simple
++igt@api_intel_bb@object-reloc-keep-cache
++igt@api_intel_bb@object-reloc-purge-cache
++igt@api_intel_bb@reset-bb
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/index.html
+
+--===============2667236804314819270==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Introduce IGT allocator</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/82954/">https://patchwork.freedesktop.org/series/82954/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9182 -&gt; IGTPW_5083</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5083 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9182/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9182/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-before-cursor-legacy:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9182/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-before-cursor-legacy.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:<ul>
+<li>{fi-kbl-7560u}:     <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9182/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9182/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/289">i915#289</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/fi-icl-u2/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/289">i915#289</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (45 -&gt; 38)</h2>
+<p>Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5822 -&gt; IGTPW_5083</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9182: 5d76506480cdfef424b52f63a0d21093b2c78dc4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5083: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5083/index.html<br />
+  IGT_5822: b4bcf05cb9839037128905deda7146434155cc41 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@api_intel_allocator@alloc-simple<br />
++igt@api_intel_allocator@fork-simple-once<br />
++igt@api_intel_allocator@fork-simple-stress<br />
++igt@api_intel_allocator@fork-simple-stress-signal<br />
++igt@api_intel_allocator@print<br />
++igt@api_intel_allocator@purge-bb<br />
++igt@api_intel_allocator@random-allocator<br />
++igt@api_intel_allocator@reopen<br />
++igt@api_intel_allocator@reopen-fork<br />
++igt@api_intel_allocator@reserve<br />
++igt@api_intel_allocator@reserve-simple<br />
++igt@api_intel_allocator@reuse<br />
++igt@api_intel_allocator@simple-allocator<br />
++igt@api_intel_allocator@two-level-inception<br />
++igt@api_intel_allocator@two-level-inception-interruptible<br />
++igt@api_intel_bb@add-remove-objects<br />
++igt@api_intel_bb@blit-noreloc-keep-cache-random<br />
++igt@api_intel_bb@blit-noreloc-purge-cache-random<br />
++igt@api_intel_bb@destroy-bb<br />
++igt@api_intel_bb@object-noreloc-keep-cache-random<br />
++igt@api_intel_bb@object-noreloc-keep-cache-simple<br />
++igt@api_intel_bb@object-noreloc-purge-cache-random<br />
++igt@api_intel_bb@object-noreloc-purge-cache-simple<br />
++igt@api_intel_bb@object-reloc-keep-cache<br />
++igt@api_intel_bb@object-reloc-purge-cache<br />
++igt@api_intel_bb@reset-bb</p>
+
+</body>
+</html>
+
+--===============2667236804314819270==--
+
+--===============1389996953==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1389996953==--
