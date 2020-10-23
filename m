@@ -1,17 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A7286E500
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Oct 2020 11:09:26 +0000 (UTC)
-Date: Fri, 23 Oct 2020 16:24:44 +0530
-From: Anshuman Gupta <anshuman.gupta@intel.com>
-Message-ID: <20201023105443.GA29526@intel.com>
-References: <20201023100709.5211-1-karthik.b.s@intel.com>
- <20201023100709.5211-2-karthik.b.s@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201023100709.5211-2-karthik.b.s@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 1/2] tests/kms_content_protection:
- Add MST subtests
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 23 Oct 2020 11:39:04 -0000
+Message-ID: <160345314493.1406.7336239063891308425@emeril.freedesktop.org>
+References: <20201023100709.5211-1-karthik.b.s@intel.com>
+In-Reply-To: <20201023100709.5211-1-karthik.b.s@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkIHN1?=
+ =?utf-8?q?btests_for_HDCP_over_MST?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,297 +14,330 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0285921078=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: Karthik B S <karthik.b.s@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On 2020-10-23 at 15:37:08 +0530, Karthik B S wrote:
-> Add subtests to verify content protection simultaneously on
-> multiple outputs on the same MST topology.
-> 
-> Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-> ---
->  tests/kms_content_protection.c | 220 +++++++++++++++++++++++++++++++++
->  1 file changed, 220 insertions(+)
-> 
-> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-> index 303ed418..5807f3a3 100644
-> --- a/tests/kms_content_protection.c
-> +++ b/tests/kms_content_protection.c
-> @@ -42,6 +42,12 @@ struct data {
->  	struct udev_monitor *uevent_monitor;
->  } data;
->  
-> +typedef struct {
-> +	float red;
-> +	float green;
-> +	float blue;
-> +} color_t;
-> +
->  /* Test flags */
->  #define CP_DPMS					(1 << 0)
->  #define CP_LIC					(1 << 1)
-> @@ -457,6 +463,54 @@ static bool sink_hdcp2_capable(igt_output_t *output)
->  
->  	return strstr(buf, "HDCP2.2");
->  }
-> +color_t red  = { 1.0f, 0.0f, 0.0f };
-> +color_t green  = { 0.0f, 0.1f, 0.0f };
-> +
-> +static void prepare_modeset_on_mst_output(igt_output_t *output, enum pipe pipe)
-> +{
-> +	drmModeConnectorPtr c = output->config.connector;
-> +	igt_display_t *display = &data.display;
-> +	drmModeModeInfo *mode;
-> +	igt_plane_t *primary;
-> +	int i;
-> +
-> +	mode = igt_output_get_mode(output);
-> +
-> +	/*
-> +	 * TODO: Add logic to use the highest possible modes on each output.
-> +	 * Currently using 2k modes by default on all the outputs.
-> +	 */
-> +	igt_debug("Before mode override: Output %s Mode hdisplay %d Mode vdisplay %d\n",
-> +		   output->name, mode->hdisplay, mode->vdisplay);
-> +
-> +	if (mode->hdisplay > 1920 && mode->vdisplay > 1080) {
-> +		for (i = 0; i < c->count_modes; i++) {
-> +			if (c->modes[i].hdisplay <= 1920 && c->modes[i].vdisplay <= 1080) {
-> +				mode = &c->modes[i];
-> +				igt_output_override_mode(output, mode);
-> +				break;
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_debug("After mode overide: Output %s Mode hdisplay %d Mode vdisplay %d\n",
-> +		   output->name, mode->hdisplay, mode->vdisplay);
-> +
-> +	if (pipe % 2) {
-> +		igt_create_color_fb(display->drm_fd, mode->hdisplay, mode->vdisplay,
-> +				    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
-> +				    red.red, red.blue, red.green, &data.red);
-> +	} else {
-> +		igt_create_color_fb(display->drm_fd, mode->hdisplay, mode->vdisplay,
-> +				    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
-> +				    green.red, green.blue, green.green, &data.green);
-> +	}
-> +
-> +	igt_output_set_pipe(output, pipe);
-> +	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +	igt_plane_set_fb(primary, NULL);
-> +	igt_plane_set_fb(primary, pipe % 2 ? &data.red : &data.green);
-> +}
->  
->  static void
->  test_content_protection(enum igt_commit_style s, int content_type)
-> @@ -496,6 +550,149 @@ test_content_protection(enum igt_commit_style s, int content_type)
->  	igt_require_f(valid_tests, "No connector found with HDCP capability\n");
->  }
->  
-> +static bool is_output_support_cp_capable(igt_output_t *output, int content_type)
-> +{
-> +		if (!output->props[IGT_CONNECTOR_CONTENT_PROTECTION])
-> +			return false;
-> +
-> +		if (!output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE] &&
-> +		    content_type)
-> +			return false;
-> +
-> +		if (content_type && !sink_hdcp2_capable(output)) {
-> +			igt_info("\tSkip %s (Sink has no HDCP2.2 support)\n",
-> +				 output->name);
-> +			return false;
-> +		} else if (!sink_hdcp_capable(output)) {
-> +			igt_info("\tSkip %s (Sink has no HDCP support)\n",
-> +				 output->name);
-> +			return false;
-> +		}
-> +
-> +		return true;
-> +}
-> +
-> +static int parse_path_blob(char *blob_data)
-> +{
-> +	int connector_id;
-> +	char *encoder;
-> +
-> +	encoder = strtok(blob_data, ":");
-> +	igt_assert_f(!strcmp(encoder, "mst"), "PATH connector property expected to have 'mst'\n");
-> +
-> +	connector_id = atoi(strtok(NULL, "-"));
-> +
-> +	return connector_id;
-> +}
-> +
-> +static bool is_dp_mst_output(igt_output_t *output, int i)
-> +{
-> +	drmModePropertyBlobPtr path_blob = NULL;
-> +	uint64_t path_blob_id;
-> +	drmModeConnector *connector = output->config.connector;
-> +	struct kmstest_connector_config config;
-> +	const char *encoder;
-> +	int connector_id;
-> +	static int prev_connector_id;
-> +
-> +	kmstest_get_connector_config(data.drm_fd, output->config.connector->connector_id, -1, &config);
-> +	encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
-> +
-> +	if (strcmp(encoder, "DP MST"))
-> +		return false;
-> +
-> +	igt_assert(kmstest_get_property(data.drm_fd, connector->connector_id,
-> +		   DRM_MODE_OBJECT_CONNECTOR, "PATH", NULL,
-> +		   &path_blob_id, NULL));
-> +
-> +	igt_assert(path_blob = drmModeGetPropertyBlob(data.drm_fd, path_blob_id));
-> +
-> +	connector_id = parse_path_blob((char *) path_blob->data);
-> +
-> +	/* Check if all the MST outputs are in the same topology */
-> +	if (i == 0) {
-> +		prev_connector_id = connector_id;
-> +	} else {
-> +		if (connector_id != prev_connector_id)
-> +			return false;
-> +	}
-> +
-> +	drmModeFreePropertyBlob(path_blob);
-> +
-> +	return true;
-> +}
-> +
-> +static void
-> +test_content_protection_mst(int content_type)
-> +{
-> +	igt_display_t *display = &data.display;
-> +	igt_output_t *output;
-> +	int valid_outputs = 0, ret, count, max_pipe = 0;
-> +	enum pipe pipe;
-> +	igt_output_t *mst_output[IGT_MAX_PIPES];
-> +
-> +	for_each_connected_output(display, output) {
-> +		if (!is_dp_mst_output(output, valid_outputs))
-> +			continue;
-> +
-> +		if (!is_output_support_cp_capable(output, content_type))
-> +			continue;
-> +
-> +		mst_output[valid_outputs] = output;
-> +		valid_outputs++;
-> +	}
-> +
-> +	igt_require_f(valid_outputs > 1, "No DP MST set up with >= 2 outputs found in a single topology\n");
-> +
-> +	for_each_pipe(display, pipe)
-> +		max_pipe++;
-> +
-> +	if (valid_outputs > max_pipe)
-> +		valid_outputs = max_pipe;
-> +
-> +	pipe = PIPE_A;
-> +
-> +	for (count = 0; count < valid_outputs; count++) {
-> +		igt_assert_f(igt_pipe_connector_valid(pipe, mst_output[count]), "Output-pipe combination invalid\n");
-> +
-> +		prepare_modeset_on_mst_output(mst_output[count], pipe);
-> +		pipe++;
-> +	}
-> +
-> +	igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +	for (count = 0; count < valid_outputs; count++) {
-> +		igt_output_set_prop_value(mst_output[count], IGT_CONNECTOR_CONTENT_PROTECTION, CP_DESIRED);
-> +
-> +		if (output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE])
-> +			igt_output_set_prop_value(mst_output[count], IGT_CONNECTOR_HDCP_CONTENT_TYPE, content_type);
-> +	}
-> +
-> +	igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +	for (count = 0; count < valid_outputs; count++) {
-> +		igt_info("CP Prop check to be ENABLED %s\n", mst_output[count]->name);
-		this is a debug log, in case we need it it should be some like "Test CP Prop to be ENABLED" .
-> +		ret = wait_for_prop_value(mst_output[count], CP_ENABLED, KERNEL_AUTH_TIME_ALLOWED_MSEC);
-> +		igt_assert_f(ret, "Content Protection not enabled output %s\n", mst_output[count]->name);
-> +
-> +		igt_kmsg("HDCP Prop is ENABLED %s\n", mst_output[count]->name);
-		this is dmesg log for debugging not required any more.
-> +
-> +		if (data.cp_tests & CP_LIC)
-> +			test_cp_lic(mst_output[count]);
-> +	}
-> +
-> +	for (count = 0; count < valid_outputs; count++) {
-> +		igt_info("CP Prop check to be ENABLED %s\n", mst_output[count]->name);
-> +		ret = wait_for_prop_value(mst_output[count], CP_ENABLED, KERNEL_AUTH_TIME_ALLOWED_MSEC);
-		this should be all possible combination of disabling CP property on one connector and extected to be ENABLED
-		on another DP MST connector, currently it is not testing like disabling HDCP on second connecotr and expected
-		to be enable on first connector.
-> +		igt_assert_f(ret, "Content Protection not enabled output %s\n", mst_output[count]->name);
-> +
-> +		igt_info("CP Prop being UNDESIRED on %s\n", mst_output[count]->name);
-		this should be debug log.
-> +		test_cp_disable(mst_output[count], COMMIT_ATOMIC);
-> +
-> +		igt_kmsg("HDCP Prop is UNDESIRED %s\n", mst_output[count]->name);
-		this is dmesg log for debugging not required any more.
-Thanks ,
-Anshuman
-> +	}
-> +}
-> +
->  static void test_content_protection_cleanup(void)
->  {
->  	igt_display_t *display = &data.display;
-> @@ -512,6 +709,7 @@ static void test_content_protection_cleanup(void)
->  			continue;
->  
->  		igt_info("CP Prop being UNDESIRED on %s\n", output->name);
-> +		igt_kmsg("HDCP Prop being UNDESIRED %s\n", output->name);
-		this is dmesg log for debugging not required any more.
->  		test_cp_disable(output, COMMIT_ATOMIC);
->  	}
->  }
-> @@ -592,6 +790,28 @@ igt_main
->  		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
->  	}
->  
-> +	igt_describe("Test Content protection over DP MST");
-> +	igt_subtest("dp-mst-type-0") {
-> +		test_content_protection_mst(HDCP_CONTENT_TYPE_0);
-> +	}
-> +
-> +	igt_describe("Test Content protection over DP MST with LIC");
-> +	igt_subtest("dp-mst-lic-type-0") {
-> +		data.cp_tests = CP_LIC;
-> +		test_content_protection_mst(HDCP_CONTENT_TYPE_0);
-> +	}
-> +
-> +	igt_describe("Test Content protection over DP MST");
-> +	igt_subtest("dp-mst-type-1") {
-> +		test_content_protection_mst(HDCP_CONTENT_TYPE_1);
-> +	}
-> +
-> +	igt_describe("Test Content protection over DP MST with LIC");
-> +	igt_subtest("dp-mst-lic-type-1") {
-> +		data.cp_tests = CP_LIC;
-> +		test_content_protection_mst(HDCP_CONTENT_TYPE_1);
-> +	}
-> +
->  	igt_fixture {
->  		test_content_protection_cleanup();
->  		igt_display_fini(&data.display);
-> -- 
-> 2.22.0
-> 
+--===============0285921078==
+Content-Type: multipart/alternative;
+ boundary="===============2284975614411254995=="
+
+--===============2284975614411254995==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: Add subtests for HDCP over MST
+URL   : https://patchwork.freedesktop.org/series/82987/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_5823 -> IGTPW_5090
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/index.html
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_5090:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@kms_content_protectoin@dp-mst-lic-type-0} (NEW):
+    - fi-tgl-u2:          NOTRUN -> [SKIP][1] +3 similar issues
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-tgl-u2/igt@kms_content_protectoin@dp-mst-lic-type-0.html
+    - fi-cml-s:           NOTRUN -> [SKIP][2] +3 similar issues
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-cml-s/igt@kms_content_protectoin@dp-mst-lic-type-0.html
+    - fi-cml-u2:          NOTRUN -> [SKIP][3] +3 similar issues
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-cml-u2/igt@kms_content_protectoin@dp-mst-lic-type-0.html
+
+  * {igt@kms_content_protectoin@dp-mst-lic-type-1} (NEW):
+    - fi-icl-u2:          NOTRUN -> [SKIP][4] +3 similar issues
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-icl-u2/igt@kms_content_protectoin@dp-mst-lic-type-1.html
+    - fi-icl-y:           NOTRUN -> [SKIP][5] +3 similar issues
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-icl-y/igt@kms_content_protectoin@dp-mst-lic-type-1.html
+
+  * {igt@kms_content_protectoin@dp-mst-type-0} (NEW):
+    - {fi-ehl-1}:         NOTRUN -> [SKIP][6] +3 similar issues
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-ehl-1/igt@kms_content_protectoin@dp-mst-type-0.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between IGT_5823 and IGTPW_5090:
+
+### New IGT tests (4) ###
+
+  * igt@kms_content_protectoin@dp-mst-lic-type-0:
+    - Statuses : 36 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_content_protectoin@dp-mst-lic-type-1:
+    - Statuses : 36 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_content_protectoin@dp-mst-type-0:
+    - Statuses : 36 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_content_protectoin@dp-mst-type-1:
+    - Statuses : 36 skip(s)
+    - Exec time: [0.0] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5090 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-icl-y:           [PASS][7] -> [DMESG-WARN][8] ([i915#1982])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5823/fi-icl-y/igt@core_hotunplug@unbind-rebind.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-icl-y/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-bsw-n3050:       [PASS][9] -> [DMESG-WARN][10] ([i915#1982])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5823/fi-bsw-n3050/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-bsw-n3050/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - fi-icl-u2:          [PASS][11] -> [DMESG-WARN][12] ([i915#1982]) +1 similar issue
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5823/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  * igt@vgem_basic@unload:
+    - fi-skl-guc:         [PASS][13] -> [DMESG-WARN][14] ([i915#2203])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5823/fi-skl-guc/igt@vgem_basic@unload.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-skl-guc/igt@vgem_basic@unload.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2203]: https://gitlab.freedesktop.org/drm/intel/issues/2203
+
+
+Participating hosts (45 -> 39)
+------------------------------
+
+  Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5823 -> IGTPW_5090
+
+  CI-20190529: 20190529
+  CI_DRM_9190: a3d535579dd93942862b867b4452ba11e4f6bbb1 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5090: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/index.html
+  IGT_5823: 7dd2fe99bd9dde00456cc5abf7e5ef0c8d7d6118 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@kms_content_protection@dp-mst-lic-type-0
++igt@kms_content_protection@dp-mst-lic-type-1
++igt@kms_content_protection@dp-mst-type-0
++igt@kms_content_protection@dp-mst-type-1
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/index.html
+
+--===============2284975614411254995==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add subtests for HDCP over MST</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/82987/">https://patchwork.freedesktop.org/series/82987/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_5823 -&gt; IGTPW_5090</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/index.html</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_5090:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>{igt@kms_content_protectoin@dp-mst-lic-type-0} (NEW):</p>
+<ul>
+<li>
+<p>fi-tgl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-tgl-u2/igt@kms_content_protectoin@dp-mst-lic-type-0.html">SKIP</a> +3 similar issues</p>
+</li>
+<li>
+<p>fi-cml-s:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-cml-s/igt@kms_content_protectoin@dp-mst-lic-type-0.html">SKIP</a> +3 similar issues</p>
+</li>
+<li>
+<p>fi-cml-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-cml-u2/igt@kms_content_protectoin@dp-mst-lic-type-0.html">SKIP</a> +3 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_content_protectoin@dp-mst-lic-type-1} (NEW):</p>
+<ul>
+<li>
+<p>fi-icl-u2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-icl-u2/igt@kms_content_protectoin@dp-mst-lic-type-1.html">SKIP</a> +3 similar issues</p>
+</li>
+<li>
+<p>fi-icl-y:           NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-icl-y/igt@kms_content_protectoin@dp-mst-lic-type-1.html">SKIP</a> +3 similar issues</p>
+</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_content_protectoin@dp-mst-type-0} (NEW):</p>
+<ul>
+<li>{fi-ehl-1}:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-ehl-1/igt@kms_content_protectoin@dp-mst-type-0.html">SKIP</a> +3 similar issues</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between IGT_5823 and IGTPW_5090:</p>
+<h3>New IGT tests (4)</h3>
+<ul>
+<li>
+<p>igt@kms_content_protectoin@dp-mst-lic-type-0:</p>
+<ul>
+<li>Statuses : 36 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protectoin@dp-mst-lic-type-1:</p>
+<ul>
+<li>Statuses : 36 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protectoin@dp-mst-type-0:</p>
+<ul>
+<li>Statuses : 36 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protectoin@dp-mst-type-1:</p>
+<ul>
+<li>Statuses : 36 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5090 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5823/fi-icl-y/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-icl-y/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5823/fi-bsw-n3050/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-bsw-n3050/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5823/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-icl-u2/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@vgem_basic@unload:</p>
+<ul>
+<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_5823/fi-skl-guc/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/fi-skl-guc/igt@vgem_basic@unload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (45 -&gt; 39)</h2>
+<p>Missing    (6): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5823 -&gt; IGTPW_5090</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9190: a3d535579dd93942862b867b4452ba11e4f6bbb1 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5090: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5090/index.html<br />
+  IGT_5823: 7dd2fe99bd9dde00456cc5abf7e5ef0c8d7d6118 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@kms_content_protection@dp-mst-lic-type-0<br />
++igt@kms_content_protection@dp-mst-lic-type-1<br />
++igt@kms_content_protection@dp-mst-type-0<br />
++igt@kms_content_protection@dp-mst-type-1</p>
+
+</body>
+</html>
+
+--===============2284975614411254995==--
+
+--===============0285921078==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0285921078==--
