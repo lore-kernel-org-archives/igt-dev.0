@@ -1,15 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2875E6E3C1
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Oct 2020 17:57:39 +0000 (UTC)
-From: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-Date: Fri, 23 Oct 2020 23:21:57 +0530
-Message-Id: <20201023175158.391450-2-ayaz.siddiqui@intel.com>
-In-Reply-To: <20201023175158.391450-1-ayaz.siddiqui@intel.com>
-References: <20201023175158.391450-1-ayaz.siddiqui@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib/igt_device_scan:Add function to get
- pci subsystem of requested card
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Fri, 23 Oct 2020 18:40:58 -0000
+Message-ID: <160347845820.1406.9498989546194574857@emeril.freedesktop.org>
+References: <20201023175158.391450-1-ayaz.siddiqui@intel.com>
+In-Reply-To: <20201023175158.391450-1-ayaz.siddiqui@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgdG9vbHMv?=
+ =?utf-8?q?intel=5Fgpu=5Ftop=3A_Fix_Device_selection_issues?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,137 +14,243 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1193342397=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>, Petri Latvala <petri.latvala@intel.com>
+To: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-intel_gpu_top requires card information and PCI_SLOT_NAME for dGPU.
-Only pci subsystem contains both information.
-In case of user filter is other than pci subsystem then we need card
-information of associated pci subsystem which is stored as parent of
-requested card if available.
+--===============1193342397==
+Content-Type: multipart/alternative;
+ boundary="===============8084706478727351022=="
 
-A new api has been added to cater intel_gpu_top requirement.
+--===============8084706478727351022==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-Cc: Petri Latvala <petri.latvala@intel.com>
-Cc: Zbigniew Kempczynski <zbigniew.kempczynski@intel.com>
-Cc: Dixit Ashutosh <ashutosh.dixit@intel.com>
----
- lib/igt_device_scan.c | 55 ++++++++++++++++++++++++++++++++-----------
- lib/igt_device_scan.h |  2 ++
- tools/intel_gpu_top.c |  2 +-
- 3 files changed, 44 insertions(+), 15 deletions(-)
+== Series Details ==
 
-diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-index f4d43c733..55aa8159d 100644
---- a/lib/igt_device_scan.c
-+++ b/lib/igt_device_scan.c
-@@ -1237,18 +1237,9 @@ static bool igt_device_filter_apply(const char *fstr)
- 	return true;
- }
- 
--/**
-- * igt_device_card_match
-- * @filter: filter string
-- * @card: pointer to igt_device_card struct
-- *
-- * Function applies filter to match device from device array.
-- *
-- * Returns:
-- * false - no card pointer was passed or card wasn't matched,
-- * true - card matched and returned.
-- */
--bool igt_device_card_match(const char *filter, struct igt_device_card *card)
-+
-+static bool __igt_device_card_match(const char *filter,
-+			struct igt_device_card *card, bool request_pci_ss)
- {
- 	struct igt_device *dev = NULL;
- 
-@@ -1266,10 +1257,46 @@ bool igt_device_card_match(const char *filter, struct igt_device_card *card)
- 
- 	/* We take first one if more than one card matches filter */
- 	dev = igt_list_first_entry(&igt_devs.filtered, dev, link);
-+	if (request_pci_ss && !is_pci_subsystem(dev) && dev->parent
-+		&& is_pci_subsystem(dev->parent))
-+		__copy_dev_to_card(dev->parent, card);
-+	else
-+		__copy_dev_to_card(dev, card);
-+	return true;
-+}
- 
--	__copy_dev_to_card(dev, card);
-+/**
-+ * igt_device_card_match
-+ * @filter: filter string
-+ * @card: pointer to igt_device_card struct
-+ *
-+ * Function applies filter to match device from device array.
-+ *
-+ * Returns:
-+ * false - no card pointer was passed or card wasn't matched,
-+ * true - card matched and returned.
-+ */
-+bool igt_device_card_match(const char *filter, struct igt_device_card *card)
-+{
-+       return __igt_device_card_match(filter, card, false);
-+}
- 
--	return true;
-+/**
-+ * igt_device_card_match_pci
-+ * @filter: filter string
-+ * @card: pointer to igt_device_card struct
-+ *
-+ * Function applies filter to match device from device array.
-+ * Populate associated pci subsystem data if available.
-+ *
-+ * Returns:
-+ * false - no card pointer was passed or card wasn't matched,
-+ * true - card matched and returned.
-+ */
-+bool igt_device_card_match_pci(const char *filter,
-+			struct igt_device_card *card)
-+{
-+       return __igt_device_card_match(filter, card, true);
- }
- 
- /**
-diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
-index bd937d227..544e982c4 100644
---- a/lib/igt_device_scan.h
-+++ b/lib/igt_device_scan.h
-@@ -68,6 +68,8 @@ const char *igt_device_filter_get(int num);
- 
- /* Use filter to match the device and fill card structure */
- bool igt_device_card_match(const char *filter, struct igt_device_card *card);
-+bool igt_device_card_match_pci(const char *filter,
-+	struct igt_device_card *card);
- bool igt_device_find_first_i915_discrete_card(struct igt_device_card *card);
- int igt_open_card(struct igt_device_card *card);
- int igt_open_render(struct igt_device_card *card);
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 79a936ffb..1b6c8633b 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -1393,7 +1393,7 @@ int main(int argc, char **argv)
- 	}
- 
- 	if (opt_device != NULL) {
--		ret = igt_device_card_match(opt_device, &card);
-+		ret = igt_device_card_match_pci(opt_device, &card);
- 		if (!ret)
- 			fprintf(stderr, "Requested device %s not found!\n", opt_device);
- 		free(opt_device);
--- 
-2.26.2
+Series: tools/intel_gpu_top: Fix Device selection issues
+URL   : https://patchwork.freedesktop.org/series/83015/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9191 -> IGTPW_5094
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5094 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - fi-icl-u2:          [PASS][1] -> [DMESG-WARN][2] ([i915#1982]) +1 similar issue
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_close_race@basic-threads:
+    - fi-apl-guc:         [INCOMPLETE][3] ([i915#1635]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-apl-guc/igt@gem_close_race@basic-threads.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-apl-guc/igt@gem_close_race@basic-threads.html
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-bsw-kefka:       [DMESG-WARN][5] ([i915#1982]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-byt-j1900:       [DMESG-WARN][7] ([i915#1982]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html
+
+  * igt@kms_chamelium@dp-crc-fast:
+    - fi-kbl-7500u:       [DMESG-WARN][9] ([i915#165]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html
+
+  * igt@kms_chamelium@hdmi-crc-fast:
+    - fi-kbl-7500u:       [DMESG-WARN][11] ([i915#2203]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - {fi-kbl-7560u}:     [DMESG-WARN][13] ([i915#1982]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - fi-icl-u2:          [DMESG-WARN][15] ([i915#1982]) -> [PASS][16] +1 similar issue
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1635]: https://gitlab.freedesktop.org/drm/intel/issues/1635
+  [i915#165]: https://gitlab.freedesktop.org/drm/intel/issues/165
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2203]: https://gitlab.freedesktop.org/drm/intel/issues/2203
+
+
+Participating hosts (46 -> 39)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5823 -> IGTPW_5094
+
+  CI-20190529: 20190529
+  CI_DRM_9191: 4b693bbb9b41fda404b5cd081bf5cd8dba240468 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5094: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/index.html
+  IGT_5823: 7dd2fe99bd9dde00456cc5abf7e5ef0c8d7d6118 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/index.html
+
+--===============8084706478727351022==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tools/intel_gpu_top: Fix Device selection issues</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/83015/">https://patchwork.freedesktop.org/series/83015/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9191 -&gt; IGTPW_5094</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5094 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-icl-u2/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_close_race@basic-threads:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-apl-guc/igt@gem_close_race@basic-threads.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1635">i915#1635</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-apl-guc/igt@gem_close_race@basic-threads.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-byt-j1900/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@dp-crc-fast:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/165">i915#165</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-kbl-7500u/igt@kms_chamelium@dp-crc-fast.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-crc-fast:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>{fi-kbl-7560u}:     <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-kbl-7560u/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9191/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/fi-icl-u2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (46 -&gt; 39)</h2>
+<p>Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5823 -&gt; IGTPW_5094</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9191: 4b693bbb9b41fda404b5cd081bf5cd8dba240468 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5094: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5094/index.html<br />
+  IGT_5823: 7dd2fe99bd9dde00456cc5abf7e5ef0c8d7d6118 @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============8084706478727351022==--
+
+--===============1193342397==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1193342397==--
