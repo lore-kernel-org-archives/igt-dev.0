@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5DC0C6E96E
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Oct 2020 08:44:53 +0000 (UTC)
-Date: Mon, 26 Oct 2020 10:44:47 +0200
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA2816E973
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Oct 2020 08:48:50 +0000 (UTC)
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201026084447.GX7444@platvala-desk.ger.corp.intel.com>
-References: <20201023175158.391450-1-ayaz.siddiqui@intel.com>
+Date: Mon, 26 Oct 2020 10:48:40 +0200
+Message-Id: <20201026084840.13061-1-petri.latvala@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201023175158.391450-1-ayaz.siddiqui@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t 0/2] tools/intel_gpu_top: Fix Device
- selection issues
+Subject: [igt-dev] [PATCH i-g-t] lib/igt_core: Don't return too early in
+ common_init_config
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,34 +15,73 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Ayaz A Siddiqui <ayaz.siddiqui@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBPY3QgMjMsIDIwMjAgYXQgMTE6MjE6NTZQTSArMDUzMCwgQXlheiBBIFNpZGRpcXVp
-IHdyb3RlOgo+IFRoZXJlIHdhcyB0d28gaXNzdWVzIGlkZW50aWZpZWQgZHVyaW5nIGludGVsX2dw
-dV90b3AgdGVzdGluZy4KPiAxLiBJbiBjYXNlIG9mIG11bHRpcGxlIGRpc2NyZXRlIEdQVSBwbGF0
-Zm9ybSwgIGlmIGZpcnN0IGNhcmQgaXMgbm90Cj4gaW50ZWwgY2FyZCB0aGVuIGV4ZWN1dGlvbiAg
-ZmFpbGVkIHdpdGggZXJyb3IuIFRvIHNvbHZlIHRoaXMgaXNzdWUgYSBjaGVjayBmb3IKPiBpbnRl
-bCBkZXZpY2UgKDgwODYpIGlzIGFkZGVkIGR1cmluZyBkZXZpY2Ugc2VsZWN0aW9uLgo+IDIuIElu
-dGVsX2dwdV90b3Agd2FzIGZhaWxpbmcgdG8gZXhlY3V0ZSBpZiBkZXZpY2Ugc2VsZWN0aW9uIGZp
-bHRlciB3YXMgb3RoZXIgdGhhbgo+IOKAnHBjaeKAnS4gaW50ZWxfZ3B1X3RvcCByZXF1aXJlcyBj
-YXJkIGluZm9ybWF0aW9uIGFuZCBQQ0lfU0xPVF9OQU1FIGZvciBkR1BVLgo+IE9ubHkgcGNpIHN1
-YnN5c3RlbSBjb250YWlucyBib3RoIGluZm9ybWF0aW9uLgo+IEluIGNhc2Ugb2YgdXNlciBmaWx0
-ZXIgaXMgb3RoZXIgdGhhbiBwY2kgc3Vic3lzdGVtIHRoZW4gd2UgbmVlZCBjYXJkCj4gaW5mb3Jt
-YXRpb24gb2YgYXNzb2NpYXRlZCBwY2kgc3Vic3lzdGVtIHdoaWNoIGlzIHN0b3JlZCBhcyBwYXJl
-bnQgb2YKPiByZXF1ZXN0ZWQgY2FyZCBpZiBhdmFpbGFibGUuCj4gCj4gQXlheiBBIFNpZGRpcXVp
-ICgyKToKPiAgIGxpYi9pZ3RfZGV2aWNlX3NjYW46QWRkIGZ1bmN0aW9uIHRvIGdldCBwY2kgc3Vi
-c3lzdGVtIG9mIHJlcXVlc3RlZAo+ICAgICBjYXJkCj4gICBsaWIvaWd0X2RldmljZV9zY2FuOiBT
-ZWxlY3QgaW50ZWwgYXMgZGVmYXVsdCB2ZW5kb3IgZm9yIGludGVsX2dwdV90b3AKPiAKPiAgbGli
-L2lndF9kZXZpY2Vfc2Nhbi5jIHwgOTUgKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0t
-LS0tLS0tLS0tLQo+ICBsaWIvaWd0X2RldmljZV9zY2FuLmggfCAgMiArCj4gIHRvb2xzL2ludGVs
-X2dwdV90b3AuYyB8ICAyICstCj4gIDMgZmlsZXMgY2hhbmdlZCwgNjQgaW5zZXJ0aW9ucygrKSwg
-MzUgZGVsZXRpb25zKC0pCj4gCgoKTWVyZ2VkLCB0aGFua3MuCgotLSAKUGV0cmkgTGF0dmFsYQpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1h
-aWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZy
-ZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+common_init_config is responsible for adding the device filters
+supplied through the environment to the filter list. If the .igtrc
+file cannot be opened, make sure the filter is added still.
+
+Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+Cc: Arkadiusz Hiler <arek@hiler.eu>
+---
+ lib/igt_core.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index b358173f..8f9d925b 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -775,21 +775,20 @@ GKeyFile *igt_load_igtrc(void)
+ static void common_init_config(void)
+ {
+ 	GError *error = NULL;
+-	int ret;
++	int ret = 0;
+ 
+ 	igt_key_file = igt_load_igtrc();
+-	if (!igt_key_file)
+-		return;
+ 
+-	if (!igt_frame_dump_path)
++	if (igt_key_file && !igt_frame_dump_path)
+ 		igt_frame_dump_path =
+ 			g_key_file_get_string(igt_key_file, "Common",
+ 					      "FrameDumpPath", &error);
+ 
+ 	g_clear_error(&error);
+ 
+-	ret = g_key_file_get_integer(igt_key_file, "DUT", "SuspendResumeDelay",
+-				     &error);
++	if (igt_key_file)
++		ret = g_key_file_get_integer(igt_key_file, "DUT", "SuspendResumeDelay",
++					     &error);
+ 	assert(!error || error->code != G_KEY_FILE_ERROR_INVALID_VALUE);
+ 
+ 	g_clear_error(&error);
+@@ -804,9 +803,10 @@ static void common_init_config(void)
+ 		if (igt_rc_device) {
+ 			igt_debug("Notice: using IGT_DEVICE env:\n");
+ 		} else {
+-			igt_rc_device =	g_key_file_get_string(igt_key_file,
+-							      "Common",
+-							      "Device", &error);
++			if (igt_key_file)
++				igt_rc_device =	g_key_file_get_string(igt_key_file,
++								      "Common",
++								      "Device", &error);
+ 			g_clear_error(&error);
+ 			if (igt_rc_device)
+ 				igt_debug("Notice: using .igtrc "
+-- 
+2.20.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
