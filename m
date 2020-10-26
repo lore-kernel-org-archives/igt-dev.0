@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 052FB6E193
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Oct 2020 05:30:39 +0000 (UTC)
-Date: Mon, 26 Oct 2020 06:30:32 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20201026053032.GA4084@zkempczy-mobl2>
-References: <20201023124212.26428-1-zbigniew.kempczynski@intel.com>
- <160346698976.1405.12940175541646881403@emeril.freedesktop.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <160346698976.1405.12940175541646881403@emeril.freedesktop.org>
-Subject: Re: [igt-dev]
- =?utf-8?b?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmb3IgSW50cm9k?=
- =?utf-8?q?uce_IGT_allocator_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 26 Oct 2020 05:43:46 -0000
+Message-ID: <160369102695.3258.14956752323763157536@emeril.freedesktop.org>
+References: <20201023124212.26428-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20201023124212.26428-1-zbigniew.kempczynski@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgSW50cm9k?=
+ =?utf-8?q?uce_IGT_allocator_=28rev4=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,332 +14,283 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============1560821729=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Oct 23, 2020 at 03:29:49PM +0000, Patchwork wrote:
->    Patch Details
-> 
->    Series:  Introduce IGT allocator (rev3)                                 
->    URL:     https://patchwork.freedesktop.org/series/82954/                
->    State:   failure                                                        
->    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5092/index.html 
-> 
->            CI Bug Log - changes from IGT_5823_full -> IGTPW_5092_full
-> 
-> Summary
-> 
->    FAILURE
-> 
->    Serious unknown changes coming with IGTPW_5092_full absolutely need to be
->    verified manually.
-> 
->    If you think the reported changes have nothing to do with the changes
->    introduced in IGTPW_5092_full, please notify your bug team to allow them
->    to document this new failure mode, which will reduce false positives in
->    CI.
-> 
->    External URL:
->    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5092/index.html
-> 
-> Possible new issues
-> 
->    Here are the unknown changes that may have been introduced in
->    IGTPW_5092_full:
-> 
->   IGT changes
-> 
->     Possible regressions
-> 
->      * igt@gem_ctx_isolation@preservation-s3@vcs0:
-> 
->           * shard-glk: PASS -> INCOMPLETE
->      * igt@gem_exec_reloc@basic-write-cpu-noreloc:
+--===============1560821729==
+Content-Type: multipart/alternative;
+ boundary="===============2364009082557616110=="
 
-I didn't touch this test. I rerun the series to check is this
-was incidental, but:
+--===============2364009082557616110==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Starting subtest: basic-write-cpu-noreloc
-(gem_exec_reloc:1496) CRITICAL: Test assertion failure function basic_reloc, file ../tests/i915/gem_exec_reloc.c:639:
-(gem_exec_reloc:1496) CRITICAL: Failed assertion: reloc.presumed_offset == offset
-(gem_exec_reloc:1496) CRITICAL: error: 0x7fff0000 != 0
-Subtest basic-write-cpu-noreloc failed.
+== Series Details ==
 
-looks it should be likely reproducible on that gen all the time.
+Series: Introduce IGT allocator (rev4)
+URL   : https://patchwork.freedesktop.org/series/82954/
+State : success
 
---
-Zbigniew
+== Summary ==
 
-> 
->           * shard-snb: PASS -> FAIL +1 similar issue
->      * igt@gem_userptr_blits@coherency-unsync:
-> 
->           * shard-hsw: PASS -> INCOMPLETE
-> 
->     Suppressed
-> 
->    The following results come from untrusted machines, tests, or statuses.
->    They do not affect the overall result.
-> 
->      * {igt@core_hotunplug@hotrebind}:
->           * shard-hsw: NOTRUN -> WARN
-> 
-> New tests
-> 
->    New tests have been introduced between IGT_5823_full and IGTPW_5092_full:
-> 
->   New IGT tests (32)
-> 
->      * igt@api_intel_allocator@alloc-simple:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.0] s
->      * igt@api_intel_allocator@fork-simple-once:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.01, 0.04] s
->      * igt@api_intel_allocator@fork-simple-stress:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [5.40, 5.60] s
->      * igt@api_intel_allocator@fork-simple-stress-signal:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [5.41, 5.50] s
->      * igt@api_intel_allocator@print:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.0] s
->      * igt@api_intel_allocator@purge-bb:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.0, 0.00] s
->      * igt@api_intel_allocator@random-allocator:
-> 
->           * Statuses :
->           * Exec time: [None] s
->      * igt@api_intel_allocator@random-allocator@basic:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.0, 0.00] s
->      * igt@api_intel_allocator@random-allocator@parallel-one:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.00, 0.01] s
->      * igt@api_intel_allocator@reopen:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.00, 0.01] s
->      * igt@api_intel_allocator@reopen-fork:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [3.23, 3.26] s
->      * igt@api_intel_allocator@reserve:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.0] s
->      * igt@api_intel_allocator@reserve-simple:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.0] s
->      * igt@api_intel_allocator@reuse:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.0] s
->      * igt@api_intel_allocator@simple-allocator:
-> 
->           * Statuses :
->           * Exec time: [None] s
->      * igt@api_intel_allocator@simple-allocator@basic:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.00] s
->      * igt@api_intel_allocator@simple-allocator@parallel-one:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.10, 0.21] s
->      * igt@api_intel_allocator@simple-allocator@reserve:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.0] s
->      * igt@api_intel_allocator@simple-allocator@reuse:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.0] s
->      * igt@api_intel_allocator@two-level-inception:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [5.40, 5.61] s
->      * igt@api_intel_allocator@two-level-inception-interruptible:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [5.41, 5.60] s
->      * igt@api_intel_bb@add-remove-objects:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.00, 0.01] s
->      * igt@api_intel_bb@blit-noreloc-keep-cache-random:
-> 
->           * Statuses : 5 pass(s) 2 skip(s)
->           * Exec time: [0.0, 0.01] s
->      * igt@api_intel_bb@blit-noreloc-purge-cache-random:
-> 
->           * Statuses : 5 pass(s) 2 skip(s)
->           * Exec time: [0.0, 0.01] s
->      * igt@api_intel_bb@destroy-bb:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.01, 0.02] s
->      * igt@api_intel_bb@object-noreloc-keep-cache-random:
-> 
->           * Statuses : 5 pass(s) 2 skip(s)
->           * Exec time: [0.0, 0.01] s
->      * igt@api_intel_bb@object-noreloc-keep-cache-simple:
-> 
->           * Statuses : 5 pass(s) 2 skip(s)
->           * Exec time: [0.0, 0.01] s
->      * igt@api_intel_bb@object-noreloc-purge-cache-random:
-> 
->           * Statuses : 5 pass(s) 2 skip(s)
->           * Exec time: [0.0, 0.01] s
->      * igt@api_intel_bb@object-noreloc-purge-cache-simple:
-> 
->           * Statuses : 5 pass(s) 2 skip(s)
->           * Exec time: [0.0, 0.01] s
->      * igt@api_intel_bb@object-reloc-keep-cache:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.00, 0.01] s
->      * igt@api_intel_bb@object-reloc-purge-cache:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.00, 0.01] s
->      * igt@api_intel_bb@reset-bb:
-> 
->           * Statuses : 7 pass(s)
->           * Exec time: [0.0, 0.00] s
-> 
-> Known issues
-> 
->    Here are the changes found in IGTPW_5092_full that come from known issues:
-> 
->   IGT changes
-> 
->     Issues hit
-> 
->      * igt@api_intel_bb@blit-noreloc-keep-cache:
-> 
->           * shard-hsw: PASS -> SKIP (fdo#109271) +3 similar issues
-> 
->           * shard-snb: PASS -> SKIP (fdo#109271) +1 similar issue
-> 
->      * igt@core_hotunplug@hotrebind-lateclose:
-> 
->           * shard-iclb: PASS -> DMESG-WARN (i915#1982)
->      * igt@kms_cursor_edge_walk@pipe-c-64x64-left-edge:
-> 
->           * shard-apl: PASS -> DMESG-WARN (i915#1635 / i915#1982) +1 similar
->             issue
->      * igt@kms_cursor_legacy@cursor-vs-flip-varying-size:
-> 
->           * shard-hsw: PASS -> FAIL (i915#2370)
->      * igt@kms_frontbuffer_tracking@fbc-farfromfence:
-> 
->           * shard-kbl: PASS -> DMESG-WARN (i915#1982) +2 similar issues
->      * igt@kms_frontbuffer_tracking@fbcpsr-badstride:
-> 
->           * shard-tglb: PASS -> DMESG-WARN (i915#1982) +2 similar issues
->      * igt@kms_psr@psr2_cursor_render:
-> 
->           * shard-iclb: PASS -> SKIP (fdo#109441) +1 similar issue
->      * igt@perf@oa-formats:
-> 
->           * shard-iclb: PASS -> SKIP (i915#1354) +1 similar issue
-> 
->           * shard-glk: PASS -> SKIP (fdo#109271 / i915#1354) +1 similar issue
-> 
->           * shard-apl: PASS -> SKIP (fdo#109271 / i915#1354 / i915#1635) +1
->             similar issue
-> 
->           * shard-kbl: PASS -> SKIP (fdo#109271 / i915#1354) +1 similar issue
-> 
->           * shard-tglb: PASS -> SKIP (i915#1354)
-> 
->     Possible fixes
-> 
->      * igt@gem_exec_create@madvise:
-> 
->           * shard-glk: DMESG-WARN (i915#118 / i915#95) -> PASS +1 similar
->             issue
->      * igt@gem_exec_fence@long-history:
-> 
->           * shard-kbl: INCOMPLETE (CI#80) -> PASS
->      * igt@gem_exec_reloc@basic-many-active@rcs0:
-> 
->           * shard-apl: FAIL (i915#1635 / i915#2389) -> PASS
->      * igt@i915_pm_dc@dc6-psr:
-> 
->           * shard-iclb: FAIL (i915#454) -> PASS
->      * {igt@kms_async_flips@async-flip-with-page-flip-events}:
-> 
->           * shard-kbl: FAIL (i915#2521) -> PASS
->      * igt@kms_cursor_edge_walk@pipe-c-64x64-right-edge:
-> 
->           * shard-glk: DMESG-WARN (i915#1982) -> PASS +1 similar issue
->      * igt@kms_draw_crc@draw-method-rgb565-render-xtiled:
-> 
->           * shard-apl: DMESG-WARN (i915#1635 / i915#1982) -> PASS
->      * igt@kms_flip@flip-vs-suspend@c-hdmi-a1:
-> 
->           * shard-hsw: INCOMPLETE (i915#2055) -> PASS
->      * igt@kms_frontbuffer_tracking@fbc-2p-scndscrn-spr-indfb-draw-mmap-cpu:
-> 
->           * shard-glk: FAIL (i915#49) -> PASS
->      * igt@kms_frontbuffer_tracking@fbcpsr-modesetfrombusy:
-> 
->           * shard-tglb: DMESG-WARN (i915#1982) -> PASS +4 similar issues
->      * igt@kms_psr@psr2_sprite_plane_onoff:
-> 
->           * shard-iclb: SKIP (fdo#109441) -> PASS
-> 
->     Warnings
-> 
->      * igt@kms_content_protection@atomic-dpms:
-> 
->           * shard-apl: TIMEOUT (i915#1319 / i915#1635) -> FAIL (fdo#110321 /
->             fdo#110336 / i915#1635) +1 similar issue
->      * igt@kms_content_protection@lic:
-> 
->           * shard-apl: FAIL (fdo#110321 / i915#1635) -> TIMEOUT (i915#1319 /
->             i915#1635)
->      * igt@perf@mi-rpc:
-> 
->           * shard-tglb: SKIP (fdo#109289) -> SKIP (i915#1354)
-> 
->    {name}: This element is suppressed. This means it is ignored when
->    computing
->    the status of the difference (SUCCESS, WARNING, or FAILURE).
-> 
-> Participating hosts (8 -> 8)
-> 
->    No changes in participating hosts
-> 
-> Build changes
-> 
->      * CI: CI-20190529 -> None
->      * IGT: IGT_5823 -> IGTPW_5092
-> 
->    CI-20190529: 20190529
->    CI_DRM_9190: a3d535579dd93942862b867b4452ba11e4f6bbb1 @
->    git://anongit.freedesktop.org/gfx-ci/linux
->    IGTPW_5092: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5092/index.html
->    IGT_5823: 7dd2fe99bd9dde00456cc5abf7e5ef0c8d7d6118 @
->    git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+CI Bug Log - changes from CI_DRM_9193 -> IGTPW_5096
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5096 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-icl-y:           [PASS][1] -> [DMESG-WARN][2] ([i915#1982])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9193/fi-icl-y/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/fi-icl-y/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@kms_chamelium@hdmi-crc-fast:
+    - fi-kbl-7500u:       [PASS][3] -> [DMESG-WARN][4] ([i915#2203])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9193/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-byt-j1900:       [PASS][5] -> [DMESG-WARN][6] ([i915#1982])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9193/fi-byt-j1900/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/fi-byt-j1900/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+    - fi-bsw-kefka:       [PASS][7] -> [DMESG-WARN][8] ([i915#1982])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9193/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_ctx_create@basic-files:
+    - fi-apl-guc:         [INCOMPLETE][9] ([i915#1635]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9193/fi-apl-guc/igt@gem_ctx_create@basic-files.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/fi-apl-guc/igt@gem_ctx_create@basic-files.html
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-bsw-kefka:       [DMESG-WARN][11] ([i915#1982]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9193/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  * igt@vgem_basic@unload:
+    - fi-skl-guc:         [DMESG-WARN][13] ([i915#2203]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9193/fi-skl-guc/igt@vgem_basic@unload.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/fi-skl-guc/igt@vgem_basic@unload.html
+
+  
+  [i915#1635]: https://gitlab.freedesktop.org/drm/intel/issues/1635
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+  [i915#2203]: https://gitlab.freedesktop.org/drm/intel/issues/2203
+
+
+Participating hosts (46 -> 39)
+------------------------------
+
+  Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5825 -> IGTPW_5096
+
+  CI-20190529: 20190529
+  CI_DRM_9193: 92d57a5d951e06303a37f344f179d010753db622 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5096: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/index.html
+  IGT_5825: e3503f6542fef432413e78e38436e13cca76bf8c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+
+
+== Testlist changes ==
+
++igt@api_intel_allocator@alloc-simple
++igt@api_intel_allocator@fork-simple-once
++igt@api_intel_allocator@fork-simple-stress
++igt@api_intel_allocator@fork-simple-stress-signal
++igt@api_intel_allocator@print
++igt@api_intel_allocator@purge-bb
++igt@api_intel_allocator@random-allocator
++igt@api_intel_allocator@reopen
++igt@api_intel_allocator@reopen-fork
++igt@api_intel_allocator@reserve
++igt@api_intel_allocator@reserve-simple
++igt@api_intel_allocator@reuse
++igt@api_intel_allocator@simple-allocator
++igt@api_intel_allocator@two-level-inception
++igt@api_intel_allocator@two-level-inception-interruptible
++igt@api_intel_bb@add-remove-objects
++igt@api_intel_bb@blit-noreloc-keep-cache-random
++igt@api_intel_bb@blit-noreloc-purge-cache-random
++igt@api_intel_bb@destroy-bb
++igt@api_intel_bb@object-noreloc-keep-cache-random
++igt@api_intel_bb@object-noreloc-keep-cache-simple
++igt@api_intel_bb@object-noreloc-purge-cache-random
++igt@api_intel_bb@object-noreloc-purge-cache-simple
++igt@api_intel_bb@object-reloc-keep-cache
++igt@api_intel_bb@object-reloc-purge-cache
++igt@api_intel_bb@reset-bb
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/index.html
+
+--===============2364009082557616110==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Introduce IGT allocator (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/82954/">https://patchwork.freedesktop.org/series/82954/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9193 -&gt; IGTPW_5096</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5096 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>fi-icl-y:           <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9193/fi-icl-y/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/fi-icl-y/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium@hdmi-crc-fast:</p>
+<ul>
+<li>fi-kbl-7500u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9193/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/fi-kbl-7500u/igt@kms_chamelium@hdmi-crc-fast.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>
+<p>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9193/fi-byt-j1900/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/fi-byt-j1900/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</p>
+</li>
+<li>
+<p>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9193/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/fi-bsw-kefka/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_ctx_create@basic-files:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9193/fi-apl-guc/igt@gem_ctx_create@basic-files.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1635">i915#1635</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/fi-apl-guc/igt@gem_ctx_create@basic-files.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-bsw-kefka:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9193/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/fi-bsw-kefka/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@vgem_basic@unload:</p>
+<ul>
+<li>fi-skl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9193/fi-skl-guc/igt@vgem_basic@unload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/2203">i915#2203</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/fi-skl-guc/igt@vgem_basic@unload.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Participating hosts (46 -&gt; 39)</h2>
+<p>Missing    (7): fi-ilk-m540 fi-hsw-4200u fi-byt-squawks fi-bsw-cyan fi-ctg-p8600 fi-byt-clapper fi-bdw-samus </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5825 -&gt; IGTPW_5096</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9193: 92d57a5d951e06303a37f344f179d010753db622 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5096: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5096/index.html<br />
+  IGT_5825: e3503f6542fef432413e78e38436e13cca76bf8c @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+<p>== Testlist changes ==</p>
+<p>+igt@api_intel_allocator@alloc-simple<br />
++igt@api_intel_allocator@fork-simple-once<br />
++igt@api_intel_allocator@fork-simple-stress<br />
++igt@api_intel_allocator@fork-simple-stress-signal<br />
++igt@api_intel_allocator@print<br />
++igt@api_intel_allocator@purge-bb<br />
++igt@api_intel_allocator@random-allocator<br />
++igt@api_intel_allocator@reopen<br />
++igt@api_intel_allocator@reopen-fork<br />
++igt@api_intel_allocator@reserve<br />
++igt@api_intel_allocator@reserve-simple<br />
++igt@api_intel_allocator@reuse<br />
++igt@api_intel_allocator@simple-allocator<br />
++igt@api_intel_allocator@two-level-inception<br />
++igt@api_intel_allocator@two-level-inception-interruptible<br />
++igt@api_intel_bb@add-remove-objects<br />
++igt@api_intel_bb@blit-noreloc-keep-cache-random<br />
++igt@api_intel_bb@blit-noreloc-purge-cache-random<br />
++igt@api_intel_bb@destroy-bb<br />
++igt@api_intel_bb@object-noreloc-keep-cache-random<br />
++igt@api_intel_bb@object-noreloc-keep-cache-simple<br />
++igt@api_intel_bb@object-noreloc-purge-cache-random<br />
++igt@api_intel_bb@object-noreloc-purge-cache-simple<br />
++igt@api_intel_bb@object-reloc-keep-cache<br />
++igt@api_intel_bb@object-reloc-purge-cache<br />
++igt@api_intel_bb@reset-bb</p>
+
+</body>
+</html>
+
+--===============2364009082557616110==--
+
+--===============1560821729==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============1560821729==--
