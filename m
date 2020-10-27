@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E0DE6E19A
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Oct 2020 07:56:03 +0000 (UTC)
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Date: Tue, 27 Oct 2020 09:55:55 +0200
-Message-Id: <20201027075555.254057-1-lionel.g.landwerlin@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B6426EB41
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Oct 2020 09:23:45 +0000 (UTC)
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Date: Tue, 27 Oct 2020 10:23:03 +0100
+Message-Id: <20201027092317.18716-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] lib/i915/perf: ensure conversion script
- preserves order of attributes
+Subject: [igt-dev] [PATCH i-g-t v5 00/14] tests: Remove libdrm dependency
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,79 +14,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We've been bitten by this before.
-
-Signed-off-by: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
----
- lib/i915/perf-configs/mdapi-xml-convert.py | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
-
-diff --git a/lib/i915/perf-configs/mdapi-xml-convert.py b/lib/i915/perf-configs/mdapi-xml-convert.py
-index f61a1cd1f..172ef0600 100755
---- a/lib/i915/perf-configs/mdapi-xml-convert.py
-+++ b/lib/i915/perf-configs/mdapi-xml-convert.py
-@@ -44,6 +44,7 @@ import re
- import sys
- import time
- import uuid
-+import collections
- 
- import xml.etree.ElementTree as et
- import xml.sax.saxutils as saxutils
-@@ -544,8 +545,14 @@ def process_mux_configs(mdapi_set):
-     return mux_configs
- 
- 
-+def create_sub_element(parent, name):
-+    el = et.SubElement(parent, name)
-+    el.attrib = collections.OrderedDict()
-+    return el
-+
-+
- def add_register_config(set, priority, availability, regs, type):
--    reg_config = et.SubElement(set, 'register_config')
-+    reg_config = create_sub_element(set, 'register_config')
- 
-     reg_config.set('type', type)
- 
-@@ -555,7 +562,7 @@ def add_register_config(set, priority, availability, regs, type):
-         reg_config.set('availability', availability)
- 
-     for reg in regs:
--        elem = et.SubElement(reg_config, 'register')
-+        elem = create_sub_element(reg_config, 'register')
-         elem.set('type', type)
-         elem.set('address', "0x%08X" % reg[0])
-         elem.set('value', "0x%08X" % reg[1])
-@@ -617,7 +624,7 @@ for arg in args.xml:
-             print_err("WARNING: skipping metric set '{0}', report size {1} invalid".format(set_symbol_name, mdapi_set.get('SnapshotReportSize')))
-             continue
- 
--        set = et.SubElement(metrics, 'set')
-+        set = create_sub_element(metrics, 'set')
- 
-         set.set('chipset', chipset)
- 
-@@ -759,7 +766,7 @@ for arg in args.xml:
- 
-             symbol_name = mdapi_counter.get('SymbolName')
- 
--            counter = et.SubElement(set, 'counter')
-+            counter = create_sub_element(set, 'counter')
-             counter.set('name', apply_aliases(mdapi_counter.get('ShortName'), aliases))
-             counter.set('symbol_name', mdapi_counter.get('SymbolName'))
-             counter.set('underscore_name', underscore(mdapi_counter.get('SymbolName')))
--- 
-2.28.0
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SSBkZWNpZGVkIHRvIHNwbGl0IHByZXZpb3VzIHNlcmllcyBpbnRvIHNtYWxsZXIgY2h1bmtzLgoo
+aHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy84MTc4Mi8pClRoZXJlIGFy
+ZSBzb21lIGNvbW1vbiBwYXRjaGVzIGlubGN1ZGVkIGluIG1vcmUgdGhhbiBvbmUgc21hbGxlciBz
+ZXJpZXMuClRoaXMgb25lIHJlbW92ZXMgbGliZHJtIHVzYWdlIGZyb20gdGVzdHMgZXhjZXB0IHBy
+aW1lXyogZ3JvdXAuCgp2MjogZml4IG1pc3Rha2UgaW50cm9kdWNlZCBpbiBnZW1fcHBndHQKICAg
+IGluIGdlbV9waXBlX2NvbnRyb2xfc3RvcmVfbG9vcCBzdWJtaXQgU2FuZHkgQnJpZGdlCiAgICB3
+b3JrYXJvdW5kIGZsdXNoIGluIHNlcGFyYXRlIGJhdGNoLiBSdW4gY2hhbmdlZCB0ZXN0cyBpbiBC
+QVQuCgp2MzogcmViYXNlIG9udG8gbWFzdGVyCiAgICBkcm9wIGdlbV9waXBlX2NvbnRyb2xfc3Rv
+cmVfbG9vcAogICAgcmVwbGFjZSBidXN5X2J1ZiB3b3JrbG9hZCBieSBzcGlubmVyIGluIFwKCXVu
+ZmVuY2VfYWN0aXZlX2J1ZmZlcnMgYW5kIHNldF90aWxpbmdfdnNfYmx0Cgp2NDogYWRhcHQgZm9y
+IGFsbG9jYXRvcgogICAgZHJvcCBnZW1fbGluZWFyX2JsaXRzIChhZGFwdGF0aW9uIG5lZWRzIGFs
+bG9jYXRvciBzZXJpZXMpCiAgICBhZGQgYWdhaW4gZ2VtX3BpcGVfY29udHJvbF9zdG9yZV9sb29w
+Cgp2NTogYXBwbHkgcmV2aWV3IGNvbW1lbnRzCgpTaWduZWQtb2ZmLWJ5OiBEb21pbmlrIEdyemVn
+b3J6ZWsgPGRvbWluaWsuZ3J6ZWdvcnpla0BpbnRlbC5jb20+CkNjOiBaYmlnbmlldyBLZW1wY3p5
+xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8
+Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgoKRG9taW5payBHcnplZ29yemVrICgxNCk6CiAgbGli
+L2ludGVsX2JhdGNoYnVmZmVyOiBhZGQgaW50ZWxfYmJfYmxpdF9jb3B5IHdyYXBwZXIKICBSZW1v
+dmUgdW51c2VkIGludGVsX2J1Zm1nci5oIGhlYWRlcnMKICBpOTE1L2dlbV9wd3JpdGVfc25vb3Bl
+ZDogUmVtb3ZlIGxpYmRybSBkZXBlbmRlbmN5CiAgaTkxNS9nZW1fcHJlYWRfYWZ0ZXJfYmxpdC5j
+OiBSZW1vdmUgbGliZHJtIGRlcGVuZGVuY3kKICBpOTE1L2dlbV90aHJlYWRlZF9hY2Nlc3NfdGls
+ZWQuYzogUmVtb3ZlIGxpYmRybSBkZXBlbmRlbmN5CiAgaTkxNS9nZW1fdW5mZW5jZV9hY3RpdmVf
+YnVmZmVycy5jOiBSZW1vdmUgbGlicmRtIGRlcGVuZGVuY3kKICBpOTE1L2dlbV91bnJlZl9hY3Rp
+dmVfYnVmZmVycy5jOiBSZW1vdmUgbGliZHJtIGRlcGVuZGVuY3kKICBpOTE1L2dlbV90aWxlZF9w
+YXJ0aWFsX3B3cml0ZV9wcmVhZDogUmVtb3ZlIGxpYmRybSBkZXBlbmRlbmN5CiAgaTkxNS9nZW1f
+c2V0X3RpbGluZ192c19ibGl0LmM6IFJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeQogIHRlc3RzL2tt
+c19mZW5jZV9waW5fbGVhay5jOiBSZW1vdmUgbGliZHJtIGRlcGVuZGVuY3kKICB0ZXN0cy9rbXNf
+ZmxpcC5jOiBSZW1vdmUgbGliZHJtIGRlcGVuZGVuY3kKICB0ZXN0cy9rbXNfcHNyMl9zdS5jOiBH
+ZXQgcmlkIG9mIHVudXNlZCBidWZtZ3IKICB0ZXN0cy9pOTE1L2dlbV9wcGd0dDogbWFrZSBjb3B5
+aW5nIG1vcmUgcmVhZGFibGUKICBpOTE1L2dlbV9waXBlX2NvbnRyb2xfc3RvcmVfbG9vcC5jOiBS
+ZW1vdmUgbGliZHJtIGRlcGVuZGVuY3kKCiBiZW5jaG1hcmtzL2dlbV91c2VycHRyX2JlbmNobWFy
+ay5jICAgICAgICAgIHwgICAxIC0KIGxpYi9pbnRlbF9iYXRjaGJ1ZmZlci5jICAgICAgICAgICAg
+ICAgICAgICAgfCAgMjMgKysrCiBsaWIvaW50ZWxfYmF0Y2hidWZmZXIuaCAgICAgICAgICAgICAg
+ICAgICAgIHwgICAzICsKIGxpYi9tZWRpYV9maWxsLmMgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgfCAgIDEgLQogdGVzdHMvaTkxNS9nZW1fY3JlYXRlLmMgICAgICAgICAgICAgICAgICAgICB8
+ICAgMSAtCiB0ZXN0cy9pOTE1L2dlbV9mbGlua19yYWNlLmMgICAgICAgICAgICAgICAgIHwgICAy
+IC0KIHRlc3RzL2k5MTUvZ2VtX3BpcGVfY29udHJvbF9zdG9yZV9sb29wLmMgICAgfCAxNDggKysr
+KysrKy0tLS0tLS0KIHRlc3RzL2k5MTUvZ2VtX3BwZ3R0LmMgICAgICAgICAgICAgICAgICAgICAg
+fCAgMTYgKy0KIHRlc3RzL2k5MTUvZ2VtX3ByZWFkX2FmdGVyX2JsaXQuYyAgICAgICAgICAgfCAx
+NTkgKysrKysrKy0tLS0tLS0KIHRlc3RzL2k5MTUvZ2VtX3B3cml0ZV9zbm9vcGVkLmMgICAgICAg
+ICAgICAgfCAgNjYgKysrLS0tCiB0ZXN0cy9pOTE1L2dlbV9yZXF1ZXN0X3JldGlyZS5jICAgICAg
+ICAgICAgIHwgICAxIC0KIHRlc3RzL2k5MTUvZ2VtX3NldF90aWxpbmdfdnNfYmx0LmMgICAgICAg
+ICAgfCAyMTYgKysrKysrKysrKy0tLS0tLS0tLS0KIHRlc3RzL2k5MTUvZ2VtX3RocmVhZGVkX2Fj
+Y2Vzc190aWxlZC5jICAgICAgfCAgMzggKystLQogdGVzdHMvaTkxNS9nZW1fdGlsZWRfcGFydGlh
+bF9wd3JpdGVfcHJlYWQuYyB8IDEzNCArKysrKystLS0tLS0KIHRlc3RzL2k5MTUvZ2VtX3VuZmVu
+Y2VfYWN0aXZlX2J1ZmZlcnMuYyAgICAgfCAxMjUgKysrKystLS0tLS0KIHRlc3RzL2k5MTUvZ2Vt
+X3VucmVmX2FjdGl2ZV9idWZmZXJzLmMgICAgICAgfCAgNjAgKysrLS0tCiB0ZXN0cy9pOTE1L2dl
+bV91c2VycHRyX2JsaXRzLmMgICAgICAgICAgICAgIHwgICAxIC0KIHRlc3RzL2k5MTUvaTkxNV9n
+ZXRwYXJhbXNfYmFzaWMuYyAgICAgICAgICAgfCAgIDEgLQogdGVzdHMva21zX2ZlbmNlX3Bpbl9s
+ZWFrLmMgICAgICAgICAgICAgICAgICB8ICA4OSArKysrLS0tLQogdGVzdHMva21zX2ZsaXAuYyAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAyMiArLQogdGVzdHMva21zX3BzcjJfc3UuYyAg
+ICAgICAgICAgICAgICAgICAgICAgICB8ICAgNyAtCiB0ZXN0cy9rbXNfc2VxdWVuY2UuYyAgICAg
+ICAgICAgICAgICAgICAgICAgIHwgICAyIC0KIHRlc3RzL2ttc19zZXRtb2RlLmMgICAgICAgICAg
+ICAgICAgICAgICAgICAgfCAgIDEgLQogdGVzdHMva21zX3ZibGFuay5jICAgICAgICAgICAgICAg
+ICAgICAgICAgICB8ICAgMiAtCiAyNCBmaWxlcyBjaGFuZ2VkLCA1NDEgaW5zZXJ0aW9ucygrKSwg
+NTc4IGRlbGV0aW9ucygtKQoKLS0gCjIuMjAuMQoKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
+cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
+aW5mby9pZ3QtZGV2Cg==
