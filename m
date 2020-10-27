@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 261AC6E07D
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Oct 2020 08:49:38 +0000 (UTC)
-Date: Tue, 27 Oct 2020 10:49:34 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201027084934.GZ7444@platvala-desk.ger.corp.intel.com>
-References: <20201023231151.383909-1-jose.souza@intel.com>
- <20201026083456.GW7444@platvala-desk.ger.corp.intel.com>
- <1d7e9b6870961ee2904405dcd1f2f854498337ce.camel@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 804496EB44
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Oct 2020 09:23:54 +0000 (UTC)
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Date: Tue, 27 Oct 2020 10:23:06 +0100
+Message-Id: <20201027092317.18716-4-dominik.grzegorzek@intel.com>
+In-Reply-To: <20201027092317.18716-1-dominik.grzegorzek@intel.com>
+References: <20201027092317.18716-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1d7e9b6870961ee2904405dcd1f2f854498337ce.camel@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_psr2_su: Skip frontbuffer
- test in TGL
+Subject: [igt-dev] [PATCH i-g-t v5 03/14] i915/gem_pwrite_snooped: Remove
+ libdrm dependency
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,43 +17,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Souza, Jose" <jose.souza@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Oct 26, 2020 at 07:47:15PM +0200, Souza, Jose wrote:
-> On Mon, 2020-10-26 at 10:34 +0200, Petri Latvala wrote:
-> > On Fri, Oct 23, 2020 at 04:11:51PM -0700, Jos=E9 Roberto de Souza wrote:
-> > > Due the commit 71c1a4998320 ("drm/i915/tgl/psr: Fix glitches when
-> > > doing frontbuffer modifications"), frontbuffer test is expected to
-> > > fail on TGL, so here skiping this test on TGL.
-> > > When PSR issues is fixed the patch above will be reverted and we
-> > > can revert this skip too.
-> > =
-
-> > How does the previous failure behave? I mean in the sense that what
-> > does this skip gain? The skip will have to be cibuglog-filtered too so
-> > no gain on that side.
-> > =
-
-> > Did the fail kill the machine, or is this just for saving runtime?
-> =
-
-> Just saving time.
-> So no need for it?
-
-Depends on the amount. Do you have numbers for this? I guess if it
-saves entire minutes it becomes worth it.
-
-
--- =
-
-Petri Latvala
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+VXNlIGludGVsX2JiIC8gaW50ZWxfYnVmIHRvIHJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeS4KClNp
+Z25lZC1vZmYtYnk6IERvbWluaWsgR3J6ZWdvcnplayA8ZG9taW5pay5ncnplZ29yemVrQGludGVs
+LmNvbT4KQ2M6IENocmlzIFdpbHNvbiA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgpSZXZpZXdl
+ZC1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5j
+b20+Ci0tLQogdGVzdHMvaTkxNS9nZW1fcHdyaXRlX3Nub29wZWQuYyB8IDY2ICsrKysrKysrKysr
+KysrKystLS0tLS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDMzIGluc2VydGlvbnMoKyks
+IDMzIGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvZ2VtX3B3cml0ZV9zbm9v
+cGVkLmMgYi90ZXN0cy9pOTE1L2dlbV9wd3JpdGVfc25vb3BlZC5jCmluZGV4IDRhMzM5NTI0Li41
+MmViYWVjMiAxMDA2NDQKLS0tIGEvdGVzdHMvaTkxNS9nZW1fcHdyaXRlX3Nub29wZWQuYworKysg
+Yi90ZXN0cy9pOTE1L2dlbV9wd3JpdGVfc25vb3BlZC5jCkBAIC00Miw0MCArNDIsMzggQEAgSUdU
+X1RFU1RfREVTQ1JJUFRJT04oCiAgICAicHdyaXRlIHRvIGEgc25vb3BlZCBibyB0aGVuIG1ha2Ug
+aXQgdW5jYWNoZWQgYW5kIGNoZWNrIHRoYXQgdGhlIEdQVSBzZWVzIHRoZSBkYXRhLiIpOwogCiBz
+dGF0aWMgaW50IGZkOwotc3RhdGljIHVpbnQzMl90IGRldmlkOwotc3RhdGljIGRybV9pbnRlbF9i
+dWZtZ3IgKmJ1Zm1ncjsKK3N0YXRpYyBzdHJ1Y3QgYnVmX29wcyAqYm9wczsKIAotc3RhdGljIHZv
+aWQgYmxpdChkcm1faW50ZWxfYm8gKmRzdCwgZHJtX2ludGVsX2JvICpzcmMsCitzdGF0aWMgdm9p
+ZCBibGl0KHN0cnVjdCBpbnRlbF9idWYgKmRzdCwgc3RydWN0IGludGVsX2J1ZiAqc3JjLAogCQkg
+dW5zaWduZWQgaW50IHdpZHRoLCB1bnNpZ25lZCBpbnQgaGVpZ2h0LAogCQkgdW5zaWduZWQgaW50
+IGRzdF9waXRjaCwgdW5zaWduZWQgaW50IHNyY19waXRjaCkKIHsKLQlzdHJ1Y3QgaW50ZWxfYmF0
+Y2hidWZmZXIgKmJhdGNoOworCXN0cnVjdCBpbnRlbF9iYiAqaWJiOwogCi0JYmF0Y2ggPSBpbnRl
+bF9iYXRjaGJ1ZmZlcl9hbGxvYyhidWZtZ3IsIGRldmlkKTsKLQlpZ3RfYXNzZXJ0KGJhdGNoKTsK
+LQotCUJMSVRfQ09QWV9CQVRDSF9TVEFSVCgwKTsKLQlPVVRfQkFUQ0goKDMgPDwgMjQpIHwgLyog
+MzIgYml0cyAqLworCWliYiA9IGludGVsX2JiX2NyZWF0ZShmZCwgNDA5Nik7CisJaW50ZWxfYmJf
+YWRkX2ludGVsX2J1ZihpYmIsIGRzdCwgdHJ1ZSk7CisJaW50ZWxfYmJfYWRkX2ludGVsX2J1Zihp
+YmIsIHNyYywgZmFsc2UpOworCWludGVsX2JiX2JsaXRfc3RhcnQoaWJiLCAwKTsKKwlpbnRlbF9i
+Yl9vdXQoaWJiLCAoMyA8PCAyNCkgfCAvKiAzMiBiaXRzICovCiAJCSAgKDB4Y2MgPDwgMTYpIHwg
+LyogY29weSBST1AgKi8KIAkJICBkc3RfcGl0Y2gpOwotCU9VVF9CQVRDSCgwIDw8IDE2IHwgMCk7
+Ci0JT1VUX0JBVENIKGhlaWdodCA8PCAxNiB8IHdpZHRoKTsKLQlPVVRfUkVMT0NfRkVOQ0VEKGRz
+dCwgSTkxNV9HRU1fRE9NQUlOX1JFTkRFUiwgSTkxNV9HRU1fRE9NQUlOX1JFTkRFUiwgMCk7Ci0J
+T1VUX0JBVENIKDAgPDwgMTYgfCAwKTsKLQlPVVRfQkFUQ0goc3JjX3BpdGNoKTsKLQlPVVRfUkVM
+T0NfRkVOQ0VEKHNyYywgSTkxNV9HRU1fRE9NQUlOX1JFTkRFUiwgMCwgMCk7Ci0JQURWQU5DRV9C
+QVRDSCgpOwotCi0JaWYgKGJhdGNoLT5nZW4gPj0gNikgewotCQlCRUdJTl9CQVRDSCgzLCAwKTsK
+LQkJT1VUX0JBVENIKFhZX1NFVFVQX0NMSVBfQkxUX0NNRCk7Ci0JCU9VVF9CQVRDSCgwKTsKLQkJ
+T1VUX0JBVENIKDApOwotCQlBRFZBTkNFX0JBVENIKCk7CisJaW50ZWxfYmJfb3V0KGliYiwgMCA8
+PCAxNiB8IDApOworCWludGVsX2JiX291dChpYmIsIGhlaWdodCA8PCAxNiB8IHdpZHRoKTsKKwlp
+bnRlbF9iYl9lbWl0X3JlbG9jX2ZlbmNlZChpYmIsIGRzdC0+aGFuZGxlLCBJOTE1X0dFTV9ET01B
+SU5fUkVOREVSLAorCQkJCSAgIEk5MTVfR0VNX0RPTUFJTl9SRU5ERVIsIDAsIGRzdC0+YWRkci5v
+ZmZzZXQpOworCWludGVsX2JiX291dChpYmIsIDAgPDwgMTYgfCAwKTsKKwlpbnRlbF9iYl9vdXQo
+aWJiLCBzcmNfcGl0Y2gpOworCWludGVsX2JiX2VtaXRfcmVsb2NfZmVuY2VkKGliYiwgc3JjLT5o
+YW5kbGUsIEk5MTVfR0VNX0RPTUFJTl9SRU5ERVIsCisJCQkJICAgMCwgMCwgc3JjLT5hZGRyLm9m
+ZnNldCk7CisKKwlpZiAoaWJiLT5nZW4gPj0gNikgeworCQlpbnRlbF9iYl9vdXQoaWJiLCBYWV9T
+RVRVUF9DTElQX0JMVF9DTUQpOworCQlpbnRlbF9iYl9vdXQoaWJiLCAwKTsKKwkJaW50ZWxfYmJf
+b3V0KGliYiwgMCk7CiAJfQogCi0JaW50ZWxfYmF0Y2hidWZmZXJfZmx1c2goYmF0Y2gpOwotCWlu
+dGVsX2JhdGNoYnVmZmVyX2ZyZWUoYmF0Y2gpOworCWludGVsX2JiX2ZsdXNoX2JsaXQoaWJiKTsK
+KwlpbnRlbF9iYl9kZXN0cm95KGliYik7CiB9CiAKIHN0YXRpYyB2b2lkICptZW1jaHJfaW52KGNv
+bnN0IHZvaWQgKnMsIGludCBjLCBzaXplX3QgbikKQEAgLTk4LDEzICs5NiwxMyBAQCBzdGF0aWMg
+dm9pZCAqbWVtY2hyX2ludihjb25zdCB2b2lkICpzLCBpbnQgYywgc2l6ZV90IG4pCiBzdGF0aWMg
+dm9pZCB0ZXN0KGludCB3LCBpbnQgaCkKIHsKIAlpbnQgb2JqZWN0X3NpemUgPSB3ICogaCAqIDQ7
+Ci0JZHJtX2ludGVsX2JvICpzcmMsICpkc3Q7CisJc3RydWN0IGludGVsX2J1ZiAqc3JjLCAqZHN0
+OwogCXZvaWQgKmJ1ZjsKIAotCXNyYyA9IGRybV9pbnRlbF9ib19hbGxvYyhidWZtZ3IsICJzcmMi
+LCBvYmplY3Rfc2l6ZSwgNDA5Nik7Ci0JaWd0X2Fzc2VydChzcmMpOwotCWRzdCA9IGRybV9pbnRl
+bF9ib19hbGxvYyhidWZtZ3IsICJkc3QiLCBvYmplY3Rfc2l6ZSwgNDA5Nik7Ci0JaWd0X2Fzc2Vy
+dChkc3QpOworCXNyYyA9IGludGVsX2J1Zl9jcmVhdGUoYm9wcywgdywgaCwgMzIsIDAsIEk5MTVf
+VElMSU5HX05PTkUsCisJCQkgICAgICAgSTkxNV9DT01QUkVTU0lPTl9OT05FKTsKKwlkc3QgPSBp
+bnRlbF9idWZfY3JlYXRlKGJvcHMsIHcsIGgsIDMyLCAwLCBJOTE1X1RJTElOR19OT05FLAorCQkJ
+ICAgICAgIEk5MTVfQ09NUFJFU1NJT05fTk9ORSk7CiAKIAlidWYgPSBtYWxsb2Mob2JqZWN0X3Np
+emUpOwogCWlndF9hc3NlcnQoYnVmKTsKQEAgLTEyNSw2ICsxMjMsOSBAQCBzdGF0aWMgdm9pZCB0
+ZXN0KGludCB3LCBpbnQgaCkKIAlnZW1fcmVhZChmZCwgZHN0LT5oYW5kbGUsIDAsIGJ1Ziwgb2Jq
+ZWN0X3NpemUpOwogCiAJaWd0X2Fzc2VydChtZW1jaHJfaW52KGJ1ZiwgMHhmZiwgb2JqZWN0X3Np
+emUpID09IE5VTEwpOworCisJaW50ZWxfYnVmX2Rlc3Ryb3koc3JjKTsKKwlpbnRlbF9idWZfZGVz
+dHJveShkc3QpOwogfQogCiBpZ3Rfc2ltcGxlX21haW4KQEAgLTEzMywxMSArMTM0LDEwIEBAIGln
+dF9zaW1wbGVfbWFpbgogCWlndF9yZXF1aXJlX2dlbShmZCk7CiAJZ2VtX3JlcXVpcmVfYmxpdHRl
+cihmZCk7CiAKLQlkZXZpZCA9IGludGVsX2dldF9kcm1fZGV2aWQoZmQpOwotCWJ1Zm1nciA9IGRy
+bV9pbnRlbF9idWZtZ3JfZ2VtX2luaXQoZmQsIDQwOTYpOworCWJvcHMgPSBidWZfb3BzX2NyZWF0
+ZShmZCk7CiAKIAl0ZXN0KDI1NiwgMjU2KTsKIAotCWRybV9pbnRlbF9idWZtZ3JfZGVzdHJveShi
+dWZtZ3IpOworCWJ1Zl9vcHNfZGVzdHJveShib3BzKTsKIAljbG9zZShmZCk7CiB9Ci0tIAoyLjIw
+LjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
+ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
+dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
