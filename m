@@ -1,12 +1,20 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 04D836E8E5
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2020 18:23:16 +0000 (UTC)
+Received: by mail-pg1-x541.google.com with SMTP id k9so1339735pgt.9
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2020 11:23:16 -0700 (PDT)
+References: <20201026130811.11136-1-juhapekka.heikkila@gmail.com>
+ <c372276a30e84ce0a356eafc96e876d1@intel.com>
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Message-ID: <9fd4258d-82a0-5bc6-8bf7-87896c53d379@gmail.com>
+Date: Thu, 29 Oct 2020 20:23:09 +0200
 MIME-Version: 1.0
-From: Patchwork <patchwork@emeril.freedesktop.org>
-Date: Thu, 29 Oct 2020 16:55:32 -0000
-Message-ID: <160399053273.1421.3662198909238979151@emeril.freedesktop.org>
-References: <20201029110030.9959-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20201029110030.9959-1-chris@chris-wilson.co.uk>
-Subject: [igt-dev] =?utf-8?b?4pyXIEZpLkNJLkJVSUxEOiBmYWlsdXJlIGZvciBkcm06?=
- =?utf-8?q?_Quieten_=5Bzero=5D_EDID_carping?=
+In-Reply-To: <c372276a30e84ce0a356eafc96e876d1@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: fix pixel format
+ (-clamping) tests
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,29 +22,121 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
-Content-Type: text/plain; charset="us-ascii"
+Reply-To: juhapekka.heikkila@gmail.com
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: "Kahola, Mika" <mika.kahola@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-== Series Details ==
+On 29.10.2020 14.43, Kahola, Mika wrote:
+>> -----Original Message-----
+>> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Juha-
+>> Pekka Heikkila
+>> Sent: Monday, October 26, 2020 3:08 PM
+>> To: igt-dev@lists.freedesktop.org
+>> Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane: fix pixel format (-clamping)
+>> tests
+>>
+>> cdclk caused modesets mid test will mess up crc sequence where two
+>> consecutive frames will get same crc. If there come modeset restart round
+>> for given set as modeset will anyway happen only on first color.
+>>
+>> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+>> ---
+>>   tests/kms_plane.c | 28 ++++++++++++++++++++++------
+>>   1 file changed, 22 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/tests/kms_plane.c b/tests/kms_plane.c index
+>> e42c71cd9..4ce859fba 100644
+>> --- a/tests/kms_plane.c
+>> +++ b/tests/kms_plane.c
+>> @@ -560,9 +560,11 @@ static void capture_format_crcs(data_t *data, enum
+>> pipe pipe,
+>>   	struct drm_event_vblank ev;
+>>   	int i;
+>>
+>> +restart_round:
+>>   	for (i = 0; i < data->num_colors; i++) {
+>>   		const color_t *c = &data->colors[i];
+>>   		struct igt_fb old_fb = *fb;
+>> +		int ret;
+>>
+>>   		prepare_format_color(data, pipe, plane, format, modifier,
+>>   				     width, height, encoding, range, c, fb); @@
+>> -593,10 +595,22 @@ static void capture_format_crcs(data_t *data, enum
+>> pipe pipe,
+>>   			 * to be prepared in parallel while the current fb
+>>   			 * awaits to be latched.
+>>   			 */
+>> -			igt_display_commit_atomic(&data->display,
+>> -
+>> DRM_MODE_ATOMIC_ALLOW_MODESET |
+>> -
+>> DRM_MODE_ATOMIC_NONBLOCK |
+>> -
+>> DRM_MODE_PAGE_FLIP_EVENT, NULL);
+>> +			ret = igt_display_try_commit_atomic(&data->display,
+>> +
+>> DRM_MODE_ATOMIC_NONBLOCK |
+>> +
+>> DRM_MODE_PAGE_FLIP_EVENT, NULL);
+>> +			if (ret) {
+>> +				/*
+>> +				 * there was needed modeset for pixel
+>> format.
+>> +				 * modeset here happen only on first color of
+>> +				 * given set so restart round as modeset will
+>> +				 * mess up crc frame sequence.
+>> +				 */
+>> +				igt_display_commit_atomic(&data->display,
+>> +
+>> DRM_MODE_ATOMIC_ALLOW_MODESET,
+>> +							  NULL);
+>> +				igt_remove_fb(data->drm_fd, &old_fb);
+>> +				goto restart_round;
+>> +			}
+> 
+> I tried to figure out the patch and it seems that we need to do modeset only once, right? However, there is a theoretical chance (probability maybe next to nothing) that we keep looping on restart_found. Therefore, I was thinking that we should limit the restarts to 1 or to some finite number?
 
-Series: drm: Quieten [zero] EDID carping
-URL   : https://patchwork.freedesktop.org/series/83208/
-State : failure
+You mean there would come more than one modeset? I think many tests will 
+start to fail at that moment. Here fb which required modeset is left on 
+screen when going for restart, there shouldn't be new modeset. Then if 
+modeset itself fail that modesetting commit is not try commit so it will 
+assert on failure. I don't think there is need for additional counter 
+unless cdclk calculations fail but then everything is failing everywhere 
+anyway I think.
 
-== Summary ==
-
-Applying: drm: Quieten [zero] EDID carping
-Patch failed at 0001 drm: Quieten [zero] EDID carping
-When you have resolved this problem, run "git am --continue".
-If you prefer to skip this patch, run "git am --skip" instead.
-To restore the original branch and stop patching, run "git am --abort".
-
+> 
+> Cheers,
+> Mika
+>>   		} else {
+>>   			/*
+>>   			 * Last moment to grab the previous crc @@ -815,8
+>> +829,10 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
+>>
+>>   		igt_plane_set_fb(plane, &test_fb);
+>>
+>> -		ret = igt_display_try_commit_atomic(&data->display,
+>> DRM_MODE_ATOMIC_TEST_ONLY, NULL);
+>> -
+>> +		ret = igt_display_try_commit_atomic(&data->display,
+>> +
+>> DRM_MODE_ATOMIC_TEST_ONLY |
+>> +
+>> DRM_MODE_ATOMIC_ALLOW_MODESET,
+>> +						    NULL);
+>>   		if (!ret) {
+>>   			width = test_fb.width;
+>>   			height = test_fb.height;
+>> --
+>> 2.28.0
+>>
+>> _______________________________________________
+>> igt-dev mailing list
+>> igt-dev@lists.freedesktop.org
+>> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 
 _______________________________________________
 igt-dev mailing list
