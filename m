@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 27F2D6E8BA
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2020 12:43:08 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-Date: Thu, 29 Oct 2020 12:43:06 +0000
-Message-ID: <c372276a30e84ce0a356eafc96e876d1@intel.com>
-References: <20201026130811.11136-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20201026130811.11136-1-juhapekka.heikkila@gmail.com>
-Content-Language: en-US
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BAC4D6E8B4
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2020 16:07:55 +0000 (UTC)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Thu, 29 Oct 2020 16:07:46 +0000
+Message-Id: <20201029160746.3488818-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: fix pixel format
- (-clamping) tests
+Subject: [igt-dev] [PATCH i-g-t] fbdev: Force module load
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,106 +18,43 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Juha-
-> Pekka Heikkila
-> Sent: Monday, October 26, 2020 3:08 PM
-> To: igt-dev@lists.freedesktop.org
-> Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane: fix pixel format (-clamping)
-> tests
-> 
-> cdclk caused modesets mid test will mess up crc sequence where two
-> consecutive frames will get same crc. If there come modeset restart round
-> for given set as modeset will anyway happen only on first color.
-> 
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->  tests/kms_plane.c | 28 ++++++++++++++++++++++------
->  1 file changed, 22 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c index
-> e42c71cd9..4ce859fba 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -560,9 +560,11 @@ static void capture_format_crcs(data_t *data, enum
-> pipe pipe,
->  	struct drm_event_vblank ev;
->  	int i;
-> 
-> +restart_round:
->  	for (i = 0; i < data->num_colors; i++) {
->  		const color_t *c = &data->colors[i];
->  		struct igt_fb old_fb = *fb;
-> +		int ret;
-> 
->  		prepare_format_color(data, pipe, plane, format, modifier,
->  				     width, height, encoding, range, c, fb); @@
-> -593,10 +595,22 @@ static void capture_format_crcs(data_t *data, enum
-> pipe pipe,
->  			 * to be prepared in parallel while the current fb
->  			 * awaits to be latched.
->  			 */
-> -			igt_display_commit_atomic(&data->display,
-> -
-> DRM_MODE_ATOMIC_ALLOW_MODESET |
-> -
-> DRM_MODE_ATOMIC_NONBLOCK |
-> -
-> DRM_MODE_PAGE_FLIP_EVENT, NULL);
-> +			ret = igt_display_try_commit_atomic(&data->display,
-> +
-> DRM_MODE_ATOMIC_NONBLOCK |
-> +
-> DRM_MODE_PAGE_FLIP_EVENT, NULL);
-> +			if (ret) {
-> +				/*
-> +				 * there was needed modeset for pixel
-> format.
-> +				 * modeset here happen only on first color of
-> +				 * given set so restart round as modeset will
-> +				 * mess up crc frame sequence.
-> +				 */
-> +				igt_display_commit_atomic(&data->display,
-> +
-> DRM_MODE_ATOMIC_ALLOW_MODESET,
-> +							  NULL);
-> +				igt_remove_fb(data->drm_fd, &old_fb);
-> +				goto restart_round;
-> +			}
+If there are no /dev/fbN, force loading of the first available drm
+module and try again.
 
-I tried to figure out the patch and it seems that we need to do modeset only once, right? However, there is a theoretical chance (probability maybe next to nothing) that we keep looping on restart_found. Therefore, I was thinking that we should limit the restarts to 1 or to some finite number?
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/2582
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/fbdev.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Cheers,
-Mika
->  		} else {
->  			/*
->  			 * Last moment to grab the previous crc @@ -815,8
-> +829,10 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
-> 
->  		igt_plane_set_fb(plane, &test_fb);
-> 
-> -		ret = igt_display_try_commit_atomic(&data->display,
-> DRM_MODE_ATOMIC_TEST_ONLY, NULL);
-> -
-> +		ret = igt_display_try_commit_atomic(&data->display,
-> +
-> DRM_MODE_ATOMIC_TEST_ONLY |
-> +
-> DRM_MODE_ATOMIC_ALLOW_MODESET,
-> +						    NULL);
->  		if (!ret) {
->  			width = test_fb.width;
->  			height = test_fb.height;
-> --
-> 2.28.0
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
+diff --git a/tests/fbdev.c b/tests/fbdev.c
+index fe320b14f..e60a19297 100644
+--- a/tests/fbdev.c
++++ b/tests/fbdev.c
+@@ -43,8 +43,16 @@ igt_main
+ 	struct fb_fix_screeninfo fix_info;
+ 	int fd = -1;
+ 
++	/*
++	 * Should this test focus on the fbdev independent of any drm driver,
++	 * or should it look for fbdev of a particular device?
++	 */
+ 	igt_fixture {
+ 		fd = open("/dev/fb0", O_RDWR);
++		if (fd < 0) {
++			close(drm_open_driver(DRIVER_ANY));
++			fd = open("/dev/fb0", O_RDWR);
++		}
+ 		igt_require_f(fd != -1, "/dev/fb0\n");
+ 
+ 		igt_require(ioctl(fd, FBIOGET_VSCREENINFO, &var_info) == 0);
+-- 
+2.28.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
