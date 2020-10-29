@@ -1,11 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Thu, 29 Oct 2020 16:44:17 +0000
-Message-Id: <20201029164417.14487-1-chris@chris-wilson.co.uk>
-In-Reply-To: <20201029110030.9959-1-chris@chris-wilson.co.uk>
+Date: Thu, 29 Oct 2020 18:59:48 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Message-ID: <20201029165948.GF6112@intel.com>
 References: <20201029110030.9959-1-chris@chris-wilson.co.uk>
+ <20201029164417.14487-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v2] drm: Quieten [zero] EDID carping
+Content-Disposition: inline
+In-Reply-To: <20201029164417.14487-1-chris@chris-wilson.co.uk>
+Subject: Re: [igt-dev] [PATCH v2] drm: Quieten [zero] EDID carping
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -13,47 +15,79 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: dri-devel@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-V2UgaGF2ZSBhIGZldyBkaXNwbGF5cyBpbiBDSSB0aGF0IGFsd2F5cyByZXBvcnQgdGhlaXIgRURJ
-RCBhcyBhIGJ1bmNoIG9mCnplcm9lcy4gVGhpcyBpcyBjb25zaXN0ZW50IGJlaGF2aW91ciwgc28g
-b25lIGFzc3VtZXMgaW50ZW50aW9uYWwKaW5kaWNhdGlvbiBvZiBhbiAiYWJzZW50IiBFRElELiBG
-bGFnZ2luZyB0aGVzZSBjb25zaXN0ZW50IHdhcm5pbmdzCmRldHJhY3RzIGZyb20gQ0kuCgpPbmUg
-b3B0aW9uIHdvdWxkIGJlIHRvIGlnbm9yZSB0aGUgemVybyBFRElEcyBhcyBpbnRlbnRpb25hbCBi
-ZWhhdmlvdXIsCmJ1dCBWaWxsZSB3b3VsZCBsaWtlIHRvIGtlZXAgdGhlIGluZm9ybWF0aW9uIGF2
-YWlsYWJsZSBmb3IgZGVidWdnaW5nLgpUaGUgc2ltcGxlIGFsdGVybmF0aXZlIHRoZW4gaXMgdG8g
-cmVkdWNlIHRoZSBsb2dsZXZlbCBmb3IgYWxsIHRoZSBFRElECmR1bXBpbmcgZnJvbSBXQVJOIHRv
-IERFQlVHIHNvIHRoZSBpbmZvcm1hdGlvbiBpcyBwcmVzZW50IGJ1dCBub3QgYW5ub3kKQ0kuIE5v
-dGUgdGhhdCB0aGUgYmFkIEVESUQgZHVtcGluZyBpcyBhbHJlYWR5IG9ubHkgc2hvd24gaWYKZHJt
-LmRlYnVnPUtNUywgaXQncyBqdXN0IHRoZSBsb2dsZXZlbCBjaG9zZW4gd2FzIHNldCB0byBiZSBj
-YXVnaHQgYnkgQ0kKaWYgaXQgZXZlciBvY2N1cnJlZCBhcyBpdCB3YXMgZXhwZWN0ZWQgdG8gYmUg
-YW4gaW50ZXJuYWwgZXJyb3Igbm90CmV4dGVybmFsLgoKQ2xvc2VzOiBodHRwczovL2dpdGxhYi5m
-cmVlZGVza3RvcC5vcmcvZHJtL2ludGVsLy0vaXNzdWVzLzIyMDMKU2lnbmVkLW9mZi1ieTogQ2hy
-aXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+CkNjOiBWaWxsZSBTeXJqw6Rsw6Qg
-PHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPgotLS0KIGRyaXZlcnMvZ3B1L2RybS9kcm1f
-ZWRpZC5jIHwgNCArKy0tCiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0
-aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS9kcm1fZWRpZC5jIGIvZHJpdmVy
-cy9ncHUvZHJtL2RybV9lZGlkLmMKaW5kZXggNjMxMTI1YjQ2ZTA0Li5jNzM2M2FmNzMxYjQgMTAw
-NjQ0Ci0tLSBhL2RyaXZlcnMvZ3B1L2RybS9kcm1fZWRpZC5jCisrKyBiL2RyaXZlcnMvZ3B1L2Ry
-bS9kcm1fZWRpZC5jCkBAIC0xODQ0LDcgKzE4NDQsNyBAQCBzdGF0aWMgdm9pZCBjb25uZWN0b3Jf
-YmFkX2VkaWQoc3RydWN0IGRybV9jb25uZWN0b3IgKmNvbm5lY3RvciwKIAlpZiAoY29ubmVjdG9y
-LT5iYWRfZWRpZF9jb3VudGVyKysgJiYgIWRybV9kZWJ1Z19lbmFibGVkKERSTV9VVF9LTVMpKQog
-CQlyZXR1cm47CiAKLQlkcm1fd2Fybihjb25uZWN0b3ItPmRldiwgIiVzOiBFRElEIGlzIGludmFs
-aWQ6XG4iLCBjb25uZWN0b3ItPm5hbWUpOworCWRybV9kYmdfa21zKGNvbm5lY3Rvci0+ZGV2LCAi
-JXM6IEVESUQgaXMgaW52YWxpZDpcbiIsIGNvbm5lY3Rvci0+bmFtZSk7CiAJZm9yIChpID0gMDsg
-aSA8IG51bV9ibG9ja3M7IGkrKykgewogCQl1OCAqYmxvY2sgPSBlZGlkICsgaSAqIEVESURfTEVO
-R1RIOwogCQljaGFyIHByZWZpeFsyMF07CkBAIC0xODU2LDcgKzE4NTYsNyBAQCBzdGF0aWMgdm9p
-ZCBjb25uZWN0b3JfYmFkX2VkaWQoc3RydWN0IGRybV9jb25uZWN0b3IgKmNvbm5lY3RvciwKIAkJ
-ZWxzZQogCQkJc3ByaW50ZihwcmVmaXgsICJcdFslMDJ4XSBHT09EICIsIGkpOwogCi0JCXByaW50
-X2hleF9kdW1wKEtFUk5fV0FSTklORywKKwkJcHJpbnRfaGV4X2R1bXAoS0VSTl9ERUJVRywKIAkJ
-CSAgICAgICBwcmVmaXgsIERVTVBfUFJFRklYX05PTkUsIDE2LCAxLAogCQkJICAgICAgIGJsb2Nr
-LCBFRElEX0xFTkdUSCwgZmFsc2UpOwogCX0KLS0gCjIuMjAuMQoKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
-dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
-bG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+On Thu, Oct 29, 2020 at 04:44:17PM +0000, Chris Wilson wrote:
+> We have a few displays in CI that always report their EDID as a bunch of
+> zeroes. This is consistent behaviour, so one assumes intentional
+> indication of an "absent" EDID. Flagging these consistent warnings
+> detracts from CI.
+> =
+
+> One option would be to ignore the zero EDIDs as intentional behaviour,
+> but Ville would like to keep the information available for debugging.
+> The simple alternative then is to reduce the loglevel for all the EDID
+> dumping from WARN to DEBUG so the information is present but not annoy
+> CI. Note that the bad EDID dumping is already only shown if
+> drm.debug=3DKMS, it's just the loglevel chosen was set to be caught by CI
+> if it ever occurred as it was expected to be an internal error not
+> external.
+
+Indeed. That makes this even less controversial.
+
+Reviewed-by: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+
+> =
+
+> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/2203
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
+> ---
+>  drivers/gpu/drm/drm_edid.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> =
+
+> diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
+> index 631125b46e04..c7363af731b4 100644
+> --- a/drivers/gpu/drm/drm_edid.c
+> +++ b/drivers/gpu/drm/drm_edid.c
+> @@ -1844,7 +1844,7 @@ static void connector_bad_edid(struct drm_connector=
+ *connector,
+>  	if (connector->bad_edid_counter++ && !drm_debug_enabled(DRM_UT_KMS))
+>  		return;
+>  =
+
+> -	drm_warn(connector->dev, "%s: EDID is invalid:\n", connector->name);
+> +	drm_dbg_kms(connector->dev, "%s: EDID is invalid:\n", connector->name);
+>  	for (i =3D 0; i < num_blocks; i++) {
+>  		u8 *block =3D edid + i * EDID_LENGTH;
+>  		char prefix[20];
+> @@ -1856,7 +1856,7 @@ static void connector_bad_edid(struct drm_connector=
+ *connector,
+>  		else
+>  			sprintf(prefix, "\t[%02x] GOOD ", i);
+>  =
+
+> -		print_hex_dump(KERN_WARNING,
+> +		print_hex_dump(KERN_DEBUG,
+>  			       prefix, DUMP_PREFIX_NONE, 16, 1,
+>  			       block, EDID_LENGTH, false);
+>  	}
+> -- =
+
+> 2.20.1
+
+-- =
+
+Ville Syrj=E4l=E4
+Intel
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
