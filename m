@@ -1,12 +1,11 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
-In-Reply-To: <20201022150943.3041180-1-chris@chris-wilson.co.uk>
-References: <20201022150943.3041180-1-chris@chris-wilson.co.uk>
-Date: Fri, 23 Oct 2020 13:21:45 +0300
-Message-ID: <87tuulqm2u.fsf@gaia.fi.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Thu, 29 Oct 2020 16:44:17 +0000
+Message-Id: <20201029164417.14487-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20201029110030.9959-1-chris@chris-wilson.co.uk>
+References: <20201029110030.9959-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_mmap_gtt: Trim object size for
- ptracing
+Subject: [igt-dev] [PATCH v2] drm: Quieten [zero] EDID carping
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,96 +13,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
+To: dri-devel@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Chris Wilson <chris@chris-wilson.co.uk> writes:
-
-> For verifying vm_ops.access we only need a page or two to check we both
-> advance across a page boundary and find the right offset within a page.
-> 16MiB is overkill for the slow uncached reads through the slow ptrace
-> interface, so reduce the object size by a couple of orders of magnitude.
->
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-
-Reviewed-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
-
-> ---
->  tests/i915/gem_mmap_gtt.c | 23 ++++++++++++-----------
->  1 file changed, 12 insertions(+), 11 deletions(-)
->
-> diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
-> index 6637bba06..3cce19e9a 100644
-> --- a/tests/i915/gem_mmap_gtt.c
-> +++ b/tests/i915/gem_mmap_gtt.c
-> @@ -525,6 +525,7 @@ static void *memchr_inv(const void *s, int c, size_t n)
->  static void
->  test_ptrace(int fd)
->  {
-> +	unsigned long sz = 16 * 4096;
->  	unsigned long AA, CC;
->  	unsigned long *gtt, *cpy;
->  	uint32_t bo;
-> @@ -533,16 +534,16 @@ test_ptrace(int fd)
->  	memset(&AA, 0xaa, sizeof(AA));
->  	memset(&CC, 0x55, sizeof(CC));
->  
-> -	cpy = malloc(OBJECT_SIZE);
-> -	memset(cpy, AA, OBJECT_SIZE);
-> +	cpy = malloc(sz);
-> +	memset(cpy, AA, sz);
->  
-> -	bo = gem_create(fd, OBJECT_SIZE);
-> -	gtt = mmap_bo(fd, bo, OBJECT_SIZE);
-> -	memset(gtt, CC, OBJECT_SIZE);
-> +	bo = gem_create(fd, sz);
-> +	gtt = mmap_bo(fd, bo, sz);
-> +	memset(gtt, CC, sz);
->  	gem_close(fd, bo);
->  
-> -	igt_assert(!memchr_inv(gtt, CC, OBJECT_SIZE));
-> -	igt_assert(!memchr_inv(cpy, AA, OBJECT_SIZE));
-> +	igt_assert(!memchr_inv(gtt, CC, sz));
-> +	igt_assert(!memchr_inv(cpy, AA, sz));
->  
->  	igt_fork(child, 1) {
->  		ptrace(PTRACE_TRACEME, 0, NULL, NULL);
-> @@ -553,7 +554,7 @@ test_ptrace(int fd)
->  	pid = wait(NULL);
->  
->  	ptrace(PTRACE_ATTACH, pid, NULL, NULL);
-> -	for (int i = 0; i < OBJECT_SIZE / sizeof(long); i++) {
-> +	for (int i = 0; i < sz / sizeof(long); i++) {
->  		long ret;
->  
->  		ret = ptrace(PTRACE_PEEKDATA, pid, gtt + i);
-> @@ -570,10 +571,10 @@ test_ptrace(int fd)
->  	igt_waitchildren();
->  
->  	/* The contents of the two buffers should now be swapped */
-> -	igt_assert(!memchr_inv(gtt, AA, OBJECT_SIZE));
-> -	igt_assert(!memchr_inv(cpy, CC, OBJECT_SIZE));
-> +	igt_assert(!memchr_inv(gtt, AA, sz));
-> +	igt_assert(!memchr_inv(cpy, CC, sz));
->  
-> -	munmap(gtt, OBJECT_SIZE);
-> +	munmap(gtt, sz);
->  	free(cpy);
->  }
->  
-> -- 
-> 2.28.0
->
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+V2UgaGF2ZSBhIGZldyBkaXNwbGF5cyBpbiBDSSB0aGF0IGFsd2F5cyByZXBvcnQgdGhlaXIgRURJ
+RCBhcyBhIGJ1bmNoIG9mCnplcm9lcy4gVGhpcyBpcyBjb25zaXN0ZW50IGJlaGF2aW91ciwgc28g
+b25lIGFzc3VtZXMgaW50ZW50aW9uYWwKaW5kaWNhdGlvbiBvZiBhbiAiYWJzZW50IiBFRElELiBG
+bGFnZ2luZyB0aGVzZSBjb25zaXN0ZW50IHdhcm5pbmdzCmRldHJhY3RzIGZyb20gQ0kuCgpPbmUg
+b3B0aW9uIHdvdWxkIGJlIHRvIGlnbm9yZSB0aGUgemVybyBFRElEcyBhcyBpbnRlbnRpb25hbCBi
+ZWhhdmlvdXIsCmJ1dCBWaWxsZSB3b3VsZCBsaWtlIHRvIGtlZXAgdGhlIGluZm9ybWF0aW9uIGF2
+YWlsYWJsZSBmb3IgZGVidWdnaW5nLgpUaGUgc2ltcGxlIGFsdGVybmF0aXZlIHRoZW4gaXMgdG8g
+cmVkdWNlIHRoZSBsb2dsZXZlbCBmb3IgYWxsIHRoZSBFRElECmR1bXBpbmcgZnJvbSBXQVJOIHRv
+IERFQlVHIHNvIHRoZSBpbmZvcm1hdGlvbiBpcyBwcmVzZW50IGJ1dCBub3QgYW5ub3kKQ0kuIE5v
+dGUgdGhhdCB0aGUgYmFkIEVESUQgZHVtcGluZyBpcyBhbHJlYWR5IG9ubHkgc2hvd24gaWYKZHJt
+LmRlYnVnPUtNUywgaXQncyBqdXN0IHRoZSBsb2dsZXZlbCBjaG9zZW4gd2FzIHNldCB0byBiZSBj
+YXVnaHQgYnkgQ0kKaWYgaXQgZXZlciBvY2N1cnJlZCBhcyBpdCB3YXMgZXhwZWN0ZWQgdG8gYmUg
+YW4gaW50ZXJuYWwgZXJyb3Igbm90CmV4dGVybmFsLgoKQ2xvc2VzOiBodHRwczovL2dpdGxhYi5m
+cmVlZGVza3RvcC5vcmcvZHJtL2ludGVsLy0vaXNzdWVzLzIyMDMKU2lnbmVkLW9mZi1ieTogQ2hy
+aXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+CkNjOiBWaWxsZSBTeXJqw6Rsw6Qg
+PHZpbGxlLnN5cmphbGFAbGludXguaW50ZWwuY29tPgotLS0KIGRyaXZlcnMvZ3B1L2RybS9kcm1f
+ZWRpZC5jIHwgNCArKy0tCiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0
+aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS9kcm1fZWRpZC5jIGIvZHJpdmVy
+cy9ncHUvZHJtL2RybV9lZGlkLmMKaW5kZXggNjMxMTI1YjQ2ZTA0Li5jNzM2M2FmNzMxYjQgMTAw
+NjQ0Ci0tLSBhL2RyaXZlcnMvZ3B1L2RybS9kcm1fZWRpZC5jCisrKyBiL2RyaXZlcnMvZ3B1L2Ry
+bS9kcm1fZWRpZC5jCkBAIC0xODQ0LDcgKzE4NDQsNyBAQCBzdGF0aWMgdm9pZCBjb25uZWN0b3Jf
+YmFkX2VkaWQoc3RydWN0IGRybV9jb25uZWN0b3IgKmNvbm5lY3RvciwKIAlpZiAoY29ubmVjdG9y
+LT5iYWRfZWRpZF9jb3VudGVyKysgJiYgIWRybV9kZWJ1Z19lbmFibGVkKERSTV9VVF9LTVMpKQog
+CQlyZXR1cm47CiAKLQlkcm1fd2Fybihjb25uZWN0b3ItPmRldiwgIiVzOiBFRElEIGlzIGludmFs
+aWQ6XG4iLCBjb25uZWN0b3ItPm5hbWUpOworCWRybV9kYmdfa21zKGNvbm5lY3Rvci0+ZGV2LCAi
+JXM6IEVESUQgaXMgaW52YWxpZDpcbiIsIGNvbm5lY3Rvci0+bmFtZSk7CiAJZm9yIChpID0gMDsg
+aSA8IG51bV9ibG9ja3M7IGkrKykgewogCQl1OCAqYmxvY2sgPSBlZGlkICsgaSAqIEVESURfTEVO
+R1RIOwogCQljaGFyIHByZWZpeFsyMF07CkBAIC0xODU2LDcgKzE4NTYsNyBAQCBzdGF0aWMgdm9p
+ZCBjb25uZWN0b3JfYmFkX2VkaWQoc3RydWN0IGRybV9jb25uZWN0b3IgKmNvbm5lY3RvciwKIAkJ
+ZWxzZQogCQkJc3ByaW50ZihwcmVmaXgsICJcdFslMDJ4XSBHT09EICIsIGkpOwogCi0JCXByaW50
+X2hleF9kdW1wKEtFUk5fV0FSTklORywKKwkJcHJpbnRfaGV4X2R1bXAoS0VSTl9ERUJVRywKIAkJ
+CSAgICAgICBwcmVmaXgsIERVTVBfUFJFRklYX05PTkUsIDE2LCAxLAogCQkJICAgICAgIGJsb2Nr
+LCBFRElEX0xFTkdUSCwgZmFsc2UpOwogCX0KLS0gCjIuMjAuMQoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRl
+dkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFp
+bG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
