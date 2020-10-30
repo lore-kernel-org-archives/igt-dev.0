@@ -1,14 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9443D6E14B
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 946246EDA2
  for <igt-dev@lists.freedesktop.org>; Fri, 30 Oct 2020 11:37:05 +0000 (UTC)
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri, 30 Oct 2020 11:36:53 +0000
-Message-Id: <20201030113653.3605117-2-chris@chris-wilson.co.uk>
-In-Reply-To: <20201030113653.3605117-1-chris@chris-wilson.co.uk>
-References: <20201030113653.3605117-1-chris@chris-wilson.co.uk>
+Date: Fri, 30 Oct 2020 11:36:52 +0000
+Message-Id: <20201030113653.3605117-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 2/2] fbdev: Force module load
+Subject: [igt-dev] [PATCH i-g-t 1/2] lib: Export drm_load_module()
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,39 +22,71 @@ To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <petri.latvala@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-If there are no /dev/fbN, force loading of the first available drm
-module and try again.
+Beneath drm_open_driver() we have a routine that tries to load a module
+appropriate for the selected chipset. This can be useful for tests that
+want to ensure the right module is loaded prior to starting, without
+opening the device itself.
 
-v2: Use drm_load_module() directly
-
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/2582
+Suggested-by: Petri Latvala <petri.latvala@intel.com>
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 Cc: Petri Latvala <petri.latvala@intel.com>
 ---
- tests/fbdev.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ lib/drmtest.c | 8 ++++----
+ lib/drmtest.h | 1 +
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/tests/fbdev.c b/tests/fbdev.c
-index fe320b14f..e5efeb93d 100644
---- a/tests/fbdev.c
-+++ b/tests/fbdev.c
-@@ -43,8 +43,16 @@ igt_main
- 	struct fb_fix_screeninfo fix_info;
- 	int fd = -1;
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index 447f54353..49e294bde 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -283,7 +283,7 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
+ 	return -1;
+ }
  
-+	/*
-+	 * Should this test focus on the fbdev independent of any drm driver,
-+	 * or should it look for fbdev of a particular device?
-+	 */
- 	igt_fixture {
- 		fd = open("/dev/fb0", O_RDWR);
-+		if (fd < 0) {
-+			drm_load_module(DRIVER_ANY);
-+			fd = open("/dev/fb0", O_RDWR);
-+		}
- 		igt_require_f(fd != -1, "/dev/fb0\n");
+-static void __try_modprobe(unsigned int chipset)
++void drm_load_module(unsigned int chipset)
+ {
+ 	static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
  
- 		igt_require(ioctl(fd, FBIOGET_VSCREENINFO, &var_info) == 0);
+@@ -307,7 +307,7 @@ static int __open_driver(const char *base, int offset, unsigned int chipset, int
+ 	if (fd != -1)
+ 		return fd;
+ 
+-	__try_modprobe(chipset);
++	drm_load_module(chipset);
+ 
+ 	return __search_and_open(base, offset, chipset, as_idx);
+ }
+@@ -320,7 +320,7 @@ static int __open_driver_exact(const char *name, unsigned int chipset)
+ 	if (fd != -1)
+ 		return fd;
+ 
+-	__try_modprobe(chipset);
++	drm_load_module(chipset);
+ 
+ 	return open_device(name, chipset);
+ }
+@@ -419,7 +419,7 @@ int __drm_open_driver_another(int idx, int chipset)
+ 		found = __get_card_for_nth_filter(idx, &card);
+ 
+ 		if (!found) {
+-			__try_modprobe(chipset);
++			drm_load_module(chipset);
+ 			found = __get_card_for_nth_filter(idx, &card);
+ 		}
+ 
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index dd4cd3848..d393dbf15 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -87,6 +87,7 @@ void __set_forced_driver(const char *name);
+  */
+ #define ALIGN_DOWN(x, a)	ALIGN((x) - ((a) - 1), (a))
+ 
++void drm_load_module(unsigned int chipset);
+ int drm_open_driver(int chipset);
+ int drm_open_driver_master(int chipset);
+ int drm_open_driver_render(int chipset);
 -- 
 2.28.0
 
