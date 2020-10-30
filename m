@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D95E6E062
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Oct 2020 10:12:03 +0000 (UTC)
-Date: Fri, 30 Oct 2020 12:11:58 +0200
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCC9B6ED7D
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Oct 2020 10:16:06 +0000 (UTC)
+Date: Fri, 30 Oct 2020 12:16:03 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201030101158.GH7444@platvala-desk.ger.corp.intel.com>
-References: <20201029160746.3488818-1-chris@chris-wilson.co.uk>
+Message-ID: <20201030101603.GI7444@platvala-desk.ger.corp.intel.com>
+References: <20201030003911.27211-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201029160746.3488818-1-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [PATCH i-g-t] fbdev: Force module load
+In-Reply-To: <20201030003911.27211-1-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/perf: Make sure i915 is loaded
+ before reading proc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -21,56 +22,69 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Oct 29, 2020 at 04:07:46PM +0000, Chris Wilson wrote:
-> If there are no /dev/fbN, force loading of the first available drm
-> module and try again.
+On Thu, Oct 29, 2020 at 05:39:11PM -0700, Umesh Nerlige Ramappa wrote:
+> The previous test may have unloaded i915 or failed to load it back. To
+> combat such cases, each test fixture is supposed to ensure that i915 is
+> loaded prior to running the subtests. In most fixtures this happens
+> automatically when we try to get a handle to i915. In perf OA, we stat
+> some proc/sys files even before getting a handle to i915. Occassionally,
+> perf tests fail trying to stat these files. Fix perf OA by checking and
+> loading i915 if it's not loaded.
 > 
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/2582
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/405
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 > ---
 
-I think we're getting to the point where we need to export
-__try_modprobe so tests can explicitly request modules to be loaded.
+I had a patch also fixing this back in August but I guess I didn't CC
+the correct people (in fact CCd none).
 
-I can remember there being at least three tests where test touches
-files created by drivers (sysfs, debugfs, etc) without necessarily
-calling drm_open_driver (before, or at all).
+https://patchwork.freedesktop.org/series/80805/
 
--- 
-Petri Latvala
+Same comment as for that other patch by Chris, we might want to
+generalize this by exporting __try_modprobe to be callable from tests.
+
+Anyway,
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
 
 
 
->  tests/fbdev.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+
+>  tests/i915/perf.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 > 
-> diff --git a/tests/fbdev.c b/tests/fbdev.c
-> index fe320b14f..e60a19297 100644
-> --- a/tests/fbdev.c
-> +++ b/tests/fbdev.c
-> @@ -43,8 +43,16 @@ igt_main
->  	struct fb_fix_screeninfo fix_info;
->  	int fd = -1;
+> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+> index a5c4adc3..a5bd63c2 100644
+> --- a/tests/i915/perf.c
+> +++ b/tests/i915/perf.c
+> @@ -41,6 +41,7 @@
+>  #include "i915/gem.h"
+>  #include "i915/perf.h"
+>  #include "igt.h"
+> +#include "igt_kmod.h"
+>  #include "igt_sysfs.h"
+>  #include "drm.h"
 >  
-> +	/*
-> +	 * Should this test focus on the fbdev independent of any drm driver,
-> +	 * or should it look for fbdev of a particular device?
-> +	 */
+> @@ -4806,6 +4807,14 @@ igt_main
 >  	igt_fixture {
->  		fd = open("/dev/fb0", O_RDWR);
-> +		if (fd < 0) {
-> +			close(drm_open_driver(DRIVER_ANY));
-> +			fd = open("/dev/fb0", O_RDWR);
-> +		}
->  		igt_require_f(fd != -1, "/dev/fb0\n");
+>  		struct stat sb;
 >  
->  		igt_require(ioctl(fd, FBIOGET_VSCREENINFO, &var_info) == 0);
+> +               /*
+> +		* Prior tests may have unloaded i915 or failed while
+> +		* loading/unloading i915. Load i915 here before we stat the
+> +		* files.
+> +                */
+> +               if (!igt_kmod_is_loaded("i915"))
+> +                       igt_assert(!igt_i915_driver_load(NULL));
+> +
+>  		igt_require(stat("/proc/sys/dev/i915/perf_stream_paranoid", &sb)
+>  			    == 0);
+>  		igt_require(stat("/proc/sys/dev/i915/oa_max_sample_rate", &sb)
 > -- 
-> 2.28.0
+> 2.20.1
 > 
 > _______________________________________________
 > igt-dev mailing list
