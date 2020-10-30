@@ -1,18 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A1DB06ED16
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Oct 2020 09:07:24 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-Date: Fri, 30 Oct 2020 09:07:22 +0000
-Message-ID: <26cb550102b54cd1951fba7654bd0e3c@intel.com>
-References: <20201026130811.11136-1-juhapekka.heikkila@gmail.com>
- <c372276a30e84ce0a356eafc96e876d1@intel.com>
- <9fd4258d-82a0-5bc6-8bf7-87896c53d379@gmail.com>
-In-Reply-To: <9fd4258d-82a0-5bc6-8bf7-87896c53d379@gmail.com>
-Content-Language: en-US
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D95E6E062
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Oct 2020 10:12:03 +0000 (UTC)
+Date: Fri, 30 Oct 2020 12:11:58 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20201030101158.GH7444@platvala-desk.ger.corp.intel.com>
+References: <20201029160746.3488818-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: fix pixel format
- (-clamping) tests
+Content-Disposition: inline
+In-Reply-To: <20201029160746.3488818-1-chris@chris-wilson.co.uk>
+Subject: Re: [igt-dev] [PATCH i-g-t] fbdev: Force module load
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,133 +21,61 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> -----Original Message-----
-> From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Sent: Thursday, October 29, 2020 8:23 PM
-> To: Kahola, Mika <mika.kahola@intel.com>; igt-dev@lists.freedesktop.org
-> Subject: Re: [igt-dev] [PATCH i-g-t] tests/kms_plane: fix pixel format (-
-> clamping) tests
+On Thu, Oct 29, 2020 at 04:07:46PM +0000, Chris Wilson wrote:
+> If there are no /dev/fbN, force loading of the first available drm
+> module and try again.
 > 
-> On 29.10.2020 14.43, Kahola, Mika wrote:
-> >> -----Original Message-----
-> >> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> >> Juha- Pekka Heikkila
-> >> Sent: Monday, October 26, 2020 3:08 PM
-> >> To: igt-dev@lists.freedesktop.org
-> >> Subject: [igt-dev] [PATCH i-g-t] tests/kms_plane: fix pixel format
-> >> (-clamping) tests
-> >>
-> >> cdclk caused modesets mid test will mess up crc sequence where two
-> >> consecutive frames will get same crc. If there come modeset restart
-> >> round for given set as modeset will anyway happen only on first color.
-> >>
-> >> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> >> ---
-> >>   tests/kms_plane.c | 28 ++++++++++++++++++++++------
-> >>   1 file changed, 22 insertions(+), 6 deletions(-)
-> >>
-> >> diff --git a/tests/kms_plane.c b/tests/kms_plane.c index
-> >> e42c71cd9..4ce859fba 100644
-> >> --- a/tests/kms_plane.c
-> >> +++ b/tests/kms_plane.c
-> >> @@ -560,9 +560,11 @@ static void capture_format_crcs(data_t *data,
-> >> enum pipe pipe,
-> >>   	struct drm_event_vblank ev;
-> >>   	int i;
-> >>
-> >> +restart_round:
-> >>   	for (i = 0; i < data->num_colors; i++) {
-> >>   		const color_t *c = &data->colors[i];
-> >>   		struct igt_fb old_fb = *fb;
-> >> +		int ret;
-> >>
-> >>   		prepare_format_color(data, pipe, plane, format, modifier,
-> >>   				     width, height, encoding, range, c, fb); @@
-> >> -593,10 +595,22 @@ static void capture_format_crcs(data_t *data, enum
-> >> pipe pipe,
-> >>   			 * to be prepared in parallel while the current fb
-> >>   			 * awaits to be latched.
-> >>   			 */
-> >> -			igt_display_commit_atomic(&data->display,
-> >> -
-> >> DRM_MODE_ATOMIC_ALLOW_MODESET |
-> >> -
-> >> DRM_MODE_ATOMIC_NONBLOCK |
-> >> -
-> >> DRM_MODE_PAGE_FLIP_EVENT, NULL);
-> >> +			ret = igt_display_try_commit_atomic(&data->display,
-> >> +
-> >> DRM_MODE_ATOMIC_NONBLOCK |
-> >> +
-> >> DRM_MODE_PAGE_FLIP_EVENT, NULL);
-> >> +			if (ret) {
-> >> +				/*
-> >> +				 * there was needed modeset for pixel
-> >> format.
-> >> +				 * modeset here happen only on first color of
-> >> +				 * given set so restart round as modeset will
-> >> +				 * mess up crc frame sequence.
-> >> +				 */
-> >> +				igt_display_commit_atomic(&data->display,
-> >> +
-> >> DRM_MODE_ATOMIC_ALLOW_MODESET,
-> >> +							  NULL);
-> >> +				igt_remove_fb(data->drm_fd, &old_fb);
-> >> +				goto restart_round;
-> >> +			}
-> >
-> > I tried to figure out the patch and it seems that we need to do modeset
-> only once, right? However, there is a theoretical chance (probability maybe
-> next to nothing) that we keep looping on restart_found. Therefore, I was
-> thinking that we should limit the restarts to 1 or to some finite number?
+> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/2582
+> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+> ---
+
+I think we're getting to the point where we need to export
+__try_modprobe so tests can explicitly request modules to be loaded.
+
+I can remember there being at least three tests where test touches
+files created by drivers (sysfs, debugfs, etc) without necessarily
+calling drm_open_driver (before, or at all).
+
+-- 
+Petri Latvala
+
+
+
+>  tests/fbdev.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> You mean there would come more than one modeset? I think many tests will
-> start to fail at that moment. Here fb which required modeset is left on screen
-> when going for restart, there shouldn't be new modeset. Then if modeset
-> itself fail that modesetting commit is not try commit so it will assert on
-> failure. I don't think there is need for additional counter unless cdclk
-> calculations fail but then everything is failing everywhere anyway I think.
-
-That's what I was thinking that there might be a minor likelihood that more than one modeset would occur. If that happens, something else must have gone wrong.
-
-Anyway, the patch looks ok.
-
-Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+> diff --git a/tests/fbdev.c b/tests/fbdev.c
+> index fe320b14f..e60a19297 100644
+> --- a/tests/fbdev.c
+> +++ b/tests/fbdev.c
+> @@ -43,8 +43,16 @@ igt_main
+>  	struct fb_fix_screeninfo fix_info;
+>  	int fd = -1;
+>  
+> +	/*
+> +	 * Should this test focus on the fbdev independent of any drm driver,
+> +	 * or should it look for fbdev of a particular device?
+> +	 */
+>  	igt_fixture {
+>  		fd = open("/dev/fb0", O_RDWR);
+> +		if (fd < 0) {
+> +			close(drm_open_driver(DRIVER_ANY));
+> +			fd = open("/dev/fb0", O_RDWR);
+> +		}
+>  		igt_require_f(fd != -1, "/dev/fb0\n");
+>  
+>  		igt_require(ioctl(fd, FBIOGET_VSCREENINFO, &var_info) == 0);
+> -- 
+> 2.28.0
 > 
-> >
-> > Cheers,
-> > Mika
-> >>   		} else {
-> >>   			/*
-> >>   			 * Last moment to grab the previous crc @@ -815,8
-> >> +829,10 @@ static bool test_format_plane(data_t *data, enum pipe
-> >> +pipe,
-> >>
-> >>   		igt_plane_set_fb(plane, &test_fb);
-> >>
-> >> -		ret = igt_display_try_commit_atomic(&data->display,
-> >> DRM_MODE_ATOMIC_TEST_ONLY, NULL);
-> >> -
-> >> +		ret = igt_display_try_commit_atomic(&data->display,
-> >> +
-> >> DRM_MODE_ATOMIC_TEST_ONLY |
-> >> +
-> >> DRM_MODE_ATOMIC_ALLOW_MODESET,
-> >> +						    NULL);
-> >>   		if (!ret) {
-> >>   			width = test_fb.width;
-> >>   			height = test_fb.height;
-> >> --
-> >> 2.28.0
-> >>
-> >> _______________________________________________
-> >> igt-dev mailing list
-> >> igt-dev@lists.freedesktop.org
-> >> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-
+> _______________________________________________
+> igt-dev mailing list
+> igt-dev@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/igt-dev
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
