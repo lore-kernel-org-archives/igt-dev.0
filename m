@@ -1,16 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0246A6E459
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Nov 2020 09:48:08 +0000 (UTC)
-Date: Mon, 2 Nov 2020 11:48:04 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201102094804.GK7444@platvala-desk.ger.corp.intel.com>
-References: <20201030225548.7444-1-umesh.nerlige.ramappa@intel.com>
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FD676E463
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Nov 2020 10:05:40 +0000 (UTC)
+From: Nidhi Gupta <nidhi1.gupta@intel.com>
+Date: Mon,  2 Nov 2020 15:43:49 +0530
+Message-Id: <20201102101349.25019-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201030225548.7444-1-umesh.nerlige.ramappa@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] i915/perf: Make sure i915 is loaded
- before reading proc
+Subject: [igt-dev] [RFC,
+ i-g-t v2] Added dynamic subtests for accurate reporting
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,60 +19,282 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Fri, Oct 30, 2020 at 03:55:48PM -0700, Umesh Nerlige Ramappa wrote:
-> The previous test may have unloaded i915 or failed to load it back. To
-> combat such cases, each test fixture is supposed to ensure that i915 is
-> loaded prior to running the subtests. In most fixtures this happens
-> automatically when we try to get a handle to i915. In perf OA, we stat
-> some proc/sys files even before getting a handle to i915. Occassionally,
-> perf tests fail trying to stat these files. Fix perf OA by checking and
-> loading i915 if it's not loaded.
-> 
-> v2: Remove the if check (Ashutosh)
-> 
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/405
-> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> ---
->  tests/i915/perf.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-> index a5c4adc3..bd8281bd 100644
-> --- a/tests/i915/perf.c
-> +++ b/tests/i915/perf.c
-> @@ -41,6 +41,7 @@
->  #include "i915/gem.h"
->  #include "i915/perf.h"
->  #include "igt.h"
-> +#include "igt_kmod.h"
->  #include "igt_sysfs.h"
->  #include "drm.h"
->  
-> @@ -4806,6 +4807,13 @@ igt_main
->  	igt_fixture {
->  		struct stat sb;
->  
-> +		/*
-> +		 * Prior tests may have unloaded i915 or failed while
-> +		 * loading/unloading i915. Load i915 here before we stat the
-> +		 * files.
-> +		 */
-> +		igt_i915_driver_load(NULL);
-> +
+For Multipipe scenario added dynamic subtests
+for accurate reporting of the results.
 
+Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+---
+ tests/kms_atomic_interruptible.c | 56 +++++++++++++++---------
+ tests/kms_flip_tiling.c          | 73 ++++++++++++++++++++------------
+ 2 files changed, 81 insertions(+), 48 deletions(-)
 
-Please use drm_load_module() instead, Chris's patch for exporting that
-is now merged.
-
-
+diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
+index e5ccdf5b..27bb6a2b 100644
+--- a/tests/kms_atomic_interruptible.c
++++ b/tests/kms_atomic_interruptible.c
+@@ -284,47 +284,61 @@ igt_main
+ 		igt_require_sw_sync();
+ 	}
+ 
+-	igt_subtest("legacy-setmode")
++	igt_subtest_with_dynamic("legacy-setmode") {
+ 		for_each_pipe_with_valid_output(&display, pipe, output) {
+-			run_plane_test(&display, pipe, output, test_legacy_modeset, DRM_PLANE_TYPE_PRIMARY);
+-			break;
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				run_plane_test(&display, pipe, output, test_legacy_modeset, DRM_PLANE_TYPE_PRIMARY);
++				break;
+ 		}
++	}
+ 
+-	igt_subtest("atomic-setmode")
++	igt_subtest_with_dynamic("atomic-setmode") {
+ 		for_each_pipe_with_valid_output(&display, pipe, output) {
+-			run_plane_test(&display, pipe, output, test_atomic_modeset, DRM_PLANE_TYPE_PRIMARY);
+-			break;
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				run_plane_test(&display, pipe, output, test_atomic_modeset, DRM_PLANE_TYPE_PRIMARY);
++				break;
+ 		}
++	}
+ 
+-	igt_subtest("legacy-dpms")
++	igt_subtest_with_dynamic("legacy-dpms") {
+ 		for_each_pipe_with_valid_output(&display, pipe, output) {
+-			run_plane_test(&display, pipe, output, test_legacy_dpms, DRM_PLANE_TYPE_PRIMARY);
+-			break;
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				run_plane_test(&display, pipe, output, test_legacy_dpms, DRM_PLANE_TYPE_PRIMARY);
++				break;
+ 		}
++	}
+ 
+-	igt_subtest("legacy-pageflip")
++	igt_subtest_with_dynamic("legacy-pageflip") {
+ 		for_each_pipe_with_valid_output(&display, pipe, output) {
+-			run_plane_test(&display, pipe, output, test_pageflip, DRM_PLANE_TYPE_PRIMARY);
+-			break;
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				run_plane_test(&display, pipe, output, test_pageflip, DRM_PLANE_TYPE_PRIMARY);
++				break;
+ 		}
++	}
+ 
+-	igt_subtest("legacy-cursor")
++	igt_subtest_with_dynamic("legacy-cursor") {
+ 		for_each_pipe_with_valid_output(&display, pipe, output) {
+-			run_plane_test(&display, pipe, output, test_setcursor, DRM_PLANE_TYPE_CURSOR);
+-			break;
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				run_plane_test(&display, pipe, output, test_setcursor, DRM_PLANE_TYPE_CURSOR);
++				break;
+ 		}
++	}
+ 
+-	igt_subtest("universal-setplane-primary")
++	igt_subtest_with_dynamic("universal-setplane-primary") {
+ 		for_each_pipe_with_valid_output(&display, pipe, output) {
+-			run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_PRIMARY);
+-			break;
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_PRIMARY);
++				break;
+ 		}
++	}
+ 
+-	igt_subtest("universal-setplane-cursor")
++	igt_subtest_with_dynamic("universal-setplane-cursor") {
+ 		for_each_pipe_with_valid_output(&display, pipe, output) {
+-			run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_CURSOR);
+-			break;
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_CURSOR);
++				break;
+ 		}
++	}
+ 
+ 	/* TODO: legacy gamma_set/get, object set/getprop, getcrtc, getconnector */
+ 	igt_fixture {
+diff --git a/tests/kms_flip_tiling.c b/tests/kms_flip_tiling.c
+index fb79de15..7a736fba 100644
+--- a/tests/kms_flip_tiling.c
++++ b/tests/kms_flip_tiling.c
+@@ -173,7 +173,7 @@ igt_main
+ 	 * generated and compared to the reference one.
+ 	 */
+ 
+-	igt_subtest_f("flip-changes-tiling") {
++	igt_subtest_with_dynamic("flip-changes-tiling") {
+ 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_X_TILED,
+ 				       LOCAL_DRM_FORMAT_MOD_NONE };
+ 		enum pipe pipe;
+@@ -181,11 +181,13 @@ igt_main
+ 		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
+ 			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
+ 
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
++		for_each_pipe_with_valid_output(&data.display, pipe, output) {
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				test_flip_tiling(&data, pipe, output, tiling);
++		}
+ 	}
+ 
+-	igt_subtest_f("flip-changes-tiling-Y") {
++	igt_subtest_with_dynamic("flip-changes-tiling-Y") {
+ 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Y_TILED,
+ 				       LOCAL_DRM_FORMAT_MOD_NONE };
+ 		enum pipe pipe;
+@@ -197,11 +199,14 @@ igt_main
+ 
+ 		igt_require(data.gen >= 9);
+ 
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
++		for_each_pipe_with_valid_output(&data.display, pipe, output) {
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				test_flip_tiling(&data, pipe, output, tiling);
++		}
+ 	}
+ 
+-	igt_subtest_f("flip-changes-tiling-Yf") {
++
++	igt_subtest_with_dynamic("flip-changes-tiling-Yf") {
+ 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Yf_TILED,
+ 				       LOCAL_DRM_FORMAT_MOD_NONE };
+ 		enum pipe pipe;
+@@ -213,8 +218,10 @@ igt_main
+ 
+ 		igt_require(data.gen >= 9);
+ 
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
++		for_each_pipe_with_valid_output(&data.display, pipe, output) {
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				test_flip_tiling(&data, pipe, output, tiling);
++		}
+ 	}
+ 
+ 	/*
+@@ -225,7 +232,7 @@ igt_main
+ 	 * reference one.
+ 	 */
+ 
+-	igt_subtest_f("flip-X-tiled") {
++	igt_subtest_with_dynamic("flip-X-tiled") {
+ 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_X_TILED,
+ 				       LOCAL_I915_FORMAT_MOD_X_TILED };
+ 		enum pipe pipe;
+@@ -233,11 +240,13 @@ igt_main
+ 		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
+ 			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
+ 
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
++		for_each_pipe_with_valid_output(&data.display, pipe, output) {
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				test_flip_tiling(&data, pipe, output, tiling);
++		}
+ 	}
+ 
+-	igt_subtest_f("flip-Y-tiled") {
++	igt_subtest_with_dynamic("flip-Y-tiled") {
+ 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Y_TILED,
+ 				       LOCAL_I915_FORMAT_MOD_Y_TILED };
+ 		enum pipe pipe;
+@@ -249,11 +258,13 @@ igt_main
+ 
+ 		igt_require(data.gen >= 9);
+ 
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
++		for_each_pipe_with_valid_output(&data.display, pipe, output) {
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				test_flip_tiling(&data, pipe, output, tiling);
++		}
+ 	}
+ 
+-	igt_subtest_f("flip-Yf-tiled") {
++	igt_subtest_with_dynamic("flip-Yf-tiled") {
+ 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Yf_TILED,
+ 				       LOCAL_I915_FORMAT_MOD_Yf_TILED };
+ 		enum pipe pipe;
+@@ -265,8 +276,10 @@ igt_main
+ 
+ 		igt_require(data.gen >= 9);
+ 
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
++		for_each_pipe_with_valid_output(&data.display, pipe, output) {
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				test_flip_tiling(&data, pipe, output, tiling);
++		}
+ 	}
+ 
+ 	/*
+@@ -277,7 +290,7 @@ igt_main
+ 	 * reference one.
+ 	 */
+ 
+-	igt_subtest_f("flip-to-X-tiled") {
++	igt_subtest_with_dynamic("flip-to-X-tiled") {
+ 		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
+ 				       LOCAL_I915_FORMAT_MOD_X_TILED };
+ 		enum pipe pipe;
+@@ -285,11 +298,13 @@ igt_main
+ 		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
+ 			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
+ 
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
++		for_each_pipe_with_valid_output(&data.display, pipe, output) {
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				test_flip_tiling(&data, pipe, output, tiling);
++		}
+ 	}
+ 
+-	igt_subtest_f("flip-to-Y-tiled") {
++	igt_subtest_with_dynamic("flip-to-Y-tiled") {
+ 		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
+ 				       LOCAL_I915_FORMAT_MOD_Y_TILED };
+ 		enum pipe pipe;
+@@ -301,11 +316,13 @@ igt_main
+ 
+ 		igt_require(data.gen >= 9);
+ 
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
++		for_each_pipe_with_valid_output(&data.display, pipe, output) {
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				test_flip_tiling(&data, pipe, output, tiling);
++		}
+ 	}
+ 
+-	igt_subtest_f("flip-to-Yf-tiled") {
++	igt_subtest_with_dynamic("flip-to-Yf-tiled") {
+ 		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
+ 				       LOCAL_I915_FORMAT_MOD_Yf_TILED };
+ 		enum pipe pipe;
+@@ -317,8 +334,10 @@ igt_main
+ 
+ 		igt_require(data.gen >= 9);
+ 
+-		for_each_pipe_with_valid_output(&data.display, pipe, output)
+-			test_flip_tiling(&data, pipe, output, tiling);
++		for_each_pipe_with_valid_output(&data.display, pipe, output) {
++			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
++				test_flip_tiling(&data, pipe, output, tiling);
++		}
+ 	}
+ 
+ 	igt_fixture {
 -- 
-Petri Latvala
+2.26.2
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
