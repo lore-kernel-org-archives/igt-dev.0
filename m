@@ -1,10 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 68FED6E439
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Nov 2020 09:03:06 +0000 (UTC)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8DBC6E0D9
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Nov 2020 09:08:39 +0000 (UTC)
 From: Anand Moon <anandx.ram.moon@intel.com>
-Date: Mon,  2 Nov 2020 09:02:43 +0000
-Message-Id: <20201102090243.19737-1-anandx.ram.moon@intel.com>
+Date: Mon,  2 Nov 2020 09:08:36 +0000
+Message-Id: <20201102090836.19803-1-anandx.ram.moon@intel.com>
 MIME-Version: 1.0
 Subject: [igt-dev] [i-g-t] tests/kms_setmode: basic Improve accuracy with
  using of confidence interval
@@ -19,7 +19,7 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org, Dorota Czaplejewicz <dorota.czaplejewicz@collabora.co.uk>
+To: igt-dev@lists.freedesktop.org
 Cc: Anand Moon <anandx.ram.moon@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
@@ -28,7 +28,6 @@ at 95% when {X} is the average of a sample of size n.
 Use this confidence interval formula as used in statistics
 to estimate the accuracy.
 
-Cc: Dorota Czaplejewicz <dorota.czaplejewicz@collabora.co.uk>
 Signed-off-by: Anand Moon <anandx.ram.moon@intel.com>
 ---
 See below link.
