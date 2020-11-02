@@ -1,18 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 86E866E117
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Nov 2020 18:12:36 +0000 (UTC)
-Date: Mon, 2 Nov 2020 20:12:31 +0200
-From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20201102181231.GA3915554@ideak-desk.fi.intel.com>
-References: <20201023130526.3983076-1-mika.kahola@intel.com>
- <20201023130526.3983076-3-mika.kahola@intel.com>
- <20201102172705.GA3914202@ideak-desk.fi.intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FAD76E311
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Nov 2020 19:50:04 +0000 (UTC)
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Date: Mon,  2 Nov 2020 11:49:57 -0800
+Message-Id: <20201102194957.30123-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201102172705.GA3914202@ideak-desk.fi.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v7 2/2] tests/kms_ccs: CCS Clear Color
- test
+Subject: [igt-dev] [PATCH i-g-t] i915/perf: Make sure i915 is loaded before
+ reading proc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,35 +15,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: imre.deak@intel.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Mika Kahola <mika.kahola@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Nov 02, 2020 at 07:27:05PM +0200, Imre Deak wrote:
-> [...]
-> On Fri, Oct 23, 2020 at 04:05:26PM +0300, Mika Kahola wrote:
-> > @@ -274,16 +279,25 @@ gen7_fill_vertex_buffer_data(struct intel_bb *ibb,
-> >  	offset = intel_bb_offset(ibb);
-> >  
-> >  	emit_vertex_2s(ibb, dst_x + width, dst_y + height);
-> > -	emit_vertex_normalized(ibb, src_x + width, intel_buf_width(src));
-> > -	emit_vertex_normalized(ibb, src_y + height, intel_buf_height(src));
-> > +
-> > +	if (src != NULL) {
-> > +		emit_vertex_normalized(ibb, src_x + width, intel_buf_width(src));
-> > +		emit_vertex_normalized(ibb, src_y + height, intel_buf_height(src));
+The previous test may have unloaded i915 or failed to load it back. To
+combat such cases, each test fixture is supposed to ensure that i915 is
+loaded prior to running the subtests. In most fixtures this happens
+automatically when we try to get a handle to i915. In perf OA, we stat
+some proc/sys files even before getting a handle to i915. Occassionally,
+perf tests fail trying to stat these files. Fix perf OA by checking and
+loading i915 if it's not loaded.
 
-The x coords need to be scaled down by 64 pixels, the y coords by 16 lines.
+v2: Use drm_load_module() (Petri)
 
---Imre
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/405
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ tests/i915/perf.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-> > +	}
-> 
+diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+index a5c4adc3..caeabd62 100644
+--- a/tests/i915/perf.c
++++ b/tests/i915/perf.c
+@@ -4806,6 +4806,13 @@ igt_main
+ 	igt_fixture {
+ 		struct stat sb;
+ 
++		/*
++		 * Prior tests may have unloaded i915 or failed while
++		 * loading/unloading i915. Load i915 here before we stat the
++		 * files.
++		 */
++		drm_load_module(DRIVER_INTEL);
++
+ 		igt_require(stat("/proc/sys/dev/i915/perf_stream_paranoid", &sb)
+ 			    == 0);
+ 		igt_require(stat("/proc/sys/dev/i915/oa_max_sample_rate", &sb)
+-- 
+2.20.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
