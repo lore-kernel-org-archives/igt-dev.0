@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9FD676E463
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Nov 2020 10:05:40 +0000 (UTC)
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
-Date: Mon,  2 Nov 2020 15:43:49 +0530
-Message-Id: <20201102101349.25019-1-nidhi1.gupta@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [RFC,
- i-g-t v2] Added dynamic subtests for accurate reporting
+From: Patchwork <patchwork@emeril.freedesktop.org>
+Date: Mon, 02 Nov 2020 10:36:28 -0000
+Message-ID: <160431338800.26394.6340163190207246768@emeril.freedesktop.org>
+References: <20201102101349.25019-1-nidhi1.gupta@intel.com>
+In-Reply-To: <20201102101349.25019-1-nidhi1.gupta@intel.com>
+Subject: [igt-dev] =?utf-8?b?4pyTIEZpLkNJLkJBVDogc3VjY2VzcyBmb3IgQWRkZWQg?=
+ =?utf-8?q?dynamic_subtests_for_accurate_reporting_=28rev2=29?=
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,287 +14,233 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: igt-dev@lists.freedesktop.org
+Content-Type: multipart/mixed; boundary="===============0485848981=="
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-For Multipipe scenario added dynamic subtests
-for accurate reporting of the results.
+--===============0485848981==
+Content-Type: multipart/alternative;
+ boundary="===============4295576857620278238=="
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
----
- tests/kms_atomic_interruptible.c | 56 +++++++++++++++---------
- tests/kms_flip_tiling.c          | 73 ++++++++++++++++++++------------
- 2 files changed, 81 insertions(+), 48 deletions(-)
+--===============4295576857620278238==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
-index e5ccdf5b..27bb6a2b 100644
---- a/tests/kms_atomic_interruptible.c
-+++ b/tests/kms_atomic_interruptible.c
-@@ -284,47 +284,61 @@ igt_main
- 		igt_require_sw_sync();
- 	}
- 
--	igt_subtest("legacy-setmode")
-+	igt_subtest_with_dynamic("legacy-setmode") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
--			run_plane_test(&display, pipe, output, test_legacy_modeset, DRM_PLANE_TYPE_PRIMARY);
--			break;
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				run_plane_test(&display, pipe, output, test_legacy_modeset, DRM_PLANE_TYPE_PRIMARY);
-+				break;
- 		}
-+	}
- 
--	igt_subtest("atomic-setmode")
-+	igt_subtest_with_dynamic("atomic-setmode") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
--			run_plane_test(&display, pipe, output, test_atomic_modeset, DRM_PLANE_TYPE_PRIMARY);
--			break;
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				run_plane_test(&display, pipe, output, test_atomic_modeset, DRM_PLANE_TYPE_PRIMARY);
-+				break;
- 		}
-+	}
- 
--	igt_subtest("legacy-dpms")
-+	igt_subtest_with_dynamic("legacy-dpms") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
--			run_plane_test(&display, pipe, output, test_legacy_dpms, DRM_PLANE_TYPE_PRIMARY);
--			break;
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				run_plane_test(&display, pipe, output, test_legacy_dpms, DRM_PLANE_TYPE_PRIMARY);
-+				break;
- 		}
-+	}
- 
--	igt_subtest("legacy-pageflip")
-+	igt_subtest_with_dynamic("legacy-pageflip") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
--			run_plane_test(&display, pipe, output, test_pageflip, DRM_PLANE_TYPE_PRIMARY);
--			break;
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				run_plane_test(&display, pipe, output, test_pageflip, DRM_PLANE_TYPE_PRIMARY);
-+				break;
- 		}
-+	}
- 
--	igt_subtest("legacy-cursor")
-+	igt_subtest_with_dynamic("legacy-cursor") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
--			run_plane_test(&display, pipe, output, test_setcursor, DRM_PLANE_TYPE_CURSOR);
--			break;
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				run_plane_test(&display, pipe, output, test_setcursor, DRM_PLANE_TYPE_CURSOR);
-+				break;
- 		}
-+	}
- 
--	igt_subtest("universal-setplane-primary")
-+	igt_subtest_with_dynamic("universal-setplane-primary") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
--			run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_PRIMARY);
--			break;
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_PRIMARY);
-+				break;
- 		}
-+	}
- 
--	igt_subtest("universal-setplane-cursor")
-+	igt_subtest_with_dynamic("universal-setplane-cursor") {
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
--			run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_CURSOR);
--			break;
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_CURSOR);
-+				break;
- 		}
-+	}
- 
- 	/* TODO: legacy gamma_set/get, object set/getprop, getcrtc, getconnector */
- 	igt_fixture {
-diff --git a/tests/kms_flip_tiling.c b/tests/kms_flip_tiling.c
-index fb79de15..7a736fba 100644
---- a/tests/kms_flip_tiling.c
-+++ b/tests/kms_flip_tiling.c
-@@ -173,7 +173,7 @@ igt_main
- 	 * generated and compared to the reference one.
- 	 */
- 
--	igt_subtest_f("flip-changes-tiling") {
-+	igt_subtest_with_dynamic("flip-changes-tiling") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_X_TILED,
- 				       LOCAL_DRM_FORMAT_MOD_NONE };
- 		enum pipe pipe;
-@@ -181,11 +181,13 @@ igt_main
- 		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
- 			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
--			test_flip_tiling(&data, pipe, output, tiling);
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
--	igt_subtest_f("flip-changes-tiling-Y") {
-+	igt_subtest_with_dynamic("flip-changes-tiling-Y") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Y_TILED,
- 				       LOCAL_DRM_FORMAT_MOD_NONE };
- 		enum pipe pipe;
-@@ -197,11 +199,14 @@ igt_main
- 
- 		igt_require(data.gen >= 9);
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
--			test_flip_tiling(&data, pipe, output, tiling);
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
--	igt_subtest_f("flip-changes-tiling-Yf") {
-+
-+	igt_subtest_with_dynamic("flip-changes-tiling-Yf") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Yf_TILED,
- 				       LOCAL_DRM_FORMAT_MOD_NONE };
- 		enum pipe pipe;
-@@ -213,8 +218,10 @@ igt_main
- 
- 		igt_require(data.gen >= 9);
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
--			test_flip_tiling(&data, pipe, output, tiling);
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
- 	/*
-@@ -225,7 +232,7 @@ igt_main
- 	 * reference one.
- 	 */
- 
--	igt_subtest_f("flip-X-tiled") {
-+	igt_subtest_with_dynamic("flip-X-tiled") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_X_TILED,
- 				       LOCAL_I915_FORMAT_MOD_X_TILED };
- 		enum pipe pipe;
-@@ -233,11 +240,13 @@ igt_main
- 		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
- 			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
--			test_flip_tiling(&data, pipe, output, tiling);
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
--	igt_subtest_f("flip-Y-tiled") {
-+	igt_subtest_with_dynamic("flip-Y-tiled") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Y_TILED,
- 				       LOCAL_I915_FORMAT_MOD_Y_TILED };
- 		enum pipe pipe;
-@@ -249,11 +258,13 @@ igt_main
- 
- 		igt_require(data.gen >= 9);
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
--			test_flip_tiling(&data, pipe, output, tiling);
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
--	igt_subtest_f("flip-Yf-tiled") {
-+	igt_subtest_with_dynamic("flip-Yf-tiled") {
- 		uint64_t tiling[2] = { LOCAL_I915_FORMAT_MOD_Yf_TILED,
- 				       LOCAL_I915_FORMAT_MOD_Yf_TILED };
- 		enum pipe pipe;
-@@ -265,8 +276,10 @@ igt_main
- 
- 		igt_require(data.gen >= 9);
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
--			test_flip_tiling(&data, pipe, output, tiling);
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
- 	/*
-@@ -277,7 +290,7 @@ igt_main
- 	 * reference one.
- 	 */
- 
--	igt_subtest_f("flip-to-X-tiled") {
-+	igt_subtest_with_dynamic("flip-to-X-tiled") {
- 		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
- 				       LOCAL_I915_FORMAT_MOD_X_TILED };
- 		enum pipe pipe;
-@@ -285,11 +298,13 @@ igt_main
- 		for (int i = 0; i < ARRAY_SIZE(tiling); i++)
- 			igt_require(igt_display_has_format_mod(&data.display, data.testformat, tiling[i]));
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
--			test_flip_tiling(&data, pipe, output, tiling);
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
--	igt_subtest_f("flip-to-Y-tiled") {
-+	igt_subtest_with_dynamic("flip-to-Y-tiled") {
- 		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
- 				       LOCAL_I915_FORMAT_MOD_Y_TILED };
- 		enum pipe pipe;
-@@ -301,11 +316,13 @@ igt_main
- 
- 		igt_require(data.gen >= 9);
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
--			test_flip_tiling(&data, pipe, output, tiling);
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
--	igt_subtest_f("flip-to-Yf-tiled") {
-+	igt_subtest_with_dynamic("flip-to-Yf-tiled") {
- 		uint64_t tiling[2] = { LOCAL_DRM_FORMAT_MOD_NONE,
- 				       LOCAL_I915_FORMAT_MOD_Yf_TILED };
- 		enum pipe pipe;
-@@ -317,8 +334,10 @@ igt_main
- 
- 		igt_require(data.gen >= 9);
- 
--		for_each_pipe_with_valid_output(&data.display, pipe, output)
--			test_flip_tiling(&data, pipe, output, tiling);
-+		for_each_pipe_with_valid_output(&data.display, pipe, output) {
-+			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-+				test_flip_tiling(&data, pipe, output, tiling);
-+		}
- 	}
- 
- 	igt_fixture {
--- 
-2.26.2
+== Series Details ==
+
+Series: Added dynamic subtests for accurate reporting (rev2)
+URL   : https://patchwork.freedesktop.org/series/82743/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_9240 -> IGTPW_5114
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/index.html
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_5114 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@coherency:
+    - fi-gdg-551:         [PASS][1] -> [DMESG-FAIL][2] ([i915#1748])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9240/fi-gdg-551/igt@i915_selftest@live@coherency.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/fi-gdg-551/igt@i915_selftest@live@coherency.html
+
+  * igt@i915_selftest@live@gt_timelines:
+    - fi-apl-guc:         [PASS][3] -> [INCOMPLETE][4] ([i915#1635])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9240/fi-apl-guc/igt@i915_selftest@live@gt_timelines.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/fi-apl-guc/igt@i915_selftest@live@gt_timelines.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-byt-j1900:       [PASS][5] -> [DMESG-WARN][6] ([i915#1982])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9240/fi-byt-j1900/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/fi-byt-j1900/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - fi-bxt-dsi:         [PASS][7] -> [DMESG-WARN][8] ([i915#1635] / [i915#1982])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9240/fi-bxt-dsi/igt@kms_frontbuffer_tracking@basic.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/fi-bxt-dsi/igt@kms_frontbuffer_tracking@basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - fi-tgl-u2:          [DMESG-WARN][9] ([i915#1982]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9240/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@i915_module_load@reload:
+    - fi-icl-u2:          [DMESG-WARN][11] ([i915#1982]) -> [PASS][12] +1 similar issue
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9240/fi-icl-u2/igt@i915_module_load@reload.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/fi-icl-u2/igt@i915_module_load@reload.html
+
+  * igt@i915_pm_rpm@basic-pci-d3-state:
+    - fi-apl-guc:         [DMESG-WARN][13] ([i915#1635] / [i915#1982]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9240/fi-apl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/fi-apl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#1635]: https://gitlab.freedesktop.org/drm/intel/issues/1635
+  [i915#1748]: https://gitlab.freedesktop.org/drm/intel/issues/1748
+  [i915#1982]: https://gitlab.freedesktop.org/drm/intel/issues/1982
+
+
+Participating hosts (42 -> 38)
+------------------------------
+
+  Missing    (4): fi-ilk-m540 fi-bsw-cyan fi-bdw-samus fi-hsw-4200u 
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_5830 -> IGTPW_5114
+
+  CI-20190529: 20190529
+  CI_DRM_9240: 89e8edde9a130b808408b6491d858606cf9afda4 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_5114: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/index.html
+  IGT_5830: 12d370cb57e0cfcb781c87ad9e15e68b17a1f41f @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/index.html
+
+--===============4295576857620278238==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Added dynamic subtests for accurate reporting (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/82743/">https://patchwork.freedesktop.org/series/82743/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_9240 -&gt; IGTPW_5114</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/index.html</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_5114 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@coherency:</p>
+<ul>
+<li>fi-gdg-551:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9240/fi-gdg-551/igt@i915_selftest@live@coherency.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/fi-gdg-551/igt@i915_selftest@live@coherency.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1748">i915#1748</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_timelines:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9240/fi-apl-guc/igt@i915_selftest@live@gt_timelines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/fi-apl-guc/igt@i915_selftest@live@gt_timelines.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1635">i915#1635</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-byt-j1900:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9240/fi-byt-j1900/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/fi-byt-j1900/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>fi-bxt-dsi:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9240/fi-bxt-dsi/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/fi-bxt-dsi/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1635">i915#1635</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>fi-tgl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9240/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/fi-tgl-u2/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_module_load@reload:</p>
+<ul>
+<li>fi-icl-u2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9240/fi-icl-u2/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/fi-icl-u2/igt@i915_module_load@reload.html">PASS</a> +1 similar issue</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-apl-guc:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_9240/fi-apl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/intel/issues/1635">i915#1635</a> / <a href="https://gitlab.freedesktop.org/drm/intel/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/fi-apl-guc/igt@i915_pm_rpm@basic-pci-d3-state.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Participating hosts (42 -&gt; 38)</h2>
+<p>Missing    (4): fi-ilk-m540 fi-bsw-cyan fi-bdw-samus fi-hsw-4200u </p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_5830 -&gt; IGTPW_5114</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_9240: 89e8edde9a130b808408b6491d858606cf9afda4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_5114: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_5114/index.html<br />
+  IGT_5830: 12d370cb57e0cfcb781c87ad9e15e68b17a1f41f @ git://anongit.freedesktop.org/xorg/app/intel-gpu-tools</p>
+
+</body>
+</html>
+
+--===============4295576857620278238==--
+
+--===============0485848981==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
 https://lists.freedesktop.org/mailman/listinfo/igt-dev
+
+--===============0485848981==--
