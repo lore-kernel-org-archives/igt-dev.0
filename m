@@ -1,19 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 298E76EC1F
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2020 08:15:51 +0000 (UTC)
-From: "Kahola, Mika" <mika.kahola@intel.com>
-Date: Tue, 3 Nov 2020 08:15:49 +0000
-Message-ID: <42977cc5fde04703a4c4dfcacfdbc4d1@intel.com>
-References: <20201023130526.3983076-1-mika.kahola@intel.com>
- <20201023130526.3983076-3-mika.kahola@intel.com>
- <20201102172705.GA3914202@ideak-desk.fi.intel.com>
- <20201102181231.GA3915554@ideak-desk.fi.intel.com>
-In-Reply-To: <20201102181231.GA3915554@ideak-desk.fi.intel.com>
-Content-Language: en-US
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 68FED6E439
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Nov 2020 09:03:06 +0000 (UTC)
+From: Anand Moon <anandx.ram.moon@intel.com>
+Date: Mon,  2 Nov 2020 09:02:43 +0000
+Message-Id: <20201102090243.19737-1-anandx.ram.moon@intel.com>
 MIME-Version: 1.0
-Subject: Re: [igt-dev] [PATCH i-g-t v7 2/2] tests/kms_ccs: CCS Clear Color
- test
+Subject: [igt-dev] [i-g-t] tests/kms_setmode: basic Improve accuracy with
+ using of confidence interval
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,45 +19,40 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Deak, Imre" <imre.deak@intel.com>
-Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+To: igt-dev@lists.freedesktop.org, Dorota Czaplejewicz <dorota.czaplejewicz@collabora.co.uk>
+Cc: Anand Moon <anandx.ram.moon@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-> -----Original Message-----
-> From: Imre Deak <imre.deak@intel.com>
-> Sent: Monday, November 2, 2020 8:13 PM
-> To: Kahola, Mika <mika.kahola@intel.com>
-> Cc: igt-dev@lists.freedesktop.org
-> Subject: Re: [igt-dev] [PATCH i-g-t v7 2/2] tests/kms_ccs: CCS Clear Color test
-> 
-> On Mon, Nov 02, 2020 at 07:27:05PM +0200, Imre Deak wrote:
-> > [...]
-> > On Fri, Oct 23, 2020 at 04:05:26PM +0300, Mika Kahola wrote:
-> > > @@ -274,16 +279,25 @@ gen7_fill_vertex_buffer_data(struct intel_bb
-> *ibb,
-> > >  	offset = intel_bb_offset(ibb);
-> > >
-> > >  	emit_vertex_2s(ibb, dst_x + width, dst_y + height);
-> > > -	emit_vertex_normalized(ibb, src_x + width, intel_buf_width(src));
-> > > -	emit_vertex_normalized(ibb, src_y + height, intel_buf_height(src));
-> > > +
-> > > +	if (src != NULL) {
-> > > +		emit_vertex_normalized(ibb, src_x + width,
-> intel_buf_width(src));
-> > > +		emit_vertex_normalized(ibb, src_y + height,
-> intel_buf_height(src));
-> 
-> The x coords need to be scaled down by 64 pixels, the y coords by 16 lines.
+Using confidence interval formula accuracy is estimates approximately
+at 95% when {X} is the average of a sample of size n.
+Use this confidence interval formula as used in statistics
+to estimate the accuracy.
 
-Thanks for the review. I will address these two points.
+Cc: Dorota Czaplejewicz <dorota.czaplejewicz@collabora.co.uk>
+Signed-off-by: Anand Moon <anandx.ram.moon@intel.com>
+---
+See below link.
+https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule#Cumulative_distribution_function
+---
+ tests/kms_setmode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Cheers,
-Mika
-> 
-> --Imre
-> 
-> > > +	}
-> >
+diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+index 92f3ead2..58814a13 100644
+--- a/tests/kms_setmode.c
++++ b/tests/kms_setmode.c
+@@ -494,7 +494,7 @@ static void check_timings(int crtc_idx, const drmModeModeInfo *kmode)
+ 	 * which depend on timing, giving the lowest acceptable MTBF of 5.6s
+ 	 * for 60Hz sampling rate.
+ 	 */
+-	accuracy = 3. * stddev;
++	accuracy = 3. * stddev / sqrt(CALIBRATE_TS_STEPS);
+ 
+ 	igt_info("Expected frametime: %.0fus; measured %.1fus +- %.3fus accuracy %.2f%% [%.2f scanlines]\n",
+ 		 expected, mean, stddev,
+-- 
+2.25.1
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
