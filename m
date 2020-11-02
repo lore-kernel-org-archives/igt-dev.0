@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9FAD76E311
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Nov 2020 19:50:04 +0000 (UTC)
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Date: Mon,  2 Nov 2020 11:49:57 -0800
-Message-Id: <20201102194957.30123-1-umesh.nerlige.ramappa@intel.com>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E57EF6E321
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Nov 2020 19:55:12 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Mon,  2 Nov 2020 20:54:36 +0100
+Message-Id: <20201102195503.22581-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/perf: Make sure i915 is loaded before
- reading proc
+Subject: [igt-dev] [PATCH i-g-t v6 00/27] Introduce IGT allocator
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,54 +14,93 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>
+Cc: Petri Latvala <petri.latvala@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The previous test may have unloaded i915 or failed to load it back. To
-combat such cases, each test fixture is supposed to ensure that i915 is
-loaded prior to running the subtests. In most fixtures this happens
-automatically when we try to get a handle to i915. In perf OA, we stat
-some proc/sys files even before getting a handle to i915. Occassionally,
-perf tests fail trying to stat these files. Fix perf OA by checking and
-loading i915 if it's not loaded.
-
-v2: Use drm_load_module() (Petri)
-
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/405
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- tests/i915/perf.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/tests/i915/perf.c b/tests/i915/perf.c
-index a5c4adc3..caeabd62 100644
---- a/tests/i915/perf.c
-+++ b/tests/i915/perf.c
-@@ -4806,6 +4806,13 @@ igt_main
- 	igt_fixture {
- 		struct stat sb;
- 
-+		/*
-+		 * Prior tests may have unloaded i915 or failed while
-+		 * loading/unloading i915. Load i915 here before we stat the
-+		 * files.
-+		 */
-+		drm_load_module(DRIVER_INTEL);
-+
- 		igt_require(stat("/proc/sys/dev/i915/perf_stream_paranoid", &sb)
- 			    == 0);
- 		igt_require(stat("/proc/sys/dev/i915/oa_max_sample_rate", &sb)
--- 
-2.20.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+VGhpcyBzZXJpZXMgaW50cm9kdWNlIGludGVsLWFsbG9jYXRvciBpbnNpZGUgSUdULgoKdjI6IGFk
+ZCBjb21tZW50L2NvbW1pdCBtc2cgZm9yIGFsbG9jYXRvciBjb3JlCnYzOiBlbmZvcmNlIHJlbG9j
+cyBpbiBnZW1fbGluZWFyX2JsaXRzIGZvciBwcGd0dCBzaXplcyA8PSAzMmIKdjQ6IHVzZSBhZGRy
+ZXNzZXMgb25seSBmcm9tIHBwZ3R0IHJhbmdlIGluIGNoZWNrLWNhbm9uaWNhbAp2NTogdXNlIHJl
+bG9jYXRpb25zIGFzIGRlZmF1bHQgdXAgdG8gZ2VuMTIgdG8gYXZvaWQgbG9vc2luZwogICAgY292
+ZXJhZ2UuCnY2OiBtaWdyYXRlIG1lbW9yeSBjaGVjayBpbiBnZW1fcHBndHQgdG8gYXZvaWQgZXhl
+YyBzZXJpYWxpemF0aW9uCgpDYzogRG9taW5payBHcnplZ29yemVrIDxkb21pbmlrLmdyemVnb3J6
+ZWtAaW50ZWwuY29tPgpDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+
+CkNjOiBQZXRyaSBMYXR2YWxhIDxwZXRyaS5sYXR2YWxhQGludGVsLmNvbT4KCkRvbWluaWsgR3J6
+ZWdvcnplayAoNSk6CiAgbGliL2lndF9saXN0OiBpZ3RfaGxpc3QgaW1wbGVtZW50YXRpb24uCiAg
+bGliL2lndF9tYXA6IEludHJvZHVjZSBpZ3RfbWFwCiAgbGliL2ludGVsX2FsbG9jYXRvcl9zaW1w
+bGU6IEFkZCBzaW1wbGUgYWxsb2NhdG9yCiAgdGVzdHMvYXBpX2ludGVsX2FsbG9jYXRvcjogU2lt
+cGxlIGFsbG9jYXRvciB0ZXN0IHN1aXRlCiAgdGVzdHMvZ2VtX2xpbmVhcl9ibGl0czogVXNlIGlu
+dGVsIGFsbG9jYXRvcgoKWmJpZ25pZXcgS2VtcGN6ecWEc2tpICgyMik6CiAgbGliL2lndF9jb3Jl
+OiBUcmFjayBjaGlsZCBwcm9jZXNzIHBpZCBhbmQgdGlkCiAgbGliL2ludGVsX2FsbG9jYXRvcl9y
+YW5kb206IEFkZCByYW5kb20gYWxsb2NhdG9yCiAgbGliL2ludGVsX2FsbG9jYXRvcjogQWRkIGlu
+dGVsX2FsbG9jYXRvciBjb3JlCiAgbGliL2ludGVsX2FsbG9jYXRvcjogVHJ5IHRvIHN0b3Agc21v
+b3RobHkgaW5zdGVhZCBvZiBkZWluaXQKICBsaWIvaW50ZWxfYWxsb2NhdG9yX21zZ2NoYW5uZWw6
+IFNjYWxlIHRvIDRrIG9mIHBhcmFsbGVsIGNsaWVudHMKICBsaWIvaW50ZWxfYnVmb3BzOiBSZW1v
+dmVzIGhhbmRsZSBmcm9tIGFsbG9jYXRvciwgY2hhbmdlIHNpemUKICBsaWIvaW50ZWxfYnVmb3Bz
+OiBBZGQgaW5pdCB3aXRoIGhhbmRsZSBhbmQgc2l6ZSBmdW5jdGlvbgogIGxpYi9pbnRlbF9iYXRj
+aGJ1ZmZlcjogSW50ZWdyYXRlIGludGVsX2JiIHdpdGggYWxsb2NhdG9yCiAgbGliL2ludGVsX2Jh
+dGNoYnVmZmVyOiBBZGQgdHJhY2tpbmcgaW50ZWxfYnVmIHRvIGludGVsX2JiCiAgbGliL2ludGVs
+X2F1eF9wZ3RhYmxlOiBHZXQgYWRkcmVzc2VzIGZvciBhdXggdGFibGUgZnJvbSBhbiBhbGxvY2F0
+b3IKICBsaWIvaWd0X2ZiOiBJbml0aWFsaXplIGludGVsX2J1ZiB3aXRoIHNhbWUgc2l6ZSBhcyBm
+YgogIHRlc3RzL2FwaV9pbnRlbF9iYjogTW9kaWZ5IHRlc3QgdG8gdmVyaWZ5IGludGVsX2JiIHdp
+dGggYWxsb2NhdG9yCiAgdGVzdHMvYXBpX2ludGVsX2JiOiBBZGQgY29tcHJlc3NlZC0+Y29tcHJl
+c3NlZCBjb3B5CiAgdGVzdHMvZ2VtfGttczogUmVtb3ZlIGludGVsX2JiIGZyb20gZml4dHVyZQog
+IHRlc3RzL2dlbV9tbWFwX29mZnNldDogVXNlIGludGVsX2J1ZiB3cmFwcGVyIGNvZGUgaW5zdGVh
+ZCBkaXJlY3QKICB0ZXN0cy9nZW1fcHBndHQ6IEFkb3B0IHRlc3QgdG8gdXNlIGludGVsX2JiIHdp
+dGggYWxsb2NhdG9yCiAgdGVzdHMvZ2VtX3JlbmRlcl9jb3B5X3JlZHV4OiBBZG9wdCB0byB1c2Ug
+d2l0aCBpbnRlbF9iYiBhbmQgYWxsb2NhdG9yCiAgdGVzdHMvcGVyZi5jOiBSZW1vdmUgYnVmZmVy
+IGZyb20gYmF0Y2gKICBsaWIvaW9jdGxfd3JhcHBlcnM6IEFkZCBnZW1faGFzX3JlbG9jYXRpb25z
+KCkgY2hlY2sKICBsaWIvaW50ZWxfYmF0Y2hidWZmZXI6IFVzZSByZWxvY2F0aW9ucyBpbiBpbnRl
+bC1iYiB1cCB0byBnZW4xMgogIHRlc3RzL2FwaV9pbnRlbF8qOiBBZG9wdCB0byB1c2UgcmVsb2Nh
+dGlvbnMgYXMgZGVmYXVsdCB1cCB0byBnZW4xMgogIHRlc3RzL2dlbV9wcGd0dDogTWlncmF0ZSBt
+ZW1vcnkgY2hlY2sgb3V0IG9mIHJlbmRlciBibGl0cwoKIC4uLi9pZ3QtZ3B1LXRvb2xzL2lndC1n
+cHUtdG9vbHMtZG9jcy54bWwgICAgICB8ICAgMiArCiBsaWIvTWFrZWZpbGUuc291cmNlcyAgICAg
+ICAgICAgICAgICAgICAgICAgICAgfCAgIDIgKwogbGliL2lndF9jb3JlLmMgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHwgIDIwICsKIGxpYi9pZ3RfZmIuYyAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICB8ICAxMCArLQogbGliL2lndF9saXN0LmMgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIHwgIDcxICsrCiBsaWIvaWd0X2xpc3QuaCAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgfCAgNTAgKy0KIGxpYi9pZ3RfbWFwLmMgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICB8IDE1MCArKysKIGxpYi9pZ3RfbWFwLmggICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICB8IDEyMSArKysKIGxpYi9pbnRlbF9hbGxvY2F0b3IuYyAgICAgICAgICAg
+ICAgICAgICAgICAgICB8IDk1OSArKysrKysrKysrKysrKysrKysKIGxpYi9pbnRlbF9hbGxvY2F0
+b3IuaCAgICAgICAgICAgICAgICAgICAgICAgICB8IDEzNiArKysKIGxpYi9pbnRlbF9hbGxvY2F0
+b3JfbXNnY2hhbm5lbC5jICAgICAgICAgICAgICB8IDE5MCArKysrCiBsaWIvaW50ZWxfYWxsb2Nh
+dG9yX21zZ2NoYW5uZWwuaCAgICAgICAgICAgICAgfCAxNDAgKysrCiBsaWIvaW50ZWxfYWxsb2Nh
+dG9yX3JhbmRvbS5jICAgICAgICAgICAgICAgICAgfCAyMjMgKysrKwogbGliL2ludGVsX2FsbG9j
+YXRvcl9zaW1wbGUuYyAgICAgICAgICAgICAgICAgIHwgNzI4ICsrKysrKysrKysrKysKIGxpYi9p
+bnRlbF9hdXhfcGd0YWJsZS5jICAgICAgICAgICAgICAgICAgICAgICB8ICA0NSArLQogbGliL2lu
+dGVsX2JhdGNoYnVmZmVyLmMgICAgICAgICAgICAgICAgICAgICAgIHwgNTY1ICsrKysrKysrLS0t
+CiBsaWIvaW50ZWxfYmF0Y2hidWZmZXIuaCAgICAgICAgICAgICAgICAgICAgICAgfCAgMjggKy0K
+IGxpYi9pbnRlbF9idWZvcHMuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA2MSArLQog
+bGliL2ludGVsX2J1Zm9wcy5oICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDIwICstCiBs
+aWIvaW9jdGxfd3JhcHBlcnMuYyAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNDMgKwogbGli
+L2lvY3RsX3dyYXBwZXJzLmggICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxICsKIGxpYi9t
+ZXNvbi5idWlsZCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgNSArCiB0ZXN0cy9p
+OTE1L2FwaV9pbnRlbF9hbGxvY2F0b3IuYyAgICAgICAgICAgICAgfCA1NTcgKysrKysrKysrKwog
+dGVzdHMvaTkxNS9hcGlfaW50ZWxfYmIuYyAgICAgICAgICAgICAgICAgICAgIHwgNjEwICsrKysr
+KysrLS0tCiB0ZXN0cy9pOTE1L2dlbV9jYWNoaW5nLmMgICAgICAgICAgICAgICAgICAgICAgfCAg
+MTQgKy0KIHRlc3RzL2k5MTUvZ2VtX2xpbmVhcl9ibGl0cy5jICAgICAgICAgICAgICAgICB8IDEw
+MyArLQogdGVzdHMvaTkxNS9nZW1fbW1hcF9vZmZzZXQuYyAgICAgICAgICAgICAgICAgIHwgICA0
+ICstCiB0ZXN0cy9pOTE1L2dlbV9wYXJ0aWFsX3B3cml0ZV9wcmVhZC5jICAgICAgICAgfCAgNDAg
+Ky0KIHRlc3RzL2k5MTUvZ2VtX3BwZ3R0LmMgICAgICAgICAgICAgICAgICAgICAgICB8ICA1NyAr
+LQogdGVzdHMvaTkxNS9nZW1fcmVuZGVyX2NvcHkuYyAgICAgICAgICAgICAgICAgIHwgIDMxICst
+CiB0ZXN0cy9pOTE1L2dlbV9yZW5kZXJfY29weV9yZWR1eC5jICAgICAgICAgICAgfCAgMjMgKy0K
+IHRlc3RzL2k5MTUvcGVyZi5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgOSArCiB0
+ZXN0cy9rbXNfYmlnX2ZiLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMTIgKy0KIHRl
+c3RzL21lc29uLmJ1aWxkICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSArCiAzNCBm
+aWxlcyBjaGFuZ2VkLCA0NTk0IGluc2VydGlvbnMoKyksIDQzNyBkZWxldGlvbnMoLSkKIGNyZWF0
+ZSBtb2RlIDEwMDY0NCBsaWIvaWd0X21hcC5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgbGliL2lndF9t
+YXAuaAogY3JlYXRlIG1vZGUgMTAwNjQ0IGxpYi9pbnRlbF9hbGxvY2F0b3IuYwogY3JlYXRlIG1v
+ZGUgMTAwNjQ0IGxpYi9pbnRlbF9hbGxvY2F0b3IuaAogY3JlYXRlIG1vZGUgMTAwNjQ0IGxpYi9p
+bnRlbF9hbGxvY2F0b3JfbXNnY2hhbm5lbC5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgbGliL2ludGVs
+X2FsbG9jYXRvcl9tc2djaGFubmVsLmgKIGNyZWF0ZSBtb2RlIDEwMDY0NCBsaWIvaW50ZWxfYWxs
+b2NhdG9yX3JhbmRvbS5jCiBjcmVhdGUgbW9kZSAxMDA2NDQgbGliL2ludGVsX2FsbG9jYXRvcl9z
+aW1wbGUuYwogY3JlYXRlIG1vZGUgMTAwNjQ0IHRlc3RzL2k5MTUvYXBpX2ludGVsX2FsbG9jYXRv
+ci5jCgotLSAKMi4yNi4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9y
+ZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
