@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C8DBC6E0D9
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Nov 2020 09:08:39 +0000 (UTC)
-From: Anand Moon <anandx.ram.moon@intel.com>
-Date: Mon,  2 Nov 2020 09:08:36 +0000
-Message-Id: <20201102090836.19803-1-anandx.ram.moon@intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C663E6E85B
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2020 08:51:24 +0000 (UTC)
+From: Karthik B S <karthik.b.s@intel.com>
+Date: Tue,  3 Nov 2020 13:56:28 +0530
+Message-Id: <20201103082628.9287-3-karthik.b.s@intel.com>
+In-Reply-To: <20201103082628.9287-1-karthik.b.s@intel.com>
+References: <20201103082628.9287-1-karthik.b.s@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [i-g-t] tests/kms_setmode: basic Improve accuracy with
- using of confidence interval
+Subject: [igt-dev] [PATCH i-g-t v3 2/2] CI HAX: Add MST tests to fast
+ feedback testlist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,37 +22,37 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Anand Moon <anandx.ram.moon@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Using confidence interval formula accuracy is estimates approximately
-at 95% when {X} is the average of a sample of size n.
-Use this confidence interval formula as used in statistics
-to estimate the accuracy.
+Add the MST subtests to the fast feedback test list as
+shards TGL does not have HDCP panels.
 
-Signed-off-by: Anand Moon <anandx.ram.moon@intel.com>
----
-See below link.
-https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule#Cumulative_distribution_function
----
- tests/kms_setmode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v3: -Fix Typo. (Petri)
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 92f3ead2..58814a13 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -494,7 +494,7 @@ static void check_timings(int crtc_idx, const drmModeModeInfo *kmode)
- 	 * which depend on timing, giving the lowest acceptable MTBF of 5.6s
- 	 * for 60Hz sampling rate.
- 	 */
--	accuracy = 3. * stddev;
-+	accuracy = 3. * stddev / sqrt(CALIBRATE_TS_STEPS);
+Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+---
+ tests/intel-ci/fast-feedback.testlist | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index 83722f83..e4c1c335 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -155,6 +155,12 @@ igt@vgem_basic@mmap
+ igt@vgem_basic@second-client
+ igt@vgem_basic@sysfs
  
- 	igt_info("Expected frametime: %.0fus; measured %.1fus +- %.3fus accuracy %.2f%% [%.2f scanlines]\n",
- 		 expected, mean, stddev,
++# HAX: Temporary addition to the fast-feedback list as shards doesnt have MST setup.
++igt@kms_content_protection@dp-mst-type-0
++igt@kms_content_protection@dp-mst-lic-type-0
++igt@kms_content_protection@dp-mst-type-1
++igt@kms_content_protection@dp-mst-lic-type-1
++
+ # All tests that do module unloading and reloading are executed last.
+ # They will sometimes reveal issues of earlier tests leaving the
+ # driver in a broken state that is not otherwise noticed in that test.
 -- 
-2.25.1
+2.22.0
 
 _______________________________________________
 igt-dev mailing list
