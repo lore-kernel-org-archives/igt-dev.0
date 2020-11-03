@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B1D936E84E
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2020 08:01:29 +0000 (UTC)
-Date: Tue, 3 Nov 2020 10:01:25 +0200
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E2A546E0A5
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2020 08:06:49 +0000 (UTC)
+Date: Tue, 3 Nov 2020 10:06:44 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201103080125.GL7444@platvala-desk.ger.corp.intel.com>
-References: <20201009175057.3336447-1-lyude@redhat.com>
- <20201009175057.3336447-2-lyude@redhat.com>
+Message-ID: <20201103080644.GN7444@platvala-desk.ger.corp.intel.com>
+References: <20201102194957.30123-1-umesh.nerlige.ramappa@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201009175057.3336447-2-lyude@redhat.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] lib/igt_device_scan: Return true
- from igt_device_find_first_i915_discrete_card()
+In-Reply-To: <20201102194957.30123-1-umesh.nerlige.ramappa@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/perf: Make sure i915 is loaded
+ before reading proc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,68 +18,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Lyude <lyude@redhat.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gRnJpLCBPY3QgMDksIDIwMjAgYXQgMDE6NTA6NTdQTSAtMDQwMCwgTHl1ZGUgd3JvdGU6Cj4g
-RnJvbTogTHl1ZGUgUGF1bCA8bHl1ZGVAcmVkaGF0LmNvbT4KPiAKPiBTbyB0aGF0IHdlIGNhbiBh
-bHNvIHByaW50IGEgcmVsZXZhbnQgZXJyb3IgbWVzc2FnZSB3aGVuIGZhaWxpbmcgdG8gZmluZCBh
-bnkgZGV2aWNlcyBpbgo+IGludGVsX2dwdV90b3AuCj4gCj4gU2lnbmVkLW9mZi1ieTogTHl1ZGUg
-UGF1bCA8bHl1ZGVAcmVkaGF0LmNvbT4KPiBDYzogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymln
-bmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Cj4gLS0tCj4gIGxpYi9pZ3RfZGV2aWNlX3NjYW4u
-YyB8ICA2ICsrKystLQo+ICBsaWIvaWd0X2RldmljZV9zY2FuLmggfCAgMiArLQo+ICB0b29scy9p
-bnRlbF9ncHVfdG9wLmMgfCAxNSArKysrKysrKystLS0tLS0KPiAgMyBmaWxlcyBjaGFuZ2VkLCAx
-NCBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS9saWIvaWd0
-X2RldmljZV9zY2FuLmMgYi9saWIvaWd0X2RldmljZV9zY2FuLmMKPiBpbmRleCBkNzczMTFhNC4u
-ZjRkNDNjNzMgMTAwNjQ0Cj4gLS0tIGEvbGliL2lndF9kZXZpY2Vfc2Nhbi5jCj4gKysrIGIvbGli
-L2lndF9kZXZpY2Vfc2Nhbi5jCj4gQEAgLTQ0OSw3ICs0NDksNyBAQCBfX2NvcHlfZGV2X3RvX2Nh
-cmQoc3RydWN0IGlndF9kZXZpY2UgKmRldiwgc3RydWN0IGlndF9kZXZpY2VfY2FyZCAqY2FyZCkK
-PiAgICogSXRlcmF0ZSBvdmVyIGFsbCBpZ3RfZGV2aWNlcyBhcnJheSBhbmQgZmluZCBmaXJzdCBk
-aXNjcmV0ZSBjYXJkLgo+ICAgKiBjYXJkLT5wY2lfc2xvdF9uYW1lIHdpbGwgYmUgdXBkYXRlZCBv
-bmx5IGlmIGEgZGlzY3JldGUgY2FyZCBpcyBwcmVzZW50Lgo+ICAgKi8KPiAtdm9pZCBpZ3RfZGV2
-aWNlX2ZpbmRfZmlyc3RfaTkxNV9kaXNjcmV0ZV9jYXJkKHN0cnVjdCBpZ3RfZGV2aWNlX2NhcmQg
-KmNhcmQpCj4gK2Jvb2wgaWd0X2RldmljZV9maW5kX2ZpcnN0X2k5MTVfZGlzY3JldGVfY2FyZChz
-dHJ1Y3QgaWd0X2RldmljZV9jYXJkICpjYXJkKQo+ICB7Cj4gIAlzdHJ1Y3QgaWd0X2RldmljZSAq
-ZGV2Owo+ICAKPiBAQCAtNDYyLDkgKzQ2MiwxMSBAQCB2b2lkIGlndF9kZXZpY2VfZmluZF9maXJz
-dF9pOTE1X2Rpc2NyZXRlX2NhcmQoc3RydWN0IGlndF9kZXZpY2VfY2FyZCAqY2FyZCkKPiAgCj4g
-IAkJaWYgKChzdHJuY21wKGRldi0+cGNpX3Nsb3RfbmFtZSwgSU5URUdSQVRFRF9JOTE1X0dQVV9Q
-Q0lfSUQsIFBDSV9TTE9UX05BTUVfU0laRSkpICE9IDApIHsKPiAgCQkJX19jb3B5X2Rldl90b19j
-YXJkKGRldiwgY2FyZCk7Cj4gLQkJCWJyZWFrOwo+ICsJCQlyZXR1cm4gdHJ1ZTsKPiAgCQl9Cj4g
-IAl9Cj4gKwo+ICsJcmV0dXJuIGZhbHNlOwo+ICB9Cj4gIAo+ICBzdGF0aWMgc3RydWN0IGlndF9k
-ZXZpY2UgKmlndF9kZXZpY2VfZnJvbV9zeXNwYXRoKGNvbnN0IGNoYXIgKnN5c3BhdGgpCj4gZGlm
-ZiAtLWdpdCBhL2xpYi9pZ3RfZGV2aWNlX3NjYW4uaCBiL2xpYi9pZ3RfZGV2aWNlX3NjYW4uaAo+
-IGluZGV4IDllZDczOTU4Li5iZDkzN2QyMiAxMDA2NDQKPiAtLS0gYS9saWIvaWd0X2RldmljZV9z
-Y2FuLmgKPiArKysgYi9saWIvaWd0X2RldmljZV9zY2FuLmgKPiBAQCAtNjgsNyArNjgsNyBAQCBj
-b25zdCBjaGFyICppZ3RfZGV2aWNlX2ZpbHRlcl9nZXQoaW50IG51bSk7Cj4gIAo+ICAvKiBVc2Ug
-ZmlsdGVyIHRvIG1hdGNoIHRoZSBkZXZpY2UgYW5kIGZpbGwgY2FyZCBzdHJ1Y3R1cmUgKi8KPiAg
-Ym9vbCBpZ3RfZGV2aWNlX2NhcmRfbWF0Y2goY29uc3QgY2hhciAqZmlsdGVyLCBzdHJ1Y3QgaWd0
-X2RldmljZV9jYXJkICpjYXJkKTsKPiAtdm9pZCBpZ3RfZGV2aWNlX2ZpbmRfZmlyc3RfaTkxNV9k
-aXNjcmV0ZV9jYXJkKHN0cnVjdCBpZ3RfZGV2aWNlX2NhcmQgKmNhcmQpOwo+ICtib29sIGlndF9k
-ZXZpY2VfZmluZF9maXJzdF9pOTE1X2Rpc2NyZXRlX2NhcmQoc3RydWN0IGlndF9kZXZpY2VfY2Fy
-ZCAqY2FyZCk7Cj4gIGludCBpZ3Rfb3Blbl9jYXJkKHN0cnVjdCBpZ3RfZGV2aWNlX2NhcmQgKmNh
-cmQpOwo+ICBpbnQgaWd0X29wZW5fcmVuZGVyKHN0cnVjdCBpZ3RfZGV2aWNlX2NhcmQgKmNhcmQp
-Owo+ICAKPiBkaWZmIC0tZ2l0IGEvdG9vbHMvaW50ZWxfZ3B1X3RvcC5jIGIvdG9vbHMvaW50ZWxf
-Z3B1X3RvcC5jCj4gaW5kZXggY2FlMDFjMjUuLjc5YTkzNmZmIDEwMDY0NAo+IC0tLSBhL3Rvb2xz
-L2ludGVsX2dwdV90b3AuYwo+ICsrKyBiL3Rvb2xzL2ludGVsX2dwdV90b3AuYwo+IEBAIC0xMzk0
-LDE1ICsxMzk0LDE4IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikKPiAgCj4gIAlp
-ZiAob3B0X2RldmljZSAhPSBOVUxMKSB7Cj4gIAkJcmV0ID0gaWd0X2RldmljZV9jYXJkX21hdGNo
-KG9wdF9kZXZpY2UsICZjYXJkKTsKPiAtCQlpZiAoIXJldCkgewo+ICsJCWlmICghcmV0KQo+ICAJ
-CQlmcHJpbnRmKHN0ZGVyciwgIlJlcXVlc3RlZCBkZXZpY2UgJXMgbm90IGZvdW5kIVxuIiwgb3B0
-X2RldmljZSk7Cj4gLQkJCWZyZWUob3B0X2RldmljZSk7Cj4gLQkJCXJldCA9IEVYSVRfRkFJTFVS
-RTsKPiAtCQkJZ290byBleGl0Owo+IC0JCX0KPiAgCQlmcmVlKG9wdF9kZXZpY2UpOwo+ICAJfSBl
-bHNlIHsKPiAtCQlpZ3RfZGV2aWNlX2ZpbmRfZmlyc3RfaTkxNV9kaXNjcmV0ZV9jYXJkKCZjYXJk
-KTsKPiArCQlyZXQgPSBpZ3RfZGV2aWNlX2ZpbmRfZmlyc3RfaTkxNV9kaXNjcmV0ZV9jYXJkKCZj
-YXJkKTsKPiArCQlpZiAoIXJldCkKPiArCQkJZnByaW50ZihzdGRlcnIsICJObyBkZXZpY2UgZmls
-dGVyIHNwZWNpZmllZCBhbmQgbm8gZGlzY3JldGUgaTkxNSBkZXZpY2VzIGZvdW5kXG4iKTsKPiAr
-CX0KCgpUaGlzIGNvbW1pdCBoYXMgaW50cm9kdWNlZCBhIGJ1ZyB3aGVyZSBpbnRlbF9ncHVfdG9w
-IG5vIGxvbmdlciB3b3Jrcwp3aXRoIGFuIGludGVncmF0ZWQgZ3B1IHVubGVzcyB5b3Ugc3BlY2lm
-eSBmaWx0ZXJzLiBJcyB0aGlzIG1pc3NpbmcgYQpmYWxsYmFjay10by1pbnRlZ3JhdGVkIGxvZ2lj
-IHNvbWV3aGVyZT8KCgotLSAKUGV0cmkgTGF0dmFsYQpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3Rz
-LmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xp
-c3RpbmZvL2lndC1kZXYK
+On Mon, Nov 02, 2020 at 11:49:57AM -0800, Umesh Nerlige Ramappa wrote:
+> The previous test may have unloaded i915 or failed to load it back. To
+> combat such cases, each test fixture is supposed to ensure that i915 is
+> loaded prior to running the subtests. In most fixtures this happens
+> automatically when we try to get a handle to i915. In perf OA, we stat
+> some proc/sys files even before getting a handle to i915. Occassionally,
+> perf tests fail trying to stat these files. Fix perf OA by checking and
+> loading i915 if it's not loaded.
+> 
+> v2: Use drm_load_module() (Petri)
+> 
+> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/405
+> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> ---
+
+
+Excellent, thanks. I would slap an R-b here but it's already in :P
+
+
+-- 
+Petri Latvala
+
+
+
+>  tests/i915/perf.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/tests/i915/perf.c b/tests/i915/perf.c
+> index a5c4adc3..caeabd62 100644
+> --- a/tests/i915/perf.c
+> +++ b/tests/i915/perf.c
+> @@ -4806,6 +4806,13 @@ igt_main
+>  	igt_fixture {
+>  		struct stat sb;
+>  
+> +		/*
+> +		 * Prior tests may have unloaded i915 or failed while
+> +		 * loading/unloading i915. Load i915 here before we stat the
+> +		 * files.
+> +		 */
+> +		drm_load_module(DRIVER_INTEL);
+> +
+>  		igt_require(stat("/proc/sys/dev/i915/perf_stream_paranoid", &sb)
+>  			    == 0);
+>  		igt_require(stat("/proc/sys/dev/i915/oa_max_sample_rate", &sb)
+> -- 
+> 2.20.1
+> 
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
