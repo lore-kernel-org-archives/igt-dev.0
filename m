@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE259894DD
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2020 08:05:17 +0000 (UTC)
-Date: Tue, 3 Nov 2020 10:05:13 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201103080513.GM7444@platvala-desk.ger.corp.intel.com>
-References: <20201026084840.13061-1-petri.latvala@intel.com>
- <871rhbc9ai.wl-ashutosh.dixit@intel.com>
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 298E76EC1F
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2020 08:15:51 +0000 (UTC)
+From: "Kahola, Mika" <mika.kahola@intel.com>
+Date: Tue, 3 Nov 2020 08:15:49 +0000
+Message-ID: <42977cc5fde04703a4c4dfcacfdbc4d1@intel.com>
+References: <20201023130526.3983076-1-mika.kahola@intel.com>
+ <20201023130526.3983076-3-mika.kahola@intel.com>
+ <20201102172705.GA3914202@ideak-desk.fi.intel.com>
+ <20201102181231.GA3915554@ideak-desk.fi.intel.com>
+In-Reply-To: <20201102181231.GA3915554@ideak-desk.fi.intel.com>
+Content-Language: en-US
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <871rhbc9ai.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_core: Don't return too early in
- common_init_config
+Subject: Re: [igt-dev] [PATCH i-g-t v7 2/2] tests/kms_ccs: CCS Clear Color
+ test
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,96 +25,45 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: "Deak, Imre" <imre.deak@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Mon, Nov 02, 2020 at 09:13:25PM -0800, Dixit, Ashutosh wrote:
-> On Mon, 26 Oct 2020 01:48:40 -0700, Petri Latvala wrote:
-> >
-> > common_init_config is responsible for adding the device filters
-> > supplied through the environment to the filter list. If the .igtrc
-> > file cannot be opened, make sure the filter is added still.
-> >
-> > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> > Cc: Arkadiusz Hiler <arek@hiler.eu>
-> > ---
-> >  lib/igt_core.c | 18 +++++++++---------
-> >  1 file changed, 9 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/lib/igt_core.c b/lib/igt_core.c
-> > index b358173f..8f9d925b 100644
-> > --- a/lib/igt_core.c
-> > +++ b/lib/igt_core.c
-> > @@ -775,21 +775,20 @@ GKeyFile *igt_load_igtrc(void)
-> >  static void common_init_config(void)
-> >  {
-> >	GError *error = NULL;
-> > -	int ret;
-> > +	int ret = 0;
-> >
-> >	igt_key_file = igt_load_igtrc();
-> > -	if (!igt_key_file)
-> > -		return;
+> -----Original Message-----
+> From: Imre Deak <imre.deak@intel.com>
+> Sent: Monday, November 2, 2020 8:13 PM
+> To: Kahola, Mika <mika.kahola@intel.com>
+> Cc: igt-dev@lists.freedesktop.org
+> Subject: Re: [igt-dev] [PATCH i-g-t v7 2/2] tests/kms_ccs: CCS Clear Color test
 > 
-> I believe the only change needed is the one above. The remaining
-> igt_key_file checks below are not needed because it looks like if we pass
-> NULL igt_key_file g_key_file_get_string will return NULL and
-> g_key_file_get_integer will return 0 (that is previously initialized values
-> are undisturbed).
+> On Mon, Nov 02, 2020 at 07:27:05PM +0200, Imre Deak wrote:
+> > [...]
+> > On Fri, Oct 23, 2020 at 04:05:26PM +0300, Mika Kahola wrote:
+> > > @@ -274,16 +279,25 @@ gen7_fill_vertex_buffer_data(struct intel_bb
+> *ibb,
+> > >  	offset = intel_bb_offset(ibb);
+> > >
+> > >  	emit_vertex_2s(ibb, dst_x + width, dst_y + height);
+> > > -	emit_vertex_normalized(ibb, src_x + width, intel_buf_width(src));
+> > > -	emit_vertex_normalized(ibb, src_y + height, intel_buf_height(src));
+> > > +
+> > > +	if (src != NULL) {
+> > > +		emit_vertex_normalized(ibb, src_x + width,
+> intel_buf_width(src));
+> > > +		emit_vertex_normalized(ibb, src_y + height,
+> intel_buf_height(src));
 > 
-> At the link below it is not clearly stated what happens when GKeyFile is
-> NULL so I am mostly inferring from the way it is handling other error
-> cases, so if we want to do this we'll probably need to test it out:
+> The x coords need to be scaled down by 64 pixels, the y coords by 16 lines.
 
-If it's not documented to work that way, I'm wary of calling those
-functions with NULL. It could behave differently in different versions
-of glib.
+Thanks for the review. I will address these two points.
 
-
-
--- 
-Petri Latvala
-
-
+Cheers,
+Mika
 > 
-> https://developer.gnome.org/glib/stable/glib-Key-value-file-parser.html
+> --Imre
 > 
-> Otherwise the patch is fine:
-> 
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> 
-> 
-> > -	if (!igt_frame_dump_path)
-> > +	if (igt_key_file && !igt_frame_dump_path)
-> >		igt_frame_dump_path =
-> >			g_key_file_get_string(igt_key_file, "Common",
-> >					      "FrameDumpPath", &error);
+> > > +	}
 > >
-> >	g_clear_error(&error);
-> >
-> > -	ret = g_key_file_get_integer(igt_key_file, "DUT", "SuspendResumeDelay",
-> > -				     &error);
-> > +	if (igt_key_file)
-> > +		ret = g_key_file_get_integer(igt_key_file, "DUT", "SuspendResumeDelay",
-> > +					     &error);
-> >	assert(!error || error->code != G_KEY_FILE_ERROR_INVALID_VALUE);
-> >
-> >	g_clear_error(&error);
-> > @@ -804,9 +803,10 @@ static void common_init_config(void)
-> >		if (igt_rc_device) {
-> >			igt_debug("Notice: using IGT_DEVICE env:\n");
-> >		} else {
-> > -			igt_rc_device =	g_key_file_get_string(igt_key_file,
-> > -							      "Common",
-> > -							      "Device", &error);
-> > +			if (igt_key_file)
-> > +				igt_rc_device =	g_key_file_get_string(igt_key_file,
-> > +								      "Common",
-> > +								      "Device", &error);
-> >			g_clear_error(&error);
-> >			if (igt_rc_device)
-> >				igt_debug("Notice: using .igtrc "
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
