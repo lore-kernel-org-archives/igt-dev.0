@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1AD476E85B
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2020 08:51:18 +0000 (UTC)
-From: Karthik B S <karthik.b.s@intel.com>
-Date: Tue,  3 Nov 2020 13:56:27 +0530
-Message-Id: <20201103082628.9287-2-karthik.b.s@intel.com>
-In-Reply-To: <20201103082628.9287-1-karthik.b.s@intel.com>
-References: <20201103082628.9287-1-karthik.b.s@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 809A66E88A
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2020 09:17:56 +0000 (UTC)
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Date: Tue,  3 Nov 2020 10:17:35 +0100
+Message-Id: <20201103091735.8302-2-dominik.grzegorzek@intel.com>
+In-Reply-To: <20201103091735.8302-1-dominik.grzegorzek@intel.com>
+References: <20201103091735.8302-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3 1/2] tests/kms_content_protection: Add
- MST subtests
+Subject: [igt-dev] [PATCH i-g-t v3 1/1] tools/intel_perf_counters: Remove
+ libdrm dependency
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,303 +17,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add subtests to verify content protection simultaneously on
-multiple outputs on the same MST topology.
-
-v3: -Remove the logging which are no longer required. (Anshuman)
-    -Add logic to verify that CP is still enabled on other connectors
-     while disabling it on one of the connectors. (Anshuman)
-
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
----
- tests/kms_content_protection.c | 234 ++++++++++++++++++++++++++++++++-
- 1 file changed, 233 insertions(+), 1 deletion(-)
-
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 303ed418..cb895a72 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -42,6 +42,12 @@ struct data {
- 	struct udev_monitor *uevent_monitor;
- } data;
- 
-+typedef struct {
-+	float red;
-+	float green;
-+	float blue;
-+} color_t;
-+
- /* Test flags */
- #define CP_DPMS					(1 << 0)
- #define CP_LIC					(1 << 1)
-@@ -457,6 +463,54 @@ static bool sink_hdcp2_capable(igt_output_t *output)
- 
- 	return strstr(buf, "HDCP2.2");
- }
-+color_t red  = { 1.0f, 0.0f, 0.0f };
-+color_t green  = { 0.0f, 0.1f, 0.0f };
-+
-+static void prepare_modeset_on_mst_output(igt_output_t *output, enum pipe pipe)
-+{
-+	drmModeConnectorPtr c = output->config.connector;
-+	igt_display_t *display = &data.display;
-+	drmModeModeInfo *mode;
-+	igt_plane_t *primary;
-+	int i;
-+
-+	mode = igt_output_get_mode(output);
-+
-+	/*
-+	 * TODO: Add logic to use the highest possible modes on each output.
-+	 * Currently using 2k modes by default on all the outputs.
-+	 */
-+	igt_debug("Before mode override: Output %s Mode hdisplay %d Mode vdisplay %d\n",
-+		   output->name, mode->hdisplay, mode->vdisplay);
-+
-+	if (mode->hdisplay > 1920 && mode->vdisplay > 1080) {
-+		for (i = 0; i < c->count_modes; i++) {
-+			if (c->modes[i].hdisplay <= 1920 && c->modes[i].vdisplay <= 1080) {
-+				mode = &c->modes[i];
-+				igt_output_override_mode(output, mode);
-+				break;
-+			}
-+		}
-+	}
-+
-+	igt_debug("After mode overide: Output %s Mode hdisplay %d Mode vdisplay %d\n",
-+		   output->name, mode->hdisplay, mode->vdisplay);
-+
-+	if (pipe % 2) {
-+		igt_create_color_fb(display->drm_fd, mode->hdisplay, mode->vdisplay,
-+				    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
-+				    red.red, red.blue, red.green, &data.red);
-+	} else {
-+		igt_create_color_fb(display->drm_fd, mode->hdisplay, mode->vdisplay,
-+				    DRM_FORMAT_XRGB8888, LOCAL_DRM_FORMAT_MOD_NONE,
-+				    green.red, green.blue, green.green, &data.green);
-+	}
-+
-+	igt_output_set_pipe(output, pipe);
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, NULL);
-+	igt_plane_set_fb(primary, pipe % 2 ? &data.red : &data.green);
-+}
- 
- static void
- test_content_protection(enum igt_commit_style s, int content_type)
-@@ -496,6 +550,162 @@ test_content_protection(enum igt_commit_style s, int content_type)
- 	igt_require_f(valid_tests, "No connector found with HDCP capability\n");
- }
- 
-+static bool is_output_support_cp_capable(igt_output_t *output, int content_type)
-+{
-+		if (!output->props[IGT_CONNECTOR_CONTENT_PROTECTION])
-+			return false;
-+
-+		if (!output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE] &&
-+		    content_type)
-+			return false;
-+
-+		if (content_type && !sink_hdcp2_capable(output)) {
-+			igt_info("\tSkip %s (Sink has no HDCP2.2 support)\n",
-+				 output->name);
-+			return false;
-+		} else if (!sink_hdcp_capable(output)) {
-+			igt_info("\tSkip %s (Sink has no HDCP support)\n",
-+				 output->name);
-+			return false;
-+		}
-+
-+		return true;
-+}
-+
-+static int parse_path_blob(char *blob_data)
-+{
-+	int connector_id;
-+	char *encoder;
-+
-+	encoder = strtok(blob_data, ":");
-+	igt_assert_f(!strcmp(encoder, "mst"), "PATH connector property expected to have 'mst'\n");
-+
-+	connector_id = atoi(strtok(NULL, "-"));
-+
-+	return connector_id;
-+}
-+
-+static bool is_dp_mst_output(igt_output_t *output, int i)
-+{
-+	drmModePropertyBlobPtr path_blob = NULL;
-+	uint64_t path_blob_id;
-+	drmModeConnector *connector = output->config.connector;
-+	struct kmstest_connector_config config;
-+	const char *encoder;
-+	int connector_id;
-+	static int prev_connector_id;
-+
-+	kmstest_get_connector_config(data.drm_fd, output->config.connector->connector_id, -1, &config);
-+	encoder = kmstest_encoder_type_str(config.encoder->encoder_type);
-+
-+	if (strcmp(encoder, "DP MST"))
-+		return false;
-+
-+	igt_assert(kmstest_get_property(data.drm_fd, connector->connector_id,
-+		   DRM_MODE_OBJECT_CONNECTOR, "PATH", NULL,
-+		   &path_blob_id, NULL));
-+
-+	igt_assert(path_blob = drmModeGetPropertyBlob(data.drm_fd, path_blob_id));
-+
-+	connector_id = parse_path_blob((char *) path_blob->data);
-+
-+	/* Check if all the MST outputs are in the same topology */
-+	if (i == 0) {
-+		prev_connector_id = connector_id;
-+	} else {
-+		if (connector_id != prev_connector_id)
-+			return false;
-+	}
-+
-+	drmModeFreePropertyBlob(path_blob);
-+
-+	return true;
-+}
-+
-+static void
-+test_content_protection_mst(int content_type)
-+{
-+	igt_display_t *display = &data.display;
-+	igt_output_t *output;
-+	int valid_outputs = 0, ret, count, max_pipe = 0, i;
-+	enum pipe pipe;
-+	igt_output_t *mst_output[IGT_MAX_PIPES];
-+
-+	for_each_connected_output(display, output) {
-+		if (!is_dp_mst_output(output, valid_outputs))
-+			continue;
-+
-+		if (!is_output_support_cp_capable(output, content_type))
-+			continue;
-+
-+		mst_output[valid_outputs] = output;
-+		valid_outputs++;
-+	}
-+
-+	igt_require_f(valid_outputs > 1, "No DP MST set up with >= 2 outputs found in a single topology\n");
-+
-+	for_each_pipe(display, pipe)
-+		max_pipe++;
-+
-+	if (valid_outputs > max_pipe)
-+		valid_outputs = max_pipe;
-+
-+	pipe = PIPE_A;
-+
-+	for (count = 0; count < valid_outputs; count++) {
-+		igt_assert_f(igt_pipe_connector_valid(pipe, mst_output[count]), "Output-pipe combination invalid\n");
-+
-+		prepare_modeset_on_mst_output(mst_output[count], pipe);
-+		pipe++;
-+	}
-+
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	for (count = 0; count < valid_outputs; count++) {
-+		igt_output_set_prop_value(mst_output[count], IGT_CONNECTOR_CONTENT_PROTECTION, CP_DESIRED);
-+
-+		if (output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE])
-+			igt_output_set_prop_value(mst_output[count], IGT_CONNECTOR_HDCP_CONTENT_TYPE, content_type);
-+	}
-+
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	for (count = 0; count < valid_outputs; count++) {
-+		igt_debug("Test CP Prop to be ENABLED %s\n", mst_output[count]->name);
-+		ret = wait_for_prop_value(mst_output[count], CP_ENABLED, KERNEL_AUTH_TIME_ALLOWED_MSEC);
-+		igt_assert_f(ret, "Content Protection not enabled output %s\n", mst_output[count]->name);
-+
-+		if (data.cp_tests & CP_LIC)
-+			test_cp_lic(mst_output[count]);
-+	}
-+
-+	for (count = 0; count < valid_outputs; count++) {
-+		igt_debug("Test CP Prop to be ENABLED %s\n", mst_output[count]->name);
-+		ret = wait_for_prop_value(mst_output[count], CP_ENABLED, KERNEL_AUTH_TIME_ALLOWED_MSEC);
-+		igt_assert_f(ret, "Content Protection not enabled output %s\n", mst_output[count]->name);
-+
-+		igt_debug("CP Prop being UNDESIRED on %s\n", mst_output[count]->name);
-+		test_cp_disable(mst_output[count], COMMIT_ATOMIC);
-+
-+		/* CP is expected to be still enabled on other outputs*/
-+		for (i = 0; i < valid_outputs; i++) {
-+			if (i == count)
-+				continue;
-+
-+			igt_debug("Test CP Prop to be ENABLED %s\n", mst_output[i]->name);
-+			ret = wait_for_prop_value(mst_output[i], CP_ENABLED, KERNEL_AUTH_TIME_ALLOWED_MSEC);
-+			igt_assert_f(ret, "Content Protection not enabled output %s\n", mst_output[i]->name);
-+		}
-+
-+		igt_output_set_prop_value(mst_output[count], IGT_CONNECTOR_CONTENT_PROTECTION, CP_DESIRED);
-+
-+		if (output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE])
-+			igt_output_set_prop_value(mst_output[count], IGT_CONNECTOR_HDCP_CONTENT_TYPE, content_type);
-+
-+		igt_display_commit2(display, COMMIT_ATOMIC);
-+	}
-+}
-+
- static void test_content_protection_cleanup(void)
- {
- 	igt_display_t *display = &data.display;
-@@ -511,7 +721,7 @@ static void test_content_protection_cleanup(void)
- 		if (val == CP_UNDESIRED)
- 			continue;
- 
--		igt_info("CP Prop being UNDESIRED on %s\n", output->name);
-+		igt_debug("CP Prop being UNDESIRED on %s\n", output->name);
- 		test_cp_disable(output, COMMIT_ATOMIC);
- 	}
- }
-@@ -592,6 +802,28 @@ igt_main
- 		test_content_protection(COMMIT_ATOMIC, HDCP_CONTENT_TYPE_0);
- 	}
- 
-+	igt_describe("Test Content protection over DP MST");
-+	igt_subtest("dp-mst-type-0") {
-+		test_content_protection_mst(HDCP_CONTENT_TYPE_0);
-+	}
-+
-+	igt_describe("Test Content protection over DP MST with LIC");
-+	igt_subtest("dp-mst-lic-type-0") {
-+		data.cp_tests = CP_LIC;
-+		test_content_protection_mst(HDCP_CONTENT_TYPE_0);
-+	}
-+
-+	igt_describe("Test Content protection over DP MST");
-+	igt_subtest("dp-mst-type-1") {
-+		test_content_protection_mst(HDCP_CONTENT_TYPE_1);
-+	}
-+
-+	igt_describe("Test Content protection over DP MST with LIC");
-+	igt_subtest("dp-mst-lic-type-1") {
-+		data.cp_tests = CP_LIC;
-+		test_content_protection_mst(HDCP_CONTENT_TYPE_1);
-+	}
-+
- 	igt_fixture {
- 		test_content_protection_cleanup();
- 		igt_display_fini(&data.display);
--- 
-2.22.0
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+VXNlIGludGVsX2JiIC8gaW50ZWxfYnVmIHRvIHJlbW92ZSBsaWJkcm0gZGVwZW5kZW5jeS4KClNp
+Z25lZC1vZmYtYnk6IERvbWluaWsgR3J6ZWdvcnplayA8ZG9taW5pay5ncnplZ29yemVrQGludGVs
+LmNvbT4KQ2M6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50
+ZWwuY29tPgpDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+Ci0tLQog
+dG9vbHMvaW50ZWxfcGVyZl9jb3VudGVycy5jIHwgMTA5ICsrKysrKysrKysrKysrKysrKy0tLS0t
+LS0tLS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDU2IGluc2VydGlvbnMoKyksIDUzIGRlbGV0
+aW9ucygtKQoKZGlmZiAtLWdpdCBhL3Rvb2xzL2ludGVsX3BlcmZfY291bnRlcnMuYyBiL3Rvb2xz
+L2ludGVsX3BlcmZfY291bnRlcnMuYwppbmRleCA1ODI0ZDljMS4uMjJhZDY5YTIgMTAwNjQ0Ci0t
+LSBhL3Rvb2xzL2ludGVsX3BlcmZfY291bnRlcnMuYworKysgYi90b29scy9pbnRlbF9wZXJmX2Nv
+dW50ZXJzLmMKQEAgLTQ2LDkgKzQ2LDkgQEAKICNpbmNsdWRlICJpOTE1X2RybS5oIgogI2luY2x1
+ZGUgImRybXRlc3QuaCIKICNpbmNsdWRlICJpbnRlbF9pby5oIgotI2luY2x1ZGUgImludGVsX2J1
+Zm1nci5oIgogI2luY2x1ZGUgImludGVsX2JhdGNoYnVmZmVyLmgiCiAjaW5jbHVkZSAiaW50ZWxf
+Y2hpcHNldC5oIgorI2luY2x1ZGUgImludGVsX2J1Zm9wcy5oIgogCiAjZGVmaW5lIEdFTjVfQ09V
+TlRFUl9DT1VOVCAyOQogCkBAIC0yOTgsOCArMjk4LDggQEAgY29uc3QgaW50IGdlbjdfY291bnRl
+cl9mb3JtYXQgPSA1OyAvKiAwYjEwMSAqLwogaW50IGhhdmVfdG90YWxzID0gMDsKIHVpbnQzMl90
+ICp0b3RhbHM7CiB1aW50MzJfdCAqbGFzdF9jb3VudGVyOwotc3RhdGljIGRybV9pbnRlbF9idWZt
+Z3IgKmJ1Zm1ncjsKLXN0cnVjdCBpbnRlbF9iYXRjaGJ1ZmZlciAqYmF0Y2g7CitzdGF0aWMgc3Ry
+dWN0IGJ1Zl9vcHMgKmJvcHM7CitzdGF0aWMgc3RydWN0IGludGVsX2JiICppYmI7CiAKIC8qIERX
+MCAqLwogI2RlZmluZSBHRU41X01JX1JFUE9SVF9QRVJGX0NPVU5UICgoMHgyNiA8PCAyMykgfCAo
+MyAtIDIpKQpAQCAtMzI3LDMwICszMjcsMjkgQEAgc3RhdGljIHZvaWQKIGdlbjVfZ2V0X2NvdW50
+ZXJzKHZvaWQpCiB7CiAJaW50IGk7Ci0JZHJtX2ludGVsX2JvICpzdGF0c19ibzsKKwlzdHJ1Y3Qg
+aW50ZWxfYnVmICpzdGF0c19idWY7CiAJdWludDMyX3QgKnN0YXRzX3Jlc3VsdDsKIAotCXN0YXRz
+X2JvID0gZHJtX2ludGVsX2JvX2FsbG9jKGJ1Zm1nciwgInN0YXRzIiwgNDA5NiwgNDA5Nik7CisJ
+c3RhdHNfYnVmID0gaW50ZWxfYnVmX2NyZWF0ZShib3BzLCA0MDk2LCAxLCA4LCAwLCBJOTE1X1RJ
+TElOR19OT05FLAorCQkJCSAgICAgSTkxNV9DT01QUkVTU0lPTl9OT05FKTsKKwlpbnRlbF9iYl9h
+ZGRfaW50ZWxfYnVmKGliYiwgc3RhdHNfYnVmLCB0cnVlKTsKIAotCUJFR0lOX0JBVENIKDYsIDIp
+OwotCU9VVF9CQVRDSChHRU41X01JX1JFUE9SVF9QRVJGX0NPVU5UIHwgTUlfQ09VTlRFUl9TRVRf
+MCk7Ci0JT1VUX1JFTE9DKHN0YXRzX2JvLAotCQkgIEk5MTVfR0VNX0RPTUFJTl9JTlNUUlVDVElP
+TiwgSTkxNV9HRU1fRE9NQUlOX0lOU1RSVUNUSU9OLAotCQkgIDApOwotCU9VVF9CQVRDSCgwKTsK
+KwlpbnRlbF9iYl9vdXQoaWJiLCBHRU41X01JX1JFUE9SVF9QRVJGX0NPVU5UIHwgTUlfQ09VTlRF
+Ul9TRVRfMCk7CisJaW50ZWxfYmJfZW1pdF9yZWxvYyhpYmIsIHN0YXRzX2J1Zi0+aGFuZGxlLCBJ
+OTE1X0dFTV9ET01BSU5fSU5TVFJVQ1RJT04sCisJCQkgICAgSTkxNV9HRU1fRE9NQUlOX0lOU1RS
+VUNUSU9OLCAwLAorCQkJICAgIHN0YXRzX2J1Zi0+YWRkci5vZmZzZXQpOworCWludGVsX2JiX291
+dChpYmIsIDApOwogCi0JT1VUX0JBVENIKEdFTjVfTUlfUkVQT1JUX1BFUkZfQ09VTlQgfCBNSV9D
+T1VOVEVSX1NFVF8xKTsKLQlPVVRfUkVMT0Moc3RhdHNfYm8sCi0JCSAgSTkxNV9HRU1fRE9NQUlO
+X0lOU1RSVUNUSU9OLCBJOTE1X0dFTV9ET01BSU5fSU5TVFJVQ1RJT04sCi0JCSAgNjQpOwotCU9V
+VF9CQVRDSCgwKTsKKwlpbnRlbF9iYl9vdXQoaWJiLCBHRU41X01JX1JFUE9SVF9QRVJGX0NPVU5U
+IHwgTUlfQ09VTlRFUl9TRVRfMSk7CisJaW50ZWxfYmJfZW1pdF9yZWxvYyhpYmIsIHN0YXRzX2J1
+Zi0+aGFuZGxlLCBJOTE1X0dFTV9ET01BSU5fSU5TVFJVQ1RJT04sCisJCQkgICAgSTkxNV9HRU1f
+RE9NQUlOX0lOU1RSVUNUSU9OLCA2NCwKKwkJCSAgICBzdGF0c19idWYtPmFkZHIub2Zmc2V0KTsK
+KwlpbnRlbF9iYl9vdXQoaWJiLCAwKTsKIAotCUFEVkFOQ0VfQkFUQ0goKTsKKwlpbnRlbF9iYl9m
+bHVzaF9ibGl0KGliYik7CiAKLQlpbnRlbF9iYXRjaGJ1ZmZlcl9mbHVzaChiYXRjaCk7Ci0KLQlk
+cm1faW50ZWxfYm9fbWFwKHN0YXRzX2JvLCAwKTsKLQlzdGF0c19yZXN1bHQgPSBzdGF0c19iby0+
+dmlydHVhbDsKKwlpbnRlbF9idWZfY3B1X21hcChzdGF0c19idWYsIGZhbHNlKTsKKwlzdGF0c19y
+ZXN1bHQgPSBzdGF0c19idWYtPnB0cjsKIAkvKiBza2lwIFJFUE9SVF9JRCwgVElNRVNUQU1QICov
+CiAJc3RhdHNfcmVzdWx0ICs9IDM7CiAJZm9yIChpID0gMCA7IGkgPCBHRU41X0NPVU5URVJfQ09V
+TlQ7IGkrKykgewpAQCAtMzU4LDE1ICszNTcsMTUgQEAgZ2VuNV9nZXRfY291bnRlcnModm9pZCkK
+IAkJbGFzdF9jb3VudGVyW2ldID0gc3RhdHNfcmVzdWx0W2ldOwogCX0KIAotCWRybV9pbnRlbF9i
+b191bm1hcChzdGF0c19ibyk7Ci0JZHJtX2ludGVsX2JvX3VucmVmZXJlbmNlKHN0YXRzX2JvKTsK
+KwlpbnRlbF9idWZfdW5tYXAoc3RhdHNfYnVmKTsKKwlpbnRlbF9idWZfZGVzdHJveShzdGF0c19i
+dWYpOwogfQogCiBzdGF0aWMgdm9pZAogZ2VuNl9nZXRfY291bnRlcnModm9pZCkKIHsKIAlpbnQg
+aTsKLQlkcm1faW50ZWxfYm8gKnN0YXRzX2JvOworCXN0cnVjdCBpbnRlbF9idWYgKnN0YXRzX2J1
+ZjsKIAl1aW50MzJfdCAqc3RhdHNfcmVzdWx0OwogCiAJLyogTWFwIGZyb20gY291bnRlciBuYW1l
+cyB0byB0aGVpciBpbmRleCBpbiB0aGUgYnVmZmVyIG9iamVjdCAqLwpAQCAtMzc4LDQ5ICszNzcs
+NTAgQEAgZ2VuNl9nZXRfY291bnRlcnModm9pZCkKIAkJMzEsIDMwLCAyOSwgMjgsIDI3LCAyNiwg
+MjUsIDI0LAogCX07CiAKLQlzdGF0c19ibyA9IGRybV9pbnRlbF9ib19hbGxvYyhidWZtZ3IsICJz
+dGF0cyIsIDQwOTYsIDQwOTYpOworCXN0YXRzX2J1ZiA9IGludGVsX2J1Zl9jcmVhdGUoYm9wcywg
+NDA5NiwgMSwgOCwgMCwgSTkxNV9USUxJTkdfTk9ORSwKKwkJCQkgICAgIEk5MTVfQ09NUFJFU1NJ
+T05fTk9ORSk7CisJaW50ZWxfYmJfYWRkX2ludGVsX2J1ZihpYmIsIHN0YXRzX2J1ZiwgdHJ1ZSk7
+CiAKLQlCRUdJTl9CQVRDSCgzLCAxKTsKLQlPVVRfQkFUQ0goR0VONl9NSV9SRVBPUlRfUEVSRl9D
+T1VOVCB8ICgzIC0gMikpOwotCU9VVF9SRUxPQyhzdGF0c19ibywKLQkJICBJOTE1X0dFTV9ET01B
+SU5fSU5TVFJVQ1RJT04sIEk5MTVfR0VNX0RPTUFJTl9JTlNUUlVDVElPTiwKLQkJICBNSV9DT1VO
+VEVSX0FERFJFU1NfR1RUKTsKLQlPVVRfQkFUQ0goMCk7Ci0JQURWQU5DRV9CQVRDSCgpOworCWlu
+dGVsX2JiX291dChpYmIsIEdFTjZfTUlfUkVQT1JUX1BFUkZfQ09VTlQgfCAoMyAtIDIpKTsKKwlp
+bnRlbF9iYl9lbWl0X3JlbG9jKGliYiwgc3RhdHNfYnVmLT5oYW5kbGUsIEk5MTVfR0VNX0RPTUFJ
+Tl9JTlNUUlVDVElPTiwKKwkJCSAgICBJOTE1X0dFTV9ET01BSU5fSU5TVFJVQ1RJT04sCisJCQkg
+ICAgTUlfQ09VTlRFUl9BRERSRVNTX0dUVCwgc3RhdHNfYnVmLT5hZGRyLm9mZnNldCk7CisJaW50
+ZWxfYmJfb3V0KGliYiwgMCk7CiAKLQlpbnRlbF9iYXRjaGJ1ZmZlcl9mbHVzaF9vbl9yaW5nKGJh
+dGNoLCBJOTE1X0VYRUNfUkVOREVSKTsKKwlpbnRlbF9iYl9mbHVzaF9yZW5kZXIoaWJiKTsKIAot
+CWRybV9pbnRlbF9ib19tYXAoc3RhdHNfYm8sIDApOwotCXN0YXRzX3Jlc3VsdCA9IHN0YXRzX2Jv
+LT52aXJ0dWFsOworCWludGVsX2J1Zl9jcHVfbWFwKHN0YXRzX2J1ZiwgMCk7CisJc3RhdHNfcmVz
+dWx0ID0gc3RhdHNfYnVmLT5wdHI7CiAJZm9yIChpID0gMDsgaSA8IEdFTjZfQ09VTlRFUl9DT1VO
+VDsgaSsrKSB7CiAJCXRvdGFsc1tpXSArPSBzdGF0c19yZXN1bHRbYnVmZmVyX2luZGV4W2ldXSAt
+IGxhc3RfY291bnRlcltpXTsKIAkJbGFzdF9jb3VudGVyW2ldID0gc3RhdHNfcmVzdWx0W2J1ZmZl
+cl9pbmRleFtpXV07CiAJfQogCi0JZHJtX2ludGVsX2JvX3VubWFwKHN0YXRzX2JvKTsKLQlkcm1f
+aW50ZWxfYm9fdW5yZWZlcmVuY2Uoc3RhdHNfYm8pOworCWludGVsX2J1Zl91bm1hcChzdGF0c19i
+dWYpOworCWludGVsX2J1Zl9kZXN0cm95KHN0YXRzX2J1Zik7CiB9CiAKIHN0YXRpYyB2b2lkCiBn
+ZW43X2dldF9jb3VudGVycyh2b2lkKQogewogCWludCBpOwotCWRybV9pbnRlbF9ibyAqc3RhdHNf
+Ym87CisJc3RydWN0IGludGVsX2J1ZiAqc3RhdHNfYnVmOwogCXVpbnQzMl90ICpzdGF0c19yZXN1
+bHQ7CiAKLQlzdGF0c19ibyA9IGRybV9pbnRlbF9ib19hbGxvYyhidWZtZ3IsICJzdGF0cyIsIDQw
+OTYsIDQwOTYpOworCXN0YXRzX2J1ZiA9IGludGVsX2J1Zl9jcmVhdGUoYm9wcywgNDA5NiwgMSwg
+OCwgMCwgSTkxNV9USUxJTkdfTk9ORSwKKwkJCQkgICAgIEk5MTVfQ09NUFJFU1NJT05fTk9ORSk7
+CisJaW50ZWxfYmJfYWRkX2ludGVsX2J1ZihpYmIsIHN0YXRzX2J1ZiwgdHJ1ZSk7CiAKLQlCRUdJ
+Tl9CQVRDSCgzLCAxKTsKLQlPVVRfQkFUQ0goR0VONl9NSV9SRVBPUlRfUEVSRl9DT1VOVCB8ICgz
+IC0gMikpOwotCU9VVF9SRUxPQyhzdGF0c19ibywKLQkJICBJOTE1X0dFTV9ET01BSU5fSU5TVFJV
+Q1RJT04sIEk5MTVfR0VNX0RPTUFJTl9JTlNUUlVDVElPTiwgMCk7Ci0JT1VUX0JBVENIKDApOwot
+CUFEVkFOQ0VfQkFUQ0goKTsKKwlpbnRlbF9iYl9vdXQoaWJiLCBHRU42X01JX1JFUE9SVF9QRVJG
+X0NPVU5UIHwgKDMgLSAyKSk7CisJaW50ZWxfYmJfZW1pdF9yZWxvYyhpYmIsIHN0YXRzX2J1Zi0+
+aGFuZGxlLCBJOTE1X0dFTV9ET01BSU5fSU5TVFJVQ1RJT04sCisJCQkgICAgSTkxNV9HRU1fRE9N
+QUlOX0lOU1RSVUNUSU9OLCAwLAorCQkJICAgIHN0YXRzX2J1Zi0+YWRkci5vZmZzZXQpOworCWlu
+dGVsX2JiX291dChpYmIsIDApOwogCi0JaW50ZWxfYmF0Y2hidWZmZXJfZmx1c2hfb25fcmluZyhi
+YXRjaCwgSTkxNV9FWEVDX1JFTkRFUik7CisJaW50ZWxfYmJfZmx1c2hfcmVuZGVyKGliYik7CiAK
+LQlkcm1faW50ZWxfYm9fbWFwKHN0YXRzX2JvLCAwKTsKLQlzdGF0c19yZXN1bHQgPSBzdGF0c19i
+by0+dmlydHVhbDsKKwlpbnRlbF9idWZfY3B1X21hcChzdGF0c19idWYsIGZhbHNlKTsKKwlzdGF0
+c19yZXN1bHQgPSBzdGF0c19idWYtPnB0cjsKIAkvKiBza2lwIFJFUE9SVF9JRCwgVElNRVNUQU1Q
+ICovCiAJc3RhdHNfcmVzdWx0ICs9IDM7CiAJZm9yIChpID0gMDsgaSA8IEdFTjdfQ09VTlRFUl9D
+T1VOVDsgaSsrKSB7CkBAIC00MzEsOCArNDMxLDggQEAgZ2VuN19nZXRfY291bnRlcnModm9pZCkK
+IAkJbGFzdF9jb3VudGVyW2ldID0gc3RhdHNfcmVzdWx0W2ldOwogCX0KIAotCWRybV9pbnRlbF9i
+b191bm1hcChzdGF0c19ibyk7Ci0JZHJtX2ludGVsX2JvX3VucmVmZXJlbmNlKHN0YXRzX2JvKTsK
+KwlpbnRlbF9idWZfdW5tYXAoc3RhdHNfYnVmKTsKKwlpbnRlbF9idWZfZGVzdHJveShzdGF0c19i
+dWYpOwogfQogCiAjZGVmaW5lIFNUQVRTX0NIRUNLX0ZSRVFVRU5DWQkxMDAKQEAgLTQ1OCw5ICs0
+NTgsOCBAQCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikKIAlmZCA9IGRybV9vcGVuX2RyaXZl
+cihEUklWRVJfSU5URUwpOwogCWRldmlkID0gaW50ZWxfZ2V0X2RybV9kZXZpZChmZCk7CiAKLQli
+dWZtZ3IgPSBkcm1faW50ZWxfYnVmbWdyX2dlbV9pbml0KGZkLCA0MDk2KTsKLQlkcm1faW50ZWxf
+YnVmbWdyX2dlbV9lbmFibGVfcmV1c2UoYnVmbWdyKTsKLQliYXRjaCA9IGludGVsX2JhdGNoYnVm
+ZmVyX2FsbG9jKGJ1Zm1nciwgZGV2aWQpOworCWJvcHMgPSBidWZfb3BzX2NyZWF0ZShmZCk7CisJ
+aWJiID0gaW50ZWxfYmJfY3JlYXRlKGZkLCA0MDk2KTsKIAogCWlmIChJU19HRU41KGRldmlkKSkg
+ewogCQljb3VudGVyX25hbWUgPSBnZW41X2NvdW50ZXJfbmFtZXM7CkBAIC01MzEsNSArNTMwLDkg
+QEAgbWFpbihpbnQgYXJnYywgY2hhciAqKmFyZ3YpCiAJZnJlZSh0b3RhbHMpOwogCWZyZWUobGFz
+dF9jb3VudGVyKTsKIAorCWludGVsX2JiX2Rlc3Ryb3koaWJiKTsKKwlidWZfb3BzX2Rlc3Ryb3ko
+Ym9wcyk7CisJY2xvc2UoZmQpOworCiAJcmV0dXJuIDA7CiB9Ci0tIAoyLjIwLjEKCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
+aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
+b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
