@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41BFE6EC88
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2020 12:58:20 +0000 (UTC)
-Date: Tue, 3 Nov 2020 14:58:16 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201103125816.GO7444@platvala-desk.ger.corp.intel.com>
-References: <20201103104813.18236-1-tzimmermann@suse.de>
- <20201103104813.18236-3-tzimmermann@suse.de>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC5416EC9A
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2020 13:18:56 +0000 (UTC)
+Date: Tue, 3 Nov 2020 14:18:51 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20201103131851.GA2698@zkempczy-mobl2>
+References: <20201103091735.8302-1-dominik.grzegorzek@intel.com>
+ <20201103091735.8302-2-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201103104813.18236-3-tzimmermann@suse.de>
-Subject: Re: [igt-dev] [PATCH 2/2] tests/fbdev: Add tests for read/write ops
- on framebuffer
+In-Reply-To: <20201103091735.8302-2-dominik.grzegorzek@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/1] tools/intel_perf_counters:
+ Remove libdrm dependency
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,156 +19,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: igt-dev@lists.freedesktop.org
+To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Nov 03, 2020 at 11:48:13AM +0100, Thomas Zimmermann wrote:
-> Read and write tests check the read and written buffer against the
-> content of the mapped framebuffer. Fbdev has some specific behavior
-> when reading/writing near the EOF, which the eof test checks.
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
->  tests/fbdev.c | 80 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 80 insertions(+)
-> 
-> diff --git a/tests/fbdev.c b/tests/fbdev.c
-> index 11df954d..045b0874 100644
-> --- a/tests/fbdev.c
-> +++ b/tests/fbdev.c
-> @@ -25,6 +25,7 @@
->  
->  #include "igt.h"
->  
-> +#include <errno.h>
->  #include <fcntl.h>
->  #include <string.h>
->  #include <sys/ioctl.h>
-> @@ -43,6 +44,7 @@ igt_main
->  	struct fb_fix_screeninfo fix_info;
->  	int fd = -1;
->  	void *map = NULL;
-> +	void *buf = NULL;
-
-In addition to what Daniel and Chris already pointed out:
-
-Behind the scenes igt_subtest and igt_fixture use longjmp. Variables
-in function scope that are assigned after setjmp have unspecified
-values after longjmp. Translated to IGT terms: Variables declared in
-igt_main that are assigned to when inside igt_fixture or igt_subtest
-have unspecified values when inside another such block.
-
-In essence if you move the variables to be shared across multiple
-tests they need to be moved all the way to global scope.
-
-
--- 
-Petri Latvala
-
-
-
->  
->  	/*
->  	 * Should this test focus on the fbdev independent of any drm driver,
-> @@ -82,7 +84,85 @@ igt_main
->  		memset(map, 0, fix_info.smem_len);
->  	}
->  
-> +	igt_subtest("read") {
-> +		ssize_t ret;
-> +		int cmp;
-> +
-> +		/* allocate two additional byte for eof test */
-> +		buf = malloc(fix_info.smem_len + 2);
-> +		igt_assert(buf);
-> +
-> +		/* framebuffer should be 0 from mmap test */
-> +		ret = pread(fd, buf, fix_info.smem_len, 0);
-> +		igt_require_f(ret == (ssize_t)fix_info.smem_len, "pread failed\n");
-> +		cmp = memcmp(map, buf, fix_info.smem_len);
-> +		igt_require_f(!cmp, "read buffer differs from mapped framebuffer for 0\n");
-> +
-> +		/* fill framebuffer with 0x55 and compare again */
-> +		memset(map, 0x55, fix_info.smem_len);
-> +		ret = pread(fd, buf, fix_info.smem_len, 0);
-> +		igt_require_f(ret == (ssize_t)fix_info.smem_len, "pread failed\n");
-> +		cmp = memcmp(map, buf, fix_info.smem_len);
-> +		igt_require_f(!cmp, "read buffer differs from mapped framebuffer for 0x55\n");
-> +	}
-> +
-> +	igt_subtest("write") {
-> +		ssize_t ret;
-> +		int cmp;
-> +
-> +		/* clear framebuffer and compare again */
-> +		memset(buf, 0, fix_info.smem_len);
-> +		ret = pwrite(fd, buf, fix_info.smem_len, 0);
-> +		igt_require_f(ret == (ssize_t)fix_info.smem_len, "pwrite failed\n");
-> +		cmp = memcmp(map, buf, fix_info.smem_len);
-> +		igt_require_f(!cmp, "write buffer differs from mapped framebuffer for 0\n");
-> +	}
-> +
-> +	igt_subtest("eof") {
-> +		unsigned long lastindex = fix_info.smem_len - 1;
-> +		unsigned char *maplast = &((unsigned char *)map)[lastindex];
-> +		unsigned char *buflast = &((unsigned char *)buf)[lastindex];
-> +		long long ret;
-> +
-> +		*buflast = 0x55;
-> +
-> +		/* write across EOF; set remaining bytes */
-> +		ret = (long long)pwrite(fd, buflast, 2, lastindex);
-> +		igt_require_f(ret == 1, "write crossed EOF, ret=%lld\n", ret);
-> +		igt_require_f(*maplast == *buflast, "write buffer differs from mapped framebuffer at final byte, "
-> +		                                    "maplast=%u buflast=%u\n", *maplast, *buflast);
-> +
-> +		/* write at EOF; get ENOSPC */
-> +		ret = (long long)pwrite(fd, &buflast[1], 1, lastindex + 1);
-> +		igt_require_f((ret == -1) && (errno == ENOSPC), "write at EOF, ret=%lld\n", ret);
-> +
-> +		*maplast = 0;
-> +
-> +		/* write final byte */
-> +		ret = (long long)pwrite(fd, buflast, 1, lastindex);
-> +		igt_require_f(ret == 1, "write before EOF, ret=%lld\n", ret);
-> +		igt_require_f(*maplast == *buflast, "write buffer differs from mapped framebuffer at final byte, "
-> +		                                    "maplast=%u buflast=%u\n", *maplast, *buflast);
-> +
-> +		/* write after EOF; get EFBIG */
-> +		ret = (long long)pwrite(fd, &buflast[2], 1, lastindex + 2);
-> +		igt_require_f((ret == -1) && (errno == EFBIG), "write after EOF, ret=%lld\n", ret);
-> +
-> +		*maplast = 0;
-> +
-> +		/* read across the EOF; get remaining bytes */
-> +		ret = (long long)pread(fd, buflast, 2, lastindex);
-> +		igt_require_f(ret == 1, "read before EOF\n");
-> +		igt_require_f(*maplast == *buflast, "read buffer differs from mapped framebuffer at final byte, "
-> +		                                    "maplast=%u buflast=%u\n", *maplast, *buflast);
-> +
-> +		/* read after EOF; get 0 */
-> +		ret = (long long)pread(fd, &buflast[1], 1, lastindex + 1);
-> +		igt_require_f(ret == 0, "read at EOF, ret=%lld\n", ret);
-> +	}
-> +
->  	igt_fixture {
-> +		free(buf);
->  		if (map && map != MAP_FAILED)
->  			munmap(map, fix_info.smem_len);
->  		close(fd);
-> -- 
-> 2.29.0
-> 
-> _______________________________________________
-> igt-dev mailing list
-> igt-dev@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/igt-dev
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gVHVlLCBOb3YgMDMsIDIwMjAgYXQgMTA6MTc6MzVBTSArMDEwMCwgRG9taW5payBHcnplZ29y
+emVrIHdyb3RlOgo+IFVzZSBpbnRlbF9iYiAvIGludGVsX2J1ZiB0byByZW1vdmUgbGliZHJtIGRl
+cGVuZGVuY3kuCj4gCj4gU2lnbmVkLW9mZi1ieTogRG9taW5payBHcnplZ29yemVrIDxkb21pbmlr
+LmdyemVnb3J6ZWtAaW50ZWwuY29tPgo+IENjOiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWdu
+aWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KPiBDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJp
+cy13aWxzb24uY28udWs+CgpMb29rcyBvazoKClJldmlld2VkLWJ5OiBaYmlnbmlldyBLZW1wY3p5
+xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KCi0tClpiaWduaWV3Cj4gLS0t
+Cj4gIHRvb2xzL2ludGVsX3BlcmZfY291bnRlcnMuYyB8IDEwOSArKysrKysrKysrKysrKysrKyst
+LS0tLS0tLS0tLS0tLS0tLS0KPiAgMSBmaWxlIGNoYW5nZWQsIDU2IGluc2VydGlvbnMoKyksIDUz
+IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS90b29scy9pbnRlbF9wZXJmX2NvdW50ZXJz
+LmMgYi90b29scy9pbnRlbF9wZXJmX2NvdW50ZXJzLmMKPiBpbmRleCA1ODI0ZDljMS4uMjJhZDY5
+YTIgMTAwNjQ0Cj4gLS0tIGEvdG9vbHMvaW50ZWxfcGVyZl9jb3VudGVycy5jCj4gKysrIGIvdG9v
+bHMvaW50ZWxfcGVyZl9jb3VudGVycy5jCj4gQEAgLTQ2LDkgKzQ2LDkgQEAKPiAgI2luY2x1ZGUg
+Imk5MTVfZHJtLmgiCj4gICNpbmNsdWRlICJkcm10ZXN0LmgiCj4gICNpbmNsdWRlICJpbnRlbF9p
+by5oIgo+IC0jaW5jbHVkZSAiaW50ZWxfYnVmbWdyLmgiCj4gICNpbmNsdWRlICJpbnRlbF9iYXRj
+aGJ1ZmZlci5oIgo+ICAjaW5jbHVkZSAiaW50ZWxfY2hpcHNldC5oIgo+ICsjaW5jbHVkZSAiaW50
+ZWxfYnVmb3BzLmgiCj4gIAo+ICAjZGVmaW5lIEdFTjVfQ09VTlRFUl9DT1VOVCAyOQo+ICAKPiBA
+QCAtMjk4LDggKzI5OCw4IEBAIGNvbnN0IGludCBnZW43X2NvdW50ZXJfZm9ybWF0ID0gNTsgLyog
+MGIxMDEgKi8KPiAgaW50IGhhdmVfdG90YWxzID0gMDsKPiAgdWludDMyX3QgKnRvdGFsczsKPiAg
+dWludDMyX3QgKmxhc3RfY291bnRlcjsKPiAtc3RhdGljIGRybV9pbnRlbF9idWZtZ3IgKmJ1Zm1n
+cjsKPiAtc3RydWN0IGludGVsX2JhdGNoYnVmZmVyICpiYXRjaDsKPiArc3RhdGljIHN0cnVjdCBi
+dWZfb3BzICpib3BzOwo+ICtzdGF0aWMgc3RydWN0IGludGVsX2JiICppYmI7Cj4gIAo+ICAvKiBE
+VzAgKi8KPiAgI2RlZmluZSBHRU41X01JX1JFUE9SVF9QRVJGX0NPVU5UICgoMHgyNiA8PCAyMykg
+fCAoMyAtIDIpKQo+IEBAIC0zMjcsMzAgKzMyNywyOSBAQCBzdGF0aWMgdm9pZAo+ICBnZW41X2dl
+dF9jb3VudGVycyh2b2lkKQo+ICB7Cj4gIAlpbnQgaTsKPiAtCWRybV9pbnRlbF9ibyAqc3RhdHNf
+Ym87Cj4gKwlzdHJ1Y3QgaW50ZWxfYnVmICpzdGF0c19idWY7Cj4gIAl1aW50MzJfdCAqc3RhdHNf
+cmVzdWx0Owo+ICAKPiAtCXN0YXRzX2JvID0gZHJtX2ludGVsX2JvX2FsbG9jKGJ1Zm1nciwgInN0
+YXRzIiwgNDA5NiwgNDA5Nik7Cj4gKwlzdGF0c19idWYgPSBpbnRlbF9idWZfY3JlYXRlKGJvcHMs
+IDQwOTYsIDEsIDgsIDAsIEk5MTVfVElMSU5HX05PTkUsCj4gKwkJCQkgICAgIEk5MTVfQ09NUFJF
+U1NJT05fTk9ORSk7Cj4gKwlpbnRlbF9iYl9hZGRfaW50ZWxfYnVmKGliYiwgc3RhdHNfYnVmLCB0
+cnVlKTsKPiAgCj4gLQlCRUdJTl9CQVRDSCg2LCAyKTsKPiAtCU9VVF9CQVRDSChHRU41X01JX1JF
+UE9SVF9QRVJGX0NPVU5UIHwgTUlfQ09VTlRFUl9TRVRfMCk7Cj4gLQlPVVRfUkVMT0Moc3RhdHNf
+Ym8sCj4gLQkJICBJOTE1X0dFTV9ET01BSU5fSU5TVFJVQ1RJT04sIEk5MTVfR0VNX0RPTUFJTl9J
+TlNUUlVDVElPTiwKPiAtCQkgIDApOwo+IC0JT1VUX0JBVENIKDApOwo+ICsJaW50ZWxfYmJfb3V0
+KGliYiwgR0VONV9NSV9SRVBPUlRfUEVSRl9DT1VOVCB8IE1JX0NPVU5URVJfU0VUXzApOwo+ICsJ
+aW50ZWxfYmJfZW1pdF9yZWxvYyhpYmIsIHN0YXRzX2J1Zi0+aGFuZGxlLCBJOTE1X0dFTV9ET01B
+SU5fSU5TVFJVQ1RJT04sCj4gKwkJCSAgICBJOTE1X0dFTV9ET01BSU5fSU5TVFJVQ1RJT04sIDAs
+Cj4gKwkJCSAgICBzdGF0c19idWYtPmFkZHIub2Zmc2V0KTsKPiArCWludGVsX2JiX291dChpYmIs
+IDApOwo+ICAKPiAtCU9VVF9CQVRDSChHRU41X01JX1JFUE9SVF9QRVJGX0NPVU5UIHwgTUlfQ09V
+TlRFUl9TRVRfMSk7Cj4gLQlPVVRfUkVMT0Moc3RhdHNfYm8sCj4gLQkJICBJOTE1X0dFTV9ET01B
+SU5fSU5TVFJVQ1RJT04sIEk5MTVfR0VNX0RPTUFJTl9JTlNUUlVDVElPTiwKPiAtCQkgIDY0KTsK
+PiAtCU9VVF9CQVRDSCgwKTsKPiArCWludGVsX2JiX291dChpYmIsIEdFTjVfTUlfUkVQT1JUX1BF
+UkZfQ09VTlQgfCBNSV9DT1VOVEVSX1NFVF8xKTsKPiArCWludGVsX2JiX2VtaXRfcmVsb2MoaWJi
+LCBzdGF0c19idWYtPmhhbmRsZSwgSTkxNV9HRU1fRE9NQUlOX0lOU1RSVUNUSU9OLAo+ICsJCQkg
+ICAgSTkxNV9HRU1fRE9NQUlOX0lOU1RSVUNUSU9OLCA2NCwKPiArCQkJICAgIHN0YXRzX2J1Zi0+
+YWRkci5vZmZzZXQpOwo+ICsJaW50ZWxfYmJfb3V0KGliYiwgMCk7Cj4gIAo+IC0JQURWQU5DRV9C
+QVRDSCgpOwo+ICsJaW50ZWxfYmJfZmx1c2hfYmxpdChpYmIpOwo+ICAKPiAtCWludGVsX2JhdGNo
+YnVmZmVyX2ZsdXNoKGJhdGNoKTsKPiAtCj4gLQlkcm1faW50ZWxfYm9fbWFwKHN0YXRzX2JvLCAw
+KTsKPiAtCXN0YXRzX3Jlc3VsdCA9IHN0YXRzX2JvLT52aXJ0dWFsOwo+ICsJaW50ZWxfYnVmX2Nw
+dV9tYXAoc3RhdHNfYnVmLCBmYWxzZSk7Cj4gKwlzdGF0c19yZXN1bHQgPSBzdGF0c19idWYtPnB0
+cjsKPiAgCS8qIHNraXAgUkVQT1JUX0lELCBUSU1FU1RBTVAgKi8KPiAgCXN0YXRzX3Jlc3VsdCAr
+PSAzOwo+ICAJZm9yIChpID0gMCA7IGkgPCBHRU41X0NPVU5URVJfQ09VTlQ7IGkrKykgewo+IEBA
+IC0zNTgsMTUgKzM1NywxNSBAQCBnZW41X2dldF9jb3VudGVycyh2b2lkKQo+ICAJCWxhc3RfY291
+bnRlcltpXSA9IHN0YXRzX3Jlc3VsdFtpXTsKPiAgCX0KPiAgCj4gLQlkcm1faW50ZWxfYm9fdW5t
+YXAoc3RhdHNfYm8pOwo+IC0JZHJtX2ludGVsX2JvX3VucmVmZXJlbmNlKHN0YXRzX2JvKTsKPiAr
+CWludGVsX2J1Zl91bm1hcChzdGF0c19idWYpOwo+ICsJaW50ZWxfYnVmX2Rlc3Ryb3koc3RhdHNf
+YnVmKTsKPiAgfQo+ICAKPiAgc3RhdGljIHZvaWQKPiAgZ2VuNl9nZXRfY291bnRlcnModm9pZCkK
+PiAgewo+ICAJaW50IGk7Cj4gLQlkcm1faW50ZWxfYm8gKnN0YXRzX2JvOwo+ICsJc3RydWN0IGlu
+dGVsX2J1ZiAqc3RhdHNfYnVmOwo+ICAJdWludDMyX3QgKnN0YXRzX3Jlc3VsdDsKPiAgCj4gIAkv
+KiBNYXAgZnJvbSBjb3VudGVyIG5hbWVzIHRvIHRoZWlyIGluZGV4IGluIHRoZSBidWZmZXIgb2Jq
+ZWN0ICovCj4gQEAgLTM3OCw0OSArMzc3LDUwIEBAIGdlbjZfZ2V0X2NvdW50ZXJzKHZvaWQpCj4g
+IAkJMzEsIDMwLCAyOSwgMjgsIDI3LCAyNiwgMjUsIDI0LAo+ICAJfTsKPiAgCj4gLQlzdGF0c19i
+byA9IGRybV9pbnRlbF9ib19hbGxvYyhidWZtZ3IsICJzdGF0cyIsIDQwOTYsIDQwOTYpOwo+ICsJ
+c3RhdHNfYnVmID0gaW50ZWxfYnVmX2NyZWF0ZShib3BzLCA0MDk2LCAxLCA4LCAwLCBJOTE1X1RJ
+TElOR19OT05FLAo+ICsJCQkJICAgICBJOTE1X0NPTVBSRVNTSU9OX05PTkUpOwo+ICsJaW50ZWxf
+YmJfYWRkX2ludGVsX2J1ZihpYmIsIHN0YXRzX2J1ZiwgdHJ1ZSk7Cj4gIAo+IC0JQkVHSU5fQkFU
+Q0goMywgMSk7Cj4gLQlPVVRfQkFUQ0goR0VONl9NSV9SRVBPUlRfUEVSRl9DT1VOVCB8ICgzIC0g
+MikpOwo+IC0JT1VUX1JFTE9DKHN0YXRzX2JvLAo+IC0JCSAgSTkxNV9HRU1fRE9NQUlOX0lOU1RS
+VUNUSU9OLCBJOTE1X0dFTV9ET01BSU5fSU5TVFJVQ1RJT04sCj4gLQkJICBNSV9DT1VOVEVSX0FE
+RFJFU1NfR1RUKTsKPiAtCU9VVF9CQVRDSCgwKTsKPiAtCUFEVkFOQ0VfQkFUQ0goKTsKPiArCWlu
+dGVsX2JiX291dChpYmIsIEdFTjZfTUlfUkVQT1JUX1BFUkZfQ09VTlQgfCAoMyAtIDIpKTsKPiAr
+CWludGVsX2JiX2VtaXRfcmVsb2MoaWJiLCBzdGF0c19idWYtPmhhbmRsZSwgSTkxNV9HRU1fRE9N
+QUlOX0lOU1RSVUNUSU9OLAo+ICsJCQkgICAgSTkxNV9HRU1fRE9NQUlOX0lOU1RSVUNUSU9OLAo+
+ICsJCQkgICAgTUlfQ09VTlRFUl9BRERSRVNTX0dUVCwgc3RhdHNfYnVmLT5hZGRyLm9mZnNldCk7
+Cj4gKwlpbnRlbF9iYl9vdXQoaWJiLCAwKTsKPiAgCj4gLQlpbnRlbF9iYXRjaGJ1ZmZlcl9mbHVz
+aF9vbl9yaW5nKGJhdGNoLCBJOTE1X0VYRUNfUkVOREVSKTsKPiArCWludGVsX2JiX2ZsdXNoX3Jl
+bmRlcihpYmIpOwo+ICAKPiAtCWRybV9pbnRlbF9ib19tYXAoc3RhdHNfYm8sIDApOwo+IC0Jc3Rh
+dHNfcmVzdWx0ID0gc3RhdHNfYm8tPnZpcnR1YWw7Cj4gKwlpbnRlbF9idWZfY3B1X21hcChzdGF0
+c19idWYsIDApOwo+ICsJc3RhdHNfcmVzdWx0ID0gc3RhdHNfYnVmLT5wdHI7Cj4gIAlmb3IgKGkg
+PSAwOyBpIDwgR0VONl9DT1VOVEVSX0NPVU5UOyBpKyspIHsKPiAgCQl0b3RhbHNbaV0gKz0gc3Rh
+dHNfcmVzdWx0W2J1ZmZlcl9pbmRleFtpXV0gLSBsYXN0X2NvdW50ZXJbaV07Cj4gIAkJbGFzdF9j
+b3VudGVyW2ldID0gc3RhdHNfcmVzdWx0W2J1ZmZlcl9pbmRleFtpXV07Cj4gIAl9Cj4gIAo+IC0J
+ZHJtX2ludGVsX2JvX3VubWFwKHN0YXRzX2JvKTsKPiAtCWRybV9pbnRlbF9ib191bnJlZmVyZW5j
+ZShzdGF0c19ibyk7Cj4gKwlpbnRlbF9idWZfdW5tYXAoc3RhdHNfYnVmKTsKPiArCWludGVsX2J1
+Zl9kZXN0cm95KHN0YXRzX2J1Zik7Cj4gIH0KPiAgCj4gIHN0YXRpYyB2b2lkCj4gIGdlbjdfZ2V0
+X2NvdW50ZXJzKHZvaWQpCj4gIHsKPiAgCWludCBpOwo+IC0JZHJtX2ludGVsX2JvICpzdGF0c19i
+bzsKPiArCXN0cnVjdCBpbnRlbF9idWYgKnN0YXRzX2J1ZjsKPiAgCXVpbnQzMl90ICpzdGF0c19y
+ZXN1bHQ7Cj4gIAo+IC0Jc3RhdHNfYm8gPSBkcm1faW50ZWxfYm9fYWxsb2MoYnVmbWdyLCAic3Rh
+dHMiLCA0MDk2LCA0MDk2KTsKPiArCXN0YXRzX2J1ZiA9IGludGVsX2J1Zl9jcmVhdGUoYm9wcywg
+NDA5NiwgMSwgOCwgMCwgSTkxNV9USUxJTkdfTk9ORSwKPiArCQkJCSAgICAgSTkxNV9DT01QUkVT
+U0lPTl9OT05FKTsKPiArCWludGVsX2JiX2FkZF9pbnRlbF9idWYoaWJiLCBzdGF0c19idWYsIHRy
+dWUpOwo+ICAKPiAtCUJFR0lOX0JBVENIKDMsIDEpOwo+IC0JT1VUX0JBVENIKEdFTjZfTUlfUkVQ
+T1JUX1BFUkZfQ09VTlQgfCAoMyAtIDIpKTsKPiAtCU9VVF9SRUxPQyhzdGF0c19ibywKPiAtCQkg
+IEk5MTVfR0VNX0RPTUFJTl9JTlNUUlVDVElPTiwgSTkxNV9HRU1fRE9NQUlOX0lOU1RSVUNUSU9O
+LCAwKTsKPiAtCU9VVF9CQVRDSCgwKTsKPiAtCUFEVkFOQ0VfQkFUQ0goKTsKPiArCWludGVsX2Ji
+X291dChpYmIsIEdFTjZfTUlfUkVQT1JUX1BFUkZfQ09VTlQgfCAoMyAtIDIpKTsKPiArCWludGVs
+X2JiX2VtaXRfcmVsb2MoaWJiLCBzdGF0c19idWYtPmhhbmRsZSwgSTkxNV9HRU1fRE9NQUlOX0lO
+U1RSVUNUSU9OLAo+ICsJCQkgICAgSTkxNV9HRU1fRE9NQUlOX0lOU1RSVUNUSU9OLCAwLAo+ICsJ
+CQkgICAgc3RhdHNfYnVmLT5hZGRyLm9mZnNldCk7Cj4gKwlpbnRlbF9iYl9vdXQoaWJiLCAwKTsK
+PiAgCj4gLQlpbnRlbF9iYXRjaGJ1ZmZlcl9mbHVzaF9vbl9yaW5nKGJhdGNoLCBJOTE1X0VYRUNf
+UkVOREVSKTsKPiArCWludGVsX2JiX2ZsdXNoX3JlbmRlcihpYmIpOwo+ICAKPiAtCWRybV9pbnRl
+bF9ib19tYXAoc3RhdHNfYm8sIDApOwo+IC0Jc3RhdHNfcmVzdWx0ID0gc3RhdHNfYm8tPnZpcnR1
+YWw7Cj4gKwlpbnRlbF9idWZfY3B1X21hcChzdGF0c19idWYsIGZhbHNlKTsKPiArCXN0YXRzX3Jl
+c3VsdCA9IHN0YXRzX2J1Zi0+cHRyOwo+ICAJLyogc2tpcCBSRVBPUlRfSUQsIFRJTUVTVEFNUCAq
+Lwo+ICAJc3RhdHNfcmVzdWx0ICs9IDM7Cj4gIAlmb3IgKGkgPSAwOyBpIDwgR0VON19DT1VOVEVS
+X0NPVU5UOyBpKyspIHsKPiBAQCAtNDMxLDggKzQzMSw4IEBAIGdlbjdfZ2V0X2NvdW50ZXJzKHZv
+aWQpCj4gIAkJbGFzdF9jb3VudGVyW2ldID0gc3RhdHNfcmVzdWx0W2ldOwo+ICAJfQo+ICAKPiAt
+CWRybV9pbnRlbF9ib191bm1hcChzdGF0c19ibyk7Cj4gLQlkcm1faW50ZWxfYm9fdW5yZWZlcmVu
+Y2Uoc3RhdHNfYm8pOwo+ICsJaW50ZWxfYnVmX3VubWFwKHN0YXRzX2J1Zik7Cj4gKwlpbnRlbF9i
+dWZfZGVzdHJveShzdGF0c19idWYpOwo+ICB9Cj4gIAo+ICAjZGVmaW5lIFNUQVRTX0NIRUNLX0ZS
+RVFVRU5DWQkxMDAKPiBAQCAtNDU4LDkgKzQ1OCw4IEBAIG1haW4oaW50IGFyZ2MsIGNoYXIgKiph
+cmd2KQo+ICAJZmQgPSBkcm1fb3Blbl9kcml2ZXIoRFJJVkVSX0lOVEVMKTsKPiAgCWRldmlkID0g
+aW50ZWxfZ2V0X2RybV9kZXZpZChmZCk7Cj4gIAo+IC0JYnVmbWdyID0gZHJtX2ludGVsX2J1Zm1n
+cl9nZW1faW5pdChmZCwgNDA5Nik7Cj4gLQlkcm1faW50ZWxfYnVmbWdyX2dlbV9lbmFibGVfcmV1
+c2UoYnVmbWdyKTsKPiAtCWJhdGNoID0gaW50ZWxfYmF0Y2hidWZmZXJfYWxsb2MoYnVmbWdyLCBk
+ZXZpZCk7Cj4gKwlib3BzID0gYnVmX29wc19jcmVhdGUoZmQpOwo+ICsJaWJiID0gaW50ZWxfYmJf
+Y3JlYXRlKGZkLCA0MDk2KTsKPiAgCj4gIAlpZiAoSVNfR0VONShkZXZpZCkpIHsKPiAgCQljb3Vu
+dGVyX25hbWUgPSBnZW41X2NvdW50ZXJfbmFtZXM7Cj4gQEAgLTUzMSw1ICs1MzAsOSBAQCBtYWlu
+KGludCBhcmdjLCBjaGFyICoqYXJndikKPiAgCWZyZWUodG90YWxzKTsKPiAgCWZyZWUobGFzdF9j
+b3VudGVyKTsKPiAgCj4gKwlpbnRlbF9iYl9kZXN0cm95KGliYik7Cj4gKwlidWZfb3BzX2Rlc3Ry
+b3koYm9wcyk7Cj4gKwljbG9zZShmZCk7Cj4gKwo+ICAJcmV0dXJuIDA7Cj4gIH0KPiAtLSAKPiAy
+LjIwLjEKPiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+aWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
+Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
