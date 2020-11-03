@@ -1,15 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0CB3A6EC6F
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2020 10:48:07 +0000 (UTC)
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Date: Tue,  3 Nov 2020 11:47:12 +0100
-Message-Id: <20201103104712.29233-29-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20201103104712.29233-1-zbigniew.kempczynski@intel.com>
-References: <20201103104712.29233-1-zbigniew.kempczynski@intel.com>
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ by gabe.freedesktop.org (Postfix) with ESMTP id A6AC96EC22
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2020 10:48:17 +0000 (UTC)
+Received: from relay2.suse.de (unknown [195.135.221.27])
+ by mx2.suse.de (Postfix) with ESMTP id 07FE9ADE8
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2020 10:48:17 +0000 (UTC)
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Date: Tue,  3 Nov 2020 11:48:12 +0100
+Message-Id: <20201103104813.18236-2-tzimmermann@suse.de>
+In-Reply-To: <20201103104813.18236-1-tzimmermann@suse.de>
+References: <20201103104813.18236-1-tzimmermann@suse.de>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v7 28/28] tests/api_intel_bb: Remove
- check-canonical test
+Subject: [igt-dev] [PATCH 1/2] tests/fbdev: Store framebuffer pointer at
+ function scope
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,67 +20,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-QXMgaW50ZWwtYmIgdXNlcyBpbnRlcm5hbGx5IGRlY2Fub25pY2FsIGFkZHJlc3MgZm9yIG9iamVj
-dHMvaW50ZWxfYnVmcwpjaGVja2luZyBjYW5vbmljYWwgYml0cyBtYWtlcyBubyBzZW5zZSBhbnlt
-b3JlLgoKU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1w
-Y3p5bnNraUBpbnRlbC5jb20+CkNjOiBEb21pbmlrIEdyemVnb3J6ZWsgPGRvbWluaWsuZ3J6ZWdv
-cnpla0BpbnRlbC5jb20+CkNjOiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51
-az4KLS0tCiB0ZXN0cy9pOTE1L2FwaV9pbnRlbF9iYi5jIHwgNzQgLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgNzQgZGVsZXRpb25zKC0pCgpk
-aWZmIC0tZ2l0IGEvdGVzdHMvaTkxNS9hcGlfaW50ZWxfYmIuYyBiL3Rlc3RzL2k5MTUvYXBpX2lu
-dGVsX2JiLmMKaW5kZXggOTVlZTg3MzIuLjc4N2FjMTU3IDEwMDY0NAotLS0gYS90ZXN0cy9pOTE1
-L2FwaV9pbnRlbF9iYi5jCisrKyBiL3Rlc3RzL2k5MTUvYXBpX2ludGVsX2JiLmMKQEAgLTI0NSw3
-NyArMjQ1LDYgQEAgc3RhdGljIHZvaWQgbG90X29mX2J1ZmZlcnMoc3RydWN0IGJ1Zl9vcHMgKmJv
-cHMpCiAJaW50ZWxfYmJfZGVzdHJveShpYmIpOwogfQogCi0vKgotICogTWFrZSBzdXJlIGludGVs
-LWJiIHNwYWNlIGFsbG9jYXRvciBjdXJyZW50bHkgZG9lc24ndCBlbnRlciA0Ny00OCBiaXQKLSAq
-IGd0dCBzaXplcy4KLSAqLwotI2RlZmluZSBHRU44X0hJR0hfQUREUkVTU19CSVQgNDcKLXN0YXRp
-YyB1aW50NjRfdCBnZW44X2Nhbm9uaWNhbF9hZGRyKHVpbnQ2NF90IGFkZHJlc3MpCi17Ci0JaW50
-IHNoaWZ0ID0gNjMgLSBHRU44X0hJR0hfQUREUkVTU19CSVQ7Ci0KLQlyZXR1cm4gKGludDY0X3Qp
-KGFkZHJlc3MgPDwgc2hpZnQpID4+IHNoaWZ0OwotfQotCi1zdGF0aWMgdm9pZCBjaGVja19jYW5v
-bmljYWwoc3RydWN0IGJ1Zl9vcHMgKmJvcHMpCi17Ci0JaW50IGk5MTUgPSBidWZfb3BzX2dldF9m
-ZChib3BzKSwgaTsKLQlzdHJ1Y3QgaW50ZWxfYmIgKmliYjsKLQlzdHJ1Y3QgaW50ZWxfYnVmICpi
-dWY7Ci0JdWludDMyX3Qgb2Zmc2V0OwotCS8qIFR3aWNlIHNhbWUgYWRkcmVzc2VzIHRvIHZlcmlm
-eSB3aWxsIGJlIHVucmVzZXJ2ZWQgaW4gcmVtb3ZlIHBhdGggKi8KLQl1aW50NjRfdCBhZGRyZXNz
-ZXNbXSA9IHsgMHg4MDAwMDAwMDAwMDAsIDB4ODAwMDAwMDAwMDAwLCAweDQwMDAwMDAwMDAwMCB9
-OwotCXVpbnQ2NF90IGFkZHJlc3MsIHN0YXJ0LCBlbmQ7Ci0JYm9vbCBzdXBwb3J0c180OGJpdCwg
-cmVsb2NzOwotCi0JaWJiID0gaW50ZWxfYmJfY3JlYXRlKGk5MTUsIFBBR0VfU0laRSk7Ci0Jc3Vw
-cG9ydHNfNDhiaXQgPSBpYmItPnN1cHBvcnRzXzQ4Yl9hZGRyZXNzOwotCXJlbG9jcyA9IGliYi0+
-ZW5mb3JjZV9yZWxvY3M7Ci0JaWYgKCFzdXBwb3J0c180OGJpdCB8fCByZWxvY3MpCi0JCWludGVs
-X2JiX2Rlc3Ryb3koaWJiKTsKLQlpZ3RfcmVxdWlyZV9mKHN1cHBvcnRzXzQ4Yml0LCAiV2UgbmVl
-ZCA0OGJpdCBwcGd0dCBmb3IgdGVzdGluZ1xuIik7Ci0JaWd0X3JlcXVpcmVfZighcmVsb2NzLCAi
-V2UgbmVlZCB0byB1c2UgYWxsb2NhdG9yIGluc3RlYWQgb2YgcmVsb2NhdGlvbnNcbiIpOwotCi0J
-aWYgKGRlYnVnX2JiKQotCQlpbnRlbF9iYl9zZXRfZGVidWcoaWJiLCB0cnVlKTsKLQotCWludGVs
-X2FsbG9jYXRvcl9nZXRfYWRkcmVzc19yYW5nZShpYmItPmFsbG9jYXRvcl9oYW5kbGUsCi0JCQkJ
-CSAgJnN0YXJ0LCAmZW5kKTsKLQotCWZvciAoaSA9IDA7IGkgPCBBUlJBWV9TSVpFKGFkZHJlc3Nl
-cyk7IGkrKykgewotCQlhZGRyZXNzID0gYWRkcmVzc2VzW2ldOwotCi0JCWlmIChhZGRyZXNzIDwg
-c3RhcnQgfHwgYWRkcmVzcyA+PSBlbmQpIHsKLQkJCWlndF9kZWJ1ZygiQWRkcmVzcyB0b28gYmln
-OiAlIiBQUkl4NjQKLQkJCQkgICIsIHN0YXJ0OiAlIiBQUkl4NjQgIiwgZW5kOiAlIiBQUkl4NjQK
-LQkJCQkgICIsIHNraXBwaW5nLi4uXG4iLAotCQkJCSAgYWRkcmVzcywgc3RhcnQsIGVuZCk7Ci0J
-CQljb250aW51ZTsKLQkJfQotCi0JCW9mZnNldCA9IGludGVsX2JiX2VtaXRfYmJlKGliYik7Ci0K
-LQkJYnVmID0gaW50ZWxfYnVmX2NyZWF0ZShib3BzLCA1MTIsIDUxMiwgMzIsIDAsCi0JCQkJICAg
-ICAgIEk5MTVfVElMSU5HX05PTkUsIEk5MTVfQ09NUFJFU1NJT05fTk9ORSk7Ci0KLQkJYnVmLT5h
-ZGRyLm9mZnNldCA9IGFkZHJlc3M7Ci0JCWludGVsX2JiX2FkZF9pbnRlbF9idWYoaWJiLCBidWYs
-IHRydWUpOwotCQlpbnRlbF9iYl9hZGRfaW50ZWxfYnVmKGliYiwgYnVmLCB0cnVlKTsKLQotCQlp
-Z3RfYXNzZXJ0KGJ1Zi0+YWRkci5vZmZzZXQgPT0gZ2VuOF9jYW5vbmljYWxfYWRkcihhZGRyZXNz
-KSk7Ci0KLQkJaW50ZWxfYmJfZXhlYyhpYmIsIG9mZnNldCwKLQkJCSAgICAgIEk5MTVfRVhFQ19E
-RUZBVUxUIHwgSTkxNV9FWEVDX05PX1JFTE9DLCB0cnVlKTsKLQotCQkvKiBXZSBlbnN1cmUgdG8g
-ZG8gdW5yZXNlcnZlIGFuZCB2ZXJpZnkgYWRkcmVzcyBjYW4gYmUgcmV1c2VkICovCi0JCWludGVs
-X2JiX3JlbW92ZV9pbnRlbF9idWYoaWJiLCBidWYpOwotCQlpbnRlbF9idWZfZGVzdHJveShidWYp
-OwotCQlpbnRlbF9iYl9yZXNldChpYmIsIHRydWUpOwotCX0KLQotCWludGVsX2JiX2Rlc3Ryb3ko
-aWJiKTsKLX0KLQogLyoKICAqIENoZWNrIGZsYWdzIGFyZSBjbGVhcmVkIGFmdGVyIGludGVsX2Ji
-X3Jlc2V0KGliYiwgZmFsc2UpOwogICovCkBAIC0xNDIyLDkgKzEzNTEsNiBAQCBpZ3RfbWFpbl9h
-cmdzKCJkcGliIiwgTlVMTCwgaGVscF9zdHIsIG9wdF9oYW5kbGVyLCBOVUxMKQogCWlndF9zdWJ0
-ZXN0KCJsb3Qtb2YtYnVmZmVycyIpCiAJCWxvdF9vZl9idWZmZXJzKGJvcHMpOwogCi0JaWd0X3N1
-YnRlc3QoImNoZWNrLWNhbm9uaWNhbCIpCi0JCWNoZWNrX2Nhbm9uaWNhbChib3BzKTsKLQogCWln
-dF9zdWJ0ZXN0KCJyZXNldC1mbGFncyIpCiAJCXJlc2V0X2ZsYWdzKGJvcHMpOwogCi0tIAoyLjI2
-LjAKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1k
-ZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlz
-dHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+---
+ tests/fbdev.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/tests/fbdev.c b/tests/fbdev.c
+index e5efeb93..11df954d 100644
+--- a/tests/fbdev.c
++++ b/tests/fbdev.c
+@@ -42,6 +42,7 @@ igt_main
+ 	struct fb_var_screeninfo var_info;
+ 	struct fb_fix_screeninfo fix_info;
+ 	int fd = -1;
++	void *map = NULL;
+ 
+ 	/*
+ 	 * Should this test focus on the fbdev independent of any drm driver,
+@@ -71,7 +72,6 @@ igt_main
+ 	}
+ 
+ 	igt_subtest("mmap") {
+-		void *map;
+ 
+ 		igt_require(fix_info.smem_len);
+ 
+@@ -80,10 +80,11 @@ igt_main
+ 		igt_assert(map != MAP_FAILED);
+ 
+ 		memset(map, 0, fix_info.smem_len);
+-		munmap(map, fix_info.smem_len);
+ 	}
+ 
+ 	igt_fixture {
++		if (map && map != MAP_FAILED)
++			munmap(map, fix_info.smem_len);
+ 		close(fd);
+ 	}
+ }
+-- 
+2.29.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
