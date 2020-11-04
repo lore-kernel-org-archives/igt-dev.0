@@ -1,17 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5883E6E98A
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Nov 2020 10:21:00 +0000 (UTC)
-References: <20201102195503.22581-1-zbigniew.kempczynski@intel.com>
- <20201102195503.22581-23-zbigniew.kempczynski@intel.com>
-From: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Message-ID: <e540f2c4-4588-7498-ec54-d6c183133241@intel.com>
-Date: Wed, 4 Nov 2020 12:20:55 +0200
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 32B246E992
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Nov 2020 10:34:14 +0000 (UTC)
+Date: Wed, 4 Nov 2020 12:34:10 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20201104103410.GP7444@platvala-desk.ger.corp.intel.com>
+References: <20201026084840.13061-1-petri.latvala@intel.com>
+ <871rhbc9ai.wl-ashutosh.dixit@intel.com>
+ <20201103080513.GM7444@platvala-desk.ger.corp.intel.com>
+ <87eelanii5.wl-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20201102195503.22581-23-zbigniew.kempczynski@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v6 22/27] tests/perf.c: Remove buffer
- from batch
+Content-Disposition: inline
+In-Reply-To: <87eelanii5.wl-ashutosh.dixit@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_core: Don't return too early in
+ common_init_config
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,49 +21,69 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gMDIvMTEvMjAyMCAyMTo1NCwgWmJpZ25pZXcgS2VtcGN6ecWEc2tpIHdyb3RlOgo+IEN1cnJl
-bnRseSB3ZSBuZWVkIHRvIGVuc3VyZSBpbnRlbF9idWYgaXMgYSBwYXJ0IG9mIHNpbmdsZSBpYmIg
-ZHVlCj4gdG8gZmFjdCBpdCBpcyBhY3F1aXJpbmcgYWRkcmVzcyBmcm9tIGFsbG9jYXRvciBzbyB3
-ZSBjYW5ub3Qga2VlcAo+IGl0IGluIHR3byBzZXBhcmF0ZSBpYmJzICh0aGVvcmV0aWNhbGx5IGl0
-IGlzIHBvc3NpYmxlIHdoZW4gZGlmZmVyZW50Cj4gaWJicyB3b3VsZCBiZSBpbiBzYW1lIGNvbnRl
-eHQgYnV0IGl0IGlzIG5vdCBjdXJyZW50bHkgaW1wbGVtZW50ZWQpLgo+Cj4gU2lnbmVkLW9mZi1i
-eTogWmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+
-Cj4gQ2M6IERvbWluaWsgR3J6ZWdvcnplayA8ZG9taW5pay5ncnplZ29yemVrQGludGVsLmNvbT4K
-PiBDYzogQ2hyaXMgV2lsc29uIDxjaHJpc0BjaHJpcy13aWxzb24uY28udWs+CgoKUmV2aWV3ZWQt
-Ynk6IExpb25lbCBMYW5kd2VybGluIDxsaW9uZWwuZy5sYW5kd2VybGluQGludGVsLmNvbT4KCgo+
-IC0tLQo+ICAgdGVzdHMvaTkxNS9wZXJmLmMgfCA5ICsrKysrKysrKwo+ICAgMSBmaWxlIGNoYW5n
-ZWQsIDkgaW5zZXJ0aW9ucygrKQo+Cj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2k5MTUvcGVyZi5jIGIv
-dGVzdHMvaTkxNS9wZXJmLmMKPiBpbmRleCBhNWM0YWRjMy4uZTU5NmFmZDMgMTAwNjQ0Cj4gLS0t
-IGEvdGVzdHMvaTkxNS9wZXJmLmMKPiArKysgYi90ZXN0cy9pOTE1L3BlcmYuYwo+IEBAIC0zNDMw
-LDYgKzM0MzAsOSBAQCBnZW44X3Rlc3Rfc2luZ2xlX2N0eF9yZW5kZXJfdGFyZ2V0X3dyaXRlc19h
-X2NvdW50ZXIodm9pZCkKPiAgIAkJCS8qIEFub3RoZXIgcmVkdW5kYW50IGZsdXNoIHRvIGNsYXJp
-ZnkgYmF0Y2ggYm8gaXMgZnJlZSB0byByZXVzZSAqLwo+ICAgCQkJaW50ZWxfYmJfZmx1c2hfcmVu
-ZGVyKGliYjApOwo+ICAgCj4gKwkJCS8qIFJlbW92ZSBpbnRlbF9idWYgZnJvbSBpYmIwIGFkZGVk
-IGltcGxpY2l0bHkgaW4gcmVuZGVyY29weSAqLwo+ICsJCQlpbnRlbF9iYl9yZW1vdmVfaW50ZWxf
-YnVmKGliYjAsIGRzdF9idWYpOwo+ICsKPiAgIAkJCS8qIHN1Ym1pdCB0d28gY29waWVzIG9uIHRo
-ZSBvdGhlciBjb250ZXh0IHRvIGF2b2lkIGEgZmFsc2UKPiAgIAkJCSAqIHBvc2l0aXZlIGluIGNh
-c2UgdGhlIGRyaXZlciBzb21laG93IGVuZGVkIHVwIGZpbHRlcmluZyBmb3IKPiAgIAkJCSAqIGNv
-bnRleHQxCj4gQEAgLTM4MjMsNiArMzgyNiw5IEBAIHN0YXRpYyB2b2lkIGdlbjEyX3NpbmdsZV9j
-dHhfaGVscGVyKHZvaWQpCj4gICAJCQkJICAgICBCT19SRVBPUlRfSUQwKTsKPiAgIAlpbnRlbF9i
-Yl9mbHVzaF9yZW5kZXIoaWJiMCk7Cj4gICAKPiArCS8qIFJlbW92ZSBpbnRlbF9idWYgZnJvbSBp
-YmIwIGFkZGVkIGltcGxpY2l0bHkgaW4gcmVuZGVyY29weSAqLwo+ICsJaW50ZWxfYmJfcmVtb3Zl
-X2ludGVsX2J1ZihpYmIwLCBkc3RfYnVmKTsKPiArCj4gICAJLyogVGhpcyBpcyB0aGUgd29yay9j
-b250ZXh0IHRoYXQgaXMgbWVhc3VyZWQgZm9yIGNvdW50ZXIgaW5jcmVtZW50cyAqLwo+ICAgCXJl
-bmRlcl9jb3B5KGliYjAsCj4gICAJCSAgICAmc3JjWzBdLCAwLCAwLCB3aWR0aCwgaGVpZ2h0LAo+
-IEBAIC0zODY5LDYgKzM4NzUsOSBAQCBzdGF0aWMgdm9pZCBnZW4xMl9zaW5nbGVfY3R4X2hlbHBl
-cih2b2lkKQo+ICAgCQkJCSAgICAgQk9fUkVQT1JUX0lEMyk7Cj4gICAJaW50ZWxfYmJfZmx1c2hf
-cmVuZGVyKGliYjEpOwo+ICAgCj4gKwkvKiBSZW1vdmUgaW50ZWxfYnVmIGZyb20gaWJiMSBhZGRl
-ZCBpbXBsaWNpdGx5IGluIHJlbmRlcmNvcHkgKi8KPiArCWludGVsX2JiX3JlbW92ZV9pbnRlbF9i
-dWYoaWJiMSwgZHN0X2J1Zik7Cj4gKwo+ICAgCS8qIFN1Ym1pdCBhbiBtaS1ycGMgdG8gY29udGV4
-dDAgYWZ0ZXIgYWxsIG1lYXN1cmFibGUgd29yayAqLwo+ICAgI2RlZmluZSBCT19USU1FU1RBTVBf
-T0ZGU0VUMSAxMDMyCj4gICAjZGVmaW5lIEJPX1JFUE9SVF9PRkZTRVQxIDI1NgoKCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBs
-aXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0
-b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+On Tue, Nov 03, 2020 at 03:11:14PM -0800, Dixit, Ashutosh wrote:
+> On Tue, 03 Nov 2020 00:05:13 -0800, Petri Latvala wrote:
+> >
+> > On Mon, Nov 02, 2020 at 09:13:25PM -0800, Dixit, Ashutosh wrote:
+> > > On Mon, 26 Oct 2020 01:48:40 -0700, Petri Latvala wrote:
+> > > >
+> > > > common_init_config is responsible for adding the device filters
+> > > > supplied through the environment to the filter list. If the .igtrc
+> > > > file cannot be opened, make sure the filter is added still.
+> > > >
+> > > > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
+> > > > Cc: Arkadiusz Hiler <arek@hiler.eu>
+> > > > ---
+> > > >  lib/igt_core.c | 18 +++++++++---------
+> > > >  1 file changed, 9 insertions(+), 9 deletions(-)
+> > > >
+> > > > diff --git a/lib/igt_core.c b/lib/igt_core.c
+> > > > index b358173f..8f9d925b 100644
+> > > > --- a/lib/igt_core.c
+> > > > +++ b/lib/igt_core.c
+> > > > @@ -775,21 +775,20 @@ GKeyFile *igt_load_igtrc(void)
+> > > >  static void common_init_config(void)
+> > > >  {
+> > > >	GError *error = NULL;
+> > > > -	int ret;
+> > > > +	int ret = 0;
+> > > >
+> > > >	igt_key_file = igt_load_igtrc();
+> > > > -	if (!igt_key_file)
+> > > > -		return;
+> > >
+> > > I believe the only change needed is the one above. The remaining
+> > > igt_key_file checks below are not needed because it looks like if we pass
+> > > NULL igt_key_file g_key_file_get_string will return NULL and
+> > > g_key_file_get_integer will return 0 (that is previously initialized values
+> > > are undisturbed).
+> > >
+> > > At the link below it is not clearly stated what happens when GKeyFile is
+> > > NULL so I am mostly inferring from the way it is handling other error
+> > > cases, so if we want to do this we'll probably need to test it out:
+> >
+> > If it's not documented to work that way, I'm wary of calling those
+> > functions with NULL. It could behave differently in different versions
+> > of glib.
+> 
+> OK, once again:
+> 
+> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+
+Thanks, merged.
+
+
+-- 
+Petri Latvala
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
