@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 32B246E992
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Nov 2020 10:34:14 +0000 (UTC)
-Date: Wed, 4 Nov 2020 12:34:10 +0200
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C7B26E062
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Nov 2020 10:35:25 +0000 (UTC)
+Date: Wed, 4 Nov 2020 12:35:21 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201104103410.GP7444@platvala-desk.ger.corp.intel.com>
-References: <20201026084840.13061-1-petri.latvala@intel.com>
- <871rhbc9ai.wl-ashutosh.dixit@intel.com>
- <20201103080513.GM7444@platvala-desk.ger.corp.intel.com>
- <87eelanii5.wl-ashutosh.dixit@intel.com>
+Message-ID: <20201104103521.GQ7444@platvala-desk.ger.corp.intel.com>
+References: <20201102194957.30123-1-umesh.nerlige.ramappa@intel.com>
+ <20201103080644.GN7444@platvala-desk.ger.corp.intel.com>
+ <20201104001542.GP70749@orsosgc001.ra.intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <87eelanii5.wl-ashutosh.dixit@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/igt_core: Don't return too early in
- common_init_config
+In-Reply-To: <20201104001542.GP70749@orsosgc001.ra.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/perf: Make sure i915 is loaded
+ before reading proc
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,60 +24,37 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Nov 03, 2020 at 03:11:14PM -0800, Dixit, Ashutosh wrote:
-> On Tue, 03 Nov 2020 00:05:13 -0800, Petri Latvala wrote:
-> >
-> > On Mon, Nov 02, 2020 at 09:13:25PM -0800, Dixit, Ashutosh wrote:
-> > > On Mon, 26 Oct 2020 01:48:40 -0700, Petri Latvala wrote:
-> > > >
-> > > > common_init_config is responsible for adding the device filters
-> > > > supplied through the environment to the filter list. If the .igtrc
-> > > > file cannot be opened, make sure the filter is added still.
-> > > >
-> > > > Signed-off-by: Petri Latvala <petri.latvala@intel.com>
-> > > > Cc: Arkadiusz Hiler <arek@hiler.eu>
-> > > > ---
-> > > >  lib/igt_core.c | 18 +++++++++---------
-> > > >  1 file changed, 9 insertions(+), 9 deletions(-)
-> > > >
-> > > > diff --git a/lib/igt_core.c b/lib/igt_core.c
-> > > > index b358173f..8f9d925b 100644
-> > > > --- a/lib/igt_core.c
-> > > > +++ b/lib/igt_core.c
-> > > > @@ -775,21 +775,20 @@ GKeyFile *igt_load_igtrc(void)
-> > > >  static void common_init_config(void)
-> > > >  {
-> > > >	GError *error = NULL;
-> > > > -	int ret;
-> > > > +	int ret = 0;
-> > > >
-> > > >	igt_key_file = igt_load_igtrc();
-> > > > -	if (!igt_key_file)
-> > > > -		return;
-> > >
-> > > I believe the only change needed is the one above. The remaining
-> > > igt_key_file checks below are not needed because it looks like if we pass
-> > > NULL igt_key_file g_key_file_get_string will return NULL and
-> > > g_key_file_get_integer will return 0 (that is previously initialized values
-> > > are undisturbed).
-> > >
-> > > At the link below it is not clearly stated what happens when GKeyFile is
-> > > NULL so I am mostly inferring from the way it is handling other error
-> > > cases, so if we want to do this we'll probably need to test it out:
-> >
-> > If it's not documented to work that way, I'm wary of calling those
-> > functions with NULL. It could behave differently in different versions
-> > of glib.
-> 
-> OK, once again:
-> 
-> Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+On Tue, Nov 03, 2020 at 04:15:42PM -0800, Umesh Nerlige Ramappa wrote:
+> On Tue, Nov 03, 2020 at 10:06:44AM +0200, Petri Latvala wrote:
+> > On Mon, Nov 02, 2020 at 11:49:57AM -0800, Umesh Nerlige Ramappa wrote:
+> > > The previous test may have unloaded i915 or failed to load it back. To
+> > > combat such cases, each test fixture is supposed to ensure that i915 is
+> > > loaded prior to running the subtests. In most fixtures this happens
+> > > automatically when we try to get a handle to i915. In perf OA, we stat
+> > > some proc/sys files even before getting a handle to i915. Occassionally,
+> > > perf tests fail trying to stat these files. Fix perf OA by checking and
+> > > loading i915 if it's not loaded.
+> > > 
+> > > v2: Use drm_load_module() (Petri)
+> > > 
+> > > Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/405
+> > > Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> > > Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+> > > Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > > ---
+> > 
+> > 
+> > Excellent, thanks. I would slap an R-b here but it's already in :P
+> > 
+> Thanks Petri, Would you please also help me merge this? I don't have
+> permissions.
 
-Thanks, merged.
+
+Merged now.
 
 
 -- 
