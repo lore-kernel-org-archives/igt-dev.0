@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B9A346E9AC
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Nov 2020 10:22:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6018C6E9AC
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Nov 2020 10:22:27 +0000 (UTC)
 From: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-Date: Fri,  6 Nov 2020 15:52:21 +0530
-Message-Id: <20201106102222.8674-1-mohammed.khajapasha@intel.com>
+Date: Fri,  6 Nov 2020 15:52:22 +0530
+Message-Id: <20201106102222.8674-2-mohammed.khajapasha@intel.com>
+In-Reply-To: <20201106102222.8674-1-mohammed.khajapasha@intel.com>
+References: <20201106102222.8674-1-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 0/1] tests/kms_plane_scaling: Don't run
+Subject: [igt-dev] [PATCH i-g-t 1/1] tests/kms_plane_scaling: Don't run
  plane scaler tests on each output
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -35,13 +37,89 @@ Cc: petri.latvala@intel.com
 Cc: mika.kahola@intel.com
 Cc: juha-pekka.heikkila@intel.com
 Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
-
-Mohammed Khajapasha (1):
-  tests/kms_plane_scaling: Don't run plane scaler tests on each output
-
+---
  tests/kms_plane_scaling.c | 38 +++++++++++++++++++++++---------------
  1 file changed, 23 insertions(+), 15 deletions(-)
 
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index ecd2c2e30..e14e6eaee 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -238,6 +238,8 @@ static void test_scaler_with_rotation_pipe(data_t *d, enum pipe pipe,
+ 	uint64_t tiling = is_i915_device(d->drm_fd) ?
+ 		LOCAL_I915_FORMAT_MOD_Y_TILED : LOCAL_DRM_FORMAT_MOD_NONE;
+ 
++	igt_require(get_num_scalers(d, pipe) > 0);
++
+ 	igt_output_set_pipe(output, pipe);
+ 	for_each_plane_on_pipe(display, pipe, plane) {
+ 		if (plane->type == DRM_PLANE_TYPE_CURSOR)
+@@ -278,6 +280,8 @@ static void test_scaler_with_pixel_format_pipe(data_t *d, enum pipe pipe, igt_ou
+ 	igt_display_t *display = &d->display;
+ 	igt_plane_t *plane;
+ 
++	igt_require(get_num_scalers(d, pipe) > 0);
++
+ 	igt_output_set_pipe(output, pipe);
+ 
+ 	for_each_plane_on_pipe(display, pipe, plane) {
+@@ -351,6 +355,8 @@ test_plane_scaling_on_pipe(data_t *d, enum pipe pipe, igt_output_t *output)
+ 	uint64_t tiling = is_i915_device(display->drm_fd) ?
+ 		LOCAL_I915_FORMAT_MOD_X_TILED : LOCAL_DRM_FORMAT_MOD_NONE;
+ 
++	igt_require(get_num_scalers(d, pipe) > 0);
++
+ 	igt_skip_on(!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888,
+ 						tiling));
+ 
+@@ -685,30 +691,32 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		igt_require(data.display.is_atomic);
+ 	}
+ 
+-	for_each_pipe_static(pipe) igt_subtest_group {
++	igt_subtest_group {
+ 		igt_output_t *output;
+ 
+-		igt_fixture {
+-			igt_display_require_output_on_pipe(&data.display, pipe);
+-
+-			igt_require(get_num_scalers(&data, pipe) > 0);
+-		}
+-
+-		igt_subtest_f("pipe-%s-plane-scaling", kmstest_pipe_name(pipe))
+-			for_each_valid_output_on_pipe(&data.display, pipe, output)
++		igt_subtest_with_dynamic("plane-scaling") {
++			for_each_pipe_with_single_output(&data.display, pipe, output)
++				igt_dynamic_f("pipe-%s-plane-scaling", kmstest_pipe_name(pipe))
+ 				test_plane_scaling_on_pipe(&data, pipe, output);
++		}
+ 
+-		igt_subtest_f("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe))
+-			for_each_valid_output_on_pipe(&data.display, pipe, output)
++		igt_subtest_with_dynamic("scaler-with-pixel-format") {
++			for_each_pipe_with_single_output(&data.display, pipe, output)
++				igt_dynamic_f("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe))
+ 				test_scaler_with_pixel_format_pipe(&data, pipe, output);
++		}
+ 
+-		igt_subtest_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
+-			for_each_valid_output_on_pipe(&data.display, pipe, output)
++		igt_subtest_with_dynamic("scaler-with-rotation") {
++			for_each_pipe_with_single_output(&data.display, pipe, output)
++				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
+ 				test_scaler_with_rotation_pipe(&data, pipe, output);
++		}
+ 
+-		igt_subtest_f("pipe-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe))
+-			for_each_valid_output_on_pipe(&data.display, pipe, output)
++		igt_subtest_with_dynamic("scaler-with-clipping-clamping") {
++			for_each_pipe_with_single_output(&data.display, pipe, output)
++				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
+ 				test_scaler_with_clipping_clamping_scenario(&data, pipe, output);
++		}
+ 	}
+ 
+ 	igt_subtest_f("2x-scaler-multi-pipe")
 -- 
 2.29.2.154.g7f7ebe054a
 
