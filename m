@@ -1,16 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D654489991
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Nov 2020 12:08:47 +0000 (UTC)
-MIME-Version: 1.0
-In-Reply-To: <20201109120632.389212-2-imre.deak@intel.com>
-References: <20201109120632.389212-1-imre.deak@intel.com>
- <20201109120632.389212-2-imre.deak@intel.com>
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EFBA899C4
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Nov 2020 12:10:37 +0000 (UTC)
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Mon, 09 Nov 2020 12:08:43 +0000
-Message-ID: <160492372394.28777.4238415753044387552@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] lib/intel_batchbuffer: Fix relocs
- across the 4GB address boundary
+Date: Mon,  9 Nov 2020 11:54:10 +0000
+Message-Id: <20201109115410.249678-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20201107111544.65260-1-chris@chris-wilson.co.uk>
+References: <20201107111544.65260-1-chris@chris-wilson.co.uk>
+MIME-Version: 1.0
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_psr: Check for available
+ modesetting support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,21 +17,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Imre Deak <imre.deak@intel.com>, igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-UXVvdGluZyBJbXJlIERlYWsgKDIwMjAtMTEtMDkgMTI6MDY6MzIpCj4gSWYgdGhlIGRlbHRhIG9m
-IGEgcmVsb2NhdGlvbiB0YXJnZXQgd3J0LiB0aGUgb2JqZWN0IGJhc2UgYWRkcmVzcyBjcm9zc2Vz
-Cj4gdGhlIDRHQiBhZGRyZXNzIGJvdW5kYXJ5IHRoZSB1cHBlciAzMmJpdCBvZiB0aGUgdGFyZ2V0
-IGFkZHJlc3Mgd2lsbCBiZQo+IGluY29ycmVjdCwgZml4IHRoaXMuCj4gCj4gQ2M6IFpiaWduaWV3
-IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgo+IENjOiBDaHJp
-cyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KPiBTaWduZWQtb2ZmLWJ5OiBJbXJl
-IERlYWsgPGltcmUuZGVha0BpbnRlbC5jb20+CgpaYmlnbmlldywgZmFuY3kgd3JpdGluZyBhIHRl
-c3QgY2FzZSBmb3IgdGhpcz8KLUNocmlzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnCmh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8v
-aWd0LWRldgo=
+Check that there is a valid output/mode combo before trying to
+dereference them.
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/2212
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/kms_psr.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/tests/kms_psr.c b/tests/kms_psr.c
+index af81a259b..4b7513d7e 100644
+--- a/tests/kms_psr.c
++++ b/tests/kms_psr.c
+@@ -411,8 +411,14 @@ static void setup_test_plane(data_t *data, int test_plane)
+ 
+ static void test_setup(data_t *data)
+ {
++	igt_require_f(data->output,
++		      "No available output found\n");
++	igt_require_f(data->mode,
++		      "No available mode found on %s\n",
++		      data->output->name);
+ 	if (data->op_psr_mode == PSR_MODE_2)
+ 		igt_require(data->supports_psr2);
++
+ 	psr_enable_if_enabled(data);
+ 	setup_test_plane(data, data->test_plane_id);
+ 	igt_assert(psr_wait_entry_if_enabled(data));
+-- 
+2.29.2
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
