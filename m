@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 439738970B
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 04:47:10 +0000 (UTC)
-From: nidhi1.gupta@intel.com
-Date: Tue, 10 Nov 2020 10:25:10 +0530
-Message-Id: <20201110045510.14716-1-nidhi1.gupta@intel.com>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB0EE897D7
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 05:02:36 +0000 (UTC)
+From: Kunal Joshi <kunal1.joshi@intel.com>
+Date: Tue, 10 Nov 2020 10:33:34 +0530
+Message-Id: <20201110050334.2747067-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] Fix IGT Warnings due to dynamic subtest
- inclusion
+Subject: [igt-dev] [PATCH i-g-t] tests/kms_color_chamelium: time optimization
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,92 +19,63 @@ Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+Cc: Kunal Joshi <kunal1.joshi@intel.com>, petri.latvala@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
+Instead of going through all the delta even if we got success with one,
+now breaking when we pass, thus saving some time and decreasing load on
+chamelium for capturing the rest of the frames.
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/kms_atomic_interruptible.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ tests/kms_color_chamelium.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
-index 27bb6a2b..f98023ca 100644
---- a/tests/kms_atomic_interruptible.c
-+++ b/tests/kms_atomic_interruptible.c
-@@ -288,7 +288,9 @@ igt_main
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_legacy_modeset, DRM_PLANE_TYPE_PRIMARY);
-+			{
- 				break;
-+			}
+diff --git a/tests/kms_color_chamelium.c b/tests/kms_color_chamelium.c
+index 310c021a..43bbe1f2 100644
+--- a/tests/kms_color_chamelium.c
++++ b/tests/kms_color_chamelium.c
+@@ -610,9 +610,9 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 				expected_colors[1].g =
+ 				expected_colors[2].b =
+ 				0.25 + delta * (i - 2);
+-			success |= test_pipe_ctm(data, primary,
+-						 red_green_blue,
+-						 expected_colors, ctm);
++			if(test_pipe_ctm(data, primary, red_green_blue,
++					 expected_colors, ctm))
++				break;
  		}
+ 		igt_assert(success);
  	}
- 
-@@ -296,7 +298,9 @@ igt_main
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_atomic_modeset, DRM_PLANE_TYPE_PRIMARY);
-+			{
- 				break;
-+			}
+@@ -632,9 +632,9 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 				expected_colors[1].g =
+ 				expected_colors[2].b =
+ 				0.5 + delta * (i - 2);
+-			success |= test_pipe_ctm(data, primary,
+-						 red_green_blue,
+-						 expected_colors, ctm);
++			if(test_pipe_ctm(data, primary, red_green_blue,
++					 expected_colors, ctm))
++				break;
  		}
+ 		igt_assert(success);
  	}
- 
-@@ -304,7 +308,9 @@ igt_main
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_legacy_dpms, DRM_PLANE_TYPE_PRIMARY);
-+			{
- 				break;
-+			}
+@@ -654,9 +654,9 @@ run_tests_for_pipe(data_t *data, enum pipe p)
+ 				expected_colors[1].g =
+ 				expected_colors[2].b =
+ 				0.75 + delta * (i - 3);
+-			success |= test_pipe_ctm(data, primary,
+-						 red_green_blue,
+-						 expected_colors, ctm);
++			if(test_pipe_ctm(data, primary, red_green_blue,
++					 expected_colors, ctm))
++				break;
  		}
+ 		igt_assert(success);
  	}
- 
-@@ -312,7 +318,9 @@ igt_main
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_pageflip, DRM_PLANE_TYPE_PRIMARY);
-+			{
- 				break;
-+			}
- 		}
- 	}
- 
-@@ -320,7 +328,9 @@ igt_main
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_setcursor, DRM_PLANE_TYPE_CURSOR);
-+			{
- 				break;
-+			}
- 		}
- 	}
- 
-@@ -328,7 +338,9 @@ igt_main
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_PRIMARY);
-+			{
- 				break;
-+			}
- 		}
- 	}
- 
-@@ -336,7 +348,9 @@ igt_main
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_CURSOR);
-+			{
- 				break;
-+			}
- 		}
- 	}
- 
 -- 
-2.26.2
+2.25.1
 
 _______________________________________________
 igt-dev mailing list
