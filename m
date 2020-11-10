@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B6C18986D
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 07:51:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 321FE89895
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 07:51:09 +0000 (UTC)
 From: Thomas Zimmermann <tzimmermann@suse.de>
-Date: Tue, 10 Nov 2020 08:50:59 +0100
-Message-Id: <20201110075102.5033-6-tzimmermann@suse.de>
+Date: Tue, 10 Nov 2020 08:50:55 +0100
+Message-Id: <20201110075102.5033-2-tzimmermann@suse.de>
 In-Reply-To: <20201110075102.5033-1-tzimmermann@suse.de>
 References: <20201110075102.5033-1-tzimmermann@suse.de>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v3 5/8] tests/fbdev: Add tests for write
- operations on framebuffer
+Subject: [igt-dev] [PATCH v3 1/8] tests/fbdev: Move existing tests into
+ separate subgroups
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,48 +25,106 @@ To: daniel.vetter@ffwll.ch, chris@chris-wilson.co.uk, petri.latvala@intel.com
 Cc: igt-dev@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The write tests check the written buffer against the content of the mapped
-framebuffer.
+Move the existing tests into subgroups for testing modesetting and
+accessing the framebuffer.
 
 v3:
-	* put igt_describe() before igt_subtest() (Petri)
+	* put igt_describe() before igt_subtest() and igt_subtest_group()
+	  (Petri)
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- tests/fbdev.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ tests/fbdev.c | 53 ++++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 40 insertions(+), 13 deletions(-)
 
 diff --git a/tests/fbdev.c b/tests/fbdev.c
-index a6376c3b..02abdede 100644
+index e5efeb93..46641fea 100644
 --- a/tests/fbdev.c
 +++ b/tests/fbdev.c
-@@ -135,6 +135,26 @@ static void framebuffer_tests(int fd)
- 		igt_require_f(pos, "found 0x55 at pos %zu, none expected\n", pos - buf);
+@@ -37,28 +37,17 @@
+ 
+ #include "igt.h"
+ 
+-igt_main
++static void mode_tests(int fd)
+ {
+ 	struct fb_var_screeninfo var_info;
+ 	struct fb_fix_screeninfo fix_info;
+-	int fd = -1;
+ 
+-	/*
+-	 * Should this test focus on the fbdev independent of any drm driver,
+-	 * or should it look for fbdev of a particular device?
+-	 */
+ 	igt_fixture {
+-		fd = open("/dev/fb0", O_RDWR);
+-		if (fd < 0) {
+-			drm_load_module(DRIVER_ANY);
+-			fd = open("/dev/fb0", O_RDWR);
+-		}
+-		igt_require_f(fd != -1, "/dev/fb0\n");
+-
+ 		igt_require(ioctl(fd, FBIOGET_VSCREENINFO, &var_info) == 0);
+ 		igt_require(ioctl(fd, FBIOGET_FSCREENINFO, &fix_info) == 0);
  	}
  
-+	igt_describe("Check write operations on framebuffer memory");
-+	igt_subtest("write") {
-+		ssize_t ret;
-+		int cmp;
++	igt_describe("Check if screeninfo is valid");
+ 	igt_subtest("info") {
+ 		unsigned long size;
+ 
+@@ -69,7 +58,17 @@ igt_main
+ 			     fix_info.line_length,
+ 			     fix_info.smem_len);
+ 	}
++}
 +
-+		/* write 0 to framebuffer and compare */
-+		memset(buf, 0, fix_info.smem_len);
-+		ret = pwrite(fd, buf, fix_info.smem_len, 0);
-+		igt_require_f(ret == (ssize_t)fix_info.smem_len, "pwrite failed, ret=%zd\n", ret);
-+		cmp = memcmp(map, buf, fix_info.smem_len);
-+		igt_require_f(!cmp, "write buffer differs from mapped framebuffer for 0\n");
-+
-+		/* write 0x55 to framebuffer and compare */
-+		memset(buf, 0x55, fix_info.smem_len);
-+		ret = pwrite(fd, buf, fix_info.smem_len, 0);
-+		igt_require_f(ret == (ssize_t)fix_info.smem_len, "pwrite failed, ret=%zd\n", ret);
-+		cmp = memcmp(map, buf, fix_info.smem_len);
-+		igt_require_f(!cmp, "write buffer differs from mapped framebuffer for 0\n");
++static void framebuffer_tests(int fd)
++{
++	struct fb_fix_screeninfo fix_info;
+ 
++	igt_fixture {
++		igt_require(ioctl(fd, FBIOGET_FSCREENINFO, &fix_info) == 0);
 +	}
 +
++	igt_describe("Check mmap operations on framebuffer memory");
+ 	igt_subtest("mmap") {
+ 		void *map;
+ 
+@@ -82,6 +81,34 @@ igt_main
+ 		memset(map, 0, fix_info.smem_len);
+ 		munmap(map, fix_info.smem_len);
+ 	}
++}
++
++igt_main
++{
++	int fd = -1;
++
++	/*
++	 * Should this test focus on the fbdev independent of any drm driver,
++	 * or should it look for fbdev of a particular device?
++	 */
++	igt_fixture {
++		fd = open("/dev/fb0", O_RDWR);
++		if (fd < 0) {
++			drm_load_module(DRIVER_ANY);
++			fd = open("/dev/fb0", O_RDWR);
++		}
++		igt_require_f(fd != -1, "/dev/fb0\n");
++	}
++
++	igt_describe("Check modesetting");
++	igt_subtest_group {
++		mode_tests(fd);
++	}
++
++	igt_describe("Check framebuffer access");
++	igt_subtest_group {
++		framebuffer_tests(fd);
++	}
+ 
  	igt_fixture {
- 		free(buf);
- 		memset(map, 0, fix_info.smem_len); // don't leave garbage on the screen
+ 		close(fd);
 -- 
 2.29.2
 
