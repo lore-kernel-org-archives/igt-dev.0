@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7BD8289895
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 07:51:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2AD768986D
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 07:51:09 +0000 (UTC)
 From: Thomas Zimmermann <tzimmermann@suse.de>
-Date: Tue, 10 Nov 2020 08:51:01 +0100
-Message-Id: <20201110075102.5033-8-tzimmermann@suse.de>
+Date: Tue, 10 Nov 2020 08:50:58 +0100
+Message-Id: <20201110075102.5033-5-tzimmermann@suse.de>
 In-Reply-To: <20201110075102.5033-1-tzimmermann@suse.de>
 References: <20201110075102.5033-1-tzimmermann@suse.de>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v3 7/8] tests/fbdev: Add tests for accessing
- framebuffer near EOF
+Subject: [igt-dev] [PATCH v3 4/8] tests/fbdev: Add tests for unaligned reads
+ on framebuffer memory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,79 +25,78 @@ To: daniel.vetter@ffwll.ch, chris@chris-wilson.co.uk, petri.latvala@intel.com
 Cc: igt-dev@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Fbdev has some specific behavior when reading/writing near the EOF, which
-the eof test checks. If at least one bytes has been written, the number
-of bytes has to be returned, otherwise an error code (if any) has to be
-returned, or otherwise 0 has to returned. Not all drivers get this right.
+The tests for unaligned reads start and stop reading within pages.
 
 v3:
 	* put igt_describe() before igt_subtest() (Petri)
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- tests/fbdev.c | 47 ++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 46 insertions(+), 1 deletion(-)
+ tests/fbdev.c | 40 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 38 insertions(+), 2 deletions(-)
 
 diff --git a/tests/fbdev.c b/tests/fbdev.c
-index 522da8e2..8fd920be 100644
+index 97d66217..a6376c3b 100644
 --- a/tests/fbdev.c
 +++ b/tests/fbdev.c
-@@ -78,7 +78,8 @@ static void framebuffer_tests(int fd)
- 			   PROT_WRITE, MAP_SHARED, fd, 0);
- 		igt_assert(map != MAP_FAILED);
+@@ -64,10 +64,13 @@ static void mode_tests(int fd)
+ static void framebuffer_tests(int fd)
+ {
+ 	struct fb_fix_screeninfo fix_info;
+-	void *map;
+-	void *buf;
++	unsigned char *map;
++	unsigned char *buf;
++	size_t pagesize;
  
--		buf = malloc(fix_info.smem_len);
-+		/* allocate two additional bytes for eof test */
-+		buf = malloc(fix_info.smem_len + 2);
+ 	igt_fixture {
++		long ret;
++
+ 		igt_require(ioctl(fd, FBIOGET_FSCREENINFO, &fix_info) == 0);
+ 		igt_require(fix_info.smem_len);
+ 
+@@ -77,6 +80,10 @@ static void framebuffer_tests(int fd)
+ 
+ 		buf = malloc(fix_info.smem_len);
  		igt_assert(buf);
- 
- 		ret = sysconf(_SC_PAGESIZE);
-@@ -184,6 +185,50 @@ static void framebuffer_tests(int fd)
- 		igt_require_f(pos, "found 0x55 at pos %zu, none expected\n", pos - map);
++
++		ret = sysconf(_SC_PAGESIZE);
++		igt_assert(ret != -1);
++		pagesize = ret;
  	}
  
-+	igt_describe("Check framebuffer access near EOF");
-+	igt_subtest("eof") {
-+		unsigned long lastindex = fix_info.smem_len - 1;
-+		unsigned char *maplast = &((unsigned char *)map)[lastindex];
-+		unsigned char *buflast = &((unsigned char *)buf)[lastindex];
+ 	igt_describe("Check read operations on framebuffer memory");
+@@ -99,6 +106,35 @@ static void framebuffer_tests(int fd)
+ 		igt_require_f(!cmp, "read buffer differs from mapped framebuffer for 0x55\n");
+ 	}
+ 
++	igt_describe("Check read operations on unaligned locations in framebuffer memory");
++	igt_subtest("unaligned-read") {
++		off_t off;
++		size_t len;
 +		ssize_t ret;
++		const unsigned char *pos;
 +
-+		*buflast = 0x55;
++		off = pagesize + (pagesize >> 2); // 1.25 * pagesize
++		len = (pagesize << 2) + (pagesize >> 1); // 4.5 * pagesize
++		igt_require_f((off + len) < fix_info.smem_len, "framebuffer too small\n");
 +
-+		/* write across EOF; set remaining bytes */
-+		ret = pwrite(fd, buflast, 2, lastindex);
-+		igt_require_f(ret == 1, "write crossed EOF, ret=%zd\n", ret);
-+		igt_require_f(*maplast == *buflast, "write buffer differs from mapped framebuffer at final byte, "
-+		                                    "maplast=%u buflast=%u\n", *maplast, *buflast);
-+
-+		/* write at EOF; get ENOSPC */
-+		ret = pwrite(fd, &buflast[1], 1, lastindex + 1);
-+		igt_require_f((ret == -1) && (errno == ENOSPC), "write at EOF, ret=%zd\n", ret);
-+
-+		*maplast = 0;
-+
-+		/* write final byte */
-+		ret = pwrite(fd, buflast, 1, lastindex);
-+		igt_require_f(ret == 1, "write before EOF, ret=%zd\n", ret);
-+		igt_require_f(*maplast == *buflast, "write buffer differs from mapped framebuffer at final byte, "
-+		                                    "maplast=%u buflast=%u\n", *maplast, *buflast);
-+
-+		/* write after EOF; get EFBIG */
-+		ret = pwrite(fd, &buflast[2], 1, lastindex + 2);
-+		igt_require_f((ret == -1) && (errno == EFBIG), "write after EOF, ret=%zd\n", ret);
-+
-+		*maplast = 0;
-+
-+		/* read across the EOF; get remaining bytes */
-+		ret = pread(fd, buflast, 2, lastindex);
-+		igt_require_f(ret == 1, "read before EOF, ret=%zd\n", ret);
-+		igt_require_f(*maplast == *buflast, "read buffer differs from mapped framebuffer at final byte, "
-+		                                    "maplast=%u buflast=%u\n", *maplast, *buflast);
-+
-+		/* read after EOF; get 0 */
-+		ret = pread(fd, &buflast[1], 1, lastindex + 1);
-+		igt_require_f(ret == 0, "read at EOF, ret=%zd\n", ret);
++		/* read at unaligned location and compare */
++		memset(map, 0, fix_info.smem_len);
++		memset(&map[off], 0x55, len);
++		memset(buf, 0xff, fix_info.smem_len);
++		ret = pread(fd, &buf[off], len, off);
++		igt_require_f(ret == (ssize_t)len, "pread failed, ret=%zd\n", ret);
++		pos = memchr(buf, 0x55, fix_info.smem_len);
++		igt_require_f(pos, "0x55 not found within read buffer\n");
++		igt_require_f(pos == &buf[off], "0x55 found at pos %zu, expected %lld\n",
++			     pos - buf, (long long)off);
++		pos = memchr(&buf[off], 0xff, fix_info.smem_len - off);
++		igt_require_f(pos, "0xff not found within read buffer\n");
++		igt_require_f(pos == &buf[off + len], "0xff found at pos %zu, expected %lld\n",
++			     pos - buf, (long long)(off + len));
++		pos = memchr(&buf[off + len], 0x55, fix_info.smem_len - off + len);
++		igt_require_f(pos, "found 0x55 at pos %zu, none expected\n", pos - buf);
 +	}
 +
  	igt_fixture {
