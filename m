@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DABB898AF
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 07:51:10 +0000 (UTC)
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Date: Tue, 10 Nov 2020 08:51:00 +0100
-Message-Id: <20201110075102.5033-7-tzimmermann@suse.de>
-In-Reply-To: <20201110075102.5033-1-tzimmermann@suse.de>
-References: <20201110075102.5033-1-tzimmermann@suse.de>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9ADE6893D0
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 08:07:08 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Tue, 10 Nov 2020 09:06:59 +0100
+Message-Id: <20201110080659.25501-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v3 6/8] tests/fbdev: Add tests for unaligned
- writes on framebuffer memory
+Subject: [igt-dev] [PATCH i-g-t] tests/api_intel_bb: Verify delta is
+ properly added in emit relocation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -17,68 +15,80 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: daniel.vetter@ffwll.ch, chris@chris-wilson.co.uk, petri.latvala@intel.com
-Cc: igt-dev@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>
+To: igt-dev@lists.freedesktop.org
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The tests for unaligned writes start and stop writing within pages.
-
-v3:
-	* put igt_describe() before igt_subtest() (Petri)
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
----
- tests/fbdev.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
-
-diff --git a/tests/fbdev.c b/tests/fbdev.c
-index 02abdede..522da8e2 100644
---- a/tests/fbdev.c
-+++ b/tests/fbdev.c
-@@ -155,6 +155,35 @@ static void framebuffer_tests(int fd)
- 		igt_require_f(!cmp, "write buffer differs from mapped framebuffer for 0\n");
- 	}
- 
-+	igt_describe("Check write operations on unaligned locations in framebuffer memory");
-+	igt_subtest("unaligned-write") {
-+		off_t off;
-+		size_t len;
-+		ssize_t ret;
-+		const unsigned char *pos;
-+
-+		off = pagesize + (pagesize >> 2); // 1.25 * pagesize
-+		len = (pagesize << 2) + (pagesize >> 1); // 4.5 * pagesize
-+		igt_require_f((off + len) < fix_info.smem_len, "framebuffer too small\n");
-+
-+		/* read at unaligned location and compare */
-+		memset(map, 0xff, fix_info.smem_len);
-+		memset(buf, 0, fix_info.smem_len);
-+		memset(&buf[off], 0x55, len);
-+		ret = pwrite(fd, &buf[off], len, off);
-+		igt_require_f(ret == (ssize_t)len, "pwrite failed, ret=%zd\n", ret);
-+		pos = memchr(map, 0x55, fix_info.smem_len);
-+		igt_require_f(pos, "0x55 not found within framebuffer\n");
-+		igt_require_f(pos == &map[off], "0x55 found at pos %zu, expected %lld\n",
-+			     pos - map, (long long)off);
-+		pos = memchr(&map[off], 0xff, fix_info.smem_len - off);
-+		igt_require_f(pos, "0xff not found within framebuffer\n");
-+		igt_require_f(pos == &map[off + len], "0xff found at pos %zu, expected %lld\n",
-+			     pos - map, (long long)(off + len));
-+		pos = memchr(&map[off + len], 0x55, fix_info.smem_len - off + len);
-+		igt_require_f(pos, "found 0x55 at pos %zu, none expected\n", pos - map);
-+	}
-+
- 	igt_fixture {
- 		free(buf);
- 		memset(map, 0, fix_info.smem_len); // don't leave garbage on the screen
--- 
-2.29.2
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+V2hlbiBkZWx0YSBpcyBhZGRlZCB0byBidWZmZXIgYWRkcmVzcyBhbmQgc3VtIGV4Y2VlZHMgMzJi
+aXRzIHZlcmlmeQplbWl0IHJlbG9jYXRpb24gY29udGFpbnMgcHJvcGVybHkgc2V0IGxvdyArIGhp
+Z2ggYWRkcmVzcyBkd29yZHMuCgpSZWZlcmVuY2VzOiBodHRwczovL3BhdGNod29yay5mcmVlZGVz
+a3RvcC5vcmcvc2VyaWVzLzgzNjQ0LwoKU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWE
+c2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+ClJlcG9ydGVkLWJ5OiBJbXJlIERl
+YWsgPGltcmUuZGVha0BpbnRlbC5jb20+CkNjOiBJbXJlIERlYWsgPGltcmUuZGVha0BpbnRlbC5j
+b20+CkNjOiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlzLXdpbHNvbi5jby51az4KLS0tCiB0ZXN0
+cy9pOTE1L2FwaV9pbnRlbF9iYi5jIHwgODQgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrCiAxIGZpbGUgY2hhbmdlZCwgODQgaW5zZXJ0aW9ucygrKQoKZGlmZiAtLWdpdCBh
+L3Rlc3RzL2k5MTUvYXBpX2ludGVsX2JiLmMgYi90ZXN0cy9pOTE1L2FwaV9pbnRlbF9iYi5jCmlu
+ZGV4IDk2NWE3ZGRlLi43Njc4ZmJjZSAxMDA2NDQKLS0tIGEvdGVzdHMvaTkxNS9hcGlfaW50ZWxf
+YmIuYworKysgYi90ZXN0cy9pOTE1L2FwaV9pbnRlbF9iYi5jCkBAIC04NjAsNiArODYwLDg3IEBA
+IHN0YXRpYyB2b2lkIG9mZnNldF9jb250cm9sKHN0cnVjdCBidWZfb3BzICpib3BzKQogCWludGVs
+X2JiX2Rlc3Ryb3koaWJiKTsKIH0KIAorLyoKKyAqIElkZWEgb2YgdGhlIHRlc3QgaXMgdG8gdmVy
+aWZ5IGRlbHRhIGlzIHByb3Blcmx5IGFkZGVkIHRvIGFkZHJlc3MKKyAqIHdoZW4gZW1pdF9yZWxv
+YygpIGlzIGNhbGxlZC4KKyAqCisgKiBXZSBjcmVhdGUgMyBidWZmZXJzIGFsaWduZWQgdG8gMHg0
+MDAwXzAwMDAsIGxhc3Qgb25lIGhhcyB0byBiZQorICogYXQgMHhjMDAwXzAwMDAuIFRoZW4gd2Ug
+YWRkIDB4NzAwMF8wMDAwIHRvIGdldCAweDFfMzAwMF8wMDAwLgorICogV2UgY2Fubm90IHVzZSBs
+ZXNzIGJ1ZmZlcnMgYmVjYXVzZSBkZWx0YSBpcyBzMzIgKGV2ZW4gaWYgaXQgaXMgcGFzc2VkIGFz
+CisgKiB1MzIpIHNvIG1heGltdW0gcG9zaXRpdmUgdmFsdWUgaXMgMHg3ZmZmX2ZmZmYuCisgKi8K
+KyNkZWZpbmUgREVMVEFfQlVGRkVSUyAzCitzdGF0aWMgdm9pZCBkZWx0YV9jaGVjayhzdHJ1Y3Qg
+YnVmX29wcyAqYm9wcykKK3sKKwlpbnQgaTkxNSA9IGJ1Zl9vcHNfZ2V0X2ZkKGJvcHMpLCBpOwor
+CXN0cnVjdCBpbnRlbF9iYiAqaWJiOworCXN0cnVjdCBpbnRlbF9idWYgKmJ1ZltERUxUQV9CVUZG
+RVJTXSwgKnRhcmdldDsKKwl1aW50NjRfdCBkZWZhdWx0X2FsaWdubWVudCwgb2Zmc2V0OworCXVp
+bnQzMl90ICpwdHIsIGhpLCBsbzsKKwlib29sIHN1cHBvcnRzXzQ4Yml0OworCisJaWJiID0gaW50
+ZWxfYmJfY3JlYXRlX3dpdGhfcmVsb2NzKGk5MTUsIFBBR0VfU0laRSk7CisJc3VwcG9ydHNfNDhi
+aXQgPSBpYmItPnN1cHBvcnRzXzQ4Yl9hZGRyZXNzOworCWlmICghc3VwcG9ydHNfNDhiaXQpCisJ
+CWludGVsX2JiX2Rlc3Ryb3koaWJiKTsKKwlpZ3RfcmVxdWlyZV9mKHN1cHBvcnRzXzQ4Yml0LCAi
+V2UgbmVlZCA0OGJpdCBwcGd0dCBmb3IgdGVzdGluZ1xuIik7CisKKwlpZiAoZGVidWdfYmIpCisJ
+CWludGVsX2JiX3NldF9kZWJ1ZyhpYmIsIHRydWUpOworCisJLyogQWxpZ25tZW50IGhhcyB0byBi
+ZSBwb3dlciBvZiAyLCB3ZSBuZWVkIHRvIGRvIDMgYnVmZmVycyAqLworCWRlZmF1bHRfYWxpZ25t
+ZW50ID0gaW50ZWxfYmJfc2V0X2RlZmF1bHRfb2JqZWN0X2FsaWdubWVudChpYmIsIDB4NDAwMDAw
+MDApOworCWZvciAoaSA9IDA7IGkgPCBBUlJBWV9TSVpFKGJ1Zik7IGkrKykgeworCQlidWZbaV0g
+PSBjcmVhdGVfYnVmKGJvcHMsIFdJRFRILCBIRUlHSFQsIENPTE9SX0NDKTsKKwkJaW50ZWxfYmJf
+YWRkX29iamVjdChpYmIsIGJ1ZltpXS0+aGFuZGxlLCBpbnRlbF9idWZfYm9fc2l6ZShidWZbaV0p
+LAorCQkJCSAgICBidWZbaV0tPmFkZHIub2Zmc2V0LCBmYWxzZSk7CisJfQorCWludGVsX2JiX3Nl
+dF9kZWZhdWx0X29iamVjdF9hbGlnbm1lbnQoaWJiLCBkZWZhdWx0X2FsaWdubWVudCk7CisKKwlp
+bnRlbF9iYl9vdXQoaWJiLCBNSV9CQVRDSF9CVUZGRVJfRU5EKTsKKwlpbnRlbF9iYl9wdHJfYWxp
+Z24oaWJiLCA4KTsKKworCWludGVsX2JiX2V4ZWMoaWJiLCBpbnRlbF9iYl9vZmZzZXQoaWJiKSwg
+STkxNV9FWEVDX0RFRkFVTFQsIGZhbHNlKTsKKworCXRhcmdldCA9IGJ1ZltERUxUQV9CVUZGRVJT
+IC0gMV07CisJLyogTGFzdCBidWZmZXIgc2hvdWxkIGJlIEAgMHhjMDAwXzAwMDAgKi8KKwlvZmZz
+ZXQgPSBpbnRlbF9iYl9nZXRfb2JqZWN0X29mZnNldChpYmIsIHRhcmdldC0+aGFuZGxlKTsKKwlp
+Z3RfYXNzZXJ0KG9mZnNldCA9PSAweGMwMDAwMDAwKTsKKworCWludGVsX2JiX3Jlc2V0KGliYiwg
+ZmFsc2UpOworCisJLyoKKwkgKiBXZSBuZWVkIHRvIGRvIHRoaXMgdWdseSBoYWNrIHRvIGVuZm9y
+Y2UgdXNpbmcgcGFzc2VkIHByZXN1bWVkX29mZnNldHMKKwkgKiBpbiBhZGRfb2JqZWN0KCkgb3Ro
+ZXJ3aXNlIC0xIGlzIHVzZWQgYW5kIHJlbG9jYXRpb24gaXMgcGVyZm9ybWVkLgorCSAqLworCWli
+Yi0+ZW5mb3JjZV9yZWxvY3MgPSBmYWxzZTsKKworCWludGVsX2JiX2FkZF9vYmplY3QoaWJiLCB0
+YXJnZXQtPmhhbmRsZSwgaW50ZWxfYnVmX2JvX3NpemUodGFyZ2V0KSwKKwkJCSAgICBvZmZzZXQs
+IGZhbHNlKTsKKwlpbnRlbF9iYl9vdXQoaWJiLCBNSV9CQVRDSF9CVUZGRVJfRU5EKTsKKwlpbnRl
+bF9iYl9wdHJfYWxpZ24oaWJiLCA4KTsKKworCWludGVsX2JiX2VtaXRfcmVsb2MoaWJiLCB0YXJn
+ZXQtPmhhbmRsZSwKKwkJCSAgICBJOTE1X0dFTV9ET01BSU5fUkVOREVSLAorCQkJICAgIEk5MTVf
+R0VNX0RPTUFJTl9SRU5ERVIsCisJCQkgICAgMHg3MDAwMDAwMCwgb2Zmc2V0KTsKKworCWludGVs
+X2JiX2V4ZWMoaWJiLCBpbnRlbF9iYl9vZmZzZXQoaWJiKSwgSTkxNV9FWEVDX0RFRkFVTFQsIGZh
+bHNlKTsKKworCXB0ciA9IGdlbV9tbWFwX19kZXZpY2VfY29oZXJlbnQoaTkxNSwgaWJiLT5oYW5k
+bGUsIDAsIGliYi0+c2l6ZSwgUFJPVF9SRUFEKTsKKwlsbyA9IHB0clsyXTsKKwloaSA9IHB0clsz
+XTsKKwlnZW1fbXVubWFwKHB0ciwgaWJiLT5zaXplKTsKKworCWZvciAoaSA9IDA7IGkgPCBBUlJB
+WV9TSVpFKGJ1Zik7IGkrKykKKwkJaW50ZWxfYnVmX2Rlc3Ryb3koYnVmW2ldKTsKKwlpbnRlbF9i
+Yl9kZXN0cm95KGliYik7CisKKwkvKiBBc3NlcnQgYWZ0ZXIgYWxsIHJlc291cmNlcyBhcmUgZnJl
+ZWQgKi8KKwlpZ3RfYXNzZXJ0X2YobG8gPT0gMHgzMDAwMDAwMCAmJiBoaSA9PSAweDEsCisJCSAg
+ICAgImludGVsLWJiIGRvZXNuJ3QgcHJvcGVybHkgaGFuZGxlIGRlbHRhIGluIGVtaXQgcmVsb2Nh
+dGlvblxuIik7Cit9CisKIHN0YXRpYyB2b2lkIGZ1bGxfYmF0Y2goc3RydWN0IGJ1Zl9vcHMgKmJv
+cHMpCiB7CiAJaW50IGk5MTUgPSBidWZfb3BzX2dldF9mZChib3BzKTsKQEAgLTExNTAsNiArMTIz
+MSw5IEBAIGlndF9tYWluX2FyZ3MoImRwaWIiLCBOVUxMLCBoZWxwX3N0ciwgb3B0X2hhbmRsZXIs
+IE5VTEwpCiAJaWd0X3N1YnRlc3QoIm9mZnNldC1jb250cm9sIikKIAkJb2Zmc2V0X2NvbnRyb2wo
+Ym9wcyk7CiAKKwlpZ3Rfc3VidGVzdCgiZGVsdGEtY2hlY2siKQorCQlkZWx0YV9jaGVjayhib3Bz
+KTsKKwogCWlndF9zdWJ0ZXN0KCJmdWxsLWJhdGNoIikKIAkJZnVsbF9iYXRjaChib3BzKTsKIAot
+LSAKMi4yNi4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRw
+czovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
