@@ -1,14 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 15A8A89AA6
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 13:00:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 034CE89AA7
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 13:00:13 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20201110073121.192006-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
-References: <20201110073121.192006-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+In-Reply-To: <20201110122448.84091-1-zbigniew.kempczynski@intel.com>
+References: <20201110122448.84091-1-zbigniew.kempczynski@intel.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 10 Nov 2020 13:00:51 +0000
-Message-ID: <160501325126.29434.3551992167366359553@build.alporthouse.com>
-Subject: Re: [igt-dev] [i-g-t] lib/i915: Identify Jasperlake
+Date: Tue, 10 Nov 2020 13:00:07 +0000
+Message-ID: <160501320739.29434.15560837802228029763@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2] tests/api_intel_bb: Verify delta is
+ properly added in emit relocation
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -16,35 +17,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>, hariom.pandey@intel.com, igt-dev@lists.freedesktop.org
+To: zbigniew.kempczynski@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Tejas Upadhyay (2020-11-10 07:31:21)
-> Recently we did split of EHL/JSL thus we need to indentify
-> Jasperlake.
-> 
-> Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
-> ---
->  lib/intel_device_info.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-> index e1132d9c..054b98c0 100644
-> --- a/lib/intel_device_info.c
-> +++ b/lib/intel_device_info.c
-> @@ -423,6 +423,7 @@ static const struct pci_id_match intel_device_match[] = {
->         INTEL_ICL_11_IDS(&intel_icelake_info),
->  
->         INTEL_EHL_IDS(&intel_elkhartlake_info),
-> +       INTEL_JSL_IDS(&intel_elkhartlake_info),
-
-You could give it it's platform name as well. Might be useful later.
--Chris
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+UXVvdGluZyBaYmlnbmlldyBLZW1wY3p5xYRza2kgKDIwMjAtMTEtMTAgMTI6MjQ6NDgpCj4gV2hl
+biBkZWx0YSBpcyBhZGRlZCB0byBidWZmZXIgYWRkcmVzcyBhbmQgc3VtIGV4Y2VlZHMgMzJiaXRz
+IHZlcmlmeQo+IGVtaXQgcmVsb2NhdGlvbiBjb250YWlucyBwcm9wZXJseSBzZXQgbG93ICsgaGln
+aCBhZGRyZXNzIGR3b3Jkcy4KPiAKPiB2MjogU2ltcGxpZnkgY29kZSBhbmQgYWRkIHdyaXRlL3Jl
+YWQgY2hlY2sgKHN1Z2dlc3RlZCBieSBJbXJlKQo+IAo+IFJlZmVyZW5jZXM6IGh0dHBzOi8vcGF0
+Y2h3b3JrLmZyZWVkZXNrdG9wLm9yZy9zZXJpZXMvODM2NDQvCj4gCj4gU2lnbmVkLW9mZi1ieTog
+WmJpZ25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+Cj4g
+UmVwb3J0ZWQtYnk6IEltcmUgRGVhayA8aW1yZS5kZWFrQGludGVsLmNvbT4KPiBDYzogSW1yZSBE
+ZWFrIDxpbXJlLmRlYWtAaW50ZWwuY29tPgo+IENjOiBDaHJpcyBXaWxzb24gPGNocmlzQGNocmlz
+LXdpbHNvbi5jby51az4KPiAtLS0KPiAgdGVzdHMvaTkxNS9hcGlfaW50ZWxfYmIuYyB8IDY4ICsr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKwo+ICAxIGZpbGUgY2hhbmdlZCwg
+NjggaW5zZXJ0aW9ucygrKQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9pOTE1L2FwaV9pbnRlbF9i
+Yi5jIGIvdGVzdHMvaTkxNS9hcGlfaW50ZWxfYmIuYwo+IGluZGV4IDk2NWE3ZGRlLi40ZTM3M2Yx
+NyAxMDA2NDQKPiAtLS0gYS90ZXN0cy9pOTE1L2FwaV9pbnRlbF9iYi5jCj4gKysrIGIvdGVzdHMv
+aTkxNS9hcGlfaW50ZWxfYmIuYwo+IEBAIC04NjAsNiArODYwLDcxIEBAIHN0YXRpYyB2b2lkIG9m
+ZnNldF9jb250cm9sKHN0cnVjdCBidWZfb3BzICpib3BzKQo+ICAgICAgICAgaW50ZWxfYmJfZGVz
+dHJveShpYmIpOwo+ICB9Cj4gIAo+ICsvKgo+ICsgKiBJZGVhIG9mIHRoZSB0ZXN0IGlzIHRvIHZl
+cmlmeSBkZWx0YSBpcyBwcm9wZXJseSBhZGRlZCB0byBhZGRyZXNzCj4gKyAqIHdoZW4gZW1pdF9y
+ZWxvYygpIGlzIGNhbGxlZC4KPiArICovCj4gKyNkZWZpbmUgREVMVEFfQlVGRkVSUyAzCj4gK3N0
+YXRpYyB2b2lkIGRlbHRhX2NoZWNrKHN0cnVjdCBidWZfb3BzICpib3BzKQo+ICt7Cj4gKyAgICAg
+ICBpbnQgaTkxNSA9IGJ1Zl9vcHNfZ2V0X2ZkKGJvcHMpOwo+ICsgICAgICAgc3RydWN0IGludGVs
+X2JiICppYmI7Cj4gKyAgICAgICBzdHJ1Y3QgaW50ZWxfYnVmICpidWY7Cj4gKyAgICAgICB1aW50
+MzJfdCAqcHRyLCBoaSwgbG8sIHZhbDsKPiArICAgICAgIHVpbnQ2NF90IG9mZnNldDsKPiArICAg
+ICAgIGJvb2wgc3VwcG9ydHNfNDhiaXQ7Cj4gKwo+ICsgICAgICAgaWJiID0gaW50ZWxfYmJfY3Jl
+YXRlKGk5MTUsIFBBR0VfU0laRSk7Cj4gKyAgICAgICBzdXBwb3J0c180OGJpdCA9IGliYi0+c3Vw
+cG9ydHNfNDhiX2FkZHJlc3M7Cj4gKyAgICAgICBpZiAoIXN1cHBvcnRzXzQ4Yml0KQo+ICsgICAg
+ICAgICAgICAgICBpbnRlbF9iYl9kZXN0cm95KGliYik7Cj4gKyAgICAgICBpZ3RfcmVxdWlyZV9m
+KHN1cHBvcnRzXzQ4Yml0LCAiV2UgbmVlZCA0OGJpdCBwcGd0dCBmb3IgdGVzdGluZ1xuIik7Cj4g
+Kwo+ICsgICAgICAgaWYgKGRlYnVnX2JiKQo+ICsgICAgICAgICAgICAgICBpbnRlbF9iYl9zZXRf
+ZGVidWcoaWJiLCB0cnVlKTsKPiArCj4gKyAgICAgICBidWYgPSBjcmVhdGVfYnVmKGJvcHMsIDB4
+MTAwMCwgMHgxMCwgQ09MT1JfQ0MpOwo+ICsgICAgICAgYnVmLT5hZGRyLm9mZnNldCA9IDB4ZmZm
+ZmYwMDA7Cj4gKyAgICAgICBpbnRlbF9iYl9hZGRfb2JqZWN0KGliYiwgYnVmLT5oYW5kbGUsIGlu
+dGVsX2J1Zl9ib19zaXplKGJ1ZiksCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgIGJ1Zi0+
+YWRkci5vZmZzZXQsIGZhbHNlKTsKPiArCj4gKyAgICAgICBpbnRlbF9iYl9vdXQoaWJiLCBNSV9T
+VE9SRV9EV09SRF9JTU0gfCAoaWJiLT5nZW4gPCA2ID8gMSA8PCAyMiA6IDApKTsKClRoZSBpbnN0
+cnVjdGlvbiBpcyBkaWZmZXJlbnQgbGVuZ3RoczsgMSB1cHRvIGdlbjgsIDIgZ2VuOCsuCi1DaHJp
+cwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2
+IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3Rz
+LmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
