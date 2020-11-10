@@ -1,15 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 418268955D
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 12:54:55 +0000 (UTC)
-From: "Souza, Jose" <jose.souza@intel.com>
-Date: Tue, 10 Nov 2020 12:54:53 +0000
-Message-ID: <738df721f26dba4aa9bdf4db82eae1533153c080.camel@intel.com>
-References: <20201110073121.192006-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
-In-Reply-To: <20201110073121.192006-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
-Content-Language: en-US
-Content-ID: <8BFC5CEF2527D8478FECD29E24EE4E2E@intel.com>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15A8A89AA6
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 13:00:54 +0000 (UTC)
 MIME-Version: 1.0
+In-Reply-To: <20201110073121.192006-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+References: <20201110073121.192006-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 10 Nov 2020 13:00:51 +0000
+Message-ID: <160501325126.29434.3551992167366359553@build.alporthouse.com>
 Subject: Re: [igt-dev] [i-g-t] lib/i915: Identify Jasperlake
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -18,30 +16,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: "Surendrakumar Upadhyay, TejaskumarX" <tejaskumarx.surendrakumar.upadhyay@intel.com>, "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Pandey,
- Hariom" <hariom.pandey@intel.com>
+To: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>, hariom.pandey@intel.com, igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCAyMDIwLTExLTEwIGF0IDEzOjAxICswNTMwLCBUZWphcyBVcGFkaHlheSB3cm90ZToN
-Cj4gUmVjZW50bHkgd2UgZGlkIHNwbGl0IG9mIEVITC9KU0wgdGh1cyB3ZSBuZWVkIHRvIGluZGVu
-dGlmeQ0KPiBKYXNwZXJsYWtlLg0KDQpSZXZpZXdlZC1ieTogSm9zw6kgUm9iZXJ0byBkZSBTb3V6
-YSA8am9zZS5zb3V6YUBpbnRlbC5jb20+DQoNCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFRlamFzIFVw
-YWRoeWF5IDx0ZWphc2t1bWFyeC5zdXJlbmRyYWt1bWFyLnVwYWRoeWF5QGludGVsLmNvbT4NCj4g
-LS0tDQo+IMKgbGliL2ludGVsX2RldmljZV9pbmZvLmMgfCAxICsNCj4gwqAxIGZpbGUgY2hhbmdl
-ZCwgMSBpbnNlcnRpb24oKykNCj4gDQo+IGRpZmYgLS1naXQgYS9saWIvaW50ZWxfZGV2aWNlX2lu
-Zm8uYyBiL2xpYi9pbnRlbF9kZXZpY2VfaW5mby5jDQo+IGluZGV4IGUxMTMyZDljLi4wNTRiOThj
-MCAxMDA2NDQNCj4gLS0tIGEvbGliL2ludGVsX2RldmljZV9pbmZvLmMNCj4gKysrIGIvbGliL2lu
-dGVsX2RldmljZV9pbmZvLmMNCj4gQEAgLTQyMyw2ICs0MjMsNyBAQCBzdGF0aWMgY29uc3Qgc3Ry
-dWN0IHBjaV9pZF9tYXRjaCBpbnRlbF9kZXZpY2VfbWF0Y2hbXSA9IHsNCj4gwqAJSU5URUxfSUNM
-XzExX0lEUygmaW50ZWxfaWNlbGFrZV9pbmZvKSwNCj4gwqANCj4gDQo+IA0KPiANCj4gwqAJSU5U
-RUxfRUhMX0lEUygmaW50ZWxfZWxraGFydGxha2VfaW5mbyksDQo+ICsJSU5URUxfSlNMX0lEUygm
-aW50ZWxfZWxraGFydGxha2VfaW5mbyksDQo+IMKgDQo+IA0KPiANCj4gDQo+IMKgCUlOVEVMX1RH
-TF8xMl9HVDFfSURTKCZpbnRlbF90aWdlcmxha2VfZ3QxX2luZm8pLA0KPiDCoAlJTlRFTF9UR0xf
-MTJfR1QyX0lEUygmaW50ZWxfdGlnZXJsYWtlX2d0Ml9pbmZvKSwNCg0KX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0
-LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcv
-bWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
+Quoting Tejas Upadhyay (2020-11-10 07:31:21)
+> Recently we did split of EHL/JSL thus we need to indentify
+> Jasperlake.
+> 
+> Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+> ---
+>  lib/intel_device_info.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> index e1132d9c..054b98c0 100644
+> --- a/lib/intel_device_info.c
+> +++ b/lib/intel_device_info.c
+> @@ -423,6 +423,7 @@ static const struct pci_id_match intel_device_match[] = {
+>         INTEL_ICL_11_IDS(&intel_icelake_info),
+>  
+>         INTEL_EHL_IDS(&intel_elkhartlake_info),
+> +       INTEL_JSL_IDS(&intel_elkhartlake_info),
+
+You could give it it's platform name as well. Might be useful later.
+-Chris
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
