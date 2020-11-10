@@ -1,16 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3BD6A89654
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 09:13:32 +0000 (UTC)
-Date: Tue, 10 Nov 2020 10:13:26 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20201110091326.GA5736@zkempczy-mobl2>
-References: <20201110070747.22703-1-nidhi1.gupta@intel.com>
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF25D896E9
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 09:13:28 +0000 (UTC)
+Date: Tue, 10 Nov 2020 11:13:24 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20201110091324.GY7444@platvala-desk.ger.corp.intel.com>
+References: <20201106102222.8674-1-mohammed.khajapasha@intel.com>
+ <20201106102222.8674-2-mohammed.khajapasha@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201110070747.22703-1-nidhi1.gupta@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v2] Fix IGT Warnings due to dynamic
- subtest inclusion
+In-Reply-To: <20201106102222.8674-2-mohammed.khajapasha@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/1] tests/kms_plane_scaling: Don't run
+ plane scaler tests on each output
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,63 +19,123 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: nidhi1.gupta@intel.com
-Cc: igt-dev@lists.freedesktop.org
+To: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+Cc: igt-dev@lists.freedesktop.org, juha-pekka.heikkila@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBOb3YgMTAsIDIwMjAgYXQgMTI6Mzc6NDdQTSArMDUzMCwgbmlkaGkxLmd1cHRhQGlu
-dGVsLmNvbSB3cm90ZToKPiBGcm9tOiBOaWRoaSBHdXB0YSA8bmlkaGkxLmd1cHRhQGludGVsLmNv
-bT4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBOaWRoaSBHdXB0YSA8bmlkaGkxLmd1cHRhQGludGVsLmNv
-bT4KPiAtLS0KPiAgdGVzdHMva21zX2F0b21pY19pbnRlcnJ1cHRpYmxlLmMgfCAxNCArKysrKysr
-LS0tLS0tLQo+ICAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspLCA3IGRlbGV0aW9ucygt
-KQo+IAo+IGRpZmYgLS1naXQgYS90ZXN0cy9rbXNfYXRvbWljX2ludGVycnVwdGlibGUuYyBiL3Rl
-c3RzL2ttc19hdG9taWNfaW50ZXJydXB0aWJsZS5jCj4gaW5kZXggMjdiYjZhMmIuLjNiYTc1MDg5
-IDEwMDY0NAo+IC0tLSBhL3Rlc3RzL2ttc19hdG9taWNfaW50ZXJydXB0aWJsZS5jCj4gKysrIGIv
-dGVzdHMva21zX2F0b21pY19pbnRlcnJ1cHRpYmxlLmMKPiBAQCAtMjg4LDcgKzI4OCw3IEBAIGln
-dF9tYWluCj4gIAkJZm9yX2VhY2hfcGlwZV93aXRoX3ZhbGlkX291dHB1dCgmZGlzcGxheSwgcGlw
-ZSwgb3V0cHV0KSB7Cj4gIAkJCWlndF9keW5hbWljX2YoIiVzLXBpcGUtJXMiLCBpZ3Rfb3V0cHV0
-X25hbWUob3V0cHV0KSwga21zdGVzdF9waXBlX25hbWUocGlwZSkpCj4gIAkJCQlydW5fcGxhbmVf
-dGVzdCgmZGlzcGxheSwgcGlwZSwgb3V0cHV0LCB0ZXN0X2xlZ2FjeV9tb2Rlc2V0LCBEUk1fUExB
-TkVfVFlQRV9QUklNQVJZKTsKPiAtCQkJCWJyZWFrOwo+ICsJCQlicmVhazsKPiAgCQl9Cj4gIAl9
-Cj4gIAo+IEBAIC0yOTYsNyArMjk2LDcgQEAgaWd0X21haW4KPiAgCQlmb3JfZWFjaF9waXBlX3dp
-dGhfdmFsaWRfb3V0cHV0KCZkaXNwbGF5LCBwaXBlLCBvdXRwdXQpIHsKPiAgCQkJaWd0X2R5bmFt
-aWNfZigiJXMtcGlwZS0lcyIsIGlndF9vdXRwdXRfbmFtZShvdXRwdXQpLCBrbXN0ZXN0X3BpcGVf
-bmFtZShwaXBlKSkKPiAgCQkJCXJ1bl9wbGFuZV90ZXN0KCZkaXNwbGF5LCBwaXBlLCBvdXRwdXQs
-IHRlc3RfYXRvbWljX21vZGVzZXQsIERSTV9QTEFORV9UWVBFX1BSSU1BUlkpOwo+IC0JCQkJYnJl
-YWs7Cj4gKwkJCWJyZWFrOwo+ICAJCX0KPiAgCX0KPiAgCj4gQEAgLTMwNCw3ICszMDQsNyBAQCBp
-Z3RfbWFpbgo+ICAJCWZvcl9lYWNoX3BpcGVfd2l0aF92YWxpZF9vdXRwdXQoJmRpc3BsYXksIHBp
-cGUsIG91dHB1dCkgewo+ICAJCQlpZ3RfZHluYW1pY19mKCIlcy1waXBlLSVzIiwgaWd0X291dHB1
-dF9uYW1lKG91dHB1dCksIGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpKQo+ICAJCQkJcnVuX3BsYW5l
-X3Rlc3QoJmRpc3BsYXksIHBpcGUsIG91dHB1dCwgdGVzdF9sZWdhY3lfZHBtcywgRFJNX1BMQU5F
-X1RZUEVfUFJJTUFSWSk7Cj4gLQkJCQlicmVhazsKPiArCQkJYnJlYWs7Cj4gIAkJfQo+ICAJfQo+
-ICAKPiBAQCAtMzEyLDcgKzMxMiw3IEBAIGlndF9tYWluCj4gIAkJZm9yX2VhY2hfcGlwZV93aXRo
-X3ZhbGlkX291dHB1dCgmZGlzcGxheSwgcGlwZSwgb3V0cHV0KSB7Cj4gIAkJCWlndF9keW5hbWlj
-X2YoIiVzLXBpcGUtJXMiLCBpZ3Rfb3V0cHV0X25hbWUob3V0cHV0KSwga21zdGVzdF9waXBlX25h
-bWUocGlwZSkpCj4gIAkJCQlydW5fcGxhbmVfdGVzdCgmZGlzcGxheSwgcGlwZSwgb3V0cHV0LCB0
-ZXN0X3BhZ2VmbGlwLCBEUk1fUExBTkVfVFlQRV9QUklNQVJZKTsKPiAtCQkJCWJyZWFrOwo+ICsJ
-CQlicmVhazsKPiAgCQl9Cj4gIAl9Cj4gIAo+IEBAIC0zMjAsNyArMzIwLDcgQEAgaWd0X21haW4K
-PiAgCQlmb3JfZWFjaF9waXBlX3dpdGhfdmFsaWRfb3V0cHV0KCZkaXNwbGF5LCBwaXBlLCBvdXRw
-dXQpIHsKPiAgCQkJaWd0X2R5bmFtaWNfZigiJXMtcGlwZS0lcyIsIGlndF9vdXRwdXRfbmFtZShv
-dXRwdXQpLCBrbXN0ZXN0X3BpcGVfbmFtZShwaXBlKSkKPiAgCQkJCXJ1bl9wbGFuZV90ZXN0KCZk
-aXNwbGF5LCBwaXBlLCBvdXRwdXQsIHRlc3Rfc2V0Y3Vyc29yLCBEUk1fUExBTkVfVFlQRV9DVVJT
-T1IpOwo+IC0JCQkJYnJlYWs7Cj4gKwkJCWJyZWFrOwo+ICAJCX0KPiAgCX0KPiAgCj4gQEAgLTMy
-OCw3ICszMjgsNyBAQCBpZ3RfbWFpbgo+ICAJCWZvcl9lYWNoX3BpcGVfd2l0aF92YWxpZF9vdXRw
-dXQoJmRpc3BsYXksIHBpcGUsIG91dHB1dCkgewo+ICAJCQlpZ3RfZHluYW1pY19mKCIlcy1waXBl
-LSVzIiwgaWd0X291dHB1dF9uYW1lKG91dHB1dCksIGttc3Rlc3RfcGlwZV9uYW1lKHBpcGUpKQo+
-ICAJCQkJcnVuX3BsYW5lX3Rlc3QoJmRpc3BsYXksIHBpcGUsIG91dHB1dCwgdGVzdF9zZXRwbGFu
-ZSwgRFJNX1BMQU5FX1RZUEVfUFJJTUFSWSk7Cj4gLQkJCQlicmVhazsKPiArCQkJYnJlYWs7Cj4g
-IAkJfQo+ICAJfQo+ICAKPiBAQCAtMzM2LDcgKzMzNiw3IEBAIGlndF9tYWluCj4gIAkJZm9yX2Vh
-Y2hfcGlwZV93aXRoX3ZhbGlkX291dHB1dCgmZGlzcGxheSwgcGlwZSwgb3V0cHV0KSB7Cj4gIAkJ
-CWlndF9keW5hbWljX2YoIiVzLXBpcGUtJXMiLCBpZ3Rfb3V0cHV0X25hbWUob3V0cHV0KSwga21z
-dGVzdF9waXBlX25hbWUocGlwZSkpCj4gIAkJCQlydW5fcGxhbmVfdGVzdCgmZGlzcGxheSwgcGlw
-ZSwgb3V0cHV0LCB0ZXN0X3NldHBsYW5lLCBEUk1fUExBTkVfVFlQRV9DVVJTT1IpOwo+IC0JCQkJ
-YnJlYWs7Cj4gKwkJCWJyZWFrOwo+ICAJCX0KPiAgCX0KPiAgCj4gLS0gCj4gMi4yNi4yCj4KCk5v
-dyBpdCBpcyBvazoKClJldmlld2VkLWJ5OiBaYmlnbmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3
-LmtlbXBjenluc2tpQGludGVsLmNvbT4KCi0tClpiaWduaWV3IApfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2
-QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWls
-bWFuL2xpc3RpbmZvL2lndC1kZXYK
+On Fri, Nov 06, 2020 at 03:52:22PM +0530, Mohammed Khajapasha wrote:
+> Don't run plane scaler tests on each output of a pipe.
+> We probably don't need to test plane scaler tests on each
+> output of a pipe.
+> 
+> $ time ./build/tests/kms_plane_scaling
+> - real    17m6.593s
+> + real    6m33.515s
+> 
+> Cc: petri.latvala@intel.com
+> Cc: mika.kahola@intel.com
+> Cc: juha-pekka.heikkila@intel.com
+> Signed-off-by: Mohammed Khajapasha <mohammed.khajapasha@intel.com>
+> ---
+>  tests/kms_plane_scaling.c | 38 +++++++++++++++++++++++---------------
+>  1 file changed, 23 insertions(+), 15 deletions(-)
+> 
+> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+> index ecd2c2e30..e14e6eaee 100644
+> --- a/tests/kms_plane_scaling.c
+> +++ b/tests/kms_plane_scaling.c
+> @@ -238,6 +238,8 @@ static void test_scaler_with_rotation_pipe(data_t *d, enum pipe pipe,
+>  	uint64_t tiling = is_i915_device(d->drm_fd) ?
+>  		LOCAL_I915_FORMAT_MOD_Y_TILED : LOCAL_DRM_FORMAT_MOD_NONE;
+>  
+> +	igt_require(get_num_scalers(d, pipe) > 0);
+> +
+>  	igt_output_set_pipe(output, pipe);
+>  	for_each_plane_on_pipe(display, pipe, plane) {
+>  		if (plane->type == DRM_PLANE_TYPE_CURSOR)
+> @@ -278,6 +280,8 @@ static void test_scaler_with_pixel_format_pipe(data_t *d, enum pipe pipe, igt_ou
+>  	igt_display_t *display = &d->display;
+>  	igt_plane_t *plane;
+>  
+> +	igt_require(get_num_scalers(d, pipe) > 0);
+> +
+>  	igt_output_set_pipe(output, pipe);
+>  
+>  	for_each_plane_on_pipe(display, pipe, plane) {
+> @@ -351,6 +355,8 @@ test_plane_scaling_on_pipe(data_t *d, enum pipe pipe, igt_output_t *output)
+>  	uint64_t tiling = is_i915_device(display->drm_fd) ?
+>  		LOCAL_I915_FORMAT_MOD_X_TILED : LOCAL_DRM_FORMAT_MOD_NONE;
+>  
+> +	igt_require(get_num_scalers(d, pipe) > 0);
+> +
+>  	igt_skip_on(!igt_display_has_format_mod(display, DRM_FORMAT_XRGB8888,
+>  						tiling));
+>  
+> @@ -685,30 +691,32 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>  		igt_require(data.display.is_atomic);
+>  	}
+>  
+> -	for_each_pipe_static(pipe) igt_subtest_group {
+> +	igt_subtest_group {
+>  		igt_output_t *output;
+>  
+> -		igt_fixture {
+> -			igt_display_require_output_on_pipe(&data.display, pipe);
+> -
+> -			igt_require(get_num_scalers(&data, pipe) > 0);
+> -		}
+> -
+> -		igt_subtest_f("pipe-%s-plane-scaling", kmstest_pipe_name(pipe))
+> -			for_each_valid_output_on_pipe(&data.display, pipe, output)
+> +		igt_subtest_with_dynamic("plane-scaling") {
+> +			for_each_pipe_with_single_output(&data.display, pipe, output)
+> +				igt_dynamic_f("pipe-%s-plane-scaling", kmstest_pipe_name(pipe))
+>  				test_plane_scaling_on_pipe(&data, pipe, output);
+
+Please check the indentation after igt_dynamic_f here and below, the
+function call should be indented to make it clear it, and only it, is
+part of the igt_dynamic block.
+
+Otherwise LGTM, so with that changed
+Reviewed-by: Petri Latvala <petri.latvala@intel.com>
+
+
+> +		}
+>  
+> -		igt_subtest_f("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe))
+> -			for_each_valid_output_on_pipe(&data.display, pipe, output)
+> +		igt_subtest_with_dynamic("scaler-with-pixel-format") {
+> +			for_each_pipe_with_single_output(&data.display, pipe, output)
+> +				igt_dynamic_f("pipe-%s-scaler-with-pixel-format", kmstest_pipe_name(pipe))
+>  				test_scaler_with_pixel_format_pipe(&data, pipe, output);
+> +		}
+>  
+> -		igt_subtest_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
+> -			for_each_valid_output_on_pipe(&data.display, pipe, output)
+> +		igt_subtest_with_dynamic("scaler-with-rotation") {
+> +			for_each_pipe_with_single_output(&data.display, pipe, output)
+> +				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
+>  				test_scaler_with_rotation_pipe(&data, pipe, output);
+> +		}
+>  
+> -		igt_subtest_f("pipe-%s-scaler-with-clipping-clamping", kmstest_pipe_name(pipe))
+> -			for_each_valid_output_on_pipe(&data.display, pipe, output)
+> +		igt_subtest_with_dynamic("scaler-with-clipping-clamping") {
+> +			for_each_pipe_with_single_output(&data.display, pipe, output)
+> +				igt_dynamic_f("pipe-%s-scaler-with-rotation", kmstest_pipe_name(pipe))
+>  				test_scaler_with_clipping_clamping_scenario(&data, pipe, output);
+> +		}
+>  	}
+>  
+>  	igt_subtest_f("2x-scaler-multi-pipe")
+> -- 
+> 2.29.2.154.g7f7ebe054a
+> 
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
