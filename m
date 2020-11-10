@@ -1,13 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E546B8945B
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 06:59:38 +0000 (UTC)
-From: nidhi1.gupta@intel.com
-Date: Tue, 10 Nov 2020 12:37:47 +0530
-Message-Id: <20201110070747.22703-1-nidhi1.gupta@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CC7389803
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2020 07:39:52 +0000 (UTC)
+From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Tue, 10 Nov 2020 13:01:21 +0530
+Message-Id: <20201110073121.192006-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v2] Fix IGT Warnings due to dynamic subtest
- inclusion
+Subject: [igt-dev] [i-g-t] lib/i915: Identify Jasperlake
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,86 +18,31 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org, hariom.pandey@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Nidhi Gupta <nidhi1.gupta@intel.com>
+Recently we did split of EHL/JSL thus we need to indentify
+Jasperlake.
 
-Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
+Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
 ---
- tests/kms_atomic_interruptible.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ lib/intel_device_info.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/kms_atomic_interruptible.c b/tests/kms_atomic_interruptible.c
-index 27bb6a2b..3ba75089 100644
---- a/tests/kms_atomic_interruptible.c
-+++ b/tests/kms_atomic_interruptible.c
-@@ -288,7 +288,7 @@ igt_main
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_legacy_modeset, DRM_PLANE_TYPE_PRIMARY);
--				break;
-+			break;
- 		}
- 	}
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index e1132d9c..054b98c0 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -423,6 +423,7 @@ static const struct pci_id_match intel_device_match[] = {
+ 	INTEL_ICL_11_IDS(&intel_icelake_info),
  
-@@ -296,7 +296,7 @@ igt_main
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_atomic_modeset, DRM_PLANE_TYPE_PRIMARY);
--				break;
-+			break;
- 		}
- 	}
+ 	INTEL_EHL_IDS(&intel_elkhartlake_info),
++	INTEL_JSL_IDS(&intel_elkhartlake_info),
  
-@@ -304,7 +304,7 @@ igt_main
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_legacy_dpms, DRM_PLANE_TYPE_PRIMARY);
--				break;
-+			break;
- 		}
- 	}
- 
-@@ -312,7 +312,7 @@ igt_main
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_pageflip, DRM_PLANE_TYPE_PRIMARY);
--				break;
-+			break;
- 		}
- 	}
- 
-@@ -320,7 +320,7 @@ igt_main
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_setcursor, DRM_PLANE_TYPE_CURSOR);
--				break;
-+			break;
- 		}
- 	}
- 
-@@ -328,7 +328,7 @@ igt_main
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_PRIMARY);
--				break;
-+			break;
- 		}
- 	}
- 
-@@ -336,7 +336,7 @@ igt_main
- 		for_each_pipe_with_valid_output(&display, pipe, output) {
- 			igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
- 				run_plane_test(&display, pipe, output, test_setplane, DRM_PLANE_TYPE_CURSOR);
--				break;
-+			break;
- 		}
- 	}
- 
+ 	INTEL_TGL_12_GT1_IDS(&intel_tigerlake_gt1_info),
+ 	INTEL_TGL_12_GT2_IDS(&intel_tigerlake_gt2_info),
 -- 
-2.26.2
+2.28.0
 
 _______________________________________________
 igt-dev mailing list
