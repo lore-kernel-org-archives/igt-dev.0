@@ -1,17 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C1E289E5A
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2020 10:17:21 +0000 (UTC)
-Date: Wed, 11 Nov 2020 12:17:12 +0200
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5FE2D89EB7
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2020 10:18:21 +0000 (UTC)
+Date: Wed, 11 Nov 2020 12:18:12 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201111101712.GE7444@platvala-desk.ger.corp.intel.com>
+Message-ID: <20201111101812.GF7444@platvala-desk.ger.corp.intel.com>
 References: <20201110075102.5033-1-tzimmermann@suse.de>
- <20201110075102.5033-6-tzimmermann@suse.de>
+ <20201110075102.5033-7-tzimmermann@suse.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201110075102.5033-6-tzimmermann@suse.de>
-Subject: Re: [igt-dev] [PATCH v3 5/8] tests/fbdev: Add tests for write
- operations on framebuffer
+In-Reply-To: <20201110075102.5033-7-tzimmermann@suse.de>
+Subject: Re: [igt-dev] [PATCH v3 6/8] tests/fbdev: Add tests for unaligned
+ writes on framebuffer memory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -27,52 +27,61 @@ To: Thomas Zimmermann <tzimmermann@suse.de>
 Cc: igt-dev@lists.freedesktop.org, chris@chris-wilson.co.uk
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Nov 10, 2020 at 08:50:59AM +0100, Thomas Zimmermann wrote:
-> The write tests check the written buffer against the content of the mapped
-> framebuffer.
+On Tue, Nov 10, 2020 at 08:51:00AM +0100, Thomas Zimmermann wrote:
+> The tests for unaligned writes start and stop writing within pages.
 > 
 > v3:
 > 	* put igt_describe() before igt_subtest() (Petri)
 > 
 > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 > ---
->  tests/fbdev.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+>  tests/fbdev.c | 29 +++++++++++++++++++++++++++++
+>  1 file changed, 29 insertions(+)
 > 
 > diff --git a/tests/fbdev.c b/tests/fbdev.c
-> index a6376c3b..02abdede 100644
+> index 02abdede..522da8e2 100644
 > --- a/tests/fbdev.c
 > +++ b/tests/fbdev.c
-> @@ -135,6 +135,26 @@ static void framebuffer_tests(int fd)
->  		igt_require_f(pos, "found 0x55 at pos %zu, none expected\n", pos - buf);
+> @@ -155,6 +155,35 @@ static void framebuffer_tests(int fd)
+>  		igt_require_f(!cmp, "write buffer differs from mapped framebuffer for 0\n");
 >  	}
 >  
-> +	igt_describe("Check write operations on framebuffer memory");
-> +	igt_subtest("write") {
+> +	igt_describe("Check write operations on unaligned locations in framebuffer memory");
+> +	igt_subtest("unaligned-write") {
+> +		off_t off;
+> +		size_t len;
 > +		ssize_t ret;
-> +		int cmp;
+> +		const unsigned char *pos;
 > +
-> +		/* write 0 to framebuffer and compare */
+> +		off = pagesize + (pagesize >> 2); // 1.25 * pagesize
+> +		len = (pagesize << 2) + (pagesize >> 1); // 4.5 * pagesize
+> +		igt_require_f((off + len) < fix_info.smem_len, "framebuffer too small\n");
+
+Same question here about framebuffer size as in that one earlier patch.
+
+> +
+> +		/* read at unaligned location and compare */
+> +		memset(map, 0xff, fix_info.smem_len);
 > +		memset(buf, 0, fix_info.smem_len);
-> +		ret = pwrite(fd, buf, fix_info.smem_len, 0);
-> +		igt_require_f(ret == (ssize_t)fix_info.smem_len, "pwrite failed, ret=%zd\n", ret);
-> +		cmp = memcmp(map, buf, fix_info.smem_len);
-> +		igt_require_f(!cmp, "write buffer differs from mapped framebuffer for 0\n");
-> +
-> +		/* write 0x55 to framebuffer and compare */
-> +		memset(buf, 0x55, fix_info.smem_len);
-> +		ret = pwrite(fd, buf, fix_info.smem_len, 0);
-> +		igt_require_f(ret == (ssize_t)fix_info.smem_len, "pwrite failed, ret=%zd\n", ret);
-> +		cmp = memcmp(map, buf, fix_info.smem_len);
-> +		igt_require_f(!cmp, "write buffer differs from mapped framebuffer for 0\n");
+> +		memset(&buf[off], 0x55, len);
+> +		ret = pwrite(fd, &buf[off], len, off);
+> +		igt_require_f(ret == (ssize_t)len, "pwrite failed, ret=%zd\n", ret);
+> +		pos = memchr(map, 0x55, fix_info.smem_len);
+> +		igt_require_f(pos, "0x55 not found within framebuffer\n");
+> +		igt_require_f(pos == &map[off], "0x55 found at pos %zu, expected %lld\n",
+> +			     pos - map, (long long)off);
+> +		pos = memchr(&map[off], 0xff, fix_info.smem_len - off);
+> +		igt_require_f(pos, "0xff not found within framebuffer\n");
+> +		igt_require_f(pos == &map[off + len], "0xff found at pos %zu, expected %lld\n",
+> +			     pos - map, (long long)(off + len));
+> +		pos = memchr(&map[off + len], 0x55, fix_info.smem_len - off + len);
+> +		igt_require_f(pos, "found 0x55 at pos %zu, none expected\n", pos - map);
 
-
-igt_asserts here instead of igt_require.
+igt_asserts instead of igt_require.
 
 
 -- 
 Petri Latvala
-
 
 
 > +	}
