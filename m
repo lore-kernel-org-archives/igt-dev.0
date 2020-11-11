@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C98E89F24
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2020 10:26:25 +0000 (UTC)
-Date: Wed, 11 Nov 2020 12:26:15 +0200
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C004889E32
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2020 10:29:41 +0000 (UTC)
+Date: Wed, 11 Nov 2020 12:29:37 +0200
 From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201111102615.GJ7444@platvala-desk.ger.corp.intel.com>
-References: <20201106092757.21505-1-nidhi1.gupta@intel.com>
- <20201106093436.GV7444@platvala-desk.ger.corp.intel.com>
- <150da36c-cb0a-f308-c6b1-bf2cf336c9ae@intel.com>
+Message-ID: <20201111102937.GK7444@platvala-desk.ger.corp.intel.com>
+References: <20201109151658.387207-1-chris@chris-wilson.co.uk>
+ <20201111075210.GA7444@platvala-desk.ger.corp.intel.com>
+ <160508861522.29434.8692318441479983740@build.alporthouse.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <150da36c-cb0a-f308-c6b1-bf2cf336c9ae@intel.com>
-Subject: Re: [igt-dev] [RFC, i-g-t] Added dynamic Subtest
+In-Reply-To: <160508861522.29434.8692318441479983740@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] lib: Handle chamelium failures
+ gracefully
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,75 +24,42 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org, nidhi1.gupta@intel.com
+To: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Nov 11, 2020 at 03:12:12PM +0530, Karthik B S wrote:
-> On 11/6/2020 3:04 PM, Petri Latvala wrote:
-> > On Fri, Nov 06, 2020 at 02:57:57PM +0530, nidhi1.gupta@intel.com wrote:
-> > > From: Nidhi Gupta <nidhi1.gupta@intel.com>
-> > > 
-> > > Signed-off-by: Nidhi Gupta <nidhi1.gupta@intel.com>
-> > > ---
-> > >   tests/kms_atomic_transition.c | 8 ++++----
-> > >   1 file changed, 4 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-> > > index a71bbe10..aa2afe02 100644
-> > > --- a/tests/kms_atomic_transition.c
-> > > +++ b/tests/kms_atomic_transition.c
-> > > @@ -1025,16 +1025,16 @@ igt_main
-> > >   			run_transition_test(&display, pipe, output, TRANSITION_MODESET_DISABLE, false, false);
-> > >   	for (i = 1; i <= IGT_MAX_PIPES; i++) {
+On Wed, Nov 11, 2020 at 09:56:55AM +0000, Chris Wilson wrote:
+> Quoting Petri Latvala (2020-11-11 07:52:10)
+> > On Mon, Nov 09, 2020 at 03:16:58PM +0000, Chris Wilson wrote:
+> > > Don't cause CI to abort a run if an _unrelated_ fixture checks for a
+> > > display and chamelium is dead.
+> > 
+> > If there's a chamelium configured and it's dead, we do want to abort
+> > though.
 > 
-> Since we're now anyway planning to use dynamic subtests for this,
+> If there's no display, we don't run display tests. The GPUs are still
+> very interesting from my pov.
+
+For CI results the display tests becoming skips is awfully painful. If
+the chamelium is dead, we (CI) want to be notified and people tend to
+spot new aborts easier than a "we have no display" skip that might
+even be filtered by cibuglog.
+
+It's a tradeoff and there is no solution that satisfies everyone, we
+went with the one that leads us fixing the hw earlier.
+
+>  
+> > What's an unrelated fixture in this context?
 > 
-> Could we just have a count of the number of outputs connected and use this,
-> instead of using IGT_MAX_PIPES to populate the subtests and eventually
-> skipping them?
+> The fixture is after we have completed the subtest. So we get
+> 	SUCCESS; ABORT
+> when we never intended to use the display at all.
 
-Yeah that sounds proper actually.
+Ah, the cleanup fixtures, I see.
 
-So igt_subtest_with_dynamic("modeset-transitions"), with
-for_each_pipe, or for_each_pipe_with_single_output, or
-for_each_connected_output, based on what kind of coverage is needed,
-and igt_dynamic_f for each.
 
---
+-- 
 Petri Latvala
-
-
-> 
-> @Petri,
-> 
-> Does this sound good?
-> 
-> Thanks,
-> Karthik.B.S
-> > > -		igt_subtest_f("%ix-modeset-transitions", i)
-> > > +		igt_subtest_with_dynamic_f("%ix-modeset-transitions", i)
-> > >   			run_modeset_transition(&display, i, false, false);
-> > > -		igt_subtest_f("%ix-modeset-transitions-nonblocking", i)
-> > > +		igt_subtest_with_dynamic_f("%ix-modeset-transitions-nonblocking", i)
-> > >   			run_modeset_transition(&display, i, true, false);
-> > > -		igt_subtest_f("%ix-modeset-transitions-fencing", i)
-> > > +		igt_subtest_with_dynamic_f("%ix-modeset-transitions-fencing", i)
-> > >   			run_modeset_transition(&display, i, false, true);
-> > > -		igt_subtest_f("%ix-modeset-transitions-nonblocking-fencing", i)
-> > > +		igt_subtest_with_dynamic_f("%ix-modeset-transitions-nonblocking-fencing", i)
-> > >   			run_modeset_transition(&display, i, true, true);
-> > Where are the igt_dynamic() blocks for these?
-> > 
-> > 
-> > --
-> > Petri Latvala
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
-> 
-> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
