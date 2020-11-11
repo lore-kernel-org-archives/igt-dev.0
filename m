@@ -1,17 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 714A889DB9
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2020 10:20:38 +0000 (UTC)
-Date: Wed, 11 Nov 2020 12:20:30 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201111102030.GH7444@platvala-desk.ger.corp.intel.com>
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 42CF789DB9
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2020 10:21:49 +0000 (UTC)
 References: <20201110075102.5033-1-tzimmermann@suse.de>
- <20201110075102.5033-9-tzimmermann@suse.de>
+ <20201110075102.5033-3-tzimmermann@suse.de>
+ <20201111094930.GB7444@platvala-desk.ger.corp.intel.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Message-ID: <3c3ea376-2575-80c2-e822-256362a9c057@suse.de>
+Date: Wed, 11 Nov 2020 11:21:47 +0100
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201110075102.5033-9-tzimmermann@suse.de>
-Subject: Re: [igt-dev] [PATCH v3 8/8] tests/fbdev: Add tests for
- read/writing with NULL-pointer buffers
+In-Reply-To: <20201111094930.GB7444@platvala-desk.ger.corp.intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH v3 2/8] tests/fbdev: Map framebuffer in
+ igt_fixture
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,59 +20,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Thomas Zimmermann <tzimmermann@suse.de>
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org, chris@chris-wilson.co.uk
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Nov 10, 2020 at 08:51:02AM +0100, Thomas Zimmermann wrote:
-> Trying to read and write with a NULL-pointer buffer should fail and
-> report EFAULT.
-> 
-> v3:
-> 	* put igt_describe() before igt_subtest() (Petri)
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
->  tests/fbdev.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/tests/fbdev.c b/tests/fbdev.c
-> index 8fd920be..814188b5 100644
-> --- a/tests/fbdev.c
-> +++ b/tests/fbdev.c
-> @@ -229,6 +229,17 @@ static void framebuffer_tests(int fd)
->  		igt_require_f(ret == 0, "read at EOF, ret=%zd\n", ret);
->  	}
->  
-> +	igt_describe("Check framebuffer access with NULL");
-> +	igt_subtest("nullptr") {
-> +		ssize_t ret;
-> +
-> +		ret = pread(fd, NULL, fix_info.smem_len, 0);
-> +		igt_require_f((ret == -1) && (errno == EFAULT), "reading into NULL did not return EFAULT, ret=%zd\n", ret);
-> +
-> +		ret = pwrite(fd, NULL, fix_info.smem_len, 0);
-> +		igt_require_f((ret == -1) && (errno == EFAULT), "writing from NULL did not return EFAULT, ret=%zd\n", ret);
-
-igt_asserts instead of igt_requires.
-
--- 
-Petri Latvala
-
-
-> +	}
-> +
->  	igt_fixture {
->  		free(buf);
->  		memset(map, 0, fix_info.smem_len); // don't leave garbage on the screen
-> -- 
-> 2.29.2
-> 
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SGksCgp0aGFua3MgZm9yIGxvb2tpbmcgYXQgdGhlIHBhdGNoZXMuCgpBbSAxMS4xMS4yMCB1bSAx
+MDo0OSBzY2hyaWViIFBldHJpIExhdHZhbGE6Cj4gT24gVHVlLCBOb3YgMTAsIDIwMjAgYXQgMDg6
+NTA6NTZBTSArMDEwMCwgVGhvbWFzIFppbW1lcm1hbm4gd3JvdGU6Cj4+IFRoZSBtYXBwaW5nIG9m
+IHRoZSBmcmFtZWJ1ZmZlciBtZW1vcnkgd2lsbCBiZSB1c2VmdWwgZm9yIHJlYWQvd3JpdGUKPj4g
+dGVzdHMuIE1vdmUgaXQgaW50byBhbiBpZ3RfZml4dHVyZSBibG9jay4KPj4KPj4gU2lnbmVkLW9m
+Zi1ieTogVGhvbWFzIFppbW1lcm1hbm4gPHR6aW1tZXJtYW5uQHN1c2UuZGU+Cj4+IC0tLQo+PiAg
+dGVzdHMvZmJkZXYuYyB8IDEwICsrKystLS0tLS0KPj4gIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2Vy
+dGlvbnMoKyksIDYgZGVsZXRpb25zKC0pCj4+Cj4+IGRpZmYgLS1naXQgYS90ZXN0cy9mYmRldi5j
+IGIvdGVzdHMvZmJkZXYuYwo+PiBpbmRleCA0NjY0MWZlYS4uZmM2NjIxMGEgMTAwNjQ0Cj4+IC0t
+LSBhL3Rlc3RzL2ZiZGV2LmMKPj4gKysrIGIvdGVzdHMvZmJkZXYuYwo+PiBAQCAtNjMsMTUgKzYz
+LDEwIEBAIHN0YXRpYyB2b2lkIG1vZGVfdGVzdHMoaW50IGZkKQo+PiAgc3RhdGljIHZvaWQgZnJh
+bWVidWZmZXJfdGVzdHMoaW50IGZkKQo+PiAgewo+PiAgCXN0cnVjdCBmYl9maXhfc2NyZWVuaW5m
+byBmaXhfaW5mbzsKPj4gKwl2b2lkICptYXA7Cj4gCj4gQWZ0ZXIgdGhpcyBwYXRjaCwgbWFwIGlz
+IGFzc2lnbmVkIHRvIGluIGFuIGlndF9maXh0dXJlIGFuZCByZWFkIGluIGEKPiBzdWJ0ZXN0LiBB
+cyBpZ3RfZml4dHVyZSB1c2VzIGxvbmdqbXAoKSwgdGhlIHZhbHVlIG9mIG1hcCB3aGVuIHJlYWQK
+PiBkZXBlbmRzIG9uIHdoZXRoZXIgdGhpcyBpcyBjb21waWxlZCB3aXRoIG9yIHdpdGhvdXQgb3B0
+aW1pemF0aW9ucy4KCk9uZSB0aGluZyBJIHdvbmRlcmVkIGFib3V0IGlzIHRoYXQgdGhlIHRlc3Rz
+IGFyZSBidWlsZCB3aXRoCi1Xbm8tY2xvYmJlcmVkLiBXaGF0J3MgdGhlIHJlYXNvbj8gSSdkIGV4
+cGVjdCB0aGF0IHRoZSBjb21waWxlciB3b3VsZApoYXZlIHdhcm5lZCBhYm91dCB0aGlzIHByb2Js
+ZW0uCgo+IAo+IFRoZSBvcHRpb25zIGZvciBzdWNoIHZhcmlhYmxlcyBhcmU6Cj4gCj4gMSkgbW92
+ZSBpdCB0byBnbG9iYWwgc2NvcGUKPiAyKSBtYWtlIGl0IHZvbGF0aWxlCj4gMykgbWFrZSBhIHN0
+cnVjdCBkYXRhX2Qgd2l0aCB0aGUgbWFwIChhbmQgaW4gYSBsYXRlciBwYXRjaCwgYnVmIGFzCj4g
+ICAgd2VsbCkgdmFyaWFibGUgYW5kIGFzc2lnbiBpdHMgbWVtYmVycyBpbnN0ZWFkLgo+IAo+IEkg
+dGhpbmsgd2UgcHJlZmVyIDMgZ2VuZXJhbGx5Lgo+IAoKSSB3b3VsZCBoYXZlIHVzZWQgMi4gV2hh
+dCdzIHRoZSBiZW5lZml0IG9mIG9mIHVzaW5nIDM/CgpCZXN0IHJlZ2FyZHMKVGhvbWFzCgotLSAK
+VGhvbWFzIFppbW1lcm1hbm4KR3JhcGhpY3MgRHJpdmVyIERldmVsb3BlcgpTVVNFIFNvZnR3YXJl
+IFNvbHV0aW9ucyBHZXJtYW55IEdtYkgKTWF4ZmVsZHN0ci4gNSwgOTA0MDkgTsO8cm5iZXJnLCBH
+ZXJtYW55CihIUkIgMzY4MDksIEFHIE7DvHJuYmVyZykKR2VzY2jDpGZ0c2bDvGhyZXI6IEZlbGl4
+IEltZW5kw7ZyZmZlcgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpo
+dHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
