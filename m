@@ -1,17 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED84889BF4
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2020 11:00:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A1BAA89FE8
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2020 12:04:05 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20201111102226.GI7444@platvala-desk.ger.corp.intel.com>
-References: <20201110075102.5033-1-tzimmermann@suse.de>
- <160502313035.11376.297659353090689661@emeril.freedesktop.org>
- <bb6f215c-e6d5-4628-dace-5179157b7c10@suse.de>
- <20201111102226.GI7444@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev]  =?unknown-8bit?b?4pyX?= Fi.CI.BAT: failure for Test cases for fbdev
+In-Reply-To: <20201110083506.GX7444@platvala-desk.ger.corp.intel.com>
+References: <20200504073707.268608-1-arkadiusz.hiler@intel.com>
+ <160494136881.21258.1784453412780097986@build.alporthouse.com>
+ <20201110083506.GX7444@platvala-desk.ger.corp.intel.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 11 Nov 2020 10:59:55 +0000
-Message-ID: <160509239570.6304.13370240708007501194@build.alporthouse.com>
+Date: Wed, 11 Nov 2020 12:03:52 +0000
+Message-ID: <160509623289.6304.6899379822049293015@build.alporthouse.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 1/3] lib: Support multiple filters
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -23,33 +22,36 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>, Thomas Zimmermann <tzimmermann@suse.de>
+To: Petri Latvala <petri.latvala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Quoting Petri Latvala (2020-11-11 10:22:26)
-> On Wed, Nov 11, 2020 at 10:11:40AM +0100, Thomas Zimmermann wrote:
-> > FYI, I replaced the mmap test with a set of more elaborate tests. It's
-> > expected that mmap does not PASS any longer.
+Quoting Petri Latvala (2020-11-10 08:35:06)
+> On Mon, Nov 09, 2020 at 05:02:48PM +0000, Chris Wilson wrote:
+> > Quoting Arkadiusz Hiler (2020-05-04 08:37:05)
+> > > This patch brings back support for multiple filters that was in the
+> > > original series by Zbyszek.
 > > 
-> > Is there a configuration file that I have to adapt?
+> > How is this filtering meant to work for tests that try to open two
+> > different devices? Shouldn't the igt_device_filter_count() take into
+> > account whether the filter even matches the desired device?
+> > Should all of the filters include all possible devices?
 > 
-> Yeah, tests/intel-ci/fast-feedback.testlist. For getting this series
-> fully tested, add a patch to the series that removes the line
 > 
-> igt@fbdev@mmap
-> 
-> from that file, with subjectprefix "CI" or "HAX" so it's clear it's
-> not the final patch to be committed.
-> 
-> Chris, do you have any input as to which subtests we want to have in
-> BAT in the end?
+> If you use filters, and you have two different devices you want to
+> use, the test should use drm_open_driver_another() and have filters
+> for two devices, semicolon-separated. See kms_prime for a good example
+> of the usage.
 
-The read/write contents verification should work well for BAT; quick and
-cover the simple use cases we know people do run into. Unaligned and
-negative tests are better suited to full test run since they should not
-provide any deep probes into the driver (and so not as likely to catch
-unexpected bugs in future patches).
+Why does the test know about filters?
+
+	drm_open_driver(DRIVER_INTEL);
+	drm_open_driver(DRIVER_VGEM);
+
+fails to find vgem because some filter is restricting the available set
+to intel. And _another still does not overcome an imposed restriction.
+
+I would not call kms_prime a good example. :|
 -Chris
 _______________________________________________
 igt-dev mailing list
