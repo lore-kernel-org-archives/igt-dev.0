@@ -1,12 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C85026E0E1
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Nov 2020 04:50:16 +0000 (UTC)
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A3006E0E1
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Nov 2020 05:01:41 +0000 (UTC)
 From: sai.gowtham.ch@intel.com
-Date: Thu, 12 Nov 2020 10:19:20 +0530
-Message-Id: <20201112044920.28130-1-sai.gowtham.ch@intel.com>
+Date: Thu, 12 Nov 2020 10:30:44 +0530
+Message-Id: <20201112050044.28416-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] i915/gem_render_linear_blits: Add test
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_tiled_pread_basic: Add test
  description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
@@ -24,37 +24,29 @@ List-ID: <igt-dev@lists.freedesktop.org>
 
 From: sai gowtham <sai.gowtham.ch@intel.com>
 
-Added more test description to the test and basic subtest.
+Add more test description to the test.
 
 Cc: Melkaveri Arjun <arjun.melkaveri@intel.com>
 Signed-off-by: sai gowtham <sai.gowtham.ch@intel.com>
 ---
- tests/i915/gem_render_linear_blits.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/i915/gem_tiled_pread_basic.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tests/i915/gem_render_linear_blits.c b/tests/i915/gem_render_linear_blits.c
-index 8e646127..0cbd205c 100644
---- a/tests/i915/gem_render_linear_blits.c
-+++ b/tests/i915/gem_render_linear_blits.c
-@@ -55,6 +55,9 @@
+diff --git a/tests/i915/gem_tiled_pread_basic.c b/tests/i915/gem_tiled_pread_basic.c
+index 7cb64410..6b16feb5 100644
+--- a/tests/i915/gem_tiled_pread_basic.c
++++ b/tests/i915/gem_tiled_pread_basic.c
+@@ -49,7 +49,9 @@
+ 
+ 
+ IGT_TEST_DESCRIPTION("Test pread behavior on tiled objects with respect to the"
+-		     " reported swizzling value.");
++		     " reported swizzling value. The goal is to exercise the"
++		     " slow_bit17_copy path for reading on bit17 machines,"
++		     " but will also be useful for catching swizzling value bugs on");
+ 
+ #define WIDTH 512
  #define HEIGHT 512
- #define SIZE (HEIGHT*STRIDE)
- 
-+IGT_TEST_DESCRIPTION("This is a test of doing many blits, with a working set"
-+		" larger than the aperture size. The goal is to simply ensure"
-+		" the basics work.");
- static uint32_t linear[WIDTH*HEIGHT];
- static igt_render_copyfunc_t render_copy;
- 
-@@ -170,6 +173,8 @@ igt_main
- 		igt_require_gem(fd);
- 	}
- 
-+	igt_describe("This is a basic test for render blit where it"
-+			" does many blits, with a working set larger than the aperture size.");
- 	igt_subtest("basic") {
- 		run_test(fd, 2);
- 	}
 -- 
 2.28.0
 
