@@ -1,17 +1,10 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Date: Tue, 10 Nov 2020 13:27:28 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Message-ID: <20201110122728.GH5736@zkempczy-mobl2>
-References: <20201109104811.3773962-1-tvrtko.ursulin@linux.intel.com>
- <20201109104811.3773962-2-tvrtko.ursulin@linux.intel.com>
- <20201110111352.GD5736@zkempczy-mobl2>
- <92afca40-68e5-5233-b6c8-24e79540fa32@linux.intel.com>
- <20201110114602.GG5736@zkempczy-mobl2>
- <8edab1c5-6f7b-5cae-3bda-5288e6bd64fe@linux.intel.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Thu, 12 Nov 2020 11:14:13 +0000
+Message-Id: <20201112111413.983404-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <8edab1c5-6f7b-5cae-3bda-5288e6bd64fe@linux.intel.com>
-Subject: Re: [igt-dev] [RFC 1/3] intel_gpu_top: User friendly device listing
+Subject: [igt-dev] [PATCH i-g-t] i915/gem_mmap_gtt: Reset a busy mmaped
+ object
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,61 +12,85 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gVHVlLCBOb3YgMTAsIDIwMjAgYXQgMTE6NTI6NTBBTSArMDAwMCwgVHZydGtvIFVyc3VsaW4g
-d3JvdGU6Cj4gCj4gT24gMTAvMTEvMjAyMCAxMTo0NiwgWmJpZ25pZXcgS2VtcGN6ecWEc2tpIHdy
-b3RlOgo+IAo+IFtzbmlwXQo+IAo+ID4gPiA+ID4gZGlmZiAtLWdpdCBhL3Rvb2xzL2ludGVsX2dw
-dV90b3AuYyBiL3Rvb2xzL2ludGVsX2dwdV90b3AuYwo+ID4gPiA+ID4gaW5kZXggMjk4ZGVmYTRl
-NmVkLi41MjMwNDcyZDJhZjQgMTAwNjQ0Cj4gPiA+ID4gPiAtLS0gYS90b29scy9pbnRlbF9ncHVf
-dG9wLmMKPiA+ID4gPiA+ICsrKyBiL3Rvb2xzL2ludGVsX2dwdV90b3AuYwo+ID4gPiA+ID4gQEAg
-LTEzMTMsNyArMTMxMyw2IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikKPiA+ID4g
-PiA+ICAgIAl1bnNpZ25lZCBpbnQgaTsKPiA+ID4gPiA+ICAgIAlpbnQgcmV0ID0gMCwgY2g7Cj4g
-PiA+ID4gPiAgICAJYm9vbCBsaXN0X2RldmljZSA9IGZhbHNlOwo+ID4gPiA+ID4gLQllbnVtIGln
-dF9kZXZpY2VzX3ByaW50X3R5cGUgcHJpbnR0eXBlID0gSUdUX1BSSU5UX1NJTVBMRTsKPiA+ID4g
-PiA+ICAgIAljaGFyICpwbXVfZGV2aWNlLCAqb3B0X2RldmljZSA9IE5VTEw7Cj4gPiA+ID4gPiAg
-ICAJc3RydWN0IGlndF9kZXZpY2VfY2FyZCBjYXJkOwo+ID4gPiA+ID4gQEAgLTEzODgsNyArMTM4
-Nyw3IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikKPiA+ID4gPiA+ICAgIAlpZ3Rf
-ZGV2aWNlc19zY2FuKGZhbHNlKTsKPiA+ID4gPiA+ICAgIAlpZiAobGlzdF9kZXZpY2UpIHsKPiA+
-ID4gPiA+IC0JCWlndF9kZXZpY2VzX3ByaW50KHByaW50dHlwZSk7Cj4gPiA+ID4gPiArCQlpZ3Rf
-ZGV2aWNlc19wcmludChJR1RfUFJJTlRfVVNFUik7Cj4gPiA+ID4gCj4gPiA+ID4gSSB3b3VsZCBh
-ZGQgYXQgbGVhc3QgcG9zc2liaWxpdHkgdG8gdXNlIHNpbXBsZSB2aWV3IHRvIHN1Z2dlc3QKPiA+
-ID4gPiBob3cgdG8gdXNlIHBjaS9zeXMgZmlsdGVyLiBXaXRoIFVTRVIgcHJpbnQgZm9ybWF0IHdl
-IHNlZSBvbmx5Cj4gPiA+IAo+ID4gPiBZb3UgbWVhbiB0aGUgYmx1cmIgcHJpbnRlZCBvdXQgYnkg
-aWd0X2RldmljZV9wcmludF9maWx0ZXJfdHlwZXMgKGN1cnJlbnRseQo+ID4gPiBwcmludGVkIGFz
-IHBhcnQgb2YgaGVscCB0ZXh0KSBvciBzb21ldGhpbmcgZWxzZT8KPiA+IAo+ID4gWWVzLiBXZSBr
-bm93IGxzZ3B1IGFuZCBpbnRlbF9ncHVfdG9wIHNlbGVjdGlvbiBpcyBzYW1lIGFuZCB5b3UncmUK
-PiA+IGFsc28gcHJpbnRpbmcgZmlsdGVyIHN5bnRheCBvbiAnaW50ZWxfZ3B1X3RvcCAtaCcuIEJ1
-dCB3aXRob3V0Cj4gPiB1c2luZyAnbHNncHUgLXMnIHlvdSB3b24ndCBndWVzcyBob3cgdG8gc3Bl
-Y2lmeSBzeXM6Li4uIGZpbHRlci4KPiAKPiBNeSB0aGlua2luZyBpcyB0aGF0IHR5cGljYWwgaW50
-ZWxfZ3B1X3RvcCB1c2VyIHdvdWxkbid0IHdhbnQvbmVlZCB0byBjb25jZXJuCj4gdGhlbXNlbHZl
-cyB3aXRoIGRpZmZlcmVudCBmaWx0ZXJzIGJ1dCBqdXN0IGNvcHkmcGFzdGUgd2hhdCB3YXMgbGlz
-dGVkIGZyb20KPiBpbnRlbF9ncHVfdG9wIC1MLiBJbiB3aGljaCBjYXNlLi4KPiAKPiA+ID4gCj4g
-PiA+ID4gZHJtIHBhdGhzLiBCdXQgSSB3b24ndCBpbnNpc3QgZm9yIHRoYXQsIHVzaW5nIGRybSBz
-ZWxlY3Rpb24KPiA+ID4gPiBpcyBvayBmb3IgbWUuCj4gPiA+IAo+ID4gPiBHb29kIHBvaW50IGFj
-dHVhbGx5LCBpbnRlbF9ncHVfdG9wIHNob3VsZCBwcm9iYWJseSBkZWZhdWx0IHRvICItLXBjaSIK
-PiA+ID4gbGlzdGluZyB0eXBlIHNpbmNlIGl0IG1vbml0b3JzIEdQVXMgd2l0aCBubyBub3Rpb24g
-b2YgRFJNIG1hc3Rlci9yZW5kZXIuCj4gPiA+IAo+ID4gPiA+IFJldmlld2VkLWJ5OiBaYmlnbmll
-dyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KPiA+ID4gCj4g
-PiA+IFRoYW5rcyEgTGV0IG1lIGtub3cgaWYgeW91IGFncmVlIHdpdGggIi0tcGNpIiBieSBkZWZh
-dWx0IGZvciBpbnRlbF9ncHVfdG9wCj4gPiA+IGFuZCBpZiBpdCBpcyBva2F5IHRvIGtlZXAgdGhl
-IHItYj8KPiA+IAo+ID4gSWYgaXQgaXMgbm90IHByb2JsZW0geW91IGNvdWxkIHByb3ZpZGUgLS1w
-Y2kgYW5kIC0tc3lzZnMgdG9vIHRvIGJlIGNvbXBsaWFudAo+ID4gd2l0aCBsc2dwdSBzd2l0Y2hl
-cy4gQnV0IHRoZXJlIGFyZSBtaW5vciBuaXRzIGFuZCB5b3UgY2FuIGtlZXAgci1iIHdpdGgKPiA+
-IHRoZSBjb2RlIGFzIGl0IGlzLgo+IAo+IC4uLiBJIGRpZCBub3Qgc2VlIHRoZSB2YWx1ZSBvZiBz
-dXBwb3J0aW5nIC0tZHJtLy0tcGNpLy0tc3lzZnMgZnJvbQo+IGludGVsX2dwdV90b3AuCj4gCj4g
-U28gIi0tcGNpIiBieSBkZWZhdWx0IHNob3VsZCAiSnVzdFdvcmsiIGFuZCBtYWtlIGVuZCB1c2Vy
-cyBoYXBweS4gQXMgbG9uZyBhcwo+IHRoZSBoZWxwIHRleHQgaXMgY2xlYXIgZW5vdWdoIHdoYXQg
-bmVlZHMgdG8gYmUgY29weSZwYXN0ZWQsIHdoaWNoIG1heSBuZWVkCj4gaW1wcm92ZW1lbnQuIElm
-IEkgYW0gbm90IG1pc3Npbmcgc29tZXRoaW5nIGVsc2UuCj4gCj4gUmVnYXJkcywKPiAKPiBUdnJ0
-a28KCk9rLiBQcm9iYWJseSB5b3UncmUgcmlnaHQgYW5kIHVzZXJzIHdvbid0IG5lZWQgYW55IG90
-aGVyIHNlbGVjdG9ycy4KSWYgdGhleSB3aWxsIHdlIHdpbGwgY2hhbmdlIHRoZSBjb2RlLiAKCi0t
-ClpiaWduaWV3Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBz
-Oi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
+Exercise the gtt mmap revocation for a reset on a busy object.
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+---
+ tests/i915/gem_mmap_gtt.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+
+diff --git a/tests/i915/gem_mmap_gtt.c b/tests/i915/gem_mmap_gtt.c
+index 3cce19e9a..2a0f2311f 100644
+--- a/tests/i915/gem_mmap_gtt.c
++++ b/tests/i915/gem_mmap_gtt.c
+@@ -45,6 +45,7 @@
+ #include "igt.h"
+ #include "igt_sysfs.h"
+ #include "igt_x86.h"
++#include "sw_sync.h"
+ 
+ #ifndef PAGE_SIZE
+ #define PAGE_SIZE 4096
+@@ -729,6 +730,38 @@ test_hang(int fd)
+ 	igt_disallow_hang(fd, hang);
+ }
+ 
++static void
++test_hang_busy(int i915)
++{
++	igt_spin_t *spin;
++	igt_hang_t hang;
++	uint32_t *ptr, *x;
++
++	hang = igt_allow_hang(i915, 0, 0);
++	igt_require(igt_params_set(i915, "reset", "1")); /* global */
++
++	spin = igt_spin_new(i915, .flags = IGT_SPIN_POLL_RUN | IGT_SPIN_FENCE_OUT);
++	igt_spin_busywait_until_started(spin);
++
++	/* Fault in the busy object */
++	ptr = gem_mmap__gtt(i915, spin->handle, 4096, PROT_READ);
++	x = ptr + ((uintptr_t)spin->condition & 4095) / sizeof(*ptr);
++	igt_assert_eq_u32(*x, spin->cmd_precondition);
++
++	igt_assert(gem_bo_busy(i915, spin->handle));
++	igt_force_gpu_reset(i915);
++
++	/* Check we reset the busy mmap */
++	gem_sync(i915, spin->handle);
++	igt_assert_eq(sync_fence_status(spin->out_fence), -5);
++
++	igt_assert_eq_u32(*x, spin->cmd_precondition);
++	munmap(ptr, 4096);
++
++	igt_spin_free(i915, spin);
++	igt_disallow_hang(i915, hang);
++}
++
+ static int min_tile_width(uint32_t devid, int tiling)
+ {
+ 	if (tiling < 0) {
+@@ -1183,6 +1216,8 @@ igt_main
+ 		test_clflush(fd);
+ 	igt_subtest("hang")
+ 		test_hang(fd);
++	igt_subtest("hang-busy")
++		test_hang_busy(fd);
+ 	igt_subtest("basic-read-write")
+ 		test_read_write(fd, READ_BEFORE_WRITE);
+ 	igt_subtest("basic-write-read")
+-- 
+2.29.2
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
