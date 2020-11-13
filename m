@@ -1,12 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D82076E529
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9022F6E50E
  for <igt-dev@lists.freedesktop.org>; Fri, 13 Nov 2020 13:39:58 +0000 (UTC)
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Fri, 13 Nov 2020 13:39:50 +0000
-Message-Id: <20201113133951.1231761-1-chris@chris-wilson.co.uk>
+Date: Fri, 13 Nov 2020 13:39:51 +0000
+Message-Id: <20201113133951.1231761-2-chris@chris-wilson.co.uk>
+In-Reply-To: <20201113133951.1231761-1-chris@chris-wilson.co.uk>
+References: <20201113133951.1231761-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 1/2] lib: Quieten device filtering
+Subject: [igt-dev] [PATCH i-g-t 2/2] lib/i915: Include the device name in
+ the submission pretty-printer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -22,40 +25,30 @@ To: igt-dev@lists.freedesktop.org
 Cc: Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-We don't need to print out the filter the umpteen thousand times we try
-and open the same device; it floods the test output with noise.
+For tests that care deeply about the submission method, also mention
+what platform the test is being run on.
 
 Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
 ---
- lib/drmtest.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ lib/i915/gem_submission.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 49e294bde..3a8bd8591 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -264,7 +264,7 @@ static int __search_and_open(const char *base, int offset, unsigned int chipset,
+diff --git a/lib/i915/gem_submission.c b/lib/i915/gem_submission.c
+index 2c17d93ae..c8980dcee 100644
+--- a/lib/i915/gem_submission.c
++++ b/lib/i915/gem_submission.c
+@@ -111,6 +111,11 @@ out:
+ void gem_submission_print_method(int fd)
+ {
+ 	const unsigned flags = gem_submission_method(fd);
++	const struct intel_device_info *info;
++
++	info = intel_get_device_info(intel_get_drm_devid(fd));
++	if (info)
++		igt_info("Running on %s\n", info->codename);
  
- 	forced = forced_driver();
- 	if (forced)
--		igt_info("Force option used: Using driver %s\n", forced);
-+		igt_debug("Force option used: Using driver %s\n", forced);
- 
- 	for (int i = 0; i < 16; i++) {
- 		char name[80];
-@@ -342,10 +342,10 @@ static bool __get_card_for_nth_filter(int idx, struct igt_device_card *card)
- 
- 	if (igt_device_filter_count() > idx) {
- 		filter = igt_device_filter_get(idx);
--		igt_info("Looking for devices to open using filter %d: %s\n", idx, filter);
-+		igt_debug("Looking for devices to open using filter %d: %s\n", idx, filter);
- 
- 		if (igt_device_card_match(filter, card)) {
--			igt_info("Filter matched %s | %s\n", card->card, card->render);
-+			igt_debug("Filter matched %s | %s\n", card->card, card->render);
- 			return true;
- 		}
- 
+ 	if (flags & GEM_SUBMISSION_GUC) {
+ 		igt_info("Using GuC submission\n");
 -- 
 2.29.2
 
