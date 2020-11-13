@@ -1,18 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 47CB36E213
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Nov 2020 14:40:51 +0000 (UTC)
-Date: Thu, 12 Nov 2020 15:40:35 +0100
-From: Katarzyna Dec <katarzyna.dec@intel.com>
-Message-ID: <20201112144035.GR6508@kdec5-desk.ger.corp.intel.com>
-References: <20201008061118.22868-1-priyanka.dandamudi@intel.com>
- <20201112132545.GP6508@kdec5-desk.ger.corp.intel.com>
- <20201112134455.GP7444@platvala-desk.ger.corp.intel.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 600A26E372
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Nov 2020 05:10:36 +0000 (UTC)
+From: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+Date: Fri, 13 Nov 2020 10:32:01 +0530
+Message-Id: <20201113050201.229179-1-tejaskumarx.surendrakumar.upadhyay@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201112134455.GP7444@platvala-desk.ger.corp.intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/core_auth: Added test description
- for test case
+Subject: [igt-dev] [PATCH V2] [i-g-t] lib/i915: Identify Jasperlake
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -24,112 +18,75 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Petri Latvala <petri.latvala@intel.com>
-Cc: igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com
+To: igt-dev@lists.freedesktop.org, hariom.pandey@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Nov 12, 2020 at 03:44:55PM +0200, Petri Latvala wrote:
-> On Thu, Nov 12, 2020 at 02:25:45PM +0100, Katarzyna Dec wrote:
-> > On Thu, Oct 08, 2020 at 11:41:18AM +0530, priyanka.dandamudi@intel.com wrote:
-> > > From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> > > 
-> > > Added test description to all the available subtests.
-> > I am starting the effort to help to merge documentation patches. And this is the
-> > first one on the list :)
-> > Documentation will have brief description and categories, e.g. SW only, Stress,
-> > Functional, HW test, etc.
-> 
-> 
-> Thanks for helping with the docs review. But I'd rather leave the
-> categorization for separate patches, along with the bigger discussion
-> that's needed for the overall effort. Majorly, what is the set of
-> categories we're going to be using, and what consumes this, and also
-> the explanation of why the hell we're doing it in the doc strings.
-> 
-> 
-> -- 
-> Petri Latvala
+Recently we did split of EHL/JSL thus we need to indentify
+Jasperlake.
 
-Ok, fair enough :) So Priyanka, Arjun - please drop category from v2 of patch.
-I will see how it is better to start such discussion.
+Changes since V1:
+	- Added jasperlake codename
 
-Kasia
-> 
-> 
-> 
-> > > 
-> > > Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
-> > > Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> > > ---
-> > >  tests/core_auth.c | 10 +++++++++-
-> > >  1 file changed, 9 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/tests/core_auth.c b/tests/core_auth.c
-> > > index 9c240fdb..955876d3 100644
-> > > --- a/tests/core_auth.c
-> > > +++ b/tests/core_auth.c
-> > > @@ -195,6 +195,7 @@ igt_main
-> > >  	int master;
-> > >  
-> > >  	/* root (which we run igt as) should always be authenticated */
-> > > +	igt_describe("Checks whether drm client is always authenticated or not.");
-> > Let's remove 'or not' and add cathegories. I suggest:
-> > 
-> > igt_describe("Check drm client is always authenticated category=SW_only,
-> > category=Core");
-> > 
-> > >  	igt_subtest("getclient-simple") {
-> > >  		int fd = drm_open_driver(DRIVER_ANY);
-> > >  
-> > > @@ -203,6 +204,9 @@ igt_main
-> > >  		close(fd);
-> > >  	}
-> > >  
-> > > +	 igt_describe("Test tries to open two clients and checks if one of the drm client is"
-> > > +		      " authenticated or not also, checks the authentication"
-> > > +		      " for the same drm client by dropping the other one.");
-> > I would go with:
-> > igt_describe("Use 2 clients, check second is authenticated even when first
-> > dropped category=SW_only, category=Core");
-> > >  	igt_subtest("getclient-master-drop") {
-> > >  		int fd = drm_open_driver(DRIVER_ANY);
-> > >  		int fd2 = drm_open_driver(DRIVER_ANY);
-> > > @@ -220,11 +224,15 @@ igt_main
-> > >  	igt_subtest_group {
-> > >  		igt_fixture
-> > >  			master = drm_open_driver_master(DRIVER_ANY);
-> > > -
-> > I think empty line between master and igt_describe should remain.
-> > > +		igt_describe("Test tries to retrieve magic for slave "
-> > > +			     "and checks if magic on master is authorised only once.");
-> > I think I would go with:
-> > igt_describe("Test magic numbers for master and slave category=SW_only, category=Core");
-> > >  		igt_subtest("basic-auth")
-> > >  			test_basic_auth(master);
-> > >  
-> > >  		/* this must be last, we adjust the rlimit */
-> > > +		igt_describe("Tests tries to retrieve magic for maximum possible number of slaves"
-> > > +			     " and verifies if all the retrieved magic values are different."
-> > > +			     "It also checks if the magic values can be authorised by master.");
-> > I think I would go with something like:
-> > igt_description("Test authentication and magic numbers uniqness for rlimit
-> > slaves, category=SW_only, category=Core");
-> > >  		igt_subtest("many-magics")
-> > >  			test_many_magics(master);
-> > >  	}
-> > Waiting for other comments or V2.
-> > Kasia :)
-> > > -- 
-> > > 2.28.0
-> > > 
-> > > _______________________________________________
-> > > igt-dev mailing list
-> > > igt-dev@lists.freedesktop.org
-> > > https://lists.freedesktop.org/mailman/listinfo/igt-dev
-> > _______________________________________________
-> > igt-dev mailing list
-> > igt-dev@lists.freedesktop.org
-> > https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Signed-off-by: Tejas Upadhyay <tejaskumarx.surendrakumar.upadhyay@intel.com>
+---
+ lib/i915/perf.c         | 2 +-
+ lib/intel_chipset.h     | 1 +
+ lib/intel_device_info.c | 7 +++++++
+ 3 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/lib/i915/perf.c b/lib/i915/perf.c
+index 8360459f..53c0a9dc 100644
+--- a/lib/i915/perf.c
++++ b/lib/i915/perf.c
+@@ -253,7 +253,7 @@ intel_perf_for_devinfo(uint32_t device_id,
+ 		intel_perf_load_metrics_cnl(perf);
+ 	} else if (devinfo->is_icelake) {
+ 		intel_perf_load_metrics_icl(perf);
+-	} else if (devinfo->is_elkhartlake) {
++	} else if (devinfo->is_elkhartlake || devinfo->is_jasperlake) {
+ 		intel_perf_load_metrics_ehl(perf);
+ 	} else if (devinfo->is_tigerlake) {
+ 		switch (devinfo->gt) {
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index 51093091..63c98025 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -72,6 +72,7 @@ struct intel_device_info {
+ 	bool is_cannonlake : 1;
+ 	bool is_icelake : 1;
+ 	bool is_elkhartlake : 1;
++	bool is_jasperlake : 1;
+ 	bool is_tigerlake : 1;
+ 	bool is_rocketlake : 1;
+ 	bool is_dg1 : 1;
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index e1132d9c..5c3816fe 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -315,6 +315,12 @@ static const struct intel_device_info intel_elkhartlake_info = {
+ 	.codename = "elkhartlake"
+ };
+ 
++static const struct intel_device_info intel_jasperlake_info = {
++	.gen = BIT(10),
++	.is_jasperlake = true,
++	.codename = "jasperlake"
++};
++
+ static const struct intel_device_info intel_tigerlake_gt1_info = {
+ 	.gen = BIT(11),
+ 	.is_tigerlake = true,
+@@ -423,6 +429,7 @@ static const struct pci_id_match intel_device_match[] = {
+ 	INTEL_ICL_11_IDS(&intel_icelake_info),
+ 
+ 	INTEL_EHL_IDS(&intel_elkhartlake_info),
++	INTEL_JSL_IDS(&intel_jasperlake_info),
+ 
+ 	INTEL_TGL_12_GT1_IDS(&intel_tigerlake_gt1_info),
+ 	INTEL_TGL_12_GT2_IDS(&intel_tigerlake_gt2_info),
+-- 
+2.28.0
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
