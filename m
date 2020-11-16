@@ -1,12 +1,14 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Date: Mon, 16 Nov 2020 17:26:53 +0000
-Message-Id: <20201116172653.4030093-5-tvrtko.ursulin@linux.intel.com>
-In-Reply-To: <20201116172653.4030093-1-tvrtko.ursulin@linux.intel.com>
+Date: Mon, 16 Nov 2020 18:58:17 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Message-ID: <20201116175817.GA3946@zkempczy-mobl2>
 References: <20201116172653.4030093-1-tvrtko.ursulin@linux.intel.com>
+ <20201116172653.4030093-3-tvrtko.ursulin@linux.intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 5/5] intel_gpu_top: Default GPU list to PCI
- mode
+Content-Disposition: inline
+In-Reply-To: <20201116172653.4030093-3-tvrtko.ursulin@linux.intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t 3/5] lib/igt_device_scan: Remember PCI
+ card index after scanning
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -14,45 +16,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Intel-gfx@lists.freedesktop.org, Petri Latvala <petri.latvala@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-
-It is more obvious for the user to only shows filters for DRM master
-nodes since those are the ones that intel_gpu_top monitors.
-
-v2:
- * Filter prefix needs to be sys: when listing PCI devices.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
----
- tools/intel_gpu_top.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-index 07f88d555dc8..37b2141e784d 100644
---- a/tools/intel_gpu_top.c
-+++ b/tools/intel_gpu_top.c
-@@ -1388,7 +1388,8 @@ int main(int argc, char **argv)
- 
- 	if (list_device) {
- 		struct igt_devices_print_format fmt = {
--			.type = IGT_PRINT_USER
-+			.type = IGT_PRINT_USER,
-+			.option = IGT_PRINT_PCI,
- 		};
- 
- 		igt_devices_print(&fmt);
--- 
-2.25.1
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+T24gTW9uLCBOb3YgMTYsIDIwMjAgYXQgMDU6MjY6NTFQTSArMDAwMCwgVHZydGtvIFVyc3VsaW4g
+d3JvdGU6Cj4gRnJvbTogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4K
+PiAKPiBBZnRlciBkZXZpY2VzIGFyZSBzb3J0ZWQgcG9zdCBzY2FubmluZywgYXNzaW5nIGEgY2Fy
+ZCBpbmRleCB0byBlYWNoIHNvIGl0Cj4gY2FuIGJlIGVhc2lseSBhY2Nlc3NlZCBpZiBQQ0kgZmls
+dGVyIGZvciBhIGNhcmQgbmVlZHMgdG8gYmUgcHJpbnRlZCBvdXQuCj4gCj4gdjI6Cj4gICogUHJl
+c2VydmUgZXhpc3RpbmcgcGNpOi4uY2FyZD1OIGJlaGF2aW91ci4gKFpiaWduaWV3KQo+IAo+IFNp
+Z25lZC1vZmYtYnk6IFR2cnRrbyBVcnN1bGluIDx0dnJ0a28udXJzdWxpbkBpbnRlbC5jb20+Cj4g
+Q2M6IFBldHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgo+IENjOiBaYmlnbmll
+dyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KPiAtLS0KPiAg
+bGliL2lndF9kZXZpY2Vfc2Nhbi5jIHwgMjkgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysK
+PiAgMSBmaWxlIGNoYW5nZWQsIDI5IGluc2VydGlvbnMoKykKPiAKPiBkaWZmIC0tZ2l0IGEvbGli
+L2lndF9kZXZpY2Vfc2Nhbi5jIGIvbGliL2lndF9kZXZpY2Vfc2Nhbi5jCj4gaW5kZXggYzBjZDY3
+NTdmYzI3Li5lY2I4ZGIyOTdmODYgMTAwNjQ0Cj4gLS0tIGEvbGliL2lndF9kZXZpY2Vfc2Nhbi5j
+Cj4gKysrIGIvbGliL2lndF9kZXZpY2Vfc2Nhbi5jCj4gQEAgLTE2Niw2ICsxNjYsNyBAQCBzdHJ1
+Y3QgaWd0X2RldmljZSB7Cj4gIAljaGFyICp2ZW5kb3I7Cj4gIAljaGFyICpkZXZpY2U7Cj4gIAlj
+aGFyICpwY2lfc2xvdF9uYW1lOwo+ICsJaW50IGdwdV9pbmRleDsgLyogRm9yIG1vcmUgdGhhbiBv
+bmUgR1BVIHdpdGggc2FtZSB2ZW5kb3IgYW5kIGRldmljZS4gKi8KPiAgCj4gIAlzdHJ1Y3QgaWd0
+X2xpc3RfaGVhZCBsaW5rOwo+ICB9Owo+IEBAIC02MDEsNiArNjAyLDMzIEBAIHN0YXRpYyB2b2lk
+IHNvcnRfYWxsX2RldmljZXModm9pZCkKPiAgCWZyZWUoZGV2cyk7Cj4gIH0KPiAgCj4gK3N0YXRp
+YyB2b2lkIGluZGV4X3BjaV9kZXZpY2VzKHZvaWQpCj4gK3sKPiArCXN0cnVjdCBpZ3RfZGV2aWNl
+ICpkZXY7Cj4gKwo+ICsJaWd0X2xpc3RfZm9yX2VhY2hfZW50cnkoZGV2LCAmaWd0X2RldnMuYWxs
+LCBsaW5rKSB7Cj4gKwkJc3RydWN0IGlndF9kZXZpY2UgKmRldjI7Cj4gKwkJaW50IGluZGV4ID0g
+MDsKPiArCj4gKwkJaWYgKCFpc19wY2lfc3Vic3lzdGVtKGRldikpCj4gKwkJCWNvbnRpbnVlOwo+
+ICsKPiArCQlpZ3RfbGlzdF9mb3JfZWFjaF9lbnRyeShkZXYyLCAmaWd0X2RldnMuYWxsLCBsaW5r
+KSB7Cj4gKwkJCWlmICghaXNfcGNpX3N1YnN5c3RlbShkZXYyKSkKPiArCQkJCWNvbnRpbnVlOwo+
+ICsKPiArCQkJaWYgKGRldjIgPT0gZGV2KQo+ICsJCQkJYnJlYWs7Cj4gKwo+ICsJCQlpZiAoIXN0
+cmNhc2VjbXAoZGV2LT52ZW5kb3IsIGRldjItPnZlbmRvcikgJiYKPiArCQkJICAgICFzdHJjYXNl
+Y21wKGRldi0+ZGV2aWNlLCBkZXYyLT5kZXZpY2UpKQo+ICsJCQkJaW5kZXgrKzsKPiArCQl9Cj4g
+Kwo+ICsJCWRldi0+Z3B1X2luZGV4ID0gaW5kZXg7Cj4gKwl9Cj4gK30KPiArCj4gIC8qIENvcmUg
+c2Nhbm5pbmcgZnVuY3Rpb24uCj4gICAqCj4gICAqIEFsbCBzY2FubmVkIGRldmljZXMgYXJlIGtl
+cHQgaW5zaWRlIGlndF9kZXZzLmFsbCBwb2ludGVyIGFycmF5Lgo+IEBAIC02NTcsNiArNjg1LDcg
+QEAgc3RhdGljIHZvaWQgc2Nhbl9kcm1fZGV2aWNlcyh2b2lkKQo+ICAJdWRldl91bnJlZih1ZGV2
+KTsKPiAgCj4gIAlzb3J0X2FsbF9kZXZpY2VzKCk7Cj4gKwlpbmRleF9wY2lfZGV2aWNlcygpOwo+
+ICAKPiAgCWlndF9saXN0X2Zvcl9lYWNoX2VudHJ5KGRldiwgJmlndF9kZXZzLmFsbCwgbGluaykg
+ewo+ICAJCXN0cnVjdCBpZ3RfZGV2aWNlICpkZXZfZHVwID0gZHVwbGljYXRlX2RldmljZShkZXYp
+Owo+IC0tIAo+IDIuMjUuMQo+IAoKWWVzLCBpdCBpcyBvayBub3cuCgpSZXZpZXdlZC1ieTogWmJp
+Z25pZXcgS2VtcGN6ecWEc2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+CgotLQpa
+YmlnbmlldyAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+aWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6
+Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
