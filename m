@@ -1,13 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-References: <20201113135618.1235497-1-chris@chris-wilson.co.uk>
 From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <28e4553d-1ae0-94a8-dc43-a0b4bb19d156@linux.intel.com>
-Date: Mon, 16 Nov 2020 11:12:55 +0000
+References: <20201113162736.2434791-1-tvrtko.ursulin@linux.intel.com>
+Message-ID: <e87c35c2-b74b-b9bb-5c0d-b5201445b973@linux.intel.com>
+Date: Mon, 16 Nov 2020 13:08:07 +0000
 MIME-Version: 1.0
-In-Reply-To: <20201113135618.1235497-1-chris@chris-wilson.co.uk>
+In-Reply-To: <20201113162736.2434791-1-tvrtko.ursulin@linux.intel.com>
 Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t] tools/intel_gpu_top: Show the active
- device
+Subject: Re: [igt-dev] [RFC i-g-t 0/5] User friendly lsgpu/intel_gpu_top
+ device listing
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,73 +15,51 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, intel-gfx@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Intel-gfx@lists.freedesktop.org, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-
-On 13/11/2020 13:56, Chris Wilson wrote:
-> Include the active device name on the update screen.
-> 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> ---
->   tools/intel_gpu_top.c | 11 +++++++----
->   1 file changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
-> index 298defa4e..c16e80502 100644
-> --- a/tools/intel_gpu_top.c
-> +++ b/tools/intel_gpu_top.c
-> @@ -1027,7 +1027,8 @@ static bool print_groups(struct cnt_group **groups)
->   }
->   
->   static int
-> -print_header(struct engines *engines, double t,
-> +print_header(const struct igt_device_card *card,
-> +	     struct engines *engines, double t,
->   	     int lines, int con_w, int con_h, bool *consumed)
->   {
->   	struct pmu_counter fake_pmu = {
-> @@ -1106,14 +1107,15 @@ print_header(struct engines *engines, double t,
->   		printf("\033[H\033[J");
->   
->   		if (lines++ < con_h) {
-> +			printf("intel-gpu-top: %s - ", card->card);
->   			if (!engines->discrete)
-> -				printf("intel-gpu-top - %s/%s MHz;  %s%% RC6; %s %s; %s irqs/s\n",
-> +				printf("%s/%s MHz;  %s%% RC6; %s %s; %s irqs/s\n",
->   					freq_items[1].buf, freq_items[0].buf,
->   					rc6_items[0].buf, power_items[0].buf,
->   					engines->rapl_unit,
->   					irq_items[0].buf);
->   			else
-> -				printf("intel-gpu-top - %s/%s MHz;  %s%% RC6; %s irqs/s\n",
-> +				printf("%s/%s MHz;  %s%% RC6; %s irqs/s\n",
->   					freq_items[1].buf, freq_items[0].buf,
->   					rc6_items[0].buf, irq_items[0].buf);
->   		}
-> @@ -1457,7 +1459,8 @@ int main(int argc, char **argv)
->   			break;
->   
->   		while (!consumed) {
-> -			lines = print_header(engines, t, lines, con_w, con_h,
-> +			lines = print_header(&card, engines,
-> +					     t, lines, con_w, con_h,
->   					     &consumed);
->   
->   			if (engines->imc_fd)
-> 
-
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-
-Regards,
-
-Tvrtko
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Ck9uIDEzLzExLzIwMjAgMTY6MjcsIFR2cnRrbyBVcnN1bGluIHdyb3RlOgo+IEZyb206IFR2cnRr
+byBVcnN1bGluIDx0dnJ0a28udXJzdWxpbkBpbnRlbC5jb20+Cj4gCj4gUGxlYXNlIHNlZSBpbmRp
+dmlkdWFsIHBhdGggY29tbWl0IG1lc3NhZ2VzIGZvciBkZXRhaWxzLCBidXQgZXNzZW50aWFsbHkg
+SQo+IGltcGxlbWVudGVkIHRoaXM6Cj4gCj4gJCBzdWRvIHRvb2xzL2xzZ3B1Cj4gY2FyZDEgICAg
+ICAgICAgICAgICAgICAgODA4Njo0OTA1ICAgIGRybTovZGV2L2RyaS9jYXJkMQo+IOKUlOKUgHJl
+bmRlckQxMjkgICAgICAgICAgICAgICAgICAgICAgICAgZHJtOi9kZXYvZHJpL3JlbmRlckQxMjkK
+PiBjYXJkMCAgICAgICAgICAgICAgICAgICA4MDg2OjNFOTggICAgZHJtOi9kZXYvZHJpL2NhcmQw
+Cj4g4pSU4pSAcmVuZGVyRDEyOCAgICAgICAgICAgICAgICAgICAgICAgICBkcm06L2Rldi9kcmkv
+cmVuZGVyRDEyOAo+IAo+ICQgc3VkbyB0b29scy9sc2dwdSAtLXBjaQo+IGNhcmQxICAgICAgICAg
+ICAgICAgICAgIDgwODY6NDkwNSAgICBwY2k6dmVuZG9yPTgwODYsZGV2aWNlPTQ5MDUsY2FyZD0w
+Cj4g4pSU4pSAcmVuZGVyRDEyOQo+IGNhcmQwICAgICAgICAgICAgICAgICAgIDgwODY6M0U5OCAg
+ICBwY2k6dmVuZG9yPTgwODYsZGV2aWNlPTNFOTgsY2FyZD0wCj4g4pSU4pSAcmVuZGVyRDEyOAo+
+IAo+ICQgc3VkbyB0b29scy9sc2dwdSAtLXN5c2ZzCj4gY2FyZDEgICAgICAgICAgICAgICAgICAg
+ODA4Njo0OTA1ICAgIHN5czovc3lzL2RldmljZXMvcGNpMDAwMDowMC8wMDAwOjAwOjAxLjAvMDAw
+MDowMTowMC4wLzAwMDA6MDI6MDEuMC8wMDAwOjAzOjAwLjAKPiDilJTilIByZW5kZXJEMTI5ICAg
+ICAgICAgICAgICAgICAgICAgICAgIHN5czovc3lzL2RldmljZXMvcGNpMDAwMDowMC8wMDAwOjAw
+OjAxLjAvMDAwMDowMTowMC4wLzAwMDA6MDI6MDEuMC8wMDAwOjAzOjAwLjAvZHJtL3JlbmRlckQx
+MjkKPiBjYXJkMCAgICAgICAgICAgICAgICAgICA4MDg2OjNFOTggICAgc3lzOi9zeXMvZGV2aWNl
+cy9wY2kwMDAwOjAwLzAwMDA6MDA6MDIuMAo+IOKUlOKUgHJlbmRlckQxMjggICAgICAgICAgICAg
+ICAgICAgICAgICAgc3lzOi9zeXMvZGV2aWNlcy9wY2kwMDAwOjAwLzAwMDA6MDA6MDIuMC9kcm0v
+cmVuZGVyRDEyOAo+IAo+IEkgbmVlZCB0byBmaW5kIGEgbWFjaGluZSB3aXRoIHR3byBHUFVzIG9m
+IHRoZSBzYW1lIGRldmljZSBpZCB0byBmaW5pc2ggdGVzdGluZwo+IHRoaXMgaGVuY2Ugc3RpbGwg
+UkZDLgoKSSBtb2NrIHRlc3RlZCB0aGUgUENJIGNhcmQgaW5kZXggZ2VuZXJhdGluZyBjb2RlIGFu
+ZCBpdCBzZWVtcyB0byB3b3JrIGZpbmU6CgokIHRvb2xzL2xzZ3B1IC0tcGNpCmNhcmQwICAgICAg
+ICAgICAgICAgICAgIDgwODY6MTkzQiAgICBwY2k6dmVuZG9yPTgwODYsZGV2aWNlPTE5M0IsY2Fy
+ZD0wCuKUnOKUgHJlbmRlckQxMjgK4pSU4pSAcmVuZGVyRDEyOApjYXJkMHggICAgICAgICAgICAg
+ICAgICA4MDg2OjE5M0IgICAgcGNpOnZlbmRvcj04MDg2LGRldmljZT0xOTNCLGNhcmQ9MQrilJzi
+lIByZW5kZXJEMTI4CuKUlOKUgHJlbmRlckQxMjgKClJlZ2FyZHMsCgpUdnJ0a28KCj4gVHZydGtv
+IFVyc3VsaW4gKDUpOgo+ICAgIGludGVsX2dwdV90b3A6IFVzZXIgZnJpZW5kbHkgZGV2aWNlIGxp
+c3RpbmcKPiAgICBsc2dwdTogVXNlciBmcmllbmRseSBkZXZpY2UgbGlzdGluZwo+ICAgIGxpYi9p
+Z3RfZGV2aWNlX3NjYW46IFJlbWVtYmVyIFBDSSBjYXJkIGluZGV4IGFmdGVyIHNjYW5uaW5nCj4g
+ICAgbHNncHU6IEFkZCBmaWx0ZXIgdHlwZSBwcmludC1vdXQgc2VsZWN0aW9uCj4gICAgaW50ZWxf
+Z3B1X3RvcDogRGVmYXVsdCBHUFUgbGlzdCB0byBQQ0kgbW9kZQo+IAo+ICAgbGliL2lndF9kZXZp
+Y2Vfc2Nhbi5jIHwgMjA1ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0t
+LQo+ICAgbGliL2lndF9kZXZpY2Vfc2Nhbi5oIHwgIDE2ICsrKy0KPiAgIHRvb2xzL2ludGVsX2dw
+dV90b3AuYyB8ICAgOCArLQo+ICAgdG9vbHMvbHNncHUuYyAgICAgICAgIHwgIDM4ICsrKysrKy0t
+Cj4gICA0IGZpbGVzIGNoYW5nZWQsIDIzMyBpbnNlcnRpb25zKCspLCAzNCBkZWxldGlvbnMoLSkK
+PiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRl
+diBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0
+cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
