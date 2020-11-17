@@ -1,16 +1,19 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 772BE6E067
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2020 19:53:21 +0000 (UTC)
-Date: Wed, 18 Nov 2020 01:19:12 +0530
-From: "Melkaveri, Arjun" <arjun.melkaveri@intel.com>
-Message-ID: <20201117194912.GB1059@arjun-NUC8i7BEH>
-References: <20201116085210.29435-29-zbigniew.kempczynski@intel.com>
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [63.128.21.124])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D7E4289ECB
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2020 20:02:37 +0000 (UTC)
+Received: by mail-qv1-f69.google.com with SMTP id d41so13797304qvc.23
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2020 12:02:35 -0800 (PST)
+From: Jeremy Cline <jcline@redhat.com>
+Date: Tue, 17 Nov 2020 15:02:06 -0500
+Message-Id: <20201117200207.92128-2-jcline@redhat.com>
+In-Reply-To: <20201117200207.92128-1-jcline@redhat.com>
+References: <20201116221844.82283-1-jcline@redhat.com>
+ <20201117200207.92128-1-jcline@redhat.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201116085210.29435-29-zbigniew.kempczynski@intel.com>
-Subject: Re: [igt-dev] [i-g-t, v9,
- 28/29] tests/api_intel_bb: Remove check-canonical test
+Subject: [igt-dev] [PATCH i-g-t v3 1/2] tests/kms_addfb_basic: Mark
+ Intel-only tests as such
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,73 +21,55 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Chris Wilson <chris@chris-wilson.co.uk>
+To: IGT GPU Tools <igt-dev@lists.freedesktop.org>
+Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-T24gTW9uLCBOb3YgMTYsIDIwMjAgYXQgMDk6NTI6MDlBTSArMDEwMCwgWmJpZ25pZXcgS2VtcGN6
-ecWEc2tpIHdyb3RlOgo+IEFzIGludGVsLWJiIHVzZXMgaW50ZXJuYWxseSBkZWNhbm9uaWNhbCBh
-ZGRyZXNzIGZvciBvYmplY3RzL2ludGVsX2J1ZnMKPiBjaGVja2luZyBjYW5vbmljYWwgYml0cyBt
-YWtlcyBubyBzZW5zZSBhbnltb3JlLgo+IAo+IFNpZ25lZC1vZmYtYnk6IFpiaWduaWV3IEtlbXBj
-ennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwuY29tPgo+IENjOiBEb21pbmlrIEdy
-emVnb3J6ZWsgPGRvbWluaWsuZ3J6ZWdvcnpla0BpbnRlbC5jb20+Cj4gQ2M6IENocmlzIFdpbHNv
-biA8Y2hyaXNAY2hyaXMtd2lsc29uLmNvLnVrPgo+IC0tLQo+ICB0ZXN0cy9pOTE1L2FwaV9pbnRl
-bF9iYi5jIHwgNzQgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4gIDEg
-ZmlsZSBjaGFuZ2VkLCA3NCBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaTkx
-NS9hcGlfaW50ZWxfYmIuYyBiL3Rlc3RzL2k5MTUvYXBpX2ludGVsX2JiLmMKPiBpbmRleCBiNDFl
-ODJhYS4uZTk4ODM0MjcgMTAwNjQ0Cj4gLS0tIGEvdGVzdHMvaTkxNS9hcGlfaW50ZWxfYmIuYwo+
-ICsrKyBiL3Rlc3RzL2k5MTUvYXBpX2ludGVsX2JiLmMKPiBAQCAtMjQ1LDc3ICsyNDUsNiBAQCBz
-dGF0aWMgdm9pZCBsb3Rfb2ZfYnVmZmVycyhzdHJ1Y3QgYnVmX29wcyAqYm9wcykKPiAgCWludGVs
-X2JiX2Rlc3Ryb3koaWJiKTsKPiAgfQo+ICAKPiAtLyoKPiAtICogTWFrZSBzdXJlIGludGVsLWJi
-IHNwYWNlIGFsbG9jYXRvciBjdXJyZW50bHkgZG9lc24ndCBlbnRlciA0Ny00OCBiaXQKPiAtICog
-Z3R0IHNpemVzLgo+IC0gKi8KPiAtI2RlZmluZSBHRU44X0hJR0hfQUREUkVTU19CSVQgNDcKPiAt
-c3RhdGljIHVpbnQ2NF90IGdlbjhfY2Fub25pY2FsX2FkZHIodWludDY0X3QgYWRkcmVzcykKPiAt
-ewo+IC0JaW50IHNoaWZ0ID0gNjMgLSBHRU44X0hJR0hfQUREUkVTU19CSVQ7Cj4gLQo+IC0JcmV0
-dXJuIChpbnQ2NF90KShhZGRyZXNzIDw8IHNoaWZ0KSA+PiBzaGlmdDsKPiAtfQo+IC0KPiAtc3Rh
-dGljIHZvaWQgY2hlY2tfY2Fub25pY2FsKHN0cnVjdCBidWZfb3BzICpib3BzKQo+IC17Cj4gLQlp
-bnQgaTkxNSA9IGJ1Zl9vcHNfZ2V0X2ZkKGJvcHMpLCBpOwo+IC0Jc3RydWN0IGludGVsX2JiICpp
-YmI7Cj4gLQlzdHJ1Y3QgaW50ZWxfYnVmICpidWY7Cj4gLQl1aW50MzJfdCBvZmZzZXQ7Cj4gLQkv
-KiBUd2ljZSBzYW1lIGFkZHJlc3NlcyB0byB2ZXJpZnkgd2lsbCBiZSB1bnJlc2VydmVkIGluIHJl
-bW92ZSBwYXRoICovCj4gLQl1aW50NjRfdCBhZGRyZXNzZXNbXSA9IHsgMHg4MDAwMDAwMDAwMDAs
-IDB4ODAwMDAwMDAwMDAwLCAweDQwMDAwMDAwMDAwMCB9Owo+IC0JdWludDY0X3QgYWRkcmVzcywg
-c3RhcnQsIGVuZDsKPiAtCWJvb2wgc3VwcG9ydHNfNDhiaXQsIHJlbG9jczsKPiAtCj4gLQlpYmIg
-PSBpbnRlbF9iYl9jcmVhdGUoaTkxNSwgUEFHRV9TSVpFKTsKPiAtCXN1cHBvcnRzXzQ4Yml0ID0g
-aWJiLT5zdXBwb3J0c180OGJfYWRkcmVzczsKPiAtCXJlbG9jcyA9IGliYi0+ZW5mb3JjZV9yZWxv
-Y3M7Cj4gLQlpZiAoIXN1cHBvcnRzXzQ4Yml0IHx8IHJlbG9jcykKPiAtCQlpbnRlbF9iYl9kZXN0
-cm95KGliYik7Cj4gLQlpZ3RfcmVxdWlyZV9mKHN1cHBvcnRzXzQ4Yml0LCAiV2UgbmVlZCA0OGJp
-dCBwcGd0dCBmb3IgdGVzdGluZ1xuIik7Cj4gLQlpZ3RfcmVxdWlyZV9mKCFyZWxvY3MsICJXZSBu
-ZWVkIHRvIHVzZSBhbGxvY2F0b3IgaW5zdGVhZCBvZiByZWxvY2F0aW9uc1xuIik7Cj4gLQo+IC0J
-aWYgKGRlYnVnX2JiKQo+IC0JCWludGVsX2JiX3NldF9kZWJ1ZyhpYmIsIHRydWUpOwo+IC0KPiAt
-CWludGVsX2FsbG9jYXRvcl9nZXRfYWRkcmVzc19yYW5nZShpYmItPmFsbG9jYXRvcl9oYW5kbGUs
-Cj4gLQkJCQkJICAmc3RhcnQsICZlbmQpOwo+IC0KPiAtCWZvciAoaSA9IDA7IGkgPCBBUlJBWV9T
-SVpFKGFkZHJlc3Nlcyk7IGkrKykgewo+IC0JCWFkZHJlc3MgPSBhZGRyZXNzZXNbaV07Cj4gLQo+
-IC0JCWlmIChhZGRyZXNzIDwgc3RhcnQgfHwgYWRkcmVzcyA+PSBlbmQpIHsKPiAtCQkJaWd0X2Rl
-YnVnKCJBZGRyZXNzIHRvbyBiaWc6ICUiIFBSSXg2NAo+IC0JCQkJICAiLCBzdGFydDogJSIgUFJJ
-eDY0ICIsIGVuZDogJSIgUFJJeDY0Cj4gLQkJCQkgICIsIHNraXBwaW5nLi4uXG4iLAo+IC0JCQkJ
-ICBhZGRyZXNzLCBzdGFydCwgZW5kKTsKPiAtCQkJY29udGludWU7Cj4gLQkJfQo+IC0KPiAtCQlv
-ZmZzZXQgPSBpbnRlbF9iYl9lbWl0X2JiZShpYmIpOwo+IC0KPiAtCQlidWYgPSBpbnRlbF9idWZf
-Y3JlYXRlKGJvcHMsIDUxMiwgNTEyLCAzMiwgMCwKPiAtCQkJCSAgICAgICBJOTE1X1RJTElOR19O
-T05FLCBJOTE1X0NPTVBSRVNTSU9OX05PTkUpOwo+IC0KPiAtCQlidWYtPmFkZHIub2Zmc2V0ID0g
-YWRkcmVzczsKPiAtCQlpbnRlbF9iYl9hZGRfaW50ZWxfYnVmKGliYiwgYnVmLCB0cnVlKTsKPiAt
-CQlpbnRlbF9iYl9hZGRfaW50ZWxfYnVmKGliYiwgYnVmLCB0cnVlKTsKPiAtCj4gLQkJaWd0X2Fz
-c2VydChidWYtPmFkZHIub2Zmc2V0ID09IGdlbjhfY2Fub25pY2FsX2FkZHIoYWRkcmVzcykpOwo+
-IC0KPiAtCQlpbnRlbF9iYl9leGVjKGliYiwgb2Zmc2V0LAo+IC0JCQkgICAgICBJOTE1X0VYRUNf
-REVGQVVMVCB8IEk5MTVfRVhFQ19OT19SRUxPQywgdHJ1ZSk7Cj4gLQo+IC0JCS8qIFdlIGVuc3Vy
-ZSB0byBkbyB1bnJlc2VydmUgYW5kIHZlcmlmeSBhZGRyZXNzIGNhbiBiZSByZXVzZWQgKi8KPiAt
-CQlpbnRlbF9iYl9yZW1vdmVfaW50ZWxfYnVmKGliYiwgYnVmKTsKPiAtCQlpbnRlbF9idWZfZGVz
-dHJveShidWYpOwo+IC0JCWludGVsX2JiX3Jlc2V0KGliYiwgdHJ1ZSk7Cj4gLQl9Cj4gLQo+IC0J
-aW50ZWxfYmJfZGVzdHJveShpYmIpOwo+IC19Cj4gLQo+ICAvKgo+ICAgKiBDaGVjayBmbGFncyBh
-cmUgY2xlYXJlZCBhZnRlciBpbnRlbF9iYl9yZXNldChpYmIsIGZhbHNlKTsKPiAgICovCj4gQEAg
-LTE0ODksOSArMTQxOCw2IEBAIGlndF9tYWluX2FyZ3MoImRwaWIiLCBOVUxMLCBoZWxwX3N0ciwg
-b3B0X2hhbmRsZXIsIE5VTEwpCj4gIAlpZ3Rfc3VidGVzdCgibG90LW9mLWJ1ZmZlcnMiKQo+ICAJ
-CWxvdF9vZl9idWZmZXJzKGJvcHMpOwo+ICAKPiAtCWlndF9zdWJ0ZXN0KCJjaGVjay1jYW5vbmlj
-YWwiKQo+IC0JCWNoZWNrX2Nhbm9uaWNhbChib3BzKTsKPiAtCkFja2VkLWJ5OiBBcmp1biBNZWxr
-YXZlcmkgPGFyanVuLm1lbGthdmVyaUBpbnRlbC5jb20+Cj4gIAlpZ3Rfc3VidGVzdCgicmVzZXQt
-ZmxhZ3MiKQo+ICAJCXJlc2V0X2ZsYWdzKGJvcHMpOwo+ICAKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1h
-bi9saXN0aW5mby9pZ3QtZGV2Cg==
+Several tests in the addfb suite only apply to i915 devices. Mark them
+as such so these tests are skipped on non-Intel devices.
+
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Jeremy Cline <jcline@redhat.com>
+---
+ tests/kms_addfb_basic.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+index 9455909c..0ec583fe 100644
+--- a/tests/kms_addfb_basic.c
++++ b/tests/kms_addfb_basic.c
+@@ -572,6 +572,7 @@ static void addfb25_ytile(int fd)
+ 
+ 	igt_subtest("addfb25-y-tiled-legacy") {
+ 		igt_require_fb_modifiers(fd);
++		igt_require_intel(fd);
+ 
+ 		f.modifier[0] = LOCAL_I915_FORMAT_MOD_Y_TILED;
+ 		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) ==
+@@ -583,6 +584,7 @@ static void addfb25_ytile(int fd)
+ 
+ 	igt_subtest("addfb25-yf-tiled-legacy") {
+ 		igt_require_fb_modifiers(fd);
++		igt_require_intel(fd);
+ 
+ 		f.modifier[0] = LOCAL_I915_FORMAT_MOD_Yf_TILED;
+ 		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) ==
+@@ -594,6 +596,7 @@ static void addfb25_ytile(int fd)
+ 
+ 	igt_subtest("addfb25-y-tiled-small-legacy") {
+ 		igt_require_fb_modifiers(fd);
++		igt_require_intel(fd);
+ 
+ 		gen = intel_gen(intel_get_drm_devid(fd));
+ 		igt_require(gen >= 9);
+-- 
+2.28.0
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
