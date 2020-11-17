@@ -3,8 +3,8 @@ MIME-Version: 1.0
 In-Reply-To: <20201117114050.302583-1-tvrtko.ursulin@linux.intel.com>
 References: <20201117114050.302583-1-tvrtko.ursulin@linux.intel.com>
 From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Tue, 17 Nov 2020 11:51:13 +0000
-Message-ID: <160561387302.22621.16952469594692287045@build.alporthouse.com>
+Date: Tue, 17 Nov 2020 12:18:04 +0000
+Message-ID: <160561548452.22621.12237070971991385724@build.alporthouse.com>
 Subject: Re: [Intel-gfx] [PATCH i-g-t] gem_wsim: Implement device selection
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/intel-gfx>,
  <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
@@ -29,7 +29,16 @@ Quoting Tvrtko Ursulin (2020-11-17 11:40:50)
 > With no device specified tool tries to find i915 discrete or integrated in
 > that order.
 
-I'm shocked you didn't add D.x to .wsim :)
+Ok, looks straightforward enough. (I still like having an idiot's guide
+with examples of -L output and what to pass to -D).
+
+> +       fd = igt_open_card(&card);
+> +       igt_require(fd);
+
+Does igt_require() still generate weirdness when used outside of igt
+tests?
+
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
 -Chris
 _______________________________________________
 Intel-gfx mailing list
