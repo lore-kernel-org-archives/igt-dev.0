@@ -1,19 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from us-smtp-delivery-124.mimecast.com
  (us-smtp-delivery-124.mimecast.com [63.128.21.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7E4289ECB
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2020 20:02:37 +0000 (UTC)
-Received: by mail-qv1-f69.google.com with SMTP id d41so13797304qvc.23
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2020 12:02:35 -0800 (PST)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B9D6389AF3
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2020 20:02:35 +0000 (UTC)
+Received: by mail-qv1-f69.google.com with SMTP id bn4so13899536qvb.9
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2020 12:02:30 -0800 (PST)
 From: Jeremy Cline <jcline@redhat.com>
-Date: Tue, 17 Nov 2020 15:02:06 -0500
-Message-Id: <20201117200207.92128-2-jcline@redhat.com>
-In-Reply-To: <20201117200207.92128-1-jcline@redhat.com>
+Date: Tue, 17 Nov 2020 15:02:05 -0500
+Message-Id: <20201117200207.92128-1-jcline@redhat.com>
+In-Reply-To: <20201116221844.82283-1-jcline@redhat.com>
 References: <20201116221844.82283-1-jcline@redhat.com>
- <20201117200207.92128-1-jcline@redhat.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t v3 1/2] tests/kms_addfb_basic: Mark
- Intel-only tests as such
+Subject: [igt-dev] [PATCH i-g-t v3 0/2] tests/kms_addfb_basic: Nouveau
+ support
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -29,43 +28,29 @@ To: IGT GPU Tools <igt-dev@lists.freedesktop.org>
 Cc: Petri Latvala <petri.latvala@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Several tests in the addfb suite only apply to i915 devices. Mark them
-as such so these tests are skipped on non-Intel devices.
+Hi folks,
 
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Jeremy Cline <jcline@redhat.com>
----
- tests/kms_addfb_basic.c | 3 +++
- 1 file changed, 3 insertions(+)
+I've been going through IGT's existing tests and seeing what they
+uncover when pointed at nouveau. The kms_addfb_basic tests appear to be
+largely vendor-agnostic, but there's a few simple cases that need fixing
+for the test suite to pass with Nouveau.
 
-diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-index 9455909c..0ec583fe 100644
---- a/tests/kms_addfb_basic.c
-+++ b/tests/kms_addfb_basic.c
-@@ -572,6 +572,7 @@ static void addfb25_ytile(int fd)
- 
- 	igt_subtest("addfb25-y-tiled-legacy") {
- 		igt_require_fb_modifiers(fd);
-+		igt_require_intel(fd);
- 
- 		f.modifier[0] = LOCAL_I915_FORMAT_MOD_Y_TILED;
- 		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) ==
-@@ -583,6 +584,7 @@ static void addfb25_ytile(int fd)
- 
- 	igt_subtest("addfb25-yf-tiled-legacy") {
- 		igt_require_fb_modifiers(fd);
-+		igt_require_intel(fd);
- 
- 		f.modifier[0] = LOCAL_I915_FORMAT_MOD_Yf_TILED;
- 		igt_assert(drmIoctl(fd, LOCAL_DRM_IOCTL_MODE_ADDFB2, &f) ==
-@@ -594,6 +596,7 @@ static void addfb25_ytile(int fd)
- 
- 	igt_subtest("addfb25-y-tiled-small-legacy") {
- 		igt_require_fb_modifiers(fd);
-+		igt_require_intel(fd);
- 
- 		gen = intel_gen(intel_get_drm_devid(fd));
- 		igt_require(gen >= 9);
+The two issues are that there are a few tests that are specifically for
+Intel GPUs, and there's some minor error code differences between i915
+and nouveau (which both seem to be okay based on the API docs I could
+find).
+
+Changes from v2:
+
+* Use if statements rather than breaking out differences into subtests
+
+Jeremy Cline (2):
+  tests/kms_addfb_basic: Mark Intel-only tests as such
+  tests/kms_addfb_basic: add vendor-specific errno assertions
+
+ tests/kms_addfb_basic.c | 48 ++++++++++++++++++++++++++++++++---------
+ 1 file changed, 38 insertions(+), 10 deletions(-)
+
 -- 
 2.28.0
 
