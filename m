@@ -1,16 +1,12 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F368D6EAA4
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2020 15:01:02 +0000 (UTC)
-Date: Tue, 17 Nov 2020 17:00:57 +0200
-From: Imre Deak <imre.deak@intel.com>
-Message-ID: <20201117150057.GB1158100@ideak-desk.fi.intel.com>
-References: <20201117144356.1253838-1-imre.deak@intel.com>
- <160562465275.22621.7389784130169909263@build.alporthouse.com>
+Received: from fireflyinternet.com (unknown [77.68.26.236])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 32F8B6E0F5
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2020 15:05:39 +0000 (UTC)
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Tue, 17 Nov 2020 15:05:18 +0000
+Message-Id: <20201117150518.1872289-1-chris@chris-wilson.co.uk>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <160562465275.22621.7389784130169909263@build.alporthouse.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] tests/fbdev: Add mmap readback subtest
+Subject: [igt-dev] [PATCH i-g-t] intel-ci: Broaden core_hotunplug blacklist
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,29 +14,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: imre.deak@intel.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>, Chris Wilson <chris@chris-wilson.co.uk>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Nov 17, 2020 at 02:50:52PM +0000, Chris Wilson wrote:
-> Quoting Imre Deak (2020-11-17 14:43:56)
-> > Add a simple subtest checking that the mmap address we get for an FB
-> > corresponds to the content that we read back from the FB via the read
-> > syscall.
-> 
-> Please coordinate with https://patchwork.freedesktop.org/series/83955/
-> and decide what is the best approach since you both implement the same
-> test.
+We're close, but iommu fails upon rebinding leading to dead GPUs and
+random failures in later tests. Random failures are a major nuisance.
 
-Thanks, the test I add isn't needed then, Thomas' read subtest already
-covers that.
+We will have to see if we can find the fix and try again in the future.
 
-> -Chris
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/2644
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Petri Latvala <petri.latvala@intel.com>
+---
+ tests/intel-ci/blacklist.txt | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
+index 25b567038..37a049335 100644
+--- a/tests/intel-ci/blacklist.txt
++++ b/tests/intel-ci/blacklist.txt
+@@ -119,8 +119,9 @@ igt@.*@.*pipe-f($|-.*)
+ igt@perf_pmu@cpu-hotplug
+ 
+ # Currently fails and leaves the machine in a very bad state, and
+-# causes coverage loss for other tests.
+-igt@core_hotunplug@.*plug.*
++# causes coverage loss for other tests. IOMMU related.
++# https://gitlab.freedesktop.org/drm/intel/-/issues/2644
++igt@core_hotunplug@.*(hot|plug).*
+ 
+ # hangs several gens of hosts, and has no immediate fix
+-igt@device_reset@reset-bound
+\ No newline at end of file
++igt@device_reset@reset-bound
+-- 
+2.29.2
+
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
