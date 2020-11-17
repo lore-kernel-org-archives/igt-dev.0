@@ -1,16 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE19F6E06E
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2020 06:19:30 +0000 (UTC)
-Date: Mon, 16 Nov 2020 22:21:58 -0800
-From: "Navare, Manasi" <manasi.d.navare@intel.com>
-Message-ID: <20201117062158.GA30241@labuser-Z97X-UD5H>
-References: <20201007060949.3858-1-karthik.b.s@intel.com>
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6CE816E122
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2020 07:31:33 +0000 (UTC)
+Date: Tue, 17 Nov 2020 09:31:29 +0200
+From: Petri Latvala <petri.latvala@intel.com>
+Message-ID: <20201117073129.GS7444@platvala-desk.ger.corp.intel.com>
+References: <20201113164940.48427-1-jcline@redhat.com>
+ <20201116221844.82283-1-jcline@redhat.com>
+ <20201116221844.82283-3-jcline@redhat.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201007060949.3858-1-karthik.b.s@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v4] tests/kms_big_joiner: Add test to
- validate big joiner
+In-Reply-To: <20201116221844.82283-3-jcline@redhat.com>
+Subject: Re: [igt-dev] [PATCH i-g-t v2 2/2] tests/kms_addfb_basic: add
+ vendor-specific errno assertions
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -18,373 +20,176 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Karthik B S <karthik.b.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org
+To: Jeremy Cline <jcline@redhat.com>
+Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Wed, Oct 07, 2020 at 11:39:49AM +0530, Karthik B S wrote:
-> Added negative test to verify the different scenarios for big joiner.
-> In the test, modeset is done on Pipe A for a big joiner mode and
-> a second modeset is attempted on Pipe B which is expected to fail.
-> Same functionality is validated for other pipes as well.
-> =
-
-> Secondly, the reverse is tested where a modeset is done on Pipe B
-> and then a second big joiner modeset is attempted on Pipe A which is
-> expected to fail. Same functionality is validated for other pipes as well.
-> =
-
-> v2: -Rename HDISPLAY_5K to MAX_HDISPLAY_PER_PIPE. (Manasi)
->     -Do not assume mode[0] will be the highest mode.
->      Loop through the mode list to find the 8k mode. (Manasi)
->     -Add a subtest for verifying basic 8k modeset on all pipes. (Manasi)
-> =
-
-> v3: -Add break after big joiner output is found in basic subtest. (Manasi)
->     -Fix the clean up part in the invalid-modeset subtest.
-> =
-
-> v4: -Add comments in the clean up part of invalid subtest as to why only
->      particular fb needs to be set to NULL. (Manasi)
-> =
-
-> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-
-Reviewed-by: Manasi Navare <manasi.d.navare@intel.com>
-
-Manasi
-
+On Mon, Nov 16, 2020 at 05:18:44PM -0500, Jeremy Cline wrote:
+> This adjusts the check on failed calls to DRM_IOCTL_MODE_ADDFB2 in
+> various scenarios. According to the kernel's
+> drm_mode_config_funcs.fb_create documentation, a negative return code is
+> all that is required to signal failure, and different drivers return
+> different errors in these scenarios.
+> 
+> Particularly, Nouveau returns -ERANGE rather than -EINVAL in scenarios
+> where the buffer is too small for the proposed configuration.
+> 
+> In situations where Nouveau and Intel return codes diverge, this splits
+> up the test into a generic test asserting a non-zero error code,
+> followed by some vendor-specific assertions about its exact value.
+> 
+> Signed-off-by: Jeremy Cline <jcline@redhat.com>
 > ---
->  tests/Makefile.sources |   1 +
->  tests/kms_big_joiner.c | 262 +++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build      |   1 +
->  3 files changed, 264 insertions(+)
->  create mode 100644 tests/kms_big_joiner.c
-> =
+> Changes since v1:
+>   - Added vendor-specific assertions for exact error numbers
+>   - Added igt_info statements to the generic test cases
+>   - Made use of do_ioctl_err() macro when possible
+> 
+>  tests/kms_addfb_basic.c | 64 +++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 58 insertions(+), 6 deletions(-)
 
-> diff --git a/tests/Makefile.sources b/tests/Makefile.sources
-> index f32ea9cf..f59ac150 100644
-> --- a/tests/Makefile.sources
-> +++ b/tests/Makefile.sources
-> @@ -38,6 +38,7 @@ TESTS_progs =3D \
->  	kms_atomic_transition \
->  	kms_available_modes_crc \
->  	kms_big_fb \
-> +	kms_big_joiner \
->  	kms_busy \
->  	kms_ccs \
->  	kms_concurrent \
-> diff --git a/tests/kms_big_joiner.c b/tests/kms_big_joiner.c
-> new file mode 100644
-> index 00000000..31d2e048
-> --- /dev/null
-> +++ b/tests/kms_big_joiner.c
-> @@ -0,0 +1,262 @@
-> +/*
-> + * Copyright =A9 2020 Intel Corporation
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining=
- a
-> + * copy of this software and associated documentation files (the "Softwa=
-re"),
-> + * to deal in the Software without restriction, including without limita=
-tion
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicen=
-se,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice (including the =
-next
-> + * paragraph) shall be included in all copies or substantial portions of=
- the
-> + * Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRE=
-SS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILI=
-TY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SH=
-ALL
-> + * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR =
-OTHER
-> + * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISI=
-NG
-> + * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER D=
-EALINGS
-> + * IN THE SOFTWARE.
-> + *
-> + * Author:
-> + *  Karthik B S <karthik.b.s@intel.com>
-> + */
-> +
-> +#include "igt.h"
-> +
-> +#define MAX_HDISPLAY_PER_PIPE 5120
-> +
-> +IGT_TEST_DESCRIPTION("Test big joiner");
-> +
-> +typedef struct {
-> +	int drm_fd;
-> +	igt_display_t display;
-> +	struct igt_fb fb;
-> +	int mode_number;
-> +	int n_pipes;
-> +	uint32_t big_joiner_output_id;
-> +} data_t;
-> +
-> +static void test_invalid_modeset(data_t *data)
-> +{
-> +	drmModeModeInfo *mode;
-> +	igt_display_t *display =3D &data->display;
-> +	igt_output_t *output, *big_joiner_output =3D NULL, *second_output =3D N=
-ULL;
-> +	int width =3D 0, height =3D 0, i, ret;
-> +	igt_pipe_t *pipe;
-> +	igt_plane_t *plane;
-> +
-> +	for_each_connected_output(display, output) {
-> +		mode =3D &output->config.connector->modes[0];
-> +
-> +		if (data->big_joiner_output_id =3D=3D output->id) {
-> +			mode =3D &output->config.connector->modes[data->mode_number];
-> +			big_joiner_output =3D output;
-> +		} else if (second_output =3D=3D NULL) {
-> +			second_output =3D output;
-> +		}
-> +
-> +		width =3D max(width, mode->hdisplay);
-> +		height =3D max(height, mode->vdisplay);
-> +	}
-> +
-> +	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
-> +			      LOCAL_DRM_FORMAT_MOD_NONE, &data->fb);
-> +
-> +	for_each_pipe(display, i) {
-> +		if (i < (data->n_pipes - 1)) {
-> +			igt_output_set_pipe(big_joiner_output, i);
-> +
-> +			mode =3D &big_joiner_output->config.connector->modes[data->mode_numbe=
-r];
-> +			igt_output_override_mode(big_joiner_output, mode);
-> +
-> +			pipe =3D &display->pipes[i];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +			igt_output_set_pipe(second_output, i + 1);
-> +
-> +			mode =3D igt_output_get_mode(second_output);
-> +
-> +			pipe =3D &display->pipes[i + 1];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			/* This commit is expectd to fail as this pipe is being used for big =
-joiner */
-> +			ret =3D igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_O=
-NLY |
-> +							    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +			igt_assert_lt(ret, 0);
-> +
-> +			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
-> +			igt_output_set_pipe(second_output, PIPE_NONE);
-> +
-> +			pipe =3D &display->pipes[i];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			/*
-> +			 * Do not explicitly set the plane of the second output to NULL,
-> +			 * as it is the adjacent pipe to the big joiner output and
-> +			 * setting the big joiner plane to NULL will take care of this.
-> +			 */
-> +			igt_plane_set_fb(plane, NULL);
-> +			igt_display_commit2(display, COMMIT_ATOMIC);
-> +			igt_output_override_mode(big_joiner_output, NULL);
-> +		}
-> +	}
-> +
-> +	for_each_pipe(display, i) {
-> +		if (i < (data->n_pipes - 1)) {
-> +			igt_output_set_pipe(second_output, i + 1);
-> +
-> +			mode =3D igt_output_get_mode(second_output);
-> +
-> +			pipe =3D &display->pipes[i + 1];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +			igt_output_set_pipe(big_joiner_output, i);
-> +
-> +			mode =3D &big_joiner_output->config.connector->modes[data->mode_numbe=
-r];
-> +			igt_output_override_mode(big_joiner_output, mode);
-> +
-> +			pipe =3D &display->pipes[i];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			/* This commit is expected to fail as the adjacent pipe is already in=
- use*/
-> +			ret =3D igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_TEST_O=
-NLY |
-> +							    DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +			igt_assert_lt(ret, 0);
-> +
-> +			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
-> +			igt_output_set_pipe(second_output, PIPE_NONE);
-> +			igt_plane_set_fb(plane, NULL);
-> +
-> +			pipe =3D &display->pipes[i + 1];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +			igt_plane_set_fb(plane, NULL);
-> +
-> +			igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +			igt_output_override_mode(big_joiner_output, NULL);
-> +		}
-> +	}
-> +
-> +	igt_remove_fb(data->drm_fd, &data->fb);
-> +}
-> +
-> +static void test_basic_modeset(data_t *data)
-> +{
-> +	drmModeModeInfo *mode;
-> +	igt_output_t *output, *big_joiner_output =3D NULL;
-> +	igt_display_t *display =3D &data->display;
-> +	int width =3D 0, height =3D 0, i;
-> +	igt_pipe_t *pipe;
-> +	igt_plane_t *plane;
-> +
-> +	for_each_connected_output(display, output) {
-> +		if (data->big_joiner_output_id =3D=3D output->id) {
-> +			mode =3D &output->config.connector->modes[data->mode_number];
-> +			big_joiner_output =3D output;
-> +			width =3D mode->hdisplay;
-> +			height =3D mode->vdisplay;
-> +			break;
-> +		}
-> +	}
-> +
-> +	igt_create_pattern_fb(data->drm_fd, width, height, DRM_FORMAT_XRGB8888,
-> +			      LOCAL_DRM_FORMAT_MOD_NONE, &data->fb);
-> +
-> +	for_each_pipe(display, i) {
-> +		if (i < (data->n_pipes - 1)) {
-> +			igt_output_set_pipe(big_joiner_output, i);
-> +
-> +			mode =3D &big_joiner_output->config.connector->modes[data->mode_numbe=
-r];
-> +			igt_output_override_mode(big_joiner_output, mode);
-> +
-> +			pipe =3D &display->pipes[i];
-> +			plane =3D igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
-> +
-> +			igt_plane_set_fb(plane, &data->fb);
-> +			igt_fb_set_size(&data->fb, plane, mode->hdisplay, mode->vdisplay);
-> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-> +
-> +			igt_display_commit2(display, COMMIT_ATOMIC);
-> +
-> +			igt_output_set_pipe(big_joiner_output, PIPE_NONE);
-> +			igt_plane_set_fb(plane, NULL);
-> +			igt_display_commit2(display, COMMIT_ATOMIC);
-> +		}
-> +	}
-> +
-> +	igt_remove_fb(data->drm_fd, &data->fb);
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data;
-> +	bool big_joiner_mode_found =3D false;
-> +	igt_output_t *output;
-> +	drmModeModeInfo *mode;
-> +	int valid_output =3D 0, i;
-> +
-> +	igt_fixture {
-> +		data.drm_fd =3D drm_open_driver_master(DRIVER_INTEL);
-> +		kmstest_set_vt_graphics_mode();
-> +
-> +		igt_display_require(&data.display, data.drm_fd);
-> +
-> +		for_each_connected_output(&data.display, output) {
-> +			if (!big_joiner_mode_found) {
-> +				for (i =3D 0; i < output->config.connector->count_modes; i++) {
-> +					mode =3D &output->config.connector->modes[i];
-> +					if (mode->hdisplay > MAX_HDISPLAY_PER_PIPE) {
-> +						big_joiner_mode_found =3D true;
-> +						data.mode_number =3D i;
-> +						data.big_joiner_output_id =3D output->id;
-> +						break;
-> +					}
-> +				}
-> +			}
-> +			valid_output++;
-> +		}
-> +
-> +		data.n_pipes =3D 0;
-> +		for_each_pipe(&data.display, i)
-> +			data.n_pipes++;
-> +
-> +		igt_require_f(big_joiner_mode_found, "No output with 5k+ mode found\n"=
-);
-> +	}
-> +
-> +	igt_describe("Verify the basic modeset on big joiner mode on all pipes"=
-);
-> +	igt_subtest("basic")
-> +		test_basic_modeset(&data);
-> +
-> +	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
-> +		     "when the pipe is active with a big joiner modeset");
-> +	igt_subtest("invalid-modeset") {
-> +		igt_require_f(valid_output > 1, "No valid Second output found\n");
-> +		test_invalid_modeset(&data);
-> +	}
-> +
-> +	igt_fixture
-> +		igt_display_fini(&data.display);
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 32f011e9..aea7d7f8 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -22,6 +22,7 @@ test_progs =3D [
->  	'kms_atomic_transition',
->  	'kms_available_modes_crc',
->  	'kms_big_fb',
-> +	'kms_big_joiner' ,
->  	'kms_busy',
->  	'kms_ccs',
->  	'kms_concurrent',
-> -- =
 
-> 2.22.0
-> =
+I was thinking more on the lines of
 
+igt_subtest("bad-pitch") {
+igt_assert_f(drmIoctl(fd, y, z) == -1, "this should have failed");
+
+if (is_i915_device(fd))
+ igt_assert_eq(errno, EINVAL);
+else if (is_nouveau_device(fd))
+ igt_assert_eq(errno, ERANGE);
+else {
+ igt_info("Unknown vendor, can't check which error value this should be, but it was %d", errno);
+}
+}
+
+
+
+That method unfortunately prevents the use of do_ioctl_err. Hmm.
+
+
+
+shouldbe = get_proper_error_code_for_device(fd);
+
+if (shouldbe != 0) {
+ do_ioctl_err(fd, x, y, z, shouldbe);
+} else {
+ igt_assert(drmIoctl(fd, x, y, z) == -1);
+ igt_info("Unknown vendor, can't check which error value this should be but it was %d", errno);
+}
+
+
+
+
+Anyway, don't split these to vendor-specific subtests. Subtests should
+be split based on the operation tested, as a very loose thumb rule.
+
+
+-- 
+Petri Latvala
+
+
+
+> 
+> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
+> index 0ec583fe..9b936584 100644
+> --- a/tests/kms_addfb_basic.c
+> +++ b/tests/kms_addfb_basic.c
+> @@ -278,11 +278,35 @@ static void pitch_tests(int fd)
+>  		f.fb_id = 0;
+>  	}
+>  
+> +	/* Generic invalid pitch tests; error numbers are driver-dependent */
+>  	for (i = 0; i < ARRAY_SIZE(bad_pitches); i++) {
+> -		igt_subtest_f("bad-pitch-%i", bad_pitches[i]) {
+> +		igt_subtest_f("generic-bad-pitch-%i", bad_pitches[i]) {
+>  			f.pitches[0] = bad_pitches[i];
+>  			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+> -				   errno == EINVAL);
+> +				   errno != 0);
+> +			igt_info("invalid pitch %i resulted in errno %i\n",
+> +				 bad_pitches[i], errno);
+> +		}
+> +	}
+> +
+> +	/* Intel returns EINVAL in all invalid pitch scenarios */
+> +	for (i = 0; i < ARRAY_SIZE(bad_pitches); i++) {
+> +		igt_subtest_f("intel-bad-pitch-%i", bad_pitches[i]) {
+> +			igt_require_intel(fd);
+> +			f.pitches[0] = bad_pitches[i];
+> +			do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+> +		}
+> +	}
+> +
+> +	/* Nouveau returns ERANGE for pitches that are too big */
+> +	for (i = 0; i < ARRAY_SIZE(bad_pitches); i++) {
+> +		igt_subtest_f("nouveau-bad-pitch-%i", bad_pitches[i]) {
+> +			igt_require_nouveau(fd);
+> +			f.pitches[0] = bad_pitches[i];
+> +			if (bad_pitches[i] > 4 * 1024)
+> +				do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, ERANGE);
+> +			else
+> +				do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+>  		}
+>  	}
+>  
+> @@ -427,17 +451,45 @@ static void size_tests(int fd)
+>  	f_8.height++;
+>  	igt_subtest("too-high") {
+>  		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+> -			   errno == EINVAL);
+> +			   errno != 0);
+> +		igt_info("driver returned errno %i for framebuffer f\n", errno);
+>  		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_16) == -1 &&
+> -			   errno == EINVAL);
+> +			   errno != 0);
+> +		igt_info("driver returned errno %i for framebuffer f_16\n", errno);
+>  		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_8) == -1 &&
+> -			   errno == EINVAL);
+> +			   errno != 0);
+> +		igt_info("driver returned errno %i for framebuffer f_8\n", errno);
+> +	}
+> +
+> +	igt_subtest("intel-too-high") {
+> +		igt_require_intel(fd);
+> +		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+> +		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f_16, EINVAL);
+> +		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f_8, EINVAL);
+> +	}
+> +
+> +	igt_subtest("nouveau-too-high") {
+> +		igt_require_nouveau(fd);
+> +		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, ERANGE);
+> +		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f_16, ERANGE);
+> +		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f_8, ERANGE);
+>  	}
+>  
+>  	f.handles[0] = gem_bo_small;
+>  	igt_subtest("bo-too-small") {
+>  		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
+> -			   errno == EINVAL);
+> +			   errno != 0);
+> +		igt_info("driver returned errno %i\n", errno);
+> +	}
+> +
+> +	igt_subtest("intel-bo-too-small") {
+> +		igt_require_intel(fd);
+> +		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, EINVAL);
+> +	}
+> +
+> +	igt_subtest("nouveau-bo-too-small") {
+> +		igt_require_nouveau(fd);
+> +		do_ioctl_err(fd, DRM_IOCTL_MODE_ADDFB2, &f, ERANGE);
+>  	}
+>  
+>  	/* Just to check that the parameters would work. */
+> -- 
+> 2.28.0
+> 
 _______________________________________________
 igt-dev mailing list
 igt-dev@lists.freedesktop.org
