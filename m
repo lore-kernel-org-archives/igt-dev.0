@@ -1,18 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFD1D6E027
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2020 09:12:32 +0000 (UTC)
-Date: Wed, 18 Nov 2020 11:12:28 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201118091228.GA7444@platvala-desk.ger.corp.intel.com>
-References: <20201116221844.82283-1-jcline@redhat.com>
- <20201117200207.92128-1-jcline@redhat.com>
- <20201117200207.92128-3-jcline@redhat.com>
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6571D6E3DA
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2020 09:56:49 +0000 (UTC)
+References: <20201117163411.133158-1-zbigniew.kempczynski@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Message-ID: <5dc15802-e634-f20f-6ffd-0b9e9eaf724c@linux.intel.com>
+Date: Wed, 18 Nov 2020 09:56:43 +0000
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201117200207.92128-3-jcline@redhat.com>
-Subject: Re: [igt-dev] [PATCH i-g-t v3 2/2] tests/kms_addfb_basic: add
- vendor-specific errno assertions
+In-Reply-To: <20201117163411.133158-1-zbigniew.kempczynski@intel.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH i-g-t v3 1/3] lib/igt_device_scan: Remember
+ vendor/device for pci devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,129 +18,124 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"; Format="flowed"
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Jeremy Cline <jcline@redhat.com>
-Cc: IGT GPU Tools <igt-dev@lists.freedesktop.org>
+To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>, igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Tue, Nov 17, 2020 at 03:02:07PM -0500, Jeremy Cline wrote:
-> This adjusts the check on failed calls to DRM_IOCTL_MODE_ADDFB2 in
-> various scenarios. According to the kernel's
-> drm_mode_config_funcs.fb_create documentation, a negative return code is
-> all that is required to signal failure, and different drivers return
-> different errors in these scenarios.
-> 
-> Particularly, Nouveau returns -ERANGE rather than -EINVAL in scenarios
-> where the buffer is too small for the proposed configuration.
-> 
-> In situations where Nouveau and Intel return codes diverge, split out
-> the errno assertions into device-specific blocks.
-> 
-> Signed-off-by: Jeremy Cline <jcline@redhat.com>
-> ---
-
-Looks good. Just a minor nit below:
-
-> Changes since v2:
->   - Remove vendor-specific subtests.
-> 
->  tests/kms_addfb_basic.c | 45 ++++++++++++++++++++++++++++++++---------
->  1 file changed, 35 insertions(+), 10 deletions(-)
-> 
-> diff --git a/tests/kms_addfb_basic.c b/tests/kms_addfb_basic.c
-> index 0ec583fe..0e5e3aeb 100644
-> --- a/tests/kms_addfb_basic.c
-> +++ b/tests/kms_addfb_basic.c
-> @@ -281,8 +281,19 @@ static void pitch_tests(int fd)
->  	for (i = 0; i < ARRAY_SIZE(bad_pitches); i++) {
->  		igt_subtest_f("bad-pitch-%i", bad_pitches[i]) {
->  			f.pitches[0] = bad_pitches[i];
-> -			igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
-> -				   errno == EINVAL);
-> +			igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f), -1);
-> +			igt_assert(errno != 0);
-> +			if (is_i915_device(fd)) {
-> +				igt_assert_eq(errno, EINVAL);
-> +			} else if (is_nouveau_device(fd)) {
-> +				if (bad_pitches[i] > 4 * 1024)
-> +					igt_assert_eq(errno, ERANGE);
-> +				else
-> +					igt_assert_eq(errno, EINVAL);
-> +			} else {
-> +				igt_info("Unknown vendor; errno unchecked (returned %i)", errno);
-> +			}
-> +			errno = 0;
->  		}
->  	}
->  
-> @@ -367,6 +378,8 @@ static void size_tests(int fd)
->  	struct drm_mode_fb_cmd2 f = {};
->  	struct drm_mode_fb_cmd2 f_16 = {};
->  	struct drm_mode_fb_cmd2 f_8 = {};
-> +	struct drm_mode_fb_cmd2 *framebuffers[] = {&f, &f_16, &f_8};
-> +	int i;
->  
->  	f.width = 1024;
->  	f.height = 1024;
-> @@ -426,18 +439,30 @@ static void size_tests(int fd)
->  	f_16.height++;
->  	f_8.height++;
->  	igt_subtest("too-high") {
-> -		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
-> -			   errno == EINVAL);
-> -		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_16) == -1 &&
-> -			   errno == EINVAL);
-> -		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f_8) == -1 &&
-> -			   errno == EINVAL);
-> +		for (i = 0; i < ARRAY_SIZE(framebuffers); i++) {
-
-If any of the asserts trigger in this for-loop, the failure will just
-say "assertion failed, errno xyz instead of EINVAL" etc, losing the
-information which fb it was we failed on. Add a igt_debug line right
-here:
-
-igt_debug("Checking framebuffer %i\n", i);
-
-With that added,
-Reviewed-by: Petri Latvala <petri.latvala@intel.com>
-
-
-
-> +			igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, framebuffers[i]), -1);
-> +			igt_assert(errno != 0);
-> +			if (is_i915_device(fd))
-> +				igt_assert_eq(errno, EINVAL);
-> +			else if (is_nouveau_device(fd))
-> +				igt_assert_eq(errno, ERANGE);
-> +			else
-> +				igt_info("Unknown vendor; errno unchecked (returned %i)", errno);
-> +			errno = 0;
-> +		}
->  	}
->  
->  	f.handles[0] = gem_bo_small;
->  	igt_subtest("bo-too-small") {
-> -		igt_assert(drmIoctl(fd, DRM_IOCTL_MODE_ADDFB2, &f) == -1 &&
-> -			   errno == EINVAL);
-> +		igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_MODE_ADDFB2, &f), -1);
-> +		igt_assert(errno != 0);
-> +		if (is_i915_device(fd))
-> +			igt_assert_eq(errno, EINVAL);
-> +		else if (is_nouveau_device(fd))
-> +			igt_assert_eq(errno, ERANGE);
-> +		else
-> +			igt_info("Unknown vendor; errno unchecked (returned %i)", errno);
-> +		errno = 0;
->  	}
->  
->  	/* Just to check that the parameters would work. */
-> -- 
-> 2.28.0
-> 
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+Ck9uIDE3LzExLzIwMjAgMTY6MzQsIFpiaWduaWV3IEtlbXBjennFhHNraSB3cm90ZToKPiBJZiB3
+ZSB3YW50IHRvIHVzZSBwY2kgZGV2aWNlIGlkIGZvciBub3Qgb3BlbmVkIGRldmljZSB3ZSBuZWVk
+IHRvCj4ga2VlcCBpdCBpbiBjYXJkIHN0cnVjdHVyZS4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBaYmln
+bmlldyBLZW1wY3p5xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KPiBDYzog
+VHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KPiBDYzogUGV0cmkgTGF0
+dmFsYSA8cGV0cmkubGF0dmFsYUBpbnRlbC5jb20+Cj4gLS0tCj4gICBsaWIvaWd0X2RldmljZV9z
+Y2FuLmMgfCA4OCArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tCj4g
+ICBsaWIvaWd0X2RldmljZV9zY2FuLmggfCAgMiArCj4gICAyIGZpbGVzIGNoYW5nZWQsIDgyIGlu
+c2VydGlvbnMoKyksIDggZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2xpYi9pZ3RfZGV2
+aWNlX3NjYW4uYyBiL2xpYi9pZ3RfZGV2aWNlX3NjYW4uYwo+IGluZGV4IGU5N2Y3MTYzLi42Yzhh
+YjhiMSAxMDA2NDQKPiAtLS0gYS9saWIvaWd0X2RldmljZV9zY2FuLmMKPiArKysgYi9saWIvaWd0
+X2RldmljZV9zY2FuLmMKPiBAQCAtMjUsNyArMjUsOSBAQAo+ICAgI2luY2x1ZGUgImlndF9jb3Jl
+LmgiCj4gICAjaW5jbHVkZSAiaWd0X2RldmljZV9zY2FuLmgiCj4gICAjaW5jbHVkZSAiaWd0X2xp
+c3QuaCIKPiArI2luY2x1ZGUgImludGVsX2NoaXBzZXQuaCIKPiAgIAo+ICsjaW5jbHVkZSA8Y3R5
+cGUuaD4KPiAgICNpbmNsdWRlIDxkaXJlbnQuaD4KPiAgICNpbmNsdWRlIDxmY250bC5oPgo+ICAg
+I2luY2x1ZGUgPGdsaWIuaD4KPiBAQCAtMTc4LDEyICsxODAsMzkgQEAgc3RhdGljIHN0cnVjdCB7
+Cj4gICAJYm9vbCBkZXZzX3NjYW5uZWQ7Cj4gICB9IGlndF9kZXZzOwo+ICAgCj4gK3R5cGVkZWYg
+Y2hhciAqKCpkZXZuYW1lX2ZuKSh1aW50MTZfdCwgdWludDE2X3QpOwo+ICsKPiArc3RhdGljIGNo
+YXIgKmRldm5hbWVfaGV4KHVpbnQxNl90IHZlbmRvciwgdWludDE2X3QgZGV2aWNlKQo+ICt7Cj4g
+KwljaGFyICpzOwo+ICsKPiArCWlndF9hc3NlcnQoYXNwcmludGYoJnMsICIlMDR4OiUwNHgiLCB2
+ZW5kb3IsIGRldmljZSkgPT0gOSk7CgotMSBvciA5IGFyZSB0aGUgb25seSBwb3NzaWJsZSByZXR1
+cm5zIGhlcmUsIG9rYXkuCgo+ICsKPiArCXJldHVybiBzOwo+ICt9Cj4gKwo+ICtzdGF0aWMgY2hh
+ciAqZGV2bmFtZV9pbnRlbCh1aW50MTZfdCB2ZW5kb3IsIHVpbnQxNl90IGRldmljZSkKClBsYW4g
+ZXhwb3J0IHNvIGxhdGVyIHBhdGNoIHRvIGludGVsX2dwdV90b3AgZG9lcyBub3QgbmVlZCB0byAK
+cmUtaW1wbGVtZW50IGl0PwoKPiArewo+ICsJY29uc3Qgc3RydWN0IGludGVsX2RldmljZV9pbmZv
+ICppbmZvID0gaW50ZWxfZ2V0X2RldmljZV9pbmZvKGRldmljZSk7Cj4gKwljaGFyICpkZXZuYW1l
+LCAqczsKPiArCj4gKwkodm9pZCkgdmVuZG9yOwo+ICsKPiArCWRldm5hbWUgPSBpbmZvLT5jb2Rl
+bmFtZSA/IHN0cmR1cChpbmZvLT5jb2RlbmFtZSkgOiBzdHJkdXAoInVua25vd24iKTsKCjEpIExl
+YWtzIGRldm5hbWU/CjIpIEkgdGhpbmsgaGV4IHZhbHVlIHdvdWxkIGJlIGJldHRlciBpZiB1bmtu
+b3duLgoKPiArCWRldm5hbWVbMF0gPSB0b3VwcGVyKGRldm5hbWVbMF0pOwo+ICsKPiArCWFzcHJp
+bnRmKCZzLCAiSW50ZWwgJXMgKEdlbiV1KSIsIGRldm5hbWUsIGZmcyhpbmZvLT5nZW4pKTsKPiAr
+Cj4gKwlyZXR1cm4gczsKPiArfQo+ICsKPiAgIHN0YXRpYyBzdHJ1Y3Qgewo+ICAgCWNvbnN0IGNo
+YXIgKm5hbWU7Cj4gICAJY29uc3QgY2hhciAqdmVuZG9yX2lkOwo+ICsJZGV2bmFtZV9mbiBkZXZu
+YW1lOwo+ICAgfSBwY2lfdmVuZG9yX21hcHBpbmdbXSA9IHsKPiAtCXsgImludGVsIiwgIjgwODYi
+IH0sCj4gLQl7ICJhbWQiLCAiMTAwMiIgfSwKPiArCXsgImludGVsIiwgIjgwODYiLCBkZXZuYW1l
+X2ludGVsIH0sCj4gKwl7ICJhbWQiLCAiMTAwMiIsIGRldm5hbWVfaGV4IH0sCj4gICAJeyBOVUxM
+LCB9LAo+ICAgfTsKPiAgIAo+IEBAIC0xOTgsNiArMjI3LDI2IEBAIHN0YXRpYyBjb25zdCBjaGFy
+ICpnZXRfcGNpX3ZlbmRvcl9pZF9ieV9uYW1lKGNvbnN0IGNoYXIgKm5hbWUpCj4gICAJcmV0dXJu
+IE5VTEw7Cj4gICB9Cj4gICAKPiArc3RhdGljIGRldm5hbWVfZm4gZ2V0X3BjaV92ZW5kb3JfZGV2
+aWNlX2ZuKGNvbnN0IGNoYXIgKnZlbmRvcl9pZCkKPiArewo+ICsJZm9yICh0eXBlb2YoKnBjaV92
+ZW5kb3JfbWFwcGluZykgKnZtID0gcGNpX3ZlbmRvcl9tYXBwaW5nOyB2bS0+bmFtZTsgdm0rKykg
+ewo+ICsJCWlmICghc3RyY2FzZWNtcCh2ZW5kb3JfaWQsIHZtLT52ZW5kb3JfaWQpKQo+ICsJCQly
+ZXR1cm4gdm0tPmRldm5hbWU7Cj4gKwl9Cj4gKwo+ICsJcmV0dXJuIGRldm5hbWVfaGV4Owo+ICt9
+Cj4gKwo+ICtzdGF0aWMgdm9pZCBnZXRfcGNpX3ZlbmRvcl9kZXZpY2UoY29uc3Qgc3RydWN0IGln
+dF9kZXZpY2UgKmRldiwKPiArCQkJCSAgdWludDE2X3QgKnZlbmRvcnAsIHVpbnQxNl90ICpkZXZp
+Y2VwKQo+ICt7Cj4gKwlpZ3RfYXNzZXJ0KGRldiAmJiBkZXYtPnZlbmRvciAmJiBkZXYtPmRldmlj
+ZSk7Cj4gKwlpZ3RfYXNzZXJ0KHZlbmRvcnAgJiYgZGV2aWNlcCk7Cj4gKwo+ICsJaWd0X2Fzc2Vy
+dChzc2NhbmYoZGV2LT52ZW5kb3IsICIlaHgiLCB2ZW5kb3JwKSA9PSAxKTsKPiArCWlndF9hc3Nl
+cnQoc3NjYW5mKGRldi0+ZGV2aWNlLCAiJWh4IiwgZGV2aWNlcCkgPT0gMSk7Cj4gK30KPiArCj4g
+ICAvKiBSZWFkaW5nIHN5c2F0dHIgdmFsdWVzIGNhbiB0YWtlIHRpbWUgKGV2ZW4gc2Vjb25kcyks
+Cj4gICAgKiB3ZSB3YW50IHRvIGF2b2lkIHJlYWRpbmcgc3VjaCBrZXlzLgo+ICAgICovCj4gQEAg
+LTQ2MCw5ICs1MDksMTkgQEAgX19jb3B5X2Rldl90b19jYXJkKHN0cnVjdCBpZ3RfZGV2aWNlICpk
+ZXYsIHN0cnVjdCBpZ3RfZGV2aWNlX2NhcmQgKmNhcmQpCj4gICAJCXN0cm5jcHkoY2FyZC0+cmVu
+ZGVyLCBkZXYtPmRybV9yZW5kZXIsCj4gICAJCQlzaXplb2YoY2FyZC0+cmVuZGVyKSAtIDEpOwo+
+ICAgCj4gLQlpZiAoZGV2LT5wY2lfc2xvdF9uYW1lICE9IE5VTEwpCj4gKwlpZiAoZGV2LT5wY2lf
+c2xvdF9uYW1lICE9IE5VTEwpIHsKPiAgIAkJc3RybmNweShjYXJkLT5wY2lfc2xvdF9uYW1lLCBk
+ZXYtPnBjaV9zbG90X25hbWUsCj4gLQkJCVBDSV9TTE9UX05BTUVfU0laRSArIDEpOwo+ICsJCQlQ
+Q0lfU0xPVF9OQU1FX1NJWkUpOwo+ICsJCWNhcmQtPnBjaV9zbG90X25hbWVbUENJX1NMT1RfTkFN
+RV9TSVpFXSA9ICdcMCc7CgpJIHdvdWxkIHN0aWxsIHByZWZlciB0aGUgc2FtZSAic2l6ZW9mIC0g
+MSIgcGF0dGVybiBhcyB0aGUgb3RoZXIgY29waWVzIAppbiB0aGlzIGZ1bmN0aW9uLgoKVGhlbiBp
+bmRlZWQgZW5zdXJpbmcgc3RyaW5ncyBhcmUgbnVsbCB0ZXJtaW5hdGVkIGlzIHNvbWV0aGluZyB3
+aGljaCAKY291bGQgYmUgYWRkZWQgdG8gYWxsLiBQb3NzaWJseSBhIGxvY2FsIHdyYXBwZXIgb24g
+c3RybmNweT8KClBDSSBzbG90IGxlbmd0aCBpcyBwcm9iYWJseSB0aGUgbW9zdCBkZWZpbmVkIG9m
+IHRoZSBidW5jaCBzbyBpdCBmZWVscyAKd3JvbmcgdG8gaGF2ZSBzYWZlc3QgaGFuZGxpbmcgY29t
+cGFyZWQgdG8gb3RoZXIgc3RyaW5ncy4KCj4gKwl9Cj4gKwo+ICsJaWYgKGRldi0+dmVuZG9yICE9
+IE5VTEwgJiYgc3RybGVuKGRldi0+dmVuZG9yKSA9PSA0KQoKQ2FuIHN0cmxlbiBiZSBub3QgZm91
+ciBoZXJlIGluIHNvbWUgc2l0dWF0aW9ucyBvciB0aGlzIGNvdWxkIGJlIGFuIAphc3NlcnQganVz
+dCBhcyB3ZWxsPwoKPiArCQlpZiAoc3NjYW5mKGRldi0+dmVuZG9yLCAiJWh4IiwgJmNhcmQtPnBj
+aV92ZW5kb3IpICE9IDEpCj4gKwkJCWNhcmQtPnBjaV92ZW5kb3IgPSAwOwo+ICsKPiArCWlmIChk
+ZXYtPmRldmljZSAhPSBOVUxMICYmIHN0cmxlbihkZXYtPmRldmljZSkgPT0gNCkKPiArCQlpZiAo
+c3NjYW5mKGRldi0+ZGV2aWNlLCAiJWh4IiwgJmNhcmQtPnBjaV9kZXZpY2UpICE9IDEpCj4gKwkJ
+CWNhcmQtPnBjaV9kZXZpY2UgPSAwOwo+ICAgfQo+ICAgCj4gICAvKgo+IEBAIC04NTIsNiArOTEx
+LDcgQEAgc3RhdGljIHZvaWQgX19wcmludF9maWx0ZXIoY2hhciAqYnVmLCBpbnQgbGVuLAo+ICAg
+CX07Cj4gICB9Cj4gICAKPiArI2RlZmluZSBWRU5ET1JfU0laRSAzMAo+ICAgc3RhdGljIHZvaWQK
+PiAgIGlndF9kZXZzX3ByaW50X3VzZXIoc3RydWN0IGlndF9saXN0X2hlYWQgKnZpZXcsCj4gICAJ
+CSAgICBjb25zdCBzdHJ1Y3QgaWd0X2RldmljZXNfcHJpbnRfZm9ybWF0ICpmbXQpCj4gQEAgLTg4
+MywxMSArOTQzLDIzIEBAIGlndF9kZXZzX3ByaW50X3VzZXIoc3RydWN0IGlndF9saXN0X2hlYWQg
+KnZpZXcsCj4gICAJCQljb250aW51ZTsKPiAgIAo+ICAgCQlpZiAocGNpX2Rldikgewo+ICsJCQl1
+aW50MTZfdCB2ZW5kb3IsIGRldmljZTsKPiArCQkJY2hhciAqZGV2bmFtZTsKPiArCQkJZGV2bmFt
+ZV9mbiBmbiA9IGRldm5hbWVfaGV4Owo+ICsKPiArCQkJaWYgKCFmbXQtPm51bWVyaWMpCj4gKwkJ
+CQlmbiA9IGdldF9wY2lfdmVuZG9yX2RldmljZV9mbihwY2lfZGV2LT52ZW5kb3IpOwoKTml0IC0g
+bWF5YmUgSSB3b3VsZCBhc3NpbmcgZGV2bmFtZV9oZXggc28gdGhlIGZsb3cgb2YgZm4gYXNzaWdu
+bWVudCBpcyAKdG90YWxseSBjb25zb2xpZGF0ZWQgYW5kIG9idmlvdXMuCgo+ICsKPiArCQkJZ2V0
+X3BjaV92ZW5kb3JfZGV2aWNlKHBjaV9kZXYsICZ2ZW5kb3IsICZkZXZpY2UpOwo+ICsJCQlkZXZu
+YW1lID0gZm4odmVuZG9yLCBkZXZpY2UpOwo+ICsKPiAgIAkJCV9fcHJpbnRfZmlsdGVyKGZpbHRl
+ciwgc2l6ZW9mKGZpbHRlciksIGZtdCwgcGNpX2RldiwKPiAgIAkJCQkgICAgICAgZmFsc2UpOwo+
+IC0JCQlwcmludGYoIiUtMjRzJTRzOiU0cyAgICAlc1xuIiwKPiAtCQkJICAgICAgIGRybV9uYW1l
+LCBwY2lfZGV2LT52ZW5kb3IsIHBjaV9kZXYtPmRldmljZSwKPiAtCQkJICAgICAgIGZpbHRlcik7
+Cj4gKwo+ICsJCQlwcmludGYoIiUtMjRzICUtKnMgICAgJXNcbiIsCj4gKwkJCSAgICAgICBkcm1f
+bmFtZSwgVkVORE9SX1NJWkUsIGRldm5hbWUsIGZpbHRlcik7Cj4gKwo+ICsJCQlmcmVlKGRldm5h
+bWUpOwo+ICAgCQl9IGVsc2Ugewo+ICAgCQkJX19wcmludF9maWx0ZXIoZmlsdGVyLCBzaXplb2Yo
+ZmlsdGVyKSwgZm10LCBkZXYsIGZhbHNlKTsKPiAgIAkJCXByaW50ZigiJS0yNHMgICAgICAgICAg
+ICAgJXNcbiIsIGRybV9uYW1lLCBmaWx0ZXIpOwo+IEBAIC05MTksNyArOTkxLDcgQEAgaWd0X2Rl
+dnNfcHJpbnRfdXNlcihzdHJ1Y3QgaWd0X2xpc3RfaGVhZCAqdmlldywKPiAgIAkJCWlmIChmbXQt
+Pm9wdGlvbiAhPSBJR1RfUFJJTlRfUENJKSB7Cj4gICAJCQkJX19wcmludF9maWx0ZXIoZmlsdGVy
+LCBzaXplb2YoZmlsdGVyKSwgZm10LAo+ICAgCQkJCQkgICAgICAgZGV2MiwgdHJ1ZSk7Cj4gLQkJ
+CQlwcmludGYoIiAgICAgICAgICAgICAlc1xuIiwgZmlsdGVyKTsKPiArCQkJCXByaW50ZigiJS0q
+cyAgICAgJXNcbiIsIFZFTkRPUl9TSVpFLCAiIiwgZmlsdGVyKTsKPiAgIAkJCX0gZWxzZSB7Cj4g
+ICAJCQkJcHJpbnRmKCJcbiIpOwo+ICAgCQkJfQo+IGRpZmYgLS1naXQgYS9saWIvaWd0X2Rldmlj
+ZV9zY2FuLmggYi9saWIvaWd0X2RldmljZV9zY2FuLmgKPiBpbmRleCBiYjRiZTcyMy4uNDIwNjZl
+ZWIgMTAwNjQ0Cj4gLS0tIGEvbGliL2lndF9kZXZpY2Vfc2Nhbi5oCj4gKysrIGIvbGliL2lndF9k
+ZXZpY2Vfc2Nhbi5oCj4gQEAgLTQ5LDYgKzQ5LDcgQEAgZW51bSBpZ3RfZGV2aWNlc19wcmludF9v
+cHRpb24gewo+ICAgc3RydWN0IGlndF9kZXZpY2VzX3ByaW50X2Zvcm1hdCB7Cj4gICAJZW51bSBp
+Z3RfZGV2aWNlc19wcmludF90eXBlICAgdHlwZTsKPiAgIAllbnVtIGlndF9kZXZpY2VzX3ByaW50
+X29wdGlvbiBvcHRpb247Cj4gKwlib29sIG51bWVyaWM7Cj4gICB9Owo+ICAgCj4gICAjZGVmaW5l
+IElOVEVHUkFURURfSTkxNV9HUFVfUENJX0lEICIwMDAwOjAwOjAyLjAiCj4gQEAgLTU4LDYgKzU5
+LDcgQEAgc3RydWN0IGlndF9kZXZpY2VfY2FyZCB7Cj4gICAJY2hhciBjYXJkW05BTUVfTUFYXTsK
+PiAgIAljaGFyIHJlbmRlcltOQU1FX01BWF07Cj4gICAJY2hhciBwY2lfc2xvdF9uYW1lW1BDSV9T
+TE9UX05BTUVfU0laRSsxXTsKPiArCXVpbnQxNl90IHBjaV92ZW5kb3IsIHBjaV9kZXZpY2U7Cj4g
+ICB9Owo+ICAgCj4gICB2b2lkIGlndF9kZXZpY2VzX3NjYW4oYm9vbCBmb3JjZSk7Cj4gCgpSZWdh
+cmRzLAoKVHZydGtvCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCmlndC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0
+dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
