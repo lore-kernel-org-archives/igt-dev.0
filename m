@@ -1,13 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from fireflyinternet.com (unknown [77.68.26.236])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8A62A6E40F
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2020 13:07:51 +0000 (UTC)
-From: Chris Wilson <chris@chris-wilson.co.uk>
-Date: Wed, 18 Nov 2020 13:07:42 +0000
-Message-Id: <20201118130742.2088282-1-chris@chris-wilson.co.uk>
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 20FD26E3D0
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2020 13:50:38 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Wed, 18 Nov 2020 14:50:20 +0100
+Message-Id: <20201118135021.40597-2-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20201118135021.40597-1-zbigniew.kempczynski@intel.com>
+References: <20201118135021.40597-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t] intel-ci: Remove blacklisting for
- perf_pmu/cpu-hotplug
+Subject: [igt-dev] [PATCH i-g-t v4 2/3] tools/intel_gpu_top: Add generation
+ info in header
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,42 +17,64 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 To: igt-dev@lists.freedesktop.org
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Petri Latvala <petri.latvala@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-While this regularly breaks upstream, that is also a good reason to keep
-testing! Let's see if upstream is in a working mood.
-
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
----
- tests/intel-ci/blacklist.txt | 5 -----
- 1 file changed, 5 deletions(-)
-
-diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-index 37a049335..c6af22b30 100644
---- a/tests/intel-ci/blacklist.txt
-+++ b/tests/intel-ci/blacklist.txt
-@@ -113,11 +113,6 @@ igt@.*@.*pipe-f($|-.*)
- # Temporary workarounds for CI-impacting bugs
- ###############################################
- 
--# https://gitlab.freedesktop.org/drm/intel/issues/1714
--# Since 5.7-rc1, this test has produced tens of megabytes of kernel
--# logs.
--igt@perf_pmu@cpu-hotplug
--
- # Currently fails and leaves the machine in a very bad state, and
- # causes coverage loss for other tests. IOMMU related.
- # https://gitlab.freedesktop.org/drm/intel/-/issues/2644
--- 
-2.29.2
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SW4gbXVsdGkgZGV2aWNlIHdvcmxkIHdlIG1heSB3YW50IHRvIHNlZSBnZW5lcmF0aW9uIG9mIGRl
+dmljZSB3ZSdyZQp0cmFja2luZyBjb3VudGVycy4gQWRkIHByZXR0eSBuYW1lIG9mIHRoZSBkZXZp
+Y2UgdG8gYmUgbW9yZSB2ZXJib3NlLgoKU2lnbmVkLW9mZi1ieTogWmJpZ25pZXcgS2VtcGN6ecWE
+c2tpIDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+CkNjOiBUdnJ0a28gVXJzdWxpbiA8
+dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPgpDYzogUGV0cmkgTGF0dmFsYSA8cGV0cmkubGF0dmFs
+YUBpbnRlbC5jb20+Ci0tLQogbGliL01ha2VmaWxlLmFtICAgICAgIHwgNCArKystCiBsaWIvbWVz
+b24uYnVpbGQgICAgICAgfCAxICsKIHRvb2xzL2ludGVsX2dwdV90b3AuYyB8IDggKysrKysrLS0K
+IDMgZmlsZXMgY2hhbmdlZCwgMTAgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkKCmRpZmYg
+LS1naXQgYS9saWIvTWFrZWZpbGUuYW0gYi9saWIvTWFrZWZpbGUuYW0KaW5kZXggZmVjZjM0Y2Qu
+LmM0NzZlZWFiIDEwMDY0NAotLS0gYS9saWIvTWFrZWZpbGUuYW0KKysrIGIvbGliL01ha2VmaWxl
+LmFtCkBAIC0xMTgsNyArMTE4LDkgQEAgbGliaWd0X2RldmljZV9zY2FuX2xhX1NPVVJDRVMgPSBc
+CiAJaWd0X2xpc3QuYwkJXAogCWlndF90b29sc19zdHViLmMJXAogCWlndF9kZXZpY2Vfc2Nhbi5j
+CVwKLQlpZ3RfZGV2aWNlX3NjYW4uaAorCWlndF9kZXZpY2Vfc2Nhbi5oCVwKKwlpbnRlbF9kZXZp
+Y2VfaW5mby5jCVwKKwlpbnRlbF9jaGlwc2V0LmgKIAogbGliaWd0X3BlcmZfbGFfU09VUkNFUyA9
+IFwKIAlpZ3RfcGVyZi5jCSBcCmRpZmYgLS1naXQgYS9saWIvbWVzb24uYnVpbGQgYi9saWIvbWVz
+b24uYnVpbGQKaW5kZXggMDkwYTEwY2QuLjU0MGZhY2IyIDEwMDY0NAotLS0gYS9saWIvbWVzb24u
+YnVpbGQKKysrIGIvbGliL21lc29uLmJ1aWxkCkBAIC0xODIsNiArMTgyLDcgQEAgbGliX2lndF9k
+ZXZpY2Vfc2Nhbl9idWlsZCA9IHN0YXRpY19saWJyYXJ5KCdpZ3RfZGV2aWNlX3NjYW4nLAogCVsn
+aWd0X2RldmljZV9zY2FuLmMnLAogCSdpZ3RfbGlzdC5jJywKIAknaWd0X3Rvb2xzX3N0dWIuYycs
+CisJJ2ludGVsX2RldmljZV9pbmZvLmMnLAogCV0sCiAJZGVwZW5kZW5jaWVzIDogc2Nhbl9kZXAs
+CiAJaW5jbHVkZV9kaXJlY3RvcmllcyA6IGluYykKZGlmZiAtLWdpdCBhL3Rvb2xzL2ludGVsX2dw
+dV90b3AuYyBiL3Rvb2xzL2ludGVsX2dwdV90b3AuYwppbmRleCA4NmRlMDlhYS4uM2U5N2JlMmMg
+MTAwNjQ0Ci0tLSBhL3Rvb2xzL2ludGVsX2dwdV90b3AuYworKysgYi90b29scy9pbnRlbF9ncHVf
+dG9wLmMKQEAgLTEwMjgsNiArMTAyOCw3IEBAIHN0YXRpYyBib29sIHByaW50X2dyb3VwcyhzdHJ1
+Y3QgY250X2dyb3VwICoqZ3JvdXBzKQogCiBzdGF0aWMgaW50CiBwcmludF9oZWFkZXIoY29uc3Qg
+c3RydWN0IGlndF9kZXZpY2VfY2FyZCAqY2FyZCwKKwkgICAgIGNvbnN0IGNoYXIgKmNvZGVuYW1l
+LAogCSAgICAgc3RydWN0IGVuZ2luZXMgKmVuZ2luZXMsIGRvdWJsZSB0LAogCSAgICAgaW50IGxp
+bmVzLCBpbnQgY29uX3csIGludCBjb25faCwgYm9vbCAqY29uc3VtZWQpCiB7CkBAIC0xMTA3LDcg
+KzExMDgsNyBAQCBwcmludF9oZWFkZXIoY29uc3Qgc3RydWN0IGlndF9kZXZpY2VfY2FyZCAqY2Fy
+ZCwKIAkJcHJpbnRmKCJcMDMzW0hcMDMzW0oiKTsKIAogCQlpZiAobGluZXMrKyA8IGNvbl9oKSB7
+Ci0JCQlwcmludGYoImludGVsLWdwdS10b3A6ICVzIC0gIiwgY2FyZC0+Y2FyZCk7CisJCQlwcmlu
+dGYoImludGVsLWdwdS10b3A6ICVzIEAgJXMgLSAiLCBjb2RlbmFtZSwgY2FyZC0+Y2FyZCk7CiAJ
+CQlpZiAoIWVuZ2luZXMtPmRpc2NyZXRlKQogCQkJCXByaW50ZigiJXMvJXMgTUh6OyAgJXMlJSBS
+QzY7ICVzICVzOyAlcyBpcnFzL3NcbiIsCiAJCQkJCWZyZXFfaXRlbXNbMV0uYnVmLCBmcmVxX2l0
+ZW1zWzBdLmJ1ZiwKQEAgLTEzMTcsNiArMTMxOCw3IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFy
+ICoqYXJndikKIAlib29sIGxpc3RfZGV2aWNlID0gZmFsc2U7CiAJY2hhciAqcG11X2RldmljZSwg
+Km9wdF9kZXZpY2UgPSBOVUxMOwogCXN0cnVjdCBpZ3RfZGV2aWNlX2NhcmQgY2FyZDsKKwljaGFy
+ICpjb2RlbmFtZSA9IE5VTEw7CiAKIAkvKiBQYXJzZSBvcHRpb25zICovCiAJd2hpbGUgKChjaCA9
+IGdldG9wdChhcmdjLCBhcmd2LCAibzpzOmQ6SkxsaCIpKSAhPSAtMSkgewpAQCAtMTQ0MSw2ICsx
+NDQzLDcgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNoYXIgKiphcmd2KQogCXJldCA9IEVYSVRfU1VD
+Q0VTUzsKIAogCXBtdV9zYW1wbGUoZW5naW5lcyk7CisJY29kZW5hbWUgPSBpZ3RfZGV2aWNlX2dl
+dF9wcmV0dHlfbmFtZSgmY2FyZCwgZmFsc2UpOwogCiAJd2hpbGUgKCFzdG9wX3RvcCkgewogCQli
+b29sIGNvbnN1bWVkID0gZmFsc2U7CkBAIC0xNDYzLDcgKzE0NjYsNyBAQCBpbnQgbWFpbihpbnQg
+YXJnYywgY2hhciAqKmFyZ3YpCiAJCQlicmVhazsKIAogCQl3aGlsZSAoIWNvbnN1bWVkKSB7Ci0J
+CQlsaW5lcyA9IHByaW50X2hlYWRlcigmY2FyZCwgZW5naW5lcywKKwkJCWxpbmVzID0gcHJpbnRf
+aGVhZGVyKCZjYXJkLCBjb2RlbmFtZSwgZW5naW5lcywKIAkJCQkJICAgICB0LCBsaW5lcywgY29u
+X3csIGNvbl9oLAogCQkJCQkgICAgICZjb25zdW1lZCk7CiAKQEAgLTE0OTAsNiArMTQ5Myw3IEBA
+IGludCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikKIAkJdXNsZWVwKHBlcmlvZF91cyk7CiAJ
+fQogCisJZnJlZShjb2RlbmFtZSk7CiBlcnI6CiAJZnJlZShlbmdpbmVzKTsKIAlmcmVlKHBtdV9k
+ZXZpY2UpOwotLSAKMi4yNi4wCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlzdAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9w
+Lm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9wLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1k
+ZXYK
