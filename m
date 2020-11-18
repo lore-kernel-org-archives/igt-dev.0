@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 85F316E441
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2020 15:20:32 +0000 (UTC)
-References: <20201118135021.40597-1-zbigniew.kempczynski@intel.com>
- <20201118135021.40597-2-zbigniew.kempczynski@intel.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Message-ID: <a9c60b65-fa0e-396c-c188-b151f5a5d652@linux.intel.com>
-Date: Wed, 18 Nov 2020 15:20:27 +0000
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B73376E440
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2020 15:22:35 +0000 (UTC)
+From: apoorva1.singh@intel.com
+Date: Wed, 18 Nov 2020 20:55:26 +0530
+Message-Id: <20201118152526.182506-1-apoorva1.singh@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20201118135021.40597-2-zbigniew.kempczynski@intel.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH i-g-t v4 2/3] tools/intel_gpu_top: Add
- generation info in header
+Subject: [igt-dev] [PATCH i-g-t] tests/prime_busy: Add all subtests
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,70 +15,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: =?UTF-8?Q?Zbigniew_Kempczy=c5=84ski?= <zbigniew.kempczynski@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <petri.latvala@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+To: igt-dev@lists.freedesktop.org, arjun.melkaveri@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Ck9uIDE4LzExLzIwMjAgMTM6NTAsIFpiaWduaWV3IEtlbXBjennFhHNraSB3cm90ZToKPiBJbiBt
-dWx0aSBkZXZpY2Ugd29ybGQgd2UgbWF5IHdhbnQgdG8gc2VlIGdlbmVyYXRpb24gb2YgZGV2aWNl
-IHdlJ3JlCj4gdHJhY2tpbmcgY291bnRlcnMuIEFkZCBwcmV0dHkgbmFtZSBvZiB0aGUgZGV2aWNl
-IHRvIGJlIG1vcmUgdmVyYm9zZS4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBaYmlnbmlldyBLZW1wY3p5
-xYRza2kgPHpiaWduaWV3LmtlbXBjenluc2tpQGludGVsLmNvbT4KPiBDYzogVHZydGtvIFVyc3Vs
-aW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KPiBDYzogUGV0cmkgTGF0dmFsYSA8cGV0cmku
-bGF0dmFsYUBpbnRlbC5jb20+Cj4gLS0tCj4gICBsaWIvTWFrZWZpbGUuYW0gICAgICAgfCA0ICsr
-Ky0KPiAgIGxpYi9tZXNvbi5idWlsZCAgICAgICB8IDEgKwo+ICAgdG9vbHMvaW50ZWxfZ3B1X3Rv
-cC5jIHwgOCArKysrKystLQo+ICAgMyBmaWxlcyBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspLCAz
-IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS9saWIvTWFrZWZpbGUuYW0gYi9saWIvTWFr
-ZWZpbGUuYW0KPiBpbmRleCBmZWNmMzRjZC4uYzQ3NmVlYWIgMTAwNjQ0Cj4gLS0tIGEvbGliL01h
-a2VmaWxlLmFtCj4gKysrIGIvbGliL01ha2VmaWxlLmFtCj4gQEAgLTExOCw3ICsxMTgsOSBAQCBs
-aWJpZ3RfZGV2aWNlX3NjYW5fbGFfU09VUkNFUyA9IFwKPiAgIAlpZ3RfbGlzdC5jCQlcCj4gICAJ
-aWd0X3Rvb2xzX3N0dWIuYwlcCj4gICAJaWd0X2RldmljZV9zY2FuLmMJXAo+IC0JaWd0X2Rldmlj
-ZV9zY2FuLmgKPiArCWlndF9kZXZpY2Vfc2Nhbi5oCVwKPiArCWludGVsX2RldmljZV9pbmZvLmMJ
-XAo+ICsJaW50ZWxfY2hpcHNldC5oCj4gICAKPiAgIGxpYmlndF9wZXJmX2xhX1NPVVJDRVMgPSBc
-Cj4gICAJaWd0X3BlcmYuYwkgXAo+IGRpZmYgLS1naXQgYS9saWIvbWVzb24uYnVpbGQgYi9saWIv
-bWVzb24uYnVpbGQKPiBpbmRleCAwOTBhMTBjZC4uNTQwZmFjYjIgMTAwNjQ0Cj4gLS0tIGEvbGli
-L21lc29uLmJ1aWxkCj4gKysrIGIvbGliL21lc29uLmJ1aWxkCj4gQEAgLTE4Miw2ICsxODIsNyBA
-QCBsaWJfaWd0X2RldmljZV9zY2FuX2J1aWxkID0gc3RhdGljX2xpYnJhcnkoJ2lndF9kZXZpY2Vf
-c2NhbicsCj4gICAJWydpZ3RfZGV2aWNlX3NjYW4uYycsCj4gICAJJ2lndF9saXN0LmMnLAo+ICAg
-CSdpZ3RfdG9vbHNfc3R1Yi5jJywKPiArCSdpbnRlbF9kZXZpY2VfaW5mby5jJywKPiAgIAldLAo+
-ICAgCWRlcGVuZGVuY2llcyA6IHNjYW5fZGVwLAo+ICAgCWluY2x1ZGVfZGlyZWN0b3JpZXMgOiBp
-bmMpCj4gZGlmZiAtLWdpdCBhL3Rvb2xzL2ludGVsX2dwdV90b3AuYyBiL3Rvb2xzL2ludGVsX2dw
-dV90b3AuYwo+IGluZGV4IDg2ZGUwOWFhLi4zZTk3YmUyYyAxMDA2NDQKPiAtLS0gYS90b29scy9p
-bnRlbF9ncHVfdG9wLmMKPiArKysgYi90b29scy9pbnRlbF9ncHVfdG9wLmMKPiBAQCAtMTAyOCw2
-ICsxMDI4LDcgQEAgc3RhdGljIGJvb2wgcHJpbnRfZ3JvdXBzKHN0cnVjdCBjbnRfZ3JvdXAgKipn
-cm91cHMpCj4gICAKPiAgIHN0YXRpYyBpbnQKPiAgIHByaW50X2hlYWRlcihjb25zdCBzdHJ1Y3Qg
-aWd0X2RldmljZV9jYXJkICpjYXJkLAo+ICsJICAgICBjb25zdCBjaGFyICpjb2RlbmFtZSwKPiAg
-IAkgICAgIHN0cnVjdCBlbmdpbmVzICplbmdpbmVzLCBkb3VibGUgdCwKPiAgIAkgICAgIGludCBs
-aW5lcywgaW50IGNvbl93LCBpbnQgY29uX2gsIGJvb2wgKmNvbnN1bWVkKQo+ICAgewo+IEBAIC0x
-MTA3LDcgKzExMDgsNyBAQCBwcmludF9oZWFkZXIoY29uc3Qgc3RydWN0IGlndF9kZXZpY2VfY2Fy
-ZCAqY2FyZCwKPiAgIAkJcHJpbnRmKCJcMDMzW0hcMDMzW0oiKTsKPiAgIAo+ICAgCQlpZiAobGlu
-ZXMrKyA8IGNvbl9oKSB7Cj4gLQkJCXByaW50ZigiaW50ZWwtZ3B1LXRvcDogJXMgLSAiLCBjYXJk
-LT5jYXJkKTsKPiArCQkJcHJpbnRmKCJpbnRlbC1ncHUtdG9wOiAlcyBAICVzIC0gIiwgY29kZW5h
-bWUsIGNhcmQtPmNhcmQpOwo+ICAgCQkJaWYgKCFlbmdpbmVzLT5kaXNjcmV0ZSkKPiAgIAkJCQlw
-cmludGYoIiVzLyVzIE1IejsgICVzJSUgUkM2OyAlcyAlczsgJXMgaXJxcy9zXG4iLAo+ICAgCQkJ
-CQlmcmVxX2l0ZW1zWzFdLmJ1ZiwgZnJlcV9pdGVtc1swXS5idWYsCj4gQEAgLTEzMTcsNiArMTMx
-OCw3IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikKPiAgIAlib29sIGxpc3RfZGV2
-aWNlID0gZmFsc2U7Cj4gICAJY2hhciAqcG11X2RldmljZSwgKm9wdF9kZXZpY2UgPSBOVUxMOwo+
-ICAgCXN0cnVjdCBpZ3RfZGV2aWNlX2NhcmQgY2FyZDsKPiArCWNoYXIgKmNvZGVuYW1lID0gTlVM
-TDsKPiAgIAo+ICAgCS8qIFBhcnNlIG9wdGlvbnMgKi8KPiAgIAl3aGlsZSAoKGNoID0gZ2V0b3B0
-KGFyZ2MsIGFyZ3YsICJvOnM6ZDpKTGxoIikpICE9IC0xKSB7Cj4gQEAgLTE0NDEsNiArMTQ0Myw3
-IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikKPiAgIAlyZXQgPSBFWElUX1NVQ0NF
-U1M7Cj4gICAKPiAgIAlwbXVfc2FtcGxlKGVuZ2luZXMpOwo+ICsJY29kZW5hbWUgPSBpZ3RfZGV2
-aWNlX2dldF9wcmV0dHlfbmFtZSgmY2FyZCwgZmFsc2UpOwo+ICAgCj4gICAJd2hpbGUgKCFzdG9w
-X3RvcCkgewo+ICAgCQlib29sIGNvbnN1bWVkID0gZmFsc2U7Cj4gQEAgLTE0NjMsNyArMTQ2Niw3
-IEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICoqYXJndikKPiAgIAkJCWJyZWFrOwo+ICAgCj4g
-ICAJCXdoaWxlICghY29uc3VtZWQpIHsKPiAtCQkJbGluZXMgPSBwcmludF9oZWFkZXIoJmNhcmQs
-IGVuZ2luZXMsCj4gKwkJCWxpbmVzID0gcHJpbnRfaGVhZGVyKCZjYXJkLCBjb2RlbmFtZSwgZW5n
-aW5lcywKPiAgIAkJCQkJICAgICB0LCBsaW5lcywgY29uX3csIGNvbl9oLAo+ICAgCQkJCQkgICAg
-ICZjb25zdW1lZCk7Cj4gICAKPiBAQCAtMTQ5MCw2ICsxNDkzLDcgQEAgaW50IG1haW4oaW50IGFy
-Z2MsIGNoYXIgKiphcmd2KQo+ICAgCQl1c2xlZXAocGVyaW9kX3VzKTsKPiAgIAl9Cj4gICAKPiAr
-CWZyZWUoY29kZW5hbWUpOwo+ICAgZXJyOgo+ICAgCWZyZWUoZW5naW5lcyk7Cj4gICAJZnJlZShw
-bXVfZGV2aWNlKTsKPiAKCldvcmtzIGZvciBtZS4KClJldmlld2VkLWJ5OiBUdnJ0a28gVXJzdWxp
-biA8dHZydGtvLnVyc3VsaW5AaW50ZWwuY29tPgoKUmVnYXJkcywKClR2cnRrbwpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwppZ3QtZGV2IG1haWxpbmcgbGlz
-dAppZ3QtZGV2QGxpc3RzLmZyZWVkZXNrdG9wLm9yZwpodHRwczovL2xpc3RzLmZyZWVkZXNrdG9w
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2lndC1kZXYK
+From: Apoorva Singh <apoorva1.singh@intel.com>
+
+Signed-off-by: Apoorva Singh <apoorva1.singh@intel.com>
+Cc: Melkaveri, Arjun <arjun.melkaveri@intel.com>
+---
+ tests/prime_busy.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/tests/prime_busy.c b/tests/prime_busy.c
+index aec76393..25153e32 100644
+--- a/tests/prime_busy.c
++++ b/tests/prime_busy.c
+@@ -236,9 +236,17 @@ igt_main
+ 			gem_require_mmap_wc(fd);
+ 
+ 		for (const struct mode *m = modes; m->name; m++) {
++			igt_describe_f("Tests the polling for prime fences when buffer object "
++			       "is exported into a global dma-buf fd %s it's execution %s",
++			       (m->flags & HANG) ? "before" : m->name,
++			       (m->flags & HANG) ? "in hang allowed environment" : "");
+ 			igt_subtest_with_dynamic(m->name)
+ 				test_mode(fd, m->flags);
+ 
++			igt_describe_f("Tests the polling using non-zero timeout for prime fences when "
++			       "buffer object is exported into a global dma-buf fd %s it's execution %s",
++			       (m->flags & HANG) ? "before" : m->name,
++			       (m->flags & HANG) ? "in hang allowed environment" : "");
+ 			igt_subtest_with_dynamic_f("%s-wait", m->name)
+ 				test_mode(fd, m->flags | POLL);
+ 		}
+-- 
+2.25.1
+
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
