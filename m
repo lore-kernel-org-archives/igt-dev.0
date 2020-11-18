@@ -1,13 +1,18 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D1B0589D1D
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2020 08:34:10 +0000 (UTC)
-From: Pankaj Bharadiya <pankaj.laxminarayan.bharadiya@intel.com>
-Date: Wed, 18 Nov 2020 13:44:46 +0530
-Message-Id: <20201118081449.10523-1-pankaj.laxminarayan.bharadiya@intel.com>
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 54CD789D1D
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2020 08:32:47 +0000 (UTC)
+References: <20201117125257.28089-1-tzimmermann@suse.de>
+ <20201117125257.28089-3-tzimmermann@suse.de>
+ <160562068144.22621.4601494672640293308@build.alporthouse.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Message-ID: <7a44971a-9de3-bbc7-9ac1-5eb95eacc0a0@suse.de>
+Date: Wed, 18 Nov 2020 09:32:45 +0100
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH i-g-t 0/3] Add FB_DAMAGE_CLIPS prop and new test
- for Selective fetch
+In-Reply-To: <160562068144.22621.4601494672640293308@build.alporthouse.com>
+Content-Language: en-US
+Subject: Re: [igt-dev] [PATCH v4 2/8] tests/fbdev: Map framebuffer in
+ igt_fixture
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -15,34 +20,56 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: gwan-gyeong.mun@intel.com, igt-dev@lists.freedesktop.org, jose.souza@intel.com
+To: Chris Wilson <chris@chris-wilson.co.uk>, daniel.vetter@ffwll.ch, petri.latvala@intel.com
+Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-Add new test for selective fetch
-
-Pankaj Bharadiya (3):
-  lib/kms: Add fb damage clip plane property
-  lib/igt_psr: Add function to check PSR2 selective fetch
-  tests: Add new PSR2 selective fetch test
-
- lib/igt_kms.c          |   3 +
- lib/igt_kms.h          |   1 +
- lib/igt_psr.c          |  10 +
- lib/igt_psr.h          |   1 +
- tests/Makefile.sources |   1 +
- tests/kms_psr2_sf.c    | 717 +++++++++++++++++++++++++++++++++++++++++
- tests/meson.build      |   1 +
- 7 files changed, 734 insertions(+)
- create mode 100644 tests/kms_psr2_sf.c
-
--- 
-2.29.2
-
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SGkKCkFtIDE3LjExLjIwIHVtIDE0OjQ0IHNjaHJpZWIgQ2hyaXMgV2lsc29uOgo+IFF1b3Rpbmcg
+VGhvbWFzIFppbW1lcm1hbm4gKDIwMjAtMTEtMTcgMTI6NTI6NTEpCj4+IFRoZSBtYXBwaW5nIG9m
+IHRoZSBmcmFtZWJ1ZmZlciBtZW1vcnkgd2lsbCBiZSB1c2VmdWwgZm9yIHJlYWQvd3JpdGUKPj4g
+dGVzdHMuIE1vdmUgaXQgaW50byBhbiBpZ3RfZml4dHVyZSBibG9jay4KPj4KPj4gdjQ6Cj4+ICAg
+ICAgICAgKiBkZWNsYXJlIG1hcCBhcyB2b2xhdGlsZSAoUGV0cmkpCj4+ICAgICAgICAgKiB0ZXN0
+IHN0cnVjdCBmYl9maXhfc2NyZWVuaW5mby5zbWVtX2xlbiB3aXRoIGlndF9hc3NlcnQoKQo+PiAg
+ICAgICAgICogcmVtb3ZlIG1tYXAgdGVzdCBmcm9tIENJCj4+Cj4+IFNpZ25lZC1vZmYtYnk6IFRo
+b21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPgo+PiAtLS0KPj4gIHRlc3RzL2Zi
+ZGV2LmMgICAgICAgICAgICAgICAgICAgICAgICAgfCAxNCArKysrKystLS0tLS0tLQo+PiAgdGVz
+dHMvaW50ZWwtY2kvZmFzdC1mZWVkYmFjay50ZXN0bGlzdCB8ICAxIC0KPj4gIDIgZmlsZXMgY2hh
+bmdlZCwgNiBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9ucygtKQo+Pgo+PiBkaWZmIC0tZ2l0IGEv
+dGVzdHMvZmJkZXYuYyBiL3Rlc3RzL2ZiZGV2LmMKPj4gaW5kZXggNDRhMjZhNmQuLmVlYmQyYTgz
+IDEwMDY0NAo+PiAtLS0gYS90ZXN0cy9mYmRldi5jCj4+ICsrKyBiL3Rlc3RzL2ZiZGV2LmMKPj4g
+QEAgLTYzLDIyICs2MywyMCBAQCBzdGF0aWMgdm9pZCBtb2RlX3Rlc3RzKGludCBmZCkKPj4gIHN0
+YXRpYyB2b2lkIGZyYW1lYnVmZmVyX3Rlc3RzKGludCBmZCkKPj4gIHsKPj4gICAgICAgICBzdHJ1
+Y3QgZmJfZml4X3NjcmVlbmluZm8gZml4X2luZm87Cj4+ICsgICAgICAgdm9pZCAqIHZvbGF0aWxl
+IG1hcDsKPj4gIAo+PiAgICAgICAgIGlndF9maXh0dXJlIHsKPj4gICAgICAgICAgICAgICAgIGln
+dF9yZXF1aXJlKGlvY3RsKGZkLCBGQklPR0VUX0ZTQ1JFRU5JTkZPLCAmZml4X2luZm8pID09IDAp
+Owo+PiAtICAgICAgIH0KPj4gLQo+PiAtICAgICAgIGlndF9kZXNjcmliZSgiQ2hlY2sgbW1hcCBv
+cGVyYXRpb25zIG9uIGZyYW1lYnVmZmVyIG1lbW9yeSIpOwo+PiAtICAgICAgIGlndF9zdWJ0ZXN0
+KCJtbWFwIikgewo+PiAtICAgICAgICAgICAgICAgdm9pZCAqbWFwOwo+PiAtCj4+IC0gICAgICAg
+ICAgICAgICBpZ3RfcmVxdWlyZShmaXhfaW5mby5zbWVtX2xlbik7Cj4+ICsgICAgICAgICAgICAg
+ICBpZ3RfYXNzZXJ0KGZpeF9pbmZvLnNtZW1fbGVuKTsKPj4gIAo+PiAgICAgICAgICAgICAgICAg
+bWFwID0gbW1hcChOVUxMLCBmaXhfaW5mby5zbWVtX2xlbiwKPj4gICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgUFJPVF9XUklURSwgTUFQX1NIQVJFRCwgZmQsIDApOwo+PiAtICAgICAgICAgICAg
+ICAgaWd0X3JlcXVpcmUobWFwICE9IE1BUF9GQUlMRUQpOwo+PiArICAgICAgICAgICAgICAgaWd0
+X2Fzc2VydChtYXAgIT0gTUFQX0ZBSUxFRCk7Cj4gCj4gQW5kIG5vdyB3ZSBnbyBiYWNrIHRvIGZh
+aWxpbmcgYWxsIHRlc3RzIGlmIG5vIG1tYXAsIHJhdGhlciB0aGFuCj4gc2tpcHBpbmcgdW5zdXBw
+b3J0ZWQgbGF0ZXIgdGVzdHMuIEluIHRoZSBmaXh0dXJlLCByZXF1aXJlIHdvdWxkCj4gZGVmaW5p
+dGVseSBiZSBwcmVmZXJhYmxlIChhcyB0aGUgdGVzdCBpcyBhYmFuZG9uZWQgYmVmb3JlIGl0IGlz
+IGV2ZW4KPiBydW4pLgoKVGhlIHRlc3RzIHVzZSBpZ3RfYXNzZXJ0KCkgZm9yIHByZWFkKCkgYW5k
+IHB3cml0ZSgpLiBNeSByZWFzb25pbmcgd2FzCnRoYXQgbW1hcCgpIGlzIHNpbWlsYXI6IHBhcnQg
+ZHJpdmVyLCBwYXJ0IGtlcm5lbC4gU28gSSB3YW50ZWQgdG8gdXNlCmlndF9hc3NlcnQoKS4gVGhh
+dCBpdCBzd2l0Y2hlcyB0byBpZ3RfcmVxdWlyZSgpIHdhcyBhIG1pc3Rha2UgaW4gdGhlCnBhdGNo
+c2V0LiBCdXQgaWYgeW91IHNheSBpZ3RfcmVxdWlyZSgpIGlzIGJldHRlciBzdWl0ZWQsIGxldCdz
+IHVzZSB0aGlzCmluc3RlYWQuCgpCZXN0IHJlZ2FyZHMKVGhvbWFzCgo+IAo+PiAgCj4+ICAgICAg
+ICAgICAgICAgICBtZW1zZXQobWFwLCAwLCBmaXhfaW5mby5zbWVtX2xlbik7Cj4+ICsgICAgICAg
+fQo+PiArCj4+ICsgICAgICAgaWd0X2ZpeHR1cmUgewo+PiAgICAgICAgICAgICAgICAgbXVubWFw
+KG1hcCwgZml4X2luZm8uc21lbV9sZW4pOwo+PiAgICAgICAgIH0KPj4gIH0KCi0tIApUaG9tYXMg
+WmltbWVybWFubgpHcmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVyClNVU0UgU29mdHdhcmUgU29sdXRp
+b25zIEdlcm1hbnkgR21iSApNYXhmZWxkc3RyLiA1LCA5MDQwOSBOw7xybmJlcmcsIEdlcm1hbnkK
+KEhSQiAzNjgwOSwgQUcgTsO8cm5iZXJnKQpHZXNjaMOkZnRzZsO8aHJlcjogRmVsaXggSW1lbmTD
+tnJmZmVyCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCmln
+dC1kZXYgbWFpbGluZyBsaXN0CmlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnCmh0dHBzOi8v
+bGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGluZm8vaWd0LWRldgo=
