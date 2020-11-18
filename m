@@ -1,18 +1,17 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDE1A6E448
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2020 08:27:03 +0000 (UTC)
-References: <20201117125257.28089-1-tzimmermann@suse.de>
- <20201117125257.28089-2-tzimmermann@suse.de>
- <160562050836.22621.11084460317362613537@build.alporthouse.com>
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Message-ID: <68b545ef-b88e-4532-6414-b61e83986dde@suse.de>
-Date: Wed, 18 Nov 2020 09:27:00 +0100
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 79AAC6E0BE
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2020 04:20:55 +0000 (UTC)
+Date: Wed, 18 Nov 2020 09:51:45 +0530
+From: Kunal Joshi <kunal@intel.com>
+Message-ID: <20201118042145.GA49735@intel.com>
+References: <20201012094017.18019-1-karthik.b.s@intel.com>
+ <2c25c93b7a4048e9a82eee9fccd88c9b@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <160562050836.22621.11084460317362613537@build.alporthouse.com>
-Content-Language: en-US
-Subject: Re: [igt-dev] [PATCH v4 1/8] tests/fbdev: Move existing tests into
- separate subgroups
+Content-Disposition: inline
+In-Reply-To: <2c25c93b7a4048e9a82eee9fccd88c9b@intel.com>
+Subject: Re: [igt-dev] FW: [PATCH i-g-t] tests/kms_async_flips: Modify
+ assert to fix failure seen on few platforms
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -20,45 +19,35 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>, daniel.vetter@ffwll.ch, petri.latvala@intel.com
-Cc: igt-dev@lists.freedesktop.org
+To: "B S, Karthik" <karthik.b.s@intel.com>, igt-dev@lists.freedesktop.org
+Cc: , Zanoni@intel.com, SowmyaX <sowmyax.kaparthi@intel.com>, Kaparthi@intel.com
 List-ID: <igt-dev@lists.freedesktop.org>
 
-SGkKCkFtIDE3LjExLjIwIHVtIDE0OjQxIHNjaHJpZWIgQ2hyaXMgV2lsc29uOgo+IFF1b3Rpbmcg
-VGhvbWFzIFppbW1lcm1hbm4gKDIwMjAtMTEtMTcgMTI6NTI6NTApCj4+ICtzdGF0aWMgdm9pZCBm
-cmFtZWJ1ZmZlcl90ZXN0cyhpbnQgZmQpCj4+ICt7Cj4+ICsgICAgICAgc3RydWN0IGZiX2ZpeF9z
-Y3JlZW5pbmZvIGZpeF9pbmZvOwo+PiArCj4+ICsgICAgICAgaWd0X2ZpeHR1cmUgewo+PiArICAg
-ICAgICAgICAgICAgaWd0X3JlcXVpcmUoaW9jdGwoZmQsIEZCSU9HRVRfRlNDUkVFTklORk8sICZm
-aXhfaW5mbykgPT0gMCk7Cj4gCj4gaWd0X2luZm8oIlRlc3RpbmcgZmJkZXY6ICVzXG4iLCBmaXhf
-aW5mby5pZCk7Cj4gCj4gd291bGQgYmUgYSB1c2VmdWwgYWRkaXRpb24uCgpPay4KCj4gCj4+ICsg
-ICAgICAgfQo+PiAgCj4+ICsgICAgICAgaWd0X2Rlc2NyaWJlKCJDaGVjayBtbWFwIG9wZXJhdGlv
-bnMgb24gZnJhbWVidWZmZXIgbWVtb3J5Iik7Cj4+ICAgICAgICAgaWd0X3N1YnRlc3QoIm1tYXAi
-KSB7Cj4+ICAgICAgICAgICAgICAgICB2b2lkICptYXA7Cj4+ICAKPj4gQEAgLTc3LDExICs3Niwz
-OSBAQCBpZ3RfbWFpbgo+PiAgCj4+ICAgICAgICAgICAgICAgICBtYXAgPSBtbWFwKE5VTEwsIGZp
-eF9pbmZvLnNtZW1fbGVuLAo+PiAgICAgICAgICAgICAgICAgICAgICAgICAgICBQUk9UX1dSSVRF
-LCBNQVBfU0hBUkVELCBmZCwgMCk7Cj4+IC0gICAgICAgICAgICAgICBpZ3RfYXNzZXJ0KG1hcCAh
-PSBNQVBfRkFJTEVEKTsKPj4gKyAgICAgICAgICAgICAgIGlndF9yZXF1aXJlKG1hcCAhPSBNQVBf
-RkFJTEVEKTsKPiAKPiBVbmRlciB3aGF0IGNvbmRpdGlvbnMgZG8gd2Ugd2FudCB0byBhbGxvdyBh
-IGRyaXZlciB0byBmYWlsIHRvIHByb3ZpZGUKPiBtbWFwKCk/IEkgaGF2ZW4ndCBzcG90dGVkIGFu
-eXRoaW5nIGluIHVhcGkvZmIuaCB0byBpbmRpY2F0ZSB3aGF0IGJpdHMgb2YKPiB0aGUgaWZhY2Ug
-YXJlIG9wdGlvbmFsLCBvciBvdGhlciBydWxlcyB1c2Vyc3BhY2UgbmVlZHMgdG8gZm9sbG93LgoK
-RmJkZXYgd2l0aG91dCBtbWFwKCkgaXMgbW9zdGx5IHVzZWxlc3MgZm9yIHVzZXJzcGFjZS4gQWZ0
-ZXIgYWxsLCBpdCdzCnRoZSBtYWluIGludGVyZmFjZSBmb3IgZHJhd2luZyB0byB0aGUgZnJhbWVi
-dWZmZXIuCgo+IAo+IGlndF9za2lwX29uKCFmaXhfaW5mby5zbWVtX2xlbik/CgpXaGF0J3MgdGhl
-IGRpZmZlcmVuY2UgdG8gaWd0X2Fzc2VydCgpIHJzcCBpZ3RfcmVxdWlyZSgpPwoKPiAKPiBJZiBt
-bWFwKCkgZmFpbGluZyBpcyB0aGUgb25seSB0cnVlIGluZGljYXRvciB0aGF0IGl0cyBub3Qgc3Vw
-cG9ydGVkLCBzbwo+IGJlIGl0LiBJbiB3aGljaCBjYXNlIGlzIGVycm5vIHNpZ25pZmljYW50PwoK
-bW1hcCgpIGZhaWxpbmcgY291bGQgYmUgYW55dGhpbmc6IGRyaXZlcnMsIG1tYXAgaW5mcmFzdHJ1
-Y3R1cmUsIGFkZHJlc3MKc3BhY2UuIEkgd291bGQgbm90IGludmVzdCB0b28gbXVjaCBlZmZvcnQg
-aW4gc29ydGluZyBvdXQgaW5kaXZpZHVhbCBlcnJvcnMuCgpCZXN0IHJlZ2FyZHMKVGhvbWFzCgo+
-IC1DaHJpcwo+IAoKLS0gClRob21hcyBaaW1tZXJtYW5uCkdyYXBoaWNzIERyaXZlciBEZXZlbG9w
-ZXIKU1VTRSBTb2Z0d2FyZSBTb2x1dGlvbnMgR2VybWFueSBHbWJICk1heGZlbGRzdHIuIDUsIDkw
-NDA5IE7DvHJuYmVyZywgR2VybWFueQooSFJCIDM2ODA5LCBBRyBOw7xybmJlcmcpCkdlc2Now6Rm
-dHNmw7xocmVyOiBGZWxpeCBJbWVuZMO2cmZmZXIKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxpc3QKaWd0LWRldkBsaXN0cy5m
-cmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3RvcC5vcmcvbWFpbG1hbi9saXN0
-aW5mby9pZ3QtZGV2Cg==
+Hi,
+
+> Failure is seen on CI on few platforms as one of the flips in between is
+> taking longer time. To fix this, added a check to assert for individual
+> flips only for the alternate-sync-async-flip subtest. In the
+> async-flip-with-page-flip-events subtest we anyway check the overall FPS
+> at the end, so we do not need a check for individual flips and this should
+> take care of some random flip taking more time in between.
+> 
+> Also, reduced the MIN_FLIPS_PER_FRAME from 8 to 5 based on the failure
+> seen in CI.
+> 
+> Bug: https://gitlab.freedesktop.org/drm/intel/-/issues/2521
+> 
+> Signed-off-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>  tests/kms_async_flips.c | 12 +++++++-----
+>  1 file changed, 7 insertions(+), 5 deletions(-)
+> 
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com> 
+_______________________________________________
+igt-dev mailing list
+igt-dev@lists.freedesktop.org
+https://lists.freedesktop.org/mailman/listinfo/igt-dev
