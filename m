@@ -1,17 +1,13 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53BF56E558
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2020 10:47:55 +0000 (UTC)
-Date: Thu, 19 Nov 2020 12:47:52 +0200
-From: Petri Latvala <petri.latvala@intel.com>
-Message-ID: <20201119104751.GI7444@platvala-desk.ger.corp.intel.com>
-References: <20201119094318.2213919-1-chris@chris-wilson.co.uk>
- <20201119094318.2213919-2-chris@chris-wilson.co.uk>
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 53A1789BA5
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2020 10:50:41 +0000 (UTC)
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Date: Thu, 19 Nov 2020 11:50:30 +0100
+Message-Id: <20201119105032.43893-1-zbigniew.kempczynski@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201119094318.2213919-2-chris@chris-wilson.co.uk>
-Subject: Re: [igt-dev] [PATCH i-g-t 2/2] tests/kms_pipe_crc_basic: Handle
- absent pipes for disable-crc-after-crtc
+Subject: [igt-dev] [PATCH i-g-t v6 1/3] lib/igt_device_scan: Remember
+ vendor/device for pci devices
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -19,81 +15,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-To: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: igt-dev@lists.freedesktop.org
+To: igt-dev@lists.freedesktop.org
+Cc: Petri Latvala <petri.latvala@intel.com>, Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Nov 19, 2020 at 09:43:18AM +0000, Chris Wilson wrote:
-> Check that the output exists prior to use, and in doing so prevent the
-> test from exploding (without leaving an intelligible trace) when the
-> connector is randomly lost.
-> 
-> Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-> ---
->  tests/kms_pipe_crc_basic.c | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-> index e584dca9b..b65649d3e 100644
-> --- a/tests/kms_pipe_crc_basic.c
-> +++ b/tests/kms_pipe_crc_basic.c
-> @@ -71,6 +71,7 @@ static void test_read_crc(data_t *data, enum pipe pipe, unsigned flags)
->  	igt_crc_t *crcs = NULL;
->  	int c, j;
->  
-> +	igt_require_pipe(display, pipe);
->  	igt_display_require_output_on_pipe(display, pipe);
->  	output = igt_get_single_output_for_pipe(display, pipe);
->  
-> @@ -224,14 +225,21 @@ static void test_compare_crc(data_t *data, enum pipe pipe)
->  static void test_disable_crc_after_crtc(data_t *data, enum pipe pipe)
->  {
->  	igt_display_t *display = &data->display;
-> -	igt_output_t *output = igt_get_single_output_for_pipe(&data->display, pipe);
-> -	igt_pipe_crc_t *pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, "auto");
-> -	drmModeModeInfo *mode = igt_output_get_mode(output);
-> +	igt_pipe_crc_t *pipe_crc;
-> +	drmModeModeInfo *mode;
-> +	igt_output_t *output;
->  	igt_crc_t crc[2];
->  
-> +	igt_require_pipe(display, pipe);
-> +	igt_display_require_output_on_pipe(display, pipe);
-> +	output = igt_get_single_output_for_pipe(display, pipe);
-> +
-> +	pipe_crc = igt_pipe_crc_new(data->drm_fd, pipe, "auto");
-> +
->  	igt_display_reset(display);
->  	igt_output_set_pipe(output, pipe);
->  
-> +	mode = igt_output_get_mode(output);
->  	igt_create_color_fb(data->drm_fd,
->  			    mode->hdisplay, mode->vdisplay,
->  			    DRM_FORMAT_XRGB8888,
-> @@ -290,8 +298,6 @@ igt_main
->  			test_read_crc(&data, pipe, TEST_SEQUENCE | TEST_NONBLOCK);
->  
->  		igt_subtest_f("suspend-read-crc-pipe-%s", kmstest_pipe_name(pipe)) {
-> -			igt_require_pipe(&data.display, pipe);
-> -
->  			test_read_crc(&data, pipe, 0);
->  
->  			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-
-
-Looks ok so far. But what about compare-crc-sanitycheck-pipe-%s, it
-doesn't call test_read_crc but test_compare_crc. That one does check
-that the output is non-null but other than that doesn't check that the
-pipe exists...
-
-
--- 
-Petri Latvala
-_______________________________________________
-igt-dev mailing list
-igt-dev@lists.freedesktop.org
-https://lists.freedesktop.org/mailman/listinfo/igt-dev
+SWYgd2Ugd2FudCB0byB1c2UgcGNpIGRldmljZSBpZCBmb3Igbm90IG9wZW5lZCBkZXZpY2Ugd2Ug
+bmVlZCB0bwprZWVwIGl0IGluIGNhcmQgc3RydWN0dXJlLgoKRXhwb3J0IGlndF9kZXZpY2VfZ2V0
+X3ByZXR0eV9uYW1lKCkgZnVuY3Rpb24gdG8gdGhlIGNhbGxlciB0bwphbGxvdyByZXR1cm4gcHJl
+dHR5IG5hbWUgKGZvciBsc2dwdSwgaW50ZWxfZ3B1X3RvcCBhbmQgb3RoZXJzKS4KClNpZ25lZC1v
+ZmYtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lAaW50ZWwu
+Y29tPgpDYzogVHZydGtvIFVyc3VsaW4gPHR2cnRrby51cnN1bGluQGludGVsLmNvbT4KQ2M6IFBl
+dHJpIExhdHZhbGEgPHBldHJpLmxhdHZhbGFAaW50ZWwuY29tPgotLS0KIGxpYi9pZ3RfZGV2aWNl
+X3NjYW4uYyB8IDE1MiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0K
+IGxpYi9pZ3RfZGV2aWNlX3NjYW4uaCB8ICAgMyArCiAyIGZpbGVzIGNoYW5nZWQsIDE0MiBpbnNl
+cnRpb25zKCspLCAxMyBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9saWIvaWd0X2RldmljZV9z
+Y2FuLmMgYi9saWIvaWd0X2RldmljZV9zY2FuLmMKaW5kZXggZTk3ZjcxNjMuLmIzYjJiZjRkIDEw
+MDY0NAotLS0gYS9saWIvaWd0X2RldmljZV9zY2FuLmMKKysrIGIvbGliL2lndF9kZXZpY2Vfc2Nh
+bi5jCkBAIC0yNSw3ICsyNSw5IEBACiAjaW5jbHVkZSAiaWd0X2NvcmUuaCIKICNpbmNsdWRlICJp
+Z3RfZGV2aWNlX3NjYW4uaCIKICNpbmNsdWRlICJpZ3RfbGlzdC5oIgorI2luY2x1ZGUgImludGVs
+X2NoaXBzZXQuaCIKIAorI2luY2x1ZGUgPGN0eXBlLmg+CiAjaW5jbHVkZSA8ZGlyZW50Lmg+CiAj
+aW5jbHVkZSA8ZmNudGwuaD4KICNpbmNsdWRlIDxnbGliLmg+CkBAIC0xNzgsMTIgKzE4MCw0NiBA
+QCBzdGF0aWMgc3RydWN0IHsKIAlib29sIGRldnNfc2Nhbm5lZDsKIH0gaWd0X2RldnM7CiAKK3R5
+cGVkZWYgY2hhciAqKCpkZXZuYW1lX2ZuKSh1aW50MTZfdCwgdWludDE2X3QpOworCitzdGF0aWMg
+Y2hhciAqZGV2bmFtZV9oZXgodWludDE2X3QgdmVuZG9yLCB1aW50MTZfdCBkZXZpY2UpCit7CisJ
+Y2hhciAqczsKKworCWlndF9hc3NlcnQoYXNwcmludGYoJnMsICIlMDR4OiUwNHgiLCB2ZW5kb3Is
+IGRldmljZSkgPT0gOSk7CisKKwlyZXR1cm4gczsKK30KKworc3RhdGljIGNoYXIgKmRldm5hbWVf
+aW50ZWwodWludDE2X3QgdmVuZG9yLCB1aW50MTZfdCBkZXZpY2UpCit7CisJY29uc3Qgc3RydWN0
+IGludGVsX2RldmljZV9pbmZvICppbmZvID0gaW50ZWxfZ2V0X2RldmljZV9pbmZvKGRldmljZSk7
+CisJY2hhciAqZGV2bmFtZSA9IE5VTEwsICpzOworCisJaWYgKGluZm8tPmNvZGVuYW1lKSB7CisJ
+CWRldm5hbWUgPSBzdHJkdXAoaW5mby0+Y29kZW5hbWUpOworCisJCWlmIChkZXZuYW1lKSB7CisJ
+CQlkZXZuYW1lWzBdID0gdG91cHBlcihkZXZuYW1lWzBdKTsKKwkJCWlndF9hc3NlcnQoYXNwcmlu
+dGYoJnMsICJJbnRlbCAlcyAoR2VuJXUpIiwgZGV2bmFtZSwKKwkJCQkJICAgIGZmcyhpbmZvLT5n
+ZW4pKSAhPSAtMSk7CisJCQlmcmVlKGRldm5hbWUpOworCQl9CisJfQorCisJaWYgKCFkZXZuYW1l
+KQorCQlzID0gZGV2bmFtZV9oZXgodmVuZG9yLCBkZXZpY2UpOworCisJcmV0dXJuIHM7Cit9CisK
+IHN0YXRpYyBzdHJ1Y3QgewogCWNvbnN0IGNoYXIgKm5hbWU7CiAJY29uc3QgY2hhciAqdmVuZG9y
+X2lkOworCWRldm5hbWVfZm4gZGV2bmFtZTsKIH0gcGNpX3ZlbmRvcl9tYXBwaW5nW10gPSB7Ci0J
+eyAiaW50ZWwiLCAiODA4NiIgfSwKLQl7ICJhbWQiLCAiMTAwMiIgfSwKKwl7ICJpbnRlbCIsICI4
+MDg2IiwgZGV2bmFtZV9pbnRlbCB9LAorCXsgImFtZCIsICIxMDAyIiwgZGV2bmFtZV9oZXggfSwK
+IAl7IE5VTEwsIH0sCiB9OwogCkBAIC0xOTgsNiArMjM0LDQyIEBAIHN0YXRpYyBjb25zdCBjaGFy
+ICpnZXRfcGNpX3ZlbmRvcl9pZF9ieV9uYW1lKGNvbnN0IGNoYXIgKm5hbWUpCiAJcmV0dXJuIE5V
+TEw7CiB9CiAKK3N0YXRpYyBkZXZuYW1lX2ZuIGdldF9wY2lfdmVuZG9yX2RldmljZV9mbih1aW50
+MTZfdCB2ZW5kb3IpCit7CisJY2hhciB2ZW5kb3JzdHJbNV07CisKKwlzbnByaW50Zih2ZW5kb3Jz
+dHIsIHNpemVvZih2ZW5kb3JzdHIpLCAiJTA0eCIsIHZlbmRvcik7CisKKwlmb3IgKHR5cGVvZigq
+cGNpX3ZlbmRvcl9tYXBwaW5nKSAqdm0gPSBwY2lfdmVuZG9yX21hcHBpbmc7IHZtLT5uYW1lOyB2
+bSsrKSB7CisJCWlmICghc3RyY2FzZWNtcCh2ZW5kb3JzdHIsIHZtLT52ZW5kb3JfaWQpKQorCQkJ
+cmV0dXJuIHZtLT5kZXZuYW1lOworCX0KKworCXJldHVybiBkZXZuYW1lX2hleDsKK30KKworc3Rh
+dGljIHZvaWQgZ2V0X3BjaV92ZW5kb3JfZGV2aWNlKGNvbnN0IHN0cnVjdCBpZ3RfZGV2aWNlICpk
+ZXYsCisJCQkJICB1aW50MTZfdCAqdmVuZG9ycCwgdWludDE2X3QgKmRldmljZXApCit7CisJaWd0
+X2Fzc2VydChkZXYgJiYgZGV2LT52ZW5kb3IgJiYgZGV2LT5kZXZpY2UpOworCWlndF9hc3NlcnQo
+dmVuZG9ycCAmJiBkZXZpY2VwKTsKKworCWlndF9hc3NlcnQoc3NjYW5mKGRldi0+dmVuZG9yLCAi
+JWh4IiwgdmVuZG9ycCkgPT0gMSk7CisJaWd0X2Fzc2VydChzc2NhbmYoZGV2LT5kZXZpY2UsICIl
+aHgiLCBkZXZpY2VwKSA9PSAxKTsKK30KKworc3RhdGljIGNoYXIgKl9fcGNpX3ByZXR0eV9uYW1l
+KHVpbnQxNl90IHZlbmRvciwgdWludDE2X3QgZGV2aWNlLCBib29sIG51bWVyaWMpCit7CisJZGV2
+bmFtZV9mbiBmbjsKKworCWlmICghbnVtZXJpYykKKwkJZm4gPSBnZXRfcGNpX3ZlbmRvcl9kZXZp
+Y2VfZm4odmVuZG9yKTsKKwllbHNlCisJCWZuID0gZGV2bmFtZV9oZXg7CisKKwlyZXR1cm4gZm4o
+dmVuZG9yLCBkZXZpY2UpOworfQorCiAvKiBSZWFkaW5nIHN5c2F0dHIgdmFsdWVzIGNhbiB0YWtl
+IHRpbWUgKGV2ZW4gc2Vjb25kcyksCiAgKiB3ZSB3YW50IHRvIGF2b2lkIHJlYWRpbmcgc3VjaCBr
+ZXlzLgogICovCkBAIC00NDYsMjMgKzUxOCw0NCBAQCBzdGF0aWMgYm9vbCBpc192ZW5kb3JfbWF0
+Y2hlZChzdHJ1Y3QgaWd0X2RldmljZSAqZGV2LCBjb25zdCBjaGFyICp2ZW5kb3IpCiAJcmV0dXJu
+ICFzdHJjYXNlY21wKGRldi0+dmVuZG9yLCB2ZW5kb3JfaWQpOwogfQogCitzdGF0aWMgY2hhciAq
+c2FmZV9zdHJuY3B5KGNoYXIgKmRzdCwgY29uc3QgY2hhciAqc3JjLCBpbnQgbikKK3sKKwljaGFy
+ICpzOworCisJaWd0X2Fzc2VydChuID4gMCk7CisJaWd0X2Fzc2VydChkc3QgJiYgc3JjKTsKKwor
+CXMgPSBzdHJuY3B5KGRzdCwgc3JjLCBuIC0gMSk7CisJc1tuIC0gMV0gPSAnXDAnOworCisJcmV0
+dXJuIHM7Cit9CisKIHN0YXRpYyB2b2lkCiBfX2NvcHlfZGV2X3RvX2NhcmQoc3RydWN0IGlndF9k
+ZXZpY2UgKmRldiwgc3RydWN0IGlndF9kZXZpY2VfY2FyZCAqY2FyZCkKIHsKIAlpZiAoZGV2LT5z
+dWJzeXN0ZW0gIT0gTlVMTCkKLQkJc3RybmNweShjYXJkLT5zdWJzeXN0ZW0sIGRldi0+c3Vic3lz
+dGVtLAotCQkJc2l6ZW9mKGNhcmQtPnN1YnN5c3RlbSkgLSAxKTsKKwkJc2FmZV9zdHJuY3B5KGNh
+cmQtPnN1YnN5c3RlbSwgZGV2LT5zdWJzeXN0ZW0sCisJCQkgICAgIHNpemVvZihjYXJkLT5zdWJz
+eXN0ZW0pKTsKIAogCWlmIChkZXYtPmRybV9jYXJkICE9IE5VTEwpCi0JCXN0cm5jcHkoY2FyZC0+
+Y2FyZCwgZGV2LT5kcm1fY2FyZCwgc2l6ZW9mKGNhcmQtPmNhcmQpIC0gMSk7CisJCXNhZmVfc3Ry
+bmNweShjYXJkLT5jYXJkLCBkZXYtPmRybV9jYXJkLCBzaXplb2YoY2FyZC0+Y2FyZCkpOwogCiAJ
+aWYgKGRldi0+ZHJtX3JlbmRlciAhPSBOVUxMKQotCQlzdHJuY3B5KGNhcmQtPnJlbmRlciwgZGV2
+LT5kcm1fcmVuZGVyLAotCQkJc2l6ZW9mKGNhcmQtPnJlbmRlcikgLSAxKTsKKwkJc2FmZV9zdHJu
+Y3B5KGNhcmQtPnJlbmRlciwgZGV2LT5kcm1fcmVuZGVyLAorCQkJICAgICBzaXplb2YoY2FyZC0+
+cmVuZGVyKSk7CiAKIAlpZiAoZGV2LT5wY2lfc2xvdF9uYW1lICE9IE5VTEwpCi0JCXN0cm5jcHko
+Y2FyZC0+cGNpX3Nsb3RfbmFtZSwgZGV2LT5wY2lfc2xvdF9uYW1lLAotCQkJUENJX1NMT1RfTkFN
+RV9TSVpFICsgMSk7CisJCXNhZmVfc3RybmNweShjYXJkLT5wY2lfc2xvdF9uYW1lLCBkZXYtPnBj
+aV9zbG90X25hbWUsCisJCQkgICAgIHNpemVvZihjYXJkLT5wY2lfc2xvdF9uYW1lKSk7CisKKwlp
+ZiAoZGV2LT52ZW5kb3IgIT0gTlVMTCkKKwkJaWYgKHNzY2FuZihkZXYtPnZlbmRvciwgIiVoeCIs
+ICZjYXJkLT5wY2lfdmVuZG9yKSAhPSAxKQorCQkJY2FyZC0+cGNpX3ZlbmRvciA9IDA7CisKKwlp
+ZiAoZGV2LT5kZXZpY2UgIT0gTlVMTCkKKwkJaWYgKHNzY2FuZihkZXYtPmRldmljZSwgIiVoeCIs
+ICZjYXJkLT5wY2lfZGV2aWNlKSAhPSAxKQorCQkJY2FyZC0+cGNpX2RldmljZSA9IDA7CiB9CiAK
+IC8qCkBAIC04NTIsNiArOTQ1LDcgQEAgc3RhdGljIHZvaWQgX19wcmludF9maWx0ZXIoY2hhciAq
+YnVmLCBpbnQgbGVuLAogCX07CiB9CiAKKyNkZWZpbmUgVkVORE9SX1NJWkUgMzAKIHN0YXRpYyB2
+b2lkCiBpZ3RfZGV2c19wcmludF91c2VyKHN0cnVjdCBpZ3RfbGlzdF9oZWFkICp2aWV3LAogCQkg
+ICAgY29uc3Qgc3RydWN0IGlndF9kZXZpY2VzX3ByaW50X2Zvcm1hdCAqZm10KQpAQCAtODgzLDEx
+ICs5NzcsMTkgQEAgaWd0X2RldnNfcHJpbnRfdXNlcihzdHJ1Y3QgaWd0X2xpc3RfaGVhZCAqdmll
+dywKIAkJCWNvbnRpbnVlOwogCiAJCWlmIChwY2lfZGV2KSB7CisJCQl1aW50MTZfdCB2ZW5kb3Is
+IGRldmljZTsKKwkJCWNoYXIgKmRldm5hbWU7CisKKwkJCWdldF9wY2lfdmVuZG9yX2RldmljZShw
+Y2lfZGV2LCAmdmVuZG9yLCAmZGV2aWNlKTsKKwkJCWRldm5hbWUgPSBfX3BjaV9wcmV0dHlfbmFt
+ZSh2ZW5kb3IsIGRldmljZSwgZm10LT5udW1lcmljKTsKKwogCQkJX19wcmludF9maWx0ZXIoZmls
+dGVyLCBzaXplb2YoZmlsdGVyKSwgZm10LCBwY2lfZGV2LAogCQkJCSAgICAgICBmYWxzZSk7Ci0J
+CQlwcmludGYoIiUtMjRzJTRzOiU0cyAgICAlc1xuIiwKLQkJCSAgICAgICBkcm1fbmFtZSwgcGNp
+X2Rldi0+dmVuZG9yLCBwY2lfZGV2LT5kZXZpY2UsCi0JCQkgICAgICAgZmlsdGVyKTsKKworCQkJ
+cHJpbnRmKCIlLTI0cyAlLSpzICAgICVzXG4iLAorCQkJICAgICAgIGRybV9uYW1lLCBWRU5ET1Jf
+U0laRSwgZGV2bmFtZSwgZmlsdGVyKTsKKworCQkJZnJlZShkZXZuYW1lKTsKIAkJfSBlbHNlIHsK
+IAkJCV9fcHJpbnRfZmlsdGVyKGZpbHRlciwgc2l6ZW9mKGZpbHRlciksIGZtdCwgZGV2LCBmYWxz
+ZSk7CiAJCQlwcmludGYoIiUtMjRzICAgICAgICAgICAgICVzXG4iLCBkcm1fbmFtZSwgZmlsdGVy
+KTsKQEAgLTkxOSw3ICsxMDIxLDcgQEAgaWd0X2RldnNfcHJpbnRfdXNlcihzdHJ1Y3QgaWd0X2xp
+c3RfaGVhZCAqdmlldywKIAkJCWlmIChmbXQtPm9wdGlvbiAhPSBJR1RfUFJJTlRfUENJKSB7CiAJ
+CQkJX19wcmludF9maWx0ZXIoZmlsdGVyLCBzaXplb2YoZmlsdGVyKSwgZm10LAogCQkJCQkgICAg
+ICAgZGV2MiwgdHJ1ZSk7Ci0JCQkJcHJpbnRmKCIgICAgICAgICAgICAgJXNcbiIsIGZpbHRlcik7
+CisJCQkJcHJpbnRmKCIlLSpzICAgICAlc1xuIiwgVkVORE9SX1NJWkUsICIiLCBmaWx0ZXIpOwog
+CQkJfSBlbHNlIHsKIAkJCQlwcmludGYoIlxuIik7CiAJCQl9CkBAIC0xNDc5LDYgKzE1ODEsMzAg
+QEAgYm9vbCBpZ3RfZGV2aWNlX2NhcmRfbWF0Y2hfcGNpKGNvbnN0IGNoYXIgKmZpbHRlciwKICAg
+ICAgICByZXR1cm4gX19pZ3RfZGV2aWNlX2NhcmRfbWF0Y2goZmlsdGVyLCBjYXJkLCB0cnVlKTsK
+IH0KIAorLyoqCisgKiBpZ3RfZGV2aWNlX2dldF9wcmV0dHlfbmFtZQorICogQGNhcmQ6IHBvaW50
+ZXIgdG8gaWd0X2RldmljZV9jYXJkIHN0cnVjdAorICoKKyAqIEZvciBjYXJkIGZ1bmN0aW9uIHJl
+dHVybnMgYWxsb2NhdGVkIHN0cmluZyBoYXZpbmcgcHJldHR5IG5hbWUKKyAqIG9yIHZlbmRvcjpk
+ZXZpY2UgYXMgaGV4IGlmIG5vIGJhY2tlbmQgcHJldHR5LXJlc29sdmVyIGlzIGltcGxlbWVudGVk
+LgorICoKKyAqIFJldHVybnM6IG5ld2x5IGFsbG9jYXRlZCBzdHJpbmcuCisgKi8KK2NoYXIgKmln
+dF9kZXZpY2VfZ2V0X3ByZXR0eV9uYW1lKHN0cnVjdCBpZ3RfZGV2aWNlX2NhcmQgKmNhcmQsIGJv
+b2wgbnVtZXJpYykKK3sKKwljaGFyICpkZXZuYW1lOworCisJaWd0X2Fzc2VydChjYXJkKTsKKwor
+CWlmIChzdHJsZW4oY2FyZC0+cGNpX3Nsb3RfbmFtZSkpCisJCWRldm5hbWUgPSBfX3BjaV9wcmV0
+dHlfbmFtZShjYXJkLT5wY2lfdmVuZG9yLCBjYXJkLT5wY2lfZGV2aWNlLAorCQkJCQkgICAgbnVt
+ZXJpYyk7CisJZWxzZQorCQlkZXZuYW1lID0gc3RyZHVwKGNhcmQtPnN1YnN5c3RlbSk7CisKKwly
+ZXR1cm4gZGV2bmFtZTsKK30KKwogLyoqCiAgKiBpZ3Rfb3Blbl9jYXJkOgogICogQGNhcmQ6IHBv
+aW50ZXIgdG8gaWd0X2RldmljZV9jYXJkIHN0cnVjdHVyZQpkaWZmIC0tZ2l0IGEvbGliL2lndF9k
+ZXZpY2Vfc2Nhbi5oIGIvbGliL2lndF9kZXZpY2Vfc2Nhbi5oCmluZGV4IGJiNGJlNzIzLi41ZjU4
+M2EwNiAxMDA2NDQKLS0tIGEvbGliL2lndF9kZXZpY2Vfc2Nhbi5oCisrKyBiL2xpYi9pZ3RfZGV2
+aWNlX3NjYW4uaApAQCAtNDksNiArNDksNyBAQCBlbnVtIGlndF9kZXZpY2VzX3ByaW50X29wdGlv
+biB7CiBzdHJ1Y3QgaWd0X2RldmljZXNfcHJpbnRfZm9ybWF0IHsKIAllbnVtIGlndF9kZXZpY2Vz
+X3ByaW50X3R5cGUgICB0eXBlOwogCWVudW0gaWd0X2RldmljZXNfcHJpbnRfb3B0aW9uIG9wdGlv
+bjsKKwlib29sIG51bWVyaWM7CiB9OwogCiAjZGVmaW5lIElOVEVHUkFURURfSTkxNV9HUFVfUENJ
+X0lEICIwMDAwOjAwOjAyLjAiCkBAIC01OCw2ICs1OSw3IEBAIHN0cnVjdCBpZ3RfZGV2aWNlX2Nh
+cmQgewogCWNoYXIgY2FyZFtOQU1FX01BWF07CiAJY2hhciByZW5kZXJbTkFNRV9NQVhdOwogCWNo
+YXIgcGNpX3Nsb3RfbmFtZVtQQ0lfU0xPVF9OQU1FX1NJWkUrMV07CisJdWludDE2X3QgcGNpX3Zl
+bmRvciwgcGNpX2RldmljZTsKIH07CiAKIHZvaWQgaWd0X2RldmljZXNfc2Nhbihib29sIGZvcmNl
+KTsKQEAgLTg0LDYgKzg2LDcgQEAgYm9vbCBpZ3RfZGV2aWNlX2NhcmRfbWF0Y2hfcGNpKGNvbnN0
+IGNoYXIgKmZpbHRlciwKIAlzdHJ1Y3QgaWd0X2RldmljZV9jYXJkICpjYXJkKTsKIGJvb2wgaWd0
+X2RldmljZV9maW5kX2ZpcnN0X2k5MTVfZGlzY3JldGVfY2FyZChzdHJ1Y3QgaWd0X2RldmljZV9j
+YXJkICpjYXJkKTsKIGJvb2wgaWd0X2RldmljZV9maW5kX2ludGVncmF0ZWRfY2FyZChzdHJ1Y3Qg
+aWd0X2RldmljZV9jYXJkICpjYXJkKTsKK2NoYXIgKmlndF9kZXZpY2VfZ2V0X3ByZXR0eV9uYW1l
+KHN0cnVjdCBpZ3RfZGV2aWNlX2NhcmQgKmNhcmQsIGJvb2wgbnVtZXJpYyk7CiBpbnQgaWd0X29w
+ZW5fY2FyZChzdHJ1Y3QgaWd0X2RldmljZV9jYXJkICpjYXJkKTsKIGludCBpZ3Rfb3Blbl9yZW5k
+ZXIoc3RydWN0IGlndF9kZXZpY2VfY2FyZCAqY2FyZCk7CiAKLS0gCjIuMjYuMAoKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KaWd0LWRldiBtYWlsaW5nIGxp
+c3QKaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcKaHR0cHM6Ly9saXN0cy5mcmVlZGVza3Rv
+cC5vcmcvbWFpbG1hbi9saXN0aW5mby9pZ3QtZGV2Cg==
