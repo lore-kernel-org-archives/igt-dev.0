@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E3896E527
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2020 13:47:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 37DF56E52E
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2020 13:47:51 +0000 (UTC)
 From: Thomas Zimmermann <tzimmermann@suse.de>
-Date: Thu, 19 Nov 2020 14:47:43 +0100
-Message-Id: <20201119134746.28020-6-tzimmermann@suse.de>
+Date: Thu, 19 Nov 2020 14:47:41 +0100
+Message-Id: <20201119134746.28020-4-tzimmermann@suse.de>
 In-Reply-To: <20201119134746.28020-1-tzimmermann@suse.de>
 References: <20201119134746.28020-1-tzimmermann@suse.de>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v5 5/8] tests/fbdev: Add tests for write
- operations on framebuffer
+Subject: [igt-dev] [PATCH v5 3/8] tests/fbdev: Add tests for read operations
+ on framebuffer
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,61 +25,85 @@ To: petri.latvala@intel.com, chris@chris-wilson.co.uk, daniel.vetter@ffwll.ch
 Cc: igt-dev@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The write tests check the written buffer against the content of the mapped
+The read tests check the read buffer against the content of the mapped
 framebuffer.
 
 v4:
-	* replace igt_require() by iqt_assert() in "write" (Petri)
-	* add write test to CI
+	* test malloc() success with igt_require()
+	* replace igt_require() by igt_assert() in "read" (Petri)
+	* add read test to CI
 v3:
 	* put igt_describe() before igt_subtest() (Petri)
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- tests/fbdev.c                         | 20 ++++++++++++++++++++
+ tests/fbdev.c                         | 25 +++++++++++++++++++++++++
  tests/intel-ci/fast-feedback.testlist |  1 +
- 2 files changed, 21 insertions(+)
+ 2 files changed, 26 insertions(+)
 
 diff --git a/tests/fbdev.c b/tests/fbdev.c
-index be9e95c1..23ff146c 100644
+index eebd2a83..d8c78a5e 100644
 --- a/tests/fbdev.c
 +++ b/tests/fbdev.c
-@@ -135,6 +135,26 @@ static void framebuffer_tests(int fd)
- 		igt_assert_f(pos, "found 0x55 at pos %zu, none expected\n", pos - buf);
- 	}
+@@ -25,6 +25,7 @@
  
-+	igt_describe("Check write operations on framebuffer memory");
-+	igt_subtest("write") {
+ #include "igt.h"
+ 
++#include <errno.h>
+ #include <fcntl.h>
+ #include <string.h>
+ #include <sys/ioctl.h>
+@@ -64,6 +65,7 @@ static void framebuffer_tests(int fd)
+ {
+ 	struct fb_fix_screeninfo fix_info;
+ 	void * volatile map;
++	void * volatile buf;
+ 
+ 	igt_fixture {
+ 		igt_require(ioctl(fd, FBIOGET_FSCREENINFO, &fix_info) == 0);
+@@ -73,10 +75,33 @@ static void framebuffer_tests(int fd)
+ 			   PROT_WRITE, MAP_SHARED, fd, 0);
+ 		igt_assert(map != MAP_FAILED);
+ 
++		buf = malloc(fix_info.smem_len);
++		igt_require(buf);
++	}
++
++	igt_describe("Check read operations on framebuffer memory");
++	igt_subtest("read") {
 +		ssize_t ret;
 +		int cmp;
 +
-+		/* write 0 to framebuffer and compare */
-+		memset(buf, 0, fix_info.smem_len);
-+		ret = pwrite(fd, buf, fix_info.smem_len, 0);
-+		igt_assert_f(ret == (ssize_t)fix_info.smem_len, "pwrite failed, ret=%zd\n", ret);
++		/* fill framebuffer with 0 and compare */
+ 		memset(map, 0, fix_info.smem_len);
++		ret = pread(fd, buf, fix_info.smem_len, 0);
++		igt_assert_f(ret == (ssize_t)fix_info.smem_len, "pread failed, ret=%zd\n", ret);
 +		cmp = memcmp(map, buf, fix_info.smem_len);
-+		igt_assert_f(!cmp, "write buffer differs from mapped framebuffer for 0\n");
++		igt_assert_f(!cmp, "read buffer differs from mapped framebuffer for 0\n");
 +
-+		/* write 0x55 to framebuffer and compare */
-+		memset(buf, 0x55, fix_info.smem_len);
-+		ret = pwrite(fd, buf, fix_info.smem_len, 0);
-+		igt_assert_f(ret == (ssize_t)fix_info.smem_len, "pwrite failed, ret=%zd\n", ret);
++		/* fill framebuffer with 0x55 and compare */
++		memset(map, 0x55, fix_info.smem_len);
++		ret = pread(fd, buf, fix_info.smem_len, 0);
++		igt_assert_f(ret == (ssize_t)fix_info.smem_len, "pread failed, ret=%zd\n", ret);
 +		cmp = memcmp(map, buf, fix_info.smem_len);
-+		igt_assert_f(!cmp, "write buffer differs from mapped framebuffer for 0\n");
-+	}
-+
++		igt_assert_f(!cmp, "read buffer differs from mapped framebuffer for 0x55\n");
+ 	}
+ 
  	igt_fixture {
- 		free(buf);
- 		memset(map, 0, fix_info.smem_len); // don't leave garbage on the screen
++		free(buf);
++		memset(map, 0, fix_info.smem_len); // don't leave garbage on the screen
+ 		munmap(map, fix_info.smem_len);
+ 	}
+ }
 diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 2f9148ab..66630e1d 100644
+index cf66b4da..fc8a605f 100644
 --- a/tests/intel-ci/fast-feedback.testlist
 +++ b/tests/intel-ci/fast-feedback.testlist
-@@ -5,6 +5,7 @@ igt@debugfs_test@read_all_entries
+@@ -3,6 +3,7 @@
+ igt@core_auth@basic-auth
+ igt@debugfs_test@read_all_entries
  igt@fbdev@info
- igt@fbdev@read
- igt@fbdev@unaligned-read
-+igt@fbdev@write
++igt@fbdev@read
  igt@gem_basic@bad-close
  igt@gem_basic@create-close
  igt@gem_basic@create-fd-close
