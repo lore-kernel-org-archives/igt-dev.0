@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 586B96E527
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2020 13:47:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7EAF06E52D
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2020 13:47:52 +0000 (UTC)
 From: Thomas Zimmermann <tzimmermann@suse.de>
-Date: Thu, 19 Nov 2020 14:47:42 +0100
-Message-Id: <20201119134746.28020-5-tzimmermann@suse.de>
+Date: Thu, 19 Nov 2020 14:47:44 +0100
+Message-Id: <20201119134746.28020-7-tzimmermann@suse.de>
 In-Reply-To: <20201119134746.28020-1-tzimmermann@suse.de>
 References: <20201119134746.28020-1-tzimmermann@suse.de>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v5 4/8] tests/fbdev: Add tests for unaligned reads
- on framebuffer memory
+Subject: [igt-dev] [PATCH v5 6/8] tests/fbdev: Add tests for unaligned
+ writes on framebuffer memory
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,60 +25,31 @@ To: petri.latvala@intel.com, chris@chris-wilson.co.uk, daniel.vetter@ffwll.ch
 Cc: igt-dev@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The tests for unaligned reads start and stop reading within pages.
+The tests for unaligned writes start and stop writing within pages.
 
 v4:
-	* declare pagesize as volatile
-	* test sysconf() success with igt_require() (Petri)
-	* clarify error message about frambuffer size (Petri)
-	* replace igt_require() by igt_assert() in "unaligned-read" (Petri)
-	* add unaligned-read test to CI
+	* replace igt_require() by igt_assert() in "unaligned-write" (Petri)
+	* clarify error message about framebuffer size (Petri)
+	* add unaligned-write test to CI
 v3:
 	* put igt_describe() before igt_subtest() (Petri)
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- tests/fbdev.c                         | 40 +++++++++++++++++++++++++--
+ tests/fbdev.c                         | 29 +++++++++++++++++++++++++++
  tests/intel-ci/fast-feedback.testlist |  1 +
- 2 files changed, 39 insertions(+), 2 deletions(-)
+ 2 files changed, 30 insertions(+)
 
 diff --git a/tests/fbdev.c b/tests/fbdev.c
-index d8c78a5e..be9e95c1 100644
+index 23ff146c..c4cb357f 100644
 --- a/tests/fbdev.c
 +++ b/tests/fbdev.c
-@@ -64,10 +64,13 @@ static void mode_tests(int fd)
- static void framebuffer_tests(int fd)
- {
- 	struct fb_fix_screeninfo fix_info;
--	void * volatile map;
--	void * volatile buf;
-+	unsigned char * volatile map;
-+	unsigned char * volatile buf;
-+	volatile size_t pagesize;
- 
- 	igt_fixture {
-+		long ret;
-+
- 		igt_require(ioctl(fd, FBIOGET_FSCREENINFO, &fix_info) == 0);
- 		igt_assert(fix_info.smem_len);
- 
-@@ -77,6 +80,10 @@ static void framebuffer_tests(int fd)
- 
- 		buf = malloc(fix_info.smem_len);
- 		igt_require(buf);
-+
-+		ret = sysconf(_SC_PAGESIZE);
-+		igt_require(ret != -1);
-+		pagesize = ret;
+@@ -155,6 +155,35 @@ static void framebuffer_tests(int fd)
+ 		igt_assert_f(!cmp, "write buffer differs from mapped framebuffer for 0\n");
  	}
  
- 	igt_describe("Check read operations on framebuffer memory");
-@@ -99,6 +106,35 @@ static void framebuffer_tests(int fd)
- 		igt_assert_f(!cmp, "read buffer differs from mapped framebuffer for 0x55\n");
- 	}
- 
-+	igt_describe("Check read operations on unaligned locations in framebuffer memory");
-+	igt_subtest("unaligned-read") {
++	igt_describe("Check write operations on unaligned locations in framebuffer memory");
++	igt_subtest("unaligned-write") {
 +		off_t off;
 +		size_t len;
 +		ssize_t ret;
@@ -89,38 +60,38 @@ index d8c78a5e..be9e95c1 100644
 +		igt_require_f((off + len) < fix_info.smem_len, "framebuffer too small to test\n");
 +
 +		/* read at unaligned location and compare */
-+		memset(map, 0, fix_info.smem_len);
-+		memset(&map[off], 0x55, len);
-+		memset(buf, 0xff, fix_info.smem_len);
-+		ret = pread(fd, &buf[off], len, off);
-+		igt_assert_f(ret == (ssize_t)len, "pread failed, ret=%zd\n", ret);
-+		pos = memchr(buf, 0x55, fix_info.smem_len);
-+		igt_assert_f(pos, "0x55 not found within read buffer\n");
-+		igt_assert_f(pos == &buf[off], "0x55 found at pos %zu, expected %lld\n",
-+			     pos - buf, (long long)off);
-+		pos = memchr(&buf[off], 0xff, fix_info.smem_len - off);
-+		igt_assert_f(pos, "0xff not found within read buffer\n");
-+		igt_assert_f(pos == &buf[off + len], "0xff found at pos %zu, expected %lld\n",
-+			     pos - buf, (long long)(off + len));
-+		pos = memchr(&buf[off + len], 0x55, fix_info.smem_len - off + len);
-+		igt_assert_f(pos, "found 0x55 at pos %zu, none expected\n", pos - buf);
++		memset(map, 0xff, fix_info.smem_len);
++		memset(buf, 0, fix_info.smem_len);
++		memset(&buf[off], 0x55, len);
++		ret = pwrite(fd, &buf[off], len, off);
++		igt_assert_f(ret == (ssize_t)len, "pwrite failed, ret=%zd\n", ret);
++		pos = memchr(map, 0x55, fix_info.smem_len);
++		igt_assert_f(pos, "0x55 not found within framebuffer\n");
++		igt_assert_f(pos == &map[off], "0x55 found at pos %zu, expected %lld\n",
++			     pos - map, (long long)off);
++		pos = memchr(&map[off], 0xff, fix_info.smem_len - off);
++		igt_assert_f(pos, "0xff not found within framebuffer\n");
++		igt_assert_f(pos == &map[off + len], "0xff found at pos %zu, expected %lld\n",
++			     pos - map, (long long)(off + len));
++		pos = memchr(&map[off + len], 0x55, fix_info.smem_len - off + len);
++		igt_assert_f(pos, "found 0x55 at pos %zu, none expected\n", pos - map);
 +	}
 +
  	igt_fixture {
  		free(buf);
  		memset(map, 0, fix_info.smem_len); // don't leave garbage on the screen
 diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index fc8a605f..2f9148ab 100644
+index 66630e1d..5bad1341 100644
 --- a/tests/intel-ci/fast-feedback.testlist
 +++ b/tests/intel-ci/fast-feedback.testlist
-@@ -4,6 +4,7 @@ igt@core_auth@basic-auth
- igt@debugfs_test@read_all_entries
+@@ -5,6 +5,7 @@ igt@debugfs_test@read_all_entries
  igt@fbdev@info
  igt@fbdev@read
-+igt@fbdev@unaligned-read
+ igt@fbdev@unaligned-read
++igt@fbdev@unaligned-write
+ igt@fbdev@write
  igt@gem_basic@bad-close
  igt@gem_basic@create-close
- igt@gem_basic@create-fd-close
 -- 
 2.29.2
 
