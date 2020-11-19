@@ -1,15 +1,15 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7EAF06E52D
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2020 13:47:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 066B56E52C
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2020 13:47:51 +0000 (UTC)
 From: Thomas Zimmermann <tzimmermann@suse.de>
-Date: Thu, 19 Nov 2020 14:47:44 +0100
-Message-Id: <20201119134746.28020-7-tzimmermann@suse.de>
+Date: Thu, 19 Nov 2020 14:47:39 +0100
+Message-Id: <20201119134746.28020-2-tzimmermann@suse.de>
 In-Reply-To: <20201119134746.28020-1-tzimmermann@suse.de>
 References: <20201119134746.28020-1-tzimmermann@suse.de>
 MIME-Version: 1.0
-Subject: [igt-dev] [PATCH v5 6/8] tests/fbdev: Add tests for unaligned
- writes on framebuffer memory
+Subject: [igt-dev] [PATCH v5 1/8] tests/fbdev: Move existing tests into
+ separate subgroups
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,71 +25,122 @@ To: petri.latvala@intel.com, chris@chris-wilson.co.uk, daniel.vetter@ffwll.ch
 Cc: igt-dev@lists.freedesktop.org, Thomas Zimmermann <tzimmermann@suse.de>
 List-ID: <igt-dev@lists.freedesktop.org>
 
-The tests for unaligned writes start and stop writing within pages.
+Move the existing tests into subgroups for testing modesetting and
+accessing the framebuffer.
 
+v5:
+	* test mmap() with igt_assert() (Daniel, Chris)
 v4:
-	* replace igt_require() by igt_assert() in "unaligned-write" (Petri)
-	* clarify error message about framebuffer size (Petri)
-	* add unaligned-write test to CI
+	* declare fd as volatile (Petri)
+	* add info test to CI
 v3:
-	* put igt_describe() before igt_subtest() (Petri)
+	* put igt_describe() before igt_subtest() and igt_subtest_group()
+	  (Petri)
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- tests/fbdev.c                         | 29 +++++++++++++++++++++++++++
+ tests/fbdev.c                         | 53 ++++++++++++++++++++-------
  tests/intel-ci/fast-feedback.testlist |  1 +
- 2 files changed, 30 insertions(+)
+ 2 files changed, 41 insertions(+), 13 deletions(-)
 
 diff --git a/tests/fbdev.c b/tests/fbdev.c
-index 23ff146c..c4cb357f 100644
+index e5efeb93..a803f445 100644
 --- a/tests/fbdev.c
 +++ b/tests/fbdev.c
-@@ -155,6 +155,35 @@ static void framebuffer_tests(int fd)
- 		igt_assert_f(!cmp, "write buffer differs from mapped framebuffer for 0\n");
+@@ -37,28 +37,17 @@
+ 
+ #include "igt.h"
+ 
+-igt_main
++static void mode_tests(int fd)
+ {
+ 	struct fb_var_screeninfo var_info;
+ 	struct fb_fix_screeninfo fix_info;
+-	int fd = -1;
+ 
+-	/*
+-	 * Should this test focus on the fbdev independent of any drm driver,
+-	 * or should it look for fbdev of a particular device?
+-	 */
+ 	igt_fixture {
+-		fd = open("/dev/fb0", O_RDWR);
+-		if (fd < 0) {
+-			drm_load_module(DRIVER_ANY);
+-			fd = open("/dev/fb0", O_RDWR);
+-		}
+-		igt_require_f(fd != -1, "/dev/fb0\n");
+-
+ 		igt_require(ioctl(fd, FBIOGET_VSCREENINFO, &var_info) == 0);
+ 		igt_require(ioctl(fd, FBIOGET_FSCREENINFO, &fix_info) == 0);
  	}
  
-+	igt_describe("Check write operations on unaligned locations in framebuffer memory");
-+	igt_subtest("unaligned-write") {
-+		off_t off;
-+		size_t len;
-+		ssize_t ret;
-+		const unsigned char *pos;
++	igt_describe("Check if screeninfo is valid");
+ 	igt_subtest("info") {
+ 		unsigned long size;
+ 
+@@ -69,7 +58,17 @@ igt_main
+ 			     fix_info.line_length,
+ 			     fix_info.smem_len);
+ 	}
++}
 +
-+		off = pagesize + (pagesize >> 2); // 1.25 * pagesize
-+		len = (pagesize << 2) + (pagesize >> 1); // 4.5 * pagesize
-+		igt_require_f((off + len) < fix_info.smem_len, "framebuffer too small to test\n");
++static void framebuffer_tests(int fd)
++{
++	struct fb_fix_screeninfo fix_info;
 +
-+		/* read at unaligned location and compare */
-+		memset(map, 0xff, fix_info.smem_len);
-+		memset(buf, 0, fix_info.smem_len);
-+		memset(&buf[off], 0x55, len);
-+		ret = pwrite(fd, &buf[off], len, off);
-+		igt_assert_f(ret == (ssize_t)len, "pwrite failed, ret=%zd\n", ret);
-+		pos = memchr(map, 0x55, fix_info.smem_len);
-+		igt_assert_f(pos, "0x55 not found within framebuffer\n");
-+		igt_assert_f(pos == &map[off], "0x55 found at pos %zu, expected %lld\n",
-+			     pos - map, (long long)off);
-+		pos = memchr(&map[off], 0xff, fix_info.smem_len - off);
-+		igt_assert_f(pos, "0xff not found within framebuffer\n");
-+		igt_assert_f(pos == &map[off + len], "0xff found at pos %zu, expected %lld\n",
-+			     pos - map, (long long)(off + len));
-+		pos = memchr(&map[off + len], 0x55, fix_info.smem_len - off + len);
-+		igt_assert_f(pos, "found 0x55 at pos %zu, none expected\n", pos - map);
++	igt_fixture {
++		igt_require(ioctl(fd, FBIOGET_FSCREENINFO, &fix_info) == 0);
++	}
+ 
++	igt_describe("Check mmap operations on framebuffer memory");
+ 	igt_subtest("mmap") {
+ 		void *map;
+ 
+@@ -82,6 +81,34 @@ igt_main
+ 		memset(map, 0, fix_info.smem_len);
+ 		munmap(map, fix_info.smem_len);
+ 	}
++}
++
++igt_main
++{
++	volatile int fd = -1;
++
++	/*
++	 * Should this test focus on the fbdev independent of any drm driver,
++	 * or should it look for fbdev of a particular device?
++	 */
++	igt_fixture {
++		fd = open("/dev/fb0", O_RDWR);
++		if (fd < 0) {
++			drm_load_module(DRIVER_ANY);
++			fd = open("/dev/fb0", O_RDWR);
++		}
++		igt_require_f(fd != -1, "/dev/fb0\n");
 +	}
 +
++	igt_describe("Check modesetting");
++	igt_subtest_group {
++		mode_tests(fd);
++	}
++
++	igt_describe("Check framebuffer access");
++	igt_subtest_group {
++		framebuffer_tests(fd);
++	}
+ 
  	igt_fixture {
- 		free(buf);
- 		memset(map, 0, fix_info.smem_len); // don't leave garbage on the screen
+ 		close(fd);
 diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index 66630e1d..5bad1341 100644
+index 83722f83..a40410a8 100644
 --- a/tests/intel-ci/fast-feedback.testlist
 +++ b/tests/intel-ci/fast-feedback.testlist
-@@ -5,6 +5,7 @@ igt@debugfs_test@read_all_entries
- igt@fbdev@info
- igt@fbdev@read
- igt@fbdev@unaligned-read
-+igt@fbdev@unaligned-write
- igt@fbdev@write
+@@ -2,6 +2,7 @@
+ 
+ igt@core_auth@basic-auth
+ igt@debugfs_test@read_all_entries
++igt@fbdev@info
+ igt@fbdev@mmap
  igt@gem_basic@bad-close
  igt@gem_basic@create-close
 -- 
