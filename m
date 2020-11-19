@@ -1,15 +1,16 @@
 Return-Path: <igt-dev-bounces@lists.freedesktop.org>
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7EBEC6E5CA
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2020 17:41:30 +0000 (UTC)
-Date: Thu, 19 Nov 2020 18:41:25 +0100
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 96E3F6E5C5
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2020 18:10:51 +0000 (UTC)
+Date: Thu, 19 Nov 2020 19:10:46 +0100
 From: Katarzyna Dec <katarzyna.dec@intel.com>
-Message-ID: <20201119174125.GB6508@kdec5-desk.ger.corp.intel.com>
-References: <20201105042851.19770-1-sai.gowtham.ch@intel.com>
+Message-ID: <20201119181046.GC6508@kdec5-desk.ger.corp.intel.com>
+References: <20201112044920.28130-1-sai.gowtham.ch@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201105042851.19770-1-sai.gowtham.ch@intel.com>
-Subject: Re: [igt-dev] [PATCH i-g-t] Added test description for test case.
+In-Reply-To: <20201112044920.28130-1-sai.gowtham.ch@intel.com>
+Subject: Re: [igt-dev] [PATCH i-g-t] i915/gem_render_linear_blits: Add test
+ description
 List-Unsubscribe: <https://lists.freedesktop.org/mailman/options/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=unsubscribe>
 List-Archive: <https://lists.freedesktop.org/archives/igt-dev>
@@ -25,50 +26,49 @@ To: sai.gowtham.ch@intel.com
 Cc: igt-dev@lists.freedesktop.org
 List-ID: <igt-dev@lists.freedesktop.org>
 
-On Thu, Nov 05, 2020 at 09:58:51AM +0530, sai.gowtham.ch@intel.com wrote:
+On Thu, Nov 12, 2020 at 10:19:20AM +0530, sai.gowtham.ch@intel.com wrote:
 > From: sai gowtham <sai.gowtham.ch@intel.com>
-Name of test missing from patch subject.
-
 > 
-> Added test description to test and basic-all subtest
-Maybe you could add brief descriptions to all cases?
+> Added more test description to the test and basic subtest.
 > 
 > Cc: Melkaveri Arjun <arjun.melkaveri@intel.com>
 > Signed-off-by: sai gowtham <sai.gowtham.ch@intel.com>
 > ---
->  tests/i915/gem_ringfill.c | 5 +++++
+>  tests/i915/gem_render_linear_blits.c | 5 +++++
 >  1 file changed, 5 insertions(+)
 > 
-> diff --git a/tests/i915/gem_ringfill.c b/tests/i915/gem_ringfill.c
-> index c499cb0d..aebbd15a 100644
-> --- a/tests/i915/gem_ringfill.c
-> +++ b/tests/i915/gem_ringfill.c
-> @@ -50,6 +50,9 @@
->  #define HIBERNATE 0x40
->  #define NEWFD 0x80
+> diff --git a/tests/i915/gem_render_linear_blits.c b/tests/i915/gem_render_linear_blits.c
+> index 8e646127..0cbd205c 100644
+> --- a/tests/i915/gem_render_linear_blits.c
+> +++ b/tests/i915/gem_render_linear_blits.c
+> @@ -55,6 +55,9 @@
+>  #define HEIGHT 512
+>  #define SIZE (HEIGHT*STRIDE)
 >  
-> +IGT_TEST_DESCRIPTION("This test does many tiny batchbuffer operations, in the"
-> +		" hope of catching failure to manage the ring properly near full");
-I would go with:
-Do many tiny batchbuffer operations to catch errors while ring is near full.
-
-Of course if that still means the same to you.
-> +
->  static unsigned int ring_size;
+> +IGT_TEST_DESCRIPTION("This is a test of doing many blits, with a working set"
+> +		" larger than the aperture size. The goal is to simply ensure"
+> +		" the basics work.");
+Leave a blank line between.
+>  static uint32_t linear[WIDTH*HEIGHT];
+>  static igt_render_copyfunc_t render_copy;
 >  
->  static void check_bo(int fd, uint32_t handle)
-> @@ -348,6 +351,8 @@ igt_main
->  		}
+> @@ -170,6 +173,8 @@ igt_main
+>  		igt_require_gem(fd);
 >  	}
 >  
-> +	igt_describe("This test does a basic pass over on all engines simultaniously"
-> +			" and checks how the driver handles a full ring.");
-In my opinion description it too long, can be shortened.
+> +	igt_describe("This is a basic test for render blit where it"
+> +			" does many blits, with a working set larger than the aperture size.");
+More specific:
+igt_describe("Copy 2 buffers forward, backward and random.");
+>  	igt_subtest("basic") {
+>  		run_test(fd, 2);
+>  	}
 
-Kasia
->  	igt_subtest("basic-all") {
->  		const struct intel_execution_engine2 *e;
->  
+Maybe you could add descriptions to other cases too?
+These cases are similar just more exahustive, using maximum memory.
+
+Kasia :)
+
 > -- 
 > 2.28.0
 > 
